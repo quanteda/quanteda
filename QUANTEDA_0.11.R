@@ -12,7 +12,7 @@
 #     notes (default is NULL, can be user-supplied)
 
 # testing git again
-# testing Rstudio with git 2 3 4
+# testing Rstudio with git 2 3 4 8
 
 library(austin)
 if(!require(XML)){
