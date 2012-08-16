@@ -14,8 +14,6 @@
 # testing git again
 # testing Rstudio with git 2 3 4 8 16 18
 
-twenty <- 20
-
 library(austin)
 if(!require(XML)){
   print("XML package is required for translation")
