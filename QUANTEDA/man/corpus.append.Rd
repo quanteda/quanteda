@@ -3,9 +3,11 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 %%  ~~function to do ... ~~
+corpus.append
 }
 \description{
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Adds a new list of texts and their features to an existing corpus
 }
 \usage{
 corpus.append(corpus1, newtexts, newattribs, ...)
