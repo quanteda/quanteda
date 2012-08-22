@@ -3,9 +3,11 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 %%  ~~function to do ... ~~
+corpus.create
 }
 \description{
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Makes a new corpus object
 }
 \usage{
 corpus.create(texts, textnames = NULL, attribs = NULL, source = NULL, notes = NULL, attribs.labels = NULL)

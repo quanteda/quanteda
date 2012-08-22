@@ -3,9 +3,11 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 %%  ~~function to do ... ~~
+corpus.add.attributes
 }
 \description{
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
+add a new list of attributes to a corpus
 }
 \usage{
 corpus.add.attributes(corpus, newattribs, name = newattribs)
@@ -31,6 +33,7 @@ corpus.add.attributes(corpus, newattribs, name = newattribs)
 %%  \item{comp1 }{Description of 'comp1'}
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
+Corpus
 }
 \references{
 %% ~put references to the literature/web site here ~
