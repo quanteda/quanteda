@@ -1,0 +1,5 @@
+source("~/Dropbox/QUANTESS/QUANTEDA/QUANTEDA_0.11.R")
+library(austin)
+texts <- getTextDir("~/Dropbox/QUANTESS/corpora/UkSupreme/2011-12cases")
+#parts <- strsplit(getRootFileNames(names(texts)), "_")
+#print(parts)
