@@ -166,10 +166,19 @@ getRootFileNames <- function(longFilenames) {
   return(sapply(splitFilenames, tail, n=1))
 }
 
+
+#' load text files from disk into a vector of character vectors
+
+#' points to files, reads them into a character vector of the texts
+#' with optional names, default being filenames
+#' returns a named vector of complete, unedited texts
+#' 
+#' @param filenames 
+#' separators 
+#' @examples
+#' getTextFiles('/home/paul/documents/libdem09.txt')
 getTextFiles <- function(filenames, textnames=NULL, verbose=FALSE) {
-  # points to files, reads them into a character vector of the texts
-  # with optional names, default being filenames
-  # return a named vector of complete, unedited texts
+
   # TODO detect encoding; verbose=TRUE (progress bar?)
   textsvec <- c()   # initialize text vector
   # changed from readChar to readLines
@@ -183,6 +192,17 @@ getTextFiles <- function(filenames, textnames=NULL, verbose=FALSE) {
   return(textsvec)
 }
 
+
+#' loads all text files from a given directory 
+#'
+#' given a directory name, get a list of all files in that directory
+#' and load them into a character vector using getTextFiles
+#' 
+#' 
+#' @param filenames filenames including a full path with directory
+#' separators 
+#' @examples
+#' getTextFiles('/home/paul/documents/libdem09.txt')
 getTextDir <- function(dirname) {
   # get all files from a directory
   return(getTextFiles(list.files(dirname, full.names = TRUE)))
