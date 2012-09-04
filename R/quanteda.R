@@ -149,11 +149,7 @@ translate <- function(sourceText,  sourceLanguage, targetLanguage, key=NULL, ver
 #' document name
 #'
 #' @param longFilenames filenames including a full path with directory
-#' separators 
-#' @param ... expressions evaluated in the context of \code{df} and 
-#'   then fed to \code{\link{order}}
-#' @keywords manip
-#' @export
+#' separators
 #' @examples
 #' getRootFilnames('/home/paul/documents/libdem09.txt')
 getRootFileNames <- function(longFilenames) {
@@ -177,7 +173,7 @@ getRootFileNames <- function(longFilenames) {
 #' separators 
 #' @examples
 #' getTextFiles('/home/paul/documents/libdem09.txt')
-getTextFiles <- function(filenames, textnames=NULL, verbose=FALSE) {
+getTextFiles <- function(filenames) {
 
   # TODO detect encoding; verbose=TRUE (progress bar?)
   textsvec <- c()   # initialize text vector
@@ -199,14 +195,24 @@ getTextFiles <- function(filenames, textnames=NULL, verbose=FALSE) {
 #' and load them into a character vector using getTextFiles
 #' 
 #' 
-#' @param filenames filenames including a full path with directory
+#' @param dirname A directory path
 #' separators 
 #' @examples
-#' getTextFiles('/home/paul/documents/libdem09.txt')
+#' getTextdir('/home/paul/documents/')
 getTextDir <- function(dirname) {
   # get all files from a directory
-  return(getTextFiles(list.files(dirname, full.names = TRUE)))
+  return(getTextFiles(list.files(dirname)))
 }
+
+#' provides a gui interface to choose a gui to load texts from
+#'
+#' launches a GUI to allow the user to choose a directory from
+#' which to load all files.
+#' 
+#' 
+#' 
+#' @examples
+#' getTextFiles('/home/paul/documents/libdem09.txt')
 
 getTextDirGui <- function() {
   files <- choose.files()
