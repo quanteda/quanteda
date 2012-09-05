@@ -9,7 +9,7 @@
 
 # This R file now approaching 500 lines including documentation -
 # suggest splitting to 3 files - translation, langtools, and corpus object
-# - PN 5 Sept
+# - PN 5th Sept
 
 
 ###
