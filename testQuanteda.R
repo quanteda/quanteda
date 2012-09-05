@@ -1,4 +1,4 @@
-source("~/Dropbox/QUANTESS/QUANTEDA/QUANTEDA_0.11.R")
+source("/home/paul/Dropbox/code/quanteda/R/quanteda.R")
 library(austin)
 
 # make a list of text objects from a directory
@@ -20,7 +20,6 @@ names(newattribs) <-
   c("year", "debate", "no", "fname", "speaker", "party")
 newattribs$party <- gsub(".txt", "", newattribs$party)
 temp <- corpus.create(texts,newattribs)
-#budgets$attribs <- rbind(budgets$attribs, temp$attribs)
 
 texts <- getTextDir("~/Dropbox/QUANTESS/corpora/iebudgets/budget_2009sup")
 parts <- strsplit(getRootFileNames(names(texts)), "_")

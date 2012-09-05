@@ -168,8 +168,9 @@ getRootFileNames <- function(longFilenames) {
 #' @param filenames 
 #' @examples
 #' getTextFiles('/home/paul/documents/libdem09.txt')
-getTextFiles <- function(filenames) {
+getTextFiles <- function(filenames, textnames=NULL) {
   # TODO detect encoding; verbose=TRUE (progress bar?)
+  print(filenames)
   textsvec <- c()  
   # changed from readChar to readLines
   for (f in filenames) {
@@ -194,7 +195,7 @@ getTextFiles <- function(filenames) {
 #' getTextdir('/home/paul/documents/')
 getTextDir <- function(dirname) {
   # get all files from a directory
-  return(getTextFiles(list.files(dirname)))
+  return(getTextFiles(list.files(dirname, full.names=TRUE)))
 }
 
 
@@ -327,7 +328,7 @@ describeTexts <- function(texts) {
 #' @param text Text to be tokenized
 #' @examples
 #' tokenize(text)
-tokenize <- function(text) {
+tokenize <- function(text, textname='count') {
   # returns a dataframe of word counts, word is 1st column
   #
   ## clean up stuff in the text
@@ -345,7 +346,7 @@ tokenize <- function(text) {
   ## tabulate word counts
   ## and return as a data frame with variables "word" and given name
   wf.list <- as.data.frame(table(tokenized.txt))
-  names(wf.list) <- c("feature", text.name)
+  names(wf.list) <- c("feature", textname)
   return(wf.list)
 }
 
