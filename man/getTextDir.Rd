@@ -1,0 +1,18 @@
+\name{getTextDir}
+\alias{getTextDir}
+\title{loads all text files from a given directory}
+\usage{
+  getTextDir(dirname)
+}
+\arguments{
+  \item{dirname}{A directory path separators}
+}
+\description{
+  given a directory name, get a list of all files in that
+  directory and load them into a character vector using
+  getTextFiles
+}
+\examples{
+getTextdir('/home/paul/documents/')
+}
+

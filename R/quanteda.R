@@ -30,7 +30,6 @@ if (!require(RCurl)) {
 }
 
 
-
 translateChunk <- function(sourceText, sourceLanguage, targetLanguage, key=NULL, verbose=TRUE) {
   if (is.null(key)) {
     key <- "DQAAALoAAABQS8Lok-tdR8rU1ewhKf1o7IJxS0m_X63cVuDI3ETGyg8rgWhgYTyaXBDdqIe1TUSlCzTbUi70iYQ5bsTOznfk_W9yXNG68iKxExrSxyy5iT5nXbRn3dXONOCcqkNHmJJ-zQAmwP4Gw3uyFEx2A_JES5Xru_Kaq2aJ9hOfRae8h4bqN_PKe7T_HRTg0xhwaNVWGno_tctoe5zXOHcRbEeRyFG-TTrD45ceJMSat7NPF2n7noIPFvL9SNpD026RSPM"
@@ -141,15 +140,12 @@ translate <- function(sourceText,  sourceLanguage, targetLanguage, key=NULL, ver
   return(translatedText)
 }
 
-
-
 #' Truncate absolute filepaths to root filenames
 #'
 #' This function takes an absolute filepath and returns just the 
 #' document name
 #'
-#' @param longFilenames filenames including a full path with directory
-#' separators
+#' @param longFilenames Absolute filenames including a full path with directory
 #' @examples
 #' getRootFilnames('/home/paul/documents/libdem09.txt')
 getRootFileNames <- function(longFilenames) {
@@ -170,13 +166,11 @@ getRootFileNames <- function(longFilenames) {
 #' returns a named vector of complete, unedited texts
 #' 
 #' @param filenames 
-#' separators 
 #' @examples
 #' getTextFiles('/home/paul/documents/libdem09.txt')
 getTextFiles <- function(filenames) {
-
   # TODO detect encoding; verbose=TRUE (progress bar?)
-  textsvec <- c()   # initialize text vector
+  textsvec <- c()  
   # changed from readChar to readLines
   for (f in filenames) {
     textsvec = c(textsvec, paste(readLines(file(f)), collapse="\n")) 
@@ -196,13 +190,13 @@ getTextFiles <- function(filenames) {
 #' 
 #' 
 #' @param dirname A directory path
-#' separators 
 #' @examples
 #' getTextdir('/home/paul/documents/')
 getTextDir <- function(dirname) {
   # get all files from a directory
   return(getTextFiles(list.files(dirname)))
 }
+
 
 #' provides a gui interface to choose a gui to load texts from
 #'
@@ -213,7 +207,6 @@ getTextDir <- function(dirname) {
 #' 
 #' @examples
 #' getTextFiles('/home/paul/documents/libdem09.txt')
-
 getTextDirGui <- function() {
   files <- choose.files()
    #get all files from a directory
@@ -294,7 +287,16 @@ summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop
   return(invisible(dtexts))
 }
 
-describetexts <- function(texts, output=TRUE) {
+
+#' print a summary of texts 
+
+#' Prints to the console a desription of the texts, including 
+#' number of types, tokens, and sentences
+#' 
+#' @param texts
+#' @examples
+#' describeTexts(texts)
+describeTexts <- function(texts) {
   # need to implement subsetting here too
   string <- gsub("[[:punct:][:digit:]]", "", texts)
   string <- gsub("\n", "", string)
@@ -315,13 +317,23 @@ describetexts <- function(texts, output=TRUE) {
   return(invisible(list(ntokens=ntokens, ntypes=ntypes, nsents=nsents)))
 }
 
-tokenize <- function(input.text, input.text.name="count") {
+
+#' split a text into words and return a table of words and their counts 
+
+#' This function takes a text (in the form of a character vectors),
+#' performs some cleanup, and splits the text on whitespace, returning
+#' a dataframe of words and their frequncies
+#' 
+#' @param text Text to be tokenized
+#' @examples
+#' tokenize(text)
+tokenize <- function(text) {
   # returns a dataframe of word counts, word is 1st column
   #
   ## clean up stuff in the text
-  clean.txt <- gsub("[[:punct:][:digit:]]", "", input.text)
+  clean.txt <- gsub("[[:punct:][:digit:]]", "", text)
   # for French, make "l'" into "l"
-  input.text <- gsub("l'", "l ", input.text)
+  text <- gsub("l'", "l ", text)
   # make all "Eszett" characters in Hochdeutsche into "ss" as in Swiss German
   clean.txt <- gsub("ß", "ss", clean.txt)
   # make all words lowercase
@@ -333,7 +345,7 @@ tokenize <- function(input.text, input.text.name="count") {
   ## tabulate word counts
   ## and return as a data frame with variables "word" and given name
   wf.list <- as.data.frame(table(tokenized.txt))
-  names(wf.list) <- c("feature", input.text.name)
+  names(wf.list) <- c("feature", text.name)
   return(wf.list)
 }
 
