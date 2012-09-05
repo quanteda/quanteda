@@ -5,7 +5,7 @@
   getTextDir(dirname)
 }
 \arguments{
-  \item{dirname}{A directory path separators}
+  \item{dirname}{A directory path}
 }
 \description{
   given a directory name, get a list of all files in that

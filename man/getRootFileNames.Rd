@@ -5,8 +5,8 @@
   getRootFileNames(longFilenames)
 }
 \arguments{
-  \item{longFilenames}{filenames including a full path with
-  directory separators}
+  \item{longFilenames}{Absolute filenames including a full
+  path with directory}
 }
 \description{
   This function takes an absolute filepath and returns just

@@ -8,7 +8,7 @@ returns a named vector of complete, unedited texts}
   getTextFiles(filenames)
 }
 \arguments{
-  \item{filenames}{separators}
+  \item{filenames}{}
 }
 \description{
   load text files from disk into a vector of character
