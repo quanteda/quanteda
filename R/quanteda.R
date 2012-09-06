@@ -35,10 +35,12 @@ if (!require(RCurl)) {
   print("RCurl package is required for translation")
 }
 
-
+# helper function for directly calling the translate API
+# sourceText must be 1000 characters or less
+# the rate limit is allegedly 1000 queries per day
 translateChunk <- function(sourceText, sourceLanguage, targetLanguage, key=NULL, verbose=TRUE) {
   if (is.null(key)) {
-    key <- "DQAAALoAAABQS8Lok-tdR8rU1ewhKf1o7IJxS0m_X63cVuDI3ETGyg8rgWhgYTyaXBDdqIe1TUSlCzTbUi70iYQ5bsTOznfk_W9yXNG68iKxExrSxyy5iT5nXbRn3dXONOCcqkNHmJJ-zQAmwP4Gw3uyFEx2A_JES5Xru_Kaq2aJ9hOfRae8h4bqN_PKe7T_HRTg0xhwaNVWGno_tctoe5zXOHcRbEeRyFG-TTrD45ceJMSat7NPF2n7noIPFvL9SNpD026RSPM"
+    key <- ""
   }
   if (verbose){
     cat("Making call to Google Translate..., with string of length: ", nchar(sourceText), "\n")
@@ -66,6 +68,16 @@ translateChunk <- function(sourceText, sourceLanguage, targetLanguage, key=NULL,
 }
 
 
+#' Send a corpus to the google translate research API
+
+#' This function translates a the texts in a corpus by sending them
+#'  to the google translate API.
+#'  
+#' @param corpus corpus to be translated
+#' @param targetlanguageString Language of the source text
+#' @param languagevar Language of the translated text
+#' @examples
+#' translation <- translate(original, fr, de, key='insertkeyhere')
 translate.corpus <- function(corpus, targetlanguageString, 
                              textvar="texts", languagevar="language") {
   ## function to translate the text from a corpus into another language
@@ -82,7 +94,17 @@ translate.corpus <- function(corpus, targetlanguageString,
   return(translatedTextVector)
 }
 
+#' Send text to the google translate research API
 
+#' This function translates a text by sending it to the google translate API.
+#'
+#'  
+#' @param sourceText Text to be translated
+#' @param sourceLanguage Language of the source text
+#' @param targetLanguage Language of the translated text
+#' @param key API key for Google Translate research API
+#' @examples
+#' translation <- translate(original, fr, de, key='insertkeyhere')
 translate <- function(sourceText,  sourceLanguage, targetLanguage, key=NULL, verbose=FALSE){
   a <- strsplit(sourceText, split="[\\.]")
   sentences <- unlist(a)
@@ -130,7 +152,8 @@ translate <- function(sourceText,  sourceLanguage, targetLanguage, key=NULL, ver
         }
         chunk <- ""
       }
-      #if this sentence will put the chunk over 1000, send the chunk to Google and save this sentence
+      #if this sentence will put the chunk over 1000, send the chunk to 
+      #Google and save this sentence
       else if ((nchar(chunk)+nchar(s) >= 1000)) {
         if (verbose) print("two")
         translatedText <- paste(translatedText, translateChunk(chunk, sourceLanguage, targetLanguage), sep=". ")
@@ -423,7 +446,6 @@ create.fvm.corpus <- function(corpus,
   if (verbose) cat("\n")
   return(fvm)
 }
-
 
 ##
 ## Ken's ongoing efforts to get the bleedin' subsetting function working!!!!
