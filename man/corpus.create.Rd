@@ -25,6 +25,5 @@ a dataframe of words and their frequncies}
 }
 \examples{
 budgets <- corpus.create(texts, attribs=newattribs)
-tokenize(text)
 }
 

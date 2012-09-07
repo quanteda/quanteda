@@ -318,7 +318,6 @@ tokenize <- function(text, textname='count'){
 #' text
 #' @examples
 #' budgets <- corpus.create(texts, attribs=newattribs)
-#' tokenize(text)
 corpus.create <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes=NULL, attribs.labels=NULL) {
   if (is.null(names(texts))) 
     names(texts) <- paste("text", 1:length(texts), sep="")
@@ -351,7 +350,16 @@ corpus.add.attributes <- function(corpus, newattribs, name=newattribs) {
   return(corpus)
 }
 
+#' create text from a string
 
+#' This function associates a string of text with a list of attribute:value pairs
+#' 
+#' @param text The string of text
+#' @param fname The name of the file containing the text
+#' @param atts A data frame of attributes that can be associated with each
+#' text
+#' @examples
+#' Cowen05 <- create.text("this is a speech",'Cowen05.txt', atts=cowen.atts)
 create.text <- function(string, fname, atts=NULL){
   # a text has a list of attribute:value pairs
   if(is.null(atts))
@@ -365,8 +373,19 @@ create.text <- function(string, fname, atts=NULL){
 
 
 
+#' function to add new texts and attributes to an existing corpus
+
+#' Accepts a list of texts and a list of associated attributes and 
+#' adds them to the corpus
+#' 
+#' @param corpus An existing corpus to add new texts and attributes to
+#' @param newtexts New texts to be added to the corpus
+#' @param newattribs New attribs associated with the new texts
+#' text
+#' @examples
+#' budgets <- corpus.append(budgets, texts, newattribs)
 corpus.append <- function(corpus1, newtexts, newattribs, ...) {
-  # function to add new texts and attributes to an existing corpus
+  # 
   # should make it also allow an optional corpus2 version where two
   # corpuses could be combined with corpus.append(corp1, corp2)
   # if we can verify the same attribute set.
@@ -377,6 +396,17 @@ corpus.append <- function(corpus1, newtexts, newattribs, ...) {
 }
 
 
+
+#' Display a summary of a corpus object
+
+#' Displays information about a corpus object, including attributes and 
+#' metadata such as date of number of texts, creation and source
+#' 
+#' @param corpus An existing corpus to be summarized
+#' @param texts The name of the attribute containing the corpus texts, if
+#' not 'texts'
+#' @examples
+#' summary.corpus(corpus1)
 summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop=FALSE, output=TRUE, nmax=100) {
   corpus <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
   cat("Corpus object contains", nrow(corpus$attribs), "texts.\n\n")
@@ -398,6 +428,15 @@ summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop
 }
 
 
+#' Create a feature-value matrix from a corpus object
+
+#' returns a feature value matrix compatible with austin
+#' 
+#' @param corpus Corpus to make matrix from
+#' @param feature Feature to count
+#' @param feature type to aggregate by, default is file
+#' @examples
+#' fvm <- create.fvm.corpus(budgets, group="party")
 create.fvm.corpus <- function(corpus,
                               feature=c("word"),
                               groups=NULL,
