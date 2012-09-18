@@ -1,4 +1,4 @@
-source("~/Dropbox/QUANTESS/alphaQuanteda/alphaQUANTEDA.R")
+source("/home/paul/Dropbox/code/quanteda/R/quanteda.R")
 library(austin)
 
 getParts <- function(casename){
