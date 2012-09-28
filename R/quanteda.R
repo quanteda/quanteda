@@ -396,6 +396,22 @@ corpus.append <- function(corpus1, newtexts, newattribs, ...) {
 }
 
 
+#### Output a WEKA-compatible arff file for an fvm
+####
+create.arff <- function(fvm, name="politics", outfile="test.arff"){
+  outString <- paste("@RELATION", name,"\r\n")
+  
+  for(c in colnames(fvm)){
+    outString <- paste(outString, "@attribute", c, "NUMERIC\r\n")
+  }
+  for(r in rownames(fvm)){
+    outString <- paste(outString, fvm[r,], r, "NUMERIC\r\n")
+  }
+  outString <- paste(outString, "@DATA\r\n")
+  writeChar(outString, file("/home/paul/testout.txt"))
+}
+
+
 
 #' Display a summary of a corpus object
 

@@ -58,5 +58,5 @@ newattribs$party <- gsub(".txt", "", newattribs$party)
 budgets <- corpus.append(budgets, texts, newattribs)
 
 fvm <- create.fvm.corpus(budgets, group="party")
-datamat <-  wfm(fvm, word.margin=1)
-wf <- wordfish(datamat, dir=c(5,1))
+#datamat <-  wfm(fvm, word.margin=1)
+#wf <- wordfish(datamat, dir=c(5,1))
