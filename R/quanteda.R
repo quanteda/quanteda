@@ -35,6 +35,47 @@ if (!require(RCurl)) {
   print("RCurl package is required for translation")
 }
 
+countSyllables <- function(sourceText, pDict){
+  #load the dictionary into a list
+  lines <- readLines(dictPath)
+  pd<-strsplit(lines, " ")
+  #clean the string
+  string <- gsub("[[:punct:][:digit:]]", "", sourceText)
+  string <- gsub("\n", "", string)
+  string <- toupper(string)
+  words <- unlist(strsplit(string, " "))
+  #sum the syllables in the words
+  total <- 0
+  for(i in 1:length(words)){
+    found <- FALSE
+    
+    for(j in 1:length(pd)){
+      if((pd[[j]][1])==words[[i]]){
+        thisWord <- (pd[[j]])
+        found <- TRUE
+      }
+    }
+    count <- 0
+    if(found){
+      for(w in 1:length(thisWord)){
+        c <- grep("[[:digit:]]", thisWord[w])
+        if(!length(c)==0){
+          count <- count+1
+        }
+      }
+    }
+    else{
+      #if the word isn't in the dictionary, guess that it has 2 syllables
+      count <- 2
+    }
+    total <- total + count
+  }
+  return(total)
+}
+
+
+
+
 # helper function for directly calling the translate API
 # sourceText must be 1000 characters or less
 # the rate limit is allegedly 1000 queries per day
