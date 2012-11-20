@@ -1,0 +1,8 @@
+NOTES FOR QUANTEDA
+
+TO INSTALL THE LOCAL SOURCE TREE INTO R:
+
+my.local.dir <- "~/Dropbox/QUANTESS/Ken local code/quanteda/"
+install.packages(my.local.dir, repos=NULL, type="source")
+library(quanteda)
+
