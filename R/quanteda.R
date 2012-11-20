@@ -26,7 +26,7 @@
 #     creation date (automatic)
 #     notes (default is NULL, can be user-supplied)
 
-
+require(openNLP)
 library(austin)
 if(!require(XML)){
   print("XML package is required for translation")
@@ -35,10 +35,10 @@ if (!require(RCurl)) {
   print("RCurl package is required for translation")
 }
 
-countSyllables <- function(sourceText, pDict){
-  #load the dictionary into a list
-  lines <- readLines(dictPath)
-  pd<-strsplit(lines, " ")
+countSyllables <- function(sourceText, dataPath){
+  #load the RData file
+  print("hello")
+  counts <- load(dataPath)
   #clean the string
   string <- gsub("[[:punct:][:digit:]]", "", sourceText)
   string <- gsub("\n", "", string)
@@ -47,34 +47,38 @@ countSyllables <- function(sourceText, pDict){
   #sum the syllables in the words
   total <- 0
   for(i in 1:length(words)){
-    found <- FALSE
-    
-    for(j in 1:length(pd)){
-      if((pd[[j]][1])==words[[i]]){
-        thisWord <- (pd[[j]])
-        found <- TRUE
-      }
-    }
-    count <- 0
-    if(found){
-      for(w in 1:length(thisWord)){
-        c <- grep("[[:digit:]]", thisWord[w])
-        if(!length(c)==0){
-          count <- count+1
-        }
-      }
+    found <- FALSE   
+    if(words[[i]] %in% names(counts)){
+      total <- total + counts[words[[i]]]
     }
     else{
       #if the word isn't in the dictionary, guess that it has 2 syllables
-      count <- 2
+      total <- total + 2
     }
-    total <- total + count
   }
   return(total)
 }
 
-
-
+determine.pos <- function(sentence) {
+  # clean sentence of punctuation and numbers
+  sentence <- gsub("[[:punct:][:digit:]]", "", sentence)
+  print(sentence)
+  # tage sentence parts of speech
+  tagged.sentence <- tagPOS(sentence)
+  # tokenize
+  tagged.sentence.pos.char.vector <- scan(what="char", text=tagged.sentence, quiet=TRUE)
+  # create a list of splits on the / character that precedes POS tags
+  strsplit(tagged.sentence.char.vector, "/")
+  tagged.sentence.pos.parsedlist <- strsplit(tagged.sentence.pos.char.vector, "/")
+  # put the second element of the list into a (factor) vector
+  tagged.sentence.pos.factor.vector <-
+    factor(sapply(tagged.sentence.pos.parsedlist, function(x) x[2]))
+  # name the vector with the word
+  names(tagged.sentence.pos.factor.vector) <-
+    sapply(tagged.sentence.pos.parsedlist, function(x) x[1])
+  # convert to table of POS and return as list
+  return(as.list(table(tagged.sentence.pos.factor.vector)))
+} 
 
 # helper function for directly calling the translate API
 # sourceText must be 1000 characters or less
