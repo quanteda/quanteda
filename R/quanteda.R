@@ -37,8 +37,7 @@ if (!require(RCurl)) {
 
 countSyllables <- function(sourceText){
   #load the RData file
-  data(syllableCounts)
-  counts <- load(dataPath)
+  counts <- data(syllableCounts)
   #clean the string
   string <- gsub("[[:punct:][:digit:]]", "", sourceText)
   string <- gsub("\n", "", string)
@@ -443,6 +442,7 @@ corpus.append <- function(corpus1, newtexts, newattribs, ...) {
 
 
 #### Output a WEKA-compatible arff file for an fvm
+#### still in development
 ####
 create.arff <- function(fvm, name="politics", outfile="test.arff"){
   outString <- paste("@RELATION", name,"\r\n")
