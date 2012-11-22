@@ -35,9 +35,9 @@ if (!require(RCurl)) {
   print("RCurl package is required for translation")
 }
 
-countSyllables <- function(sourceText, dataPath){
+countSyllables <- function(sourceText){
   #load the RData file
-  print("hello")
+  data(syllableCounts)
   counts <- load(dataPath)
   #clean the string
   string <- gsub("[[:punct:][:digit:]]", "", sourceText)
@@ -53,6 +53,7 @@ countSyllables <- function(sourceText, dataPath){
     }
     else{
       #if the word isn't in the dictionary, guess that it has 2 syllables
+      #todo: replace this with vowel cluster regex
       total <- total + 2
     }
   }
