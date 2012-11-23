@@ -5,10 +5,9 @@
 #'
 #' @name quanteda
 #' @docType package
-
 countSyllables <- function(sourceText){
   #load the RData file
-  counts <- data(syllableCounts)
+  data(syllableCounts)
   #clean the string
   string <- gsub("[[:punct:][:digit:]]", "", sourceText)
   string <- gsub("\n", "", string)
@@ -17,17 +16,20 @@ countSyllables <- function(sourceText){
   #sum the syllables in the words
   total <- 0
   for(i in 1:length(words)){
-    found <- FALSE   
+    found <- FALSE
     if(words[[i]] %in% names(counts)){
       total <- total + counts[words[[i]]]
     }
+    
     else{
-      #if the word isn't in the dictionary, guess that it has 2 syllables
-      #todo: replace this with vowel cluster regex
-      total <- total + 2
+      #if the word isn't in the dictionary, use vowel cluster count as heuristic
+      res <- gregexpr("[AEIOUY]*", words[[i]])
+      matches<-attr(res[[1]], "match.length")
+      count <- length(matches[matches>0])
+      total <- total + count
     }
   }
-  return(total)
+  return(as.integer(total))
 }
 
 determine.pos <- function(sentence) {
