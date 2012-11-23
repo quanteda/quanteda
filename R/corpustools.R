@@ -7,12 +7,6 @@
 #' @docType package
 
 
-# This R file now approaching 500 lines including documentation -
-# suggest splitting to 3 files - translation, langtools, and corpus object
-# - PN 5th Sept
-# -test 3
-
-
 ###
 ### design of a corpus object
 ###
@@ -26,7 +20,6 @@
 #     creation date (automatic)
 #     notes (default is NULL, can be user-supplied)
 
-require(openNLP)
 library(austin)
 if(!require(XML)){
   print("XML package is required for translation")
@@ -34,188 +27,6 @@ if(!require(XML)){
 if (!require(RCurl)) {
   print("RCurl package is required for translation")
 }
-
-countSyllables <- function(sourceText){
-  #load the RData file
-  counts <- data(syllableCounts)
-  #clean the string
-  string <- gsub("[[:punct:][:digit:]]", "", sourceText)
-  string <- gsub("\n", "", string)
-  string <- toupper(string)
-  words <- unlist(strsplit(string, " "))
-  #sum the syllables in the words
-  total <- 0
-  for(i in 1:length(words)){
-    found <- FALSE   
-    if(words[[i]] %in% names(counts)){
-      total <- total + counts[words[[i]]]
-    }
-    else{
-      #if the word isn't in the dictionary, guess that it has 2 syllables
-      #todo: replace this with vowel cluster regex
-      total <- total + 2
-    }
-  }
-  return(total)
-}
-
-determine.pos <- function(sentence) {
-  # clean sentence of punctuation and numbers
-  sentence <- gsub("[[:punct:][:digit:]]", "", sentence)
-  print(sentence)
-  # tage sentence parts of speech
-  tagged.sentence <- tagPOS(sentence)
-  # tokenize
-  tagged.sentence.pos.char.vector <- scan(what="char", text=tagged.sentence, quiet=TRUE)
-  # create a list of splits on the / character that precedes POS tags
-  strsplit(tagged.sentence.char.vector, "/")
-  tagged.sentence.pos.parsedlist <- strsplit(tagged.sentence.pos.char.vector, "/")
-  # put the second element of the list into a (factor) vector
-  tagged.sentence.pos.factor.vector <-
-    factor(sapply(tagged.sentence.pos.parsedlist, function(x) x[2]))
-  # name the vector with the word
-  names(tagged.sentence.pos.factor.vector) <-
-    sapply(tagged.sentence.pos.parsedlist, function(x) x[1])
-  # convert to table of POS and return as list
-  return(as.list(table(tagged.sentence.pos.factor.vector)))
-} 
-
-# helper function for directly calling the translate API
-# sourceText must be 1000 characters or less
-# the rate limit is allegedly 1000 queries per day
-translateChunk <- function(sourceText, sourceLanguage, targetLanguage, key=NULL, verbose=TRUE) {
-  if (is.null(key)) {
-    key <- ""
-  }
-  if (verbose){
-    cat("Making call to Google Translate..., with string of length: ", nchar(sourceText), "\n")
-    print(sourceText)
-  }
-  baseUrl <- "http://translate.google.com/researchapi/translate?"
-  params <- paste("sl=",sourceLanguage, "&tl=", targetLanguage, "&q=", sourceText,sep="")
-  
-  url <- paste(baseUrl,params,sep="")
-  header <- paste("Authorization: GoogleLogin auth=", key, sep="")
-  # make the http requst with the url and the authentication header
-  if (verbose) print(url)
-  curl <- getCurlHandle()
-  response <- getURL(url, httpheader=header, curl=curl)
-  # get the http response code to try to see what type of error we're getting
-  code <- getCurlInfo(curl, which="response.code")
-  print(code)
-  rm(curl)
-  Sys.sleep(1)
-  # parse XML response to extract actual translation
-  doc <- xmlTreeParse(response, getDTD = F)
-  r <- xmlRoot(doc) 
-  translation <- xmlValue(r["entry"] [[1]] [[5]])
-  return(translation)
-}
-
-
-#' Send a corpus to the google translate research API
-
-#' This function translates a the texts in a corpus by sending them
-#'  to the google translate API.
-#'  
-#' @param corpus corpus to be translated
-#' @param targetlanguageString Language of the source text
-#' @param languagevar Language of the translated text
-#' @examples
-#' translation <- translate(original, fr, de, key='insertkeyhere')
-translate.corpus <- function(corpus, targetlanguageString, 
-                             textvar="texts", languagevar="language") {
-  ## function to translate the text from a corpus into another language
-  ## wrapper for translate
-  # initialize the translated text vector
-  translatedTextVector <- rep(NA, nrow(corpus$attribs))
-  for (i in 1:nrow(corpus$attribs)) {
-    if (corpus$attribs[i,textvar]=="" | is.na(corpus$attribs[i,textvar])) next
-    if (corpus$attribs[i,languagevar]==targetlanguageString) next
-    translatedTextVector[i] <- translate(corpus$attribs[i,textvar], 
-                                         corpus$attribs[i,languagevar],
-                                         targetlanguageString)
-  }
-  return(translatedTextVector)
-}
-
-#' Send text to the google translate research API
-
-#' This function translates a text by sending it to the google translate API.
-#'
-#'  
-#' @param sourceText Text to be translated
-#' @param sourceLanguage Language of the source text
-#' @param targetLanguage Language of the translated text
-#' @param key API key for Google Translate research API
-#' @examples
-#' translation <- translate(original, fr, de, key='insertkeyhere')
-translate <- function(sourceText,  sourceLanguage, targetLanguage, key=NULL, verbose=FALSE){
-  a <- strsplit(sourceText, split="[\\.]")
-  sentences <- unlist(a)
-  # Paste sentences together into a chunk until the next one would send the current chunk
-  # over 1000 chars, then send to Google.
-  chunk <- ""
-  translatedText <- ""
-  for (i in 1:length(sentences)) {
-    s <- sentences[i]
-    if (nchar(s) < 2) {
-      if(verbose) print("empty sentence")
-      next
-    }
-    s <- curlEscape(s)
-    # handle the rare (non-existent?) case of a single sentence being >1000 chars
-    if (nchar(s) >= 1000) {
-      if (verbose) print("in the 1000 case")
-      start <- 1
-      end <- 1000
-      while ((nchar(s) - start) > 1000) {
-        chunk <- substr(s, start, end)
-        translatedText <- paste(translatedText, translateChunk(chunk,sourceLanguage, targetLanguage), sep=". ")
-        start <- start + 1000
-        end <- end + 1000
-      }
-      chunk <- substr(s, start, nchar(s))
-      translatedText <- paste(translatedText,translateChunk(chunk,sourceLanguage, targetLanguage), sep="")
-      chunk <- ""
-    }
-    else {
-      # if this is the last sentence in the speech,
-      # send it and the current chunk (if there is one) to Google
-      if (i==length(sentences)) {
-        if (verbose) print("one")
-        #send to Google, reset the chunk
-        if (nchar(chunk)>5) {
-          translatedText <- paste(translatedText, translateChunk(chunk, sourceLanguage, targetLanguage),sep=". ")
-        }else{
-          if (verbose) print("empty chunk")
-        }
-        if (nchar(s)>5) {
-          translatedText <- paste(translatedText, translateChunk(s, sourceLanguage, targetLanguage),sep=". ")
-        } else {
-          if (verbose) print("empty sentence")
-        }
-        chunk <- ""
-      }
-      #if this sentence will put the chunk over 1000, send the chunk to 
-      #Google and save this sentence
-      else if ((nchar(chunk)+nchar(s) >= 1000)) {
-        if (verbose) print("two")
-        translatedText <- paste(translatedText, translateChunk(chunk, sourceLanguage, targetLanguage), sep=". ")
-        chunk <- paste(s,".%20",sep="")
-      } else {
-        if (verbose) print("three")
-        #otherwise just add this sentence to the chunk
-        chunk <- paste(chunk, s, sep=".%20")
-      }
-    }
-  }
-  translatedText <- curlUnescape(translatedText)
-  if (verbose) cat("****************", translatedText, "********************", nchar(translatedText), "\n")
-  if (verbose) cat("\n")
-  return(translatedText)
-}
-
 
 #' Truncate absolute filepaths to root filenames
 #'
@@ -318,37 +129,6 @@ describeTexts <- function(texts) {
   return(invisible(list(ntokens=ntokens, ntypes=ntypes, nsents=nsents)))
 }
 
-
-#' split a text into words and return a table of words and their counts 
-
-#' This function takes a text (in the form of a character vectors),
-#' performs some cleanup, and splits the text on whitespace, returning
-#' a dataframe of words and their frequncies
-#' 
-#' @param text Text to be tokenized
-#' @examples
-#' tokenize(text)
-tokenize <- function(text, textname='count'){
-  # returns a dataframe of word counts, word is 1st column
-  #
-  ## clean up stuff in the text
-  clean.txt <- gsub("[[:punct:][:digit:]]", "", text)
-  # for French, make "l'" into "l"
-  text <- gsub("l'", "l ", text)
-  # make all "Eszett" characters in Hochdeutsche into "ss" as in Swiss German
-  clean.txt <- gsub("ß", "ss", clean.txt)
-  # make all words lowercase
-  clean.txt <- tolower(clean.txt)
-  # tokenize
-  tokenized.txt <- scan(what="char", text=clean.txt, quiet=TRUE)
-  # flush out "empty" strings caused by removal of punctuation and numbers
-  tokenized.txt <- tokenized.txt[tokenized.txt!=""]
-  ## tabulate word counts
-  ## and return as a data frame with variables "word" and given name
-  wf.list <- as.data.frame(table(tokenized.txt))
-  names(wf.list) <- c("feature", textname)
-  return(wf.list)
-}
 
 
 #' create a new corpus - a list containing texts and named attributes

@@ -2,8 +2,9 @@
 %\VignetteIndexEntry{quanteda}
 \title{Quanteda Package Vignette Testing}
 \author{Kenneth Benoit and Paul Nulty}
+\usepackage{Sweave}
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+\input{quanteda-concordance}
 
 \maketitle
 
@@ -12,11 +13,21 @@
 The document should be written and interpreted as a latex file.
 
 % R code chunks start with this symbol <<>>= and end with @
-<<>>=
-x <- 5
-y <- 9
-z <- x * y
-print("testing")
-print(z)
-@
+\begin{Schunk}
+\begin{Sinput}
+> x <- 5
+> y <- 9
+> z <- x * y
+> print("testing")
+\end{Sinput}
+\begin{Soutput}
+[1] "testing"
+\end{Soutput}
+\begin{Sinput}
+> print(z)
+\end{Sinput}
+\begin{Soutput}
+[1] 45
+\end{Soutput}
+\end{Schunk}
 \end{document}
