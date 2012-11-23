@@ -1,0 +1,5 @@
+THIS IS A TEST FILE THAT I WILL COMMIT
+
+Paul should modify and sync
+
+I will do same and see what it says about conflict
