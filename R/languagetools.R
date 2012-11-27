@@ -5,6 +5,7 @@
 #'
 #' @name quanteda
 #' @docType package
+
 countSyllables <- function(sourceText){
   #load the RData file
   data(syllableCounts)
@@ -13,24 +14,21 @@ countSyllables <- function(sourceText){
   string <- gsub("\n", "", string)
   string <- toupper(string)
   words <- unlist(strsplit(string, " "))
-  #sum the syllables in the words
-  total <- 0
-  for(i in 1:length(words)){
-    found <- FALSE
-    if(words[[i]] %in% names(counts)){
-      total <- total + counts[words[[i]]]
-    }
-    
-    else{
-      #if the word isn't in the dictionary, use vowel cluster count as heuristic
-      res <- gregexpr("[AEIOUY]*", words[[i]])
-      matches<-attr(res[[1]], "match.length")
-      count <- length(matches[matches>0])
-      total <- total + count
-    }
-  }
-  return(as.integer(total))
+  # lookup the syllables in the words found in the dictionary
+  # uses vectorization and named vector indexing - not looping!
+  n.syllables <- counts[words]
+  # name the syllable count vector with the words
+  names(n.syllables) <- words
+  # count the syllables in each word?
+  vowel.count.lookup <- sapply(words, function(l) sum((attr(gregexpr("[AEIOUY]*", l)[[1]], "match.length"))!=0))
+  # replace the un-looked-up words with vowel formula words
+  n.syllables[is.na(n.syllables)] <- 
+    vowel.count.lookup[is.na(n.syllables)]
+  # INSPECT SINCE IT SEEMS THAT THIS METHOD IS OVERCOUNTING SYLLABLES
+  return(sum(n.syllables))
 }
+
+
 
 determine.pos <- function(sentence) {
   # clean sentence of punctuation and numbers
