@@ -24,7 +24,6 @@ countSyllables <- function(sourceText){
   # replace the un-looked-up words with vowel formula words
   n.syllables[is.na(n.syllables)] <- 
     vowel.count.lookup[is.na(n.syllables)]
-  # INSPECT SINCE IT SEEMS THAT THIS METHOD IS OVERCOUNTING SYLLABLES
   return(sum(n.syllables))
 }
 
