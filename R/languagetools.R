@@ -28,8 +28,6 @@ countSyllables <- function(sourceText){
 }
 
 
-
-
 #' Returns a table of the occurrences of differen parts of speech in a sentence
 
 #' This function takes a sentence and tags each word with it's part of speech using 

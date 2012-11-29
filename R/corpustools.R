@@ -146,7 +146,7 @@ describeTexts <- function(texts) {
 #' @param textnames Names to assign to the texts
 #' @param attribs A data frame of attributes that can be associated with each
 #' @export
-#' text
+
 #' @examples
 #' budgets <- corpus.create(texts, attribs=newattribs)
 corpus.create <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes=NULL, attribs.labels=NULL) {
