@@ -47,6 +47,7 @@ translateChunk <- function(sourceText, sourceLanguage, targetLanguage, key=NULL,
 #' @param corpus corpus to be translated
 #' @param targetlanguageString Language of the source text
 #' @param languagevar Language of the translated text
+#' @export
 #' @examples
 #' translation <- translate(original, fr, de, key='insertkeyhere')
 translate.corpus <- function(corpus, targetlanguageString, 
@@ -74,6 +75,7 @@ translate.corpus <- function(corpus, targetlanguageString,
 #' @param sourceLanguage Language of the source text
 #' @param targetLanguage Language of the translated text
 #' @param key API key for Google Translate research API
+#' @export
 #' @examples
 #' translation <- translate(original, fr, de, key='insertkeyhere')
 translate <- function(sourceText,  sourceLanguage, targetLanguage, key=NULL, verbose=FALSE){

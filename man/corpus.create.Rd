@@ -14,7 +14,7 @@ a dataframe of words and their frequncies}
   \item{textnames}{Names to assign to the texts}
 
   \item{attribs}{A data frame of attributes that can be
-  associated with each text}
+  associated with each}
 }
 \description{
   create a new corpus - a list containing texts and named

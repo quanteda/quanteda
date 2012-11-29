@@ -36,6 +36,7 @@ countSyllables <- function(sourceText){
 #' openNLP's POS tagger, then returns a table of the parts of speech
 #' 
 #' @param text Text to be tagged
+#' @export
 #' @examples
 #' determine.pos(sentence)
 determine.pos <- function(sentence) {
@@ -68,6 +69,7 @@ determine.pos <- function(sentence) {
 #' a dataframe of words and their frequncies
 #' 
 #' @param text Text to be tokenized
+#' @export
 #' @examples
 #' tokenize(text)
 tokenize <- function(text, textname='count'){

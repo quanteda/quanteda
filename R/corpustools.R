@@ -34,6 +34,7 @@ if (!require(RCurl)) {
 #' document name
 #'
 #' @param longFilenames Absolute filenames including a full path with directory
+#' @export
 #' @examples
 #' getRootFilnames('/home/paul/documents/libdem09.txt')
 getRootFileNames <- function(longFilenames) {
@@ -54,6 +55,7 @@ getRootFileNames <- function(longFilenames) {
 #' returns a named vector of complete, unedited texts
 #' 
 #' @param filenames 
+#' @export
 #' @examples
 #' getTextFiles('/home/paul/documents/libdem09.txt')
 getTextFiles <- function(filenames, textnames=NULL) {
@@ -79,6 +81,7 @@ getTextFiles <- function(filenames, textnames=NULL) {
 #' 
 #' 
 #' @param dirname A directory path
+#' @export
 #' @examples
 #' getTextdir('/home/paul/documents/')
 getTextDir <- function(dirname) {
@@ -91,6 +94,7 @@ getTextDir <- function(dirname) {
 #'
 #' launches a GUI to allow the user to choose a directory from
 #' which to load all files.
+#' @export
 #' @examples
 #' getTextFiles('/home/paul/documents/libdem09.txt')
 getTextDirGui <- function() {
@@ -106,6 +110,7 @@ getTextDirGui <- function() {
 #' number of types, tokens, and sentences
 #' 
 #' @param texts
+#' @export
 #' @examples
 #' describeTexts(texts)
 describeTexts <- function(texts) {
@@ -140,6 +145,7 @@ describeTexts <- function(texts) {
 #' @param texts Text to be tokenized
 #' @param textnames Names to assign to the texts
 #' @param attribs A data frame of attributes that can be associated with each
+#' @export
 #' text
 #' @examples
 #' budgets <- corpus.create(texts, attribs=newattribs)
@@ -183,6 +189,7 @@ corpus.add.attributes <- function(corpus, newattribs, name=newattribs) {
 #' @param fname The name of the file containing the text
 #' @param atts A data frame of attributes that can be associated with each
 #' text
+#' @export
 #' @examples
 #' Cowen05 <- create.text("this is a speech",'Cowen05.txt', atts=cowen.atts)
 create.text <- function(string, fname, atts=NULL){
@@ -207,6 +214,7 @@ create.text <- function(string, fname, atts=NULL){
 #' @param newtexts New texts to be added to the corpus
 #' @param newattribs New attribs associated with the new texts
 #' text
+#' @export
 #' @examples
 #' budgets <- corpus.append(budgets, texts, newattribs)
 corpus.append <- function(corpus1, newtexts, newattribs, ...) {
@@ -247,6 +255,7 @@ create.arff <- function(fvm, name="politics", outfile="test.arff"){
 #' @param corpus An existing corpus to be summarized
 #' @param texts The name of the attribute containing the corpus texts, if
 #' not 'texts'
+#' @export
 #' @examples
 #' summary.corpus(corpus1)
 summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop=FALSE, output=TRUE, nmax=100) {
@@ -277,6 +286,7 @@ summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop
 #' @param corpus Corpus to make matrix from
 #' @param feature Feature to count
 #' @param feature type to aggregate by, default is file
+#' @export
 #' @examples
 #' fvm <- create.fvm.corpus(budgets, group="party")
 create.fvm.corpus <- function(corpus,
@@ -345,6 +355,7 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
   # subset(airquality, Temp > 80, select = c(Ozone, Temp))
   # subset(airquality, Day == 1, select = -Temp)
   # subset(airquality, select = Ozone:Wind)
+  #'@export
   if (is.null(subsetExpr)) 
     rows <- TRUE
   else {
