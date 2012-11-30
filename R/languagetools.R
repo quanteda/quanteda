@@ -6,6 +6,18 @@
 #' @name quanteda
 #' @docType package
 
+
+#' Returns a count of the number of syllables in the input
+
+#' This function takes a text and returns a count of the number of syllables it contains.
+#' For British English words, the syllable count is exact and looked up from the CMU
+#' pronunciation dictionary. For any word not in the dictionary the syllable count
+#' is estimated by counting vowel clusters.
+#' 
+#' @param text Text to be counted
+#' @export
+#' @examples
+#' tokenize("This is an example sentence.")
 countSyllables <- function(sourceText){
   #load the RData file
   data(syllableCounts)
@@ -69,7 +81,7 @@ determine.pos <- function(sentence) {
 #' @param text Text to be tokenized
 #' @export
 #' @examples
-#' tokenize(text)
+#' tokenize("This is an example sentence.")
 tokenize <- function(text, textname='count'){
   # returns a dataframe of word counts, word is 1st column
   #
