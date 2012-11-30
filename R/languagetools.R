@@ -18,10 +18,14 @@
 #' @export
 #' @examples
 #' tokenize("This is an example sentence.")
-countSyllables <- function(sourceText){
-  #load the RData file
-  data(syllableCounts)
-  #clean the string
+countSyllables <- function(sourceText) {
+  # load the RData file but only if not already loaded!
+  # note that data() defaults to .Globalenv
+  if (!exists(as.character(substitute(counts)))) {
+    data(syllableCounts)
+    print("loaded: syllableCounts")
+  }
+  # clean the string, change to uppercase for syllable dictionary match
   string <- gsub("[[:punct:][:digit:]]", "", sourceText)
   string <- gsub("\n", "", string)
   string <- toupper(string)
