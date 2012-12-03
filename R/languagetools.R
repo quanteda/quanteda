@@ -17,7 +17,7 @@
 #' @param text Text to be counted
 #' @export
 #' @examples
-#' tokenize("This is an example sentence.")
+#' countSyllables("This is an example sentence.")
 countSyllables <- function(sourceText) {
   # load the RData file but only if not already loaded!
   # note that data() defaults to .Globalenv
@@ -48,6 +48,44 @@ countSyllables <- function(sourceText) {
 
 #' This function takes a sentence and tags each word with it's part of speech using 
 #' openNLP's POS tagger, then returns a table of the parts of speech
+#'
+#' THE Penn Treebank Part of Speech tags:
+#' CC Coordinating conjunction
+#' CD Cardinal number
+#' DT Determiner
+#' EX Existential there
+#' FW Foreign word
+#' IN Preposition or subordinating conjunction
+#' JJ Adjective
+#' JJR Adjective, comparative
+#' JJS Adjective, superlative
+#' LS List item marker
+#' MD Modal
+#' NN Noun, singular or mass
+#' NNS Noun, plural
+#' NNP Proper noun, singular
+#' NNPS Proper noun, plural
+#' PDT Predeterminer
+#' POS Possessive ending
+#' PRP Personal pronoun
+#' PRP$ Possessive pronoun
+#' RB Adverb
+#' RBR Adverb, comparative
+#' RBS Adverb, superlative
+#' RP Particle
+#' SYM Symbol
+#' TO to
+#' UH Interjection
+#' VB Verb, base form
+#' VBD Verb, past tense
+#' VBG Verb, gerund or present participle
+#' VBN Verb, past participle
+#' VBP Verb, non­3rd person singular present
+#' VBZ Verb, 3rd person singular present
+#' WDT Wh­determiner
+#' WP Wh­pronoun
+#' WP$ Possessive wh­pronoun
+#' WRB Wh­adverb
 #' 
 #' @param text Text to be tagged
 #' @export
@@ -57,22 +95,20 @@ determine.pos <- function(sentence) {
   # clean sentence of punctuation and numbers
   require(openNLP)
   sentence <- gsub("[[:punct:][:digit:]]", "", sentence)
-  print(sentence)
+  # print(sentence)
   # tage sentence parts of speech
   tagged.sentence <- tagPOS(sentence)
+  gc() # garbage collection - seems to prevent Heap Memory errors for Java call
+  if (tagged.sentence=="") tagged.sentence<-"DeleteMe"
   # tokenize
   tagged.sentence.pos.char.vector <- scan(what="char", text=tagged.sentence, quiet=TRUE)
   # create a list of splits on the / character that precedes POS tags
-  strsplit(tagged.sentence.char.vector, "/")
   tagged.sentence.pos.parsedlist <- strsplit(tagged.sentence.pos.char.vector, "/")
   # put the second element of the list into a (factor) vector
   tagged.sentence.pos.factor.vector <-
-    factor(sapply(tagged.sentence.pos.parsedlist, function(x) x[2]))
-  # name the vector with the word
-  names(tagged.sentence.pos.factor.vector) <-
-    sapply(tagged.sentence.pos.parsedlist, function(x) x[1])
-  # convert to table of POS and return as list
-  return(as.list(table(tagged.sentence.pos.factor.vector)))
+    (sapply(tagged.sentence.pos.parsedlist, function(x) x[2]))
+  # return as a factor vector of same length as text
+  return(tagged.sentence.pos.factor.vector)
 } 
 
 
