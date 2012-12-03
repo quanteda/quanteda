@@ -1,15 +1,18 @@
-\docType{package}
+\docType{package
+Returns}
 \name{quanteda}
 \alias{quanteda}
-\alias{quanteda-package}
 \title{Quantitative Analysis of Textual Data}
 \usage{
-  translateChunk(sourceText, sourceLanguage,
-    targetLanguage, key = NULL, verbose = TRUE)
+  countSyllables(sourceText)
+}
+\arguments{
+  \item{text}{Text to be counted}
 }
 \description{
   Quantitative Analysis of Textual Data
-
-  Quantitative Analysis of Textual Data
+}
+\examples{
+tokenize("This is an example sentence.")
 }
 

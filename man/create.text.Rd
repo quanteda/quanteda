@@ -1,7 +1,6 @@
 \name{create.text}
 \alias{create.text}
-\title{create text from a string
-This function associates a string of text with a list of attribute:value pairs}
+\title{create text from a string}
 \usage{
   create.text(string, fname, atts = NULL)
 }
@@ -14,8 +13,8 @@ This function associates a string of text with a list of attribute:value pairs}
   associated with each text}
 }
 \description{
-  create text from a string This function associates a
-  string of text with a list of attribute:value pairs
+  This function associates a string of text with a list of
+  attribute:value pairs
 }
 \examples{
 Cowen05 <- create.text("this is a speech",'Cowen05.txt', atts=cowen.atts)

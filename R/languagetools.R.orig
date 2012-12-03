@@ -1,12 +1,3 @@
-
-#' Quantitative Analysis of Textual Data
-#'
-#' Quantitative Analysis of Textual Data
-#'
-#' @name quanteda
-#' @docType package
-
-
 #' Returns a count of the number of syllables in the input
 
 #' This function takes a text and returns a count of the number of syllables it contains.
@@ -17,11 +8,15 @@
 #' @param text Text to be counted
 #' @export
 #' @examples
-#' tokenize("This is an example sentence.")
-countSyllables <- function(sourceText){
-  #load the RData file
-  data(syllableCounts)
-  #clean the string
+#' countSyllables("This is an example sentence.")
+countSyllables <- function(sourceText) {
+  # load the RData file but only if not already loaded!
+  # note that data() defaults to .Globalenv
+  if (!exists(as.character(substitute(counts)))) {
+    data(syllableCounts)
+    print("loaded: syllableCounts")
+  }
+  # clean the string, change to uppercase for syllable dictionary match
   string <- gsub("[[:punct:][:digit:]]", "", sourceText)
   string <- gsub("\n", "", string)
   string <- toupper(string)
@@ -76,12 +71,12 @@ countSyllables <- function(sourceText){
 #' VBD Verb, past tense
 #' VBG Verb, gerund or present participle
 #' VBN Verb, past participle
-#' VBP Verb, nonÂ­3rd person singular present
+#' VBP Verb, non­3rd person singular present
 #' VBZ Verb, 3rd person singular present
-#' WDT WhÂ­determiner
-#' WP WhÂ­pronoun
-#' WP$ Possessive whÂ­pronoun
-#' WRB WhÂ­adverb
+#' WDT Wh­determiner
+#' WP Wh­pronoun
+#' WP$ Possessive wh­pronoun
+#' WRB Wh­adverb
 #' 
 #' @param text Text to be tagged
 #' @export
@@ -91,7 +86,16 @@ determine.pos <- function(sentence) {
   # clean sentence of punctuation and numbers
   require(openNLP)
   sentence <- gsub("[[:punct:][:digit:]]", "", sentence)
-  print(sentence)
+<<<<<<< HEAD
+  # tag sentence parts of speech
+  tagged.sentence <- tagPOS(sentence)
+  print(tagged.sentence)
+  # tokenize
+  tagged.sentence.pos.char.vector <- scan(what="char", text=tagged.sentence, quiet=TRUE)
+  # create a list of splits on the / character that precedes POS tags
+  strsplit(tagged.sentence.pos.char.vector, "/")
+=======
+  # print(sentence)
   # tage sentence parts of speech
   tagged.sentence <- tagPOS(sentence)
   gc() # garbage collection - seems to prevent Heap Memory errors for Java call
@@ -99,7 +103,7 @@ determine.pos <- function(sentence) {
   # tokenize
   tagged.sentence.pos.char.vector <- scan(what="char", text=tagged.sentence, quiet=TRUE)
   # create a list of splits on the / character that precedes POS tags
-  strsplit(tagged.sentence.pos.char.vector, "/")
+>>>>>>> 4e5574e549a135bd9899c1b9dc51c271ff7689e3
   tagged.sentence.pos.parsedlist <- strsplit(tagged.sentence.pos.char.vector, "/")
   # put the second element of the list into a (factor) vector
   tagged.sentence.pos.factor.vector <-
@@ -123,6 +127,7 @@ tokenize <- function(text, textname='count'){
   # returns a dataframe of word counts, word is 1st column
   #
   ## clean up stuff in the text
+  print("hello")
   clean.txt <- gsub("[[:punct:][:digit:]]", "", text)
   # for French, make "l'" into "l"
   text <- gsub("l'", "l ", text)

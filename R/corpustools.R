@@ -174,7 +174,7 @@ corpus.add.attributes <- function(corpus, newattribs, name=newattribs) {
 }
 
 #' create text from a string
-
+#'
 #' This function associates a string of text with a list of attribute:value pairs
 #' 
 #' @param text The string of text
@@ -225,13 +225,13 @@ corpus.append <- function(corpus1, newtexts, newattribs, ...) {
 #### still in development
 ####
 create.arff <- function(fvm, name="politics", outfile="test.arff"){
-  outString <- paste("@RELATION", name,"\r\n")
+  outString <- paste("@RELATION", name,"\n")
   
   for(c in colnames(fvm)){
-    outString <- paste(outString, "@attribute", c, "NUMERIC\r\n")
+    outString <- paste(outString, "@attribute", c, "NUMERIC\n")
   }
   for(r in rownames(fvm)){
-    outString <- paste(outString, fvm[r,], r, "NUMERIC\r\n")
+    outString <- paste(outString, fvm[r,], r, "NUMERIC\n")
   }
   outString <- paste(outString, "@DATA\r\n")
   writeChar(outString, file("/home/paul/testout.txt"))
