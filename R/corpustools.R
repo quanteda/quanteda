@@ -1,12 +1,4 @@
 
-#' Quantitative Analysis of Textual Data
-#'
-#' Quantitative Analysis of Textual Data
-#'
-#' @name quanteda
-#' @docType package
-
-
 ###
 ### design of a corpus object
 ###

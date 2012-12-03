@@ -1,5 +1,6 @@
 export(corpus.append)
 export(corpus.create)
+export(countSyllables)
 export(create.fvm.corpus)
 export(create.text)
 export(describeTexts)

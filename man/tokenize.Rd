@@ -18,6 +18,6 @@ a dataframe of words and their frequncies}
   their frequncies
 }
 \examples{
-tokenize(text)
+tokenize("This is an example sentence.")
 }
 

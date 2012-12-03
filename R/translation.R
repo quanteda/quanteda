@@ -1,11 +1,3 @@
-
-#' Quantitative Analysis of Textual Data
-#'
-#' Quantitative Analysis of Textual Data
-#'
-#' @name quanteda
-#' @docType package
-
 # helper function for directly calling the translate API
 # sourceText must be 1000 characters or less
 # the rate limit is allegedly 1000 queries per day

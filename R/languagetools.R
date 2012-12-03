@@ -1,12 +1,3 @@
-
-#' Quantitative Analysis of Textual Data
-#'
-#' Quantitative Analysis of Textual Data
-#'
-#' @name quanteda
-#' @docType package
-
-
 #' Returns a count of the number of syllables in the input
 
 #' This function takes a text and returns a count of the number of syllables it contains.
@@ -53,13 +44,13 @@ determine.pos <- function(sentence) {
   # clean sentence of punctuation and numbers
   require(openNLP)
   sentence <- gsub("[[:punct:][:digit:]]", "", sentence)
-  print(sentence)
-  # tage sentence parts of speech
+  # tag sentence parts of speech
   tagged.sentence <- tagPOS(sentence)
+  print(tagged.sentence)
   # tokenize
   tagged.sentence.pos.char.vector <- scan(what="char", text=tagged.sentence, quiet=TRUE)
   # create a list of splits on the / character that precedes POS tags
-  strsplit(tagged.sentence.char.vector, "/")
+  strsplit(tagged.sentence.pos.char.vector, "/")
   tagged.sentence.pos.parsedlist <- strsplit(tagged.sentence.pos.char.vector, "/")
   # put the second element of the list into a (factor) vector
   tagged.sentence.pos.factor.vector <-
@@ -86,6 +77,7 @@ tokenize <- function(text, textname='count'){
   # returns a dataframe of word counts, word is 1st column
   #
   ## clean up stuff in the text
+  print("hello")
   clean.txt <- gsub("[[:punct:][:digit:]]", "", text)
   # for French, make "l'" into "l"
   text <- gsub("l'", "l ", text)
