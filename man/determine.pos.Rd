@@ -22,9 +22,9 @@ openNLP's POS tagger, then returns a table of the parts of speech}
   comparative RBS Adverb, superlative RP Particle SYM
   Symbol TO to UH Interjection VB Verb, base form VBD Verb,
   past tense VBG Verb, gerund or present participle VBN
-  Verb, past participle VBP Verb, non­3rd person singular
+  Verb, past participle VBP Verb, non-3rd person singular
   present VBZ Verb, 3rd person singular present WDT
-  Wh­determiner WP Wh­pronoun WP$ Possessive wh­pronoun WRB
+  Wh-determiner WP Wh-pronoun WP$ Possessive wh-pronoun WRB
   Wh­adverb
 }
 \examples{
