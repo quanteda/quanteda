@@ -1,6 +1,4 @@
 library(quanteda)
-source("~/Dropbox/code/quanteda/R/corpustools.R")
-source("~/Dropbox/code/quanteda/R/languagetools.R")
 library(austin)
 
 # make a list of text objects from a directory
@@ -51,5 +49,4 @@ newattribs$party <- gsub(".txt", "", newattribs$party)
 iebudgets <- corpus.append(iebudgets, texts, newattribs)
 
 fvm <- create.fvm.corpus(iebudgets, group="party")
-#datamat <-  wfm(fvm, word.margin=1)
-#wf <- wordfish(datamat, dir=c(5,1))
+create.arff(wfm)
