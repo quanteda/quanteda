@@ -11,3 +11,4 @@ Collate:
     'corpustools.R'
     'languagetools.R'
     'translation.R'
+    'functionlessDocumentation.R'
