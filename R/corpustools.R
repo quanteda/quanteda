@@ -224,17 +224,26 @@ corpus.append <- function(corpus1, newtexts, newattribs, ...) {
 #### Output a WEKA-compatible arff file for an fvm
 #### still in development
 ####
-create.arff <- function(fvm, name="politics", outfile="test.arff"){
+create.arff <- function(fvm, gold, name="politics", outfile="test.arff"){
   outString <- paste("@RELATION", name,"\n")
-  
-  for(c in colnames(fvm)){
+
+  for(c in rownames(fvm)){
     outString <- paste(outString, "@attribute", c, "NUMERIC\n")
   }
-  for(r in rownames(fvm)){
-    outString <- paste(outString, fvm[r,], r, "NUMERIC\n")
+  outString <- paste(outString, "@attribute class {Economic, Social, Neither}\n")
+  outString <- paste(outString, "@DATA\n")
+  i<-1
+  while(i<length(fc)){
+    line <- paste(fc[, i], collapse=",")
+    outString <- paste(outString, line)
+    outString <- paste(outString, ",")
+    outString <- paste(outString, gold[[i]])
+    outString <- paste(outString, "\n")
+    i <- i+1
+    print(i)
   }
-  outString <- paste(outString, "@DATA\r\n")
-  writeChar(outString, file("/home/paul/testout.txt"))
+
+  writeChar(outString, file("/home/paul/testout.arff"))
 }
 
 
@@ -287,12 +296,11 @@ create.fvm.corpus <- function(corpus,
                               subset=NULL, 
                               verbose=TRUE) {
   # default is to take word as features, could expand that
-    
+
   if (verbose) cat("Creating fvm:\n")
   
   # new subset feature (no "select" because inappropriate here)
   corpus <- corpus.subset.inner(corpus, substitute(subset))
-  
   # new aggregation - to concatenate texts before making the fvm 
   if (!is.null(groups)) {
     if (verbose) cat("  Now aggregating by group: ", groups, "...", sep="") 
@@ -308,8 +316,11 @@ create.fvm.corpus <- function(corpus,
   #save(texts, file="temptexts")
   fvm <- data.frame(feature=NA)
   progress.threshold <- .1
+  
   if (verbose) cat("  Progress (%): [0")
+  
   for (i in 1:length(texts)) {
+    if(i%%10==0){print(i)}
     if (i/length(texts) > progress.threshold) {
       if (verbose) cat(paste("...", progress.threshold*100, sep=""))
       progress.threshold <- progress.threshold+.1
@@ -317,6 +328,7 @@ create.fvm.corpus <- function(corpus,
     temp.fvm <- tokenize(texts[i], textnames[i])
     fvm <- merge(fvm, temp.fvm, by="feature", all=TRUE)
   }
+  
   # convert NAs to zeros
   fvm[is.na(fvm)] <- 0
   # drop any words that never occur
@@ -348,6 +360,8 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
   # subset(airquality, Day == 1, select = -Temp)
   # subset(airquality, select = Ozone:Wind)
   #'@export
+  
+  
   if (is.null(subsetExpr)) 
     rows <- TRUE
   else {
@@ -356,9 +370,11 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
       stop("'subset' must evaluate to logical")
     rows <- rows & !is.na(rows)
   }
+  
   if (is.null(selectExpr)) 
     vars <- TRUE
   else {
+    
     nl <- as.list(seq_along(corpus$attribs))
     names(nl) <- names(corpus$attribs)
     vars <- c(1, eval(selectExpr, nl, parent.frame()))

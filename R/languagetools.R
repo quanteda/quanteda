@@ -129,7 +129,9 @@ tokenize <- function(text, textname='count'){
   ## tabulate word counts
   ## and return as a data frame with variables "word" and given name
   wf.list <- as.data.frame(table(tokenized.txt))
-  names(wf.list) <- c("feature", textname)
+  if(length(tokenized.txt)>0){
+    names(wf.list) <- c("feature", textname)
+  }
   return(wf.list)
 }
 
