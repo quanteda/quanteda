@@ -49,4 +49,3 @@ newattribs$party <- gsub(".txt", "", newattribs$party)
 iebudgets <- corpus.append(iebudgets, texts, newattribs)
 
 fvm <- create.fvm.corpus(iebudgets, group="party")
-create.arff(wfm)

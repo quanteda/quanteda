@@ -1,3 +1,4 @@
+export(corpus.add.attributes)
 export(corpus.append)
 export(corpus.create)
 export(countSyllables)

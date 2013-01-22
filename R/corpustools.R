@@ -1,8 +1,7 @@
-
 ###
 ### design of a corpus object
 ###
-# (1) texts: a named vector of texts whose only treatment is conversion to unicode
+# (1) texts: a named vector of texts whose only treatment is conversion to unicode
 # (2) attributes: a named list (data-frame) of "variables" or chracteristics
 #     of each text
 # (3) attributes labels: an optional user-supplied list of descriptions of each
@@ -164,6 +163,13 @@ corpus.create <- function(texts, textnames=NULL, attribs=NULL, source=NULL, note
   return(temp.corpus)
 }
 
+
+#' This function adds a named list of attributes to an existing corpus
+#' 
+#' @param corpus Corpus to add attributes to
+#' @param newattribs A list of new attribues
+#' @param name A name for the new attribues
+#' @export
 corpus.add.attributes <- function(corpus, newattribs, name=newattribs) {
   # attribs should be a named list of length(corpus$texts)
   # can be one or more variables
@@ -296,22 +302,20 @@ create.fvm.corpus <- function(corpus,
                               subset=NULL, 
                               verbose=TRUE) {
   # default is to take word as features, could expand that
-
   if (verbose) cat("Creating fvm:\n")
-  
   # new subset feature (no "select" because inappropriate here)
   corpus <- corpus.subset.inner(corpus, substitute(subset))
   # new aggregation - to concatenate texts before making the fvm 
   if (!is.null(groups)) {
-    if (verbose) cat("  Now aggregating by group: ", groups, "...", sep="") 
+    if (verbose) cat("  Now aggregating by group: ", groups, "...", sep="")
     texts <- split(corpus$attribs$texts, as.factor(corpus$attribs[,groups]))
-    texts <- sapply(texts, paste)
+    # was sapply, changing to lapply seems to fix 2 class case
+    texts <- lapply(texts, paste)
     if (verbose) cat("complete.\n")
   } else {
      texts <- corpus$attribs$texts
      names(texts) <- rownames(corpus$attribs)
   }
-    
   textnames <- names(texts)
   #save(texts, file="temptexts")
   fvm <- data.frame(feature=NA)

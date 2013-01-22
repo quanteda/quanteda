@@ -1,4 +1,3 @@
-
 #' Returns a count of the number of syllables in the input
 
 #' This function takes a text and returns a count of the number of syllables it contains.
