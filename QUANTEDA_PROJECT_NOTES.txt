@@ -1,8 +1,14 @@
-NOTES FOR QUANTEDA
-
-TO INSTALL THE LOCAL SOURCE TREE INTO R:
-
-my.local.dir <- "~/Dropbox/QUANTESS/Ken local code/quanteda/"
-install.packages(my.local.dir, repos=NULL, type="source")
-library(quanteda)
-
+Shopping list:
+Deodorant lynx excite x2
+Cough syrup
+Tissues
+Ginger ale
+Honey
+Board game Monopoly
+Fondue
+Fireworks
+Champagne 
+Wine
+Beers
+Black eyes peas
+Bacon
