@@ -2,4 +2,5 @@
 .Rhistory
 .RData
 .Rbuildignore
+.DS_Store
 quanteda.Rproj
