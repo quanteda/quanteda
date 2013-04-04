@@ -104,7 +104,7 @@ getTextDirGui <- function() {
 #' @export
 #' @examples
 #' describeTexts(texts)
-describeTexts <- function(texts) {
+describeTexts <- function(texts, output=TRUE) {
   # need to implement subsetting here too
   string <- gsub("[[:punct:][:digit:]]", "", texts)
   string <- gsub("\n", "", string)
@@ -275,7 +275,7 @@ summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop
   if (ncol(attribs)==1) names(attribs) <- as.character(substitute(select))[2]
   #print(names(attribs))
   names(texts) <- rownames(corpus$attribs)
-  print(head(cbind((dtexts <- describetexts(texts, output=FALSE)),
+  print(head(cbind((dtexts <- describeTexts(texts, output=FALSE)),
                    attribs), 
              nmax))
   cat("\nSource:  ", corpus$metadata["source"], ".\n", sep="")
@@ -324,7 +324,7 @@ create.fvm.corpus <- function(corpus,
   if (verbose) cat("  Progress (%): [0")
   
   for (i in 1:length(texts)) {
-    if(i%%10==0){print(i)}
+    # if(i%%10==0) cat(i)
     if (i/length(texts) > progress.threshold) {
       if (verbose) cat(paste("...", progress.threshold*100, sep=""))
       progress.threshold <- progress.threshold+.1
