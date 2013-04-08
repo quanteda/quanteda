@@ -1,3 +1,20 @@
+## make rows add up to one
+rowNorm <- function(x) {
+  x / outer(rowSums(x), rep(1, ncol(x)))  
+}
+
+## make cols add up to one 
+colNorm <- function(x) {
+  x / outer(rep(1, nrow(x)), colSums(x))
+}
+
+## rescale a vector so that the endpoints match scale.min, scale.max
+rescaler <- function(x, scale.min=-1, scale.max=1) {
+  scale.width <- scale.max - scale.min
+  scale.factor <- scale.width / (max(x) - min(x))
+  return((x-min(x)) * scale.factor - scale.max)
+}
+
 naiveBayesText <- function(x, y, smooth=1, prior="uniform", distribution="multinomial", ...) 
 {
   x.trset <- x[!is.na(y),]
@@ -9,8 +26,7 @@ naiveBayesText <- function(x, y, smooth=1, prior="uniform", distribution="multin
 
   ## distribution
   if (distribution=="Bernoulli") 
-    # convert to a vector of 1s and 0s
-    x.trset <- matrix(as.numeric(x.trset>1), nrow=nrow(x.trset))
+    x.trset[x.trset>0] <- 1 # convert to Boolean
   else
     if (distribution!="multinomial")
       stop("Distribution can only be multinomial or Bernoulli.")
@@ -29,12 +45,10 @@ naiveBayesText <- function(x, y, smooth=1, prior="uniform", distribution="multin
     Pc <- prop.table(as.table(temp2))
   } else stop("Prior must be either docfreq (default), wordfreq, or uniform")
 
-  ## likelihood: class x words, rows sum to 1
-  # d <- aggregate(x.trset, by=list(CLS=y.trclass), sum)  ## THE BOTTLENECK
+  ## multinomial ikelihood: class x words, rows sum to 1
+  # d <- aggregate(x.trset, by=list(CLS=y.trclass), sum)  ## SO SLOW!!!
   d <- t(sapply(split(as.data.frame(x.trset), y.trclass), colSums))
-  
   PwGc <- rowNorm(d + smooth)
-  # rownames(PwGc) <- d[,1]
   names(Pc) <- rownames(d)
   
   ## posterior: class x words, cols sum to 1
@@ -45,25 +59,8 @@ naiveBayesText <- function(x, y, smooth=1, prior="uniform", distribution="multin
   
   ll <- list(call=call, PwGc=PwGc, Pc=Pc, PcGw=PcGw, Pw=Pw, data=list(x=x, y=y), 
              distribution=distribution, prior=prior, smooth=smooth)
-  class(ll) <- c('naivebayes', class(ll))
+  class(ll) <- c("naivebayes", class(ll))
   return(ll)
-}
-
-## make rows add up to one
-rowNorm <- function(x) {
-  x / outer(rowSums(x), rep(1, ncol(x)))	
-}
-
-## make cols add up to one 
-colNorm <- function(x) {
-  x / outer(rep(1, nrow(x)), colSums(x))
-}
-
-## rescale a vector so that the endpoints match scale.min, scale.max
-rescaler <- function(x, scale.min=-1, scale.max=1) {
-  scale.width <- scale.max - scale.min
-  scale.factor <- scale.width / (max(x) - min(x))
-  return((x-min(x)) * scale.factor - scale.max)
 }
 
 
@@ -80,7 +77,7 @@ predictold.naivebayes <- function(object, newdata=NULL, log.probs=FALSE, normali
   if (log.probs)
     return(lp) 
   else if (normalise)
-    return(rowNorm(exp(lp))) 
+    return(rowNorm(exp(lp)))  # numeric underflow with any real data!
   else return(exp(lp))
 }
 
@@ -114,18 +111,23 @@ predict.naivebayes <- function(object, newdata=NULL, scores=c(-1,1)) {
   # lPw <- sum(log(object$Pw))
   # lPcGw <- lPc + lPwGc - lPw  # log P(c|w), prop to since excludes P(w) normalization constant
   
-  # trick from http://en.wikipedia.org/wiki/Bayesian_spam_filtering !!!
-  eta = lPwGc[,1] - lPwGc[,2]
-  PcGw <- cbind(1/(1+exp(-eta)), 1/(1+exp(eta))) 
-  colnames(PcGw) <- colnames(lPwGc)  
+  # compute the scaled quantities that come from the training set words
   if (!is.null(scores)) {
     if (length(object$Pc)!=length(scores))
       stop("scores must be equal in length to number of classes.")
-    bayesscore.word <- t(log(object$PcGw)) %*% scores
+    bayesscore.word <- log.lik %*% scores
     wordscore.word <- t(object$PcGw) %*% scores
-    bayesscore.doc <- rowNorm(newdata) %*% bayesscore.word
+    bayesscore.doc <- rowNorm(newdata) %*% bayesscore.word 
+    #  newdata * t(outer(as.vector(temp), rep(1, nrow(newdata))))
     wordscore.doc <- rowNorm(newdata) %*% wordscore.word
   }
+
+  # eta <- lPwGc[,1] - lPwGc[,2]
+  eta <- bayesscore.doc * rowSums(newdata) + log(object$Pc[2]/object$Pc[1])
+  bayesscore.doc <- bayesscore.doc + log(object$Pc[2]/object$Pc[1])
+  PcGw <- cbind(1/(1+exp(eta)), 1/(1+exp(-eta))) 
+  colnames(PcGw) <- colnames(lPwGc)  
+  
   nb.predicted <- colnames(PcGw)[apply(PcGw, 1, which.max)]
   dirtest <- ifelse(!is.null(scores) && scores[1]>scores[2], -1, 1)
   ws.predicted <- colnames(PcGw)[(dirtest*wordscore.doc > 0)+1]
