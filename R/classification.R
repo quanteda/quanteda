@@ -1,3 +1,4 @@
+#' @export
 naiveBayesText <- function(x, y, smooth=1, prior="uniform", distribution="multinomial", ...) 
 {
   x.trset <- x[!is.na(y),]

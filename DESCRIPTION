@@ -12,3 +12,4 @@ Collate:
     'languagetools.R'
     'translation.R'
     'functionlessDocumentation.R'
+    'classification.R'

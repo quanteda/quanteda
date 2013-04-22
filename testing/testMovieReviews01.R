@@ -6,6 +6,6 @@ vals <-vector()
 vals[1:1000] <- "neg"
 vals[1001:2000] <- "pos"
 atts <- data.frame(vals)
-names(atts)<-c("lab")
+names(atts)<-c("label")
 movies <- corpus.create(texts, attribs=atts)
-fvm <- create.fvm.corpus(movies, group="lab")
+fvm <- create.fvm.corpus(movies, group="label")
