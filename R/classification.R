@@ -1,4 +1,24 @@
+<<<<<<< HEAD
 #' @export
+=======
+## make rows add up to one
+rowNorm <- function(x) {
+  x / outer(rowSums(x), rep(1, ncol(x)))  
+}
+
+## make cols add up to one 
+colNorm <- function(x) {
+  x / outer(rep(1, nrow(x)), colSums(x))
+}
+
+## rescale a vector so that the endpoints match scale.min, scale.max
+rescaler <- function(x, scale.min=-1, scale.max=1) {
+  scale.width <- scale.max - scale.min
+  scale.factor <- scale.width / (max(x) - min(x))
+  return((x-min(x)) * scale.factor - scale.max)
+}
+
+>>>>>>> 397327ff84292920e58bb25d0f94b8ba0a7c9948
 naiveBayesText <- function(x, y, smooth=1, prior="uniform", distribution="multinomial", ...) 
 {
   x.trset <- x[!is.na(y),]
@@ -10,12 +30,11 @@ naiveBayesText <- function(x, y, smooth=1, prior="uniform", distribution="multin
 
   ## distribution
   if (distribution=="Bernoulli") 
-    # convert to a vector of 1s and 0s
-    x.trset <- matrix(as.numeric(x.trset>1), nrow=nrow(x.trset))
+    x.trset[x.trset>0] <- 1 # convert to Boolean
   else
     if (distribution!="multinomial")
       stop("Distribution can only be multinomial or Bernoulli.")
-  
+ 
   ## prior
   if (prior=="uniform")
     Pc <- rep(1/length(levs), length(levs))
@@ -30,38 +49,22 @@ naiveBayesText <- function(x, y, smooth=1, prior="uniform", distribution="multin
     Pc <- prop.table(as.table(temp2))
   } else stop("Prior must be either docfreq (default), wordfreq, or uniform")
 
-  ## likelihood: class x words, rows sum to 1
-  d <- aggregate(x.trset, by=list(CLS=y.trclass), sum)
-  PwGc <- rowNorm(d[,-1] + smooth)
-  rownames(PwGc) <- d[,1]
-    
+  ## multinomial ikelihood: class x words, rows sum to 1
+  # d <- aggregate(x.trset, by=list(CLS=y.trclass), sum)  ## SO SLOW!!!
+  d <- t(sapply(split(as.data.frame(x.trset), y.trclass), colSums))
+  PwGc <- rowNorm(d + smooth)
+  names(Pc) <- rownames(d)
+  
   ## posterior: class x words, cols sum to 1
-  PcGw <- colNorm(PwGc * outer(Pc, rep(1, ncol(PwGc))))
+  PcGw <- colNorm(PwGc * outer(Pc, rep(1, ncol(PwGc))))  
   
   ## P(w)
   Pw <- t(PwGc) %*% Pc
   
   ll <- list(call=call, PwGc=PwGc, Pc=Pc, PcGw=PcGw, Pw=Pw, data=list(x=x, y=y), 
              distribution=distribution, prior=prior, smooth=smooth)
-  class(ll) <- c('naivebayes', class(ll))
+  class(ll) <- c("naivebayes", class(ll))
   return(ll)
-}
-
-## make rows add up to one
-rowNorm <- function(x) {
-  x / outer(rowSums(x), rep(1, ncol(x)))	
-}
-
-## make cols add up to one 
-colNorm <- function(x) {
-  x / outer(rep(1, nrow(x)), colSums(x))
-}
-
-## rescale a vector so that the endpoints match scale.min, scale.max
-rescaler <- function(x, scale.min=-1, scale.max=1) {
-  scale.width <- scale.max - scale.min
-  scale.factor <- scale.width / (max(x) - min(x))
-  return((x-min(x)) * scale.factor - scale.max)
 }
 
 
@@ -78,7 +81,7 @@ predictold.naivebayes <- function(object, newdata=NULL, log.probs=FALSE, normali
   if (log.probs)
     return(lp) 
   else if (normalise)
-    return(rowNorm(exp(lp))) 
+    return(rowNorm(exp(lp)))  # numeric underflow with any real data!
   else return(exp(lp))
 }
 
@@ -112,18 +115,23 @@ predict.naivebayes <- function(object, newdata=NULL, scores=c(-1,1)) {
   # lPw <- sum(log(object$Pw))
   # lPcGw <- lPc + lPwGc - lPw  # log P(c|w), prop to since excludes P(w) normalization constant
   
-  # trick from http://en.wikipedia.org/wiki/Bayesian_spam_filtering !!!
-  eta = lPwGc[,1] - lPwGc[,2]  
-  PcGw <- cbind(1/(1+exp(-eta)), 1/(1+exp(eta))) 
-  colnames(PcGw) <- colnames(lPwGc)  
+  # compute the scaled quantities that come from the training set words
   if (!is.null(scores)) {
     if (length(object$Pc)!=length(scores))
       stop("scores must be equal in length to number of classes.")
     bayesscore.word <- log.lik %*% scores
     wordscore.word <- t(object$PcGw) %*% scores
-    bayesscore.doc <- rowNorm(newdata) %*% bayesscore.word
+    bayesscore.doc <- rowNorm(newdata) %*% bayesscore.word 
+    #  newdata * t(outer(as.vector(temp), rep(1, nrow(newdata))))
     wordscore.doc <- rowNorm(newdata) %*% wordscore.word
   }
+
+  # eta <- lPwGc[,1] - lPwGc[,2]
+  eta <- bayesscore.doc * rowSums(newdata) + log(object$Pc[2]/object$Pc[1])
+  bayesscore.doc <- bayesscore.doc + log(object$Pc[2]/object$Pc[1])
+  PcGw <- cbind(1/(1+exp(eta)), 1/(1+exp(-eta))) 
+  colnames(PcGw) <- colnames(lPwGc)  
+  
   nb.predicted <- colnames(PcGw)[apply(PcGw, 1, which.max)]
   dirtest <- ifelse(!is.null(scores) && scores[1]>scores[2], -1, 1)
   ws.predicted <- colnames(PcGw)[(dirtest*wordscore.doc > 0)+1]
@@ -187,3 +195,79 @@ wordscore.1d <- function(x, refscores=c(-1,1), smooth=1, scale="classic")
   return(val)
   # DOES NOT TRIM OUT THE MISSING WORDS IN THIS VERSION -- UNLIKE classic.wordscores
 }
+
+feature.select <- function(wfm, trclass, freq="document", method="chi2", 
+                           min.count=NULL, min.doc=NULL, sample=NULL) {
+  require(austin)
+  if (!is.wfm(wfm)) stop("Input must be an (austin-defined) wfm object.")
+  mY <- as.worddoc(wfm[,!is.na(trainingclass)])  # select only training set docs
+  
+  if (method=="frequency") {
+    if (is.null(min.count) & is.null(min.doc) & is.null(sample)) {
+      stop("With method='frequency', must specify at least one of min.count, min.doc, or sample.")
+    }
+    return(trim(wfm, min.count, min.doc, sample))
+  }
+  
+  if (freq=="document") {
+    mY[mY>0] <- 1 # convert to Boolean
+  } else if (freq=="word") {
+    stop("freq=word not yet implemented")
+  } else 
+    stop("Only document or word valid for frequency= argument.")
+  
+  getNs <- function(word, class) {
+    t <- table(word, class)
+    N00 <- t[1,1]
+    N01 <- t[1,2]
+    N10 <- t[2,1]
+    N11 <- t[2,2]
+    N1S <- N10 + N11
+    N0S <- N00 + N01
+    NS1 <- N01 + N11
+    NS0 <- N00 + N01
+    return(list(N00, N01, N10, N11, N1S, N0S, NS1, NS0))
+  }
+  
+  if (method=="chi2") {
+    result <- apply(mY, 1, 
+                    function(word) ifelse(sum(dim(table(word, trclass)))==4, chisq.test(word, trclass)$statistic, NA))
+  } else if (method=="mi") {
+    require(entropy)
+    entropyClass <- entropy(table(trclass))
+    result <- apply(mY, 1, 
+                    function(word) entropy(table(word)) + entropyClass - entropy(table(word, trclass)))
+    
+    # stop("method=mi (mutual information) not yet implemented.")
+  } else stop("method can be only chi2, mi, or frequency.")
+  #names(result) <- rownames(mY)
+  return(result)
+}
+
+# feature.select(as.wfm(trainingset, word.margin=2), trainingclass, method="chi2")
+# feature.select(as.wfm(trainingset, word.margin=2), trainingclass, method="mi")
+
+## classic.wordscores() from austin
+# function (wfm, scores) 
+# {
+#   if (!is.wfm(wfm)) 
+#     stop("Function not applicable to this object")
+#   if (length(scores) != length(docs(wfm))) 
+#     stop("There are not the same number of documents as scores")
+#   if (any(is.na(scores))) 
+#     stop("One of the reference document scores is NA\nFit the model with known scores and use 'predict' to get virgin score estimates")
+#   thecall <- match.call()
+#   C.all <- as.worddoc(wfm)
+#   C <- C.all[rowSums(C.all) > 0, ]
+#   F <- scale(C, center = FALSE, scale = colSums(C))
+#   ws <- apply(F, 1, function(x) {
+#     sum(scores * x)
+#   })/rowSums(F)
+#   pi <- matrix(ws, nrow = length(ws))
+#   rownames(pi) <- rownames(C)
+#   colnames(pi) <- c("Score")
+#   val <- list(pi = pi, theta = scores, data = wfm, call = thecall)
+#   class(val) <- c("classic.wordscores", "wordscores", class(val))
+#   return(val)
+# }
+
