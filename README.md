@@ -13,7 +13,7 @@ This is done as follows:
 ```S
 install.packages("devtools")
 library(devtools)
-install_github("quanteda", username="kenbenoit", dependencies=TRUE)
+install_github("quanteda", username="kbenoit", dependencies=TRUE)
 ```
 More Documentation
 ------------------
