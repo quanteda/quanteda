@@ -221,7 +221,8 @@ corpus.append <- function(corpus1, newtexts, newattribs, ...) {
   # corpuses could be combined with corpus.append(corp1, corp2)
   # if we can verify the same attribute set.
   tempcorpus <- corpus.create(newtexts, attribs=newattribs)
-  corpus1$attribs <- rbind(tempcorpus$attribs, corpus1$attribs)
+  corpus1$attribs <- rbind(corpus1$attribs, tempcorpus$attribs)
+  corpus1$texts <- rbind(corpus1$texts, tempcorpus$texts)
   # TODO: implement concatenation of any attribs.labels from new corpus
   return(corpus1)
 }
@@ -308,7 +309,10 @@ create.fvm.corpus <- function(corpus,
   # new aggregation - to concatenate texts before making the fvm 
   if (!is.null(groups)) {
     if (verbose) cat("  Now aggregating by group: ", groups, "...", sep="")
-    texts <- split(corpus$attribs$texts, as.factor(corpus$attribs[,groups]))
+    if (length(groups)>1) {
+      group.split <- lapply(corpus$attribs[,groups], as.factor)
+    } else group.split <- as.factor(corpus$attribs[,groups])
+    texts <- split(corpus$attribs$texts, group.split)
     # was sapply, changing to lapply seems to fix 2 class case
     texts <- lapply(texts, paste)
     if (verbose) cat("complete.\n")
