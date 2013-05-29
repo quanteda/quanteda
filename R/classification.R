@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-#' @export
-=======
 ## make rows add up to one
 rowNorm <- function(x) {
   x / outer(rowSums(x), rep(1, ncol(x)))  
@@ -18,7 +15,6 @@ rescaler <- function(x, scale.min=-1, scale.max=1) {
   return((x-min(x)) * scale.factor - scale.max)
 }
 
->>>>>>> 397327ff84292920e58bb25d0f94b8ba0a7c9948
 naiveBayesText <- function(x, y, smooth=1, prior="uniform", distribution="multinomial", ...) 
 {
   x.trset <- x[!is.na(y),]
