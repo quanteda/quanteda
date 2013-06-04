@@ -95,6 +95,26 @@ getTextDirGui <- function() {
 }
 
 
+#' Imports a Wordstat corpus from an XML file
+#'
+#' Reads in a wordstat XML file and creates a corpus object
+#' with the document as text and variables as attributes
+#' @export
+#' @examples
+#' 
+getTextDirGui <- function() {
+  doc <- file.choose()
+  x <- doc[[3]]['case'][[1]]
+  vals <- sapply(x, xmlValue)
+  ns <- sapply(x, xmlName)
+  names(vals) <- ns
+  text <- vals['DOCUMENT']
+  vals$DOCUMENT <- NULL
+  attribs <- as.data.frame(vals)
+  c <- corpus.create(text, attribs)
+  return c
+}
+
 #' print a summary of texts 
 
 #' Prints to the console a desription of the texts, including 
