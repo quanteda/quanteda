@@ -95,6 +95,23 @@ getTextDirGui <- function() {
 }
 
 
+#' Imports a Wordstat corpus from a CSV file
+#'
+#' Reads in a wordstat CSV file and creates a corpus object
+#' with the document as text and variables as attributes
+#' @export
+#' @examples
+#' 
+getWordStatCSV <- function(filename=NULL) {
+  f <- ifelse(is.null(filename), file.choose(), filename)
+  doc <- read.csv(f, stringsAsFactors=FALSE)
+  text <- doc$DOCUMENT
+  atts <- subset(doc, select=-c(DOCUMENT))
+  c <- corpus.create(text, attribs=atts)
+  return(c)
+}
+
+
 #' Imports a Wordstat corpus from an XML file
 #'
 #' Reads in a wordstat XML file and creates a corpus object
