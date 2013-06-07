@@ -102,9 +102,10 @@ getTextDirGui <- function() {
 #' @export
 #' @examples
 #' 
-getTextDirGui <- function() {
-  doc <- file.choose()
-  x <- doc[[3]]['case'][[1]]
+getWordStat <- function() {
+  f <- file.choose()
+  doc <- xmlRoot(xmlTreeParse(f))
+  x = doc[[3]]['case'][[1]]
   vals <- sapply(x, xmlValue)
   ns <- sapply(x, xmlName)
   names(vals) <- ns
@@ -112,7 +113,7 @@ getTextDirGui <- function() {
   vals$DOCUMENT <- NULL
   attribs <- as.data.frame(vals)
   c <- corpus.create(text, attribs)
-  return c
+  return(c)
 }
 
 #' print a summary of texts 
