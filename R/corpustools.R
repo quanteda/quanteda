@@ -102,10 +102,11 @@ getTextDirGui <- function() {
 #' @export
 #' @examples
 #' 
-getWordStat <- function() {
-  f <- file.choose()
+getWordStat <- function(filename=NULL) {
+  require(XML)
+  f <- ifelse(is.null(filename), filenamefile.choose(), filename)
   doc <- xmlRoot(xmlTreeParse(f))
-  x = doc[[3]]['case'][[1]]
+  x <- doc[[3]] #['case'][[1]]
   vals <- sapply(x, xmlValue)
   ns <- sapply(x, xmlName)
   names(vals) <- ns
