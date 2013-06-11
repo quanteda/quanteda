@@ -143,7 +143,6 @@ getWordStat <- function(filename=NULL) {
     vals <- x[-which(names(x)=='DOCUMENT')]
     vals <- sapply(vals, xmlValue)
     names(atts) <- names(vals)
-    print("done")
     atts <- rbind(atts, vals)
     atts <- na.omit(atts)
   }
