@@ -102,6 +102,7 @@ getTextDirGui <- function() {
 #' @export
 #' @examples
 #' 
+#' 
 getWordStatCSV <- function(filename=NULL) {
   f <- ifelse(is.null(filename), file.choose(), filename)
   doc <- read.csv(f, stringsAsFactors=FALSE)
@@ -122,15 +123,31 @@ getWordStatCSV <- function(filename=NULL) {
 getWordStat <- function(filename=NULL) {
   require(XML)
   f <- ifelse(is.null(filename), filenamefile.choose(), filename)
-  doc <- xmlRoot(xmlTreeParse(f))
-  x <- doc[[3]] #['case'][[1]]
-  vals <- sapply(x, xmlValue)
-  ns <- sapply(x, xmlName)
-  names(vals) <- ns
-  text <- vals['DOCUMENT']
-  vals$DOCUMENT <- NULL
-  attribs <- as.data.frame(vals)
-  c <- corpus.create(text, attribs)
+  # the first two nodes are description and codebook - structure holds all the cases and vars
+  struct <- doc[['structure']]
+  
+  # the variables are declared before the cases but at the same level - have to filter them out
+  vars <- Filter(function(x) xmlName(x)=="variable", xmlChildren(struct))
+  children <- Filter(function(x) xmlName(x)=="case", xmlChildren(struct))
+  texts <- rep(NA, length(children))
+  init <- rep(NA, length(children[[1]])-1)
+  atts <- as.data.frame(t(init))
+  
+  # for each case we take out the document and the variable values
+  for(i in 1:length(children)){
+    x <- children[[i]]
+    vals <- sapply(x, xmlValue)
+    ns <- sapply(x, xmlName)
+    names(vals) <- ns
+    texts[[i]] <- vals['DOCUMENT']
+    vals <- x[-which(names(x)=='DOCUMENT')]
+    vals <- sapply(vals, xmlValue)
+    names(atts) <- names(vals)
+    print("done")
+    atts <- rbind(atts, vals)
+    atts <- na.omit(atts)
+  }
+  c <- corpus.create(texts, attribs=atts)
   return(c)
 }
 
