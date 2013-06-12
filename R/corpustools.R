@@ -127,6 +127,7 @@ getWordStat <- function(filename=NULL) {
   str <- paste(readLines(f), collapse=" ")
   str <- gsub('<codebook>','',str)
   str <- gsub('</codebook>','',str)
+  doc <- xmlRoot(xmlTreeParse(str))
   # the first two nodes are description and codebook - structure holds all the cases and vars
   struct <- doc[['structure']]
   
