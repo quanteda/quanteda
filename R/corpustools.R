@@ -123,6 +123,10 @@ getWordStatCSV <- function(filename=NULL) {
 getWordStat <- function(filename=NULL) {
   require(XML)
   f <- ifelse(is.null(filename), filenamefile.choose(), filename)
+  
+  str <- paste(readLines(f), collapse=" ")
+  str <- gsub('<codebook>','',str)
+  str <- gsub('</codebook>','',str)
   # the first two nodes are description and codebook - structure holds all the cases and vars
   struct <- doc[['structure']]
   
