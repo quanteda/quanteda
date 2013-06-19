@@ -123,7 +123,6 @@ getWordStatCSV <- function(filename=NULL) {
 getWordStat <- function(filename=NULL) {
   require(XML)
   f <- ifelse(is.null(filename), file.choose(), filename)
-  
   str <- paste(readLines(f), collapse=" ")
   str <- gsub('<codebook>','',str)
   str <- gsub('</codebook>','',str)

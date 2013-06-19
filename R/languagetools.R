@@ -134,3 +134,60 @@ tokenize <- function(text, textname='count'){
   return(wf.list)
 }
 
+
+
+#' split a text into sentences
+
+#' This function takes a text and splits it into sentences.
+#' 
+#' @param text Text to be segmented
+#' @export
+#' @examples
+#' tokenize("This is an example sentence.")
+sentenceSeg <- function(text){
+  # returns a dataframe of word counts, word is 1st column
+  #
+  text <- paste(readLines(file(f)), collapse="\n")
+  #text <- iconv(text, from="latin1", to="ASCII", sub="byte")
+  
+  stops <- unlist(strsplit(text, split="[\\.\\?\\!][\\n* ]", perl=TRUE) )
+  abbreviations <- c('Mr', 'Mrs', 'Ms', 'Dr','Jr','Prof')
+  i <- 1
+  sentences <- c()
+  while(i < length(stops)+1){
+    exception <- FALSE
+    # it is an exception if the last word is an abbreviation OR if the 
+    # next token is not uppercase
+    lastword <- tail(unlist(strsplit(stops[[i]], " ")),1)
+    
+    # don't want to look to the next sentence if this is the last sentence
+    if(i==length(stops)){
+      sentences <- c(sentences, stops[[i]])
+      break;
+    }
+    
+    # check if the last word before the . is an abbreviation
+    if(!length(lastword)==0){
+      if (lastword %in% abbreviations){exception <- TRUE}
+    }
+    
+    # check if the first letter of word after the . is upper case
+    nextChar <- substr(stops[[i+1]],1,1)
+    if(nextChar != toupper(nextChar)){
+      exception <- TRUE
+    }
+    
+    # if we think this . is not a sentence boundary, paste the current
+    # phrase and the phrase after the . toegether.
+    if(exception){
+      sentences <- c(sentences, paste(stops[[i]],stops[[i+1]],'. '))
+      i <- i + 2
+    }else{
+      sentences <- c(sentences, stops[[i]])
+      i <- i + 1
+    }
+  }
+  return(sentences)
+}
+
+
