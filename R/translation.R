@@ -9,7 +9,7 @@ translateChunk <- function(sourceText, sourceLanguage, targetLanguage, key=NULL,
     cat("Making call to Google Translate..., with string of length: ", nchar(sourceText), "\n")
     print(sourceText)
   }
-  baseUrl <- "http://translate.google.com/researchapi/translate?"
+  baseUrl <- "https://www.googleapis.com/language/translate/v2?"
   params <- paste("sl=",sourceLanguage, "&tl=", targetLanguage, "&q=", sourceText,sep="")
   
   url <- paste(baseUrl,params,sep="")
@@ -20,6 +20,7 @@ translateChunk <- function(sourceText, sourceLanguage, targetLanguage, key=NULL,
   response <- getURL(url, httpheader=header, curl=curl)
   # get the http response code to try to see what type of error we're getting
   code <- getCurlInfo(curl, which="response.code")
+  print(code)
   rm(curl)
   Sys.sleep(1)
   # parse XML response to extract actual translation
