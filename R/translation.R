@@ -1,7 +1,7 @@
 # helper function for directly calling the translate API
 # sourceText must be 1000 characters or less
 # the rate limit is allegedly 1000 queries per day
-translateChunk <- function(sourceText, sourceLanguage, targetLanguage, key=NULL, verbose=TRUE) {
+translateChunk <- function(sourceText, sourceLanguage, targetLanguage, key=NULL, verbose=FALSE) {
   if (is.null(key)) {
     key <- ""
   }
@@ -10,24 +10,21 @@ translateChunk <- function(sourceText, sourceLanguage, targetLanguage, key=NULL,
     print(sourceText)
   }
   baseUrl <- "https://www.googleapis.com/language/translate/v2?"
-  params <- paste("sl=",sourceLanguage, "&tl=", targetLanguage, "&q=", sourceText,sep="")
+  params <- paste("key=", key, "&source=", sourceLanguage, "&target=", targetLanguage, "&q=", sourceText,sep="")
   
   url <- paste(baseUrl,params,sep="")
-  header <- paste("Authorization: GoogleLogin auth=", key, sep="")
   # make the http requst with the url and the authentication header
   if (verbose) print(url)
   curl <- getCurlHandle()
-  response <- getURL(url, httpheader=header, curl=curl)
+  response <- getURL(url, curl=curl)
   # get the http response code to try to see what type of error we're getting
   code <- getCurlInfo(curl, which="response.code")
-  print(code)
+  if(verbose) print(code)
   rm(curl)
   Sys.sleep(1)
-  # parse XML response to extract actual translation
-  doc <- xmlTreeParse(response, getDTD = F)
-  r <- xmlRoot(doc) 
-  translation <- xmlValue(r["entry"] [[1]] [[5]])
-  return(translation)
+  # parse JSON response to extract actual translation
+  doc <- fromJSON(response)
+  return(unlist(doc)[[1]])
 }
 
 
@@ -84,6 +81,7 @@ translate <- function(sourceText,  sourceLanguage, targetLanguage, key=NULL, ver
       next
     }
     s <- curlEscape(s)
+    
     # handle the rare (non-existent?) case of a single sentence being >1000 chars
     if (nchar(s) >= 1000) {
       if (verbose) print("in the 1000 case")
@@ -91,12 +89,12 @@ translate <- function(sourceText,  sourceLanguage, targetLanguage, key=NULL, ver
       end <- 1000
       while ((nchar(s) - start) > 1000) {
         chunk <- substr(s, start, end)
-        translatedText <- paste(translatedText, translateChunk(chunk,sourceLanguage, targetLanguage), sep=". ")
+        translatedText <- paste(translatedText, translateChunk(chunk,sourceLanguage, targetLanguage,key), sep=". ")
         start <- start + 1000
         end <- end + 1000
       }
       chunk <- substr(s, start, nchar(s))
-      translatedText <- paste(translatedText,translateChunk(chunk,sourceLanguage, targetLanguage), sep="")
+      translatedText <- paste(translatedText,translateChunk(chunk,sourceLanguage, targetLanguage,key), sep="")
       chunk <- ""
     }
     else {
@@ -106,12 +104,12 @@ translate <- function(sourceText,  sourceLanguage, targetLanguage, key=NULL, ver
         if (verbose) print("one")
         #send to Google, reset the chunk
         if (nchar(chunk)>5) {
-          translatedText <- paste(translatedText, translateChunk(chunk, sourceLanguage, targetLanguage),sep=". ")
+          translatedText <- paste(translatedText, translateChunk(chunk, sourceLanguage, targetLanguage,key),sep=". ")
         }else{
           if (verbose) print("empty chunk")
         }
         if (nchar(s)>5) {
-          translatedText <- paste(translatedText, translateChunk(s, sourceLanguage, targetLanguage),sep=". ")
+          translatedText <- paste(translatedText, translateChunk(s, sourceLanguage, targetLanguage,key),sep=". ")
         } else {
           if (verbose) print("empty sentence")
         }
@@ -121,7 +119,7 @@ translate <- function(sourceText,  sourceLanguage, targetLanguage, key=NULL, ver
       #Google and save this sentence
       else if ((nchar(chunk)+nchar(s) >= 1000)) {
         if (verbose) print("two")
-        translatedText <- paste(translatedText, translateChunk(chunk, sourceLanguage, targetLanguage), sep=". ")
+        translatedText <- paste(translatedText, translateChunk(chunk, sourceLanguage, targetLanguage, key), sep=". ")
         chunk <- paste(s,".%20",sep="")
       } else {
         if (verbose) print("three")

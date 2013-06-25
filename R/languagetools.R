@@ -145,9 +145,6 @@ tokenize <- function(text, textname='count'){
 sentenceSeg <- function(text){
   # returns a dataframe of word counts, word is 1st column
   #
-  Rprof(append = TRUE)
-  text <- paste((text), collapse="\n")
-  
   stops <- unlist(strsplit(text, split="[\\.\\?\\!][\\n* ]", perl=TRUE) )
   abbreviations <- c('Mr', 'Mrs', 'Ms', 'Dr','Jr','Prof')
   i <- 1
@@ -158,6 +155,7 @@ sentenceSeg <- function(text){
     # it is an exception if the last word is an abbreviation OR if the 
     # next token is not uppercase
     lastword <- tail(unlist(strsplit(stops[[i]], " ")),1)
+    
     
     # don't want to look to the next sentence if this is the last sentence
     if(i==length(stops)){
@@ -186,7 +184,7 @@ sentenceSeg <- function(text){
       i <- i + 1
     }
   }
-  Rprof(NULL)
+  sentences <- lapply(sentences, gsub, pattern="\\n", replacement="")
   return(sentences)
 }
 
