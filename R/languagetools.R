@@ -142,13 +142,11 @@ tokenize <- function(text, textname='count'){
 #' 
 #' @param text Text to be segmented
 #' @export
-#' @examples
-#' tokenize("This is an example sentence.")
 sentenceSeg <- function(text){
   # returns a dataframe of word counts, word is 1st column
   #
   text <- paste(readLines(file(f)), collapse="\n")
-  #text <- iconv(text, from="latin1", to="ASCII", sub="byte")
+  
   
   stops <- unlist(strsplit(text, split="[\\.\\?\\!][\\n* ]", perl=TRUE) )
   abbreviations <- c('Mr', 'Mrs', 'Ms', 'Dr','Jr','Prof')
