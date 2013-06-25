@@ -325,6 +325,7 @@ create.arff <- function(fvm, gold, name="politics", outfile="test.arff"){
 #' @export
 #' @examples
 #' summary.corpus(corpus1)
+####### KB: NEED TO FIX THIS TO DISPLAY A SUMMARY EVEN WHEN is.null(attribs)
 summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop=FALSE, output=TRUE, nmax=100) {
   corpus <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
   cat("Corpus object contains", nrow(corpus$attribs), "texts.\n\n")
