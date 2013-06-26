@@ -208,15 +208,23 @@ corpus.create <- function(texts, textnames=NULL, attribs=NULL, source=NULL, note
   metadata <- c(source=source, created=created, notes=notes)
   
   # if no attribs are provided, use the text names
+<<<<<<< HEAD
   if (is.null(attribs)) 
     attribs <- data.frame(attribs=names(texts),check.rows=TRUE, stringsAsFactors=FALSE)
   
   if (!is.null(attribs)) {
     attribs <- data.frame(texts=texts, attribs,
                           row.names=names(texts), 
+=======
+  if (is.null(attribs)) {
+    attribs <- data.frame(texts, row.names=names(texts), 
+>>>>>>> Committing changes - hoping it commits to original branch.
                           check.rows=TRUE, stringsAsFactors=FALSE)
-  }
-  if (!is.null(attribs) & is.null(attribs.labels)){
+  } else attribs <- data.frame(texts=texts, attribs,
+                               row.names=names(texts), 
+                               check.rows=TRUE, stringsAsFactors=FALSE)
+  
+  if (!is.null(attribs) & is.null(attribs.labels)) {
     attribs.labels <- c("Original texts", rep(NULL, length(attribs)-1))
   }
   
@@ -331,6 +339,7 @@ create.arff <- function(fvm, gold, name="politics", outfile="test.arff"){
 #' @examples
 #' summary.corpus(corpus1)
 ####### KB: NEED TO FIX THIS TO DISPLAY A SUMMARY EVEN WHEN is.null(attribs)
+#######     fixed 19:00 26 June 2013
 summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop=FALSE, output=TRUE, nmax=100) {
   corpus <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
   cat("Corpus object contains", nrow(corpus$attribs), "texts.\n\n")
