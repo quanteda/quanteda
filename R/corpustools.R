@@ -206,6 +206,11 @@ corpus.create <- function(texts, textnames=NULL, attribs=NULL, source=NULL, note
     source <- paste(getwd(), "/* ", "on ",  Sys.info()["machine"], " by ", Sys.info()["user"], sep="")
   created <- date()
   metadata <- c(source=source, created=created, notes=notes)
+  
+  # if no attribs are provided, use the text names
+  if (is.null(attribs)) 
+    attribs <- data.frame(attribs=names(texts),check.rows=TRUE, stringsAsFactors=FALSE)
+  
   if (!is.null(attribs)) {
     attribs <- data.frame(texts=texts, attribs,
                           row.names=names(texts), 
@@ -214,6 +219,7 @@ corpus.create <- function(texts, textnames=NULL, attribs=NULL, source=NULL, note
   if (!is.null(attribs) & is.null(attribs.labels)){
     attribs.labels <- c("Original texts", rep(NULL, length(attribs)-1))
   }
+  
   temp.corpus <- list(attribs=attribs,
                       attribs.labels=attribs.labels,
                       metadata=metadata)
@@ -279,8 +285,6 @@ corpus.append <- function(corpus1, newtexts, newattribs, ...) {
   # corpuses could be combined with corpus.append(corp1, corp2)
   # if we can verify the same attribute set.
   tempcorpus <- corpus.create(newtexts, attribs=newattribs)
-  print(ncol(corpus1$attribs))
-  print(ncol(tempcorpus$attribs))
   corpus1$attribs <- rbind(corpus1$attribs, tempcorpus$attribs)
   #corpus1$attribs$texts <- rbind(corpus1$attribs$texts, tempcorpus$attribs$texts)
   # TODO: implement concatenation of any attribs.labels from new corpus
@@ -461,14 +465,14 @@ corpus.subset <- function(corpus, subset=NULL, select=NULL) {
 corpus.reshape <- function(corpus){
   sents <- sentenceSeg(corpus$attribs$texts[[1]])
   serials <- 1:length(sents)
-  fnames <- rep(corpus$attribs$attribs[[1]], length(sents))
-  atts <- data.frame(fnames,serials)
+  textiles <- rep(corpus$attribs$attribs[[1]], length(sents))
+  atts <- data.frame(textiles,serials)
   sentCorp <- corpus.create(unlist(sents), attribs=atts)
   for(i in 2:length(corpus)){
     sents <- sentenceSeg(corpus$attribs$texts[[i]])
     serials <- 1:length(sents)
-    fnames <- rep(corpus$attribs$attribs[[i]], length(sents))
-    atts <- data.frame(fnames,serials)
+    textiles <- rep(corpus$attribs$attribs[[i]], length(sents))
+    atts <- data.frame(textiles,serials)
     fnames <- rep(corpus$attribs$attribs[[i]], length(sents))
     sentCorp<-corpus.append(sentCorp, unlist(sents), atts)
   }

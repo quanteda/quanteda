@@ -7,11 +7,12 @@ library(RJSONIO)
 
 strings <- getTextDir('~/Dropbox/QUANTESS/corpora/UK Manifestos')
 strings <- iconv(strings[51:60], from="latin1", to="ASCII", sub="byte")
-corpus <- corpus.create(strings, attribs=(names(strings)))
+corpus <- corpus.create(strings)
 result <- corpus.reshape(corpus)
 
 
 #translation examples
+
 #texts <- getTextDir('~/Dropbox/QUANTESS/corpora/translationTests')
 #texts <- iconv(texts, from="latin1", to="ASCII", sub="byte")
 #segmenting multiple texts
