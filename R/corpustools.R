@@ -207,8 +207,7 @@ corpus.create <- function(texts, textnames=NULL, attribs=NULL, source=NULL, note
   created <- date()
   metadata <- c(source=source, created=created, notes=notes)
   if (!is.null(attribs)) {
-    attribs <- data.frame(texts=texts,
-                          attribs,
+    attribs <- data.frame(texts=texts, attribs,
                           row.names=names(texts), 
                           check.rows=TRUE, stringsAsFactors=FALSE)
   }
@@ -280,8 +279,10 @@ corpus.append <- function(corpus1, newtexts, newattribs, ...) {
   # corpuses could be combined with corpus.append(corp1, corp2)
   # if we can verify the same attribute set.
   tempcorpus <- corpus.create(newtexts, attribs=newattribs)
+  print(ncol(corpus1$attribs))
+  print(ncol(tempcorpus$attribs))
   corpus1$attribs <- rbind(corpus1$attribs, tempcorpus$attribs)
-  corpus1$texts <- rbind(corpus1$texts, tempcorpus$texts)
+  #corpus1$attribs$texts <- rbind(corpus1$attribs$texts, tempcorpus$attribs$texts)
   # TODO: implement concatenation of any attribs.labels from new corpus
   return(corpus1)
 }
@@ -455,4 +456,21 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
 corpus.subset <- function(corpus, subset=NULL, select=NULL) {
   tempcorp <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
   return(tempcorp)
+}
+
+corpus.reshape <- function(corpus){
+  sents <- sentenceSeg(corpus$attribs$texts[[1]])
+  serials <- 1:length(sents)
+  fnames <- rep(corpus$attribs$attribs[[1]], length(sents))
+  atts <- data.frame(fnames,serials)
+  sentCorp <- corpus.create(unlist(sents), attribs=atts)
+  for(i in 2:length(corpus)){
+    sents <- sentenceSeg(corpus$attribs$texts[[i]])
+    serials <- 1:length(sents)
+    fnames <- rep(corpus$attribs$attribs[[i]], length(sents))
+    atts <- data.frame(fnames,serials)
+    fnames <- rep(corpus$attribs$attribs[[i]], length(sents))
+    sentCorp<-corpus.append(sentCorp, unlist(sents), atts)
+  }
+  return(sentCorp)
 }
