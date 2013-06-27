@@ -472,13 +472,23 @@ corpus.subset <- function(corpus, subset=NULL, select=NULL) {
   return(tempcorp)
 }
 
+
+#' Transform a corpus by splitting texts into sentences
+
+#' Each text in the corpus is split into sentences, and each
+#' sentence becomes a standalone text, with attributes indicating
+#' the text it is taken from and it's serial number in that text
+#' 
+#' @param corpus Corpus to transform
+#' @param feature Feature to count
+#' @examples
+#' sentCorp <- corpus.reshape(corpus)
 corpus.reshape <- function(corpus){
   sents <- sentenceSeg(corpus$attribs$texts[[1]])
   serials <- 1:length(sents)
   textiles <- rep(row.names(corpus$attribs)[[1]], length(sents))
   atts <- data.frame(textiles,serials)
   sentCorp <- corpus.create(unlist(sents), attribs=atts)
-  
   for(i in 2:length(corpus)){
     sents <- sentenceSeg(corpus$attribs$texts[[i]])
     serials <- 1:length(sents)

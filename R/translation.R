@@ -131,5 +131,7 @@ translate <- function(sourceText,  sourceLanguage, targetLanguage, key=NULL, ver
   translatedText <- curlUnescape(translatedText)
   if (verbose) cat("****************", translatedText, "********************", nchar(translatedText), "\n")
   if (verbose) cat("\n")
+  
+  translatedText <- sub(pattern=" .", replacement="",translatedText
   return(translatedText)
 }
