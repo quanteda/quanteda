@@ -207,18 +207,19 @@ corpus.create <- function(texts, textnames=NULL, attribs=NULL, source=NULL, note
   created <- date()
   metadata <- c(source=source, created=created, notes=notes)
   
-  # if no attribs are provided, use the text names
-<<<<<<< HEAD
-  if (is.null(attribs)) 
-    attribs <- data.frame(attribs=names(texts),check.rows=TRUE, stringsAsFactors=FALSE)
+#   # if no attribs are provided, use the text names
+# # <<<<<<< HEAD
+#   if (is.null(attribs)) 
+#     attribs <- data.frame(attribs=names(texts),check.rows=TRUE, stringsAsFactors=FALSE)
+#   
+#   if (!is.null(attribs)) {
+#     attribs <- data.frame(texts=texts, attribs,
+#                           row.names=names(texts), check.rows=TRUE, stringsAsFactors=FALSE)}
   
-  if (!is.null(attribs)) {
-    attribs <- data.frame(texts=texts, attribs,
-                          row.names=names(texts), 
-=======
+# alternative code - for disucussion PN
+# =======
   if (is.null(attribs)) {
     attribs <- data.frame(texts, row.names=names(texts), 
->>>>>>> Committing changes - hoping it commits to original branch.
                           check.rows=TRUE, stringsAsFactors=FALSE)
   } else attribs <- data.frame(texts=texts, attribs,
                                row.names=names(texts), 
@@ -227,7 +228,7 @@ corpus.create <- function(texts, textnames=NULL, attribs=NULL, source=NULL, note
   if (!is.null(attribs) & is.null(attribs.labels)) {
     attribs.labels <- c("Original texts", rep(NULL, length(attribs)-1))
   }
-  
+#   
   temp.corpus <- list(attribs=attribs,
                       attribs.labels=attribs.labels,
                       metadata=metadata)
@@ -474,15 +475,16 @@ corpus.subset <- function(corpus, subset=NULL, select=NULL) {
 corpus.reshape <- function(corpus){
   sents <- sentenceSeg(corpus$attribs$texts[[1]])
   serials <- 1:length(sents)
-  textiles <- rep(corpus$attribs$attribs[[1]], length(sents))
+  textiles <- rep(row.names(corpus$attribs)[[1]], length(sents))
   atts <- data.frame(textiles,serials)
   sentCorp <- corpus.create(unlist(sents), attribs=atts)
+  
   for(i in 2:length(corpus)){
     sents <- sentenceSeg(corpus$attribs$texts[[i]])
     serials <- 1:length(sents)
-    textiles <- rep(corpus$attribs$attribs[[i]], length(sents))
+    textiles <- rep(row.names(corpus$attribs)[[1]], length(sents))
     atts <- data.frame(textiles,serials)
-    fnames <- rep(corpus$attribs$attribs[[i]], length(sents))
+
     sentCorp<-corpus.append(sentCorp, unlist(sents), atts)
   }
   return(sentCorp)

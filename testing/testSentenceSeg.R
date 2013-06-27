@@ -9,6 +9,7 @@ strings <- getTextDir('~/Dropbox/QUANTESS/corpora/UK Manifestos')
 strings <- iconv(strings[51:60], from="latin1", to="ASCII", sub="byte")
 corpus <- corpus.create(strings)
 result <- corpus.reshape(corpus)
+df <- result$attribs
 
 
 #translation examples
