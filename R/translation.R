@@ -129,9 +129,10 @@ translate <- function(sourceText,  sourceLanguage, targetLanguage, key=NULL, ver
     }
   }
   translatedText <- curlUnescape(translatedText)
+  
+  # the joining code introduces an initial full-stop, remove it.
+  translatedText <- sub(pattern="\\. ", replacement="",translatedText)
   if (verbose) cat("****************", translatedText, "********************", nchar(translatedText), "\n")
   if (verbose) cat("\n")
-  
-  translatedText <- sub(pattern=" .", replacement="",translatedText)
   return(translatedText)
 }
