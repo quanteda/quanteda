@@ -3,7 +3,7 @@ library(quanteda)
 library(RCurl)
 library(RJSONIO)
 
-# test change Rstudio git
+# test change Rstudio git 2
 
 strings <- getTextDir('~/Dropbox/QUANTESS/corpora/UK Manifestos')
 strings <- iconv(strings[51:60], from="latin1", to="ASCII", sub="byte")
