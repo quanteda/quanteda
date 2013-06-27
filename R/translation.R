@@ -132,6 +132,6 @@ translate <- function(sourceText,  sourceLanguage, targetLanguage, key=NULL, ver
   if (verbose) cat("****************", translatedText, "********************", nchar(translatedText), "\n")
   if (verbose) cat("\n")
   
-  translatedText <- sub(pattern=" .", replacement="",translatedText
+  translatedText <- sub(pattern=" .", replacement="",translatedText)
   return(translatedText)
 }
