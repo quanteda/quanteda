@@ -188,4 +188,17 @@ sentenceSeg <- function(text){
   return(sentences)
 }
 
-
+# KB 2013-07-01
+# sentence.delimiters can be redefined to suit the language
+# takes a single text, returns a vector of sentences
+# IF you want to apply rules, such as . followed by uppercase, then
+# change these before the split using gsub()
+sentenceSeg2 <- function(text, sentence.delimiters="[.!?]") {
+  # strip out CRs and LFs, tabs
+  text <- gsub("\\n\\t", "", text)     
+  # split the text into sentences
+  # WOULD BE NICE TO PRESERVE SENTENCE PUNCTUATION
+  sentences <- unlist(strsplit(text, sentence.delimiters))
+  # COULD STRIP LEADING SPACES HERE TOO
+  return(sentences)
+}
