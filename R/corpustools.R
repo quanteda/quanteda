@@ -227,11 +227,9 @@ corpus.create <- function(texts, textnames=NULL, attribs=NULL, source=NULL, note
                                check.rows=TRUE, stringsAsFactors=FALSE)
   
   if (!is.null(attribs) & is.null(attribs.labels)) {
-    attribs.labels <- c("Original texts", rep(NULL, length(attribs)-1))
-  }
-#   
+    names(attribs) <- c("texts", rep(NULL, length(attribs)-1))
+  } else names(attribs) <- c("texts", attribs.labels)
   temp.corpus <- list(attribs=attribs,
-                      attribs.labels=attribs.labels,
                       metadata=metadata)
   class(temp.corpus) <- list("corpus", class(temp.corpus))
   return(temp.corpus)
