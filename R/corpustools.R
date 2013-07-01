@@ -92,7 +92,7 @@ getTextDir <- function(dirname) {
 #' getTextFiles('/home/paul/documents/libdem09.txt')
 getTextDirGui <- function() {
   files <- choose.files()
-   #get all files from a directory
+  #get all files from a directory
   return(getTextFiles(files))
 }
 
@@ -209,27 +209,12 @@ corpus.create <- function(texts, textnames=NULL, attribs=NULL, source=NULL, note
   created <- date()
   metadata <- c(source=source, created=created, notes=notes)
   
-#   # if no attribs are provided, use the text names
-# # <<<<<<< HEAD
-#   if (is.null(attribs)) 
-#     attribs <- data.frame(attribs=names(texts),check.rows=TRUE, stringsAsFactors=FALSE)
-#   
-#   if (!is.null(attribs)) {
-#     attribs <- data.frame(texts=texts, attribs,
-#                           row.names=names(texts), check.rows=TRUE, stringsAsFactors=FALSE)}
-  
-# alternative code - for disucussion PN
-# =======
   if (is.null(attribs)) {
     attribs <- data.frame(texts, row.names=names(texts), 
                           check.rows=TRUE, stringsAsFactors=FALSE)
   } else attribs <- data.frame(texts=texts, attribs,
                                row.names=names(texts), 
                                check.rows=TRUE, stringsAsFactors=FALSE)
-  
-  if (!is.null(attribs) & is.null(attribs.labels)) {
-    names(attribs) <- c("texts", rep(NULL, length(attribs)-1))
-  } else names(attribs) <- c("texts", attribs.labels)
   temp.corpus <- list(attribs=attribs,
                       metadata=metadata)
   class(temp.corpus) <- list("corpus", class(temp.corpus))
@@ -306,7 +291,7 @@ corpus.append <- function(corpus1, newtexts, newattribs, ...) {
 ####
 create.arff <- function(fvm, gold, name="politics", outfile="test.arff"){
   outString <- paste("@RELATION", name,"\n")
-
+  
   for(c in rownames(fvm)){
     outString <- paste(outString, "@attribute", c, "NUMERIC\n")
   }
@@ -322,7 +307,7 @@ create.arff <- function(fvm, gold, name="politics", outfile="test.arff"){
     i <- i+1
     print(i)
   }
-
+  
   writeChar(outString, file("/home/paul/testout.arff"))
 }
 
@@ -392,8 +377,8 @@ create.fvm.corpus <- function(corpus,
     texts <- lapply(texts, paste)
     if (verbose) cat("complete.\n")
   } else {
-     texts <- corpus$attribs$texts
-     names(texts) <- rownames(corpus$attribs)
+    texts <- corpus$attribs$texts
+    names(texts) <- rownames(corpus$attribs)
   }
   textnames <- names(texts)
   #save(texts, file="temptexts")
@@ -443,28 +428,28 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
   # subset(airquality, Day == 1, select = -Temp)
   # subset(airquality, select = Ozone:Wind)
   #'@export
-  
-  
-  if (is.null(subsetExpr)) 
-    rows <- TRUE
-  else {
-    rows <- eval(subsetExpr, corpus$attribs, parent.frame())
-    if (!is.logical(rows)) 
-      stop("'subset' must evaluate to logical")
-    rows <- rows & !is.na(rows)
-  }
-  
-  if (is.null(selectExpr)) 
-    vars <- TRUE
-  else {
     
-    nl <- as.list(seq_along(corpus$attribs))
-    names(nl) <- names(corpus$attribs)
-    vars <- c(1, eval(selectExpr, nl, parent.frame()))
-  }
-  # implement subset, select, and drop
-  corpus$attribs <- corpus$attribs[rows, vars, drop=drop]
-  return(corpus)
+    
+    if (is.null(subsetExpr)) 
+      rows <- TRUE
+    else {
+      rows <- eval(subsetExpr, corpus$attribs, parent.frame())
+      if (!is.logical(rows)) 
+        stop("'subset' must evaluate to logical")
+      rows <- rows & !is.na(rows)
+    }
+    
+    if (is.null(selectExpr)) 
+      vars <- TRUE
+    else {
+      
+      nl <- as.list(seq_along(corpus$attribs))
+      names(nl) <- names(corpus$attribs)
+      vars <- c(1, eval(selectExpr, nl, parent.frame()))
+    }
+    # implement subset, select, and drop
+    corpus$attribs <- corpus$attribs[rows, vars, drop=drop]
+    return(corpus)
 }
 
 corpus.subset <- function(corpus, subset=NULL, select=NULL) {
@@ -488,12 +473,15 @@ corpus.reshape <- function(corpus){
   serials <- 1:length(sents)
   textiles <- rep(row.names(corpus$attribs)[[1]], length(sents))
   atts <- data.frame(textiles,serials)
+  print(names(atts))
   sentCorp <- corpus.create(unlist(sents), attribs=atts)
-  for(i in 2:length(corpus)){
+  print(names(sentCorp$attribs))
+  for(i in 2:nrow(corpus$attribs)){
     sents <- sentenceSeg(corpus$attribs$texts[[i]])
     serials <- 1:length(sents)
     textiles <- rep(row.names(corpus$attribs)[[i]], length(sents))
     atts <- data.frame(textiles,serials)
+    
     sentCorp<-corpus.append(sentCorp, unlist(sents), atts)
   }
   return(sentCorp)
