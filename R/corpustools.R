@@ -35,6 +35,7 @@ getRootFileNames <- function(longFilenames) {
   delim <- "/"
   osName <- (Sys.info()[['sysname']] )
   if(osName=="Windows") { delim <- "\\\\" }
+  
   splitFilenames <- strsplit(longFilenames, delim)
   return(sapply(splitFilenames, tail, n=1))
 }
@@ -491,9 +492,8 @@ corpus.reshape <- function(corpus){
   for(i in 2:length(corpus)){
     sents <- sentenceSeg(corpus$attribs$texts[[i]])
     serials <- 1:length(sents)
-    textiles <- rep(row.names(corpus$attribs)[[1]], length(sents))
+    textiles <- rep(row.names(corpus$attribs)[[i]], length(sents))
     atts <- data.frame(textiles,serials)
-
     sentCorp<-corpus.append(sentCorp, unlist(sents), atts)
   }
   return(sentCorp)
