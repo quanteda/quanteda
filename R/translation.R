@@ -2,6 +2,7 @@
 # sourceText must be 1000 characters or less
 # the rate limit is allegedly 1000 queries per day
 translateChunk <- function(sourceText, sourceLanguage, targetLanguage, key=NULL, verbose=FALSE) {
+  require(RJSONIO)
   if (is.null(key)) {
     key <- ""
   }
@@ -40,17 +41,18 @@ translateChunk <- function(sourceText, sourceLanguage, targetLanguage, key=NULL,
 #' @examples
 #' translation <- translate(original, fr, de, key='insertkeyhere')
 translate.corpus <- function(corpus, targetlanguageString, 
-                             textvar="texts", languagevar="language") {
+                             textvar="texts", languagevar="language", key=NULL) {
   ## function to translate the text from a corpus into another language
   ## wrapper for translate
   # initialize the translated text vector
+  if (is.null(key)) stop("Error: Must supply a key for Google Translate.")
   translatedTextVector <- rep(NA, nrow(corpus$attribs))
   for (i in 1:nrow(corpus$attribs)) {
     if (corpus$attribs[i,textvar]=="" | is.na(corpus$attribs[i,textvar])) next
     if (corpus$attribs[i,languagevar]==targetlanguageString) next
     translatedTextVector[i] <- translate(corpus$attribs[i,textvar], 
                                          corpus$attribs[i,languagevar],
-                                         targetlanguageString)
+                                         targetlanguageString, key)
   }
   return(translatedTextVector)
 }
@@ -67,7 +69,10 @@ translate.corpus <- function(corpus, targetlanguageString,
 #' @export
 #' @examples
 #' translation <- translate(original, fr, de, key='insertkeyhere')
-translate <- function(sourceText,  sourceLanguage, targetLanguage, key=NULL, verbose=FALSE){
+translate <- function(sourceText, sourceLanguage, targetLanguage, key=NULL, verbose=FALSE) {
+  require(RCurl)
+  require(XML)
+  if (is.null(key)) stop("Error: Must supply a key for Google Translate.")
   a <- strsplit(sourceText, split="[\\.]")
   sentences <- unlist(a)
   # Paste sentences together into a chunk until the next one would send the current chunk
@@ -89,7 +94,7 @@ translate <- function(sourceText,  sourceLanguage, targetLanguage, key=NULL, ver
       end <- 1000
       while ((nchar(s) - start) > 1000) {
         chunk <- substr(s, start, end)
-        translatedText <- paste(translatedText, translateChunk(chunk,sourceLanguage, targetLanguage,key), sep=". ")
+        translatedText <- paste(translatedText, translateChunk(chunk,sourceLanguage, targetLanguage, key), sep=". ")
         start <- start + 1000
         end <- end + 1000
       }

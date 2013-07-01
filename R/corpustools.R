@@ -469,20 +469,20 @@ corpus.subset <- function(corpus, subset=NULL, select=NULL) {
 #' @examples
 #' sentCorp <- corpus.reshape(corpus)
 corpus.reshape <- function(corpus){
-  sents <- sentenceSeg(corpus$attribs$texts[[1]])
-  serials <- 1:length(sents)
-  textiles <- rep(row.names(corpus$attribs)[[1]], length(sents))
-  atts <- data.frame(textiles,serials)
-  print(names(atts))
-  sentCorp <- corpus.create(unlist(sents), attribs=atts)
-  print(names(sentCorp$attribs))
+  sentence <- sentenceSeg(corpus$attribs$texts[[1]])
+  sentenceno <- 1:length(sentence)
+  sourcetext <- rep(row.names(corpus$attribs)[[1]], length(sentence))
+  atts <- data.frame(sourcetext, sentenceno)
+  # print(names(atts))
+  sentCorp <- corpus.create(unlist(sentence), attribs=atts)
+  # print(names(sentCorp$attribs))
   for(i in 2:nrow(corpus$attribs)){
-    sents <- sentenceSeg(corpus$attribs$texts[[i]])
-    serials <- 1:length(sents)
-    textiles <- rep(row.names(corpus$attribs)[[i]], length(sents))
-    atts <- data.frame(textiles,serials)
+    sentence <- sentenceSeg(corpus$attribs$texts[[i]])
+    sentenceno <- 1:length(sentence)
+    sourcetext <- rep(row.names(corpus$attribs)[[i]], length(sentence))
+    atts <- data.frame(sourcetext, sentenceno)
     
-    sentCorp<-corpus.append(sentCorp, unlist(sents), atts)
+    sentCorp<-corpus.append(sentCorp, unlist(sentence), atts)
   }
   return(sentCorp)
 }
