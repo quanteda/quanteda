@@ -10,7 +10,7 @@
 # Machine:         Ken Benoit's Macbook Air
 
 
-#rm(list = ls()) # clear memory
+rm(list = ls()) # clear memory
 library(quanteda)
 setwd("~/Dropbox/QUANTESS/Testing/sentence_parser/")
 
