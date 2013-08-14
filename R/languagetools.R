@@ -142,11 +142,11 @@ tokenize <- function(text, textname='count'){
 #' 
 #' @param text Text to be segmented
 #' @export
-sentenceSeg <- function(text){
+sentenceSeg <- function(text, pat="[\\.\\?\\!][\\n* ]|\\n\\n*", abbreviations = NULL, parag = TRUE){
   # returns a dataframe of word counts, word is 1st column
   #
-  stops <- unlist(strsplit(text, split="[\\.\\?\\!][\\n* ]", perl=TRUE) )
-  abbreviations <- c('Mr', 'Mrs', 'Ms', 'Dr','Jr','Prof')
+  stops <- unlist(strsplit(text, split=pat, perl=TRUE) )
+  if(is.null(abbreviations)) {abbreviations <- c('Mr', 'Mrs', 'Ms', 'Dr','Jr','Prof')}
   i <- 1
   sentences <- c()
   
@@ -155,7 +155,6 @@ sentenceSeg <- function(text){
     # it is an exception if the last word is an abbreviation OR if the 
     # next token is not uppercase
     lastword <- tail(unlist(strsplit(stops[[i]], " ")),1)
-    
     
     # don't want to look to the next sentence if this is the last sentence
     if(i==length(stops)){
@@ -175,7 +174,7 @@ sentenceSeg <- function(text){
     }
     
     # if we think this . is not a sentence boundary, paste the current
-    # phrase and the phrase after the . toegether.
+    # phrase and the phrase after the . together.
     if(exception){
       sentences <- c(sentences, paste(stops[[i]],stops[[i+1]],'. '))
       i <- i + 2
