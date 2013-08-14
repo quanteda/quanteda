@@ -25,4 +25,4 @@ EScorpus <- corpus.create(EStexts, notes="Supplied by Pablo.")
 summary(EScorpus)
 # reshape into sentence corpus
 EScorpus.sentences <- corpus.reshape(EScorpus)
-df <- EScorpus.sentences$attribs
+sentence.df <- EScorpus.sentences$attribs
