@@ -486,3 +486,13 @@ corpus.reshape <- function(corpus){
   }
   return(sentCorp)
 }
+
+
+
+
+#### 
+#### make a corpus object from results of a twitter search
+####
+twitterTerms <- function(query){
+
+}
