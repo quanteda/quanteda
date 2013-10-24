@@ -209,9 +209,9 @@ sentenceSeg2 <- function(text, sentence.delimiters="[.!?]") {
 
 # remove common or 'semantically empty' words from a text.
 # 
-removeStopwords(text, stopwords=NULL){
+removeStopwords <- function(text, stopwords=NULL){
   
-  if(stopwods=NULL) stopwords <- load('stopwords_EN')
+  if(stopwods == NULL) stopwords <- load('stopwords_EN')
   
   
 }
