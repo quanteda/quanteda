@@ -1,3 +1,7 @@
+# These functions perform linguistic analysis on strings of text, as opposed
+# to those in corpustools which operate on corpus objects, feature-value matrices
+# and files
+
 #' Returns a count of the number of syllables in the input
 
 #' This function takes a text and returns a count of the number of syllables it contains.
@@ -201,3 +205,16 @@ sentenceSeg2 <- function(text, sentence.delimiters="[.!?]") {
   # COULD STRIP LEADING SPACES HERE TOO
   return(sentences)
 }
+
+
+# remove common or 'semantically empty' words from a text.
+# 
+removeStopwords(text, stopwords=NULL){
+  
+  if(stopwods=NULL) stopwords <- load('stopwords_EN')
+  
+  
+}
+
+
+
