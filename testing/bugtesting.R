@@ -15,7 +15,7 @@ budget.wfm[[1982]] <- create.fvm.corpus(budget.corpus,groups = c("member_name"))
 
 # add all other budgets to corpus and WFM list
 
-for (i in 1983:1985) {
+for (i in 1982:1985) {
   d <- read.delim(paste("~/Dropbox/budget_speeches/data/speeches/budget_",i,".tab",sep=""))
   budget.corpus <- corpus.append(budget.corpus, d$speech, d[,-17])
   budget.wfm[[i]] <- create.fvm.corpus(budget.corpus,groups = c("member_name"),select(year==i))
