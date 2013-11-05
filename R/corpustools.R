@@ -359,6 +359,7 @@ summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop
 #' fvm <- create.fvm.corpus(budgets, group="party")
 create.fvm.corpus <- function(corpus,
                               feature=c("word"),
+                              stem=FALSE,
                               groups=NULL,
                               subset=NULL, 
                               verbose=TRUE) {
@@ -393,7 +394,7 @@ create.fvm.corpus <- function(corpus,
       if (verbose) cat(paste("...", progress.threshold*100, sep=""))
       progress.threshold <- progress.threshold+.1
     }
-    temp.fvm <- tokenize(texts[i], textnames[i])
+    temp.fvm <- tokenize(texts[i], textnames[i], stem)
     fvm <- merge(fvm, temp.fvm, by="feature", all=TRUE)
   }
   

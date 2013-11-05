@@ -114,7 +114,7 @@ determine.pos <- function(sentence) {
 #' @export
 #' @examples
 #' tokenize("This is an example sentence.")
-tokenize <- function(text, textname='count'){
+tokenize <- function(text, textname='count', stem=FALSE) {
   # returns a dataframe of word counts, word is 1st column
   #
   ## clean up stuff in the text
@@ -129,6 +129,11 @@ tokenize <- function(text, textname='count'){
   tokenized.txt <- scan(what="char", text=clean.txt, quiet=TRUE)
   # flush out "empty" strings caused by removal of punctuation and numbers
   tokenized.txt <- tokenized.txt[tokenized.txt!=""]
+  # stem the words if this flag is set to TRUE
+  if (stem==TRUE) {
+      require(SnowballC)
+      tokenized.txt <- wordStem(tokenized.txt)
+  }
   ## tabulate word counts
   ## and return as a data frame with variables "word" and given name
   wf.list <- as.data.frame(table(tokenized.txt))
