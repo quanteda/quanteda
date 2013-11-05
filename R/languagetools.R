@@ -120,7 +120,7 @@ tokenize <- function(text, textname='count'){
   ## clean up stuff in the text
   clean.txt <- gsub("[[:punct:][:digit:]]", "", text)
   # for French, make "l'" into "l"
-  text <- gsub("l'", "l ", text)
+  clean.txt <- gsub("l'", "l ", clean.txt)
   # make all "Eszett" characters in Hochdeutsche into "ss" as in Swiss German
   clean.txt <- gsub("ß", "ss", clean.txt)
   # make all words lowercase
@@ -217,4 +217,77 @@ removeStopwords <- function(text, stopwords=NULL){
 }
 
 
+bigrams <- function(text=NULL, file=NULL, top=NA, distance=2) {
+    if (is.null(text) & is.null(file)) stop("Must specify either text or file.")
+#    if (is.null(text)) {
+#        t <- scan(file=file, what="char")
+#    } else {
+#        t <- strsplit(text, " ")[[1]]
+#    }
+#    t <- t[-which(t=="\xa7")]
+#    t <- gsub(" \xa7", "", t)
+      clean.txt <- gsub("[[:punct:][:digit:]]", "", text)
+  # for French, make "l'" into "l"
+  clean.txt <- gsub("\xa7", "", clean.txt)
+  # for French, make "l'" into "l"
+  clean.txt <- gsub("l'", "l ", clean.txt)
+  # make all "Eszett" characters in Hochdeutsche into "ss" as in Swiss German
+  clean.txt <- gsub("ß", "ss", clean.txt)
+  # make all words lowercase
+  clean.txt <- tolower(clean.txt)
+  # tokenize
+  tokenized.txt <- scan(what="char", text=clean.txt, quiet=TRUE)
+  # flush out "empty" strings caused by removal of punctuation and numbers
+  t <- tokenized.txt[tokenized.txt!=""]
+    t <- tolower(t)
+    bigrams <- paste(t[1:(length(t)-1)], t[2:length(t)])
+    bigrams <- tolower(bigrams)
+    bigrams.tokenized <- as.data.frame(table(bigrams), stringsAsFactors=FALSE)
+    bigrams.tokenized <- bigrams.tokenized[order(bigrams.tokenized$bigrams), ]
+    bigrams.tokenized$w1 <- sapply(strsplit(unclass(bigrams.tokenized$bigrams), " "), "[", 1)
+    bigrams.tokenized$w2 <- sapply(strsplit(unclass(bigrams.tokenized$bigrams), " "), "[", 2)
+    bigrams.tokenized$chi2 <- bigrams.tokenized$mi <- NA
+    require(entropy)
+    options(warn=-1)
+    for (i in 1:nrow(bigrams.tokenized)) {
+        bigrams.tokenized$chi2[i] <-
+            chisq.test(table(bigrams.tokenized$w1==bigrams.tokenized$w1[i], bigrams.tokenized$w2==bigrams.tokenized$w2[i]))$statistic
+        bigrams.tokenized$mi[i] <-
+            entropy(table(bigrams.tokenized$w1==bigrams.tokenized$w1[i])) + entropy(table(bigrams.tokenized$w2==bigrams.tokenized$w2[i])) -
+                entropy(table(bigrams.tokenized$w1==bigrams.tokenized$w1[i], bigrams.tokenized$w2==bigrams.tokenized$w2[i]))
+    }
+    options(warn=0)
+    bigrams.tokenized <- bigrams.tokenized[order(bigrams.tokenized$chi2, decreasing=TRUE),]
+    if (is.na(top)) top <- nrow(bigrams.tokenized)
+    return(bigrams.tokenized[1:top, c("bigrams", "Freq", "chi2", "mi")])
+}
+
+# cv002_17424.txt from NLTK corpora movie reviews - neg
+test.text <- "it is movies like these that make a jaded movie viewer thankful for the invention of the timex indiglo watch . 
+based on the late 1960's television show by the same name , the mod squad tells the tale of three reformed criminals under the employ of the police to go undercover . 
+however , things go wrong as evidence gets stolen and they are immediately under suspicion . 
+of course , the ads make it seem like so much more . 
+quick cuts , cool music , claire dane's nice hair and cute outfits , car chases , stuff blowing up , and the like . 
+sounds like a cool movie , does it not ? 
+after the first fifteen minutes , it quickly becomes apparent that it is not . 
+the mod squad is certainly a slick looking production , complete with nice hair and costumes , but that simply isn't enough . 
+the film is best described as a cross between an hour-long cop show and a music video , both stretched out into the span of an hour and a half . 
+and with it comes every single clich ? . 
+it doesn't really matter that the film is based on a television show , as most of the plot elements have been recycled from everything we've already seen . 
+the characters and acting is nothing spectacular , sometimes even bordering on wooden . 
+claire danes and omar epps deliver their lines as if they are bored , which really transfers onto the audience . 
+the only one to escape relatively unscathed is giovanni ribisi , who plays the resident crazy man , ultimately being the only thing worth watching . 
+unfortunately , even he's not enough to save this convoluted mess , as all the characters don't do much apart from occupying screen time . 
+with the young cast , cool clothes , nice hair , and hip soundtrack , it appears that the film is geared towards the teenage mindset . 
+despite an american 'r' rating ( which the content does not justify ) , the film is way too juvenile for the older mindset . 
+information on the characters is literally spoon-fed to the audience ( would it be that hard to show us instead of telling us ? ) , dialogue is poorly written , and the plot is extremely predictable . 
+the way the film progresses , you likely won't even care if the heroes are in any jeopardy , because you'll know they aren't . 
+basing the show on a 1960's television show that nobody remembers is of questionable wisdom , especially when one considers the target audience and the fact that the number of memorable films based on television shows can be counted on one hand ( even one that's missing a finger or two ) . 
+the number of times that i checked my watch ( six ) is a clear indication that this film is not one of them . 
+it is clear that the film is nothing more than an attempt to cash in on the teenage spending dollar , judging from the rash of really awful teen-flicks that we've been seeing as of late . 
+avoid this film at all costs ."
+
+b <- bigrams(test.text)
+print(b[1:100,], digits=4)
+plot(jitter(b$chi2,30), jitter(b$mi,30), cex=.5, pch=19)
 
