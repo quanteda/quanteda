@@ -221,29 +221,43 @@ removeStopwords <- function(text, stopwords=NULL){
   
 }
 
+likelihood.test = function(x) {
+    nrows = dim(x)[1]                      # no. of rows in contingency table
+    ncols = dim(x)[2]                      # no. of cols in contingency table
+    chi.out = chisq.test(x,correct=F)      # do a Pearson chi square test
+    table = chi.out[[6]]                   # get the OFs
+    ratios = chi.out[[6]]/chi.out[[7]]     # calculate OF/EF ratios
+    sum = 0                                # storage for the test statistic
+    for (i in 1:nrows) {
+        for (j in 1:ncols) {
+            sum = sum + table[i,j]*log(ratios[i,j])
+        }
+    }
+    sum = 2 * sum                          # the likelihood ratio chi square
+    df = chi.out[[2]]                      # degrees of freedom
+    p = 1 - pchisq(sum,df)                 # p-value
+    out = c(sum, df, p, chi.out[[1]])      # the output vector
+    names(out) = c("LRchi2","df","p-value","Pearschi2")
+    return(as.list(out))                           # done!
+}
 
-bigrams <- function(text=NULL, file=NULL, top=NA, distance=2) {
+bigrams <- function(text=NULL, file=NULL, top=NA, distance=2, method="lr") {
+    ## returns the bigrams, frequency, and score as a list
+    ##
     if (is.null(text) & is.null(file)) stop("Must specify either text or file.")
-#    if (is.null(text)) {
-#        t <- scan(file=file, what="char")
-#    } else {
-#        t <- strsplit(text, " ")[[1]]
-#    }
-#    t <- t[-which(t=="\xa7")]
-#    t <- gsub(" \xa7", "", t)
-      clean.txt <- gsub("[[:punct:][:digit:]]", "", text)
-  # for French, make "l'" into "l"
-  clean.txt <- gsub("\xa7", "", clean.txt)
-  # for French, make "l'" into "l"
-  clean.txt <- gsub("l'", "l ", clean.txt)
-  # make all "Eszett" characters in Hochdeutsche into "ss" as in Swiss German
-  clean.txt <- gsub("ß", "ss", clean.txt)
-  # make all words lowercase
-  clean.txt <- tolower(clean.txt)
-  # tokenize
-  tokenized.txt <- scan(what="char", text=clean.txt, quiet=TRUE)
-  # flush out "empty" strings caused by removal of punctuation and numbers
-  t <- tokenized.txt[tokenized.txt!=""]
+    clean.txt <- gsub("[[:punct:][:digit:]]", "", text)
+    # for French, make "l'" into "l"
+    clean.txt <- gsub("\xa7", "", clean.txt)
+    # for French, make "l'" into "l"
+    clean.txt <- gsub("l'", "l ", clean.txt)
+    # make all "Eszett" characters in Hochdeutsche into "ss" as in Swiss German
+    clean.txt <- gsub("ß", "ss", clean.txt)
+    # make all words lowercase
+    clean.txt <- tolower(clean.txt)
+    # tokenize
+    tokenized.txt <- scan(what="char", text=clean.txt, quiet=TRUE)
+    # flush out "empty" strings caused by removal of punctuation and numbers
+    t <- tokenized.txt[tokenized.txt!=""]
     t <- tolower(t)
     bigrams <- paste(t[1:(length(t)-1)], t[2:length(t)])
     bigrams <- tolower(bigrams)
@@ -251,20 +265,34 @@ bigrams <- function(text=NULL, file=NULL, top=NA, distance=2) {
     bigrams.tokenized <- bigrams.tokenized[order(bigrams.tokenized$bigrams), ]
     bigrams.tokenized$w1 <- sapply(strsplit(unclass(bigrams.tokenized$bigrams), " "), "[", 1)
     bigrams.tokenized$w2 <- sapply(strsplit(unclass(bigrams.tokenized$bigrams), " "), "[", 2)
-    bigrams.tokenized$chi2 <- bigrams.tokenized$mi <- NA
+    bigrams.tokenized$test <- NA
     require(entropy)
     options(warn=-1)
-    for (i in 1:nrow(bigrams.tokenized)) {
-        bigrams.tokenized$chi2[i] <-
-            chisq.test(table(bigrams.tokenized$w1==bigrams.tokenized$w1[i], bigrams.tokenized$w2==bigrams.tokenized$w2[i]))$statistic
-        bigrams.tokenized$mi[i] <-
-            entropy(table(bigrams.tokenized$w1==bigrams.tokenized$w1[i])) + entropy(table(bigrams.tokenized$w2==bigrams.tokenized$w2[i])) -
-                entropy(table(bigrams.tokenized$w1==bigrams.tokenized$w1[i], bigrams.tokenized$w2==bigrams.tokenized$w2[i]))
-    }
+    if (method=="lr") {
+        for (i in 1:nrow(bigrams.tokenized)) {
+            bigrams.tokenized$test[i] <-
+                likelihood.test(table(bigrams.tokenized$w1==bigrams.tokenized$w1[i], bigrams.tokenized$w2==bigrams.tokenized$w2[i]))$LRchi2
+        }
+    } else if (method=="chi2") {
+        for (i in 1:nrow(bigrams.tokenized)) {
+            bigrams.tokenized$test[i] <-
+                chisq.test(table(bigrams.tokenized$w1==bigrams.tokenized$w1[i], bigrams.tokenized$w2==bigrams.tokenized$w2[i]), correct=FALSE)$statistic
+        }
+    } else if (method=="mi") {
+        for (i in 1:nrow(bigrams.tokenized)) {
+            bigrams.tokenized$test[i] <-
+                entropy(table(bigrams.tokenized$w1==bigrams.tokenized$w1[i])) + entropy(table(bigrams.tokenized$w2==bigrams.tokenized$w2[i])) -
+                    entropy(table(bigrams.tokenized$w1==bigrams.tokenized$w1[i], bigrams.tokenized$w2==bigrams.tokenized$w2[i]))
+        }
+    } else stop("method must be from: lr, chi2, or mi")
     options(warn=0)
-    bigrams.tokenized <- bigrams.tokenized[order(bigrams.tokenized$chi2, decreasing=TRUE),]
+    bigrams.tokenized <- bigrams.tokenized[order(bigrams.tokenized$test, decreasing=TRUE),]
     if (is.na(top)) top <- nrow(bigrams.tokenized)
-    return(bigrams.tokenized[1:top, c("bigrams", "Freq", "chi2", "mi")])
+    returnval <- bigrams.tokenized[1:top, c("bigrams", "Freq", "test")]
+    # rename the statistic as the test
+    names(returnval)[3] <- method
+    # returns this as a (named) list
+    return(as.list(returnval))
 }
 
 # cv002_17424.txt from NLTK corpora movie reviews - neg
@@ -295,4 +323,3 @@ avoid this film at all costs ."
 b <- bigrams(test.text)
 print(b[1:100,], digits=4)
 plot(jitter(b$chi2,30), jitter(b$mi,30), cex=.5, pch=19)
-
