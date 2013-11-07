@@ -23,6 +23,8 @@ the number of times that i checked my watch ( six ) is a clear indication that t
 it is clear that the film is nothing more than an attempt to cash in on the teenage spending dollar , judging from the rash of really awful teen-flicks that we've been seeing as of late . 
 avoid this film at all costs ."
 
-b <- bigrams(test.text)
-print(b[1:100,], digits=4)
-plot(jitter(b$chi2,30), jitter(b$mi,30), cex=.5, pch=19)
+b.lr <- bigrams(test.text)
+b.chi2 <- bigrams(test.text, method="chi2")
+b.mi <- bigrams(test.text, method="mi")
+plot(jitter(b.chi2$chi2), jitter(b.lr$lr), cex=.5, pch=19)
+pairs(data.frame(lr=b.lr$lr, chi2=b.chi2$chi2, MI=b.mi$mi))
