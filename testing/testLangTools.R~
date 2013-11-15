@@ -4,7 +4,7 @@
 
 
 
-library(quanteda)
+
 
 tokenize_new.corpus <- function(c){
   c$attribs$texts <- sapply(c$attribs$texts, scan(what="char",  c$attribs$texts, quiet=TRUE))
