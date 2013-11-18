@@ -104,6 +104,29 @@ determine.pos <- function(sentence) {
 } 
 
 
+
+#' Perform basic cleanup on a string
+
+#' Simple cleanup for strings, removing punctuation, converting to lowercase
+#' and optionally replacing some language-specific characters
+#' 
+#' @param s String to be cleaned
+#' @export
+#' @examples
+#' clean(s)
+clean <- function(s, langNorm=FALSE){
+  s <- gsub("[:punct:]", "", s)
+  s <- tolower(s)
+  # optionally do some language specific normalisation
+  if(langNorm){
+    # for French, make "l'" into "l"
+    s <- gsub("l'", "l ", s)
+    # make all "Eszett" characters in Hochdeutsche into "ss" as in Swiss German
+    s <- gsub("ß", "ss", s)
+  }
+  return(s)
+}
+
 #' split a text into words and return a table of words and their counts 
 
 #' This function takes a text (in the form of a character vectors),
