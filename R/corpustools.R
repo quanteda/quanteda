@@ -500,6 +500,9 @@ corpus.reshape <- function(corpus){
 #### 
 #### make a corpus object from results of a twitter search
 ####
-twitterTerms <- function(query){
-
+twitterTerms <- function(query, oauth){
+  library('twitteR')
+  load("~/Dropbox/QUANTESS/social media/twitterStreaming/my_oauth.Rdata")
+  registerTwitterOAuth(oauth)
+  sea <- searchTwitter(query, n=50)
 }
