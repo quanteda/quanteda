@@ -3,12 +3,12 @@
 #source("~/Dropbox/code/quanteda/R/languagetools.R")
 
 
-Rprof(append = TRUE)
+
 library(quanteda)
 
 # remove punctuation, make everything lower case.
 clean <- function(s, langNorm=FALSE){
-  s <- gsub("[:punct:]", "", s)
+  s <- gsub("[[:punct:]]", "", s)
   s <- tolower(s)
   # optionally do some language specific normalisation
   if(langNorm){
@@ -21,17 +21,23 @@ clean <- function(s, langNorm=FALSE){
   
 }
 
-tokenize_new <- function(s){
+tokenize_new1 <- function(s){
   s <- clean(s)
   tokens <-strsplit(s, split="\\s+")[[1]]
   return(tokens)
 }
 
+tokenize_new2 <- function(s){
+  s <- clean(s)
+  tokenized.txt <- scan(what="char", text=s, quiet=TRUE)
+  tokenized.txt <- tokenized.txt[tokenized.txt!=""]
+  return(tokenized.tx)
+}
 
 data(iebudgets)
-
+Rprof(append = FALSE)
 tokenStrings <- iebudgets$attribs$texts
-words <- sapply(tokenStrings, tokenize_new)
+words <- sapply(tokenStrings, tokenize_new2)
 
 
 Rprof(NULL)

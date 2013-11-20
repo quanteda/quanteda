@@ -1,5 +1,7 @@
 library(quanteda)
 library(austin)
+source("~/Dropbox/code/quanteda/R/languagetools.R")
+source("~/Dropbox/code/quanteda/R/corpustools.R")
 
 # make a list of text objects from a directory
 print("making texts")

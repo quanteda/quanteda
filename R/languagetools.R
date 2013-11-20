@@ -12,14 +12,12 @@
 #' @param text Text to be counted
 #' @export
 #' @examples
-#' tokenize("This is an example sentence.")
+#' countSyllables("This is an example sentence.")
 countSyllables <- function(sourceText){
   #load the RData file
   data(syllableCounts)
   #clean the string
-  string <- gsub("[[:punct:][:digit:]]", "", sourceText)
-  string <- gsub("\n", "", string)
-  string <- toupper(string)
+  string <- clean(text)
   words <- unlist(strsplit(string, " "))
   # lookup the syllables in the words found in the dictionary
   # uses vectorization and named vector indexing - not looping!
@@ -92,7 +90,7 @@ determine.pos <- function(sentence) {
   gc() # garbage collection - seems to prevent Heap Memory errors for Java call
   if (tagged.sentence=="") tagged.sentence<-"DeleteMe"
   # tokenize
-  tagged.sentence.pos.char.vector <- scan(what="char", text=tagged.sentence, quiet=TRUE)
+  tagged.sentence.pos.char.vector <- tokenize(tagged.sentence)
   # create a list of splits on the / character that precedes POS tags
   strsplit(tagged.sentence.pos.char.vector, "/")
   tagged.sentence.pos.parsedlist <- strsplit(tagged.sentence.pos.char.vector, "/")
@@ -114,8 +112,8 @@ determine.pos <- function(sentence) {
 #' @export
 #' @examples
 #' clean(s)
-clean <- function(s, langNorm=FALSE){
-  s <- gsub("[:punct:]", "", s)
+clean <- function(s, langNorm=FALSE, removeDigits=TRUE){
+  s <- gsub("[[:punct:]]", "", s)
   s <- tolower(s)
   # optionally do some language specific normalisation
   if(langNorm){
@@ -124,48 +122,27 @@ clean <- function(s, langNorm=FALSE){
     # make all "Eszett" characters in Hochdeutsche into "ss" as in Swiss German
     s <- gsub("ß", "ss", s)
   }
+  if(removeDigits){
+    s <- gsub("[[:digit:]]", "", s)
+  }
+  #s <- s[s!=""]  # remove empty strings
   return(s)
 }
 
-#' split a text into words and return a table of words and their counts 
 
-#' This function takes a text (in the form of a character vectors),
-#' performs some cleanup, and splits the text on whitespace, returning
-#' a dataframe of words and their frequncies
+#' Split a string into words
+
+#' The input text is split into words by whitespace
 #' 
-#' @param text Text to be tokenized
-#' @export
+#' @param text
 #' @examples
-#' tokenize("This is an example sentence.")
-tokenize <- function(text, textname='count', stem=FALSE) {
-  # returns a dataframe of word counts, word is 1st column
-  #
-  ## clean up stuff in the text
-  clean.txt <- gsub("[[:punct:][:digit:]]", "", text)
-  # for French, make "l'" into "l"
-  clean.txt <- gsub("l'", "l ", clean.txt)
-  # make all "Eszett" characters in Hochdeutsche into "ss" as in Swiss German
-  clean.txt <- gsub("ß", "ss", clean.txt)
-  # make all words lowercase
-  clean.txt <- tolower(clean.txt)
-  # tokenize
-  tokenized.txt <- scan(what="char", text=clean.txt, quiet=TRUE)
+#' tokens <- tokenize("this is a test")
+tokenize <- function(text){
+  tokens <- scan(what="char", text=text, quiet=TRUE)
   # flush out "empty" strings caused by removal of punctuation and numbers
-  tokenized.txt <- tokenized.txt[tokenized.txt!=""]
-  # stem the words if this flag is set to TRUE
-  if (stem==TRUE) {
-      require(SnowballC)
-      tokenized.txt <- wordStem(tokenized.txt)
-  }
-  ## tabulate word counts
-  ## and return as a data frame with variables "word" and given name
-  wf.list <- as.data.frame(table(tokenized.txt))
-  if(length(tokenized.txt)>0){
-    names(wf.list) <- c("feature", textname)
-  }
-  return(wf.list)
+  tokens <- tokens[tokens!=""]
+  return(text)
 }
-
 
 
 #' split a text into sentences
@@ -175,8 +152,6 @@ tokenize <- function(text, textname='count', stem=FALSE) {
 #' @param text Text to be segmented
 #' @export
 sentenceSeg <- function(text, pat="[\\.\\?\\!][\\n* ]|\\n\\n*", abbreviations = NULL, parag = TRUE){
-  # returns a dataframe of word counts, word is 1st column
-  #
   stops <- unlist(strsplit(text, split=pat, perl=TRUE) )
   if(is.null(abbreviations)) {abbreviations <- c('Mr', 'Mrs', 'Ms', 'Dr','Jr','Prof')}
   i <- 1
@@ -238,10 +213,7 @@ sentenceSeg2 <- function(text, sentence.delimiters="[.!?]") {
 # remove common or 'semantically empty' words from a text.
 # 
 removeStopwords <- function(text, stopwords=NULL){
-  
   if(stopwods == NULL) stopwords <- load('stopwords_EN')
-  
-  
 }
 
 likelihood.test = function(x) {
@@ -268,20 +240,8 @@ bigrams <- function(text=NULL, file=NULL, top=NA, distance=2, method="lr") {
     ## returns the bigrams, frequency, and score as a list
     ##
     if (is.null(text) & is.null(file)) stop("Must specify either text or file.")
-    clean.txt <- gsub("[[:punct:][:digit:]]", "", text)
-    # for French, make "l'" into "l"
-    clean.txt <- gsub("\xa7", "", clean.txt)
-    # for French, make "l'" into "l"
-    clean.txt <- gsub("l'", "l ", clean.txt)
-    # make all "Eszett" characters in Hochdeutsche into "ss" as in Swiss German
-    clean.txt <- gsub("ß", "ss", clean.txt)
-    # make all words lowercase
-    clean.txt <- tolower(clean.txt)
-    # tokenize
-    tokenized.txt <- scan(what="char", text=clean.txt, quiet=TRUE)
-    # flush out "empty" strings caused by removal of punctuation and numbers
-    t <- tokenized.txt[tokenized.txt!=""]
-    t <- tolower(t)
+    clean.txt <- clean(text)
+    t <- tokenize(clean.txt)
     bigrams <- paste(t[1:(length(t)-1)], t[2:length(t)])
     bigrams <- tolower(bigrams)
     bigrams.tokenized <- as.data.frame(table(bigrams), stringsAsFactors=FALSE)

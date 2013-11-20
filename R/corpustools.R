@@ -394,8 +394,16 @@ create.fvm.corpus <- function(corpus,
       if (verbose) cat(paste("...", progress.threshold*100, sep=""))
       progress.threshold <- progress.threshold+.1
     }
-    temp.fvm <- tokenize(texts[i], textnames[i], stem)
-    fvm <- merge(fvm, temp.fvm, by="feature", all=TRUE)
+    tokenized.txt <- tokenize(texts[i])
+    if (stem==TRUE) {
+      require(SnowballC)
+      tokenized.txt <- wordStem(tokenized.txt)
+    }
+    wfTable <- as.data.frame(table(tokenized.txt))
+    if(length(tokenized.txt)>0){
+      names(wfTable) <- c("feature", textnames[i])
+    }
+    fvm <- merge(fvm, wfTable, by="feature", all=TRUE)
   }
   
   # convert NAs to zeros
@@ -487,8 +495,6 @@ corpus.reshape <- function(corpus){
   }
   return(sentCorp)
 }
-
-
 
 
 #### 

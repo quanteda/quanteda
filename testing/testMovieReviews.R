@@ -1,7 +1,7 @@
 library(quanteda)
 library(austin)
-#source("/home/paul/Dropbox/code/quanteda/R/corpustools.R")
-#source("/home/paul/Dropbox/code/quanteda/R/languagetools.R")
+source("/home/paul/Dropbox/code/quanteda/R/corpustools.R")
+source("/home/paul/Dropbox/code/quanteda/R/languagetools.R")
 texts <- getTextDir("~/Dropbox/QUANTESS/corpora/movieReviews/smaller/neg/")
 vals <-vector()
 
