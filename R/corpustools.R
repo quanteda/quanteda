@@ -502,7 +502,7 @@ corpus.reshape <- function(corpus){
 ####
 twitterTerms <- function(query, oauth){
   library('twitteR')
-  load("~/Dropbox/QUANTESS/social media/twitterStreaming/my_oauth.Rdata")
   registerTwitterOAuth(oauth)
-  sea <- searchTwitter(query, n=50)
+  sea <- (searchTwitter(query, n=50))
+  return(sea)
 }
