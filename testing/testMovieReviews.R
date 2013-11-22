@@ -19,7 +19,5 @@ atts <- data.frame(vals)
 names(atts)<-c("lab")
 movies <- corpus.append(movies, texts, atts)
 
-fvm <- create.fvm.corpus(movies, group="lab", remove_stopwords=FALSE)
-#datamat <-  wfm(fvm, word.margin=1)
-#wf <- wordfish(datamat, dir=c(4,1), group=class)
 
+fvm <- create.fvm.corpus(movies, group="lab", remove_stopwords=FALSE)

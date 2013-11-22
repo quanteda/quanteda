@@ -381,9 +381,7 @@ create.fvm.corpus <- function(corpus,
   } else {
     texts <- corpus$attribs$texts
     names(texts) <- rownames(corpus$attribs)
-  }
-  print(class(corpus$attribs$texts))
-  
+  }  
   textnames <- names(texts)
   
   #save(texts, file="temptexts")
@@ -398,7 +396,11 @@ create.fvm.corpus <- function(corpus,
       if (verbose) cat(paste("...", progress.threshold*100, sep=""))
       progress.threshold <- progress.threshold+.1
     }
-    tokenized.txt <- tokenize(texts[i])
+    #tokenized.txt <- tokenize(texts[i])
+    text = clean(texts[i])
+    tokenized.txt <- scan(what="char", text=text, quiet=TRUE)
+    # flush out "empty" strings caused by removal of punctuation and numbers
+    tokenized.txt <- tokenized.txt[tokenized.txt!=""]
     if (stem==TRUE) {
       require(SnowballC)
       tokenized.txt <- wordStem(tokenized.txt)
@@ -407,6 +409,7 @@ create.fvm.corpus <- function(corpus,
     if(length(tokenized.txt)>0){
       names(wfTable) <- c("feature", textnames[i])
     }
+
     fvm <- merge(fvm, wfTable, by="feature", all=TRUE)
   }
   

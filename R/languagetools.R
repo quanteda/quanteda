@@ -113,8 +113,7 @@ determine.pos <- function(sentence) {
 #' @examples
 #' clean(s)
 clean <- function(s, langNorm=FALSE, removeDigits=TRUE){
-  s <- gsub("[[:punct:]]", "", s)
-  s <- tolower(s)
+  Rprof(append = FALSE)
   # optionally do some language specific normalisation
   if(langNorm){
     # for French, make "l'" into "l"
@@ -123,10 +122,14 @@ clean <- function(s, langNorm=FALSE, removeDigits=TRUE){
     s <- gsub("ß", "ss", s)
   }
   if(removeDigits){
-    s <- gsub("[[:digit:]]", "", s)
+    s <- gsub("[[:digit:][:punct:]]", "", s,perl=TRUE, fixed=TRUE)
+  }else{
+    s <- gsub("[[:punct:]]", "", s, perl=TRUE, fixed=TRUE)
   }
-  #s <- s[s!=""]  # remove empty strings
+  s <- s[s!=""]  # remove empty strings
+  s <- tolower(s) 
   return(s)
+  Rprof(NULL)
 }
 
 
