@@ -360,6 +360,7 @@ summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop
 create.fvm.corpus <- function(corpus,
                               feature=c("word"),
                               stem=FALSE,
+                              remove_stopwords=FALSE
                               groups=NULL,
                               subset=NULL, 
                               verbose=TRUE) {
@@ -419,6 +420,12 @@ create.fvm.corpus <- function(corpus,
   fvm <- fvm[,-1]
   
   if (verbose) cat("\n")
+  if(remove_stopwords){
+    data(stopwords_EN)
+    stopwords <- stopwords_EN
+    stopwfm <- as.wfm(subset(fvm, !row.names(fvm) %in% stopwords))
+    fvm <- stopwfm
+  }
   return(fvm)
 }
 
