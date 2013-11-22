@@ -137,11 +137,12 @@ clean <- function(s, langNorm=FALSE, removeDigits=TRUE){
 #' @param text
 #' @examples
 #' tokens <- tokenize("this is a test")
-tokenize <- function(text){
-  tokens <- scan(what="char", text=text, quiet=TRUE)
+tokenize <- function(str){
+  str <- clean(str)
+  tokens <- scan(what="char", text=str, quiet=TRUE)
   # flush out "empty" strings caused by removal of punctuation and numbers
   tokens <- tokens[tokens!=""]
-  return(text)
+  return(tokens)
 }
 
 
@@ -213,7 +214,12 @@ sentenceSeg2 <- function(text, sentence.delimiters="[.!?]") {
 # remove common or 'semantically empty' words from a text.
 # 
 removeStopwords <- function(text, stopwords=NULL){
-  if(stopwods == NULL) stopwords <- load('stopwords_EN')
+  if(is.null(stopwords)) data('stopwords_EN')
+  tokens <- tokenize(text)
+  print(tokens)
+  newTokens <- (subset(tokens, !tokens %in% stopwords_EN))
+  newString <- paste(newTokens, sep=" ")
+  return(newString)
 }
 
 likelihood.test = function(x) {

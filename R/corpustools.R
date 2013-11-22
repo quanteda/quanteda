@@ -381,7 +381,10 @@ create.fvm.corpus <- function(corpus,
     texts <- corpus$attribs$texts
     names(texts) <- rownames(corpus$attribs)
   }
+  print(class(corpus$attribs$texts))
+  
   textnames <- names(texts)
+  
   #save(texts, file="temptexts")
   fvm <- data.frame(feature=NA)
   progress.threshold <- .1
