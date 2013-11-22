@@ -360,7 +360,7 @@ summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop
 create.fvm.corpus <- function(corpus,
                               feature=c("word"),
                               stem=FALSE,
-                              remove_stopwords=FALSE
+                              remove_stopwords=FALSE,
                               groups=NULL,
                               subset=NULL, 
                               verbose=TRUE) {
