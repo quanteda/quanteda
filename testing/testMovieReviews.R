@@ -18,7 +18,7 @@ vals[1:100] <- "pos"
 atts <- data.frame(vals)
 names(atts)<-c("lab")
 Rprof(append = FALSE)
-movies <- corpus.append(movies, texts[1:500], atts)
+movies <- corpus.append(movies, texts[1:100], atts)
 Rprof(NULL)
 
 
