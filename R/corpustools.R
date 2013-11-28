@@ -551,15 +551,17 @@ create.fvm.new.corpus <- function(corpus, verbose=TRUE){
   if (verbose) cat("Creating fvm (optimized):\n")
   texts <- corpus$attribs$texts
   names(texts) <- rownames(corpus$attribs)
-  
+
   tokens <- unlist(sapply(texts, tokenize, simplify=TRUE))
   types <- unique(tokens)
-  fvm <- data.frame(feature=NA)
+  dnames<-list(c(docs=names(texts)), c(words=types))
+  print(length(dnames[1]))
+  fvm <- matrix(nrow=length(texts), ncol=length(types), dimnames=dnames)
   
   # list of all types
   # unique() of that list is vocab
   # vocab is cols of data frame
   
                             
-  return(tokens)
+  return(fvm)
 }

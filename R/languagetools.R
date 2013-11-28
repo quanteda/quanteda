@@ -121,9 +121,10 @@ clean <- function(s, langNorm=FALSE, removeDigits=TRUE){
     s <- gsub("ß", "ss", s)
   }
   if(removeDigits){
-    s <- gsub("[[:digit:][:punct:]]", "", s, fixed = TRUE)
+    #print("called")
+    s <- gsub("[[:digit:][:punct:]]", "", s, perl = TRUE)
   }else{
-    s <- gsub("[[:punct:]]", "", s, fixed=TRUE)
+    s <- gsub("[[:punct:]]", "", s, perl=TRUE)
   }
   s <- s[s!=""]  # remove empty strings
   s <- tolower(s) 
@@ -141,11 +142,9 @@ clean <- function(s, langNorm=FALSE, removeDigits=TRUE){
 tokenize <- function(str){
   str <- clean(str)
   tokens <- scan(what="char", text=str, quiet=TRUE)
-  
-  
   # flush out "empty" strings caused by removal of punctuation and numbers
   tokens <- tokens[tokens!=""]
-    return(tokens)
+  return(tokens)
 }
 
 
