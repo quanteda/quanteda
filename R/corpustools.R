@@ -552,7 +552,8 @@ create.fvm.new.corpus <- function(corpus, verbose=TRUE){
   texts <- corpus$attribs$texts
   names(texts) <- rownames(corpus$attribs)
   
-  tokens <- sapply(texts, tokenize, simplify=TRUE)
+  tokens <- unlist(sapply(texts, tokenize, simplify=TRUE))
+  types <- unique(tokens)
   fvm <- data.frame(feature=NA)
   
   # list of all types
