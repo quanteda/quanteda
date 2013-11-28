@@ -5,19 +5,21 @@ source("/home/paul/Dropbox/code/quanteda/R/languagetools.R")
 texts <- getTextDir("~/Dropbox/QUANTESS/corpora/movieReviews/smaller/neg/")
 vals <-vector()
 
-vals[1:1000] <- "neg"
+vals[1:100] <- "neg"
 
 atts <- data.frame(vals)
 names(atts)<-c("lab")
-movies <- corpus.create(texts, attribs=atts)
+movies <- corpus.create(texts[1:100], attribs=atts)
 
 texts <- getTextDir("~/Dropbox/QUANTESS/corpora/movieReviews/smaller/pos/")
 vals <-vector()
-vals[1:1000] <- "pos"
+vals[1:100] <- "pos"
 
 atts <- data.frame(vals)
 names(atts)<-c("lab")
-movies <- corpus.append(movies, texts, atts)
+Rprof(append = FALSE)
+movies <- corpus.append(movies, texts[1:100], atts)
+Rprof(NULL)
 
 
-fvm <- create.fvm.corpus(movies, group="lab", remove_stopwords=FALSE)
+toks <- create.fvm.new.corpus(movies)

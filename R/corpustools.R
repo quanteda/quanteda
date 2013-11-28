@@ -532,3 +532,33 @@ twitterTerms <- function(query, oauth, numResults=50){
   twc <- corpus.create(texts, attribs=t(atts))
   return(twc)
 }
+
+
+
+
+#' Create a feature-value matrix from a corpus object
+#' Development version for optimization PN 26 Nov 13
+
+#' returns a feature value matrix compatible with austin
+#' 
+#' @param corpus Corpus to make matrix from
+#' @param feature Feature to count
+#' @param feature type to aggregate by, default is file
+#' @export
+#' @examples
+#' fvm <- create.fvm.corpus(budgets, group="party")
+create.fvm.new.corpus <- function(corpus, verbose=TRUE){
+  if (verbose) cat("Creating fvm (optimized):\n")
+  texts <- corpus$attribs$texts
+  names(texts) <- rownames(corpus$attribs)
+  
+  tokens <- sapply(texts, tokenize, simplify=TRUE)
+  fvm <- data.frame(feature=NA)
+  
+  # list of all types
+  # unique() of that list is vocab
+  # vocab is cols of data frame
+  
+                            
+  return(tokens)
+}
