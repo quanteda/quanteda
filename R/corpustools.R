@@ -559,18 +559,18 @@ create.fvm.new.corpus <- function(corpus, verbose=TRUE){
   dnames<-list(c(docs=names(texts)), c(words=types))
   fvm <- matrix(0,nrow=length(texts), ncol=length(types), dimnames=dnames)
   i=1
-  while(i<=length(texts)){
-    curTable = table(tokenizedTexts[i])
-    j=1
-    curTypes <- names(curTable)
-    print(i)
-    while(j<=length(curTypes)){
-      fvm[i,curTypes[j]]<- fvm[i,curTypes[j]]+curTable[j]
-      j <- j+1
-    }
-   i <- i+1
- }
-  
-                            
+   while(i<=length(texts)){
+     curTable = table(tokenizedTexts[i])
+     curTypes <- names(curTable)
+     print(i)
+     j<-1
+     while(j<=length(types)){
+        word <- types[j]
+        fvm[i,j]<- curTable[word]
+        j <- j+1
+      }
+    i <- i+1
+  }
+  fvm[is.na(fvm)] <-0             
   return(fvm)
 }
