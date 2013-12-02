@@ -565,8 +565,7 @@ create.fvm.new.corpus <- function(corpus, verbose=TRUE){
      print(i)
      j<-1
      while(j<=length(types)){
-        word <- types[j]
-        fvm[i,j]<- curTable[word]
+        fvm[i,j]<- curTable[types[j]]
         j <- j+1
       }
     i <- i+1
