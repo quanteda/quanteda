@@ -7,10 +7,10 @@ source("/home/paul/Dropbox/code/quanteda/R/corpustools.R")
 source("/home/paul/Dropbox/code/quanteda/R/languagetools.R")
 texts <- getTextDir("~/Dropbox/QUANTESS/corpora/movieReviews/smaller/neg/")
 
-oldTimes <- vector()
-newTimes <- vector()
+plyTimes <- vector()
+matTimes <- vector()
 
-testSizes <- c(200, 400)
+testSizes <- c(10,20,50)
 
 for (numDocs in testSizes){
   vals <-vector()
@@ -30,15 +30,15 @@ for (numDocs in testSizes){
   movies <- corpus.append(movies, posTexts, atts)
 
   Rprof(append = FALSE)
-  toks <- create.fvm.corpus(movies)
+  fvm <- create.fvm.matrix.corpus(movies)
   Rprof(NULL)
-  oldTimes <- c(oldTimes, summaryRprof()$sampling.time)
+  matTimes <- c(matTimes, summaryRprof()$sampling.time)
   
   Rprof(append = FALSE)
-  toks <- create.fvm.new.corpus(movies)
+  fvm <- create.fvm.plyr.corpus(movies)
   Rprof(NULL)
-  newTimes <- c(newTimes, summaryRprof()$sampling.time)
+  plyTimes <- c(plyTimes, summaryRprof()$sampling.time)
 }
-df <- data.frame(testSizes, oldTimes, newTimes)
+df <- data.frame(testSizes, matTimes, plyTimes)
 results <- melt(data = df, id.vars = "testSizes", value.name="seconds")
 ggplot(data = results, aes(x = testSizes , y = seconds, colour = variable)) + geom_line()

@@ -547,11 +547,10 @@ twitterTerms <- function(query, oauth, numResults=50){
 #' @export
 #' @examples
 #' fvm <- create.fvm.corpus(budgets, group="party")
-create.fvm.new.corpus <- function(corpus, verbose=TRUE){
+create.fvm.matrix.corpus <- function(corpus, verbose=TRUE){
   if (verbose) cat("Creating fvm (optimized):\n")
   texts <- corpus$attribs$texts
   names(texts) <- rownames(corpus$attribs)
-
   tokenizedTexts <- sapply(texts, tokenize, simplify=TRUE)
   print(names(tokenizedTexts))
   tokens <- unlist(tokenizedTexts)
@@ -572,5 +571,30 @@ create.fvm.new.corpus <- function(corpus, verbose=TRUE){
     i <- i+1
   }
   fvm[is.na(fvm)] <-0             
+  return(fvm)
+}
+
+create.fvm.plyr.corpus <- function(corpus, verbose=TRUE){
+  if (verbose) cat("Creating fvm (optimized):\n")
+  texts <- corpus$attribs$texts
+  names(texts) <- rownames(corpus$attribs)
+  tokenizedTexts <- sapply(texts, tokenize, simplify=TRUE)
+  print(names(tokenizedTexts))
+  tokens <- unlist(tokenizedTexts)
+  types <- unique(tokens)
+  dnames<-list(c(docs=names(texts)), c(words=types))
+  fvm <- matrix(0,nrow=length(texts), ncol=length(types), dimnames=dnames)
+  fvm <- as.data.frame(fvm)
+  i=1
+  while(i<=length(texts)){
+    print(i)
+    curTable = table(tokenizedTexts[i])
+    cm <- as.matrix(curTable)
+    cm <- t(cm)
+    cd <- as.data.frame(cm)
+    invisible(fvm <- suppressMessages(match_df(fvm, cd)))
+    i <- i+1
+  }
+  fvm[is.na(fvm)] <-0              
   return(fvm)
 }
