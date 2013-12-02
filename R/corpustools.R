@@ -563,9 +563,8 @@ create.fvm.matrix.corpus <- function(corpus, verbose=TRUE){
      curTypes <- names(curTable)
      print(i)
      j<-1
-     while(j<=length(types)){
-        word <- types[j]
-        fvm[i,j]<- curTable[word]
+     for (type in types){
+        fvm[i,j]<- curTable[type]
         j <- j+1
       }
     i <- i+1

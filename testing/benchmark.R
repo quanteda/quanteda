@@ -10,7 +10,7 @@ texts <- getTextDir("~/Dropbox/QUANTESS/corpora/movieReviews/smaller/neg/")
 plyTimes <- vector()
 matTimes <- vector()
 
-testSizes <- c(10,20,50)
+testSizes <- c(10,500)
 
 for (numDocs in testSizes){
   vals <-vector()
