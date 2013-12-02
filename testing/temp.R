@@ -2,6 +2,7 @@ library(quanteda)
 library(austin)
 library(plyr)
 library(ggplot2)
+library(data.table)
 library(reshape2)
 options(error=dump.frames)
 source("/home/paul/Dropbox/code/quanteda/R/corpustools.R")
@@ -24,25 +25,25 @@ names(atts)<-c("lab")
 posTexts <- texts[1:(numDocs/2)]
 movies <- corpus.append(movies, posTexts, atts)
 
-
 texts <- movies$attribs$texts
 names(texts) <- rownames(movies$attribs)
-
 tokenizedTexts <- sapply(texts, tokenize, simplify=TRUE)
 print(names(tokenizedTexts))
 tokens <- unlist(tokenizedTexts)
 types <- unique(tokens)
 dnames<-list(c(docs=names(texts)), c(words=types))
 fvm <- matrix(0,nrow=length(texts), ncol=length(types), dimnames=dnames)
-fvm <- as.data.frame(fvm)
 i=1
 while(i<=length(texts)){
-  print(i)
   curTable = table(tokenizedTexts[i])
-  cm <- as.matrix(curTable)
-  cm <- t(cm)
-  cd <- as.data.frame(cm)
-  invisible(fvm <- suppressMessages(match_df(fvm, cd)))
+  curTypes <- names(curTable)
+  print(i)
+  j<-1
+  while(j<=length(types)){
+    word <- types[j]
+    fvm[i,j]<- curTable[word]
+    j <- j+1
+  }
   i <- i+1
 }
-fvm[is.na(fvm)] <-0 
+fvm[is.na(fvm)] <-0             

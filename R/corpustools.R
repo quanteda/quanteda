@@ -598,3 +598,29 @@ create.fvm.plyr.corpus <- function(corpus, verbose=TRUE){
   fvm[is.na(fvm)] <-0              
   return(fvm)
 }
+
+create.fvm.adder.corpus <- function(corpus, verbose=TRUE){
+  if (verbose) cat("Creating fvm (optimized):\n")
+  texts <- corpus$attribs$texts
+  names(texts) <- rownames(corpus$attribs)
+  tokenizedTexts <- sapply(texts, tokenize, simplify=TRUE)
+  print(names(tokenizedTexts))
+  tokens <- unlist(tokenizedTexts)
+  types <- unique(tokens)
+  dnames<-list(c(docs=names(texts)), c(words=types))
+  fvm <- matrix(0,nrow=length(texts), ncol=length(types), dimnames=dnames)
+  i=1
+  Rprof(append = FALSE)
+  while(i<=length(texts)){
+    curText = unlist(tokenizedTexts[i])
+    print(i)
+    j<-1
+    while(j<=length(curText)){
+      word <- types[j]
+      fvm[i,curText[j]]<- fvm[i,curText[j]]+1
+      j <- j+1
+    }
+    i <- i+1
+  }
+  fvm[is.na(fvm)] <-0   
+}
