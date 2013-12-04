@@ -1,4 +1,5 @@
 library(quanteda)
+library(compiler)
 library(austin)
 library(plyr)
 library(ggplot2)
@@ -24,26 +25,33 @@ atts <- data.frame(vals)
 names(atts)<-c("lab")
 posTexts <- texts[1:(numDocs/2)]
 movies <- corpus.append(movies, posTexts, atts)
-
+Rprof(append = FALSE)
 texts <- movies$attribs$texts
 names(texts) <- rownames(movies$attribs)
 tokenizedTexts <- sapply(texts, tokenize, simplify=TRUE)
-print(names(tokenizedTexts))
 tokens <- unlist(tokenizedTexts)
 types <- unique(tokens)
 dnames<-list(c(docs=names(texts)), c(words=types))
 fvm <- matrix(0,nrow=length(texts), ncol=length(types), dimnames=dnames)
+numTypes <- length(types)
 i=1
 while(i<=length(texts)){
   curTable = table(tokenizedTexts[i])
   curTypes <- names(curTable)
-  print(i)
+  temp <- as.matrix(curTable)
+  curMatrix <- t(temp)
+  tempfvm <- matrix(0,nrow=length(texts), ncol=length(types), dimnames=dnames)
+  tempfvm <- as.matrix(rbind.fill(as.data.frame(tempfvm), as.data.frame(curMatrix)))
   j<-1
-  while(j<=length(types)){
-    word <- types[j]
-    fvm[i,j]<- curTable[word]
-    j <- j+1
-  }
+   while (j<=numTypes){
+     if(types[j] %in% curTypes )
+     {
+       fvm[i,j]<- curTable[j]
+     }
+     j <- j+1
+   }
+  print(i)
   i <- i+1
 }
-fvm[is.na(fvm)] <-0             
+fvm[is.na(fvm)] <-0      
+Rprof(NULL)

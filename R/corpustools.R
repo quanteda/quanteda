@@ -536,43 +536,6 @@ twitterTerms <- function(query, oauth, numResults=50){
 
 
 
-#' Create a feature-value matrix from a corpus object
-#' Development version for optimization PN 26 Nov 13
-
-#' returns a feature value matrix compatible with austin
-#' 
-#' @param corpus Corpus to make matrix from
-#' @param feature Feature to count
-#' @param feature type to aggregate by, default is file
-#' @export
-#' @examples
-#' fvm <- create.fvm.corpus(budgets, group="party")
-create.fvm.matrix.corpus <- function(corpus, verbose=TRUE){
-  if (verbose) cat("Creating fvm (optimized):\n")
-  texts <- corpus$attribs$texts
-  names(texts) <- rownames(corpus$attribs)
-  tokenizedTexts <- sapply(texts, tokenize, simplify=TRUE)
-  print(names(tokenizedTexts))
-  tokens <- unlist(tokenizedTexts)
-  types <- unique(tokens)
-  dnames<-list(c(docs=names(texts)), c(words=types))
-  fvm <- matrix(0,nrow=length(texts), ncol=length(types), dimnames=dnames)
-  i=1
-   while(i<=length(texts)){
-     curTable = table(tokenizedTexts[i])
-     curTypes <- names(curTable)
-     print(i)
-     j<-1
-     for (type in types){
-        fvm[i,j]<- curTable[type]
-        j <- j+1
-      }
-    i <- i+1
-  }
-  fvm[is.na(fvm)] <-0             
-  return(fvm)
-}
-
 create.fvm.plyr.corpus <- function(corpus, verbose=TRUE){
   if (verbose) cat("Creating fvm (optimized):\n")
   texts <- corpus$attribs$texts
@@ -623,3 +586,33 @@ create.fvm.adder.corpus <- function(corpus, verbose=TRUE){
   }
   fvm[is.na(fvm)] <-0   
 }
+
+create.fvm.matrix.corpus <- function(corpus, verbose=TRUE){
+  if (verbose) cat("Creating fvm (optimized):\n")
+  texts <- corpus$attribs$texts
+  names(texts) <- rownames(corpus$attribs)
+  tokenizedTexts <- sapply(texts, tokenize, simplify=TRUE)
+  print(names(tokenizedTexts))
+  tokens <- unlist(tokenizedTexts)
+  types <- unique(tokens)
+  dnames<-list(c(docs=names(texts)), c(words=types))
+  fvm <- matrix(0,nrow=length(texts), ncol=length(types), dimnames=dnames)
+  i=1
+  while(i<=length(texts)){
+    curTable = table(tokenizedTexts[i])
+    curTypes <- names(curTable)
+    print(i)
+    # indexing the table is faster with 'type' than 'types[j]' but indexing 
+    # the fvm is faster with j, which is why there is both a  for loop and 
+    # a counter
+    j<-1
+    for (type in types){
+      fvm[i,j]<- curTable[type]
+      j<-j+1
+    }
+    i <- i+1
+  }
+  fvm[is.na(fvm)] <-0             
+  return(fvm)
+}
+

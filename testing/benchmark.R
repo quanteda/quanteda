@@ -2,6 +2,7 @@ library(quanteda)
 library(austin)
 library(ggplot2)
 library(reshape2)
+library(plyr)
 options(error=dump.frames)
 source("/home/paul/Dropbox/code/quanteda/R/corpustools.R")
 source("/home/paul/Dropbox/code/quanteda/R/languagetools.R")
@@ -9,10 +10,10 @@ texts <- getTextDir("~/Dropbox/QUANTESS/corpora/movieReviews/smaller/neg/")
 
 plyTimes <- vector()
 matTimes <- vector()
-
-testSizes <- c(10,500)
-
+testSizes <- c(1000, 2000, 3000, 4000)
+insp<-matrix()
 for (numDocs in testSizes){
+  print(numDocs)
   vals <-vector()
   vals[1:(numDocs/2)] <- "neg"
   atts <- data.frame(vals)
@@ -32,12 +33,13 @@ for (numDocs in testSizes){
   Rprof(append = FALSE)
   fvm <- create.fvm.matrix.corpus(movies)
   Rprof(NULL)
+  insp<-fvm
   matTimes <- c(matTimes, summaryRprof()$sampling.time)
   
-  Rprof(append = FALSE)
-  fvm <- create.fvm.plyr.corpus(movies)
-  Rprof(NULL)
-  plyTimes <- c(plyTimes, summaryRprof()$sampling.time)
+#    Rprof(append = FALSE)
+#    fvm <- create.fvm.plyr.corpus(movies)
+#    Rprof(NULL)
+#    plyTimes <- c(plyTimes, summaryRprof()$sampling.time)
 }
 df <- data.frame(testSizes, matTimes, plyTimes)
 results <- melt(data = df, id.vars = "testSizes", value.name="seconds")
