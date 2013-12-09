@@ -603,11 +603,11 @@ create.fvm.matrix.corpus <- function(corpus, verbose=TRUE){
     curTypes <- names(curTable)
     print(i)
     # indexing the table is faster with 'type' than 'types[j]' but indexing 
-    # the fvm is faster with j, which is why there is both a  for loop and 
+    # the fvm is faster with j, which is why there is both a for loop and 
     # a counter
     j<-1
-    for (type in types){
-      fvm[i,j]<- curTable[type]
+    for(type in types){
+      fvm[i,j]<-curTable[type]
       j<-j+1
     }
     i <- i+1

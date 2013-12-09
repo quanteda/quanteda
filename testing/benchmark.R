@@ -10,7 +10,7 @@ texts <- getTextDir("~/Dropbox/QUANTESS/corpora/movieReviews/smaller/neg/")
 
 plyTimes <- vector()
 matTimes <- vector()
-testSizes <- c(1000, 2000, 3000, 4000)
+testSizes <- c(100, 2000)
 insp<-matrix()
 for (numDocs in testSizes){
   print(numDocs)
@@ -36,10 +36,10 @@ for (numDocs in testSizes){
   insp<-fvm
   matTimes <- c(matTimes, summaryRprof()$sampling.time)
   
-#    Rprof(append = FALSE)
-#    fvm <- create.fvm.plyr.corpus(movies)
-#    Rprof(NULL)
-#    plyTimes <- c(plyTimes, summaryRprof()$sampling.time)
+   Rprof(append = FALSE)
+   fvm <- create.fvm.plyr.corpus(movies)
+   Rprof(NULL)
+   plyTimes <- c(plyTimes, summaryRprof()$sampling.time)
 }
 df <- data.frame(testSizes, matTimes, plyTimes)
 results <- melt(data = df, id.vars = "testSizes", value.name="seconds")
