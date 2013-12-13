@@ -389,39 +389,36 @@ create.fvm.corpus <- function(corpus,
   progress.threshold <- .1
   
   if (verbose) cat("  Progress (%): [0")
-  
-  for (i in 1:length(texts)) {
-    # if(i%%10==0) cat(i)
-    if (i/length(texts) > progress.threshold) {
-      if (verbose) cat(paste("...", progress.threshold*100, sep=""))
-      progress.threshold <- progress.threshold+.1
-    }
-    #tokenized.txt <- tokenize(texts[i])
-    text = clean(texts[i])
-    tokenized.txt <- scan(what="char", text=text, quiet=TRUE)
-    # flush out "empty" strings caused by removal of punctuation and numbers
-    tokenized.txt <- tokenized.txt[tokenized.txt!=""]
-    if (stem==TRUE) {
-      require(SnowballC)
-      tokenized.txt <- wordStem(tokenized.txt)
-    }
-    wfTable <- as.data.frame(table(tokenized.txt))
-    if(length(tokenized.txt)>0){
-      names(wfTable) <- c("feature", textnames[i])
-    }
-
-    fvm <- merge(fvm, wfTable, by="feature", all=TRUE)
+  tokenizedTexts <- sapply(texts, tokenize, simplify=TRUE)
+  if (stem==TRUE) {
+    require(SnowballC)
+    tokenizedTexts <- wordStem(tokenizedTexts)
   }
-  
+  tokens <- unlist(tokenizedTexts)
+  types <- unique(tokens)
+  dnames<-list(c(docs=names(texts)), c(words=types))
+  fvm <- matrix(0,nrow=length(texts), ncol=length(types), dimnames=dnames)
+  i=1
+  while(i<=length(texts)){
+    curTable = table(tokenizedTexts[i])
+    curTypes <- names(curTable)
+    print(i)
+    # indexing the table is faster with 'type' than 'types[j]' but indexing 
+    # the fvm is faster with j, which is why there is both a for loop and 
+    # a counter
+    j<-1
+    for(type in types){
+      fvm[i,j]<-curTable[type]
+      j<-j+1
+    }
+    i <- i+1
+  }
+  print ("done")
   # convert NAs to zeros
   fvm[is.na(fvm)] <- 0
-  # drop any words that never occur
-  fvm <- fvm[-which(apply(fvm[,-1], 1, sum)==0),]
+  fvm <- t(fvm)
+  fvm <- as.data.frame(fvm)
   if (verbose) cat("]\n")
-  # make rownames the feature name, and remove the feature name as a data column
-  rownames(fvm) <- fvm[,"feature"]
-  fvm <- fvm[,-1]
-  
   if (verbose) cat("\n")
   if(remove_stopwords){
     data(stopwords_EN)
@@ -432,9 +429,7 @@ create.fvm.corpus <- function(corpus,
   return(fvm)
 }
 
-##
-## Ken's ongoing efforts to get the bleedin' subsetting function working!!!!
-## AND SUCCESS!!!! YEAAAAHHH!!!!
+
 corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=FALSE) {
   # This is the "inner" function to be called by other functions
   # to return a subset directly, use corpus.subset
@@ -532,87 +527,3 @@ twitterTerms <- function(query, oauth, numResults=50){
   twc <- corpus.create(texts, attribs=t(atts))
   return(twc)
 }
-
-
-
-
-create.fvm.plyr.corpus <- function(corpus, verbose=TRUE){
-  if (verbose) cat("Creating fvm (optimized):\n")
-  texts <- corpus$attribs$texts
-  names(texts) <- rownames(corpus$attribs)
-  tokenizedTexts <- sapply(texts, tokenize, simplify=TRUE)
-  print(names(tokenizedTexts))
-  tokens <- unlist(tokenizedTexts)
-  types <- unique(tokens)
-  dnames<-list(c(docs=names(texts)), c(words=types))
-  fvm <- matrix(0,nrow=length(texts), ncol=length(types), dimnames=dnames)
-  fvm <- as.data.frame(fvm)
-  i=1
-  while(i<=length(texts)){
-    print(i)
-    curTable = table(tokenizedTexts[i])
-    cm <- as.matrix(curTable)
-    cm <- t(cm)
-    cd <- as.data.frame(cm)
-    invisible(fvm <- suppressMessages(match_df(fvm, cd)))
-    i <- i+1
-  }
-  fvm[is.na(fvm)] <-0              
-  return(fvm)
-}
-
-create.fvm.adder.corpus <- function(corpus, verbose=TRUE){
-  if (verbose) cat("Creating fvm (optimized):\n")
-  texts <- corpus$attribs$texts
-  names(texts) <- rownames(corpus$attribs)
-  tokenizedTexts <- sapply(texts, tokenize, simplify=TRUE)
-  print(names(tokenizedTexts))
-  tokens <- unlist(tokenizedTexts)
-  types <- unique(tokens)
-  dnames<-list(c(docs=names(texts)), c(words=types))
-  fvm <- matrix(0,nrow=length(texts), ncol=length(types), dimnames=dnames)
-  i=1
-  Rprof(append = FALSE)
-  while(i<=length(texts)){
-    curText = unlist(tokenizedTexts[i])
-    print(i)
-    j<-1
-    while(j<=length(curText)){
-      word <- types[j]
-      fvm[i,curText[j]]<- fvm[i,curText[j]]+1
-      j <- j+1
-    }
-    i <- i+1
-  }
-  fvm[is.na(fvm)] <-0   
-}
-
-create.fvm.matrix.corpus <- function(corpus, verbose=TRUE){
-  if (verbose) cat("Creating fvm (optimized):\n")
-  texts <- corpus$attribs$texts
-  names(texts) <- rownames(corpus$attribs)
-  tokenizedTexts <- sapply(texts, tokenize, simplify=TRUE)
-  print(names(tokenizedTexts))
-  tokens <- unlist(tokenizedTexts)
-  types <- unique(tokens)
-  dnames<-list(c(docs=names(texts)), c(words=types))
-  fvm <- matrix(0,nrow=length(texts), ncol=length(types), dimnames=dnames)
-  i=1
-  while(i<=length(texts)){
-    curTable = table(tokenizedTexts[i])
-    curTypes <- names(curTable)
-    print(i)
-    # indexing the table is faster with 'type' than 'types[j]' but indexing 
-    # the fvm is faster with j, which is why there is both a for loop and 
-    # a counter
-    j<-1
-    for(type in types){
-      fvm[i,j]<-curTable[type]
-      j<-j+1
-    }
-    i <- i+1
-  }
-  fvm[is.na(fvm)] <-0             
-  return(fvm)
-}
-

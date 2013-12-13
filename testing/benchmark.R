@@ -6,13 +6,11 @@ library(plyr)
 #devtools::install_github("dplyr")
 #library(dplyr)
 options(error=dump.frames)
-source("/home/paul/Dropbox/code/quanteda/R/corpustools.R")
-source("/home/paul/Dropbox/code/quanteda/R/languagetools.R")
 texts <- getTextDir("~/Dropbox/QUANTESS/corpora/movieReviews/smaller/neg/")
 
 plyTimes <- vector()
 matTimes <- vector()
-testSizes <- c(100, 2000)
+testSizes <- c(60, 90)
 insp<-matrix()
 for (numDocs in testSizes){
   print(numDocs)
@@ -33,15 +31,15 @@ for (numDocs in testSizes){
   movies <- corpus.append(movies, posTexts, atts)
 
   Rprof(append = FALSE)
-  fvm <- create.fvm.matrix.corpus(movies)
+  fvm <- create.fvm.corpus(movies)
   Rprof(NULL)
   insp<-fvm
   matTimes <- c(matTimes, summaryRprof()$sampling.time)
   
-   Rprof(append = FALSE)
-   fvm <- create.fvm.plyr.corpus(movies)
-   Rprof(NULL)
-   plyTimes <- c(plyTimes, summaryRprof()$sampling.time)
+  Rprof(append = FALSE)
+  fvm <- create.fvm.corpus(movies)
+  Rprof(NULL)
+  plyTimes <- c(plyTimes, summaryRprof()$sampling.time)
 }
 df <- data.frame(testSizes, matTimes, plyTimes)
 results <- melt(data = df, id.vars = "testSizes", value.name="seconds")
