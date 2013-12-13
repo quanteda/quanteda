@@ -2,13 +2,26 @@ library(quanteda)
 library(austin)
 library(ggplot2)
 library(reshape2)
+library(plyr)
+#devtools::install_github("dplyr")
+#library(dplyr)
 options(error=dump.frames)
-
 texts <- getTextDir("~/Dropbox/QUANTESS/corpora/movieReviews/smaller/neg/")
+
+<<<<<<< HEAD
 oldTimes <- vector()
 newTimes <- vector()
-testSizes <- c(10, 50, 100, 200, 500, 1000)
+
+testSizes <- c(10, 1000)
+
+=======
+plyTimes <- vector()
+matTimes <- vector()
+testSizes <- c(60, 90)
+insp<-matrix()
+>>>>>>> dev_paul
 for (numDocs in testSizes){
+  print(numDocs)
   vals <-vector()
   vals[1:(numDocs/2)] <- "neg"
   atts <- data.frame(vals)
@@ -26,15 +39,16 @@ for (numDocs in testSizes){
   movies <- corpus.append(movies, posTexts, atts)
 
   Rprof(append = FALSE)
-  toks <- create.fvm.corpus(movies)
+  fvm <- create.fvm.corpus(movies)
   Rprof(NULL)
-  oldTimes <- c(oldTimes, summaryRprof()$sampling.time)
+  insp<-fvm
+  matTimes <- c(matTimes, summaryRprof()$sampling.time)
   
   Rprof(append = FALSE)
-  toks <- create.fvm.new.corpus(movies)
+  fvm <- create.fvm.corpus(movies)
   Rprof(NULL)
-  newTimes <- c(newTimes, summaryRprof()$sampling.time)
+  plyTimes <- c(plyTimes, summaryRprof()$sampling.time)
 }
-df <- data.frame(testSizes, oldTimes, newTimes)
+df <- data.frame(testSizes, matTimes, plyTimes)
 results <- melt(data = df, id.vars = "testSizes", value.name="seconds")
 ggplot(data = results, aes(x = testSizes , y = seconds, colour = variable)) + geom_line()
