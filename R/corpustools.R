@@ -407,6 +407,7 @@ create.fvm.corpus <- function(corpus,
       fvm[i,j]<-curTable[type]
       j<-j+1
     }
+    i <- i+1
   }
   # convert NAs to zeros
   fvm[is.na(fvm)] <- 0
