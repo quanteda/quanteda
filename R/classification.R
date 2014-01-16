@@ -236,7 +236,6 @@ feature.select <- function(wfm, trclass, freq="document", method="chi2",
     
     # stop("method=mi (mutual information) not yet implemented.")
   } else stop("method can be only chi2, mi, or frequency.")
-  #names(result) <- rownames(mY)
   return(result)
 }
 

@@ -381,7 +381,7 @@ create.fvm.corpus <- function(corpus,
   } else {
     texts <- corpus$attribs$texts
     names(texts) <- rownames(corpus$attribs)
-  }  
+  }
   textnames <- names(texts)
   progress.threshold <- .1
   if (verbose) cat("  Progress (%): [0")
@@ -407,6 +407,7 @@ create.fvm.corpus <- function(corpus,
       fvm[i,j]<-curTable[type]
       j<-j+1
     }
+  }
   # convert NAs to zeros
   fvm[is.na(fvm)] <- 0
   fvm <- t(fvm)
