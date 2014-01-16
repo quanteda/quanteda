@@ -244,7 +244,7 @@ feature.select <- function(wfm, trclass, freq="document", method="chi2",
 #feature.select(as.wfm(trainingset, word.margin=2), trainingclass, method="mi")
 
 # classic.wordscores() from austin
-function (wfm, scores) 
+classic.wordscores <- function (wfm, scores) 
 {
   if (!is.wfm(wfm)) 
     stop("Function not applicable to this object")
