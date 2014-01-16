@@ -240,30 +240,29 @@ feature.select <- function(wfm, trclass, freq="document", method="chi2",
   return(result)
 }
 
-# feature.select(as.wfm(trainingset, word.margin=2), trainingclass, method="chi2")
-# feature.select(as.wfm(trainingset, word.margin=2), trainingclass, method="mi")
+#feature.select(as.wfm(trainingset, word.margin=2), trainingclass, method="chi2")
+#feature.select(as.wfm(trainingset, word.margin=2), trainingclass, method="mi")
 
-## classic.wordscores() from austin
-# function (wfm, scores) 
-# {
-#   if (!is.wfm(wfm)) 
-#     stop("Function not applicable to this object")
-#   if (length(scores) != length(docs(wfm))) 
-#     stop("There are not the same number of documents as scores")
-#   if (any(is.na(scores))) 
-#     stop("One of the reference document scores is NA\nFit the model with known scores and use 'predict' to get virgin score estimates")
-#   thecall <- match.call()
-#   C.all <- as.worddoc(wfm)
-#   C <- C.all[rowSums(C.all) > 0, ]
-#   F <- scale(C, center = FALSE, scale = colSums(C))
-#   ws <- apply(F, 1, function(x) {
-#     sum(scores * x)
-#   })/rowSums(F)
-#   pi <- matrix(ws, nrow = length(ws))
-#   rownames(pi) <- rownames(C)
-#   colnames(pi) <- c("Score")
-#   val <- list(pi = pi, theta = scores, data = wfm, call = thecall)
-#   class(val) <- c("classic.wordscores", "wordscores", class(val))
-#   return(val)
-# }
-
+# classic.wordscores() from austin
+function (wfm, scores) 
+{
+  if (!is.wfm(wfm)) 
+    stop("Function not applicable to this object")
+  if (length(scores) != length(docs(wfm))) 
+    stop("There are not the same number of documents as scores")
+  if (any(is.na(scores))) 
+    stop("One of the reference document scores is NA\nFit the model with known scores and use 'predict' to get virgin score estimates")
+  thecall <- match.call()
+  C.all <- as.worddoc(wfm)
+  C <- C.all[rowSums(C.all) > 0, ]
+  F <- scale(C, center = FALSE, scale = colSums(C))
+  ws <- apply(F, 1, function(x) {
+    sum(scores * x)
+  })/rowSums(F)
+  pi <- matrix(ws, nrow = length(ws))
+  rownames(pi) <- rownames(C)
+  colnames(pi) <- c("Score")
+  val <- list(pi = pi, theta = scores, data = wfm, call = thecall)
+  class(val) <- c("classic.wordscores", "wordscores", class(val))
+  return(val)
+}
