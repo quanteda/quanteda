@@ -398,7 +398,7 @@ create.fvm.corpus <- function(corpus,
   while(i<=length(texts)){
     curTable = table(tokenizedTexts[i])
     curTypes <- names(curTable)
-    print(i)
+    cat(i, " ", sep="")
     # indexing the table is faster with 'type' than 'types[j]' but indexing 
     # the fvm is faster with j, which is why there is both a for loop and 
     # a counter
