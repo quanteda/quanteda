@@ -6,10 +6,7 @@ getLabel <- function(filename){
   second <- substr(filename,3,3)
   return(second)
 }
-
-
-
-trtexts <- getTextDir("~/Dropbox/QUANTESS/corpora/amicus curae/training")
+trtexts <- getTextDir("~/Dropbox/QUANTESS/corpora/amicus/training")
 labels <- sapply(names(trtexts), getLabel)
 newattribs <-
   data.frame((labels), nrow=length(labels))

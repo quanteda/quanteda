@@ -122,7 +122,7 @@ clean <- function(s, langNorm=FALSE, removeDigits=TRUE){
   }
   if(removeDigits){
     #print("called")
-    s <- gsub("[[:digit:][:punct:]]", "", s, perl = TRUE)
+    s <- gsub("[[:digit:][:punct:]]", "", s, perl = FALSE)
   }else{
     s <- gsub("[[:punct:]]", "", s, perl=TRUE)
   }

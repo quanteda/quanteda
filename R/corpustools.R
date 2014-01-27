@@ -364,7 +364,6 @@ create.fvm.corpus <- function(corpus,
                               groups=NULL,
                               subset=NULL, 
                               verbose=TRUE) {
-  # default is to take word as features, could expand that
   if (verbose) cat("Creating fvm:\n")
   # new subset feature (no "select" because inappropriate here)
   corpus <- corpus.subset.inner(corpus, substitute(subset))
@@ -383,8 +382,6 @@ create.fvm.corpus <- function(corpus,
     names(texts) <- rownames(corpus$attribs)
   }
   textnames <- names(texts)
-  progress.threshold <- .1
-  if (verbose) cat("  Progress (%): [0")
   tokenizedTexts <- sapply(texts, tokenize, simplify=TRUE)
   if (stem==TRUE) {
     require(SnowballC)
@@ -398,10 +395,9 @@ create.fvm.corpus <- function(corpus,
   while(i<=length(texts)){
     curTable = table(tokenizedTexts[i])
     curTypes <- names(curTable)
-    cat(i, " ", sep="")
+    if(verbose) cat(sprintf("Processing document %i of %i..\n", i, length(texts)))
     # indexing the table is faster with 'type' than 'types[j]' but indexing 
-    # the fvm is faster with j, which is why there is both a for loop and 
-    # a counter
+    # the fvm is faster with j, so use both counter and for-loop
     j<-1
     for(type in types){
       fvm[i,j]<-curTable[type]
@@ -413,8 +409,6 @@ create.fvm.corpus <- function(corpus,
   fvm[is.na(fvm)] <- 0
   fvm <- t(fvm)
   fvm <- as.data.frame(fvm)
-  if (verbose) cat("]\n")
-  if (verbose) cat("\n")
   if(remove_stopwords){
     data(stopwords_EN)
     stopwords <- stopwords_EN
