@@ -392,10 +392,16 @@ create.fvm.corpus <- function(corpus,
   dnames<-list(c(docs=names(texts)), c(words=types))
   fvm <- matrix(0,nrow=length(texts), ncol=length(types), dimnames=dnames)
   i=1
+  prog=0
+  if(verbose) cat("Progress:          ")
   while(i<=length(texts)){
+    if(verbose){
+      # erase and redraw progress meter.
+      cat("\b\b\b\b\b\b\b\b\b\b")
+      cat(sprintf("[%6.2f%%] ",prog))
+    }
     curTable = table(tokenizedTexts[i])
     curTypes <- names(curTable)
-    if(verbose) cat(sprintf("Processing document %i of %i..\n", i, length(texts)))
     # indexing the table is faster with 'type' than 'types[j]' but indexing 
     # the fvm is faster with j, so use both counter and for-loop
     j<-1
@@ -404,7 +410,9 @@ create.fvm.corpus <- function(corpus,
       j<-j+1
     }
     i <- i+1
+    prog <- (i/length(texts)*100) 
   }
+  if(verbose) cat("]. Done. \n")
   # convert NAs to zeros
   fvm[is.na(fvm)] <- 0
   fvm <- t(fvm)
@@ -414,10 +422,10 @@ create.fvm.corpus <- function(corpus,
     stopwords <- stopwords_EN
     stopwfm <- as.wfm(subset(fvm, !row.names(fvm) %in% stopwords))
     fvm <- stopwfm
+    
   }
   return(fvm)
 }
-
 
 corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=FALSE) {
   # This is the "inner" function to be called by other functions
@@ -434,7 +442,6 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
   # subset(airquality, Day == 1, select = -Temp)
   # subset(airquality, select = Ozone:Wind)
   #'@export
-    
     
     if (is.null(subsetExpr)) 
       rows <- TRUE

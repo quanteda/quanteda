@@ -1,6 +1,9 @@
 library(quanteda)
 library(austin)
 
+#source("~/Dropbox/code/quanteda/R/languagetools.R")
+#source("~/Dropbox/code/quanteda/R/corpustools.R")
+
 getLabel <- function(filename){
   len <- nchar(filename)
   second <- substr(filename,3,3)
@@ -17,7 +20,7 @@ wfm <- as.wfm(fvm,word.margin=1)
 ws <- classic.wordscores(wfm, scores=c(-1.0, -1.0, 1.0, 1.0))
 
 print("done")
-tetexts <- getTextDir("~/Dropbox/QUANTESS/corpora/amicus curae/testing")
+tetexts <- getTextDir("~/Dropbox/QUANTESS/corpora/amicus/testing")
 tetexts <- sample(tetexts, length(tetexts),replace=FALSE, prob=NULL)
 labels <- sapply(names(tetexts), getLabel)
 newattribs <-

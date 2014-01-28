@@ -1,6 +1,9 @@
 library(quanteda)
 library(austin)
 
+#source("~/Dropbox/code/quanteda/R/languagetools.R")
+#source("~/Dropbox/code/quanteda/R/corpustools.R")
+
 getParts <- function(casename){
   len <- nchar(casename)
   year <- substr(casename, 1, 4)
