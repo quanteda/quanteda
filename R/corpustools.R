@@ -412,7 +412,7 @@ create.fvm.corpus <- function(corpus,
     i <- i+1
     prog <- (i/length(texts)*100) 
   }
-  if(verbose) cat("]. Done. \n")
+  if(verbose) cat(" Done. \n")
   # convert NAs to zeros
   fvm[is.na(fvm)] <- 0
   fvm <- t(fvm)
