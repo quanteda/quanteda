@@ -501,24 +501,30 @@ corpus.reshape <- function(corpus){
   return(sentCorp)
 }
 
-kwic.text <- function(word, text, window=5){
+kwic <- function(text, word, window=5){
+  UseMethod("kwic")
+}
+
+kwic.character <- function(text, word, window=5){
     toks <- tokenize(text)
-    matches = grep(word,toks)
+    matches = which(toks == word )
     contexts = vector()
     if(length(matches) == 0){return(NA)}
     contexts <- rep(NA, length(matches))
     for(m in 1:length(matches)){
       start <- matches[m] - window
       end <- matches[m] + window
+      if(start < 0) start <- 0
+      if(end > length(toks)) end <- length(toks)
+      
       contexts[m] <- paste(toks[start:end], collapse=' ' )
       print(paste(toks[start:end], collapse=' ' ))
     }
   return(contexts)
 }
 
-
-kwic.corpus <- function(word, corpus, window=5){
-  contexts <- lapply(corpus$attribs$texts, kwic.text,word=word)
+kwic.corpus <- function(corpus, word, window=5){
+  contexts <- lapply(corpus$attribs$texts, kwic, word=word)
   names(contexts) <- row.names(corpus$attribs)
   return(contexts)
 }
