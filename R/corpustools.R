@@ -285,7 +285,6 @@ corpus.append <- function(corpus1, newtexts, newattribs, ...) {
   return(corpus1)
 }
 
-
 #### Output a WEKA-compatible arff file for an fvm
 #### still in development
 ####
@@ -498,6 +497,26 @@ corpus.reshape <- function(corpus){
     sentCorp<-corpus.append(sentCorp, unlist(sentence), atts)
   }
   return(sentCorp)
+}
+
+
+kwic.corpus <- function(word, corpus, window=5){
+  contexts <- rep(NA,length(corpus$attribs$texts))
+  #contexts <- data.frame()
+  for(text in 1:length(corpus$attribs$texts)){
+    toks <- tokenize(corpus$attribs$texts[text])
+    matches = grep(word,toks)
+    if(length(matches) == 0){next}
+    curContexts <- rep(NA, length(matches))
+    for(m in 1:length(matches)){
+      start <- matches[m] - window
+      end <- matches[m] + window
+      curContexts[m] <- paste(toks[start:end], collapse=' ' )
+    }
+    contexts[text]<- curContexts 
+  }
+  print(length(contexts))
+  return(contexts)
 }
 
 
