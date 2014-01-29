@@ -1,6 +1,6 @@
 library(quanteda)
 
-#source("~/Dropbox/code/quanteda/R/languagetools.R")
+source("~/Dropbox/code/quanteda/R/languagetools.R")
 source("~/Dropbox/code/quanteda/R/corpustools.R")
 
 neg_texts <- getTextDir("~/Dropbox/QUANTESS/corpora/movieReviews/smaller/neg/")
@@ -13,6 +13,6 @@ atts <- data.frame(vals)
 names(atts)<-c("label")
 movies <- corpus.create(texts, attribs=atts)
 
-contexts <- kwic.corpus("great",movies)
+contexts <- kwic.corpus(movies)
 
 #fvm <- create.fvm.corpus(movies, group="label")
