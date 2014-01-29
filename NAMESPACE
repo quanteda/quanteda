@@ -23,4 +23,7 @@ export(sentenceSeg)
 export(translateChunk)
 export(corpus.reshape)
 export(bigrams)
+export(twitterTerms)
+export(kwic)
+
 import(austin)
