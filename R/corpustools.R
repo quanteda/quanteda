@@ -209,10 +209,12 @@ corpus.create <- function(texts, textnames=NULL, attribs=NULL, source=NULL, note
   created <- date()
   metadata <- c(source=source, created=created, notes=notes)
   
+
+  
   if (is.null(attribs)) {
     attribs <- data.frame(texts, row.names=names(texts), 
                           check.rows=TRUE, stringsAsFactors=FALSE)
-  } else attribs <- data.frame(texts=texts, attribs,
+  } else attribs <- data.frame(texts, attribs,
                                row.names=names(texts), 
                                check.rows=TRUE, stringsAsFactors=FALSE)
   temp.corpus <- list(attribs=attribs,
@@ -499,23 +501,25 @@ corpus.reshape <- function(corpus){
   return(sentCorp)
 }
 
-
-kwic.corpus <- function(word, corpus, window=5){
-  contexts <- rep(NA,length(corpus$attribs$texts))
-  #contexts <- data.frame()
-  for(text in 1:length(corpus$attribs$texts)){
-    toks <- tokenize(corpus$attribs$texts[text])
+kwic.text <- function(word, text, window=5){
+    toks <- tokenize(text)
     matches = grep(word,toks)
-    if(length(matches) == 0){next}
-    curContexts <- rep(NA, length(matches))
+    contexts = vector()
+    if(length(matches) == 0){return(NA)}
+    contexts <- rep(NA, length(matches))
     for(m in 1:length(matches)){
       start <- matches[m] - window
       end <- matches[m] + window
-      curContexts[m] <- paste(toks[start:end], collapse=' ' )
+      contexts[m] <- paste(toks[start:end], collapse=' ' )
+      print(paste(toks[start:end], collapse=' ' ))
     }
-    contexts[text]<- curContexts 
-  }
-  print(length(contexts))
+  return(contexts)
+}
+
+
+kwic.corpus <- function(word, corpus, window=5){
+  contexts <- lapply(corpus$attribs$texts, kwic.text,word=word)
+  names(contexts) <- row.names(corpus$attribs)
   return(contexts)
 }
 
