@@ -4,8 +4,8 @@
 This function translates a the texts in a corpus by sending them
  to the google translate API.}
 \usage{
-  translate.corpus(corpus, targetlanguageString,
-    textvar = "texts", languagevar = "language")
+translate.corpus(corpus, targetlanguageString, textvar = "texts",
+  languagevar = "language", key = NULL)
 }
 \arguments{
   \item{corpus}{corpus to be translated}
@@ -15,11 +15,11 @@ This function translates a the texts in a corpus by sending them
   \item{languagevar}{Language of the translated text}
 }
 \description{
-  Send a corpus to the google translate research API This
-  function translates a the texts in a corpus by sending
-  them to the google translate API.
+Send a corpus to the google translate research API This
+function translates a the texts in a corpus by sending them
+to the google translate API.
 }
 \examples{
-translation <- translate(original, fr, de, key='insertkeyhere')
+{translation <- translate(original, fr, de, key='insertkeyhere')}
 }
 

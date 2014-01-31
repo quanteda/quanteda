@@ -7,9 +7,3 @@ Author: Ken Benoit, Will Lowe, Paul Nulty
 Maintainer: Paul Nulty <p.nulty@lse.ac.uk>
 Description: A library for analysing textual data with R
 License: What license is it under? Good Question
-Collate:
-    'corpustools.R'
-    'languagetools.R'
-    'translation.R'
-    'functionlessDocumentation.R'
-    'classification.R'

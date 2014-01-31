@@ -1,23 +1,18 @@
 \name{tokenize}
 \alias{tokenize}
-\title{split a text into words and return a table of words and their counts
-This function takes a text (in the form of a character vectors),
-performs some cleanup, and splits the text on whitespace, returning
-a dataframe of words and their frequncies}
+\title{Split a string into words
+The input text is split into words by whitespace}
 \usage{
-  tokenize(text, textname = "count")
+tokenize(str)
 }
 \arguments{
-  \item{text}{Text to be tokenized}
+  \item{text}{}
 }
 \description{
-  split a text into words and return a table of words and
-  their counts This function takes a text (in the form of a
-  character vectors), performs some cleanup, and splits the
-  text on whitespace, returning a dataframe of words and
-  their frequncies
+Split a string into words The input text is split into
+words by whitespace
 }
 \examples{
-tokenize("This is an example sentence.")
+tokens <- tokenize("this is a test")
 }
 
