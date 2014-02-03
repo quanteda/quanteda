@@ -1,0 +1,23 @@
+#' make a corpus object from results of a twitter search
+
+#' All of the attributes returned by the twitteR
+#' library call are included as attributes in the
+#' corpus. A oauth key is required, for further
+#' instruction about the oauth processs see:
+#' https://dev.twitter.com/apps/new
+#' and the twitteR documentation
+#' 
+#' @param query Search string for twitter
+#' @param oauth Oauth key
+#' @param numResults Number of results desired.
+#' @export
+#' @examples
+#' twCorp <- twitterTerms('example search', numResults=10)
+twitterTerms <- function(query, oauth, numResults=50){
+  library('twitteR')
+  registerTwitterOAuth(oauth)
+  sea <- (searchTwitter(query, numResults))
+  atts <- results[2:nrow(results),]
+  twc <- corpus.create(texts, attribs=t(atts))
+  return(twc)
+}

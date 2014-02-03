@@ -26,6 +26,6 @@ see: https://dev.twitter.com/apps/new and the twitteR
 documentation
 }
 \examples{
-sentCorp <- corpus.reshape(corpus)
+twCorp <- twitterTerms('example search', numResults=10)
 }
 

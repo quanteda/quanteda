@@ -7,7 +7,8 @@ corpus.add.attributes(corpus, newattribs, name = newattribs)
 \arguments{
   \item{corpus}{Corpus to add attributes to}
 
-  \item{newattribs}{A list of new attribues}
+  \item{newattribs}{A list of new attribues should be a
+  named list of length(corpus$texts)}
 
   \item{name}{A name for the new attribues}
 }
