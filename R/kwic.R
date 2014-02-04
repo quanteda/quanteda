@@ -10,7 +10,7 @@ kwic.character <- function(text, word, window=5) {
     tokens <- strsplit(text, " ")[[1]]
     matches <- grep(paste("?", tolower(word), "?", sep=""), tolower(tokens))
     if (length(matches) == 0) return(NA)
-    result <- data.frame(source = matches,
+    result <- data.frame(source = matches, 
                          preword = NA,
                          word = tokens[matches],
                          postword = NA)
@@ -30,14 +30,18 @@ kwic.character <- function(text, word, window=5) {
 }
 
 kwic.corpus <- function(corpus, word, window=5){
-    # need to modify this so that it returns a data frame, and
-    # puts "[filename, line XX]" in the "source" column
-    contexts <- sapply(corpus$attribs$texts, kwic, word=word)
+    contexts <- sapply(corpus$attribs$texts, kwic, word=word, window=window, USE.NAMES=FALSE)
+    if (length(contexts)==1 && is.na(contexts)) return(NA)
     names(contexts) <- row.names(corpus$attribs)
+    contexts <- contexts[!is.na(contexts)]
+    for (l in 1:length(contexts)) {
+        contexts[[l]]$source <- paste("[", names(contexts[l]), ", ",  contexts[[l]]$source, "]", sep="")
+    }
+    contexts <- do.call("rbind", contexts)
+    contexts$source <- format(contexts$source, justify="right")
+    contexts$postword <- format(contexts$postword, justify="left")
+    row.names(contexts) <- contexts$source
+    contexts <- contexts[,-1]   
     return(contexts)
 }
-
-#text <- "Keanu is really \"great\" in this movie, and Arnold is great too.  I think R is a GREAT programming tool for statistics, while Matlab just is not that great."
-
-#t <- kwic(text, "great")
 
