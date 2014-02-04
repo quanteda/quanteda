@@ -24,16 +24,18 @@ if (!require(austin)) {
 More Documentation
 ------------------
 
-Is on its way.  An example for now, to create a term-frequency matrix from a collection of documents (what quanteda calls a corpus) and analyze that using a Naive Bayes model:
+Is on its way.  An example for now, to create a term-frequency matrix from a collection of documents (what quanteda calls a corpus) and analyze that using a Naive Bayes classifier:
 
 ```S
 #### Analyze Bollinger texts from Evans et al JELS 2007
 # load in Amicus texts from a zipped web archive
-amicusFile <- "http://www.kenbenoit.net/courses/tcd2014qta/exercises/amicus_curae.zip"
-download.file(amicusFile, basename(amicusFile)
+amicusFile <- "http://www.kenbenoit.net/courses/tcd2014qta/exercises/amicus_curiae.zip"
+download.file(amicusFile, basename(amicusFile))
 unzip(basename(amicusFile))
 # load in the texts to a vector of texts using quanteda's getTextDir()
 amicus.texts <- c(getTextDir("./amicus/training"), getTextDir("./amicus/testing"))
+# change the encoding (because texts contain special symbols such as §)
+amicus.texts <- iconv(amicus.texts, from="latin1", to="UTF-8")
 # set training class
 trainclass <- factor(c("P", "R", rep(NA, length(amicus.texts)-2)))
 # set test class
@@ -49,4 +51,6 @@ amicus.fvm <- create.fvm.corpus(amicus.corpus)
 amicus.nb <- naiveBayesText(t(amicus.fvm), amicus.corpus$attribs$trainclass, smooth=1, prior="uniform")
 # predict test class
 amicus.nbp <- predict(amicus.nb)
+# compare the predicted class (rows) versus the actual class (columns)
+table(amicus.nbp$docs$nb.predicted, amicus.corpus$attribs$testclass)
 ```
