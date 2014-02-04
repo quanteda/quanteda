@@ -12,6 +12,7 @@
 ##' dataframe will be named with the word index position, or the text name and the index position
 ##' for a corpus object.  
 ##' @author Kenneth Benoit and Paul Nulty
+##' @export
 ##' @examples
 ##' data(iebudgets)
 ##' kwic(iebudgets, "Christmas", window=6)
