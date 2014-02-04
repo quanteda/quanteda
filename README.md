@@ -28,9 +28,12 @@ Is on its way.  An example for now, to create a term-frequency matrix from a col
 
 ```S
 #### Analyze Bollinger texts from Evans et al JELS 2007
-# load in Amicus texts
-amicus.texts <- c(getTextDir("~/texts/amicus/training"),
-                  getTextDir("~/texts/amicus/testing"))
+# load in Amicus texts from a zipped web archive
+amicusFile <- "http://www.kenbenoit.net/courses/tcd2014qta/exercises/amicus_curae.zip"
+download.file(amicusFile, basename(amicusFile)
+unzip(basename(amicusFile))
+# load in the texts to a vector of texts using quanteda's getTextDir()
+amicus.texts <- c(getTextDir("./amicus/training"), getTextDir("./amicus/testing"))
 # set training class
 trainclass <- factor(c("P", "R", rep(NA, length(amicus.texts)-2)))
 # set test class
