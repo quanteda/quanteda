@@ -27,7 +27,7 @@
 #' @export
 #' @examples
 #' budgets <- corpus.create(texts, attribs=newattribs)
-corpus.create <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes=NULL, attribs.labels=NULL) {
+createCorpus <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes=NULL, attribs.labels=NULL) {
   if (is.null(names(texts))) 
     names(texts) <- paste("text", 1:length(texts), sep="")
   if (is.null(source)) 
@@ -49,6 +49,7 @@ corpus.create <- function(texts, textnames=NULL, attribs=NULL, source=NULL, note
   return(temp.corpus)
 }
 
+corpus.create <- createCorpus  # for compatibility
 
 #' This function adds a named list of attributes to an existing corpus
 #' 

@@ -1,7 +1,8 @@
 #### Output a WEKA-compatible arff file for an fvm
 #### still in development
 ####
-create.arff <- function(fvm, gold, name="politics", outfile="test.arff"){
+
+createArff <- function(fvm, gold, name="politics", outfile="test.arff"){
   outString <- paste("@RELATION", name,"\n")
   
   for(c in rownames(fvm)){
@@ -22,3 +23,5 @@ create.arff <- function(fvm, gold, name="politics", outfile="test.arff"){
   
   writeChar(outString, file("/home/paul/testout.arff"))
 }
+
+create.arff <- createArff # for compatibility

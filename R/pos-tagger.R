@@ -9,7 +9,7 @@
 #' @export
 #' @examples
 #' determine.pos(sentence)
-determine.pos <- function(sentence) {
+tagPos <- function(sentence) {
   # clean sentence of punctuation and numbers
   require(openNLP)
   sentence <- gsub("[[:punct:][:digit:]]", "", sentence)
@@ -29,3 +29,4 @@ determine.pos <- function(sentence) {
   # return as a factor vector of same length as text
   return(tagged.sentence.pos.factor.vector)
 } 
+determine.pos <- tagPos

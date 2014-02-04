@@ -15,6 +15,7 @@ strings, removing punctuation, converting to lowercase and
 optionally replacing some language-specific characters
 }
 \examples{
+s <-"test"
 clean(s)
 }
 
