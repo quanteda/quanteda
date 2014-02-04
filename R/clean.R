@@ -6,6 +6,7 @@
 #' @param s String to be cleaned
 #' @export
 #' @examples
+#' s <-"test"
 #' clean(s)
 clean <- function(s, langNorm=FALSE, removeDigits=TRUE){
   # optionally do some language specific normalisation

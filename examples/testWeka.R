@@ -1,7 +1,6 @@
 library(foreign)
-#library(quanteda)
-source("~/Dropbox/code/quanteda/R/corpustools.R")
-source("~/Dropbox/code/quanteda/R/languagetools.R")
+library(quanteda)
+
 sentences <- read.dta("~/Dropbox/code/data/sentence_level_data.dta")
 
 #if i don't declare the encoding like this nchar fails("invalid multibyte string)

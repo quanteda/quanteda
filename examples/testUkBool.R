@@ -1,4 +1,4 @@
-source("/home/paul/Dropbox/code/quanteda/R/quanteda.R")
+
 library(austin)
 
 
