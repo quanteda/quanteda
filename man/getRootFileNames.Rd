@@ -8,6 +8,9 @@ getRootFileNames(longFilenames)
   \item{longFilenames}{Absolute filenames including a full
   path with directory}
 }
+\value{
+character vector of filenames withouth directory path
+}
 \description{
 This function takes an absolute filepath and returns just
 the document name

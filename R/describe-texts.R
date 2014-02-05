@@ -3,9 +3,10 @@
 #' Prints to the console a desription of the texts, including 
 #' number of types, tokens, and sentences
 #' 
-#' @param texts
+#' @param texts The texts to be described
 #' @export
 #' @examples
+#' texts <- "This is an example text"
 #' describeTexts(texts)
 describeTexts <- function(texts, output=TRUE) {
   # need to implement subsetting here too

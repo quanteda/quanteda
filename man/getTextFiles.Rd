@@ -10,6 +10,9 @@ getTextFiles(filenames, textnames = NULL)
 \arguments{
   \item{filenames}{}
 }
+\value{
+character vector of texts read from disk
+}
 \description{
 load text files from disk into a vector of character
 vectors points to files, reads them into a character vector

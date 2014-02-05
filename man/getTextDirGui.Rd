@@ -4,6 +4,9 @@
 \usage{
 getTextDirGui()
 }
+\value{
+character vector of texts read from disk
+}
 \description{
 launches a GUI to allow the user to choose a directory from
 which to load all files.

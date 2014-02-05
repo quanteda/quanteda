@@ -4,6 +4,7 @@
 #' and optionally replacing some language-specific characters
 #' 
 #' @param s String to be cleaned
+#' @return character vector in lowercase with punctuation (and optionally digits) removed
 #' @export
 #' @examples
 #' s <-"test"

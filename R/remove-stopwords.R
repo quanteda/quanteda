@@ -3,12 +3,10 @@
 #' This function takes a character vector 'text' and removes words in the
 #' list provided in 'stopwords'. If no list of stopwords is provided a 
 #' default list for English is used.
-#' openNLP's POS tagger, then returns a table of the parts of speech
-#'
-#' http://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 #' 
 #' @param text Text to alter
 #' @param stopwords List of stopwords to remove
+#' @return a character vector of text with stopwords removed
 #' @export
 #' @examples
 #' removeStopwords(someText)

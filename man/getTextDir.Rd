@@ -7,6 +7,9 @@ getTextDir(dirname)
 \arguments{
   \item{dirname}{A directory path}
 }
+\value{
+character vector of texts read from disk
+}
 \description{
 given a directory name, get a list of all files in that
 directory and load them into a character vector using
