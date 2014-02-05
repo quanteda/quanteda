@@ -13,11 +13,11 @@
 ##' @param control list specifies options for the estimation process. These are: \code{tol}, the proportional change in log likelihood
 ##' sufficient to halt estimatioe, \code{sigma} the standard deviation for the beta prior in poisson form, and \code{startparams} a
 ##' previously fitted wordfish model.  \code{verbose} generates a running commentary during estimation.  See \code{austin::wordfish}.
-##' @param alphaModel \code{free} means the alpha_i is entirely estimated; \code{logdoclength} means the alpha is predicted with an 
+##' @param alphaModel \code{free} means the \eqn{\alpha_i} is entirely estimated; \code{logdoclength} means the alpha is predicted with an 
 ##' expected value equal to the log of the document length in words, similar to an offset in a Poisson model with variable exposure;
-##' \code{modelled} allows you to specify a formula and covariates for \alpha_i using \code{alphaFormula} and \code{alphaData}.
-##' @param alphaFormula Model formula for hierarchical model predicting \alpha_i.
-##' @param alphaData Data to form the model matrix for the hierarchical model predicting \alpha_i.
+##' \code{modelled} allows you to specify a formula and covariates for \eqn{\alpha_i} using \code{alphaFormula} and \code{alphaData}.
+##' @param alphaFormula Model formula for hierarchical model predicting \eqn{\alpha_i}.
+##' @param alphaData Data to form the model matrix for the hierarchical model predicting \eqn{\alpha_i}.
 ##' @param wordPartition A vector equal in length to the documents that specifies a unique value partitioning the word parameters.  
 ##' For example, alpha could be a Boolean variable for \code{EU} to indicate that a document came from a country outside the EU or 
 ##' inside the EU.  Or, it could be a factor variable indicating the name of the country (as long as there are multiple documents
@@ -35,6 +35,25 @@
 ##' @param ... Additional arguments passed through.
 ##' @return An augmented \code{wordfish} object with additional stuff packed in.  To be documented.
 ##' @author Kenneth Benoit
+##' @examples
+##' \dontrun{
+##' data(iebudgets)
+##' # extract just the 2010 debates
+##' iebudgets2010 <- corpus.subset(iebudgets, year==2010)
+##' # create a document-term matrix and set the word margin to the columns
+##' dtm <- create.fvm.corpus(iebudgets2010)
+##' dtm <- wfm(t(dtm), word.margin=2)
+##' # estimate the maximium likelihood wordfish model from austin
+##' iebudgets2010_wordfish <- wordfish(dtm, dir=c(2,1))
+##' # estimate the MCMC model, default values
+##' iebudgets2010_wordfishMCMC <- wordfishMCMC(dtm, dir=c(2,1))
+##' # compare the estimates of \eqn{\theta_i}
+##' plot(iebudgets2010_wordfish$theta, iebudgets2010_wordfishMCMC$theta)
+##' # MCMC with a partition of the word parameters according to govt and opposition
+##' # set the constraint on word partitioned parameters to be the same for "the" and "and"
+##' iebudgets2010_wordfishMCMC_govtopp <- wordfishMCMC(dtm, dir=c(2,1), wordPartition=(iebudgets2010$attribs$party=="FF" | iebudgets2010$attribs$party=="Green"),
+##' betaPartition=TRUE, wordConstraints=which(words(dtm)=="the"))
+##' }
 wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL),
                          alphaModel=c("free", "logdoclength", "modelled"),
                          alphaFormula=NULL, alphaData=NULL, 

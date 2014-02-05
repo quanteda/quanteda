@@ -245,7 +245,23 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
     return(corpus)
 }
 
-corpus.subset <- function(corpus, subset=NULL, select=NULL) {
+#' extract a subset of a corpus
+#' 
+#' Works just like the normal subset command but for corpus objects
+#' 
+#' @param corpus corpus object to be subsetted.
+#' @param subset logical expression indicating elements or rows to keep: missing values are taken as false.
+#' @param select expression, indicating the attributes to select from the corpus
+#' 
+#' @export
+#' @examples
+#' data(iebudgets)
+#' iebudgets2010 <- subset(iebudgets, year==2010)
+#' summary(iebudgets2010)
+#' iebudgetsLenihan <- subset(iebudgets, speaker="Lenihan", select=c(speaker, year))
+#' summary(iebudgetsLenihan)
+#' 
+subset.corpus <- corpus.subset <- function(corpus, subset=NULL, select=NULL) {
   tempcorp <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
   return(tempcorp)
 }

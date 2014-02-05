@@ -1,3 +1,4 @@
+S3method(subset,corpus)
 S3method(summary,corpus)
 export(clean)
 export(corpusAppend)

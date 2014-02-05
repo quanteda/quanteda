@@ -29,19 +29,20 @@ wordfishMCMC(dtm, dir = c(1, 2), control = list(sigma = 3, startparams =
   commentary during estimation.  See
   \code{austin::wordfish}.}
 
-  \item{alphaModel}{\code{free} means the alpha_i is
+  \item{alphaModel}{\code{free} means the \eqn{\alpha_i} is
   entirely estimated; \code{logdoclength} means the alpha
   is predicted with an expected value equal to the log of
   the document length in words, similar to an offset in a
   Poisson model with variable exposure; \code{modelled}
   allows you to specify a formula and covariates for
-  \alpha_i using \code{alphaFormula} and \code{alphaData}.}
+  \eqn{\alpha_i} using \code{alphaFormula} and
+  \code{alphaData}.}
 
   \item{alphaFormula}{Model formula for hierarchical model
-  predicting \alpha_i.}
+  predicting \eqn{\alpha_i}.}
 
   \item{alphaData}{Data to form the model matrix for the
-  hierarchical model predicting \alpha_i.}
+  hierarchical model predicting \eqn{\alpha_i}.}
 
   \item{wordPartition}{A vector equal in length to the
   documents that specifies a unique value partitioning the
@@ -91,6 +92,26 @@ implementation of \code{wordfish} from the \code{austin}
 package. Options include specifying a model for alpha using
 document-level covariates, and partitioning the word
 parameters into different subsets, for instance, countries.
+}
+\examples{
+\dontrun{
+data(iebudgets)
+# extract just the 2010 debates
+iebudgets2010 <- corpus.subset(iebudgets, year==2010)
+# create a document-term matrix and set the word margin to the columns
+dtm <- create.fvm.corpus(iebudgets2010)
+dtm <- wfm(t(dtm), word.margin=2)
+# estimate the maximium likelihood wordfish model from austin
+iebudgets2010_wordfish <- wordfish(dtm, dir=c(2,1))
+# estimate the MCMC model, default values
+iebudgets2010_wordfishMCMC <- wordfishMCMC(dtm, dir=c(2,1))
+# compare the estimates of \\eqn{\\theta_i}
+plot(iebudgets2010_wordfish$theta, iebudgets2010_wordfishMCMC$theta)
+# MCMC with a partition of the word parameters according to govt and opposition
+# set the constraint on word partitioned parameters to be the same for "the" and "and"
+iebudgets2010_wordfishMCMC_govtopp <- wordfishMCMC(dtm, dir=c(2,1), wordPartition=(iebudgets2010$attribs$party=="FF" | iebudgets2010$attribs$party=="Green"),
+betaPartition=TRUE, wordConstraints=which(words(dtm)=="the"))
+}
 }
 \author{
 Kenneth Benoit
