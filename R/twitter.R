@@ -1,5 +1,5 @@
 #' make a corpus object from results of a twitter search
-
+#'
 #' All of the attributes returned by the twitteR
 #' library call are included as attributes in the
 #' corpus. A oauth key is required, for further
