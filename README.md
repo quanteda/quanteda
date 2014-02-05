@@ -20,10 +20,6 @@ if (!require(austin)) {
 }
 # install the latest version quanteda from Github
 install_github("quanteda", username="kbenoit")
-# needed by quanteda - Will Lowe's austin package
-if (!require(austin)) {
-    install.packages("austin", repos="http://r-forge.r-project.org", type="source", dependencies=TRUE)
-}
 ```
 More Documentation
 ------------------
