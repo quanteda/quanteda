@@ -8,7 +8,9 @@
 #' @param text Text to be tagged
 #' @export
 #' @examples
-#' determine.pos(sentence)
+#' \dontrun{
+#' tagPos("This is an example sentence with nouns and verbs for tagging.")
+#' }
 tagPos <- function(sentence) {
   # clean sentence of punctuation and numbers
   require(openNLP)

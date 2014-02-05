@@ -21,6 +21,6 @@ function translates a text by sending it to the google
 translate API.
 }
 \examples{
-{translation <- translate(original, fr, de, key='insertkeyhere')}
+\dontrun{translation <- translate(original, fr, de, key='insertkeyhere')}
 }
 

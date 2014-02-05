@@ -26,6 +26,8 @@ see: https://dev.twitter.com/apps/new and the twitteR
 documentation
 }
 \examples{
+\dontrun{
 twCorp <- twitterTerms('example search', numResults=10)
+}
 }
 

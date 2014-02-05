@@ -3,6 +3,8 @@
 #' The input text is split into words by whitespace
 #' 
 #' @param text
+#' @return a character vector containing the input text cleaned and split by whitespace
+#' @export
 #' @examples
 #' tokens <- tokenize("this is a test")
 tokenize <- function(str){

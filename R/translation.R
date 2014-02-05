@@ -39,7 +39,9 @@ translateChunk <- function(sourceText, sourceLanguage, targetLanguage, key=NULL,
 #' @param languagevar Language of the translated text
 #' @export
 #' @examples
-#' {translation <- translate(original, fr, de, key='insertkeyhere')}
+#' \dontrun{
+#' translation <- translate(original, fr, de, key='insertkeyhere')
+#' }
 translate.corpus <- function(corpus, targetlanguageString, 
                              textvar="texts", languagevar="language", key=NULL) {
   ## function to translate the text from a corpus into another language
@@ -68,7 +70,7 @@ translate.corpus <- function(corpus, targetlanguageString,
 #' @param key API key for Google Translate research API
 #' @export
 #' @examples
-#' {translation <- translate(original, fr, de, key='insertkeyhere')}
+#' \dontrun{translation <- translate(original, fr, de, key='insertkeyhere')}
 translate <- function(sourceText, sourceLanguage, targetLanguage, key=NULL, verbose=FALSE) {
   require(RCurl)
   require(XML)

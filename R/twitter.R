@@ -12,7 +12,9 @@
 #' @param numResults Number of results desired.
 #' @export
 #' @examples
+#' \dontrun{
 #' twCorp <- twitterTerms('example search', numResults=10)
+#' }
 twitterTerms <- function(query, oauth, numResults=50){
   library('twitteR')
   registerTwitterOAuth(oauth)

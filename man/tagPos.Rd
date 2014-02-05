@@ -13,6 +13,8 @@ tagPos(sentence)
 http://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 }
 \examples{
-determine.pos(sentence)
+\dontrun{
+tagPos("This is an example sentence with nouns and verbs for tagging.")
+}
 }
 

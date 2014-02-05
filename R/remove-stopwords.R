@@ -9,6 +9,7 @@
 #' @return a character vector of text with stopwords removed
 #' @export
 #' @examples
+#' someText <- "This text has some stopwords we want to remove"
 #' removeStopwords(someText)
 removeStopwords <- function(text, stopwords=NULL){
   if(is.null(stopwords)) data('stopwords_EN')

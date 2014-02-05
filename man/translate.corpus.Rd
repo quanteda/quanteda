@@ -20,6 +20,8 @@ function translates a the texts in a corpus by sending them
 to the google translate API.
 }
 \examples{
-{translation <- translate(original, fr, de, key='insertkeyhere')}
+\dontrun{
+translation <- translate(original, fr, de, key='insertkeyhere')
+}
 }
 

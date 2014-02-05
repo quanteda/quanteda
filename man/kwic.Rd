@@ -30,8 +30,10 @@ number, since the text may or may not be segmented using
 end-of-line delimiters.)
 }
 \examples{
+\dontrun{
 data(iebudgets)
 kwic(iebudgets, "Christmas", window=6)
+}
 }
 \author{
 Kenneth Benoit and Paul Nulty
