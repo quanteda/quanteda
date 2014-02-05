@@ -59,13 +59,13 @@ corpus.create <- createCorpus  # for compatibility
 #' @param name A name for the new attribues
 #' @return corpus A corpus with the new attributes added
 #' @export
-addAttributes <- function(corpus, newattribs, name=newattribs) {
+addCorpusAttributes <- function(corpus, newattribs, name=newattribs) {
   newattribs <- as.data.frame(newattribs, stringsAsFactors=FALSE)
   names(newattribs) <- name
   corpus$attribs <- cbind(corpus$attribs, newattribs)
   return(corpus)
 }
-corpus.add.attributes <- addAttributes
+corpus.add.attributes <- addCorpusAttributes
 
 #' create text from a string
 #'
