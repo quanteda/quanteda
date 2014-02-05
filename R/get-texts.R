@@ -1,10 +1,10 @@
-
 #' Truncate absolute filepaths to root filenames
 #'
 #' This function takes an absolute filepath and returns just the 
 #' document name
 #'
 #' @param longFilenames Absolute filenames including a full path with directory
+#' @return character vector of filenames withouth directory path
 #' @export
 #' @examples
 #' getRootFilnames('/home/paul/documents/libdem09.txt')
@@ -14,7 +14,6 @@ getRootFileNames <- function(longFilenames) {
   delim <- "/"
   osName <- (Sys.info()[['sysname']] )
   if(osName=="Windows") { delim <- "\\\\" }
-  
   splitFilenames <- strsplit(longFilenames, delim)
   return(sapply(splitFilenames, tail, n=1))
 }
@@ -26,7 +25,8 @@ getRootFileNames <- function(longFilenames) {
 #' with optional names, default being filenames
 #' returns a named vector of complete, unedited texts
 #' 
-#' @param filenames 
+#' @param filenames
+#' @return character vector of texts read from disk
 #' @export
 #' @examples
 #' getTextFiles('/home/paul/documents/libdem09.txt')
@@ -53,6 +53,7 @@ getTextFiles <- function(filenames, textnames=NULL) {
 #' 
 #' 
 #' @param dirname A directory path
+#' @return character vector of texts read from disk
 #' @export
 #' @examples
 #' getTextdir('/home/paul/documents/')
@@ -66,6 +67,7 @@ getTextDir <- function(dirname) {
 #'
 #' launches a GUI to allow the user to choose a directory from
 #' which to load all files.
+#' @return character vector of texts read from disk
 #' @export
 #' @examples
 #' getTextFiles('/home/paul/documents/libdem09.txt')
