@@ -9,7 +9,11 @@ is estimated by counting vowel clusters.}
 countSyllables(sourceText)
 }
 \arguments{
-  \item{text}{Text to be counted}
+  \item{sourceText}{Text to be counted}
+}
+\value{
+numeric A count (estimate) of the number of syllables in
+sourceText
 }
 \description{
 Returns a count of the number of syllables in the input

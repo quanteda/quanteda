@@ -26,7 +26,9 @@
 #' @param attribs A data frame of attributes that can be associated with each
 #' @export
 #' @examples
-#' budgets <- corpus.create(texts, attribs=newattribs)
+#' \dontrun{
+#' budgets <- createCorpus(texts, attribs=newattribs)
+#' }
 createCorpus <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes=NULL, attribs.labels=NULL) {
   if (is.null(names(texts))) 
     names(texts) <- paste("text", 1:length(texts), sep="")
@@ -48,21 +50,22 @@ createCorpus <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes
   class(temp.corpus) <- list("corpus", class(temp.corpus))
   return(temp.corpus)
 }
-
 corpus.create <- createCorpus  # for compatibility
 
 #' This function adds a named list of attributes to an existing corpus
 #' 
 #' @param corpus Corpus to add attributes to
-#' @param newattribs A list of new attribues should be a named list of length(corpus$texts)
+#' @param newattribs A list of new attributes should be a named list of length(corpus$texts)
 #' @param name A name for the new attribues
+#' @return corpus A corpus with the new attributes added
 #' @export
-corpus.add.attributes <- function(corpus, newattribs, name=newattribs) {
+addAttributes <- function(corpus, newattribs, name=newattribs) {
   newattribs <- as.data.frame(newattribs, stringsAsFactors=FALSE)
   names(newattribs) <- name
   corpus$attribs <- cbind(corpus$attribs, newattribs)
   return(corpus)
 }
+corpus.add.attributes <- addAttributes
 
 #' create text from a string
 #'
@@ -74,8 +77,10 @@ corpus.add.attributes <- function(corpus, newattribs, name=newattribs) {
 #' text
 #' @export
 #' @examples
-#' Cowen05 <- create.text("this is a speech",'Cowen05.txt', atts=cowen.atts)
-create.text <- function(string, fname, atts=NULL){
+#' \dontrun{
+#' Cowen05 <- createText("this is a speech",'Cowen05.txt', atts=cowen.atts)
+#' }
+createText <- function(string, fname, atts=NULL){
   # a text has a list of attribute:value pairs
   if(is.null(atts))
   {
@@ -85,6 +90,7 @@ create.text <- function(string, fname, atts=NULL){
   class(temp.text) <- list("text", class(temp.text))
   return(temp.text)
 }
+create.text <- createText # for compatibility
 
 
 
@@ -99,8 +105,10 @@ create.text <- function(string, fname, atts=NULL){
 #' text
 #' @export
 #' @examples
+#' \dontrun{
 #' budgets <- corpus.append(budgets, texts, newattribs)
-corpus.append <- function(corpus1, newtexts, newattribs, ...) {
+#' }
+corpusAppend <- function(corpus1, newtexts, newattribs, ...) {
   # 
   # should make it also allow an optional corpus2 version where two
   # corpuses could be combined with corpus.append(corp1, corp2)
@@ -111,6 +119,7 @@ corpus.append <- function(corpus1, newtexts, newattribs, ...) {
   # TODO: implement concatenation of any attribs.labels from new corpus
   return(corpus1)
 }
+corpus.append <- corpusAppend
 
 
 
@@ -124,7 +133,8 @@ corpus.append <- function(corpus1, newtexts, newattribs, ...) {
 #' @param feature type to aggregate by, default is file
 #' @export
 #' @examples
-#' fvm <- create.fvm.corpus(budgets, group="party")
+#' \dontrun{
+#' fvm <- create.fvm.corpus(budgets, group="party")}
 create.fvm.corpus <- function(corpus,
                               feature=c("word"),
                               stem=FALSE,
@@ -250,7 +260,9 @@ corpus.subset <- function(corpus, subset=NULL, select=NULL) {
 #' @param corpus Corpus to transform
 #' @param feature Feature to count
 #' @examples
+#'\dontrun{
 #' sentCorp <- corpus.reshape(corpus)
+#' }
 corpus.reshape <- function(corpus){
   sentence <- sentenceSeg(corpus$attribs$texts[[1]])
   sentenceno <- 1:length(sentence)
@@ -280,7 +292,9 @@ corpus.reshape <- function(corpus){
 #' not 'texts'
 #' @export
 #' @examples
+#' \dontrun{
 #' summary.corpus(corpus1)
+#' }
 ####### KB: NEED TO FIX THIS TO DISPLAY A SUMMARY EVEN WHEN is.null(attribs)
 #######     fixed 19:00 26 June 2013
 summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop=FALSE, output=TRUE, nmax=100) {

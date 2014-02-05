@@ -14,8 +14,10 @@
 ##' @author Kenneth Benoit and Paul Nulty
 ##' @export
 ##' @examples
+##' \dontrun{
 ##' data(iebudgets)
 ##' kwic(iebudgets, "Christmas", window=6)
+##' }
 kwic <- function(text, word, window=5) {
     UseMethod("kwic")
 }

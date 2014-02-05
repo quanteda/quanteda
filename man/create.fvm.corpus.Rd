@@ -19,6 +19,7 @@ Create a feature-value matrix from a corpus object returns
 a feature value matrix compatible with austin
 }
 \examples{
-fvm <- create.fvm.corpus(budgets, group="party")
+\dontrun{
+fvm <- create.fvm.corpus(budgets, group="party")}
 }
 

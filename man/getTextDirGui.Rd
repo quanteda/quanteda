@@ -12,6 +12,8 @@ launches a GUI to allow the user to choose a directory from
 which to load all files.
 }
 \examples{
+\dontrun{
 getTextFiles('/home/paul/documents/libdem09.txt')
+}
 }
 

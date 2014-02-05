@@ -1,8 +1,8 @@
-\name{create.text}
-\alias{create.text}
+\name{createText}
+\alias{createText}
 \title{create text from a string}
 \usage{
-create.text(string, fname, atts = NULL)
+createText(string, fname, atts = NULL)
 }
 \arguments{
   \item{text}{The string of text}
@@ -17,6 +17,8 @@ This function associates a string of text with a list of
 attribute:value pairs
 }
 \examples{
-Cowen05 <- create.text("this is a speech",'Cowen05.txt', atts=cowen.atts)
+\dontrun{
+Cowen05 <- createText("this is a speech",'Cowen05.txt', atts=cowen.atts)
+}
 }
 

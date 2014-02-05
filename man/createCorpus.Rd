@@ -24,6 +24,8 @@ text on whitespace, returning a dataframe of words and
 their frequncies
 }
 \examples{
-budgets <- corpus.create(texts, attribs=newattribs)
+\dontrun{
+budgets <- createCorpus(texts, attribs=newattribs)
+}
 }
 

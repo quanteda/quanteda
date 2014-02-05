@@ -5,7 +5,8 @@
 #' pronunciation dictionary. For any word not in the dictionary the syllable count
 #' is estimated by counting vowel clusters.
 #' 
-#' @param text Text to be counted
+#' @param sourceText Text to be counted
+#' @return numeric A count (estimate) of the number of syllables in sourceText
 #' @export
 #' @examples
 #' countSyllables("This is an example sentence.")
@@ -13,7 +14,7 @@ countSyllables <- function(sourceText){
   #load the RData file
   data(syllableCounts)
   #clean the string
-  string <- clean(text)
+  string <- clean(sourceText)
   words <- unlist(strsplit(string, " "))
   # lookup the syllables in the words found in the dictionary
   # uses vectorization and named vector indexing - not looping!

@@ -18,7 +18,6 @@ clean <- function(s, langNorm=FALSE, removeDigits=TRUE){
     s <- gsub("ß", "ss", s)
   }
   if(removeDigits){
-    #print("called")
     s <- gsub("[[:digit:][:punct:]]", "", s, perl = FALSE)
   }else{
     s <- gsub("[[:punct:]]", "", s, perl=TRUE)

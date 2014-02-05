@@ -6,8 +6,10 @@
 #' @param texts The texts to be described
 #' @export
 #' @examples
-#' texts <- "This is an example text"
+#' \dontrun{
+#' texts <- c("testing this text", "and this one")
 #' describeTexts(texts)
+#' }
 describeTexts <- function(texts, output=TRUE) {
   # need to implement subsetting here too
   string <- gsub("[[:punct:][:digit:]]", "", texts)

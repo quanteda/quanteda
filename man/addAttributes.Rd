@@ -1,16 +1,19 @@
-\name{corpus.add.attributes}
-\alias{corpus.add.attributes}
+\name{addAttributes}
+\alias{addAttributes}
 \title{This function adds a named list of attributes to an existing corpus}
 \usage{
-corpus.add.attributes(corpus, newattribs, name = newattribs)
+addAttributes(corpus, newattribs, name = newattribs)
 }
 \arguments{
   \item{corpus}{Corpus to add attributes to}
 
-  \item{newattribs}{A list of new attribues should be a
+  \item{newattribs}{A list of new attributes should be a
   named list of length(corpus$texts)}
 
   \item{name}{A name for the new attribues}
+}
+\value{
+corpus A corpus with the new attributes added
 }
 \description{
 This function adds a named list of attributes to an

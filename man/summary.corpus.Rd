@@ -19,6 +19,8 @@ about a corpus object, including attributes and metadata
 such as date of number of texts, creation and source
 }
 \examples{
+\dontrun{
 summary.corpus(corpus1)
+}
 }
 

@@ -16,6 +16,8 @@ directory and load them into a character vector using
 getTextFiles
 }
 \examples{
-getTextdir('/home/paul/documents/')
+\dontrun{
+getTextDir('/home/paul/documents/')
+}
 }
 

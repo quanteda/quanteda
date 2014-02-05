@@ -20,6 +20,8 @@ of the texts with optional names, default being filenames
 returns a named vector of complete, unedited texts
 }
 \examples{
+\dontrun{
 getTextFiles('/home/paul/documents/libdem09.txt')
+}
 }
 

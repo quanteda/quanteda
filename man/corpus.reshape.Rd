@@ -20,6 +20,8 @@ indicating the text it is taken from and it's serial number
 in that text
 }
 \examples{
+\dontrun{
 sentCorp <- corpus.reshape(corpus)
+}
 }
 

@@ -7,7 +7,7 @@
 #' @return character vector of filenames withouth directory path
 #' @export
 #' @examples
-#' getRootFilnames('/home/paul/documents/libdem09.txt')
+#' getRootFileNames('/home/paul/documents/libdem09.txt')
 getRootFileNames <- function(longFilenames) {
   ## function to return just the filename, path not included
   ## might need to detect .Platform$OS.type to change the delimiter
@@ -29,7 +29,9 @@ getRootFileNames <- function(longFilenames) {
 #' @return character vector of texts read from disk
 #' @export
 #' @examples
+#' \dontrun{
 #' getTextFiles('/home/paul/documents/libdem09.txt')
+#' }
 getTextFiles <- function(filenames, textnames=NULL) {
   # TODO detect encoding; verbose=TRUE (progress bar?)
   print(filenames)
@@ -56,7 +58,9 @@ getTextFiles <- function(filenames, textnames=NULL) {
 #' @return character vector of texts read from disk
 #' @export
 #' @examples
-#' getTextdir('/home/paul/documents/')
+#' \dontrun{
+#' getTextDir('/home/paul/documents/')
+#' }
 getTextDir <- function(dirname) {
   # get all files from a directory
   return(getTextFiles(list.files(dirname, full.names=TRUE)))
@@ -70,7 +74,9 @@ getTextDir <- function(dirname) {
 #' @return character vector of texts read from disk
 #' @export
 #' @examples
+#' \dontrun{
 #' getTextFiles('/home/paul/documents/libdem09.txt')
+#' }
 getTextDirGui <- function() {
   files <- choose.files()
   #get all files from a directory
