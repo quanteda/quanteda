@@ -1,5 +1,6 @@
 S3method(summary,corpus)
 export(addAttributes)
+export(classic.wordscores)
 export(clean)
 export(corpusAppend)
 export(countSyllables)
@@ -14,6 +15,7 @@ export(getTextFiles)
 export(getWordStat)
 export(getWordStatCSV)
 export(kwic)
+export(naiveBayesText)
 export(removeStopwords)
 export(sentenceSeg)
 export(tagPos)
@@ -21,4 +23,8 @@ export(tokenize)
 export(translate)
 export(translate.corpus)
 export(twitterTerms)
+<<<<<<< HEAD
 export(wordfishMCMC)
+=======
+export(wordscore.1d)
+>>>>>>> e59aad8c143ef4e98366d5f92bf53bb0a65e7f8b

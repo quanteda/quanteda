@@ -15,6 +15,9 @@ rescaler <- function(x, scale.min=-1, scale.max=1) {
   return((x-min(x)) * scale.factor - scale.max)
 }
 
+
+#' Naive Bayes
+#' @export
 naiveBayesText <- function(x, y, smooth=1, prior="uniform", distribution="multinomial", ...) 
 {
   x.trset <- x[!is.na(y),]
@@ -151,7 +154,8 @@ logsumexp <- function(x) {
 
 
 
-
+#' Wordscore1d
+#' @export
 wordscore.1d <- function(x, refscores=c(-1,1), smooth=1, scale="classic")
 {
   # wfm can only have two rows, two scores
@@ -243,6 +247,8 @@ feature.select <- function(wfm, trclass, freq="document", method="chi2",
 #feature.select(as.wfm(trainingset, word.margin=2), trainingclass, method="mi")
 
 # classic.wordscores() from austin
+#' Classic wordscores
+#' @export
 classic.wordscores <- function (wfm, scores) 
 {
   if (!is.wfm(wfm)) 
