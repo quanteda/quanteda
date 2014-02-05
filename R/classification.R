@@ -247,8 +247,6 @@ feature.select <- function(wfm, trclass, freq="document", method="chi2",
 #feature.select(as.wfm(trainingset, word.margin=2), trainingclass, method="mi")
 
 # classic.wordscores() from austin
-#' Classic wordscores
-#' @export
 classic.wordscores <- function (wfm, scores) 
 {
   if (!is.wfm(wfm)) 
