@@ -23,7 +23,7 @@
 ##' inside the EU.  Or, it could be a factor variable indicating the name of the country (as long as there are multiple documents
 ##' per country).  Internally, \code{wordPartition} is coerced to a factor.  \code{NULL} indicates that no paritioning of the 
 ##' word-level parameters will take place (default).
-##' @param betaPartition Boolean indicating that the \beta parameter should also be partitioned according to \code{wordPartition}.
+##' @param betaPartition Boolean indicating that the \eqn{\beta} parameter should also be partitioned according to \code{wordPartition}.
 ##' @param wordConstraints An index with a minimim length of 1, indicating which words will be set equal across 
 ##' the \code{wordPartition} factors.  \code{NULL} if \code{is.null(wordPartition)} (default).
 ##' @param verbose Turn this on for messages.  Default is \code{TRUE}.
@@ -40,19 +40,27 @@
 ##' data(iebudgets)
 ##' # extract just the 2010 debates
 ##' iebudgets2010 <- corpus.subset(iebudgets, year==2010)
+##' 
 ##' # create a document-term matrix and set the word margin to the columns
 ##' dtm <- create.fvm.corpus(iebudgets2010)
 ##' dtm <- wfm(t(dtm), word.margin=2)
+##' 
 ##' # estimate the maximium likelihood wordfish model from austin
 ##' iebudgets2010_wordfish <- wordfish(dtm, dir=c(2,1))
+##' 
 ##' # estimate the MCMC model, default values
 ##' iebudgets2010_wordfishMCMC <- wordfishMCMC(dtm, dir=c(2,1))
+##' 
 ##' # compare the estimates of \eqn{\theta_i}
 ##' plot(iebudgets2010_wordfish$theta, iebudgets2010_wordfishMCMC$theta)
+##' 
 ##' # MCMC with a partition of the word parameters according to govt and opposition
+##' # (FF and Greens were in government in during the debate over the 2010 budget)
 ##' # set the constraint on word partitioned parameters to be the same for "the" and "and"
-##' iebudgets2010_wordfishMCMC_govtopp <- wordfishMCMC(dtm, dir=c(2,1), wordPartition=(iebudgets2010$attribs$party=="FF" | iebudgets2010$attribs$party=="Green"),
-##' betaPartition=TRUE, wordConstraints=which(words(dtm)=="the"))
+##' iebudgets2010_wordfishMCMC_govtopp <- 
+##'     wordfishMCMC(dtm, dir=c(2,1), 
+##'     wordPartition=(iebudgets2010$attribs$party=="FF" | iebudgets2010$attribs$party=="Green"),
+##'     betaPartition=TRUE, wordConstraints=which(words(dtm)=="the"))
 ##' }
 wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL),
                          alphaModel=c("free", "logdoclength", "modelled"),

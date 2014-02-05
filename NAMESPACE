@@ -1,5 +1,6 @@
 S3method(subset,corpus)
 S3method(summary,corpus)
+export(addCorpusAttributes)
 export(clean)
 export(corpusAppend)
 export(countSyllables)
