@@ -5,7 +5,7 @@ data(iebudgets)
 (timeold <- system.time(wfmOld <- create.fvm.corpus(iebudgets)))
 
 # new method
-(timenew <- system.time(wfmNew <- dfm(iebudgets)))
+(timenew <- system.time(wfmNew <- dfm.corpus(iebudgets)))
 
 # hoooooowww much faster???
 cat("Time difference: the new method is", round(timeold[3]/timenew[3], 1), "times faster!")

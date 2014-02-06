@@ -67,23 +67,23 @@ wordfishMCMC(dtm, dir = c(1, 2), control = list(sigma = 3, startparams =
   \item{verbose}{Turn this on for messages.  Default is
   \code{TRUE}.}
 
-  \item{nchains}{Number of chains to run in JAGS.}
+  \item{nChains}{Number of chains to run in JAGS.}
 
-  \item{nadapt}{Adaptation iterations in JAGS.}
+  \item{nAdapt}{Adaptation iterations in JAGS.}
 
-  \item{nupdate}{Update iterations in JAGS.}
+  \item{nUpdate}{Update iterations in JAGS.}
 
-  \item{nsamples}{Number of posterior samples to draw in
+  \item{nSamples}{Number of posterior samples to draw in
   JAGS.}
 
-  \item{nthin}{Thinning parameter for drawing posterior
+  \item{nThin}{Thinning parameter for drawing posterior
   samples in JAGS.}
 
   \item{...}{Additional arguments passed through.}
 }
 \value{
-An augmented \code{wordfish} object with additional stuff
-packed in.  To be documented.
+An augmented \code{wordfish} class object with additional
+stuff packed in.  To be documented.
 }
 \description{
 \code{wordfishMCMC} implements a flexible, Bayesian model
