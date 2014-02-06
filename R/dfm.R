@@ -11,8 +11,9 @@
 #' @param groups Grouping variable for aggregating documents
 #' @param subset Expression for subsetting the corpus before processing
 #' @param verbose Get info to screen on the progress
+#' @return A data frame with row names equal to the document names and column names equal to the feature labels
 #' @export 
-#' 
+#' @author Kenneth Benoit
 #' @examples 
 #' #' \dontrun{
 #' data(iebudgets)

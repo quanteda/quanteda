@@ -23,6 +23,10 @@ dfm.corpus(corpus, feature = c("word"), stem = FALSE, stopwords = FALSE,
 
   \item{verbose}{Get info to screen on the progress}
 }
+\value{
+A data frame with row names equal to the document names and
+column names equal to the feature labels
+}
 \description{
 returns a document by feature matrix compatible with
 austin.  A typical usage would be to produce a
@@ -35,5 +39,8 @@ data(iebudgets)
 wfm <- dfm.corpus(iebudgets)
 wfmByParty2010 <- dfm.corpus(iebudgets, groups="party", subset=(year==2010))
 }
+}
+\author{
+Kenneth Benoit
 }
 
