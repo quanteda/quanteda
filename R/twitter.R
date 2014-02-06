@@ -15,7 +15,7 @@
 #' \dontrun{
 #' twCorp <- twitterTerms('example search', numResults=10)
 #' }
-twitterTerms <- function(query, oauth, numResults=50){
+twitterTerms <- function(query, oauth, numResults=50) {
   library('twitteR')
   registerTwitterOAuth(oauth)
   sea <- (searchTwitter(query, numResults))
