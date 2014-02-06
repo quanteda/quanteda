@@ -27,13 +27,13 @@
 ##' @param wordConstraints An index with a minimim length of 1, indicating which words will be set equal across 
 ##' the \code{wordPartition} factors.  \code{NULL} if \code{is.null(wordPartition)} (default).
 ##' @param verbose Turn this on for messages.  Default is \code{TRUE}.
-##' @param nchains Number of chains to run in JAGS.
-##' @param nadapt Adaptation iterations in JAGS.
-##' @param nupdate Update iterations in JAGS.
-##' @param nsamples Number of posterior samples to draw in JAGS.
-##' @param nthin Thinning parameter for drawing posterior samples in JAGS.
+##' @param nChains Number of chains to run in JAGS.
+##' @param nAdapt Adaptation iterations in JAGS.
+##' @param nUpdate Update iterations in JAGS.
+##' @param nSamples Number of posterior samples to draw in JAGS.
+##' @param nThin Thinning parameter for drawing posterior samples in JAGS.
 ##' @param ... Additional arguments passed through.
-##' @return An augmented \code{wordfish} object with additional stuff packed in.  To be documented.
+##' @return An augmented \code{wordfish} class object with additional stuff packed in.  To be documented.
 ##' @author Kenneth Benoit
 ##' @examples
 ##' \dontrun{
