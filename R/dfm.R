@@ -11,15 +11,25 @@
 #' @param groups Grouping variable for aggregating documents
 #' @param subset Expression for subsetting the corpus before processing
 #' @param verbose Get info to screen on the progress
-#' @return A data frame with row names equal to the document names and column names equal to the feature labels
+#' @return A data frame with row names equal to the document names and column names equal to the feature labels.
 #' @export 
 #' @author Kenneth Benoit
 #' @examples 
-#' #' \dontrun{
+#' \dontrun{
 #' data(iebudgets)
-#' wfm <- dfm.corpus(iebudgets)
-#' wfmByParty2010 <- dfm.corpus(iebudgets, groups="party", subset=(year==2010))
+#' wfm <- dfm(iebudgets)
+#' wfmByParty2010 <- dfm(iebudgets, groups="party", subset=(year==2010))
 #' }
+dfm <- function(corpus,
+                feature=c("word"),
+                stem=FALSE,
+                stopwords=FALSE,
+                groups=NULL,
+                subset=NULL, 
+                verbose=TRUE) {
+    UseMethod("dfm")
+}
+
 dfm.corpus <- function(corpus,
                        feature=c("word"),
                        stem=FALSE,
