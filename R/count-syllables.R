@@ -12,13 +12,15 @@
 #' countSyllables("This is an example sentence.")
 countSyllables <- function(sourceText){
   #load the RData file
-  data(syllableCounts)
+  data(sylCounts)
   #clean the string
   string <- clean(sourceText)
-  words <- unlist(strsplit(string, " "))
+  words <- tokenize(string)
+  print(words)
   # lookup the syllables in the words found in the dictionary
   # uses vectorization and named vector indexing - not looping!
   n.syllables <- counts[words]
+  print(n.syllables)
   # name the syllable count vector with the words
   names(n.syllables) <- words
   # count the syllables in each word?
