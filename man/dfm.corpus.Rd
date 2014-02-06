@@ -1,8 +1,6 @@
 \name{dfm.corpus}
 \alias{dfm.corpus}
-\title{Create a document-feature matrix from a corpus object
-returns a document by feature matrix compatible with austin.  A typical usage would
-be to produce a word-frequency matrix where the cells are counts of words by document.}
+\title{Create a document-feature matrix from a corpus object}
 \usage{
 dfm.corpus(corpus, feature = c("word"), stem = FALSE, stopwords = FALSE,
   groups = NULL, subset = NULL, verbose = TRUE)
@@ -26,7 +24,6 @@ dfm.corpus(corpus, feature = c("word"), stem = FALSE, stopwords = FALSE,
   \item{verbose}{Get info to screen on the progress}
 }
 \description{
-Create a document-feature matrix from a corpus object
 returns a document by feature matrix compatible with
 austin.  A typical usage would be to produce a
 word-frequency matrix where the cells are counts of words

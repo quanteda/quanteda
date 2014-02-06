@@ -1,6 +1,6 @@
 
 #' Create a document-feature matrix from a corpus object
-
+#'
 #' returns a document by feature matrix compatible with austin.  A typical usage would
 #' be to produce a word-frequency matrix where the cells are counts of words by document.
 #' 
