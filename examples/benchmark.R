@@ -29,7 +29,7 @@ for (numDocs in testSizes){
   movies <- corpusAppend(movies, posTexts, atts)
   
   Rprof(append = FALSE)
-  toks <- dfm.corpus(movies)
+  toks <- dfm(movies)
   Rprof(NULL)
   newTimes <- c(newTimes, summaryRprof()$sampling.time)
 

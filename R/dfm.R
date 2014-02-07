@@ -1,4 +1,3 @@
-
 #' Create a document-feature matrix from a corpus object
 #'
 #' returns a document by feature matrix compatible with austin.  A typical usage would
