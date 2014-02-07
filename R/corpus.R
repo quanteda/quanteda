@@ -28,7 +28,7 @@
 #' \dontrun{
 #' budgets <- createCorpus(texts, attribs=newattribs)
 #' }
-createCorpus <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes=NULL, attribs.labels=NULL) {
+createCorpus <- corpus.create <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes=NULL, attribs.labels=NULL) {
   if (is.null(names(texts))) 
     names(texts) <- paste("text", 1:length(texts), sep="")
   if (is.null(source)) 
@@ -49,7 +49,6 @@ createCorpus <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes
   class(temp.corpus) <- list("corpus", class(temp.corpus))
   return(temp.corpus)
 }
-corpus.create <- createCorpus  # for compatibility
 
 #' This function adds a named list of attributes to an existing corpus
 #' 

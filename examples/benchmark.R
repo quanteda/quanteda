@@ -17,7 +17,7 @@ for (numDocs in testSizes){
   atts <- data.frame(vals)
   names(atts)<-c("lab")
   negTexts <- texts[1:(numDocs/2)]
-  movies <- createCorpus(negTexts, attribs=atts)
+  movies <- corpus.create(negTexts, attribs=atts)
   
   texts <- getTextDir("~/Dropbox/QUANTESS/corpora/movieReviews/smaller/pos/")
   vals <-vector()
