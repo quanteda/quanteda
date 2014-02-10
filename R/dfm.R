@@ -11,6 +11,7 @@
 #' @param subset Expression for subsetting the corpus before processing
 #' @param verbose Get info to screen on the progress
 #' @return A data frame with row names equal to the document names and column names equal to the feature labels.
+#' @rdname dfm
 #' @export 
 #' @author Kenneth Benoit
 #' @examples 
@@ -29,6 +30,9 @@ dfm <- function(corpus,
     UseMethod("dfm")
 }
 
+#' @rdname dfm
+#' @method dfm corpus
+#' @S3method dfm corpus
 dfm.corpus <- function(corpus,
                        feature=c("word"),
                        stem=FALSE,

@@ -1,9 +1,13 @@
 \name{dfm}
 \alias{dfm}
+\alias{dfm.corpus}
 \title{Create a document-feature matrix from a corpus object}
 \usage{
 dfm(corpus, feature = c("word"), stem = FALSE, stopwords = FALSE,
   groups = NULL, subset = NULL, verbose = TRUE)
+
+\method{dfm}{corpus}(corpus, feature = c("word"), stem = FALSE,
+  stopwords = FALSE, groups = NULL, subset = NULL, verbose = TRUE)
 }
 \arguments{
   \item{corpus}{Corpus from which to generate the

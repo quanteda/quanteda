@@ -13,7 +13,6 @@
 #     notes (default is NULL, can be user-supplied)
 
 
-
 #' create a new corpus - a list containing texts and named attributes
 
 #' This function takes a text (in the form of a character vectors),

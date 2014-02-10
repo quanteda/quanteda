@@ -87,6 +87,8 @@ predictold.naivebayes <- function(object, newdata=NULL, log.probs=FALSE, normali
 
 ## does not check that we have the same set of words
 ## log.probs: would you like the class conditional sums of log prior + sum log word given class?
+#' Naive Bayes
+#' @export
 predict.naivebayes <- function(object, newdata=NULL, scores=c(-1,1)) {
   bayesscore.word <- NULL
   bayesscore.doc <- NULL
