@@ -7,8 +7,8 @@ vals[1:1000] <- "neg"
 vals[1001:2000] <- "pos"
 atts <- data.frame(vals)
 names(atts)<-c("label")
-movies <- corpus.create(texts, attribs=atts)
+movies <- createCorpus(texts, attribs=atts)
 
-contexts <- kwic.corpus(movies, "great")
+contexts <- kwic(movies, "great")
 
-#fvm <- create.fvm.corpus(movies, group="label")
+dfm <- dfm(movies, group="label")

@@ -66,7 +66,7 @@ dfm.corpus <- function(corpus,
         require(SnowballC)
         tokenizedTexts <- wordStem(tokenizedTexts)
     }
-
+    print(length)
     alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
                             words = unlist(tokenizedTexts, use.names=FALSE))
     dfm <- as.data.frame.matrix(table(alltokens$docs, alltokens$words))
