@@ -28,16 +28,14 @@
 #' \dontrun{
 #' budgets <- createCorpus(texts, attribs=newattribs)
 #' }
-createCorpus <- corpus.create <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes=NULL, attribs.labels=NULL) {
+createCorpus <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes=NULL, attribs.labels=NULL) {
   if (is.null(names(texts))) 
     names(texts) <- paste("text", 1:length(texts), sep="")
   if (is.null(source)) 
     source <- paste(getwd(), "/* ", "on ",  Sys.info()["machine"], " by ", Sys.info()["user"], sep="")
   created <- date()
   metadata <- c(source=source, created=created, notes=notes)
-  
-  
-  
+    
   if (is.null(attribs)) {
     attribs <- data.frame(texts, row.names=names(texts), 
                           check.rows=TRUE, stringsAsFactors=FALSE)
@@ -49,6 +47,8 @@ createCorpus <- corpus.create <- function(texts, textnames=NULL, attribs=NULL, s
   class(temp.corpus) <- list("corpus", class(temp.corpus))
   return(temp.corpus)
 }
+
+
 
 #' This function adds a named list of attributes to an existing corpus
 #' 
@@ -63,34 +63,6 @@ addCorpusAttributes <- function(corpus, newattribs, name=newattribs) {
   corpus$attribs <- cbind(corpus$attribs, newattribs)
   return(corpus)
 }
-corpus.add.attributes <- addCorpusAttributes
-
-#' create text from a string
-#'
-#' This function associates a string of text with a list of attribute:value pairs
-#' 
-#' @param text The string of text
-#' @param fname The name of the file containing the text
-#' @param atts A data frame of attributes that can be associated with each
-#' text
-#' @export
-#' @examples
-#' \dontrun{
-#' Cowen05 <- createText("this is a speech",'Cowen05.txt', atts=cowen.atts)
-#' }
-createText <- function(string, fname, atts=NULL){
-  # a text has a list of attribute:value pairs
-  if(is.null(atts))
-  {
-    atts <- list(fname=fname)   
-  }
-  temp.text <- list(string=string, atts=atts)
-  class(temp.text) <- list("text", class(temp.text))
-  return(temp.text)
-}
-create.text <- createText # for compatibility
-
-
 
 #' function to add new texts and attributes to an existing corpus
 
@@ -106,7 +78,7 @@ create.text <- createText # for compatibility
 #' \dontrun{
 #' budgets <- corpus.append(budgets, texts, newattribs)
 #' }
-corpusAppend <- function(corpus1, newtexts, newattribs, ...) {
+append.corpus <- function(corpus1, newtexts, newattribs, ...) {
   # 
   # should make it also allow an optional corpus2 version where two
   # corpuses could be combined with corpus.append(corp1, corp2)
@@ -117,8 +89,141 @@ corpusAppend <- function(corpus1, newtexts, newattribs, ...) {
   # TODO: implement concatenation of any attribs.labels from new corpus
   return(corpus1)
 }
-corpus.append <- corpusAppend
 
+
+
+corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=FALSE) {
+  # This is the "inner" function to be called by other functions
+  # to return a subset directly, use corpus.subset
+  
+  # The select argument exists only for the methods for data frames and matrices. 
+  # It works by first replacing column names in the selection expression with the 
+  # corresponding column numbers in the data frame and then using the resulting 
+  # integer vector to index the columns. This allows the use of the standard indexing 
+  # conventions so that for example ranges of columns can be specified easily, 
+  # or single columns can be dropped
+  # as in:
+  # subset(airquality, Temp > 80, select = c(Ozone, Temp))
+  # subset(airquality, Day == 1, select = -Temp)
+  # subset(airquality, select = Ozone:Wind)
+  #'@export
+    
+    if (is.null(subsetExpr)) 
+      rows <- TRUE
+    else {
+      rows <- eval(subsetExpr, corpus$attribs, parent.frame())
+      if (!is.logical(rows)) 
+        stop("'subset' must evaluate to logical")
+      rows <- rows & !is.na(rows)
+    }
+    
+    if (is.null(selectExpr)) 
+      vars <- TRUE
+    else {
+      
+      nl <- as.list(seq_along(corpus$attribs))
+      names(nl) <- names(corpus$attribs)
+      vars <- c(1, eval(selectExpr, nl, parent.frame()))
+    }
+    # implement subset, select, and drop
+    corpus$attribs <- corpus$attribs[rows, vars, drop=drop]
+    return(corpus)
+}
+
+
+#' extract a subset of a corpus
+#' 
+#' Works just like the normal subset command but for corpus objects
+#' 
+#' @param corpus corpus object to be subsetted.
+#' @param subset logical expression indicating elements or rows to keep: missing values are taken as false.
+#' @param select expression, indicating the attributes to select from the corpus
+#' 
+#' @export
+#' @examples
+#' data(iebudgets)
+#' iebudgets2010 <- subset(iebudgets, year==2010)
+#' summary(iebudgets2010)
+#' iebudgetsLenihan <- subset(iebudgets, speaker="Lenihan", select=c(speaker, year))
+#' summary(iebudgetsLenihan)
+#' 
+subset.corpus <- function(corpus, subset=NULL, select=NULL) {
+  tempcorp <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
+  return(tempcorp)
+}
+
+
+#' Transform a corpus by splitting texts into sentences
+
+#' Each text in the corpus is split into sentences, and each
+#' sentence becomes a standalone text, with attributes indicating
+#' the text it is taken from and it's serial number in that text
+#' 
+#' @param corpus Corpus to transform
+#' @param feature Feature to count
+#' @examples
+#'\dontrun{
+#' sentCorp <- corpus.reshape(corpus)
+#' }
+corpus.reshape <- function(corpus){
+  sentence <- sentenceSeg(corpus$attribs$texts[[1]])
+  sentenceno <- 1:length(sentence)
+  sourcetext <- rep(row.names(corpus$attribs)[[1]], length(sentence))
+  atts <- data.frame(sourcetext, sentenceno)
+  # print(names(atts))
+  sentCorp <- corpus.create(unlist(sentence), attribs=atts)
+  # print(names(sentCorp$attribs))
+  for(i in 2:nrow(corpus$attribs)){
+    sentence <- sentenceSeg(corpus$attribs$texts[[i]])
+    sentenceno <- 1:length(sentence)
+    sourcetext <- rep(row.names(corpus$attribs)[[i]], length(sentence))
+    atts <- data.frame(sourcetext, sentenceno)
+    
+    sentCorp<-corpus.append(sentCorp, unlist(sentence), atts)
+  }
+  return(sentCorp)
+}
+
+#' Display a summary of a corpus object
+
+#' Displays information about a corpus object, including attributes and 
+#' metadata such as date of number of texts, creation and source
+#' 
+#' @param corpus An existing corpus to be summarized
+#' @param texts The name of the attribute containing the corpus texts, if
+#' not 'texts'
+#' @export
+#' @examples
+#' \dontrun{
+#' summary.corpus(corpus1)
+#' }
+####### KB: NEED TO FIX THIS TO DISPLAY A SUMMARY EVEN WHEN is.null(attribs)
+#######     fixed 19:00 26 June 2013
+summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop=FALSE, output=TRUE, nmax=100) {
+  corpus <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
+  cat("Corpus object contains", nrow(corpus$attribs), "texts.\n\n")
+  # allow user to set the column or variable which identifies the texts to summarize
+  texts <- corpus$attribs[,texts]
+  attribs <- as.data.frame(corpus$attribs[,-1])
+  #print(as.character(substitute(select))[2])
+  if (ncol(attribs)==1) names(attribs) <- as.character(substitute(select))[2]
+  #print(names(attribs))
+  names(texts) <- rownames(corpus$attribs)
+  print(head(cbind((dtexts <- describeTexts(texts, output=FALSE)),
+                   attribs), 
+             nmax))
+  cat("\nSource:  ", corpus$metadata["source"], ".\n", sep="")
+  cat("Created: ", corpus$metadata["created"], ".\n", sep="")
+  cat("Notes:   ", corpus$metadata["notes"], ".\n\n", sep="")
+  # invisibly pass the summary of the texts from describetexts()
+  return(invisible(dtexts))
+}
+
+
+
+#
+# FUNCTIONS BELOW THIS POINT ARE DEPRECATED
+#
 
 
 
@@ -202,132 +307,3 @@ create.fvm.corpus <- function(corpus,
   }
   return(fvm)
 }
-
-
-
-corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=FALSE) {
-  # This is the "inner" function to be called by other functions
-  # to return a subset directly, use corpus.subset
-  
-  # The select argument exists only for the methods for data frames and matrices. 
-  # It works by first replacing column names in the selection expression with the 
-  # corresponding column numbers in the data frame and then using the resulting 
-  # integer vector to index the columns. This allows the use of the standard indexing 
-  # conventions so that for example ranges of columns can be specified easily, 
-  # or single columns can be dropped
-  # as in:
-  # subset(airquality, Temp > 80, select = c(Ozone, Temp))
-  # subset(airquality, Day == 1, select = -Temp)
-  # subset(airquality, select = Ozone:Wind)
-  #'@export
-    
-    if (is.null(subsetExpr)) 
-      rows <- TRUE
-    else {
-      rows <- eval(subsetExpr, corpus$attribs, parent.frame())
-      if (!is.logical(rows)) 
-        stop("'subset' must evaluate to logical")
-      rows <- rows & !is.na(rows)
-    }
-    
-    if (is.null(selectExpr)) 
-      vars <- TRUE
-    else {
-      
-      nl <- as.list(seq_along(corpus$attribs))
-      names(nl) <- names(corpus$attribs)
-      vars <- c(1, eval(selectExpr, nl, parent.frame()))
-    }
-    # implement subset, select, and drop
-    corpus$attribs <- corpus$attribs[rows, vars, drop=drop]
-    return(corpus)
-}
-
-#' extract a subset of a corpus
-#' 
-#' Works just like the normal subset command but for corpus objects
-#' 
-#' @param corpus corpus object to be subsetted.
-#' @param subset logical expression indicating elements or rows to keep: missing values are taken as false.
-#' @param select expression, indicating the attributes to select from the corpus
-#' 
-#' @export
-#' @examples
-#' data(iebudgets)
-#' iebudgets2010 <- subset(iebudgets, year==2010)
-#' summary(iebudgets2010)
-#' iebudgetsLenihan <- subset(iebudgets, speaker="Lenihan", select=c(speaker, year))
-#' summary(iebudgetsLenihan)
-#' 
-subset.corpus <- corpus.subset <- function(corpus, subset=NULL, select=NULL) {
-  tempcorp <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
-  return(tempcorp)
-}
-
-
-#' Transform a corpus by splitting texts into sentences
-
-#' Each text in the corpus is split into sentences, and each
-#' sentence becomes a standalone text, with attributes indicating
-#' the text it is taken from and it's serial number in that text
-#' 
-#' @param corpus Corpus to transform
-#' @param feature Feature to count
-#' @examples
-#'\dontrun{
-#' sentCorp <- corpus.reshape(corpus)
-#' }
-corpus.reshape <- function(corpus){
-  sentence <- sentenceSeg(corpus$attribs$texts[[1]])
-  sentenceno <- 1:length(sentence)
-  sourcetext <- rep(row.names(corpus$attribs)[[1]], length(sentence))
-  atts <- data.frame(sourcetext, sentenceno)
-  # print(names(atts))
-  sentCorp <- corpus.create(unlist(sentence), attribs=atts)
-  # print(names(sentCorp$attribs))
-  for(i in 2:nrow(corpus$attribs)){
-    sentence <- sentenceSeg(corpus$attribs$texts[[i]])
-    sentenceno <- 1:length(sentence)
-    sourcetext <- rep(row.names(corpus$attribs)[[i]], length(sentence))
-    atts <- data.frame(sourcetext, sentenceno)
-    
-    sentCorp<-corpus.append(sentCorp, unlist(sentence), atts)
-  }
-  return(sentCorp)
-}
-
-#' Display a summary of a corpus object
-
-#' Displays information about a corpus object, including attributes and 
-#' metadata such as date of number of texts, creation and source
-#' 
-#' @param corpus An existing corpus to be summarized
-#' @param texts The name of the attribute containing the corpus texts, if
-#' not 'texts'
-#' @export
-#' @examples
-#' \dontrun{
-#' summary.corpus(corpus1)
-#' }
-####### KB: NEED TO FIX THIS TO DISPLAY A SUMMARY EVEN WHEN is.null(attribs)
-#######     fixed 19:00 26 June 2013
-summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop=FALSE, output=TRUE, nmax=100) {
-  corpus <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
-  cat("Corpus object contains", nrow(corpus$attribs), "texts.\n\n")
-  # allow user to set the column or variable which identifies the texts to summarize
-  texts <- corpus$attribs[,texts]
-  attribs <- as.data.frame(corpus$attribs[,-1])
-  #print(as.character(substitute(select))[2])
-  if (ncol(attribs)==1) names(attribs) <- as.character(substitute(select))[2]
-  #print(names(attribs))
-  names(texts) <- rownames(corpus$attribs)
-  print(head(cbind((dtexts <- describeTexts(texts, output=FALSE)),
-                   attribs), 
-             nmax))
-  cat("\nSource:  ", corpus$metadata["source"], ".\n", sep="")
-  cat("Created: ", corpus$metadata["created"], ".\n", sep="")
-  cat("Notes:   ", corpus$metadata["notes"], ".\n\n", sep="")
-  # invisibly pass the summary of the texts from describetexts()
-  return(invisible(dtexts))
-}
-
