@@ -63,6 +63,10 @@ addCorpusAttributes <- function(corpus, newattribs, name=newattribs) {
   return(corpus)
 }
 
+
+
+
+
 #' function to add new texts and attributes to an existing corpus
 
 #' Accepts a list of texts and a list of associated attributes and 
@@ -77,12 +81,12 @@ addCorpusAttributes <- function(corpus, newattribs, name=newattribs) {
 #' \dontrun{
 #' budgets <- corpus.append(budgets, texts, newattribs)
 #' }
-append.corpus <- function(corpus1, newtexts, newattribs, ...) {
+appendCorpus <- function(corpus1, newtexts, newattribs, ...) {
   # 
   # should make it also allow an optional corpus2 version where two
   # corpuses could be combined with corpus.append(corp1, corp2)
   # if we can verify the same attribute set.
-  tempcorpus <- corpus.create(newtexts, attribs=newattribs)
+  tempcorpus <- createCorpus(newtexts, attribs=newattribs)
   corpus1$attribs <- rbind(corpus1$attribs, tempcorpus$attribs)
   #corpus1$attribs$texts <- rbind(corpus1$attribs$texts, tempcorpus$attribs$texts)
   # TODO: implement concatenation of any attribs.labels from new corpus

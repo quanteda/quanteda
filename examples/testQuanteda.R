@@ -10,7 +10,7 @@ newattribs <-
 names(newattribs) <- 
   c("year", "debate", "no", "fname", "speaker", "party")
 newattribs$party <- gsub(".txt", "", newattribs$party)
-iebudgets <- corpus.create(texts, attribs=newattribs)
+iebudgets <- createCorpus(texts, attribs=newattribs)
 
 texts <- getTextDir("~/Dropbox/QUANTESS/corpora/iebudgets/budget_2009sup")
 parts <- strsplit(getRootFileNames(names(texts)), "_")
@@ -19,7 +19,7 @@ newattribs <-
 names(newattribs) <- 
   c("year", "debate", "no", "fname", "speaker", "party")
 newattribs$party <- gsub(".txt", "", newattribs$party)
-iebudgets <- corpus.append(iebudgets, texts, newattribs)
+iebudgets <- appendCorpus(iebudgets, texts, newattribs)
 
 texts <- getTextDir("~/Dropbox/QUANTESS/corpora/iebudgets/budget_2010")
 parts <- strsplit(getRootFileNames(names(texts)), "_")
@@ -28,7 +28,7 @@ newattribs <-
 names(newattribs) <- 
   c("year", "debate", "no", "fname", "speaker", "party")
 newattribs$party <- gsub(".txt", "", newattribs$party)
-iebudgets <- corpus.append(iebudgets, texts, newattribs)
+iebudgets <- appendCorpus(iebudgets, texts, newattribs)
 
 texts <- getTextDir("~/Dropbox/QUANTESS/corpora/iebudgets/budget_2011")
 parts <- strsplit(getRootFileNames(names(texts)), "_")
@@ -37,7 +37,7 @@ newattribs <-
 names(newattribs) <- 
   c("year", "debate", "no", "fname", "speaker", "party")
 newattribs$party <- gsub(".txt", "", newattribs$party)
-iebudgets <- corpus.append(iebudgets, texts, newattribs)
+iebudgets <- appendCorpus(iebudgets, texts, newattribs)
 
 texts <- getTextDir("~/Dropbox/QUANTESS/corpora/iebudgets/budget_2012")
 parts <- strsplit(getRootFileNames(names(texts)), "_")
@@ -46,6 +46,6 @@ newattribs <-
 names(newattribs) <- 
   c("year", "debate", "no", "fname", "speaker", "party")
 newattribs$party <- gsub(".txt", "", newattribs$party)
-iebudgets <- corpus.append(iebudgets, texts, newattribs)
+iebudgets <- appendCorpus(iebudgets, texts, newattribs)
 
-fvm <- create.fvm.corpus(iebudgets, group="party")
+fvm <- dfm(iebudgets, group="party")
