@@ -1,4 +1,7 @@
 S3method(dfm,corpus)
+S3method(kwic,character)
+S3method(kwic,corpus)
+S3method(predict,naivebayes)
 S3method(subset,corpus)
 S3method(summary,corpus)
 export(addCorpusAttributes)

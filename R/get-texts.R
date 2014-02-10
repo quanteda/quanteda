@@ -38,7 +38,7 @@ getTextFiles <- function(filenames, textnames=NULL) {
   textsvec <- c()  
   # changed from readChar to readLines
   for (f in filenames) {
-    textsvec = c(textsvec, paste(readLines(f), collapse="\n"))
+    textsvec = c(textsvec, paste(suppressWarnings(readLines(f)), collapse="\n"))
   }
   # name the vector with the filename by default, otherwise assign "names"
   ifelse(is.null(textnames), 

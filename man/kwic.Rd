@@ -1,8 +1,14 @@
 \name{kwic}
 \alias{kwic}
+\alias{kwic.character}
+\alias{kwic.corpus}
 \title{List key words in context from a text or a corpus of texts.}
 \usage{
 kwic(text, word, window = 5)
+
+\method{kwic}{character}(text, word, window = 5)
+
+\method{kwic}{corpus}(corpus, word, window = 5)
 }
 \arguments{
   \item{text}{A text character scalar or a quanteda corpus.

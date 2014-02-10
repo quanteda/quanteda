@@ -12,6 +12,7 @@
 ##' dataframe will be named with the word index position, or the text name and the index position
 ##' for a corpus object.  
 ##' @author Kenneth Benoit and Paul Nulty
+##' @rdname kwic
 ##' @export
 ##' @examples
 ##' \dontrun{
@@ -22,6 +23,10 @@ kwic <- function(text, word, window=5) {
     UseMethod("kwic")
 }
 
+
+#' @rdname kwic
+#' @method kwic character
+#' @S3method kwic character
 kwic.character <- function(text, word, window=5) {
     # don't use tokenize since we want to preserve case and punctuation here
     # grep needed to get words that end in punctuation mark or in quotes
@@ -47,6 +52,10 @@ kwic.character <- function(text, word, window=5) {
     return(result)
 }
 
+
+#' @rdname kwic
+#' @method kwic corpus
+#' @S3method kwic corpus
 kwic.corpus <- function(corpus, word, window=5){
     contexts <- sapply(corpus$attribs$texts, kwic, word=word, window=window, USE.NAMES=FALSE)
     if (length(contexts)==1 && is.na(contexts)) return(NA)
