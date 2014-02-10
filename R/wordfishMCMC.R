@@ -77,6 +77,7 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
     if (!is.wfm(dtm)) dtm <- wfm(dtm, word.margin=2) # rows are documents, columns are "words"
     if (wordmargin(dtm)==1) dtm <- as.wfm(t(dtm))    # coerce to docs by words
     
+    
     ## the alpha estimation approach - take default argument or user supplied value
     alphaModel <- match.arg(alphaModel) 
     # if (!(alpha %in% c("free", "logdoclength", "modelled"))) stop("Alpha must be one of free, logdoclength, or  modelled")
@@ -243,33 +244,39 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
                                   n.iter=nSamples, thin=nThin)))
     
     ## save the samples for testing
-    #save(jags.samples, file="jsPre.Rdata")
+    save(jags.samples, file="jsPre.Rdata")
   
     ## reorder the words back to the original ordering, if words were partitioned
     if (!is.null(wordPartition)) {
         # put psi and beta samples back in original order
         # need to build an index for as many constraints are there are
-        psi.original.index <- order(original.word.index)
-        for (i in 1:(length(wordConstraints)))
-            psi.original.index <- c(psi.original.index, order(original.word.index) + length(retval$words)*i)
+        # create a new index to replace the values, equal in length to the new word-level parameters
+        psibeta.original.index <- order(original.word.index)
+        for (i in 1:(max(wordPartition)-1)) {
+            psibeta.original.index <- c(psibeta.original.index, order(original.word.index) + length(words(dtm))*i)
+        }
         jags.samples[[1]][,grep("^psi", colnames(jags.samples[[1]]))] <-
-            jags.samples[[1]][,grep("^psi", colnames(jags.samples[[1]]))[psi.original.index]]
+            jags.samples[[1]][,grep("^psi", colnames(jags.samples[[1]]))[psibeta.original.index]]
+        # only reorder the first V (number of words) set for beta unless betaPartition is true,
+        # in which case reorder all the parameters just as with psi
         jags.samples[[1]][,grep("^beta", colnames(jags.samples[[1]]))] <-
-            jags.samples[[1]][,grep("^beta", colnames(jags.samples[[1]]))[order(original.word.index)]]
+            jags.samples[[1]][,grep("^beta", colnames(jags.samples[[1]]))[ifelse(betaPartition, psibeta.original.index, order(original.word.index))]]
         dtm <- dtm[, order(original.word.index)]
     }
 
     ## save the samples for testing
-    #jags.samples.Post <- jags.samples
-    #save(jags.samples.Post, file="jsPost.Rdata")
+    jags.samples.Post <- jags.samples
+    save(jags.samples.Post, file="jsPost.Rdata")
   
     s <- summary(jags.samples)
     retval <- list(dir=dir,
                    theta = s$statistics[grep("^theta", rownames(s$statistics)), "Mean"],
-                   alpha = ifelse(alphaModel=="logdoclength", log(apply(dtm, 1, sum)), s$statistics[grep("^alpha", rownames(s$statistics)), "Mean"]),
+                   alpha = ifelse(alphaModel=="logdoclength", log(apply(dtm, 1, sum)), 
+                                  s$statistics[grep("^alpha", rownames(s$statistics)), "Mean"]),
                    beta = s$statistics[grep("^beta", rownames(s$statistics)), "Mean"],
                    psi = s$statistics[grep("^psi", rownames(s$statistics)), "Mean"],
-                   docs = docs(dtm), words=words(dtm),
+                   docs = docs(dtm), 
+                   words = words(dtm),
                    tau.beta = s$statistics[grep("^tau.beta", rownames(s$statistics)), "Mean"],
                    tau.alpha = s$statistics[grep("^tau.alpha", rownames(s$statistics)), "Mean"],
                    tau.psi = s$statistics[grep("^tau.psi", rownames(s$statistics)), "Mean"], 
@@ -282,7 +289,7 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
                    wordConstraints = wordConstraints,
                    time.elapsed=(proc.time() - start.time)[3])
     ## save for testing
-    save(retval, file="retval.Rdata")
+    #save(retval, file="retval.Rdata")
   
     if (alphaModel=="modelled") {
         retval$alphaData <- alphaData
@@ -438,7 +445,10 @@ wfmodel_psiWordPartition_alphaFree <- "
             raw.beta[j] ~ dnorm(0, tau.beta)
             beta[j] <- direction.constraint * raw.beta[j]
             psi[j, 1] ~ dnorm(psi.mean[j], tau.psi.mean)
-            psi[j, 2] <- psi[j, 1]
+            # set the rest of the categories for the constraint equal to the first
+            for (k in 2:C) {
+                psi[j, k] <- psi[j, 1]
+            }
             psi.mean[j] ~ dnorm(0, tau.psi)
         }
         # loop over remaining words
@@ -447,7 +457,7 @@ wfmodel_psiWordPartition_alphaFree <- "
             beta[j] <- direction.constraint * raw.beta[j]
             # loop for countries to define psi
             for (c in 1:C) {
-                psi[j,c] ~ dnorm(psi.mean[j], tau.psi.mean)
+                psi[j, c] ~ dnorm(psi.mean[j], tau.psi.mean)
             }
             psi.mean[j] ~ dnorm(0, tau.psi)
         }
@@ -487,11 +497,14 @@ wfmodel_psibetaWordPartition_alphaFree <- "
         for (j in 1:kConstraints) {
             raw.beta[j, 1] ~ dnorm(beta.mean[j], tau.beta)
             beta.mean[j] ~ dnorm(0, tau.beta)
-            raw.beta[j, 2] <- raw.beta[j, 1]
             beta[j, 1] <- direction.constraint * raw.beta[j, 1]
-            beta[j, 2] <- beta[j, 1]
             psi[j, 1] ~ dnorm(psi.mean[j], tau.psi.mean)
-            psi[j, 2] <- psi[j, 1]
+            # set the rest of the categories for the constraint equal to the first
+            for (k in 2:C) {
+                psi[j, k] <- psi[j, 1]
+                beta[j, k] <- beta[j, 1]
+                raw.beta[j, k] <- raw.beta[j, 1]
+            }
             psi.mean[j] ~ dnorm(0, tau.psi)
         }
         # loop over remaining words
@@ -510,58 +523,6 @@ wfmodel_psibetaWordPartition_alphaFree <- "
         direction.constraint <- 2*(step(raw.theta[dir[2]]-raw.theta[dir[1]]))-1
         mu.alpha ~ dnorm(0, .01)
         tau.alpha ~ dgamma(.01, .01)
-        tau.beta ~ dgamma(.01, .01)
-        tau.beta.mean ~ dgamma(.01, .01)
-        tau.psi ~ dgamma(.01, .01)
-        tau.psi.mean ~ dgamma(.01, .01)
-    }"
-
-wfmodel_psibetaWordPartition_alphaLogDocLength <- "
-    data {
-        # input must always be documents in rows, words in columns
-        dimensions <- dim(Y)
-        N <- dimensions[1]
-        V <- dimensions[2]
-        C <- max(wordPartition)
-        kConstraints <- length(wordConstraints)
-    }
-    model {
-        # loop over documents
-        for(i in 1:N) {
-            # loop over words
-            for (j in 1:V) {
-                log(rate[i,j]) <- log(Ni[i]) + psi[j, wordPartition[i]] + theta[i] * beta[j, wordPartition[i]]
-                Y[i, j] ~ dpois(rate[i, j])
-            }
-            raw.theta[i] ~ dnorm(0, 1)
-            theta[i] <- direction.constraint * raw.theta[i]
-        }
-        
-        # loop over words where partition params are equal by constraint
-        for (j in 1:kConstraints) {
-            raw.beta[j, 1] ~ dnorm(beta.mean[j], tau.beta)
-            beta.mean[j] ~ dnorm(0, tau.beta)
-            raw.beta[j, 2] <- raw.beta[j, 1]
-            beta[j, 1] <- direction.constraint * raw.beta[j, 1]
-            beta[j, 2] <- beta[j, 1]
-            psi[j, 1] ~ dnorm(psi.mean[j], tau.psi.mean)
-            psi[j, 2] <- psi[j, 1]
-            psi.mean[j] ~ dnorm(0, tau.psi)
-        }
-        # loop over remaining words
-        for (j in 2:V) {
-            # loop for countries to define psi
-            for (c in 1:C) {
-                psi[j, c] ~ dnorm(psi.mean[j], tau.psi.mean)
-                raw.beta[j, c] ~ dnorm(beta.mean[j], tau.beta)
-                beta[j, c] <- direction.constraint * raw.beta[j, c]
-            }
-            psi.mean[j] ~ dnorm(0, tau.psi)
-            beta.mean[j] ~ dnorm(0, tau.beta)
-        }
-         
-        # stuff for identification, and direction constraints
-        direction.constraint <- 2*(step(raw.theta[dir[2]]-raw.theta[dir[1]]))-1
         tau.beta ~ dgamma(.01, .01)
         tau.beta.mean ~ dgamma(.01, .01)
         tau.psi ~ dgamma(.01, .01)
@@ -604,7 +565,10 @@ wfmodel_psiWordPartition_alphaModelled <- "
             raw.beta[j] ~ dnorm(0, tau.beta)
             beta[j] <- direction.constraint * raw.beta[j]
             psi[j, 1] ~ dnorm(psi.mean[j], tau.psi.mean)
-            psi[j, 2] <- psi[j, 1]
+            # set the rest of the categories for the constraint equal to the first
+            for (k in 2:C) {
+                psi[j, k] <- psi[j, 1]
+            }
             psi.mean[j] ~ dnorm(0, tau.psi)
         }
         # loop over remaining words
@@ -625,7 +589,63 @@ wfmodel_psiWordPartition_alphaModelled <- "
         tau.psi ~ dgamma(.01, .01)
         tau.psi.mean ~ dgamma(.01, .01)
     }"
-    
+
+wfmodel_psibetaWordPartition_alphaLogDocLength <- "
+    data {
+        # input must always be documents in rows, words in columns
+        dimensions <- dim(Y)
+        N <- dimensions[1]
+        V <- dimensions[2]
+        C <- max(wordPartition)
+        kConstraints <- length(wordConstraints)
+    }
+    model {
+        # loop over documents
+        for(i in 1:N) {
+            # loop over words
+            for (j in 1:V) {
+                log(rate[i,j]) <- log(Ni[i]) + psi[j, wordPartition[i]] + theta[i] * beta[j, wordPartition[i]]
+                Y[i, j] ~ dpois(rate[i, j])
+            }
+            raw.theta[i] ~ dnorm(0, 1)
+            theta[i] <- direction.constraint * raw.theta[i]
+        }
+        
+        # loop over words where partition params are equal by constraint
+        for (j in 1:kConstraints) {
+            raw.beta[j, 1] ~ dnorm(beta.mean[j], tau.beta)
+            beta.mean[j] ~ dnorm(0, tau.beta)
+            beta[j, 1] <- direction.constraint * raw.beta[j, 1]
+            psi[j, 1] ~ dnorm(psi.mean[j], tau.psi.mean)
+            # set the rest of the categories for the constraint equal to the first
+            for (k in 2:C) {
+                psi[j, k] <- psi[j, 1]
+                beta[j, k] <- beta[j, 1]
+                raw.beta[j, k] <- raw.beta[j, 1]
+            }
+            psi.mean[j] ~ dnorm(0, tau.psi)
+        }
+        # loop over remaining words
+        for (j in 2:V) {
+            # loop for countries to define psi
+            for (c in 1:C) {
+                psi[j, c] ~ dnorm(psi.mean[j], tau.psi.mean)
+                raw.beta[j, c] ~ dnorm(beta.mean[j], tau.beta)
+                beta[j, c] <- direction.constraint * raw.beta[j, c]
+            }
+            psi.mean[j] ~ dnorm(0, tau.psi)
+            beta.mean[j] ~ dnorm(0, tau.beta)
+        }
+         
+        # stuff for identification, and direction constraints
+        direction.constraint <- 2*(step(raw.theta[dir[2]]-raw.theta[dir[1]]))-1
+        tau.beta ~ dgamma(.01, .01)
+        tau.beta.mean ~ dgamma(.01, .01)
+        tau.psi ~ dgamma(.01, .01)
+        tau.psi.mean ~ dgamma(.01, .01)
+    }"
+
+
 wfmodel_psibetaWordPartition_alphaModelled <- "
     data {
         # input must always be documents in rows, words in columns
@@ -661,11 +681,14 @@ wfmodel_psibetaWordPartition_alphaModelled <- "
         for (j in 1:kConstraints) {
             raw.beta[j, 1] ~ dnorm(beta.mean[j], tau.beta)
             beta.mean[j] ~ dnorm(0, tau.beta)
-            raw.beta[j, 2] <- raw.beta[j, 1]
             beta[j, 1] <- direction.constraint * raw.beta[j, 1]
-            beta[j, 2] <- beta[j, 1]
             psi[j, 1] ~ dnorm(psi.mean[j], tau.psi.mean)
-            psi[j, 2] <- psi[j, 1]
+            # set the rest of the categories for the constraint equal to the first
+            for (k in 2:C) {
+                psi[j, k] <- psi[j, 1]
+                beta[j, k] <- beta[j, 1]
+                raw.beta[j, k] <- raw.beta[j, 1]
+            }
             psi.mean[j] ~ dnorm(0, tau.psi)
         }
         # loop over remaining words
