@@ -1,5 +1,3 @@
-source('languagetools.R')
-source('corpustools.R')
 
 testString <- "In computing, stop words are words which are filtered out prior to,
 or after, processing of natural language data (text).[1] There is not one definite 
@@ -12,6 +10,6 @@ include them, particularly in names such as 'The Who', 'The The', or 'Take That'
 Other search engines remove some of the most common words—including lexical words, 
 such as want—from a query in order to improve performance."
 
-testCorpus <- corpus.create(testString)
+testCorpus <- createCorpus(testString)
 
 print(removeStopwords(testString))
