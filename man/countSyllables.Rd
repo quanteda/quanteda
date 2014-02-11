@@ -6,7 +6,7 @@ For British English words, the syllable count is exact and looked up from the CM
 pronunciation dictionary. For any word not in the dictionary the syllable count
 is estimated by counting vowel clusters.}
 \usage{
-countSyllables(sourceText)
+countSyllables(sourceText, verbose = FALSE)
 }
 \arguments{
   \item{sourceText}{Text to be counted}

@@ -10,7 +10,7 @@
 #' @export
 #' @examples
 #' countSyllables("This is an example sentence.")
-countSyllables <- function(sourceText){
+countSyllables <- function(sourceText, verbose=FALSE) {
   #load the RData file
   data(sylCounts)
   #clean the string
@@ -19,14 +19,15 @@ countSyllables <- function(sourceText){
   print(words)
   # lookup the syllables in the words found in the dictionary
   # uses vectorization and named vector indexing - not looping!
-  n.syllables <- counts[words]
-  print(n.syllables)
+  n.syllables <- syllableCounts[words]
+  
   # name the syllable count vector with the words
   names(n.syllables) <- words
   # count the syllables in each word?
-  vowel.count.lookup <- sapply(words, function(l) sum((attr(gregexpr("[AEIOUY]*", l)[[1]], "match.length"))!=0))
+  vowel.count.lookup <- sapply(words, function(l) sum((attr(gregexpr("[AEIOUYaeiouy]*", l)[[1]], "match.length"))!=0))
   # replace the un-looked-up words with vowel formula words
   n.syllables[is.na(n.syllables)] <- 
     vowel.count.lookup[is.na(n.syllables)]
+  if(verbose) print(n.syllables)
   return(sum(n.syllables))
 }

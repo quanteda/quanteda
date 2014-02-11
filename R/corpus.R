@@ -144,11 +144,13 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
 #' 
 #' @export
 #' @examples
+#' \dontrun{
 #' data(iebudgets)
 #' iebudgets2010 <- subset(iebudgets, year==2010)
 #' summary(iebudgets2010)
 #' iebudgetsLenihan <- subset(iebudgets, speaker="Lenihan", select=c(speaker, year))
 #' summary(iebudgetsLenihan)
+#' }
 #' 
 subset.corpus <- function(corpus, subset=NULL, select=NULL) {
   tempcorp <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
