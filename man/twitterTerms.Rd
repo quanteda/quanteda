@@ -20,7 +20,7 @@ documentation
 }
 \examples{
 \dontrun{
-twCorp <- twitterTerms('example search', numResults=10)
+twCorp <- twitterTerms('example search', my_oauth, numResults=10)
 }
 }
 

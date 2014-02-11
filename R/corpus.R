@@ -27,7 +27,7 @@
 #' \dontrun{
 #' budgets <- createCorpus(texts, attribs=newattribs)
 #' }
-createCorpus <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes=NULL, attribs.labels=NULL) {
+corpusCreate <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes=NULL, attribs.labels=NULL) {
   if (is.null(names(texts))) 
     names(texts) <- paste("text", 1:length(texts), sep="")
   if (is.null(source)) 
@@ -56,7 +56,7 @@ createCorpus <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes
 #' @param name A name for the new attribues
 #' @return corpus A corpus with the new attributes added
 #' @export
-addCorpusAttributes <- function(corpus, newattribs, name=newattribs) {
+corpusAddAttributes <- function(corpus, newattribs, name=newattribs) {
   newattribs <- as.data.frame(newattribs, stringsAsFactors=FALSE)
   names(newattribs) <- name
   corpus$attribs <- cbind(corpus$attribs, newattribs)
@@ -81,12 +81,12 @@ addCorpusAttributes <- function(corpus, newattribs, name=newattribs) {
 #' \dontrun{
 #' budgets <- corpus.append(budgets, texts, newattribs)
 #' }
-appendCorpus <- function(corpus1, newtexts, newattribs, ...) {
+corpusAppend <- function(corpus1, newtexts, newattribs, ...) {
   # 
   # should make it also allow an optional corpus2 version where two
   # corpuses could be combined with corpus.append(corp1, corp2)
   # if we can verify the same attribute set.
-  tempcorpus <- createCorpus(newtexts, attribs=newattribs)
+  tempcorpus <- corpusCreate(newtexts, attribs=newattribs)
   corpus1$attribs <- rbind(corpus1$attribs, tempcorpus$attribs)
   #corpus1$attribs$texts <- rbind(corpus1$attribs$texts, tempcorpus$attribs$texts)
   # TODO: implement concatenation of any attribs.labels from new corpus

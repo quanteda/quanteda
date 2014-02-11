@@ -13,13 +13,16 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' twCorp <- twitterTerms('example search', numResults=10)
+#' twCorp <- twitterTerms('example search', my_oauth, numResults=10)
 #' }
 twitterTerms <- function(query, oauth, numResults=50) {
   library('twitteR')
-  registerTwitterOAuth(oauth)
+  registerTwitterOAuth(my_oauth)
   sea <- (searchTwitter(query, numResults))
-  atts <- results[2:nrow(results),]
-  twc <- corpus.create(texts, attribs=t(atts))
+  results <- sapply(sea, as.data.frame) # ugly fix due to change in twitteR api
+  results <- as.data.frame(results)
+  atts <- as.data.frame(results[2:nrow(results),])
+  texts <- as.character(results[1,])
+  twc <- createCorpus(texts, attribs=t(atts))
   return(twc)
 }

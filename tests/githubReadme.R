@@ -1,3 +1,4 @@
+library(quanteda)
 #### Analyze Bollinger texts from Evans et al JELS 2007
 # load in Amicus texts from a zipped web archive
 
@@ -21,7 +22,7 @@ testclass[grep("AR", names(amicusTexts))] <- "AR"
 
 # make a corpus object with texts and training and test labels
 amicusCorpus <- 
-  createCorpus(amicusTexts, attribs=list(trainclass=trainclass, testclass=testclass))
+  corpusCreate(amicusTexts, attribs=list(trainclass=trainclass, testclass=testclass))
 summary(amicusCorpus)
 # extract a word by document matrix
 amicusDfm <- dfm(amicusCorpus)
