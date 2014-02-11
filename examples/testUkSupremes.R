@@ -26,8 +26,8 @@ newattribs$judge <- gsub(".txt", "", newattribs$judge)
 
 newattribs$judge[grep("[,&]",newattribs$judge)]<- "joint"
 
-judges <- corpus.create(texts, attribs=newattribs)
+judges <- corpusCreate(texts, attribs=newattribs)
 
-fvm <- create.fvm.corpus(judges, group="judge")
-datamat <-  wfm(fvm, word.margin=1)
+fvm <- dfm(judges, group="judge")
+datamat <-  wfm(fvm, word.margin=2)
 wf <- wordfish(datamat, dir=c(4,1))

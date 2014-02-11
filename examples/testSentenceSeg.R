@@ -21,7 +21,7 @@ system("file ES_manifestos/*.txt")
 # convert two of the texts into unicode (the third is already unicode)
 EStexts[c(1,3)] <- iconv(EStexts[c(1,3)], from="latin1", to="UTF-8", sub="byte")
 # create a corpus object
-EScorpus <- corpus.create(EStexts, notes="Supplied by Pablo.")
+EScorpus <- corpusCreate(EStexts, notes="Supplied by Pablo.")
 summary(EScorpus)
 # reshape into sentence corpus
 EScorpus.sentences <- corpus.reshape(EScorpus)

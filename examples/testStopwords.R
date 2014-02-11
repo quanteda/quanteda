@@ -10,6 +10,6 @@ include them, particularly in names such as 'The Who', 'The The', or 'Take That'
 Other search engines remove some of the most common words—including lexical words, 
 such as want—from a query in order to improve performance."
 
-testCorpus <- createCorpus(testString)
+testCorpus <- corpusCreate(testString)
 
 print(removeStopwords(testString))
