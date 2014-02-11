@@ -43,7 +43,7 @@ dfm.corpus <- function(corpus,
     if (verbose) cat("Creating dfm: ...")
 
     # subsets 
-    corpus <- corpus.subset.inner(corpus, substitute(subset))
+    if (!is.null(subset)) corpus <- corpus.subset.inner(corpus, substitute(subset))
 
     # aggregation by group
     if (!is.null(groups)) {
@@ -61,12 +61,12 @@ dfm.corpus <- function(corpus,
     }
 
     textnames <- factor(names(texts))
-    tokenizedTexts <- sapply(texts, tokenize, simplify=TRUE)
+    tokenizedTexts <- sapply(texts, tokenize, simplify=FALSE)
     if (stem==TRUE) {
         require(SnowballC)
         tokenizedTexts <- wordStem(tokenizedTexts)
     }
-    print(length)
+    # print(length)
     alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
                             words = unlist(tokenizedTexts, use.names=FALSE))
     dfm <- as.data.frame.matrix(table(alltokens$docs, alltokens$words))
