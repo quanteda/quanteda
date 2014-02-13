@@ -10,7 +10,7 @@ atts <- data.frame(vals)
 names(atts)<-c("label")
 movies <- createCorpus(texts, attribs=atts)
 
-text <- "Keanu is really great in this movie, and Arnold is great too."
+text <- "Keanu is really excellent in this movie, and Arnold is great too."
 
 # called on a text
 oneContext <- kwic(text, "great", window=2)
