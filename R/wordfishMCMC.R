@@ -90,7 +90,7 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
     if (!is.null(wordPartition)) {
         # ensure that wordPartition is an index from 1...C
         if (min(wordPartition) < 0) stop("wordPartition index cannot take negative values.")
-        if (!is.factor(wordPartition)) wordPartition <- as.numeric(as.factor(wordPartition))
+        wordPartition <- as.numeric(as.factor(wordPartition))
         # reorder the dtm to make the first words the ones with equality constraints
         if (is.null(wordConstraints)) stop("You must specify wordConstraints with wordPartition of psi.")
         dtm <- dtm[, c(wordConstraints, (1:ncol(dtm))[-wordConstraints])]
@@ -251,16 +251,21 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
         # put psi and beta samples back in original order
         # need to build an index for as many constraints are there are
         # create a new index to replace the values, equal in length to the new word-level parameters
-        psibeta.original.index <- order(original.word.index)
+        psi.original.index <- order(original.word.index)
         for (i in 1:(max(wordPartition)-1)) {
-            psibeta.original.index <- c(psibeta.original.index, order(original.word.index) + length(words(dtm))*i)
+            psi.original.index <- c(psi.original.index, order(original.word.index) + length(words(dtm))*i)
         }
         jags.samples[[1]][,grep("^psi", colnames(jags.samples[[1]]))] <-
-            jags.samples[[1]][,grep("^psi", colnames(jags.samples[[1]]))[psibeta.original.index]]
+            jags.samples[[1]][,grep("^psi", colnames(jags.samples[[1]]))[psi.original.index]]
         # only reorder the first V (number of words) set for beta unless betaPartition is true,
         # in which case reorder all the parameters just as with psi
+        if (betaPartition) {
+            beta.original.index <- psi.original.index
+        } else {
+            beta.original.index <- order(original.word.index)
+        }
         jags.samples[[1]][,grep("^beta", colnames(jags.samples[[1]]))] <-
-            jags.samples[[1]][,grep("^beta", colnames(jags.samples[[1]]))[ifelse(betaPartition, psibeta.original.index, order(original.word.index))]]
+            jags.samples[[1]][,grep("^beta", colnames(jags.samples[[1]]))[beta.original.index]]
         dtm <- dtm[, order(original.word.index)]
     }
 
@@ -295,7 +300,7 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
         retval$alphaData <- alphaData
         retval$alpha.coeff <- s$statistics[grep("^coef.alpha", rownames(s$statistics)), "Mean"]
         retval$alpha.coeff.se <- s$statistics[grep("^coef.alpha", rownames(s$statistics)), "Naive SE"]
-        retval$sigma.alpha <- s$statistics[grep("^sigma.alpha", rownames(s$statistics)), "Mean"]
+        retval$sigma.alpha <- 1/s$statistics[grep("^tau.alpha", rownames(s$statistics)), "Mean"]
     }
 
     class(retval) <- c("wordfish", "wordfishMCMC", class(retval))
@@ -429,7 +434,7 @@ wfmodel_psiWordPartition_alphaFree <- "
     }
     model {
         # loop over documents
-        for(i in 1:N) {
+        for (i in 1:N) {
             # loop over words
             for (j in 1:V) {
                 log(rate[i,j]) <- alpha[i] + psi[j, wordPartition[i]] + theta[i] * beta[j]
