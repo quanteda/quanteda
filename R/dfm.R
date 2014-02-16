@@ -10,23 +10,32 @@
 #' @param groups Grouping variable for aggregating documents
 #' @param subset Expression for subsetting the corpus before processing
 #' @param verbose Get info to screen on the progress
+#' @param dictionary A list of character vector dictionary entries, including regular expressions (see examples) 
 #' @return A data frame with row names equal to the document names and column names equal to the feature labels.
 #' @rdname dfm
 #' @export 
 #' @author Kenneth Benoit
 #' @examples 
-#' \dontrun{
 #' data(iebudgets)
 #' wfm <- dfm(iebudgets)
 #' wfmByParty2010 <- dfm(iebudgets, groups="party", subset=(year==2010))
-#' }
+#' 
+#' ## with dictionaries
+#' corpus <- subset(iebudgets, year==2010)
+#' mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
+#'                opposition=c("Opposition", "reject", "notincorpus"),
+#'                taxing="taxing",
+#'                taxation="taxation",
+#'                taxregex="tax*")
+#' dictDfm <- dfm(corpus, dictionary=mydict)
 dfm <- function(corpus,
                 feature=c("word"),
                 stem=FALSE,
                 stopwords=FALSE,
                 groups=NULL,
                 subset=NULL, 
-                verbose=TRUE) {
+                verbose=TRUE, 
+                dictionary=NULL) {
     UseMethod("dfm")
 }
 
@@ -39,7 +48,8 @@ dfm.corpus <- function(corpus,
                        stopwords=FALSE,
                        groups=NULL,
                        subset=NULL, 
-                       verbose=TRUE) {
+                       verbose=TRUE, 
+                       dictionary=NULL) {
     if (verbose) cat("Creating dfm: ...")
 
     # subsets 
@@ -69,7 +79,29 @@ dfm.corpus <- function(corpus,
     # print(length)
     alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
                             words = unlist(tokenizedTexts, use.names=FALSE))
-    dfm <- as.data.frame.matrix(table(alltokens$docs, alltokens$words))
+    
+    # need to enforce check that dictionary is a named list
+    if (is.null(dictionary)) {
+      dfm <- as.data.frame.matrix(table(alltokens$docs, alltokens$words))
+    } else {
+      alltokens <- cbind(alltokens, 
+                         matrix(0, nrow=nrow(alltokens), 
+                                ncol=length(names(dictionary)), 
+                                dimnames=list(NULL, names(dictionary))))
+      #      alltokens$dictionaryWord <- "other"
+      for (i in 1:length(dictionary)) {
+        dictionary_word_index <- grep(paste(tolower(dictionary[[i]]), collapse="|"), 
+                                      alltokens$words)
+        alltokens[dictionary_word_index, 2+i] <- 1
+      }
+      alltokens$All_Words <- 1
+      dictsplit <- split(alltokens[, 3:ncol(alltokens)], alltokens$docs)
+      dictsum <- sapply(dictsplit, colSums)
+      dfm <- as.data.frame.matrix(t(dictsum))
+      # doing it this way avoids an error using rowSums if only one dictionary column
+      dfm$Non_Dictionary <- 2*dfm$All_Words - rowSums(dfm)
+      dfm <- dfm[, -(ncol(dfm)-1)]
+    }
 
     if(verbose) cat(" done. \n")
 
@@ -79,5 +111,9 @@ dfm.corpus <- function(corpus,
     }
     return(dfm)
 }
+
+
+
+
 
 
