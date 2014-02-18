@@ -11,6 +11,7 @@
 #' @param subset Expression for subsetting the corpus before processing
 #' @param verbose Get info to screen on the progress
 #' @param dictionary A list of character vector dictionary entries, including regular expressions (see examples) 
+#' @param dictionary.regex \code{TRUE} means the dictionary is already in regular expression format, otherwise it will be converted from "wildcard" format
 #' @return A data frame with row names equal to the document names and column names equal to the feature labels.
 #' @rdname dfm
 #' @export 
@@ -35,7 +36,8 @@ dfm <- function(corpus,
                 groups=NULL,
                 subset=NULL, 
                 verbose=TRUE, 
-                dictionary=NULL) {
+                dictionary=NULL,
+                dictionary.regex=FALSE) {
     UseMethod("dfm")
 }
 
@@ -49,7 +51,8 @@ dfm.corpus <- function(corpus,
                        groups=NULL,
                        subset=NULL, 
                        verbose=TRUE, 
-                       dictionary=NULL) {
+                       dictionary=NULL,
+                       dictionary.regex=FALSE) {
     if (verbose) cat("Creating dfm: ...")
     
     # subsets 
@@ -86,6 +89,10 @@ dfm.corpus <- function(corpus,
     } else {
         # flatten the dictionary
         dictionary <- flatten.dictionary(dictionary)
+        # convert wildcards to regular expressions (if needed) 
+        if (!dictionary.regex) {
+            dictionary <- lapply(dictionary, makeRegEx)
+        }
         alltokens <- cbind(alltokens, 
                            matrix(0, nrow=nrow(alltokens), 
                                   ncol=length(names(dictionary)), 
@@ -166,8 +173,35 @@ flatten.dictionary <- function(elms, parent = '', dict = list()) {
 }
 
 
+makeRegEx <- function(wildcardregex) {
+    for (i in 1:length(wildcardregex)) {
+        lengthWildCard <- nchar(wildcardregex[i])
+        # '*' wildcards at both ends, just remove them
+        if ((substr(wildcardregex[i], 1, 1)=="*") & substr(wildcardregex[i], lengthWildCard, lengthWildCard)=="*") {
+            # '*' wildcards at both ends, just remove them
+            wildcardregex[i] <- substr(wildcardregex[i], 2, lengthWildCard-1)
+        } else if (substr(wildcardregex[i], 1, 1)=="*") {
+            # '*' wildcard only at beginning, remove and add "$" to end
+            wildcardregex[i] <- paste(substr(wildcardregex[i], 2, lengthWildCard), "$", sep="")
+        } else if (substr(wildcardregex[i], lengthWildCard, lengthWildCard)=="*") {
+            # '*' wildcard only at end, remove and add "^" to beginning
+            wildcardregex[i] <- paste("^", substr(wildcardregex[i], 1, lengthWildCard-1), sep="")
+        } else if (!((substr(wildcardregex[i], 1, 1)=="*") & substr(wildcardregex[i], lengthWildCard, lengthWildCard)=="*")) {
+            # change to ^word$ if no * at all, for exact match
+            wildcardregex[i] <- paste("^", wildcardregex[i], "$", sep="")
+        } else {
+            stop("Any wildcards except * and beginning or end of word not yet implemented.")
+        }
+    }
+    return(wildcardregex)
+    ##
+    ## TO ADD:
+    ##   * in the middle of the word
+    ##   ? functionality
+    ##   [ab] meaning a or b
+}
 
-
-
+#dictionary
+#lapply(dictionary, makeRegEx)
 
 

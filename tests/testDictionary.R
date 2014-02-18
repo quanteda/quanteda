@@ -13,10 +13,32 @@ dictionaryPopulismEN <-
                     "*deceiv*", "*betray*", "shame*", "scandal*", "truth*",
                     "dishonest*", "establishm*", "ruling*"))
 corpus <- subset(ukmanifestos, (year %in% c(1992, 2001, 2005) & (party %in% c("Lab", "LD", "Con", "BNP", "UKIP"))))
-summary(corpus)
 populismDfm <- dfm(corpus, dictionary=dictionaryPopulismEN)
-# print the results including relative frequency
+populismDtm <- dfm(corpus)
+# the total token counts are different...
+summary(corpus)
+(tokens.dfm <- rowSums(populismDtm))
+# these token counts match those from rowSums(dfm(corpus))
 data.frame(populismDfm, percentage=populismDfm$populism / rowSums(populismDfm) * 100)
+
+# compare totals with Paul's results: total tokens
+tokens.python <- c(30362, 11439, 17641, 
+                   13350, 29284, 21477, 
+                   25582, 7762, 24339, 16271, 8985)
+par(mfrow=c(1,2))
+plot(tokens.dfm, tokens.python,
+     xlab="quanteda dfm()", ylab="Python", main="total tokens")
+abline(a=0, b=1, col="red")
+
+# compare totals with Paul's results: dictionary counts
+populism.python <- c(10, 6, 10, 
+                     20, 16, 17, 
+                     67, 7, 17, 17, 16)
+plot(populismDfm$populism, populism.python,
+     xlab="quanteda dfm()", ylab="Python", main="dictionary counts")
+abline(a=0, b=1, col="red")
+
+
 
 ## NOTE: The warnings are because of the character encodings in the ukmanifesto texts, not 
 ##       because of anything in the routine.  The grep facility is working great!

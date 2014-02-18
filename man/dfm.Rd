@@ -4,11 +4,12 @@
 \title{Create a document-feature matrix from a corpus object}
 \usage{
 dfm(corpus, feature = c("word"), stem = FALSE, stopwords = FALSE,
-  groups = NULL, subset = NULL, verbose = TRUE, dictionary = NULL)
+  groups = NULL, subset = NULL, verbose = TRUE, dictionary = NULL,
+  dictionary.regex = FALSE)
 
 \method{dfm}{corpus}(corpus, feature = c("word"), stem = FALSE,
   stopwords = FALSE, groups = NULL, subset = NULL, verbose = TRUE,
-  dictionary = NULL)
+  dictionary = NULL, dictionary.regex = FALSE)
 }
 \arguments{
   \item{corpus}{Corpus from which to generate the
@@ -30,6 +31,10 @@ dfm(corpus, feature = c("word"), stem = FALSE, stopwords = FALSE,
 
   \item{dictionary}{A list of character vector dictionary
   entries, including regular expressions (see examples)}
+
+  \item{dictionary.regex}{\code{TRUE} means the dictionary
+  is already in regular expression format, otherwise it
+  will be converted from "wildcard" format}
 }
 \value{
 A data frame with row names equal to the document names and
