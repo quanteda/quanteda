@@ -6,7 +6,7 @@ readWStatDict <- function(path){
   curDict=list()
   n <- list()
   for(i in 1:length(lines)){
-    word = lines[i]
+    word <- unlist(strsplit(lines[i], '\\('))[[1]]
     #if it doesn't start with a tab, it's a category
     if(substr(word,1,1) != "\t"){
       n <- c(n,word)
