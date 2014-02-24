@@ -1,10 +1,7 @@
-# Example that takes dictionary input from Wordstat dictionary file
+# read a two-level Wordstat dictionary
 #
-
-
-lines= readLines('~/Dropbox/code/quanteda/examples/LoughranMcDonald.cat')
-
-readWStatDict(path){
+readWStatDict <- function(path){
+  lines <- readLines(path)
   allDicts=list()
   curDict=list()
   n <- list()
@@ -23,4 +20,5 @@ readWStatDict(path){
   # add the last dicationary
   allDicts = c(allDicts, list(word=c(curDict)))
   names(allDicts) <- n
+  return(allDicts)
 }
