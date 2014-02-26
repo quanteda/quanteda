@@ -22,3 +22,7 @@ readWStatDict <- function(path){
   names(allDicts) <- n
   return(allDicts)
 }
+
+
+
+
