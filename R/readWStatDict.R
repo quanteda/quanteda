@@ -1,8 +1,11 @@
-# makes a flat dictionary from a hierarchical wordstat dictionary
+#' This function makes a flattened dictionary from a Wordstat hierarchical
+#' dictionary
+#' @export
 readWStatDict <- function(path){
   d <- read.delim(path, header=FALSE)
   d <- data.frame(lapply(d, as.character), stringsAsFactors=FALSE)
   thismajorcat <- d[1,1]
+  # this loop fills in blank cells in the category|term dataframe
   for (i in 1:nrow(d)) {
     if (d[i,1] == "") {
       d[i,1] <- thismajorcat
@@ -19,6 +22,8 @@ readWStatDict <- function(path){
   prevCateg <- ''
   curWords <- c()
   ns <- c()
+  # this loop collapses the category cells together and
+  # makes the list of named lists compatible with dfm
   for (i in 1:nrow(d)){
     if( d[i,ncol(d)]=='') next
     categ <- unlist(paste(d[i,1:(ncol(d)-1)], collapse="."))
@@ -44,7 +49,7 @@ readWStatDict <- function(path){
 
 
 
-
+# old code:
 # makes a list of lists from a two-level wordstat dictionary
 readWStatDictNested <- function(path){
   lines <- readLines(path)
