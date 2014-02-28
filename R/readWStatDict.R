@@ -1,6 +1,52 @@
-# read a two-level Wordstat dictionary
-#
+# makes a flat dictionary from a hierarchical wordstat dictionary
 readWStatDict <- function(path){
+  d <- read.delim(path, header=FALSE)
+  d <- data.frame(lapply(d, as.character), stringsAsFactors=FALSE)
+  thismajorcat <- d[1,1]
+  for (i in 1:nrow(d)) {
+    if (d[i,1] == "") {
+      d[i,1] <- thismajorcat
+    } else {
+      thismajorcat <- d[i,1]
+    }
+    for(j in 1:ncol(d)){
+      if(d[i,j] == "" & length(d[i,j-1])!=0){
+        d[i,j] <- d[i,j-1] 
+      }
+    }
+  }
+  flatDict <- list()
+  prevCateg <- ''
+  curWords <- c()
+  ns <- c()
+  for (i in 1:nrow(d)){
+    if( d[i,ncol(d)]=='') next
+    categ <- unlist(paste(d[i,1:(ncol(d)-1)], collapse="."))
+    if(categ != prevCateg){
+      if(!is.null(curWords)){
+        ns <- c(ns, categ)
+        print(categ)
+        flatDict <- c(flatDict, categ=list(curWords))
+        curWords <- c()
+      }
+      prevCateg <- categ
+    }else{
+      w <- d[i,ncol(d)]
+      w <- clean(unlist(strsplit(w, '\\('))[[1]])
+      w <- gsub( " ", "", w)
+      curWords<-c(curWords, w)
+    }
+  }
+  names(flatDict)<-ns
+  return(flatDict)
+}
+
+
+
+
+
+# makes a list of lists from a two-level wordstat dictionary
+readWStatDictNested <- function(path){
   lines <- readLines(path)
   allDicts=list()
   curDict=list()
