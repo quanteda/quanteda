@@ -2,7 +2,7 @@
 \alias{subset.corpus}
 \title{extract a subset of a corpus}
 \usage{
-subset.corpus(corpus, subset = NULL, select = NULL)
+\method{subset}{corpus}(corpus, subset = NULL, select = NULL)
 }
 \arguments{
   \item{corpus}{corpus object to be subsetted.}
