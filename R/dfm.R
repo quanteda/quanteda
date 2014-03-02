@@ -54,6 +54,8 @@ dfm.corpus <- function(corpus,
                        verbose=TRUE, 
                        dictionary=NULL,
                        dictionary.regex=FALSE) {
+    # require(austin) 
+    # --not necessary to call austin if not returning a wfm class object
     if (verbose) cat("Creating dfm: ...")
     
     # subsets 
@@ -78,7 +80,8 @@ dfm.corpus <- function(corpus,
     tokenizedTexts <- sapply(texts, tokenize, simplify=FALSE)
     if (stem==TRUE) {
         require(SnowballC)
-        tokenizedTexts <- wordStem(tokenizedTexts)
+        cat("... stemming ...")
+        tokenizedTexts <- lapply(tokenizedTexts, wordStem)
     }
     # print(length)
     alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
@@ -117,7 +120,7 @@ dfm.corpus <- function(corpus,
     
     if (stopwords) {
         data(stopwords_EN)
-        dfm <- as.wfm(subset(dfm, !row.names(dfm) %in% stopwords_EN))
+        dfm <- subset(dfm, !row.names(dfm) %in% stopwords_EN)
     }
     return(dfm)
 }
