@@ -54,3 +54,9 @@ unlist(hdict, recursive=FALSE)
 flatten.dictionary(hdict)
 flatten.dictionary(dictionaryPopulismEN)
 
+
+
+## test the import of WordStat dictionaries
+LGdict <- readWStatDict("~/Dropbox/QUANTESS/wordstatTest/dictionaries/LaverGarry.cat")
+
+
