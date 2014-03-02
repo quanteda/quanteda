@@ -10,6 +10,8 @@
 #' @param biarny class
 #' @param smoothing constant
 #' @param number of features shown
+#' @return data frame of feature words
+#' @author Kohei Watanabe
 #' @export
 #' @examples
 #' texts <- getTextDir("/home/kohei/Documents/budget_2010/")
@@ -19,13 +21,13 @@
 #' corpus <- corpusCreate(texts, attribs=list(class=class))
 #' dfm <- dfm(corpus)
 #' features <- selectFeatures('ll', dfm, corpus$attribs$class, smooth=1)
-selectFeatures <- function(extractor, df, class, smooth=1, show=10){
+selectFeatures <- function(extractor, dfm, class, smooth=1, show=10){
  
   if(extractor == 'wsll' || extractor == 'wschisq'){
     smooth <- 0
   }
-  df1 <- split(as.data.frame(df), class)['1']
-  df0 <- split(as.data.frame(df), class)['0']
+  df1 <- split(as.data.frame(dfm), class)['1']
+  df0 <- split(as.data.frame(dfm), class)['0']
   
   d11 <- sapply(df1, colSums) + smooth
   d1. <- rep(sum(d11), nrow(d11))
