@@ -1,15 +1,14 @@
-
 #' extract feature words
 
 #' This function takes type of feature extractor and a word freaquency matrix
 #' with binary class (1/0) to select features in class one. 'wsll' and
 #' 'wschisq' replicates of 'Keyness' of Wordsmith Tools.
 #' 
-#' @param type of feature extractor
-#' @param word frequency matrix
-#' @param biarny class
-#' @param smoothing constant
-#' @param number of features shown
+#' @param extractor Type of feature extractor
+#' @param dfm Word frequency matrix
+#' @param class Biarny class
+#' @param smooth Smoothing constant
+#' @param show Number of features shown
 #' @return data frame of feature words
 #' @author Kohei Watanabe
 #' @export
@@ -22,7 +21,7 @@
 #' dfm <- dfm(corpus)
 #' features <- selectFeatures('ll', dfm, corpus$attribs$class, smooth=1)
 selectFeatures <- function(extractor, dfm, class, smooth=1, show=10){
- 
+  
   if(extractor == 'wsll' || extractor == 'wschisq'){
     smooth <- 0
   }
@@ -32,7 +31,7 @@ selectFeatures <- function(extractor, dfm, class, smooth=1, show=10){
   d11 <- sapply(df1, colSums) + smooth
   d1. <- rep(sum(d11), nrow(d11))
   d10 <- d1. - d11 + smooth
-
+  
   d01 <- sapply(df0, colSums) + smooth
   d0. <- rep(sum(d01), nrow(d01))
   d00 <- d0. - d01 + smooth
@@ -84,4 +83,4 @@ selectFeatures <- function(extractor, dfm, class, smooth=1, show=10){
   }
   return(df)
 }
-  
+
