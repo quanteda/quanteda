@@ -12,36 +12,31 @@ readWStatDict <- function(path){
     } else {
       thismajorcat <- d[i,1]
     }
-    for(j in 1:ncol(d)){
-      if(d[i,j] == "" & length(d[i,j-1])!=0){
-        d[i,j] <- d[i,j-1] 
+    for(j in 1:(ncol(d)-1)){
+      if(d[i,j] == "" & length(d[i-1,j])!=0){
+        d[i,j] <- d[i-1,j] 
+      }
+    }
+    if (nchar(d[i,ncol(d)-1]) > 0){
+      pat<- c("\\(")
+      if( !length(grep(pat,  d[i,ncol(d)-1] ) )==0 ){
+        d[i,ncol(d)] <- d[i,ncol(d)-1]
+        d[i,ncol(d)-1] <- "_"
       }
     }
   }
   flatDict <- list()
-  prevCateg <- ''
-  curWords <- c()
-  ns <- c()
+  categ <- list()
   # this loop collapses the category cells together and
   # makes the list of named lists compatible with dfm
   for (i in 1:nrow(d)){
-    categ <- unlist(paste(d[i,1:(ncol(d)-1)], collapse="."))
-    if(categ != prevCateg){
-      if(!is.null(curWords)){
-        ns <- c(ns, categ)
-        print(categ)
-        flatDict <- c(flatDict, categ=list(curWords))
-        curWords <- c()
-      }
-      prevCateg <- categ
-    }else{
-      w <- d[i,ncol(d)]
-      w <- clean(unlist(strsplit(w, '\\('))[[1]])
-      w <- gsub( " ", "", w)
-      curWords<-c(curWords, w)
-    }
+    if( d[i,ncol(d)]=='') next
+    categ <- unlist(paste(d[i,(1:(ncol(d)-1))], collapse="."))
+    w <- d[i,ncol(d)]
+    w <- clean(unlist(strsplit(w, '\\('))[[1]])
+    w <- gsub( " ", "", w)
+    flatDict[[categ]] <- append(flatDict[[categ]],c(w))
   }
-  names(flatDict)<-ns
   return(flatDict)
 }
 
