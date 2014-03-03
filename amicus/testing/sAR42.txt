@@ -1,0 +1,125 @@
+To survive review under the Equal Protection Clause, a law school's consideration of race and ethnic origin in its admissions process must (1) serve a compelling state interest and (2) be narrowly tailored to achieve that interest. n10 While this heightened standard of review must be applied to the law school's admissions process, this Court has explicitly "dispelled the notion that strict  [*4]  scrutiny is 'strict in theory, but fatal in fact'" and recognized that the "unhappy persistence of both the practice and the lingering effects of racial discrimination against minority groups in this country is an unfortunate reality, and government is not disqualified from acting in response to it." n11 
+
+n10 See Adarand Constructors v. Pena, 515 U.S. 200, 227, 114 S. Ct. 2097, 132 L. Ed. 2d 158 (1995). 
+
+n11 Id. at 237. 
+  
+I. Promoting Diversity in the Legal Profession Is a Compelling Governmental Interest. 
+
+As Justice O'Connor recognized in Wygant v. Jackson Board of Education, n12 the Supreme Court has already declared "a state interest in the promotion of racial diversity . . . sufficiently 'compelling,' at least in the context of higher education, to support the use of racial considerations in furthering that interest." n13 In Regents of University of California v. Bakke, n14 a majority of the Court held that "race may be taken into account as a factor in an admissions program" but ultimately struck down the University of California's use of a "quota" or "set aside" system because it was "not a necessary means toward that end." n15 
+
+n12 476 U.S. 265, 106 S. Ct. 1842, 90 L. Ed. 2d 260 (1986). 
+
+n13 Id. at 286 (O'Connor, J., concurring) (citing Regents of University of California v. Bakke, 438 U.S. 265, 311-315, 98 S. Ct. 2733, 57 L. Ed. 2d. 750 (1978)). 
+
+n14 438 U.S. 265, 98 S. Ct. 2733, 57 L. Ed. 2d. 750 (1978). 
+
+n15 Id. at 297 n. 36, 316-317. 
+
+ [*5]  A. The Bakke Holding. 
+
+The precise contours of the Bakke holding have been a subject of intense debate. The Sixth Circuit properly concluded that Justice Powell's decision in Bakke is controlling in this case. n16 Four members of the Bakke Court, Justices Brennan, White, Marshall, and Blackmun, applied intermediate scrutiny and upheld the University's consideration of race in its efforts to remedy the effects of societal discrimination. n17 Another four Justices (Stevens, Burger, Stewart, and Rehnquist) avoided the constitutional question and concluded that the University's practices violated Title VI of the Civil Rights Act of 1964. n18 Justice Powell cast the deciding vote, breaking the 4-4 split. 
+
+n16 See Grutter v. Bollinger, 288 F.3d 732, 741 (6th Cir. 2002). 
+
+n17 Bakke, 438 U.S. at 311-12. 
+
+n18 Id. at 418 (Stevens, J., concurring in part, dissenting in part). 
+
+Justice Powell's opinion, announcing the judgment of the Court, concluded that "the interest of diversity is compelling in the context of a university's admissions program" because "the 'nation's future depends upon leaders trained through wide exposure' to the ideas and mores of students as diverse as this Nation of many peoples." n19 In support of this position, Justice Powell reasoned:
+  
+Physicians serve a heterogeneous population. An otherwise qualified medical student with a particular background--whether it be ethnic, geographic,  [*6]  culturally advantaged or disadvantaged--may bring to a professional school of medicine experiences, outlooks, and ideas that enrich the training of its student body and better equip its graduates to render with understanding their vital service to humanity. n20
+  
+This observation is equally, if not more, relevant in the context of legal education. Quoting Sweatt v. Painter, n21 Justice Powell noted that, "The law school, the proving ground for legal learning and practice, cannot be effective in isolation from the individuals and institutions with which the law interacts." n22 In a portion of the opinion joined by four other Justices, Justice Powell ultimately concluded that "the State has a substantial interest that legitimately may be served by a properly devised admissions program involving the competitive consideration of race and ethnic origin." n23 
+
+n19 Id. at 438 (quoting Keyishian v. Board of Regents, 385 U.S. 589, 603, 87 S. Ct. 675, 683, 17 L. Ed. 2d 629 (1967). 
+
+n20 Id. at 314. 
+
+n21 339 U.S. 629, 634, 70 S. Ct. 848, 94 L.Ed. 1114 (1950). 
+
+n22 Bakke, at 314 (quoting Sweatt, 339 U.S. at 634). 
+
+n23 Id. at 320. 
+
+Justice Powell's rationale that the interest of diversity is compelling in the higher education context constitutes the holding of the Bakke Court. n24 In Marks v. United States, this Court held that in a fragmented decision like Bakke, "the holding of the Court may be viewed as that position taken by those Members who concurred in the judgments on the narrowest grounds." n25 In Bakke, Justice  [*7]  Powell's opinion clearly provides the narrowest grounds on which the five Justices concurring in the judgment agreed. Justice Powell's rationale is narrower than the rationale set forth in Justice Brennan's opinion because Justice Powell applied strict scrutiny, requiring that the consideration of race be necessary to achieve a compelling governmental interest whereas Justice Brennan applied intermediate scrutiny, requiring only that the racial classifications "serve important governmental objectives and . . . be substantially related to achievement of those objectives." n26 Because race could be considered under a wider range of cases under intermediate scrutiny than under strict scrutiny, the Sixth Circuit correctly concluded it was "bound by Justice Powell's Bakke opinion." n27 
+
+n24 Marks v. U.S., 430 U.S. 188, 97 S. Ct. 990, 51 L. Ed. 2d 260 (1977). 
+
+n25 Id. at 193. 
+
+n26 Id. at 359 (Brennan, White, Marshall, Blackmun, JJ., concurring in part, dissenting in part). See also Wygant, 476 U.S. at 286 (O'Connor, J., concurring) (recognizing that Justice Powell's rationale "may be viewed as more stringent than that suggested by Justices Brennan, White, Marshall, and Blackmun"). 
+
+n27 Grutter, 288 F.3d at 742; see also, Smith v. University of Washington Law School, 233 F.3d 1188 (9th Cir. 2000), cert. denied, 532 U.S. 1051 (2001). 
+
+B. The Supreme Court Should Adhere to Justice Powell's Opinion in Bakke. 
+
+As Justice O'Connor has noted, "The obligation to follow precedent begins with necessity, and a contrary necessity marks its outer limit." n28 Because "respect for precedent is, by definition, indispensable," the Supreme Court will decide to overrule a prior case only when the  [*8]  prior ruling has become practically unworkable or when the "facts have so changed or come to be seen so differently, as to have robbed the old rule of significant application or justification." n29 
+
+n28 Planned Parenthood v. Casey, 505 U.S. 833, 854, 112 S. Ct. 2791, 120 L. Ed. 2d 674 (1992). 
+
+n29 Id. (citations omitted). 
+
+Circumstances which would justify overruling the Court's decision in Bakke are not present. The under-representation of minorities in the legal profession continues to be a significant problem. A recent study conducted by the ABA Commission on Racial and Ethnic Diversity in the Legal Profession found that minority representation among law partners remains less than 3% in most cities, that minority representation among general counsel in the Fortune 500 is 2.8%, and that in 1999, the total number of minority law graduates in the United States dropped for the first time since 1985. n30 Bakke's recognition of diversity as a substantial governmental interest in the higher education context has not been shown to be either unworkable or insignificant. Thus, as was the case when Bakke was decided, diversity remains a compelling governmental interest in the higher education context, particularly as it relates to the legal profession. 
+
+n30 Miles to Go 2000: Progress of Minorities in the Legal Profession, ABA Commission on Racial and Ethnic Diversity in the Profession (2002). 
+
+This Court recently recognized the continuing vitality of Justice Powell's opinion in Bakke. In Wygant, citing Justice Powell's opinion in Bakke, Justice O'Connor noted that "racial diversity" was a compelling state interest in the higher education context. n31 And, in Metro Broadcasting, Inc.  [*9]  v. FCC, n32 this Court quoted Justice Powell's opinion in Bakke for the proposition that "a 'diverse student body' contributing to a 'robust exchange of ideas' is a 'constitutionally permissible goal' on which a race-conscious university admissions program may be predicated." n33 As noted by the Ninth Circuit in Smith v. University of Washington Law School, n34 since its decision in Bakke, the Supreme Court "has not returned to the area of university admissions, and has not indicated that Justice Powell's approach has lost its vitality in that unique niche of our society." n35 
+
+n31 Wygant, 476 U.S. at 286 (O'Connor, J., concurring). 
+
+n32 497 U.S. 547, 110 S. Ct. 2997, 111 L. Ed. 2d 445 (1990). 
+
+n33 Id. at 568. 
+
+n34 233 F.3d 1188 (9th Cir. 2000), cert. denied, 532 U.S. 1051 (2001). 
+
+n35 Smith, 233 F.3d at 1200. 
+
+C. Applying Bakke, This Court Should Recognize a Compelling Governmental Interest in Promoting Diversity in the Legal Profession. 
+
+The Bakke decision's declaration that diversity is a compelling governmental interest in the higher education context encompasses not only an interest in promoting diversity within the student body, but also an interest in promoting diversity within the profession which students enter into upon graduation. Bakke's finding of a compelling governmental interest was premised in large part on the recognition that the physicians graduating from the school would "serve a heterogeneous population" and that the consideration of race in the admissions context would "better equip [the University's] graduates to render with  [*10]  understanding their vital service to humanity." n36 Thus, Bakke recognizes a compelling interest that extends beyond enhancement of the educational experience to an enhancement of the vital services to be provided by graduates of professional programs. 
+
+n36 Bakke, 438 U.S. at 314. 
+
+Lawyers, like physicians, serve a heterogeneous population and provide a vital service to society. Diversity within the legal profession undoubtedly enriches the profession's ability to provide vital legal services to Americans of all races and ethnicities. Thus, the consideration of race in the law school admissions context not only serves the compelling governmental interest in achieving diversity within the student body, but also the compelling governmental interest in achieving diversity within the legal profession. 
+
+The KCBA, like other bar associations around the country, has recognized the fundamental importance of achieving diversity within the legal profession. The KCBF created the Diversity Coalition in January 2002. n37 This Coalition is comprised of representatives from the King County Superior Court, the Washington State Court of Appeals, the University of Washington and Seattle University law schools, the Loren Miller Bar, the Asian Bar Association of Washington, the Northwest Indian Bar, the Washington State Hispanic Bar, the Korean American Bar Association of Washington, and the Southeast Asian Bar Association. n38 The Coalition's mission is to increase ethnic  [*11]  diversity in the legal profession so that our courtrooms and law offices better reflect the communities they serve. n39 
+
+n37 http://www.kcba.org/foundation/whatsnew2.htm. 
+
+n38 Id. 
+
+n39 Id. 
+
+Washington State Courts have also recognized the need for increased diversity in the legal profession. The Washington State Supreme Court has created the Washington State Minority and Justice Commission to evaluate and eliminate racial and ethnic bias within the court system. n40 The Commission has explicitly recognized that racial and ethnic bias within the system can be diminished by promoting diversity within the judiciary. n41 The importance of achieving diversity in the legal profession cannot be overstated. Therefore, as an alternative to recognizing a compelling governmental interest in achieving a diverse student body, we strongly urge this Court to find a compelling governmental interest in promoting diversity within the legal profession. 
+
+n40 http://www.courts.wa.gov/mjc/ 
+
+n41 Id. 
+  
+II. The Compelling Governmental Interest in Diversity Cannot Be Achieved Without Race-Sensitive Admissions Processes. 
+
+The United States, in its brief as Amicus Curiae supporting the petitioner, recognizes that "measures that ensure diversity, accessibility and opportunity are important components of a government's responsibility to its citizens" but argues that race-neutral admission policies adequately achieve the goal of achieving racial diversity in  [*12]  the higher education context. n42 While the KCBA certainly wishes that were the case, data about the demographics of public law schools in states that have abandoned race-sensitive admissions lead to the opposite conclusion. 
+
+n42 Brief of the United States, Amicus Curiae at 10, filed January 2003, Grutter v. Bollinger (No. 02-241) (U.S.). 
+
+The KCBA and the University of Washington School of Law have experienced firsthand the impact that race-neutral admissions policies have on the racial diversity of both the law school student body and the local bar. In 1998, Washington voters passed Initiative 200. The initiative provides that "the state shall not discriminate against, or grant preferential treatment to, any individual or group on the basis of race, sex, color, ethnicity, or national origin in the operation of public employment, public education, or public contracting." n43 As a result of Initiative 200, the University of Washington School of Law ceased using race as a "plus factor" in admissions decisions. n44 
+
+n43 RCW 49.60.400(1) (formerly Washington Initiative 200). 
+
+n44 Richard McCormick, Maintaining Diversity at the University of Washington after Initiative 200. (http://www.washington.edu/president/05_99-Maintaining_Diversity_at_the_UW_After_Initiative_200.htm) (1999). 
+
+In the aftermath of Initiative 200, the citizens of Washington have learned firsthand that ethnic diversity cannot be achieved without race-sensitive admissions policies. Despite Herculean efforts by the KCBA, other private groups, and the University of Washington itself to recruit minority law students, minority enrollment dropped precipitously after passage of the initiative. On average, during the six years preceding passage of the  [*13]  initiative, Native Americans, Hispanic Americans, and African-Americans made up 15.3% of the entering law school class. n45 On average, during the four years since passage of the initiative, members of these ethnic groups have made up only 7.7% of the entering class. n46 Law schools in California and Texas, the two other states where public law schools no longer use race as a "plus-factor" in admissions have had similarly devastating losses in minority enrollment. n47 
+
+n45 University of Washington School of Law Office of Admissions; ABA Guide to Approved Law Schools (eds. 1995-2002). 
+
+n46 Id. 
+
+n47 Jason Marks, Legally Blind? Reevaluating Law School Admissions at the Dawn of a New Century, 2002 J.C. & U.L. 117 and 117 n. 34 (2002). 
+
+The empirical experience of states such as Washington that have ceased using race as a law school admissions "plus-factor," but dramatically stepped up recruiting and scholarship efforts, is sobering. If this Court were to abandon stare decisis and make the anti-affirmative action policies of Texas, California, and Washington the law of the land, there is little doubt that our nation's law schools would return to a state of de facto segregation. 
+
+ [*14]  CONCLUSION 
+
+For these reasons, this Court should uphold the legal principles set forth in Bakke, n48 and affirm the decision of the United States Court of Appeals for the Sixth Circuit. 
