@@ -15,10 +15,8 @@
 ##' @rdname kwic
 ##' @export
 ##' @examples
-##' \dontrun{
 ##' data(iebudgets)
-##' kwic(iebudgets, "Christmas", window=6)
-##' }
+##' kwic(subset(iebudgets, year==2010), "Christmas", window=4)
 kwic <- function(text, word, window=5) {
     UseMethod("kwic")
 }
