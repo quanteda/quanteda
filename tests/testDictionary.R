@@ -4,7 +4,9 @@
 
 library(quanteda)
 load(url("http://www.kenbenoit.net/files/ukmanifestos.Rdata"))
-#ukmanifestos$attribs$text <- enc2utf8(ukmanifestos$attribs$text)
+ukmanifestos$attribs$text <- iconv(ukmanifestos$attribs$text,
+                                   from="latin1", to="UTF-8")
+
 
 # use the populism dictionary from 
 dictionaryPopulismEN <- 
@@ -57,6 +59,9 @@ flatten.dictionary(dictionaryPopulismEN)
 
 
 ## test the import of WordStat dictionaries
+load(url("http://www.kenbenoit.net/files/ukmanifestos.Rdata"))
 LGdict <- readWStatDict("~/Dropbox/QUANTESS/wordstatTest/dictionaries/LaverGarry.cat")
-
+LGdict <- readWStatDict("~/Desktop/LaverGarry2.cat")
+ukman <- subset(ukmanifestos, year==1992 | year==1997)
+dfm.ukman.LGdict <- dfm(ukman, dictionary=LGdict)
 
