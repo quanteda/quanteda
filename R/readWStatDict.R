@@ -25,7 +25,6 @@ readWStatDict <- function(path){
   # this loop collapses the category cells together and
   # makes the list of named lists compatible with dfm
   for (i in 1:nrow(d)){
-    if( d[i,ncol(d)]=='') next
     categ <- unlist(paste(d[i,1:(ncol(d)-1)], collapse="."))
     if(categ != prevCateg){
       if(!is.null(curWords)){
