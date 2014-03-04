@@ -14,10 +14,13 @@
 #' data(iebudgets)
 #' collocations(iebudgets$attribs$texts[1], top=50)
 #' collocations(iebudgets$attribs$texts[1], top=50, method="chi2")
-collocations <- function(text=NULL, file=NULL, top=NA, distance=2, method="lr") {
+collocations <- function(text=NULL, file=NULL, top=NA, distance=2, n=2,
+                         method=c("lr", "chi2", "mi")) {
   ## returns the bigrams, frequency, and score as a list
   ##
-  if (is.null(text) & is.null(file)) stop("Must specify either text or file.")
+  method <- arg.match(method)
+    if (is.null(text) & is.null(file)) stop("Must specify either text or file.")
+  if (n>2) stop("Only bigrams (n=2) implemented so far.")
   clean.txt <- clean(text)
   t <- tokenize(clean.txt)
   bigrams <- paste(t[1:(length(t)-1)], t[2:length(t)])

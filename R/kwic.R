@@ -29,7 +29,7 @@ kwic.character <- function(text, word, window=5) {
     # don't use tokenize since we want to preserve case and punctuation here
     # grep needed to get words that end in punctuation mark or in quotes
     tokens <- strsplit(text, " ")[[1]]
-    matches <- grep(paste("?", tolower(word), "?", sep=""), tolower(tokens))
+    matches <- grep(paste("^", tolower(word), "$", sep=""), tolower(tokens))
     if (length(matches) == 0) return(NA)
     result <- data.frame(source = matches, 
                          preword = NA,

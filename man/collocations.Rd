@@ -2,8 +2,8 @@
 \alias{collocations}
 \title{Detect collocations in a text}
 \usage{
-collocations(text = NULL, file = NULL, top = NA, distance = 2,
-  method = "lr")
+collocations(text = NULL, file = NULL, top = NA, distance = 2, n = 2,
+  method = c("lr", "chi2", "mi"))
 }
 \arguments{
   \item{text}{a text or vector of texts}
