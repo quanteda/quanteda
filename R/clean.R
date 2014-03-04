@@ -7,7 +7,7 @@
 #' @return character object in lowercase with punctuation (and optionally digits) removed
 #' @export
 #' @examples
-#' s <-"test"
+#' s <- "A cursed £$&^!@(± Exclamation! point; paragraph §1.2, which I wrote."
 #' clean(s)
 clean <- function(s, langNorm=FALSE, removeDigits=TRUE) {
   # optionally do some language specific normalisation
@@ -24,5 +24,7 @@ clean <- function(s, langNorm=FALSE, removeDigits=TRUE) {
   }
   s <- s[s != ""]  # remove empty strings
   s <- tolower(s) 
+  # replace multiple space padding with single space
+  s <- gsub(" {2,}", " ", s)
   return(s)
 }
