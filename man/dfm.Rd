@@ -49,9 +49,10 @@ by document.
 \examples{
 data(iebudgets)
 wfm <- dfm(iebudgets)
-\dontrun{
+
+## by party, subset for 2010
 wfmByParty2010 <- dfm(iebudgets, groups="party", subset=(year==2010))
-}
+
 ## with dictionaries
 corpus <- subset(iebudgets, year==2010)
 mydict <- list(christmas=c("Christmas", "Santa", "holiday"),

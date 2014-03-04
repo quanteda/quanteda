@@ -1,25 +1,24 @@
 \name{clean}
 \alias{clean}
-\title{Perform basic cleanup on a string
+\title{Perform basic cleanup on a character object
 Simple cleanup for strings, removing punctuation, converting to lowercase
 and optionally replacing some language-specific characters}
 \usage{
 clean(s, langNorm = FALSE, removeDigits = TRUE)
 }
 \arguments{
-  \item{s}{String to be cleaned}
+  \item{s}{character object to be cleaned}
 }
 \value{
-character vector in lowercase with punctuation (and
+character object in lowercase with punctuation (and
 optionally digits) removed
 }
 \description{
-Perform basic cleanup on a string Simple cleanup for
-strings, removing punctuation, converting to lowercase and
-optionally replacing some language-specific characters
+Perform basic cleanup on a character object Simple cleanup
+for strings, removing punctuation, converting to lowercase
+and optionally replacing some language-specific characters
 }
 \examples{
-s <-"test"
-clean(s)
+s <- "A cursed £$&^!
 }
 

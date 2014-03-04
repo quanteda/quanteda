@@ -11,7 +11,8 @@
 #' @param subset Expression for subsetting the corpus before processing
 #' @param verbose Get info to screen on the progress
 #' @param dictionary A list of character vector dictionary entries, including regular expressions (see examples) 
-#' @param dictionary.regex \code{TRUE} means the dictionary is already in regular expression format, otherwise it will be converted from "wildcard" format
+#' @param dictionary.regex \code{TRUE} means the dictionary is already in regular expression format,
+#' otherwise it will be converted from "wildcard" format
 #' @return A data frame with row names equal to the document names and column names equal to the feature labels.
 #' @rdname dfm
 #' @export 
@@ -19,9 +20,10 @@
 #' @examples 
 #' data(iebudgets)
 #' wfm <- dfm(iebudgets)
-#' \dontrun{
+#' 
+#' ## by party, subset for 2010
 #' wfmByParty2010 <- dfm(iebudgets, groups="party", subset=(year==2010))
-#' }
+#' 
 #' ## with dictionaries
 #' corpus <- subset(iebudgets, year==2010)
 #' mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
