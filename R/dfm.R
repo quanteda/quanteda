@@ -18,6 +18,7 @@
 #' @export 
 #' @author Kenneth Benoit
 #' @examples 
+#' \dontrun{
 #' data(iebudgets)
 #' wfm <- dfm(iebudgets)
 #' 
@@ -32,6 +33,7 @@
 #'                taxation="taxation",
 #'                taxregex="tax*")
 #' dictDfm <- dfm(corpus, dictionary=mydict)
+#' }
 dfm <- function(corpus,
                 feature=c("word"),
                 stem=FALSE,

@@ -27,9 +27,11 @@ returns a list of collocations.  Note: Currently works only
 for pairs (bigram collocations).
 }
 \examples{
+\dontrun{
 data(iebudgets)
 collocations(iebudgets$attribs$texts[1], top=50)
 collocations(iebudgets$attribs$texts[1], top=50, method="chi2")
+}
 }
 \author{
 Kenneth Benoit

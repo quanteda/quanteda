@@ -25,8 +25,10 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' budgets <- createCorpus(texts, attribs=newattribs)
+#' data(ieTexts)
+#' budgets <- corpusCreate(ieTexts, attribs=newattribs)
 #' }
+#' 
 corpusCreate <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes=NULL, attribs.labels=NULL) {
   if (is.null(names(texts))) 
     names(texts) <- paste("text", 1:length(texts), sep="")
@@ -79,7 +81,8 @@ corpusAddAttributes <- function(corpus, newattribs, name=newattribs) {
 #' @export
 #' @examples
 #' \dontrun{
-#' budgets <- corpus.append(budgets, texts, newattribs)
+#' data(iebudgets)
+#' budgets <- corpusAppend(budgets, texts, newattribs)
 #' }
 corpusAppend <- function(corpus1, newtexts, newattribs, ...) {
   # 
@@ -142,44 +145,45 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
 #' @return corpus object
 #' @export
 #' @examples
+#' \dontrun{
 #' data(iebudgets)
 #' iebudgets2010 <- subset(iebudgets, year==2010)
 #' summary(iebudgets2010)
 #' iebudgetsLenihan <- subset(iebudgets, speaker="Lenihan", select=c(speaker, year))
 #' summary(iebudgetsLenihan)
+#' }
 subset.corpus <- function(corpus, subset=NULL, select=NULL) {
   tempcorp <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
   return(tempcorp)
 }
 
 
-# Transform a corpus by splitting texts into sentences
-#
-# Each text in the corpus is split into sentences, and each
-# sentence becomes a standalone text, with attributes indicating
-# the text it is taken from and it's serial number in that text
-# 
-# @param corpus Corpus to transform
-# @param feature Feature to count
-# @examples
-#\dontrun{
-# sentCorp <- corpus.reshape(corpus)
-# }
+#' Transform a corpus by splitting texts into sentences
+#'
+#' Each text in the corpus is split into sentences, and each
+#' sentence becomes a standalone text, with attributes indicating
+#' the text it is taken from and it's serial number in that text
+#' 
+#' @param corpus Corpus to transform
+#' @param feature Feature to count
+#' @examples
+#' \dontrun{
+#' corpus <- data(iebudgets)
+#' sentCorp <- corpus.reshape(corpus)
+#' }
 corpusReshape <- function(corpus) {
   sentence <- sentenceSeg(corpus$attribs$texts[[1]])
   sentenceno <- 1:length(sentence)
   sourcetext <- rep(row.names(corpus$attribs)[[1]], length(sentence))
   atts <- data.frame(sourcetext, sentenceno)
-  # print(names(atts))
-  sentCorp <- corpus.create(unlist(sentence), attribs=atts)
-  # print(names(sentCorp$attribs))
+  sentCorp <- corpusCreate(unlist(sentence), attribs=atts)
   for(i in 2:nrow(corpus$attribs)){
     sentence <- sentenceSeg(corpus$attribs$texts[[i]])
     sentenceno <- 1:length(sentence)
     sourcetext <- rep(row.names(corpus$attribs)[[i]], length(sentence))
     atts <- data.frame(sourcetext, sentenceno)
     
-    sentCorp<-corpus.append(sentCorp, unlist(sentence), atts)
+    sentCorp<-corpusAppend(sentCorp, unlist(sentence), atts)
   }
   return(sentCorp)
 }
@@ -234,7 +238,8 @@ summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop
 #' @export
 #' @examples
 #' \dontrun{
-#' fvm <- create.fvm.corpus(budgets, group="party")}
+#' fvm <- create.fvm.corpus(budgets, group="party")
+#' }
 create.fvm.corpus <- function(corpus,
                               feature=c("word"),
                               stem=FALSE,

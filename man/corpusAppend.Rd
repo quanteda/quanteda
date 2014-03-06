@@ -22,7 +22,8 @@ attributes and adds them to the corpus
 }
 \examples{
 \dontrun{
-budgets <- corpus.append(budgets, texts, newattribs)
+data(iebudgets)
+budgets <- corpusAppend(budgets, texts, newattribs)
 }
 }
 

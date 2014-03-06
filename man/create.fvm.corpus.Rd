@@ -20,6 +20,7 @@ a feature value matrix compatible with austin
 }
 \examples{
 \dontrun{
-fvm <- create.fvm.corpus(budgets, group="party")}
+fvm <- create.fvm.corpus(budgets, group="party")
+}
 }
 

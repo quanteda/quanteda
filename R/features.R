@@ -13,6 +13,7 @@
 #' @author Kohei Watanabe
 #' @export
 #' @examples
+#' \dontrun{
 #' texts <- getTextDir("/home/kohei/Documents/budget_2010/")
 #' class  <- rep(0, length(texts))
 #' class[grep("_LAB", names(texts))] <- 1
@@ -20,6 +21,7 @@
 #' corpus <- corpusCreate(texts, attribs=list(class=class))
 #' dfm <- dfm(corpus)
 #' features <- selectFeatures('ll', dfm, corpus$attribs$class, smooth=1)
+#' }
 selectFeatures <- function(extractor, dfm, class, smooth=1, show=10){
   
   if(extractor == 'wsll' || extractor == 'wschisq'){

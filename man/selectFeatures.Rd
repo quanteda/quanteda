@@ -28,6 +28,7 @@ extractor and a word freaquency matrix with binary class
 replicates of 'Keyness' of Wordsmith Tools.
 }
 \examples{
+\dontrun{
 texts <- getTextDir("/home/kohei/Documents/budget_2010/")
 class  <- rep(0, length(texts))
 class[grep("_LAB", names(texts))] <- 1
@@ -35,6 +36,7 @@ class[grep("_FF", names(texts))] <- 0
 corpus <- corpusCreate(texts, attribs=list(class=class))
 dfm <- dfm(corpus)
 features <- selectFeatures('ll', dfm, corpus$attribs$class, smooth=1)
+}
 }
 \author{
 Kohei Watanabe

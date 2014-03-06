@@ -26,7 +26,9 @@ cfvm2 Collocatons as data frame
 This function is an alternative KWIC
 }
 \examples{
+\dontrun{
 kwic2(texts, "we", filter = '_2010', location=TRUE)
+}
 }
 \author{
 Kohei Watanabent

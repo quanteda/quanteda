@@ -10,15 +10,17 @@
 #' @return A list of collocations, their frequencies, and their test statistics
 #' @export 
 #' @author Kenneth Benoit
-#' @examples 
+#' @examples
+#' \dontrun{
 #' data(iebudgets)
 #' collocations(iebudgets$attribs$texts[1], top=50)
 #' collocations(iebudgets$attribs$texts[1], top=50, method="chi2")
+#' }
 collocations <- function(text=NULL, file=NULL, top=NA, distance=2, n=2,
                          method=c("lr", "chi2", "mi")) {
   ## returns the bigrams, frequency, and score as a list
   ##
-  method <- arg.match(method)
+  method <- match.arg(method)
     if (is.null(text) & is.null(file)) stop("Must specify either text or file.")
   if (n>2) stop("Only bigrams (n=2) implemented so far.")
   clean.txt <- clean(text)

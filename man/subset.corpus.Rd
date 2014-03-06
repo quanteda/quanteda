@@ -21,10 +21,12 @@ Works just like the normal subset command but for corpus
 objects
 }
 \examples{
+\dontrun{
 data(iebudgets)
 iebudgets2010 <- subset(iebudgets, year==2010)
 summary(iebudgets2010)
 iebudgetsLenihan <- subset(iebudgets, speaker="Lenihan", select=c(speaker, year))
 summary(iebudgetsLenihan)
+}
 }
 

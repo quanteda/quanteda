@@ -7,7 +7,9 @@
 #' @return character vector of filenames withouth directory path
 #' @export
 #' @examples
+#' \dontrun{
 #' getRootFileNames('/home/paul/documents/libdem09.txt')
+#' }
 getRootFileNames <- function(longFilenames) {
   ## function to return just the filename, path not included
   ## might need to detect .Platform$OS.type to change the delimiter

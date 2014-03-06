@@ -10,7 +10,9 @@
 #' @return cfvm2 Collocatons as data frame
 #' @author Kohei Watanabent
 #' @examples 
+#' \dontrun{
 #' kwic2(texts, "we", filter = '_2010', location=TRUE)
+#' }
 kwic2 <- function(texts, word, window = 30, filter = '' , location = TRUE, case = TRUE){
   i <- 0
   names <- names(texts)

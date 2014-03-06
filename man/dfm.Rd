@@ -47,6 +47,7 @@ word-frequency matrix where the cells are counts of words
 by document.
 }
 \examples{
+\dontrun{
 data(iebudgets)
 wfm <- dfm(iebudgets)
 
@@ -61,6 +62,7 @@ mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
                taxation="taxation",
                taxregex="tax*")
 dictDfm <- dfm(corpus, dictionary=mydict)
+}
 }
 \author{
 Kenneth Benoit

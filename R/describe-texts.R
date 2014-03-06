@@ -6,10 +6,8 @@
 #' @param texts The texts to be described
 #' @export
 #' @examples
-#' \dontrun{
 #' texts <- c("testing this text", "and this one")
 #' describeTexts(texts)
-#' }
 describeTexts <- function(texts, output=TRUE) {
   # need to implement subsetting here too
   if (is.null(names(texts))) 
