@@ -18,12 +18,11 @@
 #' @export 
 #' @author Kenneth Benoit
 #' @examples 
-#' \dontrun{
 #' data(iebudgets)
 #' wfm <- dfm(iebudgets)
 #' 
 #' ## by party, subset for 2010
-#' wfmByParty2010 <- dfm(iebudgets, groups="party", subset=(year==2010))
+#' wfmByParty2010 <- dfm(subset(iebudgets, year==2010), groups="party")
 #' 
 #' ## with dictionaries
 #' corpus <- subset(iebudgets, year==2010)
@@ -33,7 +32,6 @@
 #'                taxation="taxation",
 #'                taxregex="tax*")
 #' dictDfm <- dfm(corpus, dictionary=mydict)
-#' }
 dfm <- function(corpus,
                 feature=c("word"),
                 stem=FALSE,
