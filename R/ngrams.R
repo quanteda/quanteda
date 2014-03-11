@@ -13,7 +13,7 @@ bigrams <- function(tokens){
   m1 <- append(t[2:l1], '')
   m2 <- t
   #print(paste(m1, m2, sep='-'))
-  m3 <- append('', w[1:l1-1])
+  m3 <- append('', t[1:l1-1])
   b <- c(paste(m3, m2, sep='-'), paste(m2, m1, sep='-'))
   l2 <- length(b)
   #print(b)
