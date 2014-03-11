@@ -6,8 +6,8 @@
 #' @return a character of bigrams vector
 #' @examples
 #' bigrams(c("aa", "bb", "cc", "dd", "ee", "ff"))
-bigrams <- function(tokens){
-  t <- tokens
+bigrams <- function(text){
+  t <- unlist(strsplit(text, ' '))
   #print(w)
   l1 <- length(t)
   m1 <- append(t[2:l1], '')
@@ -17,6 +17,6 @@ bigrams <- function(tokens){
   b <- c(paste(m3, m2, sep='-'), paste(m2, m1, sep='-'))
   l2 <- length(b)
   #print(b)
-  bigrams <- paste(b[3:l2-1], sep='')
+  bigrams <- paste(b[3:l2-1], sep='', collapse=' ')
   return(bigrams)
 }
