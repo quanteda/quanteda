@@ -51,6 +51,7 @@ dfm.corpus <- function(corpus,
                        feature=c("word"),
                        stem=FALSE,
                        stopwords=FALSE,
+                       bigram=FALSE,
                        groups=NULL,
                        subset=NULL, 
                        verbose=TRUE, 
@@ -84,6 +85,9 @@ dfm.corpus <- function(corpus,
         require(SnowballC)
         cat("... stemming ...")
         tokenizedTexts <- lapply(tokenizedTexts, wordStem)
+    }
+    if(bigram==TRUE) {
+        tokenizedTexts <- lapply(tokenizedTexts, bigrams)
     }
     # print(length)
     alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
