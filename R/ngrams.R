@@ -17,6 +17,7 @@ bigrams <- function(text){
   b <- c(paste(m3, m2, sep='-'), paste(m2, m1, sep='-'))
   l2 <- length(b)
   #print(b)
-  bigrams <- paste(b[3:l2-1], sep='', collapse=' ')
+  #bigrams <- paste(b[3:l2-1], sep='', collapse=' ')
+  bigrams <- paste(b[3:l2-1], sep='')
   return(bigrams)
 }
