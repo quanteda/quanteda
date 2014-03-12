@@ -88,6 +88,7 @@ dfm.corpus <- function(corpus,
         tokenizedTexts <- lapply(tokenizedTexts, wordStem)
     }
     if(bigram==TRUE) {
+        cat("... making bigrams ...")
         tokenizedTexts <- lapply(tokenizedTexts, bigrams)
     }
     # print(length)
@@ -126,8 +127,15 @@ dfm.corpus <- function(corpus,
     if(verbose) cat(" done. \n")
     
     if (stopwords) {
+        cat("... removing stopwords ...")
         data(stopwords_EN)
-        dfm <- subset(dfm, !row.names(dfm) %in% stopwords_EN)
+        if(bigram==TRUE) {
+          pat <- paste(paste0(paste0("-", stopwords_EN, "$"), collapse='|'), paste0(paste0("^", stopwords_EN, "-"), collapse='|'), sep='|')
+          dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
+        }else{
+          dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords_EN))
+        }
+        
     }
     return(dfm)
 }
