@@ -8,7 +8,7 @@
 #' @examples
 #' tokens <- tokenize("this is a test")
 tokenize <- function(str, lower=TRUE){
-  str <- clean(str, lower)
+  str <- clean(str, lower=lower)
   tokens <- scan(what="char", text=str, quiet=TRUE)
   # flush out "empty" strings caused by removal of punctuation and numbers
   tokens <- tokens[tokens!=""]
