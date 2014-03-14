@@ -9,7 +9,7 @@
 #' @examples
 #' s <- "A cursed £$&^!€ Exclamation! point; paragraph §1.2, which I wrote."
 #' clean(s)
-clean <- function(s, langNorm=FALSE, removeDigits=TRUE) {
+clean <- function(s, langNorm=FALSE, removeDigits=TRUE, lower=TRUE) {
   # optionally do some language specific normalisation
   if (langNorm) {
     # for French, make "l'" into "l"
@@ -23,7 +23,9 @@ clean <- function(s, langNorm=FALSE, removeDigits=TRUE) {
     s <- gsub("[[:punct:]]", "", s, perl=TRUE)
   }
   s <- s[s != ""]  # remove empty strings
-  s <- tolower(s) 
+  if(lower){
+    s <- tolower(s)
+  }
   # replace multiple space padding with single space
   s <- gsub(" {2,}", " ", s)
   return(s)
