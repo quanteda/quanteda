@@ -6,18 +6,21 @@
 #' @return a character of bigrams vector
 #' @examples
 #' bigrams(c("aa", "bb", "cc", "dd", "ee", "ff"))
-bigrams <- function(text){
+bigrams <- function(text, window = 1){
   t <- unlist(strsplit(text, ' '))
-  #print(w)
-  l1 <- length(t)
-  m1 <- append(t[2:l1], '')
-  m2 <- t
-  #print(paste(m1, m2, sep='-'))
-  m3 <- append('', t[1:l1-1])
-  b <- c(paste(m3, m2, sep='-'), paste(m2, m1, sep='-'))
-  l2 <- length(b)
-  #print(b)
-  #bigrams <- paste(b[3:l2-1], sep='', collapse=' ')
-  bigrams <- paste(b[3:l2-1], sep='')
+  bigrams <- c()
+  w <- 1
+  for(w in c(1:window)){
+
+    m1 <- c(rep('', w), t)
+    m2 <- c(t, rep('', w))
+    b <- paste(m1, m2, sep='-')
+    #print(b)
+    l <- length(b)
+    bigrams <- c(bigrams, paste(b[(w+1):(l-w)], collapse=' '))
+    
+  }
   return(bigrams)
 }
+#bigrams("aa bb cc dd ee ff", 5)
+
