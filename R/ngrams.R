@@ -20,7 +20,8 @@ bigrams <- function(text, window = 1){
     bigrams <- c(bigrams, paste(b[(w+1):(l-w)], collapse=' '))
     
   }
-  return(bigrams)
+  bigramText <- paste(bigrams, collapse = ' ')
+  return(bigramText)
 }
 #bigrams("aa bb cc dd ee ff", 5)
 
