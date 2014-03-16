@@ -6,7 +6,7 @@
 #' @return a character of bigrams vector
 #' @examples
 #' bigrams(c("aa", "bb", "cc", "dd", "ee", "ff"))
-bigrams <- function(text, window = 1){
+bigrams <- function(text, window = 2, sort = FALSE){
   t <- unlist(strsplit(text, ' '))
   bigrams <- c()
   w <- 1
@@ -17,11 +17,15 @@ bigrams <- function(text, window = 1){
     b <- paste(m1, m2, sep='-')
     #print(b)
     l <- length(b)
-    bigrams <- c(bigrams, paste(b[(w+1):(l-w)], collapse=' '))
+    bigrams <- c(bigrams, b[(w+1):(l-w)])
     
   }
-  bigramText <- paste(bigrams, collapse = ' ')
-  return(bigramText)
+  #Sort words in bigrams alphabetically
+  if(sort){
+    bigrams <- unlist(lapply(bigrams, function(x) paste(sort(unlist(strsplit(x, '-'))), collapse = '-' )))
+  }
+  #bigramText <- paste(bigrams, collapse = ' ')
+  return(bigrams)
 }
 #bigrams("aa bb cc dd ee ff", 5)
 

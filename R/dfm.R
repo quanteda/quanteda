@@ -87,9 +87,9 @@ dfm.corpus <- function(corpus,
         cat("... stemming ...")
         tokenizedTexts <- lapply(tokenizedTexts, wordStem)
     }
-    if(bigram==TRUE) {
+    if(bigram > 0) {
         cat("... making bigrams ...")
-        tokenizedTexts <- lapply(tokenizedTexts, bigrams)
+        tokenizedTexts <- lapply(tokenizedTexts, function(x) bigrams(x, bigram))
     }
     # print(length)
     alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
