@@ -5,7 +5,7 @@
 #' @author kohei Watanabe
 #' @return a character of bigrams vector
 #' @examples
-#' bigrams(c("aa", "bb", "cc", "dd", "ee", "ff"))
+#' bigrams(c("aa bb cc dd ee ff"))
 bigrams <- function(text, window = 2, sort = FALSE){
   t <- unlist(strsplit(text, ' '))
   bigrams <- c()
