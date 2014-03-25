@@ -25,7 +25,7 @@ amicusCorpus <-
   corpusCreate(amicusTexts, attribs=list(trainclass=trainclass, testclass=testclass))
 summary(amicusCorpus)
 # extract a word by document matrix
-amicusDfm <- dfm(amicusCorpus, bigram=TRUE)
+amicusDfm <- dfm(amicusCorpus)
 # train the NB classifier 
 amicusNb <- naiveBayesText(as.matrix(amicusDfm), amicusCorpus$attribs$trainclass, smooth=1, prior="uniform")
 # predict test class
