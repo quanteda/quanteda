@@ -4,12 +4,12 @@
 \title{Create a document-feature matrix from a corpus object}
 \usage{
 dfm(corpus, feature = c("word"), stem = FALSE, stopwords = FALSE,
-  groups = NULL, subset = NULL, verbose = TRUE, dictionary = NULL,
-  dictionary.regex = FALSE)
+  bigram = FALSE, groups = NULL, subset = NULL, verbose = TRUE,
+  dictionary = NULL, dictionary.regex = FALSE)
 
 \method{dfm}{corpus}(corpus, feature = c("word"), stem = FALSE,
-  stopwords = FALSE, groups = NULL, subset = NULL, verbose = TRUE,
-  dictionary = NULL, dictionary.regex = FALSE)
+  stopwords = FALSE, bigram = FALSE, groups = NULL, subset = NULL,
+  verbose = TRUE, dictionary = NULL, dictionary.regex = FALSE)
 }
 \arguments{
   \item{corpus}{Corpus from which to generate the
