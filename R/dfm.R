@@ -36,6 +36,7 @@ dfm <- function(corpus,
                 feature=c("word"),
                 stem=FALSE,
                 stopwords=FALSE,
+                bigram=FALSE,
                 groups=NULL,
                 subset=NULL, 
                 verbose=TRUE, 
@@ -51,6 +52,7 @@ dfm.corpus <- function(corpus,
                        feature=c("word"),
                        stem=FALSE,
                        stopwords=FALSE,
+                       bigram=FALSE,
                        groups=NULL,
                        subset=NULL, 
                        verbose=TRUE, 
@@ -84,6 +86,10 @@ dfm.corpus <- function(corpus,
         require(SnowballC)
         cat("... stemming ...")
         tokenizedTexts <- lapply(tokenizedTexts, wordStem)
+    }
+    if(bigram > 0) {
+        cat("... making bigrams ...")
+        tokenizedTexts <- lapply(tokenizedTexts, function(x) bigrams(x, bigram))
     }
     # print(length)
     alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
@@ -121,8 +127,15 @@ dfm.corpus <- function(corpus,
     if(verbose) cat(" done. \n")
     
     if (stopwords) {
+        cat("... removing stopwords ...")
         data(stopwords_EN)
-        dfm <- subset(dfm, !row.names(dfm) %in% stopwords_EN)
+        if(bigram==TRUE) {
+          pat <- paste(paste0(paste0("-", stopwords_EN, "$"), collapse='|'), paste0(paste0("^", stopwords_EN, "-"), collapse='|'), sep='|')
+          dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
+        }else{
+          dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords_EN))
+        }
+        
     }
     return(dfm)
 }
