@@ -12,13 +12,12 @@ describeTexts <- function(texts, output=TRUE) {
   # need to implement subsetting here too
   if (is.null(names(texts))) 
     names(texts) <- paste("text", 1:length(texts), sep="")
-  string <- gsub("[[:punct:][:digit:]]", "", texts)
-  string <- gsub("\n", "", string)
-  string <- string[string!=""]
-  string <- tolower(string)
-  tokenized.string <- lapply(string, function(s) strsplit(s, c(" ", ".", "?", "!")))
-  ntokens <- sapply(tokenized.string, function(s) sapply(s, length))
-  ntypes  <- sapply(tokenized.string, function(s) sapply(s, function(s2) length(unique(s2))))
+  cleanTexts <- lapply(texts,clean)
+  tokenizedTexts <- sapply(cleanTexts, tokenize)
+  ntokens <- sapply(tokenizedTexts,length)
+  ntypes <- length(unique)
+  temp <- sapply(tokenizedTexts, unique)
+  ntypes <- sapply(temp, length)
   nsents  <- sapply(texts, function(s) length(gregexpr("[.!?]", s)[[1]]))
   if (output) {
     cat("Summary of texts:\n")
@@ -28,5 +27,4 @@ describeTexts <- function(texts, output=TRUE) {
                      Sentences=nsents,
                      row.names=NULL))
   }
-  return(invisible(list(ntokens=ntokens, ntypes=ntypes, nsents=nsents)))
 }
