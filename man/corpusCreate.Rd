@@ -24,9 +24,8 @@ text on whitespace, returning a dataframe of words and
 their frequncies
 }
 \examples{
-\dontrun{
 data(ieTexts)
-budgets <- corpusCreate(ieTexts, attribs=newattribs)
-}
+data(ieAttribs)
+budgets <- corpusCreate(ieTexts, ieAttribs)
 }
 

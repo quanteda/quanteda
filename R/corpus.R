@@ -24,11 +24,9 @@
 #' @param attribs A data frame of attributes that can be associated with each
 #' @export
 #' @examples
-#' \dontrun{
 #' data(ieTexts)
-#' budgets <- corpusCreate(ieTexts, attribs=newattribs)
-#' }
-#' 
+#' data(ieAttribs)
+#' budgets <- corpusCreate(ieTexts, ieAttribs)
 corpusCreate <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes=NULL, attribs.labels=NULL) {
   if (is.null(names(texts))) 
     names(texts) <- paste("text", 1:length(texts), sep="")
@@ -80,10 +78,10 @@ corpusAddAttributes <- function(corpus, newattribs, name=newattribs) {
 #' text
 #' @export
 #' @examples
-#' \dontrun{
 #' data(iebudgets)
-#' budgets <- corpusAppend(budgets, texts, newattribs)
-#' }
+#' data(ieAttribs)
+#' data(ieTexts)
+#' budgets <- corpusAppend(iebudgets, ieTexts, ieAttribs)
 corpusAppend <- function(corpus1, newtexts, newattribs, ...) {
   # 
   # should make it also allow an optional corpus2 version where two

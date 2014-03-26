@@ -4,6 +4,9 @@
 #' 
 #' @param text Text to be segmented
 #' @export
+#' @examples
+#' test <- "This is a sentence! Several sentences. It's designed by a Dr. to test whether this function works. Or not? Or not."
+#' sentenceSeg(test)
 sentenceSeg <- function(text, pat="[\\.\\?\\!][\\n* ]|\\n\\n*", abbreviations = NULL, parag = TRUE){
   stops <- unlist(strsplit(text, split=pat, perl=TRUE) )
   if(is.null(abbreviations)) {abbreviations <- c('Mr', 'Mrs', 'Ms', 'Dr','Jr','Prof')}

@@ -21,9 +21,9 @@ corpus Accepts a list of texts and a list of associated
 attributes and adds them to the corpus
 }
 \examples{
-\dontrun{
 data(iebudgets)
-budgets <- corpusAppend(budgets, texts, newattribs)
-}
+data(ieAttribs)
+data(ieTexts)
+budgets <- corpusAppend(iebudgets, ieTexts, ieAttribs)
 }
 

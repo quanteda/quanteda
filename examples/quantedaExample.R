@@ -10,7 +10,7 @@ newattribs <-
 names(newattribs) <- 
   c("year", "debate", "no", "fname", "speaker", "party")
 newattribs$party <- gsub(".txt", "", newattribs$party)
-iebudgets <- corpusCreate(texts, attribs=newattribs)
+iebudgets <- corpusCreate(ieTexts, attribs=ieAttribs)
 
 texts <- getTextDir("~/Dropbox/QUANTESS/corpora/iebudgets/budget_2009sup")
 parts <- strsplit(getRootFileNames(names(texts)), "_")
