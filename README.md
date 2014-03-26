@@ -27,6 +27,8 @@ More Documentation
 Is on its way.  An example for now, to create a term-frequency matrix from a collection of documents (what quanteda calls a corpus) and analyze that using a Naive Bayes classifier:
 
 ```S
+library(quanteda)
+
 #### Analyze Bollinger texts from Evans et al JELS 2007
 # load in Amicus texts from a zipped web archive
 
