@@ -1,6 +1,6 @@
 #
 # Runs the github exapmple, and calls a few other functions to check everything is working.
-#
+# Ken test change from github client to dev
 
 
 library(quanteda)
