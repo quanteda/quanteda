@@ -2,7 +2,7 @@ library(quanteda)
 library(austin)
 
 #testing rstudio commit
-#testing 2
+#testing 2 3
 
 getLabel <- function(filename){
   len <- nchar(filename)
