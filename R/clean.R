@@ -22,7 +22,7 @@ clean <- function(s, langNorm=FALSE, removeDigits=TRUE, lower=TRUE) {
   } else {
     s <- gsub("[[:punct:]]", "", s, perl=TRUE)
   }
-  s <- s[s != ""]  # remove empty strings
+  #s <- s[s != ""]  # remove empty strings
   if(lower){
     s <- tolower(s)
   }
