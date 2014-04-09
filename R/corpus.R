@@ -27,7 +27,7 @@
 #' data(ieTexts)
 #' data(ieAttribs)
 #' budgets <- corpusCreate(ieTexts, ieAttribs)
-corpusCreate <- function(texts, textnames=NULL, attribs=NULL, header=FALSE source=NULL, notes=NULL, attribs.labels=NULL) {
+corpusCreate <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes=NULL, attribs.labels=NULL) {
   if (is.null(names(texts))) 
     names(texts) <- paste("text", 1:length(texts), sep="")
   if (is.null(source)) 
@@ -58,11 +58,27 @@ corpusCreate <- function(texts, textnames=NULL, attribs=NULL, header=FALSE sourc
 #' @export
 #' @examples
 #' \dontrun{
-#' budgets <- corpusFromHeaders(trtexts <- "~/Dropbox/QUANTESS/corpora/withHeader")
+#' budgets <- corpusFromHeaders("~/Dropbox/QUANTESS/corpora/withHeader")
 #' }
 corpusFromHeaders <- function(directory){
-  
-  
+  library(jsonlite)
+  docs <- getTextDir(directory)
+  texts <- c()
+  headerAttribs <- data.frame(stringsAsFactors=FALSE)
+  for(d in docs){
+    lines <- unlist(strsplit(d, '\n'))
+    header <- data.frame(fromJSON(lines[1]), stringsAsFactors=FALSE)
+    if(is.null(names(headerAttribs))){
+      attribs <- data.frame(header, stringsAsFactors = FALSE)
+    }
+    else{
+      headerAttribs <- rbind(header, headerAttribs)
+    }
+    content <- paste(lines[2:length(lines)], collapse='\n')
+    texts <- c(texts, content) 
+  }
+  corp <- corpusCreate(texts, attribs=headerAttribs)
+  return(corp)
 }
 
 

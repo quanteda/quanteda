@@ -1,2 +1,1 @@
-library(quanteda)
-trtexts <- getTextDir("~/Dropbox/QUANTESS/corpora/withHeader")
+corp <- corpusFromHeaders("~/Dropbox/QUANTESS/corpora/withHeader")
