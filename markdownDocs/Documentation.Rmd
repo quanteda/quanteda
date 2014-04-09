@@ -1,0 +1,15 @@
+Importing Documents into a Quanteda Corpus
+========================================================
+
+One way of creating a Quanteda corpus is to combine a vector of texts with a dataframe of attributes. 
+
+```{r}
+summary(cars)
+```
+
+You can also embed plots, for example:
+
+```{r fig.width=7, fig.height=6}
+plot(cars)
+```
+
