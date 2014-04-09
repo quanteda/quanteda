@@ -34,9 +34,10 @@ getRootFileNames <- function(longFilenames) {
 #' \dontrun{
 #' getTextFiles('/home/paul/documents/libdem09.txt')
 #' }
-getTextFiles <- function(filenames, textnames=NULL) {
+getTextFiles <- function(filenames, textnames=NULL, verbose=TRUE) {
   # TODO detect encoding; verbose=TRUE (progress bar?)
-  print(filenames)
+  if(verbose) print(sprintf("Reading .. %s", filenames))
+ # print(sprintf("Reading .. %s \n", filenames))
   textsvec <- c()  
   # changed from readChar to readLines
   for (f in filenames) {

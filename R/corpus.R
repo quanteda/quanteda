@@ -27,14 +27,13 @@
 #' data(ieTexts)
 #' data(ieAttribs)
 #' budgets <- corpusCreate(ieTexts, ieAttribs)
-corpusCreate <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes=NULL, attribs.labels=NULL) {
+corpusCreate <- function(texts, textnames=NULL, attribs=NULL, header=FALSE source=NULL, notes=NULL, attribs.labels=NULL) {
   if (is.null(names(texts))) 
     names(texts) <- paste("text", 1:length(texts), sep="")
   if (is.null(source)) 
     source <- paste(getwd(), "/* ", "on ",  Sys.info()["machine"], " by ", Sys.info()["user"], sep="")
   created <- date()
   metadata <- c(source=source, created=created, notes=notes)
-    
   if (is.null(attribs)) {
     attribs <- data.frame(texts, row.names=names(texts), 
                           check.rows=TRUE, stringsAsFactors=FALSE)
@@ -47,6 +46,24 @@ corpusCreate <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes
   return(temp.corpus)
 }
 
+
+#' create a new corpus with attribute-value pairs taken from document headers
+
+#' This function takes a directory, reads in all the documents in that directory
+#' and makes a new corpus where the attributes and values are created from
+#' JSON headers in the documents. The directory must contain only documents to be
+#' used in the corpus, and each document must have the same attributes.
+#' 
+#' @param directory 
+#' @export
+#' @examples
+#' \dontrun{
+#' budgets <- corpusFromHeaders(trtexts <- "~/Dropbox/QUANTESS/corpora/withHeader")
+#' }
+corpusFromHeaders <- function(directory){
+  
+  
+}
 
 
 #' This function adds a named list of attributes to an existing corpus

@@ -7,14 +7,13 @@
 #' @export
 #' @examples 
 #' data(iebudgets)
-#' wfm <- dfm(iebudgets)
+#' wfm <- dfm(iebudgets, group="party", bigram=TRUE)
 bigrams <- function(text, window = 2){
     ## should use our tokenizer instead - KB
     #t <- unlist(strsplit(text, ' '))
     t <- tokenize(text)
     # initialize bigrams vector
     bigrams <- c()
-
     # w <- 1  - not nececssary - for() initializes the w using the range of in
     for (w in (1:window)) {
         m1 <- c(rep('', w), t)
