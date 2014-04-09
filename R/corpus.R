@@ -51,7 +51,12 @@ corpusCreate <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes
 
 #' This function takes a directory, reads in all the documents in that directory
 #' and makes a new corpus where the attributes and values are created from
-#' JSON headers in the documents. The directory must contain only documents to be
+#' JSON headers in the documents. The JSON header should be the first line (as 
+#' delimited by \n) in document. For example, a document may begin as follows:
+#' "budgetPosition" : "1.0", "party":"FF"}
+#' When I presented the supplementary budget to this House last April....
+#' 
+#' The directory must contain only documents to be
 #' used in the corpus, and each document must have the same attributes.
 #' 
 #' @param directory 
@@ -97,9 +102,6 @@ corpusAddAttributes <- function(corpus, newattribs, name=newattribs) {
 }
 
 
-
-
-
 #' function to add new texts and attributes to an existing corpus
 
 #' Accepts a list of texts and a list of associated attributes and 
@@ -126,8 +128,6 @@ corpusAppend <- function(corpus1, newtexts, newattribs, ...) {
   # TODO: implement concatenation of any attribs.labels from new corpus
   return(corpus1)
 }
-
-
 
 corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=FALSE) {
   # This is the "inner" function to be called by other functions
