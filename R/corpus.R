@@ -86,6 +86,44 @@ corpusFromHeaders <- function(directory){
   return(corp)
 }
 
+#' create a new corpus with attribute-value pairs taken from document filenames
+
+#' Work in progress
+
+#' 
+#' @param directory 
+#' @export
+#' @examples
+#' \dontrun{
+#' budgets <- corpusFromHeaders("~/Dropbox/QUANTESS/corpora/withHeader")
+#' }
+corpusFromFilenames <- function(directory, attNames, sep='_'){
+  
+  texts <- c()
+  allAttribs <- data.frame(stringsAsFactors=FALSE)
+  filenames <- list.files(directory, full.names=TRUE)
+  for (f in filenames) {
+    text <-  paste(suppressWarnings(readLines(f)), collapse="\n")
+    sname <- getRootFileNames(f)
+    sname <- gsub(".txt", "", sname)
+    parts <- unlist(strsplit(sname, sep))
+    if(length(allAttribs) < 1)){
+      allAttribs <- data.frame(attNames, stringsAsFactors = FALSE)
+    }
+    else{
+      allAttribs <- rbind(header, headerAttribs)
+    }
+    
+    if(length(parts)!=length(attNames)){
+      stop("The length of the parts of the filename does not equal the length of the attribute names")
+    }
+    newattribs <- data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE))
+    names(newattribs) <- attNames
+  }
+  corp <- corpusCreate(texts, attribs=newattribs)
+  return()
+}
+
 
 #' This function adds a named list of attributes to an existing corpus
 #' 
