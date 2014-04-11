@@ -66,24 +66,24 @@ corpusCreate <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes
 #' budgets <- corpusFromHeaders("~/Dropbox/QUANTESS/corpora/withHeader")
 #' }
 corpusFromHeaders <- function(directory){
-  library(jsonlite)
-  docs <- getTextDir(directory)
-  texts <- c()
-  headerAttribs <- data.frame(stringsAsFactors=FALSE)
-  for(d in docs){
-    lines <- unlist(strsplit(d, '\n'))
-    header <- data.frame(fromJSON(lines[1]), stringsAsFactors=FALSE)
-    if(is.null(names(headerAttribs))){
-      attribs <- data.frame(header, stringsAsFactors = FALSE)
+    library(jsonlite)
+    docs <- getTextDir(directory)
+    texts <- c()
+    headerAttribs <- data.frame(stringsAsFactors=FALSE)
+    for(d in docs){
+        lines <- unlist(strsplit(d, '\n'))
+        header <- data.frame(fromJSON(lines[1]), stringsAsFactors=FALSE)
+        if(is.null(names(headerAttribs))){
+            attribs <- data.frame(header, stringsAsFactors = FALSE)
+        }
+        else{
+            headerAttribs <- rbind(header, headerAttribs)
+        }
+        content <- paste(lines[2:length(lines)], collapse='\n')
+        texts <- c(texts, content) 
     }
-    else{
-      headerAttribs <- rbind(header, headerAttribs)
-    }
-    content <- paste(lines[2:length(lines)], collapse='\n')
-    texts <- c(texts, content) 
-  }
-  corp <- corpusCreate(texts, attribs=headerAttribs)
-  return(corp)
+    corp <- corpusCreate(texts, attribs=headerAttribs)
+    return(corp)
 }
 
 #' create a new corpus with attribute-value pairs taken from document filenames
@@ -279,7 +279,7 @@ summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop
   if (ncol(attribs)==1) names(attribs) <- as.character(substitute(select))[2]
   #print(names(attribs))
   names(texts) <- rownames(corpus$attribs)
-  print(head(cbind((dtexts <- describeTexts(texts, output=FALSE)),
+  print(head(cbind((dtexts <- describeTexts(texts, verbose=FALSE)),
                    attribs), 
              nmax))
   cat("\nSource:  ", corpus$metadata["source"], ".\n", sep="")
