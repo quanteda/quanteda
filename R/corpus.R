@@ -107,7 +107,7 @@ corpusFromFilenames <- function(directory, attNames, sep='_'){
     sname <- getRootFileNames(f)
     sname <- gsub(".txt", "", sname)
     parts <- unlist(strsplit(sname, sep))
-    if(length(allAttribs) < 1)){
+    if(length(allAttribs) < 1){
       allAttribs <- data.frame(attNames, stringsAsFactors = FALSE)
     }
     else{

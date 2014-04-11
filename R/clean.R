@@ -22,7 +22,8 @@ clean <- function(s, langNorm=FALSE, removeDigits=TRUE, lower=TRUE) {
   } else {
     s <- gsub("[[:punct:]]", "", s, perl=TRUE)
   }
-  #s <- s[s != ""]  # remove empty strings
+  # reverting this change as I suspsect it causes bug in wordfish scaling.
+  s <- s[s != ""]  # remove empty strings
   if(lower){
     s <- tolower(s)
   }
