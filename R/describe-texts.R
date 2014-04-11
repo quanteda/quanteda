@@ -24,6 +24,6 @@ describeTexts <- function(texts, verbose=TRUE) {
                           Tokens=ntokens,
                           Sentences=nsents,
                           row.names=NULL)
-    if (output) print(results)
+    if (verbose) print(results)
     return(results)
 }
