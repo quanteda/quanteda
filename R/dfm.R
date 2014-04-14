@@ -74,7 +74,7 @@ dfm.corpus <- function(corpus,
         texts <- split(corpus$attribs$texts, group.split)
         # was sapply, changing to lapply seems to fix 2 class case
         texts <- lapply(texts, paste)
-        if (verbose) cat("complete...")
+        if (verbose) cat("complete ...")
     } else {
         texts <- corpus$attribs$texts
         names(texts) <- rownames(corpus$attribs)
@@ -84,11 +84,11 @@ dfm.corpus <- function(corpus,
     tokenizedTexts <- sapply(texts, tokenize, simplify=FALSE)
     if (stem==TRUE) {
         require(SnowballC)
-        cat("... stemming ...")
+        cat(" stemming ...")
         tokenizedTexts <- lapply(tokenizedTexts, wordStem)
     }
     if (bigram > 0) {
-        cat("... making bigrams ...")
+        cat(" making bigrams ...")
         tokenizedTexts <- lapply(tokenizedTexts, function(x) bigrams(x, bigram))
     }
     # print(length)
@@ -125,7 +125,7 @@ dfm.corpus <- function(corpus,
     }
     
     if (stopwords) {
-        cat("... removing stopwords ...")
+        cat(" removing stopwords ...")
         data(stopwords_EN)
         if (bigram==TRUE) {
           pat <- paste(paste0(paste0("-", stopwords_EN, "$"), collapse='|'), paste0(paste0("^", stopwords_EN, "-"), collapse='|'), sep='|')
