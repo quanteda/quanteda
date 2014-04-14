@@ -103,30 +103,30 @@ corpusFromHeaders <- function(headerTexts) {
 #' budgets <- corpusFromHeaders("~/Dropbox/QUANTESS/corpora/withHeader")
 #' }
 corpusFromFilenames <- function(directory, attNames, sep='_'){
-  
   texts <- c()
+  sep="_"
   allAttribs <- data.frame(stringsAsFactors=FALSE)
   filenames <- list.files(directory, full.names=TRUE)
   for (f in filenames) {
-    text <-  paste(suppressWarnings(readLines(f)), collapse="\n")
     sname <- getRootFileNames(f)
     sname <- gsub(".txt", "", sname)
-    parts <- unlist(strsplit(sname, sep))
+    parts <- strsplit(sname, sep)
+    df <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE))
+    names(df) <- attNames
     if(length(allAttribs) < 1){
-      allAttribs <- data.frame(attNames, stringsAsFactors = FALSE)
+      allAttribs <- df
     }
     else{
-      allAttribs <- rbind(header, headerAttribs)
+      allAttribs <- rbind(df, allAttribs)
     }
-    
-    if(length(parts)!=length(attNames)){
+    if(length(parts)!=length(parts)){
       stop("The length of the parts of the filename does not equal the length of the attribute names")
     }
-    newattribs <- data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE))
-    names(newattribs) <- attNames
+    content <- getTextFiles(f)
+    texts <- c(texts, content) 
   }
-  corp <- corpusCreate(texts, attribs=newattribs)
-  return()
+  corp <- corpusCreate(texts, attribs=allAttribs)
+  return(corp)
 }
 
 

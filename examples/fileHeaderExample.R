@@ -1,4 +1,3 @@
-
 library(jsonlite)
 data(ieTextsHeaders)
 texts <- c()
