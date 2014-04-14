@@ -264,13 +264,17 @@ corpusReshape <- function(corpus) {
 #' 
 #' @param corpus An existing corpus to be summarized
 #' @param texts The name of the attribute containing the corpus texts, if
-#' not 'texts'
-#' @export
+#' not 'texts'.  For instance, if the corpus contained translated texts as an attribute,
+#' then setting this to the name of that variable would make it possible to summarize
+#' the alternate rather than the main texts.
+#' @nmax maximum number of texts to describe, default=100
 #' @examples
 #' data(iebudgets)
 #' summary(subset(iebudgets, year==2010))
-summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop=FALSE, output=TRUE, nmax=100) {
-  corpus <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
+#' summary(iebudgets, nmax=100)
+#summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop=FALSE, verbose=TRUE, nmax=100) {
+summary.corpus <- function(corpus, texts="texts", nmax=100) {
+    corpus <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
   cat("Corpus object contains", nrow(corpus$attribs), "texts.\n\n")
   # allow user to set the column or variable which identifies the texts to summarize
   texts <- corpus$attribs[,texts]
