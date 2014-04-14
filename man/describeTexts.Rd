@@ -4,7 +4,7 @@
 Prints to the console a desription of the texts, including
 number of types, tokens, and sentences}
 \usage{
-describeTexts(texts, output = TRUE)
+describeTexts(texts, verbose = TRUE)
 }
 \arguments{
   \item{texts}{The texts to be described}
