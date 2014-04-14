@@ -67,31 +67,29 @@ corpusCreate <- function(texts, attribs=NULL, textnames=NULL, source=NULL, notes
 #' used in the corpus, and each document must have the same attributes.
 #' 
 #' @param directory 
-# @export
+#' @export
 #' @examples
-#' \dontrun{
-#' budgets <- corpusFromHeaders("~/Dropbox/QUANTESS/corpora/withHeader")
-#' }
-# corpusFromHeaders <- function(directory) {
-#     library(jsonlite)
-#     docs <- getTextDir(directory)
-#     texts <- c()
-#     headerAttribs <- data.frame(stringsAsFactors=FALSE)
-#     for (d in docs) {
-#         lines <- unlist(strsplit(d, '\n'))
-#         header <- data.frame(fromJSON(lines[1]), stringsAsFactors=FALSE)
-#         if (is.null(names(headerAttribs))) {
-#             attribs <- data.frame(header, stringsAsFactors = FALSE)
-#         }
-#         else {
-#             headerAttribs <- rbind(header, headerAttribs)
-#         }
-#         content <- paste(lines[2:length(lines)], collapse='\n')
-#         texts <- c(texts, content) 
-#     }
-#     corp <- corpusCreate(texts, attribs=headerAttribs)
-#     return(corp)
-# }
+#' data(ieTextsHeaders)
+#' budgets <- corpusFromHeaders(ieTextsHeaders)
+corpusFromHeaders <- function(headerTexts) {
+    library(jsonlite)
+    texts <- c()
+    headerAttribs <- data.frame(stringsAsFactors=FALSE)
+    for (ht in headerTexts) {
+      lines <- unlist(strsplit(ht, '\n'))
+      header <- data.frame(fromJSON(lines[1]), stringsAsFactors=FALSE)
+      if (is.null(names(headerAttribs))) {
+        attribs <- data.frame(header, stringsAsFactors = FALSE)
+      }
+      else {
+        headerAttribs <- rbind(header, headerAttribs)
+      }
+      content <- paste(lines[2:length(lines)], collapse='\n')
+      texts <- c(texts, content) 
+    }
+    corp <- corpusCreate(texts, attribs=headerAttribs)
+    return(corp)
+}
 
 #' create a new corpus with attribute-value pairs taken from document filenames
 

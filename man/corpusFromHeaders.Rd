@@ -2,7 +2,7 @@
 \alias{corpusFromHeaders}
 \title{create a new corpus with attribute-value pairs taken from document headers}
 \usage{
-corpusFromHeaders(directory)
+corpusFromHeaders(headerTexts)
 }
 \arguments{
   \item{directory}{}
@@ -22,8 +22,7 @@ The directory must contain only documents to be used in the
 corpus, and each document must have the same attributes.
 }
 \examples{
-\dontrun{
-budgets <- corpusFromHeaders("~/Dropbox/QUANTESS/corpora/withHeader")
-}
+data(ieTextsHeaders)
+budgets <- corpusFromHeaders(ieTextsHeaders)
 }
 
