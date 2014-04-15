@@ -13,42 +13,132 @@
 #     notes (default is NULL, can be user-supplied)
 
 
-#' create a new corpus - a list containing texts and named attributes
+#' Create a new corpus
 
-#' This function takes a text (in the form of a character vectors),
-#' performs some cleanup, and splits the text on whitespace, returning
-#' a dataframe of words and their frequncies
+#' This function creates a corpus from a character vector (of texts), 
+#' adds text-specific variables (which we term "attributes"), along
+#' with optional meta-data and notes.
 #' 
-#' @param texts Text to be tokenized
-#' @param textnames Names to assign to the texts
-#' @param attribs A data frame of attributes that can be associated with each
+#' @param texts A character vector containing the texts to be stored in the corpus.
+#' @param textnames Names to be assigned to the texts, defaults to the names of the 
+#' character vector (if any), otherwise assigns "text1", "text2", etc.
+#' @param attribs A data frame of attributes that is associated with each text.
+#' @param source A string specifying the source of the texts, used for referencing.
+#' @param notes A string containing notes about who created the text, warnings, To Dos, etc.
+#' @export
+#' @examples
+#' data(ieTexts)
+#' data(ieAttribs)
+#' budgets <- corpusCreate(ieTexts, attribs=ieAttribs)
+#' summary(budgets)
+## Removed attribs.labels argument as it was not being used - KB 14 Apr 2014
+corpusCreate <- function(texts, attribs=NULL, textnames=NULL, source=NULL, notes=NULL) {
+    if (is.null(names(texts))) {
+        names(texts) <- paste("text", 1:length(texts), sep="")
+    }
+    if (is.null(source)) {
+        source <- paste(getwd(), "/* ", "on ",  Sys.info()["machine"], " by ", Sys.info()["user"], sep="")
+    }
+    created <- date()
+    metadata <- c(source=source, created=created, notes=notes)
+    if (is.null(attribs)) {
+        attribs <- data.frame(texts, row.names=names(texts), 
+                              check.rows=TRUE, stringsAsFactors=FALSE)
+    } else {
+        attribs <- data.frame(texts, attribs, row.names=names(texts), 
+                              check.rows=TRUE, stringsAsFactors=FALSE)
+    }
+    temp.corpus <- list(attribs=attribs, metadata=metadata)
+    class(temp.corpus) <- list("corpus", class(temp.corpus))
+    return(temp.corpus)
+}
+
+
+#' create a new corpus with attribute-value pairs taken from document headers
+#' 
+#' This function takes a vector of texts with JSON headers
+#' and makes a new corpus where the attributes and values are created from
+#' JSON headers in the text. The JSON header should be the first line (as 
+#' delimited by \\n) in document. For example, a document may begin as follows:
+#' "budgetPosition" : "1.0", "party":"FF"\}
+#' When I presented the supplementary budget to this House last April....
+#' 
+#' The directory must contain only documents to be
+#' used in the corpus, and each document must have the same attributes.
+#' 
+#' @param headerTexts A vector of texts with JSON headers 
+#' @export
+#' @examples
+#' data(ieTextsHeaders)
+#' budgets <- corpusFromHeaders(ieTextsHeaders)
+corpusFromHeaders <- function(headerTexts) {
+    library(jsonlite)
+    texts <- c()
+    headerAttribs <- data.frame(stringsAsFactors=FALSE)
+    for (ht in headerTexts) {
+      lines <- unlist(strsplit(ht, '\n'))
+      header <- data.frame(fromJSON(lines[1]), stringsAsFactors=FALSE)
+      if (is.null(names(headerAttribs))) {
+        attribs <- data.frame(header, stringsAsFactors = FALSE)
+      }
+      else {
+        headerAttribs <- rbind(header, headerAttribs)
+      }
+      content <- paste(lines[2:length(lines)], collapse='\n')
+      texts <- c(texts, content) 
+    }
+    corp <- corpusCreate(texts, attribs=headerAttribs)
+    return(corp)
+}
+
+#' create a new corpus with attribute-value pairs taken from filenames
+#' 
+#' This function takes a directory, reads in all the documents in that directory
+#' and makes a new corpus where the attributes and values are created by splitting
+#' the filename according to a separator.For example, a directory may contain files
+#' with a naming scheme that identifies attribute values, e.g.:
+#' "2010_BUDGET_05_Brian_Cowen_FF.txt".
+#' 
+#' To create a corpus object from texts named in this format, we can call this 
+#' function and specify the attribute types and separator, e.g:
+#' new_corpus <- corpusFromFilenames(dirname, c("country", "electionType", "year", "language", "party"), sep='_')
+#' 
+#' Underscore is the default separator
+#' 
+#' @param directory Path to folder containing documents
+#' @param attNames A vector naming the attribute types
+#' @param sep A string by which the filename should be separated to get the values. Default is underscore.
 #' @export
 #' @examples
 #' \dontrun{
-#' data(ieTexts)
-#' budgets <- corpusCreate(ieTexts, attribs=newattribs)
+#' new_corpus <- corpusFromFilenames(dirname, c("country", "electionType", "year", "language", "party"), sep='_')
 #' }
-#' 
-corpusCreate <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes=NULL, attribs.labels=NULL) {
-  if (is.null(names(texts))) 
-    names(texts) <- paste("text", 1:length(texts), sep="")
-  if (is.null(source)) 
-    source <- paste(getwd(), "/* ", "on ",  Sys.info()["machine"], " by ", Sys.info()["user"], sep="")
-  created <- date()
-  metadata <- c(source=source, created=created, notes=notes)
-    
-  if (is.null(attribs)) {
-    attribs <- data.frame(texts, row.names=names(texts), 
-                          check.rows=TRUE, stringsAsFactors=FALSE)
-  } else attribs <- data.frame(texts, attribs,
-                               row.names=names(texts), 
-                               check.rows=TRUE, stringsAsFactors=FALSE)
-  temp.corpus <- list(attribs=attribs,
-                      metadata=metadata)
-  class(temp.corpus) <- list("corpus", class(temp.corpus))
-  return(temp.corpus)
+corpusFromFilenames <- function(directory, attNames, sep='_'){
+  texts <- c()
+  sep="_"
+  allAttribs <- data.frame(stringsAsFactors=FALSE)
+  filenames <- list.files(directory, full.names=TRUE)
+  for (f in filenames) {
+    sname <- getRootFileNames(f)
+    sname <- gsub(".txt", "", sname)
+    parts <- strsplit(sname, sep)
+    df <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE))
+    names(df) <- attNames
+    if(length(allAttribs) < 1){
+      allAttribs <- df
+    }
+    else{
+      allAttribs <- rbind(df, allAttribs)
+    }
+    if(length(parts)!=length(parts)){
+      stop("The length of the parts of the filename does not equal the length of the attribute names")
+    }
+    content <- getTextFiles(f)
+    texts <- c(texts, content) 
+  }
+  corp <- corpusCreate(texts, attribs=allAttribs)
+  return(corp)
 }
-
 
 
 #' This function adds a named list of attributes to an existing corpus
@@ -66,24 +156,21 @@ corpusAddAttributes <- function(corpus, newattribs, name=newattribs) {
 }
 
 
-
-
-
 #' function to add new texts and attributes to an existing corpus
 
 #' Accepts a list of texts and a list of associated attributes and 
 #' adds them to the corpus
 #' 
-#' @param corpus An existing corpus to add new texts and attributes to
+#' @param corpus1 An existing corpus to add new texts and attributes to
 #' @param newtexts New texts to be added to the corpus
 #' @param newattribs New attribs associated with the new texts
 #' text
 #' @export
 #' @examples
-#' \dontrun{
 #' data(iebudgets)
-#' budgets <- corpusAppend(budgets, texts, newattribs)
-#' }
+#' data(ieAttribs)
+#' data(ieTexts)
+#' budgets <- corpusAppend(iebudgets, ieTexts, ieAttribs)
 corpusAppend <- function(corpus1, newtexts, newattribs, ...) {
   # 
   # should make it also allow an optional corpus2 version where two
@@ -95,8 +182,6 @@ corpusAppend <- function(corpus1, newtexts, newattribs, ...) {
   # TODO: implement concatenation of any attribs.labels from new corpus
   return(corpus1)
 }
-
-
 
 corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=FALSE) {
   # This is the "inner" function to be called by other functions
@@ -188,36 +273,42 @@ corpusReshape <- function(corpus) {
   return(sentCorp)
 }
 
-#' Display a summary of a corpus object
+#' Corpus summary
 #'
 #' Displays information about a corpus object, including attributes and 
-#' metadata such as date of number of texts, creation and source
+#' metadata such as date of number of texts, creation and source.
 #' 
 #' @param corpus An existing corpus to be summarized
+#' @param nmax maximum number of texts to describe, default=100
 #' @param texts The name of the attribute containing the corpus texts, if
-#' not 'texts'
+#' not 'texts'.  For instance, if the corpus contained translated texts as an attribute,
+#' then setting this to the name of that variable would make it possible to summarize
+#' the alternate rather than the main texts.
+#' @param subset a Boolean expression that specifies a subset of the texts, similar to \code{subset.corpus}
 #' @export
 #' @examples
 #' data(iebudgets)
-#' summary(subset(iebudgets, year==2010))
-summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop=FALSE, output=TRUE, nmax=100) {
-  corpus <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
-  cat("Corpus object contains", nrow(corpus$attribs), "texts.\n\n")
-  # allow user to set the column or variable which identifies the texts to summarize
-  texts <- corpus$attribs[,texts]
-  attribs <- as.data.frame(corpus$attribs[,-1])
-  #print(as.character(substitute(select))[2])
-  if (ncol(attribs)==1) names(attribs) <- as.character(substitute(select))[2]
-  #print(names(attribs))
-  names(texts) <- rownames(corpus$attribs)
-  print(head(cbind((dtexts <- describeTexts(texts, output=FALSE)),
-                   attribs), 
-             nmax))
-  cat("\nSource:  ", corpus$metadata["source"], ".\n", sep="")
-  cat("Created: ", corpus$metadata["created"], ".\n", sep="")
-  cat("Notes:   ", corpus$metadata["notes"], ".\n\n", sep="")
-  # invisibly pass the summary of the texts from describetexts()
-  return(invisible(dtexts))
+#' summary(iebudgets, subset=(year==2010))
+#' summary(iebudgets, nmax=10)
+summary.corpus <- function(corpus, nmax=100, texts="texts", subset=NULL) {
+    select <- NULL
+    corpus <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
+    cat("Corpus object contains", nrow(corpus$attribs), "texts.\n\n")
+    # allow user to set the column or variable which identifies the texts to summarize
+    texts <- corpus$attribs[,texts]
+    attribs <- as.data.frame(corpus$attribs[,-1])
+    #print(as.character(substitute(select))[2])
+    if (ncol(attribs)==1) names(attribs) <- as.character(substitute(select))[2]
+    #print(names(attribs))
+    names(texts) <- rownames(corpus$attribs)
+    print(head(cbind((dtexts <- describeTexts(texts, verbose=FALSE)), 
+                     attribs), 
+               nmax), row.names=FALSE)
+    cat("\nSource:  ", corpus$metadata["source"], ".\n", sep="")
+    cat("Created: ", corpus$metadata["created"], ".\n", sep="")
+    cat("Notes:   ", corpus$metadata["notes"], ".\n\n", sep="")
+    # invisibly pass the summary of the texts from describetexts()
+    return(invisible(dtexts))
 }
 
 

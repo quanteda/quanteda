@@ -13,17 +13,18 @@
 #' @param dictionary A list of character vector dictionary entries, including regular expressions (see examples) 
 #' @param dictionary.regex \code{TRUE} means the dictionary is already in regular expression format,
 #' otherwise it will be converted from "wildcard" format
+#' @param addto \code{NULL} by default, but if an existing dfm object is specified, then the new dfm will be added to the one named.
+#' If both dfms are built from dictionaries, the combined dfm will have its \code{Non_Dictionary} total adjusted.
 #' @return A data frame with row names equal to the document names and column names equal to the feature labels.
 #' @rdname dfm
 #' @export 
 #' @author Kenneth Benoit
 #' @examples 
-#' \dontrun{
 #' data(iebudgets)
 #' wfm <- dfm(iebudgets)
 #' 
 #' ## by party, subset for 2010
-#' wfmByParty2010 <- dfm(iebudgets, groups="party", subset=(year==2010))
+#' wfmByParty2010 <- dfm(subset(iebudgets, year==2010), groups="party")
 #' 
 #' ## with dictionaries
 #' corpus <- subset(iebudgets, year==2010)
@@ -33,16 +34,23 @@
 #'                taxation="taxation",
 #'                taxregex="tax*")
 #' dictDfm <- dfm(corpus, dictionary=mydict)
-#' }
+#' dictDfm
+#' 
+#' ## adding one dfm to another
+#' mydict2 <- list(partyref=c("Lenihan", "Fianna", "Sinn", "Gael"))
+#' dictDfm2 <- dfm(corpus, dictionary=mydict2, addto=dictDfm)
+#' dictDfm2
 dfm <- function(corpus,
                 feature=c("word"),
                 stem=FALSE,
                 stopwords=FALSE,
+                bigram=FALSE,
                 groups=NULL,
                 subset=NULL, 
                 verbose=TRUE, 
                 dictionary=NULL,
-                dictionary.regex=FALSE) {
+                dictionary.regex=FALSE,
+                addto=NULL) {
     UseMethod("dfm")
 }
 
@@ -53,11 +61,13 @@ dfm.corpus <- function(corpus,
                        feature=c("word"),
                        stem=FALSE,
                        stopwords=FALSE,
+                       bigram=FALSE,
                        groups=NULL,
                        subset=NULL, 
                        verbose=TRUE, 
                        dictionary=NULL,
-                       dictionary.regex=FALSE) {
+                       dictionary.regex=FALSE,
+                       addto=NULL) {
     # require(austin) 
     # --not necessary to call austin if not returning a wfm class object
     if (verbose) cat("Creating dfm: ...")
@@ -74,7 +84,7 @@ dfm.corpus <- function(corpus,
         texts <- split(corpus$attribs$texts, group.split)
         # was sapply, changing to lapply seems to fix 2 class case
         texts <- lapply(texts, paste)
-        if (verbose) cat("complete...")
+        if (verbose) cat("complete ...")
     } else {
         texts <- corpus$attribs$texts
         names(texts) <- rownames(corpus$attribs)
@@ -84,8 +94,12 @@ dfm.corpus <- function(corpus,
     tokenizedTexts <- sapply(texts, tokenize, simplify=FALSE)
     if (stem==TRUE) {
         require(SnowballC)
-        cat("... stemming ...")
+        cat(" stemming ...")
         tokenizedTexts <- lapply(tokenizedTexts, wordStem)
+    }
+    if (bigram > 0) {
+        cat(" making bigrams ...")
+        tokenizedTexts <- lapply(tokenizedTexts, function(x) bigrams(x, bigram))
     }
     # print(length)
     alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
@@ -120,12 +134,30 @@ dfm.corpus <- function(corpus,
         dfm <- dfm[, -(ncol(dfm)-1)]
     }
     
-    if(verbose) cat(" done. \n")
-    
     if (stopwords) {
+        cat(" removing stopwords ...")
         data(stopwords_EN)
-        dfm <- subset(dfm, !row.names(dfm) %in% stopwords_EN)
+        if (bigram==TRUE) {
+          pat <- paste(paste0(paste0("-", stopwords_EN, "$"), collapse='|'), paste0(paste0("^", stopwords_EN, "-"), collapse='|'), sep='|')
+          dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
+        } else {
+          dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords_EN))
+        }
     }
+
+    if (!is.null(addto)) {
+        if (sum(rownames(dfm) != rownames(addto)) > 0) {
+            stop("Cannot add to dfm: different document set.")
+        }
+        addIndex <- which(!(colnames(addto) %in% colnames(dfm)))
+        # adjust the "Non_Dictionary" count for the combined object if both are dictionary-based
+        if ("Non_Dictionary" %in% colnames(addto) & "Non_Dictionary" %in% colnames(dfm)) {
+            dfm[, "Non_Dictionary"] <- addto[, "Non_Dictionary"] - rowSums(as.matrix(dfm[, -ncol(dfm)]))
+        }
+        dfm <- cbind(addto[, addIndex], dfm)
+    }
+    
+    if(verbose) cat(" done. \n")
     return(dfm)
 }
 

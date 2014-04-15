@@ -18,12 +18,13 @@
 ##' data(iebudgets)
 ##' kwic(subset(iebudgets, year==2010), "Christmas", window=4)
 kwic <- function(text, word, window=5) {
-  UseMethod("kwic")
+UseMethod("kwic")
 }
 
 
 #' @rdname kwic
 #' @method kwic character
+#' @param text a text character scalar (Currently does not support character vectors.)
 #' @S3method kwic character
 kwic.character <- function(text, word, window=5) {
   # don't use tokenize since we want to preserve case and punctuation here
@@ -53,19 +54,21 @@ kwic.character <- function(text, word, window=5) {
 
 #' @rdname kwic
 #' @method kwic corpus
+#' @param corpus a quanteda corpus object
 #' @S3method kwic corpus
 kwic.corpus <- function(corpus, word, window=5){
-  contexts <- sapply(corpus$attribs$texts, kwic, word=word, window=window, USE.NAMES=FALSE)
-  if (length(contexts)==1 && is.na(contexts)) return(NA)
-  names(contexts) <- row.names(corpus$attribs)
-  contexts <- contexts[!is.na(contexts)]
-  for (l in 1:length(contexts)) {
-    contexts[[l]]$source <- paste("[", names(contexts[l]), ", ",  contexts[[l]]$source, "]", sep="")
-  }
-  contexts <- do.call("rbind", contexts)
-  contexts$source <- format(contexts$source, justify="right")
-  contexts$postword <- format(contexts$postword, justify="left")
-  row.names(contexts) <- contexts$source
-  contexts <- contexts[,-1]   
-  return(contexts)
+    contexts <- sapply(corpus$attribs$texts, kwic, word=word, window=window, USE.NAMES=FALSE)
+    if (length(contexts)==1 && is.na(contexts)) return(NA)
+    names(contexts) <- row.names(corpus$attribs)
+    contexts <- contexts[!is.na(contexts)]
+    for (l in 1:length(contexts)) {
+        contexts[[l]]$source <- paste("[", names(contexts[l]), ", ",  contexts[[l]]$source, "]", sep="")
+    }
+    contexts <- do.call("rbind", contexts)
+    contexts$source <- format(contexts$source, justify="right")
+    contexts$postword <- format(contexts$postword, justify="left")
+    row.names(contexts) <- contexts$source
+    contexts <- contexts[,-1]   
+    return(contexts)
 }
+

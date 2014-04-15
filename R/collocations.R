@@ -11,11 +11,9 @@
 #' @export 
 #' @author Kenneth Benoit
 #' @examples
-#' \dontrun{
 #' data(iebudgets)
 #' collocations(iebudgets$attribs$texts[1], top=50)
 #' collocations(iebudgets$attribs$texts[1], top=50, method="chi2")
-#' }
 collocations <- function(text=NULL, file=NULL, top=NA, distance=2, n=2,
                          method=c("lr", "chi2", "mi")) {
   ## returns the bigrams, frequency, and score as a list

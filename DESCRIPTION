@@ -6,4 +6,16 @@ Date: 2014-02-03
 Author: Ken Benoit and Paul Nulty
 Maintainer: Ken Benoit <kbenoit@lse.ac.uk> and Paul Nulty <p.nulty@lse.ac.uk>
 Description: A library for the quantitative analysis of textual data with R
+Encoding: UTF-8
 License: What license is it under? Good Question
+Imports:
+    RCurl,
+    RJSONIO,
+    SnowballC,
+    XML,
+    entropy,
+    jsonlite,
+    openNLP,
+    twitteR
+Suggests:
+    austin

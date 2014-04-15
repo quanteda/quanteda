@@ -2,10 +2,19 @@
 \alias{clean}
 \title{Perform basic cleanup on a character object}
 \usage{
-clean(s, langNorm = FALSE, removeDigits = TRUE)
+clean(s, langNorm = FALSE, removeDigits = TRUE, lower = TRUE)
 }
 \arguments{
   \item{s}{character object to be cleaned}
+
+  \item{langNorm}{If true, French and German special
+  characters are normalized.}
+
+  \item{removeDigits}{If true, digits are removed. Default
+  is TRUE}
+
+  \item{lower}{If true, string is converted to lowercase.
+  Default is TRUE}
 }
 \value{
 character object in lowercase with punctuation (and
