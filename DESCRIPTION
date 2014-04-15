@@ -17,5 +17,4 @@ Depends:
     openNLP,
     twitteR
 Suggests:
-    austin,
-    rjags
+    austin
