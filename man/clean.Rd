@@ -6,6 +6,9 @@ clean(s, langNorm = FALSE, removeDigits = TRUE, lower = TRUE)
 }
 \arguments{
   \item{s}{character object to be cleaned}
+
+  \item{langNorm}{If true, French and German special
+  characters are normalized.}
 }
 \value{
 character object in lowercase with punctuation (and
