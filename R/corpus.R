@@ -56,9 +56,9 @@ corpusCreate <- function(texts, attribs=NULL, textnames=NULL, source=NULL, notes
 
 #' create a new corpus with attribute-value pairs taken from document headers
 #' 
-#' This function takes a directory, reads in all the documents in that directory
+#' This function takes a vector of texts with JSON headers
 #' and makes a new corpus where the attributes and values are created from
-#' JSON headers in the documents. The JSON header should be the first line (as 
+#' JSON headers in the text. The JSON header should be the first line (as 
 #' delimited by \\n) in document. For example, a document may begin as follows:
 #' "budgetPosition" : "1.0", "party":"FF"\}
 #' When I presented the supplementary budget to this House last April....
@@ -66,7 +66,7 @@ corpusCreate <- function(texts, attribs=NULL, textnames=NULL, source=NULL, notes
 #' The directory must contain only documents to be
 #' used in the corpus, and each document must have the same attributes.
 #' 
-#' @param directory 
+#' @param headerTexts A vector of texts with JSON headers 
 #' @export
 #' @examples
 #' data(ieTextsHeaders)
@@ -91,16 +91,27 @@ corpusFromHeaders <- function(headerTexts) {
     return(corp)
 }
 
-#' create a new corpus with attribute-value pairs taken from document filenames
-
-#' Work in progress
-
+#' create a new corpus with attribute-value pairs taken from filenames
 #' 
-#' @param directory 
+#' This function takes a directory, reads in all the documents in that directory
+#' and makes a new corpus where the attributes and values are created by splitting
+#' the filename according to a separator.For example, a directory may contain files
+#' with a naming scheme that identifies attribute values, e.g.:
+#' "2010_BUDGET_05_Brian_Cowen_FF.txt".
+#' 
+#' To create a corpus object from texts named in this format, we can call this 
+#' function and specify the attribute types and separator, e.g:
+#' new_corpus <- corpusFromFilenames(dirname, c("country", "electionType", "year", "language", "party"), sep='_')
+#' 
+#' Underscore is the default separator
+#' 
+#' @param directory Path to folder containing documents
+#' @param attNames A vector naming the attribute types
+#' @param sep A string by which the filename should be separated to get the values. Default is underscore.
 #' @export
 #' @examples
 #' \dontrun{
-#' budgets <- corpusFromHeaders("~/Dropbox/QUANTESS/corpora/withHeader")
+#' new_corpus <- corpusFromFilenames(dirname, c("country", "electionType", "year", "language", "party"), sep='_')
 #' }
 corpusFromFilenames <- function(directory, attNames, sep='_'){
   texts <- c()
@@ -150,7 +161,7 @@ corpusAddAttributes <- function(corpus, newattribs, name=newattribs) {
 #' Accepts a list of texts and a list of associated attributes and 
 #' adds them to the corpus
 #' 
-#' @param corpus An existing corpus to add new texts and attributes to
+#' @param corpus1 An existing corpus to add new texts and attributes to
 #' @param newtexts New texts to be added to the corpus
 #' @param newattribs New attribs associated with the new texts
 #' text

@@ -4,6 +4,9 @@
 \usage{
 getWordStatCSV(filename = NULL)
 }
+\arguments{
+  \item{filename}{Path to wordstat CSV file}
+}
 \description{
 Reads in a wordstat CSV file and creates a corpus object
 with the document as text and variables as attributes

@@ -27,7 +27,8 @@ getRootFileNames <- function(longFilenames) {
 #' with optional names, default being filenames
 #' returns a named vector of complete, unedited texts
 #' 
-#' @param filenames
+#' @param filenames a vector of paths to text files
+#' @param textnames names to assign to the texts
 #' @return character vector of texts read from disk
 #' @export
 #' @examples

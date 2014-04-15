@@ -9,6 +9,12 @@ clean(s, langNorm = FALSE, removeDigits = TRUE, lower = TRUE)
 
   \item{langNorm}{If true, French and German special
   characters are normalized.}
+
+  \item{removeDigits}{If true, digits are removed. Default
+  is TRUE}
+
+  \item{lower}{If true, string is converted to lowercase.
+  Default is TRUE}
 }
 \value{
 character object in lowercase with punctuation (and
