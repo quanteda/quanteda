@@ -4,6 +4,7 @@
 #' and optionally replacing some language-specific characters
 #' 
 #' @param s character object to be cleaned
+#' @param langNorm If true, French and German special characters are normalized.
 #' @return character object in lowercase with punctuation (and optionally digits) removed
 #' @export
 #' @examples
