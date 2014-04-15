@@ -5,8 +5,6 @@
 bigrams(text, window = 1)
 }
 \arguments{
-  \item{tokens}{}
-
   \item{text}{character vector containing the texts from
   which ngrams will be extracted}
 

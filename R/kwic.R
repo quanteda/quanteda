@@ -24,6 +24,7 @@ kwic <- function(text, word, window=5) {
 
 #' @rdname kwic
 #' @method kwic character
+#' @param text a text character scalar (Currently does not support character vectors.)
 #' @S3method kwic character
 kwic.character <- function(text, word, window=5) {
     # don't use tokenize since we want to preserve case and punctuation here
@@ -53,6 +54,7 @@ kwic.character <- function(text, word, window=5) {
 
 #' @rdname kwic
 #' @method kwic corpus
+#' @param corpus a quanteda corpus object
 #' @S3method kwic corpus
 kwic.corpus <- function(corpus, word, window=5){
     contexts <- sapply(corpus$attribs$texts, kwic, word=word, window=window, USE.NAMES=FALSE)

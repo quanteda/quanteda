@@ -1,6 +1,5 @@
 #' Create bigrams
 #' 
-#' @param tokens
 #' @author Kohei Watanabe and Ken Benoit
 #' @param text character vector containing the texts from which ngrams will be extracted
 #' @param window how many words to be counted for adjacency.  Default is 1 for only immediately 
