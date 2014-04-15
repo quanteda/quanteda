@@ -4,6 +4,9 @@
 \usage{
 getWordStat(filename = NULL)
 }
+\arguments{
+  \item{filename}{Path to wordstat XML file}
+}
 \description{
 Reads in a wordstat XML file and creates a corpus object
 with the document as text and variables as attributes
