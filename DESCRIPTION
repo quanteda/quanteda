@@ -15,7 +15,7 @@ Depends:
     entropy,
     jsonlite,
     openNLP,
-    rjags,
     twitteR
 Suggests:
-    austin
+    austin,
+    rjags
