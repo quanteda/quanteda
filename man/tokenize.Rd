@@ -6,7 +6,7 @@ The input text is split into words by whitespace}
 tokenize(str, lower = TRUE)
 }
 \arguments{
-  \item{text}{}
+  \item{str}{String to be tokenized}
 }
 \value{
 a character vector containing the input text cleaned and

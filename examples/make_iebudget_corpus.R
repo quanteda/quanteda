@@ -9,7 +9,7 @@
 library(quanteda)
 
 ## import the first set from the FF-Green government
-texts <- getTextDir("./iebudgets_texts/FF-Green_govt/")
+texts <- getTextDir("~/Dropbox/QUANTESS/corpora/iebudgets/budget_2010")
 # parse the filenames to get variable (attribute) values
 parts <- strsplit(getRootFileNames(names(texts)), "_")
 newattribs <- data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE))

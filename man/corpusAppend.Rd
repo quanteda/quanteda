@@ -7,7 +7,7 @@ adds them to the corpus}
 corpusAppend(corpus1, newtexts, newattribs, ...)
 }
 \arguments{
-  \item{corpus}{An existing corpus to add new texts and
+  \item{corpus1}{An existing corpus to add new texts and
   attributes to}
 
   \item{newtexts}{New texts to be added to the corpus}

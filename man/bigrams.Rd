@@ -2,10 +2,14 @@
 \alias{bigrams}
 \title{Create bigrams}
 \usage{
-bigrams(text, window = 2, sort = FALSE)
+bigrams(text, window = 1)
 }
 \arguments{
-  \item{tokens}{}
+  \item{text}{character vector containing the texts from
+  which ngrams will be extracted}
+
+  \item{window}{how many words to be counted for adjacency.
+  Default is 1 for only immediately neighbouring words.}
 }
 \value{
 a character of bigrams vector
@@ -14,9 +18,11 @@ a character of bigrams vector
 Create bigrams
 }
 \examples{
-bigrams("aa bb cc dd ee ff")
+data(iebudgets)
+bigrams("The quick brown fox jumped over the lazy dog.")
+bigrams("The quick brown fox jumped over the lazy dog.", window=2)
 }
 \author{
-kohei Watanabe
+Kohei Watanabe and Ken Benoit
 }
 

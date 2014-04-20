@@ -1,8 +1,6 @@
 # demo for Kohei's bigram function
 
 library(quanteda)
-
-library(quanteda)
 library(austin)
 
 # make a list of text objects from a directory

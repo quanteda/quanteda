@@ -1,4 +1,3 @@
-
 #' This function is an alternative KWIC
 #' 
 #' @param text Texts
@@ -44,4 +43,3 @@ kwic2 <- function(texts, word, window = 30, filter = '' , location = TRUE, case 
     }
   }
 }
-

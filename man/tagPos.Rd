@@ -7,7 +7,7 @@ openNLP's POS tagger, then returns a table of the parts of speech}
 tagPos(sentence)
 }
 \arguments{
-  \item{text}{Text to be tagged}
+  \item{sentence}{Sentence to be tagged}
 }
 \description{
 http://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html

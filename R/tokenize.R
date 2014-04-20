@@ -2,7 +2,7 @@
 
 #' The input text is split into words by whitespace
 #' 
-#' @param text
+#' @param str String to be tokenized
 #' @return a character vector containing the input text cleaned and split by whitespace
 #' @export
 #' @examples

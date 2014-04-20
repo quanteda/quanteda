@@ -26,3 +26,14 @@ twitterTerms <- function(query, oauth, numResults=50) {
   twc <- createCorpus(texts, attribs=t(atts))
   return(twc)
 }
+
+#' work-in-progress interface to Twitter streaming API
+twitterStreamer <- function(){
+  
+}
+
+#' work-in-progress from-scratch interface to Twitter search API
+twitterSerch <- function(){
+  
+  
+}

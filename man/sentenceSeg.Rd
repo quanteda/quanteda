@@ -4,10 +4,13 @@
 This function takes a text and splits it into sentences.}
 \usage{
 sentenceSeg(text, pat = "[\\\\.\\\\?\\\\!][\\\\n* ]|\\\\n\\\\n*",
-  abbreviations = NULL, parag = TRUE)
+  abbreviations = NULL)
 }
 \arguments{
   \item{text}{Text to be segmented}
+
+  \item{abbreviations}{A list of abbreviations'.' and
+  therefore should not be used to segment text}
 }
 \description{
 split a text into sentences This function takes a text and
