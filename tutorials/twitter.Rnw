@@ -1,9 +1,19 @@
+
+%this stops output over-running the shaded output area in the pdf 
+<<echo=FALSE>>=
+options(width = 60)
+@
+
+
 \documentclass{article}
 \title{Introduction to text mining Twitter with R}
 \author{Paul Nulty}
+\usepackage{hyperref}
 \begin{document}
 \maketitle
-\section{List of Acronyms and Definitions}
+\clearpage
+
+\section*{List of Acronyms and Definitions}
 \begin{itemize}
   \item API: Application Programming Interface --- a specification of how computer programs can communicate with each other
   \item JSON: JavaScript Object Notation --- a human readable format for representing attribute-value pairs.
@@ -13,7 +23,10 @@
 \end{itemize}
 
 \section*{Useful Links}
-https://dev.twitter.com/docs/things-every-developer-should-know
+\url{https://dev.twitter.com/docs/things-every-developer-should-know}
+
+\clearpage
+
 
 <<>>=
 2+3

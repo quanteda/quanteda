@@ -1,3 +1,9 @@
+
+%this stops output over-running the shaded output area in the pdf 
+
+
+
+
 \documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
 %% maxwidth is the original width if it is less than linewidth
 %% otherwise use linewidth (to make sure the graphics do not exceed the margin)
@@ -50,10 +56,13 @@
 \usepackage{alltt}
 \title{Introduction to text mining Twitter with R}
 \author{Paul Nulty}
+\usepackage{hyperref}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 \maketitle
-\section{List of Acronyms and Definitions}
+\clearpage
+
+\section*{List of Acronyms and Definitions}
 \begin{itemize}
   \item API: Application Programming Interface --- a specification of how computer programs can communicate with each other
   \item JSON: JavaScript Object Notation --- a human readable format for representing attribute-value pairs.
@@ -63,7 +72,10 @@
 \end{itemize}
 
 \section*{Useful Links}
-https://dev.twitter.com/docs/things-every-developer-should-know
+\url{https://dev.twitter.com/docs/things-every-developer-should-know}
+
+\clearpage
+
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -78,8 +90,8 @@ https://dev.twitter.com/docs/things-every-developer-should-know
 \hlkwd{tokenize}\hlstd{(}\hlstr{"Just testing sweave/knitr code integration here."}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
-## [1] "just"        "testing"     "sweaveknitr" "code"        "integration"
-## [6] "here"
+## [1] "just"        "testing"     "sweaveknitr" "code"       
+## [5] "integration" "here"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
