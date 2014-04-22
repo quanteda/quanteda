@@ -46,19 +46,18 @@ bigrams <- function(text, window = 1) {
 #' data(iebudgets)
 #' ngrams("The quick brown fox jumped over the lazy dog.", n=2)
 #' ngrams("The quick brown fox jumped over the lazy dog.", n=3)
-ngrams <- function(text, n=2, window=1, concatenator="_") {
+ngrams <- function(text, n=2, concatenator="_") {
     ## GENERALIZE to NGRAMS
     t <- tokenize(text)
     # initialize ngrams vector
+    len <- length(t)
     ngrams <- c()
-    for (w in (1:window)) {
-        m1 <- c(rep('', w), t)
-        m2 <- c(t, rep('', w))
-        b <- paste(m1, m2, sep=concatenator)
-        #print(b)
-        # trim the ends
-        l <- length(b)
-        ngrams <- c(ngrams, b[(w+1+(n-2)):(l-w-(n-2))])
+    tl <- list()
+    for (i in (1:n)) {
+      tl[[i]] <- t[(i):(len-(n-i))]
+      #print(i)
+      #print(tl[[i]])
     }
+    ngrams <- do.call('paste', c(t(tl)[1:n], sep = concatenator))
     return(ngrams)
 }
