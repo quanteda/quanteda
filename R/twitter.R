@@ -1,4 +1,4 @@
-#' make a corpus object from results of a twitter search
+#' make a corpus object from results of a twitter REST search
 #'
 #' All of the attributes returned by the twitteR
 #' library call are included as attributes in the
@@ -32,7 +32,7 @@ twitterStreamer <- function(){
 }
 
 #' work-in-progress from-scratch interface to Twitter search API
-twitterSerch <- function(){
+twitterSearch <- function(){
   
   
 }

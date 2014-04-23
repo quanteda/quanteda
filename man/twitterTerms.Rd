@@ -1,8 +1,8 @@
 \name{twitterTerms}
 \alias{twitterTerms}
-\title{make a corpus object from results of a twitter search}
+\title{make a corpus object from results of a twitter REST search}
 \usage{
-twitterTerms(query, oauth, numResults = 50)
+twitterTerms(query, numResults = 50, key, cons_secret, token, access_secret)
 }
 \arguments{
   \item{query}{Search string for twitter}
