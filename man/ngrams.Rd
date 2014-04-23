@@ -2,7 +2,7 @@
 \alias{ngrams}
 \title{Create ngrams}
 \usage{
-ngrams(text, n = 2, window = 1, concatenator = "_")
+ngrams(text, n = 2, concatenator = "_")
 }
 \arguments{
   \item{text}{character vector containing the texts from

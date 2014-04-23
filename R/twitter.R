@@ -15,15 +15,14 @@
 #' \dontrun{
 #' twCorp <- twitterTerms('example search', my_oauth, numResults=10)
 #' }
-twitterTerms <- function(query, oauth, numResults=50) {
+twitterTerms <- function(query, numResults=50, key, cons_secret, token, access_secret) {
   library('twitteR')
-  registerTwitterOAuth(my_oauth)
+  setup_twitter_oauth(key, cons_secret, token, access_secret)
   sea <- (searchTwitter(query, numResults))
-  results <- sapply(sea, as.data.frame) # ugly fix due to change in twitteR api
-  results <- as.data.frame(results)
-  atts <- as.data.frame(results[2:nrow(results),])
-  texts <- as.character(results[1,])
-  twc <- createCorpus(texts, attribs=t(atts))
+  results <-  twListToDF(sea)
+  atts <-as.data.frame(results[,2:ncol(results)])
+  texts <- results$text
+  twc <- corpusCreate(texts, attribs=atts)
   return(twc)
 }
 

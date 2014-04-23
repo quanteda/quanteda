@@ -86,7 +86,6 @@ selectFeatures <- function(extractor, dfm, class, smooth=1, show=10){
   return(df)
 }
 
-=======
 #' extract feature words
 
 #' This function takes type of feature extractor and a word freaquency matrix
