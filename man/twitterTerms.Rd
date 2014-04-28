@@ -7,9 +7,17 @@ twitterTerms(query, numResults = 50, key, cons_secret, token, access_secret)
 \arguments{
   \item{query}{Search string for twitter}
 
-  \item{oauth}{Oauth key}
-
   \item{numResults}{Number of results desired.}
+
+  \item{key}{Number of results desired.}
+
+  \item{key}{'your consumer key here'}
+
+  \item{cons_secret}{'your consumer secret here'}
+
+  \item{token}{'your access token here'}
+
+  \item{access_secret}{'your access secret here'}
 }
 \description{
 All of the attributes returned by the twitteR library call
@@ -20,7 +28,7 @@ documentation
 }
 \examples{
 \dontrun{
-twCorp <- twitterTerms('example search', my_oauth, numResults=10)
+twCorp <- twitterTerms('example', 10, key, cons_secret, token, access_secret)
 }
 }
 

@@ -8,12 +8,17 @@
 #' and the twitteR documentation
 #' 
 #' @param query Search string for twitter
-#' @param oauth Oauth key
 #' @param numResults Number of results desired.
+#' @param key Number of results desired.
+#' @param key 'your consumer key here'
+#' @param cons_secret 'your consumer secret here'
+#' @param token 'your access token here'
+#' @param access_secret 'your access secret here'
+#' 
 #' @export
 #' @examples
 #' \dontrun{
-#' twCorp <- twitterTerms('example search', my_oauth, numResults=10)
+#' twCorp <- twitterTerms('example', 10, key, cons_secret, token, access_secret)
 #' }
 twitterTerms <- function(query, numResults=50, key, cons_secret, token, access_secret) {
   library('twitteR')
