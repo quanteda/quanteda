@@ -22,7 +22,8 @@ words in the list provided in 'stopwords'. If no list of
 stopwords is provided a default list for English is used.
 }
 \examples{
-someText <- "This text has some stopwords we want to remove"
+someText <- "Here is an example of text containing some stopwords we want to remove."
 removeStopwords(someText)
+removeStopwords(someText, stopwords=c("is", "an", "to"))
 }
 

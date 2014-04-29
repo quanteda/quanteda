@@ -57,7 +57,7 @@ selectFeatures <- function(extractor, dfm, class, smooth=1, show=10){
     l1 <- d11 * log(d11 / e1)
     l2 <- d01 * log(d01 / e0)
     ll <- 2 * (l1 + l2)
-    p <- 1 - pchisq(ll, 1, ncp = 0, log = FALSE)
+    p <- 1 - pchisq(ll, 1, ncp = 0, log.p = FALSE)
     df <- data.frame(cat1 = d11, cat0 = d01, score = ll[,1], p = p[,1])
   }else if(extractor == 'wsll'){
     #WordSmith replication log-likelihood
@@ -70,13 +70,13 @@ selectFeatures <- function(extractor, dfm, class, smooth=1, show=10){
     l1 <- d11 * log(d11 / e1)
     l2 <- d01 * log(d01 / e0)
     ll <- 2 * (l1 + l2)
-    p <- 1 - pchisq(ll, 1, ncp = 0, log = FALSE)
+    p <- 1 - pchisq(ll, 1, ncp = 0, log.p = FALSE)
     s <- ll * ifelse(d11 / d1. > d01 / d0., 1 , -1)
     df <- data.frame(cat1 = d11, cat0 = d01, score = s[,1], p = p[,1])
   }else if(extractor == 'wschisq'){
     #WordSmith replication Chi-square (with Yates's correction for continuity)
     chisq <- d.. * (abs((d11 * d00) - (d10 * d01)) - (d../2) ) ^ 2 / (d1. * d.1 * d0. * d.0)
-    p <- 1 - pchisq(chisq, 1, ncp = 0, log = FALSE)
+    p <- 1 - pchisq(chisq, 1, ncp = 0, log.p = FALSE)
     s <- chisq * ifelse(d11 / d1. > d01 / d0., 1 , -1)
     df <- data.frame(cat1 = d11, cat0 = d01, score = s[,1], p = p[,1])
   }
@@ -145,7 +145,7 @@ selectFeatures <- function(extractor, dfm, class, smooth=1, show=10){
     l1 <- d11 * log(d11 / e1)
     l2 <- d01 * log(d01 / e0)
     ll <- 2 * (l1 + l2)
-    p <- 1 - pchisq(ll, 1, ncp = 0, log = FALSE)
+    p <- 1 - pchisq(ll, 1, ncp = 0, log.p = FALSE)
     df <- data.frame(cat1 = d11, cat0 = d01, score = ll[,1], p = p[,1])
   }else if(extractor == 'wsll'){
     #WordSmith replication log-likelihood
@@ -158,13 +158,13 @@ selectFeatures <- function(extractor, dfm, class, smooth=1, show=10){
     l1 <- d11 * log(d11 / e1)
     l2 <- d01 * log(d01 / e0)
     ll <- 2 * (l1 + l2)
-    p <- 1 - pchisq(ll, 1, ncp = 0, log = FALSE)
+    p <- 1 - pchisq(ll, 1, ncp = 0, log.p = FALSE)
     s <- ll * ifelse(d11 / d1. > d01 / d0., 1 , -1)
     df <- data.frame(cat1 = d11, cat0 = d01, score = s[,1], p = p[,1])
   }else if(extractor == 'wschisq'){
     #WordSmith replication Chi-square (with Yates's correction for continuity)
     chisq <- d.. * (abs((d11 * d00) - (d10 * d01)) - (d../2) ) ^ 2 / (d1. * d.1 * d0. * d.0)
-    p <- 1 - pchisq(chisq, 1, ncp = 0, log = FALSE)
+    p <- 1 - pchisq(chisq, 1, ncp = 0, log.p = FALSE)
     s <- chisq * ifelse(d11 / d1. > d01 / d0., 1 , -1)
     df <- data.frame(cat1 = d11, cat0 = d01, score = s[,1], p = p[,1])
   }
