@@ -9,13 +9,17 @@
 #' @return a character vector of text with stopwords removed
 #' @export
 #' @examples
-#' someText <- "This text has some stopwords we want to remove"
+#' someText <- "Here is an example of text containing some stopwords we want to remove."
 #' removeStopwords(someText)
+#' removeStopwords(someText, stopwords=c("is", "an", "to"))
 removeStopwords <- function(text, stopwords=NULL){
-  if(is.null(stopwords)) data('stopwords_EN')
-  tokens <- tokenize(text)
-  print(tokens)
-  newTokens <- (subset(tokens, !tokens %in% stopwords_EN))
-  newString <- paste(newTokens, sep=" ")
+  if (is.null(stopwords)) {
+      data(stopwords_EN)
+      stopwords <- stopwords_EN
+  }
+  tokens <- tokenize(text, lower=FALSE)
+  # print(tokens)
+  newTokens <- tokens[which(!(tolower(tokens) %in% tolower(stopwords)))]
+  newString <- paste(newTokens, collapse=" ")
   return(newString)
 }

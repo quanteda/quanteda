@@ -3,7 +3,7 @@
 ###
 # (1) (removed)
 # (2) attributes: a named list (data-frame) of "variables" or chracteristics
-#     of each text.  The first columbn of this is 
+#     of each text.  The first column of this is 
 #     "texts": a named vector of texts whose only treatment is conversion to unicode
 # (3) attributes labels: an optional user-supplied list of descriptions of each
 #     attribute
