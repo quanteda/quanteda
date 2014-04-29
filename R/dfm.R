@@ -15,7 +15,7 @@
 #' otherwise it will be converted from "wildcard" format
 #' @param addto \code{NULL} by default, but if an existing dfm object is specified, then the new dfm will be added to the one named.
 #' If both dfms are built from dictionaries, the combined dfm will have its \code{Non_Dictionary} total adjusted.
-#' @return A data frame with row names equal to the document names and column names equal to the feature labels.
+#' @return An austin wfm object with row names equal to the document names and column names equal to the feature labels.
 #' @rdname dfm
 #' @export 
 #' @author Kenneth Benoit
@@ -158,6 +158,8 @@ dfm.corpus <- function(corpus,
     }
     
     if(verbose) cat(" done. \n")
+    require(austin)
+    dfm <- as.wfm(dfm, word.margin=2)
     return(dfm)
 }
 
