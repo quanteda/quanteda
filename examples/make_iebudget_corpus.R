@@ -1,13 +1,26 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## Example: Creating the Irish budget speeches corpus
 ## 
+=======
+## Example: Creating the Irish budget speeches corpus
+##
+## Highlights issues in assigning variables (attributes) to the documents
+## in a text corpus, and in appending new texts to an existing corpus
+##
+>>>>>>> FETCH_HEAD
 ## Ken Benoit
 ##
 
 library(quanteda)
 
+<<<<<<< HEAD
 # import the first set from the FF-Green government
 texts <- getTextDir("./iebudgets_texts/FF-Green_govt/")
+=======
+## import the first set from the FF-Green government
+texts <- getTextDir("~/Dropbox/QUANTESS/corpora/iebudgets/budget_2010")
+>>>>>>> FETCH_HEAD
 # parse the filenames to get variable (attribute) values
 parts <- strsplit(getRootFileNames(names(texts)), "_")
 newattribs <- data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE))
@@ -30,6 +43,7 @@ summary(iebudgets1, nmax=10)
 newtexts <- getTextDir("./iebudgets_texts/FG-Lab_govt/")
 newparts <- strsplit(getRootFileNames(names(newtexts)), "_")
 newattribs2 <- data.frame(matrix(unlist(newparts), nrow=length(newparts), byrow=TRUE))
+<<<<<<< HEAD
 names(newattribs2) <- c("year", "debate", "no", "fname", "speaker", "party")
 newattribs2$party <- gsub(".txt", "", newattribs2$party)
 iebudgets2 <- corpusAppend(iebudgets1, newtexts, newattribs2)
@@ -69,6 +83,18 @@ summary(iebudgets1, nmax=10)
 newtexts <- getTextDir("./iebudgets_texts/FG-Lab_govt/")
 newparts <- strsplit(getRootFileNames(names(newtexts)), "_")
 newattribs2 <- data.frame(matrix(unlist(newparts), nrow=length(newparts), byrow=TRUE))
+names(newattribs2) <- c("year", "debate", "no", "nameFirst", "nameLast", "party")
+newattribs2$party <- gsub(".txt", "", newattribs2$party)
+newattribs2$govt <- factor(newattribs2$party %in% c("FG", "Lab"), labels=c("Govt", "Opp"))
+
+## append the first to the second corpus
+iebudgets.created <- corpusAppend(iebudgets1, newtexts, newattribs2)
+summary(iebudgets.created, nmax=10)
+
+
+
+>>>>>>> FETCH_HEAD
+=======
 names(newattribs2) <- c("year", "debate", "no", "nameFirst", "nameLast", "party")
 newattribs2$party <- gsub(".txt", "", newattribs2$party)
 newattribs2$govt <- factor(newattribs2$party %in% c("FG", "Lab"), labels=c("Govt", "Opp"))

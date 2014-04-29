@@ -27,16 +27,18 @@ getRootFileNames <- function(longFilenames) {
 #' with optional names, default being filenames
 #' returns a named vector of complete, unedited texts
 #' 
-#' @param filenames
+#' @param filenames a vector of paths to text files
+#' @param textnames names to assign to the texts
 #' @return character vector of texts read from disk
 #' @export
 #' @examples
 #' \dontrun{
 #' getTextFiles('/home/paul/documents/libdem09.txt')
 #' }
-getTextFiles <- function(filenames, textnames=NULL) {
+getTextFiles <- function(filenames, textnames=NULL, verbose=FALSE) {
   # TODO detect encoding; verbose=TRUE (progress bar?)
-  print(filenames)
+  if(verbose) print(sprintf("Reading .. %s", filenames))
+ # print(sprintf("Reading .. %s \n", filenames))
   textsvec <- c()  
   # changed from readChar to readLines
   for (f in filenames) {
@@ -63,9 +65,9 @@ getTextFiles <- function(filenames, textnames=NULL) {
 #' \dontrun{
 #' getTextDir('/home/paul/documents/')
 #' }
-getTextDir <- function(dirname) {
+getTextDir <- function(dirname, verbose=TRUE) {
   # get all files from a directory
-  return(getTextFiles(list.files(dirname, full.names=TRUE)))
+  return(getTextFiles(list.files(dirname, full.names=TRUE), verbose))
 }
 
 

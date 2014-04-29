@@ -5,10 +5,12 @@ points to files, reads them into a character vector of the texts
 with optional names, default being filenames
 returns a named vector of complete, unedited texts}
 \usage{
-getTextFiles(filenames, textnames = NULL)
+getTextFiles(filenames, textnames = NULL, verbose = FALSE)
 }
 \arguments{
-  \item{filenames}{}
+  \item{filenames}{a vector of paths to text files}
+
+  \item{textnames}{names to assign to the texts}
 }
 \value{
 character vector of texts read from disk

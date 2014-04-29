@@ -286,7 +286,7 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
                    tau.alpha = s$statistics[grep("^tau.alpha", rownames(s$statistics)), "Mean"],
                    tau.psi = s$statistics[grep("^tau.psi", rownames(s$statistics)), "Mean"], 
                    ll=NULL, data=dtm, call=thecall,
-                   se.theta = s$statistics[grep("^theta", rownames(s$statistics)), "Naive SE"],
+                   se.theta = s$statistics[grep("^theta", rownames(s$statistics)), "SD"],
                    mcmc.model=jags.mod,
                    wordPartition=wordPartition,
                    mcmc.samples=jags.samples,
@@ -299,7 +299,7 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
     if (alphaModel=="modelled") {
         retval$alphaData <- alphaData
         retval$alpha.coeff <- s$statistics[grep("^coef.alpha", rownames(s$statistics)), "Mean"]
-        retval$alpha.coeff.se <- s$statistics[grep("^coef.alpha", rownames(s$statistics)), "Naive SE"]
+        retval$alpha.coeff.se <- s$statistics[grep("^coef.alpha", rownames(s$statistics)), "SD"]
         retval$sigma.alpha <- 1/s$statistics[grep("^tau.alpha", rownames(s$statistics)), "Mean"]
     }
 

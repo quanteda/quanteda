@@ -1,0 +1,49 @@
+
+%this stops output over-running the shaded output area in the pdf 
+<<echo=FALSE>>=
+options(width = 60)
+@
+
+
+\documentclass{article}
+\title{Introduction to text mining Twitter with R}
+\author{Paul Nulty}
+\usepackage{hyperref}
+\begin{document}
+\maketitle
+\clearpage
+
+\section*{List of Acronyms and Definitions}
+\begin{itemize}
+  \item API: Application Programming Interface --- a specification of how computer programs can communicate with each other
+  \item JSON: JavaScript Object Notation --- a human readable format for representing attribute-value pairs.
+  \item OAuth: An open standard for authorization. OAuth provides client applications a `secure delegated access' to server resources on behalf of a resource owner.
+  \item HTTP: HyperText Transfer Protocol: 
+  \item REST: REpresentational State Transfer:
+\end{itemize}
+
+\section*{Useful Links}
+\url{https://dev.twitter.com/docs/things-every-developer-should-know}
+
+\clearpage
+
+
+<<>>=
+2+3
+library(quanteda)
+tokenize("Just testing sweave/knitr code integration here.")
+@
+
+
+\section*{The twitter APIs}
+Twitter offers two ways for computer programs to post and retrieve data from its service. The twitter REST Search API will receive requests as http commands, and will respond with a JSON object representing a list of tweets. The twitter streaming API allows a computer program to maintain a connection to twitter's service and receive a flow of live public tweets that match the filters or search terms specified.
+
+Both of these APIs require that the developer of the computer program create a twitter account, create a new application, and receive an access token.
+
+\section*{Getting programmatic access to twitter}
+\begin{enumerate}
+  \item Go to https://dev.twitter.com/ and sign in with a twitter account
+  \item Go to My Applications and select "New App". https://apps.twitter.com/
+  \item Fill out the form and click 'create'
+\end{enumerate}
+\end{document}

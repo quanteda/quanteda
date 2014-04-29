@@ -3,8 +3,12 @@
 #' This function takes a text and splits it into sentences.
 #' 
 #' @param text Text to be segmented
+#' @param abbreviations A list of abbreviations'.' and therefore should not be used to segment text
 #' @export
-sentenceSeg <- function(text, pat="[\\.\\?\\!][\\n* ]|\\n\\n*", abbreviations = NULL, parag = TRUE){
+#' @examples
+#' test <- "This is a sentence! Several sentences. It's designed by a Dr. to test whether this function works. Or not? Or not."
+#' sentenceSeg(test)
+sentenceSeg <- function(text, pat="[\\.\\?\\!][\\n* ]|\\n\\n*", abbreviations = NULL){
   stops <- unlist(strsplit(text, split=pat, perl=TRUE) )
   if(is.null(abbreviations)) {abbreviations <- c('Mr', 'Mrs', 'Ms', 'Dr','Jr','Prof')}
   i <- 1

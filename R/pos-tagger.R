@@ -5,7 +5,7 @@
 #'
 #' http://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 #' 
-#' @param text Text to be tagged
+#' @param sentence Sentence to be tagged
 #' @export
 #' @examples
 #' \dontrun{

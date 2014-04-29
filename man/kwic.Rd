@@ -18,6 +18,11 @@ kwic(text, word, window = 5)
 
   \item{window}{The number of context words to be displayed
   around the keyword.}
+
+  \item{text}{a text character scalar (Currently does not
+  support character vectors.)}
+
+  \item{corpus}{a quanteda corpus object}
 }
 \value{
 A data frame with the context before (\code{preword}), the

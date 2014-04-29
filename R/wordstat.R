@@ -3,6 +3,7 @@
 #'
 #' Reads in a wordstat CSV file and creates a corpus object
 #' with the document as text and variables as attributes
+#' @param filename Path to wordstat CSV file
 #' @export
 #' 
 #' 
@@ -20,6 +21,7 @@ getWordStatCSV <- function(filename=NULL) {
 #'
 #' Reads in a wordstat XML file and creates a corpus object
 #' with the document as text and variables as attributes
+#' @param filename Path to wordstat XML file
 #' @export
 #' 
 getWordStat <- function(filename=NULL) {

@@ -7,7 +7,7 @@ adds them to the corpus}
 corpusAppend(corpus1, newtexts, newattribs, ...)
 }
 \arguments{
-  \item{corpus}{An existing corpus to add new texts and
+  \item{corpus1}{An existing corpus to add new texts and
   attributes to}
 
   \item{newtexts}{New texts to be added to the corpus}
@@ -21,9 +21,9 @@ corpus Accepts a list of texts and a list of associated
 attributes and adds them to the corpus
 }
 \examples{
-\dontrun{
 data(iebudgets)
-budgets <- corpusAppend(budgets, texts, newattribs)
-}
+data(ieAttribs)
+data(ieTexts)
+budgets <- corpusAppend(iebudgets, ieTexts, ieAttribs)
 }
 

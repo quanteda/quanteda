@@ -1,32 +1,40 @@
 \name{corpusCreate}
 \alias{corpusCreate}
-\title{create a new corpus - a list containing texts and named attributes
-This function takes a text (in the form of a character vectors),
-performs some cleanup, and splits the text on whitespace, returning
-a dataframe of words and their frequncies}
+\title{Create a new corpus
+This function creates a corpus from a character vector (of texts),
+adds text-specific variables (which we term "attributes"), along
+with optional meta-data and notes.}
 \usage{
-corpusCreate(texts, textnames = NULL, attribs = NULL, source = NULL,
-  notes = NULL, attribs.labels = NULL)
+corpusCreate(texts, attribs = NULL, textnames = NULL, source = NULL,
+  notes = NULL)
 }
 \arguments{
-  \item{texts}{Text to be tokenized}
+  \item{texts}{A character vector containing the texts to
+  be stored in the corpus.}
 
-  \item{textnames}{Names to assign to the texts}
+  \item{textnames}{Names to be assigned to the texts,
+  defaults to the names of the character vector (if any),
+  otherwise assigns "text1", "text2", etc.}
 
-  \item{attribs}{A data frame of attributes that can be
-  associated with each}
+  \item{attribs}{A data frame of attributes that is
+  associated with each text.}
+
+  \item{source}{A string specifying the source of the
+  texts, used for referencing.}
+
+  \item{notes}{A string containing notes about who created
+  the text, warnings, To Dos, etc.}
 }
 \description{
-create a new corpus - a list containing texts and named
-attributes This function takes a text (in the form of a
-character vectors), performs some cleanup, and splits the
-text on whitespace, returning a dataframe of words and
-their frequncies
+Create a new corpus This function creates a corpus from a
+character vector (of texts), adds text-specific variables
+(which we term "attributes"), along with optional meta-data
+and notes.
 }
 \examples{
-\dontrun{
 data(ieTexts)
-budgets <- corpusCreate(ieTexts, attribs=newattribs)
-}
+data(ieAttribs)
+budgets <- corpusCreate(ieTexts, attribs=ieAttribs)
+summary(budgets)
 }
 
