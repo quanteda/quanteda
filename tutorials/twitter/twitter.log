@@ -1,4 +1,8 @@
+<<<<<<< HEAD:tutorials/twitter.log
 This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.9.10)  22 APR 2014 11:07
+=======
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.2.11)  29 APR 2014 12:56
+>>>>>>> fb55363480ac0d63235c07faaae5102356d9b236:tutorials/twitter/twitter.log
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -404,6 +408,7 @@ Here is how much of TeX's memory you used:
  9604 multiletter control sequences out of 15000+600000
  21122 words of font info for 50 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
+<<<<<<< HEAD:tutorials/twitter.log
  35i,6n,23p,427b,319s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 }</usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
@@ -414,6 +419,16 @@ local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsltt10.pfb></usr
 /local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/
 local/texlive/2013/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
 Output written on twitter.pdf (3 pages, 87723 bytes).
+=======
+ 29i,6n,23p,427b,320s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on twitter.pdf (3 pages, 78956 bytes).
+>>>>>>> fb55363480ac0d63235c07faaae5102356d9b236:tutorials/twitter/twitter.log
 PDF statistics:
  61 PDF objects out of 1000 (max. 8388607)
  47 compressed objects within 1 object stream

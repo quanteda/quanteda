@@ -35,7 +35,7 @@ getRootFileNames <- function(longFilenames) {
 #' \dontrun{
 #' getTextFiles('/home/paul/documents/libdem09.txt')
 #' }
-getTextFiles <- function(filenames, textnames=NULL, verbose=TRUE) {
+getTextFiles <- function(filenames, textnames=NULL, verbose=FALSE) {
   # TODO detect encoding; verbose=TRUE (progress bar?)
   if(verbose) print(sprintf("Reading .. %s", filenames))
  # print(sprintf("Reading .. %s \n", filenames))
@@ -65,9 +65,9 @@ getTextFiles <- function(filenames, textnames=NULL, verbose=TRUE) {
 #' \dontrun{
 #' getTextDir('/home/paul/documents/')
 #' }
-getTextDir <- function(dirname) {
+getTextDir <- function(dirname, verbose=TRUE) {
   # get all files from a directory
-  return(getTextFiles(list.files(dirname, full.names=TRUE)))
+  return(getTextFiles(list.files(dirname, full.names=TRUE), verbose))
 }
 
 
