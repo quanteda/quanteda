@@ -5,7 +5,7 @@ points to files, reads them into a character vector of the texts
 with optional names, default being filenames
 returns a named vector of complete, unedited texts}
 \usage{
-getTextFiles(filenames, textnames = NULL, verbose = TRUE)
+getTextFiles(filenames, textnames = NULL, verbose = FALSE)
 }
 \arguments{
   \item{filenames}{a vector of paths to text files}
