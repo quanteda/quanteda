@@ -10,6 +10,7 @@ options(width = 60)
 \author{Paul Nulty}
 \usepackage{hyperref}
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 \maketitle
 \clearpage
 
