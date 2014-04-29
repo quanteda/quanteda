@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Much has been said about this budget and I have heard many Budget Statements in the House. I will give the Government one bit of credit on this. As far as spin is concerned, it is top of the pops. It conditioned the entire electorate into believing this year’s budget day would be the darkest day in history. However, we knew better.
 
 This time the Government balanced the books by borrowing €5 billion. This country is fortunate that it has the flexibility to do that and there is no wrong in it. As Deputy McGinley asked, however, how did it get so bad so quickly?
@@ -17,3 +18,24 @@ Promises were broken and there is no value for money and it does not appear that
 My party is totally committed to decentralisation.
 
 We did as much as anyone else on it when we were in Government but we never excluded the stakeholders. That is where the Government made a terrible mistake.
+=======
+Much has been said about this budget and I have heard many Budget Statements in the House. I will give the Government one bit of credit on this. As far as spin is concerned, it is top of the pops. It conditioned the entire electorate into believing this year’s budget day would be the darkest day in history. However, we knew better.
+
+This time the Government balanced the books by borrowing €5 billion. This country is fortunate that it has the flexibility to do that and there is no wrong in it. As Deputy McGinley asked, however, how did it get so bad so quickly?
+
+I was on the hustings on the first week of May when the Taoiseach and the Tánaiste and Minister for Finance stated at one of their great press conferences that, on a predicted growth rate of 4% for 2008, the Government would be able to do A, B, X and [782]Y, reduce the top and bottom rate of tax, reduce PRSI by 2% and give out medical cards like confetti. Only the Government knew what was really in the books. The Opposition did not because it did not have its hand on the tiller.
+
+All we could do was read between the lines. Six months ago, the Government led the country astray. Outright lies were told about the state of the economy. What would have happened if the economic growth rate for 2008 was only 1% or 2%?
+
+Many great opportunities were lost. When the Dáil met in June, the Opposition implored the Government to tackle the stamp duty issue to give the housing market a chance. The Taoiseach said over his dead body would there be changes to the stamp duty regime as it was not what the building industry needed. The Minister of State knows what happened on the road to Damascus. Suddenly reforming stamp duty was the thing to do in the budget. Why was that conversion so dramatic? The Government had an eye to the tent in Galway. They are the lads who call the tune to which the Government dances.
+
+Many commentators gave the thumbs up to the budget although it has little to do with agriculture. The Minister received credit for making available another €30 million to continue the 60% grant for the farm pollution scheme. Why would she not? It was announced three years ago and there is a written contract with every farmer to the effect the grant is available. It was announced approximately five times. Had she not made it available she would have broken a contract with every farmer in the country.
+
+The Minister was not so forthcoming with the 40% for the farm improvement scheme. Just before the general election, on a fine morning at the great press conferences, I heard there would be a 40% grant for every farmer in the country for matters relating to the environment, up to 2013. Lo and behold on 31 October the hatch was raised and there is no grant available. That was [783]not mentioned in the budget. I am probably the only person who has spoken about it.
+
+Promises were broken and there is no value for money and it does not appear that through benchmarking there will be a process to create better value for money. Unlike the famous day when the former Minister for Finance, Mr. Charlie McCreevy, started his budget speech by talking about decentralisation there was not a squeak out of the Minister about it this time because the Government knows it has made a hames of the programme.
+
+My party is totally committed to decentralisation.
+
+We did as much as anyone else on it when we were in Government but we never excluded the stakeholders. That is where the Government made a terrible mistake.
+>>>>>>> FETCH_HEAD
