@@ -25,8 +25,10 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' budgets <- createCorpus(texts, attribs=newattribs)
+#' data(ieTexts)
+#' budgets <- corpusCreate(ieTexts, attribs=newattribs)
 #' }
+#' 
 corpusCreate <- function(texts, textnames=NULL, attribs=NULL, source=NULL, notes=NULL, attribs.labels=NULL) {
   if (is.null(names(texts))) 
     names(texts) <- paste("text", 1:length(texts), sep="")
@@ -79,7 +81,8 @@ corpusAddAttributes <- function(corpus, newattribs, name=newattribs) {
 #' @export
 #' @examples
 #' \dontrun{
-#' budgets <- corpus.append(budgets, texts, newattribs)
+#' data(iebudgets)
+#' budgets <- corpusAppend(budgets, texts, newattribs)
 #' }
 corpusAppend <- function(corpus1, newtexts, newattribs, ...) {
   # 
@@ -109,8 +112,6 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
   # subset(airquality, Temp > 80, select = c(Ozone, Temp))
   # subset(airquality, Day == 1, select = -Temp)
   # subset(airquality, select = Ozone:Wind)
-  #'@export
-    
     if (is.null(subsetExpr)) 
       rows <- TRUE
     else {
@@ -141,7 +142,7 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
 #' @param corpus corpus object to be subsetted.
 #' @param subset logical expression indicating elements or rows to keep: missing values are taken as false.
 #' @param select expression, indicating the attributes to select from the corpus
-#' 
+#' @return corpus object
 #' @export
 #' @examples
 #' \dontrun{
@@ -151,7 +152,6 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
 #' iebudgetsLenihan <- subset(iebudgets, speaker="Lenihan", select=c(speaker, year))
 #' summary(iebudgetsLenihan)
 #' }
-#' 
 subset.corpus <- function(corpus, subset=NULL, select=NULL) {
   tempcorp <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
   return(tempcorp)
@@ -159,7 +159,7 @@ subset.corpus <- function(corpus, subset=NULL, select=NULL) {
 
 
 #' Transform a corpus by splitting texts into sentences
-
+#'
 #' Each text in the corpus is split into sentences, and each
 #' sentence becomes a standalone text, with attributes indicating
 #' the text it is taken from and it's serial number in that text
@@ -167,30 +167,29 @@ subset.corpus <- function(corpus, subset=NULL, select=NULL) {
 #' @param corpus Corpus to transform
 #' @param feature Feature to count
 #' @examples
-#'\dontrun{
+#' \dontrun{
+#' corpus <- data(iebudgets)
 #' sentCorp <- corpus.reshape(corpus)
 #' }
-corpus.reshape <- function(corpus){
+corpusReshape <- function(corpus) {
   sentence <- sentenceSeg(corpus$attribs$texts[[1]])
   sentenceno <- 1:length(sentence)
   sourcetext <- rep(row.names(corpus$attribs)[[1]], length(sentence))
   atts <- data.frame(sourcetext, sentenceno)
-  # print(names(atts))
-  sentCorp <- corpus.create(unlist(sentence), attribs=atts)
-  # print(names(sentCorp$attribs))
+  sentCorp <- corpusCreate(unlist(sentence), attribs=atts)
   for(i in 2:nrow(corpus$attribs)){
     sentence <- sentenceSeg(corpus$attribs$texts[[i]])
     sentenceno <- 1:length(sentence)
     sourcetext <- rep(row.names(corpus$attribs)[[i]], length(sentence))
     atts <- data.frame(sourcetext, sentenceno)
     
-    sentCorp<-corpus.append(sentCorp, unlist(sentence), atts)
+    sentCorp<-corpusAppend(sentCorp, unlist(sentence), atts)
   }
   return(sentCorp)
 }
 
 #' Display a summary of a corpus object
-
+#'
 #' Displays information about a corpus object, including attributes and 
 #' metadata such as date of number of texts, creation and source
 #' 
@@ -199,11 +198,8 @@ corpus.reshape <- function(corpus){
 #' not 'texts'
 #' @export
 #' @examples
-#' \dontrun{
-#' summary.corpus(corpus1)
-#' }
-####### KB: NEED TO FIX THIS TO DISPLAY A SUMMARY EVEN WHEN is.null(attribs)
-#######     fixed 19:00 26 June 2013
+#' data(iebudgets)
+#' summary(subset(iebudgets, year==2010))
 summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop=FALSE, output=TRUE, nmax=100) {
   corpus <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
   cat("Corpus object contains", nrow(corpus$attribs), "texts.\n\n")
@@ -242,7 +238,8 @@ summary.corpus <- function(corpus, texts="texts", subset=NULL, select=NULL, drop
 #' @export
 #' @examples
 #' \dontrun{
-#' fvm <- create.fvm.corpus(budgets, group="party")}
+#' fvm <- create.fvm.corpus(budgets, group="party")
+#' }
 create.fvm.corpus <- function(corpus,
                               feature=c("word"),
                               stem=FALSE,

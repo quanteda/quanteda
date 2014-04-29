@@ -15,9 +15,28 @@ rescaler <- function(x, scale.min=-1, scale.max=1) {
   return((x-min(x)) * scale.factor - scale.max)
 }
 
-
-#' Naive Bayes
-#' @export
+##' Naive Bayes classifier for texts
+##'
+##' Currently working for vectors of texts.
+##' @title Naive Bayes classifier for texts
+##' @param x character vector of training texts
+##' @param y character vector of test texts
+##' @param smooth smoothing parameter for feature counts by class
+##' @param prior prior distribution on texts, see details
+##' @param distribution count model for text features, can be \code{multinomial} or \code{Bernoulli} 
+##' @param ... 
+##' @return A list of return values, consisting of:
+##' @return \item{call}{original function call}
+##' @return \item{PwGc}{probability of the word given the class (empirical likelihood)}
+##' @return \item{Pc}{class prior probability}
+##' @return \item{PcGw}{posterior class probability given the word}
+##' @return \item{Pw}{baseline probability of the word}
+##' @return \item{data}{list consisting of \code{x} training class, and \code{y} test class}
+##' @return \item{distribution}{the distribution argument}
+##' @return \item{prior}{argument passed as a prior}
+##' @return \item{smooth}{smoothing parameter}
+##' @author Kenneth Benoit
+##' @export
 naiveBayesText <- function(x, y, smooth=1, prior="uniform", distribution="multinomial", ...) 
 {
   x.trset <- x[!is.na(y),]
@@ -67,9 +86,9 @@ naiveBayesText <- function(x, y, smooth=1, prior="uniform", distribution="multin
 }
 
 
-## does not check that we have the same set of words
-## log.probs: would you like the class conditional sums of log prior + sum log word given class?
 predictold.naivebayes <- function(object, newdata=NULL, log.probs=FALSE, normalise=TRUE) {
+  ## does not check that we have the same set of words
+  ## log.probs: would you like the class conditional sums of log prior + sum log word given class?
   log.lik   <- t(log(object$PwGc))  
   log.prior <- log(object$Pc)
   if (is.null(newdata))
@@ -85,11 +104,32 @@ predictold.naivebayes <- function(object, newdata=NULL, log.probs=FALSE, normali
 }
 
 
-## does not check that we have the same set of words
-## log.probs: would you like the class conditional sums of log prior + sum log word given class?
-#' Naive Bayes
-#' @export
+##' prediction method for Naive Bayes classifier objects
+##'
+##' implements class predictions using trained Naive Bayes examples 
+##' (from \code{naiveBayesText()})
+##' 
+##' @title prediction method for Naive Bayes classifiers
+##' @param object a naivebayes class object
+##' @param newdata new data on which to perform classification
+##' @param scores "reference" values when the wordscores equivalent implementation
+##' of Naive Bayes prediction is used.  Default is \code{c(-1, 1)}.
+##' @return A list of two data frames, named \code{docs} and \code{words} corresponding
+##' to word- and document-level predicted quantities
+##' @return \item{docs}{data frame with document-level predictive quantities: 
+##' nb.predicted, ws.predicted, bs.predicted, PcGw, wordscore.doc, bayesscore.doc, 
+##' posterior.diff, posterior.logdiff.  Note that the diff quantities are currently 
+##' implemented only for two-class solutions.}
+##' @return \item{words}{data-frame with word-level predictive quantities: 
+##' wordscore.word, bayesscore.word}
+##' @author Kenneth Benoit
+##' @rdname predict
+##' @method predict naivebayes
+##' @S3method predict naivebayes
+##' @export
 predict.naivebayes <- function(object, newdata=NULL, scores=c(-1,1)) {
+  ## does not check that we have the same set of words
+  ## log.probs: would you like the class conditional sums of log prior + sum log word given class?
   bayesscore.word <- NULL
   bayesscore.doc <- NULL
   wordscore.word <- NULL
@@ -156,8 +196,21 @@ logsumexp <- function(x) {
 
 
 
-#' Wordscore1d
-#' @export
+## wordscores (one-dimensional) for two-class solutions
+##
+## implements Laver, Benoit and Garry's (2003) wordscores method for scaling
+## of a single dimension
+## 
+## @title one-dimensional "wordscores" implementation
+## @param x an austin \code{wfm} object with two classes (rows) only
+## @param refscores a two-element vector of reference scores for the two classes
+## @param smooth a smoothing parameter for word counts
+## @param scale classic or logit scale of log posterior differences
+## @return A list of two data frames, named \class{docs} and \class{words} corresponding
+## to word- and document-level predicted quantities
+## @return Identical returns to austin's "classic.wordscores()"
+## @author Kenneth Benoit
+## @export
 wordscore.1d <- function(x, refscores=c(-1,1), smooth=1, scale="classic")
 {
   # wfm can only have two rows, two scores

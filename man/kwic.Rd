@@ -36,10 +36,8 @@ number, since the text may or may not be segmented using
 end-of-line delimiters.)
 }
 \examples{
-\dontrun{
 data(iebudgets)
-kwic(iebudgets, "Christmas", window=6)
-}
+kwic(subset(iebudgets, year==2010), "Christmas", window=4)
 }
 \author{
 Kenneth Benoit and Paul Nulty

@@ -11,7 +11,8 @@
 #' @param subset Expression for subsetting the corpus before processing
 #' @param verbose Get info to screen on the progress
 #' @param dictionary A list of character vector dictionary entries, including regular expressions (see examples) 
-#' @param dictionary.regex \code{TRUE} means the dictionary is already in regular expression format, otherwise it will be converted from "wildcard" format
+#' @param dictionary.regex \code{TRUE} means the dictionary is already in regular expression format,
+#' otherwise it will be converted from "wildcard" format
 #' @return A data frame with row names equal to the document names and column names equal to the feature labels.
 #' @rdname dfm
 #' @export 
@@ -19,7 +20,9 @@
 #' @examples 
 #' data(iebudgets)
 #' wfm <- dfm(iebudgets)
-#' wfmByParty2010 <- dfm(iebudgets, groups="party", subset=(year==2010))
+#' 
+#' ## by party, subset for 2010
+#' wfmByParty2010 <- dfm(subset(iebudgets, year==2010), groups="party")
 #' 
 #' ## with dictionaries
 #' corpus <- subset(iebudgets, year==2010)
@@ -33,6 +36,7 @@ dfm <- function(corpus,
                 feature=c("word"),
                 stem=FALSE,
                 stopwords=FALSE,
+                bigram=FALSE,
                 groups=NULL,
                 subset=NULL, 
                 verbose=TRUE, 
@@ -48,11 +52,14 @@ dfm.corpus <- function(corpus,
                        feature=c("word"),
                        stem=FALSE,
                        stopwords=FALSE,
+                       bigram=FALSE,
                        groups=NULL,
                        subset=NULL, 
                        verbose=TRUE, 
                        dictionary=NULL,
                        dictionary.regex=FALSE) {
+    # require(austin) 
+    # --not necessary to call austin if not returning a wfm class object
     if (verbose) cat("Creating dfm: ...")
     
     # subsets 
@@ -77,7 +84,12 @@ dfm.corpus <- function(corpus,
     tokenizedTexts <- sapply(texts, tokenize, simplify=FALSE)
     if (stem==TRUE) {
         require(SnowballC)
-        tokenizedTexts <- wordStem(tokenizedTexts)
+        cat("... stemming ...")
+        tokenizedTexts <- lapply(tokenizedTexts, wordStem)
+    }
+    if(bigram==TRUE) {
+        cat("... making bigrams ...")
+        tokenizedTexts <- lapply(tokenizedTexts, bigrams)
     }
     # print(length)
     alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
@@ -115,8 +127,15 @@ dfm.corpus <- function(corpus,
     if(verbose) cat(" done. \n")
     
     if (stopwords) {
+        cat("... removing stopwords ...")
         data(stopwords_EN)
-        dfm <- as.wfm(subset(dfm, !row.names(dfm) %in% stopwords_EN))
+        if(bigram==TRUE) {
+          pat <- paste(paste0(paste0("-", stopwords_EN, "$"), collapse='|'), paste0(paste0("^", stopwords_EN, "-"), collapse='|'), sep='|')
+          dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
+        }else{
+          dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords_EN))
+        }
+        
     }
     return(dfm)
 }

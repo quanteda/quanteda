@@ -49,7 +49,9 @@ by document.
 \examples{
 data(iebudgets)
 wfm <- dfm(iebudgets)
-wfmByParty2010 <- dfm(iebudgets, groups="party", subset=(year==2010))
+
+## by party, subset for 2010
+wfmByParty2010 <- dfm(subset(iebudgets, year==2010), groups="party")
 
 ## with dictionaries
 corpus <- subset(iebudgets, year==2010)

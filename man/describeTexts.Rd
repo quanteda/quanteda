@@ -15,9 +15,7 @@ of the texts, including number of types, tokens, and
 sentences
 }
 \examples{
-\dontrun{
 texts <- c("testing this text", "and this one")
 describeTexts(texts)
-}
 }
 

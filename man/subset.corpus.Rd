@@ -13,6 +13,9 @@
   \item{select}{expression, indicating the attributes to
   select from the corpus}
 }
+\value{
+corpus object
+}
 \description{
 Works just like the normal subset command but for corpus
 objects

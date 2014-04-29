@@ -14,3 +14,4 @@ popDfm <- dfm(corpus, dictionary=popDict)
 lgDfm <- dfm(corpus, dictionary=lgDict)
 simpleDfm <- dfm(corpus)
 summary(corpus)
+

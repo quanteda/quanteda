@@ -1,8 +1,6 @@
 \name{summary.corpus}
 \alias{summary.corpus}
-\title{Display a summary of a corpus object
-Displays information about a corpus object, including attributes and
-metadata such as date of number of texts, creation and source}
+\title{Display a summary of a corpus object}
 \usage{
 \method{summary}{corpus}(corpus, texts = "texts", subset = NULL,
   select = NULL, drop = FALSE, output = TRUE, nmax = 100)
@@ -14,13 +12,12 @@ metadata such as date of number of texts, creation and source}
   corpus texts, if not 'texts'}
 }
 \description{
-Display a summary of a corpus object Displays information
-about a corpus object, including attributes and metadata
-such as date of number of texts, creation and source
+Displays information about a corpus object, including
+attributes and metadata such as date of number of texts,
+creation and source
 }
 \examples{
-\dontrun{
-summary.corpus(corpus1)
-}
+data(iebudgets)
+summary(subset(iebudgets, year==2010))
 }
 

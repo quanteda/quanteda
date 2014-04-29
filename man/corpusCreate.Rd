@@ -25,7 +25,8 @@ their frequncies
 }
 \examples{
 \dontrun{
-budgets <- createCorpus(texts, attribs=newattribs)
+data(ieTexts)
+budgets <- corpusCreate(ieTexts, attribs=newattribs)
 }
 }
 
