@@ -149,7 +149,7 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
     }
     if (alphaModel=="modelled" & is.null(wordPartition)) {
         starting.values <- starting.values[-which(names(starting.values)=="alpha")]
-        X.alpha <- model.matrix(alphaFormula, data=alphaData)
+        X.alpha <- model.matrix(alphaFormula, data=alphaData)#[, -1, drop=FALSE] # remove the intercept
         # use coefs from regression of median across 56 counts on xs as inits for doc-level intercepts
         median.length <- round(apply(dtm, 1, median))
         startval.alpha <- glm.fit(X.alpha, median.length, family=poisson(link="log"))
@@ -157,6 +157,7 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
         starting.values <- starting.values[-which(names(starting.values)=="alpha")]
         # add coefficients for alpha as starting values
         starting.values$coef.alpha <- as.numeric(coef(startval.alpha))
+        # print(X.alpha)
         jags.mod <- jags.model(textConnection(wfmodel_noWordPartition_alphaModelled),
                                data=list(Y=dtm, dir=dir, X.alpha=X.alpha),
                                inits=starting.values, nChains, nAdapt)
@@ -235,14 +236,15 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
     if (verbose) cat("Sampling from the posterior\n")
 
     ## Sample from the posterior
-    jags.samples <-
-        as.mcmc.list(ifelse(alphaModel!="modelled",
-                     coda.samples(jags.mod, c("beta", "tau.beta", "psi", "tau.psi", 
-                                              ifelse(alphaModel=="logdoclength", "theta", c("theta", "alpha"))),
-                                  n.iter=nSamples, thin=nThin),
-                     coda.samples(jags.mod, c("beta", "tau.beta", "psi", "tau.psi", "alpha", "coef.alpha", "tau.alpha", "theta"),
-                                  n.iter=nSamples, thin=nThin)))
-    
+    if (alphaModel=="free") {
+        jsparams <- c("beta", "tau.beta", "psi", "tau.psi", "theta", "alpha", "tau.alpha")
+    } else if (alphaModel=="logdoclength") {
+        jsparams <- c("beta", "tau.beta", "psi", "tau.psi", "theta") 
+    } else {
+        jsparams <- c("beta", "tau.beta", "psi", "tau.psi", "alpha", "coef.alpha", "tau.alpha", "theta")
+    }
+    jags.samples <- coda.samples(jags.mod, jsparams, n.iter=nSamples, thin=nThin)
+
     ## save the samples for testing
     save(jags.samples, file="jsPre.Rdata")
   
@@ -276,8 +278,7 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
     s <- summary(jags.samples)
     retval <- list(dir=dir,
                    theta = s$statistics[grep("^theta", rownames(s$statistics)), "Mean"],
-                   alpha = ifelse(alphaModel=="logdoclength", log(apply(dtm, 1, sum)), 
-                                  s$statistics[grep("^alpha", rownames(s$statistics)), "Mean"]),
+                   alpha = s$statistics[grep("^alpha", rownames(s$statistics)), "Mean"],
                    beta = s$statistics[grep("^beta", rownames(s$statistics)), "Mean"],
                    psi = s$statistics[grep("^psi", rownames(s$statistics)), "Mean"],
                    docs = docs(dtm), 
@@ -296,11 +297,13 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
     ## save for testing
     #save(retval, file="retval.Rdata")
   
+    if (alphaModel=="logdoclength") retval$alpha <- log(apply(dtm, 1, sum))
+
     if (alphaModel=="modelled") {
         retval$alphaData <- alphaData
         retval$alpha.coeff <- s$statistics[grep("^coef.alpha", rownames(s$statistics)), "Mean"]
         retval$alpha.coeff.se <- s$statistics[grep("^coef.alpha", rownames(s$statistics)), "SD"]
-        retval$sigma.alpha <- 1/s$statistics[grep("^tau.alpha", rownames(s$statistics)), "Mean"]
+        retval$sigma.alpha <- 1/sqrt(s$statistics[grep("^tau.alpha", rownames(s$statistics)), "Mean"])
     }
 
     class(retval) <- c("wordfish", "wordfishMCMC", class(retval))
@@ -321,7 +324,10 @@ wfmodel_noWordPartition_alphaFree <- "
     }
     model {
         # loop over documents
-        for(i in 1:N) {
+        for (i in 1:N) {
+            # if remove the following line and change alphaMC[i] to alpha[i] is MUCH FASTER
+            # but alpha wanders (not identified in the location)
+            #alphaMC[i] <- alpha[i] - mean(alpha)
             # loop over words
             for (j in 1:V) {
                 log(rate[i,j]) <- alpha[i] + psi[j] + theta[i] * beta[j]
@@ -357,7 +363,7 @@ wfmodel_noWordPartition_alphaLogDocLength <- "
     }
     model {
         # loop over documents
-        for(i in 1:N) {
+        for (i in 1:N) {
             # loop over words
             for (j in 1:V) {
                 log(rate[i,j]) <- log(Ni[i]) + psi[j] + theta[i] * beta[j]
@@ -392,7 +398,8 @@ wfmodel_noWordPartition_alphaModelled <- "
     }
     model {
         # loop over documents
-        for(i in 1:N) {
+        for (i in 1:N) {
+            # alphaMC[i] <- alpha[i] - mean(alpha)
             # loop over words
             for (j in 1:V) {
                 log(rate[i,j]) <- alpha[i] + psi[j] + theta[i] * beta[j]
