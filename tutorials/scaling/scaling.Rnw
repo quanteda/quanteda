@@ -60,6 +60,7 @@ In order to perform statistical analysis such as document scaling, we must extra
 
 <<>>=
 docMat <- dfm(ieBudgets)
+docMat[1:5,1:5]
 @
 
 We can now score and plot the documents using a statistical scaling technique, for example correspondence analysis \citep{nenadic2007}.
@@ -70,10 +71,16 @@ model <- ca(t(docMat),nd=1)
 dotchart(model$colcoord[order(model$colcoord[,1]),1], labels = model$colnames[order(model$colcoord[,1])])
 @
 
-This plot indicates the position of each of the documents. We can group documents by their attribute values when creating the word-frequency matrix, which allows us to scale according to a particular party or year, for example
+This plot indicates the position of each of the documents. We can group documents by their attribute values when creating the word-frequency matrix: 
 
 <<>>=
 partyMat <- dfm(ieBudgets, group="party")
+partyMat[,1:5]
+@
+
+which allows us to scale according to a particular party or year, for example:
+
+<<>>=
 partyModel <- ca(t(partyMat),nd=1)
 dotchart(partyModel$colcoord[order(partyModel$colcoord[,1]),1], labels = partyModel$colnames[order(partyModel$colcoord[,1])])
 @
