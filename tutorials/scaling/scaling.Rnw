@@ -15,7 +15,7 @@
 \usepackage{breakurl}
 \usepackage[authoryear]{natbib}
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+%\SweaveOpts{concordance=TRUE}
 
 <<setup, include=FALSE, cache=FALSE>>=
 library(knitr)
