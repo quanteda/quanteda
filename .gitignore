@@ -13,3 +13,7 @@ quanteda_kenlocal_gh.Rproj
 .Rdata
 .Rhistory
 __MACOSX
+*~
+*.log
+*.synctex.gz
+*.tex
