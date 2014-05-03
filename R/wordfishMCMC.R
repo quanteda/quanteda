@@ -32,6 +32,7 @@
 ##' @param nUpdate Update iterations in JAGS.
 ##' @param nSamples Number of posterior samples to draw in JAGS.
 ##' @param nThin Thinning parameter for drawing posterior samples in JAGS.
+##' @param PoissonGLM Boolean denoting that the basic model should be estimated where log(alpha) is ~ dflat() as per The BUGS Book pp131-132
 ##' @param ... Additional arguments passed through.
 ##' @return An augmented \code{wordfish} class object with additional stuff packed in.  To be documented.
 ##' @author Kenneth Benoit
@@ -66,7 +67,7 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
                          alphaModel=c("free", "logdoclength", "modelled"),
                          alphaFormula=NULL, alphaData=NULL, 
                          wordPartition=NULL, betaPartition=FALSE, wordConstraints=NULL,
-                         verbose=TRUE, 
+                         verbose=TRUE, PoissonGLM=FALSE,
                          nChains=1, nAdapt=100, nUpdate=300, nSamples=100, nThin=1,
                          ...) {
     ## record the function call, start time
@@ -133,6 +134,13 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
     }
 
     ## Initialize the model
+    
+    ## PoissonGLM
+    if (PoissonGLM) {
+        jags.mod <- jags.model(textConnection(wfmodel_PoissonGLM), 
+                               data=list(Y=dtm, dir=dir), 
+                               inits=starting.values, nChains, nAdapt)
+    }
     
     ## no word partition models
     if (alphaModel=="free" & is.null(wordPartition)) {
@@ -236,7 +244,9 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
     if (verbose) cat("Sampling from the posterior\n")
 
     ## Sample from the posterior
-    if (alphaModel=="free") {
+    if (PoissonGLM==TRUE) {
+        jsparams <- c("beta", "tau.beta", "psi", "tau.psi", "theta", "alpha")
+    } else if (alphaModel=="free") {
         jsparams <- c("beta", "tau.beta", "psi", "tau.psi", "theta", "alpha", "tau.alpha")
     } else if (alphaModel=="logdoclength") {
         jsparams <- c("beta", "tau.beta", "psi", "tau.psi", "theta") 
@@ -284,7 +294,6 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
                    docs = docs(dtm), 
                    words = words(dtm),
                    tau.beta = s$statistics[grep("^tau.beta", rownames(s$statistics)), "Mean"],
-                   tau.alpha = s$statistics[grep("^tau.alpha", rownames(s$statistics)), "Mean"],
                    tau.psi = s$statistics[grep("^tau.psi", rownames(s$statistics)), "Mean"], 
                    ll=NULL, data=dtm, call=thecall,
                    se.theta = s$statistics[grep("^theta", rownames(s$statistics)), "SD"],
@@ -297,6 +306,9 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
     ## save for testing
     #save(retval, file="retval.Rdata")
   
+
+    if (!PoissonGLM) tau.alpha <- s$statistics[grep("^tau.alpha", rownames(s$statistics)), "Mean"]
+
     if (alphaModel=="logdoclength") retval$alpha <- log(apply(dtm, 1, sum))
 
     if (alphaModel=="modelled") {
@@ -724,4 +736,40 @@ wfmodel_psibetaWordPartition_alphaModelled <- "
         tau.psi.mean ~ dgamma(.01, .01)
     }"
 
+wfmodel_PoissonGLM <- "
+    data {
+        dimensions <- dim(Y)
+        N <- dimensions[1]
+        V <- dimensions[2]
+    }
+    model {
+    # loop over documents
+    for (i in 1:N) {
+        # if remove the following line and change alphaMC[i] to alpha[i] is MUCH FASTER
+        # but alpha wanders (not identified in the location)
+        #alphaMC[i] <- alpha[i] - mean(alpha)
+        # loop over words
+        for (j in 1:V) {
+            Y[i,j] ~ dpois(rate[i,j])
+            log(rate[i,j]) <- alpha[i] + psi[j] + theta[i] * beta[j]
+        }
+        alpha[i] ~ dflat()
+        raw.theta[i] ~ dnorm(0, 1)
+        theta[i] <- direction.constraint * raw.theta[i]
+    }
+    
+    # loop over words
+    for (j in 1:V) {  
+        raw.beta[j] ~ dnorm(0, tau.beta)
+        beta[j] <- direction.constraint * raw.beta[j]
+        psi[j] ~ dnorm(0, tau.psi)
+    }
+    
+    # stuff for identification, and direction constraints
+    direction.constraint <- 2*(step(raw.theta[dir[2]]-raw.theta[dir[1]]))-1
+    #mu.alpha ~ dnorm(0, .01)
+    #tau.alpha ~ dgamma(.01, .01)
+    tau.beta ~ dgamma(.01, .01)
+    tau.psi ~ dgamma(.01, .01)
+}"
 

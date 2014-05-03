@@ -6,8 +6,8 @@ wordfishMCMC(dtm, dir = c(1, 2), control = list(sigma = 3, startparams =
   NULL), alphaModel = c("free", "logdoclength", "modelled"),
   alphaFormula = NULL, alphaData = NULL, wordPartition = NULL,
   betaPartition = FALSE, wordConstraints = NULL, verbose = TRUE,
-  nChains = 1, nAdapt = 100, nUpdate = 300, nSamples = 100, nThin = 1,
-  ...)
+  PoissonGLM = FALSE, nChains = 1, nAdapt = 100, nUpdate = 300,
+  nSamples = 100, nThin = 1, ...)
 }
 \arguments{
   \item{dtm}{The document-term matrix.  Ideally, documents
@@ -78,6 +78,10 @@ wordfishMCMC(dtm, dir = c(1, 2), control = list(sigma = 3, startparams =
 
   \item{nThin}{Thinning parameter for drawing posterior
   samples in JAGS.}
+
+  \item{PoissonGLM}{Boolean denoting that the basic model
+  should be estimated where log(alpha) is ~ dflat() as per
+  The BUGS Book pp131-132}
 
   \item{...}{Additional arguments passed through.}
 }
