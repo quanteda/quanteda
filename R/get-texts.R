@@ -67,7 +67,7 @@ getTextFiles <- function(filenames, textnames=NULL, verbose=FALSE) {
 #' }
 getTextDir <- function(dirname, verbose=TRUE) {
   # get all files from a directory
-  return(getTextFiles(list.files(dirname, full.names=TRUE), verbose))
+  return(getTextFiles(list.files(dirname, full.names=TRUE), verbose=TRUE))
 }
 
 
