@@ -157,6 +157,9 @@ dfm.corpus <- function(corpus,
         dfm <- cbind(addto[, addIndex], dfm)
     }
     
+    # give the matrix austin a "wfm"-like record of which margin is words, which is docs
+    dimnames(dfm) <- list(docs = rownames(dfm), words = colnames(dfm))
+    
     if(verbose) cat(" done. \n")
     return(dfm)
 }
