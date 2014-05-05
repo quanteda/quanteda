@@ -1,3 +1,187 @@
+##' Bayesian-MCMC version of a 1-dimnensional Poisson IRT scaling model
+##'
+##' \code{MCMCirtPoisson1d} implements a flexible, Bayesian model estimated in JAGS using MCMC.  
+##' It is based on the implementation of \code{wordfish} from the \code{austin} package.
+##' Options include specifying a model for alpha using document-level covariates, 
+##' and partitioning the word parameters into different subsets, for instance, countries.
+##' 
+##' @export
+##' @param dtm The document-term matrix.  Ideally, documents form the rows of this matrix and words the columns, 
+##' although it should be correctly coerced into the correct shape.
+##' @param dir A two-element vector, enforcing direction constraints on theta and beta, which ensure that theta[dir[1]] < theta[dir[2]].
+##' The elements of \code{dir} will index documents.
+##' @param control list specifies options for the estimation process. These are: \code{tol}, the proportional change in log likelihood
+##' sufficient to halt estimatioe, \code{sigma} the standard deviation for the beta prior in poisson form, and \code{startparams} a
+##' previously fitted wordfish model.  \code{verbose} generates a running commentary during estimation.  See \code{austin::wordfish}.
+##' @param alphaModel \code{free} means the \eqn{\alpha_i} is entirely estimated; \code{logdoclength} means the alpha is predicted with an 
+##' expected value equal to the log of the document length in words, similar to an offset in a Poisson model with variable exposure;
+##' \code{modelled} allows you to specify a formula and covariates for \eqn{\alpha_i} using \code{alphaFormula} and \code{alphaData}.
+##' @param itembase A index or column name from \code{dtm} indicating which item parameters should be used as the reference categories.
+##' (These will have \latex{\beta_j=0} and \latex{\alpha_j=0}.  If set to NULL (default) then no constraints will be implemented (not currently recommended!).
+##' @param verbose Turn this on for messages.  Default is \code{TRUE}.
+##' @param nChains Number of chains to run in JAGS.
+##' @param nAdapt Adaptation iterations in JAGS.
+##' @param nUpdate Update iterations in JAGS.
+##' @param nSamples Number of posterior samples to draw in JAGS.
+##' @param nThin Thinning parameter for drawing posterior samples in JAGS.
+##' @param ... Additional arguments passed through.
+##' @return An augmented \code{wordfish} class object with additional stuff packed in.  To be documented.
+##' @author Kenneth Benoit
+##' @examples
+##' \dontrun{
+##' data(iebudgets)
+##' # extract just the 2010 debates
+##' iebudgets2010 <- corpus.subset(iebudgets, year==2010)
+##' 
+##' # create a document-term matrix and set the word margin to the columns
+##' dtm <- create.fvm.corpus(iebudgets2010)
+##' dtm <- wfm(t(dtm), word.margin=2)
+##' 
+##' # estimate the maximium likelihood wordfish model from austin
+##' iebudgets2010_wordfish <- wordfish(dtm, dir=c(2,1))
+##' 
+##' # estimate the MCMC model, default values
+##' iebudgets2010_wordfishMCMC <- wordfishMCMC(dtm, dir=c(2,1))
+##' 
+##' # compare the estimates of \eqn{\theta_i}
+##' plot(iebudgets2010_wordfish$theta, iebudgets2010_wordfishMCMC$theta)
+##' 
+##' # MCMC with a partition of the word parameters according to govt and opposition
+##' # (FF and Greens were in government in during the debate over the 2010 budget)
+##' # set the constraint on word partitioned parameters to be the same for "the" and "and"
+##' iebudgets2010_wordfishMCMC_govtopp <- 
+##'     wordfishMCMC(dtm, dir=c(2,1), 
+##'     wordPartition=(iebudgets2010$attribs$party=="FF" | iebudgets2010$attribs$party=="Green"),
+##'     betaPartition=TRUE, wordConstraints=which(words(dtm)=="the"))
+##' }
+MCMCirtPoisson1d <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL),
+                         verbose=TRUE, itembase=NULL,
+                         nChains=1, nAdapt=100, nUpdate=300, nSamples=200, nThin=1,
+                         ...) {
+    ## record the function call, start time
+    thecall <- match.call()
+    start.time <- proc.time()
+    
+    ## make sure the object is documents by words  
+    if (!is.wfm(dtm)) dtm <- wfm(dtm, word.margin=2) # rows are documents, columns are "words"
+    if (wordmargin(dtm)==1) dtm <- as.wfm(t(dtm))    # coerce to docs by words
+    
+    # rearrange the dtm to put the constrained item category into the first column
+    # (easier for JAGS code to implement the constraint this way)
+    if (!is.null(itembase)) {
+        if (is.character(itembase)) { itembaseIndex <- which(colnames(dtm)==itembase)
+        } else {
+            itembaseIndex <- itembase
+        }
+        # move the base category to the first column 
+        dtm <- dtm[, c(itembaseIndex, (1:ncol(dtm))[-itembaseIndex])]
+        # record the original index of columns, so they can be put back later  
+        index <- 1:ncol(dtm)
+        original.item.index <- c(index[itembaseIndex], index[-itembaseIndex])
+    }
+    
+    ## starting values, three options
+    # 1) if null, then estimate an ML wordfish model and use those
+    # 2) if a wordfish object, extract quantities for starting vals
+    # 3) if a list of starting values, use those
+    if  (is.null(control$startparams)) {
+        if (verbose) cat("Calculating ML wordfish for starting values.\n")
+        wordfish.ml <- wordfish(dtm, dir)
+        starting.values <- list(raw.theta=wordfish.ml$theta,
+                                raw.beta=wordfish.ml$beta,
+                                psi=wordfish.ml$psi,
+                                alpha=wordfish.ml$alpha)
+    } else if ("wordfish" %in% class(control$startparams)) {
+        cat("Found a wordfish object for starting values.\n")
+        wordfish.ml <- control$startparams
+        starting.values <- list(raw.theta=wordfish.ml$theta,
+                                raw.beta=wordfish.ml$beta,
+                                psi=wordfish.ml$psi,
+                                alpha=wordfish.ml$alpha)
+    } else starting.values <- control$startparams
+    
+    ##
+    ## model definitions are moved to outside of this function
+    ##
+    
+    require(rjags)
+    load.module("glm")
+    
+    if (verbose) {
+        cat("\nStarting JAGS run: ")
+        cat(paste(nChains, paste("chain", ifelse(nChains>1, "s,", ","), sep=""),
+                  nAdapt ,"adaptation cycles,", nUpdate, "updates,", nSamples, "samples.\n\n"))
+    }
+    
+    ## Initialize the model
+    if (is.null(itembase)) {
+        jags.mod <- jags.model(textConnection(wfmodel_PoissonGLM), 
+                               data=list(Y=dtm, dir=dir), 
+                               inits=starting.values, nChains, nAdapt)
+    } else {
+        starting.values$psi[1] <- NA
+        starting.values$raw.beta[1] <- NA
+        #print(starting.values)
+        #View(dtm)
+        jags.mod <- jags.model(textConnection(wfmodel_PoissonGLMconstraints), 
+                               data=list(Y=dtm, dir=dir), 
+                               inits=starting.values, nChains, nAdapt)
+    }
+    
+    ## Update the model
+    if (verbose) cat("Updating model\n")
+    update(jags.mod, nUpdate)
+    if (verbose) cat("Sampling from the posterior\n")
+    
+    ## Sample from the posterior
+    jsparams <- c("beta", "tau.beta", "psi", "tau.psi", "theta", "alpha")
+    jags.samples <- coda.samples(jags.mod, jsparams, n.iter=nSamples, thin=nThin)
+    
+    ## save the samples for testing
+    # save(jags.samples, file="jsPre.Rdata")
+    
+    ## reorder the words back to the original ordering, if words were partitioned
+    ## NOTE: NOT CURRENTLY IMPLEMENTED FOR THE mcmc.samples!!
+    dtm <- dtm[, order(original.item.index)]
+    
+    ## save the samples for testing
+    # jags.samples.Post <- jags.samples
+    # save(jags.samples.Post, file="jsPost.Rdata")
+    
+    s <- summary(jags.samples)
+    retval <- list(dir=dir,
+                   theta = s$statistics[grep("^theta", rownames(s$statistics)), "Mean"],
+                   alpha = s$statistics[grep("^alpha", rownames(s$statistics)), "Mean"],
+                   # needs to be reordered if (!is.null(itembase))
+                   beta = s$statistics[grep("^beta", rownames(s$statistics)), "Mean"],
+                   # needs to be reordered if (!is.null(itembase))
+                   psi = s$statistics[grep("^psi", rownames(s$statistics)), "Mean"],
+                   tau.beta = s$statistics[grep("^tau.beta", rownames(s$statistics)), "Mean"],
+                   tau.psi = s$statistics[grep("^tau.psi", rownames(s$statistics)), "Mean"], 
+                   docs = docs(dtm), 
+                   words = words(dtm),
+                   ll=NULL, data=dtm, call=thecall,
+                   se.theta = s$statistics[grep("^theta", rownames(s$statistics)), "SD"],
+                   mcmc.model=jags.mod,
+                   itembase=words(dtm)[itembaseIndex],
+                   mcmc.samples=jags.samples,
+                   time.elapsed=(proc.time() - start.time)[3])
+    ## save for testing
+    #save(retval, file="retval.Rdata")
+    
+    if (!is.null(itembase)) {
+        retval$beta <- retval$beta[order(original.item.index)]
+        retval$psi <- retval$psi[order(original.item.index)]
+    } 
+    
+    class(retval) <- c("wordfish", "wordfishMCMC", class(retval))
+    if (verbose) cat(paste("Total time elapsed:", round(retval$time.elapsed/60,2), "minutes.\n"))
+    return(retval)
+}
+
+
+
+
 ##' Bayesian-MCMC version of the "wordfish" Poisson scaling model
 ##'
 ##' \code{wordfishMCMC} implements a flexible, Bayesian model estimated in JAGS using MCMC.  
@@ -753,7 +937,7 @@ wfmodel_PoissonGLM <- "
             Y[i,j] ~ dpois(rate[i,j])
             log(rate[i,j]) <- alpha[i] + psi[j] + theta[i] * beta[j]
         }
-        alpha[i] ~ dflat()
+        alpha[i] ~ dunif(-20,20)
         raw.theta[i] ~ dnorm(0, 1)
         theta[i] <- direction.constraint * raw.theta[i]
     }
@@ -773,3 +957,42 @@ wfmodel_PoissonGLM <- "
     tau.psi ~ dgamma(.01, .01)
 }"
 
+wfmodel_PoissonGLMconstraints <- "
+    data {
+        dimensions <- dim(Y)
+        N <- dimensions[1]
+        V <- dimensions[2]
+    }
+    model {
+    # loop over documents
+    for (i in 1:N) {
+        # loop over words
+        for (j in 1:V) {
+            Y[i,j] ~ dpois(rate[i,j])
+            log(rate[i,j]) <- alpha[i] + psi[j] + theta[i] * beta[j]
+        }
+        alpha[i] ~ dunif(-20,20)
+        raw.theta[i] ~ dnorm(0, 1)
+        theta[i] <- direction.constraint * raw.theta[i]
+    }
+    
+    # implement base categories for multinomial equivalence
+    psi[1] <- 0
+    raw.beta[1] <- 0
+    beta[1] <- 0
+    
+    # loop over words
+    for (j in 2:V) {  
+        raw.beta[j] ~ dnorm(0, tau.beta)
+        beta[j] <- direction.constraint * raw.beta[j]
+        psi[j] ~ dnorm(0, tau.psi)
+    }
+    
+    # stuff for identification, and direction constraints
+    direction.constraint <- 2*(step(raw.theta[dir[2]]-raw.theta[dir[1]]))-1
+    
+    # priors for item-level precision hyperparameters
+    tau.beta ~ dgamma(.01, .01)
+    tau.psi ~ dgamma(.01, .01)
+    }
+"
