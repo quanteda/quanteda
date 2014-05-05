@@ -44,8 +44,8 @@ dfm(corpus, feature = c("word"), stem = FALSE, stopwords = FALSE,
   \code{Non_Dictionary} total adjusted.}
 }
 \value{
-A data frame with row names equal to the document names and
-column names equal to the feature labels.
+An austin wfm object with row names equal to the document
+names and column names equal to the feature labels.
 }
 \description{
 returns a document by feature matrix compatible with
