@@ -65,16 +65,10 @@
 \usepackage[authoryear]{natbib}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
-<<<<<<< HEAD
-
-
-
-=======
 %\SweaveOpts{concordance=TRUE}
 
 
 
->>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e
 
 
 \title{Unsupervised Document Scaling with Quanteda}
@@ -149,13 +143,8 @@ This creates a new quanteda corpus object where each text has been associated va
 ##  02    Richard   Bruton    FG
 ##  01      Brian  Lenihan    FF
 ## 
-<<<<<<< HEAD
-## Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/tutorials/scaling/* on x86_64 by kbenoit.
-## Created: Tue Apr 29 14:42:38 2014.
-=======
 ## Source:  /home/paul/Dropbox/code/quanteda/tutorials/scaling/* on x86_64 by paul.
-## Created: Tue Apr 29 14:40:32 2014.
->>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e
+## Created: Mon May  5 16:29:50 2014.
 ## Notes:   NA.
 \end{verbatim}
 \end{kframe}
@@ -172,24 +161,18 @@ In order to perform statistical analysis such as document scaling, we must extra
 \begin{verbatim}
 ## Creating dfm: ... done.
 \end{verbatim}
-<<<<<<< HEAD
 
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: austin\\\#\# Loading required package: numDeriv}}\end{kframe}
-=======
-\begin{alltt}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: austin}}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: there is no package called 'austin'}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: could not find function "{}as.wfm"{}}}\begin{alltt}
 \hlstd{docMat[}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{]}
 \end{alltt}
-\begin{verbatim}
-##                                        a abandoned abandoning abetted ability
-## 2010_BUDGET_01_Brian_Lenihan_FF.txt  143         0          0       0       1
-## 2010_BUDGET_02_Richard_Bruton_FG.txt  82         1          0       0       1
-## 2010_BUDGET_03_Joan_Burton_LAB.txt   129         1          0       1       1
-## 2010_BUDGET_04_Arthur_Morgan_SF.txt  115         0          1       0       3
-## 2010_BUDGET_05_Brian_Cowen_FF.txt    122         0          0       0       2
-\end{verbatim}
-\end{kframe}
->>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'docMat' not found}}\end{kframe}
 \end{knitrout}
 
 
@@ -200,25 +183,20 @@ We can now score and plot the documents using a statistical scaling technique, f
 \begin{alltt}
 \hlkwd{library}\hlstd{(ca)}
 \hlstd{model} \hlkwb{<-} \hlkwd{ca}\hlstd{(}\hlkwd{t}\hlstd{(docMat),} \hlkwc{nd} \hlstd{=} \hlnum{1}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'docMat' not found}}\begin{alltt}
 \hlkwd{dotchart}\hlstd{(model}\hlopt{$}\hlstd{colcoord[}\hlkwd{order}\hlstd{(model}\hlopt{$}\hlstd{colcoord[,} \hlnum{1}\hlstd{]),} \hlnum{1}\hlstd{],} \hlkwc{labels} \hlstd{= model}\hlopt{$}\hlstd{colnames[}\hlkwd{order}\hlstd{(model}\hlopt{$}\hlstd{colcoord[,}
     \hlnum{1}\hlstd{])])}
 \end{alltt}
-\end{kframe}
-
-{\centering \includegraphics[width=\maxwidth]{figure/minimal-unnamed-chunk-4} 
-
-}
 
 
-
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'model' not found}}\end{kframe}
 \end{knitrout}
 
 
-<<<<<<< HEAD
-This plot indicates the position of each of the documents. We can group documents by their attribute values when creating the word-frequency matrix, which allows us to scale according to a particular party or year, for example
-=======
 This plot indicates the position of each of the documents. We can group documents by their attribute values when creating the word-frequency matrix: 
->>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -228,20 +206,18 @@ This plot indicates the position of each of the documents. We can group document
 \begin{verbatim}
 ## Creating dfm: ... aggregating by group: party...complete ... done.
 \end{verbatim}
-\begin{alltt}
-<<<<<<< HEAD
-=======
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: austin}}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: there is no package called 'austin'}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: could not find function "{}as.wfm"{}}}\begin{alltt}
 \hlstd{partyMat[,} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{]}
 \end{alltt}
-\begin{verbatim}
-##         a abandoned abandoning abetted ability
-## FF     78         0          0       0       1
-## FG    162         0          0       0       1
-## Green 326         2          1       1       5
-## LAB   288         0          0       0       3
-## SF    159         0          0       0       1
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'partyMat' not found}}\end{kframe}
 \end{knitrout}
 
 
@@ -250,23 +226,17 @@ which allows us to scale according to a particular party or year, for example:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
->>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e
 \hlstd{partyModel} \hlkwb{<-} \hlkwd{ca}\hlstd{(}\hlkwd{t}\hlstd{(partyMat),} \hlkwc{nd} \hlstd{=} \hlnum{1}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'partyMat' not found}}\begin{alltt}
 \hlkwd{dotchart}\hlstd{(partyModel}\hlopt{$}\hlstd{colcoord[}\hlkwd{order}\hlstd{(partyModel}\hlopt{$}\hlstd{colcoord[,} \hlnum{1}\hlstd{]),} \hlnum{1}\hlstd{],} \hlkwc{labels} \hlstd{= partyModel}\hlopt{$}\hlstd{colnames[}\hlkwd{order}\hlstd{(partyModel}\hlopt{$}\hlstd{colcoord[,}
     \hlnum{1}\hlstd{])])}
 \end{alltt}
-\end{kframe}
-
-<<<<<<< HEAD
-{\centering \includegraphics[width=\maxwidth]{figure/minimal-unnamed-chunk-5} 
-=======
-{\centering \includegraphics[width=\maxwidth]{figure/minimal-unnamed-chunk-6} 
->>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e
-
-}
 
 
-
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'partyModel' not found}}\end{kframe}
 \end{knitrout}
 
 %\bibliographystyle{authordate2}

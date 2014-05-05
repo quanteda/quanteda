@@ -1,15 +1,19 @@
+<<<<<<< HEAD:tutorials/scaling/scaling.log
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.5.1)  1 MAY 2014 18:26
+=======
 <<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
 This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.9.10)  29 APR 2014 14:42
 =======
 This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.2.11)  29 APR 2014 14:40
 >>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
+>>>>>>> 781f39e5c4346357bd13045a5d34b48898e0d13e:tutorials/scaling/pdf/scaling.log
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **scaling.tex
 (./scaling.tex
 LaTeX2e <2011/06/27>
-Babel <3.9f> and hyphenation patterns for 78 languages loaded.
+Babel <3.9h> and hyphenation patterns for 78 languages loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
@@ -167,7 +171,7 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
 (/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip10
-Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2012/11/06 v6.83m Hypertext links for LaTeX
@@ -641,13 +645,24 @@ Package color Info: Redefining color shadecolor on input line 108.
 Package color Info: Redefining color shadecolor on input line 157.
 Package color Info: Redefining color shadecolor on input line 182.
 
+<<<<<<< HEAD:tutorials/scaling/scaling.log
+Overfull \hbox (63.33803pt too wide) in paragraph at lines 190--190
+=======
 Overfull \hbox (63.33803pt too wide) in paragraph at lines 186--186
 >>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
+>>>>>>> 781f39e5c4346357bd13045a5d34b48898e0d13e:tutorials/scaling/pdf/scaling.log
 [][]\T1/cmtt/m/n/10 dotchart[][](model[][]$[][]colcoord[[][]order[][](model[][]
 $[][]colcoord[,[] []1[][]]),[] []1[][]],[] []labels[] []= model[][]$[][]colname
 s[[][]order[][](model[][]$[][]colcoord[,[][] 
  []
 
+<<<<<<< HEAD:tutorials/scaling/scaling.log
+Package color Info: Redefining color shadecolor on input line 202.
+[2]
+Package color Info: Redefining color shadecolor on input line 227.
+
+Overfull \hbox (168.3124pt too wide) in paragraph at lines 234--234
+=======
 <figure/minimal-unnamed-chunk-4.pdf, id=16, 505.89pt x 505.89pt>
 File: figure/minimal-unnamed-chunk-4.pdf Graphic file (type pdf)
 
@@ -669,11 +684,18 @@ Package color Info: Redefining color shadecolor on input line 228.
  [3 <./figure/minimal-unnamed-chunk-4.pdf>]
 Overfull \hbox (168.3124pt too wide) in paragraph at lines 231--231
 >>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
+>>>>>>> 781f39e5c4346357bd13045a5d34b48898e0d13e:tutorials/scaling/pdf/scaling.log
 [][]\T1/cmtt/m/n/10 dotchart[][](partyModel[][]$[][]colcoord[[][]order[][](part
 yModel[][]$[][]colcoord[,[] []1[][]]),[] []1[][]],[] []labels[] []= partyModel[
 ][]$[][]colnames[[][]order[][](partyModel[][]$[][]colcoord[,[][] 
  []
 
+<<<<<<< HEAD:tutorials/scaling/scaling.log
+(./scaling.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 247.
+ [3]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 247.
+=======
 <<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
 <figure/minimal-unnamed-chunk-5.pdf, id=24, 505.89pt x 505.89pt>
 File: figure/minimal-unnamed-chunk-5.pdf Graphic file (type pdf)
@@ -723,30 +745,39 @@ Package pdftex.def Info: figure/minimal-unnamed-chunk-6.pdf used on input line
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 249.
  [4 <./figure/minimal-unnamed-chunk-6.pdf>]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 249.
+>>>>>>> 781f39e5c4346357bd13045a5d34b48898e0d13e:tutorials/scaling/pdf/scaling.log
  (./scaling.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 249.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 249.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 247.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 247.
 Package rerunfilecheck Info: File `scaling.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 249.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 247.
  ) 
 Here is how much of TeX's memory you used:
- 10138 strings out of 493307
- 143206 string characters out of 6139905
- 218612 words of memory out of 5000000
- 13471 multiletter control sequences out of 15000+600000
- 40597 words of font info for 78 fonts, out of 8000000 for 9000
+ 10126 strings out of 493304
+ 142838 string characters out of 6139872
+ 218870 words of memory out of 5000000
+ 13466 multiletter control sequences out of 15000+600000
+ 40912 words of font info for 79 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  30i,8n,35p,429b,390s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texliv
 e/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf/fonts/type1/public/c
-m-super/sftt1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/up
-lb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb>
-Output written on scaling.pdf (4 pages, 86780 bytes).
+m-super/sfit1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1000.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb>
+Output written on scaling.pdf (3 pages, 93096 bytes).
 PDF statistics:
+<<<<<<< HEAD:tutorials/scaling/scaling.log
+ 48 PDF objects out of 1000 (max. 8388607)
+ 38 compressed objects within 1 object stream
+ 8 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+=======
  60 PDF objects out of 1000 (max. 8388607)
  46 compressed objects within 1 object stream
 >>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
  9 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
+>>>>>>> 781f39e5c4346357bd13045a5d34b48898e0d13e:tutorials/scaling/pdf/scaling.log
 

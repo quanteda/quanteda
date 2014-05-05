@@ -158,8 +158,6 @@ dfm.corpus <- function(corpus,
     }
     
     if(verbose) cat(" done. \n")
-    require(austin)
-    dfm <- as.wfm(dfm, word.margin=2)
     return(dfm)
 }
 
