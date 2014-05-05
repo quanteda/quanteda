@@ -1,4 +1,12 @@
+<<<<<<< HEAD:tutorials/scaling/scaling.log
 This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.5.1)  1 MAY 2014 18:26
+=======
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.9.10)  29 APR 2014 14:42
+=======
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.2.11)  29 APR 2014 14:40
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
+>>>>>>> 781f39e5c4346357bd13045a5d34b48898e0d13e:tutorials/scaling/pdf/scaling.log
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -23,6 +31,22 @@ File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/graphics.cfg
+=======
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 
@@ -37,10 +61,20 @@ Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 )
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/graphics.cfg
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
 File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
 )
 Package graphics Info: Driver file: pdftex.def on input line 91.
 
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+(/usr/local/texlive/2013/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+=======
 (/usr/share/texlive/texmf-dist/tex/latex/pdftex-def/pdftex.def
 File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
 
@@ -48,6 +82,7 @@ File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
 Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
 )
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
 Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 )
 \Gread@gobject=\count87
@@ -55,15 +90,26 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen103
 \Gin@req@width=\dimen104
 )
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/color.cfg
+=======
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
 Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
 
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/color.cfg
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
 File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
 Package color Info: Driver file: pdftex.def on input line 130.
 )
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+(/usr/local/texlive/2013/texmf-dist/tex/latex/framed/framed.sty
+=======
 (/usr/share/texlive/texmf-dist/tex/latex/framed/framed.sty
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
 Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
 \OuterFrameSep=\skip43
 \fb@frw=\dimen105
@@ -71,10 +117,17 @@ Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
 \FrameRule=\dimen107
 \FrameSep=\dimen108
 )
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+(/usr/local/texlive/2013/texmf-dist/tex/latex/base/alltt.sty
+Package: alltt 1997/06/16 v2.0g defines alltt environment
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/mathpazo.sty
+=======
 (/usr/share/texlive/texmf-dist/tex/latex/base/alltt.sty
 Package: alltt 1997/06/16 v2.0g defines alltt environment
 )
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/mathpazo.sty
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
 Package: mathpazo 2005/04/12 PSNFSS-v9.2a Palatino w/ Pazo Math (D.Puga, WaS) 
 \symupright=\mathgroup4
 )
@@ -88,7 +141,11 @@ LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
 (/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2010/09/12 v5.6 Page Geometry
 
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+(/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+=======
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
 Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
 Package ifpdf Info: pdfTeX in PDF mode is detected.
 )
@@ -258,11 +315,19 @@ Package: natbib 2010/09/13 8.31b (PWD, AO)
 LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count102
 )
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+(/usr/local/texlive/2013/texmf-dist/tex/latex/upquote/upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
+tim
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/base/textcomp.sty
+=======
 (/usr/share/texlive/texmf-dist/tex/latex/upquote/upquote.sty
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
 tim
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
 Package: textcomp 2005/09/27 v1.99g Standard LaTeX package
 Package textcomp Info: Sub-encoding information:
 (textcomp)               5 = only ISO-Adobe without \textcurrency
@@ -363,17 +428,28 @@ LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 67.
 LaTeX Font Info:    ... okay on input line 67.
 LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 67.
 LaTeX Font Info:    Try loading font information for TS1+cmr on input line 67.
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+ (/usr/local/texlive/2013/texmf-dist/tex/latex/base/ts1cmr.fd
+=======
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    ... okay on input line 67.
 LaTeX Font Info:    Try loading font information for T1+pplx on input line 67.
 
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/t1pplx.fd
+File: t1pplx.fd 2004/09/06 font definitions for T1/pplx.
+)
+(/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii
+=======
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pplx.fd
 File: t1pplx.fd 2004/09/06 font definitions for T1/pplx.
 )
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count103
 \scratchdimen=\dimen121
@@ -386,10 +462,17 @@ File: t1pplx.fd 2004/09/06 font definitions for T1/pplx.
 \MPnumerator=\count107
 \makeMPintoPDFobject=\count108
 \everyMPtoPDFconversion=\toks19
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+) (/usr/local/texlive/2013/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/oberdiek/grfext.sty
+=======
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
 
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
 Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
 )
 Package grfext Info: Graphics extension search list:
@@ -397,7 +480,11 @@ Package grfext Info: Graphics extension search list:
 G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 452.
 
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+=======
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
@@ -443,7 +530,11 @@ Package geometry Warning: The marginal notes overrun the paper.
 
 \AtBeginShipoutBox=\box27
 Package hyperref Info: Link coloring OFF on input line 67.
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+(/usr/local/texlive/2013/texmf-dist/tex/latex/hyperref/nameref.sty
+=======
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
@@ -458,6 +549,16 @@ LaTeX Info: Redefining \nameref on input line 67.
 (./scaling.out) (./scaling.out)
 \@outlinefile=\write3
 \openout3 = `scaling.out'.
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+
+LaTeX Font Info:    Try loading font information for OT1+pplx on input line 79.
+
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/ot1pplx.fd
+File: ot1pplx.fd 2004/09/06 font definitions for OT1/pplx.
+)
+LaTeX Font Info:    Try loading font information for OML+zplm on input line 79.
+=======
 
 LaTeX Font Info:    Try loading font information for OT1+pplx on input line 80.
 
@@ -466,30 +567,68 @@ LaTeX Font Info:    Try loading font information for OT1+pplx on input line 80.
 File: ot1pplx.fd 2004/09/06 font definitions for OT1/pplx.
 )
 LaTeX Font Info:    Try loading font information for OML+zplm on input line 80.
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omlzplm.fd
 File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
 )
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+LaTeX Font Info:    Try loading font information for OMS+zplm on input line 79.
+=======
 LaTeX Font Info:    Try loading font information for OMS+zplm on input line 80.
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omszplm.fd
 File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
 )
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+LaTeX Font Info:    Try loading font information for OMX+zplm on input line 79.
+=======
 LaTeX Font Info:    Try loading font information for OMX+zplm on input line 80.
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omxzplm.fd
 File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
 )
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+LaTeX Font Info:    Try loading font information for OT1+zplm on input line 79.
+=======
 LaTeX Font Info:    Try loading font information for OT1+zplm on input line 80.
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1zplm.fd
 File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 )
 LaTeX Font Info:    Font shape `T1/pplx/bx/n' in size <14.4> not available
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+(Font)              Font shape `T1/pplx/b/n' tried instead on input line 80.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 86.
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/base/t1cmtt.fd
+File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+Package color Info: Redefining color shadecolor on input line 91.
+LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10> not available
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 93.
+Package color Info: Redefining color shadecolor on input line 107.
+
+Overfull \hbox (84.3329pt too wide) in paragraph at lines 148--148
+[]\T1/cmtt/m/n/10 ## Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal
+_gh/tutorials/scaling/* on x86_64 by kbenoit.[] 
+ []
+
+[1
+
+{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+Package color Info: Redefining color shadecolor on input line 156.
+Package color Info: Redefining color shadecolor on input line 172.
+
+Overfull \hbox (63.33803pt too wide) in paragraph at lines 176--176
+=======
 (Font)              Font shape `T1/pplx/b/n' tried instead on input line 81.
 LaTeX Font Info:    Try loading font information for T1+cmtt on input line 87.
 
@@ -506,26 +645,107 @@ Package color Info: Redefining color shadecolor on input line 108.
 Package color Info: Redefining color shadecolor on input line 157.
 Package color Info: Redefining color shadecolor on input line 182.
 
+<<<<<<< HEAD:tutorials/scaling/scaling.log
 Overfull \hbox (63.33803pt too wide) in paragraph at lines 190--190
+=======
+Overfull \hbox (63.33803pt too wide) in paragraph at lines 186--186
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
+>>>>>>> 781f39e5c4346357bd13045a5d34b48898e0d13e:tutorials/scaling/pdf/scaling.log
 [][]\T1/cmtt/m/n/10 dotchart[][](model[][]$[][]colcoord[[][]order[][](model[][]
 $[][]colcoord[,[] []1[][]]),[] []1[][]],[] []labels[] []= model[][]$[][]colname
 s[[][]order[][](model[][]$[][]colcoord[,[][] 
  []
 
+<<<<<<< HEAD:tutorials/scaling/scaling.log
 Package color Info: Redefining color shadecolor on input line 202.
 [2]
 Package color Info: Redefining color shadecolor on input line 227.
 
 Overfull \hbox (168.3124pt too wide) in paragraph at lines 234--234
+=======
+<figure/minimal-unnamed-chunk-4.pdf, id=16, 505.89pt x 505.89pt>
+File: figure/minimal-unnamed-chunk-4.pdf Graphic file (type pdf)
+
+<use figure/minimal-unnamed-chunk-4.pdf>
+Package pdftex.def Info: figure/minimal-unnamed-chunk-4.pdf used on input line 
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+181.
+(pdftex.def)             Requested size: 472.03123pt x 472.03983pt.
+ [2]
+Package color Info: Redefining color shadecolor on input line 193.
+
+Overfull \hbox (168.3124pt too wide) in paragraph at lines 202--202
+=======
+191.
+(pdftex.def)             Requested size: 472.03123pt x 472.03983pt.
+ [2]
+Package color Info: Redefining color shadecolor on input line 203.
+Package color Info: Redefining color shadecolor on input line 228.
+ [3 <./figure/minimal-unnamed-chunk-4.pdf>]
+Overfull \hbox (168.3124pt too wide) in paragraph at lines 231--231
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
+>>>>>>> 781f39e5c4346357bd13045a5d34b48898e0d13e:tutorials/scaling/pdf/scaling.log
 [][]\T1/cmtt/m/n/10 dotchart[][](partyModel[][]$[][]colcoord[[][]order[][](part
 yModel[][]$[][]colcoord[,[] []1[][]]),[] []1[][]],[] []labels[] []= partyModel[
 ][]$[][]colnames[[][]order[][](partyModel[][]$[][]colcoord[,[][] 
  []
 
+<<<<<<< HEAD:tutorials/scaling/scaling.log
 (./scaling.bbl)
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 247.
  [3]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 247.
+=======
+<<<<<<< HEAD:tutorials/scaling/pdf/scaling.log
+<figure/minimal-unnamed-chunk-5.pdf, id=24, 505.89pt x 505.89pt>
+File: figure/minimal-unnamed-chunk-5.pdf Graphic file (type pdf)
+
+<use figure/minimal-unnamed-chunk-5.pdf>
+Package pdftex.def Info: figure/minimal-unnamed-chunk-5.pdf used on input line 
+207.
+(pdftex.def)             Requested size: 472.03123pt x 472.03983pt.
+ (./scaling.bbl [3 <./figure/minimal-unnamed-chunk-4.pdf>])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 220.
+ [4 <./figure/minimal-unnamed-chunk-5.pdf>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 220.
+ (./scaling.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 220.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 220.
+Package rerunfilecheck Info: File `scaling.out' has not changed.
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 220.
+ ) 
+Here is how much of TeX's memory you used:
+ 10140 strings out of 493315
+ 143832 string characters out of 6137904
+ 218578 words of memory out of 5000000
+ 13468 multiletter control sequences out of 15000+600000
+ 40912 words of font info for 79 fonts, out of 8000000 for 9000
+ 957 hyphenation exceptions out of 8191
+ 30i,8n,35p,429b,390s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}
+{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/tex
+live/2013/texmf-dist/fonts/type1/public/cm-super/sfit1000.pfb></usr/local/texli
+ve/2013/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texlive
+/2013/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2013/t
+exmf-dist/fonts/type1/urw/palatino/uplr8a.pfb>
+Output written on scaling.pdf (4 pages, 102391 bytes).
+PDF statistics:
+ 64 PDF objects out of 1000 (max. 8388607)
+ 49 compressed objects within 1 object stream
+=======
+<figure/minimal-unnamed-chunk-6.pdf, id=32, 505.89pt x 505.89pt>
+File: figure/minimal-unnamed-chunk-6.pdf Graphic file (type pdf)
+
+<use figure/minimal-unnamed-chunk-6.pdf>
+Package pdftex.def Info: figure/minimal-unnamed-chunk-6.pdf used on input line 
+236.
+(pdftex.def)             Requested size: 472.03123pt x 472.03983pt.
+ (./scaling.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 249.
+ [4 <./figure/minimal-unnamed-chunk-6.pdf>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 249.
+>>>>>>> 781f39e5c4346357bd13045a5d34b48898e0d13e:tutorials/scaling/pdf/scaling.log
  (./scaling.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 247.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 247.
@@ -548,8 +768,16 @@ m-super/sfit1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1000.pfb
 /texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb>
 Output written on scaling.pdf (3 pages, 93096 bytes).
 PDF statistics:
+<<<<<<< HEAD:tutorials/scaling/scaling.log
  48 PDF objects out of 1000 (max. 8388607)
  38 compressed objects within 1 object stream
  8 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
+=======
+ 60 PDF objects out of 1000 (max. 8388607)
+ 46 compressed objects within 1 object stream
+>>>>>>> 3116935b3372ae1161b1273e4cc7062af0f5c12e:tutorials/scaling/scaling.log
+ 9 named destinations out of 1000 (max. 500000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+>>>>>>> 781f39e5c4346357bd13045a5d34b48898e0d13e:tutorials/scaling/pdf/scaling.log
 

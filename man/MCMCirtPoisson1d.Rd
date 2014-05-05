@@ -1,13 +1,10 @@
-\name{wordfishMCMC}
-\alias{wordfishMCMC}
-\title{Bayesian-MCMC version of the "wordfish" Poisson scaling model}
+\name{MCMCirtPoisson1d}
+\alias{MCMCirtPoisson1d}
+\title{Bayesian-MCMC version of a 1-dimnensional Poisson IRT scaling model}
 \usage{
-wordfishMCMC(dtm, dir = c(1, 2), control = list(sigma = 3, startparams =
-  NULL), alphaModel = c("free", "logdoclength", "modelled"),
-  alphaFormula = NULL, alphaData = NULL, wordPartition = NULL,
-  betaPartition = FALSE, wordConstraints = NULL, verbose = TRUE,
-  PoissonGLM = FALSE, nChains = 1, nAdapt = 100, nUpdate = 300,
-  nSamples = 100, nThin = 1, ...)
+MCMCirtPoisson1d(dtm, dir = c(1, 2), control = list(sigma = 3, startparams =
+  NULL), verbose = TRUE, itembase = NULL, nChains = 1, nAdapt = 100,
+  nUpdate = 300, nSamples = 200, nThin = 1, ...)
 }
 \arguments{
   \item{dtm}{The document-term matrix.  Ideally, documents
@@ -38,31 +35,12 @@ wordfishMCMC(dtm, dir = c(1, 2), control = list(sigma = 3, startparams =
   \eqn{\alpha_i} using \code{alphaFormula} and
   \code{alphaData}.}
 
-  \item{alphaFormula}{Model formula for hierarchical model
-  predicting \eqn{\alpha_i}.}
-
-  \item{alphaData}{Data to form the model matrix for the
-  hierarchical model predicting \eqn{\alpha_i}.}
-
-  \item{wordPartition}{A vector equal in length to the
-  documents that specifies a unique value partitioning the
-  word parameters. For example, alpha could be a Boolean
-  variable for \code{EU} to indicate that a document came
-  from a country outside the EU or inside the EU.  Or, it
-  could be a factor variable indicating the name of the
-  country (as long as there are multiple documents per
-  country).  Internally, \code{wordPartition} is coerced to
-  a factor.  \code{NULL} indicates that no paritioning of
-  the word-level parameters will take place (default).}
-
-  \item{betaPartition}{Boolean indicating that the
-  \eqn{\beta} parameter should also be partitioned
-  according to \code{wordPartition}.}
-
-  \item{wordConstraints}{An index with a minimim length of
-  1, indicating which words will be set equal across the
-  \code{wordPartition} factors.  \code{NULL} if
-  \code{is.null(wordPartition)} (default).}
+  \item{itembase}{A index or column name from \code{dtm}
+  indicating which item parameters should be used as the
+  reference categories. (These will have \latex{\beta_j=0}
+  and \latex{\alpha_j=0}.  If set to NULL (default) then no
+  constraints will be implemented (not currently
+  recommended!).}
 
   \item{verbose}{Turn this on for messages.  Default is
   \code{TRUE}.}
@@ -79,10 +57,6 @@ wordfishMCMC(dtm, dir = c(1, 2), control = list(sigma = 3, startparams =
   \item{nThin}{Thinning parameter for drawing posterior
   samples in JAGS.}
 
-  \item{PoissonGLM}{Boolean denoting that the basic model
-  should be estimated where log(alpha) is ~ dflat() as per
-  The BUGS Book pp131-132}
-
   \item{...}{Additional arguments passed through.}
 }
 \value{
@@ -90,8 +64,8 @@ An augmented \code{wordfish} class object with additional
 stuff packed in.  To be documented.
 }
 \description{
-\code{wordfishMCMC} implements a flexible, Bayesian model
-estimated in JAGS using MCMC. It is based on the
+\code{MCMCirtPoisson1d} implements a flexible, Bayesian
+model estimated in JAGS using MCMC. It is based on the
 implementation of \code{wordfish} from the \code{austin}
 package. Options include specifying a model for alpha using
 document-level covariates, and partitioning the word
