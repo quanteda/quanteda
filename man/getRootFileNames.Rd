@@ -20,4 +20,7 @@ the document name
 getRootFileNames('/home/paul/documents/libdem09.txt')
 }
 }
+\author{
+Paul Nulty
+}
 

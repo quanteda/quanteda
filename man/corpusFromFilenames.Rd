@@ -35,4 +35,7 @@ Underscore is the default separator
 new_corpus <- corpusFromFilenames(dirname, c("country", "electionType", "year", "language", "party"), sep='_')
 }
 }
+\author{
+Paul Nulty
+}
 

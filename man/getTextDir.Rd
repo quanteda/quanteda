@@ -2,7 +2,7 @@
 \alias{getTextDir}
 \title{loads all text files from a given directory}
 \usage{
-getTextDir(dirname, verbose = TRUE)
+getTextDir(dirname)
 }
 \arguments{
   \item{dirname}{A directory path}
@@ -19,5 +19,8 @@ getTextFiles
 \dontrun{
 getTextDir('/home/paul/documents/')
 }
+}
+\author{
+Paul Nulty
 }
 

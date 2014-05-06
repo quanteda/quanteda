@@ -16,4 +16,7 @@ which to load all files.
 getTextFiles('/home/paul/documents/libdem09.txt')
 }
 }
+\author{
+Paul Nulty
+}
 

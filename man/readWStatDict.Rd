@@ -9,4 +9,7 @@ readWStatDict(path)
 This function makes a flattened dictionary from a Wordstat
 hierarchical dictionary
 }
+\author{
+Paul Nulty
+}
 

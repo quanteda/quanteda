@@ -26,4 +26,7 @@ returns a named vector of complete, unedited texts
 getTextFiles('/home/paul/documents/libdem09.txt')
 }
 }
+\author{
+Paul Nulty
+}
 

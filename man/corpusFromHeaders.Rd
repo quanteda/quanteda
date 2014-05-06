@@ -24,4 +24,7 @@ corpus, and each document must have the same attributes.
 data(ieTextsHeaders)
 budgets <- corpusFromHeaders(ieTextsHeaders)
 }
+\author{
+Paul Nulty
+}
 

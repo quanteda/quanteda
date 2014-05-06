@@ -38,7 +38,7 @@ MCMCirtPoisson1d(dtm, dir = c(1, 2), control = list(sigma = 3, startparams =
 
   \item{startRandom}{\code{FALSE} by default, uses random
   starting values (good for multiple chains) if
-  \code{TRUE{}}
+  \code{TRUE}}
 
   \item{nChains}{Number of chains to run in JAGS.}
 

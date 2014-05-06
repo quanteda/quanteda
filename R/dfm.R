@@ -245,8 +245,6 @@ makeRegEx <- function(wildcardregex) {
     ##   [ab] meaning a or b
 }
 
-#dictionary
-#lapply(dictionary, makeRegEx)
 
 #' Trim a dfm based on a subset of features and words
 #'

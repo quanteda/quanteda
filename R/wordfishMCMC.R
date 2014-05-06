@@ -16,7 +16,7 @@
 ##' @param itembase A index or column name from \code{dtm} indicating which item should be used as the reference category.
 ##' (These will have \eqn{\beta_j=0} and \eqn{\alpha_j=0}.)  The default is 1, to use the first category.  If set to NULL then no constraints will be implemented.  See details.
 ##' @param verbose Turn this on for messages.  Default is \code{TRUE}.
-##' @param startRandom \code{FALSE} by default, uses random starting values (good for multiple chains) if \code{TRUE{}
+##' @param startRandom \code{FALSE} by default, uses random starting values (good for multiple chains) if \code{TRUE}
 ##' @param nChains Number of chains to run in JAGS.
 ##' @param nAdapt Adaptation iterations in JAGS.
 ##' @param nUpdate Update iterations in JAGS.
