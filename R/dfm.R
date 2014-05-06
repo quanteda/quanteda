@@ -70,8 +70,6 @@ dfm.corpus <- function(corpus,
                        dictionary=NULL,
                        dictionary.regex=FALSE,
                        addto=NULL) {
-    # require(austin) 
-    # --not necessary to call austin if not returning a wfm class object
     if (verbose) cat("Creating dfm: ...")
     
     # subsets 
@@ -265,11 +263,11 @@ makeRegEx <- function(wildcardregex) {
 #' data(iebudgets)
 #' dtm <- dfm(iebudgets)
 #' dim(dtm)  # 196 docs x 13343 words
-#' dtm.reduced <- dfmTrim(dtm, min.count=10, min.doc=3) # only words occuring at least 10 times and in at least 3 documents
-#' dim(dtm.reduced)  # 196 docs x 3006 words
-#' dtm.sampled <- dfmTrim(dtm, sample=200)  # top 200 words
-#' dim(dtm.sampled)  # 196 x 200 words
-dfmTrim <- function(dfm, min.count=5, min.doc=5, sample=NULL, verbose=TRUE) {
+#' dtmReduced <- dfmTrim(dtm, minCount=10, minDoc=3) # only words occuring at least 10 times and in at least 3 documents
+#' dim(dtmReduced)  # 196 docs x 3006 words
+#' dtmSampled <- dfmTrim(dtm, sample=200)  # top 200 words
+#' dim(dtmSampled)  # 196 x 200 words
+dfmTrim <- function(dfm, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
     nms <- names(dimnames(dfm))
     if (!(!is.null(nms) && identical(sort(nms), c("docs", "words")))) 
         stop("Function not applicable to this object")
@@ -278,13 +276,13 @@ dfmTrim <- function(dfm, min.count=5, min.doc=5, sample=NULL, verbose=TRUE) {
     if (names(dimnames(dfm))[2] == "words") 
         mY <- t(mY)
     
-    rs1 <- which(rowSums(mY) >= min.count)
+    rs1 <- which(rowSums(mY) >= minCount)
     if (verbose)
-        cat("Words appearing less than", min.count, "times:", (nrow(mY) - length(rs1)), "\n")
+        cat("Words appearing less than", minCount, "times:", (nrow(mY) - length(rs1)), "\n")
     
-    rs2 <- which(apply(mY, 1, function(x){ sum(x>0) >= min.doc } ))
+    rs2 <- which(apply(mY, 1, function(x){ sum(x>0) >= minDoc } ))
     if (verbose)
-        cat("Words appearing in fewer than", min.doc, "documents:", (nrow(mY) - length(rs2)), "\n")
+        cat("Words appearing in fewer than", minDoc, "documents:", (nrow(mY) - length(rs2)), "\n")
     
     tokeep <- intersect(rs1, rs2)
     if (length(tokeep)==0)
