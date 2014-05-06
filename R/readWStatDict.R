@@ -1,5 +1,6 @@
 #' This function makes a flattened dictionary from a Wordstat hierarchical
 #' dictionary
+#' @author Paul Nulty
 #' @export
 readWStatDict <- function(path){
   d <- read.delim(path, header=FALSE)

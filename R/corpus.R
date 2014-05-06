@@ -68,6 +68,7 @@ corpusCreate <- function(texts, attribs=NULL, textnames=NULL, source=NULL, notes
 #' 
 #' @param headerTexts A vector of texts with JSON headers 
 #' @export
+#' @author Paul Nulty
 #' @examples
 #' data(ieTextsHeaders)
 #' budgets <- corpusFromHeaders(ieTextsHeaders)
@@ -109,6 +110,7 @@ corpusFromHeaders <- function(headerTexts) {
 #' @param attNames A vector naming the attribute types
 #' @param sep A string by which the filename should be separated to get the values. Default is underscore.
 #' @export
+#' @author Paul Nulty
 #' @examples
 #' \dontrun{
 #' new_corpus <- corpusFromFilenames(dirname, c("country", "electionType", "year", "language", "party"), sep='_')

@@ -6,6 +6,7 @@
 #' @param longFilenames Absolute filenames including a full path with directory
 #' @return character vector of filenames withouth directory path
 #' @export
+#' @author Paul Nulty
 #' @examples
 #' \dontrun{
 #' getRootFileNames('/home/paul/documents/libdem09.txt')
@@ -30,6 +31,7 @@ getRootFileNames <- function(longFilenames) {
 #' @param filenames a vector of paths to text files
 #' @param textnames names to assign to the texts
 #' @return character vector of texts read from disk
+#' @author Paul Nulty
 #' @export
 #' @examples
 #' \dontrun{
@@ -60,14 +62,15 @@ getTextFiles <- function(filenames, textnames=NULL, verbose=FALSE) {
 #' 
 #' @param dirname A directory path
 #' @return character vector of texts read from disk
+#' @author Paul Nulty
 #' @export
 #' @examples
 #' \dontrun{
 #' getTextDir('/home/paul/documents/')
 #' }
-getTextDir <- function(dirname, verbose=TRUE) {
+getTextDir <- function(dirname) {
   # get all files from a directory
-  return(getTextFiles(list.files(dirname, full.names=TRUE), verbose=TRUE))
+  return(getTextFiles(list.files(dirname, full.names=TRUE)))
 }
 
 
@@ -77,6 +80,7 @@ getTextDir <- function(dirname, verbose=TRUE) {
 #' which to load all files.
 #' @return character vector of texts read from disk
 #' @export
+#' @author Paul Nulty
 #' @examples
 #' \dontrun{
 #' getTextFiles('/home/paul/documents/libdem09.txt')
