@@ -15,7 +15,9 @@
 #' otherwise it will be converted from "wildcard" format
 #' @param addto \code{NULL} by default, but if an existing dfm object is specified, then the new dfm will be added to the one named.
 #' If both dfms are built from dictionaries, the combined dfm will have its \code{Non_Dictionary} total adjusted.
-#' @return An austin wfm object with row names equal to the document names and column names equal to the feature labels.
+#' @return A matrix object with row names equal to the document names and column names equal to the feature labels.  
+#' This matrix has \code{names(dimnames) = c("docs", "words")}
+#' to make it conformable to an \link[austin]{wfm} object.
 #' @rdname dfm
 #' @export 
 #' @author Kenneth Benoit
@@ -158,6 +160,7 @@ dfm.corpus <- function(corpus,
     }
     
     # give the matrix austin a "wfm"-like record of which margin is words, which is docs
+    dfm <- as.matrix(dfm)
     dimnames(dfm) <- list(docs = rownames(dfm), words = colnames(dfm))
     
     if(verbose) cat(" done. \n")
@@ -247,4 +250,55 @@ makeRegEx <- function(wildcardregex) {
 #dictionary
 #lapply(dictionary, makeRegEx)
 
+#' Trim a dfm based on a subset of features and words
+#'
+#' Returns a document by feature matrix reduced in size based on document and term frequency, and/or subsampling.
+#' 
+#' @param dfm Document-feature matrix created by \code{\link{dfm}}
+#' @param min.count minimum feature count
+#' @param min.doc minimum number of documents in which a feature appears
+#' @param sample how many features to retain (based on random selection)
+#' @return A dfm matrix object reduced in size.
+#' @export 
+#' @author Will Lowe, adapted by Ken Benoit
+#' @examples 
+#' data(iebudgets)
+#' dtm <- dfm(iebudgets)
+#' dim(dtm)  # 196 docs x 13343 words
+#' dtm.reduced <- dfmTrim(dtm, min.count=10, min.doc=3) # only words occuring at least 10 times and in at least 3 documents
+#' dim(dtm.reduced)  # 196 docs x 3006 words
+#' dtm.sampled <- dfmTrim(dtm, sample=200)  # top 200 words
+#' dim(dtm.sampled)  # 196 x 200 words
+dfmTrim <- function(dfm, min.count=5, min.doc=5, sample=NULL, verbose=TRUE) {
+    nms <- names(dimnames(dfm))
+    if (!(!is.null(nms) && identical(sort(nms), c("docs", "words")))) 
+        stop("Function not applicable to this object")
 
+    mY <- dfm
+    if (names(dimnames(dfm))[2] == "words") 
+        mY <- t(mY)
+    
+    rs1 <- which(rowSums(mY) >= min.count)
+    if (verbose)
+        cat("Words appearing less than", min.count, "times:", (nrow(mY) - length(rs1)), "\n")
+    
+    rs2 <- which(apply(mY, 1, function(x){ sum(x>0) >= min.doc } ))
+    if (verbose)
+        cat("Words appearing in fewer than", min.doc, "documents:", (nrow(mY) - length(rs2)), "\n")
+    
+    tokeep <- intersect(rs1, rs2)
+    if (length(tokeep)==0)
+        stop("No words left after trimming")
+    
+    if (!is.null(sample)) {
+        if (sample > length(tokeep))
+            warning(paste('Sample size', sample, 'larger than',
+                          length(tokeep), "already filtered from", nrow(mY), "so ignoring sampling request"))
+        tokeep <- sample(tokeep, min(length(tokeep), sample))
+        if (verbose)
+            cat("Retaining a random sample of", sample, "words\n")
+    }
+    return(t(mY[sort(tokeep),]))
+}
+
+    

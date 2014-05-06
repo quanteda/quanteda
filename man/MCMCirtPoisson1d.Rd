@@ -3,8 +3,8 @@
 \title{Bayesian-MCMC version of a 1-dimensional Poisson IRT scaling model}
 \usage{
 MCMCirtPoisson1d(dtm, dir = c(1, 2), control = list(sigma = 3, startparams =
-  NULL), verbose = TRUE, itembase = NULL, nChains = 1, nAdapt = 100,
-  nUpdate = 300, nSamples = 200, nThin = 1, ...)
+  NULL), verbose = TRUE, itembase = 1, startRandom = FALSE, nChains = 1,
+  nAdapt = 100, nUpdate = 300, nSamples = 200, nThin = 1, ...)
 }
 \arguments{
   \item{dtm}{The document-term matrix.  Ideally, documents
@@ -14,8 +14,8 @@ MCMCirtPoisson1d(dtm, dir = c(1, 2), control = list(sigma = 3, startparams =
 
   \item{dir}{A two-element vector, enforcing direction
   constraints on theta and beta, which ensure that
-  theta[dir[1]] < theta[dir[2]]. The elements of \code{dir}
-  will index documents.}
+  \code{theta[dir[1]] < theta[dir[2]]}. The elements of
+  \code{dir} will index documents.}
 
   \item{control}{list specifies options for the estimation
   process. These are: \code{tol}, the proportional change
@@ -24,16 +24,21 @@ MCMCirtPoisson1d(dtm, dir = c(1, 2), control = list(sigma = 3, startparams =
   poisson form, and \code{startparams} a previously fitted
   wordfish model.  \code{verbose} generates a running
   commentary during estimation.  See
-  \code{austin::wordfish}.}
+  \code{\link[austin]{wordfish}}.}
 
   \item{itembase}{A index or column name from \code{dtm}
-  indicating which item parameters should be used as the
-  reference categories. (These will have \eqn{\beta_j=0}
-  and \eqn{\alpha_j=0}.)  If set to NULL (default) then no
-  constraints will be implemented.  See details.}
+  indicating which item should be used as the reference
+  category. (These will have \eqn{\beta_j=0} and
+  \eqn{\alpha_j=0}.)  The default is 1, to use the first
+  category.  If set to NULL then no constraints will be
+  implemented.  See details.}
 
   \item{verbose}{Turn this on for messages.  Default is
   \code{TRUE}.}
+
+  \item{startRandom}{\code{FALSE} by default, uses random
+  starting values (good for multiple chains) if
+  \code{TRUE{}}
 
   \item{nChains}{Number of chains to run in JAGS.}
 
@@ -50,16 +55,17 @@ MCMCirtPoisson1d(dtm, dir = c(1, 2), control = list(sigma = 3, startparams =
   \item{...}{Additional arguments passed through.}
 }
 \value{
-An augmented \code{wordfish} class object with additional
-stuff packed in.  To be documented.
+An augmented \code{\link{wordfish}} class object with
+additional stuff packed in.  To be documented.
 }
 \description{
 \code{MCMCirtPoisson1d} implements a flexible, Bayesian
 model estimated in JAGS using MCMC. It is based on the
-implementation of \code{wordfish} from the \code{austin}
-package. Options include specifying a model for alpha using
-document-level covariates, and partitioning the word
-parameters into different subsets, for instance, countries.
+implementation of \code{\link[austin]{wordfish}} from the
+\link{austin} package. Options include specifying a model
+for alpha using document-level covariates, and partitioning
+the word parameters into different subsets, for instance,
+countries.
 }
 \details{
 The ability to constrain an item is designed to make the
@@ -70,7 +76,7 @@ We recommend setting a neutral category to have
 "the" for a text count model (assuming this word has not
 been removed).  Note: Currently the item-level return
 values will be returned in the original order suppled
-(\code{psi} and \cde{beta}) but this is not true yet for
+(\code{psi} and \code{beta}) but this is not true yet for
 the \code{mcmc.samples} value, which will have the
 constrained category as index 1.  (We will fix this soon.)
 }
@@ -101,6 +107,10 @@ pairs.panels(data.frame(ML=iebudgets2010_wordfish$theta,
 iebudgets2010_wordfish$beta[which(iebudgets2010_wordfishMCMC_unconstrained$words=="fianna")]
 iebudgets2010_wordfishMCMC$beta[which(iebudgets2010_wordfishMCMC_unconstrained$words=="fianna")]
 iebudgets2010_wordfishMCMC_unconstrained$beta[which(iebudgets2010_wordfishMCMC_unconstrained$words=="fianna")]
+
+# random starting values, for three chains
+dtm.sample <- trim(dtm, sample=200)
+iebudgets2010_wordfishMCMC_sample <- MCMCirtPoisson1d(dtm.sample, dir=c(2,1), startRandom=TRUE, nChains=3)
 }
 }
 \author{

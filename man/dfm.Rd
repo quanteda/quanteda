@@ -44,8 +44,10 @@ dfm(corpus, feature = c("word"), stem = FALSE, stopwords = FALSE,
   \code{Non_Dictionary} total adjusted.}
 }
 \value{
-An austin wfm object with row names equal to the document
-names and column names equal to the feature labels.
+A matrix object with row names equal to the document names
+and column names equal to the feature labels. This matrix
+has \code{names(dimnames) = c("docs", "words")} to make it
+conformable to an \link[austin]{wfm} object.
 }
 \description{
 returns a document by feature matrix compatible with

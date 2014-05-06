@@ -1,33 +1,34 @@
 ##' Bayesian-MCMC version of a 1-dimensional Poisson IRT scaling model
 ##'
 ##' \code{MCMCirtPoisson1d} implements a flexible, Bayesian model estimated in JAGS using MCMC.  
-##' It is based on the implementation of \code{wordfish} from the \code{austin} package.
+##' It is based on the implementation of \code{\link[austin]{wordfish}} from the \link{austin} package.
 ##' Options include specifying a model for alpha using document-level covariates, 
 ##' and partitioning the word parameters into different subsets, for instance, countries.
 ##' 
 ##' @export
 ##' @param dtm The document-term matrix.  Ideally, documents form the rows of this matrix and words the columns, 
 ##' although it should be correctly coerced into the correct shape.
-##' @param dir A two-element vector, enforcing direction constraints on theta and beta, which ensure that theta[dir[1]] < theta[dir[2]].
+##' @param dir A two-element vector, enforcing direction constraints on theta and beta, which ensure that \code{theta[dir[1]] < theta[dir[2]]}.
 ##' The elements of \code{dir} will index documents.
 ##' @param control list specifies options for the estimation process. These are: \code{tol}, the proportional change in log likelihood
 ##' sufficient to halt estimation, \code{sigma} the standard deviation for the beta prior in poisson form, and \code{startparams} a
-##' previously fitted wordfish model.  \code{verbose} generates a running commentary during estimation.  See \code{austin::wordfish}.
-##' @param itembase A index or column name from \code{dtm} indicating which item parameters should be used as the reference categories.
-##' (These will have \eqn{\beta_j=0} and \eqn{\alpha_j=0}.)  If set to NULL (default) then no constraints will be implemented.  See details.
+##' previously fitted wordfish model.  \code{verbose} generates a running commentary during estimation.  See \code{\link[austin]{wordfish}}.
+##' @param itembase A index or column name from \code{dtm} indicating which item should be used as the reference category.
+##' (These will have \eqn{\beta_j=0} and \eqn{\alpha_j=0}.)  The default is 1, to use the first category.  If set to NULL then no constraints will be implemented.  See details.
 ##' @param verbose Turn this on for messages.  Default is \code{TRUE}.
+##' @param startRandom \code{FALSE} by default, uses random starting values (good for multiple chains) if \code{TRUE{}
 ##' @param nChains Number of chains to run in JAGS.
 ##' @param nAdapt Adaptation iterations in JAGS.
 ##' @param nUpdate Update iterations in JAGS.
 ##' @param nSamples Number of posterior samples to draw in JAGS.
 ##' @param nThin Thinning parameter for drawing posterior samples in JAGS.
 ##' @param ... Additional arguments passed through.
-##' @return An augmented \code{wordfish} class object with additional stuff packed in.  To be documented.
+##' @return An augmented \code{\link{wordfish}} class object with additional stuff packed in.  To be documented.
 ##' @author Kenneth Benoit
 ##' @details The ability to constrain an item is designed to make the additive Poisson GLM mathematically equivalent to the multinomial model 
 ##' for \eqn{R \times C} contingency tables.  We recommend setting a neutral category to have \eqn{\psi_{0}=0 and \beta_{0}=0}, for example the word "the"
 ##' for a text count model (assuming this word has not been removed).  Note: Currently the item-level return values will be returned in the original
-##' order suppled (\code{psi} and \cde{beta}) but this is not true yet for the \code{mcmc.samples} value, which will have the constrained 
+##' order suppled (\code{psi} and \code{beta}) but this is not true yet for the \code{mcmc.samples} value, which will have the constrained 
 ##' category as index 1.  (We will fix this soon.)
 ##' 
 ##' @examples
@@ -57,9 +58,13 @@
 ##' iebudgets2010_wordfish$beta[which(iebudgets2010_wordfishMCMC_unconstrained$words=="fianna")]
 ##' iebudgets2010_wordfishMCMC$beta[which(iebudgets2010_wordfishMCMC_unconstrained$words=="fianna")]
 ##' iebudgets2010_wordfishMCMC_unconstrained$beta[which(iebudgets2010_wordfishMCMC_unconstrained$words=="fianna")]
+##' 
+##' # random starting values, for three chains
+##' dtm.sample <- trim(dtm, sample=200)
+##' iebudgets2010_wordfishMCMC_sample <- MCMCirtPoisson1d(dtm.sample, dir=c(2,1), startRandom=TRUE, nChains=3)
 ##' }
 MCMCirtPoisson1d <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL),
-                         verbose=TRUE, itembase=NULL,
+                         verbose=TRUE, itembase=1, startRandom=FALSE,
                          nChains=1, nAdapt=100, nUpdate=300, nSamples=200, nThin=1,
                          ...) {
     ## record the function call, start time
@@ -67,6 +72,7 @@ MCMCirtPoisson1d <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=
     start.time <- proc.time()
     
     ## make sure the object is documents by words  
+    require(austin)
     if (!is.wfm(dtm)) dtm <- wfm(dtm, word.margin=2) # rows are documents, columns are "words"
     if (wordmargin(dtm)==1) dtm <- as.wfm(t(dtm))    # coerce to docs by words
     
@@ -84,19 +90,25 @@ MCMCirtPoisson1d <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=
         original.item.index <- c(index[itembaseIndex], index[-itembaseIndex])
     }
     
+    if (verbose) {
+        cat("\nStarting JAGS run: ")
+        cat(paste(nChains, paste("chain", ifelse(nChains>1, "s,", ","), sep=""),
+                  nAdapt ,"adaptation cycles,", nUpdate, "updates,", nSamples, "samples.\n"))
+        cat("Starting values: ")
+    }
     ## starting values, three options
     # 1) if null, then estimate an ML wordfish model and use those
     # 2) if a wordfish object, extract quantities for starting vals
     # 3) if a list of starting values, use those
-    if  (is.null(control$startparams)) {
-        if (verbose) cat("Calculating ML wordfish for starting values.\n")
+    if  (is.null(control$startparams) & !startRandom) {
+        if (verbose) cat("Calculating ML wordfish.\n\n")
         wordfish.ml <- wordfish(dtm, dir)
         starting.values <- list(raw.theta=wordfish.ml$theta,
                                 raw.beta=wordfish.ml$beta,
                                 psi=wordfish.ml$psi,
                                 alpha=wordfish.ml$alpha)
     } else if ("wordfish" %in% class(control$startparams)) {
-        cat("Found a wordfish object for starting values.\n")
+        cat("Using user-supplied ML wordfish object.\n\n")
         wordfish.ml <- control$startparams
         starting.values <- list(raw.theta=wordfish.ml$theta,
                                 raw.beta=wordfish.ml$beta,
@@ -111,25 +123,40 @@ MCMCirtPoisson1d <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=
     require(rjags)
     load.module("glm")
     
-    if (verbose) {
-        cat("\nStarting JAGS run: ")
-        cat(paste(nChains, paste("chain", ifelse(nChains>1, "s,", ","), sep=""),
-                  nAdapt ,"adaptation cycles,", nUpdate, "updates,", nSamples, "samples.\n\n"))
-    }
-    
     ## Initialize the model
     if (is.null(itembase)) {
-        jags.mod <- jags.model(textConnection(wfmodel_PoissonGLM), 
-                               data=list(Y=dtm, dir=dir), 
-                               inits=starting.values, nChains, nAdapt)
+        jags.code <- textConnection(wfmodel_PoissonGLM)
     } else {
-        starting.values$psi[1] <- NA
-        starting.values$raw.beta[1] <- NA
-        #print(starting.values)
-        #View(dtm)
-        jags.mod <- jags.model(textConnection(wfmodel_PoissonGLMconstraints), 
-                               data=list(Y=dtm, dir=dir), 
-                               inits=starting.values, nChains, nAdapt)
+        jags.code <- textConnection(wfmodel_PoissonGLMconstraints)
+        if (!is.null(starting.values)) {
+            starting.values$psi[1] <- NA
+            starting.values$raw.beta[1] <- NA
+        }
+    } 
+    
+    if (!is.null(starting.values)) {
+        jags.mod <- jags.model(jags.code, data=list(Y=dtm, dir=dir), inits=starting.values, nChains, nAdapt)
+    } else if (startRandom) {
+        if (is.null(itembase)) {
+            randomStartingValues <- function() {
+            list(raw.theta = rnorm(nrow(dtm), 0, 1),
+                 alpha = runif(nrow(dtm), -2,2),
+                 raw.beta = rnorm(ncol(dtm), 1),
+                 psi = rnorm(ncol(dtm), 1))
+            }
+        } else {
+            randomStartingValues <- function() {
+                list(raw.theta = rnorm(nrow(dtm), 0, 1),
+                     alpha = runif(nrow(dtm), -2,2),
+                     raw.beta = c(NA, rnorm(ncol(dtm)-1, 1)),
+                     psi = c(NA, rnorm(ncol(dtm)-1, 1)))
+            }
+        }
+        cat("Random starting values.\n\n")
+        jags.mod <- jags.model(jags.code, data=list(Y=dtm, dir=dir), inits=randomStartingValues, nChains, nAdapt)
+    } else {
+        cat("JAGS-supplied starting values (inits not specified).\n\n")
+        jags.mod <- jags.model(jags.code, data=list(Y=dtm, dir=dir), nChains, nAdapt)
     }
     
     ## Update the model
@@ -141,17 +168,10 @@ MCMCirtPoisson1d <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=
     jsparams <- c("beta", "tau.beta", "psi", "tau.psi", "theta", "alpha")
     jags.samples <- coda.samples(jags.mod, jsparams, n.iter=nSamples, thin=nThin)
     
-    ## save the samples for testing
-    # save(jags.samples, file="jsPre.Rdata")
-    
     ## reorder the words back to the original ordering, if words were partitioned
     ## NOTE: NOT CURRENTLY IMPLEMENTED FOR THE mcmc.samples!!
-    dtm <- dtm[, order(original.item.index)]
-    
-    ## save the samples for testing
-    # jags.samples.Post <- jags.samples
-    # save(jags.samples.Post, file="jsPost.Rdata")
-    
+    if (!is.null(itembase))  dtm <- dtm[, order(original.item.index)]   
+       
     s <- summary(jags.samples)
     retval <- list(dir=dir,
                    theta = s$statistics[grep("^theta", rownames(s$statistics)), "Mean"],
@@ -164,10 +184,10 @@ MCMCirtPoisson1d <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=
                    tau.psi = s$statistics[grep("^tau.psi", rownames(s$statistics)), "Mean"], 
                    docs = docs(dtm), 
                    words = words(dtm),
+                   itembase=NULL,
                    ll=NULL, data=dtm, call=thecall,
                    se.theta = s$statistics[grep("^theta", rownames(s$statistics)), "SD"],
                    mcmc.model=jags.mod,
-                   itembase=words(dtm)[itembaseIndex],
                    mcmc.samples=jags.samples,
                    time.elapsed=(proc.time() - start.time)[3])
     ## save for testing
@@ -176,6 +196,7 @@ MCMCirtPoisson1d <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=
     if (!is.null(itembase)) {
         retval$beta <- retval$beta[order(original.item.index)]
         retval$psi <- retval$psi[order(original.item.index)]
+        retval$itembase = words(dtm)[itembaseIndex]
     } 
     
     class(retval) <- c("wordfish", "wordfishMCMC", class(retval))
