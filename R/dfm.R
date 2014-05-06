@@ -253,8 +253,8 @@ makeRegEx <- function(wildcardregex) {
 #' Returns a document by feature matrix reduced in size based on document and term frequency, and/or subsampling.
 #' 
 #' @param dfm Document-feature matrix created by \code{\link{dfm}}
-#' @param min.count minimum feature count
-#' @param min.doc minimum number of documents in which a feature appears
+#' @param minCount minimum feature count
+#' @param minDoc minimum number of documents in which a feature appears
 #' @param sample how many features to retain (based on random selection)
 #' @return A dfm matrix object reduced in size.
 #' @export 
