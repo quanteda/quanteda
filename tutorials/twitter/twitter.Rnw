@@ -19,7 +19,7 @@ options(width = 60)
   \item API: Application Programming Interface --- a specification of how computer programs can communicate with each other
   \item JSON: JavaScript Object Notation --- a human readable format for representing attribute-value pairs.
   \item OAuth: An open standard for authorization. OAuth provides client applications a `secure delegated access' to server resources on behalf of a resource owner.
-  \item HTTP: HyperText Transfer Protocol: 
+  \item HTTP: HyperText Transfer Protocol: Protocol specification
   \item REST: REpresentational State Transfer:
 \end{itemize}
 

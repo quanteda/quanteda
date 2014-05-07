@@ -12,7 +12,7 @@
 #' @examples
 #' s <- "A cursed £$&^!€ Exclamation! point; paragraph §1.2, which I wrote."
 #' clean(s)
-clean <- function(s, langNorm=FALSE, removeDigits=TRUE, lower=TRUE) {
+clean <- function(s, langNorm=FALSE, removeDigits=TRUE, lower=TRUE, removePunct=TRUE) {
   # optionally do some language specific normalisation
   if (langNorm) {
     # for French, make "l'" into "l"
@@ -21,12 +21,12 @@ clean <- function(s, langNorm=FALSE, removeDigits=TRUE, lower=TRUE) {
     s <- gsub("ß", "ss", s)
   }
   if (removeDigits) {
-    s <- gsub("[[:digit:][:punct:]]", "", s, perl = FALSE)
-  } else {
+    s <- gsub("[[:digit:]]", "", s, perl = FALSE)
+  } 
+  if (removePunct){
     s <- gsub("[[:punct:]]", "", s, perl=TRUE)
   }
-  # reverting this change as I suspsect it causes bug in wordfish scaling.
-  s <- s[s != ""]  # remove empty strings
+  s <- s[s != ""]  
   if(lower){
     s <- tolower(s)
   }
