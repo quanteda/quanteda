@@ -26,7 +26,7 @@ cleanText <- function(s, removeDigits = TRUE, lower=FALSE, min = 3) {
   }
   s <- gsub('\\s', "  ", s) #double the spaces for next step
   if(min > 1){
-    s <- gsub(paste0('\\s.{1,', (min - 1) , '}\\s'), ' ', s) #remove short words
+    s <- gsub(paste0('\\s[^A-Z]{1,', (min - 1) , '}\\s'), ' ', s) #remove short non-name words
   }
   s <- gsub('\\s\\s+', " ", s)
   s <- gsub("^\\s+|\\s+$", "", s)

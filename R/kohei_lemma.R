@@ -13,10 +13,10 @@ source('~/quanteda/R/kohei_tokenize2.R')
 lemmatizeTexts <- function(texts){
   
   if(file.exists("lemmas_EN.RData")){
-    load("data/lemmas_EN.RData")
+    load("lemmas_EN.RData")
   }else{
     lemmas_EN <- createLemmaIndex()
-    save(lemmas_EN, file="data/lemmas_EN.RData")
+    save(lemmas_EN, file="lemmas_EN.RData")
   }
   texts2 <- unlist(lapply(texts, function(x) findLemmas(x, lemmas_EN)))
   return(texts2)
