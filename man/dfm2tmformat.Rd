@@ -19,12 +19,11 @@ A simple triplet matrix of class
 \link[tm]{as.DocumentTermMatrix}
 }
 \description{
-\pkg{tm} represents document-feature matrixes as sparse
-matrixes, in the \link[slam:matrix]{simple triplet matrix}
-format of the package \pkg{slam}. This function converts a
-\code{dfm} into a
-\link[tm:DocumentTermMatrix]{DocumentTermMatrix}, for
-working with the \code{dfm} in \pkg{tm} or in other
+\pkg{tm} represents sparse document-feature matrixes in the
+\link[slam:matrix]{simple triplet matrix} format of the
+package \pkg{slam}. This function converts a \code{dfm}
+into a \link[tm:DocumentTermMatrix]{DocumentTermMatrix},
+for working with the \code{dfm} in \pkg{tm} or in other
 packages that expect this format, such as
 \pkg{topicmodels}.
 }

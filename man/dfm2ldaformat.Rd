@@ -1,7 +1,7 @@
 \name{dfm2ldaformat}
 \alias{dfm2ldaformat}
 \title{Convert a quanteda \code{\link{dfm}} (document feature matrix)
- into a the data format needed by \link{\pkg{lda}}}
+ into a the data format needed by \link[pkg]{lda}}
 \usage{
 dfm2ldaformat(d)
 }
@@ -14,9 +14,10 @@ A list with components "documents" and "vocab" as needed by
 }
 \description{
 Convert a quanteda \code{\link{dfm}} (document feature
-matrix) into a the data format needed by \link{\pkg{lda}}
+matrix) into a the data format needed by \link[pkg]{lda}
 }
 \examples{
+\dontrun{
 data(iebudgets)
 iebudgets2010 <- subset(iebudgets, year==2010)
 # create document-feature matrix, remove stopwords
@@ -31,5 +32,6 @@ if (require(lda)) {
                                                         num.iterations=50, alpha=0.1, eta=0.1)
 }
 top.topic.words(tmodel.lda$topics, 10, by.score=TRUE) # top five words in each topic
+}
 }
 
