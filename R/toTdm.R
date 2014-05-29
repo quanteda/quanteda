@@ -10,9 +10,9 @@
 #' 
 #' 
 #' @param d A \link[quanteda]{dfm} object
-#' @param weight \pkg{tm}'s coercion function accepts weightings such as tf-idf, see \pkg{tm}'s 
+#' @param weighting \pkg{tm}'s coercion function accepts weightings such as tf-idf, see \pkg{tm}'s 
 #'  \link[tm]{as.DocumentTermMatrix} for a list of possible arguments. The default is just tf (term frequency)
-#' @return A triplet matrix of class \link[tm]{as.DocumentTermMatrix}
+#' @return A simple triplet matrix of class \link[tm]{as.DocumentTermMatrix}
 #' @export
 #' @examples
 #' data(iebudgets)
@@ -39,7 +39,10 @@ dfm2tmformat <- function(d, weighting=weightTf, ...){
 #' @examples
 #' data(iebudgets)
 #' iebudgets2010 <- subset(iebudgets, year==2010)
-#' d <- dfmTrim(dfm(iebudgets2010), minCount=5, minDoc=3)
+#' # create document-feature matrix, remove stopwords
+#' d <- dfm(iebudgets2010, stopwords=TRUE)
+#' # trim low frequency words
+#' d <- dfmTrim(d, minCount=5, minDoc=3)
 #' td <- dfm2ldaformat(d)
 #' if (require(lda)) {
 #'     tmodel.lda <- result <- lda.collapsed.gibbs.sampler(documents=td$documents, 
@@ -63,11 +66,12 @@ dtm2ldaformat <- function(x, omit_empty = TRUE) {
     
     documents <- vector(mode = "list", length = nrow(x))
     names(documents) <- rownames(x)
-    documents[rowSums(x) > 0] <- split(rbind(as.integer(x$j) - 1L, as.integer(x$v)), as.integer(x$i))
+    documents[row_sums(x) > 0] <- split(rbind(as.integer(x$j) - 1L, as.integer(x$v)), as.integer(x$i))
     if (omit_empty)
-        documents[rowSums(x) == 0] <- NULL
+        documents[row_sums(x) == 0] <- NULL
     else 
-        documents[rowSums(x) == 0] <- rep(list(matrix(integer(), ncol = 0, nrow = 2)), sum(rowSums(x) == 0))
+        documents[row_sums(x) == 0] <- rep(list(matrix(integer(), ncol = 0, nrow = 2)), sum(row_sums(x) == 0))
     list(documents = documents,
          vocab = colnames(x))
 }
+

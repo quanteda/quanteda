@@ -19,7 +19,10 @@ matrix) into a the data format needed by \link{\pkg{lda}}
 \examples{
 data(iebudgets)
 iebudgets2010 <- subset(iebudgets, year==2010)
-d <- dfmTrim(dfm(iebudgets2010), minCount=5, minDoc=3)
+# create document-feature matrix, remove stopwords
+d <- dfm(iebudgets2010, stopwords=TRUE)
+# trim low frequency words
+d <- dfmTrim(d, minCount=5, minDoc=3)
 td <- dfm2ldaformat(d)
 if (require(lda)) {
     tmodel.lda <- result <- lda.collapsed.gibbs.sampler(documents=td$documents,

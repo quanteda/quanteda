@@ -254,6 +254,7 @@ makeRegEx <- function(wildcardregex) {
 #' @param minCount minimum feature count
 #' @param minDoc minimum number of documents in which a feature appears
 #' @param sample how many features to retain (based on random selection)
+#' @param verbose print messages
 #' @return A dfm matrix object reduced in size.
 #' @export 
 #' @author Will Lowe, adapted by Ken Benoit

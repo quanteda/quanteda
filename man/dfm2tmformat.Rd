@@ -9,13 +9,14 @@ dfm2tmformat(d, weighting = weightTf, ...)
 \arguments{
   \item{d}{A \link[quanteda]{dfm} object}
 
-  \item{weight}{\pkg{tm}'s coercion function accepts
+  \item{weighting}{\pkg{tm}'s coercion function accepts
   weightings such as tf-idf, see \pkg{tm}'s
   \link[tm]{as.DocumentTermMatrix} for a list of possible
   arguments. The default is just tf (term frequency)}
 }
 \value{
-A triplet matrix of class \link[tm]{as.DocumentTermMatrix}
+A simple triplet matrix of class
+\link[tm]{as.DocumentTermMatrix}
 }
 \description{
 \pkg{tm} represents document-feature matrixes as sparse
