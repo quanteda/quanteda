@@ -2,7 +2,7 @@
 #'  into a 
 #'  \pkg{tm} \link[tm:DocumentTermMatrix]{DocumentTermMatrix}
 #'
-#' \pkg{tm} represents document-feature matrixes as sparse matrixes, 
+#' \pkg{tm} represents sparse document-feature matrixes 
 #' in the \link[slam:matrix]{simple triplet matrix} format of the package \pkg{slam}. 
 #' This function converts a \code{dfm} into a \link[tm:DocumentTermMatrix]{DocumentTermMatrix}, 
 #' for working with the \code{dfm} in \pkg{tm} or in other packages that expect this format,
@@ -31,12 +31,13 @@ dfm2tmformat <- function(d, weighting=weightTf, ...){
 }
 
 #' Convert a quanteda \code{\link{dfm}} (document feature matrix) 
-#'  into a the data format needed by \link{\pkg{lda}}
+#'  into a the data format needed by \link[pkg]{lda}
 #'
 #' @param d A \code{\link{dfm}} object
 #' @return A list with components "documents" and "vocab" as needed by \link[pkg]{lda.collapsed.gibbs.sampler}
 #' @export
 #' @examples
+#' \dontrun{
 #' data(iebudgets)
 #' iebudgets2010 <- subset(iebudgets, year==2010)
 #' d <- dfmTrim(dfm(iebudgets2010), minCount=5, minDoc=3)
@@ -48,6 +49,7 @@ dfm2tmformat <- function(d, weighting=weightTf, ...){
 #'                                                         num.iterations=50, alpha=0.1, eta=0.1) 
 #' }
 #' top.topic.words(tmodel.lda$topics, 10, by.score=TRUE) # top five words in each topic
+#' }
 dfm2ldaformat <- function(d) {
     tmDTM <- dfm2tmformat(d)
     return(dtm2ldaformat(tmDTM))

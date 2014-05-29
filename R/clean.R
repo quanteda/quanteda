@@ -10,8 +10,10 @@
 #' @return character object in lowercase with punctuation (and optionally digits) removed
 #' @export
 #' @examples
+#' \dontrun{
 #' s <- "A cursed £$&^!€ Exclamation! point; paragraph §1.2, which I wrote."
 #' clean(s)
+#' }
 clean <- function(s, langNorm=FALSE, removeDigits=TRUE, lower=TRUE, removePunct=TRUE) {
   # optionally do some language specific normalisation
   if (langNorm) {
