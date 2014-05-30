@@ -40,8 +40,9 @@
 #' dictDfm
 #' 
 #' ## removing stopwords
-#' testtxt <- "The quick brown fox named Séamus jumps over the lazy dog Rory, with Tom's newpaper in his mouth."
-#' dfm(testtxt, stopwords=TRUE)
+#' testText <- "The quick brown fox named Séamus jumps over the lazy dog Rory, with Tom's newpaper in his mouth."#
+#' testCorpus <- corpusCreate(testText)
+#' dfm(testCorpus, stopwords=TRUE)
 #' if (require(tm)) {
 #' }
 #' 
