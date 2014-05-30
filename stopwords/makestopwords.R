@@ -31,4 +31,4 @@ for (i in 1:length(filenames)) {
 }
 names(stopwords) <- gsub(".dat", "", filenames)
 
-save(stopwords, file="../data/stopwords.Rdata")
+save(stopwords, file="data/stopwords.Rdata")
