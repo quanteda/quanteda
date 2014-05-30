@@ -6,7 +6,8 @@
 #' @param corpus Corpus from which to generate the document-feature matrix
 #' @param feature Feature to count (e.g. words)
 #' @param stem Stem the words
-#' @param stopwords Remove stopwords
+#' @param stopwords A character vector of stopwords that will be removed from the text when constructing the \link{dfm}.  If \code{NULL} (default)
+#' then no stopwords will be applied.  If "TRUE" then it currently defaults to \code{\link{stopwords_EN}}.
 #' @param groups Grouping variable for aggregating documents
 #' @param subset Expression for subsetting the corpus before processing
 #' @param verbose Get info to screen on the progress
@@ -38,6 +39,12 @@
 #' dictDfm <- dfm(corpus, dictionary=mydict)
 #' dictDfm
 #' 
+#' ## removing stopwords
+#' testtxt <- "The quick brown fox named Séamus jumps over the lazy dog Rory, with Tom's newpaper in his mouth."
+#' dfm(testtxt, stopwords=TRUE)
+#' if (require(tm)) {
+#' }
+#' 
 #' ## adding one dfm to another
 #' mydict2 <- list(partyref=c("Lenihan", "Fianna", "Sinn", "Gael"))
 #' dictDfm2 <- dfm(corpus, dictionary=mydict2, addto=dictDfm)
@@ -45,7 +52,7 @@
 dfm <- function(corpus,
                 feature=c("word"),
                 stem=FALSE,
-                stopwords=FALSE,
+                stopwords=NULL,
                 bigram=FALSE,
                 groups=NULL,
                 subset=NULL, 
@@ -62,7 +69,7 @@ dfm <- function(corpus,
 dfm.corpus <- function(corpus,
                        feature=c("word"),
                        stem=FALSE,
-                       stopwords=FALSE,
+                       stopwords=NULL,
                        bigram=FALSE,
                        groups=NULL,
                        subset=NULL, 
@@ -134,14 +141,21 @@ dfm.corpus <- function(corpus,
         dfm <- dfm[, -(ncol(dfm)-1)]
     }
     
-    if (stopwords) {
+    if (!is.null(stopwords)) {
         cat(" removing stopwords ...")
-        data(stopwords_EN)
+        if (stopwords==TRUE) {
+            data(stopwords_EN)
+            stopwords <- stopwords_EN
+        } else {
+            if (!is.character(stopwords) & !length(stopwords)>0) {
+                stop("stopwords must be a character vector with positive length.")
+            }
+        }
         if (bigram==TRUE) {
-          pat <- paste(paste0(paste0("-", stopwords_EN, "$"), collapse='|'), paste0(paste0("^", stopwords_EN, "-"), collapse='|'), sep='|')
+          pat <- paste(paste0(paste0("-", stopwords, "$"), collapse='|'), paste0(paste0("^", stopwords, "-"), collapse='|'), sep='|')
           dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
         } else {
-          dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords_EN))
+          dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords))
         }
     }
 

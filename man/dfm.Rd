@@ -3,12 +3,12 @@
 \alias{dfm.corpus}
 \title{Create a document-feature matrix from a corpus object}
 \usage{
-dfm(corpus, feature = c("word"), stem = FALSE, stopwords = FALSE,
+dfm(corpus, feature = c("word"), stem = FALSE, stopwords = NULL,
   bigram = FALSE, groups = NULL, subset = NULL, verbose = TRUE,
   dictionary = NULL, dictionary.regex = FALSE, addto = NULL)
 
 \method{dfm}{corpus}(corpus, feature = c("word"), stem = FALSE,
-  stopwords = FALSE, bigram = FALSE, groups = NULL, subset = NULL,
+  stopwords = NULL, bigram = FALSE, groups = NULL, subset = NULL,
   verbose = TRUE, dictionary = NULL, dictionary.regex = FALSE,
   addto = NULL)
 }
@@ -20,7 +20,11 @@ dfm(corpus, feature = c("word"), stem = FALSE, stopwords = FALSE,
 
   \item{stem}{Stem the words}
 
-  \item{stopwords}{Remove stopwords}
+  \item{stopwords}{A character vector of stopwords that
+  will be removed from the text when constructing the
+  \link{dfm}.  If \code{NULL} (default) then no stopwords
+  will be applied.  If "TRUE" then it currently defaults to
+  \code{\link{stopwords_EN}}.}
 
   \item{groups}{Grouping variable for aggregating
   documents}
@@ -71,6 +75,12 @@ mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
                taxregex="tax*")
 dictDfm <- dfm(corpus, dictionary=mydict)
 dictDfm
+
+## removing stopwords
+testtxt <- "The quick brown fox named Séamus jumps over the lazy dog Rory, with Tom's newpaper in his mouth."
+dfm(testtxt, stopwords=TRUE)
+if (require(tm)) {
+}
 
 ## adding one dfm to another
 mydict2 <- list(partyref=c("Lenihan", "Fianna", "Sinn", "Gael"))
