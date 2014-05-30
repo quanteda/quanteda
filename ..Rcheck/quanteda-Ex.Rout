@@ -258,7 +258,7 @@ Corpus object contains 5 texts.
   Bertie   Ahern    FF
 
 Source:  /home/paul/Dropbox/code/quanteda/..Rcheck/* on x86_64 by paul.
-Created: Fri May 30 15:17:52 2014.
+Created: Fri May 30 18:54:43 2014.
 Notes:   NA.
 
 > 
@@ -1189,7 +1189,7 @@ Notes:   NA.
 > ###
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  34.602 0.095 34.708 0 0 
+Time elapsed:  33.543 0.085 33.633 0 0 
 > grDevices::dev.off()
 null device 
           1 
