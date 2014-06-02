@@ -1,3 +1,5 @@
+# work in progress for new version of stopwords remover
+library(quanteda)
 
 testString <- "In computing, stop words are words which are filtered out prior to,
 or after, processing of natural language data (text).[1] There is not one definite 
@@ -10,6 +12,6 @@ include them, particularly in names such as 'The Who', 'The The', or 'Take That'
 Other search engines remove some of the most common words—including lexical words, 
 such as want—from a query in order to improve performance."
 
-testCorpus <- corpusCreate(testString)
+
 
 print(removeStopwords(testString))
