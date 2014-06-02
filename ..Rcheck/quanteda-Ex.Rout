@@ -258,7 +258,7 @@ Corpus object contains 5 texts.
   Bertie   Ahern    FF
 
 Source:  /home/paul/Dropbox/code/quanteda/..Rcheck/* on x86_64 by paul.
-Created: Mon Jun  2 14:14:08 2014.
+Created: Mon Jun  2 18:06:51 2014.
 Notes:   NA.
 
 > 
@@ -466,8 +466,11 @@ docs                                        taxation taxregex Non_Dictionary
 > dfm(testCorpus, stopwords=TRUE)
 Creating dfm: ... removing stopwords ... done. 
        words
-docs    brown dog fox jumps lazy mouth named newpaper quick rory séamus toms
-  text1     1   1   1     1    1     1     1        1     1    1      1    1
+docs    brown dog fox his in jumps lazy mouth named newpaper over quick rory
+  text1     1   1   1   1  1     1    1     1     1        1    1     1    1
+       words
+docs    séamus the toms with
+  text1      1   2    1    1
 > if (require(tm)) {
 + }
 Loading required package: tm
@@ -860,11 +863,14 @@ $level1c.level1c1b.level1c1b1
 > 
 > ### ** Examples
 > 
-> someText <- "Here is an example of text containing some stopwords we want to remove."
+> someText <- "Here is an example of text containing some stopwords we want to remove. "
+> itText <- "Ecco un esempio di testo contenente alcune parole non significative che vogliamo rimuovere."
 > removeStopwords(someText)
 [1] "example text containing stopwords want remove"
-> removeStopwords(someText, stopwords=c("is", "an", "to"))
-[1] "Here example of text containing some stopwords we want remove"
+> removeStopwords(someText, kind="italian")
+[1] "Here is an example of text containing some stopwords we want to remove"
+> removeStopwords(someText, stopwords = c("containing", "example"))
+[1] "Here is an of text some stopwords we want to remove"
 > 
 > 
 > 
@@ -1189,7 +1195,7 @@ Notes:   NA.
 > ###
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  33.181 0.113 33.303 0 0 
+Time elapsed:  33.125 0.102 33.231 0 0 
 > grDevices::dev.off()
 null device 
           1 

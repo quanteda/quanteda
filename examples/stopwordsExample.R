@@ -13,5 +13,11 @@ Other search engines remove some of the most common words—including lexical wo
 such as want—from a query in order to improve performance."
 
 
+someText <- "Here is an example of text containing some stopwords we want to remove. "
+itText <- "Ecco un esempio di testo contenente alcune parole non significative che vogliamo rimuovere."
+removeStopwords(someText)
+removeStopwords(someText, kind="italian")
+removeStopwords(someText, stopwords = c("containing", "example"))
+
 
 print(removeStopwords(testString))

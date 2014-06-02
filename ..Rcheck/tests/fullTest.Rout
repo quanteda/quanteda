@@ -161,26 +161,10 @@ Corpus object contains 100 texts.
  sAR83.txt  1292   4820       378       <NA>        AR
 
 Source:  /home/paul/Dropbox/code/quanteda/..Rcheck/tests/* on x86_64 by paul.
-Created: Mon Jun  2 14:14:16 2014.
+Created: Mon Jun  2 18:06:59 2014.
 Notes:   NA.
 
 > # extract a word by document matrix
 > amicusDfm <- dfm(amicusCorpus)
-Creating dfm: ... done. 
-> # train the NB classifier 
-> amicusNb <- naiveBayesText(as.matrix(amicusDfm), amicusCorpus$attribs$trainclass, smooth=1, prior="uniform")
-> # predict test class
-> amicusNbp <- predict(amicusNb)
-> # compare the predicted class (rows) versus the actual class (columns)
-> table(amicusNbp$docs$nb.predicted, amicusCorpus$attribs$testclass)
-   
-    AP AR
-  P 15 50
-  R  4 29
-> 
-> tokens <- tokenize(amicusCorpus)
-> contexts <- kwic( amicusCorpus, 'equality', window=10)
-> 
-> proc.time()
-   user  system elapsed 
-689.069   0.422 689.666 
+Creating dfm: ...
+Execution halted

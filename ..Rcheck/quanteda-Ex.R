@@ -554,9 +554,11 @@ flush(stderr()); flush(stdout())
 
 ### ** Examples
 
-someText <- "Here is an example of text containing some stopwords we want to remove."
+someText <- "Here is an example of text containing some stopwords we want to remove. "
+itText <- "Ecco un esempio di testo contenente alcune parole non significative che vogliamo rimuovere."
 removeStopwords(someText)
-removeStopwords(someText, stopwords=c("is", "an", "to"))
+removeStopwords(someText, kind="italian")
+removeStopwords(someText, stopwords = c("containing", "example"))
 
 
 
