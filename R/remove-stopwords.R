@@ -5,6 +5,7 @@
 #' default list for English is used.
 #' 
 #' @param text Text to alter
+#' @param kind A stopword dictionary from the stopwords directory (e.g. 'italian')
 #' @param stopwords List of stopwords to remove
 #' @return a character vector of text with stopwords removed
 #' @export

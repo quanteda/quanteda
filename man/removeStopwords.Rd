@@ -10,6 +10,9 @@ removeStopwords(text, kind = "english", stopwords = NULL)
 \arguments{
   \item{text}{Text to alter}
 
+  \item{kind}{A stopword dictionary from the stopwords
+  directory (e.g. 'italian')}
+
   \item{stopwords}{List of stopwords to remove}
 }
 \value{
