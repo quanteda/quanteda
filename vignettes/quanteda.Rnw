@@ -19,6 +19,7 @@
 \newcommand{\quanteda}{\textsf{quanteda}\ }
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 %\SweaveOpts{concordance=TRUE}
 
 
@@ -171,7 +172,7 @@ labels that correspond with the elements of the filename.
 <<>>=
 library(quanteda)
 textfile <- "http://github.com/kbenoit/quanteda/texts/irishbudgets2010.zip"
-download.file(textfile, basename(textfile)) # download this zipped archive of texts
+download.file(textfile, basename(textfile), method="curl", extra="-L") # download this zipped archive of texts
 unzip(basename(amicusFile)) # unzip the file
 attNames <- c("year", "debate", "number", "firstname", "surname", "party")
 ieBudgets2010 <- corpusFromFilenames(gsub(".zip", "", basename(amicusFile)), 

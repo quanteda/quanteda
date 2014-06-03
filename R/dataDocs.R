@@ -30,13 +30,6 @@ NULL
 #' @references \url{http://dl.acm.org/citation.cfm?id=1118704}
 NULL
 
-#' @name swissdebates
-#' @title A corpus object containing 770 texts from debates in the Swiss parliament
-#' @docType data
-#' @description A corpus object containing 770 texts from debates in the Swiss parliament
-#' @references \url{http://dl.acm.org/citation.cfm?id=1118704}
-NULL
-
 #' @name stopwords
 #' @title A named list containing common stopwords in 14 languages
 #' @docType data
