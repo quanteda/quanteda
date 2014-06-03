@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.9.10)  3 JUN 2014 11:46
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.9.10)  3 JUN 2014 16:14
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -600,92 +600,117 @@ LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <10.95> not available
 (Font)              Font shape `OT1/pcr/b/n' tried instead on input line 184.
 Package color Info: Redefining color shadecolor on input line 196.
  [2]
-Package color Info: Redefining color shadecolor on input line 217.
+Overfull \hbox (34.77312pt too wide) in paragraph at lines 212--222
+\OT1/ptm/m/n/10.95 scores). For ex-am-ple, for our cor-pus of Irish bud-get spe
+eches, the file-name \OT1/pcr/m/n/10.95 2010[]BUDGET[]03[]Joan[]Burton[]LAB.txt
 
-Overfull \hbox (35.80449pt too wide) in paragraph at lines 222--222
-[][]\OT1/pcr/m/n/10.95 ieBudgets[] []<-[] []\OT1/pcr/b/n/10.95 corpusFromFilena
-mes[][]\OT1/pcr/m/n/10.95 (dirname,[] []\OT1/pcr/b/n/10.95 c[][]\OT1/pcr/m/n/10
-.95 ([][]"year"[][],[] []"debate"[][],[] []"no"[][],[] []"fname"[][],[] []"spea
-ker"[][],[][] 
  []
 
-Package color Info: Redefining color shadecolor on input line 233.
+Package color Info: Redefining color shadecolor on input line 228.
 
-Overfull \hbox (77.5233pt too wide) in paragraph at lines 274--274
-[]\OT1/pcr/m/n/10.95 ## Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlo
-cal_gh/vignettes/* on x86_64 by kbenoit.[] 
+Overfull \hbox (4.92516pt too wide) in paragraph at lines 231--231
+[][]\OT1/pcr/m/n/10.95 textfile[] []<-[] []"https://github.com/kbenoit/quanteda
+/blob/dev/texts/irishbudgets2010.zip"[][] 
  []
 
+LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10.95> not available
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 232.
+
+Overfull \hbox (153.40788pt too wide) in paragraph at lines 232--232
+[][]\OT1/pcr/b/n/10.95 download.file[][]\OT1/pcr/m/n/10.95 (textfile,[] []\OT1/
+pcr/b/n/10.95 basename[][]\OT1/pcr/m/n/10.95 (textfile),[] []method[] []=[] []"
+curl"[][])[]  []\OT1/pcr/m/sl/10.95 # download this zipped archive of texts[][]
+ 
+ []
+
+LaTeX Font Info:    Try loading font information for TS1+pcr on input line 235.
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/ts1pcr.fd
+File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
+)
+LaTeX Font Info:    Font shape `TS1/pcr/m/it' in size <10.95> not available
+(Font)              Font shape `TS1/pcr/m/sl' tried instead on input line 235.
+
+Overfull \hbox (42.70436pt too wide) in paragraph at lines 235--235
+[][]\OT1/pcr/m/sl/10.95 # ieBudgets2010 <- corpusFromFilenames(gsub(\TS1/pcr/m/
+sl/10.95 '\OT1/pcr/m/sl/10.95 .zip\TS1/pcr/m/sl/10.95 '\OT1/pcr/m/sl/10.95 , \T
+S1/pcr/m/sl/10.95 ''\OT1/pcr/m/sl/10.95 , basename(amicusFile)),[][] 
+ []
+
+Package color Info: Redefining color shadecolor on input line 245.
 [3]
-Package color Info: Redefining color shadecolor on input line 282.
- [4]
-Package color Info: Redefining color shadecolor on input line 315.
-
-Overfull \hbox (117.60054pt too wide) in paragraph at lines 319--319
-[][]\OT1/pcr/b/n/10.95 dotchart[][]\OT1/pcr/m/n/10.95 (model[][]$[][]colcoord[[
-][]\OT1/pcr/b/n/10.95 order[][]\OT1/pcr/m/n/10.95 (model[][]$[][]colcoord[,[] [
-]1[][]]),[] []1[][]],[] []labels[] []= model[][]$[][]colnames[[][]\OT1/pcr/b/n/
-10.95 order[][]\OT1/pcr/m/n/10.95 (model[][]$[][]colcoord[,[][] 
+Underfull \vbox (badness 10000) detected at line 460
  []
 
-<figures/minimal-unnamed-chunk-6.pdf, id=44, 505.89pt x 505.89pt>
-File: figures/minimal-unnamed-chunk-6.pdf Graphic file (type pdf)
 
-<use figures/minimal-unnamed-chunk-6.pdf>
-Package pdftex.def Info: figures/minimal-unnamed-chunk-6.pdf used on input line
- 324.
-(pdftex.def)             Requested size: 469.75502pt x 469.76265pt.
-Package color Info: Redefining color shadecolor on input line 337.
- [5 <./figures/minimal-unnamed-chunk-6.pdf>]
-Package color Info: Redefining color shadecolor on input line 363.
-
-Overfull \hbox (229.29pt too wide) in paragraph at lines 366--366
-[][]\OT1/pcr/b/n/10.95 dotchart[][]\OT1/pcr/m/n/10.95 (partyModel[][]$[][]colco
-ord[[][]\OT1/pcr/b/n/10.95 order[][]\OT1/pcr/m/n/10.95 (partyModel[][]$[][]colc
-oord[,[] []1[][]]),[] []1[][]],[] []labels[] []= partyModel[][]$[][]colnames[[]
-[]\OT1/pcr/b/n/10.95 order[][]\OT1/pcr/m/n/10.95 (partyModel[][]$[][]colcoord[,
-[][] 
+Underfull \vbox (badness 10000) detected at line 460
  []
 
-<figures/minimal-unnamed-chunk-8.pdf, id=55, 505.89pt x 505.89pt>
-File: figures/minimal-unnamed-chunk-8.pdf Graphic file (type pdf)
+[4]
+Underfull \vbox (badness 10000) detected at line 460
+ []
 
-<use figures/minimal-unnamed-chunk-8.pdf>
-Package pdftex.def Info: figures/minimal-unnamed-chunk-8.pdf used on input line
- 371.
-(pdftex.def)             Requested size: 469.75502pt x 469.76265pt.
- (./quanteda.bbl [6])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 384.
- [7 <./figures/minimal-unnamed-chunk-8.pdf>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 384.
+
+Underfull \vbox (badness 10000) detected at line 460
+ []
+
+[5]
+Underfull \vbox (badness 10000) detected at line 460
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 460
+ []
+
+[6]
+Underfull \vbox (badness 10000) detected at line 460
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 460
+ []
+
+[7]
+LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <12> not available
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 474.
+LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
+(Font)              scaled to size 10.79993pt on input line 474.
+LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 478.
+LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
+(Font)              scaled to size 9.85492pt on input line 478.
+ (./quanteda.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 497.
+ [8]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 497.
  (./quanteda.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 384.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 384.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 497.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 497.
 Package rerunfilecheck Info: File `quanteda.out' has not changed.
-(rerunfilecheck)             Checksum: E6DA567CF2D017A48E5724E6B3BF7252;436.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 384.
+(rerunfilecheck)             Checksum: 2E7B8C210CC95B93C631BC5A7BB9E544;1964.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 497.
  ) 
 Here is how much of TeX's memory you used:
- 10840 strings out of 493315
- 152013 string characters out of 6137904
- 230008 words of memory out of 5000000
- 14141 multiletter control sequences out of 15000+600000
- 51972 words of font info for 105 fonts, out of 8000000 for 9000
+ 10878 strings out of 493315
+ 152313 string characters out of 6137904
+ 281743 words of memory out of 5000000
+ 14163 multiletter control sequences out of 15000+600000
+ 55689 words of font info for 111 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 34i,8n,35p,493b,400s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 34i,8n,35p,449b,400s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/te
 xlive/2013/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/20
 13/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2013/texmf
--dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2013/texmf-dist/f
-onts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/ty
-pe1/urw/times/utmb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/ti
-mes/utmr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmri8
-a.pfb>
-Output written on quanteda.pdf (7 pages, 103859 bytes).
+-dist/fonts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2013/texmf-dist/f
+onts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/ty
+pe1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw
+/times/utmb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utm
+r8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on quanteda.pdf (8 pages, 112889 bytes).
 PDF statistics:
- 106 PDF objects out of 1000 (max. 8388607)
- 84 compressed objects within 1 object stream
- 14 named destinations out of 1000 (max. 500000)
- 27 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 134 PDF objects out of 1000 (max. 8388607)
+ 113 compressed objects within 2 object streams
+ 26 named destinations out of 1000 (max. 500000)
+ 73 words of extra memory for PDF output out of 10000 (max. 10000000)
 
