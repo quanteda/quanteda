@@ -1,5 +1,5 @@
 #' remove common or 'semantically empty' words from a text.
-
+#'
 #' This function takes a character vector 'text' and removes words in the
 #' list provided in 'stopwords'. If no list of stopwords is provided a 
 #' default list for English is used.
