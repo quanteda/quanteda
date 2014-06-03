@@ -41,10 +41,15 @@ Twitter offers two ways for computer programs to post and retrieve data from its
 
 Both of these APIs require that the developer of the computer program create a twitter account, create a new application, and receive an access token.
 
-\section*{Getting programmatic access to twitter}
+\section*{Getting programmatic access to twitter}\footnote{This section is adapted from \url{https://openhatch.org/wiki/Community_Data_Science_Workshops/Twitter_authentication_setup and is correct as of May 1st 2014.}}
 \begin{enumerate}
   \item Go to https://dev.twitter.com/ and sign in with a twitter account
   \item Go to My Applications and select "New App". https://apps.twitter.com/
   \item Fill out the form and click 'create'
+  \item The next page will ask for application details. The first three are required so you will need to create a Name, Description, and Website URL. You can choose whatever you want for these fields but keep in mind that the name can not contain the word "Twitter". You should leave the "Callback URL" blank. 
+  \item You should now see page a page that says "Application Management" on the top, with the name of your app. Click on the API Keys tab.
+  \item You should now see a list of "Application settings". The first two here are the most important and you will need to copy and paste these into a file. The first is the API key. The second is the API secret. Both of them should be long strinigs of garbage looking letters and numbers. These are the keys that will let you program know that it's approved to grab data from Twitter.
+  \item At the bottom of the page you should see a section marked "Your access token" that says, "You haven't authorized this application for your own account yet." Below that there is a button that says "Create my access token". Click on that button. Once you press it there will be a yellow 'Status' box at the top. It will give you a link you can click to refresh. Wait a minute or two and click it untill you see information, below including lines that give you your "Access token" and your "Access token secret". Copy these two pieces of information.
+  \item You should have four long strings of letters and numbers taken from this page now:API key, API secret, Access token, Access token secret. These are the keys requested by most programmatic twitter interfaces.
 \end{enumerate}
 \end{document}
