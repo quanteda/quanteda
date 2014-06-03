@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 #' remove stopwords from a text or dfm
 #'
 #' This function takes a character vector or \link{dfm} and removes words in the
+=======
+#' remove common or 'semantically empty' words from a text.
+#'
+#' This function takes a character vector 'text' and removes words in the
+>>>>>>> 304330e5366a2c59f63041efbb1b458948968ddf
 #' list provided in 'stopwords'. If no list of stopwords is provided a 
 #' default list for English is used.
 #' 
