@@ -145,8 +145,8 @@ dfm.corpus <- function(corpus,
     if (!is.null(stopwords)) {
         cat(" removing stopwords ...")
         if (stopwords==TRUE) {
-            data(stopwords_EN)
-            stopwords <- stopwords_EN
+            data(stopwords)
+            stopwords <- stopwords[2]
         } else {
             if (!is.character(stopwords) & !length(stopwords)>0) {
                 stop("stopwords must be a character vector with positive length.")
