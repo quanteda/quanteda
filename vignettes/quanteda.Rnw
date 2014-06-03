@@ -170,11 +170,11 @@ labels that correspond with the elements of the filename.
 
 <<>>=
 library(quanteda)
-textfile <- "http://github.com/kbenoit/quanteda/texts/irishbudgets2010.zip"
-download.file(textfile, basename(textfile)) # download this zipped archive of texts
-unzip(basename(amicusFile)) # unzip the file
+textfile <- "https://github.com/kbenoit/quanteda/blob/dev/texts/irishbudgets2010.zip?raw=true"
+download.file(textfile, basename(textfile), method="curl", extra="-L") # download this zipped archive of texts
+unzip(basename(textfile)) # unzip the file
 attNames <- c("year", "debate", "number", "firstname", "surname", "party")
-ieBudgets2010 <- corpusFromFilenames(gsub(".zip", "", basename(amicusFile)), 
+ieBudgets2010 <- corpusFromFilenames("budget_2010", 
                                      c("year", "debate", "no", "fname", "speaker", "party"), 
                                      sep="_")
 @
@@ -182,7 +182,7 @@ ieBudgets2010 <- corpusFromFilenames(gsub(".zip", "", basename(amicusFile)),
 This creates a new quanteda corpus object where each text has been associated values for its attribute types extracted from the filename:
 
 <<>>=
-summary(ieBudgets)
+summary(ieBudgets2010)
 @
 
 \subsubsection{From a vector of texts}
@@ -224,7 +224,7 @@ summary(ieBudgets)
 In order to perform statistical analysis such as document scaling, we must extract a matrix containing the frequency of each word type from in document. In quanteda, we use the dfm function to produce such a matrix. \footnote{dfm stands for document-feature matrix --- we say `feature' instead of word, as it is sometimes useful to represent documents by features other than their word frequency.}
 
 <<>>=
-docMat <- dfm(ieBudgets)
+docMat <- dfm(ieBudgets2010)
 docMat[1:5,1:5]
 @
 
@@ -240,7 +240,7 @@ This plot indicates the position
 of each of the documents. We can group documents by their attribute values when creating the word-frequency matrix: 
 
 <<>>=
-partyMat <- dfm(ieBudgets, group="party")
+partyMat <- dfm(ieBudgets2010, group="party")
 partyMat[,1:5]
 @
 

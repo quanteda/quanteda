@@ -184,7 +184,9 @@ computer, you can install the package directly using the
 \hlkwd{library}\hlstd{(devtools)}
 \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{require}\hlstd{(quanteda))} \hlkwd{install_github}\hlstd{(}\hlstr{"quanteda"}\hlstd{,} \hlkwc{username} \hlstd{=} \hlstr{"kbenoit"}\hlstd{)}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: quanteda}}\end{kframe}
 \end{knitrout}
 
 
@@ -203,28 +205,40 @@ master, you should instead run
 
 
 
-\section*{Loading Documents into Quanteda}
+\section{Creating a corpus}
 
-One of the most common tasks 
+\subsection{Loading Documents into Quanteda}
 
-The quanteda package provides several functions for loading texts from disk into a quanteda corpus. In this example, we will load a corpus from a set of documents in a directory, where each document's attributes are specified in its filename. In this case, the filename contains the variables of interest, separated by underscores, for example:
+\subsubsection{From a directory of files}
 
-\texttt{2010\_BUDGET\_03\_Joan\_Burton\_LAB.txt}
+A very common source of files for creating a corpus will be a set of
+text files found on a local (or remote) directory.  To load in a set
+of these files, we will load a corpus from a set of text files using
+information on attributes of the text that have been conveniently
+stored in the text document's filename (separated by underscores).
+For example, for our corpus of Irish budget speeches, the filename
+\texttt{2010\_BUDGET\_03\_Joan\_Burton\_LAB.txt} tells us the year of
+the speech (2010), the type (``BUDGET''), a serial number (03), the
+first and last name of the speaker, and a party label (``LAB'' for
+Labour).
 
-Quanteda provides a function to create a corpus from a directory of documents like this. The user needs to provide the path to the directory, the names of the attribute types, and the character which separates the attribute values in the filenames:
+To load this into a corpus object, we will use the
+\texttt{corpusFromFilenames} function, supplying a vector of attribute
+labels that correspond with the elements of the filename.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(quanteda)}
-\hlstd{dirname} \hlkwb{<-} \hlstr{"~/Dropbox/QUANTESS/corpora/iebudgets/budget_2010/"}
+\hlstd{textfile} \hlkwb{<-} \hlstr{"https://github.com/kbenoit/quanteda/blob/dev/texts/irishbudgets2010.zip?raw=true"}
+\hlkwd{download.file}\hlstd{(textfile,} \hlkwd{basename}\hlstd{(textfile),} \hlkwc{method} \hlstd{=} \hlstr{"curl"}\hlstd{,} \hlkwc{extra} \hlstd{=} \hlstr{"-L"}\hlstd{)}  \hlcom{# download this zipped archive of texts}
+\hlkwd{unzip}\hlstd{(}\hlkwd{basename}\hlstd{(textfile))}  \hlcom{# unzip the file}
 \hlstd{attNames} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"year"}\hlstd{,} \hlstr{"debate"}\hlstd{,} \hlstr{"number"}\hlstd{,} \hlstr{"firstname"}\hlstd{,} \hlstr{"surname"}\hlstd{,} \hlstr{"party"}\hlstd{)}
-\hlstd{ieBudgets} \hlkwb{<-} \hlkwd{corpusFromFilenames}\hlstd{(dirname,} \hlkwd{c}\hlstd{(}\hlstr{"year"}\hlstd{,} \hlstr{"debate"}\hlstd{,} \hlstr{"no"}\hlstd{,} \hlstr{"fname"}\hlstd{,} \hlstr{"speaker"}\hlstd{,}
-    \hlstr{"party"}\hlstd{),} \hlkwc{sep} \hlstd{=} \hlstr{"_"}\hlstd{)}
+\hlstd{ieBudgets2010} \hlkwb{<-} \hlkwd{corpusFromFilenames}\hlstd{(}\hlstr{"budget_2010"}\hlstd{,} \hlkwd{c}\hlstd{(}\hlstr{"year"}\hlstd{,} \hlstr{"debate"}\hlstd{,} \hlstr{"no"}\hlstd{,} \hlstr{"fname"}\hlstd{,}
+    \hlstr{"speaker"}\hlstd{,} \hlstr{"party"}\hlstd{),} \hlkwc{sep} \hlstd{=} \hlstr{"_"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-
 
 
 This creates a new quanteda corpus object where each text has been associated values for its attribute types extracted from the filename:
@@ -232,7 +246,7 @@ This creates a new quanteda corpus object where each text has been associated va
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{summary}\hlstd{(ieBudgets)}
+\hlkwd{summary}\hlstd{(ieBudgets2010)}
 \end{alltt}
 \begin{verbatim}
 ## Corpus object contains 14 texts.
@@ -268,12 +282,48 @@ This creates a new quanteda corpus object where each text has been associated va
 ##  02    Richard   Bruton    FG
 ##  01      Brian  Lenihan    FF
 ## 
-## Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
-## Created: Tue Jun  3 11:46:33 2014.
+## Source:  /home/paul/Dropbox/code/quanteda/vignettes/* on x86_64 by paul.
+## Created: Tue Jun  3 18:09:56 2014.
 ## Notes:   NA.
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+
+
+\subsubsection{From a vector of texts}
+
+
+\subsection{Adding Information to a corpus}
+
+\subsubsection{Adding new texts}
+
+\subsubsection{Adding new text attributes}
+
+
+\subsection{Translating a \quanteda corpus into other formats}
+
+\subsubsection{Importing from QDAMiner}
+
+\subsubsection{Importing to and exporting from \textsf{tm}}
+
+
+\section{Manipulating a corpus}
+
+
+\section{Extracting Features}
+
+
+\section{Analyzing a document-feature matrix}
+
+
+
+
+
+% \singlespacing
+\bibliographystyle{apsr}
+\bibliography{../../bibliographies/QUANTESS}
+
+\end{document}
 
 
 In order to perform statistical analysis such as document scaling, we must extract a matrix containing the frequency of each word type from in document. In quanteda, we use the dfm function to produce such a matrix. \footnote{dfm stands for document-feature matrix --- we say `feature' instead of word, as it is sometimes useful to represent documents by features other than their word frequency.}
@@ -281,7 +331,7 @@ In order to perform statistical analysis such as document scaling, we must extra
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{docMat} \hlkwb{<-} \hlkwd{dfm}\hlstd{(ieBudgets)}
+\hlstd{docMat} \hlkwb{<-} \hlkwd{dfm}\hlstd{(ieBudgets2010)}
 \end{alltt}
 \begin{verbatim}
 ## Creating dfm: ... done.
@@ -291,19 +341,12 @@ In order to perform statistical analysis such as document scaling, we must extra
 \end{alltt}
 \begin{verbatim}
 ##                                       words
-## docs                                   <c3><89>ireann <c3><93> <e2><80><93>sure
-##   2010_BUDGET_01_Brian_Lenihan_FF.txt               2        0                0
-##   2010_BUDGET_02_Richard_Bruton_FG.txt              0        0                0
-##   2010_BUDGET_03_Joan_Burton_LAB.txt                0        0                0
-##   2010_BUDGET_04_Arthur_Morgan_SF.txt               0        1                0
-##   2010_BUDGET_05_Brian_Cowen_FF.txt                 1        0                0
-##                                       words
-## docs                                   <e2><80><94> <e2><80><99>flu
-##   2010_BUDGET_01_Brian_Lenihan_FF.txt             4               0
-##   2010_BUDGET_02_Richard_Bruton_FG.txt            5               0
-##   2010_BUDGET_03_Joan_Burton_LAB.txt             11               0
-##   2010_BUDGET_04_Arthur_Morgan_SF.txt             7               0
-##   2010_BUDGET_05_Brian_Cowen_FF.txt               7               0
+## docs                                    €  —   a abandoned abandoning
+##   2010_BUDGET_01_Brian_Lenihan_FF.txt  75  4 143         0          0
+##   2010_BUDGET_02_Richard_Bruton_FG.txt 18  5  82         1          0
+##   2010_BUDGET_03_Joan_Burton_LAB.txt   48 11 129         1          0
+##   2010_BUDGET_04_Arthur_Morgan_SF.txt  42  7 115         0          1
+##   2010_BUDGET_05_Brian_Cowen_FF.txt    38  7 122         0          0
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -336,7 +379,7 @@ of each of the documents. We can group documents by their attribute values when 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{partyMat} \hlkwb{<-} \hlkwd{dfm}\hlstd{(ieBudgets,} \hlkwc{group} \hlstd{=} \hlstr{"party"}\hlstd{)}
+\hlstd{partyMat} \hlkwb{<-} \hlkwd{dfm}\hlstd{(ieBudgets2010,} \hlkwc{group} \hlstd{=} \hlstr{"party"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## Creating dfm: ... aggregating by group: party...complete ... done.
@@ -346,12 +389,12 @@ of each of the documents. We can group documents by their attribute values when 
 \end{alltt}
 \begin{verbatim}
 ##        words
-## docs    <c3><89>ireann <c3><93> <e2><80><93>sure <e2><80><94> <e2><80><99>flu
-##   FF                 0        0                0            5               0
-##   FG                 0        0                1            9               1
-##   Green              0        1                0           23               0
-##   LAB                1        0                0            9               0
-##   SF                 2        0                0            4               0
+## docs      €  —   a abandoned abandoning
+##   FF     35  5  78         0          0
+##   FG     31  9 162         0          0
+##   Green 108 23 326         2          1
+##   LAB    75  9 288         0          0
+##   SF     85  4 159         0          0
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -377,8 +420,3 @@ which allows us to scale according to a particular party or year, for example:
 \end{knitrout}
 
 
-% \singlespacing
-\bibliographystyle{apsr}
-\bibliography{../../bibliographies/QUANTESS}
-
-\end{document}
