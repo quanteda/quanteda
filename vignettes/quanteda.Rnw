@@ -170,40 +170,19 @@ labels that correspond with the elements of the filename.
 
 <<>>=
 library(quanteda)
-<<<<<<< HEAD
-<<<<<<< HEAD
-textfile <- "https://github.com/kbenoit/quanteda/blob/dev/texts/irishbudgets2010.zip"
-download.file(textfile, basename(textfile), method="curl") # download this zipped archive of texts
-#unzip(basename(textfile)) # unzip the file
-=======
-textfile <- "http://github.com/kbenoit/quanteda/texts/irishbudgets2010.zip"
-download.file(textfile, basename(textfile), method="curl", extra="-L") # download this zipped archive of texts
-unzip(basename(amicusFile)) # unzip the file
->>>>>>> 304330e5366a2c59f63041efbb1b458948968ddf
-attNames <- c("year", "debate", "number", "firstname", "surname", "party")
-#ieBudgets2010 <- corpusFromFilenames(gsub(".zip", "", basename(amicusFile)), 
-#                                     c("year", "debate", "no", "fname", "speaker", "party"), 
-#                                     sep="_")
-=======
 textfile <- "https://github.com/kbenoit/quanteda/blob/dev/texts/irishbudgets2010.zip?raw=true"
-download.file(textfile, basename(textfile), method="curl", extra="-L") # download this zipped archive of texts
-unzip(basename(textfile)) # unzip the file
+download.file(textfile, "irishbudgets2010.zip", method="curl", extra="-L") # download this zipped archive of texts
+unzip("irishbudgets2010.zip") # unzip the file
 attNames <- c("year", "debate", "number", "firstname", "surname", "party")
 ieBudgets2010 <- corpusFromFilenames("budget_2010", 
                                      c("year", "debate", "no", "fname", "speaker", "party"), 
                                      sep="_")
->>>>>>> d04d5c940958195d1481feb630b8087f3c40530a
 @
 
 This creates a new quanteda corpus object where each text has been associated values for its attribute types extracted from the filename:
 
 <<>>=
-<<<<<<< HEAD
-data(iebudgets)
-summary(iebudgets)
-=======
 summary(ieBudgets2010)
->>>>>>> d04d5c940958195d1481feb630b8087f3c40530a
 @
 
 \subsubsection{From a vector of texts}
@@ -230,20 +209,12 @@ summary(ieBudgets2010)
 
 
 \section{Analyzing a document-feature matrix}
-
-
-
-
-
 % \singlespacing
 \bibliographystyle{apsr}
-\bibliography{../../bibliographies/QUANTESS}
+\bibliography{QUANTESS}
 
 \end{document}
 
-
-<<<<<<< HEAD
-=======
 In order to perform statistical analysis such as document scaling, we must extract a matrix containing the frequency of each word type from in document. In quanteda, we use the dfm function to produce such a matrix. \footnote{dfm stands for document-feature matrix --- we say `feature' instead of word, as it is sometimes useful to represent documents by features other than their word frequency.}
 
 <<>>=
@@ -274,4 +245,3 @@ partyModel <- ca(t(partyMat),nd=1)
 dotchart(partyModel$colcoord[order(partyModel$colcoord[,1]),1], labels = partyModel$colnames[order(partyModel$colcoord[,1])])
 @
 
->>>>>>> d04d5c940958195d1481feb630b8087f3c40530a

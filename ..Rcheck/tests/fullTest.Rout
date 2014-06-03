@@ -1,0 +1,181 @@
+
+R version 3.1.0 (2014-04-10) -- "Spring Dance"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> #
+> # Runs the github exapmple, and calls a few other functions to check everything is working.
+> # Ken test change from github client to dev
+> 
+> 
+> library(quanteda)
+> 
+> 
+> 
+> 
+> #### Analyze Bollinger texts from Evans et al JELS 2007
+> # load in Amicus texts from a zipped web archive
+> 
+> # download and unzip texts
+> amicusFile <- "http://www.kenbenoit.net/courses/tcd2014qta/exercises/amicus_curiae.zip"
+> download.file(amicusFile, basename(amicusFile))
+trying URL 'http://www.kenbenoit.net/courses/tcd2014qta/exercises/amicus_curiae.zip'
+Content type 'application/zip' length 1598419 bytes (1.5 Mb)
+opened URL
+==================================================
+downloaded 1.5 Mb
+
+> unzip(basename(amicusFile))
+> 
+> # load in the texts to a vector of texts using quanteda's getTextDir()
+> amicusTexts <- c(getTextDir("./amicus/training"), getTextDir("./amicus/testing"))
+> # change the encoding (because texts contain special symbols such as §)
+> amicusTexts <- iconv(amicusTexts, from="latin1", to="UTF-8")
+> 
+> # set training class
+> trainclass <- factor(c("P", "R", rep(NA, length(amicusTexts)-2)))
+> 
+> # set test class
+> testclass  <- rep(NA, length(amicusTexts))
+> testclass[grep("AP", names(amicusTexts))] <- "AP"
+> testclass[grep("AR", names(amicusTexts))] <- "AR"
+> 
+> # make a corpus object with texts and training and test labels
+> amicusCorpus <- 
++   corpusCreate(amicusTexts, attribs=list(trainclass=trainclass, testclass=testclass))
+> summary(amicusCorpus)
+Corpus object contains 100 texts.
+
+     Texts Types Tokens Sentences trainclass testclass
+ sP1P2.txt  2893  22907      2221          P      <NA>
+ sR1R2.txt  3918  23970      1900          R      <NA>
+ sAP01.txt  1479   6181       435       <NA>        AP
+ sAP02.txt  1671   6232       644       <NA>        AP
+ sAP03.txt  1740   7726       696       <NA>        AP
+ sAP04.txt  1128   4725       431       <NA>        AP
+ sAP05.txt  1800   7005       583       <NA>        AP
+ sAP06.txt  1288   4852       381       <NA>        AP
+ sAP07.txt  1249   4914       330       <NA>        AP
+ sAP08.txt   620   1748       110       <NA>        AP
+ sAP09.txt  1163   4296       362       <NA>        AP
+ sAP10.txt  1251   4097       356       <NA>        AP
+ sAP11.txt  1463   5783       494       <NA>        AP
+ sAP12.txt  1459   6923       578       <NA>        AP
+ sAP13.txt  1203   5390       518       <NA>        AP
+ sAP14.txt  1297   5542       638       <NA>        AP
+ sAP15.txt  1543   6175       499       <NA>        AP
+ sAP16.txt   931   3577       327       <NA>        AP
+ sAP17.txt  1152   4884       496       <NA>        AP
+ sAP18.txt  1204   4131       277       <NA>        AP
+ sAP19.txt   931   3341       315       <NA>        AP
+ sAR01.txt   876   1971       196       <NA>        AR
+ sAR02.txt  1708   7207       875       <NA>        AR
+ sAR03.txt  1644   7334       725       <NA>        AR
+ sAR04.txt  1642   7855       638       <NA>        AR
+ sAR05.txt  1704   7013       766       <NA>        AR
+ sAR06.txt  2159   8329       977       <NA>        AR
+ sAR07.txt  1743   8578       723       <NA>        AR
+ sAR08.txt  1574   6456       682       <NA>        AR
+ sAR09.txt  1255   5160       484       <NA>        AR
+ sAR10.txt  1982   7776       836       <NA>        AR
+ sAR11.txt  1760   8342       697       <NA>        AR
+ sAR12.txt  1196   4001       313       <NA>        AR
+ sAR13.txt  1895   7900       761       <NA>        AR
+ sAR14.txt  1542   5982       509       <NA>        AR
+ sAR15.txt  1546   8188       629       <NA>        AR
+ sAR16.txt  1496   6521       635       <NA>        AR
+ sAR17.txt  1818   7156       572       <NA>        AR
+ sAR18.txt  1566   7382       721       <NA>        AR
+ sAR19.txt  1266   4997       415       <NA>        AR
+ sAR20.txt  1997   7985       927       <NA>        AR
+ sAR21.txt  1258   4590       491       <NA>        AR
+ sAR22.txt  1889   7223       654       <NA>        AR
+ sAR23.txt  1539   6598       461       <NA>        AR
+ sAR24.txt  1674   7812       561       <NA>        AR
+ sAR25.txt  1590   6705       513       <NA>        AR
+ sAR26.txt  1492   7444       741       <NA>        AR
+ sAR27.txt  1506   7806       576       <NA>        AR
+ sAR28.txt  1245   5513       410       <NA>        AR
+ sAR29.txt  1732   7753       786       <NA>        AR
+ sAR30.txt  1448   6128       506       <NA>        AR
+ sAR31.txt  1736   6800       698       <NA>        AR
+ sAR32.txt  1579   6784       713       <NA>        AR
+ sAR33.txt  1951   8191       621       <NA>        AR
+ sAR34.txt  1724   6444       482       <NA>        AR
+ sAR35.txt  1699   6795       555       <NA>        AR
+ sAR36.txt   718   2141       153       <NA>        AR
+ sAR37.txt  1507   6396       572       <NA>        AR
+ sAR38.txt  1444   6276       407       <NA>        AR
+ sAR39.txt  1538   6970       464       <NA>        AR
+ sAR40.txt  1508   7943       608       <NA>        AR
+ sAR41.txt  1549   6908       622       <NA>        AR
+ sAR42.txt   667   2294       253       <NA>        AR
+ sAR43.txt  1662   6793       396       <NA>        AR
+ sAR44.txt  2031   9097       740       <NA>        AR
+ sAR45.txt  1768   7221       580       <NA>        AR
+ sAR46.txt  1918   8181       705       <NA>        AR
+ sAR47.txt   614   1877       136       <NA>        AR
+ sAR48.txt  1267   4225       273       <NA>        AR
+ sAR49.txt  1560   7087       484       <NA>        AR
+ sAR50.txt  1527   6518       447       <NA>        AR
+ sAR51.txt   959   3293       239       <NA>        AR
+ sAR52.txt  1984   7467       583       <NA>        AR
+ sAR53.txt  1135   4156       387       <NA>        AR
+ sAR54.txt  2113   7814       773       <NA>        AR
+ sAR55.txt   132    218         8       <NA>        AR
+ sAR56.txt  1714   7376       536       <NA>        AR
+ sAR58.txt   917   3672       436       <NA>        AR
+ sAR59.txt  1344   5163       392       <NA>        AR
+ sAR60.txt  1378   6130       460       <NA>        AR
+ sAR61.txt  1379   5275       649       <NA>        AR
+ sAR62.txt  1128   3685       277       <NA>        AR
+ sAR63.txt  1305   4454       292       <NA>        AR
+ sAR64.txt  1974   8470       497       <NA>        AR
+ sAR65.txt  1911   8480       662       <NA>        AR
+ sAR66.txt  1515   6371       542       <NA>        AR
+ sAR67.txt   984   4792       289       <NA>        AR
+ sAR68.txt  1521   6010       503       <NA>        AR
+ sAR71.txt  1693   7273       661       <NA>        AR
+ sAR72.txt  1706   5834       419       <NA>        AR
+ sAR73.txt  1533   6690       557       <NA>        AR
+ sAR74.txt   692   2765       279       <NA>        AR
+ sAR75.txt  1515   5740       600       <NA>        AR
+ sAR76.txt  1275   4715       327       <NA>        AR
+ sAR77.txt   931   4346       188       <NA>        AR
+ sAR78.txt   716   2440       200       <NA>        AR
+ sAR79.txt  1068   4258       317       <NA>        AR
+ sAR80.txt  1386   5693       458       <NA>        AR
+ sAR81.txt   670   2208       159       <NA>        AR
+ sAR83.txt  1292   4820       378       <NA>        AR
+
+Source:  /home/paul/Dropbox/code/quanteda/..Rcheck/tests/* on x86_64 by paul.
+Created: Tue Jun  3 19:36:56 2014.
+Notes:   NA.
+
+> # extract a word by document matrix
+> amicusDfm <- dfm(amicusCorpus)
+Creating dfm: ... done. 
+> # train the NB classifier 
+> amicusNb <- naiveBayesText(as.matrix(amicusDfm), amicusCorpus$attribs$trainclass, smooth=1, prior="uniform")
+> # predict test class
+> amicusNbp <- predict(amicusNb)
+> # compare the predicted class (rows) versus the actual class (columns)
+> table(amicusNbp$docs$nb.predicted, amicusCorpus$attribs$testclass)
+   
+    AP AR
+  P 15 50
+  R  4 29
+> 
+> tokens <- tokenize(amicusCorpus)

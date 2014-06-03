@@ -20,9 +20,13 @@ a character vector or dfm with stopwords removed
 }
 \description{
 This function takes a character vector or \link{dfm} and
-removes words in the list provided in 'stopwords'. If no
-list of stopwords is provided a default list for English is
-used.
+removes words in the remove common or 'semantically empty'
+words from a text.
+}
+\details{
+This function takes a character vector 'text' and removes
+words in the list provided in 'stopwords'. If no list of
+stopwords is provided a default list for English is used.
 }
 \examples{
 ## examples for character objects

@@ -258,7 +258,7 @@ Corpus object contains 5 texts.
   Bertie   Ahern    FF
 
 Source:  /home/paul/Dropbox/code/quanteda/..Rcheck/* on x86_64 by paul.
-Created: Tue Jun  3 15:03:00 2014.
+Created: Tue Jun  3 19:36:48 2014.
 Notes:   NA.
 
 > 
@@ -464,8 +464,7 @@ docs                                        taxation taxregex Non_Dictionary
 > testText <- "The quick brown fox named Séamus jumps over the lazy dog Rory, with Tom's newpaper in his mouth."#
 > testCorpus <- corpusCreate(testText)
 > dfm(testCorpus, stopwords=TRUE)
-Creating dfm: ... removing stopwords ...Warning in data(stopwords) : data set ‘stopwords’ not found
- done. 
+Creating dfm: ... removing stopwords ... done. 
        words
 docs    brown dog fox his in jumps lazy mouth named newpaper over quick rory
   text1     1   1   1   1  1     1    1     1     1        1    1     1    1
@@ -850,25 +849,480 @@ $level1c.level1c1b.level1c1b1
 > 
 > 
 > cleanEx()
-> nameEx("removeStopwords")
-> ### * removeStopwords
+> nameEx("selectFeatures")
+> ### * selectFeatures
 > 
 > flush(stderr()); flush(stdout())
 > 
-> ### Name: removeStopwords
-> ### Title: remove common or 'semantically empty' words from a text. This
-> ###   function takes a character vector 'text' and removes words in the
-> ###   list provided in 'stopwords'. If no list of stopwords is provided a
-> ###   default list for English is used.
-> ### Aliases: removeStopwords
+> ### Name: selectFeatures
+> ### Title: extract feature words This function takes type of feature
+> ###   extractor and a word freaquency matrix with binary class (1/0) to
+> ###   select features in class one. 'wsll' and 'wschisq' replicates of
+> ###   'Keyness' of Wordsmith Tools.
+> ### Aliases: selectFeatures
 > 
 > ### ** Examples
 > 
-> someText <- "Here is an example of text containing some stopwords we want to remove. "
+> ## Not run: 
+> ##D texts <- getTextDir("/home/kohei/Documents/budget_2010/")
+> ##D class  <- rep(0, length(texts))
+> ##D class[grep("_LAB", names(texts))] <- 1
+> ##D class[grep("_FF", names(texts))] <- 0
+> ##D corpus <- corpusCreate(texts, attribs=list(class=class))
+> ##D dfm <- dfm(corpus)
+> ##D features <- selectFeatures('ll', dfm, corpus$attribs$class, smooth=1)
+> ## End(Not run)
+> ## Not run: 
+> ##D texts <- getTextDir("/home/kohei/Documents/budget_2010/")
+> ##D class  <- rep(0, length(texts))
+> ##D class[grep("_LAB", names(texts))] <- 1
+> ##D class[grep("_FF", names(texts))] <- 0
+> ##D corpus <- corpusCreate(texts, attribs=list(class=class))
+> ##D dfm <- dfm(corpus)
+> ##D features <- selectFeatures('ll', dfm, corpus$attribs$class, smooth=1)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("sentenceSeg")
+> ### * sentenceSeg
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: sentenceSeg
+> ### Title: split a text into sentences This function takes a text and
+> ###   splits it into sentences.
+> ### Aliases: sentenceSeg
+> 
+> ### ** Examples
+> 
+> test <- "This is a sentence! Several sentences. It's designed by a Dr. to test whether this function works. Or not? Or not."
+> sentenceSeg(test)
+[[1]]
+[1] "This is a sentence"
+
+[[2]]
+[1] "Several sentences"
+
+[[3]]
+[1] "It's designed by a Dr to test whether this function works . "
+
+[[4]]
+[1] "Or not"
+
+[[5]]
+[1] "Or not."
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("stopwordsGet")
+> ### * stopwordsGet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: stopwordsGet
+> ### Title: access stopwords
+> ### Aliases: stopwordsGet
+> 
+> ### ** Examples
+> 
+> stopwordsGet()
+  [1] "i"          "me"         "my"         "myself"     "we"        
+  [6] "our"        "ours"       "ourselves"  "you"        "your"      
+ [11] "yours"      "yourself"   "yourselves" "he"         "him"       
+ [16] "his"        "himself"    "she"        "her"        "hers"      
+ [21] "herself"    "it"         "its"        "itself"     "they"      
+ [26] "them"       "their"      "theirs"     "themselves" "what"      
+ [31] "which"      "who"        "whom"       "this"       "that"      
+ [36] "these"      "those"      "am"         "is"         "are"       
+ [41] "was"        "were"       "be"         "been"       "being"     
+ [46] "have"       "has"        "had"        "having"     "do"        
+ [51] "does"       "did"        "doing"      "would"      "should"    
+ [56] "could"      "ought"      "i'm"        "you're"     "he's"      
+ [61] "she's"      "it's"       "we're"      "they're"    "i've"      
+ [66] "you've"     "we've"      "they've"    "i'd"        "you'd"     
+ [71] "he'd"       "she'd"      "we'd"       "they'd"     "i'll"      
+ [76] "you'll"     "he'll"      "she'll"     "we'll"      "they'll"   
+ [81] "isn't"      "aren't"     "wasn't"     "weren't"    "hasn't"    
+ [86] "haven't"    "hadn't"     "doesn't"    "don't"      "didn't"    
+ [91] "won't"      "wouldn't"   "shan't"     "shouldn't"  "can't"     
+ [96] "cannot"     "couldn't"   "mustn't"    "let's"      "that's"    
+[101] "who's"      "what's"     "here's"     "there's"    "when's"    
+[106] "where's"    "why's"      "how's"      "a"          "an"        
+[111] "the"        "and"        "but"        "if"         "or"        
+[116] "because"    "as"         "until"      "while"      "of"        
+[121] "at"         "by"         "for"        "with"       "about"     
+[126] "against"    "between"    "into"       "through"    "during"    
+[131] "before"     "after"      "above"      "below"      "to"        
+[136] "from"       "up"         "down"       "in"         "out"       
+[141] "on"         "off"        "over"       "under"      "again"     
+[146] "further"    "then"       "once"       "here"       "there"     
+[151] "when"       "where"      "why"        "how"        "all"       
+[156] "any"        "both"       "each"       "few"        "more"      
+[161] "most"       "other"      "some"       "such"       "no"        
+[166] "nor"        "not"        "only"       "own"        "same"      
+[171] "so"         "than"       "too"        "very"      
+> stopwordsGet("italian")
+  [1] "ad"         "al"         "allo"       "ai"         "agli"      
+  [6] "all"        "agl"        "alla"       "alle"       "con"       
+ [11] "col"        "coi"        "da"         "dal"        "dallo"     
+ [16] "dai"        "dagli"      "dall"       "dagl"       "dalla"     
+ [21] "dalle"      "di"         "del"        "dello"      "dei"       
+ [26] "degli"      "dell"       "degl"       "della"      "delle"     
+ [31] "in"         "nel"        "nello"      "nei"        "negli"     
+ [36] "nell"       "negl"       "nella"      "nelle"      "su"        
+ [41] "sul"        "sullo"      "sui"        "sugli"      "sull"      
+ [46] "sugl"       "sulla"      "sulle"      "per"        "tra"       
+ [51] "contro"     "io"         "tu"         "lui"        "lei"       
+ [56] "noi"        "voi"        "loro"       "mio"        "mia"       
+ [61] "miei"       "mie"        "tuo"        "tua"        "tuoi"      
+ [66] "tue"        "suo"        "sua"        "suoi"       "sue"       
+ [71] "nostro"     "nostra"     "nostri"     "nostre"     "vostro"    
+ [76] "vostra"     "vostri"     "vostre"     "mi"         "ti"        
+ [81] "ci"         "vi"         "lo"         "la"         "li"        
+ [86] "le"         "gli"        "ne"         "il"         "un"        
+ [91] "uno"        "una"        "ma"         "ed"         "se"        
+ [96] "perché"     "anche"      "come"       "dov"        "dove"      
+[101] "che"        "chi"        "cui"        "non"        "più"       
+[106] "quale"      "quanto"     "quanti"     "quanta"     "quante"    
+[111] "quello"     "quelli"     "quella"     "quelle"     "questo"    
+[116] "questi"     "questa"     "queste"     "si"         "tutto"     
+[121] "tutti"      "a"          "c"          "e"          "i"         
+[126] "l"          "o"          "ho"         "hai"        "ha"        
+[131] "abbiamo"    "avete"      "hanno"      "abbia"      "abbiate"   
+[136] "abbiano"    "avrò"       "avrai"      "avrà"       "avremo"    
+[141] "avrete"     "avranno"    "avrei"      "avresti"    "avrebbe"   
+[146] "avremmo"    "avreste"    "avrebbero"  "avevo"      "avevi"     
+[151] "aveva"      "avevamo"    "avevate"    "avevano"    "ebbi"      
+[156] "avesti"     "ebbe"       "avemmo"     "aveste"     "ebbero"    
+[161] "avessi"     "avesse"     "avessimo"   "avessero"   "avendo"    
+[166] "avuto"      "avuta"      "avuti"      "avute"      "sono"      
+[171] "sei"        "è"          "siamo"      "siete"      "sia"       
+[176] "siate"      "siano"      "sarò"       "sarai"      "sarà"      
+[181] "saremo"     "sarete"     "saranno"    "sarei"      "saresti"   
+[186] "sarebbe"    "saremmo"    "sareste"    "sarebbero"  "ero"       
+[191] "eri"        "era"        "eravamo"    "eravate"    "erano"     
+[196] "fui"        "fosti"      "fu"         "fummo"      "foste"     
+[201] "furono"     "fossi"      "fosse"      "fossimo"    "fossero"   
+[206] "essendo"    "faccio"     "fai"        "facciamo"   "fanno"     
+[211] "faccia"     "facciate"   "facciano"   "farò"       "farai"     
+[216] "farà"       "faremo"     "farete"     "faranno"    "farei"     
+[221] "faresti"    "farebbe"    "faremmo"    "fareste"    "farebbero" 
+[226] "facevo"     "facevi"     "faceva"     "facevamo"   "facevate"  
+[231] "facevano"   "feci"       "facesti"    "fece"       "facemmo"   
+[236] "faceste"    "fecero"     "facessi"    "facesse"    "facessimo" 
+[241] "facessero"  "facendo"    "sto"        "stai"       "sta"       
+[246] "stiamo"     "stanno"     "stia"       "stiate"     "stiano"    
+[251] "starò"      "starai"     "starà"      "staremo"    "starete"   
+[256] "staranno"   "starei"     "staresti"   "starebbe"   "staremmo"  
+[261] "stareste"   "starebbero" "stavo"      "stavi"      "stava"     
+[266] "stavamo"    "stavate"    "stavano"    "stetti"     "stesti"    
+[271] "stette"     "stemmo"     "steste"     "stettero"   "stessi"    
+[276] "stesse"     "stessimo"   "stessero"   "stando"    
+> 
+> 
+> 
+> cleanEx()
+> nameEx("stopwordsRemove")
+> ### * stopwordsRemove
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: stopwordsRemove
+> ### Title: remove stopwords from a text or dfm
+> ### Aliases: stopwordsRemove stopwordsRemove.character
+> ###   stopwordsRemove.matrix
+> 
+> ### ** Examples
+> 
+> ## examples for character objects
+> someText <- "Here is an example of text containing some stopwords we want to remove."
 > itText <- "Ecco un esempio di testo contenente alcune parole non significative che vogliamo rimuovere."
-> removeStopwords(someText)
-Warning in data(stopwords, envir = environment()) :
-  data set ‘stopwords’ not found
-Error in removeStopwords(someText) : 
-  english was not found in the list of stopwords
-Execution halted
+> stopwordsRemove(someText)
+[1] "Here an example text containing stopwords want remove."
+> stopwordsRemove(someText, stopwordsGet("SMART"))
+[1] "Here an of text some stopwords want remove."
+> stopwordsRemove(itText, stopwordsGet("italian"))
+[1] "Ecco esempio testo contenente alcune parole significative vogliamo rimuovere."
+> stopwordsRemove(someText, c("containing", "example"))
+[1] "Here is an  of text  some stopwords we want to remove."
+> 
+> ## example for dfm objects
+> data(iebudgets)
+> wfm <- dfm(subset(iebudgets, year==2010))
+Creating dfm: ... done. 
+> wfm.nostopwords <- stopwordsRemove(wfm)
+> dim(wfm)
+[1]   14 4929
+> dim(wfm.nostopwords)
+[1]   14 4812
+> dim(stopwordsRemove(wfm, stopwordsGet("SMART")))
+[1]   14 4545
+> 
+> 
+> 
+> cleanEx()
+> nameEx("subset.corpus")
+> ### * subset.corpus
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: subset.corpus
+> ### Title: extract a subset of a corpus
+> ### Aliases: subset.corpus
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(iebudgets)
+> ##D iebudgets2010 <- subset(iebudgets, year==2010)
+> ##D summary(iebudgets2010)
+> ##D iebudgetsLenihan <- subset(iebudgets, speaker="Lenihan", select=c(speaker, year))
+> ##D summary(iebudgetsLenihan)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("summary.corpus")
+> ### * summary.corpus
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: summary.corpus
+> ### Title: Corpus summary
+> ### Aliases: summary.corpus
+> 
+> ### ** Examples
+> 
+> data(iebudgets)
+> summary(iebudgets, subset=(year==2010))
+Corpus object contains 14 texts.
+
+                                     Texts Types Tokens Sentences year debate
+       2010_BUDGET_01_Brian_Lenihan_FF.txt  1655   7799       390 2010 BUDGET
+      2010_BUDGET_02_Richard_Bruton_FG.txt   956   4058       222 2010 BUDGET
+        2010_BUDGET_03_Joan_Burton_LAB.txt  1485   5770       329 2010 BUDGET
+       2010_BUDGET_04_Arthur_Morgan_SF.txt  1463   6481       349 2010 BUDGET
+         2010_BUDGET_05_Brian_Cowen_FF.txt  1473   5880       262 2010 BUDGET
+          2010_BUDGET_06_Enda_Kenny_FG.txt  1066   3875       161 2010 BUDGET
+     2010_BUDGET_07_Kieran_ODonnell_FG.txt   614   2066       141 2010 BUDGET
+      2010_BUDGET_08_Eamon_Gilmore_LAB.txt  1098   3800       208 2010 BUDGET
+    2010_BUDGET_09_Michael_Higgins_LAB.txt   447   1136        49 2010 BUDGET
+       2010_BUDGET_10_Ruairi_Quinn_LAB.txt   418   1177        60 2010 BUDGET
+     2010_BUDGET_11_John_Gormley_Green.txt   363    929        49 2010 BUDGET
+       2010_BUDGET_12_Eamon_Ryan_Green.txt   482   1513        90 2010 BUDGET
+     2010_BUDGET_13_Ciaran_Cuffe_Green.txt   423   1143        48 2010 BUDGET
+ 2010_BUDGET_14_Caoimhghin_OCaolain_SF.txt  1055   3654       194 2010 BUDGET
+ no      fname  speaker party
+ 01      Brian  Lenihan    FF
+ 02    Richard   Bruton    FG
+ 03       Joan   Burton   LAB
+ 04     Arthur   Morgan    SF
+ 05      Brian    Cowen    FF
+ 06       Enda    Kenny    FG
+ 07     Kieran ODonnell    FG
+ 08      Eamon  Gilmore   LAB
+ 09    Michael  Higgins   LAB
+ 10     Ruairi    Quinn   LAB
+ 11       John  Gormley Green
+ 12      Eamon     Ryan Green
+ 13     Ciaran    Cuffe Green
+ 14 Caoimhghin OCaolain    SF
+
+Source:  /home/paul/* on x86_64 by paul.
+Created: Wed Nov 28 16:49:22 2012.
+Notes:   NA.
+
+> summary(iebudgets, nmax=10)
+Corpus object contains 196 texts.
+
+                                   Texts Types Tokens Sentences year debate no
+    2012_BUDGET_01_Michael_Noonan_FG.txt  1538   6450       294 2012 BUDGET 01
+   2012_BUDGET_02_Michael_McGrath_FF.txt  1417   6098       307 2012 BUDGET 02
+    2012_BUDGET_03_Pearse_Doherty_SF.txt  1606   6813       378 2012 BUDGET 03
+    2012_BUDGET_04_Mick_Wallace_Indp.txt   577   1531        98 2012 BUDGET 04
+ 2012_BUDGET_05_Richard_Barrett_PBPA.txt   577   1820        88 2012 BUDGET 05
+      2012_BUDGET_06_Shane_Ross_Indp.txt   505   1575        78 2012 BUDGET 06
+        2012_BUDGET_07_Enda_Kenny_FG.txt  1092   4000       183 2012 BUDGET 07
+     2012_BUDGET_08_Pat_Rabbitte_LAB.txt  1015   3613       199 2012 BUDGET 08
+    2012_BUDGET_09_Micheal_Martin_FF.txt  1355   5016       258 2012 BUDGET 09
+       2012_BUDGET_10_Gerry_Adams_SF.txt  1131   3510       199 2012 BUDGET 10
+   fname  speaker party
+ Michael   Noonan    FG
+ Michael  McGrath    FF
+  Pearse  Doherty    SF
+    Mick  Wallace  Indp
+ Richard  Barrett  PBPA
+   Shane     Ross  Indp
+    Enda    Kenny    FG
+     Pat Rabbitte   LAB
+ Micheal   Martin    FF
+   Gerry    Adams    SF
+
+Source:  /home/paul/* on x86_64 by paul.
+Created: Wed Nov 28 16:49:22 2012.
+Notes:   NA.
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("tagPos")
+> ### * tagPos
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: tagPos
+> ### Title: Returns a table of the occurrences of different parts of speech
+> ###   in a sentence This function takes a sentence and tags each word with
+> ###   it's part of speech using openNLP's POS tagger, then returns a table
+> ###   of the parts of speech
+> ### Aliases: tagPos
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D tagPos("This is an example sentence with nouns and verbs for tagging.")
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("tokenize")
+> ### * tokenize
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: tokenize
+> ### Title: Split a string into words The input text is split into words by
+> ###   whitespace
+> ### Aliases: tokenize
+> 
+> ### ** Examples
+> 
+> testtxt <- "The quick brown fox named Séamus jumps over the lazy dog Rory, with Tom's newpaper in his mouth."
+> tokenize(testtxt)
+ [1] "the"      "quick"    "brown"    "fox"      "named"    "séamus"  
+ [7] "jumps"    "over"     "the"      "lazy"     "dog"      "rory"    
+[13] "with"     "toms"     "newpaper" "in"       "his"      "mouth"   
+> tokenize(testtxt, lower=FALSE)
+ [1] "The"      "quick"    "brown"    "fox"      "named"    "Séamus"  
+ [7] "jumps"    "over"     "the"      "lazy"     "dog"      "Rory"    
+[13] "with"     "Toms"     "newpaper" "in"       "his"      "mouth"   
+> 
+> 
+> 
+> cleanEx()
+> nameEx("translate")
+> ### * translate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: translate
+> ### Title: Send text to the google translate research API This function
+> ###   translates a text by sending it to the google translate API.
+> ### Aliases: translate
+> 
+> ### ** Examples
+> 
+> ## Not run: translation <- translate(original, fr, de, key='insertkeyhere')
+> 
+> 
+> 
+> cleanEx()
+> nameEx("translate.corpus")
+> ### * translate.corpus
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: translate.corpus
+> ### Title: Send a corpus to the google translate research API This function
+> ###   translates a the texts in a corpus by sending them to the google
+> ###   translate API.
+> ### Aliases: translate.corpus
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D translation <- translate(original, fr, de, key='insertkeyhere')
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("twitterTerms")
+> ### * twitterTerms
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: twitterTerms
+> ### Title: make a corpus object from results of a twitter REST search
+> ### Aliases: twitterTerms
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D twCorp <- twitterTerms('example', 10, key, cons_secret, token, access_secret)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("wordfishMCMC")
+> ### * wordfishMCMC
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: wordfishMCMC
+> ### Title: Bayesian-MCMC version of the "wordfish" Poisson scaling model
+> ### Aliases: wordfishMCMC
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(iebudgets)
+> ##D # extract just the 2010 debates
+> ##D iebudgets2010 <- corpus.subset(iebudgets, year==2010)
+> ##D 
+> ##D # create a document-term matrix and set the word margin to the columns
+> ##D dtm <- create.fvm.corpus(iebudgets2010)
+> ##D dtm <- wfm(t(dtm), word.margin=2)
+> ##D 
+> ##D # estimate the maximium likelihood wordfish model from austin
+> ##D iebudgets2010_wordfish <- wordfish(dtm, dir=c(2,1))
+> ##D 
+> ##D # estimate the MCMC model, default values
+> ##D iebudgets2010_wordfishMCMC <- wordfishMCMC(dtm, dir=c(2,1))
+> ##D 
+> ##D # compare the estimates of \eqn{\theta_i}
+> ##D plot(iebudgets2010_wordfish$theta, iebudgets2010_wordfishMCMC$theta)
+> ##D 
+> ##D # MCMC with a partition of the word parameters according to govt and opposition
+> ##D # (FF and Greens were in government in during the debate over the 2010 budget)
+> ##D # set the constraint on word partitioned parameters to be the same for "the" and "and"
+> ##D iebudgets2010_wordfishMCMC_govtopp <-
+> ##D     wordfishMCMC(dtm, dir=c(2,1),
+> ##D     wordPartition=(iebudgets2010$attribs$party=="FF" | iebudgets2010$attribs$party=="Green"),
+> ##D     betaPartition=TRUE, wordConstraints=which(words(dtm)=="the"))
+> ## End(Not run)
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  33.842 0.127 33.976 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

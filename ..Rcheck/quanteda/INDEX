@@ -71,12 +71,6 @@ ngrams                  Create ngrams
 predict.naivebayes      prediction method for Naive Bayes classifiers
 readWStatDict           This function makes a flattened dictionary from
                         a Wordstat hierarchical dictionary
-removeStopwords         remove common or 'semantically empty' words
-                        from a text. This function takes a character
-                        vector 'text' and removes words in the list
-                        provided in 'stopwords'. If no list of
-                        stopwords is provided a default list for
-                        English is used.
 selectFeatures          extract feature words This function takes type
                         of feature extractor and a word freaquency
                         matrix with binary class (1/0) to select
@@ -84,11 +78,12 @@ selectFeatures          extract feature words This function takes type
                         replicates of 'Keyness' of Wordsmith Tools.
 sentenceSeg             split a text into sentences This function takes
                         a text and splits it into sentences.
-stopwords_EN            A list containing common English stopwords
+stopwords               A named list containing common stopwords in 14
+                        languages
+stopwordsGet            access stopwords
+stopwordsRemove         remove stopwords from a text or dfm
 subset.corpus           extract a subset of a corpus
 summary.corpus          Corpus summary
-swissdebates            A corpus object containing 770 texts from
-                        debates in the Swiss parliament
 sylCounts               A named list mapping words to counts of their
                         syllables
 tagPos                  Returns a table of the occurrences of different

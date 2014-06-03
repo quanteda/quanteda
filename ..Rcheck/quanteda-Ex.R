@@ -540,29 +540,6 @@ ngrams("The quick brown fox jumped over the lazy dog.", n=3)
 
 
 cleanEx()
-nameEx("removeStopwords")
-### * removeStopwords
-
-flush(stderr()); flush(stdout())
-
-### Name: removeStopwords
-### Title: remove common or 'semantically empty' words from a text. This
-###   function takes a character vector 'text' and removes words in the
-###   list provided in 'stopwords'. If no list of stopwords is provided a
-###   default list for English is used.
-### Aliases: removeStopwords
-
-### ** Examples
-
-someText <- "Here is an example of text containing some stopwords we want to remove. "
-itText <- "Ecco un esempio di testo contenente alcune parole non significative che vogliamo rimuovere."
-removeStopwords(someText)
-removeStopwords(someText, kind="italian")
-removeStopwords(someText, stopwords = c("containing", "example"))
-
-
-
-cleanEx()
 nameEx("selectFeatures")
 ### * selectFeatures
 
@@ -613,6 +590,54 @@ flush(stderr()); flush(stdout())
 
 test <- "This is a sentence! Several sentences. It's designed by a Dr. to test whether this function works. Or not? Or not."
 sentenceSeg(test)
+
+
+
+cleanEx()
+nameEx("stopwordsGet")
+### * stopwordsGet
+
+flush(stderr()); flush(stdout())
+
+### Name: stopwordsGet
+### Title: access stopwords
+### Aliases: stopwordsGet
+
+### ** Examples
+
+stopwordsGet()
+stopwordsGet("italian")
+
+
+
+cleanEx()
+nameEx("stopwordsRemove")
+### * stopwordsRemove
+
+flush(stderr()); flush(stdout())
+
+### Name: stopwordsRemove
+### Title: remove stopwords from a text or dfm
+### Aliases: stopwordsRemove stopwordsRemove.character
+###   stopwordsRemove.matrix
+
+### ** Examples
+
+## examples for character objects
+someText <- "Here is an example of text containing some stopwords we want to remove."
+itText <- "Ecco un esempio di testo contenente alcune parole non significative che vogliamo rimuovere."
+stopwordsRemove(someText)
+stopwordsRemove(someText, stopwordsGet("SMART"))
+stopwordsRemove(itText, stopwordsGet("italian"))
+stopwordsRemove(someText, c("containing", "example"))
+
+## example for dfm objects
+data(iebudgets)
+wfm <- dfm(subset(iebudgets, year==2010))
+wfm.nostopwords <- stopwordsRemove(wfm)
+dim(wfm)
+dim(wfm.nostopwords)
+dim(stopwordsRemove(wfm, stopwordsGet("SMART")))
 
 
 
