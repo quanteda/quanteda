@@ -1,34 +1,39 @@
 \name{removeStopwords}
 \alias{removeStopwords}
-\title{remove common or 'semantically empty' words from a text.
-This function takes a character vector 'text' and removes words in the
-list provided in 'stopwords'. If no list of stopwords is provided a
-default list for English is used.}
+\alias{removeStopwords.character}
+\alias{removeStopwords.matrix}
+\title{remove stopwords from a text or dfm}
 \usage{
-removeStopwords(text, kind = "english", stopwords = NULL)
+removeStopwords(text, stopwords)
+
+\method{removeStopwords}{character}(text, stopwords = NULL)
+
+\method{removeStopwords}{matrix}(dfmObject, stopwords = NULL)
 }
 \arguments{
-  \item{text}{Text to alter}
+  \item{text}{Text from which stopwords will be removed}
 
-  \item{kind}{A stopword dictionary from the stopwords
-  directory (e.g. 'italian')}
-
-  \item{stopwords}{List of stopwords to remove}
+  \item{stopwords}{Character vector of stopwords to remove}
 }
 \value{
-a character vector of text with stopwords removed
+a character vector or dfm with stopwords removed
 }
 \description{
-remove common or 'semantically empty' words from a text.
-This function takes a character vector 'text' and removes
-words in the list provided in 'stopwords'. If no list of
-stopwords is provided a default list for English is used.
+This function takes a character vector or \link{dfm} and
+removes words in the list provided in 'stopwords'. If no
+list of stopwords is provided a default list for English is
+used.
 }
 \examples{
 someText <- "Here is an example of text containing some stopwords we want to remove. "
 itText <- "Ecco un esempio di testo contenente alcune parole non significative che vogliamo rimuovere."
 removeStopwords(someText)
-removeStopwords(someText, kind="italian")
-removeStopwords(someText, stopwords = c("containing", "example"))
+removeStopwords(someText, getStopwords("SMART"))
+removeStopwrods(itText, getStopwords("italian"))
+removeStopwords(someText, c("containing", "example"))
+data(iebudgets)
+wfm <- dfm(subset(iebudgets, year==2010))
+wfm.nostopwords <- removeStopwords(wfm)
+wfm.nostopwords <- removeStopwords(wfm, getStopwords("SMART"))
 }
 
