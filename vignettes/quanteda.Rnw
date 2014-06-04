@@ -27,7 +27,7 @@
 <<setup, include=FALSE, cache=FALSE>>=
 library(knitr)
 # set global chunk options
-opts_chunk$set(fig.path='figures/minimal-', fig.align='center', fig.show='hold')
+opts_chunk$set(fig.path='figures/minimal-', fig.align='center', fig.show='hold', size='small')
 options(replace.assign=TRUE,width=80)
 @
 
@@ -170,12 +170,17 @@ labels that correspond with the elements of the filename.
 
 <<>>=
 library(quanteda)
+tmpDir <- tempdir()  # create a temporary directory for example files
 textfile <- "https://github.com/kbenoit/quanteda/blob/dev/texts/irishbudgets2010.zip?raw=true"
-download.file(textfile, "irishbudgets2010.zip", method="curl", extra="-L") # download this zipped archive of texts
-unzip("irishbudgets2010.zip") # unzip the file
-attNames <- c("year", "debate", "number", "firstname", "surname", "party")
-ieBudgets2010 <- corpusFromFilenames("budget_2010", 
-                                     c("year", "debate", "no", "fname", "speaker", "party"), 
+download.file(textfile, paste(tmpDir, "irishbudgets2010.zip", sep="/"), 
+              method="curl", extra="-L") # download this zipped archive of texts
+# unzip the file to the temporary folder
+unzip(paste(tmpDir, "irishbudgets2010.zip", sep="/"), exdir=tmpDir) 
+# list the files unzipped
+list.files(paste(tmpDir, "budget_2010", sep="/"))
+# create a corpus from the files, parsing the filenames
+ieBudgets2010 <- corpusFromFilenames(paste(tmpDir, "budget_2010", sep="/"),
+                                     c("year", "debate", "number", "firstname", "lastname", "party"), 
                                      sep="_")
 @
 

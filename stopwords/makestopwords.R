@@ -27,8 +27,8 @@ stopwords <- list()
 for (i in 1:length(filenames)) {
     thisfile <- filenames[i]
     print(thisfile)
-    stopwords[i] <-  scan(paste("stopwords/", thisfile, sep=""), what="char", encoding="UTF-8")
+    stopwords[[i]] <-  scan(paste("stopwords/", thisfile, sep=""), what="char", encoding="UTF-8")
 }
 names(stopwords) <- gsub(".dat", "", filenames)
 
-save(stopwords, file="data/stopwords.Rdata")
+save(stopwords, file="data/stopwords.RData")

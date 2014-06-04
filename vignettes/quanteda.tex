@@ -178,7 +178,7 @@ The code for the \quanteda package currently resides on
 computer, you can install the package directly using the
 \textsf{devtools} package:
 
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(devtools)}
@@ -192,7 +192,7 @@ For other branches, for instance if you wish to install the
 \texttt{dev} branch (containing work in progress) rather than the
 master, you should instead run
 
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{install_github}\hlstd{(}\hlstr{"quanteda"}\hlstd{,} \hlkwc{username} \hlstd{=} \hlstr{"kbenoit"}\hlstd{,} \hlkwc{ref} \hlstd{=} \hlstr{"dev"}\hlstd{)}
@@ -224,16 +224,39 @@ To load this into a corpus object, we will use the
 \texttt{corpusFromFilenames} function, supplying a vector of attribute
 labels that correspond with the elements of the filename.
 
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(quanteda)}
+\hlstd{tmpDir} \hlkwb{<-} \hlkwd{tempdir}\hlstd{()}  \hlcom{# create a temporary directory for example files}
 \hlstd{textfile} \hlkwb{<-} \hlstr{"https://github.com/kbenoit/quanteda/blob/dev/texts/irishbudgets2010.zip?raw=true"}
-\hlkwd{download.file}\hlstd{(textfile,} \hlstr{"irishbudgets2010.zip"}\hlstd{,} \hlkwc{method} \hlstd{=} \hlstr{"curl"}\hlstd{,} \hlkwc{extra} \hlstd{=} \hlstr{"-L"}\hlstd{)}  \hlcom{# download this zipped archive of texts}
-\hlkwd{unzip}\hlstd{(}\hlstr{"irishbudgets2010.zip"}\hlstd{)}  \hlcom{# unzip the file}
-\hlstd{attNames} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"year"}\hlstd{,} \hlstr{"debate"}\hlstd{,} \hlstr{"number"}\hlstd{,} \hlstr{"firstname"}\hlstd{,} \hlstr{"surname"}\hlstd{,} \hlstr{"party"}\hlstd{)}
-\hlstd{ieBudgets2010} \hlkwb{<-} \hlkwd{corpusFromFilenames}\hlstd{(}\hlstr{"budget_2010"}\hlstd{,} \hlkwd{c}\hlstd{(}\hlstr{"year"}\hlstd{,} \hlstr{"debate"}\hlstd{,} \hlstr{"no"}\hlstd{,} \hlstr{"fname"}\hlstd{,}
-    \hlstr{"speaker"}\hlstd{,} \hlstr{"party"}\hlstd{),} \hlkwc{sep} \hlstd{=} \hlstr{"_"}\hlstd{)}
+\hlkwd{download.file}\hlstd{(textfile,} \hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"irishbudgets2010.zip"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"/"}\hlstd{),} \hlkwc{method} \hlstd{=} \hlstr{"curl"}\hlstd{,}
+    \hlkwc{extra} \hlstd{=} \hlstr{"-L"}\hlstd{)}  \hlcom{# download this zipped archive of texts}
+\hlcom{# unzip the file to the temporary folder}
+\hlkwd{unzip}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"irishbudgets2010.zip"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"/"}\hlstd{),} \hlkwc{exdir} \hlstd{= tmpDir)}
+\hlcom{# list the files unzipped}
+\hlkwd{list.files}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"budget_2010"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"/"}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+##  [1] "2010_BUDGET_01_Brian_Lenihan_FF.txt"      
+##  [2] "2010_BUDGET_02_Richard_Bruton_FG.txt"     
+##  [3] "2010_BUDGET_03_Joan_Burton_LAB.txt"       
+##  [4] "2010_BUDGET_04_Arthur_Morgan_SF.txt"      
+##  [5] "2010_BUDGET_05_Brian_Cowen_FF.txt"        
+##  [6] "2010_BUDGET_06_Enda_Kenny_FG.txt"         
+##  [7] "2010_BUDGET_07_Kieran_ODonnell_FG.txt"    
+##  [8] "2010_BUDGET_08_Eamon_Gilmore_LAB.txt"     
+##  [9] "2010_BUDGET_09_Michael_Higgins_LAB.txt"   
+## [10] "2010_BUDGET_10_Ruairi_Quinn_LAB.txt"      
+## [11] "2010_BUDGET_11_John_Gormley_Green.txt"    
+## [12] "2010_BUDGET_12_Eamon_Ryan_Green.txt"      
+## [13] "2010_BUDGET_13_Ciaran_Cuffe_Green.txt"    
+## [14] "2010_BUDGET_14_Caoimhghin_OCaolain_SF.txt"
+\end{verbatim}
+\begin{alltt}
+\hlcom{# create a corpus from the files, parsing the filenames}
+\hlstd{ieBudgets2010} \hlkwb{<-} \hlkwd{corpusFromFilenames}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"budget_2010"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"/"}\hlstd{),} \hlkwd{c}\hlstd{(}\hlstr{"year"}\hlstd{,}
+    \hlstr{"debate"}\hlstd{,} \hlstr{"number"}\hlstd{,} \hlstr{"firstname"}\hlstd{,} \hlstr{"lastname"}\hlstd{,} \hlstr{"party"}\hlstd{),} \hlkwc{sep} \hlstd{=} \hlstr{"_"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -241,7 +264,7 @@ labels that correspond with the elements of the filename.
 
 This creates a new quanteda corpus object where each text has been associated values for its attribute types extracted from the filename:
 
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(ieBudgets2010)}
@@ -264,24 +287,24 @@ This creates a new quanteda corpus object where each text has been associated va
 ##        2010_BUDGET_12_Eamon_Ryan_Green.txt   482   1513        90 2010 BUDGET
 ##      2010_BUDGET_13_Ciaran_Cuffe_Green.txt   423   1143        48 2010 BUDGET
 ##  2010_BUDGET_14_Caoimhghin_OCaolain_SF.txt  1055   3654       194 2010 BUDGET
-##  no      fname  speaker party
-##  14 Caoimhghin OCaolain    SF
-##  13     Ciaran    Cuffe Green
-##  12      Eamon     Ryan Green
-##  11       John  Gormley Green
-##  10     Ruairi    Quinn   LAB
-##  09    Michael  Higgins   LAB
-##  08      Eamon  Gilmore   LAB
-##  07     Kieran ODonnell    FG
-##  06       Enda    Kenny    FG
-##  05      Brian    Cowen    FF
-##  04     Arthur   Morgan    SF
-##  03       Joan   Burton   LAB
-##  02    Richard   Bruton    FG
-##  01      Brian  Lenihan    FF
+##  number  firstname lastname party
+##      14 Caoimhghin OCaolain    SF
+##      13     Ciaran    Cuffe Green
+##      12      Eamon     Ryan Green
+##      11       John  Gormley Green
+##      10     Ruairi    Quinn   LAB
+##      09    Michael  Higgins   LAB
+##      08      Eamon  Gilmore   LAB
+##      07     Kieran ODonnell    FG
+##      06       Enda    Kenny    FG
+##      05      Brian    Cowen    FF
+##      04     Arthur   Morgan    SF
+##      03       Joan   Burton   LAB
+##      02    Richard   Bruton    FG
+##      01      Brian  Lenihan    FF
 ## 
-## Source:  /home/paul/Dropbox/code/quanteda/vignettes/* on x86_64 by paul.
-## Created: Tue Jun  3 19:40:08 2014.
+## Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
+## Created: Wed Jun  4 10:43:36 2014.
 ## Notes:   NA.
 \end{verbatim}
 \end{kframe}
@@ -320,7 +343,7 @@ This creates a new quanteda corpus object where each text has been associated va
 
 In order to perform statistical analysis such as document scaling, we must extract a matrix containing the frequency of each word type from in document. In quanteda, we use the dfm function to produce such a matrix. \footnote{dfm stands for document-feature matrix --- we say `feature' instead of word, as it is sometimes useful to represent documents by features other than their word frequency.}
 
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{docMat} \hlkwb{<-} \hlkwd{dfm}\hlstd{(ieBudgets2010)}
@@ -333,12 +356,12 @@ In order to perform statistical analysis such as document scaling, we must extra
 \end{alltt}
 \begin{verbatim}
 ##                                       words
-## docs                                    €  —   a abandoned abandoning
-##   2010_BUDGET_01_Brian_Lenihan_FF.txt  75  4 143         0          0
-##   2010_BUDGET_02_Richard_Bruton_FG.txt 18  5  82         1          0
-##   2010_BUDGET_03_Joan_Burton_LAB.txt   48 11 129         1          0
-##   2010_BUDGET_04_Arthur_Morgan_SF.txt  42  7 115         0          1
-##   2010_BUDGET_05_Brian_Cowen_FF.txt    38  7 122         0          0
+## docs                                   –sure  — ’flu “all “all”
+##   2010_BUDGET_01_Brian_Lenihan_FF.txt      0  4    0    0     0
+##   2010_BUDGET_02_Richard_Bruton_FG.txt     0  5    0    0     0
+##   2010_BUDGET_03_Joan_Burton_LAB.txt       0 11    0    1     1
+##   2010_BUDGET_04_Arthur_Morgan_SF.txt      0  7    0    0     0
+##   2010_BUDGET_05_Brian_Cowen_FF.txt        0  7    0    0     0
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -346,7 +369,7 @@ In order to perform statistical analysis such as document scaling, we must extra
 
 We can now score and plot the documents using a statistical scaling technique, for example correspondence analysis.
 
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(ca)}
@@ -368,7 +391,7 @@ We can now score and plot the documents using a statistical scaling technique, f
 This plot indicates the position
 of each of the documents. We can group documents by their attribute values when creating the word-frequency matrix: 
 
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{partyMat} \hlkwb{<-} \hlkwd{dfm}\hlstd{(ieBudgets2010,} \hlkwc{group} \hlstd{=} \hlstr{"party"}\hlstd{)}
@@ -381,12 +404,12 @@ of each of the documents. We can group documents by their attribute values when 
 \end{alltt}
 \begin{verbatim}
 ##        words
-## docs      €  —   a abandoned abandoning
-##   FF     35  5  78         0          0
-##   FG     31  9 162         0          0
-##   Green 108 23 326         2          1
-##   LAB    75  9 288         0          0
-##   SF     85  4 159         0          0
+## docs    –sure  — ’flu “all “all”
+##   FF        0  5    0    0     0
+##   FG        1  9    1    0     0
+##   Green     0 23    0    1     1
+##   LAB       0  9    0    0     0
+##   SF        0  4    0    0     0
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -394,7 +417,7 @@ of each of the documents. We can group documents by their attribute values when 
 
 which allows us to scale according to a particular party or year, for example:
 
-\begin{knitrout}
+\begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{partyModel} \hlkwb{<-} \hlkwd{ca}\hlstd{(}\hlkwd{t}\hlstd{(partyMat),} \hlkwc{nd} \hlstd{=} \hlnum{1}\hlstd{)}
