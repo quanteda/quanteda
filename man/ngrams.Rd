@@ -2,7 +2,7 @@
 \alias{ngrams}
 \title{Create ngrams}
 \usage{
-ngrams(text, n = 2, concatenator = "_")
+ngrams(text, n = 2, concatenator = "_", include.all = FALSE, ...)
 }
 \arguments{
   \item{text}{character vector containing the texts from
@@ -16,19 +16,26 @@ ngrams(text, n = 2, concatenator = "_")
 
   \item{concatenator}{character for combining words,
   default is \code{_} (underscore) character}
+
+  \item{include.all}{if TRUE, add n-1...1 grams to the
+  returned list}
+
+  \item{...}{additional arguments passed to
+  \link{tokenize}}
 }
 \value{
-a character of bigrams vector
+a character vector of ngrams
 }
 \description{
 Create a set of ngrams (words in sequence) from a text.
 }
 \examples{
-data(iebudgets)
 ngrams("The quick brown fox jumped over the lazy dog.", n=2)
 ngrams("The quick brown fox jumped over the lazy dog.", n=3)
+ngrams("The quick brown fox jumped over the lazy dog.", n=3, concatenator="~")
+ngrams("The quick brown fox jumped over the lazy dog.", n=3, include.all=TRUE)
 }
 \author{
-Kohei Watanabe, Ken Benoit, Paul Nulty
+Ken Benoit, Kohei Watanabe, Paul Nulty
 }
 

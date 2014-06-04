@@ -178,7 +178,7 @@ The code for the \quanteda package currently resides on
 computer, you can install the package directly using the
 \textsf{devtools} package:
 
-\begin{knitrout}\small
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(devtools)}
@@ -192,7 +192,7 @@ For other branches, for instance if you wish to install the
 \texttt{dev} branch (containing work in progress) rather than the
 master, you should instead run
 
-\begin{knitrout}\small
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{install_github}\hlstd{(}\hlstr{"quanteda"}\hlstd{,} \hlkwc{username} \hlstd{=} \hlstr{"kbenoit"}\hlstd{,} \hlkwc{ref} \hlstd{=} \hlstr{"dev"}\hlstd{)}
@@ -224,7 +224,7 @@ To load this into a corpus object, we will use the
 \texttt{corpusFromFilenames} function, supplying a vector of attribute
 labels that correspond with the elements of the filename.
 
-\begin{knitrout}\small
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(quanteda)}
@@ -264,7 +264,7 @@ labels that correspond with the elements of the filename.
 
 This creates a new quanteda corpus object where each text has been associated values for its attribute types extracted from the filename:
 
-\begin{knitrout}\small
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{summary}\hlstd{(ieBudgets2010)}
@@ -304,7 +304,7 @@ This creates a new quanteda corpus object where each text has been associated va
 ##      01      Brian  Lenihan    FF
 ## 
 ## Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
-## Created: Wed Jun  4 10:43:36 2014.
+## Created: Wed Jun  4 11:28:02 2014.
 ## Notes:   NA.
 \end{verbatim}
 \end{kframe}
@@ -312,6 +312,72 @@ This creates a new quanteda corpus object where each text has been associated va
 
 
 \subsubsection{From a vector of texts}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# load two vectors of texts (Bollinger texts from Evans et al JELS 2007) located}
+\hlcom{# in the texts directory of the github site}
+\hlstd{amicusFile} \hlkwb{<-} \hlstr{"https://github.com/kbenoit/quanteda/blob/dev/texts/amicus_curiae.zip?raw=true"}
+\hlstd{tmpDir} \hlkwb{<-} \hlkwd{tempdir}\hlstd{()}
+\hlkwd{download.file}\hlstd{(amicusFile,} \hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"amicus_curiae.zip"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"/"}\hlstd{),} \hlkwc{method} \hlstd{=} \hlstr{"curl"}\hlstd{,}
+    \hlkwc{extra} \hlstd{=} \hlstr{"-L"}\hlstd{)}  \hlcom{# download this zipped archive of texts}
+\hlcom{# unzip the file to the temporary folder}
+\hlkwd{unzip}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"amicus_curiae.zip"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"/"}\hlstd{),} \hlkwc{exdir} \hlstd{= tmpDir)}
+
+\hlcom{# load in the texts to a vector of texts using quanteda's getTextDir()}
+\hlstd{amicusTexts} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{getTextDir}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"amicus/training"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"/"}\hlstd{)),} \hlkwd{getTextDir}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,}
+    \hlstr{"amicus/testing"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"/"}\hlstd{)))}
+\hlcom{# change the encoding (because texts contain special symbols such as §)}
+\hlstd{amicusTexts} \hlkwb{<-} \hlkwd{iconv}\hlstd{(amicusTexts,} \hlkwc{from} \hlstd{=} \hlstr{"latin1"}\hlstd{,} \hlkwc{to} \hlstd{=} \hlstr{"UTF-8"}\hlstd{)}
+
+\hlcom{# examine the amicusTexts object - a named character vector where the names of}
+\hlcom{# the elements are the original text filename}
+\hlkwd{str}\hlstd{(amicusTexts)}
+\end{alltt}
+\begin{verbatim}
+##  Named chr [1:100] "In granting a strong preference in admissions to applicants from a select group of racial and ethnic minorities, the Law School"| __truncated__ ...
+##  - attr(*, "names")= chr [1:100] "sP1P2.txt" "sR1R2.txt" "sAP01.txt" "sAP02.txt" ...
+\end{verbatim}
+\begin{alltt}
+\hlcom{# set training class - Petitioner or Respondent, only known for the two test docs}
+\hlstd{trainclass} \hlkwb{<-} \hlkwd{factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"P"}\hlstd{,} \hlstr{"R"}\hlstd{,} \hlkwd{rep}\hlstd{(}\hlnum{NA}\hlstd{,} \hlkwd{length}\hlstd{(amicusTexts)} \hlopt{-} \hlnum{2}\hlstd{)))}
+
+\hlcom{# set test class, an attribute that could be used in classification here we take}
+\hlcom{# these from the text filenames, where 'AP' means Amicus brief for Petitioner}
+\hlcom{# 'AR' means Amicus brief for Respondent}
+\hlstd{testclass} \hlkwb{<-} \hlkwd{rep}\hlstd{(}\hlnum{NA}\hlstd{,} \hlkwd{length}\hlstd{(amicusTexts))}  \hlcom{# initialize the variable}
+\hlstd{testclass[}\hlkwd{grep}\hlstd{(}\hlstr{"AP"}\hlstd{,} \hlkwd{names}\hlstd{(amicusTexts))]} \hlkwb{<-} \hlstr{"AP"}
+\hlstd{testclass[}\hlkwd{grep}\hlstd{(}\hlstr{"AR"}\hlstd{,} \hlkwd{names}\hlstd{(amicusTexts))]} \hlkwb{<-} \hlstr{"AR"}
+
+\hlcom{# make a corpus object with texts and training and test labels}
+\hlstd{amicusCorpus} \hlkwb{<-} \hlkwd{corpusCreate}\hlstd{(amicusTexts,} \hlkwc{attribs} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{trainclass} \hlstd{= trainclass,}
+    \hlkwc{testclass} \hlstd{= testclass),} \hlkwc{source} \hlstd{=} \hlstr{"Bollinger texts from Evans et al JELS 2007"}\hlstd{,}
+    \hlkwc{notes} \hlstd{=} \hlstr{"Created as part of the quanteda vignette"}\hlstd{)}
+\hlcom{# summarize the first 10 texts in the corpus}
+\hlkwd{summary}\hlstd{(amicusCorpus,} \hlkwc{nmax} \hlstd{=} \hlnum{10}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## Corpus object contains 100 texts.
+## 
+##      Texts Types Tokens Sentences trainclass testclass
+##  sP1P2.txt  2892  22886      2221          P      <NA>
+##  sR1R2.txt  3917  23963      1900          R      <NA>
+##  sAP01.txt  1478   6180       435       <NA>        AP
+##  sAP02.txt  1670   6230       644       <NA>        AP
+##  sAP03.txt  1740   7726       696       <NA>        AP
+##  sAP04.txt  1127   4723       431       <NA>        AP
+##  sAP05.txt  1799   7004       583       <NA>        AP
+##  sAP06.txt  1288   4852       381       <NA>        AP
+##  sAP07.txt  1249   4914       330       <NA>        AP
+##  sAP08.txt   620   1748       110       <NA>        AP
+## 
+## Source:  Bollinger texts from Evans et al JELS 2007.
+## Created: Wed Jun  4 11:28:07 2014.
+## Notes:   Created as part of the quanteda vignette.
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 
 \subsection{Adding Information to a corpus}
@@ -343,7 +409,7 @@ This creates a new quanteda corpus object where each text has been associated va
 
 In order to perform statistical analysis such as document scaling, we must extract a matrix containing the frequency of each word type from in document. In quanteda, we use the dfm function to produce such a matrix. \footnote{dfm stands for document-feature matrix --- we say `feature' instead of word, as it is sometimes useful to represent documents by features other than their word frequency.}
 
-\begin{knitrout}\small
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{docMat} \hlkwb{<-} \hlkwd{dfm}\hlstd{(ieBudgets2010)}
@@ -369,7 +435,7 @@ In order to perform statistical analysis such as document scaling, we must extra
 
 We can now score and plot the documents using a statistical scaling technique, for example correspondence analysis.
 
-\begin{knitrout}\small
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(ca)}
@@ -379,7 +445,7 @@ We can now score and plot the documents using a statistical scaling technique, f
 \end{alltt}
 \end{kframe}
 
-{\centering \includegraphics[width=\maxwidth]{figures/minimal-unnamed-chunk-6} 
+{\centering \includegraphics[width=\maxwidth]{figures/minimal-unnamed-chunk-7} 
 
 }
 
@@ -391,7 +457,7 @@ We can now score and plot the documents using a statistical scaling technique, f
 This plot indicates the position
 of each of the documents. We can group documents by their attribute values when creating the word-frequency matrix: 
 
-\begin{knitrout}\small
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{partyMat} \hlkwb{<-} \hlkwd{dfm}\hlstd{(ieBudgets2010,} \hlkwc{group} \hlstd{=} \hlstr{"party"}\hlstd{)}
@@ -417,7 +483,7 @@ of each of the documents. We can group documents by their attribute values when 
 
 which allows us to scale according to a particular party or year, for example:
 
-\begin{knitrout}\small
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{partyModel} \hlkwb{<-} \hlkwd{ca}\hlstd{(}\hlkwd{t}\hlstd{(partyMat),} \hlkwc{nd} \hlstd{=} \hlnum{1}\hlstd{)}
@@ -426,7 +492,7 @@ which allows us to scale according to a particular party or year, for example:
 \end{alltt}
 \end{kframe}
 
-{\centering \includegraphics[width=\maxwidth]{figures/minimal-unnamed-chunk-8} 
+{\centering \includegraphics[width=\maxwidth]{figures/minimal-unnamed-chunk-9} 
 
 }
 

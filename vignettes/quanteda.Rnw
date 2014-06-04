@@ -27,7 +27,7 @@
 <<setup, include=FALSE, cache=FALSE>>=
 library(knitr)
 # set global chunk options
-opts_chunk$set(fig.path='figures/minimal-', fig.align='center', fig.show='hold', size='small')
+opts_chunk$set(fig.path='figures/minimal-', fig.align='center', fig.show='hold', size='footnotesize')
 options(replace.assign=TRUE,width=80)
 @
 
@@ -192,6 +192,46 @@ summary(ieBudgets2010)
 
 \subsubsection{From a vector of texts}
 
+<<>>=
+# load two vectors of texts (Bollinger texts from Evans et al JELS 2007)
+# located in the texts directory of the github site
+amicusFile <- "https://github.com/kbenoit/quanteda/blob/dev/texts/amicus_curiae.zip?raw=true"
+tmpDir <- tempdir()
+download.file(amicusFile, paste(tmpDir, "amicus_curiae.zip", sep="/"), 
+              method="curl", extra="-L") # download this zipped archive of texts
+# unzip the file to the temporary folder
+unzip(paste(tmpDir, "amicus_curiae.zip", sep="/"), exdir=tmpDir) 
+
+# load in the texts to a vector of texts using quanteda's getTextDir()
+amicusTexts <- c(getTextDir(paste(tmpDir, "amicus/training", sep="/")), 
+                 getTextDir(paste(tmpDir, "amicus/testing", sep="/")))
+# change the encoding (because texts contain special symbols such as §)
+amicusTexts <- iconv(amicusTexts, from="latin1", to="UTF-8")
+
+# examine the amicusTexts object - a named character vector where the
+# names of the elements are the original text filename
+str(amicusTexts)
+
+# set training class - Petitioner or Respondent, only known for the two test docs
+trainclass <- factor(c("P", "R", rep(NA, length(amicusTexts)-2)))
+
+# set test class, an attribute that could be used in classification
+# here we take these from the text filenames, where 
+# 'AP' means Amicus brief for Petitioner
+# 'AR' means Amicus brief for Respondent
+testclass  <- rep(NA, length(amicusTexts)) # initialize the variable
+testclass[grep("AP", names(amicusTexts))] <- "AP"
+testclass[grep("AR", names(amicusTexts))] <- "AR"
+
+# make a corpus object with texts and training and test labels
+amicusCorpus <- 
+  corpusCreate(amicusTexts, 
+               attribs = list(trainclass=trainclass, testclass=testclass),
+               source = "Bollinger texts from Evans et al JELS 2007",
+               notes = "Created as part of the quanteda vignette")
+# summarize the first 10 texts in the corpus
+summary(amicusCorpus, nmax=10)
+@
 
 \subsection{Adding Information to a corpus}
 
