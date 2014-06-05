@@ -1,13 +1,4 @@
-#
-# Runs the github exapmple, and calls a few other functions to check everything is working.
-# Ken test change from github client to dev
-
-
 library(quanteda)
-
-
-
-
 #### Analyze Bollinger texts from Evans et al JELS 2007
 # load in Amicus texts from a zipped web archive
 
@@ -41,6 +32,3 @@ amicusNb <- naiveBayesText(as.matrix(amicusDfm), amicusCorpus$attribs$trainclass
 amicusNbp <- predict(amicusNb)
 # compare the predicted class (rows) versus the actual class (columns)
 table(amicusNbp$docs$nb.predicted, amicusCorpus$attribs$testclass)
-
-#tokens <- tokenize(amicusCorpus)
-#contexts <- kwic( amicusCorpus, 'equality', window=10)

@@ -1,0 +1,1336 @@
+
+R version 3.1.0 (2014-04-10) -- "Spring Dance"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "quanteda"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> library('quanteda')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("MCMCirtPoisson1d")
+> ### * MCMCirtPoisson1d
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: MCMCirtPoisson1d
+> ### Title: Bayesian-MCMC version of a 1-dimensional Poisson IRT scaling
+> ###   model
+> ### Aliases: MCMCirtPoisson1d
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(iebudgets)
+> ##D # extract just the 2010 debates
+> ##D iebudgets2010 <- subset(iebudgets, year==2010)
+> ##D 
+> ##D # create a document-term matrix and set the word margin to the columns
+> ##D dtm <- dfm(iebudgets2010)
+> ##D 
+> ##D # estimate the maximium likelihood wordfish model from austin
+> ##D require(austin)
+> ##D iebudgets2010_wordfish <- wordfish(as.wfm(dtm, word.margin=2), dir=c(2,1))
+> ##D 
+> ##D # estimate the MCMC model, default values
+> ##D iebudgets2010_wordfishMCMC <- MCMCirtPoisson1d(dtm, itembase="the", dir=c(2,1))
+> ##D iebudgets2010_wordfishMCMC_unconstrained <- MCMCirtPoisson1d(dtm, dir=c(2,1))
+> ##D 
+> ##D # compare the estimates of \eqn{\theta_i}
+> ##D require(psych)
+> ##D pairs.panels(data.frame(ML=iebudgets2010_wordfish$theta,
+> ##D                         PoissonThe=iebudgets2010_wordfishMCMC$theta,
+> ##D                         PoissonUnconst=iebudgets2010_wordfishMCMC_unconstrained$theta),
+> ##D              smooth=FALSE, scale=FALSE, ellipses=FALSE, lm=TRUE, cex.cor=2.5)
+> ##D # inspect a known "opposition" word beta values
+> ##D iebudgets2010_wordfish$beta[which(iebudgets2010_wordfishMCMC_unconstrained$words=="fianna")]
+> ##D iebudgets2010_wordfishMCMC$beta[which(iebudgets2010_wordfishMCMC_unconstrained$words=="fianna")]
+> ##D iebudgets2010_wordfishMCMC_unconstrained$beta[which(iebudgets2010_wordfishMCMC_unconstrained$words=="fianna")]
+> ##D 
+> ##D # random starting values, for three chains
+> ##D dtm.sample <- trim(dtm, sample=200)
+> ##D iebudgets2010_wordfishMCMC_sample <- MCMCirtPoisson1d(dtm.sample, dir=c(2,1), startRandom=TRUE, nChains=3)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("bigrams")
+> ### * bigrams
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: bigrams
+> ### Title: Create bigrams
+> ### Aliases: bigrams
+> 
+> ### ** Examples
+> 
+> bigrams("The quick brown fox jumped over the lazy dog.")
+[1] "the_quick"   "quick_brown" "brown_fox"   "fox_jumped"  "jumped_over"
+[6] "over_the"    "the_lazy"    "lazy_dog"   
+> bigrams("The quick brown fox jumped over the lazy dog.", window=2)
+ [1] "the_quick"    "quick_brown"  "brown_fox"    "fox_jumped"   "jumped_over" 
+ [6] "over_the"     "the_lazy"     "lazy_dog"     "the_brown"    "quick_fox"   
+[11] "brown_jumped" "fox_over"     "jumped_the"   "over_lazy"    "the_dog"     
+> 
+> 
+> 
+> cleanEx()
+> nameEx("clean")
+> ### * clean
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: clean
+> ### Title: Perform basic cleanup on a character object
+> ### Aliases: clean
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D s <- "A cursed £$&^!€ Exclamation! point; paragraph §1.2, which I wrote."
+> ##D clean(s)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("collocations")
+> ### * collocations
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: collocations
+> ### Title: Detect collocations in a text
+> ### Aliases: collocations
+> 
+> ### ** Examples
+> 
+> data(iebudgets)
+> collocations(iebudgets$attribs$texts[1], top=50)
+Loading required package: entropy
+$collocation
+ [1] "allowance beyond"          "become wealthy"           
+ [3] "bought homes"              "code legacy"              
+ [5] "could become"              "date include"             
+ [7] "five main"                 "guidance provides"        
+ [9] "housing general"           "howlin yesterday"         
+[11] "incentivise savings"       "leading trade"            
+[13] "learned nothing"           "lenihan brian"            
+[15] "looks across"              "marginal rates"           
+[17] "member states"             "national asset"           
+[19] "offlicences particularly"  "oil residential"          
+[21] "otherwise restricted"      "particularly supermarkets"
+[23] "partnership model"         "personal wealth"          
+[25] "recent months"             "reputation abroad"        
+[27] "residential housing"       "role model"               
+[29] "timely transfer"           "universal pillar"         
+[31] "vulnerable groups"         "yesterday about"          
+[33] "ago december"              "approximately taxation"   
+[35] "between midnight"          "building bubble"          
+[37] "business contributes"      "business expansion"       
+[39] "carry forward"             "cost households"          
+[41] "cover betting"             "develop grow"             
+[43] "different families"        "differential between"     
+[45] "difficult task"            "direct taxation"          
+[47] "estimates volume"          "eu member"                
+[49] "eu members"                "exiles cannot"            
+
+$Freq
+ [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[39] 1 1 1 1 2 1 1 1 1 1 1 1
+
+$lr
+ [1] 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177
+ [9] 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177
+[17] 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177
+[25] 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177
+[33] 12.33570 12.33570 12.33570 12.33570 12.33570 12.33570 12.33570 12.33570
+[41] 12.33570 12.33570 12.33570 12.33570 12.33570 12.33570 12.33570 12.33570
+[49] 12.33570 12.33570
+
+> collocations(iebudgets$attribs$texts[1], top=50, method="chi2")
+$collocation
+ [1] "absent themselves"     "acquisition phase"     "aer lingus"           
+ [4] "agreement asked"       "agricultural colleges" "aid rules"            
+ [7] "air travel"            "aircraft leasing"      "alan shatter"         
+[10] "annual gross"          "asked michael"         "associate myself"     
+[13] "attracted off"         "auto diesel"           "better incentivises"  
+[16] "blocks etc"            "brand leader"          "brazil russia"        
+[19] "brendan howlin"        "brian lenihan"         "children clothes"     
+[22] "close relatives"       "clothes oral"          "common currency"      
+[25] "core message"          "couples listening"     "crossborder shopping" 
+[28] "despite exhaustive"    "destroyed thousands"   "dia trócaire"         
+[31] "dick mulcahy"          "disastrous decisions"  "dublin castle"        
+[34] "duty—— ——to"           "eamon gilmore"         "easy ways"            
+[37] "educational standards" "entirely justifiable"  "equally important"    
+[40] "etc consistent"        "ever happened"         "everybody knows"      
+[43] "festivals events"      "fianna fáilgreen"      "finding backed"       
+[46] "firms operating"       "forecasters agree"     "formal announcement"  
+[49] "former ceo"            "free threshold"       
+
+$Freq
+ [1] 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[39] 1 1 1 1 1 1 1 1 1 1 1 1
+
+$chi2
+ [1] 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738
+[16] 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738
+[31] 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738
+[46] 4738 4738 4738 4738 4738
+
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:entropy’
+
+> nameEx("corpusAppend")
+> ### * corpusAppend
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: corpusAppend
+> ### Title: function to add new texts and attributes to an existing corpus
+> ###   Accepts a list of texts and a list of associated attributes and adds
+> ###   them to the corpus
+> ### Aliases: corpusAppend
+> 
+> ### ** Examples
+> 
+> data(iebudgets)
+> data(ieAttribs)
+> data(ieTexts)
+> budgets <- corpusAppend(iebudgets, ieTexts, ieAttribs)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("corpusCreate")
+> ### * corpusCreate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: corpusCreate
+> ### Title: Create a new corpus This function creates a corpus from a
+> ###   character vector (of texts), adds text-specific variables (which we
+> ###   term "attributes"), along with optional meta-data and notes.
+> ### Aliases: corpusCreate
+> 
+> ### ** Examples
+> 
+> data(ieTexts)
+> data(ieAttribs)
+> budgets <- corpusCreate(ieTexts, attribs=ieAttribs)
+> summary(budgets)
+Corpus object contains 5 texts.
+
+                                Texts Types Tokens Sentences year debate no
+    2008_BUDGET_01_Brian_Cowen_FF.txt  1699   8849       417 2008 BUDGET 01
+ 2008_BUDGET_02_Richard_Bruton_FG.txt  1212   5334       315 2008 BUDGET 02
+   2008_BUDGET_03_Joan_Burton_LAB.txt  1477   5464       303 2008 BUDGET 03
+  2008_BUDGET_04_Arthur_Morgan_SF.txt  1517   6108       278 2008 BUDGET 04
+   2008_BUDGET_05_Bertie_Ahern_FF.txt  1048   3946       175 2008 BUDGET 05
+   fname speaker party
+   Brian   Cowen    FF
+ Richard  Bruton    FG
+    Joan  Burton   LAB
+  Arthur  Morgan    SF
+  Bertie   Ahern    FF
+
+Source:  /home/paul/Dropbox/code/quanteda/..Rcheck/* on x86_64 by paul.
+Created: Thu Jun  5 12:36:28 2014.
+Notes:   NA.
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("corpusFromFilenames")
+> ### * corpusFromFilenames
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: corpusFromFilenames
+> ### Title: create a new corpus with attribute-value pairs taken from
+> ###   filenames
+> ### Aliases: corpusFromFilenames
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D new_corpus <- corpusFromFilenames(dirname, c("country", "electionType", "year", "language", "party"), sep='_')
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("corpusFromHeaders")
+> ### * corpusFromHeaders
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: corpusFromHeaders
+> ### Title: create a new corpus with attribute-value pairs taken from
+> ###   document headers
+> ### Aliases: corpusFromHeaders
+> 
+> ### ** Examples
+> 
+> data(ieTextsHeaders)
+> budgets <- corpusFromHeaders(ieTextsHeaders)
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:jsonlite’
+
+> nameEx("corpusReshape")
+> ### * corpusReshape
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: corpusReshape
+> ### Title: Transform a corpus by splitting texts into sentences
+> ### Aliases: corpusReshape
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D corpus <- data(iebudgets)
+> ##D sentCorp <- corpus.reshape(corpus)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("countSyllables")
+> ### * countSyllables
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: countSyllables
+> ### Title: Returns a count of the number of syllables in the input This
+> ###   function takes a text and returns a count of the number of syllables
+> ###   it contains. For British English words, the syllable count is exact
+> ###   and looked up from the CMU pronunciation dictionary. For any word not
+> ###   in the dictionary the syllable count is estimated by counting vowel
+> ###   clusters.
+> ### Aliases: countSyllables
+> 
+> ### ** Examples
+> 
+> countSyllables("This is an example sentence.")
+[1] "this"     "is"       "an"       "example"  "sentence"
+[1] 8
+> 
+> 
+> 
+> cleanEx()
+> nameEx("create.fvm.corpus")
+> ### * create.fvm.corpus
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: create.fvm.corpus
+> ### Title: Create a feature-value matrix from a corpus object returns a
+> ###   feature value matrix compatible with austin
+> ### Aliases: create.fvm.corpus
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D fvm <- create.fvm.corpus(budgets, group="party")
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("describeTexts")
+> ### * describeTexts
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: describeTexts
+> ### Title: print a summary of texts Prints to the console a desription of
+> ###   the texts, including number of types, tokens, and sentences
+> ### Aliases: describeTexts
+> 
+> ### ** Examples
+> 
+> texts <- c("testing this text", "and this one")
+> describeTexts(texts)
+  Texts Types Tokens Sentences
+1 text1     1      1         1
+2 text2     1      1         1
+3 text1     1      1         1
+4 text2     1      1         1
+5 text1     1      1         1
+6 text2     1      1         1
+  Texts Types Tokens Sentences
+1 text1     1      1         1
+2 text2     1      1         1
+3 text1     1      1         1
+4 text2     1      1         1
+5 text1     1      1         1
+6 text2     1      1         1
+> 
+> 
+> 
+> cleanEx()
+> nameEx("dfm")
+> ### * dfm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: dfm
+> ### Title: Create a document-feature matrix from a corpus object
+> ### Aliases: dfm dfm.corpus
+> 
+> ### ** Examples
+> 
+> data(iebudgets)
+> wfm <- dfm(iebudgets)
+Creating dfm: ... done. 
+> 
+> ## by party, subset for 2010
+> wfmByParty2010 <- dfm(subset(iebudgets, year==2010), groups="party")
+Creating dfm: ... aggregating by group: party...complete ... done. 
+> 
+> ## with dictionaries
+> corpus <- subset(iebudgets, year==2010)
+> mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
++                opposition=c("Opposition", "reject", "notincorpus"),
++                taxing="taxing",
++                taxation="taxation",
++                taxregex="tax*")
+> dictDfm <- dfm(corpus, dictionary=mydict)
+Creating dfm: ... done. 
+> dictDfm
+                                           words
+docs                                        christmas opposition taxing
+  2010_BUDGET_01_Brian_Lenihan_FF.txt               0          1      1
+  2010_BUDGET_02_Richard_Bruton_FG.txt              1          0      0
+  2010_BUDGET_03_Joan_Burton_LAB.txt                8          2      0
+  2010_BUDGET_04_Arthur_Morgan_SF.txt               6          2      0
+  2010_BUDGET_05_Brian_Cowen_FF.txt                 0          3      0
+  2010_BUDGET_06_Enda_Kenny_FG.txt                  1          1      0
+  2010_BUDGET_07_Kieran_ODonnell_FG.txt             1          0      0
+  2010_BUDGET_08_Eamon_Gilmore_LAB.txt              3          0      0
+  2010_BUDGET_09_Michael_Higgins_LAB.txt            0          1      0
+  2010_BUDGET_10_Ruairi_Quinn_LAB.txt               0          0      0
+  2010_BUDGET_11_John_Gormley_Green.txt             0          0      0
+  2010_BUDGET_12_Eamon_Ryan_Green.txt               0          0      0
+  2010_BUDGET_13_Ciaran_Cuffe_Green.txt             1          1      0
+  2010_BUDGET_14_Caoimhghin_OCaolain_SF.txt         1          2      0
+                                           words
+docs                                        taxation taxregex Non_Dictionary
+  2010_BUDGET_01_Brian_Lenihan_FF.txt              3       53           7741
+  2010_BUDGET_02_Richard_Bruton_FG.txt             0        5           4052
+  2010_BUDGET_03_Joan_Burton_LAB.txt               2       37           5721
+  2010_BUDGET_04_Arthur_Morgan_SF.txt             13       48           6412
+  2010_BUDGET_05_Brian_Cowen_FF.txt                2       29           5846
+  2010_BUDGET_06_Enda_Kenny_FG.txt                 1       11           3861
+  2010_BUDGET_07_Kieran_ODonnell_FG.txt            0        1           2064
+  2010_BUDGET_08_Eamon_Gilmore_LAB.txt             0        6           3791
+  2010_BUDGET_09_Michael_Higgins_LAB.txt           1       11           1123
+  2010_BUDGET_10_Ruairi_Quinn_LAB.txt              0       10           1167
+  2010_BUDGET_11_John_Gormley_Green.txt            0        9            920
+  2010_BUDGET_12_Eamon_Ryan_Green.txt              0        3           1510
+  2010_BUDGET_13_Ciaran_Cuffe_Green.txt            0        1           1140
+  2010_BUDGET_14_Caoimhghin_OCaolain_SF.txt        0        8           3643
+> 
+> ## removing stopwords
+> testText <- "The quick brown fox named Séamus jumps over the lazy dog Rory, with Tom's newpaper in his mouth."#
+> testCorpus <- corpusCreate(testText)
+> dfm(testCorpus, stopwords=TRUE)
+Creating dfm: ... removing stopwords ... done. 
+       words
+docs    brown dog fox his in jumps lazy mouth named newpaper over quick rory
+  text1     1   1   1   1  1     1    1     1     1        1    1     1    1
+       words
+docs    séamus the toms with
+  text1      1   2    1    1
+> if (require(tm)) {
++ }
+Loading required package: tm
+NULL
+> 
+> ## adding one dfm to another
+> mydict2 <- list(partyref=c("Lenihan", "Fianna", "Sinn", "Gael"))
+> dictDfm2 <- dfm(corpus, dictionary=mydict2, addto=dictDfm)
+Creating dfm: ... done. 
+> dictDfm2
+                                           words
+docs                                        christmas opposition taxing
+  2010_BUDGET_01_Brian_Lenihan_FF.txt               0          1      1
+  2010_BUDGET_02_Richard_Bruton_FG.txt              1          0      0
+  2010_BUDGET_03_Joan_Burton_LAB.txt                8          2      0
+  2010_BUDGET_04_Arthur_Morgan_SF.txt               6          2      0
+  2010_BUDGET_05_Brian_Cowen_FF.txt                 0          3      0
+  2010_BUDGET_06_Enda_Kenny_FG.txt                  1          1      0
+  2010_BUDGET_07_Kieran_ODonnell_FG.txt             1          0      0
+  2010_BUDGET_08_Eamon_Gilmore_LAB.txt              3          0      0
+  2010_BUDGET_09_Michael_Higgins_LAB.txt            0          1      0
+  2010_BUDGET_10_Ruairi_Quinn_LAB.txt               0          0      0
+  2010_BUDGET_11_John_Gormley_Green.txt             0          0      0
+  2010_BUDGET_12_Eamon_Ryan_Green.txt               0          0      0
+  2010_BUDGET_13_Ciaran_Cuffe_Green.txt             1          1      0
+  2010_BUDGET_14_Caoimhghin_OCaolain_SF.txt         1          2      0
+                                           words
+docs                                        taxation taxregex partyref
+  2010_BUDGET_01_Brian_Lenihan_FF.txt              3       53        0
+  2010_BUDGET_02_Richard_Bruton_FG.txt             0        5        3
+  2010_BUDGET_03_Joan_Burton_LAB.txt               2       37       18
+  2010_BUDGET_04_Arthur_Morgan_SF.txt             13       48       27
+  2010_BUDGET_05_Brian_Cowen_FF.txt                2       29        3
+  2010_BUDGET_06_Enda_Kenny_FG.txt                 1       11       18
+  2010_BUDGET_07_Kieran_ODonnell_FG.txt            0        1        0
+  2010_BUDGET_08_Eamon_Gilmore_LAB.txt             0        6       29
+  2010_BUDGET_09_Michael_Higgins_LAB.txt           1       11        1
+  2010_BUDGET_10_Ruairi_Quinn_LAB.txt              0       10        9
+  2010_BUDGET_11_John_Gormley_Green.txt            0        9        0
+  2010_BUDGET_12_Eamon_Ryan_Green.txt              0        3        1
+  2010_BUDGET_13_Ciaran_Cuffe_Green.txt            0        1        2
+  2010_BUDGET_14_Caoimhghin_OCaolain_SF.txt        0        8       16
+                                           words
+docs                                        Non_Dictionary
+  2010_BUDGET_01_Brian_Lenihan_FF.txt                 7741
+  2010_BUDGET_02_Richard_Bruton_FG.txt                4049
+  2010_BUDGET_03_Joan_Burton_LAB.txt                  5703
+  2010_BUDGET_04_Arthur_Morgan_SF.txt                 6385
+  2010_BUDGET_05_Brian_Cowen_FF.txt                   5843
+  2010_BUDGET_06_Enda_Kenny_FG.txt                    3843
+  2010_BUDGET_07_Kieran_ODonnell_FG.txt               2064
+  2010_BUDGET_08_Eamon_Gilmore_LAB.txt                3762
+  2010_BUDGET_09_Michael_Higgins_LAB.txt              1122
+  2010_BUDGET_10_Ruairi_Quinn_LAB.txt                 1158
+  2010_BUDGET_11_John_Gormley_Green.txt                920
+  2010_BUDGET_12_Eamon_Ryan_Green.txt                 1509
+  2010_BUDGET_13_Ciaran_Cuffe_Green.txt               1138
+  2010_BUDGET_14_Caoimhghin_OCaolain_SF.txt           3627
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:tm’
+
+> nameEx("dfm2ldaformat")
+> ### * dfm2ldaformat
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: dfm2ldaformat
+> ### Title: Convert a quanteda 'dfm' (document feature matrix) into a the
+> ###   data format needed by lda
+> ### Aliases: dfm2ldaformat
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(iebudgets)
+> ##D iebudgets2010 <- subset(iebudgets, year==2010)
+> ##D # create document-feature matrix, remove stopwords
+> ##D d <- dfm(iebudgets2010, stopwords=TRUE)
+> ##D # trim low frequency words
+> ##D d <- dfmTrim(d, minCount=5, minDoc=3)
+> ##D td <- dfm2ldaformat(d)
+> ##D if (require(lda)) {
+> ##D     tmodel.lda <- result <- lda.collapsed.gibbs.sampler(documents=td$documents,
+> ##D                                                         K=10,
+> ##D                                                         vocab=td$vocab,
+> ##D                                                         num.iterations=50, alpha=0.1, eta=0.1)
+> ##D }
+> ##D top.topic.words(tmodel.lda$topics, 10, by.score=TRUE) # top five words in each topic
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("dfm2tmformat")
+> ### * dfm2tmformat
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: dfm2tmformat
+> ### Title: Convert a quanteda 'dfm' (document feature matrix) into a 'tm'
+> ###   DocumentTermMatrix
+> ### Aliases: dfm2tmformat
+> 
+> ### ** Examples
+> 
+> data(iebudgets)
+> iebudgets2010 <- subset(iebudgets, year==2010)
+> d <- dfmTrim(dfm(iebudgets2010), minCount=5, minDoc=3)
+Creating dfm: ... done. 
+Words appearing less than 5 times: 3716 
+Words appearing in fewer than 3 documents: 3435 
+> dim(d)
+[1]   14 1154
+> td <- dfm2tmformat(d)
+Loading required package: slam
+Loading required package: tm
+> length(td$v)
+[1] 7661
+> if (require(topicmodels)) tmodel.lda <- LDA(td, control = list(alpha = 0.1), k = 4)
+Loading required package: topicmodels
+Warning in library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called ‘topicmodels’
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:tm’, ‘package:slam’
+
+> nameEx("dfmTrim")
+> ### * dfmTrim
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: dfmTrim
+> ### Title: Trim a dfm based on a subset of features and words
+> ### Aliases: dfmTrim
+> 
+> ### ** Examples
+> 
+> data(iebudgets)
+> dtm <- dfm(iebudgets)
+Creating dfm: ... done. 
+> dim(dtm)  # 196 docs x 13343 words
+[1]   196 13898
+> dtmReduced <- dfmTrim(dtm, minCount=10, minDoc=3) # only words occuring at least 10 times and in at least 3 documents
+Words appearing less than 10 times: 10871 
+Words appearing in fewer than 3 documents: 7853 
+> dim(dtmReduced)  # 196 docs x 3006 words
+[1]  196 3019
+> dtmSampled <- dfmTrim(dtm, sample=200)  # top 200 words
+Words appearing less than 5 times: 9206 
+Words appearing in fewer than 5 documents: 9639 
+Retaining a random sample of 200 words
+> dim(dtmSampled)  # 196 x 200 words
+[1] 196 200
+> 
+> 
+> 
+> cleanEx()
+> nameEx("flatten.dictionary")
+> ### * flatten.dictionary
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: flatten.dictionary
+> ### Title: Flatten a hierarchical dictionary into a list of character
+> ###   vectors
+> ### Aliases: flatten.dictionary
+> 
+> ### ** Examples
+> 
+> dictPopulismEN <-
++     list(populism=c("elit*", "consensus*", "undemocratic*", "referend*",
++                     "corrupt*", "propagand", "politici*", "*deceit*",
++                     "*deceiv*", "*betray*", "shame*", "scandal*", "truth*",
++                     "dishonest*", "establishm*", "ruling*"))
+> flatten.dictionary(dictPopulismEN)
+$populism
+ [1] "elit*"         "consensus*"    "undemocratic*" "referend*"    
+ [5] "corrupt*"      "propagand"     "politici*"     "*deceit*"     
+ [9] "*deceiv*"      "*betray*"      "shame*"        "scandal*"     
+[13] "truth*"        "dishonest*"    "establishm*"   "ruling*"      
+
+> 
+> hdict <- list(level1a = list(level1a1 = c("l1a11", "l1a12"),
++                              level1a2 = c("l1a21", "l1a22")),
++               level1b = list(level1b1 = c("l1b11", "l1b12"),
++                              level1b2 = c("l1b21", "l1b22", "l1b23")),
++               level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
++                              level1c1b = list(level1c1b1 = c("lowestalone"))))
+> flatten.dictionary(hdict)
+$level1a.level1a1
+[1] "l1a11" "l1a12"
+
+$level1a.level1a2
+[1] "l1a21" "l1a22"
+
+$level1b.level1b1
+[1] "l1b11" "l1b12"
+
+$level1b.level1b2
+[1] "l1b21" "l1b22" "l1b23"
+
+$level1c.level1c1a.level1c1a1
+[1] "lowest1" "lowest2"
+
+$level1c.level1c1b.level1c1b1
+[1] "lowestalone"
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getRootFileNames")
+> ### * getRootFileNames
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getRootFileNames
+> ### Title: Truncate absolute filepaths to root filenames
+> ### Aliases: getRootFileNames
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D getRootFileNames('/home/paul/documents/libdem09.txt')
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getTextDir")
+> ### * getTextDir
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getTextDir
+> ### Title: loads all text files from a given directory
+> ### Aliases: getTextDir
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D getTextDir('/home/paul/documents/')
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getTextDirGui")
+> ### * getTextDirGui
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getTextDirGui
+> ### Title: provides a gui interface to choose a gui to load texts from
+> ### Aliases: getTextDirGui
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D getTextFiles('/home/paul/documents/libdem09.txt')
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getTextFiles")
+> ### * getTextFiles
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getTextFiles
+> ### Title: load text files from disk into a vector of character vectors
+> ###   points to files, reads them into a character vector of the texts with
+> ###   optional names, default being filenames returns a named vector of
+> ###   complete, unedited texts
+> ### Aliases: getTextFiles
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D getTextFiles('/home/paul/documents/libdem09.txt')
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("kwic")
+> ### * kwic
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: kwic
+> ### Title: List key words in context from a text or a corpus of texts.
+> ### Aliases: kwic kwic.character kwic.corpus
+> 
+> ### ** Examples
+> 
+> data(iebudgets)
+> kwic(subset(iebudgets, year==2010), "Christmas", window=4)
+                                                             preword      word
+  [2010_BUDGET_02_Richard_Bruton_FG.txt, 628]        to see out this Christmas
+    [2010_BUDGET_03_Joan_Burton_LAB.txt, 371]   suggest titles for a Christmas
+    [2010_BUDGET_03_Joan_Burton_LAB.txt, 379]  Fáil’s hit single for Christmas
+    [2010_BUDGET_03_Joan_Burton_LAB.txt, 922] will say goodbye after Christmas
+   [2010_BUDGET_03_Joan_Burton_LAB.txt, 3159]   In previous years at Christmas
+   [2010_BUDGET_04_Arthur_Morgan_SF.txt, 346]        per week or the Christmas
+  [2010_BUDGET_04_Arthur_Morgan_SF.txt, 3244]        The loss of the Christmas
+  [2010_BUDGET_04_Arthur_Morgan_SF.txt, 3272]  on Santa presents and Christmas
+  [2010_BUDGET_04_Arthur_Morgan_SF.txt, 5899]    jobs, who face this Christmas
+[2010_BUDGET_07_Kieran_ODonnell_FG.txt, 1365]      the change in the Christmas
+  [2010_BUDGET_08_Eamon_Gilmore_LAB.txt, 550] of €641, including the Christmas
+  [2010_BUDGET_08_Eamon_Gilmore_LAB.txt, 638] on social welfare, the Christmas
+ [2010_BUDGET_13_Ciaran_Cuffe_Green.txt, 911] recently that over the Christmas
+                                                                    postword
+  [2010_BUDGET_02_Richard_Bruton_FG.txt, 628] in the hope of                
+    [2010_BUDGET_03_Joan_Burton_LAB.txt, 371] hit single. Fianna Fáil’s     
+    [2010_BUDGET_03_Joan_Burton_LAB.txt, 379] will be, “I saw               
+    [2010_BUDGET_03_Joan_Burton_LAB.txt, 922] because they must take        
+   [2010_BUDGET_03_Joan_Burton_LAB.txt, 3159] time people were laden        
+   [2010_BUDGET_04_Arthur_Morgan_SF.txt, 346] bonus. Of course, that        
+  [2010_BUDGET_04_Arthur_Morgan_SF.txt, 3244] bonus, a double payment       
+  [2010_BUDGET_04_Arthur_Morgan_SF.txt, 3272] food. The Government’s Scrooge
+  [2010_BUDGET_04_Arthur_Morgan_SF.txt, 5899] in debt, in poverty           
+[2010_BUDGET_07_Kieran_ODonnell_FG.txt, 1365] period. We suggested that     
+  [2010_BUDGET_08_Eamon_Gilmore_LAB.txt, 550] payment. A couple on          
+  [2010_BUDGET_08_Eamon_Gilmore_LAB.txt, 638] payment is gone. Earnest      
+ [2010_BUDGET_13_Ciaran_Cuffe_Green.txt, 911] recess work will be           
+> 
+> 
+> 
+> cleanEx()
+> nameEx("kwic2")
+> ### * kwic2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: kwic2
+> ### Title: This function is an alternative KWIC
+> ### Aliases: kwic2
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D kwic2(texts, "we", filter = '_2010', location=TRUE)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ngrams")
+> ### * ngrams
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ngrams
+> ### Title: Create ngrams
+> ### Aliases: ngrams
+> 
+> ### ** Examples
+> 
+> ngrams("The quick brown fox jumped over the lazy dog.", n=2)
+[1] "the_quick"   "quick_brown" "brown_fox"   "fox_jumped"  "jumped_over"
+[6] "over_the"    "the_lazy"    "lazy_dog"   
+> ngrams("The quick brown fox jumped over the lazy dog.", n=3)
+[1] "the_quick_brown"  "quick_brown_fox"  "brown_fox_jumped" "fox_jumped_over" 
+[5] "jumped_over_the"  "over_the_lazy"    "the_lazy_dog"    
+> ngrams("The quick brown fox jumped over the lazy dog.", n=3, concatenator="~")
+[1] "the~quick~brown"  "quick~brown~fox"  "brown~fox~jumped" "fox~jumped~over" 
+[5] "jumped~over~the"  "over~the~lazy"    "the~lazy~dog"    
+> ngrams("The quick brown fox jumped over the lazy dog.", n=3, include.all=TRUE)
+ [1] "the"              "quick"            "brown"            "fox"             
+ [5] "jumped"           "over"             "the"              "lazy"            
+ [9] "dog"              "the_quick"        "quick_brown"      "brown_fox"       
+[13] "fox_jumped"       "jumped_over"      "over_the"         "the_lazy"        
+[17] "lazy_dog"         "the_quick_brown"  "quick_brown_fox"  "brown_fox_jumped"
+[21] "fox_jumped_over"  "jumped_over_the"  "over_the_lazy"    "the_lazy_dog"    
+> 
+> 
+> 
+> cleanEx()
+> nameEx("selectFeatures")
+> ### * selectFeatures
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: selectFeatures
+> ### Title: extract feature words This function takes type of feature
+> ###   extractor and a word freaquency matrix with binary class (1/0) to
+> ###   select features in class one. 'wsll' and 'wschisq' replicates of
+> ###   'Keyness' of Wordsmith Tools.
+> ### Aliases: selectFeatures
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D texts <- getTextDir("/home/kohei/Documents/budget_2010/")
+> ##D class  <- rep(0, length(texts))
+> ##D class[grep("_LAB", names(texts))] <- 1
+> ##D class[grep("_FF", names(texts))] <- 0
+> ##D corpus <- corpusCreate(texts, attribs=list(class=class))
+> ##D dfm <- dfm(corpus)
+> ##D features <- selectFeatures('ll', dfm, corpus$attribs$class, smooth=1)
+> ## End(Not run)
+> ## Not run: 
+> ##D texts <- getTextDir("/home/kohei/Documents/budget_2010/")
+> ##D class  <- rep(0, length(texts))
+> ##D class[grep("_LAB", names(texts))] <- 1
+> ##D class[grep("_FF", names(texts))] <- 0
+> ##D corpus <- corpusCreate(texts, attribs=list(class=class))
+> ##D dfm <- dfm(corpus)
+> ##D features <- selectFeatures('ll', dfm, corpus$attribs$class, smooth=1)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("sentenceSeg")
+> ### * sentenceSeg
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: sentenceSeg
+> ### Title: split a text into sentences This function takes a text and
+> ###   splits it into sentences.
+> ### Aliases: sentenceSeg
+> 
+> ### ** Examples
+> 
+> test <- "This is a sentence! Several sentences. It's designed by a Dr. to test whether this function works. Or not? Or not."
+> sentenceSeg(test)
+[[1]]
+[1] "This is a sentence"
+
+[[2]]
+[1] "Several sentences"
+
+[[3]]
+[1] "It's designed by a Dr to test whether this function works . "
+
+[[4]]
+[1] "Or not"
+
+[[5]]
+[1] "Or not."
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("stopwordsGet")
+> ### * stopwordsGet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: stopwordsGet
+> ### Title: access stopwords
+> ### Aliases: stopwordsGet
+> 
+> ### ** Examples
+> 
+> stopwordsGet()
+  [1] "i"          "me"         "my"         "myself"     "we"        
+  [6] "our"        "ours"       "ourselves"  "you"        "your"      
+ [11] "yours"      "yourself"   "yourselves" "he"         "him"       
+ [16] "his"        "himself"    "she"        "her"        "hers"      
+ [21] "herself"    "it"         "its"        "itself"     "they"      
+ [26] "them"       "their"      "theirs"     "themselves" "what"      
+ [31] "which"      "who"        "whom"       "this"       "that"      
+ [36] "these"      "those"      "am"         "is"         "are"       
+ [41] "was"        "were"       "be"         "been"       "being"     
+ [46] "have"       "has"        "had"        "having"     "do"        
+ [51] "does"       "did"        "doing"      "would"      "should"    
+ [56] "could"      "ought"      "i'm"        "you're"     "he's"      
+ [61] "she's"      "it's"       "we're"      "they're"    "i've"      
+ [66] "you've"     "we've"      "they've"    "i'd"        "you'd"     
+ [71] "he'd"       "she'd"      "we'd"       "they'd"     "i'll"      
+ [76] "you'll"     "he'll"      "she'll"     "we'll"      "they'll"   
+ [81] "isn't"      "aren't"     "wasn't"     "weren't"    "hasn't"    
+ [86] "haven't"    "hadn't"     "doesn't"    "don't"      "didn't"    
+ [91] "won't"      "wouldn't"   "shan't"     "shouldn't"  "can't"     
+ [96] "cannot"     "couldn't"   "mustn't"    "let's"      "that's"    
+[101] "who's"      "what's"     "here's"     "there's"    "when's"    
+[106] "where's"    "why's"      "how's"      "a"          "an"        
+[111] "the"        "and"        "but"        "if"         "or"        
+[116] "because"    "as"         "until"      "while"      "of"        
+[121] "at"         "by"         "for"        "with"       "about"     
+[126] "against"    "between"    "into"       "through"    "during"    
+[131] "before"     "after"      "above"      "below"      "to"        
+[136] "from"       "up"         "down"       "in"         "out"       
+[141] "on"         "off"        "over"       "under"      "again"     
+[146] "further"    "then"       "once"       "here"       "there"     
+[151] "when"       "where"      "why"        "how"        "all"       
+[156] "any"        "both"       "each"       "few"        "more"      
+[161] "most"       "other"      "some"       "such"       "no"        
+[166] "nor"        "not"        "only"       "own"        "same"      
+[171] "so"         "than"       "too"        "very"      
+> stopwordsGet("italian")
+  [1] "ad"         "al"         "allo"       "ai"         "agli"      
+  [6] "all"        "agl"        "alla"       "alle"       "con"       
+ [11] "col"        "coi"        "da"         "dal"        "dallo"     
+ [16] "dai"        "dagli"      "dall"       "dagl"       "dalla"     
+ [21] "dalle"      "di"         "del"        "dello"      "dei"       
+ [26] "degli"      "dell"       "degl"       "della"      "delle"     
+ [31] "in"         "nel"        "nello"      "nei"        "negli"     
+ [36] "nell"       "negl"       "nella"      "nelle"      "su"        
+ [41] "sul"        "sullo"      "sui"        "sugli"      "sull"      
+ [46] "sugl"       "sulla"      "sulle"      "per"        "tra"       
+ [51] "contro"     "io"         "tu"         "lui"        "lei"       
+ [56] "noi"        "voi"        "loro"       "mio"        "mia"       
+ [61] "miei"       "mie"        "tuo"        "tua"        "tuoi"      
+ [66] "tue"        "suo"        "sua"        "suoi"       "sue"       
+ [71] "nostro"     "nostra"     "nostri"     "nostre"     "vostro"    
+ [76] "vostra"     "vostri"     "vostre"     "mi"         "ti"        
+ [81] "ci"         "vi"         "lo"         "la"         "li"        
+ [86] "le"         "gli"        "ne"         "il"         "un"        
+ [91] "uno"        "una"        "ma"         "ed"         "se"        
+ [96] "perché"     "anche"      "come"       "dov"        "dove"      
+[101] "che"        "chi"        "cui"        "non"        "più"       
+[106] "quale"      "quanto"     "quanti"     "quanta"     "quante"    
+[111] "quello"     "quelli"     "quella"     "quelle"     "questo"    
+[116] "questi"     "questa"     "queste"     "si"         "tutto"     
+[121] "tutti"      "a"          "c"          "e"          "i"         
+[126] "l"          "o"          "ho"         "hai"        "ha"        
+[131] "abbiamo"    "avete"      "hanno"      "abbia"      "abbiate"   
+[136] "abbiano"    "avrò"       "avrai"      "avrà"       "avremo"    
+[141] "avrete"     "avranno"    "avrei"      "avresti"    "avrebbe"   
+[146] "avremmo"    "avreste"    "avrebbero"  "avevo"      "avevi"     
+[151] "aveva"      "avevamo"    "avevate"    "avevano"    "ebbi"      
+[156] "avesti"     "ebbe"       "avemmo"     "aveste"     "ebbero"    
+[161] "avessi"     "avesse"     "avessimo"   "avessero"   "avendo"    
+[166] "avuto"      "avuta"      "avuti"      "avute"      "sono"      
+[171] "sei"        "è"          "siamo"      "siete"      "sia"       
+[176] "siate"      "siano"      "sarò"       "sarai"      "sarà"      
+[181] "saremo"     "sarete"     "saranno"    "sarei"      "saresti"   
+[186] "sarebbe"    "saremmo"    "sareste"    "sarebbero"  "ero"       
+[191] "eri"        "era"        "eravamo"    "eravate"    "erano"     
+[196] "fui"        "fosti"      "fu"         "fummo"      "foste"     
+[201] "furono"     "fossi"      "fosse"      "fossimo"    "fossero"   
+[206] "essendo"    "faccio"     "fai"        "facciamo"   "fanno"     
+[211] "faccia"     "facciate"   "facciano"   "farò"       "farai"     
+[216] "farà"       "faremo"     "farete"     "faranno"    "farei"     
+[221] "faresti"    "farebbe"    "faremmo"    "fareste"    "farebbero" 
+[226] "facevo"     "facevi"     "faceva"     "facevamo"   "facevate"  
+[231] "facevano"   "feci"       "facesti"    "fece"       "facemmo"   
+[236] "faceste"    "fecero"     "facessi"    "facesse"    "facessimo" 
+[241] "facessero"  "facendo"    "sto"        "stai"       "sta"       
+[246] "stiamo"     "stanno"     "stia"       "stiate"     "stiano"    
+[251] "starò"      "starai"     "starà"      "staremo"    "starete"   
+[256] "staranno"   "starei"     "staresti"   "starebbe"   "staremmo"  
+[261] "stareste"   "starebbero" "stavo"      "stavi"      "stava"     
+[266] "stavamo"    "stavate"    "stavano"    "stetti"     "stesti"    
+[271] "stette"     "stemmo"     "steste"     "stettero"   "stessi"    
+[276] "stesse"     "stessimo"   "stessero"   "stando"    
+> 
+> 
+> 
+> cleanEx()
+> nameEx("stopwordsRemove")
+> ### * stopwordsRemove
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: stopwordsRemove
+> ### Title: remove stopwords from a text or dfm
+> ### Aliases: stopwordsRemove stopwordsRemove.character
+> ###   stopwordsRemove.matrix
+> 
+> ### ** Examples
+> 
+> ## examples for character objects
+> someText <- "Here is an example of text containing some stopwords we want to remove."
+> itText <- "Ecco un esempio di testo contenente alcune parole non significative che vogliamo rimuovere."
+> stopwordsRemove(someText)
+[1] "Here an example text containing stopwords want remove."
+> stopwordsRemove(someText, stopwordsGet("SMART"))
+[1] "Here an of text some stopwords want remove."
+> stopwordsRemove(itText, stopwordsGet("italian"))
+[1] "Ecco esempio testo contenente alcune parole significative vogliamo rimuovere."
+> stopwordsRemove(someText, c("containing", "example"))
+[1] "Here is an  of text  some stopwords we want to remove."
+> 
+> ## example for dfm objects
+> data(iebudgets)
+> wfm <- dfm(subset(iebudgets, year==2010))
+Creating dfm: ... done. 
+> wfm.nostopwords <- stopwordsRemove(wfm)
+> dim(wfm)
+[1]   14 4929
+> dim(wfm.nostopwords)
+[1]   14 4812
+> dim(stopwordsRemove(wfm, stopwordsGet("SMART")))
+[1]   14 4545
+> 
+> 
+> 
+> cleanEx()
+> nameEx("subset.corpus")
+> ### * subset.corpus
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: subset.corpus
+> ### Title: extract a subset of a corpus
+> ### Aliases: subset.corpus
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(iebudgets)
+> ##D iebudgets2010 <- subset(iebudgets, year==2010)
+> ##D summary(iebudgets2010)
+> ##D iebudgetsLenihan <- subset(iebudgets, speaker="Lenihan", select=c(speaker, year))
+> ##D summary(iebudgetsLenihan)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("summary.corpus")
+> ### * summary.corpus
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: summary.corpus
+> ### Title: Corpus summary
+> ### Aliases: summary.corpus
+> 
+> ### ** Examples
+> 
+> data(iebudgets)
+> summary(iebudgets, subset=(year==2010))
+Corpus object contains 14 texts.
+
+                                     Texts Types Tokens Sentences year debate
+       2010_BUDGET_01_Brian_Lenihan_FF.txt  1655   7799       390 2010 BUDGET
+      2010_BUDGET_02_Richard_Bruton_FG.txt   956   4058       222 2010 BUDGET
+        2010_BUDGET_03_Joan_Burton_LAB.txt  1485   5770       329 2010 BUDGET
+       2010_BUDGET_04_Arthur_Morgan_SF.txt  1463   6481       349 2010 BUDGET
+         2010_BUDGET_05_Brian_Cowen_FF.txt  1473   5880       262 2010 BUDGET
+          2010_BUDGET_06_Enda_Kenny_FG.txt  1066   3875       161 2010 BUDGET
+     2010_BUDGET_07_Kieran_ODonnell_FG.txt   614   2066       141 2010 BUDGET
+      2010_BUDGET_08_Eamon_Gilmore_LAB.txt  1098   3800       208 2010 BUDGET
+    2010_BUDGET_09_Michael_Higgins_LAB.txt   447   1136        49 2010 BUDGET
+       2010_BUDGET_10_Ruairi_Quinn_LAB.txt   418   1177        60 2010 BUDGET
+     2010_BUDGET_11_John_Gormley_Green.txt   363    929        49 2010 BUDGET
+       2010_BUDGET_12_Eamon_Ryan_Green.txt   482   1513        90 2010 BUDGET
+     2010_BUDGET_13_Ciaran_Cuffe_Green.txt   423   1143        48 2010 BUDGET
+ 2010_BUDGET_14_Caoimhghin_OCaolain_SF.txt  1055   3654       194 2010 BUDGET
+ no      fname  speaker party
+ 01      Brian  Lenihan    FF
+ 02    Richard   Bruton    FG
+ 03       Joan   Burton   LAB
+ 04     Arthur   Morgan    SF
+ 05      Brian    Cowen    FF
+ 06       Enda    Kenny    FG
+ 07     Kieran ODonnell    FG
+ 08      Eamon  Gilmore   LAB
+ 09    Michael  Higgins   LAB
+ 10     Ruairi    Quinn   LAB
+ 11       John  Gormley Green
+ 12      Eamon     Ryan Green
+ 13     Ciaran    Cuffe Green
+ 14 Caoimhghin OCaolain    SF
+
+Source:  /home/paul/* on x86_64 by paul.
+Created: Wed Nov 28 16:49:22 2012.
+Notes:   NA.
+
+> summary(iebudgets, nmax=10)
+Corpus object contains 196 texts.
+
+                                   Texts Types Tokens Sentences year debate no
+    2012_BUDGET_01_Michael_Noonan_FG.txt  1538   6450       294 2012 BUDGET 01
+   2012_BUDGET_02_Michael_McGrath_FF.txt  1417   6098       307 2012 BUDGET 02
+    2012_BUDGET_03_Pearse_Doherty_SF.txt  1606   6813       378 2012 BUDGET 03
+    2012_BUDGET_04_Mick_Wallace_Indp.txt   577   1531        98 2012 BUDGET 04
+ 2012_BUDGET_05_Richard_Barrett_PBPA.txt   577   1820        88 2012 BUDGET 05
+      2012_BUDGET_06_Shane_Ross_Indp.txt   505   1575        78 2012 BUDGET 06
+        2012_BUDGET_07_Enda_Kenny_FG.txt  1092   4000       183 2012 BUDGET 07
+     2012_BUDGET_08_Pat_Rabbitte_LAB.txt  1015   3613       199 2012 BUDGET 08
+    2012_BUDGET_09_Micheal_Martin_FF.txt  1355   5016       258 2012 BUDGET 09
+       2012_BUDGET_10_Gerry_Adams_SF.txt  1131   3510       199 2012 BUDGET 10
+   fname  speaker party
+ Michael   Noonan    FG
+ Michael  McGrath    FF
+  Pearse  Doherty    SF
+    Mick  Wallace  Indp
+ Richard  Barrett  PBPA
+   Shane     Ross  Indp
+    Enda    Kenny    FG
+     Pat Rabbitte   LAB
+ Micheal   Martin    FF
+   Gerry    Adams    SF
+
+Source:  /home/paul/* on x86_64 by paul.
+Created: Wed Nov 28 16:49:22 2012.
+Notes:   NA.
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("tagPos")
+> ### * tagPos
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: tagPos
+> ### Title: Returns a table of the occurrences of different parts of speech
+> ###   in a sentence This function takes a sentence and tags each word with
+> ###   it's part of speech using openNLP's POS tagger, then returns a table
+> ###   of the parts of speech
+> ### Aliases: tagPos
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D tagPos("This is an example sentence with nouns and verbs for tagging.")
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("tokenize")
+> ### * tokenize
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: tokenize
+> ### Title: Split a string into words The input text is split into words by
+> ###   whitespace
+> ### Aliases: tokenize
+> 
+> ### ** Examples
+> 
+> testtxt <- "The quick brown fox named Séamus jumps over the lazy dog Rory, with Tom's newpaper in his mouth."
+> tokenize(testtxt)
+ [1] "the"      "quick"    "brown"    "fox"      "named"    "séamus"  
+ [7] "jumps"    "over"     "the"      "lazy"     "dog"      "rory"    
+[13] "with"     "toms"     "newpaper" "in"       "his"      "mouth"   
+> tokenize(testtxt, lower=FALSE)
+ [1] "The"      "quick"    "brown"    "fox"      "named"    "Séamus"  
+ [7] "jumps"    "over"     "the"      "lazy"     "dog"      "Rory"    
+[13] "with"     "Toms"     "newpaper" "in"       "his"      "mouth"   
+> 
+> 
+> 
+> cleanEx()
+> nameEx("translate")
+> ### * translate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: translate
+> ### Title: Send text to the google translate research API This function
+> ###   translates a text by sending it to the google translate API.
+> ### Aliases: translate
+> 
+> ### ** Examples
+> 
+> ## Not run: translation <- translate(original, fr, de, key='insertkeyhere')
+> 
+> 
+> 
+> cleanEx()
+> nameEx("translate.corpus")
+> ### * translate.corpus
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: translate.corpus
+> ### Title: Send a corpus to the google translate research API This function
+> ###   translates a the texts in a corpus by sending them to the google
+> ###   translate API.
+> ### Aliases: translate.corpus
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D translation <- translate(original, fr, de, key='insertkeyhere')
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("twitterTerms")
+> ### * twitterTerms
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: twitterTerms
+> ### Title: make a corpus object from results of a twitter REST search
+> ### Aliases: twitterTerms
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D twCorp <- twitterTerms('example', 10, key, cons_secret, token, access_secret)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("wordfishMCMC")
+> ### * wordfishMCMC
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: wordfishMCMC
+> ### Title: Bayesian-MCMC version of the "wordfish" Poisson scaling model
+> ### Aliases: wordfishMCMC
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(iebudgets)
+> ##D # extract just the 2010 debates
+> ##D iebudgets2010 <- corpus.subset(iebudgets, year==2010)
+> ##D 
+> ##D # create a document-term matrix and set the word margin to the columns
+> ##D dtm <- create.fvm.corpus(iebudgets2010)
+> ##D dtm <- wfm(t(dtm), word.margin=2)
+> ##D 
+> ##D # estimate the maximium likelihood wordfish model from austin
+> ##D iebudgets2010_wordfish <- wordfish(dtm, dir=c(2,1))
+> ##D 
+> ##D # estimate the MCMC model, default values
+> ##D iebudgets2010_wordfishMCMC <- wordfishMCMC(dtm, dir=c(2,1))
+> ##D 
+> ##D # compare the estimates of \eqn{\theta_i}
+> ##D plot(iebudgets2010_wordfish$theta, iebudgets2010_wordfishMCMC$theta)
+> ##D 
+> ##D # MCMC with a partition of the word parameters according to govt and opposition
+> ##D # (FF and Greens were in government in during the debate over the 2010 budget)
+> ##D # set the constraint on word partitioned parameters to be the same for "the" and "and"
+> ##D iebudgets2010_wordfishMCMC_govtopp <-
+> ##D     wordfishMCMC(dtm, dir=c(2,1),
+> ##D     wordPartition=(iebudgets2010$attribs$party=="FF" | iebudgets2010$attribs$party=="Green"),
+> ##D     betaPartition=TRUE, wordConstraints=which(words(dtm)=="the"))
+> ## End(Not run)
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  36.242 0.164 36.44 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

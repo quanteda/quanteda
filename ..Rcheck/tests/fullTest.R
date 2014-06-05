@@ -42,5 +42,5 @@ amicusNbp <- predict(amicusNb)
 # compare the predicted class (rows) versus the actual class (columns)
 table(amicusNbp$docs$nb.predicted, amicusCorpus$attribs$testclass)
 
-#tokens <- tokenize(amicusCorpus)
-#contexts <- kwic( amicusCorpus, 'equality', window=10)
+tokens <- tokenize(amicusCorpus)
+contexts <- kwic( amicusCorpus, 'equality', window=10)

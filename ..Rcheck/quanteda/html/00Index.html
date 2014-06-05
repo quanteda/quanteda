@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Quantitative Analysis of Textual Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+<h1> Quantitative Analysis of Textual Data
+<img class="toplogo" src="../../../doc/html/logo.jpg" alt="[R logo]">
+</h1>
+<hr>
+<div align="center">
+<a href="../../../doc/html/packages.html"><img src="../../../doc/html/left.jpg" alt="[Up]" width="30" height="30" border="0"></a>
+<a href="../../../doc/html/index.html"><img src="../../../doc/html/up.jpg" alt="[Top]" width="30" height="30" border="0"></a>
+</div><h2>Documentation for package &lsquo;quanteda&rsquo; version 0.12</h2>
+
+<ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
+</ul>
+
+<h2>Help Pages</h2>
+
+
+<table width="100%">
+<tr><td width="25%"><a href="bigrams.html">bigrams</a></td>
+<td>Create bigrams</td></tr>
+<tr><td width="25%"><a href="clean.html">clean</a></td>
+<td>Perform basic cleanup on a character object</td></tr>
+<tr><td width="25%"><a href="collocations.html">collocations</a></td>
+<td>Detect collocations in a text</td></tr>
+<tr><td width="25%"><a href="corpusAddAttributes.html">corpusAddAttributes</a></td>
+<td>This function adds a named list of attributes to an existing corpus</td></tr>
+<tr><td width="25%"><a href="corpusAppend.html">corpusAppend</a></td>
+<td>function to add new texts and attributes to an existing corpus Accepts a list of texts and a list of associated attributes and adds them to the corpus</td></tr>
+<tr><td width="25%"><a href="corpusCreate.html">corpusCreate</a></td>
+<td>Create a new corpus This function creates a corpus from a character vector (of texts), adds text-specific variables (which we term "attributes"), along with optional meta-data and notes.</td></tr>
+<tr><td width="25%"><a href="corpusFromFilenames.html">corpusFromFilenames</a></td>
+<td>create a new corpus with attribute-value pairs taken from filenames</td></tr>
+<tr><td width="25%"><a href="corpusFromHeaders.html">corpusFromHeaders</a></td>
+<td>create a new corpus with attribute-value pairs taken from document headers</td></tr>
+<tr><td width="25%"><a href="corpusReshape.html">corpusReshape</a></td>
+<td>Transform a corpus by splitting texts into sentences</td></tr>
+<tr><td width="25%"><a href="countSyllables.html">countSyllables</a></td>
+<td>Returns a count of the number of syllables in the input This function takes a text and returns a count of the number of syllables it contains. For British English words, the syllable count is exact and looked up from the CMU pronunciation dictionary. For any word not in the dictionary the syllable count is estimated by counting vowel clusters.</td></tr>
+<tr><td width="25%"><a href="create.fvm.corpus.html">create.fvm.corpus</a></td>
+<td>Create a feature-value matrix from a corpus object returns a feature value matrix compatible with austin</td></tr>
+<tr><td width="25%"><a href="describeTexts.html">describeTexts</a></td>
+<td>print a summary of texts Prints to the console a desription of the texts, including number of types, tokens, and sentences</td></tr>
+<tr><td width="25%"><a href="dfm.html">dfm</a></td>
+<td>Create a document-feature matrix from a corpus object</td></tr>
+<tr><td width="25%"><a href="dfm.html">dfm.corpus</a></td>
+<td>Create a document-feature matrix from a corpus object</td></tr>
+<tr><td width="25%"><a href="dfm2ldaformat.html">dfm2ldaformat</a></td>
+<td>Convert a quanteda 'dfm' (document feature matrix) into a the data format needed by lda</td></tr>
+<tr><td width="25%"><a href="dfm2tmformat.html">dfm2tmformat</a></td>
+<td>Convert a quanteda 'dfm' (document feature matrix) into a 'tm' DocumentTermMatrix</td></tr>
+<tr><td width="25%"><a href="dfmTrim.html">dfmTrim</a></td>
+<td>Trim a dfm based on a subset of features and words</td></tr>
+<tr><td width="25%"><a href="flatten.dictionary.html">flatten.dictionary</a></td>
+<td>Flatten a hierarchical dictionary into a list of character vectors</td></tr>
+<tr><td width="25%"><a href="getRootFileNames.html">getRootFileNames</a></td>
+<td>Truncate absolute filepaths to root filenames</td></tr>
+<tr><td width="25%"><a href="getTextDir.html">getTextDir</a></td>
+<td>loads all text files from a given directory</td></tr>
+<tr><td width="25%"><a href="getTextDirGui.html">getTextDirGui</a></td>
+<td>provides a gui interface to choose a gui to load texts from</td></tr>
+<tr><td width="25%"><a href="getTextFiles.html">getTextFiles</a></td>
+<td>load text files from disk into a vector of character vectors points to files, reads them into a character vector of the texts with optional names, default being filenames returns a named vector of complete, unedited texts</td></tr>
+<tr><td width="25%"><a href="getWordStat.html">getWordStat</a></td>
+<td>Imports a Wordstat corpus from an XML file</td></tr>
+<tr><td width="25%"><a href="getWordStatCSV.html">getWordStatCSV</a></td>
+<td>Imports a Wordstat corpus from a CSV file</td></tr>
+<tr><td width="25%"><a href="ieAttribs.html">ieAttribs</a></td>
+<td>A vector of attributes to match ieBudget documents</td></tr>
+<tr><td width="25%"><a href="ieTexts.html">ieTexts</a></td>
+<td>A vector of texts from Irish budget debates for use with examples</td></tr>
+<tr><td width="25%"><a href="ieTextsHeaders.html">ieTextsHeaders</a></td>
+<td>A version of ieTexts with attributes contained in JSON headers</td></tr>
+<tr><td width="25%"><a href="kwic.html">kwic</a></td>
+<td>List key words in context from a text or a corpus of texts.</td></tr>
+<tr><td width="25%"><a href="kwic.html">kwic.character</a></td>
+<td>List key words in context from a text or a corpus of texts.</td></tr>
+<tr><td width="25%"><a href="kwic.html">kwic.corpus</a></td>
+<td>List key words in context from a text or a corpus of texts.</td></tr>
+<tr><td width="25%"><a href="kwic2.html">kwic2</a></td>
+<td>This function is an alternative KWIC</td></tr>
+<tr><td width="25%"><a href="likelihood.test.html">likelihood.test</a></td>
+<td>likelihood test for 2x2 tables</td></tr>
+<tr><td width="25%"><a href="MCMCirtPoisson1d.html">MCMCirtPoisson1d</a></td>
+<td>Bayesian-MCMC version of a 1-dimensional Poisson IRT scaling model</td></tr>
+<tr><td width="25%"><a href="movies.html">movies</a></td>
+<td>A corpus object containing 2000 movie reviews</td></tr>
+<tr><td width="25%"><a href="naiveBayesText.html">naiveBayesText</a></td>
+<td>Naive Bayes classifier for texts</td></tr>
+<tr><td width="25%"><a href="ngrams.html">ngrams</a></td>
+<td>Create ngrams</td></tr>
+<tr><td width="25%"><a href="predict.html">predict.naivebayes</a></td>
+<td>prediction method for Naive Bayes classifiers</td></tr>
+<tr><td width="25%"><a href="readWStatDict.html">readWStatDict</a></td>
+<td>This function makes a flattened dictionary from a Wordstat hierarchical dictionary</td></tr>
+<tr><td width="25%"><a href="selectFeatures.html">selectFeatures</a></td>
+<td>extract feature words This function takes type of feature extractor and a word freaquency matrix with binary class (1/0) to select features in class one. 'wsll' and 'wschisq' replicates of 'Keyness' of Wordsmith Tools.</td></tr>
+<tr><td width="25%"><a href="sentenceSeg.html">sentenceSeg</a></td>
+<td>split a text into sentences This function takes a text and splits it into sentences.</td></tr>
+<tr><td width="25%"><a href="stopwords.html">stopwords</a></td>
+<td>A named list containing common stopwords in 14 languages</td></tr>
+<tr><td width="25%"><a href="stopwordsGet.html">stopwordsGet</a></td>
+<td>access stopwords</td></tr>
+<tr><td width="25%"><a href="stopwordsRemove.html">stopwordsRemove</a></td>
+<td>remove stopwords from a text or dfm</td></tr>
+<tr><td width="25%"><a href="stopwordsRemove.html">stopwordsRemove.character</a></td>
+<td>remove stopwords from a text or dfm</td></tr>
+<tr><td width="25%"><a href="stopwordsRemove.html">stopwordsRemove.matrix</a></td>
+<td>remove stopwords from a text or dfm</td></tr>
+<tr><td width="25%"><a href="subset.corpus.html">subset.corpus</a></td>
+<td>extract a subset of a corpus</td></tr>
+<tr><td width="25%"><a href="summary.corpus.html">summary.corpus</a></td>
+<td>Corpus summary</td></tr>
+<tr><td width="25%"><a href="sylCounts.html">sylCounts</a></td>
+<td>A named list mapping words to counts of their syllables</td></tr>
+<tr><td width="25%"><a href="tagPos.html">tagPos</a></td>
+<td>Returns a table of the occurrences of different parts of speech in a sentence This function takes a sentence and tags each word with it's part of speech using openNLP's POS tagger, then returns a table of the parts of speech</td></tr>
+<tr><td width="25%"><a href="tokenize.html">tokenize</a></td>
+<td>Split a string into words The input text is split into words by whitespace</td></tr>
+<tr><td width="25%"><a href="translate.html">translate</a></td>
+<td>Send text to the google translate research API This function translates a text by sending it to the google translate API.</td></tr>
+<tr><td width="25%"><a href="translate.corpus.html">translate.corpus</a></td>
+<td>Send a corpus to the google translate research API This function translates a the texts in a corpus by sending them to the google translate API.</td></tr>
+<tr><td width="25%"><a href="twitterSearch.html">twitterSearch</a></td>
+<td>work-in-progress from-scratch interface to Twitter search API</td></tr>
+<tr><td width="25%"><a href="twitterStreamer.html">twitterStreamer</a></td>
+<td>work-in-progress interface to Twitter streaming API</td></tr>
+<tr><td width="25%"><a href="twitterTerms.html">twitterTerms</a></td>
+<td>make a corpus object from results of a twitter REST search</td></tr>
+<tr><td width="25%"><a href="wordfishMCMC.html">wordfishMCMC</a></td>
+<td>Bayesian-MCMC version of the "wordfish" Poisson scaling model</td></tr>
+</table>
+</body></html>
