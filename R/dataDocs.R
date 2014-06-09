@@ -4,24 +4,24 @@
 #' @docType data
 NULL
 
-#' @name ieTexts
-#' @title A vector of texts from Irish budget debates for use with examples
-#' @description This is a small vector of texts from the ieBudget corpus for use with testing examples
-#' @docType data
-NULL
-
 #' @name ieTextsHeaders
-#' @title A version of ieTexts with attributes contained in JSON headers
+#' @title Irish budget speeches headers
 #' @description This is a small vector of texts for use in examples with corpusFromHeaders
 #' @docType data
 NULL
 
 #' @name ieTexts
-#' @title A vector of texts from Irish budget debates for use with examples
+#' @title Irish budget speeches texts
 #' @description This is a small vector of texts from the ieBudget corpus for use with testing examples
 #' @docType data
 NULL
 
+#' @name iebudgets
+#' @title Irish budget speeches corpus
+#' @description A corpus containing speeches from Irish budget debates in 2008-2012. Each text has attributes
+#' for party, speaker and year 
+#' @docType data
+NULL
 
 #' @name movies
 #' @title A corpus object containing 2000 movie reviews
@@ -45,11 +45,15 @@ NULL
 #' language tags may be used.
 NULL
 
-#' @name sylCounts
+#' @name syllableCounts
 #' @docType data
 #' @title A named list mapping words to counts of their syllables
 #' @description A named list mapping words to counts of their syllables, generated from
 #' the CMU pronunciation dictionary
+#' @examples
+#' data(sylcounts)
+#' syllableCounts["sixths"]
+#' syllableCounts["onomatopeia"]
 #' @references \url{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}
 #' 
 NULL

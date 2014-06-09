@@ -2,12 +2,7 @@
 # Runs the github exapmple, and calls a few other functions to check everything is working.
 # Ken test change from github client to dev
 
-
 library(quanteda)
-
-
-
-
 #### Analyze Bollinger texts from Evans et al JELS 2007
 # load in Amicus texts from a zipped web archive
 
