@@ -20,6 +20,7 @@ NULL
 #' @title Irish budget speeches corpus
 #' @description A corpus containing speeches from Irish budget debates in 2008-2012. Each text has attributes
 #' for party, speaker and year 
+#' @references \url{http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2225069}
 #' @docType data
 NULL
 
