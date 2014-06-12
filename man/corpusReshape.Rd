@@ -6,8 +6,6 @@ corpusReshape(corpus)
 }
 \arguments{
   \item{corpus}{Corpus to transform}
-
-  \item{feature}{Feature to count}
 }
 \description{
 Each text in the corpus is split into sentences, and each

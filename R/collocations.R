@@ -7,6 +7,7 @@
 #' @param top threshold number for number of collocations to be returned (in descending order of association value)
 #' @param distance distance between pairs of collocations
 #' @param method association measure for detecting collocations
+#' @param n Only bigrams (n=2) implemented so far.
 #' @return A list of collocations, their frequencies, and their test statistics
 #' @export 
 #' @author Kenneth Benoit

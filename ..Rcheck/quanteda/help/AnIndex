@@ -23,6 +23,7 @@ getTextFiles	getTextFiles
 getWordStat	getWordStat
 getWordStatCSV	getWordStatCSV
 ieAttribs	ieAttribs
+iebudgets	iebudgets
 ieTexts	ieTexts
 ieTextsHeaders	ieTextsHeaders
 kwic	kwic
@@ -46,6 +47,7 @@ stopwordsRemove.matrix	stopwordsRemove
 subset.corpus	subset.corpus
 summary.corpus	summary.corpus
 sylCounts	sylCounts
+syllableCounts	syllableCounts
 tagPos	tagPos
 tokenize	tokenize
 translate	translate

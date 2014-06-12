@@ -57,10 +57,9 @@ getWordStat             Imports a Wordstat corpus from an XML file
 getWordStatCSV          Imports a Wordstat corpus from a CSV file
 ieAttribs               A vector of attributes to match ieBudget
                         documents
-ieTexts                 A vector of texts from Irish budget debates for
-                        use with examples
-ieTextsHeaders          A version of ieTexts with attributes contained
-                        in JSON headers
+ieTexts                 Irish budget speeches texts
+ieTextsHeaders          Irish budget speeches headers
+iebudgets               Irish budget speeches corpus
 kwic                    List key words in context from a text or a
                         corpus of texts.
 kwic2                   This function is an alternative KWIC
@@ -85,6 +84,8 @@ stopwordsRemove         remove stopwords from a text or dfm
 subset.corpus           extract a subset of a corpus
 summary.corpus          Corpus summary
 sylCounts               A named list mapping words to counts of their
+                        syllables
+syllableCounts          A named list mapping words to counts of their
                         syllables
 tagPos                  Returns a table of the occurrences of different
                         parts of speech in a sentence This function

@@ -14,9 +14,10 @@
  breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]{hyperref}
 \hypersetup{pdfstartview={XYZ null null 1}}
 \usepackage{breakurl}
+\usepackage[utf8]{inputenc} 
 %\usepackage[authoryear]{natbib}
 
-\newcommand{\quanteda}{\textsf{quanteda}\ }
+\newcommand{\quanteda}{\textsf{quanteda}}
 
 \begin{document}
 %\SweaveOpts{concordance=TRUE}
@@ -260,7 +261,7 @@ summary(amicusCorpus, nmax=10)
 
 \end{document}
 
-In order to perform statistical analysis such as document scaling, we must extract a matrix containing the frequency of each word type from in document. In quanteda, we use the dfm function to produce such a matrix. \footnote{dfm stands for document-feature matrix --- we say `feature' instead of word, as it is sometimes useful to represent documents by features other than their word frequency.}
+In order to perform statistical analysis such as document scaling, we must extract a matrix containing the frequency of each word type from in document. In quanteda, we use the dfm function to produce such a matrix. \footnote{dfm stands for document-feature matrix --- we say ``feature'' instead of word, as it is sometimes useful to represent documents by features other than their word frequency.}
 
 <<>>=
 docMat <- dfm(ieBudgets2010)

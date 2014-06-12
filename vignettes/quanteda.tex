@@ -63,14 +63,13 @@
  breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]{hyperref}
 \hypersetup{pdfstartview={XYZ null null 1}}
 \usepackage{breakurl}
+\usepackage[utf8]{inputenc} 
 %\usepackage[authoryear]{natbib}
 
-\newcommand{\quanteda}{\textsf{quanteda}\ }
+\newcommand{\quanteda}{\textsf{quanteda}}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-
 \begin{document}
 %\SweaveOpts{concordance=TRUE}
-
 
 
 
@@ -182,11 +181,10 @@ computer, you can install the package directly using the
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(devtools)}
-\hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{require}\hlstd{(quanteda))} \hlkwd{install_github}\hlstd{(}\hlstr{"quanteda"}\hlstd{,} \hlkwc{username} \hlstd{=} \hlstr{"kbenoit"}\hlstd{)}
+\hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{require}\hlstd{(quanteda))} \hlkwd{install_github}\hlstd{(}\hlstr{"quanteda"}\hlstd{,} \hlkwc{username}\hlstd{=}\hlstr{"kbenoit"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-
 
 For other branches, for instance if you wish to install the
 \texttt{dev} branch (containing work in progress) rather than the
@@ -195,11 +193,10 @@ master, you should instead run
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{install_github}\hlstd{(}\hlstr{"quanteda"}\hlstd{,} \hlkwc{username} \hlstd{=} \hlstr{"kbenoit"}\hlstd{,} \hlkwc{ref} \hlstd{=} \hlstr{"dev"}\hlstd{)}
+\hlkwd{install_github}\hlstd{(}\hlstr{"quanteda"}\hlstd{,} \hlkwc{username}\hlstd{=}\hlstr{"kbenoit"}\hlstd{,} \hlkwc{ref}\hlstd{=}\hlstr{"dev"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-
 
 
 
@@ -230,12 +227,12 @@ labels that correspond with the elements of the filename.
 \hlkwd{library}\hlstd{(quanteda)}
 \hlstd{tmpDir} \hlkwb{<-} \hlkwd{tempdir}\hlstd{()}  \hlcom{# create a temporary directory for example files}
 \hlstd{textfile} \hlkwb{<-} \hlstr{"https://github.com/kbenoit/quanteda/blob/dev/texts/irishbudgets2010.zip?raw=true"}
-\hlkwd{download.file}\hlstd{(textfile,} \hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"irishbudgets2010.zip"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"/"}\hlstd{),} \hlkwc{method} \hlstd{=} \hlstr{"curl"}\hlstd{,}
-    \hlkwc{extra} \hlstd{=} \hlstr{"-L"}\hlstd{)}  \hlcom{# download this zipped archive of texts}
+\hlkwd{download.file}\hlstd{(textfile,} \hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"irishbudgets2010.zip"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{"/"}\hlstd{),}
+              \hlkwc{method}\hlstd{=}\hlstr{"curl"}\hlstd{,} \hlkwc{extra}\hlstd{=}\hlstr{"-L"}\hlstd{)} \hlcom{# download this zipped archive of texts}
 \hlcom{# unzip the file to the temporary folder}
-\hlkwd{unzip}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"irishbudgets2010.zip"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"/"}\hlstd{),} \hlkwc{exdir} \hlstd{= tmpDir)}
+\hlkwd{unzip}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"irishbudgets2010.zip"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{"/"}\hlstd{),} \hlkwc{exdir}\hlstd{=tmpDir)}
 \hlcom{# list the files unzipped}
-\hlkwd{list.files}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"budget_2010"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"/"}\hlstd{))}
+\hlkwd{list.files}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"budget_2010"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{"/"}\hlstd{))}
 \end{alltt}
 \begin{verbatim}
 ##  [1] "2010_BUDGET_01_Brian_Lenihan_FF.txt"      
@@ -255,12 +252,12 @@ labels that correspond with the elements of the filename.
 \end{verbatim}
 \begin{alltt}
 \hlcom{# create a corpus from the files, parsing the filenames}
-\hlstd{ieBudgets2010} \hlkwb{<-} \hlkwd{corpusFromFilenames}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"budget_2010"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"/"}\hlstd{),} \hlkwd{c}\hlstd{(}\hlstr{"year"}\hlstd{,}
-    \hlstr{"debate"}\hlstd{,} \hlstr{"number"}\hlstd{,} \hlstr{"firstname"}\hlstd{,} \hlstr{"lastname"}\hlstd{,} \hlstr{"party"}\hlstd{),} \hlkwc{sep} \hlstd{=} \hlstr{"_"}\hlstd{)}
+\hlstd{ieBudgets2010} \hlkwb{<-} \hlkwd{corpusFromFilenames}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"budget_2010"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{"/"}\hlstd{),}
+                                     \hlkwd{c}\hlstd{(}\hlstr{"year"}\hlstd{,} \hlstr{"debate"}\hlstd{,} \hlstr{"number"}\hlstd{,} \hlstr{"firstname"}\hlstd{,} \hlstr{"lastname"}\hlstd{,} \hlstr{"party"}\hlstd{),}
+                                     \hlkwc{sep}\hlstd{=}\hlstr{"_"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-
 
 This creates a new quanteda corpus object where each text has been associated values for its attribute types extracted from the filename:
 
@@ -303,36 +300,35 @@ This creates a new quanteda corpus object where each text has been associated va
 ##      02    Richard   Bruton    FG
 ##      01      Brian  Lenihan    FF
 ## 
-## Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
-## Created: Wed Jun  4 11:28:02 2014.
+## Source:  /home/paul/Dropbox/code/quanteda/vignettes/* on x86_64 by paul.
+## Created: Thu Jun 12 19:09:46 2014.
 ## Notes:   NA.
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-
 
 \subsubsection{From a vector of texts}
 
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{# load two vectors of texts (Bollinger texts from Evans et al JELS 2007) located}
-\hlcom{# in the texts directory of the github site}
+\hlcom{# load two vectors of texts (Bollinger texts from Evans et al JELS 2007)}
+\hlcom{# located in the texts directory of the github site}
 \hlstd{amicusFile} \hlkwb{<-} \hlstr{"https://github.com/kbenoit/quanteda/blob/dev/texts/amicus_curiae.zip?raw=true"}
 \hlstd{tmpDir} \hlkwb{<-} \hlkwd{tempdir}\hlstd{()}
-\hlkwd{download.file}\hlstd{(amicusFile,} \hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"amicus_curiae.zip"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"/"}\hlstd{),} \hlkwc{method} \hlstd{=} \hlstr{"curl"}\hlstd{,}
-    \hlkwc{extra} \hlstd{=} \hlstr{"-L"}\hlstd{)}  \hlcom{# download this zipped archive of texts}
+\hlkwd{download.file}\hlstd{(amicusFile,} \hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"amicus_curiae.zip"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{"/"}\hlstd{),}
+              \hlkwc{method}\hlstd{=}\hlstr{"curl"}\hlstd{,} \hlkwc{extra}\hlstd{=}\hlstr{"-L"}\hlstd{)} \hlcom{# download this zipped archive of texts}
 \hlcom{# unzip the file to the temporary folder}
-\hlkwd{unzip}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"amicus_curiae.zip"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"/"}\hlstd{),} \hlkwc{exdir} \hlstd{= tmpDir)}
+\hlkwd{unzip}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"amicus_curiae.zip"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{"/"}\hlstd{),} \hlkwc{exdir}\hlstd{=tmpDir)}
 
 \hlcom{# load in the texts to a vector of texts using quanteda's getTextDir()}
-\hlstd{amicusTexts} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{getTextDir}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"amicus/training"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"/"}\hlstd{)),} \hlkwd{getTextDir}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,}
-    \hlstr{"amicus/testing"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{"/"}\hlstd{)))}
+\hlstd{amicusTexts} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{getTextDir}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"amicus/training"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{"/"}\hlstd{)),}
+                 \hlkwd{getTextDir}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"amicus/testing"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{"/"}\hlstd{)))}
 \hlcom{# change the encoding (because texts contain special symbols such as §)}
-\hlstd{amicusTexts} \hlkwb{<-} \hlkwd{iconv}\hlstd{(amicusTexts,} \hlkwc{from} \hlstd{=} \hlstr{"latin1"}\hlstd{,} \hlkwc{to} \hlstd{=} \hlstr{"UTF-8"}\hlstd{)}
+\hlstd{amicusTexts} \hlkwb{<-} \hlkwd{iconv}\hlstd{(amicusTexts,} \hlkwc{from}\hlstd{=}\hlstr{"latin1"}\hlstd{,} \hlkwc{to}\hlstd{=}\hlstr{"UTF-8"}\hlstd{)}
 
-\hlcom{# examine the amicusTexts object - a named character vector where the names of}
-\hlcom{# the elements are the original text filename}
+\hlcom{# examine the amicusTexts object - a named character vector where the}
+\hlcom{# names of the elements are the original text filename}
 \hlkwd{str}\hlstd{(amicusTexts)}
 \end{alltt}
 \begin{verbatim}
@@ -341,44 +337,46 @@ This creates a new quanteda corpus object where each text has been associated va
 \end{verbatim}
 \begin{alltt}
 \hlcom{# set training class - Petitioner or Respondent, only known for the two test docs}
-\hlstd{trainclass} \hlkwb{<-} \hlkwd{factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"P"}\hlstd{,} \hlstr{"R"}\hlstd{,} \hlkwd{rep}\hlstd{(}\hlnum{NA}\hlstd{,} \hlkwd{length}\hlstd{(amicusTexts)} \hlopt{-} \hlnum{2}\hlstd{)))}
+\hlstd{trainclass} \hlkwb{<-} \hlkwd{factor}\hlstd{(}\hlkwd{c}\hlstd{(}\hlstr{"P"}\hlstd{,} \hlstr{"R"}\hlstd{,} \hlkwd{rep}\hlstd{(}\hlnum{NA}\hlstd{,} \hlkwd{length}\hlstd{(amicusTexts)}\hlopt{-}\hlnum{2}\hlstd{)))}
 
-\hlcom{# set test class, an attribute that could be used in classification here we take}
-\hlcom{# these from the text filenames, where 'AP' means Amicus brief for Petitioner}
+\hlcom{# set test class, an attribute that could be used in classification}
+\hlcom{# here we take these from the text filenames, where }
+\hlcom{# 'AP' means Amicus brief for Petitioner}
 \hlcom{# 'AR' means Amicus brief for Respondent}
-\hlstd{testclass} \hlkwb{<-} \hlkwd{rep}\hlstd{(}\hlnum{NA}\hlstd{,} \hlkwd{length}\hlstd{(amicusTexts))}  \hlcom{# initialize the variable}
+\hlstd{testclass}  \hlkwb{<-} \hlkwd{rep}\hlstd{(}\hlnum{NA}\hlstd{,} \hlkwd{length}\hlstd{(amicusTexts))} \hlcom{# initialize the variable}
 \hlstd{testclass[}\hlkwd{grep}\hlstd{(}\hlstr{"AP"}\hlstd{,} \hlkwd{names}\hlstd{(amicusTexts))]} \hlkwb{<-} \hlstr{"AP"}
 \hlstd{testclass[}\hlkwd{grep}\hlstd{(}\hlstr{"AR"}\hlstd{,} \hlkwd{names}\hlstd{(amicusTexts))]} \hlkwb{<-} \hlstr{"AR"}
 
 \hlcom{# make a corpus object with texts and training and test labels}
-\hlstd{amicusCorpus} \hlkwb{<-} \hlkwd{corpusCreate}\hlstd{(amicusTexts,} \hlkwc{attribs} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{trainclass} \hlstd{= trainclass,}
-    \hlkwc{testclass} \hlstd{= testclass),} \hlkwc{source} \hlstd{=} \hlstr{"Bollinger texts from Evans et al JELS 2007"}\hlstd{,}
-    \hlkwc{notes} \hlstd{=} \hlstr{"Created as part of the quanteda vignette"}\hlstd{)}
+\hlstd{amicusCorpus} \hlkwb{<-}
+  \hlkwd{corpusCreate}\hlstd{(amicusTexts,}
+               \hlkwc{attribs} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{trainclass}\hlstd{=trainclass,} \hlkwc{testclass}\hlstd{=testclass),}
+               \hlkwc{source} \hlstd{=} \hlstr{"Bollinger texts from Evans et al JELS 2007"}\hlstd{,}
+               \hlkwc{notes} \hlstd{=} \hlstr{"Created as part of the quanteda vignette"}\hlstd{)}
 \hlcom{# summarize the first 10 texts in the corpus}
-\hlkwd{summary}\hlstd{(amicusCorpus,} \hlkwc{nmax} \hlstd{=} \hlnum{10}\hlstd{)}
+\hlkwd{summary}\hlstd{(amicusCorpus,} \hlkwc{nmax}\hlstd{=}\hlnum{10}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## Corpus object contains 100 texts.
 ## 
 ##      Texts Types Tokens Sentences trainclass testclass
-##  sP1P2.txt  2892  22886      2221          P      <NA>
-##  sR1R2.txt  3917  23963      1900          R      <NA>
-##  sAP01.txt  1478   6180       435       <NA>        AP
-##  sAP02.txt  1670   6230       644       <NA>        AP
+##  sP1P2.txt  2893  22907      2221          P      <NA>
+##  sR1R2.txt  3918  23970      1900          R      <NA>
+##  sAP01.txt  1479   6181       435       <NA>        AP
+##  sAP02.txt  1671   6232       644       <NA>        AP
 ##  sAP03.txt  1740   7726       696       <NA>        AP
-##  sAP04.txt  1127   4723       431       <NA>        AP
-##  sAP05.txt  1799   7004       583       <NA>        AP
+##  sAP04.txt  1128   4725       431       <NA>        AP
+##  sAP05.txt  1800   7005       583       <NA>        AP
 ##  sAP06.txt  1288   4852       381       <NA>        AP
 ##  sAP07.txt  1249   4914       330       <NA>        AP
 ##  sAP08.txt   620   1748       110       <NA>        AP
 ## 
 ## Source:  Bollinger texts from Evans et al JELS 2007.
-## Created: Wed Jun  4 11:28:07 2014.
+## Created: Thu Jun 12 19:09:51 2014.
 ## Notes:   Created as part of the quanteda vignette.
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-
 
 \subsection{Adding Information to a corpus}
 
@@ -407,7 +405,7 @@ This creates a new quanteda corpus object where each text has been associated va
 
 \end{document}
 
-In order to perform statistical analysis such as document scaling, we must extract a matrix containing the frequency of each word type from in document. In quanteda, we use the dfm function to produce such a matrix. \footnote{dfm stands for document-feature matrix --- we say `feature' instead of word, as it is sometimes useful to represent documents by features other than their word frequency.}
+In order to perform statistical analysis such as document scaling, we must extract a matrix containing the frequency of each word type from in document. In quanteda, we use the dfm function to produce such a matrix. \footnote{dfm stands for document-feature matrix --- we say ``feature'' instead of word, as it is sometimes useful to represent documents by features other than their word frequency.}
 
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -418,20 +416,19 @@ In order to perform statistical analysis such as document scaling, we must extra
 ## Creating dfm: ... done.
 \end{verbatim}
 \begin{alltt}
-\hlstd{docMat[}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{]}
+\hlstd{docMat[}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{,}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{]}
 \end{alltt}
 \begin{verbatim}
 ##                                       words
-## docs                                   –sure  — ’flu “all “all”
-##   2010_BUDGET_01_Brian_Lenihan_FF.txt      0  4    0    0     0
-##   2010_BUDGET_02_Richard_Bruton_FG.txt     0  5    0    0     0
-##   2010_BUDGET_03_Joan_Burton_LAB.txt       0 11    0    1     1
-##   2010_BUDGET_04_Arthur_Morgan_SF.txt      0  7    0    0     0
-##   2010_BUDGET_05_Brian_Cowen_FF.txt        0  7    0    0     0
+## docs                                    €  —   a abandoned abandoning
+##   2010_BUDGET_01_Brian_Lenihan_FF.txt  75  4 143         0          0
+##   2010_BUDGET_02_Richard_Bruton_FG.txt 18  5  82         1          0
+##   2010_BUDGET_03_Joan_Burton_LAB.txt   48 11 129         1          0
+##   2010_BUDGET_04_Arthur_Morgan_SF.txt  42  7 115         0          1
+##   2010_BUDGET_05_Brian_Cowen_FF.txt    38  7 122         0          0
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-
 
 We can now score and plot the documents using a statistical scaling technique, for example correspondence analysis.
 
@@ -439,9 +436,8 @@ We can now score and plot the documents using a statistical scaling technique, f
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(ca)}
-\hlstd{model} \hlkwb{<-} \hlkwd{ca}\hlstd{(}\hlkwd{t}\hlstd{(docMat),} \hlkwc{nd} \hlstd{=} \hlnum{1}\hlstd{)}
-\hlkwd{dotchart}\hlstd{(model}\hlopt{$}\hlstd{colcoord[}\hlkwd{order}\hlstd{(model}\hlopt{$}\hlstd{colcoord[,} \hlnum{1}\hlstd{]),} \hlnum{1}\hlstd{],} \hlkwc{labels} \hlstd{= model}\hlopt{$}\hlstd{colnames[}\hlkwd{order}\hlstd{(model}\hlopt{$}\hlstd{colcoord[,}
-    \hlnum{1}\hlstd{])])}
+\hlstd{model} \hlkwb{<-} \hlkwd{ca}\hlstd{(}\hlkwd{t}\hlstd{(docMat),}\hlkwc{nd}\hlstd{=}\hlnum{1}\hlstd{)}
+\hlkwd{dotchart}\hlstd{(model}\hlopt{$}\hlstd{colcoord[}\hlkwd{order}\hlstd{(model}\hlopt{$}\hlstd{colcoord[,}\hlnum{1}\hlstd{]),}\hlnum{1}\hlstd{],} \hlkwc{labels} \hlstd{= model}\hlopt{$}\hlstd{colnames[}\hlkwd{order}\hlstd{(model}\hlopt{$}\hlstd{colcoord[,}\hlnum{1}\hlstd{])])}
 \end{alltt}
 \end{kframe}
 
@@ -453,42 +449,39 @@ We can now score and plot the documents using a statistical scaling technique, f
 
 \end{knitrout}
 
-
 This plot indicates the position
 of each of the documents. We can group documents by their attribute values when creating the word-frequency matrix: 
 
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{partyMat} \hlkwb{<-} \hlkwd{dfm}\hlstd{(ieBudgets2010,} \hlkwc{group} \hlstd{=} \hlstr{"party"}\hlstd{)}
+\hlstd{partyMat} \hlkwb{<-} \hlkwd{dfm}\hlstd{(ieBudgets2010,} \hlkwc{group}\hlstd{=}\hlstr{"party"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## Creating dfm: ... aggregating by group: party...complete ... done.
 \end{verbatim}
 \begin{alltt}
-\hlstd{partyMat[,} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{]}
+\hlstd{partyMat[,}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{]}
 \end{alltt}
 \begin{verbatim}
 ##        words
-## docs    –sure  — ’flu “all “all”
-##   FF        0  5    0    0     0
-##   FG        1  9    1    0     0
-##   Green     0 23    0    1     1
-##   LAB       0  9    0    0     0
-##   SF        0  4    0    0     0
+## docs      €  —   a abandoned abandoning
+##   FF     35  5  78         0          0
+##   FG     31  9 162         0          0
+##   Green 108 23 326         2          1
+##   LAB    75  9 288         0          0
+##   SF     85  4 159         0          0
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-
 
 which allows us to scale according to a particular party or year, for example:
 
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{partyModel} \hlkwb{<-} \hlkwd{ca}\hlstd{(}\hlkwd{t}\hlstd{(partyMat),} \hlkwc{nd} \hlstd{=} \hlnum{1}\hlstd{)}
-\hlkwd{dotchart}\hlstd{(partyModel}\hlopt{$}\hlstd{colcoord[}\hlkwd{order}\hlstd{(partyModel}\hlopt{$}\hlstd{colcoord[,} \hlnum{1}\hlstd{]),} \hlnum{1}\hlstd{],} \hlkwc{labels} \hlstd{= partyModel}\hlopt{$}\hlstd{colnames[}\hlkwd{order}\hlstd{(partyModel}\hlopt{$}\hlstd{colcoord[,}
-    \hlnum{1}\hlstd{])])}
+\hlstd{partyModel} \hlkwb{<-} \hlkwd{ca}\hlstd{(}\hlkwd{t}\hlstd{(partyMat),}\hlkwc{nd}\hlstd{=}\hlnum{1}\hlstd{)}
+\hlkwd{dotchart}\hlstd{(partyModel}\hlopt{$}\hlstd{colcoord[}\hlkwd{order}\hlstd{(partyModel}\hlopt{$}\hlstd{colcoord[,}\hlnum{1}\hlstd{]),}\hlnum{1}\hlstd{],} \hlkwc{labels} \hlstd{= partyModel}\hlopt{$}\hlstd{colnames[}\hlkwd{order}\hlstd{(partyModel}\hlopt{$}\hlstd{colcoord[,}\hlnum{1}\hlstd{])])}
 \end{alltt}
 \end{kframe}
 
@@ -499,5 +492,4 @@ which allows us to scale according to a particular party or year, for example:
 
 
 \end{knitrout}
-
 

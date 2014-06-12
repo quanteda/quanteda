@@ -14,6 +14,9 @@ clean(s, langNorm = FALSE, removeDigits = TRUE, lower = TRUE,
   \item{removeDigits}{If true, digits are removed. Default
   is TRUE}
 
+  \item{removePunct}{If true, punctuation marks are
+  removed. Default is TRUE}
+
   \item{lower}{If true, string is converted to lowercase.
   Default is TRUE}
 }

@@ -8,6 +8,9 @@ describeTexts(texts, verbose = TRUE)
 }
 \arguments{
   \item{texts}{The texts to be described}
+
+  \item{verbose}{Default is TRUE. Set to false to suppress
+  output messages}
 }
 \description{
 print a summary of texts Prints to the console a desription

@@ -682,6 +682,24 @@ summary(iebudgets, nmax=10)
 
 
 cleanEx()
+nameEx("syllableCounts")
+### * syllableCounts
+
+flush(stderr()); flush(stdout())
+
+### Name: syllableCounts
+### Title: A named list mapping words to counts of their syllables
+### Aliases: syllableCounts
+
+### ** Examples
+
+data(sylcounts)
+syllableCounts["sixths"]
+syllableCounts["onomatopeia"]
+
+
+
+cleanEx()
 nameEx("tagPos")
 ### * tagPos
 

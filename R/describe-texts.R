@@ -4,6 +4,7 @@
 #' number of types, tokens, and sentences
 #' 
 #' @param texts The texts to be described
+#' @param verbose Default is TRUE. Set to false to suppress output messages
 #' @export
 #' @examples
 #' texts <- c("testing this text", "and this one")

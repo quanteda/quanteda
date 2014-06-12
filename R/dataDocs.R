@@ -52,7 +52,7 @@ NULL
 #' @description A named list mapping words to counts of their syllables, generated from
 #' the CMU pronunciation dictionary
 #' @examples
-#' data(sylcounts)
+#' data(sylCounts)
 #' syllableCounts["sixths"]
 #' syllableCounts["onomatopeia"]
 #' @references \url{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}
