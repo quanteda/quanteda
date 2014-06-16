@@ -142,24 +142,26 @@ dfm.corpus <- function(corpus,
         dfm <- dfm[, -(ncol(dfm)-1)]
     }
     
+    # Doesn't work with stopwords supplied as a character vector
+    # could fix by testing if character first, and then else if TRUE, use english default
+    # otherwise do nothing
     if (!is.null(stopwords)) {
         cat(" removing stopwords ...")
         if (stopwords==TRUE) {
-            data(stopwords)
-            stopwords <- stopwords[2]
-        } else {
-            if (!is.character(stopwords) & !length(stopwords)>0) {
+            stopwords <- stopwordsGet()
+        } else if (stopwords!=FALSE) {
+            if (!is.character(stopwords) | !length(stopwords)>0) {
                 stop("stopwords must be a character vector with positive length.")
             }
         }
         if (bigram==TRUE) {
-          pat <- paste(paste0(paste0("-", stopwords, "$"), collapse='|'), paste0(paste0("^", stopwords, "-"), collapse='|'), sep='|')
-          dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
+            pat <- paste(paste0(paste0("-", stopwords, "$"), collapse='|'), paste0(paste0("^", stopwords, "-"), collapse='|'), sep='|')
+            dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
         } else {
-          dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords))
+            dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords))
         }
     }
-
+    
     if (!is.null(addto)) {
         if (sum(rownames(dfm) != rownames(addto)) > 0) {
             stop("Cannot add to dfm: different document set.")
