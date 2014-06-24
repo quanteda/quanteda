@@ -6,6 +6,8 @@
 #' is estimated by counting vowel clusters.
 #' 
 #' @param sourceText Text to be counted
+#' @param verbose If True, print out the count. Default false.
+#' 
 #' @return numeric A count (estimate) of the number of syllables in sourceText
 #' @export
 #' @examples

@@ -10,6 +10,9 @@ countSyllables(sourceText, verbose = FALSE)
 }
 \arguments{
   \item{sourceText}{Text to be counted}
+
+  \item{verbose}{If True, print out the count. Default
+  false.}
 }
 \value{
 numeric A count (estimate) of the number of syllables in

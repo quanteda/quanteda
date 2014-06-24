@@ -31,7 +31,7 @@ language-specific characters
 }
 \examples{
 \dontrun{
-s <- "A cursed £$&^!€ Exclamation! point; paragraph §1.2, which I wrote."
+s <- "A cursed £$&^!€ Exclamation! point; paragraph 1.2, which I wrote."
 clean(s)
 }
 }

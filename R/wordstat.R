@@ -12,7 +12,7 @@ getWordStatCSV <- function(filename=NULL) {
   doc <- read.csv(f, stringsAsFactors=FALSE)
   text <- doc$DOCUMENT
   atts <- subset(doc, select=-c(DOCUMENT))
-  c <- corpus.create(text, attribs=atts)
+  c <- corpusCreate(text, attribs=atts)
   return(c)
 }
 
@@ -54,6 +54,6 @@ getWordStat <- function(filename=NULL) {
     atts <- rbind(atts, vals)
     atts <- na.omit(atts)
   }
-  c <- corpus.create(texts, attribs=atts)
+  c <- corpusCreate(texts, attribs=atts)
   return(c)
 }
