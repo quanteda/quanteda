@@ -11,6 +11,9 @@ getTextFiles(filenames, textnames = NULL, verbose = FALSE)
   \item{filenames}{a vector of paths to text files}
 
   \item{textnames}{names to assign to the texts}
+
+  \item{verbose}{If TRUE, print out names of files being
+  read. Default is FALSE}
 }
 \value{
 character vector of texts read from disk

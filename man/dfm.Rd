@@ -24,7 +24,7 @@ dfm(corpus, feature = c("word"), stem = FALSE, stopwords = NULL,
   will be removed from the text when constructing the
   \link{dfm}.  If \code{NULL} (default) then no stopwords
   will be applied.  If "TRUE" then it currently defaults to
-  \code{\link{stopwords_EN}}.}
+  \code{\link{stopwords}}.}
 
   \item{groups}{Grouping variable for aggregating
   documents}

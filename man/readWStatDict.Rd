@@ -1,15 +1,17 @@
 \name{readWStatDict}
 \alias{readWStatDict}
-\title{This function makes a flattened dictionary from a Wordstat hierarchical
-dictionary}
+\title{Make a flattened list from a hierarchical wordstat dictionary}
 \usage{
 readWStatDict(path)
 }
-\description{
-This function makes a flattened dictionary from a Wordstat
-hierarchical dictionary
+\arguments{
+  \item{path}{path to the wordstat dictionary file}
 }
-\author{
-Paul Nulty
+\value{
+flattened dictionary as a list
+}
+\description{
+Make a flattened list from a hierarchical wordstat
+dictionary
 }
 
