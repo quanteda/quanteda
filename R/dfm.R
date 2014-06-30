@@ -7,7 +7,7 @@
 #' @param feature Feature to count (e.g. words)
 #' @param stem Stem the words
 #' @param stopwords A character vector of stopwords that will be removed from the text when constructing the \link{dfm}.  If \code{NULL} (default)
-#' then no stopwords will be applied.  If "TRUE" then it currently defaults to \code{\link{stopwords_EN}}.
+#' then no stopwords will be applied.  If "TRUE" then it currently defaults to \code{\link{stopwords}}.
 #' @param groups Grouping variable for aggregating documents
 #' @param subset Expression for subsetting the corpus before processing
 #' @param verbose Get info to screen on the progress
@@ -142,26 +142,27 @@ dfm.corpus <- function(corpus,
         dfm <- dfm[, -(ncol(dfm)-1)]
     }
     
-    # Doesn't work with stopwords supplied as a character vector
-    # could fix by testing if character first, and then else if TRUE, use english default
-    # otherwise do nothing
+    # re-written PN 30th June
     if (!is.null(stopwords)) {
-        cat(" removing stopwords ...")
-        if (stopwords==TRUE) {
-            stopwords <- stopwordsGet()
-        } else if (stopwords!=FALSE) {
-            if (!is.character(stopwords) | !length(stopwords)>0) {
-                stop("stopwords must be a character vector with positive length.")
-            }
+      # need two separate checks because if() on a char vector gives warning
+      if (!is.character(stopwords)){
+        if (stopwords==TRUE){
+          stopwords <- stopwordsGet()
         }
-        if (bigram==TRUE) {
-            pat <- paste(paste0(paste0("-", stopwords, "$"), collapse='|'), paste0(paste0("^", stopwords, "-"), collapse='|'), sep='|')
-            dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
-        } else {
-            dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords))
-        }
+      }
+      if (!is.character(stopwords) | !length(stopwords)>0) {
+        stop("stopwords must be a character vector with positive length.")
+      }
+      if (bigram==TRUE) {
+          pat <- paste(paste0(paste0("-", stopwords, "$"), collapse='|'), paste0(paste0("^", stopwords, "-"), collapse='|'), sep='|')
+          dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
+      } else {
+          dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords))
+      }
     }
     
+    
+        
     if (!is.null(addto)) {
         if (sum(rownames(dfm) != rownames(addto)) > 0) {
             stop("Cannot add to dfm: different document set.")
