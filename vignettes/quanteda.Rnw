@@ -193,6 +193,8 @@ summary(ieBudgets2010)
 
 \subsubsection{From a vector of texts}
 
+Another method of creating a corpus from texts is to read texts into character vectors, and then create the corpus from these. The function get \texttt{getTextDir} takes a path to a directory containing some texts, and reads the texts into a character vector.
+
 <<>>=
 # load two vectors of texts (Bollinger texts from Evans et al JELS 2007)
 # located in the texts directory of the github site
@@ -206,6 +208,12 @@ unzip(paste(tmpDir, "amicus_curiae.zip", sep="/"), exdir=tmpDir)
 # load in the texts to a vector of texts using quanteda's getTextDir()
 amicusTexts <- c(getTextDir(paste(tmpDir, "amicus/training", sep="/")), 
                  getTextDir(paste(tmpDir, "amicus/testing", sep="/")))
+
+@
+
+Now that we have the texts in a character vector, we can examine them and extract labels from the names. The code below uses the grep command, part of the standard R library, to make a list of labels from the names of the texts.
+
+<<>>=
 # change the encoding (because texts contain special symbols such as §)
 amicusTexts <- iconv(amicusTexts, from="latin1", to="UTF-8")
 
@@ -223,7 +231,12 @@ trainclass <- factor(c("P", "R", rep(NA, length(amicusTexts)-2)))
 testclass  <- rep(NA, length(amicusTexts)) # initialize the variable
 testclass[grep("AP", names(amicusTexts))] <- "AP"
 testclass[grep("AR", names(amicusTexts))] <- "AR"
+@
 
+
+Finally, we can create a corpus from the vector of texts, and the training and testing attributes.
+
+<<>>=
 # make a corpus object with texts and training and test labels
 amicusCorpus <- 
   corpusCreate(amicusTexts, 
@@ -237,6 +250,8 @@ summary(amicusCorpus, nmax=10)
 \subsection{Adding Information to a corpus}
 
 \subsubsection{Adding new texts}
+
+
 
 \subsubsection{Adding new text attributes}
 

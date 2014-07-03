@@ -270,20 +270,20 @@ This creates a new quanteda corpus object where each text has been associated va
 ## Corpus object contains 14 texts.
 ## 
 ##                                      Texts Types Tokens Sentences year debate
-##        2010_BUDGET_01_Brian_Lenihan_FF.txt  1655   7799       390 2010 BUDGET
-##       2010_BUDGET_02_Richard_Bruton_FG.txt   956   4058       222 2010 BUDGET
-##         2010_BUDGET_03_Joan_Burton_LAB.txt  1485   5770       329 2010 BUDGET
-##        2010_BUDGET_04_Arthur_Morgan_SF.txt  1463   6481       349 2010 BUDGET
-##          2010_BUDGET_05_Brian_Cowen_FF.txt  1473   5880       262 2010 BUDGET
-##           2010_BUDGET_06_Enda_Kenny_FG.txt  1066   3875       161 2010 BUDGET
-##      2010_BUDGET_07_Kieran_ODonnell_FG.txt   614   2066       141 2010 BUDGET
-##       2010_BUDGET_08_Eamon_Gilmore_LAB.txt  1098   3800       208 2010 BUDGET
-##     2010_BUDGET_09_Michael_Higgins_LAB.txt   447   1136        49 2010 BUDGET
-##        2010_BUDGET_10_Ruairi_Quinn_LAB.txt   418   1177        60 2010 BUDGET
-##      2010_BUDGET_11_John_Gormley_Green.txt   363    929        49 2010 BUDGET
+##        2010_BUDGET_01_Brian_Lenihan_FF.txt  1649   7720       390 2010 BUDGET
+##       2010_BUDGET_02_Richard_Bruton_FG.txt   951   4035       222 2010 BUDGET
+##         2010_BUDGET_03_Joan_Burton_LAB.txt  1473   5711       329 2010 BUDGET
+##        2010_BUDGET_04_Arthur_Morgan_SF.txt  1455   6432       349 2010 BUDGET
+##          2010_BUDGET_05_Brian_Cowen_FF.txt  1470   5835       262 2010 BUDGET
+##           2010_BUDGET_06_Enda_Kenny_FG.txt  1059   3853       161 2010 BUDGET
+##      2010_BUDGET_07_Kieran_ODonnell_FG.txt   609   2049       141 2010 BUDGET
+##       2010_BUDGET_08_Eamon_Gilmore_LAB.txt  1088   3767       208 2010 BUDGET
+##     2010_BUDGET_09_Michael_Higgins_LAB.txt   439   1132        49 2010 BUDGET
+##        2010_BUDGET_10_Ruairi_Quinn_LAB.txt   413   1177        60 2010 BUDGET
+##      2010_BUDGET_11_John_Gormley_Green.txt   362    919        49 2010 BUDGET
 ##        2010_BUDGET_12_Eamon_Ryan_Green.txt   482   1513        90 2010 BUDGET
-##      2010_BUDGET_13_Ciaran_Cuffe_Green.txt   423   1143        48 2010 BUDGET
-##  2010_BUDGET_14_Caoimhghin_OCaolain_SF.txt  1055   3654       194 2010 BUDGET
+##      2010_BUDGET_13_Ciaran_Cuffe_Green.txt   422   1140        48 2010 BUDGET
+##  2010_BUDGET_14_Caoimhghin_OCaolain_SF.txt  1040   3614       194 2010 BUDGET
 ##  number  firstname lastname party
 ##      14 Caoimhghin OCaolain    SF
 ##      13     Ciaran    Cuffe Green
@@ -301,13 +301,15 @@ This creates a new quanteda corpus object where each text has been associated va
 ##      01      Brian  Lenihan    FF
 ## 
 ## Source:  /home/paul/Dropbox/code/quanteda/vignettes/* on x86_64 by paul.
-## Created: Thu Jun 12 19:09:46 2014.
+## Created: Thu Jul  3 14:09:07 2014.
 ## Notes:   NA.
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 
 \subsubsection{From a vector of texts}
+
+Another method of creating a corpus from texts is to read texts into character vectors, and then create the corpus from these. The function get \texttt{getTextDir} takes a path to a directory containing some texts, and reads the texts into a character vector.
 
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -324,6 +326,15 @@ This creates a new quanteda corpus object where each text has been associated va
 \hlcom{# load in the texts to a vector of texts using quanteda's getTextDir()}
 \hlstd{amicusTexts} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{getTextDir}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"amicus/training"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{"/"}\hlstd{)),}
                  \hlkwd{getTextDir}\hlstd{(}\hlkwd{paste}\hlstd{(tmpDir,} \hlstr{"amicus/testing"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{"/"}\hlstd{)))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Now that we have the texts in a character vector, we can examine them and extract labels from the names. The code below uses the grep command, part of the standard R library, to make a list of labels from the names of the texts.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
 \hlcom{# change the encoding (because texts contain special symbols such as §)}
 \hlstd{amicusTexts} \hlkwb{<-} \hlkwd{iconv}\hlstd{(amicusTexts,} \hlkwc{from}\hlstd{=}\hlstr{"latin1"}\hlstd{,} \hlkwc{to}\hlstd{=}\hlstr{"UTF-8"}\hlstd{)}
 
@@ -346,7 +357,16 @@ This creates a new quanteda corpus object where each text has been associated va
 \hlstd{testclass}  \hlkwb{<-} \hlkwd{rep}\hlstd{(}\hlnum{NA}\hlstd{,} \hlkwd{length}\hlstd{(amicusTexts))} \hlcom{# initialize the variable}
 \hlstd{testclass[}\hlkwd{grep}\hlstd{(}\hlstr{"AP"}\hlstd{,} \hlkwd{names}\hlstd{(amicusTexts))]} \hlkwb{<-} \hlstr{"AP"}
 \hlstd{testclass[}\hlkwd{grep}\hlstd{(}\hlstr{"AR"}\hlstd{,} \hlkwd{names}\hlstd{(amicusTexts))]} \hlkwb{<-} \hlstr{"AR"}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
+
+Finally, we can create a corpus from the vector of texts, and the training and testing attributes.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
 \hlcom{# make a corpus object with texts and training and test labels}
 \hlstd{amicusCorpus} \hlkwb{<-}
   \hlkwd{corpusCreate}\hlstd{(amicusTexts,}
@@ -360,19 +380,19 @@ This creates a new quanteda corpus object where each text has been associated va
 ## Corpus object contains 100 texts.
 ## 
 ##      Texts Types Tokens Sentences trainclass testclass
-##  sP1P2.txt  2893  22907      2221          P      <NA>
-##  sR1R2.txt  3918  23970      1900          R      <NA>
-##  sAP01.txt  1479   6181       435       <NA>        AP
-##  sAP02.txt  1671   6232       644       <NA>        AP
+##  sP1P2.txt  2892  22886      2221          P      <NA>
+##  sR1R2.txt  3917  23963      1900          R      <NA>
+##  sAP01.txt  1478   6180       435       <NA>        AP
+##  sAP02.txt  1670   6230       644       <NA>        AP
 ##  sAP03.txt  1740   7726       696       <NA>        AP
-##  sAP04.txt  1128   4725       431       <NA>        AP
-##  sAP05.txt  1800   7005       583       <NA>        AP
+##  sAP04.txt  1127   4723       431       <NA>        AP
+##  sAP05.txt  1799   7004       583       <NA>        AP
 ##  sAP06.txt  1288   4852       381       <NA>        AP
 ##  sAP07.txt  1249   4914       330       <NA>        AP
 ##  sAP08.txt   620   1748       110       <NA>        AP
 ## 
 ## Source:  Bollinger texts from Evans et al JELS 2007.
-## Created: Thu Jun 12 19:09:51 2014.
+## Created: Thu Jul  3 14:09:12 2014.
 ## Notes:   Created as part of the quanteda vignette.
 \end{verbatim}
 \end{kframe}
@@ -381,6 +401,8 @@ This creates a new quanteda corpus object where each text has been associated va
 \subsection{Adding Information to a corpus}
 
 \subsubsection{Adding new texts}
+
+
 
 \subsubsection{Adding new text attributes}
 
@@ -420,12 +442,12 @@ In order to perform statistical analysis such as document scaling, we must extra
 \end{alltt}
 \begin{verbatim}
 ##                                       words
-## docs                                    €  —   a abandoned abandoning
-##   2010_BUDGET_01_Brian_Lenihan_FF.txt  75  4 143         0          0
-##   2010_BUDGET_02_Richard_Bruton_FG.txt 18  5  82         1          0
-##   2010_BUDGET_03_Joan_Burton_LAB.txt   48 11 129         1          0
-##   2010_BUDGET_04_Arthur_Morgan_SF.txt  42  7 115         0          1
-##   2010_BUDGET_05_Brian_Cowen_FF.txt    38  7 122         0          0
+## docs                                     a abandoned abandoning abetted ability
+##   2010_BUDGET_01_Brian_Lenihan_FF.txt  143         0          0       0       1
+##   2010_BUDGET_02_Richard_Bruton_FG.txt  82         1          0       0       1
+##   2010_BUDGET_03_Joan_Burton_LAB.txt   129         1          0       1       1
+##   2010_BUDGET_04_Arthur_Morgan_SF.txt  115         0          1       0       3
+##   2010_BUDGET_05_Brian_Cowen_FF.txt    122         0          0       0       2
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -441,7 +463,7 @@ We can now score and plot the documents using a statistical scaling technique, f
 \end{alltt}
 \end{kframe}
 
-{\centering \includegraphics[width=\maxwidth]{figures/minimal-unnamed-chunk-7} 
+{\centering \includegraphics[width=\maxwidth]{figures/minimal-unnamed-chunk-9} 
 
 }
 
@@ -465,12 +487,12 @@ of each of the documents. We can group documents by their attribute values when 
 \end{alltt}
 \begin{verbatim}
 ##        words
-## docs      €  —   a abandoned abandoning
-##   FF     35  5  78         0          0
-##   FG     31  9 162         0          0
-##   Green 108 23 326         2          1
-##   LAB    75  9 288         0          0
-##   SF     85  4 159         0          0
+## docs      a abandoned abandoning abetted ability
+##   FF     78         0          0       0       1
+##   FG    162         0          0       0       1
+##   Green 326         2          1       1       5
+##   LAB   288         0          0       0       3
+##   SF    159         0          0       0       1
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -485,7 +507,7 @@ which allows us to scale according to a particular party or year, for example:
 \end{alltt}
 \end{kframe}
 
-{\centering \includegraphics[width=\maxwidth]{figures/minimal-unnamed-chunk-9} 
+{\centering \includegraphics[width=\maxwidth]{figures/minimal-unnamed-chunk-11} 
 
 }
 
