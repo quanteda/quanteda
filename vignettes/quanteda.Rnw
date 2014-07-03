@@ -21,6 +21,7 @@
 \newcommand{\quanteda}{\textsf{quanteda}}
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 %\SweaveOpts{concordance=TRUE}
 
 
@@ -251,7 +252,13 @@ amicusCorpus <-
 summary(amicusCorpus, nmax=10)
 @
 
-Alternatively, we create a labelled corpus using the directory structure in which the files are stored. If the folder names in which the files are stored indicate values for a variable of interest.
+There is also an interactive version of the getTextFiles() function, which will open a graphical file system browser to allow selection of the directory containing the files.
+<<eval=FALSE>>=
+getTextDirGui()
+@ 
+
+
+We can also create a labelled corpus using the directory structure in which the files are stored. If the folder names in which the files are stored indicate values for a variable of interest.
 
 **todo corpus from folders***
 
