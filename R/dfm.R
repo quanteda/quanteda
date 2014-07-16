@@ -420,7 +420,28 @@ dfmSort <- function(x, margin = c("words", "docs", "both"), decreasing=TRUE) {
     return(x)
 }
 
-##
-## topwords <- function(dfm, n=10)
-##
+#' list the top n features in a dfm
+#'
+#' list a "concordance" of the top n features in a \link{dfm} and their frequencies
+#' 
+#' @param dfm Document-feature matrix created by \code{\link{dfm}}
+#' @param n how many of the top words should be listed; NULL means list all
+#' @param normalize return relative term frequency if TRUE
+#' @param bottom if TRUE, return the least frequent features instead of the most
+#' @return a data.frame of the frequencies of the top n most frequent features
+#' @export 
+#' @author Ken Benoit
+#' @examples 
+#' data(iebudgets)
+#' dtm <- dfm(ieTexts)
+#' topFeatures(dtm)
+#' topFeatures(dfm(ieTexts, stopwords=TRUE))
+#' topFeatures(dtm, 50, normalize=TRUE)
+topFeatures <- function(x, n=20, normalize=FALSE, bottom=FALSE) {
+    x <- dfmSort(x, "words", decreasing=!bottom)
+    freq <- colSums(x)
+    if (normalize) freq <- freq / sum(freq)
+    return(data.frame(freq=freq[1:n]))
+}
+
 
