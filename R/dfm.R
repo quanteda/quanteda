@@ -381,3 +381,7 @@ is.wfm <- function (x) {
     !is.null(nms) && identical(sort(nms), c("docs", "words"))
 }
 
+#' @export
+wordmargin <- function (x) {
+    ifelse(names(dimnames(x))[1] == "words", 1, 2)
+}
