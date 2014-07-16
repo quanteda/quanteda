@@ -388,3 +388,39 @@ is.wfm <- function (x) {
 wordmargin <- function (x) {
     ifelse(names(dimnames(x))[1] == "words", 1, 2)
 }
+
+#' sort a dfm by one or more margins
+#'
+#' Sorts a \link{dfm} by documents or words
+#' 
+#' @param dfm Document-feature matrix created by \code{\link{dfm}}
+#' @param margin which margin to sort on \code{words} to sort words, \code{docs} to sort
+#' documents, and \code{both} to sort both
+#' @param decreasing TRUE (default) if sort will be in descending order
+#' @return A sorted \link{dfm} matrix object
+#' @export 
+#' @author Ken Benoit
+#' @examples 
+#' data(iebudgets)
+#' dtm <- dfm(ieTexts)
+#' dtm[, 1:10]
+#' dtm <- dfmSort(dtm, "words")
+#' dfmSort(dtm)[, 1:10]
+#' dfmSort(dtm, "both")[, 1:10]
+dfmSort <- function(x, margin = c("words", "docs", "both"), decreasing=TRUE) {
+    margin <- match.arg(margin)
+    if (margin=="words") {
+        x <- x[, order(colSums(x), decreasing=decreasing)]
+    } else if (margin=="docs") {
+        x <- x[order(rowSums(x), decreasing=decreasing), ]
+    } else if (margin=="both") {
+        x <- x[order(rowSums(x), decreasing=decreasing), 
+               order(colSums(x), decreasing=decreasing)]
+    }
+    return(x)
+}
+
+##
+## topwords <- function(dfm, n=10)
+##
+
