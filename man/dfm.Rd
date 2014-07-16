@@ -1,5 +1,6 @@
 \name{dfm}
 \alias{dfm}
+\alias{dfm.character}
 \alias{dfm.corpus}
 \title{Create a document-feature matrix from a corpus object}
 \usage{
@@ -11,6 +12,10 @@ dfm(corpus, feature = c("word"), stem = FALSE, stopwords = NULL,
   stopwords = NULL, bigram = FALSE, groups = NULL, subset = NULL,
   verbose = TRUE, dictionary = NULL, dictionary.regex = FALSE,
   addto = NULL)
+
+\method{dfm}{character}(corpus, feature = c("word"), stem = FALSE,
+  stopwords = NULL, bigram = FALSE, verbose = TRUE, dictionary = NULL,
+  dictionary.regex = FALSE, addto = NULL)
 }
 \arguments{
   \item{corpus}{Corpus from which to generate the
@@ -43,7 +48,7 @@ dfm(corpus, feature = c("word"), stem = FALSE, stopwords = NULL,
 
   \item{addto}{\code{NULL} by default, but if an existing
   dfm object is specified, then the new dfm will be added
-  to the one named. If both dfms are built from
+  to the one named. If both \link{dfm}'s are built from
   dictionaries, the combined dfm will have its
   \code{Non_Dictionary} total adjusted.}
 }

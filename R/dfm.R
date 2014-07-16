@@ -15,7 +15,7 @@
 #' @param dictionary.regex \code{TRUE} means the dictionary is already in regular expression format,
 #' otherwise it will be converted from "wildcard" format
 #' @param addto \code{NULL} by default, but if an existing dfm object is specified, then the new dfm will be added to the one named.
-#' If both dfms are built from dictionaries, the combined dfm will have its \code{Non_Dictionary} total adjusted.
+#' If both \link{dfm}'s are built from dictionaries, the combined dfm will have its \code{Non_Dictionary} total adjusted.
 #' @return A matrix object with row names equal to the document names and column names equal to the feature labels.  
 #' This matrix has \code{names(dimnames) = c("docs", "words")}
 #' to make it conformable to an \link[austin]{wfm} object.
@@ -78,14 +78,13 @@ dfm.corpus <- function(corpus,
                        dictionary=NULL,
                        dictionary.regex=FALSE,
                        addto=NULL) {
-    if (verbose) cat("Creating dfm: ...")
-    
+    if (verbose) cat("Creating dfm from a corpus: ... ")
     # subsets 
     if (!is.null(subset)) corpus <- corpus.subset.inner(corpus, substitute(subset))
     
     # aggregation by group
     if (!is.null(groups)) {
-        if (verbose) cat(" aggregating by group: ", groups, "...", sep="")
+        if (verbose) cat("aggregating by group: ", groups, "...", sep="")
         if (length(groups)>1) {
             group.split <- lapply(corpus$attribs[,groups], as.factor)
         } else group.split <- as.factor(corpus$attribs[,groups])
@@ -97,6 +96,27 @@ dfm.corpus <- function(corpus,
         texts <- corpus$attribs$texts
         names(texts) <- rownames(corpus$attribs)
     }
+    
+    return(dfm(texts, feature=feature, stem=stem, stopwords=stopwords, bigram=bigram, 
+               verbose=verbose, dictionary=dictionary, dictionary.regex=dictionary.regex, addto=addto))
+}
+
+#' @rdname dfm
+#' @method dfm character
+#' @S3method dfm character
+dfm.character <- function(corpus,
+                          feature=c("word"),
+                          stem=FALSE,
+                          stopwords=NULL,
+                          bigram=FALSE,
+                          verbose=TRUE, 
+                          dictionary=NULL,
+                          dictionary.regex=FALSE,
+                          addto=NULL) {
+    # if (verbose & parent.env(dfm.character) != dfm.corpus) cat("Creating dfm: ...")
+    if (verbose) cat("Creating dfm from character: ...")
+    texts <- corpus
+    names(texts) <- names(corpus)
     
     textnames <- factor(names(texts))
     tokenizedTexts <- sapply(texts, tokenize, simplify=FALSE)
@@ -144,26 +164,24 @@ dfm.corpus <- function(corpus,
     
     # re-written PN 30th June
     if (!is.null(stopwords)) {
-      cat(" removing stopwords ... ")
-      # need two separate checks because if() on a char vector gives warning
-      if (!is.character(stopwords)){
-        if (stopwords==TRUE){
-          stopwords <- stopwordsGet()
+        cat(" removing stopwords ... ")
+        # need two separate checks because if() on a char vector gives warning
+        if (!is.character(stopwords)){
+            if (stopwords==TRUE){
+                stopwords <- stopwordsGet()
+            }
         }
-      }
-      if (!is.character(stopwords) | !length(stopwords)>0) {
-        stop("stopwords must be a character vector with positive length.")
-      }
-      if (bigram==TRUE) {
-          pat <- paste(paste0(paste0("-", stopwords, "$"), collapse='|'), paste0(paste0("^", stopwords, "-"), collapse='|'), sep='|')
-          dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
-      } else {
-          dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords))
-      }
+        if (!is.character(stopwords) | !length(stopwords)>0) {
+            stop("stopwords must be a character vector with positive length.")
+        }
+        if (bigram==TRUE) {
+            pat <- paste(paste0(paste0("-", stopwords, "$"), collapse='|'), paste0(paste0("^", stopwords, "-"), collapse='|'), sep='|')
+            dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
+        } else {
+            dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords))
+        }
     }
     
-    
-        
     if (!is.null(addto)) {
         if (sum(rownames(dfm) != rownames(addto)) > 0) {
             stop("Cannot add to dfm: different document set.")
@@ -183,6 +201,7 @@ dfm.corpus <- function(corpus,
     if(verbose) cat(" done. \n")
     return(dfm)
 }
+
 
 #' Flatten a hierarchical dictionary into a list of character vectors
 #'
@@ -361,3 +380,4 @@ is.wfm <- function (x) {
     nms <- names(dimnames(x))
     !is.null(nms) && identical(sort(nms), c("docs", "words"))
 }
+
