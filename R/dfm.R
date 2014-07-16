@@ -316,4 +316,25 @@ dfmTrim <- function(dfm, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
     return(t(mY[sort(tokeep),]))
 }
 
-    
+#' compute the tf-idf weights of a dfm
+#'
+#' Returns a matrix of tf-idf weights, as a \link{dfm} object
+#' 
+#' @param dfm Document-feature matrix created by \code{\link{dfm}}
+#' @param normalize whether to normalize term frequency by document totals
+#' @return A dfm matrix object where values are tf-idf weights
+#' @export 
+#' @author Ken Benoit
+#' @examples 
+#' data(iebudgets)
+#' dtm <- dfm(iebudgets)
+#' dtm[1:10, 100:110]
+#' tfidf(dtm)[1:10, 100:110]
+#' tfidf(dtm, normalize=FALSE)[1:10, 100:110]
+tfidf <- function(x, normalize = TRUE) {
+    idf <- log(ncol(x)) - log(rowSums(x > 0) + 1)
+    if (normalize) {
+        x <- x/colSums(x)
+    }
+    return(t(x) * idf)
+}
