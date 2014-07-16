@@ -144,7 +144,7 @@ dfm.corpus <- function(corpus,
     
     # re-written PN 30th June
     if (!is.null(stopwords)) {
-      cat(" removing stopwords ...")
+      cat(" removing stopwords ... ")
       # need two separate checks because if() on a char vector gives warning
       if (!is.character(stopwords)){
         if (stopwords==TRUE){
@@ -333,9 +333,31 @@ dfmTrim <- function(dfm, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
 #' tfidf(dtm)[1:10, 100:110]
 #' tfidf(dtm, normalize=FALSE)[1:10, 100:110]
 tfidf <- function(x, normalize = TRUE) {
-    idf <- log(ncol(x)) - log(rowSums(x > 0) + 1)
+    idf <- log(length(docs(x))) - log(colSums(x > 0) + 1)
     if (normalize) {
-        x <- x/colSums(x)
+        x <- x/rowSums(x)
+        x[is.nan(x)] <- 0
     }
-    return(t(x) * idf)
+    return(t(t(x) * idf))
+}
+
+
+#' @export
+words <- function (wfm) {
+    if (wordmargin(wfm) == 1) 
+        rownames(wfm)
+    else colnames(wfm)
+}
+
+#' @export
+docs <- function (wfm) {
+    if (wordmargin(wfm) == 1) 
+        colnames(wfm)
+    else rownames(wfm)
+}
+
+#' @export
+is.wfm <- function (x) {
+    nms <- names(dimnames(x))
+    !is.null(nms) && identical(sort(nms), c("docs", "words"))
 }

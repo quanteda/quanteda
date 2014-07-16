@@ -13,11 +13,9 @@
 #' data(iebudgets)
 #' iebudgets2010 <- subset(iebudgets, year==2010)
 #' wfm <- dfm(iebudgets2010, stopwords=TRUE)
-#' wordcloud(wfm, 1)  # plot the finance minister's speech as a wordcloud
-wordcloud <- function(dfm, doc.index, ...) {
-    require(austin)
+#' wordcloudDfm(wfm, 1)  # plot the finance minister's speech as a wordcloud
+wordcloudDfm <- function(dfm, doc.index, ...) {
     if (!is.wfm(dfm)) stop("word matrix argument must be a dfm object")
     require(wordcloud)
-    wordcloud::wordcloud(words(wfm), wfm[doc.index, ], ...)
+    wordcloud::wordcloud(words(dfm), dfm[doc.index, ], ...)
 }
-                       
