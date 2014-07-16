@@ -144,6 +144,7 @@ dfm.corpus <- function(corpus,
     
     # re-written PN 30th June
     if (!is.null(stopwords)) {
+      cat(" removing stopwords ...")
       # need two separate checks because if() on a char vector gives warning
       if (!is.character(stopwords)){
         if (stopwords==TRUE){
