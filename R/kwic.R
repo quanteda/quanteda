@@ -9,6 +9,9 @@
 ##' @param word A keyword chosen by the user.
 ##' @param window The number of context words to be displayed around the keyword.
 ##' @param regex If TRUE, then "word" is a regular expression.  Otherwise (default) is to use matching pattern as a whole word.
+##' Note that if regex=TRUE and no special regular expression characters are used in the search query, 
+##' then the concordance will include all words in which the search term appears, and not just when it
+##' appears as an entire word.
 ##' @return A data frame with the context before (\code{preword}), the keyword in its original format (\code{word}, preserving case and attached punctuation), and the context after (\code{postword}).  The rows of the
 ##' dataframe will be named with the word index position, or the text name and the index position
 ##' for a corpus object.  
@@ -19,7 +22,7 @@
 ##' data(iebudgets)
 ##' kwic(subset(iebudgets, year==2010), "Christmas", window=4)
 kwic <- function(text, word, window=5, regex=FALSE) {
-UseMethod("kwic")
+    UseMethod("kwic")
 }
 
 
@@ -31,9 +34,11 @@ kwic.character <- function(text, word, window=5, regex=FALSE) {
     # don't use tokenize since we want to preserve case and punctuation here
     # grep needed to get words that end in punctuation mark or in quotes
     tokens <- strsplit(text, " ")[[1]]
-    if (!regex) {
-        matches <- grep(paste("^", tolower(word), "$", sep=""), tolower(tokens))
-    }
+    # interpret word as a regular expression if regex==TRUE
+    match.expression <- ifelse(regex, 
+                                tolower(word),
+                                paste("^", tolower(word), "$", sep=""))
+    matches <- grep(match.expression, tolower(tokens))
     if (length(matches) == 0) return(NA)
     result <- data.frame(source = matches, 
                          preword = NA,

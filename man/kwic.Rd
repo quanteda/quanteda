@@ -21,7 +21,11 @@ kwic(text, word, window = 5, regex = FALSE)
 
   \item{regex}{If TRUE, then "word" is a regular
   expression.  Otherwise (default) is to use matching
-  pattern as a whole word.}
+  pattern as a whole word. Note that if regex=TRUE and no
+  special regular expression characters are used in the
+  search query, then the concordance will include all words
+  in which the search term appears, and not just when it
+  appears as an entire word.}
 
   \item{text}{a text character scalar (Currently does not
   support character vectors.)}

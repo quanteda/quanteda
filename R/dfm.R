@@ -97,8 +97,11 @@ dfm.corpus <- function(corpus,
         names(texts) <- rownames(corpus$attribs)
     }
     
+    # changing verbose to 2 (instead of TRUE) means will not print message twice
+    # when the function calls dfm.character
     return(dfm(texts, feature=feature, stem=stem, stopwords=stopwords, bigram=bigram, 
-               verbose=verbose, dictionary=dictionary, dictionary.regex=dictionary.regex, addto=addto))
+               verbose=2, dictionary=dictionary, dictionary.regex=dictionary.regex, 
+               addto=addto))
 }
 
 #' @rdname dfm
@@ -114,7 +117,7 @@ dfm.character <- function(corpus,
                           dictionary.regex=FALSE,
                           addto=NULL) {
     # if (verbose & parent.env(dfm.character) != dfm.corpus) cat("Creating dfm: ...")
-    if (verbose) cat("Creating dfm from character: ...")
+    if (verbose==TRUE) cat("Creating dfm from character vector ...")
     texts <- corpus
     names(texts) <- names(corpus)
     
@@ -122,11 +125,11 @@ dfm.character <- function(corpus,
     tokenizedTexts <- sapply(texts, tokenize, simplify=FALSE)
     if (stem==TRUE) {
         require(SnowballC)
-        cat(" stemming ...")
+        if (verbose) cat(" stemming ...")
         tokenizedTexts <- lapply(tokenizedTexts, wordStem)
     }
     if (bigram > 0) {
-        cat(" making bigrams ...")
+        if (verbose) cat(" making bigrams ...")
         tokenizedTexts <- lapply(tokenizedTexts, function(x) bigrams(x, bigram))
     }
     # print(length)
@@ -164,7 +167,7 @@ dfm.character <- function(corpus,
     
     # re-written PN 30th June
     if (!is.null(stopwords)) {
-        cat(" removing stopwords ... ")
+        if (verbose) cat(" removing stopwords ... ")
         # need two separate checks because if() on a char vector gives warning
         if (!is.character(stopwords)){
             if (stopwords==TRUE){
