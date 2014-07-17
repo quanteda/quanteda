@@ -10,4 +10,4 @@ Encoding: UTF-8
 License: GPL-3
 Suggests: austin, entropy, jsonlite, openNLP, RJSONIO, RCurl,
         SnowballC, twitteR, XML
-Built: R 3.1.0; ; 2014-06-12 17:33:03 UTC; unix
+Built: R 3.1.1; ; 2014-07-17 10:48:09 UTC; unix

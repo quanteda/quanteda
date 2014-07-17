@@ -11,9 +11,11 @@ countSyllables	countSyllables
 create.fvm.corpus	create.fvm.corpus
 describeTexts	describeTexts
 dfm	dfm
+dfm.character	dfm
 dfm.corpus	dfm
 dfm2ldaformat	dfm2ldaformat
 dfm2tmformat	dfm2tmformat
+dfmSort	dfmSort
 dfmTrim	dfmTrim
 flatten.dictionary	flatten.dictionary
 getRootFileNames	getRootFileNames
@@ -49,10 +51,13 @@ summary.corpus	summary.corpus
 sylCounts	sylCounts
 syllableCounts	syllableCounts
 tagPos	tagPos
+tfidf	tfidf
 tokenize	tokenize
+topFeatures	topFeatures
 translate	translate
 translate.corpus	translate.corpus
 twitterSearch	twitterSearch
 twitterStreamer	twitterStreamer
 twitterTerms	twitterTerms
+wordcloudDfm	wordcloud
 wordfishMCMC	wordfishMCMC

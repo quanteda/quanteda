@@ -40,6 +40,7 @@ dfm2ldaformat           Convert a quanteda 'dfm' (document feature
                         matrix) into a the data format needed by lda
 dfm2tmformat            Convert a quanteda 'dfm' (document feature
                         matrix) into a 'tm' DocumentTermMatrix
+dfmSort                 sort a dfm by one or more margins
 dfmTrim                 Trim a dfm based on a subset of features and
                         words
 flatten.dictionary      Flatten a hierarchical dictionary into a list
@@ -68,8 +69,8 @@ movies                  A corpus object containing 2000 movie reviews
 naiveBayesText          Naive Bayes classifier for texts
 ngrams                  Create ngrams
 predict.naivebayes      prediction method for Naive Bayes classifiers
-readWStatDict           This function makes a flattened dictionary from
-                        a Wordstat hierarchical dictionary
+readWStatDict           Make a flattened list from a hierarchical
+                        wordstat dictionary
 selectFeatures          extract feature words This function takes type
                         of feature extractor and a word freaquency
                         matrix with binary class (1/0) to select
@@ -92,8 +93,10 @@ tagPos                  Returns a table of the occurrences of different
                         takes a sentence and tags each word with it's
                         part of speech using openNLP's POS tagger, then
                         returns a table of the parts of speech
+tfidf                   compute the tf-idf weights of a dfm
 tokenize                Split a string into words The input text is
                         split into words by whitespace
+topFeatures             list the top n features in a dfm
 translate               Send text to the google translate research API
                         This function translates a text by sending it
                         to the google translate API.
@@ -107,5 +110,6 @@ twitterStreamer         work-in-progress interface to Twitter streaming
                         API
 twitterTerms            make a corpus object from results of a twitter
                         REST search
+wordcloudDfm            Plot a word cloud for a dfm
 wordfishMCMC            Bayesian-MCMC version of the "wordfish" Poisson
                         scaling model

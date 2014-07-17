@@ -1,0 +1,420 @@
+
+R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "quanteda"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> library('quanteda')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("MCMCirtPoisson1d")
+> ### * MCMCirtPoisson1d
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: MCMCirtPoisson1d
+> ### Title: Bayesian-MCMC version of a 1-dimensional Poisson IRT scaling
+> ###   model
+> ### Aliases: MCMCirtPoisson1d
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(iebudgets)
+> ##D # extract just the 2010 debates
+> ##D iebudgets2010 <- subset(iebudgets, year==2010)
+> ##D 
+> ##D # create a document-term matrix and set the word margin to the columns
+> ##D dtm <- dfm(iebudgets2010)
+> ##D 
+> ##D # estimate the maximium likelihood wordfish model from austin
+> ##D require(austin)
+> ##D iebudgets2010_wordfish <- wordfish(as.wfm(dtm, word.margin=2), dir=c(2,1))
+> ##D 
+> ##D # estimate the MCMC model, default values
+> ##D iebudgets2010_wordfishMCMC <- MCMCirtPoisson1d(dtm, itembase="the", dir=c(2,1))
+> ##D iebudgets2010_wordfishMCMC_unconstrained <- MCMCirtPoisson1d(dtm, dir=c(2,1))
+> ##D 
+> ##D # compare the estimates of \eqn{\theta_i}
+> ##D require(psych)
+> ##D pairs.panels(data.frame(ML=iebudgets2010_wordfish$theta,
+> ##D                         PoissonThe=iebudgets2010_wordfishMCMC$theta,
+> ##D                         PoissonUnconst=iebudgets2010_wordfishMCMC_unconstrained$theta),
+> ##D              smooth=FALSE, scale=FALSE, ellipses=FALSE, lm=TRUE, cex.cor=2.5)
+> ##D # inspect a known "opposition" word beta values
+> ##D iebudgets2010_wordfish$beta[which(iebudgets2010_wordfishMCMC_unconstrained$words=="fianna")]
+> ##D iebudgets2010_wordfishMCMC$beta[which(iebudgets2010_wordfishMCMC_unconstrained$words=="fianna")]
+> ##D iebudgets2010_wordfishMCMC_unconstrained$beta[which(iebudgets2010_wordfishMCMC_unconstrained$words=="fianna")]
+> ##D 
+> ##D # random starting values, for three chains
+> ##D dtm.sample <- trim(dtm, sample=200)
+> ##D iebudgets2010_wordfishMCMC_sample <- MCMCirtPoisson1d(dtm.sample, dir=c(2,1), startRandom=TRUE, nChains=3)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("bigrams")
+> ### * bigrams
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: bigrams
+> ### Title: Create bigrams
+> ### Aliases: bigrams
+> 
+> ### ** Examples
+> 
+> bigrams("The quick brown fox jumped over the lazy dog.")
+[1] "the_quick"   "quick_brown" "brown_fox"   "fox_jumped"  "jumped_over"
+[6] "over_the"    "the_lazy"    "lazy_dog"   
+> bigrams("The quick brown fox jumped over the lazy dog.", window=2)
+ [1] "the_quick"    "quick_brown"  "brown_fox"    "fox_jumped"   "jumped_over" 
+ [6] "over_the"     "the_lazy"     "lazy_dog"     "the_brown"    "quick_fox"   
+[11] "brown_jumped" "fox_over"     "jumped_the"   "over_lazy"    "the_dog"     
+> 
+> 
+> 
+> cleanEx()
+> nameEx("clean")
+> ### * clean
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: clean
+> ### Title: Perform basic cleanup on a character object
+> ### Aliases: clean
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D s <- "A cursed £$&^!€ Exclamation! point; paragraph 1.2, which I wrote."
+> ##D clean(s)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("collocations")
+> ### * collocations
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: collocations
+> ### Title: Detect collocations in a text
+> ### Aliases: collocations
+> 
+> ### ** Examples
+> 
+> data(iebudgets)
+> collocations(iebudgets$attribs$texts[1], top=50)
+Loading required package: entropy
+$collocation
+ [1] "allowance beyond"          "become wealthy"           
+ [3] "bought homes"              "code legacy"              
+ [5] "could become"              "date include"             
+ [7] "five main"                 "guidance provides"        
+ [9] "housing general"           "howlin yesterday"         
+[11] "incentivise savings"       "leading trade"            
+[13] "learned nothing"           "lenihan brian"            
+[15] "looks across"              "marginal rates"           
+[17] "member states"             "national asset"           
+[19] "offlicences particularly"  "oil residential"          
+[21] "otherwise restricted"      "particularly supermarkets"
+[23] "partnership model"         "personal wealth"          
+[25] "recent months"             "reputation abroad"        
+[27] "residential housing"       "role model"               
+[29] "timely transfer"           "universal pillar"         
+[31] "vulnerable groups"         "yesterday about"          
+[33] "ago december"              "approximately taxation"   
+[35] "between midnight"          "building bubble"          
+[37] "business contributes"      "business expansion"       
+[39] "carry forward"             "cost households"          
+[41] "cover betting"             "develop grow"             
+[43] "different families"        "differential between"     
+[45] "difficult task"            "direct taxation"          
+[47] "estimates volume"          "eu member"                
+[49] "eu members"                "exiles cannot"            
+
+$Freq
+ [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[39] 1 1 1 1 2 1 1 1 1 1 1 1
+
+$lr
+ [1] 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177
+ [9] 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177
+[17] 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177
+[25] 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177 13.38177
+[33] 12.33570 12.33570 12.33570 12.33570 12.33570 12.33570 12.33570 12.33570
+[41] 12.33570 12.33570 12.33570 12.33570 12.33570 12.33570 12.33570 12.33570
+[49] 12.33570 12.33570
+
+> collocations(iebudgets$attribs$texts[1], top=50, method="chi2")
+$collocation
+ [1] "absent themselves"     "acquisition phase"     "aer lingus"           
+ [4] "agreement asked"       "agricultural colleges" "aid rules"            
+ [7] "air travel"            "aircraft leasing"      "alan shatter"         
+[10] "annual gross"          "asked michael"         "associate myself"     
+[13] "attracted off"         "auto diesel"           "better incentivises"  
+[16] "blocks etc"            "brand leader"          "brazil russia"        
+[19] "brendan howlin"        "brian lenihan"         "children clothes"     
+[22] "close relatives"       "clothes oral"          "common currency"      
+[25] "core message"          "couples listening"     "crossborder shopping" 
+[28] "despite exhaustive"    "destroyed thousands"   "dia trócaire"         
+[31] "dick mulcahy"          "disastrous decisions"  "dublin castle"        
+[34] "duty—— ——to"           "eamon gilmore"         "easy ways"            
+[37] "educational standards" "entirely justifiable"  "equally important"    
+[40] "etc consistent"        "ever happened"         "everybody knows"      
+[43] "festivals events"      "fianna fáilgreen"      "finding backed"       
+[46] "firms operating"       "forecasters agree"     "formal announcement"  
+[49] "former ceo"            "free threshold"       
+
+$Freq
+ [1] 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[39] 1 1 1 1 1 1 1 1 1 1 1 1
+
+$chi2
+ [1] 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738
+[16] 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738
+[31] 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738 4738
+[46] 4738 4738 4738 4738 4738
+
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:entropy’
+
+> nameEx("corpusAppend")
+> ### * corpusAppend
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: corpusAppend
+> ### Title: function to add new texts and attributes to an existing corpus
+> ###   Accepts a list of texts and a list of associated attributes and adds
+> ###   them to the corpus
+> ### Aliases: corpusAppend
+> 
+> ### ** Examples
+> 
+> data(iebudgets)
+> data(ieAttribs)
+> data(ieTexts)
+> budgets <- corpusAppend(iebudgets, ieTexts, ieAttribs)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("corpusCreate")
+> ### * corpusCreate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: corpusCreate
+> ### Title: Create a new corpus This function creates a corpus from a
+> ###   character vector (of texts), adds text-specific variables (which we
+> ###   term "attributes"), along with optional meta-data and notes.
+> ### Aliases: corpusCreate
+> 
+> ### ** Examples
+> 
+> data(ieTexts)
+> data(ieAttribs)
+> budgets <- corpusCreate(ieTexts, attribs=ieAttribs)
+> summary(budgets)
+Corpus object contains 5 texts.
+
+                                Texts Types Tokens Sentences year debate no
+    2008_BUDGET_01_Brian_Cowen_FF.txt  1699   8849       417 2008 BUDGET 01
+ 2008_BUDGET_02_Richard_Bruton_FG.txt  1212   5334       315 2008 BUDGET 02
+   2008_BUDGET_03_Joan_Burton_LAB.txt  1477   5464       303 2008 BUDGET 03
+  2008_BUDGET_04_Arthur_Morgan_SF.txt  1517   6108       278 2008 BUDGET 04
+   2008_BUDGET_05_Bertie_Ahern_FF.txt  1048   3946       175 2008 BUDGET 05
+   fname speaker party
+   Brian   Cowen    FF
+ Richard  Bruton    FG
+    Joan  Burton   LAB
+  Arthur  Morgan    SF
+  Bertie   Ahern    FF
+
+Source:  /home/paul/Dropbox/code/quanteda/..Rcheck/* on x86_64 by paul.
+Created: Thu Jul 17 11:49:19 2014.
+Notes:   NA.
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("corpusFromFilenames")
+> ### * corpusFromFilenames
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: corpusFromFilenames
+> ### Title: create a new corpus with attribute-value pairs taken from
+> ###   filenames
+> ### Aliases: corpusFromFilenames
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D new_corpus <- corpusFromFilenames(dirname, c("country", "electionType", "year", "language", "party"), sep='_')
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("corpusFromHeaders")
+> ### * corpusFromHeaders
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: corpusFromHeaders
+> ### Title: create a new corpus with attribute-value pairs taken from
+> ###   document headers
+> ### Aliases: corpusFromHeaders
+> 
+> ### ** Examples
+> 
+> data(ieTextsHeaders)
+> budgets <- corpusFromHeaders(ieTextsHeaders)
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:jsonlite’
+
+> nameEx("corpusReshape")
+> ### * corpusReshape
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: corpusReshape
+> ### Title: Transform a corpus by splitting texts into sentences
+> ### Aliases: corpusReshape
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D corpus <- data(iebudgets)
+> ##D sentCorp <- corpus.reshape(corpus)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("countSyllables")
+> ### * countSyllables
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: countSyllables
+> ### Title: Returns a count of the number of syllables in the input This
+> ###   function takes a text and returns a count of the number of syllables
+> ###   it contains. For British English words, the syllable count is exact
+> ###   and looked up from the CMU pronunciation dictionary. For any word not
+> ###   in the dictionary the syllable count is estimated by counting vowel
+> ###   clusters.
+> ### Aliases: countSyllables
+> 
+> ### ** Examples
+> 
+> countSyllables("This is an example sentence.")
+[1] "this"     "is"       "an"       "example"  "sentence"
+[1] 8
+> 
+> 
+> 
+> cleanEx()
+> nameEx("create.fvm.corpus")
+> ### * create.fvm.corpus
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: create.fvm.corpus
+> ### Title: Create a feature-value matrix from a corpus object returns a
+> ###   feature value matrix compatible with austin
+> ### Aliases: create.fvm.corpus
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D fvm <- create.fvm.corpus(budgets, group="party")
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("describeTexts")
+> ### * describeTexts
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: describeTexts
+> ### Title: print a summary of texts Prints to the console a desription of
+> ###   the texts, including number of types, tokens, and sentences
+> ### Aliases: describeTexts
+> 
+> ### ** Examples
+> 
+> texts <- c("testing this text", "and this one")
+> describeTexts(texts)
+  Texts Types Tokens Sentences
+1 text1     1      1         1
+2 text2     1      1         1
+3 text1     1      1         1
+4 text2     1      1         1
+5 text1     1      1         1
+6 text2     1      1         1
+  Texts Types Tokens Sentences
+1 text1     1      1         1
+2 text2     1      1         1
+3 text1     1      1         1
+4 text2     1      1         1
+5 text1     1      1         1
+6 text2     1      1         1
+> 
+> 
+> 
+> cleanEx()
+> nameEx("dfm")
+> ### * dfm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: dfm
+> ### Title: Create a document-feature matrix from a corpus object
+> ### Aliases: dfm dfm.character dfm.corpus
+> 
+> ### ** Examples
+> 
+> data(iebudgets)
+> wfm <- dfm(iebudgets)
+Creating dfm from a corpus: ...  done. 
+> 
+> ## by party, subset for 2010
+> wfmByParty2010 <- dfm(subset(iebudgets, year==2010), groups="party")
+Creating dfm from a corpus: ... aggregating by group: party...complete ...Error in UseMethod("dfm") : 
+  no applicable method for 'dfm' applied to an object of class "list"
+Calls: dfm -> dfm.corpus -> dfm
+Execution halted
