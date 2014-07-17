@@ -84,13 +84,14 @@ dfm.corpus <- function(corpus,
     
     # aggregation by group
     if (!is.null(groups)) {
-        if (verbose) cat("aggregating by group: ", groups, "...", sep="")
+        if (verbose) cat("aggregating by group: ", groups, "... ", sep="")
         if (length(groups)>1) {
             group.split <- lapply(corpus$attribs[,groups], as.factor)
         } else group.split <- as.factor(corpus$attribs[,groups])
         texts <- split(corpus$attribs$texts, group.split)
         # was sapply, changing to lapply seems to fix 2 class case
-        texts <- lapply(texts, paste)
+        ## KB: Changed this back to sapply to return a named character vector
+        texts <- sapply(texts, paste, collapse = " ")
         if (verbose) cat("complete ...")
     } else {
         texts <- corpus$attribs$texts
