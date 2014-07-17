@@ -23,7 +23,7 @@ Sorts a \link{dfm} by documents or words
 }
 \examples{
 data(iebudgets)
-dtm <- dfm(ieTexts)
+dtm <- dfm(iebudgets)
 dtm[, 1:10]
 dtm <- dfmSort(dtm, "words")
 dfmSort(dtm)[, 1:10]

@@ -369,7 +369,7 @@ flush(stderr()); flush(stdout())
 ### ** Examples
 
 data(iebudgets)
-dtm <- dfm(ieTexts)
+dtm <- dfm(iebudgets)
 dtm[, 1:10]
 dtm <- dfmSort(dtm, "words")
 dfmSort(dtm)[, 1:10]
@@ -809,9 +809,9 @@ flush(stderr()); flush(stdout())
 ### ** Examples
 
 data(iebudgets)
-dtm <- dfm(ieTexts)
+dtm <- dfm(iebudgets)
 topFeatures(dtm)
-topFeatures(dfm(ieTexts, stopwords=TRUE))
+topFeatures(dfm(iebudgets, stopwords=TRUE))
 topFeatures(dtm, 50, normalize=TRUE)
 
 

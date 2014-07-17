@@ -26,9 +26,9 @@ and their frequencies
 }
 \examples{
 data(iebudgets)
-dtm <- dfm(ieTexts)
+dtm <- dfm(iebudgets)
 topFeatures(dtm)
-topFeatures(dfm(ieTexts, stopwords=TRUE))
+topFeatures(dfm(iebudgets, stopwords=TRUE))
 topFeatures(dtm, 50, normalize=TRUE)
 }
 \author{

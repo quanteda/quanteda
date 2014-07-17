@@ -403,7 +403,7 @@ wordmargin <- function (x) {
 #' @author Ken Benoit
 #' @examples 
 #' data(iebudgets)
-#' dtm <- dfm(ieTexts)
+#' dtm <- dfm(iebudgets)
 #' dtm[, 1:10]
 #' dtm <- dfmSort(dtm, "words")
 #' dfmSort(dtm)[, 1:10]
@@ -434,9 +434,9 @@ dfmSort <- function(x, margin = c("words", "docs", "both"), decreasing=TRUE) {
 #' @author Ken Benoit
 #' @examples 
 #' data(iebudgets)
-#' dtm <- dfm(ieTexts)
+#' dtm <- dfm(iebudgets)
 #' topFeatures(dtm)
-#' topFeatures(dfm(ieTexts, stopwords=TRUE))
+#' topFeatures(dfm(iebudgets, stopwords=TRUE))
 #' topFeatures(dtm, 50, normalize=TRUE)
 topFeatures <- function(x, n=20, normalize=FALSE, bottom=FALSE) {
     x <- dfmSort(x, "words", decreasing=!bottom)

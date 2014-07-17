@@ -1,0 +1,31 @@
+
+R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(testthat) 
+> library(quanteda)
+> test_package("quanteda") 
+trying URL 'http://www.kenbenoit.net/courses/tcd2014qta/exercises/amicus_curiae.zip'
+Content type 'application/zip' length 1598419 bytes (1.5 Mb)
+opened URL
+==================================================
+downloaded 1.5 Mb
+
+..
+> 
+> proc.time()
+   user  system elapsed 
+  0.465   0.044   1.780 
