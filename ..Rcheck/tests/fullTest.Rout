@@ -156,7 +156,7 @@ Corpus object contains 100 texts.
  sAR83.txt  1292   4820       378       <NA>        AR
 
 Source:  /home/paul/Dropbox/code/quanteda/..Rcheck/tests/* on x86_64 by paul.
-Created: Thu Jul 17 16:10:49 2014.
+Created: Fri Jul 18 12:48:09 2014.
 Notes:   NA.
 
 > # extract a word by document matrix
@@ -178,4 +178,4 @@ Creating dfm from a corpus: ...  done.
 > 
 > proc.time()
    user  system elapsed 
- 13.559   0.067  14.081 
+ 14.053   0.076  14.510 

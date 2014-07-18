@@ -196,10 +196,11 @@ flush(stderr()); flush(stdout())
 
 ### ** Examples
 
-## Not run: 
-##D corpus <- data(iebudgets)
-##D sentCorp <- corpus.reshape(corpus)
-## End(Not run)
+data(iebudgets)
+ie2010document <- subset(iebudgets, year==2010)
+summary(ie2010document)
+ie2010sentence <- corpusReshape(ie2010document)  # reshape to sentence units
+summary(ie2010sentence, 20)
 
 
 
