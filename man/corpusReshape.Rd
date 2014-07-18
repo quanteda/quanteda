@@ -2,10 +2,14 @@
 \alias{corpusReshape}
 \title{Transform a corpus by splitting texts into sentences}
 \usage{
-corpusReshape(corpus)
+corpusReshape(corpus, to = c("sentence", "document"))
 }
 \arguments{
   \item{corpus}{Corpus to transform}
+
+  \item{to}{target unit of analysis for the reshaping.
+  Currently only \code{sentence} and \code{document} are
+  supported.}
 }
 \description{
 Each text in the corpus is split into sentences, and each
@@ -14,9 +18,10 @@ indicating the text it is taken from and it's serial number
 in that text
 }
 \examples{
-\dontrun{
-corpus <- data(iebudgets)
-sentCorp <- corpus.reshape(corpus)
-}
+data(iebudgets)
+ie2010document <- subset(iebudgets, year==2010)
+summary(ie2010document)
+ie2010sentence <- corpusReshape(ie2010document)  # reshape to sentence units
+summary(ie2010sentence, 20)
 }
 

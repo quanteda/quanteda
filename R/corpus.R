@@ -252,26 +252,55 @@ subset.corpus <- function(corpus, subset=NULL, select=NULL) {
 #' the text it is taken from and it's serial number in that text
 #' 
 #' @param corpus Corpus to transform
+#' @param to target unit of analysis for the reshaping.  Currently only \code{sentence} 
+#' and \code{document} are supported.
+#' @export
 #' @examples
-#' \dontrun{
-#' corpus <- data(iebudgets)
-#' sentCorp <- corpus.reshape(corpus)
-#' }
-corpusReshape <- function(corpus) {
-  sentence <- sentenceSeg(corpus$attribs$texts[[1]])
-  sentenceno <- 1:length(sentence)
-  sourcetext <- rep(row.names(corpus$attribs)[[1]], length(sentence))
-  atts <- data.frame(sourcetext, sentenceno)
-  sentCorp <- corpusCreate(unlist(sentence), attribs=atts)
-  for(i in 2:nrow(corpus$attribs)){
-    sentence <- sentenceSeg(corpus$attribs$texts[[i]])
-    sentenceno <- 1:length(sentence)
-    sourcetext <- rep(row.names(corpus$attribs)[[i]], length(sentence))
-    atts <- data.frame(sourcetext, sentenceno)
+#' data(iebudgets)
+#' ie2010document <- subset(iebudgets, year==2010)
+#' summary(ie2010document)
+#' ie2010sentence <- corpusReshape(ie2010document)  # reshape to sentence units
+#' summary(ie2010sentence, 20)
+corpusReshape <- function(corpus, to=c("sentence", "document")) {
+    to <- match.arg(to) 
+    attrsOriginal <- corpus$attribs[, -which(names(corpus$attribs)=="texts")]
+    #         # atts <- corpus$attribs[1, ]
+    #         # start collection data.frame using first text
+    #         sentences <- sentenceSeg(corpus$attribs$texts[1])
+    #         attrsNew <- data.frame(sentenceno = 1:length(sentences),
+    #                                sourcetext = rep(row.names(corpus$attribs)[1], length(sentences)),
+    #                                attrsOriginal[rep(1, length(sentences)), ])
+    #         
     
-    sentCorp<-corpusAppend(sentCorp, unlist(sentence), atts)
-  }
-  return(sentCorp)
+    if (to=="sentence") {
+        ## move from documents to sentences
+        for (i in 1:nrow(corpus$attribs)) {
+            sentences <- sentenceSeg(corpus$attribs$texts[i])
+            attrsNew <- data.frame(sentenceno = 1:length(sentences),
+                                   # sourcetext = rep(row.names(corpus$attribs)[i], length(sentences)),
+                                   attrsOriginal[rep(i, length(sentences)), ])
+            names(sentences) <- paste(row.names(attrsNew)[1],
+                                      1:length(sentences), sep=".")
+            if (i>1) {
+                newCorp <- corpusAppend(newCorp, unlist(sentences), attrsNew) 
+            } else {
+                newCorp <- corpusCreate(unlist(sentences), attribs=attrsNew,
+                                        textnames = rownames(attrsNew))        
+            }
+        }
+    
+    } else if (to=="document") {
+        ## move from documents to sentences
+        cat("Document reshape not yet implemented.\n")
+        #             splitattrs <- split(corpus$attribs, corpus$attribs$sourcetext)
+        #             newCorp <- data.frame()
+        #             for (i in 2:length(splitattrs)) {
+        #                 newattrs <- lapply(splitattrs, texts
+        #             }
+        #             
+    }
+
+    return(newCorp)
 }
 
 #' Corpus summary
