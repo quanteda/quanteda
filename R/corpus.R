@@ -277,7 +277,7 @@ corpusReshape <- function(corpus, to=c("sentence", "document")) {
         for (i in 1:nrow(corpus$attribs)) {
             sentences <- sentenceSeg(corpus$attribs$texts[i])
             attrsNew <- data.frame(sentenceno = 1:length(sentences),
-                                   # sourcetext = rep(row.names(corpus$attribs)[i], length(sentences)),
+                                   sourcetext = rep(row.names(corpus$attribs)[i], length(sentences)),
                                    attrsOriginal[rep(i, length(sentences)), ])
             names(sentences) <- paste(row.names(attrsNew)[1],
                                       1:length(sentences), sep=".")
