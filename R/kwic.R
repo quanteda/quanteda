@@ -66,7 +66,7 @@ kwic.character <- function(text, word, window=5, regex=FALSE) {
 #' @S3method kwic corpus
 kwic.corpus <- function(corpus, word, window=5, regex=FALSE) {
     contexts <- sapply(corpus$attribs$texts, kwic, word=word, window=window, regex=regex, USE.NAMES=FALSE)
-    if (length(contexts)==1 && is.na(contexts)) return(NA)
+    if (sum(is.na(contexts))==length(contexts)) return(NA) # means no search term found
     names(contexts) <- row.names(corpus$attribs)
     contexts <- contexts[!is.na(contexts)]
     for (l in 1:length(contexts)) {

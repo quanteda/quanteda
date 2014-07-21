@@ -109,37 +109,38 @@ corpusFromHeaders <- function(headerTexts) {
 #' @param directory Path to folder containing documents
 #' @param attNames A vector naming the attribute types
 #' @param sep A string by which the filename should be separated to get the values. Default is underscore.
+#' @param enc Encoding for the texts (this is the "to" argument sent to iconv)
 #' @export
-#' @author Paul Nulty
+#' @author Paul Nulty and Ken Benoit
 #' @examples
 #' \dontrun{
 #' new_corpus <- corpusFromFilenames(dirname, c("country", "electionType", "year", "language", "party"), sep='_')
 #' }
-corpusFromFilenames <- function(directory, attNames, sep='_'){
-  texts <- c()
-  # sep="_"
-  allAttribs <- data.frame(stringsAsFactors=FALSE)
-  filenames <- list.files(directory, full.names=TRUE)
-  for (f in filenames) {
-    sname <- getRootFileNames(f)
-    sname <- gsub(".txt", "", sname)
-    parts <- strsplit(sname, sep)
-    df <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE))
-    names(df) <- attNames
-    if(length(allAttribs) < 1){
-      allAttribs <- df
+corpusFromFilenames <- function(directory, attNames, sep='_', enc=NULL){
+    # allAttribs <- data.frame(stringsAsFactors=FALSE)
+    # get the filenames from the directory
+    filenames <- list.files(directory, full.names=TRUE)
+    # read in the texts
+    texts <- getTextFiles(filenames)
+    # convert if needed
+    if (!is.null(enc)) {
+        texts <- iconv(texts, to=enc)
     }
-    else{
-      allAttribs <- rbind(df, allAttribs)
+    # get the filename roots
+    snames <- getRootFileNames(filenames)
+    # remove the .txt from text filenames
+    snames <- gsub(".txt", "", snames)
+    # split along the delimiter and make the attributes
+    parts <- strsplit(snames, sep)
+    attributesdf <-  data.frame(matrix(unlist(parts), nrow=length(parts), 
+                                       byrow=TRUE),
+                                stringsAsFactors=FALSE)
+    if (ncol(attributesdf) != length(attNames)) {
+        stop("The length of the parts of the filename does not equal the length of the attribute names")
     }
-    if(length(parts)!=length(parts)){
-      stop("The length of the parts of the filename does not equal the length of the attribute names")
-    }
-    content <- getTextFiles(f)
-    texts <- c(texts, content) 
-  }
-  corp <- corpusCreate(texts, attribs=allAttribs)
-  return(corp)
+    names(attributesdf) <- attNames
+    # return the created corpus
+    return(corpusCreate(texts, attributesdf))
 }
 
 
@@ -315,12 +316,13 @@ corpusReshape <- function(corpus, to=c("sentence", "document")) {
 #' then setting this to the name of that variable would make it possible to summarize
 #' the alternate rather than the main texts.
 #' @param subset a Boolean expression that specifies a subset of the texts, similar to \code{subset.corpus}
+#' @param verbose FALSE to turn off printed output
 #' @export
 #' @examples
 #' data(iebudgets)
 #' summary(iebudgets, subset=(year==2010))
 #' summary(iebudgets, nmax=10)
-summary.corpus <- function(corpus, nmax=100, texts="texts", subset=NULL) {
+summary.corpus <- function(corpus, nmax=100, texts="texts", subset=NULL, verbose=TRUE) {
     select <- NULL
     corpus <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
     cat("Corpus object contains", nrow(corpus$attribs), "texts.\n\n")
@@ -331,12 +333,13 @@ summary.corpus <- function(corpus, nmax=100, texts="texts", subset=NULL) {
     if (ncol(attribs)==1) names(attribs) <- as.character(substitute(select))[2]
     #print(names(attribs))
     names(texts) <- rownames(corpus$attribs)
-    print(head(cbind((dtexts <- describeTexts(texts, verbose=FALSE)), 
-                     attribs), 
-               nmax), row.names=FALSE)
-    cat("\nSource:  ", corpus$metadata["source"], ".\n", sep="")
-    cat("Created: ", corpus$metadata["created"], ".\n", sep="")
-    cat("Notes:   ", corpus$metadata["notes"], ".\n\n", sep="")
+    dtexts <- describeTexts(texts, verbose=FALSE)
+    if (verbose) {
+        print(head(cbind(dtexts, attribs), nmax), row.names=FALSE)
+        cat("\nSource:  ", corpus$metadata["source"], ".\n", sep="")
+        cat("Created: ", corpus$metadata["created"], ".\n", sep="")
+        cat("Notes:   ", corpus$metadata["notes"], ".\n\n", sep="")
+    }
     # invisibly pass the summary of the texts from describetexts()
-    return(invisible(dtexts))
+    return(invisible(cbind(dtexts, attribs)))
 }
