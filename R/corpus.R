@@ -117,7 +117,6 @@ corpusFromHeaders <- function(headerTexts) {
 #' new_corpus <- corpusFromFilenames(dirname, c("country", "electionType", "year", "language", "party"), sep='_')
 #' }
 corpusFromFilenames <- function(directory, attNames, sep='_', enc=NULL){
-    # allAttribs <- data.frame(stringsAsFactors=FALSE)
     # get the filenames from the directory
     filenames <- list.files(directory, full.names=TRUE)
     # read in the texts
