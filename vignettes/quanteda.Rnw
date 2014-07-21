@@ -175,18 +175,21 @@ labels that correspond with the elements of the filename.
 
 <<>>=
 library(quanteda)
-tmpDir <- tempdir()  # create a temporary directory for example files
-textfile <- "https://github.com/kbenoit/quanteda/blob/dev/texts/irishbudgets2010.zip?raw=true"
-download.file(textfile, paste(tmpDir, "irishbudgets2010.zip", sep="/"), 
-              method="curl", extra="-L") # download this zipped archive of texts
+#tmpDir <- tempdir()  # create a temporary directory for example files
+#textfile <- "https://github.com/kbenoit/quanteda/blob/dev/texts/irishbudgets2010.zip?raw=true"
+#download.file(textfile, paste(tmpDir, "irishbudgets2010.zip", sep="/"), 
+ #             method="curl", extra="-L") # download this zipped archive of texts
 # unzip the file to the temporary folder
-unzip(paste(tmpDir, "irishbudgets2010.zip", sep="/"), exdir=tmpDir) 
+#unzip(paste(tmpDir, "irishbudgets2010.zip", sep="/"), exdir=tmpDir) 
 # list the files unzipped
-list.files(paste(tmpDir, "budget_2010", sep="/"))
+#list.files(paste(tmpDir, "budget_2010", sep="/"))
 # create a corpus from the files, parsing the filenames
-ieBudgets2010 <- corpusFromFilenames(paste(tmpDir, "budget_2010", sep="/"),
-                                     c("year", "debate", "number", "firstname", "lastname", "party"), 
-                                     sep="_")
+#ieBudgets2010 <- corpusFromFilenames(paste(tmpDir, "budget_2010", sep="/"),
+#                                     c("year", "debate", "number", "firstname", "lastname", "party"), 
+                                     #sep="_")
+
+data(iebudgets)
+ieBudgets2010 <- subset(iebudgets, year=="2010",)
 @
 
 This creates a new quanteda corpus object where each text has been associated values for its attribute types extracted from the filename:
@@ -202,7 +205,7 @@ Another method of creating a corpus from texts is to read texts into character v
 <<>>=
 # load two vectors of texts (Bollinger texts from Evans et al JELS 2007)
 # located in the texts directory of the github site
-amicusFile <- "https://github.com/kbenoit/quanteda/blob/dev/texts/amicus_curiae.zip?raw=true"
+amicusFile <- "http://www.kenbenoit.net/courses/tcd2014qta/exercises/amicus_curiae.zip"
 tmpDir <- tempdir()
 download.file(amicusFile, paste(tmpDir, "amicus_curiae.zip", sep="/"), 
               method="curl", extra="-L") # download this zipped archive of texts
@@ -279,7 +282,7 @@ We can add new texts to a corpus using the \texttt{corpusAppend} function. For e
 
 <<>>=
 newText <-"This is an example text to be added to the ieBudgets2010 corpus"
-newAttribs <- data.frame(year="2000", debate="bud", number="99", firstname="Joe", lastname="Bloggs", party="Green" )
+newAttribs <- data.frame(year="2000", debate="bud", no="99", fname="Joe", speaker="Bloggs", party="Green" )
 
 ieBudgets2010 <- corpusAppend(ieBudgets2010, newText, newAttribs)
 @
@@ -289,7 +292,7 @@ ieBudgets2010 <- corpusAppend(ieBudgets2010, newText, newAttribs)
 
 Alternatively, we can add a new column of attribute values without appending any new texts.
 <<>>=
-newAttrib <- c('gray','gray','gray', 'gray','gray','gray','gray','gray','gray','gray','gray', 'gray','gray','gray', 'gray')
+newAttrib <- c('gray','gray','blue', 'gray','gray','yellow','gray','gray','gray','gray','gray', 'gray','gray','gray', 'gray')
 
 ieBudgets2010 <- corpusAddAttributes(ieBudgets2010, newAttrib, name="suitcolor")
 names(ieBudgets2010$attribs)
