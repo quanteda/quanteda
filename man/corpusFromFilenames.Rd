@@ -2,7 +2,7 @@
 \alias{corpusFromFilenames}
 \title{create a new corpus with attribute-value pairs taken from filenames}
 \usage{
-corpusFromFilenames(directory, attNames, sep = "_")
+corpusFromFilenames(directory, attNames, sep = "_", enc = NULL)
 }
 \arguments{
   \item{directory}{Path to folder containing documents}
@@ -11,6 +11,9 @@ corpusFromFilenames(directory, attNames, sep = "_")
 
   \item{sep}{A string by which the filename should be
   separated to get the values. Default is underscore.}
+
+  \item{enc}{Encoding for the texts (this is the "to"
+  argument sent to iconv)}
 }
 \description{
 This function takes a directory, reads in all the documents
@@ -36,6 +39,6 @@ new_corpus <- corpusFromFilenames(dirname, c("country", "electionType", "year", 
 }
 }
 \author{
-Paul Nulty
+Paul Nulty and Ken Benoit
 }
 

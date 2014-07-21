@@ -3,7 +3,7 @@
 \title{Corpus summary}
 \usage{
 \method{summary}{corpus}(corpus, nmax = 100, texts = "texts",
-  subset = NULL)
+  subset = NULL, verbose = TRUE)
 }
 \arguments{
   \item{corpus}{An existing corpus to be summarized}
@@ -20,6 +20,8 @@
 
   \item{subset}{a Boolean expression that specifies a
   subset of the texts, similar to \code{subset.corpus}}
+
+  \item{verbose}{FALSE to turn off printed output}
 }
 \description{
 Displays information about a corpus object, including
