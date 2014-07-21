@@ -117,7 +117,7 @@ corpusFromHeaders <- function(headerTexts) {
 #' }
 corpusFromFilenames <- function(directory, attNames, sep='_'){
   texts <- c()
-  sep="_"
+  # sep="_"
   allAttribs <- data.frame(stringsAsFactors=FALSE)
   filenames <- list.files(directory, full.names=TRUE)
   for (f in filenames) {
