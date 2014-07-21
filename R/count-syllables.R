@@ -18,7 +18,6 @@ countSyllables <- function(sourceText, verbose=FALSE) {
   #clean the string
   string <- clean(sourceText)
   words <- tokenize(string)
-  print(words)
   # lookup the syllables in the words found in the dictionary
   # uses vectorization and named vector indexing - not looping!
   n.syllables <- syllableCounts[words]

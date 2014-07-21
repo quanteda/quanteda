@@ -28,4 +28,4 @@ downloaded 1.5 Mb
 > 
 > proc.time()
    user  system elapsed 
-  0.465   0.044   1.780 
+  0.448   0.033   0.750 

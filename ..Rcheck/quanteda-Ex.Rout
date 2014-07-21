@@ -257,7 +257,7 @@ Corpus object contains 5 texts.
   Bertie   Ahern    FF
 
 Source:  /home/paul/Dropbox/code/quanteda/..Rcheck/* on x86_64 by paul.
-Created: Thu Jul 17 16:10:23 2014.
+Created: Fri Jul 18 12:47:42 2014.
 Notes:   NA.
 
 > 
@@ -315,10 +315,97 @@ detaching ‘package:jsonlite’
 > 
 > ### ** Examples
 > 
-> ## Not run: 
-> ##D corpus <- data(iebudgets)
-> ##D sentCorp <- corpus.reshape(corpus)
-> ## End(Not run)
+> data(iebudgets)
+> ie2010document <- subset(iebudgets, year==2010)
+> summary(ie2010document)
+Corpus object contains 14 texts.
+
+                                     Texts Types Tokens Sentences year debate
+       2010_BUDGET_01_Brian_Lenihan_FF.txt  1655   7799       390 2010 BUDGET
+      2010_BUDGET_02_Richard_Bruton_FG.txt   956   4058       222 2010 BUDGET
+        2010_BUDGET_03_Joan_Burton_LAB.txt  1485   5770       329 2010 BUDGET
+       2010_BUDGET_04_Arthur_Morgan_SF.txt  1463   6481       349 2010 BUDGET
+         2010_BUDGET_05_Brian_Cowen_FF.txt  1473   5880       262 2010 BUDGET
+          2010_BUDGET_06_Enda_Kenny_FG.txt  1066   3875       161 2010 BUDGET
+     2010_BUDGET_07_Kieran_ODonnell_FG.txt   614   2066       141 2010 BUDGET
+      2010_BUDGET_08_Eamon_Gilmore_LAB.txt  1098   3800       208 2010 BUDGET
+    2010_BUDGET_09_Michael_Higgins_LAB.txt   447   1136        49 2010 BUDGET
+       2010_BUDGET_10_Ruairi_Quinn_LAB.txt   418   1177        60 2010 BUDGET
+     2010_BUDGET_11_John_Gormley_Green.txt   363    929        49 2010 BUDGET
+       2010_BUDGET_12_Eamon_Ryan_Green.txt   482   1513        90 2010 BUDGET
+     2010_BUDGET_13_Ciaran_Cuffe_Green.txt   423   1143        48 2010 BUDGET
+ 2010_BUDGET_14_Caoimhghin_OCaolain_SF.txt  1055   3654       194 2010 BUDGET
+ no      fname  speaker party
+ 01      Brian  Lenihan    FF
+ 02    Richard   Bruton    FG
+ 03       Joan   Burton   LAB
+ 04     Arthur   Morgan    SF
+ 05      Brian    Cowen    FF
+ 06       Enda    Kenny    FG
+ 07     Kieran ODonnell    FG
+ 08      Eamon  Gilmore   LAB
+ 09    Michael  Higgins   LAB
+ 10     Ruairi    Quinn   LAB
+ 11       John  Gormley Green
+ 12      Eamon     Ryan Green
+ 13     Ciaran    Cuffe Green
+ 14 Caoimhghin OCaolain    SF
+
+Source:  /home/paul/* on x86_64 by paul.
+Created: Wed Nov 28 16:49:22 2012.
+Notes:   NA.
+
+> ie2010sentence <- corpusReshape(ie2010document)  # reshape to sentence units
+> summary(ie2010sentence, 20)
+Corpus object contains 2929 texts.
+
+                                  Texts Types Tokens Sentences sentenceno
+  2010_BUDGET_01_Brian_Lenihan_FF.txt.1    23     25         1          1
+  2010_BUDGET_01_Brian_Lenihan_FF.txt.2    20     22         1          2
+  2010_BUDGET_01_Brian_Lenihan_FF.txt.3     0      0         1          3
+  2010_BUDGET_01_Brian_Lenihan_FF.txt.4    45     65         1          4
+  2010_BUDGET_01_Brian_Lenihan_FF.txt.5     0      0         1          5
+  2010_BUDGET_01_Brian_Lenihan_FF.txt.6    46     57         1          6
+  2010_BUDGET_01_Brian_Lenihan_FF.txt.7     0      0         1          7
+  2010_BUDGET_01_Brian_Lenihan_FF.txt.8    15     15         1          8
+  2010_BUDGET_01_Brian_Lenihan_FF.txt.9    24     28         1          9
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt.10    19     20         1         10
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt.11     0      0         1         11
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt.12    19     25         1         12
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt.13     9     10         1         13
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt.14    14     15         1         14
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt.15     0      0         1         15
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt.16    17     18         1         16
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt.17    22     27         1         17
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt.18    21     22         1         18
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt.19     0      0         1         19
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt.20     4      4         1         20
+                          sourcetext year debate no fname speaker party
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+ 2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
+
+Source:  /home/paul/Dropbox/code/quanteda/..Rcheck/* on x86_64 by paul.
+Created: Fri Jul 18 12:47:43 2014.
+Notes:   NA.
+
 > 
 > 
 > 
@@ -3226,7 +3313,7 @@ detaching ‘package:wordcloud’, ‘package:RColorBrewer’
 > ###
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  51.189 0.17 51.371 0 0 
+Time elapsed:  51.751 0.201 52.009 0 0 
 > grDevices::dev.off()
 null device 
           1 
