@@ -40,7 +40,7 @@ stopwordsRemove.character <- function(text, stopwords=NULL) {
     if (is.null(stopwords)) {
         stopwords <- stopwordsGet("english")
     }
-    return(gsub(paste("(\\b|\\s)(", paste(stopwords, collapse="|"), ")(\\b)", sep=""), "", text))
+    return(gsub(paste("(\\b|\\s)(", paste(stopwords, collapse="|"), ")(\\b)", sep=""), "", text, ignore.case=TRUE))
     ## Note: Will not remove capitalized words, such as those starting the sentence.  e.g. "The man."
 }
 
