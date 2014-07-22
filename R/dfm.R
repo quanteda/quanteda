@@ -122,7 +122,11 @@ dfm.character <- function(corpus,
     texts <- corpus
     names(texts) <- names(corpus)
     
+    if (is.null(names(texts))) {
+        names(texts) <- factor(paste("text", 1:length(texts), sep=""))
+    }
     textnames <- factor(names(texts))
+    
     tokenizedTexts <- sapply(texts, tokenize, simplify=FALSE)
     if (stem==TRUE) {
         require(SnowballC)
