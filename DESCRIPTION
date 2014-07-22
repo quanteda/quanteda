@@ -8,7 +8,7 @@ Maintainer: Ken Benoit <kbenoit@lse.ac.uk> and Paul Nulty <p.nulty@lse.ac.uk>
 Description: A library for the quantitative analysis of textual data with R
 Encoding: UTF-8
 License: GPL-3
-Requires: wordcloud
+Requires: wordcloud, SnowballC
 Suggests:
     austin,
     entropy,
@@ -16,6 +16,5 @@ Suggests:
     openNLP,
     RJSONIO,
     RCurl,
-    SnowballC,
     twitteR,
     XML
