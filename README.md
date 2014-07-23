@@ -17,7 +17,7 @@ library(devtools)
 # install the latest (master) version quanteda from Github
 install_github("quanteda", username="kbenoit", dependencies=TRUE, quick=TRUE)
 # ALTERNATIVELY: install the latest dev branch version quanteda from Github
-install_github("quanteda", username="kbenoit", ref="dev", quick=TRUE)
+install_github("quanteda", username="kbenoit", dependencies=TRUE, quick=TRUE, ref="dev")
 ```
 More Documentation
 ------------------
