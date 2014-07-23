@@ -342,3 +342,22 @@ summary.corpus <- function(corpus, nmax=100, texts="texts", subset=NULL, verbose
     # invisibly pass the summary of the texts from describetexts()
     return(invisible(cbind(dtexts, attribs)))
 }
+
+
+#' extract the texts from a corpus
+#'
+#' Extract the texts from a corpus as a named character vector
+#' 
+#' @param corpus A corpus object
+#' @param usenames If TRUE (default) use the text names as names for the returned character vector.
+#' @return (Named) character vector of texts from the corpus.
+#' @export
+#' @examples
+#' data(iebudgets)
+#' cowenTexts <- getTexts(subset(iebudgets, speaker="Cowen"))
+#' syllableCount(cowenTexts)
+getTexts <- function(corpus, usenames=TRUE) {
+    texts <- corpus$attribs$texts
+    names(texts) <- row.names(corpus$attribs)
+    return(texts)
+}
