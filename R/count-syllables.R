@@ -25,7 +25,7 @@ countSyllables <- function(sourceText) { #}, verbose=FALSE) {
     words <- lapply(string, tokenize)  # tokenize the input text(s)
     
     # match syllable counts to words in the list
-    n.syllables <- sapply(words, function(x) syllableCounts[x])
+    n.syllables <- lapply(words, function(x) syllableCounts[x])
     
     # look up vowel counts for those not in the lst
     for (i in 1:length(n.syllables)) {

@@ -6,7 +6,6 @@
 #' @param document index of the document whose words will be plotted
 #' @param ... additional arguments to pass to \link[wordcloud]{wordcloud} 
 #' @return None
-#' @rdname wordcloud
 #' @export 
 #' @author Kenneth Benoit
 #' @examples 
