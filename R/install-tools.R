@@ -1,4 +1,4 @@
-##' Re-install \package{quanteda} from github
+##' Re-install \link{quanteda} from github
 ##'
 ##' Refresh the installation from the github repository for the package.  Useful if 
 ##' you need to pull the latest changes.

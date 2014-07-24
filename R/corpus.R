@@ -323,8 +323,10 @@ corpusReshape <- function(corpus, to=c("sentence", "document")) {
 #' summary(iebudgets, nmax=10)
 summary.corpus <- function(corpus, nmax=100, texts="texts", subset=NULL, verbose=TRUE) {
     select <- NULL
-    corpus <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
-    cat("Corpus object contains", nrow(corpus$attribs), "texts.\n\n")
+    if (!is.null(subset)) 
+        corpus <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
+    cat("Corpus object contains ", nrow(corpus$attribs), " text",
+         ifelse(nrow(corpus$attribs)>1, "s", ""), ".\n\n", sep="")
     # allow user to set the column or variable which identifies the texts to summarize
     texts <- corpus$attribs[,texts]
     attribs <- as.data.frame(corpus$attribs[,-1])

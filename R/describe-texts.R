@@ -14,9 +14,9 @@ describeTexts <- function(texts, verbose=TRUE) {
     if (is.null(names(texts))) 
         names(texts) <- paste("text", 1:length(texts), sep="")
     cleanTexts <- lapply(texts,clean)
-    tokenizedTexts <- sapply(cleanTexts, tokenize)
+    tokenizedTexts <- lapply(cleanTexts, tokenize)
     ntokens <- sapply(tokenizedTexts,length)
-    temp <- sapply(tokenizedTexts, unique)
+    temp <- lapply(tokenizedTexts, unique)
     ntypes <- sapply(temp, length)
     # because we still don't have a generic sentence segmenter
     nsents  <- sapply(texts, function(s) length(gregexpr("[.!?]", s)[[1]]))

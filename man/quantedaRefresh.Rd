@@ -1,6 +1,6 @@
 \name{quantedaRefresh}
 \alias{quantedaRefresh}
-\title{Re-install \package{quanteda} from github}
+\title{Re-install \link{quanteda} from github}
 \usage{
 quantedaRefresh(branch = c("dev", "master"))
 }
