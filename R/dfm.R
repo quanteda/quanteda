@@ -368,6 +368,24 @@ tfidf <- function(x, normalize = TRUE) {
     return(t(t(x) * idf))
 }
 
+#' normalizes the term frequencies a dfm
+#'
+#' Returns a matrix of term weights, as a \link{dfm} object
+#' 
+#' @param dfm Document-feature matrix created by \code{\link{dfm}}
+#' @return A dfm matrix object where values are relative term proportions within the document
+#' @export 
+#' @author Ken Benoit
+#' @examples 
+#' data(iebudgets)
+#' dtm <- dfm(iebudgets)
+#' dtm[1:10, 100:110]
+#' tf(dtm)[1:10, 100:110]
+tf <- function(x) {
+    return(x/rowSums(x))
+}
+
+
 
 #' @export
 words <- function (wfm) {
