@@ -16,6 +16,8 @@ if (!require(devtools)) install.packages("devtools")
 library(devtools)
 # install the latest version quanteda from Github
 install_github("quanteda", username="kbenoit")
+# ALTERNATIVELY: install the latest dev branch version quanteda from Github
+install_github("quanteda", username="kbenoit", dependencies=TRUE, quick=TRUE, ref="dev")
 ```
 More Documentation
 ------------------
