@@ -376,7 +376,7 @@ getTexts <- function(corpus, usenames=TRUE) {
 #' @export
 #' @examples
 #' data(movies)
-#' movieSampl <- sample(movies, 200, replace=TRUE)
+#' movieSamp <- sample(movies, 200, replace=TRUE)
 corpusSample <- function(corpus, size=n, replace=FALSE, prob=NULL){
   if(!is.null(prob)) stop("prob argument is not implemented for corpus")
   atts <- corpus$attribs
