@@ -363,3 +363,31 @@ getTexts <- function(corpus, usenames=TRUE) {
     names(texts) <- row.names(corpus$attribs)
     return(texts)
 }
+
+
+#' Corpus sampling
+#'
+#' Takes a random sample of the specified size from a corpus, with or without replacement
+#' 
+#' @param corpus An existing corpus to be sampled
+#' @param size A positive number, the number of texts to return
+#' @param replace Should sampling be with replacement?
+#' @param prob Not implemented
+#' @export
+#' @examples
+#' data(movies)
+#' movieSampl <- sample(movies, 200, replace=TRUE)
+corpusSample <- function(corpus, size=n, replace=FALSE, prob=NULL){
+  if(!is.null(prob)) stop("prob argument is not implemented for corpus")
+  atts <- corpus$attribs
+  print(nrow(atts))
+  sampleInds <- sample(nrow(atts), size=size, replace=replace)
+  newAtts <- atts[sampleInds,]
+  newTexts <- newAtts[[1]]
+  newAtts <- newAtts[2:length(newAtts)]
+  newCorp <- corpusCreate(newTexts, newAtts)
+  newCorp$metadata["created"] <- paste(newCorp$metadata["created"], "sampled from",
+                                       corpus$metadata["source"], collapse= " ")
+  return(newCorp)
+}
+

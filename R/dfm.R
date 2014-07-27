@@ -412,6 +412,27 @@ wordmargin <- function (x) {
     ifelse(names(dimnames(x))[1] == "words", 1, 2)
 }
 
+
+#' Corpus sampling
+#'
+#' Takes a random sample of the specified size from a corpus, with or without replacement
+#' 
+#' @param corpus An existing corpus to be sampled
+#' @param size A positive number, the number of texts to return
+#' @param replace Should sampling be with replacement?
+#' @param prob Not implemented
+#' @export
+#' @examples
+#' data(movies)
+#' d <- dfm(movies)
+#' samp <- dfmSample(d, 100, replace=TRUE)
+dfmSample <- function(docMat, size=n, replace=FALSE, prob=NULL){
+  if(!is.null(prob)) stop("prob argument is not implemented for corpus")
+  sampleInds <- sample(nrow(docMat), size=size, replace=replace)
+  newDocMat <- docMat[sampleInds,]
+  return(newDocMat)
+}
+
 #' sort a dfm by one or more margins
 #'
 #' Sorts a \link{dfm} by documents or words
