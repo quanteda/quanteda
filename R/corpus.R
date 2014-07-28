@@ -364,6 +364,7 @@ getTexts <- function(corpus, usenames=TRUE) {
     return(texts)
 }
 
+<<<<<<< HEAD
 #' extract the attributes (document-level meta-data) from a corpus
 #'
 #' Extract the ocument-level meta-data from a corpus as a data frame
@@ -381,3 +382,32 @@ getData <- function(corpus, usenames=TRUE) {
     if (usenames) row.names(thedata) <- row.names(corpus$attribs)
     return(thedata)
 }
+=======
+
+#' Corpus sampling
+#'
+#' Takes a random sample of the specified size from a corpus, with or without replacement
+#' 
+#' @param corpus An existing corpus to be sampled
+#' @param size A positive number, the number of texts to return
+#' @param replace Should sampling be with replacement?
+#' @param prob Not implemented
+#' @export
+#' @examples
+#' data(movies)
+#' movieSamp <- sample(movies, 200, replace=TRUE)
+corpusSample <- function(corpus, size=n, replace=FALSE, prob=NULL){
+  if(!is.null(prob)) stop("prob argument is not implemented for corpus")
+  atts <- corpus$attribs
+  print(nrow(atts))
+  sampleInds <- sample(nrow(atts), size=size, replace=replace)
+  newAtts <- atts[sampleInds,]
+  newTexts <- newAtts[[1]]
+  newAtts <- newAtts[2:length(newAtts)]
+  newCorp <- corpusCreate(newTexts, newAtts)
+  newCorp$metadata["created"] <- paste(newCorp$metadata["created"], "sampled from",
+                                       corpus$metadata["source"], collapse= " ")
+  return(newCorp)
+}
+
+>>>>>>> c2836b19898c32b9a7b2f96e3923e2250b4b2877
