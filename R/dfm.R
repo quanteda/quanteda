@@ -488,4 +488,3 @@ topFeatures <- function(x, n=20, normalize=FALSE, bottom=FALSE) {
     return(data.frame(freq=freq[1:n]))
 }
 
-

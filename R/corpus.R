@@ -360,11 +360,10 @@ summary.corpus <- function(corpus, nmax=100, texts="texts", subset=NULL, verbose
 #' syllableCount(cowenTexts)
 getTexts <- function(corpus, usenames=TRUE) {
     texts <- corpus$attribs$texts
-    names(texts) <- row.names(corpus$attribs)
+    if (usenames) names(texts) <- row.names(corpus$attribs)
     return(texts)
 }
 
-<<<<<<< HEAD
 #' extract the attributes (document-level meta-data) from a corpus
 #'
 #' Extract the ocument-level meta-data from a corpus as a data frame
@@ -378,11 +377,11 @@ getTexts <- function(corpus, usenames=TRUE) {
 #' getData(subset(iebudgets, year==2012))
 #' getData(subset(iebudgets, year==2012), usenames=FALSE)
 getData <- function(corpus, usenames=TRUE) {
-    thedata <- corpus$attribs[, -which(names(corpus$attribs)=="texts")]
-    if (usenames) row.names(thedata) <- row.names(corpus$attribs)
+    thedata <- corpus$attribs[, -which(names(corpus$attribs)=="texts"), drop=FALSE]
+    if (!usenames) row.names(thedata) <- NULL
     return(thedata)
 }
-=======
+
 
 #' Corpus sampling
 #'
@@ -410,4 +409,3 @@ corpusSample <- function(corpus, size=n, replace=FALSE, prob=NULL){
   return(newCorp)
 }
 
->>>>>>> c2836b19898c32b9a7b2f96e3923e2250b4b2877
