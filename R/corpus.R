@@ -364,7 +364,6 @@ getTexts <- function(corpus, usenames=TRUE) {
     return(texts)
 }
 
-<<<<<<< HEAD
 #' extract the attributes (document-level meta-data) from a corpus
 #'
 #' Extract the ocument-level meta-data from a corpus as a data frame
@@ -382,7 +381,6 @@ getData <- function(corpus, usenames=TRUE) {
     if (usenames) row.names(thedata) <- row.names(corpus$attribs)
     return(thedata)
 }
-=======
 
 #' Corpus sampling
 #'
@@ -409,5 +407,3 @@ corpusSample <- function(corpus, size=n, replace=FALSE, prob=NULL){
                                        corpus$metadata["source"], collapse= " ")
   return(newCorp)
 }
-
->>>>>>> c2836b19898c32b9a7b2f96e3923e2250b4b2877
