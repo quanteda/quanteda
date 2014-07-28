@@ -363,3 +363,21 @@ getTexts <- function(corpus, usenames=TRUE) {
     names(texts) <- row.names(corpus$attribs)
     return(texts)
 }
+
+#' extract the attributes (document-level meta-data) from a corpus
+#'
+#' Extract the ocument-level meta-data from a corpus as a data frame
+#' 
+#' @param corpus A corpus object
+#' @param usenames If TRUE (default) use the text names as names for the rows of the returned data frame
+#' @return data frame of the meda-data from the corpus
+#' @export
+#' @examples
+#' data(iebudgets)
+#' getData(subset(iebudgets, year==2012))
+#' getData(subset(iebudgets, year==2012), usenames=FALSE)
+getData <- function(corpus, usenames=TRUE) {
+    thedata <- corpus$attribs[, -which(names(corpus$attribs)=="texts")]
+    if (usenames) row.names(thedata) <- row.names(corpus$attribs)
+    return(thedata)
+}

@@ -53,7 +53,8 @@ sentenceSeg <- function(text, pat="[\\.\\?\\!][\\n* ]|\\n\\n*", abbreviations = 
     }
     sentences <- sapply(sentences, gsub, pattern="\\n", replacement="")
     # remove spaces only and empty "sentences"
-    sentences <- sentences[!(sentences==" " | sentences=="")]
+    if (stripempty) 
+        sentences <- sentences[!(sentences==" " | sentences=="")]
     return(sentences)
 }
 
