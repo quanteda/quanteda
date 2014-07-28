@@ -381,7 +381,10 @@ getData <- function(corpus, usenames=TRUE) {
     if (!usenames) row.names(thedata) <- NULL
     return(thedata)
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 95328716476c5139d3bfd3646fa4c619c7797abb
 
 #' Corpus sampling
 #'
@@ -408,4 +411,7 @@ corpusSample <- function(corpus, size=n, replace=FALSE, prob=NULL){
                                        corpus$metadata["source"], collapse= " ")
   return(newCorp)
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 95328716476c5139d3bfd3646fa4c619c7797abb
