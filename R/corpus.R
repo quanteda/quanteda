@@ -381,10 +381,7 @@ getData <- function(corpus, usenames=TRUE) {
     if (!usenames) row.names(thedata) <- NULL
     return(thedata)
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> 95328716476c5139d3bfd3646fa4c619c7797abb
 
 #' Corpus sampling
 #'
@@ -401,7 +398,7 @@ getData <- function(corpus, usenames=TRUE) {
 corpusSample <- function(corpus, size=n, replace=FALSE, prob=NULL){
   if(!is.null(prob)) stop("prob argument is not implemented for corpus")
   atts <- corpus$attribs
-  print(nrow(atts))
+  # print(nrow(atts))
   sampleInds <- sample(nrow(atts), size=size, replace=replace)
   newAtts <- atts[sampleInds,]
   newTexts <- newAtts[[1]]
@@ -411,7 +408,3 @@ corpusSample <- function(corpus, size=n, replace=FALSE, prob=NULL){
                                        corpus$metadata["source"], collapse= " ")
   return(newCorp)
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 95328716476c5139d3bfd3646fa4c619c7797abb
