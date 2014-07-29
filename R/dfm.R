@@ -137,6 +137,11 @@ dfm.character <- function(corpus,
         if (verbose) cat(" making bigrams ...")
         tokenizedTexts <- lapply(tokenizedTexts, function(x) bigrams(x, bigram))
     }
+    
+    # get original sort order, so that we can restore original order after table 
+    # alphabetizes the documents (rows of the dfm)
+    originalSortOrder <- (1:length(tokenizedTexts))[order(names(tokenizedTexts))]
+    
     # print(length)
     alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
                             words = unlist(tokenizedTexts, use.names=FALSE))
@@ -205,6 +210,10 @@ dfm.character <- function(corpus,
     # give the matrix austin a "wfm"-like record of which margin is words, which is docs
     dfm <- as.matrix(dfm)
     dimnames(dfm) <- list(docs = rownames(dfm), words = colnames(dfm))
+    
+    # restore original sort order
+    
+    dfm <- dfm[(1:nrow(dfm))[order(originalSortOrder)], ]
     
     if(verbose) cat(" done. \n")
     return(dfm)
