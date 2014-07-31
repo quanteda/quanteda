@@ -129,7 +129,7 @@ dfm.character <- function(corpus,
     
     tokenizedTexts <- sapply(texts, tokenize, simplify=FALSE)
     if (stem==TRUE) {
-        require(SnowballC)
+        require(SnowballC, quietly=TRUE)
         if (verbose) cat(" stemming ...")
         tokenizedTexts <- lapply(tokenizedTexts, wordStem)
     }
