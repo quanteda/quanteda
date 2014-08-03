@@ -113,20 +113,20 @@ This creates a new quanteda corpus object where each text has been associated va
 ## Corpus object contains 14 texts.
 ## 
 ##                                      Texts Types Tokens Sentences year debate
-##        2010_BUDGET_01_Brian_Lenihan_FF.txt  1649   7720       390 2010 BUDGET
-##       2010_BUDGET_02_Richard_Bruton_FG.txt   951   4035       222 2010 BUDGET
-##         2010_BUDGET_03_Joan_Burton_LAB.txt  1473   5711       329 2010 BUDGET
-##        2010_BUDGET_04_Arthur_Morgan_SF.txt  1455   6432       349 2010 BUDGET
-##          2010_BUDGET_05_Brian_Cowen_FF.txt  1470   5835       262 2010 BUDGET
-##           2010_BUDGET_06_Enda_Kenny_FG.txt  1059   3853       161 2010 BUDGET
-##      2010_BUDGET_07_Kieran_ODonnell_FG.txt   609   2049       141 2010 BUDGET
-##       2010_BUDGET_08_Eamon_Gilmore_LAB.txt  1088   3767       208 2010 BUDGET
-##     2010_BUDGET_09_Michael_Higgins_LAB.txt   439   1132        49 2010 BUDGET
-##        2010_BUDGET_10_Ruairi_Quinn_LAB.txt   413   1177        60 2010 BUDGET
-##      2010_BUDGET_11_John_Gormley_Green.txt   362    919        49 2010 BUDGET
+##        2010_BUDGET_01_Brian_Lenihan_FF.txt  1655   7799       390 2010 BUDGET
+##       2010_BUDGET_02_Richard_Bruton_FG.txt   956   4058       222 2010 BUDGET
+##         2010_BUDGET_03_Joan_Burton_LAB.txt  1485   5770       329 2010 BUDGET
+##        2010_BUDGET_04_Arthur_Morgan_SF.txt  1463   6481       349 2010 BUDGET
+##          2010_BUDGET_05_Brian_Cowen_FF.txt  1473   5880       262 2010 BUDGET
+##           2010_BUDGET_06_Enda_Kenny_FG.txt  1066   3875       161 2010 BUDGET
+##      2010_BUDGET_07_Kieran_ODonnell_FG.txt   614   2066       141 2010 BUDGET
+##       2010_BUDGET_08_Eamon_Gilmore_LAB.txt  1098   3800       208 2010 BUDGET
+##     2010_BUDGET_09_Michael_Higgins_LAB.txt   447   1136        49 2010 BUDGET
+##        2010_BUDGET_10_Ruairi_Quinn_LAB.txt   418   1177        60 2010 BUDGET
+##      2010_BUDGET_11_John_Gormley_Green.txt   363    929        49 2010 BUDGET
 ##        2010_BUDGET_12_Eamon_Ryan_Green.txt   482   1513        90 2010 BUDGET
-##      2010_BUDGET_13_Ciaran_Cuffe_Green.txt   422   1140        48 2010 BUDGET
-##  2010_BUDGET_14_Caoimhghin_OCaolain_SF.txt  1040   3614       194 2010 BUDGET
+##      2010_BUDGET_13_Ciaran_Cuffe_Green.txt   423   1143        48 2010 BUDGET
+##  2010_BUDGET_14_Caoimhghin_OCaolain_SF.txt  1055   3654       194 2010 BUDGET
 ##  no      fname  speaker party
 ##  14 Caoimhghin OCaolain    SF
 ##  13     Ciaran    Cuffe Green
@@ -143,8 +143,8 @@ This creates a new quanteda corpus object where each text has been associated va
 ##  02    Richard   Bruton    FG
 ##  01      Brian  Lenihan    FF
 ## 
-## Source:  /home/paul/Dropbox/code/quanteda/tutorials/scaling/* on x86_64 by paul.
-## Created: Mon May  5 16:29:50 2014.
+## Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/tutorials/scaling/* on x86_64 by kbenoit.
+## Created: Wed May  7 17:12:21 2014.
 ## Notes:   NA.
 \end{verbatim}
 \end{kframe}
@@ -161,18 +161,26 @@ In order to perform statistical analysis such as document scaling, we must extra
 \begin{verbatim}
 ## Creating dfm: ... done.
 \end{verbatim}
-
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: austin}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: there is no package called 'austin'}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: could not find function "{}as.wfm"{}}}\begin{alltt}
+\begin{alltt}
 \hlstd{docMat[}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{]}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'docMat' not found}}\end{kframe}
+\begin{verbatim}
+##                                       words
+## docs                                   <c3><89>ireann <c3><93> <e2><80><93>sure
+##   2010_BUDGET_01_Brian_Lenihan_FF.txt               2        0                0
+##   2010_BUDGET_02_Richard_Bruton_FG.txt              0        0                0
+##   2010_BUDGET_03_Joan_Burton_LAB.txt                0        0                0
+##   2010_BUDGET_04_Arthur_Morgan_SF.txt               0        1                0
+##   2010_BUDGET_05_Brian_Cowen_FF.txt                 1        0                0
+##                                       words
+## docs                                   <e2><80><94> <e2><80><99>flu
+##   2010_BUDGET_01_Brian_Lenihan_FF.txt             4               0
+##   2010_BUDGET_02_Richard_Bruton_FG.txt            5               0
+##   2010_BUDGET_03_Joan_Burton_LAB.txt             11               0
+##   2010_BUDGET_04_Arthur_Morgan_SF.txt             7               0
+##   2010_BUDGET_05_Brian_Cowen_FF.txt               7               0
+\end{verbatim}
+\end{kframe}
 \end{knitrout}
 
 
@@ -183,16 +191,17 @@ We can now score and plot the documents using a statistical scaling technique, f
 \begin{alltt}
 \hlkwd{library}\hlstd{(ca)}
 \hlstd{model} \hlkwb{<-} \hlkwd{ca}\hlstd{(}\hlkwd{t}\hlstd{(docMat),} \hlkwc{nd} \hlstd{=} \hlnum{1}\hlstd{)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'docMat' not found}}\begin{alltt}
 \hlkwd{dotchart}\hlstd{(model}\hlopt{$}\hlstd{colcoord[}\hlkwd{order}\hlstd{(model}\hlopt{$}\hlstd{colcoord[,} \hlnum{1}\hlstd{]),} \hlnum{1}\hlstd{],} \hlkwc{labels} \hlstd{= model}\hlopt{$}\hlstd{colnames[}\hlkwd{order}\hlstd{(model}\hlopt{$}\hlstd{colcoord[,}
     \hlnum{1}\hlstd{])])}
 \end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=\maxwidth]{figure/minimal-unnamed-chunk-4} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'model' not found}}\end{kframe}
+
 \end{knitrout}
 
 
@@ -206,18 +215,19 @@ This plot indicates the position of each of the documents. We can group document
 \begin{verbatim}
 ## Creating dfm: ... aggregating by group: party...complete ... done.
 \end{verbatim}
-
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: austin}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: there is no package called 'austin'}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: could not find function "{}as.wfm"{}}}\begin{alltt}
+\begin{alltt}
 \hlstd{partyMat[,} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{]}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'partyMat' not found}}\end{kframe}
+\begin{verbatim}
+##        words
+## docs    <c3><89>ireann <c3><93> <e2><80><93>sure <e2><80><94> <e2><80><99>flu
+##   FF                 0        0                0            5               0
+##   FG                 0        0                1            9               1
+##   Green              0        1                0           23               0
+##   LAB                1        0                0            9               0
+##   SF                 2        0                0            4               0
+\end{verbatim}
+\end{kframe}
 \end{knitrout}
 
 
@@ -227,16 +237,17 @@ which allows us to scale according to a particular party or year, for example:
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{partyModel} \hlkwb{<-} \hlkwd{ca}\hlstd{(}\hlkwd{t}\hlstd{(partyMat),} \hlkwc{nd} \hlstd{=} \hlnum{1}\hlstd{)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'partyMat' not found}}\begin{alltt}
 \hlkwd{dotchart}\hlstd{(partyModel}\hlopt{$}\hlstd{colcoord[}\hlkwd{order}\hlstd{(partyModel}\hlopt{$}\hlstd{colcoord[,} \hlnum{1}\hlstd{]),} \hlnum{1}\hlstd{],} \hlkwc{labels} \hlstd{= partyModel}\hlopt{$}\hlstd{colnames[}\hlkwd{order}\hlstd{(partyModel}\hlopt{$}\hlstd{colcoord[,}
     \hlnum{1}\hlstd{])])}
 \end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=\maxwidth]{figure/minimal-unnamed-chunk-6} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'partyModel' not found}}\end{kframe}
+
 \end{knitrout}
 
 %\bibliographystyle{authordate2}

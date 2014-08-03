@@ -10,7 +10,6 @@ options(width = 60)
 \author{Paul Nulty}
 \usepackage{hyperref}
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 \maketitle
 \clearpage
 
@@ -19,8 +18,8 @@ options(width = 60)
   \item API: Application Programming Interface --- a specification of how computer programs can communicate with each other
   \item JSON: JavaScript Object Notation --- a human readable format for representing attribute-value pairs.
   \item OAuth: An open standard for authorization. OAuth provides client applications a `secure delegated access' to server resources on behalf of a resource owner.
-  \item HTTP: HyperText Transfer Protocol: Protocol specification
-  \item REST: REpresentational State Transfer:
+  \item HTTP: HyperText Transfer Protocol: Protocol specification for requesting and sending hypertext over the internet.
+  \item REST: REpresentational State Transfer: A type of communication between software over the internet by sending and receiving data with requests and responses, usually with the request sent as a URL and the response in XML or JSON.
 \end{itemize}
 
 \section*{Useful Links}
@@ -41,10 +40,27 @@ Twitter offers two ways for computer programs to post and retrieve data from its
 
 Both of these APIs require that the developer of the computer program create a twitter account, create a new application, and receive an access token.
 
-\section*{Getting programmatic access to twitter}
+\section*{Getting programmatic access to twitter}\footnote{This section is adapted from \url{https://openhatch.org/wiki/Community_Data_Science_Workshops/Twitter_authentication_setup and is correct as of May 1st 2014.}}
 \begin{enumerate}
   \item Go to https://dev.twitter.com/ and sign in with a twitter account
   \item Go to My Applications and select "New App". https://apps.twitter.com/
   \item Fill out the form and click 'create'
+  \item The next page will ask for application details. The first three are required so you will need to create a Name, Description, and Website URL. You can choose whatever you want for these fields but keep in mind that the name can not contain the word "Twitter". You should leave the "Callback URL" blank. 
+  \item You should now see page a page that says "Application Management" on the top, with the name of your app. Click on the API Keys tab.
+  \item You should now see a list of "Application settings". The first two here are the most important and you will need to copy and paste these into a file. The first is the API key. The second is the API secret. Both of them should be long strinigs of garbage looking letters and numbers. These are the keys that will let you program know that it's approved to grab data from Twitter.
+  \item At the bottom of the page you should see a section marked "Your access token" that says, "You haven't authorized this application for your own account yet." Below that there is a button that says "Create my access token". Click on that button. Once you press it there will be a yellow 'Status' box at the top. It will give you a link you can click to refresh. Wait a minute or two and click it untill you see information, below including lines that give you your "Access token" and your "Access token secret". Copy these two pieces of information.
+  \item You should have four long strings of letters and numbers taken from this page now:API key, API secret, Access token, Access token secret. These are the keys requested by most programmatic twitter interfaces.
 \end{enumerate}
+
+
+\section*{Using the REST API}
+
+Accessing twitter data through the REST API works by constructing a HTTP GET request --- the same kind of request a web browser sends when requesting a web page. However, rather than responding with HTML, the twitter API will respond with a JSON representation of tweet data. We can construct and send HTTP requests in R using the RCurl package, and parse the response with rjson, but there is an R package which simplifies this process, acting as an R client to the twitter service: twitteR.
+
+After installing twitter, the first step is to register your API keys for your application using OAuth: The four strings 
+
+
+library('twitteR')
+setup_twitter_oauth('ZOHJIRAwnw23FhvFWyUg','HTfEcEmRRDcx0ZsJ5CHOcmPc84AfDOp5VvIXwt0oY','778251283-ZkDTfl3IbIFZFXlVokA6Gpc19TZPyov3wucZ0XaB','8vgPnpEWP3qhvILmTLXVb9RslwcEwVVeKOo4KCYHOY')
+
 \end{document}

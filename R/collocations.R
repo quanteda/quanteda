@@ -7,6 +7,7 @@
 #' @param top threshold number for number of collocations to be returned (in descending order of association value)
 #' @param distance distance between pairs of collocations
 #' @param method association measure for detecting collocations
+#' @param n Only bigrams (n=2) implemented so far.
 #' @return A list of collocations, their frequencies, and their test statistics
 #' @export 
 #' @author Kenneth Benoit
@@ -57,7 +58,7 @@ collocations <- function(text=NULL, file=NULL, top=NA, distance=2, n=2,
   names(returnval)[3] <- method
   names(returnval)[1] <- "collocation"
   # returns this as a (named) list
-  return(as.list(returnval))
+  return(as.data.frame(returnval))
 }
 
 #' likelihood test for 2x2 tables
@@ -71,7 +72,7 @@ collocations <- function(text=NULL, file=NULL, top=NA, distance=2, n=2,
 likelihood.test = function(x) {
   nrows = dim(x)[1]                      # no. of rows in contingency table
   ncols = dim(x)[2]                      # no. of cols in contingency table
-  chi.out = chisq.test(x,correct=F)      # do a Pearson chi square test
+  chi.out = suppressWarnings(chisq.test(x,correct=F))      # do a Pearson chi square test
   table = chi.out[[6]]                   # get the OFs
   ratios = chi.out[[6]]/chi.out[[7]]     # calculate OF/EF ratios
   sum = 0                                # storage for the test statistic

@@ -1,22 +1,390 @@
-\documentclass{article}
-%\VignetteIndexEntry{quanteda}
-\title{Quanteda Package Vignette Testing}
-\author{Kenneth Benoit and Paul Nulty}
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{pslatex}
+\usepackage{natbib}
+\usepackage{setspace}
+%\usepackage[sc]{mathpazo}
+%\usepackage[T1]{fontenc}
+\usepackage[margin=1in,pdftex]{geometry}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\usepackage{url}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]{hyperref}
+\hypersetup{pdfstartview={XYZ null null 1}}
+\usepackage{breakurl}
+\usepackage[utf8]{inputenc} 
+%\usepackage[authoryear]{natbib}
+
+
+\newcommand{\quanteda}{\textsf{quanteda}}
+
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+%\SweaveOpts{concordance=TRUE}
+
+
+
+
+<<setup, include=FALSE, cache=FALSE>>=
+library(knitr)
+# set global chunk options
+opts_chunk$set(fig.path='figures/minimal-', fig.align='center', fig.show='hold', size='footnotesize')
+options(replace.assign=TRUE,width=80)
+@
+
+\title{Introduction to the Quantitative Analysis of Textual Data Using
+  \quanteda\thanks{This research was supported by the European
+    Research Council grant ERC-2011-StG 283794-QUANTESS.  Code
+    contributors to the project include Alex Herzog, William Lowe, and
+    Kohei Watanabe.}}
+
+\author{Kenneth Benoit and Paul Nulty}
 
 \maketitle
 
+\setlength{\parskip}{1ex}
+\setlength{\parindent}{0ex}
 
-\section{It's just like a latex file}
-The document should be written and interpreted as a latex file.
+\section{Introduction: The Rationale for \quanteda}
 
-% R code chunks start with this symbol <<>>= and end with @
+\quanteda is an R package designed to simplify the process of
+quantitative analysis of text from start to finish, making it possible
+to turn texts into a structured corpus, conver this corpus into a
+quantitative matrix of features extracted from the texts, and to
+perform a variety of quanttative analyses on this matrix.  The object
+is inference about the data contained in the texts, whether this means
+describing characteristics of the texts, inferring quantities of
+interests about the texts of their authors, or determining the tone or
+topics contained in the texts.  The emphasis of \quanteda is on
+\emph{simplicity}: creating a corpus to manage texts and variables
+attached to these texts in a straightforward way, and providing
+powerful tools to extract features from this corpus that can be
+analyzed using quantitative techniques.
+
+The tools for getting texts into a corpus object include: 
+\begin{itemize}
+\item loading texts from directories of individual files
+\item loading texts ``manually'' by inserting them into a corpus using
+  helper functions
+\item managing text encodings and conversions from source files into
+  corpus texts
+\item attaching variables to each text that can be used for grouping,
+  reorganizing a corpus, or simply recording additional information to
+  supplement quantitative analyses with non-textual data
+\item recording meta-data about the sources and creation details for
+  the corpus.
+\end{itemize}
+
+The tools for working with a corpus include:
+\begin{itemize}
+\item summarizing the corpus in terms of its language units
+\item reshaping the corpus into smaller units or more aggregated units
+\item adding to or extracting subsets of a corpus
+\item resampling texts of the corpus, for example for use in
+  non-parametric bootstrapping of the texts \citep[for an example, see][]{lowebenoitPA2013}
+  \item Easy extraction and saving, as a new data frame or corpus, key
+    words in context (KWIC)
+\end{itemize}
+
+For extracting features from a corpus, \quanteda provides the following tools:
+\begin{itemize}
+\item extraction of word types
+\item extraction of word $n$-grams
+\item extraction of dictionary entries from user-defined dictionaries
+\item feature selection through
+  \begin{itemize}
+  \item stemming
+  \item random selection
+  \item document frequency
+  \item word frequency
+  \item and a variety of options for cleaning word types, such as
+    capitalization and rules for handling punctuation.
+  \end{itemize}
+\end{itemize}
+
+For analyzing the resulting \emph{document-feature} matrix created
+when features are abstracted from a corpus, \quanteda provides:
+\begin{itemize}
+\item scaling models, such as the Poisson scaling model or Wordscores
+\item nonparametric visualization, such as correspondence analysis
+\item topic models, such as LDA
+\item classifiers, such as Naive Bayes or $k$-nearest neighbour
+\item sentiment analysis, using dictionaries
+\end{itemize}
+
+\quanteda is hardly unique in providing facilities for working with
+text -- the excellent \textsf{tm} package already provides many of the
+features we have described.  \quanteda is designed to complement those
+packages, as well to simplify the implementation of the
+text-to-analysis workflow.  \quanteda corpus structures are simpler
+objects than in \textsf{tm}, as are the document-feature matrix
+objects from \quanteda, compared to the sparse matrix implementation
+found in \textsf{tm}.  However, there is no need to choose only one
+package, since we provide translator functions from one matrix or
+corpus object to the other in \quanteda.
+
+This vignette is designed to introduce you to \quanteda as well as
+provide a tutorial overview of its features.
+
+\section{Installing \quanteda}
+
+The code for the \quanteda package currently resides on
+\url{http://github/kbenoit/quanteda}.  From an Internet-connected
+computer, you can install the package directly using the
+\textsf{devtools} package:
+
+<<eval=FALSE>>=
+library(devtools)
+if (!require(quanteda)) install_github("quanteda", username="kbenoit")
+@ 
+
+This will download the package from github and install it on your computer.
+For other branches, for instance if you wish to install the
+\texttt{dev} branch (containing work in progress) rather than the
+master, you should instead run
+
+<<eval=FALSE>>=
+install_github("quanteda", username="kbenoit", ref="dev")
+@ 
+
+Typically, the \texttt{dev} branch of a software package is under active development --- so while it contains the latest updates, it is more likely to have bugs. The \texttt{master} branch might be missing some of the newer features, but should be more reliable.
+
+\section{Creating a corpus}
+
+\subsection{Loading Documents into Quanteda}
+
+\subsubsection{From a directory of files}
+
+The quanteda package provides several functions for loading texts from disk into a quanteda corpus.
+
+A very common source of files for creating a corpus will be a set of
+text files found on a local (or remote) directory.  To load in a set
+of these files, we will load a corpus from a set of text files using
+information on attributes of the text that have been conveniently
+stored in the text document's filename (separated by underscores).
+For example, for our corpus of Irish budget speeches, the filename
+\texttt{2010\_BUDGET\_03\_Joan\_Burton\_LAB.txt} tells us the year of
+the speech (2010), the type (``BUDGET''), a serial number (03), the
+first and last name of the speaker, and a party label (``LAB'' for
+Labour).
+
+To load this into a corpus object, we will use the
+\texttt{corpusFromFilenames} function, supplying a vector of attribute
+labels that correspond with the elements of the filename.
+
 <<>>=
-x <- 5
-y <- 9
-z <- x * y
-print("testing")
-print(z)
+library(quanteda)
+#tmpDir <- tempdir()  # create a temporary directory for example files
+#textfile <- "https://github.com/kbenoit/quanteda/blob/dev/texts/irishbudgets2010.zip?raw=true"
+#download.file(textfile, paste(tmpDir, "irishbudgets2010.zip", sep="/"), 
+ #             method="curl", extra="-L") # download this zipped archive of texts
+# unzip the file to the temporary folder
+#unzip(paste(tmpDir, "irishbudgets2010.zip", sep="/"), exdir=tmpDir) 
+# list the files unzipped
+#list.files(paste(tmpDir, "budget_2010", sep="/"))
+# create a corpus from the files, parsing the filenames
+#ieBudgets2010 <- corpusFromFilenames(paste(tmpDir, "budget_2010", sep="/"),
+#                                     c("year", "debate", "number", "firstname", "lastname", "party"), 
+                                     #sep="_")
+
+data(iebudgets)
+ieBudgets2010 <- subset(iebudgets, year=="2010",)
 @
+
+This creates a new quanteda corpus object where each text has been associated values for its attribute types extracted from the filename:
+
+<<>>=
+summary(ieBudgets2010)
+@
+
+\subsubsection{From a vector of texts}
+
+Another method of creating a corpus from texts is to read texts into character vectors, and then create the corpus from these. The function get \texttt{getTextDir} takes a path to a directory containing some texts, and reads the texts into a character vector.
+
+<<>>=
+# load two vectors of texts (Bollinger texts from Evans et al JELS 2007)
+# located in the texts directory of the github site
+amicusFile <- "http://www.kenbenoit.net/courses/tcd2014qta/exercises/amicus_curiae.zip"
+tmpDir <- tempdir()
+download.file(amicusFile, paste(tmpDir, "amicus_curiae.zip", sep="/"), 
+              method="curl", extra="-L") # download this zipped archive of texts
+# unzip the file to the temporary folder
+unzip(paste(tmpDir, "amicus_curiae.zip", sep="/"), exdir=tmpDir) 
+
+# load in the texts to a vector of texts using quanteda's getTextDir()
+amicusTexts <- c(getTextDir(paste(tmpDir, "amicus/training", sep="/")), 
+                 getTextDir(paste(tmpDir, "amicus/testing", sep="/")))
+
+@
+
+In this case, the labels we are interested in (petitioner/respondent) are not clearly separated in the filename by underscores, but Now that we have the texts in a character vector, we can examine them and extract labels from the names. The code below uses the grep command, part of the standard R library, to make a list of labels from the names of the texts.
+
+<<>>=
+# change the encoding (because texts contain special symbols such as §)
+amicusTexts <- iconv(amicusTexts, from="latin1", to="UTF-8")
+
+# examine the amicusTexts object - a named character vector where the
+# names of the elements are the original text filename
+str(amicusTexts)
+
+# set training class - Petitioner or Respondent, only known for the two test docs
+trainclass <- factor(c("P", "R", rep(NA, length(amicusTexts)-2)))
+
+# set test class, an attribute that could be used in classification
+# here we take these from the text filenames, where 
+# 'AP' means Amicus brief for Petitioner
+# 'AR' means Amicus brief for Respondent
+testclass  <- rep(NA, length(amicusTexts)) # initialize the variable
+testclass[grep("AP", names(amicusTexts))] <- "AP"
+testclass[grep("AR", names(amicusTexts))] <- "AR"
+@
+
+
+Finally, we can create a corpus from the vector of texts, and the training and testing attributes.
+
+<<>>=
+# make a corpus object with texts and training and test labels
+amicusCorpus <- 
+  corpusCreate(amicusTexts, 
+               attribs = list(trainclass=trainclass, testclass=testclass),
+               source = "Bollinger texts from Evans et al JELS 2007",
+               notes = "Created as part of the quanteda vignette")
+# summarize the first 10 texts in the corpus
+summary(amicusCorpus, nmax=10)
+@
+
+There is also an interactive version of the getTextFiles() function, which will open a graphical file system browser to allow selection of the directory containing the files.
+<<eval=FALSE>>=
+getTextDirGui()
+@ 
+
+
+We can also create a labelled corpus using the directory structure in which the files are stored. If the folder names in which the files are stored indicate values for a variable of interest.
+
+**todo corpus from folders***
+
+\subsection{Structure of a corpus in \texttt{quanteda}}
+A corpus contains attributes and metadata. Metadata is information associated with the entire set of texts, such as the source or date of creation. Metadata can also be used to package supplementary material with a corpus --- for example, if the corpus analysis is part of a model that includes other forms of data, they can be included here.
+
+The attributes of a corpus are the texts themselves, and any number of other attributes which may have different values for each text.
+
+<<>>=
+names(ieBudgets2010)
+names(ieBudgets2010$attribs)
+ieBudgets2010$attribs$party
+@
+
+
+\subsubsection{Adding new texts}
+
+We can add new texts to a corpus using the \texttt{corpusAppend} function. For example, if we wish to add another speech to the ieBudgets corpus, we can use a character vector for new text, and a data frame for the attributes of that text. The column names of the new attributes dataframe should match those in the existing corpus. 
+
+<<>>=
+newText <-"This is an example text to be added to the ieBudgets2010 corpus"
+newAttribs <- data.frame(year="2000", debate="bud", no="99", fname="Joe", speaker="Bloggs", party="Green" )
+
+ieBudgets2010 <- corpusAppend(ieBudgets2010, newText, newAttribs)
+@
+
+
+\subsubsection{Adding new text attributes}
+
+Alternatively, we can add a new column of attribute values without appending any new texts.
+<<>>=
+newAttrib <- c('gray','gray','blue', 'gray','gray','yellow','gray','gray','gray','gray','gray', 'gray','gray','gray', 'gray')
+
+ieBudgets2010 <- corpusAddAttributes(ieBudgets2010, newAttrib, name="suitcolor")
+names(ieBudgets2010$attribs)
+@
+
+
+\section{Manipulating a corpus}
+
+
+\section{Extracting Features}
+
+In order to perform statistical analysis such as document scaling, we must extract a matrix associating values for certain features with each document. In quanteda, we use the dfm function to produce such a matrix. \footnote{dfm stands for document-feature matrix --- we say `feature' as opposed to `term', since it is possible to use other properties of documents (e.g. ngrams or syntactic dependencies) for further analysis}. 
+
+By far the most common approach is to consider each word type to be a feature, and the number of occurrences of the word type in each document the values. This is easy to see with a concrete example, so lets use the \texttt{dfm} command on the full built-in Irish budget speeches corpus. In addition to indexing into the matrix with \texttt{:}, you can also view the matrix by clicking on the docMat variable in the RStudio Environment pane, or using the \texttt{View()} R command.
+
+
+<<>>=
+docMat <- dfm(ieBudgets2010)
+docMat[1:5,1:5]
+@
+
+\section{Analyzing a document-feature matrix}
+
+By default, each row in the document-frequency matrix corresponds to a single document on disk. However, if our variable does not correspond with how the documents are stored as files, we can combine together texts and study them as if they were all part of the same document. For example, rather than counting word frequencies within each speech, we can count word frequencies as they are used by each party. We can do this using the \texttt{group} argument to \texttt{dfm}:
+
+<<>>=
+
+partMat <- dfm(ieBudgets2010, group="party")
+partMat[1:3,1:3]
+@
+
+We can now score and plot the parties using a statistical scaling technique, for example correspondence analysis \citep{nenadic2007}. 
+
+<<>>=
+library(ca)
+model <- ca(t(partMat),nd=1)
+dotchart(model$colcoord[order(model$colcoord[,1]),1], labels = model$colnames[order(model$colcoord[,1])])
+@
+
+We will discuss analysis techniques in more detail later. The dfm command has many optional arguments for applying standard pre-processing techniques to texts. We can choose to apply word stemming, which will sum together counts of words that have a common morphological root --- for example \textit{earn, earning, earns} and \textit{earned} will all be counted together under the single stem \textit{earn*}. Again, this is easy to see by making a new matrix and inspecing it with \texttt{View()}
+
+<<>>=
+docMatStems <- dfm(ieBudgets2010, stem=TRUE)
+docMatStems[1:5,1:5]
+@
+
+\subsubsection{Importing to and exporting from \textsf{tm}}
+
+The \textsf{tm} package uses a sparse matrix format to store document-frequency matrices. Word frequency follows a power-law distribution (Zipf's law) --- a few words are very frequent, while most words in the total corpus vocabulary don't occur at all in the a particular document, particularly if the length of each document is a small fraction of the length of the total corpus.  The result is that most cells in a document-frequency matrix have a value of zero. 
+
+In order to use less storage space, \textsf{tm} only stores the row and column numbers where the value is not zero. This is known as a simple triplet representation. To make use of functions from \textsf{tm}, we must first convert the quanteda dfm into this format. 
+
+<<>>=
+tmMat<- dfm2tmformat(partMat)
+names(tmMat)
+@
+
+% \singlespacing
+\bibliographystyle{apsr}
+\bibliography{QUANTESS}
+
 \end{document}
+
+In order to perform statistical analysis such as document scaling, we must extract a matrix containing the frequency of each word type from in document. In quanteda, we use the dfm function to produce such a matrix. \footnote{dfm stands for document-feature matrix --- we say ``feature'' instead of word, as it is sometimes useful to represent documents by features other than their word frequency.}
+
+<<>>=
+docMat <- dfm(ieBudgets2010)
+docMat[1:5,1:5]
+@
+
+We can now score and plot the documents using a statistical scaling technique, for example correspondence analysis.
+
+<<>>=
+library(ca)
+model <- ca(t(docMat),nd=1)
+dotchart(model$colcoord[order(model$colcoord[,1]),1], labels = model$colnames[order(model$colcoord[,1])])
+@
+
+This plot indicates the position
+of each of the documents. We can group documents by their attribute values when creating the word-frequency matrix: 
+
+<<>>=
+partyMat <- dfm(ieBudgets2010, group="party")
+partyMat[,1:5]
+@
+
+which allows us to scale according to a particular party or year, for example:
+
+<<>>=
+partyModel <- ca(t(partyMat),nd=1)
+dotchart(partyModel$colcoord[order(partyModel$colcoord[,1]),1], labels = partyModel$colnames[order(partyModel$colcoord[,1])])
+@
+
+
+

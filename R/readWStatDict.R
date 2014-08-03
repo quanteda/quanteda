@@ -1,6 +1,9 @@
-#' This function makes a flattened dictionary from a Wordstat hierarchical
-#' dictionary
-#' @author Paul Nulty
+#' Make a flattened list from a hierarchical wordstat dictionary
+#'
+#' Make a flattened list from a hierarchical wordstat dictionary
+#' 
+#' @param path path to the wordstat dictionary file
+#' @return flattened dictionary as a list
 #' @export
 readWStatDict <- function(path){
   d <- read.delim(path, header=FALSE)

@@ -324,3 +324,14 @@ classic.wordscores <- function (wfm, scores)
   class(val) <- c("classic.wordscores", "wordscores", class(val))
   return(val)
 }
+
+
+
+
+
+
+
+
+
+
+

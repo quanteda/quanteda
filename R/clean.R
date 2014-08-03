@@ -6,12 +6,15 @@
 #' @param s character object to be cleaned
 #' @param langNorm If true, French and German special characters are normalized.
 #' @param removeDigits If true, digits are removed. Default is TRUE
+#' @param removePunct If true, punctuation marks are removed. Default is TRUE
 #' @param lower If true, string is converted to lowercase. Default is TRUE
 #' @return character object in lowercase with punctuation (and optionally digits) removed
 #' @export
 #' @examples
-#' s <- "A cursed £$&^!€ Exclamation! point; paragraph §1.2, which I wrote."
+#' \dontrun{
+#' s <- "A cursed £$&^!€ Exclamation! point; paragraph 1.2, which I wrote."
 #' clean(s)
+#' }
 clean <- function(s, langNorm=FALSE, removeDigits=TRUE, lower=TRUE, removePunct=TRUE) {
   # optionally do some language specific normalisation
   if (langNorm) {
