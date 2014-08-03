@@ -34,7 +34,10 @@ source('~/quanteda/R/kohei_tokenize2.R')
 #' 
 getTFMX <- function(texts, class = NULL, tokenizer = NULL, limit = 0){
   if(is.null(class)) class <- rep('all', length(texts))
-  if(length(texts) != length(class)) stop('Vector length are different')
+  if(length(texts) != length(class)) stop('Vector lengths are different')
+  texts <- texts[!is.na(class)]
+  class <- class[!is.na(class)]
+  
   if(is.null(tokenizer)) tokenizer <- tokenizeText
   tokens <- c()
   tokens.class <- c()
