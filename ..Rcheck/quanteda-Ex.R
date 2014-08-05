@@ -555,8 +555,8 @@ flush(stderr()); flush(stdout())
 ### ** Examples
 
 data(iebudgets)
-cowenTexts <- getTexts(subset(iebudgets, speaker="Cowen"))
-syllableCount(cowenTexts)
+cowenTexts <- getTexts(subset(iebudgets, speaker=="Cowen"))
+countSyllables(cowenTexts)
 
 
 

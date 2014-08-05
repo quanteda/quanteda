@@ -290,7 +290,7 @@ Corpus object contains 5 texts.
   Bertie   Ahern    FF
 
 Source:  /home/paul/Dropbox/code/quanteda/..Rcheck/* on x86_64 by paul.
-Created: Tue Aug  5 13:51:24 2014.
+Created: Tue Aug  5 14:41:14 2014.
 Notes:   NA.
 
 > 
@@ -436,7 +436,7 @@ Corpus object contains 2484 texts.
  2010_BUDGET_01_Brian_Lenihan_FF.txt 2010 BUDGET 01 Brian Lenihan    FF
 
 Source:  /home/paul/Dropbox/code/quanteda/..Rcheck/* on x86_64 by paul.
-Created: Tue Aug  5 13:51:24 2014.
+Created: Tue Aug  5 14:41:14 2014.
 Notes:   NA.
 
 > 
@@ -2549,8 +2549,1538 @@ $level1c.level1c1b.level1c1b1
 > ### ** Examples
 > 
 > data(iebudgets)
-> cowenTexts <- getTexts(subset(iebudgets, speaker="Cowen"))
-Error in subset.corpus(iebudgets, speaker = "Cowen") : 
-  unused argument (speaker = "Cowen")
-Calls: getTexts -> subset -> subset.corpus
+> cowenTexts <- getTexts(subset(iebudgets, speaker=="Cowen"))
+> countSyllables(cowenTexts)
+   2011_BUDGET_05_Brian_Cowen_FF.txt    2010_BUDGET_05_Brian_Cowen_FF.txt 
+                               10952                                 9819 
+2009_BUDGETSUP_05_Brian_Cowen_FF.txt    2008_BUDGET_01_Brian_Cowen_FF.txt 
+                                7746                                14639 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("inaugCorpus")
+> ### * inaugCorpus
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: inaugCorpus
+> ### Title: A corpus of US inaugural addresses from 1789-2013
+> ### Aliases: inaugCorpus
+> 
+> ### ** Examples
+> 
+> data(inaugCorpus)
+> summary(inaugCorpus)
+Corpus object contains 57 texts.
+
+               Texts Types Tokens Sentences year  president
+ 1789-Washington.txt   595   1430        23 1789 Washington
+ 1793-Washington.txt    90    135         4 1793 Washington
+      1797-Adams.txt   794   2318        37 1797      Adams
+  1801-Jefferson.txt   681   1726        41 1801  Jefferson
+  1805-Jefferson.txt   775   2166        45 1805  Jefferson
+    1809-Madison.txt   520   1175        21 1809    Madison
+    1813-Madison.txt   518   1210        33 1813    Madison
+     1817-Monroe.txt   980   3370       122 1817     Monroe
+     1821-Monroe.txt  1192   4459       131 1821     Monroe
+      1825-Adams.txt   962   2915        74 1825      Adams
+    1829-Jackson.txt   500   1128        25 1829    Jackson
+    1833-Jackson.txt   474   1176        29 1833    Jackson
+   1837-VanBuren.txt  1252   3839        95 1837   VanBuren
+   1841-Harrison.txt  1819   8428       215 1841   Harrison
+       1845-Polk.txt  1262   4800       153 1845       Polk
+     1849-Taylor.txt   480   1088        22 1849     Taylor
+     1853-Pierce.txt  1113   3332       104 1853     Pierce
+   1857-Buchanan.txt   892   2823        89 1857   Buchanan
+    1861-Lincoln.txt  1007   3629       135 1861    Lincoln
+    1865-Lincoln.txt   336    698        26 1865    Lincoln
+      1869-Grant.txt   466   1125        40 1869      Grant
+      1873-Grant.txt   520   1336        43 1873      Grant
+      1877-Hayes.txt   802   2480        59 1877      Hayes
+   1881-Garfield.txt   969   2971       111 1881   Garfield
+  1885-Cleveland.txt   644   1682        44 1885  Cleveland
+   1889-Harrison.txt  1297   4383       157 1889   Harrison
+  1893-Cleveland.txt   798   2013        58 1893  Cleveland
+   1897-McKinley.txt  1181   3960       130 1897   McKinley
+   1901-McKinley.txt   805   2204       100 1901   McKinley
+  1905-Roosevelt.txt   384    984        33 1905  Roosevelt
+       1909-Taft.txt  1374   5427       160 1909       Taft
+     1913-Wilson.txt   627   1699        68 1913     Wilson
+     1917-Wilson.txt   523   1529        59 1917     Wilson
+    1921-Harding.txt  1117   3327       148 1921    Harding
+   1925-Coolidge.txt  1159   4055       196 1925   Coolidge
+     1929-Hoover.txt   997   3558       158 1929     Hoover
+  1933-Roosevelt.txt   708   1880        85 1933  Roosevelt
+  1937-Roosevelt.txt   681   1806        96 1937  Roosevelt
+  1941-Roosevelt.txt   493   1334        68 1941  Roosevelt
+  1945-Roosevelt.txt   257    555        28 1945  Roosevelt
+     1949-Truman.txt   742   2270       118 1949     Truman
+ 1953-Eisenhower.txt   846   2444       119 1953 Eisenhower
+ 1957-Eisenhower.txt   586   1659        96 1957 Eisenhower
+    1961-Kennedy.txt   534   1363        57 1961    Kennedy
+    1965-Johnson.txt   526   1485        94 1965    Johnson
+      1969-Nixon.txt   708   2122       105 1969      Nixon
+      1973-Nixon.txt   506   1801        72 1973      Nixon
+     1977-Carter.txt   489   1220        52 1977     Carter
+     1981-Reagan.txt   842   2431       135 1981     Reagan
+     1985-Reagan.txt   855   2553       127 1985     Reagan
+       1989-Bush.txt   747   2315       147 1989       Bush
+    1993-Clinton.txt   599   1598        81 1993    Clinton
+    1997-Clinton.txt   716   2157       111 1997    Clinton
+       2001-Bush.txt   584   1581        97 2001       Bush
+       2005-Bush.txt   724   2069       100 2005       Bush
+      2009-Obama.txt   893   2390       119 2009      Obama
+      2013-Obama.txt   781   2079        89 2013      Obama
+
+Source:  From http://www.presidency.ucsb.edu/inaugurals.php and https://archive.org/details/Inaugural-Address-Corpus-1789-2009.
+Created: Thu Jul 24 09:33:56 2014.
+Notes:   NA.
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("kwic")
+> ### * kwic
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: kwic
+> ### Title: List key words in context from a text or a corpus of texts.
+> ### Aliases: kwic kwic.character kwic.corpus
+> 
+> ### ** Examples
+> 
+> data(ieTexts)  # a text vector
+> kwic(ieTexts, "tax")
+                                                                                            preword
+    [2008_BUDGET_01_Brian_Cowen_FF.txt, 300]                        announcing all new spending and
+    [2008_BUDGET_01_Brian_Cowen_FF.txt, 322]                       what Government is spending with
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3190]                          In previous years I announced
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3205]                      2006, I introduced the favourable
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3244]                      number of additional spending and
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3260] our greenhouse gas emissions targets.\n\nEnvironmental
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3706]                      Measures and in Annex D.\n\nMotor
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3707]                    and in Annex D.\n\nMotor Tax\nMotor
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3717]                     to Local Government funding. Motor
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3743]                         to increase the existing motor
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3800]                         proposals that will link motor
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3826]              responsible way.  \n\nOther Environmental
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3840]                           the introduction of a carbon
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3866]                       of the forthcoming Commission on
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4509]                           needed. I will be announcing
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4636]       grants for approximately 60,000 farmers.\n\nFarm
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4646]                                 of changes in the farm
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4708]                      the purpose of calculating income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4755]                            avert a claw-back of income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4768]                            avail of the special income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4815]                          new relief from Capital Gains
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 5046]                            can indicate today that the
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 5579]                               under six will receive a
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6510]                  to €133 million in 2008.\n\n\n\n\nR&D
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6534]                              announce today to the R&D
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6555]                             propose to enhance the R&D
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6610]                            industry in relation to the
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6637]        spending on STI. \n\n\nREWARDING WORK\n\nIncome
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6642]                              Tax\nI now turn to Income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6650]                             the last decade the income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6681]                           on and further progress that
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6711]                         five instalments in our income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6725]                      constitute a well targeted income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6759]                       the Government’s priority to use
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6795]                       my priority in addressing income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6808]                 doing.\n\nI am increasing the Personal
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6825]                      married couple while the Employee
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6844]                              income earners out of the
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6860]                              entry point to the income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6890]                            20 per cent standard income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6943]                         earnings from any liability to
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6948]                       tax at the higher rate.\n\nOther
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6976]                             a number of other personal
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6980]                         personal tax credits.  \n\nThe
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7010]                             credit, and the home carer
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7130]                                 of all of these income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7164]                            earners who are outside the
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7191]                           earners will continue to pay
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7201]                            the standard rate of income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7215]                      income earners remain outside the
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7227]          of Budget Measures.\n\n\nHELPING BUSINESSES –
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7272]                      to announce the following further
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7347]             following measures: \n➢\tThe Small Company
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7355]                         for the payment of preliminary
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7369]           increased from €150,000 to €200,000;\n➢\tThe
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7387]                            not have to pay preliminary
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7847]         necessary direction and certainty. \n\nHousing
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8054]                     is appropriate to make significant
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8194]                                in the operation of the
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8244]                                   on the basis that no
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8431]                         than at present. The effective
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8707]                          will be increasing the income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8817]                       of the vulnerable. \n➢\tIt keeps
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 191]                          have been frittered away. The
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 320]                       obstinate refusal to reform that
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 633]                              from any changes to motor
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 686]                              this budget in respect of
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 934]                             guise of this debt fuelled
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 962]                      percentage points extra on income
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1004]                              come home to roost. Those
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1023]                          seen proper indexation of the
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1031]                            and no proper provision for
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1179]                              and €1.6 billion extra in
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1306]                      figures the Minister projects for
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1819]                                  wage are asked to pay
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2182]                          disappointment in the area of
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2256]                        that, once again, more ordinary
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2284]                                     on the top rate of
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2327]                            Government that only 20% of
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2366]                              people being asked to pay
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2394]                                   up are frozen out of
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2614]                                   is that out of their
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2750]                        astonishing €8,500. That is the
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2793]                              we would see home carer’s
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2802]                           has disappeared and a measly
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3413]                               were committed to by the
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3517]                           including a reduction in the
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3531]                              be reformed and home care
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3540]                               be reformed. The list of
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4029]                                 to roost, not just for
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4060]                         In addition, it loaded stealth
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4240]                         his decision to increase motor
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4258]                                    This is not a green
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4266]                                      that it is such a
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4302]                               pays €2,500 each year in
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4349]                             behind the change in motor
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4428]                   which advocated introducing a carbon
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4675]                               it stand up to scrutiny.
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4831]                                       Why do we have a
+    [2008_BUDGET_03_Joan_Burton_LAB.txt, 67]                    The increased borrowing and limited
+   [2008_BUDGET_03_Joan_Burton_LAB.txt, 550]                           the raw figures of declining
+   [2008_BUDGET_03_Joan_Burton_LAB.txt, 745]                        wind with extravagant claims on
+   [2008_BUDGET_03_Joan_Burton_LAB.txt, 961]                                from extra fuel and car
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 1463]                        events.” Plans for spending and
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 1786]                          environment that was not only
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 1802]                        an endless range of unnecessary
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 2160]                           families. It is notable that
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 2399]                              to retrench, cut back and
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3254]                                 not to mention all the
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3717]                                  do not qualify to pay
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3833]                               They are not paying much
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3977]                        benefit payment or a refundable
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4155]                       Minister also presides over this
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4227]                               extra €6,240 per year in
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4259]                                €6,270 per year less in
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4307]                               table of who pays income
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4328]                             21.58% of families who pay
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4401]                            more than €35,000, will pay
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4436]                                  to use €50 million of
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4611]                   about today’s announcements on motor
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4698]                          spade. The increases in motor
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4718]                                  not good on cars. The
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4772]                           to emissions. It will simply
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 5036]                            the senior partner went for
+   [2008_BUDGET_04_Arthur_Morgan_SF.txt, 35]                          this and other Governments on
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 119]                1,500 hospital beds, 2,000 consultants,
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 143]                                    for all to see when
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 163]                           a €1.75 billion shortfall in
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 288]                           delivers value for money for
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 677]                          widening of the standard rate
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 917]                                could not afford to cut
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 945]                        parties and others to introduce
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1313]                            had a substantial impact on
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1318]                tax receipts. Although the Department’s
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1346]                        make foolhardy proposals to cut
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1420]                    finances around the assumption that
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1478]                    finances around the assumption that
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1522]                             to raise or reduce overall
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1557]                              of low levels of personal
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1568]                          a growing reliance on stealth
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1572]                          stealth taxes. Changes in the
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1583]                           have involved cuts in income
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1594]                          off and increases in indirect
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1610]                         announced a number of positive
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1636]                       fairer or more [147] progressive
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1651]                                    limit on the use of
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1673]                               have been done to ensure
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1686]                     income individuals to reduce their
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1696]                                 at which they pay less
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1718]                    the Minister’s decision to increase
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1730]                                minimum wage out of the
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1760]                            in the standard rate income
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1801]                                 the top rate of income
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1851]                     budget. Reducing the standard rate
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1960]                    the changes in vehicle registration
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2069]               past year.\n\n148\n\nAs I indicated, the
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2087]                        that the proposed commission on
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2101]                    way to fundamentally restructure to
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2108]                to create a progressive, redistributive
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2150]                        the recent explosion in stealth
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2180]                 serious long-term consequences for the
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2187]                                both in terms of income
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2193]                      revenue and revenue from spending
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2225]                       no commensurate growth in income
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2355]                             in terms of adjustments to
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2651]                                   to see the burden of
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 4585]                                   money in the form of
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 5189]                                   on low costs and low
+   [2008_BUDGET_05_Bertie_Ahern_FF.txt, 287]                 a strong and consistent pro-enterprise
+   [2008_BUDGET_05_Bertie_Ahern_FF.txt, 712]                        any significance and no stealth
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1039]                              we said we would increase
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1120]                          absence of a general property
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1552]                                on equity. The gains in
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1582]                                     on the top rate of
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1599]                             two fifths are outside the
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1618]                            we have the most favourable
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1641]                           ten years effective rates of
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1679]                                 12% of their income in
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1712]         incapable of acknowledging.\n\nOn the personal
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1760]                              than the standard rate of
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1774]                         continue to remain outside the
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1793]                     decade. Compared to then, however,
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1824]                      Our consistent approach to income
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1838]                   the strong, progressive character of
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1859]                                  pay 25% of all income
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1893]                                  only 4% of all income
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1912]                    provide clear incentives within the
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1933]                        the further enhancements of the
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 2004]                        further encouragement to do so.
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 2752]                     their lives, reared families, paid
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3106]                      more, especially to align vehicle
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3666]                        century after the commission on
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3685]                                      a new look at our
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3699]                             best to implement a carbon
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3712]                               to the new commission on
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3799]                    highly in an international business
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3813]                                 looking at uses of the
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3853]                     Bill, a sector where international
+                                                         word
+    [2008_BUDGET_01_Brian_Cowen_FF.txt, 300]     taxation    
+    [2008_BUDGET_01_Brian_Cowen_FF.txt, 322]    taxpayers’   
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3190]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3205]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3244]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3260]     Taxation    
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3706]    Tax\nMotor   
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3707]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3717]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3743]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3800]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3826]       Tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3840]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3866]    Taxation.    
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4509]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4636]   Taxation\nI   
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4646]     taxation    
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4708]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4755]       tax,      
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4768]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4815]       Tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 5046]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 5579]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6510]       Tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6534]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6555]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6610]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6637]      Tax\nI     
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6642]       Tax.      
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6650]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6681]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6711]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6725]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6759]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6795]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6808]       Tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6825]       Tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6844]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6860]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6890]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6943]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6948]       Tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6976]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6980]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7010]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7130]       tax,      
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7164]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7191]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7201]       tax,      
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7215]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7227]       TAX       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7272]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7347]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7355]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7369]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7387]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7847] Market\nTaxation
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8054]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8194]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8244]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8431]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8707]       tax       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8817]      taxes      
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 191]       tax       
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 320]       tax,      
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 633]       tax       
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 686]       tax       
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 934]       tax       
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 962]       tax       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1004]       tax       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1023]       tax       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1031]       tax       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1179]       tax.      
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1306]     taxation    
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1819]       tax       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2182]    taxation.    
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2256]    taxpayers    
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2284]       tax       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2327]    taxpayers    
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2366]       tax       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2394]       tax       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2614]     pre-tax     
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2750]       tax       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2793]       tax       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2802]       tax       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3413]    taxpayer.    
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3517]       tax       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3531]       tax       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3540]       tax       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4029]    taxpayers    
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4060]      taxes      
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4240]       tax       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4258]       tax.      
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4266]       tax       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4302]       tax.      
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4349] taxation.\n\nThe
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4428]       tax       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4675]    Taxpayers    
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4831]       taxi      
+    [2008_BUDGET_03_Joan_Burton_LAB.txt, 67]           tax   
+   [2008_BUDGET_03_Joan_Burton_LAB.txt, 550]           tax   
+   [2008_BUDGET_03_Joan_Burton_LAB.txt, 745]          tax,   
+   [2008_BUDGET_03_Joan_Burton_LAB.txt, 961]          taxes  
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 1463]        taxation 
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 1786]           tax   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 1802]           tax   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 2160]           tax   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 2399]           tax   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3254]           tax   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3717]           tax   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3833]           tax   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3977]           tax   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4155]           tax   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4227]        taxation.
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4259]           tax   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4307]           tax   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4328]           tax   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4401]           tax   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4436]        taxpayers
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4611]          tax?   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4698]           tax   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4718]           tax   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4772]           tax   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 5036]           tax   
+   [2008_BUDGET_04_Arthur_Morgan_SF.txt, 35]          tax    
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 119]          tax    
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 143]          tax    
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 163]          tax    
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 288]       taxpayers.
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 677]          tax    
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 917]         taxes   
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 945]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1313]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1318]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1346]          tax.   
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1420]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1478]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1522]        taxation 
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1557]        taxation 
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1568]         taxes.  
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1572]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1583]         taxes   
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1594]         taxes   
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1610]        taxation 
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1636]        taxation 
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1651]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1673]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1686]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1696]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1718]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1730]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1760]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1801]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1851]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1960]          tax,   
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2069]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2087]        taxation 
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2101]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2108]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2150]         taxes   
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2180]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2187]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2193]         taxes.  
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2225]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2355]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2651]         taxes   
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 4585]          tax    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 5189]         taxes.  
+   [2008_BUDGET_05_Bertie_Ahern_FF.txt, 287]           tax   
+   [2008_BUDGET_05_Bertie_Ahern_FF.txt, 712]         taxes.  
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1039]           tax   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1120]          tax,   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1552]           tax   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1582]          tax,   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1599]           tax   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1618]           tax   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1641]        taxation 
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1679]          tax.   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1712]           tax   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1760]          tax,   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1774]           tax   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1793]           tax   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1824]           tax   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1838]           tax   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1859]          tax,   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1893]          tax,   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1912]           tax   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1933]           tax   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 2004]           Tax   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 2752]          taxes  
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3106]        taxation 
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3666]        taxation,
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3685]        taxation 
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3699]           tax   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3712]        taxation 
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3799]           tax   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3813]           tax   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3853]           tax   
+                                                                                    postword
+    [2008_BUDGET_01_Brian_Cowen_FF.txt, 300] measures in a single unified                   
+    [2008_BUDGET_01_Brian_Cowen_FF.txt, 322] money. By making spending and                  
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3190] and spending changes in this                   
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3205] treatment of bio-fuels. Last year              
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3244] measures to continue to support                
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3260] - VRT\nAs I announced in                       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3706] tax is an essential contributor                
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3707] is an essential contributor to                 
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3717] has not been changed since                     
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3743] rates by 9.5 per cent                          
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3800] to CO2 emissions for new                       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3826] Measures\nThe Programme for Government has     
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3840] in the lifetime of this                        
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3866] I intend to establish the                      
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4509] changes in a moment to                         
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4636] am making a number of                          
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4646] area arising from reform of                    
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4708] liability.  This measure follows               
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4755] when a farmer who has                          
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4768] averaging arrangements, subsequently enters a  
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4815] on the dissolution of farm                     
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 5046] code will be amended to                        
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 5579] free payment of €6,148 in                      
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6510] Credit\nIreland is now viewed by               
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6534] credit scheme will help further                
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6555] credit scheme. The base year                   
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6610] credit scheme.  This improvement               
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6637] now turn to Income Tax.                        
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6642]  \n\nIn the last decade                        
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6650] system has been made fairer,                   
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6681] agenda over the next five                      
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6711] agenda. I believe that the                     
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6725] package that protects and enhances             
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6759] credits and bands to keep                      
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6795] decisions and that is what                     
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6808] Credit by €70 for a                            
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6825] Credit will also be increased                  
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6844] net and, for a single                          
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6860] system from €17,600 to €18,300                 
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6890] band is being widened by                       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6943] at the higher rate.\n\nOther Tax               
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6948] Credits\nWith the needs of certain             
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6976] credits.  \n\nThe tax credit                   
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6980] credit for an incapacitated child              
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7010] credit is being increased by                   
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7130] PRSI and Health Levy measures                  
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7164] net in 2008 will be                            
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7191] at no more than the                            
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7201] and that about two out                         
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7215] net, as outlined in the                        
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7227] MEASURES\nThe capacity of the economy          
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7272] measures aimed at the business                 
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7347] liability threshold for the payment            
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7355] on the simpler prior-year basis                
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7369] liability threshold for new start-up           
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7387] in their first accounting period               
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7847] policy must always take account                
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8054] changes and that is when                       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8194] system on residential property transactions.   
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8244] will be payable on the                         
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8431] rate falls at all levels                       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8707] relief on rent payments by                     
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8817] low for working people. \n➢\tIt                
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 191] bonanza has been spent but                     
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 320] we have seen housing sales                     
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 633] and who are free from                          
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 686] reform. The prudent surpluses are              
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 934] bonanza, the Government has thrived.           
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 962] and three percentage points extra              
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1004] bills will have to be                          
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1023] code today and no proper                       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1031] reform which was trumpeted from                
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1179] In any man’s language that                     
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1306] for 2010, one will see                         
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1819] at 41%, the same rate                          
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2182] Indexing bands and credits to                  
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2256] on modest incomes will be                      
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2284] of 41%. That is the                            
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2327] would be on the top                            
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2366] at the same rate as                            
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2394] relief.\n\nFor example, over 600,000 people    
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2614] income, people must find an                    
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2750] penalty the Minister thinks should             
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2793] credit doubled? That has disappeared           
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2802] credit increase of €130 was                    
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3413] The results that would make                    
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3517] rate from 41% to 40%,                          
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3531] credits were to be reformed.                   
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3540] reform was lengthy. The one                    
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4029] but for those trying to                        
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4060] equivalent to €3,500 per annum                 
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4240] by 10%, the Minister is                        
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4258] Any notion that it is                          
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4266] does not stand up to                           
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4302] It has been estimated that                     
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4349] change to which I refer                        
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4428] by 2002, increasing investment in              
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4675] should not be asked to                         
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4831] regulator, an aviation regulator and           
+    [2008_BUDGET_03_Joan_Burton_LAB.txt, 67] and social welfare packages reflect            
+   [2008_BUDGET_03_Joan_Burton_LAB.txt, 550] revenues under almost every heading.           
+   [2008_BUDGET_03_Joan_Burton_LAB.txt, 745] PRSI, pensions and living standards.           
+   [2008_BUDGET_03_Joan_Burton_LAB.txt, 961] like the Ministers who are                     
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 1463] should take into account the                   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 1786] free, but in which the                         
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 1802] breaks for property investment.\n\nThe Minister
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 2160] relief for people renting increased            
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 2399] in the immediate aftermath. We                 
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3254] promises that were made in                     
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3717] at all. These are people                       
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3833] or PRSI, but they have                         
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3977] credit. The Government has been                
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4155] penalty on a parent who                        
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4227] I did the maths on                             
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4259] if their income is €70,800                     
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4307] at the higher rate. Today’s                    
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4328] at the 41% rate. Even                          
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4401] at 41% if they receive                         
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4436] money in 2008 to pay                           
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4611] We support the proposal to                     
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4698] are about raising revenue and                  
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4718] on vehicles under 2.5 litres                   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4772] people because they must drive                 
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 5036] raising on green issues rather                 
+   [2008_BUDGET_04_Arthur_Morgan_SF.txt, 35] cutting which grossly misled voters            
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 119] and PRSI cuts, affordable housing              
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 143] cutting proposals which were never             
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 163] revenues. Despite the fact that                
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 288] These are the question that                    
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 677] band are welcome, they will                    
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 917] and maintain, let alone improve,               
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 945] cuts on the ground that                        
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1313] receipts. Although the Department’s tax        
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1318] strategy papers identified this possibility    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1346] We now have the farcical                       
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1420] receipts from the property and                 
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1478] receipts from property and construction        
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1522] revenue are made on the                        
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1557] and public service provision, with             
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1568] Changes in the tax base                        
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1572] base in the past decade                        
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1583] which have benefited the better                
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1594] which disproportionately impact those on       
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1610] measures as part of the                        
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1636] system. Why has he again                       
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1651] reliefs by certain high income                 
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1673] reliefs are not exploited by                   
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1686] bill to the point at                           
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1696] than ordinary workers. This is                 
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1718] credits to keep those on                       
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1730] net, we remain concerned that                  
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1760] band. My party strongly argued                 
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1801] which his party proposed in                    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1851] band by 2% would have                          
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1960] we question the reason this                    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2069] measures announced today do not                
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2087] be set the task of                             
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2101] system to create a progressive,                
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2108] system [148] through which revenue             
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2150] and charges.\n\nI will address a               
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2180] take, both in terms of                         
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2187] revenue and revenue from spending              
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2193] Although figures for employment growth         
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2225] receipts because the vast majority             
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2355] credits and bands, will compensate             
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2651] and PRSI on ordinary workers                   
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 4585] breaks for private hospitals and               
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 5189] Developments in China, India and               
+   [2008_BUDGET_05_Bertie_Ahern_FF.txt, 287] system. These strategic priorities have        
+   [2008_BUDGET_05_Bertie_Ahern_FF.txt, 712] This budget is for a                           
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1039] bands and credits in line                      
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1120] stamp duty is, as I                            
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1552] relief are again concentrated at               
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1582] where two fifths pay the                       
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1599] net altogether. As has been                    
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1618] system for low earners in                      
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1641] on annual earnings have declined               
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1679] Ten years ago, they would                      
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1712] side, we have honoured our                     
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1760] while those on the increased                   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1774] net. Average industrial earnings have          
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1793] on these earnings has been                     
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1824] policy is to make work                         
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1838] policy in recent years. With                   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1859] compared to the 15% they                       
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1893] down from the 14% paid                         
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1912] code to underpin economic activity             
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1933] credits for research and development           
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 2004] changes affecting agriculture will also        
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 2752] and built up the foundations                   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3106] more closely with environmental policy         
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3666] which was a catalyst for                       
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3685] system. This will include the                  
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3699] on a revenue-neutral basis. We                 
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3712] being set up in the                            
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3799] survey. The Minister indicated that            
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3813] system to encourage lower alcohol              
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3853] competition is fierce.\n\nBy honouring our     
+> kwic(ieTexts, "tax", regex=FALSE)  # returns only whole word, without trailing punctuation
+                                                                                    preword
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3190]                  In previous years I announced
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3205]              2006, I introduced the favourable
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3244]              number of additional spending and
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3707]            and in Annex D.\n\nMotor Tax\nMotor
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3717]             to Local Government funding. Motor
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3743]                 to increase the existing motor
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3800]                 proposals that will link motor
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3826]      responsible way.  \n\nOther Environmental
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3840]                   the introduction of a carbon
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4509]                   needed. I will be announcing
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4708]              the purpose of calculating income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4768]                    avail of the special income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4815]                  new relief from Capital Gains
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 5046]                    can indicate today that the
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 5579]                       under six will receive a
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6510]          to €133 million in 2008.\n\n\n\n\nR&D
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6534]                      announce today to the R&D
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6555]                     propose to enhance the R&D
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6610]                    industry in relation to the
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6650]                     the last decade the income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6681]                   on and further progress that
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6711]                 five instalments in our income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6725]              constitute a well targeted income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6759]               the Government’s priority to use
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6795]               my priority in addressing income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6808]         doing.\n\nI am increasing the Personal
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6825]              married couple while the Employee
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6844]                      income earners out of the
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6860]                      entry point to the income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6890]                    20 per cent standard income
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6943]                 earnings from any liability to
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6948]               tax at the higher rate.\n\nOther
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6976]                     a number of other personal
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6980]                 personal tax credits.  \n\nThe
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7010]                     credit, and the home carer
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7164]                    earners who are outside the
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7191]                   earners will continue to pay
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7215]              income earners remain outside the
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7227]  of Budget Measures.\n\n\nHELPING BUSINESSES –
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7272]              to announce the following further
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7347]     following measures: \n➢\tThe Small Company
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7355]                 for the payment of preliminary
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7369]   increased from €150,000 to €200,000;\n➢\tThe
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7387]                    not have to pay preliminary
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8054]             is appropriate to make significant
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8194]                        in the operation of the
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8244]                           on the basis that no
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8431]                 than at present. The effective
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8707]                  will be increasing the income
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 191]                  have been frittered away. The
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 633]                      from any changes to motor
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 686]                      this budget in respect of
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 934]                     guise of this debt fuelled
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 962]              percentage points extra on income
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1004]                      come home to roost. Those
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1023]                  seen proper indexation of the
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1031]                    and no proper provision for
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1819]                          wage are asked to pay
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2284]                             on the top rate of
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2366]                      people being asked to pay
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2394]                           up are frozen out of
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2750]                astonishing €8,500. That is the
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2793]                      we would see home carer’s
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2802]                   has disappeared and a measly
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3517]                   including a reduction in the
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3531]                      be reformed and home care
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3540]                       be reformed. The list of
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4240]                 his decision to increase motor
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4266]                              that it is such a
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4428]           which advocated introducing a carbon
+    [2008_BUDGET_03_Joan_Burton_LAB.txt, 67]            The increased borrowing and limited
+   [2008_BUDGET_03_Joan_Burton_LAB.txt, 550]                   the raw figures of declining
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 1786]                  environment that was not only
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 1802]                an endless range of unnecessary
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 2160]                   families. It is notable that
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 2399]                      to retrench, cut back and
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3254]                         not to mention all the
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3717]                          do not qualify to pay
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3833]                       They are not paying much
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3977]                benefit payment or a refundable
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4155]               Minister also presides over this
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4259]                        €6,270 per year less in
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4307]                       table of who pays income
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4328]                     21.58% of families who pay
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4401]                    more than €35,000, will pay
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4698]                  spade. The increases in motor
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4718]                          not good on cars. The
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4772]                   to emissions. It will simply
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 5036]                    the senior partner went for
+   [2008_BUDGET_04_Arthur_Morgan_SF.txt, 35]                  this and other Governments on
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 119]        1,500 hospital beds, 2,000 consultants,
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 143]                            for all to see when
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 163]                   a €1.75 billion shortfall in
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 677]                  widening of the standard rate
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 945]                parties and others to introduce
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1313]                    had a substantial impact on
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1318]        tax receipts. Although the Department’s
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1420]            finances around the assumption that
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1478]            finances around the assumption that
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1572]                  stealth taxes. Changes in the
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1651]                            limit on the use of
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1673]                       have been done to ensure
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1686]             income individuals to reduce their
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1696]                         at which they pay less
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1718]            the Minister’s decision to increase
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1730]                        minimum wage out of the
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1760]                    in the standard rate income
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1801]                         the top rate of income
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1851]             budget. Reducing the standard rate
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2069]       past year.\n\n148\n\nAs I indicated, the
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2101]            way to fundamentally restructure to
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2108]        to create a progressive, redistributive
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2180]         serious long-term consequences for the
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2187]                        both in terms of income
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2225]               no commensurate growth in income
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2355]                     in terms of adjustments to
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 4585]                           money in the form of
+   [2008_BUDGET_05_Bertie_Ahern_FF.txt, 287]         a strong and consistent pro-enterprise
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1039]                      we said we would increase
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1552]                        on equity. The gains in
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1599]                     two fifths are outside the
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1618]                    we have the most favourable
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1712] incapable of acknowledging.\n\nOn the personal
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1774]                 continue to remain outside the
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1793]             decade. Compared to then, however,
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1824]              Our consistent approach to income
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1838]           the strong, progressive character of
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1912]            provide clear incentives within the
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1933]                the further enhancements of the
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 2004]                further encouragement to do so.
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3699]                     best to implement a carbon
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3799]            highly in an international business
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3813]                         looking at uses of the
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3853]             Bill, a sector where international
+                                             word
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3190]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3205]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3244]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3707]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3717]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3743]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3800]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3826]  Tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3840]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4509]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4708]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4768]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4815]  Tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 5046]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 5579]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6510]  Tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6534]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6555]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6610]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6650]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6681]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6711]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6725]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6759]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6795]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6808]  Tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6825]  Tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6844]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6860]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6890]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6943]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6948]  Tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6976]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6980]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7010]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7164]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7191]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7215]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7227]  TAX
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7272]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7347]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7355]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7369]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7387]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8054]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8194]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8244]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8431]  tax
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8707]  tax
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 191]  tax
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 633]  tax
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 686]  tax
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 934]  tax
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 962]  tax
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1004]  tax
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1023]  tax
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1031]  tax
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1819]  tax
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2284]  tax
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2366]  tax
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2394]  tax
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2750]  tax
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2793]  tax
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2802]  tax
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3517]  tax
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3531]  tax
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3540]  tax
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4240]  tax
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4266]  tax
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4428]  tax
+    [2008_BUDGET_03_Joan_Burton_LAB.txt, 67]  tax
+   [2008_BUDGET_03_Joan_Burton_LAB.txt, 550]  tax
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 1786]  tax
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 1802]  tax
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 2160]  tax
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 2399]  tax
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3254]  tax
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3717]  tax
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3833]  tax
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3977]  tax
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4155]  tax
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4259]  tax
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4307]  tax
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4328]  tax
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4401]  tax
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4698]  tax
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4718]  tax
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4772]  tax
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 5036]  tax
+   [2008_BUDGET_04_Arthur_Morgan_SF.txt, 35]  tax
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 119]  tax
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 143]  tax
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 163]  tax
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 677]  tax
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 945]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1313]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1318]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1420]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1478]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1572]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1651]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1673]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1686]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1696]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1718]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1730]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1760]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1801]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1851]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2069]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2101]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2108]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2180]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2187]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2225]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2355]  tax
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 4585]  tax
+   [2008_BUDGET_05_Bertie_Ahern_FF.txt, 287]  tax
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1039]  tax
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1552]  tax
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1599]  tax
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1618]  tax
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1712]  tax
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1774]  tax
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1793]  tax
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1824]  tax
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1838]  tax
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1912]  tax
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1933]  tax
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 2004]  Tax
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3699]  tax
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3799]  tax
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3813]  tax
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3853]  tax
+                                                                                    postword
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3190] and spending changes in this                   
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3205] treatment of bio-fuels. Last year              
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3244] measures to continue to support                
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3707] is an essential contributor to                 
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3717] has not been changed since                     
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3743] rates by 9.5 per cent                          
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3800] to CO2 emissions for new                       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3826] Measures\nThe Programme for Government has     
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 3840] in the lifetime of this                        
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4509] changes in a moment to                         
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4708] liability.  This measure follows               
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4768] averaging arrangements, subsequently enters a  
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 4815] on the dissolution of farm                     
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 5046] code will be amended to                        
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 5579] free payment of €6,148 in                      
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6510] Credit\nIreland is now viewed by               
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6534] credit scheme will help further                
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6555] credit scheme. The base year                   
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6610] credit scheme.  This improvement               
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6650] system has been made fairer,                   
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6681] agenda over the next five                      
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6711] agenda. I believe that the                     
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6725] package that protects and enhances             
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6759] credits and bands to keep                      
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6795] decisions and that is what                     
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6808] Credit by €70 for a                            
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6825] Credit will also be increased                  
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6844] net and, for a single                          
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6860] system from €17,600 to €18,300                 
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6890] band is being widened by                       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6943] at the higher rate.\n\nOther Tax               
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6948] Credits\nWith the needs of certain             
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6976] credits.  \n\nThe tax credit                   
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 6980] credit for an incapacitated child              
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7010] credit is being increased by                   
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7164] net in 2008 will be                            
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7191] at no more than the                            
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7215] net, as outlined in the                        
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7227] MEASURES\nThe capacity of the economy          
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7272] measures aimed at the business                 
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7347] liability threshold for the payment            
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7355] on the simpler prior-year basis                
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7369] liability threshold for new start-up           
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 7387] in their first accounting period               
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8054] changes and that is when                       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8194] system on residential property transactions.   
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8244] will be payable on the                         
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8431] rate falls at all levels                       
+   [2008_BUDGET_01_Brian_Cowen_FF.txt, 8707] relief on rent payments by                     
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 191] bonanza has been spent but                     
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 633] and who are free from                          
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 686] reform. The prudent surpluses are              
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 934] bonanza, the Government has thrived.           
+ [2008_BUDGET_02_Richard_Bruton_FG.txt, 962] and three percentage points extra              
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1004] bills will have to be                          
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1023] code today and no proper                       
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1031] reform which was trumpeted from                
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 1819] at 41%, the same rate                          
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2284] of 41%. That is the                            
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2366] at the same rate as                            
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2394] relief.\n\nFor example, over 600,000 people    
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2750] penalty the Minister thinks should             
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2793] credit doubled? That has disappeared           
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 2802] credit increase of €130 was                    
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3517] rate from 41% to 40%,                          
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3531] credits were to be reformed.                   
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 3540] reform was lengthy. The one                    
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4240] by 10%, the Minister is                        
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4266] does not stand up to                           
+[2008_BUDGET_02_Richard_Bruton_FG.txt, 4428] by 2002, increasing investment in              
+    [2008_BUDGET_03_Joan_Burton_LAB.txt, 67] and social welfare packages reflect            
+   [2008_BUDGET_03_Joan_Burton_LAB.txt, 550] revenues under almost every heading.           
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 1786] free, but in which the                         
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 1802] breaks for property investment.\n\nThe Minister
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 2160] relief for people renting increased            
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 2399] in the immediate aftermath. We                 
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3254] promises that were made in                     
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3717] at all. These are people                       
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3833] or PRSI, but they have                         
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 3977] credit. The Government has been                
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4155] penalty on a parent who                        
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4259] if their income is €70,800                     
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4307] at the higher rate. Today’s                    
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4328] at the 41% rate. Even                          
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4401] at 41% if they receive                         
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4698] are about raising revenue and                  
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4718] on vehicles under 2.5 litres                   
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 4772] people because they must drive                 
+  [2008_BUDGET_03_Joan_Burton_LAB.txt, 5036] raising on green issues rather                 
+   [2008_BUDGET_04_Arthur_Morgan_SF.txt, 35] cutting which grossly misled voters            
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 119] and PRSI cuts, affordable housing              
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 143] cutting proposals which were never             
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 163] revenues. Despite the fact that                
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 677] band are welcome, they will                    
+  [2008_BUDGET_04_Arthur_Morgan_SF.txt, 945] cuts on the ground that                        
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1313] receipts. Although the Department’s tax        
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1318] strategy papers identified this possibility    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1420] receipts from the property and                 
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1478] receipts from property and construction        
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1572] base in the past decade                        
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1651] reliefs by certain high income                 
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1673] reliefs are not exploited by                   
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1686] bill to the point at                           
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1696] than ordinary workers. This is                 
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1718] credits to keep those on                       
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1730] net, we remain concerned that                  
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1760] band. My party strongly argued                 
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1801] which his party proposed in                    
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 1851] band by 2% would have                          
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2069] measures announced today do not                
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2101] system to create a progressive,                
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2108] system [148] through which revenue             
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2180] take, both in terms of                         
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2187] revenue and revenue from spending              
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2225] receipts because the vast majority             
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 2355] credits and bands, will compensate             
+ [2008_BUDGET_04_Arthur_Morgan_SF.txt, 4585] breaks for private hospitals and               
+   [2008_BUDGET_05_Bertie_Ahern_FF.txt, 287] system. These strategic priorities have        
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1039] bands and credits in line                      
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1552] relief are again concentrated at               
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1599] net altogether. As has been                    
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1618] system for low earners in                      
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1712] side, we have honoured our                     
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1774] net. Average industrial earnings have          
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1793] on these earnings has been                     
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1824] policy is to make work                         
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1838] policy in recent years. With                   
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1912] code to underpin economic activity             
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 1933] credits for research and development           
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 2004] changes affecting agriculture will also        
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3699] on a revenue-neutral basis. We                 
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3799] survey. The Minister indicated that            
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3813] system to encourage lower alcohol              
+  [2008_BUDGET_05_Bertie_Ahern_FF.txt, 3853] competition is fierce.\n\nBy honouring our     
+> data(iebudgets)
+> kwic(subset(iebudgets, year==2010), "Christmas", window=4) # on a corpus
+                                     preword       word
+ [text2, 628]                to see out this  Christmas
+ [text3, 371]           suggest titles for a Christmas 
+ [text3, 379]          Fáil’s hit single for Christmas 
+ [text3, 922]         will say goodbye after Christmas 
+[text3, 1518]         single golf clubs this Christmas.
+[text3, 1726]        faking its message this Christmas?
+[text3, 3159]           In previous years at Christmas 
+ [text4, 346]                per week or the Christmas 
+[text4, 3239]   social welfare payments this Christmas.
+[text4, 3244]                The loss of the Christmas 
+[text4, 3272]          on Santa presents and Christmas 
+[text4, 5899]            jobs, who face this Christmas 
+[text6, 2629] implement the reduction before Christmas.
+[text7, 1365]              the change in the  Christmas
+ [text8, 550]         of €641, including the Christmas 
+ [text8, 638]         on social welfare, the Christmas 
+ [text8, 998]    emigration. Once again this Christmas,
+[text13, 911]         recently that over the  Christmas
+[text14, 148]                 all be over by Christmas.
+                                    postword
+ [text2, 628] in the hope of                
+ [text3, 371] hit single. Fianna Fáil’s     
+ [text3, 379] will be, “I saw               
+ [text3, 922] because they must take        
+[text3, 1518] With a possible election      
+[text3, 1726] Is the Society of             
+[text3, 3159] time people were laden        
+ [text4, 346] bonus. Of course, that        
+[text4, 3239] The loss of the               
+[text4, 3244] bonus, a double payment       
+[text4, 3272] food. The Government’s Scrooge
+[text4, 5899] in debt, in poverty           
+[text6, 2629] I do not know                 
+[text7, 1365] period. We suggested that     
+ [text8, 550] payment. A couple on          
+ [text8, 638] payment is gone. Earnest      
+ [text8, 998] we will witness the           
+[text13, 911] recess work will be           
+[text14, 148] If it is the                  
+> 
+> 
+> 
+> cleanEx()
+> nameEx("kwic2")
+> ### * kwic2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: kwic2
+> ### Title: This function is an alternative KWIC
+> ### Aliases: kwic2
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D kwic2(texts, "we", filter = '_2010', location=TRUE)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("lbg")
+> ### * lbg
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: lbg
+> ### Title: Example data from Laver Benoit and Garry (2003)
+> ### Aliases: lbg
+> 
+> ### ** Examples
+> 
+> data(inaugCorpus)
+> summary(inaugCorpus)
+Corpus object contains 57 texts.
+
+               Texts Types Tokens Sentences year  president
+ 1789-Washington.txt   595   1430        23 1789 Washington
+ 1793-Washington.txt    90    135         4 1793 Washington
+      1797-Adams.txt   794   2318        37 1797      Adams
+  1801-Jefferson.txt   681   1726        41 1801  Jefferson
+  1805-Jefferson.txt   775   2166        45 1805  Jefferson
+    1809-Madison.txt   520   1175        21 1809    Madison
+    1813-Madison.txt   518   1210        33 1813    Madison
+     1817-Monroe.txt   980   3370       122 1817     Monroe
+     1821-Monroe.txt  1192   4459       131 1821     Monroe
+      1825-Adams.txt   962   2915        74 1825      Adams
+    1829-Jackson.txt   500   1128        25 1829    Jackson
+    1833-Jackson.txt   474   1176        29 1833    Jackson
+   1837-VanBuren.txt  1252   3839        95 1837   VanBuren
+   1841-Harrison.txt  1819   8428       215 1841   Harrison
+       1845-Polk.txt  1262   4800       153 1845       Polk
+     1849-Taylor.txt   480   1088        22 1849     Taylor
+     1853-Pierce.txt  1113   3332       104 1853     Pierce
+   1857-Buchanan.txt   892   2823        89 1857   Buchanan
+    1861-Lincoln.txt  1007   3629       135 1861    Lincoln
+    1865-Lincoln.txt   336    698        26 1865    Lincoln
+      1869-Grant.txt   466   1125        40 1869      Grant
+      1873-Grant.txt   520   1336        43 1873      Grant
+      1877-Hayes.txt   802   2480        59 1877      Hayes
+   1881-Garfield.txt   969   2971       111 1881   Garfield
+  1885-Cleveland.txt   644   1682        44 1885  Cleveland
+   1889-Harrison.txt  1297   4383       157 1889   Harrison
+  1893-Cleveland.txt   798   2013        58 1893  Cleveland
+   1897-McKinley.txt  1181   3960       130 1897   McKinley
+   1901-McKinley.txt   805   2204       100 1901   McKinley
+  1905-Roosevelt.txt   384    984        33 1905  Roosevelt
+       1909-Taft.txt  1374   5427       160 1909       Taft
+     1913-Wilson.txt   627   1699        68 1913     Wilson
+     1917-Wilson.txt   523   1529        59 1917     Wilson
+    1921-Harding.txt  1117   3327       148 1921    Harding
+   1925-Coolidge.txt  1159   4055       196 1925   Coolidge
+     1929-Hoover.txt   997   3558       158 1929     Hoover
+  1933-Roosevelt.txt   708   1880        85 1933  Roosevelt
+  1937-Roosevelt.txt   681   1806        96 1937  Roosevelt
+  1941-Roosevelt.txt   493   1334        68 1941  Roosevelt
+  1945-Roosevelt.txt   257    555        28 1945  Roosevelt
+     1949-Truman.txt   742   2270       118 1949     Truman
+ 1953-Eisenhower.txt   846   2444       119 1953 Eisenhower
+ 1957-Eisenhower.txt   586   1659        96 1957 Eisenhower
+    1961-Kennedy.txt   534   1363        57 1961    Kennedy
+    1965-Johnson.txt   526   1485        94 1965    Johnson
+      1969-Nixon.txt   708   2122       105 1969      Nixon
+      1973-Nixon.txt   506   1801        72 1973      Nixon
+     1977-Carter.txt   489   1220        52 1977     Carter
+     1981-Reagan.txt   842   2431       135 1981     Reagan
+     1985-Reagan.txt   855   2553       127 1985     Reagan
+       1989-Bush.txt   747   2315       147 1989       Bush
+    1993-Clinton.txt   599   1598        81 1993    Clinton
+    1997-Clinton.txt   716   2157       111 1997    Clinton
+       2001-Bush.txt   584   1581        97 2001       Bush
+       2005-Bush.txt   724   2069       100 2005       Bush
+      2009-Obama.txt   893   2390       119 2009      Obama
+      2013-Obama.txt   781   2079        89 2013      Obama
+
+Source:  From http://www.presidency.ucsb.edu/inaugurals.php and https://archive.org/details/Inaugural-Address-Corpus-1789-2009.
+Created: Thu Jul 24 09:33:56 2014.
+Notes:   NA.
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ngrams")
+> ### * ngrams
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ngrams
+> ### Title: Create ngrams
+> ### Aliases: ngrams
+> 
+> ### ** Examples
+> 
+> ngrams("The quick brown fox jumped over the lazy dog.", n=2)
+[1] "the_quick"   "quick_brown" "brown_fox"   "fox_jumped"  "jumped_over"
+[6] "over_the"    "the_lazy"    "lazy_dog"   
+> ngrams("The quick brown fox jumped over the lazy dog.", n=3)
+[1] "the_quick_brown"  "quick_brown_fox"  "brown_fox_jumped" "fox_jumped_over" 
+[5] "jumped_over_the"  "over_the_lazy"    "the_lazy_dog"    
+> ngrams("The quick brown fox jumped over the lazy dog.", n=3, concatenator="~")
+[1] "the~quick~brown"  "quick~brown~fox"  "brown~fox~jumped" "fox~jumped~over" 
+[5] "jumped~over~the"  "over~the~lazy"    "the~lazy~dog"    
+> ngrams("The quick brown fox jumped over the lazy dog.", n=3, include.all=TRUE)
+ [1] "the"              "quick"            "brown"            "fox"             
+ [5] "jumped"           "over"             "the"              "lazy"            
+ [9] "dog"              "the_quick"        "quick_brown"      "brown_fox"       
+[13] "fox_jumped"       "jumped_over"      "over_the"         "the_lazy"        
+[17] "lazy_dog"         "the_quick_brown"  "quick_brown_fox"  "brown_fox_jumped"
+[21] "fox_jumped_over"  "jumped_over_the"  "over_the_lazy"    "the_lazy_dog"    
+> 
+> 
+> 
+> cleanEx()
+> nameEx("selectFeatures")
+> ### * selectFeatures
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: selectFeatures
+> ### Title: extract feature words This function takes type of feature
+> ###   extractor and a word freaquency matrix with binary class (1/0) to
+> ###   select features in class one. 'wsll' and 'wschisq' replicates of
+> ###   'Keyness' of Wordsmith Tools.
+> ### Aliases: selectFeatures
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D texts <- getTextDir("/home/kohei/Documents/budget_2010/")
+> ##D class  <- rep(0, length(texts))
+> ##D class[grep("_LAB", names(texts))] <- 1
+> ##D class[grep("_FF", names(texts))] <- 0
+> ##D corpus <- corpusCreate(texts, attribs=list(class=class))
+> ##D dfm <- dfm(corpus)
+> ##D features <- selectFeatures('ll', dfm, corpus$attribs$class, smooth=1)
+> ## End(Not run)
+> ## Not run: 
+> ##D texts <- getTextDir("/home/kohei/Documents/budget_2010/")
+> ##D class  <- rep(0, length(texts))
+> ##D class[grep("_LAB", names(texts))] <- 1
+> ##D class[grep("_FF", names(texts))] <- 0
+> ##D corpus <- corpusCreate(texts, attribs=list(class=class))
+> ##D dfm <- dfm(corpus)
+> ##D features <- selectFeatures('ll', dfm, corpus$attribs$class, smooth=1)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("sentenceSeg")
+> ### * sentenceSeg
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: sentenceSeg
+> ### Title: split a text into sentences This function takes a text and
+> ###   splits it into sentences.
+> ### Aliases: sentenceSeg
+> 
+> ### ** Examples
+> 
+> test <- "This is a sentence! Several sentences. It's designed by a Dr. to test whether this function works. Or not? Or not."
+> sentenceSeg(test)
+                                            This is a sentence 
+                                          "This is a sentence" 
+                                             Several sentences 
+                                           "Several sentences" 
+  It's designed by a Dr to test whether this function works .  
+"It's designed by a Dr to test whether this function works . " 
+                                                        Or not 
+                                                      "Or not" 
+                                                       Or not. 
+                                                     "Or not." 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("stopwordsGet")
+> ### * stopwordsGet
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: stopwordsGet
+> ### Title: access stopwords
+> ### Aliases: stopwordsGet
+> 
+> ### ** Examples
+> 
+> stopwordsGet()
+  [1] "i"          "me"         "my"         "myself"     "we"        
+  [6] "our"        "ours"       "ourselves"  "you"        "your"      
+ [11] "yours"      "yourself"   "yourselves" "he"         "him"       
+ [16] "his"        "himself"    "she"        "her"        "hers"      
+ [21] "herself"    "it"         "its"        "itself"     "they"      
+ [26] "them"       "their"      "theirs"     "themselves" "what"      
+ [31] "which"      "who"        "whom"       "this"       "that"      
+ [36] "these"      "those"      "am"         "is"         "are"       
+ [41] "was"        "were"       "be"         "been"       "being"     
+ [46] "have"       "has"        "had"        "having"     "do"        
+ [51] "does"       "did"        "doing"      "would"      "should"    
+ [56] "could"      "ought"      "i'm"        "you're"     "he's"      
+ [61] "she's"      "it's"       "we're"      "they're"    "i've"      
+ [66] "you've"     "we've"      "they've"    "i'd"        "you'd"     
+ [71] "he'd"       "she'd"      "we'd"       "they'd"     "i'll"      
+ [76] "you'll"     "he'll"      "she'll"     "we'll"      "they'll"   
+ [81] "isn't"      "aren't"     "wasn't"     "weren't"    "hasn't"    
+ [86] "haven't"    "hadn't"     "doesn't"    "don't"      "didn't"    
+ [91] "won't"      "wouldn't"   "shan't"     "shouldn't"  "can't"     
+ [96] "cannot"     "couldn't"   "mustn't"    "let's"      "that's"    
+[101] "who's"      "what's"     "here's"     "there's"    "when's"    
+[106] "where's"    "why's"      "how's"      "a"          "an"        
+[111] "the"        "and"        "but"        "if"         "or"        
+[116] "because"    "as"         "until"      "while"      "of"        
+[121] "at"         "by"         "for"        "with"       "about"     
+[126] "against"    "between"    "into"       "through"    "during"    
+[131] "before"     "after"      "above"      "below"      "to"        
+[136] "from"       "up"         "down"       "in"         "out"       
+[141] "on"         "off"        "over"       "under"      "again"     
+[146] "further"    "then"       "once"       "here"       "there"     
+[151] "when"       "where"      "why"        "how"        "all"       
+[156] "any"        "both"       "each"       "few"        "more"      
+[161] "most"       "other"      "some"       "such"       "no"        
+[166] "nor"        "not"        "only"       "own"        "same"      
+[171] "so"         "than"       "too"        "very"      
+> stopwordsGet("italian")
+  [1] "ad"         "al"         "allo"       "ai"         "agli"      
+  [6] "all"        "agl"        "alla"       "alle"       "con"       
+ [11] "col"        "coi"        "da"         "dal"        "dallo"     
+ [16] "dai"        "dagli"      "dall"       "dagl"       "dalla"     
+ [21] "dalle"      "di"         "del"        "dello"      "dei"       
+ [26] "degli"      "dell"       "degl"       "della"      "delle"     
+ [31] "in"         "nel"        "nello"      "nei"        "negli"     
+ [36] "nell"       "negl"       "nella"      "nelle"      "su"        
+ [41] "sul"        "sullo"      "sui"        "sugli"      "sull"      
+ [46] "sugl"       "sulla"      "sulle"      "per"        "tra"       
+ [51] "contro"     "io"         "tu"         "lui"        "lei"       
+ [56] "noi"        "voi"        "loro"       "mio"        "mia"       
+ [61] "miei"       "mie"        "tuo"        "tua"        "tuoi"      
+ [66] "tue"        "suo"        "sua"        "suoi"       "sue"       
+ [71] "nostro"     "nostra"     "nostri"     "nostre"     "vostro"    
+ [76] "vostra"     "vostri"     "vostre"     "mi"         "ti"        
+ [81] "ci"         "vi"         "lo"         "la"         "li"        
+ [86] "le"         "gli"        "ne"         "il"         "un"        
+ [91] "uno"        "una"        "ma"         "ed"         "se"        
+ [96] "perché"     "anche"      "come"       "dov"        "dove"      
+[101] "che"        "chi"        "cui"        "non"        "più"       
+[106] "quale"      "quanto"     "quanti"     "quanta"     "quante"    
+[111] "quello"     "quelli"     "quella"     "quelle"     "questo"    
+[116] "questi"     "questa"     "queste"     "si"         "tutto"     
+[121] "tutti"      "a"          "c"          "e"          "i"         
+[126] "l"          "o"          "ho"         "hai"        "ha"        
+[131] "abbiamo"    "avete"      "hanno"      "abbia"      "abbiate"   
+[136] "abbiano"    "avrò"       "avrai"      "avrà"       "avremo"    
+[141] "avrete"     "avranno"    "avrei"      "avresti"    "avrebbe"   
+[146] "avremmo"    "avreste"    "avrebbero"  "avevo"      "avevi"     
+[151] "aveva"      "avevamo"    "avevate"    "avevano"    "ebbi"      
+[156] "avesti"     "ebbe"       "avemmo"     "aveste"     "ebbero"    
+[161] "avessi"     "avesse"     "avessimo"   "avessero"   "avendo"    
+[166] "avuto"      "avuta"      "avuti"      "avute"      "sono"      
+[171] "sei"        "è"          "siamo"      "siete"      "sia"       
+[176] "siate"      "siano"      "sarò"       "sarai"      "sarà"      
+[181] "saremo"     "sarete"     "saranno"    "sarei"      "saresti"   
+[186] "sarebbe"    "saremmo"    "sareste"    "sarebbero"  "ero"       
+[191] "eri"        "era"        "eravamo"    "eravate"    "erano"     
+[196] "fui"        "fosti"      "fu"         "fummo"      "foste"     
+[201] "furono"     "fossi"      "fosse"      "fossimo"    "fossero"   
+[206] "essendo"    "faccio"     "fai"        "facciamo"   "fanno"     
+[211] "faccia"     "facciate"   "facciano"   "farò"       "farai"     
+[216] "farà"       "faremo"     "farete"     "faranno"    "farei"     
+[221] "faresti"    "farebbe"    "faremmo"    "fareste"    "farebbero" 
+[226] "facevo"     "facevi"     "faceva"     "facevamo"   "facevate"  
+[231] "facevano"   "feci"       "facesti"    "fece"       "facemmo"   
+[236] "faceste"    "fecero"     "facessi"    "facesse"    "facessimo" 
+[241] "facessero"  "facendo"    "sto"        "stai"       "sta"       
+[246] "stiamo"     "stanno"     "stia"       "stiate"     "stiano"    
+[251] "starò"      "starai"     "starà"      "staremo"    "starete"   
+[256] "staranno"   "starei"     "staresti"   "starebbe"   "staremmo"  
+[261] "stareste"   "starebbero" "stavo"      "stavi"      "stava"     
+[266] "stavamo"    "stavate"    "stavano"    "stetti"     "stesti"    
+[271] "stette"     "stemmo"     "steste"     "stettero"   "stessi"    
+[276] "stesse"     "stessimo"   "stessero"   "stando"    
+> 
+> 
+> 
+> cleanEx()
+> nameEx("stopwordsRemove")
+> ### * stopwordsRemove
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: stopwordsRemove
+> ### Title: remove stopwords from a text or dfm
+> ### Aliases: stopwordsRemove stopwordsRemove.character
+> ###   stopwordsRemove.matrix
+> 
+> ### ** Examples
+> 
+> ## examples for character objects
+> someText <- "Here is an example of text containing some stopwords we want to remove."
+> itText <- "Ecco un esempio di testo contenente alcune parole non significative che vogliamo rimuovere."
+> stopwordsRemove(someText)
+[1] " example text containing stopwords want remove."
+> stopwordsRemove(someText, stopwordsGet("SMART"))
+[1] " text stopwords remove."
+> stopwordsRemove(itText, stopwordsGet("italian"))
+[1] "Ecco esempio testo contenente alcune parole significative vogliamo rimuovere."
+> stopwordsRemove(someText, c("containing", "example"))
+[1] "Here is an of text some stopwords we want to remove."
+> 
+> ## example for dfm objects
+> data(iebudgets)
+> wfm <- dfm(subset(iebudgets, year==2010))
+Creating dfm from a corpus: ...  done. 
+> wfm.nostopwords <- stopwordsRemove(wfm)
+> dim(wfm)
+[1]   14 4929
+> dim(wfm.nostopwords)
+[1]   14 4812
+> dim(stopwordsRemove(wfm, stopwordsGet("SMART")))
+[1]   14 4545
+> 
+> 
+> 
+> cleanEx()
+> nameEx("subset.corpus")
+> ### * subset.corpus
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: subset.corpus
+> ### Title: extract a subset of a corpus
+> ### Aliases: subset.corpus
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D data(iebudgets)
+> ##D iebudgets2010 <- subset(iebudgets, year==2010)
+> ##D summary(iebudgets2010)
+> ##D iebudgetsLenihan <- subset(iebudgets, speaker="Lenihan", select=c(speaker, year))
+> ##D summary(iebudgetsLenihan)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("summary.corpus")
+> ### * summary.corpus
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: summary.corpus
+> ### Title: Corpus summary
+> ### Aliases: summary.corpus
+> 
+> ### ** Examples
+> 
+> data(iebudgets)
+> summary(iebudgets, subset=(year==2010))
+Error in summary.corpus(iebudgets, subset = (year == 2010)) : 
+  object 'year' not found
+Calls: summary -> summary.corpus
 Execution halted

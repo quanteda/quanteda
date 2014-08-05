@@ -14,8 +14,8 @@ getData(corpus, usenames = TRUE)
 data frame of the meda-data from the corpus
 }
 \description{
-Extract the ocument-level meta-data from a corpus as a data
-frame
+Extract the document-level meta-data from a corpus as a
+data frame
 }
 \examples{
 data(iebudgets)

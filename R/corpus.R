@@ -319,7 +319,7 @@ corpusReshape <- function(corpus, to=c("sentence", "document")) {
 #' @export
 #' @examples
 #' data(iebudgets)
-#' summary(iebudgets, subset=(year==2010))
+#' subset(iebudgets, year==2010)
 #' summary(iebudgets, nmax=10)
 summary.corpus <- function(corpus, nmax=100, texts="texts", subset=NULL, verbose=TRUE) {
     select <- NULL
@@ -357,7 +357,7 @@ summary.corpus <- function(corpus, nmax=100, texts="texts", subset=NULL, verbose
 #' @examples
 #' data(iebudgets)
 #' cowenTexts <- getTexts(subset(iebudgets, speaker=="Cowen"))
-#' syllableCount(cowenTexts)
+#' countSyllables(cowenTexts)
 getTexts <- function(corpus, usenames=TRUE) {
     texts <- corpus$attribs$texts
     if (usenames) names(texts) <- row.names(corpus$attribs)

@@ -18,7 +18,7 @@ Extract the texts from a corpus as a named character vector
 }
 \examples{
 data(iebudgets)
-cowenTexts <- getTexts(subset(iebudgets, speaker="Cowen"))
-syllableCount(cowenTexts)
+cowenTexts <- getTexts(subset(iebudgets, speaker=="Cowen"))
+countSyllables(cowenTexts)
 }
 
