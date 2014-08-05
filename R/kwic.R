@@ -8,10 +8,10 @@
 ##' @param text A text character scalar or a quanteda corpus.  (Currently does not support character vectors.)
 ##' @param word A keyword chosen by the user.
 ##' @param window The number of context words to be displayed around the keyword.
-##' @param regex If TRUE, then "word" is a regular expression.  Otherwise (default) is to use matching pattern as a whole word.
+##' @param regex If TRUE (default), then "word" is a regular expression, otherwise only match the whole word.
 ##' Note that if regex=TRUE and no special regular expression characters are used in the search query, 
 ##' then the concordance will include all words in which the search term appears, and not just when it
-##' appears as an entire word.
+##' appears as an entire word.  (For instance, searching for the word "key" will also return "whiskey".)
 ##' @return A data frame with the context before (\code{preword}), the keyword in its original format (\code{word}, preserving case and attached punctuation), and the context after (\code{postword}).  The rows of the
 ##' dataframe will be named with the word index position, or the text name and the index position
 ##' for a corpus object.  
@@ -19,18 +19,16 @@
 ##' @rdname kwic
 ##' @export
 ##' @examples
+##' data(ieTexts)  # a text vector
+##' kwic(ieTexts, "tax")
+##' kwic(ieTexts, "tax", regex=FALSE)  # returns only whole word, without trailing punctuation
 ##' data(iebudgets)
-##' kwic(subset(iebudgets, year==2010), "Christmas", window=4)
-kwic <- function(text, word, window=5, regex=FALSE) {
+##' kwic(subset(iebudgets, year==2010), "Christmas", window=4) # on a corpus
+kwic <- function(text, word, window=5, regex=TRUE) {
     UseMethod("kwic")
 }
 
-
-#' @rdname kwic
-#' @method kwic character
-#' @param text a text character scalar (Currently does not support character vectors.)
-#' @S3method kwic character
-kwic.character <- function(text, word, window=5, regex=FALSE) {
+kwicSingleText <- function(text, word, window=5, regex=TRUE) {
     # don't use tokenize since we want to preserve case and punctuation here
     # grep needed to get words that end in punctuation mark or in quotes
     tokens <- strsplit(text, " ")[[1]]
@@ -61,13 +59,18 @@ kwic.character <- function(text, word, window=5, regex=FALSE) {
 
 
 #' @rdname kwic
-#' @method kwic corpus
-#' @param corpus a quanteda corpus object
-#' @S3method kwic corpus
-kwic.corpus <- function(corpus, word, window=5, regex=FALSE) {
-    contexts <- lapply(corpus$attribs$texts, kwic, word=word, window=window, regex=regex) #, USE.NAMES=FALSE)
+#' @method kwic character
+#' @param texts a vector of texts
+#' @S3method kwic character
+kwic.character <- function(texts, word, window=5, regex=TRUE) {
+    contexts <- lapply(texts, kwicSingleText, word=word, window=window, regex=regex) #, USE.NAMES=FALSE)
     if (sum(is.na(contexts))==length(contexts)) return(NA) # means no search term found
-    names(contexts) <- row.names(corpus$attribs)
+    # name the text vector
+    if (!is.null(names(texts))) {
+        names(contexts) <- names(texts)
+    } else {
+        names(contexts) <- paste("text", 1:length(texts), sep="")
+    }
     contexts <- contexts[!is.na(contexts)]
     for (l in 1:length(contexts)) {
         contexts[[l]]$source <- paste("[", names(contexts[l]), ", ",  contexts[[l]]$source, "]", sep="")
@@ -78,5 +81,13 @@ kwic.corpus <- function(corpus, word, window=5, regex=FALSE) {
     row.names(contexts) <- contexts$source
     contexts <- contexts[,-1]   
     return(contexts)
+}
+
+#' @rdname kwic
+#' @method kwic corpus
+#' @param corpus a quanteda corpus object
+#' @S3method kwic corpus
+kwic.corpus <- function(corpus, word, window=5, regex=TRUE) {
+    return(kwic(corpus$attribs$texts, word, window, regex))
 }
 
