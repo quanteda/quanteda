@@ -31,4 +31,3 @@ tagPos <- function(sentence) {
   # return as a factor vector of same length as text
   return(tagged.sentence.pos.factor.vector)
 } 
-determine.pos <- tagPos

@@ -109,37 +109,37 @@ corpusFromHeaders <- function(headerTexts) {
 #' @param directory Path to folder containing documents
 #' @param attNames A vector naming the attribute types
 #' @param sep A string by which the filename should be separated to get the values. Default is underscore.
+#' @param enc Encoding for the texts (this is the "to" argument sent to iconv)
 #' @export
-#' @author Paul Nulty
+#' @author Paul Nulty and Ken Benoit
 #' @examples
 #' \dontrun{
 #' new_corpus <- corpusFromFilenames(dirname, c("country", "electionType", "year", "language", "party"), sep='_')
 #' }
-corpusFromFilenames <- function(directory, attNames, sep='_'){
-  texts <- c()
-  sep="_"
-  allAttribs <- data.frame(stringsAsFactors=FALSE)
-  filenames <- list.files(directory, full.names=TRUE)
-  for (f in filenames) {
-    sname <- getRootFileNames(f)
-    sname <- gsub(".txt", "", sname)
-    parts <- strsplit(sname, sep)
-    df <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE))
-    names(df) <- attNames
-    if(length(allAttribs) < 1){
-      allAttribs <- df
+corpusFromFilenames <- function(directory, attNames, sep='_', enc=NULL){
+    # get the filenames from the directory
+    filenames <- list.files(directory, full.names=TRUE)
+    # read in the texts
+    texts <- getTextFiles(filenames)
+    # convert if needed
+    if (!is.null(enc)) {
+        texts <- iconv(texts, to=enc)
     }
-    else{
-      allAttribs <- rbind(df, allAttribs)
+    # get the filename roots
+    snames <- getRootFileNames(filenames)
+    # remove the .txt from text filenames
+    snames <- gsub(".txt", "", snames)
+    # split along the delimiter and make the attributes
+    parts <- strsplit(snames, sep)
+    attributesdf <-  data.frame(matrix(unlist(parts), nrow=length(parts), 
+                                       byrow=TRUE),
+                                stringsAsFactors=FALSE)
+    if (ncol(attributesdf) != length(attNames)) {
+        stop("The length of the parts of the filename does not equal the length of the attribute names")
     }
-    if(length(parts)!=length(parts)){
-      stop("The length of the parts of the filename does not equal the length of the attribute names")
-    }
-    content <- getTextFiles(f)
-    texts <- c(texts, content) 
-  }
-  corp <- corpusCreate(texts, attribs=allAttribs)
-  return(corp)
+    names(attributesdf) <- attNames
+    # return the created corpus
+    return(corpusCreate(texts, attributesdf))
 }
 
 
@@ -252,27 +252,55 @@ subset.corpus <- function(corpus, subset=NULL, select=NULL) {
 #' the text it is taken from and it's serial number in that text
 #' 
 #' @param corpus Corpus to transform
-#' @param feature Feature to count
+#' @param to target unit of analysis for the reshaping.  Currently only \code{sentence} 
+#' and \code{document} are supported.
+#' @export
 #' @examples
-#' \dontrun{
-#' corpus <- data(iebudgets)
-#' sentCorp <- corpus.reshape(corpus)
-#' }
-corpusReshape <- function(corpus) {
-  sentence <- sentenceSeg(corpus$attribs$texts[[1]])
-  sentenceno <- 1:length(sentence)
-  sourcetext <- rep(row.names(corpus$attribs)[[1]], length(sentence))
-  atts <- data.frame(sourcetext, sentenceno)
-  sentCorp <- corpusCreate(unlist(sentence), attribs=atts)
-  for(i in 2:nrow(corpus$attribs)){
-    sentence <- sentenceSeg(corpus$attribs$texts[[i]])
-    sentenceno <- 1:length(sentence)
-    sourcetext <- rep(row.names(corpus$attribs)[[i]], length(sentence))
-    atts <- data.frame(sourcetext, sentenceno)
+#' data(iebudgets)
+#' ie2010document <- subset(iebudgets, year==2010)
+#' summary(ie2010document)
+#' ie2010sentence <- corpusReshape(ie2010document)  # reshape to sentence units
+#' summary(ie2010sentence, 20)
+corpusReshape <- function(corpus, to=c("sentence", "document")) {
+    to <- match.arg(to) 
+    attrsOriginal <- corpus$attribs[, -which(names(corpus$attribs)=="texts")]
+    #         # atts <- corpus$attribs[1, ]
+    #         # start collection data.frame using first text
+    #         sentences <- sentenceSeg(corpus$attribs$texts[1])
+    #         attrsNew <- data.frame(sentenceno = 1:length(sentences),
+    #                                sourcetext = rep(row.names(corpus$attribs)[1], length(sentences)),
+    #                                attrsOriginal[rep(1, length(sentences)), ])
+    #         
     
-    sentCorp<-corpusAppend(sentCorp, unlist(sentence), atts)
-  }
-  return(sentCorp)
+    if (to=="sentence") {
+        ## move from documents to sentences
+        for (i in 1:nrow(corpus$attribs)) {
+            sentences <- sentenceSeg(corpus$attribs$texts[i])
+            attrsNew <- data.frame(sentenceno = 1:length(sentences),
+                                   sourcetext = rep(row.names(corpus$attribs)[i], length(sentences)),
+                                   attrsOriginal[rep(i, length(sentences)), ])
+            names(sentences) <- paste(row.names(attrsNew)[1],
+                                      1:length(sentences), sep=".")
+            if (i>1) {
+                newCorp <- corpusAppend(newCorp, unlist(sentences), attrsNew) 
+            } else {
+                newCorp <- corpusCreate(unlist(sentences), attribs=attrsNew,
+                                        textnames = rownames(attrsNew))        
+            }
+        }
+    
+    } else if (to=="document") {
+        ## move from documents to sentences
+        cat("Document reshape not yet implemented.\n")
+        #             splitattrs <- split(corpus$attribs, corpus$attribs$sourcetext)
+        #             newCorp <- data.frame()
+        #             for (i in 2:length(splitattrs)) {
+        #                 newattrs <- lapply(splitattrs, texts
+        #             }
+        #             
+    }
+
+    return(newCorp)
 }
 
 #' Corpus summary
@@ -287,15 +315,18 @@ corpusReshape <- function(corpus) {
 #' then setting this to the name of that variable would make it possible to summarize
 #' the alternate rather than the main texts.
 #' @param subset a Boolean expression that specifies a subset of the texts, similar to \code{subset.corpus}
+#' @param verbose FALSE to turn off printed output
 #' @export
 #' @examples
 #' data(iebudgets)
-#' summary(iebudgets, subset=(year==2010))
+#' subset(iebudgets, year==2010)
 #' summary(iebudgets, nmax=10)
-summary.corpus <- function(corpus, nmax=100, texts="texts", subset=NULL) {
+summary.corpus <- function(corpus, nmax=100, texts="texts", subset=NULL, verbose=TRUE) {
     select <- NULL
-    corpus <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
-    cat("Corpus object contains", nrow(corpus$attribs), "texts.\n\n")
+    if (!is.null(subset)) 
+        corpus <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
+    cat("Corpus object contains ", nrow(corpus$attribs), " text",
+         ifelse(nrow(corpus$attribs)>1, "s", ""), ".\n\n", sep="")
     # allow user to set the column or variable which identifies the texts to summarize
     texts <- corpus$attribs[,texts]
     attribs <- as.data.frame(corpus$attribs[,-1])
@@ -303,102 +334,77 @@ summary.corpus <- function(corpus, nmax=100, texts="texts", subset=NULL) {
     if (ncol(attribs)==1) names(attribs) <- as.character(substitute(select))[2]
     #print(names(attribs))
     names(texts) <- rownames(corpus$attribs)
-    print(head(cbind((dtexts <- describeTexts(texts, verbose=FALSE)), 
-                     attribs), 
-               nmax), row.names=FALSE)
-    cat("\nSource:  ", corpus$metadata["source"], ".\n", sep="")
-    cat("Created: ", corpus$metadata["created"], ".\n", sep="")
-    cat("Notes:   ", corpus$metadata["notes"], ".\n\n", sep="")
+    dtexts <- describeTexts(texts, verbose=FALSE)
+    if (verbose) {
+        print(head(cbind(dtexts, attribs), nmax), row.names=FALSE)
+        cat("\nSource:  ", corpus$metadata["source"], ".\n", sep="")
+        cat("Created: ", corpus$metadata["created"], ".\n", sep="")
+        cat("Notes:   ", corpus$metadata["notes"], ".\n\n", sep="")
+    }
     # invisibly pass the summary of the texts from describetexts()
-    return(invisible(dtexts))
+    return(invisible(cbind(dtexts, attribs)))
 }
 
 
-
-#
-# FUNCTIONS BELOW THIS POINT ARE DEPRECATED
-#
-
-
-
-#' Create a feature-value matrix from a corpus object
-
-#' returns a feature value matrix compatible with austin
+#' extract the texts from a corpus
+#'
+#' Extract the texts from a corpus as a named character vector
 #' 
-#' @param corpus Corpus to make matrix from
-#' @param feature Feature to count
-#' @param feature type to aggregate by, default is file
+#' @param corpus A corpus object
+#' @param usenames If TRUE (default) use the text names as names for the returned character vector.
+#' @return (Named) character vector of texts from the corpus.
 #' @export
 #' @examples
-#' \dontrun{
-#' fvm <- create.fvm.corpus(budgets, group="party")
-#' }
-create.fvm.corpus <- function(corpus,
-                              feature=c("word"),
-                              stem=FALSE,
-                              remove_stopwords=FALSE,
-                              groups=NULL,
-                              subset=NULL, 
-                              verbose=TRUE) {
-  if (verbose) cat("Creating fvm:\n")
-  # new subset feature (no "select" because inappropriate here)
-  corpus <- corpus.subset.inner(corpus, substitute(subset))
-  # new aggregation - to concatenate texts before making the fvm 
-  if (!is.null(groups)) {
-    if (verbose) cat("  Now aggregating by group: ", groups, "...", sep="")
-    if (length(groups)>1) {
-      group.split <- lapply(corpus$attribs[,groups], as.factor)
-    } else group.split <- as.factor(corpus$attribs[,groups])
-    texts <- split(corpus$attribs$texts, group.split)
-    # was sapply, changing to lapply seems to fix 2 class case
-    texts <- lapply(texts, paste)
-    if (verbose) cat("complete.\n")
-  } else {
+#' data(iebudgets)
+#' cowenTexts <- getTexts(subset(iebudgets, speaker=="Cowen"))
+#' countSyllables(cowenTexts)
+getTexts <- function(corpus, usenames=TRUE) {
     texts <- corpus$attribs$texts
-    names(texts) <- rownames(corpus$attribs)
-  }
-  textnames <- names(texts)
-  tokenizedTexts <- sapply(texts, tokenize, simplify=TRUE)
-  if (stem==TRUE) {
-    require(SnowballC)
-    tokenizedTexts <- wordStem(tokenizedTexts)
-  }
-  tokens <- unlist(tokenizedTexts)
-  types <- unique(tokens)
-  dnames<-list(c(docs=names(texts)), c(words=types))
-  fvm <- matrix(0,nrow=length(texts), ncol=length(types), dimnames=dnames)
-  i=1
-  prog=0
-  if(verbose) cat("Progress:          ")
-  while(i<=length(texts)){
-    if(verbose){
-      # erase and redraw progress meter.
-      cat("\b\b\b\b\b\b\b\b\b\b")
-      cat(sprintf("[%6.2f%%] ",prog))
-    }
-    curTable = table(tokenizedTexts[i])
-    curTypes <- names(curTable)
-    # indexing the table is faster with 'type' than 'types[j]' but indexing 
-    # the fvm is faster with j, so use both counter and for-loop
-    j<-1
-    for(type in types){
-      fvm[i,j]<-curTable[type]
-      j<-j+1
-    }
-    i <- i+1
-    prog <- (i/length(texts)*100) 
-  }
-  if(verbose) cat(" Done. \n")
-  # convert NAs to zeros
-  fvm[is.na(fvm)] <- 0
-  fvm <- t(fvm)
-  fvm <- as.data.frame(fvm)
-  if(remove_stopwords){
-    data(stopwords_EN)
-    stopwords <- stopwords_EN
-    stopwfm <- as.wfm(subset(fvm, !row.names(fvm) %in% stopwords))
-    fvm <- stopwfm
-    
-  }
-  return(fvm)
+    if (usenames) names(texts) <- row.names(corpus$attribs)
+    return(texts)
+}
+
+#' extract the attributes (document-level meta-data) from a corpus
+#'
+#' Extract the document-level meta-data from a corpus as a data frame
+#' 
+#' @param corpus A corpus object
+#' @param usenames If TRUE (default) use the text names as names for the rows of the returned data frame
+#' @return data frame of the meda-data from the corpus
+#' @export
+#' @examples
+#' data(iebudgets)
+#' getData(subset(iebudgets, year==2012))
+#' getData(subset(iebudgets, year==2012), usenames=FALSE)
+getData <- function(corpus, usenames=TRUE) {
+    thedata <- corpus$attribs[, -which(names(corpus$attribs)=="texts"), drop=FALSE]
+    if (!usenames) row.names(thedata) <- NULL
+    return(thedata)
+}
+
+
+#' Corpus sampling
+#'
+#' Takes a random sample of the specified size from a corpus, with or without replacement
+#' 
+#' @param corpus An existing corpus to be sampled
+#' @param size A positive number, the number of texts to return
+#' @param replace Should sampling be with replacement?
+#' @param prob Not implemented
+#' @export
+#' @examples
+#' data(movies)
+#' movieSamp <- sample(movies, 200, replace=TRUE)
+corpusSample <- function(corpus, size=n, replace=FALSE, prob=NULL){
+  if(!is.null(prob)) stop("prob argument is not implemented for corpus")
+  atts <- corpus$attribs
+  # print(nrow(atts))
+  sampleInds <- sample(nrow(atts), size=size, replace=replace)
+  newAtts <- atts[sampleInds,]
+  newTexts <- newAtts[[1]]
+  newAtts <- newAtts[2:length(newAtts)]
+  newCorp <- corpusCreate(newTexts, newAtts)
+  newCorp$metadata["created"] <- paste(newCorp$metadata["created"], "sampled from",
+                                       corpus$metadata["source"], collapse= " ")
+  return(newCorp)
 }

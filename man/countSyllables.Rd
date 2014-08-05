@@ -6,14 +6,17 @@ For British English words, the syllable count is exact and looked up from the CM
 pronunciation dictionary. For any word not in the dictionary the syllable count
 is estimated by counting vowel clusters.}
 \usage{
-countSyllables(sourceText, verbose = FALSE)
+countSyllables(sourceText)
 }
 \arguments{
-  \item{sourceText}{Text to be counted}
+  \item{sourceText}{Character vector of texts whose
+  syllables will be counted}
 }
 \value{
-numeric A count (estimate) of the number of syllables in
-sourceText
+numeric Named vector of counts of the number of syllables
+for each element of sourceText. When a word is not
+available in the lookup table, its syllables are estimated
+by counting the number of (English) vowels in the word.
 }
 \description{
 Returns a count of the number of syllables in the input
@@ -24,7 +27,13 @@ pronunciation dictionary. For any word not in the
 dictionary the syllable count is estimated by counting
 vowel clusters.
 }
+\details{
+This only works for English.
+}
 \examples{
 countSyllables("This is an example sentence.")
+myTexts <- c("Text one.", "Superduper text number two.", "One more for the road.")
+names(myTexts) <- paste("myText", 1:3, sep="")
+countSyllables(myTexts)
 }
 

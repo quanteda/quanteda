@@ -1,0 +1,14 @@
+Package: quanteda
+Type: Package
+Title: Quantitative Analysis of Textual Data
+Version: 0.14
+Date: 2014-07-23
+Author: Ken Benoit and Paul Nulty
+Maintainer: Ken Benoit <kbenoit@lse.ac.uk> and Paul Nulty <p.nulty@lse.ac.uk>
+Description: A library for the quantitative analysis of textual data with R
+Encoding: UTF-8
+License: GPL-3
+Requires: wordcloud, SnowballC, proxy
+Suggests: austin, entropy, jsonlite, openNLP, RJSONIO, RCurl, twitteR,
+        XML
+Built: R 3.1.1; ; 2014-08-05 14:18:14 UTC; unix

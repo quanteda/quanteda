@@ -15,6 +15,8 @@ dfmTrim(dfm, minCount = 5, minDoc = 5, sample = NULL, verbose = TRUE)
 
   \item{sample}{how many features to retain (based on
   random selection)}
+
+  \item{verbose}{print messages}
 }
 \value{
 A dfm matrix object reduced in size.

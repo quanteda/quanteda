@@ -23,5 +23,3 @@ createArff <- function(fvm, gold, name="politics", outfile="test.arff"){
   
   writeChar(outString, file("/home/paul/testout.arff"))
 }
-
-create.arff <- createArff # for compatibility

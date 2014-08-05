@@ -6,13 +6,16 @@
 #' @param s character object to be cleaned
 #' @param langNorm If true, French and German special characters are normalized.
 #' @param removeDigits If true, digits are removed. Default is TRUE
+#' @param removePunct If true, punctuation marks are removed. Default is TRUE
 #' @param lower If true, string is converted to lowercase. Default is TRUE
 #' @return character object in lowercase with punctuation (and optionally digits) removed
 #' @export
 #' @examples
-#' s <- "A cursed £$&^!€ Exclamation! point; paragraph §1.2, which I wrote."
+#' \dontrun{
+#' s <- "A cursed £$&^!€ Exclamation! point; paragraph 1.2, which I wrote."
 #' clean(s)
-clean <- function(s, langNorm=FALSE, removeDigits=TRUE, lower=TRUE) {
+#' }
+clean <- function(s, langNorm=FALSE, removeDigits=TRUE, lower=TRUE, removePunct=TRUE) {
   # optionally do some language specific normalisation
   if (langNorm) {
     # for French, make "l'" into "l"
@@ -21,12 +24,12 @@ clean <- function(s, langNorm=FALSE, removeDigits=TRUE, lower=TRUE) {
     s <- gsub("ß", "ss", s)
   }
   if (removeDigits) {
-    s <- gsub("[[:digit:][:punct:]]", "", s, perl = FALSE)
-  } else {
+    s <- gsub("[[:digit:]]", "", s, perl = FALSE)
+  } 
+  if (removePunct){
     s <- gsub("[[:punct:]]", "", s, perl=TRUE)
   }
-  # reverting this change as I suspsect it causes bug in wordfish scaling.
-  s <- s[s != ""]  # remove empty strings
+  s <- s[s != ""]  
   if(lower){
     s <- tolower(s)
   }

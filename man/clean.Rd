@@ -2,7 +2,8 @@
 \alias{clean}
 \title{Perform basic cleanup on a character object}
 \usage{
-clean(s, langNorm = FALSE, removeDigits = TRUE, lower = TRUE)
+clean(s, langNorm = FALSE, removeDigits = TRUE, lower = TRUE,
+  removePunct = TRUE)
 }
 \arguments{
   \item{s}{character object to be cleaned}
@@ -12,6 +13,9 @@ clean(s, langNorm = FALSE, removeDigits = TRUE, lower = TRUE)
 
   \item{removeDigits}{If true, digits are removed. Default
   is TRUE}
+
+  \item{removePunct}{If true, punctuation marks are
+  removed. Default is TRUE}
 
   \item{lower}{If true, string is converted to lowercase.
   Default is TRUE}
@@ -26,7 +30,9 @@ converting to lowercase and optionally replacing some
 language-specific characters
 }
 \examples{
-s <- "A cursed £$&^!€ Exclamation! point; paragraph §1.2, which I wrote."
+\dontrun{
+s <- "A cursed £$&^!€ Exclamation! point; paragraph 1.2, which I wrote."
 clean(s)
+}
 }
 

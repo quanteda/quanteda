@@ -1,0 +1,37 @@
+\name{topFeatures}
+\alias{topFeatures}
+\title{list the top n features in a dfm}
+\usage{
+topFeatures(x, n = 20, normalize = FALSE, bottom = FALSE)
+}
+\arguments{
+  \item{dfm}{Document-feature matrix created by
+  \code{\link{dfm}}}
+
+  \item{n}{how many of the top words should be listed; NULL
+  means list all}
+
+  \item{normalize}{return relative term frequency if TRUE}
+
+  \item{bottom}{if TRUE, return the least frequent features
+  instead of the most}
+}
+\value{
+a data.frame of the frequencies of the top n most frequent
+features
+}
+\description{
+list a "concordance" of the top n features in a \link{dfm}
+and their frequencies
+}
+\examples{
+data(iebudgets)
+dtm <- dfm(iebudgets)
+topFeatures(dtm)
+topFeatures(dfm(iebudgets, stopwords=TRUE))
+topFeatures(dtm, 50, normalize=TRUE)
+}
+\author{
+Ken Benoit
+}
+

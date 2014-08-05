@@ -17,6 +17,8 @@ collocations(text = NULL, file = NULL, top = NA, distance = 2, n = 2,
 
   \item{method}{association measure for detecting
   collocations}
+
+  \item{n}{Only bigrams (n=2) implemented so far.}
 }
 \value{
 A list of collocations, their frequencies, and their test

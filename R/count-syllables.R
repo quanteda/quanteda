@@ -5,29 +5,46 @@
 #' pronunciation dictionary. For any word not in the dictionary the syllable count
 #' is estimated by counting vowel clusters.
 #' 
-#' @param sourceText Text to be counted
-#' @return numeric A count (estimate) of the number of syllables in sourceText
+#' @param sourceText Character vector of texts whose syllables will be counted 
+# @param verbose If True, print out the count. Default false.
+#' 
+#' @return numeric Named vector of counts of the number of syllables for each element of sourceText.
+#' When a word is not available in the lookup table, its syllables are estimated by counting the number
+#' of (English) vowels in the word.
 #' @export
+#' @details This only works for English.
 #' @examples
 #' countSyllables("This is an example sentence.")
-countSyllables <- function(sourceText, verbose=FALSE) {
-  #load the RData file
-  data(sylCounts)
-  #clean the string
-  string <- clean(sourceText)
-  words <- tokenize(string)
-  print(words)
-  # lookup the syllables in the words found in the dictionary
-  # uses vectorization and named vector indexing - not looping!
-  n.syllables <- syllableCounts[words]
-  
-  # name the syllable count vector with the words
-  names(n.syllables) <- words
-  # count the syllables in each word?
-  vowel.count.lookup <- sapply(words, function(l) sum((attr(gregexpr("[AEIOUYaeiouy]*", l)[[1]], "match.length"))!=0))
-  # replace the un-looked-up words with vowel formula words
-  n.syllables[is.na(n.syllables)] <- 
-    vowel.count.lookup[is.na(n.syllables)]
-  if(verbose) print(n.syllables)
-  return(sum(n.syllables))
+#' myTexts <- c("Text one.", "Superduper text number two.", "One more for the road.")
+#' names(myTexts) <- paste("myText", 1:3, sep="")
+#' countSyllables(myTexts)
+countSyllables <- function(sourceText) { #}, verbose=FALSE) {
+
+    data(syllableCounts)               # load the syllable counts data
+    string <- clean(sourceText)        # clean the input text(s)
+    words <- lapply(string, tokenize)  # tokenize the input text(s)
+    
+    # match syllable counts to words in the list
+    n.syllables <- lapply(words, function(x) syllableCounts[x])
+    
+    # look up vowel counts for those not in the lst
+    for (i in 1:length(n.syllables)) {
+        na.index <- which(is.na(n.syllables[[i]]))
+        if (length(na.index)==0) next
+        # get the missing words as names
+        names(n.syllables[[i]])[na.index] <- words[[i]][na.index]
+        # replace NA counts with vowel counts    
+        n.syllables[[i]][na.index] <- vowelCount(words[[i]][na.index])
+    }
+    
+    # if (verbose) print(n.syllables)
+    return(sapply(n.syllables, sum))
+}
+
+
+## return a vector of vowel counts from a vector of texts
+vowelCount <- function(textVector) {
+    vowel.index.list <- 
+        lapply(gregexpr("[AEIOUYaeiouy]*", textVector), attr, "match.length")
+    sapply(vowel.index.list, sum)
 }

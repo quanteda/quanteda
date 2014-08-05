@@ -4,11 +4,11 @@
 \alias{kwic.corpus}
 \title{List key words in context from a text or a corpus of texts.}
 \usage{
-kwic(text, word, window = 5)
+kwic(text, word, window = 5, regex = TRUE)
 
-\method{kwic}{character}(text, word, window = 5)
+\method{kwic}{character}(texts, word, window = 5, regex = TRUE)
 
-\method{kwic}{corpus}(corpus, word, window = 5)
+\method{kwic}{corpus}(corpus, word, window = 5, regex = TRUE)
 }
 \arguments{
   \item{text}{A text character scalar or a quanteda corpus.
@@ -19,8 +19,16 @@ kwic(text, word, window = 5)
   \item{window}{The number of context words to be displayed
   around the keyword.}
 
-  \item{text}{a text character scalar (Currently does not
-  support character vectors.)}
+  \item{regex}{If TRUE (default), then "word" is a regular
+  expression, otherwise only match the whole word. Note
+  that if regex=TRUE and no special regular expression
+  characters are used in the search query, then the
+  concordance will include all words in which the search
+  term appears, and not just when it appears as an entire
+  word.  (For instance, searching for the word "key" will
+  also return "whiskey".)}
+
+  \item{texts}{a vector of texts}
 
   \item{corpus}{a quanteda corpus object}
 }
@@ -41,8 +49,11 @@ number, since the text may or may not be segmented using
 end-of-line delimiters.)
 }
 \examples{
+data(ieTexts)  # a text vector
+kwic(ieTexts, "tax")
+kwic(ieTexts, "tax", regex=FALSE)  # returns only whole word, without trailing punctuation
 data(iebudgets)
-kwic(subset(iebudgets, year==2010), "Christmas", window=4)
+kwic(subset(iebudgets, year==2010), "Christmas", window=4) # on a corpus
 }
 \author{
 Kenneth Benoit and Paul Nulty
