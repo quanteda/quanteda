@@ -30,7 +30,7 @@ creation and source.
 }
 \examples{
 data(iebudgets)
-summary(iebudgets, subset=(year==2010))
+subset(iebudgets, year==2010)
 summary(iebudgets, nmax=10)
 }
 

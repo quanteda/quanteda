@@ -11,4 +11,4 @@ License: GPL-3
 Requires: wordcloud, SnowballC, proxy
 Suggests: austin, entropy, jsonlite, openNLP, RJSONIO, RCurl, twitteR,
         XML
-Built: R 3.1.1; ; 2014-08-05 13:39:31 UTC; unix
+Built: R 3.1.1; ; 2014-08-05 14:18:14 UTC; unix

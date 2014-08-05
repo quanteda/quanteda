@@ -94,8 +94,6 @@ stopwordsGet            access stopwords
 stopwordsRemove         remove stopwords from a text or dfm
 subset.corpus           extract a subset of a corpus
 summary.corpus          Corpus summary
-sylCounts               A named list mapping words to counts of their
-                        syllables
 syllableCounts          A named list mapping words to counts of their
                         syllables
 tagPos                  Returns a table of the occurrences of different

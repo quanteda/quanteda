@@ -57,7 +57,6 @@ stopwordsRemove.character	stopwordsRemove
 stopwordsRemove.matrix	stopwordsRemove
 subset.corpus	subset.corpus
 summary.corpus	summary.corpus
-sylCounts	sylCounts
 syllableCounts	syllableCounts
 tagPos	tagPos
 tf	tf

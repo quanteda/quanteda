@@ -788,26 +788,8 @@ flush(stderr()); flush(stdout())
 ### ** Examples
 
 data(iebudgets)
-summary(iebudgets, subset=(year==2010))
+subset(iebudgets, year==2010)
 summary(iebudgets, nmax=10)
-
-
-
-cleanEx()
-nameEx("sylCounts")
-### * sylCounts
-
-flush(stderr()); flush(stdout())
-
-### Name: sylCounts
-### Title: A named list mapping words to counts of their syllables
-### Aliases: sylCounts
-
-### ** Examples
-
-data(sylCounts)
-syllableCounts["sixths"]
-syllableCounts["onomatopeia"]
 
 
 
