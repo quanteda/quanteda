@@ -205,6 +205,23 @@ summary(ie2010sentence, 20)
 
 
 cleanEx()
+nameEx("corpusSample")
+### * corpusSample
+
+flush(stderr()); flush(stdout())
+
+### Name: corpusSample
+### Title: Corpus sampling
+### Aliases: corpusSample
+
+### ** Examples
+
+data(movies)
+movieSamp <- sample(movies, 200, replace=TRUE)
+
+
+
+cleanEx()
 nameEx("countSyllables")
 ### * countSyllables
 
@@ -222,25 +239,9 @@ flush(stderr()); flush(stdout())
 ### ** Examples
 
 countSyllables("This is an example sentence.")
-
-
-
-cleanEx()
-nameEx("create.fvm.corpus")
-### * create.fvm.corpus
-
-flush(stderr()); flush(stdout())
-
-### Name: create.fvm.corpus
-### Title: Create a feature-value matrix from a corpus object returns a
-###   feature value matrix compatible with austin
-### Aliases: create.fvm.corpus
-
-### ** Examples
-
-## Not run: 
-##D fvm <- create.fvm.corpus(budgets, group="party")
-## End(Not run)
+myTexts <- c("Text one.", "Superduper text number two.", "One more for the road.")
+names(myTexts) <- paste("myText", 1:3, sep="")
+countSyllables(myTexts)
 
 
 
@@ -358,6 +359,24 @@ if (require(topicmodels)) tmodel.lda <- LDA(td, control = list(alpha = 0.1), k =
 
 
 cleanEx()
+nameEx("dfmSample")
+### * dfmSample
+
+flush(stderr()); flush(stdout())
+
+### Name: dfmSample
+### Title: Corpus sampling
+### Aliases: dfmSample
+
+### ** Examples
+
+data(movies)
+d <- dfm(movies)
+samp <- dfmSample(d, 100, replace=TRUE)
+
+
+
+cleanEx()
 nameEx("dfmSort")
 ### * dfmSort
 
@@ -427,6 +446,24 @@ hdict <- list(level1a = list(level1a1 = c("l1a11", "l1a12"),
               level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
                              level1c1b = list(level1c1b1 = c("lowestalone"))))
 flatten.dictionary(hdict)
+
+
+
+cleanEx()
+nameEx("getData")
+### * getData
+
+flush(stderr()); flush(stdout())
+
+### Name: getData
+### Title: extract the attributes (document-level meta-data) from a corpus
+### Aliases: getData
+
+### ** Examples
+
+data(iebudgets)
+getData(subset(iebudgets, year==2012))
+getData(subset(iebudgets, year==2012), usenames=FALSE)
 
 
 
@@ -506,6 +543,41 @@ flush(stderr()); flush(stdout())
 
 
 cleanEx()
+nameEx("getTexts")
+### * getTexts
+
+flush(stderr()); flush(stdout())
+
+### Name: getTexts
+### Title: extract the texts from a corpus
+### Aliases: getTexts
+
+### ** Examples
+
+data(iebudgets)
+cowenTexts <- getTexts(subset(iebudgets, speaker="Cowen"))
+syllableCount(cowenTexts)
+
+
+
+cleanEx()
+nameEx("inaugCorpus")
+### * inaugCorpus
+
+flush(stderr()); flush(stdout())
+
+### Name: inaugCorpus
+### Title: A corpus of US inaugural addresses from 1789-2013
+### Aliases: inaugCorpus
+
+### ** Examples
+
+data(inaugCorpus)
+summary(inaugCorpus)
+
+
+
+cleanEx()
 nameEx("kwic")
 ### * kwic
 
@@ -517,8 +589,11 @@ flush(stderr()); flush(stdout())
 
 ### ** Examples
 
+data(ieTexts)  # a text vector
+kwic(ieTexts, "tax")
+kwic(ieTexts, "tax", regex=FALSE)  # returns only whole word, without trailing punctuation
 data(iebudgets)
-kwic(subset(iebudgets, year==2010), "Christmas", window=4)
+kwic(subset(iebudgets, year==2010), "Christmas", window=4) # on a corpus
 
 
 
@@ -537,6 +612,23 @@ flush(stderr()); flush(stdout())
 ## Not run: 
 ##D kwic2(texts, "we", filter = '_2010', location=TRUE)
 ## End(Not run)
+
+
+
+cleanEx()
+nameEx("lbg")
+### * lbg
+
+flush(stderr()); flush(stdout())
+
+### Name: lbg
+### Title: Example data from Laver Benoit and Garry (2003)
+### Aliases: lbg
+
+### ** Examples
+
+data(inaugCorpus)
+summary(inaugCorpus)
 
 
 
@@ -731,7 +823,7 @@ flush(stderr()); flush(stdout())
 
 ### ** Examples
 
-data(sylCounts)
+data(syllableCounts)
 syllableCounts["sixths"]
 syllableCounts["onomatopeia"]
 
@@ -755,6 +847,25 @@ flush(stderr()); flush(stdout())
 ## Not run: 
 ##D tagPos("This is an example sentence with nouns and verbs for tagging.")
 ## End(Not run)
+
+
+
+cleanEx()
+nameEx("tf")
+### * tf
+
+flush(stderr()); flush(stdout())
+
+### Name: tf
+### Title: normalizes the term frequencies a dfm
+### Aliases: tf
+
+### ** Examples
+
+data(iebudgets)
+dtm <- dfm(iebudgets)
+dtm[1:10, 100:110]
+tf(dtm)[1:10, 100:110]
 
 
 
@@ -873,8 +984,8 @@ flush(stderr()); flush(stdout())
 
 
 cleanEx()
-nameEx("wordcloud")
-### * wordcloud
+nameEx("wordcloudDfm")
+### * wordcloudDfm
 
 flush(stderr()); flush(stdout())
 

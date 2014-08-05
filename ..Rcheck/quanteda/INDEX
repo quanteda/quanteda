@@ -1,5 +1,8 @@
 MCMCirtPoisson1d        Bayesian-MCMC version of a 1-dimensional
                         Poisson IRT scaling model
+UKManifestos            A corpus object containing 105 UK Manifestos
+amicusCorpus            Amicus briefs from US Supreme court cases
+amicusTexts             Amicus briefs from US Supreme court cases
 bigrams                 Create bigrams
 clean                   Perform basic cleanup on a character object
 collocations            Detect collocations in a text
@@ -20,6 +23,7 @@ corpusFromHeaders       create a new corpus with attribute-value pairs
                         taken from document headers
 corpusReshape           Transform a corpus by splitting texts into
                         sentences
+corpusSample            Corpus sampling
 countSyllables          Returns a count of the number of syllables in
                         the input This function takes a text and
                         returns a count of the number of syllables it
@@ -28,9 +32,6 @@ countSyllables          Returns a count of the number of syllables in
                         CMU pronunciation dictionary. For any word not
                         in the dictionary the syllable count is
                         estimated by counting vowel clusters.
-create.fvm.corpus       Create a feature-value matrix from a corpus
-                        object returns a feature value matrix
-                        compatible with austin
 describeTexts           print a summary of texts Prints to the console
                         a desription of the texts, including number of
                         types, tokens, and sentences
@@ -40,11 +41,15 @@ dfm2ldaformat           Convert a quanteda 'dfm' (document feature
                         matrix) into a the data format needed by lda
 dfm2tmformat            Convert a quanteda 'dfm' (document feature
                         matrix) into a 'tm' DocumentTermMatrix
+dfmSample               Corpus sampling
 dfmSort                 sort a dfm by one or more margins
 dfmTrim                 Trim a dfm based on a subset of features and
                         words
+exampleString           exampleString for testing functions
 flatten.dictionary      Flatten a hierarchical dictionary into a list
                         of character vectors
+getData                 extract the attributes (document-level
+                        meta-data) from a corpus
 getRootFileNames        Truncate absolute filepaths to root filenames
 getTextDir              loads all text files from a given directory
 getTextDirGui           provides a gui interface to choose a gui to
@@ -54,6 +59,7 @@ getTextFiles            load text files from disk into a vector of
                         into a character vector of the texts with
                         optional names, default being filenames returns
                         a named vector of complete, unedited texts
+getTexts                extract the texts from a corpus
 getWordStat             Imports a Wordstat corpus from an XML file
 getWordStatCSV          Imports a Wordstat corpus from a CSV file
 ieAttribs               A vector of attributes to match ieBudget
@@ -61,14 +67,18 @@ ieAttribs               A vector of attributes to match ieBudget
 ieTexts                 Irish budget speeches texts
 ieTextsHeaders          Irish budget speeches headers
 iebudgets               Irish budget speeches corpus
+inaugCorpus             A corpus of US inaugural addresses from
+                        1789-2013
 kwic                    List key words in context from a text or a
                         corpus of texts.
 kwic2                   This function is an alternative KWIC
+lbg                     Example data from Laver Benoit and Garry (2003)
 likelihood.test         likelihood test for 2x2 tables
 movies                  A corpus object containing 2000 movie reviews
 naiveBayesText          Naive Bayes classifier for texts
 ngrams                  Create ngrams
 predict.naivebayes      prediction method for Naive Bayes classifiers
+quantedaRefresh         Re-install quanteda from github
 readWStatDict           Make a flattened list from a hierarchical
                         wordstat dictionary
 selectFeatures          extract feature words This function takes type
@@ -93,6 +103,7 @@ tagPos                  Returns a table of the occurrences of different
                         takes a sentence and tags each word with it's
                         part of speech using openNLP's POS tagger, then
                         returns a table of the parts of speech
+tf                      normalizes the term frequencies a dfm
 tfidf                   compute the tf-idf weights of a dfm
 tokenize                Split a string into words The input text is
                         split into words by whitespace

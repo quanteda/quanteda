@@ -10,7 +10,7 @@
 <div align="center">
 <a href="../../../doc/html/packages.html"><img src="../../../doc/html/left.jpg" alt="[Up]" width="30" height="30" border="0"></a>
 <a href="../../../doc/html/index.html"><img src="../../../doc/html/up.jpg" alt="[Top]" width="30" height="30" border="0"></a>
-</div><h2>Documentation for package &lsquo;quanteda&rsquo; version 0.12</h2>
+</div><h2>Documentation for package &lsquo;quanteda&rsquo; version 0.14</h2>
 
 <ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
 </ul>
@@ -19,6 +19,10 @@
 
 
 <table width="100%">
+<tr><td width="25%"><a href="amicusCorpus.html">amicusCorpus</a></td>
+<td>Amicus briefs from US Supreme court cases</td></tr>
+<tr><td width="25%"><a href="amicusTexts.html">amicusTexts</a></td>
+<td>Amicus briefs from US Supreme court cases</td></tr>
 <tr><td width="25%"><a href="bigrams.html">bigrams</a></td>
 <td>Create bigrams</td></tr>
 <tr><td width="25%"><a href="clean.html">clean</a></td>
@@ -37,10 +41,10 @@
 <td>create a new corpus with attribute-value pairs taken from document headers</td></tr>
 <tr><td width="25%"><a href="corpusReshape.html">corpusReshape</a></td>
 <td>Transform a corpus by splitting texts into sentences</td></tr>
+<tr><td width="25%"><a href="corpusSample.html">corpusSample</a></td>
+<td>Corpus sampling</td></tr>
 <tr><td width="25%"><a href="countSyllables.html">countSyllables</a></td>
 <td>Returns a count of the number of syllables in the input This function takes a text and returns a count of the number of syllables it contains. For British English words, the syllable count is exact and looked up from the CMU pronunciation dictionary. For any word not in the dictionary the syllable count is estimated by counting vowel clusters.</td></tr>
-<tr><td width="25%"><a href="create.fvm.corpus.html">create.fvm.corpus</a></td>
-<td>Create a feature-value matrix from a corpus object returns a feature value matrix compatible with austin</td></tr>
 <tr><td width="25%"><a href="describeTexts.html">describeTexts</a></td>
 <td>print a summary of texts Prints to the console a desription of the texts, including number of types, tokens, and sentences</td></tr>
 <tr><td width="25%"><a href="dfm.html">dfm</a></td>
@@ -53,12 +57,18 @@
 <td>Convert a quanteda 'dfm' (document feature matrix) into a the data format needed by lda</td></tr>
 <tr><td width="25%"><a href="dfm2tmformat.html">dfm2tmformat</a></td>
 <td>Convert a quanteda 'dfm' (document feature matrix) into a 'tm' DocumentTermMatrix</td></tr>
+<tr><td width="25%"><a href="dfmSample.html">dfmSample</a></td>
+<td>Corpus sampling</td></tr>
 <tr><td width="25%"><a href="dfmSort.html">dfmSort</a></td>
 <td>sort a dfm by one or more margins</td></tr>
 <tr><td width="25%"><a href="dfmTrim.html">dfmTrim</a></td>
 <td>Trim a dfm based on a subset of features and words</td></tr>
+<tr><td width="25%"><a href="exampleString.html">exampleString</a></td>
+<td>exampleString for testing functions</td></tr>
 <tr><td width="25%"><a href="flatten.dictionary.html">flatten.dictionary</a></td>
 <td>Flatten a hierarchical dictionary into a list of character vectors</td></tr>
+<tr><td width="25%"><a href="getData.html">getData</a></td>
+<td>extract the attributes (document-level meta-data) from a corpus</td></tr>
 <tr><td width="25%"><a href="getRootFileNames.html">getRootFileNames</a></td>
 <td>Truncate absolute filepaths to root filenames</td></tr>
 <tr><td width="25%"><a href="getTextDir.html">getTextDir</a></td>
@@ -67,6 +77,8 @@
 <td>provides a gui interface to choose a gui to load texts from</td></tr>
 <tr><td width="25%"><a href="getTextFiles.html">getTextFiles</a></td>
 <td>load text files from disk into a vector of character vectors points to files, reads them into a character vector of the texts with optional names, default being filenames returns a named vector of complete, unedited texts</td></tr>
+<tr><td width="25%"><a href="getTexts.html">getTexts</a></td>
+<td>extract the texts from a corpus</td></tr>
 <tr><td width="25%"><a href="getWordStat.html">getWordStat</a></td>
 <td>Imports a Wordstat corpus from an XML file</td></tr>
 <tr><td width="25%"><a href="getWordStatCSV.html">getWordStatCSV</a></td>
@@ -79,6 +91,8 @@
 <td>Irish budget speeches texts</td></tr>
 <tr><td width="25%"><a href="ieTextsHeaders.html">ieTextsHeaders</a></td>
 <td>Irish budget speeches headers</td></tr>
+<tr><td width="25%"><a href="inaugCorpus.html">inaugCorpus</a></td>
+<td>A corpus of US inaugural addresses from 1789-2013</td></tr>
 <tr><td width="25%"><a href="kwic.html">kwic</a></td>
 <td>List key words in context from a text or a corpus of texts.</td></tr>
 <tr><td width="25%"><a href="kwic.html">kwic.character</a></td>
@@ -87,6 +101,8 @@
 <td>List key words in context from a text or a corpus of texts.</td></tr>
 <tr><td width="25%"><a href="kwic2.html">kwic2</a></td>
 <td>This function is an alternative KWIC</td></tr>
+<tr><td width="25%"><a href="lbg.html">lbg</a></td>
+<td>Example data from Laver Benoit and Garry (2003)</td></tr>
 <tr><td width="25%"><a href="likelihood.test.html">likelihood.test</a></td>
 <td>likelihood test for 2x2 tables</td></tr>
 <tr><td width="25%"><a href="MCMCirtPoisson1d.html">MCMCirtPoisson1d</a></td>
@@ -99,6 +115,8 @@
 <td>Create ngrams</td></tr>
 <tr><td width="25%"><a href="predict.html">predict.naivebayes</a></td>
 <td>prediction method for Naive Bayes classifiers</td></tr>
+<tr><td width="25%"><a href="quantedaRefresh.html">quantedaRefresh</a></td>
+<td>Re-install quanteda from github</td></tr>
 <tr><td width="25%"><a href="readWStatDict.html">readWStatDict</a></td>
 <td>Make a flattened list from a hierarchical wordstat dictionary</td></tr>
 <tr><td width="25%"><a href="selectFeatures.html">selectFeatures</a></td>
@@ -125,6 +143,8 @@
 <td>A named list mapping words to counts of their syllables</td></tr>
 <tr><td width="25%"><a href="tagPos.html">tagPos</a></td>
 <td>Returns a table of the occurrences of different parts of speech in a sentence This function takes a sentence and tags each word with it's part of speech using openNLP's POS tagger, then returns a table of the parts of speech</td></tr>
+<tr><td width="25%"><a href="tf.html">tf</a></td>
+<td>normalizes the term frequencies a dfm</td></tr>
 <tr><td width="25%"><a href="tfidf.html">tfidf</a></td>
 <td>compute the tf-idf weights of a dfm</td></tr>
 <tr><td width="25%"><a href="tokenize.html">tokenize</a></td>
@@ -141,7 +161,9 @@
 <td>work-in-progress interface to Twitter streaming API</td></tr>
 <tr><td width="25%"><a href="twitterTerms.html">twitterTerms</a></td>
 <td>make a corpus object from results of a twitter REST search</td></tr>
-<tr><td width="25%"><a href="wordcloud.html">wordcloudDfm</a></td>
+<tr><td width="25%"><a href="UKManifestos.html">UKManifestos</a></td>
+<td>A corpus object containing 105 UK Manifestos</td></tr>
+<tr><td width="25%"><a href="wordcloudDfm.html">wordcloudDfm</a></td>
 <td>Plot a word cloud for a dfm</td></tr>
 <tr><td width="25%"><a href="wordfishMCMC.html">wordfishMCMC</a></td>
 <td>Bayesian-MCMC version of the "wordfish" Poisson scaling model</td></tr>

@@ -356,7 +356,7 @@ summary.corpus <- function(corpus, nmax=100, texts="texts", subset=NULL, verbose
 #' @export
 #' @examples
 #' data(iebudgets)
-#' cowenTexts <- getTexts(subset(iebudgets, speaker="Cowen"))
+#' cowenTexts <- getTexts(subset(iebudgets, speaker=="Cowen"))
 #' syllableCount(cowenTexts)
 getTexts <- function(corpus, usenames=TRUE) {
     texts <- corpus$attribs$texts
@@ -366,7 +366,7 @@ getTexts <- function(corpus, usenames=TRUE) {
 
 #' extract the attributes (document-level meta-data) from a corpus
 #'
-#' Extract the ocument-level meta-data from a corpus as a data frame
+#' Extract the document-level meta-data from a corpus as a data frame
 #' 
 #' @param corpus A corpus object
 #' @param usenames If TRUE (default) use the text names as names for the rows of the returned data frame
