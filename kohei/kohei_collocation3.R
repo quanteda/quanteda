@@ -127,51 +127,81 @@ getCollocationMX <- function(texts, method = 'count', window = 5, smooth = 1, li
   mx <- matrix(0, nrow = yi.len, ncol = xi.len)
   rv <- matrix(0, nrow = 1, ncol = xi.len)
   cv <- matrix(0, nrow = yi.len, ncol = 1)
-  
+  wv <- matrix(0, nrow = yi.len, ncol = 1)
+  sum <- 0
 
   if(segment){
     texts <- unlist(sentenceSeg(paste(texts, sep="\n")))
   }
   for(text in texts){
     tokens <- tokenizeText(text, clean = FALSE)
+    tokens <- tokens[nchar(tokens) > 0]
     len <- length(tokens)
     for(i in 1:length(tokens)){
-      if(nchar(tokens[i]) == 0) next
-      start <- i - window
-      end <- i + window
-      #print(paste(i, end, tokens[end]))
-      if(start < 1) start <- 1
-      if(end > len) end <- len
+      #if(nchar(tokens[i]) == 0) next
+
       x <- index[['x']][[tokens[i]]]
       if(!is.null(x)){
         rv[1, x] <- rv[1, x] + 1
       }
-      for(j in start:end){
-        if(i == j) next
-        if(nchar(tokens[j]) == 0) next
-        y <- index[['y']][[tokens[j]]]
-        if(!is.null(y)){
-          cv[y, 1] <- cv[y, 1] + 1
-        }
-        if(!is.null(y) & !is.null(x)){
-          mx[y, x] <- mx[y, x] + 1
+      
+      #----
+      y <- index[['y']][[tokens[i]]]
+      if(!is.null(y)){
+        cv[y, 1] <- cv[y, 1] + 1
+        #print(paste(x, y ,tokens[i]))
+      }
+      #---
+      range <- getCollocationRange(len, i, window)
+      sum <- sum + length(range)
+      if(!is.null(x)){
+        for(j in range){
+          y <- index[['y']][[tokens[j]]]
+          if(!is.null(x) & !is.null(y)){
+            #print(paste(tokens[i] ,tokens[j]))
+            #dist <- abs(j - i)
+            #mx[y, x] <- mx[y, x] + (1 - (dist / window))
+            mx[y, x] <- mx[y, x] + 1
+          }
         }
       }
     }
   }
+  #print(mx)
+  print(cv)
+  sum <- sum + (smooth * length(mx))
   mx <- mx + smooth
   rv <- rv + smooth
   cv <- cv + smooth
+  print(paste('sum', sum))
+  #cv <- cv * wv
+ 
   
   if(method == 'pmi'){
     #Pointwise (specific) mutual information (Wordsmith replication)
-    sum <- sum(mx)
-    print(mx)
-    mx2 <- log((mx / sum) / ((cv %*% rv) / (sum ^ 2)), 2)
-    mx2 <- (mx / sum) / ((cv %*% rv) / (sum ^ 2))
+    #sum <- sum(mx) / 2
+    #print(mx / sum)
+    #print(cv %*% rv / (sum(cv) ^ 2))
+
+    #mx2 <- log((mx / sum) / ((cv %*% rv) / (sum(cv) ^ 2)), 2)
+    mx2 <- log((mx / sum(cv)) / ((cv %*% rv) / (sum(cv) ^ 2)), 2)
+    
+    
   }else if(method == 'count'){
     mx2 <- mx
   }
   attr(mx2, 'index') <- index
   return(mx2)
+}
+
+getCollocationRange <- function(len, pos, window){
+  start <- pos - window
+  end <- pos + window
+  #print(paste(i, end, tokens[end]))
+  if(start < 1) start <- 1
+  if(end > len) end <- len
+  range <- (start:end)
+  range2 <- range
+  #range2 <- range[range != pos]
+  return(range2)
 }
