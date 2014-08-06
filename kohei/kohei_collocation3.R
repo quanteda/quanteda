@@ -184,7 +184,7 @@ getCollocationMX <- function(texts, method = 'count', window = 5, smooth = 1, li
     #print(cv %*% rv / (sum(cv) ^ 2))
 
     #mx2 <- log((mx / sum) / ((cv %*% rv) / (sum(cv) ^ 2)), 2)
-    mx2 <- log((mx / sum(cv)) / ((cv %*% rv) / (sum(cv) ^ 2)), 2)
+    mx2 <- log((mx / sum(cv)) / ((cv %*% rv) / (sum(cv) ^ 2)), 2) #WS uses the number of tokes rather than the number of collocation as demoninator
     
     
   }else if(method == 'count'){
@@ -202,6 +202,6 @@ getCollocationRange <- function(len, pos, window){
   if(end > len) end <- len
   range <- (start:end)
   range2 <- range
-  #range2 <- range[range != pos]
+  #range2 <- range[range != pos] #WS includes collocation with itself
   return(range2)
 }
