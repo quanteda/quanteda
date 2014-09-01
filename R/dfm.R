@@ -61,7 +61,7 @@ dfm <- function(corpus,
                 dictionary=NULL,
                 dictionary.regex=FALSE,
                 addto=NULL) {
-    UseMethod("dfm")
+  UseMethod("dfm")
 }
 
 #' @rdname dfm
@@ -78,37 +78,35 @@ dfm.corpus <- function(corpus,
                        dictionary=NULL,
                        dictionary.regex=FALSE,
                        addto=NULL) {
-    if (verbose) cat("Creating dfm from a corpus: ... ")
-    # subsets 
-    if (!is.null(subset)) corpus <- corpus.subset.inner(corpus, substitute(subset))
-    
-    # aggregation by group
-    if (!is.null(groups)) {
-        if (verbose) cat("aggregating by group: ", groups, "... ", sep="")
-        if (length(groups)>1) {
-            group.split <- lapply(corpus$attribs[,groups], as.factor)
-        } else group.split <- as.factor(corpus$attribs[,groups])
-        texts <- split(corpus$attribs$texts, group.split)
-        # was sapply, changing to lapply seems to fix 2 class case
-        ## KB: Changed this back to sapply to return a named character vector
-        texts <- sapply(texts, paste, collapse = " ")
-        if (verbose) cat("complete ...")
-    } else {
-        texts <- corpus$attribs$texts
-        names(texts) <- rownames(corpus$attribs)
-    }
-    
-    # changing verbose to 2 (instead of TRUE) means will not print message twice
-    # when the function calls dfm.character
-    return(dfm(texts, feature=feature, stem=stem, stopwords=stopwords, bigram=bigram, 
-               verbose=2, dictionary=dictionary, dictionary.regex=dictionary.regex, 
-               addto=addto))
+  if (verbose) cat("Creating dfm from a corpus: ... ")
+  # subsets 
+  if (!is.null(subset)) corpus <- corpus.subset.inner(corpus, substitute(subset))
+  
+  # aggregation by group
+  if (!is.null(groups)) {
+    if (verbose) cat("aggregating by group: ", groups, "... ", sep="")
+    if (length(groups)>1) {
+      group.split <- lapply(corpus$attribs[,groups], as.factor)
+    } else group.split <- as.factor(corpus$attribs[,groups])
+    texts <- split(texts(corpus), group.split)
+    texts <- sapply(texts, paste, collapse = " ")
+    if (verbose) cat("complete ...")
+  } else {
+    texts <- texts(corpus)
+    names(texts) <- rownames(corpus$attribs)
+  }
+  
+  # changing verbose to 2 (instead of TRUE) means will not print message twice
+  # when the function calls dfm.character
+  return(dfm(texts, feature=feature, stem=stem, stopwords=stopwords, bigram=bigram, 
+             verbose=2, dictionary=dictionary, dictionary.regex=dictionary.regex, 
+             addto=addto))
 }
 
 #' @rdname dfm
 #' @method dfm character
 #' @S3method dfm character
-dfm.character <- function(corpus,
+dfm.character <- function(textvec,
                           feature=c("word"),
                           stem=FALSE,
                           stopwords=NULL,
@@ -117,106 +115,104 @@ dfm.character <- function(corpus,
                           dictionary=NULL,
                           dictionary.regex=FALSE,
                           addto=NULL) {
-    # if (verbose & parent.env(dfm.character) != dfm.corpus) cat("Creating dfm: ...")
-    if (verbose==TRUE) cat("Creating dfm from character vector ...")
-    texts <- corpus
-    names(texts) <- names(corpus)
-    
-    if (is.null(names(texts))) {
-        names(texts) <- factor(paste("text", 1:length(texts), sep=""))
+  # if (verbose & parent.env(dfm.character) != dfm.corpus) cat("Creating dfm: ...")
+  if (verbose==TRUE) cat("Creating dfm from character vector ...")
+  
+  if (is.null(names(textvec))) {
+    names(textvec) <- factor(paste("text", 1:length(textvec), sep=""))
+  }
+  textnames <- factor(names(textvec))
+  
+  tokenizedTexts <- sapply(textvec, tokenizeSingle, simplify=FALSE)
+  if (stem==TRUE) {
+    require(SnowballC, quietly=TRUE)
+    if (verbose) cat(" stemming ...")
+    tokenizedTexts <- lapply(tokenizedTexts, wordStem)
+  }
+  if (bigram > 0) {
+    if (verbose) cat(" making bigrams ...")
+    tokenizedTexts <- lapply(tokenizedTexts, function(x) bigrams(x, bigram))
+  }
+  
+  # get original sort order, so that we can restore original order after table 
+  # alphabetizes the documents (rows of the dfm)
+  originalSortOrder <- (1:length(tokenizedTexts))[order(names(tokenizedTexts))]
+  
+  # print(length)
+  alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
+                          words = unlist(tokenizedTexts, use.names=FALSE))
+  
+  # need to enforce check that dictionary is a named list
+  if (is.null(dictionary)) {
+    dfm <- as.data.frame.matrix(table(alltokens$docs, alltokens$words))
+  } else {
+    # flatten the dictionary
+    dictionary <- flatten.dictionary(dictionary)
+    # convert wildcards to regular expressions (if needed) 
+    if (!dictionary.regex) {
+      dictionary <- lapply(dictionary, makeRegEx)
     }
-    textnames <- factor(names(texts))
-    
-    tokenizedTexts <- sapply(texts, tokenize, simplify=FALSE)
-    if (stem==TRUE) {
-        require(SnowballC, quietly=TRUE)
-        if (verbose) cat(" stemming ...")
-        tokenizedTexts <- lapply(tokenizedTexts, wordStem)
+    alltokens <- cbind(alltokens, 
+                       matrix(0, nrow=nrow(alltokens), 
+                              ncol=length(names(dictionary)), 
+                              dimnames=list(NULL, names(dictionary))))
+    #      alltokens$dictionaryWord <- "other"
+    for (i in 1:length(dictionary)) {
+      dictionary_word_index <- grep(paste(tolower(dictionary[[i]]), collapse="|"), 
+                                    alltokens$words)
+      alltokens[dictionary_word_index, 2+i] <- 1
     }
-    if (bigram > 0) {
-        if (verbose) cat(" making bigrams ...")
-        tokenizedTexts <- lapply(tokenizedTexts, function(x) bigrams(x, bigram))
+    alltokens$All_Words <- 1
+    dictsplit <- split(alltokens[, 3:ncol(alltokens)], alltokens$docs)
+    dictsum <- sapply(dictsplit, colSums)
+    dfm <- as.data.frame.matrix(t(dictsum))
+    # doing it this way avoids an error using rowSums if only one dictionary column
+    dfm$Non_Dictionary <- 2*dfm$All_Words - rowSums(dfm)
+    dfm <- dfm[, -(ncol(dfm)-1)]
+  }
+  
+  # re-written PN 30th June
+  if (!is.null(stopwords)) {
+    if (verbose) cat(" removing stopwords ... ")
+    # need two separate checks because if() on a char vector gives warning
+    if (!is.character(stopwords)){
+      if (stopwords==TRUE){
+        stopwords <- stopwordsGet()
+      }
     }
-    
-    # get original sort order, so that we can restore original order after table 
-    # alphabetizes the documents (rows of the dfm)
-    originalSortOrder <- (1:length(tokenizedTexts))[order(names(tokenizedTexts))]
-    
-    # print(length)
-    alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
-                            words = unlist(tokenizedTexts, use.names=FALSE))
-    
-    # need to enforce check that dictionary is a named list
-    if (is.null(dictionary)) {
-        dfm <- as.data.frame.matrix(table(alltokens$docs, alltokens$words))
+    if (!is.character(stopwords) | !length(stopwords)>0) {
+      stop("stopwords must be a character vector with positive length.")
+    }
+    if (bigram==TRUE) {
+      pat <- paste(paste0(paste0("-", stopwords, "$"), collapse='|'), paste0(paste0("^", stopwords, "-"), collapse='|'), sep='|')
+      dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
     } else {
-        # flatten the dictionary
-        dictionary <- flatten.dictionary(dictionary)
-        # convert wildcards to regular expressions (if needed) 
-        if (!dictionary.regex) {
-            dictionary <- lapply(dictionary, makeRegEx)
-        }
-        alltokens <- cbind(alltokens, 
-                           matrix(0, nrow=nrow(alltokens), 
-                                  ncol=length(names(dictionary)), 
-                                  dimnames=list(NULL, names(dictionary))))
-        #      alltokens$dictionaryWord <- "other"
-        for (i in 1:length(dictionary)) {
-            dictionary_word_index <- grep(paste(tolower(dictionary[[i]]), collapse="|"), 
-                                          alltokens$words)
-            alltokens[dictionary_word_index, 2+i] <- 1
-        }
-        alltokens$All_Words <- 1
-        dictsplit <- split(alltokens[, 3:ncol(alltokens)], alltokens$docs)
-        dictsum <- sapply(dictsplit, colSums)
-        dfm <- as.data.frame.matrix(t(dictsum))
-        # doing it this way avoids an error using rowSums if only one dictionary column
-        dfm$Non_Dictionary <- 2*dfm$All_Words - rowSums(dfm)
-        dfm <- dfm[, -(ncol(dfm)-1)]
+      dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords))
     }
-    
-    # re-written PN 30th June
-    if (!is.null(stopwords)) {
-        if (verbose) cat(" removing stopwords ... ")
-        # need two separate checks because if() on a char vector gives warning
-        if (!is.character(stopwords)){
-            if (stopwords==TRUE){
-                stopwords <- stopwordsGet()
-            }
-        }
-        if (!is.character(stopwords) | !length(stopwords)>0) {
-            stop("stopwords must be a character vector with positive length.")
-        }
-        if (bigram==TRUE) {
-            pat <- paste(paste0(paste0("-", stopwords, "$"), collapse='|'), paste0(paste0("^", stopwords, "-"), collapse='|'), sep='|')
-            dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
-        } else {
-            dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords))
-        }
+  }
+  
+  if (!is.null(addto)) {
+    if (sum(rownames(dfm) != rownames(addto)) > 0) {
+      stop("Cannot add to dfm: different document set.")
     }
-    
-    if (!is.null(addto)) {
-        if (sum(rownames(dfm) != rownames(addto)) > 0) {
-            stop("Cannot add to dfm: different document set.")
-        }
-        addIndex <- which(!(colnames(addto) %in% colnames(dfm)))
-        # adjust the "Non_Dictionary" count for the combined object if both are dictionary-based
-        if ("Non_Dictionary" %in% colnames(addto) & "Non_Dictionary" %in% colnames(dfm)) {
-            dfm[, "Non_Dictionary"] <- addto[, "Non_Dictionary"] - rowSums(as.matrix(dfm[, -ncol(dfm)]))
-        }
-        dfm <- cbind(addto[, addIndex], dfm)
+    addIndex <- which(!(colnames(addto) %in% colnames(dfm)))
+    # adjust the "Non_Dictionary" count for the combined object if both are dictionary-based
+    if ("Non_Dictionary" %in% colnames(addto) & "Non_Dictionary" %in% colnames(dfm)) {
+      dfm[, "Non_Dictionary"] <- addto[, "Non_Dictionary"] - rowSums(as.matrix(dfm[, -ncol(dfm)]))
     }
-    
-    # give the matrix austin a "wfm"-like record of which margin is words, which is docs
-    dfm <- as.matrix(dfm)
-    dimnames(dfm) <- list(docs = rownames(dfm), words = colnames(dfm))
-    
-    # restore original sort order
-    
-    dfm <- dfm[(1:nrow(dfm))[order(originalSortOrder)], ]
-    
-    if(verbose) cat(" done. \n")
-    return(dfm)
+    dfm <- cbind(addto[, addIndex], dfm)
+  }
+  
+  # give the matrix austin a "wfm"-like record of which margin is words, which is docs
+  dfm <- as.matrix(dfm)
+  dimnames(dfm) <- list(docs = rownames(dfm), words = colnames(dfm))
+  
+  # restore original sort order
+  
+  dfm <- dfm[(1:nrow(dfm))[order(originalSortOrder)], ]
+  
+  if(verbose) cat(" done. \n")
+  return(dfm)
 }
 
 
@@ -251,53 +247,53 @@ dfm.character <- function(corpus,
 #'                              level1c1b = list(level1c1b1 = c("lowestalone"))))
 #' flatten.dictionary(hdict)
 flatten.dictionary <- function(elms, parent = '', dict = list()) {
-    for (self in names(elms)) {
-        elm <- elms[[self]]
-        if (parent != '') {
-            self <- paste(parent, self, sep='.')
-        }
-        # print("-------------------")
-        # print (paste("Name", self))
-        if (is.list(elm)) {
-            # print("List:")
-            # print(names(elm))
-            dict <- flatten.dictionary(elm, self, dict)
-        } else {
-            # print("Words:")
-            dict[[self]] <- elm
-            # print(dict)
-        }
+  for (self in names(elms)) {
+    elm <- elms[[self]]
+    if (parent != '') {
+      self <- paste(parent, self, sep='.')
     }
-    return(dict)
+    # print("-------------------")
+    # print (paste("Name", self))
+    if (is.list(elm)) {
+      # print("List:")
+      # print(names(elm))
+      dict <- flatten.dictionary(elm, self, dict)
+    } else {
+      # print("Words:")
+      dict[[self]] <- elm
+      # print(dict)
+    }
+  }
+  return(dict)
 }
 
 
 makeRegEx <- function(wildcardregex) {
-    for (i in 1:length(wildcardregex)) {
-        lengthWildCard <- nchar(wildcardregex[i])
-        # '*' wildcards at both ends, just remove them
-        if ((substr(wildcardregex[i], 1, 1)=="*") & substr(wildcardregex[i], lengthWildCard, lengthWildCard)=="*") {
-            # '*' wildcards at both ends, just remove them
-            wildcardregex[i] <- substr(wildcardregex[i], 2, lengthWildCard-1)
-        } else if (substr(wildcardregex[i], 1, 1)=="*") {
-            # '*' wildcard only at beginning, remove and add "$" to end
-            wildcardregex[i] <- paste(substr(wildcardregex[i], 2, lengthWildCard), "$", sep="")
-        } else if (substr(wildcardregex[i], lengthWildCard, lengthWildCard)=="*") {
-            # '*' wildcard only at end, remove and add "^" to beginning
-            wildcardregex[i] <- paste("^", substr(wildcardregex[i], 1, lengthWildCard-1), sep="")
-        } else if (!((substr(wildcardregex[i], 1, 1)=="*") & substr(wildcardregex[i], lengthWildCard, lengthWildCard)=="*")) {
-            # change to ^word$ if no * at all, for exact match
-            wildcardregex[i] <- paste("^", wildcardregex[i], "$", sep="")
-        } else {
-            stop("Any wildcards except * and beginning or end of word not yet implemented.")
-        }
+  for (i in 1:length(wildcardregex)) {
+    lengthWildCard <- nchar(wildcardregex[i])
+    # '*' wildcards at both ends, just remove them
+    if ((substr(wildcardregex[i], 1, 1)=="*") & substr(wildcardregex[i], lengthWildCard, lengthWildCard)=="*") {
+      # '*' wildcards at both ends, just remove them
+      wildcardregex[i] <- substr(wildcardregex[i], 2, lengthWildCard-1)
+    } else if (substr(wildcardregex[i], 1, 1)=="*") {
+      # '*' wildcard only at beginning, remove and add "$" to end
+      wildcardregex[i] <- paste(substr(wildcardregex[i], 2, lengthWildCard), "$", sep="")
+    } else if (substr(wildcardregex[i], lengthWildCard, lengthWildCard)=="*") {
+      # '*' wildcard only at end, remove and add "^" to beginning
+      wildcardregex[i] <- paste("^", substr(wildcardregex[i], 1, lengthWildCard-1), sep="")
+    } else if (!((substr(wildcardregex[i], 1, 1)=="*") & substr(wildcardregex[i], lengthWildCard, lengthWildCard)=="*")) {
+      # change to ^word$ if no * at all, for exact match
+      wildcardregex[i] <- paste("^", wildcardregex[i], "$", sep="")
+    } else {
+      stop("Any wildcards except * and beginning or end of word not yet implemented.")
     }
-    return(wildcardregex)
-    ##
-    ## TO ADD:
-    ##   * in the middle of the word
-    ##   ? functionality
-    ##   [ab] meaning a or b
+  }
+  return(wildcardregex)
+  ##
+  ## TO ADD:
+  ##   * in the middle of the word
+  ##   ? functionality
+  ##   [ab] meaning a or b
 }
 
 
@@ -322,35 +318,35 @@ makeRegEx <- function(wildcardregex) {
 #' dtmSampled <- dfmTrim(dtm, sample=200)  # top 200 words
 #' dim(dtmSampled)  # 196 x 200 words
 dfmTrim <- function(dfm, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
-    nms <- names(dimnames(dfm))
-    if (!(!is.null(nms) && identical(sort(nms), c("docs", "words")))) 
-        stop("Function not applicable to this object")
-
-    mY <- dfm
-    if (names(dimnames(dfm))[2] == "words") 
-        mY <- t(mY)
-    
-    rs1 <- which(rowSums(mY) >= minCount)
+  nms <- names(dimnames(dfm))
+  if (!(!is.null(nms) && identical(sort(nms), c("docs", "words")))) 
+    stop("Function not applicable to this object")
+  
+  mY <- dfm
+  if (names(dimnames(dfm))[2] == "words") 
+    mY <- t(mY)
+  
+  rs1 <- which(rowSums(mY) >= minCount)
+  if (verbose)
+    cat("Words appearing less than", minCount, "times:", (nrow(mY) - length(rs1)), "\n")
+  
+  rs2 <- which(apply(mY, 1, function(x){ sum(x>0) >= minDoc } ))
+  if (verbose)
+    cat("Words appearing in fewer than", minDoc, "documents:", (nrow(mY) - length(rs2)), "\n")
+  
+  tokeep <- intersect(rs1, rs2)
+  if (length(tokeep)==0)
+    stop("No words left after trimming")
+  
+  if (!is.null(sample)) {
+    if (sample > length(tokeep))
+      warning(paste('Sample size', sample, 'larger than',
+                    length(tokeep), "already filtered from", nrow(mY), "so ignoring sampling request"))
+    tokeep <- sample(tokeep, min(length(tokeep), sample))
     if (verbose)
-        cat("Words appearing less than", minCount, "times:", (nrow(mY) - length(rs1)), "\n")
-    
-    rs2 <- which(apply(mY, 1, function(x){ sum(x>0) >= minDoc } ))
-    if (verbose)
-        cat("Words appearing in fewer than", minDoc, "documents:", (nrow(mY) - length(rs2)), "\n")
-    
-    tokeep <- intersect(rs1, rs2)
-    if (length(tokeep)==0)
-        stop("No words left after trimming")
-    
-    if (!is.null(sample)) {
-        if (sample > length(tokeep))
-            warning(paste('Sample size', sample, 'larger than',
-                          length(tokeep), "already filtered from", nrow(mY), "so ignoring sampling request"))
-        tokeep <- sample(tokeep, min(length(tokeep), sample))
-        if (verbose)
-            cat("Retaining a random sample of", sample, "words\n")
-    }
-    return(t(mY[sort(tokeep),]))
+      cat("Retaining a random sample of", sample, "words\n")
+  }
+  return(t(mY[sort(tokeep),]))
 }
 
 #' compute the tf-idf weights of a dfm
@@ -369,12 +365,12 @@ dfmTrim <- function(dfm, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
 #' tfidf(dtm)[1:10, 100:110]
 #' tfidf(dtm, normalize=FALSE)[1:10, 100:110]
 tfidf <- function(x, normalize = TRUE) {
-    idf <- log(length(docs(x))) - log(colSums(x > 0) + 1)
-    if (normalize) {
-        x <- x/rowSums(x)
-        x[is.nan(x)] <- 0
-    }
-    return(t(t(x) * idf))
+  idf <- log(length(docs(x))) - log(colSums(x > 0) + 1)
+  if (normalize) {
+    x <- x/rowSums(x)
+    x[is.nan(x)] <- 0
+  }
+  return(t(t(x) * idf))
 }
 
 #' normalizes the term frequencies a dfm
@@ -391,55 +387,35 @@ tfidf <- function(x, normalize = TRUE) {
 #' dtm[1:10, 100:110]
 #' tf(dtm)[1:10, 100:110]
 tf <- function(x) {
-    return(x/rowSums(x))
+  return(x/rowSums(x))
 }
 
 
-
 #' @export
-words <- function (wfm) {
-    if (wordmargin(wfm) == 1) 
-        rownames(wfm)
-    else colnames(wfm)
+types <- function(corp) {
+  return(unique(unlist(tokenize(corp))))
 }
 
-#' @export
+words.dfm <- function (wfm) {
+  if (wordmargin(wfm) == 1) 
+    rownames(wfm)
+  else colnames(wfm)
+}
+
 docs <- function (wfm) {
-    if (wordmargin(wfm) == 1) 
-        colnames(wfm)
-    else rownames(wfm)
+  if (wordmargin(wfm) == 1) 
+    colnames(wfm)
+  else rownames(wfm)
 }
 
-#' @export
 is.wfm <- function (x) {
-    nms <- names(dimnames(x))
-    !is.null(nms) && identical(sort(nms), c("docs", "words"))
+  nms <- names(dimnames(x))
+  !is.null(nms) && identical(sort(nms), c("docs", "words"))
 }
 
 #' @export
 wordmargin <- function (x) {
-    ifelse(names(dimnames(x))[1] == "words", 1, 2)
-}
-
-
-#' Corpus sampling
-#'
-#' Takes a random sample of the specified size from a corpus, with or without replacement
-#' 
-#' @param corpus An existing corpus to be sampled
-#' @param size A positive number, the number of texts to return
-#' @param replace Should sampling be with replacement?
-#' @param prob Not implemented
-#' @export
-#' @examples
-#' data(movies)
-#' d <- dfm(movies)
-#' samp <- dfmSample(d, 100, replace=TRUE)
-dfmSample <- function(docMat, size=n, replace=FALSE, prob=NULL){
-  if(!is.null(prob)) stop("prob argument is not implemented for corpus")
-  sampleInds <- sample(nrow(docMat), size=size, replace=replace)
-  newDocMat <- docMat[sampleInds,]
-  return(newDocMat)
+  ifelse(names(dimnames(x))[1] == "words", 1, 2)
 }
 
 #' sort a dfm by one or more margins
@@ -461,39 +437,41 @@ dfmSample <- function(docMat, size=n, replace=FALSE, prob=NULL){
 #' dfmSort(dtm)[, 1:10]
 #' dfmSort(dtm, "both")[, 1:10]
 dfmSort <- function(x, margin = c("words", "docs", "both"), decreasing=TRUE) {
-    margin <- match.arg(margin)
-    if (margin=="words") {
-        x <- x[, order(colSums(x), decreasing=decreasing)]
-    } else if (margin=="docs") {
-        x <- x[order(rowSums(x), decreasing=decreasing), ]
-    } else if (margin=="both") {
-        x <- x[order(rowSums(x), decreasing=decreasing), 
-               order(colSums(x), decreasing=decreasing)]
-    }
-    return(x)
+  margin <- match.arg(margin)
+  if (margin=="words") {
+    x <- x[, order(colSums(x), decreasing=decreasing)]
+  } else if (margin=="docs") {
+    x <- x[order(rowSums(x), decreasing=decreasing), ]
+  } else if (margin=="both") {
+    x <- x[order(rowSums(x), decreasing=decreasing), 
+           order(colSums(x), decreasing=decreasing)]
+  }
+  return(x)
 }
 
-#' list the top n features in a dfm
+#' Corpus sampling
 #'
-#' list a "concordance" of the top n features in a \link{dfm} and their frequencies
+#' Takes a random sample of the specified size from a corpus, with or without replacement
 #' 
-#' @param dfm Document-feature matrix created by \code{\link{dfm}}
-#' @param n how many of the top words should be listed; NULL means list all
-#' @param normalize return relative term frequency if TRUE
-#' @param bottom if TRUE, return the least frequent features instead of the most
-#' @return a data.frame of the frequencies of the top n most frequent features
-#' @export 
-#' @author Ken Benoit
-#' @examples 
-#' data(iebudgets)
-#' dtm <- dfm(iebudgets)
-#' topFeatures(dtm)
-#' topFeatures(dfm(iebudgets, stopwords=TRUE))
-#' topFeatures(dtm, 50, normalize=TRUE)
-topFeatures <- function(x, n=20, normalize=FALSE, bottom=FALSE) {
-    x <- dfmSort(x, "words", decreasing=!bottom)
-    freq <- colSums(x)
-    if (normalize) freq <- freq / sum(freq)
-    return(data.frame(freq=freq[1:n]))
+#' @param corpus An existing corpus to be sampled
+#' @param size A positive number, the number of texts to return
+#' @param replace Should sampling be with replacement?
+#' @param prob Not implemented
+#' @export
+#' @examples
+#' data(movies)
+#' movieSamp <- sample(movies, 200, replace=TRUE)
+sample.corpus <- function(corpus, size=n, replace=FALSE, prob=NULL){
+  if(!is.null(prob)) stop("prob argument is not implemented for corpus")
+  atts <- corpus$attribs
+  sampleInds <- sample(nrow(atts), size=size, replace=replace)
+  newAtts <- atts[sampleInds,]
+  newTexts <- newAtts[[1]]
+  newAtts <- newAtts[2:length(newAtts)]
+  newCorp <- corpusCreate(newTexts, newAtts)
+  newCorp$metadata["created"] <- paste(newCorp$metadata["created"], "sampled from",
+                                       corpus$metadata["source"], collapse= " ")
+  return(newCorp)
 }
+
 
