@@ -1,39 +1,58 @@
-#' Perform basic cleanup on a character object
-#'
-#' Simple cleanup for strings, removing punctuation, converting to lowercase
-#' and optionally replacing some language-specific characters
-#' 
-#' @param s character object to be cleaned
-#' @param langNorm If true, French and German special characters are normalized.
-#' @param removeDigits If true, digits are removed. Default is TRUE
-#' @param removePunct If true, punctuation marks are removed. Default is TRUE
-#' @param lower If true, string is converted to lowercase. Default is TRUE
-#' @return character object in lowercase with punctuation (and optionally digits) removed
+
 #' @export
-#' @examples
-#' \dontrun{
-#' s <- "A cursed £$&^!€ Exclamation! point; paragraph 1.2, which I wrote."
-#' clean(s)
-#' }
-clean <- function(s, langNorm=FALSE, removeDigits=TRUE, lower=TRUE, removePunct=TRUE) {
-  # optionally do some language specific normalisation
-  if (langNorm) {
-    # for French, make "l'" into "l"
-    s <- gsub("l'", "l ", s)
-    # make all "Eszett" characters in Hochdeutsche into "ss" as in Swiss German
-    s <- gsub("ß", "ss", s)
-  }
-  if (removeDigits) {
-    s <- gsub("[[:digit:]]", "", s, perl = FALSE)
-  } 
-  if (removePunct){
-    s <- gsub("[[:punct:]]", "", s, perl=TRUE)
-  }
-  s <- s[s != ""]  
-  if(lower){
-    s <- tolower(s)
-  }
-  # replace multiple space padding with single space
-  s <- gsub(" {2,}", " ", s)
-  return(s)
+cleanSingleNew <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE) {
+    if (removeDigits){
+        s <- gsub("[[:digit:]]", "", s, perl = FALSE)
+    } 
+    if (removePunct){
+        s <- gsub("[[:punct:]]", "", s, perl = FALSE)
+    }
+    if (lower){
+        s <- tolower(s)
+    }
+    return(s)
+}
+
+
+#' @export
+cleanSingle <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE) {
+    if (strict) {
+        # lowercases and discards everything except spaces and alphabet
+        # possibly the most frequent use-case for QTA
+        s <- tolower(s)
+        s <- gsub("[[:space:]+]", ' ', s)
+        s <- gsub("[^[:lower:] *]", '', s)
+        
+        # had difficulty combing these into a single command, can revisit if
+        # performance is poor
+        s <- gsub(" +", ' ', s)
+    }
+    else {
+        if (removeDigits){
+            s <- gsub("[[:digit:]]", "", s, perl = FALSE)
+        } 
+        if (removePunct){
+            s <- gsub("[[:punct:]]", "", s, perl=TRUE)
+        }
+        if (lower){
+            s <- tolower(s)
+        }
+    }
+    return(s)
+}
+
+#' @export
+clean <- function(x, ...) {
+    UseMethod("clean")
+}
+
+#' @export
+clean.character <- function(s, removeDigits=TRUE, removePunct=FALSE, lower=TRUE, ...) {
+    return(lapply(s, cleanSingleNew, removeDigits=removeDigits, removePunct=removePunct, lower=lower))
+}
+
+#' @export
+clean.corpus <- function(corpus, removeDigits=TRUE, removePunct=FALSE, lower=TRUE, ...) {
+    texts(corpus) <- clean(texts(corpus), removeDigits=removeDigits, removePunct=removePunct, lower=lower)
+    return(corpus)
 }
