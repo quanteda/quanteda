@@ -1,247 +1,189 @@
-#'Constructor for corpus objects
-#'
-#'
-#' This function creates a corpus from a character vector (of texts), 
-#' adds text-specific variables (which we term "attributes"), along
-#' with optional meta-data and notes.
-#' 
-#' @param texts A character vector. This may be either a filepath to a directory containing text documents,
-#' or a character vector containing texts. file.exists checks if it is a valid path
-#' @param docnames Names to be assigned to the texts, defaults to the names of the 
-#' character vector (if any), otherwise assigns "text1", "text2", etc.
-#' @param attribs A data frame of attributes that is associated with each text.
-#' @param attribsIn Specifies if the attributes and values are encoded in file names, directory names, or headers
-#' values are 'filenames', 'dirnames', or 'headers'
-#' @param sep Separator for attribute values if specified in file names or directory names
-#' @param source A string specifying the source of the texts, used for referencing.
-#' @param notes A string containing notes about who created the text, warnings, To Dos, etc.
-#' todo examples
-#' @export
-corpus <- function(texts, ...){
-  UseMethod("corpus")
-}
+###
+### design of a corpus object
+###
+# (1) (removed)
+# (2) attributes: a named list (data-frame) of "variables" or chracteristics
+#     of each text.  The first column of this is 
+#     "texts": a named vector of texts whose only treatment is conversion to unicode
+# (3) attributes labels: an optional user-supplied list of descriptions of each
+#     attribute
+# (4) meta-data: character vector consisting ofL
+#     source (user-supplied or default is full directory path and system)
+#     creation date (automatic)
+#     notes (default is NULL, can be user-supplied)
 
 
-#' @export
-corpus.default <- function(){
-  require(tcltk2) 
-  texts <- tk_choose.dir()
-  return(corpus.character(texts))
-}
-
-# constructor for simple class representing a directory
-#' @export
-getDirectory <- function(path){
-  stopifnot(class(path)=="character")
-  stopifnot(file.exists(path))
-  tempPath <- path
-  class(tempPath) <- list("directory",class(tempPath))
-  return(tempPath)
-}
-
-
-#' @export
-corpus.directory<- function(path, docnames=NULL, attribs=NULL, attNames=NULL, sep='_', metadata=NULL, 
-                            notes=NULL, citation=NULL){
-  if (!class(path)[1]=="directory") stop("path must be a directory")
-  texts <- getTextDir(path)
-  if(class(attribs)=='character'){
-    stopifnot(attribs=='filenames' | attribs=='headers')
-    if(attribs=='filenames'){
-      fnames <- list.files(path, full.names=TRUE)
-      snames <- getRootFileNames(fnames)
-      snames <- gsub(".txt", "", snames)
-      parts <- strsplit(snames, sep)
-      attributesdf <-  data.frame(matrix(unlist(parts), nrow=length(parts), 
-                                         byrow=TRUE), stringsAsFactors=FALSE)
-      if (ncol(attributesdf) != length(attNames)) {
-        stop("The length of the parts of the filename does not equal the length of the attribute names")
-      }
-      names(attributesdf) <- attNames
-      attribs=attributesdf
-    }
-  
-  }
-
-  return(NextMethod(texts=texts, docnames=docnames, attribs=attribs,
-                    metadata=metadata, notes=notes, citation=citation))
-}
-
+#' Create a new corpus
 
 #' This function creates a corpus from a character vector (of texts), 
 #' adds text-specific variables (which we term "attributes"), along
 #' with optional meta-data and notes.
 #' 
-#' @param texts A character vector containgin
-#' @param docnames Names to be assigned to the texts, defaults to the names of the 
+#' @param texts A character vector containing the texts to be stored in the corpus.
+#' @param textnames Names to be assigned to the texts, defaults to the names of the 
 #' character vector (if any), otherwise assigns "text1", "text2", etc.
 #' @param attribs A data frame of attributes that is associated with each text.
 #' @param source A string specifying the source of the texts, used for referencing.
 #' @param notes A string containing notes about who created the text, warnings, To Dos, etc.
 #' @export
 #' @examples
+#' data(ieTexts)
+#' data(ieAttribs)
+#' budgets <- corpusCreate(ieTexts, attribs=ieAttribs)
 #' summary(budgets)
-corpus.character <- function(texts, docnames=NULL, attribs=NULL,
-                             metadata=NULL, notes=NULL, citation=NULL, ...) {
-  # name the texts vector
-  if (!is.null(docnames)) {
-    stopifnot(length(docnames)==length(texts))
-    names(texts) <- docnames
-  } else if (is.null(names(texts))) {
-    names(texts) <- paste("text", 1:length(texts), sep="")
-  }
-  
-  # create document-meta-data
-  if (is.null(source)) {
-    source <- paste(getwd(), "/* ", "on ",  Sys.info()["machine"], " by ", Sys.info()["user"], sep="")
-  }
-  created <- date()
-  metadata <- c(source=source, created=created, notes=notes, citation=citation)
-  
-  # user-supplied document-level meta-data
-  if (!is.null(attribs)) {
-    stopifnot(nrow(attribs)==length(texts))
-    attribs <- cbind(data.frame(texts, row.names=names(texts), 
-                                check.rows=TRUE, stringsAsFactors=FALSE),
-                     data.frame(attribs, row.names=names(texts),
-                                check.rows=TRUE, check.names=TRUE))
-
-  } else {
-    attribs <- data.frame(texts, row.names=names(texts), 
-                          check.rows=TRUE, stringsAsFactors=FALSE)
-  }  
-  # build the corpus object
-  tempCorpus <- list(attribs=attribs, 
-                      metadata=metadata
-  )
-  class(tempCorpus) <- list("corpus", class(tempCorpus))
-  return(tempCorpus)
+## Removed attribs.labels argument as it was not being used - KB 14 Apr 2014
+corpusCreate <- function(texts, attribs=NULL, textnames=NULL, source=NULL, notes=NULL) {
+    if (is.null(names(texts))) {
+        names(texts) <- paste("text", 1:length(texts), sep="")
+    }
+    if (is.null(source)) {
+        source <- paste(getwd(), "/* ", "on ",  Sys.info()["machine"], " by ", Sys.info()["user"], sep="")
+    }
+    created <- date()
+    metadata <- c(source=source, created=created, notes=notes)
+    if (is.null(attribs)) {
+        attribs <- data.frame(texts, row.names=names(texts), 
+                              check.rows=TRUE, stringsAsFactors=FALSE)
+    } else {
+        attribs <- data.frame(texts, attribs, row.names=names(texts), 
+                              check.rows=TRUE, stringsAsFactors=FALSE)
+    }
+    temp.corpus <- list(attribs=attribs, metadata=metadata)
+    class(temp.corpus) <- list("corpus", class(temp.corpus))
+    return(temp.corpus)
 }
 
-# accessor for texts
-#' @export
-texts <- function(corp){
-  return(unlist(corp$attribs$texts))
-}
 
-# replacement function for texts
-# warning about no data
-#' @export
-"texts<-" <- function(corp, value){
-  corp$attribs$texts <- value
-  return(corp)
-}
-
-# accessor for data
-#' @export
-data <- function(corp){
-  return(corp$attribs[2:length(corp$attribs)])
-}
-
-# replacement function for data
-#' @export
-"data<-" <- function(corp, value){
-  corp$attribs[2:length(corp$attribs)]<- value
-  return(corp)
-}
-
-# accessor for tokens
-#' @export
-tokens <- function(corp){
-  return(corp$attribs$tokens)
-}
-
-# replacement function for tokens
-#' @export
-"tokens<-" <- function(corp, value){
-  corp$attribs$tokens <- value
-  return(corp)
-}
-
-#' @export
-types <- function(corp) {
-  return(unique(unlist(tokens(corp))))
-}
-
-# accessor for docnames
-#' @export
-docnames <- function(corp){
-  return(names(texts(corp)))
-}
-
-# replacement function for docnames
-#' @export
-"docnames<-" <- function(corp, value){
-  names(texts(corp)) <- value
-  return(corp)
-}
-
-# length
-#' @export
-length.corpus <- function(corp){
-  return(length(texts(corp)))
-}
-
-# accessor for language
-#' @export
-language <- function(corp){
-  return(corp$metadata$language)
-}
-
-# replacement function for language
-#' @export
-"language<-" <- function(corp, value){
-  corp$metadata$language <- value
-  return(corp)
-}
-
-# accessor for encoding
-#' @export
-encoding <- function(corp){
-  return(Encoding(corp$texts))
-}
-
-# replacement function for encoding
-#' @export
-"encoding<-" <- function(corp, value){
-  texts(corp) <- Encoding(texts(corp), value)
-  return(corp)
-}
-
-#' Corpus sampling
-#'
-#' Takes a random sample of the specified size from a corpus, with or without replacement
+#' create a new corpus with attribute-value pairs taken from document headers
 #' 
-#' @param corpus An existing corpus to be sampled
-#' @param size A positive number, the number of texts to return
-#' @param replace Should sampling be with replacement?
-#' @param prob Not implemented
+#' This function takes a vector of texts with JSON headers
+#' and makes a new corpus where the attributes and values are created from
+#' JSON headers in the text. The JSON header should be the first line (as 
+#' delimited by \\n) in document. For example, a document may begin as follows:
+#' "budgetPosition" : "1.0", "party":"FF"\}
+#' When I presented the supplementary budget to this House last April....
+#' 
+#' The directory must contain only documents to be
+#' used in the corpus, and each document must have the same attributes.
+#' 
+#' @param headerTexts A vector of texts with JSON headers 
+#' @export
+#' @author Paul Nulty
+#' @examples
+#' data(ieTextsHeaders)
+#' budgets <- corpusFromHeaders(ieTextsHeaders)
+corpusFromHeaders <- function(headerTexts) {
+    library(jsonlite)
+    texts <- c()
+    headerAttribs <- data.frame(stringsAsFactors=FALSE)
+    for (ht in headerTexts) {
+      lines <- unlist(strsplit(ht, '\n'))
+      header <- data.frame(fromJSON(lines[1]), stringsAsFactors=FALSE)
+      if (is.null(names(headerAttribs))) {
+        attribs <- data.frame(header, stringsAsFactors = FALSE)
+      }
+      else {
+        headerAttribs <- rbind(header, headerAttribs)
+      }
+      content <- paste(lines[2:length(lines)], collapse='\n')
+      texts <- c(texts, content) 
+    }
+    corp <- corpusCreate(texts, attribs=headerAttribs)
+    return(corp)
+}
+
+#' create a new corpus with attribute-value pairs taken from filenames
+#' 
+#' This function takes a directory, reads in all the documents in that directory
+#' and makes a new corpus where the attributes and values are created by splitting
+#' the filename according to a separator.For example, a directory may contain files
+#' with a naming scheme that identifies attribute values, e.g.:
+#' "2010_BUDGET_05_Brian_Cowen_FF.txt".
+#' 
+#' To create a corpus object from texts named in this format, we can call this 
+#' function and specify the attribute types and separator, e.g:
+#' new_corpus <- corpusFromFilenames(dirname, c("country", "electionType", "year", "language", "party"), sep='_')
+#' 
+#' Underscore is the default separator
+#' 
+#' @param directory Path to folder containing documents
+#' @param attNames A vector naming the attribute types
+#' @param sep A string by which the filename should be separated to get the values. Default is underscore.
+#' @param enc Encoding for the texts (this is the "to" argument sent to iconv)
+#' @export
+#' @author Paul Nulty and Ken Benoit
+#' @examples
+#' \dontrun{
+#' new_corpus <- corpusFromFilenames(dirname, c("country", "electionType", "year", "language", "party"), sep='_')
+#' }
+corpusFromFilenames <- function(directory, attNames, sep='_', enc=NULL){
+    # get the filenames from the directory
+    filenames <- list.files(directory, full.names=TRUE)
+    # read in the texts
+    texts <- getTextFiles(filenames)
+    # convert if needed
+    if (!is.null(enc)) {
+        texts <- iconv(texts, to=enc)
+    }
+    # get the filename roots
+    snames <- getRootFileNames(filenames)
+    # remove the .txt from text filenames
+    snames <- gsub(".txt", "", snames)
+    # split along the delimiter and make the attributes
+    parts <- strsplit(snames, sep)
+    attributesdf <-  data.frame(matrix(unlist(parts), nrow=length(parts), 
+                                       byrow=TRUE),
+                                stringsAsFactors=FALSE)
+    if (ncol(attributesdf) != length(attNames)) {
+        stop("The length of the parts of the filename does not equal the length of the attribute names")
+    }
+    names(attributesdf) <- attNames
+    # return the created corpus
+    return(corpusCreate(texts, attributesdf))
+}
+
+
+#' This function adds a named list of attributes to an existing corpus
+#' 
+#' @param corpus Corpus to add attributes to
+#' @param newattribs A list of new attributes should be a named list of length(corpus$texts)
+#' @param name A name for the new attribues
+#' @return corpus A corpus with the new attributes added
+#' @export
+corpusAddAttributes <- function(corpus, newattribs, name=newattribs) {
+  newattribs <- as.data.frame(newattribs, stringsAsFactors=FALSE)
+  names(newattribs) <- name
+  corpus$attribs <- cbind(corpus$attribs, newattribs)
+  return(corpus)
+}
+
+
+#' function to add new texts and attributes to an existing corpus
+
+#' Accepts a list of texts and a list of associated attributes and 
+#' adds them to the corpus
+#' 
+#' @param corpus1 An existing corpus to add new texts and attributes to
+#' @param newtexts New texts to be added to the corpus
+#' @param newattribs New attribs associated with the new texts
+#' text
 #' @export
 #' @examples
-#' data(movies)
-#' movieSamp <- sample(movies, 200, replace=TRUE)
-sample.corpus <- function(corpus, size=n, replace=FALSE, prob=NULL){
-  if(!is.null(prob)) stop("prob argument is not implemented for corpus")
-  atts <- corpus$attribs
-  sampleInds <- sample(nrow(atts), size=size, replace=replace)
-  newAtts <- atts[sampleInds,]
-  newTexts <- newAtts[[1]]
-  newAtts <- newAtts[2:length(newAtts)]
-  newCorp <- corpusCreate(newTexts, newAtts)
-  newCorp$metadata["created"] <- paste(newCorp$metadata["created"], "sampled from",
-                                       corpus$metadata["source"], collapse= " ")
-  return(newCorp)
+#' data(iebudgets)
+#' data(ieAttribs)
+#' data(ieTexts)
+#' budgets <- corpusAppend(iebudgets, ieTexts, ieAttribs)
+corpusAppend <- function(corpus1, newtexts, newattribs, ...) {
+  # 
+  # should make it also allow an optional corpus2 version where two
+  # corpuses could be combined with corpus.append(corp1, corp2)
+  # if we can verify the same attribute set.
+  tempcorpus <- corpusCreate(newtexts, attribs=newattribs)
+  corpus1$attribs <- rbind(corpus1$attribs, tempcorpus$attribs)
+  #corpus1$attribs$texts <- rbind(corpus1$attribs$texts, tempcorpus$attribs$texts)
+  # TODO: implement concatenation of any attribs.labels from new corpus
+  return(corpus1)
 }
-
-#' @export
-print.corpus <- function(corpus){
-  print("Texts (first 20): \n")
-  print(paste(substr(texts(corpus)[0:20],0,100), '....'))
-  print("Attributes: \n")
-  d <- data(corpus)
-  print(d[0:20, 2:ncol(d)])
-}
-
 
 corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=FALSE) {
   # This is the "inner" function to be called by other functions
@@ -257,25 +199,26 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
   # subset(airquality, Temp > 80, select = c(Ozone, Temp))
   # subset(airquality, Day == 1, select = -Temp)
   # subset(airquality, select = Ozone:Wind)
-  if (is.null(subsetExpr)) 
-    rows <- TRUE
-  else {
-    rows <- eval(subsetExpr, corpus$attribs, parent.frame())
-    if (!is.logical(rows)) 
-      stop("'subset' must evaluate to logical")
-    rows <- rows & !is.na(rows)
-  }
-  
-  if (is.null(selectExpr)) 
-    vars <- TRUE
-  else {
-    nl <- as.list(seq_along(corpus$attribs))
-    names(nl) <- names(corpus$attribs)
-    vars <- c(1, eval(selectExpr, nl, parent.frame()))
-  }
-  # implement subset, select, and drop
-  corpus$attribs <- corpus$attribs[rows, vars, drop=drop]
-  return(corpus)
+    if (is.null(subsetExpr)) 
+      rows <- TRUE
+    else {
+      rows <- eval(subsetExpr, corpus$attribs, parent.frame())
+      if (!is.logical(rows)) 
+        stop("'subset' must evaluate to logical")
+      rows <- rows & !is.na(rows)
+    }
+    
+    if (is.null(selectExpr)) 
+      vars <- TRUE
+    else {
+      
+      nl <- as.list(seq_along(corpus$attribs))
+      names(nl) <- names(corpus$attribs)
+      vars <- c(1, eval(selectExpr, nl, parent.frame()))
+    }
+    # implement subset, select, and drop
+    corpus$attribs <- corpus$attribs[rows, vars, drop=drop]
+    return(corpus)
 }
 
 
@@ -299,4 +242,169 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
 subset.corpus <- function(corpus, subset=NULL, select=NULL) {
   tempcorp <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
   return(tempcorp)
+}
+
+
+#' Transform a corpus by splitting texts into sentences
+#'
+#' Each text in the corpus is split into sentences, and each
+#' sentence becomes a standalone text, with attributes indicating
+#' the text it is taken from and it's serial number in that text
+#' 
+#' @param corpus Corpus to transform
+#' @param to target unit of analysis for the reshaping.  Currently only \code{sentence} 
+#' and \code{document} are supported.
+#' @export
+#' @examples
+#' data(iebudgets)
+#' ie2010document <- subset(iebudgets, year==2010)
+#' summary(ie2010document)
+#' ie2010sentence <- corpusReshape(ie2010document)  # reshape to sentence units
+#' summary(ie2010sentence, 20)
+corpusReshape <- function(corpus, to=c("sentence", "document")) {
+    to <- match.arg(to) 
+    attrsOriginal <- corpus$attribs[, -which(names(corpus$attribs)=="texts")]
+    #         # atts <- corpus$attribs[1, ]
+    #         # start collection data.frame using first text
+    #         sentences <- sentenceSeg(corpus$attribs$texts[1])
+    #         attrsNew <- data.frame(sentenceno = 1:length(sentences),
+    #                                sourcetext = rep(row.names(corpus$attribs)[1], length(sentences)),
+    #                                attrsOriginal[rep(1, length(sentences)), ])
+    #         
+    
+    if (to=="sentence") {
+        ## move from documents to sentences
+        for (i in 1:nrow(corpus$attribs)) {
+            sentences <- sentenceSeg(corpus$attribs$texts[i])
+            attrsNew <- data.frame(sentenceno = 1:length(sentences),
+                                   sourcetext = rep(row.names(corpus$attribs)[i], length(sentences)),
+                                   attrsOriginal[rep(i, length(sentences)), ])
+            names(sentences) <- paste(row.names(attrsNew)[1],
+                                      1:length(sentences), sep=".")
+            if (i>1) {
+                newCorp <- corpusAppend(newCorp, unlist(sentences), attrsNew) 
+            } else {
+                newCorp <- corpusCreate(unlist(sentences), attribs=attrsNew,
+                                        textnames = rownames(attrsNew))        
+            }
+        }
+    
+    } else if (to=="document") {
+        ## move from documents to sentences
+        cat("Document reshape not yet implemented.\n")
+        #             splitattrs <- split(corpus$attribs, corpus$attribs$sourcetext)
+        #             newCorp <- data.frame()
+        #             for (i in 2:length(splitattrs)) {
+        #                 newattrs <- lapply(splitattrs, texts
+        #             }
+        #             
+    }
+
+    return(newCorp)
+}
+
+#' Corpus summary
+#'
+#' Displays information about a corpus object, including attributes and 
+#' metadata such as date of number of texts, creation and source.
+#' 
+#' @param corpus An existing corpus to be summarized
+#' @param nmax maximum number of texts to describe, default=100
+#' @param texts The name of the attribute containing the corpus texts, if
+#' not 'texts'.  For instance, if the corpus contained translated texts as an attribute,
+#' then setting this to the name of that variable would make it possible to summarize
+#' the alternate rather than the main texts.
+#' @param subset a Boolean expression that specifies a subset of the texts, similar to \code{subset.corpus}
+#' @param verbose FALSE to turn off printed output
+#' @export
+#' @examples
+#' data(iebudgets)
+#' subset(iebudgets, year==2010)
+#' summary(iebudgets, nmax=10)
+summary.corpus <- function(corpus, nmax=100, texts="texts", subset=NULL, verbose=TRUE) {
+    select <- NULL
+    if (!is.null(subset)) 
+        corpus <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
+    cat("Corpus object contains ", nrow(corpus$attribs), " text",
+         ifelse(nrow(corpus$attribs)>1, "s", ""), ".\n\n", sep="")
+    # allow user to set the column or variable which identifies the texts to summarize
+    texts <- corpus$attribs[,texts]
+    attribs <- as.data.frame(corpus$attribs[,-1])
+    #print(as.character(substitute(select))[2])
+    if (ncol(attribs)==1) names(attribs) <- as.character(substitute(select))[2]
+    #print(names(attribs))
+    names(texts) <- rownames(corpus$attribs)
+    dtexts <- describeTexts(texts, verbose=FALSE)
+    if (verbose) {
+        print(head(cbind(dtexts, attribs), nmax), row.names=FALSE)
+        cat("\nSource:  ", corpus$metadata["source"], ".\n", sep="")
+        cat("Created: ", corpus$metadata["created"], ".\n", sep="")
+        cat("Notes:   ", corpus$metadata["notes"], ".\n\n", sep="")
+    }
+    # invisibly pass the summary of the texts from describetexts()
+    return(invisible(cbind(dtexts, attribs)))
+}
+
+
+#' extract the texts from a corpus
+#'
+#' Extract the texts from a corpus as a named character vector
+#' 
+#' @param corpus A corpus object
+#' @param usenames If TRUE (default) use the text names as names for the returned character vector.
+#' @return (Named) character vector of texts from the corpus.
+#' @export
+#' @examples
+#' data(iebudgets)
+#' cowenTexts <- getTexts(subset(iebudgets, speaker=="Cowen"))
+#' countSyllables(cowenTexts)
+getTexts <- function(corpus, usenames=TRUE) {
+    texts <- corpus$attribs$texts
+    if (usenames) names(texts) <- row.names(corpus$attribs)
+    return(texts)
+}
+
+#' extract the attributes (document-level meta-data) from a corpus
+#'
+#' Extract the document-level meta-data from a corpus as a data frame
+#' 
+#' @param corpus A corpus object
+#' @param usenames If TRUE (default) use the text names as names for the rows of the returned data frame
+#' @return data frame of the meda-data from the corpus
+#' @export
+#' @examples
+#' data(iebudgets)
+#' getData(subset(iebudgets, year==2012))
+#' getData(subset(iebudgets, year==2012), usenames=FALSE)
+getData <- function(corpus, usenames=TRUE) {
+    thedata <- corpus$attribs[, -which(names(corpus$attribs)=="texts"), drop=FALSE]
+    if (!usenames) row.names(thedata) <- NULL
+    return(thedata)
+}
+
+
+#' Corpus sampling
+#'
+#' Takes a random sample of the specified size from a corpus, with or without replacement
+#' 
+#' @param corpus An existing corpus to be sampled
+#' @param size A positive number, the number of texts to return
+#' @param replace Should sampling be with replacement?
+#' @param prob Not implemented
+#' @export
+#' @examples
+#' data(movies)
+#' movieSamp <- sample(movies, 200, replace=TRUE)
+corpusSample <- function(corpus, size=n, replace=FALSE, prob=NULL){
+  if(!is.null(prob)) stop("prob argument is not implemented for corpus")
+  atts <- corpus$attribs
+  # print(nrow(atts))
+  sampleInds <- sample(nrow(atts), size=size, replace=replace)
+  newAtts <- atts[sampleInds,]
+  newTexts <- newAtts[[1]]
+  newAtts <- newAtts[2:length(newAtts)]
+  newCorp <- corpusCreate(newTexts, newAtts)
+  newCorp$metadata["created"] <- paste(newCorp$metadata["created"], "sampled from",
+                                       corpus$metadata["source"], collapse= " ")
+  return(newCorp)
 }
