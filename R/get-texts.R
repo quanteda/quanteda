@@ -1,3 +1,4 @@
+
 #' Truncate absolute filepaths to root filenames
 #'
 #' This function takes an absolute filepath and returns just the 
@@ -38,14 +39,13 @@ getRootFileNames <- function(longFilenames) {
 #' \dontrun{
 #' getTextFiles('/home/paul/documents/libdem09.txt')
 #' }
-getTextFiles <- function(filenames, textnames=NULL, verbose=FALSE) {
-  # TODO detect encoding; verbose=TRUE (progress bar?)
-  if(verbose) print(sprintf("Reading .. %s", filenames))
- # print(sprintf("Reading .. %s \n", filenames))
-  textsvec <- c()  
-  # changed from readChar to readLines
+getTextFiles <- function(filenames, textnames=NULL, enc="unknown", verbose=FALSE) {
+  # verbose=TRUE (progress bar?)
+  if(verbose) print(sprintf("Reading ... %s", filenames))
+  # print(sprintf("Reading .. %s \n", filenames))
+  textsvec <- c() 
   for (f in filenames) {
-    textsvec = c(textsvec, paste(suppressWarnings(readLines(f)), collapse="\n"))
+    textsvec <- c(textsvec, paste(suppressWarnings(readLines(f)), collapse="\n"))
   }
   # name the vector with the filename by default, otherwise assign "names"
   ifelse(is.null(textnames), 
@@ -69,11 +69,10 @@ getTextFiles <- function(filenames, textnames=NULL, verbose=FALSE) {
 #' \dontrun{
 #' getTextDir('/home/paul/documents/')
 #' }
-getTextDir <- function(dirname) {
+getTextDir <- function(dirname, enc="detect") {
   # get all files from a directory
-  return(getTextFiles(list.files(dirname, full.names=TRUE)))
+  return(getTextFiles(list.files(dirname, full.names=TRUE), enc=enc) )
 }
-
 
 #' provides a gui interface to choose a gui to load texts from
 #'
@@ -87,7 +86,7 @@ getTextDir <- function(dirname) {
 #' getTextFiles('/home/paul/documents/libdem09.txt')
 #' }
 getTextDirGui <- function() {
-  files <- choose.files()
+  path <- file.choose()
   #get all files from a directory
-  return(getTextFiles(files))
+  return(getTextDir(path))
 }
