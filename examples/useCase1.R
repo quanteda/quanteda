@@ -47,6 +47,10 @@ vec <- tokenize(texts(newCorp1))
 #returns a corpus with tokens
 newCorp1 <- tokenize(newCorp1)
 
+
+# is the tokens attribute equivalent to the result of tokenize?
+identical(vec, tokens(newCorp1))
+
 #index
 tempi <- index(newCorp1)
 
