@@ -13,7 +13,7 @@ dfm(corpus, feature = c("word"), stem = FALSE, stopwords = NULL,
   verbose = TRUE, dictionary = NULL, dictionary.regex = FALSE,
   addto = NULL)
 
-\method{dfm}{character}(corpus, feature = c("word"), stem = FALSE,
+\method{dfm}{character}(textvec, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, verbose = TRUE, dictionary = NULL,
   dictionary.regex = FALSE, addto = NULL)
 }
