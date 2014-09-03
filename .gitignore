@@ -1,4 +1,5 @@
 .Rproj.user
+..rcheck
 .Rhistory
 .RData
 .Rbuildignore
@@ -11,6 +12,7 @@ quanteda_kenlocal_gh.Rproj
 .Rbuildignore
 .Rdata
 .Rhistory
+.gitignore
 __MACOSX
 **/*~
 **/*.log
