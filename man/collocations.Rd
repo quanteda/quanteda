@@ -29,9 +29,9 @@ returns a list of collocations.  Note: Currently works only
 for pairs (bigram collocations).
 }
 \examples{
-data(iebudgets)
-collocations(iebudgets$attribs$texts[1], top=50)
-collocations(iebudgets$attribs$texts[1], top=50, method="chi2")
+data(inaugCorpus)
+collocations(texts(inaugCorpus)[1], top=50)
+collocations(texts(inaugCorpus)[1], top=50, method="chi2")
 }
 \author{
 Kenneth Benoit

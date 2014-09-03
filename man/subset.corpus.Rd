@@ -22,10 +22,10 @@ objects
 }
 \examples{
 \dontrun{
-data(iebudgets)
-iebudgets2010 <- subset(iebudgets, year==2010)
+data(inaugCorpus)
+inaugCorpus <- subset(inaugCorpus, year==2010)
 summary(iebudgets2010)
-iebudgetsLenihan <- subset(iebudgets, speaker="Lenihan", select=c(speaker, year))
+iebudgetsCarter <- subset(iebudgets, speaker="Carter", select=c(speaker, year))
 summary(iebudgetsLenihan)
 }
 }

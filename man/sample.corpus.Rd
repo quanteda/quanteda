@@ -19,7 +19,7 @@ Takes a random sample of the specified size from a corpus,
 with or without replacement
 }
 \examples{
-data(movies)
-movieSamp <- sample(movies, 200, replace=TRUE)
+data(inaugCorpus)
+inaugSamp <- sample(inaugCorpus, 200, replace=TRUE)
 }
 
