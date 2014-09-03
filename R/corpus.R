@@ -134,13 +134,13 @@ texts <- function(corp){
 
 # accessor for data
 #' @export
-data <- function(corp){
+metadoc <- function(corp){
   return(corp$attribs[2:length(corp$attribs)])
 }
 
 # replacement function for data
 #' @export
-"data<-" <- function(corp, value){
+"metadoc<-" <- function(corp, value){
   corp$attribs[2:length(corp$attribs)]<- value
   return(corp)
 }
@@ -218,8 +218,8 @@ encoding <- function(corp){
 #' @param prob Not implemented
 #' @export
 #' @examples
-#' data(movies)
-#' movieSamp <- sample(movies, 200, replace=TRUE)
+#' data(inaugCorpus)
+#' inaugSamp <- sample(inaugCorpus, 200, replace=TRUE)
 sample.corpus <- function(corpus, size=n, replace=FALSE, prob=NULL){
   if(!is.null(prob)) stop("prob argument is not implemented for corpus")
   atts <- corpus$attribs
@@ -290,10 +290,10 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
 #' @export
 #' @examples
 #' \dontrun{
-#' data(iebudgets)
-#' iebudgets2010 <- subset(iebudgets, year==2010)
+#' data(inaugCorpus)
+#' inaugCorpus <- subset(inaugCorpus, year==2010)
 #' summary(iebudgets2010)
-#' iebudgetsLenihan <- subset(iebudgets, speaker="Lenihan", select=c(speaker, year))
+#' iebudgetsCarter <- subset(iebudgets, speaker="Carter", select=c(speaker, year))
 #' summary(iebudgetsLenihan)
 #' }
 subset.corpus <- function(corpus, subset=NULL, select=NULL) {
