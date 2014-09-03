@@ -18,3 +18,4 @@ Suggests:
     RCurl,
     twitteR,
     XML
+LazyData: true

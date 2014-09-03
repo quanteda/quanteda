@@ -80,7 +80,8 @@ corpus.directory<- function(path, docnames=NULL, attribs=NULL, attNames=NULL, se
 #' @param notes A string containing notes about who created the text, warnings, To Dos, etc.
 #' @export
 #' @examples
-#' summary(budgets)
+#' data(inaugTexts)
+#' corpus(inaugTexts)
 corpus.character <- function(texts, docnames=NULL, attribs=NULL,
                              metadata=NULL, notes=NULL, citation=NULL, ...) {
   # name the texts vector

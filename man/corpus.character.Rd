@@ -29,6 +29,7 @@ texts), adds text-specific variables (which we term
 "attributes"), along with optional meta-data and notes.
 }
 \examples{
-summary(budgets)
+data(inaugTexts)
+corpus(inaugTexts)
 }
 
