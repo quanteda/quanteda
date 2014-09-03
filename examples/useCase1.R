@@ -48,7 +48,7 @@ vec <- tokenize(texts(newCorp1))
 newCorp1 <- tokenize(newCorp1)
 
 
-# is the tokens attribute equivalent to the result of tokenize?
+# is the tokens attribute equivalent to the result of tokenize? Yes.
 identical(vec, tokens(newCorp1))
 
 #index
