@@ -1,0 +1,79 @@
+\message{ !name(scaling.Rnw.tex)}
+\message{ !name(scaling.Rnw) !offset(14) }
+
+%\SweaveOpts{concordance=TRUE}
+
+<<setup, include=FALSE, cache=FALSE>>=
+library(knitr)
+# set global chunk options
+opts_chunk$set(fig.path='figure/minimal-', fig.align='center', fig.show='hold')
+options(replace.assign=TRUE,width=80)
+@
+
+
+\title{Unsupervised Document Scaling with Quanteda}
+
+
+\author{Kenneth Benoit and Paul Nulty}
+
+\maketitle
+
+\section*{Loading Documents into Quanteda}
+
+One of the most common tasks 
+
+The quanteda package provides several functions for loading texts from disk into a quanteda corpus. In this example, we will load a corpus from a set of documents in a directory, where each document's attributes are specified in its filename. In this case, the filename contains the variables of interest, separated by underscores, for example:
+
+\texttt{2010\_BUDGET\_03\_Joan\_Burton\_LAB.txt}
+
+Quanteda provides a function to create a corpus from a directory of documents like this. The user needs to provide the path to the directory, the names of the attribute types, and the character which separates the attribute values in the filenames:
+
+<<>>=
+library(quanteda)
+dirname <- "~/Dropbox/QUANTESS/corpora/iebudgets/budget_2010/"
+attNames <- c("year", "debate", "number", "firstname", "surname", "party")
+ieBudgets <- corpusFromFilenames(dirname, c("year", "debate", "no", "fname", "speaker", "party"), sep="_")
+@
+
+
+This creates a new quanteda corpus object where each text has been associated values for its attribute types extracted from the filename:
+
+<<>>=
+summary(ieBudgets)
+@
+
+In order to perform statistical analysis such as document scaling, we must extract a matrix containing the frequency of each word type from in document. In quanteda, we use the dfm function to produce such a matrix. \footnote{dfm stands for document-feature matrix --- we say `feature' instead of word, as it is sometimes useful to represent documents by features other than their word frequency.}
+
+<<>>=
+docMat <- dfm(ieBudgets)
+docMat[1:5,1:5]
+@
+
+We can now score and plot the documents using a statistical scaling technique, for example correspondence analysis \citep{nenadic2007}.
+
+<<>>=
+library(ca)
+model <- ca(t(docMat),nd=1)
+dotchart(model$colcoord[order(model$colcoord[,1]),1], labels = model$colnames[order(model$colcoord[,1])])
+@
+
+This plot indicates the position of each of the documents. We can group documents by their attribute values when creating the word-frequency matrix: 
+
+<<>>=
+partyMat <- dfm(ieBudgets, group="party")
+partyMat[,1:5]
+@
+
+which allows us to scale according to a particular party or year, for example:
+
+<<>>=
+partyModel <- ca(t(partyMat),nd=1)
+dotchart(partyModel$colcoord[order(partyModel$colcoord[,1]),1], labels = partyModel$colnames[order(partyModel$colcoord[,1])])
+@
+%\bibliographystyle{authordate2}
+%\bibliographystyle{plain}
+\bibliographystyle{plainnat}
+\bibliography{scaling.bib}
+
+\end{document}
+\message{ !name(scaling.Rnw.tex) !offset(-79) }
