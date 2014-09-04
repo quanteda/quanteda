@@ -26,12 +26,12 @@ Returns a document by feature matrix reduced in size based
 on document and term frequency, and/or subsampling.
 }
 \examples{
-data(iebudgets)
-dtm <- dfm(iebudgets)
-dim(dtm)  # 196 docs x 13343 words
-dtmReduced <- dfmTrim(dtm, minCount=10, minDoc=3) # only words occuring at least 10 times and in at least 3 documents
-dim(dtmReduced)  # 196 docs x 3006 words
-dtmSampled <- dfmTrim(dtm, sample=200)  # top 200 words
+data(inaugCorpus)
+dtm <- dfm(inaugCorpus)
+dim(dtm)
+dtmReduced <- dfmTrim(dtm, minCount=10, minDoc=2) # only words occuring at least 5 times and in at least 2documents
+dim(dtmReduced)
+dtmSampled <- dfmTrim(dtm, sample=50)  # top 200 words
 dim(dtmSampled)  # 196 x 200 words
 }
 \author{

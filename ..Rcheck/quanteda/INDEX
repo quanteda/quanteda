@@ -1,0 +1,88 @@
+MCMCirtPoisson1d        Bayesian-MCMC version of a 1-dimensional
+                        Poisson IRT scaling model
+bigrams                 Create bigrams
+collocations            Detect collocations in a text
+corpus                  Constructor for corpus objects
+corpus.character        This function creates a corpus from a character
+                        vector (of texts), adds text-specific variables
+                        (which we term "attributes"), along with
+                        optional meta-data and notes.
+countSyllables          Returns a count of the number of syllables in
+                        the input This function takes a text and
+                        returns a count of the number of syllables it
+                        contains. For British English words, the
+                        syllable count is exact and looked up from the
+                        CMU pronunciation dictionary. For any word not
+                        in the dictionary the syllable count is
+                        estimated by counting vowel clusters.
+describeTexts           print a summary of texts Prints to the console
+                        a desription of the texts, including number of
+                        types, tokens, and sentences
+dfm                     Create a document-feature matrix from a corpus
+                        object
+dfm2ldaformat           Convert a quanteda 'dfm' (document feature
+                        matrix) into a the data format needed by lda
+dfm2tmformat            Convert a quanteda 'dfm' (document feature
+                        matrix) into a 'tm' DocumentTermMatrix
+dfmSort                 sort a dfm by one or more margins
+dfmTrim                 Trim a dfm based on a subset of features and
+                        words
+flatten.dictionary      Flatten a hierarchical dictionary into a list
+                        of character vectors
+getRootFileNames        Truncate absolute filepaths to root filenames
+getTextDir              loads all text files from a given directory
+getTextDirGui           provides a gui interface to choose a gui to
+                        load texts from
+getTextFiles            load text files from disk into a vector of
+                        character vectors points to files, reads them
+                        into a character vector of the texts with
+                        optional names, default being filenames returns
+                        a named vector of complete, unedited texts
+getWordStat             Imports a Wordstat corpus from an XML file
+getWordStatCSV          Imports a Wordstat corpus from a CSV file
+inaugCorpus             Corpus of US presidential inaugaration speeches
+inaugTexts              Texts of US presidential inaugaration speeches
+kwic                    List key words in context from a text or a
+                        corpus of texts.
+kwic2                   This function is an alternative KWIC
+likelihood.test         likelihood test for 2x2 tables
+naiveBayesText          Naive Bayes classifier for texts
+ngrams                  Create ngrams
+predict.naivebayes      prediction method for Naive Bayes classifiers
+quantedaRefresh         Re-install quanteda from github
+readWStatDict           Make a flattened list from a hierarchical
+                        wordstat dictionary
+sample.corpus           Corpus sampling
+selectFeatures          extract feature words This function takes type
+                        of feature extractor and a word freaquency
+                        matrix with binary class (1/0) to select
+                        features in class one. 'wsll' and 'wschisq'
+                        replicates of 'Keyness' of Wordsmith Tools.
+sentenceSeg             split a text into sentences This function takes
+                        a text and splits it into sentences.
+stopwordsGet            access stopwords
+stopwordsRemove         remove stopwords from a text or dfm
+subset.corpus           extract a subset of a corpus
+tagPos                  Returns a table of the occurrences of different
+                        parts of speech in a sentence This function
+                        takes a sentence and tags each word with it's
+                        part of speech using openNLP's POS tagger, then
+                        returns a table of the parts of speech
+tf                      normalizes the term frequencies a dfm
+tfidf                   compute the tf-idf weights of a dfm
+translate               Send text to the google translate research API
+                        This function translates a text by sending it
+                        to the google translate API.
+translate.corpus        Send a corpus to the google translate research
+                        API This function translates a the texts in a
+                        corpus by sending them to the google translate
+                        API.
+twitterSearch           work-in-progress from-scratch interface to
+                        Twitter search API
+twitterStreamer         work-in-progress interface to Twitter streaming
+                        API
+twitterTerms            make a corpus object from results of a twitter
+                        REST search
+wordcloudDfm            Plot a word cloud for a dfm
+wordfishMCMC            Bayesian-MCMC version of the "wordfish" Poisson
+                        scaling model

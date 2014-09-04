@@ -28,9 +28,9 @@ packages that expect this format, such as
 \pkg{topicmodels}.
 }
 \examples{
-data(iebudgets)
-iebudgets2010 <- subset(iebudgets, year==2010)
-d <- dfmTrim(dfm(iebudgets2010), minCount=5, minDoc=3)
+data(inaugCorpus)
+inaugCorpus <- subset(inaugCorpus, year==2010)
+d <- dfmTrim(dfm(inaugCorpus), minCount=5, minDoc=3)
 dim(d)
 td <- dfm2tmformat(d)
 length(td$v)

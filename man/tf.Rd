@@ -16,8 +16,8 @@ proportions within the document
 Returns a matrix of term weights, as a \link{dfm} object
 }
 \examples{
-data(iebudgets)
-dtm <- dfm(iebudgets)
+data(inaugCorpus)
+dtm <- dfm(inaugCorpus)
 dtm[1:10, 100:110]
 tf(dtm)[1:10, 100:110]
 }

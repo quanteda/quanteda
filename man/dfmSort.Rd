@@ -22,8 +22,8 @@ A sorted \link{dfm} matrix object
 Sorts a \link{dfm} by documents or words
 }
 \examples{
-data(iebudgets)
-dtm <- dfm(iebudgets)
+data(inaugCorpus)
+dtm <- dfm(inaugCorpus)
 dtm[, 1:10]
 dtm <- dfmSort(dtm, "words")
 dfmSort(dtm)[, 1:10]

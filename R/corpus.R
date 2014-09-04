@@ -236,11 +236,11 @@ sample.corpus <- function(corpus, size=n, replace=FALSE, prob=NULL){
 
 #' @export
 print.corpus <- function(corpus){
-  print("Texts (first 20): \n")
-  print(paste(substr(texts(corpus)[0:20],0,100), '....'))
+  print("Texts (first 5): \n")
+  print(paste(substr(texts(corpus)[0:5],0,100), '....'))
   print("Attributes: \n")
-  d <- data(corpus)
-  print(d[0:20, 2:ncol(d)])
+  #d <- metadoc(corpus)
+  #print(d[0:5, 2:ncol(d)])
 }
 
 

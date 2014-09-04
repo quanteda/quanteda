@@ -17,10 +17,10 @@ Convert a quanteda \code{\link{dfm}} (document feature
 matrix) into a the data format needed by \link[pkg]{lda}
 }
 \examples{
-data(iebudgets)
-iebudgets2010 <- subset(iebudgets, year==2010)
+data(inaugCorpus)
+inaugCorpus <- subset(inaugCorpus, year==2010)
 # create document-feature matrix, remove stopwords
-d <- dfm(iebudgets2010, stopwords=TRUE)
+d <- dfm(inaugCorpus, stopwords=TRUE)
 # trim low frequency words
 d <- dfmTrim(d, minCount=5, minDoc=3)
 td <- dfm2ldaformat(d)

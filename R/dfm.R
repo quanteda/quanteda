@@ -23,14 +23,14 @@
 #' @export 
 #' @author Kenneth Benoit
 #' @examples 
-#' data(iebudgets)
-#' wfm <- dfm(iebudgets)
+#' data(inaugCorpus)
+#' wfm <- dfm(inaugCorpus)
 #' 
-#' ## by party, subset for 2010
-#' wfmByParty2010 <- dfm(subset(iebudgets, year==2010), groups="party")
+#' ## by president, after 1960
+#' wfmByPres2010 <- dfm(subset(inaugCorpus, year>1960), groups="president")
 #' 
 #' ## with dictionaries
-#' corpus <- subset(iebudgets, year==2010)
+#' corpus <- subset(inaugCorpus, year>1960)
 #' mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
 #'                opposition=c("Opposition", "reject", "notincorpus"),
 #'                taxing="taxing",
@@ -41,7 +41,7 @@
 #' 
 #' ## removing stopwords
 #' testText <- "The quick brown fox named Séamus jumps over the lazy dog Rory, with Tom's newpaper in his mouth."#
-#' testCorpus <- corpusCreate(testText)
+#' testCorpus <- corpus(testText)
 #' dfm(testCorpus, stopwords=TRUE)
 #' if (require(tm)) {
 #' }
@@ -309,12 +309,12 @@ makeRegEx <- function(wildcardregex) {
 #' @export 
 #' @author Will Lowe, adapted by Ken Benoit
 #' @examples 
-#' data(iebudgets)
-#' dtm <- dfm(iebudgets)
-#' dim(dtm)  # 196 docs x 13343 words
-#' dtmReduced <- dfmTrim(dtm, minCount=10, minDoc=3) # only words occuring at least 10 times and in at least 3 documents
-#' dim(dtmReduced)  # 196 docs x 3006 words
-#' dtmSampled <- dfmTrim(dtm, sample=200)  # top 200 words
+#' data(inaugCorpus)
+#' dtm <- dfm(inaugCorpus)
+#' dim(dtm) 
+#' dtmReduced <- dfmTrim(dtm, minCount=10, minDoc=2) # only words occuring at least 5 times and in at least 2documents
+#' dim(dtmReduced)  
+#' dtmSampled <- dfmTrim(dtm, sample=50)  # top 200 words
 #' dim(dtmSampled)  # 196 x 200 words
 dfmTrim <- function(dfm, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
   nms <- names(dimnames(dfm))
@@ -358,8 +358,8 @@ dfmTrim <- function(dfm, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
 #' @export 
 #' @author Ken Benoit
 #' @examples 
-#' data(iebudgets)
-#' dtm <- dfm(iebudgets)
+#' data(inaugCorpus)
+#' dtm <- dfm(inaugCorpus)
 #' dtm[1:10, 100:110]
 #' tfidf(dtm)[1:10, 100:110]
 #' tfidf(dtm, normalize=FALSE)[1:10, 100:110]
@@ -381,8 +381,8 @@ tfidf <- function(x, normalize = TRUE) {
 #' @export 
 #' @author Ken Benoit
 #' @examples 
-#' data(iebudgets)
-#' dtm <- dfm(iebudgets)
+#' data(inaugCorpus)
+#' dtm <- dfm(inaugCorpus)
 #' dtm[1:10, 100:110]
 #' tf(dtm)[1:10, 100:110]
 tf <- function(x) {
@@ -429,8 +429,8 @@ wordmargin <- function (x) {
 #' @export 
 #' @author Ken Benoit
 #' @examples 
-#' data(iebudgets)
-#' dtm <- dfm(iebudgets)
+#' data(inaugCorpus)
+#' dtm <- dfm(inaugCorpus)
 #' dtm[, 1:10]
 #' dtm <- dfmSort(dtm, "words")
 #' dfmSort(dtm)[, 1:10]

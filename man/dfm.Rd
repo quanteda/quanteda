@@ -65,14 +65,14 @@ word-frequency matrix where the cells are counts of words
 by document.
 }
 \examples{
-data(iebudgets)
-wfm <- dfm(iebudgets)
+data(inaugCorpus)
+wfm <- dfm(inaugCorpus)
 
-## by party, subset for 2010
-wfmByParty2010 <- dfm(subset(iebudgets, year==2010), groups="party")
+## by president, after 1960
+wfmByPres2010 <- dfm(subset(inaugCorpus, year>1960), groups="president")
 
 ## with dictionaries
-corpus <- subset(iebudgets, year==2010)
+corpus <- subset(inaugCorpus, year>1960)
 mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
                opposition=c("Opposition", "reject", "notincorpus"),
                taxing="taxing",
@@ -83,7 +83,7 @@ dictDfm
 
 ## removing stopwords
 testText <- "The quick brown fox named Séamus jumps over the lazy dog Rory, with Tom's newpaper in his mouth."#
-testCorpus <- corpusCreate(testText)
+testCorpus <- corpus(testText)
 dfm(testCorpus, stopwords=TRUE)
 if (require(tm)) {
 }

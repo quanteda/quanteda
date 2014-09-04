@@ -15,9 +15,9 @@
 #' @return A simple triplet matrix of class \link[tm]{as.DocumentTermMatrix}
 #' @export
 #' @examples
-#' data(iebudgets)
-#' iebudgets2010 <- subset(iebudgets, year==2010)
-#' d <- dfmTrim(dfm(iebudgets2010), minCount=5, minDoc=3)
+#' data(inaugCorpus)
+#' inaugCorpus <- subset(inaugCorpus, year==2010)
+#' d <- dfmTrim(dfm(inaugCorpus), minCount=5, minDoc=3)
 #' dim(d)
 #' td <- dfm2tmformat(d)
 #' length(td$v)
@@ -37,10 +37,10 @@ dfm2tmformat <- function(d, weighting=weightTf, ...){
 #' @return A list with components "documents" and "vocab" as needed by \link[pkg]{lda.collapsed.gibbs.sampler}
 #' @export
 #' @examples
-#' data(iebudgets)
-#' iebudgets2010 <- subset(iebudgets, year==2010)
+#' data(inaugCorpus)
+#' inaugCorpus <- subset(inaugCorpus, year==2010)
 #' # create document-feature matrix, remove stopwords
-#' d <- dfm(iebudgets2010, stopwords=TRUE)
+#' d <- dfm(inaugCorpus, stopwords=TRUE)
 #' # trim low frequency words
 #' d <- dfmTrim(d, minCount=5, minDoc=3)
 #' td <- dfm2ldaformat(d)
