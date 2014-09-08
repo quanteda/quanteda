@@ -1,0 +1,37 @@
+corpus definition:
+------------------
+
+needs the following document-level meta-data:
+(defaults are NULL, except where noted)
+_language
+_encoding (default is system encoding)
+_source
+_url
+_author
+_title
+_datecreated
+_dateadded
+where:
+metadoc(corpus, "fieldname")<- will assign these fields
+
+settings(corpus, "setting")<- will assign corpus level settings
+settings list: (defaults are NULL)
+stopwords
+collocations
+dictionary
+stemming (settings: none, English, etc (from SnowBall))
+delimiters_sentence.  ".!?"
+delimiters_word - default " ", but could be c(" ", ";", "•")
+delimiters_paragraph - default \n\n, but could be \n
+clean settings
+settings(corpus) - prints the current settings
+
+tokenize(corpus)  
+Would tokenize the corpus according to settings, create a dfm, and record a list with the following named elements:
+tokenization[[c("dfm", "ntypes", "ntokens", "nsents", "nparagraphs", "syllables")]]
+dfm is the standard dfm
+syllables is the ntypes-length vector of syllable counts for each type
+this can be accessed for quick dfm creation, print, summary, etc.
+would be set to null if a setting any setting is changed
+
+
