@@ -1,0 +1,53 @@
+\name{metacorpus}
+\alias{metacorpus}
+\alias{metacorpus<-}
+\title{Corpus-level metadata}
+\usage{
+metacorpus(corp, fields = NULL)
+
+metacorpus(corp, fields) <- value
+
+metacorpus(corp, fields = NULL)
+
+metacorpus(corp, fields) <- value
+}
+\arguments{
+  \item{corp}{A quanteda corpus object}
+
+  \item{fields}{Metadata field names.  If NULL (default),
+  return all metadata names.}
+
+  \item{corp}{A quanteda corpus object}
+
+  \item{fields}{Metadata field names.  If NULL (default),
+  return all metadata names.}
+}
+\value{
+For \code{metacorpus}, a list of the metadata fields in the
+corpus.
+
+For \code{metacorpus <-}, the corpus with the updated
+metadata.
+
+For \code{metacorpus}, a list of the metadata fields in the
+corpus.
+
+For \code{metacorpus <-}, the corpus with the updated
+metadata.
+}
+\description{
+Get or set the corpus-level metadata in a quanteda corpus
+object.
+
+Get or set the corpus-level metadata in a quanteda corpus
+object.
+}
+\examples{
+metacorpus(inaugTexts)
+metacorpus(inaugTexts, "source")
+metacorpus(inaugTexts, "citation") <- "Presidential Speeches Online Project (2014)."
+metacorpus(inaugTexts)
+metacorpus(inaugTexts, "source")
+metacorpus(inaugTexts, "citation") <- "Presidential Speeches Online Project (2014)."
+}
+

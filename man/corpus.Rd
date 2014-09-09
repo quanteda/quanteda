@@ -1,38 +1,67 @@
 \name{corpus}
 \alias{corpus}
+\alias{corpus.character}
+\alias{corpus.default}
+\alias{corpus.directory}
 \title{Constructor for corpus objects}
 \usage{
 corpus(texts, ...)
+
+\method{corpus}{default}()
+
+\method{corpus}{directory}(path, enc = NULL, docnames = NULL,
+  docvarsfrom = c("filenames", "headers"), docvarnames = NULL, sep = "_",
+  source = NULL, notes = NULL, citation = NULL)
+
+\method{corpus}{character}(texts, enc = NULL, docnames = NULL,
+  docvars = NULL, source = NULL, notes = NULL, citation = NULL, ...)
 }
 \arguments{
-  \item{texts}{A character vector. This may be either a
-  filepath to a directory containing text documents, or a
-  character vector containing texts. file.exists checks if
-  it is a valid path}
+  \item{texts}{A character vector of texts, or a filepath
+  to a directory containing text documents.}
+
+  \item{docvarsfrom}{Argument to specify where docvars are
+  to be taken, from parsing the filenames
+  (\link{filenames}) separated by \code{sep} or from
+  meta-data embedded in the text file header
+  (\code{headers}).}
+
+  \item{docvarnames}{Character vector of variable names for
+  \code{docvars}}
+
+  \item{sep}{Separator if \link{docvar} names are taken
+  from the filenames.}
+
+  \item{texts}{A character vector containing the texts}
 
   \item{docnames}{Names to be assigned to the texts,
   defaults to the names of the character vector (if any),
   otherwise assigns "text1", "text2", etc.}
 
-  \item{attribs}{A data frame of attributes that is
+  \item{docvars}{A data frame of attributes that is
   associated with each text.}
-
-  \item{attribsIn}{Specifies if the attributes and values
-  are encoded in file names, directory names, or headers
-  values are 'filenames', 'dirnames', or 'headers'}
-
-  \item{sep}{Separator for attribute values if specified in
-  file names or directory names}
 
   \item{source}{A string specifying the source of the
   texts, used for referencing.}
 
   \item{notes}{A string containing notes about who created
-  the text, warnings, To Dos, etc. todo examples}
+  the text, warnings, To Dos, etc.}
 }
 \description{
-This function creates a corpus from a character vector (of
-texts), adds text-specific variables (which we term
-"attributes"), along with optional meta-data and notes.
+Creates a corpus from a character vector (of texts), or an
+object such as a directory containing text files.
+Corpus-level meta-data can be specified at creation,
+containing (for example) citation information and notes.
+}
+\examples{
+\dontrun{corpus()  # pop up a file selection GUI interface
+}
+\dontrun{
+tempcorpus <- corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), enc="UTF-8", source="Ken's manifesto archive")
+summary(tempcorpus, n=10)
+}
+data(inaugTexts)
+corpus(inaugTexts)
+uk2010immigCorpus <- corpus(uk2010immig, docvars=data.frame(party=names(uk2010immig)), enc="UTF-8")
 }
 
