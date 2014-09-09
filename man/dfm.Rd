@@ -4,11 +4,11 @@
 \alias{dfm.corpus}
 \title{Create a document-feature matrix from a corpus object}
 \usage{
-dfm(corpus, feature = c("word"), stem = FALSE, stopwords = NULL,
+dfm(corp, feature = c("word"), stem = FALSE, stopwords = NULL,
   bigram = FALSE, groups = NULL, subset = NULL, verbose = TRUE,
   dictionary = NULL, dictionary.regex = FALSE, addto = NULL)
 
-\method{dfm}{corpus}(corpus, feature = c("word"), stem = FALSE,
+\method{dfm}{corpus}(corp, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, groups = NULL, subset = NULL,
   verbose = TRUE, dictionary = NULL, dictionary.regex = FALSE,
   addto = NULL)
@@ -18,7 +18,7 @@ dfm(corpus, feature = c("word"), stem = FALSE, stopwords = NULL,
   dictionary.regex = FALSE, addto = NULL)
 }
 \arguments{
-  \item{corpus}{Corpus from which to generate the
+  \item{corp}{Corpus from which to generate the
   document-feature matrix}
 
   \item{feature}{Feature to count (e.g. words)}
@@ -72,13 +72,13 @@ wfm <- dfm(inaugCorpus)
 wfmByPres2010 <- dfm(subset(inaugCorpus, year>1960), groups="president")
 
 ## with dictionaries
-corpus <- subset(inaugCorpus, year>1960)
+mycorpus <- subset(inaugCorpus, year>1960)
 mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
                opposition=c("Opposition", "reject", "notincorpus"),
                taxing="taxing",
                taxation="taxation",
                taxregex="tax*")
-dictDfm <- dfm(corpus, dictionary=mydict)
+dictDfm <- dfm(mycorpus, dictionary=mydict)
 dictDfm
 
 ## removing stopwords

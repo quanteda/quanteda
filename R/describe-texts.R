@@ -7,8 +7,8 @@
 #' @param verbose Default is TRUE. Set to false to suppress output messages
 #' @export
 #' @examples
-#' texts <- c("testing this text", "and this one")
-#' describeTexts(texts)
+#' describeTexts(c("testing this text", "and this one"))
+#' describeTexts(uk2010immig)
 describeTexts <- function(txts, verbose=TRUE) {
     # need to implement subsetting here too
     if (is.null(names(txts))) 
@@ -18,12 +18,12 @@ describeTexts <- function(txts, verbose=TRUE) {
     temp <- lapply(tokenizedTexts, unique)
     ntypes <- sapply(temp, length)
     # because we still don't have a generic sentence segmenter
-    nsents  <- sapply(texts, function(s) length(gregexpr("[.!?]", s)[[1]]))
-    results <- data.frame(Texts=names(texts),
+    nsents  <- sapply(txts, function(s) length(gregexpr("[.!?]", s)[[1]]))
+    results <- data.frame(Text=names(txts),
                           Types=ntypes,
                           Tokens=ntokens,
                           Sentences=nsents,
                           row.names=NULL)
     if (verbose) print(results)
-    return(results)
+    return(invisible(results))
 }

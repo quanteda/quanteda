@@ -18,7 +18,7 @@ of the texts, including number of types, tokens, and
 sentences
 }
 \examples{
-texts <- c("testing this text", "and this one")
-describeTexts(texts)
+describeTexts(c("testing this text", "and this one"))
+describeTexts(uk2010immig)
 }
 

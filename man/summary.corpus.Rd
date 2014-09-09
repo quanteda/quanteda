@@ -2,8 +2,7 @@
 \alias{summary.corpus}
 \title{Corpus summary}
 \usage{
-\method{summary}{corpus}(corp, n = 100, verbose = TRUE,
-  printdocnames = TRUE)
+\method{summary}{corpus}(corp, n = 100, verbose = TRUE, meta = FALSE)
 }
 \arguments{
   \item{corp}{corpus to be summarized}
@@ -12,6 +11,8 @@
   default=100}
 
   \item{verbose}{FALSE to turn off printed output}
+
+  \item{meta}{TRUE to include document-level meta-data}
 }
 \description{
 Displays information about a corpus object, including
@@ -21,5 +22,9 @@ creation and source.
 \examples{
 summary(inaugCorpus)
 summary(inaugCorpus, n=10, printdocnames=FALSE)
+mycorpus <- corpus(uk2010immig, docvars=data.frame(party=names(uk2010immig)), enc="UTF-8")
+summary(mycorpus, meta=TRUE)  # show the meta-data
+mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
+mysummary$Types / mysummary$Tokens             # crude type-token ratio
 }
 

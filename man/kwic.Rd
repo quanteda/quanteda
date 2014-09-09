@@ -8,7 +8,7 @@ kwic(text, word, window = 5, regex = TRUE)
 
 \method{kwic}{character}(texts, word, window = 5, regex = TRUE)
 
-\method{kwic}{corpus}(corpus, word, window = 5, regex = TRUE)
+\method{kwic}{corpus}(corp, word, window = 5, regex = TRUE)
 }
 \arguments{
   \item{text}{A text character scalar or a quanteda corpus.
@@ -30,7 +30,7 @@ kwic(text, word, window = 5, regex = TRUE)
 
   \item{texts}{a vector of texts}
 
-  \item{corpus}{a quanteda corpus object}
+  \item{corp}{a quanteda corpus object}
 }
 \value{
 A data frame with the context before (\code{preword}), the
@@ -49,9 +49,8 @@ number, since the text may or may not be segmented using
 end-of-line delimiters.)
 }
 \examples{
-data(ieTexts)  # a text vector
-kwic(ieTexts, "tax")
-kwic(ieTexts, "tax", regex=FALSE)  # returns only whole word, without trailing punctuation
+kwic(inaugTexts, "terror")
+kwic(inaugTexts, "terror", regex=FALSE)  # returns only whole word, without trailing punctuation
 data(iebudgets)
 kwic(subset(iebudgets, year==2010), "Christmas", window=4) # on a corpus
 }

@@ -3,7 +3,7 @@
 #' returns a document by feature matrix compatible with austin.  A typical usage would
 #' be to produce a word-frequency matrix where the cells are counts of words by document.
 #' 
-#' @param corpus Corpus from which to generate the document-feature matrix
+#' @param corp Corpus from which to generate the document-feature matrix
 #' @param feature Feature to count (e.g. words)
 #' @param stem Stem the words
 #' @param stopwords A character vector of stopwords that will be removed from the text when constructing the \link{dfm}.  If \code{NULL} (default)
@@ -30,13 +30,13 @@
 #' wfmByPres2010 <- dfm(subset(inaugCorpus, year>1960), groups="president")
 #' 
 #' ## with dictionaries
-#' corpus <- subset(inaugCorpus, year>1960)
+#' mycorpus <- subset(inaugCorpus, year>1960)
 #' mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
 #'                opposition=c("Opposition", "reject", "notincorpus"),
 #'                taxing="taxing",
 #'                taxation="taxation",
 #'                taxregex="tax*")
-#' dictDfm <- dfm(corpus, dictionary=mydict)
+#' dictDfm <- dfm(mycorpus, dictionary=mydict)
 #' dictDfm
 #' 
 #' ## removing stopwords
@@ -46,7 +46,7 @@
 #' if (require(tm)) {
 #' }
 #' 
-dfm <- function(corpus,
+dfm <- function(corp,
                 feature=c("word"),
                 stem=FALSE,
                 stopwords=NULL,
@@ -63,7 +63,7 @@ dfm <- function(corpus,
 #' @rdname dfm
 #' @method dfm corpus
 #' @S3method dfm corpus
-dfm.corpus <- function(corpus,
+dfm.corpus <- function(corp,
                        feature=c("word"),
                        stem=FALSE,
                        stopwords=NULL,
@@ -76,20 +76,20 @@ dfm.corpus <- function(corpus,
                        addto=NULL) {
   if (verbose) cat("Creating dfm from a corpus: ... ")
   # subsets 
-  if (!is.null(subset)) corpus <- corpus.subset.inner(corpus, substitute(subset))
+  if (!is.null(subset)) corp <- corpus.subset.inner(corp, substitute(subset))
   
   # aggregation by group
   if (!is.null(groups)) {
     if (verbose) cat("aggregating by group: ", groups, "... ", sep="")
     if (length(groups)>1) {
-      group.split <- lapply(corpus$attribs[,groups], as.factor)
-    } else group.split <- as.factor(corpus$attribs[,groups])
-    texts <- split(texts(corpus), group.split)
+      group.split <- lapply(documents(corp)[, groups], as.factor)
+    } else group.split <- as.factor(documents(corp)[,groups])
+    texts <- split(texts(corp), group.split)
     texts <- sapply(texts, paste, collapse = " ")
     if (verbose) cat("complete ...")
   } else {
-    texts <- texts(corpus)
-    names(texts) <- rownames(corpus$attribs)
+    texts <- texts(corp)
+    names(texts) <- docnames(corp)
   }
   
   # changing verbose to 2 (instead of TRUE) means will not print message twice

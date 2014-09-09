@@ -60,7 +60,6 @@ containing (for example) citation information and notes.
 tempcorpus <- corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), enc="UTF-8", source="Ken's manifesto archive")
 summary(tempcorpus, n=10)
 }
-data(inaugTexts)
 corpus(inaugTexts)
 uk2010immigCorpus <- corpus(uk2010immig, docvars=data.frame(party=names(uk2010immig)), enc="UTF-8")
 }

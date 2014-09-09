@@ -112,7 +112,6 @@ corpus.directory<- function(path, enc=NULL, docnames=NULL, docvarsfrom=c("filena
 #' @rdname corpus
 #' @export
 #' @examples
-#' data(inaugTexts)
 #' corpus(inaugTexts)
 #' uk2010immigCorpus <- corpus(uk2010immig, docvars=data.frame(party=names(uk2010immig)), enc="UTF-8") 
 corpus.character <- function(texts, enc=NULL, docnames=NULL, docvars=NULL,
@@ -472,18 +471,24 @@ subset.corpus <- function(corpus, subset=NULL, select=NULL) {
 #' @param corp corpus to be summarized
 #' @param n maximum number of texts to describe, default=100
 #' @param verbose FALSE to turn off printed output
+#' @param meta TRUE to include document-level meta-data
 #' @export
 #' @examples
 #' summary(inaugCorpus)
 #' summary(inaugCorpus, n=10, printdocnames=FALSE)
-summary.corpus <- function(corp, n=100, verbose=TRUE, printdocnames=TRUE) {
+#' mycorpus <- corpus(uk2010immig, docvars=data.frame(party=names(uk2010immig)), enc="UTF-8")
+#' summary(mycorpus, meta=TRUE)  # show the meta-data
+#' mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
+#' mysummary$Types / mysummary$Tokens             # crude type-token ratio
+summary.corpus <- function(corp, n=100, verbose=TRUE, meta=FALSE) {
     print(corp)
     cat("\n")
     ### Turn off describeTexts until we can speed this up
     # dtexts <- describeTexts(texts(corp), verbose=FALSE)
-    outputdf <- data.frame(Text=docnames(corp),
-                           Characters=sapply(texts(corp), nchar),
+    outputdf <- data.frame(describeTexts(texts(corp), verbose=FALSE),
                            docvars(corp))
+    if (meta)
+        outputdf[names(metadoc(corp))] <- metadoc(corp)
     if (verbose) {
         print(head(outputdf, n), row.names=FALSE)
         cat("\nSource:  ", metacorpus(corp, "source"), ".\n", sep="")

@@ -3,5 +3,4 @@
 .RData
 quanteda_kenlocal_gh.Rproj
 .Rd2pdf*
-.gitignore
-
+.git*

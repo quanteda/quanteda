@@ -3,6 +3,6 @@
 \alias{inaugTexts}
 \title{Texts of US presidential inaugaration speeches}
 \description{
-Texts of US presidential inaugaration speeches
+Character vector of US presidential inaugaration speeches
 }
 

@@ -16,12 +16,10 @@
 ##' dataframe will be named with the word index position, or the text name and the index position
 ##' for a corpus object.  
 ##' @author Kenneth Benoit and Paul Nulty
-##' @rdname kwic
 ##' @export
 ##' @examples
-##' data(ieTexts)  # a text vector
-##' kwic(ieTexts, "tax")
-##' kwic(ieTexts, "tax", regex=FALSE)  # returns only whole word, without trailing punctuation
+##' kwic(inaugTexts, "terror")
+##' kwic(inaugTexts, "terror", regex=FALSE)  # returns only whole word, without trailing punctuation
 ##' data(iebudgets)
 ##' kwic(subset(iebudgets, year==2010), "Christmas", window=4) # on a corpus
 kwic <- function(text, word, window=5, regex=TRUE) {
@@ -61,6 +59,7 @@ kwicSingleText <- function(text, word, window=5, regex=TRUE) {
 #' @rdname kwic
 #' @method kwic character
 #' @param texts a vector of texts
+#' @rdname kwic
 #' @S3method kwic character
 kwic.character <- function(texts, word, window=5, regex=TRUE) {
     contexts <- lapply(texts, kwicSingleText, word=word, window=window, regex=regex) #, USE.NAMES=FALSE)
@@ -85,9 +84,10 @@ kwic.character <- function(texts, word, window=5, regex=TRUE) {
 
 #' @rdname kwic
 #' @method kwic corpus
-#' @param corpus a quanteda corpus object
+#' @param corp a quanteda corpus object
+#' @rdname kwic
 #' @S3method kwic corpus
-kwic.corpus <- function(corpus, word, window=5, regex=TRUE) {
-    return(kwic(corpus$attribs$texts, word, window, regex))
+kwic.corpus <- function(corp, word, window=5, regex=TRUE) {
+    return(kwic(texts(corpus), word, window, regex))
 }
 
