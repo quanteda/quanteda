@@ -14,6 +14,8 @@ _dateadded
 where:
 metadoc(corpus, "fieldname")<- will assign these fields
 
+docvars() will be the name to access or replace "attribs"
+
 settings(corpus, "setting")<- will assign corpus level settings
 settings list: (defaults are NULL)
 stopwords
