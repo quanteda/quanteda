@@ -12,7 +12,7 @@
 #' @param subset Expression for subsetting the corpus before processing
 #' @param verbose Get info to screen on the progress
 #' @param dictionary A list of character vector dictionary entries, including regular expressions (see examples) 
-#' @param dictionary.regex \code{TRUE} means the dictionary is already in regular expression format,
+#' @param dictionary_regex \code{TRUE} means the dictionary is already in regular expression format,
 #' otherwise it will be converted from "wildcard" format
 #' @param addto \code{NULL} by default, but if an existing dfm object is specified, then the new dfm will be added to the one named.
 #' If both \link{dfm}'s are built from dictionaries, the combined dfm will have its \code{Non_Dictionary} total adjusted.
@@ -55,7 +55,7 @@ dfm <- function(corp,
                 subset=NULL, 
                 verbose=TRUE, 
                 dictionary=NULL,
-                dictionary.regex=FALSE,
+                dictionary_regex=FALSE,
                 addto=NULL) {
   UseMethod("dfm")
 }
@@ -72,7 +72,7 @@ dfm.corpus <- function(corp,
                        subset=NULL, 
                        verbose=TRUE, 
                        dictionary=NULL,
-                       dictionary.regex=FALSE,
+                       dictionary_regex=FALSE,
                        addto=NULL) {
   if (verbose) cat("Creating dfm from a corpus: ... ")
   # subsets 
@@ -95,7 +95,7 @@ dfm.corpus <- function(corp,
   # changing verbose to 2 (instead of TRUE) means will not print message twice
   # when the function calls dfm.character
   return(dfm(texts, feature=feature, stem=stem, stopwords=stopwords, bigram=bigram, 
-             verbose=2, dictionary=dictionary, dictionary.regex=dictionary.regex, 
+             verbose=2, dictionary=dictionary, dictionary_regex=dictionary_regex, 
              addto=addto))
 }
 
@@ -109,7 +109,7 @@ dfm.character <- function(textvec,
                           bigram=FALSE,
                           verbose=TRUE, 
                           dictionary=NULL,
-                          dictionary.regex=FALSE,
+                          dictionary_regex=FALSE,
                           addto=NULL) {
   # if (verbose & parent.env(dfm.character) != dfm.corpus) cat("Creating dfm: ...")
   if (verbose==TRUE) cat("Creating dfm from character vector ...")
@@ -144,7 +144,7 @@ dfm.character <- function(textvec,
     # flatten the dictionary
     dictionary <- flatten.dictionary(dictionary)
     # convert wildcards to regular expressions (if needed) 
-    if (!dictionary.regex) {
+    if (!dictionary_regex) {
       dictionary <- lapply(dictionary, makeRegEx)
     }
     alltokens <- cbind(alltokens, 

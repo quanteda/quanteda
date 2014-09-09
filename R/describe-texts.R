@@ -12,7 +12,7 @@
 describeTexts <- function(txts, verbose=TRUE) {
     # need to implement subsetting here too
     if (is.null(names(txts))) 
-        names(txts) <- paste("text", 1:length(texts), sep="")
+        names(txts) <- paste("text", 1:length(txts), sep="")
     tokenizedTexts <- tokenize(txts)
     ntokens <- sapply(tokenizedTexts, length)
     temp <- lapply(tokenizedTexts, unique)

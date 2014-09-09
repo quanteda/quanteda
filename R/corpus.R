@@ -103,7 +103,7 @@ corpus.directory<- function(path, enc=NULL, docnames=NULL, docvarsfrom=c("filena
 # 
 # Details here.
 # 
-#'  @param texts A character vector containing the texts
+#' @param texts A character vector containing the texts
 #' @param docnames Names to be assigned to the texts, defaults to the names of the 
 #' character vector (if any), otherwise assigns "text1", "text2", etc.
 #' @param docvars A data frame of attributes that is associated with each text.
@@ -151,38 +151,23 @@ corpus.character <- function(texts, enc=NULL, docnames=NULL, docvars=NULL,
     } 
     
     # build and return the corpus object
-    tempCorpus <- list(documents=documents, metadata=metadata, settings=NULL)
+    tempCorpus <- list(documents=documents, 
+                       metadata=metadata, 
+                       settings=settingsInitialize(),
+                       tokens=NULL)
     class(tempCorpus) <- list("corpus", class(tempCorpus))
     return(tempCorpus)
 }
 
-# settings <- list(stopwords=NULL,    # NULL, or stopword list
-#                  collocations=NULL, # NULL, or collocations object
-#                  dictionary=NULL,   # NULL, or dictionary object
-#                  stem=NULL,         # NULL, or language name
-#                  delimiters_sentence = DEFAULT_DELIM_SENTENCE,
-#                  delimiters_word = DEFAULT_DELIM_WORD,
-#                  delimiters_paragraph = DEFAULT_DELIM_PARAGRAPH,
-#                  clean = list(options="options here")
-#                  # these options will correspond the clean() arguments
-#                  )
-# settings(corpus, "setting")<- will assign corpus level settings
-# settings list: (defaults are NULL)
-# stopwords
-# collocations
-# dictionary
-# stemming (settings: none, English, etc (from SnowBall))
-# delimiters_sentence.  ".!?"
-# delimiters_word - default " ", but could be c(" ", ";", "•")
-# delimiters_paragraph - default \n\n, but could be \n
-# clean settings
-# settings(corpus) - prints the current settings
 
 
 #' @export
 print.corpus <- function(corp) {
     cat("Corpus consisting of ", length(corp), " document",
-        ifelse(length(corp)>1, "s", ""), ".\n", sep="")
+        ifelse(length(corp)>1, "s", ""),
+        ", ",
+        ifelse(is.null(corp$tokens), "un", ""),
+        "tokenised.\n", sep="")
 }
 
 

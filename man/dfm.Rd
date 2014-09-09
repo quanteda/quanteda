@@ -6,16 +6,16 @@
 \usage{
 dfm(corp, feature = c("word"), stem = FALSE, stopwords = NULL,
   bigram = FALSE, groups = NULL, subset = NULL, verbose = TRUE,
-  dictionary = NULL, dictionary.regex = FALSE, addto = NULL)
+  dictionary = NULL, dictionary_regex = FALSE, addto = NULL)
 
 \method{dfm}{corpus}(corp, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, groups = NULL, subset = NULL,
-  verbose = TRUE, dictionary = NULL, dictionary.regex = FALSE,
+  verbose = TRUE, dictionary = NULL, dictionary_regex = FALSE,
   addto = NULL)
 
 \method{dfm}{character}(textvec, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, verbose = TRUE, dictionary = NULL,
-  dictionary.regex = FALSE, addto = NULL)
+  dictionary_regex = FALSE, addto = NULL)
 }
 \arguments{
   \item{corp}{Corpus from which to generate the
@@ -42,7 +42,7 @@ dfm(corp, feature = c("word"), stem = FALSE, stopwords = NULL,
   \item{dictionary}{A list of character vector dictionary
   entries, including regular expressions (see examples)}
 
-  \item{dictionary.regex}{\code{TRUE} means the dictionary
+  \item{dictionary_regex}{\code{TRUE} means the dictionary
   is already in regular expression format, otherwise it
   will be converted from "wildcard" format}
 
