@@ -82,16 +82,11 @@ dictDfm <- dfm(corpus, dictionary=mydict)
 dictDfm
 
 ## removing stopwords
-testText <- "The quick brown fox named Séamus jumps over the lazy dog Rory, with Tom's newpaper in his mouth."#
+testText <- "The quick brown fox named Seamus jumps over the lazy dog Rory, with Tom's newpaper in his mouth."#
 testCorpus <- corpus(testText)
 dfm(testCorpus, stopwords=TRUE)
 if (require(tm)) {
 }
-
-## adding one dfm to another
-mydict2 <- list(partyref=c("Lenihan", "Fianna", "Sinn", "Gael"))
-dictDfm2 <- dfm(corpus, dictionary=mydict2, addto=dictDfm)
-dictDfm2
 }
 \author{
 Kenneth Benoit

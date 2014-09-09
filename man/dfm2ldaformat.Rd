@@ -18,7 +18,7 @@ matrix) into a the data format needed by \link[pkg]{lda}
 }
 \examples{
 data(inaugCorpus)
-inaugCorpus <- subset(inaugCorpus, year==2010)
+inaugCorpus <- subset(inaugCorpus, year>1960)
 # create document-feature matrix, remove stopwords
 d <- dfm(inaugCorpus, stopwords=TRUE)
 # trim low frequency words
