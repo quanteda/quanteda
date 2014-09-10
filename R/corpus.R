@@ -163,11 +163,11 @@ corpus.character <- function(texts, enc=NULL, docnames=NULL, docvars=NULL,
 
 #' @export
 print.corpus <- function(corp) {
-    cat("Corpus consisting of ", length(corp), " document",
-        ifelse(length(corp)>1, "s", ""),
+    cat("Corpus consisting of ", ndoc(corp), " document",
+        ifelse(ndoc(corp)>1, "s", ""),
         ", ",
         ifelse(is.null(corp$tokens), "un", ""),
-        "tokenised.\n", sep="")
+        "indexed.\n", sep="")
 }
 
 
@@ -293,11 +293,17 @@ docvars <- function(corp) {
 }
 
 
-# # accessor for tokens
-# # @export
+# accessor for tokens
+# 
+# Get the tokens object from a corpus
+# @export
 #  return(corp$docvars$tokens)
-##tokens <- function(corp){
-#}
+tokens <- function(x) {
+    UseMethod("tokens")
+}
+tokens.corpus <- function(corp) {
+    corp$tokens
+}
 
 # # replacement function for tokens
 # # @export
@@ -325,9 +331,25 @@ docnames <- function(corp) {
   return(corp)
 }
 
-# length
+
+#' get the number of documents
+#' 
+#' Returns the number of documents.
 #' @export
-length.corpus <- function(corp) {
+ndoc <- function(x) {
+    UseMethod("ndoc")
+}
+
+
+#' get the number of documents
+#' 
+#' Returns the number of documents in a corpus objects
+#' @param corp a quanteda corpus object
+#' @rdname ndoc
+#' @value an integer (count) of the number of documents in the corpus
+#' @examples ndoc(inaugCorpus)
+#' @export
+ndoc.corpus <- function(corp) {
     nrow(corp$documents)
 }
 
@@ -337,7 +359,7 @@ language <- function(corp) {
     if ("_language" %in% names(metadoc(corp)))
         metadoc(corp, "language") 
     else
-        rep(NULL, length(corp))
+        rep(NULL, ndoc(corp))
 }
 
 # replacement function for language
@@ -353,7 +375,7 @@ encoding <- function(corp) {
     if ("_encoding" %in% names(metadoc(corp)))
         metadoc(corp, "encoding") 
     else
-        rep(NULL, length(corp))
+        rep(NULL, ndoc(corp))
 }
 
 # replacement function for encoding

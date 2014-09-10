@@ -2,23 +2,32 @@
 # with scan
 # profiling shows that using scan is 3x faster than using strsplit
 #' @export
-tokenizeSingle <- function(s, clean=TRUE){
-  if (clean) {
-      s <- clean(s)
-  }
-  s <- unlist(s)
-  tokens <- scan(what="char", text=s, quiet=TRUE)
-  return(tokens)
+tokenizeSingle <- function(s, clean=TRUE) {
+    if (clean) {
+        s <- clean(s)
+    }
+    s <- unlist(s)
+    tokens <- scan(what="char", text=s, quiet=TRUE)
+    return(tokens)
 }
 
-
+#' tokenize a set of texts
+#'
+#' Tokenize the texts from a character vector or from a corpus.
+#' @return A list of length \code{\link{ndoc}(texts)} of the tokens found in each text.
 #' @export
 tokenize <- function(x, ...) {
-  UseMethod("tokenize")
+    UseMethod("tokenize")
 }
 
+#' @S3method tokenize character
+#' @rdname tokenize
 #' @export
-tokenize.character <- function(text, clean=TRUE, simplify=FALSE){
+tokenize.character <- function(text, clean=TRUE, simplify=FALSE) {
+    # should pass ... from parent functions, so that these can be
+    # passed to clean().  I suggest not using "clean" as an argument.
+    # instead, let the clean() defaults come into effect, unless
+    # overrides are passed through ...
     result <- lapply(text, tokenizeSingle, clean=clean)
     if (simplify | length(result)==1) {
         result <- unlist(result)
@@ -26,11 +35,13 @@ tokenize.character <- function(text, clean=TRUE, simplify=FALSE){
     return(result)
 }
 
-
+#' @S3method tokenize corpus
+#' @rdname tokenize
 #' @export
-tokenize.corpus <- function(corpus, clean=TRUE){
-  tokens(corpus) <- tokenize(texts(corpus), clean)
-  return(corpus)
+tokenize.corpus <- function(corpus, ...) {
+    # get the settings for clean from the corpus and use those, 
+    # unless more specific arguments are passed.
+    tokenize(texts(corpus), ...)
 }
 
 
@@ -39,31 +50,32 @@ tokenize.corpus <- function(corpus, clean=TRUE){
 ########  and store the results in a list called tokens
 ########
 
-#' tokenise a corpus and store the results
-#' 
-#' Tokenize the corpus and store the results as a dfm, along with counts for the syllables of each token, 
-#' the number of sentences per text, and the number of paragraphs per text.
-#' @export
-tokenise <- function(x, ...) {
-    UseMethod("tokenise")
-}
 
-#' @param corp Corpus to be tokenized
-#' @export
-#' @S3method tokenise corpus
-#' @rdname tokenise
-#' @return \item{tokens}{A list consisting of the following:}
+#' index the tokens in a corpus
+#'
+#' Applies pre-processing rules to the text and compiles a frequency table of features (word types)
+#' including counts of types, tokens, sentences, and paragraphs.
+#' @note This is nothing close to a true "index" but will eventually become a better
+#' indexing function.  At the moment it creates and saves a \link{dfm} in addition to 
+#' some summary information compiled from this, in order to speed up subsequent processing.
+#' Unlike most R functions which return a value, this one changes the object passed
+#' to it.  (And they say R can't pass by reference...)
+#' @param corp Corpus to be indexed
+#' @return no return but modifies the object in place by changing
+#' @return \item{tokens, }{a list consisting of the following:}
 #' @return \item{$dfm}{A \link{dfm} document-feature matrix object created with \link{settings}.}
 #' @return \item{$nwords}{A vector of token counts for each document.}
 #' @return \item{$ntypes}{A vector of type counts for each document.}
 #' @return \item{$nsents}{A vector of sentence counts for each document.}
 #' @return \item{$nparagr}{A vector of paragraph counts for each document.}
+#' @export
 #' @examples
 #' mycorpus <- corpus(uk2010immig)
 #' mycorpus
-#' tokenise(mycorpus)
+#' index(mycorpus)
 #' mycorpus
-tokenise.corpus <- function(corp) {
+#' mydfm <- dfm(mycorpus)
+index <- function(corp) {
     thisdfm <- dfm(corp, 
                    stem=settings(corp, "stem"),
                    stopwords=settings(corp, "stopwords"),
@@ -78,5 +90,6 @@ tokenise.corpus <- function(corp) {
     
     corpusName <- deparse(substitute(corp))
     env <- parent.frame()
-    env[[corpusName]]$tokens <- list(dfm=thisdfm, nwords, ntypes, nsents, nparagr)
+    env[[corpusName]]$tokens <- list(dfm=thisdfm, nwords=nwords, ntypes=ntypes, nsent=nsents, nparagr=nparagr)
 }
+

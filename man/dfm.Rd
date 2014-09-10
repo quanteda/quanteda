@@ -5,13 +5,12 @@
 \title{Create a document-feature matrix from a corpus object}
 \usage{
 dfm(corp, feature = c("word"), stem = FALSE, stopwords = NULL,
-  bigram = FALSE, groups = NULL, subset = NULL, verbose = TRUE,
-  dictionary = NULL, dictionary_regex = FALSE, addto = NULL)
+  bigram = FALSE, groups = NULL, verbose = TRUE, dictionary = NULL,
+  dictionary_regex = FALSE, addto = NULL)
 
 \method{dfm}{corpus}(corp, feature = c("word"), stem = FALSE,
-  stopwords = NULL, bigram = FALSE, groups = NULL, subset = NULL,
-  verbose = TRUE, dictionary = NULL, dictionary_regex = FALSE,
-  addto = NULL)
+  stopwords = NULL, bigram = FALSE, groups = NULL, verbose = TRUE,
+  dictionary = NULL, dictionary_regex = FALSE, addto = NULL)
 
 \method{dfm}{character}(textvec, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, verbose = TRUE, dictionary = NULL,
@@ -33,9 +32,6 @@ dfm(corp, feature = c("word"), stem = FALSE, stopwords = NULL,
 
   \item{groups}{Grouping variable for aggregating
   documents}
-
-  \item{subset}{Expression for subsetting the corpus before
-  processing}
 
   \item{verbose}{Get info to screen on the progress}
 

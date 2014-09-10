@@ -2,6 +2,12 @@
 ####
 #### PACKAGE GLOBALS
 ####
+
+#
+# Note: alternative would be to have (also) system settings that would govern the creation
+# of new corpus objects.  
+#
+
 SETTINGS_OPTIONS <- c("stopwords",
                       "collocations",
                       "dictionary",
@@ -60,5 +66,10 @@ settingsInitialize <- function() {
          clean_removePunct=TRUE)
 }
 
+
+#' @export
+settingsReset <- function(corp) {
+    corp$settings <- settingsInitialize()
+}
 
     

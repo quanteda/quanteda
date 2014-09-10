@@ -9,7 +9,6 @@
 #' @param stopwords A character vector of stopwords that will be removed from the text when constructing the \link{dfm}.  If \code{NULL} (default)
 #' then no stopwords will be applied.  If "TRUE" then it currently defaults to \code{\link{stopwords}}.
 #' @param groups Grouping variable for aggregating documents
-#' @param subset Expression for subsetting the corpus before processing
 #' @param verbose Get info to screen on the progress
 #' @param dictionary A list of character vector dictionary entries, including regular expressions (see examples) 
 #' @param dictionary_regex \code{TRUE} means the dictionary is already in regular expression format,
@@ -52,7 +51,6 @@ dfm <- function(corp,
                 stopwords=NULL,
                 bigram=FALSE,
                 groups=NULL,
-                subset=NULL, 
                 verbose=TRUE, 
                 dictionary=NULL,
                 dictionary_regex=FALSE,
@@ -69,34 +67,40 @@ dfm.corpus <- function(corp,
                        stopwords=NULL,
                        bigram=FALSE,
                        groups=NULL,
-                       subset=NULL, 
                        verbose=TRUE, 
                        dictionary=NULL,
                        dictionary_regex=FALSE,
                        addto=NULL) {
-  if (verbose) cat("Creating dfm from a corpus: ... ")
-  # subsets 
-  if (!is.null(subset)) corp <- corpus.subset.inner(corp, substitute(subset))
   
-  # aggregation by group
-  if (!is.null(groups)) {
-    if (verbose) cat("aggregating by group: ", groups, "... ", sep="")
-    if (length(groups)>1) {
-      group.split <- lapply(documents(corp)[, groups], as.factor)
-    } else group.split <- as.factor(documents(corp)[,groups])
-    texts <- split(texts(corp), group.split)
-    texts <- sapply(texts, paste, collapse = " ")
-    if (verbose) cat("complete ...")
-  } else {
-    texts <- texts(corp)
-    names(texts) <- docnames(corp)
-  }
-  
-  # changing verbose to 2 (instead of TRUE) means will not print message twice
-  # when the function calls dfm.character
-  return(dfm(texts, feature=feature, stem=stem, stopwords=stopwords, bigram=bigram, 
-             verbose=2, dictionary=dictionary, dictionary_regex=dictionary_regex, 
-             addto=addto))
+    if (!is.null(corp$tokens)) {
+        if (verbose) cat("Using dfm found in corpus.")
+        return(corp$tokens$dfm)
+    }
+    
+    if (verbose) cat("Creating dfm from a corpus: ... ")
+    
+    # subsets 
+    #if (!is.null(subset)) corp <- corpus.subset.inner(corp, substitute(subset))
+    
+    # aggregation by group
+    if (!is.null(groups)) {
+        if (verbose) cat("aggregating by group: ", groups, "... ", sep="")
+        if (length(groups)>1) {
+            group.split <- lapply(documents(corp)[, groups], as.factor)
+        } else group.split <- as.factor(documents(corp)[,groups])
+        texts <- split(texts(corp), group.split)
+        texts <- sapply(texts, paste, collapse = " ")
+        if (verbose) cat("complete ...")
+    } else {
+        texts <- texts(corp)
+        names(texts) <- docnames(corp)
+    }
+    
+    # changing verbose to 2 (instead of TRUE) means will not print message twice
+    # when the function calls dfm.character
+    return(dfm(texts, feature=feature, stem=stem, stopwords=stopwords, bigram=bigram, 
+               verbose=2, dictionary=dictionary, dictionary_regex=dictionary_regex, 
+               addto=addto))
 }
 
 #' @rdname dfm
@@ -111,103 +115,103 @@ dfm.character <- function(textvec,
                           dictionary=NULL,
                           dictionary_regex=FALSE,
                           addto=NULL) {
-  # if (verbose & parent.env(dfm.character) != dfm.corpus) cat("Creating dfm: ...")
-  if (verbose==TRUE) cat("Creating dfm from character vector ...")
-  
-  if (is.null(names(textvec))) {
-    names(textvec) <- factor(paste("text", 1:length(textvec), sep=""))
-  }
-  textnames <- factor(names(textvec))
-  tokenizedTexts <- sapply(textvec, tokenizeSingle, simplify=FALSE)
-  if (stem==TRUE) {
-    require(SnowballC, quietly=TRUE)
-    if (verbose) cat(" stemming ...")
-    tokenizedTexts <- lapply(tokenizedTexts, wordStem)
-  }
-  if (bigram > 0) {
-    if (verbose) cat(" making bigrams ...")
-    tokenizedTexts <- lapply(tokenizedTexts, function(x) bigrams(x, bigram))
-  }
-  
-  # get original sort order, so that we can restore original order after table 
-  # alphabetizes the documents (rows of the dfm)
-  originalSortOrder <- (1:length(tokenizedTexts))[order(names(tokenizedTexts))]
-  
-  # print(length)
-  alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
-                          words = unlist(tokenizedTexts, use.names=FALSE))
-  
-  # need to enforce check that dictionary is a named list
-  if (is.null(dictionary)) {
-    dfm <- as.data.frame.matrix(table(alltokens$docs, alltokens$words))
-  } else {
-    # flatten the dictionary
-    dictionary <- flatten.dictionary(dictionary)
-    # convert wildcards to regular expressions (if needed) 
-    if (!dictionary_regex) {
-      dictionary <- lapply(dictionary, makeRegEx)
+    # if (verbose & parent.env(dfm.character) != dfm.corpus) cat("Creating dfm: ...")
+    if (verbose==TRUE) cat("Creating dfm from character vector ...")
+    
+    if (is.null(names(textvec))) {
+        names(textvec) <- factor(paste("text", 1:length(textvec), sep=""))
     }
-    alltokens <- cbind(alltokens, 
-                       matrix(0, nrow=nrow(alltokens), 
-                              ncol=length(names(dictionary)), 
-                              dimnames=list(NULL, names(dictionary))))
-    #      alltokens$dictionaryWord <- "other"
-    for (i in 1:length(dictionary)) {
-      dictionary_word_index <- grep(paste(tolower(dictionary[[i]]), collapse="|"), 
-                                    alltokens$words)
-      alltokens[dictionary_word_index, 2+i] <- 1
+    textnames <- factor(names(textvec))
+    tokenizedTexts <- sapply(textvec, tokenizeSingle, simplify=FALSE)
+    if (stem==TRUE) {
+        require(SnowballC, quietly=TRUE)
+        if (verbose) cat(" stemming ...")
+        tokenizedTexts <- lapply(tokenizedTexts, wordStem)
     }
-    alltokens$All_Words <- 1
-    dictsplit <- split(alltokens[, 3:ncol(alltokens)], alltokens$docs)
-    dictsum <- sapply(dictsplit, colSums)
-    dfm <- as.data.frame.matrix(t(dictsum))
-    # doing it this way avoids an error using rowSums if only one dictionary column
-    dfm$Non_Dictionary <- 2*dfm$All_Words - rowSums(dfm)
-    dfm <- dfm[, -(ncol(dfm)-1)]
-  }
-  
-  # re-written PN 30th June
-  if (!is.null(stopwords)) {
-    if (verbose) cat(" removing stopwords ... ")
-    # need two separate checks because if() on a char vector gives warning
-    if (!is.character(stopwords)){
-      if (stopwords==TRUE){
-        stopwords <- stopwordsGet()
-      }
+    if (bigram > 0) {
+        if (verbose) cat(" making bigrams ...")
+        tokenizedTexts <- lapply(tokenizedTexts, function(x) bigrams(x, bigram))
     }
-    if (!is.character(stopwords) | !length(stopwords)>0) {
-      stop("stopwords must be a character vector with positive length.")
-    }
-    if (bigram==TRUE) {
-      pat <- paste(paste0(paste0("-", stopwords, "$"), collapse='|'), paste0(paste0("^", stopwords, "-"), collapse='|'), sep='|')
-      dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
+    
+    # get original sort order, so that we can restore original order after table 
+    # alphabetizes the documents (rows of the dfm)
+    originalSortOrder <- (1:length(tokenizedTexts))[order(names(tokenizedTexts))]
+    
+    # print(length)
+    alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
+                            words = unlist(tokenizedTexts, use.names=FALSE))
+    
+    # need to enforce check that dictionary is a named list
+    if (is.null(dictionary)) {
+        dfm <- as.data.frame.matrix(table(alltokens$docs, alltokens$words))
     } else {
-      dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords))
+        # flatten the dictionary
+        dictionary <- flatten.dictionary(dictionary)
+        # convert wildcards to regular expressions (if needed) 
+        if (!dictionary_regex) {
+            dictionary <- lapply(dictionary, makeRegEx)
+        }
+        alltokens <- cbind(alltokens, 
+                           matrix(0, nrow=nrow(alltokens), 
+                                  ncol=length(names(dictionary)), 
+                                  dimnames=list(NULL, names(dictionary))))
+        #      alltokens$dictionaryWord <- "other"
+        for (i in 1:length(dictionary)) {
+            dictionary_word_index <- grep(paste(tolower(dictionary[[i]]), collapse="|"), 
+                                          alltokens$words)
+            alltokens[dictionary_word_index, 2+i] <- 1
+        }
+        alltokens$All_Words <- 1
+        dictsplit <- split(alltokens[, 3:ncol(alltokens)], alltokens$docs)
+        dictsum <- sapply(dictsplit, colSums)
+        dfm <- as.data.frame.matrix(t(dictsum))
+        # doing it this way avoids an error using rowSums if only one dictionary column
+        dfm$Non_Dictionary <- 2*dfm$All_Words - rowSums(dfm)
+        dfm <- dfm[, -(ncol(dfm)-1)]
     }
-  }
-  
-  if (!is.null(addto)) {
-    if (sum(rownames(dfm) != rownames(addto)) > 0) {
-      stop("Cannot add to dfm: different document set.")
+    
+    # re-written PN 30th June
+    if (!is.null(stopwords)) {
+        if (verbose) cat(" removing stopwords ... ")
+        # need two separate checks because if() on a char vector gives warning
+        if (!is.character(stopwords)){
+            if (stopwords==TRUE){
+                stopwords <- stopwordsGet()
+            }
+        }
+        if (!is.character(stopwords) | !length(stopwords)>0) {
+            stop("stopwords must be a character vector with positive length.")
+        }
+        if (bigram==TRUE) {
+            pat <- paste(paste0(paste0("-", stopwords, "$"), collapse='|'), paste0(paste0("^", stopwords, "-"), collapse='|'), sep='|')
+            dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
+        } else {
+            dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords))
+        }
     }
-    addIndex <- which(!(colnames(addto) %in% colnames(dfm)))
-    # adjust the "Non_Dictionary" count for the combined object if both are dictionary-based
-    if ("Non_Dictionary" %in% colnames(addto) & "Non_Dictionary" %in% colnames(dfm)) {
-      dfm[, "Non_Dictionary"] <- addto[, "Non_Dictionary"] - rowSums(as.matrix(dfm[, -ncol(dfm)]))
+    
+    if (!is.null(addto)) {
+        if (sum(rownames(dfm) != rownames(addto)) > 0) {
+            stop("Cannot add to dfm: different document set.")
+        }
+        addIndex <- which(!(colnames(addto) %in% colnames(dfm)))
+        # adjust the "Non_Dictionary" count for the combined object if both are dictionary-based
+        if ("Non_Dictionary" %in% colnames(addto) & "Non_Dictionary" %in% colnames(dfm)) {
+            dfm[, "Non_Dictionary"] <- addto[, "Non_Dictionary"] - rowSums(as.matrix(dfm[, -ncol(dfm)]))
+        }
+        dfm <- cbind(addto[, addIndex], dfm)
     }
-    dfm <- cbind(addto[, addIndex], dfm)
-  }
-  
-  # give the matrix austin a "wfm"-like record of which margin is words, which is docs
-  dfm <- as.matrix(dfm)
-  dimnames(dfm) <- list(docs = rownames(dfm), words = colnames(dfm))
-  
-  # restore original sort order
-  
-  dfm <- dfm[(1:nrow(dfm))[order(originalSortOrder)], ]
-  
-  if(verbose) cat(" done. \n")
-  return(dfm)
+    
+    # give the matrix austin a "wfm"-like record of which margin is words, which is docs
+    dfm <- as.matrix(dfm)
+    dimnames(dfm) <- list(docs = rownames(dfm), words = colnames(dfm))
+    
+    # restore original sort order
+    
+    dfm <- dfm[(1:nrow(dfm))[order(originalSortOrder)], ]
+    
+    if(verbose) cat(" done. \n")
+    return(dfm)
 }
 
 
@@ -242,53 +246,53 @@ dfm.character <- function(textvec,
 #'                              level1c1b = list(level1c1b1 = c("lowestalone"))))
 #' flatten.dictionary(hdict)
 flatten.dictionary <- function(elms, parent = '', dict = list()) {
-  for (self in names(elms)) {
-    elm <- elms[[self]]
-    if (parent != '') {
-      self <- paste(parent, self, sep='.')
+    for (self in names(elms)) {
+        elm <- elms[[self]]
+        if (parent != '') {
+            self <- paste(parent, self, sep='.')
+        }
+        # print("-------------------")
+        # print (paste("Name", self))
+        if (is.list(elm)) {
+            # print("List:")
+            # print(names(elm))
+            dict <- flatten.dictionary(elm, self, dict)
+        } else {
+            # print("Words:")
+            dict[[self]] <- elm
+            # print(dict)
+        }
     }
-    # print("-------------------")
-    # print (paste("Name", self))
-    if (is.list(elm)) {
-      # print("List:")
-      # print(names(elm))
-      dict <- flatten.dictionary(elm, self, dict)
-    } else {
-      # print("Words:")
-      dict[[self]] <- elm
-      # print(dict)
-    }
-  }
-  return(dict)
+    return(dict)
 }
 
 
 makeRegEx <- function(wildcardregex) {
-  for (i in 1:length(wildcardregex)) {
-    lengthWildCard <- nchar(wildcardregex[i])
-    # '*' wildcards at both ends, just remove them
-    if ((substr(wildcardregex[i], 1, 1)=="*") & substr(wildcardregex[i], lengthWildCard, lengthWildCard)=="*") {
-      # '*' wildcards at both ends, just remove them
-      wildcardregex[i] <- substr(wildcardregex[i], 2, lengthWildCard-1)
-    } else if (substr(wildcardregex[i], 1, 1)=="*") {
-      # '*' wildcard only at beginning, remove and add "$" to end
-      wildcardregex[i] <- paste(substr(wildcardregex[i], 2, lengthWildCard), "$", sep="")
-    } else if (substr(wildcardregex[i], lengthWildCard, lengthWildCard)=="*") {
-      # '*' wildcard only at end, remove and add "^" to beginning
-      wildcardregex[i] <- paste("^", substr(wildcardregex[i], 1, lengthWildCard-1), sep="")
-    } else if (!((substr(wildcardregex[i], 1, 1)=="*") & substr(wildcardregex[i], lengthWildCard, lengthWildCard)=="*")) {
-      # change to ^word$ if no * at all, for exact match
-      wildcardregex[i] <- paste("^", wildcardregex[i], "$", sep="")
-    } else {
-      stop("Any wildcards except * and beginning or end of word not yet implemented.")
+    for (i in 1:length(wildcardregex)) {
+        lengthWildCard <- nchar(wildcardregex[i])
+        # '*' wildcards at both ends, just remove them
+        if ((substr(wildcardregex[i], 1, 1)=="*") & substr(wildcardregex[i], lengthWildCard, lengthWildCard)=="*") {
+            # '*' wildcards at both ends, just remove them
+            wildcardregex[i] <- substr(wildcardregex[i], 2, lengthWildCard-1)
+        } else if (substr(wildcardregex[i], 1, 1)=="*") {
+            # '*' wildcard only at beginning, remove and add "$" to end
+            wildcardregex[i] <- paste(substr(wildcardregex[i], 2, lengthWildCard), "$", sep="")
+        } else if (substr(wildcardregex[i], lengthWildCard, lengthWildCard)=="*") {
+            # '*' wildcard only at end, remove and add "^" to beginning
+            wildcardregex[i] <- paste("^", substr(wildcardregex[i], 1, lengthWildCard-1), sep="")
+        } else if (!((substr(wildcardregex[i], 1, 1)=="*") & substr(wildcardregex[i], lengthWildCard, lengthWildCard)=="*")) {
+            # change to ^word$ if no * at all, for exact match
+            wildcardregex[i] <- paste("^", wildcardregex[i], "$", sep="")
+        } else {
+            stop("Any wildcards except * and beginning or end of word not yet implemented.")
+        }
     }
-  }
-  return(wildcardregex)
-  ##
-  ## TO ADD:
-  ##   * in the middle of the word
-  ##   ? functionality
-  ##   [ab] meaning a or b
+    return(wildcardregex)
+    ##
+    ## TO ADD:
+    ##   * in the middle of the word
+    ##   ? functionality
+    ##   [ab] meaning a or b
 }
 
 
@@ -313,35 +317,35 @@ makeRegEx <- function(wildcardregex) {
 #' dtmSampled <- dfmTrim(dtm, sample=50)  # top 200 words
 #' dim(dtmSampled)  # 196 x 200 words
 dfmTrim <- function(dfm, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
-  nms <- names(dimnames(dfm))
-  if (!(!is.null(nms) && identical(sort(nms), c("docs", "words")))) 
-    stop("Function not applicable to this object")
-  
-  mY <- dfm
-  if (names(dimnames(dfm))[2] == "words") 
-    mY <- t(mY)
-  
-  rs1 <- which(rowSums(mY) >= minCount)
-  if (verbose)
-    cat("Words appearing less than", minCount, "times:", (nrow(mY) - length(rs1)), "\n")
-  
-  rs2 <- which(apply(mY, 1, function(x){ sum(x>0) >= minDoc } ))
-  if (verbose)
-    cat("Words appearing in fewer than", minDoc, "documents:", (nrow(mY) - length(rs2)), "\n")
-  
-  tokeep <- intersect(rs1, rs2)
-  if (length(tokeep)==0)
-    stop("No words left after trimming")
-  
-  if (!is.null(sample)) {
-    if (sample > length(tokeep))
-      warning(paste('Sample size', sample, 'larger than',
-                    length(tokeep), "already filtered from", nrow(mY), "so ignoring sampling request"))
-    tokeep <- sample(tokeep, min(length(tokeep), sample))
+    nms <- names(dimnames(dfm))
+    if (!(!is.null(nms) && identical(sort(nms), c("docs", "words")))) 
+        stop("Function not applicable to this object")
+    
+    mY <- dfm
+    if (names(dimnames(dfm))[2] == "words") 
+        mY <- t(mY)
+    
+    rs1 <- which(rowSums(mY) >= minCount)
     if (verbose)
-      cat("Retaining a random sample of", sample, "words\n")
-  }
-  return(t(mY[sort(tokeep),]))
+        cat("Words appearing less than", minCount, "times:", (nrow(mY) - length(rs1)), "\n")
+    
+    rs2 <- which(apply(mY, 1, function(x){ sum(x>0) >= minDoc } ))
+    if (verbose)
+        cat("Words appearing in fewer than", minDoc, "documents:", (nrow(mY) - length(rs2)), "\n")
+    
+    tokeep <- intersect(rs1, rs2)
+    if (length(tokeep)==0)
+        stop("No words left after trimming")
+    
+    if (!is.null(sample)) {
+        if (sample > length(tokeep))
+            warning(paste('Sample size', sample, 'larger than',
+                          length(tokeep), "already filtered from", nrow(mY), "so ignoring sampling request"))
+        tokeep <- sample(tokeep, min(length(tokeep), sample))
+        if (verbose)
+            cat("Retaining a random sample of", sample, "words\n")
+    }
+    return(t(mY[sort(tokeep),]))
 }
 
 #' compute the tf-idf weights of a dfm
@@ -360,12 +364,12 @@ dfmTrim <- function(dfm, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
 #' tfidf(dtm)[1:10, 100:110]
 #' tfidf(dtm, normalize=FALSE)[1:10, 100:110]
 tfidf <- function(x, normalize = TRUE) {
-  idf <- log(length(docs(x))) - log(colSums(x > 0) + 1)
-  if (normalize) {
-    x <- x/rowSums(x)
-    x[is.nan(x)] <- 0
-  }
-  return(t(t(x) * idf))
+    idf <- log(length(docs(x))) - log(colSums(x > 0) + 1)
+    if (normalize) {
+        x <- x/rowSums(x)
+        x[is.nan(x)] <- 0
+    }
+    return(t(t(x) * idf))
 }
 
 #' normalizes the term frequencies a dfm
@@ -382,35 +386,35 @@ tfidf <- function(x, normalize = TRUE) {
 #' dtm[1:10, 100:110]
 #' tf(dtm)[1:10, 100:110]
 tf <- function(x) {
-  return(x/rowSums(x))
+    return(x/rowSums(x))
 }
 
 
 #' @export
 types <- function(corp) {
-  return(unique(unlist(tokenize(corp))))
+    return(unique(unlist(tokenize(corp))))
 }
 
 words.dfm <- function (wfm) {
-  if (wordmargin(wfm) == 1) 
-    rownames(wfm)
-  else colnames(wfm)
+    if (wordmargin(wfm) == 1) 
+        rownames(wfm)
+    else colnames(wfm)
 }
 
 docs <- function (wfm) {
-  if (wordmargin(wfm) == 1) 
-    colnames(wfm)
-  else rownames(wfm)
+    if (wordmargin(wfm) == 1) 
+        colnames(wfm)
+    else rownames(wfm)
 }
 
 is.wfm <- function (x) {
-  nms <- names(dimnames(x))
-  !is.null(nms) && identical(sort(nms), c("docs", "words"))
+    nms <- names(dimnames(x))
+    !is.null(nms) && identical(sort(nms), c("docs", "words"))
 }
 
 #' @export
 wordmargin <- function (x) {
-  ifelse(names(dimnames(x))[1] == "words", 1, 2)
+    ifelse(names(dimnames(x))[1] == "words", 1, 2)
 }
 
 #' sort a dfm by one or more margins
@@ -432,16 +436,16 @@ wordmargin <- function (x) {
 #' dfmSort(dtm)[, 1:10]
 #' dfmSort(dtm, "both")[, 1:10]
 dfmSort <- function(x, margin = c("words", "docs", "both"), decreasing=TRUE) {
-  margin <- match.arg(margin)
-  if (margin=="words") {
-    x <- x[, order(colSums(x), decreasing=decreasing)]
-  } else if (margin=="docs") {
-    x <- x[order(rowSums(x), decreasing=decreasing), ]
-  } else if (margin=="both") {
-    x <- x[order(rowSums(x), decreasing=decreasing), 
-           order(colSums(x), decreasing=decreasing)]
-  }
-  return(x)
+    margin <- match.arg(margin)
+    if (margin=="words") {
+        x <- x[, order(colSums(x), decreasing=decreasing)]
+    } else if (margin=="docs") {
+        x <- x[order(rowSums(x), decreasing=decreasing), ]
+    } else if (margin=="both") {
+        x <- x[order(rowSums(x), decreasing=decreasing), 
+               order(colSums(x), decreasing=decreasing)]
+    }
+    return(x)
 }
 
 

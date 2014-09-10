@@ -1,5 +1,5 @@
 
-#' @export
+# @export
 index <- function(corp){
 
   # the aim here is to use a list like a dictionary/hashtable
