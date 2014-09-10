@@ -58,7 +58,7 @@ directory <- function(path) {
 #' by \code{sep} or from meta-data embedded in the text file header (\code{headers}).
 #' @param docvarnames Character vector of variable names for \code{docvars}
 #' @param sep Separator if \link{docvar} names are taken from the filenames.
-#' @warning Only files with the extension \code{.txt} are read in using the directory method.
+# @warning Only files with the extension \code{.txt} are read in using the directory method.
 #' @rdname corpus
 #' @export
 #' @examples 
