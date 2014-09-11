@@ -79,22 +79,22 @@ corpus.directory<- function(path, enc=NULL, docnames=NULL, docvarsfrom=c("filena
         parts <- strsplit(snames, sep)
         if (var(sapply(parts, length)) != 0)
             stop("Filename elements are not equal in length.")
-        docvars <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE), 
-                               stringsAsFactors=FALSE)
+        dvars <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE), 
+                            stringsAsFactors=FALSE)
         if (is.null(docvarnames)) {
-            names(docvars) <- paste("docvar", 1:ncol(docvars), sep="")  
+            names(dvars) <- paste("docvar", 1:ncol(dvars), sep="")  
         } else {
-            if (ncol(docvars) != length(docvarnames)) {
+            if (ncol(dvars) != length(docvarnames)) {
                 stop("The length of the parts of the filename does not equal the length of the attribute names.")
             }
         } 
         # remove the filename extension from the document names
-        names(texts) <- gsub(".txt", "", docvarnames)
+        names(texts) <- gsub(".txt", "", names(texts))
     } else {
         stop("headers argument not yet implemented.")
     }
     
-    NextMethod(texts=texts, enc=enc, docnames=docvarnames, docvars=docvars,
+    NextMethod(texts=texts, enc=enc, docnames=docvarnames, docvars=dvars,
                source=source, notes=notes, citation=citation, fnames=fnames)
 }
 
@@ -268,7 +268,7 @@ metadoc <- function(corp, field=NULL) {
     # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
     # (this check not yet implemented)
     field <- paste("_", field, sep="")
-    documents(corp)[, field] <- value
+    documents(corp)[field] <- value
     corp
 }
 

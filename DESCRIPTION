@@ -18,4 +18,5 @@ Suggests:
     RCurl,
     twitteR,
     XML
-LazyData: true
+URL: http://github.com/kbenoit/quanteda
+LazyData: TRUE

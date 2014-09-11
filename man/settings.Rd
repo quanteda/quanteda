@@ -20,4 +20,11 @@ collocations, etc. \code{settings(corp)} query the corps
 settings \code{settings(corp, settingname) <-} update the
 corpus settings
 }
+\examples{
+settings(tempcorpus, "stopwords")
+tempdfm <- dfm(inaugCorpus)
+tempdfmSW <- dfm(inaugCorpus, stopwords=TRUE)
+settings(inaugCorpus, "stopwords") <- TRUE
+tempdfmSW <- dfm(inaugCorpus)
+}
 

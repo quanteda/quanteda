@@ -1,4 +1,19 @@
 
+SETTINGS_OPTIONS <- c("stopwords",
+                      "collocations",
+                      "dictionary",
+                      "dictionary_regex",
+                      "stem",
+                      "delimiter_word",
+                      "delimiter_sentence",
+                      "delimiter_paragraph",
+                      "clean_tolower",
+                      "clean_removeDigits",
+                      "clean_removePunct") 
+DEFAULT_DELIM_SENTENCE <- ".!?"
+DEFAULT_DELIM_WORD <- " "
+DEFAULT_DELIM_PARAGRAPH <- "\n\n"
+
 #' Get or set the corpus settings
 #' 
 #' Get or set various settings in the corpus for the treatment of texts, such as rules for 
@@ -6,6 +21,12 @@
 #' \code{settings(corp)}  query the corps settings
 #' \code{settings(corp, settingname) <-}  update the corpus settings
 #' @param corp Corpus from/to which settings are queried or applied
+#' @examples
+#' settings(tempcorpus, "stopwords")
+#' tempdfm <- dfm(inaugCorpus)
+#' tempdfmSW <- dfm(inaugCorpus, stopwords=TRUE)
+#' settings(inaugCorpus, "stopwords") <- TRUE
+#' tempdfmSW <- dfm(inaugCorpus)
 #' @export 
 settings <- function(corp, fields=NULL) {
     if (is.null(fields)) {

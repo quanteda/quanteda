@@ -1,6 +1,5 @@
-.Rproj.user
-.Rhistory
-.RData
-quanteda_kenlocal_gh.Rproj
+.R*
+*.Rproj
 .Rd2pdf*
-.git*
+.gitignore
+.Rproj.user

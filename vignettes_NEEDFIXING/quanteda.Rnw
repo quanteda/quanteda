@@ -189,7 +189,7 @@ library(quanteda)
                                      #sep="_")
 
 data(inaugCorpus)
-inaugCorpus <- subset(inaugCorpus, year=="2010",)
+# inaugCorpus <- subset(inaugCorpus, year=="2010")
 @
 
 This creates a new quanteda corpus object where each text has been associated values for its attribute types extracted from the filename:
