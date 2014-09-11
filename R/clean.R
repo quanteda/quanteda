@@ -1,13 +1,13 @@
 
 #' @export
 cleanSingleNew <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE) {
-    if (removeDigits){
+    if (removeDigits) {
         s <- gsub("[[:digit:]]", "", s)
     } 
-    if (removePunct){
+    if (removePunct) {
         s <- gsub("[[:punct:]]", "", s)
     }
-    if (lower){
+    if (lower) {
         s <- tolower(s)
     }
     return(s)
@@ -19,12 +19,12 @@ clean <- function(x, ...) {
 }
 
 #' @export
-clean.character <- function(s, removeDigits=TRUE, removePunct=FALSE, lower=TRUE, ...) {
+clean.character <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, ...) {
     return(sapply(s, cleanSingleNew, removeDigits=removeDigits, removePunct=removePunct, lower=lower))
 }
 
 #' @export
-clean.corpus <- function(corpus, removeDigits=TRUE, removePunct=FALSE, lower=TRUE, ...) {
+clean.corpus <- function(corpus, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, ...) {
     texts(corpus) <- clean(texts(corpus), removeDigits=removeDigits, removePunct=removePunct, lower=lower)
     return(corpus)
 }

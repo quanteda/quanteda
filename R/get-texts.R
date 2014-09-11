@@ -17,7 +17,7 @@ getRootFileNames <- function(longFilenames) {
   ## might need to detect .Platform$OS.type to change the delimiter
   delim <- "/"
   osName <- (Sys.info()[['sysname']] )
-  if(osName=="Windows") { delim <- "\\\\" }
+  if (osName=="Windows") { delim <- "\\\\" }
   splitFilenames <- strsplit(longFilenames, delim)
   return(sapply(splitFilenames, tail, n=1))
 }
@@ -51,6 +51,8 @@ getTextFiles <- function(filenames, textnames=NULL, enc="unknown", verbose=FALSE
   ifelse(is.null(textnames), 
          names(textsvec) <- getRootFileNames(filenames),
          names(textsvec) <- textnames)
+  # apply encoding
+  Encoding(textsvec) <- enc
   return(textsvec)
 }
 
@@ -69,9 +71,9 @@ getTextFiles <- function(filenames, textnames=NULL, enc="unknown", verbose=FALSE
 #' \dontrun{
 #' getTextDir('/home/paul/documents/')
 #' }
-getTextDir <- function(dirname, enc="detect") {
+getTextDir <- function(dirname, enc="detect", pattern="\\.txt$") {
   # get all files from a directory
-  return(getTextFiles(list.files(dirname, full.names=TRUE), enc=enc) )
+  return(getTextFiles(list.files(dirname, pattern=pattern, full.names=TRUE), enc=enc) )
 }
 
 #' provides a gui interface to choose a gui to load texts from

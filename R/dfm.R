@@ -54,6 +54,8 @@ dfm <- function(corp,
                 verbose=TRUE, 
                 dictionary=NULL,
                 dictionary_regex=FALSE,
+                clean=TRUE,
+                removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
                 addto=NULL) {
   UseMethod("dfm")
 }
@@ -70,6 +72,8 @@ dfm.corpus <- function(corp,
                        verbose=TRUE, 
                        dictionary=NULL,
                        dictionary_regex=FALSE,
+                       clean=TRUE,
+                       removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
                        addto=NULL) {
   
     if (!is.null(corp$tokens)) {
@@ -114,6 +118,8 @@ dfm.character <- function(textvec,
                           verbose=TRUE, 
                           dictionary=NULL,
                           dictionary_regex=FALSE,
+                          clean=TRUE,
+                          removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
                           addto=NULL) {
     # if (verbose & parent.env(dfm.character) != dfm.corpus) cat("Creating dfm: ...")
     if (verbose==TRUE) cat("Creating dfm from character vector ...")
@@ -122,7 +128,13 @@ dfm.character <- function(textvec,
         names(textvec) <- factor(paste("text", 1:length(textvec), sep=""))
     }
     textnames <- factor(names(textvec))
-    tokenizedTexts <- sapply(textvec, tokenizeSingle, simplify=FALSE)
+    
+    # clean options
+    if (clean) {
+        textvec <- clean(textvec, removeDigits, removePunct, lower)
+    }
+    
+    tokenizedTexts <- tokenize(textvec, clean=FALSE)
     if (stem==TRUE) {
         require(SnowballC, quietly=TRUE)
         if (verbose) cat(" stemming ...")

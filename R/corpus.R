@@ -209,12 +209,12 @@ metacorpus <- function(corp, fields=NULL) {
 
 
 # internal accessor for documents object
-# @export
+#' @export
 documents <- function(corp) {
     corp$documents
 }
 # internal replacement function for documents
-# @export
+#' @export
 "documents<-" <- function(corp, value) {
     corp$documents <- value
     corp

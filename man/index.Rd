@@ -44,5 +44,6 @@ mycorpus <- corpus(uk2010immig)
 mycorpus
 index(mycorpus)
 mycorpus
+mydfm <- dfm(mycorpus)
 }
 

@@ -6,7 +6,7 @@
 \usage{
 tokenize(x, ...)
 
-\method{tokenize}{character}(text, clean = TRUE, simplify = FALSE)
+\method{tokenize}{character}(text, clean = FALSE, simplify = FALSE)
 
 \method{tokenize}{corpus}(corpus, ...)
 }

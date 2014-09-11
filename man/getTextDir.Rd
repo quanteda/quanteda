@@ -2,7 +2,7 @@
 \alias{getTextDir}
 \title{loads all text files from a given directory}
 \usage{
-getTextDir(dirname, enc = "detect")
+getTextDir(dirname, enc = "detect", pattern = "\\\\.txt$")
 }
 \arguments{
   \item{dirname}{A directory path}

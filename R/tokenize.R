@@ -2,7 +2,7 @@
 # with scan
 # profiling shows that using scan is 3x faster than using strsplit
 #' @export
-tokenizeSingle <- function(s, clean=TRUE) {
+tokenizeSingle <- function(s, clean=FALSE) {
     if (clean) {
         s <- clean(s)
     }
@@ -23,12 +23,12 @@ tokenize <- function(x, ...) {
 #' @S3method tokenize character
 #' @rdname tokenize
 #' @export
-tokenize.character <- function(text, clean=TRUE, simplify=FALSE) {
+tokenize.character <- function(text, clean=FALSE, simplify=FALSE) {
     # should pass ... from parent functions, so that these can be
     # passed to clean().  I suggest not using "clean" as an argument.
     # instead, let the clean() defaults come into effect, unless
     # overrides are passed through ...
-    result <- lapply(text, tokenizeSingle, clean=clean)
+    result <- lapply(text, tokenizeSingle, clean)
     if (simplify | length(result)==1) {
         result <- unlist(result)
     }
@@ -40,7 +40,7 @@ tokenize.character <- function(text, clean=TRUE, simplify=FALSE) {
 #' @export
 tokenize.corpus <- function(corpus, ...) {
     # get the settings for clean from the corpus and use those, 
-    # unless more specific arguments are passed.
+    # unless more specific arguments are passed -- ADD THE ABILITY TO PASS THESE
     tokenize(texts(corpus), ...)
 }
 
@@ -51,16 +51,16 @@ tokenize.corpus <- function(corpus, ...) {
 ########
 
 
-#' index the tokens in a corpus
+#' preprocess the tokens in a corpus
 #'
 #' Applies pre-processing rules to the text and compiles a frequency table of features (word types)
 #' including counts of types, tokens, sentences, and paragraphs.
-#' @note This is nothing close to a true "index" but will eventually become a better
+#' @note This will eventually become an
 #' indexing function.  At the moment it creates and saves a \link{dfm} in addition to 
 #' some summary information compiled from this, in order to speed up subsequent processing.
 #' Unlike most R functions which return a value, this one changes the object passed
 #' to it.  (And they say R can't pass by reference...)
-#' @param corp Corpus to be indexed
+#' @param corp Corpus to be preprocessed
 #' @return no return but modifies the object in place by changing
 #' @return \item{tokens, }{a list consisting of the following:}
 #' @return \item{$dfm}{A \link{dfm} document-feature matrix object created with \link{settings}.}
@@ -68,14 +68,14 @@ tokenize.corpus <- function(corpus, ...) {
 #' @return \item{$ntypes}{A vector of type counts for each document.}
 #' @return \item{$nsents}{A vector of sentence counts for each document.}
 #' @return \item{$nparagr}{A vector of paragraph counts for each document.}
-#' @export
+# @export
 #' @examples
 #' mycorpus <- corpus(uk2010immig)
 #' mycorpus
-#' index(mycorpus)
+#' preprocess(mycorpus)
 #' mycorpus
 #' mydfm <- dfm(mycorpus)
-index <- function(corp) {
+preprocess <- function(corp) {
     thisdfm <- dfm(corp, 
                    stem=settings(corp, "stem"),
                    stopwords=settings(corp, "stopwords"),

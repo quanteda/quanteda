@@ -6,15 +6,18 @@
 \usage{
 dfm(corp, feature = c("word"), stem = FALSE, stopwords = NULL,
   bigram = FALSE, groups = NULL, verbose = TRUE, dictionary = NULL,
-  dictionary_regex = FALSE, addto = NULL)
+  dictionary_regex = FALSE, clean = TRUE, removeDigits = TRUE,
+  removePunct = TRUE, lower = TRUE, addto = NULL)
 
 \method{dfm}{corpus}(corp, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, groups = NULL, verbose = TRUE,
-  dictionary = NULL, dictionary_regex = FALSE, addto = NULL)
+  dictionary = NULL, dictionary_regex = FALSE, clean = TRUE,
+  removeDigits = TRUE, removePunct = TRUE, lower = TRUE, addto = NULL)
 
 \method{dfm}{character}(textvec, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, verbose = TRUE, dictionary = NULL,
-  dictionary_regex = FALSE, addto = NULL)
+  dictionary_regex = FALSE, clean = TRUE, removeDigits = TRUE,
+  removePunct = TRUE, lower = TRUE, addto = NULL)
 }
 \arguments{
   \item{corp}{Corpus from which to generate the
