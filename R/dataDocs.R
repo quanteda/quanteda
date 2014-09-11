@@ -15,4 +15,3 @@ NULL
 #' @title Texts of UK 2010 manifestos on immigration
 #' @docType data
 NULL
-
