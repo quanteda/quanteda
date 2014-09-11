@@ -1,28 +1,4 @@
 
-####
-#### PACKAGE GLOBALS
-####
-
-#
-# Note: alternative would be to have (also) system settings that would govern the creation
-# of new corpus objects.  
-#
-
-SETTINGS_OPTIONS <- c("stopwords",
-                      "collocations",
-                      "dictionary",
-                      "dictionary_regex",
-                      "stem",
-                      "delimiter_word",
-                      "delimiter_sentence",
-                      "delimiter_paragraph",
-                      "clean_tolower",
-                      "clean_removeDigits",
-                      "clean_removePunct") 
-DEFAULT_DELIM_SENTENCE <- ".!?"
-DEFAULT_DELIM_WORD <- " "
-DEFAULT_DELIM_PARAGRAPH <- "\n\n"
-
 #' Get or set the corpus settings
 #' 
 #' Get or set various settings in the corpus for the treatment of texts, such as rules for 
@@ -32,11 +8,12 @@ DEFAULT_DELIM_PARAGRAPH <- "\n\n"
 #' @param corp Corpus from/to which settings are queried or applied
 #' @export 
 settings <- function(corp, fields=NULL) {
-    if (!(fields %in% SETTINGS_OPTIONS)) stop(paste(fields, "not valid setting."))
-    if (is.null(fields))
+    if (is.null(fields)) {
         corp$settings
-    else
+    } else {
+        if (!(fields %in% SETTINGS_OPTIONS)) stop(paste(fields, "not valid setting."))
         unlist(corp$settings[fields])
+    }
 }
 
 # replacement function for corpus settings
@@ -72,4 +49,28 @@ settingsReset <- function(corp) {
     corp$settings <- settingsInitialize()
 }
 
+#' @export
+settingsGet <- function(corp, match.call.list) {
+    callingenv <- parent.frame()
+    if (!exists(match.call.list$dictionary))
+        assign("dictionary", settings(corp, "dictionary"), callingenv)
+    if (!exists(match.call.list$dictionary_regex))
+        assign("dictionary_regex", settings(corp, "dictionary_regex"), callingenv)
+    if (!exists(match.call.list$stem))
+        assign("stem", settings(corp, "stem"), callingenv)   
+    if (!exists(match.call.list$stopwords))
+        assign("stopwords", settings(corp, "stopwords"), callingenv)
+    if (!exists(match.call.list$removeDigits))
+        assign("removeDigits", settings(corp, "clean_removeDigits"), callingenv)
+    if (!exists(match.call.list$removePunct))
+        assign("removePunct", settings(corp, "clean_removePunct"), callingenv)
+    if (!exists(match.call.list$lower))
+        assign("lower", settings(corp, "clean_tolower"), callingenv)
+    if (!exists(match.call.list$collocations))
+        assign("collocations", settings(corp, "collocations"), callingenv)
+}
     
+# clean=TRUE,
+# removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
+# addto=NULL
+

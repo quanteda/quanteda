@@ -41,6 +41,7 @@
 #' ## removing stopwords
 #' testText <- "The quick brown fox named Seamus jumps over the lazy dog Rory, with Tom's newpaper in his mouth."#
 #' testCorpus <- corpus(testText)
+#' settings(testCorpus, "stopwords")
 #' dfm(testCorpus, stopwords=TRUE)
 #' if (require(tm)) {
 #' }
@@ -75,7 +76,10 @@ dfm.corpus <- function(corp,
                        clean=TRUE,
                        removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
                        addto=NULL) {
-  
+    
+    # use corpus settings unless overrridden by call
+    settingsGet(corp, as.list(match.call()))
+    
     if (!is.null(corp$tokens)) {
         if (verbose) cat("Using dfm found in corpus.")
         return(corp$tokens$dfm)
