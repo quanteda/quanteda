@@ -258,9 +258,9 @@ texts <- function(corp) {
 #' @param rownames If TRUE, overwrite the names of the documents with names from assigned object.
 #' @rdname texts
 #' @export
-"texts<-" <- function(corp, value, rownames=FALSE) {
+"texts<-" <- function(corp, value) { #}, rownames=FALSE) {
     documents(corp)$texts <- value
-    if (rownames) rownames(documents(corp)) <- names(value) 
+    # if (rownames) rownames(documents(corp)) <- names(value) 
     return(corp)
 }
 
@@ -479,7 +479,8 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
         vars <- c(1, eval(selectExpr, nl, parent.frame()))
     }
     # implement subset, select, and drop
-    documents(corpus) <- documents(corpus)[rows, vars, drop=drop]
+    # documents(corpus) <- documents(corpus)[rows, vars, drop=drop]
+    documents(corpus) <- corpus$documents[rows, vars, drop=drop]
     return(corpus)
 }
 
@@ -496,10 +497,10 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
 #' @examples
 #' \dontrun{
 #' data(inaugCorpus)
-#' inaugCorpus <- subset(inaugCorpus, year==2010)
-#' summary(iebudgets2010)
-#' iebudgetsCarter <- subset(iebudgets, speaker="Carter", select=c(speaker, year))
-#' summary(iebudgetsLenihan)
+#' summary(subset(inaugCorpus, Year>1980))
+# summary(iebudgets2010)
+# iebudgetsCarter <- subset(iebudgets, speaker="Carter", select=c(speaker, year))
+# summary(iebudgetsLenihan)
 #' }
 subset.corpus <- function(corpus, subset=NULL, select=NULL) {
     tempcorp <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
