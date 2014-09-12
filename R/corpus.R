@@ -272,6 +272,26 @@ metadoc <- function(corp, field=NULL) {
     corp
 }
 
+# replacement function for document-level metadata
+#
+# to get this to work with indexes, e.g. 
+# metadoc(UDHRcorpus, "language")[1] <- "1st Row Only"
+# or
+# language(UDHRcorpus)[1] <- "1st row only"
+# is trickier.  Solution lies in nesting a complex "[" function
+# inside the calling function: see http://cran.r-project.org/doc/manuals/R-lang.html#Subset-assignment
+#
+#' @export
+"metadoc<-[" <- function(corp, value, field) {
+    # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
+    # (this check not yet implemented)
+    field <- paste("_", field, sep="")
+    documents(corp)[field] <- value
+    corp
+}
+
+
+
 # accessor for document variables
 #' @export
 docvars <- function(corp) {
@@ -366,6 +386,7 @@ language <- function(corp) {
 #' @export
 "language<-" <- function(corp, value){
     metadoc(corp, "language") <- value
+    # corp$documents$"_language" <- value
     corp
 }
 

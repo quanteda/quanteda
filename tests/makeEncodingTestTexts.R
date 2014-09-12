@@ -16,6 +16,12 @@ UDHRcorpus <- corpus(UDHRtexts, enc="UTF-8")
 metadoc(UDHRcorpus, "language") <- sapply(strsplit(docnames(UDHRcorpus), "_"), "[[", 2)
 metadoc(UDHRcorpus)
 
+metadoc(UDHRcorpus, "language") <- "Testing"
+metadoc(UDHRcorpus)
+metadoc(UDHRcorpus)$"_language"[1] <- "Replacement2"
+metadoc(UDHRcorpus)
+
+
 # make some new encodings - add a new one for Chinese
 documents(UDHRcorpus) <- rbind(documents(UDHRcorpus), documents(UDHRcorpus)[1,])
 texts(UDHRcorpus)[ndoc(UDHRcorpus)] <- iconv(texts(UDHRcorpus)[ndoc(UDHRcorpus)], "UTF-8", "CHINESE")
