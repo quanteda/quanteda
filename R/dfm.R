@@ -3,7 +3,7 @@
 #' returns a document by feature matrix compatible with austin.  A typical usage would
 #' be to produce a word-frequency matrix where the cells are counts of words by document.
 #' 
-#' @param corp Corpus from which to generate the document-feature matrix
+#' @param x Corpus or character vector from which to generate the document-feature matrix
 #' @param feature Feature to count (e.g. words)
 #' @param stem Stem the words
 #' @param stopwords A character vector of stopwords that will be removed from the text when constructing the \link{dfm}.  If \code{NULL} (default)
@@ -46,7 +46,7 @@
 #' if (require(tm)) {
 #' }
 #' 
-dfm <- function(corp,
+dfm <- function(x,
                 feature=c("word"),
                 stem=FALSE,
                 stopwords=NULL,
@@ -64,7 +64,7 @@ dfm <- function(corp,
 #' @rdname dfm
 #' @method dfm corpus
 #' @S3method dfm corpus
-dfm.corpus <- function(corp,
+dfm.corpus <- function(x,
                        feature=c("word"),
                        stem=FALSE,
                        stopwords=NULL,
@@ -78,30 +78,30 @@ dfm.corpus <- function(corp,
                        addto=NULL) {
     
     # use corpus settings unless overrridden by call
-    settingsGet(corp, as.list(match.call()))
+    # settingsGet(x, as.list(match.call()))
     
-    if (!is.null(corp$tokens)) {
+    if (!is.null(x$tokens)) {
         if (verbose) cat("Using dfm found in corpus.")
-        return(corp$tokens$dfm)
+        return(x$tokens$dfm)
     }
     
     if (verbose) cat("Creating dfm from a corpus: ... ")
     
     # subsets 
-    #if (!is.null(subset)) corp <- corpus.subset.inner(corp, substitute(subset))
+    #if (!is.null(subset)) x <- corpus.subset.inner(x, substitute(subset))
     
     # aggregation by group
     if (!is.null(groups)) {
         if (verbose) cat("aggregating by group: ", groups, "... ", sep="")
         if (length(groups)>1) {
-            group.split <- lapply(documents(corp)[, groups], as.factor)
-        } else group.split <- as.factor(documents(corp)[,groups])
-        texts <- split(texts(corp), group.split)
+            group.split <- lapply(documents(x)[, groups], as.factor)
+        } else group.split <- as.factor(documents(x)[,groups])
+        texts <- split(texts(x), group.split)
         texts <- sapply(texts, paste, collapse = " ")
         if (verbose) cat("complete ...")
     } else {
-        texts <- texts(corp)
-        names(texts) <- docnames(corp)
+        texts <- texts(x)
+        names(texts) <- docnames(x)
     }
     
     # changing verbose to 2 (instead of TRUE) means will not print message twice
@@ -109,18 +109,19 @@ dfm.corpus <- function(corp,
     tempdfm <- dfm(texts, feature=feature, stem=stem, stopwords=stopwords, bigram=bigram, 
                    verbose=2, dictionary=dictionary, dictionary_regex=dictionary_regex, 
                    addto=addto)
-    attr(tempdfm, "settings") <- settings(corp)
+    attr(tempdfm, "settings") <- settings(x)
     tempdfm
 }
 
 #' @rdname dfm
 #' @method dfm character
 #' @S3method dfm character
-dfm.character <- function(textvec,
+dfm.character <- function(x,
                           feature=c("word"),
                           stem=FALSE,
                           stopwords=NULL,
                           bigram=FALSE,
+                          groups=NULL,
                           verbose=TRUE, 
                           dictionary=NULL,
                           dictionary_regex=FALSE,
@@ -130,17 +131,17 @@ dfm.character <- function(textvec,
     # if (verbose & parent.env(dfm.character) != dfm.corpus) cat("Creating dfm: ...")
     if (verbose==TRUE) cat("Creating dfm from character vector ...")
     
-    if (is.null(names(textvec))) {
-        names(textvec) <- factor(paste("text", 1:length(textvec), sep=""))
+    if (is.null(names(x))) {
+        names(x) <- factor(paste("text", 1:length(x), sep=""))
     }
-    textnames <- factor(names(textvec))
+    textnames <- factor(names(x))
     
     # clean options
     if (clean) {
-        textvec <- clean(textvec, removeDigits, removePunct, lower)
+        x <- clean(x, removeDigits, removePunct, lower)
     }
     
-    tokenizedTexts <- tokenize(textvec, clean=FALSE)
+    tokenizedTexts <- tokenize(x, clean=FALSE)
     if (stem==TRUE) {
         require(SnowballC, quietly=TRUE)
         if (verbose) cat(" stemming ...")

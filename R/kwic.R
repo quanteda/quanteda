@@ -5,7 +5,7 @@
 ##' text and the word index number within the source text.  (Not the line number, since
 ##' the text may or may not be segmented using end-of-line delimiters.)
 ##' 
-##' @param text A text character scalar or a quanteda corpus.  (Currently does not support character vectors.)
+##' @param x A text character scalar or a quanteda corpus.  (Currently does not support character vectors.)
 ##' @param word A keyword chosen by the user.
 ##' @param window The number of context words to be displayed around the keyword.
 ##' @param regex If TRUE (default), then "word" is a regular expression, otherwise only match the whole word.
@@ -22,7 +22,7 @@
 ##' kwic(inaugTexts, "terror", regex=FALSE)  # returns only whole word, without trailing punctuation
 ##' data(iebudgets)
 ##' kwic(subset(iebudgets, year==2010), "Christmas", window=4) # on a corpus
-kwic <- function(text, word, window=5, regex=TRUE) {
+kwic <- function(x, word, window=5, regex=TRUE) {
     UseMethod("kwic")
 }
 
@@ -61,14 +61,14 @@ kwicSingleText <- function(text, word, window=5, regex=TRUE) {
 #' @param texts a vector of texts
 #' @rdname kwic
 #' @S3method kwic character
-kwic.character <- function(texts, word, window=5, regex=TRUE) {
-    contexts <- lapply(texts, kwicSingleText, word=word, window=window, regex=regex) #, USE.NAMES=FALSE)
+kwic.character <- function(x, word, window=5, regex=TRUE) {
+    contexts <- lapply(x, kwicSingleText, word=word, window=window, regex=regex) #, USE.NAMES=FALSE)
     if (sum(is.na(contexts))==length(contexts)) return(NA) # means no search term found
     # name the text vector
-    if (!is.null(names(texts))) {
-        names(contexts) <- names(texts)
+    if (!is.null(names(x))) {
+        names(contexts) <- names(x)
     } else {
-        names(contexts) <- paste("text", 1:length(texts), sep="")
+        names(contexts) <- paste("text", 1:length(x), sep="")
     }
     contexts <- contexts[!is.na(contexts)]
     for (l in 1:length(contexts)) {
@@ -87,7 +87,7 @@ kwic.character <- function(texts, word, window=5, regex=TRUE) {
 #' @param corp a quanteda corpus object
 #' @rdname kwic
 #' @S3method kwic corpus
-kwic.corpus <- function(corp, word, window=5, regex=TRUE) {
-    return(kwic(texts(corpus), word, window, regex))
+kwic.corpus <- function(x, word, window=5, regex=TRUE) {
+    return(kwic(texts(x), word, window, regex))
 }
 
