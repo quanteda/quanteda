@@ -5,20 +5,18 @@
 \alias{is.dfm}
 \title{Create a document-feature matrix from a corpus object}
 \usage{
-dfm(x, feature = c("word"), stem = FALSE, stopwords = NULL,
-  bigram = FALSE, groups = NULL, verbose = TRUE, dictionary = NULL,
-  dictionary_regex = FALSE, clean = TRUE, removeDigits = TRUE,
-  removePunct = TRUE, lower = TRUE, addto = NULL)
+dfm(x, ...)
 
 \method{dfm}{corpus}(x, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, groups = NULL, verbose = TRUE,
   dictionary = NULL, dictionary_regex = FALSE, clean = TRUE,
-  removeDigits = TRUE, removePunct = TRUE, lower = TRUE, addto = NULL)
+  removeDigits = TRUE, removePunct = TRUE, lower = TRUE, addto = NULL,
+  ...)
 
 \method{dfm}{character}(x, feature = c("word"), stem = FALSE,
-  stopwords = NULL, bigram = FALSE, groups = NULL, verbose = TRUE,
-  dictionary = NULL, dictionary_regex = FALSE, clean = TRUE,
-  removeDigits = TRUE, removePunct = TRUE, lower = TRUE, addto = NULL)
+  stopwords = NULL, bigram = FALSE, verbose = TRUE, dictionary = NULL,
+  dictionary_regex = FALSE, clean = TRUE, removeDigits = TRUE,
+  removePunct = TRUE, lower = TRUE, addto = NULL, ...)
 
 is.dfm(x)
 }

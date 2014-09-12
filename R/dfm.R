@@ -46,18 +46,18 @@
 #' if (require(tm)) {
 #' }
 #' 
-dfm <- function(x,
-                feature=c("word"),
-                stem=FALSE,
-                stopwords=NULL,
-                bigram=FALSE,
-                groups=NULL,
-                verbose=TRUE, 
-                dictionary=NULL,
-                dictionary_regex=FALSE,
-                clean=TRUE,
-                removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
-                addto=NULL) {
+dfm <- function(x, ...) {
+#                 feature=c("word"),
+#                 stem=FALSE,
+#                 stopwords=NULL,
+#                 bigram=FALSE,
+#                 groups=NULL,
+#                 verbose=TRUE, 
+#                 dictionary=NULL,
+#                 dictionary_regex=FALSE,
+#                 clean=TRUE,
+#                 removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
+#                 addto=NULL) {
   UseMethod("dfm")
 }
 
@@ -75,7 +75,7 @@ dfm.corpus <- function(x,
                        dictionary_regex=FALSE,
                        clean=TRUE,
                        removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
-                       addto=NULL) {
+                       addto=NULL, ...) {
     
     # use corpus settings unless overrridden by call
     # settingsGet(x, as.list(match.call()))
@@ -121,13 +121,13 @@ dfm.character <- function(x,
                           stem=FALSE,
                           stopwords=NULL,
                           bigram=FALSE,
-                          groups=NULL,
+                          # groups=NULL,
                           verbose=TRUE, 
                           dictionary=NULL,
                           dictionary_regex=FALSE,
                           clean=TRUE,
                           removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
-                          addto=NULL) {
+                          addto=NULL, ...) {
     # if (verbose & parent.env(dfm.character) != dfm.corpus) cat("Creating dfm: ...")
     if (verbose==TRUE) cat("Creating dfm from character vector ...")
     
