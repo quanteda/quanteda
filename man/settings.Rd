@@ -1,0 +1,44 @@
+\name{settings}
+\alias{settings}
+\alias{settings.corpus}
+\alias{settings.dfm}
+\alias{settings<-}
+\title{Get or set the corpus settings}
+\usage{
+settings(x, ...)
+
+\method{settings}{corpus}(corp, fields = NULL)
+
+settings(corp, fields) <- value
+
+\method{settings}{dfm}(x)
+}
+\arguments{
+  \item{corp}{Corpus from/to which settings are queried or
+  applied}
+
+  \item{fields}{a valid corpus setting field name}
+
+  \item{x}{dfm from which settings are queried}
+}
+\description{
+Get or set the corpus settings
+
+Get or set various settings in the corpus for the treatment
+of texts, such as rules for stemming, stopwords,
+collocations, etc. \code{settings(corp)} query the corps
+settings \code{settings(corp, settingname) <-} update the
+corpus settings
+
+Get the settings from a which a \link{dfm} was created
+}
+\examples{
+settings(tempcorpus, "stopwords")
+tempdfm <- dfm(inaugCorpus)
+tempdfmSW <- dfm(inaugCorpus, stopwords=TRUE)
+settings(inaugCorpus, "stopwords") <- TRUE
+tempdfmSW <- dfm(inaugCorpus)
+tempdfm <- dfm(inaugCorpus, stem=TRUE)
+settings(tempdfm)
+}
+

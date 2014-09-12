@@ -1,0 +1,101 @@
+\name{dfm}
+\alias{dfm}
+\alias{dfm.character}
+\alias{dfm.corpus}
+\alias{is.dfm}
+\title{Create a document-feature matrix from a corpus object}
+\usage{
+dfm(x, feature = c("word"), stem = FALSE, stopwords = NULL,
+  bigram = FALSE, groups = NULL, verbose = TRUE, dictionary = NULL,
+  dictionary_regex = FALSE, clean = TRUE, removeDigits = TRUE,
+  removePunct = TRUE, lower = TRUE, addto = NULL)
+
+\method{dfm}{corpus}(x, feature = c("word"), stem = FALSE,
+  stopwords = NULL, bigram = FALSE, groups = NULL, verbose = TRUE,
+  dictionary = NULL, dictionary_regex = FALSE, clean = TRUE,
+  removeDigits = TRUE, removePunct = TRUE, lower = TRUE, addto = NULL)
+
+\method{dfm}{character}(x, feature = c("word"), stem = FALSE,
+  stopwords = NULL, bigram = FALSE, groups = NULL, verbose = TRUE,
+  dictionary = NULL, dictionary_regex = FALSE, clean = TRUE,
+  removeDigits = TRUE, removePunct = TRUE, lower = TRUE, addto = NULL)
+
+is.dfm(x)
+}
+\arguments{
+  \item{x}{Corpus or character vector from which to
+  generate the document-feature matrix}
+
+  \item{feature}{Feature to count (e.g. words)}
+
+  \item{stem}{Stem the words}
+
+  \item{stopwords}{A character vector of stopwords that
+  will be removed from the text when constructing the
+  \link{dfm}.  If \code{NULL} (default) then no stopwords
+  will be applied.  If "TRUE" then it currently defaults to
+  \code{\link{stopwords}}.}
+
+  \item{groups}{Grouping variable for aggregating
+  documents}
+
+  \item{verbose}{Get info to screen on the progress}
+
+  \item{dictionary}{A list of character vector dictionary
+  entries, including regular expressions (see examples)}
+
+  \item{dictionary_regex}{\code{TRUE} means the dictionary
+  is already in regular expression format, otherwise it
+  will be converted from "wildcard" format}
+
+  \item{addto}{\code{NULL} by default, but if an existing
+  dfm object is specified, then the new dfm will be added
+  to the one named. If both \link{dfm}'s are built from
+  dictionaries, the combined dfm will have its
+  \code{Non_Dictionary} total adjusted.}
+}
+\value{
+A matrix object with row names equal to the document names
+and column names equal to the feature labels. This matrix
+has \code{names(dimnames) = c("docs", "words")} to make it
+conformable to an \link[austin]{wfm} object.
+}
+\description{
+returns a document by feature matrix compatible with
+austin.  A typical usage would be to produce a
+word-frequency matrix where the cells are counts of words
+by document.
+}
+\details{
+\code{is.dfm} returns \code{TRUE} if and only if its
+argument is a \link{dfm}.
+}
+\examples{
+data(inaugCorpus)
+wfm <- dfm(inaugCorpus)
+
+## by president, after 1960
+wfmByPres2010 <- dfm(subset(inaugCorpus, year>1960), groups="president")
+
+## with dictionaries
+mycorpus <- subset(inaugCorpus, year>1960)
+mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
+               opposition=c("Opposition", "reject", "notincorpus"),
+               taxing="taxing",
+               taxation="taxation",
+               taxregex="tax*")
+dictDfm <- dfm(mycorpus, dictionary=mydict)
+dictDfm
+
+## removing stopwords
+testText <- "The quick brown fox named Seamus jumps over the lazy dog Rory, with Tom's newpaper in his mouth."
+testCorpus <- corpus(testText)
+settings(testCorpus, "stopwords")
+dfm(testCorpus, stopwords=TRUE)
+if (require(tm)) {
+}
+}
+\author{
+Kenneth Benoit
+}
+

@@ -1,0 +1,39 @@
+\name{countSyllables}
+\alias{countSyllables}
+\title{Returns a count of the number of syllables in the input
+This function takes a text and returns a count of the number of syllables it contains.
+For British English words, the syllable count is exact and looked up from the CMU
+pronunciation dictionary. For any word not in the dictionary the syllable count
+is estimated by counting vowel clusters.}
+\usage{
+countSyllables(sourceText)
+}
+\arguments{
+  \item{sourceText}{Character vector of texts whose
+  syllables will be counted}
+}
+\value{
+numeric Named vector of counts of the number of syllables
+for each element of sourceText. When a word is not
+available in the lookup table, its syllables are estimated
+by counting the number of (English) vowels in the word.
+}
+\description{
+Returns a count of the number of syllables in the input
+This function takes a text and returns a count of the
+number of syllables it contains. For British English words,
+the syllable count is exact and looked up from the CMU
+pronunciation dictionary. For any word not in the
+dictionary the syllable count is estimated by counting
+vowel clusters.
+}
+\details{
+This only works for English.
+}
+\examples{
+countSyllables("This is an example sentence.")
+myTexts <- c("Text one.", "Superduper text number two.", "One more for the road.")
+names(myTexts) <- paste("myText", 1:3, sep="")
+countSyllables(myTexts)
+}
+

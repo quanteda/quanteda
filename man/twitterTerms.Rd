@@ -1,0 +1,34 @@
+\name{twitterTerms}
+\alias{twitterTerms}
+\title{make a corpus object from results of a twitter REST search}
+\usage{
+twitterTerms(query, numResults = 50, key, cons_secret, token, access_secret)
+}
+\arguments{
+  \item{query}{Search string for twitter}
+
+  \item{numResults}{Number of results desired.}
+
+  \item{key}{Number of results desired.}
+
+  \item{key}{'your consumer key here'}
+
+  \item{cons_secret}{'your consumer secret here'}
+
+  \item{token}{'your access token here'}
+
+  \item{access_secret}{'your access secret here'}
+}
+\description{
+All of the attributes returned by the twitteR library call
+are included as attributes in the corpus. A oauth key is
+required, for further instruction about the oauth processs
+see: https://dev.twitter.com/apps/new and the twitteR
+documentation
+}
+\examples{
+\dontrun{
+twCorp <- twitterTerms('example', 10, key, cons_secret, token, access_secret)
+}
+}
+

@@ -1,0 +1,28 @@
+\name{texts}
+\alias{texts}
+\alias{texts<-}
+\title{Corpus texts}
+\usage{
+texts(corp)
+
+texts(corp) <- value
+}
+\arguments{
+  \item{corp}{A quanteda corpus object}
+
+  \item{rownames}{If TRUE, overwrite the names of the
+  documents with names from assigned object.}
+}
+\value{
+For \code{texts}, a character vector of the texts in the
+corpus. For \code{texts <-}, the corpus with the updated
+texts.
+}
+\description{
+Get or replace the texts in a quanteda corpus object.
+}
+\examples{
+texts(inaugCorpus)[1]
+texts(inaugTexts)[55] <- "GW Bush's second inaugural address, the condensed version."
+}
+

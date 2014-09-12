@@ -1,0 +1,55 @@
+\name{naiveBayesText}
+\alias{naiveBayesText}
+\title{Naive Bayes classifier for texts}
+\usage{
+naiveBayesText(x, y, smooth = 1, prior = "uniform",
+  distribution = "multinomial", ...)
+}
+\arguments{
+  \item{x}{character vector of training texts}
+
+  \item{y}{character vector of test texts}
+
+  \item{smooth}{smoothing parameter for feature counts by
+  class}
+
+  \item{prior}{prior distribution on texts, see details}
+
+  \item{distribution}{count model for text features, can be
+  \code{multinomial} or \code{Bernoulli}}
+
+  \item{...}{}
+}
+\value{
+A list of return values, consisting of:
+
+\item{call}{original function call}
+
+\item{PwGc}{probability of the word given the class
+(empirical likelihood)}
+
+\item{Pc}{class prior probability}
+
+\item{PcGw}{posterior class probability given the word}
+
+\item{Pw}{baseline probability of the word}
+
+\item{data}{list consisting of \code{x} training class, and
+\code{y} test class}
+
+\item{distribution}{the distribution argument}
+
+\item{prior}{argument passed as a prior}
+
+\item{smooth}{smoothing parameter}
+}
+\description{
+Naive Bayes classifier for texts
+}
+\details{
+Currently working for vectors of texts.
+}
+\author{
+Kenneth Benoit
+}
+
