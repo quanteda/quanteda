@@ -3,6 +3,12 @@
 library(quanteda)
 inaugTexts <- getTextDir('~/Dropbox/QUANTESS/corpora/inaugural')
 save(inaugTexts, file=".//data//inaugTexts.RData")
+inaugCorpus <- iconv(inaugTexts, from="latin1", to="ASCII")
 
-inaugCorpus <- corpus(inaugTexts)
-save(inaugCorpus, file=".//data//inaugCorpus.RData")
+d <- directory('~/Dropbox/QUANTESS/corpora/inaugural')
+
+inaugCorpus <- corpus(d, docvarsfrom ="filenames", docvarnames = c("Year", "President"), sep = "-")
+
+x <- dfm(inaugCorpus)
+
+save(inaugCorpus, file = ".//data//inaugCorpus.RData")

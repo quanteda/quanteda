@@ -75,7 +75,7 @@ corpus.directory<- function(path, enc=NULL, docnames=NULL, docvarsfrom=c("filena
     if (class(path)[1] != "directory") stop("path must be a directory")
     docvarsfrom <- match.arg(docvarsfrom)
     texts <- getTextDir(path)
-    if (docvarsfrom=='filenames') {
+    if (docvarsfrom == 'filenames') {
         fnames <- list.files(path, full.names=TRUE)
         snames <- getRootFileNames(fnames)
         snames <- gsub(".txt", "", snames)
@@ -88,16 +88,17 @@ corpus.directory<- function(path, enc=NULL, docnames=NULL, docvarsfrom=c("filena
             names(dvars) <- paste("docvar", 1:ncol(dvars), sep="")  
         } else {
             if (ncol(dvars) != length(docvarnames)) {
-                stop("The length of the parts of the filename does not equal the length of the attribute names.")
+                stop("The length of the parts of the filename does not equal the length of the variable name list.")
             }
+            names(dvars) <- docvarnames
         } 
         # remove the filename extension from the document names
         names(texts) <- gsub(".txt", "", names(texts))
     } else {
         stop("headers argument not yet implemented.")
     }
-    
-    NextMethod(texts=texts, enc=enc, docnames=docvarnames, docvars=dvars,
+
+    NextMethod(texts=texts, enc=enc, docnames=docnames, docvars=dvars,
                source=source, notes=notes, citation=citation, fnames=fnames)
 }
 
@@ -380,7 +381,7 @@ ndoc <- function(x) {
 #' Returns the number of documents in a corpus objects
 #' @param corp a quanteda corpus object
 #' @rdname ndoc
-#' @value an integer (count) of the number of documents in the corpus
+#' @return an integer (count) of the number of documents in the corpus
 #' @examples ndoc(inaugCorpus)
 #' @export
 ndoc.corpus <- function(corp) {
