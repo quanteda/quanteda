@@ -167,10 +167,15 @@ corpus.character <- function(texts, enc=NULL, docnames=NULL, docvars=NULL,
 #' @export
 print.corpus <- function(corp) {
     cat("Corpus consisting of ", ndoc(corp), " document",
-        ifelse(ndoc(corp)>1, "s", ""),
-        ", ",
-        ifelse(is.null(corp$tokens), "un", ""),
-        "indexed.\n", sep="")
+        ifelse(ndoc(corp)>1, "s", ""), ".\n", sep="")
+#         ", ",
+#         ifelse(is.null(corp$tokens), "un", ""),
+#         "indexed.\n", sep="")
+#     cat("Settings:")
+#      tempSettings <- unlist(settings(corp))
+#      for (i in 1:length(tempSettings)) {
+#          print(tempSettings[i])
+#      }
 }
 
 #' @details \code{is.corpus} returns \code{TRUE} if the object is a corpus

@@ -41,7 +41,7 @@ settings.corpus <- function(corp, fields=NULL) {
         corp$settings
     } else {
         if (!(fields %in% SETTINGS_OPTIONS)) stop(paste(fields, "not valid setting."))
-        unlist(corp$settings[fields])
+        corp$settings[fields]
     }
 }
 
