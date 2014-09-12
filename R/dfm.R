@@ -106,9 +106,11 @@ dfm.corpus <- function(corp,
     
     # changing verbose to 2 (instead of TRUE) means will not print message twice
     # when the function calls dfm.character
-    return(dfm(texts, feature=feature, stem=stem, stopwords=stopwords, bigram=bigram, 
-               verbose=2, dictionary=dictionary, dictionary_regex=dictionary_regex, 
-               addto=addto))
+    tempdfm <- dfm(texts, feature=feature, stem=stem, stopwords=stopwords, bigram=bigram, 
+                   verbose=2, dictionary=dictionary, dictionary_regex=dictionary_regex, 
+                   addto=addto)
+    attr(tempdfm, "settings") <- settings(corp)
+    tempdfm
 }
 
 #' @rdname dfm
@@ -227,6 +229,7 @@ dfm.character <- function(textvec,
     dfm <- dfm[(1:nrow(dfm))[order(originalSortOrder)], ]
     
     if(verbose) cat(" done. \n")
+    class(dfm) <- c(class(dfm), "dfm")
     return(dfm)
 }
 
@@ -423,10 +426,19 @@ docs <- function (wfm) {
     else rownames(wfm)
 }
 
+#' @details \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
+#' @rdname dfm
+#' @export
+is.dfm <- function(x) {
+    "dfm" %in% class(x) 
+}
+
 is.wfm <- function (x) {
     nms <- names(dimnames(x))
     !is.null(nms) && identical(sort(nms), c("docs", "words"))
 }
+
+
 
 #' @export
 wordmargin <- function (x) {

@@ -14,13 +14,21 @@ DEFAULT_DELIM_SENTENCE <- ".!?"
 DEFAULT_DELIM_WORD <- " "
 DEFAULT_DELIM_PARAGRAPH <- "\n\n"
 
+
 #' Get or set the corpus settings
 #' 
+#' @export 
+settings <- function(x, ...) {
+    UseMethod("settings")
+}
+
+
 #' Get or set various settings in the corpus for the treatment of texts, such as rules for 
 #' stemming, stopwords, collocations, etc.
 #' \code{settings(corp)}  query the corps settings
 #' \code{settings(corp, settingname) <-}  update the corpus settings
 #' @param corp Corpus from/to which settings are queried or applied
+#' @rdname settings
 #' @examples
 #' settings(tempcorpus, "stopwords")
 #' tempdfm <- dfm(inaugCorpus)
@@ -28,7 +36,7 @@ DEFAULT_DELIM_PARAGRAPH <- "\n\n"
 #' settings(inaugCorpus, "stopwords") <- TRUE
 #' tempdfmSW <- dfm(inaugCorpus)
 #' @export 
-settings <- function(corp, fields=NULL) {
+settings.corpus <- function(corp, fields=NULL) {
     if (is.null(fields)) {
         corp$settings
     } else {
@@ -43,10 +51,23 @@ settings <- function(corp, fields=NULL) {
 #' @param fields a valid corpus setting field name
 #' @export
 "settings<-" <- function(corp, value, fields) {
+    if (is.dfm(corp)) stop("Cannot assign settings to a dfm object.")
     if (!(fields %in% SETTINGS_OPTIONS)) stop(paste(fields, "not valid setting."))
     corp$settings[fields] <- value
     corp
 }
+
+#' Get the settings from a which a \link{dfm} was created
+#' @param x dfm from which settings are queried
+#' @rdname settings
+#' @examples
+#' tempdfm <- dfm(inaugCorpus, stem=TRUE)
+#' settings(tempdfm)
+#' @export 
+settings.dfm <- function(x) {
+    attributes(x)$settings
+}
+
 
 
 #' @export

@@ -17,6 +17,9 @@
 # @param notes Optional string containing notes about who created the text, warnings, To Dos, etc.
 # todo examples
 # @param citation Optional string specifying the citation information for this corpus.
+#' @return A corpus class object containing the original texts, document-level variables, 
+#' document-level metadata, corpus-level metadata, and default settings for subsequent 
+#' processing of the corpus.
 #' @export
 corpus <- function(texts, ...) {
   UseMethod("corpus")
@@ -170,6 +173,12 @@ print.corpus <- function(corp) {
         "indexed.\n", sep="")
 }
 
+#' @details \code{is.corpus} returns \code{TRUE} if the object is a corpus
+#' @rdname corpus
+#' @export
+is.corpus <- function(x) {
+    "corpus" %in% class(x)
+}
 
 #' Corpus-level metadata
 #' 

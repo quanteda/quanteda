@@ -3,6 +3,7 @@
 \alias{corpus.character}
 \alias{corpus.default}
 \alias{corpus.directory}
+\alias{is.corpus}
 \title{Constructor for corpus objects}
 \usage{
 corpus(texts, ...)
@@ -15,6 +16,8 @@ corpus(texts, ...)
 
 \method{corpus}{character}(texts, enc = NULL, docnames = NULL,
   docvars = NULL, source = NULL, notes = NULL, citation = NULL, ...)
+
+is.corpus(x)
 }
 \arguments{
   \item{texts}{A character vector of texts, or a filepath
@@ -47,11 +50,21 @@ corpus(texts, ...)
   \item{notes}{A string containing notes about who created
   the text, warnings, To Dos, etc.}
 }
+\value{
+A corpus class object containing the original texts,
+document-level variables, document-level metadata,
+corpus-level metadata, and default settings for subsequent
+processing of the corpus.
+}
 \description{
 Creates a corpus from a character vector (of texts), or an
 object such as a directory containing text files.
 Corpus-level meta-data can be specified at creation,
 containing (for example) citation information and notes.
+}
+\details{
+\code{is.corpus} returns \code{TRUE} if the object is a
+corpus
 }
 \examples{
 \dontrun{corpus()  # pop up a file selection GUI interface

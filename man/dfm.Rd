@@ -2,6 +2,7 @@
 \alias{dfm}
 \alias{dfm.character}
 \alias{dfm.corpus}
+\alias{is.dfm}
 \title{Create a document-feature matrix from a corpus object}
 \usage{
 dfm(corp, feature = c("word"), stem = FALSE, stopwords = NULL,
@@ -18,6 +19,8 @@ dfm(corp, feature = c("word"), stem = FALSE, stopwords = NULL,
   stopwords = NULL, bigram = FALSE, verbose = TRUE, dictionary = NULL,
   dictionary_regex = FALSE, clean = TRUE, removeDigits = TRUE,
   removePunct = TRUE, lower = TRUE, addto = NULL)
+
+is.dfm(x)
 }
 \arguments{
   \item{corp}{Corpus from which to generate the
@@ -62,6 +65,10 @@ returns a document by feature matrix compatible with
 austin.  A typical usage would be to produce a
 word-frequency matrix where the cells are counts of words
 by document.
+}
+\details{
+\code{is.dfm} returns \code{TRUE} if and only if its
+argument is a \link{dfm}.
 }
 \examples{
 data(inaugCorpus)
