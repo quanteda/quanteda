@@ -515,7 +515,7 @@ subset.corpus <- function(corpus, subset=NULL, select=NULL) {
 #' @param corp corpus to be summarized
 #' @param n maximum number of texts to describe, default=100
 #' @param verbose FALSE to turn off printed output
-#' @param meta TRUE to include document-level meta-data
+#' @param showmeta TRUE to include document-level meta-data
 #' @export
 #' @examples
 #' summary(inaugCorpus)
@@ -524,20 +524,21 @@ subset.corpus <- function(corpus, subset=NULL, select=NULL) {
 #' summary(mycorpus, meta=TRUE)  # show the meta-data
 #' mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
 #' mysummary$Types / mysummary$Tokens             # crude type-token ratio
-summary.corpus <- function(corp, n=100, verbose=TRUE, meta=FALSE) {
+summary.corpus <- function(corp, n=100, verbose=TRUE, showmeta=FALSE) {
     print(corp)
     cat("\n")
     ### Turn off describeTexts until we can speed this up
     # dtexts <- describeTexts(texts(corp), verbose=FALSE)
     outputdf <- data.frame(describeTexts(texts(corp), verbose=FALSE),
                            docvars(corp))
-    if (meta)
+    # if (detail) outputdf <- cbind(outputdf, metadoc(corp))
+    if (showmeta)
         outputdf[names(metadoc(corp))] <- metadoc(corp)
     if (verbose) {
         print(head(outputdf, n), row.names=FALSE)
-        cat("\nSource:  ", metacorpus(corp, "source"), ".\n", sep="")
-        cat("Created: ",   metacorpus(corp, "created"), ".\n", sep="")
-        cat("Notes:   ",   metacorpus(corp, "notes"), ".\n\n", sep="")
+        cat("\nSource:  ", unlist(metacorpus(corp, "source")), ".\n", sep="")
+        cat("Created: ",   unlist(metacorpus(corp, "created")), ".\n", sep="")
+        cat("Notes:   ",   unlist(metacorpus(corp, "notes")), ".\n\n", sep="")
     }
     # invisibly pass the summary of the texts from describetexts()
     return(invisible(outputdf))

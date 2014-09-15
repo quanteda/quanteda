@@ -2,7 +2,7 @@
 \alias{summary.corpus}
 \title{Corpus summary}
 \usage{
-\method{summary}{corpus}(corp, n = 100, verbose = TRUE, meta = FALSE)
+\method{summary}{corpus}(corp, n = 100, verbose = TRUE, showmeta = FALSE)
 }
 \arguments{
   \item{corp}{corpus to be summarized}
@@ -12,7 +12,7 @@
 
   \item{verbose}{FALSE to turn off printed output}
 
-  \item{meta}{TRUE to include document-level meta-data}
+  \item{showmeta}{TRUE to include document-level meta-data}
 }
 \description{
 Displays information about a corpus object, including
