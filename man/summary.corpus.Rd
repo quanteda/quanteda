@@ -21,9 +21,9 @@ creation and source.
 }
 \examples{
 summary(inaugCorpus)
-summary(inaugCorpus, n=10, printdocnames=FALSE)
+summary(inaugCorpus, n=10)
 mycorpus <- corpus(uk2010immig, docvars=data.frame(party=names(uk2010immig)), enc="UTF-8")
-summary(mycorpus, meta=TRUE)  # show the meta-data
+summary(mycorpus, showmeta=TRUE)  # show the meta-data
 mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
 mysummary$Types / mysummary$Tokens             # crude type-token ratio
 }
