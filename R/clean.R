@@ -20,7 +20,8 @@ clean <- function(x, ...) {
 
 #' @export
 clean.character <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, ...) {
-    return(sapply(s, cleanSingleNew, removeDigits=removeDigits, removePunct=removePunct, lower=lower))
+    return(sapply(s, cleanSingleNew, removeDigits=removeDigits, removePunct=removePunct, lower=lower),
+           USE.NAMES=FALSE)
 }
 
 #' @export
