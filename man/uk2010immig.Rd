@@ -1,9 +1,18 @@
 \docType{data}
 \name{uk2010immig}
 \alias{uk2010immig}
-\title{Texts of UK 2010 manifestos on immigration}
+\title{Immigration-related sections of 2010 UK party manifestos}
+\format{A named character vector of plain ASCII texts}
 \description{
-Character vector of immigration-related sections from UK
-2010 political party manifestos.
+Extracts from the election manifestos of 9 UK political
+parties from 2010, related to immigration or
+asylum-seekers.
+}
+\examples{
+data(uk2010immig)
+uk2010immigCorpus <- corpus(uk2010immig, docvars=list(party=names(uk2010immig)))
+language(uk2010immigCorpus) <- "english"
+encoding(uk2010immigCorpus) <- "UTF-8"
+summary(uk2010immigCorpus)
 }
 

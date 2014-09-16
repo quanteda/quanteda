@@ -36,10 +36,19 @@ NULL
 
 
 #' @name uk2010immig
-#' @description Character vector of immigration-related sections from UK 2010 political party manifestos.
-#' @title Texts of UK 2010 manifestos on immigration
+#' @title Immigration-related sections of 2010 UK party manifestos
 #' @docType data
+#' @description Extracts from the election manifestos of 9 UK political parties from 2010, related
+#' to immigration or asylum-seekers.
+#' @format A named character vector of plain ASCII texts
+#' @examples
+#' data(uk2010immig)
+#' uk2010immigCorpus <- corpus(uk2010immig, docvars=list(party=names(uk2010immig)))
+#' language(uk2010immigCorpus) <- "english"
+#' encoding(uk2010immigCorpus) <- "UTF-8"
+#' summary(uk2010immigCorpus)
 NULL
+
 
 #' @name stopwords
 #' @title A named list containing common stopwords in 14 languages
