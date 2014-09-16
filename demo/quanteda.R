@@ -13,7 +13,7 @@ kwic(mycorpus, "deport", 3)
 mydfm <- dfm(mycorpus, stem=TRUE, stopwords=TRUE)
 docnames(mydfm)
 features(mydfm)
-quartz(7,7)
+quartz("BNP 2010 word cloud", 7,7)
 wordcloudDfm(mydfm, "BNP")
 
 # some examples of tokenization and string cleaning
@@ -38,5 +38,26 @@ get_topics(presLDA)
 postTopics <- data.frame(posterior(presLDA)$topics)
 
 # dictionaries
+data(iebudgets)
+mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
+               opposition=c("Opposition", "reject", "notincorpus"),
+               taxing="taxing",
+               taxation="taxation",
+               taxregex="tax*")
+dictDfm <- dfm(mycorpus, dictionary=mydict)
+dictDfm
 
+# simple lexical diversity measures
+data(iebudgets)
+finMins <- subset(iebudgets, no=="01")
+finDfm <- dfm(finMins)
+types <- rowSums(finDfm > 0)
+tokens <- rowSums(finDfm)
+ttrs <- types/tokens
+quartz("TTRs over time", 4, 7)
+plot(2008:2012, ttrs,
+     ylim=c(.18,.25),   # set the y axis range
+     type="b",          # points connected by lines
+     xlab="Budget Year",
+     ylab="Type/Token Ratios")
 
