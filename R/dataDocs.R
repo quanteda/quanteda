@@ -1,3 +1,11 @@
+#' @name quanteda
+#' @docType package
+#' @title An R package for the quantitative analysis of textual data.
+#' @author Ken Benoit and Paul Nulty
+#' @description A set of functions for creating and managing text corpora, extracting features from 
+#' text corpora, and analyzing those features using quantitative methods.
+NULL
+
 #' @name inaugCorpus
 #' @docType data
 #' @title A corpus of US presidential inaugural addresses from 1789-2013
