@@ -351,19 +351,40 @@ tokens.corpus <- function(corp) {
 #  return(unique(unlist(tokens(corp))))
 #}
 
-# accessor for docnames
+#' extract document names
+#' 
+#' Extract the document names from a corpus or a document-feature matrix.  Document names are the
+#' rownames of the \link{documents} data.frame in a corpus, or the rownames of the \link{dfm}
+#' object for a dfm.
+#' of the \link{dfm} object.
 #' @export
-docnames <- function(corp) {
-    # didn't use accessor documents() because didn't want to pass
-    # that large object
-    rownames(corp$documents)
+docnames <- function(x) {
+    UseMethod("docnames")
 }
 
-# replacement function for docnames
+#' \code{docnames} queries the document names of a corpus or a dfm
 #' @export
-"docnames<-" <- function(corp, value) {
-  rownames(corp$documents) <- value
-  return(corp)
+#' @rdname docnames
+docnames.corpus <- function(x) {
+    # didn't use accessor documents() because didn't want to pass
+    # that large object
+    rownames(x$documents)
+}
+
+#' \code{docnames <-} assigns new values to the document names of a corpus.  (Does not work
+#' for dfm objects, whose document names are fixed,)
+#' @export
+#' @examples 
+#' # query the document names of the inaugural speech corpus
+#' docnames(inaugCorpus) <- paste("Speech", 1:ndoc(inaugCorpus), sep="")
+#' 
+#' # reassign the document names of the inaugural speech corpus
+#' docnames(inaugCorpus) <- paste("Speech", 1:ndoc(inaugCorpus), sep="")
+#' 
+#' @rdname docnames
+"docnames<-" <- function(x, value) {
+    rownames(x$documents) <- value
+    return(x)
 }
 
 

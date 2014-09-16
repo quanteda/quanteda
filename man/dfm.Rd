@@ -73,10 +73,12 @@ data(inaugCorpus)
 wfm <- dfm(inaugCorpus)
 
 ## by president, after 1960
-wfmByPres2010 <- dfm(subset(inaugCorpus, year>1960), groups="president")
+wfmByPresfrom1900 <- dfm(subset(inaugCorpus, Year>1900), groups="President")
+docnames(wfmByPresfrom1900)
 
 ## with dictionaries
-mycorpus <- subset(inaugCorpus, year>1960)
+data(iebudgets)
+mycorpus <- subset(iebudgets, year==2010)
 mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
                opposition=c("Opposition", "reject", "notincorpus"),
                taxing="taxing",

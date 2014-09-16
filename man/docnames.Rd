@@ -1,0 +1,43 @@
+\name{docnames}
+\alias{docnames}
+\alias{docnames.corpus}
+\alias{docnames.dfm}
+\alias{docnames<-}
+\title{extract document names}
+\usage{
+docnames(x)
+
+\method{docnames}{corpus}(x)
+
+docnames(x) <- value
+
+\method{docnames}{dfm}(x)
+}
+\value{
+Character vector of the document names
+}
+\description{
+Extract the document names from a corpus or a
+document-feature matrix.  Document names are the rownames
+of the \link{documents} data.frame in a corpus, or the
+rownames of the \link{dfm} object for a dfm. of the
+\link{dfm} object.
+
+\code{docnames} queries the document names of a corpus or a
+dfm
+
+\code{docnames <-} assigns new values to the document names
+of a corpus.  (Does not work for dfm objects, whose
+document names are fixed,)
+}
+\examples{
+# query the document names of the inaugural speech corpus
+docnames(inaugCorpus) <- paste("Speech", 1:ndoc(inaugCorpus), sep="")
+
+# reassign the document names of the inaugural speech corpus
+docnames(inaugCorpus) <- paste("Speech", 1:ndoc(inaugCorpus), sep="")
+#
+# query the document names of a dfm
+docnames(dfm(inaugTexts[1:5]))
+}
+

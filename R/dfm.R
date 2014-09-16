@@ -26,10 +26,12 @@
 #' wfm <- dfm(inaugCorpus)
 #' 
 #' ## by president, after 1960
-#' wfmByPres2010 <- dfm(subset(inaugCorpus, year>1960), groups="president")
+#' wfmByPresfrom1900 <- dfm(subset(inaugCorpus, Year>1900), groups="President")
+#' docnames(wfmByPresfrom1900)
 #' 
 #' ## with dictionaries
-#' mycorpus <- subset(inaugCorpus, year>1960)
+#' data(iebudgets)
+#' mycorpus <- subset(iebudgets, year==2010)
 #' mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
 #'                opposition=c("Opposition", "reject", "notincorpus"),
 #'                taxing="taxing",
@@ -415,16 +417,34 @@ types <- function(corp) {
     return(unique(unlist(tokenize(corp))))
 }
 
-words.dfm <- function (wfm) {
-    if (wordmargin(wfm) == 1) 
-        rownames(wfm)
-    else colnames(wfm)
+
+#' @export
+features <- function(x) {
+    UseMethod("features")
 }
 
-docs <- function (wfm) {
-    if (wordmargin(wfm) == 1) 
-        colnames(wfm)
-    else rownames(wfm)
+#' extract the feature labels from a \link{dfm}
+#' 
+#' Extract the features from a document-feature matrix, which are stored as the column names
+#' of the \link{dfm} object.
+#' @aliases features
+#' @return Character vector of the features
+#' @examples
+#' features(dfm(inaugTexts[1:2]))
+#' @export
+features.dfm <- function(x) {
+    colnames(x)
+}
+
+#' @rdname docnames
+#' @return Character vector of the document names
+#' @examples
+#' # 
+#' # query the document names of a dfm
+#' docnames(dfm(inaugTexts[1:5]))
+#' @export
+docnames.dfm <- function(x) {
+    rownames(x)
 }
 
 #' @details \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
@@ -466,6 +486,7 @@ wordmargin <- function (x) {
 #' dfmSort(dtm, "both")[, 1:10]
 dfmSort <- function(x, margin = c("words", "docs", "both"), decreasing=TRUE) {
     margin <- match.arg(margin)
+    class_xorig <- class(x)
     if (margin=="words") {
         x <- x[, order(colSums(x), decreasing=decreasing)]
     } else if (margin=="docs") {
@@ -474,6 +495,7 @@ dfmSort <- function(x, margin = c("words", "docs", "both"), decreasing=TRUE) {
         x <- x[order(rowSums(x), decreasing=decreasing), 
                order(colSums(x), decreasing=decreasing)]
     }
+    class(x) <- class_xorig
     return(x)
 }
 
