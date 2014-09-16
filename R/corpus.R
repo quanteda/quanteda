@@ -1,40 +1,48 @@
-#' Constructor for corpus objects
-#'
-#' Creates a corpus from a character vector (of texts), or an object such as a
-#' directory containing text files.  Corpus-level meta-data can be specified
-#' at creation, containing (for example) citation information and notes.
-#' 
-#' @param texts A character vector of texts, or a filepath to a directory containing text documents.
-# @param docnames Names to be assigned to the texts, defaults to the names of the 
-# character vector (if any), the names of the files with the extension removed.  
-# If none is supplied, it defaults to "text1", "text2", etc.
-# @param docvars A data frame of attributes that is associated with each text.
-# @param docvarsIn Specifies if the attributes and values are encoded in file names, directory names, or headers
-# values are 'filenames', 'dirnames', or 'headers'
-# @param enc Text file input encoding.  To see the system options, try \code{iconvlist()}.
-# @param sep Separator for attribute values if specified in file names or directory names
-# @param source Optional string specifying the source of the texts, used for referencing.
-# @param notes Optional string containing notes about who created the text, warnings, To Dos, etc.
-# todo examples
-# @param citation Optional string specifying the citation information for this corpus.
-#' @return A corpus class object containing the original texts, document-level variables, 
-#' document-level metadata, corpus-level metadata, and default settings for subsequent 
-#' processing of the corpus.
-#' @export
-corpus <- function(texts, ...) {
-  UseMethod("corpus")
-}
+### TO DO:
+###
+### - the replacement functions do not work with indexes, this needs to be fixed
+### - corpus constructor method needs more object types defined, e.g. Twitter
 
-# Creates a corpus from a GUI-selected set of text files
-#' @rdname corpus
-#' @examples 
-#' \dontrun{corpus()  # pop up a file selection GUI interface
-#' }
+
+#' Constructor for corpus objects
+#' 
+#' Creates a corpus from a document source, such as character vector (of texts),
+#' or an object pointing to a source of texts such as a directory containing 
+#' text files.  Corpus-level meta-data can be specified at creation, containing 
+#' (for example) citation information and notes.
+#' 
+#' @param x A source of texts to form the documents in the corpus. This can be a
+#'   filepath to a directory containing text documents (see \link{directory}), 
+#'   or a character vector of texts.
+#' @return A corpus class object containing the original texts, document-level 
+#'   variables, document-level metadata, corpus-level metadata, and default 
+#'   settings for subsequent processing of the corpus.  A corpus consists of a 
+#'   list of elements described below, although these should only be accessed 
+#'   through accessor and replacement functions, not directly (since the 
+#'   internals may be subject to change).  The structure of a corpus classed 
+#'   list object is:
+#'   
+#'   \item{$documents}{A data frame containing the document level information, 
+#'   consisting of \code{\link{texts}}, user-named \code{\link{docvars}} variables describing 
+#'   attributes of the documents, and \code{metadoc} document-level metadata 
+#'   whose names begin with an underscore character, such as 
+#'   \code{\link{_language}}.}
+#'   
+#'   \item{$metadata}{A named list set of corpus-level meta-data, including 
+#'   \code{source} and \code{created} (both generated automatically unless 
+#'   assigned), \code{notes}, and \code{citation}.}
+#'   
+#'   \item{$settings}{Settings for the corpus which record options that govern 
+#'   the subsequent processing of the corpus when it is converted into a 
+#'   document-feature matrix (\link{dfm}).  See \link{settings}.}
+#'   
+#'   \item{$tokens}{An indexed list of tokens and types tabulated by document, 
+#'   including information on positions.  Not yet fully implemented.}
+#' @seealso \link{docvars}, \link{metadoc}, \link{metacorpus}, \link{language},
+#'   \link{encoding}, \link{settings}, \link{texts}
 #' @export
-corpus.default <- function() {
-  require(tcltk2) 
-  texts <- tk_choose.dir()
-  return(corpus.character(texts))
+corpus <- function(x, ...) {
+    UseMethod("corpus")
 }
 
 #' Function to declare a connection to a directory (containing files)
@@ -42,13 +50,24 @@ corpus.default <- function() {
 #' Function to declare a connection to a directory, although unlike \link{file} it does not require closing.
 #' If the directory does not exist, the function will return an error.
 #' 
-#' @param path  String describing the full path of the directory
+#' @param path  String describing the full path of the directory or NULL to use a GUI
+#' to choose a directory from disk
 #' @export
 #' @examples 
-#' \dontrun{mydir <- directory("~/Dropbox/QUANTESS/corpora/ukManRenamed")
-#' corpus(mydir)} 
+#' \dontrun{
+#' # name a directory of files
+#' mydir <- directory("~/Dropbox/QUANTESS/corpora/ukManRenamed")
+#' corpus(mydir)
+#' 
+#' # choose a directory using a GUI
+#' corpus(directory())} 
 #' @export
-directory <- function(path) {
+directory <- function(path=NULL) {
+    # choose it from a GUI if none exists
+    if (is.null(path)) {
+        require(tcltk2) 
+        texts <- tk_choose.dir()
+    }
     stopifnot(class(path) == "character")
     stopifnot(file.exists(path))
     tempPath <- path
@@ -66,17 +85,21 @@ directory <- function(path) {
 #' @export
 #' @examples 
 #' \dontrun{
-#' tempcorpus <- corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), enc="UTF-8", source="Ken's manifesto archive")
-#' summary(tempcorpus, n=10)
-#' }
-corpus.directory<- function(path, enc=NULL, docnames=NULL, docvarsfrom=c("filenames", "headers"), 
+#' # import texts from a directory of files
+#' corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), 
+#'        enc="UTF-8", 
+#'        source="Ken's UK manifesto archive")
+#' 
+#' # choose a directory using a GUI
+#' corpus(directory())}
+corpus.directory<- function(x, enc=NULL, docnames=NULL, docvarsfrom=c("filenames", "headers"), 
                             docvarnames=NULL, sep='_', 
-                            source=NULL, notes=NULL, citation=NULL) {
-    if (class(path)[1] != "directory") stop("path must be a directory")
+                            source=NULL, notes=NULL, citation=NULL, ...) {
+    if (class(x)[1] != "directory") stop("first argument must be a directory")
     docvarsfrom <- match.arg(docvarsfrom)
-    texts <- getTextDir(path)
+    texts <- getTextDir(x)
     if (docvarsfrom == 'filenames') {
-        fnames <- list.files(path, full.names=TRUE)
+        fnames <- list.files(x, full.names=TRUE)
         snames <- getRootFileNames(fnames)
         snames <- gsub(".txt", "", snames)
         parts <- strsplit(snames, sep)
@@ -107,7 +130,6 @@ corpus.directory<- function(path, enc=NULL, docnames=NULL, docvarsfrom=c("filena
 # 
 # Details here.
 # 
-#' @param texts A character vector containing the texts
 #' @param docnames Names to be assigned to the texts, defaults to the names of the 
 #' character vector (if any), otherwise assigns "text1", "text2", etc.
 #' @param docvars A data frame of attributes that is associated with each text.
@@ -116,16 +138,22 @@ corpus.directory<- function(path, enc=NULL, docnames=NULL, docvarsfrom=c("filena
 #' @rdname corpus
 #' @export
 #' @examples
+#' #
+#' # create a corpus from texts
 #' corpus(inaugTexts)
-#' uk2010immigCorpus <- corpus(uk2010immig, docvars=data.frame(party=names(uk2010immig)), enc="UTF-8") 
-corpus.character <- function(texts, enc=NULL, docnames=NULL, docvars=NULL,
+#' 
+#' # create a corpus from texts and assign meta-data and document variables
+#' uk2010immigCorpus <- corpus(uk2010immig, 
+#'                             docvars=data.frame(party=names(uk2010immig)), 
+#'                             enc="UTF-8") 
+corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
                              source=NULL, notes=NULL, citation=NULL, ...) {
     # name the texts vector
     if (!is.null(docnames)) {
-        stopifnot(length(docnames)==length(texts))
-        names(texts) <- docnames
-    } else if (is.null(names(texts))) {
-        names(texts) <- paste("text", 1:length(texts), sep="")
+        stopifnot(length(docnames)==length(x))
+        names(x) <- docnames
+    } else if (is.null(names(x))) {
+        names(x) <- paste("text", 1:length(x), sep="")
     }
     
     # check validity of encoding label(s)
@@ -139,7 +167,7 @@ corpus.character <- function(texts, enc=NULL, docnames=NULL, docvars=NULL,
     metadata <- list(source=source, created=created, notes=notes, citation=citation)
     
     # create the documents data frame starting with the texts
-    documents <- data.frame(texts, row.names=names(texts),
+    documents <- data.frame(x, row.names=names(x),
                             check.rows=TRUE, stringsAsFactors=FALSE)
     # set the encoding label
     documents$"_encoding" <- enc
@@ -150,7 +178,7 @@ corpus.character <- function(texts, enc=NULL, docnames=NULL, docvars=NULL,
     
     # user-supplied document-level variables (one kind of meta-data)
     if (!is.null(docvars)) {
-        stopifnot(nrow(docvars)==length(texts))
+        stopifnot(nrow(docvars)==length(x))
         documents <- cbind(documents, docvars)
     } 
     
@@ -164,11 +192,10 @@ corpus.character <- function(texts, enc=NULL, docnames=NULL, docvars=NULL,
 }
 
 
-
 #' @export
-print.corpus <- function(corp) {
-    cat("Corpus consisting of ", ndoc(corp), " document",
-        ifelse(ndoc(corp)>1, "s", ""), ".\n", sep="")
+print.corpus <- function(x) {
+    cat("Corpus consisting of ", ndoc(x), " document",
+        ifelse(ndoc(x)>1, "s", ""), ".\n", sep="")
 #         ", ",
 #         ifelse(is.null(corp$tokens), "un", ""),
 #         "indexed.\n", sep="")
@@ -186,25 +213,31 @@ is.corpus <- function(x) {
     "corpus" %in% class(x)
 }
 
-#' Corpus-level metadata
+#' get or set corpus metadata
 #' 
 #' Get or set the corpus-level metadata in a quanteda corpus object.
 #' 
 #' @param corp A quanteda corpus object
-#' @param fields Metadata field names.  If NULL (default), return all metadata names.
-#' @return For \code{metacorpus}, a list of the metadata fields in the corpus.
-#' 
-#' For \code{metacorpus <-}, the corpus with the updated metadata.
+#' @param field Metadata field name(s).  If \code{NULL} (default), return all
+#'   metadata names.
+#' @return For \code{metacorpus}, a list of the metadata fields in the corpus. 
+#'   If a list is not what you wanted, you can wrap the results in \link{unlist}, 
+#'   but this will remove any metadata field that is set to \code{NULL}.
+#'   
+#'   For \code{metacorpus <-}, the corpus with the updated metadata.
 #' @export
 #' @examples
-#' metacorpus(inaugTexts)
-#' metacorpus(inaugTexts, "source")
-#' metacorpus(inaugTexts, "citation") <- "Presidential Speeches Online Project (2014)."
-metacorpus <- function(corp, fields=NULL) {
-    if (!is.null(fields)) {
+#' metacorpus(inaugCorpus)
+#' metacorpus(inaugCorpus, "source")
+#' metacorpus(inaugCorpus, "citation") <- "Presidential Speeches Online Project (2014)."
+#' metacorpus(inaugCorpus, "citation")
+metacorpus <- function(corp, field=NULL) {
+    if (!is.corpus(corp))
+        stop("Not a valid corpus object.")
+    if (!is.null(field)) {
         stopifnot(TRUE)
         ## NEED TO CHECK HERE THAT FIELD LIST MATCHES METADATA FIELD NAMES
-        return(corp$metadata[fields])
+        return(corp$metadata[field])
     } else {
         return(corp$metadata)
     }
@@ -213,12 +246,12 @@ metacorpus <- function(corp, fields=NULL) {
 # replacement function for corpus-level data
 #' @export
 #' @rdname metacorpus
-"metacorpus<-" <- function(corp, value, fields) {
-    if (!is.null(fields)) {
+"metacorpus<-" <- function(corp, field, value) {
+    if (!is.null(field)) {
         stopifnot(TRUE)
         ## NEED TO CHECK HERE THAT FIELD LIST MATCHES METADATA FIELD NAMES
     }
-    corp$metadata[fields] <- value
+    corp$metadata[field] <- value
     corp
 }
 
@@ -228,6 +261,7 @@ metacorpus <- function(corp, fields=NULL) {
 documents <- function(corp) {
     corp$documents
 }
+
 # internal replacement function for documents
 #' @export
 "documents<-" <- function(corp, value) {
@@ -236,17 +270,21 @@ documents <- function(corp) {
 }
 
 
-#' Corpus texts
+#' get or set corpus texts
 #' 
 #' Get or replace the texts in a quanteda corpus object.
 #' 
 #' @param corp A quanteda corpus object
 #' @return For \code{texts}, a character vector of the texts in the corpus.
+#' 
 #' For \code{texts <-}, the corpus with the updated texts.
 #' @export
 #' @examples
 #' texts(inaugCorpus)[1]
-#' texts(inaugTexts)[55] <- "GW Bush's second inaugural address, the condensed version."
+#' sapply(texts(inaugCorpus), nchar)  # length in characters of the inaugual corpus texts
+#'
+#' ## this doesn't work yet - need to overload `[` for this replacement function
+#' # texts(inaugTexts)[55] <- "GW Bush's second inaugural address, the condensed version."
 texts <- function(corp) {
     temp <- documents(corp)$texts
     names(temp) <- rownames(documents(corp))
@@ -264,26 +302,53 @@ texts <- function(corp) {
     return(corp)
 }
 
-# accessor for document-level metadata
+#' get or set document-level meta-data
+#' 
+#' Get or set the document-level meta-data, including reserved fields for 
+#' language and corpus.
+#' 
+#' @param corp A quanteda corpus object
+#' @return For \code{texts}, a character vector of the texts in the corpus.
+#'   
+#'   For \code{texts <-}, the corpus with the updated texts.
+#' @note Document-level meta-data names are preceded by an underscore character,
+#'   such as \code{_encoding}, but when named in in the \code{field} argument,
+#'   do \emph{not} need the underscore character.
 #' @export
+#' @examples
+#' mycorp <- subset(inaugCorpus, Year>1990)
+#' summary(mycorp, showmeta=TRUE)
+#' metadoc(mycorp, "encoding") <- "UTF-8"
+#' metadoc(mycorp)
+#' metadoc(mycorp, "language") <- "english"
+#' summary(mycorp, showmeta=TRUE)
 metadoc <- function(corp, field=NULL) {
     # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
     # (this check not yet implemented)
+    if (length(field)>1)
+        stop("cannot assign multiple fields.")
     if (is.null(field)) {
         documents(corp)[, grep("^\\_", names(documents(corp))), drop=FALSE]
     } else {
         ## error if field not defined in data
-        documents(corp)[, paste("_", field, sep=""), drop=FALSE]
+        fieldname <- ifelse(substr(field, 1, 1)=="_", 
+                            field, 
+                            paste("_", field, sep=""))
+        documents(corp)[, fieldname, drop=FALSE]
     }
 }
 
 # replacement function for document-level metadata
 #' @export
-"metadoc<-" <- function(corp, value, field) {
+"metadoc<-" <- function(corp, field, value) {
     # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
     # (this check not yet implemented)
-    field <- paste("_", field, sep="")
-    documents(corp)[field] <- value
+    if (length(field)>1)
+        stop("cannot assign multiple fields.")
+    fieldname <- ifelse(substr(field, 1, 1)=="_", 
+                        field, 
+                        paste("_", field, sep=""))
+    documents(corp)[fieldname] <- value
     corp
 }
 
@@ -296,7 +361,7 @@ metadoc <- function(corp, field=NULL) {
 # is trickier.  Solution lies in nesting a complex "[" function
 # inside the calling function: see http://cran.r-project.org/doc/manuals/R-lang.html#Subset-assignment
 #
-#' @export
+# @export
 "metadoc<-[" <- function(corp, value, field) {
     # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
     # (this check not yet implemented)
@@ -307,24 +372,34 @@ metadoc <- function(corp, field=NULL) {
 
 
 
-# accessor for document variables
+#' get or set for document-level variables
+#' 
+#' Get or set variables for the documents in a corpus
+#' @param x corpus whose document-level variables will be read or set
+#' @return \code{docvars} returns a data.frame of the document-level variables
+#' @examples head(docvars(inaugCorpus))
 #' @export
-docvars <- function(corp) {
-    docvarsIndex <- intersect(which(substr(names(documents(corp)), 1, 1) != "_"),
-                              which(names(documents(corp)) != "texts"))
+docvars <- function(x) {
+    docvarsIndex <- intersect(which(substr(names(documents(x)), 1, 1) != "_"),
+                              which(names(documents(x)) != "texts"))
     if (length(docvarsIndex)==0) {
         return(NULL)
     } else {
-        return(documents(corp)[, docvarsIndex, drop=FALSE])
+        return(documents(x)[, docvarsIndex, drop=FALSE])
     }
 }
 
-# replacement function for document variables
+#' @rdname docvars
+#' @param field string containing the document-level variable name
+#' @return \code{docvars<-} assigns \code{value} to the named \code{field}
+#' @examples 
+#' docvars(inaugCorpus, "President") <- paste("prez", 1:ndoc(inaugCorpus), sep="")
+#' head(docvars(inaugCorpus))
 #' @export
-"docvars<-" <- function(corp, value, field) {
+"docvars<-" <- function(x, field, value) {
     if ("texts" %in% field) stop("You should use texts() instead to replace the corpus texts.")
-    documents(corp)[field] <- value
-    corp
+    documents(x)[field] <- value
+    x
 }
 
 
@@ -363,6 +438,7 @@ docnames <- function(x) {
 }
 
 #' \code{docnames} queries the document names of a corpus or a dfm
+#' @return \code{docnames} returns a character vector of the document names
 #' @export
 #' @rdname docnames
 docnames.corpus <- function(x) {
@@ -373,6 +449,7 @@ docnames.corpus <- function(x) {
 
 #' \code{docnames <-} assigns new values to the document names of a corpus.  (Does not work
 #' for dfm objects, whose document names are fixed,)
+#' @return \code{docnames<-} assigns a character vector of the document names in a corpus
 #' @export
 #' @examples 
 #' # query the document names of the inaugural speech corpus
@@ -390,26 +467,30 @@ docnames.corpus <- function(x) {
 
 #' get the number of documents
 #' 
-#' Returns the number of documents.
+#' Returns the number of documents in a corpus objects
+#' @usage \emph{ }
+#' @param x a corpus or dfm object
+#' @return an integer (count) of the number of documents in the corpus or dfm
+#' @examples 
+#' ndoc(inaugCorpus)
+#' ndoc(dfm(inaugCorpus))
 #' @export
 ndoc <- function(x) {
     UseMethod("ndoc")
 }
 
 
-#' get the number of documents
-#' 
-#' Returns the number of documents in a corpus objects
-#' @param corp a quanteda corpus object
 #' @rdname ndoc
-#' @return an integer (count) of the number of documents in the corpus
-#' @examples ndoc(inaugCorpus)
 #' @export
 ndoc.corpus <- function(corp) {
     nrow(corp$documents)
 }
 
-# accessor for language
+#' get or set the language of corpus documents
+#' 
+#' Get or set the \code{_language} document-level metadata field in a corpus. 
+#' Same as 
+#' 
 #' @export
 language <- function(corp) {
     if ("_language" %in% names(metadoc(corp)))

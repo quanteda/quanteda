@@ -1,27 +1,26 @@
 \name{corpus}
 \alias{corpus}
 \alias{corpus.character}
-\alias{corpus.default}
 \alias{corpus.directory}
 \alias{is.corpus}
 \title{Constructor for corpus objects}
 \usage{
-corpus(texts, ...)
+corpus(x, ...)
 
-\method{corpus}{default}()
-
-\method{corpus}{directory}(path, enc = NULL, docnames = NULL,
+\method{corpus}{directory}(x, enc = NULL, docnames = NULL,
   docvarsfrom = c("filenames", "headers"), docvarnames = NULL, sep = "_",
   source = NULL, notes = NULL, citation = NULL)
 
-\method{corpus}{character}(texts, enc = NULL, docnames = NULL,
-  docvars = NULL, source = NULL, notes = NULL, citation = NULL, ...)
+\method{corpus}{character}(x, enc = NULL, docnames = NULL, docvars = NULL,
+  source = NULL, notes = NULL, citation = NULL, ...)
 
 is.corpus(x)
 }
 \arguments{
-  \item{texts}{A character vector of texts, or a filepath
-  to a directory containing text documents.}
+  \item{x}{A source of texts to form the documents in the
+  corpus. This can be a filepath to a directory containing
+  text documents (see \link{directory}), or a character
+  vector of texts.}
 
   \item{docvarsfrom}{Argument to specify where docvars are
   to be taken, from parsing the filenames
@@ -34,8 +33,6 @@ is.corpus(x)
 
   \item{sep}{Separator if \link{docvar} names are taken
   from the filenames.}
-
-  \item{texts}{A character vector containing the texts}
 
   \item{docnames}{Names to be assigned to the texts,
   defaults to the names of the character vector (if any),
@@ -54,11 +51,37 @@ is.corpus(x)
 A corpus class object containing the original texts,
 document-level variables, document-level metadata,
 corpus-level metadata, and default settings for subsequent
-processing of the corpus.
+processing of the corpus.  A corpus consists of a list of
+elements described below, although these should only be
+accessed through accessor and replacement functions, not
+directly (since the internals may be subject to change).
+The structure of a corpus classed list object is:
+
+\item{$documents}{A data frame containing the document
+level information, consisting of \code{\link{texts}},
+user-named \code{\link{docvars}} variables describing
+attributes of the documents, and \code{metadoc}
+document-level metadata whose names begin with an
+underscore character, such as \code{\link{_language}}.}
+
+\item{$metadata}{A named list set of corpus-level
+meta-data, including \code{source} and \code{created} (both
+generated automatically unless assigned), \code{notes}, and
+\code{citation}.}
+
+\item{$settings}{Settings for the corpus which record
+options that govern the subsequent processing of the corpus
+when it is converted into a document-feature matrix
+(\link{dfm}).  See \link{settings}.}
+
+\item{$tokens}{An indexed list of tokens and types
+tabulated by document, including information on positions.
+Not yet fully implemented.}
 }
 \description{
-Creates a corpus from a character vector (of texts), or an
-object such as a directory containing text files.
+Creates a corpus from a document source, such as character
+vector (of texts), or an object pointing to a source of
+texts such as a directory containing text files.
 Corpus-level meta-data can be specified at creation,
 containing (for example) citation information and notes.
 }
@@ -67,13 +90,26 @@ containing (for example) citation information and notes.
 corpus
 }
 \examples{
-\dontrun{corpus()  # pop up a file selection GUI interface
-}
 \dontrun{
-tempcorpus <- corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), enc="UTF-8", source="Ken's manifesto archive")
-summary(tempcorpus, n=10)
-}
+# import texts from a directory of files
+corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"),
+       enc="UTF-8",
+       source="Ken's UK manifesto archive")
+
+# choose a directory using a GUI
+corpus(directory())}
+#
+# create a corpus from texts
 corpus(inaugTexts)
-uk2010immigCorpus <- corpus(uk2010immig, docvars=data.frame(party=names(uk2010immig)), enc="UTF-8")
+
+# create a corpus from texts and assign meta-data and document variables
+uk2010immigCorpus <- corpus(uk2010immig,
+                            docvars=data.frame(party=names(uk2010immig)),
+                            enc="UTF-8")
+}
+\seealso{
+\link{docvars}, \link{metadoc}, \link{metacorpus},
+\link{language}, \link{encoding}, \link{settings},
+\link{texts}
 }
 

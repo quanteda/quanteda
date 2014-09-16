@@ -13,6 +13,6 @@ Extract the features from a document-feature matrix, which
 are stored as the column names of the \link{dfm} object.
 }
 \examples{
-features(dfm(inaugTexts[1:2]))
+features(dfm(inaugTexts))[1:50]  # first 50 features (alphabetically sorted)
 }
 

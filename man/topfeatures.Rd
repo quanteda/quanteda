@@ -1,0 +1,23 @@
+\name{topfeatures}
+\alias{topfeatures}
+\alias{topfeatures.dfm}
+\title{list the most frequent features}
+\usage{
+topfeatures(x, n = 10, decreasing = TRUE)
+
+\method{topfeatures}{dfm}(x, n = 10, decreasing = TRUE)
+}
+\value{
+A named numeric vector of feature counts, where the names
+are the feature labels.
+}
+\description{
+List the most frequently occuring features.
+}
+\examples{
+topfeatures(dfm(inaugCorpus))
+topfeatures(dfm(inaugCorpus, stopwords=TRUE))
+# least frequent features
+topfeatures(dfm(inaugCorpus), decreasing=FALSE)
+}
+

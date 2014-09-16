@@ -2,7 +2,7 @@
 \alias{tfidf.dfm}
 \title{compute the tf-idf weights of a dfm}
 \usage{
-\method{tfidf}{dfm}(x, normalize = TRUE)
+tfidf.dfm(x, normalize = TRUE)
 }
 \arguments{
   \item{x}{document-feature matrix created by

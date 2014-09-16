@@ -223,16 +223,17 @@ dfm.character <- function(x,
         dfm <- cbind(addto[, addIndex], dfm)
     }
     
-    # give the matrix austin a "wfm"-like record of which margin is words, which is docs
+    # give the matrix austin a "wfm"-like record of which margin is features, which is docs
+    # for dfm objects, docs are always rows
     dfm <- as.matrix(dfm)
-    dimnames(dfm) <- list(docs = rownames(dfm), words = colnames(dfm))
+    dimnames(dfm) <- list(docs = rownames(dfm), features = colnames(dfm))
     
     # restore original sort order
     
     dfm <- dfm[(1:nrow(dfm))[order(originalSortOrder)], ]
     
     if(verbose) cat(" done. \n")
-    class(dfm) <- c(class(dfm), "dfm")
+    class(dfm) <- c("dfm", class(dfm))
     return(dfm)
 }
 
@@ -317,35 +318,34 @@ makeRegEx <- function(wildcardregex) {
     ##   [ab] meaning a or b
 }
 
+#' @export
+trim <- function(x, ...) {
+    UseMethod("trim")
+}
 
 #' Trim a dfm based on a subset of features and words
 #'
 #' Returns a document by feature matrix reduced in size based on document and term frequency, and/or subsampling.
 #' 
-#' @param dfm Document-feature matrix created by \code{\link{dfm}}
+#' @param x document-feature matrix created by \link{dfm}
 #' @param minCount minimum feature count
 #' @param minDoc minimum number of documents in which a feature appears
 #' @param sample how many features to retain (based on random selection)
 #' @param verbose print messages
-#' @return A dfm matrix object reduced in size.
+#' @return A \link{dfm} object reduced in size.
 #' @export 
-#' @author Will Lowe, adapted by Ken Benoit
+#' @author Ken Benoit adapted from code by Will Lowe (see \link[austin]{trim})
 #' @examples 
 #' data(inaugCorpus)
 #' dtm <- dfm(inaugCorpus)
 #' dim(dtm) 
-#' dtmReduced <- dfmTrim(dtm, minCount=10, minDoc=2) # only words occuring at least 5 times and in at least 2documents
+#' dtmReduced <- trim(dtm, minCount=10, minDoc=2) # only words occuring at least 5 times and in at least 2documents
 #' dim(dtmReduced)  
-#' dtmSampled <- dfmTrim(dtm, sample=50)  # top 200 words
+#' dtmSampled <- trim(dtm, sample=200)  # top 200 words
 #' dim(dtmSampled)  # 196 x 200 words
-dfmTrim <- function(dfm, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
-    nms <- names(dimnames(dfm))
-    if (!(!is.null(nms) && identical(sort(nms), c("docs", "words")))) 
-        stop("Function not applicable to this object")
-    
-    mY <- dfm
-    if (names(dimnames(dfm))[2] == "words") 
-        mY <- t(mY)
+trim.dfm <- function(x, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
+    class_xorig <- class(x)
+    mY <- t(x)
     
     rs1 <- which(rowSums(mY) >= minCount)
     if (verbose)
@@ -357,7 +357,7 @@ dfmTrim <- function(dfm, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
     
     tokeep <- intersect(rs1, rs2)
     if (length(tokeep)==0)
-        stop("No words left after trimming")
+        stop("No words left after trimming.")
     
     if (!is.null(sample)) {
         if (sample > length(tokeep))
@@ -367,14 +367,28 @@ dfmTrim <- function(dfm, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
         if (verbose)
             cat("Retaining a random sample of", sample, "words\n")
     }
-    return(t(mY[sort(tokeep),]))
+    trimmeddfm <- t(mY[sort(tokeep),])
+    class(trimmeddfm) <- class_xorig
+    trimmeddfm
+}
+
+#' @export
+tfidf <- function(x) {
+    UseMethod("tfidf")
+}
+
+#' @export
+#' @rdname ndoc
+ndoc.dfm <- function(x) {
+    nrow(x)
 }
 
 #' compute the tf-idf weights of a dfm
 #'
 #' Returns a matrix of tf-idf weights, as a \link{dfm} object
 #' 
-#' @param dfm Document-feature matrix created by \code{\link{dfm}}
+#' @rdname tfidf
+#' @param x document-feature matrix created by \code{\link{dfm}}
 #' @param normalize whether to normalize term frequency by document totals
 #' @return A dfm matrix object where values are tf-idf weights
 #' @export 
@@ -385,8 +399,8 @@ dfmTrim <- function(dfm, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
 #' dtm[1:10, 100:110]
 #' tfidf(dtm)[1:10, 100:110]
 #' tfidf(dtm, normalize=FALSE)[1:10, 100:110]
-tfidf <- function(x, normalize = TRUE) {
-    idf <- log(length(docs(x))) - log(colSums(x > 0) + 1)
+tfidf.dfm <- function(x, normalize = TRUE) {
+    idf <- log(ndoc(x)) - log(colSums(x > 0) + 1)
     if (normalize) {
         x <- x/rowSums(x)
         x[is.nan(x)] <- 0
@@ -400,7 +414,7 @@ tfidf <- function(x, normalize = TRUE) {
 #' 
 #' @param dfm Document-feature matrix created by \code{\link{dfm}}
 #' @return A dfm matrix object where values are relative term proportions within the document
-#' @export 
+# @export 
 #' @author Ken Benoit
 #' @examples 
 #' data(inaugCorpus)
@@ -412,7 +426,7 @@ tf <- function(x) {
 }
 
 
-#' @export
+# @export
 types <- function(corp) {
     return(unique(unlist(tokenize(corp))))
 }
@@ -430,14 +444,13 @@ features <- function(x) {
 #' @aliases features
 #' @return Character vector of the features
 #' @examples
-#' features(dfm(inaugTexts[1:2]))
+#' features(dfm(inaugTexts))[1:50]  # first 50 features (alphabetically sorted)
 #' @export
 features.dfm <- function(x) {
     colnames(x)
 }
 
 #' @rdname docnames
-#' @return Character vector of the document names
 #' @examples
 #' # 
 #' # query the document names of a dfm
@@ -451,43 +464,36 @@ docnames.dfm <- function(x) {
 #' @rdname dfm
 #' @export
 is.dfm <- function(x) {
-    "dfm" %in% class(x) 
+    "dfm" %in% class(x)
 }
 
-is.wfm <- function (x) {
-    nms <- names(dimnames(x))
-    !is.null(nms) && identical(sort(nms), c("docs", "words"))
-}
-
-
-
-#' @export
-wordmargin <- function (x) {
-    ifelse(names(dimnames(x))[1] == "words", 1, 2)
-}
 
 #' sort a dfm by one or more margins
-#'
-#' Sorts a \link{dfm} by documents or words
+#' 
+#' Sorts a \link{dfm} by frequency of total features, total features in 
+#' documents, or both
 #' 
 #' @param dfm Document-feature matrix created by \code{\link{dfm}}
-#' @param margin which margin to sort on \code{words} to sort words, \code{docs} to sort
-#' documents, and \code{both} to sort both
-#' @param decreasing TRUE (default) if sort will be in descending order
+#' @param margin which margin to sort on \code{features} to sort by frequency of
+#'   features, \code{docs} to sort by total feature counts in documents, and 
+#'   \code{both} to sort by both
+#' @param decreasing TRUE (default) if sort will be in descending order, 
+#'   otherwise sort in increasing order
 #' @return A sorted \link{dfm} matrix object
-#' @export 
+#' @export
 #' @author Ken Benoit
 #' @examples 
-#' data(inaugCorpus)
 #' dtm <- dfm(inaugCorpus)
-#' dtm[, 1:10]
-#' dtm <- dfmSort(dtm, "words")
-#' dfmSort(dtm)[, 1:10]
-#' dfmSort(dtm, "both")[, 1:10]
-dfmSort <- function(x, margin = c("words", "docs", "both"), decreasing=TRUE) {
+#' dtm[1:10, 1:5]
+#' dtm <- sort(dtm)
+#' sort(dtm)[1:10, 1:5]
+#' sort(dtm, TRUE, "both")[1:10, 1:5]  # note that the decreasing=TRUE argument
+#'                                     # must be second, because of the order of the
+#'                                     # formals in the generic method of sort()
+sort.dfm <- function(x, decreasing=TRUE, margin = c("features", "docs", "both")) {
     margin <- match.arg(margin)
     class_xorig <- class(x)
-    if (margin=="words") {
+    if (margin=="features") {
         x <- x[, order(colSums(x), decreasing=decreasing)]
     } else if (margin=="docs") {
         x <- x[order(rowSums(x), decreasing=decreasing), ]
@@ -499,4 +505,23 @@ dfmSort <- function(x, margin = c("words", "docs", "both"), decreasing=TRUE) {
     return(x)
 }
 
+#' list the most frequent features
+#' 
+#' List the most frequently occuring features.
+#' @return A named numeric vector of feature counts, where the names are the feature labels.
+#' @export
+#' @examples
+#' topfeatures(dfm(inaugCorpus))
+#' topfeatures(dfm(inaugCorpus, stopwords=TRUE))
+#' # least frequent features
+#' topfeatures(dfm(inaugCorpus), decreasing=FALSE)
+topfeatures <- function(x, n=10, decreasing=TRUE) {
+    UseMethod("topfeatures")
+}
 
+#' @rdname topfeatures
+#' @export
+topfeatures.dfm <- function(x, n=10, decreasing=TRUE) {
+    subdfm <- sort(colSums(x), decreasing)
+    subdfm[1:n]
+}

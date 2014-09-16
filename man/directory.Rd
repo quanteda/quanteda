@@ -2,11 +2,12 @@
 \alias{directory}
 \title{Function to declare a connection to a directory (containing files)}
 \usage{
-directory(path)
+directory(path = NULL)
 }
 \arguments{
   \item{path}{String describing the full path of the
-  directory}
+  directory or NULL to use a GUI to choose a directory from
+  disk}
 }
 \description{
 Function to declare a connection to a directory, although
@@ -15,7 +16,12 @@ directory does not exist, the function will return an
 error.
 }
 \examples{
-\dontrun{mydir <- directory("~/Dropbox/QUANTESS/corpora/ukManRenamed")
-corpus(mydir)}
+\dontrun{
+# name a directory of files
+mydir <- directory("~/Dropbox/QUANTESS/corpora/ukManRenamed")
+corpus(mydir)
+
+# choose a directory using a GUI
+corpus(directory())}
 }
 

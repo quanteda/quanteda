@@ -14,7 +14,11 @@ docnames(x) <- value
 \method{docnames}{dfm}(x)
 }
 \value{
-Character vector of the document names
+\code{docnames} returns a character vector of the document
+names
+
+\code{docnames<-} assigns a character vector of the
+document names in a corpus
 }
 \description{
 Extract the document names from a corpus or a

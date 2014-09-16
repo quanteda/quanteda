@@ -1,7 +1,7 @@
 \name{texts}
 \alias{texts}
 \alias{texts<-}
-\title{Corpus texts}
+\title{get or set corpus texts}
 \usage{
 texts(corp)
 
@@ -15,14 +15,18 @@ texts(corp) <- value
 }
 \value{
 For \code{texts}, a character vector of the texts in the
-corpus. For \code{texts <-}, the corpus with the updated
-texts.
+corpus.
+
+For \code{texts <-}, the corpus with the updated texts.
 }
 \description{
 Get or replace the texts in a quanteda corpus object.
 }
 \examples{
 texts(inaugCorpus)[1]
-texts(inaugTexts)[55] <- "GW Bush's second inaugural address, the condensed version."
+sapply(texts(inaugCorpus), nchar)  # length in characters of the inaugual corpus texts
+
+## this doesn't work yet - need to overload `[` for this replacement function
+# texts(inaugTexts)[55] <- "GW Bush's second inaugural address, the condensed version."
 }
 

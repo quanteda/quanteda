@@ -1,0 +1,34 @@
+\name{metadoc}
+\alias{metadoc}
+\title{get or set document-level meta-data}
+\usage{
+metadoc(corp, field = NULL)
+}
+\arguments{
+  \item{corp}{A quanteda corpus object}
+}
+\value{
+For \code{texts}, a character vector of the texts in the
+corpus.
+
+For \code{texts <-}, the corpus with the updated texts.
+}
+\description{
+Get or set the document-level meta-data, including reserved
+fields for language and corpus.
+}
+\note{
+Document-level meta-data names are preceded by an
+underscore character, such as \code{_encoding}, but when
+named in in the \code{field} argument, do \emph{not} need
+the underscore character.
+}
+\examples{
+mycorp <- subset(inaugCorpus, Year>1990)
+summary(mycorp, showmeta=TRUE)
+metadoc(mycorp, "encoding") <- "UTF-8"
+metadoc(mycorp)
+metadoc(mycorp, "language") <- "english"
+summary(mycorp, showmeta=TRUE)
+}
+
