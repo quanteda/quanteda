@@ -69,6 +69,23 @@ bigrams("The quick brown fox jumped over the lazy dog.", window=2)
 
 
 cleanEx()
+nameEx("clean")
+### * clean
+
+flush(stderr()); flush(stdout())
+
+### Name: clean
+### Title: clean a set of texts
+### Aliases: clean clean.character clean.corpus
+
+### ** Examples
+
+clean(inaugTexts, removeDigits=FALSE)
+clean(inaugCorpus, removeDigits=FALSE)
+
+
+
+cleanEx()
 nameEx("collocations")
 ### * collocations
 
@@ -180,8 +197,8 @@ wfmByPresfrom1900 <- dfm(subset(inaugCorpus, Year>1900), groups="President")
 docnames(wfmByPresfrom1900)
 
 ## with dictionaries
-data(iebudgets)
-mycorpus <- subset(iebudgets, year==2010)
+data(inaugCorpus)
+mycorpus <- subset(inaugCorpus, Year>1900)
 mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
                opposition=c("Opposition", "reject", "notincorpus"),
                taxing="taxing",
@@ -1000,23 +1017,23 @@ flush(stderr()); flush(stdout())
 
 
 cleanEx()
-nameEx("trim.dfm")
-### * trim.dfm
+nameEx("trimdfm")
+### * trimdfm
 
 flush(stderr()); flush(stdout())
 
-### Name: trim.dfm
+### Name: trimdfm
 ### Title: Trim a dfm based on a subset of features and words
-### Aliases: trim.dfm
+### Aliases: trimdfm
 
 ### ** Examples
 
 data(inaugCorpus)
 dtm <- dfm(inaugCorpus)
 dim(dtm)
-dtmReduced <- trim(dtm, minCount=10, minDoc=2) # only words occuring at least 5 times and in at least 2documents
+dtmReduced <- trimdfm(dtm, minCount=10, minDoc=2) # only words occuring at least 5 times and in at least 2documents
 dim(dtmReduced)
-dtmSampled <- trim(dtm, sample=200)  # top 200 words
+dtmSampled <- trimdfm(dtm, sample=200)  # top 200 words
 dim(dtmSampled)  # 196 x 200 words
 
 

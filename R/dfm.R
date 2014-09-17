@@ -30,8 +30,8 @@
 #' docnames(wfmByPresfrom1900)
 #' 
 #' ## with dictionaries
-#' data(iebudgets)
-#' mycorpus <- subset(iebudgets, year==2010)
+#' data(inaugCorpus)
+#' mycorpus <- subset(inaugCorpus, Year>1900)
 #' mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
 #'                opposition=c("Opposition", "reject", "notincorpus"),
 #'                taxing="taxing",
