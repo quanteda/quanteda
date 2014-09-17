@@ -475,15 +475,15 @@ docnames.corpus <- function(x) {
 #' ndoc(inaugCorpus)
 #' ndoc(dfm(inaugCorpus))
 #' @export
-ndoc <- function(x) {
+ndoc <- function(x, ...) {
     UseMethod("ndoc")
 }
 
 
 #' @rdname ndoc
 #' @export
-ndoc.corpus <- function(corp) {
-    nrow(corp$documents)
+ndoc.corpus <- function(x, ...) {
+    nrow(x$documents)
 }
 
 #' get or set the language of corpus documents

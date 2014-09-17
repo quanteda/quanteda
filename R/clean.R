@@ -19,13 +19,13 @@ clean <- function(x, ...) {
 }
 
 #' @export
-clean.character <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, ...) {
-    return(sapply(s, cleanSingleNew, removeDigits=removeDigits, removePunct=removePunct, lower=lower,
+clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, ...) {
+    return(sapply(x, cleanSingleNew, removeDigits=removeDigits, removePunct=removePunct, lower=lower,
            USE.NAMES=FALSE))
 }
 
 #' @export
-clean.corpus <- function(corpus, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, ...) {
-    texts(corpus) <- clean(texts(corpus), removeDigits=removeDigits, removePunct=removePunct, lower=lower)
-    return(corpus)
+clean.corpus <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, ...) {
+    texts(x) <- clean(texts(x), removeDigits=removeDigits, removePunct=removePunct, lower=lower)
+    return(x)
 }

@@ -3,7 +3,7 @@
 \title{split a text into sentences
 This function takes a text and splits it into sentences.}
 \usage{
-sentenceSeg(text, pat = "[\\\\.\\\\?\\\\!][\\\\n* ]|\\\\n\\\\n*",
+sentenceSeg(txt, pat = "[\\\\.\\\\?\\\\!][\\\\n* ]|\\\\n\\\\n*",
   abbreviations = NULL, stripempty = TRUE)
 }
 \arguments{

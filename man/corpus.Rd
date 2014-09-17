@@ -9,7 +9,7 @@ corpus(x, ...)
 
 \method{corpus}{directory}(x, enc = NULL, docnames = NULL,
   docvarsfrom = c("filenames", "headers"), docvarnames = NULL, sep = "_",
-  source = NULL, notes = NULL, citation = NULL)
+  source = NULL, notes = NULL, citation = NULL, ...)
 
 \method{corpus}{character}(x, enc = NULL, docnames = NULL, docvars = NULL,
   source = NULL, notes = NULL, citation = NULL, ...)

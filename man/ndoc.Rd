@@ -6,7 +6,7 @@
 \usage{
 \emph{ }
 
-\method{ndoc}{corpus}(corp)
+\method{ndoc}{corpus}(x, ...)
 
 \method{ndoc}{dfm}(x)
 }
