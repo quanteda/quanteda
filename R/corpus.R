@@ -1,4 +1,4 @@
-### TO DO:
+### TO DO: 
 ###
 ### - the replacement functions do not work with indexes, this needs to be fixed
 ### - corpus constructor method needs more object types defined, e.g. Twitter
