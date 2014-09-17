@@ -7,7 +7,7 @@ tokenizeSingle <- function(s, clean=FALSE) {
         s <- clean(s)
     }
     s <- unlist(s)
-    tokens <- scan(what="char", text=s, quiet=TRUE)
+    tokens <- scan(what="char", text=s, quiet=TRUE, quote="")
     return(tokens)
 }
 

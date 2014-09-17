@@ -11,9 +11,9 @@
 #' @examples
 #' test <- "This is a sentence! Several sentences. It's designed by a Dr. to test whether this function works. Or not? Or not."
 #' sentenceSeg(test)
-sentenceSeg <- function(text, pat="[\\.\\?\\!][\\n* ]|\\n\\n*", abbreviations = NULL,
+sentenceSeg <- function(txt, pat="[\\.\\?\\!][\\n* ]|\\n\\n*", abbreviations = NULL,
                         stripempty = TRUE) {
-    stops <- unlist(strsplit(text, split=pat, perl=TRUE) )
+    stops <- unlist(strsplit(txt, split=pat, perl=TRUE) )
     if (is.null(abbreviations)) {abbreviations <- c('Mr', 'Mrs', 'Ms', 'Dr','Jr','Prof')}
     i <- 1
     sentences <- c()

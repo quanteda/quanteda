@@ -18,6 +18,7 @@ describeTexts <- function(txts, verbose=TRUE) {
     temp <- lapply(tokenizedTexts, unique)
     ntypes <- sapply(temp, length)
     # because we still don't have a generic sentence segmenter
+    # broken
     nsents  <- sapply(txts, function(s) length(gregexpr("[.!?]", s)[[1]]))
     results <- data.frame(Text=names(txts),
                           Types=ntypes,
