@@ -362,13 +362,13 @@ metadoc <- function(corp, field=NULL) {
 # inside the calling function: see http://cran.r-project.org/doc/manuals/R-lang.html#Subset-assignment
 #
 # @export
-"metadoc<-[" <- function(corp, value, field) {
-    # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
-    # (this check not yet implemented)
-    field <- paste("_", field, sep="")
-    documents(corp)[field] <- value
-    corp
-}
+# "metadoc<-[" <- function(corp, value, field) {
+#     # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
+#     # (this check not yet implemented)
+#     field <- paste("_", field, sep="")
+#     documents(corp)[field] <- value
+#     corp
+# }
 
 
 
@@ -460,6 +460,8 @@ docnames.corpus <- function(x) {
 #' 
 #' @rdname docnames
 "docnames<-" <- function(x, value) {
+    if (!is.corpus(x))
+        stop("docnames<-  only valid for corpus objects.")
     rownames(x$documents) <- value
     return(x)
 }

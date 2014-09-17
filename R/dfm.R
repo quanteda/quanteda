@@ -318,10 +318,10 @@ makeRegEx <- function(wildcardregex) {
     ##   [ab] meaning a or b
 }
 
-#' @export
-trim <- function(x, ...) {
-    UseMethod("trim")
-}
+# # @export
+# trim <- function(x, ...) {
+#     UseMethod("trim")
+# }
 
 #' Trim a dfm based on a subset of features and words
 #'
@@ -339,11 +339,12 @@ trim <- function(x, ...) {
 #' data(inaugCorpus)
 #' dtm <- dfm(inaugCorpus)
 #' dim(dtm) 
-#' dtmReduced <- trim(dtm, minCount=10, minDoc=2) # only words occuring at least 5 times and in at least 2documents
+#' dtmReduced <- trimdfm(dtm, minCount=10, minDoc=2) # only words occuring at least 5 times and in at least 2documents
 #' dim(dtmReduced)  
-#' dtmSampled <- trim(dtm, sample=200)  # top 200 words
+#' dtmSampled <- trimdfm(dtm, sample=200)  # top 200 words
 #' dim(dtmSampled)  # 196 x 200 words
-trim.dfm <- function(x, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
+trimdfm <- function(x, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
+    if (!is.dfm(x)) stop("trimdfm should only be used for dfm objects.")
     class_xorig <- class(x)
     mY <- t(x)
     
