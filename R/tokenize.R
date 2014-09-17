@@ -14,21 +14,25 @@ tokenizeSingle <- function(s, clean=FALSE) {
 #' tokenize a set of texts
 #'
 #' Tokenize the texts from a character vector or from a corpus.
+#' @rdname tokenize
+#' @param x The text to be tokenized
 #' @return A list of length \code{\link{ndoc}(texts)} of the tokens found in each text.
 #' @export
 tokenize <- function(x, ...) {
     UseMethod("tokenize")
 }
 
-#' @S3method tokenize character
+#' @S3method tokenize character vector
 #' @rdname tokenize
+#' @param x A character vector to be tokenized
+#' @return  A list of length \code{\link{ndoc}(texts)} of the tokens found in each text.
 #' @export
-tokenize.character <- function(text, clean=FALSE, simplify=FALSE) {
+tokenize.character <- function(x, clean=FALSE, simplify=FALSE, ... ) {
     # should pass ... from parent functions, so that these can be
     # passed to clean().  I suggest not using "clean" as an argument.
     # instead, let the clean() defaults come into effect, unless
     # overrides are passed through ...
-    result <- lapply(text, tokenizeSingle, clean)
+    result <- lapply(x, tokenizeSingle, clean)
     if (simplify | length(result)==1) {
         result <- unlist(result)
     }
