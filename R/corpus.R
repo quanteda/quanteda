@@ -45,36 +45,6 @@ corpus <- function(x, ...) {
     UseMethod("corpus")
 }
 
-#' Function to declare a connection to a directory (containing files)
-#' 
-#' Function to declare a connection to a directory, although unlike \link{file} it does not require closing.
-#' If the directory does not exist, the function will return an error.
-#' 
-#' @param path  String describing the full path of the directory or NULL to use a GUI
-#' to choose a directory from disk
-#' @export
-#' @examples 
-#' \dontrun{
-#' # name a directory of files
-#' mydir <- directory("~/Dropbox/QUANTESS/corpora/ukManRenamed")
-#' corpus(mydir)
-#' 
-#' # choose a directory using a GUI
-#' corpus(directory())} 
-#' @export
-directory <- function(path=NULL) {
-    # choose it from a GUI if none exists
-    if (is.null(path)) {
-        require(tcltk2) 
-        texts <- tk_choose.dir()
-    }
-    stopifnot(class(path) == "character")
-    stopifnot(file.exists(path))
-    tempPath <- path
-    class(tempPath) <- list("directory", class(tempPath))
-    return(tempPath)
-}
-
 
 #' @param docvarsfrom  Argument to specify where docvars are to be taken, from parsing the filenames (\link{filenames}) separated
 #' by \code{sep} or from meta-data embedded in the text file header (\code{headers}).
@@ -121,7 +91,7 @@ corpus.directory<- function(x, enc=NULL, docnames=NULL, docvarsfrom=c("filenames
         stop("headers argument not yet implemented.")
     }
 
-    NextMethod(texts=texts, enc=enc, docnames=docnames, docvars=dvars,
+    NextMethod(x=texts, enc=enc, docnames=docnames, docvars=dvars,
                source=source, notes=notes, citation=citation, fnames=fnames)
 }
 
@@ -167,7 +137,7 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
     metadata <- list(source=source, created=created, notes=notes, citation=citation)
     
     # create the documents data frame starting with the texts
-    documents <- data.frame(x, row.names=names(x),
+    documents <- data.frame(texts=x, row.names=names(x),
                             check.rows=TRUE, stringsAsFactors=FALSE)
     # set the encoding label
     documents$"_encoding" <- enc
@@ -189,6 +159,36 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
                        tokens=NULL)
     class(tempCorpus) <- list("corpus", class(tempCorpus))
     return(tempCorpus)
+}
+
+#' Function to declare a connection to a directory (containing files)
+#' 
+#' Function to declare a connection to a directory, although unlike \link{file} it does not require closing.
+#' If the directory does not exist, the function will return an error.
+#' 
+#' @param path  String describing the full path of the directory or NULL to use a GUI
+#' to choose a directory from disk
+#' @export
+#' @examples 
+#' \dontrun{
+#' # name a directory of files
+#' mydir <- directory("~/Dropbox/QUANTESS/corpora/ukManRenamed")
+#' corpus(mydir)
+#' 
+#' # choose a directory using a GUI
+#' corpus(directory())} 
+#' @export
+directory <- function(path=NULL) {
+    # choose it from a GUI if none exists
+    if (is.null(path)) {
+        require(tcltk2) 
+        texts <- tk_choose.dir()
+    }
+    stopifnot(class(path) == "character")
+    stopifnot(file.exists(path))
+    tempPath <- path
+    class(tempPath) <- list("directory", class(tempPath))
+    return(tempPath)
 }
 
 

@@ -434,7 +434,7 @@ types <- function(corp) {
 
 
 #' @export
-features <- function(x) {
+features <- function(x, ...) {
     UseMethod("features")
 }
 
@@ -523,6 +523,7 @@ topfeatures <- function(x, n=10, decreasing=TRUE) {
 #' @rdname topfeatures
 #' @export
 topfeatures.dfm <- function(x, n=10, decreasing=TRUE) {
+    if (is.null(n)) n <- ncol(x)
     subdfm <- sort(colSums(x), decreasing)
     subdfm[1:n]
 }
