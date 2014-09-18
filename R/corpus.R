@@ -46,7 +46,8 @@ corpus <- function(x, ...) {
 }
 
 
-#' @param docvarsfrom  Argument to specify where docvars are to be taken, from parsing the filenames (\link{filenames}) separated
+#' @param docvarsfrom  Argument to specify where docvars are to be taken, from 
+#' parsing the filenames (\link{filenames}) separated
 #' by \code{sep} or from meta-data embedded in the text file header (\code{headers}).
 #' @param docvarnames Character vector of variable names for \code{docvars}
 #' @param sep Separator if \link{docvar} names are taken from the filenames.

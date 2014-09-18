@@ -13,50 +13,56 @@ cleanSingleNew <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE) {
     return(s)
 }
 
-#' clean a set of texts
-#'
-#' clean the texts from a character vector or from a corpus.
+#' clean: simple pre-processing cleanup
+#' 
+#' \code{clean} removes punctuation and digits from text, using the regex 
+#' character classes for punctuation and digits. \code{clean} uses the standard R
+#' function \code{tolower} to convert the text to lower case. Each of these 
+#' steps is optional, but switched on by default, so for example, to remove 
+#' punctuation and convert to lower, but keep digits, the command would be: 
+#' \code{clean(mytexts, removeDigits=FALSE)}
 #' @rdname clean
-#' @param x The text to be cleaned
+#' @param x The object to be cleaned. Can be either a character vector or a 
+#'   corpus object. If x is a corpus, \code{clean} returns a copy of the x with 
+#'   the texts cleaned.
+#' @param removeDigits Should digits be removed? TRUE or FALSE
+#' @param removePunct Should punctuation be removed? TRUE or FALSE
+#' @param lower Convert to lower case? TRUE or FALSE
+#' @examples
+#' 
+#' #convert a set of texts to lower case and remove 
+#' punctuation, keeping digits
+#' 
+#' clean(inaugTexts, removeDigits=FALSE)
+#' 
+#' # remove digits from a corpus
+#' clean(inaugTexts, removePunct=FALSE, lower=FALSE)
+#' 
 #' @export
 clean <- function(x, ...) {
     UseMethod("clean")
 }
 
-#' clean a character vector
-#' 
-#' clean the texts from a character vector by removing (optionally) digits and
-#' punctuation, and converting to lower case
+
+
 #' @rdname clean
-#' @param x The character vector to be cleaned
-#' @param removeDigits Should digits be removed? TRUE or FALSE
-#' @param removePunct Should punctuation be removed? TRUE or FALSE
-#' @param lower Convert to lower case? TRUE or FALSE
 #' @export
-#' @examples
-#' 
-#' clean(inaugTexts, removeDigits=FALSE)
 clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, ...) {
+    if(!(removeDigits | removePunct | lower)){
+        warning("all options FALSE, text unchanged")
+    }
     return(sapply(x, cleanSingleNew, removeDigits=removeDigits, removePunct=removePunct, lower=lower,
            USE.NAMES=FALSE))
 }
 
 
-#' clean a corpus
-#' 
-#' clean the texts in a corpus by removing (optionally) digits and punctuation,
-#' and converting to lower case. Returns a corpus with the texts cleaned.
+
 #' @rdname clean
-#' @param x The character vector to be cleaned
-#' @param removeDigits Should digits be removed? TRUE or FALSE
-#' @param removePunct Should punctuation be removed? TRUE or FALSE
-#' @param lower Convert to lower case? TRUE or FALSE
-#' @return  a corpus with the texts cleaned.
 #' @export
-#' @examples
-#' 
-#' clean(inaugCorpus, removeDigits=FALSE)
 clean.corpus <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, ...) {
+    if(!(removeDigits | removePunct | lower)){
+        warning("all options FALSE, text unchanged")
+    }
     texts(x) <- clean(texts(x), removeDigits=removeDigits, removePunct=removePunct, lower=lower)
     return(x)
 }
