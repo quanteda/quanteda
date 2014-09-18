@@ -52,7 +52,7 @@ NULL
 
 #' @name stopwords
 #' @title A named list containing common stopwords in 14 languages
-#' @docType data
+# @rdname stopwordsRemove
 #' @description SMART English stopwords from the SMART information retrieval
 #' system (obtained from
 #' http://jmlr.csail.mit.edu/papers/volume5/lewis04a/a11-smart-stop-list/english.stop)

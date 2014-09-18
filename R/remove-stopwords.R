@@ -1,14 +1,17 @@
 #' remove stopwords from a text or dfm
-#'
+#' 
 #' This function takes a character vector or \link{dfm} and removes words in the
-#' remove common or 'semantically empty' words from a text.
-#'
-#' This function takes a character vector 'text' and removes words in the
-#' list provided in 'stopwords'. If no list of stopwords is provided a 
-#' default list for English is used.
+#' remove common or 'semantically empty' words from a text. See \link{stopwordsGet}
+#' for the information about the default lists.
+#' 
+#' This function takes a character vector 'text' and removes words in the list 
+#' provided in stopwords. If no list of stopwords is provided a default
+#' list for English is used. The function \link{stopwordsGet} can load a default
+#' set of stopwords for many languages.
 #' 
 #' @param text Text from which stopwords will be removed
-#' @param stopwords Character vector of stopwords to remove
+#' @param stopwords Character vector of stopwords to remove - if none is 
+#'   supplied, a default set of English stopwords is used
 #' @return a character vector or dfm with stopwords removed
 #' @rdname stopwordsRemove
 #' @export
@@ -22,20 +25,18 @@
 #' stopwordsRemove(someText, c("containing", "example"))
 #' 
 #' ## example for dfm objects
-#' data(iebudgets)
-#' wfm <- dfm(subset(iebudgets, year==2010))
-#' wfm.nostopwords <- stopwordsRemove(wfm)
-#' dim(wfm)
-#' dim(wfm.nostopwords)
-#' dim(stopwordsRemove(wfm, stopwordsGet("SMART")))
+#' docmat <- dfm(uk2010immig)
+#' docmatNostopwords <- stopwordsRemove(docmat)
+#' dim(docmat)
+#' dim(docmatNostopwords)
+#' dim(stopwordsRemove(docmat, stopwordsGet("SMART")))
 stopwordsRemove <- function(text, stopwords=NULL) {
     UseMethod("stopwordsRemove")
 }
 
 
 #' @rdname stopwordsRemove
-#' @method stopwordsRemove character
-#' @S3method stopwordsRemove character
+#' @export
 stopwordsRemove.character <- function(text, stopwords=NULL) {
     if (is.null(stopwords)) {
         stopwords <- stopwordsGet("english")
@@ -45,26 +46,24 @@ stopwordsRemove.character <- function(text, stopwords=NULL) {
 }
 
 
-#' @rdname stopwordsRemove
-#' @method stopwordsRemove matrix
-#' @S3method stopwordsRemove matrix
-stopwordsRemove.matrix <- function(text, stopwords=NULL) {
-    if (names(dimnames(text))[2] != "words") {
-        stop(paste(text, "does not appear to be a valid dfm matrix."))
+#' @export
+stopwordsRemove.dfm <- function(text, stopwords=NULL) {
+    if (!("dfm" %in% class(text)) ) {
+        stop(paste(text, "does not appear to be a valid dfm."))
     }
     if (is.null(stopwords)) {
         stopwords <- stopwordsGet("english")
     }
-    remove.index <- which(colnames(text) %in% stopwords)
-    return(text[, -remove.index])
+    removeIndex <- which(colnames(text) %in% stopwords)
+    return(text[, -removeIndex])
 }
 
 
 #' access stopwords
-#'
-#' This function retrieves stopwords from the type specified in the \code{kind} argument and 
-#' returns the stopword list as a character vector
-#' The default is English.
+#' 
+#' This function retrieves stopwords from the type specified in the \code{kind}
+#' argument and returns the stopword list as a character vector The default is
+#' English. See \link{stopwords} for information about the list.
 #' 
 #' @param kind The pre-set kind of stopwords (as a character string)
 #' @return a character vector or dfm with stopwords removed
