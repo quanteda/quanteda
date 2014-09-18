@@ -634,8 +634,9 @@ summary.corpus <- function(corp, n=100, verbose=TRUE, showmeta=FALSE) {
     cat("\n")
     ### Turn off describeTexts until we can speed this up
     # dtexts <- describeTexts(texts(corp), verbose=FALSE)
-    outputdf <- data.frame(describeTexts(texts(corp), verbose=FALSE),
-                           docvars(corp))
+    outputdf <- data.frame(describeTexts(texts(corp), verbose=FALSE))
+    if (!is.null(docvars(corp)))
+        outputdf <- cbind(outputdf, docvars(corp))
     # if (detail) outputdf <- cbind(outputdf, metadoc(corp))
     if (showmeta)
         outputdf[names(metadoc(corp))] <- metadoc(corp)

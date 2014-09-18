@@ -525,3 +525,11 @@ topfeatures.dfm <- function(x, n=10, decreasing=TRUE) {
     subdfm <- sort(colSums(x), decreasing)
     subdfm[1:n]
 }
+
+#' @S3method print dfm
+#' @export
+print.dfm <- function(x) {
+    class(x) <- "matrix"
+    attr(x, "settings") <- NULL
+    print(x)
+}

@@ -2,6 +2,7 @@
 
 library(quanteda)
 inaugTexts <- getTextDir('~/Dropbox/QUANTESS/corpora/inaugural')
+names(inaugTexts) <- gsub("\\.txt", "", names(inaugTexts))
 save(inaugTexts, file=".//data//inaugTexts.RData")
 inaugCorpus <- iconv(inaugTexts, from="latin1", to="ASCII")
 d <- directory('~/Dropbox/QUANTESS/corpora/inaugural')

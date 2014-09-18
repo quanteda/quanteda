@@ -1,4 +1,5 @@
 \name{tokenize}
+\alias{tokenise}
 \alias{tokenize}
 \alias{tokenize.character}
 \alias{tokenize.corpus}
@@ -6,18 +7,25 @@
 \usage{
 tokenize(x, ...)
 
-\method{tokenize}{character}(x, clean = FALSE, simplify = FALSE, ...)
+\method{tokenize}{character}(x, simplify = FALSE, sep = " ", ...)
 
 \method{tokenize}{corpus}(corpus, ...)
 }
 \arguments{
-  \item{x}{The text to be tokenized}
+  \item{x}{The text(s) or corpus to be tokenized}
 
-  \item{x}{A character vector to be tokenized}
+  \item{...}{additional arguments passed to
+  \code{\link{clean}}}
+
+  \item{simplify}{If \code{TRUE}, return a character vector
+  of tokens rather than a list of length
+  \code{\link{ndoc}(texts)}, with each element of the list
+  containing a character vector of the tokens corresponding
+  to that text.}
 }
 \value{
-A list of length \code{\link{ndoc}(texts)} of the tokens
-found in each text.
+A list of length \code{\link{ndoc}(x)} of the tokens found
+in each text.
 
 A list of length \code{\link{ndoc}(texts)} of the tokens
 found in each text.
@@ -25,5 +33,19 @@ found in each text.
 \description{
 Tokenize the texts from a character vector or from a
 corpus.
+}
+\examples{
+# same for character vectors and for lists
+tokensFromChar <- tokenize(inaugTexts)
+tokensFromCorp <- tokenize(inaugCorpus)
+identical(tokensFromChar, tokensFromCorp)
+str(tokensFromChar)
+# returned as a list
+head(tokenize(inaugTexts[57])[[1]], 10)
+# returned as a character vector using simplify=TRUE
+head(tokenize(inaugTexts[57], simplify=TRUE), 10)
+
+# demonstrate some options with clean
+head(tokenize(inaugTexts[57], simplify=TRUE, lower=FALSE), 30)
 }
 

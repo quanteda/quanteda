@@ -1,40 +1,61 @@
 
 # with scan
-# profiling shows that using scan is 3x faster than using strsplit
-#' @export
-tokenizeSingle <- function(s, clean=FALSE) {
-    if (clean) {
-        s <- clean(s)
-    }
-    s <- unlist(s)
-    tokens <- scan(what="char", text=s, quiet=TRUE, quote="")
-    return(tokens)
-}
 
 #' tokenize a set of texts
 #'
 #' Tokenize the texts from a character vector or from a corpus.
 #' @rdname tokenize
-#' @param x The text to be tokenized
-#' @return A list of length \code{\link{ndoc}(texts)} of the tokens found in each text.
+#' @aliases tokenise
+#' @param x The text(s) or corpus to be tokenized
+#' @param ... additional arguments passed to \code{\link{clean}}
+#' @return A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
 #' @export
+#' @examples 
+#' # same for character vectors and for lists
+#' tokensFromChar <- tokenize(inaugTexts)
+#' tokensFromCorp <- tokenize(inaugCorpus)
+#' identical(tokensFromChar, tokensFromCorp)
+#' str(tokensFromChar)
+#' 
 tokenize <- function(x, ...) {
     UseMethod("tokenize")
 }
 
-#' @S3method tokenize character vector
+#' @S3method tokenize character
 #' @rdname tokenize
-#' @param x A character vector to be tokenized
-#' @return  A list of length \code{\link{ndoc}(texts)} of the tokens found in each text.
+#' @param simplify If \code{TRUE}, return a character vector of tokens rather 
+#'   than a list of length \code{\link{ndoc}(texts)}, with each element of the 
+#'   list containing a character vector of the tokens corresponding to that
+#'   text.
+#' @return  A list of length \code{\link{ndoc}(texts)} of the tokens found in 
+#'   each text.
 #' @export
-tokenize.character <- function(x, clean=FALSE, simplify=FALSE, ... ) {
-    # should pass ... from parent functions, so that these can be
-    # passed to clean().  I suggest not using "clean" as an argument.
-    # instead, let the clean() defaults come into effect, unless
-    # overrides are passed through ...
-    result <- lapply(x, tokenizeSingle, clean)
-    if (simplify | length(result)==1) {
-        result <- unlist(result)
+#' @examples 
+#' # returned as a list
+#' head(tokenize(inaugTexts[57])[[1]], 10)
+#' # returned as a character vector using simplify=TRUE
+#' head(tokenize(inaugTexts[57], simplify=TRUE), 10)
+#' 
+#' # demonstrate some options with clean
+#' head(tokenize(inaugTexts[57], simplify=TRUE, lower=FALSE), 30)
+tokenize.character <- function(x, simplify=FALSE, sep=" ", ... ) {
+    # function to tokenize a single element character
+    # profiling shows that using scan is 3x faster than using strsplit
+    tokenizeSingle <- function(s, sep=" ", ...) {
+        s <- clean(s, ...)
+        # s <- unlist(s)
+        tokens <- scan(what="char", text=s, quiet=TRUE, quote="", sep=sep)
+        return(tokens)
+    }
+    
+    # apply to each texts, return a list
+    result <- lapply(x, tokenizeSingle, sep, ...)
+    
+    #if (simplify | length(result)==1) {
+    # change to a character vector of tokens if simplify==TRUE 
+    # this will concatenate the token lists if length(result)>1
+    if (simplify) {
+        result <- unlist(result, use.names=FALSE)
     }
     return(result)
 }
@@ -45,6 +66,7 @@ tokenize.character <- function(x, clean=FALSE, simplify=FALSE, ... ) {
 tokenize.corpus <- function(corpus, ...) {
     # get the settings for clean from the corpus and use those, 
     # unless more specific arguments are passed -- ADD THE ABILITY TO PASS THESE
+    # need to include sep in this list too 
     tokenize(texts(corpus), ...)
 }
 
