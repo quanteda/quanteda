@@ -45,8 +45,6 @@
 #' testCorpus <- corpus(testText)
 #' settings(testCorpus, "stopwords")
 #' dfm(testCorpus, stopwords=TRUE)
-#' if (require(tm)) {
-#' }
 #' 
 dfm <- function(x, ...) {
 #                 feature=c("word"),
