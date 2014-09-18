@@ -52,7 +52,7 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, 
         warning("all options FALSE, text unchanged")
     }
     return(sapply(x, cleanSingleNew, removeDigits=removeDigits, removePunct=removePunct, lower=lower,
-           USE.NAMES=FALSE))
+                  USE.NAMES=FALSE))
 }
 
 

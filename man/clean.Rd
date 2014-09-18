@@ -2,7 +2,7 @@
 \alias{clean}
 \alias{clean.character}
 \alias{clean.corpus}
-\title{clean a set of texts}
+\title{clean: simple pre-processing cleanup}
 \usage{
 clean(x, ...)
 
@@ -13,19 +13,10 @@ clean(x, ...)
   lower = TRUE, ...)
 }
 \arguments{
-  \item{x}{The text to be cleaned}
-
-  \item{x}{The character vector to be cleaned}
-
-  \item{removeDigits}{Should digits be removed? TRUE or
-  FALSE}
-
-  \item{removePunct}{Should punctuation be removed? TRUE or
-  FALSE}
-
-  \item{lower}{Convert to lower case? TRUE or FALSE}
-
-  \item{x}{The character vector to be cleaned}
+  \item{x}{The object to be cleaned. Can be either a
+  character vector or a corpus object. If x is a corpus,
+  \code{clean} returns a copy of the x with the texts
+  cleaned.}
 
   \item{removeDigits}{Should digits be removed? TRUE or
   FALSE}
@@ -34,23 +25,24 @@ clean(x, ...)
   FALSE}
 
   \item{lower}{Convert to lower case? TRUE or FALSE}
-}
-\value{
-a corpus with the texts cleaned.
 }
 \description{
-clean the texts from a character vector or from a corpus.
-
-clean the texts from a character vector by removing
-(optionally) digits and punctuation, and converting to
-lower case
-
-clean the texts in a corpus by removing (optionally) digits
-and punctuation, and converting to lower case. Returns a
-corpus with the texts cleaned.
+\code{clean} removes punctuation and digits from text,
+using the regex character classes for punctuation and
+digits. \code{clean} uses the standard R function
+\code{tolower} to convert the text to lower case. Each of
+these steps is optional, but switched on by default, so for
+example, to remove punctuation and convert to lower, but
+keep digits, the command would be: \code{clean(mytexts,
+removeDigits=FALSE)}
 }
 \examples{
+#convert a set of texts to lower case and remove
+punctuation, keeping digits
+
 clean(inaugTexts, removeDigits=FALSE)
-clean(inaugCorpus, removeDigits=FALSE)
+
+# remove digits from a corpus
+clean(inaugTexts, removePunct=FALSE, lower=FALSE)
 }
 
