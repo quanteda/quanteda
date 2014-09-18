@@ -92,8 +92,6 @@ testText <- "The quick brown fox named Seamus jumps over the lazy dog Rory, with
 testCorpus <- corpus(testText)
 settings(testCorpus, "stopwords")
 dfm(testCorpus, stopwords=TRUE)
-if (require(tm)) {
-}
 }
 \author{
 Kenneth Benoit
