@@ -41,7 +41,8 @@
 #' dictDfm
 #' 
 #' ## removing stopwords
-#' testText <- "The quick brown fox named Seamus jumps over the lazy dog Rory, with Tom's newpaper in his mouth."
+#' testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with 
+#'              the newspaper from a a boy named Seamus, in his mouth."
 #' testCorpus <- corpus(testText)
 #' settings(testCorpus, "stopwords")
 #' dfm(testCorpus, stopwords=TRUE)
@@ -63,7 +64,7 @@ dfm <- function(x, ...) {
 
 #' @rdname dfm
 #' @method dfm corpus
-#' @S3method dfm corpus
+#' @export
 dfm.corpus <- function(x,
                        feature=c("word"),
                        stem=FALSE,
@@ -115,7 +116,7 @@ dfm.corpus <- function(x,
 
 #' @rdname dfm
 #' @method dfm character
-#' @S3method dfm character
+#' @export
 dfm.character <- function(x,
                           feature=c("word"),
                           stem=FALSE,
@@ -143,9 +144,9 @@ dfm.character <- function(x,
     
     tokenizedTexts <- tokenize(x, clean=FALSE)
     if (stem==TRUE) {
-        require(SnowballC, quietly=TRUE)
+        # require(SnowballC, quietly=TRUE)
         if (verbose) cat(" stemming ...")
-        tokenizedTexts <- lapply(tokenizedTexts, wordStem)
+        tokenizedTexts <- lapply(tokenizedTexts, SnowballC::wordStem)
     }
     if (bigram > 0) {
         if (verbose) cat(" making bigrams ...")
@@ -158,11 +159,11 @@ dfm.character <- function(x,
     
     # print(length)
     alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
-                            words = unlist(tokenizedTexts, use.names=FALSE))
+                            features = unlist(tokenizedTexts, use.names=FALSE))
     
     # need to enforce check that dictionary is a named list
     if (is.null(dictionary)) {
-        dfm <- as.data.frame.matrix(table(alltokens$docs, alltokens$words))
+        dfm <- as.data.frame.matrix(table(alltokens$docs, alltokens$features))
     } else {
         # flatten the dictionary
         dictionary <- flatten.dictionary(dictionary)
@@ -201,6 +202,9 @@ dfm.character <- function(x,
         if (!is.character(stopwords) | !length(stopwords)>0) {
             stop("stopwords must be a character vector with positive length.")
         }
+#         } else {
+#             stopwords <- stopwordsGet(stopwords)
+#         }
         if (bigram==TRUE) {
             pat <- paste(paste0(paste0("-", stopwords, "$"), collapse='|'), paste0(paste0("^", stopwords, "-"), collapse='|'), sep='|')
             dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
@@ -228,7 +232,7 @@ dfm.character <- function(x,
     
     # restore original sort order
     
-    dfm <- dfm[(1:nrow(dfm))[order(originalSortOrder)], ]
+    dfm <- dfm[(1:nrow(dfm))[order(originalSortOrder)], , drop=FALSE]
     
     if(verbose) cat(" done. \n")
     class(dfm) <- c("dfm", class(dfm))
@@ -526,7 +530,6 @@ topfeatures.dfm <- function(x, n=10, decreasing=TRUE) {
     subdfm[1:n]
 }
 
-#' @S3method print dfm
 #' @export
 print.dfm <- function(x) {
     class(x) <- "matrix"
