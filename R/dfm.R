@@ -63,7 +63,6 @@ dfm <- function(x, ...) {
 
 #' @rdname dfm
 #' @method dfm corpus
-#' @S3method dfm corpus
 dfm.corpus <- function(x,
                        feature=c("word"),
                        stem=FALSE,
@@ -115,7 +114,6 @@ dfm.corpus <- function(x,
 
 #' @rdname dfm
 #' @method dfm character
-#' @S3method dfm character
 dfm.character <- function(x,
                           feature=c("word"),
                           stem=FALSE,
