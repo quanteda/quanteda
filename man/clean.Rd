@@ -34,7 +34,7 @@ punctuation and convert to lower, but keep digits, the command would be:
 }
 \examples{
 #convert a set of texts to lower case and remove
-punctuation, keeping digits
+#punctuation, keeping digits
 
 clean(inaugTexts, removeDigits=FALSE)
 

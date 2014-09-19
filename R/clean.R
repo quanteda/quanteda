@@ -31,7 +31,7 @@ cleanSingleNew <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE) {
 #' @examples
 #' 
 #' #convert a set of texts to lower case and remove 
-#' punctuation, keeping digits
+#' #punctuation, keeping digits
 #' 
 #' clean(inaugTexts, removeDigits=FALSE)
 #' 
