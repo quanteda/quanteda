@@ -1,19 +1,5 @@
 
-#' @export
-cleanSingleNew <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE) {
-    if (removeDigits) {
-        s <- gsub("[[:digit:]]", "", s)
-    } 
-    if (removePunct) {
-        s <- gsub("[[:punct:]]", "", s)
-    }
-    if (lower) {
-        s <- tolower(s)
-    }
-    return(s)
-}
-
-#' clean: simple pre-processing cleanup
+#' simple cleaning of text before processing
 #' 
 #' \code{clean} removes punctuation and digits from text, using the regex 
 #' character classes for punctuation and digits. \code{clean} uses the standard R
@@ -25,19 +11,17 @@ cleanSingleNew <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE) {
 #' @param x The object to be cleaned. Can be either a character vector or a 
 #'   corpus object. If x is a corpus, \code{clean} returns a copy of the x with 
 #'   the texts cleaned.
-#' @param removeDigits Should digits be removed? TRUE or FALSE
-#' @param removePunct Should punctuation be removed? TRUE or FALSE
-#' @param lower Convert to lower case? TRUE or FALSE
+#' @param removeDigits remove numbers if \code{TRUE}
+#' @param removePunct remove punctuation if \code{TRUE}
+#' @param lower convert text to lower case \code{TRUE}
+#' @return A character vector equal in length to the original texts, after cleaning.
 #' @examples
+#' clean("This is 1 sentence with 1.9 numbers in it, and one comma.", removeDigits=FALSE)
+#' clean("This is 1 sentence with 1.9 numbers in it, and one comma.", lower=FALSE)
 #' 
-#' #convert a set of texts to lower case and remove 
-#' #punctuation, keeping digits
-#' 
-#' clean(inaugTexts, removeDigits=FALSE)
-#' 
-#' # remove digits from a corpus
-#' clean(inaugTexts, removePunct=FALSE, lower=FALSE)
-#' 
+#' # for a vector of texts
+#' clean(c("This is 1 sentence with 1.9 numbers in it, and one comma.", 
+#'         "€1.2 billion was spent on text analysis in 2014."))
 #' @export
 clean <- function(x, ...) {
     UseMethod("clean")
@@ -51,6 +35,23 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, 
     if(!(removeDigits | removePunct | lower)){
         warning("all options FALSE, text unchanged")
     }
+    cleanSingleNew <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE) {
+        if (removePunct) {
+            s <- gsub("[[:punct:]]", "", s)
+        }
+        # must remove "punctuation" first
+        if (removeDigits) {
+            s <- gsub("[[:digit:]]", "", s)
+        } 
+        if (lower) {
+            s <- tolower(s)
+        }
+        # convert multiple whitespace (up to 100 in a row) into one
+        s <- gsub("\\s{2,100}", " ", s)
+        # remove leading and trailing whitespace and return
+        gsub("^ +| +$", "", s)
+    }
+
     return(sapply(x, cleanSingleNew, removeDigits=removeDigits, removePunct=removePunct, lower=lower,
                   USE.NAMES=FALSE))
 }
@@ -60,9 +61,5 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, 
 #' @rdname clean
 #' @export
 clean.corpus <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, ...) {
-    if(!(removeDigits | removePunct | lower)){
-        warning("all options FALSE, text unchanged")
-    }
-    texts(x) <- clean(texts(x), removeDigits=removeDigits, removePunct=removePunct, lower=lower)
-    return(x)
+    clean(texts(x), removeDigits=removeDigits, removePunct=removePunct, lower=lower)
 }

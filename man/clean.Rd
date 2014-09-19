@@ -3,7 +3,7 @@
 \alias{clean}
 \alias{clean.character}
 \alias{clean.corpus}
-\title{clean: simple pre-processing cleanup}
+\title{simple cleaning of text before processing}
 \usage{
 clean(x, ...)
 
@@ -18,11 +18,14 @@ clean(x, ...)
 corpus object. If x is a corpus, \code{clean} returns a copy of the x with
 the texts cleaned.}
 
-\item{removeDigits}{Should digits be removed? TRUE or FALSE}
+\item{removeDigits}{remove numbers if \code{TRUE}}
 
-\item{removePunct}{Should punctuation be removed? TRUE or FALSE}
+\item{removePunct}{remove punctuation if \code{TRUE}}
 
-\item{lower}{Convert to lower case? TRUE or FALSE}
+\item{lower}{convert text to lower case \code{TRUE}}
+}
+\value{
+A character vector equal in length to the original texts, after cleaning.
 }
 \description{
 \code{clean} removes punctuation and digits from text, using the regex
@@ -33,12 +36,11 @@ punctuation and convert to lower, but keep digits, the command would be:
 \code{clean(mytexts, removeDigits=FALSE)}
 }
 \examples{
-#convert a set of texts to lower case and remove
-#punctuation, keeping digits
+clean("This is 1 sentence with 1.9 numbers in it, and one comma.", removeDigits=FALSE)
+clean("This is 1 sentence with 1.9 numbers in it, and one comma.", lower=FALSE)
 
-clean(inaugTexts, removeDigits=FALSE)
-
-# remove digits from a corpus
-clean(inaugTexts, removePunct=FALSE, lower=FALSE)
+# for a vector of texts
+clean(c("This is 1 sentence with 1.9 numbers in it, and one comma.",
+        "€1.2 billion was spent on text analysis in 2014."))
 }
 
