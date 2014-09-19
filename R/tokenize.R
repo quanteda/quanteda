@@ -21,7 +21,6 @@ tokenize <- function(x, ...) {
     UseMethod("tokenize")
 }
 
-#' @S3method tokenize character
 #' @rdname tokenize
 #' @param simplify If \code{TRUE}, return a character vector of tokens rather 
 #'   than a list of length \code{\link{ndoc}(texts)}, with each element of the 
@@ -63,7 +62,6 @@ tokenize.character <- function(x, simplify=FALSE, sep=" ", ... ) {
     return(result)
 }
 
-#' @S3method tokenize corpus
 #' @rdname tokenize
 #' @export
 tokenize.corpus <- function(corpus, ...) {
@@ -72,6 +70,117 @@ tokenize.corpus <- function(corpus, ...) {
     # need to include sep in this list too 
     tokenize(texts(corpus), ...)
 }
+
+#' @export
+segmentSentence <- function(text, delimiter="[.!?:;]") {
+    # strip out CRs and LFs, tabs
+    text <- gsub("\\n|\\t", "", text)
+    
+    #exceptions <- c("Mr.", "Mrs.", "Ms.", "Dr.", "Jr.", "Prof.", "Ph.D.")
+    #test <- gsub(paste(exceptions))
+    
+    # recover punctuation characters
+    tkns <- tokenize(text, removePunct=FALSE, simplify=TRUE)
+    punctpos <- grep(paste(delimiter, "$", sep=""), tkns)
+    puncts <- substr(tkns[punctpos], nchar(tkns[punctpos]), nchar(tkns[punctpos]))
+    
+    # split the text into sentences
+    sentences <- unlist(strsplit(text, delimiter))
+    # paste punctuation marks back onto sentences
+    result <- paste(sentences, puncts, sep="")
+    # remove leading and trailing spaces and return
+    gsub("^ +| +$", "", result)
+}
+
+#' @export
+segmentParagraph <- function(text, delimiter="\\n{2}") {
+    unlist(strsplit(text, delimiter))
+}
+
+
+#' segment texts into component elements
+#' 
+#' Segment text(s) into tokens, sentences, paragraphs, or other sections. 
+#' \code{segment} works on a character vector or corpus object, and allows the 
+#' delimiters to be defined.  See details.
+#' @param what defines the component to define the segmentation unit.  Current 
+#'   options are tokens, sentences, paragraphs, and other.  Segmenting on 
+#'   \code{other} allows segmentation of a text on any user-defined value, and 
+#'   must be accompanied by the \code{delimiter} argument.
+#' @param delimiter  delimiter defined as a \link{regex} for segmentation.
+#' Each type has its own default, except \code{other}, which requires a value to be specified.
+#' @param ... additional arguments to be passed to \link{clean}
+#' @return A list of segmented texts, with each element of the list correponding
+#'   to one of the original texts.
+#' @details Tokens are delimited by whitespace.  For sentences, the delimiter 
+#'   can be defined by the user.  The default for sentences includes \code{.}, 
+#'   \code{!}, \code{?}, plus \code{;} and \code{:}.
+#'   
+#'   For paragraphs, the default is two carriage returns, although this could be
+#'   changed to a single carriage return by changing the value of 
+#'  \code{delimiter} to \code{"\\\n{1}"} which is the R version of the 
+#'   \link{regex} for one newline character.  (You might 
+#'   need this if the document was created in a word processor, for instance, 
+#'   and the lines were wrapped in the window rather than being hard-wrapped 
+#'   with a newline character.)
+#' @export
+segment <- function(x, ...) {
+#, what=c("tokens", "sentences", "paragraphs", "other"), 
+#                     delimiter=ifelse(what=="tokens", " ", 
+#                                      ifelse(what=="sentences", "[.!?:;]", "\\n{2}")),
+#                     ...) {
+    UseMethod("segment")
+}
+
+#' @rdname segment
+#' @export
+#' @examples
+#' # same as tokenize()
+#' identical(tokenize(uk2010immig, lower=FALSE), segment(uk2010immig, lower=FALSE))
+#' 
+#' # segment into paragraphs
+#' segment(uk2010immig[3:4], "paragraphs")
+#' 
+#' # segment a text into sentences
+#' segmentedChar <- segment(uk2010immig, "sentences")
+#' segmentedChar[2]
+segment.character <- function(x, what=c("tokens", "sentences", "paragraphs", "other"), 
+                              delimiter=ifelse(what=="tokens", " ", 
+                                               ifelse(what=="sentences", "[.!?:;]", "\\n{2}")),
+                              ...) {
+    what <- match.arg(what)
+    if (what=="tokens") {
+        return(tokenize(x, sep=delimiter, ...)) 
+    } else if (what=="sentences") {
+        return(lapply(x, segmentSentence, delimiter)) 
+    } else if (what=="paragraphs") {
+        return(lapply(x, segmentParagraph, delimiter)) 
+    } else if (what=="other") {
+        if (!("delimiter" %in% names(list(...))))
+            stop("For type other, you must supply a delimiter value.")
+        return(lapply(x, segmentParagraph, delimiter)) 
+    }
+}
+
+#' @rdname segment
+#' @export
+#' @examples
+#' # segment a corpus into sentences
+#' segmentedCorpus <- segment(corpus(uk2010immig), "sentences")
+#' identical(segmentedCorpus, segmentedChar)
+segment.corpus <- function(x, what=c("tokens", "sentences", "paragraphs", "other"), 
+                           delimiter=ifelse(what=="tokens", " ", 
+                                            ifelse(what=="sentences", "[.!?:;]", "\\n{2}")),
+                           ...) {
+    segment(texts(x))
+}
+
+# segment(uk2010immig[1], removePunct=FALSE, simplify=TRUE)
+# segment(uk2010immig[1], what="sentences")
+# segment(uk2010immig[1], what="paragraphs")
+
+
+
 
 
 ########
@@ -115,7 +224,7 @@ preprocess <- function(corp) {
     nsents <- sapply(texts(corp), 
                      function(s) length(gregexpr(paste("[", settings(corp, "delimiter_sentence"), "]", sep=""), s)[[1]]))
     nparagr <- sapply(texts(corp), 
-                       function(s) length(gregexpr(paste("[", settings(corp, "delimiter_paragraph"), "]", sep=""), s)[[1]]))
+                      function(s) length(gregexpr(paste("[", settings(corp, "delimiter_paragraph"), "]", sep=""), s)[[1]]))
     
     corpusName <- deparse(substitute(corp))
     env <- parent.frame()

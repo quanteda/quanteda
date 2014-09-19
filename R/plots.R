@@ -8,7 +8,6 @@
 #' @param x a dfm object
 #' @param ... additional parameters to \link[wordcloud]{wordcloud} or to \link{text}
 #'   (and \link{strheight}, \link{strwidth})
-#' @S3method plot dfm
 #' @seealso \link[wordcloud]{wordcloud}
 #' @examples
 #' # plot the features (without stopwords) from Obama's two inaugural addresses

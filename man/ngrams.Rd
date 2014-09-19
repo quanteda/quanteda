@@ -20,13 +20,15 @@ ngrams(text, n = 2, concatenator = "_", include.all = FALSE, ...)
 neighbouring words.}
 }
 \value{
-a character vector of ngrams
+a list of character vectors of ngrams, one list element per text
 }
 \description{
-Create a set of ngrams (words in sequence) from a text.
+Create a set of ngrams (words in sequence) from text(s) in a character vector
 }
 \examples{
 ngrams("The quick brown fox jumped over the lazy dog.", n=2)
+identical(ngrams("The quick brown fox jumped over the lazy dog.", n=2),
+          bigrams("The quick brown fox jumped over the lazy dog.", n=2))
 ngrams("The quick brown fox jumped over the lazy dog.", n=3)
 ngrams("The quick brown fox jumped over the lazy dog.", n=3, concatenator="~")
 ngrams("The quick brown fox jumped over the lazy dog.", n=3, include.all=TRUE)

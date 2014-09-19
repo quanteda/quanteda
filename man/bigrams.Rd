@@ -26,9 +26,10 @@ Create bigrams
 }
 \examples{
 bigrams("The quick brown fox jumped over the lazy dog.")
-bigrams("The quick brown fox jumped over the lazy dog.", window=2)
+bigrams(c("The quick brown fox", "jumped over the lazy dog."))
+bigrams(c("The quick brown fox", "jumped over the lazy dog."), window=2)
 }
 \author{
-Kohei Watanabe and Ken Benoit
+Ken Benoit and Kohei Watanabe
 }
 

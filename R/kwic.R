@@ -60,7 +60,6 @@ kwicSingleText <- function(text, word, window=5, regex=TRUE) {
 #' @method kwic character
 #' @param texts a vector of texts
 #' @rdname kwic
-#' @S3method kwic character
 kwic.character <- function(x, word, window=5, regex=TRUE) {
     contexts <- lapply(x, kwicSingleText, word=word, window=window, regex=regex) #, USE.NAMES=FALSE)
     if (sum(is.na(contexts))==length(contexts)) return(NA) # means no search term found
@@ -86,7 +85,6 @@ kwic.character <- function(x, word, window=5, regex=TRUE) {
 #' @method kwic corpus
 #' @param corp a quanteda corpus object
 #' @rdname kwic
-#' @S3method kwic corpus
 kwic.corpus <- function(x, word, window=5, regex=TRUE) {
     return(kwic(texts(x), word, window, regex))
 }
