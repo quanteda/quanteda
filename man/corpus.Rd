@@ -64,15 +64,14 @@ A corpus class object containing the original texts, document-level
 
   \item{$tokens}{An indexed list of tokens and types tabulated by document,
   including information on positions.  Not yet fully implemented.}
+
+\code{is.corpus} returns \code{TRUE} if the object is a corpus
 }
 \description{
 Creates a corpus from a document source, such as character vector (of texts),
 or an object pointing to a source of texts such as a directory containing
 text files.  Corpus-level meta-data can be specified at creation, containing
 (for example) citation information and notes.
-}
-\details{
-\code{is.corpus} returns \code{TRUE} if the object is a corpus
 }
 \examples{
 \dontrun{

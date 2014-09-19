@@ -207,7 +207,7 @@ print.corpus <- function(x) {
 #      }
 }
 
-#' @details \code{is.corpus} returns \code{TRUE} if the object is a corpus
+#' @return \code{is.corpus} returns \code{TRUE} if the object is a corpus
 #' @rdname corpus
 #' @export
 is.corpus <- function(x) {
