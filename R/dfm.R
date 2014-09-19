@@ -108,7 +108,8 @@ dfm.corpus <- function(x,
     # changing verbose to 2 (instead of TRUE) means will not print message twice
     # when the function calls dfm.character
     tempdfm <- dfm(texts, feature=feature, stem=stem, stopwords=stopwords, bigram=bigram, 
-                   verbose=2, dictionary=dictionary, dictionary_regex=dictionary_regex, 
+                   verbose=ifelse(verbose==TRUE, 2, FALSE),
+                   dictionary=dictionary, dictionary_regex=dictionary_regex, 
                    addto=addto)
     attr(tempdfm, "settings") <- settings(x)
     tempdfm
@@ -234,7 +235,7 @@ dfm.character <- function(x,
     
     dfm <- dfm[(1:nrow(dfm))[order(originalSortOrder)], , drop=FALSE]
     
-    if(verbose) cat(" done. \n")
+    if (verbose) cat(" done. \n")
     class(dfm) <- c("dfm", class(dfm))
     return(dfm)
 }
