@@ -51,6 +51,9 @@ tokenize.character <- function(x, simplify=FALSE, sep=" ", ... ) {
     # apply to each texts, return a list
     result <- lapply(x, tokenizeSingle, sep, ...)
     
+    # remove empty "tokens" caused by multiple whitespace characters in sequence
+    result <- lapply(result, function(x) x[which(x != "")])
+    
     #if (simplify | length(result)==1) {
     # change to a character vector of tokens if simplify==TRUE 
     # this will concatenate the token lists if length(result)>1

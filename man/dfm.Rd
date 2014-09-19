@@ -75,7 +75,8 @@ dictDfm <- dfm(mycorpus, dictionary=mydict)
 dictDfm
 
 ## removing stopwords
-testText <- "The quick brown fox named Seamus jumps over the lazy dog Rory, with Tom's newpaper in his mouth."
+testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
+             the newspaper from a a boy named Seamus, in his mouth."
 testCorpus <- corpus(testText)
 settings(testCorpus, "stopwords")
 dfm(testCorpus, stopwords=TRUE)
