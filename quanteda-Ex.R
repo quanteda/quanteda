@@ -5,53 +5,6 @@ library('quanteda')
 
 base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
 cleanEx()
-nameEx("MCMCirtPoisson1d")
-### * MCMCirtPoisson1d
-
-flush(stderr()); flush(stdout())
-
-### Name: MCMCirtPoisson1d
-### Title: Bayesian-MCMC version of a 1-dimensional Poisson IRT scaling
-###   model
-### Aliases: MCMCirtPoisson1d
-
-### ** Examples
-
-## Not run: 
-##D data(iebudgets)
-##D # extract just the 2010 debates
-##D iebudgets2010 <- subset(iebudgets, year==2010)
-##D 
-##D # create a document-term matrix and set the word margin to the columns
-##D dtm <- dfm(iebudgets2010)
-##D 
-##D # estimate the maximium likelihood wordfish model from austin
-##D require(austin)
-##D iebudgets2010_wordfish <- wordfish(as.wfm(dtm, word.margin=2), dir=c(2,1))
-##D 
-##D # estimate the MCMC model, default values
-##D iebudgets2010_wordfishMCMC <- MCMCirtPoisson1d(dtm, itembase="the", dir=c(2,1))
-##D iebudgets2010_wordfishMCMC_unconstrained <- MCMCirtPoisson1d(dtm, dir=c(2,1))
-##D 
-##D # compare the estimates of \eqn{\theta_i}
-##D require(psych)
-##D pairs.panels(data.frame(ML=iebudgets2010_wordfish$theta,
-##D                         PoissonThe=iebudgets2010_wordfishMCMC$theta,
-##D                         PoissonUnconst=iebudgets2010_wordfishMCMC_unconstrained$theta),
-##D              smooth=FALSE, scale=FALSE, ellipses=FALSE, lm=TRUE, cex.cor=2.5)
-##D # inspect a known "opposition" word beta values
-##D iebudgets2010_wordfish$beta[which(iebudgets2010_wordfishMCMC_unconstrained$words=="fianna")]
-##D iebudgets2010_wordfishMCMC$beta[which(iebudgets2010_wordfishMCMC_unconstrained$words=="fianna")]
-##D iebudgets2010_wordfishMCMC_unconstrained$beta[which(iebudgets2010_wordfishMCMC_unconstrained$words=="fianna")]
-##D 
-##D # random starting values, for three chains
-##D dtm.sample <- trim(dtm, sample=200)
-##D iebudgets2010_wordfishMCMC_sample <- MCMCirtPoisson1d(dtm.sample, dir=c(2,1), startRandom=TRUE, nChains=3)
-## End(Not run)
-
-
-
-cleanEx()
 nameEx("bigrams")
 ### * bigrams
 
@@ -64,7 +17,40 @@ flush(stderr()); flush(stdout())
 ### ** Examples
 
 bigrams("The quick brown fox jumped over the lazy dog.")
-bigrams("The quick brown fox jumped over the lazy dog.", window=2)
+bigrams(c("The quick brown fox", "jumped over the lazy dog."))
+bigrams(c("The quick brown fox", "jumped over the lazy dog."), window=2)
+
+
+
+cleanEx()
+nameEx("changeunits")
+### * changeunits
+
+flush(stderr()); flush(stdout())
+
+### Name: changeunits
+### Title: change the document units of a corpus
+### Aliases: changeunits
+
+### ** Examples
+
+# simple example
+mycorpus <- corpus(c(textone="This is a sentence.  Another sentence.  Yet another.",
+                     textwo="Première phrase. Seconde phrase."),
+                   docvars=list(country=c("UK", "USA"), year=c(1990, 2000)),
+                   notes="This is a simple example to show how changeunits() works.")
+language(mycorpus) <- c("english", "french")
+summary(mycorpus)
+summary(changeunits(mycorpus, to="sentences"), showmeta=TRUE)
+
+# example with inaugural corpus speeches
+mycorpus2 <- subset(inaugCorpus, Year>2004)
+mycorpus2
+paragCorpus <- changeunits(mycorpus2, to="paragraphs")
+paragCorpus
+summary(paragCorpus, 100, showmeta=TRUE)
+## Note that Bush 2005 is recorded as a single paragraph because that text used a single
+## \n to mark the end of a paragraph.
 
 
 
@@ -75,13 +61,17 @@ nameEx("clean")
 flush(stderr()); flush(stdout())
 
 ### Name: clean
-### Title: clean a set of texts
+### Title: simple cleaning of text before processing
 ### Aliases: clean clean.character clean.corpus
 
 ### ** Examples
 
-clean(inaugTexts, removeDigits=FALSE)
-clean(inaugCorpus, removeDigits=FALSE)
+clean("This is 1 sentence with 1.9 numbers in it, and one comma.", removeDigits=FALSE)
+clean("This is 1 sentence with 1.9 numbers in it, and one comma.", lower=FALSE)
+
+# for a vector of texts
+clean(c("This is 1 sentence with 1.9 numbers in it, and one comma.",
+        "€1.2 billion was spent on text analysis in 2014."))
 
 
 
@@ -208,12 +198,11 @@ dictDfm <- dfm(mycorpus, dictionary=mydict)
 dictDfm
 
 ## removing stopwords
-testText <- "The quick brown fox named Seamus jumps over the lazy dog Rory, with Tom's newpaper in his mouth."
+testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
+             the newspaper from a a boy named Seamus, in his mouth."
 testCorpus <- corpus(testText)
 settings(testCorpus, "stopwords")
 dfm(testCorpus, stopwords=TRUE)
-if (require(tm)) {
-}
 
 
 
@@ -224,26 +213,22 @@ nameEx("dfm2ldaformat")
 flush(stderr()); flush(stdout())
 
 ### Name: dfm2ldaformat
-### Title: Convert a quanteda 'dfm' (document feature matrix) into a the
-###   data format needed by lda
+### Title: Convert a dfm into the format needed by lda
 ### Aliases: dfm2ldaformat
 
 ### ** Examples
 
-data(inaugCorpus)
-inaugCorpus <- subset(inaugCorpus, year>1960)
-# create document-feature matrix, remove stopwords
-d <- dfm(inaugCorpus, stopwords=TRUE)
-# trim low frequency words
-d <- dfmTrim(d, minCount=5, minDoc=3)
+mycorpus <- subset(inaugCorpus, Year>1970)
+d <- dfm(mycorpus, stopwords=TRUE)
+d <- trimdfm(d, minCount=5, minDoc=3)
 td <- dfm2ldaformat(d)
 if (require(lda)) {
-    tmodel.lda <- result <- lda.collapsed.gibbs.sampler(documents=td$documents,
-                                                        K=10,
-                                                        vocab=td$vocab,
-                                                        num.iterations=50, alpha=0.1, eta=0.1)
+    tmodel.lda <- lda.collapsed.gibbs.sampler(documents=td$documents,
+                                              K=10,
+                                              vocab=td$vocab,
+                                              num.iterations=50, alpha=0.1, eta=0.1)
+    top.topic.words(tmodel.lda$topics, 10, by.score=TRUE) # top five words in each topic
 }
-top.topic.words(tmodel.lda$topics, 10, by.score=TRUE) # top five words in each topic
 
 
 
@@ -254,62 +239,17 @@ nameEx("dfm2tmformat")
 flush(stderr()); flush(stdout())
 
 ### Name: dfm2tmformat
-### Title: Convert a quanteda 'dfm' (document feature matrix) into a 'tm'
-###   DocumentTermMatrix
+### Title: Convert a dfm into a 'tm' DocumentTermMatrix
 ### Aliases: dfm2tmformat
 
 ### ** Examples
 
-data(inaugCorpus)
-inaugCorpus <- subset(inaugCorpus, year==2010)
-d <- dfmTrim(dfm(inaugCorpus), minCount=5, minDoc=3)
+mycorpus <- subset(inaugCorpus, Year>1970)
+d <- trimdfm(dfm(mycorpus), minCount=5, minDoc=3)
 dim(d)
 td <- dfm2tmformat(d)
 length(td$v)
-if (require(topicmodels)) tmodel.lda <- LDA(td, control = list(alpha = 0.1), k = 4)
-
-
-
-cleanEx()
-nameEx("dfmSort")
-### * dfmSort
-
-flush(stderr()); flush(stdout())
-
-### Name: dfmSort
-### Title: sort a dfm by one or more margins
-### Aliases: dfmSort
-
-### ** Examples
-
-data(inaugCorpus)
-dtm <- dfm(inaugCorpus)
-dtm[, 1:10]
-dtm <- dfmSort(dtm, "words")
-dfmSort(dtm)[, 1:10]
-dfmSort(dtm, "both")[, 1:10]
-
-
-
-cleanEx()
-nameEx("dfmTrim")
-### * dfmTrim
-
-flush(stderr()); flush(stdout())
-
-### Name: dfmTrim
-### Title: Trim a dfm based on a subset of features and words
-### Aliases: dfmTrim
-
-### ** Examples
-
-data(inaugCorpus)
-dtm <- dfm(inaugCorpus)
-dim(dtm)
-dtmReduced <- dfmTrim(dtm, minCount=10, minDoc=2) # only words occuring at least 5 times and in at least 2documents
-dim(dtmReduced)
-dtmSampled <- dfmTrim(dtm, sample=50)  # top 200 words
-dim(dtmSampled)  # 196 x 200 words
+if (require(topicmodels)) (tmodel.lda <- LDA(td, control = list(alpha = 0.1), k = 5))
 
 
 
@@ -543,24 +483,6 @@ kwic(subset(iebudgets, year==2010), "Christmas", window=4) # on a corpus
 
 
 cleanEx()
-nameEx("kwic2")
-### * kwic2
-
-flush(stderr()); flush(stdout())
-
-### Name: kwic2
-### Title: This function is an alternative KWIC
-### Aliases: kwic2
-
-### ** Examples
-
-## Not run: 
-##D kwic2(texts, "we", filter = '_2010', location=TRUE)
-## End(Not run)
-
-
-
-cleanEx()
 nameEx("metacorpus")
 ### * metacorpus
 
@@ -630,9 +552,35 @@ flush(stderr()); flush(stdout())
 ### ** Examples
 
 ngrams("The quick brown fox jumped over the lazy dog.", n=2)
+identical(ngrams("The quick brown fox jumped over the lazy dog.", n=2),
+          bigrams("The quick brown fox jumped over the lazy dog.", n=2))
 ngrams("The quick brown fox jumped over the lazy dog.", n=3)
 ngrams("The quick brown fox jumped over the lazy dog.", n=3, concatenator="~")
 ngrams("The quick brown fox jumped over the lazy dog.", n=3, include.all=TRUE)
+
+
+
+cleanEx()
+nameEx("plot.dfm")
+### * plot.dfm
+
+flush(stderr()); flush(stdout())
+
+### Name: plot.dfm
+### Title: plot features as a wordcloud
+### Aliases: plot.dfm
+
+### ** Examples
+
+# plot the features (without stopwords) from Obama's two inaugural addresses
+mydfm <- dfm(subset(inaugCorpus, President=="Obama"), verbose=FALSE, stopwords=TRUE)
+plot(mydfm)
+
+# plot only Lincoln's inaugural address
+plot(dfm(subset(inaugCorpus, President=="Lincoln"), verbose=FALSE, stopwords=TRUE))
+
+# plot in colors with some additional options passed to wordcloud
+plot(mydfm, random.color=TRUE, rot.per=.25, colors=sample(colors()[2:128], 5))
 
 
 
@@ -657,56 +605,48 @@ mydfm <- dfm(mycorpus)
 
 
 cleanEx()
-nameEx("selectFeatures")
-### * selectFeatures
+nameEx("readWStatDict")
+### * readWStatDict
 
 flush(stderr()); flush(stdout())
 
-### Name: selectFeatures
-### Title: extract feature words This function takes type of feature
-###   extractor and a word freaquency matrix with binary class (1/0) to
-###   select features in class one. 'wsll' and 'wschisq' replicates of
-###   'Keyness' of Wordsmith Tools.
-### Aliases: selectFeatures
+### Name: readWStatDict
+### Title: Import a Wordstat dictionary
+### Aliases: readWStatDict
 
 ### ** Examples
 
-## Not run: 
-##D texts <- getTextDir("/home/kohei/Documents/budget_2010/")
-##D class  <- rep(0, length(texts))
-##D class[grep("_LAB", names(texts))] <- 1
-##D class[grep("_FF", names(texts))] <- 0
-##D corpus <- corpusCreate(texts, attribs=list(class=class))
-##D dfm <- dfm(corpus)
-##D features <- selectFeatures('ll', dfm, corpus$attribs$class, smooth=1)
-## End(Not run)
-## Not run: 
-##D texts <- getTextDir("/home/kohei/Documents/budget_2010/")
-##D class  <- rep(0, length(texts))
-##D class[grep("_LAB", names(texts))] <- 1
-##D class[grep("_FF", names(texts))] <- 0
-##D corpus <- corpusCreate(texts, attribs=list(class=class))
-##D dfm <- dfm(corpus)
-##D features <- selectFeatures('ll', dfm, corpus$attribs$class, smooth=1)
-## End(Not run)
+\donrun{
+path <- '~/Dropbox/QUANTESS/corpora/LaverGarry.cat'
+lgdict <- readWStatDict(path)
+}
 
 
 
 cleanEx()
-nameEx("sentenceSeg")
-### * sentenceSeg
+nameEx("segment")
+### * segment
 
 flush(stderr()); flush(stdout())
 
-### Name: sentenceSeg
-### Title: split a text into sentences This function takes a text and
-###   splits it into sentences.
-### Aliases: sentenceSeg
+### Name: segment
+### Title: segment texts into component elements
+### Aliases: segment segment.character segment.corpus
 
 ### ** Examples
 
-test <- "This is a sentence! Several sentences. It's designed by a Dr. to test whether this function works. Or not? Or not."
-sentenceSeg(test)
+# same as tokenize()
+identical(tokenize(uk2010immig, lower=FALSE), segment(uk2010immig, lower=FALSE))
+
+# segment into paragraphs
+segment(uk2010immig[3:4], "paragraphs")
+
+# segment a text into sentences
+segmentedChar <- segment(uk2010immig, "sentences")
+segmentedChar[2]
+# segment a corpus into sentences
+segmentedCorpus <- segment(corpus(uk2010immig), "sentences")
+identical(segmentedCorpus, segmentedChar)
 
 
 
@@ -779,8 +719,7 @@ flush(stderr()); flush(stdout())
 
 ### Name: stopwordsRemove
 ### Title: remove stopwords from a text or dfm
-### Aliases: stopwordsRemove stopwordsRemove.character
-###   stopwordsRemove.matrix
+### Aliases: stopwordsRemove stopwordsRemove.character stopwordsRemove.dfm
 
 ### ** Examples
 
@@ -793,12 +732,11 @@ stopwordsRemove(itText, stopwordsGet("italian"))
 stopwordsRemove(someText, c("containing", "example"))
 
 ## example for dfm objects
-data(iebudgets)
-wfm <- dfm(subset(iebudgets, year==2010))
-wfm.nostopwords <- stopwordsRemove(wfm)
-dim(wfm)
-dim(wfm.nostopwords)
-dim(stopwordsRemove(wfm, stopwordsGet("SMART")))
+docmat <- dfm(uk2010immig)
+docmatNostopwords <- stopwordsRemove(docmat)
+dim(docmat)
+dim(docmatNostopwords)
+dim(stopwordsRemove(docmat, stopwordsGet("SMART")))
 
 
 
@@ -857,27 +795,6 @@ flush(stderr()); flush(stdout())
 data(syllableCounts)
 syllableCounts["sixths"]
 syllableCounts["onomatopeia"]
-
-
-
-cleanEx()
-nameEx("tagPos")
-### * tagPos
-
-flush(stderr()); flush(stdout())
-
-### Name: tagPos
-### Title: Returns a table of the occurrences of different parts of speech
-###   in a sentence This function takes a sentence and tags each word with
-###   it's part of speech using openNLP's POS tagger, then returns a table
-###   of the parts of speech
-### Aliases: tagPos
-
-### ** Examples
-
-## Not run: 
-##D tagPos("This is an example sentence with nouns and verbs for tagging.")
-## End(Not run)
 
 
 
@@ -941,22 +858,29 @@ tfidf(dtm, normalize=FALSE)[1:10, 100:110]
 
 
 cleanEx()
-nameEx("tfidf.dfm")
-### * tfidf.dfm
+nameEx("tokenize")
+### * tokenize
 
 flush(stderr()); flush(stdout())
 
-### Name: tfidf.dfm
-### Title: compute the tf-idf weights of a dfm
-### Aliases: tfidf.dfm
+### Name: tokenize
+### Title: tokenize a set of texts
+### Aliases: tokenise tokenize tokenize.character tokenize.corpus
 
 ### ** Examples
 
-data(inaugCorpus)
-dtm <- dfm(inaugCorpus)
-dtm[1:10, 100:110]
-tfidf(dtm)[1:10, 100:110]
-tfidf(dtm, normalize=FALSE)[1:10, 100:110]
+# same for character vectors and for lists
+tokensFromChar <- tokenize(inaugTexts)
+tokensFromCorp <- tokenize(inaugCorpus)
+identical(tokensFromChar, tokensFromCorp)
+str(tokensFromChar)
+# returned as a list
+head(tokenize(inaugTexts[57])[[1]], 10)
+# returned as a character vector using simplify=TRUE
+head(tokenize(inaugTexts[57], simplify=TRUE), 10)
+
+# demonstrate some options with clean
+head(tokenize(inaugTexts[57], simplify=TRUE, lower=FALSE), 30)
 
 
 
@@ -976,43 +900,6 @@ topfeatures(dfm(inaugCorpus))
 topfeatures(dfm(inaugCorpus, stopwords=TRUE))
 # least frequent features
 topfeatures(dfm(inaugCorpus), decreasing=FALSE)
-
-
-
-cleanEx()
-nameEx("translate")
-### * translate
-
-flush(stderr()); flush(stdout())
-
-### Name: translate
-### Title: Send text to the google translate research API This function
-###   translates a text by sending it to the google translate API.
-### Aliases: translate
-
-### ** Examples
-
-## Not run: translation <- translate(original, fr, de, key='insertkeyhere')
-
-
-
-cleanEx()
-nameEx("translate.corpus")
-### * translate.corpus
-
-flush(stderr()); flush(stdout())
-
-### Name: translate.corpus
-### Title: Send a corpus to the google translate research API This function
-###   translates a the texts in a corpus by sending them to the google
-###   translate API.
-### Aliases: translate.corpus
-
-### ** Examples
-
-## Not run: 
-##D translation <- translate(original, fr, de, key='insertkeyhere')
-## End(Not run)
 
 
 
@@ -1073,85 +960,6 @@ uk2010immigCorpus <- corpus(uk2010immig, docvars=list(party=names(uk2010immig)))
 language(uk2010immigCorpus) <- "english"
 encoding(uk2010immigCorpus) <- "UTF-8"
 summary(uk2010immigCorpus)
-
-
-
-cleanEx()
-nameEx("wordcloud.dfm")
-### * wordcloud.dfm
-
-flush(stderr()); flush(stdout())
-
-### Name: wordcloud.dfm
-### Title: Plot a word cloud for a dfm
-### Aliases: wordcloud.dfm
-
-### ** Examples
-
-data(iebudgets)
-iebudgets2010 <- subset(iebudgets, year==2010)
-wfm <- dfm(iebudgets2010, stopwords=TRUE)
-wordcloudDfm(wfm, 1)  # plot the finance minister's speech as a wordcloud
-
-
-
-cleanEx()
-nameEx("wordcloudDfm")
-### * wordcloudDfm
-
-flush(stderr()); flush(stdout())
-
-### Name: wordcloudDfm
-### Title: Plot a word cloud for a dfm
-### Aliases: wordcloudDfm
-
-### ** Examples
-
-data(iebudgets)
-iebudgets2010 <- subset(iebudgets, year==2010)
-wfm <- dfm(iebudgets2010, stopwords=TRUE)
-wordcloudDfm(wfm, 1)  # plot the finance minister's speech as a wordcloud
-
-
-
-cleanEx()
-nameEx("wordfishMCMC")
-### * wordfishMCMC
-
-flush(stderr()); flush(stdout())
-
-### Name: wordfishMCMC
-### Title: Bayesian-MCMC version of the "wordfish" Poisson scaling model
-### Aliases: wordfishMCMC
-
-### ** Examples
-
-## Not run: 
-##D data(iebudgets)
-##D # extract just the 2010 debates
-##D iebudgets2010 <- corpus.subset(iebudgets, year==2010)
-##D 
-##D # create a document-term matrix and set the word margin to the columns
-##D dtm <- create.fvm.corpus(iebudgets2010)
-##D dtm <- wfm(t(dtm), word.margin=2)
-##D 
-##D # estimate the maximium likelihood wordfish model from austin
-##D iebudgets2010_wordfish <- wordfish(dtm, dir=c(2,1))
-##D 
-##D # estimate the MCMC model, default values
-##D iebudgets2010_wordfishMCMC <- wordfishMCMC(dtm, dir=c(2,1))
-##D 
-##D # compare the estimates of \eqn{\theta_i}
-##D plot(iebudgets2010_wordfish$theta, iebudgets2010_wordfishMCMC$theta)
-##D 
-##D # MCMC with a partition of the word parameters according to govt and opposition
-##D # (FF and Greens were in government in during the debate over the 2010 budget)
-##D # set the constraint on word partitioned parameters to be the same for "the" and "and"
-##D iebudgets2010_wordfishMCMC_govtopp <-
-##D     wordfishMCMC(dtm, dir=c(2,1),
-##D     wordPartition=(iebudgets2010$attribs$party=="FF" | iebudgets2010$attribs$party=="Green"),
-##D     betaPartition=TRUE, wordConstraints=which(words(dtm)=="the"))
-## End(Not run)
 
 
 
