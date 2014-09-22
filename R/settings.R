@@ -52,7 +52,7 @@ settings.corpus <- function(corp, fields=NULL) {
 #' @rdname settings
 #' @param fields a valid corpus setting field name
 #' @export
-"settings<-" <- function(corp, value, fields) {
+"settings<-" <- function(corp, fields, value) {
     if (is.dfm(corp)) stop("Cannot assign settings to a dfm object.")
     if (!(fields %in% SETTINGS_OPTIONS)) stop(paste(fields, "not valid setting."))
     corp$settings[fields] <- value
