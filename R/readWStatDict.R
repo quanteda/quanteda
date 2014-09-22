@@ -1,10 +1,18 @@
-#' Make a flattened list from a hierarchical wordstat dictionary
-#'
+#' Import a Wordstat dictionary
+#' 
 #' Make a flattened list from a hierarchical wordstat dictionary
 #' 
-#' @param path path to the wordstat dictionary file
-#' @return flattened dictionary as a list
+#' @param path path to the wordstat dictionary file (.cat)
+#' @return a named list, where each the name of element is a bottom level
+#'   category in the hierarchical wordstat dictionary. Each element is a list of
+#'   the dictionary terms corresponding to that level.
+#' @author Kohei Watanabe
 #' @export
+#' @examples
+#' \donrun{
+#' path <- '~/Dropbox/QUANTESS/corpora/LaverGarry.cat'
+#' lgdict <- readWStatDict(path)
+#' }
 readWStatDict <- function(path){
   d <- read.delim(path, header=FALSE)
   d <- data.frame(lapply(d, as.character), stringsAsFactors=FALSE)

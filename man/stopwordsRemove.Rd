@@ -2,11 +2,14 @@
 \name{stopwordsRemove}
 \alias{stopwordsRemove}
 \alias{stopwordsRemove.character}
+\alias{stopwordsRemove.dfm}
 \title{remove stopwords from a text or dfm}
 \usage{
 stopwordsRemove(text, stopwords = NULL)
 
 \method{stopwordsRemove}{character}(text, stopwords = NULL)
+
+\method{stopwordsRemove}{dfm}(text, stopwords = NULL)
 }
 \arguments{
 \item{text}{Text from which stopwords will be removed}
