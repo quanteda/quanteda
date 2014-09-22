@@ -4,7 +4,7 @@
 \alias{features.dfm}
 \title{extract the feature labels from a \link{dfm}}
 \usage{
-\method{features}{dfm}(x)
+\method{features}{dfm}(x, ...)
 }
 \value{
 Character vector of the features

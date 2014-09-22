@@ -9,7 +9,7 @@
 
 \method{ndoc}{corpus}(x, ...)
 
-\method{ndoc}{dfm}(x)
+\method{ndoc}{dfm}(x, ...)
 }
 \arguments{
 \item{x}{a corpus or dfm object}

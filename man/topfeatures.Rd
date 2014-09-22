@@ -6,7 +6,7 @@
 \usage{
 topfeatures(x, n = 10, decreasing = TRUE)
 
-\method{topfeatures}{dfm}(x, n = 10, decreasing = TRUE)
+\method{topfeatures}{dfm}(x, n = 10, decreasing = TRUE, ...)
 }
 \value{
 A named numeric vector of feature counts, where the names are the feature labels.

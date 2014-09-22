@@ -4,7 +4,7 @@
 \title{sort a dfm by one or more margins}
 \usage{
 \method{sort}{dfm}(x, decreasing = TRUE, margin = c("features", "docs",
-  "both"))
+  "both"), ...)
 }
 \arguments{
 \item{decreasing}{TRUE (default) if sort will be in descending order,

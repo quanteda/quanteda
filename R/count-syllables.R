@@ -1,5 +1,5 @@
 #' Returns a count of the number of syllables in the input
-
+#'
 #' This function takes a text and returns a count of the number of syllables it contains.
 #' For British English words, the syllable count is exact and looked up from the CMU
 #' pronunciation dictionary. For any word not in the dictionary the syllable count

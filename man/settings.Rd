@@ -8,18 +8,18 @@
 \usage{
 settings(x, ...)
 
-\method{settings}{corpus}(corp, fields = NULL)
+\method{settings}{corpus}(x, fields = NULL, ...)
 
 settings(corp, fields) <- value
 
-\method{settings}{dfm}(x)
+\method{settings}{dfm}(x, ...)
 }
 \arguments{
 \item{x}{dfm from which settings are queried}
 
-\item{corp}{Corpus from/to which settings are queried or applied}
-
 \item{fields}{a valid corpus setting field name}
+
+\item{corp}{Corpus from/to which settings are queried or applied}
 }
 \description{
 Get or set the corpus settings

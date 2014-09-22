@@ -64,11 +64,11 @@ tokenize.character <- function(x, simplify=FALSE, sep=" ", ... ) {
 
 #' @rdname tokenize
 #' @export
-tokenize.corpus <- function(corpus, ...) {
+tokenize.corpus <- function(x, ...) {
     # get the settings for clean from the corpus and use those, 
     # unless more specific arguments are passed -- ADD THE ABILITY TO PASS THESE
     # need to include sep in this list too 
-    tokenize(texts(corpus), ...)
+    tokenize(texts(x), ...)
 }
 
 #' @export

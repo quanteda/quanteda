@@ -38,7 +38,7 @@ settings <- function(x, ...) {
 #' settings(inaugCorpus, "stopwords") <- TRUE
 #' tempdfmSW <- dfm(inaugCorpus)
 #' @export 
-settings.corpus <- function(corp, fields=NULL) {
+settings.corpus <- function(x, fields=NULL, ...) {
     if (is.null(fields)) {
         corp$settings
     } else {
@@ -66,7 +66,7 @@ settings.corpus <- function(corp, fields=NULL) {
 #' tempdfm <- dfm(inaugCorpus, stem=TRUE)
 #' settings(tempdfm)
 #' @export 
-settings.dfm <- function(x) {
+settings.dfm <- function(x, ...) {
     attributes(x)$settings
 }
 

@@ -387,13 +387,13 @@ trimdfm <- function(x, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
 }
 
 #' @export
-tfidf <- function(x) {
+tfidf <- function(x, ...) {
     UseMethod("tfidf")
 }
 
 #' @export
 #' @rdname ndoc
-ndoc.dfm <- function(x) {
+ndoc.dfm <- function(x, ...) {
     nrow(x)
 }
 
@@ -413,7 +413,7 @@ ndoc.dfm <- function(x) {
 #' dtm[1:10, 100:110]
 #' tfidf(dtm)[1:10, 100:110]
 #' tfidf(dtm, normalize=FALSE)[1:10, 100:110]
-tfidf.dfm <- function(x, normalize = TRUE) {
+tfidf.dfm <- function(x, normalize = TRUE, ...) {
     idf <- log(ndoc(x)) - log(colSums(x > 0) + 1)
     if (normalize) {
         x <- x/rowSums(x)
@@ -460,7 +460,7 @@ features <- function(x, ...) {
 #' @examples
 #' features(dfm(inaugTexts))[1:50]  # first 50 features (alphabetically sorted)
 #' @export
-features.dfm <- function(x) {
+features.dfm <- function(x, ...) {
     colnames(x)
 }
 
@@ -504,7 +504,7 @@ is.dfm <- function(x) {
 #' sort(dtm, TRUE, "both")[1:10, 1:5]  # note that the decreasing=TRUE argument
 #'                                     # must be second, because of the order of the
 #'                                     # formals in the generic method of sort()
-sort.dfm <- function(x, decreasing=TRUE, margin = c("features", "docs", "both")) {
+sort.dfm <- function(x, decreasing=TRUE, margin = c("features", "docs", "both"), ...) {
     margin <- match.arg(margin)
     class_xorig <- class(x)
     if (margin=="features") {
@@ -535,14 +535,14 @@ topfeatures <- function(x, n=10, decreasing=TRUE) {
 
 #' @rdname topfeatures
 #' @export
-topfeatures.dfm <- function(x, n=10, decreasing=TRUE) {
+topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ...) {
     if (is.null(n)) n <- ncol(x)
     subdfm <- sort(colSums(x), decreasing)
     subdfm[1:n]
 }
 
 #' @export
-print.dfm <- function(x) {
+print.dfm <- function(x, ...) {
     class(x) <- "matrix"
     attr(x, "settings") <- NULL
     print(x)

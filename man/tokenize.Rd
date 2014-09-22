@@ -10,7 +10,7 @@ tokenize(x, ...)
 
 \method{tokenize}{character}(x, simplify = FALSE, sep = " ", ...)
 
-\method{tokenize}{corpus}(corpus, ...)
+\method{tokenize}{corpus}(x, ...)
 }
 \arguments{
 \item{x}{The text(s) or corpus to be tokenized}

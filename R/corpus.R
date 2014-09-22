@@ -194,7 +194,7 @@ directory <- function(path=NULL) {
 
 
 #' @export
-print.corpus <- function(x) {
+print.corpus <- function(x, ...) {
     cat("Corpus consisting of ", ndoc(x), " document",
         ifelse(ndoc(x)>1, "s", ""), ".\n", sep="")
 #         ", ",
@@ -607,7 +607,7 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
 # iebudgetsCarter <- subset(iebudgets, speaker="Carter", select=c(speaker, year))
 # summary(iebudgetsLenihan)
 #' }
-subset.corpus <- function(corpus, subset=NULL, select=NULL) {
+subset.corpus <- function(corpus, subset=NULL, select=NULL, ...) {
     tempcorp <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
     return(tempcorp)
 }
@@ -629,22 +629,22 @@ subset.corpus <- function(corpus, subset=NULL, select=NULL) {
 #' summary(mycorpus, showmeta=TRUE)  # show the meta-data
 #' mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
 #' mysummary$Types / mysummary$Tokens             # crude type-token ratio
-summary.corpus <- function(corp, n=100, verbose=TRUE, showmeta=FALSE) {
-    print(corp)
+summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
+    print(object)
     cat("\n")
     ### Turn off describeTexts until we can speed this up
-    # dtexts <- describeTexts(texts(corp), verbose=FALSE)
-    outputdf <- data.frame(describeTexts(texts(corp), verbose=FALSE))
-    if (!is.null(docvars(corp)))
-        outputdf <- cbind(outputdf, docvars(corp))
-    # if (detail) outputdf <- cbind(outputdf, metadoc(corp))
+    # dtexts <- describeTexts(texts(object), verbose=FALSE)
+    outputdf <- data.frame(describeTexts(texts(object), verbose=FALSE))
+    if (!is.null(docvars(object)))
+        outputdf <- cbind(outputdf, docvars(object))
+    # if (detail) outputdf <- cbind(outputdf, metadoc(object))
     if (showmeta)
-        outputdf[names(metadoc(corp))] <- metadoc(corp)
+        outputdf[names(metadoc(object))] <- metadoc(object)
     if (verbose) {
         print(head(outputdf, n), row.names=FALSE)
-        cat("\nSource:  ", unlist(metacorpus(corp, "source")), ".\n", sep="")
-        cat("Created: ",   unlist(metacorpus(corp, "created")), ".\n", sep="")
-        cat("Notes:   ",   unlist(metacorpus(corp, "notes")), ".\n\n", sep="")
+        cat("\nSource:  ", unlist(metacorpus(object, "source")), ".\n", sep="")
+        cat("Created: ",   unlist(metacorpus(object, "created")), ".\n", sep="")
+        cat("Notes:   ",   unlist(metacorpus(object, "notes")), ".\n\n", sep="")
     }
     # invisibly pass the summary of the texts from describetexts()
     return(invisible(outputdf))
