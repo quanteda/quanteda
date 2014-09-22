@@ -11,7 +11,7 @@ SETTINGS_OPTIONS <- c("stopwords",
                       "clean_removeDigits",
                       "clean_removePunct",
                       "unitsoriginal",
-                      "unitschanged") 
+                      "units") 
 DEFAULT_DELIM_SENTENCE <- ".!?"
 DEFAULT_DELIM_WORD <- " "
 DEFAULT_DELIM_PARAGRAPH <- "\n\n"
@@ -85,8 +85,8 @@ settingsInitialize <- function() {
          clean_tolower=TRUE,
          clean_removeDigits=TRUE,
          clean_removePunct=TRUE,
-         units="document",
-         unitsoriginal="document")
+         units="documents",
+         unitsoriginal="documents")
 }
 
 
