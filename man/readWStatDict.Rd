@@ -17,7 +17,7 @@ a named list, where each the name of element is a bottom level
 Make a flattened list from a hierarchical wordstat dictionary
 }
 \examples{
-\\donrun{
+\dontrun{
 path <- '~/Dropbox/QUANTESS/corpora/LaverGarry.cat'
 lgdict <- readWStatDict(path)
 }

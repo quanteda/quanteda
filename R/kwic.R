@@ -27,8 +27,6 @@
 ##' @examples
 ##' kwic(inaugTexts, "terror")
 ##' kwic(inaugTexts, "terror", regex=FALSE)  # returns only whole word, without trailing punctuation
-##' data(iebudgets)
-##' kwic(subset(iebudgets, year==2010), "Christmas", window=4) # on a corpus
 kwic <- function(x, word, window=5, regex=TRUE) {
     UseMethod("kwic")
 }

@@ -12,7 +12,6 @@
 #' @export 
 #' @author Kenneth Benoit
 #' @examples
-#' data(inaugCorpus)
 #' collocations(texts(inaugCorpus)[1], top=50)
 #' collocations(texts(inaugCorpus)[1], top=50, method="chi2")
 collocations <- function(text=NULL, file=NULL, top=NA, distance=2, n=2,
@@ -81,6 +80,7 @@ likelihood.test = function(x) {
       sum = sum + table[i,j]*log(ratios[i,j])
     }
   }
+  sum = sum + table * log(ratios + .0000001)
   sum = 2 * sum                          # the likelihood ratio chi square
   df = chi.out[[2]]                      # degrees of freedom
   p = 1 - pchisq(sum,df)                 # p-value

@@ -18,6 +18,8 @@ clean(x, ...)
 corpus object. If x is a corpus, \code{clean} returns a copy of the x with
 the texts cleaned.}
 
+\item{...}{additional parameters}
+
 \item{removeDigits}{remove numbers if \code{TRUE}}
 
 \item{removePunct}{remove punctuation if \code{TRUE}}

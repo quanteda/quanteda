@@ -20,6 +20,8 @@
 #' @param dictionary_regex \code{TRUE} means the dictionary is already in 
 #'   regular expression format, otherwise it will be converted from "wildcard" 
 #'   format
+#' @param bigram include bigrams as well as unigram features, if \code{TRUE}
+#' @param ... additional arguments passed to \code{\link{clean}}
 #' @param addto \code{NULL} by default, but if an existing dfm object is 
 #'   specified, then the new dfm will be added to the one named. If both 
 #'   \link{dfm}'s are built from dictionaries, the combined dfm will have its 
@@ -85,7 +87,7 @@ dfm.corpus <- function(x,
                        dictionary=NULL,
                        dictionary_regex=FALSE,
                        clean=TRUE,
-                       removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
+                       # removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
                        addto=NULL, ...) {
     
     # use corpus settings unless overrridden by call
@@ -120,7 +122,7 @@ dfm.corpus <- function(x,
     tempdfm <- dfm(texts, feature=feature, stem=stem, stopwords=stopwords, bigram=bigram, 
                    verbose=ifelse(verbose==TRUE, 2, FALSE),
                    dictionary=dictionary, dictionary_regex=dictionary_regex, 
-                   addto=addto)
+                   addto=addto, ...)
     attr(tempdfm, "settings") <- settings(x)
     tempdfm
 }
@@ -138,7 +140,7 @@ dfm.character <- function(x,
                           dictionary=NULL,
                           dictionary_regex=FALSE,
                           clean=TRUE,
-                          removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
+                          #removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
                           addto=NULL, ...) {
     # if (verbose & parent.env(dfm.character) != dfm.corpus) cat("Creating dfm: ...")
     if (verbose==TRUE) cat("Creating dfm from character vector ...")
@@ -150,7 +152,7 @@ dfm.character <- function(x,
     
     # clean options
     if (clean) {
-        x <- clean(x, removeDigits, removePunct, lower)
+        x <- clean(x, ...)
     }
     
     tokenizedTexts <- tokenize(x, clean=FALSE)
@@ -428,7 +430,7 @@ tfidf.dfm <- function(x, normalize = TRUE, ...) {
 #' 
 #' @param dfm Document-feature matrix created by \code{\link{dfm}}
 #' @return A dfm matrix object where values are relative term proportions within the document
-# @export 
+#' @export 
 #' @author Ken Benoit
 #' @examples 
 #' data(inaugCorpus)

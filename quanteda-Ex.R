@@ -87,7 +87,6 @@ flush(stderr()); flush(stdout())
 
 ### ** Examples
 
-data(inaugCorpus)
 collocations(texts(inaugCorpus)[1], top=50)
 collocations(texts(inaugCorpus)[1], top=50, method="chi2")
 
@@ -471,8 +470,6 @@ flush(stderr()); flush(stdout())
 
 kwic(inaugTexts, "terror")
 kwic(inaugTexts, "terror", regex=FALSE)  # returns only whole word, without trailing punctuation
-data(iebudgets)
-kwic(subset(iebudgets, year==2010), "Christmas", window=4) # on a corpus
 
 
 
@@ -579,26 +576,6 @@ plot(mydfm, random.color=TRUE, rot.per=.25, colors=sample(colors()[2:128], 5))
 
 
 cleanEx()
-nameEx("preprocess")
-### * preprocess
-
-flush(stderr()); flush(stdout())
-
-### Name: preprocess
-### Title: preprocess the tokens in a corpus
-### Aliases: preprocess
-
-### ** Examples
-
-mycorpus <- corpus(uk2010immig)
-mycorpus
-preprocess(mycorpus)
-mycorpus
-mydfm <- dfm(mycorpus)
-
-
-
-cleanEx()
 nameEx("readWStatDict")
 ### * readWStatDict
 
@@ -610,10 +587,10 @@ flush(stderr()); flush(stdout())
 
 ### ** Examples
 
-\donrun{
-path <- '~/Dropbox/QUANTESS/corpora/LaverGarry.cat'
-lgdict <- readWStatDict(path)
-}
+## Not run: 
+##D path <- '~/Dropbox/QUANTESS/corpora/LaverGarry.cat'
+##D lgdict <- readWStatDict(path)
+## End(Not run)
 
 
 
@@ -656,7 +633,7 @@ flush(stderr()); flush(stdout())
 
 ### ** Examples
 
-settings(tempcorpus, "stopwords")
+settings(inaugCorpus, "stopwords")
 tempdfm <- dfm(inaugCorpus)
 tempdfmSW <- dfm(inaugCorpus, stopwords=TRUE)
 settings(inaugCorpus, "stopwords") <- TRUE

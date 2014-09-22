@@ -6,7 +6,7 @@
 #' neighbouring words.  This is only available for bigrams, not for ngrams.
 #' @param concatenator character for combining words, default is \code{_} (underscore) character
 #' @param include.unigrams if \code{TRUE}, return unigrams as well
-#' @details \code{...} provides additional arguments passed to \link{tokenize}
+#' @param ... provides additional arguments passed to \link{tokenize}
 #' @return a character vector of bigrams
 #' @export
 #' @examples 

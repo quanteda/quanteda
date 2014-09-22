@@ -14,6 +14,7 @@
 #' @param removeDigits remove numbers if \code{TRUE}
 #' @param removePunct remove punctuation if \code{TRUE}
 #' @param lower convert text to lower case \code{TRUE}
+#' @param ... additional parameters
 #' @return A character vector equal in length to the original texts, after cleaning.
 #' @examples
 #' clean("This is 1 sentence with 1.9 numbers in it, and one comma.", removeDigits=FALSE)
@@ -61,5 +62,5 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, 
 #' @rdname clean
 #' @export
 clean.corpus <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, ...) {
-    clean(texts(x), removeDigits=removeDigits, removePunct=removePunct, lower=lower)
+    clean(texts(x), removeDigits=removeDigits, removePunct=removePunct, lower=lower, ...)
 }

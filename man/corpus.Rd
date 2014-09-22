@@ -22,6 +22,8 @@ is.corpus(x)
 filepath to a directory containing text documents (see \link{directory}),
 or a character vector of texts.}
 
+\item{...}{additional arguments}
+
 \item{enc}{A string (or character vector) specifying the encoding for each text in the corpus.
 Must be a valid entry in \code{\link{iconvtypes}()}.}
 

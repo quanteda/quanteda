@@ -9,15 +9,14 @@ changeunits(corp, to = c("sentences", "paragraphs", "documents"), ...)
 \item{corp}{corpus whose document units will be reshaped}
 
 \item{to}{new documents units for the corpus to be recast in}
+
+\item{...}{passes additional arguments to \code{\link{segment}}}
 }
 \description{
 For a corpus, recast the documents down or up a level of aggregation.  "Down"
 would mean going from documents to sentences, for instance.  "Up" means from
 sentences back to documents.  This makes it easy to reshape a corpus from a a
 collection of documents into a collection of sentences, for instance.
-}
-\details{
-\code{...} passes additional arguments to \code{\link{segment}}
 }
 \examples{
 # simple example

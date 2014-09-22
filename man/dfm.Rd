@@ -11,19 +11,19 @@ dfm(x, ...)
 \method{dfm}{corpus}(x, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, groups = NULL, verbose = TRUE,
   dictionary = NULL, dictionary_regex = FALSE, clean = TRUE,
-  removeDigits = TRUE, removePunct = TRUE, lower = TRUE, addto = NULL,
-  ...)
+  addto = NULL, ...)
 
 \method{dfm}{character}(x, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, verbose = TRUE, dictionary = NULL,
-  dictionary_regex = FALSE, clean = TRUE, removeDigits = TRUE,
-  removePunct = TRUE, lower = TRUE, addto = NULL, ...)
+  dictionary_regex = FALSE, clean = TRUE, addto = NULL, ...)
 
 is.dfm(x)
 }
 \arguments{
 \item{x}{Corpus or character vector from which to generate the
 document-feature matrix}
+
+\item{...}{additional arguments passed to \code{\link{clean}}}
 
 \item{feature}{Feature to count (e.g. words)}
 
@@ -33,6 +33,8 @@ document-feature matrix}
 the text when constructing the \link{dfm}.  If \code{NULL} (default) then
 no stopwords will be applied.  If "TRUE" then it currently defaults to
 \code{\link{stopwords}}.}
+
+\item{bigram}{include bigrams as well as unigram features, if \code{TRUE}}
 
 \item{groups}{Grouping variable for aggregating documents}
 

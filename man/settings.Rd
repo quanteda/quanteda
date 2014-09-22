@@ -32,7 +32,7 @@ stemming, stopwords, collocations, etc.
 Get the settings from a which a \link{dfm} was created
 }
 \examples{
-settings(tempcorpus, "stopwords")
+settings(inaugCorpus, "stopwords")
 tempdfm <- dfm(inaugCorpus)
 tempdfmSW <- dfm(inaugCorpus, stopwords=TRUE)
 settings(inaugCorpus, "stopwords") <- TRUE

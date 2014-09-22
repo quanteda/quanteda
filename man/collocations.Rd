@@ -26,7 +26,6 @@ A list of collocations, their frequencies, and their test statistics
 returns a list of collocations.  Note: Currently works only for pairs (bigram collocations).
 }
 \examples{
-data(inaugCorpus)
 collocations(texts(inaugCorpus)[1], top=50)
 collocations(texts(inaugCorpus)[1], top=50, method="chi2")
 }

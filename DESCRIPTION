@@ -38,6 +38,8 @@ Suggests:
     RJSONIO,
     RCurl,
     twitteR,
-    XML
+    XML,
+    lda,
+    topicmodels
 URL: http://github.com/kbenoit/quanteda
 LazyData: TRUE

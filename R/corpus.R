@@ -14,6 +14,7 @@
 #' @param x A source of texts to form the documents in the corpus. This can be a
 #'   filepath to a directory containing text documents (see \link{directory}), 
 #'   or a character vector of texts.
+#' @param ... additional arguments
 #' @return A corpus class object containing the original texts, document-level 
 #'   variables, document-level metadata, corpus-level metadata, and default 
 #'   settings for subsequent processing of the corpus.  A corpus consists of a 
@@ -661,7 +662,7 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
 #' collection of documents into a collection of sentences, for instance.
 #' @param corp corpus whose document units will be reshaped
 #' @param to new documents units for the corpus to be recast in
-#' @details \code{...} passes additional arguments to \code{\link{segment}}
+#' @param ... passes additional arguments to \code{\link{segment}}
 
 #' @export
 #' @examples

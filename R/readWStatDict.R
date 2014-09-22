@@ -9,7 +9,7 @@
 #' @author Kohei Watanabe
 #' @export
 #' @examples
-#' \donrun{
+#' \dontrun{
 #' path <- '~/Dropbox/QUANTESS/corpora/LaverGarry.cat'
 #' lgdict <- readWStatDict(path)
 #' }

@@ -190,30 +190,30 @@ segment.corpus <- function(x, what=c("tokens", "sentences", "paragraphs", "other
 ########
 
 
-#' preprocess the tokens in a corpus
-#'
-#' Applies pre-processing rules to the text and compiles a frequency table of features (word types)
-#' including counts of types, tokens, sentences, and paragraphs.
-#' @note This will eventually become an
-#' indexing function.  At the moment it creates and saves a \link{dfm} in addition to 
-#' some summary information compiled from this, in order to speed up subsequent processing.
-#' Unlike most R functions which return a value, this one changes the object passed
-#' to it.  (And they say R can't pass by reference...)
-#' @param corp Corpus to be preprocessed
-#' @return no return but modifies the object in place by changing
-#' @return \item{tokens, }{a list consisting of the following:}
-#' @return \item{$dfm}{A \link{dfm} document-feature matrix object created with \link{settings}.}
-#' @return \item{$nwords}{A vector of token counts for each document.}
-#' @return \item{$ntypes}{A vector of type counts for each document.}
-#' @return \item{$nsents}{A vector of sentence counts for each document.}
-#' @return \item{$nparagr}{A vector of paragraph counts for each document.}
+# preprocess the tokens in a corpus
+#
+# Applies pre-processing rules to the text and compiles a frequency table of features (word types)
+# including counts of types, tokens, sentences, and paragraphs.
+# @note This will eventually become an
+# indexing function.  At the moment it creates and saves a \link{dfm} in addition to 
+# some summary information compiled from this, in order to speed up subsequent processing.
+# Unlike most R functions which return a value, this one changes the object passed
+# to it.  (And they say R can't pass by reference...)
+# @param corp Corpus to be preprocessed
+# @return no return but modifies the object in place by changing
+# @return \item{tokens, }{a list consisting of the following:}
+# @return \item{$dfm}{A \link{dfm} document-feature matrix object created with \link{settings}.}
+# @return \item{$nwords}{A vector of token counts for each document.}
+# @return \item{$ntypes}{A vector of type counts for each document.}
+# @return \item{$nsents}{A vector of sentence counts for each document.}
+# @return \item{$nparagr}{A vector of paragraph counts for each document.}
 # @export
-#' @examples
-#' mycorpus <- corpus(uk2010immig)
-#' mycorpus
-#' preprocess(mycorpus)
-#' mycorpus
-#' mydfm <- dfm(mycorpus)
+# @examples
+# mycorpus <- corpus(uk2010immig)
+# mycorpus
+# preprocess(mycorpus)
+# mycorpus
+# mydfm <- dfm(mycorpus)
 preprocess <- function(corp) {
     thisdfm <- dfm(corp, 
                    stem=settings(corp, "stem"),
