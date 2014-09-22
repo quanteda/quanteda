@@ -45,7 +45,7 @@ stopwordsRemove.character <- function(text, stopwords=NULL) {
     ## Note: Will not remove capitalized words, such as those starting the sentence.  e.g. "The man."
 }
 
-
+#' @rdname stopwordsRemove
 #' @export
 stopwordsRemove.dfm <- function(text, stopwords=NULL) {
     if (!("dfm" %in% class(text)) ) {

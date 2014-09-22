@@ -25,20 +25,18 @@ countSyllables <- function(sourceText) { #}, verbose=FALSE) {
     words <- lapply(string, tokenize)  # tokenize the input text(s)
     
     # match syllable counts to words in the list
-    n.syllables <- lapply(words, function(x) syllableCounts[x])
+    nSyllables <- lapply(words, function(x) syllableCounts[unlist(x)])
     
     # look up vowel counts for those not in the lst
-    for (i in 1:length(n.syllables)) {
-        na.index <- which(is.na(n.syllables[[i]]))
-        if (length(na.index)==0) next
+    for (i in 1:length(nSyllables)) {
+        naIndex <- which(is.na(nSyllables[[i]]))
+        if (length(naIndex)==0) next
         # get the missing words as names
-        names(n.syllables[[i]])[na.index] <- words[[i]][na.index]
+        names(nSyllables[[i]])[naIndex] <- words[[i]][naIndex]
         # replace NA counts with vowel counts    
-        n.syllables[[i]][na.index] <- vowelCount(words[[i]][na.index])
+        nSyllables[[i]][naIndex] <- vowelCount(words[[i]][naIndex])
     }
-    
-    # if (verbose) print(n.syllables)
-    return(sapply(n.syllables, sum))
+    return(sapply(nSyllables, sum))
 }
 
 
