@@ -650,3 +650,60 @@ summary.corpus <- function(corp, n=100, verbose=TRUE, showmeta=FALSE) {
     return(invisible(outputdf))
 }
 
+#' change the document units of a corpus
+#' 
+#' For a corpus, recast the documents down or up a level of aggregation.  "Down"
+#' would mean going from documents to sentences, for instance.  "Up" means from 
+#' sentences back to documents.  This makes it easy to reshape a corpus from a a
+#' collection of documents into a collection of sentences, for instance.
+#' @param corp corpus whose document units will be reshaped
+#' @param to new documents units for the corpus to be recast in
+#' @param ... additional arguments to \code{\link{segment}}
+#' @export
+#' @examples
+#' # simple example
+#' mycorpus <- corpus(c(textone="This is a sentence.  Another sentence.  Yet another.", 
+#'                      textwo="Premieère phrase. Seconde phrase."), 
+#'                    docvars=list(country=c("UK", "USA"), year=c(1990, 2000)),
+#'                    notes="This is a simple example to show how changeunits() works.")
+#' language(mycorpus) <- c("english", "french")                   
+#' summary(mycorpus)
+#' summary(changeunits(mycorpus, to="sentences"), showmeta=TRUE)
+#' 
+#' # example with inaugural corpus speeches
+#' mycorpus2 <- subset(inaugCorpus, Year>2004)
+#' mycorpus2
+#' paragCorpus <- changeunits(mycorpus2, to="paragraphs")
+#' paragCorpus
+#' summary(paragCorpus, 100, showmeta=TRUE)
+#' ## Note that Bush 2005 is recorded as a single paragraph because that text used a single
+#' ## \n to mark the end of a paragraph.
+changeunits <- function(corp, to=c("sentences", "paragraphs", "documents"), ...) {
+    if (!is.corpus(corp)) stop("changeunits must have a valid corpus as its first argument.")
+    to <- match.arg(to)
+    if (to=="documents") stop("documents not yet implemented.")
+    
+    # make the new corpus
+    segmentedTexts <- segment(texts(corp), to, ...)
+    lengthSegments <- sapply(segmentedTexts, length)
+    newcorpus <- corpus(unlist(segmentedTexts))
+    # repeat the docvars and existing document metadata
+    docvars(newcorpus, names(docvars(corp))) <- as.data.frame(lapply(docvars(corp), rep, lengthSegments))
+    metadoc(newcorpus, names(metadoc(corp))) <- as.data.frame(lapply(metadoc(corp), rep, lengthSegments))
+    # add original document name as metadata
+    metadoc(newcorpus, "document") <- rep(names(segmentedTexts), lengthSegments)
+    
+    # copy settings and corpus metadata
+    newcorpus$settings <- corp$settings
+    newcorpus$metadata <- corp$metadata
+
+    # modify settings flag for changeunits info
+    settings(newcorpus, "unitsoriginal") <- settings(newcorpus, "units")
+    settings(newcorpus, "units") <- to
+
+    newcorpus
+}
+
+rep.data.frame <- function(x, ...)
+    as.data.frame(lapply(x, rep, ...))
+

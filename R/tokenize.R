@@ -172,7 +172,7 @@ segment.corpus <- function(x, what=c("tokens", "sentences", "paragraphs", "other
                            delimiter=ifelse(what=="tokens", " ", 
                                             ifelse(what=="sentences", "[.!?:;]", "\\n{2}")),
                            ...) {
-    segment(texts(x))
+    segment(texts(x), what, delimiter, ...)
 }
 
 # segment(uk2010immig[1], removePunct=FALSE, simplify=TRUE)
