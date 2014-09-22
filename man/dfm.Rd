@@ -22,35 +22,46 @@ dfm(x, ...)
 is.dfm(x)
 }
 \arguments{
-\item{x}{Corpus or character vector from which to generate the document-feature matrix}
+\item{x}{Corpus or character vector from which to generate the
+document-feature matrix}
 
 \item{feature}{Feature to count (e.g. words)}
 
 \item{stem}{Stem the words}
 
-\item{stopwords}{A character vector of stopwords that will be removed from the text when constructing the \link{dfm}.  If \code{NULL} (default)
-then no stopwords will be applied.  If "TRUE" then it currently defaults to \code{\link{stopwords}}.}
+\item{stopwords}{A character vector of stopwords that will be removed from
+the text when constructing the \link{dfm}.  If \code{NULL} (default) then
+no stopwords will be applied.  If "TRUE" then it currently defaults to
+\code{\link{stopwords}}.}
 
 \item{groups}{Grouping variable for aggregating documents}
 
 \item{verbose}{Get info to screen on the progress}
 
-\item{dictionary}{A list of character vector dictionary entries, including regular expressions (see examples)}
+\item{dictionary}{A list of character vector dictionary entries, including
+regular expressions (see examples)}
 
-\item{dictionary_regex}{\code{TRUE} means the dictionary is already in regular expression format,
-otherwise it will be converted from "wildcard" format}
+\item{dictionary_regex}{\code{TRUE} means the dictionary is already in
+regular expression format, otherwise it will be converted from "wildcard"
+format}
 
-\item{addto}{\code{NULL} by default, but if an existing dfm object is specified, then the new dfm will be added to the one named.
-If both \link{dfm}'s are built from dictionaries, the combined dfm will have its \code{Non_Dictionary} total adjusted.}
+\item{addto}{\code{NULL} by default, but if an existing dfm object is
+specified, then the new dfm will be added to the one named. If both
+\link{dfm}'s are built from dictionaries, the combined dfm will have its
+\code{Non_Dictionary} total adjusted.}
 }
 \value{
-A matrix object with row names equal to the document names and column names equal to the feature labels.
-This matrix has \code{names(dimnames) = c("docs", "words")}
-to make it conformable to an \link[austin]{wfm} object.
+A specially classed matrix object with row names equal to the
+  document names and column names equal to the feature labels.  Additional
+  information is attached to this object as \code{\link{attributes}}, such as
+  \link{settings}.
 }
 \description{
-returns a document by feature matrix compatible with austin.  A typical usage would
-be to produce a word-frequency matrix where the cells are counts of words by document.
+Returns a document by feature matrix with additional meta-information
+(settings, identification of training texts for supervised models, resampling
+information, etc.) that is useful in other quanteda functions.  A typical
+usage would be to produce a word-frequency matrix where the cells are counts
+of words by document, but the definition of "features" is entirely general.
 }
 \details{
 \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.

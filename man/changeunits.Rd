@@ -21,7 +21,7 @@ collection of documents into a collection of sentences, for instance.
 \examples{
 # simple example
 mycorpus <- corpus(c(textone="This is a sentence.  Another sentence.  Yet another.",
-                     textwo="Premieère phrase. Seconde phrase."),
+                     textwo="Première phrase. Seconde phrase."),
                    docvars=list(country=c("UK", "USA"), year=c(1990, 2000)),
                    notes="This is a simple example to show how changeunits() works.")
 language(mycorpus) <- c("english", "french")
