@@ -40,10 +40,10 @@ settings <- function(x, ...) {
 #' @export 
 settings.corpus <- function(x, fields=NULL, ...) {
     if (is.null(fields)) {
-        corp$settings
+        x$settings
     } else {
         if (!(fields %in% SETTINGS_OPTIONS)) stop(paste(fields, "not valid setting."))
-        corp$settings[fields]
+        x$settings[fields]
     }
 }
 

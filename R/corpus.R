@@ -608,7 +608,7 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
 # summary(iebudgetsLenihan)
 #' }
 subset.corpus <- function(x, subset=NULL, select=NULL, ...) {
-    tempcorp <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
+    tempcorp <- corpus.subset.inner(x, substitute(subset), substitute(select))
     return(tempcorp)
 }
 
