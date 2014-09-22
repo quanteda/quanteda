@@ -4,16 +4,16 @@
 \title{Corpus summary}
 \usage{
 \method{summary}{corpus}(object, n = 100, verbose = TRUE,
-  showmeta = FALSE)
+  showmeta = FALSE, ...)
 }
 \arguments{
+\item{object}{corpus to be summarized}
+
 \item{n}{maximum number of texts to describe, default=100}
 
 \item{verbose}{FALSE to turn off printed output}
 
 \item{showmeta}{TRUE to include document-level meta-data}
-
-\item{corp}{corpus to be summarized}
 }
 \description{
 Displays information about a corpus object, including attributes and

@@ -103,7 +103,7 @@ segmentParagraph <- function(text, delimiter="\\n{2}") {
 #' Segment text(s) into tokens, sentences, paragraphs, or other sections. 
 #' \code{segment} works on a character vector or corpus object, and allows the 
 #' delimiters to be defined.  See details.
-#' @param what defines the component to define the segmentation unit.  Current 
+#' @param x defines the component to define the segmentation unit.  Current 
 #'   options are tokens, sentences, paragraphs, and other.  Segmenting on 
 #'   \code{other} allows segmentation of a text on any user-defined value, and 
 #'   must be accompanied by the \code{delimiter} argument.

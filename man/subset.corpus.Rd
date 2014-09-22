@@ -3,10 +3,10 @@
 \alias{subset.corpus}
 \title{extract a subset of a corpus}
 \usage{
-\method{subset}{corpus}(corpus, subset = NULL, select = NULL)
+\method{subset}{corpus}(x, subset = NULL, select = NULL, ...)
 }
 \arguments{
-\item{corpus}{corpus object to be subsetted.}
+\item{x}{corpus object to be subsetted.}
 
 \item{subset}{logical expression indicating elements or rows to keep: missing values are taken as false.}
 

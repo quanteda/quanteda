@@ -22,9 +22,6 @@ is.corpus(x)
 filepath to a directory containing text documents (see \link{directory}),
 or a character vector of texts.}
 
-\item{docnames}{Names to be assigned to the texts, defaults to the names of the
-character vector (if any), otherwise assigns "text1", "text2", etc.}
-
 \item{docvarsfrom}{Argument to specify where docvars are to be taken, from
 parsing the filenames (\link{filenames}) separated
 by \code{sep} or from meta-data embedded in the text file header (\code{headers}).}
@@ -38,6 +35,9 @@ by \code{sep} or from meta-data embedded in the text file header (\code{headers}
 \item{notes}{A string containing notes about who created the text, warnings, To Dos, etc.}
 
 \item{docvars}{A data frame of attributes that is associated with each text.}
+
+\item{x}{Names to be assigned to the texts, defaults to the names of the
+character vector (if any), otherwise assigns "text1", "text2", etc.}
 }
 \value{
 A corpus class object containing the original texts, document-level

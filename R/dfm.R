@@ -487,7 +487,7 @@ is.dfm <- function(x) {
 #' Sorts a \link{dfm} by frequency of total features, total features in 
 #' documents, or both
 #' 
-#' @param dfm Document-feature matrix created by \code{\link{dfm}}
+#' @param x Document-feature matrix created by \code{\link{dfm}}
 #' @param margin which margin to sort on \code{features} to sort by frequency of
 #'   features, \code{docs} to sort by total feature counts in documents, and 
 #'   \code{both} to sort by both

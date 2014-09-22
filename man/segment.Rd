@@ -16,12 +16,12 @@ segment(x, ...)
   "sentences", "[.!?:;]", "\\\\n{2}")), ...)
 }
 \arguments{
-\item{...}{additional arguments to be passed to \link{clean}}
-
-\item{what}{defines the component to define the segmentation unit.  Current
+\item{x}{defines the component to define the segmentation unit.  Current
 options are tokens, sentences, paragraphs, and other.  Segmenting on
 \code{other} allows segmentation of a text on any user-defined value, and
 must be accompanied by the \code{delimiter} argument.}
+
+\item{...}{additional arguments to be passed to \link{clean}}
 
 \item{delimiter}{delimiter defined as a \link{regex} for segmentation.
 Each type has its own default, except \code{other}, which requires a value to be specified.}

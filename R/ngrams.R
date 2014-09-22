@@ -3,7 +3,7 @@
 #' @author Ken Benoit and Kohei Watanabe
 #' @param text character vector containing the texts from which bigrams will be constructed
 #' @param window how many words to be counted for adjacency.  Default is 1 for only immediately 
-#' neighbouring words.  This is only available for bigrams, not for \link{ngram}.
+#' neighbouring words.  This is only available for bigrams, not for ngrams.
 #' @param concatenator character for combining words, default is \code{_} (underscore) character
 #' @param include.unigrams if \code{TRUE}, return unigrams as well
 #' @param ... additional arguments passed to \link{tokenize}

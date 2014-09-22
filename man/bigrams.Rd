@@ -10,7 +10,7 @@ bigrams(text, window = 1, concatenator = "_", include.unigrams = FALSE,
 \item{text}{character vector containing the texts from which bigrams will be constructed}
 
 \item{window}{how many words to be counted for adjacency.  Default is 1 for only immediately
-neighbouring words.  This is only available for bigrams, not for \link{ngram}.}
+neighbouring words.  This is only available for bigrams, not for ngrams.}
 
 \item{concatenator}{character for combining words, default is \code{_} (underscore) character}
 

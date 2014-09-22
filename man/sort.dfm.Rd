@@ -7,14 +7,14 @@
   "both"), ...)
 }
 \arguments{
+\item{x}{Document-feature matrix created by \code{\link{dfm}}}
+
 \item{decreasing}{TRUE (default) if sort will be in descending order,
 otherwise sort in increasing order}
 
 \item{margin}{which margin to sort on \code{features} to sort by frequency of
 features, \code{docs} to sort by total feature counts in documents, and
 \code{both} to sort by both}
-
-\item{dfm}{Document-feature matrix created by \code{\link{dfm}}}
 }
 \value{
 A sorted \link{dfm} matrix object

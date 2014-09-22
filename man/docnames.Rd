@@ -21,7 +21,7 @@ docnames(x) <- value
 }
 \description{
 Extract the document names from a corpus or a document-feature matrix.  Document names are the
-rownames of the \link{documents} data.frame in a corpus, or the rownames of the \link{dfm}
+rownames of the documents data.frame in a corpus, or the rownames of the \link{dfm}
 object for a dfm.
 of the \link{dfm} object.
 

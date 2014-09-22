@@ -101,7 +101,7 @@ corpus.directory<- function(x, enc=NULL, docnames=NULL, docvarsfrom=c("filenames
 # 
 # Details here.
 # 
-#' @param docnames Names to be assigned to the texts, defaults to the names of the 
+#' @param x Names to be assigned to the texts, defaults to the names of the 
 #' character vector (if any), otherwise assigns "text1", "text2", etc.
 #' @param docvars A data frame of attributes that is associated with each text.
 #' @param source A string specifying the source of the texts, used for referencing.
@@ -430,7 +430,7 @@ tokens.corpus <- function(corp) {
 #' extract document names
 #' 
 #' Extract the document names from a corpus or a document-feature matrix.  Document names are the
-#' rownames of the \link{documents} data.frame in a corpus, or the rownames of the \link{dfm}
+#' rownames of the documents data.frame in a corpus, or the rownames of the \link{dfm}
 #' object for a dfm.
 #' of the \link{dfm} object.
 #' @export
@@ -594,7 +594,7 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
 #' 
 #' Works just like the normal subset command but for corpus objects
 #' 
-#' @param corpus corpus object to be subsetted.
+#' @param x corpus object to be subsetted.
 #' @param subset logical expression indicating elements or rows to keep: missing values are taken as false.
 #' @param select expression, indicating the attributes to select from the corpus
 #' @return corpus object
@@ -607,7 +607,7 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
 # iebudgetsCarter <- subset(iebudgets, speaker="Carter", select=c(speaker, year))
 # summary(iebudgetsLenihan)
 #' }
-subset.corpus <- function(corpus, subset=NULL, select=NULL, ...) {
+subset.corpus <- function(x, subset=NULL, select=NULL, ...) {
     tempcorp <- corpus.subset.inner(corpus, substitute(subset), substitute(select))
     return(tempcorp)
 }
@@ -617,7 +617,7 @@ subset.corpus <- function(corpus, subset=NULL, select=NULL, ...) {
 #' Displays information about a corpus object, including attributes and 
 #' metadata such as date of number of texts, creation and source.
 #' 
-#' @param corp corpus to be summarized
+#' @param object corpus to be summarized
 #' @param n maximum number of texts to describe, default=100
 #' @param verbose FALSE to turn off printed output
 #' @param showmeta TRUE to include document-level meta-data
