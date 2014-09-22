@@ -1,0 +1,59 @@
+quanteda 0.5.0
+==============
+
+Lots of new functions
+---------------------
+
+* plot.dfm method for producing word clouds from dfm objects
+
+* print.dfm, print.corpus, and summary.corpus methods now defined
+
+* new accessor functions defined, such as docnames(), settings(), docvars(),
+  metadoc(), metacorpus(), encoding(), and language()
+
+* replacement functions defined that correspond to most of the above
+  accessor functions, e.g. encoding(mycorpus) <- "UTF-8"
+
+* segment(x, to=c("tokens", "sentences", "paragraphs", "other", ...) now
+  provides an easy and powerful method for segmenting a corpus by units
+  other than just tokens
+
+* a settings() function has been added to manage settings that would commonly govern
+  how texts are converted for processing, so that these can be preserved in a corpus
+  and applied to operations that are relevant.  These settings also propagate to a
+  dfm for both replication purposes and to govern operations for which they would be
+  relevant, when applied to a dfm.
+
+Old functions vastly improved
+-----------------------------
+
+* better ways now exist to manage corpus internals, such as through the 
+  accessor functions, rather than trying to access the internal structure of 
+  the corpus directly.
+
+* basic functions such as tokenize(), clean(), etc are now faster, neater, and
+  operate generally on vectors and return consistent object types
+
+Better object and class design
+------------------------------
+
+* the corpus object has been redesigned with more flexible components, including
+  a settings list, better corpus-level metadata, and smarter implementation of 
+  document-level attributes including user-defined variables (docvars) and document-
+  level meta-data (metadoc)
+
+* the dfm now has a proper class definition, including additional attributes that 
+  hold the settings used to produce the dfm.
+
+* all important functions are now defined as methods for classes of built-in (e.g.
+  character) objects, or quanteda objects such as a corpus or dfm.  Lots of functions
+  operate on both, for instance dfm.corpus(x) and dfm.character(x).
+
+more complete documentation
+---------------------------
+
+* all functions are now documented and have working examples
+
+* quanteda.pdf provides a pdf version of the function documentation in one easy-to-access
+  document
+
