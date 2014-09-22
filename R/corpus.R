@@ -101,11 +101,14 @@ corpus.directory<- function(x, enc=NULL, docnames=NULL, docvarsfrom=c("filenames
 # 
 # Details here.
 # 
-#' @param x Names to be assigned to the texts, defaults to the names of the 
+#' @param docnames Names to be assigned to the texts, defaults to the names of the 
 #' character vector (if any), otherwise assigns "text1", "text2", etc.
 #' @param docvars A data frame of attributes that is associated with each text.
 #' @param source A string specifying the source of the texts, used for referencing.
+#' @param citation Information on how to cite the corpus.
 #' @param notes A string containing notes about who created the text, warnings, To Dos, etc.
+#' @param enc A string (or character vector) specifying the encoding for each text in the corpus.  
+#' Must be a valid entry in \code{\link{iconvtypes}()}.
 #' @rdname corpus
 #' @export
 #' @examples
@@ -658,12 +661,13 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
 #' collection of documents into a collection of sentences, for instance.
 #' @param corp corpus whose document units will be reshaped
 #' @param to new documents units for the corpus to be recast in
-#' @param ... additional arguments to \code{\link{segment}}
+#' @details \code{...} passes additional arguments to \code{\link{segment}}
+
 #' @export
 #' @examples
 #' # simple example
 #' mycorpus <- corpus(c(textone="This is a sentence.  Another sentence.  Yet another.", 
-#'                      textwo="Première phrase. Seconde phrase."), 
+#'                      textwo="Première phrase.  Deuxième phrase."), 
 #'                    docvars=list(country=c("UK", "USA"), year=c(1990, 2000)),
 #'                    notes="This is a simple example to show how changeunits() works.")
 #' language(mycorpus) <- c("english", "french")                   

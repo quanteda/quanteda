@@ -7,7 +7,7 @@
 #' @rdname tokenize
 #' @aliases tokenise
 #' @param x The text(s) or corpus to be tokenized
-#' @param ... additional arguments passed to \code{\link{clean}}
+#' @details \code{...} provides additional arguments passed to \code{\link{clean}}
 #' @return A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
 #' @export
 #' @examples 
@@ -24,8 +24,11 @@ tokenize <- function(x, ...) {
 #' @rdname tokenize
 #' @param simplify If \code{TRUE}, return a character vector of tokens rather 
 #'   than a list of length \code{\link{ndoc}(texts)}, with each element of the 
-#'   list containing a character vector of the tokens corresponding to that
+#'   list containing a character vector of the tokens corresponding to that 
 #'   text.
+#' @param sep by default, tokenize expects a ‘white-space’ delimiter between
+#'   tokens. Alternatively, \code{sep} can be used to specify another character
+#'   which delimits fields.
 #' @return  A list of length \code{\link{ndoc}(texts)} of the tokens found in 
 #'   each text.
 #' @export
@@ -107,9 +110,7 @@ segmentParagraph <- function(text, delimiter="\\n{2}") {
 #'   options are tokens, sentences, paragraphs, and other.  Segmenting on 
 #'   \code{other} allows segmentation of a text on any user-defined value, and 
 #'   must be accompanied by the \code{delimiter} argument.
-#' @param delimiter  delimiter defined as a \link{regex} for segmentation.
-#' Each type has its own default, except \code{other}, which requires a value to be specified.
-#' @param ... additional arguments to be passed to \link{clean}
+#' @param \code{...} provides additional arguments to be passed to \link{clean}
 #' @return A list of segmented texts, with each element of the list correponding
 #'   to one of the original texts.
 #' @details Tokens are delimited by whitespace.  For sentences, the delimiter 
@@ -125,14 +126,14 @@ segmentParagraph <- function(text, delimiter="\\n{2}") {
 #'   with a newline character.)
 #' @export
 segment <- function(x, ...) {
-#, what=c("tokens", "sentences", "paragraphs", "other"), 
-#                     delimiter=ifelse(what=="tokens", " ", 
-#                                      ifelse(what=="sentences", "[.!?:;]", "\\n{2}")),
-#                     ...) {
     UseMethod("segment")
 }
 
 #' @rdname segment
+#' @param what unit of segmentation
+#' @param delimiter  delimiter defined as a \link{regex} for segmentation. Each
+#'   type has its own default, except \code{other}, which requires a value to be
+#'   specified.
 #' @export
 #' @examples
 #' # same as tokenize()

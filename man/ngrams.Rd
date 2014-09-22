@@ -13,17 +13,15 @@ ngrams(text, n = 2, concatenator = "_", include.all = FALSE, ...)
 \item{concatenator}{character for combining words, default is \code{_} (underscore) character}
 
 \item{include.all}{if TRUE, add n-1...1 grams to the returned list}
-
-\item{...}{additional arguments passed to \link{tokenize}}
-
-\item{window}{how many words to be counted for adjacency.  Default is 1 for only immediately
-neighbouring words.}
 }
 \value{
 a list of character vectors of ngrams, one list element per text
 }
 \description{
 Create a set of ngrams (words in sequence) from text(s) in a character vector
+}
+\details{
+\code{...} provides additional arguments passed to \link{tokenize}
 }
 \examples{
 ngrams("The quick brown fox jumped over the lazy dog.", n=2)

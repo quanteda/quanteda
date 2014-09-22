@@ -15,14 +15,15 @@ neighbouring words.  This is only available for bigrams, not for ngrams.}
 \item{concatenator}{character for combining words, default is \code{_} (underscore) character}
 
 \item{include.unigrams}{if \code{TRUE}, return unigrams as well}
-
-\item{...}{additional arguments passed to \link{tokenize}}
 }
 \value{
 a character vector of bigrams
 }
 \description{
 Create bigrams
+}
+\details{
+\code{...} provides additional arguments passed to \link{tokenize}
 }
 \examples{
 bigrams("The quick brown fox jumped over the lazy dog.")

@@ -15,12 +15,14 @@ tokenize(x, ...)
 \arguments{
 \item{x}{The text(s) or corpus to be tokenized}
 
-\item{...}{additional arguments passed to \code{\link{clean}}}
-
 \item{simplify}{If \code{TRUE}, return a character vector of tokens rather
 than a list of length \code{\link{ndoc}(texts)}, with each element of the
 list containing a character vector of the tokens corresponding to that
 text.}
+
+\item{sep}{by default, tokenize expects a ‘white-space’ delimiter between
+tokens. Alternatively, \code{sep} can be used to specify another character
+which delimits fields.}
 }
 \value{
 A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
@@ -30,6 +32,9 @@ A list of length \code{\link{ndoc}(texts)} of the tokens found in
 }
 \description{
 Tokenize the texts from a character vector or from a corpus.
+}
+\details{
+\code{...} provides additional arguments passed to \code{\link{clean}}
 }
 \examples{
 # same for character vectors and for lists

@@ -154,6 +154,28 @@ dfm.character <- function(x,
     }
     
     tokenizedTexts <- tokenize(x, clean=FALSE)
+    
+    if (!is.null(stopwords)) {
+        if (verbose) cat(" removing stopwords ... ")
+        # need two separate checks because if() on a char vector gives warning
+        if (!is.character(stopwords)) {
+            if (stopwords==TRUE) {
+                stopwords <- stopwordsGet()
+            }
+        }
+        if (!is.character(stopwords) | !length(stopwords)>0) {
+            stop("stopwords must be a character vector with positive length.")
+        }
+        if (bigram==TRUE) {
+            stop("bigram and stopwords not yet implemented.")
+            #pat <- paste(paste0(paste0("-", stopwords, "$"), collapse='|'), paste0(paste0("^", stopwords, "-"), collapse='|'), sep='|')
+            #dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
+        } else {
+            #dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords))
+            tokenizedTexts <- lapply(tokenizedTexts, stopwordsRemove, stopwords)
+        }
+    }
+    
     if (stem==TRUE) {
         # require(SnowballC, quietly=TRUE)
         if (verbose) cat(" stemming ...")
@@ -201,29 +223,7 @@ dfm.character <- function(x,
         dfm <- dfm[, -(ncol(dfm)-1)]
     }
     
-    # re-written PN 30th June
-    if (!is.null(stopwords)) {
-        if (verbose) cat(" removing stopwords ... ")
-        # need two separate checks because if() on a char vector gives warning
-        if (!is.character(stopwords)){
-            if (stopwords==TRUE){
-                stopwords <- stopwordsGet()
-            }
-        }
-        if (!is.character(stopwords) | !length(stopwords)>0) {
-            stop("stopwords must be a character vector with positive length.")
-        }
-#         } else {
-#             stopwords <- stopwordsGet(stopwords)
-#         }
-        if (bigram==TRUE) {
-            pat <- paste(paste0(paste0("-", stopwords, "$"), collapse='|'), paste0(paste0("^", stopwords, "-"), collapse='|'), sep='|')
-            dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
-        } else {
-            dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords))
-        }
-    }
-    
+   
     if (!is.null(addto)) {
         if (sum(rownames(dfm) != rownames(addto)) > 0) {
             stop("Cannot add to dfm: different document set.")
@@ -447,7 +447,7 @@ types <- function(corp) {
 
 
 #' @export
-features <- function(x, ...) {
+features <- function(x) {
     UseMethod("features")
 }
 
@@ -455,12 +455,13 @@ features <- function(x, ...) {
 #' 
 #' Extract the features from a document-feature matrix, which are stored as the column names
 #' of the \link{dfm} object.
+#' @param x the object (dfm) whose features will be extracted
 #' @aliases features
 #' @return Character vector of the features
 #' @examples
 #' features(dfm(inaugTexts))[1:50]  # first 50 features (alphabetically sorted)
 #' @export
-features.dfm <- function(x, ...) {
+features.dfm <- function(x) {
     colnames(x)
 }
 

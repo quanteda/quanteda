@@ -6,8 +6,9 @@
 #' this is to produce a dfm only from the documents whose features you want 
 #' plotted.
 #' @param x a dfm object
-#' @param ... additional parameters to \link[wordcloud]{wordcloud} or to \link{text}
-#'   (and \link{strheight}, \link{strwidth})
+#' @details \code{...} provides additional parameters passed to to
+#'   \link[wordcloud]{wordcloud} or to \link{text} (and \link{strheight},
+#'   \link{strwidth})
 #' @seealso \link[wordcloud]{wordcloud}
 #' @examples
 #' # plot the features (without stopwords) from Obama's two inaugural addresses

@@ -36,7 +36,7 @@ flush(stderr()); flush(stdout())
 
 # simple example
 mycorpus <- corpus(c(textone="This is a sentence.  Another sentence.  Yet another.",
-                     textwo="Première phrase. Seconde phrase."),
+                     textwo="Première phrase.  Deuxième phrase."),
                    docvars=list(country=c("UK", "USA"), year=c(1990, 2000)),
                    notes="This is a simple example to show how changeunits() works.")
 language(mycorpus) <- c("english", "french")
@@ -132,12 +132,7 @@ nameEx("countSyllables")
 flush(stderr()); flush(stdout())
 
 ### Name: countSyllables
-### Title: Returns a count of the number of syllables in the input This
-###   function takes a text and returns a count of the number of syllables
-###   it contains. For British English words, the syllable count is exact
-###   and looked up from the CMU pronunciation dictionary. For any word not
-###   in the dictionary the syllable count is estimated by counting vowel
-###   clusters.
+### Title: Returns a count of the number of syllables in the input
 ### Aliases: countSyllables
 
 ### ** Examples
@@ -156,8 +151,7 @@ nameEx("describeTexts")
 flush(stderr()); flush(stdout())
 
 ### Name: describeTexts
-### Title: print a summary of texts Prints to the console a desription of
-###   the texts, including number of types, tokens, and sentences
+### Title: print a summary of texts
 ### Aliases: describeTexts
 
 ### ** Examples

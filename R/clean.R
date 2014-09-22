@@ -47,7 +47,7 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, 
             s <- tolower(s)
         }
         # convert multiple whitespace (up to 100 in a row) into one
-        s <- gsub("\\s{2,100}", " ", s)
+        ## s <- gsub(" {2,}", " ", s)
         # remove leading and trailing whitespace and return
         gsub("^ +| +$", "", s)
     }

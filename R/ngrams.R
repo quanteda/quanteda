@@ -6,7 +6,7 @@
 #' neighbouring words.  This is only available for bigrams, not for ngrams.
 #' @param concatenator character for combining words, default is \code{_} (underscore) character
 #' @param include.unigrams if \code{TRUE}, return unigrams as well
-#' @param ... additional arguments passed to \link{tokenize}
+#' @details \code{...} provides additional arguments passed to \link{tokenize}
 #' @return a character vector of bigrams
 #' @export
 #' @examples 
@@ -39,11 +39,11 @@ bigrams <- function(text, window = 1, concatenator="_", include.unigrams=FALSE, 
 #' @return a list of character vectors of ngrams, one list element per text
 #' @param text character vector containing the texts from which ngrams will be extracted
 #' @param n the number of tokens to concatenate. Default is 2 for bigrams.
-#' @param window how many words to be counted for adjacency.  Default is 1 for only immediately 
-#' neighbouring words.
+# @param window how many words to be counted for adjacency.  Default is 1 for only immediately 
+# neighbouring words.
 #' @param concatenator character for combining words, default is \code{_} (underscore) character
 #' @param include.all if TRUE, add n-1...1 grams to the returned list
-#' @param ... additional arguments passed to \link{tokenize}
+#' @details \code{...} provides additional arguments passed to \link{tokenize}
 #' @export
 #' @examples 
 #' ngrams("The quick brown fox jumped over the lazy dog.", n=2)

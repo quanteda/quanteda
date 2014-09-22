@@ -9,8 +9,6 @@ changeunits(corp, to = c("sentences", "paragraphs", "documents"), ...)
 \item{corp}{corpus whose document units will be reshaped}
 
 \item{to}{new documents units for the corpus to be recast in}
-
-\item{...}{additional arguments to \code{\link{segment}}}
 }
 \description{
 For a corpus, recast the documents down or up a level of aggregation.  "Down"
@@ -18,10 +16,13 @@ would mean going from documents to sentences, for instance.  "Up" means from
 sentences back to documents.  This makes it easy to reshape a corpus from a a
 collection of documents into a collection of sentences, for instance.
 }
+\details{
+\code{...} passes additional arguments to \code{\link{segment}}
+}
 \examples{
 # simple example
 mycorpus <- corpus(c(textone="This is a sentence.  Another sentence.  Yet another.",
-                     textwo="Première phrase. Seconde phrase."),
+                     textwo="Première phrase.  Deuxième phrase."),
                    docvars=list(country=c("UK", "USA"), year=c(1990, 2000)),
                    notes="This is a simple example to show how changeunits() works.")
 language(mycorpus) <- c("english", "french")

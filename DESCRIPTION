@@ -26,9 +26,9 @@ Description: A package for the management and quantitative analysis of textual
     class prediction.
 Encoding: UTF-8
 License: GPL-3
+Requires: SnowballC
 Imports:
     wordcloud,
-    SnowballC,
     proxy
 Suggests:
     austin,

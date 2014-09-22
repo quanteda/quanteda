@@ -23,7 +23,7 @@ collocations <- function(text=NULL, file=NULL, top=NA, distance=2, n=2,
     if (is.null(text) & is.null(file)) stop("Must specify either text or file.")
   if (n>2) stop("Only bigrams (n=2) implemented so far.")
   clean.txt <- clean(text)
-  t <- tokenize(clean.txt)
+  t <- unlist(tokenize(clean.txt))
   bigrams <- paste(t[1:(length(t)-1)], t[2:length(t)])
   bigrams <- tolower(bigrams)
   bigrams.tokenized <- as.data.frame(table(bigrams), stringsAsFactors=FALSE)
@@ -31,7 +31,6 @@ collocations <- function(text=NULL, file=NULL, top=NA, distance=2, n=2,
   bigrams.tokenized$w1 <- sapply(strsplit(unclass(bigrams.tokenized$bigrams), " "), "[", 1)
   bigrams.tokenized$w2 <- sapply(strsplit(unclass(bigrams.tokenized$bigrams), " "), "[", 2)
   bigrams.tokenized$test <- NA
-  require(entropy)
   options(warn=-1)
   if (method=="lr") {
     for (i in 1:nrow(bigrams.tokenized)) {
@@ -44,7 +43,8 @@ collocations <- function(text=NULL, file=NULL, top=NA, distance=2, n=2,
         chisq.test(table(bigrams.tokenized$w1==bigrams.tokenized$w1[i], bigrams.tokenized$w2==bigrams.tokenized$w2[i]), correct=FALSE)$statistic
     }
   } else if (method=="mi") {
-    for (i in 1:nrow(bigrams.tokenized)) {
+      require(entropy)
+      for (i in 1:nrow(bigrams.tokenized)) {
       bigrams.tokenized$test[i] <-
         entropy(table(bigrams.tokenized$w1==bigrams.tokenized$w1[i])) + entropy(table(bigrams.tokenized$w2==bigrams.tokenized$w2[i])) -
         entropy(table(bigrams.tokenized$w1==bigrams.tokenized$w1[i], bigrams.tokenized$w2==bigrams.tokenized$w2[i]))
