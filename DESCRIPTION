@@ -2,7 +2,7 @@ Package: quanteda
 Type: Package
 Title: Quantitative Analysis of Textual Data
 Version: 0.5.0
-Date: 2014-09-17
+Date: 2014-09-23
 Author: Ken Benoit and Paul Nulty
 Maintainer: Ken Benoit <kbenoit@lse.ac.uk> and Paul Nulty <p.nulty@lse.ac.uk>
 Description: A package for the management and quantitative analysis of textual
