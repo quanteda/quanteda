@@ -60,18 +60,18 @@
 #' dfm(testCorpus, stopwords=TRUE)
 #' 
 dfm <- function(x, ...) {
-#                 feature=c("word"),
-#                 stem=FALSE,
-#                 stopwords=NULL,
-#                 bigram=FALSE,
-#                 groups=NULL,
-#                 verbose=TRUE, 
-#                 dictionary=NULL,
-#                 dictionary_regex=FALSE,
-#                 clean=TRUE,
-#                 removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
-#                 addto=NULL) {
-  UseMethod("dfm")
+    #                 feature=c("word"),
+    #                 stem=FALSE,
+    #                 stopwords=NULL,
+    #                 bigram=FALSE,
+    #                 groups=NULL,
+    #                 verbose=TRUE, 
+    #                 dictionary=NULL,
+    #                 dictionary_regex=FALSE,
+    #                 clean=TRUE,
+    #                 removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
+    #                 addto=NULL) {
+    UseMethod("dfm")
 }
 
 #' @rdname dfm
@@ -225,7 +225,7 @@ dfm.character <- function(x,
         dfm <- dfm[, -(ncol(dfm)-1)]
     }
     
-   
+    
     if (!is.null(addto)) {
         if (sum(rownames(dfm) != rownames(addto)) > 0) {
             stop("Cannot add to dfm: different document set.")
@@ -524,21 +524,21 @@ sort.dfm <- function(x, decreasing=TRUE, margin = c("features", "docs", "both"),
 
 #' list the most frequent features
 #' 
-#' List the most frequently occuring features.
-#' @return A named numeric vector of feature counts, where the names are the feature labels.
+#' List the most frequently occuring features in a \link{dfm}
 #' @export
+topfeatures <- function(x, n=10, decreasing=TRUE) {
+    UseMethod("topfeatures")
+}
+
+#' @return A named numeric vector of feature counts, where the names are the feature labels.
 #' @examples
 #' topfeatures(dfm(inaugCorpus))
 #' topfeatures(dfm(inaugCorpus, stopwords=TRUE))
 #' # least frequent features
 #' topfeatures(dfm(inaugCorpus), decreasing=FALSE)
-topfeatures <- function(x, n=10, decreasing=TRUE) {
-    UseMethod("topfeatures")
-}
-
-#' @rdname topfeatures
 #' @export
-topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ...) {
+#' @rdname topfeatures
+topfeatures.dfm <- function(x, n=10, decreasing=TRUE) {
     if (is.null(n)) n <- ncol(x)
     subdfm <- sort(colSums(x), decreasing)
     subdfm[1:n]
