@@ -1,76 +1,58 @@
-#' @name amicusCorpus
-#' @title Amicus briefs from  US Supreme court cases
-#' @description This is a corpus of petitioner and respondent briefs to two US Supreme court cases on affirmative action; Bakke(1978) and Bollinger (2008)
-#' @format corpus with 100 texts, and attribute for petitioner/respondent
-#' @references Evans, Michael, et al. "Recounting the courts? Applying automated content analysis to enhance empirical legal research." Journal of Empirical Legal Studies 4.4 (2007): 1007-1039.
-#' @docType data
+#' @name quanteda
+#' @docType package
+#' @title An R package for the quantitative analysis of textual data.
+#' @author Ken Benoit and Paul Nulty
+#' @description A set of functions for creating and managing text corpora, extracting features from 
+#' text corpora, and analyzing those features using quantitative methods.
 NULL
 
-#' @name amicusTexts
-#' @title Amicus briefs from  US Supreme court cases
-#' @description This is a text vector of petitioner and respondent briefs to two US Supreme court cases on affirmative action; Bakke(1978) and Bollinger (2008)
-#' @format character vector with 100 texts
-#' @references Evans, Michael, et al. "Recounting the courts? Applying automated content analysis to enhance empirical legal research." Journal of Empirical Legal Studies 4.4 (2007): 1007-1039.
+#' @name inaugCorpus
 #' @docType data
+#' @title A corpus of US presidential inaugural addresses from 1789-2013
+#' @description \code{inaugCorpus} is the \link{quanteda} corpus object of US presidents' inaugural addresses since 1789.
+#' Document variables contain the year of the address and the last name of the president.
+#' @examples
+#' # some operations on the inaugural corpus
+#' data(inaugCorpus)
+#' summary(inaugCorpus)
+#' head(docvars(inaugCorpus), 10)
+#' @references \url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and 
+#' \url{http://www.presidency.ucsb.edu/inaugurals.php}.
+#' 
 NULL
 
-
-#' @name exampleString
-#' @title exampleString for testing functions
-#' @description This is a long paragraph (2914 characters) of text taken from an Irish budget speech by Joe Higgins
-#' @format character vector with one element (nchar 2914)
+#' @name inaugTexts
+#' @title Texts of US presidential inaugural addresses from 1789-2013
+#' @rdname inaugCorpus
+#' @description \code{inaugTexts} is the character vector of US presidential inaugaration speeches
 #' @docType data
-NULL
-
-
-#' @name ieAttribs
-#' @title A vector of attributes to match ieBudget documents
-#' @description This is a small vector of attributes for use in examples with ieBudgets
-#' @format a dataframe of attributes, 5 obs. of 6 variables 
-#' @docType data
-NULL
-
-
-#' @name ieTextsHeaders
-#' @title Irish budget speeches headers
-#' @description This is a small vector of texts for use in examples with corpusFromHeaders
-#' @format character vector of 14 texts with JSON headers for use in example
-#' @docType data
-NULL
-
-#' @name ieTexts
-#' @title Irish budget speeches texts
-#' @description This is a small vector of texts from the ieBudget corpus for use with testing examples
-#' @format character vector of 5 texts
-#' @docType data
-NULL
-
-#' @name iebudgets
-#' @title Irish budget speeches corpus
-#' @description A corpus containing speeches from Irish budget debates in 2008-2012. Each text has attributes
-#' for party, speaker and year 
-#' @references \url{http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2225069}
-#' @docType data
-NULL
-
-#' @name movies
-#' @title A corpus object containing 2000 movie reviews
-#' @docType data
-#' @description A corpus object containing 2000 movie reviews classified by positive or negative sentiment
-#' @references \url{http://dl.acm.org/citation.cfm?id=1118704}
+#' @examples
+#' # working with the character vector only
+#' data(inaugTexts)
+#' str(inaugTexts)
+#' head(docvars(inaugCorpus), 10)
+#' mycorpus <- corpus(inaugTexts)
 NULL
 
 
-#' @name UKManifestos
-#' @title A corpus object containing 105 UK Manifestos
+#' @name uk2010immig
+#' @title Immigration-related sections of 2010 UK party manifestos
 #' @docType data
-#' @description A corpus object containing 105 UK Manifestos from 1945-2005, with party and year attributes
-#' @references As used in Laver, Michael. 1998a. \'Party Policy in Britain, 1997: Results from an Expert Survey.\' Political Studies 46: 336–47.
+#' @description Extracts from the election manifestos of 9 UK political parties from 2010, related
+#' to immigration or asylum-seekers.
+#' @format A named character vector of plain ASCII texts
+#' @examples
+#' data(uk2010immig)
+#' uk2010immigCorpus <- corpus(uk2010immig, docvars=list(party=names(uk2010immig)))
+#' language(uk2010immigCorpus) <- "english"
+#' encoding(uk2010immigCorpus) <- "UTF-8"
+#' summary(uk2010immigCorpus)
 NULL
+
 
 #' @name stopwords
 #' @title A named list containing common stopwords in 14 languages
-#' @docType data
+# @rdname stopwordsRemove
 #' @description SMART English stopwords from the SMART information retrieval
 #' system (obtained from
 #' http://jmlr.csail.mit.edu/papers/volume5/lewis04a/a11-smart-stop-list/english.stop)
@@ -96,35 +78,3 @@ NULL
 #' 
 NULL
 
-#' @name inaugCorpus
-#' @docType data
-#' @title A corpus of US inaugural addresses from 1789-2013
-#' @description A \link{quanteda} corpus of US presidents' inaugural addresses since 1789.
-#' Meta-data contains the year of the address and the last name of the president.
-#' @examples
-#' data(inaugCorpus)
-#' summary(inaugCorpus)
-#' @references \url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and 
-#' \url{http://www.presidency.ucsb.edu/inaugurals.php}.
-#' 
-NULL
-
-
-#' @name lbg
-#' @docType data
-#' @title Example data from Laver Benoit and Garry (2003)
-#' @description Example data to demonstrate the Wordscores algorithm, from Laver Benoit and Garry (2003)
-#' @details his is the example word count data from Laver,
-#'  Benoit and Garry's (2000) article    
-#'  on Wordscores.  Documents R1 to R5 are assumed to have known
-#'  positions: -1.5, -0.75, 0, 0.75, 1.5.  Document V1 is assumed
-#'  unknown, and will have a raw text score of approximately -0.45 when computed
-#'  as per LBG (2003).  
-#'  
-#'  \link{lbg} is a document-feature matrix.
-#' @examples
-#' data(inaugCorpus)
-#' summary(inaugCorpus)
-#' @references Laver, Benoit and Garry (2003) `Estimating policy positions from
-#' political text using words as data' American Political Science Review 97(2).
-NULL

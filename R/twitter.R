@@ -27,7 +27,7 @@ twitterTerms <- function(query, numResults=50, key, cons_secret, token, access_s
   results <-  twListToDF(sea)
   atts <-as.data.frame(results[,2:ncol(results)])
   texts <- results$text
-  twc <- corpusCreate(texts, attribs=atts)
+  twc <- corpus(texts, attribs=atts)
   return(twc)
 }
 
