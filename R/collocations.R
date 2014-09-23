@@ -60,7 +60,7 @@ collocations <- function(text=NULL, file=NULL, top=NA, distance=2, n=2,
   return(as.data.frame(returnval))
 }
 
-#' likelihood test for 2x2 tables
+#' likelihood test for contingency tables
 #'
 #' returns a list of values
 #' 
@@ -69,23 +69,10 @@ collocations <- function(text=NULL, file=NULL, top=NA, distance=2, n=2,
 #' @export 
 #' @author Kenneth Benoit
 likelihood.test = function(x) {
-  nrows = dim(x)[1]                      # no. of rows in contingency table
-  ncols = dim(x)[2]                      # no. of cols in contingency table
-  chi.out = suppressWarnings(chisq.test(x,correct=F))      # do a Pearson chi square test
-  table = chi.out[[6]]                   # get the OFs
-  ratios = chi.out[[6]]/chi.out[[7]]     # calculate OF/EF ratios
-  sum = 0                                # storage for the test statistic
-  for (i in 1:nrows) {
-    for (j in 1:ncols) {
-      sum = sum + table[i,j]*log(ratios[i,j])
-    }
-  }
-  sum = sum + table * log(ratios + .0000001)
-  sum = 2 * sum                          # the likelihood ratio chi square
-  df = chi.out[[2]]                      # degrees of freedom
-  p = 1 - pchisq(sum,df)                 # p-value
-  out = c(sum, df, p, chi.out[[1]])      # the output vector
-  names(out) = c("LRchi2","df","p-value","Pearschi2")
-  return(as.list(out))                           # done!
+    epsilon <- .000000001  # to offset zero cell counts
+    chi.out <- suppressWarnings(chisq.test(x, correct=F))      # do a Pearson chi square test
+    lrratio <- 2 * sum(chi.out$observed * log(chi.out$observed / chi.out$expected + epsilon))
+    p <- 1 - pchisq(lrratio, chi.out$parameter)
+    list(LRchi2=lrratio, df=chi.out$parameter, p=p)
 }
 
