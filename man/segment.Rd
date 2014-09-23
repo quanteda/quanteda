@@ -21,13 +21,13 @@ options are tokens, sentences, paragraphs, and other.  Segmenting on
 \code{other} allows segmentation of a text on any user-defined value, and
 must be accompanied by the \code{delimiter} argument.}
 
+\item{...}{provides additional arguments to be passed to \link{clean}}
+
 \item{what}{unit of segmentation}
 
 \item{delimiter}{delimiter defined as a \link{regex} for segmentation. Each
 type has its own default, except \code{other}, which requires a value to be
 specified.}
-
-\item{\code{...}}{provides additional arguments to be passed to \link{clean}}
 }
 \value{
 A list of segmented texts, with each element of the list correponding

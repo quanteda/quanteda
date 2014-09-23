@@ -13,6 +13,8 @@ ngrams(text, n = 2, concatenator = "_", include.all = FALSE, ...)
 \item{concatenator}{character for combining words, default is \code{_} (underscore) character}
 
 \item{include.all}{if TRUE, add n-1...1 grams to the returned list}
+
+\item{...}{additional parameters}
 }
 \value{
 a list of character vectors of ngrams, one list element per text

@@ -13,6 +13,8 @@
 }
 \arguments{
 \item{x}{a corpus or dfm object}
+
+\item{...}{additional parameters}
 }
 \value{
 an integer (count) of the number of documents in the corpus or dfm

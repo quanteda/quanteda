@@ -110,7 +110,7 @@ segmentParagraph <- function(text, delimiter="\\n{2}") {
 #'   options are tokens, sentences, paragraphs, and other.  Segmenting on 
 #'   \code{other} allows segmentation of a text on any user-defined value, and 
 #'   must be accompanied by the \code{delimiter} argument.
-#' @param \code{...} provides additional arguments to be passed to \link{clean}
+#' @param ... provides additional arguments to be passed to \link{clean}
 #' @return A list of segmented texts, with each element of the list correponding
 #'   to one of the original texts.
 #' @details Tokens are delimited by whitespace.  For sentences, the delimiter 

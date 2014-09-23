@@ -477,6 +477,7 @@ docnames.corpus <- function(x) {
 #' Returns the number of documents in a corpus objects
 #' @usage \emph{ }
 #' @param x a corpus or dfm object
+#' @param ... additional parameters
 #' @return an integer (count) of the number of documents in the corpus or dfm
 #' @examples 
 #' ndoc(inaugCorpus)

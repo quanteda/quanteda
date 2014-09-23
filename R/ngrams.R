@@ -43,6 +43,7 @@ bigrams <- function(text, window = 1, concatenator="_", include.unigrams=FALSE, 
 # neighbouring words.
 #' @param concatenator character for combining words, default is \code{_} (underscore) character
 #' @param include.all if TRUE, add n-1...1 grams to the returned list
+#' @param ... additional parameters
 #' @details \code{...} provides additional arguments passed to \link{tokenize}
 #' @export
 #' @examples 
