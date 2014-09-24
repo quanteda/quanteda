@@ -8,6 +8,14 @@ topfeatures(x, n = 10, decreasing = TRUE)
 
 \method{topfeatures}{dfm}(x, n = 10, decreasing = TRUE)
 }
+\arguments{
+\item{x}{the object whose features will be returned}
+
+\item{n}{how many top features should be returned}
+
+\item{decreasing}{If TRUE, return the \code{n} most frequent features, if
+FALSE, return the \code{n} least frequent features}
+}
 \value{
 A named numeric vector of feature counts, where the names are the feature labels.
 }

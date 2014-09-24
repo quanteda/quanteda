@@ -14,6 +14,8 @@ getTextFiles(filenames, textnames = NULL, enc = "unknown",
 
 \item{textnames}{names to assign to the texts}
 
+\item{enc}{a value for encoding that is a legal value for \link{Encoding}}
+
 \item{verbose}{If TRUE, print out names of files being read. Default is FALSE}
 }
 \value{

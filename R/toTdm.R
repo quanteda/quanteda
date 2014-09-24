@@ -22,7 +22,7 @@
 #' td <- dfm2tmformat(d)
 #' length(td$v)
 #' if (require(topicmodels)) (tmodel.lda <- LDA(td, control = list(alpha = 0.1), k = 5))
-dfm2tmformat <- function(d, weighting=weightTf, ...){
+dfm2tmformat <- function(d, weighting=weightTf){
     sl <- slam::as.simple_triplet_matrix(d)
     td <- tm::as.TermDocumentMatrix(sl, weighting=weighting)
     return(td)

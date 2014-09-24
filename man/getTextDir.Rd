@@ -7,13 +7,18 @@ getTextDir(dirname, enc = "detect", pattern = "\\\\.txt$")
 }
 \arguments{
 \item{dirname}{A directory path}
+
+\item{enc}{a value for encoding that is a legal value for \link{Encoding}}
+
+\item{pattern}{a \link[=regex]{regular expression} pattern match for the input
+file names}
 }
 \value{
 character vector of texts read from disk
 }
 \description{
-given a directory name, get a list of all files in that directory
-and load them into a character vector using getTextFiles
+given a directory name, get a list of all files in that directory and load
+them into a character vector using getTextFiles
 }
 \examples{
 \dontrun{

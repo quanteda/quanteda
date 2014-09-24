@@ -60,17 +60,6 @@
 #' dfm(testCorpus, stopwords=TRUE)
 #' 
 dfm <- function(x, ...) {
-    #                 feature=c("word"),
-    #                 stem=FALSE,
-    #                 stopwords=NULL,
-    #                 bigram=FALSE,
-    #                 groups=NULL,
-    #                 verbose=TRUE, 
-    #                 dictionary=NULL,
-    #                 dictionary_regex=FALSE,
-    #                 clean=TRUE,
-    #                 removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
-    #                 addto=NULL) {
     UseMethod("dfm")
 }
 
@@ -86,7 +75,7 @@ dfm.corpus <- function(x,
                        verbose=TRUE, 
                        dictionary=NULL,
                        dictionary_regex=FALSE,
-                       clean=TRUE,
+                       # clean=TRUE,
                        # removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
                        addto=NULL, ...) {
     
@@ -139,7 +128,7 @@ dfm.character <- function(x,
                           verbose=TRUE, 
                           dictionary=NULL,
                           dictionary_regex=FALSE,
-                          clean=TRUE,
+                          # clean=TRUE,
                           #removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
                           addto=NULL, ...) {
     # if (verbose & parent.env(dfm.character) != dfm.corpus) cat("Creating dfm: ...")
@@ -151,7 +140,7 @@ dfm.character <- function(x,
     textnames <- factor(names(x))
     
     # clean options
-    if (clean) {
+    if (length(list(...)) > 0) {
         x <- clean(x, ...)
     }
     
@@ -388,10 +377,6 @@ trimdfm <- function(x, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
     trimmeddfm
 }
 
-#' @export
-tfidf <- function(x, ...) {
-    UseMethod("tfidf")
-}
 
 #' @export
 #' @rdname ndoc
@@ -399,10 +384,16 @@ ndoc.dfm <- function(x, ...) {
     nrow(x)
 }
 
+
 #' compute the tf-idf weights of a dfm
 #'
 #' Returns a matrix of tf-idf weights, as a \link{dfm} object
 #' 
+#' @export
+tfidf <- function(x, normalize = TRUE) {
+    UseMethod("tfidf")
+}
+
 #' @rdname tfidf
 #' @param x document-feature matrix created by \code{\link{dfm}}
 #' @param normalize whether to normalize term frequency by document totals
@@ -415,20 +406,23 @@ ndoc.dfm <- function(x, ...) {
 #' dtm[1:10, 100:110]
 #' tfidf(dtm)[1:10, 100:110]
 #' tfidf(dtm, normalize=FALSE)[1:10, 100:110]
-tfidf.dfm <- function(x, normalize = TRUE, ...) {
+tfidf.dfm <- function(x, normalize = TRUE) {
+    class_xorig <- class(x)
     idf <- log(ndoc(x)) - log(colSums(x > 0) + 1)
     if (normalize) {
         x <- x/rowSums(x)
         x[is.nan(x)] <- 0
     }
-    return(t(t(x) * idf))
+    tmp <- t(t(x) * idf)
+    class(tmp) <- class_xorig
+    tmp
 }
 
 #' normalizes the term frequencies a dfm
 #'
 #' Returns a matrix of term weights, as a \link{dfm} object
 #' 
-#' @param dfm Document-feature matrix created by \code{\link{dfm}}
+#' @param x Document-feature matrix created by \code{\link{dfm}}
 #' @return A dfm matrix object where values are relative term proportions within the document
 #' @export 
 #' @author Ken Benoit
@@ -438,7 +432,10 @@ tfidf.dfm <- function(x, normalize = TRUE, ...) {
 #' dtm[1:10, 100:110]
 #' tf(dtm)[1:10, 100:110]
 tf <- function(x) {
-    return(x/rowSums(x))
+    class_xorig <- class(x)
+    tmp <- x/rowSums(x)
+    class(tmp) <- class_xorig
+    tmp
 }
 
 
@@ -496,6 +493,7 @@ is.dfm <- function(x) {
 #'   \code{both} to sort by both
 #' @param decreasing TRUE (default) if sort will be in descending order, 
 #'   otherwise sort in increasing order
+#' @param ... additional argumnets passed to base method \code{sort.int}
 #' @return A sorted \link{dfm} matrix object
 #' @export
 #' @author Ken Benoit
@@ -525,6 +523,10 @@ sort.dfm <- function(x, decreasing=TRUE, margin = c("features", "docs", "both"),
 #' list the most frequent features
 #' 
 #' List the most frequently occuring features in a \link{dfm}
+#' @param x the object whose features will be returned
+#' @param n how many top features should be returned
+#' @param decreasing If TRUE, return the \code{n} most frequent features, if
+#'   FALSE, return the \code{n} least frequent features
 #' @export
 topfeatures <- function(x, n=10, decreasing=TRUE) {
     UseMethod("topfeatures")

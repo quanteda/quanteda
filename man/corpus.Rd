@@ -83,9 +83,14 @@ text files.  Corpus-level meta-data can be specified at creation, containing
 \examples{
 \dontrun{
 # import texts from a directory of files
-corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"),
-       enc="UTF-8",
-       source="Ken's UK manifesto archive")
+summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"),
+               enc="UTF-8",
+               source="Ken's UK manifesto archive",
+               docvarnames=c("Country", "Level", "Year", "language")), 5))
+summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"),
+               enc="UTF-8",
+               source="Ken's UK manifesto archive",
+               docvarnames=c("Country", "Level", "Year", "language", "Party")), 5))
 
 # choose a directory using a GUI
 corpus(directory())}

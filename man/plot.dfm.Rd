@@ -7,6 +7,10 @@
 }
 \arguments{
 \item{x}{a dfm object}
+
+\item{...}{additional parameters passed to to
+\link[wordcloud]{wordcloud} or to \link{text} (and \link{strheight},
+\link{strwidth})}
 }
 \description{
 The default plot method for a \code{\link{dfm}} object.  Produces a wordcloud
@@ -14,11 +18,6 @@ plot for the features of the dfm, weighted by the total frequencies.  To
 produce word cloud plots for specific documents, the only way currently to do
 this is to produce a dfm only from the documents whose features you want
 plotted.
-}
-\details{
-\code{...} provides additional parameters passed to to
-  \link[wordcloud]{wordcloud} or to \link{text} (and \link{strheight},
-  \link{strwidth})
 }
 \examples{
 # plot the features (without stopwords) from Obama's two inaugural addresses

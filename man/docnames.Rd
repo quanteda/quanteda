@@ -4,7 +4,7 @@
 \alias{docnames.corpus}
 \alias{docnames.dfm}
 \alias{docnames<-}
-\title{extract document names}
+\title{get or set document names}
 \usage{
 docnames(x)
 
@@ -13,6 +13,11 @@ docnames(x)
 docnames(x) <- value
 
 \method{docnames}{dfm}(x)
+}
+\arguments{
+\item{x}{the object with docnames}
+
+\item{value}{a character vector of the same length as \code{x}}
 }
 \value{
 \code{docnames} returns a character vector of the document names
@@ -28,7 +33,7 @@ of the \link{dfm} object.
 \code{docnames} queries the document names of a corpus or a dfm
 
 \code{docnames <-} assigns new values to the document names of a corpus.  (Does not work
-for dfm objects, whose document names are fixed,)
+for dfm objects, whose document names are fixed.)
 }
 \examples{
 # query the document names of the inaugural speech corpus

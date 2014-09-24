@@ -58,9 +58,14 @@ corpus <- function(x, ...) {
 #' @examples 
 #' \dontrun{
 #' # import texts from a directory of files
-#' corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), 
-#'        enc="UTF-8", 
-#'        source="Ken's UK manifesto archive")
+#' summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), 
+#'                enc="UTF-8", 
+#'                source="Ken's UK manifesto archive",
+#'                docvarnames=c("Country", "Level", "Year", "language")), 5))
+#' summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), 
+#'                enc="UTF-8", 
+#'                source="Ken's UK manifesto archive",
+#'                docvarnames=c("Country", "Level", "Year", "language", "Party")), 5))
 #' 
 #' # choose a directory using a GUI
 #' corpus(directory())}
@@ -70,6 +75,7 @@ corpus.directory<- function(x, enc=NULL, docnames=NULL, docvarsfrom=c("filenames
     if (class(x)[1] != "directory") stop("first argument must be a directory")
     docvarsfrom <- match.arg(docvarsfrom)
     texts <- getTextDir(x)
+    fnames <- NULL
     if (docvarsfrom == 'filenames') {
         fnames <- list.files(x, full.names=TRUE)
         snames <- getRootFileNames(fnames)
@@ -79,22 +85,30 @@ corpus.directory<- function(x, enc=NULL, docnames=NULL, docvarsfrom=c("filenames
             stop("Filename elements are not equal in length.")
         dvars <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE), 
                             stringsAsFactors=FALSE)
-        if (is.null(docvarnames)) {
-            names(dvars) <- paste("docvar", 1:ncol(dvars), sep="")  
-        } else {
-            if (ncol(dvars) != length(docvarnames)) {
-                stop("The length of the parts of the filename does not equal the length of the variable name list.")
+        # assign default names in any case
+        names(dvars) <- paste("docvar", 1:ncol(dvars), sep="")  
+        if (!is.null(docvarnames)) {
+            names(dvars)[1:length(docvarnames)] <- docvarnames
+            if (length(docvarnames) != ncol(dvars)) {
+                warning("Fewer docnames supplied than exist docvars - last ",
+                        ncol(dvars) - length(docvarnames), " docvars were given generic names.")
             }
-            names(dvars) <- docvarnames
-        } 
+        }
         # remove the filename extension from the document names
         names(texts) <- gsub(".txt", "", names(texts))
     } else {
         stop("headers argument not yet implemented.")
     }
 
-    NextMethod(x=texts, enc=enc, docnames=docnames, docvars=dvars,
-               source=source, notes=notes, citation=citation, fnames=fnames)
+    tmpCorp <- NextMethod(x=texts, enc=enc, docnames=docnames, docvars=dvars,
+                          source=source, notes=notes, citation=citation)
+    
+    # set document source as filename
+    if (!is.null(fnames)) {
+        metadoc(tmpCorp, "source") <- fnames
+    }
+    
+    tmpCorp
 }
 
 
@@ -146,10 +160,6 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
                             check.rows=TRUE, stringsAsFactors=FALSE)
     # set the encoding label
     documents$"_encoding" <- enc
-    # set document source if exists (from the call)
-    if (exists("fnames")) {
-        documents$"_source" <- fnames
-    }
     
     # user-supplied document-level variables (one kind of meta-data)
     if (!is.null(docvars)) {
@@ -188,6 +198,7 @@ directory <- function(path=NULL) {
     if (is.null(path)) {
         if (require(tcltk2))
             texts <- tk_choose.dir()
+            if (is.na(texts)) stop("Directory selection cancelled by user.")
         else
             stop("you need tcltk2 installed to use GUI directory selection.")
     }
@@ -251,6 +262,7 @@ metacorpus <- function(corp, field=NULL) {
 }
 
 # replacement function for corpus-level data
+#' @param value new value of the corpus metadata field
 #' @export
 #' @rdname metacorpus
 "metacorpus<-" <- function(corp, field, value) {
@@ -300,7 +312,7 @@ texts <- function(corp) {
 
 # replacement function for texts
 # warning about no data
-#' @param rownames If TRUE, overwrite the names of the documents with names from assigned object.
+#' @param value character vector of the new texts
 #' @rdname texts
 #' @export
 "texts<-" <- function(corp, value) { #}, rownames=FALSE) {
@@ -315,6 +327,7 @@ texts <- function(corp) {
 #' language and corpus.
 #' 
 #' @param corp A quanteda corpus object
+#' @param field string containing the name of the metadata field(s) to be queried or set
 #' @return For \code{texts}, a character vector of the texts in the corpus.
 #'   
 #'   For \code{texts <-}, the corpus with the updated texts.
@@ -345,7 +358,8 @@ metadoc <- function(corp, field=NULL) {
     }
 }
 
-# replacement function for document-level metadata
+#' @param value the new value of the new meta-data field
+#' @rdname metadoc
 #' @export
 "metadoc<-" <- function(corp, field, value) {
     # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
@@ -398,6 +412,7 @@ docvars <- function(x) {
 
 #' @rdname docvars
 #' @param field string containing the document-level variable name
+#' @param value the new values of the document-level variable
 #' @return \code{docvars<-} assigns \code{value} to the named \code{field}
 #' @examples 
 #' docvars(inaugCorpus, "President") <- paste("prez", 1:ndoc(inaugCorpus), sep="")
@@ -433,18 +448,20 @@ tokens.corpus <- function(corp) {
 #  return(unique(unlist(tokens(corp))))
 #}
 
-#' extract document names
+#' get or set document names
 #' 
 #' Extract the document names from a corpus or a document-feature matrix.  Document names are the
 #' rownames of the documents data.frame in a corpus, or the rownames of the \link{dfm}
 #' object for a dfm.
 #' of the \link{dfm} object.
+#' @param x the object with docnames
 #' @export
 docnames <- function(x) {
     UseMethod("docnames")
 }
 
 #' \code{docnames} queries the document names of a corpus or a dfm
+#' 
 #' @return \code{docnames} returns a character vector of the document names
 #' @export
 #' @rdname docnames
@@ -455,7 +472,8 @@ docnames.corpus <- function(x) {
 }
 
 #' \code{docnames <-} assigns new values to the document names of a corpus.  (Does not work
-#' for dfm objects, whose document names are fixed,)
+#' for dfm objects, whose document names are fixed.)
+#' @param value a character vector of the same length as \code{x}
 #' @return \code{docnames<-} assigns a character vector of the document names in a corpus
 #' @export
 #' @examples 
@@ -495,9 +513,10 @@ ndoc.corpus <- function(x) {
 
 #' get or set the language of corpus documents
 #' 
-#' Get or set the \code{_language} document-level metadata field in a corpus. 
-#' Same as 
-#' 
+#' Get or set the \code{_language} document-level metadata field in a corpus.
+#' @param corp a corpus object
+#' @details This function modifies the \code{_language} value set by
+#'   \code{\link{metadoc}}.  It is a wrapper for \code{metadoc(corp, "language")}.
 #' @export
 language <- function(corp) {
     if ("_language" %in% names(metadoc(corp)))
@@ -506,7 +525,9 @@ language <- function(corp) {
         rep(NULL, ndoc(corp))
 }
 
-# replacement function for language
+#' @rdname language
+#' @param value the new value for the language meta-data field, a string or
+#'   character vector equal in length to \code{ndoc(corp)}
 #' @export
 "language<-" <- function(corp, value){
     metadoc(corp, "language") <- value
@@ -516,21 +537,31 @@ language <- function(corp) {
 
 #' get the encoding of documents in a corpus
 #' 
-#' Accessor for encoding.  This access the \code{_encoding} field of
-#' \code{\link{metadoc}}.
+#' Get or set the \code{_encoding} document-level metadata field in a corpus.
+#' @param x a corpus object
+#' @details This function modifies the \code{_encoding} value set by 
+#'   \code{\link{metadoc}}.  It is a wrapper for \code{metadoc(corp, "encoding")}.
+#'   
+#' @note This function differs from R's built-in \link{Encoding} function, which
+#'   only allows the four values of "latin1", "UTF-8", "bytes", and "unknown"
+#'   (and which assigns "unknown" to any text that contains only ASCII characters).
+#'   Legal values for encodings must be from \link{iconvlist}.  Note that encoding
+#'   does not convert or set encodings, it simply records a user declaration of a 
+#'   valid encoding.  (We hope to implement checking and conversion later.)
 #' @export
-encoding <- function(corp) {
-    if ("_encoding" %in% names(metadoc(corp)))
-        metadoc(corp, "encoding") 
+encoding <- function(x) {
+    if ("_encoding" %in% names(metadoc(x)))
+        metadoc(x, "encoding") 
     else
-        rep(NULL, ndoc(corp))
+        rep(NULL, ndoc(x))
 }
 
-# replacement function for encoding
+#' @param value a character vector or scalar representing the new value of the encoding (see Note)
+#' @rdname encoding
 #' @export
-"encoding<-" <- function(corp, value){
-    metadoc(corp, "encoding") <- value
-    corp
+"encoding<-" <- function(x, value){
+    metadoc(x, "encoding") <- value
+    x
 }
 
 
@@ -604,16 +635,12 @@ corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=F
 #' @param x corpus object to be subsetted.
 #' @param subset logical expression indicating elements or rows to keep: missing values are taken as false.
 #' @param select expression, indicating the attributes to select from the corpus
+#' @param ...  additional arguments affecting the summary produced
 #' @return corpus object
 #' @export
 #' @examples
-#' \dontrun{
-#' data(inaugCorpus)
 #' summary(subset(inaugCorpus, Year>1980))
-# summary(iebudgets2010)
-# iebudgetsCarter <- subset(iebudgets, speaker="Carter", select=c(speaker, year))
-# summary(iebudgetsLenihan)
-#' }
+#' summary(subset(inaugCorpus, Year>1930 & President=="Roosevelt", select=Year))
 subset.corpus <- function(x, subset=NULL, select=NULL, ...) {
     tempcorp <- corpus.subset.inner(x, substitute(subset), substitute(select))
     return(tempcorp)
@@ -628,6 +655,7 @@ subset.corpus <- function(x, subset=NULL, select=NULL, ...) {
 #' @param n maximum number of texts to describe, default=100
 #' @param verbose FALSE to turn off printed output
 #' @param showmeta TRUE to include document-level meta-data
+#' @param ...  additional arguments affecting the summary produced
 #' @export
 #' @examples
 #' summary(inaugCorpus)

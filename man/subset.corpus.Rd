@@ -11,6 +11,8 @@
 \item{subset}{logical expression indicating elements or rows to keep: missing values are taken as false.}
 
 \item{select}{expression, indicating the attributes to select from the corpus}
+
+\item{...}{additional arguments affecting the summary produced}
 }
 \value{
 corpus object
@@ -19,9 +21,7 @@ corpus object
 Works just like the normal subset command but for corpus objects
 }
 \examples{
-\dontrun{
-data(inaugCorpus)
 summary(subset(inaugCorpus, Year>1980))
-}
+summary(subset(inaugCorpus, Year>1930 & President=="Roosevelt", select=Year))
 }
 

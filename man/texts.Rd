@@ -11,7 +11,7 @@ texts(corp) <- value
 \arguments{
 \item{corp}{A quanteda corpus object}
 
-\item{rownames}{If TRUE, overwrite the names of the documents with names from assigned object.}
+\item{value}{character vector of the new texts}
 }
 \value{
 For \code{texts}, a character vector of the texts in the corpus.

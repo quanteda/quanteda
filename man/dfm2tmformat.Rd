@@ -3,7 +3,7 @@
 \alias{dfm2tmformat}
 \title{Convert a \link{dfm} into a \pkg{tm} \link[tm]{DocumentTermMatrix}}
 \usage{
-dfm2tmformat(d, weighting = weightTf, ...)
+dfm2tmformat(d, weighting = weightTf)
 }
 \arguments{
 \item{d}{A \link[quanteda]{dfm} object}

@@ -8,26 +8,29 @@
 \usage{
 settings(x, ...)
 
-\method{settings}{corpus}(x, fields = NULL, ...)
+\method{settings}{corpus}(x, field = NULL, ...)
 
-settings(corp, fields) <- value
+settings(x, field) <- value
 
 \method{settings}{dfm}(x, ...)
 }
 \arguments{
-\item{x}{dfm from which settings are queried}
+\item{x}{object from/to which settings are queried or applied}
 
-\item{fields}{a valid corpus setting field name}
+\item{...}{additional arguments}
 
-\item{corp}{Corpus from/to which settings are queried or applied}
+\item{field}{string containing the name of the setting to be set or queried
+\code{settings(x)}  query the corps settings
+
+\code{settings(x, field) <-}  update the corpus settings for \code{field}}
+
+\item{value}{new setting value}
 }
 \description{
 Get or set the corpus settings
 
 Get or set various settings in the corpus for the treatment of texts, such as rules for
 stemming, stopwords, collocations, etc.
-\code{settings(corp)}  query the corps settings
-\code{settings(corp, settingname) <-}  update the corpus settings
 
 Get the settings from a which a \link{dfm} was created
 }

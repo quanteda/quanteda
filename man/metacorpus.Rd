@@ -13,6 +13,8 @@ metacorpus(corp, field) <- value
 
 \item{field}{Metadata field name(s).  If \code{NULL} (default), return all
 metadata names.}
+
+\item{value}{new value of the corpus metadata field}
 }
 \value{
 For \code{metacorpus}, a list of the metadata fields in the corpus.
