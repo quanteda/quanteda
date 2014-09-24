@@ -26,11 +26,14 @@ Description: A package for the management and quantitative analysis of textual
     class prediction.
 Encoding: UTF-8
 License: GPL-3
-Requires: SnowballC
+Requires: R > 2.1
 Imports:
+    SnowballC,
     wordcloud,
-    proxy
+    slam,
+    tm
 Suggests:
+    quantedaData,
     austin,
     entropy,
     jsonlite,
@@ -40,6 +43,7 @@ Suggests:
     twitteR,
     XML,
     lda,
-    topicmodels
+    topicmodels,
+    tcltk2
 URL: http://github.com/kbenoit/quanteda
 LazyData: TRUE

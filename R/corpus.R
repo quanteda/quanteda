@@ -27,7 +27,7 @@
 #'   consisting of \code{\link{texts}}, user-named \code{\link{docvars}} variables describing 
 #'   attributes of the documents, and \code{metadoc} document-level metadata 
 #'   whose names begin with an underscore character, such as 
-#'   \code{\link{_language}}.}
+#'   \code{_language}.}
 #'   
 #'   \item{$metadata}{A named list set of corpus-level meta-data, including 
 #'   \code{source} and \code{created} (both generated automatically unless 
@@ -48,10 +48,10 @@ corpus <- function(x, ...) {
 
 
 #' @param docvarsfrom  Argument to specify where docvars are to be taken, from 
-#' parsing the filenames (\link{filenames}) separated
+#' parsing the filenames separated
 #' by \code{sep} or from meta-data embedded in the text file header (\code{headers}).
 #' @param docvarnames Character vector of variable names for \code{docvars}
-#' @param sep Separator if \link{docvar} names are taken from the filenames.
+#' @param sep Separator if \code{\link{docvars}} names are taken from the filenames.
 # @warning Only files with the extension \code{.txt} are read in using the directory method.
 #' @rdname corpus
 #' @export
@@ -109,7 +109,7 @@ corpus.directory<- function(x, enc=NULL, docnames=NULL, docvarsfrom=c("filenames
 #' @param citation Information on how to cite the corpus.
 #' @param notes A string containing notes about who created the text, warnings, To Dos, etc.
 #' @param enc A string (or character vector) specifying the encoding for each text in the corpus.  
-#' Must be a valid entry in \code{\link{iconvtypes}()}.
+#' Must be a valid entry in \code{\link{iconvlist}()}.
 #' @rdname corpus
 #' @export
 #' @examples
@@ -186,8 +186,10 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
 directory <- function(path=NULL) {
     # choose it from a GUI if none exists
     if (is.null(path)) {
-        require(tcltk2) 
-        texts <- tk_choose.dir()
+        if (require(tcltk2))
+            texts <- tk_choose.dir()
+        else
+            stop("you need tcltk2 installed to use GUI directory selection.")
     }
     stopifnot(class(path) == "character")
     stopifnot(file.exists(path))
@@ -471,26 +473,23 @@ docnames.corpus <- function(x) {
     return(x)
 }
 
-
 #' get the number of documents
 #' 
 #' Returns the number of documents in a corpus objects
-#' @usage \emph{ }
 #' @param x a corpus or dfm object
 #' @param ... additional parameters
 #' @return an integer (count) of the number of documents in the corpus or dfm
+#' @export
+ndoc <- function(x) {
+    UseMethod("ndoc")
+}
+
+#' @rdname ndoc
 #' @examples 
 #' ndoc(inaugCorpus)
 #' ndoc(dfm(inaugCorpus))
 #' @export
-ndoc <- function(x, ...) {
-    UseMethod("ndoc")
-}
-
-
-#' @rdname ndoc
-#' @export
-ndoc.corpus <- function(x, ...) {
+ndoc.corpus <- function(x) {
     nrow(x$documents)
 }
 
@@ -515,7 +514,10 @@ language <- function(corp) {
     corp
 }
 
-# accessor for encoding
+#' get the encoding of documents in a corpus
+#' 
+#' Accessor for encoding.  This access the \code{_encoding} field of
+#' \code{\link{metadoc}}.
 #' @export
 encoding <- function(corp) {
     if ("_encoding" %in% names(metadoc(corp)))

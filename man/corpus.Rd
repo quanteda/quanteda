@@ -25,18 +25,18 @@ or a character vector of texts.}
 \item{...}{additional arguments}
 
 \item{enc}{A string (or character vector) specifying the encoding for each text in the corpus.
-Must be a valid entry in \code{\link{iconvtypes}()}.}
+Must be a valid entry in \code{\link{iconvlist}()}.}
 
 \item{docnames}{Names to be assigned to the texts, defaults to the names of the
 character vector (if any), otherwise assigns "text1", "text2", etc.}
 
 \item{docvarsfrom}{Argument to specify where docvars are to be taken, from
-parsing the filenames (\link{filenames}) separated
+parsing the filenames separated
 by \code{sep} or from meta-data embedded in the text file header (\code{headers}).}
 
 \item{docvarnames}{Character vector of variable names for \code{docvars}}
 
-\item{sep}{Separator if \link{docvar} names are taken from the filenames.}
+\item{sep}{Separator if \code{\link{docvars}} names are taken from the filenames.}
 
 \item{source}{A string specifying the source of the texts, used for referencing.}
 
@@ -59,7 +59,7 @@ A corpus class object containing the original texts, document-level
   consisting of \code{\link{texts}}, user-named \code{\link{docvars}} variables describing
   attributes of the documents, and \code{metadoc} document-level metadata
   whose names begin with an underscore character, such as
-  \code{\link{_language}}.}
+  \code{_language}.}
 
   \item{$metadata}{A named list set of corpus-level meta-data, including
   \code{source} and \code{created} (both generated automatically unless
