@@ -19,6 +19,8 @@ DEFAULT_DELIM_PARAGRAPH <- "\n\n"
 
 #' Get or set the corpus settings
 #' 
+#' @param  x object from/to which settings are queried or applied
+#' @param  ... additional arguments
 #' @export 
 settings <- function(x, ...) {
     UseMethod("settings")
@@ -27,9 +29,10 @@ settings <- function(x, ...) {
 
 #' Get or set various settings in the corpus for the treatment of texts, such as rules for 
 #' stemming, stopwords, collocations, etc.
-#' \code{settings(corp)}  query the corps settings
-#' \code{settings(corp, settingname) <-}  update the corpus settings
-#' @param corp Corpus from/to which settings are queried or applied
+#' @param field string containing the name of the setting to be set or queried
+#' \code{settings(x)}  query the corps settings 
+#' 
+#' \code{settings(x, field) <-}  update the corpus settings for \code{field}
 #' @rdname settings
 #' @examples
 #' settings(inaugCorpus, "stopwords")
@@ -38,29 +41,28 @@ settings <- function(x, ...) {
 #' settings(inaugCorpus, "stopwords") <- TRUE
 #' tempdfmSW <- dfm(inaugCorpus)
 #' @export 
-settings.corpus <- function(x, fields=NULL, ...) {
-    if (is.null(fields)) {
+settings.corpus <- function(x, field=NULL, ...) {
+    if (is.null(field)) {
         x$settings
     } else {
-        if (!(fields %in% SETTINGS_OPTIONS)) stop(paste(fields, "not valid setting."))
-        x$settings[fields]
+        if (!(field %in% SETTINGS_OPTIONS)) stop(paste(field, "not valid setting."))
+        x$settings[field]
     }
 }
 
 # replacement function for corpus settings
 #' @export
 #' @rdname settings
-#' @param fields a valid corpus setting field name
+#' @param value new setting value
 #' @export
-"settings<-" <- function(corp, fields, value) {
-    if (is.dfm(corp)) stop("Cannot assign settings to a dfm object.")
-    if (!(fields %in% SETTINGS_OPTIONS)) stop(paste(fields, "not valid setting."))
-    corp$settings[fields] <- value
-    corp
+"settings<-" <- function(x, field, value) {
+    if (is.dfm(x)) stop("Cannot assign settings to a dfm object.")
+    if (!(field %in% SETTINGS_OPTIONS)) stop(paste(field, "not valid setting."))
+    x$settings[field] <- value
+    x
 }
 
 #' Get the settings from a which a \link{dfm} was created
-#' @param x dfm from which settings are queried
 #' @rdname settings
 #' @examples
 #' tempdfm <- dfm(inaugCorpus, stem=TRUE)
@@ -71,7 +73,8 @@ settings.dfm <- function(x, ...) {
 }
 
 
-
+#' \code{settingsInitialize} returns a list of legal settings, set to their default values
+#' @rdname setttings
 #' @export
 settingsInitialize <- function() {
     list(stopwords=NULL,
@@ -90,12 +93,19 @@ settingsInitialize <- function() {
 }
 
 
-#' @export
+##
+## DOESN'T MODIFY IN PLACE -- NEEDS REWRITING
+##
+# \code{settingsReset} restores settings for a corpus to the default values
+# @rdname setttings
+# @export
 settingsReset <- function(corp) {
     corp$settings <- settingsInitialize()
 }
 
-#' @export
+# \code{settingsReset} restores settings for a corpus to the default values
+# @rdname setttings
+# @export
 settingsGet <- function(corp, match.call.list) {
     callingenv <- parent.frame()
     if (is.null(match.call.list$dictionary))

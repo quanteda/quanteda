@@ -31,6 +31,7 @@ getRootFileNames <- function(longFilenames) {
 #' 
 #' @param filenames a vector of paths to text files
 #' @param textnames names to assign to the texts
+#' @param enc a value for encoding that is a legal value for \link{Encoding}
 #' @param verbose If TRUE, print out names of files being read. Default is FALSE
 #' @return character vector of texts read from disk
 #' @author Paul Nulty
@@ -57,13 +58,16 @@ getTextFiles <- function(filenames, textnames=NULL, enc="unknown", verbose=FALSE
 }
 
 
-#' loads all text files from a given directory 
-#'
-#' given a directory name, get a list of all files in that directory
-#' and load them into a character vector using getTextFiles
+#' loads all text files from a given directory
+#' 
+#' given a directory name, get a list of all files in that directory and load
+#' them into a character vector using getTextFiles
 #' 
 #' 
 #' @param dirname A directory path
+#' @param enc a value for encoding that is a legal value for \link{Encoding}
+#' @param pattern a \link[=regex]{regular expression} pattern match for the input
+#'   file names
 #' @return character vector of texts read from disk
 #' @author Paul Nulty
 #' @export

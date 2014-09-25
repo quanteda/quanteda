@@ -5,9 +5,9 @@
 \alias{ndoc.dfm}
 \title{get the number of documents}
 \usage{
-\emph{ }
+ndoc(x)
 
-\method{ndoc}{corpus}(x, ...)
+\method{ndoc}{corpus}(x)
 
 \method{ndoc}{dfm}(x, ...)
 }

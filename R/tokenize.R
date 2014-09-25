@@ -7,7 +7,7 @@
 #' @rdname tokenize
 #' @aliases tokenise
 #' @param x The text(s) or corpus to be tokenized
-#' @details \code{...} provides additional arguments passed to \code{\link{clean}}
+#' @param ... additional arguments passed to \code{\link{clean}}
 #' @return A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
 #' @export
 #' @examples 
@@ -74,30 +74,48 @@ tokenize.corpus <- function(x, ...) {
     tokenize(texts(x), ...)
 }
 
+#' @rdname segment
+#' @return \code{segmentSentence} returns a character vector of sentences that
+#'   have been segmented
 #' @export
-segmentSentence <- function(text, delimiter="[.!?:;]") {
+#' @examples
+#' # segment sentences of the UK 2010 immigration sections of manifestos
+#' segmentSentence(uk2010immig[1])[1:5]   # 1st 5 sentences from first (BNP) text
+#' str(segmentSentence(uk2010immig[1]))   # a 143-element char vector
+#' str(segmentSentence(uk2010immig[1:2])) # a 155-element char vector (143+ 12)
+#' 
+segmentSentence <- function(x, delimiter="[.!?:;]") {
     # strip out CRs and LFs, tabs
-    text <- gsub("\\n|\\t", "", text)
+    text <- gsub("\\n|\\t", "", x)
     
     #exceptions <- c("Mr.", "Mrs.", "Ms.", "Dr.", "Jr.", "Prof.", "Ph.D.")
     #test <- gsub(paste(exceptions))
     
     # recover punctuation characters
-    tkns <- tokenize(text, removePunct=FALSE, simplify=TRUE)
+    tkns <- tokenize(x, removePunct=FALSE, simplify=TRUE)
     punctpos <- grep(paste(delimiter, "$", sep=""), tkns)
     puncts <- substr(tkns[punctpos], nchar(tkns[punctpos]), nchar(tkns[punctpos]))
     
     # split the text into sentences
-    sentences <- unlist(strsplit(text, delimiter))
+    sentences <- unlist(strsplit(x, delimiter))
     # paste punctuation marks back onto sentences
     result <- paste(sentences, puncts, sep="")
     # remove leading and trailing spaces and return
     gsub("^ +| +$", "", result)
 }
 
+#' @rdname segment
+#' @return \code{segmentParagraph} returns a character vector of paragraphs that
+#'   have been segmented
 #' @export
-segmentParagraph <- function(text, delimiter="\\n{2}") {
-    unlist(strsplit(text, delimiter))
+#' @examples
+#' # segment paragraphs 
+#' segmentParagraph(uk2010immig[3])[1:2]   # 1st 2 Paragraphs from 3rd (Con) text
+#' str(segmentParagraph(uk2010immig[3]))   # a 12-element char vector
+#' 
+#' @export
+segmentParagraph <- function(x, delimiter="\\n{2}") {
+    unlist(strsplit(x, delimiter))
 }
 
 
@@ -106,10 +124,7 @@ segmentParagraph <- function(text, delimiter="\\n{2}") {
 #' Segment text(s) into tokens, sentences, paragraphs, or other sections. 
 #' \code{segment} works on a character vector or corpus object, and allows the 
 #' delimiters to be defined.  See details.
-#' @param x defines the component to define the segmentation unit.  Current 
-#'   options are tokens, sentences, paragraphs, and other.  Segmenting on 
-#'   \code{other} allows segmentation of a text on any user-defined value, and 
-#'   must be accompanied by the \code{delimiter} argument.
+#' @param x text or corpus object to be segmented
 #' @param ... provides additional arguments to be passed to \link{clean}
 #' @return A list of segmented texts, with each element of the list correponding
 #'   to one of the original texts.
@@ -130,8 +145,11 @@ segment <- function(x, ...) {
 }
 
 #' @rdname segment
-#' @param what unit of segmentation
-#' @param delimiter  delimiter defined as a \link{regex} for segmentation. Each
+#' @param what unit of segmentation.  Current options are tokens, sentences,
+#'   paragraphs, and other.  Segmenting on \code{other} allows segmentation of a
+#'   text on any user-defined value, and must be accompanied by the
+#'   \code{delimiter} argument.
+#' @param delimiter  delimiter defined as a \link{regex} for segmentation. Each 
 #'   type has its own default, except \code{other}, which requires a value to be
 #'   specified.
 #' @export

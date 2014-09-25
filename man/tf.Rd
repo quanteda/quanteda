@@ -6,7 +6,7 @@
 tf(x)
 }
 \arguments{
-\item{dfm}{Document-feature matrix created by \code{\link{dfm}}}
+\item{x}{Document-feature matrix created by \code{\link{dfm}}}
 }
 \value{
 A dfm matrix object where values are relative term proportions within the document

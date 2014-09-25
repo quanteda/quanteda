@@ -12,6 +12,8 @@ docvars(x, field) <- value
 \item{x}{corpus whose document-level variables will be read or set}
 
 \item{field}{string containing the document-level variable name}
+
+\item{value}{the new values of the document-level variable}
 }
 \value{
 \code{docvars} returns a data.frame of the document-level variables

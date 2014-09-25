@@ -1,3 +1,14 @@
+quanteda 0.5.1
+==============
+
+* Fixed all the remaining issues causing warnings in R CMD CHECK, now all are fixed.  
+  Mostly these related to documentation.
+
+* Fixed corpus.directory to better implementing naming of docvars, if found.
+
+* Moved twitter.R to the R_NEEDFIXING until it can be made to pass tests.  Apparently
+  setup_twitter_oauth() is deprecated in the latest version of the twitteR package.
+
 quanteda 0.5.0
 ==============
 

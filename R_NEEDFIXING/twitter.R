@@ -9,7 +9,6 @@
 #' 
 #' @param query Search string for twitter
 #' @param numResults Number of results desired.
-#' @param key Number of results desired.
 #' @param key 'your consumer key here'
 #' @param cons_secret 'your consumer secret here'
 #' @param token 'your access token here'

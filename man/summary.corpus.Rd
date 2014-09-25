@@ -14,6 +14,8 @@
 \item{verbose}{FALSE to turn off printed output}
 
 \item{showmeta}{TRUE to include document-level meta-data}
+
+\item{...}{additional arguments affecting the summary produced}
 }
 \description{
 Displays information about a corpus object, including attributes and

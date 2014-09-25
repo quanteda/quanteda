@@ -10,12 +10,11 @@ dfm(x, ...)
 
 \method{dfm}{corpus}(x, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, groups = NULL, verbose = TRUE,
-  dictionary = NULL, dictionary_regex = FALSE, clean = TRUE,
-  addto = NULL, ...)
+  dictionary = NULL, dictionary_regex = FALSE, addto = NULL, ...)
 
 \method{dfm}{character}(x, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, verbose = TRUE, dictionary = NULL,
-  dictionary_regex = FALSE, clean = TRUE, addto = NULL, ...)
+  dictionary_regex = FALSE, addto = NULL, ...)
 
 is.dfm(x)
 }

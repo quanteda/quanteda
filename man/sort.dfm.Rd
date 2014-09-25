@@ -15,6 +15,8 @@ otherwise sort in increasing order}
 \item{margin}{which margin to sort on \code{features} to sort by frequency of
 features, \code{docs} to sort by total feature counts in documents, and
 \code{both} to sort by both}
+
+\item{...}{additional argumnets passed to base method \code{sort.int}}
 }
 \value{
 A sorted \link{dfm} matrix object

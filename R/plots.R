@@ -6,7 +6,7 @@
 #' this is to produce a dfm only from the documents whose features you want 
 #' plotted.
 #' @param x a dfm object
-#' @details \code{...} provides additional parameters passed to to
+#' @param ... additional parameters passed to to
 #'   \link[wordcloud]{wordcloud} or to \link{text} (and \link{strheight},
 #'   \link{strwidth})
 #' @seealso \link[wordcloud]{wordcloud}
