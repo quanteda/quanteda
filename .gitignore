@@ -1,4 +1,5 @@
 .Rproj.user
+<<<<<<< HEAD
 .Rhistory
 .RData
 .Rbuildignore
@@ -16,3 +17,6 @@ __MACOSX
 **/*.log
 **/*.synctex.gz
 **/*.tex
+=======
+
+>>>>>>> dev
