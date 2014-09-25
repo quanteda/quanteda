@@ -1,3 +1,12 @@
+quanteda 0.5.2
+==============
+
+* Added a corpus constructor method for the VCorpus class object from the tm package.
+
+* added zipfiles() to unzip a directory of text files from disk or a URL, for easy
+  import into a corpus using corpus.directory(zipfiles())
+
+
 quanteda 0.5.1
 ==============
 
