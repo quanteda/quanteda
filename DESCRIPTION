@@ -50,4 +50,4 @@ Suggests:
     tcltk2
 URL: http://github.com/kbenoit/quanteda
 BugReports: https://github.com/kbenoit/quanteda/issues
-LazyData: TRUE
+LazyData: TRUE 
