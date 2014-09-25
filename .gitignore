@@ -1,6 +1,5 @@
 .R*
 *.Rproj
 .Rd2pdf*
-.gitignore
-.Rproj.user
-
+__MACOSX
+.DS_Store
