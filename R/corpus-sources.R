@@ -55,8 +55,9 @@ directory <- function(path=NULL) {
 #' }
 #' @export
 zipfiles <- function(zfile=NULL, ...) {
-    if (is.null(zfile))
+    if (is.null(zfile)) {
         zfile <- file.choose()
+    }
 
     # get temp directory name
     tmpdir <- tempdir()
@@ -68,6 +69,6 @@ zipfiles <- function(zfile=NULL, ...) {
     }
 
     unzip(zfile, exdir=paste(tmpdir, "/tmp/", sep=""), ...)
-    directory(paste(tmpdir, "/tmp/", sep=""))
+    return(directory(paste(tmpdir, "/tmp/", sep="")))
 }
 

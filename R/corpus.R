@@ -683,7 +683,14 @@ subset.corpus <- function(x, subset=NULL, select=NULL, ...) {
 #' mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
 #' mysummary$Types / mysummary$Tokens             # crude type-token ratio
 summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
-    print(object)
+    
+    cat("Corpus consisting of ", ndoc(object), " document",
+        ifelse(ndoc(object)>1, "s", ""), 
+        ifelse(ndoc(object)<=n, "", 
+               paste(", showing ", n, " document", ifelse(n>1, "s", ""), sep="")),
+        ".\n", sep="")
+
+    #print(object)
     cat("\n")
     ### Turn off describeTexts until we can speed this up
     # dtexts <- describeTexts(texts(object), verbose=FALSE)
