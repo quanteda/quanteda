@@ -10,8 +10,9 @@
 corpus(x, ...)
 
 \method{corpus}{directory}(x, enc = NULL, docnames = NULL,
-  docvarsfrom = c("filenames", "headers"), docvarnames = NULL, sep = "_",
-  source = NULL, notes = NULL, citation = NULL, ...)
+  docvarsfrom = c("none", "filenames", "headers"), docvarnames = NULL,
+  sep = "_", pattern = "\\\\.txt$", source = NULL, notes = NULL,
+  citation = NULL, ...)
 
 \method{corpus}{VCorpus}(x, enc = NULL, notes = NULL, citation = NULL,
   ...)
@@ -41,6 +42,9 @@ by \code{sep} or from meta-data embedded in the text file header (\code{headers}
 \item{docvarnames}{Character vector of variable names for \code{docvars}}
 
 \item{sep}{Separator if \code{\link{docvars}} names are taken from the filenames.}
+
+\item{pattern}{filename extension - set to "*" if all files are desired.  This is a
+\link[=regex]{regular expression}.}
 
 \item{source}{A string specifying the source of the texts, used for referencing.}
 
@@ -104,11 +108,11 @@ When \code{x} is a \link[tm]{VCorpus} object, the fixed metadata
 \dontrun{
 # import texts from a directory of files
 summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"),
-               enc="UTF-8",
+               enc="UTF-8", docvarsfrom="filenames",
                source="Ken's UK manifesto archive",
                docvarnames=c("Country", "Level", "Year", "language")), 5))
 summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"),
-               enc="UTF-8",
+               enc="UTF-8", docvarsfrom="filenames",
                source="Ken's UK manifesto archive",
                docvarnames=c("Country", "Level", "Year", "language", "Party")), 5))
 

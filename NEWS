@@ -1,3 +1,13 @@
+quanteda 0.5....
+==============
+
+* updated corpus.directory to allow specification of the file extension mask
+
+* updated docvars<- to take the docvar names from the assigned data.frame if
+  field is omitted. 
+
+* added field to docvars()
+
 quanteda 0.5.3
 ==============
 
