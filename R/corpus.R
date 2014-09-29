@@ -161,7 +161,8 @@ corpus.VCorpus <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
     # the _ in the variable names
     corpus(texts, docvars=metad,
            source=paste("Converted from tm VCorpus \'", 
-                        deparse(substitute(x)), "\'", sep=""), ...)
+                        deparse(substitute(x)), "\'", sep=""), 
+           enc=enc, ...)
 }
 
 
@@ -175,8 +176,11 @@ corpus.VCorpus <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
 #' @param source A string specifying the source of the texts, used for referencing.
 #' @param citation Information on how to cite the corpus.
 #' @param notes A string containing notes about who created the text, warnings, To Dos, etc.
-#' @param enc A string (or character vector) specifying the encoding for each text in the corpus.  
-#' Must be a valid entry in \code{\link{iconvlist}()}.
+#' @param enc A string specifying the input encoding for texts in the 
+#' corpus.  Must be a valid entry in \code{\link{iconvlist}()}, since the code in 
+#' \code{corpus.character} will convert this to \code{UTF-8} using \code{\link{iconv}}.  
+#' Currently only one input encoding can be specified for a collection of input texts, 
+#' meaning that you should not mix input text encoding types in a single \code{corpus} call.
 #' @rdname corpus
 #' @export
 #' @examples
@@ -212,8 +216,14 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
     # create the documents data frame starting with the texts
     documents <- data.frame(texts=x, row.names=names(x),
                             check.rows=TRUE, stringsAsFactors=FALSE)
-    # set the encoding label
-    documents$"_encoding" <- enc
+
+    # set the encoding label if specified
+    if (!is.null(enc) && enc != "unknown") {
+        documents$texts <- iconv(documents$texts, enc, "UTF-8")
+        #if (verbose)
+            cat("  note: converted texts from", enc, "to UTF-8.")
+        documents$"_encoding" <- enc
+    }
     
     # user-supplied document-level variables (one kind of meta-data)
     if (!is.null(docvars)) {

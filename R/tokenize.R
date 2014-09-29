@@ -250,3 +250,11 @@ preprocess <- function(corp) {
     env[[corpusName]]$tokens <- list(dfm=thisdfm, nwords=nwords, ntypes=ntypes, nsent=nsents, nparagr=nparagr)
 }
 
+
+tokenizeStrsplit <- function(s, sep=" ", ...) {
+    s <- clean(s, ...)
+    # s <- unlist(s)
+    tokens <- strsplit(s, " ")
+    return(tokens)
+}
+

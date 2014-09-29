@@ -29,8 +29,11 @@ or a character vector of texts.}
 
 \item{...}{additional arguments}
 
-\item{enc}{A string (or character vector) specifying the encoding for each text in the corpus.
-Must be a valid entry in \code{\link{iconvlist}()}.}
+\item{enc}{A string specifying the input encoding for texts in the
+corpus.  Must be a valid entry in \code{\link{iconvlist}()}, since the code in
+\code{corpus.character} will convert this to \code{UTF-8} using \code{\link{iconv}}.
+Currently only one input encoding can be specified for a collection of input texts,
+meaning that you should not mix input text encoding types in a single \code{corpus} call.}
 
 \item{docnames}{Names to be assigned to the texts, defaults to the names of the
 character vector (if any), otherwise assigns "text1", "text2", etc.}

@@ -8,6 +8,8 @@ quanteda 0.5....
 
 * added field to docvars()
 
+* enc argument in corpus() methods now actually converts from enc to "UTF-8"
+
 quanteda 0.5.3
 ==============
 

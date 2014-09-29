@@ -52,8 +52,16 @@ getTextFiles <- function(filenames, textnames=NULL, enc="unknown", verbose=FALSE
   ifelse(is.null(textnames), 
          names(textsvec) <- getRootFileNames(filenames),
          names(textsvec) <- textnames)
-  # apply encoding
-  Encoding(textsvec) <- enc
+   # apply encoding
+   Encoding(textsvec) <- enc
+#   
+#   # convert to UTF-8 if enc is specified
+#   if (enc != "unknown") {
+#       textsvec <- iconv(textsvec, enc, "UTF-8")
+#       if (verbose)
+#           cat("note: converted texts from", enc, "to UTF-8.")
+#   }
+  
   return(textsvec)
 }
 
