@@ -59,6 +59,7 @@ statLexdiv <- function(x, ...) {
 #' @param measure A character vector defining the measure to calculate.
 #' @param log.base A numeric value defining the base of the logarithm. 
 # See \code{\link[base:log]{log}} for details.
+#' @param ... additional arguments
 #' @author Kenneth Benoit, adapted from the S4 class implementation written by 
 #'   Meik Michalke in the \pkg{koRpus} package.
 #' @note This implements only the static measures of lexical diversity, not more 

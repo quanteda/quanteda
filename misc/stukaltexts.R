@@ -17,15 +17,16 @@ cat(as.numeric(size2 / size1), "times larger in UTF-8.\n")
 # probably not 2x larger only because of spaces/punctuation which still need just 1 byte
 
 # this is VERY slow (relatively)
-tst <- tokenize(texts(stukalCorp))
+system.time(tst <- tokenize(texts(stukalCorp)))
 # compare to
-tst <- tokenize(inaugTexts)
+system.time(tst <- tokenize(inaugTexts))
 
 summary(stukalCorp, 20)
 # view the first text to see if it looks ok - yes
 texts(stukalCorp)[1]
 
-mydfm <- dfm(stukalCorp, stopwords=stopwordsGet("russian"), stem=)
+system.time(mydfm <- dfm(stukalCorp)) # stopwords=stopwordsGet("russian"), stem=))
+# most of that is from tokenize()
 
 topfeatures(mydfm, 30)
 

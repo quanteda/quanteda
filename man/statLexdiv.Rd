@@ -16,6 +16,8 @@ statLexdiv(x, ...)
 \arguments{
 \item{x}{a \link[=dfm]{document-feature matrix object}}
 
+\item{...}{additional arguments}
+
 \item{measure}{A character vector defining the measure to calculate.}
 
 \item{log.base}{A numeric value defining the base of the logarithm.}
