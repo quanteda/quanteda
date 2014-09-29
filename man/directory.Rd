@@ -6,12 +6,13 @@
 directory(path = NULL)
 }
 \arguments{
-\item{path}{String describing the full path of the directory or NULL to use a GUI
-to choose a directory from disk}
+\item{path}{String describing the full path of the directory or NULL to use
+a GUI to choose a directory from disk}
 }
 \description{
-Function to declare a connection to a directory, although unlike \link{file} it does not require closing.
-If the directory does not exist, the function will return an error.
+Function to declare a connection to a directory, although unlike \link{file}
+it does not require closing. If the directory does not exist, the function
+will return an error.
 }
 \examples{
 \dontrun{

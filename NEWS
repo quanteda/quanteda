@@ -1,3 +1,33 @@
+quanteda 0.5....
+==============
+
+* updated corpus.directory to allow specification of the file extension mask
+
+* updated docvars<- to take the docvar names from the assigned data.frame if
+  field is omitted. 
+
+* added field to docvars()
+
+quanteda 0.5.3
+==============
+
+* added statLexdiv() to compute the lexical diversity of texts from a dfm.
+
+* minor bug fixes; update to print.corpus() output messages.
+
+* added a wrapper function for SnowballC::wordStem, called wordstem(), so that
+  this can be imported without loading the whole package.
+
+
+quanteda 0.5.2
+==============
+
+* Added a corpus constructor method for the VCorpus class object from the tm package.
+
+* added zipfiles() to unzip a directory of text files from disk or a URL, for easy
+  import into a corpus using corpus.directory(zipfiles())
+
+
 quanteda 0.5.1
 ==============
 

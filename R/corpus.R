@@ -6,11 +6,21 @@
 
 #' Constructor for corpus objects
 #' 
-#' Creates a corpus from a document source, such as character vector (of texts),
-#' or an object pointing to a source of texts such as a directory containing 
-#' text files.  Corpus-level meta-data can be specified at creation, containing 
-#' (for example) citation information and notes.
-#' 
+#' Creates a corpus from a document source.  The current available document
+#' sources are:
+#' \itemize{
+#' \item a character vector (as in R class \code{char}) of texts;
+#' \item a directory of text files, using \link{directory};
+#' \item a directory constructed from a zip file consisting of text files, using 
+#' \link{zipfiles}; and
+#' \item a \pkg{tm} \link[tm]{VCorpus} class corpus object, meaning that anything
+#' you can use to create a \pkg{tm} corpus, including all of the tm plugins plus the 
+#' built-in functions of tm for importing pdf, Word, and XML documents, can be used 
+#' to create a quanteda \link{corpus}.
+#' }
+#' Corpus-level meta-data can be specified at creation, containing 
+#' (for example) citation information and notes, as can document-level variables
+#' and document-level meta-data.
 #' @param x A source of texts to form the documents in the corpus. This can be a
 #'   filepath to a directory containing text documents (see \link{directory}), 
 #'   or a character vector of texts.
@@ -53,28 +63,39 @@ corpus <- function(x, ...) {
 #' @param docvarnames Character vector of variable names for \code{docvars}
 #' @param sep Separator if \code{\link{docvars}} names are taken from the filenames.
 # @warning Only files with the extension \code{.txt} are read in using the directory method.
+#' @param pattern filename extension - set to "*" if all files are desired.  This is a 
+#' \link[=regex]{regular expression}.
 #' @rdname corpus
 #' @export
 #' @examples 
 #' \dontrun{
 #' # import texts from a directory of files
 #' summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), 
-#'                enc="UTF-8", 
+#'                enc="UTF-8", docvarsfrom="filenames",
 #'                source="Ken's UK manifesto archive",
 #'                docvarnames=c("Country", "Level", "Year", "language")), 5))
 #' summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), 
-#'                enc="UTF-8", 
+#'                enc="UTF-8", docvarsfrom="filenames",
 #'                source="Ken's UK manifesto archive",
 #'                docvarnames=c("Country", "Level", "Year", "language", "Party")), 5))
 #' 
 #' # choose a directory using a GUI
-#' corpus(directory())}
-corpus.directory<- function(x, enc=NULL, docnames=NULL, docvarsfrom=c("filenames", "headers"), 
-                            docvarnames=NULL, sep='_', 
+#' corpus(directory())
+#'
+#' # from a zip file on the web
+#' myzipcorp <- corpus(zipfiles("http://kenbenoit.net/files/EUcoalsubsidies.zip"),
+#'                     notes="From some EP debate about coal mine subsidies")
+#' docvars(myzipcorp, speakername=docnames(myzipcorp))
+#' summary(myzipcorp)
+#' }
+corpus.directory<- function(x, enc=NULL, docnames=NULL, 
+                            docvarsfrom=c("none", "filenames", "headers"), 
+                            docvarnames=NULL, sep='_', pattern="\\.txt$",
                             source=NULL, notes=NULL, citation=NULL, ...) {
     if (class(x)[1] != "directory") stop("first argument must be a directory")
+    dvars <- NULL
     docvarsfrom <- match.arg(docvarsfrom)
-    texts <- getTextDir(x)
+    texts <- getTextDir(x, pattern=pattern)
     fnames <- NULL
     if (docvarsfrom == 'filenames') {
         fnames <- list.files(x, full.names=TRUE)
@@ -96,9 +117,9 @@ corpus.directory<- function(x, enc=NULL, docnames=NULL, docvarsfrom=c("filenames
         }
         # remove the filename extension from the document names
         names(texts) <- gsub(".txt", "", names(texts))
-    } else {
+    } else if (docvarsfrom == "headers") 
         stop("headers argument not yet implemented.")
-    }
+
 
     tmpCorp <- NextMethod(x=texts, enc=enc, docnames=docnames, docvars=dvars,
                           source=source, notes=notes, citation=citation)
@@ -109,6 +130,38 @@ corpus.directory<- function(x, enc=NULL, docnames=NULL, docvarsfrom=c("filenames
     }
     
     tmpCorp
+}
+
+#' @rdname corpus
+#' @note When \code{x} is a \link[tm]{VCorpus} object, the fixed metadata 
+#'   fields from that object are imported as document-level metadata. Currently
+#'   no corpus-level metadata is imported, but we will add that soon.
+#' @examples 
+#' #
+#' ## import a tm VCorpus
+#' if (require(tm)) {
+#'     data(crude)    # load in a tm example VCorpus
+#'     mytmCorpus <- corpus(crude)
+#'     summary(mytmCorpus, showmeta=TRUE)
+#' }
+#' @export
+corpus.VCorpus <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
+    # extract the content (texts)
+    texts <- sapply(x, function(x) x$content)
+    
+    # some mighty twisted shit here required to get a data frame from this metadata list
+    metad <- as.data.frame(t(as.data.frame(sapply(x, function(x) x$meta))))
+    makechar <- function(x) gsub("character\\(0\\)", NA, as.character(x))
+    metad[, c(1, 3:15)] <- apply(metad[, c(1, 3:15)], 2, makechar)
+    metad$datetimestamp <- t(as.data.frame((lapply(metad$datetimestamp, as.POSIXlt))))[,1]
+    # give them the underscore character required
+    names(metad) <- paste("_", names(metad), sep="")
+    
+    # using docvars inappropriately here but they show up as docmeta given 
+    # the _ in the variable names
+    corpus(texts, docvars=metad,
+           source=paste("Converted from tm VCorpus \'", 
+                        deparse(substitute(x)), "\'", sep=""), ...)
 }
 
 
@@ -135,6 +188,7 @@ corpus.directory<- function(x, enc=NULL, docnames=NULL, docvarsfrom=c("filenames
 #' uk2010immigCorpus <- corpus(uk2010immig, 
 #'                             docvars=data.frame(party=names(uk2010immig)), 
 #'                             enc="UTF-8") 
+#'                             
 corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
                              source=NULL, notes=NULL, citation=NULL, ...) {
     # name the texts vector
@@ -176,38 +230,6 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
     return(tempCorpus)
 }
 
-#' Function to declare a connection to a directory (containing files)
-#' 
-#' Function to declare a connection to a directory, although unlike \link{file} it does not require closing.
-#' If the directory does not exist, the function will return an error.
-#' 
-#' @param path  String describing the full path of the directory or NULL to use a GUI
-#' to choose a directory from disk
-#' @export
-#' @examples 
-#' \dontrun{
-#' # name a directory of files
-#' mydir <- directory("~/Dropbox/QUANTESS/corpora/ukManRenamed")
-#' corpus(mydir)
-#' 
-#' # choose a directory using a GUI
-#' corpus(directory())} 
-#' @export
-directory <- function(path=NULL) {
-    # choose it from a GUI if none exists
-    if (is.null(path)) {
-        if (require(tcltk2))
-            texts <- tk_choose.dir()
-            if (is.na(texts)) stop("Directory selection cancelled by user.")
-        else
-            stop("you need tcltk2 installed to use GUI directory selection.")
-    }
-    stopifnot(class(path) == "character")
-    stopifnot(file.exists(path))
-    tempPath <- path
-    class(tempPath) <- list("directory", class(tempPath))
-    return(tempPath)
-}
 
 
 #' @export
@@ -397,29 +419,34 @@ metadoc <- function(corp, field=NULL) {
 #' 
 #' Get or set variables for the documents in a corpus
 #' @param x corpus whose document-level variables will be read or set
+#' @param field string containing the document-level variable name
 #' @return \code{docvars} returns a data.frame of the document-level variables
 #' @examples head(docvars(inaugCorpus))
 #' @export
-docvars <- function(x) {
+docvars <- function(x, field=NULL) {
     docvarsIndex <- intersect(which(substr(names(documents(x)), 1, 1) != "_"),
                               which(names(documents(x)) != "texts"))
-    if (length(docvarsIndex)==0) {
+    if (length(docvarsIndex)==0)
         return(NULL)
-    } else {
+    if (is.null(field))
         return(documents(x)[, docvarsIndex, drop=FALSE])
-    }
+    return(documents(x)[, field, drop=FALSE])
 }
 
 #' @rdname docvars
-#' @param field string containing the document-level variable name
 #' @param value the new values of the document-level variable
 #' @return \code{docvars<-} assigns \code{value} to the named \code{field}
 #' @examples 
 #' docvars(inaugCorpus, "President") <- paste("prez", 1:ndoc(inaugCorpus), sep="")
 #' head(docvars(inaugCorpus))
 #' @export
-"docvars<-" <- function(x, field, value) {
+"docvars<-" <- function(x, field=NULL, value) {
     if ("texts" %in% field) stop("You should use texts() instead to replace the corpus texts.")
+    if (is.null(field)) {
+        field <- names(value)
+        if (is.null(field))
+            field <- paste("docvar", 1:ncol(as.data.frame(value)), sep="")
+    }
     documents(x)[field] <- value
     x
 }
@@ -665,7 +692,14 @@ subset.corpus <- function(x, subset=NULL, select=NULL, ...) {
 #' mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
 #' mysummary$Types / mysummary$Tokens             # crude type-token ratio
 summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
-    print(object)
+    
+    cat("Corpus consisting of ", ndoc(object), " document",
+        ifelse(ndoc(object)>1, "s", ""), 
+        ifelse(ndoc(object)<=n, "", 
+               paste(", showing ", n, " document", ifelse(n>1, "s", ""), sep="")),
+        ".\n", sep="")
+
+    #print(object)
     cat("\n")
     ### Turn off describeTexts until we can speed this up
     # dtexts <- describeTexts(texts(object), verbose=FALSE)

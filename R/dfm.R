@@ -170,7 +170,7 @@ dfm.character <- function(x,
     if (stem==TRUE) {
         # require(SnowballC, quietly=TRUE)
         if (verbose) cat(" stemming ...")
-        tokenizedTexts <- lapply(tokenizedTexts, SnowballC::wordStem)
+        tokenizedTexts <- lapply(tokenizedTexts, wordstem)
     }
     if (bigram > 0) {
         if (verbose) cat(" making bigrams ...")
