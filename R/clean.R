@@ -1,4 +1,50 @@
 
+cleanSingle <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
+                        additional=NULL, twitter=FALSE) {
+
+    s <- gsub("_", "undeeerscoooore", s)
+    
+    if (twitter) {
+        s <- gsub("#", "hhaasshh", s)
+        s <- gsub("@", "aattssiiggnn", s)
+    }
+    if (removePunct) {
+        s <- gsub("[[:punct:]]", "", s)
+    }
+    
+    # remove punctuation, plus any additional characters
+#     remove <- paste("\\]|[$%&'/;`~!\"\\(\\)\\*\\+\\,\\.\\:\\<\\=\\>\\?\\[\\^\\{\\|\\}",
+#                     # only remove if twitter=FALSE
+#                     ifelse(!twitter, "#@]", "]"),  
+#                     # for additional grep elements
+#                     ifelse(!is.null(additional), paste("|", additional, sep=""), ""),
+#                     "|\\-",  # this has to go last
+#                     sep="")
+#     print(remove)
+#     
+    # must remove "punctuation" first
+    if (removeDigits) {
+        s <- gsub("[[:digit:]]", "", s)
+    } 
+    if (lower) {
+        s <- tolower(s)
+    }
+
+    if (twitter) {
+        s <- gsub("hhaasshh", "#", s)
+        s <- gsub("aattssiiggnn", "@", s)
+    }
+    s <- gsub("undeeerscoooore", "_", s)
+    if (!is.null(additional)) {
+        s <- gsub(additional, "", s)
+    }
+
+    # convert 2+ multiple whitespaces into one
+    # s <- gsub("\\s{2,}", " ", s)
+    # remove leading and trailing whitespace and return, plus additional
+    gsub("^ +| +$", "", s)
+}
+
 #' simple cleaning of text before processing
 #' 
 #' \code{clean} removes punctuation and digits from text, using the regex 
@@ -14,11 +60,16 @@
 #' @param removeDigits remove numbers if \code{TRUE}
 #' @param removePunct remove punctuation if \code{TRUE}
 #' @param lower convert text to lower case \code{TRUE}
+#' @param additional additional characters to remove (\link[=regex]{regular expression})
 #' @param ... additional parameters
 #' @return A character vector equal in length to the original texts, after cleaning.
 #' @examples
 #' clean("This is 1 sentence with 1.9 numbers in it, and one comma.", removeDigits=FALSE)
 #' clean("This is 1 sentence with 1.9 numbers in it, and one comma.", lower=FALSE)
+#' clean("The \"economy\" is [worth] £1,000bn or approx. €1.2 trillion.")
+#' clean("The \"economy\" is [worth] £1,000bn or approx. €1.2 trillion.", additional="[£€]")
+#' clean("We are his Beliebers, and him is #ourjustin @@justinbieber we love u", twitter=TRUE)
+#' clean("Collocations can be represented as inheritance_tax using the _ character.")
 #' 
 #' # for a vector of texts
 #' clean(c("This is 1 sentence with 1.9 numbers in it, and one comma.", 
@@ -32,28 +83,13 @@ clean <- function(x, ...) {
 
 #' @rdname clean
 #' @export
-clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, ...) {
-    if(!(removeDigits | removePunct | lower)){
-        warning("all options FALSE, text unchanged")
+clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, 
+                            additional=NULL, twitter=FALSE, ...) {
+    if (!(removeDigits | removePunct | lower) & is.null(additional)) {
+        warning("  clean: text unchanged")
     }
-    cleanSingleNew <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE) {
-        if (removePunct) {
-            s <- gsub("[[:punct:]]", "", s)
-        }
-        # must remove "punctuation" first
-        if (removeDigits) {
-            s <- gsub("[[:digit:]]", "", s)
-        } 
-        if (lower) {
-            s <- tolower(s)
-        }
-        # convert multiple whitespace (up to 100 in a row) into one
-        ## s <- gsub(" {2,}", " ", s)
-        # remove leading and trailing whitespace and return
-        gsub("^ +| +$", "", s)
-    }
-
-    return(sapply(x, cleanSingleNew, removeDigits=removeDigits, removePunct=removePunct, lower=lower,
+    return(sapply(x, cleanSingle, removeDigits=removeDigits, removePunct=removePunct, 
+                  lower=lower, additional=additional, twitter=twitter,
                   USE.NAMES=FALSE))
 }
 
@@ -61,8 +97,10 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, 
 
 #' @rdname clean
 #' @export
-clean.corpus <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, ...) {
-    clean(texts(x), removeDigits=removeDigits, removePunct=removePunct, lower=lower, ...)
+clean.corpus <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, 
+                         additional=NULL, twitter=FALSE, ...) {
+    clean(texts(x), removeDigits=removeDigits, removePunct=removePunct, lower=lower, 
+          additional=additional, ...)
 }
 
 #' stem words
