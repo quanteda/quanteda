@@ -60,6 +60,7 @@ cleanSingle <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
 #' @param removeDigits remove numbers if \code{TRUE}
 #' @param removePunct remove punctuation if \code{TRUE}
 #' @param lower convert text to lower case \code{TRUE}
+#' @param twitter if \code{TRUE}, do not remove \code{@@} or \code{#}
 #' @param additional additional characters to remove (\link[=regex]{regular expression})
 #' @param ... additional parameters
 #' @return A character vector equal in length to the original texts, after cleaning.

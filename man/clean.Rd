@@ -27,6 +27,8 @@ the texts cleaned.}
 \item{lower}{convert text to lower case \code{TRUE}}
 
 \item{additional}{additional characters to remove (\link[=regex]{regular expression})}
+
+\item{twitter}{if \code{TRUE}, do not remove \code{@} or \code{#}}
 }
 \value{
 A character vector equal in length to the original texts, after cleaning.
