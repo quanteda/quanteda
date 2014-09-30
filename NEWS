@@ -3,12 +3,15 @@ quanteda 0.5....
 
 * updated corpus.directory to allow specification of the file extension mask
 
-* updated docvars<- to take the docvar names from the assigned data.frame if
+* updated docvars<- and metadoc<- to take the docvar names from the assigned data.frame if
   field is omitted. 
 
 * added field to docvars()
 
 * enc argument in corpus() methods now actually converts from enc to "UTF-8"
+
+* started working on clean to give it exceptions for @ # _ for twitter text and
+  to allow preservation of underscores used in bigrams/collocations.
 
 quanteda 0.5.3
 ==============

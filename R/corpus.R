@@ -217,19 +217,20 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
     documents <- data.frame(texts=x, row.names=names(x),
                             check.rows=TRUE, stringsAsFactors=FALSE)
 
-    # set the encoding label if specified
-    if (!is.null(enc) && enc != "unknown") {
-        documents$texts <- iconv(documents$texts, enc, "UTF-8")
-        #if (verbose)
-            cat("  note: converted texts from", enc, "to UTF-8.")
-        documents$"_encoding" <- enc
-    }
     
     # user-supplied document-level variables (one kind of meta-data)
     if (!is.null(docvars)) {
         stopifnot(nrow(docvars)==length(x))
         documents <- cbind(documents, docvars)
     } 
+
+    # set the encoding label if specified
+    if (!is.null(enc) && enc != "unknown") {
+        documents$texts <- iconv(documents$texts, enc, "UTF-8")
+        #if (verbose)
+        cat("  note: converted texts from", enc, "to UTF-8.")
+        documents$"_encoding" <- "UTF-8"
+    }
     
     # build and return the corpus object
     tempCorpus <- list(documents=documents, 
@@ -393,15 +394,15 @@ metadoc <- function(corp, field=NULL) {
 #' @param value the new value of the new meta-data field
 #' @rdname metadoc
 #' @export
-"metadoc<-" <- function(corp, field, value) {
+"metadoc<-" <- function(corp, field=NULL, value) {
     # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
     # (this check not yet implemented)
-    if (length(field)>1)
-        stop("cannot assign multiple fields.")
-    fieldname <- ifelse(substr(field, 1, 1)=="_", 
-                        field, 
-                        paste("_", field, sep=""))
-    documents(corp)[fieldname] <- value
+    if (is.null(field)) {
+        field <- paste("_", names(value), sep="")
+        if (is.null(field))
+            field <- paste("_metadoc", 1:ncol(as.data.frame(value)), sep="")
+    }
+    documents(corp)[field] <- value
     corp
 }
 
@@ -713,7 +714,8 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
     cat("\n")
     ### Turn off describeTexts until we can speed this up
     # dtexts <- describeTexts(texts(object), verbose=FALSE)
-    outputdf <- data.frame(describeTexts(texts(object), verbose=FALSE))
+    outputdf <- data.frame(describeTexts(texts(object)[1:min(c(n, ndoc(object)))], 
+                                         verbose=FALSE))
     if (!is.null(docvars(object)))
         outputdf <- cbind(outputdf, docvars(object))
     # if (detail) outputdf <- cbind(outputdf, metadoc(object))

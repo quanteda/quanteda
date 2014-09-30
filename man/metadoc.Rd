@@ -6,7 +6,7 @@
 \usage{
 metadoc(corp, field = NULL)
 
-metadoc(corp, field) <- value
+metadoc(corp, field = NULL) <- value
 }
 \arguments{
 \item{corp}{A quanteda corpus object}
