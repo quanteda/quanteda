@@ -1,0 +1,14 @@
+* using log directory ‘/home/paul/Dropbox/code/quanteda/..Rcheck’
+* using R version 3.1.1 (2014-07-10)
+* using platform: x86_64-pc-linux-gnu (64-bit)
+* using session charset: UTF-8
+* checking for file ‘./DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘quanteda’ version ‘0.4’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... NOTE
+Subdirectory ‘quanteda.Rcheck/quanteda’ seems to contain an installed version of the package.
+* checking if there is a namespace ... OK
+* checking for executable files ...
