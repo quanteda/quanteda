@@ -401,6 +401,8 @@ metadoc <- function(corp, field=NULL) {
         field <- paste("_", names(value), sep="")
         if (is.null(field))
             field <- paste("_metadoc", 1:ncol(as.data.frame(value)), sep="")
+    } else {
+        field <- paste("_", field, sep="")
     }
     documents(corp)[field] <- value
     corp
@@ -717,10 +719,10 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
     outputdf <- data.frame(describeTexts(texts(object)[1:min(c(n, ndoc(object)))], 
                                          verbose=FALSE))
     if (!is.null(docvars(object)))
-        outputdf <- cbind(outputdf, docvars(object))
+        outputdf <- cbind(outputdf, docvars(object)[1:min(c(n, ndoc(object))),, drop=FALSE])
     # if (detail) outputdf <- cbind(outputdf, metadoc(object))
     if (showmeta)
-        outputdf[names(metadoc(object))] <- metadoc(object)
+        outputdf[names(metadoc(object))] <- metadoc(object)[1:min(c(n, ndoc(object))),,drop=FALSE]
     if (verbose) {
         print(head(outputdf, n), row.names=FALSE)
         cat("\nSource:  ", unlist(metacorpus(object, "source")), ".\n", sep="")
