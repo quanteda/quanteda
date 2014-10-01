@@ -1,4 +1,4 @@
-quanteda 0.5....
+quanteda 0.5.4 (pending)
 ==============
 
 * updated corpus.directory to allow specification of the file extension mask
@@ -12,6 +12,8 @@ quanteda 0.5....
 
 * started working on clean to give it exceptions for @ # _ for twitter text and
   to allow preservation of underscores used in bigrams/collocations.
+
+* added a `+` method for corpus objects, to combine a corpus using this operator.
 
 quanteda 0.5.3
 ==============

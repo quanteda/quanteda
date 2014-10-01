@@ -791,3 +791,102 @@ changeunits <- function(corp, to=c("sentences", "paragraphs", "documents"), ...)
 rep.data.frame <- function(x, ...)
     as.data.frame(lapply(x, rep, ...))
 
+#' @rdname corpus
+#' @details The \code{+} operator for a corpus object will combine two corpus 
+#'   objects, resolving any non-matching \code{\link{docvar}} or 
+#'   \code{\link{metadoc}} fields by making them into \code{NA} values for the 
+#'   corpus lacking that field.  Corpus-level meta data is concatenated, except 
+#'   for \code{source} and \code{notes}, which are stamped with information 
+#'   pertaining to the creation of the new joined corpus.
+#'   
+#'   There are some issues that need to be addressed in future revisions of 
+#'   quanteda concerning the use of factors to store document variables and 
+#'   meta-data.  Currently most or all of these are not recorded as factors, 
+#'   because we use \code{stringsAsFactors=FALSE} in the 
+#'   \code{\link{data.frame}} calls that are used to create and store the 
+#'   document-level information, because the texts should always be stored as
+#'   character vectors and never as factors. 
+#' @export
+`+.corpus` <- function(c1, c2) {
+    ## deal with metadata first
+    # note the source and date/time-stamp the creation
+    metacorpus(c1, "source") <- paste("Combination of corpuses", deparse(substitute(c1)),
+                                      "and", deparse(substitute(c2)))
+    metacorpus(c1, "created") <- date()
+    # concatenate the other fields if not identical already
+    for (field in names(metacorpus(c2))) {
+        if (field %in% c("source", "created")) next
+        if (!identical(metacorpus(c1, field), metacorpus(c2, field)))
+            metacorpus(c1, field) <- paste(metacorpus(c1, field), metacorpus(c2, field))
+    }
+
+    # combine the documents info, after warning if not column-conforming
+    if (!setequal(names(c1$documents), names(c2$documents)))
+        warning("different document-level data found, filling missing values with NAs.", noBreaks.=TRUE)
+    c1$documents <- combineByName(c1$documents, c2$documents, stringsAsFactors=FALSE)
+    
+    
+    # settings
+    ### currently just use the c1 settings
+
+    return(c1)
+}
+
+
+### from http://stackoverflow.com/questions/3402371/rbind-different-number-of-columns
+### combines data frames (like rbind) but by matching column names
+# columns without matches in the other data frame are still combined
+# but with NA in the rows corresponding to the data frame without
+# the variable
+# A warning is issued if there is a type mismatch between columns of
+# the same name and an attempt is made to combine the columns
+combineByName <- function(A, B, ...) {
+    a.names <- names(A)
+    b.names <- names(B)
+    all.names <- union(a.names,b.names)
+    #print(paste("Number of columns:",length(all.names)))
+    a.type <- NULL
+    for (i in 1:ncol(A)) {
+        a.type[i] <- typeof(A[,i])
+    }
+    b.type <- NULL
+    for (i in 1:ncol(B)) {
+        b.type[i] <- typeof(B[,i])
+    }
+    a_b.names <- names(A)[!names(A)%in%names(B)]
+    b_a.names <- names(B)[!names(B)%in%names(A)]
+    if (length(a_b.names)>0 | length(b_a.names)>0){
+        #print("Columns in data frame A but not in data frame B:")
+        #print(a_b.names)
+        #print("Columns in data frame B but not in data frame A:")
+        #print(b_a.names)
+    } else if(a.names==b.names & a.type==b.type){
+        C <- rbind(A,B, ...)
+        return(C)
+    }
+    C <- list()
+    for(i in 1:length(all.names)) {
+        l.a <- all.names[i]%in%a.names
+        pos.a <- match(all.names[i],a.names)
+        typ.a <- a.type[pos.a]
+        l.b <- all.names[i]%in%b.names
+        pos.b <- match(all.names[i],b.names)
+        typ.b <- b.type[pos.b]
+        if(l.a & l.b) {
+            if(typ.a==typ.b) {
+                vec <- c(A[,pos.a],B[,pos.b])
+            } else {
+                warning(c("Type mismatch in variable named: ",all.names[i],"\n"))
+                vec <- try(c(A[,pos.a],B[,pos.b]))
+            }
+        } else if (l.a) {
+            vec <- c(A[,pos.a],rep(NA,nrow(B)))
+        } else {
+            vec <- c(rep(NA,nrow(A)),B[,pos.b])
+        }
+        C[[i]] <- vec
+    }
+    names(C) <- all.names
+    C <- as.data.frame(C, ...)
+    return(C)
+}
