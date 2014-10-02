@@ -9,7 +9,7 @@
 #' @param method association measure for detecting collocations
 #' @param n Only bigrams (n=2) implemented so far.
 #' @return A list of collocations, their frequencies, and their test statistics
-#' @export 
+# @export 
 #' @author Kenneth Benoit
 #' @examples
 #' collocations(texts(inaugCorpus)[1], top=50)
@@ -71,7 +71,7 @@ collocations <- function(text=NULL, file=NULL, top=NA, distance=2, n=2,
 #' 
 #' @param x a contingency table or matrix object
 #' @return A list of return values
-#' @export 
+# @export 
 #' @author Kenneth Benoit
 likelihood.test = function(x) {
     epsilon <- .000000001  # to offset zero cell counts
@@ -89,15 +89,16 @@ likelihood.test = function(x) {
 #' @param text a text or vector of texts
 #' @param method association measure for detecting collocations
 #' @param n Only bigrams (n=2) implemented so far.
-#' @return A list of collocations, their frequencies, and the G^2 likelihood ratio Chi^2 
+#' @return A list of collocations, their frequencies, and the G^2 likelihood ratio, and Chi^2 
 #' statistic.
+#' @note We will eventually add options to remove collocations containing stopwords, and 
+#' additional measures of association (mutual information, for instance).
 #' @export 
 #' @author Kenneth Benoit
 #' @examples
 #' collocations(texts(inaugCorpus)[1], top=50)
 #' collocations(texts(inaugCorpus)[1], top=50, method="chi2")
-collocations2 <- function(text=NULL, n=2,
-                          method=c("lr", "chi2", "mi")) {
+collocations <- function(text=NULL, n=2, method=c("lr", "chi2", "mi")) {
     ## returns the bigrams, frequency, and score as a list
     ##
     method <- match.arg(method)
@@ -140,7 +141,7 @@ collocations2 <- function(text=NULL, n=2,
     
     setkey(allTable2, w1, w2)
     
-    N <- allTable2[, sum(w2n, na.rm=TRUE)]
+    N <- sum(allTable2$w1w2n)
     
     # fill in cells of 2x2 tables
     allTable2$w1notw2 <- allTable2$w1n - allTable2$w1w2
@@ -160,13 +161,19 @@ collocations2 <- function(text=NULL, n=2,
                                (w1notw2 * log(w1notw2 / w1notw2Exp + epsilon)) +
                                (notw1w2 * log(notw1w2 / notw1w2Exp + epsilon)) +
                                (notw1notw2 * log(notw1notw2 / notw1notw2Exp + epsilon)))
+    allTable2$chi2 <- (w1w2n - w1w2Exp)^2 / w1w2Exp +
+                      (w1notw2 - w1notw2Exp)^2 / w1notw2Exp +
+                      (notw1w2 - notw1w2Exp)^2 / notw1w2Exp +
+                      (notw1notw2 - notw1notw2Exp)^2 / notw1notw2Exp
+    
     detach(allTable2)    
     
     allTable2 <- allTable2[order(-lrratio)]
     
     return(data.frame(collocation=paste(allTable2$w1, allTable2$w2),
                       count=allTable2$w1w2n,
-                      G2=allTable2$lrratio))
+                      G2=allTable2$lrratio,
+                      X2=allTable2$chi2))
 }
 
 
