@@ -1,4 +1,4 @@
-quanteda 0.5.4 (pending)
+quanteda 0.5.4 
 ==============
 
 * updated corpus.directory to allow specification of the file extension mask
@@ -13,11 +13,13 @@ quanteda 0.5.4 (pending)
 * started working on clean to give it exceptions for @ # _ for twitter text and
   to allow preservation of underscores used in bigrams/collocations.
 
-* added a `+` method for corpus objects, to combine a corpus using this operator.
+* Added: a `+` method for corpus objects, to combine a corpus using this operator.
 
-* changed and fixed collocations(), which was not only fatally slow and inefficient,
+* Changed and fixed: collocations(), which was not only fatally slow and inefficient,
   but also wrong.  Now is much faster and O(n) because it uses data.table and vector 
   operations only.
+
+* Added: resample() for corpus texts.
 
 quanteda 0.5.3
 ==============
