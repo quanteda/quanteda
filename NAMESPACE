@@ -3,6 +3,8 @@
 S3method("+",corpus)
 S3method(clean,character)
 S3method(clean,corpus)
+S3method(collocations,character)
+S3method(collocations,corpus)
 S3method(corpus,VCorpus)
 S3method(corpus,character)
 S3method(corpus,directory)
