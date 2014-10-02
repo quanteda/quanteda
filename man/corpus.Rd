@@ -59,6 +59,10 @@ by \code{sep} or from meta-data embedded in the text file header (\code{headers}
 \item{citation}{Information on how to cite the corpus.}
 
 \item{docvars}{A data frame of attributes that is associated with each text.}
+
+\item{c1}{corpus one to be added}
+
+\item{c2}{corpus two to be added}
 }
 \value{
 A corpus class object containing the original texts, document-level
@@ -107,7 +111,7 @@ and document-level meta-data.
 }
 \details{
 The \code{+} operator for a corpus object will combine two corpus
-  objects, resolving any non-matching \code{\link{docvar}} or
+  objects, resolving any non-matching \code{\link{docvars}} or
   \code{\link{metadoc}} fields by making them into \code{NA} values for the
   corpus lacking that field.  Corpus-level meta data is concatenated, except
   for \code{source} and \code{notes}, which are stamped with information
