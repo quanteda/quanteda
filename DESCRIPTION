@@ -1,7 +1,7 @@
 Package: quanteda
 Type: Package
 Title: Quantitative Analysis of Textual Data
-Version: 0.5.3.005
+Version: 0.5.3.006
 Date: 2014-09-30
 Authors@R: c(
     person("Benoit", "Kenneth", email = "kbenoit@lse.ac.uk", role = "cre"),
@@ -34,7 +34,8 @@ Imports:
     SnowballC,
     wordcloud,
     slam,
-    tm
+    tm,
+    data.table
 Suggests:
     quantedaData,
     austin,

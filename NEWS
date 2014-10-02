@@ -15,6 +15,9 @@ quanteda 0.5.4 (pending)
 
 * added a `+` method for corpus objects, to combine a corpus using this operator.
 
+* working on an experimental collocations2 that is much faster because it uses 
+  data.table and vector operations only
+
 quanteda 0.5.3
 ==============
 
