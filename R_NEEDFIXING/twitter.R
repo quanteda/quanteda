@@ -1,33 +1,15 @@
-#' make a corpus object from results of a twitter REST search
-#'
-#' All of the attributes returned by the twitteR
-#' library call are included as attributes in the
-#' corpus. A oauth key is required, for further
-#' instruction about the oauth processs see:
-#' https://dev.twitter.com/apps/new
-#' and the twitteR documentation
-#' 
-#' @param query Search string for twitter
-#' @param numResults Number of results desired.
-#' @param key 'your consumer key here'
-#' @param cons_secret 'your consumer secret here'
-#' @param token 'your access token here'
-#' @param access_secret 'your access secret here'
-#' 
+#' @rdname corpus
 #' @export
-#' @examples
-#' \dontrun{
-#' twCorp <- twitterTerms('example', 10, key, cons_secret, token, access_secret)
-#' }
-twitterTerms <- function(query, numResults=50, key, cons_secret, token, access_secret) {
-  library('twitteR')
-  setup_twitter_oauth(key, cons_secret, token, access_secret)
-  sea <- (searchTwitter(query, numResults))
-  results <-  twListToDF(sea)
-  atts <-as.data.frame(results[,2:ncol(results)])
-  texts <- results$text
-  twc <- corpus(texts, attribs=atts)
-  return(twc)
+corpus.twitter <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
+    # extract the content (texts)
+    texts <- x$text
+    atts <-as.data.frame(results[,2:ncol(results)])    
+    
+    # using docvars inappropriately here but they show up as docmeta given 
+    # the _ in the variable names
+    corpus(texts, docvars=atts,
+           source=paste("Converted from twitter search results"),
+           enc=enc, ...)
 }
 
 #' work-in-progress interface to Twitter streaming API

@@ -32,6 +32,32 @@ directory <- function(path=NULL) {
     return(tempPath)
 }
 
+
+#' Function to declare a twitter search
+#' 
+#' Function to declare a connection to a twitter search
+#' 
+#' @param query  String describing the search query terms
+#' @export
+#' @value The search results marked as a 'twitter' object for use by
+#'   corpus.twitter()
+#' @export
+getTweets <- function(query, numResults=50, key, cons_secret, token, access_secret) {
+    # choose it from a GUI if none exists
+    library('twitteR')
+    setup_twitter_oauth(key, cons_secret, token, access_secret)
+    sea <- (searchTwitter(query, numResults))
+    results <-  twListToDF(sea)
+    #atts <-as.data.frame(results[,2:ncol(results)])
+    #texts <- results$text
+    tempRes <- results
+    class(tempRes) <- list('twitter', class(results))
+    return(tempRes)
+}
+
+
+
+
 #' unzip a zipped collection of text files and return the directory
 #' 
 #' \code{zipfiles} extracts a set of text files in a zip archives, and returns
