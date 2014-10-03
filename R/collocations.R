@@ -32,7 +32,6 @@ collocations.character <- function(x, method=c("all", "lr", "chi2"), n=2, top=NU
     t <- unlist(tokenize(text), use.names=FALSE)
     
     # create a data.table of all adjacent bigrams
-    require(data.table)
     wordpairs <- data.table(w1 = t[1:(length(t)-1)], 
                             w2 = t[2:length(t)], 
                             count = 1)
@@ -41,7 +40,7 @@ collocations.character <- function(x, method=c("all", "lr", "chi2"), n=2, top=NU
     setkey(wordpairs, w1, w2)
     
     # tabulate (count) w1 w2 pairs
-    wordpairsTable <- wordpairs[, sum(count), by="w1,w2"]
+    wordpairsTable <- wordpairs[, j=sum(count), by="w1,w2"]
     setnames(wordpairsTable, "V1", "w1w2n")
     
     # tabulate all word marginal counts

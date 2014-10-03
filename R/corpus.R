@@ -773,7 +773,7 @@ changeunits <- function(corp, to=c("sentences", "paragraphs", "documents"), ...)
     newcorpus <- corpus(unlist(segmentedTexts))
     # repeat the docvars and existing document metadata
     docvars(newcorpus, names(docvars(corp))) <- as.data.frame(lapply(docvars(corp), rep, lengthSegments))
-    metadoc(newcorpus, names(metadoc(corp))) <- as.data.frame(lapply(metadoc(corp), rep, lengthSegments))
+    docvars(newcorpus, names(metadoc(corp))) <- as.data.frame(lapply(metadoc(corp), rep, lengthSegments))
     # add original document name as metadata
     metadoc(newcorpus, "document") <- rep(names(segmentedTexts), lengthSegments)
     
@@ -792,8 +792,10 @@ rep.data.frame <- function(x, ...)
     as.data.frame(lapply(x, rep, ...))
 
 #' @rdname corpus
+#' @param c1 corpus one to be added
+#' @param c2 corpus two to be added
 #' @details The \code{+} operator for a corpus object will combine two corpus 
-#'   objects, resolving any non-matching \code{\link{docvar}} or 
+#'   objects, resolving any non-matching \code{\link{docvars}} or 
 #'   \code{\link{metadoc}} fields by making them into \code{NA} values for the 
 #'   corpus lacking that field.  Corpus-level meta data is concatenated, except 
 #'   for \code{source} and \code{notes}, which are stamped with information 
