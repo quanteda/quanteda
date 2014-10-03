@@ -132,6 +132,23 @@ corpus.directory<- function(x, enc=NULL, docnames=NULL,
     tmpCorp
 }
 
+
+#' @rdname corpus
+#' @export
+corpus.twitter <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
+    # extract the content (texts)
+    texts <- x$text
+    atts <-as.data.frame(x[,2:ncol(x)])    
+    
+    # using docvars inappropriately here but they show up as docmeta given 
+    # the _ in the variable names
+    corpus(texts, docvars=atts,
+           source=paste("Converted from twitter search results"),
+           enc=enc, ...)
+}
+
+
+
 #' @rdname corpus
 #' @note When \code{x} is a \link[tm]{VCorpus} object, the fixed metadata 
 #'   fields from that object are imported as document-level metadata. Currently

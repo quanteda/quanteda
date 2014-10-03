@@ -5,6 +5,7 @@
 \alias{corpus.VCorpus}
 \alias{corpus.character}
 \alias{corpus.directory}
+\alias{corpus.twitter}
 \alias{is.corpus}
 \title{Constructor for corpus objects}
 \usage{
@@ -14,6 +15,9 @@ corpus(x, ...)
   docvarsfrom = c("none", "filenames", "headers"), docvarnames = NULL,
   sep = "_", pattern = "\\\\.txt$", source = NULL, notes = NULL,
   citation = NULL, ...)
+
+\method{corpus}{twitter}(x, enc = NULL, notes = NULL, citation = NULL,
+  ...)
 
 \method{corpus}{VCorpus}(x, enc = NULL, notes = NULL, citation = NULL,
   ...)

@@ -38,18 +38,24 @@ directory <- function(path=NULL) {
 #' Function to declare a connection to a twitter search
 #' 
 #' @param query  String describing the search query terms
+#' @param numResults  Number of tweets to return. Maximum of approximately 1500
+#' @param key  Key for twitter API authentication
+#' @param cons_secret  for twitter API authentication
+#' @param token  String for twitter API authentication
+#' @param access_secret  for twitter API authentication
 #' @export
-#' @value The search results marked as a 'twitter' object for use by
+#' @return The search results marked as a 'twitter' object for use by 
 #'   corpus.twitter()
 #' @export
 getTweets <- function(query, numResults=50, key, cons_secret, token, access_secret) {
     # choose it from a GUI if none exists
     library('twitteR')
+    print('authorizing... ')
     setup_twitter_oauth(key, cons_secret, token, access_secret)
+    print('running search... ')
     sea <- (searchTwitter(query, numResults))
+    print('returning results.')
     results <-  twListToDF(sea)
-    #atts <-as.data.frame(results[,2:ncol(results)])
-    #texts <- results$text
     tempRes <- results
     class(tempRes) <- list('twitter', class(results))
     return(tempRes)
