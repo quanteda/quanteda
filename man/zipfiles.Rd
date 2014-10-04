@@ -25,7 +25,7 @@ to \link{corpus.directory} for import.
 # from a zip file on the web
 myzipcorp <- corpus(zipfiles("http://kenbenoit.net/files/EUcoalsubsidies.zip"),
                     notes="From some EP debate about coal mine subsidies")
-docvars(myzipcorp, speakername=docnames(myzipcorp))
+docvars(myzipcorp, "speakername") <- docnames(myzipcorp)
 summary(myzipcorp)
 
 # call up interactive user input

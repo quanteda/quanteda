@@ -27,6 +27,10 @@ collocations <- function(x, ...) {
 collocations.character <- function(x, method=c("all", "lr", "chi2"), n=2, top=NULL, ...) {
     method <- match.arg(method)
     if (n != 2) stop("Only bigrams (n=2) implemented so far.")
+
+    # to prevent warning messages during CHECK
+    #w1 <- w2 <- count <- w1w2n <- w1w2Exp <- w1notw2Exp <- notw1w2 <- notw1w2Exp <- NULL
+    #notw1notw2 <- notw1notw2Exp <- NULL
     
     text <- clean(x, ...)
     t <- unlist(tokenize(text), use.names=FALSE)
@@ -78,20 +82,18 @@ collocations.character <- function(x, method=c("all", "lr", "chi2"), n=2, top=NU
     
     # vectorized lr stat
     epsilon <- .000000001  # to offset zero cell counts
-    attach(allTable2)
     if (method=="all" | method=="lr") {
-        allTable2$lrratio <- 2 *  ((w1w2n * log(w1w2n / w1w2Exp + epsilon)) +
-                                       (w1notw2 * log(w1notw2 / w1notw2Exp + epsilon)) +
-                                       (notw1w2 * log(notw1w2 / notw1w2Exp + epsilon)) +
-                                       (notw1notw2 * log(notw1notw2 / notw1notw2Exp + epsilon)))
+        allTable2$lrratio <- 2 *  ((allTable2$w1w2n * log(allTable2$w1w2n / allTable2$w1w2Exp + epsilon)) +
+                                       (allTable2$w1notw2 * log(allTable2$w1notw2 / allTable2$w1notw2Exp + epsilon)) +
+                                       (allTable2$notw1w2 * log(allTable2$notw1w2 / allTable2$notw1w2Exp + epsilon)) +
+                                       (allTable2$notw1notw2 * log(allTable2$notw1notw2 / allTable2$notw1notw2Exp + epsilon)))
     }
     if (method=="all" | method=="chi2") {
-        allTable2$chi2 <- (w1w2n - w1w2Exp)^2 / w1w2Exp +
-        (w1notw2 - w1notw2Exp)^2 / w1notw2Exp +
-        (notw1w2 - notw1w2Exp)^2 / notw1w2Exp +
-        (notw1notw2 - notw1notw2Exp)^2 / notw1notw2Exp
+        allTable2$chi2 <- (allTable2$w1w2n - allTable2$w1w2Exp)^2 / allTable2$w1w2Exp +
+        (allTable2$w1notw2 - allTable2$w1notw2Exp)^2 / allTable2$w1notw2Exp +
+        (allTable2$notw1w2 - allTable2$notw1w2Exp)^2 / allTable2$notw1w2Exp +
+        (allTable2$notw1notw2 - allTable2$notw1notw2Exp)^2 / allTable2$notw1notw2Exp
     }    
-    detach(allTable2)    
     if (method=="chi2") {
         allTable2 <- allTable2[order(-chi2)]
         df <- data.frame(collocation=paste(allTable2$w1, allTable2$w2),

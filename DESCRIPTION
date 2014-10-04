@@ -35,8 +35,7 @@ Imports:
     SnowballC,
     wordcloud,
     slam,
-    tm,
-    data.table
+    tm
 Suggests:
     quantedaData,
     austin,

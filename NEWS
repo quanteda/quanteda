@@ -1,3 +1,11 @@
+quanteda 0.5.5 (pending)
+==============
+
+* added is.resample() for dfm and corpus objects
+
+* added Twitter functions (PAUL TO DOCUMENT)
+
+
 quanteda 0.5.4 
 ==============
 

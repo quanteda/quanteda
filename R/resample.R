@@ -21,6 +21,11 @@
 #' testRS <- resample(x, n=3)
 #' metadoc(testRS)
 #' testRS$documents
+#' 
+#' # tests to see if a corpus contains resampled texts
+#' is.resampled(testCorp)
+#' is.resampled(inaugCorpus)
+#' 
 #' @note Additional resampling units to be added will include fixed length
 #'   samples and random length samples.
 #' @export
@@ -48,4 +53,25 @@ resample.corpus <- function(x, n=100, unit=c("sentences", "paragraphs"), ...) {
     
     return(x)
 } 
+
+#' @rdname resample
+#' @export
+#' @details \code{is.resampled} checks a corpus or dfm object and returns
+#'   \code{TRUE} if these contain resampled texts or the results of resampled texts
+is.resampled <- function(x) {
+    UseMethod("is.resampled")
+}
+
+#' @rdname resample
+#' @export
+is.resampled.corpus <- function(x) {
+    sum(substr(names(x$documents), 1, 9) == "_resample") > 0
+}
+
+#' @rdname resample
+#' @export
+is.resampled.dfm <- function(x) {
+    sum(substr(names(x$documents), 1, 9) == "_resample") > 0
+}
+
 

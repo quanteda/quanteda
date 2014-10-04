@@ -106,7 +106,7 @@ statLexdiv <- function(x, ...) {
 #' t(statLexdiv(mydfmSW, "Maas"))
 statLexdiv.dfm <- function(x, measure=c("TTR", "C", "R", "CTTR", "U", "S", "Maas"), 
                            log.base=10, ...) {
-    apply(x, 1, statLexdiv.numeric, measure, log.base, verbose, ...)
+    apply(x, 1, statLexdiv.numeric, measure, log.base, ...)
 }
 
 
