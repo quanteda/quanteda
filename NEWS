@@ -3,7 +3,9 @@ quanteda 0.5.5 (pending)
 
 * added is.resample() for dfm and corpus objects
 
-* added Twitter functions (PAUL TO DOCUMENT)
+* added Twitter functions: getTweets() performs a REST search through twitteR,
+  corpus.twitter creates a corpus object with test and docvars form each tweet
+  (operational but needs work)
 
 * added various resample functions, including making dfm a multi-dimensional object
   when created from a resampled corpus and dfm(, bootstrap=TRUE).
