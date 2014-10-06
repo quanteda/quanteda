@@ -12,8 +12,8 @@
 #' @param ... additional arguments passed to \code{\link{segment}}
 #' @return a corpus object containing new resampled texts.
 #' @examples 
-#' testCorp <- resample(subset(inaugCorpus, Year>2000), n=10, "sentences")
-#' testCorpPara <- resample(corpus(uk2010immig), n=10, "paragraphs")
+#' testCorp <- resample(subset(inaugCorpus, Year>2000), 10, "sentences")
+#' testCorpPara <- resample(corpus(uk2010immig), 10, "paragraphs")
 #' names(metadoc(testCorp))
 #' x <- corpus(c("Sentence One C1.  Sentence Two C1.  Sentence Three C1.", 
 #'               "Sentence One C2.  Sentence Two C2.  Sentence Three C2. Sentence Four C2.  Sentence Five C2.  Sentence Six C2."),
@@ -71,7 +71,32 @@ is.resampled.corpus <- function(x) {
 #' @rdname resample
 #' @export
 is.resampled.dfm <- function(x) {
-    sum(substr(names(x$documents), 1, 9) == "_resample") > 0
+    length(dim(x)) == 3
+}
+
+
+
+#' get the number of resamples
+#' 
+#' Get the number of resamples from a corpus or dfm object
+#' @param x corpus object containing the texts to be resampled
+#' @return an integer as the number of resampled texts
+#' @export
+nresample <- function(x) {
+    UseMethod("nresample")
+}
+
+#' @rdname nresample
+#' @export
+nresample.corpus <- function(x) {
+    sum(substr(names(x$documents), 1, 9) == "_resample")
+}
+
+#' @rdname nresample
+#' @export
+nresample.dfm <- function(x) {
+    if (!is.resampled(x)) 0 else
+        dim(x)[3] - 1
 }
 
 

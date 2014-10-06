@@ -5,6 +5,9 @@ quanteda 0.5.5 (pending)
 
 * added Twitter functions (PAUL TO DOCUMENT)
 
+* added various resample functions, including making dfm a multi-dimensional object
+  when created from a resampled corpus and dfm(, bootstrap=TRUE).
+
 
 quanteda 0.5.4 
 ==============

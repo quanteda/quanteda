@@ -45,8 +45,8 @@ Additional resampling units to be added will include fixed length
   samples and random length samples.
 }
 \examples{
-testCorp <- resample(subset(inaugCorpus, Year>2000), n=10, "sentences")
-testCorpPara <- resample(corpus(uk2010immig), n=10, "paragraphs")
+testCorp <- resample(subset(inaugCorpus, Year>2000), 10, "sentences")
+testCorpPara <- resample(corpus(uk2010immig), 10, "paragraphs")
 names(metadoc(testCorp))
 x <- corpus(c("Sentence One C1.  Sentence Two C1.  Sentence Three C1.",
               "Sentence One C2.  Sentence Two C2.  Sentence Three C2. Sentence Four C2.  Sentence Five C2.  Sentence Six C2."),

@@ -10,7 +10,8 @@ dfm(x, ...)
 
 \method{dfm}{corpus}(x, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, groups = NULL, verbose = TRUE,
-  dictionary = NULL, dictionary_regex = FALSE, addto = NULL, ...)
+  dictionary = NULL, dictionary_regex = FALSE, bootstrap = FALSE,
+  addto = NULL, ...)
 
 \method{dfm}{character}(x, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, verbose = TRUE, dictionary = NULL,
@@ -45,6 +46,10 @@ regular expressions (see examples)}
 \item{dictionary_regex}{\code{TRUE} means the dictionary is already in
 regular expression format, otherwise it will be converted from "wildcard"
 format}
+
+\item{bootstrap}{if \code{TRUE}, compute multiple \code{dfm}'s from resampled
+texts in the corpus.  Requires a resampled corpus.  See
+\code{\link{resample}}.}
 
 \item{addto}{\code{NULL} by default, but if an existing dfm object is
 specified, then the new dfm will be added to the one named. If both
