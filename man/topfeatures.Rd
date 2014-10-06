@@ -4,9 +4,9 @@
 \alias{topfeatures.dfm}
 \title{list the most frequent features}
 \usage{
-topfeatures(x, n = 10, decreasing = TRUE)
+topfeatures(x, n = 10, decreasing = TRUE, ci = 0.95)
 
-\method{topfeatures}{dfm}(x, n = 10, decreasing = TRUE)
+\method{topfeatures}{dfm}(x, n = 10, decreasing = TRUE, ci = 0.95)
 }
 \arguments{
 \item{x}{the object whose features will be returned}
@@ -15,6 +15,8 @@ topfeatures(x, n = 10, decreasing = TRUE)
 
 \item{decreasing}{If TRUE, return the \code{n} most frequent features, if
 FALSE, return the \code{n} least frequent features}
+
+\item{ci}{confidence interval from 0-1.0 for use if dfm is resampled}
 }
 \value{
 A named numeric vector of feature counts, where the names are the feature labels.

@@ -1,5 +1,11 @@
-quanteda 0.5.5 (pending)
+quanteda 0.5.5
 ==============
+
+* added: similarity() to implement similarity measures for documents or features
+  as vector representations
+
+* begun: implementing dfm resample methods, but this will need more time to work.  
+  (Solution: a three way table where the third dim is the resampled text.)
 
 * added is.resample() for dfm and corpus objects
 

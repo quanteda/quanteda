@@ -106,18 +106,20 @@ dfm.corpus <- function(x,
         nreps <- nresample(x) + 1
     }
         
+    curtexts <- texts(x)
     for (i in 1:nreps) {
+        if (i>1) curtexts <- x$documents[, paste("_resample", i-1, sep="")]
         
         # aggregation by group
         if (!is.null(groups)) {
             if (length(groups)>1) {
                 group.split <- lapply(documents(x)[, groups], as.factor)
             } else group.split <- as.factor(documents(x)[,groups])
-            texts <- split(texts(x), group.split)
+            texts <- split(curtexts, group.split)
             texts <- sapply(texts, paste, collapse = " ")
             if (verbose) cat("complete ...")
         } else {
-            texts <- texts(x)
+            texts <- curtexts
             names(texts) <- docnames(x)
         }
         
@@ -132,12 +134,15 @@ dfm.corpus <- function(x,
             resultdfm <- tempdfm
         
         if (nreps>1) {
-            if (i==1) {
+            if (i == 1) {
                 # initialize the array
                 resultdfm <- array(tempdfm, dim=c(dim(tempdfm), nreps))
-            } else 
+            } else { 
                 # add to the array if not the first rep
+                cat("\n", dim(resultdfm),
+                    "\n", dim(tempdfm))
                 resultdfm[,,i] <- tempdfm
+            }
         }
     }
     
@@ -173,9 +178,11 @@ dfm.character <- function(x,
     # if (verbose & parent.env(dfm.character) != dfm.corpus) cat("Creating dfm: ...")
     if (verbose==TRUE) cat("Creating dfm from character vector ...")
     
+    ##
     if (is.null(names(x))) {
         names(x) <- factor(paste("text", 1:length(x), sep=""))
     }
+    ##
     textnames <- factor(names(x))
     
     # clean options
@@ -183,6 +190,7 @@ dfm.character <- function(x,
         x <- clean(x, ...)
     }
     
+    # returns a list of tokens = in length to ndoc x replicates
     tokenizedTexts <- tokenize(x, clean=FALSE)
     
     if (!is.null(stopwords)) {
@@ -218,6 +226,7 @@ dfm.character <- function(x,
     
     # get original sort order, so that we can restore original order after table 
     # alphabetizes the documents (rows of the dfm)
+    ##
     originalSortOrder <- (1:length(tokenizedTexts))[order(names(tokenizedTexts))]
     
     # print(length)
@@ -564,10 +573,11 @@ sort.dfm <- function(x, decreasing=TRUE, margin = c("features", "docs", "both"),
 #' List the most frequently occuring features in a \link{dfm}
 #' @param x the object whose features will be returned
 #' @param n how many top features should be returned
-#' @param decreasing If TRUE, return the \code{n} most frequent features, if
+#' @param decreasing If TRUE, return the \code{n} most frequent features, if 
 #'   FALSE, return the \code{n} least frequent features
+#' @param ci confidence interval from 0-1.0 for use if dfm is resampled
 #' @export
-topfeatures <- function(x, n=10, decreasing=TRUE) {
+topfeatures <- function(x, n=10, decreasing=TRUE, ci=.95) {
     UseMethod("topfeatures")
 }
 
@@ -579,10 +589,19 @@ topfeatures <- function(x, n=10, decreasing=TRUE) {
 #' topfeatures(dfm(inaugCorpus), decreasing=FALSE)
 #' @export
 #' @rdname topfeatures
-topfeatures.dfm <- function(x, n=10, decreasing=TRUE) {
+topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ci=.95) {
     if (is.null(n)) n <- ncol(x)
-    subdfm <- sort(colSums(x), decreasing)
-    subdfm[1:n]
+    if (is.resampled(x)) {
+        subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
+        subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
+        return(data.frame(#features=colnames(subdfm),
+                          freq=colSums(subdfm[,,1]),
+                          cilo=apply(colSums(subdfm), 1, quantile, (1-ci)/2),
+                          cihi=apply(colSums(subdfm), 1, quantile, 1-(1-ci)/2)))
+    } else {
+        subdfm <- sort(colSums(x), decreasing)
+        return(subdfm[1:n])
+    }
 }
 
 #' print a dfm object
