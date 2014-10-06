@@ -8,6 +8,8 @@ quanteda 0.5.5 (pending)
 * added various resample functions, including making dfm a multi-dimensional object
   when created from a resampled corpus and dfm(, bootstrap=TRUE).
 
+* modified the print.dfm() method.
+
 
 quanteda 0.5.4 
 ==============
