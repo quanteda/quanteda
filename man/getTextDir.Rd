@@ -3,15 +3,15 @@
 \alias{getTextDir}
 \title{loads all text files from a given directory}
 \usage{
-getTextDir(dirname, enc = "detect", pattern = "\\\\.txt$")
+getTextDir(dirname, pattern = "\\\\.txt$", enc = "unknown")
 }
 \arguments{
 \item{dirname}{A directory path}
 
-\item{enc}{a value for encoding that is a legal value for \link{Encoding}}
-
 \item{pattern}{a \link[=regex]{regular expression} pattern match for the input
 file names}
+
+\item{enc}{a value for encoding that is a legal value for \link{Encoding}}
 }
 \value{
 character vector of texts read from disk

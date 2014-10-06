@@ -52,8 +52,16 @@ getTextFiles <- function(filenames, textnames=NULL, enc="unknown", verbose=FALSE
   ifelse(is.null(textnames), 
          names(textsvec) <- getRootFileNames(filenames),
          names(textsvec) <- textnames)
-  # apply encoding
-  Encoding(textsvec) <- enc
+   # apply encoding
+   Encoding(textsvec) <- enc
+#   
+#   # convert to UTF-8 if enc is specified
+#   if (enc != "unknown") {
+#       textsvec <- iconv(textsvec, enc, "UTF-8")
+#       if (verbose)
+#           cat("note: converted texts from", enc, "to UTF-8.")
+#   }
+  
   return(textsvec)
 }
 
@@ -65,9 +73,9 @@ getTextFiles <- function(filenames, textnames=NULL, enc="unknown", verbose=FALSE
 #' 
 #' 
 #' @param dirname A directory path
-#' @param enc a value for encoding that is a legal value for \link{Encoding}
 #' @param pattern a \link[=regex]{regular expression} pattern match for the input
 #'   file names
+#' @param enc a value for encoding that is a legal value for \link{Encoding}
 #' @return character vector of texts read from disk
 #' @author Paul Nulty
 #' @export
@@ -75,7 +83,7 @@ getTextFiles <- function(filenames, textnames=NULL, enc="unknown", verbose=FALSE
 #' \dontrun{
 #' getTextDir('/home/paul/documents/')
 #' }
-getTextDir <- function(dirname, enc="detect", pattern="\\.txt$") {
+getTextDir <- function(dirname, pattern="\\.txt$", enc="unknown") {
   # get all files from a directory
   return(getTextFiles(list.files(dirname, pattern=pattern, full.names=TRUE), enc=enc) )
 }

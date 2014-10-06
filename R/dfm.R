@@ -21,13 +21,16 @@
 #'   regular expression format, otherwise it will be converted from "wildcard" 
 #'   format
 #' @param bigram include bigrams as well as unigram features, if \code{TRUE}
-#' @param ... additional arguments passed to \code{\link{clean}}
 #' @param addto \code{NULL} by default, but if an existing dfm object is 
 #'   specified, then the new dfm will be added to the one named. If both 
 #'   \link{dfm}'s are built from dictionaries, the combined dfm will have its 
 #'   \code{Non_Dictionary} total adjusted.
+#' @param bootstrap if \code{TRUE}, compute multiple \code{dfm}'s from resampled
+#'   texts in the corpus.  Requires a resampled corpus.  See
+#'   \code{\link{resample}}.
+#' @param ... additional arguments passed to \code{\link{clean}}
 #' @return A specially classed matrix object with row names equal to the 
-#'   document names and column names equal to the feature labels.  Additional
+#'   document names and column names equal to the feature labels.  Additional 
 #'   information is attached to this object as \code{\link{attributes}}, such as
 #'   \link{settings}.
 #' @rdname dfm
@@ -75,6 +78,7 @@ dfm.corpus <- function(x,
                        verbose=TRUE, 
                        dictionary=NULL,
                        dictionary_regex=FALSE,
+                       bootstrap=FALSE,
                        # clean=TRUE,
                        # removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
                        addto=NULL, ...) {
@@ -91,29 +95,69 @@ dfm.corpus <- function(x,
     
     # subsets 
     #if (!is.null(subset)) x <- corpus.subset.inner(x, substitute(subset))
-    
-    # aggregation by group
-    if (!is.null(groups)) {
+
+    if (!is.null(groups))
         if (verbose) cat("aggregating by group: ", groups, "... ", sep="")
-        if (length(groups)>1) {
-            group.split <- lapply(documents(x)[, groups], as.factor)
-        } else group.split <- as.factor(documents(x)[,groups])
-        texts <- split(texts(x), group.split)
-        texts <- sapply(texts, paste, collapse = " ")
-        if (verbose) cat("complete ...")
-    } else {
-        texts <- texts(x)
-        names(texts) <- docnames(x)
+        
+    nreps <- 1
+    if (bootstrap) {
+        if (!is.resampled(x)) stop("cannot bootstrap if corpus is not resampled.")
+        if (verbose) cat("using", nresample(x), "resamples ... ")
+        nreps <- nresample(x) + 1
+    }
+        
+    curtexts <- texts(x)
+    for (i in 1:nreps) {
+        if (i>1) curtexts <- x$documents[, paste("_resample", i-1, sep="")]
+        
+        # aggregation by group
+        if (!is.null(groups)) {
+            if (length(groups)>1) {
+                group.split <- lapply(documents(x)[, groups], as.factor)
+            } else group.split <- as.factor(documents(x)[,groups])
+            texts <- split(curtexts, group.split)
+            texts <- sapply(texts, paste, collapse = " ")
+            if (verbose) cat("complete ...")
+        } else {
+            texts <- curtexts
+            names(texts) <- docnames(x)
+        }
+        
+        # changing verbose to 2 (instead of TRUE) means will not print message twice
+        # when the function calls dfm.character
+        tempdfm <- dfm(texts, feature=feature, stem=stem, stopwords=stopwords, bigram=bigram, 
+                       verbose=ifelse(verbose==TRUE, 2, FALSE),
+                       dictionary=dictionary, dictionary_regex=dictionary_regex, 
+                       addto=addto, ...)
+        
+        if (nreps==1) 
+            resultdfm <- tempdfm
+        
+        if (nreps>1) {
+            if (i == 1) {
+                # initialize the array
+                resultdfm <- array(tempdfm, dim=c(dim(tempdfm), nreps))
+            } else { 
+                # add to the array if not the first rep
+                cat("\n", dim(resultdfm),
+                    "\n", dim(tempdfm))
+                resultdfm[,,i] <- tempdfm
+            }
+        }
     }
     
-    # changing verbose to 2 (instead of TRUE) means will not print message twice
-    # when the function calls dfm.character
-    tempdfm <- dfm(texts, feature=feature, stem=stem, stopwords=stopwords, bigram=bigram, 
-                   verbose=ifelse(verbose==TRUE, 2, FALSE),
-                   dictionary=dictionary, dictionary_regex=dictionary_regex, 
-                   addto=addto, ...)
-    attr(tempdfm, "settings") <- settings(x)
-    tempdfm
+    # add settings as an attribute
+    attr(resultdfm, "settings") <- settings(x)
+    # class and label dimnames if an array
+    if (length(dim(resultdfm)) > 2) {
+        dimnames(resultdfm) <- list(docs = rownames(tempdfm), 
+                                    features = colnames(tempdfm),
+                                    resample = 0:(nreps-1))
+        class(resultdfm) <- c("dfm", class(resultdfm))
+    }
+    
+    if (verbose) cat("done.\n")
+    resultdfm
 }
 
 #' @rdname dfm
@@ -134,9 +178,11 @@ dfm.character <- function(x,
     # if (verbose & parent.env(dfm.character) != dfm.corpus) cat("Creating dfm: ...")
     if (verbose==TRUE) cat("Creating dfm from character vector ...")
     
+    ##
     if (is.null(names(x))) {
         names(x) <- factor(paste("text", 1:length(x), sep=""))
     }
+    ##
     textnames <- factor(names(x))
     
     # clean options
@@ -144,6 +190,7 @@ dfm.character <- function(x,
         x <- clean(x, ...)
     }
     
+    # returns a list of tokens = in length to ndoc x replicates
     tokenizedTexts <- tokenize(x, clean=FALSE)
     
     if (!is.null(stopwords)) {
@@ -170,7 +217,7 @@ dfm.character <- function(x,
     if (stem==TRUE) {
         # require(SnowballC, quietly=TRUE)
         if (verbose) cat(" stemming ...")
-        tokenizedTexts <- lapply(tokenizedTexts, SnowballC::wordStem)
+        tokenizedTexts <- lapply(tokenizedTexts, wordstem)
     }
     if (bigram > 0) {
         if (verbose) cat(" making bigrams ...")
@@ -179,6 +226,7 @@ dfm.character <- function(x,
     
     # get original sort order, so that we can restore original order after table 
     # alphabetizes the documents (rows of the dfm)
+    ##
     originalSortOrder <- (1:length(tokenizedTexts))[order(names(tokenizedTexts))]
     
     # print(length)
@@ -236,7 +284,7 @@ dfm.character <- function(x,
     
     dfm <- dfm[(1:nrow(dfm))[order(originalSortOrder)], , drop=FALSE]
     
-    if (verbose) cat(" done. \n")
+    if (verbose==TRUE) cat(" done. \n")
     class(dfm) <- c("dfm", class(dfm))
     return(dfm)
 }
@@ -525,10 +573,11 @@ sort.dfm <- function(x, decreasing=TRUE, margin = c("features", "docs", "both"),
 #' List the most frequently occuring features in a \link{dfm}
 #' @param x the object whose features will be returned
 #' @param n how many top features should be returned
-#' @param decreasing If TRUE, return the \code{n} most frequent features, if
+#' @param decreasing If TRUE, return the \code{n} most frequent features, if 
 #'   FALSE, return the \code{n} least frequent features
+#' @param ci confidence interval from 0-1.0 for use if dfm is resampled
 #' @export
-topfeatures <- function(x, n=10, decreasing=TRUE) {
+topfeatures <- function(x, n=10, decreasing=TRUE, ci=.95) {
     UseMethod("topfeatures")
 }
 
@@ -540,15 +589,45 @@ topfeatures <- function(x, n=10, decreasing=TRUE) {
 #' topfeatures(dfm(inaugCorpus), decreasing=FALSE)
 #' @export
 #' @rdname topfeatures
-topfeatures.dfm <- function(x, n=10, decreasing=TRUE) {
+topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ci=.95) {
     if (is.null(n)) n <- ncol(x)
-    subdfm <- sort(colSums(x), decreasing)
-    subdfm[1:n]
+    if (is.resampled(x)) {
+        subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
+        subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
+        return(data.frame(#features=colnames(subdfm),
+                          freq=colSums(subdfm[,,1]),
+                          cilo=apply(colSums(subdfm), 1, quantile, (1-ci)/2),
+                          cihi=apply(colSums(subdfm), 1, quantile, 1-(1-ci)/2)))
+    } else {
+        subdfm <- sort(colSums(x), decreasing)
+        return(subdfm[1:n])
+    }
 }
 
+#' print a dfm object
+#' 
+#' print method for dfm objects
+#' @param x the dfm to be printed
+#' @param show.values print the dfm as a matrix or array (if resampled).
+#' @param show.settings Print the settings used to create the dfm.  See 
+#'   \link{settings}.
+#' @param ... further arguments passed to or from other methods
 #' @export
-print.dfm <- function(x, ...) {
-    class(x) <- "matrix"
-    attr(x, "settings") <- NULL
-    print(x)
+print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, ...) {
+    cat("Document-feature matrix of: ",
+        ndoc(x), " document",
+        ifelse(ndoc(x)>1, "s, ", ", "),
+        dim(x)[2], " feature",
+        ifelse(dim(x)[2]>1, "s", ""),
+        ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
+        ".\n", sep="")
+    if (show.settings) {
+        cat("Settings: TO BE IMPLEMENTED.")
+    }
+    if (show.values) {
+        class(x) <- class(x)[2]
+        attr(x, "settings") <- NULL
+        print(x)
+    }
 }
+

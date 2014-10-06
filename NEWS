@@ -1,3 +1,67 @@
+quanteda 0.5.5
+==============
+
+* added: similarity() to implement similarity measures for documents or features
+  as vector representations
+
+* begun: implementing dfm resample methods, but this will need more time to work.  
+  (Solution: a three way table where the third dim is the resampled text.)
+
+* added is.resample() for dfm and corpus objects
+
+* added Twitter functions: getTweets() performs a REST search through twitteR,
+  corpus.twitter creates a corpus object with test and docvars form each tweet
+  (operational but needs work)
+
+* added various resample functions, including making dfm a multi-dimensional object
+  when created from a resampled corpus and dfm(, bootstrap=TRUE).
+
+* modified the print.dfm() method.
+
+
+quanteda 0.5.4 
+==============
+
+* updated corpus.directory to allow specification of the file extension mask
+
+* updated docvars<- and metadoc<- to take the docvar names from the assigned data.frame if
+  field is omitted. 
+
+* added field to docvars()
+
+* enc argument in corpus() methods now actually converts from enc to "UTF-8"
+
+* started working on clean to give it exceptions for @ # _ for twitter text and
+  to allow preservation of underscores used in bigrams/collocations.
+
+* Added: a `+` method for corpus objects, to combine a corpus using this operator.
+
+* Changed and fixed: collocations(), which was not only fatally slow and inefficient,
+  but also wrong.  Now is much faster and O(n) because it uses data.table and vector 
+  operations only.
+
+* Added: resample() for corpus texts.
+
+quanteda 0.5.3
+==============
+
+* added statLexdiv() to compute the lexical diversity of texts from a dfm.
+
+* minor bug fixes; update to print.corpus() output messages.
+
+* added a wrapper function for SnowballC::wordStem, called wordstem(), so that
+  this can be imported without loading the whole package.
+
+
+quanteda 0.5.2
+==============
+
+* Added a corpus constructor method for the VCorpus class object from the tm package.
+
+* added zipfiles() to unzip a directory of text files from disk or a URL, for easy
+  import into a corpus using corpus.directory(zipfiles())
+
+
 quanteda 0.5.1
 ==============
 
