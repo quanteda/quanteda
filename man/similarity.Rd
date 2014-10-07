@@ -4,7 +4,7 @@
 \title{compute similarities between documents and/or features}
 \usage{
 similarity(x, selection, n = 10, margin = c("features", "documents"),
-  method = "correlation", sort = TRUE, normalize = TRUE)
+  method = "correlation", sort = TRUE, normalize = TRUE, digits = 4)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -27,6 +27,8 @@ documents.}
 \item{normalize}{if \code{TRUE}, normalize the dfm by term frequency within
 document (so that the dfm values will be relative term frequency within
 each document)}
+
+\item{digits}{digits for rounding results}
 }
 \value{
 a named list of the selection labels, with a sorted named vector of
@@ -61,10 +63,15 @@ similarity(presDfm, c("fair", "health", "terror"), method="cosine")
 # compare to tm
 require(tm)
 data("crude")
+crude <- tm_map(crude, content_transformer(tolower))
+crude <- tm_map(crude, removePunctuation)
+crude <- tm_map(crude, removeNumbers)
+crude <- tm_map(crude, stemDocument)
 tdm <- TermDocumentMatrix(crude)
-findAssocs(tdm, c("oil", "opec", "xyz"), c(0.7, 0.75, 0.1))
+findAssocs(tdm, c("oil", "opec", "xyz"), c(0.75, 0.82, 0.1))
+# in quanteda
 crudeDfm <- dfm(corpus(crude))
-similarity(crudeDfm, c("oil", "opec", "xyz"), normalize=FALSE)
+similarity(crudeDfm, c("oil", "opec", "xyz"), normalize=FALSE, digits=2)
 }
 }
 
