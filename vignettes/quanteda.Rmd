@@ -1,58 +1,217 @@
+
+
 ---
-title: "Quanteda"
+title: "quanteda"
 author: "Kenneth Benoit and Paul Nulty"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:
+    rmarkdown::html_vignette:
+        css: test1.css
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{quanteda}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
 ---
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+*This vignette serves as a brief introduction to the core featuers of *quanteda*. For a comprehensive guide to quantitative text analysis in R, see the (work-in-progress) book [here](http://kbenoit.github.io/quanteda)*
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
 
-## Vignette Info
+# Introduction: The Rationale for *quanteda*
 
-Note the various macros within the `vignette` setion of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+*quanteda*[^thanks] is an R package designed to simplify the process of
+quantitative analysis of text from start to finish, making it possible
+to turn texts into a structured corpus, conver this corpus into a
+quantitative matrix of features extracted from the texts, and to
+perform a variety of quanttative analyses on this matrix.
 
-## Styles
+[^thanks]: This research was supported by the European
+    Research Council grant ERC-2011-StG 283794-QUANTESS.  Code
+    contributors to the project include Alex Herzog, William Lowe, and
+    Kohei Watanabe.
 
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+The object is inference about the data contained in the texts, whether this means
+describing characteristics of the texts, inferring quantities of
+interests about the texts of their authors, or determining the tone or
+topics contained in the texts.  The emphasis of *quanteda* is on
+*simplicity*: creating a corpus to manage texts and variables
+attached to these texts in a straightforward way, and providing
+powerful tools to extract features from this corpus that can be
+analyzed using quantitative techniques.
 
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
+The tools for getting texts into a corpus object include: 
 
-## Figures
+* loading texts from directories of individual files
+* loading texts ``manually'' by inserting them into a corpus using
+  helper functions
+*  managing text encodings and conversions from source files into
+  corpus texts
+* attaching variables to each text that can be used for grouping,
+  reorganizing a corpus, or simply recording additional information to
+  supplement quantitative analyses with non-textual data
+* recording meta-data about the sources and creation details for
+  the corpus.
+  
+The tools for working with a corpus include:
 
-The figure sizes have been customised so that you can easily put two images side-by-side. 
+* summarizing the corpus in terms of its language units
+* reshaping the corpus into smaller units or more aggregated units
+* adding to or extracting subsets of a corpus
+* resampling texts of the corpus, for example for use in
+  non-parametric bootstrapping of the texts
+* Easy extraction and saving, as a new data frame or corpus, key
+    words in context (KWIC)
 
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+For extracting features from a corpus, *quanteda* provides the following tools:
+
+* extraction of word types
+* extraction of word n-grams
+* extraction of dictionary entries from user-defined dictionaries
+* feature selection through
+    - stemming
+    - random selection
+    - document frequency
+    - word frequency
+* and a variety of options for cleaning word types, such as
+    capitalization and rules for handling punctuation.
+
+For analyzing the resulting *document-feature* matrix created
+when features are abstracted from a corpus, *quanteda* provides:
+
+* scaling models, such as the Poisson scaling model or Wordscores
+* nonparametric visualization, such as correspondence analysis
+* topic models, such as LDA
+* classifiers, such as Naive Bayes or k-nearest neighbour
+* sentiment analysis, using dictionaries
+
+*quanteda* is hardly unique in providing facilities for working with
+text -- the excellent *tm* package already provides many of the
+features we have described.  *quanteda* is designed to complement those
+packages, as well to simplify the implementation of the
+text-to-analysis workflow.  *quanteda* corpus structures are simpler
+objects than in *tm*s, as are the document-feature matrix
+objects from *quanteda*, compared to the sparse matrix implementation
+found in *tm*.  However, there is no need to choose only one
+package, since we provide translator functions from one matrix or
+corpus object to the other in *quanteda*.
+
+This vignette is designed to introduce you to *quanteda* as well as
+provide a tutorial overview of its features.
+
+Installing quanteda
+====================
+
+The code for the *quanteda* package currently resides on
+<http://github/kbenoit/quanteda>.  From an Internet-connected
+computer, you can install the package directly using the
+*devtools* package:
+
+```{r eval=FALSE}
+library(devtools)
+if (!require(quanteda)) install_github("kbenoit/quanteda")
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+This will download the package from github and install it on your computer.
+For other branches, for instance if you wish to install the
+development branch (containing work in progress) rather than the
+master, you should instead run:
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+```{r eval=FALSE}
+# to install the latest dev branch version quanteda from Github use:
+install_github("kbenoit/quanteda", dependencies=TRUE, quick=TRUE, ref="dev")
 ```
 
-Also a quote using `>`:
+Typically, the `dev` branch of a software package is under active
+development --- so while it contains the latest updates, it is more likely
+to have bugs. The `master` branch might be missing some of the newer
+features, but should be more reliable.
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+Creating a corpus
+==============================
+
+Loading Documents into Quanteda
+-------------------------------
+
+## From a directory of files
+The quanteda package provides several functions for loading texts from
+disk into a quanteda corpus. A very common source of files for creating
+a corpus will be a set of text files found on a local (or remote)
+directory. To load in a set of these files, we will load a corpus from a
+set of text files using information on attributes of the text that have
+been conveniently stored in the text document’s filename (separated by
+underscores). For example, for our corpus of Irish budget speeches, the
+filename `2010_BUDGET_03_Joan_Burton_LAB.txt` tells us the year of the
+speech (2010), the type (“BUDGET”), a serial number (03), the first and
+last name of the speaker, and a party label (“LAB” for Labour).
+
+To load this into a corpus object, we will use the `corpusFromFilenames`
+function, supplying a vector of attribute labels that correspond with
+the elements of the filename.
+
+## From a vector of texts
+
+Another method of creating a corpus from texts is to read texts into
+character vectors, and then create the corpus from these. The
+
+We can also create a labelled corpus using the directory structure in
+which the files are stored. If the folder names in which the files are
+stored indicate values for a variable of interest.
+
+
+Structure of a corpus in `quanteda`
+-----------------------------------
+
+A corpus contains attributes and metadata. Metadata is information
+associated with the entire set of texts, such as the source or date of
+creation. Metadata can also be used to package supplementary material
+with a corpus — for example, if the corpus analysis is part of a model
+that includes other forms of data, they can be included here.
+
+The attributes of a corpus are the texts themselves, and any number of
+other attributes which may have different values for each text.
+
+Extracting Features
+===================
+
+In order to perform statistical analysis such as document scaling, we
+must extract a matrix associating values for certain features with each
+document. In quanteda, we use the dfm function to produce such a matrix.
+[^1].
+
+By far the most common approach is to consider each word type to be a
+feature, and the number of occurrences of the word type in each document
+the values. This is easy to see with a concrete example, so lets use the
+`dfm` command on the full built-in Irish budget speeches corpus. In
+addition to indexing into the matrix with `:`, you can also view the
+matrix by clicking on the docMat variable in the RStudio Environment
+pane, or using the `View()` R command.
+
+[^1]: dfm stands for document-feature matrix — we say ‘feature’ as
+    opposed to ‘term’, since it is possible to use other properties of
+    documents (e.g. ngrams or syntactic dependencies) for further
+    analysis
+    
+Example
+===================
+
+```{r warning=FALSE, message=FALSE}
+library(quanteda)
+# create a corpus from the immigration texts from UK party platforms
+uk2010immigCorpus <- corpus(uk2010immig,
+                            docvars=data.frame(party=names(uk2010immig)),
+                            notes="Immigration-related sections of 2010 UK party manifestos",
+                            enc="UTF-8")
+uk2010immigCorpus
+summary(uk2010immigCorpus, showmeta=TRUE)
+
+# key words in context for "deport", 3 words of context
+kwic(uk2010immigCorpus, "deport", 3)
+
+# create a dfm, removing stopwords
+mydfm <- dfm(uk2010immigCorpus, stopwords=TRUE)
+dim(mydfm)              # basic dimensions of the dfm
+topfeatures(mydfm, 15)  # 15 top words
+plot(mydfm)             # word cloud  
+
+```
+
+
