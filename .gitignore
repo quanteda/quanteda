@@ -5,3 +5,4 @@ __MACOSX
 .DS_Store
 
 .Rproj.user
+inst/doc

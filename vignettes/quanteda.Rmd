@@ -1,5 +1,5 @@
 ---
-title: "Quantitative Text Analysis in R"
+title: "Quanteda"
 author: "Kenneth Benoit and Paul Nulty"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
