@@ -27,7 +27,7 @@ collocations <- function(x, ...) {
 collocations.character <- function(x, method=c("all", "lr", "chi2"), n=2, top=NULL, ...) {
     method <- match.arg(method)
     if (n != 2) stop("Only bigrams (n=2) implemented so far.")
-
+    
     # to prevent warning messages during CHECK
     #w1 <- w2 <- count <- w1w2n <- w1w2Exp <- w1notw2Exp <- notw1w2 <- notw1w2Exp <- NULL
     #notw1notw2 <- notw1notw2Exp <- NULL
@@ -90,9 +90,9 @@ collocations.character <- function(x, method=c("all", "lr", "chi2"), n=2, top=NU
     }
     if (method=="all" | method=="chi2") {
         allTable2$chi2 <- (allTable2$w1w2n - allTable2$w1w2Exp)^2 / allTable2$w1w2Exp +
-        (allTable2$w1notw2 - allTable2$w1notw2Exp)^2 / allTable2$w1notw2Exp +
-        (allTable2$notw1w2 - allTable2$notw1w2Exp)^2 / allTable2$notw1w2Exp +
-        (allTable2$notw1notw2 - allTable2$notw1notw2Exp)^2 / allTable2$notw1notw2Exp
+            (allTable2$w1notw2 - allTable2$w1notw2Exp)^2 / allTable2$w1notw2Exp +
+            (allTable2$notw1w2 - allTable2$notw1w2Exp)^2 / allTable2$notw1w2Exp +
+            (allTable2$notw1notw2 - allTable2$notw1notw2Exp)^2 / allTable2$notw1notw2Exp
     }    
     if (method=="chi2") {
         allTable2 <- allTable2[order(-chi2)]
@@ -115,6 +115,7 @@ collocations.character <- function(x, method=c("all", "lr", "chi2"), n=2, top=NU
 collocations.corpus <- function(x, method=c("all", "lr", "chi2"), n=2, top=NULL, ...) {
     collocations(texts(x), method, n, top, ...)
 }
+
 
 
 
