@@ -67,14 +67,14 @@ cleanSingle <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
 #' @examples
 #' clean("This is 1 sentence with 1.9 numbers in it, and one comma.", removeDigits=FALSE)
 #' clean("This is 1 sentence with 1.9 numbers in it, and one comma.", lower=FALSE)
-#' clean("The \"economy\" is [worth] £1,000bn or approx. €1.2 trillion.")
-#' clean("The \"economy\" is [worth] £1,000bn or approx. €1.2 trillion.", additional="[£€]")
+#' clean("The \"economy\" is [worth] approx. $1.2 trillion.")
+#' clean("The \"economy\" is {worth} approx. $1.2 trillion.", additional="[$]")
 #' clean("We are his Beliebers, and him is #ourjustin @@justinbieber we love u", twitter=TRUE)
 #' clean("Collocations can be represented as inheritance_tax using the _ character.")
 #' 
 #' # for a vector of texts
 #' clean(c("This is 1 sentence with 1.9 numbers in it, and one comma.", 
-#'         "€1.2 billion was spent on text analysis in 2014."))
+#'         "$1.2 billion was spent on text analysis in 2014."))
 #' @export
 clean <- function(x, ...) {
     UseMethod("clean")

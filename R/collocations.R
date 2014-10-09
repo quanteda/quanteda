@@ -1,19 +1,32 @@
 #' Detect collocations from text
-#'
-#' Detects collocations (currently, bigrams) from texts or a corpus, returning a 
-#' data.frame of collocations and their scores, sorted by the likelihood
-#' ratio \eqn{G^2} and Pearson's \eqn{\chi^2}.
+#' 
+#' Detects collocations (currently, bigrams) from texts or a corpus, returning a
+#' data.frame of collocations and their scores, sorted by the likelihood ratio
+#' \eqn{G^2} and Pearson's \eqn{\chi^2}.
 #' @param x a text, a character vector of texts, or a corpus
-#' @param method association measure for detecting collocations.  \code{all} returns 
-#' all available measures, \code{lr} returns the likelihood ratio statistic \eqn{G^2},
-#' and \code{chi2} returns Pearson's \eqn{\chi^2} statistic.
-#' @param n length of the collocation.  Only bigrams (\code{n=2}) implemented so far.
-#' @param top the number of collocations to return, sorted in descending order of the 
-#' requested statistic, or \eqn{G^2} if none is specified.
+#' @param method association measure for detecting collocations.  Available
+#'   measures for bigrams are:
+#'   \describe{ 
+#'   \item{\code{"lr"}}{The likelihood ratio statistic \eqn{G^2}, computed as:
+#'          \deqn{2 * \sum_i \sum_j (n_{ij} * log \frac{n_{ij}}{m_{ij}}}
+#'      }
+#'   \item{\code{"chi2"}}{Pearson's \eqn{\chi^2} statistic, computed as:
+#'          \deqn{\sum_i \sum_j \frac{(n_{ij} - m_{ij})^2}{m_{ij}}}
+#'      }
+#'   \item{\code{"pmi"}}{point-wise mutual information score, computed as log \eqn{n_{11}/m{11}}}
+#'   \item{\code{"dice"}}{the Dice coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
+#'   \item{\code{"all"}}{returns all of the above}
+#'   }
+#' @param n length of the collocation.  Only bigrams (\code{n=2}) implemented so
+#'   far.
+#' @param top the number of collocations to return, sorted in descending order
+#'   of the requested statistic, or \eqn{G^2} if none is specified.
 #' @param ... additional parameters
-#' @return A data.frame of collocations, their frequencies, and the computed
-#' association measure.
-#' @export 
+#' @return A data.frame of collocations, their frequencies, and the computed 
+#'   association measure.
+#' @export
+#' @references Add some.
+#' @seealso bigrams, trigrams 
 #' @author Kenneth Benoit
 #' @examples
 #' collocations(inaugTexts, top=10)
@@ -24,7 +37,7 @@ collocations <- function(x, ...) {
     
 #' @rdname collocations
 #' @export    
-collocations.character <- function(x, method=c("all", "lr", "chi2"), n=2, top=NULL, ...) {
+collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=2, top=NULL, ...) {
     method <- match.arg(method)
     if (n != 2) stop("Only bigrams (n=2) implemented so far.")
     
@@ -93,26 +106,49 @@ collocations.character <- function(x, method=c("all", "lr", "chi2"), n=2, top=NU
             (allTable2$w1notw2 - allTable2$w1notw2Exp)^2 / allTable2$w1notw2Exp +
             (allTable2$notw1w2 - allTable2$notw1w2Exp)^2 / allTable2$notw1w2Exp +
             (allTable2$notw1notw2 - allTable2$notw1notw2Exp)^2 / allTable2$notw1notw2Exp
-    }    
+    }
+    if (method=="all" | method=="pmi") {
+        allTable2$pmi <- log(allTable2$w1w2n / allTable2$w1w2Exp)
+    }
+    if (method=="all" | method=="dice") {
+        allTable2$dice <- 2 * allTable2$w1w2n / (allTable2$w1w2n + allTable2$w1notw2) 
+    }
     if (method=="chi2") {
         allTable2 <- allTable2[order(-chi2)]
         df <- data.frame(collocation=paste(allTable2$w1, allTable2$w2),
                          count=allTable2$w1w2n,
                          X2=allTable2$chi2)
+    } else if (method=="pmi") {
+        allTable2 <- allTable2[order(-pmi)]
+        df <- data.frame(collocation=paste(allTable2$w1, allTable2$w2),
+                         count=allTable2$w1w2n,
+                         pmi=allTable2$pmi) 
+    
+    } else if (method=="dice") {
+        allTable2 <- allTable2[order(-dice)]
+        df <- data.frame(collocation=paste(allTable2$w1, allTable2$w2),
+                         count=allTable2$w1w2n,
+                         dice=allTable2$dice) 
     } else {
         allTable2 <- allTable2[order(-lrratio)]
         df <- data.frame(collocation=paste(allTable2$w1, allTable2$w2),
                          count=allTable2$w1w2n,
                          G2=allTable2$lrratio) 
-        if (method=="all") df$X2 <- allTable2$chi2
     }
-    
+        
+    if (method=="all") {
+        df$G2 <- allTable2$lrratio
+        df$X2 <- allTable2$chi2
+        df$pmi <- allTable2$pmi
+        df$dice <- allTable2$dice
+    }
+        
     df[1:ifelse(is.null(top), N, top), ]
 }
 
 #' @rdname collocations
 #' @export
-collocations.corpus <- function(x, method=c("all", "lr", "chi2"), n=2, top=NULL, ...) {
+collocations.corpus <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=2, top=NULL, ...) {
     collocations(texts(x), method, n, top, ...)
 }
 

@@ -100,20 +100,15 @@ collocations3.character <- function(x, method=c("lr"), n=3, top=NULL, ...) {
         n222 <- N - c1 - n211 - n212 - n221
     })
     
-    # expected counts m_{ijk}
+    # expected counts m_{ijk} for four independence models
     allTable <- within(allTable, {
         m111 <- (c12 + c13 + c23) / c123
         m211 <- c23 - c123
         m121 <- c13 - c123
         m122 <- c1 - c12 - m121
-        
-        m112 <- c12 - c123
-        m212 <- c2 - c12 - m211
-        m221 <- c3 - c13 - m211
-        m222 <- N - c1 - n211 - n212 - n221
     })
     
-    mijk = nipp npjp nppk / nppp
+    
     
     allTable3$w1w2notw3 c1c2
     allTable3$w1notw2w3
@@ -146,4 +141,45 @@ collocations3.character <- function(x, method=c("lr"), n=3, top=NULL, ...) {
     
     df[1:ifelse(is.null(top), N, top), ]
 }
+
+library(quantedaData)
+data(exampleString)
+x <- exampleString
+method<-"lr"; top=NULL; n<-3
+text <- clean(x)
+
+
+with(wordpairs, table(w1!="of", w2!="thousands", w3!="of", useNA="ifany"))
+# , ,  = FALSE
+# 
+# 
+#       FALSE TRUE
+# FALSE     5    1
+# TRUE      0   31
+# 
+# , ,  = TRUE
+# 
+# 
+#       FALSE TRUE
+# FALSE     0   31
+# TRUE      1  421
+with(wordpairs, table(w1!="of", w2!="thousands"))
+
+#       FALSE TRUE
+# FALSE     5   32
+# TRUE      1  452
+with(wordpairs, table(w2!="thousands", w3!="of"))
+
+#       FALSE TRUE
+# FALSE     5    1
+# TRUE     32  452
+> with(wordpairs, table(w1!="of", w3!="of"))
+
+#       FALSE TRUE
+# FALSE     6   31
+# TRUE     31  422
+
+allTable[425, ]
+#    w1        w2 w3  c123 c1 c2 c3 c12 c13 c23 n222 n221 n212 n211 n122 n121 n112 n111
+# 1: of thousands of     5 37  6 37   5   6   5  421   31    1    0   31    1    0    5
 

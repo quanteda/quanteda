@@ -1,7 +1,5 @@
-
-
 ---
-title: "quanteda"
+title: "quanteda-intro"
 author: "Kenneth Benoit and Paul Nulty"
 date: "`r Sys.Date()`"
 output:
@@ -140,8 +138,8 @@ set of text files using information on attributes of the text that have
 been conveniently stored in the text document’s filename (separated by
 underscores). For example, for our corpus of Irish budget speeches, the
 filename `2010_BUDGET_03_Joan_Burton_LAB.txt` tells us the year of the
-speech (2010), the type (“BUDGET”), a serial number (03), the first and
-last name of the speaker, and a party label (“LAB” for Labour).
+speech (2010), the type ("BUDGET"), a serial number (03), the first and
+last name of the speaker, and a party label ("LAB" for Labour).
 
 To load this into a corpus object, we will use the `corpusFromFilenames`
 function, supplying a vector of attribute labels that correspond with
@@ -210,6 +208,7 @@ kwic(uk2010immigCorpus, "deport", 3)
 mydfm <- dfm(uk2010immigCorpus, stopwords=TRUE)
 dim(mydfm)              # basic dimensions of the dfm
 topfeatures(mydfm, 15)  # 15 top words
+# if (Sys.info()["sysname"] == "Darwin") quartz(width=8, height=8)
 plot(mydfm)             # word cloud  
 
 ```

@@ -1,6 +1,9 @@
 quanteda 0.5.5
 ==============
 
+* added Dice and point-wise mutual information as association measures for
+  collocations()
+
 * added: similarity() to implement similarity measures for documents or features
   as vector representations
 

@@ -764,7 +764,7 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
 #' @examples
 #' # simple example
 #' mycorpus <- corpus(c(textone="This is a sentence.  Another sentence.  Yet another.", 
-#'                      textwo="Première phrase.  Deuxième phrase."), 
+#'                      textwo="Premiere phrase.  Deuxieme phrase."), 
 #'                    docvars=list(country=c("UK", "USA"), year=c(1990, 2000)),
 #'                    notes="This is a simple example to show how changeunits() works.")
 #' language(mycorpus) <- c("english", "french")                   
