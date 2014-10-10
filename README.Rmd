@@ -49,9 +49,9 @@ install_github("quanteda", username="kbenoit", dependencies=TRUE, quick=TRUE, re
 Documentation
 -------------
 
-An introductory vignette is in progress and can be viewed here: [pnulty.github.io](here).
+An introductory vignette is in progress and can be viewed here: [here](http://pnulty.github.io).
 
-In-depth tutorials in the form of a gitbook will be available at here: [kbenoit.github.io/quanteda](here).
+In-depth tutorials in the form of a gitbook will be available here [here](http://kbenoit.github.io/quanteda).
 
 Examples for any function can also be seen using (for instance, for `corpus()`):
 ```S
