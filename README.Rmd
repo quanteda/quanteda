@@ -49,9 +49,9 @@ install_github("quanteda", username="kbenoit", dependencies=TRUE, quick=TRUE, re
 Documentation
 -------------
 
-We are working on a package vignette, but for the moment the best documentation is 
-found in the quanteda.pdf document, which is a formatted version of the man files
-available for all of the quanteda functions.
+An introductory vignette is in progress and can be viewed here: [pnulty.github.io](here).
+
+In-depth tutorials in the form of a gitbook will be available at here: [kbenoit.github.io/quanteda](here).
 
 Examples for any function can also be seen using (for instance, for `corpus()`):
 ```S
