@@ -7,34 +7,45 @@
 \usage{
 collocations(x, ...)
 
-\method{collocations}{character}(x, method = c("all", "lr", "chi2"), n = 2,
-  top = NULL, ...)
+\method{collocations}{character}(x, method = c("lr", "chi2", "pmi", "dice",
+  "all"), n = 2, top = NULL, ...)
 
-\method{collocations}{corpus}(x, method = c("all", "lr", "chi2"), n = 2,
-  top = NULL, ...)
+\method{collocations}{corpus}(x, method = c("lr", "chi2", "pmi", "dice",
+  "all"), n = 2, top = NULL, ...)
 }
 \arguments{
 \item{x}{a text, a character vector of texts, or a corpus}
 
 \item{...}{additional parameters}
 
-\item{method}{association measure for detecting collocations.  \code{all} returns
-all available measures, \code{lr} returns the likelihood ratio statistic \eqn{G^2},
-and \code{chi2} returns Pearson's \eqn{\chi^2} statistic.}
+\item{method}{association measure for detecting collocations.  Available
+measures for bigrams are:
+\describe{
+\item{\code{"lr"}}{The likelihood ratio statistic \eqn{G^2}, computed as:
+       \deqn{2 * \sum_i \sum_j (n_{ij} * log \frac{n_{ij}}{m_{ij}}}
+   }
+\item{\code{"chi2"}}{Pearson's \eqn{\chi^2} statistic, computed as:
+       \deqn{\sum_i \sum_j \frac{(n_{ij} - m_{ij})^2}{m_{ij}}}
+   }
+\item{\code{"pmi"}}{point-wise mutual information score, computed as log \eqn{n_{11}/m{11}}}
+\item{\code{"dice"}}{the Dice coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
+\item{\code{"all"}}{returns all of the above}
+}}
 
-\item{n}{length of the collocation.  Only bigrams (\code{n=2}) implemented so far.}
+\item{n}{length of the collocation.  Only bigrams (\code{n=2}) implemented so
+far.}
 
-\item{top}{the number of collocations to return, sorted in descending order of the
-requested statistic, or \eqn{G^2} if none is specified.}
+\item{top}{the number of collocations to return, sorted in descending order
+of the requested statistic, or \eqn{G^2} if none is specified.}
 }
 \value{
 A data.frame of collocations, their frequencies, and the computed
-association measure.
+  association measure.
 }
 \description{
 Detects collocations (currently, bigrams) from texts or a corpus, returning a
-data.frame of collocations and their scores, sorted by the likelihood
-ratio \eqn{G^2} and Pearson's \eqn{\chi^2}.
+data.frame of collocations and their scores, sorted by the likelihood ratio
+\eqn{G^2} and Pearson's \eqn{\chi^2}.
 }
 \examples{
 collocations(inaugTexts, top=10)
@@ -42,5 +53,11 @@ collocations(inaugCorpus, top=10, method="chi2")
 }
 \author{
 Kenneth Benoit
+}
+\references{
+Add some.
+}
+\seealso{
+bigrams, trigrams
 }
 
