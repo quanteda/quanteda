@@ -842,7 +842,7 @@ rep.data.frame <- function(x, ...)
     # combine the documents info, after warning if not column-conforming
     if (!setequal(names(c1$documents), names(c2$documents)))
         warning("different document-level data found, filling missing values with NAs.", noBreaks.=TRUE)
-    c1$documents <- combineByName(c1$documents, c2$documents, stringsAsFactors=FALSE)
+    c1$documents <- combineByName(c1$documents, c2$documents)
     
     
     # settings
@@ -879,8 +879,8 @@ combineByName <- function(A, B, ...) {
         #print(a_b.names)
         #print("Columns in data frame B but not in data frame A:")
         #print(b_a.names)
-    } else if(a.names==b.names & a.type==b.type){
-        C <- rbind(A,B, ...)
+    } else if (a.names==b.names && a.type==b.type) {
+        C <- rbind(A, B)
         return(C)
     }
     C <- list()
@@ -906,6 +906,6 @@ combineByName <- function(A, B, ...) {
         C[[i]] <- vec
     }
     names(C) <- all.names
-    C <- as.data.frame(C, ...)
+    C <- as.data.frame(C) #, stringsAsFactors=TRUE)
     return(C)
 }

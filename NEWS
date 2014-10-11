@@ -1,6 +1,10 @@
 quanteda 0.5.5
 ==============
 
+* fixed broken dictionary option in dfm()
+
+* fixed a bug in dfm() that was preventing clean() options from being passed through
+
 * added Dice and point-wise mutual information as association measures for
   collocations()
 
