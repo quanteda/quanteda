@@ -37,7 +37,6 @@
 #' @export
 #' @author Kenneth Benoit
 #' @examples 
-#' data(inaugCorpus)
 #' wfm <- dfm(inaugCorpus)
 #' 
 #' ## by president, after 1960
@@ -45,7 +44,6 @@
 #' docnames(wfmByPresfrom1900)
 #' 
 #' ## with dictionaries
-#' data(inaugCorpus)
 #' mycorpus <- subset(inaugCorpus, Year>1900)
 #' mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
 #'                opposition=c("Opposition", "reject", "notincorpus"),
@@ -186,12 +184,11 @@ dfm.character <- function(x,
     textnames <- factor(names(x))
     
     # clean options
-    if (length(list(...)) > 0) {
-        x <- clean(x, ...)
-    }
+    #x <- clean(x, ...)
     
     # returns a list of tokens = in length to ndoc x replicates
-    tokenizedTexts <- tokenize(x, clean=FALSE)
+    # the ... are the clean options
+    tokenizedTexts <- tokenize(x, ...)
     
     if (!is.null(stopwords)) {
         if (verbose) cat(" removing stopwords ... ")
@@ -250,7 +247,7 @@ dfm.character <- function(x,
         #      alltokens$dictionaryWord <- "other"
         for (i in 1:length(dictionary)) {
             dictionary_word_index <- grep(paste(tolower(dictionary[[i]]), collapse="|"), 
-                                          alltokens$words)
+                                          alltokens$features)
             alltokens[dictionary_word_index, 2+i] <- 1
         }
         alltokens$All_Words <- 1
@@ -528,6 +525,17 @@ docnames.dfm <- function(x) {
 is.dfm <- function(x) {
     "dfm" %in% class(x)
 }
+
+#' @details \code{as.dfm} coerces a matrix to a dfm
+#' @rdname dfm
+#' @export
+as.dfm <- function(x) {
+    if (!("matrix" %in% class(x)))
+        stop("is.dfm only applicable to matrix(-like) objects.")
+    class(x) <- c("dfm", class(x))
+    x
+}
+
 
 
 #' sort a dfm by one or more margins
