@@ -1,3 +1,11 @@
+quanteda 0.5.6
+==============
+
+* added readLIWCdict() to read LIWC-formatted dictionaries
+
+* fixed a "bug"/feature in readWStatDict() that eliminated wildcards (and all other
+  punctuation marks) - now only converts to lower.
+
 quanteda 0.5.5
 ==============
 
