@@ -1,0 +1,32 @@
+# Classification
+
+***
+
+This document describes the process of implementing text regression in R with `quanteda`
+
+## NText regression in R
+
+#### Training
+
+```{r}
+
+library(quanteda)
+
+myinaug <- inaugCorpus
+
+# dependent variable is years since declaration of independence
+year <- as.numeric((docvars(inaugCorpus)$Year)) - 1789
+
+# independent variable is word tfidf
+wordtfidf <- tfidf(trimdfm(dfm(inaugCorpus, stopwords=TRUE, stem=TRUE), minCount=8, minDoc=4))
+wordtfidf <- sort(wordtfidf)[,0:400]
+library(glmnet)
+model <- glmnet(wordtfidf, year)
+predict(model, newx=t(wordtfidf[3,]))
+
+#dat <- as.data.frame(cbind(year, wordtfidf))
+#model <- glm(year ~ wordtfidf, data=dat)
+
+```
+
+
