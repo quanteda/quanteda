@@ -153,6 +153,15 @@ collocations.corpus <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"),
 }
 
 
+concatDictionary <- function(dictionary) {
+    lapply(dictionary, function(x) gsub(" ", "_", x))
+}
+
+concatPhrases <- function(txts, dictionary) {
+    phrases <- unlist(dictionary, use.names=FALSE)
+    compoundPhrases <- phrases[grep(" ", phrases)]
+    lapply(dictionary, function(x) gsub(" ", "_", x))
+}
 
 
 

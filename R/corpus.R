@@ -460,7 +460,8 @@ docvars <- function(x, field=NULL) {
         return(NULL)
     if (is.null(field))
         return(documents(x)[, docvarsIndex, drop=FALSE])
-    return(documents(x)[, field, drop=FALSE])
+    #return(documents(x)[, field, drop=FALSE])
+    return(documents(x)[, field, drop=TRUE])
 }
 
 #' @rdname docvars

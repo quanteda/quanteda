@@ -90,9 +90,10 @@ mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
                opposition=c("Opposition", "reject", "notincorpus"),
                taxing="taxing",
                taxation="taxation",
-               taxregex="tax*")
+               taxregex="tax*",
+               country="united states")
 dictDfm <- dfm(mycorpus, dictionary=mydict)
-dictDfm
+print(dictDfm, show.values=TRUE)
 
 ## removing stopwords
 testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
