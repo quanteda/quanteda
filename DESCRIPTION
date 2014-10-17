@@ -26,7 +26,6 @@ Description: A package for the management and quantitative analysis of textual
     textual feature can be analyzed using quantitative methods for describing,
     comparing, or scaling texts, or used to train machine learning methods
     for class prediction.
-Encoding: UTF-8
 License: GPL-3
 Depends:
     R (>= 3.0),

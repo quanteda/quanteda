@@ -39,19 +39,19 @@ This is done as follows:
 # devtools required to install quanteda from Github
 if (!require(devtools)) install.packages("devtools")
 library(devtools)
-# install the latest version quanteda from Github
-install_github("quanteda", username="kbenoit", dependencies=TRUE, quick=TRUE)
+# install the latest version master branch version quanteda from Github
+install_github("kbenoit/quanteda", dependencies=TRUE, quick=TRUE)
 
 # to install the latest dev branch version quanteda from Github use:
-install_github("quanteda", username="kbenoit", dependencies=TRUE, quick=TRUE, ref="dev")
+install_github("kbenoit/quanteda", dependencies=TRUE, quick=TRUE, ref="dev")
 ```
 
 Documentation
 -------------
 
-We are working on a package vignette, but for the moment the best documentation is 
-found in the quanteda.pdf document, which is a formatted version of the man files
-available for all of the quanteda functions.
+An introductory vignette is in progress and can be viewed here: [here](http://pnulty.github.io).
+
+In-depth tutorials in the form of a gitbook will be available here [here](http://kbenoit.github.io/quanteda).
 
 Examples for any function can also be seen using (for instance, for `corpus()`):
 ```S
@@ -85,5 +85,4 @@ topfeatures(mydfm, 20)  # 20 top words
 quartz()
 plot(mydfm)             # word cloud     
 ```
-
 
