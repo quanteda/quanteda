@@ -17,6 +17,13 @@
 #' @param verbose Get info to screen on the progress
 #' @param dictionary A list of character vector dictionary entries, including 
 #'   regular expressions (see examples)
+#' @param thesaurus A list of character vector "thesaurus" entries, in a
+#'   dictionary list format, which can also include regular expressions  if 
+#'   \code{dictionary_regex} is \code{TRUE} (see examples).  Note that unlike
+#'   dictionaries, each entry in a thesaurus key must be unique, otherwise only
+#'   the first match in the list will be used.  Thesaurus keys are converted to 
+#'   upper case to create a feature label in the dfm, as a reminder that this was
+#'   not a type found in the text, but rather the label of a thesaurus key.
 #' @param dictionary_regex \code{TRUE} means the dictionary is already in 
 #'   regular expression format, otherwise it will be converted from "wildcard" 
 #'   format
@@ -26,7 +33,7 @@
 #'   \link{dfm}'s are built from dictionaries, the combined dfm will have its 
 #'   \code{Non_Dictionary} total adjusted.
 #' @param bootstrap if \code{TRUE}, compute multiple \code{dfm}'s from resampled
-#'   texts in the corpus.  Requires a resampled corpus.  See
+#'   texts in the corpus.  Requires a resampled corpus.  See 
 #'   \code{\link{resample}}.
 #' @param ... additional arguments passed to \code{\link{clean}}
 #' @return A specially classed matrix object with row names equal to the 
@@ -54,6 +61,16 @@
 #' dictDfm <- dfm(mycorpus, dictionary=mydict)
 #' print(dictDfm, show.values=TRUE)
 #' 
+#' ## with the thesaurus feature
+#' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
+#'              "New York City has raised a taxes: an income tax and a sales tax.")
+#' mydict <- list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax"))
+#' print(dfm(compoundWords(mytexts, mydict), 
+#'           thesaurus=lapply(mydict, function(x) gsub("\\s", "_", x))), 
+#'       show.values=TRUE)
+#' # pick up "taxes" with "tax" as a regex
+#' print(dfm(compoundWords(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE), TRUE)
+#' 
 #' ## removing stopwords
 #' testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with 
 #'              the newspaper from a a boy named Seamus, in his mouth."
@@ -76,6 +93,7 @@ dfm.corpus <- function(x,
                        groups=NULL,
                        verbose=TRUE, 
                        dictionary=NULL,
+                       thesaurus=NULL,
                        dictionary_regex=FALSE,
                        bootstrap=FALSE,
                        # clean=TRUE,
@@ -126,7 +144,8 @@ dfm.corpus <- function(x,
         # when the function calls dfm.character
         tempdfm <- dfm(texts, feature=feature, stem=stem, stopwords=stopwords, bigram=bigram, 
                        verbose=ifelse(verbose==TRUE, 2, FALSE),
-                       dictionary=dictionary, dictionary_regex=dictionary_regex, 
+                       dictionary=dictionary, thesaurus=thesaurus,
+                       dictionary_regex=dictionary_regex, 
                        addto=addto, ...)
         
         if (nreps==1) 
@@ -170,6 +189,7 @@ dfm.character <- function(x,
                           # groups=NULL,
                           verbose=TRUE, 
                           dictionary=NULL,
+                          thesaurus=NULL,
                           dictionary_regex=FALSE,
                           # clean=TRUE,
                           #removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
@@ -231,6 +251,20 @@ dfm.character <- function(x,
     alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
                             features = unlist(tokenizedTexts, use.names=FALSE))
     
+    # thesaurus to make word equivalencies
+    if (!is.null(thesaurus)) {
+        thesaurus <- flatten.dictionary(thesaurus)
+        if (!dictionary_regex) 
+            thesaurus <- lapply(thesaurus, makeRegEx)
+        for (l in names(thesaurus)) {
+            # add the level to the factor, make the label uppercase
+            levels(alltokens$features) <- c(levels(alltokens$features), toupper(l))
+            alltokens$features[grep(paste(tolower(thesaurus[[l]]), collapse="|"), alltokens$features)] <- toupper(l)
+            # remove the assigned levels from the factor
+            levels(alltokens$features) <- factor(alltokens$features)
+        }
+    }
+    
     # need to enforce check that dictionary is a named list
     if (is.null(dictionary)) {
         dfm <- as.data.frame.matrix(table(alltokens$docs, alltokens$features))
@@ -238,9 +272,8 @@ dfm.character <- function(x,
         # flatten the dictionary
         dictionary <- flatten.dictionary(dictionary)
         # convert wildcards to regular expressions (if needed) 
-        if (!dictionary_regex) {
+        if (!dictionary_regex) 
             dictionary <- lapply(dictionary, makeRegEx)
-        }
         alltokens <- cbind(alltokens, 
                            matrix(0, nrow=nrow(alltokens), 
                                   ncol=length(names(dictionary)), 

@@ -14,6 +14,9 @@ quanteda 0.5.6
   compoundWords() and the dictionary joins phrases with the connector ("_").
   May add this functionality to be more automatic in future versions.
 
+* added thesaurus argument to dfm, which works to record equivalency classes
+  as lists of words or regular expressions for a given key/label.
+
 quanteda 0.5.5
 ==============
 
