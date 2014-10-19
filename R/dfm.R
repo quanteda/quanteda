@@ -430,29 +430,31 @@ makeRegEx <- function(wildcardregex) {
 #' @param minCount minimum feature count
 #' @param minDoc minimum number of documents in which a feature appears
 #' @param sample how many features to retain (based on random selection)
+#' @param keep regular expression specifying which features to keep
 #' @param verbose print messages
 #' @return A \link{dfm} object reduced in size.
 #' @export 
-#' @author Ken Benoit adapted from code by Will Lowe (see \link[austin]{trim})
+#' @author Ken Benoit adapted from code originally by Will Lowe (see \link[austin]{trim})
 #' @examples 
-#' data(inaugCorpus)
 #' dtm <- dfm(inaugCorpus)
 #' dim(dtm) 
 #' dtmReduced <- trimdfm(dtm, minCount=10, minDoc=2) # only words occuring at least 5 times and in at least 2documents
-#' dim(dtmReduced)  
+#' dim(dtmReduced)
+#' dtmReduced <- trimdfm(dtm, keep="^nation|^citizen|^union$")
+#' topfeatures(dtmReduced, NULL)
 #' dtmSampled <- trimdfm(dtm, sample=200)  # top 200 words
 #' dim(dtmSampled)  # 196 x 200 words
-trimdfm <- function(x, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
+trimdfm <- function(x, minCount=1, minDoc=1, sample=NULL, keep=NULL, verbose=TRUE) {
     if (!is.dfm(x)) stop("trimdfm should only be used for dfm objects.")
     class_xorig <- class(x)
     mY <- t(x)
     
     rs1 <- which(rowSums(mY) >= minCount)
-    if (verbose)
+    if (verbose & minCount>1)
         cat("Words appearing less than", minCount, "times:", (nrow(mY) - length(rs1)), "\n")
     
     rs2 <- which(apply(mY, 1, function(x){ sum(x>0) >= minDoc } ))
-    if (verbose)
+    if (verbose & minDoc>1)
         cat("Words appearing in fewer than", minDoc, "documents:", (nrow(mY) - length(rs2)), "\n")
     
     tokeep <- intersect(rs1, rs2)
@@ -467,7 +469,14 @@ trimdfm <- function(x, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
         if (verbose)
             cat("Retaining a random sample of", sample, "words\n")
     }
+    
     trimmeddfm <- t(mY[sort(tokeep),])
+    
+    # which features to keep 
+    if (!is.null(keep)) {
+        trimmeddfm <- trimmeddfm[, grep(keep, colnames(trimmeddfm))]    
+    }
+    
     class(trimmeddfm) <- class_xorig
     trimmeddfm
 }
@@ -688,4 +697,28 @@ print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, ...) {
         print(x)
     }
 }
+
+#' @rdname ndoc
+#' @export
+nfeature <- function(x) {
+    UseMethod("nfeature")
+}
+
+#' @rdname ndoc
+#' @export
+nfeature.corpus <- function(x) {
+    stop("nfeature not yet implemented for corpus objects.")
+}
+
+#' @rdname ndoc
+#' @export
+#' @examples 
+#' nfeature(dfm(inaugCorpus))
+#' nfeature(trimdfm(dfm(inaugCorpus), minDoc=5, minCount=10))
+nfeature.dfm <- function(x) {
+    ncol(x)
+}
+
+
+
 

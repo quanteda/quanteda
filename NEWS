@@ -6,6 +6,11 @@ quanteda 0.5.7
   compoundWords() and the dictionary joins phrases with the connector ("_").
   May add this functionality to be more automatic in future versions.
 
+* new keep argument for trimdfm() now takes a regular expression for which 
+  feature labels to retain.  New defaults for minDoc and minCount (1 each).
+
+* added nfeature() method for dfm objects.
+
 New arguments for dfm():
 ------------------------
 
