@@ -17,16 +17,17 @@
 #' @param verbose Get info to screen on the progress
 #' @param dictionary A list of character vector dictionary entries, including 
 #'   regular expressions (see examples)
-#' @param thesaurus A list of character vector "thesaurus" entries, in a
+#' @param thesaurus A list of character vector "thesaurus" entries, in a 
 #'   dictionary list format, which can also include regular expressions  if 
-#'   \code{dictionary_regex} is \code{TRUE} (see examples).  Note that unlike
-#'   dictionaries, each entry in a thesaurus key must be unique, otherwise only
+#'   \code{dictionary_regex} is \code{TRUE} (see examples).  Note that unlike 
+#'   dictionaries, each entry in a thesaurus key must be unique, otherwise only 
 #'   the first match in the list will be used.  Thesaurus keys are converted to 
-#'   upper case to create a feature label in the dfm, as a reminder that this was
-#'   not a type found in the text, but rather the label of a thesaurus key.
+#'   upper case to create a feature label in the dfm, as a reminder that this
+#'   was not a type found in the text, but rather the label of a thesaurus key.
 #' @param dictionary_regex \code{TRUE} means the dictionary is already in 
 #'   regular expression format, otherwise it will be converted from "wildcard" 
 #'   format
+#' @param keep a regular expression specifying which features to keep
 #' @param bigram include bigrams as well as unigram features, if \code{TRUE}
 #' @param addto \code{NULL} by default, but if an existing dfm object is 
 #'   specified, then the new dfm will be added to the one named. If both 
@@ -76,8 +77,14 @@
 #'              the newspaper from a a boy named Seamus, in his mouth."
 #' testCorpus <- corpus(testText)
 #' settings(testCorpus, "stopwords")
-#' dfm(testCorpus, stopwords=TRUE)
+#' print(dfm(testCorpus, stopwords=TRUE), TRUE)
 #' 
+#' ## keep only certain words
+#' print(dfm(testCorpus, keep="s$"), TRUE)  # keep only words ending in "s"
+#' testTweets <- c("My homie @@justinbieber #justinbieber getting his shopping on in #LA yesterday #beliebers",
+#'                 "To all the haters including my brother #justinbieber #justinbiebermeetcrystaltalley #emabiggestfansjustinbieber",
+#'                 "Justin Bieber #justinbieber #belieber #kidrauhl #fetusjustin #EMABiggestFansJustinBieber")
+#' print(dfm(testTweets, keep="^#"), TRUE)  # keep only hashtags
 dfm <- function(x, ...) {
     UseMethod("dfm")
 }
@@ -95,6 +102,7 @@ dfm.corpus <- function(x,
                        dictionary=NULL,
                        thesaurus=NULL,
                        dictionary_regex=FALSE,
+                       keep=NULL,
                        bootstrap=FALSE,
                        # clean=TRUE,
                        # removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
@@ -146,6 +154,7 @@ dfm.corpus <- function(x,
                        verbose=ifelse(verbose==TRUE, 2, FALSE),
                        dictionary=dictionary, thesaurus=thesaurus,
                        dictionary_regex=dictionary_regex, 
+                       keep=keep,
                        addto=addto, ...)
         
         if (nreps==1) 
@@ -191,6 +200,7 @@ dfm.character <- function(x,
                           dictionary=NULL,
                           thesaurus=NULL,
                           dictionary_regex=FALSE,
+                          keep=NULL,
                           # clean=TRUE,
                           #removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
                           addto=NULL, ...) {
@@ -250,6 +260,12 @@ dfm.character <- function(x,
     # print(length)
     alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
                             features = unlist(tokenizedTexts, use.names=FALSE))
+    
+    # if keep is supplied as a regex, then keep only those features
+    if (!is.null(keep)) {
+        alltokens <- alltokens[grep(keep, alltokens$features), ]
+        alltokens$features <- factor(alltokens$features) # refactor
+    }
     
     # thesaurus to make word equivalencies
     if (!is.null(thesaurus)) {

@@ -1,3 +1,20 @@
+quanteda 0.5.7
+==============
+
+* added compoundWords() to turn space-delimited phrases into single "tokens".
+  Works with dfm(, dictionary=) if the text has been pre-processed with 
+  compoundWords() and the dictionary joins phrases with the connector ("_").
+  May add this functionality to be more automatic in future versions.
+
+New arguments for dfm():
+------------------------
+
+* thesaurus: works to record equivalency classes
+  as lists of words or regular expressions for a given key/label.
+
+* keep: regular expression pattern match for features to keep
+
+
 quanteda 0.5.6
 ==============
 
@@ -8,14 +25,6 @@ quanteda 0.5.6
 
 * improved clean() functions to better handle Twitter, punctuation, and 
   removing extra whitespace
-
-* added compoundWords() to turn space-delimited phrases into single "tokens".
-  Works with dfm(, dictionary=) if the text has been pre-processed with 
-  compoundWords() and the dictionary joins phrases with the connector ("_").
-  May add this functionality to be more automatic in future versions.
-
-* added thesaurus argument to dfm, which works to record equivalency classes
-  as lists of words or regular expressions for a given key/label.
 
 quanteda 0.5.5
 ==============

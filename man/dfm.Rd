@@ -12,11 +12,12 @@ dfm(x, ...)
 \method{dfm}{corpus}(x, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, groups = NULL, verbose = TRUE,
   dictionary = NULL, thesaurus = NULL, dictionary_regex = FALSE,
-  bootstrap = FALSE, addto = NULL, ...)
+  keep = NULL, bootstrap = FALSE, addto = NULL, ...)
 
 \method{dfm}{character}(x, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, verbose = TRUE, dictionary = NULL,
-  thesaurus = NULL, dictionary_regex = FALSE, addto = NULL, ...)
+  thesaurus = NULL, dictionary_regex = FALSE, keep = NULL, addto = NULL,
+  ...)
 
 is.dfm(x)
 
@@ -51,12 +52,14 @@ dictionary list format, which can also include regular expressions  if
 \code{dictionary_regex} is \code{TRUE} (see examples).  Note that unlike
 dictionaries, each entry in a thesaurus key must be unique, otherwise only
 the first match in the list will be used.  Thesaurus keys are converted to
-upper case to create a feature label in the dfm, as a reminder that this was
-not a type found in the text, but rather the label of a thesaurus key.}
+upper case to create a feature label in the dfm, as a reminder that this
+was not a type found in the text, but rather the label of a thesaurus key.}
 
 \item{dictionary_regex}{\code{TRUE} means the dictionary is already in
 regular expression format, otherwise it will be converted from "wildcard"
 format}
+
+\item{keep}{a regular expression specifying which features to keep}
 
 \item{bootstrap}{if \code{TRUE}, compute multiple \code{dfm}'s from resampled
 texts in the corpus.  Requires a resampled corpus.  See
@@ -118,7 +121,14 @@ testText <- "The quick brown fox named Seamus jumps over the lazy dog also named
              the newspaper from a a boy named Seamus, in his mouth."
 testCorpus <- corpus(testText)
 settings(testCorpus, "stopwords")
-dfm(testCorpus, stopwords=TRUE)
+print(dfm(testCorpus, stopwords=TRUE), TRUE)
+
+## keep only certain words
+print(dfm(testCorpus, keep="s$"), TRUE)  # keep only words ending in "s"
+testTweets <- c("My homie @justinbieber #justinbieber getting his shopping on in #LA yesterday #beliebers",
+                "To all the haters including my brother #justinbieber #justinbiebermeetcrystaltalley #emabiggestfansjustinbieber",
+                "Justin Bieber #justinbieber #belieber #kidrauhl #fetusjustin #EMABiggestFansJustinBieber")
+print(dfm(testTweets, keep="^#"), TRUE)  # keep only hashtags
 }
 \author{
 Kenneth Benoit
