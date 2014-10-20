@@ -638,6 +638,7 @@ sort.dfm <- function(x, decreasing=TRUE, margin = c("features", "docs", "both"),
 #' list the most frequent features
 #' 
 #' List the most frequently occuring features in a \link{dfm}
+#' @aliases topFeatures
 #' @param x the object whose features will be returned
 #' @param n how many top features should be returned
 #' @param decreasing If TRUE, return the \code{n} most frequent features, if 

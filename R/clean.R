@@ -1,30 +1,5 @@
 ## SHOULD IMPLEMENT PRESERVATION OF URLs
 
-cleanSingle <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
-                        additional=NULL, twitter=TRUE) {
-    if (removePunct) {
-        # use "negative lookahead" to keep Twitter symbols, always keep "_"
-        # remove other punctuation from POSIX [:punct:]
-        remove <- paste("(?![",
-                        ifelse(twitter, "@#_", "_"),
-                        "])[[:punct:]]", sep="")
-        s <- gsub(remove, "", s, perl=TRUE)
-    }
-
-    if (removeDigits) 
-        s <- gsub("[[:digit:]]", "", s)
-    if (lower) 
-        s <- tolower(s)
-
-    if (!is.null(additional))
-        s <- gsub(additional, "", s)
-
-    # convert 2+ multiple whitespaces into one
-    s <- gsub("\\s{2,}", " ", s, perl=TRUE)
-    # remove leading and trailing whitespace and return
-    gsub("^ +| +$", "", s)
-}
-
 #' simple cleaning of text before processing
 #' 
 #' \code{clean} removes punctuation and digits from text, using the regex 
@@ -67,11 +42,28 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
     if (!(removeDigits | removePunct | lower) & is.null(additional)) {
         warning("  clean: text unchanged")
     }
-    return(sapply(x, cleanSingle, removeDigits=removeDigits, removePunct=removePunct, 
-                  lower=lower, additional=additional, twitter=twitter,
-                  USE.NAMES=FALSE))
+    if (removePunct) {
+        # use "negative lookahead" to keep Twitter symbols, always keep "_"
+        # remove other punctuation from POSIX [:punct:]
+        remove <- paste("(?![",
+                        ifelse(twitter, "@#_", "_"),
+                        "])[[:punct:]]", sep="")
+       x <- gsub(remove, "", x, perl=TRUE)
+    }
+    
+    if (removeDigits) 
+        x <- gsub("[[:digit:]]", "", x)
+    if (lower) 
+        x <- tolower(x)
+    
+    if (!is.null(additional))
+        x <- gsub(additional, "", x)
+    
+    # convert 2+ multiple whitespaces into one
+    x <- gsub("\\s{2,}", " ", x, perl=TRUE)
+    # remove leading and trailing whitespace and return
+    gsub("^ +| +$", "", x)
 }
-
 
 
 #' @rdname clean
@@ -106,3 +98,4 @@ clean.corpus <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
 wordstem <- function(words, language = "porter") {
     SnowballC::wordStem(words, language)
 }
+
