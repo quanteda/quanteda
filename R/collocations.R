@@ -25,6 +25,7 @@
 #' @return A data.frame of collocations, their frequencies, and the computed 
 #'   association measure.
 #' @export
+#' @import data.table
 #' @references Add some.
 #' @seealso bigrams, trigrams 
 #' @author Kenneth Benoit
@@ -152,6 +153,57 @@ collocations.corpus <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"),
     collocations(texts(x), method, n, top, ...)
 }
 
+
+#' convert phrases into single tokens
+#' 
+#' Replace multi-word phrases in text(s) with a compound version of the phrases 
+#' concatenated with  \code{connector} (by default, the "\code{_}" character) to
+#' form a single token.  This prevents tokenization of the phrases during 
+#' subsequent processing by eliminating the whitespace delimiter.
+#' @param txts character or character vector of texts
+#' @param dictionary a list or named list (such as a quanteda dictionary) that 
+#'   contains some phrases, defined as multiple words delimited by whitespace. 
+#'   These can be up to 9 words long.
+#' @param connector the concatenation character that will connect the words 
+#'   making up the multi-word phrases.  The default \code{_} is highly 
+#'   recommended since it will not be removed during normal cleaning and 
+#'   tokenization (while nearly all other punctuation characters, at least those
+#'   in the POSIX class \code{[[:punct:]]}) will be removed.
+#' @return character or character vector of texts with phrases replaced by 
+#'   compound "words" joined by the connector
+#' @export
+#' @examples
+#' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
+#'              "New York City has raised a taxes: an income tax and a sales tax.")
+#' mydict <- list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax"))
+#' (cw <- compoundWords(mytexts, mydict))
+#' print(dfm(cw), show.values=TRUE)
+#' 
+#' # when used as a dictionary for dfm creation
+#' mydfm2 <- dfm(cw, dictionary=lapply(mydict, function(x) gsub(" ", "_", x)))
+#' print(mydfm2, show.values=TRUE)
+#' # to pick up "taxes" in the second text, set regular_expression=TRUE
+#' mydfm3 <- dfm(cw, dictionary=lapply(mydict, function(x) gsub(" ", "_", x)),
+#'               dictionary_regex=TRUE)
+#' print(mydfm3, show.values=TRUE)
+compoundWords <- function(txts, dictionary, connector="_") {
+    # get the tokenized list of compound phrases from a dictionary (list)
+    phrases <- unlist(dictionary, use.names=FALSE)
+    compoundPhrases <- phrases[grep(" ", phrases)]
+    compoundPhrasesList <- tokenize(compoundPhrases)
+    
+    # contenate the phrases in
+    # gsub("(word1)\\s(word2)", "\\1_\\2", "word1 word2")
+    ## [1] "word1_word2"
+    for (l in compoundPhrasesList) {
+        re.pattern <- paste("(", 
+                            paste(l, collapse=")\\s("),
+                            ")", sep="")
+        re.replace <- paste("\\", 1:length(l), sep="", collapse=connector)
+        txts <- gsub(re.pattern, re.replace, txts, perl=TRUE)
+    }
+    txts    
+}
 
 
 

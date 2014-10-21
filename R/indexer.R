@@ -31,3 +31,6 @@ index <- function(corp){
   return(dict)
 }
 
+preprocess <- function(corpus) {
+    
+}

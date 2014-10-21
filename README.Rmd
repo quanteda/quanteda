@@ -39,11 +39,11 @@ This is done as follows:
 # devtools required to install quanteda from Github
 if (!require(devtools)) install.packages("devtools")
 library(devtools)
-# install the latest version quanteda from Github
-install_github("quanteda", username="kbenoit", dependencies=TRUE, quick=TRUE)
+# install the latest version master branch version quanteda from Github
+install_github("kbenoit/quanteda", dependencies=TRUE, quick=TRUE)
 
 # to install the latest dev branch version quanteda from Github use:
-install_github("quanteda", username="kbenoit", dependencies=TRUE, quick=TRUE, ref="dev")
+install_github("kbenoit/quanteda", dependencies=TRUE, quick=TRUE, ref="dev")
 ```
 
 Documentation
@@ -85,5 +85,4 @@ topfeatures(mydfm, 20)  # 20 top words
 quartz()
 plot(mydfm)             # word cloud     
 ```
-
 

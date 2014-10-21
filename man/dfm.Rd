@@ -11,12 +11,13 @@ dfm(x, ...)
 
 \method{dfm}{corpus}(x, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, groups = NULL, verbose = TRUE,
-  dictionary = NULL, dictionary_regex = FALSE, bootstrap = FALSE,
-  addto = NULL, ...)
+  dictionary = NULL, thesaurus = NULL, dictionary_regex = FALSE,
+  keep = NULL, bootstrap = FALSE, addto = NULL, ...)
 
 \method{dfm}{character}(x, feature = c("word"), stem = FALSE,
   stopwords = NULL, bigram = FALSE, verbose = TRUE, dictionary = NULL,
-  dictionary_regex = FALSE, addto = NULL, ...)
+  thesaurus = NULL, dictionary_regex = FALSE, keep = NULL, addto = NULL,
+  ...)
 
 is.dfm(x)
 
@@ -46,9 +47,19 @@ no stopwords will be applied.  If "TRUE" then it currently defaults to
 \item{dictionary}{A list of character vector dictionary entries, including
 regular expressions (see examples)}
 
+\item{thesaurus}{A list of character vector "thesaurus" entries, in a
+dictionary list format, which can also include regular expressions  if
+\code{dictionary_regex} is \code{TRUE} (see examples).  Note that unlike
+dictionaries, each entry in a thesaurus key must be unique, otherwise only
+the first match in the list will be used.  Thesaurus keys are converted to
+upper case to create a feature label in the dfm, as a reminder that this
+was not a type found in the text, but rather the label of a thesaurus key.}
+
 \item{dictionary_regex}{\code{TRUE} means the dictionary is already in
 regular expression format, otherwise it will be converted from "wildcard"
 format}
+
+\item{keep}{a regular expression specifying which features to keep}
 
 \item{bootstrap}{if \code{TRUE}, compute multiple \code{dfm}'s from resampled
 texts in the corpus.  Requires a resampled corpus.  See
@@ -90,16 +101,34 @@ mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
                opposition=c("Opposition", "reject", "notincorpus"),
                taxing="taxing",
                taxation="taxation",
-               taxregex="tax*")
+               taxregex="tax*",
+               country="united states")
 dictDfm <- dfm(mycorpus, dictionary=mydict)
-dictDfm
+print(dictDfm, show.values=TRUE)
+
+## with the thesaurus feature
+mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
+             "New York City has raised a taxes: an income tax and a sales tax.")
+mydict <- list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax"))
+print(dfm(compoundWords(mytexts, mydict),
+          thesaurus=lapply(mydict, function(x) gsub("\\\\s", "_", x))),
+      show.values=TRUE)
+# pick up "taxes" with "tax" as a regex
+print(dfm(compoundWords(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE), TRUE)
 
 ## removing stopwords
 testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
              the newspaper from a a boy named Seamus, in his mouth."
 testCorpus <- corpus(testText)
 settings(testCorpus, "stopwords")
-dfm(testCorpus, stopwords=TRUE)
+print(dfm(testCorpus, stopwords=TRUE), TRUE)
+
+## keep only certain words
+print(dfm(testCorpus, keep="s$"), TRUE)  # keep only words ending in "s"
+testTweets <- c("My homie @justinbieber #justinbieber getting his shopping on in #LA yesterday #beliebers",
+                "To all the haters including my brother #justinbieber #justinbiebermeetcrystaltalley #emabiggestfansjustinbieber",
+                "Justin Bieber #justinbieber #belieber #kidrauhl #fetusjustin #EMABiggestFansJustinBieber")
+print(dfm(testTweets, keep="^#"), TRUE)  # keep only hashtags
 }
 \author{
 Kenneth Benoit

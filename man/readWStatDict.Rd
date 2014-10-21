@@ -3,10 +3,14 @@
 \alias{readWStatDict}
 \title{Import a Wordstat dictionary}
 \usage{
-readWStatDict(path)
+readWStatDict(path, enc = "", lower = TRUE)
 }
 \arguments{
-\item{path}{path to the wordstat dictionary file (.cat)}
+\item{path}{full pathname of the wordstat dictionary file (usually ending in .cat)}
+
+\item{enc}{a valid input encoding for the file to be read, see \link{iconvlist}}
+
+\item{lower}{if \code{TRUE} (default), convert the dictionary entries to lower case}
 }
 \value{
 a named list, where each the name of element is a bottom level
@@ -23,6 +27,6 @@ lgdict <- readWStatDict(path)
 }
 }
 \author{
-Kohei Watanabe
+Kohei Watanabe, Kenneth Benoit
 }
 

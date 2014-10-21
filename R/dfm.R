@@ -17,16 +17,24 @@
 #' @param verbose Get info to screen on the progress
 #' @param dictionary A list of character vector dictionary entries, including 
 #'   regular expressions (see examples)
+#' @param thesaurus A list of character vector "thesaurus" entries, in a 
+#'   dictionary list format, which can also include regular expressions  if 
+#'   \code{dictionary_regex} is \code{TRUE} (see examples).  Note that unlike 
+#'   dictionaries, each entry in a thesaurus key must be unique, otherwise only 
+#'   the first match in the list will be used.  Thesaurus keys are converted to 
+#'   upper case to create a feature label in the dfm, as a reminder that this
+#'   was not a type found in the text, but rather the label of a thesaurus key.
 #' @param dictionary_regex \code{TRUE} means the dictionary is already in 
 #'   regular expression format, otherwise it will be converted from "wildcard" 
 #'   format
+#' @param keep a regular expression specifying which features to keep
 #' @param bigram include bigrams as well as unigram features, if \code{TRUE}
 #' @param addto \code{NULL} by default, but if an existing dfm object is 
 #'   specified, then the new dfm will be added to the one named. If both 
 #'   \link{dfm}'s are built from dictionaries, the combined dfm will have its 
 #'   \code{Non_Dictionary} total adjusted.
 #' @param bootstrap if \code{TRUE}, compute multiple \code{dfm}'s from resampled
-#'   texts in the corpus.  Requires a resampled corpus.  See
+#'   texts in the corpus.  Requires a resampled corpus.  See 
 #'   \code{\link{resample}}.
 #' @param ... additional arguments passed to \code{\link{clean}}
 #' @return A specially classed matrix object with row names equal to the 
@@ -49,17 +57,34 @@
 #'                opposition=c("Opposition", "reject", "notincorpus"),
 #'                taxing="taxing",
 #'                taxation="taxation",
-#'                taxregex="tax*")
+#'                taxregex="tax*",
+#'                country="united states")
 #' dictDfm <- dfm(mycorpus, dictionary=mydict)
-#' dictDfm
+#' print(dictDfm, show.values=TRUE)
+#' 
+#' ## with the thesaurus feature
+#' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
+#'              "New York City has raised a taxes: an income tax and a sales tax.")
+#' mydict <- list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax"))
+#' print(dfm(compoundWords(mytexts, mydict), 
+#'           thesaurus=lapply(mydict, function(x) gsub("\\s", "_", x))), 
+#'       show.values=TRUE)
+#' # pick up "taxes" with "tax" as a regex
+#' print(dfm(compoundWords(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE), TRUE)
 #' 
 #' ## removing stopwords
 #' testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with 
 #'              the newspaper from a a boy named Seamus, in his mouth."
 #' testCorpus <- corpus(testText)
 #' settings(testCorpus, "stopwords")
-#' dfm(testCorpus, stopwords=TRUE)
+#' print(dfm(testCorpus, stopwords=TRUE), TRUE)
 #' 
+#' ## keep only certain words
+#' print(dfm(testCorpus, keep="s$"), TRUE)  # keep only words ending in "s"
+#' testTweets <- c("My homie @@justinbieber #justinbieber getting his shopping on in #LA yesterday #beliebers",
+#'                 "To all the haters including my brother #justinbieber #justinbiebermeetcrystaltalley #emabiggestfansjustinbieber",
+#'                 "Justin Bieber #justinbieber #belieber #kidrauhl #fetusjustin #EMABiggestFansJustinBieber")
+#' print(dfm(testTweets, keep="^#"), TRUE)  # keep only hashtags
 dfm <- function(x, ...) {
     UseMethod("dfm")
 }
@@ -75,7 +100,9 @@ dfm.corpus <- function(x,
                        groups=NULL,
                        verbose=TRUE, 
                        dictionary=NULL,
+                       thesaurus=NULL,
                        dictionary_regex=FALSE,
+                       keep=NULL,
                        bootstrap=FALSE,
                        # clean=TRUE,
                        # removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
@@ -125,7 +152,9 @@ dfm.corpus <- function(x,
         # when the function calls dfm.character
         tempdfm <- dfm(texts, feature=feature, stem=stem, stopwords=stopwords, bigram=bigram, 
                        verbose=ifelse(verbose==TRUE, 2, FALSE),
-                       dictionary=dictionary, dictionary_regex=dictionary_regex, 
+                       dictionary=dictionary, thesaurus=thesaurus,
+                       dictionary_regex=dictionary_regex, 
+                       keep=keep,
                        addto=addto, ...)
         
         if (nreps==1) 
@@ -169,7 +198,9 @@ dfm.character <- function(x,
                           # groups=NULL,
                           verbose=TRUE, 
                           dictionary=NULL,
+                          thesaurus=NULL,
                           dictionary_regex=FALSE,
+                          keep=NULL,
                           # clean=TRUE,
                           #removeDigits=TRUE, removePunct=TRUE, lower=TRUE,                          
                           addto=NULL, ...) {
@@ -230,6 +261,26 @@ dfm.character <- function(x,
     alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
                             features = unlist(tokenizedTexts, use.names=FALSE))
     
+    # if keep is supplied as a regex, then keep only those features
+    if (!is.null(keep)) {
+        alltokens <- alltokens[grep(keep, alltokens$features), ]
+        alltokens$features <- factor(alltokens$features) # refactor
+    }
+    
+    # thesaurus to make word equivalencies
+    if (!is.null(thesaurus)) {
+        thesaurus <- flatten.dictionary(thesaurus)
+        if (!dictionary_regex) 
+            thesaurus <- lapply(thesaurus, makeRegEx)
+        for (l in names(thesaurus)) {
+            # add the level to the factor, make the label uppercase
+            levels(alltokens$features) <- c(levels(alltokens$features), toupper(l))
+            alltokens$features[grep(paste(tolower(thesaurus[[l]]), collapse="|"), alltokens$features)] <- toupper(l)
+            # remove the assigned levels from the factor
+            levels(alltokens$features) <- factor(alltokens$features)
+        }
+    }
+    
     # need to enforce check that dictionary is a named list
     if (is.null(dictionary)) {
         dfm <- as.data.frame.matrix(table(alltokens$docs, alltokens$features))
@@ -237,9 +288,8 @@ dfm.character <- function(x,
         # flatten the dictionary
         dictionary <- flatten.dictionary(dictionary)
         # convert wildcards to regular expressions (if needed) 
-        if (!dictionary_regex) {
+        if (!dictionary_regex) 
             dictionary <- lapply(dictionary, makeRegEx)
-        }
         alltokens <- cbind(alltokens, 
                            matrix(0, nrow=nrow(alltokens), 
                                   ncol=length(names(dictionary)), 
@@ -380,29 +430,31 @@ makeRegEx <- function(wildcardregex) {
 #' @param minCount minimum feature count
 #' @param minDoc minimum number of documents in which a feature appears
 #' @param sample how many features to retain (based on random selection)
+#' @param keep regular expression specifying which features to keep
 #' @param verbose print messages
 #' @return A \link{dfm} object reduced in size.
 #' @export 
-#' @author Ken Benoit adapted from code by Will Lowe (see \link[austin]{trim})
+#' @author Ken Benoit adapted from code originally by Will Lowe (see \link[austin]{trim})
 #' @examples 
-#' data(inaugCorpus)
 #' dtm <- dfm(inaugCorpus)
 #' dim(dtm) 
 #' dtmReduced <- trimdfm(dtm, minCount=10, minDoc=2) # only words occuring at least 5 times and in at least 2documents
-#' dim(dtmReduced)  
+#' dim(dtmReduced)
+#' dtmReduced <- trimdfm(dtm, keep="^nation|^citizen|^union$")
+#' topfeatures(dtmReduced, NULL)
 #' dtmSampled <- trimdfm(dtm, sample=200)  # top 200 words
 #' dim(dtmSampled)  # 196 x 200 words
-trimdfm <- function(x, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
+trimdfm <- function(x, minCount=1, minDoc=1, sample=NULL, keep=NULL, verbose=TRUE) {
     if (!is.dfm(x)) stop("trimdfm should only be used for dfm objects.")
     class_xorig <- class(x)
     mY <- t(x)
     
     rs1 <- which(rowSums(mY) >= minCount)
-    if (verbose)
+    if (verbose & minCount>1)
         cat("Words appearing less than", minCount, "times:", (nrow(mY) - length(rs1)), "\n")
     
     rs2 <- which(apply(mY, 1, function(x){ sum(x>0) >= minDoc } ))
-    if (verbose)
+    if (verbose & minDoc>1)
         cat("Words appearing in fewer than", minDoc, "documents:", (nrow(mY) - length(rs2)), "\n")
     
     tokeep <- intersect(rs1, rs2)
@@ -417,7 +469,14 @@ trimdfm <- function(x, minCount=5, minDoc=5, sample=NULL, verbose=TRUE) {
         if (verbose)
             cat("Retaining a random sample of", sample, "words\n")
     }
+    
     trimmeddfm <- t(mY[sort(tokeep),])
+    
+    # which features to keep 
+    if (!is.null(keep)) {
+        trimmeddfm <- trimmeddfm[, grep(keep, colnames(trimmeddfm))]    
+    }
+    
     class(trimmeddfm) <- class_xorig
     trimmeddfm
 }
@@ -579,6 +638,7 @@ sort.dfm <- function(x, decreasing=TRUE, margin = c("features", "docs", "both"),
 #' list the most frequent features
 #' 
 #' List the most frequently occuring features in a \link{dfm}
+#' @aliases topFeatures
 #' @param x the object whose features will be returned
 #' @param n how many top features should be returned
 #' @param decreasing If TRUE, return the \code{n} most frequent features, if 
@@ -638,4 +698,28 @@ print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, ...) {
         print(x)
     }
 }
+
+#' @rdname ndoc
+#' @export
+nfeature <- function(x) {
+    UseMethod("nfeature")
+}
+
+#' @rdname ndoc
+#' @export
+nfeature.corpus <- function(x) {
+    stop("nfeature not yet implemented for corpus objects.")
+}
+
+#' @rdname ndoc
+#' @export
+#' @examples 
+#' nfeature(dfm(inaugCorpus))
+#' nfeature(trimdfm(dfm(inaugCorpus), minDoc=5, minCount=10))
+nfeature.dfm <- function(x) {
+    ncol(x)
+}
+
+
+
 

@@ -135,7 +135,7 @@ features, but should be more reliable.
 A corpus contains a set of texts, variables associated with each document, and metadata associated with the corpus as a whole. Metadata can be used to store information such as the source of the documents, or to package supplementary material with a corpus. For example, if the corpus analysis is part of a model
 that includes other forms of data, they can be included here.
 
-A corpus also contains `settings`, which record various options for the preprocessing and feature-extraction procedures provided by the package.
+A corpus also contains `settings`, which record various options for the preprocessing and feature- extraction procedures provided by the package.
 
 To try the functions provided for interacting with load the `inaugCorpus` object packaged with `quanteda`. This corpus contains US presidents' inaugural addresses since 1789, with document-level variables for the year of each address (`Year`) and the last name of the president (`President`).
 
@@ -294,20 +294,18 @@ recentCorpus <- subset(inaugCorpus, Year > 1991)
 Now we define a toy dictionary:
 ```{r}
 myDict<-list(terror=c("terrorism", "terrorists", "threat","a"),
-economy=c("jobs", "business", "grow","work")
-)
- 
+             economy=c("jobs", "business", "grow","work"))
 ```
 
 
 We can use the dictionary when making the dfm:
 ```{r}
 # I don't think this is working
-byPresMat <- dfm(myCorpus,  dictionary=myDict)
+byPresMat <- dfm(myCorpus, dictionary=myDict)
 ```
 
-[^1]: dfm stands for document-feature matrix — we say ‘feature’ as
-    opposed to ‘term’, since it is possible to use other properties of
+[^1]: dfm stands for document-feature matrix — we say "feature" as
+    opposed to "term", since it is possible to use other properties of
     documents (e.g. ngrams or syntactic dependencies) for further
     analysis
     
@@ -334,6 +332,5 @@ dim(mydfm)              # basic dimensions of the dfm
 topfeatures(mydfm, 15)  # 15 top words
 # if (Sys.info()["sysname"] == "Darwin") quartz(width=8, height=8)
 plot(mydfm)             # word cloud  
-
 ```
 
