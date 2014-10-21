@@ -11,8 +11,8 @@ quanteda 0.5.7
 
 * added nfeature() method for dfm objects.
 
-New arguments for dfm():
-------------------------
+New arguments for dfm()
+-----------------------
 
 * thesaurus: works to record equivalency classes
   as lists of words or regular expressions for a given key/label.

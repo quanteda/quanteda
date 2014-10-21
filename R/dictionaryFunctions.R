@@ -53,6 +53,8 @@ readWStatDict <- function(path, enc="", lower=TRUE) {
         # w <- gsub(" ", "", w)
         flatDict[[categ]] <- append(flatDict[[categ]], c(w))
     }
+    # remove any left-over whitespace
+    flatDict <- lapply(flatDict, function(x) gsub("\\s", "", x, perl=TRUE))
     return(flatDict)
 }
 
