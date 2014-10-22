@@ -15,28 +15,28 @@ rescaler <- function(x, scale.min=-1, scale.max=1) {
   return((x-min(x)) * scale.factor - scale.max)
 }
 
-##' Naive Bayes classifier for texts
-##'
-##' Currently working for vectors of texts.
-##' @title Naive Bayes classifier for texts
-##' @param x character vector of training texts
-##' @param y character vector of test texts
-##' @param smooth smoothing parameter for feature counts by class
-##' @param prior prior distribution on texts, see details
-##' @param distribution count model for text features, can be \code{multinomial} or \code{Bernoulli} 
-##' @param ... 
-##' @return A list of return values, consisting of:
-##' @return \item{call}{original function call}
-##' @return \item{PwGc}{probability of the word given the class (empirical likelihood)}
-##' @return \item{Pc}{class prior probability}
-##' @return \item{PcGw}{posterior class probability given the word}
-##' @return \item{Pw}{baseline probability of the word}
-##' @return \item{data}{list consisting of \code{x} training class, and \code{y} test class}
-##' @return \item{distribution}{the distribution argument}
-##' @return \item{prior}{argument passed as a prior}
-##' @return \item{smooth}{smoothing parameter}
-##' @author Kenneth Benoit
-##' @export
+# Naive Bayes classifier for texts
+#
+# Currently working for vectors of texts.
+# @title Naive Bayes classifier for texts
+# @param x character vector of training texts
+# @param y character vector of test texts
+# @param smooth smoothing parameter for feature counts by class
+# @param prior prior distribution on texts, see details
+# @param distribution count model for text features, can be \code{multinomial} or \code{Bernoulli} 
+# @param ... 
+# @return A list of return values, consisting of:
+# @return \item{call}{original function call}
+# @return \item{PwGc}{probability of the word given the class (empirical likelihood)}
+# @return \item{Pc}{class prior probability}
+# @return \item{PcGw}{posterior class probability given the word}
+# @return \item{Pw}{baseline probability of the word}
+# @return \item{data}{list consisting of \code{x} training class, and \code{y} test class}
+# @return \item{distribution}{the distribution argument}
+# @return \item{prior}{argument passed as a prior}
+# @return \item{smooth}{smoothing parameter}
+# @author Kenneth Benoit
+# @export
 naiveBayesText <- function(x, y, smooth=1, prior="uniform", distribution="multinomial", ...) 
 {
   x.trset <- x[!is.na(y),]
@@ -104,29 +104,29 @@ predictold.naivebayes <- function(object, newdata=NULL, log.probs=FALSE, normali
 }
 
 
-##' prediction method for Naive Bayes classifier objects
-##'
-##' implements class predictions using trained Naive Bayes examples 
-##' (from \code{naiveBayesText()})
-##' 
-##' @title prediction method for Naive Bayes classifiers
-##' @param object a naivebayes class object
-##' @param newdata new data on which to perform classification
-##' @param scores "reference" values when the wordscores equivalent implementation
-##' of Naive Bayes prediction is used.  Default is \code{c(-1, 1)}.
-##' @return A list of two data frames, named \code{docs} and \code{words} corresponding
-##' to word- and document-level predicted quantities
-##' @return \item{docs}{data frame with document-level predictive quantities: 
-##' nb.predicted, ws.predicted, bs.predicted, PcGw, wordscore.doc, bayesscore.doc, 
-##' posterior.diff, posterior.logdiff.  Note that the diff quantities are currently 
-##' implemented only for two-class solutions.}
-##' @return \item{words}{data-frame with word-level predictive quantities: 
-##' wordscore.word, bayesscore.word}
-##' @author Kenneth Benoit
-##' @rdname predict
-##' @method predict naivebayes
-##' @S3method predict naivebayes
-##' @export
+# prediction method for Naive Bayes classifier objects
+#
+# implements class predictions using trained Naive Bayes examples 
+# (from \code{naiveBayesText()})
+# 
+# @title prediction method for Naive Bayes classifiers
+# @param object a naivebayes class object
+# @param newdata new data on which to perform classification
+# @param scores "reference" values when the wordscores equivalent implementation
+# of Naive Bayes prediction is used.  Default is \code{c(-1, 1)}.
+# @return A list of two data frames, named \code{docs} and \code{words} corresponding
+# to word- and document-level predicted quantities
+# @return \item{docs}{data frame with document-level predictive quantities: 
+# nb.predicted, ws.predicted, bs.predicted, PcGw, wordscore.doc, bayesscore.doc, 
+# posterior.diff, posterior.logdiff.  Note that the diff quantities are currently 
+# implemented only for two-class solutions.}
+# @return \item{words}{data-frame with word-level predictive quantities: 
+# wordscore.word, bayesscore.word}
+# @author Kenneth Benoit
+# @rdname predict
+# @method predict naivebayes
+# @S3method predict naivebayes
+# @export
 predict.naivebayes <- function(object, newdata=NULL, scores=c(-1,1)) {
   ## does not check that we have the same set of words
   ## log.probs: would you like the class conditional sums of log prior + sum log word given class?
@@ -195,61 +195,6 @@ logsumexp <- function(x) {
 
 
 
-
-## wordscores (one-dimensional) for two-class solutions
-##
-## implements Laver, Benoit and Garry's (2003) wordscores method for scaling
-## of a single dimension
-## 
-## @title one-dimensional "wordscores" implementation
-## @param x an austin \code{wfm} object with two classes (rows) only
-## @param refscores a two-element vector of reference scores for the two classes
-## @param smooth a smoothing parameter for word counts
-## @param scale classic or logit scale of log posterior differences
-## @return A list of two data frames, named \class{docs} and \class{words} corresponding
-## to word- and document-level predicted quantities
-## @return Identical returns to austin's "classic.wordscores()"
-## @author Kenneth Benoit
-## @export
-wordscore.1d <- function(x, refscores=c(-1,1), smooth=1, scale="classic")
-{
-  # wfm can only have two rows, two scores
-  if (nrow(x)!=2)
-    stop("wordscore.1d requires a two-row wfm only")
-  if (length(refscores)!=2)
-    stop("wordscore.1d requires two reference scores only")
-  # check that object type is wfm
-  if (!is.wfm(x)) 
-    stop("Function not applicable to this object")
-  if (length(refscores) != length(docs(x))) 
-    stop("There are not the same number of documents as scores")
-  if (any(is.na(refscores))) 
-    stop("One of the reference document scores is NA\nFit the model with known scores and use 'predict' to get virgin score estimates")
-  # check that scale="classic" or "logit"
-  if (scale!="classic") {
-    if (scale!="logit")
-      stop("scale must be either classic or logit")
-  }
-  thecall <- match.call()    # save the call
-  x <- x + smooth            # add one to all word counts
-  # CANT DO THIS SINCE PRE-NORMALIZATION, IT MEANS THAT THE WEIGHT IS GREATER FOR SHORTER
-  # VERSUS LONGER DOCUMENTS - EVEN WHEN BOTH WORDS ARE ZERO COUNT
-  x <- x / apply(x,1,sum)    # normalize words to term frequencies
-  if (scale=="classic") {
-    p <- t(apply(x, 1, function(w) w/apply(x,2,sum)))  # Pr(this word | document)
-    wordscores <- apply(p * refscores, 2, sum)
-  } else if (scale=="logit") {
-    # x <- x + smooth
-    wordscores <- log(x[2,]/x[1,])
-  }
-  wordscores <- matrix(wordscores, nrow=length(wordscores))
-  rownames(wordscores) <- colnames(x)
-  colnames(wordscores) <- c("Score")
-  val <- list(pi = wordscores, theta = refscores, data = x, call = thecall, type=scale)
-  class(val) <- c("ken.wordscores", "wordscores", class(val))
-  return(val)
-  # DOES NOT TRIM OUT THE MISSING WORDS IN THIS VERSION -- UNLIKE classic.wordscores
-}
 
 feature.select <- function(wfm, trclass, freq="document", method="chi2", 
                            min.count=NULL, min.doc=NULL, sample=NULL) {
@@ -327,11 +272,115 @@ classic.wordscores <- function (wfm, scores)
 
 
 
+#' fit a word model
+#' 
+#' Fit a word model to a dfm.
+#' @param x a dfm object
+#' @param ... additional parameters to be passed to other functions
+#' @export
+#' @examples
+#' require(quantedaData)
+#' data(ie2010Corpus)
+#' ieDfm <- dfm(ie2010Corpus)
+#' ws <- fitmodel(ieDfm, train=c("2010_BUDGET_06_Enda_Kenny_FG", "2010_BUDGET_05_Brian_Cowen_FF"),
+#'                train.scores=c(-1,1), smooth=1)
+#' bs <- fitmodel(ieDfm, train=c("2010_BUDGET_06_Enda_Kenny_FG", "2010_BUDGET_05_Brian_Cowen_FF"),
+#'                train.scores=c(-1,1), scale="logit", smooth=1)
+#' plot(ws$featureScores, bs$featureScores, xlim=c(-1, 1),
+#'      xlab="Linear word score", ylab="Logit word score")
+#'      
+#' # prediction method for wordscores
+#' predict(ws, ieDfm, rescaling="mv")
+fitmodel <- function(x, ...) {
+    UseMethod("fitmodel")
+}
 
+#' @rdname fitmodel
+#' @param method the model type to be fit
+#' @export
+fitmodel.dfm <- function(x, method=c("wordscores", "NB"), ...) {
+    method <- match.arg(method)
+    if (method=="wordscores") {
+        return(wordscores_model(x, ...))
+    } else {
+        stop("Only wordscores method is currently implemented.")
+    }
+}
 
+#' Wordscores model
+#' 
+#' \code{wordscores_model} implements Laver, Benoit and Garry's (2003)
+#' wordscores method for scaling of a single dimension
+#' @param train integer index of documents, or character vector of document 
+#'   names.  For \code{scale="logit"}, only two documents can be specified
+#' @param smooth a smoothing parameter for word counts
+#' @param scale classic or logit scale of log posterior differences
+#' @author Kenneth Benoit
+#' @references Laver, Benoit and Garry (2003)
+#' @export
+wordscores_model <- function(x, train, train.scores, 
+                             scale=c("linear", "logit"), smooth=0) {
+    thecall <- match.call()
+    scale <- match.arg(scale)
+    if (length(train) < 2)
+        stop("wordscores model requires at least two training documents.")
+    if (length(train) != length(train.scores))
+        stop("number of training documents differs from train.scores length.")
+    if (any(is.na(train.scores))) 
+        stop("no train.scores can be NA.")
 
+    x <- x[train, ]            # select only the reference texts
+    x <- x + smooth            # add one to all word counts
+    Fwr <- tf(x)               # normalize words to term frequencies "Fwr"
+    Pwr <- tf(t(Fwr))          # posterior word probability Pwr
+    
+    # compute likelihoods "Pwr" Pr(this word | document)
+    if (scale=="linear") {
+        Sw <- Pwr %*% train.scores
+        Sw <- Sw[,1]
+    } else if (scale=="logit") {
+        if (length(train) > 2)
+            stop("For logit scale, only two training texts can be used.")
+        if (sum(train.scores) != 0) {
+            warning("For logit scale, training scores are automatically rescaled to -1 and 1.")
+            train.scores <- rescaler(train.scores)
+        }
+        lower <- 1
+        upper <- 2
+        if (train.scores[1] > train.scores[2]) { lower <- 2; upper <- 1 }
+        Sw <- log(Pwr[, upper]) - log(Pwr[, lower])
+    }
+    model <- list(featureScores = Sw, train=train, train.scores=train.scores)
+    class(model) <- c("textmodel", "wordscores", class(model))
+    return(model)
+}
 
+#' predict a text model on a test set
+#' 
+#' Apply a fitted text model to make predictions on test data.
+#' @param object a fitted textmodel object (from \code{\link{fitmodel}})
+#' @export
+predict.textmodel <- function(object, ...) {
+    NextMethod(object, ...)
+}
 
-
+#' @rdname predict.textmodel
+#' @references LBG (2003); Martin and Vanberg (2007)
+#' @export
+predict.wordscores <- function(object, newdata, se.fit=FALSE, 
+                               rescaling = c("none", "lbg", "mv"), 
+                               ...) {
+    textscores <- data.frame(textscore_raw = tf(newdata) %*% object$featureScores)
+    
+    if (rescaling=="mv") {
+        lowerIndex <- object$train[which(object$train.scores==min(object$train.scores))]
+        upperIndex <- object$train[which(object$train.scores==max(object$train.scores))]
+        textscores$textscores_mv <-
+            (textscores$textscore_raw - textscores[lowerIndex, "textscore_raw"]) /
+            abs(textscores[lowerIndex, "textscore_raw"] - textscores[upperIndex, "textscore_raw"])
+    }
+    
+    return(textscores)
+}
 
 
