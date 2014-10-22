@@ -2,7 +2,7 @@
 \name{fitmodel}
 \alias{fitmodel}
 \alias{fitmodel.dfm}
-\title{fit a word model}
+\title{fit a text model}
 \usage{
 fitmodel(x, ...)
 
@@ -13,10 +13,24 @@ fitmodel(x, ...)
 
 \item{...}{additional parameters to be passed to other functions}
 
-\item{method}{the model type to be fit}
+\item{method}{the model type to be fit.  Currently implemented methods are:
+\describe{
+  \item{\code{wordscores}}{Fits the "wordscores" model of Laver, Benoit, and
+  Garry (2003). Options include the original linear scale of LBG or the logit
+  scale proposed by Beauchamps (2001).  See \link{textmodel_wordscores}.}
+
+  \item{\code{NB}}{Fits a Naive Bayes model to the dfm, with options for
+  smoothing, setting class priors, and a choice of multinomial or binomial
+  probabilities.}}}
+}
+\value{
+a \code{textmodel} class list, containing the fitted model and
+  additional information specific to the model class.  See the methods for
+  specific models, e.g. \link{textmodel_wordscores}, \link{textmodel_NB},
+  etc.
 }
 \description{
-Fit a word model to a dfm.
+Fit a text model to a dfm.
 }
 \examples{
 require(quantedaData)
@@ -31,5 +45,8 @@ plot(ws$featureScores, bs$featureScores, xlim=c(-1, 1),
 
 # prediction method for wordscores
 predict(ws, ieDfm, rescaling="mv")
+}
+\references{
+LBG (2003); Beauchamps (20XX)
 }
 

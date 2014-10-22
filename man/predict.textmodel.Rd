@@ -11,6 +11,29 @@
 }
 \arguments{
 \item{object}{a fitted textmodel object (from \code{\link{fitmodel}})}
+
+\item{...}{further arguments passed to or from other methods}
+
+\item{newdata}{A dfm or matrix object containing features found in the
+training object.  If omitted, the original dfm on which the model was fit
+will be used -- or it will eventually, since we have not yet implemented
+that functionality, which would require us to include the original data in
+the list defined by the \code{textmodel} class.}
+
+\item{se.fit}{whether and how to compute standard errors -- not yet
+implemented and will be somewhat model-specific.}
+
+\item{rescaling}{\code{none} for "raw" scores; \code{lbg} for LBG (2003)
+rescaling; or \code{mv} for the rescaling proposed by Martin and Vanberg
+(2007).  (Note to authors: Provide full details here in documentation.)}
+}
+\value{
+\code{predict.wordscores} returns a data.frame whose rows are the
+  documents fitted and whose columns contain the scored textvalues, with the
+  number of columns depending on the options called (for instance, how many
+  rescaled scores, and whether standard errors were requested.)  (Note: We
+  may very well change this soon so that it is a list similar to other
+  existing fitted objects.)
 }
 \description{
 Apply a fitted text model to make predictions on test data.
