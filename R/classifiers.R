@@ -376,8 +376,10 @@ predict.wordscores <- function(object, newdata, se.fit=FALSE,
         lowerIndex <- object$train[which(object$train.scores==min(object$train.scores))]
         upperIndex <- object$train[which(object$train.scores==max(object$train.scores))]
         textscores$textscores_mv <-
-            (textscores$textscore_raw - textscores[lowerIndex, "textscore_raw"]) /
-            abs(textscores[lowerIndex, "textscore_raw"] - textscores[upperIndex, "textscore_raw"])
+            (textscores$textscore_raw - textscores[lowerIndex, "textscore_raw"]) *
+            (max(object$train.scores) - min(object$train.scores)) /
+            (textscores[upperIndex, "textscore_raw"] - textscores[lowerIndex, "textscore_raw"]) +
+            min(object$train.scores)
     }
     
     return(textscores)
