@@ -429,6 +429,7 @@ makeRegEx <- function(wildcardregex) {
 #' @param x document-feature matrix created by \link{dfm}
 #' @param minCount minimum feature count
 #' @param minDoc minimum number of documents in which a feature appears
+#' @param minTotal minimum total feature threshold to retain a document
 #' @param sample how many features to retain (based on random selection)
 #' @param keep regular expression specifying which features to keep
 #' @param verbose print messages
@@ -444,7 +445,7 @@ makeRegEx <- function(wildcardregex) {
 #' topfeatures(dtmReduced, NULL)
 #' dtmSampled <- trimdfm(dtm, sample=200)  # top 200 words
 #' dim(dtmSampled)  # 196 x 200 words
-trimdfm <- function(x, minCount=1, minDoc=1, sample=NULL, keep=NULL, verbose=TRUE) {
+trimdfm <- function(x, minCount=1, minDoc=1, minTotal=0, sample=NULL, keep=NULL, verbose=TRUE) {
     if (!is.dfm(x)) stop("trimdfm should only be used for dfm objects.")
     class_xorig <- class(x)
     mY <- t(x)
@@ -476,6 +477,8 @@ trimdfm <- function(x, minCount=1, minDoc=1, sample=NULL, keep=NULL, verbose=TRU
     if (!is.null(keep)) {
         trimmeddfm <- trimmeddfm[, grep(keep, colnames(trimmeddfm))]    
     }
+    
+    trimmeddfm <- trimmeddfm[rowSums(trimmeddfm) >= minTotal, , drop=FALSE]
     
     class(trimmeddfm) <- class_xorig
     trimmeddfm
