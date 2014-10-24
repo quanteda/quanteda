@@ -8,7 +8,7 @@ Here you can find mode documentation on the
 implementation of the \code{textmodel} class of fitted models on \link{dfm} objects.
 }
 \seealso{
-\code{\link{textmodel_wordscores}}, \code{\link{textmodel_NB}},
-\code{\link{fitmodel}}
+\code{\link{textModelWordscores}}, \code{\link{textModelNB}},
+\code{\link{fitModel}}
 }
 

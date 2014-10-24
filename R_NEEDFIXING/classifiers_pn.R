@@ -18,19 +18,15 @@ fitModel.formula <- function(formula, data, smooth=1, method=c("wordscores", "NB
     mf <- mf[c(1, m)]
     mf[[1]] <- as.name("model.frame")
     mf <- eval.parent(mf)
-
-    ## 1) allow model.frame to update the terms object before saving it.
     mt <- attr(mf, "terms")
 
     x <- model.matrix(mt, mf)
     print(dim(x))
     y <- model.response(mf, "numeric")
     z <- c()
-    if(method == 'wordscores'){z <- textModelWordscores(x, y, smooth = smooth, ...)
-    }else if(method == 'NB') { z <- textModelNB(x, y, smooth = smooth, ...)
-    }
-    else {
-        stop("Only wordscores method is currently implemented.")
+    if(method == 'wordscores') { z <- textModelWordscores(x, y, smooth = smooth, ...)
+    } else if (method == 'NB') { z <- textModelNB(x, y, smooth = smooth, ...)
+    } else { stop("Only wordscores method is currently implemented.")
     }
 }
 
@@ -62,7 +58,7 @@ fitModel.formula <- function(formula, data, smooth=1, method=c("wordscores", "NB
 #' @author Kenneth Benoit
 #' @references Laver, Benoit and Garry (2003); Martin and Vanberg (2007)
 #' @export
-textmodelNB <- function(trainData, trainLabels, smooth=1,
+textModelNB <- function(trainData, trainLabels, smooth=1,
                          distribution=c("multinomial", "bernoulli"),
                          classpriors=1/length(table(train.class))) {
     thecall <- match.call()
@@ -74,7 +70,6 @@ textmodelNB <- function(trainData, trainLabels, smooth=1,
     class(model) <- c("textmodel", "NB", class(model))
     return(model)
 }
-
 
 
 #' Wordscores model
@@ -115,6 +110,6 @@ data(ie2010Corpus)
 ieDfm <- dfm(ie2010Corpus)
 refData <- ieDfm[5:8,] # Cowen and Kenny
 refScores <- c(-1,1,NA,NA)
-mod <- fitModel(refScores ~ refData)
+mod <- fitModel(refScores ~ refData, method="NB")
 
 
