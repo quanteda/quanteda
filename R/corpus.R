@@ -88,7 +88,7 @@ corpus <- function(x, ...) {
 #' docvars(myzipcorp, speakername=docnames(myzipcorp))
 #' summary(myzipcorp)
 #' }
-corpus.directory<- function(x, enc=NULL, docnames=NULL, 
+corpus.directory <- function(x, enc=NULL, docnames=NULL, 
                             docvarsfrom=c("none", "filenames", "headers"), 
                             docvarnames=NULL, sep='_', pattern="\\.txt$",
                             source=NULL, notes=NULL, citation=NULL, ...) {
@@ -97,7 +97,7 @@ corpus.directory<- function(x, enc=NULL, docnames=NULL,
     docvarsfrom <- match.arg(docvarsfrom)
     texts <- getTextDir(x, pattern=pattern)
     fnames <- NULL
-    if (docvarsfrom == 'filenames') {
+    if (docvarsfrom == "filenames") {
         fnames <- list.files(x, full.names=TRUE)
         snames <- getRootFileNames(fnames)
         snames <- gsub(".txt", "", snames)

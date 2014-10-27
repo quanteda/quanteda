@@ -1,7 +1,12 @@
-quanteda 0.5.8 
+quanteda 0.6.0 
 ==============
 
-(pending)
+* Added textmodel for scaling and prediction methods, including for starters,
+  wordscores and naivebayes class models.  LIKELY TO BE BUGGY AND QUIRKY FOR A WHILE.
+
+
+quanteda 0.5.8 
+==============
 
 Classification and scaling methods
 ----------------------------------
