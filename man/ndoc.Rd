@@ -3,13 +3,22 @@
 \alias{ndoc}
 \alias{ndoc.corpus}
 \alias{ndoc.dfm}
-\title{get the number of documents}
+\alias{nfeature}
+\alias{nfeature.corpus}
+\alias{nfeature.dfm}
+\title{get the number of documents or features}
 \usage{
 ndoc(x)
 
 \method{ndoc}{corpus}(x)
 
 \method{ndoc}{dfm}(x, ...)
+
+nfeature(x)
+
+\method{nfeature}{corpus}(x)
+
+\method{nfeature}{dfm}(x)
 }
 \arguments{
 \item{x}{a corpus or dfm object}
@@ -17,13 +26,15 @@ ndoc(x)
 \item{...}{additional parameters}
 }
 \value{
-an integer (count) of the number of documents in the corpus or dfm
+an integer (count) of the number of documents or features in the corpus or dfm
 }
 \description{
-Returns the number of documents in a corpus objects
+Returns the number of documents or features in a quanteda object.
 }
 \examples{
 ndoc(inaugCorpus)
 ndoc(dfm(inaugCorpus))
+nfeature(dfm(inaugCorpus))
+nfeature(trimdfm(dfm(inaugCorpus), minDoc=5, minCount=10))
 }
 

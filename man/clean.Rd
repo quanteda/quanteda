@@ -8,10 +8,10 @@
 clean(x, ...)
 
 \method{clean}{character}(x, removeDigits = TRUE, removePunct = TRUE,
-  lower = TRUE, additional = NULL, twitter = FALSE, ...)
+  lower = TRUE, additional = NULL, twitter = TRUE, ...)
 
 \method{clean}{corpus}(x, removeDigits = TRUE, removePunct = TRUE,
-  lower = TRUE, additional = NULL, twitter = FALSE, ...)
+  lower = TRUE, additional = NULL, twitter = TRUE, ...)
 }
 \arguments{
 \item{x}{The object to be cleaned. Can be either a character vector or a
@@ -42,15 +42,14 @@ punctuation and convert to lower, but keep digits, the command would be:
 \code{clean(mytexts, removeDigits=FALSE)}
 }
 \examples{
-clean("This is 1 sentence with 1.9 numbers in it, and one comma.", removeDigits=FALSE)
-clean("This is 1 sentence with 1.9 numbers in it, and one comma.", lower=FALSE)
-clean("The \\"economy\\" is [worth] £1,000bn or approx. €1.2 trillion.")
-clean("The \\"economy\\" is [worth] £1,000bn or approx. €1.2 trillion.", additional="[£€]")
+clean("This is 1 sentence with 2.0 numbers in it, and one comma.", removeDigits=FALSE)
+clean("This is 1 sentence with 2.0 numbers in it, and one comma.", lower=FALSE)
 clean("We are his Beliebers, and him is #ourjustin @justinbieber we love u", twitter=TRUE)
 clean("Collocations can be represented as inheritance_tax using the _ character.")
+clean("But under_scores can be removed using the additional argument.", additional="[_]")
 
 # for a vector of texts
-clean(c("This is 1 sentence with 1.9 numbers in it, and one comma.",
-        "€1.2 billion was spent on text analysis in 2014."))
+clean(c("This is 1 sentence with 2.0 numbers in it, and one comma.",
+        "$1.2 billion was spent on text analysis in 2014."))
 }
 

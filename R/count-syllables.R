@@ -20,7 +20,6 @@
 #' countSyllables(myTexts)
 countSyllables <- function(sourceText) { #}, verbose=FALSE) {
 
-    data(syllableCounts)               # load the syllable counts data
     string <- clean(sourceText)        # clean the input text(s)
     words <- lapply(string, tokenize)  # tokenize the input text(s)
     

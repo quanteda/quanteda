@@ -1,19 +1,33 @@
 #' Detect collocations from text
-#'
-#' Detects collocations (currently, bigrams) from texts or a corpus, returning a 
-#' data.frame of collocations and their scores, sorted by the likelihood
-#' ratio \eqn{G^2} and Pearson's \eqn{\chi^2}.
+#' 
+#' Detects collocations (currently, bigrams) from texts or a corpus, returning a
+#' data.frame of collocations and their scores, sorted by the likelihood ratio
+#' \eqn{G^2} and Pearson's \eqn{\chi^2}.
 #' @param x a text, a character vector of texts, or a corpus
-#' @param method association measure for detecting collocations.  \code{all} returns 
-#' all available measures, \code{lr} returns the likelihood ratio statistic \eqn{G^2},
-#' and \code{chi2} returns Pearson's \eqn{\chi^2} statistic.
-#' @param n length of the collocation.  Only bigrams (\code{n=2}) implemented so far.
-#' @param top the number of collocations to return, sorted in descending order of the 
-#' requested statistic, or \eqn{G^2} if none is specified.
+#' @param method association measure for detecting collocations.  Available
+#'   measures for bigrams are:
+#'   \describe{ 
+#'   \item{\code{"lr"}}{The likelihood ratio statistic \eqn{G^2}, computed as:
+#'          \deqn{2 * \sum_i \sum_j (n_{ij} * log \frac{n_{ij}}{m_{ij}}}
+#'      }
+#'   \item{\code{"chi2"}}{Pearson's \eqn{\chi^2} statistic, computed as:
+#'          \deqn{\sum_i \sum_j \frac{(n_{ij} - m_{ij})^2}{m_{ij}}}
+#'      }
+#'   \item{\code{"pmi"}}{point-wise mutual information score, computed as log \eqn{n_{11}/m{11}}}
+#'   \item{\code{"dice"}}{the Dice coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
+#'   \item{\code{"all"}}{returns all of the above}
+#'   }
+#' @param n length of the collocation.  Only bigrams (\code{n=2}) implemented so
+#'   far.
+#' @param top the number of collocations to return, sorted in descending order
+#'   of the requested statistic, or \eqn{G^2} if none is specified.
 #' @param ... additional parameters
-#' @return A data.frame of collocations, their frequencies, and the computed
-#' association measure.
-#' @export 
+#' @return A data.frame of collocations, their frequencies, and the computed 
+#'   association measure.
+#' @export
+#' @import data.table
+#' @references Add some.
+#' @seealso bigrams, trigrams 
 #' @author Kenneth Benoit
 #' @examples
 #' collocations(inaugTexts, top=10)
@@ -24,10 +38,10 @@ collocations <- function(x, ...) {
     
 #' @rdname collocations
 #' @export    
-collocations.character <- function(x, method=c("all", "lr", "chi2"), n=2, top=NULL, ...) {
+collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=2, top=NULL, ...) {
     method <- match.arg(method)
     if (n != 2) stop("Only bigrams (n=2) implemented so far.")
-
+    
     # to prevent warning messages during CHECK
     #w1 <- w2 <- count <- w1w2n <- w1w2Exp <- w1notw2Exp <- notw1w2 <- notw1w2Exp <- NULL
     #notw1notw2 <- notw1notw2Exp <- NULL
@@ -90,30 +104,105 @@ collocations.character <- function(x, method=c("all", "lr", "chi2"), n=2, top=NU
     }
     if (method=="all" | method=="chi2") {
         allTable2$chi2 <- (allTable2$w1w2n - allTable2$w1w2Exp)^2 / allTable2$w1w2Exp +
-        (allTable2$w1notw2 - allTable2$w1notw2Exp)^2 / allTable2$w1notw2Exp +
-        (allTable2$notw1w2 - allTable2$notw1w2Exp)^2 / allTable2$notw1w2Exp +
-        (allTable2$notw1notw2 - allTable2$notw1notw2Exp)^2 / allTable2$notw1notw2Exp
-    }    
+            (allTable2$w1notw2 - allTable2$w1notw2Exp)^2 / allTable2$w1notw2Exp +
+            (allTable2$notw1w2 - allTable2$notw1w2Exp)^2 / allTable2$notw1w2Exp +
+            (allTable2$notw1notw2 - allTable2$notw1notw2Exp)^2 / allTable2$notw1notw2Exp
+    }
+    if (method=="all" | method=="pmi") {
+        allTable2$pmi <- log(allTable2$w1w2n / allTable2$w1w2Exp)
+    }
+    if (method=="all" | method=="dice") {
+        allTable2$dice <- 2 * allTable2$w1w2n / (allTable2$w1w2n + allTable2$w1notw2) 
+    }
     if (method=="chi2") {
         allTable2 <- allTable2[order(-chi2)]
         df <- data.frame(collocation=paste(allTable2$w1, allTable2$w2),
                          count=allTable2$w1w2n,
                          X2=allTable2$chi2)
+    } else if (method=="pmi") {
+        allTable2 <- allTable2[order(-pmi)]
+        df <- data.frame(collocation=paste(allTable2$w1, allTable2$w2),
+                         count=allTable2$w1w2n,
+                         pmi=allTable2$pmi) 
+    
+    } else if (method=="dice") {
+        allTable2 <- allTable2[order(-dice)]
+        df <- data.frame(collocation=paste(allTable2$w1, allTable2$w2),
+                         count=allTable2$w1w2n,
+                         dice=allTable2$dice) 
     } else {
         allTable2 <- allTable2[order(-lrratio)]
         df <- data.frame(collocation=paste(allTable2$w1, allTable2$w2),
                          count=allTable2$w1w2n,
                          G2=allTable2$lrratio) 
-        if (method=="all") df$X2 <- allTable2$chi2
     }
-    
+        
+    if (method=="all") {
+        df$G2 <- allTable2$lrratio
+        df$X2 <- allTable2$chi2
+        df$pmi <- allTable2$pmi
+        df$dice <- allTable2$dice
+    }
+        
     df[1:ifelse(is.null(top), N, top), ]
 }
 
 #' @rdname collocations
 #' @export
-collocations.corpus <- function(x, method=c("all", "lr", "chi2"), n=2, top=NULL, ...) {
+collocations.corpus <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=2, top=NULL, ...) {
     collocations(texts(x), method, n, top, ...)
+}
+
+
+#' convert phrases into single tokens
+#' 
+#' Replace multi-word phrases in text(s) with a compound version of the phrases 
+#' concatenated with  \code{connector} (by default, the "\code{_}" character) to
+#' form a single token.  This prevents tokenization of the phrases during 
+#' subsequent processing by eliminating the whitespace delimiter.
+#' @param txts character or character vector of texts
+#' @param dictionary a list or named list (such as a quanteda dictionary) that 
+#'   contains some phrases, defined as multiple words delimited by whitespace. 
+#'   These can be up to 9 words long.
+#' @param connector the concatenation character that will connect the words 
+#'   making up the multi-word phrases.  The default \code{_} is highly 
+#'   recommended since it will not be removed during normal cleaning and 
+#'   tokenization (while nearly all other punctuation characters, at least those
+#'   in the POSIX class \code{[[:punct:]]}) will be removed.
+#' @return character or character vector of texts with phrases replaced by 
+#'   compound "words" joined by the connector
+#' @export
+#' @examples
+#' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
+#'              "New York City has raised a taxes: an income tax and a sales tax.")
+#' mydict <- list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax"))
+#' (cw <- compoundWords(mytexts, mydict))
+#' print(dfm(cw), show.values=TRUE)
+#' 
+#' # when used as a dictionary for dfm creation
+#' mydfm2 <- dfm(cw, dictionary=lapply(mydict, function(x) gsub(" ", "_", x)))
+#' print(mydfm2, show.values=TRUE)
+#' # to pick up "taxes" in the second text, set regular_expression=TRUE
+#' mydfm3 <- dfm(cw, dictionary=lapply(mydict, function(x) gsub(" ", "_", x)),
+#'               dictionary_regex=TRUE)
+#' print(mydfm3, show.values=TRUE)
+compoundWords <- function(txts, dictionary, connector="_") {
+    # get the tokenized list of compound phrases from a dictionary (list)
+    phrases <- unlist(dictionary, use.names=FALSE)
+    compoundPhrases <- phrases[grep(" ", phrases)]
+    compoundPhrasesList <- tokenize(compoundPhrases)
+    
+    # contenate the phrases in
+    # gsub("(word1)\\s(word2)", "\\1_\\2", "word1 word2")
+    ## [1] "word1_word2"
+    for (l in compoundPhrasesList) {
+        re.pattern <- paste("(", 
+                            paste(l, collapse=")\\s("),
+                            ")", sep="")
+        re.replace <- paste("\\", 1:length(l), sep="", collapse=connector)
+        txts <- gsub(re.pattern, re.replace, txts, perl=TRUE)
+    }
+    txts    
 }
 
 

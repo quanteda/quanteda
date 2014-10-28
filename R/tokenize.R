@@ -26,7 +26,7 @@ tokenize <- function(x, ...) {
 #'   than a list of length \code{\link{ndoc}(texts)}, with each element of the 
 #'   list containing a character vector of the tokens corresponding to that 
 #'   text.
-#' @param sep by default, tokenize expects a ‘white-space’ delimiter between
+#' @param sep by default, tokenize expects a "white-space" delimiter between
 #'   tokens. Alternatively, \code{sep} can be used to specify another character
 #'   which delimits fields.
 #' @return  A list of length \code{\link{ndoc}(texts)} of the tokens found in 

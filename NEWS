@@ -1,5 +1,63 @@
+quanteda 0.6.0 
+==============
+
+* Added textmodel for scaling and prediction methods, including for starters,
+  wordscores and naivebayes class models.  LIKELY TO BE BUGGY AND QUIRKY FOR A WHILE.
+
+
+quanteda 0.5.8 
+==============
+
+Classification and scaling methods
+----------------------------------
+
+* New dfm methods for fitmodel(), predict(), and specific model fitting
+  and prediction methods called by these, for classification and scaling 
+  of different "textmodel" types, such as wordscores and Naive Bayes
+  (for starters).
+
+quanteda 0.5.7
+==============
+
+* added compoundWords() to turn space-delimited phrases into single "tokens".
+  Works with dfm(, dictionary=) if the text has been pre-processed with 
+  compoundWords() and the dictionary joins phrases with the connector ("_").
+  May add this functionality to be more automatic in future versions.
+
+* new keep argument for trimdfm() now takes a regular expression for which 
+  feature labels to retain.  New defaults for minDoc and minCount (1 each).
+
+* added nfeature() method for dfm objects.
+
+New arguments for dfm()
+-----------------------
+
+* thesaurus: works to record equivalency classes
+  as lists of words or regular expressions for a given key/label.
+
+* keep: regular expression pattern match for features to keep
+
+
+quanteda 0.5.6
+==============
+
+* added readLIWCdict() to read LIWC-formatted dictionaries
+
+* fixed a "bug"/feature in readWStatDict() that eliminated wildcards (and all other
+  punctuation marks) - now only converts to lower.
+
+* improved clean() functions to better handle Twitter, punctuation, and 
+  removing extra whitespace
+
 quanteda 0.5.5
 ==============
+
+* fixed broken dictionary option in dfm()
+
+* fixed a bug in dfm() that was preventing clean() options from being passed through
+
+* added Dice and point-wise mutual information as association measures for
+  collocations()
 
 * added: similarity() to implement similarity measures for documents or features
   as vector representations

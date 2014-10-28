@@ -88,7 +88,7 @@ corpus <- function(x, ...) {
 #' docvars(myzipcorp, speakername=docnames(myzipcorp))
 #' summary(myzipcorp)
 #' }
-corpus.directory<- function(x, enc=NULL, docnames=NULL, 
+corpus.directory <- function(x, enc=NULL, docnames=NULL, 
                             docvarsfrom=c("none", "filenames", "headers"), 
                             docvarnames=NULL, sep='_', pattern="\\.txt$",
                             source=NULL, notes=NULL, citation=NULL, ...) {
@@ -97,7 +97,7 @@ corpus.directory<- function(x, enc=NULL, docnames=NULL,
     docvarsfrom <- match.arg(docvarsfrom)
     texts <- getTextDir(x, pattern=pattern)
     fnames <- NULL
-    if (docvarsfrom == 'filenames') {
+    if (docvarsfrom == "filenames") {
         fnames <- list.files(x, full.names=TRUE)
         snames <- getRootFileNames(fnames)
         snames <- gsub(".txt", "", snames)
@@ -460,7 +460,8 @@ docvars <- function(x, field=NULL) {
         return(NULL)
     if (is.null(field))
         return(documents(x)[, docvarsIndex, drop=FALSE])
-    return(documents(x)[, field, drop=FALSE])
+    #return(documents(x)[, field, drop=FALSE])
+    return(documents(x)[, field, drop=TRUE])
 }
 
 #' @rdname docvars
@@ -548,12 +549,12 @@ docnames.corpus <- function(x) {
     return(x)
 }
 
-#' get the number of documents
+#' get the number of documents or features
 #' 
-#' Returns the number of documents in a corpus objects
+#' Returns the number of documents or features in a quanteda object.
 #' @param x a corpus or dfm object
 #' @param ... additional parameters
-#' @return an integer (count) of the number of documents in the corpus or dfm
+#' @return an integer (count) of the number of documents or features in the corpus or dfm
 #' @export
 ndoc <- function(x) {
     UseMethod("ndoc")
@@ -764,7 +765,7 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
 #' @examples
 #' # simple example
 #' mycorpus <- corpus(c(textone="This is a sentence.  Another sentence.  Yet another.", 
-#'                      textwo="Première phrase.  Deuxième phrase."), 
+#'                      textwo="Premiere phrase.  Deuxieme phrase."), 
 #'                    docvars=list(country=c("UK", "USA"), year=c(1990, 2000)),
 #'                    notes="This is a simple example to show how changeunits() works.")
 #' language(mycorpus) <- c("english", "french")                   
@@ -842,7 +843,7 @@ rep.data.frame <- function(x, ...)
     # combine the documents info, after warning if not column-conforming
     if (!setequal(names(c1$documents), names(c2$documents)))
         warning("different document-level data found, filling missing values with NAs.", noBreaks.=TRUE)
-    c1$documents <- combineByName(c1$documents, c2$documents, stringsAsFactors=FALSE)
+    c1$documents <- combineByName(c1$documents, c2$documents)
     
     
     # settings
@@ -879,8 +880,8 @@ combineByName <- function(A, B, ...) {
         #print(a_b.names)
         #print("Columns in data frame B but not in data frame A:")
         #print(b_a.names)
-    } else if(a.names==b.names & a.type==b.type){
-        C <- rbind(A,B, ...)
+    } else if (a.names==b.names && a.type==b.type) {
+        C <- rbind(A, B)
         return(C)
     }
     C <- list()
@@ -906,6 +907,6 @@ combineByName <- function(A, B, ...) {
         C[[i]] <- vec
     }
     names(C) <- all.names
-    C <- as.data.frame(C, ...)
+    C <- as.data.frame(C) #, stringsAsFactors=TRUE)
     return(C)
 }

@@ -1,49 +1,4 @@
-
-cleanSingle <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
-                        additional=NULL, twitter=FALSE) {
-
-    s <- gsub("_", "undeeerscoooore", s)
-    
-    if (twitter) {
-        s <- gsub("#", "hhaasshh", s)
-        s <- gsub("@", "aattssiiggnn", s)
-    }
-    if (removePunct) {
-        s <- gsub("[[:punct:]]", "", s)
-    }
-    
-    # remove punctuation, plus any additional characters
-#     remove <- paste("\\]|[$%&'/;`~!\"\\(\\)\\*\\+\\,\\.\\:\\<\\=\\>\\?\\[\\^\\{\\|\\}",
-#                     # only remove if twitter=FALSE
-#                     ifelse(!twitter, "#@]", "]"),  
-#                     # for additional grep elements
-#                     ifelse(!is.null(additional), paste("|", additional, sep=""), ""),
-#                     "|\\-",  # this has to go last
-#                     sep="")
-#     print(remove)
-#     
-    # must remove "punctuation" first
-    if (removeDigits) {
-        s <- gsub("[[:digit:]]", "", s)
-    } 
-    if (lower) {
-        s <- tolower(s)
-    }
-
-    if (twitter) {
-        s <- gsub("hhaasshh", "#", s)
-        s <- gsub("aattssiiggnn", "@", s)
-    }
-    s <- gsub("undeeerscoooore", "_", s)
-    if (!is.null(additional)) {
-        s <- gsub(additional, "", s)
-    }
-
-    # convert 2+ multiple whitespaces into one
-    # s <- gsub("\\s{2,}", " ", s)
-    # remove leading and trailing whitespace and return, plus additional
-    gsub("^ +| +$", "", s)
-}
+## SHOULD IMPLEMENT PRESERVATION OF URLs
 
 #' simple cleaning of text before processing
 #' 
@@ -65,41 +20,56 @@ cleanSingle <- function(s, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
 #' @param ... additional parameters
 #' @return A character vector equal in length to the original texts, after cleaning.
 #' @examples
-#' clean("This is 1 sentence with 1.9 numbers in it, and one comma.", removeDigits=FALSE)
-#' clean("This is 1 sentence with 1.9 numbers in it, and one comma.", lower=FALSE)
-#' clean("The \"economy\" is [worth] £1,000bn or approx. €1.2 trillion.")
-#' clean("The \"economy\" is [worth] £1,000bn or approx. €1.2 trillion.", additional="[£€]")
+#' clean("This is 1 sentence with 2.0 numbers in it, and one comma.", removeDigits=FALSE)
+#' clean("This is 1 sentence with 2.0 numbers in it, and one comma.", lower=FALSE)
 #' clean("We are his Beliebers, and him is #ourjustin @@justinbieber we love u", twitter=TRUE)
 #' clean("Collocations can be represented as inheritance_tax using the _ character.")
+#' clean("But under_scores can be removed using the additional argument.", additional="[_]")
 #' 
 #' # for a vector of texts
-#' clean(c("This is 1 sentence with 1.9 numbers in it, and one comma.", 
-#'         "€1.2 billion was spent on text analysis in 2014."))
+#' clean(c("This is 1 sentence with 2.0 numbers in it, and one comma.", 
+#'         "$1.2 billion was spent on text analysis in 2014."))
 #' @export
 clean <- function(x, ...) {
     UseMethod("clean")
 }
 
 
-
 #' @rdname clean
 #' @export
 clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, 
-                            additional=NULL, twitter=FALSE, ...) {
+                            additional=NULL, twitter=TRUE, ...) {
     if (!(removeDigits | removePunct | lower) & is.null(additional)) {
         warning("  clean: text unchanged")
     }
-    return(sapply(x, cleanSingle, removeDigits=removeDigits, removePunct=removePunct, 
-                  lower=lower, additional=additional, twitter=twitter,
-                  USE.NAMES=FALSE))
+    if (removePunct) {
+        # use "negative lookahead" to keep Twitter symbols, always keep "_"
+        # remove other punctuation from POSIX [:punct:]
+        remove <- paste("(?![",
+                        ifelse(twitter, "@#_", "_"),
+                        "])[[:punct:]]", sep="")
+       x <- gsub(remove, "", x, perl=TRUE)
+    }
+    
+    if (removeDigits) 
+        x <- gsub("[[:digit:]]", "", x)
+    if (lower) 
+        x <- tolower(x)
+    
+    if (!is.null(additional))
+        x <- gsub(additional, "", x)
+    
+    # convert 2+ multiple whitespaces into one
+    x <- gsub("\\s{2,}", " ", x, perl=TRUE)
+    # remove leading and trailing whitespace and return
+    gsub("^ +| +$", "", x)
 }
-
 
 
 #' @rdname clean
 #' @export
 clean.corpus <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, 
-                         additional=NULL, twitter=FALSE, ...) {
+                         additional=NULL, twitter=TRUE, ...) {
     clean(texts(x), removeDigits=removeDigits, removePunct=removePunct, lower=lower, 
           additional=additional, ...)
 }
@@ -128,3 +98,4 @@ clean.corpus <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
 wordstem <- function(words, language = "porter") {
     SnowballC::wordStem(words, language)
 }
+
