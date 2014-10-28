@@ -52,6 +52,22 @@ Currently working for vectors of texts -- not specially defined for a dfm.
 \details{
 This naive Bayes model works on word counts, with smoothing.
 }
+\examples{
+## Example from 13.1 of _An Introduction to Information Retrieval_
+trainingset <- matrix(c(1, 2, 0, 0, 0, 0,
+                        0, 2, 0, 0, 1, 0,
+                        0, 1, 0, 1, 0, 0,
+                        0, 1, 1, 0, 0, 1,
+                        0, 3, 1, 0, 0, 1),
+                      ncol=6, nrow=5, byrow=TRUE,
+                      dimnames = list(docs=paste("d", 1:5, sep=""),
+                                      features=c("Beijing", "Chinese",  "Japan", "Macao",
+                                        "Shanghai", "Tokyo")))
+trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered=TRUE)
+## replicate IIR p261 prediction for test set (document 5)
+nb.p261 <- textmodel_NB(as.dfm(trainingset), trainingclass, smooth=1, prior="docfreq")
+print(unclass(predict(nb.p261)))
+}
 \author{
 Kenneth Benoit
 }

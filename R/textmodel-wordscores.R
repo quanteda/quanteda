@@ -3,8 +3,8 @@
 #' Wordscores text model
 #' 
 #' \code{textmodel_wordscores} implements Laver, Benoit and Garry's (2003) 
-#' wordscores method for scaling of a single dimension.  This is normally not
-#' called directly, but rather through \code{\link{textmodel}}.
+#' wordscores method for scaling of a single dimension.  This can be called directly, but the
+#' recommended method is through \code{\link{textmodel}}.
 #' @param data the dfm on which the model will be fit.  Does not need to
 #'   contain only the training documents, since the index of these will be
 #'   matched automatically.
@@ -20,6 +20,8 @@
 #' data(LBGexample)
 #' ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores")
 #' ws
+#' # same as:
+#' textmodel_wordscores(LBGexample, c(seq(-1.5, 1.5, .75), NA))
 #' predict(ws)
 #' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
 #'   "Extracting Policy Positions From Political Texts Using Words as Data." 

@@ -81,6 +81,21 @@ colNorm <- function(x) {
 #' @return \item{prior}{argument passed as a prior}
 #' @return \item{smooth}{smoothing parameter}
 #' @author Kenneth Benoit
+#' @examples
+#' ## Example from 13.1 of _An Introduction to Information Retrieval_
+#' trainingset <- matrix(c(1, 2, 0, 0, 0, 0,
+#'                         0, 2, 0, 0, 1, 0,
+#'                         0, 1, 0, 1, 0, 0,
+#'                         0, 1, 1, 0, 0, 1,
+#'                         0, 3, 1, 0, 0, 1), 
+#'                       ncol=6, nrow=5, byrow=TRUE,
+#'                       dimnames = list(docs=paste("d", 1:5, sep=""),
+#'                                       features=c("Beijing", "Chinese",  "Japan", "Macao", 
+#'                                         "Shanghai", "Tokyo")))
+#' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered=TRUE)
+#' ## replicate IIR p261 prediction for test set (document 5)
+#' nb.p261 <- textmodel_NB(as.dfm(trainingset), trainingclass, smooth=1, prior="docfreq")
+#' print(unclass(predict(nb.p261)))
 #' @export
 textmodel_NB <- function(x, y, smooth=1, prior="uniform", distribution="multinomial", ...) 
 {
@@ -243,11 +258,9 @@ print.naivebayes <- function(x, n=30L, ...) {
     cat("\nTraining classes and priors:\n")
     print(x$Pc)
     
-    cat("\nLikelihoods:\n")
-    print(x$PwGc)
-    
-    cat("\nClass Posteriors:\n")
-    print(x$PcGw)
+    cat("\n\t\t\t  Likelihoods:\tClass Posteriors:\n")
+    print(head(t(rbind(x$PwGc, x$PcGw)), n))
+        
     cat("\n")
 }
 

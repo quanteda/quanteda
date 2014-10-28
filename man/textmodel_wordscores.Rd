@@ -21,14 +21,16 @@ to match the LBG (2003) method.}
 }
 \description{
 \code{textmodel_wordscores} implements Laver, Benoit and Garry's (2003)
-wordscores method for scaling of a single dimension.  This is normally not
-called directly, but rather through \code{\link{textmodel}}.
+wordscores method for scaling of a single dimension.  This can be called directly, but the
+recommended method is through \code{\link{textmodel}}.
 }
 \examples{
 library(quantedaData)
 data(LBGexample)
 ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores")
 ws
+# same as:
+textmodel_wordscores(LBGexample, c(seq(-1.5, 1.5, .75), NA))
 predict(ws)
 }
 \author{
