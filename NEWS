@@ -1,3 +1,21 @@
+quanteda 0.6.0 
+==============
+
+* Added textmodel for scaling and prediction methods, including for starters,
+  wordscores and naivebayes class models.  LIKELY TO BE BUGGY AND QUIRKY FOR A WHILE.
+
+
+quanteda 0.5.8 
+==============
+
+Classification and scaling methods
+----------------------------------
+
+* New dfm methods for fitmodel(), predict(), and specific model fitting
+  and prediction methods called by these, for classification and scaling 
+  of different "textmodel" types, such as wordscores and Naive Bayes
+  (for starters).
+
 quanteda 0.5.7
 ==============
 

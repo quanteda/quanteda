@@ -3,8 +3,8 @@
 \alias{trimdfm}
 \title{Trim a dfm based on a subset of features and words}
 \usage{
-trimdfm(x, minCount = 1, minDoc = 1, sample = NULL, keep = NULL,
-  verbose = TRUE)
+trimdfm(x, minCount = 1, minDoc = 1, minTotal = 0, sample = NULL,
+  keep = NULL, verbose = TRUE)
 }
 \arguments{
 \item{x}{document-feature matrix created by \link{dfm}}
@@ -12,6 +12,8 @@ trimdfm(x, minCount = 1, minDoc = 1, sample = NULL, keep = NULL,
 \item{minCount}{minimum feature count}
 
 \item{minDoc}{minimum number of documents in which a feature appears}
+
+\item{minTotal}{minimum total feature threshold to retain a document}
 
 \item{sample}{how many features to retain (based on random selection)}
 
