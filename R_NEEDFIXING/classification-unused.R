@@ -1,3 +1,59 @@
+#' Transform a list of ordinal target labels to a numeric vector
+#' 
+#' Returns a numeric vector for use as target variable for a textmodel
+#' 
+#' @param categories A character vector of ordinal target values
+#' @param values A list of numbers to map the ordinal values on to
+#' @return A numeric vector of the same length as categories
+#' @export
+#' @author Paul Nulty
+#' @examples
+#' cats <- docvars(inaugCorpus, 
+#' 
+#' # combine these methods for more complex weightings, e.g. as in Section 6.4 of
+#' # Introduction to Information Retrieval
+#' logTfDtm <- weight(dtm, type="logTf")
+#' wfidfDtm <- weight(logTfDtm, type="tfidf")
+#' 
+#' @references Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
+#'   Introduction to information retrieval. Vol. 1. Cambridge: Cambridge 
+#'   university press, 2008.
+transformOrdinal <- function(categories, values=NULL){
+    catFactor <- as.factor(categories)
+    if(is.null(values)){
+        return(as.numeric(catFactor))
+    }
+    if(length(levels(catFactor))!=length(values)){
+        stop(sprintf('Number of values (%d) does not equal number of categories (%d)',length(values), length(levels(catFactor)) ))
+    }
+    
+    newVals <- rep(values[1],length(cats))
+    i <- 2
+    while(i<=length(values)){
+        newVals[which(cats==levels(catFactor)[i])] <- values[i]
+        i <- i+1
+    }
+    return(newVals)
+}
+
+
+
+crossVal <- function(data, values, k=1){
+    i <- 1
+    foldSize <- nrow(data)/k
+    while(i<nrow(data)){
+        thisFold <- data[]
+        
+    }
+
+    return(newVals)
+}
+
+
+library(quantedData)
+data(sotuCorp)
+
+
 # Naive Bayes classifier for texts
 #
 # Currently working for vectors of texts.
@@ -229,38 +285,4 @@ feature.select <- function(wfm, trclass, freq="document", method="chi2",
 #feature.select(as.wfm(trainingset, word.margin=2), trainingclass, method="chi2")
 #feature.select(as.wfm(trainingset, word.margin=2), trainingclass, method="mi")
 
-# classic.wordscores() from austin
-classic.wordscores <- function (wfm, scores) 
-{
-    if (!is.wfm(wfm)) 
-        stop("Function not applicable to this object")
-    if (length(scores) != length(docs(wfm))) 
-        stop("There are not the same number of documents as scores")
-    if (any(is.na(scores))) 
-        stop("One of the reference document scores is NA\nFit the model with known scores and use 'predict' to get virgin score estimates")
-    thecall <- match.call()
-    C.all <- as.worddoc(wfm)
-    C <- C.all[rowSums(C.all) > 0, ]
-    F <- scale(C, center = FALSE, scale = colSums(C))
-    ws <- apply(F, 1, function(x) {
-        sum(scores * x)
-    })/rowSums(F)
-    pi <- matrix(ws, nrow = length(ws))
-    rownames(pi) <- rownames(C)
-    colnames(pi) <- c("Score")
-    val <- list(pi = pi, theta = scores, data = wfm, call = thecall)
-    class(val) <- c("classic.wordscores", "wordscores", class(val))
-    return(val)
-}
-
-
-## make rows add up to one
-rowNorm <- function(x) {
-    x / outer(rowSums(x), rep(1, ncol(x)))  
-}
-
-## make cols add up to one 
-colNorm <- function(x) {
-    x / outer(rep(1, nrow(x)), colSums(x))
-}
 
