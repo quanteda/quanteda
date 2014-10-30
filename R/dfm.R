@@ -727,9 +727,7 @@ nfeature.dfm <- function(x) {
 #' Weight the feature frequencies in a dfm by various methods
 #' 
 #' Returns a document by feature matrix with the feature frequencies weighted 
-#' according to one of several common methods. Currently implemented are length 
-#' normalization (dividing the frequency of the feature by the length of the 
-#' document), tf-idf, and positive pointwise mutual information
+#' according to one of several common methods. 
 #' 
 #' @param x document-feature matrix created by \link{dfm}
 #' @param type The weighting function to aapply to the dfm. One of: 
@@ -740,13 +738,12 @@ nfeature.dfm <- function(x) {
 #'   document frequency. For a full explanation, see, for example, 
 #'   \url{(http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html)}.
 #'    This implementation will not return negative values. 
-#'   \item logTf - The
+#'    \item logTf - The 
 #'   natural log of the term frequency 
-#'   \item maxTf - The term frequency divided
+#'   \item maxTf - The term frequency divided 
 #'   by the frequency of the most frequent term in the document 
-#'   \item ppmi -
-#'   Positive Pointwise Mutual Information }
-#' @param smooth Apply additivee smoothing to the matrix before weighting. TRUE
+#'   \item ppmi -   Positive Pointwise Mutual Information }
+#' @param smooth Apply additivee smoothing to the matrix before weighting. TRUE 
 #'   by default, adding 0.5 to counts.
 #' @return The original dfm, with values weighted according to type function.
 #' @export
@@ -765,11 +762,20 @@ nfeature.dfm <- function(x) {
 #' topfeatures(tfidfDtm)
 #' pmiDtm <- weight(dtm+1, type="ppmi")
 #' topfeatures(pmiDtm)
-weight <- function(x, type=c("normTf","maxTf","logTf", "tfidf", "ppmi"), smooth=TRUE){
+#' 
+#' # combine these methods for more complex weightings, e.g. as in Section 6.4 of
+#' # Introduction to Information Retrieval
+#' logTfDtm <- weight(dtm, type="logTf")
+#' wfidfDtm <- weight(logTfDtm, type="tfidf")
+#' 
+#' @references Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
+#'   Introduction to information retrieval. Vol. 1. Cambridge: Cambridge 
+#'   university press, 2008.
+weight <- function(x, type=c("normTf","maxTf","logTf", "tfidf", "ppmi"), smooth=FALSE){
     class_xorig <- class(x)
     type <- match.arg(type)
     if(smooth){
-        x <- smooth(x,type="additive",alpha=0.5)
+        x <- smooth(x)
     }
     if(type=="normTf"){
         x <- x/rowSums(x)
@@ -798,13 +804,12 @@ weight <- function(x, type=c("normTf","maxTf","logTf", "tfidf", "ppmi"), smooth=
 }
 
 
-#' Smooth the feature frequencies in a dfm
+#' Additive smoothing of feature frequencies in a dfm
 #' 
 #' Smooths the feature counts by adding a small value (default 0.5) to remove
 #' zero counts. Zero counts are problematic for probability-based models.
 #' 
 #' @param x document-feature matrix created by \link{dfm}
-#' @param type The type of smoothign to apply. Currently just additive smoothing.
 #' @param alpha The value to add to all counts. Default is 0.5
 #' @return The original dfm, with values weighted according to type function.
 #' @export
@@ -814,10 +819,7 @@ weight <- function(x, type=c("normTf","maxTf","logTf", "tfidf", "ppmi"), smooth=
 #' head(dtm[1,])
 #' smDtm <- smooth(dtm)
 #' head(smDtm[1,])
-smooth <- function(x, type=c("additive"), alpha=0.5){
-    type <- match.arg(type)
-    if(type=="additive"){
-        x <- x+alpha
-    }
+smooth <- function(x, alpha=0.5){
+    x <- x+alpha
     return(x)
 }

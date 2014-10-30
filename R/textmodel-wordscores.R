@@ -18,12 +18,12 @@
 #' @examples 
 #' library(quantedaData)
 #' data(LBGexample)
-#' #LBGexample <- as.dfm(LBGexample)
-#' #ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores")
-#' #ws
-#' ## same as:
-#' #textmodel_wordscores(LBGexample, c(seq(-1.5, 1.5, .75), NA))
-#' #predict(ws)
+#' LBGexample <- as.dfm(LBGexample)
+#' ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores")
+#' ws
+#' # same as:
+#' textmodel_wordscores(LBGexample, c(seq(-1.5, 1.5, .75), NA))
+#' predict(ws)
 #' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
 #'   "Extracting Policy Positions From Political Texts Using Words as Data." 
 #'   American Political Science Review 97(02): 311-31; Beauchamp, N. 2012. 
