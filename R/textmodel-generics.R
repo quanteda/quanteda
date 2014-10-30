@@ -185,9 +185,9 @@ print.textmodelpredicted <- function(x, ...) {
 }
 
 
-#' summay of a textmodel object
+#' summary of a textmodel object
 #' 
-#' Summarize the results of a fitted or predited textmodel object.
+#' Summarize the results of a fitted or predicted textmodel object.
 #' @param object textmodel object to be summarized
 #' @param ... additional arguments to \link{print}
 #' @export
@@ -196,8 +196,6 @@ summary.textmodel <- function(object, ...) {
 }
 
 #' @rdname summary.textmodel
-#' 
-#' Summarize the results of a fitted or predited textmodel object.
 #'@export
 summary.textmodelfitted <- function(object, ...) {
     cat("Predicted textmodel of type:", class(x)[3], "\n\n")
@@ -208,8 +206,6 @@ summary.textmodelfitted <- function(object, ...) {
 }
 
 #' @rdname summary.textmodel
-#' 
-#' Summarize the results of a fitted or predited textmodel object.
 #'@export
 summary.textmodelpredicted <- function(object, ...) {
     NextMethod(object)    
