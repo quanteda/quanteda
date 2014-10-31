@@ -38,20 +38,72 @@ transformOrdinal <- function(categories, values=NULL){
 
 
 
-crossVal <- function(data, values, k=1){
-    i <- 1
-    foldSize <- nrow(data)/k
-    while(i<nrow(data)){
-        thisFold <- data[]
+#' Perform cross-validation
+#' 
+#' Returns a numeric vector for use as target variable for a textmodel
+#' 
+#' @param dtm A dfm containing documents and features for training and testing.
+#' @param values The 'true' target values for each document
+#' @param k The number of 'folds' to split the data into. Default is leave-one-out.
+#' @export
+#' @author Paul Nulty
+crossVal <- function(dtm, values, k=nrow(dtm)){
+    foldSize <-  floor(nrow(dtm)/k)
+    foldStart <- 1
+    foldEnd <- 1
+    while(foldStart < nrow(dtm)){
+        foldEnd <- foldStart+foldSize
+        if (foldEnd > nrow(dtm)){
+            foldEnd <-  nrow(dtm)
+        }
         
+        thisTrain <- as.dfm(dtm[-(foldStart:foldEnd),])
+        trainRefs <- refs[-(foldStart:foldEnd)]
+        
+        thisHoldout <- as.dfm(dtm[foldStart:foldEnd,])
+        testRefs <- refs[foldStart:foldEnd]
+        
+        
+        thisModel <- textmodel(thisTrain, trainRefs)
+        thisResult <- predict(thisModel, thisHoldout)
+        
+        foldStart <- foldStart+foldSize
     }
-
-    return(newVals)
 }
 
 
-library(quantedData)
+library(quantedaData)
+library(quanteda)
 data(sotuCorp)
+dtm <- dfm(sotuCorp)
+refs <- transformOrdinal(docvars(sotuCorp, "party"))
+crossVal(dtm,refs)
+i <- 1
+k=5
+foldSize <-  floor(nrow(dtm)/k)
+foldStart <- 1
+foldEnd <- 1
+while(foldStart < nrow(dtm)){
+    foldEnd <- foldStart+foldSize
+    if (foldEnd > nrow(dtm)){
+        foldEnd = nrow(dtm)
+    }
+    
+    thisTrain <- as.dfm(dtm[-(foldStart:foldEnd),])
+    trainRefs <- refs[-(foldStart:foldEnd)]
+    
+    thisHoldout <- as.dfm(dtm[foldStart:foldEnd,])
+    testRefs <- refs[foldStart:foldEnd]
+    
+    
+    thisModel <- textmodel(thisTrain, trainRefs)
+    thisResult <- predict(thisModel, thisHoldout)
+    
+    foldStart <- foldStart+foldSize
+}
+
+thisModel <- textmodel(thisTrain, trainRefs)
+thisResult <- predict(thisModel, thisHoldout)
 
 
 # Naive Bayes classifier for texts
