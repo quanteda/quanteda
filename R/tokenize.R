@@ -86,20 +86,36 @@ tokenize.corpus <- function(x, ...) {
 #' 
 segmentSentence <- function(x, delimiter="[.!?:;]") {
     # strip out CRs and LFs, tabs
-    text <- gsub("\\n|\\t", "", x)
+    text <- gsub("\\n+|\\t+", " ", x)
+    # remove trailing and leading spaces
+    text <- gsub("^ +| +$", "", text)
     
-    #exceptions <- c("Mr.", "Mrs.", "Ms.", "Dr.", "Jr.", "Prof.", "Ph.D.")
-    #test <- gsub(paste(exceptions))
+    # remove . delimiter from common title abbreviations
+    exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph",  
+                    "M", "MM")
+    findregex <- paste("\\b(", paste(exceptions, collapse="|"), ")\\.", sep="")
+    text <- gsub(findregex, "\\1", text)
+    
+    # preserve decimals
+    numbersWithDecimalsregex <- "(\\d)\\.([\\d\\s])"
+    text <- gsub(numbersWithDecimalsregex, "\\1_DECIMAL_\\2", text, perl=TRUE)
+    
+    # preserve ellipses
+    text <- gsub("\\.{3}", "_ELIPSIS_", text)
     
     # recover punctuation characters
-    tkns <- tokenize(x, removePunct=FALSE, simplify=TRUE)
+    tkns <- tokenize(text, removePunct=FALSE, simplify=TRUE)
     punctpos <- grep(paste(delimiter, "$", sep=""), tkns)
     puncts <- substr(tkns[punctpos], nchar(tkns[punctpos]), nchar(tkns[punctpos]))
     
     # split the text into sentences
-    sentences <- unlist(strsplit(x, delimiter))
+    sentences <- unlist(strsplit(text, delimiter))
     # paste punctuation marks back onto sentences
     result <- paste(sentences, puncts, sep="")
+    # put decimals back
+    result <- gsub("_DECIMAL_", "\\.", result)
+    # put elipses back
+    result <- gsub("_ELIPSIS_", "...", result)
     # remove leading and trailing spaces and return
     gsub("^ +| +$", "", result)
 }

@@ -772,7 +772,7 @@ nfeature.dfm <- function(x) {
 #'   Introduction to information retrieval. Vol. 1. Cambridge: Cambridge 
 #'   university press, 2008.
 weight <- function(x, type=c("normTf","maxTf","logTf", "tfidf", "ppmi"), smooth=FALSE){
-    class_xorig <- class(x)
+    attr_orig <- attributes(x)
     type <- match.arg(type)
     if(smooth){
         x <- smooth(x)
@@ -788,7 +788,7 @@ weight <- function(x, type=c("normTf","maxTf","logTf", "tfidf", "ppmi"), smooth=
     }else if(type=="tfidf"){
         idf <- log(ndoc(x)+1) - log(colSums(x > 0.5) + 1)
         x <- t(t(x) * idf)
-    }else if(type=="ppmi"){
+    } else if (type=="ppmi"){
         pij <- x/rowSums(x)
         pij[is.nan(pij)] <- 0
         pi <- colSums(x)
@@ -796,10 +796,10 @@ weight <- function(x, type=c("normTf","maxTf","logTf", "tfidf", "ppmi"), smooth=
         pj[is.nan(pj)] <- 0
         pmi <- (pij / t(outer(pi,pj)))
         x <- abs(pmi)
-    }else{
+    } else {
         warning( sprintf("Type %s not implmented, no weighting performed.", type))
     }
-    class(x) <- class_xorig
+    attributes(x) <- attr_orig
     return(x)
 }
 
@@ -816,10 +816,12 @@ weight <- function(x, type=c("normTf","maxTf","logTf", "tfidf", "ppmi"), smooth=
 #' @author Paul Nulty
 #' @examples
 #' dtm <- dfm(inaugCorpus)
-#' head(dtm[1,])
-#' smDtm <- smooth(dtm)
-#' head(smDtm[1,])
-smooth <- function(x, alpha=0.5){
-    x <- x+alpha
-    return(x)
+#' dtm[1:5,1:10]
+#' smDtm <- smoothdfm(dtm)
+#' smDtm[1:5,1:10]
+smoothdfm <- function(x, alpha=0.5) {
+    attr_orig <- attributes(x)
+    x <- x + alpha
+    attributes(x) <- attr_orig
+    x
 }

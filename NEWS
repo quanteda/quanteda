@@ -4,6 +4,10 @@ quanteda 0.6.0
 * Added textmodel for scaling and prediction methods, including for starters,
   wordscores and naivebayes class models.  LIKELY TO BE BUGGY AND QUIRKY FOR A WHILE.
 
+* Added smoothdfm() and weight() methods for dfms.
+
+* Fixed a bug in segmentSentence().
+
 
 quanteda 0.5.8 
 ==============

@@ -398,13 +398,13 @@ metadoc <- function(corp, field=NULL) {
     if (length(field)>1)
         stop("cannot assign multiple fields.")
     if (is.null(field)) {
-        documents(corp)[, grep("^\\_", names(documents(corp))), drop=FALSE]
+        documents(corp)[, grep("^\\_", names(documents(corp))), drop=TRUE]
     } else {
         ## error if field not defined in data
         fieldname <- ifelse(substr(field, 1, 1)=="_", 
                             field, 
                             paste("_", field, sep=""))
-        documents(corp)[, fieldname, drop=FALSE]
+        documents(corp)[, fieldname, drop=TRUE]
     }
 }
 
