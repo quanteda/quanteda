@@ -5,6 +5,7 @@
 \alias{corpus.VCorpus}
 \alias{corpus.character}
 \alias{corpus.directory}
+\alias{corpus.excel}
 \alias{corpus.twitter}
 \alias{is.corpus}
 \title{Constructor for corpus objects}
@@ -15,6 +16,9 @@ corpus(x, ...)
   docvarsfrom = c("none", "filenames", "headers"), docvarnames = NULL,
   sep = "_", pattern = "\\\\.txt$", source = NULL, notes = NULL,
   citation = NULL, ...)
+
+\method{corpus}{excel}(x, docnames = row.names(x), textCol = 1,
+  docvarsfrom = NULL, source = NULL, notes = NULL, citation = NULL, ...)
 
 \method{corpus}{twitter}(x, enc = NULL, notes = NULL, citation = NULL,
   ...)
@@ -61,6 +65,11 @@ by \code{sep} or from meta-data embedded in the text file header (\code{headers}
 \item{notes}{A string containing notes about who created the text, warnings, To Dos, etc.}
 
 \item{citation}{Information on how to cite the corpus.}
+
+\item{textCol}{The column of the sheet that contains the texts
+the docvars from. By defauls, takes everything except the textCol by
+\code{sep} or from meta-data embedded in the text file header
+(\code{headers}).}
 
 \item{docvars}{A data frame of attributes that is associated with each text.}
 
@@ -154,6 +163,8 @@ myzipcorp <- corpus(zipfiles("http://kenbenoit.net/files/EUcoalsubsidies.zip"),
                     notes="From some EP debate about coal mine subsidies")
 docvars(myzipcorp, speakername=docnames(myzipcorp))
 summary(myzipcorp)
+}
+\dontrun{
 }
 #
 ## import a tm VCorpus

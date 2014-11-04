@@ -132,6 +132,33 @@ corpus.directory <- function(x, enc=NULL, docnames=NULL,
     tmpCorp
 }
 
+#' @param textCol  The column of the sheet that contains the texts
+#'   the docvars from. By defauls, takes everything except the textCol by
+#'   \code{sep} or from meta-data embedded in the text file header
+#'   (\code{headers}).
+#' @rdname corpus
+#' @export
+#' @examples 
+#' \dontrun{
+#'} 
+#' 
+corpus.excel <- function(x, docnames=row.names(x),
+                             textCol=1, docvarsfrom=NULL, 
+                             source=NULL, notes=NULL, citation=NULL, ...) {
+    if (is.null(docvarsfrom)){
+        docvarsfrom <- -textCol
+    }
+    if (class(x)[1] != "excel") stop("first argument must be an excel sheet")
+    x <- data.table(x)
+    class(x) <- (list("excel", "data.table", "data.frame")) # data.table unclasses it
+    dvars <- NULL    
+    txts <- as.character(unlist(x[,textCol,with=FALSE]))
+    dvars <- x[, docvarsfrom, with=FALSE]
+    tmpCorp <- corpus(txts, enc=enc, docnames=docnames, docvars=dvars,
+                          source=source, notes=notes, citation=citation)
+    return(tmpCorp)
+}
+
 
 #' @rdname corpus
 #' @export

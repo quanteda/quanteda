@@ -33,6 +33,38 @@ directory <- function(path=NULL) {
 }
 
 
+#'Function to declare a connection to an excel file
+#'
+#'Function to declare a connection to a excel file.
+#'
+#'@param path  String describing the full path to the excel file or NULL to use 
+#'  a GUI to choose a directory from disk
+#'@param sheetIndex  The index of the sheet of the excel file to read (as passed
+#'  to read.xlsx2)
+#'@export
+#' @examples 
+#' \dontrun{
+#'} 
+#'@export
+excel <- function(path=NULL, sheetIndex=1) {
+    require(xlsx)
+    # choose it from a GUI if none exists
+    if (is.null(path)) {
+        if (require(tcltk2))
+            texts <- tk_choose.dir()
+        if (is.na(texts)) stop("Directory selection cancelled by user.")
+        else
+            stop("you need tcltk2 installed to use GUI directory selection.")
+    }
+    stopifnot(class(path) == "character")
+    stopifnot(file.exists(path))
+    
+    sheet <- read.xlsx2(path,  stringsAsFactors=FALSE, sheetIndex=sheetIndex)
+    class(sheet) <- (list("excel","data.frame"))
+
+    return(sheet)
+}
+
 #' Function to declare a twitter search
 #' 
 #' Function to declare a connection to a twitter search
