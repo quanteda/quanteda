@@ -1,3 +1,11 @@
+quanteda 0.6.1
+==============
+
+* started textmodel_wordfish, textmodel_ca
+
+* now depends on ca, austin
+
+
 quanteda 0.6.0 
 ==============
 

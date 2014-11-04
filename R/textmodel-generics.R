@@ -20,6 +20,10 @@
 #'
 #' # prediction method for wordscores
 #' predict(ws, ieDfm, rescaling="mv")
+#' 
+#' # wordfish
+#' wf <- textmodel(ieDfm, model="wordfish", dir=c(2,1))
+#' 
 textmodel <- function(x, ...) {
     UseMethod("textmodel")
 }
@@ -43,18 +47,24 @@ textmodel <- function(x, ...) {
 #'   specific models, e.g. \link{textmodel_wordscores}, \link{textmodel_NB}, 
 #'   etc.
 #' @export
-textmodel.dfm <- function(x, y, model=c("wordscores", "NB"), ...) {
+textmodel.dfm <- function(x, y=NULL, model=c("wordscores", "NB", "wordfish"), ...) {
     model <- match.arg(model)
     call <- match.call()
     Yname <- deparse(substitute(y))
     
-    if (nrow(x) != length(y))
-        stop("x and y contain different numbers of documents.")
-    
     if (model=="wordscores") {
+        if (nrow(x) != length(y))
+            stop("x and y contain different numbers of documents.")
+        
         result <- textmodel_wordscores(x, y, ...)
     } else if (model=="NB") {
+        if (nrow(x) != length(y))
+            stop("x and y contain different numbers of documents.")
         result <- textmodel_NB(x, y, ...)
+    } else if (model=="wordfish") {
+        if (!is.null(y))
+            warning("y values not used with wordfish model. ")
+        result <- textmodel_wordfish(x, ...)
     } else {
         stop(paste("model", method, "not implemented."))
     }
@@ -177,6 +187,8 @@ print.textmodelpredicted <- function(x, ...) {
     if (class(x)[3]=="wordscores") {
         print(as.data.frame(x))
         cat("\n")
+    } else if (class(x)[3]=="wordfish") {
+        NextMethod(x, ...)
     } else {
         cat("Document-level quantitites:\n")
         print(data.frame(Prediction=x$docs$nb.predicted,
