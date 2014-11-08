@@ -12,6 +12,7 @@
 #' ieDfm <- dfm(ie2010Corpus)
 #' wca <- textmodel_ca(ieDfm)
 #' summary(wca)
+#' @import ca
 #' @export
 textmodel_ca <- function(data, smooth=0, ...) {
     if (!is.dfm(data))

@@ -3,24 +3,27 @@
 \alias{textmodel_wordfish}
 \title{Poisson scaling text model}
 \usage{
-textmodel_wordfish(data, smooth = 0, ...)
+textmodel_wordfish(data, method = c("mml", "mcmc"), smooth = 0, ...)
 }
 \arguments{
 \item{data}{the dfm on which the model will be fit.  Does not need to contain
 only the training documents, since the index of these will be matched
 automatically.}
 
+\item{method}{method for estimating the model.  \code{mml} for Lowe's
+implementation of marginal maximum likelihood in \pkg{austin}; \code{mcmc}
+for a Bayesian-MCMC method implemented in JAGS.}
+
 \item{smooth}{a smoothing parameter for word counts; defaults to zero for the
 to match the LBG (2003) method.}
 
-\item{...}{additional arguments passed to \link[austin]{wordfish}}
+\item{...}{additional arguments passed to \link[austin]{wordfish} or to}
 }
 \description{
 \code{textmodel_wordfish} implements Slapin and Proksch's (2008) Poisson
-scaling model, also known as "wordfish", for a single dimension. This can be
-called directly, but the recommended method is through
-\code{\link{textmodel}}.  Currently the method is a wrapper to
-\link[austin]{wordfish} by Will Lowe.
+scaling model, also known as "wordfish", for a single dimension.   This function
+is a wrapper to
+\link[austin]{wordfish} by Will Lowe and to \link{MCMCirtPoisson1d}.
 }
 \examples{
 library(quantedaData)
@@ -33,7 +36,11 @@ summary(wf)
 Kenneth Benoit
 }
 \references{
-Slapin, Jonathan B, and Sven-Oliver Proksch. 2008. "A Scaling
+Benoit, Kenneth and Thomas Daubler.  2014.  "Putting Text in Context: How
+  to Estimate Better Left-Right Positions by Scaling Party Manifesto Data."
+  LSE and University of Mannheim manuscript.
+
+  Slapin, Jonathan B, and Sven-Oliver Proksch. 2008. "A Scaling
   Model for Estimating Time-Series Party Positions From Texts." American
   Journal of Political Science 52(3): 705-22.
 }

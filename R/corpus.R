@@ -600,14 +600,16 @@ ndoc.corpus <- function(x) {
 #' 
 #' Get or set the \code{_language} document-level metadata field in a corpus.
 #' @param corp a corpus object
+#' @param drop return as a vector if \code{TRUE}, otherwise return a \code{data.frame}
 #' @details This function modifies the \code{_language} value set by
 #'   \code{\link{metadoc}}.  It is a wrapper for \code{metadoc(corp, "language")}.
 #' @export
-language <- function(corp) {
-    if ("_language" %in% names(metadoc(corp)))
-        metadoc(corp, "language") 
-    else
-        rep(NULL, ndoc(corp))
+language <- function(corp, drop=TRUE) {
+    if ("_language" %in% names(metadoc(corp))) {
+        result <- metadoc(corp, "language")
+        return(result[,1, drop=drop])
+    } else
+        return(rep(NULL, ndoc(corp)))
 }
 
 #' @rdname language
@@ -624,6 +626,7 @@ language <- function(corp) {
 #' 
 #' Get or set the \code{_encoding} document-level metadata field in a corpus.
 #' @param x a corpus object
+#' @param drop  return as a vector if \code{TRUE}, otherwise return a \code{data.frame}
 #' @details This function modifies the \code{_encoding} value set by 
 #'   \code{\link{metadoc}}.  It is a wrapper for \code{metadoc(corp, "encoding")}.
 #'   
@@ -634,11 +637,12 @@ language <- function(corp) {
 #'   does not convert or set encodings, it simply records a user declaration of a 
 #'   valid encoding.  (We hope to implement checking and conversion later.)
 #' @export
-encoding <- function(x) {
-    if ("_encoding" %in% names(metadoc(x)))
-        metadoc(x, "encoding") 
-    else
-        rep(NULL, ndoc(x))
+encoding <- function(x, drop=TRUE) {
+    if ("_encoding" %in% names(metadoc(x))) {
+        result <- metadoc(x, "encoding") 
+        return(result[,1, drop=drop])
+    } else
+        return(rep(NULL, ndoc(x)))
 }
 
 #' @param value a character vector or scalar representing the new value of the encoding (see Note)

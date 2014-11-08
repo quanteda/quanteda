@@ -4,12 +4,14 @@
 \alias{encoding<-}
 \title{get the encoding of documents in a corpus}
 \usage{
-encoding(x)
+encoding(x, drop = TRUE)
 
 encoding(x) <- value
 }
 \arguments{
 \item{x}{a corpus object}
+
+\item{drop}{return as a vector if \code{TRUE}, otherwise return a \code{data.frame}}
 
 \item{value}{a character vector or scalar representing the new value of the encoding (see Note)}
 }
