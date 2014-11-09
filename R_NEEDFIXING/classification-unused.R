@@ -62,8 +62,7 @@ crossVal <- function(dtm, values, k=nrow(dtm)){
         
         thisHoldout <- as.dfm(dtm[foldStart:foldEnd,])
         testRefs <- refs[foldStart:foldEnd]
-        
-        
+         
         thisModel <- textmodel(thisTrain, trainRefs)
         thisResult <- predict(thisModel, thisHoldout)
         
