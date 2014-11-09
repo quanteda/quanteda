@@ -30,15 +30,15 @@ Description: A package for the management and quantitative analysis of textual
 License: GPL-3
 Depends:
     R (>= 3.0),
-    data.table (>= 1.9.2),
-    austin,
-    ca
+    data.table (>= 1.9.2)
 Imports:
     SnowballC,
     wordcloud,
     slam,
     tm,
-    proxy
+    proxy,
+    austin,
+    ca
 Suggests:
     quantedaData,
     entropy,
@@ -51,7 +51,11 @@ Suggests:
     lda,
     topicmodels,
     tcltk2,
-    knitr
+    knitr,
+    rjags,
+    coda,
+    lattice,
+    xlsx
 URL: http://github.com/kbenoit/quanteda
 BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE
