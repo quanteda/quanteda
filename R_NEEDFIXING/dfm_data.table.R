@@ -1,5 +1,12 @@
+rm(list=ls())
 
 dfm_table <- function(x, ...) {
+    # name the vector if it is unnamed
+    if (is.null(names(x))) {
+        names(x) <- factor(paste("text", 1:length(x), sep=""))
+    }
+    textnames <- factor(names(x))
+    
     # tokenizeTexts is a named list of tokens
     tokenizedTexts <- quanteda::tokenize(x, ...)
     # record original text order, since table() alphabetizes
@@ -20,6 +27,12 @@ dfm_table <- function(x, ...) {
 }
 
 dfm_datatable <- function(x, ...) {
+    # name the vector if it is unnamed
+    if (is.null(names(x))) {
+        names(x) <- factor(paste("text", 1:length(x), sep=""))
+    }
+    textnames <- factor(names(x))
+    
     # tokenizeTexts is a named list of tokens
     tokenizedTexts <- quanteda::tokenize(x, ...)
     # record original text order, since table() alphabetizes
@@ -46,6 +59,12 @@ dfm_datatable <- function(x, ...) {
 
 
 dfm_datatable_dcast <- function(x, ...) {
+    # name the vector if it is unnamed
+    if (is.null(names(x))) {
+        names(x) <- factor(paste("text", 1:length(x), sep=""))
+    }
+    textnames <- factor(names(x))
+    
     # tokenizeTexts is a named list of tokens
     tokenizedTexts <- quanteda::tokenize(x, ...)
     # record original text order, since table() alphabetizes
@@ -72,11 +91,40 @@ dfm_datatable_dcast <- function(x, ...) {
     return(d)
 }
 
+dfm_tapplyonly <- function(x, ...) {
+    # name the vector if it is unnamed
+    if (is.null(names(x))) {
+        names(x) <- factor(paste("text", 1:length(x), sep=""))
+    }
+    textnames <- factor(names(x))
+    
+    # tokenizeTexts is a named list of tokens
+    tokenizedTexts <- quanteda::tokenize(x, ...)
+    # record original text order, since table() alphabetizes
+    originalSortOrder <- (1:length(tokenizedTexts))[order(names(tokenizedTexts))]
+    # construct a "long" format data frame
+    alltokens <- data.frame(docs = rep(names(tokenizedTexts), sapply(tokenizedTexts, length)),
+                            features = unlist(tokenizedTexts, use.names=FALSE),
+                            n=1L)    # make a vector of 1s
+    d <- tapply(alltokens$n, list(alltokens$docs, alltokens$features), sum, rm.na=FALSE)
+    d[which(is.na(d))] <- 0
+    dimnames(d) <- list(docs = names(tokenizedTexts), features = colnames(d))
+    # restore original sort order
+    d <- d[(1:nrow(d))[order(originalSortOrder)], , drop=FALSE]
+    
+    class(d) <- c("dfm", class(d))
+    return(d)
+}
 
+
+gc()
 library(quanteda)
 system.time(t1 <- dfm_table(inaugTexts))
 system.time(t2 <- dfm_datatable(inaugTexts))
 system.time(t3 <- dfm_datatable_dcast(inaugTexts))
+system.time(t4 <- dfm_tapplyonly(inaugTexts))
+
+
 
 
 
