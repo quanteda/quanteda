@@ -1,0 +1,204 @@
+quanteda 0.6.1
+==============
+
+* started textmodel_wordfish, textmodel_ca
+
+* now depends on ca, austin
+
+
+quanteda 0.6.0 
+==============
+
+* Added textmodel for scaling and prediction methods, including for starters,
+  wordscores and naivebayes class models.  LIKELY TO BE BUGGY AND QUIRKY FOR A WHILE.
+
+* Added smoothdfm() and weight() methods for dfms.
+
+* Fixed a bug in segmentSentence().
+
+
+quanteda 0.5.8 
+==============
+
+Classification and scaling methods
+----------------------------------
+
+* New dfm methods for fitmodel(), predict(), and specific model fitting
+  and prediction methods called by these, for classification and scaling 
+  of different "textmodel" types, such as wordscores and Naive Bayes
+  (for starters).
+
+quanteda 0.5.7
+==============
+
+* added compoundWords() to turn space-delimited phrases into single "tokens".
+  Works with dfm(, dictionary=) if the text has been pre-processed with 
+  compoundWords() and the dictionary joins phrases with the connector ("_").
+  May add this functionality to be more automatic in future versions.
+
+* new keep argument for trimdfm() now takes a regular expression for which 
+  feature labels to retain.  New defaults for minDoc and minCount (1 each).
+
+* added nfeature() method for dfm objects.
+
+New arguments for dfm()
+-----------------------
+
+* thesaurus: works to record equivalency classes
+  as lists of words or regular expressions for a given key/label.
+
+* keep: regular expression pattern match for features to keep
+
+
+quanteda 0.5.6
+==============
+
+* added readLIWCdict() to read LIWC-formatted dictionaries
+
+* fixed a "bug"/feature in readWStatDict() that eliminated wildcards (and all other
+  punctuation marks) - now only converts to lower.
+
+* improved clean() functions to better handle Twitter, punctuation, and 
+  removing extra whitespace
+
+quanteda 0.5.5
+==============
+
+* fixed broken dictionary option in dfm()
+
+* fixed a bug in dfm() that was preventing clean() options from being passed through
+
+* added Dice and point-wise mutual information as association measures for
+  collocations()
+
+* added: similarity() to implement similarity measures for documents or features
+  as vector representations
+
+* begun: implementing dfm resample methods, but this will need more time to work.  
+  (Solution: a three way table where the third dim is the resampled text.)
+
+* added is.resample() for dfm and corpus objects
+
+* added Twitter functions: getTweets() performs a REST search through twitteR,
+  corpus.twitter creates a corpus object with test and docvars form each tweet
+  (operational but needs work)
+
+* added various resample functions, including making dfm a multi-dimensional object
+  when created from a resampled corpus and dfm(, bootstrap=TRUE).
+
+* modified the print.dfm() method.
+
+
+quanteda 0.5.4 
+==============
+
+* updated corpus.directory to allow specification of the file extension mask
+
+* updated docvars<- and metadoc<- to take the docvar names from the assigned data.frame if
+  field is omitted. 
+
+* added field to docvars()
+
+* enc argument in corpus() methods now actually converts from enc to "UTF-8"
+
+* started working on clean to give it exceptions for @ # _ for twitter text and
+  to allow preservation of underscores used in bigrams/collocations.
+
+* Added: a `+` method for corpus objects, to combine a corpus using this operator.
+
+* Changed and fixed: collocations(), which was not only fatally slow and inefficient,
+  but also wrong.  Now is much faster and O(n) because it uses data.table and vector 
+  operations only.
+
+* Added: resample() for corpus texts.
+
+quanteda 0.5.3
+==============
+
+* added statLexdiv() to compute the lexical diversity of texts from a dfm.
+
+* minor bug fixes; update to print.corpus() output messages.
+
+* added a wrapper function for SnowballC::wordStem, called wordstem(), so that
+  this can be imported without loading the whole package.
+
+
+quanteda 0.5.2
+==============
+
+* Added a corpus constructor method for the VCorpus class object from the tm package.
+
+* added zipfiles() to unzip a directory of text files from disk or a URL, for easy
+  import into a corpus using corpus.directory(zipfiles())
+
+
+quanteda 0.5.1
+==============
+
+* Fixed all the remaining issues causing warnings in R CMD CHECK, now all are fixed.  
+  Mostly these related to documentation.
+
+* Fixed corpus.directory to better implementing naming of docvars, if found.
+
+* Moved twitter.R to the R_NEEDFIXING until it can be made to pass tests.  Apparently
+  setup_twitter_oauth() is deprecated in the latest version of the twitteR package.
+
+quanteda 0.5.0
+==============
+
+Lots of new functions
+---------------------
+
+* plot.dfm method for producing word clouds from dfm objects
+
+* print.dfm, print.corpus, and summary.corpus methods now defined
+
+* new accessor functions defined, such as docnames(), settings(), docvars(),
+  metadoc(), metacorpus(), encoding(), and language()
+
+* replacement functions defined that correspond to most of the above
+  accessor functions, e.g. encoding(mycorpus) <- "UTF-8"
+
+* segment(x, to=c("tokens", "sentences", "paragraphs", "other", ...) now
+  provides an easy and powerful method for segmenting a corpus by units
+  other than just tokens
+
+* a settings() function has been added to manage settings that would commonly govern
+  how texts are converted for processing, so that these can be preserved in a corpus
+  and applied to operations that are relevant.  These settings also propagate to a
+  dfm for both replication purposes and to govern operations for which they would be
+  relevant, when applied to a dfm.
+
+Old functions vastly improved
+-----------------------------
+
+* better ways now exist to manage corpus internals, such as through the 
+  accessor functions, rather than trying to access the internal structure of 
+  the corpus directly.
+
+* basic functions such as tokenize(), clean(), etc are now faster, neater, and
+  operate generally on vectors and return consistent object types
+
+Better object and class design
+------------------------------
+
+* the corpus object has been redesigned with more flexible components, including
+  a settings list, better corpus-level metadata, and smarter implementation of 
+  document-level attributes including user-defined variables (docvars) and document-
+  level meta-data (metadoc)
+
+* the dfm now has a proper class definition, including additional attributes that 
+  hold the settings used to produce the dfm.
+
+* all important functions are now defined as methods for classes of built-in (e.g.
+  character) objects, or quanteda objects such as a corpus or dfm.  Lots of functions
+  operate on both, for instance dfm.corpus(x) and dfm.character(x).
+
+more complete documentation
+---------------------------
+
+* all functions are now documented and have working examples
+
+* quanteda.pdf provides a pdf version of the function documentation in one easy-to-access
+  document
+

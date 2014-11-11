@@ -1,20 +1,31 @@
-#' Plot a word cloud for a \link{dfm}
-#'
-#' plots a document as a wordcloud of its features
+#' plot features as a wordcloud
 #' 
-#' @param dfm document-feature matrix created in quanteda
-#' @param document index of the document whose words will be plotted
-#' @param ... additional arguments to pass to \link[wordcloud]{wordcloud} 
-#' @return None
-#' @export 
-#' @author Kenneth Benoit
-#' @examples 
-#' data(iebudgets)
-#' iebudgets2010 <- subset(iebudgets, year==2010)
-#' wfm <- dfm(iebudgets2010, stopwords=TRUE)
-#' wordcloudDfm(wfm, 1)  # plot the finance minister's speech as a wordcloud
-wordcloudDfm <- function(dfm, doc.index, ...) {
-    if (!is.wfm(dfm)) stop("word matrix argument must be a dfm object")
-    require(wordcloud)
-    wordcloud::wordcloud(words(dfm), dfm[doc.index, ], ...)
+#' The default plot method for a \code{\link{dfm}} object.  Produces a wordcloud
+#' plot for the features of the dfm, weighted by the total frequencies.  To 
+#' produce word cloud plots for specific documents, the only way currently to do
+#' this is to produce a dfm only from the documents whose features you want 
+#' plotted.
+#' @param x a dfm object
+#' @param ... additional parameters passed to to
+#'   \link[wordcloud]{wordcloud} or to \link{text} (and \link{strheight},
+#'   \link{strwidth})
+#' @seealso \link[wordcloud]{wordcloud}
+#' @examples
+#' # plot the features (without stopwords) from Obama's two inaugural addresses
+#' mydfm <- dfm(subset(inaugCorpus, President=="Obama"), verbose=FALSE, stopwords=TRUE)
+#' plot(mydfm)
+#' 
+#' # plot only Lincoln's inaugural address
+#' plot(dfm(subset(inaugCorpus, President=="Lincoln"), verbose=FALSE, stopwords=TRUE))
+#' 
+#' # plot in colors with some additional options passed to wordcloud
+#' plot(mydfm, random.color=TRUE, rot.per=.25, colors=sample(colors()[2:128], 5))
+#' @export
+plot.dfm <- function(x, ...) {
+    wordcloud::wordcloud(features(x), colSums(x), ...)
 }
+
+
+
+
+

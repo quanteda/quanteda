@@ -1,2 +1,3 @@
-^\.Rproj\.user$
 ^.*\.Rproj$
+^\.Rproj\.user$
+^\.Rd2pdf*
