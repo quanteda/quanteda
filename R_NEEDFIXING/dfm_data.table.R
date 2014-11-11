@@ -58,6 +58,34 @@ dfm_datatable <- function(x, ...) {
 }
 
 
+dfm_bigtable <- function(x, ...) {
+  library(bigtabulate)
+  # name the vector if it is unnamed
+  if (is.null(names(x))) {
+    names(x) <- factor(paste("text", 1:length(x), sep=""))
+  }
+  textnames <- factor(names(x))
+  
+  # tokenizeTexts is a named list of tokens
+  tokenizedTexts <- quanteda::tokenize(x, ...)
+  # record original text order, since table() alphabetizes
+  originalSortOrder <- (1:length(tokenizedTexts))[order(names(tokenizedTexts))]
+  # construct a "long" format data frame
+  alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
+                          features = unlist(tokenizedTexts, use.names=FALSE))
+  # cross-tabulate
+  d <- as.data.frame.matrix(bigtable(alltokens, c('docs', 'features')))
+  
+  d <- as.matrix(d)
+  dimnames(d) <- list(docs = rownames(tokenizedTexts), features = colnames(d))
+  # restore original sort order
+  d <- d[(1:nrow(d))[order(originalSortOrder)], , drop=FALSE]
+  
+  class(d) <- c("dfm", class(d))
+  return(d)
+}
+
+
 dfm_datatable_dcast <- function(x, ...) {
     # name the vector if it is unnamed
     if (is.null(names(x))) {
