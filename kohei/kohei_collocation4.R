@@ -91,7 +91,7 @@ showCollocation <- function(mx, thresh = 0){
   len <- nrow(elms)
   values <- rep(NA, len)
   names <- rep(NA, len)
-  
+
   if(length(elms) == 0){
     cat('No item above the thresh\n')
     stop()
@@ -103,7 +103,7 @@ showCollocation <- function(mx, thresh = 0){
     names[k] <- paste(tokens.x[[xi]], tokens.y[[yi]])
     #print(sprintf("%s %s", tokens.x[[xi]], tokens.y[[yi]]))    
   }
-  
+ 
   df <- data.frame(score = values, row.names = names)
   df2 <- df[order(-df$score), , drop=FALSE]
   return(df2)
@@ -128,7 +128,7 @@ getCollocationMX <- function(texts, method = 'count', window = 5, smooth = 1, li
   rv <- matrix(0, nrow = 1, ncol = xi.len)
   cv <- matrix(0, nrow = yi.len, ncol = 1)
   
-  
+
   if(segment){
     texts <- unlist(sentenceSeg(paste(texts, sep="\n")))
   }
@@ -142,24 +142,17 @@ getCollocationMX <- function(texts, method = 'count', window = 5, smooth = 1, li
       #print(paste(i, end, tokens[end]))
       if(start < 1) start <- 1
       if(end > len) end <- len
-      
-      #word frequency of x (selected)
       x <- index[['x']][[tokens[i]]]
       if(!is.null(x)){
         rv[1, x] <- rv[1, x] + 1
       }
-      
-      #word frequency of y (all)
-      y <- index[['y']][[tokens[i]]]
-      if(!is.null(y)){
-        cv[y, 1] <- cv[y, 1] + 1
-      }
-      
-      #collocation frequency
       for(j in start:end){
         if(i == j) next
         if(nchar(tokens[j]) == 0) next
         y <- index[['y']][[tokens[j]]]
+        if(!is.null(y)){
+          cv[y, 1] <- cv[y, 1] + 1
+        }
         if(!is.null(y) & !is.null(x)){
           mx[y, x] <- mx[y, x] + 1
         }
@@ -172,13 +165,13 @@ getCollocationMX <- function(texts, method = 'count', window = 5, smooth = 1, li
   
   if(method == 'pmi'){
     #Pointwise (specific) mutual information (Wordsmith replication)
-    sum <- sum(mx) / 2
-    mx2 <- log((mx / sum) / ((cv %*% rv) / (sum(cv) ^ 2)), 2)
+    sum <- sum(mx)
+    print(mx)
+    mx2 <- log((mx / sum) / ((cv %*% rv) / (sum ^ 2)), 2)
+    mx2 <- (mx / sum) / ((cv %*% rv) / (sum ^ 2))
   }else if(method == 'count'){
     mx2 <- mx
   }
   attr(mx2, 'index') <- index
   return(mx2)
 }
-
-

@@ -1,4 +1,5 @@
 source('~/quanteda/kohei/kohei_tokenize2.R')
+library(compiler)
 
 #' Find collocation
 #' This depends on Kohei's tokenizer
@@ -13,9 +14,16 @@ source('~/quanteda/kohei/kohei_tokenize2.R')
 #' texts <- cleanText(ieTexts, lower=TRUE)
 #' mx <- findCollocation(texts)
 #' plotCollocation(mx)
-
-findCollocation <- function(texts, method = 'count', window = 5, smooth = 1, limit = 1000, filter = '', segment = FALSE){
-  mx <- getCollocationMX(texts, method, window = window, smooth = smooth, limit = limit, filter = filter, segment = segment)
+findCollocation <- function(texts, method = 'count', window = 5, smooth = 1, limit = 1000, filter = '', 
+                            dist = FALSE, segment = FALSE){
+  #start_time = proc.time()["elapsed"]
+  #mx <- getCollocationMX(texts, method, window = window, smooth = smooth, limit = limit, filter = filter, 
+  #                       dist = dist, segment = segment)
+  #print( proc.time()[ "elapsed" ] - start_time )
+  start_time = proc.time()["elapsed"]
+  mx <- getCollocationMX.compiled(texts, method, window = window, smooth = smooth, limit = limit, filter = filter, 
+                   dist = dist, segment = segment)
+  print( proc.time()[ "elapsed" ] - start_time )
   return(mx)
 }
 
@@ -37,26 +45,32 @@ plotCollocation <- function(mx){
 createCollocationIndex <- function(texts, limit, filter) {
   text <- paste(texts, collapse = ' ')
   tokens <- tokenizeText(text, clean = FALSE)
-  tokens <- tokens[nchar(tokens) > 0]
+  tokens <- tokens[!is.na(tokens) & nchar(tokens) > 0]
   token.aggre <- table(tokens)
   token.sort <- sort(token.aggre, decreasing=TRUE)
   if(limit > length(token.sort)){
     limit <- length(token.sort)
   }
+  
+  #Pre-select words by freqnecy 
   if(limit == 0){
     token.aggre2 <- token.aggre
   }else{
     token.aggre2 <- token.aggre[token.aggre >= token.sort[limit]]
   }
+  
+  #Pre-select words in x by pattern (matrix is no longer square)
   tokens.unique <- names(token.aggre2)
   if(filter == ''){
     tokens.x <- tokens.unique
     tokens.y <- tokens.unique
   }else{
     print(tokens.unique[grepl(filter, tokens.unique)])
-    tokens.x <- tokens.unique[grep(filter, tokens.unique)]
+    tokens.x <- tokens.unique[grep(filter, tokens.unique)] 
     tokens.y <- tokens.unique
   }
+  
+  #Construct hash index
   hash = list()
   hash[['x']] <- new.env(hash = TRUE, parent = emptyenv(), size = length(tokens.x))
   for(xi in 1:length(tokens.x)) {
@@ -81,7 +95,7 @@ convertMx2dist <- function(mx){
   return(1 / dist)
 }
 
-showCollocation <- function(mx, thresh = 0){
+showCollocation <- cmpfun(function(mx, thresh = 0){
   
   index <- attr(mx, 'index')
   tokens.x <- flipCollocationIndex(index[['x']])
@@ -107,7 +121,7 @@ showCollocation <- function(mx, thresh = 0){
   df <- data.frame(score = values, row.names = names)
   df2 <- df[order(-df$score), , drop=FALSE]
   return(df2)
-}
+})
 
 flipCollocationIndex <- function(index){
   list <- list()
@@ -120,7 +134,9 @@ flipCollocationIndex <- function(index){
 }
 
 
-getCollocationMX <- function(texts, method = 'count', window = 5, smooth = 1, limit = 1000, filter = filter, segment = FALSE){
+getCollocationMX <- function(texts, method = 'count', window = 5, smooth = 1, limit = 1000, filter = filter, 
+                             dist = FALSE , segment = FALSE){
+  
   index <- createCollocationIndex(texts, limit = limit, filter = filter)
   xi.len <- length(index[['x']])
   yi.len <- length(index[['y']])
@@ -129,17 +145,24 @@ getCollocationMX <- function(texts, method = 'count', window = 5, smooth = 1, li
   cv <- matrix(0, nrow = yi.len, ncol = 1)
   wv <- matrix(0, nrow = yi.len, ncol = 1)
   sum <- 0
+  
+  if(dist){
+    counter <- countWeightDist
+  }else{
+    counter <- countSimple
+  }
 
   if(segment){
     texts <- unlist(sentenceSeg(paste(texts, sep="\n")))
   }
   for(text in texts){
     tokens <- tokenizeText(text, clean = FALSE)
-    tokens <- tokens[nchar(tokens) > 0]
+    tokens <- tokens[!is.na(tokens) & nchar(tokens) > 0]
     len <- length(tokens)
+    if(length(tokens) == 0) next
     for(i in 1:length(tokens)){
       #if(nchar(tokens[i]) == 0) next
-
+      #print(tokens[i])
       x <- index[['x']][[tokens[i]]]
       if(!is.null(x)){
         rv[1, x] <- rv[1, x] + 1
@@ -159,16 +182,14 @@ getCollocationMX <- function(texts, method = 'count', window = 5, smooth = 1, li
           y <- index[['y']][[tokens[j]]]
           if(!is.null(x) & !is.null(y)){
             #print(paste(tokens[i] ,tokens[j]))
-            #dist <- abs(j - i)
-            #mx[y, x] <- mx[y, x] + (1 - (dist / window))
-            mx[y, x] <- mx[y, x] + 1
+            mx[y, x] <- mx[y, x] + counter(i, j, window)
           }
         }
       }
     }
   }
   #print(mx)
-  print(cv)
+  #print(cv)
   sum <- sum + (smooth * length(mx))
   mx <- mx + smooth
   rv <- rv + smooth
@@ -178,15 +199,7 @@ getCollocationMX <- function(texts, method = 'count', window = 5, smooth = 1, li
  
   
   if(method == 'pmi'){
-    #Pointwise (specific) mutual information (Wordsmith replication)
-    #sum <- sum(mx) / 2
-    #print(mx / sum)
-    #print(cv %*% rv / (sum(cv) ^ 2))
-
-    #mx2 <- log((mx / sum) / ((cv %*% rv) / (sum(cv) ^ 2)), 2)
     mx2 <- log((mx / sum(cv)) / ((cv %*% rv) / (sum(cv) ^ 2)), 2) #WS uses the number of tokes rather than the number of collocation as demoninator
-    
-    
   }else if(method == 'count'){
     mx2 <- mx
   }
@@ -194,6 +207,16 @@ getCollocationMX <- function(texts, method = 'count', window = 5, smooth = 1, li
   return(mx2)
 }
 
+library(compiler)
+getCollocationMX.compiled <- cmpfun(getCollocationMX)
+
+countWeightDist <- function(i, j, window){
+  dist <- abs(j - i)
+  return(1 - (dist / window))
+}
+countSimple <- function(i, j,  window){
+  return(1)
+}
 getCollocationRange <- function(len, pos, window){
   start <- pos - window
   end <- pos + window
