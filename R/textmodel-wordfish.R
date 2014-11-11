@@ -37,7 +37,7 @@ textmodel_wordfish <- function(data, method=c("mml", "mcmc"), smooth=0, ...) {
         stop("supplied data must be a dfm object.")
     data <- data + smooth  # smooth by the specified amount
     if (method=="mml") {
-        model <- austin::wordfish(as.wfm(data, word.margin=2), ...)
+        model <- wordfish(as.wfm(data, word.margin=2), ...)
     } else if (method=="mcmc") {
         if (!require(rjags)) 
             stop("You must first install rjags to use method=mcmc.")
@@ -161,9 +161,9 @@ MCMCirtPoisson1d <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=
     start.time <- proc.time()
     
     ## make sure the object is documents by words  
-    require(austin)
-    if (!is.wfm(dtm)) dtm <- wfm(dtm, word.margin=2) # rows are documents, columns are "words"
-    if (wordmargin(dtm)==1) dtm <- as.wfm(t(dtm))    # coerce to docs by words
+#     if (!require(austin)) stop("austin package required to run mcmc wordish")
+#     if (!is.wfm(dtm)) dtm <- wfm(dtm, word.margin=2) # rows are documents, columns are "words"
+#     if (wordmargin(dtm)==1) dtm <- as.wfm(t(dtm))    # coerce to docs by words
     
     # rearrange the dtm to put the constrained item category into the first column
     # (easier for JAGS code to implement the constraint this way)
@@ -299,42 +299,60 @@ MCMCirtPoisson1d <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=
 
 
 #' Bayesian-MCMC version of the "wordfish" Poisson scaling model
-#'
-#' \code{wordfishMCMC} implements a flexible, Bayesian model estimated in JAGS using MCMC.  
-#' It is based on the implementation of \code{wordfish} from the \code{austin} package.
-#' Options include specifying a model for alpha using document-level covariates, 
-#' and partitioning the word parameters into different subsets, for instance, countries.
+#' 
+#' \code{wordfishMCMC} implements a flexible, Bayesian model estimated in JAGS
+#' using MCMC. It is based on the implementation of \code{wordfish} from the
+#' \code{austin} package. Options include specifying a model for alpha using
+#' document-level covariates, and partitioning the word parameters into
+#' different subsets, for instance, countries.
 #' 
 #' @export
-#' @param dtm The document-term matrix.  Ideally, documents form the rows of this matrix and words the columns, 
-#' although it should be correctly coerced into the correct shape.
-#' @param dir A two-element vector, enforcing direction constraints on theta and beta, which ensure that theta[dir[1]] < theta[dir[2]].
-#' The elements of \code{dir} will index documents.
-#' @param control list specifies options for the estimation process. These are: \code{tol}, the proportional change in log likelihood
-#' sufficient to halt estimatioe, \code{sigma} the standard deviation for the beta prior in poisson form, and \code{startparams} a
-#' previously fitted wordfish model.  \code{verbose} generates a running commentary during estimation.  See \code{austin::wordfish}.
-#' @param alphaModel \code{free} means the \eqn{\alpha_i} is entirely estimated; \code{logdoclength} means the alpha is predicted with an 
-#' expected value equal to the log of the document length in words, similar to an offset in a Poisson model with variable exposure;
-#' \code{modelled} allows you to specify a formula and covariates for \eqn{\alpha_i} using \code{alphaFormula} and \code{alphaData}.
-#' @param alphaFormula Model formula for hierarchical model predicting \eqn{\alpha_i}.
-#' @param alphaData Data to form the model matrix for the hierarchical model predicting \eqn{\alpha_i}.
-#' @param wordPartition A vector equal in length to the documents that specifies a unique value partitioning the word parameters.  
-#' For example, alpha could be a Boolean variable for \code{EU} to indicate that a document came from a country outside the EU or 
-#' inside the EU.  Or, it could be a factor variable indicating the name of the country (as long as there are multiple documents
-#' per country).  Internally, \code{wordPartition} is coerced to a factor.  \code{NULL} indicates that no paritioning of the 
-#' word-level parameters will take place (default).
-#' @param betaPartition Boolean indicating that the \eqn{\beta} parameter should also be partitioned according to \code{wordPartition}.
-#' @param wordConstraints An index with a minimim length of 1, indicating which words will be set equal across 
-#' the \code{wordPartition} factors.  \code{NULL} if \code{is.null(wordPartition)} (default).
+#' @param dtm The document-term matrix.  Ideally, documents form the rows of
+#'   this matrix and words the columns, although it should be correctly coerced
+#'   into the correct shape.
+#' @param dir A two-element vector, enforcing direction constraints on theta and
+#'   beta, which ensure that theta[dir[1]] < theta[dir[2]]. The elements of
+#'   \code{dir} will index documents.
+#' @param control list specifies options for the estimation process. These are:
+#'   \code{tol}, the proportional change in log likelihood sufficient to halt
+#'   estimatioe, \code{sigma} the standard deviation for the beta prior in
+#'   poisson form, and \code{startparams} a previously fitted wordfish model. 
+#'   \code{verbose} generates a running commentary during estimation.  See
+#'   \code{\link[austin]{wordfish}}.
+#' @param alphaModel \code{free} means the \eqn{\alpha_i} is entirely estimated;
+#'   \code{logdoclength} means the alpha is predicted with an expected value
+#'   equal to the log of the document length in words, similar to an offset in a
+#'   Poisson model with variable exposure; \code{modelled} allows you to specify
+#'   a formula and covariates for \eqn{\alpha_i} using \code{alphaFormula} and
+#'   \code{alphaData}.
+#' @param alphaFormula Model formula for hierarchical model predicting
+#'   \eqn{\alpha_i}.
+#' @param alphaData Data to form the model matrix for the hierarchical model
+#'   predicting \eqn{\alpha_i}.
+#' @param wordPartition A vector equal in length to the documents that specifies
+#'   a unique value partitioning the word parameters. For example, alpha could
+#'   be a Boolean variable for \code{EU} to indicate that a document came from a
+#'   country outside the EU or inside the EU.  Or, it could be a factor variable
+#'   indicating the name of the country (as long as there are multiple documents
+#'   per country).  Internally, \code{wordPartition} is coerced to a factor. 
+#'   \code{NULL} indicates that no paritioning of the word-level parameters will
+#'   take place (default).
+#' @param betaPartition Boolean indicating that the \eqn{\beta} parameter should
+#'   also be partitioned according to \code{wordPartition}.
+#' @param wordConstraints An index with a minimim length of 1, indicating which
+#'   words will be set equal across the \code{wordPartition} factors. 
+#'   \code{NULL} if \code{is.null(wordPartition)} (default).
 #' @param verbose Turn this on for messages.  Default is \code{TRUE}.
 #' @param nChains Number of chains to run in JAGS.
 #' @param nAdapt Adaptation iterations in JAGS.
 #' @param nUpdate Update iterations in JAGS.
 #' @param nSamples Number of posterior samples to draw in JAGS.
 #' @param nThin Thinning parameter for drawing posterior samples in JAGS.
-#' @param PoissonGLM Boolean denoting that the basic model should be estimated where log(alpha) is ~ dflat() as per The BUGS Book pp131-132
+#' @param PoissonGLM Boolean denoting that the basic model should be estimated
+#'   where log(alpha) is ~ dflat() as per The BUGS Book pp131-132
 #' @param ... Additional arguments passed through.
-#' @return An augmented \code{wordfish} class object with additional stuff packed in.  To be documented.
+#' @return An augmented \code{wordfish} class object with additional stuff
+#'   packed in.  To be documented.
 #' @author Kenneth Benoit
 #' @examples
 #' \dontrun{

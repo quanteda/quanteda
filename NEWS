@@ -1,9 +1,14 @@
 quanteda 0.6.1
 ==============
 
-* started textmodel_wordfish, textmodel_ca
+* started textmodel_wordfish, textmodel_ca.  textmodel_wordfish takes an mcmc argument
+  that calls JAGS wordfish.
 
-* now depends on ca, austin
+* now depends on ca, austin rather than importing them
+
+* dfm subsetting with [,] now works
+
+* docnames()[], []<-, docvars()[] and []<- now work correctly
 
 
 quanteda 0.6.0 
