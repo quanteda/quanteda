@@ -695,7 +695,7 @@ print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, ...) {
     if (show.settings) {
         cat("Settings: TO BE IMPLEMENTED.")
     }
-    if (show.values) {
+    if (show.values | (nrow(x)<=20 & ncol(x)<=20)) {
         class(x) <- class(x)[2]
         attr(x, "settings") <- NULL
         print(x)
@@ -824,4 +824,13 @@ smoothdfm <- function(x, alpha=0.5) {
     x <- x + alpha
     attributes(x) <- attr_orig
     x
+}
+
+# [] method for dfm
+#' @export
+`[.dfm` <- function(x, i, j, ..., drop) {
+    m <- NextMethod("[")
+    attr(m, "settings") <- attr(x, "settings")
+    class(m) <- class(x)
+    m
 }
