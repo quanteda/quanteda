@@ -47,7 +47,9 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
         # remove other punctuation from POSIX [:punct:]
         remove <- paste("(?![",
                         ifelse(twitter, "@#_", "_"),
-                        "])[[:punct:]]", sep="")
+                        "])[[:punct:]]", 
+                        ifelse(!is.null(additional), paste("|", additional, sep=""), ""),
+                        sep="")
        x <- gsub(remove, "", x, perl=TRUE)
     }
     
@@ -56,8 +58,8 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
     if (lower) 
         x <- tolower(x)
     
-    if (!is.null(additional))
-        x <- gsub(additional, "", x)
+#     if (!is.null(additional))
+#         x <- gsub(additional, "", x)
     
     # convert 2+ multiple whitespaces into one
     x <- gsub("\\s{2,}", " ", x, perl=TRUE)

@@ -1,3 +1,14 @@
+quanteda 0.6.2
+==============
+
+* The first appearance of dfms(), to create a sparse Matrix using the 
+  Matrix package.  Eventually this will become the default format for 
+  all but small dfms.  Not only is this far more efficient, it is also
+  much faster.
+
+* Minor speed gains for clean() -- but still much more work to be done
+  with clean().
+
 quanteda 0.6.1
 ==============
 
