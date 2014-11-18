@@ -9,6 +9,9 @@ quanteda 0.6.2
 * Minor speed gains for clean() -- but still much more work to be done
   with clean().
 
+* added textmodel_lda support, including LDA, CTM, and STM.  Added a 
+  converter dfm2stmformat() between dfm and stm's input format.
+
 quanteda 0.6.1
 ==============
 

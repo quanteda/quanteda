@@ -3,6 +3,7 @@
 #' Fit a text model to a dfm.
 #' @param ... additional arguments to be passed to specific model types
 #' @seealso \code{\link{textmodel_wordscores}}, \code{\link{textmodel_NB}},
+#' \code{\link{textmodel_wordfish}}, \code{\link{textmodel_lda}}, 
 #' \code{\link{textmodel}}
 #' @section Class hierarchy:
 #' Here will go the description of the class hierarchy that governs dispatch for the 
@@ -47,7 +48,7 @@ textmodel <- function(x, ...) {
 #'   specific models, e.g. \link{textmodel_wordscores}, \link{textmodel_NB}, 
 #'   etc.
 #' @export
-textmodel.dfm <- function(x, y=NULL, model=c("wordscores", "NB", "wordfish"), ...) {
+textmodel.dfm <- function(x, y=NULL, model=c("wordscores", "NB", "wordfish", "lda"), ...) {
     model <- match.arg(model)
     call <- match.call()
     Yname <- deparse(substitute(y))
@@ -65,6 +66,10 @@ textmodel.dfm <- function(x, y=NULL, model=c("wordscores", "NB", "wordfish"), ..
         if (!is.null(y))
             warning("y values not used with wordfish model. ")
         result <- textmodel_wordfish(x, ...)
+    } else if (model=="lda") {
+        if (!is.null(y))
+            warning("y values not used with wordfish model. ")
+        result <- textmodel_lda(x, ...)
     } else {
         stop(paste("model", method, "not implemented."))
     }

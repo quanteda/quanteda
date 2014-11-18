@@ -8,7 +8,7 @@
 textmodel(x, ...)
 
 \method{textmodel}{dfm}(x, y = NULL, model = c("wordscores", "NB",
-  "wordfish"), ...)
+  "wordfish", "lda"), ...)
 
 \method{textmodel}{formula}(formula, data = NULL, model = c("wordscores",
   "NB"), ...)
@@ -80,6 +80,7 @@ Paul Nulty
 }
 \seealso{
 \code{\link{textmodel_wordscores}}, \code{\link{textmodel_NB}},
+\code{\link{textmodel_wordfish}}, \code{\link{textmodel_lda}},
 \code{\link{textmodel}}
 }
 

@@ -110,7 +110,8 @@ collocations3.character <- function(x, method=c("lr"), n=3, top=NULL, ...) {
     
     
     
-    allTable3$w1w2notw3 c1c2
+    
+    allTable3$w1w2notw3 
     allTable3$w1notw2w3
     allTable3$w1notw2notw3    
     allTable3$notw1w2w3
