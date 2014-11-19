@@ -592,7 +592,7 @@ is.dfm <- function(x) {
 #' @rdname dfm
 #' @export
 as.dfm <- function(x) {
-    if (any(!(c("matrix", "data.frame") %in% class(x))))
+    if (!any((c("matrix", "data.frame") %in% class(x))))
         stop("as.dfm only applicable to matrix(-like) objects.")
     x <- as.matrix(x)
     class(x) <- c("dfm", class(x))
