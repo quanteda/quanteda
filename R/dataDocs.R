@@ -63,6 +63,8 @@ NULL
 #' hungarian, italian, norwegian, portuguese, russian, spanish, and
 #' swedish. Language names are case sensitive. Alternatively, their IETF
 #' language tags may be used.
+#' 
+#' Also now (>=0.6.3) includes Arabic stopwords.
 NULL
 
 #' @name syllableCounts

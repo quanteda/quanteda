@@ -1,3 +1,13 @@
+quanteda 0.6.3
+==============
+
+* added textmodel_lda support, including LDA, CTM, and STM.  Added a 
+  converter dfm2stmformat() between dfm and stm's input format.
+
+* as.dfm works now for data.frame objects
+
+* added Arabic to list of stopwords.  (Still working on a stemmer for Arabic.)
+
 quanteda 0.6.2
 ==============
 
@@ -8,9 +18,6 @@ quanteda 0.6.2
 
 * Minor speed gains for clean() -- but still much more work to be done
   with clean().
-
-* added textmodel_lda support, including LDA, CTM, and STM.  Added a 
-  converter dfm2stmformat() between dfm and stm's input format.
 
 quanteda 0.6.1
 ==============

@@ -588,16 +588,16 @@ is.dfm <- function(x) {
     "dfm" %in% class(x)
 }
 
-#' @details \code{as.dfm} coerces a matrix to a dfm
+#' @details \code{as.dfm} coerces a matrix or data.frame to a dfm
 #' @rdname dfm
 #' @export
 as.dfm <- function(x) {
-    if (!("matrix" %in% class(x)))
-        stop("is.dfm only applicable to matrix(-like) objects.")
+    if (any(!(c("matrix", "data.frame") %in% class(x))))
+        stop("as.dfm only applicable to matrix(-like) objects.")
+    x <- as.matrix(x)
     class(x) <- c("dfm", class(x))
     x
 }
-
 
 
 #' sort a dfm by one or more margins

@@ -86,7 +86,7 @@ of words by document, but the definition of "features" is entirely general.
 \details{
 \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
 
-\code{as.dfm} coerces a matrix to a dfm
+\code{as.dfm} coerces a matrix or data.frame to a dfm
 }
 \examples{
 wfm <- dfm(inaugCorpus)
