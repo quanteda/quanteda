@@ -261,7 +261,7 @@ MCMCirtPoisson1d <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=
     
     ## reorder the words back to the original ordering, if words were partitioned
     ## NOTE: NOT CURRENTLY IMPLEMENTED FOR THE mcmc.samples!!
-    if (!is.null(itembase))  dtm <- dtm[, order(original.item.index)]   
+    if (!is.null(itembase) & itembase>0) dtm <- dtm[, order(original.item.index)]   
        
     s <- summary(jags.samples)
     retval <- list(dir=dir,
