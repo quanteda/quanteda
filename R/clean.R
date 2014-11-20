@@ -101,3 +101,15 @@ wordstem <- function(words, language = "porter") {
     SnowballC::wordStem(words, language)
 }
 
+#' @rdname wordstem
+#' @export
+#  from https://sites.google.com/site/motazsite/arabic/arlightstemmerlucene.jar
+#  source: https://sites.google.com/site/motazsite/arabic/arlightstemmerlucene-src.7z
+wordstemArabic <- function(x) {
+    require(rJava)
+    .jinit("java/ArLightStemmerLucene.jar")
+    hjw <- .jnew("ArLightStemmerLucene")     # create instance of ArLightStemmerLucene class
+    out <- .jcall(hjw, "S", "main", x)  # invoke sayHello method
+    return(out)
+}
+
