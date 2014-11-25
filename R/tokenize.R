@@ -95,9 +95,20 @@ segmentSentence <- function(x, delimiter="[.!?:;]") {
                     "M", "MM")
     findregex <- paste("\\b(", paste(exceptions, collapse="|"), ")\\.", sep="")
     text <- gsub(findregex, "\\1", text)
+
+    # deal with i.e. e.g. pp. p. Cf. cf.
+    text <- gsub("i\\.e\\.", "_IE_", text)
+    text <- gsub("e\\.g\\.", "_EG_", text)
+    text <- gsub("(\\b|\\()(p\\.)", "\\1_P_", text)
+    text <- gsub("(\\b|\\()(pp\\.)", "\\1_PP_", text)
+    text <- gsub("(\\b|\\()([cC]f\\.)", "\\1_CF_", text)
     
-    # preserve decimals
-    numbersWithDecimalsregex <- "(\\d)\\.([\\d\\s])"
+    exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph", "M", "MM")
+    findregex <- paste("\\b(", paste(exceptions, collapse="|"), ")\\.", sep="")
+    text <- gsub(findregex, "\\1", text)
+    
+    # preserve decimals - also i.e. pp. p. e.g. etc.
+    numbersWithDecimalsregex <- "([\\d])\\.([\\d\\s])"
     text <- gsub(numbersWithDecimalsregex, "\\1_DECIMAL_\\2", text, perl=TRUE)
     
     # preserve ellipses
@@ -116,6 +127,14 @@ segmentSentence <- function(x, delimiter="[.!?:;]") {
     result <- gsub("_DECIMAL_", "\\.", result)
     # put elipses back
     result <- gsub("_ELIPSIS_", "...", result)
+    
+    # put i.e. e.g. pp. p. Cf. cf. back
+    result <- gsub("_IE_", "i.e.", result)
+    result <- gsub("_EG_", "e.g.", result)
+    result <- gsub("(\\b|\\()_P_", "\\1p.", result)
+    result <- gsub("(\\b|\\()_PP_", "\\1pp.", result)
+    result <- gsub("(\\b|\\()_CF_", "\\1cf.", result)
+    
     # remove leading and trailing spaces and return
     gsub("^ +| +$", "", result)
 }

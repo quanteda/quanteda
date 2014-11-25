@@ -1165,7 +1165,8 @@ model {
     direction.constraint <- 2*(step(raw.theta[dir[2]]-raw.theta[dir[1]]))-1
     
     # priors for item-level precision hyperparameters
-    tau.beta ~ dgamma(.01, .01)
+    # tau.beta ~ dgamma(.01, .01)
+    tau.beta <- 1/(3^2)  ## set the beta SD to 3
     tau.psi ~ dgamma(.01, .01)
 }
 "

@@ -825,6 +825,9 @@ changeunits <- function(corp, to=c("sentences", "paragraphs", "documents"), ...)
     docvars(newcorpus, names(metadoc(corp))) <- as.data.frame(lapply(metadoc(corp), rep, lengthSegments))
     # add original document name as metadata
     metadoc(newcorpus, "document") <- rep(names(segmentedTexts), lengthSegments)
+    # give a serial number (within document) to each sentence
+    sentenceid <- lapply(lengthSegments, function(n) seq(from=1, to=n))
+    metadoc(newcorpus, "serialno") <- unlist(sentenceid, use.names=FALSE)
     
     # copy settings and corpus metadata
     newcorpus$settings <- corp$settings
