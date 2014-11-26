@@ -40,7 +40,8 @@ Imports:
     proxy,
     austin,
     ca,
-    stm
+    stm,
+    topicmodels
 Suggests:
     quantedaData,
     entropy,

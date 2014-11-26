@@ -44,9 +44,10 @@ tokenize.character <- function(x, simplify=FALSE, sep=" ", ... ) {
     # function to tokenize a single element character
     # profiling shows that using scan is 3x faster than using strsplit
     tokenizeSingle <- function(s, sep=" ", ...) {
-        s <- clean(s, ...)
+        
         # s <- unlist(s)
         tokens <- scan(what="char", text=s, quiet=TRUE, quote="", sep=sep)
+        tokens <- clean(tokens, ...)
         return(tokens)
     }
     

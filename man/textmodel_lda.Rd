@@ -29,7 +29,9 @@ single dimension.   This function is a wrapper to \link[topicmodels]{LDA} and
 \link[topicmodels]{CTM} in \pkg{topicmodels}.
 }
 \examples{
-data(SOTUCorpus)
+library(quantedaData)
+data(sotuCorp)
+SOTUCorpus <- sotuCorp
 presDfm <- dfm(subset(SOTUCorpus, year>1960), stopwords=TRUE, stem=TRUE)
 presDfm <- trimdfm(presDfm, minCount=5, minDoc=3)
 presLDA <- textmodel_lda(presDfm, k=10)
