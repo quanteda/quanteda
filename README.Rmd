@@ -53,8 +53,8 @@ install_github("kbenoit/quanteda", ref="dev")
 install.packages("austin", repos="http://r-forge.r-project.org", type="source")
 
 
+## ALTERNATIVELY, to install the latest version master branch version:
 library(devtools)
-# install the latest version master branch version quanteda from Github
 install_github("kbenoit/quanteda", dependencies=TRUE, quick=TRUE)
 
 ```
