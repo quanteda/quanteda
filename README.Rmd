@@ -44,7 +44,11 @@ Some preliminaries:
 2.  To access the topic modelling functionality, you will need to install the package topicmodels from CRAN.  On most platforms, this will be done automatically when you install quanteda, but will fail on OS X unless you 
 have some additional tools installed.  [See instructions on installing **topicmodels** on OS X Mavericks or Yosemite here.](http://www.kenbenoit.net/how-to-install-the-r-package-topicmodels-on-os-x/)
 
-3.  You should install [Will Lowe's **austin** package](http://conjugateprior.org/software/austin/).  Just follow the instructions below.
+3.  You should install [Will Lowe's **austin** package](http://conjugateprior.org/software/austin/).
+
+    ```S
+    install.packages("austin", repos="http://r-forge.r-project.org", type="source")
+    ```
 
 4.  You should install the additional corpus data from **quantedaData** using
 
