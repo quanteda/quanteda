@@ -43,12 +43,14 @@ Mac: To install the topicmodels package,
    from the App Store.  (After installation, you need to open the App from the Applications folder 
    for it to complete installation.)
 *  Install [homebrew](http://brew.sh) using
-   ```
+
+   ```ruby
    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
    ```
 *  Install the Gnu Scientific Library using `brew install gsl`
 *  Download to your Downloads folder the source file http://cran.r-project.org/src/contrib/topicmodels_0.2-1.tar.gz from the [CRAN topicmodels page](http://cran.r-project.org/web/packages/topicmodels/index.html).
 *  Open a Terminal window, and execute this command:
+
    ```
    R CMD INSTALL ~/Downloads/topicmodels_0.2-1.tar.gz
    ```
