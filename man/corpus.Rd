@@ -6,6 +6,7 @@
 \alias{corpus.character}
 \alias{corpus.directory}
 \alias{corpus.excel}
+\alias{corpus.facebook}
 \alias{corpus.twitter}
 \alias{is.corpus}
 \title{Constructor for corpus objects}
@@ -21,6 +22,9 @@ corpus(x, ...)
   docvarsfrom = NULL, source = NULL, notes = NULL, citation = NULL, ...)
 
 \method{corpus}{twitter}(x, enc = NULL, notes = NULL, citation = NULL,
+  ...)
+
+\method{corpus}{facebook}(x, enc = NULL, notes = NULL, citation = NULL,
   ...)
 
 \method{corpus}{VCorpus}(x, enc = NULL, notes = NULL, citation = NULL,
