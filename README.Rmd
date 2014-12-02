@@ -33,37 +33,19 @@ How to Install
 
 You can download the files and build the package from source, or you can use the devtools library to install the package directly from github.
 
-Note that to access the topic modelling functionality, you will need to install the package topicmodels from CRAN. 
-This will be done auatomatically when you install quanteda, but topicmodels will probably install from source,
-as the binary versions are not yet built for the latest versions of R (>= 3.1.1.).  
+Note that to access the topic modelling functionality, you will need to install the package topicmodels from CRAN.  
+On most platforms, this will be done automatically when you install quanteda, but will fail on OS X unless you 
+have some additional tools installed.  
 
-Mac: To install the topicmodels package,
-*  you will need a C compiler installed.  For the Mac, you can get this by installing 
-   [XCode Tools](https://macappsto.re/gb/Bk9QD.m)
-   from the App Store.  (After installation, you need to open the App from the Applications folder 
-   for it to complete installation.)
-*  Install [homebrew](http://brew.sh) using
+[See instructions on installing topicmodels on OS X Mavericks or Yosemite here.](http://www.kenbenoit.net/how-to-install-the-r-package-topicmodels-on-os-x/)
 
-   ```ruby
-   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-   ```
-*  Install the Gnu Scientific Library using `brew install gsl`
-*  Download to your Downloads folder the source file http://cran.r-project.org/src/contrib/topicmodels_0.2-1.tar.gz from the [CRAN topicmodels page](http://cran.r-project.org/web/packages/topicmodels/index.html).
-*  Open a Terminal window, and execute this command:
-
-   ```
-   R CMD INSTALL ~/Downloads/topicmodels_0.2-1.tar.gz
-   ```
-
-This is done as follows:
+You will also need to install [Will Lowe's austin package](http://conjugateprior.org/software/austin/).  Just follow the instructions below.
 
 ```S
 ## devtools required to install quanteda from Github
 if (!require(devtools)) install.packages("devtools")
-
-## additional packages that require special installation:
-# Will Lowe's austin package
-install.packages("austin", repos="http://r-forge.r-project.org", type="source")
+## Will Lowe's austin package
+if (!require(austin)) install.packages("austin", repos="http://r-forge.r-project.org", type="source")
 
 ## to install the latest dev branch version:
 install_github("kbenoit/quanteda", ref="dev")
@@ -72,7 +54,6 @@ install_github("kbenoit/quanteda", ref="dev")
 ## ALTERNATIVELY, to install the latest version master branch version:
 library(devtools)
 install_github("kbenoit/quanteda", dependencies=TRUE, quick=TRUE)
-
 ```
 
 Documentation
