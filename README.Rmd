@@ -33,27 +33,33 @@ How to Install
 
 You can download the files and build the package from source, or you can use the devtools library to install the package directly from github.
 
-Note that to access the topic modelling functionality, you will need to install the package topicmodels from CRAN.  
-On most platforms, this will be done automatically when you install quanteda, but will fail on OS X unless you 
-have some additional tools installed.  
+Some preliminaries:
 
-[See instructions on installing topicmodels on OS X Mavericks or Yosemite here.](http://www.kenbenoit.net/how-to-install-the-r-package-topicmodels-on-os-x/)
+1.  To install the package from github, you will need to install the `devtools` package, using (from R):
 
-You will also need to install [Will Lowe's austin package](http://conjugateprior.org/software/austin/).  Just follow the instructions below.
+    ```S
+    install.packages("devtools")
+    ```
+
+2.  To access the topic modelling functionality, you will need to install the package topicmodels from CRAN.  On most platforms, this will be done automatically when you install quanteda, but will fail on OS X unless you 
+have some additional tools installed.  [See instructions on installing **topicmodels** on OS X Mavericks or Yosemite here.](http://www.kenbenoit.net/how-to-install-the-r-package-topicmodels-on-os-x/)
+
+3.  You should install [Will Lowe's **austin** package](http://conjugateprior.org/software/austin/).  Just follow the instructions below.
+
+4.  You should install the additional corpus data from **quantedaData** using
+
+    ```S
+    ## devtools required to install quanteda from Github
+    devtools::install_github("kbenoit/quantedaData")
+    ```
+
+To install `quanteda`, we recommend you use the **dev branch**:
 
 ```S
-## devtools required to install quanteda from Github
-if (!require(devtools)) install.packages("devtools")
-## Will Lowe's austin package
-if (!require(austin)) install.packages("austin", repos="http://r-forge.r-project.org", type="source")
-
-## to install the latest dev branch version:
-install_github("kbenoit/quanteda", ref="dev")
-
+devtools::install_github("kbenoit/quanteda", ref="dev")
 
 ## ALTERNATIVELY, to install the latest version master branch version:
-library(devtools)
-install_github("kbenoit/quanteda", dependencies=TRUE, quick=TRUE)
+devtools::install_github("kbenoit/quanteda")
 ```
 
 Documentation
