@@ -33,17 +33,30 @@ How to Install
 
 You can download the files and build the package from source, or you can use the devtools library to install the package directly from github.
 
+Note that to access the topic modelling functionality, you will need to install the package topicmodels from CRAN. 
+This will be done auatomatically when you install quanteda, but topicmodels will probably install from source,
+as the binary versions are not yet built for the latest versions of R (>= 3.1.1.).  To install the topicmodels package,
+you will need a C compiler installed.  For the Mac, you can get this by installing [XCode Tools](https://macappsto.re/gb/Bk9QD.m)
+from the App Store.  (After installation, you need to open the App from the Applications folder for it to complete installation.)
+
 This is done as follows:
 
 ```S
-# devtools required to install quanteda from Github
+## devtools required to install quanteda from Github
 if (!require(devtools)) install.packages("devtools")
+
+## to install the latest dev branch version:
+install_github("kbenoit/quanteda", ref="dev")
+
+## additional packages that require special installation:
+# Will Lowe's austin package
+install.packages("austin", repos="http://r-forge.r-project.org", type="source")
+
+
 library(devtools)
 # install the latest version master branch version quanteda from Github
 install_github("kbenoit/quanteda", dependencies=TRUE, quick=TRUE)
 
-# to install the latest dev branch version quanteda from Github use:
-install_github("kbenoit/quanteda", dependencies=TRUE, quick=TRUE, ref="dev")
 ```
 
 Documentation
