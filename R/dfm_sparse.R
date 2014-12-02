@@ -2,6 +2,8 @@
 #' 
 #' Create a sparse matrix dfm from a vector of texts.
 #' @param x Character vector from which to generate the document-feature matrix
+#' @param verbose display messages if \code{TRUE}
+#' @param clean if \code{FALSE}, do no cleaning of the text
 #' @param ... additional arguments passed to \code{\link{clean}}
 #' @return A specially classed \link[Matrix]{Matrix} object with row names equal to the 
 #'   document names and column names equal to the feature labels.
@@ -33,7 +35,7 @@
 #' dim(tmDTM)
 #'  
 #' # with cleaning - the gsub() calls in clean() take a long time
-#' system.time(dfmsBig <- dfms(txts, clean=TRUE, additional="[-_—]")) 
+#' system.time(dfmsBig <- dfms(txts, clean=TRUE, additional="[-_\\x{h2014}]")) 
 #' object.size(dfmsBig)
 #' dim(dfmsBig) 
 #' # 100 top features
@@ -42,7 +44,6 @@
 #' head(sort(topf, decreasing=TRUE), 100)
 #' }
 dfms <- function(x, verbose=TRUE, clean=TRUE, ...) {
-    require(Matrix)
     if (verbose) cat("Creating dfm from character vector ...")
         
     if (verbose) cat("\n   ... indexing documents")

@@ -8,6 +8,10 @@ dfms(x, verbose = TRUE, clean = TRUE, ...)
 \arguments{
 \item{x}{Character vector from which to generate the document-feature matrix}
 
+\item{verbose}{display messages if \code{TRUE}}
+
+\item{clean}{if \code{FALSE}, do no cleaning of the text}
+
 \item{...}{additional arguments passed to \code{\link{clean}}}
 }
 \value{
@@ -43,7 +47,7 @@ object.size(tmDTM)
 dim(tmDTM)
 
 # with cleaning - the gsub() calls in clean() take a long time
-system.time(dfmsBig <- dfms(txts, clean=TRUE, additional="[-_—]"))
+system.time(dfmsBig <- dfms(txts, clean=TRUE, additional="[-_\\\\x{h2014}]"))
 object.size(dfmsBig)
 dim(dfmsBig)
 # 100 top features

@@ -7,10 +7,12 @@ json(path = NULL, source = "twitter", ...)
 }
 \arguments{
 \item{path}{String describing the full path of a directory that
- contains files in json format, or a vector of file names in
- in json format}
+contains files in json format, or a vector of file names in
+in json format}
 
 \item{source}{Source of data in JSON format.}
+
+\item{...}{additional arguments passed to \code{\link[streamR]{parseTweets}}}
 }
 \description{
 Function to read files with tweets in JSON format

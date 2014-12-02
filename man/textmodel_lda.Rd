@@ -7,6 +7,8 @@ textmodel_lda(x, model = c("lda", "ctm", "stm"), k, smooth = 0,
   meta = NULL, ...)
 }
 \arguments{
+\item{x}{the dfm on which the model will be fit}
+
 \item{model}{the class of lda-type model to fit.  \code{lda} for classic
 latent Dirichlet allocation; \code{ctm} for Blei and Rafferty's (2007)
 correlated topic model.}
@@ -19,13 +21,10 @@ correlated topic model.}
 model}
 
 \item{...}{additional arguments passed to \link[topicmodels]{LDA}}
-
-\item{data}{the dfm on which the model will be fit}
 }
 \description{
-\code{textmodel_lda} estimates the parameters of Blei et. al. (2003)Slapin
-and Proksch's (2008) Poisson scaling model, also known as "wordfish", for a
-single dimension.   This function is a wrapper to \link[topicmodels]{LDA} and
+\code{textmodel_lda} estimates the parameters of Blei et. al. (2003)
+This function is a wrapper to \link[topicmodels]{LDA} and
 \link[topicmodels]{CTM} in \pkg{topicmodels}.
 }
 \examples{
@@ -59,13 +58,13 @@ Kenneth Benoit
 \references{
 Blei, David M., Andrew Y. Ng, and Michael I. Jordan. 2003. "Latent
   Dirichlet Allocation." \emph{The Journal of Machine Learning Research} 3:
-  993–1022.
+  993-1022.
 
   Blei, David M, and John D. Lafferty. 2007. "A Correlated Topic Model of
   Science." \emph{The Annals of Applied Statistics} 1(1): 17-35.
 
   Roberts, M., Stewart, B., Tingley, D., and Airoldi, E. (2013) "The
-  structural topic model and ap- plied social science." In \emph{Advances in Neural
+  structural topic model and applied social science." In \emph{Advances in Neural
   Information Processing Systems Workshop on Topic Models: Computation,
   Application, and Evaluation}. \url{http://goo.gl/uHkXAQ}
 }

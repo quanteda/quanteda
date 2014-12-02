@@ -1,3 +1,12 @@
+quanteda 0.6.4
+==============
+* first cut at REST APIs for Twitter and Facebook
+
+* some minor improvements to sentence segmentation
+
+* improvements to package dependencies and imports - but this is ongoing!
+
+
 quanteda 0.6.3
 ==============
 

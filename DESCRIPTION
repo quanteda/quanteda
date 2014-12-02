@@ -1,7 +1,7 @@
 Package: quanteda
 Type: Package
 Title: Quantitative Analysis of Textual Data
-Version: 0.6.3.001
+Version: 0.6.4.000
 Date: 2014-11-19
 Authors@R: c(
     person("Benoit", "Kenneth", email = "kbenoit@lse.ac.uk", role = "cre"),
@@ -30,7 +30,8 @@ Description: A package for the management and quantitative analysis of textual
 License: GPL-3
 Depends:
     R (>= 3.0),
-    data.table (>= 1.9.2)
+    data.table (>= 1.9.2),
+    Matrix (>= 1.1)
 Imports:
     Matrix,
     SnowballC,
@@ -41,11 +42,13 @@ Imports:
     ca,
     stm,
     topicmodels,
-    austin
+    austin,
+    streamR,
+    jsonlite,
+    httr
 Suggests:
     quantedaData,
     entropy,
-    jsonlite,
     openNLP,
     RJSONIO,
     RCurl,

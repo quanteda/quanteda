@@ -15,8 +15,4 @@ to read.xlsx2)}
 \description{
 Function to declare a connection to a excel file.
 }
-\examples{
-\dontrun{
-}
-}
 

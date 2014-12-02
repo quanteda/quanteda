@@ -42,9 +42,6 @@ directory <- function(path=NULL) {
 #'@param sheetIndex  The index of the sheet of the excel file to read (as passed
 #'  to read.xlsx2)
 #'@export
-#' @examples 
-#' \dontrun{
-#'} 
 #'@export
 excel <- function(path=NULL, sheetIndex=1) {
     require(xlsx)
@@ -93,34 +90,27 @@ getTweets <- function(query, numResults=50, key, cons_secret, token, access_secr
     return(tempRes)
 }
 
-#' @rdname getTimeline
-#' @export
+#' return a time-line of most recent Tweets from a given user
 #'
-#' @title 
-#' Returns up to 3,200 recent tweets from a given user
-#'
-#' @description
-#' \code{getTimeline} connects to the REST API of Twitter and returns up to
+#' Connect to the REST API of Twitter and returns up to
 #' 3,200 recent tweets sent by this user.
 #'
 #' @param screen_name user name of the Twitter user for which tweets
 #' will be downloaded
-#'
 #' @param filename file where tweets will be stored (in json format).
 #' If "default", they will be stored in a file whose name is the
 #' screen name of the queried user. If \code{NA} or \code{NULL},
 #' tweets will be stored in a temporary file that will be deleted.
-#'
 #' @param numResults number of tweets to be downloaded (maximum is 3,200)
-#'
 #' @param key  Key for twitter API authentication
 #' @param cons_secret  for twitter API authentication
 #' @param token  String for twitter API authentication
 #' @param access_secret  for twitter API authentication
-#'
 #' @param df If \code{TRUE}, will return tweets in data frame format.
 #' If \code{FALSE}, will only store tweets in json format in disk.
-#'
+#' @author Pablo Barbera
+#' @export
+#' @import jsonlite httr streamR
 #' @examples \dontrun{
 #'  key = 'your consumer key here'
 #'  cons_secret = 'your consumer secret here'
@@ -140,7 +130,6 @@ getTweets <- function(query, numResults=50, key, cons_secret, token, access_secr
 #'  plot(twDfm)
 #' }
 #'
-
 getTimeline <- function(screen_name, numResults=200, filename="default", 
     key, cons_secret, token, access_secret, df=TRUE) {
     
@@ -155,25 +144,26 @@ getTimeline <- function(screen_name, numResults=200, filename="default",
         filename <- tempfile()
     }
 
-    library(httr); library(rjson); library(streamR)
+    # library(httr); library(rjson); library(streamR)
     cat('authorizing...\n')
     # authorization (manual, not using twitteR package)
-    app <- oauth_app("twitter", key = key, secret = cons_secret)
-    sig <- sign_oauth1.0(app, token=token, token_secret=access_secret)
+    app <- httr::oauth_app("twitter", key = key, secret = cons_secret)
+    sig <- httr::sign_oauth1.0(app, token=token, token_secret=access_secret)
 
     # parameters for API query
     url <- "https://api.twitter.com/1.1/statuses/user_timeline.json"
-    params <- list(count=min(c(numResults, 200)), screen_name = screen_name, include_rts="true",
-        exclude_replies="false", trim_user="false")
+    params <- list(count=min(c(numResults, 200)), 
+                   screen_name = screen_name, include_rts="true",
+                   exclude_replies="false", trim_user="false")
     query <- lapply(params, function(x) URLencode(as.character(x)))
 
     # first query
     url.data <- GET(url, query=query, config(token=sig[["token"]]))
-    json.data <- rjson::fromJSON(rawToChar(url.data$content), unexpected.escape = "keep")
+    json.data <- jsonlite::fromJSON(rawToChar(url.data$content), unexpected.escape = "keep")
 
     # writing to disk
     conn <- file(filename, "a")
-    invisible(lapply(json.data, function(x) writeLines(rjson::toJSON(x), con=conn)))
+    invisible(lapply(json.data, function(x) writeLines(jsonlite::toJSON(x), con=conn)))
     close(conn)        
 
     ## max_id
@@ -189,12 +179,13 @@ getTimeline <- function(screen_name, numResults=200, filename="default",
             include_rts="true", exclude_replies="false", trim_user="false")
         query <- lapply(params, function(x) URLencode(as.character(x)))
         url.data <- GET(url, query=query, config(token=sig[["token"]]))
-        json.data <- rjson::fromJSON(rawToChar(url.data$content), unexpected.escape = "keep")
+        json.data <- jsonlite::fromJSON(rawToChar(url.data$content), 
+                                        unexpected.escape = "keep")
 
         # writing to disk
         if (!is.null(filename) && !is.na(filename)){
             conn <- file(filename, "a")
-            invisible(lapply(json.data, function(x) writeLines(rjson::toJSON(x), con=conn)))
+            invisible(lapply(json.data, function(x) writeLines(jsonlite::toJSON(x), con=conn)))
             close(conn)        
         }
 
@@ -206,7 +197,7 @@ getTimeline <- function(screen_name, numResults=200, filename="default",
 
     if (df){
         # reading tweets into a data frame
-        results <- parseTweets(filename, verbose=FALSE)
+        results <- streamR::parseTweets(filename, verbose=FALSE)
         tempRes <- results
         class(tempRes) <- list('twitter', class(results))
         return(tempRes)        
@@ -218,8 +209,8 @@ getTimeline <- function(screen_name, numResults=200, filename="default",
 #' @param path  String describing the full path of a directory that
 #'  contains files in json format, or a vector of file names in
 #'  in json format
-#'
 #' @param source Source of data in JSON format.
+#' @param ... additional arguments passed to \code{\link[streamR]{parseTweets}}
 #' @export
 #' @examples 
 #' \dontrun{
@@ -247,9 +238,9 @@ json <- function(path=NULL, source="twitter", ...) {
     txt <- unlist(sapply(fls, readLines))
 
     # parsing into a data frame
-    library(streamR)
+    #library(streamR)
     # reading tweets into a data frame
-    results <- parseTweets(txt, verbose=FALSE, ...)
+    results <- streamR::parseTweets(txt, verbose=FALSE, ...)
     tempRes <- results
     class(tempRes) <- list('twitter', class(results))
     return(tempRes)  
@@ -296,24 +287,24 @@ json <- function(path=NULL, source="twitter", ...) {
 #' fbDfm <- dfm(fbcorpus, stopwords=TRUE, stem=TRUE)
 #' plot(fbDfm)
 #' }
-#'
+#' @author Pablo Barbera
+#' @import httr jsonlite
 #' @export
-
 getFBpage <- function(page, token, since=NULL, until=NULL, n=100, feed=FALSE){
-    require(httr); require(rjson)
+    # require(httr); require(rjson)
     cat('collecting posts...\n')
     url <- paste0('https://graph.facebook.com/', page,
         '/posts?fields=from,message,created_time,type,link,comments.summary(true)',
         ',likes.summary(true),shares&limit=')
-    if (feed){
+    if (feed) {
         url <- paste0('https://graph.facebook.com/', page,
         '/feed?fields=from,message,created_time,type,link,comments.summary(true)',
         ',likes.summary(true),shares')
     }
-    if (!is.null(until)){
+    if (!is.null(until)) {
         url <- paste0(url, '&until=', until)
     }
-    if (!is.null(since)){
+    if (!is.null(since)) {
         url <- paste0(url, '&since=', since)
     }
     if (n<=100){
@@ -341,7 +332,7 @@ getFBpage <- function(page, token, since=NULL, until=NULL, n=100, feed=FALSE){
     df <- pageDataToDF(content$data)
 
     ## paging if n>100
-    if (n>100){
+    if (n>100) {
         df.list <- list(df)
         while (l<n & length(content$data)>0 & 
             !is.null(content$paging$`next`)){

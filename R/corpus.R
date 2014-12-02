@@ -165,7 +165,7 @@ corpus.excel <- function(x, docnames=row.names(x),
 corpus.twitter <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
     # extract the content (texts)
     texts <- x$text
-    atts <-as.data.frame(x[,2:ncol(x)])    
+    atts <- as.data.frame(x[,2:ncol(x)])    
     
     # using docvars inappropriately here but they show up as docmeta given 
     # the _ in the variable names

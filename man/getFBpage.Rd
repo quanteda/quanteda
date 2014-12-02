@@ -45,4 +45,7 @@ fbDfm <- dfm(fbcorpus, stopwords=TRUE, stem=TRUE)
 plot(fbDfm)
 }
 }
+\author{
+Pablo Barbera
+}
 

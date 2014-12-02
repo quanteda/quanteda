@@ -74,7 +74,7 @@ stopwordsRemove.dfm <- function(text, stopwords=NULL) {
 #' stopwordsGet("italian")
 stopwordsGet <- function(kind="english") {
     if (!(kind %in% c("english", "SMART", "danish", "french", "hungarian", "norwegian", "russian", "swedish", "catalan", "dutch", "finnish",   
-                     "german", "italian", "portuguese", "spanish"))) {
+                     "german", "italian", "portuguese", "spanish", "arabic"))) {
         stop(paste(kind, "is not a recognized stopword list type."))
     }
     data(stopwords, envir = environment())

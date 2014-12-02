@@ -5,6 +5,9 @@
 \usage{
 dfm2stmformat(data)
 }
+\arguments{
+\item{data}{dfm object to be convereted}
+}
 \value{
 A list containing the following elements:
 \item{documents}{A list containing the documents in the stm format.}
