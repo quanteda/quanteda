@@ -109,7 +109,7 @@ segmentSentence <- function(x, delimiter="[.!?:;]") {
     text <- gsub(findregex, "\\1", text)
     
     # preserve decimals - also i.e. pp. p. e.g. etc.
-    numbersWithDecimalsregex <- "([\\d])\\.([\\d\\s])"
+    numbersWithDecimalsregex <- "([\\d])\\.([\\d])"
     text <- gsub(numbersWithDecimalsregex, "\\1_DECIMAL_\\2", text, perl=TRUE)
     
     # preserve ellipses
