@@ -28,6 +28,7 @@ This function is a wrapper to \link[topicmodels]{LDA} and
 \link[topicmodels]{CTM} in \pkg{topicmodels}.
 }
 \examples{
+\dontrun{
 library(quantedaData)
 data(sotuCorp)
 SOTUCorpus <- sotuCorp
@@ -50,6 +51,7 @@ if (require(stm)) {
                                  prevalence = ~treatment + s(pid_rep),
                                  data = docvars(gadarianCorpus))
     summary(gadarianSTM)
+}
 }
 }
 \author{

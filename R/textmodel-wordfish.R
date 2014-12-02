@@ -21,7 +21,6 @@
 #'   Slapin, Jonathan B, and Sven-Oliver Proksch. 2008. "A Scaling 
 #'   Model for Estimating Time-Series Party Positions From Texts." American 
 #'   Journal of Political Science 52(3): 705-22.
-#' @import austin
 #' @author Kenneth Benoit
 #' @examples 
 #' library(quantedaData)
@@ -37,6 +36,8 @@ textmodel_wordfish <- function(data, method=c("mml", "mcmc"), smooth=0, ...) {
         stop("supplied data must be a dfm object.")
     data <- data + smooth  # smooth by the specified amount
     if (method=="mml") {
+        if (!require(austin))
+            stop("you must first install austin (from Rforge) to use wordfish mml.")
         model <- wordfish(as.wfm(data, word.margin=2), ...)
     } else if (method=="mcmc") {
         if (!require(rjags)) 

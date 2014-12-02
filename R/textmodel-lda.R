@@ -26,6 +26,7 @@
 #' @import topicmodels stm
 #' @author Kenneth Benoit
 #' @examples 
+#' \dontrun{
 #' library(quantedaData)
 #' data(sotuCorp)
 #' SOTUCorpus <- sotuCorp
@@ -48,6 +49,7 @@
 #'                                  prevalence = ~treatment + s(pid_rep), 
 #'                                  data = docvars(gadarianCorpus))
 #'     summary(gadarianSTM)
+#' }
 #' }
 #' @import topicmodels stm
 #' @export
