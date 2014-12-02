@@ -175,6 +175,19 @@ corpus.twitter <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
 }
 
 
+#' @rdname corpus
+#' @export
+corpus.facebook <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
+    # extract the content ("message" of posts)
+    texts <- x$message
+    atts <- as.data.frame(x[,2:ncol(x)])    
+    
+    # not sure I'm doing this the right way... What is metadata?
+    corpus(texts, docvars=atts,
+           source=paste("Converted from posts on Facebook page"),
+           enc=enc, ...)
+}
+
 
 #' @rdname corpus
 #' @note When \code{x} is a \link[tm]{VCorpus} object, the fixed metadata 
