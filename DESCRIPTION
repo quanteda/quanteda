@@ -38,11 +38,11 @@ Imports:
     slam,
     tm,
     proxy,
-    austin,
     ca,
     stm
 Suggests:
     quantedaData,
+    austin,
     entropy,
     jsonlite,
     openNLP,
