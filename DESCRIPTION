@@ -39,10 +39,11 @@ Imports:
     tm,
     proxy,
     ca,
-    stm
+    stm,
+    topicmodels,
+    austin
 Suggests:
     quantedaData,
-    austin,
     entropy,
     jsonlite,
     openNLP,
@@ -51,7 +52,6 @@ Suggests:
     twitteR,
     XML,
     lda,
-    topicmodels,
     tcltk2,
     knitr,
     rjags,
