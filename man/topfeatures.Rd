@@ -3,11 +3,14 @@
 \alias{topFeatures}
 \alias{topfeatures}
 \alias{topfeatures.dfm}
+\alias{topfeatures.dgCMatrix}
 \title{list the most frequent features}
 \usage{
 topfeatures(x, n = 10, decreasing = TRUE, ci = 0.95)
 
 \method{topfeatures}{dfm}(x, n = 10, decreasing = TRUE, ci = 0.95)
+
+\method{topfeatures}{dgCMatrix}(x, n = 10, decreasing = TRUE, ci = 0.95)
 }
 \arguments{
 \item{x}{the object whose features will be returned}

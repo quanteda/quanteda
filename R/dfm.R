@@ -675,6 +675,28 @@ topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ci=.95) {
     }
 }
 
+#' @export
+#' @rdname topfeatures
+topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ci=.95) {
+    if (is.null(n)) n <- ncol(x)
+#     if (is.resampled(x)) {
+#         subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
+#         subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
+#         return(data.frame(#features=colnames(subdfm),
+#             freq=colSums(subdfm[,,1]),
+#             cilo=apply(colSums(subdfm), 1, quantile, (1-ci)/2),
+#             cihi=apply(colSums(subdfm), 1, quantile, 1-(1-ci)/2)))
+#     } else {
+        
+    csums <- colSums(x)
+    names(csums) <- mydfms@Dimnames$features
+    subdfm <- sort(csums, decreasing)
+    return(subdfm[1:n])
+#    }
+}
+
+
+
 #' print a dfm object
 #'
 #' print method for dfm objects
