@@ -3,7 +3,9 @@
 \alias{readWStatDict}
 \title{Import a Wordstat dictionary}
 \usage{
-readWStatDict(path, enc = "", lower = TRUE)
+readWStatDict(path)
+
+readWStatDict(path)
 }
 \arguments{
 \item{path}{full pathname of the wordstat dictionary file (usually ending in .cat)}
@@ -11,13 +13,21 @@ readWStatDict(path, enc = "", lower = TRUE)
 \item{enc}{a valid input encoding for the file to be read, see \link{iconvlist}}
 
 \item{lower}{if \code{TRUE} (default), convert the dictionary entries to lower case}
+
+\item{path}{path to the wordstat dictionary file (.cat)}
 }
 \value{
 a named list, where each the name of element is a bottom level
   category in the hierarchical wordstat dictionary. Each element is a list of
   the dictionary terms corresponding to that level.
+
+a named list, where each the name of element is a bottom level
+  category in the hierarchical wordstat dictionary. Each element is a list of
+  the dictionary terms corresponding to that level.
 }
 \description{
+Make a flattened list from a hierarchical wordstat dictionary
+
 Make a flattened list from a hierarchical wordstat dictionary
 }
 \examples{
@@ -25,8 +35,14 @@ Make a flattened list from a hierarchical wordstat dictionary
 path <- '~/Dropbox/QUANTESS/corpora/LaverGarry.cat'
 lgdict <- readWStatDict(path)
 }
+\dontrun{
+path <- '~/Dropbox/QUANTESS/corpora/LaverGarry.cat'
+lgdict <- readWStatDict(path)
+}
 }
 \author{
 Kohei Watanabe, Kenneth Benoit
+
+Kohei Watanabe
 }
 

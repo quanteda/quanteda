@@ -6,13 +6,13 @@
 \alias{summary.wordscores}
 \title{summary of a textmodel object}
 \usage{
-summary.textmodel(object, ...)
+\method{summary}{textmodel}(object, ...)
 
-summary.textmodelfitted(object, ...)
+\method{summary}{textmodelfitted}(object, ...)
 
-summary.textmodelpredicted(object, ...)
+\method{summary}{textmodelpredicted}(object, ...)
 
-summary.wordscores(object, ...)
+\method{summary}{wordscores}(object, ...)
 }
 \arguments{
 \item{object}{textmodel object to be summarized}
