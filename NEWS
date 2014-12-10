@@ -6,6 +6,8 @@ quanteda 0.6.4
 
 * improvements to package dependencies and imports - but this is ongoing!
 
+* Added more functions to dfms, getting there...
+
 
 quanteda 0.6.3
 ==============

@@ -1,5 +1,4 @@
 # To Implement:
-#   custom stopwords
 #   bigram
 #   dictionary
 #   thesaurus
@@ -25,12 +24,18 @@ dfms <- function(x, ...) {
 #' @param verbose display messages if \code{TRUE}
 #' @param clean if \code{FALSE}, do no cleaning of the text
 #' @param stem if \code{TRUE}, stem words
-#' @param removestopwords if \code{TRUE}, remove stopwords in \code{langage}
+#' @param ignoredFeatures a character vector of user-supplied features to
+#'   ignore, such as "stop words".  Formerly, this was a Boolean option for
+#'   \code{stopwords = TRUE}, but requiring the user to supply the list
+#'   highlights the choice involved in using any stopword list.  To access one
+#'   possible list (from any list you wish), use the
+#'   \code{\link{stopwordsGet}()} function or just (e.g.)
+#'   \code{stopwords$english}.
 #' @param language Language for stemming and stopwords.  Choices are 
-#'   \code{danish, dutch, english, finnish, french, german, hungarian, italian,
-#'   norwegian, porter, portuguese, romanian, russian, spanish, swedish,
+#'   \code{danish, dutch, english, finnish, french, german, hungarian, italian, 
+#'   norwegian, porter, portuguese, romanian, russian, spanish, swedish, 
 #'   turkish} for stemming, and \code{SMART, danish, english, french, hungarian,
-#'   norwegian, russian, swedish, catalan, dutch, finnish, german, italian,
+#'   norwegian, russian, swedish, catalan, dutch, finnish, german, italian, 
 #'   portuguese, spanish, arabic} for stopwords.
 #' @param dense if \code{TRUE}, produce a dense matrix, otherwise produce a 
 #'   sparse matrix of class \code{dgCMatrix} from the \pkg{\link{Matrix}} 
@@ -45,6 +50,9 @@ dfms <- function(x, ...) {
 #' (size1 <- object.size(dfmsInaug))
 #' (size2 <- object.size(dfm(inaugTexts)))
 #' cat("Compacted by ", round(as.numeric((1-size1/size2)*100), 1), "%.\n", sep="")
+#' 
+#' # with stopwords English, stemming, and dense matrix
+#' dfmsInaug2 <- dfms(inaugCorpus, ignoredFeatures = stopwordsGet(), stem=TRUE, dense=TRUE)
 #' 
 #' \dontrun{
 #' # try it with approx 35,000 court documents from Lauderdale and Clark (200?)
@@ -74,10 +82,11 @@ dfms <- function(x, ...) {
 #' head(sort(topf, decreasing=TRUE), 100)
 #' }
 dfms.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, 
-                           removestopwords=FALSE, 
+                           ignoredFeatures = NULL, 
                            dense=FALSE, 
                            language="english",
                            fromCorpus=FALSE, ...) {
+    startTime <- proc.time()
     if (!fromCorpus & verbose) 
         cat("Creating dfm from character vector ...")
         
@@ -90,15 +99,16 @@ dfms.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     if (verbose) cat("\n   ... tokenizing texts")
     tokenizedTexts <- lapply(x, tokenizeSingle, sep=" ")
     
-    if (verbose) cat("\n   ... shaping tokens into data.table")
+    #if (verbose) cat("\n   ... shaping tokens into data.table")
     alltokens <- data.table(docIndex = rep(docIndex, sapply(tokenizedTexts, length)),
                             features = unlist(tokenizedTexts))
+    alltokens <- alltokens[features != ""]
+    if (verbose) cat(", found", format(nrow(alltokens), big.mark=","), "total tokens")
     
     if (clean) {
         if (verbose) cat("\n   ... cleaning the tokens")
         alltokens$features <- clean(alltokens$features, ...)
     }
-    
     alltokens <- alltokens[features != ""]
     
     if (stem == TRUE) {
@@ -112,15 +122,18 @@ dfms.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
         }
     }
 
-    if (removestopwords) {
-        languageIndex <- grep(tolower(language), tolower(names(stopwords)))
-        if (length(languageIndex) == 0) {
-            cat("\n   ... WARNING: not removing stopwords because language", language, "is unavailable")
+    if (!is.null(ignoredFeatures)) {
+        if (!is.character(ignoredFeatures)) {
+            cat("\n   ... WARNING: not ignoring words because not a character vector")
         } else {
-            if (verbose) 
-                cat("\n   ... removing stopwords (", names(stopwords)[languageIndex], ")", sep="")
-            stopw <- stopwords[[languageIndex]]
-            alltokens <- alltokens[!(features %in% stopw)]
+            if (verbose) cat("\n   ... ignoring", format(length(ignoredFeatures), big.mark=","), "feature types, discarding ")
+            ignoredfeatIndex <- which(alltokens$features %in% ignoredFeatures)
+            if (verbose) {
+                cat(format(length(ignoredfeatIndex), big.mark=","), " total features (",
+                    format(length(ignoredfeatIndex) / nrow(alltokens) * 100, digits=3),
+                    "%)", sep="")
+            }
+            alltokens <- alltokens[!ignoredfeatIndex]
         }
     }
     
@@ -156,10 +169,10 @@ dfms.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     }
     
     if (verbose) cat("\n   ... done: created a", paste(dim(dfmresult), collapse=" x "), 
-                     ifelse(dense, "dense", "sparse"), "dfm.\n")
+                     ifelse(dense, "dense", "sparse"), "dfm, elapsed time",
+                     (proc.time() - startTime)[3], "seconds.\n")
     return(dfmresult)
 }
-
 
 tokenizeSingle <- function(s, sep=" ", useclean=FALSE, ...) {
     if (useclean) s <- clean(s, ...)
@@ -176,7 +189,9 @@ tokenizeSingle <- function(s, sep=" ", useclean=FALSE, ...) {
 #' mydfms <- dfms(inaugCorpus)
 #' data(iebudgetsCorpus, package="quantedaData")
 #' mydfms2 <- dfms(SOTUCorpus, groups = c("name", "party"))
-dfms.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, removestopwords=FALSE, dense=FALSE, language="english",
+dfms.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, 
+                        ignoredFeatures=NULL, 
+                        dense=FALSE, language="english",
                         groups=NULL, ...) {
     if (verbose) cat("Creating dfm from corpus ...")
     
@@ -196,7 +211,8 @@ dfms.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, removestopwords
         names(texts) <- docnames(x)
     }
 
-    dfms(texts, verbose=verbose, clean=clean, stem=stem, removestopwords=removestopwords, dense=dense, language=language,
+    dfms(texts, verbose=verbose, clean=clean, stem=stem, ignoredFeatures=ignoredFeatures, 
+         dense=dense, language=language,
          fromCorpus=TRUE, ...)
 }
 

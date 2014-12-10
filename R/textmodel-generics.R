@@ -190,7 +190,7 @@ print.textmodelpredicted <- function(x, ...) {
         x$ci.lo <- x$ci.hi <- NULL
     
     if (class(x)[3]=="wordscores") {
-        print(as.data.frame(x))
+        print(round(as.data.frame(x), 4))
         cat("\n")
     } else if (class(x)[3]=="wordfish") {
         NextMethod(x, ...)

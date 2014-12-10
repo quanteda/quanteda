@@ -8,11 +8,11 @@
 dfms(x, ...)
 
 \method{dfms}{character}(x, verbose = TRUE, clean = TRUE, stem = FALSE,
-  removestopwords = FALSE, dense = FALSE, language = "english",
+  ignoredFeatures = NULL, dense = FALSE, language = "english",
   fromCorpus = FALSE, ...)
 
 \method{dfms}{corpus}(x, verbose = TRUE, clean = TRUE, stem = FALSE,
-  removestopwords = FALSE, dense = FALSE, language = "english",
+  ignoredFeatures = NULL, dense = FALSE, language = "english",
   groups = NULL, ...)
 }
 \arguments{
@@ -26,7 +26,13 @@ dfms(x, ...)
 
 \item{stem}{if \code{TRUE}, stem words}
 
-\item{removestopwords}{if \code{TRUE}, remove stopwords in \code{langage}}
+\item{ignoredFeatures}{a character vector of user-supplied features to
+ignore, such as "stop words".  Formerly, this was a Boolean option for
+\code{stopwords = TRUE}, but requiring the user to supply the list
+highlights the choice involved in using any stopword list.  To access one
+possible list (from any list you wish), use the
+\code{\link{stopwordsGet}()} function or just (e.g.)
+\code{stopwords$english}.}
 
 \item{dense}{if \code{TRUE}, produce a dense matrix, otherwise produce a
 sparse matrix of class \code{dgCMatrix} from the \pkg{\link{Matrix}}
@@ -59,6 +65,9 @@ dfmsInaug <- dfms(inaugTexts)
 (size1 <- object.size(dfmsInaug))
 (size2 <- object.size(dfm(inaugTexts)))
 cat("Compacted by ", round(as.numeric((1-size1/size2)*100), 1), "\%.\\n", sep="")
+
+# with stopwords and stemming
+dfmsInaug2 <- dfms(inaugCorpus, stopwords = stopwordsGet(), stem=TRUE)
 
 \dontrun{
 # try it with approx 35,000 court documents from Lauderdale and Clark (200?)
