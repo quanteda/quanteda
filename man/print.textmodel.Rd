@@ -7,15 +7,15 @@
 \alias{print.wordscores}
 \title{print a textmodel object}
 \usage{
-print.textmodel(x, ...)
+\method{print}{textmodel}(x, ...)
 
-print.textmodelfitted(x, ...)
+\method{print}{textmodelfitted}(x, ...)
 
-print.textmodelpredicted(x, ...)
+\method{print}{textmodelpredicted}(x, ...)
 
-print.naivebayes(x, n = 30L, ...)
+\method{print}{naivebayes}(x, n = 30L, ...)
 
-print.wordscores(x, n = 30L, ...)
+\method{print}{wordscores}(x, n = 30L, ...)
 }
 \arguments{
 \item{x}{textmodel object to be printed}

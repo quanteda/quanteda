@@ -3,7 +3,8 @@
 \alias{summary.corpus}
 \title{Corpus summary}
 \usage{
-summary.corpus(object, n = 100, verbose = TRUE, showmeta = FALSE, ...)
+\method{summary}{corpus}(object, n = 100, verbose = TRUE,
+  showmeta = FALSE, ...)
 }
 \arguments{
 \item{object}{corpus to be summarized}
