@@ -8,9 +8,12 @@
 dfms(x, ...)
 
 \method{dfms}{character}(x, verbose = TRUE, clean = TRUE, stem = FALSE,
+  removestopwords = FALSE, dense = FALSE, language = "english",
   fromCorpus = FALSE, ...)
 
-\method{dfms}{corpus}(x, verbose = TRUE, clean = TRUE, stem = FALSE, ...)
+\method{dfms}{corpus}(x, verbose = TRUE, clean = TRUE, stem = FALSE,
+  removestopwords = FALSE, dense = FALSE, language = "english",
+  groups = NULL, ...)
 }
 \arguments{
 \item{x}{corpus or character vector from which to generate the document-feature matrix}
@@ -21,11 +24,26 @@ dfms(x, ...)
 
 \item{clean}{if \code{FALSE}, do no cleaning of the text}
 
-\item{stem}{if \code{TRUE}, apply English Porter stemmer (just English for now, sorry)}
+\item{stem}{if \code{TRUE}, stem words}
+
+\item{removestopwords}{if \code{TRUE}, remove stopwords in \code{langage}}
+
+\item{dense}{if \code{TRUE}, produce a dense matrix, otherwise produce a
+sparse matrix of class \code{dgCMatrix} from the \pkg{\link{Matrix}}
+package.}
+
+\item{language}{Language for stemming and stopwords.  Choices are
+\code{danish, dutch, english, finnish, french, german, hungarian, italian,
+norwegian, porter, portuguese, romanian, russian, spanish, swedish,
+turkish} for stemming, and \code{SMART, danish, english, french, hungarian,
+norwegian, russian, swedish, catalan, dutch, finnish, german, italian,
+portuguese, spanish, arabic} for stopwords.}
+
+\item{groups}{Grouping variable for aggregating documents}
 }
 \value{
-A specially classed \link[Matrix]{Matrix} object with row names equal to the
-  document names and column names equal to the feature labels.
+A specially classed \link[Matrix]{Matrix} object with row names equal
+  to the document names and column names equal to the feature labels.
 }
 \description{
 Create a sparse matrix dfm from a corpus or a vector of texts, using the
@@ -71,6 +89,8 @@ head(sort(topf, decreasing=TRUE), 100)
 }
 # sparse matrix from a corpus
 mydfms <- dfms(inaugCorpus)
+data(iebudgetsCorpus, package="quantedaData")
+mydfms2 <- dfms(SOTUCorpus, groups = c("name", "party"))
 }
 \author{
 Kenneth Benoit

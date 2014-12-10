@@ -92,7 +92,12 @@ clean.corpus <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
 #'   of the vector are converted to UTF-8 encoding before the stemming is
 #'   performed, and the returned elements are marked as such when they contain
 #'   non-ASCII characters.
-#' @seealso \link[SnowballC]{wordStem}; \url{http://snowball.tartarus.org/}.
+#' @seealso \link[SnowballC]{wordStem}
+#' 
+#' @references \url{http://snowball.tartarus.org/}
+#' 
+#' \url{http://www.loc.gov/standards/iso639-2/php/code_list.php} 
+#' for a list of ISO-639 language codes
 #' @export
 #' @examples
 #' # Simple example
