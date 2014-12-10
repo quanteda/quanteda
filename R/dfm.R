@@ -647,8 +647,9 @@ sort.dfm <- function(x, decreasing=TRUE, margin = c("features", "docs", "both"),
 #' @param decreasing If TRUE, return the \code{n} most frequent features, if
 #'   FALSE, return the \code{n} least frequent features
 #' @param ci confidence interval from 0-1.0 for use if dfm is resampled
+#' @param ... additional arguments passed to other methods
 #' @export
-topfeatures <- function(x, n=10, decreasing=TRUE, ci=.95) {
+topfeatures <- function(x, ...) {
     UseMethod("topfeatures")
 }
 
@@ -660,7 +661,7 @@ topfeatures <- function(x, n=10, decreasing=TRUE, ci=.95) {
 #' topfeatures(dfm(inaugCorpus), decreasing=FALSE)
 #' @export
 #' @rdname topfeatures
-topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ci=.95) {
+topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ci=.95, ...) {
     if (is.null(n)) n <- ncol(x)
     if (is.resampled(x)) {
         subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
@@ -677,7 +678,7 @@ topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ci=.95) {
 
 #' @export
 #' @rdname topfeatures
-topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ci=.95) {
+topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ...) {
     if (is.null(n)) n <- ncol(x)
 #     if (is.resampled(x)) {
 #         subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
@@ -689,7 +690,7 @@ topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ci=.95) {
 #     } else {
         
     csums <- colSums(x)
-    names(csums) <- mydfms@Dimnames$features
+    names(csums) <- x@Dimnames$features
     subdfm <- sort(csums, decreasing)
     return(subdfm[1:n])
 #    }

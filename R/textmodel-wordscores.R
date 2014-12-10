@@ -69,7 +69,9 @@ textmodel_wordscores <- function(data, scores,
         Sw <- log(Pwr[, upper]) - log(Pwr[, lower])
     }
     
-    Sw <- Sw[which(colSums(x) > 0)]  # remove words with zero counts in ref set
+    namesTemp <- names(Sw)
+    Sw <- as.vector(Sw[which(colSums(x) > 0)])  # remove words with zero counts in ref set
+    names(Sw) <- namesTemp[which(colSums(x) > 0)]
     
     model <- list(pi = Sw, data=data, scores=scores)
     class(model) <- c("wordscores", "list")

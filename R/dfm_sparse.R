@@ -1,10 +1,21 @@
-#' create a sparse matrix dfm
+#' create a sparse document-feature matrix
 #' 
-#' Create a sparse matrix dfm from a vector of texts.
-#' @param x Character vector from which to generate the document-feature matrix
+#' Create a sparse matrix dfm from a corpus or a vector of texts, using the
+#' \pkg{Matrix} package.  This is both much faster and much more memory efficient
+#' than the regular (dense) \link{dfm} object. 
+#' 
+#' Eventually the plan is to represent all dfm's as sparse matrixes.
+#' @param x corpus or character vector from which to generate the document-feature matrix
+#' @param ... additional arguments passed to \code{\link{clean}}
+#' @export
+dfms <- function(x, ...) {
+    UseMethod("dfms")
+}
+
+#' @rdname dfms
 #' @param verbose display messages if \code{TRUE}
 #' @param clean if \code{FALSE}, do no cleaning of the text
-#' @param ... additional arguments passed to \code{\link{clean}}
+#' @param stem if \code{TRUE}, apply English Porter stemmer (just English for now, sorry)
 #' @return A specially classed \link[Matrix]{Matrix} object with row names equal to the 
 #'   document names and column names equal to the feature labels.
 #' @author Kenneth Benoit
@@ -43,8 +54,9 @@
 #' names(topf) <- colnames(dfmsBig)
 #' head(sort(topf, decreasing=TRUE), 100)
 #' }
-dfms <- function(x, verbose=TRUE, clean=TRUE, ...) {
-    if (verbose) cat("Creating dfm from character vector ...")
+dfms.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, fromCorpus=FALSE, ...) {
+    if (!fromCorpus & verbose) 
+        cat("Creating dfm from character vector ...")
         
     if (verbose) cat("\n   ... indexing documents")
     docIndex <- 1:length(x)
@@ -64,6 +76,12 @@ dfms <- function(x, verbose=TRUE, clean=TRUE, ...) {
         alltokens$features <- clean(alltokens$features, ...)
     }
     alltokens <- alltokens[features!=""]
+    
+    if (stem == TRUE) {
+        # require(SnowballC, quietly=TRUE)
+        if (verbose) cat("\n   ... stemming the tokens")
+        alltokens$features <- wordstem(alltokens$features)
+    }
     
     if (verbose) cat("\n   ... summing tokens by document")
     alltokens[, n:=1L]
@@ -87,7 +105,7 @@ dfms <- function(x, verbose=TRUE, clean=TRUE, ...) {
     # class(dfmsparse) <- c("dfms", class(dfmsparse))
     # NEED ANOTHER CLASS METHODS SINCE THIS IS S4
     
-    if (verbose) cat(" ... done.\n")
+    if (verbose) cat("\n   ... done.\n")
     return(dfmsparse)
 }
 
@@ -99,7 +117,17 @@ tokenizeSingle <- function(s, sep=" ", useclean=FALSE, ...) {
     return(tokens)
 }
 
+#' @rdname dfms
+#' @export
+#' @examples
+#' # sparse matrix from a corpus
+#' mydfms <- dfms(inaugCorpus) 
+dfms.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, ...) {
+    if (verbose) cat("Creating dfm from corpus ...")
+    dfms(texts(x), verbose=verbose, clean=clean, stem=stem, fromCorpus=TRUE, ...)
+}
 
-
+    
+    
 
 

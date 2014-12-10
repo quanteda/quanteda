@@ -6,14 +6,16 @@
 \alias{topfeatures.dgCMatrix}
 \title{list the most frequent features}
 \usage{
-topfeatures(x, n = 10, decreasing = TRUE, ci = 0.95)
+topfeatures(x, ...)
 
-\method{topfeatures}{dfm}(x, n = 10, decreasing = TRUE, ci = 0.95)
+\method{topfeatures}{dfm}(x, n = 10, decreasing = TRUE, ci = 0.95, ...)
 
-\method{topfeatures}{dgCMatrix}(x, n = 10, decreasing = TRUE, ci = 0.95)
+\method{topfeatures}{dgCMatrix}(x, n = 10, decreasing = TRUE, ...)
 }
 \arguments{
 \item{x}{the object whose features will be returned}
+
+\item{...}{additional arguments passed to other methods}
 
 \item{n}{how many top features should be returned}
 
