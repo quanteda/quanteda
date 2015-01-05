@@ -42,6 +42,11 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
     if (!(removeDigits | removePunct | lower) & is.null(additional)) {
         warning("  clean: text unchanged")
     }
+    
+    # convert "curly quotes"
+    x <- gsub("[“”]", "\"", x)
+    x <- gsub("[’‘]", "\'", x)
+    
     if (removePunct) {
         # use "negative lookahead" to keep Twitter symbols, always keep "_"
         # remove other punctuation from POSIX [:punct:]
@@ -52,6 +57,12 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
                         sep="")
        x <- gsub(remove, "", x, perl=TRUE)
     }
+    
+    # change typographic dash variations to a hyphen: There Can Be Only One
+    x <- gsub("–", "-", x)
+    
+    # remove common cruft from word-processors
+    x <- gsub("[\\f…]", "", x)
     
     if (removeDigits) 
         x <- gsub("[[:digit:]]", "", x)

@@ -14,12 +14,14 @@ segmentParagraph(x, delimiter = "\\\\n{2}")
 segment(x, ...)
 
 \method{segment}{character}(x, what = c("tokens", "sentences", "paragraphs",
-  "other"), delimiter = ifelse(what == "tokens", " ", ifelse(what ==
-  "sentences", "[.!?:;]", "\\\\n{2}")), ...)
+  "tags", "other"), delimiter = ifelse(what == "tokens", " ", ifelse(what ==
+  "sentences", "[.!?:;]", ifelse(what == "paragraphs", "\\\\n{2}", ifelse(what
+  == "tags", "\\\\s*##\\\\w+\\\\b\\\\s*", NULL)))), ...)
 
 \method{segment}{corpus}(x, what = c("tokens", "sentences", "paragraphs",
-  "other"), delimiter = ifelse(what == "tokens", " ", ifelse(what ==
-  "sentences", "[.!?:;]", "\\\\n{2}")), ...)
+  "tags", "other"), delimiter = ifelse(what == "tokens", " ", ifelse(what ==
+  "sentences", "[.!?:;]", ifelse(what == "paragraphs", "\\\\n{2}", ifelse(what
+  == "tags", "\\\\s*##\\\\w+\\\\b\\\\s*", NULL)))), ...)
 }
 \arguments{
 \item{x}{text or corpus object to be segmented}
@@ -63,6 +65,10 @@ Tokens are delimited by whitespace.  For sentences, the delimiter
   and the lines were wrapped in the window rather than being hard-wrapped
   with a newline character.)
 }
+\note{
+Does not currently record document segments if segmenting a multi-text corpus
+into smaller units. For this, use \link{changeunits} instead.
+}
 \examples{
 # segment sentences of the UK 2010 immigration sections of manifestos
 segmentSentence(uk2010immig[1])[1:5]   # 1st 5 sentences from first (BNP) text
@@ -80,6 +86,14 @@ segment(uk2010immig[3:4], "paragraphs")
 # segment a text into sentences
 segmentedChar <- segment(uk2010immig, "sentences")
 segmentedChar[2]
+testCorpus <- corpus("##INTRO This is the introduction.
+                      ##DOC1 This is the first document.
+                      Second sentence in Doc 1.
+                      ##DOC3 Third document starts here.
+                      End of third document.")
+testCorpusSeg <- segment(testCorpus, "tags")
+summary(testCorpusSeg)
+texts(testCorpusSeg)
 # segment a corpus into sentences
 segmentedCorpus <- segment(corpus(uk2010immig), "sentences")
 identical(segmentedCorpus, segmentedChar)

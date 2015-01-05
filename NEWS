@@ -8,6 +8,10 @@ quanteda 0.6.4
 
 * Added more functions to dfms, getting there...
 
+* Added the ability to segment a corpus on tags (e.g. ##TAG1 text text, ##TAG2) 
+  and have the document split using the tags as a delimiter and the tag then
+  added to the corpus as a docvar.
+
 
 quanteda 0.6.3
 ==============

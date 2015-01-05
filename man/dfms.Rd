@@ -66,8 +66,8 @@ dfmsInaug <- dfms(inaugTexts)
 (size2 <- object.size(dfm(inaugTexts)))
 cat("Compacted by ", round(as.numeric((1-size1/size2)*100), 1), "\%.\\n", sep="")
 
-# with stopwords and stemming
-dfmsInaug2 <- dfms(inaugCorpus, stopwords = stopwordsGet(), stem=TRUE)
+# with stopwords English, stemming, and dense matrix
+dfmsInaug2 <- dfms(inaugCorpus, ignoredFeatures = stopwordsGet(), stem=TRUE, dense=TRUE)
 
 \dontrun{
 # try it with approx 35,000 court documents from Lauderdale and Clark (200?)

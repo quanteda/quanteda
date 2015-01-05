@@ -151,8 +151,10 @@ segmentSentence <- function(x, delimiter="[.!?:;]") {
 #' 
 #' @export
 segmentParagraph <- function(x, delimiter="\\n{2}") {
-    unlist(strsplit(x, delimiter))
+    tmp <- unlist(strsplit(x, delimiter))
+    tmp[which(tmp != "")]
 }
+
 
 
 #' segment texts into component elements
@@ -199,9 +201,12 @@ segment <- function(x, ...) {
 #' # segment a text into sentences
 #' segmentedChar <- segment(uk2010immig, "sentences")
 #' segmentedChar[2]
-segment.character <- function(x, what=c("tokens", "sentences", "paragraphs", "other"), 
-                              delimiter=ifelse(what=="tokens", " ", 
-                                               ifelse(what=="sentences", "[.!?:;]", "\\n{2}")),
+segment.character <- function(x, what=c("tokens", "sentences", "paragraphs", "tags", "other"), 
+                              delimiter = ifelse(what=="tokens", " ", 
+                                                 ifelse(what=="sentences", "[.!?:;]", 
+                                                        ifelse(what=="paragraphs", "\\n{2}", 
+                                                               ifelse(what=="tags", "\\s*##\\w+\\b\\s*", 
+                                                                      NULL)))),
                               ...) {
     what <- match.arg(what)
     if (what=="tokens") {
@@ -210,32 +215,58 @@ segment.character <- function(x, what=c("tokens", "sentences", "paragraphs", "ot
         return(lapply(x, segmentSentence, delimiter)) 
     } else if (what=="paragraphs") {
         return(lapply(x, segmentParagraph, delimiter)) 
+    } else if (what=="tags") {
+        return(lapply(x, segmentParagraph, delimiter))         
     } else if (what=="other") {
-        if (!("delimiter" %in% names(list(...))))
+        if (is.null(delimiter))
             stop("For type other, you must supply a delimiter value.")
-        return(lapply(x, segmentParagraph, delimiter)) 
+        return(lapply(x, segmentParagraph, delimiter))
     }
 }
 
 #' @rdname segment
 #' @export
+#' @note Does not currently record document segments if segmenting a multi-text corpus
+#' into smaller units. For this, use \link{changeunits} instead.
 #' @examples
+#' testCorpus <- corpus("##INTRO This is the introduction. 
+#'                       ##DOC1 This is the first document.  
+#'                       Second sentence in Doc 1.  
+#'                       ##DOC3 Third document starts here.  
+#'                       End of third document.")
+#' testCorpusSeg <- segment(testCorpus, "tags")
+#' summary(testCorpusSeg)
+#' texts(testCorpusSeg)
 #' # segment a corpus into sentences
 #' segmentedCorpus <- segment(corpus(uk2010immig), "sentences")
 #' identical(segmentedCorpus, segmentedChar)
-segment.corpus <- function(x, what=c("tokens", "sentences", "paragraphs", "other"), 
-                           delimiter=ifelse(what=="tokens", " ", 
-                                            ifelse(what=="sentences", "[.!?:;]", "\\n{2}")),
+segment.corpus <- function(x, what = c("tokens", "sentences", "paragraphs", "tags", "other"), 
+                           delimiter = ifelse(what=="tokens", " ", 
+                                              ifelse(what=="sentences", "[.!?:;]", 
+                                                     ifelse(what=="paragraphs", "\\n{2}", 
+                                                            ifelse(what=="tags", "\\s*##\\w+\\b\\s*", 
+                                                                   NULL)))),
                            ...) {
-    segment(texts(x), what, delimiter, ...)
+    newCorpus <- corpus(unlist(segment(texts(x), what, delimiter, ...)),
+                        source = metacorpus(x, "source"),
+                        notes = paste0("segment.corpus(", match.call(), ")"))
+    
+    if (what == "tags") {
+        tagIndex <- gregexpr(delimiter, txt)[[1]]
+        tags <- character()
+        length(tags) <- ndoc(newCorpus)
+        for (i in 1:length(tagIndex))
+            tags[i] <- substr(txt, start = tagIndex[i],
+                              stop = tagIndex[i] + attr(tagIndex, "match.length")[i] - 1)
+        docvars(newCorpus, "tag") <- tags
+    }
+    
+    newCorpus
 }
 
 # segment(uk2010immig[1], removePunct=FALSE, simplify=TRUE)
 # segment(uk2010immig[1], what="sentences")
 # segment(uk2010immig[1], what="paragraphs")
-
-
-
 
 
 ########
