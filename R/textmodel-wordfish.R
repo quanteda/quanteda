@@ -38,7 +38,7 @@ textmodel_wordfish <- function(data, method=c("mml", "mcmc"), smooth=0, ...) {
     if (method=="mml") {
         if (!require(austin))
             stop("you must first install austin (from Rforge) to use wordfish mml.")
-        model <- wordfish(as.wfm(data, word.margin=2), ...)
+        model <- austin::wordfish(austin::as.wfm(data, word.margin=2), ...)
     } else if (method=="mcmc") {
         if (!require(rjags)) 
             stop("You must first install rjags to use method=mcmc.")
@@ -192,7 +192,7 @@ MCMCirtPoisson1d <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=
     # 3) if a list of starting values, use those
     if  (is.null(control$startparams) & !startRandom) {
         if (verbose) cat("Calculating ML wordfish.\n\n")
-        wordfish.ml <- wordfish(dtm, dir)
+        wordfish.ml <- austin::wordfish(dtm, dir)
         starting.values <- list(raw.theta=wordfish.ml$theta,
                                 raw.beta=wordfish.ml$beta,
                                 psi=wordfish.ml$psi,
@@ -425,7 +425,7 @@ wordfishMCMC <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=NULL
     # 3) if a list of starting values, use those
     if  (is.null(control$startparams)) {
         if (verbose) cat("Calculating ML wordfish for starting values.\n")
-        wordfish.ml <- wordfish(dtm, dir)
+        wordfish.ml <- austin::wordfish(dtm, dir)
         starting.values <- list(raw.theta=wordfish.ml$theta,
                                 raw.beta=wordfish.ml$beta,
                                 psi=wordfish.ml$psi,

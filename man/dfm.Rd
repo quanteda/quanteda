@@ -5,47 +5,66 @@
 \alias{dfm.character}
 \alias{dfm.corpus}
 \alias{is.dfm}
-\title{Create a document-feature matrix from a corpus object}
+\title{create a document-feature matrix}
 \usage{
 dfm(x, ...)
 
-\method{dfm}{corpus}(x, feature = c("word"), stem = FALSE,
-  stopwords = NULL, bigram = FALSE, groups = NULL, verbose = TRUE,
-  dictionary = NULL, thesaurus = NULL, dictionary_regex = FALSE,
-  keep = NULL, bootstrap = FALSE, addto = NULL, ...)
+\method{dfm}{character}(x, verbose = TRUE, clean = TRUE, stem = FALSE,
+  ignoredFeatures = NULL, keptFeatures = NULL, matrixType = c("dense",
+  "sparse"), language = "english", fromCorpus = FALSE, bigrams = FALSE,
+  thesaurus = NULL, dictionary = NULL, dictionary_regex = FALSE,
+  addto = NULL, ...)
 
-\method{dfm}{character}(x, feature = c("word"), stem = FALSE,
-  stopwords = NULL, bigram = FALSE, verbose = TRUE, dictionary = NULL,
-  thesaurus = NULL, dictionary_regex = FALSE, keep = NULL, addto = NULL,
-  ...)
+\method{dfm}{corpus}(x, verbose = TRUE, clean = TRUE, stem = FALSE,
+  ignoredFeatures = NULL, keptFeatures = NULL, matrixType = "dense",
+  language = "english", groups = NULL, bigrams = FALSE,
+  thesaurus = NULL, dictionary = NULL, dictionary_regex = FALSE,
+  addto = NULL, ...)
 
 is.dfm(x)
 
 as.dfm(x)
 }
 \arguments{
-\item{x}{Corpus or character vector from which to generate the
-document-feature matrix}
+\item{x}{corpus or character vector from which to generate the document-feature matrix}
 
 \item{...}{additional arguments passed to \code{\link{clean}}}
 
-\item{feature}{Feature to count (e.g. words)}
+\item{verbose}{display messages if \code{TRUE}}
 
-\item{stem}{Stem the words}
+\item{clean}{if \code{FALSE}, do no cleaning of the text}
 
-\item{stopwords}{A character vector of stopwords that will be removed from
-the text when constructing the \link{dfm}.  If \code{NULL} (default) then
-no stopwords will be applied.  If "TRUE" then it currently defaults to
-\code{\link{stopwords}}.}
+\item{stem}{if \code{TRUE}, stem words}
 
-\item{bigram}{include bigrams as well as unigram features, if \code{TRUE}}
+\item{ignoredFeatures}{a character vector of user-supplied features to
+ignore, such as "stop words".  Formerly, this was a Boolean option for
+\code{stopwords = TRUE}, but requiring the user to supply the list
+highlights the choice involved in using any stopword list.  To access one
+possible list (from any list you wish), use the
+\code{\link{stopwordsGet}()} function or just (e.g.)
+\code{stopwords$english}.}
 
-\item{groups}{Grouping variable for aggregating documents}
+\item{keptFeatures}{a use supplied regular expression defining which features to
+  keep, while excluding all others.  This can
+be used in lieu of a dictionary if there are only specific features that
+a user wishes to keep.  To extract only Twitter user names hashtags, set
+\code{keep = "@\\w+\\b"} and make sure that \code{twitter = TRUE} as an additional
+argument passed to \link{clean}.}
 
-\item{verbose}{Get info to screen on the progress}
+\item{matrixType}{if \code{dense}, produce a dense matrix; or it \code{sparse} produce a
+sparse matrix of class \code{dgCMatrix} from the \pkg{\link{Matrix}}
+package.}
 
-\item{dictionary}{A list of character vector dictionary entries, including
-regular expressions (see examples)}
+\item{language}{Language for stemming and stopwords.  Choices are
+\code{danish, dutch, english, finnish, french, german, hungarian, italian,
+norwegian, porter, portuguese, romanian, russian, spanish, swedish,
+turkish} for stemming, and \code{SMART, danish, english, french, hungarian,
+norwegian, russian, swedish, catalan, dutch, finnish, german, italian,
+portuguese, spanish, arabic} for stopwords.}
+
+\item{fromCorpus}{a system flag used internally, soon to be phased out.}
+
+\item{bigrams}{include bigrams as well as unigram features, if \code{TRUE}}
 
 \item{thesaurus}{A list of character vector "thesaurus" entries, in a
 dictionary list format, which can also include regular expressions  if
@@ -55,45 +74,46 @@ the first match in the list will be used.  Thesaurus keys are converted to
 upper case to create a feature label in the dfm, as a reminder that this
 was not a type found in the text, but rather the label of a thesaurus key.}
 
+\item{dictionary}{A list of character vector dictionary entries, including
+regular expressions (see examples)}
+
 \item{dictionary_regex}{\code{TRUE} means the dictionary is already in
 regular expression format, otherwise it will be converted from "wildcard"
 format}
-
-\item{keep}{a regular expression specifying which features to keep}
-
-\item{bootstrap}{if \code{TRUE}, compute multiple \code{dfm}'s from resampled
-texts in the corpus.  Requires a resampled corpus.  See
-\code{\link{resample}}.}
 
 \item{addto}{\code{NULL} by default, but if an existing dfm object is
 specified, then the new dfm will be added to the one named. If both
 \link{dfm}'s are built from dictionaries, the combined dfm will have its
 \code{Non_Dictionary} total adjusted.}
+
+\item{groups}{Grouping variable for aggregating documents}
 }
 \value{
-A specially classed matrix object with row names equal to the
-  document names and column names equal to the feature labels.  Additional
-  information is attached to this object as \code{\link{attributes}}, such as
-  \link{settings}.
+A specially classed \link[Matrix]{Matrix} object with row names equal
+  to the document names and column names equal to the feature labels.
 }
 \description{
-Returns a document by feature matrix with additional meta-information
-(settings, identification of training texts for supervised models, resampling
-information, etc.) that is useful in other quanteda functions.  A typical
-usage would be to produce a word-frequency matrix where the cells are counts
-of words by document, but the definition of "features" is entirely general.
+Create a dense or sparse matrix dfm from a corpus or a vector of texts.  The sparse
+matrix construction uses  the
+\pkg{Matrix} package, and is both much faster and much more memory efficient
+than the dense form of the \link{dfm} object.
 }
 \details{
+Eventually the plan is to represent all dfm's as sparse matrixes, but for now the default is
+to create a dense matrix (\code{matrixType = "dense"}).
+
 \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
 
 \code{as.dfm} coerces a matrix or data.frame to a dfm
 }
 \examples{
-wfm <- dfm(inaugCorpus)
+# with inaugural texts
+(size1 <- object.size(dfm(inaugTexts, matrixType="sparse")))
+(size2 <- object.size(dfm(inaugTexts, matrixType="dense")))
+cat("Compacted by ", round(as.numeric((1-size1/size2)*100), 1), "\%.\\n", sep="")
 
-## by president, after 1960
-wfmByPresfrom1900 <- dfm(subset(inaugCorpus, Year>1900), groups="President")
-docnames(wfmByPresfrom1900)
+# with stopwords English, stemming, and dense matrix
+dfmsInaug2 <- dfm(inaugCorpus, ignoredFeatures = stopwordsGet(), stem=TRUE, matrixType="dense")
 
 ## with dictionaries
 mycorpus <- subset(inaugCorpus, Year>1900)
@@ -104,31 +124,62 @@ mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
                taxregex="tax*",
                country="united states")
 dictDfm <- dfm(mycorpus, dictionary=mydict)
-print(dictDfm, show.values=TRUE)
+dictDfm
 
 ## with the thesaurus feature
 mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
              "New York City has raised a taxes: an income tax and a sales tax.")
 mydict <- list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax"))
-print(dfm(compoundWords(mytexts, mydict),
-          thesaurus=lapply(mydict, function(x) gsub("\\\\s", "_", x))),
-      show.values=TRUE)
+dfm(compoundWords(mytexts, mydict), thesaurus=lapply(mydict, function(x) gsub("\\\\s", "_", x)))
 # pick up "taxes" with "tax" as a regex
-print(dfm(compoundWords(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE), TRUE)
+dfm(compoundWords(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE)
 
 ## removing stopwords
 testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
              the newspaper from a a boy named Seamus, in his mouth."
 testCorpus <- corpus(testText)
 settings(testCorpus, "stopwords")
-print(dfm(testCorpus, stopwords=TRUE), TRUE)
+dfm(testCorpus, stopwords=TRUE)
 
 ## keep only certain words
-print(dfm(testCorpus, keep="s$"), TRUE)  # keep only words ending in "s"
+dfm(testCorpus, keep="s$")  # keep only words ending in "s"
 testTweets <- c("My homie @justinbieber #justinbieber getting his shopping on in #LA yesterday #beliebers",
                 "To all the haters including my brother #justinbieber #justinbiebermeetcrystaltalley #emabiggestfansjustinbieber",
                 "Justin Bieber #justinbieber #belieber #kidrauhl #fetusjustin #EMABiggestFansJustinBieber")
-print(dfm(testTweets, keep="^#"), TRUE)  # keep only hashtags
+dfm(testTweets, keep="^#")  # keep only hashtags
+
+
+\dontrun{
+# try it with approx 35,000 court documents from Lauderdale and Clark (200?)
+load('~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/lauderdaleClark/Opinion_files.RData')
+txts <- unlist(Opinion_files[1])
+names(txts) <- NULL
+
+# dfms without cleaning
+require(Matrix)
+system.time(dfmsBig <- dfm(txts, clean=FALSE, verbose=FALSE))
+object.size(dfmsBig)
+dim(dfmsBig)
+# compare with tm
+require(tm)
+tmcorp <- VCorpus(VectorSource(txts))
+system.time(tmDTM <- DocumentTermMatrix(tmcorp))
+object.size(tmDTM)
+dim(tmDTM)
+
+# with cleaning - the gsub() calls in clean() take a long time
+system.time(dfmsBig <- dfm(txts, clean=TRUE, additional="[-_\\\\x{h2014}]"))
+object.size(dfmsBig)
+dim(dfmsBig)
+# 100 top features
+topf <- colSums(dfmsBig)
+names(topf) <- colnames(dfmsBig)
+head(sort(topf, decreasing=TRUE), 100)
+}
+# sparse matrix from a corpus
+mydfms <- dfm(inaugCorpus, matrixType="sparse")
+data(ie2010Corpus, package="quantedaData")
+mydfms2 <- dfm(ie2010Corpus, groups = "party", matrixType="sparse")
 }
 \author{
 Kenneth Benoit

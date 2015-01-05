@@ -33,7 +33,7 @@
 #' presDfm <- dfm(subset(SOTUCorpus, year>1960), stopwords=TRUE, stem=TRUE)
 #' presDfm <- trimdfm(presDfm, minCount=5, minDoc=3)
 #' presLDA <- textmodel_lda(presDfm, k=10)
-#' require(topicmodels)  # need this to access methods below
+#' #require(topicmodels)  # need this to access methods below
 #' terms(presLDA, k=10)  # top 10 terms in each topic
 #' topics(presLDA)       # dominant topics for each document
 #' presCTM <- textmodel_lda(presDfm, model="ctm", k=10)
@@ -61,6 +61,7 @@ textmodel_lda <- function(x, model=c("lda", "ctm", "stm"), k, smooth=0, meta=NUL
         x <- x + smooth  # smooth by the specified amount if > 0
     if (model=="lda") {
         dataSTM <- dfm2tmformat(x)
+        #require(topicmodels)
         fittedlda <- topicmodels::LDA(dataSTM, k=k, ...) 
     } else if (model=="ctm") {
         dataSTM <- dfm2tmformat(x)

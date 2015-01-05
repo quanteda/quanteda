@@ -1,3 +1,8 @@
+quanteda 0.6.5
+==============
+* New engine for dfm now implemented as standard, using data.table and
+  Matrix for fast, efficient (sparse) matrixes.
+
 quanteda 0.6.4
 ==============
 * first cut at REST APIs for Twitter and Facebook

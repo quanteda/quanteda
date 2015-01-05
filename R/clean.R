@@ -44,8 +44,8 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
     }
     
     # convert "curly quotes"
-    x <- gsub("[“”]", "\"", x)
-    x <- gsub("[’‘]", "\'", x)
+    x <- gsub("[\u201C\u201D]", "\"", x)
+    x <- gsub("[\u2018\u2019]", "\'", x)
     
     if (removePunct) {
         # use "negative lookahead" to keep Twitter symbols, always keep "_"
@@ -59,10 +59,10 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
     }
     
     # change typographic dash variations to a hyphen: There Can Be Only One
-    x <- gsub("–", "-", x)
+    x <- gsub("\u2013", "-", x)
     
     # remove common cruft from word-processors
-    x <- gsub("[\\f…]", "", x)
+    x <- gsub("\\f|[\u2026\u22EF]", "", x)
     
     if (removeDigits) 
         x <- gsub("[[:digit:]]", "", x)

@@ -16,12 +16,12 @@ segment(x, ...)
 \method{segment}{character}(x, what = c("tokens", "sentences", "paragraphs",
   "tags", "other"), delimiter = ifelse(what == "tokens", " ", ifelse(what ==
   "sentences", "[.!?:;]", ifelse(what == "paragraphs", "\\\\n{2}", ifelse(what
-  == "tags", "\\\\s*##\\\\w+\\\\b\\\\s*", NULL)))), ...)
+  == "tags", "##\\\\w+\\\\b", NULL)))), ...)
 
 \method{segment}{corpus}(x, what = c("tokens", "sentences", "paragraphs",
   "tags", "other"), delimiter = ifelse(what == "tokens", " ", ifelse(what ==
   "sentences", "[.!?:;]", ifelse(what == "paragraphs", "\\\\n{2}", ifelse(what
-  == "tags", "\\\\s*##\\\\w+\\\\b\\\\s*", NULL)))), ...)
+  == "tags", "##\\\\w+\\\\b", NULL)))), ...)
 }
 \arguments{
 \item{x}{text or corpus object to be segmented}
@@ -72,8 +72,8 @@ into smaller units. For this, use \link{changeunits} instead.
 \examples{
 # segment sentences of the UK 2010 immigration sections of manifestos
 segmentSentence(uk2010immig[1])[1:5]   # 1st 5 sentences from first (BNP) text
-str(segmentSentence(uk2010immig[1]))   # a 143-element char vector
-str(segmentSentence(uk2010immig[1:2])) # a 155-element char vector (143+ 12)
+str(segmentSentence(uk2010immig[1]))   # a 132-element char vector
+str(segmentSentence(uk2010immig[1:2])) # a 144-element char vector (143+ 12)
 # segment paragraphs
 segmentParagraph(uk2010immig[3])[1:2]   # 1st 2 Paragraphs from 3rd (Con) text
 str(segmentParagraph(uk2010immig[3]))   # a 12-element char vector

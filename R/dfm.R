@@ -1,20 +1,37 @@
-#' Create a document-feature matrix from a corpus object
-#'
-#' Returns a document by feature matrix with additional meta-information
-#' (settings, identification of training texts for supervised models, resampling
-#' information, etc.) that is useful in other quanteda functions.  A typical
-#' usage would be to produce a word-frequency matrix where the cells are counts
-#' of words by document, but the definition of "features" is entirely general.
-#' @param x Corpus or character vector from which to generate the
-#'   document-feature matrix
-#' @param feature Feature to count (e.g. words)
-#' @param stem Stem the words
-#' @param stopwords A character vector of stopwords that will be removed from
-#'   the text when constructing the \link{dfm}.  If \code{NULL} (default) then
-#'   no stopwords will be applied.  If "TRUE" then it currently defaults to
-#'   \code{\link{stopwords}}.
-#' @param groups Grouping variable for aggregating documents
-#' @param verbose Get info to screen on the progress
+#' create a document-feature matrix
+#' 
+#' Create a dense or sparse matrix dfm from a corpus or a vector of texts.  The sparse
+#' matrix construction uses  the
+#' \pkg{Matrix} package, and is both much faster and much more memory efficient
+#' than the dense form of the \link{dfm} object. 
+#' 
+#' Eventually the plan is to represent all dfm's as sparse matrixes, but for now the default is
+#' to create a dense matrix (\code{matrixType = "dense"}).
+#' @param x corpus or character vector from which to generate the document-feature matrix
+#' @param ... additional arguments passed to \code{\link{clean}}
+#' @import Matrix
+#' @export
+dfm <- function(x, ...) {
+    UseMethod("dfm")
+}
+
+#' @rdname dfm
+#' @param verbose display messages if \code{TRUE}
+#' @param clean if \code{FALSE}, do no cleaning of the text
+#' @param stem if \code{TRUE}, stem words
+#' @param ignoredFeatures a character vector of user-supplied features to
+#'   ignore, such as "stop words".  Formerly, this was a Boolean option for
+#'   \code{stopwords = TRUE}, but requiring the user to supply the list
+#'   highlights the choice involved in using any stopword list.  To access one
+#'   possible list (from any list you wish), use the
+#'   \code{\link{stopwordsGet}()} function or just (e.g.)
+#'   \code{stopwords$english}.
+#' @param keptFeatures a use supplied regular expression defining which features to
+#'   keep, while excluding all others.  This can 
+#' be used in lieu of a dictionary if there are only specific features that
+#' a user wishes to keep.  To extract only Twitter user names hashtags, set
+#' \code{keep = "@@\\w+\\b"} and make sure that \code{twitter = TRUE} as an additional
+#' argument passed to \link{clean}.
 #' @param dictionary A list of character vector dictionary entries, including
 #'   regular expressions (see examples)
 #' @param thesaurus A list of character vector "thesaurus" entries, in a
@@ -27,30 +44,34 @@
 #' @param dictionary_regex \code{TRUE} means the dictionary is already in
 #'   regular expression format, otherwise it will be converted from "wildcard"
 #'   format
-#' @param keep a regular expression specifying which features to keep
-#' @param bigram include bigrams as well as unigram features, if \code{TRUE}
+#' @param bigrams include bigrams as well as unigram features, if \code{TRUE}
 #' @param addto \code{NULL} by default, but if an existing dfm object is
 #'   specified, then the new dfm will be added to the one named. If both
 #'   \link{dfm}'s are built from dictionaries, the combined dfm will have its
 #'   \code{Non_Dictionary} total adjusted.
-#' @param bootstrap if \code{TRUE}, compute multiple \code{dfm}'s from resampled
-#'   texts in the corpus.  Requires a resampled corpus.  See
-#'   \code{\link{resample}}.
-#' @param ... additional arguments passed to \code{\link{clean}}
-#' @return A specially classed matrix object with row names equal to the
-#'   document names and column names equal to the feature labels.  Additional
-#'   information is attached to this object as \code{\link{attributes}}, such as
-#'   \link{settings}.
-#' @rdname dfm
-#' @export
+#' @param language Language for stemming and stopwords.  Choices are 
+#'   \code{danish, dutch, english, finnish, french, german, hungarian, italian, 
+#'   norwegian, porter, portuguese, romanian, russian, spanish, swedish, 
+#'   turkish} for stemming, and \code{SMART, danish, english, french, hungarian,
+#'   norwegian, russian, swedish, catalan, dutch, finnish, german, italian, 
+#'   portuguese, spanish, arabic} for stopwords.
+#' @param matrixType if \code{dense}, produce a dense matrix; or it \code{sparse} produce a 
+#'   sparse matrix of class \code{dgCMatrix} from the \pkg{\link{Matrix}} 
+#'   package.
+#'   @param fromCorpus a system flag used internally, soon to be phased out.
+#' @return A specially classed \link[Matrix]{Matrix} object with row names equal
+#'   to the document names and column names equal to the feature labels.
 #' @author Kenneth Benoit
+#' @export
 #' @examples
-#' wfm <- dfm(inaugCorpus)
-#'
-#' ## by president, after 1960
-#' wfmByPresfrom1900 <- dfm(subset(inaugCorpus, Year>1900), groups="President")
-#' docnames(wfmByPresfrom1900)
-#'
+#' # with inaugural texts
+#' (size1 <- object.size(dfm(inaugTexts, matrixType="sparse")))
+#' (size2 <- object.size(dfm(inaugTexts, matrixType="dense")))
+#' cat("Compacted by ", round(as.numeric((1-size1/size2)*100), 1), "%.\n", sep="")
+#' 
+#' # with stopwords English, stemming, and dense matrix
+#' dfmsInaug2 <- dfm(inaugCorpus, ignoredFeatures = stopwordsGet(), stem=TRUE, matrixType="dense")
+#' 
 #' ## with dictionaries
 #' mycorpus <- subset(inaugCorpus, Year>1900)
 #' mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
@@ -60,281 +81,271 @@
 #'                taxregex="tax*",
 #'                country="united states")
 #' dictDfm <- dfm(mycorpus, dictionary=mydict)
-#' print(dictDfm, show.values=TRUE)
+#' dictDfm
 #'
 #' ## with the thesaurus feature
 #' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
 #'              "New York City has raised a taxes: an income tax and a sales tax.")
 #' mydict <- list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax"))
-#' print(dfm(compoundWords(mytexts, mydict),
-#'           thesaurus=lapply(mydict, function(x) gsub("\\s", "_", x))),
-#'       show.values=TRUE)
+#' dfm(compoundWords(mytexts, mydict), thesaurus=lapply(mydict, function(x) gsub("\\s", "_", x)))
 #' # pick up "taxes" with "tax" as a regex
-#' print(dfm(compoundWords(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE), TRUE)
+#' dfm(compoundWords(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE)
 #'
 #' ## removing stopwords
 #' testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
 #'              the newspaper from a a boy named Seamus, in his mouth."
 #' testCorpus <- corpus(testText)
 #' settings(testCorpus, "stopwords")
-#' print(dfm(testCorpus, stopwords=TRUE), TRUE)
+#' dfm(testCorpus, stopwords=TRUE)
 #'
 #' ## keep only certain words
-#' print(dfm(testCorpus, keep="s$"), TRUE)  # keep only words ending in "s"
+#' dfm(testCorpus, keep="s$")  # keep only words ending in "s"
 #' testTweets <- c("My homie @@justinbieber #justinbieber getting his shopping on in #LA yesterday #beliebers",
 #'                 "To all the haters including my brother #justinbieber #justinbiebermeetcrystaltalley #emabiggestfansjustinbieber",
 #'                 "Justin Bieber #justinbieber #belieber #kidrauhl #fetusjustin #EMABiggestFansJustinBieber")
-#' print(dfm(testTweets, keep="^#"), TRUE)  # keep only hashtags
-dfm <- function(x, ...) {
-    UseMethod("dfm")
-}
-
-#' @rdname dfm
-#' @method dfm corpus
-#' @export
-dfm.corpus <- function(x,
-                       feature=c("word"),
-                       stem=FALSE,
-                       stopwords=NULL,
-                       bigram=FALSE,
-                       groups=NULL,
-                       verbose=TRUE,
-                       dictionary=NULL,
-                       thesaurus=NULL,
-                       dictionary_regex=FALSE,
-                       keep=NULL,
-                       bootstrap=FALSE,
-                       # clean=TRUE,
-                       # removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
-                       addto=NULL, ...) {
-
-    # use corpus settings unless overrridden by call
-    # settingsGet(x, as.list(match.call()))
-
-    if (!is.null(x$tokens)) {
-        if (verbose) cat("Using dfm found in corpus.")
-        return(x$tokens$dfm)
+#' dfm(testTweets, keep="^#")  # keep only hashtags
+#' 
+#' 
+#' \dontrun{
+#' # try it with approx 35,000 court documents from Lauderdale and Clark (200?)
+#' load('~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/lauderdaleClark/Opinion_files.RData')
+#' txts <- unlist(Opinion_files[1])
+#' names(txts) <- NULL
+#' 
+#' # dfms without cleaning
+#' require(Matrix)
+#' system.time(dfmsBig <- dfm(txts, clean=FALSE, verbose=FALSE))
+#' object.size(dfmsBig)
+#' dim(dfmsBig)
+#' # compare with tm
+#' require(tm)
+#' tmcorp <- VCorpus(VectorSource(txts))
+#' system.time(tmDTM <- DocumentTermMatrix(tmcorp))
+#' object.size(tmDTM)
+#' dim(tmDTM)
+#'  
+#' # with cleaning - the gsub() calls in clean() take a long time
+#' system.time(dfmsBig <- dfm(txts, clean=TRUE, additional="[-_\\x{h2014}]")) 
+#' object.size(dfmsBig)
+#' dim(dfmsBig) 
+#' # 100 top features
+#' topf <- colSums(dfmsBig)
+#' names(topf) <- colnames(dfmsBig)
+#' head(sort(topf, decreasing=TRUE), 100)
+#' }
+dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, 
+                           ignoredFeatures = NULL, keptFeatures=NULL,
+                           matrixType=c("dense", "sparse"), 
+                           language="english",
+                           fromCorpus=FALSE, bigrams=FALSE, 
+                           thesaurus=NULL, dictionary=NULL, dictionary_regex=FALSE, 
+                           addto=NULL, 
+                           ...) {
+    startTime <- proc.time()
+    matrixType <- match.arg(matrixType)
+    if (!fromCorpus & verbose) 
+        cat("Creating dfm from character vector ...")
+    
+    if (verbose) cat("\n   ... indexing documents")
+    docIndex <- 1:length(x)
+    if (is.null(names(x))) 
+        names(docIndex) <- factor(paste("text", 1:length(x), sep="")) else
+            names(docIndex) <- names(x)
+    
+    if (verbose) cat("\n   ... tokenizing texts")
+    if (!bigrams) {
+        tokenizedTexts <- lapply(x, tokenizeSingle, sep=" ")
+    } else {
+        tokenizedTexts <- bigrams(x, include.unigrams=TRUE)
+        if (verbose) cat (" (and forming bigrams)")
     }
-
-    if (verbose) cat("Creating dfm from a corpus: ... ")
-
-    # subsets
-    #if (!is.null(subset)) x <- corpus.subset.inner(x, substitute(subset))
-
-    if (!is.null(groups))
-        if (verbose) cat("aggregating by group: ", groups, "... ", sep="")
-
-    nreps <- 1
-    if (bootstrap) {
-        if (!is.resampled(x)) stop("cannot bootstrap if corpus is not resampled.")
-        if (verbose) cat("using", nresample(x), "resamples ... ")
-        nreps <- nresample(x) + 1
+    
+    #if (verbose) cat("\n   ... shaping tokens into data.table")
+    alltokens <- data.table(docIndex = rep(docIndex, sapply(tokenizedTexts, length)),
+                            features = unlist(tokenizedTexts))
+    alltokens <- alltokens[features != ""]
+    if (verbose) cat(", found", format(nrow(alltokens), big.mark=","), "total tokens")
+    if (verbose & bigrams) 
+        cat(" incl.", format(sum(grepl("_", alltokens$features)), big.mark=","), "bigrams")
+    
+    if (clean) {
+        if (verbose) cat("\n   ... cleaning the tokens")
+        alltokens$features <- clean(alltokens$features, ...)
     }
-
-    curtexts <- texts(x)
-    for (i in 1:nreps) {
-        if (i>1) curtexts <- x$documents[, paste("_resample", i-1, sep="")]
-
-        # aggregation by group
-        if (!is.null(groups)) {
-            if (length(groups)>1) {
-                group.split <- lapply(documents(x)[, groups], as.factor)
-            } else group.split <- as.factor(documents(x)[,groups])
-            texts <- split(curtexts, group.split)
-            texts <- sapply(texts, paste, collapse = " ")
-            if (verbose) cat("complete ...")
-        } else {
-            texts <- curtexts
-            names(texts) <- docnames(x)
-        }
-
-        # changing verbose to 2 (instead of TRUE) means will not print message twice
-        # when the function calls dfm.character
-        tempdfm <- dfm(texts, feature=feature, stem=stem, stopwords=stopwords, bigram=bigram,
-                       verbose=ifelse(verbose==TRUE, 2, FALSE),
-                       dictionary=dictionary, thesaurus=thesaurus,
-                       dictionary_regex=dictionary_regex,
-                       keep=keep,
-                       addto=addto, ...)
-
-        if (nreps==1)
-            resultdfm <- tempdfm
-
-        if (nreps>1) {
-            if (i == 1) {
-                # initialize the array
-                resultdfm <- array(tempdfm, dim=c(dim(tempdfm), nreps))
-            } else {
-                # add to the array if not the first rep
-                cat("\n", dim(resultdfm),
-                    "\n", dim(tempdfm))
-                resultdfm[,,i] <- tempdfm
-            }
-        }
-    }
-
-    # add settings as an attribute
-    attr(resultdfm, "settings") <- settings(x)
-    # class and label dimnames if an array
-    if (length(dim(resultdfm)) > 2) {
-        dimnames(resultdfm) <- list(docs = rownames(tempdfm),
-                                    features = colnames(tempdfm),
-                                    resample = 0:(nreps-1))
-        class(resultdfm) <- c("dfm", class(resultdfm))
-    }
-
-    if (verbose) cat("done.\n")
-    resultdfm
-}
-
-#' @rdname dfm
-#' @method dfm character
-#' @export
-dfm.character <- function(x,
-                          feature=c("word"),
-                          stem=FALSE,
-                          stopwords=NULL,
-                          bigram=FALSE,
-                          # groups=NULL,
-                          verbose=TRUE,
-                          dictionary=NULL,
-                          thesaurus=NULL,
-                          dictionary_regex=FALSE,
-                          keep=NULL,
-                          # clean=TRUE,
-                          #removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
-                          addto=NULL, ...) {
-    # if (verbose & parent.env(dfm.character) != dfm.corpus) cat("Creating dfm: ...")
-    if (verbose==TRUE) cat("Creating dfm from character vector ...")
-
-    ##
-    if (is.null(names(x))) {
-        names(x) <- factor(paste("text", 1:length(x), sep=""))
-    }
-    ##
-    textnames <- factor(names(x))
-
-    # clean options
-    #x <- clean(x, ...)
-
-    # returns a list of tokens = in length to ndoc x replicates
-    # the ... are the clean options
-    tokenizedTexts <- tokenize(x, ...)
-
-    if (!is.null(stopwords)) {
-        if (verbose) cat(" removing stopwords ... ")
-        # need two separate checks because if() on a char vector gives warning
-        if (!is.character(stopwords)) {
-            if (stopwords==TRUE) {
-                stopwords <- stopwordsGet()
-            }
-        }
-        if (!is.character(stopwords) | !length(stopwords)>0) {
-            stop("stopwords must be a character vector with positive length.")
-        }
-        if (bigram==TRUE) {
-            stop("bigram and stopwords not yet implemented.")
-            #pat <- paste(paste0(paste0("-", stopwords, "$"), collapse='|'), paste0(paste0("^", stopwords, "-"), collapse='|'), sep='|')
-            #dfm <- t(subset(t(dfm), !grepl(pat, colnames(dfm))))
-        } else {
-            #dfm <- t(subset(t(dfm), !colnames(dfm) %in% stopwords))
-            tokenizedTexts <- lapply(tokenizedTexts, stopwordsRemove, stopwords)
-        }
-    }
-
-    if (stem==TRUE) {
+    alltokens <- alltokens[features != ""]
+    
+    if (stem == TRUE) {
         # require(SnowballC, quietly=TRUE)
-        if (verbose) cat(" stemming ...")
-        tokenizedTexts <- lapply(tokenizedTexts, wordstem)
+        language <- tolower(language)
+        if (!(language %in% SnowballC::getStemLanguages())) {
+            cat("\n   ... WARNING: not stemming because language", language, "is unavailable")
+        } else {
+            if (verbose) cat("\n   ... stemming the tokens (", language, ")", sep="")
+            alltokens$features <- wordstem(alltokens$features, language=language)
+        }
     }
-    if (bigram > 0) {
-        if (verbose) cat(" making bigrams ...")
-        tokenizedTexts <- lapply(tokenizedTexts, function(x) bigrams(x, bigram))
+    
+    if (!is.null(ignoredFeatures)) {
+        if (!is.character(ignoredFeatures)) {
+            cat("\n   ... WARNING: not ignoring words because not a character vector")
+        } else {
+            if (verbose) cat("\n   ... ignoring", format(length(ignoredFeatures), big.mark=","), "feature types, discarding ")
+            ignoredfeatIndex <- which(alltokens$features %in% ignoredFeatures)
+            if (verbose) {
+                cat(format(length(ignoredfeatIndex), big.mark=","), " total features (",
+                    format(length(ignoredfeatIndex) / nrow(alltokens) * 100, digits=3),
+                    "%)", sep="")
+            }
+            alltokens <- alltokens[!ignoredfeatIndex]
+        }
     }
-
-    # get original sort order, so that we can restore original order after table
-    # alphabetizes the documents (rows of the dfm)
-    ##
-    originalSortOrder <- (1:length(tokenizedTexts))[order(names(tokenizedTexts))]
-
-    # print(length)
-    alltokens <- data.frame(docs = rep(textnames, sapply(tokenizedTexts, length)),
-                            features = unlist(tokenizedTexts, use.names=FALSE))
-
-    # if keep is supplied as a regex, then keep only those features
-    if (!is.null(keep)) {
-        alltokens <- alltokens[grep(keep, alltokens$features), ]
-        alltokens$features <- factor(alltokens$features) # refactor
-    }
-
+    
     # thesaurus to make word equivalencies
     if (!is.null(thesaurus)) {
         thesaurus <- flatten.dictionary(thesaurus)
         if (!dictionary_regex)
             thesaurus <- lapply(thesaurus, makeRegEx)
-        for (l in names(thesaurus)) {
-            # add the level to the factor, make the label uppercase
-            levels(alltokens$features) <- c(levels(alltokens$features), toupper(l))
+        for (l in names(thesaurus)) 
             alltokens$features[grep(paste(tolower(thesaurus[[l]]), collapse="|"), alltokens$features)] <- toupper(l)
-            # remove the assigned levels from the factor
-            levels(alltokens$features) <- factor(alltokens$features)
-        }
     }
-
-    # need to enforce check that dictionary is a named list
-    if (is.null(dictionary)) {
-        dfm <- as.data.frame.matrix(table(alltokens$docs, alltokens$features))
-    } else {
+    
+    # if keep is supplied as a regex, then keep only those features
+    if (!is.null(keptFeatures)) {
+        alltokens <- alltokens[grep(keptFeatures, alltokens$features), ]
+    }
+    
+    # dictionary function to select only dictionary terms
+    if (!is.null(dictionary)) {
+        if (verbose) cat("\n   ... compiling dictionary counts")
+        # NEED SOME ERROR CHECKING HERE
         # flatten the dictionary
         dictionary <- flatten.dictionary(dictionary)
         # convert wildcards to regular expressions (if needed)
         if (!dictionary_regex)
             dictionary <- lapply(dictionary, makeRegEx)
+        # append the dictionary keys to the table
         alltokens <- cbind(alltokens,
                            matrix(0, nrow=nrow(alltokens),
                                   ncol=length(names(dictionary)),
                                   dimnames=list(NULL, names(dictionary))))
         #      alltokens$dictionaryWord <- "other"
+        # loop through dictionary keys and entries and increment counters
         for (i in 1:length(dictionary)) {
             dictionary_word_index <- grep(paste(tolower(dictionary[[i]]), collapse="|"),
                                           alltokens$features)
             alltokens[dictionary_word_index, 2+i] <- 1
         }
         alltokens$All_Words <- 1
-        dictsplit <- split(alltokens[, 3:ncol(alltokens)], alltokens$docs)
+        dictsplit <- split(alltokens[, 3:ncol(alltokens), with=FALSE], alltokens$docIndex)
         dictsum <- sapply(dictsplit, colSums)
-        dfm <- as.data.frame.matrix(t(dictsum))
+        dfmresult <- as.data.frame.matrix(t(dictsum))
+        dimnames(dfmresult) <- list(docs=names(docIndex), features=colnames(dfmresult))
         # doing it this way avoids an error using rowSums if only one dictionary column
-        dfm$Non_Dictionary <- 2*dfm$All_Words - rowSums(dfm)
-        dfm <- dfm[, -(ncol(dfm)-1)]
+        dfmresult$Non_Dictionary <- 2*dfmresult$All_Words - rowSums(dfmresult)
+        dfmresult <- dfmresult[, -(ncol(dfmresult)-1)]
+        
+        # convert to a sparse matrix
+        dfmresult <- Matrix(as.matrix(dfmresult), sparse=TRUE)
+        
+    } else {
+        
+        if (verbose) cat("\n   ... summing tokens by document")
+        alltokens[, n:=1L]
+        alltokens <- alltokens[, by=list(docIndex,features), sum(n)]
+        
+        if (verbose) cat("\n   ... indexing features")
+        uniqueFeatures <- sort(unique(unlist(alltokens$features)))
+        # much faster than using factor(alltokens$features, levels=uniqueFeatures) !!
+        featureTable <- data.table(featureIndex = 1:length(uniqueFeatures),
+                                   features = uniqueFeatures)
+        setkey(alltokens, features)
+        setkey(featureTable, features)
+        # merge, data.table style.  warnings suppressed or it moans about mixed encodings
+        suppressWarnings(alltokens <- alltokens[featureTable])
+        
+        if (verbose) cat("\n   ... building sparse matrix")
+        suppressWarnings(dfmresult <- sparseMatrix(i = alltokens$docIndex, 
+                                                   j = alltokens$featureIndex, 
+                                                   x = alltokens$V1, 
+                                                   dimnames=list(docs=names(docIndex), features=uniqueFeatures)))
     }
-
-
+    # class(dfmsparse) <- c("dfms", class(dfmsparse))
+    # NEED ANOTHER CLASS METHODS SINCE THIS IS S4
+    
     if (!is.null(addto)) {
-        if (sum(rownames(dfm) != rownames(addto)) > 0) {
+        if (sum(rownames(dfmresult) != rownames(addto)) > 0) {
             stop("Cannot add to dfm: different document set.")
         }
         addIndex <- which(!(colnames(addto) %in% colnames(dfm)))
         # adjust the "Non_Dictionary" count for the combined object if both are dictionary-based
-        if ("Non_Dictionary" %in% colnames(addto) & "Non_Dictionary" %in% colnames(dfm)) {
-            dfm[, "Non_Dictionary"] <- addto[, "Non_Dictionary"] - rowSums(as.matrix(dfm[, -ncol(dfm)]))
+        if ("Non_Dictionary" %in% colnames(addto) & "Non_Dictionary" %in% colnames(dfmresult)) {
+            dfm[, "Non_Dictionary"] <- addto[, "Non_Dictionary"] - rowSums(as.matrix(dfmresult[, -ncol(dfmresult)]))
         }
-        dfm <- cbind(addto[, addIndex], dfm)
+        dfmresult <- cbind(addto[, addIndex], dfmresult)
     }
-
-    # give the matrix austin a "wfm"-like record of which margin is features, which is docs
-    # for dfm objects, docs are always rows
-    dfm <- as.matrix(dfm)
-    dimnames(dfm) <- list(docs = rownames(dfm), features = colnames(dfm))
-
-    # restore original sort order
-
-    dfm <- dfm[(1:nrow(dfm))[order(originalSortOrder)], , drop=FALSE]
-
-    if (verbose==TRUE) cat(" done. \n")
-    class(dfm) <- c("dfm", class(dfm))
-    return(dfm)
+    
+    # add settings as an attribute
+    # attr(resultdfm, "settings") <- settings(x)
+    # class and label dimnames if an array
+    if (matrixType == "dense") {
+        if (verbose) cat("\n   ... converting to a dense matrix")
+        dfmresult  <- as.matrix(dfmresult)
+        class(dfmresult) <- c("dfm", class(dfmresult))
+    }
+    
+    if (verbose) cat("\n   ... done: created a", paste(dim(dfmresult), collapse=" x "), 
+                     ifelse(matrixType=="dense", "dense", "sparse"), "dfm, elapsed time",
+                     (proc.time() - startTime)[3], "seconds.\n")
+    return(dfmresult)
 }
+
+tokenizeSingle <- function(s, sep=" ", useclean=FALSE, ...) {
+    if (useclean) s <- clean(s, ...)
+    # s <- unlist(s)
+    tokens <- scan(what="char", text=s, quiet=TRUE, quote="", sep=sep)
+    return(tokens)
+}
+
+#' @rdname dfm
+#' @param groups Grouping variable for aggregating documents
+#' @export
+#' @examples
+#' # sparse matrix from a corpus
+#' mydfms <- dfm(inaugCorpus, matrixType="sparse")
+#' data(ie2010Corpus, package="quantedaData")
+#' mydfms2 <- dfm(ie2010Corpus, groups = "party", matrixType="sparse")
+dfm.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, 
+                        ignoredFeatures=NULL, 
+                        keptFeatures=NULL,
+                        matrixType="dense", language="english",
+                        groups=NULL, bigrams=FALSE, 
+                        thesaurus=NULL, dictionary=NULL, dictionary_regex=FALSE,
+                        addto=NULL, ...) {
+    if (verbose) cat("Creating dfm from corpus ...")
+    
+    if (!is.null(groups)) {
+        if (verbose) cat("\n   ... grouping texts by variable", 
+                         ifelse(length(groups)==1, "", "s"), ": ", 
+                         paste(groups, collapse=", "), sep="")
+        if (length(groups)>1) {
+            group.split <- lapply(documents(x)[, groups], as.factor)
+        } else {
+            group.split <- as.factor(documents(x)[,groups])
+        }
+        texts <- split(texts(x), group.split)
+        texts <- sapply(texts, paste, collapse = " ")
+    } else {
+        texts <- texts(x)
+        names(texts) <- docnames(x)
+    }
+    
+    dfm(texts, verbose=verbose, clean=clean, stem=stem, 
+         ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
+         matrixType=matrixType, language=language,
+         thesaurus=thesaurus, dictionary=dictionary, dictionary_regex=dictionary_regex,
+         fromCorpus=TRUE, bigrams=bigrams, addto=addto, ...)
+}
+
 
 
 #' Flatten a hierarchical dictionary into a list of character vectors

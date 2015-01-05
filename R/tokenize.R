@@ -82,8 +82,8 @@ tokenize.corpus <- function(x, ...) {
 #' @examples
 #' # segment sentences of the UK 2010 immigration sections of manifestos
 #' segmentSentence(uk2010immig[1])[1:5]   # 1st 5 sentences from first (BNP) text
-#' str(segmentSentence(uk2010immig[1]))   # a 143-element char vector
-#' str(segmentSentence(uk2010immig[1:2])) # a 155-element char vector (143+ 12)
+#' str(segmentSentence(uk2010immig[1]))   # a 132-element char vector
+#' str(segmentSentence(uk2010immig[1:2])) # a 144-element char vector (143+ 12)
 #' 
 segmentSentence <- function(x, delimiter="[.!?:;]") {
     # strip out CRs and LFs, tabs
@@ -205,7 +205,7 @@ segment.character <- function(x, what=c("tokens", "sentences", "paragraphs", "ta
                               delimiter = ifelse(what=="tokens", " ", 
                                                  ifelse(what=="sentences", "[.!?:;]", 
                                                         ifelse(what=="paragraphs", "\\n{2}", 
-                                                               ifelse(what=="tags", "\\s*##\\w+\\b\\s*", 
+                                                               ifelse(what=="tags", "##\\w+\\b", 
                                                                       NULL)))),
                               ...) {
     what <- match.arg(what)
@@ -244,7 +244,7 @@ segment.corpus <- function(x, what = c("tokens", "sentences", "paragraphs", "tag
                            delimiter = ifelse(what=="tokens", " ", 
                                               ifelse(what=="sentences", "[.!?:;]", 
                                                      ifelse(what=="paragraphs", "\\n{2}", 
-                                                            ifelse(what=="tags", "\\s*##\\w+\\b\\s*", 
+                                                            ifelse(what=="tags", "##\\w+\\b", 
                                                                    NULL)))),
                            ...) {
     newCorpus <- corpus(unlist(segment(texts(x), what, delimiter, ...)),
@@ -252,11 +252,11 @@ segment.corpus <- function(x, what = c("tokens", "sentences", "paragraphs", "tag
                         notes = paste0("segment.corpus(", match.call(), ")"))
     
     if (what == "tags") {
-        tagIndex <- gregexpr(delimiter, txt)[[1]]
+        tagIndex <- gregexpr(delimiter, texts(x))[[1]]
         tags <- character()
         length(tags) <- ndoc(newCorpus)
         for (i in 1:length(tagIndex))
-            tags[i] <- substr(txt, start = tagIndex[i],
+            tags[i] <- substr(texts(x), start = tagIndex[i],
                               stop = tagIndex[i] + attr(tagIndex, "match.length")[i] - 1)
         docvars(newCorpus, "tag") <- tags
     }

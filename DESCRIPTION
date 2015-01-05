@@ -1,7 +1,7 @@
 Package: quanteda
 Type: Package
 Title: Quantitative Analysis of Textual Data
-Version: 0.6.4.003
+Version: 0.6.5.001
 Date: 2015-01-05
 Authors@R: c(
     person("Benoit", "Kenneth", email = "kbenoit@lse.ac.uk", role = "cre"),
@@ -34,7 +34,6 @@ Depends:
     data.table (>= 1.9.2),
     Matrix (>= 1.1)
 Imports:
-    Matrix,
     SnowballC,
     wordcloud,
     slam,
@@ -45,7 +44,8 @@ Imports:
     topicmodels,
     streamR,
     jsonlite,
-    httr
+    httr,
+    austin
 Suggests:
     quantedaData,
     entropy,
@@ -60,8 +60,7 @@ Suggests:
     rjags,
     coda,
     lattice,
-    xlsx,
-    austin
+    xlsx
 URL: http://github.com/kbenoit/quanteda
 BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE
