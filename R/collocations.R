@@ -1,11 +1,11 @@
 #' Detect collocations from text
 #' 
-#' Detects collocations (currently, bigrams) from texts or a corpus, returning a
-#' data.frame of collocations and their scores, sorted by the likelihood ratio
-#' \eqn{G^2} and Pearson's \eqn{\chi^2}.
+#' Detects collocations (currently, bigrams and trigrams) from texts or a corpus, returning a
+#' data.frame of collocations and their scores, sorted in descending order of the association
+#' measure.
 #' @param x a text, a character vector of texts, or a corpus
 #' @param method association measure for detecting collocations.  Available
-#'   measures for bigrams are:
+#'   measures are:
 #'   \describe{ 
 #'   \item{\code{"lr"}}{The likelihood ratio statistic \eqn{G^2}, computed as:
 #'          \deqn{2 * \sum_i \sum_j (n_{ij} * log \frac{n_{ij}}{m_{ij}}}
@@ -17,17 +17,17 @@
 #'   \item{\code{"dice"}}{the Dice coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
 #'   \item{\code{"all"}}{returns all of the above}
 #'   }
-#' @param n length of the collocation.  Only bigrams (\code{n=2}) implemented so
-#'   far.
+#' @param n length of the collocation.  Only bigram (\code{n=2}) and trigram (\code{n=3}) 
+#' collocations are implemented so far.
 #' @param top the number of collocations to return, sorted in descending order
 #'   of the requested statistic, or \eqn{G^2} if none is specified.
-#' @param ... additional parameters
+#' @param ... additional parameters passed to \link{clean}
 #' @return A data.table of collocations, their frequencies, and the computed 
-#'   association measure.
+#'   association measure(s).
 #' @export
 #' @import data.table
 #' @references McInnes, B T. 2004. "Extending the Log Likelihood Measure to Improve Collocation Identification."  M.Sc. Thesis, University of Minnesota.
-#' @seealso bigrams, trigrams 
+#' @seealso \link{bigrams}, \link{ngrams}
 #' @author Kenneth Benoit
 #' @examples
 #' collocations(inaugTexts, top=10)
@@ -41,8 +41,6 @@ collocations <- function(x, ...) {
 #' @export    
 collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=2, top=NULL, ...) {
     method <- match.arg(method)
-    if (n == 3 & method != "lr") 
-        stop("Only lr implemented for trigram collocations so far.")
     if (n > 3) 
         stop("Only bigram and trigram collocations implemented so far.")
     if (n == 2)
@@ -169,9 +167,8 @@ collocations.corpus <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"),
 
 
 
-collocations3 <- function(x, method=c("lr"), n=3, top=NULL, ...) {
+collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=3, top=NULL, ...) {
     method <- match.arg(method)
-    if (n != 3) stop("Hey, this method is for trigrams only! (n=3).")
     
     text <- clean(x, ...)
     t <- unlist(tokenize(text), use.names=FALSE)
@@ -273,17 +270,42 @@ collocations3 <- function(x, method=c("lr"), n=3, top=NULL, ...) {
     
     
     epsilon <- .000000001  # to offset zero cell counts
-    allTable <- within(allTable, lrratio <- 2 *
-                           ((n111 * log(n111 / m1.111 + epsilon)) + (n112 * log(n112 / m1.112 + epsilon)) +
-                                (n121 * log(n121 / m1.121 + epsilon)) + (n122 * log(n122 / m1.122 + epsilon)) +
-                                (n211 * log(n211 / m1.211 + epsilon)) + (n212 * log(n212 / m1.212 + epsilon)) +
-                                (n221 * log(n221 / m1.221 + epsilon)) + (n222 * log(n222 / m1.222 + epsilon))))         
+    allTable <- within(allTable, {
+        lrratio <- 2 * ((n111 * log(n111 / m1.111 + epsilon)) + (n112 * log(n112 / m1.112 + epsilon)) +
+                        (n121 * log(n121 / m1.121 + epsilon)) + (n122 * log(n122 / m1.122 + epsilon)) +
+                        (n211 * log(n211 / m1.211 + epsilon)) + (n212 * log(n212 / m1.212 + epsilon)) +
+                        (n221 * log(n221 / m1.221 + epsilon)) + (n222 * log(n222 / m1.222 + epsilon)))
+        chi2 <- ((n111 - m1.111)^2 / m1.111) + ((n112 - m1.112)^2 / m1.112) +
+                ((n121 - m1.121)^2 / m1.121) + ((n122 - m1.122)^2 / m1.122) +
+                ((n211 - m1.211)^2 / m1.211) + ((n212 - m1.212)^2 / m1.212) +
+                ((n221 - m1.221)^2 / m1.221) + ((n222 - m1.222)^2 / m1.222)
+        pmi <- log(n111 / m1.111)
+        dice <- 2 * n111 / (n111 + n121 + n112 + n122)
+    })         
     
     dt <- data.table(collocation = paste(allTable$w1, allTable$w2, allTable$w3),
-                     count = allTable$c123,
-                     G2 = allTable$lrratio) 
-    setorder(dt, -G2)
+                     count = allTable$c123)
     
+    if (method=="chi2") {
+        dt$X2 <- allTable$chi2
+        setorder(dt, -X2)
+    } else if (method=="pmi") {
+        dt$pmi <- allTable$pmi
+        setorder(dt, -pmi)
+    } else if (method=="dice") {
+        dt$dice <- allTable$dice
+        setorder(dt, -dice)
+    } else {
+        dt$G2 <- allTable$lrratio
+        setorder(dt, -G2)
+    }
+    
+    if (method=="all") {
+        dt$X2 <- allTable$chi2
+        dt$pmi <- allTable$pmi
+        dt$dice <- allTable$dice
+    }
+
     dt[1:ifelse(is.null(top), nrow(dt), top), ]
 }
 
