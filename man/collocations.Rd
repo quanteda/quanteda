@@ -39,7 +39,7 @@ far.}
 of the requested statistic, or \eqn{G^2} if none is specified.}
 }
 \value{
-A data.frame of collocations, their frequencies, and the computed
+A data.table of collocations, their frequencies, and the computed
   association measure.
 }
 \description{
@@ -50,12 +50,13 @@ data.frame of collocations and their scores, sorted by the likelihood ratio
 \examples{
 collocations(inaugTexts, top=10)
 collocations(inaugCorpus, top=10, method="chi2")
+collocations(inaugCorpus, top=30, n=3)
 }
 \author{
 Kenneth Benoit
 }
 \references{
-Add some.
+McInnes, B T. 2004. "Extending the Log Likelihood Measure to Improve Collocation Identification."  M.Sc. Thesis, University of Minnesota.
 }
 \seealso{
 bigrams, trigrams

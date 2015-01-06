@@ -25,6 +25,8 @@
 #' clean("We are his Beliebers, and him is #ourjustin @@justinbieber we love u", twitter=TRUE)
 #' clean("Collocations can be represented as inheritance_tax using the _ character.")
 #' clean("But under_scores can be removed using the additional argument.", additional="[_]")
+#' clean("This is a $5m watch and €20bn budget and $100,000 in cash plus a ¢50 cigar.")
+#' clean("This is a $5m watch and €20bn budget and $100,000 in cash plus a ¢50 cigar.", removeDigits=FALSE)
 #' 
 #' # for a vector of texts
 #' clean(c("This is 1 sentence with 2.0 numbers in it, and one comma.", 
@@ -65,7 +67,9 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
     x <- gsub("\\f|[\u2026\u22EF]", "", x)
     
     if (removeDigits) 
-        x <- gsub("[[:digit:]]", "", x)
+        # amended regex removes currency stuff better, e.g.
+        # clean("This is a $5m watch and €20bn budget and $100,000 in cash plus a ¢50 cigar.")
+        x <- gsub("[$¢\u20AC]?[[:digit:]]\\w*", "", x)
     if (lower) 
         x <- tolower(x)
     
@@ -129,3 +133,6 @@ wordstem <- function(words, language = "porter") {
 #     return(out)
 # }
 # 
+
+
+# clean("This is a $10m watch and €20bn budget and $100,000 in cash plus ¢50.")

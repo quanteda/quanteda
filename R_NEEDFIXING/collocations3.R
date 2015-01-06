@@ -86,7 +86,8 @@ collocations3.character <- function(x, method=c("lr"), n=3, top=NULL, ...) {
     
     ## cell counts
     # total table counts
-    N <- sum(allTable6$c123)  # total number of collocations (table N for all tables)
+    #N <- sum(allTable6$c123)  # total number of collocations (table N for all tables)
+    N <- allTable3[, sum(c123)]
     
     # observed counts n_{ijk}
     allTable <- within(allTable6, {
@@ -100,54 +101,51 @@ collocations3.character <- function(x, method=c("lr"), n=3, top=NULL, ...) {
         n222 <- N - c1 - n211 - n212 - n221
     })
     
-    # expected counts m_{ijk} for four independence models
+    #     ## testing from McInnes thesis Tables 19-20 example
+    #     allTable <- rbind(allTable, allTable[478,])
+    #     allTable$n111[479] <- 171
+    #     allTable$n112[479] <- 3000
+    #     allTable$n121[479] <- 2
+    #     allTable$n122[479] <- 20805
+    #     allTable$n211[479] <- 4
+    #     allTable$n212[479] <- 2522
+    #     allTable$n221[479] <- 7157
+    #     allTable$n222[479] <- 88567875
+    #     N <- 88601536
+    
+    # expected counts m_{ijk} for first independence model
     allTable <- within(allTable, {
-        m111 <- (c12 + c13 + c23) / c123
-        m211 <- c23 - c123
-        m121 <- c13 - c123
-        m122 <- c1 - c12 - m121
+        m1.111 <- (n111 + n121 + n112 + n122) * (n111 + n211 + n112 + n212) * (n111 + n211 + n121 + n221) / N^2
+        m1.112 <- (n111 + n121 + n112 + n122) * (n111 + n211 + n112 + n212) * (n112 + n212 + n122 + n222) / N^2
+        m1.121 <- (n111 + n121 + n112 + n122) * (n121 + n221 + n122 + n222) * (n111 + n211 + n121 + n221) / N^2
+        m1.122 <- (n111 + n121 + n112 + n122) * (n121 + n221 + n122 + n222) * (n112 + n212 + n122 + n222) / N^2
+        m1.211 <- (n211 + n221 + n212 + n222) * (n111 + n211 + n112 + n212) * (n111 + n211 + n121 + n221) / N^2
+        m1.212 <- (n211 + n221 + n212 + n222) * (n111 + n211 + n112 + n212) * (n112 + n212 + n122 + n222) / N^2
+        m1.221 <- (n211 + n221 + n212 + n222) * (n121 + n221 + n122 + n222) * (n111 + n211 + n121 + n221) / N^2
+        m1.222 <- (n211 + n221 + n212 + n222) * (n121 + n221 + n122 + n222) * (n112 + n212 + n122 + n222) / N^2
     })
     
-    
-    
-    
-    allTable3$w1w2notw3 
-    allTable3$w1notw2w3
-    allTable3$w1notw2notw3    
-    allTable3$notw1w2w3
-    allTable3$notw1w2notw3
-    allTable3$notw1notw2w3
-    allTable3$notw1notw2notw3
-    
-    # calculate expected values
-    allTable3$Ew1w2w3         <- allTable3$w1n * allTable3$w2n * allTable3$w3n / N 
-    allTable3$Ew1w2notw3
-    allTable3$Ew1notw2w3
-    allTable3$Ew1notw2notw3    
-    allTable3$Enotw1w2w3
-    allTable3$Enotw1w2notw3
-    allTable3$Enotw1notw2w3
-    allTable3$Enotw1notw2notw3
-    
-    # vectorized lr stat
+  
     epsilon <- .000000001  # to offset zero cell counts
-    allTable3$lrratio <- 2 *  ((allTable3$w1w2n * log(allTable3$w1w2n / allTable3$w1w2Exp + epsilon)) +
-                                   (allTable3$w1notw2 * log(allTable3$w1notw2 / allTable3$w1notw2Exp + epsilon)) +
-                                   (allTable3$notw1w2 * log(allTable3$notw1w2 / allTable3$notw1w2Exp + epsilon)) +
-                                   (allTable3$notw1notw2 * log(allTable3$notw1notw2 / allTable3$notw1notw2Exp + epsilon)))
-    allTable3 <- allTable3[order(-lrratio)]
-    df <- data.frame(collocation=paste(allTable3$w1, allTable3$w2, allTable3$w3),
-                     count=allTable3$w1w2nw3n,
-                     G2=allTable3$lrratio) 
+    allTable <- within(allTable, lrratio <- 2 *
+               ((n111 * log(n111 / m1.111 + epsilon)) + (n112 * log(n112 / m1.112 + epsilon)) +
+                (n121 * log(n121 / m1.121 + epsilon)) + (n122 * log(n122 / m1.122 + epsilon)) +
+                (n211 * log(n211 / m1.211 + epsilon)) + (n212 * log(n212 / m1.212 + epsilon)) +
+                (n221 * log(n221 / m1.221 + epsilon)) + (n222 * log(n222 / m1.222 + epsilon))))         
+               
+    dt <- data.table(collocation = paste(allTable$w1, allTable$w2, allTable$w3),
+                     count = allTable$c123,
+                     G2 = allTable$lrratio) 
+    setorder(dt, -G2)
     
-    df[1:ifelse(is.null(top), N, top), ]
+    dt[1:ifelse(is.null(top), nrow(dt), top), ]
 }
 
-library(quantedaData)
-data(exampleString)
-x <- exampleString
-method<-"lr"; top=NULL; n<-3
-text <- clean(x)
+# library(quantedaData)
+# data(exampleString)
+# x <- exampleString
+# method<-"lr"; top=NULL; n<-3
+# text <- clean(x)
 
 
 with(wordpairs, table(w1!="of", w2!="thousands", w3!="of", useNA="ifany"))

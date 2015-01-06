@@ -1,0 +1,3 @@
+library(quantedaData)
+data(exampleString)
+

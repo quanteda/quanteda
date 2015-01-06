@@ -47,6 +47,8 @@ clean("This is 1 sentence with 2.0 numbers in it, and one comma.", lower=FALSE)
 clean("We are his Beliebers, and him is #ourjustin @justinbieber we love u", twitter=TRUE)
 clean("Collocations can be represented as inheritance_tax using the _ character.")
 clean("But under_scores can be removed using the additional argument.", additional="[_]")
+clean("This is a $5m watch and €20bn budget and $100,000 in cash plus a ¢50 cigar.")
+clean("This is a $5m watch and €20bn budget and $100,000 in cash plus a ¢50 cigar.", removeDigits=FALSE)
 
 # for a vector of texts
 clean(c("This is 1 sentence with 2.0 numbers in it, and one comma.",

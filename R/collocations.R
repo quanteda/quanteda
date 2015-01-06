@@ -22,16 +22,17 @@
 #' @param top the number of collocations to return, sorted in descending order
 #'   of the requested statistic, or \eqn{G^2} if none is specified.
 #' @param ... additional parameters
-#' @return A data.frame of collocations, their frequencies, and the computed 
+#' @return A data.table of collocations, their frequencies, and the computed 
 #'   association measure.
 #' @export
 #' @import data.table
-#' @references Add some.
+#' @references McInnes, B T. 2004. "Extending the Log Likelihood Measure to Improve Collocation Identification."  M.Sc. Thesis, University of Minnesota.
 #' @seealso bigrams, trigrams 
 #' @author Kenneth Benoit
 #' @examples
 #' collocations(inaugTexts, top=10)
-#' collocations(inaugCorpus, top=10, method="chi2")
+#' collocations(inaugCorpus, top=10, method="all")
+#' collocations(inaugCorpus, top=10, n=3)
 collocations <- function(x, ...) {
     UseMethod("collocations")
 }
@@ -39,6 +40,19 @@ collocations <- function(x, ...) {
 #' @rdname collocations
 #' @export    
 collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=2, top=NULL, ...) {
+    method <- match.arg(method)
+    if (n == 3 & method != "lr") 
+        stop("Only lr implemented for trigram collocations so far.")
+    if (n > 3) 
+        stop("Only bigram and trigram collocations implemented so far.")
+    if (n == 2)
+        collocations2(x, method, 2, top, ...)
+    else
+        collocations3(x, method, 3, top, ...)
+}
+    
+
+collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=2, top=NULL, ...) {
     method <- match.arg(method)
     if (n != 2) stop("Only bigrams (n=2) implemented so far.")
     
@@ -81,7 +95,7 @@ collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all
     
     setkey(allTable2, w1, w2)
     
-    N <- nrow(allTable2)  # total number of collocations (table N for all tables)
+    N <- wordpairsTable[, sum(w1w2n)]  # total number of collocations (table N for all tables)
     
     # fill in cells of 2x2 tables
     allTable2$w1notw2 <- allTable2$w1n - allTable2$w1w2
@@ -115,24 +129,24 @@ collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all
         allTable2$dice <- 2 * allTable2$w1w2n / (allTable2$w1w2n + allTable2$w1notw2) 
     }
     if (method=="chi2") {
-        allTable2 <- allTable2[order(-chi2)]
-        df <- data.frame(collocation=paste(allTable2$w1, allTable2$w2),
+        setorder(allTable2, -chi2)
+        df <- data.table(collocation=paste(allTable2$w1, allTable2$w2),
                          count=allTable2$w1w2n,
                          X2=allTable2$chi2)
     } else if (method=="pmi") {
-        allTable2 <- allTable2[order(-pmi)]
-        df <- data.frame(collocation=paste(allTable2$w1, allTable2$w2),
+        setorder(allTable2, -pmi)
+        df <- data.table(collocation=paste(allTable2$w1, allTable2$w2),
                          count=allTable2$w1w2n,
                          pmi=allTable2$pmi) 
     
     } else if (method=="dice") {
-        allTable2 <- allTable2[order(-dice)]
-        df <- data.frame(collocation=paste(allTable2$w1, allTable2$w2),
+        setorder(allTable2, -dice)
+        df <- data.table(collocation=paste(allTable2$w1, allTable2$w2),
                          count=allTable2$w1w2n,
                          dice=allTable2$dice) 
     } else {
-        allTable2 <- allTable2[order(-lrratio)]
-        df <- data.frame(collocation=paste(allTable2$w1, allTable2$w2),
+        setorder(allTable2, -lrratio)
+        df <- data.table(collocation=paste(allTable2$w1, allTable2$w2),
                          count=allTable2$w1w2n,
                          G2=allTable2$lrratio) 
     }
@@ -144,7 +158,7 @@ collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all
         df$dice <- allTable2$dice
     }
         
-    df[1:ifelse(is.null(top), N, top), ]
+    df[1:ifelse(is.null(top), nrow(df), top), ]
 }
 
 #' @rdname collocations
@@ -152,6 +166,127 @@ collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all
 collocations.corpus <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=2, top=NULL, ...) {
     collocations(texts(x), method, n, top, ...)
 }
+
+
+
+collocations3 <- function(x, method=c("lr"), n=3, top=NULL, ...) {
+    method <- match.arg(method)
+    if (n != 3) stop("Hey, this method is for trigrams only! (n=3).")
+    
+    text <- clean(x, ...)
+    t <- unlist(tokenize(text), use.names=FALSE)
+    
+    # create a data.table of all adjacent bigrams
+    wordpairs <- data.table(w1 = t[1:(length(t)-2)], 
+                            w2 = t[2:(length(t)-1)],
+                            w3 = t[3:(length(t))],
+                            count = 1)
+    
+    # set the data.table sort key
+    #setkey(wordpairs, w1, w2, w3)
+    
+    ## counts of trigrams and bigrams
+    # tabulate (count) w1 w2 pairs
+    wordpairsTable <- wordpairs[, j=sum(count), by="w1,w2,w3"]
+    setnames(wordpairsTable, "V1", "c123")
+    
+    # tabulate all w1 counts
+    w1Table <- wordpairs[, sum(count), by=w1]
+    setnames(w1Table, "V1", "c1")
+    setkey(w1Table, w1)
+    setkey(wordpairsTable, w1)
+    suppressWarnings(allTable <- wordpairsTable[w1Table]) # otherwise gives an encoding warning
+    
+    # tabulate all w2 counts
+    w2Table <- wordpairs[, sum(count), by=w2]
+    setnames(w2Table, "V1", "c2")
+    setkey(w2Table, w2)
+    setkey(allTable, w2)
+    suppressWarnings(allTable2 <- allTable[w2Table])
+    
+    # tabulate all w3 counts
+    w3Table <- wordpairs[, sum(count), by=w3]
+    setnames(w3Table, "V1", "c3")
+    setkey(w3Table, w3)
+    setkey(allTable2, w3)
+    suppressWarnings(allTable3 <- allTable2[w3Table])
+    
+    # paired occurrence counts
+    w12Table <- wordpairs[, sum(count), by="w1,w2"]
+    setnames(w12Table, "V1", "c12")
+    setkey(w12Table, w1, w2)
+    setkey(allTable3, w1, w2)
+    suppressWarnings(allTable4 <- allTable3[w12Table])
+    
+    w13Table <- wordpairs[, sum(count), by="w1,w3"]
+    setnames(w13Table, "V1", "c13")
+    setkey(w13Table, w1, w3)
+    setkey(allTable4, w1, w3)
+    suppressWarnings(allTable5 <- allTable4[w13Table])
+    
+    w23Table <- wordpairs[, sum(count), by="w2,w3"]
+    setnames(w23Table, "V1", "c23")
+    setkey(w23Table, w2, w3)
+    setkey(allTable5, w2, w3)
+    suppressWarnings(allTable6 <- allTable5[w23Table])
+    
+    ## cell counts
+    # total table counts
+    #N <- sum(allTable6$c123)  # total number of collocations (table N for all tables)
+    N <- allTable3[, sum(c123)]
+    
+    # observed counts n_{ijk}
+    allTable <- within(allTable6, {
+        n111 <- c123
+        n112 <- c12 - c123
+        n121 <- c13 - c123
+        n122 <- c1 - c12 - n121
+        n211 <- c23 - c123
+        n212 <- c2 - c12 - n211
+        n221 <- c3 - c13 - n211
+        n222 <- N - c1 - n211 - n212 - n221
+    })
+    
+    #     ## testing from McInnes thesis Tables 19-20 example
+    #     allTable <- rbind(allTable, allTable[478,])
+    #     allTable$n111[479] <- 171
+    #     allTable$n112[479] <- 3000
+    #     allTable$n121[479] <- 2
+    #     allTable$n122[479] <- 20805
+    #     allTable$n211[479] <- 4
+    #     allTable$n212[479] <- 2522
+    #     allTable$n221[479] <- 7157
+    #     allTable$n222[479] <- 88567875
+    #     N <- 88601536
+    
+    # expected counts m_{ijk} for first independence model
+    allTable <- within(allTable, {
+        m1.111 <- (n111 + n121 + n112 + n122) * (n111 + n211 + n112 + n212) * (n111 + n211 + n121 + n221) / N^2
+        m1.112 <- (n111 + n121 + n112 + n122) * (n111 + n211 + n112 + n212) * (n112 + n212 + n122 + n222) / N^2
+        m1.121 <- (n111 + n121 + n112 + n122) * (n121 + n221 + n122 + n222) * (n111 + n211 + n121 + n221) / N^2
+        m1.122 <- (n111 + n121 + n112 + n122) * (n121 + n221 + n122 + n222) * (n112 + n212 + n122 + n222) / N^2
+        m1.211 <- (n211 + n221 + n212 + n222) * (n111 + n211 + n112 + n212) * (n111 + n211 + n121 + n221) / N^2
+        m1.212 <- (n211 + n221 + n212 + n222) * (n111 + n211 + n112 + n212) * (n112 + n212 + n122 + n222) / N^2
+        m1.221 <- (n211 + n221 + n212 + n222) * (n121 + n221 + n122 + n222) * (n111 + n211 + n121 + n221) / N^2
+        m1.222 <- (n211 + n221 + n212 + n222) * (n121 + n221 + n122 + n222) * (n112 + n212 + n122 + n222) / N^2
+    })
+    
+    
+    epsilon <- .000000001  # to offset zero cell counts
+    allTable <- within(allTable, lrratio <- 2 *
+                           ((n111 * log(n111 / m1.111 + epsilon)) + (n112 * log(n112 / m1.112 + epsilon)) +
+                                (n121 * log(n121 / m1.121 + epsilon)) + (n122 * log(n122 / m1.122 + epsilon)) +
+                                (n211 * log(n211 / m1.211 + epsilon)) + (n212 * log(n212 / m1.212 + epsilon)) +
+                                (n221 * log(n221 / m1.221 + epsilon)) + (n222 * log(n222 / m1.222 + epsilon))))         
+    
+    dt <- data.table(collocation = paste(allTable$w1, allTable$w2, allTable$w3),
+                     count = allTable$c123,
+                     G2 = allTable$lrratio) 
+    setorder(dt, -G2)
+    
+    dt[1:ifelse(is.null(top), nrow(dt), top), ]
+}
+
 
 
 #' convert phrases into single tokens
@@ -204,7 +339,4 @@ compoundWords <- function(txts, dictionary, connector="_") {
     }
     txts    
 }
-
-
-
 

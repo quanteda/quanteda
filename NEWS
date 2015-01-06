@@ -3,6 +3,11 @@ quanteda 0.6.5
 * New engine for dfm now implemented as standard, using data.table and
   Matrix for fast, efficient (sparse) matrixes.
 
+* Added trigram collocations (n=3) to collocations().
+
+* Minor fixes to clean() so that removeDigits=TRUE removes €10bn entirely
+  and not just the €10.  
+
 quanteda 0.6.4
 ==============
 * first cut at REST APIs for Twitter and Facebook
