@@ -32,7 +32,8 @@
 #' @examples
 #' collocations(inaugTexts, top=10)
 #' collocations(inaugCorpus, top=10, method="all")
-#' collocations(inaugCorpus, top=10, n=3)
+#' collocations(inaugTexts, top=10, n=3)
+#' collocations(inaugCorpus, top=10, method="all", n=3)
 collocations <- function(x, ...) {
     UseMethod("collocations")
 }
@@ -81,6 +82,7 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=2, 
     setkey(wordpairsTable, w1)
     suppressWarnings(allTable <- wordpairsTable[w1Table])
     # otherwise gives an encoding warning
+    rm(w1Table)
     
     # tabulate all w2 counts
     w2Table <- wordpairs[, sum(count), by=w2]
@@ -90,6 +92,8 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=2, 
     setkey(allTable, w2)
     suppressWarnings(allTable2 <- allTable[w2Table])
     # otherwise gives an encoding warning
+    rm(w2Table)
+    rm(allTable)
     
     setkey(allTable2, w1, w2)
     
@@ -193,6 +197,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=3, 
     setkey(w1Table, w1)
     setkey(wordpairsTable, w1)
     suppressWarnings(allTable <- wordpairsTable[w1Table]) # otherwise gives an encoding warning
+    rm(w1Table)
     
     # tabulate all w2 counts
     w2Table <- wordpairs[, sum(count), by=w2]
@@ -200,6 +205,8 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=3, 
     setkey(w2Table, w2)
     setkey(allTable, w2)
     suppressWarnings(allTable2 <- allTable[w2Table])
+    rm(w2Table)
+    rm(allTable)
     
     # tabulate all w3 counts
     w3Table <- wordpairs[, sum(count), by=w3]
@@ -207,6 +214,8 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=3, 
     setkey(w3Table, w3)
     setkey(allTable2, w3)
     suppressWarnings(allTable3 <- allTable2[w3Table])
+    rm(w3Table)
+    rm(allTable2)
     
     # paired occurrence counts
     w12Table <- wordpairs[, sum(count), by="w1,w2"]
@@ -214,23 +223,27 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=3, 
     setkey(w12Table, w1, w2)
     setkey(allTable3, w1, w2)
     suppressWarnings(allTable4 <- allTable3[w12Table])
+    rm(w12Table)
+    rm(allTable3)
     
     w13Table <- wordpairs[, sum(count), by="w1,w3"]
     setnames(w13Table, "V1", "c13")
     setkey(w13Table, w1, w3)
     setkey(allTable4, w1, w3)
     suppressWarnings(allTable5 <- allTable4[w13Table])
+    rm(w13Table)
+    rm(allTable4)
     
     w23Table <- wordpairs[, sum(count), by="w2,w3"]
     setnames(w23Table, "V1", "c23")
     setkey(w23Table, w2, w3)
     setkey(allTable5, w2, w3)
     suppressWarnings(allTable6 <- allTable5[w23Table])
+    rm(w23Table)
+    rm(allTable5)
     
-    ## cell counts
     # total table counts
-    #N <- sum(allTable6$c123)  # total number of collocations (table N for all tables)
-    N <- allTable3[, sum(c123)]
+    N <- allTable6[, sum(c123)]
     
     # observed counts n_{ijk}
     allTable <- within(allTable6, {
@@ -243,6 +256,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=3, 
         n221 <- c3 - c13 - n211
         n222 <- N - c1 - n211 - n212 - n221
     })
+    rm(allTable6)
     
     #     ## testing from McInnes thesis Tables 19-20 example
     #     allTable <- rbind(allTable, allTable[478,])
@@ -267,7 +281,6 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=3, 
         m1.221 <- (n211 + n221 + n212 + n222) * (n121 + n221 + n122 + n222) * (n111 + n211 + n121 + n221) / N^2
         m1.222 <- (n211 + n221 + n212 + n222) * (n121 + n221 + n122 + n222) * (n112 + n212 + n122 + n222) / N^2
     })
-    
     
     epsilon <- .000000001  # to offset zero cell counts
     allTable <- within(allTable, {

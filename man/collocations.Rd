@@ -50,7 +50,8 @@ measure.
 \examples{
 collocations(inaugTexts, top=10)
 collocations(inaugCorpus, top=10, method="all")
-collocations(inaugCorpus, top=10, n=3)
+collocations(inaugTexts, top=10, n=3)
+collocations(inaugCorpus, top=10, method="all", n=3)
 }
 \author{
 Kenneth Benoit
