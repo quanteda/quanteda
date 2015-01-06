@@ -35,6 +35,7 @@ dfm2tmformat <- function(d, weighting=weightTf){
 #' @param d A \code{\link{dfm}} object
 #' @return A list with components "documents" and "vocab" as needed by 
 #'   \link[lda]{lda.collapsed.gibbs.sampler}
+#' @import topicmodels
 #' @export
 #' @examples
 #' mycorpus <- subset(inaugCorpus, Year>1970)

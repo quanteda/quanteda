@@ -81,7 +81,7 @@ collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all
     
     setkey(allTable2, w1, w2)
     
-    N <- sum(allTable2$w1w2n)  # total number of collocations (table N for all tables)
+    N <- nrow(allTable2)  # total number of collocations (table N for all tables)
     
     # fill in cells of 2x2 tables
     allTable2$w1notw2 <- allTable2$w1n - allTable2$w1w2
