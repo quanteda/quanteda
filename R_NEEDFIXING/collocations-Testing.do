@@ -1,4 +1,4 @@
-use testTable, clear
+use "~/Dropbox/QUANTESS/quanteda_kenlocal_gh/R_NEEDFIXING/wordPairs.dta", clear
 
 gen n111 = (w1=="are" & w2=="trapped" & w3=="in")
 gen n112 = (w1=="are" & w2=="trapped" & w3!="in")

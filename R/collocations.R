@@ -109,10 +109,10 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=2, 
     # vectorized lr stat
     epsilon <- .000000001  # to offset zero cell counts
     if (method=="all" | method=="lr") {
-        allTable2$lrratio <- 2 *  ((allTable2$w1w2n * log(allTable2$w1w2n / allTable2$w1w2Exp + epsilon)) +
-                                       (allTable2$w1notw2 * log(allTable2$w1notw2 / allTable2$w1notw2Exp + epsilon)) +
-                                       (allTable2$notw1w2 * log(allTable2$notw1w2 / allTable2$notw1w2Exp + epsilon)) +
-                                       (allTable2$notw1notw2 * log(allTable2$notw1notw2 / allTable2$notw1notw2Exp + epsilon)))
+        allTable2$lrratio <- 2 *  ((allTable2$w1w2n * log(allTable2$w1w2n / (allTable2$w1w2Exp + epsilon) + epsilon)) +
+                                   (allTable2$w1notw2 * log(allTable2$w1notw2 / (allTable2$w1notw2Exp + epsilon) + epsilon)) +
+                                   (allTable2$notw1w2 * log(allTable2$notw1w2 / (allTable2$notw1w2Exp + epsilon) + epsilon)) +
+                                   (allTable2$notw1notw2 * log(allTable2$notw1notw2 / (allTable2$notw1notw2Exp + epsilon) + epsilon)))
     }
     if (method=="all" | method=="chi2") {
         allTable2$chi2 <- (allTable2$w1w2n - allTable2$w1w2Exp)^2 / allTable2$w1w2Exp +
@@ -124,7 +124,7 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=2, 
         allTable2$pmi <- log(allTable2$w1w2n / allTable2$w1w2Exp)
     }
     if (method=="all" | method=="dice") {
-        allTable2$dice <- 2 * allTable2$w1w2n / (allTable2$w1w2n + allTable2$w1notw2) 
+        allTable2$dice <- 2 * allTable2$w1w2n / (2*allTable2$w1w2n + allTable2$w1notw2 + allTable2$notw1w2) 
     }
     if (method=="chi2") {
         setorder(allTable2, -chi2)
@@ -280,7 +280,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=3, 
                 ((n211 - m1.211)^2 / m1.211) + ((n212 - m1.212)^2 / m1.212) +
                 ((n221 - m1.221)^2 / m1.221) + ((n222 - m1.222)^2 / m1.222)
         pmi <- log(n111 / m1.111)
-        dice <- 2 * n111 / (n111 + n121 + n112 + n122)
+        dice <- 2 * n111 / (n111 + n121 + n112 + n122 + n111 + n211 + n112 + n212 + n111 + n211 + n121 + n221)
     })         
     
     dt <- data.table(collocation = paste(allTable$w1, allTable$w2, allTable$w3),
