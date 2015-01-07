@@ -206,10 +206,11 @@ getTimeline <- function(screen_name, numResults=200, filename="default",
 
 #' Function to read files with tweets in JSON format
 #' 
-#' @param path  String describing the full path of a directory that
+#' @param path  string describing the full path of a directory that
 #'  contains files in json format, or a vector of file names in
 #'  in json format
-#' @param source Source of data in JSON format.
+#' @param source source of data in JSON format.
+#' @param enc encoding of the input json file
 #' @param ... additional arguments passed to \code{\link[streamR]{parseTweets}}
 #' @export
 #' @examples 
@@ -223,7 +224,7 @@ getTimeline <- function(screen_name, numResults=200, filename="default",
 #' corpus(tweets)
 #' } 
 #' @export
-json <- function(path=NULL, source="twitter", ...) {
+json <- function(path=NULL, source="twitter", enc = "unknown", ...) {
     stopifnot(file.exists(path))
     # identifying whether it is a folder
     if (!grepl("*.json$", path)){
@@ -235,7 +236,7 @@ json <- function(path=NULL, source="twitter", ...) {
         fls <- path
     }
     # read raw json data
-    txt <- unlist(sapply(fls, readLines))
+    txt <- unlist(sapply(fls, readLines, encoding = enc))
 
     # parsing into a data frame
     #library(streamR)

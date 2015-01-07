@@ -3,14 +3,16 @@
 \alias{json}
 \title{Function to read files with tweets in JSON format}
 \usage{
-json(path = NULL, source = "twitter", ...)
+json(path = NULL, source = "twitter", enc = "unknown", ...)
 }
 \arguments{
-\item{path}{String describing the full path of a directory that
+\item{path}{string describing the full path of a directory that
 contains files in json format, or a vector of file names in
 in json format}
 
-\item{source}{Source of data in JSON format.}
+\item{source}{source of data in JSON format.}
+
+\item{enc}{encoding of the input json file}
 
 \item{...}{additional arguments passed to \code{\link[streamR]{parseTweets}}}
 }
