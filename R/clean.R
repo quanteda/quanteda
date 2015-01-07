@@ -16,6 +16,8 @@
 #' @param removePunct remove punctuation if \code{TRUE}
 #' @param lower convert text to lower case \code{TRUE}
 #' @param twitter if \code{TRUE}, do not remove \code{@@} or \code{#}
+#' @param removeURL removes URLs (web addresses starting with \code{http:} or \code{https:}), based 
+#' on a regular expression from \url{http://daringfireball.net/2010/07/improved_regex_for_matching_urls}
 #' @param additional additional characters to remove (\link[=regex]{regular expression})
 #' @param ... additional parameters
 #' @return A character vector equal in length to the original texts, after cleaning.
@@ -27,6 +29,7 @@
 #' clean("But under_scores can be removed using the additional argument.", additional="[_]")
 #' clean("This is a $5m watch and €20bn budget and $100,000 in cash plus a ¢50 cigar.")
 #' clean("This is a $5m watch and €20bn budget and $100,000 in cash plus a ¢50 cigar.", removeDigits=FALSE)
+#' clean("For the URL regex see http://daringfireball.net/2010/07/improved_regex_for_matching_urls.")
 #' 
 #' # for a vector of texts
 #' clean(c("This is 1 sentence with 2.0 numbers in it, and one comma.", 
@@ -40,7 +43,7 @@ clean <- function(x, ...) {
 #' @rdname clean
 #' @export
 clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, 
-                            additional=NULL, twitter=TRUE, ...) {
+                            additional=NULL, twitter=TRUE, removeURL=TRUE, ...) {
     if (!(removeDigits | removePunct | lower) & is.null(additional)) {
         warning("  clean: text unchanged")
     }
@@ -48,6 +51,16 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
     # convert "curly quotes"
     x <- gsub("[\u201C\u201D]", "\"", x)
     x <- gsub("[\u2018\u2019]", "\'", x)
+    
+    urlregex <- "(?i)\\b((?:[a-z][\\w-]+:(?:/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\\'\".,<>?]))"
+    # see http://daringfireball.net/2010/07/improved_regex_for_matching_urls
+    if (removeURL) {
+        x <- gsub(urlregex, "", x, perl=TRUE)
+    } else {
+        # NEED TO PRESERVE THESE SOMEHOW
+    }
+    
+    
     
     if (removePunct) {
         # use "negative lookahead" to keep Twitter symbols, always keep "_"
@@ -136,3 +149,9 @@ wordstem <- function(words, language = "porter") {
 
 
 # clean("This is a $10m watch and €20bn budget and $100,000 in cash plus ¢50.")
+
+urlregex <- "(?i)\\b((?:[a-z][\\w-]+:(?:/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\\'\".,<>?]))"
+
+
+
+

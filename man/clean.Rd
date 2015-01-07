@@ -8,7 +8,8 @@
 clean(x, ...)
 
 \method{clean}{character}(x, removeDigits = TRUE, removePunct = TRUE,
-  lower = TRUE, additional = NULL, twitter = TRUE, ...)
+  lower = TRUE, additional = NULL, twitter = TRUE, removeURL = TRUE,
+  ...)
 
 \method{clean}{corpus}(x, removeDigits = TRUE, removePunct = TRUE,
   lower = TRUE, additional = NULL, twitter = TRUE, ...)
@@ -29,6 +30,9 @@ the texts cleaned.}
 \item{additional}{additional characters to remove (\link[=regex]{regular expression})}
 
 \item{twitter}{if \code{TRUE}, do not remove \code{@} or \code{#}}
+
+\item{removeURL}{removes URLs (web addresses starting with \code{http:} or \code{https:}), based
+on a regular expression from \url{http://daringfireball.net/2010/07/improved_regex_for_matching_urls}}
 }
 \value{
 A character vector equal in length to the original texts, after cleaning.

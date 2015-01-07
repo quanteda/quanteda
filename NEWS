@@ -6,7 +6,10 @@ quanteda 0.6.5
 * Added trigram collocations (n=3) to collocations().
 
 * Minor fixes to clean() so that removeDigits=TRUE removes €10bn entirely
-  and not just the €10.  
+  and not just the €10. 
+
+* Clean now removes http and https URLs by default, although does not 
+  preserve them (yet).
 
 quanteda 0.6.4
 ==============
