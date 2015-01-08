@@ -42,8 +42,8 @@
 #' 
 #' # fit a structural topic model
 #' if (require(stm)) {
-#'     gadarianCorpus <- corpus(gadarian$open.ended.response, docvars=gadarian[, 1:3],
-#'                              source="From stm package, data from Gadarian and Albertson (forthcoming)")
+#'   gadarianCorpus <- corpus(gadarian$open.ended.response, docvars=gadarian[, 1:3],
+#'                            source="From stm package, from Gadarian and Albertson (forthcoming)")
 #'     gadarianDfm <- dfm(gadarianCorpus, stopwords=TRUE, stem=TRUE)
 #'     gadarianSTM <- textmodel_lda(gadarianDfm, "stm", k=3, 
 #'                                  prevalence = ~treatment + s(pid_rep), 

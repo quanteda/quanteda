@@ -150,26 +150,29 @@ predict.textmodelfitted <- function(object, ...) {
 
 
 
-#' print a textmodel object
-#' 
-#' print a class of textmodel object
-#' @param x textmodel object to be printed
-#' @param ... additional arguments passed to \code{print}
+# print a textmodel object
+# 
+# print a class of textmodel object
+# @param x textmodel object to be printed
+# @param ... additional arguments passed to \code{print}
 #' @export
+#' @method print textmodel
 print.textmodel <- function(x, ...) {
     NextMethod(x, ...)
 }
 
-#' @rdname print.textmodel
+# @rdname print.textmodel
 #' @export
+#' @method print textmodelfitted
 print.textmodelfitted <- function(x, ...) {
     cat("Fitted textmodel of type:", class(x)[3], "\n")
     
     NextMethod(x, ...)
 }
 
-#' @rdname print.textmodel
+# @rdname print.textmodel
 #' @export
+#' @method print textmodelpredicted
 print.textmodelpredicted <- function(x, ...) {
     cat("Predicted textmodel of type:", class(x)[3], "\n\n")
     #cat("Call:\n\t")
@@ -202,18 +205,20 @@ print.textmodelpredicted <- function(x, ...) {
 }
 
 
-#' summary of a textmodel object
-#' 
-#' Summarize the results of a fitted or predicted textmodel object.
-#' @param object textmodel object to be summarized
-#' @param ... additional arguments to \link{print}
+# summary of a textmodel object
+# 
+# Summarize the results of a fitted or predicted textmodel object.
+# @param object textmodel object to be summarized
+# @param ... additional arguments to \link{print}
 #' @export
+#' @method summary textmodel
 summary.textmodel <- function(object, ...) {
     NextMethod(object)    
 }
 
-#' @rdname summary.textmodel
-#'@export
+# @rdname summary.textmodel
+#' @export
+#' @method summary textmodelfitted
 summary.textmodelfitted <- function(object, ...) {
     cat("Predicted textmodel of type:", class(x)[3], "\n\n")
     cat("Call:\n\t")
@@ -222,13 +227,10 @@ summary.textmodelfitted <- function(object, ...) {
     NextMethod(object)
 }
 
-#' @rdname summary.textmodel
-#'@export
+# @rdname summary.textmodel
+#' @export
+#' @method summary textmodelpredicted
 summary.textmodelpredicted <- function(object, ...) {
     NextMethod(object)    
 }
-
-
-
-
 

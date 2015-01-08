@@ -1,7 +1,7 @@
 Package: quanteda
 Type: Package
 Title: Quantitative Analysis of Textual Data
-Version: 0.6.5.006
+Version: 0.6.6.000
 Date: 2015-01-08
 Authors@R: c(
     person("Benoit", "Kenneth", email = "kbenoit@lse.ac.uk", role = "cre"),
@@ -30,10 +30,10 @@ Description: A package for the management and quantitative analysis of textual
     train machine learning methods for class prediction.
 License: GPL-3
 Depends:
-    R (>= 3.0),
-    data.table (>= 1.9.2),
-    Matrix (>= 1.1)
+    R (>= 3.0)
 Imports:
+    Matrix (>= 1.1),
+    data.table (>= 1.9.2),
     SnowballC,
     wordcloud,
     slam,

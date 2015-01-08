@@ -1,3 +1,10 @@
+quanteda 0.6.6
+==============
+* No more depends, all done through imports.  Passes clean check.
+  The start of our reliance more on the master branch rather than
+  having merges from dev to master happen only once in a blue moon.
+
+
 quanteda 0.6.5
 ==============
 * New engine for dfm now implemented as standard, using data.table and
