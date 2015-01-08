@@ -3,6 +3,7 @@
 #' Fit a text model to a dfm.
 #' @param ... additional arguments to be passed to specific model types
 #' @seealso \code{\link{textmodel_wordscores}}, \code{\link{textmodel_NB}},
+#' \code{\link{textmodel_wordfish}}, \code{\link{textmodel_lda}}, 
 #' \code{\link{textmodel}}
 #' @section Class hierarchy:
 #' Here will go the description of the class hierarchy that governs dispatch for the 
@@ -20,6 +21,10 @@
 #'
 #' # prediction method for wordscores
 #' predict(ws, ieDfm, rescaling="mv")
+#' 
+#' # wordfish
+#' wf <- textmodel(ieDfm, model="wordfish", dir=c(2,1))
+#' 
 textmodel <- function(x, ...) {
     UseMethod("textmodel")
 }
@@ -43,18 +48,28 @@ textmodel <- function(x, ...) {
 #'   specific models, e.g. \link{textmodel_wordscores}, \link{textmodel_NB}, 
 #'   etc.
 #' @export
-textmodel.dfm <- function(x, y, model=c("wordscores", "NB"), ...) {
+textmodel.dfm <- function(x, y=NULL, model=c("wordscores", "NB", "wordfish", "lda"), ...) {
     model <- match.arg(model)
     call <- match.call()
     Yname <- deparse(substitute(y))
     
-    if (nrow(x) != length(y))
-        stop("x and y contain different numbers of documents.")
-    
     if (model=="wordscores") {
+        if (nrow(x) != length(y))
+            stop("x and y contain different numbers of documents.")
+        
         result <- textmodel_wordscores(x, y, ...)
     } else if (model=="NB") {
+        if (nrow(x) != length(y))
+            stop("x and y contain different numbers of documents.")
         result <- textmodel_NB(x, y, ...)
+    } else if (model=="wordfish") {
+        if (!is.null(y))
+            warning("y values not used with wordfish model. ")
+        result <- textmodel_wordfish(x, ...)
+    } else if (model=="lda") {
+        if (!is.null(y))
+            warning("y values not used with wordfish model. ")
+        result <- textmodel_lda(x, ...)
     } else {
         stop(paste("model", method, "not implemented."))
     }
@@ -175,8 +190,10 @@ print.textmodelpredicted <- function(x, ...) {
         x$ci.lo <- x$ci.hi <- NULL
     
     if (class(x)[3]=="wordscores") {
-        print(as.data.frame(x))
+        print(round(as.data.frame(x), 4))
         cat("\n")
+    } else if (class(x)[3]=="wordfish") {
+        NextMethod(x, ...)
     } else {
         cat("Document-level quantitites:\n")
         print(data.frame(Prediction=x$docs$nb.predicted,
@@ -185,9 +202,9 @@ print.textmodelpredicted <- function(x, ...) {
 }
 
 
-#' summay of a textmodel object
+#' summary of a textmodel object
 #' 
-#' Summarize the results of a fitted or predited textmodel object.
+#' Summarize the results of a fitted or predicted textmodel object.
 #' @param object textmodel object to be summarized
 #' @param ... additional arguments to \link{print}
 #' @export
@@ -196,8 +213,6 @@ summary.textmodel <- function(object, ...) {
 }
 
 #' @rdname summary.textmodel
-#' 
-#' Summarize the results of a fitted or predited textmodel object.
 #'@export
 summary.textmodelfitted <- function(object, ...) {
     cat("Predicted textmodel of type:", class(x)[3], "\n\n")
@@ -208,8 +223,6 @@ summary.textmodelfitted <- function(object, ...) {
 }
 
 #' @rdname summary.textmodel
-#' 
-#' Summarize the results of a fitted or predited textmodel object.
 #'@export
 summary.textmodelpredicted <- function(object, ...) {
     NextMethod(object)    

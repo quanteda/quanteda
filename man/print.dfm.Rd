@@ -3,7 +3,7 @@
 \alias{print.dfm}
 \title{print a dfm object}
 \usage{
-\method{print}{dfm}(x, show.values = FALSE, show.settings = FALSE, ...)
+print.dfm(x, show.values = FALSE, show.settings = FALSE, ...)
 }
 \arguments{
 \item{x}{the dfm to be printed}

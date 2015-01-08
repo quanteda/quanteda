@@ -7,7 +7,8 @@
 \usage{
 textmodel(x, ...)
 
-\method{textmodel}{dfm}(x, y, model = c("wordscores", "NB"), ...)
+\method{textmodel}{dfm}(x, y = NULL, model = c("wordscores", "NB",
+  "wordfish", "lda"), ...)
 
 \method{textmodel}{formula}(formula, data = NULL, model = c("wordscores",
   "NB"), ...)
@@ -70,12 +71,16 @@ plot(ws$pi, bs$pi, xlim=c(-1, 1), xlab="Linear word score", ylab="Logit word sco
 
 # prediction method for wordscores
 predict(ws, ieDfm, rescaling="mv")
+
+# wordfish
+wf <- textmodel(ieDfm, model="wordfish", dir=c(2,1))
 }
 \author{
 Paul Nulty
 }
 \seealso{
 \code{\link{textmodel_wordscores}}, \code{\link{textmodel_NB}},
+\code{\link{textmodel_wordfish}}, \code{\link{textmodel_lda}},
 \code{\link{textmodel}}
 }
 

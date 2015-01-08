@@ -30,7 +30,13 @@ Snowball.
 # Simple example
 wordstem(c("win", "winning", "winner"))
 }
+\references{
+\url{http://snowball.tartarus.org/}
+
+\url{http://www.loc.gov/standards/iso639-2/php/code_list.php}
+for a list of ISO-639 language codes
+}
 \seealso{
-\link[SnowballC]{wordStem}; \url{http://snowball.tartarus.org/}.
+\link[SnowballC]{wordStem}
 }
 

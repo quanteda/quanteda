@@ -13,5 +13,7 @@ languages are danish, dutch, english, finnish, french, german,
 hungarian, italian, norwegian, portuguese, russian, spanish, and
 swedish. Language names are case sensitive. Alternatively, their IETF
 language tags may be used.
+
+Also now (>=0.6.3) includes Arabic stopwords.
 }
 

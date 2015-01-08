@@ -4,12 +4,14 @@
 \alias{language<-}
 \title{get or set the language of corpus documents}
 \usage{
-language(corp)
+language(corp, drop = TRUE)
 
 language(corp) <- value
 }
 \arguments{
 \item{corp}{a corpus object}
+
+\item{drop}{return as a vector if \code{TRUE}, otherwise return a \code{data.frame}}
 
 \item{value}{the new value for the language meta-data field, a string or
 character vector equal in length to \code{ndoc(corp)}}

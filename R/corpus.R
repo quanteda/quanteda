@@ -132,13 +132,40 @@ corpus.directory <- function(x, enc=NULL, docnames=NULL,
     tmpCorp
 }
 
+#' @param textCol  The column of the sheet that contains the texts
+#'   the docvars from. By defauls, takes everything except the textCol by
+#'   \code{sep} or from meta-data embedded in the text file header
+#'   (\code{headers}).
+#' @rdname corpus
+#' @export
+#' @examples 
+#' \dontrun{
+#'} 
+#' 
+corpus.excel <- function(x, docnames=row.names(x),
+                             textCol=1, docvarsfrom=NULL, 
+                             source=NULL, notes=NULL, citation=NULL, ...) {
+    if (is.null(docvarsfrom)){
+        docvarsfrom <- -textCol
+    }
+    if (class(x)[1] != "excel") stop("first argument must be an excel sheet")
+    x <- data.table(x)
+    class(x) <- (list("excel", "data.table", "data.frame")) # data.table unclasses it
+    dvars <- NULL    
+    txts <- as.character(unlist(x[,textCol,with=FALSE]))
+    dvars <- x[, docvarsfrom, with=FALSE]
+    tmpCorp <- corpus(txts, enc=enc, docnames=docnames, docvars=dvars,
+                          source=source, notes=notes, citation=citation)
+    return(tmpCorp)
+}
+
 
 #' @rdname corpus
 #' @export
 corpus.twitter <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
     # extract the content (texts)
     texts <- x$text
-    atts <-as.data.frame(x[,2:ncol(x)])    
+    atts <- as.data.frame(x[,2:ncol(x)])    
     
     # using docvars inappropriately here but they show up as docmeta given 
     # the _ in the variable names
@@ -147,6 +174,19 @@ corpus.twitter <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
            enc=enc, ...)
 }
 
+
+#' @rdname corpus
+#' @export
+corpus.facebook <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
+    # extract the content ("message" of posts)
+    texts <- x$message
+    atts <- as.data.frame(x[,2:ncol(x)])    
+    
+    # not sure I'm doing this the right way... What is metadata?
+    corpus(texts, docvars=atts,
+           source=paste("Converted from posts on Facebook page"),
+           enc=enc, ...)
+}
 
 
 #' @rdname corpus
@@ -573,14 +613,16 @@ ndoc.corpus <- function(x) {
 #' 
 #' Get or set the \code{_language} document-level metadata field in a corpus.
 #' @param corp a corpus object
+#' @param drop return as a vector if \code{TRUE}, otherwise return a \code{data.frame}
 #' @details This function modifies the \code{_language} value set by
 #'   \code{\link{metadoc}}.  It is a wrapper for \code{metadoc(corp, "language")}.
 #' @export
-language <- function(corp) {
-    if ("_language" %in% names(metadoc(corp)))
-        metadoc(corp, "language") 
-    else
-        rep(NULL, ndoc(corp))
+language <- function(corp, drop=TRUE) {
+    if ("_language" %in% names(metadoc(corp))) {
+        result <- metadoc(corp, "language")
+        return(result[,1, drop=drop])
+    } else
+        return(rep(NULL, ndoc(corp)))
 }
 
 #' @rdname language
@@ -597,6 +639,7 @@ language <- function(corp) {
 #' 
 #' Get or set the \code{_encoding} document-level metadata field in a corpus.
 #' @param x a corpus object
+#' @param drop  return as a vector if \code{TRUE}, otherwise return a \code{data.frame}
 #' @details This function modifies the \code{_encoding} value set by 
 #'   \code{\link{metadoc}}.  It is a wrapper for \code{metadoc(corp, "encoding")}.
 #'   
@@ -607,11 +650,12 @@ language <- function(corp) {
 #'   does not convert or set encodings, it simply records a user declaration of a 
 #'   valid encoding.  (We hope to implement checking and conversion later.)
 #' @export
-encoding <- function(x) {
-    if ("_encoding" %in% names(metadoc(x)))
-        metadoc(x, "encoding") 
-    else
-        rep(NULL, ndoc(x))
+encoding <- function(x, drop=TRUE) {
+    if ("_encoding" %in% names(metadoc(x))) {
+        result <- metadoc(x, "encoding") 
+        return(result[,1, drop=drop])
+    } else
+        return(rep(NULL, ndoc(x)))
 }
 
 #' @param value a character vector or scalar representing the new value of the encoding (see Note)
@@ -794,6 +838,9 @@ changeunits <- function(corp, to=c("sentences", "paragraphs", "documents"), ...)
     docvars(newcorpus, names(metadoc(corp))) <- as.data.frame(lapply(metadoc(corp), rep, lengthSegments))
     # add original document name as metadata
     metadoc(newcorpus, "document") <- rep(names(segmentedTexts), lengthSegments)
+    # give a serial number (within document) to each sentence
+    sentenceid <- lapply(lengthSegments, function(n) seq(from=1, to=n))
+    metadoc(newcorpus, "serialno") <- unlist(sentenceid, use.names=FALSE)
     
     # copy settings and corpus metadata
     newcorpus$settings <- corp$settings

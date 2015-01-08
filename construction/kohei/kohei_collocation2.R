@@ -1,4 +1,4 @@
-source('~/quanteda/R/kohei_tokenize2.R')
+source('~/quanteda/kohei/kohei_tokenize2.R')
 
 #' Find collocation
 #' This depends on Kohei's tokenizer
@@ -14,8 +14,8 @@ source('~/quanteda/R/kohei_tokenize2.R')
 #' mx <- findCollocation(texts)
 #' plotCollocation(mx)
 
-findCollocation <- function(texts, method = 'count', limit = 1000){
-  mx <- getCollocationMX(texts, method, limit = limit)
+findCollocation <- function(texts, method = 'count', window = 5, smooth = 1, limit = 1000, filter = '', segment = FALSE){
+  mx <- getCollocationMX(texts, method, window = window, smooth = smooth, limit = limit, filter = filter, segment = segment)
   return(mx)
 }
 
@@ -34,7 +34,7 @@ plotCollocation <- function(mx){
   cat('Plot was saved as ', getwd(), '/hd.pdf', '\n', sep='')
 }
 
-createCollocationIndex <- function(texts, limit = 1000) {
+createCollocationIndex <- function(texts, limit, filter) {
   text <- paste(texts, collapse = ' ')
   tokens <- tokenizeText(text, clean = FALSE)
   tokens <- tokens[nchar(tokens) > 0]
@@ -43,11 +43,28 @@ createCollocationIndex <- function(texts, limit = 1000) {
   if(limit > length(token.sort)){
     limit <- length(token.sort)
   }
-  token.aggre2 <- token.aggre[token.aggre >= token.sort[limit]]
+  if(limit == 0){
+    token.aggre2 <- token.aggre
+  }else{
+    token.aggre2 <- token.aggre[token.aggre >= token.sort[limit]]
+  }
   tokens.unique <- names(token.aggre2)
-  hash <- new.env(hash = TRUE, parent = emptyenv(), size = length(tokens.unique))
-  for(token.index in 1:length(tokens.unique)) {
-    hash[[tokens.unique[token.index]]] <- token.index
+  if(filter == ''){
+    tokens.x <- tokens.unique
+    tokens.y <- tokens.unique
+  }else{
+    print(tokens.unique[grepl(filter, tokens.unique)])
+    tokens.x <- tokens.unique[grep(filter, tokens.unique)]
+    tokens.y <- tokens.unique
+  }
+  hash = list()
+  hash[['x']] <- new.env(hash = TRUE, parent = emptyenv(), size = length(tokens.x))
+  for(xi in 1:length(tokens.x)) {
+    hash[['x']][[tokens.x[xi]]] <- xi
+  }
+  hash[['y']] <- new.env(hash = TRUE, parent = emptyenv(), size = length(tokens.y))
+  for(yi in 1:length(tokens.y)) {
+    hash[['y']][[tokens.y[yi]]] <- yi
   }
   return(hash)
 }
@@ -67,46 +84,27 @@ convertMx2dist <- function(mx){
 showCollocation <- function(mx, thresh = 0){
   
   index <- attr(mx, 'index')
-  tokens <- flipCollocationIndex(index)
-  mx[upper.tri(mx, diag = TRUE)] <- NA
+  tokens.x <- flipCollocationIndex(index[['x']])
+  tokens.y <- flipCollocationIndex(index[['y']])
+  #mx[upper.tri(mx, diag = TRUE)] <- NA
   elms <- which(mx >= thresh & !is.na(mx), arr.ind=T)
-  len <- length(elms)
-  sv <- rep(NA, len)
-  nv <- rep(NA, len)
-
+  len <- nrow(elms)
+  values <- rep(NA, len)
+  names <- rep(NA, len)
+  
   if(length(elms) == 0){
     cat('No item above the thresh\n')
     stop()
   }
-  print(elms)
-  for(k in 1:(elms)[1]){
-    i <- elms[k,][[1]]
-    j <- elms[k,][[2]]
-    sv[k] <- mx[i, j]
-    nv[k] <- paste(tokens[[i]], tokens[[j]])
-    print(sprintf("%s %s", tokens[[i]], tokens[[j]]))    
+  for(k in 1:len){
+    yi <- elms[k,][1]
+    xi <- elms[k,][2]
+    values[k] <- mx[yi, xi]
+    names[k] <- paste(tokens.x[[xi]], tokens.y[[yi]])
+    #print(sprintf("%s %s", tokens.x[[xi]], tokens.y[[yi]]))    
   }
   
-  
-  df <- data.frame(score = sv, row.names = nv)
-  df2 <- df[order(-df$score), , drop=FALSE]
-  return(df2)
-}
-
-showCollocationToken <- function(mx, token, thresh = 0){
-  sv <- c()
-  nv <- c()
-  index <- attrib(mx, 'index')
-  toks <- flipCollocationIndex(index)
-  i <- index[[token]]
-  len <- length(index)
-  for(j in 1:len){
-    if(mx[i, j] >= thresh){
-      sv <- append(sv, mx[i, j])
-      nv <- append(nv, sprintf("%s %s", toks[[i]], toks[[j]]))
-    }
-  }
-  df <- data.frame(score = sv, row.names = nv)
+  df <- data.frame(score = values, row.names = names)
   df2 <- df[order(-df$score), , drop=FALSE]
   return(df2)
 }
@@ -122,12 +120,15 @@ flipCollocationIndex <- function(index){
 }
 
 
-getCollocationMX <- function(texts, method = 'count', window = 5, smooth = 1, limit = 1000, segment = TRUE){
-  index <- createCollocationIndex(texts, limit = limit)
-  index.len <- length(index)
-  mx <- matrix(0, nrow = index.len, ncol = index.len)
-  cmx <- matrix(0, nrow = index.len, ncol = 1)
-  #print(mx)
+getCollocationMX <- function(texts, method = 'count', window = 5, smooth = 1, limit = 1000, filter = filter, segment = FALSE){
+  index <- createCollocationIndex(texts, limit = limit, filter = filter)
+  xi.len <- length(index[['x']])
+  yi.len <- length(index[['y']])
+  mx <- matrix(0, nrow = yi.len, ncol = xi.len)
+  rv <- matrix(0, nrow = 1, ncol = xi.len)
+  cv <- matrix(0, nrow = yi.len, ncol = 1)
+  
+  
   if(segment){
     texts <- unlist(sentenceSeg(paste(texts, sep="\n")))
   }
@@ -138,34 +139,46 @@ getCollocationMX <- function(texts, method = 'count', window = 5, smooth = 1, li
       if(nchar(tokens[i]) == 0) next
       start <- i - window
       end <- i + window
+      #print(paste(i, end, tokens[end]))
       if(start < 1) start <- 1
       if(end > len) end <- len
-      ti1 <- index[[tokens[i]]]
-      if(!is.null(ti1)){
-        cmx[ti1,1] <- cmx[ti1,1] + 1
+      
+      #word frequency of x (selected)
+      x <- index[['x']][[tokens[i]]]
+      if(!is.null(x)){
+        rv[1, x] <- rv[1, x] + 1
       }
+      
+      #word frequency of y (all)
+      y <- index[['y']][[tokens[i]]]
+      if(!is.null(y)){
+        cv[y, 1] <- cv[y, 1] + 1
+      }
+      
+      #collocation frequency
       for(j in start:end){
+        if(i == j) next
         if(nchar(tokens[j]) == 0) next
-        ti2 <- index[[tokens[j]]]
-        if(!is.null(ti1) & !is.null(ti2)){
-          mx[ti1, ti2] <- mx[ti1, ti2] + 1
+        y <- index[['y']][[tokens[j]]]
+        if(!is.null(y) & !is.null(x)){
+          mx[y, x] <- mx[y, x] + 1
         }
       }
     }
   }
   mx <- mx + smooth
-  cmx <- cmx + smooth
+  rv <- rv + smooth
+  cv <- cv + smooth
   
-  if(method == 'mi'){
-    #Mutual information
-    smx <- log(mx * sum(cmx), 2) / (cmx %*% t(cmx))
-  }else if(method == 'pmi'){
+  if(method == 'pmi'){
     #Pointwise (specific) mutual information (Wordsmith replication)
-    mxsum <- sum(mx[lower.tri(mx, diag = TRUE)])
-    smx <- log((mx / mxsum) / ((cmx %*% t(cmx)) / (sum(cmx) ^ 2)), 2)
+    sum <- sum(mx) / 2
+    mx2 <- log((mx / sum) / ((cv %*% rv) / (sum(cv) ^ 2)), 2)
   }else if(method == 'count'){
-    smx <- mx
+    mx2 <- mx
   }
-  attr(smx, 'index') <- index
-  return(smx)
+  attr(mx2, 'index') <- index
+  return(mx2)
 }
+
+

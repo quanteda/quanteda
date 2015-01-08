@@ -1,8 +1,77 @@
+quanteda 0.6.5
+==============
+* New engine for dfm now implemented as standard, using data.table and
+  Matrix for fast, efficient (sparse) matrixes.
+
+* Added trigram collocations (n=3) to collocations().
+
+* Improvements to clean(): Minor fixes to clean() so that removeDigits=TRUE 
+  removes €10bn entirely and not just the €10. clean() now removes http and 
+  https URLs by default, although does not 
+  preserve them (yet).  clean also handles numbers better, to remove
+  1,000,000 and 3.14159 if removeDigits=TRUE but not crazy8 or 4sure.
+
+* dfm works for documents that contain no features, including for
+  dictionary counts. Thanks to Kevin Munger for catching this.
+
+quanteda 0.6.4
+==============
+* first cut at REST APIs for Twitter and Facebook
+
+* some minor improvements to sentence segmentation
+
+* improvements to package dependencies and imports - but this is ongoing!
+
+* Added more functions to dfms, getting there...
+
+* Added the ability to segment a corpus on tags (e.g. ##TAG1 text text, ##TAG2) 
+  and have the document split using the tags as a delimiter and the tag then
+  added to the corpus as a docvar.
+
+
+quanteda 0.6.3
+==============
+
+* added textmodel_lda support, including LDA, CTM, and STM.  Added a 
+  converter dfm2stmformat() between dfm and stm's input format.
+
+* as.dfm works now for data.frame objects
+
+* added Arabic to list of stopwords.  (Still working on a stemmer for Arabic.)
+
+quanteda 0.6.2
+==============
+
+* The first appearance of dfms(), to create a sparse Matrix using the 
+  Matrix package.  Eventually this will become the default format for 
+  all but small dfms.  Not only is this far more efficient, it is also
+  much faster.
+
+* Minor speed gains for clean() -- but still much more work to be done
+  with clean().
+
+quanteda 0.6.1
+==============
+
+* started textmodel_wordfish, textmodel_ca.  textmodel_wordfish takes an mcmc argument
+  that calls JAGS wordfish.
+
+* now depends on ca, austin rather than importing them
+
+* dfm subsetting with [,] now works
+
+* docnames()[], []<-, docvars()[] and []<- now work correctly
+
+
 quanteda 0.6.0 
 ==============
 
 * Added textmodel for scaling and prediction methods, including for starters,
   wordscores and naivebayes class models.  LIKELY TO BE BUGGY AND QUIRKY FOR A WHILE.
+
+* Added smoothdfm() and weight() methods for dfms.
+
+* Fixed a bug in segmentSentence().
 
 
 quanteda 0.5.8 

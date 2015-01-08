@@ -21,14 +21,15 @@
 filenames <- c("SMART.dat", "danish.dat", "english.dat", "french.dat",
                "hungarian.dat", "norwegian.dat", "russian.dat",
                "swedish.dat", "catalan.dat", "dutch.dat", "finnish.dat", "german.dat",
-               "italian.dat", "portuguese.dat", "spanish.dat")
+               "italian.dat", "portuguese.dat", "spanish.dat", "arabic.dat")
 
 stopwords <- list()
 for (i in 1:length(filenames)) {
     thisfile <- filenames[i]
     print(thisfile)
-    stopwords[[i]] <-  scan(paste("stopwords/", thisfile, sep=""), what="char", encoding="UTF-8")
+    stopwords[[i]] <-  scan(paste("./", thisfile, sep=""), what="char", encoding="UTF-8")
 }
 names(stopwords) <- gsub(".dat", "", filenames)
 
-save(stopwords, file="data/stopwords.RData")
+save(stopwords, file="../../data/stopwords.RData")
+

@@ -16,6 +16,8 @@
 #' @param removePunct remove punctuation if \code{TRUE}
 #' @param lower convert text to lower case \code{TRUE}
 #' @param twitter if \code{TRUE}, do not remove \code{@@} or \code{#}
+#' @param removeURL removes URLs (web addresses starting with \code{http:} or \code{https:}), based 
+#' on a regular expression from \url{http://daringfireball.net/2010/07/improved_regex_for_matching_urls}
 #' @param additional additional characters to remove (\link[=regex]{regular expression})
 #' @param ... additional parameters
 #' @return A character vector equal in length to the original texts, after cleaning.
@@ -25,6 +27,9 @@
 #' clean("We are his Beliebers, and him is #ourjustin @@justinbieber we love u", twitter=TRUE)
 #' clean("Collocations can be represented as inheritance_tax using the _ character.")
 #' clean("But under_scores can be removed using the additional argument.", additional="[_]")
+#' clean("This is a $5m watch and €20bn budget and $100,000 in cash plus a ¢50 cigar.")
+#' clean("This is a $5m watch and €20bn budget and $100,000 in cash plus a ¢50 cigar.", removeDigits=FALSE)
+#' clean("For the URL regex see http://daringfireball.net/2010/07/improved_regex_for_matching_urls.")
 #' 
 #' # for a vector of texts
 #' clean(c("This is 1 sentence with 2.0 numbers in it, and one comma.", 
@@ -38,26 +43,55 @@ clean <- function(x, ...) {
 #' @rdname clean
 #' @export
 clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, 
-                            additional=NULL, twitter=TRUE, ...) {
+                            additional=NULL, twitter=TRUE, removeURL=TRUE, ...) {
     if (!(removeDigits | removePunct | lower) & is.null(additional)) {
         warning("  clean: text unchanged")
     }
+    
+    # convert "curly quotes"
+    x <- gsub("[\u201C\u201D]", "\"", x)
+    x <- gsub("[\u2018\u2019]", "\'", x)
+    
+    urlregex <- "(?i)\\b((?:[a-z][\\w-]+:(?:/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\\'\".,<>?]))"
+    # see http://daringfireball.net/2010/07/improved_regex_for_matching_urls
+    if (removeURL) {
+        x <- gsub(urlregex, "", x, perl=TRUE)
+    } else {
+        # NEED TO PRESERVE THESE SOMEHOW
+    }
+    
+    
+    
     if (removePunct) {
         # use "negative lookahead" to keep Twitter symbols, always keep "_"
         # remove other punctuation from POSIX [:punct:]
         remove <- paste("(?![",
                         ifelse(twitter, "@#_", "_"),
-                        "])[[:punct:]]", sep="")
+                        "])[[:punct:]]", 
+                        ifelse(!is.null(additional), paste("|", additional, sep=""), ""),
+                        sep="")
        x <- gsub(remove, "", x, perl=TRUE)
     }
     
+    # change typographic dash variations to a hyphen: There Can Be Only One
+    x <- gsub("\u2013", "-", x)
+    
+    # remove common cruft from word-processors
+    x <- gsub("\\f|[\u2026\u22EF]", "", x)
+    
     if (removeDigits) 
-        x <- gsub("[[:digit:]]", "", x)
+        # amended regex removes currency stuff better, e.g.
+        # clean("This is a $5m watch and €20bn budget and $100,000 in cash plus a ¢50 cigar.")
+        #
+        # second part in alternation means don't remove digits if in a word, e.g. 4sure, crazy8
+        # the group stuff is to remove thousands separators, e.g. 1,000,000 or 1.000.000
+        # clean("nodigits crazy8 4sure 67 89b 1,000,000 1.023.496")
+        x <- gsub("[$¢£\u20AC][[:digit:]]\\w*|\\b([[:digit:]]+[,.]?)+\\b", "", x)
     if (lower) 
         x <- tolower(x)
     
-    if (!is.null(additional))
-        x <- gsub(additional, "", x)
+#     if (!is.null(additional))
+#         x <- gsub(additional, "", x)
     
     # convert 2+ multiple whitespaces into one
     x <- gsub("\\s{2,}", " ", x, perl=TRUE)
@@ -90,7 +124,12 @@ clean.corpus <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
 #'   of the vector are converted to UTF-8 encoding before the stemming is
 #'   performed, and the returned elements are marked as such when they contain
 #'   non-ASCII characters.
-#' @seealso \link[SnowballC]{wordStem}; \url{http://snowball.tartarus.org/}.
+#' @seealso \link[SnowballC]{wordStem}
+#' 
+#' @references \url{http://snowball.tartarus.org/}
+#' 
+#' \url{http://www.loc.gov/standards/iso639-2/php/code_list.php} 
+#' for a list of ISO-639 language codes
 #' @export
 #' @examples
 #' # Simple example
@@ -98,4 +137,25 @@ clean.corpus <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
 wordstem <- function(words, language = "porter") {
     SnowballC::wordStem(words, language)
 }
+
+# rdname wordstem
+# export
+#  from https://sites.google.com/site/motazsite/arabic/arlightstemmerlucene.jar
+#  source: https://sites.google.com/site/motazsite/arabic/arlightstemmerlucene-src.7z
+# wordstemArabic <- function(x) {
+#     require(rJava)
+#     .jinit("java/ArLightStemmerLucene.jar")
+#     hjw <- .jnew("ArLightStemmerLucene")     # create instance of ArLightStemmerLucene class
+#     out <- .jcall(hjw, "S", "main", x)  # invoke sayHello method
+#     return(out)
+# }
+# 
+
+
+# clean("This is a $10m watch and €20bn budget and $100,000 in cash plus ¢50.")
+
+urlregex <- "(?i)\\b((?:[a-z][\\w-]+:(?:/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\\'\".,<>?]))"
+
+
+
 

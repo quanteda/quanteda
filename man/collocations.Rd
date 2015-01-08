@@ -16,10 +16,10 @@ collocations(x, ...)
 \arguments{
 \item{x}{a text, a character vector of texts, or a corpus}
 
-\item{...}{additional parameters}
+\item{...}{additional parameters passed to \link{clean}}
 
 \item{method}{association measure for detecting collocations.  Available
-measures for bigrams are:
+measures are:
 \describe{
 \item{\code{"lr"}}{The likelihood ratio statistic \eqn{G^2}, computed as:
        \deqn{2 * \sum_i \sum_j (n_{ij} * log \frac{n_{ij}}{m_{ij}}}
@@ -32,32 +32,34 @@ measures for bigrams are:
 \item{\code{"all"}}{returns all of the above}
 }}
 
-\item{n}{length of the collocation.  Only bigrams (\code{n=2}) implemented so
-far.}
+\item{n}{length of the collocation.  Only bigram (\code{n=2}) and trigram (\code{n=3})
+collocations are implemented so far.}
 
 \item{top}{the number of collocations to return, sorted in descending order
 of the requested statistic, or \eqn{G^2} if none is specified.}
 }
 \value{
-A data.frame of collocations, their frequencies, and the computed
-  association measure.
+A data.table of collocations, their frequencies, and the computed
+  association measure(s).
 }
 \description{
-Detects collocations (currently, bigrams) from texts or a corpus, returning a
-data.frame of collocations and their scores, sorted by the likelihood ratio
-\eqn{G^2} and Pearson's \eqn{\chi^2}.
+Detects collocations (currently, bigrams and trigrams) from texts or a corpus, returning a
+data.frame of collocations and their scores, sorted in descending order of the association
+measure.
 }
 \examples{
 collocations(inaugTexts, top=10)
-collocations(inaugCorpus, top=10, method="chi2")
+collocations(inaugCorpus, top=10, method="all")
+collocations(inaugTexts, top=10, n=3)
+collocations(inaugCorpus, top=10, method="all", n=3)
 }
 \author{
 Kenneth Benoit
 }
 \references{
-Add some.
+McInnes, B T. 2004. "Extending the Log Likelihood Measure to Improve Collocation Identification."  M.Sc. Thesis, University of Minnesota.
 }
 \seealso{
-bigrams, trigrams
+\link{bigrams}, \link{ngrams}
 }
 

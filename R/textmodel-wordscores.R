@@ -18,12 +18,12 @@
 #' @examples 
 #' library(quantedaData)
 #' data(LBGexample)
-#' #LBGexample <- as.dfm(LBGexample)
-#' #ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores")
-#' #ws
-#' ## same as:
-#' #textmodel_wordscores(LBGexample, c(seq(-1.5, 1.5, .75), NA))
-#' #predict(ws)
+#' LBGexample <- as.dfm(LBGexample)
+#' ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores")
+#' ws
+#' # same as:
+#' textmodel_wordscores(LBGexample, c(seq(-1.5, 1.5, .75), NA))
+#' predict(ws)
 #' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
 #'   "Extracting Policy Positions From Political Texts Using Words as Data." 
 #'   American Political Science Review 97(02): 311-31; Beauchamp, N. 2012. 
@@ -69,7 +69,9 @@ textmodel_wordscores <- function(data, scores,
         Sw <- log(Pwr[, upper]) - log(Pwr[, lower])
     }
     
-    Sw <- Sw[which(colSums(x) > 0)]  # remove words with zero counts in ref set
+    namesTemp <- names(Sw)
+    Sw <- as.vector(Sw[which(colSums(x) > 0)])  # remove words with zero counts in ref set
+    names(Sw) <- namesTemp[which(colSums(x) > 0)]
     
     model <- list(pi = Sw, data=data, scores=scores)
     class(model) <- c("wordscores", "list")
@@ -128,7 +130,8 @@ predict.wordscores <- function(object, newdata=NULL, rescaling = "none",
                          textscore_raw_hi = textscore_raw + z * textscore_raw_se)
     
     if ("mv" %in% rescaling) {
-        warning("\nMore than one reference score found with MV rescaling; using only min, max values.")
+        if (sum(!is.na(object$scores)) > 2)
+            warning("\nMore than two reference scores found with MV rescaling; using only min, max values.")
         lowerIndex <- which(object$scores==min(object$scores, na.rm=TRUE))
         upperIndex <- which(object$scores==max(object$scores, na.rm=TRUE))
         textscore_mv <-

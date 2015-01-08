@@ -44,9 +44,10 @@ tokenize.character <- function(x, simplify=FALSE, sep=" ", ... ) {
     # function to tokenize a single element character
     # profiling shows that using scan is 3x faster than using strsplit
     tokenizeSingle <- function(s, sep=" ", ...) {
-        s <- clean(s, ...)
+        
         # s <- unlist(s)
         tokens <- scan(what="char", text=s, quiet=TRUE, quote="", sep=sep)
+        tokens <- clean(tokens, ...)
         return(tokens)
     }
     
@@ -81,25 +82,60 @@ tokenize.corpus <- function(x, ...) {
 #' @examples
 #' # segment sentences of the UK 2010 immigration sections of manifestos
 #' segmentSentence(uk2010immig[1])[1:5]   # 1st 5 sentences from first (BNP) text
-#' str(segmentSentence(uk2010immig[1]))   # a 143-element char vector
-#' str(segmentSentence(uk2010immig[1:2])) # a 155-element char vector (143+ 12)
+#' str(segmentSentence(uk2010immig[1]))   # a 132-element char vector
+#' str(segmentSentence(uk2010immig[1:2])) # a 144-element char vector (143+ 12)
 #' 
 segmentSentence <- function(x, delimiter="[.!?:;]") {
     # strip out CRs and LFs, tabs
-    text <- gsub("\\n|\\t", "", x)
+    text <- gsub("\\n+|\\t+", " ", x)
+    # remove trailing and leading spaces
+    text <- gsub("^ +| +$", "", text)
     
-    #exceptions <- c("Mr.", "Mrs.", "Ms.", "Dr.", "Jr.", "Prof.", "Ph.D.")
-    #test <- gsub(paste(exceptions))
+    # remove . delimiter from common title abbreviations
+    exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph",  
+                    "M", "MM")
+    findregex <- paste("\\b(", paste(exceptions, collapse="|"), ")\\.", sep="")
+    text <- gsub(findregex, "\\1", text)
+
+    # deal with i.e. e.g. pp. p. Cf. cf.
+    text <- gsub("i\\.e\\.", "_IE_", text)
+    text <- gsub("e\\.g\\.", "_EG_", text)
+    text <- gsub("(\\b|\\()(p\\.)", "\\1_P_", text)
+    text <- gsub("(\\b|\\()(pp\\.)", "\\1_PP_", text)
+    text <- gsub("(\\b|\\()([cC]f\\.)", "\\1_CF_", text)
+    
+    exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph", "M", "MM")
+    findregex <- paste("\\b(", paste(exceptions, collapse="|"), ")\\.", sep="")
+    text <- gsub(findregex, "\\1", text)
+    
+    # preserve decimals - also i.e. pp. p. e.g. etc.
+    numbersWithDecimalsregex <- "([\\d])\\.([\\d])"
+    text <- gsub(numbersWithDecimalsregex, "\\1_DECIMAL_\\2", text, perl=TRUE)
+    
+    # preserve ellipses
+    text <- gsub("\\.{3}", "_ELIPSIS_", text)
     
     # recover punctuation characters
-    tkns <- tokenize(x, removePunct=FALSE, simplify=TRUE)
+    tkns <- tokenize(text, removePunct=FALSE, simplify=TRUE)
     punctpos <- grep(paste(delimiter, "$", sep=""), tkns)
     puncts <- substr(tkns[punctpos], nchar(tkns[punctpos]), nchar(tkns[punctpos]))
     
     # split the text into sentences
-    sentences <- unlist(strsplit(x, delimiter))
+    sentences <- unlist(strsplit(text, delimiter))
     # paste punctuation marks back onto sentences
     result <- paste(sentences, puncts, sep="")
+    # put decimals back
+    result <- gsub("_DECIMAL_", "\\.", result)
+    # put elipses back
+    result <- gsub("_ELIPSIS_", "...", result)
+    
+    # put i.e. e.g. pp. p. Cf. cf. back
+    result <- gsub("_IE_", "i.e.", result)
+    result <- gsub("_EG_", "e.g.", result)
+    result <- gsub("(\\b|\\()_P_", "\\1p.", result)
+    result <- gsub("(\\b|\\()_PP_", "\\1pp.", result)
+    result <- gsub("(\\b|\\()_CF_", "\\1cf.", result)
+    
     # remove leading and trailing spaces and return
     gsub("^ +| +$", "", result)
 }
@@ -115,8 +151,10 @@ segmentSentence <- function(x, delimiter="[.!?:;]") {
 #' 
 #' @export
 segmentParagraph <- function(x, delimiter="\\n{2}") {
-    unlist(strsplit(x, delimiter))
+    tmp <- unlist(strsplit(x, delimiter))
+    tmp[which(tmp != "")]
 }
+
 
 
 #' segment texts into component elements
@@ -163,9 +201,12 @@ segment <- function(x, ...) {
 #' # segment a text into sentences
 #' segmentedChar <- segment(uk2010immig, "sentences")
 #' segmentedChar[2]
-segment.character <- function(x, what=c("tokens", "sentences", "paragraphs", "other"), 
-                              delimiter=ifelse(what=="tokens", " ", 
-                                               ifelse(what=="sentences", "[.!?:;]", "\\n{2}")),
+segment.character <- function(x, what=c("tokens", "sentences", "paragraphs", "tags", "other"), 
+                              delimiter = ifelse(what=="tokens", " ", 
+                                                 ifelse(what=="sentences", "[.!?:;]", 
+                                                        ifelse(what=="paragraphs", "\\n{2}", 
+                                                               ifelse(what=="tags", "##\\w+\\b", 
+                                                                      NULL)))),
                               ...) {
     what <- match.arg(what)
     if (what=="tokens") {
@@ -174,32 +215,58 @@ segment.character <- function(x, what=c("tokens", "sentences", "paragraphs", "ot
         return(lapply(x, segmentSentence, delimiter)) 
     } else if (what=="paragraphs") {
         return(lapply(x, segmentParagraph, delimiter)) 
+    } else if (what=="tags") {
+        return(lapply(x, segmentParagraph, delimiter))         
     } else if (what=="other") {
-        if (!("delimiter" %in% names(list(...))))
+        if (is.null(delimiter))
             stop("For type other, you must supply a delimiter value.")
-        return(lapply(x, segmentParagraph, delimiter)) 
+        return(lapply(x, segmentParagraph, delimiter))
     }
 }
 
 #' @rdname segment
 #' @export
+#' @note Does not currently record document segments if segmenting a multi-text corpus
+#' into smaller units. For this, use \link{changeunits} instead.
 #' @examples
+#' testCorpus <- corpus("##INTRO This is the introduction. 
+#'                       ##DOC1 This is the first document.  
+#'                       Second sentence in Doc 1.  
+#'                       ##DOC3 Third document starts here.  
+#'                       End of third document.")
+#' testCorpusSeg <- segment(testCorpus, "tags")
+#' summary(testCorpusSeg)
+#' texts(testCorpusSeg)
 #' # segment a corpus into sentences
 #' segmentedCorpus <- segment(corpus(uk2010immig), "sentences")
 #' identical(segmentedCorpus, segmentedChar)
-segment.corpus <- function(x, what=c("tokens", "sentences", "paragraphs", "other"), 
-                           delimiter=ifelse(what=="tokens", " ", 
-                                            ifelse(what=="sentences", "[.!?:;]", "\\n{2}")),
+segment.corpus <- function(x, what = c("tokens", "sentences", "paragraphs", "tags", "other"), 
+                           delimiter = ifelse(what=="tokens", " ", 
+                                              ifelse(what=="sentences", "[.!?:;]", 
+                                                     ifelse(what=="paragraphs", "\\n{2}", 
+                                                            ifelse(what=="tags", "##\\w+\\b", 
+                                                                   NULL)))),
                            ...) {
-    segment(texts(x), what, delimiter, ...)
+    newCorpus <- corpus(unlist(segment(texts(x), what, delimiter, ...)),
+                        source = metacorpus(x, "source"),
+                        notes = paste0("segment.corpus(", match.call(), ")"))
+    
+    if (what == "tags") {
+        tagIndex <- gregexpr(delimiter, texts(x))[[1]]
+        tags <- character()
+        length(tags) <- ndoc(newCorpus)
+        for (i in 1:length(tagIndex))
+            tags[i] <- substr(texts(x), start = tagIndex[i],
+                              stop = tagIndex[i] + attr(tagIndex, "match.length")[i] - 1)
+        docvars(newCorpus, "tag") <- tags
+    }
+    
+    newCorpus
 }
 
 # segment(uk2010immig[1], removePunct=FALSE, simplify=TRUE)
 # segment(uk2010immig[1], what="sentences")
 # segment(uk2010immig[1], what="paragraphs")
-
-
-
 
 
 ########
