@@ -174,9 +174,10 @@ rescaler <- function(x, scale.min=-1, scale.max=1) {
 }
 
 
-#' @rdname print.textmodel
-#' @param n max rows of dfm to print 
+# @rdname print.textmodel
+# @param n max rows of dfm to print 
 #' @export
+#' @method print wordscores
 print.wordscores <- function(x, n=30L, ...) {
     cat("\nReference documents and reference scores:\n\n")
     print(data.frame(Documents=docnames(x$data),
@@ -189,8 +190,8 @@ print.wordscores <- function(x, n=30L, ...) {
 }
 
 
-#' @rdname summary.textmodel
 #' @export
+#' @method summary wordscores
 summary.wordscores <- function(object, ...) {
     cat("Call:\n\t")
     print(object$call)

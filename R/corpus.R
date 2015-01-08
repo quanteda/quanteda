@@ -299,8 +299,14 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
 }
 
 
-
+# print a corpus object
+#
+# print method for corpus objects
+# @param x the corpus to be printed
+# @param ... further arguments passed to or from other methods
 #' @export
+#  see http://stackoverflow.com/questions/6517222/how-to-properly-document-a-s3-method-of-a-generic-from-a-different-package-usin
+#' @method print corpus
 print.corpus <- function(x, ...) {
     cat("Corpus consisting of ", ndoc(x), " document",
         ifelse(ndoc(x)>1, "s", ""), ".\n", sep="")
@@ -759,6 +765,7 @@ subset.corpus <- function(x, subset=NULL, select=NULL, ...) {
 #' @param showmeta TRUE to include document-level meta-data
 #' @param ...  additional arguments affecting the summary produced
 #' @export
+#' @method summary corpus
 #' @examples
 #' summary(inaugCorpus)
 #' summary(inaugCorpus, n=10)

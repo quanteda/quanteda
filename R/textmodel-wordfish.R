@@ -21,6 +21,7 @@
 #'   Slapin, Jonathan B, and Sven-Oliver Proksch. 2008. "A Scaling 
 #'   Model for Estimating Time-Series Party Positions From Texts." American 
 #'   Journal of Political Science 52(3): 705-22.
+#' @importFrom austin wordfish is.wfm
 #' @author Kenneth Benoit
 #' @examples 
 #' library(quantedaData)
@@ -28,7 +29,6 @@
 #' ieDfm <- dfm(ie2010Corpus)
 #' wf <- textmodel_wordfish(ieDfm, dir=c(2,1))
 #' summary(wf)
-#' @import austin
 #' @export
 textmodel_wordfish <- function(data, method=c("mml", "mcmc"), smooth=0, ...) {
     method = match.arg(method)
@@ -36,9 +36,7 @@ textmodel_wordfish <- function(data, method=c("mml", "mcmc"), smooth=0, ...) {
         stop("supplied data must be a dfm object.")
     data <- data + smooth  # smooth by the specified amount
     if (method=="mml") {
-        if (!require(austin))
-            stop("you must first install austin (from Rforge) to use wordfish mml.")
-        model <- austin::wordfish(austin::as.wfm(data, word.margin=2), ...)
+        model <- wordfish(as.wfm(data, word.margin=2), ...)
     } else if (method=="mcmc") {
         if (!require(rjags)) 
             stop("You must first install rjags to use method=mcmc.")
@@ -110,7 +108,7 @@ textmodel_wordfish <- function(data, method=c("mml", "mcmc"), smooth=0, ...) {
 #' @return An augmented \code{\link[austin]{wordfish}} class object with additional
 #'   stuff packed in.  To be documented.
 #' @author Kenneth Benoit
-#' @import austin
+#' @importFrom austin wordfish is.wfm
 #' @details 
 #'   \code{textmodel_wordfish}
 #' 
@@ -192,7 +190,7 @@ MCMCirtPoisson1d <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=
     # 3) if a list of starting values, use those
     if  (is.null(control$startparams) & !startRandom) {
         if (verbose) cat("Calculating ML wordfish.\n\n")
-        wordfish.ml <- austin::wordfish(dtm, dir)
+        wordfish.ml <- wordfish(dtm, dir)
         starting.values <- list(raw.theta=wordfish.ml$theta,
                                 raw.beta=wordfish.ml$beta,
                                 psi=wordfish.ml$psi,
@@ -355,6 +353,7 @@ MCMCirtPoisson1d <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=
 #' @return An augmented \code{wordfish} class object with additional stuff
 #'   packed in.  To be documented.
 #' @author Kenneth Benoit
+#' @importFrom austin wordfish as.wfm is.wfm wfm
 #' @examples
 #' \dontrun{
 #' data(iebudgets)
@@ -366,7 +365,7 @@ MCMCirtPoisson1d <- function(dtm, dir=c(1,2), control=list(sigma=3, startparams=
 #' dtm <- wfm(t(dtm), word.margin=2)
 #' 
 #' # estimate the maximium likelihood wordfish model from austin
-#' iebudgets2010_wordfish <- wordfish(dtm, dir=c(2,1))
+#' iebudgets2010_wordfish <- austin::wordfish(dtm, dir=c(2,1))
 #' 
 #' # estimate the MCMC model, default values
 #' iebudgets2010_wordfishMCMC <- wordfishMCMC(dtm, dir=c(2,1))

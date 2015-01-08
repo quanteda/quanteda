@@ -17,12 +17,12 @@
 #' @export
 #' @examples
 #' ## examples for character objects
-#' someText <- "Here is an example of text containing some stopwords we want to remove."
-#' itText <- "Ecco un esempio di testo contenente alcune parole non significative che vogliamo rimuovere."
+#' someText <- "Here's some text containing words we want to remove."
+#' itText <- "Ecco alcuni di testo contenente le parole che vogliamo rimuovere."
 #' stopwordsRemove(someText)
 #' stopwordsRemove(someText, stopwordsGet("SMART"))
 #' stopwordsRemove(itText, stopwordsGet("italian"))
-#' stopwordsRemove(someText, c("containing", "example"))
+#' stopwordsRemove(someText, c("some", "want"))
 #' 
 #' ## example for dfm objects
 #' docmat <- dfm(uk2010immig)

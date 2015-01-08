@@ -249,8 +249,9 @@ logsumexp <- function(x) {
 }
 
 
-#' @rdname print.textmodel
+# @rdname print.textmodel
 #' @export
+#' @method print naivebayes
 print.naivebayes <- function(x, n=30L, ...) {
     cat("Call:\n\t")
     print(x$call)

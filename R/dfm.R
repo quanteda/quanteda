@@ -62,6 +62,7 @@ dfm <- function(x, ...) {
 #' @return A specially classed \link[Matrix]{Matrix} object with row names equal
 #'   to the document names and column names equal to the feature labels.
 #' @author Kenneth Benoit
+#' @import data.table Matrix
 #' @export
 #' @examples
 #' # with inaugural texts
@@ -100,9 +101,9 @@ dfm <- function(x, ...) {
 #'
 #' ## keep only certain words
 #' dfm(testCorpus, keep="s$")  # keep only words ending in "s"
-#' testTweets <- c("My homie @@justinbieber #justinbieber getting his shopping on in #LA yesterday #beliebers",
-#'                 "To all the haters including my brother #justinbieber #justinbiebermeetcrystaltalley #emabiggestfansjustinbieber",
-#'                 "Justin Bieber #justinbieber #belieber #kidrauhl #fetusjustin #EMABiggestFansJustinBieber")
+#' testTweets <- c("My homie @@justinbieber #justinbieber shopping in #LA yesterday #beliebers",
+#'                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
+#'                 "Justin Bieber #justinbieber #belieber#fetusjustin #EMABiggestFansJustinBieber")
 #' dfm(testTweets, keep="^#")  # keep only hashtags
 #' 
 #' 
@@ -318,9 +319,11 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
         class(dfmresult) <- c("dfm", class(dfmresult))
     }
     
-    if (verbose) cat("\n   ... done: created a", paste(dim(dfmresult), collapse=" x "), 
-                     ifelse(matrixType=="dense", "dense", "sparse"), "dfm, elapsed time",
-                     (proc.time() - startTime)[3], "seconds.\n")
+    if (verbose) {
+        cat("\n   ... created a", paste(dim(dfmresult), collapse=" x "), 
+            ifelse(matrixType=="dense", "dense", "sparse"), "dfm")
+        cat("\n   ... complete. Elapsed time:", (proc.time() - startTime)[3], "seconds.\n")
+    }
     return(dfmresult)
 }
 
@@ -475,7 +478,7 @@ makeRegEx <- function(wildcardregex) {
 #' @examples
 #' dtm <- dfm(inaugCorpus)
 #' dim(dtm)
-#' dtmReduced <- trimdfm(dtm, minCount=10, minDoc=2) # only words occuring at least 5 times and in at least 2documents
+#' dtmReduced <- trimdfm(dtm, minCount=10, minDoc=2) # only words occuring >=5 times and in >=2 docs
 #' dim(dtmReduced)
 #' dtmReduced <- trimdfm(dtm, keep="^nation|^citizen|^union$")
 #' topfeatures(dtmReduced, NULL)
@@ -742,7 +745,8 @@ topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ...) {
 #' @param show.settings Print the settings used to create the dfm.  See
 #'   \link{settings}.
 #' @param ... further arguments passed to or from other methods
-#' @export
+#' @export 
+#' @method print dfm
 print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, ...) {
     cat("Document-feature matrix of: ",
         ndoc(x), " document",
@@ -865,30 +869,30 @@ weight.dfm <- function(x, type=c("normTf","maxTf","logTf", "tfidf", "ppmi"), smo
 }
 
 
-#' Additive smoothing of feature frequencies in a dfm
-#' 
-#' Smooths the feature counts by adding a small value (default 0.5) to remove
-#' zero counts. Zero counts are problematic for probability-based models.
-#' 
-#' @param x document-feature matrix created by \link{dfm}
-#' @param alpha The value to add to all counts. Default is 0.5
-#' @return The original dfm, with values weighted according to type function.
+# Additive smoothing of feature frequencies in a dfm
+# 
+# Smooths the feature counts by adding a small value (default 0.5) to remove
+# zero counts. Zero counts are problematic for probability-based models.
+# 
+# @param x document-feature matrix created by \link{dfm}
+# @param alpha The value to add to all counts. Default is 0.5
+# @return The original dfm, with values weighted according to type function.
 # @export
-#' @author Paul Nulty
-#' @examples
-#' dtm <- dfm(inaugCorpus)
-#' dtm[1:5,1:10]
-#' smDtm <- smoothdfm(dtm)
-#' smDtm[1:5,1:10]
+# @author Paul Nulty
+# @examples
+# dtm <- dfm(inaugCorpus)
+# dtm[1:5,1:10]
+# smDtm <- smoothdfm(dtm)
+# smDtm[1:5,1:10]
 smoothdfm <- function(x, alpha=0.5) {
-    attr_orig <- attributes(x)
-    x <- x + alpha
-    attributes(x) <- attr_orig
-    x
+     attr_orig <- attributes(x)
+     x <- x + alpha
+     attributes(x) <- attr_orig
+     x
 }
 
-# [] method for dfm
 #' @export
+#' @method [ dfm
 `[.dfm` <- function(x, i, j, ..., drop) {
     m <- NextMethod("[")
     attr(m, "settings") <- attr(x, "settings")

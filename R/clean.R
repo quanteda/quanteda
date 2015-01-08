@@ -27,9 +27,9 @@
 #' clean("We are his Beliebers, and him is #ourjustin @@justinbieber we love u", twitter=TRUE)
 #' clean("Collocations can be represented as inheritance_tax using the _ character.")
 #' clean("But under_scores can be removed using the additional argument.", additional="[_]")
-#' clean("This is a $5m watch and €20bn budget and $100,000 in cash plus a ¢50 cigar.")
-#' clean("This is a $5m watch and €20bn budget and $100,000 in cash plus a ¢50 cigar.", removeDigits=FALSE)
-#' clean("For the URL regex see http://daringfireball.net/2010/07/improved_regex_for_matching_urls.")
+#' clean("This is a $1,500,000 budget and $20bn cash and a $5 cigar.")
+#' clean("This is a $1,500,000 budget and $20bn cash and a $5 cigar.", removeDigits=FALSE)
+#' clean("URL regex from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.")
 #' 
 #' # for a vector of texts
 #' clean(c("This is 1 sentence with 2.0 numbers in it, and one comma.", 
@@ -81,12 +81,15 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
     
     if (removeDigits) 
         # amended regex removes currency stuff better, e.g.
-        # clean("This is a $5m watch and €20bn budget and $100,000 in cash plus a ¢50 cigar.")
+        # clean("This is a $5m watch and $20bn budget and $100,000 in cash plus a $5 cigar.")
         #
-        # second part in alternation means don't remove digits if in a word, e.g. 4sure, crazy8
-        # the group stuff is to remove thousands separators, e.g. 1,000,000 or 1.000.000
+        # 2nd part in alternation removes 1st 2nd 31st 43rd 3bis 101th etc.
+        #
+        # third part in alternation means don't remove digits if in a word, e.g. 4sure, crazy8
+        # the third stuff is to remove thousands separators, e.g. 1,000,000 or 1.000.000
         # clean("nodigits crazy8 4sure 67 89b 1,000,000 1.023.496")
-        x <- gsub("[$¢£\u20AC][[:digit:]]\\w*|\\b([[:digit:]]+[,.]?)+\\b", "", x)
+        # note: \u00A3 is pound sign, \u20AC is euro sign, \u00A2 is the cent sign
+        x <- gsub("[$\u00A3\u20AC\u00A2][[:digit:]]\\w*|\\b[[:digit:]]+(st|nd|rd|d|th|bis)\\b|\\b([[:digit:]]+[,.]?)+\\b", "", x)
     if (lower) 
         x <- tolower(x)
     

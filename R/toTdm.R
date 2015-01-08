@@ -51,8 +51,6 @@ dfm2tmformat <- function(d, weighting=weightTf){
 #' }
 dfm2ldaformat <- function(d) {
     tmDTM <- dfm2tmformat(d)
-    if (!require(topicmodels))
-        stop("topicmodels package required for this function.")
     return(topicmodels::dtm2ldaformat(tmDTM))
 }
 
