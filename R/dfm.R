@@ -144,9 +144,11 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     startTime <- proc.time()
     matrixType <- match.arg(matrixType)
     if (!fromCorpus & verbose) 
-        cat("Creating dfm from character vector ...")
+        cat("Creating a dfm from a character vector ...")
     
-    if (verbose) cat("\n   ... indexing documents")
+    if (verbose) cat("\n   ... indexing ", 
+                     format(length(x), big.mark=","), " document",
+                     ifelse(length(x) > 1, "s", ""), sep="")
     docIndex <- 1:length(x)
     if (is.null(names(x))) 
         names(docIndex) <- factor(paste("text", 1:length(x), sep="")) else
@@ -218,10 +220,12 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     
     # dictionary function to select only dictionary terms
     if (!is.null(dictionary)) {
-        if (verbose) cat("\n   ... compiling dictionary counts")
+        if (verbose) cat("\n   ... applying a dictionary ")
         # NEED SOME ERROR CHECKING HERE
         # flatten the dictionary
         dictionary <- flatten.dictionary(dictionary)
+        if (verbose) cat("consisting of ", length(dictionary), " key entr", 
+                         ifelse(length(dictionary) > 1, "ies", "y"), sep="")
         # convert wildcards to regular expressions (if needed)
         if (!dictionary_regex)
             dictionary <- lapply(dictionary, makeRegEx)
@@ -256,8 +260,14 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
         alltokens[, n:=1L]
         alltokens <- alltokens[, by=list(docIndex,features), sum(n)]
         
-        if (verbose) cat("\n   ... indexing features")
-        uniqueFeatures <- sort(unique(unlist(alltokens$features)))
+        if (verbose) cat("\n   ... indexing ")
+        uniqueFeatures <- unique(unlist(alltokens$features))
+        uniqueFeatures <- sort(uniqueFeatures)
+        # are any features the null string?
+        blankFeatureIndex <- which(uniqueFeatures == "")
+        totalfeatures <- length(uniqueFeatures) - (length(blankFeatureIndex) > 0)
+        if (verbose) cat(format(totalfeatures, big.mark=","), " feature",
+                         ifelse(totalfeatures > 1, "s", ""), sep="")
         # much faster than using factor(alltokens$features, levels=uniqueFeatures) !!
         featureTable <- data.table(featureIndex = 1:length(uniqueFeatures),
                                    features = uniqueFeatures)
@@ -282,7 +292,6 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
         # dfmresult[which(rowSums(dfmresult[, -blankFeatureIndex]) > 0), ""] <- 0
         
         # different approach: remove null strings entirely
-        blankFeatureIndex <- which(uniqueFeatures == "")
         dfmresult <- dfmresult[, -blankFeatureIndex]
     }
     # class(dfmsparse) <- c("dfms", class(dfmsparse))
@@ -337,7 +346,7 @@ dfm.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
                         groups=NULL, bigrams=FALSE, 
                         thesaurus=NULL, dictionary=NULL, dictionary_regex=FALSE,
                         addto=NULL, ...) {
-    if (verbose) cat("Creating dfm from corpus ...")
+    if (verbose) cat("Creating a dfm from a corpus ...")
     
     if (!is.null(groups)) {
         if (verbose) cat("\n   ... grouping texts by variable", 
