@@ -5,11 +5,14 @@ quanteda 0.6.5
 
 * Added trigram collocations (n=3) to collocations().
 
-* Minor fixes to clean() so that removeDigits=TRUE removes €10bn entirely
-  and not just the €10. 
+* Improvements to clean(): Minor fixes to clean() so that removeDigits=TRUE 
+  removes €10bn entirely and not just the €10. clean() now removes http and 
+  https URLs by default, although does not 
+  preserve them (yet).  clean also handles numbers better, to remove
+  1,000,000 and 3.14159 if removeDigits=TRUE but not crazy8 or 4sure.
 
-* Clean now removes http and https URLs by default, although does not 
-  preserve them (yet).
+* dfm works for documents that contain no features, including for
+  dictionary counts. Thanks to Kevin Munger for catching this.
 
 quanteda 0.6.4
 ==============

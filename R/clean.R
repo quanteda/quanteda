@@ -82,7 +82,11 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
     if (removeDigits) 
         # amended regex removes currency stuff better, e.g.
         # clean("This is a $5m watch and €20bn budget and $100,000 in cash plus a ¢50 cigar.")
-        x <- gsub("[$¢\u20AC]?[[:digit:]]\\w*", "", x)
+        #
+        # second part in alternation means don't remove digits if in a word, e.g. 4sure, crazy8
+        # the group stuff is to remove thousands separators, e.g. 1,000,000 or 1.000.000
+        # clean("nodigits crazy8 4sure 67 89b 1,000,000 1.023.496")
+        x <- gsub("[$¢£\u20AC][[:digit:]]\\w*|\\b([[:digit:]]+[,.]?)+\\b", "", x)
     if (lower) 
         x <- tolower(x)
     

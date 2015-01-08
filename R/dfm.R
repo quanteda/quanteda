@@ -171,8 +171,10 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     if (clean) {
         if (verbose) cat("\n   ... cleaning the tokens")
         alltokens$features <- clean(alltokens$features, ...)
+        if (verbose) cat(", ", nrow(alltokens[features == ""]), " removed entirely", sep="")
     }
-    alltokens <- alltokens[features != ""]
+    ## commented out to keep words that get removed in cleaning 
+    # alltokens <- alltokens[features != ""]
     
     if (stem == TRUE) {
         # require(SnowballC, quietly=TRUE)
@@ -235,7 +237,8 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
                                           alltokens$features)
             alltokens[dictionary_word_index, 2+i] <- 1
         }
-        alltokens$All_Words <- 1
+        # condition is to handle "null string" features (removed entirely in clean step)
+        alltokens$All_Words <- ifelse(alltokens$features != "", 1, 0)
         dictsplit <- split(alltokens[, 3:ncol(alltokens), with=FALSE], alltokens$docIndex)
         dictsum <- sapply(dictsplit, colSums)
         dfmresult <- as.data.frame.matrix(t(dictsum))
@@ -268,6 +271,19 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
                                                    j = alltokens$featureIndex, 
                                                    x = alltokens$V1, 
                                                    dimnames=list(docs=names(docIndex), features=uniqueFeatures)))
+        # zero out "" counts for documents that count other features, meaning that
+        # only documents with NO OTHER features than null "" (because of cleaning)
+        # will have a positive count for the "" field.  To count "" from cleaning,
+        # just comment this next command out
+        #
+        # the reason to record a positive count for documents whose only 
+        # feature is a null feature is that sparse matrixes cannot be all zero
+        # blankFeatureIndex <- which(uniqueFeatures == "")
+        # dfmresult[which(rowSums(dfmresult[, -blankFeatureIndex]) > 0), ""] <- 0
+        
+        # different approach: remove null strings entirely
+        blankFeatureIndex <- which(uniqueFeatures == "")
+        dfmresult <- dfmresult[, -blankFeatureIndex]
     }
     # class(dfmsparse) <- c("dfms", class(dfmsparse))
     # NEED ANOTHER CLASS METHODS SINCE THIS IS S4
@@ -768,20 +784,20 @@ nfeature.dfm <- function(x) {
 #' \itemize{ 
 #'   \item normTf - Length normalization: dividing the frequency of the feature 
 #'   by the length of the document) 
+#'   \item logTf - The natural log of the term frequency 
 #'   \item tf-idf - Term-frequency * inverse 
 #'   document frequency. For a full explanation, see, for example, 
 #'   \url{(http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html)}.
 #'    This implementation will not return negative values. 
-#'    \item logTf - The 
-#'   natural log of the term frequency 
 #'   \item maxTf - The term frequency divided 
 #'   by the frequency of the most frequent term in the document 
 #'   \item ppmi -   Positive Pointwise Mutual Information }
-#' @param smooth Apply additivee smoothing to the matrix before weighting. TRUE 
-#'   by default, adding 0.5 to counts.
-#' @return The original dfm, with values weighted according to type function.
+#' @param smooth amount to apply as additive smoothing to the document-feature matrix prior to
+#'    weighting, default is 0.5, set to \code{smooth=0} for no smoothing.
+#' @param ... not currently used
+#' @return The dfm with weighted values
 #' @export
-#' @author Paul Nulty
+#' @author Paul Nulty and Kenneth Benoit
 #' @examples
 #' dtm <- dfm(inaugCorpus)
 #' x <- apply(dtm, 1, function(tf) tf/max(tf))
@@ -805,24 +821,27 @@ nfeature.dfm <- function(x) {
 #' @references Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
 #'   Introduction to information retrieval. Vol. 1. Cambridge: Cambridge 
 #'   university press, 2008.
-weight <- function(x, type=c("normTf","maxTf","logTf", "tfidf", "ppmi"), smooth=FALSE){
+weight <- function(x, ...) {
+    UseMethod("weight")
+}
+
+#' @rdname weight
+#' @export
+weight.dfm <- function(x, type=c("normTf","maxTf","logTf", "tfidf", "ppmi"), smooth = 0.5, ...){
     attr_orig <- attributes(x)
     type <- match.arg(type)
-    if(smooth){
-        x <- smooth(x)
-    }
-    if(type=="normTf"){
+    x <- x + smooth
+    if (type=="normTf") {
         x <- x/rowSums(x)
-        x[is.nan(x)] <- 0
-    }else if(type=="maxTf"){
+    } else if (type=="maxTf") {
         x <- t(apply(dtm, 1, function(tef) tef/max(tef)))
-    }else if(type=="logTf"){
-        x <- 1+log(x)
-        x[is.nan(x)] <- 0
-    }else if(type=="tfidf"){
+    } else if (type=="logTf") {
+        x <- 1 + log(x)
+    } else if (type=="tfidf") {
+        ## CHECK/REVISE
         idf <- log(ndoc(x)+1) - log(colSums(x > 0.5) + 1)
         x <- t(t(x) * idf)
-    } else if (type=="ppmi"){
+    } else if (type=="ppmi") {
         pij <- x/rowSums(x)
         pij[is.nan(pij)] <- 0
         pi <- colSums(x)
@@ -830,9 +849,8 @@ weight <- function(x, type=c("normTf","maxTf","logTf", "tfidf", "ppmi"), smooth=
         pj[is.nan(pj)] <- 0
         pmi <- (pij / t(outer(pi,pj)))
         x <- abs(pmi)
-    } else {
-        warning( sprintf("Type %s not implmented, no weighting performed.", type))
-    }
+    } else warning( sprintf("Type %s not implmented, no weighting performed.", type))
+    x[is.infinite(x)] <- 0
     attributes(x) <- attr_orig
     return(x)
 }
@@ -846,7 +864,7 @@ weight <- function(x, type=c("normTf","maxTf","logTf", "tfidf", "ppmi"), smooth=
 #' @param x document-feature matrix created by \link{dfm}
 #' @param alpha The value to add to all counts. Default is 0.5
 #' @return The original dfm, with values weighted according to type function.
-#' @export
+# @export
 #' @author Paul Nulty
 #' @examples
 #' dtm <- dfm(inaugCorpus)
