@@ -33,17 +33,37 @@ How to Install
 
 You can download the files and build the package from source, or you can use the devtools library to install the package directly from github.
 
-This is done as follows:
+Some preliminaries:
+
+1.  To install the package from github, you will need to install the `devtools` package, using (from R):
+
+    ```S
+    install.packages("devtools")
+    ```
+
+2.  To access the topic modelling functionality, you will need to install the package topicmodels from CRAN.  On most platforms, this will be done automatically when you install quanteda, but will fail on OS X unless you 
+have some additional tools installed.  [See instructions on installing **topicmodels** on OS X Mavericks or Yosemite here.](http://www.kenbenoit.net/how-to-install-the-r-package-topicmodels-on-os-x/)
+
+3.  You should install [Will Lowe's **austin** package](http://conjugateprior.org/software/austin/).
+
+    ```S
+    install.packages("austin", repos="http://r-forge.r-project.org", type="source")
+    ```
+
+4.  You should install the additional corpus data from **quantedaData** using
+
+    ```S
+    ## devtools required to install quanteda from Github
+    devtools::install_github("kbenoit/quantedaData")
+    ```
+
+To install `quanteda`, we recommend you use the **dev branch**:
 
 ```S
-# devtools required to install quanteda from Github
-if (!require(devtools)) install.packages("devtools")
-library(devtools)
-# install the latest version master branch version quanteda from Github
-install_github("kbenoit/quanteda", dependencies=TRUE, quick=TRUE)
+devtools::install_github("kbenoit/quanteda", ref="dev")
 
-# to install the latest dev branch version quanteda from Github use:
-install_github("kbenoit/quanteda", dependencies=TRUE, quick=TRUE, ref="dev")
+## ALTERNATIVELY, to install the latest version master branch version:
+devtools::install_github("kbenoit/quanteda")
 ```
 
 Documentation
