@@ -1,8 +1,8 @@
 Package: quanteda
 Type: Package
 Title: Quantitative Analysis of Textual Data
-Version: 0.6.6.000
-Date: 2015-01-08
+Version: 0.6.6.001
+Date: 2015-01-12
 Authors@R: c(
     person("Benoit", "Kenneth", email = "kbenoit@lse.ac.uk", role = "cre"),
     person("Nulty", "Paul", email = "paul.nulty@gmail.com", role = "aut"),

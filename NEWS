@@ -4,6 +4,9 @@ quanteda 0.6.6
   The start of our reliance more on the master branch rather than
   having merges from dev to master happen only once in a blue moon.
 
+* bigrams in dfm() when bigrams=TRUE and ignoredFeatures=<something>
+  now removed if any bigram contains an ignoredFeature
+
 
 quanteda 0.6.5
 ==============

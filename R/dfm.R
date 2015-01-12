@@ -195,7 +195,9 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
             cat("\n   ... WARNING: not ignoring words because not a character vector")
         } else {
             if (verbose) cat("\n   ... ignoring", format(length(ignoredFeatures), big.mark=","), "feature types, discarding ")
-            ignoredfeatIndex <- which(alltokens$features %in% ignoredFeatures)
+            # this is slower but removes all bigrams containing stop words
+            ignoredfeatIndex <- grep(paste0("\\b", paste(ignoredFeatures, collapse="\\b|\\b"), "\\b"), gsub("_", " ", alltokens$features))
+            # ignoredfeatIndex <- which(alltokens$features %in% ignoredFeatures)
             if (verbose) {
                 cat(format(length(ignoredfeatIndex), big.mark=","), " total features (",
                     format(length(ignoredfeatIndex) / nrow(alltokens) * 100, digits=3),
@@ -267,7 +269,7 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
         # are any features the null string?
         blankFeatureIndex <- which(uniqueFeatures == "")
         totalfeatures <- length(uniqueFeatures) - (length(blankFeatureIndex) > 0)
-        if (verbose) cat(format(totalfeatures, big.mark=","), " feature",
+        if (verbose) cat(format(totalfeatures, big.mark=","), " feature type",
                          ifelse(totalfeatures > 1, "s", ""), sep="")
         # much faster than using factor(alltokens$features, levels=uniqueFeatures) !!
         featureTable <- data.table(featureIndex = 1:length(uniqueFeatures),
@@ -293,7 +295,7 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
         # dfmresult[which(rowSums(dfmresult[, -blankFeatureIndex]) > 0), ""] <- 0
         
         # different approach: remove null strings entirely
-        dfmresult <- dfmresult[, -blankFeatureIndex]
+        if (length(blankFeatureIndex) > 0) dfmresult <- dfmresult[, -blankFeatureIndex]
     }
     # class(dfmsparse) <- c("dfms", class(dfmsparse))
     # NEED ANOTHER CLASS METHODS SINCE THIS IS S4
