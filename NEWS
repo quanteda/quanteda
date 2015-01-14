@@ -7,6 +7,11 @@ quanteda 0.6.6
 * bigrams in dfm() when bigrams=TRUE and ignoredFeatures=<something>
   now removed if any bigram contains an ignoredFeature
 
+* stopwordsRemove() now defined for sparse dfms and for collocations.
+
+* stopwordsRemove() now requires an explicit stopwords=<char> argument,
+  to emphasize the user's responsibility for applying stopwords.
+
 
 quanteda 0.6.5
 ==============

@@ -203,7 +203,7 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
                     format(length(ignoredfeatIndex) / nrow(alltokens) * 100, digits=3),
                     "%)", sep="")
             }
-            alltokens <- alltokens[!ignoredfeatIndex]
+            if (length(ignoredfeatIndex) > 0) alltokens <- alltokens[!ignoredfeatIndex]
         }
     }
     
@@ -310,6 +310,9 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
             dfm[, "Non_Dictionary"] <- addto[, "Non_Dictionary"] - rowSums(as.matrix(dfmresult[, -ncol(dfmresult)]))
         }
         dfmresult <- cbind(addto[, addIndex], dfmresult)
+        
+        #dfmS4 <- setClass("dfm", contains = "dgCMatrix")
+        #dfmresult <- dfmS4(dfmresult)
     }
     
     # add settings as an attribute
@@ -317,7 +320,7 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     # class and label dimnames if an array
     if (matrixType == "dense") {
         if (verbose) cat("\n   ... converting to a dense matrix")
-        dfmresult  <- as.matrix(dfmresult)
+        dfmresult <- as.matrix(dfmresult)
         class(dfmresult) <- c("dfm", class(dfmresult))
     }
     
@@ -328,6 +331,7 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     }
     return(dfmresult)
 }
+
 
 tokenizeSingle <- function(s, sep=" ", useclean=FALSE, ...) {
     if (useclean) s <- clean(s, ...)

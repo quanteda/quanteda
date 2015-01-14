@@ -5,17 +5,28 @@
 \title{Create bigrams}
 \usage{
 bigrams(text, window = 1, concatenator = "_", include.unigrams = FALSE,
-  ...)
+  ignoredFeatures = NULL, skipGrams = FALSE, ...)
 }
 \arguments{
-\item{text}{character vector containing the texts from which bigrams will be constructed}
+\item{text}{character vector containing the texts from which bigrams will be
+constructed}
 
-\item{window}{how many words to be counted for adjacency.  Default is 1 for only immediately
-neighbouring words.  This is only available for bigrams, not for ngrams.}
+\item{window}{how many words to be counted for adjacency.  Default is 1 for
+only immediately neighbouring words.  This is only available for bigrams,
+not for ngrams.}
 
-\item{concatenator}{character for combining words, default is \code{_} (underscore) character}
+\item{concatenator}{character for combining words, default is \code{_}
+(underscore) character}
 
 \item{include.unigrams}{if \code{TRUE}, return unigrams as well}
+
+\item{ignoredFeatures}{a character vector of features to ignore}
+
+\item{skipGrams}{If \code{FALSE} (default), remove any bigram containing a
+feature listed in \code{ignoredFeatures}, otherwise, first remove the
+features in \code{ignoredFeatures}, and then create bigrams.  This means
+that some "bigrams" will actually not occur as adjacent features in the
+original text.  See examples.}
 
 \item{...}{provides additional arguments passed to \link{tokenize}}
 }
@@ -29,6 +40,11 @@ Create bigrams
 bigrams("The quick brown fox jumped over the lazy dog.")
 bigrams(c("The quick brown fox", "jumped over the lazy dog."))
 bigrams(c("The quick brown fox", "jumped over the lazy dog."), window=2)
+bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"))
+bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"),
+        ignoredFeatures=stopwords$english)
+bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"),
+        ignoredFeatures=stopwords$english, skipGrams=TRUE)
 }
 \author{
 Ken Benoit and Kohei Watanabe

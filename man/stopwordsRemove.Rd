@@ -3,23 +3,31 @@
 \name{stopwordsRemove}
 \alias{stopwordsRemove}
 \alias{stopwordsRemove.character}
+\alias{stopwordsRemove.collocations}
 \alias{stopwordsRemove.dfm}
+\alias{stopwordsRemove.dgCMatrix}
 \title{remove stopwords from a text or dfm}
 \usage{
-stopwordsRemove(text, stopwords = NULL)
+stopwordsRemove(x, stopwords = NULL, verbose = TRUE)
 
-\method{stopwordsRemove}{character}(text, stopwords = NULL)
+\method{stopwordsRemove}{character}(x, stopwords = NULL, verbose = TRUE)
 
-\method{stopwordsRemove}{dfm}(text, stopwords = NULL)
+\method{stopwordsRemove}{dfm}(x, stopwords = NULL, verbose = TRUE)
+
+\method{stopwordsRemove}{dgCMatrix}(x, stopwords = NULL, verbose = TRUE)
+
+\method{stopwordsRemove}{collocations}(x, stopwords = NULL, verbose = TRUE)
 }
 \arguments{
-\item{text}{Text from which stopwords will be removed}
+\item{x}{Object from which stopwords will be removed}
 
-\item{stopwords}{Character vector of stopwords to remove - if none is
-supplied, a default set of English stopwords is used}
+\item{stopwords}{Character vector of stopwords to remove.  Now requires an explicit
+list to be supplied, for instance \code{stopwordsGet("english")}.}
+
+\item{verbose}{if \code{TRUE} print message about how many items were removed}
 }
 \value{
-a character vector or dfm with stopwords removed
+an object with stopwords removed
 }
 \description{
 This function takes a character vector or \link{dfm} and removes words in the
@@ -35,17 +43,20 @@ set of stopwords for many languages.
 \examples{
 ## examples for character objects
 someText <- "Here's some text containing words we want to remove."
-itText <- "Ecco alcuni di testo contenente le parole che vogliamo rimuovere."
-stopwordsRemove(someText)
+stopwordsRemove(someText, stopwordsGet("english"))
 stopwordsRemove(someText, stopwordsGet("SMART"))
-stopwordsRemove(itText, stopwordsGet("italian"))
 stopwordsRemove(someText, c("some", "want"))
+itText <- "Ecco alcuni di testo contenente le parole che vogliamo rimuovere."
+stopwordsRemove(itText, stopwordsGet("italian"))
 
 ## example for dfm objects
-docmat <- dfm(uk2010immig)
-docmatNostopwords <- stopwordsRemove(docmat)
-dim(docmat)
-dim(docmatNostopwords)
-dim(stopwordsRemove(docmat, stopwordsGet("SMART")))
+mydfm <- dfm(uk2010immig, verbose=FALSE)
+stopwordsRemove(mydfm, stopwordsGet("english"))
+mydfms <- dfm(uk2010immig, verbose=FALSE, matrixType="sparse")
+dim(stopwordsRemove(mydfms, stopwordsGet("SMART")))
+
+## example for collocations
+(myCollocs <- collocations(inaugTexts, top=20))
+stopwordsRemove(myCollocs, stopwordsGet("english"))
 }
 

@@ -160,6 +160,7 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=2, 
         df$dice <- allTable2$dice
     }
         
+    class(df) <- c("collocations", class(df))
     df[1:ifelse(is.null(top), nrow(df), top), ]
 }
 
@@ -319,6 +320,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=3, 
         dt$dice <- allTable$dice
     }
 
+    class(dt) <- c("collocations", class(dt))
     dt[1:ifelse(is.null(top), nrow(dt), top), ]
 }
 
