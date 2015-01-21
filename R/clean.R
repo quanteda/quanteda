@@ -48,6 +48,8 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
         warning("  clean: text unchanged")
     }
     
+    
+    
     # convert "curly quotes"
     x <- gsub("[\u201C\u201D]", "\"", x)
     x <- gsub("[\u2018\u2019]", "\'", x)
@@ -60,7 +62,11 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
         # NEED TO PRESERVE THESE SOMEHOW
     }
     
+    # change typographic dash variations to a hyphen: There Can Be Only One
+    x <- gsub("[\u2013\u2014]", "-", x)
     
+    # remove tabs, newlines, and common cruft from word-processors
+    x <- gsub("\\f|[\u2026\u22EF]|\\t|\\n", " ", x)
     
     if (removePunct) {
         # use "negative lookahead" to keep Twitter symbols, always keep "_"
@@ -72,12 +78,6 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
                         sep="")
        x <- gsub(remove, "", x, perl=TRUE)
     }
-    
-    # change typographic dash variations to a hyphen: There Can Be Only One
-    x <- gsub("\u2013", "-", x)
-    
-    # remove common cruft from word-processors
-    x <- gsub("\\f|[\u2026\u22EF]", "", x)
     
     if (removeDigits) 
         # amended regex removes currency stuff better, e.g.
@@ -99,7 +99,7 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
     # convert 2+ multiple whitespaces into one
     x <- gsub("\\s{2,}", " ", x, perl=TRUE)
     # remove leading and trailing whitespace and return
-    gsub("^ +| +$", "", x)
+    gsub("^\\s+|\\s+$", "", x)
 }
 
 
