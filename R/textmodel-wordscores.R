@@ -18,7 +18,6 @@
 #' @examples 
 #' library(quantedaData)
 #' data(LBGexample)
-#' LBGexample <- as.dfm(LBGexample)
 #' ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores")
 #' ws
 #' # same as:
@@ -48,7 +47,6 @@ textmodel_wordscores <- function(data, scores,
     setscores <- scores[inRefSet] # only non-NA reference texts
     data <- data + smooth         # add one to all word counts
     x <- data[inRefSet, ]         # select only the reference texts
-    
     
     Fwr <- tf(x)                  # normalize words to term frequencies "Fwr"
     Pwr <- tf(t(Fwr))             # posterior word probability Pwr
@@ -99,7 +97,7 @@ predict.wordscores <- function(object, newdata=NULL, rescaling = "none",
     rescaling <- match.arg(rescaling, c("none", "lbg", "mv"), several.ok=TRUE)
     
     if (!is.null(newdata))
-        data <- as.dfm(newdata)
+        data <- newdata
     else data <- object$data
     
     featureIndex <- match(names(object$pi), features(data))
@@ -113,9 +111,9 @@ predict.wordscores <- function(object, newdata=NULL, rescaling = "none",
     # compute text scores as weighted mean of word scores in "virgin" document
     #Fw <- tf(data)   # first compute relative term weights
     #scorable.newd <- Fw[, featureIndex]  # then exclude any features not found/scored
-    scorable.newd <- subset(data, select=scorable)
+    scorable.newd <- data[, scorable]
     ## NOTE: This is different from computing term weights on only the scorable words
-    textscore_raw <- tf(scorable.newd) %*% pi
+    textscore_raw <- as.matrix(tf(scorable.newd) %*% pi)
     
     textscore_raw_se <- rep(NA, length(textscore_raw))
     Fwv <- tf(scorable.newd)
@@ -131,6 +129,7 @@ predict.wordscores <- function(object, newdata=NULL, rescaling = "none",
     
     if ("mv" %in% rescaling) {
         if (sum(!is.na(object$scores)) > 2)
+ 
             warning("\nMore than two reference scores found with MV rescaling; using only min, max values.")
         lowerIndex <- which(object$scores==min(object$scores, na.rm=TRUE))
         upperIndex <- which(object$scores==max(object$scores, na.rm=TRUE))

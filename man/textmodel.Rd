@@ -9,7 +9,7 @@
 textmodel(x, ...)
 
 \method{textmodel}{dfm}(x, y = NULL, model = c("wordscores", "NB",
-  "wordfish", "lda"), ...)
+  "wordfish", "lda", "ca"), ...)
 
 \method{textmodel}{formula}(formula, data = NULL, model = c("wordscores",
   "NB"), ...)
@@ -67,7 +67,7 @@ data(ie2010Corpus)
 ieDfm <- dfm(ie2010Corpus)
 refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
 ws <- textmodel(ieDfm, refscores, model="wordscores", smooth=1)
-bs <- textmodel(as.dfm(ieDfm[5:6,]), refscores[5:6], model="wordscores", scale="logit", smooth=1)
+bs <- textmodel(ieDfm[5:6,], refscores[5:6], model="wordscores", scale="logit", smooth=1)
 plot(ws$pi, bs$pi, xlim=c(-1, 1), xlab="Linear word score", ylab="Logit word score")
 
 # prediction method for wordscores

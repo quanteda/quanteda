@@ -17,7 +17,7 @@ otherwise sort in increasing order}
 features, \code{docs} to sort by total feature counts in documents, and
 \code{both} to sort by both}
 
-\item{...}{additional argumnets passed to base method \code{sort.int}}
+\item{...}{additional arguments passed to base method \code{sort.int}}
 }
 \value{
 A sorted \link{dfm} matrix object

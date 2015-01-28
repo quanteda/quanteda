@@ -28,7 +28,6 @@ recommended method is through \code{\link{textmodel}}.
 \examples{
 library(quantedaData)
 data(LBGexample)
-LBGexample <- as.dfm(LBGexample)
 ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores")
 ws
 # same as:

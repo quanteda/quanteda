@@ -63,7 +63,7 @@ stopwordsRemove.dfm <- function(x, stopwords=NULL, verbose=TRUE) {
 
 #' @rdname stopwordsRemove
 #' @export
-stopwordsRemove.dgCMatrix <- function(x, stopwords=NULL, verbose=TRUE) {
+stopwordsRemove.dfmSnum <- function(x, stopwords=NULL, verbose=TRUE) {
     if (is.null(stopwords))
         stop("Must supply a character vector of stopwords, e.g. stopwordsGet(\"english\")")
     removeIndex <- which(colnames(x) %in% stopwords)

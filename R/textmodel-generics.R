@@ -16,7 +16,7 @@
 #' ieDfm <- dfm(ie2010Corpus)
 #' refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
 #' ws <- textmodel(ieDfm, refscores, model="wordscores", smooth=1)
-#' bs <- textmodel(as.dfm(ieDfm[5:6,]), refscores[5:6], model="wordscores", scale="logit", smooth=1)
+#' bs <- textmodel(ieDfm[5:6,], refscores[5:6], model="wordscores", scale="logit", smooth=1)
 #' plot(ws$pi, bs$pi, xlim=c(-1, 1), xlab="Linear word score", ylab="Logit word score")
 #'
 #' # prediction method for wordscores
@@ -48,7 +48,7 @@ textmodel <- function(x, ...) {
 #'   specific models, e.g. \link{textmodel_wordscores}, \link{textmodel_NB}, 
 #'   etc.
 #' @export
-textmodel.dfm <- function(x, y=NULL, model=c("wordscores", "NB", "wordfish", "lda"), ...) {
+textmodel.dfm <- function(x, y=NULL, model=c("wordscores", "NB", "wordfish", "lda", "ca"), ...) {
     model <- match.arg(model)
     call <- match.call()
     Yname <- deparse(substitute(y))
@@ -69,6 +69,10 @@ textmodel.dfm <- function(x, y=NULL, model=c("wordscores", "NB", "wordfish", "ld
     } else if (model=="lda") {
         if (!is.null(y))
             warning("y values not used with wordfish model. ")
+        result <- textmodel_lda(x, ...)
+    } else if (model=="ca") {
+        if (!is.null(y))
+            warning("y values not used with ca model. ")
         result <- textmodel_lda(x, ...)
     } else {
         stop(paste("model", method, "not implemented."))
