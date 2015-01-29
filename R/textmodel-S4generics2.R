@@ -1,6 +1,15 @@
-#' the textmodel virtual class
+### IN THIS FILE, THE MAIN METHOD and OBJECTS are S4.
+### This allows multiple dispatch, esp. for the S4 dfms, but also still
+### works on the S3 old-style matrix-based dfm.  
+###
+### textmodel2 creates S4 objects now.  The methods for print, 
+### summary, etc. are now more specific and defined in the model-specific
+### R files (see textmodel-wordscoresS4.R.
+
+
+#' the fitted textmodel classes
 #' 
-#' The \code{textmodel} virtual class is a parent class for more specific text models,
+#' The \code{textmodel} virtual class is a parent class for more specific fitted text models,
 #' which are the result of a quantitative text analysis applied to a document-feature
 #' matrix.
 #' 
@@ -10,7 +19,6 @@
 #' @export
 setClass("textmodel_fitted",
          slots = c(x = "dfm", y = "ANY", call = "call", method = "character"))
-
 
 
 #' fit a text model

@@ -1,3 +1,14 @@
+### IN THIS FILE, THE MAIN METHOD and OBJECTS are S4.
+### This allows multiple dispatch, esp. for the S4 dfms, but also still
+### works on the S3 old-style matrix-based dfm.  
+###
+### textmodel2 creates S4 objects now inheriting from textmodel_fitted-class
+###
+### the print, summary, predict methods are STILL S3 -- which is why they 
+### do not dispatch properly unless print() (e.g.) is called specifically, 
+### but this could be easily solved by writing appropriate methods in S4.
+
+
 #' @rdname textmodel_fitted-class
 #' @export
 setClass("textmodel_wordscores_fitted",
