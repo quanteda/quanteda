@@ -1,14 +1,9 @@
-# #' the textmodel virtual class
-# #' 
-# #' The \code{textmodel} virtual class is a parent class for more specific text models,
-# #' which are the result of a quantitative text analysis applied to a document-feature
-# #' matrix.
-# #' 
-# #' Available types currently include...
-# # @slot dfm a \link{dfm-class} document-feature matrix
-# # @export
-# setClass("textmodel",
-#          slots = c(data = "dfm"))
+### IN THIS FILE, ONLY THE METHODS ARE S4.
+### This allows multiple dispatch, esp. for the S4 dfms, but also still
+### works on the S3 old-style matrix-based dfm.  
+###
+### Other methods (print, predict, summary, etc) are still S3 but 
+### working since the S4 methods output S3 class objects.
 
 #' fit a text model
 #' 
