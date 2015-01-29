@@ -46,7 +46,7 @@ settings.corpus <- function(x, field=NULL, ...) {
         x$settings
     } else {
         if (!(field %in% SETTINGS_OPTIONS)) stop(paste(field, "not valid setting."))
-        x$settings[field]
+        x$settings[[field]]
     }
 }
 
@@ -56,7 +56,7 @@ settings.corpus <- function(x, field=NULL, ...) {
 #' @param value new setting value
 #' @export
 "settings<-" <- function(x, field, value) {
-    if (is.dfm(x)) stop("Cannot assign settings to a dfm object.")
+    if (is(x, "dfm")) stop("Cannot assign settings to a dfm object.")
     if (!(field %in% SETTINGS_OPTIONS)) stop(paste(field, "not valid setting."))
     x$settings[field] <- value
     x
@@ -77,20 +77,34 @@ settings.dfm <- function(x, ...) {
 #' @rdname setttings
 #' @export
 settingsInitialize <- function() {
-    list(stopwords=NULL,
-         collocations=NULL,
-         dictionary=NULL,
-         dictionary_regex=FALSE,
-         stem=FALSE,
-         delimiter_word=DEFAULT_DELIM_WORD,
-         delimiter_sentence=DEFAULT_DELIM_SENTENCE,
-         delimiter_paragraph=DEFAULT_DELIM_PARAGRAPH,
-         clean_tolower=TRUE,
-         clean_removeDigits=TRUE,
-         clean_removePunct=TRUE,
-         units="documents",
-         unitsoriginal="documents")
+    tempsettings <- list(stopwords=NULL,
+                         collocations=NULL,
+                         dictionary=NULL,
+                         dictionary_regex=FALSE,
+                         stem=FALSE,
+                         delimiter_word=DEFAULT_DELIM_WORD,
+                         delimiter_sentence=DEFAULT_DELIM_SENTENCE,
+                         delimiter_paragraph=DEFAULT_DELIM_PARAGRAPH,
+                         clean_tolower=TRUE,
+                         clean_removeDigits=TRUE,
+                         clean_removePunct=TRUE,
+                         units="documents",
+                         unitsoriginal="documents")
+    class(tempsettings) <- c("settings", class(tempsettings))
+    tempsettings
 }
+
+
+#' @rdname settings
+#' @export
+print.settings <- function(x, ...) {
+    cat("Settings:\n")
+    for (s in names(x)) {
+        cat("  ", s, ": ", sep="")
+        print(x[[s]])
+    }
+}
+
 
 
 ##

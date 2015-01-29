@@ -26,6 +26,7 @@
 \alias{dfm-class}
 \alias{dfmDense-class}
 \alias{dfmSparse-class}
+\alias{t,dfm-method}
 \alias{t,dfmDense-method}
 \alias{t,dfmSparse-method}
 \title{Virtual class "dfm" for a document-feature matrix}
@@ -33,6 +34,8 @@
 \S4method{t}{dfmSparse}(x)
 
 \S4method{t}{dfmDense}(x)
+
+\S4method{t}{dfm}(x)
 
 \method{[}{dfm}(x, i, j, ..., drop = FALSE)
 

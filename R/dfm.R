@@ -113,7 +113,7 @@ setMethod("t", signature(x = "dfmDense"), getMethod("t", "dgeMatrix"))
 
 ## S4 Method for the S3 class dense dfm
 #' @export
-#' @rdname dfm 
+#' @rdname dfm-class 
 setMethod("t",
           signature = (x = "dfm"),
           definition = function(x) {
@@ -139,6 +139,7 @@ setMethod("t",
 #' @param ... additional arguments passed to \code{\link{clean}}
 #' @import Matrix
 #' @export
+#' @name dfm
 dfm <- function(x, ...) {
     UseMethod("dfm")
 }
@@ -829,9 +830,11 @@ is.dfm <- function(x) {
 as.dfm <- function(x) {
     if (!any((c("matrix", "data.frame") %in% class(x))))
         stop("as.dfm only applicable to matrix(-like) objects.")
-    x <- as.matrix(x)
-    class(x) <- c("dfm", class(x))
-    x
+    m <- as.matrix(x)
+    attr(m, "settings") <- attr(x, "settings")
+    attr(m, "weighting") <- attr(x, "weighting")
+    class(m) <- class(x)
+    m
 }
 
 
