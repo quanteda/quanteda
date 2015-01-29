@@ -5,14 +5,7 @@
 \alias{textmodel}
 \alias{textmodel,dfm,ANY,missing,character-method}
 \alias{textmodel,formula,missing,dfm,character-method}
-\title{#the textmodel virtual class
-#
-#The \code{textmodel} virtual class is a parent class for more specific text models,
-#which are the result of a quantitative text analysis applied to a document-feature
-#matrix.
-#
-#Available types currently include...
-fit a text model}
+\title{fit a text model}
 \usage{
 textmodel(x, y = NULL, data = NULL, model = c("wordscores", "NB",
   "wordfish", "lda", "ca"), ...)

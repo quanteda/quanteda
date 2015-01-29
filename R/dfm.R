@@ -821,7 +821,8 @@ docnames.dfm <- function(x) {
 #' @rdname dfm
 #' @export
 is.dfm <- function(x) {
-    "dfm" %in% class(x)
+    is(x, "dfm")
+     # "dfm" %in% class(x)
 }
 
 #' @details \code{as.dfm} coerces a matrix or data.frame to a dfm
@@ -914,7 +915,7 @@ topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ci=.95, ...) {
     }
 }
 
-# @export
+#' @export
 setMethod("colSums", 
           signature = (x = "dfmSparse"),
           definition = function(x, na.rm = FALSE, dims = 1L) {
@@ -923,7 +924,7 @@ setMethod("colSums",
               csums
           })
 
-# @export
+#' @export
 setMethod("colSums", 
           signature = (x = "dfmDense"),
           definition = function(x, na.rm = FALSE, dims = 1L) {
@@ -932,7 +933,7 @@ setMethod("colSums",
               csums
           })
 
-# @export
+#' @export
 setMethod("rowSums", 
           signature = (x = "dfmSparse"),
           definition = function(x, na.rm = FALSE, dims = 1L) {
@@ -941,7 +942,7 @@ setMethod("rowSums",
               rsums
           })
 
-# @export
+#' @export
 setMethod("rowSums", 
           signature = (x = "dfmDense"),
           definition = function(x, na.rm = FALSE, dims = 1L) {
@@ -949,6 +950,7 @@ setMethod("rowSums",
               names(rsums) <- docnames(x)
               rsums
           })
+
 
 #' @export
 #' @rdname topfeatures
@@ -983,7 +985,7 @@ topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ...) {
 #' @export 
 #' @method print dfm
 print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, ...) {
-    cat("Document-feature matrix of: ",
+    cat("(S3) Document-feature matrix of: ",
         ndoc(x), " document",
         ifelse(ndoc(x)>1, "s, ", ", "),
         dim(x)[2], " feature",
@@ -1166,6 +1168,7 @@ setMethod("weighting", signature(object="dfm"), function(object) {
 #' @export
 setGeneric("docfreq", signature = c("object", "threshold"), 
            def=function(object, threshold=0) standardGeneric("docfreq"))
+
 #' @rdname docfreq
 setMethod("docfreq", signature(object="dfmDense", threshold="numeric"), 
           function(object, threshold=0) colSums(as(object, "dgeMatrix") > threshold))

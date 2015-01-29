@@ -5,9 +5,9 @@
 \alias{textmodel_fitted-class}
 \alias{textmodel_wordscores_fitted-class}
 \alias{textmodel_wordscores_predicted-class}
-\title{the textmodel virtual class}
+\title{the fitted textmodel classes}
 \description{
-The \code{textmodel} virtual class is a parent class for more specific text models,
+The \code{textmodel} virtual class is a parent class for more specific fitted text models,
 which are the result of a quantitative text analysis applied to a document-feature
 matrix.
 }
