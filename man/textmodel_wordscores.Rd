@@ -26,9 +26,7 @@ wordscores method for scaling of a single dimension.  This can be called directl
 recommended method is through \code{\link{textmodel}}.
 }
 \examples{
-library(quantedaData)
-data(LBGexample)
-LBGexample <- as.dfm(LBGexample)
+data(LBGexample, package="quantedaData")
 ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores")
 ws
 # same as:

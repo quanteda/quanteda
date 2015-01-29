@@ -6,7 +6,7 @@
 \alias{inaugTexts}
 \title{A corpus of US presidential inaugural addresses from 1789-2013}
 \description{
-\code{inaugCorpus} is the \link{quanteda} corpus object of US presidents' inaugural addresses since 1789.
+\code{inaugCorpus} is the \link{quanteda-package} corpus object of US presidents' inaugural addresses since 1789.
 Document variables contain the year of the address and the last name of the president.
 
 \code{inaugTexts} is the character vector of US presidential inaugaration speeches

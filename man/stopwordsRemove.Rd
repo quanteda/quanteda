@@ -5,7 +5,7 @@
 \alias{stopwordsRemove.character}
 \alias{stopwordsRemove.collocations}
 \alias{stopwordsRemove.dfm}
-\alias{stopwordsRemove.dgCMatrix}
+\alias{stopwordsRemove.dfmSnum}
 \title{remove stopwords from a text or dfm}
 \usage{
 stopwordsRemove(x, stopwords = NULL, verbose = TRUE)
@@ -14,7 +14,7 @@ stopwordsRemove(x, stopwords = NULL, verbose = TRUE)
 
 \method{stopwordsRemove}{dfm}(x, stopwords = NULL, verbose = TRUE)
 
-\method{stopwordsRemove}{dgCMatrix}(x, stopwords = NULL, verbose = TRUE)
+\method{stopwordsRemove}{dfmSnum}(x, stopwords = NULL, verbose = TRUE)
 
 \method{stopwordsRemove}{collocations}(x, stopwords = NULL, verbose = TRUE)
 }

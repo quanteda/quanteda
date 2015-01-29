@@ -36,9 +36,10 @@
 #' similarity(presDfm, c("2009-Obama" , "2013-Obama"), n=NULL, margin="documents", method="cosine")
 #' similarity(presDfm, "2005-Bush", n=NULL, margin="documents", method="eJaccard", sort=FALSE)
 #' 
-#' \dontrun{
 #' # compute some term similarities
 #' similarity(presDfm, c("fair", "health", "terror"), method="cosine")
+#' 
+#' \dontrun{
 #' 
 #' # compare to tm
 #' require(tm)
@@ -54,54 +55,74 @@
 #' similarity(crudeDfm, c("oil", "opec", "xyz"), normalize=FALSE, digits=2)
 #' }
 #' @export
-similarity <- function(x, selection, n=10, 
-                       margin=c("features", "documents"),
-                       method="correlation", 
-                       sort=TRUE, normalize=TRUE, digits=4) {
-    if (!is.dfm(x))
-        stop("findAssociations only works for dfm objects.")
+setGeneric("similarity", 
+           signature = c("x", "selection", "n", "margin", "sort", "normalize", "digits"),
+           def = function(x, selection, n=10, 
+                          margin=c("features", "documents"),
+                          method="correlation", 
+                          sort=TRUE, normalize=TRUE, digits=4)
+               standardGeneric("similarity"))
 
-    if (normalize) x <- tf(x)  # normalize by term freq.
-    
-    margin = match.arg(margin)
-    if (margin=="features") {
-        items <- features(x)
-    } else {
-        items <- docnames(x)
-    }
-    
-    if (is.null(n) || n > length(items))
-        n <- length(items)  # choose all features/docs if n is NULL
-    
-    # retain only existing features or documents
-    selectIndex <- which(items %in% selection)
-    if (length(selectIndex)==0)
-        stop("no such documents or feature labels exist.")
 
-    if (margin=="features") {
-        xSelect <- x[, selectIndex, drop=FALSE]
-    } else {
-        xSelect <- x[selectIndex, , drop=FALSE]
-    }
-    
-    similmatrix <- as.matrix(proxy::simil(xSelect, x, method=method, 
-                                          by_rows=ifelse(margin=="features", FALSE, TRUE)))
-    
-    # convert the matrix to a list of similarities
-    result <- lapply(seq_len(nrow(similmatrix)), function(i) similmatrix[i, ])
-    names(result) <- items[selectIndex]
-    
-    # sort each element of the list and return only first n results if n not NULL
-    if (sort==TRUE & !is.null(n)) {
-        result <- lapply(result, sort, decreasing=TRUE)
-        # discard the first element of each list element since this will be the item itself
-        result <- lapply(result, function(x) x[2:(n+1)])
-    }
+#' @rdname similarity
+#' @export
+setMethod("similarity", 
+           signature = signature("dfm", "index"),
+           def = function(x, selection, n=10, 
+                          margin=c("features", "documents"),
+                          method="correlation", 
+                          sort=TRUE, normalize=TRUE, digits=4) {
+               
+                   if (normalize) x <- weight(x, "relFreq")  # normalize by term freq.
+                   
+                   margin = match.arg(margin)
+                   if (margin=="features") {
+                       items <- features(x)
+                   } else {
+                       items <- docnames(x)
+                   }
+                   
+                   if (is.null(n) || n > length(items))
+                       n <- length(items)  # choose all features/docs if n is NULL
+                   
+                   # retain only existing features or documents
+                   selectIndex <- which(items %in% selection)
+                   if (length(selectIndex)==0)
+                       stop("no such documents or feature labels exist.")
+                   
+                   if (margin=="features") {
+                       xSelect <- x[, selectIndex, drop=FALSE]
+                   } else {
+                       xSelect <- x[selectIndex, , drop=FALSE]
+                   }
+                   
+                   # a crude conditional here so that dense old-style S3 dfms still work
+                   if (isS4(x)) {
+                       similmatrix <- as.matrix(proxy::simil(as.matrix(xSelect), as.matrix(x), method=method, 
+                                                             by_rows=ifelse(margin=="features", FALSE, TRUE)))
+                   } else {
+                       similmatrix <- as.matrix(proxy::simil(xSelect, x, method=method, 
+                                                             by_rows=ifelse(margin=="features", FALSE, TRUE)))
+                   }
+                   
+                   # convert the matrix to a list of similarities
+                   result <- lapply(seq_len(nrow(similmatrix)), function(i) similmatrix[i, ])
+                   names(result) <- items[selectIndex]
+                   
+                   # sort each element of the list and return only first n results if n not NULL
+                   if (sort==TRUE & !is.null(n)) {
+                       result <- lapply(result, sort, decreasing=TRUE)
+                       # discard the first element of each list element since this will be the item itself
+                       result <- lapply(result, function(x) x[2:(n+1)])
+                   }
+                   
+                   # round the results using digits
+                   result <- lapply(result, round, digits)
+                   
+                   # return a vector if list of length 1, otherwise return a named list
+                   if (length(result)==1) return(result[[1]]) else return(result)
+               })
 
-    # round the results using digits
-    result <- lapply(result, round, digits)
-    
-    # return a vector if list of length 1, otherwise return a named list
-    if (length(result)==1) return(result[[1]]) else return(result)
-}
+
+
 

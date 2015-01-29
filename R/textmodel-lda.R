@@ -73,32 +73,6 @@ textmodel_lda <- function(x, model=c("lda", "ctm", "stm"), k, smooth=0, meta=NUL
     return(fittedlda)
 }
 
-#' convert a dfm to stm's input document format
-#'
-#' Convert a quanteda dfm object into the indexed format needed for estimating
-#' a structural topic model from the \pkg{stm} package using \link[stm]{stm}.
-#' @param data dfm object to be convereted
-#' @note
-#' Meta-data will need to be passed separately to \link[stm]{stm} as this 
-#' information is not included in a dfm object.
-#' @return A list containing the following elements:
-#' \item{documents}{A list containing the documents in the stm format.}
-#' \item{vocab}{Character vector of vocabulary.}
-#' \item{meta}{NULL} 
-#' @export
-dfm2stmformat <- function(data) {
-    sortedData <- data[, order(features(data))]
-    vocab <- features(sortedData)
-    stmdocs <- list()
-    length(stmdocs) <- ndoc(data)
-    names(stmdocs) <- docnames(data)
-    for (d in docnames(data)) {
-        temp <- as.matrix(rbind(1:length(vocab), as.integer(data[d, ])))
-        stmdocs[[d]] <- temp[, which(temp[2, ] > 0), drop=FALSE]
-    }
-    list(documents=stmdocs, vocab=vocab, meta=NULL)
-}
-
 
 # rdname predict.textmodel
 # param ... additional arguments passed to \link[austin]{predict.wordfish}
