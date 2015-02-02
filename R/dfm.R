@@ -915,37 +915,66 @@ topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ci=.95, ...) {
     }
 }
 
-#' @export
+# @details \code{rowSums} and \code{colSums} form row and column sums and means for \link{dfm-class} objects.
+# @param x a dfm, inheriting from \link[Matrix]{Matrix}
+# @param na.rm if \code{TRUE}, omit missing values (including \code{NaN}) from
+#'   the calculations
+# @param dims ignored
+# @param ... additional arguments, for methods/generic compatibility
+# @return returns a named (non-sparse) numeric vector
+# @rdname dfm-class
+# @aliases colSums rowSums
+# @export
+# @examples
+#' myDfm <- dfm(inaugTexts, verbose=FALSE)
+# colSums(myDfm[, 1:10])
+# rowSums(myDfm)
+# @export
+# setGeneric("colSums",
+#           def = function(x, na.rm = FALSE, dims = 1L, ...) standardGeneric("colSums"))
+# 
+# # @export
+# # @rdname dfm-class
+# setGeneric("rowSums",
+#            def = function(x, na.rm = FALSE, dims = 1L, ...) standardGeneric("rowSums"))
+
+
+#' @method colSums dfmSparse
+#' @param x a dfm, inheriting from \link[Matrix]{Matrix}
+#' @param na.rm if \code{TRUE}, omit missing values (including \code{NaN}) from
+#'   the calculations
+#' @param dims ignored
+#' @param ... additional arguments, for methods/generic compatibility
 setMethod("colSums", 
           signature = (x = "dfmSparse"),
-          definition = function(x, na.rm = FALSE, dims = 1L) {
+          definition = function(x, na.rm = FALSE, dims = 1L, ...) {
               csums <- callNextMethod()
               names(csums) <- features(x)
               csums
           })
 
-#' @export
+#' @method colSums dfmDense
 setMethod("colSums", 
           signature = (x = "dfmDense"),
-          definition = function(x, na.rm = FALSE, dims = 1L) {
+          definition = function(x, na.rm = FALSE, dims = 1L, ...) {
               csums <- callNextMethod()
               names(csums) <- features(x)
               csums
           })
 
-#' @export
+#' @method rowSums dfmSparse
 setMethod("rowSums", 
           signature = (x = "dfmSparse"),
-          definition = function(x, na.rm = FALSE, dims = 1L) {
+          definition = function(x, na.rm = FALSE, dims = 1L, ...) {
               rsums <- callNextMethod()
               names(rsums) <- docnames(x)
               rsums
           })
 
-#' @export
+#' @method rowSums dfmDense
 setMethod("rowSums", 
           signature = (x = "dfmDense"),
-          definition = function(x, na.rm = FALSE, dims = 1L) {
+          definition = function(x, na.rm = FALSE, dims = 1L, ...) {
               rsums <- callNextMethod()
               names(rsums) <- docnames(x)
               rsums
@@ -1362,4 +1391,44 @@ setMethod("+", signature(e1 = "numeric", e2 = "dfmDense"),
           function(e1, e2) {
               as(e1 + as(e2, "Matrix"), "dfmDense")
           })
+
+
+#' @rdname dfm
+#' @export
+#' @examples
+#' \dontshow{
+#' dfmSparse <- dfm(inaugTexts, verbose=FALSE)
+#' str(as.matrix(dfmSparse))
+#' class(as.matrix(dfmSparse))
+#' dfmDense <- dfm(inaugTexts, verbose=FALSE, matrixType="dense")
+#' str(as.matrix(dfmDense))
+#' class(as.matrix(dfmDense))
+#' identical(as.matrix(dfmSparse), as.matrix(dfmDense))
+#' }
+setMethod("as.matrix", signature(x="dfm"),
+          function(x) {
+              if (isS4(x)) {
+                  f <- getMethod("as.matrix", "Matrix")
+                  x <- f(x)
+                  names(dimnames(x)) <- c("docs", "features")
+              } else {
+                  x <- matrix(x, nrow=ndoc(x), dimnames = list(docs = docnames(x), features = features(x)))
+              }
+              x
+          })
+
+#' @rdname dfm
+#' @export
+#' @examples
+#' \dontshow{
+#' dfmSparse <- dfm(inaugTexts, verbose=FALSE)
+#' str(as.data.frame(dfmSparse))
+#' class(as.data.frame(dfmSparse))
+#' dfmDense <- dfm(inaugTexts, verbose=FALSE, matrixType="dense")
+#' str(as.data.frame(dfmDense))
+#' class(as.data.frame(dfmDense))
+#' identical(as.data.frame(dfmSparse), as.data.frame(dfmDense))
+#' }
+setMethod("as.data.frame", signature(x="dfm"), function(x) as.data.frame(as.matrix(x)))
+
 

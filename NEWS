@@ -3,11 +3,13 @@ quanteda 0.7.0
 * dfm now sparse by default, implemented as subclasses of the 
   Matrix package.  Option dfm(..., matrixType="sparse") is now
   the default, although matrixType="dense" will still produce the
-  old S3-class dfm based on a regular matrix.  For now.
+  old S3-class dfm based on a regular matrix, and all dfm methods
+  will still work with this object.
 
 * Improvements to: weight(), print() for dfms.
 
-* New methods for dfms: docfreq(), weight(), summary().
+* New methods for dfms: docfreq(), weight(), summary(), as.matrix(), 
+  as.data.frame.
 
 
 quanteda 0.6.6
