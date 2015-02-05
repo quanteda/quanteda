@@ -1,10 +1,14 @@
 ---
 title: "Quanteda Quickstart"
 output:
-  html_document:
+  rmarkdown::html_document:
     theme: null
     css: mystyle.css
     toc: yes
+vignette: >
+  %\VignetteIndexEntry{Quickstart}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 <!--
@@ -41,3 +45,35 @@ Typically, the `dev` branch of a software package is under active
 development --- so while it contains the latest updates, it is more likely
 to have bugs. The `master` branch might be missing some of the newer
 features, but should be more reliable.
+
+
+
+## Working with a text corpus
+
+To try the functions provided for interacting with corpora, load the `inaugCorpus` object packaged with `quanteda`. This corpus contains US presidents' inaugural addresses since 1789, with document-level variables for the year of each address (`Year`) and the last name of the president (`President`). The `summary` command gives a brief description of the corpus, and a summary of the first `n` documents: 
+
+```{r}
+# make sure quanteda is loaded and load the corpus of inaugural addresses
+library(quanteda)
+data(inaugCorpus)
+summary(inaugCorpus, n=3)
+````
+
+In the above summary, `Year` and `President` are variables associated with each document. 
+
+```{r}
+# check the document-level variable names
+names(docvars(inaugCorpus))
+
+# list the first few values
+head(docvars(inaugCorpus))
+
+# check the corpus-level metadata
+metacorpus(inaugCorpus)
+
+```
+
+Many more corpora are available in the [quantedaData](http://github.com/kbenoit/quantedaData) package.
+
+## Document Feature Matrix
+

@@ -137,7 +137,7 @@ that includes other forms of data, they can be included here.
 
 A corpus also contains `settings`, which record various options for the preprocessing and feature- extraction procedures provided by the package.
 
-To try the functions provided for interacting with load the `inaugCorpus` object packaged with `quanteda`. This corpus contains US presidents' inaugural addresses since 1789, with document-level variables for the year of each address (`Year`) and the last name of the president (`President`).
+To try the functions provided for interacting with corpora, load the `inaugCorpus` object packaged with `quanteda`. This corpus contains US presidents' inaugural addresses since 1789, with document-level variables for the year of each address (`Year`) and the last name of the president (`President`).
 
 ```{r}
 # make sure quanteda is loaded
