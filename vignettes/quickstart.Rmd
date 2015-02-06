@@ -59,7 +59,7 @@ data(inaugCorpus)
 summary(inaugCorpus, n=3)
 ````
 
-In the above summary, `Year` and `President` are variables associated with each document. 
+In the above summary, `Year` and `President` are variables associated with each document. We can access such variables with the `docvars` command.
 
 ```{r}
 # check the document-level variable names
