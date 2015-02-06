@@ -48,7 +48,7 @@ features, but should be more reliable.
 
 
 
-## Working with a text corpus
+## A text corpus: descriptive analysis
 
 To try the functions provided for interacting with corpora, load the `inaugCorpus` object packaged with `quanteda`. This corpus contains US presidents' inaugural addresses since 1789, with document-level variables for the year of each address (`Year`) and the last name of the president (`President`). The `summary` command gives a brief description of the corpus, and a summary of the first `n` documents: 
 
@@ -62,12 +62,36 @@ summary(inaugCorpus, n=3)
 We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:
 
 
-```{r}
+```{r results='hide'}
 tokenInfo <- summary(inaugCorpus)
-
+```
+```{r}
 library(ggplot2)
 ggplot(data=tokenInfo, aes(x=Year, y=Tokens, group=1)) + geom_line() + geom_point() +
     scale_x_discrete(labels=c(seq(1789,2012,12)), breaks=seq(1789,2012,12) ) 
+
+
+tokenInfo[which.max(tokenInfo$Tokens),] # Longest inaugural address: William Henry Harrison
+```
+
+A simple measure of the complexity of a text is lexical diversity, or the ratio of the number of unique word types (the vocabulary size) to the total number of word tokens (the length of the document in words). We can get this ratio from the corpus summary also. The type-token ratio is a simplistic measure, and is usually higher for short texts.
+```{r}
+
+ttr <- tokenInfo$Types/tokenInfo$Tokens
+ggplot(data=tokenInfo, aes(x=Year, y=ttr, group=1)) + geom_line() + geom_point() +
+    scale_x_discrete(labels=c(seq(1789,2012,12)), breaks=seq(1789,2012,12) )
+
+tokenInfo[which.max(ttr),]
+```
+
+
+The `kwic` function (KeyWord In Context) performs a search for a word and allows us to view the contexts in which it occurs:
+```{r}
+options(width = 200)
+kwic(inaugCorpus, "terror")
+kwic(inaugCorpus, "terror", regex=TRUE)
+kwic(inaugCorpus, "communist", regex=TRUE)
+
 ```
 
 
