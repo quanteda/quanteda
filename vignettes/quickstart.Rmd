@@ -59,7 +59,19 @@ data(inaugCorpus)
 summary(inaugCorpus, n=3)
 ````
 
-In the above summary, `Year` and `President` are variables associated with each document. We can access such variables with the `docvars` command.
+We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:
+
+
+```{r}
+tokenInfo <- summary(inaugCorpus)
+
+library(ggplot2)
+ggplot(data=tokenInfo, aes(x=Year, y=Tokens, group=1)) + geom_line() + geom_point() +
+    scale_x_discrete(labels=c(seq(1789,2012,12)), breaks=seq(1789,2012,12) ) 
+```
+
+
+In the above summary, `Year` and `President` are variables associated with each document. We can access such variables with the `docvars()` function.
 
 ```{r}
 # check the document-level variable names
@@ -72,6 +84,7 @@ head(docvars(inaugCorpus))
 metacorpus(inaugCorpus)
 
 ```
+
 
 Many more corpora are available in the [quantedaData](http://github.com/kbenoit/quantedaData) package.
 
