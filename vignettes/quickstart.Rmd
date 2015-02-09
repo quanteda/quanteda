@@ -19,6 +19,88 @@ vignette: >
 ```{r echo = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
+## The Rationale for `quanteda`
+
+`quanteda`[^thanks] is an R package designed to simplify the process of
+quantitative analysis of text from start to finish, making it possible
+to turn texts into a structured corpus, conver this corpus into a
+quantitative matrix of features extracted from the texts, and to
+perform a variety of quanttative analyses on this matrix.
+
+[^thanks]: This research was supported by the European
+    Research Council grant ERC-2011-StG 283794-QUANTESS.  Code
+    contributors to the project include Alex Herzog, William Lowe, and
+    Kohei Watanabe.
+
+The object is inference about the data contained in the texts, whether this means
+describing characteristics of the texts, inferring quantities of
+interests about the texts of their authors, or determining the tone or
+topics contained in the texts.  The emphasis of `quanteda` is on
+*simplicity*: creating a corpus to manage texts and variables
+attached to these texts in a straightforward way, and providing
+powerful tools to extract features from this corpus that can be
+analyzed using quantitative techniques.
+
+The tools for getting texts into a corpus object include: 
+
+* loading texts from directories of individual files
+* loading texts ``manually'' by inserting them into a corpus using
+  helper functions
+*  managing text encodings and conversions from source files into
+  corpus texts
+* attaching variables to each text that can be used for grouping,
+  reorganizing a corpus, or simply recording additional information to
+  supplement quantitative analyses with non-textual data
+* recording meta-data about the sources and creation details for
+  the corpus.
+  
+The tools for working with a corpus include:
+
+* summarizing the corpus in terms of its language units
+* reshaping the corpus into smaller units or more aggregated units
+* adding to or extracting subsets of a corpus
+* resampling texts of the corpus, for example for use in
+  non-parametric bootstrapping of the texts
+* Easy extraction and saving, as a new data frame or corpus, key
+    words in context (KWIC)
+
+For extracting features from a corpus, `quanteda` provides the following tools:
+
+* extraction of word types
+* extraction of word n-grams
+* extraction of dictionary entries from user-defined dictionaries
+* feature selection through
+    - stemming
+    - random selection
+    - document frequency
+    - word frequency
+* and a variety of options for cleaning word types, such as
+    capitalization and rules for handling punctuation.
+
+For analyzing the resulting *document-feature* matrix created
+when features are abstracted from a corpus, `quanteda` provides:
+
+* scaling models, such as the Poisson scaling model or Wordscores
+* nonparametric visualization, such as correspondence analysis
+* topic models, such as LDA
+* classifiers, such as Naive Bayes or k-nearest neighbour
+* sentiment analysis, using dictionaries
+
+`quanteda` is hardly unique in providing facilities for working with
+text -- the excellent *tm* package already provides many of the
+features we have described.  `quanteda` is designed to complement those
+packages, as well to simplify the implementation of the
+text-to-analysis workflow.  `quanteda` corpus structures are simpler
+objects than in *tm*s, as are the document-feature matrix
+objects from `quanteda`, compared to the sparse matrix implementation
+found in *tm*.  However, there is no need to choose only one
+package, since we provide translator functions from one matrix or
+corpus object to the other in `quanteda`.
+
+This vignette is designed to introduce you to `quanteda` as well as
+provide a tutorial overview of its features.
+
+
 ## Installing quanteda
 
 The code for the `quanteda` package currently resides on
@@ -45,6 +127,8 @@ Typically, the `dev` branch of a software package is under active
 development --- so while it contains the latest updates, it is more likely
 to have bugs. The `master` branch might be missing some of the newer
 features, but should be more reliable.
+
+
 
 
 
@@ -112,5 +196,169 @@ metacorpus(inaugCorpus)
 
 Many more corpora are available in the [quantedaData](http://github.com/kbenoit/quantedaData) package.
 
-## Document Feature Matrix
+
+
+
+## Creating a corpus
+
+The simplest case is to create a corpus from a vector of texts already in memory in R. If we already have the texts in this form, we can call the corpus constructor function directly. `inaugTexts` is a character vector of the inaugural addresses included with `quanteda`.
+
+```{r}
+data(inaugTexts)
+myCorpus <- corpus(inaugTexts)
+```
+
+Often, texts aren't available as pre-made R character vectors, and we need to load them from an external source.
+To do this, we first create a *source* for the documents, which defines how they are loaded from the source into the corpus. The source may be a character vector, a directory of text files, a zip file, a twitter search, or several external package formats such as `tm`'s `VCorpus`.
+
+Once a source has been defined, we make a new corpus by calling the `corpus` constructor with the source as the first argument. The corpus constructor also accepts arguments which can set some corpus metadata, and define how the document variables are set.
+
+### From a directory of files
+A very common source of files for creating
+a corpus will be a set of text files found on a local (or remote)
+directory. To load texts in this way, we first define a source for the directory, and pass this source as an argument to the corpus constructor. We create a directory source by calling the `directory` function. 
+
+
+```{r}
+# Basic file import from directory
+d <- directory('~/Dropbox/QUANTESS/corpora/inaugural')
+myCorpus <- corpus(d)
+```
+
+If the document variables are specified in the filenames of the texts, we can read them by setting the `docvarsfrom` argument (`docvarsfrom = "filenames"`) and specifiying how the filenames are formatted with the `sep` argument. For example, if the inaugural address texts were stored on disk in the format `Year-President.txt` (e.g. `1973-Nixon.txt`), then we can load them and automatically populate the document variables. The `docvarnames` argument sets the names of the document variables --- it must be the same length as the parts of the filenames.
+
+```{r}
+# File import reading document variables from filenames
+d <- directory('~/Dropbox/QUANTESS/corpora/inaugural')
+
+# In this example the format of the filenames is `Year-President.txt`. 
+# Because there are two variables in the filename, docvarnames must contain two names
+myCorpus <- corpus(d, docvarsfrom="filenames", sep="-", docvarnames=c("Year", "President") )
+```
+
+### From a twitter search
+
+`quanteda` provides an interface to retrieve and store data from a twitter search as a corpus object. The REST API query uses the [twitteR package](https://github.com/geoffjentry/twitteR), and an API authorization from twitter is required. The process of obtaining this authorization is described in detail here: <https://openhatch.org/wiki/Community_Data_Science_Workshops/Twitter_authentication_setup>, correct as of October 2014. The twitter API is a commercial service, and rate limits and the data returned are determined by twitter.
+
+Four keys are required, to be passed to `quanteda`'s `getTweets` source function, in addition to the search query term and the number of results required. The maximum number of results that can be obtained is not exactly identified in the API documentation, but experimentation indicates an upper bound of around 1500 results from a single query, with a frequency limit of one query per minute.
+
+The code below performs authentication and runs a search for the string 'quantitative'. Many other functions for working with the API are available from the [twitteR package](https://github.com/geoffjentry/twitteR). An R interface to the streaming API is also available [link](link).
+
+```{r eval=FALSE}
+# These keys are examples and may not work! Get your own key at dev.twitter.com
+consumer_key="vRLy03ef6OFAZB7oCL4jA"
+consumer_secret="wWF35Lr1raBrPerVHSDyRftv8qB1H7ltV0T3Srb3s"
+access_token="1577780816-wVbOZEED8KZs70PwJ2q5ld2w9CcvcZ2kC6gPnAo"
+token_secret="IeC6iYlgUK9csWiP524Jb4UNM8RtQmHyetLi9NZrkJA"
+
+
+tw <- getTweets('quantitative', numResults=20, consumer_key, consumer_secret, access_token, token_secret)
+```
+
+The return value from the above query is a source object which can be passed to quanteda's corpus constructor, and the document variables are set to correspond with tweet metadata returned by the API.
+
+```{r eval=FALSE}
+twCorpus <- corpus(tw)
+names(docvars(twCorpus))
+```
+
+
+
+## Extracting Features
+
+
+In order to perform statistical analysis such as document scaling, we
+must extract a matrix associating values for certain features with each
+document. In quanteda, we use the `dfm` function to produce such a matrix.
+[^1].
+
+### Basic document-frequency matrix
+By far the most common approach is to consider each word type to be a
+feature, and the number of occurrences of the word type in each document
+the values. This is easy to see with a concrete example, so lets use the `dfm` command on the inaugural address corpus. To simplify the example output, we reduce the size of the inaugCorpus object using the corpus `subset` function, which can create a new corpus from a subset, selecting by document variables.
+
+```{r}
+data(inaugCorpus)
+myCorpus <- subset(inaugCorpus, Year > 1990)
+
+# make a dfm
+myDfm <- dfm(myCorpus)
+myDfm [,1:5]
+
+# make a dfm, removing stopwords and applying stemming
+myStemMat <- dfm(myCorpus, stopwords=TRUE, stem=TRUE)
+myStemMat [,1:5]
+```
+
+### Viewing the document-frequency matrix
+
+The dfm can be inspected in the Enviroment pane in RStudio, or by calling R's `View` function. Calling `plot` on a dfm will display a wordcloud using the [wordcloud package](link.)
+```{r warning=FALSE}
+plot(myStemMat)
+```
+
+### Grouping documents by document variable 
+
+Often, we are interested in analysing how texts differ according to substantive factors which may be encoded in the document variables, rather than simply by the boundaries of the document files. We can group documents which share the same value for a document variable when creating a dfm:
+
+```{r}
+byPresMat <- dfm(myCorpus, groups=c('President'), stopwords=TRUE)
+byPresMat[,1:5] # the counts here are sums of counts from speeches by the same President.
+```
+
+### Grouping words by dictionary or equivalence class
+
+For some applications we have prior knowledge of sets of words that are indicative of traits we would like to measure from the text. For example, a general list of positive words might indicate positive sentiment in a movie review, or we might have a dictionary of political terms which are associated with a particular ideological stance. In these cases, it is sometimes useful to treat these groups of words as equivalent for the purposes of analysis, and sum their counts into classes. 
+
+For example, let's look at how words associated with terrorism and words associated with the economy vary by President in the inaugural speeches corpus. From the original corpus, we select Presidents since Clinton:
+
+```{r}
+data(inaugCorpus)
+recentCorpus <- subset(inaugCorpus, Year > 1991)
+
+```
+
+Now we define a toy dictionary:
+```{r}
+myDict<-list(terror=c("terrorism", "terrorists", "threat","a"),
+             economy=c("jobs", "business", "grow","work"))
+```
+
+
+We can use the dictionary when making the dfm:
+```{r}
+# I don't think this is working
+byPresMat <- dfm(myCorpus, dictionary=myDict)
+```
+
+[^1]: dfm stands for document-feature matrix — we say "feature" as
+    opposed to "term", since it is possible to use other properties of
+    documents (e.g. ngrams or syntactic dependencies) for further
+    analysis
+    
+
+
+## Further example:
+
+```{r warning=FALSE, message=FALSE}
+library(quanteda)
+# create a corpus from the immigration texts from UK party platforms
+uk2010immigCorpus <- corpus(uk2010immig,
+                            docvars=data.frame(party=names(uk2010immig)),
+                            notes="Immigration-related sections of 2010 UK party manifestos",
+                            enc="UTF-8")
+uk2010immigCorpus
+summary(uk2010immigCorpus, showmeta=TRUE)
+
+# key words in context for "deport", 3 words of context
+kwic(uk2010immigCorpus, "deport", 3)
+
+# create a dfm, removing stopwords
+mydfm <- dfm(uk2010immigCorpus, stopwords=TRUE)
+dim(mydfm)              # basic dimensions of the dfm
+topfeatures(mydfm, 15)  # 15 top words
+# if (Sys.info()["sysname"] == "Darwin") quartz(width=8, height=8)
+plot(mydfm)             # word cloud  
+```
+
 
