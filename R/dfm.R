@@ -286,7 +286,7 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     if (is.null(names(x))) 
         names(docIndex) <- factor(paste("text", 1:length(x), sep="")) else
             names(docIndex) <- names(x)
-    
+    ?clean
     if (verbose) cat("\n   ... tokenizing texts")
     if (!bigrams) {
         tokenizedTexts <- lapply(x, tokenizeSingle, sep=" ")
