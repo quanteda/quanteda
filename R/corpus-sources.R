@@ -285,143 +285,18 @@ json <- function(path=NULL, source="twitter", enc = "unknown", ...) {
 #' fbcorpus <- corpus(pg)
 #' summary(fbcorpus)
 #' # viewing the DFM using a word cloud
-#' fbDfm <- dfm(fbcorpus, stopwords=TRUE, stem=TRUE)
+#' fbDfm <- dfm(fbcorpus, ignoredFeatures = stopwordsGet())
 #' plot(fbDfm)
 #' }
 #' @author Pablo Barbera
-#' @import httr jsonlite
 #' @export
-getFBpage <- function(page, token, since=NULL, until=NULL, n=100, feed=FALSE){
-    # require(httr); require(rjson)
-    cat('collecting posts...\n')
-    url <- paste0('https://graph.facebook.com/', page,
-        '/posts?fields=from,message,created_time,type,link,comments.summary(true)',
-        ',likes.summary(true),shares&limit=')
-    if (feed) {
-        url <- paste0('https://graph.facebook.com/', page,
-        '/feed?fields=from,message,created_time,type,link,comments.summary(true)',
-        ',likes.summary(true),shares')
-    }
-    if (!is.null(until)) {
-        url <- paste0(url, '&until=', until)
-    }
-    if (!is.null(since)) {
-        url <- paste0(url, '&since=', since)
-    }
-    if (n<=100){
-        url <- paste0(url, "&limit=", n)
-    }
-    if (n>100){
-        url <- paste0(url, "&limit=100")
-    }
-    # making query
-    content <- callAPI(url=url, token=token)
-    l <- length(content$data); cat(l, "posts\n")
-    
-    ## retrying 3 times if error was found
-    error <- 0
-    while (length(content$error_code)>0){
-        cat("Error!\n")
-        Sys.sleep(0.5)
-        error <- error + 1
-        content <- callAPI(url=url, token=token)        
-        if (error==3){ stop(content$error_msg) }
-    }
-    if (length(content$data)==0){ 
-        stop("No public posts mentioning the string were found")
-    }
-    df <- pageDataToDF(content$data)
-
-    ## paging if n>100
-    if (n>100) {
-        df.list <- list(df)
-        while (l<n & length(content$data)>0 & 
-            !is.null(content$paging$`next`)){
-            # waiting one second before making next API call...
-            Sys.sleep(0.5)
-            url <- content$paging$`next`
-            content <- callAPI(url=url, token=token)
-            l <- l + length(content$data)
-            if (length(content$data)>0){ cat(l, "posts\n") }
-
-            ## retrying 3 times if error was found
-            error <- 0
-            while (length(content$error_code)>0){
-                cat("Error!\n")
-                Sys.sleep(0.5)
-                error <- error + 1
-                content <- callAPI(url=url, token=token)        
-                if (error==3){ stop(content$error_msg) }
-            }
-
-            df.list <- c(df.list, list(pageDataToDF(content$data)))
-        }
-        df <- do.call(rbind, df.list)
-    }
-    cat('...done.')
+getFBpage <- function(page, token, n=100, since=NULL, until=NULL, feed=FALSE){
+    library("Rfacebook")
+    df <- Rfacebook::getPage(page, token, n, since, until, feed)
     tempRes <- df
     class(tempRes) <- list('facebook', class(df))
     return(tempRes)
 }
-
-
-pageDataToDF <- function(json){
-    df <- data.frame(
-        message = unlistWithNA(json, 'message'),
-        from_id = unlistWithNA(json, c('from', 'id')),
-        from_name = unlistWithNA(json, c('from', 'name')),
-        created_time = unlistWithNA(json, 'created_time'),
-        type = unlistWithNA(json, 'type'),
-        link = unlistWithNA(json, 'link'),
-        id = unlistWithNA(json, 'id'),
-        likes_count = unlistWithNA(json, c('likes', 'summary', 'total_count')),
-        comments_count = unlistWithNA(json, c('comments', 'summary', 'total_count')),
-        shares_count = unlistWithNA(json, c('shares', 'count')),
-        stringsAsFactors=F)
-    return(df)
-}
-
-unlistWithNA <- function(lst, field){
-    if (length(field)==1){
-        notnulls <- unlist(lapply(lst, function(x) !is.null(x[[field]])))
-        vect <- rep(NA, length(lst))
-        vect[notnulls] <- unlist(lapply(lst, '[[', field))
-    }
-    if (length(field)==2){
-        notnulls <- unlist(lapply(lst, function(x) !is.null(x[[field[1]]][[field[2]]])))
-        vect <- rep(NA, length(lst))
-        vect[notnulls] <- unlist(lapply(lst, function(x) x[[field[1]]][[field[2]]]))
-    }
-    if (length(field)==3){
-        notnulls <- unlist(lapply(lst, function(x) 
-            tryCatch(!is.null(x[[field[1]]][[field[2]]][[field[3]]]), 
-                error=function(e) FALSE)))
-        vect <- rep(NA, length(lst))
-        vect[notnulls] <- unlist(lapply(lst[notnulls], function(x) x[[field[1]]][[field[2]]][[field[3]]]))
-    }
-    return(vect)
-}
-
-
-callAPI <- function(url, token){
-    if (class(token)=="character"){
-        url <- paste0(url, "&access_token=", token)
-        url <- gsub(" ", "%20", url)
-        url.data <- GET(url)
-    }
-    if (class(token)!="character"){
-        stop("Error in access token. See help for details.")
-    }
-    content <- fromJSON(rawToChar(url.data$content))
-    if (length(content$error)>0){
-        stop(content$error$message)
-    }   
-    return(content)
-}
-
-
-
-
 
 #' unzip a zipped collection of text files and return the directory
 #' 
