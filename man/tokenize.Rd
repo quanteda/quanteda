@@ -29,9 +29,6 @@ which delimits fields.}
 }
 \value{
 A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
-
-A list of length \code{\link{ndoc}(texts)} of the tokens found in
-  each text.
 }
 \description{
 Tokenize the texts from a character vector or from a corpus.

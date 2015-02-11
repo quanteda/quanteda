@@ -146,53 +146,61 @@ dfm <- function(x, ...) {
 
 #' @rdname dfm
 #' @param verbose display messages if \code{TRUE}
-#' @param clean if \code{FALSE}, do no cleaning of the text
+#' @param clean if \code{FALSE}, do no cleaning of the text.  This offers a one-argument
+#' easy method to turn off any cleaning of the texts during construction of the dfm.
 #' @param stem if \code{TRUE}, stem words
-#' @param ignoredFeatures a character vector of user-supplied features to
-#'   ignore, such as "stop words".  Formerly, this was a Boolean option for
-#'   \code{stopwords = TRUE}, but requiring the user to supply the list
-#'   highlights the choice involved in using any stopword list.  To access one
-#'   possible list (from any list you wish), use the
-#'   \code{\link{stopwordsGet}()} function or just (e.g.)
+#' @param ignoredFeatures a character vector of user-supplied features to 
+#'   ignore, such as "stop words".  Formerly, this was a Boolean option for 
+#'   \code{stopwords = TRUE}, but requiring the user to supply the list 
+#'   highlights the choice involved in using any stopword list.  To access one 
+#'   possible list (from any list you wish), use the 
+#'   \code{\link{stopwordsGet}()} function or just (e.g.) 
 #'   \code{stopwords$english}.
-#' @param keptFeatures a use supplied regular expression defining which features to
-#'   keep, while excluding all others.  This can 
-#' be used in lieu of a dictionary if there are only specific features that
-#' a user wishes to keep.  To extract only Twitter user names hashtags, set
-#' \code{keep = "@@\\w+\\b"} and make sure that \code{twitter = TRUE} as an additional
-#' argument passed to \link{clean}.
-#' @param dictionary A list of character vector dictionary entries, including
+#' @param keptFeatures a use supplied regular expression defining which features
+#'   to keep, while excluding all others.  This can be used in lieu of a 
+#'   dictionary if there are only specific features that a user wishes to keep. 
+#'   To extract only Twitter usernames, for example, set \code{keptFeatures = "^@@\\\w+\\\b"} 
+#'   and make sure that \code{removeTwitter = FALSE} as an additional argument passed 
+#'   to \link{clean}.  (Note: \code{keptFeatures = "^@@"} will also retrieve usernames, but
+#'   does not enforce the username convention that a username must contain one and only one
+#'   \code{@@} symbol, at the beginning of the username.)
+#' @param dictionary A list of character vector dictionary entries, including 
 #'   regular expressions (see examples)
-#' @param thesaurus A list of character vector "thesaurus" entries, in a
-#'   dictionary list format, which can also include regular expressions  if
-#'   \code{dictionary_regex} is \code{TRUE} (see examples).  Note that unlike
-#'   dictionaries, each entry in a thesaurus key must be unique, otherwise only
-#'   the first match in the list will be used.  Thesaurus keys are converted to
-#'   upper case to create a feature label in the dfm, as a reminder that this
+#' @param thesaurus A list of character vector "thesaurus" entries, in a 
+#'   dictionary list format, which can also include regular expressions  if 
+#'   \code{dictionary_regex} is \code{TRUE} (see examples).  Note that unlike 
+#'   dictionaries, each entry in a thesaurus key must be unique, otherwise only 
+#'   the first match in the list will be used.  Thesaurus keys are converted to 
+#'   upper case to create a feature label in the dfm, as a reminder that this 
 #'   was not a type found in the text, but rather the label of a thesaurus key.
-#' @param dictionary_regex \code{TRUE} means the dictionary is already in
-#'   regular expression format, otherwise it will be converted from "wildcard"
+#' @param dictionary_regex \code{TRUE} means the dictionary is already in 
+#'   regular expression format, otherwise it will be converted from "wildcard" 
 #'   format
 #' @param bigrams include bigrams as well as unigram features, if \code{TRUE}
-#' @param addto \code{NULL} by default, but if an existing dfm object is
-#'   specified, then the new dfm will be added to the one named. If both
-#'   \link{dfm}'s are built from dictionaries, the combined dfm will have its
+#' @param addto \code{NULL} by default, but if an existing dfm object is 
+#'   specified, then the new dfm will be added to the one named. If both 
+#'   \link{dfm}'s are built from dictionaries, the combined dfm will have its 
 #'   \code{Non_Dictionary} total adjusted.
 #' @param language Language for stemming and stopwords.  Choices are 
-#'   \code{danish, dutch, english, finnish, french, german, hungarian, italian, 
-#'   norwegian, porter, portuguese, romanian, russian, spanish, swedish, 
-#'   turkish} for stemming, and \code{SMART, danish, english, french, hungarian,
-#'   norwegian, russian, swedish, catalan, dutch, finnish, german, italian, 
-#'   portuguese, spanish, arabic} for stopwords.
-#' @param matrixType if \code{dense}, produce a dense matrix; or it \code{sparse} produce a 
-#'   sparse matrix of class \code{dgCMatrix} from the \pkg{\link{Matrix}} 
-#'   package.
-#'   @param fromCorpus a system flag used internally, soon to be phased out.
-#' @return A \link{dfm-class} object containing a sparse matrix representation of the
-#' counts of features by document, along with associated settings and metadata. 
-#' 
-#' If you used \code{matrixType = "dense"} then the return is an old-style S3 matrix
-#' class object with additional attributes representing meta-data.
+#'   \code{danish}, \code{dutch}, \code{english}, \code{finnish}, \code{french},
+#'   \code{german}, \code{hungarian}, \code{italian}, \code{norwegian}, 
+#'   \code{porter}, \code{portuguese}, \code{romanian}, \code{russian}, 
+#'   \code{spanish}, \code{swedish}, \code{turkish} for stemming, and 
+#'   \code{SMART}, \code{danish}, \code{english}, \code{french}, 
+#'   \code{hungarian}, \code{norwegian}, \code{russian}, \code{swedish}, 
+#'   \code{catalan}, \code{dutch}, \code{finnish}, \code{german}, 
+#'   \code{italian}, \code{portuguese}, \code{spanish}, \code{arabic} for 
+#'   stopwords.
+#' @param matrixType if \code{dense}, produce a dense matrix; or it 
+#'   \code{sparse} produce a sparse matrix of class \code{dgCMatrix} from the 
+#'   \pkg{\link{Matrix}} package.
+#' @param fromCorpus a system flag used internally, soon to be phased out.
+#' @return A \link{dfm-class} object containing a sparse matrix representation 
+#'   of the counts of features by document, along with associated settings and 
+#'   metadata.
+#'   
+#'   If you used \code{matrixType = "dense"} then the return is an old-style S3 
+#'   matrix class object with additional attributes representing meta-data.
 #' @author Kenneth Benoit
 #' @import data.table Matrix
 #' @export
@@ -215,28 +223,28 @@ dfm <- function(x, ...) {
 #'                country="united states")
 #' dictDfm <- dfm(mycorpus, dictionary=mydict)
 #' dictDfm
-#'
+#' 
 #' ## with the thesaurus feature
 #' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
 #'              "New York City has raised a taxes: an income tax and a sales tax.")
 #' mydict <- list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax"))
-#' dfm(compoundWords(mytexts, mydict), thesaurus=lapply(mydict, function(x) gsub("\\s", "_", x)))
+#' dfm(phrasetotoken(mytexts, mydict), thesaurus=lapply(mydict, function(x) gsub("\\s", "_", x)))
 #' # pick up "taxes" with "tax" as a regex
-#' dfm(compoundWords(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE)
-#'
+#' dfm(phrasetotoken(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE)
+#' 
 #' ## removing stopwords
 #' testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
 #'              the newspaper from a a boy named Seamus, in his mouth."
 #' testCorpus <- corpus(testText)
 #' settings(testCorpus, "stopwords")
 #' dfm(testCorpus, stopwords=TRUE)
-#'
+#' 
 #' ## keep only certain words
-#' dfm(testCorpus, keep="s$")  # keep only words ending in "s"
+#' dfm(testCorpus, keptFeatures="s$", verbose=FALSE)  # keep only words ending in "s"
 #' testTweets <- c("My homie @@justinbieber #justinbieber shopping in #LA yesterday #beliebers",
 #'                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
-#'                 "Justin Bieber #justinbieber #belieber#fetusjustin #EMABiggestFansJustinBieber")
-#' dfm(testTweets, keep="^#")  # keep only hashtags
+#'                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
+#' dfm(testTweets, keptFeatures="^#")  # keep only hashtags
 #' 
 #' 
 #' \dontrun{
@@ -518,36 +526,36 @@ dfm.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
 
 
 
-#' Flatten a hierarchical dictionary into a list of character vectors
-#'
-#' Converts a hierarchical dictionary (a named list of named lists, ending in character
-#' vectors at the lowest level) into a flat list of character vectors.  Works like
-#' \code{unlist(dictionary, recursive=TRUE)} except that the recursion does not go to the
-#' bottom level.
-#'
-#' Called by dfm()
-#'
-#' @param elms list to be flattened
-#' @param parent parent list name, gets built up through recursion in the same way that \code{unlist(dictionary, recursive=TRUE)} works
-#' @param dict the bottom list of dictionary entries ("synonyms") passed up from recursive calls
-#' @return A dictionary flattened down one level further than the one passed
-#' @export
-#' @author Kohei Watanabe
-#' @examples
-#' dictPopulismEN <-
-#'     list(populism=c("elit*", "consensus*", "undemocratic*", "referend*",
-#'                     "corrupt*", "propagand", "politici*", "*deceit*",
-#'                     "*deceiv*", "*betray*", "shame*", "scandal*", "truth*",
-#'                     "dishonest*", "establishm*", "ruling*"))
-#' flatten.dictionary(dictPopulismEN)
-#'
-#' hdict <- list(level1a = list(level1a1 = c("l1a11", "l1a12"),
-#'                              level1a2 = c("l1a21", "l1a22")),
-#'               level1b = list(level1b1 = c("l1b11", "l1b12"),
-#'                              level1b2 = c("l1b21", "l1b22", "l1b23")),
-#'               level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
-#'                              level1c1b = list(level1c1b1 = c("lowestalone"))))
-#' flatten.dictionary(hdict)
+# Flatten a hierarchical dictionary into a list of character vectors
+#
+# Converts a hierarchical dictionary (a named list of named lists, ending in character
+# vectors at the lowest level) into a flat list of character vectors.  Works like
+# \code{unlist(dictionary, recursive=TRUE)} except that the recursion does not go to the
+# bottom level.
+#
+# Called by dfm()
+#
+# @param elms list to be flattened
+# @param parent parent list name, gets built up through recursion in the same way that \code{unlist(dictionary, recursive=TRUE)} works
+# @param dict the bottom list of dictionary entries ("synonyms") passed up from recursive calls
+# @return A dictionary flattened down one level further than the one passed
+# @export
+# @author Kohei Watanabe
+# @examples
+# dictPopulismEN <-
+#     list(populism=c("elit*", "consensus*", "undemocratic*", "referend*",
+#                     "corrupt*", "propagand", "politici*", "*deceit*",
+#                     "*deceiv*", "*betray*", "shame*", "scandal*", "truth*",
+#                     "dishonest*", "establishm*", "ruling*"))
+# flatten.dictionary(dictPopulismEN)
+#
+# hdict <- list(level1a = list(level1a1 = c("l1a11", "l1a12"),
+#                              level1a2 = c("l1a21", "l1a22")),
+#               level1b = list(level1b1 = c("l1b11", "l1b12"),
+#                              level1b2 = c("l1b21", "l1b22", "l1b23")),
+#               level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
+#                              level1c1b = list(level1c1b1 = c("lowestalone"))))
+# flatten.dictionary(hdict)
 flatten.dictionary <- function(elms, parent = '', dict = list()) {
     for (self in names(elms)) {
         elm <- elms[[self]]
@@ -603,29 +611,29 @@ makeRegEx <- function(wildcardregex) {
 #     UseMethod("trimdfm")
 # }
 
-#' Trim a dfm based on a subset of features and words
-#'
-#' Returns a document by feature matrix reduced in size based on document and term frequency, and/or subsampling.
-#'
-#' @param x document-feature matrix created by \link{dfm}
-#' @param minCount minimum feature count
-#' @param minDoc minimum number of documents in which a feature appears
-#' @param minTotal minimum total feature threshold to retain a document
-#' @param sample how many features to retain (based on random selection)
-#' @param keep regular expression specifying which features to keep
-#' @param verbose print messages
-#' @return A \link{dfm} object reduced in size.
-#' @export
-#' @author Ken Benoit adapted from code originally by Will Lowe (see \link[austin]{trim})
-#' @examples
-#' dtm <- dfm(inaugCorpus)
-#' dim(dtm)
-#' dtmReduced <- trimdfm(dtm, minCount=10, minDoc=2) # only words occuring >=5 times and in >=2 docs
-#' dim(dtmReduced)
-#' dtmReduced <- trimdfm(dtm, keep="^nation|^citizen|^union$")
-#' topfeatures(dtmReduced, NULL)
-#' dtmSampled <- trimdfm(dtm, sample=200)  # top 200 words
-#' dim(dtmSampled)  # 196 x 200 words
+# Trim a dfm based on a subset of features and words
+#
+# Returns a document by feature matrix reduced in size based on document and term frequency, and/or subsampling.
+#
+# @param x document-feature matrix created by \link{dfm}
+# @param minCount minimum feature count
+# @param minDoc minimum number of documents in which a feature appears
+# @param minTotal minimum total feature threshold to retain a document
+# @param sample how many features to retain (based on random selection)
+# @param keep regular expression specifying which features to keep
+# @param verbose print messages
+# @return A \link{dfm} object reduced in size.
+# @export
+# @author Ken Benoit adapted from code originally by Will Lowe (see \link[austin]{trim})
+# @examples
+# dtm <- dfm(inaugCorpus)
+# dim(dtm)
+# dtmReduced <- trimdfm(dtm, minCount=10, minDoc=2) # only words occuring >=5 times and in >=2 docs
+# dim(dtmReduced)
+# dtmReduced <- trimdfm(dtm, keep="^nation|^citizen|^union$")
+# topfeatures(dtmReduced, NULL)
+# dtmSampled <- trimdfm(dtm, sample=200)  # top 200 words
+# dim(dtmSampled)  # 196 x 200 words
 trimdfm <- function(x, minCount=1, minDoc=1, minTotal=0, sample=NULL, keep=NULL, verbose=TRUE) {
     # if (!is.dfm(x)) stop("trimdfm should only be used for dfm objects.")
     class_xorig <- class(x)
@@ -733,10 +741,10 @@ ndoc.dfm <- function(x, ...) {
 }
 
 
-# #' compute the tf-idf weights of a dfm
-# #'
-# #' Returns a matrix of tf-idf weights, as a \link{dfm} object
-# #'
+#  compute the tf-idf weights of a dfm
+# 
+#  Returns a matrix of tf-idf weights, as a \link{dfm} object
+# 
 # # @export
 # tfidf <- function(x, normalize = TRUE) {
 #     UseMethod("tfidf")
@@ -749,11 +757,11 @@ ndoc.dfm <- function(x, ...) {
 # # @export
 # # @author Ken Benoit
 # # @examples
-# #' data(inaugCorpus)
-# #' dtm <- dfm(inaugCorpus)
-# #' dtm[1:10, 100:110]
-# #' tfidf(dtm)[1:10, 100:110]
-# #' tfidf(dtm, normalize=FALSE)[1:10, 100:110]
+#  data(inaugCorpus)
+#  dtm <- dfm(inaugCorpus)
+#  dtm[1:10, 100:110]
+#  tfidf(dtm)[1:10, 100:110]
+#  tfidf(dtm, normalize=FALSE)[1:10, 100:110]
 # tfidf.dfm <- function(x, normalize = TRUE) {
 #     weight(x, "tfidf", normalize)
 # #     class_xorig <- class(x)
@@ -767,19 +775,19 @@ ndoc.dfm <- function(x, ...) {
 # #     tmp
 # }
 # 
-# #' normalizes the term frequencies a dfm
-# #'
-# #' Returns a matrix of term weights, as a \link{dfm} object
-# #'
+#  normalizes the term frequencies a dfm
+# 
+#  Returns a matrix of term weights, as a \link{dfm} object
+# 
 # # @param x Document-feature matrix created by \code{\link{dfm}}
 # # @return A dfm matrix object where values are relative term proportions within the document
 # # @export
 # # @author Ken Benoit
 # # @examples
-# #' data(inaugCorpus)
-# #' dtm <- dfm(inaugCorpus)
-# #' dtm[1:10, 100:110]
-# #' tf(dtm)[1:10, 100:110]
+#  data(inaugCorpus)
+#  dtm <- dfm(inaugCorpus)
+#  dtm[1:10, 100:110]
+#  tf(dtm)[1:10, 100:110]
 # tf <- function(x) {
 #     class_xorig <- class(x)
 #     tmp <- x/rowSums(x)
@@ -809,7 +817,6 @@ features.dfm <- function(x) {
 
 #' @rdname docnames
 #' @examples
-#' #
 #' # query the document names of a dfm
 #' docnames(dfm(inaugTexts[1:5]))
 #' @export
@@ -1014,19 +1021,21 @@ topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ...) {
 #' @export 
 #' @method print dfm
 print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, ...) {
-    cat("(S3) Document-feature matrix of: ",
+    cat("Document-feature matrix of: ",
         ndoc(x), " document",
         ifelse(ndoc(x)>1, "s, ", ", "),
         dim(x)[2], " feature",
-        ifelse(dim(x)[2]>1, "s", ""),
-        ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
-        ".\n", sep="")
+        ifelse(dim(x)[2]>1, "s", ""), ".\n", sep="")
+    cat(ndoc(x), "x", nfeature(x), "dense matrix of (S3) class \"dfm\"\n")
+    #    ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
+        
     if (show.settings) {
         cat("Settings: TO BE IMPLEMENTED.")
     }
     if (show.values | (nrow(x)<=20 & ncol(x)<=20)) {
         class(x) <- class(x)[2]
         attr(x, "settings") <- NULL
+        attr(x, "weighting") <- NULL
         print(x)
     }
 }

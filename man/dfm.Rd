@@ -40,7 +40,8 @@ as.dfm(x)
 
 \item{verbose}{display messages if \code{TRUE}}
 
-\item{clean}{if \code{FALSE}, do no cleaning of the text}
+\item{clean}{if \code{FALSE}, do no cleaning of the text.  This offers a one-argument
+easy method to turn off any cleaning of the texts during construction of the dfm.}
 
 \item{stem}{if \code{TRUE}, stem words}
 
@@ -52,23 +53,29 @@ possible list (from any list you wish), use the
 \code{\link{stopwordsGet}()} function or just (e.g.)
 \code{stopwords$english}.}
 
-\item{keptFeatures}{a use supplied regular expression defining which features to
-  keep, while excluding all others.  This can
-be used in lieu of a dictionary if there are only specific features that
-a user wishes to keep.  To extract only Twitter user names hashtags, set
-\code{keep = "@\\w+\\b"} and make sure that \code{twitter = TRUE} as an additional
-argument passed to \link{clean}.}
+\item{keptFeatures}{a use supplied regular expression defining which features
+to keep, while excluding all others.  This can be used in lieu of a
+dictionary if there are only specific features that a user wishes to keep.
+To extract only Twitter usernames, for example, set \code{keptFeatures = "^@\\\w+\\\b"}
+and make sure that \code{removeTwitter = FALSE} as an additional argument passed
+to \link{clean}.  (Note: \code{keptFeatures = "^@"} will also retrieve usernames, but
+does not enforce the username convention that a username must contain one and only one
+\code{@} symbol, at the beginning of the username.)}
 
-\item{matrixType}{if \code{dense}, produce a dense matrix; or it \code{sparse} produce a
-sparse matrix of class \code{dgCMatrix} from the \pkg{\link{Matrix}}
-package.}
+\item{matrixType}{if \code{dense}, produce a dense matrix; or it
+\code{sparse} produce a sparse matrix of class \code{dgCMatrix} from the
+\pkg{\link{Matrix}} package.}
 
 \item{language}{Language for stemming and stopwords.  Choices are
-\code{danish, dutch, english, finnish, french, german, hungarian, italian,
-norwegian, porter, portuguese, romanian, russian, spanish, swedish,
-turkish} for stemming, and \code{SMART, danish, english, french, hungarian,
-norwegian, russian, swedish, catalan, dutch, finnish, german, italian,
-portuguese, spanish, arabic} for stopwords.}
+\code{danish}, \code{dutch}, \code{english}, \code{finnish}, \code{french},
+\code{german}, \code{hungarian}, \code{italian}, \code{norwegian},
+\code{porter}, \code{portuguese}, \code{romanian}, \code{russian},
+\code{spanish}, \code{swedish}, \code{turkish} for stemming, and
+\code{SMART}, \code{danish}, \code{english}, \code{french},
+\code{hungarian}, \code{norwegian}, \code{russian}, \code{swedish},
+\code{catalan}, \code{dutch}, \code{finnish}, \code{german},
+\code{italian}, \code{portuguese}, \code{spanish}, \code{arabic} for
+stopwords.}
 
 \item{fromCorpus}{a system flag used internally, soon to be phased out.}
 
@@ -97,11 +104,12 @@ specified, then the new dfm will be added to the one named. If both
 \item{groups}{Grouping variable for aggregating documents}
 }
 \value{
-A \link{dfm-class} object containing a sparse matrix representation of the
-counts of features by document, along with associated settings and metadata.
+A \link{dfm-class} object containing a sparse matrix representation
+  of the counts of features by document, along with associated settings and
+  metadata.
 
-If you used \code{matrixType = "dense"} then the return is an old-style S3 matrix
-class object with additional attributes representing meta-data.
+  If you used \code{matrixType = "dense"} then the return is an old-style S3
+  matrix class object with additional attributes representing meta-data.
 }
 \description{
 Create a sparse matrix document-feature matrix from a corpus or a vector of texts.  The sparse
@@ -143,9 +151,9 @@ dictDfm
 mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
              "New York City has raised a taxes: an income tax and a sales tax.")
 mydict <- list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax"))
-dfm(compoundWords(mytexts, mydict), thesaurus=lapply(mydict, function(x) gsub("\\\\s", "_", x)))
+dfm(phrasetotoken(mytexts, mydict), thesaurus=lapply(mydict, function(x) gsub("\\\\s", "_", x)))
 # pick up "taxes" with "tax" as a regex
-dfm(compoundWords(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE)
+dfm(phrasetotoken(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE)
 
 ## removing stopwords
 testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
@@ -155,11 +163,11 @@ settings(testCorpus, "stopwords")
 dfm(testCorpus, stopwords=TRUE)
 
 ## keep only certain words
-dfm(testCorpus, keep="s$")  # keep only words ending in "s"
+dfm(testCorpus, keptFeatures="s$", verbose=FALSE)  # keep only words ending in "s"
 testTweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday #beliebers",
                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
-                "Justin Bieber #justinbieber #belieber#fetusjustin #EMABiggestFansJustinBieber")
-dfm(testTweets, keep="^#")  # keep only hashtags
+                "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
+dfm(testTweets, keptFeatures="^#")  # keep only hashtags
 
 
 \dontrun{

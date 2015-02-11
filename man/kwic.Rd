@@ -6,11 +6,11 @@
 \alias{kwic.corpus}
 \title{List key words in context from a text or a corpus of texts.}
 \usage{
-kwic(x, word, window = 5, regex = TRUE)
+kwic(x, word, window = 5, wholeword = FALSE)
 
-\method{kwic}{character}(x, word, window = 5, regex = TRUE)
+\method{kwic}{character}(x, word, window = 5, wholeword = FALSE)
 
-\method{kwic}{corpus}(x, word, window = 5, regex = TRUE)
+\method{kwic}{corpus}(x, word, window = 5, wholeword = FALSE)
 }
 \arguments{
 \item{x}{A text character scalar or a quanteda corpus.  (Currently does not
@@ -21,12 +21,12 @@ support character vectors.)}
 \item{window}{The number of context words to be displayed around the
 keyword.}
 
-\item{regex}{If TRUE (default), then "word" is a regular expression,
-otherwise only match the whole word. Note that if regex=TRUE and no
-special regular expression characters are used in the search query, then
-the concordance will include all words in which the search term appears,
-and not just when it appears as an entire word.  (For instance, searching
-for the word "key" will also return "whiskey".)}
+\item{wholeword}{If \code{TRUE}, then only search for the entire "word".
+Otherwise \code{word} is interpreted as a regular expression, which
+matches any occurrence of \code{word} in the text, so that the the
+concordance will include all words in which the search term appears, and
+not just when it appears as an entire word.  For instance, searching for
+the word "key" will also return "whiskey".  This is the default.}
 }
 \value{
 A data frame with the context before (\code{preword}), the keyword
@@ -44,7 +44,7 @@ delimiters.)
 }
 \examples{
 kwic(inaugTexts, "terror")
-kwic(inaugTexts, "terror", regex=FALSE)  # returns only whole word, without trailing punctuation
+kwic(inaugTexts, "terror", wholeword=TRUE)  # returns only whole word, without trailing punctuation
 }
 \author{
 Kenneth Benoit and Paul Nulty

@@ -9,34 +9,36 @@
 collocations(x, ...)
 
 \method{collocations}{character}(x, method = c("lr", "chi2", "pmi", "dice",
-  "all"), n = 2, top = NULL, ...)
+  "all"), size = 2, n = NULL, ...)
 
 \method{collocations}{corpus}(x, method = c("lr", "chi2", "pmi", "dice",
-  "all"), n = 2, top = NULL, ...)
+  "all"), size = 2, n = NULL, ...)
 }
 \arguments{
 \item{x}{a text, a character vector of texts, or a corpus}
 
 \item{...}{additional parameters passed to \link{clean}}
 
-\item{method}{association measure for detecting collocations.  Available
-measures are:
-\describe{
-\item{\code{"lr"}}{The likelihood ratio statistic \eqn{G^2}, computed as:
-       \deqn{2 * \sum_i \sum_j (n_{ij} * log \frac{n_{ij}}{m_{ij}}}
-   }
-\item{\code{"chi2"}}{Pearson's \eqn{\chi^2} statistic, computed as:
-       \deqn{\sum_i \sum_j \frac{(n_{ij} - m_{ij})^2}{m_{ij}}}
-   }
-\item{\code{"pmi"}}{point-wise mutual information score, computed as log \eqn{n_{11}/m{11}}}
-\item{\code{"dice"}}{the Dice coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
-\item{\code{"all"}}{returns all of the above}
-}}
+\item{method}{association measure for detecting collocations.  Let \eqn{i} index documents, and
+\eqn{j} index features, \eqn{n_{ij}} refers to observed counts,
+and \eqn{m_{ij}} the expected counts in a collocations frequency table of dimensions \eqn{(J - size + 1)^2}.
+Available measures are computed as:
+  \describe{
+  \item{\code{"lr"}}{The likelihood ratio statistic \eqn{G^2}, computed as:
+         \deqn{2 * \sum_i \sum_j ( n_{ij} * log \frac{n_{ij}}{m_{ij}} )}
+     }
+  \item{\code{"chi2"}}{Pearson's \eqn{\chi^2} statistic, computed as:
+         \deqn{\sum_i \sum_j \frac{(n_{ij} - m_{ij})^2}{m_{ij}}}
+     }
+  \item{\code{"pmi"}}{point-wise mutual information score, computed as log \eqn{n_{11}/m_{11}}}
+  \item{\code{"dice"}}{the Dice coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
+  \item{\code{"all"}}{returns all of the above}
+  }}
 
-\item{n}{length of the collocation.  Only bigram (\code{n=2}) and trigram (\code{n=3})
+\item{size}{length of the collocation.  Only bigram (\code{n=2}) and trigram (\code{n=3})
 collocations are implemented so far.}
 
-\item{top}{the number of collocations to return, sorted in descending order
+\item{n}{the number of collocations to return, sorted in descending order
 of the requested statistic, or \eqn{G^2} if none is specified.}
 }
 \value{
@@ -49,10 +51,10 @@ data.frame of collocations and their scores, sorted in descending order of the a
 measure.
 }
 \examples{
-collocations(inaugTexts, top=10)
-collocations(inaugCorpus, top=10, method="all")
-collocations(inaugTexts, top=10, n=3)
-collocations(inaugCorpus, top=10, method="all", n=3)
+collocations(inaugTexts, n=10)
+collocations(inaugCorpus, method="all", n=10)
+collocations(inaugTexts, size=3, n=10)
+collocations(inaugCorpus, method="all", size=3, n=10)
 }
 \author{
 Kenneth Benoit

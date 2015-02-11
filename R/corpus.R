@@ -643,7 +643,7 @@ language <- function(corp, drop=TRUE) {
 
 #' get the encoding of documents in a corpus
 #' 
-#' Get or set the \code{_encoding} document-level metadata field in a corpus.
+#' Get or set the \code{_encoding} document-level metadata field(s) in a corpus.
 #' @param x a corpus object
 #' @param drop  return as a vector if \code{TRUE}, otherwise return a \code{data.frame}
 #' @details This function modifies the \code{_encoding} value set by 
@@ -806,7 +806,7 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
 #' 
 #' For a corpus, recast the documents down or up a level of aggregation.  "Down"
 #' would mean going from documents to sentences, for instance.  "Up" means from 
-#' sentences back to documents.  This makes it easy to reshape a corpus from a a
+#' sentences back to documents.  This makes it easy to reshape a corpus from a 
 #' collection of documents into a collection of sentences, for instance.
 #' @param corp corpus whose document units will be reshaped
 #' @param to new documents units for the corpus to be recast in

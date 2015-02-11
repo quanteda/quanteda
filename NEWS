@@ -1,3 +1,13 @@
+quanteda 0.7.1
+==============
+* trimdfm, flatten.dictionary are gone from the NAMESPACE
+
+* formals changed a bit in clean(), kwic()
+
+* compoundWords() -> phrasetotoken()
+
+* Cleaned up minor issues in documentation.
+
 quanteda 0.7.0
 ==============
 * dfm now sparse by default, implemented as subclasses of the 

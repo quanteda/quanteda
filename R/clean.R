@@ -10,12 +10,12 @@
 #' \code{clean(mytexts, removeDigits=FALSE)}
 #' @rdname clean
 #' @param x The object to be cleaned. Can be either a character vector or a 
-#'   corpus object. If x is a corpus, \code{clean} returns a copy of the x with 
-#'   the texts cleaned.
+#'   corpus object. If x is a corpus, \code{clean} returns the corpus containing 
+#'   the cleaned texts.
 #' @param removeDigits remove numbers if \code{TRUE}
 #' @param removePunct remove punctuation if \code{TRUE}
-#' @param lower convert text to lower case \code{TRUE}
-#' @param twitter if \code{TRUE}, do not remove \code{@@} or \code{#}
+#' @param toLower convert text to lower case \code{TRUE}
+#' @param removeTwitter if \code{FALSE}, do not remove \code{@@} or \code{#}
 #' @param removeURL removes URLs (web addresses starting with \code{http:} or \code{https:}), based 
 #' on a regular expression from \url{http://daringfireball.net/2010/07/improved_regex_for_matching_urls}
 #' @param additional additional characters to remove (\link[=regex]{regular expression})
@@ -23,8 +23,8 @@
 #' @return A character vector equal in length to the original texts, after cleaning.
 #' @examples
 #' clean("This is 1 sentence with 2.0 numbers in it, and one comma.", removeDigits=FALSE)
-#' clean("This is 1 sentence with 2.0 numbers in it, and one comma.", lower=FALSE)
-#' clean("We are his Beliebers, and him is #ourjustin @@justinbieber we love u", twitter=TRUE)
+#' clean("This is 1 sentence with 2.0 numbers in it, and one comma.", toLower=FALSE)
+#' clean("We are his Beliebers, and him is #ourjustin @@justinbieber we love u", removeTwitter=TRUE)
 #' clean("Collocations can be represented as inheritance_tax using the _ character.")
 #' clean("But under_scores can be removed using the additional argument.", additional="[_]")
 #' clean("This is a $1,500,000 budget and $20bn cash and a $5 cigar.")
@@ -42,13 +42,12 @@ clean <- function(x, ...) {
 
 #' @rdname clean
 #' @export
-clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, 
-                            additional=NULL, twitter=TRUE, removeURL=TRUE, ...) {
-    if (!(removeDigits | removePunct | lower) & is.null(additional)) {
-        warning("  clean: text unchanged")
-    }
-    
-    
+clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, toLower=TRUE, 
+                            additional=NULL, removeTwitter=FALSE, removeURL=TRUE, ...) {
+    ## THIS NEEDS TO LOOK AT SETTINGS BEFORE MAKING A DECISION
+    #if (!(removeDigits | removePunct | toLower) & is.null(additional)) {
+    #    warning("  clean: text unchanged")
+    #}
     
     # convert "curly quotes"
     x <- gsub("[\u201C\u201D]", "\"", x)
@@ -72,8 +71,8 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
         # use "negative lookahead" to keep Twitter symbols, always keep "_"
         # remove other punctuation from POSIX [:punct:]
         remove <- paste("(?![",
-                        ifelse(twitter, "@#_", "_"),
-                        "])[[:punct:]]", 
+                        ifelse(removeTwitter, "_", "@#_"),
+                        "])[[:punct:]]",  
                         ifelse(!is.null(additional), paste("|", additional, sep=""), ""),
                         sep="")
        x <- gsub(remove, "", x, perl=TRUE)
@@ -90,7 +89,7 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
         # clean("nodigits crazy8 4sure 67 89b 1,000,000 1.023.496")
         # note: \u00A3 is pound sign, \u20AC is euro sign, \u00A2 is the cent sign
         x <- gsub("[$\u00A3\u20AC\u00A2][[:digit:]]\\w*|\\b[[:digit:]]+(st|nd|rd|d|th|bis)\\b|\\b([[:digit:]]+[,.]?)+\\b", "", x)
-    if (lower) 
+    if (toLower) 
         x <- tolower(x)
     
 #     if (!is.null(additional))
@@ -105,9 +104,9 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE,
 
 #' @rdname clean
 #' @export
-clean.corpus <- function(x, removeDigits=TRUE, removePunct=TRUE, lower=TRUE, 
-                         additional=NULL, twitter=TRUE, ...) {
-    clean(texts(x), removeDigits=removeDigits, removePunct=removePunct, lower=lower, 
+clean.corpus <- function(x, removeDigits=TRUE, removePunct=TRUE, toLower=TRUE, 
+                         additional=NULL, removeTwitter=FALSE, ...) {
+    clean(texts(x), removeDigits=removeDigits, removePunct=removePunct, toLower=toLower, 
           additional=additional, ...)
 }
 

@@ -3,24 +3,7 @@
 \name{features}
 \alias{features}
 \alias{features.dfm}
-\title{#compute the tf-idf weights of a dfm
-#
-#Returns a matrix of tf-idf weights, as a \link{dfm} object
-#
-#data(inaugCorpus)
-#dtm <- dfm(inaugCorpus)
-#dtm[1:10, 100:110]
-#tfidf(dtm)[1:10, 100:110]
-#tfidf(dtm, normalize=FALSE)[1:10, 100:110]
-#normalizes the term frequencies a dfm
-#
-#Returns a matrix of term weights, as a \link{dfm} object
-#
-#data(inaugCorpus)
-#dtm <- dfm(inaugCorpus)
-#dtm[1:10, 100:110]
-#tf(dtm)[1:10, 100:110]
-extract the feature labels from a \link{dfm}}
+\title{extract the feature labels from a \link{dfm}}
 \usage{
 features(x)
 

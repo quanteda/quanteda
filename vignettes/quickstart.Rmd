@@ -173,8 +173,8 @@ The `kwic` function (KeyWord In Context) performs a search for a word and allows
 ```{r}
 options(width = 200)
 kwic(inaugCorpus, "terror")
-kwic(inaugCorpus, "terror", regex=TRUE)
-kwic(inaugCorpus, "communist", regex=TRUE)
+kwic(inaugCorpus, "terror", wholeword=TRUE)
+kwic(inaugCorpus, "communist")
 
 ```
 

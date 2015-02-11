@@ -42,7 +42,6 @@ docnames(inaugCorpus) <- paste("Speech", 1:ndoc(inaugCorpus), sep="")
 
 # reassign the document names of the inaugural speech corpus
 docnames(inaugCorpus) <- paste("Speech", 1:ndoc(inaugCorpus), sep="")
-#
 # query the document names of a dfm
 docnames(dfm(inaugTexts[1:5]))
 }

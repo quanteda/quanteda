@@ -17,7 +17,7 @@ encoding(x) <- value
 \item{value}{a character vector or scalar representing the new value of the encoding (see Note)}
 }
 \description{
-Get or set the \code{_encoding} document-level metadata field in a corpus.
+Get or set the \code{_encoding} document-level metadata field(s) in a corpus.
 }
 \details{
 This function modifies the \code{_encoding} value set by
