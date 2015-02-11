@@ -16,7 +16,7 @@ changeunits(corp, to = c("sentences", "paragraphs", "documents"), ...)
 \description{
 For a corpus, recast the documents down or up a level of aggregation.  "Down"
 would mean going from documents to sentences, for instance.  "Up" means from
-sentences back to documents.  This makes it easy to reshape a corpus from a a
+sentences back to documents.  This makes it easy to reshape a corpus from a
 collection of documents into a collection of sentences, for instance.
 }
 \examples{

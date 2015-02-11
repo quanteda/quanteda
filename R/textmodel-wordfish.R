@@ -32,11 +32,14 @@
 #' @export
 textmodel_wordfish <- function(data, method=c("mml", "mcmc"), smooth=0, ...) {
     method = match.arg(method)
-    if (!is.dfm(data))
+    if (!is(ieDfm, "dfm"))
         stop("supplied data must be a dfm object.")
     data <- data + smooth  # smooth by the specified amount
     if (method=="mml") {
-        model <- wordfish(as.wfm(data, word.margin=2), ...)
+        if (isS4(data)) 
+            model <- wordfish(as.wfm(as.matrix(data), word.margin=2), ...)
+        else 
+            model <- wordfish(as.wfm(data, word.margin=2), ...)
     } else if (method=="mcmc") {
         if (!require(rjags)) 
             stop("You must first install rjags to use method=mcmc.")

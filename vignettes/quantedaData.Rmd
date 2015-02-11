@@ -1,0 +1,25 @@
+---
+title: "quantedaData"
+output:
+  rmarkdown::html_document:
+    theme: null
+    css: mystyle.css
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{quantedaData}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+
+## Introduction
+
+`quantedaData` is a supplementary package to the `quanteda` text analysis library, containing text corpora.
+
+
+## Installing quantedaData
+
+The code for the `quantedaData` package currently resides on
+<http://github/kbenoit/quantedaData>.  From an Internet-connected
+computer, you can install the package directly using the
+`devtools` package:

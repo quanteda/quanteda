@@ -9,16 +9,16 @@
 clean(x, ...)
 
 \method{clean}{character}(x, removeDigits = TRUE, removePunct = TRUE,
-  lower = TRUE, additional = NULL, twitter = TRUE, removeURL = TRUE,
-  ...)
+  toLower = TRUE, additional = NULL, removeTwitter = FALSE,
+  removeURL = TRUE, ...)
 
 \method{clean}{corpus}(x, removeDigits = TRUE, removePunct = TRUE,
-  lower = TRUE, additional = NULL, twitter = TRUE, ...)
+  toLower = TRUE, additional = NULL, removeTwitter = FALSE, ...)
 }
 \arguments{
 \item{x}{The object to be cleaned. Can be either a character vector or a
-corpus object. If x is a corpus, \code{clean} returns a copy of the x with
-the texts cleaned.}
+corpus object. If x is a corpus, \code{clean} returns the corpus containing
+the cleaned texts.}
 
 \item{...}{additional parameters}
 
@@ -26,11 +26,11 @@ the texts cleaned.}
 
 \item{removePunct}{remove punctuation if \code{TRUE}}
 
-\item{lower}{convert text to lower case \code{TRUE}}
+\item{toLower}{convert text to lower case \code{TRUE}}
 
 \item{additional}{additional characters to remove (\link[=regex]{regular expression})}
 
-\item{twitter}{if \code{TRUE}, do not remove \code{@} or \code{#}}
+\item{removeTwitter}{if \code{FALSE}, do not remove \code{@} or \code{#}}
 
 \item{removeURL}{removes URLs (web addresses starting with \code{http:} or \code{https:}), based
 on a regular expression from \url{http://daringfireball.net/2010/07/improved_regex_for_matching_urls}}
@@ -48,8 +48,8 @@ punctuation and convert to lower, but keep digits, the command would be:
 }
 \examples{
 clean("This is 1 sentence with 2.0 numbers in it, and one comma.", removeDigits=FALSE)
-clean("This is 1 sentence with 2.0 numbers in it, and one comma.", lower=FALSE)
-clean("We are his Beliebers, and him is #ourjustin @justinbieber we love u", twitter=TRUE)
+clean("This is 1 sentence with 2.0 numbers in it, and one comma.", toLower=FALSE)
+clean("We are his Beliebers, and him is #ourjustin @justinbieber we love u", removeTwitter=TRUE)
 clean("Collocations can be represented as inheritance_tax using the _ character.")
 clean("But under_scores can be removed using the additional argument.", additional="[_]")
 clean("This is a $1,500,000 budget and $20bn cash and a $5 cigar.")

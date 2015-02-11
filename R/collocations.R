@@ -4,22 +4,24 @@
 #' data.frame of collocations and their scores, sorted in descending order of the association
 #' measure.
 #' @param x a text, a character vector of texts, or a corpus
-#' @param method association measure for detecting collocations.  Available
-#'   measures are:
+#' @param method association measure for detecting collocations.  Let \eqn{i} index documents, and
+#' \eqn{j} index features, \eqn{n_{ij}} refers to observed counts, 
+#' and \eqn{m_{ij}} the expected counts in a collocations frequency table of dimensions \eqn{(J - size + 1)^2}.  
+#' Available measures are computed as:
 #'   \describe{ 
 #'   \item{\code{"lr"}}{The likelihood ratio statistic \eqn{G^2}, computed as:
-#'          \deqn{2 * \sum_i \sum_j (n_{ij} * log \frac{n_{ij}}{m_{ij}}}
+#'          \deqn{2 * \sum_i \sum_j ( n_{ij} * log \frac{n_{ij}}{m_{ij}} )}
 #'      }
 #'   \item{\code{"chi2"}}{Pearson's \eqn{\chi^2} statistic, computed as:
 #'          \deqn{\sum_i \sum_j \frac{(n_{ij} - m_{ij})^2}{m_{ij}}}
 #'      }
-#'   \item{\code{"pmi"}}{point-wise mutual information score, computed as log \eqn{n_{11}/m{11}}}
+#'   \item{\code{"pmi"}}{point-wise mutual information score, computed as log \eqn{n_{11}/m_{11}}}
 #'   \item{\code{"dice"}}{the Dice coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
 #'   \item{\code{"all"}}{returns all of the above}
 #'   }
-#' @param n length of the collocation.  Only bigram (\code{n=2}) and trigram (\code{n=3}) 
+#' @param size length of the collocation.  Only bigram (\code{n=2}) and trigram (\code{n=3}) 
 #' collocations are implemented so far.
-#' @param top the number of collocations to return, sorted in descending order
+#' @param n the number of collocations to return, sorted in descending order
 #'   of the requested statistic, or \eqn{G^2} if none is specified.
 #' @param ... additional parameters passed to \link{clean}
 #' @return A data.table of collocations, their frequencies, and the computed 
@@ -30,30 +32,30 @@
 #' @seealso \link{bigrams}, \link{ngrams}
 #' @author Kenneth Benoit
 #' @examples
-#' collocations(inaugTexts, top=10)
-#' collocations(inaugCorpus, top=10, method="all")
-#' collocations(inaugTexts, top=10, n=3)
-#' collocations(inaugCorpus, top=10, method="all", n=3)
+#' collocations(inaugTexts, n=10)
+#' collocations(inaugCorpus, method="all", n=10)
+#' collocations(inaugTexts, size=3, n=10)
+#' collocations(inaugCorpus, method="all", size=3, n=10)
 collocations <- function(x, ...) {
     UseMethod("collocations")
 }
     
 #' @rdname collocations
 #' @export    
-collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=2, top=NULL, ...) {
+collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, ...) {
     method <- match.arg(method)
-    if (n > 3) 
+    if (size > 3) 
         stop("Only bigram and trigram collocations implemented so far.")
-    if (n == 2)
-        collocations2(x, method, 2, top, ...)
+    if (size == 2)
+        collocations2(x, method, 2, n, ...)
     else
-        collocations3(x, method, 3, top, ...)
+        collocations3(x, method, 3, n, ...)
 }
     
 
-collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=2, top=NULL, ...) {
+collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, ...) {
     method <- match.arg(method)
-    if (n != 2) stop("Only bigrams (n=2) implemented so far.")
+    if (size != 2) stop("Only bigrams (n=2) implemented so far.")
     
     # to prevent warning messages during CHECK
     #w1 <- w2 <- count <- w1w2n <- w1w2Exp <- w1notw2Exp <- notw1w2 <- notw1w2Exp <- NULL
@@ -160,18 +162,19 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=2, 
         df$dice <- allTable2$dice
     }
         
-    df[1:ifelse(is.null(top), nrow(df), top), ]
+    class(df) <- c("collocations", class(df))
+    df[1:ifelse(is.null(n), nrow(df), n), ]
 }
 
 #' @rdname collocations
 #' @export
-collocations.corpus <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=2, top=NULL, ...) {
-    collocations(texts(x), method, n, top, ...)
+collocations.corpus <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, ...) {
+    collocations(texts(x), method, size, n, ...)
 }
 
 
 
-collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=3, top=NULL, ...) {
+collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=3, n=NULL, ...) {
     method <- match.arg(method)
     
     text <- clean(x, ...)
@@ -319,7 +322,8 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=3, 
         dt$dice <- allTable$dice
     }
 
-    dt[1:ifelse(is.null(top), nrow(dt), top), ]
+    class(dt) <- c("collocations", class(dt))
+    dt[1:ifelse(is.null(n), nrow(dt), n), ]
 }
 
 
@@ -327,36 +331,44 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), n=3, 
 #' convert phrases into single tokens
 #' 
 #' Replace multi-word phrases in text(s) with a compound version of the phrases 
-#' concatenated with  \code{connector} (by default, the "\code{_}" character) to
+#' concatenated with  \code{concatenator} (by default, the "\code{_}" character) to
 #' form a single token.  This prevents tokenization of the phrases during 
 #' subsequent processing by eliminating the whitespace delimiter.
-#' @param txts character or character vector of texts
+#' @param x source texts, a character or character vector
 #' @param dictionary a list or named list (such as a quanteda dictionary) that 
 #'   contains some phrases, defined as multiple words delimited by whitespace. 
 #'   These can be up to 9 words long.
-#' @param connector the concatenation character that will connect the words 
+#' @param concatenator the concatenation character that will connect the words 
 #'   making up the multi-word phrases.  The default \code{_} is highly 
 #'   recommended since it will not be removed during normal cleaning and 
 #'   tokenization (while nearly all other punctuation characters, at least those
-#'   in the POSIX class \code{[[:punct:]]}) will be removed.
+#'   in the POSIX class \code{[:punct:]}) will be removed.
 #' @return character or character vector of texts with phrases replaced by 
-#'   compound "words" joined by the connector
+#'   compound "words" joined by the concatenator
 #' @export
 #' @examples
 #' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
 #'              "New York City has raised a taxes: an income tax and a sales tax.")
 #' mydict <- list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax"))
-#' (cw <- compoundWords(mytexts, mydict))
-#' print(dfm(cw), show.values=TRUE)
+#' (cw <- phrasetotoken(mytexts, mydict))
+#' dfm(cw, verbose=FALSE)
 #' 
 #' # when used as a dictionary for dfm creation
 #' mydfm2 <- dfm(cw, dictionary=lapply(mydict, function(x) gsub(" ", "_", x)))
-#' print(mydfm2, show.values=TRUE)
-#' # to pick up "taxes" in the second text, set regular_expression=TRUE
-#' mydfm3 <- dfm(cw, dictionary=lapply(mydict, function(x) gsub(" ", "_", x)),
+#' mydfm2
+#' # to pick up "taxes" in the second text, set dictionary_regex=TRUE
+#' mydfm3 <- dfm(cw, dictionary=lapply(mydict, phrasetotoken, mydict),
 #'               dictionary_regex=TRUE)
-#' print(mydfm3, show.values=TRUE)
-compoundWords <- function(txts, dictionary, connector="_") {
+#' mydfm3
+#' ## one more token counted for "tax" than before
+phrasetotoken <- function(x, dictionary, concatenator="_") {
+    UseMethod("phrasetotoken")
+}
+
+
+#' @rdname phrasetotoken
+#' @export
+phrasetotoken.character <- function(x, dictionary, concatenator="_") {
     # get the tokenized list of compound phrases from a dictionary (list)
     phrases <- unlist(dictionary, use.names=FALSE)
     compoundPhrases <- phrases[grep(" ", phrases)]
@@ -369,9 +381,9 @@ compoundWords <- function(txts, dictionary, connector="_") {
         re.pattern <- paste("(", 
                             paste(l, collapse=")\\s("),
                             ")", sep="")
-        re.replace <- paste("\\", 1:length(l), sep="", collapse=connector)
-        txts <- gsub(re.pattern, re.replace, txts, perl=TRUE)
+        re.replace <- paste("\\", 1:length(l), sep="", collapse=concatenator)
+        x <- gsub(re.pattern, re.replace, x, perl=TRUE)
     }
-    txts    
+    x    
 }
 

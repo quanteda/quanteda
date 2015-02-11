@@ -30,8 +30,7 @@ This function is a wrapper to \link[topicmodels]{LDA} and
 }
 \examples{
 \dontrun{
-library(quantedaData)
-data(sotuCorp)
+data(sotuCorp, package="quantedaData")
 SOTUCorpus <- sotuCorp
 presDfm <- dfm(subset(SOTUCorpus, year>1960), stopwords=TRUE, stem=TRUE)
 presDfm <- trimdfm(presDfm, minCount=5, minDoc=3)

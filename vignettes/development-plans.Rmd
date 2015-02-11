@@ -1,0 +1,50 @@
+---
+title: "quanteda Development Plans"
+author: "Ken Benoit and Paul Nulty"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Development Plans}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+## Suggestions for using quanteda during development
+
+`quanteda` is in development and will remain so until we declare a 1.0 version, at which time we will only add new functions, not change the names of 
+existing ones.  In the meantime, we suggest:
+
+-   use named formals in the function calls, rather than relying on the current ordering of formals,
+    for instance, use `clean(mytexts, removeDigits=TRUE)` instead of `clean(mytexts, TRUE)`;
+-   hope that we get to 1.0 quickly;
+-   help that process by sending us feedback stating what you think of the syntax, formal names, etc. from a user's perspective.
+
+## On the To Do List
+
+1.  Remove anything not yet implemented, e.g.: settings, resample.
+
+2.  for the `dfm2*` functions, change to a `convert.dfm(x, to = “format”)`, instead of 3 separate functions.
+
+3.  Do something similar for dictionary imports.
+
+4.  Define a `textsource(x, from = c(“character”, “twitter”, “zipfiles”, “facebook”, …)` etc that returns a subclass of 
+textsource that will have common attributes needed for corpus construction.  Then define different corpus() methods for 
+each subclass of object?  There is probably a better way than this - we should think about it carefully - 
+but it’s too anarchic at the moment, and too hard to find the range of available text sources.  
+(And we can also define methods to work with all of the tm sources.)
+
+
+5.  get rid of `segmentSentence`, `segmentParagraph`, just have a s`egment(x, to=“sentence”)`.
+
+6.  Redo `stopwords` -- see pdf notes.
+
+7.  Redo `syllableCounts` -- see pdf notes.
+
+8.  `settings`
+
+9.  `resample`
+
+10. `index`
+
+
+

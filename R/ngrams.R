@@ -1,11 +1,20 @@
 #' Create bigrams
 #' 
 #' @author Ken Benoit and Kohei Watanabe
-#' @param text character vector containing the texts from which bigrams will be constructed
-#' @param window how many words to be counted for adjacency.  Default is 1 for only immediately 
-#' neighbouring words.  This is only available for bigrams, not for ngrams.
-#' @param concatenator character for combining words, default is \code{_} (underscore) character
+#' @param text character vector containing the texts from which bigrams will be
+#'   constructed
+#' @param window how many words to be counted for adjacency.  Default is 1 for
+#'   only immediately neighbouring words.  This is only available for bigrams,
+#'   not for ngrams.
+#' @param concatenator character for combining words, default is \code{_}
+#'   (underscore) character
 #' @param include.unigrams if \code{TRUE}, return unigrams as well
+#' @param ignoredFeatures a character vector of features to ignore
+#' @param skipGrams If \code{FALSE} (default), remove any bigram containing a
+#'   feature listed in \code{ignoredFeatures}, otherwise, first remove the
+#'   features in \code{ignoredFeatures}, and then create bigrams.  This means
+#'   that some "bigrams" will actually not occur as adjacent features in the
+#'   original text.  See examples.
 #' @param ... provides additional arguments passed to \link{tokenize}
 #' @return a character vector of bigrams
 #' @export
@@ -13,8 +22,28 @@
 #' bigrams("The quick brown fox jumped over the lazy dog.")
 #' bigrams(c("The quick brown fox", "jumped over the lazy dog."))
 #' bigrams(c("The quick brown fox", "jumped over the lazy dog."), window=2)
-bigrams <- function(text, window = 1, concatenator="_", include.unigrams=FALSE, ...) {
+#' bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"))
+#' bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"), 
+#'         ignoredFeatures=stopwords$english)
+#' bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"), 
+#'         ignoredFeatures=stopwords$english, skipGrams=TRUE)
+bigrams <- function(text, window = 1, concatenator="_", include.unigrams=FALSE, 
+                    ignoredFeatures=NULL, skipGrams=FALSE, ...) {
+
+    removeIgnoredFeatures <- function(bigramCharVector, ignoredFeatures) {
+        ignoredfeatIndex <- 
+            grep(paste0("\\b", paste(ignoredFeatures, collapse="\\b|\\b"), "\\b"), 
+                 gsub("_", " ", bigramCharVector))
+        if (length(ignoredfeatIndex) > 0) 
+            bigramCharVector <- bigramCharVector[-ignoredfeatIndex]
+        bigramCharVector
+    }
+    
     tokenizedList <- tokenize(text, ...)
+    
+    if (!is.null(ignoredFeatures) & skipGrams==TRUE)
+        tokenizedList <- lapply(tokenize(text), removeIgnoredFeatures, ignoredFeatures)
+    
     bigramSingle <- function(tokens, window, concatenator, include.unigrams) {
         bigrams <- c()  # initialize bigrams vector
         for (w in (1:window)) {
@@ -27,7 +56,18 @@ bigrams <- function(text, window = 1, concatenator="_", include.unigrams=FALSE, 
         if (include.unigrams) bigrams <- c(tokens, bigrams)
         bigrams
     }
-    lapply(tokenizedList, bigramSingle, window, concatenator, include.unigrams)
+    
+    result <- lapply(tokenizedList, bigramSingle, window, concatenator, include.unigrams)
+        
+    # remove features if supplied and if skipGrams==FALSE, in other words
+    # remove all bigrams that contain an ignored feature
+    if (!is.null(ignoredFeatures) & skipGrams==FALSE) {
+        if (!is.character(ignoredFeatures)) 
+            stop("ignoredFeatures must be a character vector")
+        result <- lapply(result, removeIgnoredFeatures, ignoredFeatures)
+    }
+
+    result
 }
 #bigrams("aa bb cc dd ee ff", 5)
 

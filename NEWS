@@ -1,8 +1,40 @@
+quanteda 0.7.1
+==============
+* trimdfm, flatten.dictionary are gone from the NAMESPACE
+
+* formals changed a bit in clean(), kwic()
+
+* compoundWords() -> phrasetotoken()
+
+* Cleaned up minor issues in documentation.
+
+quanteda 0.7.0
+==============
+* dfm now sparse by default, implemented as subclasses of the 
+  Matrix package.  Option dfm(..., matrixType="sparse") is now
+  the default, although matrixType="dense" will still produce the
+  old S3-class dfm based on a regular matrix, and all dfm methods
+  will still work with this object.
+
+* Improvements to: weight(), print() for dfms.
+
+* New methods for dfms: docfreq(), weight(), summary(), as.matrix(), 
+  as.data.frame.
+
+
 quanteda 0.6.6
 ==============
 * No more depends, all done through imports.  Passes clean check.
   The start of our reliance more on the master branch rather than
   having merges from dev to master happen only once in a blue moon.
+
+* bigrams in dfm() when bigrams=TRUE and ignoredFeatures=<something>
+  now removed if any bigram contains an ignoredFeature
+
+* stopwordsRemove() now defined for sparse dfms and for collocations.
+
+* stopwordsRemove() now requires an explicit stopwords=<char> argument,
+  to emphasize the user's responsibility for applying stopwords.
 
 
 quanteda 0.6.5
