@@ -126,7 +126,7 @@ getTweets <- function(query, numResults=50, key, cons_secret, token, access_secr
 #'  summary(twcorpus)
 #'
 #'  # viewing the DFM using a word cloud
-#'  twDfm <- dfm(twcorpus, stopwords=TRUE, stem=TRUE)
+#'  twDfm <- dfm(twcorpus, gnoredFeatures = c(stopwordsGet(), "rt"))
 #'  plot(twDfm)
 #' }
 #'
@@ -158,12 +158,12 @@ getTimeline <- function(screen_name, numResults=200, filename="default",
     query <- lapply(params, function(x) URLencode(as.character(x)))
 
     # first query
-    url.data <- GET(url, query=query, config(token=sig[["token"]]))
-    json.data <- jsonlite::fromJSON(rawToChar(url.data$content), unexpected.escape = "keep")
+    url.data <- httr::GET(url, query=query, config(token=sig[["token"]]))
+    json.data <- httr::content(url.data)
 
     # writing to disk
-    conn <- file(filename, "a")
-    invisible(lapply(json.data, function(x) writeLines(jsonlite::toJSON(x), con=conn)))
+    conn <- file(filename, "a", encoding='UTF-8')
+    invisible(lapply(json.data, function(x) writeLines(jsonlite::toJSON(x, null="null"), con=conn)))
     close(conn)        
 
     ## max_id
@@ -178,14 +178,14 @@ getTimeline <- function(screen_name, numResults=200, filename="default",
         params <- list(count=200, screen_name = screen_name, max_id=max_id, 
             include_rts="true", exclude_replies="false", trim_user="false")
         query <- lapply(params, function(x) URLencode(as.character(x)))
-        url.data <- GET(url, query=query, config(token=sig[["token"]]))
-        json.data <- jsonlite::fromJSON(rawToChar(url.data$content), 
-                                        unexpected.escape = "keep")
+        url.data <- httr::GET(url, query=query, config(token=sig[["token"]]))
+        json.data <- httr::content(url.data)
 
         # writing to disk
         if (!is.null(filename) && !is.na(filename)){
-            conn <- file(filename, "a")
-            invisible(lapply(json.data, function(x) writeLines(jsonlite::toJSON(x), con=conn)))
+            conn <- file(filename, "a", encoding='UTF-8')
+            invisible(lapply(json.data, function(x) 
+                writeLines(jsonlite::toJSON(x, null="null"), con=conn)))
             close(conn)        
         }
 
@@ -212,7 +212,7 @@ getTimeline <- function(screen_name, numResults=200, filename="default",
 #' @param source source of data in JSON format.
 #' @param enc encoding of the input json file
 #' @param ... additional arguments passed to \code{\link[streamR]{parseTweets}}
-#' @export
+#' @import streamR
 #' @examples 
 #' \dontrun{
 #' # name a directory of files in json format
@@ -239,7 +239,6 @@ json <- function(path=NULL, source="twitter", enc = "unknown", ...) {
     txt <- unlist(sapply(fls, readLines, encoding = enc))
 
     # parsing into a data frame
-    #library(streamR)
     # reading tweets into a data frame
     results <- streamR::parseTweets(txt, verbose=FALSE, ...)
     tempRes <- results
