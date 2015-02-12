@@ -4,7 +4,7 @@
 \alias{getFBpage}
 \title{Extract list of posts from a public Facebook page}
 \usage{
-getFBpage(page, token, since = NULL, until = NULL, n = 100,
+getFBpage(page, token, n = 100, since = NULL, until = NULL,
   feed = FALSE)
 }
 \arguments{
@@ -13,6 +13,9 @@ getFBpage(page, token, since = NULL, until = NULL, n = 100,
 \item{token}{An access token created at
 \url{https://developers.facebook.com/tools/explorer}.}
 
+\item{n}{Number of posts of page to return. Note that number can be sometimes
+higher or lower, depending on status of API.}
+
 \item{since}{A UNIX timestamp or strtotime data value that points to
 the start of the time range to be searched. For more information on the
 accepted values, see: \url{http://php.net/manual/en/function.strtotime.php}}
@@ -20,9 +23,6 @@ accepted values, see: \url{http://php.net/manual/en/function.strtotime.php}}
 \item{until}{A UNIX timestamp or strtotime data value that points to
 the end of the time range to be searched. For more information on the
 accepted values, see: \url{http://php.net/manual/en/function.strtotime.php}}
-
-\item{n}{Number of posts of page to return. Note that number can be sometimes
-higher or lower, depending on status of API.}
 
 \item{feed}{If \code{TRUE}, the function will also return posts on the page
 that were made by others (not only the admin of the page).}
@@ -42,7 +42,7 @@ pg <- getFBpage('barackobama', token, n=100)
 fbcorpus <- corpus(pg)
 summary(fbcorpus)
 # viewing the DFM using a word cloud
-fbDfm <- dfm(fbcorpus, stopwords=TRUE, stem=TRUE)
+fbDfm <- dfm(fbcorpus, ignoredFeatures = stopwordsGet())
 plot(fbDfm)
 }
 }
