@@ -49,7 +49,7 @@ Connect to the REST API of Twitter and returns up to
  summary(twcorpus)
 
  # viewing the DFM using a word cloud
- twDfm <- dfm(twcorpus, stopwords=TRUE, stem=TRUE)
+ twDfm <- dfm(twcorpus, gnoredFeatures = c(stopwordsGet(), "rt"))
  plot(twDfm)
 }
 }
