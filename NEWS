@@ -11,6 +11,9 @@ quanteda 0.7.1
 * countSyllables data object renamed to englishSyllables.Rdata, and function
   renamed to syllables().
 
+* stopwordsGet() changed to stopwords().  stopwordsRemove() changed to 
+  removeFeatures().
+
 
 quanteda 0.7.0
 ==============
