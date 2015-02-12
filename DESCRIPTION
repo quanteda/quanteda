@@ -7,7 +7,7 @@ Authors@R: c(
     person("Pablo", "Barbera", email = "pablo.barbera@nyu.edu", role = "ctb"),
     person("Kohei", "Watanabe", email = "watanabe.kohei@gmail.com", role = "ctb"))
 Version: 0.7.1.000
-Date: 2015-02-11
+Date: 2015-02-12
 Description: A package for the management and quantitative analysis of textual
     data with R. quanteda makes it easy to manage texts in the form of a
     corpus, defined as a collection of texts that includes document-level
@@ -15,10 +15,7 @@ Description: A package for the management and quantitative analysis of textual
     the collection as a whole. quanteda includes tools to make it easy and fast
     to manuipulate the texts the texts in a corpus, for instance by tokenizing
     them, with or without stopwords or stemming, or to segment them by sentence
-    or paragraph units. quanteda implements bootstrapping methods for texts
-    that makes it easy to resample texts from pre-defined units, to facilitate
-    computation of confidence intervals on textual statistics using techniques
-    of non-parametric bootstrapping, but applied to the original texts as data.
+    or paragraph units.  
     quanteda includes a suite of sophisticated tools to extract features of the
     texts into a quantitative matrix, where these features can be defined
     according to a dictionary or thesaurus, including the declaration of
