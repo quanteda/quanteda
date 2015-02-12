@@ -7,7 +7,7 @@
 #' 
 #' @param x character vector or list of character vectors whose syllables will be counted
 #' @param syllableDict a named numeric vector of syllable counts where the names are
-#' lower case tokens.  The default is \link{englishCMUdict}, an English pronunciation 
+#' lower case tokens.  The default is \link{englishSyllables}, an English pronunciation 
 #' dictionary from CMU.  
 #' @param ... additional arguments passed to clean
 #' 
