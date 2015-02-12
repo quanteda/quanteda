@@ -43,23 +43,6 @@ NULL
 NULL
 
 
-#' @name stopwords
-#' @title A named list containing common stopwords in 14 languages
-# @rdname stopwordsRemove
-#' @description SMART English stopwords from the SMART information retrieval
-#' system (obtained from
-#' http://jmlr.csail.mit.edu/papers/volume5/lewis04a/a11-smart-stop-list/english.stop)
-#' and a set of stopword lists from the Snowball stemmer project in
-#' different languages (obtained from
-#' http://svn.tartarus.org/snowball/trunk/website/algorithms/*/stop.txt). Supported
-#' languages are danish, dutch, english, finnish, french, german,
-#' hungarian, italian, norwegian, portuguese, russian, spanish, and
-#' swedish. Language names are case sensitive. Alternatively, their IETF
-#' language tags may be used.
-#' 
-#' Also now (>=0.6.3) includes Arabic stopwords.
-NULL
-
 #' @name englishSyllables
 #' @docType data
 #' @title syllable counts of English words
@@ -71,5 +54,10 @@ NULL
 #' englishSyllables["onomatopeia"]
 #' @source \url{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}
 #' 
+NULL
+
+#' @name .stopwords
+#' @rdname stopwords
+#' @docType data
 NULL
 

@@ -40,8 +40,9 @@ as.dfm(x)
 
 \item{verbose}{display messages if \code{TRUE}}
 
-\item{clean}{if \code{FALSE}, do no cleaning of the text.  This offers a one-argument
-easy method to turn off any cleaning of the texts during construction of the dfm.}
+\item{clean}{if \code{FALSE}, do no cleaning of the text.  This offers a
+one-argument easy method to turn off any cleaning of the texts during
+construction of the dfm.}
 
 \item{stem}{if \code{TRUE}, stem words}
 
@@ -49,18 +50,17 @@ easy method to turn off any cleaning of the texts during construction of the dfm
 ignore, such as "stop words".  Formerly, this was a Boolean option for
 \code{stopwords = TRUE}, but requiring the user to supply the list
 highlights the choice involved in using any stopword list.  To access one
-possible list (from any list you wish), use the
-\code{\link{stopwordsGet}()} function or just (e.g.)
-\code{stopwords$english}.}
+possible list (from any list you wish), use \code{\link{stopwords}()}.}
 
 \item{keptFeatures}{a use supplied regular expression defining which features
 to keep, while excluding all others.  This can be used in lieu of a
 dictionary if there are only specific features that a user wishes to keep.
-To extract only Twitter usernames, for example, set \code{keptFeatures = "^@\\\w+\\\b"}
-and make sure that \code{removeTwitter = FALSE} as an additional argument passed
-to \link{clean}.  (Note: \code{keptFeatures = "^@"} will also retrieve usernames, but
-does not enforce the username convention that a username must contain one and only one
-\code{@} symbol, at the beginning of the username.)}
+To extract only Twitter usernames, for example, set \code{keptFeatures =
+"^@\\\w+\\\b"} and make sure that \code{removeTwitter = FALSE} as an
+additional argument passed to \link{clean}.  (Note: \code{keptFeatures =
+"^@"} will also retrieve usernames, but does not enforce the username
+convention that a username must contain one and only one \code{@} symbol,
+at the beginning of the username.)}
 
 \item{matrixType}{if \code{dense}, produce a dense matrix; or it
 \code{sparse} produce a sparse matrix of class \code{dgCMatrix} from the

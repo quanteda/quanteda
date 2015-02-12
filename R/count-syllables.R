@@ -34,7 +34,7 @@ syllables.character <- function(x, syllableDict = englishSyllables, ...) {
     words <- tokenize(clean(x, ...))
     
     # match syllable counts to words in the list
-    nSyllables <- lapply(words, function(x) englishSyllables[x])
+    nSyllables <- lapply(words, function(x) syllableDict[x])
     
     # look up vowel counts for those not in the lst
     for (i in 1:length(nSyllables)) {

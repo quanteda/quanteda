@@ -67,7 +67,7 @@ Calculate the lexical diversity or complexity of text(s).
   \eqn{\log{}_{e}{V_0}}): \deqn{a^2 = \frac{\log{N} - \log{V}}{\log{N}^2}}{a^2 =
   log(N) - log(V) / log(N)^2} \deqn{\log{V_0} = \frac{\log{V}}{\sqrt{1 -
   \frac{\log{V}}{\log{N}}^2}}}{log(V0) = log(V) / sqrt(1 - (log(V) / log(N)^2))}
-  The measure was derived from a formula by M\"uller (1969, as cited
+  The measure was derived from a formula by Mueller (1969, as cited
   in Maas, 1972). \eqn{\log{}_{e}{V_0}} is equivalent to \eqn{\log{V_0}}, only
   with \eqn{e} as the base for the logarithms. Also calculated are \eqn{a},
   \eqn{\log{V_0}} (both not the same as before) and \eqn{V'} as measures of
