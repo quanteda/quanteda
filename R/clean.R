@@ -1,5 +1,4 @@
 ## SHOULD IMPLEMENT PRESERVATION OF URLs
-# test
 
 #' simple cleaning of text before processing
 #' 
