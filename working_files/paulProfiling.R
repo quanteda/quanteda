@@ -14,13 +14,15 @@ library(quanteda)
 library(tm)
 
 txts <- txts[order(nchar(txts))]
-numDocs <- 300
-start <- 20000
+numDocs <- 4000
+start <- 16000
 end <- start+numDocs
 avgDocSizes <- c()
-qutimes <- c()
+quantedaTimes <- c()
+newTimes <- c()
+newTimes <- c()
 tmtimes <- c()
-while(end < 30000){
+while(end < 32000){
     start <- end - numDocs
     print(start)
     # taking docs at a time from different points on the document length distibution
@@ -32,7 +34,18 @@ while(end < 30000){
     quCorp <- corpus(thisTexts)
     quDfm <- dfm(quCorp)
     sto <- proc.time()-sta
-    qutimes <- c(qutimes, sto[1])
+    quantedaTimes <- c(quantedaTimes, sto[1])
+    
+    
+    
+    sta <- proc.time()
+    newCorp <- corpus(thisTexts)
+    newCorp <- clean(newCorp)
+    newDfm <- dfm(newCorp, clean=FALSE)
+    sto <- proc.time()-sta
+    newTimes <- c(newTimes, sto[1])
+    
+    
     
     sta <- proc.time()
     tmcorpus <- Corpus(VectorSource(thisTexts))
@@ -46,10 +59,18 @@ while(end < 30000){
     start <- start + 1000
     end <- end + 1000
 }
+
+
 options(scipen=5)
 library(ggplot2)
-d1 <- data.frame(avgDocSizes, qutimes, tmtimes)
+d1 <- data.frame(avgDocSizes, quantedaTimes, tmtimes, newTimes)
 ggplot() + 
-    geom_line(aes(avgDocSizes, qutimes), d1) +  
+    geom_line(aes(avgDocSizes, quantedaTimes), d1) +  
     geom_line(aes(avgDocSizes, tmtimes ), d1)
+
+library(reshape2)
+d2 <- melt(d1, id=c('avgDocSizes'))
+ggplot(d2, aes(x=avgDocSizes, y=value, colour=variable)) + 
+    geom_line(aes(group=variable)) +
+    geom_point(size=3)
 
