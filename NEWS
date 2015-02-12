@@ -8,6 +8,10 @@ quanteda 0.7.1
 
 * Cleaned up minor issues in documentation.
 
+* countSyllables data object renamed to englishSyllables.Rdata, and function
+  renamed to syllables().
+
+
 quanteda 0.7.0
 ==============
 * dfm now sparse by default, implemented as subclasses of the 

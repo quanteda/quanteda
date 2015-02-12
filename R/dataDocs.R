@@ -60,16 +60,16 @@ NULL
 #' Also now (>=0.6.3) includes Arabic stopwords.
 NULL
 
-#' @name syllableCounts
+#' @name englishSyllables
 #' @docType data
-#' @title A named list mapping words to counts of their syllables
-#' @description A named list mapping words to counts of their syllables, generated from
-#' the CMU pronunciation dictionary
+#' @title syllable counts of English words
+#' @description A named numeric vector of syllable counts for the words used as names.
+#' Taken from the freely available CMU pronunciation dictionary.
 #' @examples
-#' data(syllableCounts)
-#' syllableCounts["sixths"]
-#' syllableCounts["onomatopeia"]
-#' @references \url{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}
+#' data(englishSyllables)
+#' englishSyllables["sixths"]
+#' englishSyllables["onomatopeia"]
+#' @source \url{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}
 #' 
 NULL
 
