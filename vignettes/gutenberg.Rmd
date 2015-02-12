@@ -75,6 +75,13 @@ xlab="Novel Time", ylab="whale", type="h", ylim=c(0,1), yaxt='n')
 ```
 
 
-## Searching
+## Searching and breaking by chapter
+```{r eval=TRUE}
+#kwic(mobyCorp, 'chapter')
+#chapters <- segment(mobyCorp, delimiter="Chapter")
+```
+
+
+
 
 

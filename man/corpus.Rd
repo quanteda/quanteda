@@ -9,6 +9,7 @@
 \alias{corpus.excel}
 \alias{corpus.facebook}
 \alias{corpus.twitter}
+\alias{corpus.url}
 \alias{is.corpus}
 \title{Constructor for corpus objects}
 \usage{
@@ -22,11 +23,13 @@ corpus(x, ...)
 \method{corpus}{excel}(x, docnames = row.names(x), textCol = 1,
   docvarsfrom = NULL, source = NULL, notes = NULL, citation = NULL, ...)
 
+\method{corpus}{facebook}(x, enc = NULL, notes = NULL, citation = NULL,
+  ...)
+
 \method{corpus}{twitter}(x, enc = NULL, notes = NULL, citation = NULL,
   ...)
 
-\method{corpus}{facebook}(x, enc = NULL, notes = NULL, citation = NULL,
-  ...)
+\method{corpus}{url}(x, enc = NULL, notes = NULL, citation = NULL, ...)
 
 \method{corpus}{VCorpus}(x, enc = NULL, notes = NULL, citation = NULL,
   ...)
@@ -126,6 +129,8 @@ to create a quanteda \link{corpus}.
 Corpus-level meta-data can be specified at creation, containing
 (for example) citation information and notes, as can document-level variables
 and document-level meta-data.
+
+Creates a corpus from a url object.
 }
 \details{
 The \code{+} operator for a corpus object will combine two corpus

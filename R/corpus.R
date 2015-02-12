@@ -159,6 +159,18 @@ corpus.excel <- function(x, docnames=row.names(x),
     return(tmpCorp)
 }
 
+#' @rdname corpus
+#' @export
+corpus.facebook <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
+    # extract the content ("message" of posts)
+    texts <- x$message
+    atts <- as.data.frame(x[,2:ncol(x)])    
+    
+    # not sure I'm doing this the right way... What is metadata?
+    corpus(texts, docvars=atts,
+           source=paste("Converted from posts on Facebook page"),
+           enc=enc, ...)
+}
 
 #' @rdname corpus
 #' @export
@@ -174,19 +186,21 @@ corpus.twitter <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
            enc=enc, ...)
 }
 
-
+#' Constructor for corpus objects from urls
+#' 
+#' Creates a corpus from a url object. 
 #' @rdname corpus
 #' @export
-corpus.facebook <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
-    # extract the content ("message" of posts)
-    texts <- x$message
-    atts <- as.data.frame(x[,2:ncol(x)])    
-    
-    # not sure I'm doing this the right way... What is metadata?
-    corpus(texts, docvars=atts,
-           source=paste("Converted from posts on Facebook page"),
-           enc=enc, ...)
+corpus.url <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
+    # extract the content (texts)
+    txt <- paste(scan(x, what="character", sep=" "), collapse=" ")
+    dets <- summary(x)
+    close(x)
+    corpus(txt, source=paste(sprintf("Loaded from url at %s:", dets$description ),
+           enc=enc, ...))
+   
 }
+
 
 
 #' @rdname corpus

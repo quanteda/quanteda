@@ -1,1 +1,4 @@
 todo: corpus constructor for urls, or just an example?
+
+- excel should know which column is text
+- import from csv
