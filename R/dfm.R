@@ -962,6 +962,7 @@ topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ci=.95, ...) {
 #'   the calculations
 #' @param dims ignored
 #' @param ... additional arguments, for methods/generic compatibility
+#' @export
 setMethod("colSums", 
           signature = (x = "dfmSparse"),
           definition = function(x, na.rm = FALSE, dims = 1L, ...) {
@@ -971,6 +972,7 @@ setMethod("colSums",
           })
 
 #' @method colSums dfmDense
+#' @export
 setMethod("colSums", 
           signature = (x = "dfmDense"),
           definition = function(x, na.rm = FALSE, dims = 1L, ...) {
@@ -980,6 +982,7 @@ setMethod("colSums",
           })
 
 #' @method rowSums dfmSparse
+#' @export
 setMethod("rowSums", 
           signature = (x = "dfmSparse"),
           definition = function(x, na.rm = FALSE, dims = 1L, ...) {
@@ -989,6 +992,7 @@ setMethod("rowSums",
           })
 
 #' @method rowSums dfmDense
+#' @export
 setMethod("rowSums", 
           signature = (x = "dfmDense"),
           definition = function(x, na.rm = FALSE, dims = 1L, ...) {
