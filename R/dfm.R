@@ -294,7 +294,7 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     if (is.null(names(x))) 
         names(docIndex) <- factor(paste("text", 1:length(x), sep="")) else
             names(docIndex) <- names(x)
-    ?clean
+    #?clean
     if (verbose) cat("\n   ... tokenizing texts")
     if (!bigrams) {
         tokenizedTexts <- lapply(x, tokenizeSingle, sep=" ")
@@ -315,6 +315,8 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
         if (verbose) cat("\n   ... cleaning the tokens")
         alltokens$features <- clean(alltokens$features, ...)
         if (verbose) cat(", ", nrow(alltokens[features == ""]), " removed entirely", sep="")
+        # remove any features eliminated entirely by cleaning
+        alltokens <- alltokens[features != ""]  ## KB 12 Feb to fix failure on dfm(inaugTexts[1])
     }
     ## commented out to keep words that get removed in cleaning 
     # alltokens <- alltokens[features != ""]
