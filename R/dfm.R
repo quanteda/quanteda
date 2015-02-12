@@ -956,13 +956,12 @@ topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ci=.95, ...) {
 #            def = function(x, na.rm = FALSE, dims = 1L, ...) standardGeneric("rowSums"))
 
 
-#' @method colSums dfmSparse
-#' @param x a dfm, inheriting from \link[Matrix]{Matrix}
+# @method colSums dfmSparse
+#' @rdname dfm-class
 #' @param na.rm if \code{TRUE}, omit missing values (including \code{NaN}) from
 #'   the calculations
 #' @param dims ignored
-#' @param ... additional arguments, for methods/generic compatibility
-#' @export
+# @export
 setMethod("colSums", 
           signature = (x = "dfmSparse"),
           definition = function(x, na.rm = FALSE, dims = 1L, ...) {
@@ -971,8 +970,9 @@ setMethod("colSums",
               csums
           })
 
-#' @method colSums dfmDense
-#' @export
+# @method colSums dfmDense
+#' @rdname dfm-class
+# @export
 setMethod("colSums", 
           signature = (x = "dfmDense"),
           definition = function(x, na.rm = FALSE, dims = 1L, ...) {
@@ -981,8 +981,9 @@ setMethod("colSums",
               csums
           })
 
-#' @method rowSums dfmSparse
-#' @export
+# @method rowSums dfmSparse
+#' @rdname dfm-class
+# @export
 setMethod("rowSums", 
           signature = (x = "dfmSparse"),
           definition = function(x, na.rm = FALSE, dims = 1L, ...) {
@@ -991,8 +992,9 @@ setMethod("rowSums",
               rsums
           })
 
-#' @method rowSums dfmDense
-#' @export
+# @method rowSums dfmDense
+#' @rdname dfm-class
+# @export
 setMethod("rowSums", 
           signature = (x = "dfmDense"),
           definition = function(x, na.rm = FALSE, dims = 1L, ...) {
