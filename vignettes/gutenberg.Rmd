@@ -24,9 +24,10 @@ In this use case I will implement some of the analysis from the book "Text Analy
 
 The code below scans and splits the text of Moby Dick from Project Gutenberg, more or less as implemented in the textbook.
 ```{r eval=TRUE}
+library(quanteda)
 alltext <- scan("http://www.gutenberg.org/cache/epub/2701/pg2701.txt",
 what="character", sep="\n")
-mobyWords <- unlist(strsplit(mobyText, "\\W"))
+mobyWords <- unlist(strsplit(alltext, "\\W"))
 which(mobyWords=="whale")
 ```
 
