@@ -5,6 +5,8 @@
 \alias{print,dfmDense-method}
 \alias{print,dfmSparse-method}
 \alias{print.dfm}
+\alias{show,dfmDense-method}
+\alias{show,dfmSparse-method}
 \title{print a dfm object}
 \usage{
 \S4method{print}{dfmSparse}(x, show.values = FALSE, show.settings = FALSE,
@@ -12,6 +14,10 @@
 
 \S4method{print}{dfmDense}(x, show.values = FALSE, show.settings = FALSE,
   ...)
+
+\S4method{show}{dfmSparse}(object)
+
+\S4method{show}{dfmDense}(object)
 
 \method{print}{dfm}(x, show.values = FALSE, show.settings = FALSE, ...)
 }
@@ -24,6 +30,8 @@
 \link{settings}.}
 
 \item{...}{further arguments passed to or from other methods}
+
+\item{object}{the item to be printed}
 }
 \description{
 print method for dfm objects

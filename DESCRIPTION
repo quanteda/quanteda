@@ -57,7 +57,8 @@ Suggests:
     coda,
     lattice,
     xlsx,
-    ggplot2
+    ggplot2,
+    topicmodels
 URL: http://github.com/kbenoit/quanteda
 BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE

@@ -98,7 +98,12 @@ setMethod("print", signature(x = "dfmDense"),
               }
           })
 
+
+#' @rdname print.dfm
+#' @param object the item to be printed
 setMethod("show", signature(object = "dfmSparse"), function(object) print(object))
+
+#' @rdname print.dfm
 setMethod("show", signature(object = "dfmDense"), function(object) print(object))
 
 ## S4 Method for the S4 class sparse dfm
