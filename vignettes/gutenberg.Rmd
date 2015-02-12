@@ -75,8 +75,8 @@ kwic(mobyCorp, 'chapter')
 chapters <- segment(mobyCorp, what='other', delimiter="\\nCHAPTER\\s\\d", perl=TRUE)
 
 chapDfm <- dfm(chapters)
-barplot(as.numeric(chapDfm[,'whale']))
-barplot(as.numeric(chapDfm[,'ahab']))
+barplot(as.numeric(chapDfm[, 'whale']))
+barplot(as.numeric(chapDfm[, 'ahab']))
 
 ```
 
@@ -85,8 +85,8 @@ barplot(as.numeric(chapDfm[,'ahab']))
 Correlation of type-token ratio and chapter length:
 
 ```{r eval=TRUE}
-#ttr <- statLexdiv(chapDfm)
-#lens <- length(rowSums(chapDfm))
+ttr <- statLexdiv(chapDfm)
+lens <- length(rowSums(chapDfm))
 
 ```
 
