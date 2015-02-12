@@ -20,7 +20,7 @@ topic modelling package \pkg{lda}.
 \examples{
 mycorpus <- subset(inaugCorpus, Year>1970)
 d <- dfm(mycorpus, stopwords=TRUE)
-d <- trimdfm(d, minCount=5, minDoc=3)
+d <- trim(d, minCount=5, minDoc=3)
 td <- dfm2ldaformat(d)
 if (require(lda)) {
     tmodel.lda <- lda.collapsed.gibbs.sampler(documents=td$documents,

@@ -9,11 +9,11 @@
 clean(x, ...)
 
 \method{clean}{character}(x, removeDigits = TRUE, removePunct = TRUE,
-  toLower = TRUE, additional = NULL, removeTwitter = FALSE,
+  toLower = TRUE, removeAdditional = NULL, removeTwitter = FALSE,
   removeURL = TRUE, ...)
 
 \method{clean}{corpus}(x, removeDigits = TRUE, removePunct = TRUE,
-  toLower = TRUE, additional = NULL, removeTwitter = FALSE, ...)
+  toLower = TRUE, removeAdditional = NULL, removeTwitter = FALSE, ...)
 }
 \arguments{
 \item{x}{The object to be cleaned. Can be either a character vector or a
@@ -28,7 +28,7 @@ the cleaned texts.}
 
 \item{toLower}{convert text to lower case \code{TRUE}}
 
-\item{additional}{additional characters to remove (\link[=regex]{regular expression})}
+\item{removeAdditional}{additional characters to remove (\link[=regex]{regular expression})}
 
 \item{removeTwitter}{if \code{FALSE}, do not remove \code{@} or \code{#}}
 
@@ -49,9 +49,9 @@ punctuation and convert to lower, but keep digits, the command would be:
 \examples{
 clean("This is 1 sentence with 2.0 numbers in it, and one comma.", removeDigits=FALSE)
 clean("This is 1 sentence with 2.0 numbers in it, and one comma.", toLower=FALSE)
-clean("We are his Beliebers, and him is #ourjustin @justinbieber we love u", removeTwitter=TRUE)
+clean("We are his Beliebers, and him is #ourjustin @justinbieber we luv u", removeTwitter=TRUE)
 clean("Collocations can be represented as inheritance_tax using the _ character.")
-clean("But under_scores can be removed using the additional argument.", additional="[_]")
+clean("But under_scores can be removed with removeAdditional.", removeAdditional="[_]")
 clean("This is a $1,500,000 budget and $20bn cash and a $5 cigar.")
 clean("This is a $1,500,000 budget and $20bn cash and a $5 cigar.", removeDigits=FALSE)
 clean("URL regex from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.")

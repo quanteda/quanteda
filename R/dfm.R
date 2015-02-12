@@ -608,10 +608,13 @@ makeRegEx <- function(wildcardregex) {
     ##   [ab] meaning a or b
 }
 
-# @export
-# trimdfm <- function(x, ...) {
-#     UseMethod("trimdfm")
-# }
+#' @rdname trim
+#' @param ... only included to allow legacy \code{trimdfm} to pass arguments to \code{trim}
+#' @export
+trimdfm <- function(x, ...) {
+    cat("note: trimdfm deprecated: use trim instead.\n")
+    UseMethod("trim")
+}
 
 # Trim a dfm based on a subset of features and words
 #
@@ -636,44 +639,44 @@ makeRegEx <- function(wildcardregex) {
 # topfeatures(dtmReduced, NULL)
 # dtmSampled <- trimdfm(dtm, sample=200)  # top 200 words
 # dim(dtmSampled)  # 196 x 200 words
-trimdfm <- function(x, minCount=1, minDoc=1, minTotal=0, sample=NULL, keep=NULL, verbose=TRUE) {
-    # if (!is.dfm(x)) stop("trimdfm should only be used for dfm objects.")
-    class_xorig <- class(x)
-    mY <- t(x)
-
-    rs1 <- which(rowSums(mY) >= minCount)
-    if (verbose & minCount>1)
-        cat("Words appearing less than", minCount, "times:", (nrow(mY) - length(rs1)), "\n")
-
-    rs2 <- which(apply(mY, 1, function(x){ sum(x>0) >= minDoc } ))
-    if (verbose & minDoc>1)
-        cat("Words appearing in fewer than", minDoc, "documents:", (nrow(mY) - length(rs2)), "\n")
-
-    tokeep <- intersect(rs1, rs2)
-    if (length(tokeep)==0)
-        stop("No words left after trimming.")
-
-    if (!is.null(sample)) {
-        if (sample > length(tokeep))
-            warning(paste('Sample size', sample, 'larger than',
-                          length(tokeep), "already filtered from", nrow(mY), "so ignoring sampling request"))
-        tokeep <- sample(tokeep, min(length(tokeep), sample))
-        if (verbose)
-            cat("Retaining a random sample of", sample, "words\n")
-    }
-
-    trimmeddfm <- t(mY[sort(tokeep),])
-
-    # which features to keep
-    if (!is.null(keep)) {
-        trimmeddfm <- trimmeddfm[, grep(keep, colnames(trimmeddfm))]
-    }
-
-    trimmeddfm <- trimmeddfm[rowSums(trimmeddfm) >= minTotal, , drop=FALSE]
-
-    class(trimmeddfm) <- class_xorig
-    trimmeddfm
-}
+# trimdfm <- function(x, minCount=1, minDoc=1, minTotal=0, sample=NULL, keep=NULL, verbose=TRUE) {
+#     # if (!is.dfm(x)) stop("trimdfm should only be used for dfm objects.")
+#     class_xorig <- class(x)
+#     mY <- t(x)
+# 
+#     rs1 <- which(rowSums(mY) >= minCount)
+#     if (verbose & minCount>1)
+#         cat("Words appearing less than", minCount, "times:", (nrow(mY) - length(rs1)), "\n")
+# 
+#     rs2 <- which(apply(mY, 1, function(x){ sum(x>0) >= minDoc } ))
+#     if (verbose & minDoc>1)
+#         cat("Words appearing in fewer than", minDoc, "documents:", (nrow(mY) - length(rs2)), "\n")
+# 
+#     tokeep <- intersect(rs1, rs2)
+#     if (length(tokeep)==0)
+#         stop("No words left after trimming.")
+# 
+#     if (!is.null(sample)) {
+#         if (sample > length(tokeep))
+#             warning(paste('Sample size', sample, 'larger than',
+#                           length(tokeep), "already filtered from", nrow(mY), "so ignoring sampling request"))
+#         tokeep <- sample(tokeep, min(length(tokeep), sample))
+#         if (verbose)
+#             cat("Retaining a random sample of", sample, "words\n")
+#     }
+# 
+#     trimmeddfm <- t(mY[sort(tokeep),])
+# 
+#     # which features to keep
+#     if (!is.null(keep)) {
+#         trimmeddfm <- trimmeddfm[, grep(keep, colnames(trimmeddfm))]
+#     }
+# 
+#     trimmeddfm <- trimmeddfm[rowSums(trimmeddfm) >= minTotal, , drop=FALSE]
+# 
+#     class(trimmeddfm) <- class_xorig
+#     trimmeddfm
+# }
 
 
 #' Trim a dfm using threshold-based or random feature selection
@@ -1059,7 +1062,7 @@ nfeature.corpus <- function(x) {
 #' @export
 #' @examples
 #' nfeature(dfm(inaugCorpus))
-#' nfeature(trimdfm(dfm(inaugCorpus), minDoc=5, minCount=10))
+#' nfeature(trim(dfm(inaugCorpus), minDoc=5, minCount=10))
 nfeature.dfm <- function(x) {
     ncol(x)
 }

@@ -29,7 +29,7 @@ wordstem(exampleString)
 library(topicmodels)
 prescorpus <- subset(inaugCorpus, Year>1900)
 presdfm <- dfm(prescorpus, stopwords=TRUE, stem=TRUE)
-presdfm <- trimdfm(presdfm, minCount=10, minDoc=5) 
+presdfm <- trim(presdfm, minCount=10, minDoc=5) 
 presTriplet <- dfm2tmformat(presdfm)
 presLDA <- LDA(presTriplet, method="VEM", k=20)
 # which terms contribute most to each topic

@@ -1,14 +1,13 @@
 Package: quanteda
 Type: Package
 Title: Quantitative Analysis of Textual Data
+Authors@R: c(
+    person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role = c("cre", "aut")),
+    person("Paul", "Nulty", email = "paul.nulty@gmail.com", role = "aut"),
+    person("Pablo", "Barbera", email = "pablo.barbera@nyu.edu", role = "ctb"),
+    person("Kohei", "Watanabe", email = "watanabe.kohei@gmail.com", role = "ctb"))
 Version: 0.7.1.000
 Date: 2015-02-11
-Authors@R: c(
-    person("Benoit", "Kenneth", email = "kbenoit@lse.ac.uk", role = "cre"),
-    person("Nulty", "Paul", email = "paul.nulty@gmail.com", role = "aut"),
-    person("Barbera", "Pablo", email = "pablo.barbera@nyu.edu", role = "ctb"))
-Author: Ken Benoit <kbenoit@lse.ac.uk> and Paul Nulty <p.nulty@lse.ac.uk>
-Maintainer: Ken Benoit <kbenoit@lse.ac.uk>
 Description: A package for the management and quantitative analysis of textual
     data with R. quanteda makes it easy to manage texts in the form of a
     corpus, defined as a collection of texts that includes document-level
@@ -44,7 +43,7 @@ Imports:
     stm,
     topicmodels,
     streamR,
-    jsonlite,
+    jsonlite (>= 0.9.10),
     httr,
     austin
 Suggests:
@@ -61,7 +60,8 @@ Suggests:
     rjags,
     coda,
     lattice,
-    xlsx
+    xlsx,
+    ggplot2
 URL: http://github.com/kbenoit/quanteda
 BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE

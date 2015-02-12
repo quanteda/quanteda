@@ -17,7 +17,7 @@
 #' @export
 #' @examples
 #' mycorpus <- subset(inaugCorpus, Year>1970)
-#' d <- trimdfm(dfm(mycorpus), minCount=5, minDoc=3)
+#' d <- trim(dfm(mycorpus), minCount=5, minDoc=3)
 #' dim(d)
 #' td <- dfm2tmformat(d)
 #' length(td$v)
@@ -40,7 +40,7 @@ dfm2tmformat <- function(d, weighting=weightTf){
 #' @examples
 #' mycorpus <- subset(inaugCorpus, Year>1970)
 #' d <- dfm(mycorpus, stopwords=TRUE)
-#' d <- trimdfm(d, minCount=5, minDoc=3)
+#' d <- trim(d, minCount=5, minDoc=3)
 #' td <- dfm2ldaformat(d)
 #' if (require(lda)) {
 #'     tmodel.lda <- lda.collapsed.gibbs.sampler(documents=td$documents, 
