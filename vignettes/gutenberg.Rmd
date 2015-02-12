@@ -18,7 +18,7 @@ vignette: >
 
 # Example 1: Moby Dick
 
-In this use case I will implement some of the analysis from the book "Text Analysis with R for Students of Literature" by Matthew L Jockers. The first section of analysis uses a 
+In this use case I will implement some of the analysis from the book "Text Analysis with R for Students of Literature" by Matthew L Jockers. 
 
 ## scanning text and lines from the web
 
@@ -31,20 +31,14 @@ mobyWords <- unlist(strsplit(alltext, "\\W"))
 which(mobyWords=="whale")
 ```
 
-Below is the initial word frequency analysis performed using a `quanteda` corpus.
-
-```{r eval=TRUE}
-mobyLines <- scan("http://www.gutenberg.org/cache/epub/2701/pg2701.txt",
-                what="character", sep="\n")
-mobyText <- paste(mobyLines, collapse=" ")
-mobyCorp <- corpus(mobyText)
-```
 
 
 ## Comparing word frequencies
+Below is the initial word frequency analysis performed using a `quanteda` corpus.
 
 ```{r eval=TRUE}
 # ten most frequent words
+mobyCorp <- corpus(url("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
 mobyDfm <- dfm(mobyCorp)
 topfeatures(mobyDfm, n=10)
 plot(topfeatures(mobyDfm, n=10))
@@ -62,7 +56,6 @@ mobyDfm[,'she']
 
 
 ## Dispersion plots
-
 Example 4.1 in the book plots the frequency of certain words across the length of the text. 
 
 ```{r eval=TRUE}
@@ -75,14 +68,27 @@ xlab="Novel Time", ylab="whale", type="h", ylim=c(0,1), yaxt='n')
 ```
 
 
-## Searching and breaking by chapter
+
+## Breaking by chapter, searching, and counting
 ```{r eval=TRUE}
-txt <- paste(scan(url("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"), what="character", sep="\n"), collapse="\n")
-#kwic(mobyCorp, 'chapter')
-#chapters <- segment(mobyCorp, delimiter="Chapter")
+kwic(mobyCorp, 'chapter')
+chapters <- segment(mobyCorp, what='other', delimiter="\\nCHAPTER\\s\\d", perl=TRUE)
+
+chapDfm <- dfm(chapters)
+barplot(as.numeric(chapDfm[,'whale']))
+barplot(as.numeric(chapDfm[,'ahab']))
+
 ```
 
+## Measures of Lexical Variety
 
+Correlation of type-token ratio and chapter length:
+
+```{r eval=TRUE}
+#ttr <- statLexdiv(chapDfm)
+#lens <- length(rowSums(chapDfm))
+
+```
 
 
 
