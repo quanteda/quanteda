@@ -26,7 +26,7 @@ packages that expect this format, such as \pkg{topicmodels}.
 }
 \examples{
 mycorpus <- subset(inaugCorpus, Year>1970)
-d <- trimdfm(dfm(mycorpus), minCount=5, minDoc=3)
+d <- trim(dfm(mycorpus), minCount=5, minDoc=3)
 dim(d)
 td <- dfm2tmformat(d)
 length(td$v)

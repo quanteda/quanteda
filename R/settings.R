@@ -95,8 +95,8 @@ settingsInitialize <- function() {
 }
 
 
-#' @rdname settings
-#' @export
+# @rdname settings
+# @export
 print.settings <- function(x, ...) {
     cat("Settings:\n")
     for (s in names(x)) {

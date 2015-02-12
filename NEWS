@@ -2,7 +2,7 @@ quanteda 0.7.1
 ==============
 * trimdfm, flatten.dictionary are gone from the NAMESPACE
 
-* formals changed a bit in clean(), kwic()
+* formals changed a bit in clean(), kwic().  
 
 * compoundWords() -> phrasetotoken()
 

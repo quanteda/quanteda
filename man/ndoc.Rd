@@ -36,6 +36,6 @@ Returns the number of documents or features in a quanteda object.
 ndoc(inaugCorpus)
 ndoc(dfm(inaugCorpus))
 nfeature(dfm(inaugCorpus))
-nfeature(trimdfm(dfm(inaugCorpus), minDoc=5, minCount=10))
+nfeature(trim(dfm(inaugCorpus), minDoc=5, minCount=10))
 }
 
