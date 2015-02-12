@@ -73,17 +73,17 @@ tokenize.corpus <- function(x, ...) {
     tokenize(texts(x), ...)
 }
 
-#' @rdname segment
-#' @return \code{segmentSentence} returns a character vector of sentences that
-#'   have been segmented
-#' @export
-#' @examples
-#' # segment sentences of the UK 2010 immigration sections of manifestos
-#' segmentSentence(uk2010immig[1])[1:5]   # 1st 5 sentences from first (BNP) text
-#' str(segmentSentence(uk2010immig[1]))   # a 132-element char vector
-#' str(segmentSentence(uk2010immig[1:2])) # a 144-element char vector (143+ 12)
-#' 
-segmentSentence <- function(x, delimiter="[.!?:;]") {
+# @rdname segment
+# @return \code{segmentSentence} returns a character vector of sentences that
+#   have been segmented
+# @export
+# @examples
+# # segment sentences of the UK 2010 immigration sections of manifestos
+# segmentSentence(uk2010immig[1])[1:5]   # 1st 5 sentences from first (BNP) text
+# str(segmentSentence(uk2010immig[1]))   # a 132-element char vector
+# str(segmentSentence(uk2010immig[1:2])) # a 144-element char vector (143+ 12)
+# 
+segmentSentence <- function(x, delimiter="[.!?:;]", perl=FALSE) {
     # strip out CRs and LFs, tabs
     text <- gsub("\\n+|\\t+", " ", x)
     # remove trailing and leading spaces
@@ -119,7 +119,7 @@ segmentSentence <- function(x, delimiter="[.!?:;]") {
     puncts <- substr(tkns[punctpos], nchar(tkns[punctpos]), nchar(tkns[punctpos]))
     
     # split the text into sentences
-    sentences <- unlist(strsplit(text, delimiter))
+    sentences <- unlist(strsplit(text, delimiter, perl=perl))
     # paste punctuation marks back onto sentences
     result <- paste(sentences, puncts, sep="")
     # put decimals back
@@ -138,18 +138,18 @@ segmentSentence <- function(x, delimiter="[.!?:;]") {
     gsub("^ +| +$", "", result)
 }
 
-#' @rdname segment
-#' @return \code{segmentParagraph} returns a character vector of paragraphs that
-#'   have been segmented
-#' @export
-#' @examples
-#' # segment paragraphs 
-#' segmentParagraph(uk2010immig[3])[1:2]   # 1st 2 Paragraphs from 3rd (Con) text
-#' str(segmentParagraph(uk2010immig[3]))   # a 12-element char vector
-#' 
-#' @export
-segmentParagraph <- function(x, delimiter="\\n{2}") {
-    tmp <- unlist(strsplit(x, delimiter))
+# @rdname segment
+# @return \code{segmentParagraph} returns a character vector of paragraphs that
+#   have been segmented
+# @export
+# @examples
+# # segment paragraphs 
+# segmentParagraph(uk2010immig[3])[1:2]   # 1st 2 Paragraphs from 3rd (Con) text
+# str(segmentParagraph(uk2010immig[3]))   # a 12-element char vector
+# 
+# @export
+segmentParagraph <- function(x, delimiter="\\n{2}", perl=FALSE) {
+    tmp <- unlist(strsplit(x, delimiter, perl=perl))
     tmp[which(tmp != "")]
 }
 
@@ -161,7 +161,8 @@ segmentParagraph <- function(x, delimiter="\\n{2}") {
 #' \code{segment} works on a character vector or corpus object, and allows the 
 #' delimiters to be defined.  See details.
 #' @param x text or corpus object to be segmented
-#' @param ... provides additional arguments to be passed to \link{clean}
+#' @param ... provides additional passed to the regular expression, such as \code{perl=TRUE},
+#' or arguments to be passed to \link{clean} if \code{what=tokens},
 #' @return A list of segmented texts, with each element of the list correponding
 #'   to one of the original texts.
 #' @details Tokens are delimited by whitespace.  For sentences, the delimiter 
@@ -181,13 +182,14 @@ segment <- function(x, ...) {
 }
 
 #' @rdname segment
-#' @param what unit of segmentation.  Current options are tokens, sentences,
+#' @param what unit of segmentation.  Current options are tokens, sentences, 
 #'   paragraphs, and other.  Segmenting on \code{other} allows segmentation of a
-#'   text on any user-defined value, and must be accompanied by the
+#'   text on any user-defined value, and must be accompanied by the 
 #'   \code{delimiter} argument.
 #' @param delimiter  delimiter defined as a \link{regex} for segmentation. Each 
 #'   type has its own default, except \code{other}, which requires a value to be
 #'   specified.
+#' @param perl logical. Should Perl-compatible regular expressions be used?
 #' @export
 #' @examples
 #' # same as tokenize()
@@ -205,20 +207,21 @@ segment.character <- function(x, what=c("tokens", "sentences", "paragraphs", "ta
                                                         ifelse(what=="paragraphs", "\\n{2}", 
                                                                ifelse(what=="tags", "##\\w+\\b", 
                                                                       NULL)))),
+                              perl=FALSE,
                               ...) {
     what <- match.arg(what)
     if (what=="tokens") {
         return(tokenize(x, sep=delimiter, ...)) 
     } else if (what=="sentences") {
-        return(lapply(x, segmentSentence, delimiter)) 
+        return(lapply(x, segmentSentence, delimiter, perl=perl)) 
     } else if (what=="paragraphs") {
-        return(lapply(x, segmentParagraph, delimiter)) 
+        return(lapply(x, segmentParagraph, delimiter, perl=perl)) 
     } else if (what=="tags") {
-        return(lapply(x, segmentParagraph, delimiter))         
+        return(lapply(x, segmentParagraph, delimiter, perl=perl))         
     } else if (what=="other") {
         if (is.null(delimiter))
             stop("For type other, you must supply a delimiter value.")
-        return(lapply(x, segmentParagraph, delimiter))
+        return(lapply(x, segmentParagraph, delimiter, perl=perl))
     }
 }
 
@@ -237,20 +240,21 @@ segment.character <- function(x, what=c("tokens", "sentences", "paragraphs", "ta
 #' texts(testCorpusSeg)
 #' # segment a corpus into sentences
 #' segmentedCorpus <- segment(corpus(uk2010immig), "sentences")
-#' identical(segmentedCorpus, segmentedChar)
+#' identical(ndoc(segmentedCorpus), length(unlist(segmentedChar)))
 segment.corpus <- function(x, what = c("tokens", "sentences", "paragraphs", "tags", "other"), 
                            delimiter = ifelse(what=="tokens", " ", 
                                               ifelse(what=="sentences", "[.!?:;]", 
                                                      ifelse(what=="paragraphs", "\\n{2}", 
                                                             ifelse(what=="tags", "##\\w+\\b", 
                                                                    NULL)))),
+                           perl=FALSE,
                            ...) {
-    newCorpus <- corpus(unlist(segment(texts(x), what, delimiter, ...)),
+    newCorpus <- corpus(unlist(segment(texts(x), what, delimiter, perl=perl, ...)),
                         source = metacorpus(x, "source"),
                         notes = paste0("segment.corpus(", match.call(), ")"))
     
     if (what == "tags") {
-        tagIndex <- gregexpr(delimiter, texts(x))[[1]]
+        tagIndex <- gregexpr(delimiter, texts(x), perl=perl)[[1]]
         tags <- character()
         length(tags) <- ndoc(newCorpus)
         for (i in 1:length(tagIndex))
