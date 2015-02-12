@@ -193,7 +193,7 @@ corpus.twitter <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
 #' @export
 corpus.url <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
     # extract the content (texts)
-    txt <- paste(scan(x, what="character", sep=" "), collapse=" ")
+    txt <- paste(scan(x, what="character", sep="\n"), collapse="\n")
     dets <- summary(x)
     close(x)
     corpus(txt, source=paste(sprintf("Loaded from url at %s:", dets$description ),
