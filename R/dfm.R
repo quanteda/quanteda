@@ -1001,7 +1001,6 @@ setMethod("rowSums",
               rsums
           })
 
-
 #' @export
 #' @rdname topfeatures
 topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ...) {
