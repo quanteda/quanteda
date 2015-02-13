@@ -274,7 +274,6 @@ json <- function(path=NULL, source="twitter", enc = "unknown", ...) {
 #' @param until A UNIX timestamp or strtotime data value that points to
 #' the end of the time range to be searched. For more information on the
 #' accepted values, see: \url{http://php.net/manual/en/function.strtotime.php}
-#' @import Rfacebook
 #' @examples
 #' \dontrun{
 #' # scraping the 100 most recent posts on Barack Obama's page
