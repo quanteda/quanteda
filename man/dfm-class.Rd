@@ -23,6 +23,8 @@
 \alias{[,dfmSparse,missing,missing,logical-method}
 \alias{[,dfmSparse,missing,missing,missing-method}
 \alias{[.dfm}
+\alias{as.data.frame,dfm-method}
+\alias{as.matrix,dfm-method}
 \alias{colSums,dfmDense-method}
 \alias{colSums,dfmSparse-method}
 \alias{dfm-class}
@@ -88,6 +90,10 @@
 \S4method{+}{dfmDense,numeric}(e1, e2)
 
 \S4method{+}{numeric,dfmDense}(e1, e2)
+
+\S4method{as.matrix}{dfm}(x)
+
+\S4method{as.data.frame}{dfm}(x)
 }
 \arguments{
 \item{x}{the dfm object}
@@ -115,9 +121,6 @@ The dfm class of object is a type of \link[Matrix]{Matrix-class}
   subclasses of the \code{dfm} class, depending on whether the object can be
   represented by a sparse matrix, in which case it is a \code{dfmSparse}
   class object, or if dense, then a \code{dfmDense} object.  See Details.
-
-the calculations
-myDfm <- dfm(inaugTexts, verbose=FALSE)
 }
 \details{
 The \code{dfm} class is a virtual class that will contain one of two
@@ -150,9 +153,10 @@ requiring 8 bytes of storage.
 operations, including the settings used to clean and tokenize the texts,
 and to create the dfm.  See \code{\link{settings}}.}
 
-\item{\code{weighting}}{the feature weighting applied to the dfm.  Default is \code{"frequency"},
-indicating that the values in the cells of the dfm are simple feature
-counts.  To change this, use the \code{\link{weight}} method.}
+\item{\code{weighting}}{the feature weighting applied to the dfm.  Default is
+\code{"frequency"}, indicating that the values in the cells of the dfm are
+simple feature counts.  To change this, use the \code{\link{weight}}
+method.}
 
 \item{\code{smooth}}{a smoothing parameter, defaults to zero.  Can be changed using
 either the \code{\link{smooth}} or the \code{\link{weight}} methods.}
@@ -160,4 +164,27 @@ either the \code{\link{smooth}} or the \code{\link{weight}} methods.}
 \item{\code{Dimnames}}{These are inherited from \link[Matrix]{Matrix-class} but are
 named \code{docs} and \code{features} respectively.}
 }}
+\examples{
+\dontshow{
+dfmSparse <- dfm(inaugTexts, verbose=FALSE)
+str(as.matrix(dfmSparse))
+class(as.matrix(dfmSparse))
+dfmDense <- dfm(inaugTexts, verbose=FALSE, matrixType="dense")
+str(as.matrix(dfmDense))
+class(as.matrix(dfmDense))
+identical(as.matrix(dfmSparse), as.matrix(dfmDense))
+}
+\dontshow{
+dfmSparse <- dfm(inaugTexts, verbose=FALSE)
+str(as.data.frame(dfmSparse))
+class(as.data.frame(dfmSparse))
+dfmDense <- dfm(inaugTexts, verbose=FALSE, matrixType="dense")
+str(as.data.frame(dfmDense))
+class(as.data.frame(dfmDense))
+identical(as.data.frame(dfmSparse), as.data.frame(dfmDense))
+}
+}
+\seealso{
+\link{dfm}
+}
 
