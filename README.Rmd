@@ -102,7 +102,7 @@ kwic(uk2010immigCorpus, "deport", 3)
 mydfm <- dfm(uk2010immigCorpus, stopwords=TRUE)
 dim(mydfm)              # basic dimensions of the dfm
 topfeatures(mydfm, 20)  # 20 top words
-quartz()
+if (Sys.info()['sysname']=="Darwin") quartz() # open nicer window, Mac only
 plot(mydfm)             # word cloud     
 ```
 

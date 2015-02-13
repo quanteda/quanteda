@@ -28,6 +28,7 @@
 #'   \code{dfmSparse} or \code{dfmDense}.
 #' @export
 #' @import methods
+#' @name dfm-class
 setClass("dfm",
          slots = c(settings = "list", weighting = "character", smooth = "numeric"),
          prototype = list(settings = list(NULL),

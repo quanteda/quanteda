@@ -69,8 +69,7 @@ NULL
 #' 
 NULL
 
-#' @name .stopwords
-#' @rdname stopwords
+#' @name stopwords
 #' @docType data
 NULL
 
