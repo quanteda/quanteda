@@ -70,7 +70,6 @@ Collate:
     'dfm-classes.R'
     'dfm-main.R'
     'dictionaryFunctions.R'
-    'dispersion.R'
     'distance.R'
     'get-texts.R'
     'gui.R'
