@@ -4,13 +4,13 @@
 \alias{getTextDir}
 \title{loads all text files from a given directory}
 \usage{
-getTextDir(dirname, pattern = "\\\\.txt$", enc = "unknown")
+getTextDir(dirname, extension = "*.txt", enc = "unknown")
 }
 \arguments{
 \item{dirname}{A directory path}
 
-\item{pattern}{a \link[=regex]{regular expression} pattern match for the input
-file names}
+\item{extension}{a glob pattern match for the
+file extension of the documents to load (e.g. '*.txt')}
 
 \item{enc}{a value for encoding that is a legal value for \link{Encoding}}
 }
@@ -27,6 +27,6 @@ getTextDir('/home/paul/documents/')
 }
 }
 \author{
-Paul Nulty
+Paul Nulty and Kenneth Benoit
 }
 
