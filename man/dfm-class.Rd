@@ -31,14 +31,8 @@
 \alias{rowSums,dfmDense-method}
 \alias{rowSums,dfmSparse-method}
 \alias{t,dfm-method}
-\alias{t,dfmDense-method}
-\alias{t,dfmSparse-method}
 \title{Virtual class "dfm" for a document-feature matrix}
 \usage{
-\S4method{t}{dfmSparse}(x)
-
-\S4method{t}{dfmDense}(x)
-
 \S4method{t}{dfm}(x)
 
 \S4method{colSums}{dfmSparse}(x, na.rm = FALSE, dims = 1L, ...)
@@ -96,7 +90,7 @@
 \S4method{+}{numeric,dfmDense}(e1, e2)
 }
 \arguments{
-\item{x}{the sparse dfm}
+\item{x}{the dfm object}
 
 \item{na.rm}{if \code{TRUE}, omit missing values (including \code{NaN}) from
 the calculations}

@@ -80,10 +80,10 @@ sort(dfmSparse)[,1:10]
 sort(dfmWeighted)[,1:10] 
 
 ## statLexdiv.dfm* -- PASSED
-statLexdiv(dfmDense)   ### works but warning message
-statLexdiv(dfmDense, "C")   ### works but warning message
-statLexdiv(dfmSparse)  
-statLexdiv(dfmSparse, "C")  
+lexdiv(dfmDense)   ### works but warning message
+lexdiv(dfmDense, "C")   ### works but warning message
+lexdiv(dfmSparse)  
+lexdiv(dfmSparse, "C")  
 # statLexdiv(dfmWeighted)  
 # statLexdiv(dfmWeighted, "CTTR")  
 

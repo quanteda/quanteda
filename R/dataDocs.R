@@ -51,9 +51,9 @@ NULL
 #' @examples
 #' data(ukimmigrTexts)
 #' ukimmigrCorpus <- corpus(ukimmigrTexts, docvars=list(party=names(ukimmigrTexts)))
-#' language(ukimmigrTexts) <- "english"
-#' encoding(ukimmigrTexts) <- "UTF-8"
-#' summary(ukimmigrTexts)
+#' language(ukimmigrCorpus) <- "english"
+#' encoding(ukimmigrCorpus) <- "UTF-8"
+#' summary(ukimmigrCorpus)
 NULL
 
 #' @name englishSyllables
