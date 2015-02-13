@@ -5,3 +5,7 @@ todo: corpus constructor for urls, or just an example? - done
 - dispersion plots
 
 statLexdiv - camelCase
+
+- fix facebook warnings
+
+-  change dfm clean order

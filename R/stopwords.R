@@ -103,6 +103,7 @@ stopwordsGet <- function(kind="english") {
 #' Supported languages are arabic, danish, dutch, english, finnish, french,
 #' german, hungarian, italian, norwegian, portuguese, russian, spanish, and 
 #' swedish. Language names are case sensitive.
+#' @rdname stopwords
 #' @section A note of caution:
 #'  Stop words are an arbitrary choice imposed by the
 #'   user, and accessing a pre-defined list of words to ignore does not mean
@@ -126,6 +127,7 @@ stopwords <- function(kind="english", verbose=TRUE) {
         stop(paste(kind, "is not a recognized stopword list type."))
     }
     if (verbose) cat("note: using", kind, "builtin stopwords, but beware that one size may not fit all.\n")
+    data(stopwords, envir = environment())
     .stopwords[[kind]]
 }
 

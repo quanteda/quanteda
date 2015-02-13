@@ -274,7 +274,6 @@ json <- function(path=NULL, source="twitter", enc = "unknown", ...) {
 #' @param until A UNIX timestamp or strtotime data value that points to
 #' the end of the time range to be searched. For more information on the
 #' accepted values, see: \url{http://php.net/manual/en/function.strtotime.php}
-#'
 #' @examples
 #' \dontrun{
 #' # scraping the 100 most recent posts on Barack Obama's page
@@ -290,7 +289,10 @@ json <- function(path=NULL, source="twitter", enc = "unknown", ...) {
 #' @author Pablo Barbera
 #' @export
 getFBpage <- function(page, token, n=100, since=NULL, until=NULL, feed=FALSE){
-    library("Rfacebook")
+    if(!requireNamespace("Rfacebook", quietly = TRUE)){
+        stop("The Rfacebook packages is needed for this function to work. Please install it.",
+             call. = FALSE)
+    }
     df <- Rfacebook::getPage(page, token, n, since, until, feed)
     tempRes <- df
     class(tempRes) <- list('facebook', class(df))
