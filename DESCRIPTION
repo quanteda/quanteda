@@ -53,10 +53,10 @@ Suggests:
     rjags,
     coda,
     lattice,
-    xlsx,
     ggplot2,
     topicmodels,
-    Rfacebook
+    Rfacebook,
+    xlsx
 URL: http://github.com/kbenoit/quanteda
 BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE
@@ -71,6 +71,7 @@ Collate:
     'dfm-classes.R'
     'dfm-main.R'
     'dictionaryFunctions.R'
+    'dispersion.R'
     'distance.R'
     'get-texts.R'
     'gui.R'
