@@ -74,7 +74,6 @@ Collate:
     'distance.R'
     'get-texts.R'
     'gui.R'
-    'indexer.R'
     'kwic.R'
     'lexdiv.R'
     'ngrams.R'
