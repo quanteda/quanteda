@@ -1,10 +1,4 @@
 
-#' @rdname removeFeatures
-#' @export
-stopwordsRemove <- function(x, stopwords=NULL, verbose=TRUE) {
-    cat("stopwordsRemove is deprecated, use removeFeatures instead.")
-    UseMethod("removeFeatures")
-}
 
 #' remove features from an object
 #' 
@@ -21,7 +15,9 @@ stopwordsRemove <- function(x, stopwords=NULL, verbose=TRUE) {
 #' list to be supplied, for instance \code{stopwords("english")}.
 #' @param verbose if \code{TRUE} print message about how many features were removed
 #' @return an object with stopwords removed
+#' @name removeFeatures
 #' @export
+#' @seealso \link{stopwords}
 #' @examples
 #' ## examples for character objects
 #' someText <- "Here's some text containing words we want to remove."
@@ -80,13 +76,14 @@ removeFeatures.collocations <- function(x, stopwords=NULL, verbose=TRUE) {
     x
 }
 
-
-#' @rdname stopwords
+#' @rdname removeFeatures
 #' @export
-stopwordsGet <- function(kind="english") {
-    cat("stopwordsGet() is deprecated, use stopwords() instead.\n")
-    stopwords(kind)
+stopwordsRemove <- function(x, stopwords=NULL, verbose=TRUE) {
+    cat("stopwordsRemove is deprecated, use removeFeatures instead.")
+    UseMethod("removeFeatures")
 }
+
+
 
 #' access built-in stopwords
 #' 
@@ -103,6 +100,7 @@ stopwordsGet <- function(kind="english") {
 #' Supported languages are arabic, danish, dutch, english, finnish, french,
 #' german, hungarian, italian, norwegian, portuguese, russian, spanish, and 
 #' swedish. Language names are case sensitive.
+#' @rdname stopwords
 #' @section A note of caution:
 #'  Stop words are an arbitrary choice imposed by the
 #'   user, and accessing a pre-defined list of words to ignore does not mean
@@ -115,6 +113,7 @@ stopwordsGet <- function(kind="english") {
 #'   \code{italian}, \code{portuguese}, \code{spanish}, \code{arabic}
 #' @param verbose if \code{FALSE}, suppress the annoying warning note
 #' @return a character vector of stopwords
+#' @name stopwords
 #' @export
 #' @examples
 #' stopwords("english")[1:5]
@@ -130,4 +129,15 @@ stopwords <- function(kind="english", verbose=TRUE) {
     .stopwords[[kind]]
 }
 
+#' @name .stopwords
+#' @rdname stopwords
+#' @docType data
+NULL
+
+#' @rdname stopwords
+#' @export
+stopwordsGet <- function(kind="english") {
+    cat("stopwordsGet() is deprecated, use stopwords() instead.\n")
+    stopwords(kind)
+}
 
