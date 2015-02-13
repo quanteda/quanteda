@@ -1,12 +1,12 @@
 Package: quanteda
 Type: Package
 Title: Quantitative Analysis of Textual Data
-Authors@R: c(
-    person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role = c("cre", "aut")),
-    person("Paul", "Nulty", email = "paul.nulty@gmail.com", role = "aut"),
-    person("Pablo", "Barbera", email = "pablo.barbera@nyu.edu", role = "ctb"),
-    person("Kohei", "Watanabe", email = "watanabe.kohei@gmail.com", role = "ctb"),
-    person("Benjamin", "Lauderdale", email = "B.E.lauderdale@lse.ac.uk", role = "ctb"))
+Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
+    c("cre", "aut")), person("Paul", "Nulty", email = "paul.nulty@gmail.com",
+    role = "aut"), person("Pablo", "Barbera", email = "pablo.barbera@nyu.edu",
+    role = "ctb"), person("Kohei", "Watanabe", email =
+    "watanabe.kohei@gmail.com", role = "ctb"), person("Benjamin", "Lauderdale",
+    email = "B.E.lauderdale@lse.ac.uk", role = "ctb"))
 Version: 0.7.1.000
 Date: 2015-02-12
 Description: A package for the management and quantitative analysis of textual
