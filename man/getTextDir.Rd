@@ -4,13 +4,13 @@
 \alias{getTextDir}
 \title{loads all text files from a given directory}
 \usage{
-getTextDir(dirname, extension = "*.txt", enc = "unknown")
+getTextDir(dirname, pattern = "*.txt", enc = "unknown")
 }
 \arguments{
 \item{dirname}{A directory path}
 
-\item{extension}{a glob pattern match for the
-file extension of the documents to load (e.g. '*.txt')}
+\item{pattern}{A pattern (a 'glob') specifying which files to match in the
+directory (e.g. '*.txt', 'speech*.txt')}
 
 \item{enc}{a value for encoding that is a legal value for \link{Encoding}}
 }
