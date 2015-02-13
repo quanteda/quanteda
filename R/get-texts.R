@@ -70,24 +70,25 @@ getTextFiles <- function(filenames, textnames=NULL, enc="unknown", verbose=FALSE
 
 #' loads all text files from a given directory
 #' 
-#' given a directory name, get a list of all files in that directory and load
+#' given a directory name, get a list of all files in that directory and load 
 #' them into a character vector using getTextFiles
 #' 
 #' 
 #' @param dirname A directory path
-#' @param pattern a \link[=regex]{regular expression} pattern match for the input
-#'   file names
+#' @param pattern A pattern (a 'glob') specifying which files to match in the
+#'   directory (e.g. '*.txt', 'speech*.txt')
 #' @param enc a value for encoding that is a legal value for \link{Encoding}
 #' @return character vector of texts read from disk
-#' @author Paul Nulty
+#' @author Paul Nulty and Kenneth Benoit
 #' @export
 #' @examples
 #' \dontrun{
 #' getTextDir('/home/paul/documents/')
 #' }
-getTextDir <- function(dirname, pattern="\\.txt$", enc="unknown") {
+getTextDir <- function(dirname, pattern="*.txt", enc="unknown") {
   # get all files from a directory
-  return(getTextFiles(list.files(dirname, pattern=pattern, full.names=TRUE), enc=enc) )
+    rx <- glob2rx(pattern)
+  return(getTextFiles(list.files(dirname, pattern=rx, full.names=TRUE), enc=enc) )
 }
 
 #' provides a gui interface to choose a gui to load texts from
