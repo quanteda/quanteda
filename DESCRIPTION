@@ -38,7 +38,10 @@ Imports:
     proxy,
     streamR,
     jsonlite (>= 0.9.10),
-    httr
+    httr,
+    Rcpp,
+    RcppArmadillo
+LinkingTo: Rcpp, RcppArmadillo
 Suggests:
     quantedaData,
     entropy,
@@ -62,6 +65,7 @@ BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
 Collate:
+    'RcppExports.R'
     'clean.R'
     'collocations.R'
     'corpus-sources.R'
@@ -86,6 +90,7 @@ Collate:
     'settings.R'
     'stopwords.R'
     'textmodel-generics.R'
+    'textmodel-wordfish.R'
     'textmodel-wordscores.R'
     'toTdm.R'
     'tokenize.R'
