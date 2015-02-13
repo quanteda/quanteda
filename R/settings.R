@@ -26,6 +26,14 @@ settings <- function(x, ...) {
     UseMethod("settings")
 }
 
+#' @rdname settings
+#' @export
+#' @details Calling \code{settings()} with no arguments returns a list of system default settings.
+settings.default <- function(x=NULL, ...) {
+    if (!is.null(x)) 
+        stop("settings default should be used without arguments")
+    settingsInitialize()
+}
 
 #' Get or set various settings in the corpus for the treatment of texts, such as rules for 
 #' stemming, stopwords, collocations, etc.
@@ -59,6 +67,7 @@ settings.corpus <- function(x, field=NULL, ...) {
     if (is(x, "dfm")) stop("Cannot assign settings to a dfm object.")
     if (!(field %in% SETTINGS_OPTIONS)) stop(paste(field, "not valid setting."))
     x$settings[field] <- value
+    cat("note: corpus settings are not yet used in dfm construction.\n")
     x
 }
 
@@ -69,13 +78,13 @@ settings.corpus <- function(x, field=NULL, ...) {
 #' settings(tempdfm)
 #' @export 
 settings.dfm <- function(x, ...) {
-    attributes(x)$settings
+    # attributes(x)$settings
+    cat("note: dfm settings are not yet implemented - coming soon.\n")
 }
 
 
-#' \code{settingsInitialize} returns a list of legal settings, set to their default values
-#' @rdname setttings
-#' @export
+# @rdname settings
+# @export
 settingsInitialize <- function() {
     tempsettings <- list(stopwords=NULL,
                          collocations=NULL,
@@ -96,6 +105,7 @@ settingsInitialize <- function() {
 
 
 #' @rdname settings
+#' @method print settings
 #' @export
 print.settings <- function(x, ...) {
     cat("Settings:\n")
@@ -111,7 +121,7 @@ print.settings <- function(x, ...) {
 ## DOESN'T MODIFY IN PLACE -- NEEDS REWRITING
 ##
 # \code{settingsReset} restores settings for a corpus to the default values
-# @rdname setttings
+# @rdname settings
 # @export
 settingsReset <- function(corp) {
     corp$settings <- settingsInitialize()

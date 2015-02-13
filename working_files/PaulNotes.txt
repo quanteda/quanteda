@@ -1,0 +1,11 @@
+todo: corpus constructor for urls, or just an example? - done
+
+- excel should know which column is text
+- import from csv
+- dispersion plots
+
+statLexdiv - camelCase
+
+- fix facebook warnings
+
+-  change dfm clean order

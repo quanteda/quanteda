@@ -142,7 +142,7 @@ corpus.directory <- function(x, enc=NULL, docnames=NULL,
 #' \dontrun{
 #'} 
 #' 
-corpus.excel <- function(x, docnames=row.names(x),
+corpus.excel <- function(x, enc=NULL, docnames=row.names(x),
                              textCol=1, docvarsfrom=NULL, 
                              source=NULL, notes=NULL, citation=NULL, ...) {
     if (is.null(docvarsfrom)){
@@ -159,6 +159,18 @@ corpus.excel <- function(x, docnames=row.names(x),
     return(tmpCorp)
 }
 
+#' @rdname corpus
+#' @export
+corpus.facebook <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
+    # extract the content ("message" of posts)
+    texts <- x$message
+    atts <- as.data.frame(x[,2:ncol(x)])    
+    
+    # not sure I'm doing this the right way... What is metadata?
+    corpus(texts, docvars=atts,
+           source=paste("Converted from posts on Facebook page"),
+           enc=enc, ...)
+}
 
 #' @rdname corpus
 #' @export
@@ -174,19 +186,21 @@ corpus.twitter <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
            enc=enc, ...)
 }
 
-
+#' Constructor for corpus objects from urls
+#' 
+#' Creates a corpus from a url object. 
 #' @rdname corpus
 #' @export
-corpus.facebook <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
-    # extract the content ("message" of posts)
-    texts <- x$message
-    atts <- as.data.frame(x[,2:ncol(x)])    
-    
-    # not sure I'm doing this the right way... What is metadata?
-    corpus(texts, docvars=atts,
-           source=paste("Converted from posts on Facebook page"),
-           enc=enc, ...)
+corpus.url <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
+    # extract the content (texts)
+    txt <- paste(scan(x, what="character", sep="\n"), collapse="\n")
+    dets <- summary(x)
+    close(x)
+    corpus(txt, source=paste(sprintf("Loaded from url at %s:", dets$description ),
+           enc=enc, ...))
+   
 }
+
 
 
 #' @rdname corpus
@@ -292,7 +306,7 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
     # build and return the corpus object
     tempCorpus <- list(documents=documents, 
                        metadata=metadata, 
-                       settings=settingsInitialize(),
+                       settings=settings(),
                        tokens=NULL)
     class(tempCorpus) <- list("corpus", class(tempCorpus))
     return(tempCorpus)
@@ -785,7 +799,7 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
     cat("\n")
     ### Turn off describeTexts until we can speed this up
     # dtexts <- describeTexts(texts(object), verbose=FALSE)
-    outputdf <- data.frame(describeTexts(texts(object)[1:min(c(n, ndoc(object)))], 
+    outputdf <- data.frame(summary(texts(object)[1:min(c(n, ndoc(object)))], 
                                          verbose=FALSE))
     if (!is.null(docvars(object)))
         outputdf <- cbind(outputdf, docvars(object)[1:min(c(n, ndoc(object))),, drop=FALSE])

@@ -24,9 +24,9 @@
 #' bigrams(c("The quick brown fox", "jumped over the lazy dog."), window=2)
 #' bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"))
 #' bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"), 
-#'         ignoredFeatures=stopwords$english)
+#'         ignoredFeatures=stopwords("english"))
 #' bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"), 
-#'         ignoredFeatures=stopwords$english, skipGrams=TRUE)
+#'         ignoredFeatures=stopwords("english"), skipGrams=TRUE)
 bigrams <- function(text, window = 1, concatenator="_", include.unigrams=FALSE, 
                     ignoredFeatures=NULL, skipGrams=FALSE, ...) {
 

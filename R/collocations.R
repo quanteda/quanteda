@@ -54,6 +54,10 @@ collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all
     
 
 collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, ...) {
+    
+    # to not issue the check warnings:
+    w1 <- w2 <- count <- w1wn <- w1w2n <- chi2 <- pmi <- dice <- lrratio <- NULL
+    
     method <- match.arg(method)
     if (size != 2) stop("Only bigrams (n=2) implemented so far.")
     
@@ -176,6 +180,9 @@ collocations.corpus <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"),
 
 collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=3, n=NULL, ...) {
     method <- match.arg(method)
+    
+    # to not issue the check warnings:
+    w1 <- w2 <- w3 <- c123 <- c12 <- c13 <- c1 <- c23 <- c2 <- c3 <- X2 <- G2 <- count <- NULL
     
     text <- clean(x, ...)
     t <- unlist(tokenize(text), use.names=FALSE)

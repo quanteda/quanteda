@@ -2,11 +2,23 @@ quanteda 0.7.1
 ==============
 * trimdfm, flatten.dictionary are gone from the NAMESPACE
 
-* formals changed a bit in clean(), kwic()
+* formals changed a bit in clean(), kwic().  
 
 * compoundWords() -> phrasetotoken()
 
 * Cleaned up minor issues in documentation.
+
+* countSyllables data object renamed to englishSyllables.Rdata, and function
+  renamed to syllables().
+
+* stopwordsGet() changed to stopwords().  stopwordsRemove() changed to 
+  removeFeatures().
+
+* new dictionary() constructor function that also does import and conversion,
+  replacing old readWStatdict and readLIWCdict functions.
+
+
+
 
 quanteda 0.7.0
 ==============

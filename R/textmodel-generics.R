@@ -2,7 +2,7 @@
 ### This allows multiple dispatch, esp. for the S4 dfms, but also still
 ### works on the S3 old-style matrix-based dfm.  
 ###
-### textmodel2 creates S4 objects now.  The methods for print, 
+### textmodel creates S4 objects now.  The methods for print, 
 ### summary, etc. are now more specific and defined in the model-specific
 ### R files (see textmodel-wordscoresS4.R.
 
@@ -36,48 +36,63 @@ setClass("textmodel_fitted",
 #'   or the logit scale proposed by Beauchamps (2001).  See 
 #'   \link{textmodel_wordscores}.}
 #'   
+#'   \item{\code{ca}}{Correspondence analysis scaling of the dfm.}
+#'   
 #'   \item{\code{NB}}{Fits a Naive Bayes model to the dfm, with options for 
 #'   smoothing, setting class priors, and a choice of multinomial or binomial 
-#'   probabilities.}}
+#'   probabilities.}
+#'   
+#'   \item{\code{wordfish}}{Fits the "wordfish" model of Slapin and Proksch (2008).}
+#'   
+#'   \item{\code{lda}}{Fit a topic model based on latent Dirichlet allocation.  Temporarily removed.}
+#'   
+#'   \item{\code{kNN}}{k-nearest neighbour classification, coming soon.}
+#'   }
 #' @return a \code{textmodel} class list, containing the fitted model and 
 #'   additional information specific to the model class.  See the methods for 
-#'   specific models, e.g. \link{textmodel_wordscores}, \link{textmodel_NB}, 
+#'   specific models, e.g. \link{textmodel_wordscores}, 
 #'   etc.
 #' @param ... additional arguments to be passed to specific model types
-#' @seealso \code{\link{textmodel_wordscores}}, \code{\link{textmodel_NB}}, 
-#'   \code{\link{textmodel_wordfish}}, \code{\link{textmodel_lda}}, 
-#'   \code{\link{textmodel}}
+#' @seealso \code{\link{textmodel}}, \code{\link{textmodel_wordscores}}
+# , \code{\link{textmodel_NB}}, 
+#   \code{\link{textmodel_wordfish}}, \code{\link{textmodel_lda}}, 
 #' @section Class hierarchy: Here will go the description of the class hierarchy
 #'   that governs dispatch for the predict, print, summary methods, since this 
 #'   is not terribly obvious. (Blame it on the S3 system.)
 #' @export
 #' @examples
+#' \dontrun{
 #' data(ie2010Corpus, package="quantedaData")
-#' \dontshow{
-#' # test with old-style matrix-based dense dfm
-#' ieDfmd <- dfm(ie2010Corpus, matrixType="dense", verbose=FALSE)
-#' refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
-#' ws <- textmodel2(ieDfmd, refscores, model="wordscores", smooth=1)
-#' ws <- textmodel2(ieDfmd, refscores, model="wordscores")
-#' ws <- textmodel2(refscores ~ . -1, data=ieDfmd, model="wordscores")
-#' rm(ieDfmd)
-#' }
+# # test with old-style matrix-based dense dfm
+# ieDfmd <- dfm(ie2010Corpus, matrixType="dense", verbose=FALSE)
+# refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
+# ws <- textmodel(ieDfmd, refscores, model="wordscores", smooth=1)
+# ws <- textmodel(ieDfmd, refscores, model="wordscores")
+# ws <- textmodel(refscores ~ . -1, data=ieDfmd, model="wordscores")
+# rm(ieDfmd)
+# }
 #' ieDfm <- dfm(ie2010Corpus, verbose=FALSE)
 #' refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
-#' ws <- textmodel2(ieDfm, refscores, model="wordscores", smooth=1)
+#' ws <- textmodel(ieDfm, refscores, model="wordscores", smooth=1)
+#'
 #' # alternative formula notation - but slower
-#' wsform <- textmodel2(refscores ~ . - 1, data=ieDfm, model="wordscores", smooth=1)
+#' # need the - 1 to remove the intercept, as this is literal formula notation
+#' wsform <- textmodel(refscores ~ . - 1, data=ieDfm, model="wordscores", smooth=1)
 #' identical(ws@@Sw, wsform@@Sw)  # compare wordscores from the two models
-#' bs <- textmodel2(ieDfm[5:6,], refscores[5:6], model="wordscores", scale="logit", smooth=1)
+#' 
+#' 
+#' # compare the logit and linear wordscores
+#' bs <- textmodel(ieDfm[5:6,], refscores[5:6], model="wordscores", scale="logit", smooth=1)
 #' plot(ws@@Sw, bs@@Sw, xlim=c(-1, 1), xlab="Linear word score", ylab="Logit word score")
+#' }
 #' 
 #' @export
-setGeneric("textmodel2", 
+setGeneric("textmodel", 
     function(x, y=NULL, data=NULL, model=c("wordscores", "NB", "wordfish", "lda", "ca"), ...)
-             standardGeneric("textmodel2"))
+             standardGeneric("textmodel"))
 
-#' @rdname textmodel2
-setMethod("textmodel2", signature(x = "dfm", y="ANY", data="missing", model = "character"),
+#' @rdname textmodel
+setMethod("textmodel", signature(x = "dfm", y="ANY", data="missing", model = "character"),
           definition = 
               function(x, y=NULL, model=c("wordscores", "NB", "wordfish", "lda", "ca"), ...) {
                   #cat("x is:"); print(x)
@@ -90,39 +105,38 @@ setMethod("textmodel2", signature(x = "dfm", y="ANY", data="missing", model = "c
                   if (model=="wordscores") {
                       if (nrow(x) != length(y))
                           stop("x and y contain different numbers of documents.")
-                      
-                      result <- textmodel2_wordscores(x, y, ...)
-                  } else if (model=="NB") {
-                      if (nrow(x) != length(y))
-                          stop("x and y contain different numbers of documents.")
-                      result <- textmodel_NB(x, y, ...)
-                  } else if (model=="wordfish") {
-                      if (!is.null(y))
-                          warning("y values not used with wordfish model. ")
-                      result <- textmodel_wordfish(x, ...)
-                  } else if (model=="lda") {
-                      if (!is.null(y))
-                          warning("y values not used with wordfish model. ")
-                      result <- textmodel_lda(x, ...)
-                  } else if (model=="ca") {
-                      if (!is.null(y))
-                          warning("y values not used with ca model. ")
-                      result <- textmodel_lda(x, ...)
+                      result <- textmodel_wordscores(x, y, ...)
+#                   } else if (model=="NB") {
+#                       if (nrow(x) != length(y))
+#                           stop("x and y contain different numbers of documents.")
+#                       result <- textmodel_NB(x, y, ...)
+#                   } else if (model=="wordfish") {
+#                       if (!is.null(y))
+#                           warning("y values not used with wordfish model. ")
+#                       result <- textmodel_wordfish(x, ...)
+#                   } else if (model=="lda") {
+#                       if (!is.null(y))
+#                           warning("y values not used with wordfish model. ")
+#                       result <- textmodel_lda(x, ...)
+#                   } else if (model=="ca") {
+#                       if (!is.null(y))
+#                           warning("y values not used with ca model. ")
+#                       result <- textmodel_lda(x, ...)
                   } else {
-                      stop(paste("model", method, "not implemented."))
+                      stop(paste("model", model, "not implemented."))
                   }
                   result
               })
 
 
-#' @rdname textmodel2
+#' @rdname textmodel
 #' @param formula An object of class \link{formula} of the form \code{y ~ x1
 #'   + x2 + ...}.  (Interactions are not currently allowed for any of the models
 #'   implemented.)  The \code{x} variable(s) is
 #'   typically a \link{dfm}, and the y variable a vector of class labels or 
 #'   training values associated with each document.
 #' @param data dfm or data.frame from which to take the formula
-setMethod("textmodel2", signature(x = "formula", y="missing", data="dfm", model = "character"),
+setMethod("textmodel", signature(x = "formula", y="missing", data="dfm", model = "character"),
           definition = 
               function(x, data, model=c("wordscores", "NB", "wordfish", "lda", "ca"), ...) {
                   model <- match.arg(model)
@@ -134,7 +148,7 @@ setMethod("textmodel2", signature(x = "formula", y="missing", data="dfm", model 
                   # x <- model.matrix(attr(mf, "terms"), data=mf)
                   y <- model.response(mf)
                   # cat("HERE\n")
-                  textmodel2(data[which(docnames(data) %in% names(y)), 
+                  textmodel(data[which(docnames(data) %in% names(y)), 
                                  which(features(data) %in% names(mf))], 
                             y, model = model, ...)
               })

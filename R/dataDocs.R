@@ -42,34 +42,64 @@ NULL
 #' summary(uk2010immigCorpus)
 NULL
 
-
-#' @name stopwords
-#' @title A named list containing common stopwords in 14 languages
-# @rdname stopwordsRemove
-#' @description SMART English stopwords from the SMART information retrieval
-#' system (obtained from
-#' http://jmlr.csail.mit.edu/papers/volume5/lewis04a/a11-smart-stop-list/english.stop)
-#' and a set of stopword lists from the Snowball stemmer project in
-#' different languages (obtained from
-#' http://svn.tartarus.org/snowball/trunk/website/algorithms/*/stop.txt). Supported
-#' languages are danish, dutch, english, finnish, french, german,
-#' hungarian, italian, norwegian, portuguese, russian, spanish, and
-#' swedish. Language names are case sensitive. Alternatively, their IETF
-#' language tags may be used.
-#' 
-#' Also now (>=0.6.3) includes Arabic stopwords.
-NULL
-
-#' @name syllableCounts
+#' @name ukimmigrTexts
+#' @title Immigration-related sections of 2010 UK party manifestos
 #' @docType data
-#' @title A named list mapping words to counts of their syllables
-#' @description A named list mapping words to counts of their syllables, generated from
-#' the CMU pronunciation dictionary
+#' @description Extracts from the election manifestos of 9 UK political parties from 2010, related
+#' to immigration or asylum-seekers.
+#' @format A named character vector of plain ASCII texts
 #' @examples
-#' data(syllableCounts)
-#' syllableCounts["sixths"]
-#' syllableCounts["onomatopeia"]
-#' @references \url{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}
+#' data(ukimmigrTexts)
+#' ukimmigrCorpus <- corpus(ukimmigrTexts, docvars=list(party=names(ukimmigrTexts)))
+#' language(ukimmigrCorpus) <- "english"
+#' encoding(ukimmigrCorpus) <- "UTF-8"
+#' summary(ukimmigrCorpus)
+NULL
+
+#' @name englishSyllables
+#' @rdname syllables
+#' @docType data
+#' @details \code{englishSyllables} is a quanteda-supplied data object consisting of a named numeric 
+#' vector of syllable counts for the words used as names.  This is the default object used to count 
+#' English syllables.
+# @examples
+# data(englishSyllables)
+# englishSyllables["sixths"]
+# englishSyllables["onomatopeia"]
+#' @source \code{englishSyllables} is built from the freely available CMU pronunciation dictionary at \url{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
 #' 
 NULL
+
+#' @name LBGexample
+#' @docType data
+#' @title dfm containing example data from Table 1 of Laver Benoit and Garry
+#'   (2003)
+#' @description Example data to demonstrate the Wordscores algorithm, from Laver
+#'   Benoit and Garry (2003)
+#' @details This is the example word count data from Laver, Benoit and Garry's
+#'   (2003) Table 1. Documents R1 to R5 are assumed to have known positions:
+#'   -1.5, -0.75, 0, 0.75, 1.5.  Document V1 is assumed unknown, and will have a
+#'   raw text score of approximately -0.45 when computed as per LBG (2003).
+#' @format A \link{dfm} object with 6 documents and 37 features
+#' @references Laver, Michael, Kenneth Benoit, and John Garry.  2003.
+#'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating policy
+#'   positions from political text using words as data.}" American Political
+#'   Science Review 97(2): 311-331.
+NULL
+
+# @name ie2010Corpus
+# @aliases iebudgets
+# @title Irish budget speeches from 2010
+# @description Speeches and document-level variables from the debate over the 
+#   Irish budget of 2010.
+# @format The corpus object for the 2010 budget speeches, with document-level
+#   variables for year, debate, serial number, first and last name of the
+#   speaker, and the speaker's party.
+# @source Lowe and Benoit (2013)
+# @references Lowe, Will, and Kenneth R Benoit. 2013. 
+#   "\href{http://www.kenbenoit.net/pdfs/Political%20Analysis-2013-Lowe-298-313.pdf}{Validating
+#    Estimates of Latent Traits From Textual Data Using Human Judgment as a 
+#   Benchmark.}" \emph{Political Analysis} 21: 298–313.
+# @docType data summary(ie2010Corpus)
+# NULL
 

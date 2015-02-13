@@ -1,0 +1,94 @@
+---
+title: "Use Case 1: Project Gutenberg Texts"
+output:
+  rmarkdown::html_document:
+    theme: null
+    css: mystyle.css
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Quickstart}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{Quickstart}
+-->
+
+# Example 1: Moby Dick
+
+In this use case I will implement some of the analysis from the book "Text Analysis with R for Students of Literature" by Matthew L Jockers. 
+
+## scanning text and lines from the web
+
+The code below scans and splits the text of Moby Dick from Project Gutenberg, more or less as implemented in the textbook.
+```{r eval=TRUE}
+library(quanteda)
+alltext <- scan("http://www.gutenberg.org/cache/epub/2701/pg2701.txt",
+what="character", sep="\n")
+mobyWords <- unlist(strsplit(alltext, "\\W"))
+which(mobyWords=="whale")
+```
+
+
+
+## Comparing word frequencies
+Below is the initial word frequency analysis performed using a `quanteda` corpus.
+
+```{r eval=TRUE}
+# ten most frequent words
+mobyCorp <- corpus(url("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
+mobyDfm <- dfm(mobyCorp)
+topfeatures(mobyDfm, n=10)
+plot(topfeatures(mobyDfm, n=10))
+
+# frequencies of 'he' and 'she' - these are matrixes, not numerics
+mobyDfm[,'he']
+mobyDfm[,'she']
+
+
+# relative frequencies:
+mobyDfm <- weight(mobyDfm, type='relFreq')
+mobyDfm[,'he']
+mobyDfm[,'she']
+```
+
+
+## Dispersion plots
+Example 4.1 in the book plots the frequency of certain words across the length of the text. 
+
+```{r eval=TRUE}
+nTime <- seq(1:length(mobyWords))
+whales <- which(mobyWords == "whale")
+wcount <- rep(NA,length(nTime))
+wcount[whales] <- 1
+plot(wcount, main="Dispersion Plot of `whale' in Moby Dick",
+xlab="Novel Time", ylab="whale", type="h", ylim=c(0,1), yaxt='n')
+```
+
+
+
+## Breaking by chapter, searching, and counting
+```{r eval=TRUE}
+kwic(mobyCorp, 'chapter')
+chapters <- segment(mobyCorp, what='other', delimiter="\\nCHAPTER\\s\\d", perl=TRUE)
+
+chapDfm <- dfm(chapters)
+barplot(as.numeric(chapDfm[, 'whale']))
+barplot(as.numeric(chapDfm[, 'ahab']))
+
+```
+
+## Measures of Lexical Variety
+
+Correlation of type-token ratio and chapter length:
+
+```{r eval=TRUE}
+ttr <- statLexdiv(chapDfm)
+lens <- length(rowSums(chapDfm))
+
+```
+
+
+

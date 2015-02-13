@@ -1,5 +1,5 @@
 ---
-title: "Quanteda Quickstart"
+title: "A Quick Start Guide to quanteda"
 output:
   rmarkdown::html_document:
     theme: null
@@ -219,7 +219,7 @@ a corpus will be a set of text files found on a local (or remote)
 directory. To load texts in this way, we first define a source for the directory, and pass this source as an argument to the corpus constructor. We create a directory source by calling the `directory` function. 
 
 
-```{r}
+```{r eval=FALSE}
 # Basic file import from directory
 d <- directory('~/Dropbox/QUANTESS/corpora/inaugural')
 myCorpus <- corpus(d)
@@ -227,7 +227,7 @@ myCorpus <- corpus(d)
 
 If the document variables are specified in the filenames of the texts, we can read them by setting the `docvarsfrom` argument (`docvarsfrom = "filenames"`) and specifiying how the filenames are formatted with the `sep` argument. For example, if the inaugural address texts were stored on disk in the format `Year-President.txt` (e.g. `1973-Nixon.txt`), then we can load them and automatically populate the document variables. The `docvarnames` argument sets the names of the document variables --- it must be the same length as the parts of the filenames.
 
-```{r}
+```{r eval=FALSE}
 # File import reading document variables from filenames
 d <- directory('~/Dropbox/QUANTESS/corpora/inaugural')
 

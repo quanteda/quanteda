@@ -18,15 +18,15 @@
 #' @param removeTwitter if \code{FALSE}, do not remove \code{@@} or \code{#}
 #' @param removeURL removes URLs (web addresses starting with \code{http:} or \code{https:}), based 
 #' on a regular expression from \url{http://daringfireball.net/2010/07/improved_regex_for_matching_urls}
-#' @param additional additional characters to remove (\link[=regex]{regular expression})
+#' @param removeAdditional additional characters to remove (\link[=regex]{regular expression})
 #' @param ... additional parameters
 #' @return A character vector equal in length to the original texts, after cleaning.
 #' @examples
 #' clean("This is 1 sentence with 2.0 numbers in it, and one comma.", removeDigits=FALSE)
 #' clean("This is 1 sentence with 2.0 numbers in it, and one comma.", toLower=FALSE)
-#' clean("We are his Beliebers, and him is #ourjustin @@justinbieber we love u", removeTwitter=TRUE)
+#' clean("We are his Beliebers, and him is #ourjustin @@justinbieber we luv u", removeTwitter=TRUE)
 #' clean("Collocations can be represented as inheritance_tax using the _ character.")
-#' clean("But under_scores can be removed using the additional argument.", additional="[_]")
+#' clean("But under_scores can be removed with removeAdditional.", removeAdditional="[_]")
 #' clean("This is a $1,500,000 budget and $20bn cash and a $5 cigar.")
 #' clean("This is a $1,500,000 budget and $20bn cash and a $5 cigar.", removeDigits=FALSE)
 #' clean("URL regex from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.")
@@ -43,9 +43,9 @@ clean <- function(x, ...) {
 #' @rdname clean
 #' @export
 clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, toLower=TRUE, 
-                            additional=NULL, removeTwitter=FALSE, removeURL=TRUE, ...) {
+                            removeAdditional=NULL, removeTwitter=FALSE, removeURL=TRUE, ...) {
     ## THIS NEEDS TO LOOK AT SETTINGS BEFORE MAKING A DECISION
-    #if (!(removeDigits | removePunct | toLower) & is.null(additional)) {
+    #if (!(removeDigits | removePunct | toLower) & is.null(removeAdditional)) {
     #    warning("  clean: text unchanged")
     #}
     
@@ -73,7 +73,7 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, toLower=TRUE
         remove <- paste("(?![",
                         ifelse(removeTwitter, "_", "@#_"),
                         "])[[:punct:]]",  
-                        ifelse(!is.null(additional), paste("|", additional, sep=""), ""),
+                        ifelse(!is.null(removeAdditional), paste("|", removeAdditional, sep=""), ""),
                         sep="")
        x <- gsub(remove, "", x, perl=TRUE)
     }
@@ -92,8 +92,8 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, toLower=TRUE
     if (toLower) 
         x <- tolower(x)
     
-#     if (!is.null(additional))
-#         x <- gsub(additional, "", x)
+#     if (!is.null(removeAdditional))
+#         x <- gsub(removeAdditional, "", x)
     
     # convert 2+ multiple whitespaces into one
     x <- gsub("\\s{2,}", " ", x, perl=TRUE)
@@ -104,10 +104,10 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, toLower=TRUE
 
 #' @rdname clean
 #' @export
-clean.corpus <- function(x, removeDigits=TRUE, removePunct=TRUE, toLower=TRUE, 
-                         additional=NULL, removeTwitter=FALSE, ...) {
-    clean(texts(x), removeDigits=removeDigits, removePunct=removePunct, toLower=toLower, 
-          additional=additional, ...)
+clean.corpus <- function(x, removeDigits=TRUE, removePunct=TRUE, toLower=TRUE,
+                         removeAdditional=NULL, removeTwitter=FALSE, ...) {
+    clean(texts(x), removeDigits=removeDigits, removePunct=removePunct, 
+          toLower=toLower, removeAdditional=removeAdditional, ...)
 }
 
 #' stem words

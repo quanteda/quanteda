@@ -20,7 +20,7 @@ directory <- function(path=NULL) {
     # choose it from a GUI if none exists
     if (is.null(path)) {
         if (require(tcltk2))
-            texts <- tk_choose.dir()
+            texts <- tcltk::tk_choose.dir()
         if (is.na(texts)) stop("Directory selection cancelled by user.")
         else
             stop("you need tcltk2 installed to use GUI directory selection.")
@@ -42,13 +42,15 @@ directory <- function(path=NULL) {
 #'@param sheetIndex  The index of the sheet of the excel file to read (as passed
 #'  to read.xlsx2)
 #'@export
-#'@export
 excel <- function(path=NULL, sheetIndex=1) {
-    require(xlsx)
+    if(!requireNamespace("xlsx", quietly = TRUE)){
+        stop("The xlsx package is needed for this function to work. Please install it.",
+             call. = FALSE)
+    }
     # choose it from a GUI if none exists
     if (is.null(path)) {
         if (require(tcltk2))
-            texts <- tk_choose.dir()
+            texts <- tcltk::tk_choose.dir()
         if (is.na(texts)) stop("Directory selection cancelled by user.")
         else
             stop("you need tcltk2 installed to use GUI directory selection.")
@@ -56,7 +58,7 @@ excel <- function(path=NULL, sheetIndex=1) {
     stopifnot(class(path) == "character")
     stopifnot(file.exists(path))
     
-    sheet <- read.xlsx2(path,  stringsAsFactors=FALSE, sheetIndex=sheetIndex)
+    sheet <- xlsx::read.xlsx2(path,  stringsAsFactors=FALSE, sheetIndex=sheetIndex)
     class(sheet) <- (list("excel","data.frame"))
 
     return(sheet)
@@ -78,13 +80,15 @@ excel <- function(path=NULL, sheetIndex=1) {
 #' @export
 getTweets <- function(query, numResults=50, key, cons_secret, token, access_secret) {
     # choose it from a GUI if none exists
-    library('twitteR')
+    if(!requireNamespace("twitteR", quietly = TRUE)){
+        stop("The twitteR package is needed for this function to work. Please install it.")
+    }
     print('authorizing... ')
-    setup_twitter_oauth(key, cons_secret, token, access_secret)
+    twitteR::setup_twitter_oauth(key, cons_secret, token, access_secret)
     print('running search... ')
-    sea <- (searchTwitter(query, numResults))
+    sea <- (twitteR::searchTwitter(query, numResults))
     print('returning results.')
-    results <-  twListToDF(sea)
+    results <-  twitteR::twListToDF(sea)
     tempRes <- results
     class(tempRes) <- list('twitter', class(results))
     return(tempRes)
@@ -274,7 +278,6 @@ json <- function(path=NULL, source="twitter", enc = "unknown", ...) {
 #' @param until A UNIX timestamp or strtotime data value that points to
 #' the end of the time range to be searched. For more information on the
 #' accepted values, see: \url{http://php.net/manual/en/function.strtotime.php}
-#'
 #' @examples
 #' \dontrun{
 #' # scraping the 100 most recent posts on Barack Obama's page
@@ -290,7 +293,10 @@ json <- function(path=NULL, source="twitter", enc = "unknown", ...) {
 #' @author Pablo Barbera
 #' @export
 getFBpage <- function(page, token, n=100, since=NULL, until=NULL, feed=FALSE){
-    library("Rfacebook")
+    if(!requireNamespace("Rfacebook", quietly = TRUE)){
+        stop("The Rfacebook packages is needed for this function to work. Please install it.",
+             call. = FALSE)
+    }
     df <- Rfacebook::getPage(page, token, n, since, until, feed)
     tempRes <- df
     class(tempRes) <- list('facebook', class(df))
