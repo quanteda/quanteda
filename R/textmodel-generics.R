@@ -121,7 +121,7 @@ setMethod("textmodel", signature(x = "dfm", y="ANY", data="missing", model = "ch
 #                           warning("y values not used with ca model. ")
 #                       result <- textmodel_lda(x, ...)
                   } else {
-                      stop(paste("model", method, "not implemented."))
+                      stop(paste("model", model, "not implemented."))
                   }
                   result
               })

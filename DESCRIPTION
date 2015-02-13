@@ -15,7 +15,7 @@ Description: A package for the management and quantitative analysis of textual
     the collection as a whole. quanteda includes tools to make it easy and fast
     to manuipulate the texts the texts in a corpus, for instance by tokenizing
     them, with or without stopwords or stemming, or to segment them by sentence
-    or paragraph units.  
+    or paragraph units.
     quanteda includes a suite of sophisticated tools to extract features of the
     texts into a quantitative matrix, where these features can be defined
     according to a dictionary or thesaurus, including the declaration of
@@ -60,3 +60,31 @@ URL: http://github.com/kbenoit/quanteda
 BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
+Collate:
+    'clean.R'
+    'collocations.R'
+    'corpus-sources.R'
+    'corpus.R'
+    'count-syllables.R'
+    'dataDocs.R'
+    'describe-texts.R'
+    'dfm-classes.R'
+    'dfm-main.R'
+    'dictionaryFunctions.R'
+    'distance.R'
+    'get-texts.R'
+    'gui.R'
+    'indexer.R'
+    'kwic.R'
+    'lexdiv.R'
+    'ngrams.R'
+    'onLoad.R'
+    'plots.R'
+    'quanteda-package.R'
+    'resample.R'
+    'settings.R'
+    'stopwords.R'
+    'textmodel-generics.R'
+    'textmodel-wordscores.R'
+    'toTdm.R'
+    'tokenize.R'

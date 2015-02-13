@@ -126,6 +126,7 @@ stopwords <- function(kind="english", verbose=TRUE) {
         stop(paste(kind, "is not a recognized stopword list type."))
     }
     if (verbose) cat("note: using", kind, "builtin stopwords, but beware that one size may not fit all.\n")
+    data(stopwords, envir = environment())
     .stopwords[[kind]]
 }
 
