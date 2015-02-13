@@ -7,6 +7,8 @@
 #' @param verbose set to \code{FALSE} to suppress printing, for instance
 #' if you simply want to assign the output to a \code{data.frame}
 #' @param ... additional arguments affecting the summary produced
+#' @rdname summary.character
+#' @method summary character
 #' @export
 #' @examples
 #' summary(c("testing this text", "and this one"))
