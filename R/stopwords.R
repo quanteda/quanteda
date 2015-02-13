@@ -1,10 +1,4 @@
 
-#' @rdname removeFeatures
-#' @export
-stopwordsRemove <- function(x, stopwords=NULL, verbose=TRUE) {
-    cat("stopwordsRemove is deprecated, use removeFeatures instead.")
-    UseMethod("removeFeatures")
-}
 
 #' remove features from an object
 #' 
@@ -21,7 +15,9 @@ stopwordsRemove <- function(x, stopwords=NULL, verbose=TRUE) {
 #' list to be supplied, for instance \code{stopwords("english")}.
 #' @param verbose if \code{TRUE} print message about how many features were removed
 #' @return an object with stopwords removed
+#' @name removeFeatures
 #' @export
+#' @seealso \link{stopwords}
 #' @examples
 #' ## examples for character objects
 #' someText <- "Here's some text containing words we want to remove."
@@ -80,6 +76,13 @@ removeFeatures.collocations <- function(x, stopwords=NULL, verbose=TRUE) {
     x
 }
 
+#' @rdname removeFeatures
+#' @export
+stopwordsRemove <- function(x, stopwords=NULL, verbose=TRUE) {
+    cat("stopwordsRemove is deprecated, use removeFeatures instead.")
+    UseMethod("removeFeatures")
+}
+
 
 #' @rdname stopwords
 #' @export
@@ -103,6 +106,7 @@ stopwordsGet <- function(kind="english") {
 #' Supported languages are arabic, danish, dutch, english, finnish, french,
 #' german, hungarian, italian, norwegian, portuguese, russian, spanish, and 
 #' swedish. Language names are case sensitive.
+#' @rdname stopwords
 #' @section A note of caution:
 #'  Stop words are an arbitrary choice imposed by the
 #'   user, and accessing a pre-defined list of words to ignore does not mean
@@ -126,6 +130,7 @@ stopwords <- function(kind="english", verbose=TRUE) {
         stop(paste(kind, "is not a recognized stopword list type."))
     }
     if (verbose) cat("note: using", kind, "builtin stopwords, but beware that one size may not fit all.\n")
+    data(stopwords, envir = environment())
     .stopwords[[kind]]
 }
 

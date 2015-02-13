@@ -57,20 +57,20 @@ NULL
 NULL
 
 #' @name englishSyllables
+#' @rdname syllables
 #' @docType data
-#' @title syllable counts of English words
-#' @description A named numeric vector of syllable counts for the words used as names.
-#' Taken from the freely available CMU pronunciation dictionary.
-#' @examples
-#' data(englishSyllables)
-#' englishSyllables["sixths"]
-#' englishSyllables["onomatopeia"]
-#' @source \url{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}
+#' @details \code{englishSyllables} is a quanteda-supplied data object consisting of a named numeric 
+#' vector of syllable counts for the words used as names.  This is the default object used to count 
+#' English syllables.
+# @examples
+# data(englishSyllables)
+# englishSyllables["sixths"]
+# englishSyllables["onomatopeia"]
+#' @source \code{englishSyllables} is built from the freely available CMU pronunciation dictionary at \url{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
 #' 
 NULL
 
-#' @name .stopwords
-#' @rdname stopwords
+#' @name stopwords
 #' @docType data
 NULL
 

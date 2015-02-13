@@ -4,11 +4,14 @@
 \alias{print.settings}
 \alias{settings}
 \alias{settings.corpus}
+\alias{settings.default}
 \alias{settings.dfm}
 \alias{settings<-}
 \title{Get or set the corpus settings}
 \usage{
 settings(x, ...)
+
+\method{settings}{default}()
 
 \method{settings}{corpus}(x, field = NULL, ...)
 
@@ -37,6 +40,9 @@ Get or set various settings in the corpus for the treatment of texts, such as ru
 stemming, stopwords, collocations, etc.
 
 Get the settings from a which a \link{dfm} was created
+}
+\details{
+Calling \code{settings()} with no arguments returns a list of system default settings.
 }
 \examples{
 settings(inaugCorpus, "stopwords")

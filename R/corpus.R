@@ -306,7 +306,7 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
     # build and return the corpus object
     tempCorpus <- list(documents=documents, 
                        metadata=metadata, 
-                       settings=settingsInitialize(),
+                       settings=settings(),
                        tokens=NULL)
     class(tempCorpus) <- list("corpus", class(tempCorpus))
     return(tempCorpus)

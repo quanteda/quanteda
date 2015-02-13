@@ -26,6 +26,12 @@ settings <- function(x, ...) {
     UseMethod("settings")
 }
 
+#' @rdname settings
+#' @export
+#' @details Calling \code{settings()} with no arguments returns a list of system default settings.
+settings.default <- function() {
+    settingsInitialize()
+}
 
 #' Get or set various settings in the corpus for the treatment of texts, such as rules for 
 #' stemming, stopwords, collocations, etc.
@@ -75,9 +81,8 @@ settings.dfm <- function(x, ...) {
 }
 
 
-#' \code{settingsInitialize} returns a list of legal settings, set to their default values
-#' @rdname setttings
-#' @export
+# @rdname settings
+# @export
 settingsInitialize <- function() {
     tempsettings <- list(stopwords=NULL,
                          collocations=NULL,
@@ -113,7 +118,7 @@ print.settings <- function(x, ...) {
 ## DOESN'T MODIFY IN PLACE -- NEEDS REWRITING
 ##
 # \code{settingsReset} restores settings for a corpus to the default values
-# @rdname setttings
+# @rdname settings
 # @export
 settingsReset <- function(corp) {
     corp$settings <- settingsInitialize()
