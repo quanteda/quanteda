@@ -40,7 +40,6 @@ Imports:
     jsonlite (>= 0.9.10),
     httr
 Suggests:
-    quantedaData,
     entropy,
     openNLP,
     RJSONIO,

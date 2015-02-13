@@ -90,7 +90,6 @@ following slots:
 \item{\code{method}}{takes a value of \code{wordscores} for this model}
 }}
 \examples{
-data(LBGexample, package="quantedaData")
 ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores")
 ws
 wsp <- predict(ws)
@@ -118,6 +117,11 @@ Martin, L W, and G Vanberg. 2007. "A
 Robust Transformation Procedure for Interpreting Political Text." Political
 Analysis 16(1): 93-100.
 
-LBG (2003); Martin and Vanberg (2007)
+Laver, Michael, Kenneth R Benoit, and John Garry. 2003.
+"Extracting Policy Positions From Political Texts Using Words as Data."
+\emph{American Political Science Review} 97(02): 311-31.
+
+Martin, L W, and G Vanberg. 2007. "A Robust Transformation Procedure for
+Interpreting Political Text." \emph{Political Analysis} 16(1): 93-100.
 }
 

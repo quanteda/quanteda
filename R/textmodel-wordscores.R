@@ -52,7 +52,6 @@ setClass("textmodel_wordscores_predicted",
 #' @slot method takes a value of \code{wordscores} for this model
 #' @author Kenneth Benoit
 #' @examples 
-#' data(LBGexample, package="quantedaData")
 #' ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores")
 #' ws
 #' wsp <- predict(ws)
@@ -119,7 +118,7 @@ textmodel_wordscores <- function(data, scores,
 
 
 #' @rdname textmodel_wordscores
-#' @param object the fitted wordscores textmodel on which prediction will be
+#' @param object the fitted wordscores textmodel on which prediction will be 
 #'   made
 #' @param level probability level for confidence interval width
 #' @param rescaling \code{none} for "raw" scores; \code{lbg} for LBG (2003) 
@@ -128,12 +127,17 @@ textmodel_wordscores <- function(data, scores,
 #' @param newdata dfm on which prediction should be made
 #' @param ... additional argumennts passed to other functions
 #' @param verbose If \code{TRUE}, output status messages
-#' @references LBG (2003); Martin and Vanberg (2007)
-#' @return The \code{predict} method for a wordscores fitted object returns a
-#'   data.frame whose rows are the documents fitted and whose columns contain
-#'   the scored textvalues, with the number of columns depending on the options
+#' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
+#' "Extracting Policy Positions From Political Texts Using Words as Data." 
+#' \emph{American Political Science Review} 97(02): 311-31.
+#' 
+#' Martin, L W, and G Vanberg. 2007. "A Robust Transformation Procedure for
+#' Interpreting Political Text." \emph{Political Analysis} 16(1): 93-100.
+#' @return The \code{predict} method for a wordscores fitted object returns a 
+#'   data.frame whose rows are the documents fitted and whose columns contain 
+#'   the scored textvalues, with the number of columns depending on the options 
 #'   called (for instance, how many rescaled scores, and whether standard errors
-#'   were requested.)  (Note: We may very well change this soon so that it is a
+#'   were requested.)  (Note: We may very well change this soon so that it is a 
 #'   list similar to other existing fitted objects.)
 #' @author Ken Benoit
 #' @export
