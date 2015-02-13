@@ -70,7 +70,5 @@ NULL
 #' 
 NULL
 
-#' @name stopwords
-#' @docType data
-NULL
+
 

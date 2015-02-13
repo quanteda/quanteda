@@ -3,6 +3,7 @@
 \docType{methods}
 \name{print.dfm}
 \alias{print,dfmDense-method}
+\alias{print,dfmSparse-method}
 \alias{print.dfm}
 \alias{show,dfmDense-method}
 \alias{show,dfmSparse-method}
@@ -33,6 +34,6 @@
 \item{object}{the item to be printed}
 }
 \description{
-print method for dfm objects
+print methods for document-feature matrices
 }
 

@@ -11,7 +11,7 @@
 \usage{
 settings(x, ...)
 
-\method{settings}{default}()
+\method{settings}{default}(x = NULL, ...)
 
 \method{settings}{corpus}(x, field = NULL, ...)
 
@@ -19,7 +19,7 @@ settings(x, field) <- value
 
 \method{settings}{dfm}(x, ...)
 
-print.settings(x, ...)
+\method{print}{settings}(x, ...)
 }
 \arguments{
 \item{x}{object from/to which settings are queried or applied}
