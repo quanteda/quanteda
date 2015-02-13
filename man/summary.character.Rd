@@ -5,7 +5,7 @@
 \alias{summary.character}
 \title{text summary}
 \usage{
-summary.character(object, verbose = TRUE, ...)
+\method{summary}{character}(object, verbose = TRUE, ...)
 
 describeTexts(object, verbose = TRUE, ...)
 }
