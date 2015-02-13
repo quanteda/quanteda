@@ -14,6 +14,11 @@ quanteda 0.7.1
 * stopwordsGet() changed to stopwords().  stopwordsRemove() changed to 
   removeFeatures().
 
+* new dictionary() constructor function that also does import and conversion,
+  replacing old readWStatdict and readLIWCdict functions.
+
+
+
 
 quanteda 0.7.0
 ==============
