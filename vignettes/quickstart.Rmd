@@ -1,5 +1,5 @@
 ---
-title: "Quanteda Quickstart"
+title: "A Quick Start Guide to quanteda"
 output:
   rmarkdown::html_document:
     theme: null

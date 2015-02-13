@@ -283,9 +283,9 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
         dfmresult <- Matrix(as.matrix(dfmresult), sparse=TRUE)
         
     } else {
-        
+        n <- NULL
         if (verbose) cat("\n   ... summing tokens by document")
-        alltokens[, n:=1L]
+        alltokens[, "n":=1L]
         alltokens <- alltokens[, by=list(docIndex,features), sum(n)]
         
         if (verbose) cat("\n   ... indexing ")
@@ -374,9 +374,8 @@ tokenizeSingle <- function(s, sep=" ", useclean=FALSE, ...) {
 #' @export
 #' @examples
 #' # sparse matrix from a corpus
-#' mydfms <- dfm(inaugCorpus, matrixType="sparse")
-#' data(ie2010Corpus, package="quantedaData")
-#' mydfms2 <- dfm(ie2010Corpus, groups = "party", matrixType="sparse")
+#' mydfm <- dfm(inaugCorpus)
+#' mydfmGrouped <- dfm(inaugCorpus, groups = "President")
 dfm.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, 
                        ignoredFeatures=NULL, 
                        keptFeatures=NULL,
