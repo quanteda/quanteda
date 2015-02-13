@@ -25,40 +25,4 @@ tokenize(exampleString)
 clean(exampleString)
 wordstem(exampleString)
 
-# topic models 
-library(topicmodels)
-prescorpus <- subset(inaugCorpus, Year>1900)
-presdfm <- dfm(prescorpus, stopwords=TRUE, stem=TRUE)
-presdfm <- trim(presdfm, minCount=10, minDoc=5) 
-presTriplet <- dfm2tmformat(presdfm)
-presLDA <- LDA(presTriplet, method="VEM", k=20)
-# which terms contribute most to each topic
-get_terms(presLDA, k=15)
-# which is the dominant topic for each document
-get_topics(presLDA)
-# the topic contribution of each topic to each document
-postTopics <- data.frame(posterior(presLDA)$topics)
-
-# dictionaries
-data(iebudgets)
-mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
-               opposition=c("Opposition", "reject", "notincorpus"),
-               taxing="taxing",
-               taxation="taxation",
-               taxregex="tax*")
-dictDfm <- dfm(mycorpus, dictionary=mydict)
-dictDfm
-
-# simple lexical diversity measures
-data(iebudgets)
-finMins <- subset(iebudgets, no=="01")
-finDfm <- dfm(finMins)
-types <- rowSums(finDfm > 0)
-tokens <- rowSums(finDfm)
-ttrs <- types/tokens
-plot(2008:2012, ttrs,
-     ylim=c(.18,.25),   # set the y axis range
-     type="b",          # points connected by lines
-     xlab="Budget Year",
-     ylab="Type/Token Ratios")
 
