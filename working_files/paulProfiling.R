@@ -15,7 +15,7 @@ library(tm)
 
 txts <- txts[order(nchar(txts))]
 numDocs <- 4000
-start <- 16000
+start <- 13000
 end <- start+numDocs
 avgDocSizes <- c()
 quantedaTimes <- c()
