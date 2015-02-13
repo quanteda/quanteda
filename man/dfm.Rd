@@ -191,9 +191,8 @@ names(topf) <- colnames(dfmsBig)
 head(sort(topf, decreasing=TRUE), 100)
 }
 # sparse matrix from a corpus
-mydfms <- dfm(inaugCorpus, matrixType="sparse")
-data(ie2010Corpus, package="quantedaData")
-mydfms2 <- dfm(ie2010Corpus, groups = "party", matrixType="sparse")
+mydfm <- dfm(inaugCorpus)
+mydfmGrouped <- dfm(inaugCorpus, groups = "President")
 }
 \author{
 Kenneth Benoit
