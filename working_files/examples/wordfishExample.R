@@ -1,5 +1,6 @@
 # Validation and speed comparison against Will Lowe's wordfish code on 2009 irish budget data
 
+library(quanteda)
 library(austin)
 data(iebudget2009)
 
@@ -12,10 +13,7 @@ print(comparison)
   cor(comparison)
 
 # To do list:
-# Recode C++ to take prior precisions rather than prior variances, set prior defaults to match Wordfish defaults
-# Change tolerances to match default tolerances from Wordfish
-# Add direction option
-
+# Add standard error code
 
 
 
