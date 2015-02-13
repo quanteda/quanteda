@@ -61,7 +61,7 @@ setClass("dfmDense",
 # # @export
 # setMethod("print", signature(x = "dfm"), callNextMethod())
 #               
-              
+
 #' @rdname print.dfm
 setMethod("print", signature(x = "dfmSparse"), 
           function(x, show.values=FALSE, show.settings=FALSE, ...) {
@@ -107,24 +107,36 @@ setMethod("show", signature(object = "dfmSparse"), function(object) print(object
 setMethod("show", signature(object = "dfmDense"), function(object) print(object))
 
 ## S4 Method for the S4 class sparse dfm
-#' @param x the sparse dfm
-#' @rdname dfm-class
-setMethod("t", signature(x = "dfmSparse"), getMethod("t", "dgCMatrix"))
+# @param x the sparse dfm
+# @rdname dfm-class
+# @method t dfmSparse
+#setMethod("t", signature(x = "dfmSparse"), getMethod("t", "dgCMatrix"))
 
 ## S4 Method for the S4 class dense/weighted dfm
-#' @rdname dfm-class
-setMethod("t", signature(x = "dfmDense"), getMethod("t", "dgeMatrix"))
+# @rdname dfm-class
+# @method t dfmSparse
+# setMethod("t", signature(x = "dfmDense"), definition = 
+#               function(x) {
+#                   selectMethod("t", "dgeMatrix")
+#               }) #getMethod("t", "dgeMatrix"))
 
 
 ## S4 Method for the S3 class dense dfm
 #' @export
+#' @param x the dfm object
 #' @rdname dfm-class 
 setMethod("t",
           signature = (x = "dfm"),
           definition = function(x) {
-              attsorig <- attributes(x)
               newx <- t(matrix(x, nrow=nrow(x)))
-              attributes(newx)$dimnames <- rev(attsorig$dimnames)
+              dimnames(newx) <- rev(dimnames(x))
+#               if (isS4(x)) {
+#                   newx <- t(as.Matrix(x))
+#                   attributes(newx)$dimnames <- rev(x@Dimnames)
+#               } else {
+#                   attsorig <- attributes(x)
+#                   attributes(newx)$dimnames <- rev(attsorig$dimnames)
+#               }
               newx
           })
 
@@ -280,13 +292,13 @@ dfm <- function(x, ...) {
 #' head(sort(topf, decreasing=TRUE), 100)
 #' }
 dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, 
-                           ignoredFeatures = NULL, keptFeatures=NULL,
-                           matrixType=c("sparse", "dense"), 
-                           language="english",
-                           fromCorpus=FALSE, bigrams=FALSE, 
-                           thesaurus=NULL, dictionary=NULL, dictionary_regex=FALSE, 
-                           addto=NULL, 
-                           ...) {
+                          ignoredFeatures = NULL, keptFeatures=NULL,
+                          matrixType=c("sparse", "dense"), 
+                          language="english",
+                          fromCorpus=FALSE, bigrams=FALSE, 
+                          thesaurus=NULL, dictionary=NULL, dictionary_regex=FALSE, 
+                          addto=NULL, 
+                          ...) {
     startTime <- proc.time()
     matrixType <- match.arg(matrixType)
     if (!fromCorpus & verbose) 
@@ -500,12 +512,12 @@ tokenizeSingle <- function(s, sep=" ", useclean=FALSE, ...) {
 #' data(ie2010Corpus, package="quantedaData")
 #' mydfms2 <- dfm(ie2010Corpus, groups = "party", matrixType="sparse")
 dfm.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, 
-                        ignoredFeatures=NULL, 
-                        keptFeatures=NULL,
-                        matrixType=c("sparse", "dense"), language="english",
-                        groups=NULL, bigrams=FALSE, 
-                        thesaurus=NULL, dictionary=NULL, dictionary_regex=FALSE,
-                        addto=NULL, ...) {
+                       ignoredFeatures=NULL, 
+                       keptFeatures=NULL,
+                       matrixType=c("sparse", "dense"), language="english",
+                       groups=NULL, bigrams=FALSE, 
+                       thesaurus=NULL, dictionary=NULL, dictionary_regex=FALSE,
+                       addto=NULL, ...) {
     if (verbose) cat("Creating a dfm from a corpus ...")
     
     if (!is.null(groups)) {
@@ -525,10 +537,10 @@ dfm.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     }
     
     dfm(texts, verbose=verbose, clean=clean, stem=stem, 
-         ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
-         matrixType=matrixType, language=language,
-         thesaurus=thesaurus, dictionary=dictionary, dictionary_regex=dictionary_regex,
-         fromCorpus=TRUE, bigrams=bigrams, addto=addto, ...)
+        ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
+        matrixType=matrixType, language=language,
+        thesaurus=thesaurus, dictionary=dictionary, dictionary_regex=dictionary_regex,
+        fromCorpus=TRUE, bigrams=bigrams, addto=addto, ...)
 }
 
 
@@ -729,7 +741,7 @@ setMethod("trim", signature(x="dfm"),
               if (length(featureKeepIndex)==0)  stop("No features left after trimming.")
               
               x <- x[, featureKeepIndex]
-                                             
+              
               if (!is.null(nsample)) {
                   if (nsample > nfeature(x))
                       cat("Retained features smaller in number than sample size so resetting nsample to nfeature.")
@@ -839,7 +851,7 @@ docnames.dfm <- function(x) {
 #' @export
 is.dfm <- function(x) {
     is(x, "dfm")
-     # "dfm" %in% class(x)
+    # "dfm" %in% class(x)
 }
 
 #' @details \code{as.dfm} coerces a matrix or data.frame to a dfm
@@ -923,9 +935,9 @@ topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ci=.95, ...) {
         subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
         subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
         return(data.frame(#features=colnames(subdfm),
-                          freq=colSums(subdfm[,,1]),
-                          cilo=apply(colSums(subdfm), 1, quantile, (1-ci)/2),
-                          cihi=apply(colSums(subdfm), 1, quantile, 1-(1-ci)/2)))
+            freq=colSums(subdfm[,,1]),
+            cilo=apply(colSums(subdfm), 1, quantile, (1-ci)/2),
+            cihi=apply(colSums(subdfm), 1, quantile, 1-(1-ci)/2)))
     } else {
         subdfm <- sort(colSums(x), decreasing)
         return(subdfm[1:n])
@@ -1007,20 +1019,20 @@ setMethod("rowSums",
 #' @rdname topfeatures
 topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ...) {
     if (is.null(n)) n <- ncol(x)
-#     if (is.resampled(x)) {
-#         subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
-#         subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
-#         return(data.frame(#features=colnames(subdfm),
-#             freq=colSums(subdfm[,,1]),
-#             cilo=apply(colSums(subdfm), 1, quantile, (1-ci)/2),
-#             cihi=apply(colSums(subdfm), 1, quantile, 1-(1-ci)/2)))
-#     } else {
-        
+    #     if (is.resampled(x)) {
+    #         subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
+    #         subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
+    #         return(data.frame(#features=colnames(subdfm),
+    #             freq=colSums(subdfm[,,1]),
+    #             cilo=apply(colSums(subdfm), 1, quantile, (1-ci)/2),
+    #             cihi=apply(colSums(subdfm), 1, quantile, 1-(1-ci)/2)))
+    #     } else {
+    
     csums <- colSums(x)
     names(csums) <- x@Dimnames$features
     subdfm <- sort(csums, decreasing)
     return(subdfm[1:n])
-#    }
+    #    }
 }
 
 
@@ -1043,7 +1055,7 @@ print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, ...) {
         ifelse(dim(x)[2]>1, "s", ""), ".\n", sep="")
     cat(ndoc(x), "x", nfeature(x), "dense matrix of (S3) class \"dfm\"\n")
     #    ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
-        
+    
     if (show.settings) {
         cat("Settings: TO BE IMPLEMENTED.")
     }
@@ -1137,7 +1149,7 @@ setMethod("weight", signature = "dfm",
               type = match.arg(type)
               x <- x + smooth
               if (weighting(x) != "frequency") {
-                 cat("  No weighting applied: you should not weight an already weighted dfm.\n")
+                  cat("  No weighting applied: you should not weight an already weighted dfm.\n")
               } else if (type=="relFreq") {
                   x <- x/rowSums(x)
               } else if (type=="relMaxFreq") {
@@ -1153,18 +1165,19 @@ setMethod("weight", signature = "dfm",
                       stop("missing some values in idf calculation")
                   # currently this strips the dfm of its special class, but this is a problem in 
                   # the t() method for dfms, not an issue with this operation
-                  x <- t(t(x) * idf) 
+                  x <- t(t(x) * idf)
+                  class(x) <- c("dfm", class(x))
               }
-#               } else if (type=="ppmi") {
-#                   pij <- x/rowSums(x)
-#                   pij[is.na(pij)] <- 0
-#                   pi <- colSums(x)
-#                   pj <- rowSums(x)
-#                   pj[is.na(pj)] <- 0
-#                   pmi <- (pij / t(outer(pi,pj)))
-#                   x <- abs(pmi)
-#              } else warning(sprintf("Type %s not implmented, no weighting performed.", type))
-
+              #               } else if (type=="ppmi") {
+              #                   pij <- x/rowSums(x)
+              #                   pij[is.na(pij)] <- 0
+              #                   pi <- colSums(x)
+              #                   pj <- rowSums(x)
+              #                   pj[is.na(pj)] <- 0
+              #                   pmi <- (pij / t(outer(pi,pj)))
+              #                   x <- abs(pmi)
+              #              } else warning(sprintf("Type %s not implmented, no weighting performed.", type))
+              
               if (is(x, "dfm")) x@weighting <- type
               # x[is.infinite(x)] <- 0
               return(x)
@@ -1210,7 +1223,7 @@ setMethod("weighting", signature(object="dfm"), function(object) {
 # have a separate method here to allow S3 dfm to still exist
 # @rdname weight
 #setMethod("weight", signature = "dfmDense", getMethod("weight", "dfmSparse"))
-                                
+
 #' get the document frequency of a feature
 #' 
 #' Returns the document frequency of a feature in a \link{dfm-class} object, 
@@ -1242,7 +1255,7 @@ setMethod("docfreq", signature(object="dfm", threshold="missing"),
           function(object, threshold=0) colSums(object > threshold))
 ## Note: need the coercion to dg[C,e]Matrix because > Op not currently 
 ## working for the dfmSparse,Dense classes
-    
+
 
 
 # Additive smoothing of feature frequencies in a dfm
@@ -1261,10 +1274,10 @@ setMethod("docfreq", signature(object="dfm", threshold="missing"),
 # smDtm <- smoothdfm(dtm)
 # smDtm[1:5,1:10]
 smoothdfm <- function(x, alpha=0.5) {
-     attr_orig <- attributes(x)
-     x <- x + alpha
-     attributes(x) <- attr_orig
-     x
+    attr_orig <- attributes(x)
+    x <- x + alpha
+    attributes(x) <- attr_orig
+    x
 }
 
 ## S3 METHODS FOR INDEXING DENSE dfm object
@@ -1365,7 +1378,7 @@ setMethod("[", signature(x = "dfmSparse", i = "index", j = "missing", drop = "lo
               if (drop) warning("drop=TRUE not currently supported")
               new("dfmSparse", "["(as(x, "sparseMatrix"), i, , ..., drop=FALSE))
           })
-      
+
 #' @rdname dfm-class
 setMethod("[", signature(x = "dfmSparse", i = "missing", j = "index", drop = "missing"),
           function(x, i, j, ..., drop=FALSE) 
@@ -1454,5 +1467,4 @@ setMethod("as.matrix", signature(x="dfm"),
 #' identical(as.data.frame(dfmSparse), as.data.frame(dfmDense))
 #' }
 setMethod("as.data.frame", signature(x="dfm"), function(x) as.data.frame(as.matrix(x)))
-
 

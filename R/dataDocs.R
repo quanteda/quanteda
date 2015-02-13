@@ -42,6 +42,19 @@ NULL
 #' summary(uk2010immigCorpus)
 NULL
 
+#' @name ukimmigrTexts
+#' @title Immigration-related sections of 2010 UK party manifestos
+#' @docType data
+#' @description Extracts from the election manifestos of 9 UK political parties from 2010, related
+#' to immigration or asylum-seekers.
+#' @format A named character vector of plain ASCII texts
+#' @examples
+#' data(ukimmigrTexts)
+#' ukimmigrCorpus <- corpus(ukimmigrTexts, docvars=list(party=names(ukimmigrTexts)))
+#' language(ukimmigrCorpus) <- "english"
+#' encoding(ukimmigrCorpus) <- "UTF-8"
+#' summary(ukimmigrCorpus)
+NULL
 
 #' @name englishSyllables
 #' @docType data
