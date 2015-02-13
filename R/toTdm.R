@@ -1,3 +1,16 @@
+#' convert a dfm to a non-quanteda format
+#'
+#' Convert a quanteda \link{dfm-class} object to a format useable by
+#' other text analysis packages.
+#' @param object dfm to be converted
+#' @param to target conversion format, one of
+#' \describe{
+#' \item{"lda"}{}
+#' \item{"tm"}{a \link[tm]{DocumentTermMatrix} from the \pkg{tm} package} 
+#' \item{"stm"}{data format for the \pkg{\link{stm}} package}
+#' \item{"austin"}{\link[austin]{wfm} format from the \pkg{\link{austin}} package}
+#' }
+
 #' Convert a \link{dfm} into a \pkg{tm} \link[tm]{DocumentTermMatrix}
 #' 
 #' \pkg{tm} represents sparse document-feature matrixes in the 
