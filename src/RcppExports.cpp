@@ -7,16 +7,17 @@
 using namespace Rcpp;
 
 // wordfishcpp
-Rcpp::List wordfishcpp(SEXP wfm, SEXP priors, SEXP tolerances);
-RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP priorsSEXP, SEXP tolerancesSEXP) {
+Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol);
+RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
         Rcpp::traits::input_parameter< SEXP >::type wfm(wfmSEXP );
+        Rcpp::traits::input_parameter< SEXP >::type dir(dirSEXP );
         Rcpp::traits::input_parameter< SEXP >::type priors(priorsSEXP );
-        Rcpp::traits::input_parameter< SEXP >::type tolerances(tolerancesSEXP );
-        Rcpp::List __result = wordfishcpp(wfm, priors, tolerances);
+        Rcpp::traits::input_parameter< SEXP >::type tol(tolSEXP );
+        Rcpp::List __result = wordfishcpp(wfm, dir, priors, tol);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);

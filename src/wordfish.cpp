@@ -8,18 +8,19 @@ using namespace Rcpp;
 
 // [[Rcpp::export]]
 
-Rcpp::List wordfishcpp(SEXP wfm, SEXP priors, SEXP tolerances){
+Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol){
 
 	// DEFINE INPUTS
 	
 		Rcpp::NumericMatrix Y(wfm); 
 		Rcpp::NumericVector priorvec(priors);
-		Rcpp::NumericVector tol(tolerances); 	
+		Rcpp::NumericVector tolvec(tol); 
+  	Rcpp::IntegerVector dirvec(dir);     
 		
-		double prioralpha = priorvec(0);
-		double priorpsi = priorvec(1);
-		double priorbeta = priorvec(2);
-		double priortheta = priorvec(3);		
+		double priorprecalpha = priorvec(0);
+		double priorprecpsi = priorvec(1);
+		double priorprecbeta = priorvec(2);
+		double priorprectheta = priorvec(3);		
 		
 		int N = Y.nrow();
 		int K = Y.ncol();
@@ -55,7 +56,7 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP priors, SEXP tolerances){
 		psi = log(csum/N);
 		
 		alpha = alpha - log(mean(rsum));
-		theta = (theta - mean(theta))/sd(theta);
+		theta = (theta - mean(theta))/sd(theta);  
 		
 		// Create temporary variables
 		Rcpp::NumericMatrix pars(2,1);
@@ -71,7 +72,7 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP priors, SEXP tolerances){
 		int outeriter = 0;
 		
 		double lastlp = -2000000000000.0;
-		double lp = -1.0*(sum(0.5 * ((alpha*alpha)/(prioralpha*prioralpha))) + sum(0.5 * ((psi*psi)/(priorpsi* priorpsi))) + sum(0.5 * ((beta*beta)/(priorbeta* priorbeta))) + sum(0.5 * ((theta*theta)/(priortheta*priortheta))));
+		double lp = -1.0*(sum(0.5 * ((alpha*alpha)*(priorprecalpha))) + sum(0.5 * ((psi*psi)*(priorprecpsi))) + sum(0.5 * ((beta*beta)*(priorprecbeta))) + sum(0.5 * ((theta*theta)*(priorprectheta))));
 			for (int i=0; i < N; i++){
 				for (int k=0; k < K; k++){
 					loglambdaik = alpha(i) + psi(k) + beta(k)*theta(i);
@@ -80,7 +81,7 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP priors, SEXP tolerances){
 			}
 	
 	// BEGIN WHILE LOOP
-	while(((lp - lastlp) > tol(0)) && outeriter < 100){	
+	while(((lp - lastlp) > tolvec(0)) && outeriter < 100){	
 		outeriter++;
 	
 		// UPDATE WORD PARAMETERS
@@ -88,15 +89,15 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP priors, SEXP tolerances){
 				cc = 1;
 				inneriter = 0;
 				if (outeriter == 1) stepsize = 0.5;
-				while ((cc > tol(1)) && inneriter < 10){
+				while ((cc > tolvec(1)) && inneriter < 10){
 					inneriter++;
 					lambdak = exp(alpha + psi(k) + beta(k)*theta);
-					G(0,0) = sum(Y(_,k) - lambdak) - psi(k)/(priorpsi*priorpsi);
-					G(1,0) = sum(theta*(Y(_,k) - lambdak)) - beta(k)/(priorbeta*priorbeta);
-					H(0,0) = -sum(lambdak) - 1/(priorpsi* priorpsi);
+					G(0,0) = sum(Y(_,k) - lambdak) - psi(k)*(priorprecpsi);
+					G(1,0) = sum(theta*(Y(_,k) - lambdak)) - beta(k)*(priorprecbeta);
+					H(0,0) = -sum(lambdak) - priorprecpsi;
 					H(1,0) = -sum(theta*lambdak);
 					H(0,1) = H(1,0);
-					H(1,1) = -sum((theta*theta)*lambdak) - 1/(priorbeta* priorbeta);
+					H(1,1) = -sum((theta*theta)*lambdak) - priorprecbeta;
 					pars(0,0) = psi(k);
 					pars(1,0) = beta(k);
 					newpars(0,0) = pars(0,0) - stepsize*(H(1,1)*G(0,0) - H(0,1)*G(1,0))/(H(0,0)*H(1,1) - H(0,1)*H(1,0));
@@ -114,15 +115,15 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP priors, SEXP tolerances){
 				cc = 1;
 				inneriter = 0;
 				if (outeriter == 1) stepsize = 0.5;
-				while ((cc > tol(1)) && inneriter < 10){
+				while ((cc > tolvec(1)) && inneriter < 10){
 					inneriter++;
 					lambdai = exp(alpha(i) + psi + beta*theta(i));
-					G(0,0) = sum(Y(i,_) - lambdai) - alpha(i)/(prioralpha* prioralpha);
-					G(1,0) = sum(beta*(Y(i,_) - lambdai)) - theta(i)/(priortheta* priortheta);		
-					H(0,0) = -sum(lambdai) - 1/(prioralpha* prioralpha);
+					G(0,0) = sum(Y(i,_) - lambdai) - alpha(i)*priorprecalpha;
+					G(1,0) = sum(beta*(Y(i,_) - lambdai)) - theta(i)*priorprectheta;		
+					H(0,0) = -sum(lambdai) - priorprecalpha;
 					H(1,0) = -sum(beta*lambdai);
 					H(0,1) = H(1,0);
-					H(1,1) = -sum((beta* beta)*lambdai) - 1/(priortheta* priortheta);
+					H(1,1) = -sum((beta* beta)*lambdai) - priorprectheta;
 					pars(0,0) = alpha(i);
 					pars(1,0) = theta(i);
 					newpars(0,0) = pars(0,0) - stepsize*(H(1,1)*G(0,0) - H(0,1)*G(1,0))/(H(0,0)*H(1,1) - H(0,1)*H(1,0));
@@ -139,7 +140,7 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP priors, SEXP tolerances){
 		
 		// CHECK LOG-POSTERIOR FOR CONVERGENCE
 			lastlp = lp;
-			lp = -1.0*(sum(0.5 * ((alpha*alpha)/(prioralpha*prioralpha))) + sum(0.5 * ((psi*psi)/(priorpsi* priorpsi))) + sum(0.5 * ((beta*beta)/(priorbeta* priorbeta))) + sum(0.5 * ((theta*theta)/(priortheta*priortheta))));
+			lp = -1.0*(sum(0.5 * ((alpha*alpha)*(priorprecalpha))) + sum(0.5 * ((psi*psi)*(priorprecpsi))) + sum(0.5 * ((beta*beta)*(priorprecbeta))) + sum(0.5 * ((theta*theta)*(priorprectheta))));
 			for (int i=0; i < N; i++){
 				for (int k=0; k < K; k++){
 					loglambdaik = alpha(i) + psi(k) + beta(k)*theta(i);
@@ -150,6 +151,14 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP priors, SEXP tolerances){
 
 	// END WHILE LOOP		
 	} 
+  
+      
+  // Fix Global Polarity  
+  
+  if (theta(dirvec(0)) > theta(dirvec(1))) {
+    beta = -beta;
+    theta = -theta;
+  }
 		
 	// DEFINE OUTPUT	
 	

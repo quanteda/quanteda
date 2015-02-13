@@ -4,7 +4,8 @@
 \alias{textmodel_wordfish}
 \title{Wordscores text model}
 \usage{
-textmodel_wordfish(wfm, priors, tolerances)
+textmodel_wordfish(wfm, dir = c(1, 10), control = list(priors = c(Inf, Inf,
+  3, 1), tol = c(1e-06, 1e-08)))
 }
 \arguments{
 \item{wfm}{the dfm on which the model will be fit.  Does not need to contain

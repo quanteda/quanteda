@@ -14,9 +14,9 @@
 #' @param tolerances a smoothing parameter for word counts; defaults to zero for the
 #'   to match the LBG (2003) method.
 #' @export
-textmodel_wordfish <- function(wfm, priors, tolerances) {
+textmodel_wordfish <- function(wfm, dir=c(1, 10), control=list(priors = c(Inf,Inf,3,1), tol = c(1e-6,1e-8))) {
 	
-	return(wordfishcpp(wfm, priors, tolerances))
+  return(wordfishcpp(wfm, as.integer(dir), 1/(control$priors^2), control$tol))
     
 }
 
