@@ -77,14 +77,17 @@ setClass("dfmDense",
 
 #' print a dfm object
 #'
-#' print method for dfm objects
+#' print methods for document-feature matrices
+#' @name print.dfm
+NULL
+
 #' @param x the dfm to be printed
 #' @param show.values print the dfm as a matrix or array (if resampled).
 #' @param show.settings Print the settings used to create the dfm.  See
 #'   \link{settings}.
 #' @param ... further arguments passed to or from other methods
 #' @export 
-#' @name print.dfm
+#' @rdname print.dfm
 setMethod("print", signature(x = "dfmSparse"), 
           function(x, show.values=FALSE, show.settings=FALSE, ...) {
               cat("Document-feature matrix of: ",

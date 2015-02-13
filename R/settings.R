@@ -29,7 +29,9 @@ settings <- function(x, ...) {
 #' @rdname settings
 #' @export
 #' @details Calling \code{settings()} with no arguments returns a list of system default settings.
-settings.default <- function() {
+settings.default <- function(x=NULL, ...) {
+    if (!is.null(x)) 
+        stop("settings default should be used without arguments")
     settingsInitialize()
 }
 
@@ -103,6 +105,7 @@ settingsInitialize <- function() {
 
 
 #' @rdname settings
+#' @method print settings
 #' @export
 print.settings <- function(x, ...) {
     cat("Settings:\n")

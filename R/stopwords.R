@@ -84,12 +84,6 @@ stopwordsRemove <- function(x, stopwords=NULL, verbose=TRUE) {
 }
 
 
-#' @rdname stopwords
-#' @export
-stopwordsGet <- function(kind="english") {
-    cat("stopwordsGet() is deprecated, use stopwords() instead.\n")
-    stopwords(kind)
-}
 
 #' access built-in stopwords
 #' 
@@ -119,6 +113,7 @@ stopwordsGet <- function(kind="english") {
 #'   \code{italian}, \code{portuguese}, \code{spanish}, \code{arabic}
 #' @param verbose if \code{FALSE}, suppress the annoying warning note
 #' @return a character vector of stopwords
+#' @name stopwords
 #' @export
 #' @examples
 #' stopwords("english")[1:5]
@@ -134,4 +129,15 @@ stopwords <- function(kind="english", verbose=TRUE) {
     .stopwords[[kind]]
 }
 
+#' @name .stopwords
+#' @rdname stopwords
+#' @docType data
+NULL
+
+#' @rdname stopwords
+#' @export
+stopwordsGet <- function(kind="english") {
+    cat("stopwordsGet() is deprecated, use stopwords() instead.\n")
+    stopwords(kind)
+}
 
