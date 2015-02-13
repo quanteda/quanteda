@@ -283,9 +283,9 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
         dfmresult <- Matrix(as.matrix(dfmresult), sparse=TRUE)
         
     } else {
-        
+        n <- NULL
         if (verbose) cat("\n   ... summing tokens by document")
-        alltokens[, n:=1L]
+        alltokens[, "n":=1L]
         alltokens <- alltokens[, by=list(docIndex,features), sum(n)]
         
         if (verbose) cat("\n   ... indexing ")
@@ -374,9 +374,8 @@ tokenizeSingle <- function(s, sep=" ", useclean=FALSE, ...) {
 #' @export
 #' @examples
 #' # sparse matrix from a corpus
-#' mydfms <- dfm(inaugCorpus, matrixType="sparse")
-#' data(ie2010Corpus, package="quantedaData")
-#' mydfms2 <- dfm(ie2010Corpus, groups = "party", matrixType="sparse")
+#' mydfm <- dfm(inaugCorpus)
+#' mydfmGrouped <- dfm(inaugCorpus, groups = "President")
 dfm.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, 
                        ignoredFeatures=NULL, 
                        keptFeatures=NULL,
@@ -491,14 +490,6 @@ makeRegEx <- function(wildcardregex) {
     ##   [ab] meaning a or b
 }
 
-#' @rdname trim
-#' @param ... only included to allow legacy \code{trimdfm} to pass arguments to \code{trim}
-#' @export
-trimdfm <- function(x, ...) {
-    cat("note: trimdfm deprecated: use trim instead.\n")
-    UseMethod("trim")
-}
-
 
 
 #' Trim a dfm using threshold-based or random feature selection
@@ -511,6 +502,7 @@ trimdfm <- function(x, ...) {
 #' @param nsample how many features to retain (based on random selection)
 #' @param verbose print messages
 #' @return A \link{dfm-class} object reduced in features
+#' @name trim
 #' @export
 #' @author Ken Benoit, inspired by code by Will Lowe (see \link[austin]{trim})
 #' @examples
@@ -558,6 +550,13 @@ setMethod("trim", signature(x="dfm"),
               sort(x)
           })
 
+#' @rdname trim
+#' @param ... only included to allow legacy \code{trimdfm} to pass arguments to \code{trim}
+#' @export
+trimdfm <- function(x, ...) {
+    cat("note: trimdfm deprecated: use trim instead.\n")
+    UseMethod("trim")
+}
 
 
 
@@ -570,7 +569,7 @@ ndoc.dfm <- function(x, ...) {
 
 
 
-#' extract the feature labels from a \link{dfm}
+#' extract the feature labels from a dfm
 #'
 #' Extract the features from a document-feature matrix, which are stored as the column names
 #' of the \link{dfm} object.
@@ -658,43 +657,6 @@ sort.dfm <- function(x, decreasing=TRUE, margin = c("features", "docs", "both"),
     return(x)
 }
 
-#' list the most frequent features
-#'
-#' List the most frequently occuring features in a \link{dfm}
-#' @aliases topFeatures
-#' @param x the object whose features will be returned
-#' @param n how many top features should be returned
-#' @param decreasing If TRUE, return the \code{n} most frequent features, if
-#'   FALSE, return the \code{n} least frequent features
-#' @param ci confidence interval from 0-1.0 for use if dfm is resampled
-#' @param ... additional arguments passed to other methods
-#' @export
-topfeatures <- function(x, ...) {
-    UseMethod("topfeatures")
-}
-
-#' @return A named numeric vector of feature counts, where the names are the feature labels.
-#' @examples
-#' topfeatures(dfm(inaugCorpus))
-#' topfeatures(dfm(inaugCorpus, stopwords=TRUE))
-#' # least frequent features
-#' topfeatures(dfm(inaugCorpus), decreasing=FALSE)
-#' @export
-#' @rdname topfeatures
-topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ci=.95, ...) {
-    if (is.null(n)) n <- ncol(x)
-    if (is.resampled(x)) {
-        subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
-        subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
-        return(data.frame(#features=colnames(subdfm),
-            freq=colSums(subdfm[,,1]),
-            cilo=apply(colSums(subdfm), 1, quantile, (1-ci)/2),
-            cihi=apply(colSums(subdfm), 1, quantile, 1-(1-ci)/2)))
-    } else {
-        subdfm <- sort(colSums(x), decreasing)
-        return(subdfm[1:n])
-    }
-}
 
 
 
@@ -718,7 +680,6 @@ nfeature.corpus <- function(x) {
 nfeature.dfm <- function(x) {
     ncol(x)
 }
-
 
 
 
@@ -908,5 +869,65 @@ smoothdfm <- function(x, alpha=0.5) {
     x <- x + alpha
     attributes(x) <- attr_orig
     x
+}
+
+
+#' list the most frequent features
+#'
+#' List the most frequently occuring features in a \link{dfm}
+#' @name topfeatures
+#' @aliases topFeatures
+#' @param x the object whose features will be returned
+#' @param n how many top features should be returned
+#' @param decreasing If TRUE, return the \code{n} most frequent features, if
+#'   FALSE, return the \code{n} least frequent features
+#' @param ci confidence interval from 0-1.0 for use if dfm is resampled
+#' @param ... additional arguments passed to other methods
+#' @export
+topfeatures <- function(x, ...) {
+    UseMethod("topfeatures")
+}
+
+#' @return A named numeric vector of feature counts, where the names are the feature labels.
+#' @examples
+#' topfeatures(dfm(inaugCorpus))
+#' topfeatures(dfm(inaugCorpus, stopwords=TRUE))
+#' # least frequent features
+#' topfeatures(dfm(inaugCorpus), decreasing=FALSE)
+#' @export
+#' @rdname topfeatures
+topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ci=.95, ...) {
+    if (is.null(n)) n <- ncol(x)
+    if (is.resampled(x)) {
+        subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
+        subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
+        return(data.frame(#features=colnames(subdfm),
+            freq=colSums(subdfm[,,1]),
+            cilo=apply(colSums(subdfm), 1, quantile, (1-ci)/2),
+            cihi=apply(colSums(subdfm), 1, quantile, 1-(1-ci)/2)))
+    } else {
+        subdfm <- sort(colSums(x), decreasing)
+        return(subdfm[1:n])
+    }
+}
+
+#' @export
+#' @rdname topfeatures
+topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ...) {
+    if (is.null(n)) n <- ncol(x)
+    #     if (is.resampled(x)) {
+    #         subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
+    #         subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
+    #         return(data.frame(#features=colnames(subdfm),
+    #             freq=colSums(subdfm[,,1]),
+    #             cilo=apply(colSums(subdfm), 1, quantile, (1-ci)/2),
+    #             cihi=apply(colSums(subdfm), 1, quantile, 1-(1-ci)/2)))
+    #     } else {
+    
+    csums <- colSums(x)
+    names(csums) <- x@Dimnames$features
+    subdfm <- sort(csums, decreasing)
+    return(subdfm[1:n])
+    #    }
 }
 

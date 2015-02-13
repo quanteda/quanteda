@@ -10,24 +10,28 @@
 #' @description The dfm class of object is a type of \link[Matrix]{Matrix-class}
 #'   object with additional slots, described below.  \pkg{quanteda} uses two 
 #'   subclasses of the \code{dfm} class, depending on whether the object can be 
-#'   represented by a sparse matrix, in which case it is a \code{dfmSparse}
+#'   represented by a sparse matrix, in which case it is a \code{dfmSparse} 
 #'   class object, or if dense, then a \code{dfmDense} object.  See Details.
 #'   
 #' @slot settings settings that govern corpus handling and subsequent downstream
 #'   operations, including the settings used to clean and tokenize the texts, 
 #'   and to create the dfm.  See \code{\link{settings}}.
-#' @slot weighting the feature weighting applied to the dfm.  Default is \code{"frequency"}, 
-#'   indicating that the values in the cells of the dfm are simple feature 
-#'   counts.  To change this, use the \code{\link{weight}} method.
+#' @slot weighting the feature weighting applied to the dfm.  Default is
+#'   \code{"frequency"}, indicating that the values in the cells of the dfm are
+#'   simple feature counts.  To change this, use the \code{\link{weight}}
+#'   method.
 #' @slot smooth a smoothing parameter, defaults to zero.  Can be changed using 
 #'   either the \code{\link{smooth}} or the \code{\link{weight}} methods.
 #' @slot Dimnames  These are inherited from \link[Matrix]{Matrix-class} but are 
 #'   named \code{docs} and \code{features} respectively.
 #' @details The \code{dfm} class is a virtual class that will contain one of two
-#'   subclasses for containing the cell counts of document-feature matrixes:  
+#'   subclasses for containing the cell counts of document-feature matrixes: 
 #'   \code{dfmSparse} or \code{dfmDense}.
+#' @seealso \link{dfm}
 #' @export
 #' @import methods
+#' @docType class
+#' @name dfm-class
 setClass("dfm",
          slots = c(settings = "list", weighting = "character", smooth = "numeric"),
          prototype = list(settings = list(NULL),
@@ -64,11 +68,25 @@ setClass("dfmSparse",
 setClass("dfmDense",
          contains = c("dfm", "dgeMatrix"))
 
+
+
 # # @rdname print.dfm
 # # @export
 # setMethod("print", signature(x = "dfm"), callNextMethod())
 #               
 
+#' print a dfm object
+#'
+#' print methods for document-feature matrices
+#' @name print.dfm
+NULL
+
+#' @param x the dfm to be printed
+#' @param show.values print the dfm as a matrix or array (if resampled).
+#' @param show.settings Print the settings used to create the dfm.  See
+#'   \link{settings}.
+#' @param ... further arguments passed to or from other methods
+#' @export 
 #' @rdname print.dfm
 setMethod("print", signature(x = "dfmSparse"), 
           function(x, show.values=FALSE, show.settings=FALSE, ...) {
@@ -105,13 +123,35 @@ setMethod("print", signature(x = "dfmDense"),
               }
           })
 
-
 #' @rdname print.dfm
 #' @param object the item to be printed
 setMethod("show", signature(object = "dfmSparse"), function(object) print(object))
 
 #' @rdname print.dfm
 setMethod("show", signature(object = "dfmDense"), function(object) print(object))
+
+#' @method print dfm
+#' @rdname print.dfm
+print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, ...) {
+    cat("Document-feature matrix of: ",
+        ndoc(x), " document",
+        ifelse(ndoc(x)>1, "s, ", ", "),
+        dim(x)[2], " feature",
+        ifelse(dim(x)[2]>1, "s", ""), ".\n", sep="")
+    cat(ndoc(x), "x", nfeature(x), "dense matrix of (S3) class \"dfm\"\n")
+    #    ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
+    
+    if (show.settings) {
+        cat("Settings: TO BE IMPLEMENTED.")
+    }
+    if (show.values | (nrow(x)<=20 & ncol(x)<=20)) {
+        class(x) <- class(x)[2]
+        attr(x, "settings") <- NULL
+        attr(x, "weighting") <- NULL
+        print(x)
+    }
+}
+
 
 ## S4 Method for the S4 class sparse dfm
 # @param x the sparse dfm
@@ -151,7 +191,7 @@ setMethod("t",
 # @details \code{rowSums} and \code{colSums} form row and column sums and means for \link{dfm-class} objects.
 # @param x a dfm, inheriting from \link[Matrix]{Matrix}
 # @param na.rm if \code{TRUE}, omit missing values (including \code{NaN}) from
-#'   the calculations
+#   the calculations
 # @param dims ignored
 # @param ... additional arguments, for methods/generic compatibility
 # @return returns a named (non-sparse) numeric vector
@@ -159,7 +199,7 @@ setMethod("t",
 # @aliases colSums rowSums
 # @export
 # @examples
-#' myDfm <- dfm(inaugTexts, verbose=FALSE)
+# myDfm <- dfm(inaugTexts, verbose=FALSE)
 # colSums(myDfm[, 1:10])
 # rowSums(myDfm)
 # @export
@@ -219,57 +259,7 @@ setMethod("rowSums",
               rsums
           })
 
-#' @export
-#' @rdname topfeatures
-topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ...) {
-    if (is.null(n)) n <- ncol(x)
-    #     if (is.resampled(x)) {
-    #         subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
-    #         subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
-    #         return(data.frame(#features=colnames(subdfm),
-    #             freq=colSums(subdfm[,,1]),
-    #             cilo=apply(colSums(subdfm), 1, quantile, (1-ci)/2),
-    #             cihi=apply(colSums(subdfm), 1, quantile, 1-(1-ci)/2)))
-    #     } else {
-    
-    csums <- colSums(x)
-    names(csums) <- x@Dimnames$features
-    subdfm <- sort(csums, decreasing)
-    return(subdfm[1:n])
-    #    }
-}
 
-
-
-#' print a dfm object
-#'
-#' print method for dfm objects
-#' @param x the dfm to be printed
-#' @param show.values print the dfm as a matrix or array (if resampled).
-#' @param show.settings Print the settings used to create the dfm.  See
-#'   \link{settings}.
-#' @param ... further arguments passed to or from other methods
-#' @export 
-#' @method print dfm
-print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, ...) {
-    cat("Document-feature matrix of: ",
-        ndoc(x), " document",
-        ifelse(ndoc(x)>1, "s, ", ", "),
-        dim(x)[2], " feature",
-        ifelse(dim(x)[2]>1, "s", ""), ".\n", sep="")
-    cat(ndoc(x), "x", nfeature(x), "dense matrix of (S3) class \"dfm\"\n")
-    #    ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
-    
-    if (show.settings) {
-        cat("Settings: TO BE IMPLEMENTED.")
-    }
-    if (show.values | (nrow(x)<=20 & ncol(x)<=20)) {
-        class(x) <- class(x)[2]
-        attr(x, "settings") <- NULL
-        attr(x, "weighting") <- NULL
-        print(x)
-    }
-}
 
 ## S3 METHODS FOR INDEXING DENSE dfm object
 #' @export
@@ -421,7 +411,7 @@ setMethod("+", signature(e1 = "numeric", e2 = "dfmDense"),
           })
 
 
-#' @rdname dfm
+#' @rdname dfm-class
 #' @export
 #' @examples
 #' \dontshow{
@@ -445,7 +435,7 @@ setMethod("as.matrix", signature(x="dfm"),
               x
           })
 
-#' @rdname dfm
+#' @rdname dfm-class
 #' @export
 #' @examples
 #' \dontshow{

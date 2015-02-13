@@ -3,7 +3,7 @@
 \name{features}
 \alias{features}
 \alias{features.dfm}
-\title{extract the feature labels from a \link{dfm}}
+\title{extract the feature labels from a dfm}
 \usage{
 features(x)
 

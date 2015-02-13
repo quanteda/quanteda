@@ -142,7 +142,7 @@ corpus.directory <- function(x, enc=NULL, docnames=NULL,
 #' \dontrun{
 #'} 
 #' 
-corpus.excel <- function(x, docnames=row.names(x),
+corpus.excel <- function(x, enc=NULL, docnames=row.names(x),
                              textCol=1, docvarsfrom=NULL, 
                              source=NULL, notes=NULL, citation=NULL, ...) {
     if (is.null(docvarsfrom)){
@@ -306,7 +306,7 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
     # build and return the corpus object
     tempCorpus <- list(documents=documents, 
                        metadata=metadata, 
-                       settings=settingsInitialize(),
+                       settings=settings(),
                        tokens=NULL)
     class(tempCorpus) <- list("corpus", class(tempCorpus))
     return(tempCorpus)
@@ -799,7 +799,7 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
     cat("\n")
     ### Turn off describeTexts until we can speed this up
     # dtexts <- describeTexts(texts(object), verbose=FALSE)
-    outputdf <- data.frame(describeTexts(texts(object)[1:min(c(n, ndoc(object)))], 
+    outputdf <- data.frame(summary(texts(object)[1:min(c(n, ndoc(object)))], 
                                          verbose=FALSE))
     if (!is.null(docvars(object)))
         outputdf <- cbind(outputdf, docvars(object)[1:min(c(n, ndoc(object))),, drop=FALSE])
