@@ -25,9 +25,9 @@ Description: A package for the management and quantitative analysis of textual
     describing, comparing, or scaling texts, or topic modelling, or used to
     train machine learning methods for class prediction.
 License: GPL-3
-Depends: 
+Depends:
     R (>= 3.0)
-Imports: 
+Imports:
     methods,
     Matrix (>= 1.1),
     data.table (>= 1.9.3),
@@ -39,7 +39,7 @@ Imports:
     streamR,
     jsonlite (>= 0.9.10),
     httr
-Suggests: 
+Suggests:
     quantedaData,
     entropy,
     openNLP,
