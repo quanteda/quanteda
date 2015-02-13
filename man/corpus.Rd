@@ -20,8 +20,9 @@ corpus(x, ...)
   sep = "_", pattern = "\\\\.txt$", source = NULL, notes = NULL,
   citation = NULL, ...)
 
-\method{corpus}{excel}(x, docnames = row.names(x), textCol = 1,
-  docvarsfrom = NULL, source = NULL, notes = NULL, citation = NULL, ...)
+\method{corpus}{excel}(x, enc = NULL, docnames = row.names(x),
+  textCol = 1, docvarsfrom = NULL, source = NULL, notes = NULL,
+  citation = NULL, ...)
 
 \method{corpus}{facebook}(x, enc = NULL, notes = NULL, citation = NULL,
   ...)
