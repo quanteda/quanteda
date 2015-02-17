@@ -5,36 +5,56 @@
 #' @param object dfm to be converted
 #' @param to target conversion format, one of
 #' \describe{
-#' \item{"lda"}{}
+#' \item{"lda"}{a list with components "documents" and "vocab" as needed by 
+#'   \link[lda]{lda.collapsed.gibbs.sampler}}
 #' \item{"tm"}{a \link[tm]{DocumentTermMatrix} from the \pkg{tm} package} 
-#' \item{"stm"}{data format for the \pkg{\link{stm}} package}
-#' \item{"austin"}{\link[austin]{wfm} format from the \pkg{\link{austin}} package}
+#' \item{"stm"}{the data format for the \pkg{\link{stm}} package}
+#' \item{"austin"}{the \link[austin]{wfm} format from the \pkg{\link{austin}} package}
 #' }
-
-#' Convert a \link{dfm} into a \pkg{tm} \link[tm]{DocumentTermMatrix}
-#' 
-#' \pkg{tm} represents sparse document-feature matrixes in the 
-#' \link[slam:matrix]{simple triplet matrix} format of the package \pkg{slam}. 
-#' This function converts a \code{dfm} into a 
-#' \code{\link[tm]{DocumentTermMatrix}}, enabling a dfm to be used with other 
-#' packages that expect this format, such as \pkg{topicmodels}.
-#' @param d A \link[quanteda]{dfm} object
-#' @param weighting weight function  arguments passed to 
-#'   \code{as.TermDocumentMatrix}, defaults to term frequency (see 
-#'   \code{\link[tm]{as.DocumentTermMatrix}} for a list of options, such as
-#'   tf-idf).
-#' @return A simple triplet matrix of class \link[tm]{as.DocumentTermMatrix}
+#' @return a converted object determined by the value of \code{to} (see above)
 #' @importFrom slam as.simple_triplet_matrix
 #' @importFrom tm as.TermDocumentMatrix
 #' @importFrom tm weightTf
 #' @export
 #' @examples
 #' mycorpus <- subset(inaugCorpus, Year>1970)
-#' d <- trim(dfm(mycorpus), minCount=5, minDoc=3)
-#' dim(d)
-#' td <- dfm2tmformat(d)
-#' length(td$v)
-#' if (require(topicmodels)) (tmodel.lda <- LDA(td, control = list(alpha = 0.1), k = 5))
+#' quantdfm <- dfm(mycorpus, verbose=FALSE)
+#' # convert to austin wfm format
+#' austindfm <- convert(quantdfm, to="austin")
+#' # convert to lda format
+#' if (require(austin)) austin::is.wfm(austindfm)
+# td <- dfm2tmformat(d)
+# length(td$v)
+# if (require(topicmodels)) (tmodel.lda <- LDA(td, control = list(alpha = 0.1), k = 5))
+convert <- function(object, ...) {
+    UseMethod("convert")
+}
+
+#' @export
+#' @rdname convert
+#' @importFrom topicmodels dtm2ldaformat
+convert.dfm <- function(object, to = c("lda", "tm", "stm", "austin"), weighting=weightTf) {
+    to <- match.arg(to)
+    if (to=="tm") 
+        return(dfm2tmformat(object, weighting))
+    else if (to=="lda")
+        return(dfm2ldaformat(object))
+    else if (to=="stm")
+        return(dfm2stmformat(object))
+    else if (to=="austin")
+        return(dfm2austinformat(object))
+    
+}
+
+
+dfm2austinformat <- function(d) {
+    d <- as.matrix(d)
+    names(dimnames(d))[2] <- "words"
+    class(d) <- c("wfm", "matrix")
+    d
+}
+
+## convert to tm format
 dfm2tmformat <- function(d, weighting=weightTf){
     sl <- slam::as.simple_triplet_matrix(d)
     td <- tm::as.TermDocumentMatrix(sl, weighting=weighting)
@@ -42,24 +62,45 @@ dfm2tmformat <- function(d, weighting=weightTf){
 }
 
 
+# @return A list with components "documents" and "vocab" as needed by 
+#   \link[lda]{lda.collapsed.gibbs.sampler}
+# @import topicmodels
+# @export
+# @examples
+# mycorpus <- subset(inaugCorpus, Year>1970)
+# d <- dfm(mycorpus, stopwords=TRUE)
+# d <- trim(d, minCount=5, minDoc=3)
+# td <- dfm2ldaformat(d)
+# if (require(lda)) {
+#     tmodel.lda <- lda.collapsed.gibbs.sampler(documents=td$documents, 
+#                                               K=10,  
+#                                               vocab=td$vocab,
+#                                               num.iterations=50, alpha=0.1, eta=0.1) 
+#     top.topic.words(tmodel.lda$topics, 10, by.score=TRUE) # top five words in each topic
+# }
+dfm2ldaformat <- function(d) {
+    tmDTM <- dfm2tmformat(d)
+    return(topicmodels::dtm2ldaformat(tmDTM))
+}
 
-#' convert a dfm to stm's input document format
-#'
-#' Convert a quanteda dfm object into the indexed format needed for estimating
-#' a structural topic model from the \pkg{stm} package using \link[stm]{stm}.
-#' @param data dfm object to be converted
-#' @note
-#' Meta-data will need to be passed separately to \link[stm]{stm} as this 
-#' information is not included in a dfm object.
-#' @return A list containing the following elements:
-#' \item{documents}{A list containing the documents in the stm format.}
-#' \item{vocab}{Character vector of vocabulary.}
-#' \item{meta}{NULL} 
-#' @examples
-#' mydfm <- dfm(inaugTexts)
-#' mydfmStm <- dfm2stmformat(mydfm)
-#' str(mydfmStm)
-#' @export
+
+# convert a dfm to stm's input document format
+#
+# Convert a quanteda dfm object into the indexed format needed for estimating
+# a structural topic model from the \pkg{stm} package using \link[stm]{stm}.
+# @param data dfm object to be converted
+# @note
+# Meta-data will need to be passed separately to \link[stm]{stm} as this 
+# information is not included in a dfm object.
+# @return A list containing the following elements:
+# \item{documents}{A list containing the documents in the stm format.}
+# \item{vocab}{Character vector of vocabulary.}
+# \item{meta}{NULL} 
+# @examples
+# mydfm <- dfm(inaugTexts)
+# mydfmStm <- dfm2stmformat(mydfm)
+# str(mydfmStm)
+# @export
 dfm2stmformat <- function(data) {
     sortedData <- data[, order(features(data))]
     vocab <- features(sortedData)
