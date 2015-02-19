@@ -29,7 +29,7 @@ perform a variety of quanttative analyses on this matrix.
 
 [^thanks]: This research was supported by the European
     Research Council grant ERC-2011-StG 283794-QUANTESS.  Code
-    contributors to the project include Alex Herzog, William Lowe, and
+    contributors to the project include Ben Lauderdale, Pablo Barberà, and 
     Kohei Watanabe.
 
 The object is inference about the data contained in the texts, whether this means
@@ -343,8 +343,8 @@ byPresMat <- dfm(myCorpus, dictionary=myDict)
 ```{r warning=FALSE, message=FALSE}
 library(quanteda)
 # create a corpus from the immigration texts from UK party platforms
-uk2010immigCorpus <- corpus(uk2010immig,
-                            docvars=data.frame(party=names(uk2010immig)),
+uk2010immigCorpus <- corpus(ukimmigTexts,
+                            docvars=data.frame(party=names(ukimmigTexts)),
                             notes="Immigration-related sections of 2010 UK party manifestos",
                             enc="UTF-8")
 uk2010immigCorpus

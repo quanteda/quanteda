@@ -63,13 +63,13 @@ into smaller units. For this, use \link{changeunits} instead.
 }
 \examples{
 # same as tokenize()
-identical(tokenize(uk2010immig, lower=FALSE), segment(uk2010immig, lower=FALSE))
+identical(tokenize(ukimmigTexts, lower=FALSE), segment(ukimmigTexts, lower=FALSE))
 
 # segment into paragraphs
-segment(uk2010immig[3:4], "paragraphs")
+segment(ukimmigTexts[3:4], "paragraphs")
 
 # segment a text into sentences
-segmentedChar <- segment(uk2010immig, "sentences")
+segmentedChar <- segment(ukimmigTexts, "sentences")
 segmentedChar[2]
 testCorpus <- corpus("##INTRO This is the introduction.
                       ##DOC1 This is the first document.
@@ -80,7 +80,7 @@ testCorpusSeg <- segment(testCorpus, "tags")
 summary(testCorpusSeg)
 texts(testCorpusSeg)
 # segment a corpus into sentences
-segmentedCorpus <- segment(corpus(uk2010immig), "sentences")
+segmentedCorpus <- segment(corpus(ukimmigTexts), "sentences")
 identical(ndoc(segmentedCorpus), length(unlist(segmentedChar)))
 }
 

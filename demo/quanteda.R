@@ -1,8 +1,8 @@
 # a demonstration of the capabilities of quanteda
 
-str(uk2010immig)
-mycorpus <- corpus(uk2010immig,
-                   docvars=list(party=names(uk2010immig)),
+str(ukimmigTexts)
+mycorpus <- corpus(ukimmigTexts,
+                   docvars=list(party=names(ukimmigTexts), year=2010L, country="UK"),
                    notes="Immigration-related sections from UK 2010 party manifestos.")
 encoding(mycorpus) <- "UTF-8"
 language(mycorpus) <- "english"

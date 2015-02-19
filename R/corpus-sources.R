@@ -1,3 +1,4 @@
+
 #' Function to declare a connection to a directory (containing files)
 #' 
 #' Function to declare a connection to a directory, although unlike \link{file}

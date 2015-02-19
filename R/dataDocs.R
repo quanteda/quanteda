@@ -28,44 +28,38 @@ NULL
 NULL
 
 
-#' @name uk2010immig
+# @name uk2010immig
+# @title Immigration-related sections of 2010 UK party manifestos
+# @docType data
+# @description Extracts from the election manifestos of 9 UK political parties from 2010, related
+# to immigration or asylum-seekers.
+# @format A named character vector of plain ASCII texts
+# @examples
+# data(uk2010immig)
+# uk2010immigCorpus <- corpus(uk2010immig, docvars=list(party=names(uk2010immig)))
+# language(uk2010immigCorpus) <- "english"
+# encoding(uk2010immigCorpus) <- "UTF-8"
+# summary(uk2010immigCorpus)
+NULL
+
+#' @name ukimmigTexts
 #' @title Immigration-related sections of 2010 UK party manifestos
 #' @docType data
 #' @description Extracts from the election manifestos of 9 UK political parties from 2010, related
 #' to immigration or asylum-seekers.
 #' @format A named character vector of plain ASCII texts
 #' @examples
-#' data(uk2010immig)
-#' uk2010immigCorpus <- corpus(uk2010immig, docvars=list(party=names(uk2010immig)))
-#' language(uk2010immigCorpus) <- "english"
-#' encoding(uk2010immigCorpus) <- "UTF-8"
-#' summary(uk2010immigCorpus)
+#' data(ukimmigTexts)
+#' ukimmigCorpus <- corpus(ukimmigTexts, docvars=list(party=names(ukimmigTexts)))
+#' language(ukimmigCorpus) <- "english"
+#' encoding(ukimmigCorpus) <- "UTF-8"
+#' summary(ukimmigCorpus)
 NULL
 
-#' @name ukimmigrTexts
-#' @title Immigration-related sections of 2010 UK party manifestos
-#' @docType data
-#' @description Extracts from the election manifestos of 9 UK political parties from 2010, related
-#' to immigration or asylum-seekers.
-#' @format A named character vector of plain ASCII texts
-#' @examples
-#' data(ukimmigrTexts)
-#' ukimmigrCorpus <- corpus(ukimmigrTexts, docvars=list(party=names(ukimmigrTexts)))
-#' language(ukimmigrCorpus) <- "english"
-#' encoding(ukimmigrCorpus) <- "UTF-8"
-#' summary(ukimmigrCorpus)
-NULL
-
-#' @name englishSyllables
+#' @name syllables
+#' @aliases englishSyllables
 #' @rdname syllables
 #' @docType data
-#' @details \code{englishSyllables} is a quanteda-supplied data object consisting of a named numeric 
-#' vector of syllable counts for the words used as names.  This is the default object used to count 
-#' English syllables.
-# @examples
-# data(englishSyllables)
-# englishSyllables["sixths"]
-# englishSyllables["onomatopeia"]
 #' @source \code{englishSyllables} is built from the freely available CMU pronunciation dictionary at \url{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
 #' 
 NULL

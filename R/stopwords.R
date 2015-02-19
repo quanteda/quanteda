@@ -28,7 +28,7 @@
 #' removeFeatures(itText, stopwords("italian", verbose=FALSE))
 #' 
 #' ## example for dfm objects
-#' mydfm <- dfm(uk2010immig, verbose=FALSE)
+#' mydfm <- dfm(ukimmigTexts, verbose=FALSE)
 #' removeFeatures(mydfm, stopwords("english", verbose=FALSE))
 #' 
 #' ## example for collocations

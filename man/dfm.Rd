@@ -126,6 +126,12 @@ a disapproving warning message while doing so, suggesting you make the switch.
 (size2 <- object.size(dfm(inaugTexts, matrixType="dense")))
 cat("Compacted by ", round(as.numeric((1-size1/size2)*100), 1), "\%.\\n", sep="")
 
+# for a corpus
+mydfm <- dfm(inaugCorpus)
+
+# grouping documents by docvars in a corpus
+mydfmGrouped <- dfm(inaugCorpus, groups = "President")
+
 # with stopwords English, stemming, and dense matrix
 dfmsInaug2 <- dfm(inaugCorpus, ignoredFeatures = stopwordsGet(), stem=TRUE, matrixType="dense")
 
@@ -190,9 +196,6 @@ topf <- colSums(dfmsBig)
 names(topf) <- colnames(dfmsBig)
 head(sort(topf, decreasing=TRUE), 100)
 }
-# sparse matrix from a corpus
-mydfm <- dfm(inaugCorpus)
-mydfmGrouped <- dfm(inaugCorpus, groups = "President")
 }
 \author{
 Kenneth Benoit

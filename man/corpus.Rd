@@ -189,8 +189,8 @@ if (require(tm)) {
 corpus(inaugTexts)
 
 # create a corpus from texts and assign meta-data and document variables
-uk2010immigCorpus <- corpus(uk2010immig,
-                            docvars=data.frame(party=names(uk2010immig)),
+ukimmigCorpus <- corpus(ukimmigTexts,
+                            docvars=data.frame(party=names(ukimmigTexts)),
                             enc="UTF-8")
 }
 \seealso{

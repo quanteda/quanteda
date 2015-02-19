@@ -93,6 +93,12 @@ dfm <- function(x, ...) {
 #' (size2 <- object.size(dfm(inaugTexts, matrixType="dense")))
 #' cat("Compacted by ", round(as.numeric((1-size1/size2)*100), 1), "%.\n", sep="")
 #' 
+#' # for a corpus
+#' mydfm <- dfm(inaugCorpus)
+#'
+#' # grouping documents by docvars in a corpus
+#' mydfmGrouped <- dfm(inaugCorpus, groups = "President")
+#' 
 #' # with stopwords English, stemming, and dense matrix
 #' dfmsInaug2 <- dfm(inaugCorpus, ignoredFeatures = stopwordsGet(), stem=TRUE, matrixType="dense")
 #' 
@@ -372,10 +378,6 @@ tokenizeSingle <- function(s, sep=" ", useclean=FALSE, ...) {
 #' @rdname dfm
 #' @param groups Grouping variable for aggregating documents
 #' @export
-#' @examples
-#' # sparse matrix from a corpus
-#' mydfm <- dfm(inaugCorpus)
-#' mydfmGrouped <- dfm(inaugCorpus, groups = "President")
 dfm.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, 
                        ignoredFeatures=NULL, 
                        keptFeatures=NULL,

@@ -1,3 +1,14 @@
+quanteda 0.7.2
+==============
+* Renamed dfm2xxxx functions, now called convert(dfm, to="target") and a variety of 
+  as.xxx functions.  See ?convert.
+
+* summary.character() replaces describeTexts().
+
+* renamed uk2010immig built-in texts object to ukimmigTexts.
+
+* Tidied up a few man pages.
+
 quanteda 0.7.1
 ==============
 * trimdfm, flatten.dictionary are gone from the NAMESPACE

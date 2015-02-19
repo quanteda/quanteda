@@ -260,8 +260,8 @@ corpus.VCorpus <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
 #' corpus(inaugTexts)
 #' 
 #' # create a corpus from texts and assign meta-data and document variables
-#' uk2010immigCorpus <- corpus(uk2010immig, 
-#'                             docvars=data.frame(party=names(uk2010immig)), 
+#' ukimmigCorpus <- corpus(ukimmigTexts, 
+#'                             docvars=data.frame(party=names(ukimmigTexts)), 
 #'                             enc="UTF-8") 
 #'                             
 corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
@@ -768,25 +768,31 @@ subset.corpus <- function(x, subset=NULL, select=NULL, ...) {
     return(tempcorp)
 }
 
-#' Corpus summary
-#'
-#' Displays information about a corpus object, including attributes and 
-#' metadata such as date of number of texts, creation and source.
+#' summarize a corpus or a vector of texts
 #' 
-#' @param object corpus to be summarized
+#' Displays information about a corpus or vector of texts.  For a corpus, this 
+#' includes attributes and metadata such as date of number of texts, creation 
+#' and source.  For texts, prints to the console a desription of the texts,
+#' including number of types, tokens, and sentences.
+#' 
+#' @param object corpus or texts to be summarized
 #' @param n maximum number of texts to describe, default=100
-#' @param verbose FALSE to turn off printed output
-#' @param showmeta TRUE to include document-level meta-data
+#' @param verbose set to \code{FALSE} to turn off printed output, for instance
+#'   if you simply want to assign the output to a \code{data.frame}
+#' @param showmeta for a corpus, set to \code{TRUE} to include document-level
+#'   meta-data
 #' @param ...  additional arguments affecting the summary produced
 #' @export
 #' @method summary corpus
 #' @examples
+#' # summarize corpus information
 #' summary(inaugCorpus)
 #' summary(inaugCorpus, n=10)
-#' mycorpus <- corpus(uk2010immig, docvars=data.frame(party=names(uk2010immig)), enc="UTF-8")
+#' mycorpus <- corpus(ukimmigTexts, docvars=data.frame(party=names(ukimmigTexts)), enc="UTF-8")
 #' summary(mycorpus, showmeta=TRUE)  # show the meta-data
 #' mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
 #' mysummary$Types / mysummary$Tokens             # crude type-token ratio
+#' 
 summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
     
     cat("Corpus consisting of ", ndoc(object), " document",

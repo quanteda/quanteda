@@ -10,7 +10,7 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
 Version: 0.7.1.000
 Date: 2015-02-13
 Description: A package for the management and quantitative analysis of textual
-    data with R. ?quanteda makes it easy to manage texts in the form of a
+    data with R. quanteda makes it easy to manage texts in the form of a
     corpus, defined as a collection of texts that includes document-level
     variables specific to each text, as well as meta-data for documents and for
     the collection as a whole. quanteda includes tools to make it easy and fast
@@ -33,13 +33,13 @@ Imports:
     data.table (>= 1.9.3),
     SnowballC,
     wordcloud,
-    slam,
-    tm,
     proxy,
     streamR,
     jsonlite (>= 0.9.10),
     httr
 Suggests:
+    slam,
+    tm,
     entropy,
     openNLP,
     RJSONIO,
@@ -63,6 +63,8 @@ VignetteBuilder: knitr
 Collate:
     'clean.R'
     'collocations.R'
+    'converters.R'
+    'corpus-sources-S4.R'
     'corpus-sources.R'
     'corpus.R'
     'dataDocs.R'
@@ -85,5 +87,4 @@ Collate:
     'syllables.R'
     'textmodel-generics.R'
     'textmodel-wordscores.R'
-    'toTdm.R'
     'tokenize.R'
