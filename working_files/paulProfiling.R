@@ -1,6 +1,54 @@
 library(quanteda)
 library(quantedaData)
+library(ggplot2)
+library(reshape2)
 
+options(scipen=5)
+
+plotTimes <- function(times){
+    
+    d1 <- data.frame(avgDocSizes, quantedaTimes, tmtimes, newTimes)
+    ggplot() + 
+        geom_line(aes(avgDocSizes, quantedaTimes), d1) +  
+        geom_line(aes(avgDocSizes, tmtimes ), d1)
+    
+    
+    d2 <- melt(d1, id=c('avgDocSizes'))
+    ggplot(d2, aes(x=avgDocSizes, y=value, colour=variable)) + 
+        geom_line(aes(group=variable)) +
+        geom_point(size=3)
+    
+}
+
+
+compareFunctions <- function(texts, f1, f2, f3=NULL, splits=5) {
+    f1Times <- c()
+    f2Times <- c()
+    f3Times <- c()
+    splits <- seq(from=1, to=length(texts), by= as.integer(length(texts)/splits))
+    splitSize = as.integer(length(texts)/splits)
+    start=0
+    end=length(texts)
+    while(start < end){
+        sta <- proc.time()
+        r1 <-f1(inaugTexts)
+        f1Times <- c(f1Times, proc.time()-sta)
+        
+        sta <- proc.time()
+        r2 <-f2(inaugTexts)
+        f2Times <- c(f2Times, proc.time()-sta)
+        
+        if(!is.null(f3)){
+            sta <- proc.time()
+            r3 <-f3(inaugTexts)
+            f3Times <- c(f3Times, proc.time()-sta)
+        }
+    }
+    
+    return(c(f1=f1Times, f2=f2Times)
+}
+
+compareFunctions(inaugTexts)
 
 # test harness for clean and tokenize
 
@@ -87,16 +135,7 @@ while(end < 32000){
 }
 
 
-options(scipen=5)
-library(ggplot2)
-d1 <- data.frame(avgDocSizes, quantedaTimes, tmtimes, newTimes)
-ggplot() + 
-    geom_line(aes(avgDocSizes, quantedaTimes), d1) +  
-    geom_line(aes(avgDocSizes, tmtimes ), d1)
 
-library(reshape2)
-d2 <- melt(d1, id=c('avgDocSizes'))
-ggplot(d2, aes(x=avgDocSizes, y=value, colour=variable)) + 
-    geom_line(aes(group=variable)) +
-    geom_point(size=3)
+
+
 
