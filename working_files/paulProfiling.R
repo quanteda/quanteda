@@ -1,3 +1,29 @@
+library(quanteda)
+library(quantedaData)
+
+
+# test harness for clean and tokenize
+
+sta <- proc.time()
+verify1 <- clean(tokenize(inaugTexts))
+sto <- proc.time()-sta
+print(sto)
+
+sta <- proc.time()
+verify2 <- tokenize(clean(inaugTexts))
+sto <- proc.time()-sta
+print(sto)
+
+
+###############
+###############
+
+
+# movie reviews
+
+
+
+
 ###############
 ###############
 
