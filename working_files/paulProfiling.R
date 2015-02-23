@@ -3,52 +3,72 @@ library(quantedaData)
 library(ggplot2)
 library(reshape2)
 
-options(scipen=5)
 
-plotTimes <- function(times){
-    
-    d1 <- data.frame(avgDocSizes, quantedaTimes, tmtimes, newTimes)
-    ggplot() + 
-        geom_line(aes(avgDocSizes, quantedaTimes), d1) +  
-        geom_line(aes(avgDocSizes, tmtimes ), d1)
-    
-    
-    d2 <- melt(d1, id=c('avgDocSizes'))
-    ggplot(d2, aes(x=avgDocSizes, y=value, colour=variable)) + 
-        geom_line(aes(group=variable)) +
-        geom_point(size=3)
-    
+tokenize1 <- function(texts){
+    return(quanteda::tokenize(texts))
 }
 
-
-compareFunctions <- function(texts, f1, f2, f3=NULL, splits=5) {
-    f1Times <- c()
-    f2Times <- c()
-    f3Times <- c()
-    splits <- seq(from=1, to=length(texts), by= as.integer(length(texts)/splits))
-    splitSize = as.integer(length(texts)/splits)
-    start=0
-    end=length(texts)
-    while(start < end){
-        sta <- proc.time()
-        r1 <-f1(inaugTexts)
-        f1Times <- c(f1Times, proc.time()-sta)
+tokenize2 <- function(texts, sep=" "){
+    tokenizeSingle <- function(s, sep=" ") {
         
-        sta <- proc.time()
-        r2 <-f2(inaugTexts)
-        f2Times <- c(f2Times, proc.time()-sta)
-        
-        if(!is.null(f3)){
-            sta <- proc.time()
-            r3 <-f3(inaugTexts)
-            f3Times <- c(f3Times, proc.time()-sta)
-        }
+        # s <- unlist(s)
+        tokens <- scan(what="char", text=s, quiet=TRUE, quote="", sep=sep)
+        #tokens <- clean(tokens, ...)
+        return(tokens)
     }
     
-    return(c(f1=f1Times, f2=f2Times)
+    # apply to each texts, return a list
+    result <- lapply(texts, tokenizeSingle, sep)
+    
+    # remove empty "tokens" caused by multiple whitespace characters in sequence
+    result <- lapply(result, function(x) x[which(x != "")])
+    
+    return(result)
 }
 
-compareFunctions(inaugTexts)
+
+
+compareFunctions <- function(texts, f1, f2,  splits=5, plot=TRUE) {
+    f1Times <- c()
+    f2Times <- c()
+    numDocs <- c()
+    splitSize <- as.integer(length(texts)/splits)
+    start <- 1
+    end <- length(texts)
+    while(start < end){
+        curTexts <- texts[start:end]
+        numDocs <- c(numDocs, length(curTexts))
+        sta <- proc.time()
+        r1 <-f1(curTexts)
+        sto <- proc.time()-sta
+        f1Times <- c(f1Times, sto[3])
+        sta <- proc.time()
+        r2 <- f2(curTexts)
+        sto <- proc.time()-sta
+        f2Times <- c(f2Times, sto[3])
+        start <- start+splitSize
+    }
+    times <- data.frame(f1=f1Times, f2=f2Times, numDocs=numDocs)
+    plt <- ggplot(melt(times, id=c('numDocs'), value.name='elapsed'), 
+           aes(x=numDocs, y=elapsed, colour=variable)) + 
+        geom_line(aes(group=variable)) +
+        geom_point(size=3)
+    return(plt)
+}
+gp <- compareFunctions(inaugTexts, tokenize1, tokenize2)
+gp
+# plot timings against number of doucments
+
+
+ggplot() + 
+    geom_line(aes(numDocs, f1), res) +  
+    geom_line(aes(numDocs, f2), res)
+
+
+d2 <- melt(res, id=c('numDocs'), value.name='elapsed')
+ggplot(d2, aes(x=numDocs, y=elapsed, colour=variable)) + 
+    geom_line(aes(group=variable)) +
+    geom_point(size=3)
 
 # test harness for clean and tokenize
 
