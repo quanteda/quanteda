@@ -19,6 +19,10 @@ existing ones.  In the meantime, we suggest:
 -   hope that we get to 1.0 quickly;
 -   help that process by sending us feedback stating what you think of the syntax, formal names, etc. from a user's perspective.
 
+## Bugs to fix
+
+*   Remove documents made empty by dfm - anything that results in rowSums(mydfm)==0
+
 ## On the To Do List
 
 1.  Define full set of operators for dfmSparse and dfmDense.  Right now, only `+` is defined.

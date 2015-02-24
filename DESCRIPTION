@@ -36,10 +36,11 @@ Imports:
     proxy,
     streamR,
     jsonlite (>= 0.9.10),
-    httr
-Suggests:
+    httr,
     slam,
     tm,
+    topicmodels,
+Suggests:
     entropy,
     openNLP,
     RJSONIO,
@@ -53,9 +54,7 @@ Suggests:
     coda,
     lattice,
     ggplot2,
-    topicmodels,
-    Rfacebook,
-    xlsx
+    Rfacebook
 URL: http://github.com/kbenoit/quanteda
 BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE
@@ -87,5 +86,4 @@ Collate:
     'syllables.R'
     'textmodel-generics.R'
     'textmodel-wordscores.R'
-    'toTdm.R'
     'tokenize.R'

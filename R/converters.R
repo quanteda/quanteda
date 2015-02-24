@@ -56,7 +56,7 @@
 #' str(ldadfm)
 #' identical(ldadfm, stmdfm[1:2])
 #' 
-convert <- function(x, ...) {
+convert <- function(x, to, ...) {
     UseMethod("convert")
 }
 
@@ -121,13 +121,16 @@ as.DocumentTermMatrix <- function(x, ...) {
 #' @rdname convert
 #' @details \code{as.DocumentTermMatrix} will convert a quanteda \link{dfm} into
 #'   the \pkg{tm} package's \link[tm]{DocumentTermMatrix} format.
-#' @param weighting a weighting function for 
-#'   \link[tm]{TermDocumentMatrix}.  It defaults to \code{weightTf} for term frequency weighting.
-#'   For other available weighting functions from the \pkg{tm} package, see 
-#'   \code{\link[tm]{TermDocumentMatrix}}.
-#' @param ... not used here; see \code{weighting}
-as.DocumentTermMatrix.dfm <- function(x, weighting=tm::weightTf, ...) {
-    convert(x, to="tm", weighting)
+#' @note The \pkg{tm} package version of \code{as.TermDocumentMatrix} allows a \code{weighting} argument,
+#' which supplies a weighting function for 
+#'   \link[tm]{TermDocumentMatrix}.  Here the default is for term frequency weighting.
+#'   If you want a different weighting, apply the weights after converting using one of the \pkg{tm}
+#'   functions.  
+#   For other available weighting functions from the \pkg{tm} package, see 
+#   \code{\link[tm]{TermDocumentMatrix}}.
+#' @param ... not used here
+as.DocumentTermMatrix.dfm <- function(x, ...) {
+    convert(x, to="tm", ...)
 }
 
 #' @export

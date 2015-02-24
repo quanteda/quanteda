@@ -56,7 +56,6 @@ corpus <- function(x, ...) {
     UseMethod("corpus")
 }
 
-
 #' @param docvarsfrom  Argument to specify where docvars are to be taken, from 
 #' parsing the filenames separated
 #' by \code{sep} or from meta-data embedded in the text file header (\code{headers}).
@@ -200,7 +199,6 @@ corpus.url <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
            enc=enc, ...))
    
 }
-
 
 
 #' @rdname corpus

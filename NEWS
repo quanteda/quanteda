@@ -28,9 +28,6 @@ quanteda 0.7.1
 * new dictionary() constructor function that also does import and conversion,
   replacing old readWStatdict and readLIWCdict functions.
 
-
-
-
 quanteda 0.7.0
 ==============
 * dfm now sparse by default, implemented as subclasses of the 
