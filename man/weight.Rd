@@ -89,6 +89,15 @@ topfeatures(tfidfDtm)
 # Introduction to Information Retrieval
 logTfDtm <- weight(dtm, type="logFreq")
 wfidfDtm <- weight(logTfDtm, type="tfidf", normalize=FALSE)
+\dontshow{
+testdfm <- dfm(inaugTexts[1:5])
+print(testdfm[, 1:5])
+for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
+    testw <- weight(testdfm, w)
+    cat("\\nweight test for:", w, "; class:", class(testw), "\\n")
+    print(testw[, 1:5])
+}
+}
 }
 \author{
 Paul Nulty and Kenneth Benoit

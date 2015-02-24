@@ -21,24 +21,15 @@ existing ones.  In the meantime, we suggest:
 
 ## On the To Do List
 
-1.  Remove anything not yet implemented, e.g.: settings, resample.
+1.  Define full set of operators for dfmSparse and dfmDense.  Right now, only `+` is defined.
 
-2.  for the `dfm2*` functions, change to a `convert.dfm(x, to = “format”)`, instead of 3 separate functions.
-
-3.  Do something similar for dictionary imports.
+3.  Common import syntax for dictionary imports.
 
 4.  Define a `textsource(x, from = c(“character”, “twitter”, “zipfiles”, “facebook”, …)` etc that returns a subclass of 
 textsource that will have common attributes needed for corpus construction.  Then define different corpus() methods for 
 each subclass of object?  There is probably a better way than this - we should think about it carefully - 
 but it’s too anarchic at the moment, and too hard to find the range of available text sources.  
 (And we can also define methods to work with all of the tm sources.)
-
-
-5.  get rid of `segmentSentence`, `segmentParagraph`, just have a s`egment(x, to=“sentence”)`.
-
-6.  Redo `stopwords` -- see pdf notes.
-
-7.  Redo `syllableCounts` -- see pdf notes.
 
 8.  `settings`
 

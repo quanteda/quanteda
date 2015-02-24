@@ -736,6 +736,16 @@ nfeature.dfm <- function(x) {
 setGeneric("weight", function(x, ...) standardGeneric("weight"))
 
 #' @rdname weight
+#' @examples
+#' \dontshow{
+#' testdfm <- dfm(inaugTexts[1:5])
+#' print(testdfm[, 1:5])
+#' for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
+#'     testw <- weight(testdfm, w)
+#'     cat("\nweight test for:", w, "; class:", class(testw), "\n")
+#'     print(testw[, 1:5])
+#' }
+#' }
 setMethod("weight", signature = "dfm", 
           definition = function(x, type=c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"), #, "ppmi"), 
                                 smooth = 0, normalize = TRUE, verbose=TRUE, ...) {
@@ -744,7 +754,7 @@ setMethod("weight", signature = "dfm",
               if (weighting(x) != "frequency") {
                   cat("  No weighting applied: you should not weight an already weighted dfm.\n")
               } else if (type=="relFreq") {
-                  x <- x/rowSums(x)
+                  x <- new("dfmSparse", x/rowSums(x))
               } else if (type=="relMaxFreq") {
                   x <- x / apply(x, 1, max)
               } else if (type=="logFreq") {
@@ -753,7 +763,7 @@ setMethod("weight", signature = "dfm",
                   # complicated as, is is to control coercion to a class for which logical operator is
                   # properly defined as a method, currently not dfm and child classes
                   idf <- log(ndoc(x)) - log(docfreq(x, smooth))
-                  if (normalize) x <- x/rowSums(x)
+                  if (normalize) x <- weight(x, "relFreq")
                   if (nfeature(x) != length(idf)) 
                       stop("missing some values in idf calculation")
                   # currently this strips the dfm of its special class, but this is a problem in 
