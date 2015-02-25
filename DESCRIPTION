@@ -8,7 +8,7 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     "watanabe.kohei@gmail.com", role = "ctb"), person("Benjamin", "Lauderdale",
     email = "B.E.lauderdale@lse.ac.uk", role = "ctb"))
 Version: 0.7.1.001
-Date: 2015-02-24
+Date: 2015-02-25
 Description: A package for the management and quantitative analysis of textual
     data with R. quanteda makes it easy to manage texts in the form of a
     corpus, defined as a collection of texts that includes document-level
@@ -34,27 +34,14 @@ Imports:
     SnowballC,
     wordcloud,
     proxy,
-    streamR,
-    jsonlite (>= 0.9.10),
-    httr,
     slam,
-    tm,
-    topicmodels,
+    tm
 Suggests:
-    entropy,
-    openNLP,
-    RJSONIO,
-    RCurl,
-    twitteR,
-    XML,
-    lda,
-    tcltk2,
     knitr,
-    rjags,
-    coda,
-    lattice,
-    ggplot2,
-    Rfacebook
+    lda,
+    topicmodels,
+    jsonlite (>= 0.9.10),
+    streamR
 URL: http://github.com/kbenoit/quanteda
 BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE
@@ -64,7 +51,6 @@ Collate:
     'collocations.R'
     'converters.R'
     'corpus-sources-S4.R'
-    'corpus-sources.R'
     'corpus.R'
     'dataDocs.R'
     'describe-texts.R'
@@ -72,7 +58,6 @@ Collate:
     'dfm-main.R'
     'dictionaryFunctions.R'
     'distance.R'
-    'get-texts.R'
     'gui.R'
     'kwic.R'
     'lexdiv.R'

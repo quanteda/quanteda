@@ -6,11 +6,6 @@
 \alias{corpus.VCorpus}
 \alias{corpus.character}
 \alias{corpus.corpusSource}
-\alias{corpus.directory}
-\alias{corpus.excel}
-\alias{corpus.facebook}
-\alias{corpus.twitter}
-\alias{corpus.url}
 \alias{is.corpus}
 \title{Constructor for corpus objects from corpusSource}
 \usage{
@@ -18,23 +13,6 @@
   citation = NULL, ...)
 
 corpus(x, ...)
-
-\method{corpus}{directory}(x, enc = NULL, docnames = NULL,
-  docvarsfrom = c("none", "filenames", "headers"), docvarnames = NULL,
-  sep = "_", pattern = "\\\\.txt$", source = NULL, notes = NULL,
-  citation = NULL, ...)
-
-\method{corpus}{excel}(x, enc = NULL, docnames = row.names(x),
-  textCol = 1, docvarsfrom = NULL, source = NULL, notes = NULL,
-  citation = NULL, ...)
-
-\method{corpus}{facebook}(x, enc = NULL, notes = NULL, citation = NULL,
-  ...)
-
-\method{corpus}{twitter}(x, enc = NULL, notes = NULL, citation = NULL,
-  ...)
-
-\method{corpus}{url}(x, enc = NULL, notes = NULL, citation = NULL, ...)
 
 \method{corpus}{VCorpus}(x, enc = NULL, notes = NULL, citation = NULL,
   ...)
@@ -47,9 +25,8 @@ is.corpus(x)
 \method{+}{corpus}(c1, c2)
 }
 \arguments{
-\item{x}{A source of texts to form the documents in the corpus. This can be a
-filepath to a directory containing text documents (see \link{directory}),
-or a character vector of texts.}
+\item{x}{a source of texts to form the documents in the corpus, a character vector or
+a \link{corpusSource-class} object created using \link{textfile}.}
 
 \item{enc}{A string specifying the input encoding for texts in the
 corpus.  Must be a valid entry in \code{\link{iconvlist}()}, since the code in
@@ -66,25 +43,9 @@ meaning that you should not mix input text encoding types in a single \code{corp
 \item{docnames}{Names to be assigned to the texts, defaults to the names of the
 character vector (if any), otherwise assigns "text1", "text2", etc.}
 
-\item{docvarsfrom}{Argument to specify where docvars are to be taken, from
-parsing the filenames separated
-by \code{sep} or from meta-data embedded in the text file header (\code{headers}).}
-
-\item{docvarnames}{Character vector of variable names for \code{docvars}}
-
-\item{sep}{Separator if \code{\link{docvars}} names are taken from the filenames.}
-
-\item{pattern}{filename extension - set to "*" if all files are desired.  This is a
-\link[=regex]{regular expression}.}
+\item{docvars}{A data frame of attributes that is associated with each text.}
 
 \item{source}{A string specifying the source of the texts, used for referencing.}
-
-\item{textCol}{The column of the sheet that contains the texts
-the docvars from. By defauls, takes everything except the textCol by
-\code{sep} or from meta-data embedded in the text file header
-(\code{headers}).}
-
-\item{docvars}{A data frame of attributes that is associated with each text.}
 
 \item{c1}{corpus one to be added}
 
@@ -125,9 +86,7 @@ Creates a corpus from a document source.  The current available document
 sources are:
 \itemize{
 \item a character vector (as in R class \code{char}) of texts;
-\item a directory of text files, using \link{directory};
-\item a directory constructed from a zip file consisting of text files, using
-\link{zipfiles}; and
+\item a \link{corpusSource-class} object, constructed using \link{textfile};
 \item a \pkg{tm} \link[tm]{VCorpus} class corpus object, meaning that anything
 you can use to create a \pkg{tm} corpus, including all of the tm plugins plus the
 built-in functions of tm for importing pdf, Word, and XML documents, can be used
@@ -136,8 +95,6 @@ to create a quanteda \link{corpus}.
 Corpus-level meta-data can be specified at creation, containing
 (for example) citation information and notes, as can document-level variables
 and document-level meta-data.
-
-Creates a corpus from a url object.
 }
 \details{
 The \code{+} operator for a corpus object will combine two corpus
@@ -168,28 +125,6 @@ mycorp <- corpus(mytexts)
 mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField="Title"))
 identical(texts(mycorp), texts(mycorp2))
 identical(docvars(mycorp), docvars(mycorp2))
-\dontrun{
-# import texts from a directory of files
-summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"),
-               enc="UTF-8", docvarsfrom="filenames",
-               source="Ken's UK manifesto archive",
-               docvarnames=c("Country", "Level", "Year", "language")), 5))
-summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"),
-               enc="UTF-8", docvarsfrom="filenames",
-               source="Ken's UK manifesto archive",
-               docvarnames=c("Country", "Level", "Year", "language", "Party")), 5))
-
-# choose a directory using a GUI
-corpus(directory())
-
-# from a zip file on the web
-myzipcorp <- corpus(zipfiles("http://kenbenoit.net/files/EUcoalsubsidies.zip"),
-                    notes="From some EP debate about coal mine subsidies")
-docvars(myzipcorp, speakername=docnames(myzipcorp))
-summary(myzipcorp)
-}
-\dontrun{
-}
 #
 ## import a tm VCorpus
 if (require(tm)) {

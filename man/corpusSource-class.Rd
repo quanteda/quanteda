@@ -13,6 +13,8 @@ corpus source objects.
 \describe{
 \item{\code{texts}}{the texts that form the core of the corpus}
 
+\item{\code{docvars}}{document variables in a data.frame}
+
 \item{\code{source}}{source recorded for the corpus, based on type of source}
 
 \item{\code{created}}{a time stamp}

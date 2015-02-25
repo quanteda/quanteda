@@ -1,17 +1,10 @@
-quanteda 0.7.2
-==============
-* Renamed dfm2xxxx functions, now called convert(dfm, to="target") and a variety of 
-  as.xxx functions.  See ?convert.
-
-* summary.character() replaces describeTexts().
-
-* renamed uk2010immig built-in texts object to ukimmigTexts.
-
-* Tidied up a few man pages.
-
 quanteda 0.7.1
 ==============
-* trimdfm, flatten.dictionary are gone from the NAMESPACE
+
+Many major changes to the syntax in this version.
+
+* trimdfm, flatten.dictionary, the textfile functions, dictionary converters
+  are all gone from the NAMESPACE
 
 * formals changed a bit in clean(), kwic().  
 
@@ -27,6 +20,11 @@ quanteda 0.7.1
 
 * new dictionary() constructor function that also does import and conversion,
   replacing old readWStatdict and readLIWCdict functions.
+
+* one function to read in text files, called `textsource`, that does the 
+  work for different file types based on the filename extension, and works
+  also for wildcard expressions (that can link to directories for example)
+
 
 quanteda 0.7.0
 ==============
