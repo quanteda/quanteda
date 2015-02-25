@@ -790,7 +790,7 @@ setMethod("weight", signature = "dfm",
 #' @details \code{tf} is a shortcut for \code{weight(x, "relFreq")}
 #' @export
 tf <- function(x) {
-    if (is(x, "dfm"))
+    if (isS4(x))
         weight(x, "relFreq")
     else 
         x / rowSums(x)

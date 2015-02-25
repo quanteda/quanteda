@@ -1,8 +1,3 @@
-### TO DO: 
-###
-### - the replacement functions do not work with indexes, this needs to be fixed
-### - corpus constructor method needs more object types defined, e.g. Twitter
-
 
 #' Constructor for corpus objects
 #' 
@@ -10,9 +5,7 @@
 #' sources are:
 #' \itemize{
 #' \item a character vector (as in R class \code{char}) of texts;
-#' \item a directory of text files, using \link{directory};
-#' \item a directory constructed from a zip file consisting of text files, using 
-#' \link{zipfiles}; and
+#' \item a \link{corpusSource-class} object, constructed using \link{textfile};
 #' \item a \pkg{tm} \link[tm]{VCorpus} class corpus object, meaning that anything
 #' you can use to create a \pkg{tm} corpus, including all of the tm plugins plus the 
 #' built-in functions of tm for importing pdf, Word, and XML documents, can be used 
@@ -21,9 +14,8 @@
 #' Corpus-level meta-data can be specified at creation, containing 
 #' (for example) citation information and notes, as can document-level variables
 #' and document-level meta-data.
-#' @param x A source of texts to form the documents in the corpus. This can be a
-#'   filepath to a directory containing text documents (see \link{directory}), 
-#'   or a character vector of texts.
+#' @param x a source of texts to form the documents in the corpus, a character vector or 
+#' a \link{corpusSource-class} object created using \link{textfile}.
 #' @param ... additional arguments
 #' @return A corpus class object containing the original texts, document-level 
 #'   variables, document-level metadata, corpus-level metadata, and default 
@@ -56,149 +48,81 @@ corpus <- function(x, ...) {
     UseMethod("corpus")
 }
 
-#' @param docvarsfrom  Argument to specify where docvars are to be taken, from 
-#' parsing the filenames separated
-#' by \code{sep} or from meta-data embedded in the text file header (\code{headers}).
-#' @param docvarnames Character vector of variable names for \code{docvars}
-#' @param sep Separator if \code{\link{docvars}} names are taken from the filenames.
+# @param docvarsfrom  Argument to specify where docvars are to be taken, from 
+# parsing the filenames separated
+# by \code{sep} or from meta-data embedded in the text file header (\code{headers}).
+# @param docvarnames Character vector of variable names for \code{docvars}
+# @param sep Separator if \code{\link{docvars}} names are taken from the filenames.
 # @warning Only files with the extension \code{.txt} are read in using the directory method.
-#' @param pattern filename extension - set to "*" if all files are desired.  This is a 
-#' \link[=regex]{regular expression}.
-#' @rdname corpus
-#' @export
-#' @examples 
-#' \dontrun{
-#' # import texts from a directory of files
-#' summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), 
-#'                enc="UTF-8", docvarsfrom="filenames",
-#'                source="Ken's UK manifesto archive",
-#'                docvarnames=c("Country", "Level", "Year", "language")), 5))
-#' summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), 
-#'                enc="UTF-8", docvarsfrom="filenames",
-#'                source="Ken's UK manifesto archive",
-#'                docvarnames=c("Country", "Level", "Year", "language", "Party")), 5))
-#' 
-#' # choose a directory using a GUI
-#' corpus(directory())
-#'
-#' # from a zip file on the web
-#' myzipcorp <- corpus(zipfiles("http://kenbenoit.net/files/EUcoalsubsidies.zip"),
-#'                     notes="From some EP debate about coal mine subsidies")
-#' docvars(myzipcorp, speakername=docnames(myzipcorp))
-#' summary(myzipcorp)
-#' }
-corpus.directory <- function(x, enc=NULL, docnames=NULL, 
-                            docvarsfrom=c("none", "filenames", "headers"), 
-                            docvarnames=NULL, sep='_', pattern="\\.txt$",
-                            source=NULL, notes=NULL, citation=NULL, ...) {
-    if (class(x)[1] != "directory") stop("first argument must be a directory")
-    dvars <- NULL
-    docvarsfrom <- match.arg(docvarsfrom)
-    texts <- getTextDir(x, pattern=pattern)
-    fnames <- NULL
-    if (docvarsfrom == "filenames") {
-        fnames <- list.files(x, full.names=TRUE)
-        snames <- getRootFileNames(fnames)
-        snames <- gsub(".txt", "", snames)
-        parts <- strsplit(snames, sep)
-        if (var(sapply(parts, length)) != 0)
-            stop("Filename elements are not equal in length.")
-        dvars <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE), 
-                            stringsAsFactors=FALSE)
-        # assign default names in any case
-        names(dvars) <- paste("docvar", 1:ncol(dvars), sep="")  
-        if (!is.null(docvarnames)) {
-            names(dvars)[1:length(docvarnames)] <- docvarnames
-            if (length(docvarnames) != ncol(dvars)) {
-                warning("Fewer docnames supplied than exist docvars - last ",
-                        ncol(dvars) - length(docvarnames), " docvars were given generic names.")
-            }
-        }
-        # remove the filename extension from the document names
-        names(texts) <- gsub(".txt", "", names(texts))
-    } else if (docvarsfrom == "headers") 
-        stop("headers argument not yet implemented.")
+# @param pattern filename extension - set to "*" if all files are desired.  This is a 
+# \link[=regex]{regular expression}.
+# @rdname corpus
+# @export
+# @examples 
+# \dontrun{
+# # import texts from a directory of files
+# summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), 
+#                enc="UTF-8", docvarsfrom="filenames",
+#                source="Ken's UK manifesto archive",
+#                docvarnames=c("Country", "Level", "Year", "language")), 5))
+# summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), 
+#                enc="UTF-8", docvarsfrom="filenames",
+#                source="Ken's UK manifesto archive",
+#                docvarnames=c("Country", "Level", "Year", "language", "Party")), 5))
+# 
+# # choose a directory using a GUI
+# corpus(directory())
+#
+# # from a zip file on the web
+# myzipcorp <- corpus(zipfiles("http://kenbenoit.net/files/EUcoalsubsidies.zip"),
+#                     notes="From some EP debate about coal mine subsidies")
+# docvars(myzipcorp, speakername=docnames(myzipcorp))
+# summary(myzipcorp)
+# }
+# corpus.directory <- function(x, enc=NULL, docnames=NULL, 
+#                             docvarsfrom=c("none", "filenames", "headers"), 
+#                             docvarnames=NULL, sep='_', pattern="\\.txt$",
+#                             source=NULL, notes=NULL, citation=NULL, ...) {
+#     if (class(x)[1] != "directory") stop("first argument must be a directory")
+#     dvars <- NULL
+#     docvarsfrom <- match.arg(docvarsfrom)
+#     texts <- getTextDir(x, pattern=pattern)
+#     fnames <- NULL
+#     if (docvarsfrom == "filenames") {
+#         fnames <- list.files(x, full.names=TRUE)
+#         snames <- getRootFileNames(fnames)
+#         snames <- gsub(".txt", "", snames)
+#         parts <- strsplit(snames, sep)
+#         if (var(sapply(parts, length)) != 0)
+#             stop("Filename elements are not equal in length.")
+#         dvars <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE), 
+#                             stringsAsFactors=FALSE)
+#         # assign default names in any case
+#         names(dvars) <- paste("docvar", 1:ncol(dvars), sep="")  
+#         if (!is.null(docvarnames)) {
+#             names(dvars)[1:length(docvarnames)] <- docvarnames
+#             if (length(docvarnames) != ncol(dvars)) {
+#                 warning("Fewer docnames supplied than exist docvars - last ",
+#                         ncol(dvars) - length(docvarnames), " docvars were given generic names.")
+#             }
+#         }
+#         # remove the filename extension from the document names
+#         names(texts) <- gsub(".txt", "", names(texts))
+#     } else if (docvarsfrom == "headers") 
+#         stop("headers argument not yet implemented.")
+# 
+# 
+#     tmpCorp <- NextMethod(x=texts, enc=enc, docnames=docnames, docvars=dvars,
+#                           source=source, notes=notes, citation=citation)
+#     
+#     # set document source as filename
+#     if (!is.null(fnames)) {
+#         metadoc(tmpCorp, "source") <- fnames
+#     }
+#     
+#     tmpCorp
+# }
 
-
-    tmpCorp <- NextMethod(x=texts, enc=enc, docnames=docnames, docvars=dvars,
-                          source=source, notes=notes, citation=citation)
-    
-    # set document source as filename
-    if (!is.null(fnames)) {
-        metadoc(tmpCorp, "source") <- fnames
-    }
-    
-    tmpCorp
-}
-
-#' @param textCol  The column of the sheet that contains the texts
-#'   the docvars from. By defauls, takes everything except the textCol by
-#'   \code{sep} or from meta-data embedded in the text file header
-#'   (\code{headers}).
-#' @rdname corpus
-#' @export
-#' @examples 
-#' \dontrun{
-#'} 
-#' 
-corpus.excel <- function(x, enc=NULL, docnames=row.names(x),
-                             textCol=1, docvarsfrom=NULL, 
-                             source=NULL, notes=NULL, citation=NULL, ...) {
-    if (is.null(docvarsfrom)){
-        docvarsfrom <- -textCol
-    }
-    if (class(x)[1] != "excel") stop("first argument must be an excel sheet")
-    x <- data.table(x)
-    class(x) <- (list("excel", "data.table", "data.frame")) # data.table unclasses it
-    dvars <- NULL    
-    txts <- as.character(unlist(x[,textCol,with=FALSE]))
-    dvars <- x[, docvarsfrom, with=FALSE]
-    tmpCorp <- corpus(txts, enc=enc, docnames=docnames, docvars=dvars,
-                          source=source, notes=notes, citation=citation)
-    return(tmpCorp)
-}
-
-#' @rdname corpus
-#' @export
-corpus.facebook <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
-    # extract the content ("message" of posts)
-    texts <- x$message
-    atts <- as.data.frame(x[,2:ncol(x)])    
-    
-    # not sure I'm doing this the right way... What is metadata?
-    corpus(texts, docvars=atts,
-           source=paste("Converted from posts on Facebook page"),
-           enc=enc, ...)
-}
-
-#' @rdname corpus
-#' @export
-corpus.twitter <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
-    # extract the content (texts)
-    texts <- x$text
-    atts <- as.data.frame(x[,2:ncol(x)])    
-    
-    # using docvars inappropriately here but they show up as docmeta given 
-    # the _ in the variable names
-    corpus(texts, docvars=atts,
-           source=paste("Converted from twitter search results"),
-           enc=enc, ...)
-}
-
-#' Constructor for corpus objects from urls
-#' 
-#' Creates a corpus from a url object. 
-#' @rdname corpus
-#' @export
-corpus.url <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
-    # extract the content (texts)
-    txt <- paste(scan(x, what="character", sep="\n"), collapse="\n")
-    dets <- summary(x)
-    close(x)
-    corpus(txt, source=paste(sprintf("Loaded from url at %s:", dets$description ),
-           enc=enc, ...))
-   
-}
 
 
 #' @rdname corpus
