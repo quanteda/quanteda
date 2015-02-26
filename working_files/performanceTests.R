@@ -4,8 +4,6 @@ library(ggplot2)
 library(reshape2)
 library(magrittr)
 
-
-# c
 tokenizeSingleCleanAfter <- function(s, sep=" ", clean=TRUE, ...) {
     # s <- unlist(s)
     tokens <- scan(what="char", text=s, quiet=TRUE, quote="", sep=sep)
@@ -24,8 +22,6 @@ tokenizeSingleCleanFirst <- function(s, sep=" ", clean=TRUE, ...) {
 
     return(tokens)
 }
-
-
 
 # tokenizing with optional cleaning, clean first
 tokenizeCharvecCleanFirst <- function(texts, sep=" ", clean=TRUE, ...){
@@ -63,21 +59,31 @@ tokenizeNoClean2 <- function(texts, sep=" ", clean=FALSE, ...){
     return(result)
 }
 
+library(tm)
+# tm's dtm with cleaning
+tmtest <- function(texts){
+    tmcorpus <- Corpus(VectorSource(texts))
+    tmdtm <- DocumentTermMatrix(tmcorpus,
+                                control = list(stemming = FALSE, stopwords = FALSE, minWordLength = 0,
+                                               removeNumbers = TRUE, removePunctuation = TRUE))
+}
 
 
 
-compareFunctions2 <- function(texts, funs,  splits=5, plot=TRUE, fnames=NULL) {
+
+compareFunctions <- function(texts, funs,  splits=5, plot=TRUE, fnames=NULL) {
     funTimes <- as.data.frame(matrix())
     print(fnames)
     ind <- 1
     for(fun in funs){
         curFunTimes <- c() 
         numDocs <- c()
-        print(length(texts))
+        print(fnames[ind])
         splitSize <- as.integer(length(texts)/splits)
         start <- 1
         end <- length(texts)
         while(start < end){
+            print(start)
             curTexts <- texts[start:end]
             numDocs <- c(numDocs, length(curTexts))
             sta <- proc.time()
@@ -98,13 +104,14 @@ compareFunctions2 <- function(texts, funs,  splits=5, plot=TRUE, fnames=NULL) {
 }
 
 
+d1 <- tokenizeCharvecCleanAfter(inaugTexts)
+d2 <- tokenizeCharvecCleanFirst(inaugTexts)
+identical(d1,d2)
 
+funcList <- c(tokenizeCharvecCleanAfter, tokenizeCharvecCleanFirst, quanteda::tokenize, quanteda::dfm, tokenizeNoClean1,  tmtest)
+funcNames <- c('cleanAfter', 'cleanFirst', 'originalTokenize', 'defaultDfm', 'tokenizeNoClean1',  'tmDfm')
 
-
-funcList <- c(tokenizeCharvecCleanAfter, tokenizeCharvecCleanFirst, quanteda::tokenize, quanteda::dfm, tokenizeNoClean1, tokenizeNoClean2)
-funcNames <- c('cleanAfter', 'cleanFirst', 'original', 'defaultDfm', 'tokenizeNoClean1', 'tokenizeNoClean2')
-
-timings <- compareFunctions2(inaugTexts,funcList , splits=5, fnames=funcNames) %>%
+timings <- compareFunctions(inaugTexts,funcList , splits=5, fnames=funcNames) %>%
 melt(id=c('numDocs'), value.name='elapsed') 
 
 ggplot(timings, aes(x=numDocs, y=elapsed, colour=variable)) + 
@@ -112,13 +119,6 @@ ggplot(timings, aes(x=numDocs, y=elapsed, colour=variable)) +
     geom_point(size=3)
 
 
-
-
-###############
-###############
-
-
-# movie reviews
 
 
 
@@ -131,62 +131,39 @@ ggplot(timings, aes(x=numDocs, y=elapsed, colour=variable)) +
 # see formattingDocumentsForTopicModels
 load('~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/lauderdaleClark/Opinion_files.RData')
 txts <- unlist(Opinion_files[1])
-names(txts) <- NULL
-
-
-# 34070 documents, lets do some profiling tests...
-library(quanteda)
-library(tm)
-
 txts <- txts[order(nchar(txts))]
-numDocs <- 4000
-start <- 13000
-end <- start+numDocs
-avgDocSizes <- c()
-quantedaTimes <- c()
-newTimes <- c()
-newTimes <- c()
-tmtimes <- c()
-while(end < 32000){
-    start <- end - numDocs
-    print(start)
-    # taking docs at a time from different points on the document length distibution
-    thisTexts <- txts[start:end]
-    avgDocSizes <- c(avgDocSizes, sum(nchar(thisTexts))/length(thisTexts) )
-    print(avgDocSizes)
-    
-    sta <- proc.time()
-    quCorp <- corpus(thisTexts)
-    quDfm <- dfm(quCorp)
-    sto <- proc.time()-sta
-    quantedaTimes <- c(quantedaTimes, sto[1])
-    
-    
-    
-    sta <- proc.time()
-    newCorp <- corpus(thisTexts)
-    newCorp <- clean(newCorp)
-    newDfm <- dfm(newCorp, clean=FALSE)
-    sto <- proc.time()-sta
-    newTimes <- c(newTimes, sto[1])
-    
-    
-    
-    sta <- proc.time()
-    tmcorpus <- Corpus(VectorSource(thisTexts))
-    tmdtm <- DocumentTermMatrix(tmcorpus,
-                                control = list(stemming = FALSE, stopwords = FALSE, minWordLength = 0,
-                                               removeNumbers = TRUE, removePunctuation = TRUE)) 
-    sto <- proc.time()-sta
-    tmtimes <- c(tmtimes, sto[1])
-    
-    
-    start <- start + 1000
-    end <- end + 1000
-}
+# 34070 documents, lets do some profiling tests...
 
 
 
+funcList <- c(tokenizeCharvecCleanAfter, tokenizeCharvecCleanFirst, quanteda::tokenize, quanteda::dfm, tokenizeNoClean1,  tmtest)
+funcNames <- c('cleanAfter', 'cleanFirst', 'originalTokenize', 'defaultDfm', 'tokenizeNoClean1',  'tmDfm')
+
+# The 1000 shortest texts
+timings <- compareFunctions2(txts[1:1000],funcList , splits=5, fnames=funcNames) %>%
+    melt(id=c('numDocs'), value.name='elapsed') 
+
+ggplot(timings, aes(x=numDocs, y=elapsed, colour=variable)) + 
+    geom_line() +
+    geom_point(size=3)
 
 
+#The 5 longest texts
+longTxts <- txts[(length(txts)-5):length(txts)]
+sum(nchar(longTxts))
+timings <- compareFunctions(longTxts, funcList , splits=5, fnames=funcNames) %>%
+    melt(id=c('numDocs'), value.name='elapsed') 
 
+ggplot(timings, aes(x=numDocs, y=elapsed, colour=variable)) + 
+    geom_line() +
+    geom_point(size=3)
+
+#The 8000 shortest texts
+shortTexts <- txts[1:8000]
+sum(nchar(shortTexts))
+timings <- compareFunctions(txts[1:8000],funcList , splits=5, fnames=funcNames) %>%
+    melt(id=c('numDocs'), value.name='elapsed') 
+
+ggplot(timings, aes(x=numDocs, y=elapsed, colour=variable)) + 
+    geom_line() +
+    geom_point(size=3)
