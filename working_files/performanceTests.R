@@ -3,7 +3,12 @@ library(quantedaData)
 library(ggplot2)
 library(reshape2)
 library(magrittr)
+library(profr)
 
+
+###############
+# definitions of functions to test
+###############
 tokenizeSingleCleanAfter <- function(s, sep=" ", clean=TRUE, ...) {
     # s <- unlist(s)
     tokens <- scan(what="char", text=s, quiet=TRUE, quote="", sep=sep)
@@ -71,6 +76,10 @@ tmtest <- function(texts){
 
 
 
+
+###############
+# function for comparing performance of a list of functions on increasing numbers of texts
+###############
 compareFunctions <- function(texts, funs,  splits=5, plot=TRUE, fnames=NULL) {
     funTimes <- as.data.frame(matrix())
     print(fnames)
@@ -128,6 +137,8 @@ ggplot(timings, aes(x=numDocs, y=elapsed, colour=variable)) +
 
 #Lauderdale and Clark
 
+###############
+###############
 # see formattingDocumentsForTopicModels
 load('~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/lauderdaleClark/Opinion_files.RData')
 txts <- unlist(Opinion_files[1])
@@ -167,3 +178,36 @@ timings <- compareFunctions(txts[1:8000],funcList , splits=5, fnames=funcNames) 
 ggplot(timings, aes(x=numDocs, y=elapsed, colour=variable)) + 
     geom_line() +
     geom_point(size=3)
+
+
+
+##=======================================##
+# proper profiling
+##=======================================##
+
+library(profr)
+p <- profr(dfm(inaugTexts))
+plot(p)
+
+p <- profr(dfm(shortTexts))
+plot(p)
+
+p <- profr(dfm(longTxts))
+plot(p)
+
+p <- profr(dfm(shortTexts, clean=FALSE))
+plot(p)
+
+p <- profr(dfm(longTxts, clean=FALSE))
+plot(p)
+
+p <- profr(dfm(shortTexts, matrixType="dense"))
+plot(p)
+
+p <- profr(dfm(longTxts, matrixType="dense"))
+plot(p)
+
+
+
+
+
