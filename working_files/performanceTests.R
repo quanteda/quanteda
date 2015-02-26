@@ -113,6 +113,10 @@ compareFunctions <- function(texts, funs,  splits=5, plot=TRUE, fnames=NULL) {
 }
 
 
+
+###############
+# inaugTexts
+###############
 d1 <- tokenizeCharvecCleanAfter(inaugTexts)
 d2 <- tokenizeCharvecCleanFirst(inaugTexts)
 identical(d1,d2)
