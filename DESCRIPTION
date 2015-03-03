@@ -47,6 +47,7 @@ BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
 Collate:
+    'RcppExports.R'
     'clean.R'
     'collocations.R'
     'converters.R'
