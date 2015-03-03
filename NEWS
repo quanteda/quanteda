@@ -1,6 +1,10 @@
 quanteda 0.7.1
 ==============
-* trimdfm, flatten.dictionary are gone from the NAMESPACE
+
+Many major changes to the syntax in this version.
+
+* trimdfm, flatten.dictionary, the textfile functions, dictionary converters
+  are all gone from the NAMESPACE
 
 * formals changed a bit in clean(), kwic().  
 
@@ -13,6 +17,13 @@ quanteda 0.7.1
 
 * stopwordsGet() changed to stopwords().  stopwordsRemove() changed to 
   removeFeatures().
+
+* new dictionary() constructor function that also does import and conversion,
+  replacing old readWStatdict and readLIWCdict functions.
+
+* one function to read in text files, called `textsource`, that does the 
+  work for different file types based on the filename extension, and works
+  also for wildcard expressions (that can link to directories for example)
 
 
 quanteda 0.7.0

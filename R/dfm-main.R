@@ -93,6 +93,12 @@ dfm <- function(x, ...) {
 #' (size2 <- object.size(dfm(inaugTexts, matrixType="dense")))
 #' cat("Compacted by ", round(as.numeric((1-size1/size2)*100), 1), "%.\n", sep="")
 #' 
+#' # for a corpus
+#' mydfm <- dfm(inaugCorpus)
+#'
+#' # grouping documents by docvars in a corpus
+#' mydfmGrouped <- dfm(inaugCorpus, groups = "President")
+#' 
 #' # with stopwords English, stemming, and dense matrix
 #' dfmsInaug2 <- dfm(inaugCorpus, ignoredFeatures = stopwordsGet(), stem=TRUE, matrixType="dense")
 #' 
@@ -372,10 +378,6 @@ tokenizeSingle <- function(s, sep=" ", useclean=FALSE, ...) {
 #' @rdname dfm
 #' @param groups Grouping variable for aggregating documents
 #' @export
-#' @examples
-#' # sparse matrix from a corpus
-#' mydfm <- dfm(inaugCorpus)
-#' mydfmGrouped <- dfm(inaugCorpus, groups = "President")
 dfm.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, 
                        ignoredFeatures=NULL, 
                        keptFeatures=NULL,
@@ -734,6 +736,16 @@ nfeature.dfm <- function(x) {
 setGeneric("weight", function(x, ...) standardGeneric("weight"))
 
 #' @rdname weight
+#' @examples
+#' \dontshow{
+#' testdfm <- dfm(inaugTexts[1:5])
+#' print(testdfm[, 1:5])
+#' for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
+#'     testw <- weight(testdfm, w)
+#'     cat("\nweight test for:", w, "; class:", class(testw), "\n")
+#'     print(testw[, 1:5])
+#' }
+#' }
 setMethod("weight", signature = "dfm", 
           definition = function(x, type=c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"), #, "ppmi"), 
                                 smooth = 0, normalize = TRUE, verbose=TRUE, ...) {
@@ -742,7 +754,7 @@ setMethod("weight", signature = "dfm",
               if (weighting(x) != "frequency") {
                   cat("  No weighting applied: you should not weight an already weighted dfm.\n")
               } else if (type=="relFreq") {
-                  x <- x/rowSums(x)
+                  x <- new("dfmSparse", x/rowSums(x))
               } else if (type=="relMaxFreq") {
                   x <- x / apply(x, 1, max)
               } else if (type=="logFreq") {
@@ -751,7 +763,7 @@ setMethod("weight", signature = "dfm",
                   # complicated as, is is to control coercion to a class for which logical operator is
                   # properly defined as a method, currently not dfm and child classes
                   idf <- log(ndoc(x)) - log(docfreq(x, smooth))
-                  if (normalize) x <- x/rowSums(x)
+                  if (normalize) x <- weight(x, "relFreq")
                   if (nfeature(x) != length(idf)) 
                       stop("missing some values in idf calculation")
                   # currently this strips the dfm of its special class, but this is a problem in 
@@ -778,7 +790,7 @@ setMethod("weight", signature = "dfm",
 #' @details \code{tf} is a shortcut for \code{weight(x, "relFreq")}
 #' @export
 tf <- function(x) {
-    if (is(x, "dfm"))
+    if (isS4(x))
         weight(x, "relFreq")
     else 
         x / rowSums(x)
