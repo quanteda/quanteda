@@ -1,21 +1,20 @@
 
-#' Constructor for corpus objects
-#' 
-#' Creates a corpus from a document source.  The current available document
-#' sources are:
-#' \itemize{
-#' \item a character vector (as in R class \code{char}) of texts;
-#' \item a \link{corpusSource-class} object, constructed using \link{textfile};
-#' \item a \pkg{tm} \link[tm]{VCorpus} class corpus object, meaning that anything
-#' you can use to create a \pkg{tm} corpus, including all of the tm plugins plus the 
-#' built-in functions of tm for importing pdf, Word, and XML documents, can be used 
-#' to create a quanteda \link{corpus}.
-#' }
-#' Corpus-level meta-data can be specified at creation, containing 
-#' (for example) citation information and notes, as can document-level variables
-#' and document-level meta-data.
-#' @param x a source of texts to form the documents in the corpus, a character vector or 
-#' a \link{corpusSource-class} object created using \link{textfile}.
+#' @title constructor for corpus objects
+#' @name corpus
+#'   
+#' @description Creates a corpus from a document source.  The current available
+#'   document sources are: \itemize{ \item a character vector (as in R class
+#'   \code{char}) of texts; \item a \link{corpusSource-class} object,
+#'   constructed using \code{\link{textfile}}; \item a \pkg{tm}
+#'   \link[tm]{VCorpus} class corpus object, meaning that anything you can use
+#'   to create a \pkg{tm} corpus, including all of the tm plugins plus the 
+#'   built-in functions of tm for importing pdf, Word, and XML documents, can be
+#'   used to create a quanteda \link{corpus}. } Corpus-level meta-data can be
+#'   specified at creation, containing (for example) citation information and
+#'   notes, as can document-level variables and document-level meta-data.
+#' @param x a source of texts to form the documents in the corpus, a character
+#'   vector or a \link{corpusSource-class} object created using
+#'   \code{\link{textfile}}.
 #' @param ... additional arguments
 #' @return A corpus class object containing the original texts, document-level 
 #'   variables, document-level metadata, corpus-level metadata, and default 
@@ -26,10 +25,10 @@
 #'   list object is:
 #'   
 #'   \item{$documents}{A data frame containing the document level information, 
-#'   consisting of \code{\link{texts}}, user-named \code{\link{docvars}} variables describing 
-#'   attributes of the documents, and \code{metadoc} document-level metadata 
-#'   whose names begin with an underscore character, such as 
-#'   \code{_language}.}
+#'   consisting of \code{\link{texts}}, user-named \code{\link{docvars}}
+#'   variables describing attributes of the documents, and \code{metadoc}
+#'   document-level metadata whose names begin with an underscore character,
+#'   such as \code{_language}.}
 #'   
 #'   \item{$metadata}{A named list set of corpus-level meta-data, including 
 #'   \code{source} and \code{created} (both generated automatically unless 
@@ -41,8 +40,9 @@
 #'   
 #'   \item{$tokens}{An indexed list of tokens and types tabulated by document, 
 #'   including information on positions.  Not yet fully implemented.}
-#' @seealso \link{docvars}, \link{metadoc}, \link{metacorpus}, \link{language},
+#' @seealso \link{docvars}, \link{metadoc}, \link{metacorpus}, \link{language}, 
 #'   \link{encoding}, \link{settings}, \link{texts}
+#' @author Kenneth Benoit and Paul Nulty
 #' @export
 corpus <- function(x, ...) {
     UseMethod("corpus")
@@ -125,38 +125,6 @@ corpus <- function(x, ...) {
 
 
 
-#' @rdname corpus
-#' @note When \code{x} is a \link[tm]{VCorpus} object, the fixed metadata 
-#'   fields from that object are imported as document-level metadata. Currently
-#'   no corpus-level metadata is imported, but we will add that soon.
-#' @examples 
-#' #
-#' ## import a tm VCorpus
-#' if (require(tm)) {
-#'     data(crude)    # load in a tm example VCorpus
-#'     mytmCorpus <- corpus(crude)
-#'     summary(mytmCorpus, showmeta=TRUE)
-#' }
-#' @export
-corpus.VCorpus <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
-    # extract the content (texts)
-    texts <- sapply(x, function(x) x$content)
-    
-    # some mighty twisted shit here required to get a data frame from this metadata list
-    metad <- as.data.frame(t(as.data.frame(sapply(x, function(x) x$meta))))
-    makechar <- function(x) gsub("character\\(0\\)", NA, as.character(x))
-    metad[, c(1, 3:15)] <- apply(metad[, c(1, 3:15)], 2, makechar)
-    metad$datetimestamp <- t(as.data.frame((lapply(metad$datetimestamp, as.POSIXlt))))[,1]
-    # give them the underscore character required
-    names(metad) <- paste("_", names(metad), sep="")
-    
-    # using docvars inappropriately here but they show up as docmeta given 
-    # the _ in the variable names
-    corpus(texts, docvars=metad,
-           source=paste("Converted from tm VCorpus \'", 
-                        deparse(substitute(x)), "\'", sep=""), 
-           enc=enc, ...)
-}
 
 
 # Corpus constructor for a character method
@@ -232,6 +200,56 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
                        tokens=NULL)
     class(tempCorpus) <- list("corpus", class(tempCorpus))
     return(tempCorpus)
+}
+
+
+#' @rdname corpus
+#' @export
+#' @examples
+#' \donttest{# the fifth column of this csv file is the text field
+#' mytexts <- textfile("http://www.kenbenoit.net/files/text_example.csv", textField=5)
+#' str(mytexts)
+#' mycorp <- corpus(mytexts)
+#' mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField="Title"))
+#' identical(texts(mycorp), texts(mycorp2))
+#' identical(docvars(mycorp), docvars(mycorp2))}
+corpus.corpusSource <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
+    sources <- NULL
+    load(x@texts, envir = environment())  # load from tempfile only into function environment
+    corpus(sources$txts, docvars=sources$docv)
+}
+
+#' @rdname corpus
+#' @note When \code{x} is a \link[tm]{VCorpus} object, the fixed metadata 
+#'   fields from that object are imported as document-level metadata. Currently
+#'   no corpus-level metadata is imported, but we will add that soon.
+#' @examples 
+#' #
+#' ## import a tm VCorpus
+#' if (require(tm)) {
+#'     data(crude)    # load in a tm example VCorpus
+#'     mytmCorpus <- corpus(crude)
+#'     summary(mytmCorpus, showmeta=TRUE)
+#' }
+#' @export
+corpus.VCorpus <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
+    # extract the content (texts)
+    texts <- sapply(x, function(x) x$content)
+    
+    # some mighty twisted shit here required to get a data frame from this metadata list
+    metad <- as.data.frame(t(as.data.frame(sapply(x, function(x) x$meta))))
+    makechar <- function(x) gsub("character\\(0\\)", NA, as.character(x))
+    metad[, c(1, 3:15)] <- apply(metad[, c(1, 3:15)], 2, makechar)
+    metad$datetimestamp <- t(as.data.frame((lapply(metad$datetimestamp, as.POSIXlt))))[,1]
+    # give them the underscore character required
+    names(metad) <- paste("_", names(metad), sep="")
+    
+    # using docvars inappropriately here but they show up as docmeta given 
+    # the _ in the variable names
+    corpus(texts, docvars=metad,
+           source=paste("Converted from tm VCorpus \'", 
+                        deparse(substitute(x)), "\'", sep=""), 
+           enc=enc, ...)
 }
 
 

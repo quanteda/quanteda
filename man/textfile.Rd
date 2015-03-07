@@ -3,34 +3,39 @@
 \docType{methods}
 \name{textfile}
 \alias{textfile}
-\alias{textfile,character,index,missing-method}
-\alias{textfile,character,missing,missing-method}
+\alias{textfile,character,index,missing,missing,missing,missing-method}
+\alias{textfile,character,missing,missing,character,ANY,ANY-method}
+\alias{textfile,character,missing,missing,missing,missing,missing-method}
 \title{read a text corpus source from a file}
 \usage{
-textfile(file, textField, directory, ...)
+textfile(file, textField, directory = NULL, docvarsfrom = c("filenames"),
+  sep = "_", docvarnames = NULL, ...)
 
-\S4method{textfile}{character,index,missing}(file, textField,
-  directory = NULL, ...)
+\S4method{textfile}{character,index,missing,missing,missing,missing}(file,
+  textField, directory = NULL, docvarsfrom = c("filenames"), sep = "_",
+  docvarnames = NULL, ...)
 
-\S4method{textfile}{character,missing,missing}(file, textField = NULL,
-  directory = NULL, ...)
+\S4method{textfile}{character,missing,missing,missing,missing,missing}(file,
+  textField, directory = NULL, docvarsfrom = c("filenames"), sep = "_",
+  docvarnames = NULL, ...)
+
+\S4method{textfile}{character,missing,missing,character,ANY,ANY}(file,
+  textField = NULL, directory = NULL, docvarsfrom = c("headers"),
+  sep = "_", docvarnames = NULL, ...)
 }
 \arguments{
 \item{file}{the complete filename to be read.  Currently available file types
-are:
-\describe{
-  \item{\code{txt}}{plain text files}
-  \item{\code{json}}{data in JavaScript Object Notation, consisting of the texts and additional
-  document-level variables and document-level meta-data.  The text key must be identified
-  by specifying a \code{textField} value.}
-  \item{\code{csv}}{comma separated value data, consisting of the texts and additional
-  document-level variables and document-level meta-data.  The text file must be identified
-  by specifying a \code{textField} value.}
-  \item{a wildcard value}{any valid pathname with a wildcard ("glob") expression that can be
-  expanded by the operating system.  This may consist of multiple file types.}
-  \item{\code{doc, docx}:}{Word files coming soon.}
-  \item{\code{pdf}:}{Adobe Portable Document Format files, coming soon.}
-}}
+are: \describe{ \item{\code{txt}}{plain text files} \item{\code{json}}{data
+in JavaScript Object Notation, consisting of the texts and additional
+document-level variables and document-level meta-data.  The text key must
+be identified by specifying a \code{textField} value.}
+\item{\code{csv}}{comma separated value data, consisting of the texts and
+additional document-level variables and document-level meta-data.  The text
+file must be identified by specifying a \code{textField} value.} \item{a
+wildcard value}{any valid pathname with a wildcard ("glob") expression that
+can be expanded by the operating system.  This may consist of multiple file
+types.} \item{\code{doc, docx}:}{Word files coming soon.}
+\item{\code{pdf}:}{Adobe Portable Document Format files, coming soon.} }}
 
 \item{textField}{a variable (column) name or column number indicating where
 to find the texts that form the documents for the corpus.  This must be
@@ -38,6 +43,20 @@ specified for file types \code{.csv} and \code{.json}.}
 
 \item{directory}{not used yet, and may be removed (if I move this to a new
 method called \code{textfiles})}
+
+\item{docvarsfrom}{used to specify that docvars should be taken from the
+filenames, when the \code{textfile} inputs are filenames and the elements
+of the filenames are document variables, separated by a delimiter
+(\code{sep}).  This allows easy assignment of docvars from filenames such
+as \code{1789-Washington.txt}, \code{1793-Washington}, etc. by \code{sep}
+or from meta-data embedded in the text file header (\code{headers}).}
+
+\item{sep}{separator used in filenames to delimit docvar elements if
+\code{docvarsfrom="filenames"} is used}
+
+\item{docvarnames}{character vector of variable names for \code{docvars}, if
+\code{docvarsfrom} is specified.  If this argument is not used, default
+docvar names will be used (\code{docvar1}, \code{docvar2}, ...).}
 
 \item{...}{additional arguments passed through to other functions}
 }
@@ -75,5 +94,11 @@ mytf3 <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")
 summary(corpus(mytf3))
 mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt")
 summary(corpus(mytf4))
+mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt",
+                  docvarsfrom="filenames", sep="-", docvarnames=c("Year", "President"))
+summary(corpus(mytf5))
+}
+\author{
+Kenneth Benoit and Paul Nulty
 }
 
