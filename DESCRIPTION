@@ -33,15 +33,8 @@ Imports:
     data.table (>= 1.9.3),
     SnowballC,
     wordcloud,
-<<<<<<< HEAD
-    proxy,
-    slam,
-    Rcpp,
-    tm
-LinkingTo: Rcpp, RcppArmadillo
-=======
     proxy
->>>>>>> dev
+LinkingTo: Rcpp, RcppArmadillo
 Suggests:
     knitr,
     lda,

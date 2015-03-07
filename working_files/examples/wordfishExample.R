@@ -4,9 +4,9 @@ library(quanteda)
 library(austin)
 data(iebudget2009)
 
-wordfishcpp.out <- textmodel_wordfish(t(iebudget2009))
+system.time(wordfishcpp.out <- textmodel_wordfish(t(iebudget2009)))
 
-wordfish.out <- wordfish(iebudget2009)
+system.time(wordfish.out <- wordfish(iebudget2009))
 
 comparison <- cbind(wordfish.out$theta,wordfishcpp.out$theta)
 print(comparison)

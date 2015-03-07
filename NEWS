@@ -1,6 +1,9 @@
 quanteda 0.7.1
 ==============
 
+* textmodel_wordfish now implemented entirely in C for speed.  No std errors yet but 
+  coming soon.  No predict method currently working either.
+
 Many major changes to the syntax in this version.
 
 * trimdfm, flatten.dictionary, the textfile functions, dictionary converters

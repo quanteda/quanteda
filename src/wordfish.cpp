@@ -155,7 +155,8 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol){
       
   // Fix Global Polarity  
   
-  if (theta(dirvec(0)) > theta(dirvec(1))) {
+  // added the -1 because C counts from ZERO...  -- KB
+  if (theta(dirvec(0)-1) > theta(dirvec(1)-1)) {
     beta = -beta;
     theta = -theta;
   }
@@ -166,7 +167,6 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol){
                           Rcpp::Named("alpha") = alpha,
                           Rcpp::Named("psi") = psi,
                           Rcpp::Named("beta") = beta);
-
 
 }
 

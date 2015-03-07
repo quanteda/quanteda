@@ -50,7 +50,7 @@ rescaling; or \code{mv} for the rescaling proposed by Martin and Vanberg
 
 \item{verbose}{If \code{TRUE}, output status messages}
 
-\item{...}{additional argumennts passed to other functions}
+\item{...}{additional arguments passed to other functions}
 
 \item{x}{for print method, the object to be printed}
 

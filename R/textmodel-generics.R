@@ -84,8 +84,10 @@ setClass("textmodel_fitted",
 #' # compare the logit and linear wordscores
 #' bs <- textmodel(ieDfm[5:6,], refscores[5:6], model="wordscores", scale="logit", smooth=1)
 #' plot(ws@@Sw, bs@@Sw, xlim=c(-1, 1), xlab="Linear word score", ylab="Logit word score")
-#' }
 #' 
+#' wf <- textmodel(ieDfm, model="wordfish", dir = c(6,5))
+#' wf
+#' }
 #' @export
 setGeneric("textmodel", 
     function(x, y=NULL, data=NULL, model=c("wordscores", "NB", "wordfish", "lda", "ca"), ...)
@@ -106,14 +108,14 @@ setMethod("textmodel", signature(x = "dfm", y="ANY", data="missing", model = "ch
                       if (nrow(x) != length(y))
                           stop("x and y contain different numbers of documents.")
                       result <- textmodel_wordscores(x, y, ...)
+                  } else if (model=="wordfish") {
+                      if (!is.null(y))
+                          warning("y values not used with wordfish model. ")
+                      result <- textmodel_wordfish(x, ...)
 #                   } else if (model=="NB") {
 #                       if (nrow(x) != length(y))
 #                           stop("x and y contain different numbers of documents.")
 #                       result <- textmodel_NB(x, y, ...)
-#                   } else if (model=="wordfish") {
-#                       if (!is.null(y))
-#                           warning("y values not used with wordfish model. ")
-#                       result <- textmodel_wordfish(x, ...)
 #                   } else if (model=="lda") {
 #                       if (!is.null(y))
 #                           warning("y values not used with wordfish model. ")
