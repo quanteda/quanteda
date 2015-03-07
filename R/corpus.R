@@ -1,8 +1,7 @@
 
-#' @title constructor for corpus objects
-#' @name corpus
+#' constructor for corpus objects
 #'   
-#' @description Creates a corpus from a document source.  The current available
+#' Creates a corpus from a document source.  The current available
 #'   document sources are: \itemize{ \item a character vector (as in R class
 #'   \code{char}) of texts; \item a \link{corpusSource-class} object,
 #'   constructed using \code{\link{textfile}}; \item a \pkg{tm}
