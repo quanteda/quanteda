@@ -162,6 +162,9 @@ dfm2ldaformat.dfm <- function(x) {
 ## from the package topicmodels
 dtm2ldaformat <- function (x, omit_empty = TRUE) 
 {
+    if (system.file(package = "slam")=="") #(!require(slam))
+        stop("You must install the slam package installed for this conversion.")
+    
     split.matrix <- function(x, f, drop = FALSE, ...) lapply(split(seq_len(ncol(x)), 
                                                                    f, drop = drop, ...), function(ind) x[, ind, drop = FALSE])
     documents <- vector(mode = "list", length = nrow(x))

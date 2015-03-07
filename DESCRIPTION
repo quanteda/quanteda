@@ -7,8 +7,8 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     role = "ctb"), person("Kohei", "Watanabe", email =
     "watanabe.kohei@gmail.com", role = "ctb"), person("Benjamin", "Lauderdale",
     email = "B.E.lauderdale@lse.ac.uk", role = "ctb"))
-Version: 0.7.1.001
-Date: 2015-02-25
+Version: 0.7.1.002
+Date: 2015-03-07
 Description: A package for the management and quantitative analysis of textual
     data with R. quanteda makes it easy to manage texts in the form of a
     corpus, defined as a collection of texts that includes document-level
@@ -33,17 +33,23 @@ Imports:
     data.table (>= 1.9.3),
     SnowballC,
     wordcloud,
+<<<<<<< HEAD
     proxy,
     slam,
     Rcpp,
     tm
 LinkingTo: Rcpp, RcppArmadillo
+=======
+    proxy
+>>>>>>> dev
 Suggests:
     knitr,
     lda,
     topicmodels,
     jsonlite (>= 0.9.10),
-    streamR
+    streamR,
+    tm,
+    slam
 URL: http://github.com/kbenoit/quanteda
 BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE
