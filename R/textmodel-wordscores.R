@@ -125,7 +125,7 @@ textmodel_wordscores <- function(data, scores,
 #'   rescaling; or \code{mv} for the rescaling proposed by Martin and Vanberg 
 #'   (2007).  (Note to authors: Provide full details here in documentation.)
 #' @param newdata dfm on which prediction should be made
-#' @param ... additional argumennts passed to other functions
+#' @param ... additional arguments passed to other functions
 #' @param verbose If \code{TRUE}, output status messages
 #' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
 #' "Extracting Policy Positions From Political Texts Using Words as Data." 
@@ -243,7 +243,7 @@ print.textmodel_wordscores_fitted <- function(x, n=30L, ...) {
     print(refscores, ...)
     cat("\nWord scores: ")
     if (length(x@Sw) > n)
-        cat("showing first", n, "scored features ...")
+        cat("showing first", n, "scored features")
     cat("\n\n")
     print(head(x@Sw, n), ...)
 }

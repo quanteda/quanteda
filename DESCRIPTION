@@ -34,6 +34,7 @@ Imports:
     SnowballC,
     wordcloud,
     proxy
+LinkingTo: Rcpp, RcppArmadillo
 Suggests:
     knitr,
     lda,
@@ -47,6 +48,7 @@ BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
 Collate:
+    'RcppExports.R'
     'clean.R'
     'collocations.R'
     'converters.R'
@@ -70,5 +72,6 @@ Collate:
     'stopwords.R'
     'syllables.R'
     'textmodel-generics.R'
+    'textmodel-wordfish.R'
     'textmodel-wordscores.R'
     'tokenize.R'
