@@ -7,7 +7,7 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     role = "ctb"), person("Kohei", "Watanabe", email =
     "watanabe.kohei@gmail.com", role = "ctb"), person("Benjamin", "Lauderdale",
     email = "B.E.lauderdale@lse.ac.uk", role = "ctb"))
-Version: 0.7.1.002
+Version: 0.7.1.003
 Date: 2015-03-07
 Description: A package for the management and quantitative analysis of textual
     data with R. quanteda makes it easy to manage texts in the form of a
@@ -33,7 +33,8 @@ Imports:
     data.table (>= 1.9.3),
     SnowballC,
     wordcloud,
-    proxy
+    proxy,
+    Rcpp
 LinkingTo: Rcpp, RcppArmadillo
 Suggests:
     knitr,

@@ -6,6 +6,29 @@
 
 using namespace Rcpp;
 
+// tokenizecpp
+Rcpp::CharacterVector tokenizecpp(SEXP x, SEXP sep, SEXP minLength, SEXP toLower, SEXP removeDigits, SEXP removePunct, SEXP removeTwitter, SEXP removeURL, SEXP removeAdditional);
+RcppExport SEXP quanteda_tokenizecpp(SEXP xSEXP, SEXP sepSEXP, SEXP minLengthSEXP, SEXP toLowerSEXP, SEXP removeDigitsSEXP, SEXP removePunctSEXP, SEXP removeTwitterSEXP, SEXP removeURLSEXP, SEXP removeAdditionalSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< SEXP >::type x(xSEXP );
+        Rcpp::traits::input_parameter< SEXP >::type sep(sepSEXP );
+        Rcpp::traits::input_parameter< SEXP >::type minLength(minLengthSEXP );
+        Rcpp::traits::input_parameter< SEXP >::type toLower(toLowerSEXP );
+        Rcpp::traits::input_parameter< SEXP >::type removeDigits(removeDigitsSEXP );
+        Rcpp::traits::input_parameter< SEXP >::type removePunct(removePunctSEXP );
+        Rcpp::traits::input_parameter< SEXP >::type removeTwitter(removeTwitterSEXP );
+        Rcpp::traits::input_parameter< SEXP >::type removeURL(removeURLSEXP );
+        Rcpp::traits::input_parameter< SEXP >::type removeAdditional(removeAdditionalSEXP );
+        Rcpp::CharacterVector __result = tokenizecpp(x, sep, minLength, toLower, removeDigits, removePunct, removeTwitter, removeURL, removeAdditional);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // wordfishcpp
 Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol);
 RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP) {

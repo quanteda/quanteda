@@ -166,7 +166,8 @@ dfm(testCorpus, keptFeatures="s$", verbose=FALSE)  # keep only words ending in "
 testTweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday #beliebers",
                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-dfm(testTweets, keptFeatures="^#")  # keep only hashtags
+### NEED TO FIX
+### dfm(testTweets, keptFeatures="^#")  # keep only hashtags
 
 
 \dontrun{

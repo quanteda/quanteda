@@ -1,5 +1,7 @@
 quanteda 0.7.1
 ==============
+* tokenize() now has a new option, cpp=TRUE, to use a C++ tokenizer and cleaner, resulting
+  in much faster text tokenization and cleaning, including that used in dfm()
 
 * textmodel_wordfish now implemented entirely in C for speed.  No std errors yet but 
   coming soon.  No predict method currently working either.
