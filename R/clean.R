@@ -159,5 +159,42 @@ wordstem <- function(words, language = "porter") {
 urlregex <- "(?i)\\b((?:[a-z][\\w-]+:(?:/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\\'\".,<>?]))"
 
 
-
+#' @rdname clean
+#' @details \code{cleanC} is KB's adaptation from KW's code for tokenization and cleaning, 
+#' for testing.
+#' @importFrom Rcpp evalCpp
+#' @useDynLib quanteda
+#' @examples
+#' cleanC("This is 1 sentence with 2.0 numbers in it, and one comma.", removeDigits=FALSE)
+#' cleanC("This is 1 sentence with 2.0 numbers in it, and one comma.", toLower=FALSE)
+#' cleanC("We are his Beliebers, and him is #ourjustin @@justinbieber we luv u", removeTwitter=TRUE)
+#' cleanC("Collocations can be represented as inheritance_tax using the _ character.")
+#' cleanC("But under_scores can be removed with removeAdditional.", removeAdditional="[_]")
+#' cleanC("This is a $1,500,000 budget and $20bn cash and a $5 cigar.")
+#' cleanC("This is a $1,500,000 budget and $20bn cash and a $5 cigar.", removeDigits=FALSE)
+#' clean("URL regex from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.")
+#' 
+#' \donttest{# on a single long text
+#' mobydick <- texts(corpus(textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")))
+#' system.time(tmp <- cleanC(mobydick)) # .218 seconds
+#' system.time(tmp <- clean(mobydick))  # .776 seconds
+#' 
+#' # on a longer set of texts (34,070 texts)
+#' load('~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/lauderdaleClark/Opinion_files.RData')
+#' txts <- unlist(Opinion_files[1]); names(txts) <- NULL
+#' system.time(tmp <- sapply(txts, cleanC)) # about 20.5 seconds
+#' \dontrun{system.time(tmp <- sapply(txts, clean))  # about forever: 647.502 seconds}
+#' }
+#' @export
+cleanC <- function(x, removeDigits=TRUE, removePunct=TRUE, toLower=TRUE, 
+                   removeAdditional=NULL, removeTwitter=FALSE, removeURL=TRUE, ...) {
+    
+    # to match the NULL default in clean()
+    if (is.null(removeAdditional)) removeAdditional <- "" 
+    
+    cleancpp(x, removeDigits=removeDigits, removePunct=removePunct, 
+              toLower=toLower, 
+              removeAdditional=removeAdditional, 
+              removeTwitter=removeTwitter, removeURL=removeURL)
+}    
 

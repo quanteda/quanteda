@@ -1,5 +1,8 @@
 quanteda 0.7.1
 ==============
+* created tokenizeOnly*() functions, for testing tokenizing separately from cleaning,
+  and a cleanC(), where both new separate functions are implemented in C
+
 * tokenize() now has a new option, cpp=TRUE, to use a C++ tokenizer and cleaner, resulting
   in much faster text tokenization and cleaning, including that used in dfm()
 
