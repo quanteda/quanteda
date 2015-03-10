@@ -66,6 +66,18 @@ devtools::install_github("kbenoit/quanteda", ref="dev")
 devtools::install_github("kbenoit/quanteda")
 ```
 
+**Additional Libraries you may need for installation:**
+
+*  the `pcre` C library
+    *  for [Windows](http://gnuwin32.sourceforge.net/packages/pcre.htm)
+    *  for Mac, install [homebrew](http://brew.sh/) and then `brew install pcre`
+    *  for Linux, `apt-get install libpcre3`
+
+*  the LAPACK C libraries
+    *  for Mac, install [homebrew](http://brew.sh/) and then `brew install LAPACK`
+    *  for [Windows](http://icl.cs.utk.edu/lapack-for-windows/lapack/)
+    *  for Linux, `sudo apt-get install liblapack-dev`
+
 Documentation
 -------------
 
@@ -88,8 +100,8 @@ Example
 ```{r quanteda_example}
 library(quanteda)
 # create a corpus from the immigration texts from UK party platforms
-uk2010immigCorpus <- corpus(uk2010immig,
-                            docvars=data.frame(party=names(uk2010immig)),
+uk2010immigCorpus <- corpus(ukimmigTexts,
+                            docvars=data.frame(party=names(ukimmigTexts)),
                             notes="Immigration-related sections of 2010 UK party manifestos",
                             enc="UTF-8")
 uk2010immigCorpus
@@ -99,7 +111,7 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 kwic(uk2010immigCorpus, "deport", 3)
 
 # create a dfm, removing stopwords
-mydfm <- dfm(uk2010immigCorpus, stopwords=TRUE)
+mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english", verbose=FALSE)))
 dim(mydfm)              # basic dimensions of the dfm
 topfeatures(mydfm, 20)  # 20 top words
 if (Sys.info()['sysname']=="Darwin") quartz() # open nicer window, Mac only
