@@ -181,21 +181,20 @@ predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling 
                          textscore_raw_hi = textscore_raw + z * textscore_raw_se)
     
     if ("mv" %in% rescaling) {
-        if (sum(!is.na(object@scores)) > 2)
- 
+        if (sum(!is.na(object@y)) > 2)
             warning("\nMore than two reference scores found with MV rescaling; using only min, max values.")
-        lowerIndex <- which(object@scores==min(object@scores, na.rm=TRUE))
-        upperIndex <- which(object@scores==max(object@scores, na.rm=TRUE))
+        lowerIndex <- which(object@y==min(object@y, na.rm=TRUE))
+        upperIndex <- which(object@y==max(object@y, na.rm=TRUE))
         textscore_mv <-
             (textscore_raw - textscore_raw[lowerIndex]) *
-            (max(object@scores, na.rm=TRUE) - min(object@scores, na.rm=TRUE)) /
+            (max(object@y, na.rm=TRUE) - min(object@y, na.rm=TRUE)) /
             (textscore_raw[upperIndex] - textscore_raw[lowerIndex]) +
-            min(object@scores, na.rm=TRUE)
+            min(object@y, na.rm=TRUE)
         result$textscore_mv <- textscore_mv
     } 
     
     if ("lbg" %in% rescaling) {
-        SDr <- sd(object@scores, na.rm=TRUE)
+        SDr <- sd(object@y, na.rm=TRUE)
         Sv <- mean(textscore_raw, na.rm=TRUE)
         SDv <- ifelse(length(textscore_raw)<2, 0, sd(textscore_raw))
         mult <- ifelse(SDv==0, 0, SDr/SDv)
