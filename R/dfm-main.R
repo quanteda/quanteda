@@ -187,7 +187,7 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     #?clean
     if (verbose) cat("\n   ... tokenizing texts")
     if (!bigrams) {
-        tokenizedTexts <- lapply(x, tokenizeSingle, sep=" ")
+        tokenizedTexts <- lapply(x, tokenizeSingle2, sep=" ")
     } else {
         tokenizedTexts <- bigrams(x, include.unigrams=TRUE)
         if (verbose) cat (" (and forming bigrams)")
@@ -369,7 +369,7 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
 }
 
 
-tokenizeSingle <- function(s, sep=" ", useclean=FALSE, ...) {
+tokenizeSingle2 <- function(s, sep=" ", useclean=FALSE, ...) {
     if (useclean) s <- clean(s, ...)
     # s <- unlist(s)
     tokens <- scan(what="char", text=s, quiet=TRUE, quote="", sep=sep)
@@ -755,7 +755,13 @@ setMethod("weight", signature = "dfm",
               if (weighting(x) != "frequency") {
                   cat("  No weighting applied: you should not weight an already weighted dfm.\n")
               } else if (type=="relFreq") {
-                  x <- new("dfmSparse", x/rowSums(x))
+                  ## UGLY HACK
+                  if (is(x, "dfmSparse"))
+                      x <- new("dfmSparse", x/rowSums(x))
+                  else if (is(x, "dfmDense"))
+                      x <- new("dfmDense", x/rowSums(x))
+                  else 
+                      x <- x/rowSums(x)
               } else if (type=="relMaxFreq") {
                   x <- x / apply(x, 1, max)
               } else if (type=="logFreq") {

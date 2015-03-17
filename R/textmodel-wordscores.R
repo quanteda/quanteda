@@ -76,7 +76,7 @@ textmodel_wordscores <- function(data, scores,
                                  scale=c("linear", "logit"), smooth=0) {
     scale <- match.arg(scale)
     
-    if (length(data) < 2)
+    if (nrow(data) < 2)
         stop("wordscores model requires at least two training documents.")
     if (nrow(data) != length(scores))
         stop("trainingdata and scores vector must refer to same number of documents.")
@@ -86,7 +86,7 @@ textmodel_wordscores <- function(data, scores,
         stop("wordscores model requires numeric scores.")
     
     setscores <- scores[inRefSet] # only non-NA reference texts
-    data <- data + smooth         # add one to all word counts
+    if (smooth) data <- smoother(data, smooth) # smooth if not 0
     x <- data[inRefSet, ]         # select only the reference texts
     
     Fwr <- tf(x)                  # normalize words to term frequencies "Fwr"
@@ -98,13 +98,13 @@ textmodel_wordscores <- function(data, scores,
     } else if (scale=="logit") {
         if (length(setscores) > 2)
             stop("\nFor logit scale, only two training texts can be used.")
-        if (sum(setscores) != 0) {
+        if (!identical(c(-1,1), sort(setscores))) {
             warning("\nFor logit scale, training scores are automatically rescaled to -1 and 1.")
             scores <- rescaler(setscores)
         }
         lower <- 1
         upper <- 2
-        if (scores[1] > scores[2]) { lower <- 2; upper <- 1 }
+        if (setscores[1] > setscores[2]) { lower <- 2; upper <- 1 }
         Sw <- log(Pwr[, upper]) - log(Pwr[, lower])
     }
     

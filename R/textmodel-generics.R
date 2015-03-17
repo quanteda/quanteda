@@ -105,9 +105,12 @@ setMethod("textmodel", signature(x = "dfm", y="ANY", data="missing", model = "ch
                   Yname <- deparse(substitute(y))
                   
                   if (model=="wordscores") {
-                      if (nrow(x) != length(y))
+                      if (ndoc(x) != length(y))
                           stop("x and y contain different numbers of documents.")
+                      cat("HERE!!!\n")
                       result <- textmodel_wordscores(x, y, ...)
+                      cat("AFTER WS!!!\n")
+                      
                   } else if (model=="wordfish") {
                       if (!is.null(y))
                           warning("y values not used with wordfish model. ")
