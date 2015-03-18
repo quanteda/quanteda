@@ -137,7 +137,7 @@ setMethod("textfile",
               } else if (fileType=="filemask") {
                   sources <- get_txts(file)
               } else {
-                  stop("File type ", fileType, " requires textField.")
+                  stop("File type ", fileType, " not supported or requires textField.")
               }
               tempCorpusFilename <- tempfile()
               save(sources, file=tempCorpusFilename)
@@ -251,6 +251,8 @@ getFileType <- function(filenameChar) {
             return("gz")
         else if (x %in% c("tar"))
             return("tar")
+        else if (x %in% c("xml"))
+            return("xml")
         else return("unknown") }, USE.NAMES=FALSE)
 }    
 

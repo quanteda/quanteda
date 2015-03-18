@@ -2,7 +2,8 @@
 #' 
 #' Detects collocations (currently, bigrams and trigrams) from texts or a corpus, returning a
 #' data.frame of collocations and their scores, sorted in descending order of the association
-#' measure.
+#' measure.  Words separated by punctuation delimiters \code{.,!?;:(){}[]} are not counted as adjacent
+#' and hence are not eligible to be collocations.
 #' @param x a text, a character vector of texts, or a corpus
 #' @param method association measure for detecting collocations.  Let \eqn{i} index documents, and
 #' \eqn{j} index features, \eqn{n_{ij}} refers to observed counts, 
@@ -34,8 +35,13 @@
 #' @examples
 #' collocations(inaugTexts, n=10)
 #' collocations(inaugCorpus, method="all", n=10)
-#' collocations(inaugTexts, size=3, n=10)
-#' collocations(inaugCorpus, method="all", size=3, n=10)
+#' collocations(inaugTexts, method="chi2", size=3, n=10)
+#' collocations(inaugCorpus, method="pmi", size=3, n=10)
+#' txt <- c("This is one sentence: looking for (word) pairs!  
+#'          This [is] a second sentence again. For.",
+#'          "Here: is a second sentence, looking again for word pairs.")
+#' collocations(txt)
+#' collocations(txt, size=3)
 collocations <- function(x, ...) {
     UseMethod("collocations")
 }
@@ -65,13 +71,16 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     #w1 <- w2 <- count <- w1w2n <- w1w2Exp <- w1notw2Exp <- notw1w2 <- notw1w2Exp <- NULL
     #notw1notw2 <- notw1notw2Exp <- NULL
     
-    text <- clean(x, ...)
-    t <- unlist(tokenize(text), use.names=FALSE)
+    # text <- clean(x, ...)
+    t <- unlist(lapply(x, gapTokenize), use.names=FALSE)
     
     # create a data.table of all adjacent bigrams
     wordpairs <- data.table(w1 = t[1:(length(t)-1)], 
                             w2 = t[2:length(t)], 
                             count = 1)
+    
+    # eliminate non-adjacent words (where a blank is in a pair)
+    wordpairs <- wordpairs[w1!="" & w2!=""]
     
     # set the data.table sort key
     setkey(wordpairs, w1, w2)
@@ -138,23 +147,31 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     }
     if (method=="chi2") {
         setorder(allTable2, -chi2)
-        df <- data.table(collocation=paste(allTable2$w1, allTable2$w2),
+        df <- data.table(word1=allTable2$w1, 
+                         word2=allTable2$w2,
+                         word3="",
                          count=allTable2$w1w2n,
                          X2=allTable2$chi2)
     } else if (method=="pmi") {
         setorder(allTable2, -pmi)
-        df <- data.table(collocation=paste(allTable2$w1, allTable2$w2),
+        df <- data.table(word1=allTable2$w1, 
+                         word2=allTable2$w2,
+                         word3="",
                          count=allTable2$w1w2n,
                          pmi=allTable2$pmi) 
     
     } else if (method=="dice") {
         setorder(allTable2, -dice)
-        df <- data.table(collocation=paste(allTable2$w1, allTable2$w2),
+        df <- data.table(word1=allTable2$w1, 
+                         word2=allTable2$w2,
+                         word3="",
                          count=allTable2$w1w2n,
                          dice=allTable2$dice) 
     } else {
         setorder(allTable2, -lrratio)
-        df <- data.table(collocation=paste(allTable2$w1, allTable2$w2),
+        df <- data.table(word1=allTable2$w1, 
+                         word2=allTable2$w2,
+                         word3="",
                          count=allTable2$w1w2n,
                          G2=allTable2$lrratio) 
     }
@@ -184,14 +201,17 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     # to not issue the check warnings:
     w1 <- w2 <- w3 <- c123 <- c12 <- c13 <- c1 <- c23 <- c2 <- c3 <- X2 <- G2 <- count <- NULL
     
-    text <- clean(x, ...)
-    t <- unlist(tokenize(text), use.names=FALSE)
+    # text <- clean(x, ...)
+    t <- unlist(lapply(x, gapTokenize), use.names=FALSE)
     
     # create a data.table of all adjacent bigrams
     wordpairs <- data.table(w1 = t[1:(length(t)-2)], 
                             w2 = t[2:(length(t)-1)],
                             w3 = t[3:(length(t))],
                             count = 1)
+    
+    # eliminate non-adjacent words (where a blank is in a triplet)
+    wordpairs <- wordpairs[w1!="" & w2!="" & w3!=""]
     
     # set the data.table sort key
     #setkey(wordpairs, w1, w2, w3)
@@ -306,7 +326,9 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
         dice <- 2 * n111 / (n111 + n121 + n112 + n122 + n111 + n211 + n112 + n212 + n111 + n211 + n121 + n221)
     })         
     
-    dt <- data.table(collocation = paste(allTable$w1, allTable$w2, allTable$w3),
+    dt <- data.table(word1=allTable$w1, 
+                     word2=allTable$w2,
+                     word3=allTable$w3,
                      count = allTable$c123)
     
     if (method=="chi2") {
@@ -394,3 +416,22 @@ phrasetotoken.character <- function(x, dictionary, concatenator="_") {
     x    
 }
 
+gapTokenize <- function(txt) {
+    tokenVec <- tokenize(txt, removePunct=FALSE, simplify=TRUE)
+    punctEndIndex <- grep("[])};:,.?!]", tokenVec) # don't pad if last token
+    if (length(punctEndIndex) > 0) {
+        for (i in 1:(length(punctEndIndex))) {
+            if (punctEndIndex[i]+i-1 == length(tokenVec)) break
+            tokenVec <- c(tokenVec[1:(i-1+punctEndIndex[i])], "", tokenVec[(i+punctEndIndex[i]):length(tokenVec)])
+        }
+    }
+    punctBegIndex <- grep("[[({]", tokenVec)
+    if (length(punctBegIndex) > 0) {
+        for (i in 1:(length(punctBegIndex))) {
+            if (punctBegIndex[i] == 1) continue  # don't pad if first token
+            tokenVec <- c(tokenVec[1:(i-2+punctBegIndex[i])], "", tokenVec[(i-1+punctBegIndex[i]):length(tokenVec)])
+        }
+    }
+    # now remove the rest of the stuff not yet cleaned
+    clean(tokenVec, removeDigits = FALSE, toLower = FALSE, removeURL = FALSE)
+}

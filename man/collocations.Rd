@@ -48,13 +48,19 @@ A data.table of collocations, their frequencies, and the computed
 \description{
 Detects collocations (currently, bigrams and trigrams) from texts or a corpus, returning a
 data.frame of collocations and their scores, sorted in descending order of the association
-measure.
+measure.  Words separated by punctuation delimiters \code{.,!?;:(){}[]} are not counted as adjacent
+and hence are not eligible to be collocations.
 }
 \examples{
 collocations(inaugTexts, n=10)
 collocations(inaugCorpus, method="all", n=10)
-collocations(inaugTexts, size=3, n=10)
-collocations(inaugCorpus, method="all", size=3, n=10)
+collocations(inaugTexts, method="chi2", size=3, n=10)
+collocations(inaugCorpus, method="pmi", size=3, n=10)
+txt <- c("This is one sentence: looking for (word) pairs!
+         This [is] a second sentence again. For.",
+         "Here: is a second sentence, looking again for word pairs.")
+collocations(txt)
+collocations(txt, size=3)
 }
 \author{
 Kenneth Benoit

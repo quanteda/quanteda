@@ -62,19 +62,45 @@ removeFeatures.dfm <- function(x, stopwords=NULL, verbose=TRUE) {
 }
 
 
+### now optimized for speed using data.table
 #' @rdname removeFeatures
 #' @export
-removeFeatures.collocations <- function(x, stopwords=NULL, verbose=TRUE) {
+removeFeatures.collocations <- function(x, stopwords=NULL, pos=c(1,2,3)) {
     if (is.null(stopwords))
         stop("Must supply a character vector of stopwords, e.g. stopwordsGet(\"english\")")
-    removeIndex <- grep(paste0("\\b", paste(stopwords, collapse="\\b|\\b"), "\\b"), 
-                        x$collocation)
-    if (length(removeIndex) > 0) 
-        x <- x[-removeIndex, ]
-    if (verbose) cat("Removed", format(length(removeIndex), big.mark=","), 
-                     "collocations, from a list of", length(stopwords), "stopwords.\n")
+    if (!all(pos %in% 1:3))
+        stop("pos for collocation position can only be 1, 2, and/or 3")
+    stopwordTable <- data.table(word=stopwords, remove=1)
+    setkey(stopwordTable, word)
+    x$order <- 1:nrow(x)
+    
+    if (3 %in% pos) {
+        setnames(stopwordTable, 1, "word3")
+        setkey(x, word3)
+        x <- stopwordTable[x]
+        x <- x[is.na(remove)]
+        x[, remove:=NULL]
+    }
+    if (2 %in% pos) {
+        setnames(stopwordTable, 1, "word2")
+        setkey(x, word2)
+        x <- stopwordTable[x]
+        x <- x[is.na(remove)]
+        x[, remove:=NULL]
+    }
+    if (1 %in% pos) {
+        setnames(stopwordTable, 1, "word1")
+        setkey(x, word1)
+        x <- stopwordTable[x]
+        x <- x[is.na(remove)]
+        x[, remove:=NULL]
+    }
+    setorder(x, order)
+    x[, order:=NULL]
     x
 }
+
+
 
 #' @rdname removeFeatures
 #' @export
@@ -119,7 +145,7 @@ stopwordsRemove <- function(x, stopwords=NULL, verbose=TRUE) {
 #' stopwords("english")[1:5]
 #' stopwords("italian")[1:5]
 #' stopwords("arabic")[1:5]
-stopwords <- function(kind="english", verbose=TRUE) {
+stopwords <- function(kind="english", verbose=FALSE) {
     if (!(kind %in% c("english", "SMART", "danish", "french", "hungarian", "norwegian", "russian", "swedish", "catalan", "dutch", "finnish",   
                       "german", "italian", "portuguese", "spanish", "arabic"))) {
         stop(paste(kind, "is not a recognized stopword list type."))

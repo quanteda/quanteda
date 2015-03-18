@@ -7,7 +7,7 @@
 \alias{stopwordsGet}
 \title{access built-in stopwords}
 \usage{
-stopwords(kind = "english", verbose = TRUE)
+stopwords(kind = "english", verbose = FALSE)
 
 stopwordsGet(kind = "english")
 }

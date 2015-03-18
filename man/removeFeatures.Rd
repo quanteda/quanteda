@@ -14,7 +14,7 @@ removeFeatures(x, stopwords = NULL, verbose = TRUE)
 
 \method{removeFeatures}{dfm}(x, stopwords = NULL, verbose = TRUE)
 
-\method{removeFeatures}{collocations}(x, stopwords = NULL, verbose = TRUE)
+\method{removeFeatures}{collocations}(x, stopwords = NULL, pos = c(1, 2, 3))
 
 stopwordsRemove(x, stopwords = NULL, verbose = TRUE)
 }
