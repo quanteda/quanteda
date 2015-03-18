@@ -45,7 +45,11 @@
 collocations <- function(x, ...) {
     UseMethod("collocations")
 }
-    
+ 
+wFIRSTGREP <- "[])};:,.?!]$"
+wMIDDLEGREP <- "[][({)};:,.?!]"
+wLASTGREP <- "^[[({]"
+
 #' @rdname collocations
 #' @export    
 collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, ...) {
@@ -71,16 +75,20 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     #w1 <- w2 <- count <- w1w2n <- w1w2Exp <- w1notw2Exp <- notw1w2 <- notw1w2Exp <- NULL
     #notw1notw2 <- notw1notw2Exp <- NULL
     
-    # text <- clean(x, ...)
-    t <- unlist(lapply(x, gapTokenize), use.names=FALSE)
+    text <- clean(x, removePunct=FALSE, ...)
+    t <- unlist(tokenizeOnlyCppKB(text), use.names=FALSE)
     
     # create a data.table of all adjacent bigrams
     wordpairs <- data.table(w1 = t[1:(length(t)-1)], 
-                            w2 = t[2:length(t)], 
+                            w2 = t[2:length(t)],
                             count = 1)
     
     # eliminate non-adjacent words (where a blank is in a pair)
-    wordpairs <- wordpairs[w1!="" & w2!=""]
+    wordpairs[, containsPunct := grepl(wFIRSTGREP, w1) | grepl(wLASTGREP, w2)]
+    wordpairs <- wordpairs[containsPunct==FALSE]
+    # then remove any remaining punctuation
+    wordpairs[, w1 := clean(w1, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
+    wordpairs[, w2 := clean(w2, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
     
     # set the data.table sort key
     setkey(wordpairs, w1, w2)
@@ -209,6 +217,14 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
                             w2 = t[2:(length(t)-1)],
                             w3 = t[3:(length(t))],
                             count = 1)
+    
+    # eliminate non-adjacent words (where a blank is in a pair)
+    wordpairs[, containsPunct := grepl(wFIRSTGREP, w1) | grepl(wMIDDLEGREP, w2) | grepl(wLASTGREP, w3)]
+    wordpairs <- wordpairs[containsPunct==FALSE]
+    # then remove any remaining punctuation
+    wordpairs[, w1 := clean(w1, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
+    wordpairs[, w2 := clean(w2, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
+    wordpairs[, w3 := clean(w3, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
     
     # eliminate non-adjacent words (where a blank is in a triplet)
     wordpairs <- wordpairs[w1!="" & w2!="" & w3!=""]
