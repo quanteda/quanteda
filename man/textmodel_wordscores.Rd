@@ -15,7 +15,7 @@ textmodel_wordscores(data, scores, scale = c("linear", "logit"), smooth = 0)
 \method{predict}{textmodel_wordscores_fitted}(object, newdata = NULL,
   rescaling = "none", level = 0.95, verbose = TRUE, ...)
 
-\method{print}{textmodel_wordscores_fitted}(x, n = 30L, ...)
+\method{print}{textmodel_wordscores_fitted}(x, n = 30L, digits = 2)
 
 \S4method{show}{textmodel_wordscores_fitted}(object)
 
@@ -90,14 +90,13 @@ following slots:
 \item{\code{method}}{takes a value of \code{wordscores} for this model}
 }}
 \examples{
-ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores")
-ws
-wsp <- predict(ws)
-wsp
+(ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores"))
+predict(ws)
+predict(ws, rescaling="mv")
+predict(ws, rescaling="lbg")
 
 # same as:
-ws2 <- textmodel_wordscores(LBGexample, c(seq(-1.5, 1.5, .75), NA))
-ws2
+(ws2 <- textmodel_wordscores(LBGexample, c(seq(-1.5, 1.5, .75), NA)))
 predict(ws2)
 }
 \author{

@@ -52,14 +52,13 @@ setClass("textmodel_wordscores_predicted",
 #' @slot method takes a value of \code{wordscores} for this model
 #' @author Kenneth Benoit
 #' @examples 
-#' ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores")
-#' ws
-#' wsp <- predict(ws)
-#' wsp
+#' (ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores"))
+#' predict(ws)
+#' predict(ws, rescaling="mv")
+#' predict(ws, rescaling="lbg")
 #'
 #' # same as:
-#' ws2 <- textmodel_wordscores(LBGexample, c(seq(-1.5, 1.5, .75), NA))
-#' ws2
+#' (ws2 <- textmodel_wordscores(LBGexample, c(seq(-1.5, 1.5, .75), NA)))
 #' predict(ws2)
 #' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
 #' "Extracting Policy Positions From Political Texts Using Words as Data." 
@@ -143,6 +142,8 @@ textmodel_wordscores <- function(data, scores,
 #' @export
 predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling = "none", 
                                level=0.95, verbose=TRUE, ...) {    
+    if (length(list(...))>0) 
+        stop("Arguments:", names(list(...)), "not supported.\n")
     rescaling <- match.arg(rescaling, c("none", "lbg", "mv"), several.ok=TRUE)
     
     if (!is.null(newdata))
@@ -212,8 +213,8 @@ predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling 
                                            textscore_lbg_hi))
     }
     
-    ret <- new("textmodel_wordscores_predicted", rescaling = rescaling,
-               newdata = newdata, textscores = result)
+    new("textmodel_wordscores_predicted", rescaling = rescaling,
+        newdata = newdata, textscores = result)
 }
 
 
@@ -230,21 +231,22 @@ rescaler <- function(x, scale.min=-1, scale.max=1) {
 #' @param n max rows of dfm to print 
 #' @export
 #' @method print textmodel_wordscores_fitted
-print.textmodel_wordscores_fitted <- function(x, n=30L, ...) {
+print.textmodel_wordscores_fitted <- function(x, n=30L, digits=2) {
     cat("Fitted wordscores model:\n")
     cat("Call:\n\t")
     print(x@call)
     cat("\nReference documents and reference scores:\n\n")
     refscores <- data.frame(Documents=docnames(x@x),
                             "Ref scores" = x@y)
-    refscores$Ref.scores[is.na(refscores$Ref.scores)] <- "."
+    refscores$Ref.scores <- format(refscores$Ref.scores, digits=digits)
+    refscores$Ref.scores[grep("NA", refscores$Ref.scores)] <- "."
     names(refscores)[2] <- "Ref scores"
-    print(refscores, ...)
+    print(refscores, row.names=FALSE, digits=digits)
     cat("\nWord scores: ")
     if (length(x@Sw) > n)
         cat("showing first", n, "scored features")
     cat("\n\n")
-    print(head(x@Sw, n), ...)
+    print(head(x@Sw, n), digits=digits)
 }
 
 #' @rdname textmodel_wordscores
@@ -262,16 +264,23 @@ summary.textmodel_wordscores_fitted <- function(object, ...) {
     cat("Call:\n\t")
     print(object@call)
     
-    cat("\nReference Document Statistics:\n\n")
-    dd <- data.frame(Total=apply(object@x, 1, sum),
+    cat("\nReference Document Statistics:\n")
+    cat("(ref scores and feature count statistics)\n\n")
+    dd <- data.frame(Score=object@y,
+                     Total=apply(object@x, 1, sum),
                      Min=apply(object@x, 1, min),
                      Max=apply(object@x, 1, max),
                      Mean=apply(object@x, 1, mean),
-                     Median=apply(object@x, 1, median),
-                     Score=object@y)
+                     Median=apply(object@x, 1, median))
     rownames(dd) <- docnames(object@x)
     print(dd, ...)
     invisible(dd)
+}
+
+#' @export
+#' @method summary textmodel_wordscores_predicted
+summary.textmodel_wordscores_predicted <- function(object, ...) {
+    print(object)
 }
 
 
