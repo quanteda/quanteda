@@ -1,5 +1,8 @@
 quanteda 0.7.1
 ==============
+* improvements to collocations(), now does not include tokens that are separated 
+  by punctuation
+
 * created tokenizeOnly*() functions, for testing tokenizing separately from cleaning,
   and a cleanC(), where both new separate functions are implemented in C
 

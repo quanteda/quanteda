@@ -49,6 +49,7 @@ collocations <- function(x, ...) {
 wFIRSTGREP <- "[])};:,.?!]$"
 wMIDDLEGREP <- "[][({)};:,.?!]"
 wLASTGREP <- "^[[({]"
+containsPunct <- NULL
 
 #' @rdname collocations
 #' @export    
@@ -209,8 +210,8 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     # to not issue the check warnings:
     w1 <- w2 <- w3 <- c123 <- c12 <- c13 <- c1 <- c23 <- c2 <- c3 <- X2 <- G2 <- count <- NULL
     
-    # text <- clean(x, ...)
-    t <- unlist(lapply(x, gapTokenize), use.names=FALSE)
+    text <- clean(x, removePunct=FALSE, ...)
+    t <- unlist(tokenizeOnlyCppKB(text), use.names=FALSE)
     
     # create a data.table of all adjacent bigrams
     wordpairs <- data.table(w1 = t[1:(length(t)-2)], 

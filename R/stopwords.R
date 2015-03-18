@@ -14,6 +14,9 @@
 #' @param stopwords character vector of features to remove.  Now requires an explicit
 #' list to be supplied, for instance \code{stopwords("english")}.
 #' @param verbose if \code{TRUE} print message about how many features were removed
+#' @param pos indexes of word position if called on collocations: remove if word \code{pos}
+#' is a stopword
+#' @param ... additional arguments for some methods (such as \code{pos} for \link{collocations})
 #' @return an object with stopwords removed
 #' @name removeFeatures
 #' @export
@@ -34,14 +37,14 @@
 #' ## example for collocations
 #' (myCollocs <- collocations(inaugTexts, top=20))
 #' removeFeatures(myCollocs, stopwords("english", verbose=FALSE))
-removeFeatures <- function(x, stopwords=NULL, verbose=TRUE) {
+removeFeatures <- function(x, stopwords=NULL, verbose=TRUE, ...) {
     UseMethod("removeFeatures")
 }
 
 
 #' @rdname removeFeatures
 #' @export
-removeFeatures.character <- function(x, stopwords=NULL, verbose=TRUE) {
+removeFeatures.character <- function(x, stopwords=NULL, verbose=TRUE, ...) {
     if (is.null(stopwords))
         stop("Must supply a character vector of stopwords, e.g. stopwordsGet(\"english\")")
     ret <- gsub(paste("(\\b|\\s)(", paste(stopwords, collapse="|"), ")(\\b)", sep=""), "", x, ignore.case=TRUE)
@@ -52,7 +55,7 @@ removeFeatures.character <- function(x, stopwords=NULL, verbose=TRUE) {
 
 #' @rdname removeFeatures
 #' @export
-removeFeatures.dfm <- function(x, stopwords=NULL, verbose=TRUE) {
+removeFeatures.dfm <- function(x, stopwords=NULL, verbose=TRUE, ...) {
     if (is.null(stopwords))
         stop("Must supply a character vector of stopwords, e.g. stopwordsGet(\"english\")")
     removeIndex <- which(colnames(x) %in% stopwords)
@@ -65,7 +68,8 @@ removeFeatures.dfm <- function(x, stopwords=NULL, verbose=TRUE) {
 ### now optimized for speed using data.table
 #' @rdname removeFeatures
 #' @export
-removeFeatures.collocations <- function(x, stopwords=NULL, pos=c(1,2,3)) {
+removeFeatures.collocations <- function(x, stopwords=NULL, verbose=TRUE, pos=c(1,2,3), ...) {
+    word <- word1 <- word2 <- word3 <- NULL
     if (is.null(stopwords))
         stop("Must supply a character vector of stopwords, e.g. stopwordsGet(\"english\")")
     if (!all(pos %in% 1:3))
@@ -96,6 +100,7 @@ removeFeatures.collocations <- function(x, stopwords=NULL, pos=c(1,2,3)) {
         x[, remove:=NULL]
     }
     setorder(x, order)
+    setcolorder(x, c("word1", "word2", "word3", names(x)[4:ncol(x)]))
     x[, order:=NULL]
     x
 }

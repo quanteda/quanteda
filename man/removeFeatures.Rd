@@ -8,13 +8,14 @@
 \alias{stopwordsRemove}
 \title{remove features from an object}
 \usage{
-removeFeatures(x, stopwords = NULL, verbose = TRUE)
+removeFeatures(x, stopwords = NULL, verbose = TRUE, ...)
 
-\method{removeFeatures}{character}(x, stopwords = NULL, verbose = TRUE)
+\method{removeFeatures}{character}(x, stopwords = NULL, verbose = TRUE, ...)
 
-\method{removeFeatures}{dfm}(x, stopwords = NULL, verbose = TRUE)
+\method{removeFeatures}{dfm}(x, stopwords = NULL, verbose = TRUE, ...)
 
-\method{removeFeatures}{collocations}(x, stopwords = NULL, pos = c(1, 2, 3))
+\method{removeFeatures}{collocations}(x, stopwords = NULL, verbose = TRUE,
+  pos = c(1, 2, 3), ...)
 
 stopwordsRemove(x, stopwords = NULL, verbose = TRUE)
 }
@@ -25,6 +26,11 @@ stopwordsRemove(x, stopwords = NULL, verbose = TRUE)
 list to be supplied, for instance \code{stopwords("english")}.}
 
 \item{verbose}{if \code{TRUE} print message about how many features were removed}
+
+\item{...}{additional arguments for some methods (such as \code{pos} for \link{collocations})}
+
+\item{pos}{indexes of word position if called on collocations: remove if word \code{pos}
+is a stopword}
 }
 \value{
 an object with stopwords removed

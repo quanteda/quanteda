@@ -15,7 +15,7 @@ textmodel_wordscores(data, scores, scale = c("linear", "logit"), smooth = 0)
 \method{predict}{textmodel_wordscores_fitted}(object, newdata = NULL,
   rescaling = "none", level = 0.95, verbose = TRUE, ...)
 
-\method{print}{textmodel_wordscores_fitted}(x, n = 30L, digits = 2)
+\method{print}{textmodel_wordscores_fitted}(x, n = 30L, digits = 2, ...)
 
 \S4method{show}{textmodel_wordscores_fitted}(object)
 
@@ -55,6 +55,8 @@ rescaling; or \code{mv} for the rescaling proposed by Martin and Vanberg
 \item{x}{for print method, the object to be printed}
 
 \item{n}{max rows of dfm to print}
+
+\item{digits}{number of decimal places to print for print methods}
 }
 \value{
 The \code{predict} method for a wordscores fitted object returns a
