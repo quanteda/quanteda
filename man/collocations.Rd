@@ -36,7 +36,8 @@ Available measures are computed as:
   }}
 
 \item{size}{length of the collocation.  Only bigram (\code{n=2}) and trigram (\code{n=3})
-collocations are implemented so far.}
+collocations are implemented so far.  Can be \code{c(2,3)} (or \code{2:3}) to return
+both bi- and tri-gram collocations.}
 
 \item{n}{the number of collocations to return, sorted in descending order
 of the requested statistic, or \eqn{G^2} if none is specified.}
@@ -51,16 +52,23 @@ data.frame of collocations and their scores, sorted in descending order of the a
 measure.  Words separated by punctuation delimiters \code{.,!?;:(){}[]} are not counted as adjacent
 and hence are not eligible to be collocations.
 }
+\details{
+Because of incompatibilities with the join operations in \link{data.table}
+when input files have slightly different encoding settings, \code{collocations} currently
+converts all text to ASCII prior to processing.  We hope to improve on this in the
+future.
+}
 \examples{
 collocations(inaugTexts, n=10)
 collocations(inaugCorpus, method="all", n=10)
 collocations(inaugTexts, method="chi2", size=3, n=10)
 collocations(inaugCorpus, method="pmi", size=3, n=10)
-txt <- c("This is one sentence: looking for (word) pairs!
-         This [is] a second sentence again. For.",
-         "Here: is a second sentence, looking again for word pairs.")
+txt <- c("This is software testing: looking for (word) pairs!
+         This [is] a software testing again. For.",
+         "Here: is a software testing, looking again for word pairs.")
 collocations(txt)
-collocations(txt, size=3)
+collocations(txt, size=2:3)
+removeFeatures(collocations(txt, size=2:3), stopwords("english"))
 }
 \author{
 Kenneth Benoit

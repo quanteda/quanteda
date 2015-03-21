@@ -66,10 +66,12 @@ dictionary <- function(x=NULL, file=NULL, format=NULL, enc="", tolower=TRUE, max
             x <- readLIWCdict(file, maxcats=10, enc="")
     }
     
-    class(x) <- c("dictionary", class(x))
-    x
+    new("dictionary", x)
 }
 
+#' @rdname dictionary
+# NEED TO ADD A VALIDATOR
+setClass("dictionary", contains = "list")
 
 # Import a Wordstat dictionary
 # 

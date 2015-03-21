@@ -62,6 +62,9 @@ removeFeatures(mydfm, stopwords("english", verbose=FALSE))
 (myCollocs <- collocations(inaugTexts, top=20))
 removeFeatures(myCollocs, stopwords("english", verbose=FALSE))
 }
+\author{
+Kenneth Benoit
+}
 \seealso{
 \link{stopwords}
 }

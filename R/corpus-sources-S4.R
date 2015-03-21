@@ -153,7 +153,7 @@ setMethod("textfile",
                                 docvarsfrom=c("headers"), sep="_", docvarnames=NULL, ...) {
               fileType <- getFileType(file)
               if (fileType=="filemask") {
-                  sources <- get_txts(file)
+                  sources <- get_txts(file, ...)
               } else {
                   stop("File type ", fileType, " not supported with these arguments.")
               }
@@ -280,11 +280,14 @@ get_txts <- function(filemask, textnames=NULL, ...) {
     # get the directory name
     path <- substr(filemask, 1, nchar(filemask) - nchar(pattern))
     # get the filenames
-    filenames <- list.files(path, pattern, full.names=TRUE, ...)
+    filenames <- list.files(path, pattern, full.names=TRUE)
     # read texts into a character vector
     textsvec <- c() 
     for (f in filenames) {
+        #fc <- file(f, ...)
         textsvec <- c(textsvec, paste(suppressWarnings(readLines(f)), collapse="\n"))
+        #textsvec <- c(textsvec, readChar(fc, nchars=10000000))
+        #close(fc)
     }
     # name the vector with the filename by default, otherwise assign "names"
     if (!is.null(textnames)) {

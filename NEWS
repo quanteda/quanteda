@@ -1,5 +1,10 @@
 quanteda 0.7.1
 ==============
+* phrasetotokens works with dictionaries and collocations, to transform
+  multi-word expressions into single tokens in texts or corpora
+
+* dictionaries now redefined as S4 classes
+
 * improvements to collocations(), now does not include tokens that are separated 
   by punctuation
 
