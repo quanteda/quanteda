@@ -39,7 +39,8 @@ Imports:
     SnowballC,
     wordcloud,
     proxy,
-    Rcpp
+    Rcpp,
+    ca
 LinkingTo: Rcpp, RcppArmadillo
 Suggests:
     knitr,
@@ -58,6 +59,7 @@ VignetteBuilder: knitr
 Collate:
     'RcppExports.R'
     'clean.R'
+    'dictionaryFunctions.R'
     'collocations.R'
     'converters.R'
     'corpus-sources-S4.R'
@@ -66,7 +68,6 @@ Collate:
     'describe-texts.R'
     'dfm-classes.R'
     'dfm-main.R'
-    'dictionaryFunctions.R'
     'distance.R'
     'gui.R'
     'kwic.R'
@@ -79,6 +80,7 @@ Collate:
     'settings.R'
     'stopwords.R'
     'syllables.R'
+    'textmodel-ca.R'
     'textmodel-generics.R'
     'textmodel-wordfish.R'
     'textmodel-wordscores.R'

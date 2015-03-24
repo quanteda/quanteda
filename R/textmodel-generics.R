@@ -120,10 +120,10 @@ setMethod("textmodel", signature(x = "dfm", y="ANY", data="missing", model = "ch
 #                       if (!is.null(y))
 #                           warning("y values not used with wordfish model. ")
 #                       result <- textmodel_lda(x, ...)
-#                   } else if (model=="ca") {
-#                       if (!is.null(y))
-#                           warning("y values not used with ca model. ")
-#                       result <- textmodel_lda(x, ...)
+                  } else if (model=="ca") {
+                      if (!is.null(y))
+                          warning("y values not used with ca model. ")
+                      result <- textmodel_ca(x, ...)
                   } else {
                       stop(paste("model", model, "not implemented."))
                   }

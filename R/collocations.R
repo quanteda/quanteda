@@ -1,3 +1,6 @@
+#' @include dictionaryFunctions.R
+NULL
+
 #' Detect collocations from text
 #' 
 #' Detects collocations (currently, bigrams and trigrams) from texts or a corpus, returning a

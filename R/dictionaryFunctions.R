@@ -1,3 +1,9 @@
+#' @rdname dictionary
+#' @export 
+# NEED TO ADD A VALIDATOR
+setClass("dictionary", contains = "list")
+
+
 #' create a dictionary
 #' 
 #' Create a quanteda dictionary, either from a list or by importing from a 
@@ -69,9 +75,6 @@ dictionary <- function(x=NULL, file=NULL, format=NULL, enc="", tolower=TRUE, max
     new("dictionary", x)
 }
 
-#' @rdname dictionary
-# NEED TO ADD A VALIDATOR
-setClass("dictionary", contains = "list")
 
 # Import a Wordstat dictionary
 # 
