@@ -923,3 +923,54 @@ combineByName <- function(A, B, ...) {
     C <- as.data.frame(C) #, stringsAsFactors=TRUE)
     return(C)
 }
+
+
+#' count the number of tokens
+#' 
+#' Return the count of tokens in a text or corpus.  "tokens" here
+#' means all words, not unique words, and these are not cleaned
+#' prior to counting.
+#' @param x texts or corpus whose tokens will be counted
+#' @param block.size how many texts to process at a time; experimentation
+#' indicates that for bery large collections of texts, 200 seems fastest
+#' @param verbose if \code{TRUE} print progress indicator and time elapsed
+#' @return scalar count of the total tokens
+#' @examples
+#' ntokens(inaugTexts, verbose=FALSE)
+#' ntokens(inaugCorpus, verbose=FALSE)
+#' if (require(quantedaData)) {
+#'     data(ukManifestosCorpus, package="quantedaData")
+#'     ntoken(ukManifestosCorpus, block.size=5) 
+#' }
+#' @export
+ntoken <- function(x, block.size=200, verbose=TRUE) {
+    UseMethod("ntoken")
+}
+
+#' @rdname ntoken
+#' @export
+ntoken.corpus <- function(x, block.size=200, verbose=TRUE) {
+    ntoken(texts(x), block.size, verbose)
+}
+
+#' @rdname ntoken
+#' @export
+ntoken.character <- function(x, block.size=200, verbose=TRUE) {
+    startTime <- proc.time()
+    i <- 1
+    totWords <- 0
+    if (verbose) cat("Counting tokens (block size ", block.size, "):      ", sep="")
+    while (i < length(x)) {
+        pct <- i / length(x) * 100
+        if (verbose) cat("\b\b\b\b\b", formatC(round(pct), width=3), " %", sep="")
+        this.size <- ifelse(length(x) < i + block.size,
+                            length(x) - i,
+                            block.size - 1)
+        totWords <- totWords + length(unlist(tokenizeOnlyCppKB(x[i:(i+this.size)])))
+        i <- i + this.size + 1
+    }
+    if (verbose) cat("\b\b\b\b\b", formatC(100, width=3), " %", sep="")
+    if (verbose) cat(", elapsed time", round((proc.time() - startTime)[3], 2), "seconds.\n")
+    totWords
+}
+
