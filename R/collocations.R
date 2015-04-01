@@ -271,12 +271,12 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     wordpairs[, containsPunct := grepl(wFIRSTGREP, w1) | grepl(wMIDDLEGREP, w2) | grepl(wLASTGREP, w3)]
     wordpairs <- wordpairs[containsPunct==FALSE]
     # then remove any remaining punctuation
-    #wordpairs[, w1 := clean(w1, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
-    #wordpairs[, w2 := clean(w2, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
-    #wordpairs[, w3 := clean(w3, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
-    wordpairs[, w1 := gsub("[[:punct:]]", "", w1)]
-    wordpairs[, w2 := gsub("[[:punct:]]", "", w2)]
-    wordpairs[, w3 := gsub("[[:punct:]]", "", w3)]    
+    wordpairs[, w1 := clean(w1, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
+    wordpairs[, w2 := clean(w2, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
+    wordpairs[, w3 := clean(w3, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
+    #wordpairs[, w1 := gsub("[[:punct:]]", "", w1)]
+    #wordpairs[, w2 := gsub("[[:punct:]]", "", w2)]
+    #wordpairs[, w3 := gsub("[[:punct:]]", "", w3)]    
     
     # eliminate non-adjacent words (where a blank is in a triplet)
     wordpairs <- wordpairs[w1!="" & w2!="" & w3!=""]
