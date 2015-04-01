@@ -174,6 +174,10 @@ urlregex <- "(?i)\\b((?:[a-z][\\w-]+:(?:/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9
 #' cleanC("This is a $1,500,000 budget and $20bn cash and a $5 cigar.", removeDigits=FALSE)
 #' clean("URL regex from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.")
 #' 
+#' # for a vector of texts
+#' clean(c("This is 1 sentence with 2.0 numbers in it, and one comma.", 
+#'         "$1.2 billion was spent on text analysis in 2014."))
+#' 
 #' \donttest{# on a single long text
 #' mobydick <- texts(corpus(textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")))
 #' system.time(tmp <- cleanC(mobydick)) # .218 seconds
@@ -192,9 +196,15 @@ cleanC <- function(x, removeDigits=TRUE, removePunct=TRUE, toLower=TRUE,
     # to match the NULL default in clean()
     if (is.null(removeAdditional)) removeAdditional <- "" 
     
-    cleancpp(x, removeDigits=removeDigits, removePunct=removePunct, 
-              toLower=toLower, 
-              removeAdditional=removeAdditional, 
-              removeTwitter=removeTwitter, removeURL=removeURL)
+#     cleancpp(x, removeDigits=removeDigits, removePunct=removePunct, 
+#               toLower=toLower, 
+#               removeAdditional=removeAdditional, 
+#               removeTwitter=removeTwitter, removeURL=removeURL)
+
+    sapply(x, cleancpp, removeDigits=removeDigits, removePunct=removePunct, 
+           toLower=toLower, 
+           removeAdditional=removeAdditional, 
+           removeTwitter=removeTwitter, removeURL=removeURL,
+           USE.NAMES = FALSE)
 }    
 

@@ -76,6 +76,10 @@ cleanC("This is a $1,500,000 budget and $20bn cash and a $5 cigar.")
 cleanC("This is a $1,500,000 budget and $20bn cash and a $5 cigar.", removeDigits=FALSE)
 clean("URL regex from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.")
 
+# for a vector of texts
+clean(c("This is 1 sentence with 2.0 numbers in it, and one comma.",
+        "$1.2 billion was spent on text analysis in 2014."))
+
 \donttest{# on a single long text
 mobydick <- texts(corpus(textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")))
 system.time(tmp <- cleanC(mobydick)) # .218 seconds
