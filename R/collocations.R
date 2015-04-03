@@ -55,30 +55,37 @@ collocations <- function(x, ...) {
     UseMethod("collocations")
 }
  
-wFIRSTGREP <- "[][)};:,.?!$—]"
+wFIRSTGREP <- "[])};:,.?!$—]"
 wMIDDLEGREP <- "[][({)};:,.?!—]"
 wLASTGREP <- "[][^({]"
 containsPunct <- NULL
 
+wFIRSTGREPpenn <- "([,:.]|''|``|-rrb-)_.*"
+wMIDDLEGREPpenn <- "([,:.]|''|``|-[lr]rb-)_.*"
+wLASTGREPpenn <- "-lrb-_.*"
+
+
 #' @rdname collocations
 #' @export    
-collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, ...) {
+collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, tagset=c("none", "penn", "google"), ...) {
     method <- match.arg(method)
     
     #  "Enough is enough! I have had it with these motherfucking snakes on this motherfucking plane!"
     x <- iconv(x, "UTF-8", "ASCII",  sub="") # opening some windows
+    
+    tagset <- match.arg(tagset)
     
     if (any(!(size %in% 2:3)))
         stop("Only bigram and trigram collocations implemented so far.")
     
     coll <- NULL
     if (2 %in% size)
-        coll <- collocations2(x, method, 2, n, ...)
+        coll <- collocations2(x, method, 2, n, tagset, ...)
     if (3 %in% size) {
         if (is.null(coll)) 
-            coll <- collocations3(x, method, 3, n, ...)
+            coll <- collocations3(x, method, 3, n, tagset, ...)
         else {
-            coll <- rbind(coll, collocations3(x, method, 3, n, ...))
+            coll <- rbind(coll, collocations3(x, method, 3, n, tagset, ...))
             class(coll) <- c("collocations", class(coll))
         }
     }
@@ -107,8 +114,13 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
                             count = 1)
     
     # eliminate non-adjacent words (where a blank is in a pair)
-    wordpairs[, containsPunct := grepl(wFIRSTGREP, w1) | grepl(wLASTGREP, w2)]
+    #if (tagset=="none" | tagset=="google") {
+        wordpairs[, containsPunct := grepl(wFIRSTGREP, w1) | grepl(wLASTGREP, w2)]
+    #} else if (tagset=="penn") {
+    #    wordpairs[, containsPunct := grepl(wFIRSTGREPpenn, w1) | grepl(wLASTGREPpenn, w2)]
+    #}
     wordpairs <- wordpairs[containsPunct==FALSE]
+
     # then remove any remaining punctuation
     wordpairs[, w1 := clean(w1, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
     wordpairs[, w2 := clean(w2, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
