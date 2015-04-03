@@ -67,25 +67,25 @@ wLASTGREPpenn <- "-lrb-_.*"
 
 #' @rdname collocations
 #' @export    
-collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, tagset=c("none", "penn", "google"), ...) {
+collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, ...) {
     method <- match.arg(method)
     
     #  "Enough is enough! I have had it with these motherfucking snakes on this motherfucking plane!"
     x <- iconv(x, "UTF-8", "ASCII",  sub="") # opening some windows
     
-    tagset <- match.arg(tagset)
+    # tagset <- match.arg(tagset)
     
     if (any(!(size %in% 2:3)))
         stop("Only bigram and trigram collocations implemented so far.")
     
     coll <- NULL
     if (2 %in% size)
-        coll <- collocations2(x, method, 2, n, tagset, ...)
+        coll <- collocations2(x, method, 2, n, ...)
     if (3 %in% size) {
         if (is.null(coll)) 
-            coll <- collocations3(x, method, 3, n, tagset, ...)
+            coll <- collocations3(x, method, 3, n, ...)
         else {
-            coll <- rbind(coll, collocations3(x, method, 3, n, tagset, ...))
+            coll <- rbind(coll, collocations3(x, method, 3, n, ...))
             class(coll) <- c("collocations", class(coll))
         }
     }
