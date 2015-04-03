@@ -55,8 +55,8 @@ collocations <- function(x, ...) {
     UseMethod("collocations")
 }
  
-wFIRSTGREP <- "[])};:,.?!]$"
-wMIDDLEGREP <- "[][({)};:,.?!]"
+wFIRSTGREP <- "[])};:,.?!]$—"
+wMIDDLEGREP <- "[][({)};:,.?!]—"
 wLASTGREP <- "^[[({]"
 containsPunct <- NULL
 
