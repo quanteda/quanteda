@@ -1,5 +1,0 @@
-library(quanteda)
-data(movies)
-x <- corpusSample(movies, size=500)
-d <- dfm(x)
-samp <- dfmSample(d, 50)

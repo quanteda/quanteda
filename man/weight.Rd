@@ -38,7 +38,7 @@ weighting(object)
   \item logTf - The natural log of the term frequency
   \item tf-idf - Term-frequency * inverse
   document frequency. For a full explanation, see, for example,
-  \url{(http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html)}.
+  \url{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html}.
    This implementation will not return negative values.
   \item maxTf - The term frequency divided
   by the frequency of the most frequent term in the document
@@ -89,6 +89,15 @@ topfeatures(tfidfDtm)
 # Introduction to Information Retrieval
 logTfDtm <- weight(dtm, type="logFreq")
 wfidfDtm <- weight(logTfDtm, type="tfidf", normalize=FALSE)
+\dontshow{
+testdfm <- dfm(inaugTexts[1:5])
+print(testdfm[, 1:5])
+for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
+    testw <- weight(testdfm, w)
+    cat("\\nweight test for:", w, "; class:", class(testw), "\\n")
+    print(testw[, 1:5])
+}
+}
 }
 \author{
 Paul Nulty and Kenneth Benoit

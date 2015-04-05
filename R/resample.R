@@ -15,7 +15,7 @@
 # @return a corpus object containing new resampled texts.
 # @examples 
 # testCorp <- resample(subset(inaugCorpus, Year>2000), 10, "sentences")
-# testCorpPara <- resample(corpus(uk2010immig), 10, "paragraphs")
+# testCorpPara <- resample(corpus(ukimmigTexts), 10, "paragraphs")
 # names(metadoc(testCorp))
 # x <- corpus(c("Sentence One C1.  Sentence Two C1.  Sentence Three C1.", 
 #               "Sentence One C2.  Sentence Two C2.  Sentence Three C2. 

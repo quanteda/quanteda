@@ -1,3 +1,9 @@
+#' @rdname dictionary
+#' @export 
+# NEED TO ADD A VALIDATOR
+setClass("dictionary", contains = "list")
+
+
 #' create a dictionary
 #' 
 #' Create a quanteda dictionary, either from a list or by importing from a 
@@ -7,8 +13,8 @@
 #'   expressions (see examples)
 #' @param file file identifier for a foreign dictionary
 #' @param format character identifier for the format of the foreign dictionary. 
-#'   Available options are: \describe{ \item{"wordstat"}{format used by Provalis
-#'   Research's Wordstat software} \item{"LIWC"}{format used by the Linguistic 
+#'   Available options are: \describe{ \item{\code{"wordstat"}}{format used by Provalis
+#'   Research's Wordstat software} \item{\code{"LIWC"}}{format used by the Linguistic 
 #'   Inquiry and Word Count software} }
 #' @param enc optional encoding value for dictionaries imported in Wordstat 
 #'   format
@@ -17,9 +23,11 @@
 #'   LIWC dictionary file, defaults to 10 (which is more than the actual LIWC 
 #'   2007 dictionary uses).  The default value of 10 is likely to be more than 
 #'   enough.
-#' @source Wordstat dictionaries page, from Provalis Research 
+#' @return A list with a ductionary class label, to be used by other functions in quanteda.
+#' @note We will eventually change this to an S4 class with validators and additional methods.
+#' @references
+#' Wordstat dictionaries page, from Provalis Research 
 #'   \url{http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/}.
-#'   
 #'   
 #'   Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J. 
 #'   (2007). The development and psychometric properties of LIWC2007. [Software 
@@ -64,8 +72,7 @@ dictionary <- function(x=NULL, file=NULL, format=NULL, enc="", tolower=TRUE, max
             x <- readLIWCdict(file, maxcats=10, enc="")
     }
     
-    class(x) <- c("dictionary", class(x))
-    x
+    new("dictionary", x)
 }
 
 

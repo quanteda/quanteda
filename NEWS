@@ -1,6 +1,35 @@
+quanteda 0.7.2
+==============
+* phrasetotokens works with dictionaries and collocations, to transform
+  multi-word expressions into single tokens in texts or corpora
+
+* dictionaries now redefined as S4 classes
+
+* improvements to collocations(), now does not include tokens that are separated 
+  by punctuation
+
+* created tokenizeOnly*() functions, for testing tokenizing separately from cleaning,
+  and a cleanC(), where both new separate functions are implemented in C
+
+* tokenize() now has a new option, cpp=TRUE, to use a C++ tokenizer and cleaner, resulting
+  in much faster text tokenization and cleaning, including that used in dfm()
+
+* textmodel_wordfish now implemented entirely in C for speed.  No std errors yet but 
+  coming soon.  No predict method currently working either.
+
+* ie2010Corpus, and exampleString now moved into quanteda (formerly were only in 
+  quantedaData because of non-ASCII characters in each - solved with native2ascii
+  and \uXXXX encodings).
+
+* All dependencies, even conditional, to the quantedaData and austin packages
+  have been removed.
+
 quanteda 0.7.1
 ==============
-* trimdfm, flatten.dictionary are gone from the NAMESPACE
+Many major changes to the syntax in this version.
+
+* trimdfm, flatten.dictionary, the textfile functions, dictionary converters
+  are all gone from the NAMESPACE
 
 * formals changed a bit in clean(), kwic().  
 
@@ -17,7 +46,9 @@ quanteda 0.7.1
 * new dictionary() constructor function that also does import and conversion,
   replacing old readWStatdict and readLIWCdict functions.
 
-
+* one function to read in text files, called `textsource`, that does the 
+  work for different file types based on the filename extension, and works
+  also for wildcard expressions (that can link to directories for example)
 
 
 quanteda 0.7.0

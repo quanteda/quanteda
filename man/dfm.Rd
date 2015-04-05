@@ -126,6 +126,12 @@ a disapproving warning message while doing so, suggesting you make the switch.
 (size2 <- object.size(dfm(inaugTexts, matrixType="dense")))
 cat("Compacted by ", round(as.numeric((1-size1/size2)*100), 1), "\%.\\n", sep="")
 
+# for a corpus
+mydfm <- dfm(inaugCorpus)
+
+# grouping documents by docvars in a corpus
+mydfmGrouped <- dfm(inaugCorpus, groups = "President")
+
 # with stopwords English, stemming, and dense matrix
 dfmsInaug2 <- dfm(inaugCorpus, ignoredFeatures = stopwordsGet(), stem=TRUE, matrixType="dense")
 
@@ -143,7 +149,7 @@ dictDfm
 ## with the thesaurus feature
 mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
              "New York City has raised a taxes: an income tax and a sales tax.")
-mydict <- list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax"))
+mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax")))
 dfm(phrasetotoken(mytexts, mydict), thesaurus=lapply(mydict, function(x) gsub("\\\\s", "_", x)))
 # pick up "taxes" with "tax" as a regex
 dfm(phrasetotoken(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE)
@@ -160,7 +166,8 @@ dfm(testCorpus, keptFeatures="s$", verbose=FALSE)  # keep only words ending in "
 testTweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday #beliebers",
                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-dfm(testTweets, keptFeatures="^#")  # keep only hashtags
+### NEED TO FIX
+### dfm(testTweets, keptFeatures="^#")  # keep only hashtags
 
 
 \dontrun{
@@ -190,9 +197,6 @@ topf <- colSums(dfmsBig)
 names(topf) <- colnames(dfmsBig)
 head(sort(topf, decreasing=TRUE), 100)
 }
-# sparse matrix from a corpus
-mydfm <- dfm(inaugCorpus)
-mydfmGrouped <- dfm(inaugCorpus, groups = "President")
 }
 \author{
 Kenneth Benoit

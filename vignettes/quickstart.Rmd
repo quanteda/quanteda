@@ -29,7 +29,7 @@ perform a variety of quanttative analyses on this matrix.
 
 [^thanks]: This research was supported by the European
     Research Council grant ERC-2011-StG 283794-QUANTESS.  Code
-    contributors to the project include Alex Herzog, William Lowe, and
+    contributors to the project include Ben Lauderdale, Pablo Barberà, and 
     Kohei Watanabe.
 
 The object is inference about the data contained in the texts, whether this means
@@ -104,7 +104,7 @@ provide a tutorial overview of its features.
 ## Installing quanteda
 
 The code for the `quanteda` package currently resides on
-<http://github/kbenoit/quanteda>.  From an Internet-connected
+<http://github.com/kbenoit/quanteda>.  From an Internet-connected
 computer, you can install the package directly using the
 `devtools` package:
 
@@ -150,9 +150,9 @@ We can save the output from the summary command as a data frame, and plot some b
 tokenInfo <- summary(inaugCorpus)
 ```
 ```{r}
-library(ggplot2)
-ggplot(data=tokenInfo, aes(x=Year, y=Tokens, group=1)) + geom_line() + geom_point() +
-    scale_x_discrete(labels=c(seq(1789,2012,12)), breaks=seq(1789,2012,12) ) 
+if (require(ggplot2))
+    ggplot(data=tokenInfo, aes(x=Year, y=Tokens, group=1)) + geom_line() + geom_point() +
+        scale_x_discrete(labels=c(seq(1789,2012,12)), breaks=seq(1789,2012,12) ) 
 
 
 tokenInfo[which.max(tokenInfo$Tokens),] # Longest inaugural address: William Henry Harrison
@@ -162,8 +162,9 @@ A simple measure of the complexity of a text is lexical diversity, or the ratio 
 ```{r}
 
 ttr <- tokenInfo$Types/tokenInfo$Tokens
-ggplot(data=tokenInfo, aes(x=Year, y=ttr, group=1)) + geom_line() + geom_point() +
-    scale_x_discrete(labels=c(seq(1789,2012,12)), breaks=seq(1789,2012,12) )
+if (require(ggplot2))
+    ggplot(data=tokenInfo, aes(x=Year, y=ttr, group=1)) + geom_line() + geom_point() +
+        scale_x_discrete(labels=c(seq(1789,2012,12)), breaks=seq(1789,2012,12) )
 
 tokenInfo[which.max(ttr),]
 ```
@@ -343,8 +344,8 @@ byPresMat <- dfm(myCorpus, dictionary=myDict)
 ```{r warning=FALSE, message=FALSE}
 library(quanteda)
 # create a corpus from the immigration texts from UK party platforms
-uk2010immigCorpus <- corpus(uk2010immig,
-                            docvars=data.frame(party=names(uk2010immig)),
+uk2010immigCorpus <- corpus(ukimmigTexts,
+                            docvars=data.frame(party=names(ukimmigTexts)),
                             notes="Immigration-related sections of 2010 UK party manifestos",
                             enc="UTF-8")
 uk2010immigCorpus

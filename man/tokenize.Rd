@@ -45,6 +45,19 @@ head(tokenize(inaugTexts[57])[[1]], 10)
 head(tokenize(inaugTexts[57], simplify=TRUE), 10)
 
 # demonstrate some options with clean
-head(tokenize(inaugTexts[57], simplify=TRUE, lower=FALSE), 30)
+head(tokenize(inaugTexts[57], simplify=TRUE, cpp=TRUE), 30)
+## NOTE: not the same as
+head(tokenize(inaugTexts[57], simplify=TRUE, cpp=FALSE), 30)
+
+## MORE COMPARISONS
+tokenize("this is MY <3 4U @myhandle gr8 stuff :-)", removeTwitter=FALSE, cpp=TRUE)
+tokenize("this is MY <3 4U @myhandle gr8 stuff :-)", removeTwitter=FALSE, cpp=FALSE)
+tokenize("great website http://textasdata.com", removeURL=FALSE, cpp=TRUE)
+tokenize("great website http://textasdata.com", removeURL=FALSE, cpp=FALSE)
+tokenize("great website http://textasdata.com", removeURL=TRUE, cpp=TRUE)
+tokenize("great website http://textasdata.com", removeURL=TRUE, cpp=FALSE)
+}
+\author{
+Kohei Watanabe (C++ code), Ken Benoit, and Paul Nulty
 }
 

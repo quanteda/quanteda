@@ -106,6 +106,7 @@ lexdiv <- function(x, ...) {
 #' t(lexdiv(mydfmSW, "Maas"))
 lexdiv.dfm <- function(x, measure=c("TTR", "C", "R", "CTTR", "U", "S", "Maas"), 
                            log.base=10, ...) {
+    measure <- match.arg(measure)
     apply(x, 1, lexdiv.numeric, measure, log.base, ...)
 }
 
@@ -115,6 +116,7 @@ lexdiv.dfm <- function(x, measure=c("TTR", "C", "R", "CTTR", "U", "S", "Maas"),
 lexdiv.numeric <- function(x, measure=c("TTR", "C", "R", "CTTR", "U", "S", "Maas"), 
                                log.base=10, ...) {
     
+    measure <- match.arg(measure)
     num.tokens <- sum(x)
     num.types <- sum(x>0)
     

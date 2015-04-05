@@ -44,27 +44,28 @@ Some preliminaries:
 2.  To access the topic modelling functionality, you will need to install the package topicmodels from CRAN.  On most platforms, this will be done automatically when you install quanteda, but will fail on OS X unless you 
 have some additional tools installed.  [See instructions on installing **topicmodels** on OS X Mavericks or Yosemite here.](http://www.kenbenoit.net/how-to-install-the-r-package-topicmodels-on-os-x/)
 
-3.  You should install [Will Lowe's **austin** package](http://conjugateprior.org/software/austin/).
-
-    ```S
-    install.packages("austin", repos="http://r-forge.r-project.org", type="source")
-    ```
-
-4.  You should install the additional corpus data from **quantedaData** using
+4.  (Optional) You can install the additional corpus data from **quantedaData** using
 
     ```S
     ## devtools required to install quanteda from Github
     devtools::install_github("kbenoit/quantedaData")
     ```
 
-To install `quanteda`, we recommend you use the **dev branch**:
+To install the latest master branch of `quanteda`:
 
 ```S
-devtools::install_github("kbenoit/quanteda", ref="dev")
-
-## ALTERNATIVELY, to install the latest version master branch version:
 devtools::install_github("kbenoit/quanteda")
+
+## ALTERNATIVELY, to install the latest version `dev` branch version:
+devtools::install_github("kbenoit/quanteda", ref="dev")
 ```
+
+**Additional Libraries you may need for installation:**
+
+*  the LAPACK C libraries
+    *  for Mac, install [homebrew](http://brew.sh/) and then `brew install LAPACK`
+    *  for [Windows](http://icl.cs.utk.edu/lapack-for-windows/lapack/)
+    *  for Linux, `sudo apt-get install liblapack-dev`
 
 Documentation
 -------------
@@ -88,8 +89,8 @@ Example
 ```{r quanteda_example}
 library(quanteda)
 # create a corpus from the immigration texts from UK party platforms
-uk2010immigCorpus <- corpus(uk2010immig,
-                            docvars=data.frame(party=names(uk2010immig)),
+uk2010immigCorpus <- corpus(ukimmigTexts,
+                            docvars=data.frame(party=names(ukimmigTexts)),
                             notes="Immigration-related sections of 2010 UK party manifestos",
                             enc="UTF-8")
 uk2010immigCorpus
@@ -99,7 +100,7 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 kwic(uk2010immigCorpus, "deport", 3)
 
 # create a dfm, removing stopwords
-mydfm <- dfm(uk2010immigCorpus, stopwords=TRUE)
+mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english", verbose=FALSE)))
 dim(mydfm)              # basic dimensions of the dfm
 topfeatures(mydfm, 20)  # 20 top words
 if (Sys.info()['sysname']=="Darwin") quartz() # open nicer window, Mac only

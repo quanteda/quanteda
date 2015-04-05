@@ -6,3 +6,5 @@ __MACOSX
 .Rproj.user
 inst/doc
 .Rhistory
+*.o
+*.so

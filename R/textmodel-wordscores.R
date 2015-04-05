@@ -52,14 +52,13 @@ setClass("textmodel_wordscores_predicted",
 #' @slot method takes a value of \code{wordscores} for this model
 #' @author Kenneth Benoit
 #' @examples 
-#' ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores")
-#' ws
-#' wsp <- predict(ws)
-#' wsp
+#' (ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores"))
+#' predict(ws)
+#' predict(ws, rescaling="mv")
+#' predict(ws, rescaling="lbg")
 #'
 #' # same as:
-#' ws2 <- textmodel_wordscores(LBGexample, c(seq(-1.5, 1.5, .75), NA))
-#' ws2
+#' (ws2 <- textmodel_wordscores(LBGexample, c(seq(-1.5, 1.5, .75), NA)))
 #' predict(ws2)
 #' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
 #' "Extracting Policy Positions From Political Texts Using Words as Data." 
@@ -76,7 +75,7 @@ textmodel_wordscores <- function(data, scores,
                                  scale=c("linear", "logit"), smooth=0) {
     scale <- match.arg(scale)
     
-    if (length(data) < 2)
+    if (nrow(data) < 2)
         stop("wordscores model requires at least two training documents.")
     if (nrow(data) != length(scores))
         stop("trainingdata and scores vector must refer to same number of documents.")
@@ -86,7 +85,7 @@ textmodel_wordscores <- function(data, scores,
         stop("wordscores model requires numeric scores.")
     
     setscores <- scores[inRefSet] # only non-NA reference texts
-    data <- data + smooth         # add one to all word counts
+    if (smooth) data <- smoother(data, smooth) # smooth if not 0
     x <- data[inRefSet, ]         # select only the reference texts
     
     Fwr <- tf(x)                  # normalize words to term frequencies "Fwr"
@@ -98,13 +97,13 @@ textmodel_wordscores <- function(data, scores,
     } else if (scale=="logit") {
         if (length(setscores) > 2)
             stop("\nFor logit scale, only two training texts can be used.")
-        if (sum(setscores) != 0) {
+        if (!identical(c(-1,1), sort(setscores))) {
             warning("\nFor logit scale, training scores are automatically rescaled to -1 and 1.")
             scores <- rescaler(setscores)
         }
         lower <- 1
         upper <- 2
-        if (scores[1] > scores[2]) { lower <- 2; upper <- 1 }
+        if (setscores[1] > setscores[2]) { lower <- 2; upper <- 1 }
         Sw <- log(Pwr[, upper]) - log(Pwr[, lower])
     }
     
@@ -125,7 +124,7 @@ textmodel_wordscores <- function(data, scores,
 #'   rescaling; or \code{mv} for the rescaling proposed by Martin and Vanberg 
 #'   (2007).  (Note to authors: Provide full details here in documentation.)
 #' @param newdata dfm on which prediction should be made
-#' @param ... additional argumennts passed to other functions
+#' @param ... additional arguments passed to other functions
 #' @param verbose If \code{TRUE}, output status messages
 #' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
 #' "Extracting Policy Positions From Political Texts Using Words as Data." 
@@ -143,6 +142,8 @@ textmodel_wordscores <- function(data, scores,
 #' @export
 predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling = "none", 
                                level=0.95, verbose=TRUE, ...) {    
+    if (length(list(...))>0) 
+        stop("Arguments:", names(list(...)), "not supported.\n")
     rescaling <- match.arg(rescaling, c("none", "lbg", "mv"), several.ok=TRUE)
     
     if (!is.null(newdata))
@@ -181,21 +182,20 @@ predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling 
                          textscore_raw_hi = textscore_raw + z * textscore_raw_se)
     
     if ("mv" %in% rescaling) {
-        if (sum(!is.na(object@scores)) > 2)
- 
+        if (sum(!is.na(object@y)) > 2)
             warning("\nMore than two reference scores found with MV rescaling; using only min, max values.")
-        lowerIndex <- which(object@scores==min(object@scores, na.rm=TRUE))
-        upperIndex <- which(object@scores==max(object@scores, na.rm=TRUE))
+        lowerIndex <- which(object@y==min(object@y, na.rm=TRUE))
+        upperIndex <- which(object@y==max(object@y, na.rm=TRUE))
         textscore_mv <-
             (textscore_raw - textscore_raw[lowerIndex]) *
-            (max(object@scores, na.rm=TRUE) - min(object@scores, na.rm=TRUE)) /
+            (max(object@y, na.rm=TRUE) - min(object@y, na.rm=TRUE)) /
             (textscore_raw[upperIndex] - textscore_raw[lowerIndex]) +
-            min(object@scores, na.rm=TRUE)
+            min(object@y, na.rm=TRUE)
         result$textscore_mv <- textscore_mv
     } 
     
     if ("lbg" %in% rescaling) {
-        SDr <- sd(object@scores, na.rm=TRUE)
+        SDr <- sd(object@y, na.rm=TRUE)
         Sv <- mean(textscore_raw, na.rm=TRUE)
         SDv <- ifelse(length(textscore_raw)<2, 0, sd(textscore_raw))
         mult <- ifelse(SDv==0, 0, SDr/SDv)
@@ -213,8 +213,8 @@ predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling 
                                            textscore_lbg_hi))
     }
     
-    ret <- new("textmodel_wordscores_predicted", rescaling = rescaling,
-               newdata = newdata, textscores = result)
+    new("textmodel_wordscores_predicted", rescaling = rescaling,
+        newdata = newdata, textscores = result)
 }
 
 
@@ -228,24 +228,27 @@ rescaler <- function(x, scale.min=-1, scale.max=1) {
 
 #' @rdname textmodel_wordscores
 #' @param x for print method, the object to be printed
-#' @param n max rows of dfm to print 
+#' @param n max rows of dfm to print
+#' @param digits number of decimal places to print for print methods
+# @param ... not used in \code{print.textmodel_wordscores_fitted}
 #' @export
 #' @method print textmodel_wordscores_fitted
-print.textmodel_wordscores_fitted <- function(x, n=30L, ...) {
+print.textmodel_wordscores_fitted <- function(x, n=30L, digits=2, ...) {
     cat("Fitted wordscores model:\n")
     cat("Call:\n\t")
     print(x@call)
     cat("\nReference documents and reference scores:\n\n")
     refscores <- data.frame(Documents=docnames(x@x),
                             "Ref scores" = x@y)
-    refscores$Ref.scores[is.na(refscores$Ref.scores)] <- "."
+    refscores$Ref.scores <- format(refscores$Ref.scores, digits=digits)
+    refscores$Ref.scores[grep("NA", refscores$Ref.scores)] <- "."
     names(refscores)[2] <- "Ref scores"
-    print(refscores, ...)
+    print(refscores, row.names=FALSE, digits=digits)
     cat("\nWord scores: ")
     if (length(x@Sw) > n)
-        cat("showing first", n, "scored features ...")
+        cat("showing first", n, "scored features")
     cat("\n\n")
-    print(head(x@Sw, n), ...)
+    print(head(x@Sw, n), digits=digits)
 }
 
 #' @rdname textmodel_wordscores
@@ -263,16 +266,23 @@ summary.textmodel_wordscores_fitted <- function(object, ...) {
     cat("Call:\n\t")
     print(object@call)
     
-    cat("\nReference Document Statistics:\n\n")
-    dd <- data.frame(Total=apply(object@x, 1, sum),
+    cat("\nReference Document Statistics:\n")
+    cat("(ref scores and feature count statistics)\n\n")
+    dd <- data.frame(Score=object@y,
+                     Total=apply(object@x, 1, sum),
                      Min=apply(object@x, 1, min),
                      Max=apply(object@x, 1, max),
                      Mean=apply(object@x, 1, mean),
-                     Median=apply(object@x, 1, median),
-                     Score=object@y)
+                     Median=apply(object@x, 1, median))
     rownames(dd) <- docnames(object@x)
     print(dd, ...)
     invisible(dd)
+}
+
+#' @export
+#' @method summary textmodel_wordscores_predicted
+summary.textmodel_wordscores_predicted <- function(object, ...) {
+    print(object)
 }
 
 

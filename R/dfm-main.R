@@ -93,6 +93,12 @@ dfm <- function(x, ...) {
 #' (size2 <- object.size(dfm(inaugTexts, matrixType="dense")))
 #' cat("Compacted by ", round(as.numeric((1-size1/size2)*100), 1), "%.\n", sep="")
 #' 
+#' # for a corpus
+#' mydfm <- dfm(inaugCorpus)
+#'
+#' # grouping documents by docvars in a corpus
+#' mydfmGrouped <- dfm(inaugCorpus, groups = "President")
+#' 
 #' # with stopwords English, stemming, and dense matrix
 #' dfmsInaug2 <- dfm(inaugCorpus, ignoredFeatures = stopwordsGet(), stem=TRUE, matrixType="dense")
 #' 
@@ -110,7 +116,7 @@ dfm <- function(x, ...) {
 #' ## with the thesaurus feature
 #' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
 #'              "New York City has raised a taxes: an income tax and a sales tax.")
-#' mydict <- list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax"))
+#' mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax")))
 #' dfm(phrasetotoken(mytexts, mydict), thesaurus=lapply(mydict, function(x) gsub("\\s", "_", x)))
 #' # pick up "taxes" with "tax" as a regex
 #' dfm(phrasetotoken(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE)
@@ -127,7 +133,8 @@ dfm <- function(x, ...) {
 #' testTweets <- c("My homie @@justinbieber #justinbieber shopping in #LA yesterday #beliebers",
 #'                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
 #'                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-#' dfm(testTweets, keptFeatures="^#")  # keep only hashtags
+#' ### NEED TO FIX
+#' ### dfm(testTweets, keptFeatures="^#")  # keep only hashtags
 #' 
 #' 
 #' \dontrun{
@@ -180,7 +187,7 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     #?clean
     if (verbose) cat("\n   ... tokenizing texts")
     if (!bigrams) {
-        tokenizedTexts <- lapply(x, tokenizeSingle, sep=" ")
+        tokenizedTexts <- lapply(x, tokenizeSingle2, sep=" ")
     } else {
         tokenizedTexts <- bigrams(x, include.unigrams=TRUE)
         if (verbose) cat (" (and forming bigrams)")
@@ -362,7 +369,7 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
 }
 
 
-tokenizeSingle <- function(s, sep=" ", useclean=FALSE, ...) {
+tokenizeSingle2 <- function(s, sep=" ", useclean=FALSE, ...) {
     if (useclean) s <- clean(s, ...)
     # s <- unlist(s)
     tokens <- scan(what="char", text=s, quiet=TRUE, quote="", sep=sep)
@@ -372,10 +379,6 @@ tokenizeSingle <- function(s, sep=" ", useclean=FALSE, ...) {
 #' @rdname dfm
 #' @param groups Grouping variable for aggregating documents
 #' @export
-#' @examples
-#' # sparse matrix from a corpus
-#' mydfm <- dfm(inaugCorpus)
-#' mydfmGrouped <- dfm(inaugCorpus, groups = "President")
 dfm.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, 
                        ignoredFeatures=NULL, 
                        keptFeatures=NULL,
@@ -504,7 +507,7 @@ makeRegEx <- function(wildcardregex) {
 #' @return A \link{dfm-class} object reduced in features
 #' @name trim
 #' @export
-#' @author Ken Benoit, inspired by code by Will Lowe (see \link[austin]{trim})
+#' @author Ken Benoit, inspired by code by Will Lowe (see \code{trim} from the \code{austin} package)
 #' @examples
 #' dtm <- dfm(inaugCorpus)
 #' dim(dtm)
@@ -696,7 +699,7 @@ nfeature.dfm <- function(x) {
 #'   \item logTf - The natural log of the term frequency 
 #'   \item tf-idf - Term-frequency * inverse 
 #'   document frequency. For a full explanation, see, for example, 
-#'   \url{(http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html)}.
+#'   \url{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html}.
 #'    This implementation will not return negative values. 
 #'   \item maxTf - The term frequency divided 
 #'   by the frequency of the most frequent term in the document 
@@ -734,6 +737,16 @@ nfeature.dfm <- function(x) {
 setGeneric("weight", function(x, ...) standardGeneric("weight"))
 
 #' @rdname weight
+#' @examples
+#' \dontshow{
+#' testdfm <- dfm(inaugTexts[1:5])
+#' print(testdfm[, 1:5])
+#' for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
+#'     testw <- weight(testdfm, w)
+#'     cat("\nweight test for:", w, "; class:", class(testw), "\n")
+#'     print(testw[, 1:5])
+#' }
+#' }
 setMethod("weight", signature = "dfm", 
           definition = function(x, type=c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"), #, "ppmi"), 
                                 smooth = 0, normalize = TRUE, verbose=TRUE, ...) {
@@ -742,7 +755,13 @@ setMethod("weight", signature = "dfm",
               if (weighting(x) != "frequency") {
                   cat("  No weighting applied: you should not weight an already weighted dfm.\n")
               } else if (type=="relFreq") {
-                  x <- x/rowSums(x)
+                  ## UGLY HACK
+                  if (is(x, "dfmSparse"))
+                      x <- new("dfmSparse", x/rowSums(x))
+                  else if (is(x, "dfmDense"))
+                      x <- new("dfmDense", x/rowSums(x))
+                  else 
+                      x <- x/rowSums(x)
               } else if (type=="relMaxFreq") {
                   x <- x / apply(x, 1, max)
               } else if (type=="logFreq") {
@@ -751,7 +770,7 @@ setMethod("weight", signature = "dfm",
                   # complicated as, is is to control coercion to a class for which logical operator is
                   # properly defined as a method, currently not dfm and child classes
                   idf <- log(ndoc(x)) - log(docfreq(x, smooth))
-                  if (normalize) x <- x/rowSums(x)
+                  if (normalize) x <- weight(x, "relFreq")
                   if (nfeature(x) != length(idf)) 
                       stop("missing some values in idf calculation")
                   # currently this strips the dfm of its special class, but this is a problem in 
@@ -778,7 +797,7 @@ setMethod("weight", signature = "dfm",
 #' @details \code{tf} is a shortcut for \code{weight(x, "relFreq")}
 #' @export
 tf <- function(x) {
-    if (is(x, "dfm"))
+    if (isS4(x))
         weight(x, "relFreq")
     else 
         x / rowSums(x)

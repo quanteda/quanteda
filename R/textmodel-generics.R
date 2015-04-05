@@ -61,16 +61,15 @@ setClass("textmodel_fitted",
 #'   is not terribly obvious. (Blame it on the S3 system.)
 #' @export
 #' @examples
-#' \dontrun{
-#' data(ie2010Corpus, package="quantedaData")
-# # test with old-style matrix-based dense dfm
-# ieDfmd <- dfm(ie2010Corpus, matrixType="dense", verbose=FALSE)
-# refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
-# ws <- textmodel(ieDfmd, refscores, model="wordscores", smooth=1)
-# ws <- textmodel(ieDfmd, refscores, model="wordscores")
-# ws <- textmodel(refscores ~ . -1, data=ieDfmd, model="wordscores")
-# rm(ieDfmd)
-# }
+#' data(ie2010Corpus)
+#  # test with old-style matrix-based dense dfm
+#  ieDfmd <- dfm(ie2010Corpus, matrixType="dense", verbose=FALSE)
+#  refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
+#  ws <- textmodel(ieDfmd, refscores, model="wordscores", smooth=1)
+#  ws <- textmodel(ieDfmd, refscores, model="wordscores")
+#  ws <- textmodel(refscores ~ . -1, data=ieDfmd, model="wordscores")
+#  rm(ieDfmd)
+# 
 #' ieDfm <- dfm(ie2010Corpus, verbose=FALSE)
 #' refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
 #' ws <- textmodel(ieDfm, refscores, model="wordscores", smooth=1)
@@ -84,8 +83,9 @@ setClass("textmodel_fitted",
 #' # compare the logit and linear wordscores
 #' bs <- textmodel(ieDfm[5:6,], refscores[5:6], model="wordscores", scale="logit", smooth=1)
 #' plot(ws@@Sw, bs@@Sw, xlim=c(-1, 1), xlab="Linear word score", ylab="Logit word score")
-#' }
 #' 
+#' wf <- textmodel(ieDfm, model="wordfish", dir = c(6,5))
+#' wf
 #' @export
 setGeneric("textmodel", 
     function(x, y=NULL, data=NULL, model=c("wordscores", "NB", "wordfish", "lda", "ca"), ...)
@@ -103,25 +103,25 @@ setMethod("textmodel", signature(x = "dfm", y="ANY", data="missing", model = "ch
                   Yname <- deparse(substitute(y))
                   
                   if (model=="wordscores") {
-                      if (nrow(x) != length(y))
+                      if (ndoc(x) != length(y))
                           stop("x and y contain different numbers of documents.")
                       result <- textmodel_wordscores(x, y, ...)
+                  } else if (model=="wordfish") {
+                      if (!is.null(y))
+                          warning("y values not used with wordfish model. ")
+                      result <- textmodel_wordfish(x, ...)
 #                   } else if (model=="NB") {
 #                       if (nrow(x) != length(y))
 #                           stop("x and y contain different numbers of documents.")
 #                       result <- textmodel_NB(x, y, ...)
-#                   } else if (model=="wordfish") {
-#                       if (!is.null(y))
-#                           warning("y values not used with wordfish model. ")
-#                       result <- textmodel_wordfish(x, ...)
 #                   } else if (model=="lda") {
 #                       if (!is.null(y))
 #                           warning("y values not used with wordfish model. ")
 #                       result <- textmodel_lda(x, ...)
-#                   } else if (model=="ca") {
-#                       if (!is.null(y))
-#                           warning("y values not used with ca model. ")
-#                       result <- textmodel_lda(x, ...)
+                  } else if (model=="ca") {
+                      if (!is.null(y))
+                          warning("y values not used with ca model. ")
+                      result <- textmodel_ca(x, ...)
                   } else {
                       stop(paste("model", model, "not implemented."))
                   }
