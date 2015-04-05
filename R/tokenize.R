@@ -1,11 +1,3 @@
-###
-### NOTE: Need to set 
-###       Sys.setenv("PKG_LIBS"="-lpcrecpp")
-###       for the build to work
-###
-
-Sys.setenv("PKG_LIBS"="-lpcrecpp")
-
 #' tokenize a set of texts
 #'
 #' Tokenize the texts from a character vector or from a corpus.
@@ -35,10 +27,10 @@ tokenize <- function(x, ...) {
 #'   than a list of length \code{\link{ndoc}(texts)}, with each element of the 
 #'   list containing a character vector of the tokens corresponding to that 
 #'   text.
-#' @param cpp if \code{TRUE}, tokenize and clean using C++ tokenizer, otherwise 
-#'   use a slower R version
-#' @param minLength the minimum length in characters for retaining a token,
-#'   defaults to 1.  Only used if \code{cpp=TRUE}.
+# @param cpp if \code{TRUE}, tokenize and clean using C++ tokenizer, otherwise 
+#   use a slower R version
+# @param minLength the minimum length in characters for retaining a token,
+#   defaults to 1.  Only used if \code{cpp=TRUE}.
 #' @importFrom Rcpp evalCpp
 #' @useDynLib quanteda
 #' @export
@@ -60,11 +52,12 @@ tokenize <- function(x, ...) {
 #' tokenize("great website http://textasdata.com", removeURL=FALSE, cpp=FALSE)
 #' tokenize("great website http://textasdata.com", removeURL=TRUE, cpp=TRUE)
 #' tokenize("great website http://textasdata.com", removeURL=TRUE, cpp=FALSE)
-tokenize.character <- function(x, cpp=FALSE, simplify=FALSE, sep=" ", minLength=1, ... ) {
-
-    if (cpp) {
+#tokenize.character <- function(x, cpp=FALSE, simplify=FALSE, sep=" ", minLength=1, ... ) {
+tokenize.character <- function(x, simplify=FALSE, sep=" ", ... ) {
+    #if (cpp) {
+    if (FALSE) {
         result <- lapply(x, tokenizeSingle, sep, minLength, ...) #toLower, removeDigits, removePunct, 
-                              #removeTwitter, removeURL, removeAdditional)
+        #removeTwitter, removeURL, removeAdditional)
     } else {
         result <- lapply(x, tokenizeSingleOld, sep, ...)
         # remove empty "tokens" caused by multiple whitespace characters in sequence
@@ -86,7 +79,7 @@ tokenize.corpus <- function(x, ...) {
     tokenize(texts(x), ...)
 }
 
-tokenizeSingleOld <- function(s, sep=" ", ...) {
+tokenizeSingle <- tokenizeSingleOld <- function(s, sep=" ", ...) {
     # function to tokenize a single element character
     # profiling shows that using scan is 3x faster than using strsplit
     # s <- unlist(s)
@@ -95,12 +88,15 @@ tokenizeSingleOld <- function(s, sep=" ", ...) {
     return(tokens)
 }
 
-tokenizeSingle <- function(x, sep=' ', 
-                       minLength=1, toLower=TRUE, removeDigits=TRUE, removePunct=TRUE,
-                       removeTwitter=TRUE, removeURL=TRUE, removeAdditional='') {
-    tokenizecpp(x, sep, minLength, toLower, removeDigits, removePunct, 
-                removeTwitter, removeURL, removeAdditional)
-}
+# tokenizeSingle <- function(x, sep=' ', 
+#                        minLength=1, toLower=TRUE, removeDigits=TRUE, removePunct=TRUE,
+#                        removeTwitter=TRUE, removeURL=TRUE, removeAdditional='') {
+#     tokenizecpp(x, sep, minLength, toLower, removeDigits, removePunct, 
+#                 removeTwitter, removeURL, removeAdditional)
+# }
+
+
+
 
 #' @title tokenizeOnly
 #' @name tokenizeOnly
@@ -115,7 +111,7 @@ tokenizeSingle <- function(x, sep=' ',
 #'   tokenized text
 #' @examples
 #' # on inaugural speeches
-#' system.time(tmp1 <- tokenizeOnlyCppKW(inaugTexts))
+#' # system.time(tmp1 <- tokenizeOnlyCppKW(inaugTexts))
 #' system.time(tmp2 <- tokenizeOnlyCppKB(inaugTexts))
 #' system.time(tmp3 <- tokenizeOnlyScan(inaugTexts))
 #' 
@@ -123,7 +119,7 @@ tokenizeSingle <- function(x, sep=' ',
 #' load('~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/lauderdaleClark/Opinion_files.RData')
 #' txts <- unlist(Opinion_files[1])
 #' names(txts) <- NULL
-#' system.time(tmp4 <- tokenizeOnlyCppKW(txts))
+#' # system.time(tmp4 <- tokenizeOnlyCppKW(txts))
 #' ## about  9.2 seconds on Ken's MacBook Pro
 #' system.time(tmp5 <- tokenizeOnlyCppKB(txts))
 #' ## about  7.0 seconds
@@ -132,18 +128,18 @@ tokenizeSingle <- function(x, sep=' ',
 #' }
 NULL
 
-#' @rdname tokenizeOnly
-#' @details \code{tokenizeOnlyCppKW} calls KW's original C++ function, 
-#' with the cleaning options set to off.
-#' @export
-tokenizeOnlyCppKW <- function(x, sep=" ", minLength=1) {
-    lapply(x, tokenizeSingle, sep=sep, minLength=minLength, 
-           toLower=FALSE, 
-           removeDigits=FALSE, 
-           removePunct=FALSE, 
-           removeTwitter=FALSE, 
-           removeURL=FALSE)
-}
+# # @rdname tokenizeOnly
+# # @details \code{tokenizeOnlyCppKW} used to call KW's original C++ function, 
+# # with the cleaning options set to off -- but this has been (temporarily) removed.
+# # @export
+# tokenizeOnlyCppKW <- function(x, sep=" ", minLength=1) {
+#     lapply(x, tokenizeSingle, sep=sep, minLength=minLength, 
+#            toLower=FALSE, 
+#            removeDigits=FALSE, 
+#            removePunct=FALSE, 
+#            removeTwitter=FALSE, 
+#            removeURL=FALSE)
+# }
 
 #' @rdname tokenizeOnly
 #' @details \code{tokenizeOnlyCppKB} calls a C++ function that KB adapted from 

@@ -3,12 +3,9 @@
 \name{tokenizeOnly}
 \alias{tokenizeOnly}
 \alias{tokenizeOnlyCppKB}
-\alias{tokenizeOnlyCppKW}
 \alias{tokenizeOnlyScan}
 \title{tokenizeOnly}
 \usage{
-tokenizeOnlyCppKW(x, sep = " ", minLength = 1)
-
 tokenizeOnlyCppKB(x, sep = " ", minLength = 1)
 
 tokenizeOnlyScan(x, sep = " ")
@@ -30,9 +27,6 @@ For performance comparisons of tokenize-only functions. All
   when \code{x} is a vector of texts.
 }
 \details{
-\code{tokenizeOnlyCppKW} calls KW's original C++ function,
-with the cleaning options set to off.
-
 \code{tokenizeOnlyCppKB} calls a C++ function that KB adapted from
   Kohei's code that does tokenization without the cleaning.
 
@@ -41,7 +35,7 @@ with the cleaning options set to off.
 }
 \examples{
 # on inaugural speeches
-system.time(tmp1 <- tokenizeOnlyCppKW(inaugTexts))
+# system.time(tmp1 <- tokenizeOnlyCppKW(inaugTexts))
 system.time(tmp2 <- tokenizeOnlyCppKB(inaugTexts))
 system.time(tmp3 <- tokenizeOnlyScan(inaugTexts))
 
@@ -49,7 +43,7 @@ system.time(tmp3 <- tokenizeOnlyScan(inaugTexts))
 load('~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/lauderdaleClark/Opinion_files.RData')
 txts <- unlist(Opinion_files[1])
 names(txts) <- NULL
-system.time(tmp4 <- tokenizeOnlyCppKW(txts))
+# system.time(tmp4 <- tokenizeOnlyCppKW(txts))
 ## about  9.2 seconds on Ken's MacBook Pro
 system.time(tmp5 <- tokenizeOnlyCppKB(txts))
 ## about  7.0 seconds

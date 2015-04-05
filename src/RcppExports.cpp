@@ -6,42 +6,6 @@
 
 using namespace Rcpp;
 
-// cleancpp
-Rcpp::CharacterVector cleancpp(SEXP x, SEXP toLower, SEXP removeDigits, SEXP removePunct, SEXP removeTwitter, SEXP removeURL, SEXP removeAdditional);
-RcppExport SEXP quanteda_cleancpp(SEXP xSEXP, SEXP toLowerSEXP, SEXP removeDigitsSEXP, SEXP removePunctSEXP, SEXP removeTwitterSEXP, SEXP removeURLSEXP, SEXP removeAdditionalSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type toLower(toLowerSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type removeDigits(removeDigitsSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type removePunct(removePunctSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type removeTwitter(removeTwitterSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type removeURL(removeURLSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type removeAdditional(removeAdditionalSEXP);
-    __result = Rcpp::wrap(cleancpp(x, toLower, removeDigits, removePunct, removeTwitter, removeURL, removeAdditional));
-    return __result;
-END_RCPP
-}
-// tokenizecpp
-Rcpp::CharacterVector tokenizecpp(SEXP x, SEXP sep, SEXP minLength, SEXP toLower, SEXP removeDigits, SEXP removePunct, SEXP removeTwitter, SEXP removeURL, SEXP removeAdditional);
-RcppExport SEXP quanteda_tokenizecpp(SEXP xSEXP, SEXP sepSEXP, SEXP minLengthSEXP, SEXP toLowerSEXP, SEXP removeDigitsSEXP, SEXP removePunctSEXP, SEXP removeTwitterSEXP, SEXP removeURLSEXP, SEXP removeAdditionalSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type sep(sepSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type minLength(minLengthSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type toLower(toLowerSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type removeDigits(removeDigitsSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type removePunct(removePunctSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type removeTwitter(removeTwitterSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type removeURL(removeURLSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type removeAdditional(removeAdditionalSEXP);
-    __result = Rcpp::wrap(tokenizecpp(x, sep, minLength, toLower, removeDigits, removePunct, removeTwitter, removeURL, removeAdditional));
-    return __result;
-END_RCPP
-}
 // justTokenizeCpp
 Rcpp::CharacterVector justTokenizeCpp(SEXP x, SEXP sep, SEXP minLength);
 RcppExport SEXP quanteda_justTokenizeCpp(SEXP xSEXP, SEXP sepSEXP, SEXP minLengthSEXP) {

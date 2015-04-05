@@ -84,7 +84,7 @@ The constructor does not store a copy of the texts, but rather reads
 \examples{
 # Twitter json
 \donttest{mytf <- textfile("~/Dropbox/QUANTESS/corpora/misc/NinTANDO_Me.json")
-summary(corpus(mytf))}
+summary(corpus(mytf))
 # generic json - needs a textField specifier
 mytf2 <- textfile("~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/sotu/sotu.json",
                   textField = "text")
@@ -96,7 +96,7 @@ mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt")
 summary(corpus(mytf4))
 mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt",
                   docvarsfrom="filenames", sep="-", docvarnames=c("Year", "President"))
-summary(corpus(mytf5))
+summary(corpus(mytf5))}
 }
 \author{
 Kenneth Benoit and Paul Nulty

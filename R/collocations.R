@@ -55,8 +55,8 @@ collocations <- function(x, ...) {
     UseMethod("collocations")
 }
  
-wFIRSTGREP <- "[])};:,.?!$—]"
-wMIDDLEGREP <- "[][({)};:,.?!—]"
+wFIRSTGREP <- "[])};:,.?!$\u2014]"
+wMIDDLEGREP <- "[][({)};:,.?!\u2014]"
 wLASTGREP <- "[][^({]"
 containsPunct <- NULL
 
@@ -410,7 +410,9 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     #     N <- 88601536
     
     # expected counts m_{ijk} for first independence model
+    epsilon <- .000000001  # to offset zero cell counts
     allTable <- within(allTable, {
+        # "Model 1": P(w1,w2,w3) = P(w1)P(w2)P(w3)
         m1.111 <- exp(log(n111 + n121 + n112 + n122) + log(n111 + n211 + n112 + n212) + log(n111 + n211 + n121 + n221) - 2*log(N))
         m1.112 <- exp(log(n111 + n121 + n112 + n122) + log(n111 + n211 + n112 + n212) + log(n112 + n212 + n122 + n222) - 2*log(N))
         m1.121 <- exp(log(n111 + n121 + n112 + n122) + log(n121 + n221 + n122 + n222) + log(n111 + n211 + n121 + n221) - 2*log(N))
@@ -419,18 +421,47 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
         m1.212 <- exp(log(n211 + n221 + n212 + n222) + log(n111 + n211 + n112 + n212) + log(n112 + n212 + n122 + n222) - 2*log(N))
         m1.221 <- exp(log(n211 + n221 + n212 + n222) + log(n121 + n221 + n122 + n222) + log(n111 + n211 + n121 + n221) - 2*log(N))
         m1.222 <- exp(log(n211 + n221 + n212 + n222) + log(n121 + n221 + n122 + n222) + log(n112 + n212 + n122 + n222) - 2*log(N))
+        
+        # "Model 2": P(w1,w2,w3) = P(w1,w2)P(w3)
+#         m2.111 <- exp(log(n111 + n112) + log(n111 + n211 + n121 + n221) - log(N))
+#         m2.112 <- exp(log(n111 + n112) + log(n112 + n212 + n122 + n222) - log(N))
+#         m2.121 <- exp(log(n121 + n122) + log(n111 + n211 + n121 + n221) - log(N))
+#         m2.122 <- exp(log(n121 + n122) + log(n112 + n212 + n122 + n222) - log(N))
+#         m2.211 <- exp(log(n211 + n212) + log(n111 + n211 + n121 + n221) - log(N))
+#         m2.212 <- exp(log(n211 + n212) + log(n112 + n212 + n122 + n222) - log(N))
+#         m2.221 <- exp(log(n221 + n222) + log(n111 + n211 + n121 + n221) - log(N))
+#         m2.222 <- exp(log(n221 + n222) + log(n112 + n212 + n122 + n222) - log(N))
+#         
+#         # "Model 2": P(w1,w2,w3) = P(w1)P(w2,w3)
+#         m3.111 <- exp(log(n111 + n211) + log(n111 + n121 + n112 + n122) - log(N))
+#         m3.112 <- exp(log(n112 + n212) + log(n111 + n121 + n112 + n122) - log(N))
+#         m3.121 <- exp(log(n121 + n221) + log(n111 + n121 + n112 + n122) - log(N))
+#         m3.122 <- exp(log(n122 + n222) + log(n111 + n121 + n112 + n122) - log(N))
+#         m3.211 <- exp(log(n111 + n211) + log(n211 + n221 + n212 + n222) - log(N))
+#         m3.212 <- exp(log(n112 + n212) + log(n211 + n221 + n212 + n222) - log(N))
+#         m3.221 <- exp(log(n121 + n221) + log(n211 + n221 + n212 + n222) - log(N))
+#         m3.222 <- exp(log(n122 + n222) + log(n211 + n221 + n212 + n222) - log(N))
+        
+        lrratioM1 <- 2 * ((n111 * log(n111 / m1.111 + epsilon)) + (n112 * log(n112 / m1.112 + epsilon)) +
+                              (n121 * log(n121 / m1.121 + epsilon)) + (n122 * log(n122 / m1.122 + epsilon)) +
+                              (n211 * log(n211 / m1.211 + epsilon)) + (n212 * log(n212 / m1.212 + epsilon)) +
+                              (n221 * log(n221 / m1.221 + epsilon)) + (n222 * log(n222 / m1.222 + epsilon)))
+#         lrratioM2 <- 2 * ((n111 * log((n111 + epsilon) / (m2.111 + epsilon))) + (n112 * log((n112 + epsilon) / (m2.112 + epsilon))) +
+#                               (n121 * log((n121 + epsilon) / (m2.121 + epsilon))) + (n122 * log((n122 + epsilon) / (m2.122 + epsilon))) +
+#                               (n211 * log((n211 + epsilon) / (m2.211 + epsilon))) + (n212 * log((n212 + epsilon) / (m2.212 + epsilon))) +
+#                               (n221 * log((n221 + epsilon) / (m2.221 + epsilon))) + (n222 * log((n222 + epsilon) / (m2.222 + epsilon))))
+#         lrratioM3 <- 2 * ((n111 * log((n111 + epsilon) / (m3.111 + epsilon))) + (n112 * log((n112 + epsilon) / (m3.112 + epsilon))) +
+#                               (n121 * log((n121 + epsilon) / (m3.121 + epsilon))) + (n122 * log((n122 + epsilon) / (m3.122 + epsilon))) +
+#                               (n211 * log((n211 + epsilon) / (m3.211 + epsilon))) + (n212 * log((n212 + epsilon) / (m3.212 + epsilon))) +
+#                               (n221 * log((n221 + epsilon) / (m3.221 + epsilon))) + (n222 * log((n222 + epsilon) / (m3.222 + epsilon))))
+        
     })
-    
-    epsilon <- .000000001  # to offset zero cell counts
+
     allTable <- within(allTable, {
-        lrratio <- 2 * ((n111 * log(n111 / m1.111 + epsilon)) + (n112 * log(n112 / m1.112 + epsilon)) +
-                        (n121 * log(n121 / m1.121 + epsilon)) + (n122 * log(n122 / m1.122 + epsilon)) +
-                        (n211 * log(n211 / m1.211 + epsilon)) + (n212 * log(n212 / m1.212 + epsilon)) +
-                        (n221 * log(n221 / m1.221 + epsilon)) + (n222 * log(n222 / m1.222 + epsilon)))
         chi2 <- ((n111 - m1.111)^2 / m1.111) + ((n112 - m1.112)^2 / m1.112) +
-                ((n121 - m1.121)^2 / m1.121) + ((n122 - m1.122)^2 / m1.122) +
-                ((n211 - m1.211)^2 / m1.211) + ((n212 - m1.212)^2 / m1.212) +
-                ((n221 - m1.221)^2 / m1.221) + ((n222 - m1.222)^2 / m1.222)
+            ((n121 - m1.121)^2 / m1.121) + ((n122 - m1.122)^2 / m1.122) +
+            ((n211 - m1.211)^2 / m1.211) + ((n212 - m1.212)^2 / m1.212) +
+            ((n221 - m1.221)^2 / m1.221) + ((n222 - m1.222)^2 / m1.222)
         pmi <- log(n111 / m1.111)
         dice <- 2 * n111 / (n111 + n121 + n112 + n122 + n111 + n211 + n112 + n212 + n111 + n211 + n121 + n221)
     })         
@@ -450,7 +481,11 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
         dt$dice <- allTable$dice
         setorder(dt, -dice)
     } else {
-        dt$G2 <- allTable$lrratio
+#         dt$G2m1 <- allTable$lrratioM1
+#         dt$G2m2 <- allTable$lrratioM2
+#         dt$G2m3 <- allTable$lrratioM3
+#         setorder(dt, -G2m1)
+        dt$G2 <- allTable$lrratioM1
         setorder(dt, -G2)
     }
     

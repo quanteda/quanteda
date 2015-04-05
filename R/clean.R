@@ -192,19 +192,18 @@ urlregex <- "(?i)\\b((?:[a-z][\\w-]+:(?:/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9
 #' @export
 cleanC <- function(x, removeDigits=TRUE, removePunct=TRUE, toLower=TRUE, 
                    removeAdditional=NULL, removeTwitter=FALSE, removeURL=TRUE, ...) {
+    UseMethod("clean")
+    
+    ## EVENTUALLY, MOVE THIS TO stringi::stri_replace_all()
     
     # to match the NULL default in clean()
-    if (is.null(removeAdditional)) removeAdditional <- "" 
-    
-#     cleancpp(x, removeDigits=removeDigits, removePunct=removePunct, 
-#               toLower=toLower, 
-#               removeAdditional=removeAdditional, 
-#               removeTwitter=removeTwitter, removeURL=removeURL)
+#    if (is.null(removeAdditional)) removeAdditional <- "" 
 
-    sapply(x, cleancpp, removeDigits=removeDigits, removePunct=removePunct, 
-           toLower=toLower, 
-           removeAdditional=removeAdditional, 
-           removeTwitter=removeTwitter, removeURL=removeURL,
-           USE.NAMES = FALSE)
-}    
+#     sapply(x, cleancpp, removeDigits=removeDigits, removePunct=removePunct, 
+#            toLower=toLower, 
+#            removeAdditional=removeAdditional, 
+#            removeTwitter=removeTwitter, removeURL=removeURL,
+#            USE.NAMES = FALSE)
+}
+
 

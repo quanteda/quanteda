@@ -9,8 +9,7 @@
 \usage{
 tokenize(x, ...)
 
-\method{tokenize}{character}(x, cpp = FALSE, simplify = FALSE, sep = " ",
-  minLength = 1, ...)
+\method{tokenize}{character}(x, simplify = FALSE, sep = " ", ...)
 
 \method{tokenize}{corpus}(x, ...)
 }
@@ -18,9 +17,6 @@ tokenize(x, ...)
 \item{x}{The text(s) or corpus to be tokenized}
 
 \item{...}{additional arguments passed to \code{\link{clean}}}
-
-\item{cpp}{if \code{TRUE}, tokenize and clean using C++ tokenizer, otherwise
-use a slower R version}
 
 \item{simplify}{If \code{TRUE}, return a character vector of tokens rather
 than a list of length \code{\link{ndoc}(texts)}, with each element of the
@@ -30,9 +26,6 @@ text.}
 \item{sep}{by default, tokenize expects a "white-space" delimiter between
 tokens. Alternatively, \code{sep} can be used to specify another character
 which delimits fields.}
-
-\item{minLength}{the minimum length in characters for retaining a token,
-defaults to 1.  Only used if \code{cpp=TRUE}.}
 }
 \value{
 A list of length \code{\link{ndoc}(x)} of the tokens found in each text.

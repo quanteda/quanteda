@@ -936,12 +936,8 @@ combineByName <- function(A, B, ...) {
 #' @param verbose if \code{TRUE} print progress indicator and time elapsed
 #' @return scalar count of the total tokens
 #' @examples
-#' ntokens(inaugTexts, verbose=FALSE)
-#' ntokens(inaugCorpus, verbose=FALSE)
-#' if (require(quantedaData)) {
-#'     data(ukManifestosCorpus, package="quantedaData")
-#'     ntoken(ukManifestosCorpus, block.size=5) 
-#' }
+#' ntoken(inaugTexts, verbose=FALSE)
+#' ntoken(inaugCorpus, verbose=FALSE)
 #' @export
 ntoken <- function(x, block.size=200, verbose=TRUE) {
     UseMethod("ntoken")

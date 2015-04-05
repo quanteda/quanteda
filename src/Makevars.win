@@ -1,1 +1,1 @@
-PKG_LIBS = -lpcrecpp -lblas -llapack
+PKG_LIBS = $(BLAS_LIBS) $(LAPACK_LIBS) # $(FLIBS)

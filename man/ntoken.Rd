@@ -29,11 +29,7 @@ means all words, not unique words, and these are not cleaned
 prior to counting.
 }
 \examples{
-ntokens(inaugTexts, verbose=FALSE)
-ntokens(inaugCorpus, verbose=FALSE)
-if (require(quantedaData)) {
-    data(ukManifestosCorpus, package="quantedaData")
-    ntoken(ukManifestosCorpus, block.size=5)
-}
+ntoken(inaugTexts, verbose=FALSE)
+ntoken(inaugCorpus, verbose=FALSE)
 }
 

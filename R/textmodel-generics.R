@@ -61,16 +61,15 @@ setClass("textmodel_fitted",
 #'   is not terribly obvious. (Blame it on the S3 system.)
 #' @export
 #' @examples
-#' \dontrun{
-#' data(ie2010Corpus, package="quantedaData")
-# # test with old-style matrix-based dense dfm
-# ieDfmd <- dfm(ie2010Corpus, matrixType="dense", verbose=FALSE)
-# refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
-# ws <- textmodel(ieDfmd, refscores, model="wordscores", smooth=1)
-# ws <- textmodel(ieDfmd, refscores, model="wordscores")
-# ws <- textmodel(refscores ~ . -1, data=ieDfmd, model="wordscores")
-# rm(ieDfmd)
-# }
+#' data(ie2010Corpus)
+#  # test with old-style matrix-based dense dfm
+#  ieDfmd <- dfm(ie2010Corpus, matrixType="dense", verbose=FALSE)
+#  refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
+#  ws <- textmodel(ieDfmd, refscores, model="wordscores", smooth=1)
+#  ws <- textmodel(ieDfmd, refscores, model="wordscores")
+#  ws <- textmodel(refscores ~ . -1, data=ieDfmd, model="wordscores")
+#  rm(ieDfmd)
+# 
 #' ieDfm <- dfm(ie2010Corpus, verbose=FALSE)
 #' refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
 #' ws <- textmodel(ieDfm, refscores, model="wordscores", smooth=1)
@@ -87,7 +86,6 @@ setClass("textmodel_fitted",
 #' 
 #' wf <- textmodel(ieDfm, model="wordfish", dir = c(6,5))
 #' wf
-#' }
 #' @export
 setGeneric("textmodel", 
     function(x, y=NULL, data=NULL, model=c("wordscores", "NB", "wordfish", "lda", "ca"), ...)

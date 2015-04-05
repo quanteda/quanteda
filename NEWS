@@ -1,4 +1,4 @@
-quanteda 0.7.1
+quanteda 0.7.2
 ==============
 * phrasetotokens works with dictionaries and collocations, to transform
   multi-word expressions into single tokens in texts or corpora
@@ -17,6 +17,15 @@ quanteda 0.7.1
 * textmodel_wordfish now implemented entirely in C for speed.  No std errors yet but 
   coming soon.  No predict method currently working either.
 
+* ie2010Corpus, and exampleString now moved into quanteda (formerly were only in 
+  quantedaData because of non-ASCII characters in each - solved with native2ascii
+  and \uXXXX encodings).
+
+* All dependencies, even conditional, to the quantedaData and austin packages
+  have been removed.
+
+quanteda 0.7.1
+==============
 Many major changes to the syntax in this version.
 
 * trimdfm, flatten.dictionary, the textfile functions, dictionary converters

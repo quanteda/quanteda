@@ -81,19 +81,40 @@ NULL
 #'   Science Review 97(2): 311-331.
 NULL
 
-# @name ie2010Corpus
-# @aliases iebudgets
-# @title Irish budget speeches from 2010
-# @description Speeches and document-level variables from the debate over the 
-#   Irish budget of 2010.
-# @format The corpus object for the 2010 budget speeches, with document-level
-#   variables for year, debate, serial number, first and last name of the
-#   speaker, and the speaker's party.
-# @source Lowe and Benoit (2013)
-# @references Lowe, Will, and Kenneth R Benoit. 2013. 
-#   "\href{http://www.kenbenoit.net/pdfs/Political%20Analysis-2013-Lowe-298-313.pdf}{Validating
-#    Estimates of Latent Traits From Textual Data Using Human Judgment as a 
-#   Benchmark.}" \emph{Political Analysis} 21: 298–313.
-# @docType data summary(ie2010Corpus)
-# NULL
+#' @name ie2010Corpus
+#' @aliases iebudgets
+#' @title Irish budget speeches from 2010
+#' @description Speeches and document-level variables from the debate over the 
+#'   Irish budget of 2010.
+#' @format The corpus object for the 2010 budget speeches, with document-level 
+#'   variables for year, debate, serial number, first and last name of the 
+#'   speaker, and the speaker's party.
+#' @source Lowe and Benoit (2013)
+#' @references Lowe, Will, and Kenneth R Benoit. 2013. "Validating Estimates of
+#'   Latent Traits From Textual Data Using Human Judgment as a Benchmark."
+#'   \emph{Political Analysis} 21: 298-313.
+#' @docType data
+#' @examples
+#' summary(ie2010Corpus)
+NULL
 
+# data(ie2010Corpus, package="quantedaData")
+# txts <- texts(ie2010Corpus)
+# for (i in 1:length(txts)) {
+#     temptxt <- system2("native2ascii", input = txts[i], stdout = TRUE)
+#     temptxt[temptxt==""] <- "\n"
+#     temptxt <- paste(temptxt, collapse="")
+#     txts[i] <- temptxt
+# }
+# texts(ie2010Corpus) <- txts
+# save(ie2010Corpus, file="data/ie2010Corpus.RData")
+
+#' @name exampleString
+#' @title A paragraph of text for testing various text-based functions
+#' @description This is a long paragraph (2,914 characters) of text taken from an Irish budget speech by Joe Higgins
+#' @format character vector with one element
+#' @docType data
+#' @examples
+#' data(exampleString)
+#' clean(exampleString)
+NULL

@@ -53,23 +53,19 @@ one-dimensional document positions using conditional maximum likelihood.
 }
 \details{
 The returns match those of Will Lowe's R implementation of
-  \link[austin]{wordfish}, except that here we have renamed \code{words} to
+  \code{wordfish} (see the austin package), except that here we have renamed \code{words} to
   be \code{features}.  (This return list may change.)  We have also followed the practice begun with
   Slapin and Proksch's early implementation of the model that used a regularization parameter of
   se\eqn{(\sigma) = 3}, through the third element in \code{priors}.
 }
 \examples{
-\donttest{if (require(quantedaData)) {
-    data(ie2010Corpus)
-    ie2010dfm <- dfm(ie2010Corpus, verbose=FALSE)
-    wfmodel <- textmodel_wordfish(ie2010dfm, dir = c(6,5))
+ie2010dfm <- dfm(ie2010Corpus, verbose=FALSE)
+wfmodel <- textmodel_wordfish(ie2010dfm, dir = c(6,5))
 
-    if (require(austin)) {
+\dontrun{if (require(austin)) {
         wfmodelAustin <- wordfish(quanteda::as.wfm(ie2010dfm), dir = c(6,5))
         cor(wfmodel@theta, wfmodelAustin$theta)
-    }
-}
-}
+}}
 }
 \author{
 Benjamin Lauderdale and Kenneth Benoit

@@ -47,7 +47,7 @@ setClass("textmodel_wordfish_predicted",
 #'   \item{se.theta}{standard errors for theta-hats} \item{data}{dfm to which 
 #'   the model was fit}
 #' @details The returns match those of Will Lowe's R implementation of
-#'   \link[austin]{wordfish}, except that here we have renamed \code{words} to
+#'   \code{wordfish} (see the austin package), except that here we have renamed \code{words} to
 #'   be \code{features}.  (This return list may change.)  We have also followed the practice begun with
 #'   Slapin and Proksch's early implementation of the model that used a regularization parameter of 
 #'   se\eqn{(\sigma) = 3}, through the third element in \code{priors}.
@@ -56,17 +56,13 @@ setClass("textmodel_wordfish_predicted",
 #'   Journal of Political Science} 52(3):705-772.
 #' @author Benjamin Lauderdale and Kenneth Benoit
 #' @examples
-#' \donttest{if (require(quantedaData)) {
-#'     data(ie2010Corpus)
-#'     ie2010dfm <- dfm(ie2010Corpus, verbose=FALSE)
-#'     wfmodel <- textmodel_wordfish(ie2010dfm, dir = c(6,5))
+#' ie2010dfm <- dfm(ie2010Corpus, verbose=FALSE)
+#' wfmodel <- textmodel_wordfish(ie2010dfm, dir = c(6,5))
 #' 
-#'     if (require(austin)) {
+#' \dontrun{if (require(austin)) {
 #'         wfmodelAustin <- wordfish(quanteda::as.wfm(ie2010dfm), dir = c(6,5))
 #'         cor(wfmodel@@theta, wfmodelAustin$theta)
-#'     }
-#' }
-#' }
+#' }}
 #' @export
 textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8)) {
     wfresult <- wordfishcpp(as.matrix(data), as.integer(dir), 1/(priors^2), tol)

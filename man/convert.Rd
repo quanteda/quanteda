@@ -44,7 +44,7 @@ whose document-term matrix representation the dfm will be converted:
   \link[lda]{lda.collapsed.gibbs.sampler} from the \pkg{lda} package}
 \item{\code{"tm"}}{a \link[tm]{DocumentTermMatrix} from the \pkg{tm} package}
 \item{\code{"stm"}}{the  format for the \pkg{stm} package}
-\item{\code{"austin"}}{the \link[austin]{wfm} format from the \pkg{austin} package}
+\item{\code{"austin"}}{the \code{wfm} format from the \code{austin} package}
 \item{\code{"topicmodels"}}{the "dtm" format as used by the \pkg{topicmodels} package}
 }}
 
@@ -71,12 +71,12 @@ all other text analysis packages for which conversions are defined.  To
 make the usage as consistent as possible with other packages, however,
 quanteda also provides direct conversion functions in the idiom of
 the foreign packages, for example  \code{as.wfm} to
-coerce a dfm into the \link[austin]{wfm} format from the \pkg{austin} package,
+coerce a dfm into the \code{wfm} format from the \code{austin} package,
 and \code{quantedaformat2dtm} for using a dfm with the \pkg{topicmodels} package.
 }
 \details{
 \code{as.wfm} converts a quanteda \link{dfm} into the
-\link[austin]{wfm} format used by the \pkg{austin} package.
+\code{wfm} format used by the \code{austin} package.
 
 \code{as.DocumentTermMatrix} will convert a quanteda \link{dfm} into
   the \pkg{tm} package's \link[tm]{DocumentTermMatrix} format.
@@ -102,7 +102,6 @@ quantdfm <- dfm(mycorpus, verbose=FALSE)
 # austin's wfm format
 austindfm <- as.wfm(quantdfm)
 identical(austindfm, convert(quantdfm, to="austin"))
-\dontrun{wftest <- austin::wordfish(austindfm)}
 
 # tm's DocumentTermMatrix format
 tmdfm <- as.DocumentTermMatrix(quantdfm)

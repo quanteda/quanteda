@@ -44,6 +44,6 @@ dtmSampled # 57 x 50 words
 topfeatures(dtmSampled)
 }
 \author{
-Ken Benoit, inspired by code by Will Lowe (see \link[austin]{trim})
+Ken Benoit, inspired by code by Will Lowe (see \code{trim} from the \code{austin} package)
 }
 

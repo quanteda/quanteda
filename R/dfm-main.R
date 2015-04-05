@@ -507,7 +507,7 @@ makeRegEx <- function(wildcardregex) {
 #' @return A \link{dfm-class} object reduced in features
 #' @name trim
 #' @export
-#' @author Ken Benoit, inspired by code by Will Lowe (see \link[austin]{trim})
+#' @author Ken Benoit, inspired by code by Will Lowe (see \code{trim} from the \code{austin} package)
 #' @examples
 #' dtm <- dfm(inaugCorpus)
 #' dim(dtm)
@@ -699,7 +699,7 @@ nfeature.dfm <- function(x) {
 #'   \item logTf - The natural log of the term frequency 
 #'   \item tf-idf - Term-frequency * inverse 
 #'   document frequency. For a full explanation, see, for example, 
-#'   \url{(http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html)}.
+#'   \url{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html}.
 #'    This implementation will not return negative values. 
 #'   \item maxTf - The term frequency divided 
 #'   by the frequency of the most frequent term in the document 

@@ -7,11 +7,9 @@
 #' @param ... additional arguments passed to \link[ca]{ca.matrix}
 #' @author Kenneth Benoit
 #' @examples 
-#' library(quantedaData)
-#' data(ie2010Corpus)
 #' ieDfm <- dfm(ie2010Corpus)
 #' wca <- textmodel_ca(ieDfm)
-#' summary(wca)
+#' summary(wca) 
 #' @import ca
 #' @export
 textmodel_ca <- function(data, smooth=0, ...) {

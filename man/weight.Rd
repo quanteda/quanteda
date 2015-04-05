@@ -38,7 +38,7 @@ weighting(object)
   \item logTf - The natural log of the term frequency
   \item tf-idf - Term-frequency * inverse
   document frequency. For a full explanation, see, for example,
-  \url{(http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html)}.
+  \url{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html}.
    This implementation will not return negative values.
   \item maxTf - The term frequency divided
   by the frequency of the most frequent term in the document

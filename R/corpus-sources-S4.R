@@ -88,7 +88,7 @@ setGeneric("textfile",
 #' @examples 
 #' # Twitter json
 #' \donttest{mytf <- textfile("~/Dropbox/QUANTESS/corpora/misc/NinTANDO_Me.json")
-#' summary(corpus(mytf))}
+#' summary(corpus(mytf))
 #' # generic json - needs a textField specifier
 #' mytf2 <- textfile("~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/sotu/sotu.json",
 #'                   textField = "text")
@@ -100,7 +100,7 @@ setGeneric("textfile",
 #' summary(corpus(mytf4))
 #' mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", 
 #'                   docvarsfrom="filenames", sep="-", docvarnames=c("Year", "President"))
-#' summary(corpus(mytf5))
+#' summary(corpus(mytf5))}
 setMethod("textfile", 
           signature(file = "character", textField = "index", directory = "missing", 
                     docvarsfrom="missing", sep="missing", docvarnames="missing"),

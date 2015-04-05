@@ -104,7 +104,7 @@ provide a tutorial overview of its features.
 ## Installing quanteda
 
 The code for the `quanteda` package currently resides on
-<http://github/kbenoit/quanteda>.  From an Internet-connected
+<http://github.com/kbenoit/quanteda>.  From an Internet-connected
 computer, you can install the package directly using the
 `devtools` package:
 

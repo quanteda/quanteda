@@ -7,7 +7,7 @@
 #' make the usage as consistent as possible with other packages, however, 
 #' quanteda also provides direct conversion functions in the idiom of 
 #' the foreign packages, for example  \code{as.wfm} to 
-#' coerce a dfm into the \link[austin]{wfm} format from the \pkg{austin} package,
+#' coerce a dfm into the \code{wfm} format from the \code{austin} package,
 #' and \code{quantedaformat2dtm} for using a dfm with the \pkg{topicmodels} package.
 #' @param x dfm to be converted
 #' @param to target conversion format, consisting of the name of the package into 
@@ -17,7 +17,7 @@
 #'   \link[lda]{lda.collapsed.gibbs.sampler} from the \pkg{lda} package}
 #' \item{\code{"tm"}}{a \link[tm]{DocumentTermMatrix} from the \pkg{tm} package} 
 #' \item{\code{"stm"}}{the  format for the \pkg{stm} package}
-#' \item{\code{"austin"}}{the \link[austin]{wfm} format from the \pkg{austin} package}
+#' \item{\code{"austin"}}{the \code{wfm} format from the \code{austin} package}
 #' \item{\code{"topicmodels"}}{the "dtm" format as used by the \pkg{topicmodels} package}
 #' }
 #' @return A converted object determined by the value of \code{to} (see above). 
@@ -37,7 +37,6 @@
 #' # austin's wfm format
 #' austindfm <- as.wfm(quantdfm)
 #' identical(austindfm, convert(quantdfm, to="austin"))
-#' \dontrun{wftest <- austin::wordfish(austindfm)}
 #' 
 #' # tm's DocumentTermMatrix format
 #' tmdfm <- as.DocumentTermMatrix(quantdfm)
@@ -87,7 +86,7 @@ as.wfm <- function(x) {
 #' @export
 #' @rdname convert
 #' @details \code{as.wfm} converts a quanteda \link{dfm} into the
-#' \link[austin]{wfm} format used by the \pkg{austin} package.
+#' \code{wfm} format used by the \code{austin} package.
 #' 
 as.wfm.dfm <- function(x) {
     convert(x, to = "austin")

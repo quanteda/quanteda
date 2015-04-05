@@ -18,8 +18,6 @@ textmodel_ca(data, smooth = 0, ...)
 \link{dfm}.  Currently the method is a wrapper to \link[ca]{ca.matrix} in the \pkg{ca} package.
 }
 \examples{
-library(quantedaData)
-data(ie2010Corpus)
 ieDfm <- dfm(ie2010Corpus)
 wca <- textmodel_ca(ieDfm)
 summary(wca)
