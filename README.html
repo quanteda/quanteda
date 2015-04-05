@@ -74,6 +74,7 @@ img {
 <ol style="list-style-type: decimal">
 <li><p>To install the package from github, you will need to install the <code>devtools</code> package, using (from R):</p>
 <pre class="s"><code>install.packages(&quot;devtools&quot;)</code></pre></li>
+<li><p>To build the C++ parts of quanteda on Windows platforms, you will need also to install the <a href="http://cran.r-project.org/bin/windows/Rtools/">Rtools</a> software available from CRAN. (OS X and Linux users can skip this step.)</p></li>
 <li><p>To access the topic modelling functionality, you will need to install the package topicmodels from CRAN. On most platforms, this will be done automatically when you install quanteda, but will fail on OS X unless you have some additional tools installed. <a href="http://www.kenbenoit.net/how-to-install-the-r-package-topicmodels-on-os-x/">See instructions on installing <strong>topicmodels</strong> on OS X Mavericks or Yosemite here.</a></p></li>
 <li><p>(Optional) You can install the additional corpus data from <strong>quantedaData</strong> using</p>
 <pre class="s"><code>## devtools required to install quanteda from Github
@@ -128,7 +129,7 @@ uk2010immigCorpus &lt;- corpus(ukimmigTexts,
 ##          UKIP   303    625        41         UKIP     UTF-8
 ## 
 ## Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/* on x86_64 by kbenoit.
-## Created: Sun Apr  5 21:35:04 2015.
+## Created: Sun Apr  5 21:45:16 2015.
 ## Notes:   Immigration-related sections of 2010 UK party manifestos.</code></pre>
 <pre class="r"><code># key words in context for &quot;deport&quot;, 3 words of context
 kwic(uk2010immigCorpus, &quot;deport&quot;, 3)</code></pre>
@@ -173,7 +174,7 @@ mydfm &lt;- dfm(uk2010immigCorpus, ignoredFeatures=c(&quot;will&quot;, stopwords
 ##    ... indexing 1,491 feature types
 ##    ... building sparse matrix
 ##    ... created a 9 x 1491 sparse dfm
-##    ... complete. Elapsed time: 0.154 seconds.</code></pre>
+##    ... complete. Elapsed time: 0.153 seconds.</code></pre>
 <pre class="r"><code>dim(mydfm)              # basic dimensions of the dfm</code></pre>
 <pre><code>## [1]    9 1491</code></pre>
 <pre class="r"><code>topfeatures(mydfm, 20)  # 20 top words</code></pre>
