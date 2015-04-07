@@ -33,8 +33,8 @@ an integer (count) of the number of documents or features in the corpus or dfm
 Returns the number of documents or features in a quanteda object.
 }
 \examples{
-ndoc(inaugCorpus)
-ndoc(dfm(inaugCorpus))
+ndoc(subset(inaugCorpus, Year>1980))
+ndoc(dfm(subset(inaugCorpus, Year>1980), verbose=FALSE))
 nfeature(dfm(inaugCorpus))
 nfeature(trim(dfm(inaugCorpus), minDoc=5, minCount=10))
 }

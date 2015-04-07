@@ -414,7 +414,7 @@ setMethod("+", signature(e1 = "numeric", e2 = "dfmDense"),
 #' @rdname dfm-class
 #' @export
 #' @examples
-#' \dontshow{
+#' \dontrun{
 #' dfmSparse <- dfm(inaugTexts, verbose=FALSE)
 #' str(as.matrix(dfmSparse))
 #' class(as.matrix(dfmSparse))
@@ -438,7 +438,7 @@ setMethod("as.matrix", signature(x="dfm"),
 #' @rdname dfm-class
 #' @export
 #' @examples
-#' \dontshow{
+#' \dontrun{
 #' dfmSparse <- dfm(inaugTexts, verbose=FALSE)
 #' str(as.data.frame(dfmSparse))
 #' class(as.data.frame(dfmSparse))

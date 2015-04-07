@@ -165,7 +165,7 @@ either the \code{\link{smooth}} or the \code{\link{weight}} methods.}
 named \code{docs} and \code{features} respectively.}
 }}
 \examples{
-\dontshow{
+\dontrun{
 dfmSparse <- dfm(inaugTexts, verbose=FALSE)
 str(as.matrix(dfmSparse))
 class(as.matrix(dfmSparse))
@@ -174,7 +174,7 @@ str(as.matrix(dfmDense))
 class(as.matrix(dfmDense))
 identical(as.matrix(dfmSparse), as.matrix(dfmDense))
 }
-\dontshow{
+\dontrun{
 dfmSparse <- dfm(inaugTexts, verbose=FALSE)
 str(as.data.frame(dfmSparse))
 class(as.data.frame(dfmSparse))

@@ -93,8 +93,8 @@ lexdiv <- function(x, ...) {
 #'   input document
 #' @export
 #' @examples
-#' mydfm <- dfm(inaugCorpus)
-#' mydfmSW <- dfm(inaugCorpus, stopwords=TRUE)
+#' mydfm <- dfm(subset(inaugCorpus, Year>1980))
+#' mydfmSW <- dfm(subset(inaugCorpus, Year>1980), ignoredFeatures=stopwords("english"))
 #' results <- data.frame(TTR = lexdiv(mydfm, "TTR"),
 #'                       CTTR = lexdiv(mydfm, "CTTR"), 
 #'                       U = lexdiv(mydfm, "U"),

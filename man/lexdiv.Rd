@@ -87,8 +87,8 @@ This implements only the static measures of lexical diversity, not more
   (see McCarthy & Jarvis, 2007).  These are available from the package \pkg{korRpus}.
 }
 \examples{
-mydfm <- dfm(inaugCorpus)
-mydfmSW <- dfm(inaugCorpus, stopwords=TRUE)
+mydfm <- dfm(subset(inaugCorpus, Year>1980))
+mydfmSW <- dfm(subset(inaugCorpus, Year>1980), ignoredFeatures=stopwords("english"))
 results <- data.frame(TTR = lexdiv(mydfm, "TTR"),
                       CTTR = lexdiv(mydfm, "CTTR"),
                       U = lexdiv(mydfm, "U"),

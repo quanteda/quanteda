@@ -27,8 +27,8 @@
 #' clean("We are his Beliebers, and him is #ourjustin @@justinbieber we luv u", removeTwitter=TRUE)
 #' clean("Collocations can be represented as inheritance_tax using the _ character.")
 #' clean("But under_scores can be removed with removeAdditional.", removeAdditional="[_]")
-#' clean("This is a $1,500,000 budget and $20bn cash and a $5 cigar.")
-#' clean("This is a $1,500,000 budget and $20bn cash and a $5 cigar.", removeDigits=FALSE)
+#' clean("This is a $1,500,000 budget and \u20ac20bn cash plus 50\u00a2.")
+#' clean("This is a $1,500,000 budget and €20bn cash plus 50¢.", removeDigits=FALSE)
 #' clean("URL regex from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.")
 #' 
 #' # for a vector of texts
@@ -154,7 +154,7 @@ wordstem <- function(words, language = "porter") {
 # 
 
 
-# clean("This is a $10m watch and €20bn budget and $100,000 in cash plus ¢50.")
+# clean("This is a $10m watch and \u20ac20bn budget and $100,000 in cash plus \u00a250.")
 
 urlregex <- "(?i)\\b((?:[a-z][\\w-]+:(?:/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\\'\".,<>?]))"
 

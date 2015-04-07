@@ -3,32 +3,35 @@ Type: Package
 Title: Quantitative Analysis of Textual Data
 Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     c("aut", "cre")), person("Paul", "Nulty", email = "paul.nulty@gmail.com",
-    role = "aut"), person("Pablo", "Barbera", email = "pablo.barbera@nyu.edu",
+    role = "aut"), person("Pablo", "Barberá", email = "pablo.barbera@nyu.edu",
     role = "ctb"), person("Kohei", "Watanabe", email =
     "watanabe.kohei@gmail.com", role = "ctb"), person("Benjamin", "Lauderdale",
     email = "B.E.lauderdale@lse.ac.uk", role = "ctb"))
 Author: Kenneth Benoit [aut, cre],
     Paul Nulty [aut],
-    Pablo Barbera [ctb],
+    Pablo Barberá [ctb],
     Kohei Watanabe [ctb],
     Benjamin Lauderdale [ctb]
 Version: 0.7.2
 Date: 2015-04-05
-Description: A package for the management and quantitative analysis of textual
-    data with R. quanteda makes it easy to manage texts in the form of a
-    corpus, defined as a collection of texts that includes document-level
-    variables specific to each text, as well as meta-data for documents and for
-    the collection as a whole. quanteda includes tools to make it easy and fast
-    to manipulate the texts the texts in a corpus, for instance by tokenizing
-    them, with or without "stop words"" or stemming, or to segment them by
-    sentence or paragraph units. quanteda includes a suite of sophisticated
-    tools to extract features of the texts into a quantitative matrix, where
-    these features can be defined according to a dictionary or thesaurus,
-    including the declaration of collocations to be treated as single features.
-    Once converted into a quantitative matrix (known as a ``dfm" for
-    document-feature matrix), the textual features can be analyzed using
-    quantitative methods for describing, comparing, or scaling texts, or topic
-    modelling, or used to train machine learning methods for class prediction.
+Description: A fast, flexible toolset for for the management, processing, and
+    and quantitative analysis of textual data with R. quanteda makes
+    it easy to manage texts in the form of a corpus, defined as a
+    collection of texts that includes document-level variables
+    specific to each text, as well as meta-data for documents and for
+    the collection as a whole. quanteda includes tools to make it easy
+    and fast to manipulate the texts the texts in a corpus, for
+    instance by tokenizing them, with or without "stop words"" or
+    stemming, or to segment them by sentence or paragraph
+    units. quanteda includes a suite of sophisticated tools to extract
+    features of the texts into a quantitative matrix, where these
+    features can be defined according to a dictionary or thesaurus,
+    including the declaration of collocations to be treated as single
+    features.  Once converted into a quantitative matrix (known as a
+    ``dfm" for document-feature matrix), the textual features can be
+    analyzed using quantitative methods for describing, comparing, or
+    scaling texts, or topic modelling, or used to train machine
+    learning methods for class prediction.
 License: GPL-3
 Depends:
     R (>= 3.0)
@@ -49,8 +52,10 @@ Suggests:
     jsonlite (>= 0.9.10),
     streamR,
     tm,
-    slam
+    slam,
+    ggplot2
 URL: http://github.com/kbenoit/quanteda
+Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr

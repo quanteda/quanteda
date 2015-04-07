@@ -121,19 +121,22 @@ a disapproving warning message while doing so, suggesting you make the switch.
 \code{as.dfm} coerces a matrix or data.frame to a dfm
 }
 \examples{
-# with inaugural texts
+\donttest{# with inaugural texts
 (size1 <- object.size(dfm(inaugTexts, matrixType="sparse")))
 (size2 <- object.size(dfm(inaugTexts, matrixType="dense")))
 cat("Compacted by ", round(as.numeric((1-size1/size2)*100), 1), "\%.\\n", sep="")
+}
 
 # for a corpus
-mydfm <- dfm(inaugCorpus)
+mydfm <- dfm(subset(inaugCorpus, Year>1980))
 
 # grouping documents by docvars in a corpus
-mydfmGrouped <- dfm(inaugCorpus, groups = "President")
+mydfmGrouped <- dfm(subset(inaugCorpus, Year>1980), groups = "President")
 
 # with stopwords English, stemming, and dense matrix
-dfmsInaug2 <- dfm(inaugCorpus, ignoredFeatures = stopwordsGet(), stem=TRUE, matrixType="dense")
+dfmsInaug2 <- dfm(subset(inaugCorpus, Year>1980),
+                  ignoredFeatures=stopwords("english"),
+                  stem=TRUE, matrixType="dense")
 
 ## with dictionaries
 mycorpus <- subset(inaugCorpus, Year>1900)
@@ -159,16 +162,15 @@ testText <- "The quick brown fox named Seamus jumps over the lazy dog also named
              the newspaper from a a boy named Seamus, in his mouth."
 testCorpus <- corpus(testText)
 settings(testCorpus, "stopwords")
-dfm(testCorpus, stopwords=TRUE)
+dfm(testCorpus, ignoredFeatures=stopwords("english"))
 
 ## keep only certain words
 dfm(testCorpus, keptFeatures="s$", verbose=FALSE)  # keep only words ending in "s"
 testTweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday #beliebers",
                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-### NEED TO FIX
-### dfm(testTweets, keptFeatures="^#")  # keep only hashtags
 
+dfm(testTweets, keptFeatures="^#")  # keep only hashtags
 
 \dontrun{
 # try it with approx 35,000 court documents from Lauderdale and Clark (200?)

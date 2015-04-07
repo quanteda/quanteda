@@ -57,10 +57,11 @@ setClass("textmodel_wordfish_predicted",
 #' @author Benjamin Lauderdale and Kenneth Benoit
 #' @examples
 #' ie2010dfm <- dfm(ie2010Corpus, verbose=FALSE)
-#' wfmodel <- textmodel_wordfish(ie2010dfm, dir = c(6,5))
+#' wfmodel <- textmodel_wordfish(LBGexample, dir = c(6,5))
+#' wfmodel
 #' 
 #' \dontrun{if (require(austin)) {
-#'         wfmodelAustin <- wordfish(quanteda::as.wfm(ie2010dfm), dir = c(6,5))
+#'         wfmodelAustin <- wordfish(quanteda::as.wfm(LBGexample), dir = c(6,5))
 #'         cor(wfmodel@@theta, wfmodelAustin$theta)
 #' }}
 #' @export

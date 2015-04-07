@@ -44,10 +44,11 @@ settings.default <- function(x=NULL, ...) {
 #' @rdname settings
 #' @examples
 #' settings(inaugCorpus, "stopwords")
-#' tempdfm <- dfm(inaugCorpus)
-#' tempdfmSW <- dfm(inaugCorpus, stopwords=TRUE)
+#' tempdfm <- dfm(subset(inaugCorpus, Year>1980))
+#' tempdfmSW <- dfm(subset(inaugCorpus, Year>1980),
+#'                  ignoredFeatures=stopwords("english"))
 #' settings(inaugCorpus, "stopwords") <- TRUE
-#' tempdfmSW <- dfm(inaugCorpus)
+#' tempdfmSW <- dfm(subset(inaugCorpus, Year>1980))
 #' @export 
 settings.corpus <- function(x, field=NULL, ...) {
     if (is.null(field)) {

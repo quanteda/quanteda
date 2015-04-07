@@ -1,4 +1,4 @@
-
+.stopwords <- NULL
 
 #' remove features from an object
 #' 
@@ -36,7 +36,7 @@
 #' removeFeatures(mydfm, stopwords("english", verbose=FALSE))
 #' 
 #' ## example for collocations
-#' (myCollocs <- collocations(inaugTexts, top=20))
+#' (myCollocs <- collocations(inaugTexts[1:3], top=20))
 #' removeFeatures(myCollocs, stopwords("english", verbose=FALSE))
 removeFeatures <- function(x, stopwords=NULL, verbose=TRUE, ...) {
     UseMethod("removeFeatures")
@@ -47,7 +47,7 @@ removeFeatures <- function(x, stopwords=NULL, verbose=TRUE, ...) {
 #' @export
 removeFeatures.character <- function(x, stopwords=NULL, verbose=TRUE, ...) {
     if (is.null(stopwords))
-        stop("Must supply a character vector of stopwords, e.g. stopwordsGet(\"english\")")
+        stop("Must supply a character vector of stopwords, e.g. stopwords(\"english\")")
     ret <- gsub(paste("(\\b|\\s)(", paste(stopwords, collapse="|"), ")(\\b)", sep=""), "", x, ignore.case=TRUE)
     # if (verbose) cat("Removed", sum(ret==""), "tokens, from a list of", length(stopwords), "stopwords.")
     ret[ret != ""]
@@ -58,7 +58,7 @@ removeFeatures.character <- function(x, stopwords=NULL, verbose=TRUE, ...) {
 #' @export
 removeFeatures.dfm <- function(x, stopwords=NULL, verbose=TRUE, ...) {
     if (is.null(stopwords))
-        stop("Must supply a character vector of stopwords, e.g. stopwordsGet(\"english\")")
+        stop("Must supply a character vector of stopwords, e.g. stopwords(\"english\")")
     removeIndex <- which(colnames(x) %in% stopwords)
     if (verbose) cat("Removed", format(length(removeIndex), big.mark=","),  
                      "features, from a list of", length(stopwords), "stopwords.\n")
@@ -72,7 +72,7 @@ removeFeatures.dfm <- function(x, stopwords=NULL, verbose=TRUE, ...) {
 removeFeatures.collocations <- function(x, stopwords=NULL, verbose=TRUE, pos=c(1,2,3), ...) {
     word <- word1 <- word2 <- word3 <- NULL
     if (is.null(stopwords))
-        stop("Must supply a character vector of stopwords, e.g. stopwordsGet(\"english\")")
+        stop("Must supply a character vector of stopwords, e.g. stopwords(\"english\")")
     if (!all(pos %in% 1:3))
         stop("pos for collocation position can only be 1, 2, and/or 3")
     nstart <- nrow(x)

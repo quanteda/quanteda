@@ -59,7 +59,7 @@ mydfm <- dfm(ukimmigTexts, verbose=FALSE)
 removeFeatures(mydfm, stopwords("english", verbose=FALSE))
 
 ## example for collocations
-(myCollocs <- collocations(inaugTexts, top=20))
+(myCollocs <- collocations(inaugTexts[1:3], top=20))
 removeFeatures(myCollocs, stopwords("english", verbose=FALSE))
 }
 \author{

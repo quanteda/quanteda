@@ -1,3 +1,4 @@
+englishSyllables <- NULL
 
 #' count syllables in a text
 #' 
