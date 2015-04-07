@@ -725,13 +725,11 @@ subset.corpus <- function(x, subset=NULL, select=NULL, ...) {
 #' @method summary corpus
 #' @examples
 #' # summarize corpus information
-#' summary(inaugCorpus)
 #' summary(inaugCorpus, n=10)
 #' mycorpus <- corpus(ukimmigTexts, docvars=data.frame(party=names(ukimmigTexts)), enc="UTF-8")
-#' summary(mycorpus, showmeta=TRUE)  # show the meta-data
+#' summary(mycorpus, showmeta=TRUE, n=10)  # show the meta-data
 #' mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
 #' mysummary$Types / mysummary$Tokens             # crude type-token ratio
-#' 
 summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
     
     cat("Corpus consisting of ", ndoc(object), " document",

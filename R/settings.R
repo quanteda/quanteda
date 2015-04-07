@@ -44,11 +44,10 @@ settings.default <- function(x=NULL, ...) {
 #' @rdname settings
 #' @examples
 #' settings(inaugCorpus, "stopwords")
-#' tempdfm <- dfm(subset(inaugCorpus, Year>1980))
-#' tempdfmSW <- dfm(subset(inaugCorpus, Year>1980),
-#'                  ignoredFeatures=stopwords("english"))
+#' (tempdfm <- dfm(subset(inaugCorpus, Year>1980), verbose=FALSE))
+#' (tempdfmSW <- dfm(subset(inaugCorpus, Year>1980),
+#'                  ignoredFeatures=stopwords("english"), verbose=FALSE))
 #' settings(inaugCorpus, "stopwords") <- TRUE
-#' tempdfmSW <- dfm(subset(inaugCorpus, Year>1980))
 #' @export 
 settings.corpus <- function(x, field=NULL, ...) {
     if (is.null(field)) {
@@ -75,7 +74,7 @@ settings.corpus <- function(x, field=NULL, ...) {
 #' Get the settings from a which a \link{dfm} was created
 #' @rdname settings
 #' @examples
-#' tempdfm <- dfm(inaugCorpus, stem=TRUE)
+#' tempdfm <- dfm(inaugCorpus, stem=TRUE, verbose=FALSE)
 #' settings(tempdfm)
 #' @export 
 settings.dfm <- function(x, ...) {

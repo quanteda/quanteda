@@ -35,7 +35,8 @@ Returns the number of documents or features in a quanteda object.
 \examples{
 ndoc(subset(inaugCorpus, Year>1980))
 ndoc(dfm(subset(inaugCorpus, Year>1980), verbose=FALSE))
-nfeature(dfm(inaugCorpus))
-nfeature(trim(dfm(inaugCorpus), minDoc=5, minCount=10))
+mydfm <- dfm(subset(inaugCorpus, Year>1980), verbose=FALSE)
+nfeature(mydfm)
+nfeature(trim(mydfm, minDoc=5, minCount=10))
 }
 
