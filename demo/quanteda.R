@@ -13,7 +13,7 @@ kwic(mycorpus, "deport", 3, wholeword=TRUE)
 
 sort(lexdiv(dfm(mycorpus, verbose=FALSE), "TTR"))
 
-mydfm <- dfm(mycorpus, stem=TRUE, stopwords=TRUE)
+mydfm <- dfm(mycorpus, stem=TRUE, ignoredFeatures=stopwords("english"))
 docnames(mydfm)
 features(mydfm)
 

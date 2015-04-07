@@ -561,8 +561,8 @@ ndoc <- function(x) {
 
 #' @rdname ndoc
 #' @examples 
-#' ndoc(inaugCorpus)
-#' ndoc(dfm(inaugCorpus))
+#' ndoc(subset(inaugCorpus, Year>1980))
+#' ndoc(dfm(subset(inaugCorpus, Year>1980), verbose=FALSE))
 #' @export
 ndoc.corpus <- function(x) {
     nrow(x$documents)

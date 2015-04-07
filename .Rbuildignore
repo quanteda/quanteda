@@ -1,3 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.Rd2pdf*
+^README\.Rmd$
+^README-*\.png$

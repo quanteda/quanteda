@@ -69,7 +69,6 @@ will depend on which model was called (see \code{model} types below).
   is not terribly obvious. (Blame it on the S3 system.)
 }
 \examples{
-data(ie2010Corpus)
 ieDfm <- dfm(ie2010Corpus, verbose=FALSE)
 refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
 ws <- textmodel(ieDfm, refscores, model="wordscores", smooth=1)
@@ -84,8 +83,8 @@ identical(ws@Sw, wsform@Sw)  # compare wordscores from the two models
 bs <- textmodel(ieDfm[5:6,], refscores[5:6], model="wordscores", scale="logit", smooth=1)
 plot(ws@Sw, bs@Sw, xlim=c(-1, 1), xlab="Linear word score", ylab="Logit word score")
 
-wf <- textmodel(ieDfm, model="wordfish", dir = c(6,5))
-wf
+\donttest{wf <- textmodel(ieDfm, model="wordfish", dir = c(6,5))
+wf}
 }
 \seealso{
 \code{\link{textmodel}}, \code{\link{textmodel_wordscores}}

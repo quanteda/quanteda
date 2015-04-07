@@ -41,10 +41,10 @@ NULL
 #' @seealso \link{bigrams}, \link{ngrams}
 #' @author Kenneth Benoit
 #' @examples
-#' collocations(inaugTexts, n=10)
-#' collocations(inaugCorpus, method="all", n=10)
-#' collocations(inaugTexts, method="chi2", size=3, n=10)
-#' collocations(inaugCorpus, method="pmi", size=3, n=10)
+#' collocations(inaugTexts[49:57], n=10)
+#' collocations(inaugTexts[49:57], method="all", n=10)
+#' collocations(inaugTexts[49:57], method="chi2", size=3, n=10)
+#' collocations(subset(inaugCorpus, Year>1980), method="pmi", size=3, n=10)
 #' txt <- c("This is software testing: looking for (word) pairs!  
 #'          This [is] a software testing again. For.",
 #'          "Here: is a software testing, looking again for word pairs.")

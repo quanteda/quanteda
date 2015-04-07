@@ -10,8 +10,8 @@
 #' @export
 #' @examples 
 #' # same for character vectors and for lists
-#' tokensFromChar <- tokenize(inaugTexts)
-#' tokensFromCorp <- tokenize(inaugCorpus)
+#' tokensFromChar <- tokenize(inaugTexts[1:3])
+#' tokensFromCorp <- tokenize(subset(inaugCorpus, Year<1798))
 #' identical(tokensFromChar, tokensFromCorp)
 #' str(tokensFromChar)
 #' 

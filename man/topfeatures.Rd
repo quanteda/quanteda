@@ -32,9 +32,10 @@ A named numeric vector of feature counts, where the names are the feature labels
 List the most frequently occuring features in a \link{dfm}
 }
 \examples{
-topfeatures(dfm(inaugCorpus))
-topfeatures(dfm(inaugCorpus, stopwords=TRUE))
+topfeatures(dfm(subset(inaugCorpus, Year>1980), verbose=FALSE))
+topfeatures(dfm(subset(inaugCorpus, Year>1980), ignoredFeatures=stopwords("english"),
+            verbose=FALSE))
 # least frequent features
-topfeatures(dfm(inaugCorpus), decreasing=FALSE)
+topfeatures(dfm(subset(inaugCorpus, Year>1980), verbose=FALSE), decreasing=FALSE)
 }
 

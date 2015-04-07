@@ -61,7 +61,7 @@ setClass("textmodel_fitted",
 #'   is not terribly obvious. (Blame it on the S3 system.)
 #' @export
 #' @examples
-#' data(ie2010Corpus)
+# data(ie2010Corpus)
 #  # test with old-style matrix-based dense dfm
 #  ieDfmd <- dfm(ie2010Corpus, matrixType="dense", verbose=FALSE)
 #  refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
@@ -84,8 +84,8 @@ setClass("textmodel_fitted",
 #' bs <- textmodel(ieDfm[5:6,], refscores[5:6], model="wordscores", scale="logit", smooth=1)
 #' plot(ws@@Sw, bs@@Sw, xlim=c(-1, 1), xlab="Linear word score", ylab="Logit word score")
 #' 
-#' wf <- textmodel(ieDfm, model="wordfish", dir = c(6,5))
-#' wf
+#' \donttest{wf <- textmodel(ieDfm, model="wordfish", dir = c(6,5))
+#' wf}
 #' @export
 setGeneric("textmodel", 
     function(x, y=NULL, data=NULL, model=c("wordscores", "NB", "wordfish", "lda", "ca"), ...)

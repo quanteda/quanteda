@@ -46,10 +46,11 @@ Calling \code{settings()} with no arguments returns a list of system default set
 }
 \examples{
 settings(inaugCorpus, "stopwords")
-tempdfm <- dfm(inaugCorpus)
-tempdfmSW <- dfm(inaugCorpus, stopwords=TRUE)
+tempdfm <- dfm(subset(inaugCorpus, Year>1980))
+tempdfmSW <- dfm(subset(inaugCorpus, Year>1980),
+                 ignoredFeatures=stopwords("english"))
 settings(inaugCorpus, "stopwords") <- TRUE
-tempdfmSW <- dfm(inaugCorpus)
+tempdfmSW <- dfm(subset(inaugCorpus, Year>1980))
 tempdfm <- dfm(inaugCorpus, stem=TRUE)
 settings(tempdfm)
 }
