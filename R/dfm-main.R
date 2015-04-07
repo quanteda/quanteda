@@ -680,8 +680,9 @@ nfeature.corpus <- function(x) {
 #' @rdname ndoc
 #' @export
 #' @examples
-#' nfeature(dfm(inaugCorpus))
-#' nfeature(trim(dfm(inaugCorpus), minDoc=5, minCount=10))
+#' mydfm <- dfm(subset(inaugCorpus, Year>1980), verbose=FALSE)
+#' nfeature(mydfm)
+#' nfeature(trim(mydfm, minDoc=5, minCount=10))
 nfeature.dfm <- function(x) {
     ncol(x)
 }
@@ -716,7 +717,7 @@ nfeature.dfm <- function(x) {
 #' @export
 #' @author Paul Nulty and Kenneth Benoit
 #' @examples
-#' dtm <- dfm(inaugCorpus)
+#' dtm <- dfm(subset(inaugCorpus, Year>1980), verbose=FALSE)
 #' x <- apply(dtm, 1, function(tf) tf/max(tf))
 #' topfeatures(dtm)
 #' normDtm <- weight(dtm)
@@ -741,7 +742,7 @@ setGeneric("weight", function(x, ...) standardGeneric("weight"))
 #' @rdname weight
 #' @examples
 #' \dontshow{
-#' testdfm <- dfm(inaugTexts[1:5])
+#' testdfm <- dfm(inaugTexts[1:5], verbose=FALSE)
 #' print(testdfm[, 1:5])
 #' for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
 #'     testw <- weight(testdfm, w)
