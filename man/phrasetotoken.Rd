@@ -3,7 +3,7 @@
 \docType{methods}
 \name{phrasetotoken}
 \alias{phrasetotoken}
-\alias{phrasetotoken,character,data.table-method}
+\alias{phrasetotoken,character,collocations-method}
 \alias{phrasetotoken,character,dictionary-method}
 \alias{phrasetotoken.corpus}
 \title{convert phrases into single tokens}
@@ -15,7 +15,7 @@ phrasetotoken(object, phrases, concatenator = "_")
 
 phrasetotoken.corpus(object, phrases, concatenator = "_")
 
-\S4method{phrasetotoken}{character,data.table}(object, phrases,
+\S4method{phrasetotoken}{character,collocations}(object, phrases,
   concatenator = "_")
 }
 \arguments{

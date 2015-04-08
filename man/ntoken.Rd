@@ -4,6 +4,7 @@
 \alias{ntoken}
 \alias{ntoken.character}
 \alias{ntoken.corpus}
+\alias{ntoken.dfm}
 \title{count the number of tokens}
 \usage{
 ntoken(x, block.size = 200, verbose = TRUE)
@@ -11,12 +12,14 @@ ntoken(x, block.size = 200, verbose = TRUE)
 \method{ntoken}{corpus}(x, block.size = 200, verbose = TRUE)
 
 \method{ntoken}{character}(x, block.size = 200, verbose = TRUE)
+
+\method{ntoken}{dfm}(x, block.size = 0, verbose = TRUE)
 }
 \arguments{
 \item{x}{texts or corpus whose tokens will be counted}
 
 \item{block.size}{how many texts to process at a time; experimentation
-indicates that for bery large collections of texts, 200 seems fastest}
+indicates that for bery large collections of texts, 200 seems fastest.  Not used for dfm objects.}
 
 \item{verbose}{if \code{TRUE} print progress indicator and time elapsed}
 }
@@ -24,12 +27,18 @@ indicates that for bery large collections of texts, 200 seems fastest}
 scalar count of the total tokens
 }
 \description{
-Return the count of tokens in a text or corpus.  "tokens" here
+Return the count of tokens in a text, corpus, or dfm.  "tokens" here
 means all words, not unique words, and these are not cleaned
 prior to counting.
 }
+\note{
+Due to differences between raw text tokens and features that have been
+defined for a \link{dfm}, the counts be different for dfm objects and the texts
+from which the dfm was generated.
+}
 \examples{
-ntoken(inaugTexts, verbose=FALSE)
-ntoken(inaugCorpus, verbose=FALSE)
+ntoken(inaugTexts[49:57], verbose=FALSE)
+ntoken(subset(inaugCorpus, Year>1980), verbose=FALSE)
+ntoken(dfm(subset(inaugCorpus, Year>1980), verbose=FALSE))
 }
 

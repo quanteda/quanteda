@@ -725,11 +725,13 @@ subset.corpus <- function(x, subset=NULL, select=NULL, ...) {
 #' @method summary corpus
 #' @examples
 #' # summarize corpus information
+#' summary(inaugCorpus)
 #' summary(inaugCorpus, n=10)
 #' mycorpus <- corpus(ukimmigTexts, docvars=data.frame(party=names(ukimmigTexts)), enc="UTF-8")
-#' summary(mycorpus, showmeta=TRUE, n=10)  # show the meta-data
+#' summary(mycorpus, showmeta=TRUE)  # show the meta-data
 #' mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
 #' mysummary$Types / mysummary$Tokens             # crude type-token ratio
+#' 
 summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
     
     cat("Corpus consisting of ", ndoc(object), " document",
@@ -925,17 +927,21 @@ combineByName <- function(A, B, ...) {
 
 #' count the number of tokens
 #' 
-#' Return the count of tokens in a text or corpus.  "tokens" here
+#' Return the count of tokens in a text, corpus, or dfm.  "tokens" here
 #' means all words, not unique words, and these are not cleaned
 #' prior to counting.
 #' @param x texts or corpus whose tokens will be counted
 #' @param block.size how many texts to process at a time; experimentation
-#' indicates that for bery large collections of texts, 200 seems fastest
+#' indicates that for bery large collections of texts, 200 seems fastest.  Not used for dfm objects.
 #' @param verbose if \code{TRUE} print progress indicator and time elapsed
+#' @note Due to differences between raw text tokens and features that have been 
+#' defined for a \link{dfm}, the counts be different for dfm objects and the texts 
+#' from which the dfm was generated.
 #' @return scalar count of the total tokens
 #' @examples
-#' ntoken(inaugTexts, verbose=FALSE)
-#' ntoken(inaugCorpus, verbose=FALSE)
+#' ntoken(inaugTexts[49:57], verbose=FALSE)
+#' ntoken(subset(inaugCorpus, Year>1980), verbose=FALSE)
+#' ntoken(dfm(subset(inaugCorpus, Year>1980), verbose=FALSE))
 #' @export
 ntoken <- function(x, block.size=200, verbose=TRUE) {
     UseMethod("ntoken")
@@ -968,3 +974,8 @@ ntoken.character <- function(x, block.size=200, verbose=TRUE) {
     totWords
 }
 
+#' @rdname ntoken
+#' @export
+ntoken.dfm <- function(x, block.size=0, verbose=TRUE) {
+    sum(x)
+}

@@ -41,8 +41,9 @@ NULL
 #' @seealso \link{bigrams}, \link{ngrams}
 #' @author Kenneth Benoit
 #' @examples
+#' collocations(inaugTexts[49:57], n=10)
 #' collocations(inaugTexts[49:57], method="all", n=10)
-#' collocations(inaugTexts[49:57], method="all", size=3, n=10)
+#' collocations(inaugTexts[49:57], method="chi2", size=3, n=10)
 #' collocations(subset(inaugCorpus, Year>1980), method="pmi", size=3, n=10)
 #' txt <- c("This is software testing: looking for (word) pairs!  
 #'          This [is] a software testing again. For.",
@@ -50,7 +51,6 @@ NULL
 #' collocations(txt)
 #' collocations(txt, size=2:3)
 #' removeFeatures(collocations(txt, size=2:3), stopwords("english"))
-# collocations(inaugTexts[49:57], n=10)
 collocations <- function(x, ...) {
     UseMethod("collocations")
 }
@@ -574,7 +574,7 @@ phrasetotoken.corpus <- function(object, phrases, concatenator="_") {
 
 #' @rdname phrasetotoken
 #' @export
-setMethod("phrasetotoken", signature=c("character", "data.table", "ANY"), 
+setMethod("phrasetotoken", signature=c("character", "collocations", "ANY"), 
           function(object, phrases, concatenator="_") {
               word1 <- word2 <- word3 <- NULL
               # concatenate the words                               

@@ -1,5 +1,11 @@
 quanteda 0.7.2
 ==============
+* added an ntoken() method for dfm objects.
+
+* 
+
+quanteda 0.7.2
+==============
 * phrasetotokens works with dictionaries and collocations, to transform
   multi-word expressions into single tokens in texts or corpora
 
