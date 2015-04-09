@@ -4,7 +4,7 @@
 ## Ken Benoit
 ####################################################################
 
-#' @include dfm-classes.R
+# @include dfm-classes.R
 NULL
 
 #' create a document-feature matrix
