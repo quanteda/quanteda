@@ -73,7 +73,7 @@ according to one of several common methods.
 \code{weighting} queries (but cannot set) the weighting applied to the dfm.
 }
 \examples{
-dtm <- dfm(subset(inaugCorpus, Year>1980), verbose=FALSE)
+dtm <- dfm(inaugCorpus)
 x <- apply(dtm, 1, function(tf) tf/max(tf))
 topfeatures(dtm)
 normDtm <- weight(dtm)
@@ -90,7 +90,7 @@ topfeatures(tfidfDtm)
 logTfDtm <- weight(dtm, type="logFreq")
 wfidfDtm <- weight(logTfDtm, type="tfidf", normalize=FALSE)
 \dontshow{
-testdfm <- dfm(inaugTexts[1:5], verbose=FALSE)
+testdfm <- dfm(inaugTexts[1:5])
 print(testdfm[, 1:5])
 for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
     testw <- weight(testdfm, w)

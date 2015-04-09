@@ -616,11 +616,13 @@ is.dfm <- function(x) {
 as.dfm <- function(x) {
     if (!any((c("matrix", "data.frame") %in% class(x))))
         stop("as.dfm only applicable to matrix(-like) objects.")
-    m <- as.matrix(x)
-    attr(m, "settings") <- attr(x, "settings")
-    attr(m, "weighting") <- attr(x, "weighting")
-    class(m) <- class(x)
-    m
+    new("dfmSparse", Matrix(as.matrix(x), sparse=TRUE))
+#     
+#     m <- as.matrix(x)
+#     attr(m, "settings") <- attr(x, "settings")
+#     attr(m, "weighting") <- attr(x, "weighting")
+#     class(m) <- class(x)
+#     m
 }
 
 
@@ -680,9 +682,8 @@ nfeature.corpus <- function(x) {
 #' @rdname ndoc
 #' @export
 #' @examples
-#' mydfm <- dfm(subset(inaugCorpus, Year>1980), verbose=FALSE)
-#' nfeature(mydfm)
-#' nfeature(trim(mydfm, minDoc=5, minCount=10))
+#' nfeature(dfm(inaugCorpus))
+#' nfeature(trim(dfm(inaugCorpus), minDoc=5, minCount=10))
 nfeature.dfm <- function(x) {
     ncol(x)
 }
@@ -717,7 +718,7 @@ nfeature.dfm <- function(x) {
 #' @export
 #' @author Paul Nulty and Kenneth Benoit
 #' @examples
-#' dtm <- dfm(subset(inaugCorpus, Year>1980), verbose=FALSE)
+#' dtm <- dfm(inaugCorpus)
 #' x <- apply(dtm, 1, function(tf) tf/max(tf))
 #' topfeatures(dtm)
 #' normDtm <- weight(dtm)
@@ -742,7 +743,7 @@ setGeneric("weight", function(x, ...) standardGeneric("weight"))
 #' @rdname weight
 #' @examples
 #' \dontshow{
-#' testdfm <- dfm(inaugTexts[1:5], verbose=FALSE)
+#' testdfm <- dfm(inaugTexts[1:5])
 #' print(testdfm[, 1:5])
 #' for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
 #'     testw <- weight(testdfm, w)
