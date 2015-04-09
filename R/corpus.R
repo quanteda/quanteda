@@ -229,6 +229,10 @@ corpus.corpusSource <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
 #'     data(crude)    # load in a tm example VCorpus
 #'     mytmCorpus <- corpus(crude)
 #'     summary(mytmCorpus, showmeta=TRUE)
+#'     
+#'     tmCorp <- VCorpus(VectorSource(inaugTexts[49:57]))
+#'     quantCorp <- corpus(tmCorp)
+#'     summary(quantCorp)
 #' }
 #' @export
 corpus.VCorpus <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
@@ -238,7 +242,7 @@ corpus.VCorpus <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
     # some mighty twisted shit here required to get a data frame from this metadata list
     metad <- as.data.frame(t(as.data.frame(sapply(x, function(x) x$meta))))
     makechar <- function(x) gsub("character\\(0\\)", NA, as.character(x))
-    metad[, c(1, 3:15)] <- apply(metad[, c(1, 3:15)], 2, makechar)
+    metad[, c(1, 3:ncol(metad))] <- apply(metad[, c(1, 3:ncol(metad))], 2, makechar)
     metad$datetimestamp <- t(as.data.frame((lapply(metad$datetimestamp, as.POSIXlt))))[,1]
     # give them the underscore character required
     names(metad) <- paste("_", names(metad), sep="")

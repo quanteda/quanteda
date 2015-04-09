@@ -135,6 +135,10 @@ if (require(tm)) {
     data(crude)    # load in a tm example VCorpus
     mytmCorpus <- corpus(crude)
     summary(mytmCorpus, showmeta=TRUE)
+
+    tmCorp <- VCorpus(VectorSource(inaugTexts[49:57]))
+    quantCorp <- corpus(tmCorp)
+    summary(quantCorp)
 }
 }
 \author{
