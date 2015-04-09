@@ -60,6 +60,7 @@ dfm <- function(x, ...) {
 #'   regular expression format, otherwise it will be converted from "wildcard" 
 #'   format
 #' @param bigrams include bigrams as well as unigram features, if \code{TRUE}
+#' @param include.unigrams exclude unigrams if \code{TRUE}; only used if \code{bigrams=TRUE}
 #' @param addto \code{NULL} by default, but if an existing dfm object is 
 #'   specified, then the new dfm will be added to the one named. If both 
 #'   \link{dfm}'s are built from dictionaries, the combined dfm will have its 
@@ -126,10 +127,12 @@ dfm <- function(x, ...) {
 #' 
 #' ## removing stopwords
 #' testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
-#'              the newspaper from a a boy named Seamus, in his mouth."
+#'              the newspaper from a boy named Seamus, in his mouth."
 #' testCorpus <- corpus(testText)
-#' settings(testCorpus, "stopwords")
+# settings(testCorpus, "stopwords")
 #' dfm(testCorpus, ignoredFeatures=stopwords("english"))
+#' features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE))
+#' features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE, include.unigrams=FALSE))
 #' 
 #' ## keep only certain words
 #' dfm(testCorpus, keptFeatures="s$", verbose=FALSE)  # keep only words ending in "s"
@@ -170,7 +173,8 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
                           ignoredFeatures = NULL, keptFeatures=NULL,
                           matrixType=c("sparse", "dense"), 
                           language="english",
-                          fromCorpus=FALSE, bigrams=FALSE, 
+                          fromCorpus=FALSE, bigrams=FALSE,
+                          include.unigrams=TRUE,
                           thesaurus=NULL, dictionary=NULL, dictionary_regex=FALSE, 
                           addto=NULL, 
                           ...) {
@@ -191,8 +195,8 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     if (!bigrams) {
         tokenizedTexts <- lapply(x, tokenizeSingle2, sep=" ")
     } else {
-        tokenizedTexts <- bigrams(x, include.unigrams=TRUE)
-        if (verbose) cat (" (and forming bigrams)")
+        tokenizedTexts <- bigrams(x, include.unigrams=include.unigrams)
+        if (verbose) cat (", forming bigrams")
     }
     
     #if (verbose) cat("\n   ... shaping tokens into data.table")
@@ -386,6 +390,7 @@ dfm.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
                        keptFeatures=NULL,
                        matrixType=c("sparse", "dense"), language="english",
                        groups=NULL, bigrams=FALSE, 
+                       include.unigrams=TRUE,
                        thesaurus=NULL, dictionary=NULL, dictionary_regex=FALSE,
                        addto=NULL, ...) {
     if (verbose) cat("Creating a dfm from a corpus ...")
@@ -410,7 +415,8 @@ dfm.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
         ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
         matrixType=matrixType, language=language,
         thesaurus=thesaurus, dictionary=dictionary, dictionary_regex=dictionary_regex,
-        fromCorpus=TRUE, bigrams=bigrams, addto=addto, ...)
+        fromCorpus=TRUE, bigrams=bigrams, include.unigrams=include.unigrams,
+        addto=addto, ...)
 }
 
 

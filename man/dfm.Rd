@@ -13,14 +13,14 @@ dfm(x, ...)
 \method{dfm}{character}(x, verbose = TRUE, clean = TRUE, stem = FALSE,
   ignoredFeatures = NULL, keptFeatures = NULL, matrixType = c("sparse",
   "dense"), language = "english", fromCorpus = FALSE, bigrams = FALSE,
-  thesaurus = NULL, dictionary = NULL, dictionary_regex = FALSE,
-  addto = NULL, ...)
+  include.unigrams = TRUE, thesaurus = NULL, dictionary = NULL,
+  dictionary_regex = FALSE, addto = NULL, ...)
 
 \method{dfm}{corpus}(x, verbose = TRUE, clean = TRUE, stem = FALSE,
   ignoredFeatures = NULL, keptFeatures = NULL, matrixType = c("sparse",
   "dense"), language = "english", groups = NULL, bigrams = FALSE,
-  thesaurus = NULL, dictionary = NULL, dictionary_regex = FALSE,
-  addto = NULL, ...)
+  include.unigrams = TRUE, thesaurus = NULL, dictionary = NULL,
+  dictionary_regex = FALSE, addto = NULL, ...)
 
 is.dfm(x)
 
@@ -73,6 +73,8 @@ stopwords.}
 \item{fromCorpus}{a system flag used internally, soon to be phased out.}
 
 \item{bigrams}{include bigrams as well as unigram features, if \code{TRUE}}
+
+\item{include.unigrams}{exclude unigrams if \code{TRUE}; only used if \code{bigrams=TRUE}}
 
 \item{thesaurus}{A list of character vector "thesaurus" entries, in a
 dictionary list format, which can also include regular expressions  if
@@ -159,10 +161,11 @@ dfm(phrasetotoken(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_reg
 
 ## removing stopwords
 testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
-             the newspaper from a a boy named Seamus, in his mouth."
+             the newspaper from a boy named Seamus, in his mouth."
 testCorpus <- corpus(testText)
-settings(testCorpus, "stopwords")
 dfm(testCorpus, ignoredFeatures=stopwords("english"))
+features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE))
+features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE, include.unigrams=FALSE))
 
 ## keep only certain words
 dfm(testCorpus, keptFeatures="s$", verbose=FALSE)  # keep only words ending in "s"
