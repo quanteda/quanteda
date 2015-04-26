@@ -35,7 +35,7 @@ Suggests:
     topicmodels,
     jsonlite (>= 0.9.10),
     streamR,
-    tm,
+    tm (>= 0.6),
     slam,
     ggplot2
 URL: http://github.com/kbenoit/quanteda
@@ -43,4 +43,32 @@ Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
-
+Collate:
+    'RcppExports.R'
+    'clean.R'
+    'dictionaryFunctions.R'
+    'collocations.R'
+    'converters.R'
+    'corpus-sources-S4.R'
+    'corpus.R'
+    'dataDocs.R'
+    'describe-texts.R'
+    'dfm-classes.R'
+    'dfm-main.R'
+    'distance.R'
+    'gui.R'
+    'kwic.R'
+    'lexdiv.R'
+    'ngrams.R'
+    'onLoad.R'
+    'plots.R'
+    'quanteda-package.R'
+    'resample.R'
+    'settings.R'
+    'stopwords.R'
+    'syllables.R'
+    'textmodel-ca.R'
+    'textmodel-generics.R'
+    'textmodel-wordfish.R'
+    'textmodel-wordscores.R'
+    'tokenize.R'

@@ -1,5 +1,5 @@
-#' @rdname dictionary
-#' @export 
+# @rdname dictionary
+# @export 
 # NEED TO ADD A VALIDATOR
 setClass("dictionary", contains = "list")
 

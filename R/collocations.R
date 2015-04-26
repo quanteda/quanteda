@@ -1,4 +1,4 @@
-# @include dictionaryFunctions.R
+#' @include dictionaryFunctions.R
 NULL
 
 #' Detect collocations from text
@@ -548,7 +548,12 @@ setMethod("phrasetotoken", signature=c("character", "dictionary", "ANY"),
           function(object, phrases, concatenator="_") {
               phrases <- unlist(phrases, use.names=FALSE)
               compoundPhrases <- phrases[grep(" ", phrases)]
+              # now replace hyphens with something else
+              compoundPhrases <- gsub("-", "__", compoundPhrases)
               compoundPhrasesList <- tokenize(compoundPhrases)
+              
+              # replace intra-word hyphens in text with __
+              object <- gsub("(\\w+)[-](\\w+)", "\\1__\\2", object)
               
               # contenate the phrases in
               # gsub("(word1)\\s(word2)", "\\1_\\2", "word1 word2")
@@ -560,6 +565,8 @@ setMethod("phrasetotoken", signature=c("character", "dictionary", "ANY"),
                   re.replace <- paste("\\", 1:length(l), sep="", collapse=concatenator)
                   object <- gsub(re.pattern, re.replace, object, perl=TRUE, ignore.case=TRUE)
               }
+              # now transform hyphens back
+              object <- gsub("__", "-", object)
               object
           })
 
@@ -571,6 +578,8 @@ phrasetotoken.corpus <- function(object, phrases, concatenator="_") {
     object
 }
 
+
+setClass("collocations", contains = "data.table")
 
 #' @rdname phrasetotoken
 #' @export

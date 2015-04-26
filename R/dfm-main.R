@@ -234,8 +234,8 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
         } else {
             if (verbose) cat("\n   ... ignoring", format(length(ignoredFeatures), big.mark=","), "feature types, discarding ")
             # this is slower but removes all bigrams containing stop words
-            ignoredfeatIndex <- grep(paste0("\\b", paste(ignoredFeatures, collapse="\\b|\\b"), "\\b"), gsub("_", " ", alltokens$features))
-            # ignoredfeatIndex <- which(alltokens$features %in% ignoredFeatures)
+            # ignoredfeatIndex <- grep(paste0("\\b", paste(ignoredFeatures, collapse="\\b|\\b"), "\\b"), gsub("_", " ", alltokens$features))
+            ignoredfeatIndex <- which(alltokens$features %in% ignoredFeatures)
             if (verbose) {
                 cat(format(length(ignoredfeatIndex), big.mark=","), " total features (",
                     format(length(ignoredfeatIndex) / nrow(alltokens) * 100, digits=3),

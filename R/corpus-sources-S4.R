@@ -110,6 +110,10 @@ setMethod("textfile",
                   if (length(textField) != 1)
                       stop("textField must be a single field name or column number identifying the texts.")
                   sources <- get_csv(file, textField, ...) 
+              } else if (fileType == "tab") {
+                  if (length(textField) != 1)
+                      stop("textField must be a single field name or column number identifying the texts.")
+                  sources <- get_csv(file, textField, sep = "\t", ...) 
               } else if (fileType == "json") {
                   # general json
                   sources <- get_json(file, textField, ...)
@@ -178,8 +182,8 @@ setMethod("textfile",
 ## specific functions for reading file types
 
 ## csv format
-get_csv <- function(file, textField, ...) {
-    docv <- read.csv(file, stringsAsFactors=FALSE, ...)
+get_csv <- function(file, textField, sep=",", ...) {
+    docv <- read.csv(file, stringsAsFactors=FALSE, sep=sep, ...)
     if (is.character(textField)) {
         textFieldi <- which(names(docv)==textField)
         if (length(textFieldi)==0)
@@ -192,7 +196,7 @@ get_csv <- function(file, textField, ...) {
 }
 
 ## csv format multiple
-get_csvs <- function(filemask, textField, ...) {
+get_csvs <- function(filemask, textField, sep=",", ...) {
     # get the pattern at the end
     pattern <- getRootFileNames(filemask)
     # get the directory name
@@ -203,7 +207,7 @@ get_csvs <- function(filemask, textField, ...) {
     textsvec <- c()
     docv <- NULL
     for (f in filenames) {
-        thisdocv <- read.csv(f, stringsAsFactors=FALSE, ...)
+        thisdocv <- read.csv(f, stringsAsFactors=FALSE, sep=sep, ...)
         if (is.character(textField)) {
             textFieldi <- which(names(thisdocv)==textField)
             if (length(textFieldi)==0)
@@ -287,6 +291,8 @@ getFileType <- function(filenameChar) {
             return("tar")
         else if (x %in% c("xml"))
             return("xml")
+        else if (x %in% c("tab"))
+            return("tab")
         else return("unknown") }, USE.NAMES=FALSE)
 }    
 
