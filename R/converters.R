@@ -106,7 +106,7 @@ dfm2tmformat <- function(x, weighting=tm::weightTf) {
     if (system.file(package = "slam")=="") #(!require(slam))
         stop("You must install the slam package installed for this conversion.")
     sl <- slam::as.simple_triplet_matrix(x)
-    td <- tm::as.TermDocumentMatrix(sl, weighting=weighting)
+    td <- tm::as.DocumentTermMatrix(sl, weighting=weighting)
     return(td)
 }
 

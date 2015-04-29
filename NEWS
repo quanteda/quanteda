@@ -1,8 +1,10 @@
-quanteda 0.7.2
+quanteda 0.7.3
 ==============
 * added an ntoken() method for dfm objects.
 
-* 
+* fixed a bug wherein convert(anydfm, to="tm") created a DocumentTermMatrix, not a 
+  TermDocumentMatrix.  Now correctly creates a TermDocumentMatrix.  (Both worked
+  previously in topicmodels::LDA() so many users may not notice the change.)
 
 quanteda 0.7.2
 ==============
