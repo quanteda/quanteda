@@ -23,7 +23,7 @@ quanteda makes it easy to manage texts in the form of a
 corpus, defined as a collection of texts that includes document-level
 variables specific to each text, as well as meta-data for documents
 and for the collection as a whole. quanteda includes tools to make it
-easy and fast to manuipulate the texts the texts in a corpus, for
+easy and fast to manuipulate the texts in a corpus, for
 instance by tokenizing them, with or without stopwords or stemming, or
 to segment them by sentence or paragraph units. 
 
