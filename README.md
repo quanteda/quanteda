@@ -4,7 +4,7 @@ quanteda: Quantitative Analysis of Textual Data
 
 An R package for managing and analyzing text, by Ken Benoit and Paul Nulty.
 
-quanteda makes it easy to manage texts in the form of a corpus, defined as a collection of texts that includes document-level variables specific to each text, as well as meta-data for documents and for the collection as a whole. quanteda includes tools to make it easy and fast to manuipulate the texts the texts in a corpus, for instance by tokenizing them, with or without stopwords or stemming, or to segment them by sentence or paragraph units.
+quanteda makes it easy to manage texts in the form of a corpus, defined as a collection of texts that includes document-level variables specific to each text, as well as meta-data for documents and for the collection as a whole. quanteda includes tools to make it easy and fast to manuipulate the texts in a corpus, for instance by tokenizing them, with or without stopwords or stemming, or to segment them by sentence or paragraph units.
 
 quanteda implements bootstrapping methods for texts that makes it easy to resample texts from pre-defined units, to facilitate computation of confidence intervals on textual statistics using techniques of non-parametric bootstrapping, but applied to the original texts as data. quanteda includes a suite of sophisticated tools to extract features of the texts into a quantitative matrix, where these features can be defined according to a dictionary or thesaurus, including the declaration of collocations to be treated as single features.
 
@@ -93,7 +93,7 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 #>          UKIP   303    625        41         UKIP     UTF-8
 #> 
 #> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/* on x86_64 by kbenoit.
-#> Created: Tue Apr  7 10:21:29 2015.
+#> Created: Thu Apr 30 06:02:24 2015.
 #> Notes:   Immigration-related sections of 2010 UK party manifestos.
 
 # key words in context for "deport", 3 words of context
@@ -140,7 +140,7 @@ mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english", v
 #>    ... indexing 1,491 feature types
 #>    ... building sparse matrix
 #>    ... created a 9 x 1491 sparse dfm
-#>    ... complete. Elapsed time: 0.252 seconds.
+#>    ... complete. Elapsed time: 0.093 seconds.
 dim(mydfm)              # basic dimensions of the dfm
 #> [1]    9 1491
 topfeatures(mydfm, 20)  # 20 top words
