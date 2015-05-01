@@ -25,9 +25,7 @@ Some preliminaries:
 
 2.  To build the C++ parts of quanteda on Windows platforms, you will need also to install the [Rtools](http://cran.r-project.org/bin/windows/Rtools/) software available from CRAN. (OS X and Linux users can skip this step.)
 
-3.  To access the topic modelling functionality, you will need to install the package topicmodels from CRAN. On most platforms, this will be done automatically when you install quanteda, but will fail on OS X unless you have some additional tools installed. [See instructions on installing **topicmodels** on OS X Mavericks or Yosemite here.](http://www.kenbenoit.net/how-to-install-the-r-package-topicmodels-on-os-x/)
-
-4.  (Optional) You can install the additional corpus data from **quantedaData** using
+3.  (Optional) You can install the additional corpus data from **quantedaData** using
 
     ``` s
     ## devtools required to install quanteda from Github
@@ -47,7 +45,7 @@ devtools::install_github("kbenoit/quanteda", ref="dev")
 
 -   the LAPACK C libraries
     -   for Mac, install [homebrew](http://brew.sh/) and then `brew install LAPACK`
-    -   for [Windows](http://icl.cs.utk.edu/lapack-for-windows/lapack/)
+    -   for Windows, this should be installed already when you installed [Rtools](http://cran.r-project.org/bin/windows/Rtools/) as per the above instructions
     -   for Linux, `sudo apt-get install liblapack-dev`
 
 Documentation
@@ -93,7 +91,7 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 #>          UKIP   303    625        41         UKIP     UTF-8
 #> 
 #> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/* on x86_64 by kbenoit.
-#> Created: Thu Apr 30 06:02:24 2015.
+#> Created: Thu Apr 30 06:12:14 2015.
 #> Notes:   Immigration-related sections of 2010 UK party manifestos.
 
 # key words in context for "deport", 3 words of context
@@ -140,7 +138,7 @@ mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english", v
 #>    ... indexing 1,491 feature types
 #>    ... building sparse matrix
 #>    ... created a 9 x 1491 sparse dfm
-#>    ... complete. Elapsed time: 0.093 seconds.
+#>    ... complete. Elapsed time: 0.081 seconds.
 dim(mydfm)              # basic dimensions of the dfm
 #> [1]    9 1491
 topfeatures(mydfm, 20)  # 20 top words

@@ -59,9 +59,6 @@ Some preliminaries:
 
 2.  To build the C++ parts of quanteda on Windows platforms, you will need also to install the [Rtools](http://cran.r-project.org/bin/windows/Rtools/) software available from CRAN.  (OS X and Linux users can skip this step.)
 
-2.  To access the topic modelling functionality, you will need to install the package topicmodels from CRAN.  On most platforms, this will be done automatically when you install quanteda, but will fail on OS X unless you 
-have some additional tools installed.  [See instructions on installing **topicmodels** on OS X Mavericks or Yosemite here.](http://www.kenbenoit.net/how-to-install-the-r-package-topicmodels-on-os-x/)
-
 4.  (Optional) You can install the additional corpus data from **quantedaData** using
 
     ```S
@@ -82,7 +79,7 @@ devtools::install_github("kbenoit/quanteda", ref="dev")
 
 *  the LAPACK C libraries
     *  for Mac, install [homebrew](http://brew.sh/) and then `brew install LAPACK`
-    *  for [Windows](http://icl.cs.utk.edu/lapack-for-windows/lapack/)
+    *  for Windows, this should be installed already when you installed [Rtools](http://cran.r-project.org/bin/windows/Rtools/) as per the above instructions
     *  for Linux, `sudo apt-get install liblapack-dev`
 
 Documentation
@@ -96,7 +93,6 @@ Examples for any function can also be seen using (for instance, for `corpus()`):
 ```S
 example(corpus)
 ```
-
 There are also some demo functions that show off some of the package capabilities, such 
 as `demo(quanteda)`.
 
