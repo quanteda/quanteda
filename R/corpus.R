@@ -249,7 +249,7 @@ corpus.VCorpus <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
     
     # using docvars inappropriately here but they show up as docmeta given 
     # the _ in the variable names
-    corpus(texts, docvars=metad,
+    corpus(as.character(texts), docvars=metad,
            source=paste("Converted from tm VCorpus \'", 
                         deparse(substitute(x)), "\'", sep=""), 
            enc=enc, ...)
