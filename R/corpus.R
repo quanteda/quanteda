@@ -970,7 +970,7 @@ ntoken.character <- function(x, block.size=200, verbose=TRUE) {
         this.size <- ifelse(length(x) < i + block.size,
                             length(x) - i,
                             block.size - 1)
-        totWords <- totWords + length(unlist(tokenizeOnlyCppKB(x[i:(i+this.size)])))
+        totWords <- totWords + length(unlist(tokenize(x[i:(i+this.size)], removePunct=FALSE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)))
         i <- i + this.size + 1
     }
     if (verbose) cat("\b\b\b\b\b", formatC(100, width=3), " %", sep="")

@@ -6,19 +6,6 @@
 
 using namespace Rcpp;
 
-// justTokenizeCpp
-Rcpp::CharacterVector justTokenizeCpp(SEXP x, SEXP sep, SEXP minLength);
-RcppExport SEXP quanteda_justTokenizeCpp(SEXP xSEXP, SEXP sepSEXP, SEXP minLengthSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type sep(sepSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type minLength(minLengthSEXP);
-    __result = Rcpp::wrap(justTokenizeCpp(x, sep, minLength));
-    return __result;
-END_RCPP
-}
 // wordfishcpp
 Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol);
 RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP) {

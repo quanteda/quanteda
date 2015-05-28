@@ -105,8 +105,9 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     #w1 <- w2 <- count <- w1w2n <- w1w2Exp <- w1notw2Exp <- notw1w2 <- notw1w2Exp <- NULL
     #notw1notw2 <- notw1notw2Exp <- NULL
     
-    text <- clean(x, removePunct=FALSE, ...)
-    t <- unlist(tokenizeOnlyCppKB(text), use.names=FALSE)
+    #text <- clean(x, removePunct=FALSE, ...)
+    #t <- unlist(tokenizeOnlyCppKB(text), use.names=FALSE)
+    t <- tokenize(x, simplify=TRUE, removePunct=FALSE)
     
     # create a data.table of all adjacent bigrams
     wordpairs <- data.table(w1 = t[1:(length(t)-1)], 
@@ -270,8 +271,9 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     # to not issue the check warnings:
     w1 <- w2 <- w3 <- c123 <- c12 <- c13 <- c1 <- c23 <- c2 <- c3 <- X2 <- G2 <- count <- NULL
     
-    text <- clean(x, removePunct=FALSE, ...)
-    t <- unlist(tokenizeOnlyCppKB(text), use.names=FALSE)
+    #text <- clean(x, removePunct=FALSE, ...)
+    #t <- unlist(tokenizeOnlyCppKB(text), use.names=FALSE)
+    t <- tokenize(x, simplify=TRUE, removePunct=FALSE)
     
     # create a data.table of all adjacent bigrams
     wordpairs <- data.table(w1 = t[1:(length(t)-2)], 

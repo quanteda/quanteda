@@ -1,14 +1,42 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+
+
 quanteda: Quantitative Analysis of Textual Data
 ===============================================
 
 An R package for managing and analyzing text, by Ken Benoit and Paul Nulty.
 
-quanteda makes it easy to manage texts in the form of a corpus, defined as a collection of texts that includes document-level variables specific to each text, as well as meta-data for documents and for the collection as a whole. quanteda includes tools to make it easy and fast to manuipulate the texts in a corpus, for instance by tokenizing them, with or without stopwords or stemming, or to segment them by sentence or paragraph units.
+quanteda makes it easy to manage texts in the form of a
+corpus, defined as a collection of texts that includes document-level
+variables specific to each text, as well as meta-data for documents
+and for the collection as a whole. quanteda includes tools to make it
+easy and fast to manuipulate the texts in a corpus, for
+instance by tokenizing them, with or without stopwords or stemming, or
+to segment them by sentence or paragraph units. 
 
-quanteda implements bootstrapping methods for texts that makes it easy to resample texts from pre-defined units, to facilitate computation of confidence intervals on textual statistics using techniques of non-parametric bootstrapping, but applied to the original texts as data. quanteda includes a suite of sophisticated tools to extract features of the texts into a quantitative matrix, where these features can be defined according to a dictionary or thesaurus, including the declaration of collocations to be treated as single features.
+quanteda implements
+bootstrapping methods for texts that makes it easy to resample texts
+from pre-defined units, to facilitate computation of confidence
+intervals on textual statistics using techniques of non-parametric
+bootstrapping, but applied to the original texts as data. quanteda
+includes a suite of sophisticated tools to extract features of the
+texts into a quantitative matrix, where these features can be defined
+according to a dictionary or thesaurus, including the declaration of
+collocations to be treated as single features. 
 
-Once converted into a quantitative matrix (known as a "dfm" for document-feature matrix), the textual feature can be analyzed using quantitative methods for describing, comparing, or scaling texts, or used to train machine learning methods for class prediction.
+Once converted into a
+quantitative matrix (known as a "dfm" for document-feature matrix),
+the textual feature can be analyzed using quantitative methods for
+describing, comparing, or scaling texts, or used to train machine
+learning methods for class prediction.
+
 
 How to Install
 --------------
@@ -19,22 +47,22 @@ Some preliminaries:
 
 1.  To install the package from github, you will need to install the `devtools` package, using (from R):
 
-    ``` s
+    ```S
     install.packages("devtools")
     ```
 
-2.  To build the C++ parts of quanteda on Windows platforms, you will need also to install the [Rtools](http://cran.r-project.org/bin/windows/Rtools/) software available from CRAN. (OS X and Linux users can skip this step.)
+2.  To build the C++ parts of quanteda on Windows platforms, you will need also to install the [Rtools](http://cran.r-project.org/bin/windows/Rtools/) software available from CRAN.  (OS X and Linux users can skip this step.)
 
-3.  (Optional) You can install the additional corpus data from **quantedaData** using
+4.  (Optional) You can install the additional corpus data from **quantedaData** using
 
-    ``` s
+    ```S
     ## devtools required to install quanteda from Github
     devtools::install_github("kbenoit/quantedaData")
     ```
 
 To install the latest master branch of `quanteda`:
 
-``` s
+```S
 devtools::install_github("kbenoit/quanteda")
 
 ## ALTERNATIVELY, to install the latest version `dev` branch version:
@@ -43,10 +71,10 @@ devtools::install_github("kbenoit/quanteda", ref="dev")
 
 **Additional Libraries you may need for installation:**
 
--   the LAPACK C libraries
-    -   for Mac, install [homebrew](http://brew.sh/) and then `brew install LAPACK`
-    -   for Windows, this should be installed already when you installed [Rtools](http://cran.r-project.org/bin/windows/Rtools/) as per the above instructions
-    -   for Linux, `sudo apt-get install liblapack-dev`
+*  the LAPACK C libraries
+    *  for Mac, install [homebrew](http://brew.sh/) and then `brew install LAPACK`
+    *  for Windows, this should be installed already when you installed [Rtools](http://cran.r-project.org/bin/windows/Rtools/) as per the above instructions
+    *  for Linux, `sudo apt-get install liblapack-dev`
 
 Documentation
 -------------
@@ -56,17 +84,18 @@ An introductory vignette is in progress and can be viewed here: [here](http://pn
 In-depth tutorials in the form of a gitbook will be available here [here](http://kbenoit.github.io/quanteda).
 
 Examples for any function can also be seen using (for instance, for `corpus()`):
-
-``` s
+```S
 example(corpus)
 ```
+There are also some demo functions that show off some of the package capabilities, such 
+as `demo(quanteda)`.
 
-There are also some demo functions that show off some of the package capabilities, such as `demo(quanteda)`.
 
 Example
 -------
 
-``` r
+
+```r
 library(quanteda)
 # create a corpus from the immigration texts from UK party platforms
 uk2010immigCorpus <- corpus(ukimmigTexts,
@@ -91,7 +120,7 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 #>          UKIP   303    625        41         UKIP     UTF-8
 #> 
 #> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/* on x86_64 by kbenoit.
-#> Created: Thu Apr 30 06:12:14 2015.
+#> Created: Tue May  5 18:10:48 2015.
 #> Notes:   Immigration-related sections of 2010 UK party manifestos.
 
 # key words in context for "deport", 3 words of context
@@ -138,7 +167,7 @@ mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english", v
 #>    ... indexing 1,491 feature types
 #>    ... building sparse matrix
 #>    ... created a 9 x 1491 sparse dfm
-#>    ... complete. Elapsed time: 0.081 seconds.
+#>    ... complete. Elapsed time: 0.093 seconds.
 dim(mydfm)              # basic dimensions of the dfm
 #> [1]    9 1491
 topfeatures(mydfm, 20)  # 20 top words
@@ -154,4 +183,5 @@ if (Sys.info()['sysname']=="Darwin") quartz() # open nicer window, Mac only
 plot(mydfm)             # word cloud     
 ```
 
-![](README-quanteda_example-1.png)
+![plot of chunk quanteda_example](README-quanteda_example-1.png) 
+

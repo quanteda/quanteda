@@ -17,10 +17,7 @@ vignette: >
 %\VignetteIndexEntry{Corpus-construction}
 -->
 
-```{r echo = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
-library(quanteda)
-```
+
 
 ## How a quanteda corpus works
 
@@ -50,29 +47,76 @@ The simplest case is to create a corpus from a vector of texts already in memory
 ways to get a vector of texts into R.
 
 If we already have the texts in this form, we can call the corpus constructor function directly.  We can demonstrate this on the built-in character vector of 57 US president inaugural speeches called `inaugTexts`.
-```{r}
+
+```r
 str(inaugTexts)  # this gives us some information about the object
+#>  Named chr [1:57] "Fellow-Citizens of the Senate and of the House of Representatives:\n\nAmong the vicissitudes incident to life no event could ha"| __truncated__ ...
+#>  - attr(*, "names")= chr [1:57] "1789-Washington" "1793-Washington" "1797-Adams" "1801-Jefferson" ...
 myCorpus <- corpus(inaugTexts)  # build the corpus
 summary(myCorpus, n=5)
+#> Corpus consisting of 57 documents, showing 5 documents.
+#> 
+#>             Text Types Tokens Sentences
+#>  1789-Washington   594   1429        23
+#>  1793-Washington    90    135         4
+#>       1797-Adams   794   2318        37
+#>   1801-Jefferson   681   1726        41
+#>   1805-Jefferson   775   2166        45
+#> 
+#> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
+#> Created: Tue May  5 18:10:56 2015.
+#> Notes:   .
 ```
 
 If we wanted, we could add some document-level variables -- what quanteda calls `docvars` -- to this corpus.
 We can do this using the R's `substring()` function to extract characters from a name -- in this case, the 
 name of the character vector `inaugTexts`.  This works using our fixed starting and ending positions with
 `substring()` because these names are a very regular format of `YYYY-PresidentName`.
-```{r}
+
+```r
 docvars(myCorpus, "President") <- substring(names(inaugTexts), 6)
 docvars(myCorpus, "Year") <- as.integer(substring(names(inaugTexts), 1, 4))
 summary(myCorpus, n=5)
+#> Corpus consisting of 57 documents, showing 5 documents.
+#> 
+#>             Text Types Tokens Sentences  President Year
+#>  1789-Washington   594   1429        23 Washington 1789
+#>  1793-Washington    90    135         4 Washington 1793
+#>       1797-Adams   794   2318        37      Adams 1797
+#>   1801-Jefferson   681   1726        41  Jefferson 1801
+#>   1805-Jefferson   775   2166        45  Jefferson 1805
+#> 
+#> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
+#> Created: Tue May  5 18:10:56 2015.
+#> Notes:   .
 ```
 
 If we wanted to tag each document with additional meta-data not considered a document variable of interest for
 analysis, but rather something that we need to know as an attribute of the document, we could also 
 add those to our corpus.
-```{r}
+
+```r
 language(myCorpus) <- "english"
 metadoc(myCorpus, "docsource")  <- paste("inaugTexts", 1:ndoc(myCorpus), sep="_")
 summary(myCorpus, n=5, showmeta=TRUE)
+#> Corpus consisting of 57 documents, showing 5 documents.
+#> 
+#>             Text Types Tokens Sentences  President Year _language
+#>  1789-Washington   594   1429        23 Washington 1789   english
+#>  1793-Washington    90    135         4 Washington 1793   english
+#>       1797-Adams   794   2318        37      Adams 1797   english
+#>   1801-Jefferson   681   1726        41  Jefferson 1801   english
+#>   1805-Jefferson   775   2166        45  Jefferson 1805   english
+#>    _docsource
+#>  inaugTexts_1
+#>  inaugTexts_2
+#>  inaugTexts_3
+#>  inaugTexts_4
+#>  inaugTexts_5
+#> 
+#> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
+#> Created: Tue May  5 18:10:56 2015.
+#> Notes:   .
 ```
 
 The last command, `metadoc`, allows you to define your own document meta-data fields.  The two docmeta fields
@@ -90,12 +134,30 @@ functions you may already use in R, such as `nrow()` and `ncol()`.
 The `+` operator provides a simple method for concatenating two corpus objects.  If they contain
 different sets of document-level variables, these will be stitched together in a fashion that guarantees
 that no information is lost.  Corpus-level medata data is also concatenated.
-```{r}
+
+```r
 library(quanteda)
 mycorpus1 <- corpus(inaugTexts[1:5], note="First five inaug speeches")
 mycorpus2 <- corpus(inaugTexts[6:10], note="Next five inaug speeches")
 mycorpus3 <- mycorpus1 + mycorpus2
 summary(mycorpus3)
+#> Corpus consisting of 10 documents.
+#> 
+#>             Text Types Tokens Sentences
+#>  1789-Washington   594   1429        23
+#>  1793-Washington    90    135         4
+#>       1797-Adams   794   2318        37
+#>   1801-Jefferson   681   1726        41
+#>   1805-Jefferson   775   2166        45
+#>     1809-Madison   520   1175        21
+#>     1813-Madison   518   1210        33
+#>      1817-Monroe   980   3370       122
+#>      1821-Monroe  1190   4457       131
+#>       1825-Adams   962   2915        74
+#> 
+#> Source:  Combination of corpuses mycorpus1 and mycorpus2.
+#> Created: Tue May  5 18:10:56 2015.
+#> Notes:   First five inaug speeches Next five inaug speeches.
 ```
 
 ### Extracting a subset of a corpus
@@ -166,17 +228,19 @@ a corpus will be a set of text files found on a local (or remote)
 directory. To load texts in this way, we first define a source for the directory, and pass this source as an argument to the corpus constructor. We create a directory source by calling the `directory` function. 
 
 
-```{r eval=FALSE}
+
+```r
 # Basic file import from directory
-d <- textfile('~/Dropbox/QUANTESS/corpora/inaugural/*.txt')
+d <- directory('~/Dropbox/QUANTESS/corpora/inaugural')
 myCorpus <- corpus(d)
 ```
 
 If the document variables are specified in the filenames of the texts, we can read them by setting the `docvarsfrom` argument (`docvarsfrom = "filenames"`) and specifiying how the filenames are formatted with the `sep` argument. For example, if the inaugural address texts were stored on disk in the format `Year-President.txt` (e.g. `1973-Nixon.txt`), then we can load them and automatically populate the document variables. The `docvarnames` argument sets the names of the document variables --- it must be the same length as the parts of the filenames.
 
-```{r eval=FALSE}
+
+```r
 # File import reading document variables from filenames
-d <- textfile('~/Dropbox/QUANTESS/corpora/inaugural/*.txt')
+d <- directory('~/Dropbox/QUANTESS/corpora/inaugural')
 
 # In this example the format of the filenames is `Year-President.txt`. 
 # Because there are two variables in the filename, docvarnames must contain two names
@@ -191,7 +255,8 @@ Four keys are required, to be passed to `quanteda`'s `getTweets` source function
 
 The code below performs authentication and runs a search for the string 'quantitative'. Many other functions for working with the API are available from the [twitteR package](https://github.com/geoffjentry/twitteR). An R interface to the streaming API is also available [link](link).
 
-```{r eval=FALSE}
+
+```r
 # These keys are examples and may not work! Get your own key at dev.twitter.com
 consumer_key="vRLy03ef6OFAZB7oCL4jA"
 consumer_secret="wWF35Lr1raBrPerVHSDyRftv8qB1H7ltV0T3Srb3s"
@@ -204,7 +269,8 @@ tw <- getTweets('quantitative', numResults=20, consumer_key, consumer_secret, ac
 
 The return value from the above query is a source object which can be passed to quanteda's corpus constructor, and the document variables are set to correspond with tweet metadata returned by the API.
 
-```{r eval=FALSE}
+
+```r
 twCorpus <- corpus(tw)
 names(docvars(twCorpus))
 ```

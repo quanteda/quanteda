@@ -13,7 +13,7 @@ Author: Kenneth Benoit [aut, cre],
     Kohei Watanabe [ctb],
     Benjamin Lauderdale [ctb]
 Version: 0.7.4
-Date: 2015-04-05
+Date: 2015-05-28
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -27,7 +27,8 @@ Imports:
     wordcloud,
     proxy,
     Rcpp,
-    ca
+    ca,
+    stringi
 LinkingTo: Rcpp, RcppArmadillo
 Suggests:
     knitr,

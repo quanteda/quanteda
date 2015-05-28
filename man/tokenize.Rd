@@ -9,7 +9,8 @@
 \usage{
 tokenize(x, ...)
 
-\method{tokenize}{character}(x, simplify = FALSE, sep = " ", ...)
+\method{tokenize}{character}(x, simplify = FALSE, sep = NULL,
+  what = "word", cleanFirst = TRUE, ...)
 
 \method{tokenize}{corpus}(x, ...)
 }
@@ -26,6 +27,14 @@ text.}
 \item{sep}{by default, tokenize expects a "white-space" delimiter between
 tokens. Alternatively, \code{sep} can be used to specify another character
 which delimits fields.}
+
+\item{what}{the unit for splitting the text, defaults to \code{"word"}.
+Available alternatives are \code{c("character", "word", "line_break",
+"sentence")}. See \link[stringi]{stringi-search-boundaries}.}
+
+\item{cleanFirst}{clean before tokenizing, if TRUE.  Added for performance
+testing only -- we strongly recommend that you NOT use this argument, as we
+will remove it from the function soon.}
 }
 \value{
 A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
@@ -45,17 +54,13 @@ head(tokenize(inaugTexts[57])[[1]], 10)
 head(tokenize(inaugTexts[57], simplify=TRUE), 10)
 
 # demonstrate some options with clean
-head(tokenize(inaugTexts[57], simplify=TRUE, cpp=TRUE), 30)
-## NOTE: not the same as
-head(tokenize(inaugTexts[57], simplify=TRUE, cpp=FALSE), 30)
+head(tokenize(inaugTexts[57], simplify=TRUE, removePunct=FALSE), 30)
 
 ## MORE COMPARISONS
-tokenize("this is MY <3 4U @myhandle gr8 stuff :-)", removeTwitter=FALSE, cpp=TRUE)
-tokenize("this is MY <3 4U @myhandle gr8 stuff :-)", removeTwitter=FALSE, cpp=FALSE)
-tokenize("great website http://textasdata.com", removeURL=FALSE, cpp=TRUE)
-tokenize("great website http://textasdata.com", removeURL=FALSE, cpp=FALSE)
-tokenize("great website http://textasdata.com", removeURL=TRUE, cpp=TRUE)
-tokenize("great website http://textasdata.com", removeURL=TRUE, cpp=FALSE)
+tokenize("this is MY <3 4U @myhandle gr8 stuff :-)", removeTwitter=TRUE)
+tokenize("this is MY <3 4U @myhandle gr8 stuff :-)", removeTwitter=FALSE)
+tokenize("great website http://textasdata.com", removeURL=FALSE)
+tokenize("great website http://textasdata.com", removeURL=TRUE)
 }
 \author{
 Kohei Watanabe (C++ code), Ken Benoit, and Paul Nulty
