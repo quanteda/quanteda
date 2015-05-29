@@ -21,6 +21,9 @@
 #' @param removeAdditional additional characters to remove (\link[=regex]{regular expression})
 #' @param ... additional parameters
 #' @return A character vector equal in length to the original texts, after cleaning.
+#' @importFrom stringi stri_replace_all_regex stri_trim_both stri_trans_tolower
+#' @useDynLib quanteda
+#' @export
 #' @examples
 #' clean("This is 1 sentence with 2.0 numbers in it, and one comma.", removeDigits=FALSE)
 #' clean("This is 1 sentence with 2.0 numbers in it, and one comma.", toLower=FALSE)
@@ -52,22 +55,22 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, toLower=TRUE
     #}
     
     # convert "curly quotes"
-    x <- gsub("[\u201C\u201D]", "\"", x)
-    x <- gsub("[\u2018\u2019]", "\'", x)
+    x <- stri_replace_all_regex(x, "[\u201C\u201D]", "\"")
+    x <- stri_replace_all_regex(x, "[\u2018\u2019]", "\'")
     
     urlregex <- "(?i)\\b((?:[a-z][\\w-]+:(?:/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\\'\".,<>?]))"
     # see http://daringfireball.net/2010/07/improved_regex_for_matching_urls
     if (removeURL) {
-        x <- gsub(urlregex, "", x, perl=TRUE)
+        x <- stri_replace_all_regex(x, urlregex, "", perl=TRUE)
     } else {
         # NEED TO PRESERVE THESE SOMEHOW
     }
     
     # change typographic dash variations to a hyphen: There Can Be Only One
-    x <- gsub("[\u2013\u2014]", "-", x)
+    x <- stri_replace_all_regex(x, "[\u2013\u2014]", "-")
     
     # remove tabs, newlines, and common cruft from word-processors
-    x <- gsub("\\f|[\u2026\u22EF]|\\t|\\n", " ", x)
+    x <- stri_replace_all_regex(x, "\\f|[\u2026\u22EF]|\\t|\\n", " ")
     
     if (removePunct) {
         # use "negative lookahead" to keep Twitter symbols, always keep "_"
@@ -77,7 +80,7 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, toLower=TRUE
                         "])[[:punct:]]",  
                         ifelse(!is.null(removeAdditional), paste("|", removeAdditional, sep=""), ""),
                         sep="")
-       x <- gsub(remove, "", x, perl=TRUE)
+        x <- stri_replace_all_regex(x, remove, "", perl=TRUE)
     }
     
     if (removeDigits) 
@@ -90,17 +93,18 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, toLower=TRUE
         # the third stuff is to remove thousands separators, e.g. 1,000,000 or 1.000.000
         # clean("nodigits crazy8 4sure 67 89b 1,000,000 1.023.496")
         # note: \u00A3 is pound sign, \u20AC is euro sign, \u00A2 is the cent sign
-        x <- gsub("[$\u00A3\u20AC\u00A2][[:digit:]]\\w*|\\b[[:digit:]]+(st|nd|rd|d|th|bis)\\b|\\b([[:digit:]]+[,.]?)+\\b", "", x)
+        x <- stri_replace_all_regex(x, "[$\u00A3\u20AC\u00A2][[:digit:]]\\w*|\\b[[:digit:]]+(st|nd|rd|d|th|bis)\\b|\\b([[:digit:]]+[,.]?)+\\b", "")
     if (toLower) 
-        x <- tolower(x)
+        x <- stri_trans_tolower(x)
     
-#     if (!is.null(removeAdditional))
-#         x <- gsub(removeAdditional, "", x)
+    #     if (!is.null(removeAdditional))
+    #         x <- gsub(removeAdditional, "", x)
     
     # convert 2+ multiple whitespaces into one
-    x <- gsub("\\s{2,}", " ", x, perl=TRUE)
+    x <- stri_replace_all_regex(x, "\\s{2,}", " ",  perl=TRUE)
     # remove leading and trailing whitespace and return
-    gsub("^\\s+|\\s+$", "", x)
+    x <- stri_trim_both(x)
+    return(x)
 }
 
 

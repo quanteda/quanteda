@@ -623,12 +623,12 @@ as.dfm <- function(x) {
     if (!any((c("matrix", "data.frame") %in% class(x))))
         stop("as.dfm only applicable to matrix(-like) objects.")
     new("dfmSparse", Matrix(as.matrix(x), sparse=TRUE))
-#     
-#     m <- as.matrix(x)
-#     attr(m, "settings") <- attr(x, "settings")
-#     attr(m, "weighting") <- attr(x, "weighting")
-#     class(m) <- class(x)
-#     m
+    #     
+    #     m <- as.matrix(x)
+    #     attr(m, "settings") <- attr(x, "settings")
+    #     attr(m, "weighting") <- attr(x, "weighting")
+    #     class(m) <- class(x)
+    #     m
 }
 
 
@@ -960,4 +960,3 @@ topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ...) {
     return(subdfm[1:n])
     #    }
 }
-
