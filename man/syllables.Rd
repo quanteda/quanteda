@@ -12,7 +12,7 @@
 \usage{
 syllables(x, ...)
 
-\method{syllables}{character}(x, syllableDict = englishSyllables, ...)
+\method{syllables}{character}(x, syllableDict = NULL, ...)
 }
 \arguments{
 \item{x}{character vector or list of character vectors whose syllables will
@@ -20,9 +20,10 @@ be counted}
 
 \item{...}{additional arguments passed to clean}
 
-\item{syllableDict}{a named numeric vector of syllable counts where the names
-are lower case tokens.  The default is \link{englishSyllables}, an English
-pronunciation dictionary from CMU.}
+\item{syllableDict}{optional named integer vector of syllable counts where
+the names are lower case tokens.  When set to \code{NULL} (default), then
+the function will use the quanteda data object \code{englishSyllables}, an
+English pronunciation dictionary from CMU.}
 }
 \value{
 numeric Named vector or list of counts of the number of syllables for
@@ -32,16 +33,16 @@ numeric Named vector or list of counts of the number of syllables for
 }
 \description{
 This function takes a text and returns a count of the number of
-syllables it contains. For British English words, the syllable count is exact
-and looked up from the CMU pronunciation dictionary, from the default
-syllable dictionary \code{englishSyllables}. For any word not in the
-dictionary the syllable count is estimated by counting vowel clusters.
+  syllables it contains. For British English words, the syllable count is
+  exact and looked up from the CMU pronunciation dictionary, from the default
+  syllable dictionary \code{englishSyllables}. For any word not in the
+  dictionary the syllable count is estimated by counting vowel clusters.
 
-\code{englishSyllables} is a quanteda-supplied data object consisting of a
-named numeric vector of syllable counts for the words used as names.  This is
-the default object used to count English syllables.  This object that can be
-accessed directly, but we strongly encourage you to access it only through
-the \code{syllables()} wrapper function.
+  \code{englishSyllables} is a quanteda-supplied data object consisting of a
+  named numeric vector of syllable counts for the words used as names.  This
+  is the default object used to count English syllables.  This object that
+  can be accessed directly, but we strongly encourage you to access it only
+  through the \code{syllables()} wrapper function.
 }
 \examples{
 syllables("This is an example sentence.")
