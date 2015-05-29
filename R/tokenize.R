@@ -33,6 +33,7 @@ tokenize <- function(x, ...) {
 #' @param cleanFirst clean before tokenizing, if TRUE.  Added for performance 
 #'   testing only -- we strongly recommend that you NOT use this argument, as we
 #'   will remove it from the function soon.
+#' @param verbose if \code{TRUE}, print timing messages to the console; off by default
 #' @importFrom stringi stri_split_fixed stri_split_boundaries
 #' @useDynLib quanteda
 #' @export
@@ -50,13 +51,19 @@ tokenize <- function(x, ...) {
 #' tokenize("this is MY <3 4U @@myhandle gr8 stuff :-)", removeTwitter=FALSE)
 #' tokenize("great website http://textasdata.com", removeURL=FALSE)
 #' tokenize("great website http://textasdata.com", removeURL=TRUE)
-tokenize.character <- function(x, simplify=FALSE, sep=NULL, what="word", cleanFirst=TRUE, ...) {
+tokenize.character <- function(x, simplify=FALSE, sep=NULL, what="word", cleanFirst=TRUE, verbose=FALSE, ...) {
     # clean the text, with additional options
+    if (verbose) cat("Starting tokenization...\n")
     result <- x
     if (cleanFirst) {
+        if (verbose) cat("  ...cleaning texts")
+        startTimeClean <- proc.time()
         result <- sapply(result, clean, ..., USE.NAMES = FALSE)
+        if (verbose) cat("...total elapsed:  ", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
     
+    if (verbose) cat("  ...tokenizing texts")
+    startTimeTok <- proc.time()
     if (!is.null(sep))
         # if the sep is desired, for manual control
         result <- stringi::stri_split_fixed(result, sep)
@@ -66,9 +73,14 @@ tokenize.character <- function(x, simplify=FALSE, sep=NULL, what="word", cleanFi
             stop(what, " not a valid text boundary, see help(\"stringi-search-boundaries\", package=\"stringi\")")
         result <- stringi::stri_split_boundaries(result, type=what, skip_word_none=TRUE)
     }
+    if (verbose) cat("...total elapsed:", (proc.time() - startTimeTok)[3], "seconds.\n")
     
-    if (!cleanFirst)
+    if (!cleanFirst) {
+        if (verbose) cat("  ...cleaning texts")
+        startTimeClean <- proc.time()
         result <- sapply(result, clean, ..., USE.NAMES = FALSE)
+        if (verbose) cat("...total elapsed:  ", (proc.time() - startTimeClean)[3], "seconds.\n")
+    }
     
     if (simplify==FALSE) {
         # stri_* destroys names, so put them back
@@ -77,6 +89,8 @@ tokenize.character <- function(x, simplify=FALSE, sep=NULL, what="word", cleanFi
         # or just return the tokens as a single character vector
         result <- unlist(result)
     }
+    if (verbose) 
+        cat("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
     result
 }
 

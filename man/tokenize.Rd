@@ -10,7 +10,7 @@
 tokenize(x, ...)
 
 \method{tokenize}{character}(x, simplify = FALSE, sep = NULL,
-  what = "word", cleanFirst = TRUE, ...)
+  what = "word", cleanFirst = TRUE, verbose = FALSE, ...)
 
 \method{tokenize}{corpus}(x, ...)
 }
@@ -35,6 +35,8 @@ Available alternatives are \code{c("character", "word", "line_break",
 \item{cleanFirst}{clean before tokenizing, if TRUE.  Added for performance
 testing only -- we strongly recommend that you NOT use this argument, as we
 will remove it from the function soon.}
+
+\item{verbose}{if \code{TRUE}, print timing messages to the console; off by default}
 }
 \value{
 A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
