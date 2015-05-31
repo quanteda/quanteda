@@ -34,7 +34,7 @@ tokenize <- function(x, ...) {
 #'   testing only -- we strongly recommend that you NOT use this argument, as we
 #'   will remove it from the function soon.
 #' @param verbose if \code{TRUE}, print timing messages to the console; off by default
-#' @importFrom stringi stri_split_fixed stri_split_boundaries
+#' @importFrom stringi stri_split_fixed stri_split_boundaries stri_trim_right
 #' @useDynLib quanteda
 #' @export
 #' @examples 
@@ -58,7 +58,7 @@ tokenize.character <- function(x, simplify=FALSE, sep=NULL, what="word", cleanFi
     if (cleanFirst) {
         if (verbose) cat("  ...cleaning texts")
         startTimeClean <- proc.time()
-        result <- sapply(result, clean, ..., USE.NAMES = FALSE)
+        result <- sapply(result, function(x) clean(x, ...), USE.NAMES = FALSE)
         if (verbose) cat("...total elapsed:  ", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
     
@@ -71,7 +71,9 @@ tokenize.character <- function(x, simplify=FALSE, sep=NULL, what="word", cleanFi
         # using the defaults in ICU
         if (!(what %in% c("character", "word", "line_break", "sentence")))
             stop(what, " not a valid text boundary, see help(\"stringi-search-boundaries\", package=\"stringi\")")
-        result <- stringi::stri_split_boundaries(result, type=what, skip_word_none=TRUE)
+        result <- stringi::stri_split_boundaries(result) #, type=what, skip_word_none=TRUE)
+        # trim trailing white spaces that result from the above
+        result <- lapply(result, stringi::stri_trim_right)
     }
     if (verbose) cat("...total elapsed:", (proc.time() - startTimeTok)[3], "seconds.\n")
     

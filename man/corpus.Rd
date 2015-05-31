@@ -129,12 +129,14 @@ mycorp <- corpus(mytexts)
 mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField="Title"))
 identical(texts(mycorp), texts(mycorp2))
 identical(docvars(mycorp), docvars(mycorp2))}
-#
-## import a tm VCorpus
+# import a tm VCorpus
 if (require(tm)) {
     data(crude)    # load in a tm example VCorpus
     mytmCorpus <- corpus(crude)
     summary(mytmCorpus, showmeta=TRUE)
+
+    data(acq)
+    summary(corpus(acq), 5, showmeta=TRUE)
 
     tmCorp <- VCorpus(VectorSource(inaugTexts[49:57]))
     quantCorp <- corpus(tmCorp)

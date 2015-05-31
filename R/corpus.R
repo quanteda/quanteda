@@ -223,12 +223,14 @@ corpus.corpusSource <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
 #'   fields from that object are imported as document-level metadata. Currently
 #'   no corpus-level metadata is imported, but we will add that soon.
 #' @examples 
-#' #
-#' ## import a tm VCorpus
+#' # import a tm VCorpus
 #' if (require(tm)) {
 #'     data(crude)    # load in a tm example VCorpus
 #'     mytmCorpus <- corpus(crude)
 #'     summary(mytmCorpus, showmeta=TRUE)
+#'     
+#'     data(acq)
+#'     summary(corpus(acq), 5, showmeta=TRUE)
 #'     
 #'     tmCorp <- VCorpus(VectorSource(inaugTexts[49:57]))
 #'     quantCorp <- corpus(tmCorp)
@@ -239,17 +241,19 @@ corpus.VCorpus <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
     # extract the content (texts)
     texts <- sapply(x, function(x) x$content)
     
-    # some mighty twisted shit here required to get a data frame from this metadata list
+    # special handling for VCorpus meta-data
     metad <- as.data.frame(t(as.data.frame(sapply(x, function(x) x$meta))))
     makechar <- function(x) gsub("character\\(0\\)", NA, as.character(x))
-    metad[, c(1, 3:ncol(metad))] <- apply(metad[, c(1, 3:ncol(metad))], 2, makechar)
-    metad$datetimestamp <- t(as.data.frame((lapply(metad$datetimestamp, as.POSIXlt))))[,1]
+    datetimestampIndex <- which(names(metad) == "datetimestamp")
+    metad[, -datetimestampIndex] <- apply(metad[, -datetimestampIndex], 2, makechar)
+    if (length(datetimestampIndex))
+        metad$datetimestamp <- t(as.data.frame((lapply(metad$datetimestamp, as.POSIXlt))))[,1]
     # give them the underscore character required
     names(metad) <- paste("_", names(metad), sep="")
     
     # using docvars inappropriately here but they show up as docmeta given 
     # the _ in the variable names
-    corpus(as.character(texts), docvars=metad,
+    corpus(texts, docvars=metad,
            source=paste("Converted from tm VCorpus \'", 
                         deparse(substitute(x)), "\'", sep=""), 
            enc=enc, ...)

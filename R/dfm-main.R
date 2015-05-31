@@ -129,7 +129,7 @@ dfm <- function(x, ...) {
 #' testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
 #'              the newspaper from a boy named Seamus, in his mouth."
 #' testCorpus <- corpus(testText)
-# settings(testCorpus, "stopwords")
+#' # settings(testCorpus, "stopwords")
 #' dfm(testCorpus, ignoredFeatures=stopwords("english"))
 #' features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE))
 #' features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE, include.unigrams=FALSE))
@@ -191,12 +191,18 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
         names(docIndex) <- factor(paste("text", 1:length(x), sep="")) else
             names(docIndex) <- names(x)
     #?clean
-    if (verbose) cat("\n   ... tokenizing texts")
+    if (verbose) cat("\n   ... ", ifelse(clean, "cleaning and ", ""), "tokenizing texts", sep="")
     if (!bigrams) {
-        tokenizedTexts <- lapply(x, tokenizeSingle2, sep=" ")
+        # tokenizedTexts <- lapply(x, tokenizeSingle2, sep=" ")
+        if (clean)
+            tokenizedTexts <- tokenize(x, ...)
+        else
+            tokenizedTexts <- tokenize(x, removeDigits = FALSE, removePunct = FALSE, toLower = FALSE, removeURL = FALSE)
+        
     } else {
+        if (verbose) cat("\n   ...", ifelse(clean, "cleaning and ", ""), "forming bigrams", sep="")
+        if (clean) x <- clean(x, ...)
         tokenizedTexts <- bigrams(x, include.unigrams=include.unigrams)
-        if (verbose) cat (", forming bigrams")
     }
     
     #if (verbose) cat("\n   ... shaping tokens into data.table")
@@ -207,13 +213,13 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     if (verbose & bigrams) 
         cat(" incl.", format(sum(grepl("_", alltokens$features)), big.mark=","), "bigrams")
     
-    if (clean) {
-        if (verbose) cat("\n   ... cleaning the tokens")
-        alltokens$features <- clean(alltokens$features, ...)
-        if (verbose) cat(", ", nrow(alltokens[features == ""]), " removed entirely", sep="")
-        # remove any features eliminated entirely by cleaning
-        alltokens <- alltokens[features != ""]  ## KB 12 Feb to fix failure on dfm(inaugTexts[1])
-    }
+#     if (clean) {
+#         if (verbose) cat("\n   ... cleaning the tokens")
+#         alltokens$features <- clean(alltokens$features, ...)
+#         if (verbose) cat(", ", nrow(alltokens[features == ""]), " removed entirely", sep="")
+#         # remove any features eliminated entirely by cleaning
+#         alltokens <- alltokens[features != ""]  ## KB 12 Feb to fix failure on dfm(inaugTexts[1])
+#     }
     ## commented out to keep words that get removed in cleaning 
     # alltokens <- alltokens[features != ""]
     

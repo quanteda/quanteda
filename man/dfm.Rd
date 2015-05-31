@@ -163,6 +163,7 @@ dfm(phrasetotoken(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_reg
 testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
              the newspaper from a boy named Seamus, in his mouth."
 testCorpus <- corpus(testText)
+# settings(testCorpus, "stopwords")
 dfm(testCorpus, ignoredFeatures=stopwords("english"))
 features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE))
 features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE, include.unigrams=FALSE))
