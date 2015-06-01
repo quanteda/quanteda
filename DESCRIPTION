@@ -12,8 +12,8 @@ Author: Kenneth Benoit [aut, cre],
     Pablo Barberá [ctb],
     Kohei Watanabe [ctb],
     Benjamin Lauderdale [ctb]
-Version: 0.7.2
-Date: 2015-04-05
+Version: 0.7.2-1
+Date: 2015-05-26
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -35,7 +35,7 @@ Suggests:
     topicmodels,
     jsonlite (>= 0.9.10),
     streamR,
-    tm,
+    tm (>= 0.6),
     slam,
     ggplot2
 URL: http://github.com/kbenoit/quanteda
