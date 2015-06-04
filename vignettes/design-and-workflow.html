@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Ken Benoit and Paul Nulty" />
+
+
+<title>quanteda Design and Work Flow</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<link href="data:text/css,body%20%7B%0A%20%20background%2Dcolor%3A%20%23fff%3B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20max%2Dwidth%3A%20700px%3B%0A%20%20overflow%3A%20visible%3B%0A%20%20padding%2Dleft%3A%202em%3B%0A%20%20padding%2Dright%3A%202em%3B%0A%20%20font%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20font%2Dsize%3A%2014px%3B%0A%20%20line%2Dheight%3A%201%2E35%3B%0A%7D%0A%0A%23header%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0A%0A%23TOC%20%7B%0A%20%20clear%3A%20both%3B%0A%20%20margin%3A%200%200%2010px%2010px%3B%0A%20%20padding%3A%204px%3B%0A%20%20width%3A%20400px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20border%2Dradius%3A%205px%3B%0A%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20font%2Dsize%3A%2013px%3B%0A%20%20line%2Dheight%3A%201%2E3%3B%0A%7D%0A%20%20%23TOC%20%2Etoctitle%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%20%20font%2Dsize%3A%2015px%3B%0A%20%20%20%20margin%2Dleft%3A%205px%3B%0A%20%20%7D%0A%0A%20%20%23TOC%20ul%20%7B%0A%20%20%20%20padding%2Dleft%3A%2040px%3B%0A%20%20%20%20margin%2Dleft%3A%20%2D1%2E5em%3B%0A%20%20%20%20margin%2Dtop%3A%205px%3B%0A%20%20%20%20margin%2Dbottom%3A%205px%3B%0A%20%20%7D%0A%20%20%23TOC%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dleft%3A%20%2D2em%3B%0A%20%20%7D%0A%20%20%23TOC%20li%20%7B%0A%20%20%20%20line%2Dheight%3A%2016px%3B%0A%20%20%7D%0A%0Atable%20%7B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dcolor%3A%20%23DDDDDD%3B%0A%20%20border%2Dstyle%3A%20outset%3B%0A%20%20border%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0A%20%20border%2Dwidth%3A%202px%3B%0A%20%20padding%3A%205px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%20%20line%2Dheight%3A%2018px%3B%0A%20%20padding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0A%20%20border%2Dleft%2Dstyle%3A%20none%3B%0A%20%20border%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%2E5em%200%3B%0A%7D%0A%0Ablockquote%20%7B%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20padding%3A%200%2E25em%200%2E75em%3B%0A%7D%0A%0Ahr%20%7B%0A%20%20border%2Dstyle%3A%20solid%3B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dtop%3A%201px%20solid%20%23777%3B%0A%20%20margin%3A%2028px%200%3B%0A%7D%0A%0Adl%20%7B%0A%20%20margin%2Dleft%3A%200%3B%0A%7D%0A%20%20dl%20dd%20%7B%0A%20%20%20%20margin%2Dbottom%3A%2013px%3B%0A%20%20%20%20margin%2Dleft%3A%2013px%3B%0A%20%20%7D%0A%20%20dl%20dt%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%7D%0A%0Aul%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%7D%0A%20%20ul%20li%20%7B%0A%20%20%20%20list%2Dstyle%3A%20circle%20outside%3B%0A%20%20%7D%0A%20%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dbottom%3A%200%3B%0A%20%20%7D%0A%0Apre%2C%20code%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20color%3A%20%23333%3B%0A%7D%0Apre%20%7B%0A%20%20white%2Dspace%3A%20pre%2Dwrap%3B%20%20%20%20%2F%2A%20Wrap%20long%20lines%20%2A%2F%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20margin%3A%205px%200px%2010px%200px%3B%0A%20%20padding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0A%20%20font%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0A%20%20padding%3A%202px%200px%3B%0A%7D%0A%0Adiv%2Efigure%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0A%20%20background%2Dcolor%3A%20%23FFFFFF%3B%0A%20%20padding%3A%202px%3B%0A%20%20border%3A%201px%20solid%20%23DDDDDD%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20margin%3A%200%205px%3B%0A%7D%0A%0Ah1%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%20%20font%2Dsize%3A%2035px%3B%0A%20%20line%2Dheight%3A%2040px%3B%0A%7D%0A%0Ah2%20%7B%0A%20%20border%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20padding%2Dbottom%3A%202px%3B%0A%20%20font%2Dsize%3A%20145%25%3B%0A%7D%0A%0Ah3%20%7B%0A%20%20border%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20font%2Dsize%3A%20120%25%3B%0A%7D%0A%0Ah4%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0A%20%20margin%2Dleft%3A%208px%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Ah5%2C%20h6%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23ccc%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Aa%20%7B%0A%20%20color%3A%20%230033dd%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%236666ff%3B%20%7D%0A%20%20a%3Avisited%20%7B%0A%20%20%20%20color%3A%20%23800080%3B%20%7D%0A%20%20a%3Avisited%3Ahover%20%7B%0A%20%20%20%20color%3A%20%23BB00BB%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%0A%2F%2A%20Class%20described%20in%20https%3A%2F%2Fbenjeffrey%2Ecom%2Fposts%2Fpandoc%2Dsyntax%2Dhighlighting%2Dcss%0A%20%20%20Colours%20from%20https%3A%2F%2Fgist%2Egithub%2Ecom%2Frobsimmons%2F1172277%20%2A%2F%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Keyword%20%2A%2F%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%2F%2A%20DataType%20%2A%2F%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%2F%2A%20DecVal%20%28decimal%20values%29%20%2A%2F%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20BaseN%20%2A%2F%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Float%20%2A%2F%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Char%20%2A%2F%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20String%20%2A%2F%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%2F%2A%20Comment%20%2A%2F%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%2F%2A%20OtherToken%20%2A%2F%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20AlertToken%20%2A%2F%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Function%20calls%20%2A%2F%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%2F%2A%20ErrorTok%20%2A%2F%0A%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div id="header">
+<h1 class="title">quanteda Design and Work Flow</h1>
+<h4 class="author"><em>Ken Benoit and Paul Nulty</em></h4>
+<h4 class="date"><em>3 June 2015</em></h4>
+</div>
+
+
+<div id="basic-principles" class="section level2">
+<h2>Basic Principles</h2>
+<ol style="list-style-type: decimal">
+<li><p><strong>Corpus texts should remain <em>unchanged</em> during subsequent analysis and processing.</strong> In other words, after <em>loading</em> and <em>encoding</em>, we should discourage users from modifying a corpus of texts as a form of processing, so that the corpus can act as a library and record of the original texts, prior to any downstream processing. This not only aids in replication, but also means that a corpus presents the unmodified texts to which any processing, feature selection, transformations, or sampling may be applied or reapplied, without hard-coding any changes made as part of the process of analyzing the texts. The only exception is to reshape the units of text in a corpus, but we will record the details of this reshaping to make it relatively easy to reverse unit changes. Since the definition of a “document” is part of the process of loading texts into a corpus, however, rather than processing, we will take a less stringent line on this aspect of changing a corpus.</p></li>
+<li><p><strong>A corpus should have <em>settings</em>, that can be changed.</strong> These record what a user wants to do for a project, and affects downstream processing, such as creating a dfm. Indexing will make use of these settings, and if a setting is changed, the index will need to be rebuilt.</p></li>
+<li><p><strong>A dfm should have settings, that cannot be changed.</strong> These provide a record of what was done to the text, and where it came from.</p></li>
+<li><p><strong>A dfm should consist mainly of a (sparse) matrix,</strong> that can be used for any sort of quantitative analysis. The basic structure will always be <em>documents</em> (or document groups) in rows by <em>features</em> in columns.</p></li>
+<li><p><strong>Encoding of texts</strong> should be done in the corpus, and recorded as meta-data in the corpus. We should be able to detect encodings and suggest (and perform) and conversion when storing texts in a corpus. This encoding should be <code>UTF-8</code> by default. We will use the tools available in the <code>stringi</code> package to detect and set character encodings, namely <code>stri_enc_detect()</code> and <code>stri_conv()</code>, with reports and suggestions made at the time of corpus creation.</p></li>
+</ol>
+</div>
+<div id="major-categories-of-functions" class="section level2">
+<h2>Major categories of functions</h2>
+<ol style="list-style-type: decimal">
+<li><p><strong>Corpus construction and management</strong>. These operate on a corpus, and return a corpus, or report on a corpus.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">changeunits
+corpus
+docnames, &lt;-
+docvars, &lt;-
+encoding, &lt;-
+language, &lt;-
+metacorpus, metadoc, &lt;-
+ndoc
+ntoken
+segment      <span class="co"># also works on character vectors</span>
+settings, &lt;-
+subset
+summary
+textfile
+texts, &lt;-<span class="st">    </span><span class="co"># see Question below</span></code></pre></div>
+<p>Question: Should <code>texts() &lt;-</code> have a replacement function? This violates basic principle 1 above. It is included for convenience, since sometimes texts might need to be modified, and this prevents users from addressing internal corpus object slots directly.</p></li>
+<li><p><strong>Text manipulation.</strong> These operate on character vectors, and return character vectors.</p>
+<ol style="list-style-type: decimal">
+<li><p>Operations on character vectors or the character vector of texts from a corpus.</p>
+<p>Returns a list of character vectors:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tokenize</code></pre></div>
+<p>Returning a character vector:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">phrasetotoken</code></pre></div>
+<p>Returns a <code>collocations</code> object,</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">collocations</code></pre></div>
+<p>Returns a screen output and data/frame:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">kwic</code></pre></div>
+<p>Counts the number of tokens:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ntoken</code></pre></div></li>
+<li><p>Operations on character vectors of <em>tokens only</em>, returning a character vector of tokens:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">syllables
+wordstem</code></pre></div></li>
+<li><p>Operations on character vectors of <em>tokens</em>, but also dfm objects and collocations:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">removeFeatures</code></pre></div></li>
+<li><p>Operations that <em>previously</em> worked (currently work) on character vectors of any size, but that will now be folded into Workflow Step 2 functions (see below) as part of tokenize:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bigrams
+ngrams
+clean</code></pre></div></li>
+</ol></li>
+<li><p><strong><code>dfm</code> construction and manipulation.</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dfm         <span class="co"># also works directly on (the texts of) a corpus</span>
+convert
+docfreq
+docnames
+features
+lexdiv
+ndoc
+ntoken
+plot
+print, show
+removeFeatures
+similarity
+sort
+textmodel, textmodel_*
+topfeatures
+trim
+weight
+settings</code></pre></div></li>
+<li><p><strong>Auxiliary functions</strong>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dictionary
+stopwords
+textfile</code></pre></div></li>
+<li><p><strong>Example datasets and objects</strong>.</p>
+<p>Example data objects:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exampleString       <span class="co"># character, length 1</span>
+ukimmigTexts        <span class="co"># character, length 14</span>
+inaugTexts          <span class="co"># character, length 57</span>
+ie2010Corpus        <span class="co"># corpus</span>
+inaugCorpus         <span class="co"># corpus</span>
+LBGexample          <span class="co"># dfm</span></code></pre></div>
+<p>and some built-in objects used by functions:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">englishSyllables    <span class="co"># named character vector, length 133245</span>
+stopwords           <span class="co"># named list .stopwords, length 16</span></code></pre></div></li>
+</ol>
+</div>
+<div id="basic-workflow-steps" class="section level2">
+<h2>Basic workflow steps</h2>
+<ol style="list-style-type: decimal">
+<li><p>Creating the corpus</p>
+<p>Reading files, probably using <code>textfile()</code>, then creating a corpus using <code>corpus()</code>, making sure the texts have a common encoding, and adding document variables (<code>docvars</code>) and metadata (<code>metadoc</code> and <code>metacorpus</code>).</p></li>
+<li><p>Defining and delimiting documents</p>
+<p>Defining what are “texts”, for instance using <code>changeunits</code> or grouping.</p>
+<p>Suggestion: add a <code>groups=</code> option to <code>texts()</code>, to extract texts from a corpus concatenated by groups of document variables. (This functionality is currently only available through <code>dfm</code>.)</p></li>
+<li><p>Defining and delimiting textual features</p>
+This step involves defining and extracting the relevant features from each document, using:
+<ul>
+<li><code>tokenize</code>, the main function for this step, involves indentifying instances of defined features (“tokens”) and extracting them as vectors. Usually these will consist of words, but may also consist of:</li>
+<li><code>bigrams</code> or <code>ngrams</code>, adjacent sequences of words, not separated by punctuation marks or sentence boundaries; including</li>
+<li>multi-word expressions, through <code>phrasetotoken</code>, for selected word ngrams as identified in selected lists rather than simply using all adjacent word pairs or n-sequences.</li>
+</ul>
+By defining the broad class of tokens we wish to extract, in this step we also apply rules that will keep or ignore elements such as punctuation or digits, or special aggregations of word and other characters that make up URLS, Twitter tags, or currency-prefixed digits. This will involve adding the following options to <code>tokenize</code>:
+<ul>
+<li><code>removeDigits</code></li>
+<li><code>removePunct</code></li>
+<li><code>removeAdditional</code></li>
+<li><code>removeTwitter</code>*</li>
+<li><code>removeURL</code>* And for convenience and speed, although we more appropriately view this as part of the next workflow step, we will also add an option:</li>
+<li><code>toLower</code></li>
+</ul>
+<p>Since the tokenizer we will use may not distinguish the puncutation characters used in constructs such as URLs, email addresses, Twitter handles, or digits prefixed by currency symbols, we will mostly need to use a substitution strategy to replace these with alternative characters prior to tokenization, and then replace the substitutions with the original characters. This will slow down processing but will only be active by explicit user request for this type of handling to take place. We could offer three possible options here, such as for URLs, consisting of <code>c(&quot;ignore&quot;, &quot;keep&quot;, &quot;remove&quot;, &quot;ignore&quot;)</code>, to pretend they do not exist and tokenize come what may, to preserve remove URLs in their entirety as “tokens”, or to remove them completely, respectively.</p>
+<p>Note that that defining and delimiting features may alao include their <em>parts of speech</em>, meaning we will need to add functionality for POS tagging and extraction in this step.</p></li>
+<li><p>Further feature selection</p>
+Once features have been identified and separated from the texts in the tokenization step, features may be removed from token lists, or handled as part of <code>dfm</code> construction. Features may be:
+<ul>
+<li><em>eliminated</em> through use of predefined lists or patterns of <em>stop words</em>, using <code>removeFeatures</code> or <code>ignoredFeatures</code> (<code>dfm</code> option)</li>
+<li><em>kept</em> through through use of predefined lists or patterns of <em>stop words</em>, using <code>removeFeatures</code> or <code>keptFeaures</code> (<code>dfm</code> option)</li>
+<li><em>collapsed</em> by:
+<ul>
+<li>considering morphological variations as equivalent to a stem or lemma, through the <code>stem</code> option in <code>dfm</code></li>
+<li>considering lists of features as equivalent to a <em>dictionary</em> key, either exclusively (<code>dfm</code> option <code>dictionary</code>) or as a supplement to uncollapsed features (<code>dfm</code> option <code>thesaurus</code>)</li>
+<li><code>toLower</code> to consider as equivalent the same word features despite having different cases, by converting all features to lower case</li>
+</ul></li>
+</ul>
+<p>It will be sometimes possible, to perform these steps separately from the <code>dfm</code> creating stage, but in most cases these steps will be performed as options to the <code>dfm</code> function.</p></li>
+<li><p>Analysis of the documents and features</p>
+<ol style="list-style-type: decimal">
+<li><p>From a corpus.</p>
+These steps don’t necessarily require the processing steps above.
+<ul>
+<li><code>kwic</code></li>
+<li><code>lexdiv</code></li>
+<li><code>summary</code></li>
+</ul></li>
+<li><p>From a dfm – after <code>dfm</code> on the processed document and features.</p></li>
+</ol></li>
+</ol>
+</div>
+<div id="dfm-the-swiss-army-knife" class="section level2">
+<h2><code>dfm</code>, the Swiss Army knife</h2>
+<ol style="list-style-type: decimal">
+<li><p>Most common use case</p>
+<p>In most cases, users will use the default settings to create a dfm straight from a corpus. <code>dfm</code> will combine steps 3–4, even though basic functions will be available to perform these separately. All options shown in steps 3–4 will be available from <code>dfm</code>.</p></li>
+<li><p>If separate steps are desired</p>
+<p>We will do our best to ensure that all functions allow piping using the <code>magrittr</code> package, e.g.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw">texts</span>(mycorpus, <span class="dt">group =</span> <span class="st">&quot;party&quot;</span>) %&gt;%<span class="st"> </span>toLower %&gt;%<span class="st"> </span>tokenize %&gt;%<span class="st"> </span>wordstem %&gt;%
+<span class="st">                                </span><span class="kw">removeFeatures</span>(<span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>)) %&gt;%<span class="st"> </span>dfm</code></pre></div>
+<p>We recognize however that not all sequences will make sense, for instance <code>wordstem</code> will only work <em>after</em> tokenization, and will try to catch these errors and make the proper sequence clear to users.</p></li>
+</ol>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
