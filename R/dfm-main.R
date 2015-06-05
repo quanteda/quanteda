@@ -176,7 +176,7 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
                           fromCorpus=FALSE, bigrams=FALSE,
                           include.unigrams=TRUE,
                           thesaurus=NULL, dictionary=NULL, dictionary_regex=FALSE, 
-                          addto=NULL, 
+                          addto=NULL, mc=FALSE,
                           ...) {
     startTime <- proc.time()
     matrixType <- match.arg(matrixType)
@@ -194,10 +194,18 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     if (verbose) cat("\n   ... ", ifelse(clean, "cleaning and ", ""), "tokenizing texts", sep="")
     if (!bigrams) {
         # tokenizedTexts <- lapply(x, tokenizeSingle2, sep=" ")
-        if (clean)
-            tokenizedTexts <- tokenize(x, ...)
-        else
+        if (clean){
+            if(mc){
+                tempFun <- function(y) tokenize(y, ...)
+                tokenizedTexts <- mcmapply(x, FUN=tempFun,  USE.NAMES=FALSE, mc.cores=detectCores())
+            }else{
+                tokenizedTexts <- tokenize(x, ...)
+            }
+        }
+        else{
             tokenizedTexts <- tokenize(x, removeDigits = FALSE, removePunct = FALSE, toLower = FALSE, removeURL = FALSE)
+        }
+            
         
     } else {
         if (verbose) cat("\n   ...", ifelse(clean, "cleaning and ", ""), "forming bigrams", sep="")
