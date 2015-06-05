@@ -26,6 +26,7 @@ Imports:
     SnowballC,
     wordcloud,
     proxy,
+    parallel,
     Rcpp,
     ca,
     stringi

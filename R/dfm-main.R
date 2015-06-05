@@ -29,8 +29,8 @@ dfm <- function(x, ...) {
 
 #' @rdname dfm
 #' @param verbose display messages if \code{TRUE}
-#' @param clean if \code{FALSE}, do no cleaning of the text.  This offers a
-#'   one-argument easy method to turn off any cleaning of the texts during
+#' @param clean if \code{FALSE}, do no cleaning of the text.  This offers a 
+#'   one-argument easy method to turn off any cleaning of the texts during 
 #'   construction of the dfm.
 #' @param stem if \code{TRUE}, stem words
 #' @param ignoredFeatures a character vector of user-supplied features to 
@@ -41,11 +41,11 @@ dfm <- function(x, ...) {
 #' @param keptFeatures a use supplied regular expression defining which features
 #'   to keep, while excluding all others.  This can be used in lieu of a 
 #'   dictionary if there are only specific features that a user wishes to keep. 
-#'   To extract only Twitter usernames, for example, set \code{keptFeatures =
-#'   "^@@\\\w+\\\b"} and make sure that \code{removeTwitter = FALSE} as an
-#'   additional argument passed to \link{clean}.  (Note: \code{keptFeatures =
-#'   "^@@"} will also retrieve usernames, but does not enforce the username
-#'   convention that a username must contain one and only one \code{@@} symbol,
+#'   To extract only Twitter usernames, for example, set \code{keptFeatures = 
+#'   "^@@\\\w+\\\b"} and make sure that \code{removeTwitter = FALSE} as an 
+#'   additional argument passed to \link{clean}.  (Note: \code{keptFeatures = 
+#'   "^@@"} will also retrieve usernames, but does not enforce the username 
+#'   convention that a username must contain one and only one \code{@@} symbol, 
 #'   at the beginning of the username.)
 #' @param dictionary A list of character vector dictionary entries, including 
 #'   regular expressions (see examples)
@@ -60,7 +60,8 @@ dfm <- function(x, ...) {
 #'   regular expression format, otherwise it will be converted from "wildcard" 
 #'   format
 #' @param bigrams include bigrams as well as unigram features, if \code{TRUE}
-#' @param include.unigrams exclude unigrams if \code{TRUE}; only used if \code{bigrams=TRUE}
+#' @param include.unigrams exclude unigrams if \code{TRUE}; only used if
+#'   \code{bigrams=TRUE}
 #' @param addto \code{NULL} by default, but if an existing dfm object is 
 #'   specified, then the new dfm will be added to the one named. If both 
 #'   \link{dfm}'s are built from dictionaries, the combined dfm will have its 
@@ -79,6 +80,8 @@ dfm <- function(x, ...) {
 #'   \code{sparse} produce a sparse matrix of class \code{dgCMatrix} from the 
 #'   \pkg{\link{Matrix}} package.
 #' @param fromCorpus a system flag used internally, soon to be phased out.
+#' @param mc if TRUE, tokenization is parallelized with mcmapply, using
+#'   detectCores(). parallel uses forking, so will not work on Windows.
 #' @return A \link{dfm-class} object containing a sparse matrix representation 
 #'   of the counts of features by document, along with associated settings and 
 #'   metadata.
@@ -86,6 +89,7 @@ dfm <- function(x, ...) {
 #'   If you used \code{matrixType = "dense"} then the return is an old-style S3 
 #'   matrix class object with additional attributes representing meta-data.
 #' @author Kenneth Benoit
+#' @importFrom parallel detectCores mcmapply
 #' @import data.table Matrix
 #' @export
 #' @examples
@@ -97,7 +101,7 @@ dfm <- function(x, ...) {
 #' 
 #' # for a corpus
 #' mydfm <- dfm(subset(inaugCorpus, Year>1980))
-#'
+#' 
 #' # grouping documents by docvars in a corpus
 #' mydfmGrouped <- dfm(subset(inaugCorpus, Year>1980), groups = "President")
 #' 

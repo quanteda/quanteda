@@ -14,7 +14,7 @@ dfm(x, ...)
   ignoredFeatures = NULL, keptFeatures = NULL, matrixType = c("sparse",
   "dense"), language = "english", fromCorpus = FALSE, bigrams = FALSE,
   include.unigrams = TRUE, thesaurus = NULL, dictionary = NULL,
-  dictionary_regex = FALSE, addto = NULL, ...)
+  dictionary_regex = FALSE, addto = NULL, mc = FALSE, ...)
 
 \method{dfm}{corpus}(x, verbose = TRUE, clean = TRUE, stem = FALSE,
   ignoredFeatures = NULL, keptFeatures = NULL, matrixType = c("sparse",
@@ -74,7 +74,8 @@ stopwords.}
 
 \item{bigrams}{include bigrams as well as unigram features, if \code{TRUE}}
 
-\item{include.unigrams}{exclude unigrams if \code{TRUE}; only used if \code{bigrams=TRUE}}
+\item{include.unigrams}{exclude unigrams if \code{TRUE}; only used if
+\code{bigrams=TRUE}}
 
 \item{thesaurus}{A list of character vector "thesaurus" entries, in a
 dictionary list format, which can also include regular expressions  if
@@ -95,6 +96,9 @@ format}
 specified, then the new dfm will be added to the one named. If both
 \link{dfm}'s are built from dictionaries, the combined dfm will have its
 \code{Non_Dictionary} total adjusted.}
+
+\item{mc}{if TRUE, tokenization is parallelized with mcmapply, using
+detectCores(). parallel uses forking, so will not work on Windows.}
 
 \item{groups}{Grouping variable for aggregating documents}
 }
