@@ -80,7 +80,7 @@ dfm <- function(x, ...) {
 #'   \code{sparse} produce a sparse matrix of class \code{dgCMatrix} from the 
 #'   \pkg{\link{Matrix}} package.
 #' @param fromCorpus a system flag used internally, soon to be phased out.
-#' @param mc if TRUE, tokenization is parallelized with mcmapply, using
+#' @param multicore if TRUE, tokenization is parallelized with mcmapply, using
 #'   detectCores(). parallel uses forking, so will not work on Windows.
 #' @return A \link{dfm-class} object containing a sparse matrix representation 
 #'   of the counts of features by document, along with associated settings and 
@@ -180,7 +180,7 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
                           fromCorpus=FALSE, bigrams=FALSE,
                           include.unigrams=TRUE,
                           thesaurus=NULL, dictionary=NULL, dictionary_regex=FALSE, 
-                          addto=NULL, mc=FALSE,
+                          addto=NULL, multicore=FALSE,
                           ...) {
     startTime <- proc.time()
     matrixType <- match.arg(matrixType)
@@ -199,7 +199,8 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     if (!bigrams) {
         # tokenizedTexts <- lapply(x, tokenizeSingle2, sep=" ")
         if (clean){
-            if(mc){
+            if(multicore){
+                if(verbose) cat(paste(" using ", detectCores(), " cores...", sep=""))
                 tempFun <- function(y) tokenize(y, ...)
                 tokenizedTexts <- mcmapply(x, FUN=tempFun,  USE.NAMES=FALSE, mc.cores=detectCores())
             }else{
