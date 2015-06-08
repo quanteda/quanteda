@@ -20,9 +20,10 @@ Convert texts to lower case
 }
 \examples{
 # same for character vectors and for lists
-tokensFromChar <- tokenize(inaugTexts[1:3])
-tokensFromCorp <- tokenize(subset(inaugCorpus, Year<1798))
-identical(tokensFromChar, tokensFromCorp)
+lowerTexts <- toLower('A single Character vector.')
+
+toks <- tokenize(ukimmigTexts)
+lowerToks <- toLower(toks)
 str(tokensFromChar)
 }
 

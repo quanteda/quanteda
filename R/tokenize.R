@@ -1,7 +1,7 @@
 #' tokenize a set of texts
 #'
 #' Tokenize the texts from a character vector or from a corpus.
-#' @rdname tokenizeOld
+#' @rdname tokenize
 #' @aliases tokenise
 #' @param x The text(s) or corpus to be tokenized
 #' @param ... additional arguments passed to \code{\link{clean}}
@@ -15,11 +15,11 @@
 #' identical(tokensFromChar, tokensFromCorp)
 #' str(tokensFromChar)
 #' 
-tokenizeOld <- function(x, ...) {
-    UseMethod("tokenizeOld")
+tokenize <- function(x, ...) {
+    UseMethod("tokenize")
 }
 
-#' @rdname tokenizeOld
+#' @rdname tokenize
 #' @param what the unit for splitting the text, defaults to \code{"word"}. 
 #'   Available alternatives are \code{c("character", "word", "line_break",
 #'   "sentence")}. See \link[stringi]{stringi-search-boundaries}.
@@ -51,7 +51,7 @@ tokenizeOld <- function(x, ...) {
 #' tokenize("this is MY <3 4U @@myhandle gr8 stuff :-)", removeTwitter=FALSE)
 #' tokenize("great website http://textasdata.com", removeURL=FALSE)
 #' tokenize("great website http://textasdata.com", removeURL=TRUE)
-tokenizeOld.character <- function(x, simplify=FALSE, sep=NULL, what="word", cleanFirst=TRUE, verbose=FALSE, ...) {
+tokenize.character <- function(x, simplify=FALSE, sep=NULL, what="word", cleanFirst=TRUE, verbose=FALSE, ...) {
     # clean the text, with additional options
     if (verbose) cat("Starting tokenization...\n")
     result <- x
@@ -98,11 +98,11 @@ tokenizeOld.character <- function(x, simplify=FALSE, sep=NULL, what="word", clea
 
 #' @rdname tokenize
 #' @export
-tokenizeOld.corpus <- function(x, ...) {
+tokenize.corpus <- function(x, ...) {
     # get the settings for clean from the corpus and use those, 
     # unless more specific arguments are passed -- ADD THE ABILITY TO PASS THESE
     # need to include sep in this list too 
-    tokenizeOld(texts(x), ...)
+    tokenize(texts(x), ...)
 }
 
 # @rdname segment
@@ -364,8 +364,8 @@ tokenizeStrsplit <- function(s, sep=" ", ...) {
 #' tokenize a set of texts
 #'
 #' Tokenize the texts from a character vector or from a corpus.
-#' @rdname tokenize
-#' @aliases tokenise
+#' @rdname tokenize2
+#' @aliases tokenise2
 #' @param x The text(s) or corpus to be tokenized
 #' @param ... additional arguments not used
 #' @return A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
@@ -378,11 +378,11 @@ tokenizeStrsplit <- function(s, sep=" ", ...) {
 #' identical(tokensFromChar, tokensFromCorp)
 #' str(tokensFromChar)
 #' @export
-tokenize <- function(x, ...) {
-    UseMethod("tokenize")
+tokenize2 <- function(x, ...) {
+    UseMethod("tokenize2")
 }
 
-#' @rdname tokenize
+#' @rdname tokenize2
 #' @param what the unit for splitting the text, defaults to \code{"word"}. 
 #'   Available alternatives are \code{c("character", "word", "line_break", 
 #'   "sentence")}. See \link[stringi]{stringi-search-boundaries}.
@@ -418,22 +418,11 @@ tokenize <- function(x, ...) {
 #' tokenize("this is MY <3 4U @@myhandle gr8 stuff :-)", removeTwitter=FALSE)
 #' tokenize("great website http://textasdata.com", removeURL=FALSE)
 #' tokenize("great website http://textasdata.com", removeURL=TRUE)
-#' txt <- c(text1="This is €10 in 999 different ways,\n up and down; left and right!", 
-#'          text2="@@kenbenoit working: on #quanteda 2day and\t4ever.")
+#' txt <- c("This is €10 in 999 different ways, up and down; left and right!", 
+#'          "@@kenbenoit working: on #quanteda 2day and 4ever.")
 #' tokenize(txt)
-#' tokenize(txt, removeDigits=TRUE, removePunct=TRUE)
-#' tokenize(txt, removeDigits=FALSE, removePunct=TRUE)
-#' tokenize(txt, removeDigits=FALSE, removePunct=FALSE)
-tokenize.character <- function(x, what=c("word", "sentence", "character"),
-                               cleanFirst = TRUE, verbose = FALSE,  ## FOR TESTING
-                               toLower = TRUE, 
-                               removeNumbers = TRUE, 
-                               removePunct = TRUE,
-                               removeWhiteSpace = TRUE,
-                               # removeCurrency = TRUE,
-                               # removeTwitter = TRUE
-                               removeURL = FALSE,
-                               simplify=FALSE) {
+#' tokenize(txt, removeDigits=FALSE)
+tokenize2.character <- function(x, simplify=FALSE, sep=NULL, what="word", cleanFirst=TRUE, verbose=FALSE, removeDigits=TRUE, toLower=TRUE, removePunct=TRUE) {
     # clean the text, with additional options
     if (verbose) cat("Starting tokenization...\n")
     result <- x
@@ -447,20 +436,20 @@ tokenize.character <- function(x, what=c("word", "sentence", "character"),
     
     if (verbose) cat("  ...tokenizing texts")
     startTimeTok <- proc.time()
-#     if (!is.null(sep))
-#         # if the sep is desired, for manual control
-#         result <- stringi::stri_split_fixed(result, sep)
-#     else {
-#         # using the defaults in ICU
+    if (!is.null(sep))
+        # if the sep is desired, for manual control
+        result <- stringi::stri_split_fixed(result, sep)
+    else {
+        # using the defaults in ICU
         if (!(what %in% c("character", "word", "line_break", "sentence")))
             stop(what, " not a valid text boundary, see help(\"stringi-search-boundaries\", package=\"stringi\")")
         result <- stringi::stri_split_boundaries(result, 
                                                  type = what, 
-                                                 skip_word_none = removePunct, # this is what obliterates currency symbols, Twitter tags, and URLs
-                                                 skip_word_number = removeNumbers) # but does not remove 4u, 2day, etc.
+                                                 skip_word_none=TRUE, # this is what obliterates currency symbols, Twitter tags, and URLs
+                                                 skip_word_number = removeDigits) # but does not remove 4u, 2day, etc.
         # trim trailing white spaces that result from the above
         # result <- lapply(result, stringi::stri_trim_right)
-    # }
+    }
     if (verbose) cat("...total elapsed:", (proc.time() - startTimeTok)[3], "seconds.\n")
     
     if (!cleanFirst & toLower) {
