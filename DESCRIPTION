@@ -73,4 +73,5 @@ Collate:
     'textmodel-generics.R'
     'textmodel-wordfish.R'
     'textmodel-wordscores.R'
+    'toLower.R'
     'tokenize.R'

@@ -9,9 +9,10 @@
 #' @export
 #' @examples 
 #' # same for character vectors and for lists
-#' tokensFromChar <- tokenize(inaugTexts[1:3])
-#' tokensFromCorp <- tokenize(subset(inaugCorpus, Year<1798))
-#' identical(tokensFromChar, tokensFromCorp)
+#' lowerTexts <- toLower('A single Character vector.')
+#' 
+#' toks <- tokenize(ukimmigTexts)
+#' lowerToks <- toLower(toks)
 #' str(tokensFromChar)
 #' 
 toLower <- function(x, ...) {
@@ -20,10 +21,18 @@ toLower <- function(x, ...) {
 
 
 toLower.character <- function(x, ...){
-    return(stri_trans_tolower(x, locale = NULL))
+    res <- stri_trans_tolower(x, locale = NULL)
+    names(res) <- names(x)
+    return(res)
 }
 
+# tokenize could return a vector
 
 toLower.list <- function(x, ...){
-    result <- sapply(x, toLower)
+    typeTest <- all(sapply(x, is.character))
+    if(!typeTest){
+        stop("Each element of the list must be a character vector.")
+    }
+    result <- lapply(x, toLower)
 }
+
