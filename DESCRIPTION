@@ -12,13 +12,8 @@ Author: Kenneth Benoit [aut, cre],
     Pablo Barberá [ctb],
     Kohei Watanabe [ctb],
     Benjamin Lauderdale [ctb]
-<<<<<<< HEAD
 Version: 0.7.4
 Date: 2015-05-28
-=======
-Version: 0.7.2-1
-Date: 2015-05-26
->>>>>>> master
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3

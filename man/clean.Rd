@@ -60,16 +60,9 @@ clean("This is 1 sentence with 2.0 numbers in it, and one comma.", toLower=FALSE
 clean("We are his Beliebers, and him is #ourjustin @justinbieber we luv u", removeTwitter=TRUE)
 clean("Collocations can be represented as inheritance_tax using the _ character.")
 clean("But under_scores can be removed with removeAdditional.", removeAdditional="[_]")
-<<<<<<< HEAD
-clean("This is a large $1,500,000 budget")
-clean("This is a large $1,500,000 budget", removeDigits=FALSE)
-=======
 clean("This is a $1,500,000 budget and $20bn cash plus 50¢.")
 clean("This is a $1,500,000 budget and $20bn cash plus 50¢.", removeDigits=FALSE)
->>>>>>> master
 clean("URL regex from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.")
-\dontrun{clean("Here is \\u20ac20bn cash plus 50\\u00a2.")
-clean("Here is \\u20ac20bn cash plus 50\\u00a2.", removeDigits=FALSE)}
 
 # for a vector of texts
 clean(c("This is 1 sentence with 2.0 numbers in it, and one comma.",
