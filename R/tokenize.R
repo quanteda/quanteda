@@ -126,7 +126,7 @@ segmentSentence <- function(x, delimiter="[.!?:;]", perl=FALSE) {
                     "M", "MM")
     findregex <- paste("\\b(", paste(exceptions, collapse="|"), ")\\.", sep="")
     text <- gsub(findregex, "\\1", text)
-
+    
     # deal with i.e. e.g. pp. p. Cf. cf.
     text <- gsub("i\\.e\\.", "_IE_", text)
     text <- gsub("e\\.g\\.", "_EG_", text)
@@ -359,3 +359,115 @@ tokenizeStrsplit <- function(s, sep=" ", ...) {
     return(tokens)
 }
 
+
+
+#' tokenize a set of texts
+#'
+#' Tokenize the texts from a character vector or from a corpus.
+#' @rdname tokenize2
+#' @aliases tokenise2
+#' @param x The text(s) or corpus to be tokenized
+#' @param ... additional arguments not used
+#' @return A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
+#' @author Ken Benoit and Paul Nulty
+#' @export
+#' @examples 
+#' # same for character vectors and for lists
+#' tokensFromChar <- tokenize(inaugTexts[1:3])
+#' tokensFromCorp <- tokenize(subset(inaugCorpus, Year<1798))
+#' identical(tokensFromChar, tokensFromCorp)
+#' str(tokensFromChar)
+#' @export
+tokenize2 <- function(x, ...) {
+    UseMethod("tokenize2")
+}
+
+#' @rdname tokenize2
+#' @param what the unit for splitting the text, defaults to \code{"word"}. 
+#'   Available alternatives are \code{c("character", "word", "line_break", 
+#'   "sentence")}. See \link[stringi]{stringi-search-boundaries}.
+#' @param sep by default, tokenize expects a "white-space" delimiter between 
+#'   tokens. Alternatively, \code{sep} can be used to specify another character 
+#'   which delimits fields.
+#' @param simplify If \code{TRUE}, return a character vector of tokens rather 
+#'   than a list of length \code{\link{ndoc}(texts)}, with each element of the 
+#'   list containing a character vector of the tokens corresponding to that 
+#'   text.
+#' @param removeDigits Remove tokens that consist only of numbers, but not words 
+#'   that start with digits, e.g. \code{2day}
+#' @param removePunct Remove all punctuation
+#' @param cleanFirst clean before tokenizing, if TRUE.  Added for performance 
+#'   testing only -- we strongly recommend that you NOT use this argument, as we
+#'   will remove it from the function soon.
+#' @param verbose if \code{TRUE}, print timing messages to the console; off by
+#'   default
+#' @importFrom stringi stri_split_fixed stri_split_boundaries stri_trim_right
+#' @useDynLib quanteda
+#' @export
+#' @examples 
+#' # returned as a list
+#' head(tokenize(inaugTexts[57])[[1]], 10)
+#' # returned as a character vector using simplify=TRUE
+#' head(tokenize(inaugTexts[57], simplify=TRUE), 10)
+#' 
+#' # demonstrate some options with clean
+#' head(tokenize(inaugTexts[57], simplify=TRUE, removePunct=FALSE), 30)
+#' 
+#' ## MORE COMPARISONS
+#' tokenize("this is MY <3 4U @@myhandle gr8 stuff :-)", removeTwitter=TRUE)
+#' tokenize("this is MY <3 4U @@myhandle gr8 stuff :-)", removeTwitter=FALSE)
+#' tokenize("great website http://textasdata.com", removeURL=FALSE)
+#' tokenize("great website http://textasdata.com", removeURL=TRUE)
+#' txt <- c("This is €10 in 999 different ways, up and down; left and right!", 
+#'          "@@kenbenoit working: on #quanteda 2day and 4ever.")
+#' tokenize(txt)
+#' tokenize(txt, removeDigits=FALSE)
+tokenize2.character <- function(x, simplify=FALSE, sep=NULL, what="word", cleanFirst=TRUE, verbose=FALSE, removeDigits=TRUE, toLower=TRUE, removePunct=TRUE) {
+    # clean the text, with additional options
+    if (verbose) cat("Starting tokenization...\n")
+    result <- x
+    if (cleanFirst & toLower) {
+        if (verbose) cat("  ...lowercasing texts")
+        startTimeClean <- proc.time()
+        # result <- sapply(result, function(x) clean(x, ...), USE.NAMES = FALSE)
+        result <- toLower(result)
+        if (verbose) cat("...total elapsed:  ", (proc.time() - startTimeClean)[3], "seconds.\n")
+    }
+    
+    if (verbose) cat("  ...tokenizing texts")
+    startTimeTok <- proc.time()
+    if (!is.null(sep))
+        # if the sep is desired, for manual control
+        result <- stringi::stri_split_fixed(result, sep)
+    else {
+        # using the defaults in ICU
+        if (!(what %in% c("character", "word", "line_break", "sentence")))
+            stop(what, " not a valid text boundary, see help(\"stringi-search-boundaries\", package=\"stringi\")")
+        result <- stringi::stri_split_boundaries(result, 
+                                                 type = what, 
+                                                 skip_word_none=TRUE, # this is what obliterates currency symbols, Twitter tags, and URLs
+                                                 skip_word_number = removeDigits) # but does not remove 4u, 2day, etc.
+        # trim trailing white spaces that result from the above
+        # result <- lapply(result, stringi::stri_trim_right)
+    }
+    if (verbose) cat("...total elapsed:", (proc.time() - startTimeTok)[3], "seconds.\n")
+    
+    if (!cleanFirst & toLower) {
+        if (verbose) cat("  ...lowercasing texts")
+        startTimeClean <- proc.time()
+        # result <- sapply(result, clean, ..., USE.NAMES = FALSE)
+        result <- toLower(result)
+        if (verbose) cat("...total elapsed:  ", (proc.time() - startTimeClean)[3], "seconds.\n")
+    }
+    
+    if (simplify==FALSE) {
+        # stri_* destroys names, so put them back
+        names(result) <- names(x)
+    } else {
+        # or just return the tokens as a single character vector
+        result <- unlist(result)
+    }
+    if (verbose) 
+        cat("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
+    result
+}
