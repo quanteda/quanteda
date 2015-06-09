@@ -30,9 +30,7 @@ A list of length \code{\link{ndoc}(x)} of the tokens found in each
 Convert texts to lower case
 }
 \examples{
-# same for character vectors and for lists
-str(toLower(ukimmigTexts))
-str(tokenize(ukimmigTexts, toLower = FALSE))
-str(toLower(tokenize(ukimmigTexts, toLower = FALSE)))
+test1 <- c('I joined NATO and UNESCO', 'and NASA')
+toLower(test1, keepAcronyms=TRUE)
 }
 
