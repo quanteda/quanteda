@@ -26,8 +26,13 @@ toLower <- function(x, ...) {
 #' @export
 toLower.character <- function(x, cores = parallel::detectCores(), ...) {
     # Windows cannot use  mclapply
-    if (.Platform$OS.type == "windows") cores <- 1
-    res <- parallel::mclapply(x, stri_trans_tolower, mc.cores = cores, ...)
+    if (.Platform$OS.type == "windows") {
+        cl <- makeCluster(cores)
+        res <- parLapply(cl, x, stri_trans_tolower, ...)
+        stopCluster(cl)
+    } else {
+        res <- parallel::mclapply(x, stri_trans_tolower, mc.cores = cores, ...)    
+    }
     # return a character vector
     res <- simplify2array(res)
     names(res) <- names(x)
