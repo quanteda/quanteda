@@ -29,9 +29,10 @@ dfm <- function(x, ...) {
 
 #' @rdname dfm
 #' @param verbose display messages if \code{TRUE}
-#' @param clean if \code{FALSE}, do no cleaning of the text.  This offers a 
-#'   one-argument easy method to turn off any cleaning of the texts during 
-#'   construction of the dfm.
+#' @param toLower convert texts to lowercase
+#' @param removeNumbers remove numbers, see \link{tokenize}
+#' @param removePunct remove numbers, see \link{tokenize}
+#' @param removeSeparators remove separators (whitespace), see \link{tokenize}
 #' @param stem if \code{TRUE}, stem words
 #' @param ignoredFeatures a character vector of user-supplied features to 
 #'   ignore, such as "stop words".  Formerly, this was a Boolean option for 
@@ -80,8 +81,6 @@ dfm <- function(x, ...) {
 #'   \code{sparse} produce a sparse matrix of class \code{dgCMatrix} from the 
 #'   \pkg{\link{Matrix}} package.
 #' @param fromCorpus a system flag used internally, soon to be phased out.
-#' @param multicore if TRUE, tokenization is parallelized with mcmapply, using
-#'   detectCores(). parallel uses forking, so will not work on Windows.
 #' @return A \link{dfm-class} object containing a sparse matrix representation 
 #'   of the counts of features by document, along with associated settings and 
 #'   metadata.
@@ -89,7 +88,7 @@ dfm <- function(x, ...) {
 #'   If you used \code{matrixType = "dense"} then the return is an old-style S3 
 #'   matrix class object with additional attributes representing meta-data.
 #' @author Kenneth Benoit
-#' @importFrom parallel detectCores mcmapply
+#' @importFrom parallel mclapply
 #' @import data.table Matrix
 #' @export
 #' @examples
@@ -110,7 +109,7 @@ dfm <- function(x, ...) {
 #'                   ignoredFeatures=stopwords("english"),
 #'                   stem=TRUE, matrixType="dense")
 #' 
-#' ## with dictionaries
+#' # with dictionaries
 #' mycorpus <- subset(inaugCorpus, Year>1900)
 #' mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
 #'                opposition=c("Opposition", "reject", "notincorpus"),
@@ -121,7 +120,7 @@ dfm <- function(x, ...) {
 #' dictDfm <- dfm(mycorpus, dictionary=mydict)
 #' dictDfm
 #' 
-#' ## with the thesaurus feature
+#' # with the thesaurus feature
 #' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
 #'              "New York City has raised a taxes: an income tax and a sales tax.")
 #' mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax")))
@@ -129,7 +128,7 @@ dfm <- function(x, ...) {
 #' # pick up "taxes" with "tax" as a regex
 #' dfm(phrasetotoken(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE)
 #' 
-#' ## removing stopwords
+#' # removing stopwords
 #' testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
 #'              the newspaper from a boy named Seamus, in his mouth."
 #' testCorpus <- corpus(testText)
@@ -138,40 +137,29 @@ dfm <- function(x, ...) {
 #' features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE))
 #' features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE, include.unigrams=FALSE))
 #' 
-#' ## keep only certain words
+#' # keep only certain words
 #' dfm(testCorpus, keptFeatures="s$", verbose=FALSE)  # keep only words ending in "s"
+#' 
+#' # testing Twitter functions
 #' testTweets <- c("My homie @@justinbieber #justinbieber shopping in #LA yesterday #beliebers",
 #'                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
 #'                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-#' 
-#' dfm(testTweets, keptFeatures="^#")  # keep only hashtags
+#' dfm(testTweets, keptFeatures="^#", removePunct=FALSE)  # keep only hashtags
+#' ## NOT WHAT WE WERE EXPECTING - NEED TO FIX
 #' 
 #' \dontrun{
 #' # try it with approx 35,000 court documents from Lauderdale and Clark (200?)
 #' load('~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/lauderdaleClark/Opinion_files.RData')
 #' txts <- unlist(Opinion_files[1])
 #' names(txts) <- NULL
-#' 
-#' # dfms without cleaning
-#' require(Matrix)
-#' system.time(dfmsBig <- dfm(txts, toLower=FALSE, verbose=FALSE))
+#' system.time(dfmsBig <- dfm(txts))
 #' object.size(dfmsBig)
-#' dim(dfmsBig)
+#'
 #' # compare with tm
 #' require(tm)
 #' tmcorp <- VCorpus(VectorSource(txts))
 #' system.time(tmDTM <- DocumentTermMatrix(tmcorp))
 #' object.size(tmDTM)
-#' dim(tmDTM)
-#'  
-#' # with cleaning - the gsub() calls in toLower() take a long time
-#' system.time(dfmsBig <- dfm(txts, toLower=TRUE, additional="[-_\\x{h2014}]")) 
-#' object.size(dfmsBig)
-#' dim(dfmsBig) 
-#' # 100 top features
-#' topf <- colSums(dfmsBig)
-#' names(topf) <- colnames(dfmsBig)
-#' head(sort(topf, decreasing=TRUE), 100)
 #' }
 dfm.character <- function(x, verbose=TRUE, 
                           toLower=TRUE, 
@@ -179,7 +167,7 @@ dfm.character <- function(x, verbose=TRUE,
                           removePunct = TRUE,
                           removeSeparators = TRUE,
                           # removeCurrency = TRUE,
-                          # removeTwitter = TRUE,
+                          removeTwitter = TRUE,
                           # removeURL = TRUE,
                           stem=FALSE, 
                           ignoredFeatures = NULL, 
@@ -193,7 +181,6 @@ dfm.character <- function(x, verbose=TRUE,
                           dictionary=NULL, 
                           dictionary_regex=FALSE, 
                           addto=NULL, 
-                          multicore=FALSE,
                           ...) {
     startTime <- proc.time()
     matrixType <- match.arg(matrixType)
@@ -213,7 +200,9 @@ dfm.character <- function(x, verbose=TRUE,
     # includes bigram tokenization but this will be merged soon into tokenize()
     if (verbose) cat("\n   ... ", ifelse(toLower, "lowercasing and ", ""), "tokenizing texts", sep="")
     if (!bigrams) {
-        tokenizedTexts <- tokenize(x, toLower=toLower, removeNumbers=removeNumbers, removeSeparators=removeSeparators, removePunct=removePunct)
+        tokenizedTexts <- tokenize(x, toLower=toLower, removeNumbers=removeNumbers, 
+                                   removeSeparators=removeSeparators, removePunct=removePunct,
+                                   removeTwitter = removeTwitter)
     } else {
         if (verbose) cat("\n   ...", ifelse(toLower, "lowercasing and ", ""), "forming bigrams", sep="")
         if (toLower) x <- toLower(x, ...)
@@ -237,7 +226,7 @@ dfm.character <- function(x, verbose=TRUE,
         } else {
             if (verbose) cat("\n   ... stemming the tokens (", language, ")", sep="")
             # parallelization with just two cores seems to speed things up by x2
-            alltokens$features <- simplify2array(mclapply(alltokens$features, wordstem, language=language))
+            alltokens[, features := simplify2array(mclapply(alltokens$features, wordstem, language=language))]
         }
     }
     
@@ -316,7 +305,8 @@ dfm.character <- function(x, verbose=TRUE,
         alltokens <- alltokens[, by=list(docIndex,features), sum(n)]
         
         if (verbose) cat("\n   ... indexing ")
-        uniqueFeatures <- unique(unlist(alltokens$features))
+        uniqueFeatures <- unique(alltokens$features)
+        ## BETTER METHOD, BUT SLOWER, IS stri_unique()
         uniqueFeatures <- sort(uniqueFeatures)
         # are any features the null string?
         blankFeatureIndex <- which(uniqueFeatures == "")
@@ -329,7 +319,8 @@ dfm.character <- function(x, verbose=TRUE,
         setkey(alltokens, features)
         setkey(featureTable, features)
         # merge, data.table style.  warnings suppressed or it moans about mixed encodings
-        suppressWarnings(alltokens <- alltokens[featureTable])
+        ## suppressWarnings(alltokens <- alltokens[featureTable])
+        alltokens <- alltokens[featureTable]
         
         if (verbose) cat("\n   ... building sparse matrix")
         suppressWarnings(dfmresult <- sparseMatrix(i = alltokens$docIndex, 

@@ -2,7 +2,7 @@
 #'
 #' Tokenize the texts from a character vector or from a corpus.
 #' @rdname tokenizeOld
-#' @aliases tokenise
+#' @aliases tokeniseOld
 #' @param x The text(s) or corpus to be tokenized
 #' @param ... additional arguments passed to \code{\link{clean}}
 #' @return A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
@@ -34,7 +34,7 @@ tokenizeOld <- function(x, ...) {
 #'   testing only -- we strongly recommend that you NOT use this argument, as we
 #'   will remove it from the function soon.
 #' @param verbose if \code{TRUE}, print timing messages to the console; off by default
-#' @importFrom stringi stri_split_fixed stri_split_boundaries stri_trim_right
+#' @import stringi
 #' @useDynLib quanteda
 #' @export
 #' @examples 
@@ -389,22 +389,24 @@ tokenize <- function(x, ...) {
 #' @param sep by default, tokenize expects a "white-space" delimiter between 
 #'   tokens. Alternatively, \code{sep} can be used to specify another character 
 #'   which delimits fields.
-#' @param simplify If \code{TRUE}, return a character vector of tokens rather 
+#' @param simplify if \code{TRUE}, return a character vector of tokens rather 
 #'   than a list of length \code{\link{ndoc}(texts)}, with each element of the 
 #'   list containing a character vector of the tokens corresponding to that 
 #'   text.
-#' @param removeNumbers Remove tokens that consist only of numbers, but not 
+#' @param removeNumbers remove tokens that consist only of numbers, but not 
 #'   words that start with digits, e.g. \code{2day}
-#' @param removePunct Remove all punctuation
-#' @param removeSeparators Remove Separators and separator characters (spaces and
-#'   variations of spaces, plus tab, newlines, and anything else in the
+#' @param removePunct remove all punctuation
+#' @param removeTwitter remove Twitter characters \code{@@} and \code{#}; set to
+#'   \code{FALSE} if you wish to preserve these
+#' @param removeSeparators remove Separators and separator characters (spaces
+#'   and variations of spaces, plus tab, newlines, and anything else in the 
 #'   Unicode "separator" category) when \code{removePunct=FALSE}
 #' @param cleanFirst clean before tokenizing, if TRUE.  Added for performance 
 #'   testing only -- we strongly recommend that you NOT use this argument, as we
 #'   will remove it from the function soon.
 #' @param verbose if \code{TRUE}, print timing messages to the console; off by 
 #'   default
-#' @importFrom stringi stri_split_fixed stri_split_boundaries stri_trim_right stri_detect_regex
+#' @import stringi
 #' @importFrom parallel detectCores mclapply
 #' @useDynLib quanteda
 #' @export
@@ -420,8 +422,8 @@ tokenize <- function(x, ...) {
 #' head(tokenize(inaugTexts[57], simplify=TRUE, toLower=FALSE), 30)
 #' 
 #' ## MORE COMPARISONS
-#' #tokenize("this is MY <3 4U @@myhandle gr8 stuff :-)", removeTwitter=TRUE)
-#' #tokenize("this is MY <3 4U @@myhandle gr8 stuff :-)", removeTwitter=FALSE)
+#' tokenize("#textanalysis is MY <3 4U @@myhandle gr8 #stuff :-)", removeTwitter=TRUE)
+#' tokenize("#textanalysis is MY <3 4U @@myhandle gr8 #stuff :-)", removeTwitter=FALSE)
 #' #tokenize("great website http://textasdata.com", removeURL=FALSE)
 #' #tokenize("great website http://textasdata.com", removeURL=TRUE)
 #' 
@@ -444,8 +446,8 @@ tokenize.character <- function(x, what=c("word", "sentence", "character"),
                                removeNumbers = TRUE, 
                                removePunct = TRUE,
                                removeSeparators = TRUE,
+                               removeTwitter = TRUE,
                                # removeCurrency = TRUE,
-                               # removeTwitter = TRUE,
                                # removeURL = TRUE,
                                simplify=FALSE,
                                cores = parallel::detectCores(),
@@ -461,13 +463,22 @@ tokenize.character <- function(x, what=c("word", "sentence", "character"),
     
     if (verbose) cat("Starting tokenization...\n")
     result <- x
+
+    
+    if (removeTwitter == FALSE) {
+        if (verbose) cat("  ...preserving Twitter characters (#, @)")
+        startTimeClean <- proc.time()
+        result <- stringi::stri_replace_all_fixed(result, c("#", "@"), c("_ht_", "_as_"), vectorize_all = FALSE)
+        if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
+    }
+
     if (cleanFirst & toLower) {
         if (verbose) cat("  ...lowercasing texts")
         startTimeClean <- proc.time()
         result <- toLower(result)
         if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
-    
+
     if (verbose) cat("  ...tokenizing texts")
     startTimeTok <- proc.time()
     if (what != "character") {
@@ -493,6 +504,13 @@ tokenize.character <- function(x, what=c("word", "sentence", "character"),
         if (verbose) cat("  ...lowercasing texts")
         startTimeClean <- proc.time()
         result <- toLower(result)
+        if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
+    }
+    
+    if (removeTwitter == FALSE) {
+        if (verbose) cat("  ...replacing Twitter characters (#, @)")
+        startTimeClean <- proc.time()
+        result <- lapply(result, stri_replace_all_fixed, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
         if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
     

@@ -14,7 +14,8 @@ tokenize(x, ...)
 \method{tokenize}{character}(x, what = c("word", "sentence", "character"),
   cleanFirst = TRUE, verbose = FALSE, toLower = TRUE,
   removeNumbers = TRUE, removePunct = TRUE, removeSeparators = TRUE,
-  simplify = FALSE, cores = parallel::detectCores(), ...)
+  removeTwitter = TRUE, simplify = FALSE, cores = parallel::detectCores(),
+  ...)
 }
 \arguments{
 \item{x}{The text(s) or corpus to be tokenized}
@@ -32,16 +33,19 @@ will remove it from the function soon.}
 \item{verbose}{if \code{TRUE}, print timing messages to the console; off by
 default}
 
-\item{removeNumbers}{Remove tokens that consist only of numbers, but not
+\item{removeNumbers}{remove tokens that consist only of numbers, but not
 words that start with digits, e.g. \code{2day}}
 
-\item{removePunct}{Remove all punctuation}
+\item{removePunct}{remove all punctuation}
 
-\item{removeSeparators}{Remove Separators and separator characters (spaces and
-variations of spaces, plus tab, newlines, and anything else in the
+\item{removeSeparators}{remove Separators and separator characters (spaces
+and variations of spaces, plus tab, newlines, and anything else in the
 Unicode "separator" category) when \code{removePunct=FALSE}}
 
-\item{simplify}{If \code{TRUE}, return a character vector of tokens rather
+\item{removeTwitter}{remove Twitter characters \code{@} and \code{#}; set to
+\code{FALSE} if you wish to preserve these}
+
+\item{simplify}{if \code{TRUE}, return a character vector of tokens rather
 than a list of length \code{\link{ndoc}(texts)}, with each element of the
 list containing a character vector of the tokens corresponding to that
 text.}
@@ -73,8 +77,8 @@ head(tokenize(inaugTexts[57], simplify=TRUE, removePunct=FALSE), 30)
 head(tokenize(inaugTexts[57], simplify=TRUE, toLower=FALSE), 30)
 
 ## MORE COMPARISONS
-#tokenize("this is MY <3 4U @myhandle gr8 stuff :-)", removeTwitter=TRUE)
-#tokenize("this is MY <3 4U @myhandle gr8 stuff :-)", removeTwitter=FALSE)
+tokenize("#textanalysis is MY <3 4U @myhandle gr8 #stuff :-)", removeTwitter=TRUE)
+tokenize("#textanalysis is MY <3 4U @myhandle gr8 #stuff :-)", removeTwitter=FALSE)
 #tokenize("great website http://textasdata.com", removeURL=FALSE)
 #tokenize("great website http://textasdata.com", removeURL=TRUE)
 

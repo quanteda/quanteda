@@ -21,7 +21,7 @@
 #' @param removeAdditional additional characters to remove (\link[=regex]{regular expression})
 #' @param ... additional parameters
 #' @return A character vector equal in length to the original texts, after cleaning.
-#' @importFrom stringi stri_replace_all_regex stri_trim_both stri_trans_tolower
+#' @import stringi
 #' @useDynLib quanteda
 #' @export
 #' @examples

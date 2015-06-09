@@ -16,7 +16,7 @@ dfm(x, ...)
   matrixType = c("sparse", "dense"), language = "english",
   fromCorpus = FALSE, bigrams = FALSE, include.unigrams = TRUE,
   thesaurus = NULL, dictionary = NULL, dictionary_regex = FALSE,
-  addto = NULL, multicore = FALSE, ...)
+  addto = NULL, ...)
 
 \method{dfm}{corpus}(x, verbose = TRUE, toLower = TRUE, stem = FALSE,
   ignoredFeatures = NULL, keptFeatures = NULL, matrixType = c("sparse",
@@ -34,6 +34,14 @@ as.dfm(x)
 \item{...}{additional arguments passed to \code{\link{clean}}}
 
 \item{verbose}{display messages if \code{TRUE}}
+
+\item{toLower}{convert texts to lowercase}
+
+\item{removeNumbers}{remove numbers, see \link{tokenize}}
+
+\item{removePunct}{remove numbers, see \link{tokenize}}
+
+\item{removeSeparators}{remove separators (whitespace), see \link{tokenize}}
 
 \item{stem}{if \code{TRUE}, stem words}
 
@@ -95,14 +103,7 @@ specified, then the new dfm will be added to the one named. If both
 \link{dfm}'s are built from dictionaries, the combined dfm will have its
 \code{Non_Dictionary} total adjusted.}
 
-\item{multicore}{if TRUE, tokenization is parallelized with mcmapply, using
-detectCores(). parallel uses forking, so will not work on Windows.}
-
 \item{groups}{Grouping variable for aggregating documents}
-
-\item{clean}{if \code{FALSE}, do no cleaning of the text.  This offers a
-one-argument easy method to turn off any cleaning of the texts during
-construction of the dfm.}
 }
 \value{
 A \link{dfm-class} object containing a sparse matrix representation
@@ -146,7 +147,7 @@ dfmsInaug2 <- dfm(subset(inaugCorpus, Year>1980),
                   ignoredFeatures=stopwords("english"),
                   stem=TRUE, matrixType="dense")
 
-## with dictionaries
+# with dictionaries
 mycorpus <- subset(inaugCorpus, Year>1900)
 mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
                opposition=c("Opposition", "reject", "notincorpus"),
@@ -157,7 +158,7 @@ mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
 dictDfm <- dfm(mycorpus, dictionary=mydict)
 dictDfm
 
-## with the thesaurus feature
+# with the thesaurus feature
 mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
              "New York City has raised a taxes: an income tax and a sales tax.")
 mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax")))
@@ -165,7 +166,7 @@ dfm(phrasetotoken(mytexts, mydict), thesaurus=lapply(mydict, function(x) gsub("\
 # pick up "taxes" with "tax" as a regex
 dfm(phrasetotoken(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE)
 
-## removing stopwords
+# removing stopwords
 testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
              the newspaper from a boy named Seamus, in his mouth."
 testCorpus <- corpus(testText)
@@ -174,40 +175,29 @@ dfm(testCorpus, ignoredFeatures=stopwords("english"))
 features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE))
 features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE, include.unigrams=FALSE))
 
-## keep only certain words
+# keep only certain words
 dfm(testCorpus, keptFeatures="s$", verbose=FALSE)  # keep only words ending in "s"
+
+# testing Twitter functions
 testTweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday #beliebers",
                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-
-dfm(testTweets, keptFeatures="^#")  # keep only hashtags
+dfm(testTweets, keptFeatures="^#", removePunct=FALSE)  # keep only hashtags
+## NOT WHAT WE WERE EXPECTING - NEED TO FIX
 
 \dontrun{
 # try it with approx 35,000 court documents from Lauderdale and Clark (200?)
 load('~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/lauderdaleClark/Opinion_files.RData')
 txts <- unlist(Opinion_files[1])
 names(txts) <- NULL
-
-# dfms without cleaning
-require(Matrix)
-system.time(dfmsBig <- dfm(txts, toLower=FALSE, verbose=FALSE))
+system.time(dfmsBig <- dfm(txts))
 object.size(dfmsBig)
-dim(dfmsBig)
+
 # compare with tm
 require(tm)
 tmcorp <- VCorpus(VectorSource(txts))
 system.time(tmDTM <- DocumentTermMatrix(tmcorp))
 object.size(tmDTM)
-dim(tmDTM)
-
-# with cleaning - the gsub() calls in toLower() take a long time
-system.time(dfmsBig <- dfm(txts, toLower=TRUE, additional="[-_\\\\x{h2014}]"))
-object.size(dfmsBig)
-dim(dfmsBig)
-# 100 top features
-topf <- colSums(dfmsBig)
-names(topf) <- colnames(dfmsBig)
-head(sort(topf, decreasing=TRUE), 100)
 }
 }
 \author{
