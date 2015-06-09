@@ -404,7 +404,7 @@ tokenize <- function(x, ...) {
 #'   will remove it from the function soon.
 #' @param verbose if \code{TRUE}, print timing messages to the console; off by 
 #'   default
-#' @importFrom stringi stri_split_fixed stri_split_boundaries stri_trim_right
+#' @importFrom stringi stri_split_fixed stri_split_boundaries stri_trim_right stri_detect_regex
 #' @importFrom parallel detectCores mclapply
 #' @useDynLib quanteda
 #' @export
