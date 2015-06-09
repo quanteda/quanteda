@@ -13,8 +13,8 @@ tokenize(x, ...)
 
 \method{tokenize}{character}(x, what = c("word", "sentence", "character"),
   cleanFirst = TRUE, verbose = FALSE, toLower = TRUE,
-  removeNumbers = TRUE, removePunct = TRUE, removeWhiteSpace = TRUE,
-  removeURL = FALSE, simplify = FALSE)
+  removeNumbers = TRUE, removePunct = TRUE, removeSeparators = TRUE,
+  simplify = FALSE, cores = parallel::detectCores(), ...)
 }
 \arguments{
 \item{x}{The text(s) or corpus to be tokenized}
@@ -32,7 +32,14 @@ will remove it from the function soon.}
 \item{verbose}{if \code{TRUE}, print timing messages to the console; off by
 default}
 
+\item{removeNumbers}{Remove tokens that consist only of numbers, but not
+words that start with digits, e.g. \code{2day}}
+
 \item{removePunct}{Remove all punctuation}
+
+\item{removeSeparators}{Remove Separators and separator characters (spaces and
+variations of spaces, plus tab, newlines, and anything else in the
+Unicode "separator" category) when \code{removePunct=FALSE}}
 
 \item{simplify}{If \code{TRUE}, return a character vector of tokens rather
 than a list of length \code{\link{ndoc}(texts)}, with each element of the
@@ -42,9 +49,6 @@ text.}
 \item{sep}{by default, tokenize expects a "white-space" delimiter between
 tokens. Alternatively, \code{sep} can be used to specify another character
 which delimits fields.}
-
-\item{removeDigits}{Remove tokens that consist only of numbers, but not words
-that start with digits, e.g. \code{2day}}
 }
 \value{
 A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
@@ -63,20 +67,30 @@ head(tokenize(inaugTexts[57])[[1]], 10)
 # returned as a character vector using simplify=TRUE
 head(tokenize(inaugTexts[57], simplify=TRUE), 10)
 
-# demonstrate some options with clean
+# keeping punctuation marks
 head(tokenize(inaugTexts[57], simplify=TRUE, removePunct=FALSE), 30)
+# keeping case
+head(tokenize(inaugTexts[57], simplify=TRUE, toLower=FALSE), 30)
 
 ## MORE COMPARISONS
-tokenize("this is MY <3 4U @myhandle gr8 stuff :-)", removeTwitter=TRUE)
-tokenize("this is MY <3 4U @myhandle gr8 stuff :-)", removeTwitter=FALSE)
-tokenize("great website http://textasdata.com", removeURL=FALSE)
-tokenize("great website http://textasdata.com", removeURL=TRUE)
+#tokenize("this is MY <3 4U @myhandle gr8 stuff :-)", removeTwitter=TRUE)
+#tokenize("this is MY <3 4U @myhandle gr8 stuff :-)", removeTwitter=FALSE)
+#tokenize("great website http://textasdata.com", removeURL=FALSE)
+#tokenize("great website http://textasdata.com", removeURL=TRUE)
+
 txt <- c(text1="This is €10 in 999 different ways,\\n up and down; left and right!",
-         text2="@kenbenoit working: on #quanteda 2day and\\t4ever.")
-tokenize(txt)
-tokenize(txt, removeDigits=TRUE, removePunct=TRUE)
-tokenize(txt, removeDigits=FALSE, removePunct=TRUE)
-tokenize(txt, removeDigits=FALSE, removePunct=FALSE)
+         text2="@kenbenoit working: on #quanteda 2day\\t4ever, http://textasdata.com?page=123.")
+tokenize(txt, verbose=TRUE)
+tokenize(txt, removeNumbers=TRUE, removePunct=TRUE)
+tokenize(txt, removeNumbers=FALSE, removePunct=TRUE)
+tokenize(txt, removeNumbers=TRUE, removePunct=FALSE)
+tokenize(txt, removeNumbers=FALSE, removePunct=FALSE)
+tokenize(txt, removeNumbers=FALSE, removePunct=FALSE, removeSeparators=FALSE)
+
+# character-level
+tokenize("Great website: http://textasdata.com?page=123.", what="character")
+tokenize("Great website: http://textasdata.com?page=123.", what="character",
+         removeSeparators=FALSE)
 }
 \author{
 Ken Benoit and Paul Nulty

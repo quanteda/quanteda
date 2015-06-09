@@ -2,27 +2,37 @@
 % Please edit documentation in R/toLower.R
 \name{toLower}
 \alias{toLower}
+\alias{toLower.character}
+\alias{toLower.list}
 \title{Convert texts to lower case}
 \usage{
 toLower(x, ...)
+
+\method{toLower}{character}(x, cores = parallel::detectCores(), ...)
+
+\method{toLower}{list}(x, cores = parallel::detectCores(), ...)
 }
 \arguments{
-\item{x}{The text to be lower-cased}
+\item{x}{text to be lower-cased}
 
-\item{...}{additional arguments passed to \code{\link{clean}}}
+\item{...}{additional arguments passed to \code{\link{stri_trans_tolower}},
+such as \code{locale}}
+
+\item{cores}{number of \code{mc.cores} to use in \pkg{parallel} processing
+operations, default is the (logical) system cores returned by
+\code{link[parallel]{detectCores}}}
 }
 \value{
-A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
-#'
+A list of length \code{\link{ndoc}(x)} of the tokens found in each
+  text. #'
 }
 \description{
 Convert texts to lower case
 }
 \examples{
 # same for character vectors and for lists
-tokensFromChar <- tokenize(inaugTexts[1:3])
-tokensFromCorp <- tokenize(subset(inaugCorpus, Year<1798))
-identical(tokensFromChar, tokensFromCorp)
-str(tokensFromChar)
+str(toLower(ukimmigTexts))
+str(tokenize(ukimmigTexts, toLower = FALSE))
+str(toLower(tokenize(ukimmigTexts, toLower = FALSE)))
 }
 

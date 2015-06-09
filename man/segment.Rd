@@ -45,7 +45,7 @@ Segment text(s) into tokens, sentences, paragraphs, or other sections.
 delimiters to be defined.  See details.
 }
 \details{
-Tokens are delimited by whitespace.  For sentences, the delimiter
+Tokens are delimited by Separators.  For sentences, the delimiter
   can be defined by the user.  The default for sentences includes \code{.},
   \code{!}, \code{?}, plus \code{;} and \code{:}.
 
