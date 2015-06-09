@@ -4,6 +4,7 @@
 \alias{tokenise}
 \alias{tokenize}
 \alias{tokenize.character}
+\alias{tokenize.corpus}
 \title{tokenize a set of texts}
 \usage{
 tokenize(x, ...)
@@ -13,6 +14,8 @@ tokenize(x, ...)
   removeNumbers = TRUE, removePunct = TRUE, removeSeparators = TRUE,
   removeTwitter = TRUE, simplify = FALSE, cores = parallel::detectCores(),
   ...)
+
+\method{tokenize}{corpus}(x, ...)
 }
 \arguments{
 \item{x}{The text(s) or corpus to be tokenized}

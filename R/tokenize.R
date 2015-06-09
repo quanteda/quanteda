@@ -424,3 +424,13 @@ tokenize.character <- function(x, what=c("word", "sentence", "character"),
         cat("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts\n") #, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
     result
 }
+
+#' @rdname tokenize
+#' @export
+tokenize.corpus <- function(x, ...) {
+    # get the settings for clean from the corpus and use those, 
+    # unless more specific arguments are passed -- ADD THE ABILITY TO PASS THESE
+    # need to include sep in this list too 
+    tokenize(texts(x), ...)
+}
+
