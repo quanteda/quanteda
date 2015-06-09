@@ -8,9 +8,9 @@
 \usage{
 toLower(x, ...)
 
-\method{toLower}{character}(x, cores = parallel::detectCores(), ...)
+\method{toLower}{character}(x, keepAcronyms = FALSE, ...)
 
-\method{toLower}{list}(x, cores = parallel::detectCores(), ...)
+\method{toLower}{list}(x, keepAcronyms = FALSE, ...)
 }
 \arguments{
 \item{x}{text to be lower-cased}
@@ -24,7 +24,7 @@ operations, default is the (logical) system cores returned by
 }
 \value{
 A list of length \code{\link{ndoc}(x)} of the tokens found in each
-  text. #'
+  text.
 }
 \description{
 Convert texts to lower case
