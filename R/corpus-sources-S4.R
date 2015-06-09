@@ -291,7 +291,7 @@ getFileType <- function(filenameChar) {
             return("tar")
         else if (x %in% c("xml"))
             return("xml")
-        else if (x %in% c("tab"))
+        else if (x %in% c("tab", "tsv"))
             return("tab")
         else return("unknown") }, USE.NAMES=FALSE)
 }    

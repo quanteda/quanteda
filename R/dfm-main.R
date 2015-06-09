@@ -154,7 +154,7 @@ dfm <- function(x, ...) {
 #' 
 #' # dfms without cleaning
 #' require(Matrix)
-#' system.time(dfmsBig <- dfm(txts, clean=FALSE, verbose=FALSE))
+#' system.time(dfmsBig <- dfm(txts, toLower=FALSE, verbose=FALSE))
 #' object.size(dfmsBig)
 #' dim(dfmsBig)
 #' # compare with tm
@@ -164,8 +164,8 @@ dfm <- function(x, ...) {
 #' object.size(tmDTM)
 #' dim(tmDTM)
 #'  
-#' # with cleaning - the gsub() calls in clean() take a long time
-#' system.time(dfmsBig <- dfm(txts, clean=TRUE, additional="[-_\\x{h2014}]")) 
+#' # with cleaning - the gsub() calls in toLower() take a long time
+#' system.time(dfmsBig <- dfm(txts, toLower=TRUE, additional="[-_\\x{h2014}]")) 
 #' object.size(dfmsBig)
 #' dim(dfmsBig) 
 #' # 100 top features
@@ -173,20 +173,34 @@ dfm <- function(x, ...) {
 #' names(topf) <- colnames(dfmsBig)
 #' head(sort(topf, decreasing=TRUE), 100)
 #' }
-dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, 
-                          ignoredFeatures = NULL, keptFeatures=NULL,
+dfm.character <- function(x, verbose=TRUE, 
+                          toLower=TRUE, 
+                          removeNumbers = TRUE, 
+                          removePunct = TRUE,
+                          removeSeparators = TRUE,
+                          # removeCurrency = TRUE,
+                          # removeTwitter = TRUE,
+                          # removeURL = TRUE,
+                          stem=FALSE, 
+                          ignoredFeatures = NULL, 
+                          keptFeatures=NULL,
                           matrixType=c("sparse", "dense"), 
                           language="english",
-                          fromCorpus=FALSE, bigrams=FALSE,
+                          fromCorpus=FALSE, 
+                          bigrams=FALSE,
                           include.unigrams=TRUE,
-                          thesaurus=NULL, dictionary=NULL, dictionary_regex=FALSE, 
-                          addto=NULL, multicore=FALSE,
+                          thesaurus=NULL, 
+                          dictionary=NULL, 
+                          dictionary_regex=FALSE, 
+                          addto=NULL, 
+                          multicore=FALSE,
                           ...) {
     startTime <- proc.time()
     matrixType <- match.arg(matrixType)
     if (!fromCorpus & verbose) 
         cat("Creating a dfm from a character vector ...")
     
+    # index documents
     if (verbose) cat("\n   ... indexing ", 
                      format(length(x), big.mark=","), " document",
                      ifelse(length(x) > 1, "s", ""), sep="")
@@ -194,59 +208,40 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     if (is.null(names(x))) 
         names(docIndex) <- factor(paste("text", 1:length(x), sep="")) else
             names(docIndex) <- names(x)
-    #?clean
-    if (verbose) cat("\n   ... ", ifelse(clean, "cleaning and ", ""), "tokenizing texts", sep="")
+    
+    # case conversion and tokenization
+    # includes bigram tokenization but this will be merged soon into tokenize()
+    if (verbose) cat("\n   ... ", ifelse(toLower, "lowercasing and ", ""), "tokenizing texts", sep="")
     if (!bigrams) {
-        # tokenizedTexts <- lapply(x, tokenizeSingle2, sep=" ")
-        if (clean){
-            if(multicore){
-                if(verbose) cat(paste(" using ", detectCores(), " cores...", sep=""))
-                tempFun <- function(y) tokenize(y, ...)
-                tokenizedTexts <- mcmapply(x, FUN=tempFun,  USE.NAMES=FALSE, mc.cores=detectCores())
-            }else{
-                tokenizedTexts <- tokenize(x, ...)
-            }
-        }
-        else{
-            tokenizedTexts <- tokenize(x, removeDigits = FALSE, removePunct = FALSE, toLower = FALSE, removeURL = FALSE)
-        }
-            
-        
+        tokenizedTexts <- tokenize(x, toLower=toLower, removeNumbers=removeNumbers, removeSeparators=removeSeparators, removePunct=removePunct)
     } else {
-        if (verbose) cat("\n   ...", ifelse(clean, "cleaning and ", ""), "forming bigrams", sep="")
-        if (clean) x <- clean(x, ...)
+        if (verbose) cat("\n   ...", ifelse(toLower, "lowercasing and ", ""), "forming bigrams", sep="")
+        if (toLower) x <- toLower(x, ...)
         tokenizedTexts <- bigrams(x, include.unigrams=include.unigrams)
     }
     
-    #if (verbose) cat("\n   ... shaping tokens into data.table")
+    # index features
+    if (verbose) cat("\n   ... shaping tokens into data.table")
     alltokens <- data.table(docIndex = rep(docIndex, sapply(tokenizedTexts, length)),
-                            features = unlist(tokenizedTexts))
-    alltokens <- alltokens[features != ""]
+                            features = unlist(tokenizedTexts, use.names = FALSE))
+    alltokens <- alltokens[features != ""]  # if there are any "blank" features
     if (verbose) cat(", found", format(nrow(alltokens), big.mark=","), "total tokens")
     if (verbose & bigrams) 
         cat(" incl.", format(sum(grepl("_", alltokens$features)), big.mark=","), "bigrams")
     
-#     if (clean) {
-#         if (verbose) cat("\n   ... cleaning the tokens")
-#         alltokens$features <- clean(alltokens$features, ...)
-#         if (verbose) cat(", ", nrow(alltokens[features == ""]), " removed entirely", sep="")
-#         # remove any features eliminated entirely by cleaning
-#         alltokens <- alltokens[features != ""]  ## KB 12 Feb to fix failure on dfm(inaugTexts[1])
-#     }
-    ## commented out to keep words that get removed in cleaning 
-    # alltokens <- alltokens[features != ""]
-    
+    # stemming features
     if (stem == TRUE) {
-        # require(SnowballC, quietly=TRUE)
         language <- tolower(language)
         if (!(language %in% SnowballC::getStemLanguages())) {
             cat("\n   ... WARNING: not stemming because language", language, "is unavailable")
         } else {
             if (verbose) cat("\n   ... stemming the tokens (", language, ")", sep="")
-            alltokens$features <- wordstem(alltokens$features, language=language)
+            # parallelization with just two cores seems to speed things up by x2
+            alltokens$features <- simplify2array(mclapply(alltokens$features, wordstem, language=language))
         }
     }
     
+    # "stop words" through ignoredFeatures
     if (!is.null(ignoredFeatures)) {
         if (!is.character(ignoredFeatures)) {
             cat("\n   ... WARNING: not ignoring words because not a character vector")
@@ -394,17 +389,11 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
 }
 
 
-tokenizeSingle2 <- function(s, sep=" ", useclean=FALSE, ...) {
-    if (useclean) s <- clean(s, ...)
-    # s <- unlist(s)
-    tokens <- scan(what="char", text=s, quiet=TRUE, quote="", sep=sep)
-    return(tokens)
-}
 
 #' @rdname dfm
 #' @param groups Grouping variable for aggregating documents
 #' @export
-dfm.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, 
+dfm.corpus <- function(x, verbose=TRUE, toLower=TRUE, stem=FALSE, 
                        ignoredFeatures=NULL, 
                        keptFeatures=NULL,
                        matrixType=c("sparse", "dense"), language="english",
@@ -430,7 +419,7 @@ dfm.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
         names(texts) <- docnames(x)
     }
     
-    dfm(texts, verbose=verbose, clean=clean, stem=stem, 
+    dfm(texts, verbose=verbose, toLower=toLower, stem=stem, 
         ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
         matrixType=matrixType, language=language,
         thesaurus=thesaurus, dictionary=dictionary, dictionary_regex=dictionary_regex,

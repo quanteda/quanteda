@@ -10,13 +10,15 @@
 \usage{
 dfm(x, ...)
 
-\method{dfm}{character}(x, verbose = TRUE, clean = TRUE, stem = FALSE,
-  ignoredFeatures = NULL, keptFeatures = NULL, matrixType = c("sparse",
-  "dense"), language = "english", fromCorpus = FALSE, bigrams = FALSE,
-  include.unigrams = TRUE, thesaurus = NULL, dictionary = NULL,
-  dictionary_regex = FALSE, addto = NULL, multicore = FALSE, ...)
+\method{dfm}{character}(x, verbose = TRUE, toLower = TRUE,
+  removeNumbers = TRUE, removePunct = TRUE, removeSeparators = TRUE,
+  stem = FALSE, ignoredFeatures = NULL, keptFeatures = NULL,
+  matrixType = c("sparse", "dense"), language = "english",
+  fromCorpus = FALSE, bigrams = FALSE, include.unigrams = TRUE,
+  thesaurus = NULL, dictionary = NULL, dictionary_regex = FALSE,
+  addto = NULL, multicore = FALSE, ...)
 
-\method{dfm}{corpus}(x, verbose = TRUE, clean = TRUE, stem = FALSE,
+\method{dfm}{corpus}(x, verbose = TRUE, toLower = TRUE, stem = FALSE,
   ignoredFeatures = NULL, keptFeatures = NULL, matrixType = c("sparse",
   "dense"), language = "english", groups = NULL, bigrams = FALSE,
   include.unigrams = TRUE, thesaurus = NULL, dictionary = NULL,
@@ -32,10 +34,6 @@ as.dfm(x)
 \item{...}{additional arguments passed to \code{\link{clean}}}
 
 \item{verbose}{display messages if \code{TRUE}}
-
-\item{clean}{if \code{FALSE}, do no cleaning of the text.  This offers a
-one-argument easy method to turn off any cleaning of the texts during
-construction of the dfm.}
 
 \item{stem}{if \code{TRUE}, stem words}
 
@@ -101,6 +99,10 @@ specified, then the new dfm will be added to the one named. If both
 detectCores(). parallel uses forking, so will not work on Windows.}
 
 \item{groups}{Grouping variable for aggregating documents}
+
+\item{clean}{if \code{FALSE}, do no cleaning of the text.  This offers a
+one-argument easy method to turn off any cleaning of the texts during
+construction of the dfm.}
 }
 \value{
 A \link{dfm-class} object containing a sparse matrix representation
@@ -188,7 +190,7 @@ names(txts) <- NULL
 
 # dfms without cleaning
 require(Matrix)
-system.time(dfmsBig <- dfm(txts, clean=FALSE, verbose=FALSE))
+system.time(dfmsBig <- dfm(txts, toLower=FALSE, verbose=FALSE))
 object.size(dfmsBig)
 dim(dfmsBig)
 # compare with tm
@@ -198,8 +200,8 @@ system.time(tmDTM <- DocumentTermMatrix(tmcorp))
 object.size(tmDTM)
 dim(tmDTM)
 
-# with cleaning - the gsub() calls in clean() take a long time
-system.time(dfmsBig <- dfm(txts, clean=TRUE, additional="[-_\\\\x{h2014}]"))
+# with cleaning - the gsub() calls in toLower() take a long time
+system.time(dfmsBig <- dfm(txts, toLower=TRUE, additional="[-_\\\\x{h2014}]"))
 object.size(dfmsBig)
 dim(dfmsBig)
 # 100 top features
