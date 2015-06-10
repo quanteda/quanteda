@@ -334,7 +334,7 @@ tokenize <- function(x, ...) {
 #' tokenize("Great website: http://textasdata.com?page=123.", what="character")
 #' tokenize("Great website: http://textasdata.com?page=123.", what="character", 
 #'          removeSeparators=FALSE)
-tokenize.character <- function(x, what=c("word", "sentence", "character"),
+tokenize.character <- function(x, what=c("word", "sentence", "character", "fastestword", "fasterword"),
                                cleanFirst = TRUE, verbose = FALSE,  ## FOR TESTING
                                toLower = TRUE, 
                                removeNumbers = TRUE, 
@@ -352,48 +352,62 @@ tokenize.character <- function(x, what=c("word", "sentence", "character"),
     }
     
     what <- match.arg(what)
-    if (!(what %in% c("character", "word", "line_break", "sentence")))
-        stop(what, " not a valid text boundary, see help(\"stringi-search-boundaries\", package=\"stringi\")")
+#     if (!(what %in% c("character", "word", "line_break", "sentence", "fastestword", "fasterword")))
+#         stop(what, " not a valid text boundary, see help(\"stringi-search-boundaries\", package=\"stringi\")")
     
     if (verbose) cat("Starting tokenization...\n")
     result <- x
-
     
-    if (removeTwitter == FALSE) {
+    
+    if (removeTwitter == FALSE & what != "fastword") {
         if (verbose) cat("  ...preserving Twitter characters (#, @)")
         startTimeClean <- proc.time()
         result <- stringi::stri_replace_all_fixed(result, c("#", "@"), c("_ht_", "_as_"), vectorize_all = FALSE)
         if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
-
+    
     if (cleanFirst & toLower) {
         if (verbose) cat("  ...lowercasing texts")
         startTimeClean <- proc.time()
         result <- toLower(result)
         if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
-
+    
     if (verbose) cat("  ...tokenizing texts")
     startTimeTok <- proc.time()
-    if (what != "character") {
+    if (what %in% c("fasterword", "fastestword")) {
+
+        if (verbose & removeNumbers==TRUE) cat(", removing numbers")
+        if (verbose & removePunct==TRUE) cat(", removing punctuation")
+        regexToEliminate <- paste0(ifelse(removeNumbers, "\\b\\d+\\b|", ""),
+                                   ifelse(removePunct, paste0("(?![", ifelse(removeTwitter, "_", "@#_"), "])[[:punct:]]"), "|"))
+        if (regexToEliminate != "|")
+            result <- stri_replace_all_regex(result, regexToEliminate, "")
+        
+        if (verbose & removePunct==TRUE) cat(", ", what, "tokenizing", sep="")
+        if (what=="fastestword")
+            result <- stringi::stri_split_fixed(result, " ")
+        else if (what=="fasterword")
+            result <- stringi::stri_split_regex(result, "\\s")
+
+    } else {
+        if (what != "character") {
         result <- stringi::stri_split_boundaries(result, 
                                                  type = what, 
                                                  skip_word_none = removePunct, # this is what obliterates currency symbols, Twitter tags, and URLs
                                                  skip_word_number = removeNumbers) # but does not remove 4u, 2day, etc.
-    } else {
+        } else {
         result <- stringi::stri_split_boundaries(result, type = what)
         # note: does not implement removePunct or removeNumbers
+        }
     }
-        # trim trailing white spaces that result from the above
-        # result <- lapply(result, stringi::stri_trim_right)
-    # }
     if (verbose) cat("...total elapsed: ", (proc.time() - startTimeTok)[3], "seconds.\n")
     
-    if (removeSeparators & !removePunct) {
+    if (removeSeparators & !removePunct & what != "fastword") {
         if (verbose) cat("...removing separators.\n")
         result <- lapply(result, function(x) x[-which(stri_detect_regex(x, "^\\s$"))]) 
     }
-
+    
     if (!cleanFirst & toLower) {
         if (verbose) cat("  ...lowercasing texts")
         startTimeClean <- proc.time()
@@ -401,7 +415,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character"),
         if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
     
-    if (removeTwitter == FALSE) {
+    if (removeTwitter == FALSE & what != "fastword") {
         if (verbose) cat("  ...replacing Twitter characters (#, @)")
         startTimeClean <- proc.time()
         result <- lapply(result, stringi::stri_replace_all_fixed, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)

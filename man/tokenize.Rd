@@ -9,11 +9,11 @@
 \usage{
 tokenize(x, ...)
 
-\method{tokenize}{character}(x, what = c("word", "sentence", "character"),
-  cleanFirst = TRUE, verbose = FALSE, toLower = TRUE,
-  removeNumbers = TRUE, removePunct = TRUE, removeSeparators = TRUE,
-  removeTwitter = TRUE, simplify = FALSE, cores = parallel::detectCores(),
-  ...)
+\method{tokenize}{character}(x, what = c("word", "sentence", "character",
+  "fastestword", "fasterword"), cleanFirst = TRUE, verbose = FALSE,
+  toLower = TRUE, removeNumbers = TRUE, removePunct = TRUE,
+  removeSeparators = TRUE, removeTwitter = TRUE, simplify = FALSE,
+  cores = parallel::detectCores(), ...)
 
 \method{tokenize}{corpus}(x, ...)
 }
