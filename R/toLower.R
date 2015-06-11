@@ -10,8 +10,7 @@
 #'   such as \code{locale}
 #' @return A list of length \code{\link{ndoc}(x)} of the tokens found in each 
 #'   text. 
-#' @importFrom stringi stri_split_fixed stri_split_boundaries 
-#'   stri_trim_right
+#' @import stringi
 #' @importFrom parallel detectCores
 #' @export
 #' @examples 

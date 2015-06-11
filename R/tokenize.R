@@ -1,109 +1,3 @@
-#' tokenize a set of texts
-#'
-#' Tokenize the texts from a character vector or from a corpus.
-#' @rdname tokenizeOld
-#' @aliases tokeniseOld
-#' @param x The text(s) or corpus to be tokenized
-#' @param ... additional arguments passed to \code{\link{clean}}
-#' @return A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
-#' @author Kohei Watanabe (C++ code), Ken Benoit, and Paul Nulty
-#' @export
-#' @examples 
-#' # same for character vectors and for lists
-#' tokensFromChar <- tokenize(inaugTexts[1:3])
-#' tokensFromCorp <- tokenize(subset(inaugCorpus, Year<1798))
-#' identical(tokensFromChar, tokensFromCorp)
-#' str(tokensFromChar)
-#' 
-tokenizeOld <- function(x, ...) {
-    UseMethod("tokenizeOld")
-}
-
-#' @rdname tokenizeOld
-#' @param what the unit for splitting the text, defaults to \code{"word"}. 
-#'   Available alternatives are \code{c("character", "word", "line_break",
-#'   "sentence")}. See \link[stringi]{stringi-search-boundaries}.
-#' @param sep by default, tokenize expects a "white-space" delimiter between 
-#'   tokens. Alternatively, \code{sep} can be used to specify another character 
-#'   which delimits fields.
-#' @param simplify If \code{TRUE}, return a character vector of tokens rather 
-#'   than a list of length \code{\link{ndoc}(texts)}, with each element of the 
-#'   list containing a character vector of the tokens corresponding to that 
-#'   text.
-#' @param cleanFirst clean before tokenizing, if TRUE.  Added for performance 
-#'   testing only -- we strongly recommend that you NOT use this argument, as we
-#'   will remove it from the function soon.
-#' @param verbose if \code{TRUE}, print timing messages to the console; off by default
-#' @import stringi
-#' @useDynLib quanteda
-#' @export
-#' @examples 
-#' # returned as a list
-#' head(tokenize(inaugTexts[57])[[1]], 10)
-#' # returned as a character vector using simplify=TRUE
-#' head(tokenize(inaugTexts[57], simplify=TRUE), 10)
-#' 
-#' # demonstrate some options with clean
-#' head(tokenize(inaugTexts[57], simplify=TRUE, removePunct=FALSE), 30)
-#' 
-#' ## MORE COMPARISONS
-#' tokenize("this is MY <3 4U @@myhandle gr8 stuff :-)", removeTwitter=TRUE)
-#' tokenize("this is MY <3 4U @@myhandle gr8 stuff :-)", removeTwitter=FALSE)
-#' tokenize("great website http://textasdata.com", removeURL=FALSE)
-#' tokenize("great website http://textasdata.com", removeURL=TRUE)
-tokenizeOld.character <- function(x, simplify=FALSE, sep=NULL, what="word", cleanFirst=TRUE, verbose=FALSE, ...) {
-    # clean the text, with additional options
-    if (verbose) cat("Starting tokenization...\n")
-    result <- x
-    if (cleanFirst) {
-        if (verbose) cat("  ...cleaning texts")
-        startTimeClean <- proc.time()
-        result <- sapply(result, function(x) clean(x, ...), USE.NAMES = FALSE)
-        if (verbose) cat("...total elapsed:  ", (proc.time() - startTimeClean)[3], "seconds.\n")
-    }
-    
-    if (verbose) cat("  ...tokenizing texts")
-    startTimeTok <- proc.time()
-    if (!is.null(sep))
-        # if the sep is desired, for manual control
-        result <- stringi::stri_split_fixed(result, sep)
-    else {
-        # using the defaults in ICU
-        if (!(what %in% c("character", "word", "line_break", "sentence")))
-            stop(what, " not a valid text boundary, see help(\"stringi-search-boundaries\", package=\"stringi\")")
-        result <- stringi::stri_split_boundaries(result) #, type=what, skip_word_none=TRUE)
-        # trim trailing white spaces that result from the above
-        result <- lapply(result, stringi::stri_trim_right)
-    }
-    if (verbose) cat("...total elapsed:", (proc.time() - startTimeTok)[3], "seconds.\n")
-    
-    if (!cleanFirst) {
-        if (verbose) cat("  ...cleaning texts")
-        startTimeClean <- proc.time()
-        result <- sapply(result, clean, ..., USE.NAMES = FALSE)
-        if (verbose) cat("...total elapsed:  ", (proc.time() - startTimeClean)[3], "seconds.\n")
-    }
-    
-    if (simplify==FALSE) {
-        # stri_* destroys names, so put them back
-        names(result) <- names(x)
-    } else {
-        # or just return the tokens as a single character vector
-        result <- unlist(result)
-    }
-    if (verbose) 
-        cat("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
-    result
-}
-
-#' @rdname tokenize
-#' @export
-tokenizeOld.corpus <- function(x, ...) {
-    # get the settings for clean from the corpus and use those, 
-    # unless more specific arguments are passed -- ADD THE ABILITY TO PASS THESE
-    # need to include sep in this list too 
-    tokenizeOld(texts(x), ...)
-}
 
 # @rdname segment
 # @return \code{segmentSentence} returns a character vector of sentences that
@@ -406,8 +300,8 @@ tokenize <- function(x, ...) {
 #'   will remove it from the function soon.
 #' @param verbose if \code{TRUE}, print timing messages to the console; off by 
 #'   default
-#' @import stringi
 #' @importFrom parallel detectCores mclapply
+#' @import stringi
 #' @useDynLib quanteda
 #' @export
 #' @examples 
@@ -440,7 +334,7 @@ tokenize <- function(x, ...) {
 #' tokenize("Great website: http://textasdata.com?page=123.", what="character")
 #' tokenize("Great website: http://textasdata.com?page=123.", what="character", 
 #'          removeSeparators=FALSE)
-tokenize.character <- function(x, what=c("word", "sentence", "character"),
+tokenize.character <- function(x, what=c("word", "sentence", "character", "fastestword", "fasterword"),
                                cleanFirst = TRUE, verbose = FALSE,  ## FOR TESTING
                                toLower = TRUE, 
                                removeNumbers = TRUE, 
@@ -458,48 +352,62 @@ tokenize.character <- function(x, what=c("word", "sentence", "character"),
     }
     
     what <- match.arg(what)
-    if (!(what %in% c("character", "word", "line_break", "sentence")))
-        stop(what, " not a valid text boundary, see help(\"stringi-search-boundaries\", package=\"stringi\")")
+#     if (!(what %in% c("character", "word", "line_break", "sentence", "fastestword", "fasterword")))
+#         stop(what, " not a valid text boundary, see help(\"stringi-search-boundaries\", package=\"stringi\")")
     
     if (verbose) cat("Starting tokenization...\n")
     result <- x
-
     
-    if (removeTwitter == FALSE) {
+    
+    if (removeTwitter == FALSE & what != "fastword") {
         if (verbose) cat("  ...preserving Twitter characters (#, @)")
         startTimeClean <- proc.time()
         result <- stringi::stri_replace_all_fixed(result, c("#", "@"), c("_ht_", "_as_"), vectorize_all = FALSE)
         if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
-
+    
     if (cleanFirst & toLower) {
         if (verbose) cat("  ...lowercasing texts")
         startTimeClean <- proc.time()
         result <- toLower(result)
         if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
-
+    
     if (verbose) cat("  ...tokenizing texts")
     startTimeTok <- proc.time()
-    if (what != "character") {
+    if (what %in% c("fasterword", "fastestword")) {
+
+        if (verbose & removeNumbers==TRUE) cat(", removing numbers")
+        if (verbose & removePunct==TRUE) cat(", removing punctuation")
+        regexToEliminate <- paste0(ifelse(removeNumbers, "\\b\\d+\\b|", ""),
+                                   ifelse(removePunct, paste0("(?![", ifelse(removeTwitter, "_", "@#_"), "])[[:punct:]]"), "|"))
+        if (regexToEliminate != "|")
+            result <- stri_replace_all_regex(result, regexToEliminate, "")
+        
+        if (verbose & removePunct==TRUE) cat(", ", what, "tokenizing", sep="")
+        if (what=="fastestword")
+            result <- stringi::stri_split_fixed(result, " ")
+        else if (what=="fasterword")
+            result <- stringi::stri_split_regex(result, "\\s")
+
+    } else {
+        if (what != "character") {
         result <- stringi::stri_split_boundaries(result, 
                                                  type = what, 
                                                  skip_word_none = removePunct, # this is what obliterates currency symbols, Twitter tags, and URLs
                                                  skip_word_number = removeNumbers) # but does not remove 4u, 2day, etc.
-    } else {
+        } else {
         result <- stringi::stri_split_boundaries(result, type = what)
         # note: does not implement removePunct or removeNumbers
+        }
     }
-        # trim trailing white spaces that result from the above
-        # result <- lapply(result, stringi::stri_trim_right)
-    # }
     if (verbose) cat("...total elapsed: ", (proc.time() - startTimeTok)[3], "seconds.\n")
     
-    if (removeSeparators & !removePunct) {
+    if (removeSeparators & !removePunct & what != "fastword") {
         if (verbose) cat("...removing separators.\n")
         result <- lapply(result, function(x) x[-which(stri_detect_regex(x, "^\\s$"))]) 
     }
-
+    
     if (!cleanFirst & toLower) {
         if (verbose) cat("  ...lowercasing texts")
         startTimeClean <- proc.time()
@@ -507,10 +415,10 @@ tokenize.character <- function(x, what=c("word", "sentence", "character"),
         if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
     
-    if (removeTwitter == FALSE) {
+    if (removeTwitter == FALSE & what != "fastword") {
         if (verbose) cat("  ...replacing Twitter characters (#, @)")
         startTimeClean <- proc.time()
-        result <- lapply(result, stri_replace_all_fixed, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
+        result <- lapply(result, stringi::stri_replace_all_fixed, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
         if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
     
@@ -530,3 +438,13 @@ tokenize.character <- function(x, what=c("word", "sentence", "character"),
         cat("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts\n") #, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
     result
 }
+
+#' @rdname tokenize
+#' @export
+tokenize.corpus <- function(x, ...) {
+    # get the settings for clean from the corpus and use those, 
+    # unless more specific arguments are passed -- ADD THE ABILITY TO PASS THESE
+    # need to include sep in this list too 
+    tokenize(texts(x), ...)
+}
+

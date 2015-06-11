@@ -32,7 +32,9 @@ dfm <- function(x, ...) {
 #' @param toLower convert texts to lowercase
 #' @param removeNumbers remove numbers, see \link{tokenize}
 #' @param removePunct remove numbers, see \link{tokenize}
-#' @param removeSeparators remove separators (whitespace), see \link{tokenize}
+#' @param removeTwitter if \code{FALSE}, preserve \code{#} and \code{@@}
+#'   characters, see \link{tokenize} #' @param removeSeparators remove
+#'   separators (whitespace), see \link{tokenize}
 #' @param stem if \code{TRUE}, stem words
 #' @param ignoredFeatures a character vector of user-supplied features to 
 #'   ignore, such as "stop words".  Formerly, this was a Boolean option for 
@@ -61,7 +63,7 @@ dfm <- function(x, ...) {
 #'   regular expression format, otherwise it will be converted from "wildcard" 
 #'   format
 #' @param bigrams include bigrams as well as unigram features, if \code{TRUE}
-#' @param include.unigrams exclude unigrams if \code{TRUE}; only used if
+#' @param include.unigrams exclude unigrams if \code{TRUE}; only used if 
 #'   \code{bigrams=TRUE}
 #' @param addto \code{NULL} by default, but if an existing dfm object is 
 #'   specified, then the new dfm will be added to the one named. If both 
@@ -154,7 +156,7 @@ dfm <- function(x, ...) {
 #' names(txts) <- NULL
 #' system.time(dfmsBig <- dfm(txts))
 #' object.size(dfmsBig)
-#'
+#' 
 #' # compare with tm
 #' require(tm)
 #' tmcorp <- VCorpus(VectorSource(txts))
@@ -166,8 +168,8 @@ dfm.character <- function(x, verbose=TRUE,
                           removeNumbers = TRUE, 
                           removePunct = TRUE,
                           removeSeparators = TRUE,
-                          # removeCurrency = TRUE,
                           removeTwitter = TRUE,
+                          # removeCurrency = TRUE,
                           # removeURL = TRUE,
                           stem=FALSE, 
                           ignoredFeatures = NULL, 
@@ -206,7 +208,7 @@ dfm.character <- function(x, verbose=TRUE,
     } else {
         if (verbose) cat("\n   ...", ifelse(toLower, "lowercasing and ", ""), "forming bigrams", sep="")
         if (toLower) x <- toLower(x, ...)
-        tokenizedTexts <- bigrams(x, include.unigrams=include.unigrams)
+        tokenizedTexts <- bigrams(x, ignoredFeatures = ignoredFeatures, include.unigrams=include.unigrams)
     }
     
     # index features
@@ -231,7 +233,7 @@ dfm.character <- function(x, verbose=TRUE,
     }
     
     # "stop words" through ignoredFeatures
-    if (!is.null(ignoredFeatures)) {
+    if (!is.null(ignoredFeatures) & !bigrams) {
         if (!is.character(ignoredFeatures)) {
             cat("\n   ... WARNING: not ignoring words because not a character vector")
         } else {

@@ -12,11 +12,11 @@ dfm(x, ...)
 
 \method{dfm}{character}(x, verbose = TRUE, toLower = TRUE,
   removeNumbers = TRUE, removePunct = TRUE, removeSeparators = TRUE,
-  stem = FALSE, ignoredFeatures = NULL, keptFeatures = NULL,
-  matrixType = c("sparse", "dense"), language = "english",
-  fromCorpus = FALSE, bigrams = FALSE, include.unigrams = TRUE,
-  thesaurus = NULL, dictionary = NULL, dictionary_regex = FALSE,
-  addto = NULL, ...)
+  removeTwitter = TRUE, stem = FALSE, ignoredFeatures = NULL,
+  keptFeatures = NULL, matrixType = c("sparse", "dense"),
+  language = "english", fromCorpus = FALSE, bigrams = FALSE,
+  include.unigrams = TRUE, thesaurus = NULL, dictionary = NULL,
+  dictionary_regex = FALSE, addto = NULL, ...)
 
 \method{dfm}{corpus}(x, verbose = TRUE, toLower = TRUE, stem = FALSE,
   ignoredFeatures = NULL, keptFeatures = NULL, matrixType = c("sparse",
@@ -41,7 +41,11 @@ as.dfm(x)
 
 \item{removePunct}{remove numbers, see \link{tokenize}}
 
-\item{removeSeparators}{remove separators (whitespace), see \link{tokenize}}
+\item{removeSeparators}{remove
+separators (whitespace), see \link{tokenize}}
+
+\item{removeTwitter}{if \code{FALSE}, preserve \code{#} and \code{@}
+characters, see \link{tokenize} #'}
 
 \item{stem}{if \code{TRUE}, stem words}
 
