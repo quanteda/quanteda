@@ -21,8 +21,9 @@ cleanC(x, removeDigits = TRUE, removePunct = TRUE, toLower = TRUE,
 }
 \arguments{
 \item{x}{The object to be cleaned. Can be either a character vector or a
-corpus object. If x is a corpus, \code{clean} returns the corpus containing
-the cleaned texts.}
+corpus object. Corpus texts are not intended to be directly mutable, so if
+x is a corpus, \code{clean} returns the a character vector containing the
+cleaned texts.}
 
 \item{...}{additional parameters}
 
@@ -32,20 +33,23 @@ the cleaned texts.}
 
 \item{toLower}{convert text to lower case \code{TRUE}}
 
-\item{removeAdditional}{additional characters to remove (\link[=regex]{regular expression})}
+\item{removeAdditional}{additional characters to remove
+(\link[=regex]{regular expression})}
 
 \item{removeTwitter}{if \code{FALSE}, do not remove \code{@} or \code{#}}
 
-\item{removeURL}{removes URLs (web addresses starting with \code{http:} or \code{https:}), based
-on a regular expression from \url{http://daringfireball.net/2010/07/improved_regex_for_matching_urls}}
+\item{removeURL}{removes URLs (web addresses starting with \code{http:} or
+\code{https:}), based on a regular expression from
+\url{http://daringfireball.net/2010/07/improved_regex_for_matching_urls}}
 }
 \value{
-A character vector equal in length to the original texts, after cleaning.
+A character vector equal in length to the original texts, after
+  cleaning.
 }
 \description{
 \code{clean} removes punctuation and digits from text, using the regex
-character classes for punctuation and digits. \code{clean} uses the standard R
-function \code{tolower} to convert the text to lower case. Each of these
+character classes for punctuation and digits. \code{clean} uses the standard
+R function \code{tolower} to convert the text to lower case. Each of these
 steps is optional, but switched on by default, so for example, to remove
 punctuation and convert to lower, but keep digits, the command would be:
 \code{clean(mytexts, removeDigits=FALSE)}

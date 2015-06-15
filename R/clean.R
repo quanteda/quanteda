@@ -3,24 +3,28 @@
 #' simple cleaning of text before processing
 #' 
 #' \code{clean} removes punctuation and digits from text, using the regex 
-#' character classes for punctuation and digits. \code{clean} uses the standard R
-#' function \code{tolower} to convert the text to lower case. Each of these 
+#' character classes for punctuation and digits. \code{clean} uses the standard
+#' R function \code{tolower} to convert the text to lower case. Each of these 
 #' steps is optional, but switched on by default, so for example, to remove 
 #' punctuation and convert to lower, but keep digits, the command would be: 
 #' \code{clean(mytexts, removeDigits=FALSE)}
 #' @rdname clean
 #' @param x The object to be cleaned. Can be either a character vector or a 
-#'   corpus object. If x is a corpus, \code{clean} returns the corpus containing 
-#'   the cleaned texts.
+#'   corpus object. Corpus texts are not intended to be directly mutable, so if
+#'   x is a corpus, \code{clean} returns the a character vector containing the
+#'   cleaned texts.
 #' @param removeDigits remove numbers if \code{TRUE}
 #' @param removePunct remove punctuation if \code{TRUE}
 #' @param toLower convert text to lower case \code{TRUE}
 #' @param removeTwitter if \code{FALSE}, do not remove \code{@@} or \code{#}
-#' @param removeURL removes URLs (web addresses starting with \code{http:} or \code{https:}), based 
-#' on a regular expression from \url{http://daringfireball.net/2010/07/improved_regex_for_matching_urls}
-#' @param removeAdditional additional characters to remove (\link[=regex]{regular expression})
+#' @param removeURL removes URLs (web addresses starting with \code{http:} or
+#'   \code{https:}), based on a regular expression from
+#'   \url{http://daringfireball.net/2010/07/improved_regex_for_matching_urls}
+#' @param removeAdditional additional characters to remove
+#'   (\link[=regex]{regular expression})
 #' @param ... additional parameters
-#' @return A character vector equal in length to the original texts, after cleaning.
+#' @return A character vector equal in length to the original texts, after
+#'   cleaning.
 #' @importFrom stringi stri_replace_all_regex stri_trim_both stri_trans_tolower
 #' @useDynLib quanteda
 #' @export
