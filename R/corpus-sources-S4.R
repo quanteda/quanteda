@@ -37,8 +37,10 @@ setClass("corpusSource", slots = c(texts = "character",
 #'   file must be identified by specifying a \code{textField} value.} \item{a 
 #'   wildcard value}{any valid pathname with a wildcard ("glob") expression that
 #'   can be expanded by the operating system.  This may consist of multiple file
-#'   types.} \item{\code{doc, docx}:}{Word files coming soon.} 
-#'   \item{\code{pdf}:}{Adobe Portable Document Format files, coming soon.} }
+#'   types.} \item{\code{xml}:}{Basic flat XML documents are supported -- those
+#'   of the kind supported by the function xmlToDataFrame function of the \link[XML]{XML}  package.} 
+#'   \item{\code{doc, docx}:}{Word files coming soon.} \item{\code{pdf}:}{Adobe
+#'   Portable Document Format files, coming soon.} }
 #' @param textField a variable (column) name or column number indicating where 
 #'   to find the texts that form the documents for the corpus.  This must be 
 #'   specified for file types \code{.csv} and \code{.json}.
@@ -52,8 +54,8 @@ setClass("corpusSource", slots = c(texts = "character",
 #'   or from meta-data embedded in the text file header (\code{headers}).
 #' @param sep separator used in filenames to delimit docvar elements if 
 #'   \code{docvarsfrom="filenames"} is used
-#' @param docvarnames character vector of variable names for \code{docvars}, if
-#'   \code{docvarsfrom} is specified.  If this argument is not used, default
+#' @param docvarnames character vector of variable names for \code{docvars}, if 
+#'   \code{docvarsfrom} is specified.  If this argument is not used, default 
 #'   docvar names will be used (\code{docvar1}, \code{docvar2}, ...).
 #' @param ... additional arguments passed through to other functions
 #' @details The constructor does not store a copy of the texts, but rather reads
@@ -121,6 +123,8 @@ setMethod("textfile",
                   # only works for .csv multiple files at the moment
                   # cat("file = ", file)
                   sources <- get_csvs(file, textField, ...)
+              } else if (fileType=="xml") {
+                  sources <- get_xml(file, textField, ...)
               } else {
                   stop("File type ", fileType, " not yet implemented with textField.")
               }
@@ -265,6 +269,22 @@ get_json <- function(path=NULL, textField, enc = "unknown", ...) {
         stop("column name", textField, "not found.")
     list(txts=df[, textFieldi], docv=df[, -textFieldi])
 }
+
+
+## flat xml format
+get_xml<- function(file, textField, sep=",", ...) {
+    docv <- xmlToDataFrame(file, stringsAsFactors = FALSE)
+    if (is.character(textField)) {
+        textFieldi <- which(names(docv)==textField)
+        if (length(textFieldi)==0)
+            stop("column name", textField, "not found.")
+        textField <- textFieldi
+    }
+    txts <- docv[, textField]
+    docv <- docv[, -textField]
+    list(txts=txts, docv=docv)
+}
+
 
 
 getFileType <- function(filenameChar) {
