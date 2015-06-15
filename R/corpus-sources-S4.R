@@ -324,10 +324,8 @@ get_txts <- function(filemask, textnames=NULL, ...) {
     # read texts into a character vector
     textsvec <- c() 
     for (f in filenames) {
-        #fc <- file(f, ...)
-        textsvec <- c(textsvec, paste(suppressWarnings(readLines(f)), collapse="\n"))
-        #textsvec <- c(textsvec, readChar(fc, nchars=10000000))
-        #close(fc)
+        # read texts into a character vector
+        textsvec <- sapply(filenames, function(x) paste(suppressWarnings(readLines(f)), collapse="\n"))
     }
     # name the vector with the filename by default, otherwise assign "names"
     if (!is.null(textnames)) {
