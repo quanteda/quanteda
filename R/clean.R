@@ -110,8 +110,9 @@ clean.character <- function(x, removeDigits=TRUE, removePunct=TRUE, toLower=TRUE
 #' @export
 clean.corpus <- function(x, removeDigits=TRUE, removePunct=TRUE, toLower=TRUE,
                          removeAdditional=NULL, removeTwitter=FALSE, ...) {
-    clean(texts(x), removeDigits=removeDigits, removePunct=removePunct, 
+    texts(x) <- clean(texts(x), removeDigits=removeDigits, removePunct=removePunct, 
           toLower=toLower, removeAdditional=removeAdditional, ...)
+    return(x)
 }
 
 #' stem words
