@@ -229,6 +229,36 @@ get_csvs <- function(filemask, textField, sep=",", ...) {
 }
 
 
+## csv format multiple using data.table
+get_csvs2 <- function(filemask, textField, ...) {
+    # get the pattern at the end
+    pattern <- getRootFileNames(filemask)
+    # get the directory name
+    path <- substr(filemask, 1, nchar(filemask) - nchar(pattern))
+    # get the filenames
+    filenames <- list.files(path, glob2rx(pattern), full.names=TRUE)
+    # read texts into a character vector
+    textsvec <- c()
+    docv <- NULL
+    for (f in filenames) {
+        thisdocv <- data.table::fread(f, ...)
+        if (is.character(textField)) {
+            textFieldi <- which(names(thisdocv)==textField)
+            if (length(textFieldi)==0)
+                stop("column name ", textField, " not found.")
+            textField <- textFieldi
+        }
+        textsvec <- c(textsvec, thisdocv[, textField])
+        if (is.null(docv)) {
+            docv <- thisdocv[, -textField] 
+        } else {
+            docv <- rbind(docv, thisdocv[, -textField])
+        }
+    }
+    list(txts=textsvec, docv=docv)
+}
+
+
 ## Twitter json
 get_json_tweets <- function(path=NULL, source="twitter", enc = "unknown", ...) {
     stopifnot(file.exists(path))
