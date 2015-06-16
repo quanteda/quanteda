@@ -83,3 +83,8 @@
 #  mydfm <- texts(mycorpus, group = "party") %>% toLower %>% tokenize %>% wordstem %>%
 #                                  removeFeatures(stopwords("english")) %>% dfm
 
+## ---- eval=TRUE----------------------------------------------------------
+data("ie2010Corpus")
+
+
+
