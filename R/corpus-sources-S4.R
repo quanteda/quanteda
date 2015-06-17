@@ -45,8 +45,6 @@ setClass("corpusSource", slots = c(texts = "character",
 #' @param textField a variable (column) name or column number indicating where 
 #'   to find the texts that form the documents for the corpus.  This must be 
 #'   specified for file types \code{.csv} and \code{.json}.
-#' @param directory not used yet, and may be removed (if I move this to a new 
-#'   method called \code{textfiles})
 #' @param docvarsfrom  used to specify that docvars should be taken from the 
 #'   filenames, when the \code{textfile} inputs are filenames and the elements 
 #'   of the filenames are document variables, separated by a delimiter 
@@ -74,12 +72,10 @@ setClass("corpusSource", slots = c(texts = "character",
 #' @author Kenneth Benoit and Paul Nulty
 #' @export
 setGeneric("textfile",
-           function(file, textField, directory=NULL, docvarsfrom=c("filenames"), sep="_", 
+           function(file, textField, docvarsfrom=c("filenames"), sep="_", 
                     docvarnames=NULL, ...) 
                standardGeneric("textfile"),
-           signature = c("file", "textField", "directory", "docvarsfrom", "sep", "docvarnames"))
-# setGeneric("textfile", 
-#            function(file=NULL, textField=NULL, directory=NULL, ...) standardGeneric("textfile"))
+           signature = c("file", "textField", "docvarsfrom", "sep", "docvarnames"))
 
 # FROM THE MATRIX PACKAGE - no need to duplicate here
 # setClassUnion("index", members =  c("numeric", "integer", "logical", "character"))
@@ -112,9 +108,9 @@ setGeneric("textfile",
 #' summary(corpus(mytf6))
 #' }
 setMethod("textfile", 
-          signature(file = "character", textField = "index", directory = "missing", 
+          signature(file = "character", textField = "index", 
                     docvarsfrom="missing", sep="missing", docvarnames="missing"),
-          definition = function(file, textField, directory=NULL, ...) {
+          definition = function(file, textField, ...) {
               fileType <- getFileType(file)
               if (fileType == "csv") {
                   if (length(textField) != 1)
@@ -145,9 +141,9 @@ setMethod("textfile",
 #' @rdname textfile
 #' @export
 setMethod("textfile", 
-          signature(file = "character", textField = "missing", directory = "missing", 
+          signature(file = "character", textField = "missing",
                     docvarsfrom="missing", sep="missing", docvarnames="missing"),
-          definition = function(file, textField=NULL, directory=NULL, ...) {
+          definition = function(file, textField=NULL, ...) {
               fileType <- getFileType(file)
               if (fileType == "json") {
                   # hard-wired for Twitter json only at the moment
@@ -167,9 +163,9 @@ setMethod("textfile",
 #' @rdname textfile
 #' @export
 setMethod("textfile", 
-          signature(file = "character", textField = "missing", directory = "missing", 
+          signature(file = "character", textField = "missing", 
                     docvarsfrom="character", sep="ANY", docvarnames="ANY"),
-          definition = function(file, textField=NULL, directory=NULL, 
+          definition = function(file, textField=NULL, 
                                 docvarsfrom=c("headers"), sep="_", docvarnames=NULL, ...) {
               fileType <- getFileType(file)
               if (fileType=="filemask") {
@@ -187,6 +183,8 @@ setMethod("textfile",
               save(sources, file=tempCorpusFilename)
               new("corpusSource", texts=tempCorpusFilename)
           })
+
+
 
 
 

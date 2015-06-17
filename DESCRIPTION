@@ -69,6 +69,7 @@ Collate:
     'settings.R'
     'stopwords.R'
     'syllables.R'
+    'textfile2.R'
     'textmodel-ca.R'
     'textmodel-generics.R'
     'textmodel-wordfish.R'
