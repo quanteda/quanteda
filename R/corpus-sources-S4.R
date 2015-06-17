@@ -381,11 +381,7 @@ get_txts <- function(filemask, textnames=NULL, ...) {
     # get the filenames
     filenames <- list.files(path, pattern, full.names=TRUE)
     # read texts into a character vector
-    textsvec <- c() 
-    for (f in filenames) {
-        # read texts into a character vector
-        textsvec <- sapply(filenames, function(x) paste(suppressWarnings(readLines(f)), collapse="\n"))
-    }
+    textsvec <- sapply(filenames, function(x) paste(suppressWarnings(readLines(x)), collapse="\n"))
     # name the vector with the filename by default, otherwise assign "names"
     if (!is.null(textnames)) {
         names(textsvec) <- getRootFileNames(filenames)
