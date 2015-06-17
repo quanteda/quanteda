@@ -83,8 +83,10 @@
 #  mydfm <- texts(mycorpus, group = "party") %>% toLower %>% tokenize %>% wordstem %>%
 #                                  removeFeatures(stopwords("english")) %>% dfm
 
-## ---- eval=TRUE----------------------------------------------------------
-data("ie2010Corpus")
-
-
+## ---- eval=FALSE---------------------------------------------------------
+#  mydfm <- texts(ie2010Corpus, groups = "party") %>% toLower %>% tokenize %>%
+#               removeFeatures(stopwords("english")) %>% wordstem %>% dfm
+#  
+#  # same as:
+#  mydfm2 <- dfm(ie2010Corpus, groups = "party", ignoredFeatures = stopwords("english"), stem = TRUE)
 

@@ -35,9 +35,10 @@ file must be identified by specifying a \code{textField} value.} \item{a
 wildcard value}{any valid pathname with a wildcard ("glob") expression that
 can be expanded by the operating system.  This may consist of multiple file
 types.} \item{\code{xml}:}{Basic flat XML documents are supported -- those
-of the kind supported by the function xmlToDataFrame function of the \link[XML]{XML}  package.}
-\item{\code{doc, docx}:}{Word files coming soon.} \item{\code{pdf}:}{Adobe
-Portable Document Format files, coming soon.} }}
+of the kind supported by the function xmlToDataFrame function of the
+\link[XML]{XML}  package.} \item{\code{doc, docx}:}{Word files coming
+soon.} \item{\code{pdf}:}{Adobe Portable Document Format files, coming
+soon.} }}
 
 \item{textField}{a variable (column) name or column number indicating where
 to find the texts that form the documents for the corpus.  This must be
@@ -98,7 +99,13 @@ mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt")
 summary(corpus(mytf4))
 mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt",
                   docvarsfrom="filenames", sep="-", docvarnames=c("Year", "President"))
-summary(corpus(mytf5))}
+summary(corpus(mytf5))
+# XML file
+## some locally working code here
+mytf6 <- textfile("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml",
+                  textField = "COMMON")
+summary(corpus(mytf6))
+}
 }
 \author{
 Kenneth Benoit and Paul Nulty

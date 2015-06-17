@@ -37,10 +37,11 @@ setClass("corpusSource", slots = c(texts = "character",
 #'   file must be identified by specifying a \code{textField} value.} \item{a 
 #'   wildcard value}{any valid pathname with a wildcard ("glob") expression that
 #'   can be expanded by the operating system.  This may consist of multiple file
-#'   types.} \item{\code{xml}:}{Basic flat XML documents are supported -- those
-#'   of the kind supported by the function xmlToDataFrame function of the \link[XML]{XML}  package.} 
-#'   \item{\code{doc, docx}:}{Word files coming soon.} \item{\code{pdf}:}{Adobe
-#'   Portable Document Format files, coming soon.} }
+#'   types.} \item{\code{xml}:}{Basic flat XML documents are supported -- those 
+#'   of the kind supported by the function xmlToDataFrame function of the
+#'   \link[XML]{XML}  package.} \item{\code{doc, docx}:}{Word files coming
+#'   soon.} \item{\code{pdf}:}{Adobe Portable Document Format files, coming
+#'   soon.} }
 #' @param textField a variable (column) name or column number indicating where 
 #'   to find the texts that form the documents for the corpus.  This must be 
 #'   specified for file types \code{.csv} and \code{.json}.
@@ -69,6 +70,7 @@ setClass("corpusSource", slots = c(texts = "character",
 #'   called.
 #' @return an object of class \link{corpusSource-class} that can be read by 
 #'   \link{corpus} to construct a corpus
+#' @importFrom XML xmlToDataFrame
 #' @author Kenneth Benoit and Paul Nulty
 #' @export
 setGeneric("textfile",
@@ -102,7 +104,13 @@ setGeneric("textfile",
 #' summary(corpus(mytf4))
 #' mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", 
 #'                   docvarsfrom="filenames", sep="-", docvarnames=c("Year", "President"))
-#' summary(corpus(mytf5))}
+#' summary(corpus(mytf5))
+#' # XML file
+#' ## some locally working code here
+#' mytf6 <- textfile("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml", 
+#'                   textField = "COMMON")
+#' summary(corpus(mytf6))
+#' }
 setMethod("textfile", 
           signature(file = "character", textField = "index", directory = "missing", 
                     docvarsfrom="missing", sep="missing", docvarnames="missing"),
@@ -302,19 +310,20 @@ get_json <- function(path=NULL, textField, enc = "unknown", ...) {
 
 
 ## flat xml format
-get_xml<- function(file, textField, sep=",", ...) {
-    docv <- xmlToDataFrame(file, stringsAsFactors = FALSE)
+get_xml <- function(file, textField, sep=",", ...) {
+    if (!requireNamespace("XML", quietly = TRUE))
+        stop("You must have XML installed to read XML files.")
+    docv <- XML::xmlToDataFrame(file, stringsAsFactors = FALSE)
     if (is.character(textField)) {
         textFieldi <- which(names(docv)==textField)
         if (length(textFieldi)==0)
-            stop("column name", textField, "not found.")
+            stop("node", textField, "not found.")
         textField <- textFieldi
     }
     txts <- docv[, textField]
     docv <- docv[, -textField]
     list(txts=txts, docv=docv)
 }
-
 
 
 getFileType <- function(filenameChar) {
