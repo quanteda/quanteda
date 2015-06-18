@@ -176,14 +176,14 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
     # create the documents data frame starting with the texts
     documents <- data.frame(texts=x, row.names=names(x),
                             check.rows=TRUE, stringsAsFactors=FALSE)
-
+    
     
     # user-supplied document-level variables (one kind of meta-data)
     if (!is.null(docvars)) {
         stopifnot(nrow(docvars)==length(x))
         documents <- cbind(documents, docvars)
     } 
-
+    
     # set the encoding label if specified
     if (!is.null(enc) && enc != "unknown") {
         documents$texts <- iconv(documents$texts, enc, "UTF-8")
@@ -271,14 +271,14 @@ corpus.VCorpus <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
 print.corpus <- function(x, ...) {
     cat("Corpus consisting of ", ndoc(x), " document",
         ifelse(ndoc(x)>1, "s", ""), ".\n", sep="")
-#         ", ",
-#         ifelse(is.null(corp$tokens), "un", ""),
-#         "indexed.\n", sep="")
-#     cat("Settings:")
-#      tempSettings <- unlist(settings(corp))
-#      for (i in 1:length(tempSettings)) {
-#          print(tempSettings[i])
-#      }
+    #         ", ",
+    #         ifelse(is.null(corp$tokens), "un", ""),
+    #         "indexed.\n", sep="")
+    #     cat("Settings:")
+    #      tempSettings <- unlist(settings(corp))
+    #      for (i in 1:length(tempSettings)) {
+    #          print(tempSettings[i])
+    #      }
 }
 
 #' @return \code{is.corpus} returns \code{TRUE} if the object is a corpus
@@ -346,11 +346,12 @@ documents <- function(corp) {
 }
 
 
-#' get or set corpus texts
+#' get corpus texts
 #' 
-#' Get or replace the texts in a quanteda corpus object.
+#' Get the texts in a quanteda corpus object, with grouping options
 #' 
-#' @param corp A quanteda corpus object
+#' @param x A quanteda corpus object
+#' @param ... not currently used
 #' @return For \code{texts}, a character vector of the texts in the corpus.
 #' 
 #' For \code{texts <-}, the corpus with the updated texts.
@@ -358,20 +359,40 @@ documents <- function(corp) {
 #' @examples
 #' texts(inaugCorpus)[1]
 #' sapply(texts(inaugCorpus), nchar)  # length in characters of the inaugual corpus texts
-#'
-#' ## this doesn't work yet - need to overload `[` for this replacement function
-#' # texts(inaugTexts)[55] <- "GW Bush's second inaugural address, the condensed version."
-texts <- function(corp) {
-    temp <- documents(corp)$texts
-    names(temp) <- rownames(documents(corp))
-    temp
+#' str(texts(ie2010Corpus, groups = "party"))
+texts <- function(x, ...) {
+    UseMethod("texts")
 }
+
+#' @rdname texts
+#' @param groups character vector containing the names of document variables for
+#'   aggregating documents
+#' @export
+texts.corpus <- function(x, groups = NULL, ...) {
+    texts <- documents(x)$texts
+    if (!is.null(groups)) {
+        if (length(groups) > 1) {
+            # if more than one grouping variable
+            group.split <- lapply(documents(x)[, groups], as.factor)
+        } else {
+            # if only one grouping variable
+            group.split <- as.factor(documents(x)[,groups])
+        }
+        texts <- split(texts, group.split)
+        texts <- sapply(texts, paste, collapse = " ")
+    } else {
+        names(texts) <- docnames(x)
+    }
+    return(texts)
+}
+
+
 
 # replacement function for texts
 # warning about no data
-#' @param value character vector of the new texts
-#' @rdname texts
-#' @export
+# @param value character vector of the new texts
+# @rdname texts
+# @export
 "texts<-" <- function(corp, value) { #}, rownames=FALSE) {
     documents(corp)$texts <- value
     # if (rownames) rownames(documents(corp)) <- names(value) 
@@ -661,19 +682,19 @@ encoding <- function(x, drop=TRUE) {
 
 
 corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=FALSE) {
-  # This is the "inner" function to be called by other functions
-  # to return a subset directly, use corpus.subset
-  
-  # The select argument exists only for the methods for data frames and matrices. 
-  # It works by first replacing column names in the selection expression with the 
-  # corresponding column numbers in the data frame and then using the resulting 
-  # integer vector to index the columns. This allows the use of the standard indexing 
-  # conventions so that for example ranges of columns can be specified easily, 
-  # or single columns can be dropped
-  # as in:
-  # subset(airquality, Temp > 80, select = c(Ozone, Temp))
-  # subset(airquality, Day == 1, select = -Temp)
-  # subset(airquality, select = Ozone:Wind)
+    # This is the "inner" function to be called by other functions
+    # to return a subset directly, use corpus.subset
+    
+    # The select argument exists only for the methods for data frames and matrices. 
+    # It works by first replacing column names in the selection expression with the 
+    # corresponding column numbers in the data frame and then using the resulting 
+    # integer vector to index the columns. This allows the use of the standard indexing 
+    # conventions so that for example ranges of columns can be specified easily, 
+    # or single columns can be dropped
+    # as in:
+    # subset(airquality, Temp > 80, select = c(Ozone, Temp))
+    # subset(airquality, Day == 1, select = -Temp)
+    # subset(airquality, select = Ozone:Wind)
     if (is.null(subsetExpr)) 
         rows <- TRUE
     else {
@@ -747,13 +768,13 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
         ifelse(ndoc(object)<=n, "", 
                paste(", showing ", n, " document", ifelse(n>1, "s", ""), sep="")),
         ".\n", sep="")
-
+    
     #print(object)
     cat("\n")
     ### Turn off describeTexts until we can speed this up
     # dtexts <- describeTexts(texts(object), verbose=FALSE)
     outputdf <- data.frame(summary(texts(object)[1:min(c(n, ndoc(object)))], 
-                                         verbose=FALSE))
+                                   verbose=FALSE))
     if (!is.null(docvars(object)))
         outputdf <- cbind(outputdf, docvars(object)[1:min(c(n, ndoc(object))),, drop=FALSE])
     # if (detail) outputdf <- cbind(outputdf, metadoc(object))
@@ -819,11 +840,11 @@ changeunits <- function(corp, to=c("sentences", "paragraphs", "documents"), ...)
     # copy settings and corpus metadata
     newcorpus$settings <- corp$settings
     newcorpus$metadata <- corp$metadata
-
+    
     # modify settings flag for changeunits info
     settings(newcorpus, "unitsoriginal") <- settings(newcorpus, "units")
     settings(newcorpus, "units") <- to
-
+    
     newcorpus
 }
 
@@ -860,7 +881,7 @@ rep.data.frame <- function(x, ...)
         if (!identical(metacorpus(c1, field), metacorpus(c2, field)))
             metacorpus(c1, field) <- paste(metacorpus(c1, field), metacorpus(c2, field))
     }
-
+    
     # combine the documents info, after warning if not column-conforming
     if (!setequal(names(c1$documents), names(c2$documents)))
         warning("different document-level data found, filling missing values with NAs.", noBreaks.=TRUE)
@@ -869,7 +890,7 @@ rep.data.frame <- function(x, ...)
     
     # settings
     ### currently just use the c1 settings
-
+    
     return(c1)
 }
 

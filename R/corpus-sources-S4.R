@@ -39,7 +39,7 @@ setClass("corpusSource", slots = c(texts = "character",
 #'   can be expanded by the operating system.  This may consist of multiple file
 #'   types.} \item{\code{xml}:}{Basic flat XML documents are supported -- those 
 #'   of the kind supported by the function xmlToDataFrame function of the
-#'   \link[XML]{XML}  package.} \item{\code{doc, docx}:}{Word files coming
+#'   \pkg{XML}  package.} \item{\code{doc, docx}:}{Word files coming
 #'   soon.} \item{\code{pdf}:}{Adobe Portable Document Format files, coming
 #'   soon.} }
 #' @param textField a variable (column) name or column number indicating where 
@@ -68,7 +68,6 @@ setClass("corpusSource", slots = c(texts = "character",
 #'   called.
 #' @return an object of class \link{corpusSource-class} that can be read by 
 #'   \link{corpus} to construct a corpus
-#' @importFrom XML xmlToDataFrame
 #' @author Kenneth Benoit and Paul Nulty
 #' @export
 setGeneric("textfile",

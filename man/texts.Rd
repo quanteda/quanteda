@@ -2,17 +2,20 @@
 % Please edit documentation in R/corpus.R
 \name{texts}
 \alias{texts}
-\alias{texts<-}
-\title{get or set corpus texts}
+\alias{texts.corpus}
+\title{get corpus texts}
 \usage{
-texts(corp)
+texts(x, ...)
 
-texts(corp) <- value
+\method{texts}{corpus}(x, groups = NULL, ...)
 }
 \arguments{
-\item{corp}{A quanteda corpus object}
+\item{x}{A quanteda corpus object}
 
-\item{value}{character vector of the new texts}
+\item{...}{not currently used}
+
+\item{groups}{character vector containing the names of document variables for
+aggregating documents}
 }
 \value{
 For \code{texts}, a character vector of the texts in the corpus.
@@ -20,13 +23,11 @@ For \code{texts}, a character vector of the texts in the corpus.
 For \code{texts <-}, the corpus with the updated texts.
 }
 \description{
-Get or replace the texts in a quanteda corpus object.
+Get the texts in a quanteda corpus object, with grouping options
 }
 \examples{
 texts(inaugCorpus)[1]
 sapply(texts(inaugCorpus), nchar)  # length in characters of the inaugual corpus texts
-
-## this doesn't work yet - need to overload `[` for this replacement function
-# texts(inaugTexts)[55] <- "GW Bush's second inaugural address, the condensed version."
+str(texts(ie2010Corpus, groups = "party"))
 }
 

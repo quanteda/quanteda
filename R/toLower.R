@@ -1,61 +1,60 @@
 #' Convert texts to lower case
 #' 
-#' Convert texts to lower case
+#' Convert texts or tokens to lower case
 #' @rdname toLower
-#' @param x text to be lower-cased
-#' @param cores number of \code{mc.cores} to use in \pkg{parallel} processing 
-#'   operations, default is the (logical) system cores returned by
-#'   \code{link[parallel]{detectCores}}
-#' @param ... additional arguments passed to \code{\link{stri_trans_tolower}}, 
-#'   such as \code{locale}
-#' @return A list of length \code{\link{ndoc}(x)} of the tokens found in each 
-#'   text. 
+#' @param x texts to be lower-cased
+#' @param keepAcronyms if \code{TRUE}, do not lowercase any all-uppercase words
+#' @param ... additional arguments passed to \pkg{stringi} functions, (e.g. 
+#'   \code{\link{stri_trans_tolower}}), such as \code{locale}
+#' @return Texts tranformed into their lowercased versions.  If \code{x} is a 
+#'   character vector or a corpus, return a lowercased character vector.  If 
+#'   \code{x} is a list of tokenized texts, then return a list of lower-cased 
+#'   tokenized texts.
 #' @import stringi
-#' @importFrom parallel detectCores
 #' @export
 #' @examples 
-#' test1 <- c('I joined NATO and UNESCO', 'and NASA')
-#' toLower(test1, keepAcronyms=TRUE)
-toLower <- function(x, ...) {
+#' test1 <- c(text1 = "England and France are members of NATO and UNESCO", 
+#'            text2 = "NASA sent a rocket into space.")
+#' toLower(test1)
+#' toLower(test1, keepAcronyms = TRUE)
+#' 
+#' test2 <- tokenize(test1, removePunct=TRUE)
+#' toLower(test2)
+#' toLower(test2, keepAcronyms = TRUE)
+toLower <- function(x, keepAcronyms=FALSE, ...) {
     UseMethod("toLower")
-}
-
-toLowerSingleKeep <- function(x){
-    res <- c()
-    if(stri_detect_regex(x, '(\\b[A-Z]{2,}\\b)')){
-        tmp <- stri_replace_all_regex(x, '(\\b[A-Z]{2,}\\b)',  '_$1_')
-        res <- stri_trans_tolower(tmp)
-        m1 <- stri_match_all_regex(res, '(\\b_[a-z]+_\\b)')[[1]][,1]
-        m2 <- stri_trans_toupper(m1)
-        res <- stri_replace_all_regex(res, m1,  m2, vectorize_all = FALSE)
-    }else{
-        res <- stri_trans_tolower(x)
-    }
-    return(res)
-    
 }
 
 #' @rdname toLower
 #' @export
 toLower.character <- function(x, keepAcronyms=FALSE, ...) {
-    res <- c()
-    if(keepAcronyms){
-        res <- lapply(x, toLowerSingleKeep)
-    }else{
-        res <- stri_trans_tolower(x)
+    savedNames <- names(x)
+    if (keepAcronyms)
+        x <- stri_replace_all_regex(x, "\\b([A-Z]{2,})\\b",  "_$1_", ...)
+    x <- stri_trans_tolower(x, ...)
+    if (keepAcronyms) {
+        m1 <- unique(unlist(stri_extract_all_regex(x, "\\b_[a-z]+_\\b", omit_no_match = TRUE, ...)))
+        m2 <- stri_replace_all_fixed(stri_trans_toupper(m1, ...), "_", "", ...)
+        x <- sapply(x, function(s) stri_replace_all_regex(s, m1,  m2, vectorize_all = FALSE, ...))
     }
-    names(res) <- names(x)
-    return(res)
+    names(x) <- savedNames
+    return(x)
 }
-
-
 
 #' @rdname toLower
 #' @export
-toLower.list <- function(x, keepAcronyms=FALSE,  ...){
+toLower.tokenizedTexts <- function(x, keepAcronyms=FALSE, ...) {
     typeTest <- all(sapply(x, is.character))
     if (!typeTest) {
         stop("Each element of the list must be a character vector.")
     }
-    return(lapply(x, toLower, keepAcronyms=keepAcronyms))
-    }
+    x <- lapply(x, toLower, keepAcronyms=keepAcronyms, ...)
+    class(x) <- c("tokenizedTexts", class(x))
+    x
+}
+
+#' @rdname toLower
+#' @export
+toLower.corpus <- function(x, keepAcronyms=FALSE, ...) {
+    toLower(texts(x), keepAcronyms, ...)
+}

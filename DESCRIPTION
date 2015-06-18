@@ -57,6 +57,7 @@ Collate:
     'describe-texts.R'
     'dfm-classes.R'
     'dfm-main.R'
+    'dfm-methods.R'
     'distance.R'
     'gui.R'
     'kwic.R'
