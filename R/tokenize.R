@@ -323,7 +323,7 @@ tokenize <- function(x, ...) {
 #' #tokenize("great website http://textasdata.com", removeURL=FALSE)
 #' #tokenize("great website http://textasdata.com", removeURL=TRUE)
 #' 
-#' txt <- c(text1="This is €10 in 999 different ways,\n up and down; left and right!", 
+#' txt <- c(text1="This is $10 in 999 different ways,\n up and down; left and right!", 
 #'          text2="@@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123.")
 #' tokenize(txt, verbose=TRUE)
 #' tokenize(txt, removeNumbers=TRUE, removePunct=TRUE)
@@ -391,7 +391,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
                                                      skip_word_none = removePunct, # this is what obliterates currency symbols, Twitter tags, and URLs
                                                      skip_word_number = removeNumbers) # but does not remove 4u, 2day, etc.
             # remove trailing whitespaces
-            result <- lapply(result, stringi::stri_replace_last_regex, "\\s+$", "")
+            result <- lapply(result, stringi::stri_trim_right)
             # remove any "sentences" that were completely blanked out
             result <- lapply(result, function(x) x <- x[which(x != "")])
         } else {
@@ -401,7 +401,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
     }
     if (verbose) cat("...total elapsed: ", (proc.time() - startTimeTok)[3], "seconds.\n")
     
-    if (removeSeparators & !removePunct & what != "fastword" & what != "sentence") {
+    if (removeSeparators & !removePunct & what == "character") {
         if (verbose) cat("...removing separators.\n")
         result <- lapply(result, function(x) x[-which(stri_detect_regex(x, "^\\s$"))]) 
     }
