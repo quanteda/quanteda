@@ -111,64 +111,15 @@ setMethod("textfile",
           signature(file = "character", textField = "index", 
                     docvarsfrom="missing", sep="missing", docvarnames="missing"),
           definition = function(file, textField, ...) {
+              if (length(textField) != 1)
+                  stop("textField must be a single field name or column number identifying the texts.")
               fileType <- getFileType(file)
-              if (fileType == "csv") {
-                  if (length(textField) != 1)
-                      stop("textField must be a single field name or column number identifying the texts.")
-                  sources <- get_csv(file, textField, ...) 
-              } else if (fileType == "tab") {
-                  if (length(textField) != 1)
-                      stop("textField must be a single field name or column number identifying the texts.")
-                  sources <- get_csv(file, textField, sep = "\t", ...) 
-              } else if (fileType == "json") {
-                  # general json
-                  sources <- get_json(file, textField, ...)
-              } else if (fileType=="filemask") {
-                  # only works for .csv multiple files at the moment
-                  # cat("file = ", file)
-                  sources <- get_csvs(file, textField, ...)
-              } else if (fileType=="xml") {
-                  sources <- get_xml(file, textField, ...)
-              } else {
-                  stop("File type ", fileType, " not yet implemented with textField.")
-              }
-              
+              sources <- get_data(file, fileType, textField)
               tempCorpusFilename <- tempfile()
               save(sources, file=tempCorpusFilename)
               new("corpusSource", texts=tempCorpusFilename)
           })
 
-
-setMethod("textfile", 
-          signature(file = "character", textField = "index", 
-                    docvarsfrom="missing", sep="missing", docvarnames="missing"),
-          definition = function(file, textField, ...) {
-              fileType <- getFileType(file)
-              if (fileType == "filemask") {
-                  if (length(textField) != 1)
-                      stop("textField must be a single field name or column number identifying the texts.")
-                  sources <- get_csv(file, textField, ...) 
-              } else if (fileType == "tab") {
-                  if (length(textField) != 1)
-                      stop("textField must be a single field name or column number identifying the texts.")
-                  sources <- get_csv(file, textField, sep = "\t", ...) 
-              } else if (fileType == "json") {
-                  # general json
-                  sources <- get_json(file, textField, ...)
-              } else if (fileType=="csv") {
-                  # only works for .csv multiple files at the moment
-                  # cat("file = ", file)
-                  sources <- get_csv(file, textField, ...) 
-              } else if (fileType=="xml") {
-                  sources <- get_xml(file, textField, ...)
-              } else {
-                  stop("File type ", fileType, " not yet implemented with textField.")
-              }
-              
-              tempCorpusFilename <- tempfile()
-              save(sources, file=tempCorpusFilename)
-              new("corpusSource", texts=tempCorpusFilename)
-          })
 
 
 #' @rdname textfile
@@ -178,16 +129,7 @@ setMethod("textfile",
                     docvarsfrom="missing", sep="missing", docvarnames="missing"),
           definition = function(file, textField=NULL, ...) {
               fileType <- getFileType(file)
-              if (fileType == "json") {
-                  # hard-wired for Twitter json only at the moment
-                  sources <- get_json_tweets(file)
-              } else if (fileType=="txt") {
-                  sources <- list(txts=paste(readLines(file), collapse="\n"), docv=NULL)
-              } else if (fileType=="filemask") {
-                  sources <- get_txts(file)
-              } else {
-                  stop("File type ", fileType, " not supported or requires textField.")
-              }
+              sources <- get_txt(file, fileType, textField)
               tempCorpusFilename <- tempfile()
               save(sources, file=tempCorpusFilename)
               new("corpusSource", texts=tempCorpusFilename)
@@ -236,11 +178,10 @@ get_data <- function(f, textField='index', fileType){
     switch(fileType,
            csv = get_csv(f, textField = textField),
            json = get_json(f, textField = textField),
-           xml = get_xml(f, textField = textField)
+           xml = get_xml(f, textField = textField),
+           stop('fileType not supported')
     )
 }
-
-
 
 
 get_doc <- function(f){
