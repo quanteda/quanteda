@@ -47,7 +47,43 @@ wildcard value}{any valid pathname with a wildcard ("glob") expression that
 can be expanded by the operating system.  This may consist of multiple file
 types.} \item{\code{xml}:}{Basic flat XML documents are supported -- those
 of the kind supported by the function xmlToDataFrame function of the
-\link[XML]{XML}  package.} \item{\code{doc, docx}:}{Word files coming
+\pkg{XML}  package.} \item{\code{doc, docx}:}{Word files coming
+soon.} \item{\code{pdf}:}{Adobe Portable Document Format files, coming
+soon.} }}
+
+\item{textField}{a variable (column) name or column number indicating where
+to find the texts that form the documents for the corpus.  This must be
+specified for file types \code{.csv} and \code{.json}.}
+
+\item{docvarsfrom}{used to specify that docvars should be taken from the
+filenames, when the \code{textfile} inputs are filenames and the elements
+of the filenames are document variables, separated by a delimiter
+(\code{sep}).  This allows easy assignment of docvars from filenames such
+as \code{1789-Washington.txt}, \code{1793-Washington}, etc. by \code{sep}
+or from meta-data embedded in the text file header (\code{headers}).}
+
+\item{sep}{separator used in filenames to delimit docvar elements if
+\code{docvarsfrom="filenames"} is used}
+
+\item{docvarnames}{character vector of variable names for \code{docvars}, if
+\code{docvarsfrom} is specified.  If this argument is not used, default
+docvar names will be used (\code{docvar1}, \code{docvar2}, ...).}
+
+\item{...}{additional arguments passed through to other functions}
+
+\item{file}{the complete filename to be read.  Currently available file types
+are: \describe{ \item{\code{txt}}{plain text files} \item{\code{json}}{data
+in JavaScript Object Notation, consisting of the texts and additional
+document-level variables and document-level meta-data.  The text key must
+be identified by specifying a \code{textField} value.}
+\item{\code{csv}}{comma separated value data, consisting of the texts and
+additional document-level variables and document-level meta-data.  The text
+file must be identified by specifying a \code{textField} value.} \item{a
+wildcard value}{any valid pathname with a wildcard ("glob") expression that
+can be expanded by the operating system.  This may consist of multiple file
+types.} \item{\code{xml}:}{Basic flat XML documents are supported -- those
+of the kind supported by the function xmlToDataFrame function of the
+\pkg{XML}  package.} \item{\code{doc, docx}:}{Word files coming
 soon.} \item{\code{pdf}:}{Adobe Portable Document Format files, coming
 soon.} }}
 

@@ -3,34 +3,43 @@
 \name{toLower}
 \alias{toLower}
 \alias{toLower.character}
-\alias{toLower.list}
+\alias{toLower.corpus}
+\alias{toLower.tokenizedTexts}
 \title{Convert texts to lower case}
 \usage{
-toLower(x, ...)
+toLower(x, keepAcronyms = FALSE, ...)
 
 \method{toLower}{character}(x, keepAcronyms = FALSE, ...)
 
-\method{toLower}{list}(x, keepAcronyms = FALSE, ...)
+\method{toLower}{tokenizedTexts}(x, keepAcronyms = FALSE, ...)
+
+\method{toLower}{corpus}(x, keepAcronyms = FALSE, ...)
 }
 \arguments{
-\item{x}{text to be lower-cased}
+\item{x}{texts to be lower-cased}
 
-\item{...}{additional arguments passed to \code{\link{stri_trans_tolower}},
-such as \code{locale}}
+\item{keepAcronyms}{if \code{TRUE}, do not lowercase any all-uppercase words}
 
-\item{cores}{number of \code{mc.cores} to use in \pkg{parallel} processing
-operations, default is the (logical) system cores returned by
-\code{link[parallel]{detectCores}}}
+\item{...}{additional arguments passed to \pkg{stringi} functions, (e.g.
+\code{\link{stri_trans_tolower}}), such as \code{locale}}
 }
 \value{
-A list of length \code{\link{ndoc}(x)} of the tokens found in each
-  text.
+Texts tranformed into their lowercased versions.  If \code{x} is a
+  character vector or a corpus, return a lowercased character vector.  If
+  \code{x} is a list of tokenized texts, then return a list of lower-cased
+  tokenized texts.
 }
 \description{
-Convert texts to lower case
+Convert texts or tokens to lower case
 }
 \examples{
-test1 <- c('I joined NATO and UNESCO', 'and NASA')
-toLower(test1, keepAcronyms=TRUE)
+test1 <- c(text1 = "England and France are members of NATO and UNESCO",
+           text2 = "NASA sent a rocket into space.")
+toLower(test1)
+toLower(test1, keepAcronyms = TRUE)
+
+test2 <- tokenize(test1, removePunct=TRUE)
+toLower(test2)
+toLower(test2, keepAcronyms = TRUE)
 }
 
