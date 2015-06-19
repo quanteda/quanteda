@@ -9,40 +9,59 @@
 \usage{
 tokenize(x, ...)
 
-\method{tokenize}{character}(x, simplify = FALSE, sep = NULL,
-  what = "word", cleanFirst = TRUE, verbose = FALSE, ...)
+\method{tokenize}{character}(x, what = c("word", "sentence", "character",
+  "fastestword", "fasterword"), removeNumbers = FALSE, removePunct = FALSE,
+  removeSeparators = TRUE, removeTwitter = FALSE, simplify = FALSE,
+  verbose = FALSE, ...)
 
 \method{tokenize}{corpus}(x, ...)
 }
 \arguments{
 \item{x}{The text(s) or corpus to be tokenized}
 
-\item{...}{additional arguments passed to \code{\link{clean}}}
-
-\item{simplify}{If \code{TRUE}, return a character vector of tokens rather
-than a list of length \code{\link{ndoc}(texts)}, with each element of the
-list containing a character vector of the tokens corresponding to that
-text.}
-
-\item{sep}{by default, tokenize expects a "white-space" delimiter between
-tokens. Alternatively, \code{sep} can be used to specify another character
-which delimits fields.}
+\item{...}{additional arguments not used}
 
 \item{what}{the unit for splitting the text, defaults to \code{"word"}.
 Available alternatives are \code{c("character", "word", "line_break",
 "sentence")}. See \link[stringi]{stringi-search-boundaries}.}
 
-\item{cleanFirst}{clean before tokenizing, if TRUE.  Added for performance
-testing only -- we strongly recommend that you NOT use this argument, as we
-will remove it from the function soon.}
+\item{removeNumbers}{remove tokens that consist only of numbers, but not
+words that start with digits, e.g. \code{2day}}
 
-\item{verbose}{if \code{TRUE}, print timing messages to the console; off by default}
+\item{removePunct}{remove all punctuation}
+
+\item{removeSeparators}{remove Separators and separator characters (spaces
+and variations of spaces, plus tab, newlines, and anything else in the
+Unicode "separator" category) when \code{removePunct=FALSE}}
+
+\item{removeTwitter}{remove Twitter characters \code{@} and \code{#}; set to
+\code{FALSE} if you wish to eliminate these}
+
+\item{simplify}{if \code{TRUE}, return a character vector of tokens rather
+than a list of length \code{\link{ndoc}(texts)}, with each element of the
+list containing a character vector of the tokens corresponding to that
+text.}
+
+\item{verbose}{if \code{TRUE}, print timing messages to the console; off by
+default}
 }
 \value{
 A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
+
+a \strong{tokenizedText} (S3) object, essentially a list of character
+  vectors. If \code{simplify=TRUE} then return a single character vector.
 }
 \description{
 Tokenize the texts from a character vector or from a corpus.
+}
+\details{
+The tokenizer is designed to be fast and flexible as well as to
+  handle Unicode correctly. Most of the time, users will construct \link{dfm}
+  objects from texts or a corpus, without calling \code{tokenize()} as an
+  intermediate step.  Since \code{tokenize()} is most likely to be used by
+  more technical users, we have set its options to default to minimal
+  intervention. This means that punctuation is tokenized as well, and that
+  nothing is removed from the
 }
 \examples{
 # same for character vectors and for lists
@@ -55,16 +74,36 @@ head(tokenize(inaugTexts[57])[[1]], 10)
 # returned as a character vector using simplify=TRUE
 head(tokenize(inaugTexts[57], simplify=TRUE), 10)
 
-# demonstrate some options with clean
-head(tokenize(inaugTexts[57], simplify=TRUE, removePunct=FALSE), 30)
+# removing punctuation marks and lowecasing texts
+head(tokenize(toLower(inaugTexts[57]), simplify=TRUE, removePunct=TRUE), 30)
+# keeping case and punctuation
+head(tokenize(inaugTexts[57], simplify=TRUE), 30)
 
 ## MORE COMPARISONS
-tokenize("this is MY <3 4U @myhandle gr8 stuff :-)", removeTwitter=TRUE)
-tokenize("this is MY <3 4U @myhandle gr8 stuff :-)", removeTwitter=FALSE)
-tokenize("great website http://textasdata.com", removeURL=FALSE)
-tokenize("great website http://textasdata.com", removeURL=TRUE)
+txt <- "#textanalysis is MY <3 4U @myhandle gr8 #stuff :-)"
+tokenize(txt, removePunct=TRUE)
+tokenize(txt, removePunct=TRUE, removeTwitter=TRUE)
+#tokenize("great website http://textasdata.com", removeURL=FALSE)
+#tokenize("great website http://textasdata.com", removeURL=TRUE)
+
+txt <- c(text1="This is $10 in 999 different ways,\\n up and down; left and right!",
+         text2="@kenbenoit working: on #quanteda 2day\\t4ever, http://textasdata.com?page=123.")
+tokenize(txt, verbose=TRUE)
+tokenize(txt, removeNumbers=TRUE, removePunct=TRUE)
+tokenize(txt, removeNumbers=FALSE, removePunct=TRUE)
+tokenize(txt, removeNumbers=TRUE, removePunct=FALSE)
+tokenize(txt, removeNumbers=FALSE, removePunct=FALSE)
+tokenize(txt, removeNumbers=FALSE, removePunct=FALSE, removeSeparators=FALSE)
+
+# character level
+tokenize("Great website: http://textasdata.com?page=123.", what="character")
+tokenize("Great website: http://textasdata.com?page=123.", what="character",
+         removeSeparators=FALSE)
+
+# sentence level
+tokenize(inaugTexts[c(2,40)], what = "sentence", simplify = TRUE)
 }
 \author{
-Kohei Watanabe (C++ code), Ken Benoit, and Paul Nulty
+Ken Benoit and Paul Nulty
 }
 

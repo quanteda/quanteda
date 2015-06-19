@@ -138,7 +138,6 @@ textmodel_wordscores <- function(data, scores,
 #'   called (for instance, how many rescaled scores, and whether standard errors
 #'   were requested.)  (Note: We may very well change this soon so that it is a 
 #'   list similar to other existing fitted objects.)
-#' @author Ken Benoit
 #' @export
 predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling = "none", 
                                level=0.95, verbose=TRUE, ...) {    

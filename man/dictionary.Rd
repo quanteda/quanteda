@@ -29,7 +29,7 @@ LIWC dictionary file, defaults to 10 (which is more than the actual LIWC
 enough.}
 }
 \value{
-A list with a ductionary class label, to be used by other functions in quanteda.
+A dictionary class object, essentially a specially classed named list of characters.
 }
 \description{
 Create a quanteda dictionary, either from a list or by importing from a

@@ -3,25 +3,23 @@
 \docType{methods}
 \name{textfile}
 \alias{textfile}
-\alias{textfile,character,index,missing,missing,missing,missing-method}
-\alias{textfile,character,missing,missing,character,ANY,ANY-method}
-\alias{textfile,character,missing,missing,missing,missing,missing-method}
+\alias{textfile,character,index,missing,missing,missing-method}
+\alias{textfile,character,missing,character,ANY,ANY-method}
+\alias{textfile,character,missing,missing,missing,missing-method}
 \title{read a text corpus source from a file}
 \usage{
-textfile(file, textField, directory = NULL, docvarsfrom = c("filenames"),
-  sep = "_", docvarnames = NULL, ...)
-
-\S4method{textfile}{character,index,missing,missing,missing,missing}(file,
-  textField, directory = NULL, docvarsfrom = c("filenames"), sep = "_",
+textfile(file, textField, docvarsfrom = c("filenames"), sep = "_",
   docvarnames = NULL, ...)
 
-\S4method{textfile}{character,missing,missing,missing,missing,missing}(file,
-  textField, directory = NULL, docvarsfrom = c("filenames"), sep = "_",
-  docvarnames = NULL, ...)
+\S4method{textfile}{character,index,missing,missing,missing}(file, textField,
+  docvarsfrom = c("filenames"), sep = "_", docvarnames = NULL, ...)
 
-\S4method{textfile}{character,missing,missing,character,ANY,ANY}(file,
-  textField = NULL, directory = NULL, docvarsfrom = c("headers"),
-  sep = "_", docvarnames = NULL, ...)
+\S4method{textfile}{character,missing,missing,missing,missing}(file, textField,
+  docvarsfrom = c("filenames"), sep = "_", docvarnames = NULL, ...)
+
+\S4method{textfile}{character,missing,character,ANY,ANY}(file,
+  textField = NULL, docvarsfrom = c("headers"), sep = "_",
+  docvarnames = NULL, ...)
 }
 \arguments{
 \item{file}{the complete filename to be read.  Currently available file types
@@ -34,15 +32,15 @@ additional document-level variables and document-level meta-data.  The text
 file must be identified by specifying a \code{textField} value.} \item{a
 wildcard value}{any valid pathname with a wildcard ("glob") expression that
 can be expanded by the operating system.  This may consist of multiple file
-types.} \item{\code{doc, docx}:}{Word files coming soon.}
-\item{\code{pdf}:}{Adobe Portable Document Format files, coming soon.} }}
+types.} \item{\code{xml}:}{Basic flat XML documents are supported -- those
+of the kind supported by the function xmlToDataFrame function of the
+\strong{XML}  package.} \item{\code{doc, docx}:}{Word files coming
+soon.} \item{\code{pdf}:}{Adobe Portable Document Format files, coming
+soon.} }}
 
 \item{textField}{a variable (column) name or column number indicating where
 to find the texts that form the documents for the corpus.  This must be
 specified for file types \code{.csv} and \code{.json}.}
-
-\item{directory}{not used yet, and may be removed (if I move this to a new
-method called \code{textfiles})}
 
 \item{docvarsfrom}{used to specify that docvars should be taken from the
 filenames, when the \code{textfile} inputs are filenames and the elements
@@ -72,7 +70,7 @@ header.
 }
 \details{
 The constructor does not store a copy of the texts, but rather reads
-  in the texts and associated data, and saves them to a temporary R object
+  in the texts and associated data, and saves them to a temporary disk file
   whose location is specified in the \link{corpusSource-class} object.  This
   prevents a complete copy of the object from cluttering the global
   environment and consuming additional space.  This does mean however that
@@ -96,7 +94,13 @@ mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt")
 summary(corpus(mytf4))
 mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt",
                   docvarsfrom="filenames", sep="-", docvarnames=c("Year", "President"))
-summary(corpus(mytf5))}
+summary(corpus(mytf5))
+# XML file
+## some locally working code here
+mytf6 <- textfile("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml",
+                  textField = "COMMON")
+summary(corpus(mytf6))
+}
 }
 \author{
 Kenneth Benoit and Paul Nulty

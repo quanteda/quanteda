@@ -47,89 +47,7 @@ corpus <- function(x, ...) {
     UseMethod("corpus")
 }
 
-# @param docvarsfrom  Argument to specify where docvars are to be taken, from 
-# parsing the filenames separated
-# by \code{sep} or from meta-data embedded in the text file header (\code{headers}).
-# @param docvarnames Character vector of variable names for \code{docvars}
-# @param sep Separator if \code{\link{docvars}} names are taken from the filenames.
-# @warning Only files with the extension \code{.txt} are read in using the directory method.
-# @param pattern filename extension - set to "*" if all files are desired.  This is a 
-# \link[=regex]{regular expression}.
-# @rdname corpus
-# @export
-# @examples 
-# \dontrun{
-# # import texts from a directory of files
-# summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), 
-#                enc="UTF-8", docvarsfrom="filenames",
-#                source="Ken's UK manifesto archive",
-#                docvarnames=c("Country", "Level", "Year", "language")), 5))
-# summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), 
-#                enc="UTF-8", docvarsfrom="filenames",
-#                source="Ken's UK manifesto archive",
-#                docvarnames=c("Country", "Level", "Year", "language", "Party")), 5))
-# 
-# # choose a directory using a GUI
-# corpus(directory())
-#
-# # from a zip file on the web
-# myzipcorp <- corpus(zipfiles("http://kenbenoit.net/files/EUcoalsubsidies.zip"),
-#                     notes="From some EP debate about coal mine subsidies")
-# docvars(myzipcorp, speakername=docnames(myzipcorp))
-# summary(myzipcorp)
-# }
-# corpus.directory <- function(x, enc=NULL, docnames=NULL, 
-#                             docvarsfrom=c("none", "filenames", "headers"), 
-#                             docvarnames=NULL, sep='_', pattern="\\.txt$",
-#                             source=NULL, notes=NULL, citation=NULL, ...) {
-#     if (class(x)[1] != "directory") stop("first argument must be a directory")
-#     dvars <- NULL
-#     docvarsfrom <- match.arg(docvarsfrom)
-#     texts <- getTextDir(x, pattern=pattern)
-#     fnames <- NULL
-#     if (docvarsfrom == "filenames") {
-#         fnames <- list.files(x, full.names=TRUE)
-#         snames <- getRootFileNames(fnames)
-#         snames <- gsub(".txt", "", snames)
-#         parts <- strsplit(snames, sep)
-#         if (var(sapply(parts, length)) != 0)
-#             stop("Filename elements are not equal in length.")
-#         dvars <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE), 
-#                             stringsAsFactors=FALSE)
-#         # assign default names in any case
-#         names(dvars) <- paste("docvar", 1:ncol(dvars), sep="")  
-#         if (!is.null(docvarnames)) {
-#             names(dvars)[1:length(docvarnames)] <- docvarnames
-#             if (length(docvarnames) != ncol(dvars)) {
-#                 warning("Fewer docnames supplied than exist docvars - last ",
-#                         ncol(dvars) - length(docvarnames), " docvars were given generic names.")
-#             }
-#         }
-#         # remove the filename extension from the document names
-#         names(texts) <- gsub(".txt", "", names(texts))
-#     } else if (docvarsfrom == "headers") 
-#         stop("headers argument not yet implemented.")
-# 
-# 
-#     tmpCorp <- NextMethod(x=texts, enc=enc, docnames=docnames, docvars=dvars,
-#                           source=source, notes=notes, citation=citation)
-#     
-#     # set document source as filename
-#     if (!is.null(fnames)) {
-#         metadoc(tmpCorp, "source") <- fnames
-#     }
-#     
-#     tmpCorp
-# }
 
-
-
-
-
-# Corpus constructor for a character method
-# 
-# Details here.
-# 
 #' @param docnames Names to be assigned to the texts, defaults to the names of the 
 #' character vector (if any), otherwise assigns "text1", "text2", etc.
 #' @param docvars A data frame of attributes that is associated with each text.
@@ -144,7 +62,6 @@ corpus <- function(x, ...) {
 #' @rdname corpus
 #' @export
 #' @examples
-#' #
 #' # create a corpus from texts
 #' corpus(inaugTexts)
 #' 
@@ -176,14 +93,14 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
     # create the documents data frame starting with the texts
     documents <- data.frame(texts=x, row.names=names(x),
                             check.rows=TRUE, stringsAsFactors=FALSE)
-
+    
     
     # user-supplied document-level variables (one kind of meta-data)
     if (!is.null(docvars)) {
         stopifnot(nrow(docvars)==length(x))
         documents <- cbind(documents, docvars)
     } 
-
+    
     # set the encoding label if specified
     if (!is.null(enc) && enc != "unknown") {
         documents$texts <- iconv(documents$texts, enc, "UTF-8")
@@ -271,14 +188,14 @@ corpus.VCorpus <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
 print.corpus <- function(x, ...) {
     cat("Corpus consisting of ", ndoc(x), " document",
         ifelse(ndoc(x)>1, "s", ""), ".\n", sep="")
-#         ", ",
-#         ifelse(is.null(corp$tokens), "un", ""),
-#         "indexed.\n", sep="")
-#     cat("Settings:")
-#      tempSettings <- unlist(settings(corp))
-#      for (i in 1:length(tempSettings)) {
-#          print(tempSettings[i])
-#      }
+    #         ", ",
+    #         ifelse(is.null(corp$tokens), "un", ""),
+    #         "indexed.\n", sep="")
+    #     cat("Settings:")
+    #      tempSettings <- unlist(settings(corp))
+    #      for (i in 1:length(tempSettings)) {
+    #          print(tempSettings[i])
+    #      }
 }
 
 #' @return \code{is.corpus} returns \code{TRUE} if the object is a corpus
@@ -346,11 +263,12 @@ documents <- function(corp) {
 }
 
 
-#' get or set corpus texts
+#' get corpus texts
 #' 
-#' Get or replace the texts in a quanteda corpus object.
+#' Get the texts in a quanteda corpus object, with grouping options
 #' 
-#' @param corp A quanteda corpus object
+#' @param x A quanteda corpus object
+#' @param ... not currently used
 #' @return For \code{texts}, a character vector of the texts in the corpus.
 #' 
 #' For \code{texts <-}, the corpus with the updated texts.
@@ -358,20 +276,42 @@ documents <- function(corp) {
 #' @examples
 #' texts(inaugCorpus)[1]
 #' sapply(texts(inaugCorpus), nchar)  # length in characters of the inaugual corpus texts
-#'
-#' ## this doesn't work yet - need to overload `[` for this replacement function
-#' # texts(inaugTexts)[55] <- "GW Bush's second inaugural address, the condensed version."
-texts <- function(corp) {
-    temp <- documents(corp)$texts
-    names(temp) <- rownames(documents(corp))
-    temp
+#' str(texts(ie2010Corpus, groups = "party"))
+texts <- function(x, ...) {
+    UseMethod("texts")
 }
 
+#' @rdname texts
+#' @param groups character vector containing the names of document variables for
+#'   aggregating documents
+#' @export
+texts.corpus <- function(x, groups = NULL, ...) {
+    texts <- documents(x)$texts
+    if (!is.null(groups)) {
+        if (length(groups) > 1) {
+            # if more than one grouping variable
+            group.split <- lapply(documents(x)[, groups], as.factor)
+        } else {
+            # if only one grouping variable
+            group.split <- as.factor(documents(x)[,groups])
+        }
+        texts <- split(texts, group.split)
+        texts <- sapply(texts, paste, collapse = " ")
+    } else {
+        names(texts) <- docnames(x)
+    }
+    return(texts)
+}
+
+
+# -- REMOVED
+# -- REMOVED - CORPUS TEXTS SHOULD NOT BE MODIFIED IN THIS WAY
+# -- REMOVED
 # replacement function for texts
 # warning about no data
-#' @param value character vector of the new texts
-#' @rdname texts
-#' @export
+# @param value character vector of the new texts
+# @rdname texts
+# @export
 "texts<-" <- function(corp, value) { #}, rownames=FALSE) {
     documents(corp)$texts <- value
     # if (rownames) rownames(documents(corp)) <- names(value) 
@@ -661,19 +601,19 @@ encoding <- function(x, drop=TRUE) {
 
 
 corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=FALSE) {
-  # This is the "inner" function to be called by other functions
-  # to return a subset directly, use corpus.subset
-  
-  # The select argument exists only for the methods for data frames and matrices. 
-  # It works by first replacing column names in the selection expression with the 
-  # corresponding column numbers in the data frame and then using the resulting 
-  # integer vector to index the columns. This allows the use of the standard indexing 
-  # conventions so that for example ranges of columns can be specified easily, 
-  # or single columns can be dropped
-  # as in:
-  # subset(airquality, Temp > 80, select = c(Ozone, Temp))
-  # subset(airquality, Day == 1, select = -Temp)
-  # subset(airquality, select = Ozone:Wind)
+    # This is the "inner" function to be called by other functions
+    # to return a subset directly, use corpus.subset
+    
+    # The select argument exists only for the methods for data frames and matrices. 
+    # It works by first replacing column names in the selection expression with the 
+    # corresponding column numbers in the data frame and then using the resulting 
+    # integer vector to index the columns. This allows the use of the standard indexing 
+    # conventions so that for example ranges of columns can be specified easily, 
+    # or single columns can be dropped
+    # as in:
+    # subset(airquality, Temp > 80, select = c(Ozone, Temp))
+    # subset(airquality, Day == 1, select = -Temp)
+    # subset(airquality, select = Ozone:Wind)
     if (is.null(subsetExpr)) 
         rows <- TRUE
     else {
@@ -739,7 +679,6 @@ subset.corpus <- function(x, subset=NULL, select=NULL, ...) {
 #' summary(mycorpus, showmeta=TRUE)  # show the meta-data
 #' mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
 #' mysummary$Types / mysummary$Tokens             # crude type-token ratio
-#' 
 summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
     
     cat("Corpus consisting of ", ndoc(object), " document",
@@ -747,13 +686,13 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
         ifelse(ndoc(object)<=n, "", 
                paste(", showing ", n, " document", ifelse(n>1, "s", ""), sep="")),
         ".\n", sep="")
-
+    
     #print(object)
     cat("\n")
     ### Turn off describeTexts until we can speed this up
     # dtexts <- describeTexts(texts(object), verbose=FALSE)
     outputdf <- data.frame(summary(texts(object)[1:min(c(n, ndoc(object)))], 
-                                         verbose=FALSE))
+                                   verbose=FALSE))
     if (!is.null(docvars(object)))
         outputdf <- cbind(outputdf, docvars(object)[1:min(c(n, ndoc(object))),, drop=FALSE])
     # if (detail) outputdf <- cbind(outputdf, metadoc(object))
@@ -778,7 +717,7 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
 #' @param corp corpus whose document units will be reshaped
 #' @param to new documents units for the corpus to be recast in
 #' @param ... passes additional arguments to \code{\link{segment}}
-
+#' @return a corpus object with the documents defined as the new units
 #' @export
 #' @examples
 #' # simple example
@@ -819,11 +758,11 @@ changeunits <- function(corp, to=c("sentences", "paragraphs", "documents"), ...)
     # copy settings and corpus metadata
     newcorpus$settings <- corp$settings
     newcorpus$metadata <- corp$metadata
-
+    
     # modify settings flag for changeunits info
     settings(newcorpus, "unitsoriginal") <- settings(newcorpus, "units")
     settings(newcorpus, "units") <- to
-
+    
     newcorpus
 }
 
@@ -860,7 +799,7 @@ rep.data.frame <- function(x, ...)
         if (!identical(metacorpus(c1, field), metacorpus(c2, field)))
             metacorpus(c1, field) <- paste(metacorpus(c1, field), metacorpus(c2, field))
     }
-
+    
     # combine the documents info, after warning if not column-conforming
     if (!setequal(names(c1$documents), names(c2$documents)))
         warning("different document-level data found, filling missing values with NAs.", noBreaks.=TRUE)
@@ -869,7 +808,7 @@ rep.data.frame <- function(x, ...)
     
     # settings
     ### currently just use the c1 settings
-
+    
     return(c1)
 }
 

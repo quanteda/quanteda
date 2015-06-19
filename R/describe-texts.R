@@ -15,13 +15,12 @@ summary.character <- function(object, verbose=TRUE, ...) {
     # need to implement subsetting here too
     if (is.null(names(object))) 
         names(object) <- paste("text", 1:length(object), sep="")
-    tokenizedTexts <- tokenize(object)
-    ntokens <- sapply(tokenizedTexts, length)
-    temp <- lapply(tokenizedTexts, unique)
-    ntypes <- sapply(temp, length)
+    tokenizedTexts <- tokenize(toLower(object), removePunct=TRUE)
+    ntokens <- sapply(tokenizedTexts, length, USE.NAMES = FALSE)
+    ntypes <- sapply(lapply(tokenizedTexts, unique), length, USE.NAMES = FALSE)
     # because we still don't have a generic sentence segmenter
     # broken
-    nsents  <- sapply(object, function(s) length(gregexpr("[.!?]", s)[[1]]))
+    nsents  <- sapply(tokenize(object, what = "sentence"), length, USE.NAMES = FALSE)
     
     results <- data.frame(Text=names(object),
                           Types=ntypes,
@@ -38,4 +37,3 @@ describeTexts <- function(object, verbose=TRUE, ...) {
     cat("note: describeTexts is deprecated, use summary instead.\n")
     UseMethod("summary.character")
 }
-

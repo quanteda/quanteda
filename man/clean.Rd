@@ -21,9 +21,13 @@ cleanC(x, removeDigits = TRUE, removePunct = TRUE, toLower = TRUE,
 }
 \arguments{
 \item{x}{The object to be cleaned. Can be either a character vector or a
+<<<<<<< HEAD
 corpus object. Corpus texts are not intended to be directly mutable, so if
 x is a corpus, \code{clean} returns the a character vector containing the
 cleaned texts.}
+=======
+corpus containing texts}
+>>>>>>> workingDev
 
 \item{...}{additional parameters}
 
@@ -36,13 +40,14 @@ cleaned texts.}
 \item{removeAdditional}{additional characters to remove
 (\link[=regex]{regular expression})}
 
-\item{removeTwitter}{if \code{FALSE}, do not remove \code{@} or \code{#}}
+\item{removeTwitter}{if \code{FALSE}, do not remove \code{@} or \code{#'}}
 
 \item{removeURL}{removes URLs (web addresses starting with \code{http:} or
 \code{https:}), based on a regular expression from
 \url{http://daringfireball.net/2010/07/improved_regex_for_matching_urls}}
 }
 \value{
+<<<<<<< HEAD
 A character vector equal in length to the original texts, after
   cleaning.
 }
@@ -95,5 +100,13 @@ txts <- unlist(Opinion_files[1]); names(txts) <- NULL
 system.time(tmp <- sapply(txts, cleanC)) # about 20.5 seconds
 \dontrun{system.time(tmp <- sapply(txts, clean))  # about forever: 647.502 seconds}
 }
+=======
+A character vector equal in length to the original texts (supplied or in the corpus)
+after cleaning.
+}
+\description{
+\code{clean} is an older function used for pre-processing text, but now replaced by similar functionality in
+\code{\link{tokenize}}.  Please use that function instead.
+>>>>>>> workingDev
 }
 

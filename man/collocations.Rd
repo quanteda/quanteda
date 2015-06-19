@@ -17,64 +17,72 @@ collocations(x, ...)
 \arguments{
 \item{x}{a text, a character vector of texts, or a corpus}
 
-\item{...}{additional parameters passed to \link{clean}}
+\item{...}{additional parameters passed to \code{\link{tokenize}}.  If wanted
+to include collocations separated by punctuation, then you can use this to
+send \code{removePunct = TRUE} to \code{\link{tokenize}}.}
 
-\item{method}{association measure for detecting collocations.  Let \eqn{i} index documents, and
-\eqn{j} index features, \eqn{n_{ij}} refers to observed counts,
-and \eqn{m_{ij}} the expected counts in a collocations frequency table of dimensions \eqn{(J - size + 1)^2}.
-Available measures are computed as:
-  \describe{
-  \item{\code{"lr"}}{The likelihood ratio statistic \eqn{G^2}, computed as:
-         \deqn{2 * \sum_i \sum_j ( n_{ij} * log \frac{n_{ij}}{m_{ij}} )}
-     }
-  \item{\code{"chi2"}}{Pearson's \eqn{\chi^2} statistic, computed as:
-         \deqn{\sum_i \sum_j \frac{(n_{ij} - m_{ij})^2}{m_{ij}}}
-     }
-  \item{\code{"pmi"}}{point-wise mutual information score, computed as log \eqn{n_{11}/m_{11}}}
-  \item{\code{"dice"}}{the Dice coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
-  \item{\code{"all"}}{returns all of the above}
-  }}
+\item{method}{association measure for detecting collocations.  Let \eqn{i}
+index documents, and \eqn{j} index features, \eqn{n_{ij}} refers to
+observed counts, and \eqn{m_{ij}} the expected counts in a collocations
+frequency table of dimensions \eqn{(J - size + 1)^2}. Available measures
+are computed as: \describe{ \item{\code{"lr"}}{The likelihood ratio
+statistic \eqn{G^2}, computed as: \deqn{2 * \sum_i \sum_j ( n_{ij} * log
+\frac{n_{ij}}{m_{ij}} )} } \item{\code{"chi2"}}{Pearson's \eqn{\chi^2}
+statistic, computed as: \deqn{\sum_i \sum_j \frac{(n_{ij} -
+m_{ij})^2}{m_{ij}}} } \item{\code{"pmi"}}{point-wise mutual information
+score, computed as log \eqn{n_{11}/m_{11}}} \item{\code{"dice"}}{the Dice
+coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
+\item{\code{"all"}}{returns all of the above} }}
 
-\item{size}{length of the collocation.  Only bigram (\code{n=2}) and trigram (\code{n=3})
-collocations are implemented so far.  Can be \code{c(2,3)} (or \code{2:3}) to return
-both bi- and tri-gram collocations.}
+\item{size}{length of the collocation.  Only bigram (\code{n=2}) and trigram
+(\code{n=3}) collocations are implemented so far.  Can be \code{c(2,3)} (or
+\code{2:3}) to return both bi- and tri-gram collocations.}
 
-\item{n}{the number of collocations to return, sorted in descending order
-of the requested statistic, or \eqn{G^2} if none is specified.}
+\item{n}{the number of collocations to return, sorted in descending order of
+the requested statistic, or \eqn{G^2} if none is specified.}
 }
 \value{
 A data.table of collocations, their frequencies, and the computed
   association measure(s).
 }
 \description{
-Detects collocations (currently, bigrams and trigrams) from texts or a corpus, returning a
-data.frame of collocations and their scores, sorted in descending order of the association
-measure.  Words separated by punctuation delimiters \code{.,!?;:(){}[]} are not counted as adjacent
-and hence are not eligible to be collocations.
+Detects collocations (currently, bigrams and trigrams) from texts or a
+corpus, returning a data.frame of collocations and their scores, sorted in
+descending order of the association measure.  Words separated by punctuation
+delimiters are not counted as adjacent and hence are not eligible to be
+collocations.
 }
 \details{
-Because of incompatibilities with the join operations in \link{data.table}
-when input files have slightly different encoding settings, \code{collocations} currently
-converts all text to ASCII prior to processing.  We hope to improve on this in the
-future.
+Because of incompatibilities with the join operations in
+  \link{data.table} when input files have slightly different encoding
+  settings, \code{collocations} currently converts all text to ASCII prior to
+  processing.  We hope to improve on this in the future.
 }
 \examples{
+txt <- c("This is software testing: looking for (word) pairs!
+         This [is] a software testing again. For.",
+         "Here: this is more Software Testing, looking again for word pairs.")
+collocations(txt)
+collocations(txt, removePunct = TRUE)
+collocations(txt, size=2:3)
+removeFeatures(collocations(txt, size=2:3), stopwords("english"))
+
+collocations("@textasdata We really, really love the #quanteda package - thanks!!")
+collocations("@textasdata We really, really love the #quanteda package - thanks!!",
+              removeTwitter = TRUE)
+
 collocations(inaugTexts[49:57], n=10)
 collocations(inaugTexts[49:57], method="all", n=10)
 collocations(inaugTexts[49:57], method="chi2", size=3, n=10)
 collocations(subset(inaugCorpus, Year>1980), method="pmi", size=3, n=10)
-txt <- c("This is software testing: looking for (word) pairs!
-         This [is] a software testing again. For.",
-         "Here: is a software testing, looking again for word pairs.")
-collocations(txt)
-collocations(txt, size=2:3)
-removeFeatures(collocations(txt, size=2:3), stopwords("english"))
 }
 \author{
 Kenneth Benoit
 }
 \references{
-McInnes, B T. 2004. "Extending the Log Likelihood Measure to Improve Collocation Identification."  M.Sc. Thesis, University of Minnesota.
+McInnes, B T. 2004. "Extending the Log Likelihood Measure to
+  Improve Collocation Identification."  M.Sc. Thesis, University of
+  Minnesota.
 }
 \seealso{
 \link{bigrams}, \link{ngrams}

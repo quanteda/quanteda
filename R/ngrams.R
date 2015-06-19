@@ -83,13 +83,12 @@ bigrams <- function(text, window = 1, concatenator="_", include.unigrams=FALSE,
 # neighbouring words.
 #' @param concatenator character for combining words, default is \code{_} (underscore) character
 #' @param include.all if TRUE, add n-1...1 grams to the returned list
-#' @param ... additional parameters
-#' @details \code{...} provides additional arguments passed to \link{tokenize}
+#' @param ... additional parameters passed to \code{\link{tokenize}}
 #' @export
 #' @examples 
 #' ngrams("The quick brown fox jumped over the lazy dog.", n=2)
 #' identical(ngrams("The quick brown fox jumped over the lazy dog.", n=2),
-#'           bigrams("The quick brown fox jumped over the lazy dog.", n=2))
+#'           bigrams("The quick brown fox jumped over the lazy dog."))
 #' ngrams("The quick brown fox jumped over the lazy dog.", n=3)
 #' ngrams("The quick brown fox jumped over the lazy dog.", n=3, concatenator="~")
 #' ngrams("The quick brown fox jumped over the lazy dog.", n=3, include.all=TRUE)
@@ -98,7 +97,7 @@ ngrams <- function(text, n=2, concatenator="_", include.all=FALSE, ...) {
 }
 
 ngramSingle <- function(text, n=2, concatenator="_", include.all=FALSE, ...) {
-    t <- unlist(tokenize(text, ...))
+    t <- unlist(tokenize(text, simplify=TRUE, ...))
     len <- length(t)
     ngram.result <- c()  # initialize ngrams vector
     tl <- list()   # initialize tl vector
@@ -119,4 +118,3 @@ ngramSingle <- function(text, n=2, concatenator="_", include.all=FALSE, ...) {
     }
     return(ngram.result)
 }
-

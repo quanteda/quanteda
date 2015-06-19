@@ -15,7 +15,7 @@ ngrams(text, n = 2, concatenator = "_", include.all = FALSE, ...)
 
 \item{include.all}{if TRUE, add n-1...1 grams to the returned list}
 
-\item{...}{additional parameters}
+\item{...}{additional parameters passed to \code{\link{tokenize}}}
 }
 \value{
 a list of character vectors of ngrams, one list element per text
@@ -23,13 +23,10 @@ a list of character vectors of ngrams, one list element per text
 \description{
 Create a set of ngrams (words in sequence) from text(s) in a character vector
 }
-\details{
-\code{...} provides additional arguments passed to \link{tokenize}
-}
 \examples{
 ngrams("The quick brown fox jumped over the lazy dog.", n=2)
 identical(ngrams("The quick brown fox jumped over the lazy dog.", n=2),
-          bigrams("The quick brown fox jumped over the lazy dog.", n=2))
+          bigrams("The quick brown fox jumped over the lazy dog."))
 ngrams("The quick brown fox jumped over the lazy dog.", n=3)
 ngrams("The quick brown fox jumped over the lazy dog.", n=3, concatenator="~")
 ngrams("The quick brown fox jumped over the lazy dog.", n=3, include.all=TRUE)
