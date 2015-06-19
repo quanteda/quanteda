@@ -47,89 +47,7 @@ corpus <- function(x, ...) {
     UseMethod("corpus")
 }
 
-# @param docvarsfrom  Argument to specify where docvars are to be taken, from 
-# parsing the filenames separated
-# by \code{sep} or from meta-data embedded in the text file header (\code{headers}).
-# @param docvarnames Character vector of variable names for \code{docvars}
-# @param sep Separator if \code{\link{docvars}} names are taken from the filenames.
-# @warning Only files with the extension \code{.txt} are read in using the directory method.
-# @param pattern filename extension - set to "*" if all files are desired.  This is a 
-# \link[=regex]{regular expression}.
-# @rdname corpus
-# @export
-# @examples 
-# \dontrun{
-# # import texts from a directory of files
-# summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), 
-#                enc="UTF-8", docvarsfrom="filenames",
-#                source="Ken's UK manifesto archive",
-#                docvarnames=c("Country", "Level", "Year", "language")), 5))
-# summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), 
-#                enc="UTF-8", docvarsfrom="filenames",
-#                source="Ken's UK manifesto archive",
-#                docvarnames=c("Country", "Level", "Year", "language", "Party")), 5))
-# 
-# # choose a directory using a GUI
-# corpus(directory())
-#
-# # from a zip file on the web
-# myzipcorp <- corpus(zipfiles("http://kenbenoit.net/files/EUcoalsubsidies.zip"),
-#                     notes="From some EP debate about coal mine subsidies")
-# docvars(myzipcorp, speakername=docnames(myzipcorp))
-# summary(myzipcorp)
-# }
-# corpus.directory <- function(x, enc=NULL, docnames=NULL, 
-#                             docvarsfrom=c("none", "filenames", "headers"), 
-#                             docvarnames=NULL, sep='_', pattern="\\.txt$",
-#                             source=NULL, notes=NULL, citation=NULL, ...) {
-#     if (class(x)[1] != "directory") stop("first argument must be a directory")
-#     dvars <- NULL
-#     docvarsfrom <- match.arg(docvarsfrom)
-#     texts <- getTextDir(x, pattern=pattern)
-#     fnames <- NULL
-#     if (docvarsfrom == "filenames") {
-#         fnames <- list.files(x, full.names=TRUE)
-#         snames <- getRootFileNames(fnames)
-#         snames <- gsub(".txt", "", snames)
-#         parts <- strsplit(snames, sep)
-#         if (var(sapply(parts, length)) != 0)
-#             stop("Filename elements are not equal in length.")
-#         dvars <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE), 
-#                             stringsAsFactors=FALSE)
-#         # assign default names in any case
-#         names(dvars) <- paste("docvar", 1:ncol(dvars), sep="")  
-#         if (!is.null(docvarnames)) {
-#             names(dvars)[1:length(docvarnames)] <- docvarnames
-#             if (length(docvarnames) != ncol(dvars)) {
-#                 warning("Fewer docnames supplied than exist docvars - last ",
-#                         ncol(dvars) - length(docvarnames), " docvars were given generic names.")
-#             }
-#         }
-#         # remove the filename extension from the document names
-#         names(texts) <- gsub(".txt", "", names(texts))
-#     } else if (docvarsfrom == "headers") 
-#         stop("headers argument not yet implemented.")
-# 
-# 
-#     tmpCorp <- NextMethod(x=texts, enc=enc, docnames=docnames, docvars=dvars,
-#                           source=source, notes=notes, citation=citation)
-#     
-#     # set document source as filename
-#     if (!is.null(fnames)) {
-#         metadoc(tmpCorp, "source") <- fnames
-#     }
-#     
-#     tmpCorp
-# }
 
-
-
-
-
-# Corpus constructor for a character method
-# 
-# Details here.
-# 
 #' @param docnames Names to be assigned to the texts, defaults to the names of the 
 #' character vector (if any), otherwise assigns "text1", "text2", etc.
 #' @param docvars A data frame of attributes that is associated with each text.
@@ -387,7 +305,9 @@ texts.corpus <- function(x, groups = NULL, ...) {
 }
 
 
-
+# -- REMOVED
+# -- REMOVED - CORPUS TEXTS SHOULD NOT BE MODIFIED IN THIS WAY
+# -- REMOVED
 # replacement function for texts
 # warning about no data
 # @param value character vector of the new texts
@@ -760,7 +680,6 @@ subset.corpus <- function(x, subset=NULL, select=NULL, ...) {
 #' summary(mycorpus, showmeta=TRUE)  # show the meta-data
 #' mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
 #' mysummary$Types / mysummary$Tokens             # crude type-token ratio
-#' 
 summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
     
     cat("Corpus consisting of ", ndoc(object), " document",

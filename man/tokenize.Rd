@@ -86,7 +86,7 @@ tokenize(txt, removePunct=TRUE, removeTwitter=TRUE)
 #tokenize("great website http://textasdata.com", removeURL=FALSE)
 #tokenize("great website http://textasdata.com", removeURL=TRUE)
 
-txt <- c(text1="This is €10 in 999 different ways,\\n up and down; left and right!",
+txt <- c(text1="This is $10 in 999 different ways,\\n up and down; left and right!",
          text2="@kenbenoit working: on #quanteda 2day\\t4ever, http://textasdata.com?page=123.")
 tokenize(txt, verbose=TRUE)
 tokenize(txt, removeNumbers=TRUE, removePunct=TRUE)
