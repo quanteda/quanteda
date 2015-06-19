@@ -38,7 +38,7 @@ setClass("corpusSource", slots = c(texts = "character",
 #'   can be expanded by the operating system.  This may consist of multiple file
 #'   types.} \item{\code{xml}:}{Basic flat XML documents are supported -- those 
 #'   of the kind supported by the function xmlToDataFrame function of the
-#'   \pkg{XML}  package.} \item{\code{doc, docx}:}{Word files coming
+#'   \strong{XML}  package.} \item{\code{doc, docx}:}{Word files coming
 #'   soon.} \item{\code{pdf}:}{Adobe Portable Document Format files, coming
 #'   soon.} }
 #' @param textField a variable (column) name or column number indicating where 
@@ -57,7 +57,7 @@ setClass("corpusSource", slots = c(texts = "character",
 #'   docvar names will be used (\code{docvar1}, \code{docvar2}, ...).
 #' @param ... additional arguments passed through to other functions
 #' @details The constructor does not store a copy of the texts, but rather reads
-#'   in the texts and associated data, and saves them to a temporary R object 
+#'   in the texts and associated data, and saves them to a temporary disk file 
 #'   whose location is specified in the \link{corpusSource-class} object.  This 
 #'   prevents a complete copy of the object from cluttering the global 
 #'   environment and consuming additional space.  This does mean however that 
@@ -80,9 +80,6 @@ setGeneric("textfile",
 
 #' @rdname textfile
 #' @export
-# @importFrom streamR parseTweets XML
-# @importFrom jsonlite  fromJSON
-# (>= 0.9.10)
 #' @examples 
 #' # Twitter json
 #' \donttest{mytf <- textfile("~/Dropbox/QUANTESS/corpora/misc/NinTANDO_Me.json")
@@ -396,3 +393,4 @@ getdocvarsFromHeaders <- function(fnames, sep="_", docvarnames=NULL) {
     }
     dvars
 }
+

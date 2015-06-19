@@ -13,6 +13,9 @@ changeunits(corp, to = c("sentences", "paragraphs", "documents"), ...)
 
 \item{...}{passes additional arguments to \code{\link{segment}}}
 }
+\value{
+a corpus object with the documents defined as the new units
+}
 \description{
 For a corpus, recast the documents down or up a level of aggregation.  "Down"
 would mean going from documents to sentences, for instance.  "Up" means from

@@ -103,8 +103,6 @@ predict(ws2)
 }
 \author{
 Kenneth Benoit
-
-Ken Benoit
 }
 \references{
 Laver, Michael, Kenneth R Benoit, and John Garry. 2003.

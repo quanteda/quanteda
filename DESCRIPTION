@@ -40,6 +40,7 @@ Suggests:
     tm (>= 0.6),
     slam,
     ggplot2,
+    XML,
     testthat
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8

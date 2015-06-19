@@ -114,7 +114,6 @@ When \code{x} is a \link[tm]{VCorpus} object, the fixed metadata
   no corpus-level metadata is imported, but we will add that soon.
 }
 \examples{
-#
 # create a corpus from texts
 corpus(inaugTexts)
 

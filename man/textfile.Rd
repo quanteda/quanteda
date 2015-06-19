@@ -34,7 +34,7 @@ wildcard value}{any valid pathname with a wildcard ("glob") expression that
 can be expanded by the operating system.  This may consist of multiple file
 types.} \item{\code{xml}:}{Basic flat XML documents are supported -- those
 of the kind supported by the function xmlToDataFrame function of the
-\pkg{XML}  package.} \item{\code{doc, docx}:}{Word files coming
+\strong{XML}  package.} \item{\code{doc, docx}:}{Word files coming
 soon.} \item{\code{pdf}:}{Adobe Portable Document Format files, coming
 soon.} }}
 
@@ -70,7 +70,7 @@ header.
 }
 \details{
 The constructor does not store a copy of the texts, but rather reads
-  in the texts and associated data, and saves them to a temporary R object
+  in the texts and associated data, and saves them to a temporary disk file
   whose location is specified in the \link{corpusSource-class} object.  This
   prevents a complete copy of the object from cluttering the global
   environment and consuming additional space.  This does mean however that

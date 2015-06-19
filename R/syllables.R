@@ -51,7 +51,7 @@ syllables.character <- function(x, syllableDict = NULL, ...) {
         if (!is.integer(syllableDict))
             stop("user-supplied syllableDict must be named integer vector.")
     }
-    words <- tokenize(x, ...)
+    words <- tokenize(toLower(x), removePunct = TRUE, removeTwitter = TRUE, removeNumbers = TRUE, ...)
     
     # match syllable counts to words in the list
     nSyllables <- lapply(words, function(x) syllableDict[x])

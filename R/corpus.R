@@ -62,7 +62,6 @@ corpus <- function(x, ...) {
 #' @rdname corpus
 #' @export
 #' @examples
-#' #
 #' # create a corpus from texts
 #' corpus(inaugTexts)
 #' 
@@ -718,7 +717,7 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
 #' @param corp corpus whose document units will be reshaped
 #' @param to new documents units for the corpus to be recast in
 #' @param ... passes additional arguments to \code{\link{segment}}
-
+#' @return a corpus object with the documents defined as the new units
 #' @export
 #' @examples
 #' # simple example

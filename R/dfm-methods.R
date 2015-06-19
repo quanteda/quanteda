@@ -348,36 +348,67 @@ setMethod("weighting", signature(object="dfm"), function(object) {
 
 #' get the document frequency of a feature
 #' 
-#' Returns the document frequency of a feature in a \link{dfm-class} object, 
-#' which occurs greater than a threshold.
+#' For a \link{dfm-class} object, returns the number of documents in which a 
+#' feature in occurs greater than a given frequency threshold.  The default is 
+#' greater than zero, meaning that a feature occurs at least once in a document.
 #' @param object a \link{dfm-class} document-feature matrix
-#' @param threshold numeric value of the threshold for counting a feature
-#' as existing in the document, default is 0
+#' @param threshold numeric value of the threshold \emph{above which} a feature
+#'   will considered in the computation of document frequency.  The default is
+#'   0, meaning that a feature's document frequency will be the number of
+#'   documents in which it occurs greater than zero times.
+#' @return a numeric vector of document frequencies for each feature
 #' @export
+#' @examples 
+#' mydfm <- dfm(inaugTexts[1:2], verbose = FALSE)
+#' docfreq(mydfm[, 1:20])
 setGeneric("docfreq", signature = c("object", "threshold"), 
            def=function(object, threshold=0) standardGeneric("docfreq"))
 
-#' @rdname docfreq
-setMethod("docfreq", signature(object="dfmDense", threshold="numeric"), 
-          function(object, threshold=0) colSums(as(object, "dgeMatrix") > threshold))
-#' @rdname docfreq
-setMethod("docfreq", signature(object="dfmDense", threshold="missing"), 
-          function(object, threshold=0) colSums(as(object, "dgeMatrix") > threshold))
-#' @rdname docfreq
-setMethod("docfreq", signature(object="dfmSparse", threshold="numeric"), 
-          function(object, threshold=0) colSums(as(object, "dgCMatrix") > threshold))
-#' @rdname docfreq
-setMethod("docfreq", signature(object="dfmSparse", threshold="missing"), 
-          function(object, threshold=0) colSums(as(object, "dgCMatrix") > threshold))
-#' @rdname docfreq
-setMethod("docfreq", signature(object="dfm", threshold="numeric"), 
-          function(object, threshold=0) colSums(object > threshold))
-#' @rdname docfreq
-setMethod("docfreq", signature(object="dfm", threshold="missing"), 
-          function(object, threshold=0) colSums(object > threshold))
-## Note: need the coercion to dg[C,e]Matrix because > Op not currently 
+## Note: need the coercions to dg[C,e]Matrix because > Op not currently 
 ## working for the dfmSparse,Dense classes
 
+#' @rdname docfreq
+setMethod("docfreq", signature(object="dfmDense", threshold="numeric"), 
+          function(object, threshold=0) {
+              tmp <- colSums(as(object, "dgeMatrix") > threshold)
+              names(tmp) <- features(object)
+              tmp
+          })
+#' @rdname docfreq
+setMethod("docfreq", signature(object="dfmDense", threshold="missing"), 
+          function(object, threshold=0) {
+              tmp <- colSums(as(object, "dgeMatrix") > threshold)
+              names(tmp) <- features(object)
+              tmp
+          })
+#' @rdname docfreq
+setMethod("docfreq", signature(object="dfmSparse", threshold="numeric"), 
+          function(object, threshold=0) {
+              tmp <- colSums(as(object, "dgCMatrix") > threshold)
+              names(tmp) <- features(object)
+              tmp
+          })
+#' @rdname docfreq
+setMethod("docfreq", signature(object="dfmSparse", threshold="missing"), 
+          function(object, threshold=0) {
+              tmp <- colSums(as(object, "dgCMatrix") > threshold)
+              names(tmp) <- features(object)
+              tmp
+          })
+#' @rdname docfreq
+setMethod("docfreq", signature(object="dfm", threshold="numeric"), 
+          function(object, threshold=0) {
+              tmp <- colSums(object > threshold)
+              names(tmp) <- features(object)
+              tmp
+          })
+#' @rdname docfreq
+setMethod("docfreq", signature(object="dfm", threshold="missing"), 
+          function(object, threshold=0) {
+              tmp <- colSums(object > threshold)
+              names(tmp) <- features(object)
+              tmp
+          })
 
 
 # Additive smoothing of feature frequencies in a dfm

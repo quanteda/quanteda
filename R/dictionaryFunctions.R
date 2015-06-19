@@ -23,7 +23,7 @@ setClass("dictionary", contains = "list")
 #'   LIWC dictionary file, defaults to 10 (which is more than the actual LIWC 
 #'   2007 dictionary uses).  The default value of 10 is likely to be more than 
 #'   enough.
-#' @return A list with a ductionary class label, to be used by other functions in quanteda.
+#' @return A dictionary class object, essentially a specially classed named list of characters.
 #' @note We will eventually change this to an S4 class with validators and additional methods.
 #' @references
 #' Wordstat dictionaries page, from Provalis Research 
