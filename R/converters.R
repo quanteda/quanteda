@@ -7,7 +7,7 @@
 #' make the usage as consistent as possible with other packages, however, 
 #' quanteda also provides direct conversion functions in the idiom of 
 #' the foreign packages, for example  \code{as.wfm} to 
-#' coerce a dfm into the \code{wfm} format from the \code{austin} package,
+#' coerce a dfm into the \code{wfm} format from the \strong{austin} package,
 #' and \code{quantedaformat2dtm} for using a dfm with the \pkg{topicmodels} package.
 #' @param x dfm to be converted
 #' @param to target conversion format, consisting of the name of the package into 

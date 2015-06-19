@@ -5,9 +5,7 @@
 \alias{clean.character}
 \alias{clean.corpus}
 \alias{cleanC}
-\title{simple cleaning of text before processing
-\code{clean} is an older function used for pre-processing text, but now replaced by similar functionality in
-\code{\link{tokenize}}.  Please use that function instead.}
+\title{simple cleaning of text before processing}
 \usage{
 clean(x, ...)
 
@@ -45,7 +43,6 @@ A character vector equal in length to the original texts (supplied or in the cor
 after cleaning.
 }
 \description{
-simple cleaning of text before processing
 \code{clean} is an older function used for pre-processing text, but now replaced by similar functionality in
 \code{\link{tokenize}}.  Please use that function instead.
 }

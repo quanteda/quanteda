@@ -71,7 +71,7 @@ all other text analysis packages for which conversions are defined.  To
 make the usage as consistent as possible with other packages, however,
 quanteda also provides direct conversion functions in the idiom of
 the foreign packages, for example  \code{as.wfm} to
-coerce a dfm into the \code{wfm} format from the \code{austin} package,
+coerce a dfm into the \code{wfm} format from the \strong{austin} package,
 and \code{quantedaformat2dtm} for using a dfm with the \pkg{topicmodels} package.
 }
 \details{

@@ -1,7 +1,7 @@
 ## SHOULD IMPLEMENT PRESERVATION OF URLs
 
 #' simple cleaning of text before processing
-# '
+#'
 #' \code{clean} is an older function used for pre-processing text, but now replaced by similar functionality in 
 #' \code{\link{tokenize}}.  Please use that function instead.
 #' @rdname clean
