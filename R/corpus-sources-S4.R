@@ -112,12 +112,13 @@ setMethod("textfile",
               if (length(textField) != 1)
                   stop("textField must be a single field name or column number identifying the texts.")
               fileType <- getFileType(file)
+              print('1')
               if(fileType == 'filemask'){
                   sources <- get_datas(file, textField)
               }else{
-                  sources <- get_data(file, fileType, textField)
+                  sources <- get_data(file, textField, fileType)
               }
-              
+              print(names(sources))
               tempCorpusFilename <- tempfile()
               save(sources, file=tempCorpusFilename)
               new("corpusSource", texts=tempCorpusFilename)
@@ -131,11 +132,12 @@ setMethod("textfile",
           signature(file = "character", textField = "missing",
                     docvarsfrom="missing", sep="missing", docvarnames="missing"),
           definition = function(file, textField=NULL, ...) {
+              print('2')
               fileType <- getFileType(file)
               if (fileType=="filemask") {
                   sources <- get_docs(file, fileType)
               }else{
-                  sources <- get_doc(file, fileType)
+                  sources <- get_doc(file)
               }
               tempCorpusFilename <- tempfile()
               save(sources, file=tempCorpusFilename)
@@ -151,7 +153,7 @@ setMethod("textfile",
                                 docvarsfrom=c("headers"), sep="_", docvarnames=NULL, ...) {
               fileType <- getFileType(file)
               if (fileType=="filemask") {
-                  sources <- sapply(file, get_doc(filetype))
+                  sources <- get_docs(file, fileType)
               } else {
                   stop("File type ", fileType, " not supported with these arguments.")
               }
@@ -169,53 +171,15 @@ setMethod("textfile",
 
 # read a document from a text-only file.
 get_doc <- function(f){
+    txts <- c()
     fileType <- getFileType(f)
     switch(fileType,
-           txt =  txts <- paste(suppressWarnings(readLines(f)), collapse="\n"),
-           doc =  txts <- get_word(f),
-           pdf =  txts <- get_pdf(f)
+           txt = {txts <- paste(suppressWarnings(readLines(f)), collapse="\n")},
+           doc = {txts <- get_word(f)},
+           pdf = {txts <- get_pdf(f)}
     )
     return(list(txts=txts))
 }
-
-# read a document from a structured file containing text and data
-get_data <- function(f, textField='index', fileType){
-    switch(fileType,
-           csv = src <- get_csv(f, textField = textField),
-           json = src <- get_json(f, textField = textField),
-           xml = src <- get_xml(f, textField = textField),
-           stop('fileType not supported')
-    )
-    return(src)
-}
-
-
-get_word <- function(f){
-    stop('doc files not implemented yet')
-}
-
-get_pdf <- function(f){
-    stop('pdf files not implemented yet')
-}
-
-
-
-
-
-## csv format
-get_csv <- function(file, textField, sep=",", ...) {
-    docv <- read.csv(file, stringsAsFactors=FALSE, sep=sep, ...)
-    if (is.character(textField)) {
-        textFieldi <- which(names(docv)==textField)
-        if (length(textFieldi)==0)
-            stop("column name", textField, "not found.")
-        textField <- textFieldi
-    }
-    txts <- docv[, textField]
-    docv <- docv[, -textField]
-    list(txts=txts, docv=docv)
-}
-
 
 get_docs <- function(filemask, textnames=NULL, ...) {
     # get the pattern at the end
@@ -238,9 +202,64 @@ get_docs <- function(filemask, textnames=NULL, ...) {
     list(txts=textsvec, docv=NULL)    
 }
 
+# read a document from a structured file containing text and data
+get_data <- function(f, textField='index', sep=',', ...){
+    src <- list()
+    print('fileType')
+    fileType <- getFileType(f)
+    switch(fileType,
+           csv = {src <- get_csv(f, textField, ...)},
+           json = {src <- get_json(f, textField, ...)},
+           xml = {src <- get_xml(f, textField, ...)}
+    )
+    print(names(src))
+    return(src)
+}
 
-## INTERNALS
-## specific functions for reading file types
+# read a document from a structured file containing text and data
+get_datas <- function(filemask, textField='index', fileType, ...){
+    # get the pattern at the end
+    pattern <- getRootFileNames(filemask)
+    # get the directory name
+    path <- substr(filemask, 1, nchar(filemask) - nchar(pattern))
+    # get the filenames
+    filenames <- list.files(path, glob2rx(pattern), full.names=TRUE)
+    # read texts into a character vector
+    textsvec <- c()
+    docv <- NULL
+    for (f in filenames) {
+        src <- get_data(f,  textField, ...)
+        thisdocv <- src$docv
+        textsvec <- c(textsvec, thisdocv$txts)
+    }
+    list(txts=textsvec, docv=docv)
+    return(src)
+}
+
+get_word <- function(f){
+    stop('doc files not implemented yet')
+}
+
+get_pdf <- function(f){
+    stop('pdf files not implemented yet')
+}
+
+## csv format
+get_csv <- function(file, textField, sep=",", ...) {
+    docv <- read.csv(file, stringsAsFactors=FALSE, sep=sep, ...)
+    if (is.character(textField)) {
+        textFieldi <- which(names(docv)==textField)
+        if (length(textFieldi)==0)
+            stop("column name ", textField, " not found.")
+        textField <- textFieldi
+    }
+    txts <- docv[, textField]
+    docv <- docv[, -textField]
+    list(txts=txts, docv=docv)
+}
+
+
+
 
 
 ## Twitter json
