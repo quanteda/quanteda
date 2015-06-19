@@ -39,7 +39,8 @@ Suggests:
     streamR,
     tm (>= 0.6),
     slam,
-    ggplot2
+    ggplot2,
+    testthat
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues

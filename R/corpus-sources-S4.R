@@ -80,7 +80,7 @@ setGeneric("textfile",
 
 #' @rdname textfile
 #' @export
-# @importFrom streamR parseTweets
+# @importFrom streamR parseTweets XML
 # @importFrom jsonlite  fromJSON
 # (>= 0.9.10)
 #' @examples 
