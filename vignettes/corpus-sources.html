@@ -104,14 +104,14 @@ summary(myCorpus, n=5)
 #&gt; Corpus consisting of 57 documents, showing 5 documents.
 #&gt; 
 #&gt;             Text Types Tokens Sentences
-#&gt;  1789-Washington   594   1429        23
+#&gt;  1789-Washington   594   1431        24
 #&gt;  1793-Washington    90    135         4
-#&gt;       1797-Adams   794   2318        37
-#&gt;   1801-Jefferson   681   1726        41
-#&gt;   1805-Jefferson   775   2166        45
+#&gt;       1797-Adams   794   2321        37
+#&gt;   1801-Jefferson   680   1730        42
+#&gt;   1805-Jefferson   776   2166        45
 #&gt; 
-#&gt; Source:  /home/paul/Dropbox/quanteda/vignettes/* on x86_64 by paul.
-#&gt; Created: Fri Jun  5 14:45:43 2015.
+#&gt; Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
+#&gt; Created: Fri Jun 19 21:18:48 2015.
 #&gt; Notes:   .</code></pre>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus. We can do this using the R’s <code>substring()</code> function to extract characters from a name – in this case, the name of the character vector <code>inaugTexts</code>. This works using our fixed starting and ending positions with <code>substring()</code> because these names are a very regular format of <code>YYYY-PresidentName</code>.</p>
 <pre class="r"><code>docvars(myCorpus, &quot;President&quot;) &lt;- substring(names(inaugTexts), 6)
@@ -120,14 +120,14 @@ summary(myCorpus, n=5)
 #&gt; Corpus consisting of 57 documents, showing 5 documents.
 #&gt; 
 #&gt;             Text Types Tokens Sentences  President Year
-#&gt;  1789-Washington   594   1429        23 Washington 1789
+#&gt;  1789-Washington   594   1431        24 Washington 1789
 #&gt;  1793-Washington    90    135         4 Washington 1793
-#&gt;       1797-Adams   794   2318        37      Adams 1797
-#&gt;   1801-Jefferson   681   1726        41  Jefferson 1801
-#&gt;   1805-Jefferson   775   2166        45  Jefferson 1805
+#&gt;       1797-Adams   794   2321        37      Adams 1797
+#&gt;   1801-Jefferson   680   1730        42  Jefferson 1801
+#&gt;   1805-Jefferson   776   2166        45  Jefferson 1805
 #&gt; 
-#&gt; Source:  /home/paul/Dropbox/quanteda/vignettes/* on x86_64 by paul.
-#&gt; Created: Fri Jun  5 14:45:43 2015.
+#&gt; Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
+#&gt; Created: Fri Jun 19 21:18:48 2015.
 #&gt; Notes:   .</code></pre>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <pre class="r"><code>language(myCorpus) &lt;- &quot;english&quot;
@@ -136,11 +136,11 @@ summary(myCorpus, n=5, showmeta=TRUE)
 #&gt; Corpus consisting of 57 documents, showing 5 documents.
 #&gt; 
 #&gt;             Text Types Tokens Sentences  President Year _language
-#&gt;  1789-Washington   594   1429        23 Washington 1789   english
+#&gt;  1789-Washington   594   1431        24 Washington 1789   english
 #&gt;  1793-Washington    90    135         4 Washington 1793   english
-#&gt;       1797-Adams   794   2318        37      Adams 1797   english
-#&gt;   1801-Jefferson   681   1726        41  Jefferson 1801   english
-#&gt;   1805-Jefferson   775   2166        45  Jefferson 1805   english
+#&gt;       1797-Adams   794   2321        37      Adams 1797   english
+#&gt;   1801-Jefferson   680   1730        42  Jefferson 1801   english
+#&gt;   1805-Jefferson   776   2166        45  Jefferson 1805   english
 #&gt;    _docsource
 #&gt;  inaugTexts_1
 #&gt;  inaugTexts_2
@@ -148,8 +148,8 @@ summary(myCorpus, n=5, showmeta=TRUE)
 #&gt;  inaugTexts_4
 #&gt;  inaugTexts_5
 #&gt; 
-#&gt; Source:  /home/paul/Dropbox/quanteda/vignettes/* on x86_64 by paul.
-#&gt; Created: Fri Jun  5 14:45:43 2015.
+#&gt; Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
+#&gt; Created: Fri Jun 19 21:18:48 2015.
 #&gt; Notes:   .</code></pre>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. The two docmeta fields <code>language</code> and <code>encoding</code> are so common that quanteda has shortened accessor and replacement functions for manipulating these: <code>encoding()</code> and <code>language()</code>. Note that in assiging just the single value of <code>&quot;english&quot;</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code>ndoc()</code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -167,19 +167,19 @@ summary(mycorpus3)
 #&gt; Corpus consisting of 10 documents.
 #&gt; 
 #&gt;             Text Types Tokens Sentences
-#&gt;  1789-Washington   594   1429        23
+#&gt;  1789-Washington   594   1431        24
 #&gt;  1793-Washington    90    135         4
-#&gt;       1797-Adams   794   2318        37
-#&gt;   1801-Jefferson   681   1726        41
-#&gt;   1805-Jefferson   775   2166        45
-#&gt;     1809-Madison   520   1175        21
-#&gt;     1813-Madison   518   1210        33
-#&gt;      1817-Monroe   980   3370       122
-#&gt;      1821-Monroe  1190   4457       131
-#&gt;       1825-Adams   962   2915        74
+#&gt;       1797-Adams   794   2321        37
+#&gt;   1801-Jefferson   680   1730        42
+#&gt;   1805-Jefferson   776   2166        45
+#&gt;     1809-Madison   521   1177        21
+#&gt;     1813-Madison   518   1211        33
+#&gt;      1817-Monroe   980   3378       121
+#&gt;      1821-Monroe  1202   4476       131
+#&gt;       1825-Adams   963   2916        74
 #&gt; 
 #&gt; Source:  Combination of corpuses mycorpus1 and mycorpus2.
-#&gt; Created: Fri Jun  5 14:45:43 2015.
+#&gt; Created: Fri Jun 19 21:18:48 2015.
 #&gt; Notes:   First five inaug speeches Next five inaug speeches.</code></pre>
 </div>
 <div id="extracting-a-subset-of-a-corpus" class="section level3">

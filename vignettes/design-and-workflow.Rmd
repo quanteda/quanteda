@@ -1,7 +1,7 @@
 ---
-title: "quanteda Design and Work Flow"
+title: "quanteda Design Principles"
 author: "Ken Benoit and Paul Nulty"
-date: "3 June 2015"
+date: "19 June 2015"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Corpus-construction}

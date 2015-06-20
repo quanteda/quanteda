@@ -872,57 +872,88 @@ combineByName <- function(A, B, ...) {
 }
 
 
-#' count the number of tokens
+#' count the number of tokens or types
 #' 
-#' Return the count of tokens in a text, corpus, or dfm.  "tokens" here
-#' means all words, not unique words, and these are not cleaned
-#' prior to counting.
-#' @param x texts or corpus whose tokens will be counted
-#' @param block.size how many texts to process at a time; experimentation
-#' indicates that for bery large collections of texts, 200 seems fastest.  Not used for dfm objects.
-#' @param verbose if \code{TRUE} print progress indicator and time elapsed
+#' Return the count of tokens (total features) or types (unique features) in a
+#' text, corpus, or dfm.  "tokens" here means all words, not unique words, and
+#' these are not cleaned prior to counting.
+#' @param x texts or corpus whose tokens or types will be counted
+#' @param ... additional arguments passed to \code{\link{tokenize}}
 #' @note Due to differences between raw text tokens and features that have been 
-#' defined for a \link{dfm}, the counts be different for dfm objects and the texts 
-#' from which the dfm was generated.
-#' @return scalar count of the total tokens
+#'   defined for a \link{dfm}, the counts be different for dfm objects and the 
+#'   texts from which the dfm was generated.  Because the method tokenizes the 
+#'   text in order to count the tokens, your results will depend on the options 
+#'   passed through to \code{\link{tokenize}}
+#' @return scalar count of the total tokens or types
 #' @examples
-#' ntoken(inaugTexts[49:57], verbose=FALSE)
-#' ntoken(subset(inaugCorpus, Year>1980), verbose=FALSE)
-#' ntoken(dfm(subset(inaugCorpus, Year>1980), verbose=FALSE))
+#' # simple example
+#' txt <- c(text1 = "This is a sentence, this.", text2 = "A word. Repeated repeated.")
+#' ntoken(txt)
+#' ntype(txt)
+#' ntoken(toLower(txt))  # same
+#' ntype(toLower(txt))   # fewer types
+#' ntoken(toLower(txt), removePunct = TRUE)
+#' ntype(toLower(txt), removePunct = TRUE)
+#' 
+#' # with some real texts
+#' ntoken(subset(inaugCorpus, Year<1806, removePunct = TRUE))
+#' ntype(subset(inaugCorpus, Year<1806, removePunct = TRUE))
+#' ntoken(dfm(subset(inaugCorpus, Year<1800)))
+#' ntype(dfm(subset(inaugCorpus, Year<1800)))
 #' @export
-ntoken <- function(x, block.size=200, verbose=TRUE) {
+ntoken <- function(x, ...) {
     UseMethod("ntoken")
 }
 
 #' @rdname ntoken
 #' @export
-ntoken.corpus <- function(x, block.size=200, verbose=TRUE) {
-    ntoken(texts(x), block.size, verbose)
+ntype <- function(x, ...) {
+    UseMethod("ntype")
 }
 
 #' @rdname ntoken
 #' @export
-ntoken.character <- function(x, block.size=200, verbose=TRUE) {
-    startTime <- proc.time()
-    i <- 1
-    totWords <- 0
-    if (verbose) cat("Counting tokens (block size ", block.size, "):      ", sep="")
-    while (i < length(x)) {
-        pct <- i / length(x) * 100
-        if (verbose) cat("\b\b\b\b\b", formatC(round(pct), width=3), " %", sep="")
-        this.size <- ifelse(length(x) < i + block.size,
-                            length(x) - i,
-                            block.size - 1)
-        totWords <- totWords + length(unlist(tokenize(x[i:(i+this.size)], removePunct=FALSE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)))
-        i <- i + this.size + 1
-    }
-    if (verbose) cat("\b\b\b\b\b", formatC(100, width=3), " %", sep="")
-    if (verbose) cat(", elapsed time", round((proc.time() - startTime)[3], 2), "seconds.\n")
-    totWords
+ntoken.corpus <- function(x, ...) {
+    ntoken(texts(x), ...)
 }
 
 #' @rdname ntoken
 #' @export
-ntoken.dfm <- function(x, block.size=0, verbose=TRUE) {
-    sum(x)
+ntype.corpus <- function(x, ...) {
+    ntype(texts(x), ...)
 }
+
+
+#' @rdname ntoken
+#' @export
+ntoken.character <- function(x, ...) {
+    #if (removePunct(list(...))
+    #if ("removePunct" %in% list(...))
+    sapply(tokenize(x, ...), length)
+}
+
+#' @rdname ntoken
+#' @export
+ntype.character <- function(x, ...) {
+    #if (removePunct(list(...))
+    #if ("removePunct" %in% list(...))
+    sapply(sapply(tokenize(x, ...), unique), length)
+}
+
+
+#' @rdname ntoken
+#' @export
+ntoken.dfm <- function(x, ...) {
+    if (length(list(...)) > 0)
+        warning("additional arguments not used for ntoken.dfm()")
+    rowSums(x)
+}
+
+#' @rdname ntoken
+#' @export
+ntype.dfm <- function(x, ...) {
+    if (length(list(...)) > 0)
+        warning("additional arguments not used for ntoken.dfm()")
+    apply(x, 1, function(dfmrow) sum(dfmrow > 0))
+}
+
