@@ -498,9 +498,9 @@ docnames.corpus <- function(x) {
 
 #' get the number of documents or features
 #' 
-#' Returns the number of documents or features in a quanteda object.
+#' \code{ndoc} returns the number of documents or features in a quanteda object, which can be 
+#' a corpus, dfm, or tokenized texts.
 #' @param x a corpus or dfm object
-#' @param ... additional parameters
 #' @return an integer (count) of the number of documents or features in the corpus or dfm
 #' @export
 ndoc <- function(x) {

@@ -75,7 +75,7 @@ trimdfm <- function(x, ...) {
 
 #' @export
 #' @rdname ndoc
-ndoc.dfm <- function(x, ...) {
+ndoc.dfm <- function(x) {
     nrow(x)
 }
 
@@ -173,8 +173,6 @@ sort.dfm <- function(x, decreasing=TRUE, margin = c("features", "docs", "both"),
 }
 
 
-
-
 #' @rdname ndoc
 #' @export
 nfeature <- function(x) {
@@ -182,12 +180,9 @@ nfeature <- function(x) {
 }
 
 #' @rdname ndoc
-#' @export
-nfeature.corpus <- function(x) {
-    stop("nfeature not yet implemented for corpus objects.")
-}
-
-#' @rdname ndoc
+#' @description \code{nfeature} is an alias for \code{ntype} when applied to dfm
+#'   objects.  For a corpus or set of texts, "features" are only defined through
+#'   tokenization, so you need to use \code{\link{ntoken}} to count these.
 #' @export
 #' @examples
 #' nfeature(dfm(inaugCorpus))

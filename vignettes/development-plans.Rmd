@@ -19,11 +19,19 @@ existing ones.  In the meantime, we suggest:
 -   hope that we get to 1.0 quickly;
 -   help that process by sending us feedback stating what you think of the syntax, formal names, etc. from a user's perspective.
 
+## Notes to the **quanteda** team
+
+1.  All **testing** should be in tests/testthat/test_<name>.R.  No more haphazard tests in other locations.
+
+2.  For **performance comprisons**, we write up the results and document them in the vignette `performance_comparisons.Rmd.`
+
+3.  Development and branches:  We add new features through `workingDev`.  Before merging this with `dev`, we make sure the build passes a full CRAN check.
+
 ## To Do List
 
 *   rewrite to make use of **stringi** (and the new `tokenize()` based on that package):
     *   **DONE** `ntoken()`  
-    *   **DONE** `ntype()`
+    *   **DONE** `ntype()` and `nfeature()`
     *   `phrasetotoken()` 
     *   `segment()`
     *   (ADD) `nsentence()`
@@ -63,6 +71,8 @@ existing ones.  In the meantime, we suggest:
 *    specific textmodel types:
     *   Improve wordfish and round out methods
     *   Add CA scaling
+    
+* convert text binaries to UTF-8
 
 ## For bug reports and feature requests
 
