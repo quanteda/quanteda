@@ -75,7 +75,7 @@ trimdfm <- function(x, ...) {
 
 #' @export
 #' @rdname ndoc
-ndoc.dfm <- function(x, ...) {
+ndoc.dfm <- function(x) {
     nrow(x)
 }
 
