@@ -30,6 +30,10 @@ an integer (count) of the number of documents or features in the corpus or dfm
 \description{
 \code{ndoc} returns the number of documents or features in a quanteda object, which can be
 a corpus, dfm, or tokenized texts.
+
+\code{nfeature} is an alias for \code{ntype} when applied to dfm
+  objects.  For a corpus or set of texts, "features" are only defined through
+  tokenization, so you need to use \code{\link{ntoken}} to count these.
 }
 \examples{
 ndoc(subset(inaugCorpus, Year>1980))
