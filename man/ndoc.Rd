@@ -5,6 +5,7 @@
 \alias{ndoc.corpus}
 \alias{ndoc.dfm}
 \alias{nfeature}
+\alias{nfeature.corpus}
 \alias{nfeature.dfm}
 \title{get the number of documents or features}
 \usage{
@@ -15,6 +16,8 @@ ndoc(x)
 \method{ndoc}{dfm}(x)
 
 nfeature(x)
+
+\method{nfeature}{corpus}(x)
 
 \method{nfeature}{dfm}(x)
 }

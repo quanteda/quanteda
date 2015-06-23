@@ -21,17 +21,9 @@ cleanC(x, removeDigits = TRUE, removePunct = TRUE, toLower = TRUE,
 }
 \arguments{
 \item{x}{The object to be cleaned. Can be either a character vector or a
-<<<<<<< HEAD
-<<<<<<< HEAD
 corpus object. Corpus texts are not intended to be directly mutable, so if
 x is a corpus, \code{clean} returns the a character vector containing the
 cleaned texts.}
-=======
-corpus containing texts}
->>>>>>> workingDev
-=======
-corpus containing texts}
->>>>>>> workingDev
 
 \item{...}{additional parameters}
 
@@ -44,17 +36,57 @@ corpus containing texts}
 \item{removeAdditional}{additional characters to remove
 (\link[=regex]{regular expression})}
 
-\item{removeTwitter}{if \code{FALSE}, do not remove \code{@} or \code{#'}}
+\item{removeTwitter}{if \code{FALSE}, do not remove \code{@} or \code{#}}
 
 \item{removeURL}{removes URLs (web addresses starting with \code{http:} or
 \code{https:}), based on a regular expression from
 \url{http://daringfireball.net/2010/07/improved_regex_for_matching_urls}}
+
+\item{x}{The object to be cleaned. Can be either a character vector or a
+corpus containing texts}
+
+\item{removeDigits}{remove numbers if \code{TRUE}}
+
+\item{removePunct}{remove punctuation if \code{TRUE}}
+
+\item{toLower}{convert text to lower case \code{TRUE}}
+
+\item{removeTwitter}{if \code{FALSE}, do not remove \code{@} or \code{#'}}
+
+\item{removeURL}{removes URLs (web addresses starting with \code{http:} or \code{https:}), based
+on a regular expression from \url{http://daringfireball.net/2010/07/improved_regex_for_matching_urls}}
+
+\item{removeAdditional}{additional characters to remove (\link[=regex]{regular expression})}
+
+\item{...}{additional parameters}
+
+\item{x}{The object to be cleaned. Can be either a character vector or a
+corpus containing texts}
+
+\item{removeDigits}{remove numbers if \code{TRUE}}
+
+\item{removePunct}{remove punctuation if \code{TRUE}}
+
+\item{toLower}{convert text to lower case \code{TRUE}}
+
+\item{removeTwitter}{if \code{FALSE}, do not remove \code{@} or \code{#'}}
+
+\item{removeURL}{removes URLs (web addresses starting with \code{http:} or \code{https:}), based
+on a regular expression from \url{http://daringfireball.net/2010/07/improved_regex_for_matching_urls}}
+
+\item{removeAdditional}{additional characters to remove (\link[=regex]{regular expression})}
+
+\item{...}{additional parameters}
 }
 \value{
-<<<<<<< HEAD
-<<<<<<< HEAD
 A character vector equal in length to the original texts, after
   cleaning.
+
+A character vector equal in length to the original texts (supplied or in the corpus)
+after cleaning.
+
+A character vector equal in length to the original texts (supplied or in the corpus)
+after cleaning.
 }
 \description{
 \code{clean} removes punctuation and digits from text, using the regex
@@ -63,10 +95,6 @@ R function \code{tolower} to convert the text to lower case. Each of these
 steps is optional, but switched on by default, so for example, to remove
 punctuation and convert to lower, but keep digits, the command would be:
 \code{clean(mytexts, removeDigits=FALSE)}
-}
-\details{
-\code{cleanC} is KB's adaptation from KW's code for tokenization and cleaning,
-for testing.
 }
 \examples{
 clean("This is 1 sentence with 2.0 numbers in it, and one comma.", removeDigits=FALSE)
@@ -81,45 +109,8 @@ clean("URL regex from http://daringfireball.net/2010/07/improved_regex_for_match
 # for a vector of texts
 clean(c("This is 1 sentence with 2.0 numbers in it, and one comma.",
         "$1.2 billion was spent on text analysis in 2014."))
-cleanC("This is 1 sentence with 2.0 numbers in it, and one comma.", removeDigits=FALSE)
-cleanC("This is 1 sentence with 2.0 numbers in it, and one comma.", toLower=FALSE)
-cleanC("We are his Beliebers, and him is #ourjustin @justinbieber we luv u", removeTwitter=TRUE)
-cleanC("Collocations can be represented as inheritance_tax using the _ character.")
-cleanC("But under_scores can be removed with removeAdditional.", removeAdditional="[_]")
-cleanC("This is a $1,500,000 budget and $20bn cash and a $5 cigar.")
-cleanC("This is a $1,500,000 budget and $20bn cash and a $5 cigar.", removeDigits=FALSE)
-clean("URL regex from http://daringfireball.net/2010/07/improved_regex_for_matching_urls.")
 
-# for a vector of texts
-clean(c("This is 1 sentence with 2.0 numbers in it, and one comma.",
-        "$1.2 billion was spent on text analysis in 2014."))
-
-\donttest{# on a single long text
-mobydick <- texts(corpus(textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")))
-system.time(tmp <- cleanC(mobydick)) # .218 seconds
-system.time(tmp <- clean(mobydick))  # .776 seconds
-
-# on a longer set of texts (34,070 texts)
-load('~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/lauderdaleClark/Opinion_files.RData')
-txts <- unlist(Opinion_files[1]); names(txts) <- NULL
-system.time(tmp <- sapply(txts, cleanC)) # about 20.5 seconds
-\dontrun{system.time(tmp <- sapply(txts, clean))  # about forever: 647.502 seconds}
-}
-=======
-A character vector equal in length to the original texts (supplied or in the corpus)
-after cleaning.
-}
-\description{
-\code{clean} is an older function used for pre-processing text, but now replaced by similar functionality in
-\code{\link{tokenize}}.  Please use that function instead.
->>>>>>> workingDev
-=======
-A character vector equal in length to the original texts (supplied or in the corpus)
-after cleaning.
-}
-\description{
-\code{clean} is an older function used for pre-processing text, but now replaced by similar functionality in
-\code{\link{tokenize}}.  Please use that function instead.
->>>>>>> workingDev
+\\code{clean} is an older function used for pre-processing text, but now replaced by similar functionality in
+\\code{\\link{tokenize}}.  Please use that function instead.
 }
 

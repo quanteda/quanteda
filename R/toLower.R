@@ -10,7 +10,6 @@
 #'   character vector or a corpus, return a lowercased character vector.  If 
 #'   \code{x} is a list of tokenized texts, then return a list of lower-cased 
 #'   tokenized texts.
-#' @import stringi
 #' @export
 #' @examples 
 #' test1 <- c(text1 = "England and France are members of NATO and UNESCO", 

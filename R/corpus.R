@@ -878,7 +878,7 @@ combineByName <- function(A, B, ...) {
 #' text, corpus, or dfm.  "tokens" here means all words, not unique words, and
 #' these are not cleaned prior to counting.
 #' @param x texts or corpus whose tokens or types will be counted
-#' @param ... additional arguments passed to \code{\link{tokenize}}
+#' @param ... additional arguments passed to XXX 
 #' @note Due to differences between raw text tokens and features that have been 
 #'   defined for a \link{dfm}, the counts be different for dfm objects and the 
 #'   texts from which the dfm was generated.  Because the method tokenizes the 
