@@ -2,6 +2,7 @@
 
 #' simple cleaning of text before processing
 <<<<<<< HEAD
+<<<<<<< HEAD
 #' 
 #' \code{clean} removes punctuation and digits from text, using the regex 
 #' character classes for punctuation and digits. \code{clean} uses the standard
@@ -42,6 +43,25 @@
 #' # for a vector of texts
 #' clean(c("This is 1 sentence with 2.0 numbers in it, and one comma.", 
 #'         "$1.2 billion was spent on text analysis in 2014."))
+=======
+#'
+#' \code{clean} is an older function used for pre-processing text, but now replaced by similar functionality in 
+#' \code{\link{tokenize}}.  Please use that function instead.
+#' @rdname clean
+#' @param x The object to be cleaned. Can be either a character vector or a 
+#'   corpus containing texts
+#' @param removeDigits remove numbers if \code{TRUE}
+#' @param removePunct remove punctuation if \code{TRUE}
+#' @param toLower convert text to lower case \code{TRUE}
+#' @param removeTwitter if \code{FALSE}, do not remove \code{@@} or \code{#'}
+#' @param removeURL removes URLs (web addresses starting with \code{http:} or \code{https:}), based 
+#' on a regular expression from \url{http://daringfireball.net/2010/07/improved_regex_for_matching_urls}
+#' @param removeAdditional additional characters to remove (\link[=regex]{regular expression})
+#' @param ... additional parameters
+#' @return A character vector equal in length to the original texts (supplied or in the corpus) 
+#' after cleaning.
+#' @import stringi
+>>>>>>> workingDev
 =======
 #'
 #' \code{clean} is an older function used for pre-processing text, but now replaced by similar functionality in 

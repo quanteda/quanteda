@@ -5,40 +5,62 @@
 \alias{ntoken.character}
 \alias{ntoken.corpus}
 \alias{ntoken.dfm}
-\title{count the number of tokens}
+\alias{ntype}
+\alias{ntype.character}
+\alias{ntype.corpus}
+\alias{ntype.dfm}
+\title{count the number of tokens or types}
 \usage{
-ntoken(x, block.size = 200, verbose = TRUE)
+ntoken(x, ...)
 
-\method{ntoken}{corpus}(x, block.size = 200, verbose = TRUE)
+ntype(x, ...)
 
-\method{ntoken}{character}(x, block.size = 200, verbose = TRUE)
+\method{ntoken}{corpus}(x, ...)
 
-\method{ntoken}{dfm}(x, block.size = 0, verbose = TRUE)
+\method{ntype}{corpus}(x, ...)
+
+\method{ntoken}{character}(x, ...)
+
+\method{ntype}{character}(x, ...)
+
+\method{ntoken}{dfm}(x, ...)
+
+\method{ntype}{dfm}(x, ...)
 }
 \arguments{
-\item{x}{texts or corpus whose tokens will be counted}
+\item{x}{texts or corpus whose tokens or types will be counted}
 
-\item{block.size}{how many texts to process at a time; experimentation
-indicates that for bery large collections of texts, 200 seems fastest.  Not used for dfm objects.}
-
-\item{verbose}{if \code{TRUE} print progress indicator and time elapsed}
+\item{...}{additional arguments passed to \code{\link{tokenize}}}
 }
 \value{
-scalar count of the total tokens
+scalar count of the total tokens or types
 }
 \description{
-Return the count of tokens in a text, corpus, or dfm.  "tokens" here
-means all words, not unique words, and these are not cleaned
-prior to counting.
+Return the count of tokens (total features) or types (unique features) in a
+text, corpus, or dfm.  "tokens" here means all words, not unique words, and
+these are not cleaned prior to counting.
 }
 \note{
 Due to differences between raw text tokens and features that have been
-defined for a \link{dfm}, the counts be different for dfm objects and the texts
-from which the dfm was generated.
+  defined for a \link{dfm}, the counts be different for dfm objects and the
+  texts from which the dfm was generated.  Because the method tokenizes the
+  text in order to count the tokens, your results will depend on the options
+  passed through to \code{\link{tokenize}}
 }
 \examples{
-ntoken(inaugTexts[49:57], verbose=FALSE)
-ntoken(subset(inaugCorpus, Year>1980), verbose=FALSE)
-ntoken(dfm(subset(inaugCorpus, Year>1980), verbose=FALSE))
+# simple example
+txt <- c(text1 = "This is a sentence, this.", text2 = "A word. Repeated repeated.")
+ntoken(txt)
+ntype(txt)
+ntoken(toLower(txt))  # same
+ntype(toLower(txt))   # fewer types
+ntoken(toLower(txt), removePunct = TRUE)
+ntype(toLower(txt), removePunct = TRUE)
+
+# with some real texts
+ntoken(subset(inaugCorpus, Year<1806, removePunct = TRUE))
+ntype(subset(inaugCorpus, Year<1806, removePunct = TRUE))
+ntoken(dfm(subset(inaugCorpus, Year<1800)))
+ntype(dfm(subset(inaugCorpus, Year<1800)))
 }
 
