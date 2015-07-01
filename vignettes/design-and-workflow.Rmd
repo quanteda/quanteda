@@ -40,10 +40,8 @@ vignette: >
     subset
     summary
     textfile
-    texts, <-    # see Question below
+    texts
     ```
-    
-    Question: Should `texts() <-` have a replacement function?  This violates basic principle 1 above.  It is included for convenience, since sometimes texts might need to be modified, and this prevents users from addressing internal corpus object slots directly.
     
     
 2.  **Text manipulation.**  These operate on character vectors, and return character vectors.

@@ -530,26 +530,23 @@ setGeneric("phrasetotoken",
 setMethod("phrasetotoken", signature=c("character", "dictionary", "ANY"), 
           function(object, phrases, concatenator="_") {
               phrases <- unlist(phrases, use.names=FALSE)
-              compoundPhrases <- phrases[grep(" ", phrases)]
+              compoundPhrases <- phrases[stringi::stri_detect_fixed(phrases, " ")]
               # now replace hyphens with something else
-              compoundPhrases <- gsub("-", "__", compoundPhrases)
+              compoundPhrases <- stringi::stri_replace_all_fixed(compoundPhrases, "-", "__")
               compoundPhrasesList <- tokenize(compoundPhrases)
               
               # replace intra-word hyphens in text with __
-              object <- gsub("(\\w+)[-](\\w+)", "\\1__\\2", object)
+              object <- stringi::stri_replace_all_regex(object, "(\\w+)[-](\\w+)", "$1__$2")
               
-              # contenate the phrases in
-              # gsub("(word1)\\s(word2)", "\\1_\\2", "word1 word2")
-              ## [1] "word1_word2"
               for (l in compoundPhrasesList) {
                   # match phrases with space delimiters or (already added) concatenator
                   # this catches trigram collocations that have already been processed partly as bigrams
                   re.pattern <- paste("(", paste(l, collapse=paste0(")[\\s", concatenator, "](")), ")", sep="")
-                  re.replace <- paste("\\", 1:length(l), sep="", collapse=concatenator)
-                  object <- gsub(re.pattern, re.replace, object, perl=TRUE, ignore.case=TRUE)
+                  re.replace <- paste("$", 1:length(l), sep="", collapse=concatenator)
+                  object <- stringi::stri_replace_all_regex(object, re.pattern, re.replace, case_insensitive=TRUE)
               }
               # now transform hyphens back
-              object <- gsub("__", "-", object)
+              object <- stringi::stri_replace_all_fixed(object, "__", "-")
               object
           })
 

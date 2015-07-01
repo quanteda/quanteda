@@ -13,7 +13,7 @@
 #  subset
 #  summary
 #  textfile
-#  texts, <-    # see Question below
+#  texts
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  tokenize
