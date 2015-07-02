@@ -80,9 +80,9 @@ The constructor does not store a copy of the texts, but rather reads
   called.
 }
 \examples{
-# Twitter json
-\donttest{mytf <- textfile("~/Dropbox/QUANTESS/corpora/misc/NinTANDO_Me.json")
-summary(corpus(mytf))
+\donttest{#' # Twitter json
+mytf1 <- textfile("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
+summary(corpus(mytf1))
 # generic json - needs a textField specifier
 mytf2 <- textfile("~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/sotu/sotu.json",
                   textField = "text")
@@ -90,16 +90,22 @@ summary(corpus(mytf2))
 # text file
 mytf3 <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")
 summary(corpus(mytf3))
+# multiple text files
 mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt")
 summary(corpus(mytf4))
+# multiple text files with docvars from filenames
 mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt",
                   docvarsfrom="filenames", sep="-", docvarnames=c("Year", "President"))
 summary(corpus(mytf5))
-# XML file
-## some locally working code here
+# XML data
 mytf6 <- textfile("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml",
                   textField = "COMMON")
 summary(corpus(mytf6))
+# csv file
+write.csv(data.frame(inaugSpeech = texts(inaugCorpus), docvars(inaugCorpus)),
+          file = "/tmp/inaugTexts.csv", row.names = FALSE)
+mytf7 <- textfile("/tmp/inaugTexts.csv", textField = "inaugSpeech")
+summary(corpus(mytf7))
 }
 }
 \author{

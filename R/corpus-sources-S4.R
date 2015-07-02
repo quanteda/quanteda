@@ -81,9 +81,9 @@ setGeneric("textfile",
 #' @rdname textfile
 #' @export
 #' @examples 
-#' # Twitter json
-#' \donttest{mytf <- textfile("~/Dropbox/QUANTESS/corpora/misc/NinTANDO_Me.json")
-#' summary(corpus(mytf))
+#' \donttest{#' # Twitter json
+#' mytf1 <- textfile("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
+#' summary(corpus(mytf1))
 #' # generic json - needs a textField specifier
 #' mytf2 <- textfile("~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/sotu/sotu.json",
 #'                   textField = "text")
@@ -91,16 +91,22 @@ setGeneric("textfile",
 #' # text file
 #' mytf3 <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")
 #' summary(corpus(mytf3))
+#' # multiple text files
 #' mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt")
 #' summary(corpus(mytf4))
+#' # multiple text files with docvars from filenames
 #' mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", 
 #'                   docvarsfrom="filenames", sep="-", docvarnames=c("Year", "President"))
 #' summary(corpus(mytf5))
-#' # XML file
-#' ## some locally working code here
+#' # XML data
 #' mytf6 <- textfile("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml", 
 #'                   textField = "COMMON")
 #' summary(corpus(mytf6))
+#' # csv file
+#' write.csv(data.frame(inaugSpeech = texts(inaugCorpus), docvars(inaugCorpus)), 
+#'           file = "/tmp/inaugTexts.csv", row.names = FALSE)
+#' mytf7 <- textfile("/tmp/inaugTexts.csv", textField = "inaugSpeech")
+#' summary(corpus(mytf7))
 #' }
 setMethod("textfile", 
           signature(file = "character", textField = "index", 
@@ -109,13 +115,13 @@ setMethod("textfile",
               if (length(textField) != 1)
                   stop("textField must be a single field name or column number identifying the texts.")
               fileType <- getFileType(file)
-              print('1')
-              if(fileType == 'filemask'){
+              # print('1')
+              if (fileType == 'filemask'){
                   sources <- get_datas(file, textField)
-              }else{
+              } else {
                   sources <- get_data(file, textField, fileType)
               }
-              print(names(sources))
+              # print(names(sources))
               tempCorpusFilename <- tempfile()
               save(sources, file=tempCorpusFilename)
               new("corpusSource", texts=tempCorpusFilename)
@@ -129,11 +135,11 @@ setMethod("textfile",
           signature(file = "character", textField = "missing",
                     docvarsfrom="missing", sep="missing", docvarnames="missing"),
           definition = function(file, textField=NULL, ...) {
-              print('2')
+              #print('2')
               fileType <- getFileType(file)
               if (fileType=="filemask") {
-                  sources <- get_docs(file, fileType)
-              }else{
+                  sources <- get_docs(file)
+              } else {
                   sources <- get_doc(file)
               }
               tempCorpusFilename <- tempfile()
@@ -150,7 +156,7 @@ setMethod("textfile",
                                 docvarsfrom=c("headers"), sep="_", docvarnames=NULL, ...) {
               fileType <- getFileType(file)
               if (fileType=="filemask") {
-                  sources <- get_docs(file, fileType)
+                  sources <- get_docs(file)
               } else {
                   stop("File type ", fileType, " not supported with these arguments.")
               }
@@ -167,15 +173,16 @@ setMethod("textfile",
 ## New internals
 
 # read a document from a text-only file.
-get_doc <- function(f){
+get_doc <- function(f) {
     txts <- c()
     fileType <- getFileType(f)
     switch(fileType,
-           txt = {txts <- paste(suppressWarnings(readLines(f)), collapse="\n")},
-           doc = {txts <- get_word(f)},
-           pdf = {txts <- get_pdf(f)}
+           txt =  { return(list(txts = paste(suppressWarnings(readLines(f)), collapse="\n"))) },
+           doc =  { return(list(txts = get_word(f))) },
+           json = { return(get_json_tweets(f)) },
+           pdf =  { return(list(txts = get_pdf(f))) }
     )
-    return(list(txts=txts))
+    stop("unrecognized fileType:", fileType)
 }
 
 get_docs <- function(filemask, textnames=NULL, ...) {
@@ -202,14 +209,14 @@ get_docs <- function(filemask, textnames=NULL, ...) {
 # read a document from a structured file containing text and data
 get_data <- function(f, textField='index', sep=',', ...){
     src <- list()
-    print('fileType')
+    # print('fileType')
     fileType <- getFileType(f)
     switch(fileType,
            csv = {src <- get_csv(f, textField, ...)},
            json = {src <- get_json(f, textField, ...)},
            xml = {src <- get_xml(f, textField, ...)}
     )
-    print(names(src))
+    # print(names(src))
     return(src)
 }
 
@@ -230,7 +237,7 @@ get_datas <- function(filemask, textField='index', fileType, ...){
         textsvec <- c(textsvec, thisdocv$txts)
     }
     list(txts=textsvec, docv=docv)
-    return(src)
+    # return(src)
 }
 
 get_word <- function(f){
@@ -257,8 +264,6 @@ get_csv <- function(file, textField, sep=",", ...) {
 
 
 
-
-
 ## Twitter json
 get_json_tweets <- function(path=NULL, source="twitter", enc = "unknown", ...) {
     stopifnot(file.exists(path))
@@ -282,7 +287,7 @@ get_json_tweets <- function(path=NULL, source="twitter", enc = "unknown", ...) {
     # parsing into a data frame
     # reading tweets into a data frame
     results <- streamR::parseTweets(txt, verbose=FALSE, ...)
-    list(txts=results[, 1], docv=as.data.frame(results[, -1]))
+    list(txts = results[, 1], docv = as.data.frame(results[, -1]))
 }
 
 ## general json

@@ -48,17 +48,30 @@ corpus <- function(x, ...) {
 }
 
 
-#' @param docnames Names to be assigned to the texts, defaults to the names of the 
-#' character vector (if any), otherwise assigns "text1", "text2", etc.
+#' @param docnames Names to be assigned to the texts, defaults to the names of 
+#'   the character vector (if any), otherwise assigns "text1", "text2", etc.
 #' @param docvars A data frame of attributes that is associated with each text.
-#' @param source A string specifying the source of the texts, used for referencing.
+#' @param source A string specifying the source of the texts, used for 
+#'   referencing.
 #' @param citation Information on how to cite the corpus.
-#' @param notes A string containing notes about who created the text, warnings, To Dos, etc.
-#' @param enc A string specifying the input encoding for texts in the 
-#' corpus.  Must be a valid entry in \code{\link{iconvlist}()}, since the code in 
-#' \code{corpus.character} will convert this to \code{UTF-8} using \code{\link{iconv}}.  
-#' Currently only one input encoding can be specified for a collection of input texts, 
-#' meaning that you should not mix input text encoding types in a single \code{corpus} call.
+#' @param notes A string containing notes about who created the text, warnings, 
+#'   To Dos, etc.
+#' @param enc a string specifying the input encoding for texts in the corpus. 
+#'   Must be a valid entry in \code{\link[pkg=stringi]{stri_enc_list}()}, since 
+#'   the code in \code{corpus.character} will convert this to \code{encTo} using
+#'   \code{\link[pkg=stringi]{stri_encode}}.  We recommend that you do
+#'   \strong{not} use \code{enc}, since if left \code{NULL} (the default) then
+#'   \code{corpus()} will detect the input encoding(s) and convert
+#'   automatically.
+#'   
+#'   Currently only one input encoding can be specified for a collection of 
+#'   input texts, meaning that you should not mix input text encoding types in a
+#'   single \code{corpus} call.  However if you suspect multiple encodings, omit
+#'   the \code{enc} argument and \code{corpus()} will detect and convert each
+#'   file automatically.
+#' @param encTo target encoding, default is UTF-8.  Unless you have strong reasons
+#' to use an alternative encoding, we strongly recommend you leave this at its 
+#' default.  Must be a valid entry in \code{\link[pkg=stringi]{stri_enc_list}()}
 #' @rdname corpus
 #' @export
 #' @examples
@@ -67,11 +80,47 @@ corpus <- function(x, ...) {
 #' 
 #' # create a corpus from texts and assign meta-data and document variables
 #' ukimmigCorpus <- corpus(ukimmigTexts, 
-#'                             docvars=data.frame(party=names(ukimmigTexts)), 
-#'                             enc="UTF-8") 
+#'                         docvars = data.frame(party=names(ukimmigTexts)), 
+#'                         encTo = "windows-1252") 
 #'                             
-corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
+corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvars=NULL,
                              source=NULL, notes=NULL, citation=NULL, ...) {
+    
+    # check validity of encoding label(s)
+    if (!is.null(enc) && !(enc %in% stringi::stri_enc_list(simplify = TRUE))) 
+        stop("enc = ", enc, " argument not found in stri_enc_list()")
+    if (!(encTo %in% stringi::stri_enc_list(simplify = TRUE))) 
+        stop("encTo = ", enc, " argument not found in stri_enc_list()")
+
+    # detect encoding
+    detectedEncoding <- sapply(stringi::stri_enc_detect(x), function(x) x$Encoding[1])
+    # just take most common
+    detectedEncoding <- names(sort(table(detectedEncoding), decreasing = TRUE))[1]
+    # if an encoding was specified, and is different from most common detected, print warning
+    if (!is.null(enc) && enc != detectedEncoding) {
+        cat("  NOTE:", enc, "specified as input encoding, but", detectedEncoding, "detected.  Are you SURE?\n\n")
+    }
+
+    # use specified enc, not detected encoding
+    if (!is.null(enc)) detectedEncoding <- enc
+    # convert to "enc" if not already UTF-8
+    if (detectedEncoding[1] != encTo) {
+#         if (length(table(detectedEncoding)) != 1) {
+#             # if multiple encodings detected, convert each one to encTo
+#             cat("  Multiple input encodings detected (", 
+#                 paste(names(table(detectedEncoding)), collapse = ", "),
+#                 "), converting to ", encTo, ".\n", sep="")
+#             for (i in 1:length(x)) {
+#                 suppressWarnings(x[i] <- stringi::stri_encode(x[i], from = detectedEncoding[i], to = encTo))
+#             } 
+#         } else if (length(table(detectedEncoding)) == 1) {
+        # if single encoding detected, convert all at once to encTo
+        cat("  Non-", encTo, " encoding ", ifelse(is.null(enc), "detected ", ""), "(", 
+            names(table(detectedEncoding)), "), converting to ", encTo, ".\n", sep="")
+        suppressWarnings(x <- stringi::stri_encode(x, from = detectedEncoding[1], to = encTo))
+#    }
+    }
+
     # name the texts vector
     if (!is.null(docnames)) {
         stopifnot(length(docnames)==length(x))
@@ -79,10 +128,7 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
     } else if (is.null(names(x))) {
         names(x) <- paste("text", 1:length(x), sep="")
     }
-    
-    # check validity of encoding label(s)
-    if (!is.null(enc) && !(enc %in% iconvlist())) stop("enc argument not found in iconvlist()")
-    
+
     # create document-meta-data
     if (is.null(source)) {
         source <- paste(getwd(), "/* ", "on ",  Sys.info()["machine"], " by ", Sys.info()["user"], sep="")
@@ -93,21 +139,12 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
     # create the documents data frame starting with the texts
     documents <- data.frame(texts=x, row.names=names(x),
                             check.rows=TRUE, stringsAsFactors=FALSE)
-    
-    
+
     # user-supplied document-level variables (one kind of meta-data)
     if (!is.null(docvars)) {
         stopifnot(nrow(docvars)==length(x))
         documents <- cbind(documents, docvars)
     } 
-    
-    # set the encoding label if specified
-    if (!is.null(enc) && enc != "unknown") {
-        documents$texts <- iconv(documents$texts, enc, "UTF-8")
-        #if (verbose)
-        cat("  note: converted texts from", enc, "to UTF-8.")
-        documents$"_encoding" <- "UTF-8"
-    }
     
     # build and return the corpus object
     tempCorpus <- list(documents=documents, 
@@ -124,15 +161,19 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
 #' @examples
 #' \donttest{# the fifth column of this csv file is the text field
 #' mytexts <- textfile("http://www.kenbenoit.net/files/text_example.csv", textField=5)
-#' str(mytexts)
-#' mycorp <- corpus(mytexts)
+#' mycorp <- corpus(mytexts, enc = "UTF-8")
 #' mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField="Title"))
 #' identical(texts(mycorp), texts(mycorp2))
-#' identical(docvars(mycorp), docvars(mycorp2))}
-corpus.corpusSource <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
+#' identical(docvars(mycorp), docvars(mycorp2))
+#' 
+#' # some Cyrillic texts in WINDOWS-1251 - auto-detected and converted
+#' mycorp <- corpus(textfile("~/Dropbox/QUANTESS/corpora/pozhdata/*.txt"))
+#' cat(texts(mycorp)[1])
+#' }
+corpus.corpusSource <- function(x, ...) {
     sources <- NULL
     load(x@texts, envir = environment())  # load from tempfile only into function environment
-    corpus(sources$txts, docvars=sources$docv)
+    corpus(sources$txts, docvars=sources$docv, ...)
 }
 
 #' @rdname corpus

@@ -11,11 +11,11 @@
 \usage{
 corpus(x, ...)
 
-\method{corpus}{character}(x, enc = NULL, docnames = NULL, docvars = NULL,
-  source = NULL, notes = NULL, citation = NULL, ...)
-
-\method{corpus}{corpusSource}(x, enc = NULL, notes = NULL,
+\method{corpus}{character}(x, enc = NULL, encTo = "UTF-8",
+  docnames = NULL, docvars = NULL, source = NULL, notes = NULL,
   citation = NULL, ...)
+
+\method{corpus}{corpusSource}(x, ...)
 
 \method{corpus}{VCorpus}(x, enc = NULL, notes = NULL, citation = NULL,
   ...)
@@ -31,20 +31,34 @@ vector or a \link{corpusSource-class} object created using
 
 \item{...}{additional arguments}
 
-\item{enc}{A string specifying the input encoding for texts in the
-corpus.  Must be a valid entry in \code{\link{iconvlist}()}, since the code in
-\code{corpus.character} will convert this to \code{UTF-8} using \code{\link{iconv}}.
-Currently only one input encoding can be specified for a collection of input texts,
-meaning that you should not mix input text encoding types in a single \code{corpus} call.}
+\item{enc}{a string specifying the input encoding for texts in the corpus.
+  Must be a valid entry in \code{\link[pkg=stringi]{stri_enc_list}()}, since
+  the code in \code{corpus.character} will convert this to \code{encTo} using
+  \code{\link[pkg=stringi]{stri_encode}}.  We recommend that you do
+  \strong{not} use \code{enc}, since if left \code{NULL} (the default) then
+  \code{corpus()} will detect the input encoding(s) and convert
+  automatically.
 
-\item{docnames}{Names to be assigned to the texts, defaults to the names of the
-character vector (if any), otherwise assigns "text1", "text2", etc.}
+  Currently only one input encoding can be specified for a collection of
+  input texts, meaning that you should not mix input text encoding types in a
+  single \code{corpus} call.  However if you suspect multiple encodings, omit
+  the \code{enc} argument and \code{corpus()} will detect and convert each
+  file automatically.}
+
+\item{encTo}{target encoding, default is UTF-8.  Unless you have strong reasons
+to use an alternative encoding, we strongly recommend you leave this at its
+default.  Must be a valid entry in \code{\link[pkg=stringi]{stri_enc_list}()}}
+
+\item{docnames}{Names to be assigned to the texts, defaults to the names of
+the character vector (if any), otherwise assigns "text1", "text2", etc.}
 
 \item{docvars}{A data frame of attributes that is associated with each text.}
 
-\item{source}{A string specifying the source of the texts, used for referencing.}
+\item{source}{A string specifying the source of the texts, used for
+referencing.}
 
-\item{notes}{A string containing notes about who created the text, warnings, To Dos, etc.}
+\item{notes}{A string containing notes about who created the text, warnings,
+To Dos, etc.}
 
 \item{citation}{Information on how to cite the corpus.}
 
@@ -119,15 +133,19 @@ corpus(inaugTexts)
 
 # create a corpus from texts and assign meta-data and document variables
 ukimmigCorpus <- corpus(ukimmigTexts,
-                            docvars=data.frame(party=names(ukimmigTexts)),
-                            enc="UTF-8")
+                        docvars = data.frame(party=names(ukimmigTexts)),
+                        encTo = "windows-1252")
 \donttest{# the fifth column of this csv file is the text field
 mytexts <- textfile("http://www.kenbenoit.net/files/text_example.csv", textField=5)
-str(mytexts)
-mycorp <- corpus(mytexts)
+mycorp <- corpus(mytexts, enc = "UTF-8")
 mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField="Title"))
 identical(texts(mycorp), texts(mycorp2))
-identical(docvars(mycorp), docvars(mycorp2))}
+identical(docvars(mycorp), docvars(mycorp2))
+
+# some Cyrillic texts in WINDOWS-1251 - auto-detected and converted
+mycorp <- corpus(textfile("~/Dropbox/QUANTESS/corpora/pozhdata/*.txt"))
+cat(texts(mycorp)[1])
+}
 # import a tm VCorpus
 if (require(tm)) {
     data(crude)    # load in a tm example VCorpus

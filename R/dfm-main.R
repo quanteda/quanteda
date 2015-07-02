@@ -233,7 +233,8 @@ dfm.character <- function(x, verbose=TRUE,
         } else {
             if (verbose) cat("\n   ... stemming the tokens (", language, ")", sep="")
             # parallelization with just two cores seems to speed things up by x2
-            alltokens[, features := simplify2array(mclapply(alltokens$features, wordstem, language=language))]
+            # alltokens[, features := simplify2array(mclapply(alltokens$features, wordstem, language=language))]
+            alltokens[, features := wordstem(alltokens$features, language=language)]
         }
     }
     
