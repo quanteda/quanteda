@@ -208,7 +208,7 @@ dfm.character <- function(x, verbose=TRUE,
     
     if (!bigrams) {
         if (verbose) cat("\n   ... tokenizing", sep="")
-        tokenizedTexts <- tokenize(x, toLower=toLower, removeNumbers=removeNumbers, 
+        tokenizedTexts <- tokenize(x, removeNumbers=removeNumbers, 
                                    removeSeparators=removeSeparators, removePunct=removePunct,
                                    removeTwitter = removeTwitter)
     } else {
@@ -272,7 +272,6 @@ dfm.character <- function(x, verbose=TRUE,
     # dictionary function to select only dictionary terms
     if (!is.null(dictionary)) {
         if (verbose) cat("\n   ... applying a dictionary ")
-        # NEED SOME ERROR CHECKING HERE
         # flatten the dictionary
         dictionary <- flatten.dictionary(dictionary)
         if (verbose) cat("consisting of ", length(dictionary), " key entr", 
@@ -282,88 +281,58 @@ dfm.character <- function(x, verbose=TRUE,
             dictionary <- lapply(dictionary, glob2rx) # makeRegEx)
         # lowercase the dictionary if toLower == TRUE
         if (toLower) dictionary <- lapply(dictionary, toLower)
-        # append the dictionary keys to the table
-#         alltokens <- cbind(alltokens,
-#                            matrix(0, nrow=nrow(alltokens),
-#                                   ncol=length(names(dictionary)),
-#                                   dimnames=list(NULL, names(dictionary))))
-        dictokens <- data.table(docIndex = 0, features = names(dictionary))
-        for (i in 1:length(dictionary)) {
-            thisalltokens <- alltokens[which(stri_detect_regex(alltokens$features, paste(dictionary[[i]], collapse = "|")))]
-            if (nrow(thisalltokens) > 0)
-                dictokens <- rbind(dictokens, thisalltokens[, features := names(dictionary[i])])
-        }
-        alltokens <- dictokens
+        # call the dictionary entry counting function and return new alltokens
+        alltokens <- countDictionaryEntries(alltokens, dictionary)
     }
-        # loop through dictionary keys and entries and increment counters
-#         for (i in 1:length(dictionary)) {
-#             alltokens[, names(dictionary)[i] := stringi::stri_count_regex(alltokens$features, 
-#                                                                           paste(dictionary[[i]], collapse = "|")), 
-#                       with=FALSE]
-#         }
-#         # condition is to handle "null string" features (removed entirely in clean step)
-#         alltokens$All_Words <- ifelse(alltokens$features != "", 1, 0)
-#         dictsplit <- split(alltokens[, 3:ncol(alltokens), with=FALSE], alltokens$docIndex)
-#         dictsum <- sapply(dictsplit, colSums)
-#         dfmresult <- as.data.frame.matrix(t(dictsum))
-#         dimnames(dfmresult) <- list(docs=names(docIndex), features=colnames(dfmresult))
-#         # doing it this way avoids an error using rowSums if only one dictionary column
-#         dfmresult$Non_Dictionary <- 2*dfmresult$All_Words - rowSums(dfmresult)
-#         dfmresult <- dfmresult[, -(ncol(dfmresult)-1)]
-#         
-#         # convert to a sparse matrix
-#         dfmresult <- Matrix(as.matrix(dfmresult), sparse=TRUE)
-        
-#    } 
-#    else {
-        n <- NULL
-        if (verbose) cat("\n   ... summing tokens by document")
-        alltokens[, "n":=1L]
-        alltokens <- alltokens[, by=list(docIndex,features), sum(n)]
 
-        if (verbose) cat("\n   ... indexing ")
-        uniqueFeatures <- unique(alltokens$features)
-        
-        # now remove the docIndex == 0, now that all dictionary keys are indexed as features
-        alltokens <- alltokens[docIndex > 0]
-        
-        ## BETTER METHOD, BUT SLOWER, IS stri_unique()
-        uniqueFeatures <- sort(uniqueFeatures)
-        # are any features the null string?
-        blankFeatureIndex <- which(uniqueFeatures == "")
-        totalfeatures <- length(uniqueFeatures) - (length(blankFeatureIndex) > 0)
-        if (verbose) cat(format(totalfeatures, big.mark=","), " feature type",
-                         ifelse(totalfeatures > 1, "s", ""), sep="")
-        # much faster than using factor(alltokens$features, levels=uniqueFeatures) !!
-        featureTable <- data.table(featureIndex = 1:length(uniqueFeatures),
-                                   features = uniqueFeatures)
-        setkey(alltokens, features)
-        setkey(featureTable, features)
-        # merge, data.table style.  warnings suppressed or it moans about mixed encodings
-        ## suppressWarnings(alltokens <- alltokens[featureTable])
-        alltokens <- alltokens[featureTable, allow.cartesian = TRUE]
-        alltokens[is.na(docIndex), c("docIndex", "V1") := list(1, 0)]
-        if (verbose) cat("\n   ... building sparse matrix")
-        #suppressWarnings(
-        dfmresult <- sparseMatrix(i = alltokens$docIndex, 
-                                  j = alltokens$featureIndex, 
-                                  x = alltokens$V1, 
-                                  dimnames=list(docs=names(docIndex), features=uniqueFeatures))
-        #    )
-        # zero out "" counts for documents that count other features, meaning that
-        # only documents with NO OTHER features than null "" (because of cleaning)
-        # will have a positive count for the "" field.  To count "" from cleaning,
-        # just comment this next command out
-        #
-        # the reason to record a positive count for documents whose only 
-        # feature is a null feature is that sparse matrixes cannot be all zero
-        # blankFeatureIndex <- which(uniqueFeatures == "")
-        # dfmresult[which(rowSums(dfmresult[, -blankFeatureIndex]) > 0), ""] <- 0
-        
-        # different approach: remove null strings entirely
-        if (length(blankFeatureIndex) > 0) dfmresult <- dfmresult[, -blankFeatureIndex]
-#    }
+    n <- NULL
+    if (verbose) cat("\n   ... summing", ifelse(is.null(dictionary), "tokens", "dictionary-matched features"), "by document")
+    alltokens[, "n":=1L]
+    alltokens <- alltokens[, by=list(docIndex,features), sum(n)]
     
+    if (verbose) cat("\n   ... indexing ")
+    uniqueFeatures <- unique(alltokens$features)
+    
+    # now remove the docIndex == 0, now that all dictionary keys are indexed as features
+    alltokens <- alltokens[docIndex > 0]
+    
+    ## BETTER METHOD, BUT SLOWER, IS stri_unique()
+    uniqueFeatures <- sort(uniqueFeatures)
+    # are any features the null string?
+    blankFeatureIndex <- which(uniqueFeatures == "")
+    totalfeatures <- length(uniqueFeatures) - (length(blankFeatureIndex) > 0)
+    if (verbose) cat(format(totalfeatures, big.mark=","), " feature type",
+                     ifelse(totalfeatures > 1, "s", ""), sep="")
+    # much faster than using factor(alltokens$features, levels=uniqueFeatures) !!
+    featureTable <- data.table(featureIndex = 1:length(uniqueFeatures),
+                               features = uniqueFeatures)
+    setkey(alltokens, features)
+    setkey(featureTable, features)
+    # merge, data.table style.  warnings suppressed or it moans about mixed encodings
+    ## suppressWarnings(alltokens <- alltokens[featureTable])
+    alltokens <- alltokens[featureTable, allow.cartesian = TRUE]
+    alltokens[is.na(docIndex), c("docIndex", "V1") := list(1, 0)]
+    if (verbose) cat("\n   ... building sparse matrix")
+    #suppressWarnings(
+    dfmresult <- sparseMatrix(i = alltokens$docIndex, 
+                              j = alltokens$featureIndex, 
+                              x = alltokens$V1, 
+                              dimnames=list(docs=names(docIndex), features=uniqueFeatures))
+    #    )
+    
+    # zero out "" counts for documents that count other features, meaning that
+    # only documents with NO OTHER features than null "" (because of cleaning)
+    # will have a positive count for the "" field.  To count "" from cleaning,
+    # just comment this next command out
+    #
+    # the reason to record a positive count for documents whose only 
+    # feature is a null feature is that sparse matrixes cannot be all zero
+    # blankFeatureIndex <- which(uniqueFeatures == "")
+    # dfmresult[which(rowSums(dfmresult[, -blankFeatureIndex]) > 0), ""] <- 0
+    
+    # different approach: remove null strings entirely
+    if (length(blankFeatureIndex) > 0) dfmresult <- dfmresult[, -blankFeatureIndex]
+
     # make into sparse S4 class inheriting from dgCMatrix
     dfmresult <- new("dfmSparse", dfmresult)
     
@@ -537,6 +506,29 @@ makeRegEx <- function(wildcardregex) {
     ##   * in the middle of the word
     ##   ? functionality
     ##   [ab] meaning a or b
+}
+
+countDictionaryEntries <- function(alltokens, dictionary) {
+    # get unique tokens from all tokens
+    alltokensFeatures <- unique(alltokens$features)
+    # create a data table of all dictionary keys and entries as single regexes
+    allDictEntries <- data.table(dictIndex = names(dictionary), 
+                                 regex = sapply(dictionary, paste, collapse = "|", USE.NAMES = FALSE))
+    # match unique tokens in dictionary to each dictionary category
+    alltokensFeaturesInDict <- alltokensFeatures[stri_detect_regex(alltokensFeatures, 
+                                                                   paste(allDictEntries$regex, collapse = "|"))]
+    # now lookup each unique word in each dictionary category
+    tmp <- parallel::mclapply(alltokensFeaturesInDict, function(x) which(stri_detect_regex(x, allDictEntries$regex)))
+    # make list of matches into a data.table
+    tmp <- data.table(word = rep(alltokensFeaturesInDict, sapply(tmp, length)),
+                      features = allDictEntries[unlist(tmp), dictIndex])
+    # use data.table merging to merge with original set of features
+    setkey(tmp, word)
+    setkey(alltokens, features)
+    merged <- tmp[alltokens, allow.cartesian=TRUE]
+    merged <- merged[!is.na(features), .(docIndex, features)]
+    # paste the empty categories too as docIndex 0 and return
+    rbind(data.table(docIndex = 0, features = names(dictionary)), merged)
 }
 
 
