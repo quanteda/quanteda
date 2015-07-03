@@ -510,6 +510,7 @@ makeRegEx <- function(wildcardregex) {
 }
 
 countDictionaryEntries <- function(alltokens, dictionary) {
+    dictIndex <- docIndex <- word <- NULL
     # get unique tokens from all tokens
     alltokensFeatures <- unique(alltokens$features)
     # create a data table of all dictionary keys and entries as single regexes
@@ -527,7 +528,7 @@ countDictionaryEntries <- function(alltokens, dictionary) {
     setkey(tmp, word)
     setkey(alltokens, features)
     merged <- tmp[alltokens, allow.cartesian=TRUE]
-    merged <- merged[!is.na(features), .(docIndex, features)]
+    merged <- merged[!is.na(features), list(docIndex, features)]
     # paste the empty categories too as docIndex 0 and return
     rbind(data.table(docIndex = 0, features = names(dictionary)), merged)
 }

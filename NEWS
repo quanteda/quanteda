@@ -1,5 +1,5 @@
-quanteda 0.7.9-1
-================
+quanteda 0.7.9
+==============
 
 Syntax changes and workflow streamlining
 ----------------------------------------
@@ -7,6 +7,12 @@ The workflow is now more logical and more streamlined, with a new workflow vigne
 as well as a design vignette explaining the principles behind the workflow and the
 commands that encourage this workflow.  The document also details the development
 plans and things remaining to be done on the project.
+
+Encoding detection and conversion
+---------------------------------
+Newly rewritten command encoding() detects encoding for character, corpus, and corpusSource objects
+(created by textfile).  When creating a corpus using corpus(), detection is automatic to UTF-8 if
+an encoding other than UTF-8, ASCII, or ISO-8859-1 is detected.
 
 Major infrastructural changes
 -----------------------------
@@ -25,6 +31,20 @@ but also more correctly handles Unicode characters and strings.
   many many times faster.
   
 * phrasetotoken() now using stringi.
+
+Other changes
+-------------
+* textfile has a new option, cache = FALSE, for not writing the data to a temporary file, but rather
+  storing the object in memory if that is preferred.
+  
+* language() is removed.  (See Encoding... section  above for changes to encoding().)
+
+* new object encodedTexts contains some encoded character objects for testing.
+
+* ie2010Corpus now has UTF-8 encoded texts (previously was unicode escaped for non-ASCII characters)
+
+* texts() and docvars() methods added for corpusSource objects.
+
 
 quanteda 0.7.3
 ==============

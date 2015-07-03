@@ -17,8 +17,7 @@ corpus(x, ...)
 
 \method{corpus}{corpusSource}(x, ...)
 
-\method{corpus}{VCorpus}(x, enc = NULL, notes = NULL, citation = NULL,
-  ...)
+\method{corpus}{VCorpus}(x, ...)
 
 is.corpus(x)
 
@@ -32,9 +31,9 @@ vector or a \link{corpusSource-class} object created using
 \item{...}{additional arguments}
 
 \item{enc}{a string specifying the input encoding for texts in the corpus.
-  Must be a valid entry in \code{\link[pkg=stringi]{stri_enc_list}()}, since
+  Must be a valid entry in \code{\link[stringi]{stri_enc_list}()}, since
   the code in \code{corpus.character} will convert this to \code{encTo} using
-  \code{\link[pkg=stringi]{stri_encode}}.  We recommend that you do
+  \code{\link[stringi]{stri_encode}}.  We recommend that you do
   \strong{not} use \code{enc}, since if left \code{NULL} (the default) then
   \code{corpus()} will detect the input encoding(s) and convert
   automatically.
@@ -47,7 +46,7 @@ vector or a \link{corpusSource-class} object created using
 
 \item{encTo}{target encoding, default is UTF-8.  Unless you have strong reasons
 to use an alternative encoding, we strongly recommend you leave this at its
-default.  Must be a valid entry in \code{\link[pkg=stringi]{stri_enc_list}()}}
+default.  Must be a valid entry in \code{\link[stringi]{stri_enc_list}()}}
 
 \item{docnames}{Names to be assigned to the texts, defaults to the names of
 the character vector (if any), otherwise assigns "text1", "text2", etc.}
@@ -95,16 +94,16 @@ A corpus class object containing the original texts, document-level
 \code{is.corpus} returns \code{TRUE} if the object is a corpus
 }
 \description{
-Creates a corpus from a document source.  The current available
-  document sources are: \itemize{ \item a character vector (as in R class
-  \code{char}) of texts; \item a \link{corpusSource-class} object,
-  constructed using \code{\link{textfile}}; \item a \pkg{tm}
-  \link[tm]{VCorpus} class corpus object, meaning that anything you can use
-  to create a \pkg{tm} corpus, including all of the tm plugins plus the
-  built-in functions of tm for importing pdf, Word, and XML documents, can be
-  used to create a quanteda \link{corpus}. } Corpus-level meta-data can be
-  specified at creation, containing (for example) citation information and
-  notes, as can document-level variables and document-level meta-data.
+Creates a corpus from a document source.  The current available document
+sources are: \itemize{ \item a character vector (as in R class \code{char})
+of texts; \item a \link{corpusSource-class} object, constructed using
+\code{\link{textfile}}; \item a \pkg{tm} \link[tm]{VCorpus} class corpus
+object, meaning that anything you can use to create a \pkg{tm} corpus,
+including all of the tm plugins plus the built-in functions of tm for
+importing pdf, Word, and XML documents, can be used to create a quanteda
+\link{corpus}. } Corpus-level meta-data can be specified at creation,
+containing (for example) citation information and notes, as can
+document-level variables and document-level meta-data.
 }
 \details{
 The \code{+} operator for a corpus object will combine two corpus
@@ -134,11 +133,18 @@ corpus(inaugTexts)
 # create a corpus from texts and assign meta-data and document variables
 ukimmigCorpus <- corpus(ukimmigTexts,
                         docvars = data.frame(party=names(ukimmigTexts)),
-                        encTo = "windows-1252")
+                        encTo = "UTF-16")
+
+corpus(texts(ie2010Corpus))
+
+\dontrun{# automatically russian tests from windows-1251 to UTF-8
+myRussianCorpus <- corpus(textfile("~/Dropbox/QUANTESS/corpora/pozhdata/*.txt"))
+cat(texts(myRussianCorpus)[1])
+}
 \donttest{# the fifth column of this csv file is the text field
-mytexts <- textfile("http://www.kenbenoit.net/files/text_example.csv", textField=5)
-mycorp <- corpus(mytexts, enc = "UTF-8")
-mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField="Title"))
+mytexts <- textfile("http://www.kenbenoit.net/files/text_example.csv", textField = 5)
+mycorp <- corpus(mytexts)
+mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField = "Title"))
 identical(texts(mycorp), texts(mycorp2))
 identical(docvars(mycorp), docvars(mycorp2))
 
@@ -164,7 +170,7 @@ if (require(tm)) {
 Kenneth Benoit and Paul Nulty
 }
 \seealso{
-\link{docvars}, \link{metadoc}, \link{metacorpus}, \link{language},
-  \link{encoding}, \link{settings}, \link{texts}
+\link{docvars}, \link{metadoc}, \link{metacorpus}, \link{settings},
+  \link{texts}
 }
 

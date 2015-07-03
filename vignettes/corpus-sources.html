@@ -111,7 +111,7 @@ summary(myCorpus, n=5)
 #&gt;   1805-Jefferson   776   2166        45
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
-#&gt; Created: Fri Jun 19 21:18:48 2015.
+#&gt; Created: Fri Jul  3 18:14:41 2015.
 #&gt; Notes:   .</code></pre>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus. We can do this using the R’s <code>substring()</code> function to extract characters from a name – in this case, the name of the character vector <code>inaugTexts</code>. This works using our fixed starting and ending positions with <code>substring()</code> because these names are a very regular format of <code>YYYY-PresidentName</code>.</p>
 <pre class="r"><code>docvars(myCorpus, &quot;President&quot;) &lt;- substring(names(inaugTexts), 6)
@@ -127,10 +127,10 @@ summary(myCorpus, n=5)
 #&gt;   1805-Jefferson   776   2166        45  Jefferson 1805
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
-#&gt; Created: Fri Jun 19 21:18:48 2015.
+#&gt; Created: Fri Jul  3 18:14:41 2015.
 #&gt; Notes:   .</code></pre>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
-<pre class="r"><code>language(myCorpus) &lt;- &quot;english&quot;
+<pre class="r"><code>metadoc(myCorpus, &quot;language&quot;) &lt;- &quot;english&quot;
 metadoc(myCorpus, &quot;docsource&quot;)  &lt;- paste(&quot;inaugTexts&quot;, 1:ndoc(myCorpus), sep=&quot;_&quot;)
 summary(myCorpus, n=5, showmeta=TRUE)
 #&gt; Corpus consisting of 57 documents, showing 5 documents.
@@ -149,9 +149,9 @@ summary(myCorpus, n=5, showmeta=TRUE)
 #&gt;  inaugTexts_5
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
-#&gt; Created: Fri Jun 19 21:18:48 2015.
+#&gt; Created: Fri Jul  3 18:14:41 2015.
 #&gt; Notes:   .</code></pre>
-<p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. The two docmeta fields <code>language</code> and <code>encoding</code> are so common that quanteda has shortened accessor and replacement functions for manipulating these: <code>encoding()</code> and <code>language()</code>. Note that in assiging just the single value of <code>&quot;english&quot;</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code>ndoc()</code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
+<p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>&quot;english&quot;</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code>ndoc()</code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
 </div>
 <div id="tools-for-handling-corpus-objects" class="section level2">
@@ -179,7 +179,7 @@ summary(mycorpus3)
 #&gt;       1825-Adams   963   2916        74
 #&gt; 
 #&gt; Source:  Combination of corpuses mycorpus1 and mycorpus2.
-#&gt; Created: Fri Jun 19 21:18:48 2015.
+#&gt; Created: Fri Jul  3 18:14:41 2015.
 #&gt; Notes:   First five inaug speeches Next five inaug speeches.</code></pre>
 </div>
 <div id="extracting-a-subset-of-a-corpus" class="section level3">

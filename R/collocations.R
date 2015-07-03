@@ -1,4 +1,4 @@
-#' @include dictionaryFunctions.R
+#' @include dictionaries.R
 NULL
 
 #' Detect collocations from text

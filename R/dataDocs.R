@@ -6,7 +6,6 @@
 #' Document variables contain the year of the address and the last name of the president.
 #' @examples
 #' # some operations on the inaugural corpus
-#' data(inaugCorpus)
 #' summary(inaugCorpus)
 #' head(docvars(inaugCorpus), 10)
 #' @references \url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and 
@@ -21,25 +20,9 @@ NULL
 #' @docType data
 #' @examples
 #' # working with the character vector only
-#' data(inaugTexts)
 #' str(inaugTexts)
 #' head(docvars(inaugCorpus), 10)
 #' mycorpus <- corpus(inaugTexts)
-NULL
-
-
-# @name uk2010immig
-# @title Immigration-related sections of 2010 UK party manifestos
-# @docType data
-# @description Extracts from the election manifestos of 9 UK political parties from 2010, related
-# to immigration or asylum-seekers.
-# @format A named character vector of plain ASCII texts
-# @examples
-# data(uk2010immig)
-# uk2010immigCorpus <- corpus(uk2010immig, docvars=list(party=names(uk2010immig)))
-# language(uk2010immigCorpus) <- "english"
-# encoding(uk2010immigCorpus) <- "UTF-8"
-# summary(uk2010immigCorpus)
 NULL
 
 #' @name ukimmigTexts
@@ -49,11 +32,9 @@ NULL
 #' to immigration or asylum-seekers.
 #' @format A named character vector of plain ASCII texts
 #' @examples
-#' data(ukimmigTexts)
-#' ukimmigCorpus <- corpus(ukimmigTexts, docvars=list(party=names(ukimmigTexts)))
-#' language(ukimmigCorpus) <- "english"
-#' encoding(ukimmigCorpus) <- "UTF-8"
-#' summary(ukimmigCorpus)
+#' ukimmigCorpus <- corpus(ukimmigTexts, docvars=data.frame(party=names(ukimmigTexts)))
+#' metadoc(ukimmigCorpus, "language") <- "english"
+#' summary(ukimmigCorpus, showmeta = TRUE)
 NULL
 
 #' @name syllables
@@ -115,6 +96,14 @@ NULL
 #' @format character vector with one element
 #' @docType data
 #' @examples
-#' data(exampleString)
 #' clean(exampleString)
+NULL
+
+#' @name encodedTexts
+#' @title encoded texts for testing
+#' @description \code{encodedTexts} is a 10-element character vector with 10 different encodings
+#' @docType data
+#' @examples
+#' Encoding(encodedTexts)
+#' data.frame(labelled = names(encodedTexts), detected = encoding(encodedTexts)$all)
 NULL

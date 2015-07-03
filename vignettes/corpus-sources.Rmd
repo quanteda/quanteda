@@ -70,14 +70,12 @@ If we wanted to tag each document with additional meta-data not considered a doc
 analysis, but rather something that we need to know as an attribute of the document, we could also 
 add those to our corpus.
 ```{r}
-language(myCorpus) <- "english"
+metadoc(myCorpus, "language") <- "english"
 metadoc(myCorpus, "docsource")  <- paste("inaugTexts", 1:ndoc(myCorpus), sep="_")
 summary(myCorpus, n=5, showmeta=TRUE)
 ```
 
-The last command, `metadoc`, allows you to define your own document meta-data fields.  The two docmeta fields
-`language` and `encoding` are so common that quanteda has shortened accessor and replacement functions
-for manipulating these: `encoding()` and `language()`.  Note that in assiging just the single value of `"english"`, R has recycled the value until it matches the number of documents in the corpus.  In creating
+The last command, `metadoc`, allows you to define your own document meta-data fields.  Note that in assiging just the single value of `"english"`, R has recycled the value until it matches the number of documents in the corpus.  In creating
 a simple tag for our custom metadoc field `docsource`, we used the quanteda function `ndoc()` to retrieve
 the number of documents in our corpus.  This function is deliberately designed to work in a way similar to 
 functions you may already use in R, such as `nrow()` and `ncol()`.

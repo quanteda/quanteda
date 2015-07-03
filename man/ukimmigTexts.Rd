@@ -10,8 +10,7 @@ Extracts from the election manifestos of 9 UK political parties from 2010, relat
 to immigration or asylum-seekers.
 }
 \examples{
-data(ukimmigTexts)
-ukimmigCorpus <- corpus(ukimmigTexts, docvars=list(party=names(ukimmigTexts)))
+ukimmigCorpus <- corpus(ukimmigTexts, docvars=data.frame(party=names(ukimmigTexts)))
 language(ukimmigCorpus) <- "english"
 encoding(ukimmigCorpus) <- "UTF-8"
 summary(ukimmigCorpus)

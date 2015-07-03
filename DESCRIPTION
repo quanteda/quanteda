@@ -12,8 +12,8 @@ Author: Kenneth Benoit [aut, cre],
     Pablo Barberá [ctb],
     Kohei Watanabe [ctb],
     Benjamin Lauderdale [ctb]
-Version: 0.7.9-3
-Date: 2015-07-02
+Version: 0.7.9-4
+Date: 2015-07-03
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -50,10 +50,9 @@ VignetteBuilder: knitr
 Collate:
     'RcppExports.R'
     'clean.R'
-    'dictionaryFunctions.R'
+    'dictionaries.R'
     'collocations.R'
     'converters.R'
-    'corpus-sources-S4.R'
     'corpus.R'
     'dataDocs.R'
     'describe-texts.R'
@@ -61,17 +60,17 @@ Collate:
     'dfm-main.R'
     'dfm-methods.R'
     'distance.R'
-    'gui.R'
+    'encoding.R'
     'kwic.R'
     'lexdiv.R'
     'ngrams.R'
-    'onLoad.R'
     'plots.R'
     'quanteda-package.R'
     'resample.R'
     'settings.R'
     'stopwords.R'
     'syllables.R'
+    'textfile.R'
     'textmodel-ca.R'
     'textmodel-generics.R'
     'textmodel-wordfish.R'
