@@ -11,8 +11,7 @@ to immigration or asylum-seekers.
 }
 \examples{
 ukimmigCorpus <- corpus(ukimmigTexts, docvars=data.frame(party=names(ukimmigTexts)))
-language(ukimmigCorpus) <- "english"
-encoding(ukimmigCorpus) <- "UTF-8"
-summary(ukimmigCorpus)
+metadoc(ukimmigCorpus, "language") <- "english"
+summary(ukimmigCorpus, showmeta = TRUE)
 }
 
