@@ -5,6 +5,7 @@
 \alias{englishSyllables}
 \alias{syllables}
 \alias{syllables.character}
+\alias{syllables.tokenizedTexts}
 \title{count syllables in a text}
 \source{
 \code{englishSyllables} is built from the freely available CMU pronunciation dictionary at \url{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
@@ -13,12 +14,14 @@
 syllables(x, ...)
 
 \method{syllables}{character}(x, syllableDict = NULL, ...)
+
+\method{syllables}{tokenizedTexts}(x, syllableDict = NULL, ...)
 }
 \arguments{
-\item{x}{character vector or list of character vectors whose syllables will
-be counted}
+\item{x}{character vector or \code{tokenizedText-class} object  whose
+syllables will be counted}
 
-\item{...}{additional arguments passed to clean}
+\item{...}{additional arguments passed to tokenize}
 
 \item{syllableDict}{optional named integer vector of syllable counts where
 the names are lower case tokens.  When set to \code{NULL} (default), then
@@ -26,23 +29,28 @@ the function will use the quanteda data object \code{englishSyllables}, an
 English pronunciation dictionary from CMU.}
 }
 \value{
-numeric Named vector or list of counts of the number of syllables for
-  each element of x. When a word is not available in the lookup table, its
-  syllables are estimated by counting the number of (English) vowels in the
-  word.
+If \code{x} is a character vector, a named numeric vector of the
+  counts of the syllables in each text, without tokenization.  If \code{x}
+  consists of (a list of) tokenized texts, then return a list of syllable
+  counts corresponding to the tokenized texts.
 }
 \description{
-This function takes a text and returns a count of the number of
-  syllables it contains. For British English words, the syllable count is
-  exact and looked up from the CMU pronunciation dictionary, from the default
-  syllable dictionary \code{englishSyllables}. For any word not in the
-  dictionary the syllable count is estimated by counting vowel clusters.
+Returns a count of the number of syllables in texts. For English
+  words, the syllable count is exact and looked up from the CMU pronunciation
+  dictionary, from the default syllable dictionary \code{englishSyllables}.
+  For any word not in the dictionary, the syllable count is estimated by
+  counting vowel clusters.
 
   \code{englishSyllables} is a quanteda-supplied data object consisting of a
   named numeric vector of syllable counts for the words used as names.  This
   is the default object used to count English syllables.  This object that
   can be accessed directly, but we strongly encourage you to access it only
   through the \code{syllables()} wrapper function.
+}
+\note{
+All tokens are automatically converted to lowercase to perform the
+  matching with the syllable dictionary, so there is no need to perform this
+  step prior to calling \code{syllables()}.
 }
 \examples{
 syllables("This is an example sentence.")
@@ -51,6 +59,7 @@ myTexts <- c(text1 = "Text one.",
              text2 = "Superduper text number two.",
              text3 = "One more for the road.")
 syllables(myTexts)
+syllables(tokenize(myTexts, removePunct = TRUE))
 syllables("supercalifragilisticexpialidocious")
 }
 

@@ -49,14 +49,25 @@
 <li><p>Development and branches: We add new features through <code>workingDev</code>. Before merging this with <code>dev</code>, we make sure the build passes a full CRAN check.</p></li>
 </ol>
 </div>
-<div id="to-do-list" class="section level2">
-<h2>To Do List</h2>
+<div id="completed" class="section level2">
+<h2>Completed</h2>
 <ul>
+<li><strong>DONE</strong> rewrite <code>encoding()</code> to detect encoding, and replace <code>iconv()</code> calls with <code>stringi::stri_encode()</code> in <code>corpus()</code></li>
 <li>rewrite to make use of <strong>stringi</strong> (and the new <code>tokenize()</code> based on that package):
 <ul>
 <li><strong>DONE</strong> <code>ntoken()</code><br /></li>
 <li><strong>DONE</strong> <code>ntype()</code> and <code>nfeature()</code></li>
 <li><strong>DONE</strong> <code>phrasetotoken()</code></li>
+</ul></li>
+<li><strong>DONE</strong> encode <code>ie2010Corpus</code> (and see if CRAN lets us get away with it)</li>
+<li><strong>DONE</strong> removed <code>language()</code></li>
+</ul>
+</div>
+<div id="to-do-remaining" class="section level2">
+<h2>To Do Remaining</h2>
+<ul>
+<li>rewrite to make use of <strong>stringi</strong> (and the new <code>tokenize()</code> based on that package):
+<ul>
 <li><code>segment()</code></li>
 <li>(ADD) <code>nsentence()</code></li>
 </ul></li>
@@ -64,17 +75,9 @@
 <li>make <code>bigrams</code>, <code>ngrams</code> punctuation sensitive in the same way that <code>collocations</code> is currently</li>
 <li>integrate <code>collocations</code> code for bigrams and trigrams and reduce the internal memory usage</li>
 <li>make sure <code>corpus.VCorpus()</code> is fully working</li>
-<li><strong>encoding</strong>: some major work to be done here, such as
-<ul>
-<li>removing all of the <code>enc</code> options to functions such as <code>corpus()</code></li>
-<li>detecting, inspecting, correcting non-UTF-8 encodings at the <code>textfile()</code> and/or <code>corpus()</code> stage(s)</li>
-<li>(consider) removing <code>encoding()</code></li>
-</ul></li>
 <li>dfm documentation needs to group arguments into sections and describe how these correspond to the logical workflow</li>
 <li>need to figure out how to exclude specific signatures (especially S4 signatures) from the man (.Rd) pages. For instance `?“dfm-class” has far more details on methods signatures than any user will find useful.</li>
-<li>encode <code>ie2010Corpus</code> (and see if CRAN lets us get away with it)</li>
 <li>rewrite <code>kwic</code> to use new tokenizer, and to allow searches for multi-word regular expressions</li>
-<li>consider removing <code>language()</code></li>
 <li>add a converter for objects from the <strong>koRpus</strong> package</li>
 <li>Devise a scheme for <code>settings()</code> and figure out how to add additional objects to a corpus, namely one or more:
 <ul>
@@ -86,9 +89,9 @@
 <li>consider adopting ISO language names for functions such as <code>wordstem()</code>, <code>stopwords()</code>, and <code>syllables()</code></li>
 <li>add methods for <code>tokenizedTexts</code> objects:
 <ul>
-<li><code>dfm.tokenizedTexts</code></li>
+<li><strong>DONE</strong> <code>dfm.tokenizedTexts</code></li>
 <li><code>removeFeatures.tokenizedTexts</code></li>
-<li><code>syllables.tokenizedTexts</code></li>
+<li><strong>DONE</strong> <code>syllables.tokenizedTexts</code></li>
 </ul></li>
 <li><code>textmodel</code>: Devise and document a consistent, logical, and easy-to-use and remember scheme for textmodels.</li>
 <li>Move more functions to S4</li>

@@ -24,16 +24,27 @@
 #' @seealso \link{stopwords}
 #' @examples
 #' ## examples for character objects
-#' someText <- "Here's some text containing words we want to remove."
-#' removeFeatures(someText, stopwords("english", verbose=FALSE))
-#' removeFeatures(someText, stopwords("SMART", verbose=FALSE))
+#' someText <- c(text1 = "Here's some text containing words we want to remove.")
+#' removeFeatures(someText, stopwords("english"))
+#' removeFeatures(someText, stopwords("SMART"))
 #' removeFeatures(someText, c("some", "want"))
+#' someText <- c(someText, text2 = "A second sentence with a few stopwords.")
+#' removeFeatures(someText, stopwords("english"))
+#' 
+#' ## for tokenized texts 
+#' txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to 
+#'                    execute the functions of its Chief Magistrate.",
+#'          wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
+#'                    the high sense I entertain of this distinguished honor.")
+#' removeFeatures(txt, stopwords("english"))
+#' removeFeatures(tokenize(txt), stopwords("english"))
+#' 
 #' itText <- "Ecco alcuni di testo contenente le parole che vogliamo rimuovere."
-#' removeFeatures(itText, stopwords("italian", verbose=FALSE))
+#' removeFeatures(itText, stopwords("italian"))
 #' 
 #' ## example for dfm objects
 #' mydfm <- dfm(ukimmigTexts, verbose=FALSE)
-#' removeFeatures(mydfm, stopwords("english", verbose=FALSE))
+#' removeFeatures(mydfm, stopwords("english"))
 #' 
 #' ## example for collocations
 #' (myCollocs <- collocations(inaugTexts[1:3], top=20))
@@ -48,12 +59,26 @@ removeFeatures <- function(x, stopwords=NULL, verbose=TRUE, ...) {
 removeFeatures.character <- function(x, stopwords=NULL, verbose=TRUE, ...) {
     if (is.null(stopwords))
         stop("Must supply a character vector of stopwords, e.g. stopwords(\"english\")")
-    ret <- gsub(paste("(\\b|\\s)(", paste(stopwords, collapse="|"), ")(\\b)", sep=""), "", x, ignore.case=TRUE)
-    # if (verbose) cat("Removed", sum(ret==""), "tokens, from a list of", length(stopwords), "stopwords.")
-    ret[ret != ""]
-    ## Note: Will not remove capitalized words, such as those starting the sentence.  e.g. "The man."
+    # tokenize while keeping spaces, and send to removeFeatures.tokenizedTexts
+    ret <- removeFeatures(tokenize(x, removePunct = FALSE, removeNumbers = FALSE, removeSeparators = FALSE, removeTwitter = FALSE),
+                          stopwords)
+    # remove first of two whitespaces
+    ret <- lapply(ret, function(x) x[!(stringi::stri_detect_charclass(x, "[\\p{Zs}]") & stringi::stri_detect_charclass(c(x[-1], " "), "[\\p{Zs}]"))])
+    ret <- lapply(ret, function(x) if (x[1] == " ") x[-1] else x)
+    # paste back into a string and return
+    sapply(ret, paste, collapse = "")
 }
 
+#' @rdname removeFeatures
+#' @export
+removeFeatures.tokenizedTexts <- function(x, stopwords=NULL, verbose=TRUE, ...) {
+    if (is.null(stopwords))
+        stop("Must supply a character vector of stopwords, e.g. stopwords(\"english\")")
+    # much faster than any regex method
+    lapply(x, function(x) x[which(!(toLower(x) %in% stopwords))])
+}
+    
+    
 #' @rdname removeFeatures
 #' @export
 removeFeatures.dfm <- function(x, stopwords=NULL, verbose=TRUE, ...) {

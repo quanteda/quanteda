@@ -5,12 +5,16 @@
 \alias{removeFeatures.character}
 \alias{removeFeatures.collocations}
 \alias{removeFeatures.dfm}
+\alias{removeFeatures.tokenizedTexts}
 \alias{stopwordsRemove}
 \title{remove features from an object}
 \usage{
 removeFeatures(x, stopwords = NULL, verbose = TRUE, ...)
 
 \method{removeFeatures}{character}(x, stopwords = NULL, verbose = TRUE, ...)
+
+\method{removeFeatures}{tokenizedTexts}(x, stopwords = NULL, verbose = TRUE,
+  ...)
 
 \method{removeFeatures}{dfm}(x, stopwords = NULL, verbose = TRUE, ...)
 
@@ -47,16 +51,27 @@ that are removed, we do not provide a default list.  Use \code{\link{stopwords}}
 }
 \examples{
 ## examples for character objects
-someText <- "Here's some text containing words we want to remove."
-removeFeatures(someText, stopwords("english", verbose=FALSE))
-removeFeatures(someText, stopwords("SMART", verbose=FALSE))
+someText <- c(text1 = "Here's some text containing words we want to remove.")
+removeFeatures(someText, stopwords("english"))
+removeFeatures(someText, stopwords("SMART"))
 removeFeatures(someText, c("some", "want"))
+someText <- c(someText, text2 = "A second sentence with a few stopwords.")
+removeFeatures(someText, stopwords("english"))
+
+## for tokenized texts
+txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to
+                   execute the functions of its Chief Magistrate.",
+         wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
+                   the high sense I entertain of this distinguished honor.")
+removeFeatures(txt, stopwords("english"))
+removeFeatures(tokenize(txt), stopwords("english"))
+
 itText <- "Ecco alcuni di testo contenente le parole che vogliamo rimuovere."
-removeFeatures(itText, stopwords("italian", verbose=FALSE))
+removeFeatures(itText, stopwords("italian"))
 
 ## example for dfm objects
 mydfm <- dfm(ukimmigTexts, verbose=FALSE)
-removeFeatures(mydfm, stopwords("english", verbose=FALSE))
+removeFeatures(mydfm, stopwords("english"))
 
 ## example for collocations
 (myCollocs <- collocations(inaugTexts[1:3], top=20))

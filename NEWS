@@ -32,6 +32,8 @@ but also more correctly handles Unicode characters and strings.
   
 * phrasetotoken() now using stringi.
 
+* remnoveFeatures() now using stringi and fixed binary matches on tokenized texts
+
 Other changes
 -------------
 * textfile has a new option, cache = FALSE, for not writing the data to a temporary file, but rather
@@ -44,6 +46,10 @@ Other changes
 * ie2010Corpus now has UTF-8 encoded texts (previously was unicode escaped for non-ASCII characters)
 
 * texts() and docvars() methods added for corpusSource objects.
+
+* new methods for `tokenizedTexts` objects: `dfm()`, `removeFeatures()`, and `syllables()`
+
+* `syllables()` is now much faster, using matching through `stringi` and merging using `data.table`.
 
 
 quanteda 0.7.3
