@@ -95,7 +95,7 @@ syllables.data.table <- function(x, syllableDict, ...) {
     syllDT <- syllableDictDT[x]
     
     # look up vowel counts for those not in the syllables list
-    syllDT[is.na(syllables), syllables := stringi::stri_count_charclass(word, "[aeiouy]")]
+    syllDT[is.na(syllables), syllables := stringi::stri_count_regex(word, "[aeiouy]*")]
     # put back into original order
     syllDT <- syllDT[order(serial)]
     # split back to a list
@@ -104,14 +104,3 @@ syllables.data.table <- function(x, syllableDict, ...) {
     syllcount
 }
 
-
-## INTERNALS
-
-## return a vector of vowel counts from a vector of texts
-vowelCount <- function(textVector) {
-    
-    
-    vowel.index.list <- 
-        lapply(gregexpr("[AEIOUYaeiouy]*", textVector), attr, "match.length")
-    sapply(vowel.index.list, sum)
-}

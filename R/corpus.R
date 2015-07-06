@@ -988,3 +988,32 @@ ntype.dfm <- function(x, ...) {
     apply(x, 1, function(dfmrow) sum(dfmrow > 0))
 }
 
+
+
+#' count the number of sentences
+#' 
+#' Return the count of sentences in a corpus or character.
+#' @param x texts or corpus whose sentences will be counted
+#' @param ... additional arguments passed to \code{\link{tokenize}}
+#' @return scalar count(s) of the total sentences per text
+#' @examples
+#' # simple example
+#' txt <- c(text1 = "This is a sentence: second part of first sentence.",
+#'          text2 = "A word. Repeated repeated.")
+#' nsentence(txt)
+#' @export
+nsentence <- function(x, ...) {
+    UseMethod("nsentence")
+}
+
+#' @rdname nsentence
+#' @export
+nsentence.character <- function(x, ...) {
+    lengths(tokenize(x, what = "sentence", ...))
+}
+
+#' @rdname nsentence
+#' @export
+nsentence.corpus <- function(x, ...) {
+    nsentence(texts(x), ...)
+}

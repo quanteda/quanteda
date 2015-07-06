@@ -107,3 +107,32 @@ NULL
 #' Encoding(encodedTexts)
 #' data.frame(labelled = names(encodedTexts), detected = encoding(encodedTexts)$all)
 NULL
+
+
+#' @name wordlists
+#' @title word lists used in some readability indexes
+#' @description \code{wordlists} is a named list of character vectors where each list element corresponds to a different readability index.  These are:
+#' \describe{
+#' \item{\code{DaleChall}}{The long Dale-Chall list of 3,000 familiar (English) words needed to compute the Dale-Chall Readability Formula.}
+#' \item{\code{Spache}}{The revised Spache word list (see Klare 1975, 73) needed to compute the Spache Revised Formula of readability (Spache 1974.}
+#' }
+#' @references 
+#' Chall, J. S., & Dale, E.  1995. \emph{Readability Revisited: The New Dale-Chall Readability Formula}. Brookline Books.
+#' 
+#' Klare, G. R. 1975. "Assessing readability." \emph{Reading Research Quarterly} 10(1): 62–102.
+#' 
+#' Spache, G. 1953. "A new readability formula for primary-grade reading materials." \emph{The Elementary School Journal} 53: 410-413.
+#' @docType data
+NULL
+# makeWordList <- function(filename) {
+#     wordList <- textfile(filename, cache = FALSE)@texts
+#     wordList <- stringi::stri_replace_all_regex(wordList, "-", "_")
+#     wordList <- tokenize(wordList, simplify = TRUE)
+#     wordList <- stringi::stri_replace_all_regex(wordList, "_", "-")
+#     wordList
+# }
+# dalechall    <- makeWordList("~/Dropbox/QUANTESS/quanteda_working_files/readability/Dale-Chall.txt")
+# spache    <- makeWordList("~/Dropbox/QUANTESS/quanteda_working_files/readability/Spache.txt")
+# wordlists <- list(dalechall = dalechall, spache = spache)
+# save(wordlists, file = "data/wordlists.RData")
+

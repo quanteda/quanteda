@@ -1,7 +1,7 @@
 ---
 title: "quanteda Development Plans"
 author: "Ken Benoit and Paul Nulty"
-date: "2015-06-19"
+date: "2015-07-06"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Development Plans}

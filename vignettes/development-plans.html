@@ -10,7 +10,7 @@
 
 <meta name="author" content="Ken Benoit and Paul Nulty" />
 
-<meta name="date" content="2015-06-19" />
+<meta name="date" content="2015-07-06" />
 
 <title>quanteda Development Plans</title>
 
@@ -28,7 +28,7 @@
 <div id="header">
 <h1 class="title">quanteda Development Plans</h1>
 <h4 class="author"><em>Ken Benoit and Paul Nulty</em></h4>
-<h4 class="date"><em>2015-06-19</em></h4>
+<h4 class="date"><em>2015-07-06</em></h4>
 </div>
 
 
@@ -61,11 +61,20 @@
 </ul></li>
 <li><strong>DONE</strong> encode <code>ie2010Corpus</code> (and see if CRAN lets us get away with it)</li>
 <li><strong>DONE</strong> removed <code>language()</code></li>
+<li>add methods for <code>tokenizedTexts</code> objects:
+<ul>
+<li><strong>DONE</strong> <code>dfm.tokenizedTexts</code></li>
+<li><strong>DONE</strong> <code>removeFeatures.tokenizedTexts</code></li>
+<li><strong>DONE</strong> <code>syllables.tokenizedTexts</code></li>
+</ul></li>
+<li><code>removeFeatures</code> now much faster, based on fixed binary matches and <code>stringi</code> character classes</li>
 </ul>
 </div>
 <div id="to-do-remaining" class="section level2">
 <h2>To Do Remaining</h2>
 <ul>
+<li>add a converter for objects from the <strong>koRpus</strong> package</li>
+<li>add readability statistics</li>
 <li>rewrite to make use of <strong>stringi</strong> (and the new <code>tokenize()</code> based on that package):
 <ul>
 <li><code>segment()</code></li>
@@ -75,10 +84,9 @@
 <li>make <code>bigrams</code>, <code>ngrams</code> punctuation sensitive in the same way that <code>collocations</code> is currently</li>
 <li>integrate <code>collocations</code> code for bigrams and trigrams and reduce the internal memory usage</li>
 <li>make sure <code>corpus.VCorpus()</code> is fully working</li>
-<li>dfm documentation needs to group arguments into sections and describe how these correspond to the logical workflow</li>
+<li><code>dfm</code> documentation needs to group arguments into sections and describe how these correspond to the logical workflow</li>
 <li>need to figure out how to exclude specific signatures (especially S4 signatures) from the man (.Rd) pages. For instance `?“dfm-class” has far more details on methods signatures than any user will find useful.</li>
 <li>rewrite <code>kwic</code> to use new tokenizer, and to allow searches for multi-word regular expressions</li>
-<li>add a converter for objects from the <strong>koRpus</strong> package</li>
 <li>Devise a scheme for <code>settings()</code> and figure out how to add additional objects to a corpus, namely one or more:
 <ul>
 <li>dictionary objects</li>
@@ -87,12 +95,6 @@
 </ul></li>
 <li>optimize <code>similarity()</code></li>
 <li>consider adopting ISO language names for functions such as <code>wordstem()</code>, <code>stopwords()</code>, and <code>syllables()</code></li>
-<li>add methods for <code>tokenizedTexts</code> objects:
-<ul>
-<li><strong>DONE</strong> <code>dfm.tokenizedTexts</code></li>
-<li><code>removeFeatures.tokenizedTexts</code></li>
-<li><strong>DONE</strong> <code>syllables.tokenizedTexts</code></li>
-</ul></li>
 <li><code>textmodel</code>: Devise and document a consistent, logical, and easy-to-use and remember scheme for textmodels.</li>
 <li>Move more functions to S4</li>
 <li>Documentation for <code>convert()</code> needs substantial work</li>

@@ -41,7 +41,8 @@ Suggests:
     slam,
     ggplot2,
     XML,
-    testthat
+    testthat,
+    koRpus
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
@@ -66,6 +67,7 @@ Collate:
     'ngrams.R'
     'plots.R'
     'quanteda-package.R'
+    'readability.R'
     'resample.R'
     'settings.R'
     'stopwords.R'

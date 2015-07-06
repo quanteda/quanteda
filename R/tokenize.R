@@ -390,20 +390,30 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
                                                      type = what, 
                                                      skip_word_none = removePunct, # this is what obliterates currency symbols, Twitter tags, and URLs
                                                      skip_word_number = removeNumbers) # but does not remove 4u, 2day, etc.
-            ## remove trailing whitespaces
-            #result <- lapply(result, stringi::stri_trim_right)
+            ## remove newline chars and trailing spaces for sentence tokenization
+            if (what == "sentence") {
+                result <- lapply(result, stringi::stri_replace_all_fixed, "\n", "")
+                result <- lapply(result, stringi::stri_trim_right)
+            }
             # remove any "sentences" that were completely blanked out
             result <- lapply(result, function(x) x <- x[which(x != "")])
         } else {
-            result <- stringi::stri_split_boundaries(result, type = what)
+            result <- stringi::stri_split_boundaries(result, type = "character")
+            if (removePunct) {
+                if (verbose) cat("   ...removing punctuation.\n")
+                result <- lapply(result, function(x) x[-which(stri_detect_charclass(x, "[\\p{P}\\p{S}]"))]) 
+            }
+            
+            
             # note: does not implement removePunct or removeNumbers
         }
     }
     if (verbose) cat("...total elapsed: ", (proc.time() - startTimeTok)[3], "seconds.\n")
     
-    if (removeSeparators & !removePunct & (what == "character" | what == "word")) {
-        if (verbose) cat("...removing separators.\n")
-        result <- lapply(result, function(x) x[-which(stri_detect_regex(x, "^\\s$"))]) 
+    # if (removeSeparators & !removePunct & (what == "character" | what == "word")) {
+    if (removeSeparators & ((!removePunct & what == "word") | (what == "character"))) {
+        if (verbose) cat("   ...removing separators.\n")
+        result <- lapply(result, function(x) x[!stri_detect_charclass(x, "\\p{Z}")])
     }
     
     if (removeTwitter == FALSE & what != "fastword") {
