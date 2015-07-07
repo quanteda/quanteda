@@ -51,6 +51,8 @@ Other changes
 
 * `syllables()` is now much faster, using matching through `stringi` and merging using `data.table`.
 
+* added `readability()` to compute (fast!) readability indexes on a text or corpus
+
 
 quanteda 0.7.3
 ==============

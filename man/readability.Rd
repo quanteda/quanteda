@@ -3,25 +3,37 @@
 \name{readability}
 \alias{readability}
 \alias{readability.character}
+\alias{readability.corpus}
 \title{calculate readability}
 \usage{
-readability(x, ...)
+readability(x, measure)
 
-\method{readability}{character}(x, index)
+\method{readability}{corpus}(x, measure)
+
+\method{readability}{character}(x, measure = c("all", "ARI", "Bormuth",
+  "Coleman", "Coleman.Liau", "Dale.Chall", "Danielson.Bryan", "Dickes.Steiwer",
+  "DRP", "ELF", "Farr.Jenkins.Paterson", "Flesch", "Flesch.Kincaid", "FOG",
+  "FORCAST", "Fucks", "Linsear.Write", "LIX", "nWS", "RIX", "SMOG", "Spache",
+  "Strain"))
 }
 \arguments{
-\item{x}{a \link{corpus} object}
+\item{x}{a \link{corpus} object or character vector}
 
-\item{index}{character vector defining the readability index to calculate}
+\item{measure}{character vector defining the readability measure to calculate}
 }
 \description{
 Calculate the readability of text(s).
 }
 \examples{
-readability(c("ABC.", "The fat, cat."), index = "Flesch.Kincaid")
+readability(inaugCorpus, measure = "Flesch.Kincaid")
+txt <- c("Readability zero one.  Ten, Eleven.", "The cat in a dilapidated tophat.")
+readability(txt, "Flesch.Kincaid")
+readability(txt, "FOG")
+inaugReadability <- readability(inaugCorpus, "all")
+round(cor(inaugReadability), 3)
 }
 \author{
-Kenneth Benoit, adapted from the S4 class implementation written by
+Kenneth Benoit, re-engineered from the function of the same name by
   Meik Michalke in the \pkg{koRpus} package.
 }
 

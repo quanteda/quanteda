@@ -12,8 +12,8 @@ Author: Kenneth Benoit [aut, cre],
     Pablo Barberá [ctb],
     Kohei Watanabe [ctb],
     Benjamin Lauderdale [ctb]
-Version: 0.7.9-5
-Date: 2015-07-06
+Version: 0.7.9-6
+Date: 2015-07-07
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -41,8 +41,7 @@ Suggests:
     slam,
     ggplot2,
     XML,
-    testthat,
-    koRpus
+    testthat
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues

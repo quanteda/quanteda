@@ -57,10 +57,13 @@ syllables.character <- function(x, syllableDict = NULL, ...) {
 syllables.tokenizedTexts <- function(x, syllableDict = NULL, ...) { 
 
     # make tokenized list into a data table
-    nSyllables <- syllables.data.table(data.table(docIndex = rep(1:length(x), lengths(x)),
-                                                 word = unlist(x), 
-                                                 serial = 1:length(unlist(x))),
-                                      syllableDict)
+    syllablesDT <- data.table(docIndex = rep(1:length(x), lengths(x)),
+                              word = unlist(x), 
+                              serial = 1:length(unlist(x)))
+    
+    # call the syllables data.table function
+    nSyllables <- syllables.data.table(syllablesDT, syllableDict)    
+
     # restore names
     names(nSyllables) <- names(x)    
     
@@ -95,7 +98,7 @@ syllables.data.table <- function(x, syllableDict, ...) {
     syllDT <- syllableDictDT[x]
     
     # look up vowel counts for those not in the syllables list
-    syllDT[is.na(syllables), syllables := stringi::stri_count_regex(word, "[aeiouy]*")]
+    syllDT[is.na(syllables), syllables := stringi::stri_count_regex(word, "[aeiouy]+")]
     # put back into original order
     syllDT <- syllDT[order(serial)]
     # split back to a list
