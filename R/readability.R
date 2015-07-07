@@ -44,7 +44,7 @@ readability.character <- function(x, measure = c("all", "ARI", "Bormuth", "Colem
         Farr.Jenkins.Paterson <- Flesch <- Flesch.PSK <- Flesch.Kincaid <- FOG <- FOG.PSK <- FOG.NRI <- 
         FORCAST <- FORCAST.RGL <- Fucks <- Linsear.Write.raw <- LIW <- nWS.1 <- nWS.2 <- nWS.3 <- RIX <- 
         SMOG <- SMOG.C <- SMOG.simple <- SMOG.de <- Spache <- Spache.old <- Strain <- Wheeler.Smith <- 
-        wordlists <- Bormuth.MC <- Bl <- NULL
+        wordlists <- Bormuth.MC <- Bl <- Traenkle.Bailer.1 <- Traenkle.Bailer.2 <- NULL
     
     if (is.null(names(x)))
         names(x) <- paste0("text", 1:length(x))
@@ -189,19 +189,18 @@ readability.character <- function(x, measure = c("all", "ARI", "Bormuth", "Colem
     if (any(c("all", "Strain") %in% measure)) 
         textFeatures[, Strain := Sy * 1 / (St/3) / 10]
 
-#     if (any(c("all", "TRI") %in% measure)) {
-#         Ptn <- lengths(tokenize(x, removePunct = FALSE)) - lengths(tokenizedWords)
-#         Frg <- NA  # foreign words -- cannot compute without a dictionary
-#         textFeatures[, TRI := (0.449 * W_1Sy) - (2.467 * Ptn) - (0.937 * Frg) - 14.417]
-#     }
-        
-    #     if (any(c("all", "Traenkle.Bailer") %in% measure)) {
+    if (any(c("all", "Traenkle.Bailer") %in% measure)) {
+        Wprep <- sapply(tokenizedWords, function(x) sum(x %in% prepositions))  # English prepositions
+        Wconj <- sapply(tokenizedWords, function(x) sum(x %in% conjunctions))  # English conjunctions
+        textFeatures[, Traenkle.Bailer.1 := 224.6814 - (79.8304 * C / W) - (12.24032 * W / St) - (1.292857 * 100 * Wprep / W)]
+        textFeatures[, Traenkle.Bailer.2 := 234.1063 - (96.11069 * C / W) - (2.05444 * 100 * Wprep / W) - (1.02805 * 100 * Wconj / W)]
+    }
+
+    #     if (any(c("all", "TRI") %in% measure)) {
     #         Ptn <- lengths(tokenize(x, removePunct = FALSE)) - lengths(tokenizedWords)
     #         Frg <- NA  # foreign words -- cannot compute without a dictionary
-    #         textFeatures[, Traenkle.Bailer.1 := 224.6814 - (79.8304 * C / W) - (12.24032 * W / St) - (1.292857 * 100 * Wprep / W)]
-    #         textFeatures[, Traenkle.Bailer.2 := 234.1063 - (96.11069 * C / W) - (2.05444 * 100 * Wprep / W) - (1.02805 * 100 * Wprep / W)]
+    #         textFeatures[, TRI := (0.449 * W_1Sy) - (2.467 * Ptn) - (0.937 * Frg) - 14.417]
     #     }
-    
     
     if (any(c("all", "Wheeler.Smith") %in% measure)) 
         textFeatures[, Wheeler.Smith := W / St * (10 * W2Sy) / W]
@@ -216,4 +215,16 @@ readability.character <- function(x, measure = c("all", "ARI", "Bormuth", "Colem
         names(ret) <- textFeatures$textID
     ret
 }
+
+conjunctions <- c("for", "and", "nor", "but", "or", "yet", "so")
+prepositions <- c("a", "abaft", "abeam", "aboard", "about", "above", "absent", "across", "afore", "after", "against", "along", 
+                  "alongside", "amid", "amidst", "among", "amongst", "an", "anenst", "apropos", "apud", "around", "as", "aside", 
+                  "astride", "at", "athwart", "atop", "barring", "before", "behind", "below", "beneath", "beside", "besides", 
+                  "between", "beyond", "but", "by", "chez", "circa", "ca", "c", "concerning", "despite", "down", "during", "except", 
+                  "excluding", "failing", "following", "for", "forenenst", "from", "given", "in", "including", "inside", "into", 
+                  "like", "mid", "midst", "minus", "modulo", "near", "next", "notwithstanding", "o'", "of", "off", "on", "onto", 
+                  "opposite", "out", "outside", "over", "pace", "past", "per", "plus", "pro", "qua", "regarding", "round", "sans", 
+                  "save", "since", "than", "through", "thru", "throughout", "thruout", "times", "to", "toward", "towards", "under", 
+                  "underneath", "unlike", "until", "unto", "up", "upon", "versus", "vs", "v", "via", "vis-a-vis", "with", "within", 
+                  "without", "worth")
 
