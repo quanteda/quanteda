@@ -484,7 +484,7 @@ tokenize.corpus <- function(x, ...) {
 }
 
 
-ngram <- function(tokens, n = 2, concatenator = "_", include.all = FALSE, ...) {
+ngram <- function(tokens, n = 2, concatenator = "_", include.all = FALSE) {
 
     # start with lower ngrams, or just the specified size if include.all = FALSE
     start <- ifelse(include.all, 
