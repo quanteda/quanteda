@@ -53,6 +53,9 @@ Other changes
 
 * added `readability()` to compute (fast!) readability indexes on a text or corpus
 
+* tokenize() now creates ngrams of any length, with two new arguments: `ngrams =` <integer vector> and 
+  `concatenator = "_"`.  The new arguments to `tokenize()` can be passed through from `dfm()`.
+
 
 quanteda 0.7.3
 ==============
