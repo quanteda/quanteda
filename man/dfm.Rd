@@ -15,30 +15,28 @@ dfm(x, ...)
   removeNumbers = TRUE, removePunct = TRUE, removeSeparators = TRUE,
   removeTwitter = TRUE, stem = FALSE, ignoredFeatures = NULL,
   keptFeatures = NULL, matrixType = c("sparse", "dense"),
-  language = "english", bigrams = FALSE, include.unigrams = TRUE,
-  thesaurus = NULL, dictionary = NULL, dictionary_regex = FALSE,
-  addto = NULL, ...)
+  language = "english", thesaurus = NULL, dictionary = NULL,
+  dictionary_regex = FALSE, addto = NULL, ...)
 
 \method{dfm}{tokenizedTexts}(x, verbose = TRUE, toLower = TRUE,
   stem = FALSE, ignoredFeatures = NULL, keptFeatures = NULL,
-  matrixType = c("sparse", "dense"), language = "english", groups = NULL,
-  bigrams = FALSE, include.unigrams = TRUE, thesaurus = NULL,
-  dictionary = NULL, dictionary_regex = FALSE, addto = NULL, ...)
+  matrixType = c("sparse", "dense"), language = "english",
+  thesaurus = NULL, dictionary = NULL, dictionary_regex = FALSE,
+  addto = NULL, ...)
 
-\method{dfm}{corpus}(x, verbose = TRUE, toLower = TRUE, stem = FALSE,
-  ignoredFeatures = NULL, keptFeatures = NULL, matrixType = c("sparse",
-  "dense"), language = "english", groups = NULL, bigrams = FALSE,
-  include.unigrams = TRUE, thesaurus = NULL, dictionary = NULL,
-  dictionary_regex = FALSE, addto = NULL, ...)
+\method{dfm}{corpus}(x, verbose = TRUE, groups = NULL, ...)
 
 is.dfm(x)
 
 as.dfm(x)
 }
 \arguments{
-\item{x}{corpus or character vector from which to generate the document-feature matrix}
+\item{x}{corpus or character vector from which to generate the
+document-feature matrix}
 
-\item{...}{additional arguments passed to \code{\link{clean}}}
+\item{...}{additional arguments passed to \link{tokenize}, which can include for
+instance \code{ngrams} and \code{concatenator} for tokenizing multi-token
+sequences}
 
 \item{verbose}{display messages if \code{TRUE}}
 
@@ -87,11 +85,6 @@ at the beginning of the username.)}
 \code{italian}, \code{portuguese}, \code{spanish}, \code{arabic} for
 stopwords.}
 
-\item{bigrams}{include bigrams as well as unigram features, if \code{TRUE}}
-
-\item{include.unigrams}{exclude unigrams if \code{TRUE}; only used if
-\code{bigrams=TRUE}}
-
 \item{thesaurus}{A list of character vector "thesaurus" entries, in a
 dictionary list format, which can also include regular expressions  if
 \code{dictionary_regex} is \code{TRUE} (see examples).  Note that unlike
@@ -108,9 +101,7 @@ regular expression format, otherwise it will be converted from "wildcard"
 format}
 
 \item{addto}{\code{NULL} by default, but if an existing dfm object is
-specified, then the new dfm will be added to the one named. If both
-\link{dfm}'s are built from dictionaries, the combined dfm will have its
-\code{Non_Dictionary} total adjusted.}
+specified, then the new dfm will be added to the one named}
 
 \item{groups}{character vector containing the names of document variables for
 aggregating documents}
@@ -124,16 +115,17 @@ A \link{dfm-class} object containing a sparse matrix representation
   matrix class object with additional attributes representing meta-data.
 }
 \description{
-Create a sparse matrix document-feature matrix from a corpus or a vector of texts.  The sparse
-matrix construction uses  the
-\pkg{Matrix} package, and is both much faster and much more memory efficient
-than the corresponding dense (regular \code{matrix}) representation.  For details on the
-structure of the dfm class, see \link{dfm-class}.
+Create a sparse matrix document-feature matrix from a corpus or a vector of
+texts.  The sparse matrix construction uses  the \pkg{Matrix} package, and is
+both much faster and much more memory efficient than the corresponding dense
+(regular \code{matrix}) representation.  For details on the structure of the
+dfm class, see \link{dfm-class}.
 }
 \details{
-New as of v0.7: All dfms are by default sparse, a change from the previous behaviour.
-You can still create the older (S3) dense matrix type dfm object, but you will receive
-a disapproving warning message while doing so, suggesting you make the switch.
+New as of v0.7: All dfms are by default sparse, a change from the previous
+behaviour. You can still create the older (S3) dense matrix type dfm object,
+but you will receive a disapproving warning message while doing so,
+suggesting you make the switch.
 
 \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
 

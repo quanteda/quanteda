@@ -93,7 +93,7 @@ The constructor does not store a copy of the texts, but rather reads
 \examples{
 \donttest{#' # Twitter json
 mytf1 <- textfile("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
-summary(corpus(mytf1))
+summary(corpus(mytf1), 5)
 # generic json - needs a textField specifier
 mytf2 <- textfile("~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/sotu/sotu.json",
                   textField = "text")
@@ -102,7 +102,7 @@ summary(corpus(mytf2))
 mytf3 <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
 summary(corpus(mytf3))
 # multiple text files
-mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt")
+mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
 summary(corpus(mytf4))
 # multiple text files with docvars from filenames
 mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt",

@@ -30,6 +30,8 @@
 bigrams <- function(text, window = 1, concatenator="_", include.unigrams=FALSE, 
                     ignoredFeatures=NULL, skipGrams=FALSE, ...) {
 
+    cat("note: bigrams() is being phased out, and replaced by tokenize(x, ngrams=2)\n")
+    
     removeIgnoredFeatures <- function(bigramCharVector, ignoredFeatures) {
         ignoredfeatIndex <- 
             grep(paste0("\\b", paste(ignoredFeatures, collapse="\\b|\\b"), "\\b"), 
@@ -97,24 +99,43 @@ ngrams <- function(text, n=2, concatenator="_", include.all=FALSE, ...) {
 }
 
 ngramSingle <- function(text, n=2, concatenator="_", include.all=FALSE, ...) {
-    t <- unlist(tokenize(text, simplify=TRUE, ...))
-    len <- length(t)
-    ngram.result <- c()  # initialize ngrams vector
-    tl <- list()   # initialize tl vector
-    min <- n
-    if (include.all==TRUE) min <- 1 # set minimum to unigram if include.all
+    # tokenize once
+    tokens <- tokenize(text, simplify=TRUE, ...)
+
+    # start with lower ngrams, or just the specified size if include.all = FALSE
+    start <- ifelse(include.all, 1, n)
     
-    for (i in (1:n)) {
-        tl[[i]] <- t[(i):(len-(n-i))]
-    }
-    # ngrams <- do.call('paste', c(t(tl)[1:n], sep = concatenator))
-    # paste the elements together
-    ngram.result <- do.call('paste', c(tl, sep = concatenator))
-    # build up list with successive calls if include.all is TRUE
-    if (include.all==TRUE) {
-        for (i in (n-1):1) {
-            ngram.result <- c(ngramSingle(text, i, concatenator, ...), ngram.result)
+    # set max size of ngram at max length of tokens
+    end <- ifelse(length(tokens) < n, length(tokens), n)
+    
+    all_ngrams <- c()
+    # outer loop for all ngrams down to 1
+    for (width in start:end) {
+        new_ngrams <- tokens[1:(length(tokens) - width + 1)]
+        # inner loop for ngrams of width > 1
+        if (width > 1) {
+            for (i in 1:(width - 1)) 
+                new_ngrams <- paste(new_ngrams, 
+                                    tokens[(i + 1):(length(tokens) - width + 1 + i)], 
+                                    sep = concatenator)
         }
+        # paste onto previous results and continue
+        all_ngrams <- c(all_ngrams, new_ngrams)
     }
-    return(ngram.result)
+    
+    all_ngrams
 }
+
+
+# > ngramSingle <- function(text, n=2, concatenator="_", include.all=FALSE, ...) {
+#     +     tokens <- tokenize(text, simplify=TRUE, ...)
+#     +     
+#         +     new_ngrams <- tokens[1:(length(tokens) - n + 1)]
+#         +     if (n==1) return(new_ngrams)
+#         +     for (i in 2:n) 
+#             +         new_ngrams <- paste(new_ngrams, tokens[(i):(length(tokens)-n+i)], sep = concatenator) 
+#             +     
+#                 +     if (include.all & n > 1)
+#                     +         new_ngrams <- c(new_ngrams, ngramSingle(text, n-1, concatenator, include.all, ...))
+#                     +     new_ngrams
+#                     + }

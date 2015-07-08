@@ -11,8 +11,8 @@ tokenize(x, ...)
 
 \method{tokenize}{character}(x, what = c("word", "sentence", "character",
   "fastestword", "fasterword"), removeNumbers = FALSE, removePunct = FALSE,
-  removeSeparators = TRUE, removeTwitter = FALSE, simplify = FALSE,
-  verbose = FALSE, ...)
+  removeSeparators = TRUE, removeTwitter = FALSE, ngrams = 1,
+  concatenator = "_", simplify = FALSE, verbose = FALSE, ...)
 
 \method{tokenize}{corpus}(x, ...)
 }
@@ -36,6 +36,15 @@ Unicode "separator" category) when \code{removePunct=FALSE}}
 
 \item{removeTwitter}{remove Twitter characters \code{@} and \code{#}; set to
 \code{FALSE} if you wish to eliminate these}
+
+\item{ngrams}{integer vector of the \emph{n} for \emph{n}-grams, defaulting
+to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for
+bigrams and unigrams, use \code{1:2}.  You can even include irregular
+sequences such as \code{2:3} for bigrams and trigrams only.}
+
+\item{concatenator}{character to use in concatenating \emph{n}-grams, default
+is "\code{_}", which is recommended since this is included in the regular
+expression and Unicode definitions of "word" characters}
 
 \item{simplify}{if \code{TRUE}, return a character vector of tokens rather
 than a list of length \code{\link{ndoc}(texts)}, with each element of the

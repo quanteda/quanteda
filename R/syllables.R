@@ -95,7 +95,8 @@ syllables.data.table <- function(x, syllableDict, ...) {
     setkey(x, word)
     
     # merge words to get syllables
-    syllDT <- syllableDictDT[x]
+    # suppressWarnings so it won't complain about mixed encodings
+    suppressWarnings(syllDT <- syllableDictDT[x])
     
     # look up vowel counts for those not in the syllables list
     syllDT[is.na(syllables), syllables := stringi::stri_count_regex(word, "[aeiouy]+")]

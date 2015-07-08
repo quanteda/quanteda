@@ -10,17 +10,21 @@ NULL
 
 #' create a document-feature matrix
 #' 
-#' Create a sparse matrix document-feature matrix from a corpus or a vector of texts.  The sparse
-#' matrix construction uses  the
-#' \pkg{Matrix} package, and is both much faster and much more memory efficient
-#' than the corresponding dense (regular \code{matrix}) representation.  For details on the
-#' structure of the dfm class, see \link{dfm-class}.
+#' Create a sparse matrix document-feature matrix from a corpus or a vector of
+#' texts.  The sparse matrix construction uses  the \pkg{Matrix} package, and is
+#' both much faster and much more memory efficient than the corresponding dense
+#' (regular \code{matrix}) representation.  For details on the structure of the
+#' dfm class, see \link{dfm-class}.
 #' 
-#' New as of v0.7: All dfms are by default sparse, a change from the previous behaviour.  
-#' You can still create the older (S3) dense matrix type dfm object, but you will receive
-#' a disapproving warning message while doing so, suggesting you make the switch.
-#' @param x corpus or character vector from which to generate the document-feature matrix
-#' @param ... additional arguments passed to \code{\link{clean}}
+#' New as of v0.7: All dfms are by default sparse, a change from the previous
+#' behaviour. You can still create the older (S3) dense matrix type dfm object,
+#' but you will receive a disapproving warning message while doing so,
+#' suggesting you make the switch.
+#' @param x corpus or character vector from which to generate the
+#'   document-feature matrix
+#' @param ... additional arguments passed to \link{tokenize}, which can include for
+#'   instance \code{ngrams} and \code{concatenator} for tokenizing multi-token
+#'   sequences
 #' @import Matrix
 #' @export
 #' @name dfm
@@ -33,8 +37,8 @@ dfm <- function(x, ...) {
 #' @param toLower convert texts to lowercase
 #' @param removeNumbers remove numbers, see \link{tokenize}
 #' @param removePunct remove numbers, see \link{tokenize}
-#' @param removeTwitter if \code{FALSE}, preserve \code{#} and \code{@@}
-#'   characters, see \link{tokenize} #' @param removeSeparators remove
+#' @param removeTwitter if \code{FALSE}, preserve \code{#} and \code{@@} 
+#'   characters, see \link{tokenize} #' @param removeSeparators remove 
 #'   separators (whitespace), see \link{tokenize}
 #' @param stem if \code{TRUE}, stem words
 #' @param ignoredFeatures a character vector of user-supplied features to 
@@ -63,13 +67,8 @@ dfm <- function(x, ...) {
 #' @param dictionary_regex \code{TRUE} means the dictionary is already in 
 #'   regular expression format, otherwise it will be converted from "wildcard" 
 #'   format
-#' @param bigrams include bigrams as well as unigram features, if \code{TRUE}
-#' @param include.unigrams exclude unigrams if \code{TRUE}; only used if 
-#'   \code{bigrams=TRUE}
 #' @param addto \code{NULL} by default, but if an existing dfm object is 
-#'   specified, then the new dfm will be added to the one named. If both 
-#'   \link{dfm}'s are built from dictionaries, the combined dfm will have its 
-#'   \code{Non_Dictionary} total adjusted.
+#'   specified, then the new dfm will be added to the one named
 #' @param language Language for stemming and stopwords.  Choices are 
 #'   \code{danish}, \code{dutch}, \code{english}, \code{finnish}, \code{french},
 #'   \code{german}, \code{hungarian}, \code{italian}, \code{norwegian}, 
@@ -164,7 +163,8 @@ dfm <- function(x, ...) {
 #' system.time(tmDTM <- DocumentTermMatrix(tmcorp))
 #' object.size(tmDTM)
 #' }
-dfm.character <- function(x, verbose=TRUE, 
+dfm.character <- function(x, 
+                          verbose=TRUE, 
                           toLower=TRUE, 
                           removeNumbers = TRUE, 
                           removePunct = TRUE,
@@ -172,23 +172,68 @@ dfm.character <- function(x, verbose=TRUE,
                           removeTwitter = TRUE,
                           # removeCurrency = TRUE,
                           # removeURL = TRUE,
-                          stem=FALSE, 
+                          stem = FALSE, 
                           ignoredFeatures = NULL, 
                           keptFeatures=NULL,
                           matrixType=c("sparse", "dense"), 
                           language="english",
-                          bigrams=FALSE,
-                          include.unigrams=TRUE,
                           thesaurus=NULL, 
                           dictionary=NULL, 
                           dictionary_regex=FALSE, 
-                          addto=NULL, 
+                          addto=NULL,
                           ...) {
     startTime <- proc.time()
     matrixType <- match.arg(matrixType)
     
     if (verbose && grepl("^dfm\\.character", sys.calls()[[2]]))
         cat("Creating a dfm from a character vector ...")
+
+    # case conversion and tokenization
+    # includes bigram tokenization but this will be merged soon into tokenize()
+    if (toLower) {
+        if (verbose) cat("\n   ... lowercasing", sep="")
+        x <- toLower(x)
+    }
+    
+    if (verbose) cat("\n   ... tokenizing", sep="")
+    tokenizedTexts <- tokenize(x, removeNumbers=removeNumbers, 
+                               removeSeparators=removeSeparators, removePunct=removePunct,
+                               removeTwitter = removeTwitter,
+                               ...)
+
+    dfm(tokenizedTexts, verbose=verbose, toLower=toLower, stem=stem, 
+        ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
+        matrixType=matrixType, language=language,
+        thesaurus=thesaurus, dictionary=dictionary, dictionary_regex=dictionary_regex,
+        addto=addto, startTime = startTime)
+    
+}
+
+    
+#' @rdname dfm
+#' @export
+dfm.tokenizedTexts <- function(x, 
+                               verbose=TRUE,
+                               toLower = TRUE,
+                               stem=FALSE, 
+                               ignoredFeatures=NULL, 
+                               keptFeatures=NULL,
+                               matrixType=c("sparse", "dense"), 
+                               language="english",
+                               thesaurus=NULL, 
+                               dictionary=NULL, 
+                               dictionary_regex=FALSE,
+                               addto=NULL, ...) {
+    
+    dots <- list(...)
+    if ("startTime" %in% names(dots)) startTime <- dots$startTime
+    
+    matrixType <- match.arg(matrixType)
+
+    if (verbose && grepl("^dfm\\.tokenizedTexts", sys.calls()[[2]])) {
+        cat("Creating a dfm from a tokenizedTexts object ...")
+        startTime <- proc.time()
+    }
     
     # index documents
     if (verbose) cat("\n   ... indexing ", 
@@ -198,32 +243,15 @@ dfm.character <- function(x, verbose=TRUE,
     if (is.null(names(x))) 
         names(docIndex) <- factor(paste("text", 1:length(x), sep="")) else
             names(docIndex) <- names(x)
-    
-    # case conversion and tokenization
-    # includes bigram tokenization but this will be merged soon into tokenize()
-    if (toLower) {
-        if (verbose) cat("\n   ... lowercasing", sep="")
-        x <- toLower(x)
-    }
-    
-    if (!bigrams) {
-        if (verbose) cat("\n   ... tokenizing", sep="")
-        tokenizedTexts <- tokenize(x, removeNumbers=removeNumbers, 
-                                   removeSeparators=removeSeparators, removePunct=removePunct,
-                                   removeTwitter = removeTwitter)
-    } else {
-        if (verbose) cat("\n   ... forming bigrams", sep="")
-        tokenizedTexts <- bigrams(x, ignoredFeatures = ignoredFeatures, include.unigrams=include.unigrams)
-    }
-    
+
     # index features
     if (verbose) cat("\n   ... shaping tokens into data.table")
-    alltokens <- data.table(docIndex = rep(docIndex, sapply(tokenizedTexts, length)),
-                            features = unlist(tokenizedTexts, use.names = FALSE))
+    alltokens <- data.table(docIndex = rep(docIndex, sapply(x, length)),
+                            features = unlist(x, use.names = FALSE))
     alltokens <- alltokens[features != ""]  # if there are any "blank" features
     if (verbose) cat(", found", format(nrow(alltokens), big.mark=","), "total tokens")
-    if (verbose & bigrams) 
-        cat(" incl.", format(sum(grepl("_", alltokens$features)), big.mark=","), "bigrams")
+#     if (verbose & bigrams) 
+#         cat(" incl.", format(sum(grepl("_", alltokens$features)), big.mark=","), "bigrams")
     
     # stemming features
     if (stem == TRUE) {
@@ -239,7 +267,7 @@ dfm.character <- function(x, verbose=TRUE,
     }
     
     # "stop words" through ignoredFeatures
-    if (!is.null(ignoredFeatures) & !bigrams) {
+    if (!is.null(ignoredFeatures)) {
         if (!is.character(ignoredFeatures)) {
             cat("\n   ... WARNING: not ignoring words because not a character vector")
         } else {
@@ -285,7 +313,7 @@ dfm.character <- function(x, verbose=TRUE,
         # call the dictionary entry counting function and return new alltokens
         alltokens <- countDictionaryEntries(alltokens, dictionary)
     }
-
+    
     n <- NULL
     if (verbose) cat("\n   ... summing", ifelse(is.null(dictionary), "tokens", "dictionary-matched features"), "by document")
     alltokens[, "n":=1L]
@@ -333,7 +361,7 @@ dfm.character <- function(x, verbose=TRUE,
     
     # different approach: remove null strings entirely
     if (length(blankFeatureIndex) > 0) dfmresult <- dfmresult[, -blankFeatureIndex]
-
+    
     # make into sparse S4 class inheriting from dgCMatrix
     dfmresult <- new("dfmSparse", dfmresult)
     
@@ -369,44 +397,15 @@ dfm.character <- function(x, verbose=TRUE,
     }
     if (matrixType == "dense")
         cat("  Note: matrixType dense is being phased out, try sparse instead.\n")
+    
     return(dfmresult)
-}
-
-#' @rdname dfm
-#' @export
-dfm.tokenizedTexts <- function(x, verbose=TRUE, toLower=TRUE, stem=FALSE, 
-                               ignoredFeatures=NULL, 
-                               keptFeatures=NULL,
-                               matrixType=c("sparse", "dense"), language="english",
-                               groups=NULL, bigrams=FALSE, 
-                               include.unigrams=TRUE,
-                               thesaurus=NULL, dictionary=NULL, dictionary_regex=FALSE,
-                               addto=NULL, ...) {
-    
-    ## should check that options in ... do NOT include tokenization options
-    
-    .TOKENIZE <- FALSE
-    
-    dfm(texts, verbose=verbose, toLower=toLower, stem=stem, 
-        ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
-        matrixType=matrixType, language=language,
-        thesaurus=thesaurus, dictionary=dictionary, dictionary_regex=dictionary_regex,
-        fromCorpus=TRUE, bigrams=bigrams, include.unigrams=include.unigrams,
-        addto=addto, ...)
 }
 
 #' @rdname dfm
 #' @param groups character vector containing the names of document variables for
 #'   aggregating documents
 #' @export
-dfm.corpus <- function(x, verbose=TRUE, toLower=TRUE, stem=FALSE, 
-                       ignoredFeatures=NULL, 
-                       keptFeatures=NULL,
-                       matrixType=c("sparse", "dense"), language="english",
-                       groups=NULL, bigrams=FALSE, 
-                       include.unigrams=TRUE,
-                       thesaurus=NULL, dictionary=NULL, dictionary_regex=FALSE,
-                       addto=NULL, ...) {
+dfm.corpus <- function(x, verbose = TRUE, groups = NULL, ...) {
     if (verbose) cat("Creating a dfm from a corpus ...")
     
     if (!is.null(groups)) {
@@ -419,12 +418,7 @@ dfm.corpus <- function(x, verbose=TRUE, toLower=TRUE, stem=FALSE,
         names(texts) <- docnames(x)
     }
     
-    dfm(texts, verbose=verbose, toLower=toLower, stem=stem, 
-        ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
-        matrixType=matrixType, language=language,
-        thesaurus=thesaurus, dictionary=dictionary, dictionary_regex=dictionary_regex,
-        bigrams=bigrams, include.unigrams=include.unigrams,
-        addto=addto, ...)
+    dfm(texts, verbose = verbose, ...)
 }
 
 

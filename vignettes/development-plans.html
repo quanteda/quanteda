@@ -67,19 +67,17 @@
 <li><strong>DONE</strong> <code>removeFeatures.tokenizedTexts</code></li>
 <li><strong>DONE</strong> <code>syllables.tokenizedTexts</code></li>
 </ul></li>
-<li><code>removeFeatures</code> now much faster, based on fixed binary matches and <code>stringi</code> character classes</li>
+<li><strong>DONE</strong> <code>removeFeatures</code> now much faster, based on fixed binary matches and <code>stringi</code> character classes</li>
+<li><strong>DONE</strong> added readability statistics through <code>readability()</code></li>
+<li><strong>DONE</strong> added <code>nsentence()</code></li>
 </ul>
 </div>
 <div id="to-do-remaining" class="section level2">
 <h2>To Do Remaining</h2>
 <ul>
 <li>add a converter for objects from the <strong>koRpus</strong> package</li>
-<li>add readability statistics</li>
-<li>rewrite to make use of <strong>stringi</strong> (and the new <code>tokenize()</code> based on that package):
-<ul>
-<li><code>segment()</code></li>
-<li>(ADD) <code>nsentence()</code></li>
-</ul></li>
+<li>rewrite <code>lexdiv()</code> to make the API similar to <code>readability()</code> and to use data.table</li>
+<li>rewrite <code>segment()</code> to make use of new tokenizer that segments on sentences</li>
 <li><code>bigrams</code> and <code>ngrams</code> need to be added as options to <code>tokenize()</code></li>
 <li>make <code>bigrams</code>, <code>ngrams</code> punctuation sensitive in the same way that <code>collocations</code> is currently</li>
 <li>integrate <code>collocations</code> code for bigrams and trigrams and reduce the internal memory usage</li>
@@ -111,7 +109,6 @@
 <li>Improve wordfish and round out methods</li>
 <li>Add CA scaling</li>
 </ul></li>
-<li>convert text binaries to UTF-8</li>
 </ul>
 </div>
 <div id="for-bug-reports-and-feature-requests" class="section level2">

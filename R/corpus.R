@@ -100,12 +100,20 @@ corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvar
     if (!(encTo %in% stringi::stri_enc_list(simplify = TRUE))) 
         stop("encTo = ", enc, " argument not found in stri_enc_list()")
 
+    
+    # convert the dreaded "curly quotes" to ASCII equivalents
+    x <- stringi::stri_replace_all_fixed(x, 
+                                         c("\u201C", "\u201D", "\u201F",
+                                           "\u2018", "\u201B", "\u2019"),                                     
+                                         c("\"", "\"", "\"", 
+                                           "\'", "\'", "\'"), vectorize_all = FALSE)
+
     # detect encoding
     detectedEncoding <- encoding(x, verbose = FALSE)$probably
     # cat("Detected encoding:", detectedEncoding, "\n")
-    if (!is.null(enc))
-        if (enc != detectedEncoding)
-            cat("  NOTE:", enc, "specified as input encoding, but", detectedEncoding, "detected.  Are you SURE?\n\n")
+#     if (!is.null(enc))
+#         if (enc != detectedEncoding)
+#             cat("  NOTE:", enc, "specified as input encoding, but", detectedEncoding, "detected.  Are you SURE?\n\n")
     # use specified enc, not detected encoding
     detected <- FALSE
     if (is.null(enc)) {
@@ -116,7 +124,7 @@ corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvar
     # convert to "enc" if not already UTF-8 **unless** ISO-8859-1 detected, in which case do not do automatically
     if (enc != encTo) {
         if (enc != "ISO-8859-1" & encTo == "UTF-8") {
-            cat("Non-", encTo, " encoding ", ifelse(detected, "detected ", "specified"), "(", 
+            cat("Non-", encTo, " encoding ", ifelse(detected, "detected ", "specified"), " (", 
                 enc, "), converting to ", encTo, ".\n", sep="")
             suppressWarnings(x <- stringi::stri_encode(x, from = enc, to = encTo))
         }

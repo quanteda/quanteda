@@ -288,6 +288,14 @@ tokenize <- function(x, ...) {
 #' @param removeSeparators remove Separators and separator characters (spaces 
 #'   and variations of spaces, plus tab, newlines, and anything else in the 
 #'   Unicode "separator" category) when \code{removePunct=FALSE}
+#' @param ngrams integer vector of the \emph{n} for \emph{n}-grams, defaulting 
+#'   to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for 
+#'   bigrams and unigrams, use \code{1:2}.  You can even include irregular 
+#'   sequences such as \code{2:3} for bigrams and trigrams only.
+#' @param concatenator character to use in concatenating \emph{n}-grams, default
+#'   is "\code{_}", which is recommended since this is included in the regular 
+#'   expression and Unicode definitions of "word" characters
+
 #' @param simplify if \code{TRUE}, return a character vector of tokens rather 
 #'   than a list of length \code{\link{ndoc}(texts)}, with each element of the 
 #'   list containing a character vector of the tokens corresponding to that 
@@ -345,6 +353,8 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
                                removeSeparators = TRUE,
                                removeTwitter = FALSE,
                                # removeURL = TRUE,
+                               ngrams = 1,
+                               concatenator = "_",
                                simplify=FALSE,
                                verbose = FALSE,  ## FOR TESTING
                                ...) {
@@ -435,9 +445,27 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         if (verbose) cat("  ...unlisting results\n")
         result <- unlist(result)
     }
-    if (verbose) 
-        cat("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts\n") #, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
     
+    
+    if (!identical(ngrams, 1)) {
+        if (verbose) cat("  ...creating ngrams\n")
+        # is the ngram set serial starting with 1? use single call if so (most efficient)
+        if (sum(1:length(ngrams)) == sum(ngrams)) {
+            result <- lapply(result, ngram, n = length(ngrams), concatenator = concatenator, include.all = TRUE)
+        } else {
+            result <- lapply(result, function(x) {
+                xnew <- c()
+                for (n in ngrams) 
+                    xnew <- c(xnew, ngram(x, n, concatenator = concatenator, include.all = FALSE))
+                xnew
+            })
+        }
+    }
+
+    if (verbose) 
+        cat("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts\n") 
+        #, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
+
     # make this an S3 class item, if a list
     if (simplify == FALSE) {
         class(result) <- c("tokenizedTexts", class(result))
@@ -454,3 +482,33 @@ tokenize.corpus <- function(x, ...) {
     # need to include sep in this list too 
     tokenize(texts(x), ...)
 }
+
+
+ngram <- function(tokens, n = 2, concatenator = "_", include.all = FALSE, ...) {
+
+    # start with lower ngrams, or just the specified size if include.all = FALSE
+    start <- ifelse(include.all, 
+                    1, 
+                    ifelse(length(tokens) < n, 1, n))
+    
+    # set max size of ngram at max length of tokens
+    end <- ifelse(length(tokens) < n, length(tokens), n)
+    
+    all_ngrams <- c()
+    # outer loop for all ngrams down to 1
+    for (width in start:end) {
+        new_ngrams <- tokens[1:(length(tokens) - width + 1)]
+        # inner loop for ngrams of width > 1
+        if (width > 1) {
+            for (i in 1:(width - 1)) 
+                new_ngrams <- paste(new_ngrams, 
+                                    tokens[(i + 1):(length(tokens) - width + 1 + i)], 
+                                    sep = concatenator)
+        }
+        # paste onto previous results and continue
+        all_ngrams <- c(all_ngrams, new_ngrams)
+    }
+    
+    all_ngrams
+}
+

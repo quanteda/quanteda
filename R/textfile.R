@@ -110,7 +110,7 @@ setGeneric("textfile",
 #' @examples 
 #' \donttest{#' # Twitter json
 #' mytf1 <- textfile("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
-#' summary(corpus(mytf1))
+#' summary(corpus(mytf1), 5)
 #' # generic json - needs a textField specifier
 #' mytf2 <- textfile("~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/sotu/sotu.json",
 #'                   textField = "text")
@@ -119,7 +119,7 @@ setGeneric("textfile",
 #' mytf3 <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
 #' summary(corpus(mytf3))
 #' # multiple text files
-#' mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt")
+#' mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
 #' summary(corpus(mytf4))
 #' # multiple text files with docvars from filenames
 #' mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", 
@@ -216,18 +216,18 @@ get_doc <- function(f) {
     stop("unrecognized fileType:", fileType)
 }
 
-get_docs <- function(filemask, textnames=NULL, ...) {
+get_docs <- function(filemask, textnames = NULL, ...) {
     # get the pattern at the end
     pattern <- getRootFileNames(filemask)
     # get the directory name
     path <- substr(filemask, 1, nchar(filemask) - nchar(pattern))
     # get the filenames
     filenames <- list.files(path, pattern, full.names=TRUE)
-    # read texts into a character vector
-    textsvec <- as.character(sapply(filenames, get_doc))
+    # read texts from call to get_doc, discarding any docv
+    textsvec <- sapply(filenames, function(x) get_doc(x)$txts)
     # name the vector with the filename by default, otherwise assign "names"
     if (!is.null(textnames)) {
-        names(textsvec) <- getRootFileNames(filenames)
+        names(textsvec) <- textnames
     } else {
         names(textsvec) <- getRootFileNames(filenames)
     }
