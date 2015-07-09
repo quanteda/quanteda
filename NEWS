@@ -56,6 +56,9 @@ Other changes
 * tokenize() now creates ngrams of any length, with two new arguments: `ngrams =` <integer vector> and 
   `concatenator = "_"`.  The new arguments to `tokenize()` can be passed through from `dfm()`.
 
+Bug fixes
+---------
+* fixed a problem in `textfile()` causing it to fail on Windows machines when loading `*.txt`
 
 quanteda 0.7.3
 ==============

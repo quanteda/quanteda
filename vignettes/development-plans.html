@@ -36,7 +36,7 @@
 <h2>Suggestions for using quanteda during development</h2>
 <p><code>quanteda</code> is in development and will remain so until we declare a 1.0 version, at which time we will only add new functions, not change the names of existing ones. In the meantime, we suggest:</p>
 <ul>
-<li>use named formals in the function calls, rather than relying on the current ordering of formals, for instance, use <code>tokenize(mytexts, what = &quot;sentence&quot;)</code> instead of <code>tokenize(mytexts, &quot;sentence&quot;)</code> – since the order is not stable; and also using named formals rather than relying on current defaults, e.g. <code>tokenize(mytexts, remnovePunct = FALSE)</code> since the default values are not stable.</li>
+<li>use named formals in the function calls, rather than relying on the current ordering of formals, for instance, use <code>tokenize(mytexts, what = &quot;sentence&quot;)</code> instead of <code>tokenize(mytexts, &quot;sentence&quot;)</code> – since the order is not stable; and also using named formals rather than relying on current defaults, e.g. <code>tokenize(mytexts, removePunct = FALSE)</code> since the default values are not stable.</li>
 <li>hope that we get to 1.0 quickly;</li>
 <li>help that process by sending us feedback stating what you think of the syntax, formal names, etc. from a user’s perspective.</li>
 </ul>
@@ -70,15 +70,14 @@
 <li><strong>DONE</strong> <code>removeFeatures</code> now much faster, based on fixed binary matches and <code>stringi</code> character classes</li>
 <li><strong>DONE</strong> added readability statistics through <code>readability()</code></li>
 <li><strong>DONE</strong> added <code>nsentence()</code></li>
+<li><strong>DONE</strong> <code>ngrams</code> added as an option to <code>tokenize()</code></li>
 </ul>
 </div>
 <div id="to-do-remaining" class="section level2">
 <h2>To Do Remaining</h2>
 <ul>
-<li>add a converter for objects from the <strong>koRpus</strong> package</li>
 <li>rewrite <code>lexdiv()</code> to make the API similar to <code>readability()</code> and to use data.table</li>
 <li>rewrite <code>segment()</code> to make use of new tokenizer that segments on sentences</li>
-<li><code>bigrams</code> and <code>ngrams</code> need to be added as options to <code>tokenize()</code></li>
 <li>make <code>bigrams</code>, <code>ngrams</code> punctuation sensitive in the same way that <code>collocations</code> is currently</li>
 <li>integrate <code>collocations</code> code for bigrams and trigrams and reduce the internal memory usage</li>
 <li>make sure <code>corpus.VCorpus()</code> is fully working</li>

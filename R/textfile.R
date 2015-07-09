@@ -158,7 +158,6 @@ setMethod("textfile",
           signature(file = "character", textField = "missing",
                     docvarsfrom="missing", sep="missing", docvarnames="missing"),
           definition = function(file, textField=NULL, ...) {
-              #print('2')
               fileType <- getFileType(file)
               if (fileType=="filemask") {
                   sources <- get_docs(file)
@@ -399,10 +398,11 @@ getRootFileNames <- function(longFilenames) {
     ## function to return just the filename, path not included
     ## might need to detect .Platform$OS.type to change the delimiter
     delim <- "/"
-    osName <- (Sys.info()[['sysname']] )
     
-    # it is possible to use forwardslashes in Windows in R
-    if ((osName=="Windows") & !('/') %in% longFilenames) { delim <- "\\\\" }
+    # replace forward slashes used in Windows
+    osName <- (Sys.info()[['sysname']] )
+    if (osName=="Windows") 
+        gsub("(\\\\)", "/", longFilenames) 
     splitFilenames <- strsplit(longFilenames, delim)
     return(sapply(splitFilenames, tail, n=1))
 }

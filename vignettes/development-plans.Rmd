@@ -1,7 +1,7 @@
 ---
 title: "quanteda Development Plans"
 author: "Ken Benoit and Paul Nulty"
-date: "2015-07-06"
+date: "2015-07-09"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Development Plans}
@@ -15,7 +15,7 @@ vignette: >
 existing ones.  In the meantime, we suggest:
 
 -   use named formals in the function calls, rather than relying on the current ordering of formals,
-    for instance, use `tokenize(mytexts, what = "sentence")` instead of `tokenize(mytexts, "sentence")` -- since the order is not stable; and also using named formals rather than relying on current defaults, e.g. `tokenize(mytexts, remnovePunct = FALSE)` since the default values are not stable.
+    for instance, use `tokenize(mytexts, what = "sentence")` instead of `tokenize(mytexts, "sentence")` -- since the order is not stable; and also using named formals rather than relying on current defaults, e.g. `tokenize(mytexts, removePunct = FALSE)` since the default values are not stable.
 -   hope that we get to 1.0 quickly;
 -   help that process by sending us feedback stating what you think of the syntax, formal names, etc. from a user's perspective.
 
@@ -48,7 +48,6 @@ existing ones.  In the meantime, we suggest:
 
 ## To Do Remaining
 
-*   add a converter for objects from the **koRpus** package
 *   rewrite `lexdiv()` to make the API similar to `readability()` and to use data.table
 *   rewrite `segment()` to make use of new tokenizer that segments on sentences
 *   make `bigrams`, `ngrams` punctuation sensitive in the same way that `collocations` is currently
