@@ -211,6 +211,7 @@ dfm.character <- function(x,
 
     
 #' @rdname dfm
+#' @importFrom utils glob2rx
 #' @export
 dfm.tokenizedTexts <- function(x, 
                                verbose=TRUE,
