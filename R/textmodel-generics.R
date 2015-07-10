@@ -136,17 +136,18 @@ setMethod("textmodel", signature(x = "dfm", y="ANY", data="missing", model = "ch
 #'   typically a \link{dfm}, and the y variable a vector of class labels or 
 #'   training values associated with each document.
 #' @param data dfm or data.frame from which to take the formula
+#' @importFrom stats model.frame model.response
 setMethod("textmodel", signature(x = "formula", y="missing", data="dfm", model = "character"),
           definition = 
               function(x, data, model=c("wordscores", "NB", "wordfish", "lda", "ca"), ...) {
                   model <- match.arg(model)
                   if (isS4(data))  # is it a new type dfm class object
-                      mf <- model.frame(formula=x, data=as.data.frame(as.matrix(data)))
+                      mf <- stats::model.frame(formula=x, data=as.data.frame(as.matrix(data)))
                   else 
-                      mf <- model.frame(formula=x, data=data)
+                      mf <- stats::model.frame(formula=x, data=data)
                   
                   # x <- model.matrix(attr(mf, "terms"), data=mf)
-                  y <- model.response(mf)
+                  y <- stats::model.response(mf)
                   # cat("HERE\n")
                   textmodel(data[which(docnames(data) %in% names(y)), 
                                  which(features(data) %in% names(mf))], 

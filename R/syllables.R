@@ -46,7 +46,7 @@ syllables <- function(x, ...) {
 
 #' @rdname syllables
 #' @export
-syllables.character <- function(x, syllableDict = NULL, ...) { 
+syllables.character <- function(x, syllableDict = quanteda::englishSyllables, ...) { 
     tokenizedwords <- tokenize(x, removePunct = TRUE, removeTwitter = TRUE, removeNumbers = TRUE, ...)
     sapply(syllables(tokenizedwords, syllableDict), sum)
 }
@@ -54,7 +54,7 @@ syllables.character <- function(x, syllableDict = NULL, ...) {
 
 #' @rdname syllables
 #' @export
-syllables.tokenizedTexts <- function(x, syllableDict = NULL, ...) { 
+syllables.tokenizedTexts <- function(x, syllableDict = quanteda::englishSyllables, ...) { 
 
     # make tokenized list into a data table
     syllablesDT <- data.table(docIndex = rep(1:length(x), lengths(x)),
@@ -71,14 +71,14 @@ syllables.tokenizedTexts <- function(x, syllableDict = NULL, ...) {
 }
 
 
-syllables.data.table <- function(x, syllableDict, ...) {
+syllables.data.table <- function(x, syllableDict = quanteda::englishSyllables, ...) {
     word <- serial <- NULL
     
     # retrieve or validate syllable list
     englishSyllables <- NULL
     if (is.null(syllableDict)) {
-        data(englishSyllables, envir = environment())
-        syllableDict <- englishSyllables
+        #data(englishSyllables, envir = environment())
+        #syllableDict <- englishSyllables
     } else {
         if (!is.integer(syllableDict))
             stop("user-supplied syllableDict must be named integer vector.")

@@ -96,7 +96,7 @@ dictionary <- function(x=NULL, file=NULL, format=NULL, enc="", tolower=TRUE, max
 # lgdict <- readWStatDict(path)
 # }
 readWStatDict <- function(path, enc="", lower=TRUE) {
-    d <- read.delim(path, header=FALSE, fileEncoding=enc)
+    d <- utils::read.delim(path, header=FALSE, fileEncoding=enc)
     d <- data.frame(lapply(d, as.character), stringsAsFactors=FALSE)
     thismajorcat <- d[1,1]
     # this loop fills in blank cells in the category|term dataframe
@@ -186,7 +186,7 @@ readWStatDictNested <- function(path) {
 # LIWCdict <- readLIWCdict("~/Dropbox/QUANTESS/corpora/LIWC/LIWC2001_English.dic") }
 readLIWCdict <- function(path, maxcats=10, enc="") {
     # read in the dictionary as a (big, uneven) table
-    d <- read.delim(path, header=FALSE, fileEncoding=enc,
+    d <- utils::read.delim(path, header=FALSE, fileEncoding=enc,
                     col.names=c("category", paste("catno", 1:maxcats, sep="")),
                     stringsAsFactors=FALSE)
     

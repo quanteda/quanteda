@@ -13,9 +13,11 @@
 \usage{
 syllables(x, ...)
 
-\method{syllables}{character}(x, syllableDict = NULL, ...)
+\method{syllables}{character}(x, syllableDict = quanteda::englishSyllables,
+  ...)
 
-\method{syllables}{tokenizedTexts}(x, syllableDict = NULL, ...)
+\method{syllables}{tokenizedTexts}(x,
+  syllableDict = quanteda::englishSyllables, ...)
 }
 \arguments{
 \item{x}{character vector or \code{tokenizedText-class} object  whose
