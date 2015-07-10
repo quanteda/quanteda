@@ -55,6 +55,7 @@ readability.character <- function(x, measure = c("all", "ARI", "Bormuth", "Colem
     tmpSyll <- syllables(tokenizedWords)
     wordLengths <- sapply(tokenizedWords, stringi::stri_length)
     
+    # common statistics required by (nearly all) indexes
     textFeatures <- data.table(textID = names(x),
                                W = lengths(tokenizedWords),  # number of words
                                St = nsentence(x),            # number of sentences
@@ -65,15 +66,9 @@ readability.character <- function(x, measure = c("all", "ARI", "Bormuth", "Colem
                                W_1Sy = sapply(tmpSyll, function(x) sum(x == 1)),   # number words with 1 syllable
                                W6C = sapply(wordLengths, function(x) sum(x >= 6)), # number of words with at least 6 letters
                                W7C = sapply(wordLengths, function(x) sum(x >= 7))) # number of words with at least 7 letters
-
+    textFeatures[, W_wl.Dale.Chall := sapply(tokenizedWords, function(x) sum(!(x %in% quanteda::wordlists$dalechall)))]
     textFeatures[, Wlt3Sy := Sy - W3Sy]   # number of words with less than three syllables
     
-    # number of words which are not in the Dale-Chall modified word list
-    textFeatures[, W_wl.Dale.Chall := sapply(tokenizedWords, function(x) sum(!(x %in% wordlists$dalechall)))]
-
-    # number of words which are not in the Spache word list
-    textFeatures[, W_wl.Spache := sapply(tokenizedWords, function(x) sum(!(x %in% wordlists$spache)))]
-
     if (any(c("all", "ARI") %in% measure)) {
         textFeatures[, ARI := 0.5 * W / St + 4.71 * C / W - 21.43]
         textFeatures[, ARI.NRI := 0.4 * W / St + 6 * C / W - 27.4]
@@ -102,6 +97,7 @@ readability.character <- function(x, measure = c("all", "ARI", "Bormuth", "Colem
     }
     
     if (any(c("all", "Dale.Chall") %in% measure)) {
+        # number of words which are not in the Dale-Chall modified word list
         textFeatures[, Dale.Chall.new := 64 - 0.95 * 100 * W_wl.Dale.Chall / W - 0.69 * W / St]
         textFeatures[, Dale.Chall.old := 0.1579 - 100 * W_wl.Dale.Chall / W + 0.0496 * W / St + 3.6365]
         textFeatures[, Dale.Chall.PSK := 0.1155 - 100 * W_wl.Dale.Chall / W + 0.0596 * W / St + 3.2672]
@@ -136,10 +132,10 @@ readability.character <- function(x, measure = c("all", "ARI", "Bormuth", "Colem
         textFeatures[, Flesch := 206.835 - 1.015 * W / St - 84.6 * Sy / W ]
     
     if (any(c("all", "Flesch.PSK") %in% measure))
-        textFeatures[, Flesch.PSK := 0.0778 * W / St - 4.55 * Sy / W - 2.2029]
+        textFeatures[, Flesch.PSK := 0.0778 * W / St + 4.55 * Sy / W - 2.2029]
     
     if (any(c("all", "Flesch.Kincaid") %in% measure))
-        textFeatures[, Flesch.Kincaid := 0.39 * W / St - 11.8 * Sy / W - 15.59]
+        textFeatures[, Flesch.Kincaid := 0.39 * W / St + 11.8 * Sy / W - 15.59]
     
     if (any(c("all", "FOG") %in% measure)) {
         # If the text was POS-tagged accordingly, proper nouns and combinations of only easy words 
@@ -182,8 +178,11 @@ readability.character <- function(x, measure = c("all", "ARI", "Bormuth", "Colem
     }
     
     if (any(c("all", "Spache") %in% measure)) {
+        # number of words which are not in the Spache word list
+        textFeatures[, W_wl.Spache := sapply(tokenizedWords, function(x) sum(!(x %in% quanteda::wordlists$spache)))]
         textFeatures[, Spache := 0.121 * W / St + 0.082 * (100 * W_wl.Spache / W) + 0.659]
         textFeatures[, Spache.old := 0.141 * W / St + 0.086 * (100 * W_wl.Spache / W) + 0.839]
+        textFeatures[, W_wl.Spache := NULL]
     }
     
     if (any(c("all", "Strain") %in% measure)) 
@@ -206,7 +205,7 @@ readability.character <- function(x, measure = c("all", "ARI", "Bormuth", "Colem
         textFeatures[, Wheeler.Smith := W / St * (10 * W2Sy) / W]
 
     # return a data.frame of the indexes
-    tempIndex <- which(names(textFeatures) == "W_wl.Spache")
+    tempIndex <- which(names(textFeatures) == "Wlt3Sy")
     textFeatures <- as.data.frame(textFeatures)
     ret <- textFeatures[, (tempIndex+1) : ncol(textFeatures), drop = TRUE]
     if (!is.vector(ret))

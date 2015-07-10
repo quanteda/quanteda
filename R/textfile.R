@@ -96,6 +96,7 @@ setMethod("show",
 #'   \link{corpus} to construct a corpus
 #' @author Kenneth Benoit and Paul Nulty
 #' @export
+#' @importFrom stats var
 setGeneric("textfile",
            function(file, textField, docvarsfrom = c("filenames"), sep="_", 
                     docvarnames = NULL, cache = TRUE, ...) 
@@ -255,7 +256,7 @@ get_datas <- function(filemask, textField='index', fileType, ...){
     # get the directory name
     path <- substr(filemask, 1, nchar(filemask) - nchar(pattern))
     # get the filenames
-    filenames <- list.files(path, glob2rx(pattern), full.names=TRUE)
+    filenames <- list.files(path, utils::glob2rx(pattern), full.names=TRUE)
     # read texts into a character vector
     textsvec <- c()
     docv <- data.frame()
@@ -278,7 +279,7 @@ get_pdf <- function(f){
 
 ## csv format
 get_csv <- function(file, textField, sep=",", ...) {
-    docv <- read.csv(file, stringsAsFactors=FALSE, sep=sep, ...)
+    docv <- utils::read.csv(file, stringsAsFactors=FALSE, sep=sep, ...)
     if (is.character(textField)) {
         textFieldi <- which(names(docv)==textField)
         if (length(textFieldi)==0)
@@ -412,7 +413,7 @@ getdocvarsFromHeaders <- function(fnames, sep="_", docvarnames=NULL) {
     snames <- fnames
     snames <- gsub(".txt", "", snames)
     parts <- strsplit(snames, sep)
-    if (var(sapply(parts, length)) != 0)
+    if (stats::var(sapply(parts, length)) != 0)
         stop("Filename elements are not equal in length.")
     dvars <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE), 
                          stringsAsFactors=FALSE)

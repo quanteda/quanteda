@@ -288,7 +288,7 @@ dfm.tokenizedTexts <- function(x,
     if (!is.null(thesaurus)) {
         thesaurus <- flatten.dictionary(thesaurus)
         if (!dictionary_regex)
-            thesaurus <- lapply(thesaurus, glob2rx) # makeRegEx)
+            thesaurus <- lapply(thesaurus, utils::glob2rx) # makeRegEx)
         for (l in names(thesaurus)) 
             alltokens$features[grep(paste(tolower(thesaurus[[l]]), collapse="|"), alltokens$features)] <- toupper(l)
     }

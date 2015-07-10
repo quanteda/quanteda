@@ -460,6 +460,7 @@ topfeatures <- function(x, ...) {
 #' topfeatures(dfm(subset(inaugCorpus, Year>1980), verbose=FALSE), decreasing=FALSE)
 #' @export
 #' @rdname topfeatures
+#' @importFrom stats quantile
 topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ci=.95, ...) {
     if (is.null(n)) n <- ncol(x)
     if (is.resampled(x)) {
@@ -467,8 +468,8 @@ topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ci=.95, ...) {
         subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
         return(data.frame(#features=colnames(subdfm),
             freq=colSums(subdfm[,,1]),
-            cilo=apply(colSums(subdfm), 1, quantile, (1-ci)/2),
-            cihi=apply(colSums(subdfm), 1, quantile, 1-(1-ci)/2)))
+            cilo=apply(colSums(subdfm), 1, stats::quantile, (1-ci)/2),
+            cihi=apply(colSums(subdfm), 1, stats::quantile, 1-(1-ci)/2)))
     } else {
         subdfm <- sort(colSums(x), decreasing)
         return(subdfm[1:n])
