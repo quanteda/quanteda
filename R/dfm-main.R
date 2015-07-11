@@ -308,7 +308,7 @@ dfm.tokenizedTexts <- function(x,
                          ifelse(length(dictionary) > 1, "ies", "y"), sep="")
         # convert wildcards to regular expressions (if needed)
         if (!dictionary_regex)
-            dictionary <- lapply(dictionary, glob2rx) # makeRegEx)
+            dictionary <- lapply(dictionary, utils::glob2rx) # makeRegEx)
         # lowercase the dictionary if toLower == TRUE
         if (toLower) dictionary <- lapply(dictionary, toLower)
         # call the dictionary entry counting function and return new alltokens
