@@ -21,6 +21,10 @@ readability(x, measure)
 
 \item{measure}{character vector defining the readability measure to calculate}
 }
+\value{
+a data.frame object consisting of the documents as rows, and the
+  readability statistics as columns
+}
 \description{
 Calculate the readability of text(s).
 }

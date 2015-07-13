@@ -176,7 +176,6 @@ corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvar
 #' mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField = "Title"))
 #' identical(texts(mycorp), texts(mycorp2))
 #' identical(docvars(mycorp), docvars(mycorp2))
-#' 
 #' # some Cyrillic texts in WINDOWS-1251 - auto-detected and converted
 #' mycorp <- corpus(textfile("~/Dropbox/QUANTESS/corpora/pozhdata/*.txt"))
 #' cat(texts(mycorp)[1])
@@ -976,7 +975,7 @@ ntoken.character <- function(x, ...) {
 ntype.character <- function(x, ...) {
     #if (removePunct(list(...))
     #if ("removePunct" %in% list(...))
-    sapply(sapply(tokenize(x, ...), unique), length)
+    sapply(lapply(tokenize(x, ...), unique), length)
 }
 
 
@@ -1003,6 +1002,11 @@ ntype.dfm <- function(x, ...) {
 #' Return the count of sentences in a corpus or character.
 #' @param x texts or corpus whose sentences will be counted
 #' @param ... additional arguments passed to \code{\link{tokenize}}
+#' @note `nsentence()` relies on the boundaries definitions in the \pkg{stringi}
+#'   package (see \link[stringi]{stri_opts_brkiter}).  It does not count
+#'   sentences correctly if the text has been transformed to lower case, and for
+#'   this reason `nsentence()` will stop with an error if it detects all
+#'   lower-cased text.
 #' @return scalar count(s) of the total sentences per text
 #' @examples
 #' # simple example
@@ -1017,6 +1021,8 @@ nsentence <- function(x, ...) {
 #' @rdname nsentence
 #' @export
 nsentence.character <- function(x, ...) {
+    if (!any(stringi::stri_detect_charclass(x, "[A-Z]")))
+        stop("nsentence() does not correctly count sentences in all lower-cased text")
     lengths(tokenize(x, what = "sentence", ...))
 }
 

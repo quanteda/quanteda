@@ -432,9 +432,16 @@ getdocvarsFromHeaders <- function(fnames, sep="_", docvarnames=NULL) {
 #' @rdname texts
 #' @export
 texts.corpusSource <- function(x, groups = NULL, ...) {
+    sources <- NULL
     if (!is.null(groups))
         stop("groups argument not supported for texts() on a corpusSource object")
-    x@texts
+    if (x@cachedfile == "") {
+        return(x@texts)
+    } else {
+        # load from tempfile only into function environment
+        load(x@cachedfile, envir = environment())
+        return(sources$txts)
+    }
 }
 
 #' @rdname docvars

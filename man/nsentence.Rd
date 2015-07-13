@@ -23,6 +23,13 @@ scalar count(s) of the total sentences per text
 \description{
 Return the count of sentences in a corpus or character.
 }
+\note{
+`nsentence()` relies on the boundaries definitions in the \pkg{stringi}
+  package (see \link[stringi]{stri_opts_brkiter}).  It does not count
+  sentences correctly if the text has been transformed to lower case, and for
+  this reason `nsentence()` will stop with an error if it detects all
+  lower-cased text.
+}
 \examples{
 # simple example
 txt <- c(text1 = "This is a sentence: second part of first sentence.",

@@ -269,12 +269,15 @@ setMethod("weight", signature = "dfm",
                   cat("  No weighting applied: you should not weight an already weighted dfm.\n")
               } else if (type=="relFreq") {
                   ## UGLY HACK
-                  if (is(x, "dfmSparse"))
-                      x <- new("dfmSparse", x/rowSums(x))
-                  else if (is(x, "dfmDense"))
+                  if (is(x, "dfmSparse")) {
+                      tmp <- x/rowSums(x)
+                      tmp[is.na(tmp)] <- 0
+                      x <- new("dfmSparse", tmp)
+                  } else 
+                 if (is(x, "dfmDense"))
                       x <- new("dfmDense", x/rowSums(x))
-                  else 
-                      x <- x/rowSums(x)
+                 else 
+                     x <- x/rowSums(x)
               } else if (type=="relMaxFreq") {
                   x <- x / apply(x, 1, max)
               } else if (type=="logFreq") {

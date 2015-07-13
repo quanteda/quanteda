@@ -7,6 +7,8 @@
 #' @param measure character vector defining the readability measure to calculate
 #' @author Kenneth Benoit, re-engineered from the function of the same name by 
 #'   Meik Michalke in the \pkg{koRpus} package.
+#' @return a data.frame object consisting of the documents as rows, and the
+#'   readability statistics as columns
 #' @export
 readability <- function(x, measure) {
     UseMethod("readability")
@@ -49,16 +51,22 @@ readability.character <- function(x, measure = c("all", "ARI", "Bormuth", "Colem
     if (is.null(names(x)))
         names(x) <- paste0("text", 1:length(x))
     
+    # get sentence lengths - BEFORE lower-casing
+    St <- nsentence(x)
+    
     # get the word length and syllable info for use in computing quantities
     x <- toLower(x)
     tokenizedWords <- tokenize(x, removePunct = TRUE)
+    
+    # number of syllables
     tmpSyll <- syllables(tokenizedWords)
-    wordLengths <- sapply(tokenizedWords, stringi::stri_length)
+    # lengths in characters of the words
+    wordLengths <- lapply(tokenizedWords, stringi::stri_length)
     
     # common statistics required by (nearly all) indexes
     textFeatures <- data.table(textID = names(x),
                                W = lengths(tokenizedWords),  # number of words
-                               St = nsentence(x),            # number of sentences
+                               St = St,            # number of sentences
                                C = sapply(wordLengths, sum), # number of characters (letters)
                                Sy = sapply(tmpSyll, sum),    # number of syllables
                                W3Sy = sapply(tmpSyll, function(x) sum(x >= 3)),    # number words with >= 3 syllables
@@ -130,7 +138,7 @@ readability.character <- function(x, measure = c("all", "ARI", "Bormuth", "Colem
     
     if (any(c("all", "Flesch") %in% measure))
         textFeatures[, Flesch := 206.835 - 1.015 * W / St - 84.6 * Sy / W ]
-    
+
     if (any(c("all", "Flesch.PSK") %in% measure))
         textFeatures[, Flesch.PSK := 0.0778 * W / St + 4.55 * Sy / W - 2.2029]
     
@@ -207,11 +215,11 @@ readability.character <- function(x, measure = c("all", "ARI", "Bormuth", "Colem
     # return a data.frame of the indexes
     tempIndex <- which(names(textFeatures) == "Wlt3Sy")
     textFeatures <- as.data.frame(textFeatures)
-    ret <- textFeatures[, (tempIndex+1) : ncol(textFeatures), drop = TRUE]
+    ret <- textFeatures[, (tempIndex+1) : ncol(textFeatures), drop = FALSE]
     if (!is.vector(ret))
         row.names(ret) <- textFeatures$textID
-    else 
-        names(ret) <- textFeatures$textID
+     else 
+         names(ret) <- textFeatures$textID
     ret
 }
 

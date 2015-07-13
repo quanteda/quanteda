@@ -1,3 +1,4 @@
+
 quanteda 0.8.0
 ==============
 
@@ -32,7 +33,7 @@ but also more correctly handles Unicode characters and strings.
   
 * phrasetotoken() now using stringi.
 
-* remnoveFeatures() now using stringi and fixed binary matches on tokenized texts
+* removeFeatures() now using stringi and fixed binary matches on tokenized texts
 
 Other changes
 -------------
@@ -59,6 +60,9 @@ Other changes
 Bug fixes
 ---------
 * fixed a problem in `textfile()` causing it to fail on Windows machines when loading `*.txt`
+
+* nsentence() was not counting sentences correctly if the text was lower-cased - now issues an 
+  error if no upper-case characters are detected.  This was also causing readability() to fail.
 
 quanteda 0.7.3
 ==============

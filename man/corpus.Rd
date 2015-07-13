@@ -147,7 +147,6 @@ mycorp <- corpus(mytexts)
 mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField = "Title"))
 identical(texts(mycorp), texts(mycorp2))
 identical(docvars(mycorp), docvars(mycorp2))
-
 # some Cyrillic texts in WINDOWS-1251 - auto-detected and converted
 mycorp <- corpus(textfile("~/Dropbox/QUANTESS/corpora/pozhdata/*.txt"))
 cat(texts(mycorp)[1])

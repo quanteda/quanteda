@@ -340,7 +340,7 @@ dfm.tokenizedTexts <- function(x,
     setkey(featureTable, features)
     # merge, data.table style.  warnings suppressed or it moans about mixed encodings
     ## suppressWarnings(alltokens <- alltokens[featureTable])
-    alltokens <- alltokens[featureTable, allow.cartesian = TRUE]
+    suppressWarnings(alltokens <- alltokens[featureTable, allow.cartesian = TRUE])
     alltokens[is.na(docIndex), c("docIndex", "V1") := list(1, 0)]
     if (verbose) cat("\n   ... building sparse matrix")
     #suppressWarnings(
