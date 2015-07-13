@@ -48,6 +48,9 @@ existing ones.  In the meantime, we suggest:
 
 ## To Do Remaining
 
+*   fix `collocations()` behaviour, changed since new `tokenize()`
+*   `weight()` breaks for dfm objects with all zero counts, for instance those that have been `trim()`med
+*   `dfm` objects need a subset method for selection rows, not just columns
 *   rewrite `lexdiv()` to make the API similar to `readability()` and to use data.table
 *   rewrite `segment()` to make use of new tokenizer that segments on sentences
 *   make `bigrams`, `ngrams` punctuation sensitive in the same way that `collocations` is currently
