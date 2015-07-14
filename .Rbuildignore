@@ -4,3 +4,5 @@
 ^README\.Rmd$
 ^README-*\.png$
 ^cran-comments\.md$
+^README-quanteda_example-1.png$
+^README-quanteda_example.png$

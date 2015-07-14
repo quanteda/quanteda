@@ -76,6 +76,9 @@
 <div id="to-do-remaining" class="section level2">
 <h2>To Do Remaining</h2>
 <ul>
+<li>fix <code>collocations()</code> behaviour, changed since new <code>tokenize()</code></li>
+<li><code>weight()</code> breaks for dfm objects with all zero counts, for instance those that have been <code>trim()</code>med</li>
+<li><code>dfm</code> objects need a subset method for selection rows, not just columns</li>
 <li>rewrite <code>lexdiv()</code> to make the API similar to <code>readability()</code> and to use data.table</li>
 <li>rewrite <code>segment()</code> to make use of new tokenizer that segments on sentences</li>
 <li>make <code>bigrams</code>, <code>ngrams</code> punctuation sensitive in the same way that <code>collocations</code> is currently</li>

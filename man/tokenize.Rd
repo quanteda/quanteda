@@ -32,10 +32,14 @@ words that start with digits, e.g. \code{2day}}
 
 \item{removeSeparators}{remove Separators and separator characters (spaces
 and variations of spaces, plus tab, newlines, and anything else in the
-Unicode "separator" category) when \code{removePunct=FALSE}}
+Unicode "separator" category) when \code{removePunct=FALSE}.  Only applicable
+for \code{what = "character"} (when you probably want it to be \code{FALSE})
+and for \code{what = "word"} (when you probably want it to be \code{TRUE}).  Note that
+if \code{what = "word"} and you set \code{removePunct = TRUE}, then
+\code{removeSeparators} has no effect.  Use carefully.}
 
 \item{removeTwitter}{remove Twitter characters \code{@} and \code{#}; set to
-\code{FALSE} if you wish to eliminate these}
+\code{FALSE} if you wish to eliminate these.}
 
 \item{ngrams}{integer vector of the \emph{n} for \emph{n}-grams, defaulting
 to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for

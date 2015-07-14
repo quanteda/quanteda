@@ -284,10 +284,14 @@ tokenize <- function(x, ...) {
 #'   words that start with digits, e.g. \code{2day}
 #' @param removePunct remove all punctuation
 #' @param removeTwitter remove Twitter characters \code{@@} and \code{#}; set to
-#'   \code{FALSE} if you wish to eliminate these
+#'   \code{FALSE} if you wish to eliminate these.
 #' @param removeSeparators remove Separators and separator characters (spaces 
 #'   and variations of spaces, plus tab, newlines, and anything else in the 
-#'   Unicode "separator" category) when \code{removePunct=FALSE}
+#'   Unicode "separator" category) when \code{removePunct=FALSE}.  Only applicable
+#'   for \code{what = "character"} (when you probably want it to be \code{FALSE})
+#'   and for \code{what = "word"} (when you probably want it to be \code{TRUE}).  Note that
+#'   if \code{what = "word"} and you set \code{removePunct = TRUE}, then 
+#'   \code{removeSeparators} has no effect.  Use carefully.
 #' @param ngrams integer vector of the \emph{n} for \emph{n}-grams, defaulting 
 #'   to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for 
 #'   bigrams and unigrams, use \code{1:2}.  You can even include irregular 
@@ -359,18 +363,12 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
                                verbose = FALSE,  ## FOR TESTING
                                ...) {
     
-    if (.Platform$OS.type == "windows") {
-        cores <- 1
-    }
-    
     what <- match.arg(what)
-    #     if (!(what %in% c("character", "word", "line_break", "sentence", "fastestword", "fasterword")))
-    #         stop(what, " not a valid text boundary, see help(\"stringi-search-boundaries\", package=\"stringi\")")
-    
+
     if (verbose) cat("Starting tokenization...\n")
     result <- x
     
-    if (removeTwitter == FALSE & what != "fastword") {
+    if (removeTwitter == FALSE & !(what %in% c("fastword", "fastestword"))) {
         if (verbose) cat("  ...preserving Twitter characters (#, @)")
         startTimeClean <- proc.time()
         result <- stringi::stri_replace_all_fixed(result, c("#", "@"), c("_ht_", "_as_"), vectorize_all = FALSE)
@@ -379,7 +377,8 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
     
     if (verbose) cat("  ...tokenizing texts")
     startTimeTok <- proc.time()
-    if (what %in% c("fasterword", "fastestword")) {
+    
+    if (what == "fasterword" | what == "fastestword") {
         
         if (verbose & removeNumbers==TRUE) cat(", removing numbers")
         if (verbose & removePunct==TRUE) cat(", removing punctuation")
@@ -393,40 +392,66 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
             result <- stringi::stri_split_fixed(result, " ")
         else if (what=="fasterword")
             result <- stringi::stri_split_regex(result, "\\s")
+        result <- lapply(result, function(x) x <- x[which(x != "")])
         
-    } else {
-        if (what != "character") {
-            result <- stringi::stri_split_boundaries(result, 
-                                                     type = what, 
-                                                     skip_word_none = removePunct, # this is what obliterates currency symbols, Twitter tags, and URLs
-                                                     skip_word_number = removeNumbers) # but does not remove 4u, 2day, etc.
-            ## remove newline chars and trailing spaces for sentence tokenization
-            if (what == "sentence") {
-                result <- lapply(result, stringi::stri_replace_all_fixed, "\n", "")
-                result <- lapply(result, stringi::stri_trim_right)
-            }
-            # remove any "sentences" that were completely blanked out
-            result <- lapply(result, function(x) x <- x[which(x != "")])
-        } else {
-            result <- stringi::stri_split_boundaries(result, type = "character")
-            if (removePunct) {
-                if (verbose) cat("   ...removing punctuation.\n")
-                result <- lapply(result, function(x) x[-which(stri_detect_charclass(x, "[\\p{P}\\p{S}]"))]) 
-            }
-            
-            
-            # note: does not implement removePunct or removeNumbers
+    } else if (what == "character") {
+        
+        # note: does not implement removeNumbers
+        result <- stringi::stri_split_boundaries(result, type = "character")
+        if (removePunct) {
+            if (verbose) cat("   ...removing punctuation.\n")
+            result <- lapply(result, function(x) x[-which(stri_detect_charclass(x, "[\\p{P}\\p{S}]"))]) 
+        } 
+        if (removeSeparators) {
+            if (verbose) cat("   ...removing separators.\n")
+            result <- lapply(result, function(x) x[!stri_detect_regex(x, "^\\s$")])
         }
+        
+        
+    } else if (what == "word") {
+        
+        keepHyphens <- TRUE  # fix this, for now
+        
+        # to preserve intra-word hyphens, replace with _hy_
+        if (keepHyphens & removePunct)
+            result <- stri_replace_all_regex(result, "(\\w)[\\p{Pd}](\\w)", "$1_hy_$2")
+        result <- stringi::stri_split_boundaries(result, 
+                                                 type = "word", 
+                                                 skip_word_none = removePunct, # this is what obliterates currency symbols, Twitter tags, and URLs
+                                                 skip_word_number = removeNumbers) # but does not remove 4u, 2day, etc.
+        # put hyphens back the fast way (the ski mask way)
+        if (keepHyphens & removePunct)
+            result <- lapply(result, stri_replace_all_fixed, "_hy_", "-")
+        # remove separators if option is TRUE
+        if (removeSeparators & !removePunct) {
+            if (verbose) cat("   ...removing separators.\n")
+            result <- lapply(result, function(x) x[!stri_detect_regex(x, "^\\s$")])
+        }
+
+    } else if (what == "sentence") {
+
+        # replace . delimiter from common title abbreviations, with _pd_
+        exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM")
+        findregex <- paste0("\\b(", exceptions, ")\\.")
+        result <- stri_replace_all_regex(result, findregex, "$1_pd_", vectorize_all = FALSE)
+
+        result <- stringi::stri_split_boundaries(result, type = "sentence")
+        ## remove newline chars and trailing spaces for sentence tokenization
+        result <- lapply(result, stringi::stri_replace_all_fixed, "\n", "")
+        result <- lapply(result, stringi::stri_trim_right)
+        # remove any "sentences" that were completely blanked out
+        result <- lapply(result, function(x) x <- x[which(x != "")])
+        
+        # replace the non-full-stop "." characters
+        result <- lapply(result, stri_replace_all_fixed, "_pd_", ".")
+
+    } else {
+        stop(what, " not implemented in tokenize().")
     }
+
     if (verbose) cat("...total elapsed: ", (proc.time() - startTimeTok)[3], "seconds.\n")
     
-    # if (removeSeparators & !removePunct & (what == "character" | what == "word")) {
-    if (removeSeparators & ((!removePunct & what == "word") | (what == "character"))) {
-        if (verbose) cat("   ...removing separators.\n")
-        result <- lapply(result, function(x) x[!stri_detect_charclass(x, "\\p{Z}")])
-    }
-    
-    if (removeTwitter == FALSE & what != "fastword") {
+    if (removeTwitter == FALSE & !(what %in% c("fastword", "fastestword"))) {
         if (verbose) cat("  ...replacing Twitter characters (#, @)")
         startTimeClean <- proc.time()
         result <- lapply(result, stringi::stri_replace_all_fixed, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
@@ -445,7 +470,6 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         if (verbose) cat("  ...unlisting results\n")
         result <- unlist(result)
     }
-    
     
     if (!identical(ngrams, 1)) {
         if (verbose) cat("  ...creating ngrams\n")

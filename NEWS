@@ -1,3 +1,10 @@
+quanteda 0.8.0
+==============
+
+* tokenize improvements for what = "sentence": more robust to specifying options, and does not split
+  sentences after common abbreviations such as "Dr.", "Prof.", etc.
+
+
 
 quanteda 0.8.0
 ==============
