@@ -6,20 +6,28 @@
 \alias{readability.corpus}
 \title{calculate readability}
 \usage{
-readability(x, measure)
+readability(x, measure, drop = TRUE)
 
-\method{readability}{corpus}(x, measure)
+\method{readability}{corpus}(x, measure, drop = TRUE)
 
-\method{readability}{character}(x, measure = c("all", "ARI", "Bormuth",
-  "Coleman", "Coleman.Liau", "Dale.Chall", "Danielson.Bryan", "Dickes.Steiwer",
-  "DRP", "ELF", "Farr.Jenkins.Paterson", "Flesch", "Flesch.Kincaid", "FOG",
-  "FORCAST", "Fucks", "Linsear.Write", "LIX", "nWS", "RIX", "SMOG", "Spache",
-  "Strain"))
+\method{readability}{character}(x, measure = c("all", "ARI", "ARI.simple",
+  "Bormuth", "Bormuth.GP", "Coleman", "Coleman.C2", "Coleman.Liau",
+  "Coleman.Liau.grade", "Coleman.short", "Dale.Chall", "Dale.Chall.old",
+  "Dale.Chall.PSK", "Danielson.Bryan", "Danielson.Bryan.2", "Dickes.Steiwer",
+  "DRP", "ELF", "Farr.Jenkins.Paterson", "Flesch", "Flesch.PSK",
+  "Flesch.Kincaid", "FOG", "FOG.PSK", "FOG.NRI", "FORCAST", "FORCAST.RGL",
+  "Fucks", "Linsear.Write", "LIW", "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX",
+  "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de", "Spache",      "Spache.old",
+  "Strain", "Traenkle.Bailer", "Traenkle.Bailer.2", "Wheeler.Smith"),
+  drop = TRUE)
 }
 \arguments{
 \item{x}{a \link{corpus} object or character vector}
 
 \item{measure}{character vector defining the readability measure to calculate}
+
+\item{drop}{if \code{TRUE}, the result is returned as a numeric vector if only a single measure is requested;
+otherwise, a data.frame is returned with each column consisting of a requested measure.}
 }
 \value{
 a data.frame object consisting of the documents as rows, and the
@@ -32,7 +40,8 @@ Calculate the readability of text(s).
 readability(inaugCorpus, measure = "Flesch.Kincaid")
 txt <- c("Readability zero one.  Ten, Eleven.", "The cat in a dilapidated tophat.")
 readability(txt, "Flesch.Kincaid")
-readability(txt, "FOG")
+readability(txt, "Flesch.Kincaid", drop = FALSE)
+readability(txt, c("FOG", "FOG.PSK", "FOG.NRI"))
 inaugReadability <- readability(inaugCorpus, "all")
 round(cor(inaugReadability), 3)
 }
