@@ -1,9 +1,18 @@
-quanteda 0.8.0
+quanteda 0.8.1
 ==============
 
 * tokenize improvements for what = "sentence": more robust to specifying options, and does not split
   sentences after common abbreviations such as "Dr.", "Prof.", etc.
+  
+* corpus() no longer automatically converts encodings detected as non-UTF-8, as this detection is too imprecise.
 
+* new function `scrabble()` computes English Scrabble word values for any text, applying any summary numerical function.
+
+Bug Fixes
+---------
+* fixed the problem that document names were getting erased in corpus() because stringi functions
+  were removing them
+* fixed problem in tokenize(x, "character", removePunct = TRUE) that deleted texts that had no punctuation to begin with
 
 
 quanteda 0.8.0

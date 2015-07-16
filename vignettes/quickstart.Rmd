@@ -1,12 +1,12 @@
 ---
-title: "A Quick Start Guide to quanteda"
+title: "Getting Started with quanteda"
 output:
-  rmarkdown::html_document:
+  rmarkdown::html_vignette:
     theme: null
     css: mystyle.css
     toc: yes
 vignette: >
-  %\VignetteIndexEntry{Quickstart}
+  %\VignetteIndexEntry{Getting Started Guide}
   %\VignetteEngine{knitr::knitr}
   \usepackage[utf8]{inputenc}
 ---
@@ -373,7 +373,7 @@ The `kwic` function (KeyWord In Context) performs a search for a word and allows
 ```{r}
 options(width = 200)
 kwic(inaugCorpus, "terror")
-kwic(inaugCorpus, "terror", wholeword=TRUE)
+kwic(inaugCorpus, "terror", wholeword = TRUE)
 kwic(inaugCorpus, "communist")
 ```
 
@@ -426,7 +426,6 @@ tokenize(txt, removeNumbers=FALSE, removePunct=FALSE, removeSeparators=FALSE)
 
 We also have the option to tokenize characters:
 ```{r}
-# character level
 tokenize("Great website: http://textasdata.com?page=123.", what="character")
 tokenize("Great website: http://textasdata.com?page=123.", what="character", 
          removeSeparators=FALSE)
@@ -495,8 +494,8 @@ plot(mydfm)
 
 The `plot.dfm()` method passes arguments through to `wordcloud()` from the **wordcloud** package, and can prettify the plot using the same arguments:
 ```{r warning=FALSE}
-if(require(RColorBrewer))
-    plot(mydfm, max.words=100, colors = brewer.pal(6, "Dark2"), scale=c(5, .5))
+if (require(RColorBrewer))
+    plot(mydfm, max.words=100, colors = brewer.pal(6, "Dark2"), scale=c(8, .5))
 ```
 
 ### Grouping documents by document variable 
@@ -528,8 +527,8 @@ recentCorpus <- subset(inaugCorpus, Year > 1991)
 
 Now we define a demonstration dictionary:
 ```{r}
-myDict <- dictionary(list(terror = c("terrorism", "terrorists", "threat","a"),
-                          economy = c("jobs", "business", "grow","work")))
+myDict <- dictionary(list(terror = c("terrorism", "terrorists", "threat"),
+                          economy = c("jobs", "business", "grow", "work")))
 ```
 
 
@@ -558,17 +557,17 @@ liwcdfm[, 1:10]
 presDfm <- dfm(subset(inaugCorpus, Year>1980), 
                ignoredFeatures = stopwords("english"),
                stem=TRUE, verbose=FALSE)
-obamaDistance <- similarity(presDfm, c("2009-Obama" , "2013-Obama"), n=NULL, 
-                            margin="documents", method="cosine")
-dotchart(obamaDistance$`2009-Obama`, xlab="Cosine distance")
+obamaSimil <- similarity(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL, 
+                            margin = "documents", method = "cosine")
+dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
 ```
 
 
 We can use these distances to plot a dendrogram, clustering presidents:
 ```{r}
 data(SOTUCorpus, package="quantedaData")
-presDfm <- dfm(subset(SOTUCorpus, year>1960), verbose=FALSE, stem=TRUE,
-               ignoredFeatures =stopwords("english"))
+presDfm <- dfm(subset(SOTUCorpus, year > 1960), verbose = FALSE, stem = TRUE,
+               ignoredFeatures = stopwords("english"))
 presDfm <- trim(presDfm, minCount=5, minDoc=3)
 # hierarchical clustering - get distances on normalized dfm
 presDistMat <- dist(as.matrix(weight(presDfm, "relFreq")))
@@ -582,7 +581,7 @@ plot(presCluster)
 
 We can also look at term similarities:
 ```{r}
-similarity(presDfm, c("fair", "health", "terror"), method="cosine")
+similarity(presDfm, c("fair", "health", "terror"), method = "cosine")
 ```
 
 ## Scaling document positions

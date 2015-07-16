@@ -17,9 +17,9 @@ readability(x, measure, drop = TRUE)
   "DRP", "ELF", "Farr.Jenkins.Paterson", "Flesch", "Flesch.PSK",
   "Flesch.Kincaid", "FOG", "FOG.PSK", "FOG.NRI", "FORCAST", "FORCAST.RGL",
   "Fucks", "Linsear.Write", "LIW", "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX",
-  "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de", "Spache",      "Spache.old",
-  "Strain", "Traenkle.Bailer", "Traenkle.Bailer.2", "Wheeler.Smith"),
-  drop = TRUE)
+  "Scrabble", "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de",      "Spache",
+  "Spache.old", "Strain", "Traenkle.Bailer", "Traenkle.Bailer.2",
+  "Wheeler.Smith"), drop = TRUE)
 }
 \arguments{
 \item{x}{a \link{corpus} object or character vector}

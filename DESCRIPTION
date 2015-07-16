@@ -43,7 +43,8 @@ Suggests:
     slam,
     ggplot2,
     XML,
-    testthat
+    testthat,
+    RColorBrewer
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues

@@ -43,7 +43,7 @@ readability.character <- function(x, measure = c("all", "ARI", "ARI.simple", "Bo
                                                  "Flesch", "Flesch.PSK", "Flesch.Kincaid", 
                                                  "FOG", "FOG.PSK", "FOG.NRI", "FORCAST", "FORCAST.RGL",
                                                  "Fucks", "Linsear.Write", "LIW",
-                                                 "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX", 
+                                                 "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX", "Scrabble",
                                                  "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de", 
                                                  "Spache", "Spache.old", "Strain",
                                                  "Traenkle.Bailer", "Traenkle.Bailer.2",
@@ -60,7 +60,8 @@ readability.character <- function(x, measure = c("all", "ARI", "ARI.simple", "Bo
                                    "Flesch", "Flesch.PSK", "Flesch.Kincaid", 
                                    "FOG", "FOG.PSK", "FOG.NRI", "FORCAST", "FORCAST.RGL",
                                    "Fucks", "Linsear.Write", "LIW",
-                                   "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX", 
+                                   "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX",
+                                   "Scrabble",
                                    "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de", 
                                    "Spache", "Spache.old", "Strain",
                                    "Traenkle.Bailer", "Traenkle.Bailer.2",
@@ -70,11 +71,11 @@ readability.character <- function(x, measure = c("all", "ARI", "ARI.simple", "Bo
 
     # to avoid "no visible binding for global variable" CHECK NOTE
     textID <- W <- St <- C <- Sy <- W3Sy <- W2Sy <- W_1Sy <- W6C <- W7C <- Wlt3Sy <- W_wl.Dale.Chall <- 
-        W_wl.Spache <- ARI <- ARI.NRI <- ARI.simple <- Bormuth.GP <- Coleman.C1 <- Coleman.C2 <- 
+        W_wl.Spache <- ARI <- ARI.NRI <- ARI.simple <- Bormuth.GP <- Coleman <- Coleman.C2 <- 
         Coleman.Liau.ECP <- Coleman.Liau.grade <- Coleman.Liau.short <- Dale.Chall <- Dale.Chall.old <- 
         Dale.Chall.PSK <- Danielson.Bryan <- Danielson.Bryan.2 <- Dickes.Steiwer <- DRP <- ELF <- 
         Farr.Jenkins.Paterson <- Flesch <- Flesch.PSK <- Flesch.Kincaid <- FOG <- FOG.PSK <- FOG.NRI <- 
-        FORCAST <- FORCAST.RGL <- Fucks <- Linsear.Write <- LIW <- nWS.1 <- nWS.2 <- nWS.3 <- nWS.4 <- 
+        FORCAST <- FORCAST.RGL <- Fucks <- Linsear.Write <- LIW <- nWS <- nWS.2 <- nWS.3 <- nWS.4 <- 
         RIX <- SMOG <- SMOG.C <- SMOG.simple <- SMOG.de <- Spache <- Spache.old <- Strain <- Wheeler.Smith <- 
         wordlists <- Bormuth.MC <- Bl <- Traenkle.Bailer <- Traenkle.Bailer.2 <- Bormuth <- 
         Coleman.Liau <- NULL
@@ -291,6 +292,10 @@ readability.character <- function(x, measure = c("all", "ARI", "ARI.simple", "Bo
     
     if (any(c("all", "Wheeler.Smith") %in% measure)) 
         textFeatures[, Wheeler.Smith := W / St * (10 * W2Sy) / W]
+    
+    Scrabble <- NULL
+    if ("Scrabble" %in% measure)
+        textFeatures[, Scrabble := scrabble(x, mean)]
 
     # return a data.frame of the indexes
     tempIndex <- which(names(textFeatures) == "Wlt3Sy")
@@ -314,4 +319,47 @@ prepositions <- c("a", "abaft", "abeam", "aboard", "about", "above", "absent", "
                   "save", "since", "than", "through", "thru", "throughout", "thruout", "times", "to", "toward", "towards", "under", 
                   "underneath", "unlike", "until", "unto", "up", "upon", "versus", "vs", "v", "via", "vis-a-vis", "with", "within", 
                   "without", "worth")
+
+#' compute the Scrabble letter values of text
+#' 
+#' Compute the Scrabble letter values of text given a user-supplied function, 
+#' such as the sum (default) or mean of the character values.
+#' @param x a character vector
+#' @param FUN function to be applied to the character values in the text; 
+#'   default is \code{sum}, but could also be \code{mean} or a user-supplied 
+#'   function
+#' @author Kenneth Benoit
+#' @return a vector of Scabble letter values, computed using \code{FUN}, 
+#'   corresponding to the input text(s)
+#' @note Character values are only defined for non-accented Latin a-z, A-Z 
+#'   letters.  Lower-casing is unnecessary.
+#' @examples 
+#' scrabble(c("muzjiks", "excellency"))
+#' scrabble(inaugTexts[1:5], mean)
+#' @export
+scrabble <- function(x, FUN = sum, toLower = TRUE) {
+    UseMethod("scrabble")
+}
+
+#' @rdname scrabble
+#' @export
+scrabble.character <- function(x, FUN = sum) {
+    FUN <- match.fun(FUN)
+    letter <- Char <- docIndex <- values <- V1 <- NULL
+
+    letterVals <- data.table(letter = c(letters, LETTERS),
+                             values = rep(c(1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10), 2))
+    setkey(letterVals, letter)
+    
+    textChars <- tokenize(x, what = "character", removePunct = TRUE)
+    textDT <- data.table(docIndex = rep(1:length(textChars), lengths(textChars)),
+                         Char = unlist(textChars, use.names = FALSE))
+    setkey(textDT, Char)
+    
+    textDT <- letterVals[textDT]
+    textDT <- textDT[order(docIndex), FUN(values, na.rm = TRUE), by = docIndex]
+    result <- textDT[, V1]
+    if (!is.null(names(x))) names(result) <- names(x)
+    result
+}
 

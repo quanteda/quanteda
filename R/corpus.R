@@ -92,6 +92,8 @@ corpus <- function(x, ...) {
 corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvars=NULL,
                              source=NULL, notes=NULL, citation=NULL, ...) {
     
+    x_names <- names(x)
+    
     # check validity of encoding label(s)
     if (!is.null(enc)) {
         if (!(enc %in% stringi::stri_enc_list(simplify = TRUE))) 
@@ -124,9 +126,9 @@ corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvar
     # convert to "enc" if not already UTF-8 **unless** ISO-8859-1 detected, in which case do not do automatically
     if (enc != encTo) {
         if (enc != "ISO-8859-1" & encTo == "UTF-8") {
-            cat("Non-", encTo, " encoding ", ifelse(detected, "detected ", "specified"), " (", 
-                enc, "), converting to ", encTo, ".\n", sep="")
-            suppressWarnings(x <- stringi::stri_encode(x, from = enc, to = encTo))
+            cat("Non-", encTo, " encoding ", ifelse(detected, "(possibly) detected ", "specified"), " :", 
+                enc, ".\n", sep="")
+            # suppressWarnings(x <- stringi::stri_encode(x, from = enc, to = encTo))
         }
     }
 
@@ -134,8 +136,11 @@ corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvar
     if (!is.null(docnames)) {
         stopifnot(length(docnames)==length(x))
         names(x) <- docnames
-    } else if (is.null(names(x))) {
+    } else if (is.null(x_names)) {
         names(x) <- paste("text", 1:length(x), sep="")
+    } else if (is.null(names(x))) {
+        # if they previously existed, but got obliterated by a stringi function
+        names(x) <- x_names
     }
 
     # create document-meta-data

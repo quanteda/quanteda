@@ -405,11 +405,12 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         result <- stringi::stri_split_boundaries(result, type = "character")
         if (removePunct) {
             if (verbose) cat("   ...removing punctuation.\n")
-            result <- lapply(result, function(x) x[-which(stri_detect_charclass(x, "[\\p{P}\\p{S}]"))]) 
+            result <- lapply(result, stringi::stri_replace_all_charclass, "[\\p{P}\\p{S}]", "")
+            result <- lapply(result, function(x) x <- x[which(x != "")])
         } 
         if (removeSeparators) {
             if (verbose) cat("   ...removing separators.\n")
-            result <- lapply(result, function(x) x[!stri_detect_regex(x, "^\\s$")])
+            result <- lapply(result, function(x) x[!stringi::stri_detect_regex(x, "^\\s$")])
         }
         
         
