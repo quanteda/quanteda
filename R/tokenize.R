@@ -350,6 +350,11 @@ tokenize <- function(x, ...) {
 #'          removeSeparators=FALSE)
 #' 
 #' # sentence level         
+#' tokenize(c("Kurt Vongeut said; only assholes use semi-colons.", 
+#'            "Today is Thursday in Canberra:  It is yesterday in London.", 
+#'            "Today is Thursday in Canberra:  \nIt is yesterday in London.",
+#'            "To be?  Or\not to be?"), 
+#'           what = "sentence")
 #' tokenize(inaugTexts[c(2,40)], what = "sentence", simplify = TRUE)
 tokenize.character <- function(x, what=c("word", "sentence", "character", "fastestword", "fasterword"),
                                removeNumbers = FALSE, 
