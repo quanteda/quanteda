@@ -185,9 +185,9 @@ As of version 0.8.0, the GitHub master repository will always contain the develo
 
 # Creating and Working with a Corpus
 
-    ```{r hide=TRUE}
-    require(quanteda)
-    ```
+```{r show=FALSE}
+require(quanteda)
+```
 
 
 ## Currently available corpus sources
