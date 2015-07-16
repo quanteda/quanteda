@@ -337,7 +337,7 @@ prepositions <- c("a", "abaft", "abeam", "aboard", "about", "above", "absent", "
 #' scrabble(c("muzjiks", "excellency"))
 #' scrabble(inaugTexts[1:5], mean)
 #' @export
-scrabble <- function(x, FUN = sum, toLower = TRUE) {
+scrabble <- function(x, FUN = sum) {
     UseMethod("scrabble")
 }
 
