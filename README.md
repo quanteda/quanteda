@@ -1,4 +1,6 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+See the [Getting Started Vignette](http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html).
+
 quanteda: Quantitative Analysis of Textual Data
 ===============================================
 
@@ -89,18 +91,18 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 #> Corpus consisting of 9 documents.
 #> 
 #>   Text Types Tokens Sentences        party
-#>  text1  1024   2876       137          BNP
-#>  text2   135    235        12    Coalition
-#>  text3   235    454        21 Conservative
-#>  text4   306    614        30       Greens
-#>  text5   276    630        34       Labour
-#>  text6   246    443        26       LibDem
-#>  text7    74    103         5           PC
-#>  text8    82    125         4          SNP
-#>  text9   310    641        38         UKIP
+#>  text1  1023   2851       137          BNP
+#>  text2   133    231        12    Coalition
+#>  text3   234    452        21 Conservative
+#>  text4   303    610        30       Greens
+#>  text5   278    620        34       Labour
+#>  text6   240    435        26       LibDem
+#>  text7    72    101         5           PC
+#>  text8    81    124         4          SNP
+#>  text9   311    633        38         UKIP
 #> 
 #> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/* on x86_64 by kbenoit.
-#> Created: Mon Jul 13 18:53:48 2015.
+#> Created: Thu Jul 16 11:00:58 2015.
 #> Notes:   Immigration-related sections of 2010 UK party manifestos.
 
 # key words in context for "deport", 3 words of context
@@ -142,24 +144,24 @@ mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
 #>    ... lowercasing
 #>    ... tokenizing
 #>    ... indexing 9 documents
-#>    ... shaping tokens into data.table, found 6,021 total tokens
-#>    ... ignoring 175 feature types, discarding 2,599 total features (43.2%)
+#>    ... shaping tokens into data.table, found 5,959 total tokens
+#>    ... ignoring 175 feature types, discarding 2,596 total features (43.6%)
 #>    ... summing tokens by document
-#>    ... indexing 1,477 feature types
+#>    ... indexing 1,489 feature types
 #>    ... building sparse matrix
-#>    ... created a 9 x 1477 sparse dfm
-#>    ... complete. Elapsed time: 0.033 seconds.
+#>    ... created a 9 x 1489 sparse dfm
+#>    ... complete. Elapsed time: 0.039 seconds.
 dim(mydfm)              # basic dimensions of the dfm
-#> [1]    9 1477
+#> [1]    9 1489
 topfeatures(mydfm, 20)  # 20 top words
 #> immigration     british      people      asylum     britain      system 
-#>          68          38          36          29          28          27 
+#>          66          37          35          29          28          27 
 #>          uk  population     country         new      ensure  immigrants 
 #>          27          21          20          19          17          17 
-#>       shall citizenship        work          eu    national      social 
-#>          17          16          15          14          14          14 
-#>         bnp     illegal 
-#>          13          13
+#>       shall citizenship    national      social         bnp     illegal 
+#>          17          16          14          14          13          13 
+#>        work      ethnic 
+#>          13          12
 if (Sys.info()['sysname']=="Darwin") quartz() # open nicer window, Mac only
 plot(mydfm)             # word cloud     
 ```
