@@ -3,9 +3,9 @@
 \docType{methods}
 \name{textfile}
 \alias{textfile}
-\alias{textfile,character,index,missing,missing,logical,missing,missing,missing-method}
-\alias{textfile,character,missing,character,character,logical,missing,missing,missing-method}
-\alias{textfile,character,missing,missing,missing,logical,character,ANY,ANY-method}
+\alias{textfile,character,index,missing,missing,ANY,missing,missing,missing-method}
+\alias{textfile,character,missing,ANY,ANY,ANY,missing,missing,missing-method}
+\alias{textfile,character,missing,missing,missing,ANY,character,ANY,ANY-method}
 \title{read a text corpus source from a file}
 \usage{
 textfile(file, textField, encodingFrom = NULL, encodingTo = "UTF-8",
@@ -13,17 +13,17 @@ textfile(file, textField, encodingFrom = NULL, encodingTo = "UTF-8",
   docvarnames = NULL, ...)
 
 
-  \S4method{textfile}{character,index,missing,missing,logical,missing,missing,missing}(file,
+  \S4method{textfile}{character,index,missing,missing,ANY,missing,missing,missing}(file,
   textField, encodingFrom = NULL, encodingTo = "UTF-8", cache = FALSE,
   docvarsfrom = c("filenames"), sep = "_", docvarnames = NULL, ...)
 
 
-  \S4method{textfile}{character,missing,character,character,logical,missing,missing,missing}(file,
+  \S4method{textfile}{character,missing,ANY,ANY,ANY,missing,missing,missing}(file,
   textField, encodingFrom = NULL, encodingTo = "UTF-8", cache = FALSE,
   docvarsfrom = c("filenames"), sep = "_", docvarnames = NULL, ...)
 
 
-  \S4method{textfile}{character,missing,missing,missing,logical,character,ANY,ANY}(file,
+  \S4method{textfile}{character,missing,missing,missing,ANY,character,ANY,ANY}(file,
   textField, encodingFrom = NULL, encodingTo = "UTF-8", cache = FALSE,
   docvarsfrom = c("filenames"), sep = "_", docvarnames = NULL, ...)
 }

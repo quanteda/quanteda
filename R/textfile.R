@@ -152,7 +152,7 @@ setGeneric("textfile",
 setMethod("textfile", 
           signature(file = "character", textField = "index", 
                     encodingFrom="missing", encodingTo="missing",
-                    cache = "logical", 
+                    cache = "ANY", 
                     docvarsfrom="missing", sep="missing", docvarnames="missing"),
           definition = function(file, textField, cache = FALSE, ...) {
               if (length(textField) != 1)
@@ -172,7 +172,7 @@ setMethod("textfile",
 #' @export
 setMethod("textfile", 
           signature(file = "character", textField = "missing",
-                    encodingFrom="character", encodingTo="character", cache = "logical",
+                    encodingFrom="ANY", encodingTo="ANY", cache = "ANY",
                     docvarsfrom="missing", sep="missing", docvarnames="missing"),
           definition = function(file, encodingFrom = NULL, encodingTo = "UTF-8", cache = FALSE, ...) {
               fileType <- getFileType(file)
@@ -189,7 +189,7 @@ setMethod("textfile",
 setMethod("textfile", 
           signature(file = "character", textField = "missing", 
                     encodingFrom="missing", encodingTo="missing", 
-                    cache = "logical",
+                    cache = "ANY",
                     docvarsfrom="character", sep="ANY", docvarnames="ANY"),
           definition = function(file, textField=NULL, cache = FALSE, 
                                 docvarsfrom=c("headers"), sep="_", docvarnames=NULL, ...) {
