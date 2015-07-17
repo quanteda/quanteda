@@ -62,6 +62,17 @@ setMethod("show",
 #' @param textField a variable (column) name or column number indicating where 
 #'   to find the texts that form the documents for the corpus.  This must be 
 #'   specified for file types \code{.csv} and \code{.json}.
+#' @param encodingFrom a single character value specifying the input file 
+#'   encoding, or a vector of character values where each element corresponds to
+#'   a single file, if a filemask or multiple filenames are supplied as 
+#'   \code{file}.  These work in the same was as the \code{encoding} argument 
+#'   supplied to \link{file}, which uses the naming conventions and conversion 
+#'   functions of \link{iconv}.  If no \code{encodingFrom} argument is supplied,
+#'   then the default encoding is assumed, which may very well be incorrect. 
+#'   Currently, this argument only works when reading text (\code{txt}) files.
+#' @param encodingTo an optional value that can specify the encoding you wish 
+#'   the files to be converted to, but we strongly encourage you to use the 
+#'   default of UTF-8.
 #' @param docvarsfrom  used to specify that docvars should be taken from the 
 #'   filenames, when the \code{textfile} inputs are filenames and the elements 
 #'   of the filenames are document variables, separated by a delimiter 
@@ -73,14 +84,14 @@ setMethod("show",
 #' @param docvarnames character vector of variable names for \code{docvars}, if 
 #'   \code{docvarsfrom} is specified.  If this argument is not used, default 
 #'   docvar names will be used (\code{docvar1}, \code{docvar2}, ...).
-#' @param cache If \code{TRUE}, write the object to a temporary file and store
+#' @param cache If \code{TRUE}, write the object to a temporary file and store 
 #'   the temporary filename in the \link{corpusSource-class} object definition. 
 #'   If \code{FALSE}, return the data in the object. Caching the file provides a
-#'   way to read in very large quantities of textual data without storing two
-#'   copies in memory: one as a \link{corpusSource-class} object and the second
-#'   as a \link{corpus} class object.  It also provides a way to try different
+#'   way to read in very large quantities of textual data without storing two 
+#'   copies in memory: one as a \link{corpusSource-class} object and the second 
+#'   as a \link{corpus} class object.  It also provides a way to try different 
 #'   settings of encoding conversion when creating a corpus from a 
-#'   \link{corpusSource-class} object, without having to load in all of the
+#'   \link{corpusSource-class} object, without having to load in all of the 
 #'   source data again.
 #' @param ... additional arguments passed through to other functions
 #' @details The constructor does not store a copy of the texts, but rather reads
@@ -98,10 +109,12 @@ setMethod("show",
 #' @export
 #' @importFrom stats var
 setGeneric("textfile",
-           function(file, textField, docvarsfrom = c("filenames"), sep="_", 
-                    docvarnames = NULL, cache = TRUE, ...) 
-               standardGeneric("textfile"),
-           signature = c("file", "textField", "docvarsfrom", "sep", "docvarnames"))
+           function(file, textField, encodingFrom = NULL, encodingTo = "UTF-8",
+                    cache = FALSE, docvarsfrom = c("filenames"), sep="_", 
+                    docvarnames = NULL,  ...) 
+               standardGeneric("textfile"))
+    #signature = c("file", "textField", "encodingFrom", "encodingTo", "docvarsfrom", 
+    #              "sep", "docvarnames", "cache", "encodingFrom", "encodingTo"))
 
 # FROM THE MATRIX PACKAGE - no need to duplicate here
 # setClassUnion("index", members =  c("numeric", "integer", "logical", "character"))
@@ -138,8 +151,10 @@ setGeneric("textfile",
 #' }
 setMethod("textfile", 
           signature(file = "character", textField = "index", 
+                    encodingFrom="missing", encodingTo="missing",
+                    cache = "logical", 
                     docvarsfrom="missing", sep="missing", docvarnames="missing"),
-          definition = function(file, textField, ...) {
+          definition = function(file, textField, cache = FALSE, ...) {
               if (length(textField) != 1)
                   stop("textField must be a single field name or column number identifying the texts.")
               fileType <- getFileType(file)
@@ -157,13 +172,14 @@ setMethod("textfile",
 #' @export
 setMethod("textfile", 
           signature(file = "character", textField = "missing",
+                    encodingFrom="character", encodingTo="character", cache = "logical",
                     docvarsfrom="missing", sep="missing", docvarnames="missing"),
-          definition = function(file, textField=NULL, ...) {
+          definition = function(file, encodingFrom = NULL, encodingTo = "UTF-8", cache = FALSE, ...) {
               fileType <- getFileType(file)
               if (fileType=="filemask") {
-                  sources <- get_docs(file)
+                  sources <- get_docs(file, encodingFrom, encodingTo)
               } else {
-                  sources <- get_doc(file)
+                  sources <- get_doc(file, encodingFrom, encodingTo)
               }
               returnCorpusSource(sources, cache)
           })
@@ -172,12 +188,14 @@ setMethod("textfile",
 #' @export
 setMethod("textfile", 
           signature(file = "character", textField = "missing", 
+                    encodingFrom="missing", encodingTo="missing", 
+                    cache = "logical",
                     docvarsfrom="character", sep="ANY", docvarnames="ANY"),
-          definition = function(file, textField=NULL, 
+          definition = function(file, textField=NULL, cache = FALSE, 
                                 docvarsfrom=c("headers"), sep="_", docvarnames=NULL, ...) {
               fileType <- getFileType(file)
               if (fileType=="filemask") {
-                  sources <- get_docs(file)
+                  sources <- get_docs(file, encodingFrom, encodingTo)
               } else {
                   stop("File type ", fileType, " not supported with these arguments.")
               }
@@ -204,11 +222,19 @@ returnCorpusSource <- function(sources, cache) {
 
 
 # read a document from a text-only file.
-get_doc <- function(f) {
+get_doc <- function(f, encodingFrom = NULL, encodingTo = "UTF-8") {
     txts <- c()
     fileType <- getFileType(f)
     switch(fileType,
-           txt =  { return(list(txts = paste(suppressWarnings(readLines(f)), collapse="\n"), docv=data.frame())) },
+           txt =  { 
+               if (is.null(encodingFrom)) encodingFrom <- getOption("encoding")
+               fn <- file(f, open = "rt", encoding = encodingFrom)
+               result <- list(txts = paste(suppressWarnings(readLines(fn)), collapse="\n"), docv=data.frame())
+               close(fn)
+               if (encodingTo != "UTF-8")
+                   result <- iconv(result, from = "UTF-8", to = encodingTo)
+               return(result)
+               },
            doc =  { return(list(txts = get_word(f), docv=data.frame())) },
            json = { return(get_json_tweets(f)) },
            pdf =  { return(list(txts = get_pdf(f), docv=data.frame())) }
@@ -216,7 +242,7 @@ get_doc <- function(f) {
     stop("unrecognized fileType:", fileType)
 }
 
-get_docs <- function(filemask, textnames = NULL, ...) {
+get_docs <- function(filemask, encodingFrom = NULL, encodingTo = "UTF-8") {
     # get the pattern at the end
     pattern <- getRootFileNames(filemask)
     # get the directory name
@@ -224,13 +250,20 @@ get_docs <- function(filemask, textnames = NULL, ...) {
     # get the filenames
     filenames <- list.files(path, pattern, full.names=TRUE)
     # read texts from call to get_doc, discarding any docv
-    textsvec <- sapply(filenames, function(x) get_doc(x)$txts)
-    # name the vector with the filename by default, otherwise assign "names"
-    if (!is.null(textnames)) {
-        names(textsvec) <- textnames
-    } else {
-        names(textsvec) <- getRootFileNames(filenames)
+    if (!is.null(encodingFrom)) {
+        if (length(encodingFrom) > 1) {
+            if (length(filenames) != length(encodingFrom))
+                stop("length of encodingFrom (", length(encodingFrom), ") different from length of filenames (", length(filenames), ")")    
+        } else
+            encodingFrom <- rep(encodingFrom, length(filenames))
     }
+    # loop through filenames and load each one
+    textsvec <- c()
+    for (i in 1:length(filenames))
+        textsvec[i] <- get_doc(filenames[i], encodingFrom[i], encodingTo)$txts
+
+    # name the vector with the filename by default
+    names(textsvec) <- getRootFileNames(filenames)
 
     list(txts=textsvec, docv=data.frame())    
 }

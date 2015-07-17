@@ -3,25 +3,29 @@
 \docType{methods}
 \name{textfile}
 \alias{textfile}
-\alias{textfile,character,index,missing,missing,missing-method}
-\alias{textfile,character,missing,character,ANY,ANY-method}
-\alias{textfile,character,missing,missing,missing,missing-method}
+\alias{textfile,character,index,missing,missing,logical,missing,missing,missing-method}
+\alias{textfile,character,missing,character,character,logical,missing,missing,missing-method}
+\alias{textfile,character,missing,missing,missing,logical,character,ANY,ANY-method}
 \title{read a text corpus source from a file}
 \usage{
-textfile(file, textField, docvarsfrom = c("filenames"), sep = "_",
-  docvarnames = NULL, cache = TRUE, ...)
+textfile(file, textField, encodingFrom = NULL, encodingTo = "UTF-8",
+  cache = FALSE, docvarsfrom = c("filenames"), sep = "_",
+  docvarnames = NULL, ...)
 
-\S4method{textfile}{character,index,missing,missing,missing}(file, textField,
-  docvarsfrom = c("filenames"), sep = "_", docvarnames = NULL,
-  cache = TRUE, ...)
 
-\S4method{textfile}{character,missing,missing,missing,missing}(file, textField,
-  docvarsfrom = c("filenames"), sep = "_", docvarnames = NULL,
-  cache = TRUE, ...)
+  \S4method{textfile}{character,index,missing,missing,logical,missing,missing,missing}(file,
+  textField, encodingFrom = NULL, encodingTo = "UTF-8", cache = FALSE,
+  docvarsfrom = c("filenames"), sep = "_", docvarnames = NULL, ...)
 
-\S4method{textfile}{character,missing,character,ANY,ANY}(file, textField,
-  docvarsfrom = c("filenames"), sep = "_", docvarnames = NULL,
-  cache = TRUE, ...)
+
+  \S4method{textfile}{character,missing,character,character,logical,missing,missing,missing}(file,
+  textField, encodingFrom = NULL, encodingTo = "UTF-8", cache = FALSE,
+  docvarsfrom = c("filenames"), sep = "_", docvarnames = NULL, ...)
+
+
+  \S4method{textfile}{character,missing,missing,missing,logical,character,ANY,ANY}(file,
+  textField, encodingFrom = NULL, encodingTo = "UTF-8", cache = FALSE,
+  docvarsfrom = c("filenames"), sep = "_", docvarnames = NULL, ...)
 }
 \arguments{
 \item{file}{the complete filename to be read.  Currently available file types
@@ -43,6 +47,29 @@ of the kind supported by the function xmlToDataFrame function of the
 to find the texts that form the documents for the corpus.  This must be
 specified for file types \code{.csv} and \code{.json}.}
 
+\item{encodingFrom}{a single character value specifying the input file
+encoding, or a vector of character values where each element corresponds to
+a single file, if a filemask or multiple filenames are supplied as
+\code{file}.  These work in the same was as the \code{encoding} argument
+supplied to \link{file}, which uses the naming conventions and conversion
+functions of \link{iconv}.  If no \code{encodingFrom} argument is supplied,
+then the default encoding is assumed, which may very well be incorrect.
+Currently, this argument only works when reading text (\code{txt}) files.}
+
+\item{encodingTo}{an optional value that can specify the encoding you wish
+the files to be converted to, but we strongly encourage you to use the
+default of UTF-8.}
+
+\item{cache}{If \code{TRUE}, write the object to a temporary file and store
+the temporary filename in the \link{corpusSource-class} object definition.
+If \code{FALSE}, return the data in the object. Caching the file provides a
+way to read in very large quantities of textual data without storing two
+copies in memory: one as a \link{corpusSource-class} object and the second
+as a \link{corpus} class object.  It also provides a way to try different
+settings of encoding conversion when creating a corpus from a
+\link{corpusSource-class} object, without having to load in all of the
+source data again.}
+
 \item{docvarsfrom}{used to specify that docvars should be taken from the
 filenames, when the \code{textfile} inputs are filenames and the elements
 of the filenames are document variables, separated by a delimiter
@@ -56,16 +83,6 @@ or from meta-data embedded in the text file header (\code{headers}).}
 \item{docvarnames}{character vector of variable names for \code{docvars}, if
 \code{docvarsfrom} is specified.  If this argument is not used, default
 docvar names will be used (\code{docvar1}, \code{docvar2}, ...).}
-
-\item{cache}{If \code{TRUE}, write the object to a temporary file and store
-the temporary filename in the \link{corpusSource-class} object definition.
-If \code{FALSE}, return the data in the object. Caching the file provides a
-way to read in very large quantities of textual data without storing two
-copies in memory: one as a \link{corpusSource-class} object and the second
-as a \link{corpus} class object.  It also provides a way to try different
-settings of encoding conversion when creating a corpus from a
-\link{corpusSource-class} object, without having to load in all of the
-source data again.}
 
 \item{...}{additional arguments passed through to other functions}
 }

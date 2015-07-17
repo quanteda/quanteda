@@ -5,7 +5,7 @@
 \alias{scrabble.character}
 \title{compute the Scrabble letter values of text}
 \usage{
-scrabble(x, FUN = sum, toLower = TRUE)
+scrabble(x, FUN = sum)
 
 \method{scrabble}{character}(x, FUN = sum)
 }
@@ -29,7 +29,7 @@ Character values are only defined for non-accented Latin a-z, A-Z
   letters.  Lower-casing is unnecessary.
 }
 \examples{
-scrabble(c(word1 = "muzjiks", word2 = "excellency"))
+scrabble(c("muzjiks", "excellency"))
 scrabble(inaugTexts[1:5], mean)
 }
 \author{
