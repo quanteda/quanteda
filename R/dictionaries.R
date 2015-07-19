@@ -197,6 +197,7 @@ readLIWCdict <- function(path, maxcats=10, enc="") {
     }
     # extract the category guide
     guide <- d[2:(guideRowEnd-1), 1:2]
+    colnames(guide) <- c('catNum', 'catName' )
     # initialize the dictionary as list of NAs
     dictionary <- list()
     length(dictionary) <- nrow(guide)
