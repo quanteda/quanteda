@@ -192,8 +192,12 @@ readLIWCdict <- function(path, maxcats=10, enc="") {
     
     # get the row number that signals the end of the category guide
     guideRowEnd <- max(which(d$category=="%"))
+    if(guideRowEnd < 1){
+        stop('Expected a guide (a category legend) delimted by percentage symbols at start of file, none found')
+    }
     # extract the category guide
     guide <- d[2:(guideRowEnd-1), 1:2]
+    colnames(guide) <- c('catNum', 'catName' )
     # initialize the dictionary as list of NAs
     dictionary <- list()
     length(dictionary) <- nrow(guide)
@@ -212,10 +216,11 @@ readLIWCdict <- function(path, maxcats=10, enc="") {
         terms[[i]] <- as.numeric(catlist[i, !is.na(catlist[i,])])
     }
 
-    # now fill the dictionary with the terms
-    for (t in 1:length(terms)) {
-        for (c in terms[[t]]) {
-            dictionary[[c]] <- append(dictionary[[c]], names(terms[t]))
+    for(ind in 1:length(terms)){
+        for(num in terms[[ind]]){
+            thisCat <- guide$catName[num]
+            thisTerm <- names(terms[ind])
+            dictionary[[thisCat]] <- append(dictionary[[thisCat]], thisTerm)
         }
     }
     return(dictionary)
