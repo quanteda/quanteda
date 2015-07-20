@@ -2,12 +2,11 @@
 title: "Getting Started with quanteda"
 output:
   rmarkdown::html_vignette:
-    theme: null
     css: mystyle.css
     toc: yes
 vignette: >
   %\VignetteIndexEntry{Getting Started Guide}
-  %\VignetteEngine{knitr::knitr}
+  %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
 
