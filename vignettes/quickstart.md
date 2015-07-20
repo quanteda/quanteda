@@ -235,7 +235,7 @@ summary(myCorpus, n=5)
 #>   1805-Jefferson   776   2166        45
 #> 
 #> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
-#> Created: Thu Jul 16 18:32:01 2015.
+#> Created: Mon Jul 20 15:37:00 2015.
 #> Notes:   .
 ```
 
@@ -259,7 +259,7 @@ summary(myCorpus, n=5)
 #>   1805-Jefferson   776   2166        45  Jefferson 1805
 #> 
 #> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
-#> Created: Thu Jul 16 18:32:01 2015.
+#> Created: Mon Jul 20 15:37:00 2015.
 #> Notes:   .
 ```
 
@@ -286,7 +286,7 @@ summary(myCorpus, n=5, showmeta=TRUE)
 #>  inaugTexts_5
 #> 
 #> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
-#> Created: Thu Jul 16 18:32:01 2015.
+#> Created: Mon Jul 20 15:37:00 2015.
 #> Notes:   .
 ```
 
@@ -373,7 +373,7 @@ summary(myCorpusTwitter, 5)
 #>        NaN  NA  NA         <NA> <NA>
 #> 
 #> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
-#> Created: Thu Jul 16 18:32:01 2015.
+#> Created: Mon Jul 20 15:37:00 2015.
 #> Notes:   .
 # generic json - needs a textField specifier
 mytf2 <- textfile("~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/sotu/sotu.json",
@@ -389,7 +389,7 @@ summary(corpus(mytf2), 5)
 #>  text5  1399   4795       295   rep  1989_bush1  bush1 1989
 #> 
 #> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
-#> Created: Thu Jul 16 18:32:02 2015.
+#> Created: Mon Jul 20 15:37:01 2015.
 #> Notes:   .
 # text file
 mytf3 <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
@@ -400,7 +400,7 @@ summary(corpus(mytf3), 5)
 #>  text1 19064 216801     25767
 #> 
 #> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
-#> Created: Thu Jul 16 18:32:02 2015.
+#> Created: Mon Jul 20 15:37:01 2015.
 #> Notes:   .
 # multiple text files
 mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
@@ -415,7 +415,7 @@ summary(corpus(mytf4), 5)
 #>   1805-Jefferson.txt   776   2166        45
 #> 
 #> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
-#> Created: Thu Jul 16 18:32:03 2015.
+#> Created: Mon Jul 20 15:37:03 2015.
 #> Notes:   .
 # multiple text files with docvars from filenames
 mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", 
@@ -431,7 +431,7 @@ summary(corpus(mytf5), 5)
 #>   1805-Jefferson.txt   776   2166        45 1805  Jefferson
 #> 
 #> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
-#> Created: Thu Jul 16 18:32:03 2015.
+#> Created: Mon Jul 20 15:37:04 2015.
 #> Notes:   .
 # XML data
 mytf6 <- textfile("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml", 
@@ -454,7 +454,7 @@ summary(corpus(mytf6), 5)
 #>  $6.44       012099
 #> 
 #> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
-#> Created: Thu Jul 16 18:32:03 2015.
+#> Created: Mon Jul 20 15:37:04 2015.
 #> Notes:   .
 # csv file
 write.csv(data.frame(inaugSpeech = texts(inaugCorpus), docvars(inaugCorpus)), 
@@ -471,7 +471,7 @@ summary(corpus(mytf7), 5)
 #>  text5   776   2166        45 1805  Jefferson
 #> 
 #> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/vignettes/* on x86_64 by kbenoit.
-#> Created: Thu Jul 16 18:32:04 2015.
+#> Created: Mon Jul 20 15:37:05 2015.
 #> Notes:   .
 ```
 
@@ -685,7 +685,7 @@ summary(mycorpus3)
 #>       2013-Obama   781   2097        90
 #> 
 #> Source:  Combination of corpuses mycorpus1 and mycorpus2.
-#> Created: Thu Jul 16 18:32:05 2015.
+#> Created: Mon Jul 20 15:37:06 2015.
 #> Notes:   First five inaug speeches. Last five inaug speeches..
 ```
 
@@ -940,7 +940,7 @@ myDfm <- dfm(myCorpus)
 #>    ... indexing 2,303 feature types
 #>    ... building sparse matrix
 #>    ... created a 6 x 2303 sparse dfm
-#>    ... complete. Elapsed time: 0.064 seconds.
+#>    ... complete. Elapsed time: 0.053 seconds.
 myDfm[, 1:5]
 #> Document-feature matrix of: 6 documents, 5 features.
 #> 6 x 5 sparse Matrix of class "dfmSparse"
@@ -969,7 +969,7 @@ myStemMat <- dfm(myCorpus, ignoredFeatures = stopwords("english"), stem=TRUE)
 #>    ... indexing 1,794 feature types
 #>    ... building sparse matrix
 #>    ... created a 6 x 1794 sparse dfm
-#>    ... complete. Elapsed time: 0.046 seconds.
+#>    ... complete. Elapsed time: 0.048 seconds.
 myStemMat[, 1:5]
 #> Document-feature matrix of: 6 documents, 5 features.
 #> 6 x 5 sparse Matrix of class "dfmSparse"
@@ -1014,7 +1014,7 @@ mydfm <- dfm(ukimmigTexts, ignoredFeatures=c("will", stopwords("english")))
 #>    ... indexing 1,585 feature types
 #>    ... building sparse matrix
 #>    ... created a 9 x 1585 sparse dfm
-#>    ... complete. Elapsed time: 0.029 seconds.
+#>    ... complete. Elapsed time: 0.03 seconds.
 mydfm
 #> Document-feature matrix of: 9 documents, 1585 features.
 ```
@@ -1064,7 +1064,7 @@ byPartyDfm <- dfm(ie2010Corpus, groups = "party", ignoredFeatures = stopwords("e
 #>    ... indexing 4,881 feature types
 #>    ... building sparse matrix
 #>    ... created a 5 x 4881 sparse dfm
-#>    ... complete. Elapsed time: 0.066 seconds.
+#>    ... complete. Elapsed time: 0.083 seconds.
 ```
 
 We can sort this dfm, and inspect it:
@@ -1119,7 +1119,7 @@ byPresMat <- dfm(recentCorpus, dictionary = myDict)
 #>    ... indexing 2 feature types
 #>    ... building sparse matrix
 #>    ... created a 6 x 2 sparse dfm
-#>    ... complete. Elapsed time: 0.069 seconds.
+#>    ... complete. Elapsed time: 0.072 seconds.
 byPresMat
 #> Document-feature matrix of: 6 documents, 2 features.
 #> 6 x 2 sparse Matrix of class "dfmSparse"
@@ -1253,7 +1253,7 @@ if (require(topicmodels)) {
 #> 
 #>     dtm2ldaformat, ldaformat2dtm
 #>      Lenihan FF Bruton FG Burton LAB Morgan SF Cowen FF Kenny FG ODonnell FG Gilmore LAB Higgins LAB Quinn LAB Gormley Green Ryan Green Cuffe Green OCaolain SF
-#> [1,]         20        18         19         2        6        3           9          17           4        13            10         11          12          16
-#> [2,]          1        14         15         5        8        8          12           8          10         4            13         10          10           7
-#> [3,]          6         8          8         8       20       20          10           2          13        10            12         13          13          14
+#> [1,]          1        10          3        18        5        6          13           7          15         9            16         20          11          14
+#> [2,]         12        19         19        19        4       19          16           8           9        20            20         16          16           2
+#> [3,]         17        18          4        17       19       17           6          19          16        15            11         11           9           1
 ```
