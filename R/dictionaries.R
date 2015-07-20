@@ -186,7 +186,7 @@ readWStatDictNested <- function(path) {
 # LIWCdict <- readLIWCdict("~/Dropbox/QUANTESS/corpora/LIWC/LIWC2001_English.dic") }
 readLIWCdict <- function(path, maxcats=10, enc="") {
     # read in the dictionary as a (big, uneven) table
-    d <- utils::read.table(path1, header=FALSE, fileEncoding=enc,
+    d <- utils::read.table(path, header=FALSE, fileEncoding=enc,
                            col.names=c("category", paste("catno", 1:maxcats)),
                            fill=TRUE, stringsAsFactors=FALSE)
     # get the row number that signals the end of the category guide
@@ -197,6 +197,7 @@ readLIWCdict <- function(path, maxcats=10, enc="") {
     # extract the category guide
     guide <- d[2:(guideRowEnd-1), 1:2]
     colnames(guide) <- c('catNum', 'catName' )
+    guide$catNum <- as.numeric(guide$catNum)
     # initialize the dictionary as list of NAs
     dictionary <- list()
     length(dictionary) <- nrow(guide)
@@ -216,7 +217,7 @@ readLIWCdict <- function(path, maxcats=10, enc="") {
     }
 
     for(ind in 1:length(terms)){
-        for(num in terms[[ind]]){
+        for(num in as.numeric(terms[[ind]])){
             thisCat <- guide$catName[which(guide$catNum==num)]
             thisTerm <- names(terms[ind])
             dictionary[[thisCat]] <- append(dictionary[[thisCat]], thisTerm)
