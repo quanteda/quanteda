@@ -13,6 +13,7 @@ Bug Fixes
 * fixed the problem that document names were getting erased in corpus() because stringi functions
   were removing them
 * fixed problem in tokenize(x, "character", removePunct = TRUE) that deleted texts that had no punctuation to begin with
+* fixed problem in dictionary(, format = "LIWC") causing import to fail for some LIWC dictionaries.
 
 
 quanteda 0.8.0
