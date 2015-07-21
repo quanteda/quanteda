@@ -430,12 +430,13 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
             result <- lapply(result, stri_replace_all_fixed, "_hy_", "-")
         # remove separators if option is TRUE
         if (removeSeparators & !removePunct) {
-            if (verbose) cat("   ...removing separators.\n")
+            if (verbose) cat("\n   ...removing separators.")
             result <- lapply(result, function(x) x[!stri_detect_regex(x, "^\\s$")])
         }
 
     } else if (what == "sentence") {
-
+        if (verbose) cat("\n   ...separating into sentences.")
+        
         # replace . delimiter from common title abbreviations, with _pd_
         exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM")
         findregex <- paste0("\\b(", exceptions, ")\\.")
@@ -464,21 +465,12 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
     
-    if (simplify==FALSE) {
-        # stri_* destroys names, so put them back
-        startTimeClean <- proc.time()
-        if (verbose) cat("  ...replacing names")
-        names(result) <- names(x)
-        if (verbose) cat("...total elapsed: ", (proc.time() - startTimeClean)[3], "seconds.\n")
-        
-    } else {
-        # or just return the tokens as a single character vector
-        if (verbose) cat("  ...unlisting results\n")
-        result <- unlist(result)
-    }
-    
+
     if (!identical(ngrams, 1)) {
-        if (verbose) cat("  ...creating ngrams\n")
+        if (verbose) {
+            cat("  ...creating ngrams")
+            startTimeClean <- proc.time()
+        }
         # is the ngram set serial starting with 1? use single call if so (most efficient)
         if (sum(1:length(ngrams)) == sum(ngrams)) {
             result <- lapply(result, ngram, n = length(ngrams), concatenator = concatenator, include.all = TRUE)
@@ -490,11 +482,25 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
                 xnew
             })
         }
+        if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
 
+    if (simplify==FALSE) {
+        # stri_* destroys names, so put them back
+        startTimeClean <- proc.time()
+        if (verbose) cat("  ...replacing names")
+        names(result) <- names(x)
+        if (verbose) cat("...total elapsed: ", (proc.time() - startTimeClean)[3], "seconds.\n")
+        
+    } else {
+        # or just return the tokens as a single character vector
+        if (verbose) cat("  ...unlisting results.\n")
+        result <- unlist(result)
+    }
+    
     if (verbose) 
-        cat("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts\n") 
-        #, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
+        cat("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n") 
+    #, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
 
     # make this an S3 class item, if a list
     if (simplify == FALSE) {
