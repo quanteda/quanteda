@@ -557,13 +557,13 @@ presDfm <- dfm(subset(inaugCorpus, Year>1980),
                ignoredFeatures = stopwords("english"),
                stem=TRUE, verbose=FALSE)
 obamaSimil <- similarity(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL, 
-                            margin = "documents", method = "cosine")
+                            margin = "documents", method = "cosine", normalize = FALSE)
 dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
 ```
 
 
 We can use these distances to plot a dendrogram, clustering presidents:
-```{r}
+```{r, eval=FALSE}
 data(SOTUCorpus, package="quantedaData")
 presDfm <- dfm(subset(SOTUCorpus, year > 1960), verbose = FALSE, stem = TRUE,
                ignoredFeatures = stopwords("english"))
@@ -577,6 +577,8 @@ presCluster$labels <- docnames(presDfm)
 # plot as a dendrogram
 plot(presCluster)
 ```
+
+
 
 We can also look at term similarities:
 ```{r}

@@ -192,7 +192,7 @@ presDfm <- dfm(subset(inaugCorpus, Year>1980),
                ignoredFeatures = stopwords("english"),
                stem=TRUE, verbose=FALSE)
 obamaSimil <- similarity(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL, 
-                            margin = "documents", method = "cosine")
+                            margin = "documents", method = "cosine", normalize = FALSE)
 dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

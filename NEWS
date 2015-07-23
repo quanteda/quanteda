@@ -8,13 +8,15 @@ quanteda 0.8.1
 
 * new function `scrabble()` computes English Scrabble word values for any text, applying any summary numerical function.
 
+* IMMINENT: change behaviour of `ignoredFeatures` and `removeFeatures()` applied to ngrams; change behaviour of stem = TRUE applied to ngrams (in `dfm()`)
+
 Bug Fixes
 ---------
 * fixed the problem that document names were getting erased in corpus() because stringi functions
   were removing them
 * fixed problem in tokenize(x, "character", removePunct = TRUE) that deleted texts that had no punctuation to begin with
 * fixed problem in dictionary(, format = "LIWC") causing import to fail for some LIWC dictionaries.
-
+* fixed problem in tokenize(x, ngrams = N) where N > length(x).  Now returns NULL instead of an erroneously tokenized set of ngrams.
 
 quanteda 0.8.0
 ==============

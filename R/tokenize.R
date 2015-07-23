@@ -522,11 +522,14 @@ tokenize.corpus <- function(x, ...) {
 
 ngram <- function(tokens, n = 2, concatenator = "_", include.all = FALSE) {
 
+    if (length(tokens) < n) 
+        return(NULL)
+    
     # start with lower ngrams, or just the specified size if include.all = FALSE
     start <- ifelse(include.all, 
                     1, 
                     ifelse(length(tokens) < n, 1, n))
-    
+
     # set max size of ngram at max length of tokens
     end <- ifelse(length(tokens) < n, length(tokens), n)
     
