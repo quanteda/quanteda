@@ -210,7 +210,7 @@ stopwordsGet <- function(kind="english") {
 #' text-based object, or to select only features from a list of regular 
 #' expression.
 #' @param x object whose features will be selected
-#' @param features character vector of \link[regex]{regular expressions} 
+#' @param features character vector of \code{\link{regex}{regular expressions}} 
 #'   definding the features to be selected, or a dictionary class object whose 
 #'   values will provide the features to be selected.  If a dictionary class 
 #'   object, the values will be interpreted as regular expressions.  (We may add
@@ -262,6 +262,7 @@ selectFeatures.dfm <- function(x, features = NULL, selection = c("keep", "remove
     if (verbose) cat(ifelse(selection=="keep", "kept", "removed"), 
                      format(length(featIndex), big.mark=","),
                      "features, from", length(features), "supplied feature types\n")
+    featIndex <- featIndex[!is.na(featIndex)]
     if (selection == "keep")
         return(x[, featIndex])
     else

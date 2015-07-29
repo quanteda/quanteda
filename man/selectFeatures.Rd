@@ -13,7 +13,7 @@ selectFeatures(x, features, ...)
 \arguments{
 \item{x}{object whose features will be selected}
 
-\item{features}{character vector of \link[regex]{regular expressions}
+\item{features}{character vector of \code{\link{regex}{regular expressions}}
 definding the features to be selected, or a dictionary class object whose
 values will provide the features to be selected.  If a dictionary class
 object, the values will be interpreted as regular expressions.  (We may add
