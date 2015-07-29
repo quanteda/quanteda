@@ -36,3 +36,10 @@ microbenchmark::microbenchmark(
     dfm(inaugTextsTokenized, dictionary = mydict, verbose = FALSE),
     dfm(inaugTextsTokenized, dictionary = mydict, verbose = FALSE, codeType = "old")
 )
+
+## need to be carefully inspected!
+txt <- "The tall brown trees with pretty leaves in its branches."
+dfm(txt)
+dfm(txt, stem = TRUE)
+dfm(txt, ignoredFeatures = stopwords("english"))  ## FAILS
+dfm(txt, stem = TRUE, ignoredFeatures = stopwords("english"))  ## FAILS

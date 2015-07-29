@@ -579,7 +579,7 @@ plot(presCluster)
 ```
 
 We can also look at term similarities:
-```{r}
+```{r, eval = FALSE}
 similarity(presDfm, c("fair", "health", "terror"), method = "cosine", normalize = FALSE)
 ```
 

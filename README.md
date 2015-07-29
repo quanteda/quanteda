@@ -90,53 +90,53 @@ uk2010immigCorpus
 summary(uk2010immigCorpus, showmeta=TRUE)
 #> Corpus consisting of 9 documents.
 #> 
-#>   Text Types Tokens Sentences        party
-#>  text1  1023   2851       137          BNP
-#>  text2   133    231        12    Coalition
-#>  text3   234    452        21 Conservative
-#>  text4   303    610        30       Greens
-#>  text5   278    620        34       Labour
-#>  text6   240    435        26       LibDem
-#>  text7    72    101         5           PC
-#>  text8    81    124         4          SNP
-#>  text9   311    633        38         UKIP
+#>          Text Types Tokens Sentences        party
+#>           BNP  1023   2851       137          BNP
+#>     Coalition   133    231        12    Coalition
+#>  Conservative   234    452        21 Conservative
+#>        Greens   303    610        30       Greens
+#>        Labour   278    620        34       Labour
+#>        LibDem   240    435        26       LibDem
+#>            PC    72    101         5           PC
+#>           SNP    81    124         4          SNP
+#>          UKIP   311    633        38         UKIP
 #> 
 #> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/* on x86_64 by kbenoit.
-#> Created: Thu Jul 16 11:00:58 2015.
+#> Created: Wed Jul 29 21:13:10 2015.
 #> Notes:   Immigration-related sections of 2010 UK party manifestos.
 
 # key words in context for "deport", 3 words of context
 kwic(uk2010immigCorpus, "deport", 3)
 #>                                               preword         word
-#>   [text1, 71]                further immigration, the deportation 
-#>  [text1, 139]                            The BNP will    deport   
-#> [text1, 1628] long-term resettlement programme.\n\n2.    Deport   
-#> [text1, 1633]          illegal immigrants\n\nWe shall    deport   
-#> [text1, 1653]                current unacceptably lax deportation 
-#> [text1, 1659]                           of people are   deported  
-#> [text1, 2169]                     enforced by instant deportation,
-#> [text1, 2180]         British immigration laws.\n\n8. Deportation 
-#> [text1, 2186]           Foreign Criminals\n\nWe shall    deport   
-#> [text1, 2198]                       This includes the deportation 
-#>  [text4, 566]                      subject to summary deportation.
-#>  [text6, 194]         illegal labour.\n\n- Prioritise deportation 
-#>  [text6, 394]                  flight risks.\n\n- End deportations
-#>  [text9, 317]                            laws or face deportation.
+#>     [BNP, 71]                further immigration, the deportation 
+#>    [BNP, 139]                            The BNP will    deport   
+#>   [BNP, 1628] long-term resettlement programme.\n\n2.    Deport   
+#>   [BNP, 1633]          illegal immigrants\n\nWe shall    deport   
+#>   [BNP, 1653]                current unacceptably lax deportation 
+#>   [BNP, 1659]                           of people are   deported  
+#>   [BNP, 2169]                     enforced by instant deportation,
+#>   [BNP, 2180]         British immigration laws.\n\n8. Deportation 
+#>   [BNP, 2186]           Foreign Criminals\n\nWe shall    deport   
+#>   [BNP, 2198]                       This includes the deportation 
+#> [Greens, 566]                      subject to summary deportation.
+#> [LibDem, 194]         illegal labour.\n\n- Prioritise deportation 
+#> [LibDem, 394]                  flight risks.\n\n- End deportations
+#>   [UKIP, 317]                            laws or face deportation.
 #>                                   postword
-#>   [text1, 71] of all illegal              
-#>  [text1, 139] all foreigners convicted    
-#> [text1, 1628] all illegal immigrants\n\nWe
-#> [text1, 1633] all illegal immigrants      
-#> [text1, 1653] policies, thousands of      
-#> [text1, 1659] from the UK                 
-#> [text1, 2169] for anyone found            
-#> [text1, 2180] of all Foreign              
-#> [text1, 2186] all criminal entrants,      
-#> [text1, 2198] of all Muslim               
-#>  [text4, 566] They should receive         
-#>  [text6, 194] efforts on criminals,       
-#>  [text6, 394] of refugees to              
-#>  [text9, 317] Such citizens will
+#>     [BNP, 71] of all illegal              
+#>    [BNP, 139] all foreigners convicted    
+#>   [BNP, 1628] all illegal immigrants\n\nWe
+#>   [BNP, 1633] all illegal immigrants      
+#>   [BNP, 1653] policies, thousands of      
+#>   [BNP, 1659] from the UK                 
+#>   [BNP, 2169] for anyone found            
+#>   [BNP, 2180] of all Foreign              
+#>   [BNP, 2186] all criminal entrants,      
+#>   [BNP, 2198] of all Muslim               
+#> [Greens, 566] They should receive         
+#> [LibDem, 194] efforts on criminals,       
+#> [LibDem, 394] of refugees to              
+#>   [UKIP, 317] Such citizens will
 
 # create a dfm, removing stopwords
 mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
@@ -144,24 +144,20 @@ mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
 #>    ... lowercasing
 #>    ... tokenizing
 #>    ... indexing 9 documents
-#>    ... shaping tokens into data.table, found 5,959 total tokens
-#>    ... ignoring 175 feature types, discarding 2,596 total features (43.6%)
-#>    ... summing tokens by document
-#>    ... indexing 1,489 feature types
-#>    ... building sparse matrix
-#>    ... created a 9 x 1489 sparse dfm
-#>    ... complete. Elapsed time: 0.039 seconds.
+#>    ... indexing 1,586 feature types
+#>   ... removed 1,347 features, from a list of 175 supplied feature types.
+#>    ... created a 9 x 239 sparse dfm
+#>    ... complete. 
+#> Elapsed time: 0.063 seconds.
 dim(mydfm)              # basic dimensions of the dfm
-#> [1]    9 1489
+#> [1]   9 239
 topfeatures(mydfm, 20)  # 20 top words
-#> immigration     british      people      asylum     britain      system 
-#>          66          37          35          29          28          27 
-#>          uk  population     country         new      ensure  immigrants 
-#>          27          21          20          19          17          17 
-#>       shall citizenship    national      social         bnp     illegal 
-#>          17          16          14          14          13          13 
-#>        work      ethnic 
-#>          13          12
+#>   people       uk   system  country      new   ensure      bnp  percent 
+#>       35       27       27       20       19       17       13       12 
+#>     must  seekers      end       eu   future refugees  schools     jobs 
+#>       12       10       10       10        9        8        7        7 
+#> students   levels  current  culture 
+#>        7        6        5        5
 if (Sys.info()['sysname']=="Darwin") quartz() # open nicer window, Mac only
 plot(mydfm)             # word cloud     
 ```

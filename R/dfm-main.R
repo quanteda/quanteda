@@ -277,13 +277,6 @@ dfm.tokenizedTexts <- function(x,
                               dimnames = list(docs = docNames, features = uniqueFeatures))
     dfmresult <- new("dfmSparse", dfmresult)
     
-    if (stem) {
-        if (verbose) cat("   ... stemming features (", stri_trans_totitle(language), ")", sep="")
-        oldNfeature <- nfeature(dfmresult)
-        dfmresult <- wordstem(dfmresult, language)
-        if (verbose) cat(", removed", oldNfeature - nfeature(dfmresult), "feature variants")
-    }
-    
     if (!is.null(ignoredFeatures)) {
         cat("  ... ")
         dfmresult <- selectFeatures(dfmresult, ignoredFeatures, selection = "remove", verbose = verbose)
@@ -302,6 +295,13 @@ dfm.tokenizedTexts <- function(x,
                                      valuetype = ifelse(dictionary_regex, "regex", "glob"),
                                      verbose = verbose,
                                      ...)
+    }
+    
+    if (stem) {
+        if (verbose) cat("   ... stemming features (", stri_trans_totitle(language), ")", sep="")
+        oldNfeature <- nfeature(dfmresult)
+        dfmresult <- wordstem(dfmresult, language)
+        if (verbose) cat(", trimmed", oldNfeature - nfeature(dfmresult), "feature variants\n")
     }
     
     if (verbose) 

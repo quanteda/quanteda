@@ -56,7 +56,7 @@ myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
 myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.",
                "Does the United_States or Sweden have more progressive taxation?"),
              verbose = FALSE)
-applyDictionary(myDfm, mydict, valuetype = "glob")
-applyDictionary(myDfm, mydict, exclusive = FALSE, valuetype = "glob", verbose = FALSE)
+applyDictionary(myDfm, myDict, valuetype = "glob")
+applyDictionary(myDfm, myDict, exclusive = FALSE, valuetype = "glob", verbose = FALSE)
 }
 
