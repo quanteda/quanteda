@@ -3,11 +3,17 @@
 \name{wordstem}
 \alias{wordstem}
 \alias{wordstem.character}
+\alias{wordstem.dfm}
+\alias{wordstem.tokenizedTexts}
 \title{stem words}
 \usage{
 wordstem(x, language = "porter")
 
 \method{wordstem}{character}(x, language = "porter")
+
+\method{wordstem}{tokenizedTexts}(x, language = "porter")
+
+\method{wordstem}{dfm}(x, language = "porter")
 }
 \arguments{
 \item{x}{a character vector or corpus, whose word stems are to be removed}

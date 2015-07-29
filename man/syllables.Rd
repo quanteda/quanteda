@@ -8,7 +8,7 @@
 \alias{syllables.tokenizedTexts}
 \title{count syllables in a text}
 \source{
-\code{englishSyllables} is built from the freely available CMU pronunciation dictionary at \url{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
+\code{englishSyllables} is built from the freely available CMU pronunciation dictionary at \code{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
 }
 \usage{
 syllables(x, ...)

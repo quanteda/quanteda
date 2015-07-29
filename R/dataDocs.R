@@ -41,7 +41,7 @@ NULL
 #' @aliases englishSyllables
 #' @rdname syllables
 #' @docType data
-#' @source \code{englishSyllables} is built from the freely available CMU pronunciation dictionary at \url{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
+#' @source \code{englishSyllables} is built from the freely available CMU pronunciation dictionary at \code{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
 #' 
 NULL
 

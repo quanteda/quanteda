@@ -135,19 +135,18 @@ dfm <- function(x, ...) {
 #'              the newspaper from a boy named Seamus, in his mouth."
 #' testCorpus <- corpus(testText)
 #' # settings(testCorpus, "stopwords")
-#' dfm(testCorpus, ignoredFeatures=stopwords("english"))
-#' features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE))
-#' features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE, include.unigrams=FALSE))
+#' dfm(testCorpus, ignoredFeatures = stopwords("english"))
+#' features(dfm(testCorpus, verbose = FALSE, ngrams = 1:2))
+#' features(dfm(testCorpus, verbose = FALSE, ngrams = 2))
 #' 
 #' # keep only certain words
-#' dfm(testCorpus, keptFeatures="s$", verbose=FALSE)  # keep only words ending in "s"
+#' dfm(testCorpus, keptFeatures = "s$", verbose = FALSE)  # keep only words ending in "s"
 #' 
 #' # testing Twitter functions
 #' testTweets <- c("My homie @@justinbieber #justinbieber shopping in #LA yesterday #beliebers",
 #'                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
 #'                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-#' dfm(testTweets, keptFeatures="^#", removePunct=FALSE)  # keep only hashtags
-#' ## NOT WHAT WE WERE EXPECTING - NEED TO FIX
+#' dfm(testTweets, keptFeatures = "^#", removeTwitter = FALSE)  # keep only hashtags
 #' 
 #' \dontrun{
 #' # try it with approx 35,000 court documents from Lauderdale and Clark (200?)
@@ -169,7 +168,7 @@ dfm.character <- function(x,
                           removeNumbers = TRUE, 
                           removePunct = TRUE,
                           removeSeparators = TRUE,
-                          removeTwitter = TRUE,
+                          removeTwitter = FALSE,
                           # removeCurrency = TRUE,
                           # removeURL = TRUE,
                           stem = FALSE, 
@@ -196,8 +195,8 @@ dfm.character <- function(x,
     }
     
     if (verbose) cat("\n   ... tokenizing", sep="")
-    tokenizedTexts <- tokenize(x, removeNumbers=removeNumbers, 
-                               removeSeparators=removeSeparators, removePunct=removePunct,
+    tokenizedTexts <- tokenize(x, removeNumbers = removeNumbers, 
+                               removeSeparators = removeSeparators, removePunct = removePunct,
                                removeTwitter = removeTwitter,
                                ...)
 
@@ -225,7 +224,107 @@ dfm.tokenizedTexts <- function(x,
                                dictionary=NULL, 
                                dictionary_regex=FALSE,
                                addto=NULL, ...) {
+    dots <- list(...)
+    startTime <- proc.time()
+    if ("startTime" %in% names(dots)) startTime <- dots$startTime
     
+    if ("codeType" %in% names(dots))
+        return(dfmTokenizeTextsOld(x, verbose=verbose, toLower=toLower, stem=stem, 
+                                   ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
+                                   matrixType=matrixType, language=language,
+                                   thesaurus=thesaurus, dictionary=dictionary, dictionary_regex=dictionary_regex,
+                                   addto=addto, startTime = startTime))
+    
+    # argument checking
+    matrixType <- match.arg(matrixType)
+    if (matrixType == "dense")
+        warning("matrixType = \"dense\" no longer supported, created sparse dfm instead")
+    if (!is.null(addto))
+        warning("addto no longer supported, ignoring")
+    language <- tolower(language)
+    
+    if (verbose && grepl("^dfm\\.tokenizedTexts", sys.calls()[[2]])) {
+        cat("Creating a dfm from a tokenizedTexts object ...")
+    }
+
+    # get document names
+    if (is.null(names(x))) {
+        docNames <- paste("text", 1:length(x), sep="")
+    } else docNames <- names(x)
+    
+    # index documents
+    if (verbose) cat("\n   ... indexing ", 
+                     format(length(x), big.mark=","), " document",
+                     ifelse(length(x) > 1, "s", ""), sep="")
+    nTokens <- lengths(x)
+    docIndex <- rep(seq_along(nTokens), nTokens)
+    
+    # index features
+    if (verbose) cat("\n   ... indexing")
+    allFeatures <- unlist(x)
+    uniqueFeatures <- unique(allFeatures) 
+    totalfeatures <- length(uniqueFeatures)
+    if (verbose) cat(" ", format(totalfeatures, big.mark=","), " feature type",
+                     ifelse(totalfeatures > 1, "s", ""), sep="")
+    featureIndex <- match(allFeatures, uniqueFeatures)
+    
+    if (verbose) cat("\n")
+    
+    # make the dfm
+    dfmresult <- sparseMatrix(i = docIndex, 
+                              j = featureIndex, 
+                              x = 1L, 
+                              dimnames = list(docs = docNames, features = uniqueFeatures))
+    dfmresult <- new("dfmSparse", dfmresult)
+    
+    if (stem) {
+        if (verbose) cat("   ... stemming features (", stri_trans_totitle(language), ")", sep="")
+        oldNfeature <- nfeature(dfmresult)
+        dfmresult <- wordstem(dfmresult, language)
+        if (verbose) cat(", removed", oldNfeature - nfeature(dfmresult), "feature variants")
+    }
+    
+    if (!is.null(ignoredFeatures)) {
+        cat("  ... ")
+        dfmresult <- selectFeatures(dfmresult, ignoredFeatures, selection = "remove", verbose = verbose)
+    }
+    
+    if (!is.null(keptFeatures)) {
+        cat("  ... ")
+        dfmresult <- selectFeatures(dfmresult, keptFeatures, selection = "keep", verbose = verbose)
+    }
+    
+    if (!is.null(dictionary) | !is.null(thesaurus)) {
+        if (!is.null(thesaurus)) dictionary <- thesaurus
+        if (verbose) cat("   ... ")
+        dfmresult <- applyDictionary(dfmresult, dictionary,
+                                     exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
+                                     valuetype = ifelse(dictionary_regex, "regex", "glob"),
+                                     verbose = verbose,
+                                     ...)
+    }
+    
+    if (verbose) 
+        cat("   ... created a", paste(dim(dfmresult), collapse=" x "), 
+            "sparse dfm\n   ... complete. \nElapsed time:", (proc.time() - startTime)[3], "seconds.\n")
+    
+    return(dfmresult)
+}
+
+    
+    
+dfmTokenizeTextsOld <- function(x, 
+                               verbose=TRUE,
+                               toLower = TRUE,
+                               stem=FALSE, 
+                               ignoredFeatures=NULL, 
+                               keptFeatures=NULL,
+                               matrixType=c("sparse", "dense"), 
+                               language="english",
+                               thesaurus=NULL, 
+                               dictionary=NULL, 
+                               dictionary_regex=FALSE,
+                               addto=NULL, ...) {
     dots <- list(...)
     if ("startTime" %in% names(dots)) startTime <- dots$startTime
     
@@ -394,7 +493,7 @@ dfm.tokenizedTexts <- function(x,
     if (verbose) {
         cat("\n   ... created a", paste(dim(dfmresult), collapse=" x "), 
             ifelse(matrixType=="dense", "dense", "sparse"), "dfm")
-        cat("\n   ... complete. Elapsed time:", (proc.time() - startTime)[3], "seconds.\n")
+        cat("\n   ... complete. \nElapsed time:", (proc.time() - startTime)[3], "seconds.\n")
     }
     if (matrixType == "dense")
         cat("  Note: matrixType dense is being phased out, try sparse instead.\n")
