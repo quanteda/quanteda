@@ -41,5 +41,5 @@ microbenchmark::microbenchmark(
 txt <- "The tall brown trees with pretty leaves in its branches."
 dfm(txt)
 dfm(txt, stem = TRUE)
-dfm(txt, ignoredFeatures = stopwords("english"))  ## FAILS
-dfm(txt, stem = TRUE, ignoredFeatures = stopwords("english"))  ## FAILS
+dfm(txt, ignoredFeatures = stopwords("english"))  
+dfm(txt, stem = TRUE, ignoredFeatures = stopwords("english"))

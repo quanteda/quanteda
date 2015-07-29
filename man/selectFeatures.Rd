@@ -8,7 +8,7 @@
 selectFeatures(x, features, ...)
 
 \method{selectFeatures}{dfm}(x, features = NULL, selection = c("keep",
-  "remove"), verbose = TRUE, ...)
+  "remove"), valuetype = c("glob", "regex", "fixed"), verbose = TRUE, ...)
 }
 \arguments{
 \item{x}{object whose features will be selected}
@@ -23,6 +23,10 @@ the option for other formats in the next revision.)}
 \code{\link[stringi]{stri_detect_regex}}, such as \code{case_insensitive}}
 
 \item{selection}{whether to keep or remove the features}
+
+\item{valuetype}{how to interpret feature vector: \code{fixed} for words as
+is; \code{"regex"} for regular expressions; or \code{"glob"} for
+"glob"-style wildcard}
 
 \item{verbose}{if \code{TRUE} print message about how many features were
 removed}
@@ -43,8 +47,9 @@ mydict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
                           notintext = "blahblah"))
 selectFeatures(myDfm, mydict)
 selectFeatures(myDfm, mydict, case_insensitive = TRUE)
-selectFeatures(myDfm, c("s$", ".y"), "keep")
-selectFeatures(myDfm, c("s$", ".y"), "remove")
+selectFeatures(myDfm, c("s$", ".y"), "keep", valuetype = "regex")
+selectFeatures(myDfm, c("s$", ".y"), "remove", valuetype = "regex")
+selectFeatures(myDfm, stopwords("english"), "remove", valuetype = "fixed")
 }
 \seealso{
 \link{removeFeatures}

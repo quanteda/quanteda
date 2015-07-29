@@ -212,10 +212,13 @@ stopwordsGet <- function(kind="english") {
 #' @param x object whose features will be selected
 #' @param features character vector of \link[regex]{regular expressions} 
 #'   definding the features to be selected, or a dictionary class object whose 
-#'   values will provide the features to be selected.  If a dictionary class
+#'   values will provide the features to be selected.  If a dictionary class 
 #'   object, the values will be interpreted as regular expressions.  (We may add
 #'   the option for other formats in the next revision.)
 #' @param selection whether to keep or remove the features
+#' @param valuetype how to interpret feature vector: \code{fixed} for words as
+#'   is; \code{"regex"} for regular expressions; or \code{"glob"} for
+#'   "glob"-style wildcard
 #' @param verbose if \code{TRUE} print message about how many features were 
 #'   removed
 #' @param ... supplementary arguments passed to the underlying functions in 
@@ -231,23 +234,34 @@ stopwordsGet <- function(kind="english") {
 #'                           notintext = "blahblah"))
 #' selectFeatures(myDfm, mydict)
 #' selectFeatures(myDfm, mydict, case_insensitive = TRUE)
-#' selectFeatures(myDfm, c("s$", ".y"), "keep")
-#' selectFeatures(myDfm, c("s$", ".y"), "remove")
+#' selectFeatures(myDfm, c("s$", ".y"), "keep", valuetype = "regex")
+#' selectFeatures(myDfm, c("s$", ".y"), "remove", valuetype = "regex")
+#' selectFeatures(myDfm, stopwords("english"), "remove", valuetype = "fixed")
 selectFeatures <- function(x, features, ...) {
     UseMethod("selectFeatures")
 }
 
 #' @rdname selectFeatures
 #' @export
-selectFeatures.dfm <- function(x, features = NULL, selection = c("keep", "remove"), verbose = TRUE, ...) {
+selectFeatures.dfm <- function(x, features = NULL, selection = c("keep", "remove"), 
+                               valuetype = c("glob", "regex", "fixed"),
+                               verbose = TRUE, ...) {
     selection <- match.arg(selection)
+    valuetype <- match.arg(valuetype)
     if (is.null(features))
         stop("Must supply a character vector of words to keep or remove")
     features <- unique(unlist(features))  # to convert any dictionaries
-    featIndex <- which(stringi::stri_detect_regex(features(x), paste0(features, collapse = "|"), ...))
+    if (valuetype == "glob") 
+        features <- lapply(features, utils::glob2rx)
+    if (valuetype == "regex" | valuetype == "glob") {
+        featIndex <- which(stringi::stri_detect_regex(features(x), paste0(features, collapse = "|"), ...))
+    } else {
+        featIndex <- match(features, features(x))
+    }
+
     if (verbose) cat(ifelse(selection=="keep", "kept", "removed"), 
                      format(length(featIndex), big.mark=","),
-                     "features, from a list of", length(features), "supplied feature types.\n")
+                     "features, from", length(features), "supplied feature types\n")
     if (selection == "keep")
         return(x[, featIndex])
     else

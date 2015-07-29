@@ -278,12 +278,12 @@ dfm.tokenizedTexts <- function(x,
     dfmresult <- new("dfmSparse", dfmresult)
     
     if (!is.null(ignoredFeatures)) {
-        cat("  ... ")
+        cat("   ... ")
         dfmresult <- selectFeatures(dfmresult, ignoredFeatures, selection = "remove", verbose = verbose)
     }
     
     if (!is.null(keptFeatures)) {
-        cat("  ... ")
+        cat("   ... ")
         dfmresult <- selectFeatures(dfmresult, keptFeatures, selection = "keep", verbose = verbose)
     }
     
