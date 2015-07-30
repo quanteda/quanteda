@@ -30,12 +30,12 @@ applyDictionary(txtDfm, mydict, exclusive = FALSE, valuetype = "glob", verbose =
 
 
 inaugTextsTokenized <- tokenize(toLower(inaugTexts[1:10]), removePunct = TRUE)
-microbenchmark::microbenchmark(
-    dfm(inaugTextsTokenized, verbose = FALSE),
-    dfm(inaugTextsTokenized, verbose = FALSE, codeType = "old"),
-    dfm(inaugTextsTokenized, dictionary = mydict, verbose = FALSE),
-    dfm(inaugTextsTokenized, dictionary = mydict, verbose = FALSE, codeType = "old")
-)
+# microbenchmark::microbenchmark(
+#     dfm(inaugTextsTokenized, verbose = FALSE),
+#     dfm(inaugTextsTokenized, verbose = FALSE, codeType = "old"),
+#     dfm(inaugTextsTokenized, dictionary = mydict, verbose = FALSE),
+#     dfm(inaugTextsTokenized, dictionary = mydict, verbose = FALSE, codeType = "old")
+# )
 
 ## need to be carefully inspected!
 txt <- "The tall brown trees with pretty leaves in its branches."

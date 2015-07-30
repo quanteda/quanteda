@@ -247,7 +247,7 @@ functions you may already use in R, such as `nrow()` and `ncol()`.
 
 ### Example: loading in files using `textfile()`
 
-```{r}
+```{r, eval=FALSE}
 # Twitter json
 mytf1 <- textfile("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
 myCorpusTwitter <- corpus(mytf1)
@@ -539,7 +539,7 @@ byPresMat
 
 The constructor function `dictionary()` also works with two common "foreign" dictionary formats: the 
 LIWC and Provalis Research's Wordstat format.  For instance, we can load the LIWC and apply this to the Presidential inaugural speech corpus:
-```{r}
+```{r, eval = FALSE}
 liwcdict <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
                        format = "LIWC")
 liwcdfm <- dfm(inaugTexts[52:57], dictionary = liwcdict, verbose = FALSE)
