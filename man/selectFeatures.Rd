@@ -42,6 +42,11 @@ such as text, a dfm, or a list of collocations.  The most common usage for
 text-based object, or to select only features from a list of regular
 expression.
 }
+\note{
+This function selects features based on their labels.  To select
+  features based on the values of a the document-feature matrix, use
+  \code{\link{trim}}.
+}
 \examples{
 myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.",
                "Does the United_States or Sweden have more progressive taxation?"),
@@ -57,6 +62,6 @@ selectFeatures(myDfm, stopwords("english"), "keep", valuetype = "fixed")
 selectFeatures(myDfm, stopwords("english"), "remove", valuetype = "fixed")
 }
 \seealso{
-\link{removeFeatures}
+\code{\link{removeFeatures}}, \code{\link{trim}}
 }
 

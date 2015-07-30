@@ -28,10 +28,19 @@ trimdfm(x, ...)
 \item{...}{only included to allow legacy \code{trimdfm} to pass arguments to \code{trim}}
 }
 \value{
-A \link{dfm-class} object reduced in features
+A \link{dfm-class} object reduced in features (with the same number
+  of documents)
 }
 \description{
-Returns a document by feature matrix reduced in size based on document and term frequency, and/or subsampling.
+Returns a document by feature matrix reduced in size based on document and
+term frequency, and/or subsampling.
+}
+\note{
+Trimming a \link{dfm-class} object is an operation based on the values
+  in the document-feature \emph{matrix}.  To select subsets of a dfm based on
+  attributes of the features themselves -- such as selecting features
+  matching a regular expression, or removing features matching a stopword
+  list, use \link{selectFeatures}.
 }
 \examples{
 dtm <- dfm(inaugCorpus)
@@ -44,6 +53,10 @@ dtmSampled # 57 x 50 words
 topfeatures(dtmSampled)
 }
 \author{
-Ken Benoit, inspired by code by Will Lowe (see \code{trim} from the \code{austin} package)
+Ken Benoit, inspired by code by Will Lowe (see \code{trim} from the
+  \code{austin} package)
+}
+\seealso{
+\code{\link{selectFeatures}}
 }
 

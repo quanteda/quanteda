@@ -96,7 +96,7 @@ NULL
 #' @format character vector with one element
 #' @docType data
 #' @examples
-#' clean(exampleString)
+#' tokenize(exampleString, removePunct = TRUE)
 NULL
 
 #' @name encodedTexts

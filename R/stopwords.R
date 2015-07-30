@@ -223,10 +223,13 @@ stopwordsGet <- function(kind="english") {
 #' @param verbose if \code{TRUE} print message about how many features were 
 #'   removed
 #' @param ... supplementary arguments passed to the underlying functions in 
-#'   \code{\link[stringi]{stri_detect_regex}}.  (This is how
+#'   \code{\link[stringi]{stri_detect_regex}}.  (This is how 
 #'   \code{case_insensitive} is passed, but you may wish to pass others.)
+#' @note This function selects features based on their labels.  To select
+#'   features based on the values of a the document-feature matrix, use
+#'   \code{\link{trim}}.
 #' @export
-#' @seealso \link{removeFeatures}
+#' @seealso \code{\link{removeFeatures}}, \code{\link{trim}}
 #' @examples 
 #' myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
 #'                "Does the United_States or Sweden have more progressive taxation?"),

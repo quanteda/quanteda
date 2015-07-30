@@ -6,18 +6,26 @@
 
 
 #' Trim a dfm using threshold-based or random feature selection
-#'
-#' Returns a document by feature matrix reduced in size based on document and term frequency, and/or subsampling.
+#' 
+#' Returns a document by feature matrix reduced in size based on document and 
+#' term frequency, and/or subsampling.
 #' @param x document-feature matrix of \link{dfm-class}
 #' @param minCount minimum feature count
 #' @param minDoc minimum number of documents in which a feature appears
-# @param minTotal minimum total feature threshold to retain a document
 #' @param nsample how many features to retain (based on random selection)
 #' @param verbose print messages
-#' @return A \link{dfm-class} object reduced in features
+#' @return A \link{dfm-class} object reduced in features (with the same number 
+#'   of documents)
 #' @name trim
 #' @export
-#' @author Ken Benoit, inspired by code by Will Lowe (see \code{trim} from the \code{austin} package)
+#' @note Trimming a \link{dfm-class} object is an operation based on the values 
+#'   in the document-feature \emph{matrix}.  To select subsets of a dfm based on
+#'   attributes of the features themselves -- such as selecting features 
+#'   matching a regular expression, or removing features matching a stopword 
+#'   list, use \link{selectFeatures}.
+#' @author Ken Benoit, inspired by code by Will Lowe (see \code{trim} from the 
+#'   \code{austin} package)
+#' @seealso \code{\link{selectFeatures}}
 #' @examples
 #' dtm <- dfm(inaugCorpus)
 #' dim(dtm)

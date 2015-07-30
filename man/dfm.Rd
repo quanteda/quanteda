@@ -16,13 +16,12 @@ dfm(x, ...)
   removeTwitter = FALSE, stem = FALSE, ignoredFeatures = NULL,
   keptFeatures = NULL, matrixType = c("sparse", "dense"),
   language = "english", thesaurus = NULL, dictionary = NULL,
-  dictionary_regex = FALSE, addto = NULL, ...)
+  dictionary_regex = FALSE, ...)
 
 \method{dfm}{tokenizedTexts}(x, verbose = TRUE, toLower = TRUE,
   stem = FALSE, ignoredFeatures = NULL, keptFeatures = NULL,
   matrixType = c("sparse", "dense"), language = "english",
-  thesaurus = NULL, dictionary = NULL, dictionary_regex = FALSE,
-  addto = NULL, ...)
+  thesaurus = NULL, dictionary = NULL, dictionary_regex = FALSE, ...)
 
 \method{dfm}{corpus}(x, verbose = TRUE, groups = NULL, ...)
 
@@ -65,7 +64,7 @@ to keep, while excluding all others.  This can be used in lieu of a
 dictionary if there are only specific features that a user wishes to keep.
 To extract only Twitter usernames, for example, set \code{keptFeatures =
 "^@\\\w+\\\b"} and make sure that \code{removeTwitter = FALSE} as an
-additional argument passed to \link{clean}.  (Note: \code{keptFeatures =
+additional argument passed to \link{tokenize}.  (Note: \code{keptFeatures =
 "^@"} will also retrieve usernames, but does not enforce the username
 convention that a username must contain one and only one \code{@} symbol,
 at the beginning of the username.)}
@@ -99,9 +98,6 @@ regular expressions (see examples)}
 \item{dictionary_regex}{\code{TRUE} means the dictionary is already in
 regular expression format, otherwise it will be converted from "wildcard"
 format}
-
-\item{addto}{\code{NULL} by default, but if an existing dfm object is
-specified, then the new dfm will be added to the one named}
 
 \item{groups}{character vector containing the names of document variables for
 aggregating documents}

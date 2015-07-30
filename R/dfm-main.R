@@ -51,7 +51,7 @@ dfm <- function(x, ...) {
 #'   dictionary if there are only specific features that a user wishes to keep. 
 #'   To extract only Twitter usernames, for example, set \code{keptFeatures = 
 #'   "^@@\\\w+\\\b"} and make sure that \code{removeTwitter = FALSE} as an 
-#'   additional argument passed to \link{clean}.  (Note: \code{keptFeatures = 
+#'   additional argument passed to \link{tokenize}.  (Note: \code{keptFeatures = 
 #'   "^@@"} will also retrieve usernames, but does not enforce the username 
 #'   convention that a username must contain one and only one \code{@@} symbol, 
 #'   at the beginning of the username.)
@@ -67,8 +67,6 @@ dfm <- function(x, ...) {
 #' @param dictionary_regex \code{TRUE} means the dictionary is already in 
 #'   regular expression format, otherwise it will be converted from "wildcard" 
 #'   format
-#' @param addto \code{NULL} by default, but if an existing dfm object is 
-#'   specified, then the new dfm will be added to the one named
 #' @param language Language for stemming and stopwords.  Choices are 
 #'   \code{danish}, \code{dutch}, \code{english}, \code{finnish}, \code{french},
 #'   \code{german}, \code{hungarian}, \code{italian}, \code{norwegian}, 
@@ -179,7 +177,6 @@ dfm.character <- function(x,
                           thesaurus=NULL, 
                           dictionary=NULL, 
                           dictionary_regex=FALSE, 
-                          addto=NULL,
                           ...) {
     startTime <- proc.time()
     matrixType <- match.arg(matrixType)
@@ -204,7 +201,7 @@ dfm.character <- function(x,
         ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
         matrixType=matrixType, language=language,
         thesaurus=thesaurus, dictionary=dictionary, dictionary_regex=dictionary_regex,
-        addto=addto, startTime = startTime)
+        startTime = startTime)
     
 }
 
@@ -223,7 +220,7 @@ dfm.tokenizedTexts <- function(x,
                                thesaurus=NULL, 
                                dictionary=NULL, 
                                dictionary_regex=FALSE,
-                               addto=NULL, ...) {
+                               ...) {
     dots <- list(...)
     startTime <- proc.time()
     if ("startTime" %in% names(dots)) startTime <- dots$startTime
@@ -233,14 +230,12 @@ dfm.tokenizedTexts <- function(x,
                                    ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
                                    matrixType=matrixType, language=language,
                                    thesaurus=thesaurus, dictionary=dictionary, dictionary_regex=dictionary_regex,
-                                   addto=addto, startTime = startTime))
+                                   startTime = startTime))
     
     # argument checking
     matrixType <- match.arg(matrixType)
     if (matrixType == "dense")
         warning("matrixType = \"dense\" no longer supported, created sparse dfm instead")
-    if (!is.null(addto))
-        warning("addto no longer supported, ignoring")
     language <- tolower(language)
     
     if (verbose && grepl("^dfm\\.tokenizedTexts", sys.calls()[[2]])) {
@@ -325,7 +320,7 @@ dfmTokenizeTextsOld <- function(x,
                                thesaurus=NULL, 
                                dictionary=NULL, 
                                dictionary_regex=FALSE,
-                               addto=NULL, ...) {
+                               ...) {
     dots <- list(...)
     if ("startTime" %in% names(dots)) startTime <- dots$startTime
     
@@ -465,21 +460,6 @@ dfmTokenizeTextsOld <- function(x,
     
     # make into sparse S4 class inheriting from dgCMatrix
     dfmresult <- new("dfmSparse", dfmresult)
-    
-    if (!is.null(addto)) {
-        if (sum(rownames(dfmresult) != rownames(addto)) > 0) {
-            stop("Cannot add to dfm: different document set.")
-        }
-        addIndex <- which(!(colnames(addto) %in% colnames(dfm)))
-        # adjust the "Non_Dictionary" count for the combined object if both are dictionary-based
-        if ("Non_Dictionary" %in% colnames(addto) & "Non_Dictionary" %in% colnames(dfmresult)) {
-            dfm[, "Non_Dictionary"] <- addto[, "Non_Dictionary"] - rowSums(as.matrix(dfmresult[, -ncol(dfmresult)]))
-        }
-        dfmresult <- cbind(addto[, addIndex], dfmresult)
-        
-        #dfmS4 <- setClass("dfm", contains = "dgCMatrix")
-        #dfmresult <- dfmS4(dfmresult)
-    }
     
     # add settings as an attribute
     # attr(resultdfm, "settings") <- settings(x)

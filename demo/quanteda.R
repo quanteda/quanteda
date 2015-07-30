@@ -24,7 +24,6 @@ plot(dfm(subset(mycorpus, party=="BNP"),
          ignoredFeatures = stopwords("english")))
 
 # some examples of tokenization and string cleaning
-tokenize(exampleString)
-clean(exampleString)
+tokenize(exampleString, removePunct = TRUE)
 wordstem(exampleString)
 
