@@ -55,8 +55,8 @@ removeFeatures <- function(x, stopwords=NULL, verbose=TRUE, ...) {
 }
 
 
-# #' @rdname removeFeatures
-# #' @export
+# # @rdname removeFeatures
+# # @export
 # removeFeatures.character <- function(x, stopwords=NULL, verbose=TRUE, ...) {
 #     if (is.null(stopwords))
 #         stop("Must supply a character vector of stopwords, e.g. stopwords(\"english\")")
