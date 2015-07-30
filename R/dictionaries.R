@@ -286,9 +286,10 @@ applyDictionary <- function(x, dictionary, ...) {
 #' @param exclusive if \code{TRUE}, remove all features not in dictionary, 
 #'   otherwise, replace values in dictionary keys with keys while leaving other 
 #'   features unaffected
-#' @param valuetype how to interpret dictionary values: \code{"regex"} for 
-#'   regular expressions; or \code{"glob"} for "glob"-style wildcard 
-#'   expressions; \code{"fixed"} for exact matching (entire words, for instance)
+#' @param valuetype how to interpret dictionary values: \code{"glob"} for 
+#'   "glob"-style wildcard expressions (the format used in Wordstat and LIWC
+#'   formatted dictionary values); \code{"regex"} for regular expressions; or
+#'   \code{"fixed"} for exact matching (entire words, for instance)
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
 #' @param capkeys if \code{TRUE}, convert dictionary or thesaurus keys to 
 #'   uppercase to distinguish them from other features
@@ -298,24 +299,34 @@ applyDictionary <- function(x, dictionary, ...) {
 #' @examples
 #' myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
 #'                           opposition = c("Opposition", "reject", "notincorpus"),
-#'                           taxing = "taxing",
-#'                           taxation = "taxation",
-#'                           taxregex = "tax*",
-#'                           country = "united_states"))
+#'                           taxglob = "tax*",
+#'                           taxregex = "tax.+$",
+#'                           country = c("United_States", "Sweden")))
 #' myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
 #'                "Does the United_States or Sweden have more progressive taxation?"),
-#'              verbose = FALSE)
-#' applyDictionary(myDfm, myDict, valuetype = "glob") 
-#' applyDictionary(myDfm, myDict, exclusive = FALSE, valuetype = "glob", verbose = FALSE) 
-applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("regex", "glob"), 
-                                case_insensitive = TRUE, 
-                                capkeys = !exclusive, 
+#'              ignoredFeatures = stopwords("english"), verbose = FALSE)
+#' myDfm
+#' 
+#' # glob format
+#' applyDictionary(myDfm, myDict, valuetype = "glob")
+#' applyDictionary(myDfm, myDict, valuetype = "glob", case_insensitive = FALSE)
+#'
+#' # regex v. glob format: note that "united_states" is a regex match for "tax*"
+#' applyDictionary(myDfm, myDict, valuetype = "glob")
+#' applyDictionary(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE)
+#' 
+#' # fixed format: no pattern matching
+#' applyDictionary(myDfm, myDict, valuetype = "fixed")
+#' applyDictionary(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
+applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("glob", "regex", "fixed"), 
+                                case_insensitive = TRUE,
+                                capkeys = !exclusive,
                                 verbose = TRUE, ...) {
     valuetype <- match.arg(valuetype)
     dictionary <- flatten.dictionary(dictionary)
     
-    if (verbose) cat("applying a dictionary consisting of ", length(dictionary), " key entr", 
-                     ifelse(length(dictionary) > 1, "ies", "y"), "\n", sep="")
+    if (verbose) cat("applying a dictionary consisting of ", length(dictionary), " key", 
+                     ifelse(length(dictionary) > 1, "s", ""), "\n", sep="")
     
     # convert wildcards to regular expressions (if needed)
     if (valuetype == "glob") {
@@ -328,7 +339,12 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
     uniqueFeatures <- features(x)
     newFeatureIndexList <- lapply(dictionary, function(x) {
         # ind <- grep(paste(x, collapse = "|"), uniqueFeatures, ignore.case = case_insensitive)
-        ind <- which(stringi::stri_detect_regex(uniqueFeatures, paste(x, collapse = "|"), case_insensitive = case_insensitive))
+        if (valuetype == "fixed") {
+            if (case_insensitive)  
+                ind <- which(toLower(uniqueFeatures) %in% (toLower(x)))
+            else ind <- which(uniqueFeatures %in% x)
+        }
+        else ind <- which(stringi::stri_detect_regex(uniqueFeatures, paste(x, collapse = "|"), case_insensitive = case_insensitive))
         if (length(ind) == 0)
             return(NULL)
         else 

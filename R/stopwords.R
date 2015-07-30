@@ -210,19 +210,21 @@ stopwordsGet <- function(kind="english") {
 #' text-based object, or to select only features from a list of regular 
 #' expression.
 #' @param x object whose features will be selected
-#' @param features character vector of \code{\link{regex}{regular expressions}} 
+#' @param features character vector of \link{regex}{regular expressions} 
 #'   definding the features to be selected, or a dictionary class object whose 
 #'   values will provide the features to be selected.  If a dictionary class 
 #'   object, the values will be interpreted as regular expressions.  (We may add
 #'   the option for other formats in the next revision.)
 #' @param selection whether to keep or remove the features
-#' @param valuetype how to interpret feature vector: \code{fixed} for words as
-#'   is; \code{"regex"} for regular expressions; or \code{"glob"} for
+#' @param valuetype how to interpret feature vector: \code{fixed} for words as 
+#'   is; \code{"regex"} for regular expressions; or \code{"glob"} for 
 #'   "glob"-style wildcard
+#' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
 #' @param verbose if \code{TRUE} print message about how many features were 
 #'   removed
 #' @param ... supplementary arguments passed to the underlying functions in 
-#'   \code{\link[stringi]{stri_detect_regex}}, such as \code{case_insensitive}
+#'   \code{\link[stringi]{stri_detect_regex}}.  (This is how
+#'   \code{case_insensitive} is passed, but you may wish to pass others.)
 #' @export
 #' @seealso \link{removeFeatures}
 #' @examples 
@@ -236,6 +238,7 @@ stopwordsGet <- function(kind="english") {
 #' selectFeatures(myDfm, mydict, case_insensitive = TRUE)
 #' selectFeatures(myDfm, c("s$", ".y"), "keep", valuetype = "regex")
 #' selectFeatures(myDfm, c("s$", ".y"), "remove", valuetype = "regex")
+#' selectFeatures(myDfm, stopwords("english"), "keep", valuetype = "fixed")
 #' selectFeatures(myDfm, stopwords("english"), "remove", valuetype = "fixed")
 selectFeatures <- function(x, features, ...) {
     UseMethod("selectFeatures")
@@ -245,6 +248,7 @@ selectFeatures <- function(x, features, ...) {
 #' @export
 selectFeatures.dfm <- function(x, features = NULL, selection = c("keep", "remove"), 
                                valuetype = c("glob", "regex", "fixed"),
+                               case_insensitive = TRUE,
                                verbose = TRUE, ...) {
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
@@ -254,15 +258,17 @@ selectFeatures.dfm <- function(x, features = NULL, selection = c("keep", "remove
     if (valuetype == "glob") 
         features <- lapply(features, utils::glob2rx)
     if (valuetype == "regex" | valuetype == "glob") {
-        featIndex <- which(stringi::stri_detect_regex(features(x), paste0(features, collapse = "|"), ...))
+        featIndex <- which(stringi::stri_detect_regex(features(x), paste0(features, collapse = "|"), 
+                                                      case_insensitive = case_insensitive, ...))
     } else {
-        featIndex <- match(features, features(x))
+        if (case_insensitive)
+            featIndex <- which(toLower(features(x)) %in% toLower(features))
+        else featIndex <- which(features(x) %in% features)
     }
 
     if (verbose) cat(ifelse(selection=="keep", "kept", "removed"), 
                      format(length(featIndex), big.mark=","),
                      "features, from", length(features), "supplied feature types\n")
-    featIndex <- featIndex[!is.na(featIndex)]
     if (selection == "keep")
         return(x[, featIndex])
     else

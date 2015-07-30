@@ -43,3 +43,31 @@ dfm(txt)
 dfm(txt, stem = TRUE)
 dfm(txt, ignoredFeatures = stopwords("english"))  
 dfm(txt, stem = TRUE, ignoredFeatures = stopwords("english"))
+
+
+myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
+                          opposition = c("Opposition", "reject", "notincorpus"),
+                          taxglob = "tax*",
+                          taxregex = "tax.+$",
+                          country = c("United_States", "Sweden")))
+myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
+               "Does the United_States or Sweden have more progressive taxation?"),
+             ignoredFeatures = stopwords("english"),
+             verbose = FALSE)
+myDfm
+# glob format
+(tmp <- applyDictionary(myDfm, myDict, valuetype = "glob", case_insensitive = TRUE))
+expect_equal(as.vector(tmp[, c("christmas", "country")]), c(1, 0, 0, 2))
+(tmp <- applyDictionary(myDfm, myDict, valuetype = "glob", case_insensitive = FALSE))
+expect_equal(as.vector(tmp[, c("christmas", "country")]), c(0, 0, 0, 0))
+# regex v. glob format
+(tmp <- applyDictionary(myDfm, myDict, valuetype = "glob", case_insensitive = TRUE))
+expect_equal(as.vector(tmp[, c("taxglob", "taxregex")]), c(1, 1, 0, 0))
+(tmp <- applyDictionary(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE))
+expect_equal(as.vector(tmp[, c("taxglob", "taxregex")]), c(1, 2, 0, 1))
+## note: "united_states" is a regex match for "tax*"!!
+
+(tmp <- applyDictionary(myDfm, myDict, valuetype = "fixed"))
+expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 2))
+(tmp <- applyDictionary(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE))
+expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 0))

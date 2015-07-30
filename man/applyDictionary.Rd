@@ -8,7 +8,7 @@
 applyDictionary(x, dictionary, ...)
 
 \method{applyDictionary}{dfm}(x, dictionary, exclusive = TRUE,
-  valuetype = c("regex", "glob"), case_insensitive = TRUE,
+  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
   capkeys = !exclusive, verbose = TRUE, ...)
 }
 \arguments{
@@ -22,9 +22,10 @@ applyDictionary(x, dictionary, ...)
 otherwise, replace values in dictionary keys with keys while leaving other
 features unaffected}
 
-\item{valuetype}{how to interpret dictionary values: \code{"regex"} for
-regular expressions; or \code{"glob"} for "glob"-style wildcard
-expressions; \code{"fixed"} for exact matching (entire words, for instance)}
+\item{valuetype}{how to interpret dictionary values: \code{"glob"} for
+"glob"-style wildcard expressions (the format used in Wordstat and LIWC
+formatted dictionary values); \code{"regex"} for regular expressions; or
+\code{"fixed"} for exact matching (entire words, for instance)}
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 
@@ -49,14 +50,24 @@ defined as values in a dictionary into their keys, while keeping all other featu
 \examples{
 myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                           opposition = c("Opposition", "reject", "notincorpus"),
-                          taxing = "taxing",
-                          taxation = "taxation",
-                          taxregex = "tax*",
-                          country = "united_states"))
+                          taxglob = "tax*",
+                          taxregex = "tax.+$",
+                          country = c("United_States", "Sweden")))
 myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.",
                "Does the United_States or Sweden have more progressive taxation?"),
-             verbose = FALSE)
+             ignoredFeatures = stopwords("english"), verbose = FALSE)
+myDfm
+
+# glob format
 applyDictionary(myDfm, myDict, valuetype = "glob")
-applyDictionary(myDfm, myDict, exclusive = FALSE, valuetype = "glob", verbose = FALSE)
+applyDictionary(myDfm, myDict, valuetype = "glob", case_insensitive = FALSE)
+
+# regex v. glob format: note that "united_states" is a regex match for "tax*"
+applyDictionary(myDfm, myDict, valuetype = "glob")
+applyDictionary(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE)
+
+# fixed format: no pattern matching
+applyDictionary(myDfm, myDict, valuetype = "fixed")
+applyDictionary(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
 }
 

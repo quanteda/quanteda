@@ -12,8 +12,8 @@ quanteda 0.8.1
   Code is also much simpler, based on using three new functions that are also available directly:
 
     * new "dfm" method for removeFeatures()  
-    * new "dfm" method: selectFeatures() that is now how features can be added or removed from a dfm, based on vectors of regular expressions  
-    * new "dfm" method: applyDictionary() that can replace features through matching with values in key-value lists from a dictionary class object.
+    * new "dfm" method: selectFeatures() that is now how features can be added or removed from a dfm, based on vectors of regular expressions, globs, or fixed matching  
+    * new "dfm" method: applyDictionary() that can replace features through matching with values in key-value lists from a dictionary class objects, based on vectors of regular expressions, globs, or fixed matching for dictionary values.  All functionality for applying dictionaries now takes place through applyDictionary().
 
 Bug Fixes
 ---------

@@ -8,25 +8,29 @@
 selectFeatures(x, features, ...)
 
 \method{selectFeatures}{dfm}(x, features = NULL, selection = c("keep",
-  "remove"), valuetype = c("glob", "regex", "fixed"), verbose = TRUE, ...)
+  "remove"), valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE, verbose = TRUE, ...)
 }
 \arguments{
 \item{x}{object whose features will be selected}
 
-\item{features}{character vector of \code{\link{regex}{regular expressions}}
+\item{features}{character vector of \link{regex}{regular expressions}
 definding the features to be selected, or a dictionary class object whose
 values will provide the features to be selected.  If a dictionary class
 object, the values will be interpreted as regular expressions.  (We may add
 the option for other formats in the next revision.)}
 
 \item{...}{supplementary arguments passed to the underlying functions in
-\code{\link[stringi]{stri_detect_regex}}, such as \code{case_insensitive}}
+\code{\link[stringi]{stri_detect_regex}}.  (This is how
+\code{case_insensitive} is passed, but you may wish to pass others.)}
 
 \item{selection}{whether to keep or remove the features}
 
 \item{valuetype}{how to interpret feature vector: \code{fixed} for words as
 is; \code{"regex"} for regular expressions; or \code{"glob"} for
 "glob"-style wildcard}
+
+\item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 
 \item{verbose}{if \code{TRUE} print message about how many features were
 removed}
@@ -49,6 +53,7 @@ selectFeatures(myDfm, mydict)
 selectFeatures(myDfm, mydict, case_insensitive = TRUE)
 selectFeatures(myDfm, c("s$", ".y"), "keep", valuetype = "regex")
 selectFeatures(myDfm, c("s$", ".y"), "remove", valuetype = "regex")
+selectFeatures(myDfm, stopwords("english"), "keep", valuetype = "fixed")
 selectFeatures(myDfm, stopwords("english"), "remove", valuetype = "fixed")
 }
 \seealso{
