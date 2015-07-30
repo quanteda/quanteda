@@ -64,7 +64,17 @@ removeFeatures.character <- function(x, stopwords=NULL, verbose=TRUE, ...) {
                           stopwords)
     # remove first of two whitespaces
     ret <- lapply(ret, function(x) x[!(stringi::stri_detect_charclass(x, "[\\p{Zs}]") & stringi::stri_detect_charclass(c(x[-1], " "), "[\\p{Zs}]"))])
-    ret <- lapply(ret, function(x) if (x[1] == " ") x[-1] else x)
+    print(length(ret))
+    tmpFun <- function(y){
+        if(is.na(y[1])){return('')} 
+        if(y[1] == " "){
+            
+            return(y[-1])
+        }else{
+            return(y)
+        }
+    }
+    ret <- lapply(ret, tmpFun)
     # paste back into a string and return
     sapply(ret, paste, collapse = "")
 }
