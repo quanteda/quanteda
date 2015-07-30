@@ -24,11 +24,12 @@
 #' @seealso \link{stopwords}
 #' @examples
 #' ## examples for character objects
-#' someText <- c(text1 = "Here's some text containing words we want to remove.")
+#' someText <- tokenize(c(text1 = "Here's some text containing words we want to remove."))
 #' removeFeatures(someText, stopwords("english"))
 #' removeFeatures(someText, stopwords("SMART"))
 #' removeFeatures(someText, c("some", "want"))
-#' someText <- c(someText, text2 = "A second sentence with a few stopwords.")
+#' someText <- tokenize(c(text1 = "Here's some text containing words we want to remove.",
+#'                        text2 = "A second sentence with a few stopwords."))
 #' removeFeatures(someText, stopwords("english"))
 #' 
 #' ## for tokenized texts 
@@ -36,11 +37,11 @@
 #'                    execute the functions of its Chief Magistrate.",
 #'          wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
 #'                    the high sense I entertain of this distinguished honor.")
-#' removeFeatures(txt, stopwords("english"))
 #' removeFeatures(tokenize(txt), stopwords("english"))
 #' 
-#' itText <- "Ecco alcuni di testo contenente le parole che vogliamo rimuovere."
-#' removeFeatures(itText, stopwords("italian"))
+#' itText <- tokenize("Ecco alcuni di testo contenente le parole che vogliamo rimuovere.", 
+#'                    removePunct = TRUE)
+#' removeFeatures(itText, stopwords("italian"), case_insensitive = TRUE)
 #' 
 #' ## example for dfm objects
 #' mydfm <- dfm(ukimmigTexts, verbose=FALSE)
@@ -54,30 +55,28 @@ removeFeatures <- function(x, stopwords=NULL, verbose=TRUE, ...) {
 }
 
 
-#' @rdname removeFeatures
-#' @export
-removeFeatures.character <- function(x, stopwords=NULL, verbose=TRUE, ...) {
-    if (is.null(stopwords))
-        stop("Must supply a character vector of stopwords, e.g. stopwords(\"english\")")
-    # tokenize while keeping spaces, and send to removeFeatures.tokenizedTexts
-    ret <- removeFeatures(tokenize(x, removePunct = FALSE, removeNumbers = FALSE, removeSeparators = FALSE, removeTwitter = FALSE),
-                          stopwords)
-    # remove first of two whitespaces
-    ret <- lapply(ret, function(x) x[!(stringi::stri_detect_charclass(x, "[\\p{Zs}]") & stringi::stri_detect_charclass(c(x[-1], " "), "[\\p{Zs}]"))])
-    print(length(ret))
-    tmpFun <- function(y){
-        if(is.na(y[1])){return('')} 
-        if(y[1] == " "){
-            
-            return(y[-1])
-        }else{
-            return(y)
-        }
-    }
-    ret <- lapply(ret, tmpFun)
-    # paste back into a string and return
-    sapply(ret, paste, collapse = "")
-}
+# #' @rdname removeFeatures
+# #' @export
+# removeFeatures.character <- function(x, stopwords=NULL, verbose=TRUE, ...) {
+#     if (is.null(stopwords))
+#         stop("Must supply a character vector of stopwords, e.g. stopwords(\"english\")")
+#     # tokenize while keeping spaces, and send to removeFeatures.tokenizedTexts
+#     ret <- removeFeatures(tokenize(x, removePunct = FALSE, removeNumbers = FALSE, removeSeparators = FALSE, removeTwitter = FALSE),
+#                           stopwords)
+#     # remove first of two whitespaces
+#     ret <- lapply(ret, function(x) x[!(stringi::stri_detect_charclass(x, "[\\p{Zs}]") & stringi::stri_detect_charclass(c(x[-1], " "), "[\\p{Zs}]"))])
+#     print(length(ret))
+#     tmpFun <- function(y) {
+#         if (is.na(y[1])) return("")
+#         if (y[1] == " ") 
+#             return(y[-1])
+#         else 
+#             return(y)
+#     }
+#     ret <- lapply(ret, tmpFun)
+#     # paste back into a string and return
+#     sapply(ret, paste, collapse = "")
+# }
 
 #' @rdname removeFeatures
 #' @export
@@ -215,7 +214,7 @@ stopwordsGet <- function(kind="english") {
 #' select features from an object
 #' 
 #' This function selects or discards features from a dfm.variety of objects, 
-#' such as text, a dfm, or a list of collocations.  The most common usage for 
+#' such as tokenized texts, a dfm, or a list of collocations.  The most common usage for 
 #' \code{removeFeatures} will be to eliminate stop words from a text or 
 #' text-based object, or to select only features from a list of regular 
 #' expression.

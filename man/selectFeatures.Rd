@@ -37,7 +37,7 @@ removed}
 }
 \description{
 This function selects or discards features from a dfm.variety of objects,
-such as text, a dfm, or a list of collocations.  The most common usage for
+such as tokenized texts, a dfm, or a list of collocations.  The most common usage for
 \code{removeFeatures} will be to eliminate stop words from a text or
 text-based object, or to select only features from a list of regular
 expression.
