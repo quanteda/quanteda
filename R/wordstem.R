@@ -44,3 +44,63 @@ wordstem.character <- function(x, language = "porter") {
 #                wordstemP(toks),
 #                simplify2array(parallel::mclapply(toks, wordstem, language=language)))
 
+#' @rdname wordstem
+#' @import stringi 
+#' @export
+wordstem.tokenizedTexts <- function(x, language = "porter") {
+    if (any(unlist(lapply(x, stringi::stri_detect_fixed, " "))))
+        stop("whitespace detected: you can only stem tokenized texts")
+    result <- lapply(x, SnowballC::wordStem, language)
+    class(result) <- c("tokenizedTexts", class(result))
+    result
+}
+
+#' @rdname wordstem
+#' @import stringi 
+#' @export
+wordstem.dfm <- function(x, language = "porter") {
+    oldFeaturesStemmed <- wordstem(features(x), language)
+    newFeatures <- unique(oldFeaturesStemmed)
+
+    featureIndex <- match(oldFeaturesStemmed, newFeatures)
+    docIndex <- rep(1:ndoc(x), length(oldFeaturesStemmed))
+    featureCounts <- as.vector(x)
+
+    result <- sparseMatrix(i = docIndex, 
+                           j = rep(featureIndex, each = ndoc(x)),
+                           x = featureCounts, 
+                           dimnames=list(docs = docnames(x), 
+                                         features = newFeatures))
+    new("dfmSparse", result)
+}
+
+
+# wordstem2 <- function(x, language = "porter") {
+#     
+#     dt <- data.table(stemmedFeatures = wordstem(rep(features(x), each = ndoc(x)), language),
+#                      docIndex = rep(1:ndoc(x), nfeature(x)),
+#                      counts = as.vector(x))
+#     setkey(dt, docIndex, stemmedFeatures)
+#     dt <- dt[, list(newCounts = sum(counts)), by = list(docIndex, stemmedFeatures)]
+#     
+#     newFeatures <- unique(dt, by = "stemmedFeatures")[, stemmedFeatures]
+#     
+#     result <- sparseMatrix(i = dt$docIndex,
+#                            j = rep(1:length(newFeatures), each = ndoc(x)),
+#                            x = dt$newCounts, 
+#                            dimnames=list(docs = docnames(x), 
+#                                          features = newFeatures))
+#     new("dfmSparse", result)
+# }
+# 
+
+
+# testText <- c("Dog runs, dogs run, and doggy is running.", 
+#               "The running man likes to run.")
+# xtoks <- tokenize(toLower(testText), removePunct = TRUE)
+# (xdfm <- dfmNew(xtoks))
+# wordstem(x)
+# microbenchmark::microbenchmark(dfmNew(wordstem(xtoks), toLower = FALSE, verbose = FALSE), 
+#                                wordstem(xdfm), 
+#                                wordstem2(xdfm))
+

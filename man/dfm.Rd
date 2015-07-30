@@ -13,7 +13,7 @@ dfm(x, ...)
 
 \method{dfm}{character}(x, verbose = TRUE, toLower = TRUE,
   removeNumbers = TRUE, removePunct = TRUE, removeSeparators = TRUE,
-  removeTwitter = TRUE, stem = FALSE, ignoredFeatures = NULL,
+  removeTwitter = FALSE, stem = FALSE, ignoredFeatures = NULL,
   keptFeatures = NULL, matrixType = c("sparse", "dense"),
   language = "english", thesaurus = NULL, dictionary = NULL,
   dictionary_regex = FALSE, addto = NULL, ...)
@@ -174,19 +174,18 @@ testText <- "The quick brown fox named Seamus jumps over the lazy dog also named
              the newspaper from a boy named Seamus, in his mouth."
 testCorpus <- corpus(testText)
 # settings(testCorpus, "stopwords")
-dfm(testCorpus, ignoredFeatures=stopwords("english"))
-features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE))
-features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE, include.unigrams=FALSE))
+dfm(testCorpus, ignoredFeatures = stopwords("english"))
+features(dfm(testCorpus, verbose = FALSE, ngrams = 1:2))
+features(dfm(testCorpus, verbose = FALSE, ngrams = 2))
 
 # keep only certain words
-dfm(testCorpus, keptFeatures="s$", verbose=FALSE)  # keep only words ending in "s"
+dfm(testCorpus, keptFeatures = "s$", verbose = FALSE)  # keep only words ending in "s"
 
 # testing Twitter functions
 testTweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday #beliebers",
                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-dfm(testTweets, keptFeatures="^#", removePunct=FALSE)  # keep only hashtags
-## NOT WHAT WE WERE EXPECTING - NEED TO FIX
+dfm(testTweets, keptFeatures = "^#", removeTwitter = FALSE)  # keep only hashtags
 
 \dontrun{
 # try it with approx 35,000 court documents from Lauderdale and Clark (200?)

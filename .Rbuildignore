@@ -8,3 +8,4 @@
 ^README-quanteda_example.png$
 ^vignettes/figure
 ^\.httr-oauth$
+^\.travis*

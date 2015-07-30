@@ -113,8 +113,8 @@ setGeneric("textfile",
                     cache = FALSE, docvarsfrom = c("filenames"), sep="_", 
                     docvarnames = NULL,  ...) 
                standardGeneric("textfile"))
-    #signature = c("file", "textField", "encodingFrom", "encodingTo", "docvarsfrom", 
-    #              "sep", "docvarnames", "cache", "encodingFrom", "encodingTo"))
+#signature = c("file", "textField", "encodingFrom", "encodingTo", "docvarsfrom", 
+#              "sep", "docvarnames", "cache", "encodingFrom", "encodingTo"))
 
 # FROM THE MATRIX PACKAGE - no need to duplicate here
 # setClassUnion("index", members =  c("numeric", "integer", "logical", "character"))
@@ -234,7 +234,7 @@ get_doc <- function(f, encodingFrom = NULL, encodingTo = "UTF-8") {
                if (encodingTo != "UTF-8")
                    result <- iconv(result, from = "UTF-8", to = encodingTo)
                return(result)
-               },
+           },
            doc =  { return(list(txts = get_word(f), docv=data.frame())) },
            json = { return(get_json_tweets(f)) },
            pdf =  { return(list(txts = get_pdf(f), docv=data.frame())) }
@@ -261,10 +261,10 @@ get_docs <- function(filemask, encodingFrom = NULL, encodingTo = "UTF-8") {
     textsvec <- c()
     for (i in 1:length(filenames))
         textsvec[i] <- get_doc(filenames[i], encodingFrom[i], encodingTo)$txts
-
+    
     # name the vector with the filename by default
     names(textsvec) <- getRootFileNames(filenames)
-
+    
     list(txts=textsvec, docv=data.frame())    
 }
 

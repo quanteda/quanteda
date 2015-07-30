@@ -35,7 +35,7 @@ mytf1 <- textfile("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
 myCorpusTwitter <- corpus(mytf1)
 summary(myCorpusTwitter, 5)
 # generic json - needs a textField specifier
-mytf2 <- textfile("~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/sotu/sotu.json",
+mytf2 <- textfile("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
                   textField = "text")
 summary(corpus(mytf2), 5)
 # text file
@@ -209,8 +209,8 @@ presCluster$labels <- docnames(presDfm)
 # plot as a dendrogram
 plot(presCluster)
 
-## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-similarity(presDfm, c("fair", "health", "terror"), method = "cosine")
+## ---- eval = FALSE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#  similarity(presDfm, c("fair", "health", "terror"), method = "cosine", normalize = FALSE)
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # make prettier document names

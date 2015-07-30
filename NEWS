@@ -8,6 +8,13 @@ quanteda 0.8.1
 
 * new function `scrabble()` computes English Scrabble word values for any text, applying any summary numerical function.
 
+* dfm() now 2x faster, replacing previous data.table matching with direct construction of sparse matrix from match().  
+  Code is also much simpler, based on using three new functions that are also available directly:
+
+    * new "dfm" method for removeFeatures()  
+    * new "dfm" method: selectFeatures() that is now how features can be added or removed from a dfm, based on vectors of regular expressions, globs, or fixed matching  
+    * new "dfm" method: applyDictionary() that can replace features through matching with values in key-value lists from a dictionary class objects, based on vectors of regular expressions, globs, or fixed matching for dictionary values.  All functionality for applying dictionaries now takes place through applyDictionary().
+
 * IMMINENT: change behaviour of `ignoredFeatures` and `removeFeatures()` applied to ngrams; change behaviour of stem = TRUE applied to ngrams (in `dfm()`)
 
 Bug Fixes
