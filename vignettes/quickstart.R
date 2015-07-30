@@ -195,22 +195,22 @@ obamaSimil <- similarity(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL,
                             margin = "documents", method = "cosine", normalize = FALSE)
 dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
 
-## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-data(SOTUCorpus, package="quantedaData")
-presDfm <- dfm(subset(SOTUCorpus, year > 1960), verbose = FALSE, stem = TRUE,
-               ignoredFeatures = stopwords("english"))
-presDfm <- trim(presDfm, minCount=5, minDoc=3)
-# hierarchical clustering - get distances on normalized dfm
-presDistMat <- dist(as.matrix(weight(presDfm, "relFreq")))
-# hiarchical clustering the distance object
-presCluster <- hclust(presDistMat)
-# label with document names
-presCluster$labels <- docnames(presDfm)
-# plot as a dendrogram
-plot(presCluster)
+## ---- eval=FALSE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#  data(SOTUCorpus, package="quantedaData")
+#  presDfm <- dfm(subset(SOTUCorpus, year > 1960), verbose = FALSE, stem = TRUE,
+#                 ignoredFeatures = stopwords("english"))
+#  presDfm <- trim(presDfm, minCount=5, minDoc=3)
+#  # hierarchical clustering - get distances on normalized dfm
+#  presDistMat <- dist(as.matrix(weight(presDfm, "relFreq")))
+#  # hiarchical clustering the distance object
+#  presCluster <- hclust(presDistMat)
+#  # label with document names
+#  presCluster$labels <- docnames(presDfm)
+#  # plot as a dendrogram
+#  plot(presCluster)
 
-## ---- eval = FALSE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#  similarity(presDfm, c("fair", "health", "terror"), method = "cosine", normalize = FALSE)
+## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+similarity(presDfm, c("fair", "health", "terror"), method = "cosine", normalize = FALSE)
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # make prettier document names
