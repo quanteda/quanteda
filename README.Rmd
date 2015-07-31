@@ -15,6 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 **Development version** [![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=dev)]
+[![codecov.io](http://codecov.io/github/kbenoit/quanteda.svg?branch=dev)](http://codecov.io/github/kbenoit/quanteda.svg?branch=dev)
 
 
 See the [Getting Started Vignette](http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html).
