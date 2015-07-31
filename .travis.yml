@@ -1,5 +1,11 @@
+before_install:
+  pip install codecov
+
 language: r
 sudo: required
 
 r_binary_packages:
 - topicmodels
+
+after_success:
+  codecov
