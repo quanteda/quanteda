@@ -1,4 +1,4 @@
-quanteda 0.8.1
+quanteda 0.8.2
 ==============
 
 * tokenize improvements for what = "sentence": more robust to specifying options, and does not split
