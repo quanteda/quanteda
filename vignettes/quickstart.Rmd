@@ -316,7 +316,7 @@ A corpus is designed to be a more or less static container of texts with respect
 To extract texts from a a corpus, we use an extractor, called `texts()`.  
 
 ```{r}
-texts(myCorpusTwitter)[c(15, 18, 55)]
+texts(inaugCorpus)[2]
 ```
 
 To summarize the texts from a corpus, we can call a `summary()` method defined for a corpus.
