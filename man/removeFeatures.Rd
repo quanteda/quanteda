@@ -4,10 +4,14 @@
 \alias{removeFeatures}
 \alias{removeFeatures.collocations}
 \alias{removeFeatures.dfm}
+\alias{removeFeatures.tokenizedTexts}
 \alias{stopwordsRemove}
 \title{remove features from an object}
 \usage{
 removeFeatures(x, stopwords = NULL, verbose = TRUE, ...)
+
+\method{removeFeatures}{tokenizedTexts}(x, stopwords = NULL, verbose = TRUE,
+  ...)
 
 \method{removeFeatures}{dfm}(x, stopwords = NULL, verbose = TRUE, ...)
 
