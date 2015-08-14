@@ -29,34 +29,34 @@ metadoc(myCorpus, "language") <- "english"
 metadoc(myCorpus, "docsource")  <- paste("inaugTexts", 1:ndoc(myCorpus), sep="_")
 summary(myCorpus, n=5, showmeta=TRUE)
 
-## ------------------------------------------------------------------------
-# Twitter json
-mytf1 <- textfile("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
-myCorpusTwitter <- corpus(mytf1)
-summary(myCorpusTwitter, 5)
-# generic json - needs a textField specifier
-mytf2 <- textfile("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
-                  textField = "text")
-summary(corpus(mytf2), 5)
-# text file
-mytf3 <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
-summary(corpus(mytf3), 5)
-# multiple text files
-mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
-summary(corpus(mytf4), 5)
-# multiple text files with docvars from filenames
-mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", 
-                  docvarsfrom="filenames", sep="-", docvarnames=c("Year", "President"))
-summary(corpus(mytf5), 5)
-# XML data
-mytf6 <- textfile("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml", 
-                  textField = "COMMON")
-summary(corpus(mytf6), 5)
-# csv file
-write.csv(data.frame(inaugSpeech = texts(inaugCorpus), docvars(inaugCorpus)), 
-          file = "/tmp/inaugTexts.csv", row.names = FALSE)
-mytf7 <- textfile("/tmp/inaugTexts.csv", textField = "inaugSpeech")
-summary(corpus(mytf7), 5)
+## ---- eval=FALSE---------------------------------------------------------
+#  # Twitter json
+#  mytf1 <- textfile("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
+#  myCorpusTwitter <- corpus(mytf1)
+#  summary(myCorpusTwitter, 5)
+#  # generic json - needs a textField specifier
+#  mytf2 <- textfile("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
+#                    textField = "text")
+#  summary(corpus(mytf2), 5)
+#  # text file
+#  mytf3 <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
+#  summary(corpus(mytf3), 5)
+#  # multiple text files
+#  mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
+#  summary(corpus(mytf4), 5)
+#  # multiple text files with docvars from filenames
+#  mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt",
+#                    docvarsfrom="filenames", sep="-", docvarnames=c("Year", "President"))
+#  summary(corpus(mytf5), 5)
+#  # XML data
+#  mytf6 <- textfile("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml",
+#                    textField = "COMMON")
+#  summary(corpus(mytf6), 5)
+#  # csv file
+#  write.csv(data.frame(inaugSpeech = texts(inaugCorpus), docvars(inaugCorpus)),
+#            file = "/tmp/inaugTexts.csv", row.names = FALSE)
+#  mytf7 <- textfile("/tmp/inaugTexts.csv", textField = "inaugSpeech")
+#  summary(corpus(mytf7), 5)
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # These keys are examples and may not work! Get your own key at dev.twitter.com
@@ -73,7 +73,7 @@ summary(corpus(mytf7), 5)
 #  names(docvars(twCorpus))
 
 ## ------------------------------------------------------------------------
-texts(myCorpusTwitter)[c(15, 18, 55)]
+texts(inaugCorpus)[2]
 
 ## ------------------------------------------------------------------------
 summary(ie2010Corpus)
@@ -181,11 +181,11 @@ myDict <- dictionary(list(terror = c("terrorism", "terrorists", "threat"),
 byPresMat <- dfm(recentCorpus, dictionary = myDict)
 byPresMat
 
-## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-liwcdict <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
-                       format = "LIWC")
-liwcdfm <- dfm(inaugTexts[52:57], dictionary = liwcdict, verbose = FALSE)
-liwcdfm[, 1:10]
+## ---- eval = FALSE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#  liwcdict <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
+#                         format = "LIWC")
+#  liwcdfm <- dfm(inaugTexts[52:57], dictionary = liwcdict, verbose = FALSE)
+#  liwcdfm[, 1:10]
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 presDfm <- dfm(subset(inaugCorpus, Year>1980), 

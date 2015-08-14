@@ -643,59 +643,40 @@ ndoc.corpus <- function(x) {
 # }
 
 
-corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=FALSE) {
-    # This is the "inner" function to be called by other functions
-    # to return a subset directly, use corpus.subset
-    
-    # The select argument exists only for the methods for data frames and matrices. 
-    # It works by first replacing column names in the selection expression with the 
-    # corresponding column numbers in the data frame and then using the resulting 
-    # integer vector to index the columns. This allows the use of the standard indexing 
-    # conventions so that for example ranges of columns can be specified easily, 
-    # or single columns can be dropped
-    # as in:
-    # subset(airquality, Temp > 80, select = c(Ozone, Temp))
-    # subset(airquality, Day == 1, select = -Temp)
-    # subset(airquality, select = Ozone:Wind)
-    if (is.null(subsetExpr)) 
-        rows <- TRUE
-    else {
-        rows <- eval(subsetExpr, documents(corpus), parent.frame())
-        if (!is.logical(rows)) 
-            stop("'subset' must evaluate to logical")
-        rows <- rows & !is.na(rows)
-    }
-    
-    if (is.null(selectExpr)) 
-        vars <- TRUE
-    else {
-        nl <- as.list(seq_along(documents(corpus)))
-        names(nl) <- names(documents(corpus))
-        vars <- c(1, eval(selectExpr, nl, parent.frame()))
-    }
-    # implement subset, select, and drop
-    # documents(corpus) <- documents(corpus)[rows, vars, drop=drop]
-    documents(corpus) <- corpus$documents[rows, vars, drop=drop]
-    return(corpus)
-}
-
-
 #' extract a subset of a corpus
 #' 
-#' Works just like the normal subset command but for corpus objects
+#' Returns subsets of a corpus that meet certain conditions, including direct 
+#' logical operations on docvars (document-level variables).  Works just like
+#' the normal subset command but for corpus objects.
 #' 
 #' @param x corpus object to be subsetted.
-#' @param subset logical expression indicating elements or rows to keep: missing values are taken as false.
+#' @param subset logical expression indicating elements or rows to keep: missing
+#'   values are taken as false.
 #' @param select expression, indicating the attributes to select from the corpus
-#' @param ...  additional arguments affecting the summary produced
+#' @param ... not used
 #' @return corpus object
 #' @export
+#' @seealso \code{\link{select}}
 #' @examples
 #' summary(subset(inaugCorpus, Year>1980))
 #' summary(subset(inaugCorpus, Year>1930 & President=="Roosevelt", select=Year))
-subset.corpus <- function(x, subset=NULL, select=NULL, ...) {
-    tempcorp <- corpus.subset.inner(x, substitute(subset), substitute(select))
-    return(tempcorp)
+subset.corpus <- function(x, subset, select, ...) {
+    r <- if (missing(subset)) {
+        rep_len(TRUE, nrow(documents(x)))
+    } else {
+        e <- substitute(subset)
+        r <- eval(e, documents(x), parent.frame())
+        r & !is.na(r)
+    }
+    vars <- if (missing(select)) 
+        TRUE
+    else {
+        nl <- as.list(seq_along(documents(x)))
+        names(nl) <- names(documents(x))
+        c(1, eval(substitute(select), nl, parent.frame()))
+    }
+    documents(x) <- documents(x)[r, vars, drop = FALSE]
+    x
 }
 
 #' summarize a corpus or a vector of texts
