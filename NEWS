@@ -1,19 +1,24 @@
-quanteda 0.8.3
-==============
+quanteda 0.8.2-1
+================
+
+* 0.8.2-1: Changed R version dependency to 3.2.0 so that Mac binary would build on CRAN.
 
 New Features
 ------------
-* `sample.corpus()` now samples documents from a corpus, and `sample.dfm()` samples documents 
+* 0.8.2-1: `sample.corpus()` now samples documents from a corpus, and `sample.dfm()` samples documents 
    or features from a dfm.  `trim()` method for with `nsample` argument now calls `sample.dfm()`.
-
 
 Bug Fixes
 ---------
 * Fixed a bug in `subset.corpus()` related to environments that sometimes caused the method to break if
   nested in function environments.
 
+
 quanteda 0.8.2
 ==============
+
+* `sample.corpus()` now samples documents from a corpus, and `sample.dfm()` samples documents 
+   or features from a dfm.  `trim()` method for with `nsample` argument now calls `sample.dfm()`.
 
 * tokenize improvements for what = "sentence": more robust to specifying options, and does not split
   sentences after common abbreviations such as "Dr.", "Prof.", etc.
