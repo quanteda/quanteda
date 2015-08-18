@@ -18,6 +18,7 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
@@ -74,7 +75,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h2>Major categories of functions</h2>
 <ol style="list-style-type: decimal">
 <li><p><strong>Corpus construction and management</strong>. These operate on a corpus, and return a corpus, or report on a corpus.</p>
-<pre class="sourceCode r"><code class="sourceCode r">changeunits
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">changeunits
 corpus
 docnames, &lt;-
 docvars, &lt;-
@@ -88,32 +89,32 @@ settings, &lt;-
 subset
 summary
 textfile
-texts</code></pre></li>
+texts</code></pre></div></li>
 <li><p><strong>Text manipulation.</strong> These operate on character vectors, and return character vectors.</p>
 <ol style="list-style-type: decimal">
 <li><p>Operations on character vectors or the character vector of texts from a corpus.</p>
 <p>Returns a list of character vectors:</p>
-<pre class="sourceCode r"><code class="sourceCode r">tokenize</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tokenize</code></pre></div>
 <p>Returning a character vector:</p>
-<pre class="sourceCode r"><code class="sourceCode r">phrasetotoken</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">phrasetotoken</code></pre></div>
 <p>Returns a <code>collocations</code> object,</p>
-<pre class="sourceCode r"><code class="sourceCode r">collocations</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">collocations</code></pre></div>
 <p>Returns a screen output and data/frame:</p>
-<pre class="sourceCode r"><code class="sourceCode r">kwic</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">kwic</code></pre></div>
 <p>Counts the number of tokens:</p>
-<pre class="sourceCode r"><code class="sourceCode r">ntoken</code></pre></li>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ntoken</code></pre></div></li>
 <li><p>Operations on character vectors of <em>tokens only</em>, returning a character vector of tokens:</p>
-<pre class="sourceCode r"><code class="sourceCode r">syllables
-wordstem</code></pre></li>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">syllables
+wordstem</code></pre></div></li>
 <li><p>Operations on character vectors of <em>tokens</em>, but also dfm objects and collocations:</p>
-<pre class="sourceCode r"><code class="sourceCode r">removeFeatures</code></pre></li>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">removeFeatures</code></pre></div></li>
 <li><p>Operations that <em>previously</em> worked (currently work) on character vectors of any size, but that will now be folded into Workflow Step 2 functions (see below) as part of tokenize:</p>
-<pre class="sourceCode r"><code class="sourceCode r">bigrams
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bigrams
 ngrams
-clean</code></pre></li>
+clean</code></pre></div></li>
 </ol></li>
 <li><p><strong><code>dfm</code> construction and manipulation.</strong></p>
-<pre class="sourceCode r"><code class="sourceCode r">dfm         <span class="co"># also works directly on (the texts of) a corpus</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dfm         <span class="co"># also works directly on (the texts of) a corpus</span>
 convert
 docfreq
 docnames
@@ -130,22 +131,22 @@ textmodel, textmodel_*
 topfeatures
 trim
 weight
-settings</code></pre></li>
+settings</code></pre></div></li>
 <li><p><strong>Auxiliary functions</strong>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">dictionary
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dictionary
 stopwords
-textfile</code></pre></li>
+textfile</code></pre></div></li>
 <li><p><strong>Example datasets and objects</strong>.</p>
 <p>Example data objects:</p>
-<pre class="sourceCode r"><code class="sourceCode r">exampleString       <span class="co"># character, length 1</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exampleString       <span class="co"># character, length 1</span>
 ukimmigTexts        <span class="co"># character, length 14</span>
 inaugTexts          <span class="co"># character, length 57</span>
 ie2010Corpus        <span class="co"># corpus</span>
 inaugCorpus         <span class="co"># corpus</span>
-LBGexample          <span class="co"># dfm</span></code></pre>
+LBGexample          <span class="co"># dfm</span></code></pre></div>
 <p>and some built-in objects used by functions:</p>
-<pre class="sourceCode r"><code class="sourceCode r">englishSyllables    <span class="co"># named character vector, length 133245</span>
-stopwords           <span class="co"># named list .stopwords, length 16</span></code></pre></li>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">englishSyllables    <span class="co"># named character vector, length 133245</span>
+stopwords           <span class="co"># named list .stopwords, length 16</span></code></pre></div></li>
 </ol>
 </div>
 </div>
@@ -218,8 +219,8 @@ These steps don’t necessarily require the processing steps above.
 <p>In most cases, users will use the default settings to create a dfm straight from a corpus. <code>dfm</code> will combine steps 3–4, even though basic functions will be available to perform these separately. All options shown in steps 3–4 will be available in <code>dfm</code>.</p></li>
 <li><p>If separate steps are desired</p>
 <p>We will do our best to ensure that all functions allow piping using the <code>magrittr</code> package, e.g.</p>
-<pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw">texts</span>(mycorpus, <span class="dt">group =</span> <span class="st">&quot;party&quot;</span>) %&gt;%<span class="st"> </span>toLower %&gt;%<span class="st"> </span>tokenize %&gt;%<span class="st"> </span>wordstem %&gt;%
-<span class="st">                                </span><span class="kw">removeFeatures</span>(<span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>)) %&gt;%<span class="st"> </span>dfm</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw">texts</span>(mycorpus, <span class="dt">group =</span> <span class="st">&quot;party&quot;</span>) %&gt;%<span class="st"> </span>toLower %&gt;%<span class="st"> </span>tokenize %&gt;%<span class="st"> </span>wordstem %&gt;%
+<span class="st">                                </span><span class="kw">removeFeatures</span>(<span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>)) %&gt;%<span class="st"> </span>dfm</code></pre></div>
 <p>We recognize however that not all sequences will make sense, for instance <code>wordstem</code> will only work <em>after</em> tokenization, and will try to catch these errors and make the proper sequence clear to users.</p></li>
 </ol>
 </div>
@@ -385,11 +386,11 @@ These steps don’t necessarily require the processing steps above.
 <div id="dfm-creation-with-ie2010-corpus" class="section level4">
 <h4>dfm creation with ie2010 Corpus</h4>
 <p>A <code>dfm</code> object can be created using piping, or in one step:</p>
-<pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw">texts</span>(ie2010Corpus, <span class="dt">groups =</span> <span class="st">&quot;party&quot;</span>) %&gt;%<span class="st"> </span>toLower %&gt;%<span class="st"> </span>tokenize %&gt;%<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw">texts</span>(ie2010Corpus, <span class="dt">groups =</span> <span class="st">&quot;party&quot;</span>) %&gt;%<span class="st"> </span>toLower %&gt;%<span class="st"> </span>tokenize %&gt;%<span class="st"> </span>
 <span class="st">             </span><span class="kw">removeFeatures</span>(<span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>)) %&gt;%<span class="st"> </span>wordstem %&gt;%<span class="st"> </span>dfm
     
 <span class="co"># same as:</span>
-mydfm2 &lt;-<span class="st"> </span><span class="kw">dfm</span>(ie2010Corpus, <span class="dt">groups =</span> <span class="st">&quot;party&quot;</span>, <span class="dt">ignoredFeatures =</span> <span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>)</code></pre>
+mydfm2 &lt;-<span class="st"> </span><span class="kw">dfm</span>(ie2010Corpus, <span class="dt">groups =</span> <span class="st">&quot;party&quot;</span>, <span class="dt">ignoredFeatures =</span> <span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
 </div>
 </div>

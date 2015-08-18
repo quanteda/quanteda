@@ -1,7 +1,15 @@
 quanteda 0.8.3
 ==============
 
-* Fixed a bug in subset.corpus() related to environments that sometimes caused the method to break if
+New Features
+------------
+* `sample.corpus()` now samples documents from a corpus, and `sample.dfm()` samples documents 
+   or features from a dfm.  `trim()` method for with `nsample` argument now calls `sample.dfm()`.
+
+
+Bug Fixes
+---------
+* Fixed a bug in `subset.corpus()` related to environments that sometimes caused the method to break if
   nested in function environments.
 
 quanteda 0.8.2

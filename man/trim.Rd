@@ -45,10 +45,10 @@ Trimming a \link{dfm-class} object is an operation based on the values
 \examples{
 dtm <- dfm(inaugCorpus)
 dim(dtm)
-dtmReduced <- trim(dtm, minCount=10, minDoc=2) # only words occuring >=5 times and in >=2 docs
+dtmReduced <- trim(dtm, minCount = 10, minDoc = 2) # only words occuring >=5 times and in >=2 docs
 dim(dtmReduced)
-topfeatures(dtmReduced, decreasing=FALSE)
-dtmSampled <- trim(dtm, minCount=20, nsample=50)  # sample 50 words over 20 count
+topfeatures(dtmReduced, decreasing = FALSE)
+dtmSampled <- trim(dtm, minCount = 20, nsample = 50)  # sample 50 words over 20 count
 dtmSampled # 57 x 50 words
 topfeatures(dtmSampled)
 }

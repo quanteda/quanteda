@@ -29,10 +29,10 @@
 #' @examples
 #' dtm <- dfm(inaugCorpus)
 #' dim(dtm)
-#' dtmReduced <- trim(dtm, minCount=10, minDoc=2) # only words occuring >=5 times and in >=2 docs
+#' dtmReduced <- trim(dtm, minCount = 10, minDoc = 2) # only words occuring >=5 times and in >=2 docs
 #' dim(dtmReduced)
-#' topfeatures(dtmReduced, decreasing=FALSE)
-#' dtmSampled <- trim(dtm, minCount=20, nsample=50)  # sample 50 words over 20 count
+#' topfeatures(dtmReduced, decreasing = FALSE)
+#' dtmSampled <- trim(dtm, minCount = 20, nsample = 50)  # sample 50 words over 20 count
 #' dtmSampled # 57 x 50 words
 #' topfeatures(dtmSampled)  
 #' @export
@@ -42,7 +42,7 @@ setGeneric("trim",
                standardGeneric("trim"))
 
 #' @rdname trim
-setMethod("trim", signature(x="dfm"), 
+setMethod("trim", signature(x = "dfm"), 
           function(x, minCount=1, minDoc=1, nsample=NULL, verbose=TRUE) {
               
               featIndexAboveMinCount <- which(colSums(x) >= minCount, useNames = FALSE)
@@ -64,7 +64,8 @@ setMethod("trim", signature(x="dfm"),
                   if (nsample > nfeature(x))
                       cat("Retained features smaller in number than sample size so resetting nsample to nfeature.")
                   nsample <- min(nfeature(x), nsample)
-                  x <- x[, sample(1:nsample)]
+                  # x <- x[, sample(1:nsample)]
+                  x <- sample(x, nsample, what = "features")
                   if (verbose) cat("Retaining a random sample of", nsample, "words\n")
               }
               
@@ -506,3 +507,37 @@ topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ...) {
     return(subdfm[1:n])
     #    }
 }
+
+#' @export
+#' @param what dimension (of a \link{dfm}) to sample: can be \code{documents} or
+#'   \code{features}
+#' @return A dfm object with number of documents equal to \code{size}, drawn 
+#'   from the corpus \code{x}.  The returned corpus object will contain all of 
+#'   the meta-data of the original corpus, and the same document variables for 
+#'   the documents selected.
+#' @seealso \code{\link{sample}}
+#' @rdname sample
+#' @examples
+#' # sampling from a dfm
+#' myDfm <- dfm(inaugTexts[1:10], verbose = FALSE)
+#' sample(myDfm)[, 1:10]
+#' sample(myDfm, replace = TRUE)[, 1:10]
+#' sample(myDfm, what = "features")[1:10, ]
+sample.dfm <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, 
+                       what = c("documents", "features"), ...) {
+    what <- match.arg(what)
+    if (what == "documents") {
+        if (size > ndoc(x))
+            stop("size cannot exceed the number of documents (", ndoc(x), ")")
+        x <- x[sample(ndoc(x), size, replace, prob), ]
+    } else if (what == "features") {
+        if (size > nfeature(x))
+            stop("size cannot exceed the number of features (", nfeature(x), ")")
+        x <- x[, sample(nfeature(x), size, replace, prob)]
+    } else {
+        stop("only documents or features please")
+    }
+    x
+}
+
+
