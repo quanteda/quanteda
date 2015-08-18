@@ -29,7 +29,7 @@ setMethod("show",
               } else {
                   cat("corpusSource object containing ", length(texts(object)), 
                       " text", ifelse(length(texts(object)) == 1, "", "s"), " and ", 
-                      ncol(docvars(object)), " docvar", ifelse(ncol(docvars(object)) == 1, "", "s"), ".\n", sep="")
+                      ncol(docvars(object)), " docvar", ifelse(ncol(docvars(object)) == 1, "", "s"), ".\n", dvsep="")
               }
           })
 
@@ -52,13 +52,17 @@ setMethod("show",
 #'   be identified by specifying a \code{textField} value.} 
 #'   \item{\code{csv}}{comma separated value data, consisting of the texts and 
 #'   additional document-level variables and document-level meta-data.  The text
-#'   file must be identified by specifying a \code{textField} value.} \item{a 
+#'   file must be identified by specifying a \code{textField} value.} 
+#'   \item{\code{tab, tsv}}{tab-separated value data, consisting of the texts and 
+#'   additional document-level variables and document-level meta-data.  The text
+#'   file must be identified by specifying a \code{textField} value.} 
+#'   \item{a 
 #'   wildcard value}{any valid pathname with a wildcard ("glob") expression that
 #'   can be expanded by the operating system.  This may consist of multiple file
-#'   types.} \item{\code{xml}:}{Basic flat XML documents are supported -- those 
+#'   types.} \item{\code{xml}}{Basic flat XML documents are supported -- those 
 #'   of the kind supported by the function xmlToDataFrame function of the 
-#'   \strong{XML}  package.} \item{\code{doc, docx}:}{Word files coming soon.} 
-#'   \item{\code{pdf}:}{Adobe Portable Document Format files, coming soon.} }
+#'   \strong{XML}  package.} 
+#'   }
 #' @param textField a variable (column) name or column number indicating where 
 #'   to find the texts that form the documents for the corpus.  This must be 
 #'   specified for file types \code{.csv} and \code{.json}.
@@ -76,10 +80,10 @@ setMethod("show",
 #' @param docvarsfrom  used to specify that docvars should be taken from the 
 #'   filenames, when the \code{textfile} inputs are filenames and the elements 
 #'   of the filenames are document variables, separated by a delimiter 
-#'   (\code{sep}).  This allows easy assignment of docvars from filenames such 
-#'   as \code{1789-Washington.txt}, \code{1793-Washington}, etc. by \code{sep} 
+#'   (\code{dvsep}).  This allows easy assignment of docvars from filenames such 
+#'   as \code{1789-Washington.txt}, \code{1793-Washington}, etc. by \code{dvsep} 
 #'   or from meta-data embedded in the text file header (\code{headers}).
-#' @param sep separator used in filenames to delimit docvar elements if 
+#' @param dvsep separator used in filenames to delimit docvar elements if 
 #'   \code{docvarsfrom="filenames"} is used
 #' @param docvarnames character vector of variable names for \code{docvars}, if 
 #'   \code{docvarsfrom} is specified.  If this argument is not used, default 
@@ -110,11 +114,11 @@ setMethod("show",
 #' @importFrom stats var
 setGeneric("textfile",
            function(file, textField, encodingFrom = NULL, encodingTo = "UTF-8",
-                    cache = FALSE, docvarsfrom = c("filenames"), sep="_", 
+                    cache = FALSE, docvarsfrom = c("filenames"), dvsep="_", 
                     docvarnames = NULL,  ...) 
                standardGeneric("textfile"))
 #signature = c("file", "textField", "encodingFrom", "encodingTo", "docvarsfrom", 
-#              "sep", "docvarnames", "cache", "encodingFrom", "encodingTo"))
+#              "dvsep", "docvarnames", "cache", "encodingFrom", "encodingTo"))
 
 # FROM THE MATRIX PACKAGE - no need to duplicate here
 # setClassUnion("index", members =  c("numeric", "integer", "logical", "character"))
@@ -137,7 +141,7 @@ setGeneric("textfile",
 #' summary(corpus(mytf4))
 #' # multiple text files with docvars from filenames
 #' mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", 
-#'                   docvarsfrom="filenames", sep="-", docvarnames=c("Year", "President"))
+#'                   docvarsfrom="filenames", dvsep="-", docvarnames=c("Year", "President"))
 #' summary(corpus(mytf5))
 #' # XML data
 #' mytf6 <- textfile("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml", 
@@ -153,7 +157,7 @@ setMethod("textfile",
           signature(file = "character", textField = "index", 
                     encodingFrom="missing", encodingTo="missing",
                     cache = "ANY", 
-                    docvarsfrom="missing", sep="missing", docvarnames="missing"),
+                    docvarsfrom="missing", dvsep="missing", docvarnames="missing"),
           definition = function(file, textField, cache = FALSE, ...) {
               if (length(textField) != 1)
                   stop("textField must be a single field name or column number identifying the texts.")
@@ -173,7 +177,7 @@ setMethod("textfile",
 setMethod("textfile", 
           signature(file = "character", textField = "missing",
                     encodingFrom="ANY", encodingTo="ANY", cache = "ANY",
-                    docvarsfrom="missing", sep="missing", docvarnames="missing"),
+                    docvarsfrom="missing", dvsep="missing", docvarnames="missing"),
           definition = function(file, encodingFrom = NULL, encodingTo = "UTF-8", cache = FALSE, ...) {
               fileType <- getFileType(file)
               if (fileType=="filemask") {
@@ -190,9 +194,9 @@ setMethod("textfile",
           signature(file = "character", textField = "missing", 
                     encodingFrom="missing", encodingTo="missing", 
                     cache = "ANY",
-                    docvarsfrom="character", sep="ANY", docvarnames="ANY"),
+                    docvarsfrom="character", dvsep="ANY", docvarnames="ANY"),
           definition = function(file, textField=NULL, cache = FALSE, 
-                                docvarsfrom=c("headers"), sep="_", docvarnames=NULL, ...) {
+                                docvarsfrom=c("headers"), dvsep="_", docvarnames=NULL, ...) {
               fileType <- getFileType(file)
               if (fileType=="filemask") {
                   sources <- get_docs(file, encodingFrom, encodingTo)
@@ -200,7 +204,7 @@ setMethod("textfile",
                   stop("File type ", fileType, " not supported with these arguments.")
               }
               if (docvarsfrom == "filenames") {
-                  sources$docv <- getdocvarsFromHeaders(names(sources$txts), sep=sep, docvarnames=docvarnames)
+                  sources$docv <- getdocvarsFromHeaders(names(sources$txts), dvsep=dvsep, docvarnames=docvarnames)
               } else {
                   warning("docvarsfrom=", docvarsfrom, " not supported.")
               }
@@ -269,12 +273,14 @@ get_docs <- function(filemask, encodingFrom = NULL, encodingTo = "UTF-8") {
 }
 
 # read a document from a structured file containing text and data
-get_data <- function(f, textField='index', sep=',', ...){
+get_data <- function(f, textField, sep = ",", ...){
     src <- list()
     # print('fileType')
     fileType <- getFileType(f)
     switch(fileType,
            csv = {src <- get_csv(f, textField, ...)},
+           tab = {src <- get_csv(f, textField, sep = "\t", ...)},
+           tsv = {src <- get_csv(f, textField, sep = "\t", ...)},
            json = {src <- get_json(f, textField, ...)},
            xml = {src <- get_xml(f, textField, ...)}
     )
@@ -442,10 +448,10 @@ getRootFileNames <- function(longFilenames) {
 }
 
 
-getdocvarsFromHeaders <- function(fnames, sep="_", docvarnames=NULL) {
+getdocvarsFromHeaders <- function(fnames, dvsep="_", docvarnames=NULL) {
     snames <- fnames
     snames <- gsub(".txt", "", snames)
-    parts <- strsplit(snames, sep)
+    parts <- strsplit(snames, dvsep)
     if (stats::var(sapply(parts, length)) != 0)
         stop("Filename elements are not equal in length.")
     dvars <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE), 

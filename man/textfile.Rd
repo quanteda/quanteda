@@ -9,23 +9,23 @@
 \title{read a text corpus source from a file}
 \usage{
 textfile(file, textField, encodingFrom = NULL, encodingTo = "UTF-8",
-  cache = FALSE, docvarsfrom = c("filenames"), sep = "_",
+  cache = FALSE, docvarsfrom = c("filenames"), dvsep = "_",
   docvarnames = NULL, ...)
 
 
   \S4method{textfile}{character,index,missing,missing,ANY,missing,missing,missing}(file,
   textField, encodingFrom = NULL, encodingTo = "UTF-8", cache = FALSE,
-  docvarsfrom = c("filenames"), sep = "_", docvarnames = NULL, ...)
+  docvarsfrom = c("filenames"), dvsep = "_", docvarnames = NULL, ...)
 
 
   \S4method{textfile}{character,missing,ANY,ANY,ANY,missing,missing,missing}(file,
   textField, encodingFrom = NULL, encodingTo = "UTF-8", cache = FALSE,
-  docvarsfrom = c("filenames"), sep = "_", docvarnames = NULL, ...)
+  docvarsfrom = c("filenames"), dvsep = "_", docvarnames = NULL, ...)
 
 
   \S4method{textfile}{character,missing,missing,missing,ANY,character,ANY,ANY}(file,
   textField, encodingFrom = NULL, encodingTo = "UTF-8", cache = FALSE,
-  docvarsfrom = c("filenames"), sep = "_", docvarnames = NULL, ...)
+  docvarsfrom = c("filenames"), dvsep = "_", docvarnames = NULL, ...)
 }
 \arguments{
 \item{file}{the complete filename to be read.  Currently available file types
@@ -35,13 +35,17 @@ document-level variables and document-level meta-data.  The text key must
 be identified by specifying a \code{textField} value.}
 \item{\code{csv}}{comma separated value data, consisting of the texts and
 additional document-level variables and document-level meta-data.  The text
-file must be identified by specifying a \code{textField} value.} \item{a
+file must be identified by specifying a \code{textField} value.}
+\item{\code{tab, tsv}}{tab-separated value data, consisting of the texts and
+additional document-level variables and document-level meta-data.  The text
+file must be identified by specifying a \code{textField} value.}
+\item{a
 wildcard value}{any valid pathname with a wildcard ("glob") expression that
 can be expanded by the operating system.  This may consist of multiple file
-types.} \item{\code{xml}:}{Basic flat XML documents are supported -- those
+types.} \item{\code{xml}}{Basic flat XML documents are supported -- those
 of the kind supported by the function xmlToDataFrame function of the
-\strong{XML}  package.} \item{\code{doc, docx}:}{Word files coming soon.}
-\item{\code{pdf}:}{Adobe Portable Document Format files, coming soon.} }}
+\strong{XML}  package.}
+}}
 
 \item{textField}{a variable (column) name or column number indicating where
 to find the texts that form the documents for the corpus.  This must be
@@ -73,11 +77,11 @@ source data again.}
 \item{docvarsfrom}{used to specify that docvars should be taken from the
 filenames, when the \code{textfile} inputs are filenames and the elements
 of the filenames are document variables, separated by a delimiter
-(\code{sep}).  This allows easy assignment of docvars from filenames such
-as \code{1789-Washington.txt}, \code{1793-Washington}, etc. by \code{sep}
+(\code{dvsep}).  This allows easy assignment of docvars from filenames such
+as \code{1789-Washington.txt}, \code{1793-Washington}, etc. by \code{dvsep}
 or from meta-data embedded in the text file header (\code{headers}).}
 
-\item{sep}{separator used in filenames to delimit docvar elements if
+\item{dvsep}{separator used in filenames to delimit docvar elements if
 \code{docvarsfrom="filenames"} is used}
 
 \item{docvarnames}{character vector of variable names for \code{docvars}, if
@@ -123,7 +127,7 @@ mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
 summary(corpus(mytf4))
 # multiple text files with docvars from filenames
 mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt",
-                  docvarsfrom="filenames", sep="-", docvarnames=c("Year", "President"))
+                  docvarsfrom="filenames", dvsep="-", docvarnames=c("Year", "President"))
 summary(corpus(mytf5))
 # XML data
 mytf6 <- textfile("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml",
