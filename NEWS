@@ -1,21 +1,17 @@
-quanteda 0.8.2-1
-================
+quanteda 0.8.3
+==============
 
-* 0.8.2-1: Changed R version dependency to 3.2.0 so that Mac binary would build on CRAN.
+*  corpus() no longer checks all documents for text encoding; rather, this is now based on a random sample of max()
 
-New Features
-------------
-* 0.8.2-1: `sample.corpus()` now samples documents from a corpus, and `sample.dfm()` samples documents 
-   or features from a dfm.  `trim()` method for with `nsample` argument now calls `sample.dfm()`.
-
-Bug Fixes
----------
-* Fixed a bug in `subset.corpus()` related to environments that sometimes caused the method to break if
-  nested in function environments.
-
+*  wordstem.dfm() both faster and more robust when working with large objects.
 
 quanteda 0.8.2
 ==============
+
+*  0.8.2-1: Changed R version dependency to 3.2.0 so that Mac binary would build on CRAN.
+
+*  0.8.2-1: `sample.corpus()` now samples documents from a corpus, and `sample.dfm()` samples documents 
+   or features from a dfm.  `trim()` method for with `nsample` argument now calls `sample.dfm()`.
 
 * `sample.corpus()` now samples documents from a corpus, and `sample.dfm()` samples documents 
    or features from a dfm.  `trim()` method for with `nsample` argument now calls `sample.dfm()`.
@@ -42,6 +38,8 @@ Bug Fixes
 * fixed problem in tokenize(x, "character", removePunct = TRUE) that deleted texts that had no punctuation to begin with
 * fixed problem in dictionary(, format = "LIWC") causing import to fail for some LIWC dictionaries.
 * fixed problem in tokenize(x, ngrams = N) where N > length(x).  Now returns NULL instead of an erroneously tokenized set of ngrams.
+* Fixed a bug in `subset.corpus()` related to environments that sometimes caused the method to break if
+  nested in function environments.
 
 Deletions
 ---------

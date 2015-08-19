@@ -92,8 +92,6 @@ corpus <- function(x, ...) {
 corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvars=NULL,
                              source=NULL, notes=NULL, citation=NULL, ...) {
     
-    x_names <- names(x)
-    
     # check validity of encoding label(s)
     if (!is.null(enc)) {
         if (!(enc %in% stringi::stri_enc_list(simplify = TRUE))) 
@@ -110,8 +108,9 @@ corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvar
                                          c("\"", "\"", "\"", 
                                            "\'", "\'", "\'"), vectorize_all = FALSE)
 
-    # detect encoding
-    detectedEncoding <- encoding(x, verbose = FALSE)$probably
+    # detect encoding based on 100 documents
+    detectSampleSize <- 100
+    detectedEncoding <- encoding(x[sample(length(x), min(detectSampleSize, length(x)))], verbose = FALSE)$probably
     # cat("Detected encoding:", detectedEncoding, "\n")
 #     if (!is.null(enc))
 #         if (enc != detectedEncoding)
@@ -133,6 +132,7 @@ corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvar
     }
 
     # name the texts vector
+    x_names <- names(x)
     if (!is.null(docnames)) {
         stopifnot(length(docnames)==length(x))
         names(x) <- docnames
@@ -993,7 +993,8 @@ ntoken.dfm <- function(x, ...) {
 ntype.dfm <- function(x, ...) {
     if (length(list(...)) > 0)
         warning("additional arguments not used for ntoken.dfm()")
-    apply(x, 1, function(dfmrow) sum(dfmrow > 0))
+    # apply(x, 1, function(dfmrow) sum(dfmrow > 0))
+    apply(x, 1, Matrix::nnzero)
 }
 
 

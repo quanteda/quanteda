@@ -69,9 +69,9 @@ additional argument passed to \link{tokenize}.  (Note: \code{keptFeatures =
 convention that a username must contain one and only one \code{@} symbol,
 at the beginning of the username.)}
 
-\item{matrixType}{if \code{dense}, produce a dense matrix; or it
-\code{sparse} produce a sparse matrix of class \code{dgCMatrix} from the
-\pkg{\link{Matrix}} package.}
+\item{matrixType}{deprecated, used to produce a dense matrix if \code{dense},
+but this was removed in 0.8.2.  All dfm objects are now created as a sparse
+matrix of class \code{dgCMatrix} from the \pkg{\link{Matrix}} package.}
 
 \item{language}{Language for stemming and stopwords.  Choices are
 \code{danish}, \code{dutch}, \code{english}, \code{finnish}, \code{french},
@@ -106,9 +106,6 @@ aggregating documents}
 A \link{dfm-class} object containing a sparse matrix representation
   of the counts of features by document, along with associated settings and
   metadata.
-
-  If you used \code{matrixType = "dense"} then the return is an old-style S3
-  matrix class object with additional attributes representing meta-data.
 }
 \description{
 Create a sparse matrix document-feature matrix from a corpus or a vector of
@@ -118,19 +115,14 @@ both much faster and much more memory efficient than the corresponding dense
 dfm class, see \link{dfm-class}.
 }
 \details{
-New as of v0.7: All dfms are by default sparse, a change from the previous
-behaviour. You can still create the older (S3) dense matrix type dfm object,
-but you will receive a disapproving warning message while doing so,
-suggesting you make the switch.
-
 \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
 
 \code{as.dfm} coerces a matrix or data.frame to a dfm
 }
 \examples{
 \donttest{# with inaugural texts
-(size1 <- object.size(dfm(inaugTexts, matrixType="sparse")))
-(size2 <- object.size(dfm(inaugTexts, matrixType="dense")))
+(size1 <- object.size(dfm(inaugTexts, verbose = FALSE)))
+(size2 <- object.size(as.matrix(dfm(inaugTexts, verbose = FALSE)))
 cat("Compacted by ", round(as.numeric((1-size1/size2)*100), 1), "\%.\\n", sep="")
 }
 
@@ -141,10 +133,9 @@ mydfm <- dfm(subset(inaugCorpus, Year>1980), toLower=FALSE)
 # grouping documents by docvars in a corpus
 mydfmGrouped <- dfm(subset(inaugCorpus, Year>1980), groups = "President")
 
-# with stopwords English, stemming, and dense matrix
+# with English stopwords and stemming
 dfmsInaug2 <- dfm(subset(inaugCorpus, Year>1980),
-                  ignoredFeatures=stopwords("english"),
-                  stem=TRUE, matrixType="dense")
+                  ignoredFeatures=stopwords("english"), stem=TRUE)
 
 # with dictionaries
 mycorpus <- subset(inaugCorpus, Year>1900)

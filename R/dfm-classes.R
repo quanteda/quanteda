@@ -91,10 +91,10 @@ NULL
 setMethod("print", signature(x = "dfmSparse"), 
           function(x, show.values=FALSE, show.settings=FALSE, ...) {
               cat("Document-feature matrix of: ",
-                  ndoc(x), " document",
-                  ifelse(ndoc(x)>1, "s, ", ", "),
-                  dim(x)[2], " feature",
-                  ifelse(dim(x)[2]>1, "s", ""),
+                  format(ndoc(x), , big.mark=","), " document",
+                  ifelse(ndoc(x)>1 | ndoc(x)==0, "s, ", ", "),
+                  format(nfeature(x), big.mark=","), " feature",
+                  ifelse(nfeature(x)>1 | nfeature(x)==0, "s", ""),
                   ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
                   ".\n", sep="")
               if (show.settings) {
@@ -109,10 +109,10 @@ setMethod("print", signature(x = "dfmSparse"),
 setMethod("print", signature(x = "dfmDense"), 
           function(x, show.values=FALSE, show.settings=FALSE, ...) {
               cat("Document-feature matrix of: ",
-                  ndoc(x), " document",
-                  ifelse(ndoc(x)>1, "s, ", ", "),
-                  dim(x)[2], " feature",
-                  ifelse(dim(x)[2]>1, "s", ""),
+                  format(ndoc(x), , big.mark=","), " document",
+                  ifelse(ndoc(x)>1 | ndoc(x)==0, "s, ", ", "),
+                  format(nfeature(x), big.mark=","), " feature",
+                  ifelse(nfeature(x)>1 | nfeature(x)==0, "s", ""),
                   ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
                   ".\n", sep="")
               if (show.settings) {

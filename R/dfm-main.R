@@ -16,10 +16,6 @@ NULL
 #' (regular \code{matrix}) representation.  For details on the structure of the
 #' dfm class, see \link{dfm-class}.
 #' 
-#' New as of v0.7: All dfms are by default sparse, a change from the previous
-#' behaviour. You can still create the older (S3) dense matrix type dfm object,
-#' but you will receive a disapproving warning message while doing so,
-#' suggesting you make the switch.
 #' @param x corpus or character vector from which to generate the
 #'   document-feature matrix
 #' @param ... additional arguments passed to \link{tokenize}, which can include for
@@ -51,7 +47,7 @@ dfm <- function(x, ...) {
 #'   dictionary if there are only specific features that a user wishes to keep. 
 #'   To extract only Twitter usernames, for example, set \code{keptFeatures = 
 #'   "^@@\\\w+\\\b"} and make sure that \code{removeTwitter = FALSE} as an 
-#'   additional argument passed to \link{tokenize}.  (Note: \code{keptFeatures = 
+#'   additional argument passed to \link{tokenize}.  (Note: \code{keptFeatures =
 #'   "^@@"} will also retrieve usernames, but does not enforce the username 
 #'   convention that a username must contain one and only one \code{@@} symbol, 
 #'   at the beginning of the username.)
@@ -77,23 +73,20 @@ dfm <- function(x, ...) {
 #'   \code{catalan}, \code{dutch}, \code{finnish}, \code{german}, 
 #'   \code{italian}, \code{portuguese}, \code{spanish}, \code{arabic} for 
 #'   stopwords.
-#' @param matrixType if \code{dense}, produce a dense matrix; or it 
-#'   \code{sparse} produce a sparse matrix of class \code{dgCMatrix} from the 
-#'   \pkg{\link{Matrix}} package.
+#' @param matrixType deprecated, used to produce a dense matrix if \code{dense},
+#'   but this was removed in 0.8.2.  All dfm objects are now created as a sparse
+#'   matrix of class \code{dgCMatrix} from the \pkg{\link{Matrix}} package.
 #' @return A \link{dfm-class} object containing a sparse matrix representation 
 #'   of the counts of features by document, along with associated settings and 
 #'   metadata.
-#'   
-#'   If you used \code{matrixType = "dense"} then the return is an old-style S3 
-#'   matrix class object with additional attributes representing meta-data.
 #' @author Kenneth Benoit
 #' @importFrom parallel mclapply
 #' @import data.table Matrix
 #' @export
 #' @examples
 #' \donttest{# with inaugural texts
-#' (size1 <- object.size(dfm(inaugTexts, matrixType="sparse")))
-#' (size2 <- object.size(dfm(inaugTexts, matrixType="dense")))
+#' (size1 <- object.size(dfm(inaugTexts, verbose = FALSE)))
+#' (size2 <- object.size(as.matrix(dfm(inaugTexts, verbose = FALSE)))
 #' cat("Compacted by ", round(as.numeric((1-size1/size2)*100), 1), "%.\n", sep="")
 #' }
 #' 
@@ -104,10 +97,9 @@ dfm <- function(x, ...) {
 #' # grouping documents by docvars in a corpus
 #' mydfmGrouped <- dfm(subset(inaugCorpus, Year>1980), groups = "President")
 #' 
-#' # with stopwords English, stemming, and dense matrix
+#' # with English stopwords and stemming
 #' dfmsInaug2 <- dfm(subset(inaugCorpus, Year>1980), 
-#'                   ignoredFeatures=stopwords("english"),
-#'                   stem=TRUE, matrixType="dense")
+#'                   ignoredFeatures=stopwords("english"), stem=TRUE)
 #' 
 #' # with dictionaries
 #' mycorpus <- subset(inaugCorpus, Year>1900)
@@ -248,18 +240,18 @@ dfm.tokenizedTexts <- function(x,
     } else docNames <- names(x)
     
     # index documents
-    if (verbose) cat("\n   ... indexing ", 
+    if (verbose) cat("\n   ... indexing documents: ", 
                      format(length(x), big.mark=","), " document",
                      ifelse(length(x) > 1, "s", ""), sep="")
     nTokens <- lengths(x)
     docIndex <- rep(seq_along(nTokens), nTokens)
     
     # index features
-    if (verbose) cat("\n   ... indexing")
+    if (verbose) cat("\n   ... indexing features: ")
     allFeatures <- unlist(x)
     uniqueFeatures <- unique(allFeatures) 
     totalfeatures <- length(uniqueFeatures)
-    if (verbose) cat(" ", format(totalfeatures, big.mark=","), " feature type",
+    if (verbose) cat(format(totalfeatures, big.mark=","), " feature type",
                      ifelse(totalfeatures > 1, "s", ""), sep="")
     featureIndex <- match(allFeatures, uniqueFeatures)
     

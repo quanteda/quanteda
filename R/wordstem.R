@@ -59,18 +59,19 @@ wordstem.tokenizedTexts <- function(x, language = "porter") {
 #' @import stringi 
 #' @export
 wordstem.dfm <- function(x, language = "porter") {
-    oldFeaturesStemmed <- wordstem(features(x), language)
+    # triplet representation, so we can get j index
+    j <- as(x, "TsparseMatrix")@j + 1
+
+    oldFeatures <- features(x)[j]
+    oldFeaturesStemmed <- wordstem(oldFeatures, language)
     newFeatures <- unique(oldFeaturesStemmed)
+    newFeatureIndex <- match(oldFeaturesStemmed, newFeatures)
 
-    featureIndex <- match(oldFeaturesStemmed, newFeatures)
-    docIndex <- rep(1:ndoc(x), length(oldFeaturesStemmed))
-    featureCounts <- as.vector(x)
-
-    result <- sparseMatrix(i = docIndex, 
-                           j = rep(featureIndex, each = ndoc(x)),
-                           x = featureCounts, 
-                           dimnames=list(docs = docnames(x), 
-                                         features = newFeatures))
+    result <- sparseMatrix(i = x@i + 1, 
+                           j = newFeatureIndex,
+                           x = x@x, 
+                           dimnames = list(docs = docnames(x), 
+                                           features = newFeatures))
     new("dfmSparse", result)
 }
 
