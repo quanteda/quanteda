@@ -120,11 +120,10 @@ dfm class, see \link{dfm-class}.
 \code{as.dfm} coerces a matrix or data.frame to a dfm
 }
 \examples{
-\donttest{# with inaugural texts
+# why we phased out dense matrix dfm objects
 (size1 <- object.size(dfm(inaugTexts, verbose = FALSE)))
-(size2 <- object.size(as.matrix(dfm(inaugTexts, verbose = FALSE)))
+(size2 <- object.size(as.matrix(dfm(inaugTexts, verbose = FALSE))))
 cat("Compacted by ", round(as.numeric((1-size1/size2)*100), 1), "\%.\\n", sep="")
-}
 
 # for a corpus
 mydfm <- dfm(subset(inaugCorpus, Year>1980))

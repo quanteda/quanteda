@@ -994,9 +994,11 @@ ntype.dfm <- function(x, ...) {
     if (length(list(...)) > 0)
         warning("additional arguments not used for ntoken.dfm()")
     # apply(x, 1, function(dfmrow) sum(dfmrow > 0))
-    apply(x, 1, Matrix::nnzero)
+    tmp <- sparseMatrix(i = x@i, p = x@p, x = x@x > 0, index1 = FALSE, dims = x@Dim)
+    tmp <- rowSums(tmp)
+    names(tmp) <- docnames(x)
+    tmp
 }
-
 
 
 #' count the number of sentences
