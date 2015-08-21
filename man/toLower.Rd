@@ -2,6 +2,7 @@
 % Please edit documentation in R/toLower.R
 \name{toLower}
 \alias{toLower}
+\alias{toLower.NULL}
 \alias{toLower.character}
 \alias{toLower.corpus}
 \alias{toLower.tokenizedTexts}
@@ -10,6 +11,8 @@
 toLower(x, keepAcronyms = FALSE, ...)
 
 \method{toLower}{character}(x, keepAcronyms = FALSE, ...)
+
+\method{toLower}{NULL}(x, ...)
 
 \method{toLower}{tokenizedTexts}(x, keepAcronyms = FALSE, ...)
 

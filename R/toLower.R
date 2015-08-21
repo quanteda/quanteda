@@ -42,6 +42,10 @@ toLower.character <- function(x, keepAcronyms=FALSE, ...) {
 
 #' @rdname toLower
 #' @export
+toLower.NULL <- function(x, ...) NULL
+
+#' @rdname toLower
+#' @export
 toLower.tokenizedTexts <- function(x, keepAcronyms=FALSE, ...) {
     typeTest <- all(sapply(x, is.character))
     if (!typeTest) {

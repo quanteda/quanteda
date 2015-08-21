@@ -312,6 +312,16 @@ tokenize <- function(x, ...) {
 #'            "To be?  Or\not to be?"), 
 #'           what = "sentence")
 #' tokenize(inaugTexts[c(2,40)], what = "sentence", simplify = TRUE)
+#' 
+#' # creating ngrams
+#' txt <- toLower(c(mytext1 = "This is a short test sentence.",
+#'                 mytext2 = "Short.",
+#'                 mytext3 = "Short, shorter, and shortest."))
+#' tokenize(txt, removePunct = TRUE)
+#' removeFeatures(tokenize(txt, removePunct = TRUE), stopwords("english"))
+#' tokenize(txt, removePunct = TRUE, ngrams = 2)
+#' tokenize(txt, removePunct = TRUE, ngrams = 1:2)
+#' removeFeatures(tokenize(txt, removePunct = TRUE, ngrams = 1:2), stopwords("english"))
 tokenize.character <- function(x, what=c("word", "sentence", "character", "fastestword", "fasterword"),
                                removeNumbers = FALSE, 
                                removePunct = FALSE,
@@ -428,16 +438,16 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
             startTimeClean <- proc.time()
         }
         # is the ngram set serial starting with 1? use single call if so (most efficient)
-        if (sum(1:length(ngrams)) == sum(ngrams)) {
-            result <- lapply(result, ngram, n = length(ngrams), concatenator = concatenator, include.all = TRUE)
-        } else {
+        # if (sum(1:length(ngrams)) == sum(ngrams)) {
+        #     result <- lapply(result, ngram, n = length(ngrams), concatenator = concatenator, include.all = TRUE)
+        # } else {
             result <- lapply(result, function(x) {
                 xnew <- c()
                 for (n in ngrams) 
                     xnew <- c(xnew, ngram(x, n, concatenator = concatenator, include.all = FALSE))
                 xnew
             })
-        }
+        # }
         if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
 

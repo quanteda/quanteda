@@ -5,6 +5,10 @@ quanteda 0.8.3
 
 *  wordstem.dfm() both faster and more robust when working with large objects.
 
+*  toLower.NULL() now allows toLower() to work on texts with no words (returns NULL for NULL input)
+
+*  fixed bug in selectFeatures() / removeFeatures() that returned zero features if no features were found matching removal pattern
+
 quanteda 0.8.2
 ==============
 

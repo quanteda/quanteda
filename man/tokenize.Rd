@@ -128,6 +128,16 @@ tokenize(c("Kurt Vongeut said; only assholes use semi-colons.",
            "To be?  Or\\not to be?"),
           what = "sentence")
 tokenize(inaugTexts[c(2,40)], what = "sentence", simplify = TRUE)
+
+# creating ngrams
+txt <- toLower(c(mytext1 = "This is a short test sentence.",
+                mytext2 = "Short.",
+                mytext3 = "Short, shorter, and shortest."))
+tokenize(txt, removePunct = TRUE)
+removeFeatures(tokenize(txt, removePunct = TRUE), stopwords("english"))
+tokenize(txt, removePunct = TRUE, ngrams = 2)
+tokenize(txt, removePunct = TRUE, ngrams = 1:2)
+removeFeatures(tokenize(txt, removePunct = TRUE, ngrams = 1:2), stopwords("english"))
 }
 \author{
 Ken Benoit and Paul Nulty
