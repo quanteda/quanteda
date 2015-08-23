@@ -93,9 +93,8 @@ removeFeatures.tokenizedTexts <- function(x, stopwords=NULL, verbose=TRUE, ...) 
 #' @rdname removeFeatures
 #' @export
 removeFeatures.dfm <- function(x, stopwords = NULL, verbose = TRUE, ...) {
-    selectFeatures(x, features = stopwords, selection = "remove", verbose = verbose)
+    selectFeatures(x, features = stopwords, selection = "remove", verbose = verbose, ...)
 }
-
 
 
 ### now optimized for speed using data.table
@@ -244,12 +243,12 @@ stopwordsGet <- function(kind="english") {
 #' @examples 
 #' myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
 #'                "Does the United_States or Sweden have more progressive taxation?"),
-#'              verbose = FALSE)
+#'              toLower = FALSE, verbose = FALSE)
 #' mydict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
 #'                           wordsEndingInY = c("by", "my"),
 #'                           notintext = "blahblah"))
 #' selectFeatures(myDfm, mydict)
-#' selectFeatures(myDfm, mydict, case_insensitive = TRUE)
+#' selectFeatures(myDfm, mydict, case_insensitive = FALSE)
 #' selectFeatures(myDfm, c("s$", ".y"), "keep", valuetype = "regex")
 #' selectFeatures(myDfm, c("s$", ".y"), "remove", valuetype = "regex")
 #' selectFeatures(myDfm, stopwords("english"), "keep", valuetype = "fixed")
