@@ -45,6 +45,8 @@ can be expanded by the operating system.  This may consist of multiple file
 types.} \item{\code{xml}}{Basic flat XML documents are supported -- those
 of the kind supported by the function xmlToDataFrame function of the
 \strong{XML}  package.}
+\item{\code{zip}}{zip archive file, containing \code{*.txt} files.  This may be
+a URL to a zip file.}
 }}
 
 \item{textField}{a variable (column) name or column number indicating where

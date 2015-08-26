@@ -62,6 +62,8 @@ setMethod("show",
 #'   types.} \item{\code{xml}}{Basic flat XML documents are supported -- those 
 #'   of the kind supported by the function xmlToDataFrame function of the 
 #'   \strong{XML}  package.} 
+#'   \item{\code{zip}}{zip archive file, containing \code{*.txt} files.  This may be 
+#'   a URL to a zip file.}
 #'   }
 #' @param textField a variable (column) name or column number indicating where 
 #'   to find the texts that form the documents for the corpus.  This must be 
