@@ -29,7 +29,7 @@ setMethod("show",
               } else {
                   cat("corpusSource object containing ", length(texts(object)), 
                       " text", ifelse(length(texts(object)) == 1, "", "s"), " and ", 
-                      ncol(docvars(object)), " docvar", ifelse(ncol(docvars(object)) == 1, "", "s"), ".\n", dvsep="")
+                      ncol(docvars(object)), " docvar", ifelse(ncol(docvars(object)) == 1, "", "s"), ".\n", sep="")
               }
           })
 
@@ -229,6 +229,7 @@ returnCorpusSource <- function(sources, cache) {
 get_doc <- function(f, encodingFrom = NULL, encodingTo = "UTF-8") {
     txts <- c()
     fileType <- getFileType(f)
+    # cat("fileType = ", fileType, "\n")
     switch(fileType,
            txt =  { 
                if (is.null(encodingFrom)) encodingFrom <- getOption("encoding")
@@ -241,6 +242,7 @@ get_doc <- function(f, encodingFrom = NULL, encodingTo = "UTF-8") {
            },
            doc =  { return(list(txts = get_word(f), docv=data.frame())) },
            json = { return(get_json_tweets(f)) },
+           zip = { return(get_zipfile(f)) },
            pdf =  { return(list(txts = get_pdf(f), docv=data.frame())) }
     )
     stop("unrecognized fileType:", fileType)
@@ -269,7 +271,14 @@ get_docs <- function(filemask, encodingFrom = NULL, encodingTo = "UTF-8") {
     # name the vector with the filename by default
     names(textsvec) <- getRootFileNames(filenames)
     
-    list(txts=textsvec, docv=data.frame())    
+    list(txts = textsvec, docv = data.frame())    
+}
+
+get_zipfile <- function(f, ...) {
+    td <- tempdir()
+    unzip(f, exdir = td)
+    # cat("file:", paste0(td, "*.txt"), "\n")
+    get_docs(paste0(td, "/*.txt"))
 }
 
 # read a document from a structured file containing text and data

@@ -100,6 +100,7 @@ corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvar
     if (!(encTo %in% stringi::stri_enc_list(simplify = TRUE))) 
         stop("encTo = ", enc, " argument not found in stri_enc_list()")
 
+    x_names <- names(x)
     
     # convert the dreaded "curly quotes" to ASCII equivalents
     x <- stringi::stri_replace_all_fixed(x, 
@@ -132,7 +133,6 @@ corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvar
     }
 
     # name the texts vector
-    x_names <- names(x)
     if (!is.null(docnames)) {
         stopifnot(length(docnames)==length(x))
         names(x) <- docnames

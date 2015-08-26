@@ -7,7 +7,14 @@ quanteda 0.8.3
 
 *  toLower.NULL() now allows toLower() to work on texts with no words (returns NULL for NULL input)
 
+*  textfile() now works on zip archives of *.txt files
+
+Bug fixes
+---------
+
 *  fixed bug in selectFeatures() / removeFeatures() that returned zero features if no features were found matching removal pattern
+
+*  corpus() previously removed document names, now fixed
 
 quanteda 0.8.2
 ==============
