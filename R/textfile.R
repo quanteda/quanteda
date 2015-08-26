@@ -276,7 +276,9 @@ get_docs <- function(filemask, encodingFrom = NULL, encodingTo = "UTF-8") {
 
 get_zipfile <- function(f, ...) {
     td <- tempdir()
-    unzip(f, exdir = td)
+    if (substr(f, 1, 4) == "http")
+        download.file(f, destfile = (flocal <- paste0(td, "/temp.zip", quiet = TRUE)))
+    unzip(flocal, exdir = td)
     # cat("file:", paste0(td, "*.txt"), "\n")
     get_docs(paste0(td, "/*.txt"))
 }
