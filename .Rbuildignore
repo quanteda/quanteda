@@ -1,6 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^\.Rd2pdf*
+^\.Rd2pdf
 ^README\.Rmd$
 ^README-*\.png$
 ^cran-comments\.md$
@@ -10,3 +10,13 @@
 ^\.httr-oauth$
 ^\.travis*
 ^README-.*\.png$
+^\.git
+__MACOSX
+\.DS_Store
+\.Rproj\.user
+inst/doc
+\.Rhistory
+\.o$
+\.so$
+^\.httr\-oauth$
+

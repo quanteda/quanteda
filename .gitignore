@@ -9,3 +9,4 @@ inst/doc
 *.o
 *.so
 .httr-oauth
+*Rcheck*

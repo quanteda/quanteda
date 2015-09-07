@@ -85,6 +85,6 @@ McInnes, B T. 2004. "Extending the Log Likelihood Measure to
   Minnesota.
 }
 \seealso{
-\link{bigrams}, \link{ngrams}
+\link{ngrams}
 }
 

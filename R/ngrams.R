@@ -1,103 +1,113 @@
-#' Create bigrams
-#' 
-#' @author Ken Benoit and Kohei Watanabe
-#' @param text character vector containing the texts from which bigrams will be
-#'   constructed
-#' @param window how many words to be counted for adjacency.  Default is 1 for
-#'   only immediately neighbouring words.  This is only available for bigrams,
-#'   not for ngrams.
-#' @param concatenator character for combining words, default is \code{_}
-#'   (underscore) character
-#' @param include.unigrams if \code{TRUE}, return unigrams as well
-#' @param ignoredFeatures a character vector of features to ignore
-#' @param skipGrams If \code{FALSE} (default), remove any bigram containing a
-#'   feature listed in \code{ignoredFeatures}, otherwise, first remove the
-#'   features in \code{ignoredFeatures}, and then create bigrams.  This means
-#'   that some "bigrams" will actually not occur as adjacent features in the
-#'   original text.  See examples.
-#' @param ... provides additional arguments passed to \link{tokenize}
-#' @return a character vector of bigrams
-#' @export
-#' @examples 
-#' bigrams("The quick brown fox jumped over the lazy dog.")
-#' bigrams(c("The quick brown fox", "jumped over the lazy dog."))
-#' bigrams(c("The quick brown fox", "jumped over the lazy dog."), window=2)
-#' bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"))
-#' bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"), 
-#'         ignoredFeatures=stopwords("english"))
-#' bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"), 
-#'         ignoredFeatures=stopwords("english"), skipGrams=TRUE)
-bigrams <- function(text, window = 1, concatenator="_", include.unigrams=FALSE, 
-                    ignoredFeatures=NULL, skipGrams=FALSE, ...) {
-
-    cat("note: bigrams() is being phased out, and replaced by tokenize(x, ngrams=2)\n")
-    
-    removeIgnoredFeatures <- function(bigramCharVector, ignoredFeatures) {
-        ignoredfeatIndex <- 
-            grep(paste0("\\b", paste(ignoredFeatures, collapse="\\b|\\b"), "\\b"), 
-                 gsub("_", " ", bigramCharVector))
-        if (length(ignoredfeatIndex) > 0) 
-            bigramCharVector <- bigramCharVector[-ignoredfeatIndex]
-        bigramCharVector
-    }
-    
-    tokenizedList <- tokenize(text, ...)
-    
-    if (!is.null(ignoredFeatures) & skipGrams==TRUE)
-        tokenizedList <- lapply(tokenize(text), removeIgnoredFeatures, ignoredFeatures)
-    
-    bigramSingle <- function(tokens, window, concatenator, include.unigrams) {
-        bigrams <- c()  # initialize bigrams vector
-        for (w in (1:window)) {
-            m1 <- c(rep('', w), tokens)
-            m2 <- c(tokens, rep('', w))
-            b <- paste(m1, m2, sep=concatenator)
-            l <- length(b)
-            bigrams <- c(bigrams, b[(w+1):(l-w)])
-        }
-        if (include.unigrams) bigrams <- c(tokens, bigrams)
-        bigrams
-    }
-    
-    result <- lapply(tokenizedList, bigramSingle, window, concatenator, include.unigrams)
-        
-    # remove features if supplied and if skipGrams==FALSE, in other words
-    # remove all bigrams that contain an ignored feature
-    if (!is.null(ignoredFeatures) & skipGrams==FALSE) {
-        if (!is.character(ignoredFeatures)) 
-            stop("ignoredFeatures must be a character vector")
-        result <- lapply(result, removeIgnoredFeatures, ignoredFeatures)
-    }
-
-    result
-}
-#bigrams("aa bb cc dd ee ff", 5)
-
-
 #' Create ngrams
 #' 
-#' Create a set of ngrams (words in sequence) from text(s) in a character vector
-#' @author Ken Benoit, Kohei Watanabe, Paul Nulty
-#' @return a list of character vectors of ngrams, one list element per text
-#' @param text character vector containing the texts from which ngrams will be extracted
-#' @param n the number of tokens to concatenate. Default is 2 for bigrams.
-# @param window how many words to be counted for adjacency.  Default is 1 for only immediately 
-# neighbouring words.
-#' @param concatenator character for combining words, default is \code{_} (underscore) character
-#' @param include.all if TRUE, add n-1...1 grams to the returned list
-#' @param ... additional parameters passed to \code{\link{tokenize}}
+#' Create a set of ngrams (words in sequence) from tokenized text(s)
+#' @author Ken Benoit
+#' @return a tokenizedTexts object consisting a list of character vectors of
+#'   ngrams, one list element per text, or a character vector if called on a
+#'   simple character vector
+#' @param x a tokenizedText object or a character vector of tokens
+#' @param n integer vector specifying the number of elements to be concatenated
+#'   in each ngram
+#' @param window integer vector specifying the adjacency width for tokens 
+#'   forming the ngrams, default is 1 for only immediately neighbouring words
+#' @param concatenator character for combining words, default is \code{_} 
+#'   (underscore) character
 #' @export
-#' @examples 
-#' ngrams("The quick brown fox jumped over the lazy dog.", n=2)
-#' identical(ngrams("The quick brown fox jumped over the lazy dog.", n=2),
-#'           bigrams("The quick brown fox jumped over the lazy dog."))
-#' ngrams("The quick brown fox jumped over the lazy dog.", n=3)
-#' ngrams("The quick brown fox jumped over the lazy dog.", n=3, concatenator="~")
-#' ngrams("The quick brown fox jumped over the lazy dog.", n=3, include.all=TRUE)
-ngrams <- function(text, n=2, concatenator="_", include.all=FALSE, ...) {
-    lapply(text, ngramSingle, n, concatenator, include.all, ...)
+#' @examples
+#' ngrams(LETTERS, n = 2, window = 2)
+#' ngrams(LETTERS, n = 3, window = 2)
+#' ngrams(LETTERS, n = 3, window = 3)
+#' 
+#' tokens <- tokenize("the quick brown fox jumped over the lazy dog.", removePunct = TRUE)[[1]]
+#' ngrams(tokens, n = 1:3)
+#' ngrams(tokens, n = c(2,4), window = 1:2, concatenator = " ")
+#'
+#' skipgrams(tokens)
+ngrams <- function(x, ...) {
+    UseMethod("ngrams")
 }
 
+#' @rdname ngrams
+#' @export
+ngrams.character <- function(x, n = 2, window = 1, concatenator = "_", ...) {
+    if (any(stringi::stri_detect_fixed(x, " ")) & concatenator != " ")
+        stop("whitespace detected: please tokenize() before using ngrams()")
+    
+    if (length(x) < max(n)) return(NULL)
+    if (identical(n, 1)) {
+        if (!identical(window, 1))
+            warning("window argument ignored for n = 1")
+        return(x)
+    }
+    
+    ngrams <- c()
+    for (w in window) {
+        winIndex <- findWindowSequence(max(n), w)
+        wordtable <- data.table(w1 = c(rep(NA, max(n)-1), x))
+        for (i in 2:(length(winIndex)))
+            wordtable[, paste0("w", i) := wrapVector(wordtable$w1, winIndex[i]-1, w)]
+
+        for (nsize in n) {
+            nonMissing <- complete.cases(wordtable[, 1:nsize, with = FALSE])
+            ngrams <- c(ngrams, 
+                        apply(wordtable[nonMissing, 1:nsize, with = FALSE], 
+                              1, paste, collapse = concatenator))
+        }
+    }    
+    ngrams
+}
+
+findWindowSequence <- function(n, w) {
+    seq(1, (n * w) - (w-1), by = w)
+}
+
+wrapVector <- function(x, n, window = 1) {
+    if (n == length(x)) 
+        return(x)
+    while (n > length(x)) 
+        n <- n - 20
+    result <- c(x[(n+1):length(x)], x[1:n])
+    if (window > 1)
+        result[(length(result) - n + 1) : length(result)] <- NA
+    result
+}
+
+#' @param ... additional arguments passed to \code{\link[parallel]{mclapply}}
+#'   which applies \code{ngram.character()} to the \code{tokenizedTexts} list object
+#' @rdname ngrams
+#' @export
+ngrams.tokenizedTexts <- function(x, n = 2, window = 1, concatenator = "_", ...) {
+    ngramsResult <- parallel::mclapply(x, ngrams.character, n, window, concatenator, ...)
+    class(ngramsResult) <- c("tokenizedTexts", class(ngramsResult))
+    ngramsResult
+}
+
+
+#' @rdname ngrams
+#' @details Normally, \code{\link{ngrams}} will be called through
+#'   \code{\link{tokenize}}, but these functions are also exported in case a
+#'   user wants to perform lower-level ngram construction on tokenized texts.
+#'   
+#'   \code{\link{skipgrams}} is a wrapper to \code{\link{ngrams}} that simply
+#'   passes through a default \code{window} value of 2.
+#' @export
+skipgrams <- function(x, ...) UseMethod("skipgrams")
+
+#' @rdname ngrams
+#' @export
+skipgrams.character <- function(x, n = 2, window = 2, concatenator = "_", ...)
+    ngrams.character(x, n, window, concatenator)
+
+#' @rdname ngrams
+#' @export
+skipgrams.tokenizedTexts <- function(x, n = 2, window = 2, concatenator = "_", ...)
+    ngrams.tokenizedTexts(x, n, window, concatenator, ...)
+
+
+
+
+
+############### OLDER, NOT USED
 ngramSingle <- function(text, n=2, concatenator="_", include.all=FALSE, ...) {
     # tokenize once
     tokens <- tokenize(text, simplify=TRUE, ...)
@@ -139,3 +149,81 @@ ngramSingle <- function(text, n=2, concatenator="_", include.all=FALSE, ...) {
 #                     +         new_ngrams <- c(new_ngrams, ngramSingle(text, n-1, concatenator, include.all, ...))
 #                     +     new_ngrams
 #                     + }
+
+# Create bigrams
+# 
+# @author Ken Benoit and Kohei Watanabe
+# @param text character vector containing the texts from which bigrams will be
+#   constructed
+# @param window how many words to be counted for adjacency.  Default is 1 for
+#   only immediately neighbouring words.  This is only available for bigrams,
+#   not for ngrams.
+# @param concatenator character for combining words, default is \code{_}
+#   (underscore) character
+# @param include.unigrams if \code{TRUE}, return unigrams as well
+# @param ignoredFeatures a character vector of features to ignore
+# @param skipGrams If \code{FALSE} (default), remove any bigram containing a
+#   feature listed in \code{ignoredFeatures}, otherwise, first remove the
+#   features in \code{ignoredFeatures}, and then create bigrams.  This means
+#   that some "bigrams" will actually not occur as adjacent features in the
+#   original text.  See examples.
+# @param ... provides additional arguments passed to \link{tokenize}
+# @return a character vector of bigrams
+# @export
+# @examples 
+# bigrams("The quick brown fox jumped over the lazy dog.")
+# bigrams(c("The quick brown fox", "jumped over the lazy dog."))
+# bigrams(c("The quick brown fox", "jumped over the lazy dog."), window=2)
+# bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"))
+# bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"), 
+#         ignoredFeatures=stopwords("english"))
+# bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"), 
+#         ignoredFeatures=stopwords("english"), skipGrams=TRUE)
+bigrams <- function(text, window = 1, concatenator="_", include.unigrams=FALSE, 
+                    ignoredFeatures=NULL, skipGrams=FALSE, ...) {
+    
+    cat("note: bigrams() is being phased out, and replaced by tokenize(x, ngrams=2)\n")
+    
+    removeIgnoredFeatures <- function(bigramCharVector, ignoredFeatures) {
+        ignoredfeatIndex <- 
+            grep(paste0("\\b", paste(ignoredFeatures, collapse="\\b|\\b"), "\\b"), 
+                 gsub("_", " ", bigramCharVector))
+        if (length(ignoredfeatIndex) > 0) 
+            bigramCharVector <- bigramCharVector[-ignoredfeatIndex]
+        bigramCharVector
+    }
+    
+    tokenizedList <- tokenize(text, ...)
+    
+    if (!is.null(ignoredFeatures) & skipGrams==TRUE)
+        tokenizedList <- lapply(tokenize(text), removeIgnoredFeatures, ignoredFeatures)
+    
+    bigramSingle <- function(tokens, window, concatenator, include.unigrams) {
+        bigrams <- c()  # initialize bigrams vector
+        for (w in (1:window)) {
+            m1 <- c(rep('', w), tokens)
+            m2 <- c(tokens, rep('', w))
+            b <- paste(m1, m2, sep=concatenator)
+            l <- length(b)
+            bigrams <- c(bigrams, b[(w+1):(l-w)])
+        }
+        if (include.unigrams) bigrams <- c(tokens, bigrams)
+        bigrams
+    }
+    
+    result <- lapply(tokenizedList, bigramSingle, window, concatenator, include.unigrams)
+    
+    # remove features if supplied and if skipGrams==FALSE, in other words
+    # remove all bigrams that contain an ignored feature
+    if (!is.null(ignoredFeatures) & skipGrams==FALSE) {
+        if (!is.character(ignoredFeatures)) 
+            stop("ignoredFeatures must be a character vector")
+        result <- lapply(result, removeIgnoredFeatures, ignoredFeatures)
+    }
+    
+    result
+}
+#bigrams("aa bb cc dd ee ff", 5)
+
+
+

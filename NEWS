@@ -1,6 +1,9 @@
 quanteda 0.8.3
 ==============
 
+*  ngrams() rewritten to accept fully vectorized arguments for `n` and for `window`, thus implementing "skip-grams".
+   bigrams(), deprecated since 0.7, has been removed from the namespace.
+
 *  corpus() no longer checks all documents for text encoding; rather, this is now based on a random sample of max()
 
 *  wordstem.dfm() both faster and more robust when working with large objects.

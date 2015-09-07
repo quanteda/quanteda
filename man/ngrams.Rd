@@ -2,36 +2,71 @@
 % Please edit documentation in R/ngrams.R
 \name{ngrams}
 \alias{ngrams}
+\alias{ngrams.character}
+\alias{ngrams.tokenizedTexts}
+\alias{skipgrams}
+\alias{skipgrams.character}
+\alias{skipgrams.tokenizedTexts}
 \title{Create ngrams}
 \usage{
-ngrams(text, n = 2, concatenator = "_", include.all = FALSE, ...)
+ngrams(x, ...)
+
+\method{ngrams}{character}(x, n = 2, window = 1, concatenator = "_", ...)
+
+\method{ngrams}{tokenizedTexts}(x, n = 2, window = 1, concatenator = "_",
+  ...)
+
+skipgrams(x, ...)
+
+\method{skipgrams}{character}(x, n = 2, window = 2, concatenator = "_",
+  ...)
+
+\method{skipgrams}{tokenizedTexts}(x, n = 2, window = 2,
+  concatenator = "_", ...)
 }
 \arguments{
-\item{text}{character vector containing the texts from which ngrams will be extracted}
+\item{x}{a tokenizedText object or a character vector of tokens}
 
-\item{n}{the number of tokens to concatenate. Default is 2 for bigrams.}
+\item{...}{additional arguments passed to \code{\link[parallel]{mclapply}}
+which applies \code{ngram.character()} to the \code{tokenizedTexts} list object}
 
-\item{concatenator}{character for combining words, default is \code{_} (underscore) character}
+\item{n}{integer vector specifying the number of elements to be concatenated
+in each ngram}
 
-\item{include.all}{if TRUE, add n-1...1 grams to the returned list}
+\item{window}{integer vector specifying the adjacency width for tokens
+forming the ngrams, default is 1 for only immediately neighbouring words}
 
-\item{...}{additional parameters passed to \code{\link{tokenize}}}
+\item{concatenator}{character for combining words, default is \code{_}
+(underscore) character}
 }
 \value{
-a list of character vectors of ngrams, one list element per text
+a tokenizedTexts object consisting a list of character vectors of
+  ngrams, one list element per text, or a character vector if called on a
+  simple character vector
 }
 \description{
-Create a set of ngrams (words in sequence) from text(s) in a character vector
+Create a set of ngrams (words in sequence) from tokenized text(s)
+}
+\details{
+Normally, \code{\link{ngrams}} will be called through
+  \code{\link{tokenize}}, but these functions are also exported in case a
+  user wants to perform lower-level ngram construction on tokenized texts.
+
+  \code{\link{skipgrams}} is a wrapper to \code{\link{ngrams}} that simply
+  passes through a default \code{window} value of 2.
 }
 \examples{
-ngrams("The quick brown fox jumped over the lazy dog.", n=2)
-identical(ngrams("The quick brown fox jumped over the lazy dog.", n=2),
-          bigrams("The quick brown fox jumped over the lazy dog."))
-ngrams("The quick brown fox jumped over the lazy dog.", n=3)
-ngrams("The quick brown fox jumped over the lazy dog.", n=3, concatenator="~")
-ngrams("The quick brown fox jumped over the lazy dog.", n=3, include.all=TRUE)
+ngrams(LETTERS, n = 2, window = 2)
+ngrams(LETTERS, n = 3, window = 2)
+ngrams(LETTERS, n = 3, window = 3)
+
+tokens <- tokenize("the quick brown fox jumped over the lazy dog.", removePunct = TRUE)[[1]]
+ngrams(tokens, n = 1:3)
+ngrams(tokens, n = c(2,4), window = 1:2, concatenator = " ")
+
+skipgrams(tokens)
 }
 \author{
-Ken Benoit, Kohei Watanabe, Paul Nulty
+Ken Benoit
 }
 

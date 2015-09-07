@@ -40,7 +40,7 @@ NULL
 #' @references McInnes, B T. 2004. "Extending the Log Likelihood Measure to
 #'   Improve Collocation Identification."  M.Sc. Thesis, University of
 #'   Minnesota.
-#' @seealso \link{bigrams}, \link{ngrams}
+#' @seealso \link{ngrams}
 #' @author Kenneth Benoit
 #' @examples
 #' txt <- c("This is software testing: looking for (word) pairs!  

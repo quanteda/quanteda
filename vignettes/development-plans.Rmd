@@ -355,7 +355,6 @@ We *always* welcome hearing about your experiences (and problems!) in using quan
 *   `dfm` objects need a subset method for selection rows, not just columns
 *   rewrite `lexdiv()` to make the API similar to `readability()` and to use data.table
 *   rewrite `segment()` to make use of new tokenizer that segments on sentences
-*   make `bigrams`, `ngrams` punctuation sensitive in the same way that `collocations` is currently
 *   integrate `collocations` code for bigrams and trigrams and reduce the internal memory usage
 *   make sure `corpus.VCorpus()` is fully working
 *   `dfm` documentation needs to group arguments into sections and describe how these correspond to the logical workflow
@@ -379,8 +378,6 @@ We *always* welcome hearing about your experiences (and problems!) in using quan
 *    specific textmodel types:
     *   Improve wordfish and round out methods
     *   Add CA scaling
-
-
 
 
 

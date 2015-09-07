@@ -238,19 +238,22 @@ tokenize <- function(x, ...) {
 #'   \code{FALSE} if you wish to eliminate these.
 #' @param removeSeparators remove Separators and separator characters (spaces 
 #'   and variations of spaces, plus tab, newlines, and anything else in the 
-#'   Unicode "separator" category) when \code{removePunct=FALSE}.  Only applicable
-#'   for \code{what = "character"} (when you probably want it to be \code{FALSE})
-#'   and for \code{what = "word"} (when you probably want it to be \code{TRUE}).  Note that
-#'   if \code{what = "word"} and you set \code{removePunct = TRUE}, then 
-#'   \code{removeSeparators} has no effect.  Use carefully.
+#'   Unicode "separator" category) when \code{removePunct=FALSE}.  Only 
+#'   applicable for \code{what = "character"} (when you probably want it to be 
+#'   \code{FALSE}) and for \code{what = "word"} (when you probably want it to be
+#'   \code{TRUE}).  Note that if \code{what = "word"} and you set 
+#'   \code{removePunct = TRUE}, then \code{removeSeparators} has no effect.  Use
+#'   carefully.
 #' @param ngrams integer vector of the \emph{n} for \emph{n}-grams, defaulting 
 #'   to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for 
 #'   bigrams and unigrams, use \code{1:2}.  You can even include irregular 
 #'   sequences such as \code{2:3} for bigrams and trigrams only.
+#' @param window integer vector specifying the adjacency width for tokens 
+#'   forming the \emph{n}-grams, default is 1 for only immediately neighbouring
+#'   words. Only applies if \code{ngrams} is different from the default of 1.
 #' @param concatenator character to use in concatenating \emph{n}-grams, default
 #'   is "\code{_}", which is recommended since this is included in the regular 
 #'   expression and Unicode definitions of "word" characters
-
 #' @param simplify if \code{TRUE}, return a character vector of tokens rather 
 #'   than a list of length \code{\link{ndoc}(texts)}, with each element of the 
 #'   list containing a character vector of the tokens corresponding to that 
@@ -266,13 +269,14 @@ tokenize <- function(x, ...) {
 #'   intervention. This means that punctuation is tokenized as well, and that 
 #'   nothing is removed from the
 #' @return a \strong{tokenizedText} (S3) object, essentially a list of character
-#'   vectors. If \code{simplify=TRUE} then return a single character vector.
+#'   vectors. If \code{simplify = TRUE} then return a single character vector.
 #' @note This replaces an older function named \code{clean()}, removed from 
 #'   \pkg{quanteda} in version 0.8.1.  "Cleaning" by removing certain parts of 
 #'   texts, such as punctuation or numbers, only only works on tokenized texts, 
 #'   although texts of any length can be converted to lower case using 
 #'   \code{\link{toLower}}.
 #' @export
+#' @seealso \code{\link{ngrams}}
 #' @examples 
 #' # returned as a list
 #' head(tokenize(inaugTexts[57])[[1]], 10)
@@ -321,6 +325,7 @@ tokenize <- function(x, ...) {
 #' removeFeatures(tokenize(txt, removePunct = TRUE), stopwords("english"))
 #' tokenize(txt, removePunct = TRUE, ngrams = 2)
 #' tokenize(txt, removePunct = TRUE, ngrams = 1:2)
+#' tokenize(txt, removePunct = TRUE, ngrams = 2, window = 2, concatenator = " ")
 #' removeFeatures(tokenize(txt, removePunct = TRUE, ngrams = 1:2), stopwords("english"))
 tokenize.character <- function(x, what=c("word", "sentence", "character", "fastestword", "fasterword"),
                                removeNumbers = FALSE, 
@@ -329,8 +334,9 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
                                removeTwitter = FALSE,
                                # removeURL = TRUE,
                                ngrams = 1,
+                               window = 1,
                                concatenator = "_",
-                               simplify=FALSE,
+                               simplify = FALSE,
                                verbose = FALSE,  ## FOR TESTING
                                ...) {
     
@@ -431,33 +437,37 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
     
+    # make this an S3 class item, if a list
+    if (simplify == FALSE) {
+        class(result) <- c("tokenizedTexts", class(result))
+    }
 
     if (!identical(ngrams, 1)) {
         if (verbose) {
             cat("  ...creating ngrams")
             startTimeClean <- proc.time()
         }
+        result <- ngrams(result, n = ngrams, window = window, concatenator = concatenator)
         # is the ngram set serial starting with 1? use single call if so (most efficient)
         # if (sum(1:length(ngrams)) == sum(ngrams)) {
         #     result <- lapply(result, ngram, n = length(ngrams), concatenator = concatenator, include.all = TRUE)
         # } else {
-            result <- lapply(result, function(x) {
-                xnew <- c()
-                for (n in ngrams) 
-                    xnew <- c(xnew, ngram(x, n, concatenator = concatenator, include.all = FALSE))
-                xnew
-            })
+#             result <- lapply(result, function(x) {
+#                 xnew <- c()
+#                 for (n in ngrams) 
+#                     xnew <- c(xnew, ngram(x, n, concatenator = concatenator, include.all = FALSE))
+#                 xnew
+#             })
         # }
         if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
 
-    if (simplify==FALSE) {
+    if (simplify == FALSE) {
         # stri_* destroys names, so put them back
         startTimeClean <- proc.time()
         if (verbose) cat("  ...replacing names")
         names(result) <- names(x)
         if (verbose) cat("...total elapsed: ", (proc.time() - startTimeClean)[3], "seconds.\n")
-        
     } else {
         # or just return the tokens as a single character vector
         if (verbose) cat("  ...unlisting results.\n")
@@ -516,4 +526,5 @@ ngram <- function(tokens, n = 2, concatenator = "_", include.all = FALSE) {
     
     all_ngrams
 }
+
 
