@@ -84,24 +84,35 @@ ngrams.tokenizedTexts <- function(x, n = 2, window = 1, concatenator = "_", ...)
 
 
 #' @rdname ngrams
-#' @details Normally, \code{\link{ngrams}} will be called through
-#'   \code{\link{tokenize}}, but these functions are also exported in case a
+#' @param k for skip-grams only, \code{k} is the
+#' @details Normally, \code{\link{ngrams}} will be called through 
+#'   \code{\link{tokenize}}, but these functions are also exported in case a 
 #'   user wants to perform lower-level ngram construction on tokenized texts.
 #'   
-#'   \code{\link{skipgrams}} is a wrapper to \code{\link{ngrams}} that simply
-#'   passes through a default \code{window} value of 2.
+#'   \code{\link{skipgrams}} is a wrapper to \code{\link{ngrams}} that simply 
+#'   passes through a \code{window} value of \code{1:(k+1)}, conforming to the
+#'   definition of skip-grams found in Guthrie et al (2006): A $k$ skip-gram is
+#'   an ngram which is a superset of all ngrams and each $(k-i)$ skipgram until
+#'   $(k-i)==0$ (which includes 0 skip-grams).
 #' @export
+#' @references \href{Guthrie, D, B Allison, W Liu, and L Guthrie. 2006. “A Closer Look
+#'   at Skip-Gram Modelling.”}{http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf}
+#' @examples 
+#' tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."), removePunct = TRUE)
+#' skipgrams(tokens, n = 2, k = 2, concatenator = " ")   
+#' # the next one does not match Guthrie et al yet, needs tweaking
+#' skipgrams(tokens, n = 3, k = 2, concatenator = " ")   
 skipgrams <- function(x, ...) UseMethod("skipgrams")
 
 #' @rdname ngrams
 #' @export
-skipgrams.character <- function(x, n = 2, window = 2, concatenator = "_", ...)
-    ngrams.character(x, n, window, concatenator)
+skipgrams.character <- function(x, n = 2, k = 1, concatenator = "_", ...)
+    ngrams.character(x, n, window = 1:(k+1), concatenator)
 
 #' @rdname ngrams
 #' @export
-skipgrams.tokenizedTexts <- function(x, n = 2, window = 2, concatenator = "_", ...)
-    ngrams.tokenizedTexts(x, n, window, concatenator, ...)
+skipgrams.tokenizedTexts <- function(x, n = 2, k = 1, concatenator = "_", ...)
+    ngrams.tokenizedTexts(x, n, window = 1:(k+1), concatenator, ...)
 
 
 

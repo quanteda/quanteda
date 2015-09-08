@@ -18,11 +18,10 @@ ngrams(x, ...)
 
 skipgrams(x, ...)
 
-\method{skipgrams}{character}(x, n = 2, window = 2, concatenator = "_",
-  ...)
+\method{skipgrams}{character}(x, n = 2, k = 1, concatenator = "_", ...)
 
-\method{skipgrams}{tokenizedTexts}(x, n = 2, window = 2,
-  concatenator = "_", ...)
+\method{skipgrams}{tokenizedTexts}(x, n = 2, k = 1, concatenator = "_",
+  ...)
 }
 \arguments{
 \item{x}{a tokenizedText object or a character vector of tokens}
@@ -38,6 +37,8 @@ forming the ngrams, default is 1 for only immediately neighbouring words}
 
 \item{concatenator}{character for combining words, default is \code{_}
 (underscore) character}
+
+\item{k}{for skip-grams only, \code{k} is the}
 }
 \value{
 a tokenizedTexts object consisting a list of character vectors of
@@ -53,7 +54,10 @@ Normally, \code{\link{ngrams}} will be called through
   user wants to perform lower-level ngram construction on tokenized texts.
 
   \code{\link{skipgrams}} is a wrapper to \code{\link{ngrams}} that simply
-  passes through a default \code{window} value of 2.
+  passes through a \code{window} value of \code{1:(k+1)}, conforming to the
+  definition of skip-grams found in Guthrie et al (2006): A $k$ skip-gram is
+  an ngram which is a superset of all ngrams and each $(k-i)$ skipgram until
+  $(k-i)==0$ (which includes 0 skip-grams).
 }
 \examples{
 ngrams(LETTERS, n = 2, window = 2)
@@ -65,8 +69,16 @@ ngrams(tokens, n = 1:3)
 ngrams(tokens, n = c(2,4), window = 1:2, concatenator = " ")
 
 skipgrams(tokens)
+tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."), removePunct = TRUE)
+skipgrams(tokens, n = 2, k = 2, concatenator = " ")
+# the next one does not match Guthrie et al yet, needs tweaking
+skipgrams(tokens, n = 3, k = 2, concatenator = " ")
 }
 \author{
 Ken Benoit
+}
+\references{
+\href{Guthrie, D, B Allison, W Liu, and L Guthrie. 2006. “A Closer Look
+  at Skip-Gram Modelling.”}{http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf}
 }
 
