@@ -175,7 +175,7 @@ corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvar
 #' @rdname corpus
 #' @export
 #' @examples
-#' \donttest{# the fifth column of this csv file is the text field
+#' \dontrun{# the fifth column of this csv file is the text field
 #' mytexts <- textfile("http://www.kenbenoit.net/files/text_example.csv", textField = 5)
 #' mycorp <- corpus(mytexts)
 #' mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField = "Title"))

@@ -128,7 +128,7 @@ setGeneric("textfile",
 #' @rdname textfile
 #' @export
 #' @examples 
-#' \donttest{# Twitter json
+#' \dontrun{# Twitter json
 #' mytf1 <- textfile("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
 #' summary(corpus(mytf1), 5)
 #' # generic json - needs a textField specifier

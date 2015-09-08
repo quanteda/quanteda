@@ -78,7 +78,8 @@ skipgrams(tokens, n = 3, k = 2, concatenator = " ")
 Ken Benoit
 }
 \references{
-\href{Guthrie, D, B Allison, W Liu, and L Guthrie. 2006. “A Closer Look
-  at Skip-Gram Modelling.”}{http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf}
+\href{http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf}{Guthrie,
+  D, B Allison, W Liu, and L Guthrie. 2006. "A Closer Look at Skip-Gram
+  Modelling."}
 }
 

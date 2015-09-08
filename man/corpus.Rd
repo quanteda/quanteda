@@ -141,7 +141,7 @@ corpus(texts(ie2010Corpus))
 myRussianCorpus <- corpus(textfile("~/Dropbox/QUANTESS/corpora/pozhdata/*.txt"))
 cat(texts(myRussianCorpus)[1])
 }
-\donttest{# the fifth column of this csv file is the text field
+\dontrun{# the fifth column of this csv file is the text field
 mytexts <- textfile("http://www.kenbenoit.net/files/text_example.csv", textField = 5)
 mycorp <- corpus(mytexts)
 mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField = "Title"))

@@ -22,7 +22,7 @@
 #' ngrams(tokens, n = 1:3)
 #' ngrams(tokens, n = c(2,4), window = 1:2, concatenator = " ")
 #'
-#' skipgrams(tokens)
+#' # skipgrams
 ngrams <- function(x, ...) {
     UseMethod("ngrams")
 }
@@ -90,13 +90,15 @@ ngrams.tokenizedTexts <- function(x, n = 2, window = 1, concatenator = "_", ...)
 #'   user wants to perform lower-level ngram construction on tokenized texts.
 #'   
 #'   \code{\link{skipgrams}} is a wrapper to \code{\link{ngrams}} that simply 
-#'   passes through a \code{window} value of \code{1:(k+1)}, conforming to the
-#'   definition of skip-grams found in Guthrie et al (2006): A $k$ skip-gram is
-#'   an ngram which is a superset of all ngrams and each $(k-i)$ skipgram until
+#'   passes through a \code{window} value of \code{1:(k+1)}, conforming to the 
+#'   definition of skip-grams found in Guthrie et al (2006): A $k$ skip-gram is 
+#'   an ngram which is a superset of all ngrams and each $(k-i)$ skipgram until 
 #'   $(k-i)==0$ (which includes 0 skip-grams).
 #' @export
-#' @references \href{Guthrie, D, B Allison, W Liu, and L Guthrie. 2006. “A Closer Look
-#'   at Skip-Gram Modelling.”}{http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf}
+#' @references
+#'   \href{http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf}{Guthrie,
+#'   D, B Allison, W Liu, and L Guthrie. 2006. "A Closer Look at Skip-Gram
+#'   Modelling."}
 #' @examples 
 #' tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."), removePunct = TRUE)
 #' skipgrams(tokens, n = 2, k = 2, concatenator = " ")   
@@ -114,7 +116,8 @@ skipgrams.character <- function(x, n = 2, k = 1, concatenator = "_", ...)
 skipgrams.tokenizedTexts <- function(x, n = 2, k = 1, concatenator = "_", ...)
     ngrams.tokenizedTexts(x, n, window = 1:(k+1), concatenator, ...)
 
-
+## to make this match Guthrie et al (2006), needs to implement R version of
+## http://stackoverflow.com/questions/31847682/how-to-compute-skipgrams-in-python
 
 
 
