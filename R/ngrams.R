@@ -29,6 +29,7 @@ ngrams <- function(x, ...) {
 }
 
 #' @rdname ngrams
+#' @importFrom stats complete.cases
 #' @export
 ngrams.character <- function(x, n = 2, window = 1, concatenator = "_", ...) {
     if (any(stringi::stri_detect_fixed(x, " ")) & concatenator != " ")
@@ -49,7 +50,7 @@ ngrams.character <- function(x, n = 2, window = 1, concatenator = "_", ...) {
             wordtable[, paste0("w", i) := wrapVector(wordtable$w1, winIndex[i]-1, w)]
 
         for (nsize in n) {
-            nonMissing <- complete.cases(wordtable[, 1:nsize, with = FALSE])
+            nonMissing <- stats::complete.cases(wordtable[, 1:nsize, with = FALSE])
             ngrams <- c(ngrams, 
                         apply(wordtable[nonMissing, 1:nsize, with = FALSE], 
                               1, paste, collapse = concatenator))
@@ -100,9 +101,10 @@ ngrams.tokenizedTexts <- function(x, n = 2, window = 1, concatenator = "_", ...)
 #'   \href{http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf}{Guthrie,
 #'   D, B Allison, W Liu, and L Guthrie. 2006. "A Closer Look at Skip-Gram
 #'   Modelling."}
+#' @importFrom utils combn
 #' @examples 
 #' tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."), 
-#'                    removePunct = TRUE, simplify = TRUE)
+#'                    removePunct = TRUE, simplify = TRUE<)
 #' skipgrams(tokens, n = 2, k = 2, concatenator = " ")   
 #' skipgrams(tokens, n = 3, k = 2, concatenator = " ")   
 skipgrams <- function(x, ...) UseMethod("skipgrams")
@@ -194,7 +196,7 @@ ngramIndex <- function(n, window = 1, skipgrams = FALSE) {
         (sequence <- seq(along.with = 1:n, by = window))
     else 
         (sequence <- seq(1, n + window - 1, by = 1))
-    combn(sequence, n, simplify = FALSE)
+    utils::combn(sequence, n, simplify = FALSE)
 }
 
 ############### OLDER, NOT USED
