@@ -85,10 +85,6 @@ corpus <- function(x, ...) {
 #'
 #' corpus(texts(ie2010Corpus))
 #' 
-#' \dontrun{# automatically russian tests from windows-1251 to UTF-8
-#' myRussianCorpus <- corpus(textfile("~/Dropbox/QUANTESS/corpora/pozhdata/*.txt"))
-#' cat(texts(myRussianCorpus)[1])
-#' }
 corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvars=NULL,
                              source=NULL, notes=NULL, citation=NULL, ...) {
     
@@ -181,9 +177,6 @@ corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvar
 #' mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField = "Title"))
 #' identical(texts(mycorp), texts(mycorp2))
 #' identical(docvars(mycorp), docvars(mycorp2))
-#' # some Cyrillic texts in WINDOWS-1251 - auto-detected and converted
-#' mycorp <- corpus(textfile("~/Dropbox/QUANTESS/corpora/pozhdata/*.txt"))
-#' cat(texts(mycorp)[1])
 #' }
 corpus.corpusSource <- function(x, ...) {
     sources <- NULL

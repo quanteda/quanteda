@@ -64,14 +64,15 @@ ngrams(LETTERS, n = 2, window = 2)
 ngrams(LETTERS, n = 3, window = 2)
 ngrams(LETTERS, n = 3, window = 3)
 
-tokens <- tokenize("the quick brown fox jumped over the lazy dog.", removePunct = TRUE)[[1]]
+tokens <- tokenize("the quick brown fox jumped over the lazy dog.",
+                   removePunct = TRUE, simplify = TRUE)
 ngrams(tokens, n = 1:3)
 ngrams(tokens, n = c(2,4), window = 1:2, concatenator = " ")
 
-skipgrams(tokens)
-tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."), removePunct = TRUE)
+# skipgrams
+tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."),
+                   removePunct = TRUE, simplify = TRUE)
 skipgrams(tokens, n = 2, k = 2, concatenator = " ")
-# the next one does not match Guthrie et al yet, needs tweaking
 skipgrams(tokens, n = 3, k = 2, concatenator = " ")
 }
 \author{

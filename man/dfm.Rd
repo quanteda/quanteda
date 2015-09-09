@@ -172,21 +172,6 @@ testTweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday 
                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
 dfm(testTweets, keptFeatures = "^#", removeTwitter = FALSE)  # keep only hashtags
-
-\dontrun{
-# try it with approx 35,000 court documents from Lauderdale and Clark (200?)
-load('~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/lauderdaleClark/Opinion_files.RData')
-txts <- unlist(Opinion_files[1])
-names(txts) <- NULL
-system.time(dfmsBig <- dfm(txts))
-object.size(dfmsBig)
-
-# compare with tm
-require(tm)
-tmcorp <- VCorpus(VectorSource(txts))
-system.time(tmDTM <- DocumentTermMatrix(tmcorp))
-object.size(tmDTM)
-}
 }
 \author{
 Kenneth Benoit

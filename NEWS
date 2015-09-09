@@ -1,7 +1,8 @@
-quanteda 0.8.3
+quanteda 0.8.4
 ==============
 
 *  ngrams() rewritten to accept fully vectorized arguments for `n` and for `window`, thus implementing "skip-grams".
+   Separate function skipgrams() behaves in the standard "skipgram" fashion.
    bigrams(), deprecated since 0.7, has been removed from the namespace.
 
 *  corpus() no longer checks all documents for text encoding; rather, this is now based on a random sample of max()
@@ -10,7 +11,8 @@ quanteda 0.8.3
 
 *  toLower.NULL() now allows toLower() to work on texts with no words (returns NULL for NULL input)
 
-*  textfile() now works on zip archives of *.txt files
+*  textfile() now works on zip archives of *.txt files, although this may not be entirely portable.
+
 
 Bug fixes
 ---------
@@ -18,6 +20,9 @@ Bug fixes
 *  fixed bug in selectFeatures() / removeFeatures() that returned zero features if no features were found matching removal pattern
 
 *  corpus() previously removed document names, now fixed
+
+*  non-portable \donttest{} examples now removed completely from all documentation
+
 
 quanteda 0.8.2
 ==============
