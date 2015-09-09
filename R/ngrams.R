@@ -104,7 +104,7 @@ ngrams.tokenizedTexts <- function(x, n = 2, window = 1, concatenator = "_", ...)
 #' @importFrom utils combn
 #' @examples 
 #' tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."), 
-#'                    removePunct = TRUE, simplify = TRUE<)
+#'                    removePunct = TRUE, simplify = TRUE)
 #' skipgrams(tokens, n = 2, k = 2, concatenator = " ")   
 #' skipgrams(tokens, n = 3, k = 2, concatenator = " ")   
 skipgrams <- function(x, ...) UseMethod("skipgrams")
