@@ -118,7 +118,7 @@ The constructor does not store a copy of the texts, but rather reads
 mytf1 <- textfile("http://www.kenbenoit.net/files/tweets.json")
 summary(corpus(mytf1), 5)
 # generic json - needs a textField specifier
-mytf2 <- textfile(http://www.kenbenoit.net/files/sotu.json",
+mytf2 <- textfile("http://www.kenbenoit.net/files/sotu.json",
                   textField = "text")
 summary(corpus(mytf2))
 # text file

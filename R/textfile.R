@@ -133,7 +133,7 @@ setGeneric("textfile",
 #' mytf1 <- textfile("http://www.kenbenoit.net/files/tweets.json")
 #' summary(corpus(mytf1), 5)
 #' # generic json - needs a textField specifier
-#' mytf2 <- textfile(http://www.kenbenoit.net/files/sotu.json",
+#' mytf2 <- textfile("http://www.kenbenoit.net/files/sotu.json",
 #'                   textField = "text")
 #' summary(corpus(mytf2))
 #' # text file
@@ -366,14 +366,15 @@ get_json_tweets <- function(path=NULL, source="twitter", ...) {
 }
 
 ## general json
-get_json <- function(path=NULL, textField, ...) {
+get_json <- function(path, textField, ...) {
     if (!requireNamespace("jsonlite", quietly = TRUE))
         stop("You must have jsonlite installed to read json files.")
-    raw <- readLines(path)
-    parsed <- lapply(raw, jsonlite::fromJSON, flatten=TRUE)
-    df <- data.frame(matrix(unlist(parsed), nrow=length(parsed), ncol=length(parsed[[1]]), byrow=TRUE),
-                     stringsAsFactors=FALSE)
-    names(df) <- names(parsed[[1]])
+    # raw <- readLines(path)
+    #parsed <- lapply(path, jsonlite::fromJSON, flatten=TRUE)
+    df <- jsonlite::fromJSON(path, flatten=TRUE)
+#     df <- data.frame(matrix(unlist(parsed), nrow=length(parsed), ncol=length(parsed[[1]]), byrow=TRUE),
+#                      stringsAsFactors=FALSE)
+#     names(df) <- names(parsed[[1]])
     textFieldi <- which(names(df)==textField)
     if (length(textFieldi)==0)
         stop("column name", textField, "not found.")
