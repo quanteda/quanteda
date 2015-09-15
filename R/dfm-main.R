@@ -160,10 +160,11 @@ dfm.character <- function(x,
                           thesaurus=NULL, 
                           dictionary=NULL,
                           valuetype = c("glob", "regex", "fixed"),
-                          dictionary_regex = ifelse(valuetype=="regex", TRUE, FALSE), 
+                          dictionary_regex = FALSE, 
                           ...) {
     startTime <- proc.time()
     matrixType <- match.arg(matrixType)
+    valuetype <- match.arg(valuetype)
     
     if (verbose && grepl("^dfm\\.character", sys.calls()[[2]]))
         cat("Creating a dfm from a character vector ...")
@@ -205,8 +206,10 @@ dfm.tokenizedTexts <- function(x,
                                thesaurus=NULL, 
                                dictionary=NULL, 
                                valuetype = c("glob", "regex", "fixed"),
-                               dictionary_regex = ifelse(valuetype=="regex", TRUE, FALSE),
+                               dictionary_regex = FALSE,
                                ...) {
+    
+    valuetype <- match.arg(valuetype)
     dots <- list(...)
     startTime <- proc.time()
     if ("startTime" %in% names(dots)) startTime <- dots$startTime
@@ -268,12 +271,17 @@ dfm.tokenizedTexts <- function(x,
         dfmresult <- selectFeatures(dfmresult, keptFeatures, selection = "keep", valuetype = valuetype, verbose = verbose)
     }
     
+    if (dictionary_regex & valuetype != "regex") {
+        warning("dictionary_regex is deprecated, use valuetype = \"regex\" instead.")
+        valuetype <- "regex"
+    }
+    
     if (!is.null(dictionary) | !is.null(thesaurus)) {
         if (!is.null(thesaurus)) dictionary <- thesaurus
         if (verbose) cat("   ... ")
         dfmresult <- applyDictionary(dfmresult, dictionary,
                                      exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
-                                     valuetype = ifelse(dictionary_regex, "regex", "glob"),
+                                     valuetype = valuetype,
                                      verbose = verbose,
                                      ...)
     }

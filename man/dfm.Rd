@@ -16,14 +16,13 @@ dfm(x, ...)
   removeTwitter = FALSE, stem = FALSE, ignoredFeatures = NULL,
   keptFeatures = NULL, matrixType = c("sparse", "dense"),
   language = "english", thesaurus = NULL, dictionary = NULL,
-  valuetype = c("glob", "regex", "fixed"),
-  dictionary_regex = ifelse(valuetype == "regex", TRUE, FALSE), ...)
+  valuetype = c("glob", "regex", "fixed"), dictionary_regex = FALSE, ...)
 
 \method{dfm}{tokenizedTexts}(x, verbose = TRUE, toLower = TRUE,
   stem = FALSE, ignoredFeatures = NULL, keptFeatures = NULL,
   matrixType = c("sparse", "dense"), language = "english",
   thesaurus = NULL, dictionary = NULL, valuetype = c("glob", "regex",
-  "fixed"), dictionary_regex = ifelse(valuetype == "regex", TRUE, FALSE), ...)
+  "fixed"), dictionary_regex = FALSE, ...)
 
 \method{dfm}{corpus}(x, verbose = TRUE, groups = NULL, ...)
 
@@ -158,9 +157,9 @@ dictDfm
 mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
              "New York City has raised a taxes: an income tax and a sales tax.")
 mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax")))
-dfm(phrasetotoken(mytexts, mydict), thesaurus=lapply(mydict, function(x) gsub("\\\\s", "_", x)))
+dfm(phrasetotoken(mytexts, mydict), thesaurus = lapply(mydict, function(x) gsub("\\\\s", "_", x)))
 # pick up "taxes" with "tax" as a regex
-dfm(phrasetotoken(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE)
+dfm(phrasetotoken(mytexts, mydict), thesaurus = list(anytax = "tax"), valuetype = "regex")
 
 # removing stopwords
 testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
@@ -172,13 +171,15 @@ features(dfm(testCorpus, verbose = FALSE, ngrams = 1:2))
 features(dfm(testCorpus, verbose = FALSE, ngrams = 2))
 
 # keep only certain words
-dfm(testCorpus, keptFeatures = "s$", verbose = FALSE)  # keep only words ending in "s"
+dfm(testCorpus, keptFeatures = "*s", verbose = FALSE)  # keep only words ending in "s"
+dfm(testCorpus, keptFeatures = "s$", valuetype = "regex", verbose = FALSE)  # keep only words ending in "s"
 
 # testing Twitter functions
 testTweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday #beliebers",
                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-dfm(testTweets, keptFeatures = "^#", removeTwitter = FALSE)  # keep only hashtags
+dfm(testTweets, keptFeatures = "#*", removeTwitter = FALSE)  # keep only hashtags
+dfm(testTweets, keptFeatures = "^#.*$", valuetype = "regex", removeTwitter = FALSE)
 }
 \author{
 Kenneth Benoit
