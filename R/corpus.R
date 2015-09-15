@@ -732,9 +732,9 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
         outputdf[names(metadoc(object))] <- metadoc(object)[1:min(c(n, ndoc(object))),,drop=FALSE]
     if (verbose) {
         print(head(outputdf, n), row.names=FALSE)
-        cat("\nSource:  ", unlist(metacorpus(object, "source")), ".\n", sep="")
-        cat("Created: ",   unlist(metacorpus(object, "created")), ".\n", sep="")
-        cat("Notes:   ",   unlist(metacorpus(object, "notes")), ".\n\n", sep="")
+        cat("\nSource:  ", unlist(metacorpus(object, "source")), "\n", sep="")
+        cat("Created: ",   unlist(metacorpus(object, "created")), "\n", sep="")
+        cat("Notes:   ",   unlist(metacorpus(object, "notes")), "\n\n", sep="")
     }
     # invisibly pass the summary of the texts from describetexts()
     return(invisible(outputdf))

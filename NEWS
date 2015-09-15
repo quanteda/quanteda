@@ -1,6 +1,8 @@
 quanteda 0.8.5
 ==============
 
+*  segment(x, what = "sentence"), and changeunits(x, to = "sentences") now uses tokenize(x, what = "sentence").  Annoying warning messages now gone.
+
 Bug fixes
 ---------
 

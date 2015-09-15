@@ -172,7 +172,7 @@ features(dfm(testCorpus, verbose = FALSE, ngrams = 2))
 
 # keep only certain words
 dfm(testCorpus, keptFeatures = "*s", verbose = FALSE)  # keep only words ending in "s"
-dfm(testCorpus, keptFeatures = "s$", valuetype = "regex", verbose = FALSE)  # keep only words ending in "s"
+dfm(testCorpus, keptFeatures = "s$", valuetype = "regex", verbose = FALSE)
 
 # testing Twitter functions
 testTweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday #beliebers",

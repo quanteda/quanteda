@@ -9,7 +9,11 @@
 # str(segmentSentence(ukimmigTexts[1]))   # a 132-element char vector
 # str(segmentSentence(ukimmigTexts[1:2])) # a 144-element char vector (143+ 12)
 # 
-segmentSentence <- function(x, delimiter="[.!?:;]", perl=FALSE) {
+segmentSentence <- function(x, delimiter = NULL, perl = FALSE) {
+    result <- unlist(tokenize(x, what = "sentence"), use.names = FALSE)
+}
+
+segmentSentenceOld <- function(x, delimiter="[.!?:;]", perl=FALSE) {
     # strip out CRs and LFs, tabs
     text <- gsub("\\n+|\\t+", " ", x)
     # remove trailing and leading spaces
@@ -104,7 +108,7 @@ segmentParagraph <- function(x, delimiter="\\n{2}", perl=FALSE) {
 #'   with a newline character.)
 #' @export
 segment <- function(x, ...) {
-    warning("segment() is deprecated, use tokenize() instead.")
+    # warning("segment() is deprecated, use tokenize() instead.")
     UseMethod("segment")
 }
 
@@ -140,7 +144,7 @@ segment.character <- function(x, what=c("tokens", "sentences", "paragraphs", "ta
     if (what=="tokens") {
         return(tokenize(x, sep=delimiter, ...)) 
     } else if (what=="sentences") {
-        warning("tokenize(x, what = \"sentence\") is *much* better.")
+        # warning("consider using tokenize(x, what = \"sentence\") instead.")
         return(lapply(x, segmentSentence, delimiter, perl=perl)) 
     } else if (what=="paragraphs") {
         return(lapply(x, segmentParagraph, delimiter, perl=perl)) 
