@@ -1,3 +1,14 @@
+quanteda 0.8.5
+==============
+
+Bug fixes
+---------
+
+*  fixed bug in dfm(, keptFeatures = "whatever") that passed it through as a glob rather than a regex to selectFeatures().  Now takes a regex, as per the manual description.
+
+*  fixed textfeatures() for type json, where now it can call jsonlite::fromJSON() on a file directly.
+
+
 quanteda 0.8.4
 ==============
 

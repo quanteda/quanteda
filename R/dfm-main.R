@@ -41,16 +41,16 @@ dfm <- function(x, ...) {
 #'   ignore, such as "stop words".  Formerly, this was a Boolean option for 
 #'   \code{stopwords = TRUE}, but requiring the user to supply the list 
 #'   highlights the choice involved in using any stopword list.  To access one 
-#'   possible list (from any list you wish), use \code{\link{stopwords}()}.
+#'   possible list (from any list you wish), use \code{\link{stopwords}()}.  The
+#'   pattern matching type will be set by \code{valuetype}.
 #' @param keptFeatures a use supplied regular expression defining which features
 #'   to keep, while excluding all others.  This can be used in lieu of a 
 #'   dictionary if there are only specific features that a user wishes to keep. 
 #'   To extract only Twitter usernames, for example, set \code{keptFeatures = 
-#'   "^@@\\\w+\\\b"} and make sure that \code{removeTwitter = FALSE} as an 
-#'   additional argument passed to \link{tokenize}.  (Note: \code{keptFeatures =
-#'   "^@@"} will also retrieve usernames, but does not enforce the username 
-#'   convention that a username must contain one and only one \code{@@} symbol, 
-#'   at the beginning of the username.)
+#'   "@@*"} and make sure that \code{removeTwitter = FALSE} as an additional 
+#'   argument passed to \link{tokenize}.  Note: \code{keptFeatures = 
+#'   "^@@\\\w+\\\b"} would be the regular expression version of this matching 
+#'   pattern.  The pattern matching type will be set by \code{valuetype}.
 #' @param dictionary A list of character vector dictionary entries, including 
 #'   regular expressions (see examples)
 #' @param thesaurus A list of character vector "thesaurus" entries, in a 
@@ -60,9 +60,13 @@ dfm <- function(x, ...) {
 #'   the first match in the list will be used.  Thesaurus keys are converted to 
 #'   upper case to create a feature label in the dfm, as a reminder that this 
 #'   was not a type found in the text, but rather the label of a thesaurus key.
+#' @param valuetype \code{fixed} for words as is; \code{"regex"} for regular 
+#'   expressions; or \code{"glob"} for "glob"-style wildcard.  Glob format is
+#'   the default.  See \code{\link{selectFeatures}}.
 #' @param dictionary_regex \code{TRUE} means the dictionary is already in 
-#'   regular expression format, otherwise it will be converted from "wildcard" 
-#'   format
+#'   regular expression format, otherwise it will be converted from the "glob" 
+#'   format.  This is a legacy argument that will soon be phased out in favour of
+#'   \code{valuetype}.
 #' @param language Language for stemming and stopwords.  Choices are 
 #'   \code{danish}, \code{dutch}, \code{english}, \code{finnish}, \code{french},
 #'   \code{german}, \code{hungarian}, \code{italian}, \code{norwegian}, 
@@ -115,9 +119,9 @@ dfm <- function(x, ...) {
 #' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
 #'              "New York City has raised a taxes: an income tax and a sales tax.")
 #' mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax")))
-#' dfm(phrasetotoken(mytexts, mydict), thesaurus=lapply(mydict, function(x) gsub("\\s", "_", x)))
+#' dfm(phrasetotoken(mytexts, mydict), thesaurus = lapply(mydict, function(x) gsub("\\s", "_", x)))
 #' # pick up "taxes" with "tax" as a regex
-#' dfm(phrasetotoken(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE)
+#' dfm(phrasetotoken(mytexts, mydict), thesaurus = list(anytax = "tax"), valuetype = "regex")
 #' 
 #' # removing stopwords
 #' testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
@@ -129,13 +133,15 @@ dfm <- function(x, ...) {
 #' features(dfm(testCorpus, verbose = FALSE, ngrams = 2))
 #' 
 #' # keep only certain words
-#' dfm(testCorpus, keptFeatures = "s$", verbose = FALSE)  # keep only words ending in "s"
+#' dfm(testCorpus, keptFeatures = "*s", verbose = FALSE)  # keep only words ending in "s"
+#' dfm(testCorpus, keptFeatures = "s$", valuetype = "regex", verbose = FALSE)  # keep only words ending in "s"
 #' 
 #' # testing Twitter functions
 #' testTweets <- c("My homie @@justinbieber #justinbieber shopping in #LA yesterday #beliebers",
 #'                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
 #'                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-#' dfm(testTweets, keptFeatures = "^#", removeTwitter = FALSE)  # keep only hashtags
+#' dfm(testTweets, keptFeatures = "#*", removeTwitter = FALSE)  # keep only hashtags
+#' dfm(testTweets, keptFeatures = "^#.*$", valuetype = "regex", removeTwitter = FALSE)
 #' 
 dfm.character <- function(x, 
                           verbose=TRUE, 
@@ -152,8 +158,9 @@ dfm.character <- function(x,
                           matrixType=c("sparse", "dense"), 
                           language="english",
                           thesaurus=NULL, 
-                          dictionary=NULL, 
-                          dictionary_regex=FALSE, 
+                          dictionary=NULL,
+                          valuetype = c("glob", "regex", "fixed"),
+                          dictionary_regex = ifelse(valuetype=="regex", TRUE, FALSE), 
                           ...) {
     startTime <- proc.time()
     matrixType <- match.arg(matrixType)
@@ -177,7 +184,8 @@ dfm.character <- function(x,
     dfm(tokenizedTexts, verbose=verbose, toLower=toLower, stem=stem, 
         ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
         matrixType=matrixType, language=language,
-        thesaurus=thesaurus, dictionary=dictionary, dictionary_regex=dictionary_regex,
+        thesaurus=thesaurus, dictionary=dictionary, valuetype = valuetype, 
+        dictionary_regex = dictionary_regex,
         startTime = startTime)
     
 }
@@ -196,7 +204,8 @@ dfm.tokenizedTexts <- function(x,
                                language="english",
                                thesaurus=NULL, 
                                dictionary=NULL, 
-                               dictionary_regex=FALSE,
+                               valuetype = c("glob", "regex", "fixed"),
+                               dictionary_regex = ifelse(valuetype=="regex", TRUE, FALSE),
                                ...) {
     dots <- list(...)
     startTime <- proc.time()
@@ -251,12 +260,12 @@ dfm.tokenizedTexts <- function(x,
     
     if (!is.null(ignoredFeatures)) {
         if (verbose) cat("   ... ")
-        dfmresult <- selectFeatures(dfmresult, ignoredFeatures, selection = "remove", verbose = verbose)
+        dfmresult <- selectFeatures(dfmresult, ignoredFeatures, selection = "remove", valuetype = valuetype, verbose = verbose)
     }
     
     if (!is.null(keptFeatures)) {
         if (verbose) cat("   ... ")
-        dfmresult <- selectFeatures(dfmresult, keptFeatures, selection = "keep", verbose = verbose)
+        dfmresult <- selectFeatures(dfmresult, keptFeatures, selection = "keep", valuetype = valuetype, verbose = verbose)
     }
     
     if (!is.null(dictionary) | !is.null(thesaurus)) {
