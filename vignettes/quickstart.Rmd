@@ -19,6 +19,7 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
+
 # Introduction
 
 An R package for managing and analyzing text, by Ken Benoit and Paul Nulty.[^thanks]
