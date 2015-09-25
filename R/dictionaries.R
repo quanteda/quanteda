@@ -249,7 +249,7 @@ readLIWCdict <- function(path, maxcats=25, enc="") {
         catlist
     }
     
-    save(catlist, file = "~/Desktop/catlist.Rdata")
+    # save(catlist, file = "~/Desktop/catlist.Rdata")
     
     catlist <- catlist[order(catlist[,1]), ]
     # merge key categories of duplicate terms - this makes the function work with some LIWC-supplied
