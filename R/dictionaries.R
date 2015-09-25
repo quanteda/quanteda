@@ -73,7 +73,7 @@ setMethod("show", "dictionary",
 #' dfm(inaugTexts, dictionary=liwcdict)
 #' }
 #' @export
-dictionary <- function(x=NULL, file=NULL, format=NULL, enc="", tolower=TRUE, maxcats=10) {
+dictionary <- function(x=NULL, file=NULL, format=NULL, enc="", tolower=TRUE, maxcats=25) {
     if (!is.null(x) & !is.list(x))
         stop("Dictionaries must be named lists.")
     x <- flatten.dictionary(x)
@@ -85,9 +85,9 @@ dictionary <- function(x=NULL, file=NULL, format=NULL, enc="", tolower=TRUE, max
             stop("You must specify a format for file", file)
         format <- match.arg(format, c("wordstat", "LIWC"))
         if (format=="wordstat") 
-            x <- readWStatDict(file, enc=enc, lower=tolower)
+            x <- readWStatDict(file, enc = enc, lower = tolower)
         else if (format=="LIWC") 
-            x <- readLIWCdict(file, maxcats=10, enc="")
+            x <- readLIWCdict(file, maxcats = maxcats, enc = enc)
     }
     
     new("dictionary", x)
@@ -200,7 +200,7 @@ readWStatDictNested <- function(path) {
 # @export
 # @examples \dontrun{ 
 # LIWCdict <- readLIWCdict("~/Dropbox/QUANTESS/corpora/LIWC/LIWC2001_English.dic") }
-readLIWCdict <- function(path, maxcats=10, enc="") {
+readLIWCdict <- function(path, maxcats=25, enc="") {
     # read in the dictionary as a (big, uneven) table
     d <- utils::read.table(path, header=FALSE, fileEncoding=enc,
                            col.names=c("category", paste("catno", 1:maxcats)),
@@ -208,7 +208,7 @@ readLIWCdict <- function(path, maxcats=10, enc="") {
     # get the row number that signals the end of the category guide
     guideRowEnd <- max(which(d$category=="%"))
     if(guideRowEnd < 1){
-        stop('Expected a guide (a category legend) delimted by percentage symbols at start of file, none found')
+        stop('Expected a guide (a category legend) delimited by percentage symbols at start of file, none found')
     }
     # extract the category guide
     guide <- d[2:(guideRowEnd-1), 1:2]
@@ -222,6 +222,47 @@ readLIWCdict <- function(path, maxcats=10, enc="") {
     
     # make a list of terms with their category numbers
     catlist <- d[(guideRowEnd+1):nrow(d), ]
+    
+    mergeNums <- function(x, y) {
+        # helper function    
+        result <- sort(unique(c(as.numeric(x), as.numeric(y))))
+        if (length(result) > length(x))
+            stop("too long: try increasing maxcats")
+        if (length(result) < length(x))
+            result <- c(result, rep(NA, length(x) - length(result)))
+        result
+    }
+    
+    consolidateCatlist <- function(catlist) {
+        dups <- which(duplicated(catlist[, 1]))
+        # cat("Found duplicates at rows:", dups, "\n\n")
+        while (length(dups)) {
+            # cat("Duplicates = ", length(dups), "\n\n")
+            i <- dups[1]
+            # cat("merging row [", i-1, "]", catlist[i-1, 1], as.numeric(catlist[i-1, 2:ncol(catlist)]), "\n")
+            # cat("   with row [", i, "]", catlist[i, 1], as.numeric(catlist[i, 2:ncol(catlist)]), "\n")
+            catlist[i-1, 2:ncol(catlist)] <- mergeNums(catlist[i-1, 2:ncol(catlist)], catlist[i, 2:ncol(catlist)])
+            catlist <- catlist[-i, ]
+            # cat("   NEW row [", i-1, "]", catlist[i-1, 1], as.numeric(catlist[i-1, 2:ncol(catlist)]), "\n\n")
+            dups <- dups[-1] - 1 
+        }
+        catlist
+    }
+    
+    save(catlist, file = "~/Desktop/catlist.Rdata")
+    
+    catlist <- catlist[order(catlist[,1]), ]
+    # merge key categories of duplicate terms - this makes the function work with some LIWC-supplied
+    # dictionaries that repeat term entries across different lines
+    dups <- which(duplicated(catlist[, 1]))
+    if (length(dups)) {
+        cat("Found", length(dups), "duplicated entries, and merged them.\n")
+        catlist <- consolidateCatlist(catlist)
+    }
+
+    # path <- "~/Dropbox/Papers/EUP_Kansas/analysis/Dictionaries/LIWC2007_French_UTF8.dic"; maxcats=15; enc=""
+    # path <- "~/Dropbox/Papers/EUP_Kansas/analysis/Dictionaries/TESTDIC.dic"; maxcats=15; enc=""
+    
     rownames(catlist) <- catlist[,1]
     catlist <- catlist[, -1]
     suppressWarnings(catlist <- apply(catlist, c(1,2), as.numeric))

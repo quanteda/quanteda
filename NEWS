@@ -10,6 +10,7 @@ Bug fixes
 
 *  fixed textfeatures() for type json, where now it can call jsonlite::fromJSON() on a file directly.
 
+*  dictionary(x, format = "LIWC") now expanded to 25 categories by default, and handles entries that are listed on multiple lines in .dic files, such as those distributed with the LIWC.
 
 quanteda 0.8.4
 ==============

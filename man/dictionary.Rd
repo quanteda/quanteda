@@ -5,7 +5,7 @@
 \title{create a dictionary}
 \usage{
 dictionary(x = NULL, file = NULL, format = NULL, enc = "",
-  tolower = TRUE, maxcats = 10)
+  tolower = TRUE, maxcats = 25)
 }
 \arguments{
 \item{x}{a list of character vector dictionary entries, including regular
