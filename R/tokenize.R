@@ -483,7 +483,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
     #, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
 
     # make this an S3 class item, if a list
-    if (simplify == FALSE) {
+    if (simplify == FALSE & !is.tokenizedTexts(result)) {
         class(result) <- c("tokenizedTexts", class(result))
     }
     
@@ -531,4 +531,11 @@ ngram <- function(tokens, n = 2, concatenator = "_", include.all = FALSE) {
     all_ngrams
 }
 
+
+#' @export
+#' @description \code{is.tokenizedTexts} returns \code{TRUE} if the object is of class tokenizedTexts, \code{FALSE} otherwise.
+#' @rdname tokenize
+is.tokenizedTexts <- function(x) {
+    ifelse("tokenizedTexts" %in% class(x), TRUE, FALSE)
+}
 
