@@ -59,7 +59,8 @@ ignore, such as "stop words".  Formerly, this was a Boolean option for
 \code{stopwords = TRUE}, but requiring the user to supply the list
 highlights the choice involved in using any stopword list.  To access one
 possible list (from any list you wish), use \code{\link{stopwords}()}.  The
-pattern matching type will be set by \code{valuetype}.}
+pattern matching type will be set by \code{valuetype}.  For behaviour of
+\code{ingoredFeatures} with \code{ngrams > 1}, see Details.}
 
 \item{keptFeatures}{a use supplied regular expression defining which features
 to keep, while excluding all others.  This can be used in lieu of a
@@ -102,8 +103,8 @@ the default.  See \code{\link{selectFeatures}}.}
 
 \item{dictionary_regex}{\code{TRUE} means the dictionary is already in
 regular expression format, otherwise it will be converted from the "glob"
-format.  This is a legacy argument that will soon be phased out in favour of
-\code{valuetype}.}
+format.  This is a legacy argument that will soon be phased out in favour
+of \code{valuetype}.}
 
 \item{groups}{character vector containing the names of document variables for
 aggregating documents}
@@ -121,6 +122,13 @@ both much faster and much more memory efficient than the corresponding dense
 dfm class, see \link{dfm-class}.
 }
 \details{
+The default behavior for \code{ignoredFeatures} when constructing
+  ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to remove any ngram that
+  contains any item in \code{ignoredFeatures}.  If you wish to remove these before
+  constructing ngrams, you will need to first tokenize the texts with ngrams, then
+  remove the features to be ignored, and then construct the dfm using this modified
+  tokenization object.  See the code examples for an illustration.
+
 \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
 
 \code{as.dfm} coerces a matrix or data.frame to a dfm
@@ -165,10 +173,17 @@ dfm(phrasetotoken(mytexts, mydict), thesaurus = list(anytax = "tax"), valuetype 
 testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
              the newspaper from a boy named Seamus, in his mouth."
 testCorpus <- corpus(testText)
-# settings(testCorpus, "stopwords")
-dfm(testCorpus, ignoredFeatures = stopwords("english"))
-features(dfm(testCorpus, verbose = FALSE, ngrams = 1:2))
-features(dfm(testCorpus, verbose = FALSE, ngrams = 2))
+# note: "also" is not in the default stopwords("english")
+features(dfm(testCorpus, ignoredFeatures = stopwords("english")))
+# for ngrams
+features(dfm(testCorpus, ngrams = 2, ignoredFeatures = stopwords("english")))
+features(dfm(testCorpus, ngrams = 1:2, ignoredFeatures = stopwords("english")))
+
+## removing stopwords before constructing ngrams
+tokensAll <- tokenize(toLower(testText), removePunct = TRUE)
+tokensNoStopwords <- removeFeatures(tokensAll, stopwords("english"))
+tokensNgramsNoStopwords <- ngrams(tokensNoStopwords, 2)
+features(dfm(tokensNgramsNoStopwords, ngrams = 1:2))
 
 # keep only certain words
 dfm(testCorpus, keptFeatures = "*s", verbose = FALSE)  # keep only words ending in "s"

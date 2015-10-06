@@ -42,7 +42,8 @@ dfm <- function(x, ...) {
 #'   \code{stopwords = TRUE}, but requiring the user to supply the list 
 #'   highlights the choice involved in using any stopword list.  To access one 
 #'   possible list (from any list you wish), use \code{\link{stopwords}()}.  The
-#'   pattern matching type will be set by \code{valuetype}.
+#'   pattern matching type will be set by \code{valuetype}.  For behaviour of 
+#'   \code{ingoredFeatures} with \code{ngrams > 1}, see Details.
 #' @param keptFeatures a use supplied regular expression defining which features
 #'   to keep, while excluding all others.  This can be used in lieu of a 
 #'   dictionary if there are only specific features that a user wishes to keep. 
@@ -61,12 +62,12 @@ dfm <- function(x, ...) {
 #'   upper case to create a feature label in the dfm, as a reminder that this 
 #'   was not a type found in the text, but rather the label of a thesaurus key.
 #' @param valuetype \code{fixed} for words as is; \code{"regex"} for regular 
-#'   expressions; or \code{"glob"} for "glob"-style wildcard.  Glob format is
+#'   expressions; or \code{"glob"} for "glob"-style wildcard.  Glob format is 
 #'   the default.  See \code{\link{selectFeatures}}.
 #' @param dictionary_regex \code{TRUE} means the dictionary is already in 
 #'   regular expression format, otherwise it will be converted from the "glob" 
-#'   format.  This is a legacy argument that will soon be phased out in favour of
-#'   \code{valuetype}.
+#'   format.  This is a legacy argument that will soon be phased out in favour 
+#'   of \code{valuetype}.
 #' @param language Language for stemming and stopwords.  Choices are 
 #'   \code{danish}, \code{dutch}, \code{english}, \code{finnish}, \code{french},
 #'   \code{german}, \code{hungarian}, \code{italian}, \code{norwegian}, 
@@ -83,6 +84,12 @@ dfm <- function(x, ...) {
 #' @return A \link{dfm-class} object containing a sparse matrix representation 
 #'   of the counts of features by document, along with associated settings and 
 #'   metadata.
+#' @details The default behavior for \code{ignoredFeatures} when constructing
+#'   ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to remove any ngram that
+#'   contains any item in \code{ignoredFeatures}.  If you wish to remove these before
+#'   constructing ngrams, you will need to first tokenize the texts with ngrams, then
+#'   remove the features to be ignored, and then construct the dfm using this modified
+#'   tokenization object.  See the code examples for an illustration.
 #' @author Kenneth Benoit
 #' @importFrom parallel mclapply
 #' @import data.table Matrix
@@ -127,10 +134,17 @@ dfm <- function(x, ...) {
 #' testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
 #'              the newspaper from a boy named Seamus, in his mouth."
 #' testCorpus <- corpus(testText)
-#' # settings(testCorpus, "stopwords")
-#' dfm(testCorpus, ignoredFeatures = stopwords("english"))
-#' features(dfm(testCorpus, verbose = FALSE, ngrams = 1:2))
-#' features(dfm(testCorpus, verbose = FALSE, ngrams = 2))
+#' # note: "also" is not in the default stopwords("english")
+#' features(dfm(testCorpus, ignoredFeatures = stopwords("english")))
+#' # for ngrams
+#' features(dfm(testCorpus, ngrams = 2, ignoredFeatures = stopwords("english")))
+#' features(dfm(testCorpus, ngrams = 1:2, ignoredFeatures = stopwords("english")))
+#' 
+#' ## removing stopwords before constructing ngrams
+#' tokensAll <- tokenize(toLower(testText), removePunct = TRUE)
+#' tokensNoStopwords <- removeFeatures(tokensAll, stopwords("english"))
+#' tokensNgramsNoStopwords <- ngrams(tokensNoStopwords, 2)
+#' features(dfm(tokensNgramsNoStopwords, ngrams = 1:2))
 #' 
 #' # keep only certain words
 #' dfm(testCorpus, keptFeatures = "*s", verbose = FALSE)  # keep only words ending in "s"
@@ -182,13 +196,24 @@ dfm.character <- function(x,
                                removeTwitter = removeTwitter,
                                ...)
 
+    # if ngrams > 1 and ignoredFeatures are specified, then convert these into a
+    # regex that will remove any ngram containing one of the words
+    if (!identical(attr(tokenizedTexts, "ngrams"), 1) & !is.null(ignoredFeatures)) {
+        conc <- attr(tokenizedTexts, "concatenator")
+        if (valuetype == "glob") {
+            ignoredFeatures <- gsub("\\*", ".*", ignoredFeatures)
+            ignoredFeatures <- gsub("\\?", ".{1}", ignoredFeatures)
+        }
+        ignoredFeatures <- paste0("(\\b|(\\w+", conc, ")+)", ignoredFeatures, "(\\b|(", conc, "\\w+)+)")
+        valuetype <- "regex"
+    }
+    
     dfm(tokenizedTexts, verbose=verbose, toLower=toLower, stem=stem, 
         ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
         matrixType=matrixType, language=language,
         thesaurus=thesaurus, dictionary=dictionary, valuetype = valuetype, 
         dictionary_regex = dictionary_regex,
         startTime = startTime)
-    
 }
 
     

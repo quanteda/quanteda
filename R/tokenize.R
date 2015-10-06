@@ -487,6 +487,12 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         class(result) <- c("tokenizedTexts", class(result))
     }
     
+    # add settings for ngrams and concatenator
+    attr(result, "ngrams") <- ngrams
+    if (!identical(ngrams, 1)) {
+        attr(result, "concatenator") <- concatenator
+    }
+        
     result
 }
 
