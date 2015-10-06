@@ -38,7 +38,12 @@ forming the ngrams, default is 1 for only immediately neighbouring words}
 \item{concatenator}{character for combining words, default is \code{_}
 (underscore) character}
 
-\item{k}{for skip-grams only, \code{k} is the}
+\item{k}{for skip-grams only, \code{k} is the number of skips used to
+construct the $n$-gram. Skip-grams for a given skip distance $k$ allow a
+total of $k$ or less skips to construct the $n$-gram.  Thus a
+"4-skip-n-gram" produces results that include 4 skips, 3 skips, 2 skips, 1
+skip, and 0 skips (where 0 skips are typical n-grams formed from adjacent
+words).  See Guthrie et al (2006).}
 }
 \value{
 a tokenizedTexts object consisting a list of character vectors of
@@ -80,7 +85,7 @@ Ken Benoit
 }
 \references{
 \href{http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf}{Guthrie,
-  D, B Allison, W Liu, and L Guthrie. 2006. "A Closer Look at Skip-Gram
+  D., B. Allison, W. Liu, and L. Guthrie. 2006. "A Closer Look at Skip-Gram
   Modelling."}
 }
 
