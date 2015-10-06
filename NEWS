@@ -7,8 +7,12 @@ quanteda 0.8.5
 
 *  segment(x, what = "sentence"), and changeunits(x, to = "sentences") now uses tokenize(x, what = "sentence").  Annoying warning messages now gone.
 
+*  smoother() and weight() formal "smooth" now changed to "smoothing" to avoid clashes with stats::smooth().
+
 Bug fixes
 ---------
+
+*  fixed signature error message caused by `weight(x, "relFreq")` and `weight(x, "tfidf")`.  Both now correctly produce objects of class dfmSparse.
 
 *  fixed bug in dfm(, keptFeatures = "whatever") that passed it through as a glob rather than a regex to selectFeatures().  Now takes a regex, as per the manual description.
 

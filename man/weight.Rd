@@ -14,13 +14,14 @@
 weight(x, ...)
 
 \S4method{weight}{dfm}(x, type = c("frequency", "relFreq", "relMaxFreq",
-  "logFreq", "tfidf"), smooth = 0, normalize = TRUE, verbose = TRUE, ...)
+  "logFreq", "tfidf"), smoothing = 0, normalize = TRUE, verbose = TRUE,
+  ...)
 
 tf(x)
 
 tfidf(x)
 
-smoother(x, smooth)
+smoother(x, smoothing)
 
 weighting(object)
 
@@ -44,8 +45,8 @@ weighting(object)
   by the frequency of the most frequent term in the document
   \item ppmi -   Positive Pointwise Mutual Information }}
 
-\item{smooth}{amount to apply as additive smoothing to the document-feature matrix prior to
-weighting, default is 0.5, set to \code{smooth=0} for no smoothing.}
+\item{smoothing}{amount to apply as additive smoothing to the document-feature matrix prior to
+weighting, default is 0.5, set to \code{smoothing=0} for no smoothing.}
 
 \item{normalize}{if \code{TRUE} (default) then normalize the dfm by relative
 term frequency prior to computing tfidf}
@@ -68,7 +69,7 @@ according to one of several common methods.
 
 \code{tfidf} is a shortcut for \code{weight(x, "tfidf")}
 
-\code{smoother} is a shortcut for \code{weight(x, "frequency", smooth)}
+\code{smoother(x, smoothing)} is a shortcut for \code{weight(x, "frequency", smoothing)}
 
 \code{weighting} queries (but cannot set) the weighting applied to the dfm.
 }
@@ -91,11 +92,11 @@ logTfDtm <- weight(dtm, type="logFreq")
 wfidfDtm <- weight(logTfDtm, type="tfidf", normalize=FALSE)
 \dontshow{
 testdfm <- dfm(inaugTexts[1:5])
-print(testdfm[, 1:5])
+head(testdfm)
 for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
     testw <- weight(testdfm, w)
-    cat("\\nweight test for:", w, "; class:", class(testw), "\\n")
-    print(testw[, 1:5])
+    cat("\\n\\n=== weight() TEST for:", w, "; class:", class(testw), "\\n")
+    head(testw)
 }
 }
 }

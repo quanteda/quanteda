@@ -226,8 +226,8 @@ nfeature.dfm <- function(x) {
 #'   \item maxTf - The term frequency divided 
 #'   by the frequency of the most frequent term in the document 
 #'   \item ppmi -   Positive Pointwise Mutual Information }
-#' @param smooth amount to apply as additive smoothing to the document-feature matrix prior to
-#'    weighting, default is 0.5, set to \code{smooth=0} for no smoothing.
+#' @param smoothing amount to apply as additive smoothing to the document-feature matrix prior to
+#'    weighting, default is 0.5, set to \code{smoothing=0} for no smoothing.
 #' @param normalize if \code{TRUE} (default) then normalize the dfm by relative
 #'   term frequency prior to computing tfidf
 #' @param verbose if \code{TRUE} output status messages
@@ -262,26 +262,26 @@ setGeneric("weight", function(x, ...) standardGeneric("weight"))
 #' @examples
 #' \dontshow{
 #' testdfm <- dfm(inaugTexts[1:5])
-#' print(testdfm[, 1:5])
+#' head(testdfm)
 #' for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
 #'     testw <- weight(testdfm, w)
-#'     cat("\nweight test for:", w, "; class:", class(testw), "\n")
-#'     print(testw[, 1:5])
+#'     cat("\n\n=== weight() TEST for:", w, "; class:", class(testw), "\n")
+#'     head(testw)
 #' }
 #' }
 setMethod("weight", signature = "dfm", 
           definition = function(x, type=c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"), #, "ppmi"), 
-                                smooth = 0, normalize = TRUE, verbose=TRUE, ...) {
+                                smoothing = 0, normalize = TRUE, verbose=TRUE, ...) {
               type = match.arg(type)
-              x <- x + smooth
+              x <- x + smoothing
               if (weighting(x) != "frequency") {
                   cat("  No weighting applied: you should not weight an already weighted dfm.\n")
               } else if (type=="relFreq") {
                   ## UGLY HACK
                   if (is(x, "dfmSparse")) {
-                      tmp <- x/rowSums(x)
-                      tmp[is.na(tmp)] <- 0
-                      x <- new("dfmSparse", tmp)
+                      #tmp <- x/rowSums(x)
+                      #tmp[is.na(tmp)] <- 0
+                      x <- new("dfmSparse", x/rowSums(x))
                   } else 
                  if (is(x, "dfmDense"))
                       x <- new("dfmDense", x/rowSums(x))
@@ -290,18 +290,18 @@ setMethod("weight", signature = "dfm",
               } else if (type=="relMaxFreq") {
                   x <- x / apply(x, 1, max)
               } else if (type=="logFreq") {
-                  x <- log(x + ifelse(smooth==0, 1, smooth))
+                  x <- log(x + ifelse(smoothing==0, 1, smoothing))
               } else if (type=="tfidf") {
                   # complicated as, is is to control coercion to a class for which logical operator is
                   # properly defined as a method, currently not dfm and child classes
-                  idf <- log(ndoc(x)) - log(docfreq(x, smooth))
+                  idf <- log(ndoc(x)) - log(docfreq(x, smoothing))
                   if (normalize) x <- weight(x, "relFreq")
                   if (nfeature(x) != length(idf)) 
                       stop("missing some values in idf calculation")
                   # currently this strips the dfm of its special class, but this is a problem in 
                   # the t() method for dfms, not an issue with this operation
-                  x <- t(t(x) * idf)
-                  class(x) <- c("dfm", class(x))
+                  x <- new("dfmSparse", Matrix::Matrix(t(t(x) * idf)))
+                  # class(x) <- c("dfm", class(x))
               }
               #               } else if (type=="ppmi") {
               #                   pij <- x/rowSums(x)
@@ -334,9 +334,9 @@ tf <- function(x) {
 tfidf <- function(x) weight(x, "tfidf")
 
 #' @rdname weight
-#' @details \code{smoother} is a shortcut for \code{weight(x, "frequency", smooth)}
+#' @details \code{smoother(x, smoothing)} is a shortcut for \code{weight(x, "frequency", smoothing)}
 #' @export
-smoother <- function(x, smooth) weight(x, "frequency", smooth=smooth)
+smoother <- function(x, smoothing) weight(x, "frequency", smoothing = smoothing)
 
 
 #' @rdname weight

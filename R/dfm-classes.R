@@ -137,7 +137,7 @@ setMethod("print", signature(x = "dfm"),
               if (show.settings) {
                   cat("Settings: TO BE IMPLEMENTED.")
               }
-              if (show.values) { # | (nrow(x)<=ndoc & ncol(x)<=nfeature)) {
+              if (show.values | (nrow(x)<=ndoc & ncol(x)<=nfeature)) {
                   Matrix::printSpMatrix2(x[1:min(ndoc, ndoc(x)), 1:min(nfeature, nfeature(x))], 
                                          col.names=TRUE, zero.print=0, ...)
               }
@@ -167,7 +167,7 @@ setMethod("print", signature(x = "dfmSparse"),
               if (show.settings) {
                   cat("Settings: TO BE IMPLEMENTED.")
               }
-              if (show.values) { # | (nrow(x)<=ndoc & ncol(x)<=nfeature)) {
+              if (show.values | (nrow(x) <= ndoc & ncol(x) <= nfeature)) {
                   Matrix::printSpMatrix2(x[1:min(ndoc, ndoc(x)), 1:min(nfeature, nfeature(x))], 
                                          col.names=TRUE, zero.print=0, ...)
               }

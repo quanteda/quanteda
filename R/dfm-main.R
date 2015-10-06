@@ -231,6 +231,10 @@ dfm.tokenizedTexts <- function(x,
         cat("Creating a dfm from a tokenizedTexts object ...")
     }
 
+    # add a "NULL" token to every tokenized text, in case some are empty
+    x <- lapply(x, function(t) t <- c(t, "**_NULL_**"))
+    class(x) <- c("tokenizedTexts", "list")
+    
     # get document names
     if (is.null(names(x))) {
         docNames <- paste("text", 1:length(x), sep="")
@@ -246,10 +250,10 @@ dfm.tokenizedTexts <- function(x,
     # index features
     if (verbose) cat("\n   ... indexing features: ")
     allFeatures <- unlist(x)
-    uniqueFeatures <- unique(allFeatures) 
+    uniqueFeatures <- unique(allFeatures)
     totalfeatures <- length(uniqueFeatures)
-    if (verbose) cat(format(totalfeatures, big.mark=","), " feature type",
-                     ifelse(totalfeatures > 1, "s", ""), sep="")
+    if (verbose) cat(format(totalfeatures - 1, big.mark=","), " feature type",
+                     ifelse(totalfeatures - 1  > 1, "s", ""), sep="")
     featureIndex <- match(allFeatures, uniqueFeatures)
     
     if (verbose) cat("\n")
@@ -259,6 +263,9 @@ dfm.tokenizedTexts <- function(x,
                               j = featureIndex, 
                               x = 1L, 
                               dimnames = list(docs = docNames, features = uniqueFeatures))
+    # remove null term
+    dfmresult <- dfmresult[, -match("**_NULL_**", colnames(dfmresult)), drop = FALSE]
+    # construct the dfmSparse type object
     dfmresult <- new("dfmSparse", dfmresult)
     
     if (!is.null(ignoredFeatures)) {
