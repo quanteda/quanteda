@@ -1,6 +1,8 @@
 quanteda 0.8.5
 ==============
 
+*  head.dfm() and tail.dfm() methods added.
+
 *  kwic() has new formals and new functionality, including a completely flexible set of matching for phrases, as well as control over how the texts and matching keyword(s) are tokenized.
 
 *  segment(x, what = "sentence"), and changeunits(x, to = "sentences") now uses tokenize(x, what = "sentence").  Annoying warning messages now gone.

@@ -500,38 +500,6 @@ tokenize.corpus <- function(x, ...) {
 }
 
 
-ngram <- function(tokens, n = 2, concatenator = "_", include.all = FALSE) {
-
-    if (length(tokens) < n) 
-        return(NULL)
-    
-    # start with lower ngrams, or just the specified size if include.all = FALSE
-    start <- ifelse(include.all, 
-                    1, 
-                    ifelse(length(tokens) < n, 1, n))
-
-    # set max size of ngram at max length of tokens
-    end <- ifelse(length(tokens) < n, length(tokens), n)
-    
-    all_ngrams <- c()
-    # outer loop for all ngrams down to 1
-    for (width in start:end) {
-        new_ngrams <- tokens[1:(length(tokens) - width + 1)]
-        # inner loop for ngrams of width > 1
-        if (width > 1) {
-            for (i in 1:(width - 1)) 
-                new_ngrams <- paste(new_ngrams, 
-                                    tokens[(i + 1):(length(tokens) - width + 1 + i)], 
-                                    sep = concatenator)
-        }
-        # paste onto previous results and continue
-        all_ngrams <- c(all_ngrams, new_ngrams)
-    }
-    
-    all_ngrams
-}
-
-
 #' @export
 #' @description \code{is.tokenizedTexts} returns \code{TRUE} if the object is of class tokenizedTexts, \code{FALSE} otherwise.
 #' @rdname tokenize
