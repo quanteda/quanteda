@@ -35,7 +35,7 @@ ngrams.character <- function(x, n = 2, window = 1, concatenator = "_", ...) {
     if (any(stringi::stri_detect_fixed(x, " ")) & concatenator != " ")
         stop("whitespace detected: please tokenize() before using ngrams()")
     
-    if (length(x) < max(n)) return(NULL)
+    if (length(x) < min(n)) return(NULL)
     if (identical(n, 1)) {
         if (!identical(window, 1))
             warning("window argument ignored for n = 1")
