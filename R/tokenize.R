@@ -442,9 +442,9 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
     }
     
     # make this an S3 class item, if a list
-    if (simplify == FALSE) {
+    #if (simplify == FALSE) {
         class(result) <- c("tokenizedTexts", class(result))
-    }
+    #}
 
     if (!identical(ngrams, 1)) {
         if (verbose) {
