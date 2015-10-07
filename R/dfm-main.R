@@ -293,16 +293,6 @@ dfm.tokenizedTexts <- function(x,
     # construct the dfmSparse type object
     dfmresult <- new("dfmSparse", dfmresult)
     
-    if (!is.null(ignoredFeatures)) {
-        if (verbose) cat("   ... ")
-        dfmresult <- selectFeatures(dfmresult, ignoredFeatures, selection = "remove", valuetype = valuetype, verbose = verbose)
-    }
-    
-    if (!is.null(keptFeatures)) {
-        if (verbose) cat("   ... ")
-        dfmresult <- selectFeatures(dfmresult, keptFeatures, selection = "keep", valuetype = valuetype, verbose = verbose)
-    }
-    
     if (dictionary_regex & valuetype != "regex") {
         warning("dictionary_regex is deprecated, use valuetype = \"regex\" instead.")
         valuetype <- "regex"
@@ -324,6 +314,17 @@ dfm.tokenizedTexts <- function(x,
         dfmresult <- wordstem(dfmresult, language)
         if (verbose & (oldNfeature - nfeature(dfmresult)) > 0) 
             cat(", trimmed", oldNfeature - nfeature(dfmresult), "feature variants\n")
+        else cat("\n")
+    }
+    
+    if (!is.null(ignoredFeatures)) {
+        if (verbose) cat("   ... ")
+        dfmresult <- selectFeatures(dfmresult, ignoredFeatures, selection = "remove", valuetype = valuetype, verbose = verbose)
+    }
+    
+    if (!is.null(keptFeatures)) {
+        if (verbose) cat("   ... ")
+        dfmresult <- selectFeatures(dfmresult, keptFeatures, selection = "keep", valuetype = valuetype, verbose = verbose)
     }
     
     if (verbose) 
