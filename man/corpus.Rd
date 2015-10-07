@@ -144,15 +144,15 @@ identical(texts(mycorp), texts(mycorp2))
 identical(docvars(mycorp), docvars(mycorp2))
 }
 # import a tm VCorpus
-if (require(tm)) {
-    data(crude)    # load in a tm example VCorpus
+if ("tm" \%in\% rownames(installed.packages())) {
+    data(crude, package = "tm")    # load in a tm example VCorpus
     mytmCorpus <- corpus(crude)
     summary(mytmCorpus, showmeta=TRUE)
 
-    data(acq)
+    data(acq, package = "tm")
     summary(corpus(acq), 5, showmeta=TRUE)
 
-    tmCorp <- VCorpus(VectorSource(inaugTexts[49:57]))
+    tmCorp <- tm::VCorpus(tm::VectorSource(inaugTexts[49:57]))
     quantCorp <- corpus(tmCorp)
     summary(quantCorp)
 }

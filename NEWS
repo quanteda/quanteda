@@ -9,6 +9,8 @@ quanteda 0.8.5
 
 *  smoother() and weight() formal "smooth" now changed to "smoothing" to avoid clashes with stats::smooth().
 
+*  Updated `corpus.VCorpus()` to work with recent updates to the **tm** package.
+
 Bug fixes
 ---------
 

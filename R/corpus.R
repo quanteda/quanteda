@@ -195,22 +195,23 @@ corpus.corpusSource <- function(x, ...) {
 #'   no corpus-level metadata is imported, but we will add that soon.
 #' @examples 
 #' # import a tm VCorpus
-#' if (require(tm)) {
-#'     data(crude)    # load in a tm example VCorpus
+#' if ("tm" %in% rownames(installed.packages())) {
+#'     data(crude, package = "tm")    # load in a tm example VCorpus
 #'     mytmCorpus <- corpus(crude)
 #'     summary(mytmCorpus, showmeta=TRUE)
 #'     
-#'     data(acq)
+#'     data(acq, package = "tm")
 #'     summary(corpus(acq), 5, showmeta=TRUE)
 #'     
-#'     tmCorp <- VCorpus(VectorSource(inaugTexts[49:57]))
+#'     tmCorp <- tm::VCorpus(tm::VectorSource(inaugTexts[49:57]))
 #'     quantCorp <- corpus(tmCorp)
 #'     summary(quantCorp)
 #' }
 #' @export
 corpus.VCorpus <- function(x, ...) {
     # extract the content (texts)
-    texts <- sapply(x, function(x) x$content)
+    #texts <- sapply(x, function(x) x$content)
+    texts <- sapply(x, as.character)
     
     # special handling for VCorpus meta-data
     metad <- as.data.frame(t(as.data.frame(sapply(x, function(x) x$meta))))
@@ -220,11 +221,11 @@ corpus.VCorpus <- function(x, ...) {
     if (length(datetimestampIndex))
         metad$datetimestamp <- t(as.data.frame((lapply(metad$datetimestamp, as.POSIXlt))))[,1]
     # give them the underscore character required
-    names(metad) <- paste("_", names(metad), sep="")
+    # names(metad) <- paste("_", names(metad), sep="")
     
     # using docvars inappropriately here but they show up as docmeta given 
     # the _ in the variable names
-    corpus(texts, docvars=metad,
+    corpus(texts, docvars = metad,
            source = paste("Converted from tm VCorpus \'", deparse(substitute(x)), "\'", sep=""), ...)
 }
 
