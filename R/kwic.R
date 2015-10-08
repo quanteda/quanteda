@@ -57,7 +57,7 @@ kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
 #' @export 
 kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
     keywords <- tokenize(keywords, simplify = TRUE, what = "fastestword", ...)
-    contexts <- contexts <- lapply(x, kwic.tokenizedText, keywords, window, valuetype, case_insensitive)
+    contexts <- lapply(x, kwic.tokenizedText, keywords, window, valuetype, case_insensitive)
     if (sum(is.na(contexts)) == length(contexts)) return(NA) # means no search term found
     # name the text vector
     if (!is.null(names(x))) {
@@ -74,10 +74,15 @@ kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "
     contexts$contextPre <- format(contexts$contextPre, justify="right")
     contexts$contextPost <- stringi::stri_replace_all_regex(contexts$contextPost, "(\\w*) (\\W)", "$1$2")
     contexts$contextPost <- format(contexts$contextPost, justify="left")
+    
+    contexts$contextPre <- paste(contexts$contextPre, "[")
+    contexts$contextPost <- paste("]", contexts$contextPost)
+    
     contexts$keyword <- format(contexts$keyword, justify="centre")
     rownames(contexts) <- contexts$position
     contexts$position <- NULL
-    #names(contexts)[c(1,3)] <- c("pre", "post")
+    #names(contexts)[1] <- "contextPre  "
+    #names(contexts)[3]
     contexts
 }
 
@@ -112,10 +117,13 @@ kwic.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex
         indexKeyword <- cbind(matchIndex2, matchIndex2)
     }
 
-    indexPre <- cbind(pmax(matchIndex2 - window, 1), pmax(matchIndex2 - 1, 1))
-    indexPost <- cbind(pmin(matchIndex2 + wordLength, length(x)), pmin(matchIndex2 + wordLength + window-1, length(x)))
+    indexPre <- cbind(pmax(matchIndex2 - window, 0), pmax(matchIndex2 - 1, 0))
+    indexPost <- cbind(pmin(matchIndex2 + wordLength, length(x)+1), pmin(matchIndex2 + wordLength + window-1, length(x)))
+    # if the post runs past the end of the phrase
+    if (indexPost[1,1] > length(x)) indexPost <- cbind(0,0)
     
     concatIndexes <- function(indexPair, textVector) {
+        if (identical(indexPair, c(0,0))) return("")
         if (length(indexPair) == 1)
             textVector[indexPair]
         else
@@ -138,7 +146,7 @@ kwic.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex
 
 # return the first index position of a sequence seq in a vector of values vec
 matchSequence <- function(seq, vec) {
-    vecTrimmed <- vec[1 : (length(vec) - length(seq) + 1)]
+    vecTrimmed <- vec # vec[1 : (length(vec) - length(seq) + 1)]
     matches <- seq[1] == vecTrimmed
     if (length(seq) == 1) return(which(matches))
     for (i in 2:length(seq)) {
@@ -213,4 +221,12 @@ kwicSingleText <- function(text, word, window = 5, wholeword=FALSE) {
     return(result)
 }
 
+
+# x <- tokenize(c("Fellow citizens of the world, unite", "I talk frequently to my fellow citizens"))[[2]]
+# word <- tokenize("fellow citizens", simplify = TRUE, what = "fastestword")
+# window = 5
+# case_insensitive = TRUE
+# kwic(c("Fellow citizens of my world, unite", "I talk frequently to my fellow citizens"), "fellow")
+# kwic(c("Fellow citizens of my world, unite", "I talk frequently to my fellow citizens"), "citizens")
+# kwic(c("Fellow citizens of my world, unite", "I talk frequently to my fellow citizens"), "fellow citizens")
 
