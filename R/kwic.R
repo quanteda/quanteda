@@ -155,16 +155,16 @@ matchSequence <- function(seq, vec) {
     which(rowSums(matches) == i)
 }
 
-wrapVector <- function(x, n, window = 1) {
+# helper function for matchSequence
+# wraps a vector by removing the first n elements and padding end with NAs
+wrapVector <- function(x, n) {
+    stopifnot(n <= length(x))
     if (n == length(x)) 
-        return(x)
-    while (n > length(x)) 
-        n <- n - 20
-    result <- c(x[(n+1):length(x)], x[1:n])
-    if (window > 1)
-        result[(length(result) - n + 1) : length(result)] <- NA
-    result
+        return(rep(NA, n))
+    else
+        return(c(x[(n+1):length(x)], rep(NA, n)))
 }
+
 
 # works like match but for regular expressions
 matchRegex <- function(x, table, case_insensitive) {
