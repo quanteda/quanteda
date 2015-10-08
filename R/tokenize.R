@@ -513,3 +513,18 @@ is.tokenizedTexts <- function(x) {
     ifelse("tokenizedTexts" %in% class(x), TRUE, FALSE)
 }
 
+#' print a tokenizedTexts objects
+#' 
+#' print method for a \link[tokenize]{tokenizedText} object
+#' @rdname tokenize
+#' @export
+print.tokenizedTexts <- function(x, ...) {
+    ndocuments <- ifelse(is.list(x), length(x), 1)
+    cat("tokenizedText object from ", ndocuments, " document", 
+        ifelse(ndocuments > 1, "s", ""), "\n", sep = "")
+    if (ndocuments > 1 ) 
+        class(x) <- "listof"
+    else 
+        x <- as.character(x)
+    print(x)
+}

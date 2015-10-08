@@ -13,6 +13,8 @@ quanteda 0.8.5
 
 *  Updated `corpus.VCorpus()` to work with recent updates to the **tm** package.
 
+*  added print method for tokenizedTexts
+
 Bug fixes
 ---------
 
