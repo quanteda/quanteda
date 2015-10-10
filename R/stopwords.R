@@ -86,6 +86,7 @@ removeFeatures.tokenizedTexts <- function(x, stopwords=NULL, verbose=TRUE, ...) 
     # much faster than any regex method
     result <- lapply(x, function(x) x[which(!(toLower(x) %in% stopwords))])
     class(result) <- c("tokenizedTexts", class(result))
+    attributes(result) <- attributes(x)
     result
 }
     
@@ -274,9 +275,9 @@ selectFeatures <- function(x, features, ...) {
     UseMethod("selectFeatures")
 }
 
-#' @rdname selectFeatures
-#' @export
-selectFeatures.dfm <- function(x, features = NULL, selection = c("keep", "remove"), 
+# @rdname selectFeatures
+# @export
+NULLselectFeatures.dfm <- function(x, features = NULL, selection = c("keep", "remove"), 
                                valuetype = c("glob", "regex", "fixed"),
                                case_insensitive = TRUE,
                                verbose = TRUE, ...) {
@@ -292,14 +293,19 @@ selectFeatures.dfm <- function(x, features = NULL, selection = c("keep", "remove
         features_from_dfm <- TRUE
     }
     features <- unique(unlist(features))  # to convert any dictionaries
+    
+    # convert glob to fixed if no actual glob characters (since fixed is much faster)
     if (valuetype == "glob") {
         # treat as fixed if no glob characters detected
         if (!sum(stringi::stri_detect_charclass(features, c("[*?]"))))
             valuetype <- "fixed"
-        else
+        else {
             features <- lapply(features, utils::glob2rx)
+            valuetype <- "regex"
+        }
     }
-    if (valuetype == "regex" | valuetype == "glob") {
+    
+    if (valuetype == "regex") {
         featIndex <- which(stringi::stri_detect_regex(features(x), paste0(features, collapse = "|"), 
                                                       case_insensitive = case_insensitive, ...))
     } else {
@@ -348,3 +354,137 @@ selectFeatures.dfm <- function(x, features = NULL, selection = c("keep", "remove
     else 
         return(x[, -featIndex])
 }
+
+
+
+#' @rdname selectFeatures
+#' @export
+selectFeatures.dfm <- function(x, features = NULL, selection = c("keep", "remove"), 
+                               valuetype = c("glob", "regex", "fixed"),
+                               case_insensitive = TRUE,
+                               verbose = TRUE, ...) {
+    selection <- match.arg(selection)
+    valuetype <- match.arg(valuetype)
+    features_from_dfm <- FALSE
+    if (is.null(features))
+        stop("Must supply a character vector of words to keep or remove")
+    if (!(is.character(features) | is.dfm(features) | is(features, "dictionary")))
+        stop("features must be of type character, dictionary, or dfm")
+    if (is.dfm(features)) {
+        features_dfm <- features <- features(features)
+        features_from_dfm <- TRUE
+    }
+
+    features <- unique(unlist(features))  # to convert any dictionaries
+    
+    # convert glob to fixed if no actual glob characters (since fixed is much faster)
+    if (valuetype == "glob") {
+        # treat as fixed if no glob characters detected
+        if (1) #!sum(stringi::stri_detect_charclass(features, c("[*?]"))))
+            valuetype <- "fixed"
+        else {
+            features <- sapply(features, utils::glob2rx, USE.NAMES = FALSE)
+            valuetype <- "regex"
+        }
+    }
+    
+    features_x <- features(x)
+    if (case_insensitive & valuetype == "fixed") {
+        features_x <- toLower(features_x)
+        features <- toLower(features)
+    }
+    # split features on concatenator if exists
+    if (x@concatenator != "")
+        features_x <- strsplit(features_x, x@concatenator)
+    
+    if (valuetype == "regex") {
+        if (all.equal(x@ngrams, 1L)==TRUE) {
+            featIndex <- which(stringi::stri_detect_regex(features_x, paste0(features, collapse = "|"), 
+                                                          case_insensitive = case_insensitive, ...))
+        } else {
+            ####
+            ####
+            matchPattern <- paste0(features, collapse = "|")
+            featIndex <- which(sapply(features_x, 
+                                      function(x) any(stringi::stri_detect_regex(x, matchPattern, 
+                                                                                 case_insensitive = case_insensitive, ...))))
+        }
+    } else {
+        if (all.equal(x@ngrams, 1L)==TRUE)
+            featIndex <- which(features(x) %in% features)  # unigrams
+        else
+            featIndex <- which(sapply(features_x, function(f) any(f %in% features), USE.NAMES = FALSE)) # ngrams
+    }
+    
+    if (verbose & !features_from_dfm) 
+        cat(ifelse(selection=="keep", "kept", "removed"), " ", 
+            format(length(featIndex), big.mark=","),
+            " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
+            ", from ", length(features), " supplied (", valuetype, ") feature type",
+            ifelse(length(features) > 0 | length(featIndex)==0, "s", ""),
+            "\n", sep = "")
+    if (verbose & features_from_dfm)
+        cat(ifelse(selection=="keep", "found", "zeroed"), " ", 
+            format(length(featIndex), big.mark=","),
+            " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
+            " from ", length(features), " supplied type",
+            ifelse(length(features) > 0 | length(featIndex)==0, "s", ""),
+            " in a dfm,", sep = "")
+    
+    # if no features were removed, return original dfm
+    if (length(featIndex) == 0)
+        return(x)
+    
+    # pad the zeros if features was a dfm, return in same feature order as original dfm
+    if (features_from_dfm) {
+        # remove features in x that are not in features (from supplied dfm)
+        x2 <- x[, featIndex]
+        # now add zero-valued features to x that are not in x but are in features
+        origDfmFeatureIndex <- which(!(toLower(features) %in% toLower(features(x2))))
+        xOriginalFeatureLength <- nfeature(x2)
+        xOriginalFeatures <- features(x2)
+        ### NEED a cbind() operation for dfm that preserves settings! ###
+        if (verbose) cat(" padding 0s for another", length(origDfmFeatureIndex), "\n")
+        x2 <- new("dfmSparse", cbind(x2, matrix(0, nrow = ndoc(x2), ncol = length(origDfmFeatureIndex))))
+        colnames(x2)[(xOriginalFeatureLength + 1) : nfeature(x2)] <- features[origDfmFeatureIndex]
+        return(x2[, features_dfm])
+    }
+    
+    # otherwise select to keep or remove features and return
+    if (selection == "keep") 
+        return(x[, featIndex])
+    else 
+        return(x[, -featIndex])
+}
+
+# txt <- c("This is a test text with a few words.", "Some more words in this text text.")
+# x <- myDfm2 <- dfm(txt, ngrams = 2)
+# myDfm1 <- dfm(txt)
+# valuetype <- "glob"
+# case_insensitive = TRUE
+# selection <- "remove"
+# features <- stopwords("english")
+# features[1] <- "no*"
+# 
+# microbenchmark(selectFeatures(myDfm, stopwords("english"), "remove", verbose = F), 
+#                selectFeatures2(myDfm, stopwords("english"), "remove", verbose = F),
+#                times = 30, unit = "relative")
+# microbenchmark(selectFeatures(myDfm2, stopwords("english"), "remove", verbose = F), 
+#                selectFeatures2(myDfm2, stopwords("english"), "remove", verbose = F),
+#     times = 30, unit = "relative")
+# microbenchmark(selectFeatures2(myDfm2, sw, "remove", verbose = F), 
+#                selectFeatures2(myDfm2, glob2rx(sw), "remove", verbose = F, valuetype = "regex"),
+#                times = 30, unit = "relative")
+# 
+# 
+# microbenchmark(sum(stringi::stri_detect_charclass(features, c("[*?]"))),
+#                any(stringi::stri_detect_charclass(features, c("[*?]"))),
+#                sum(grepl("[*?]", features)),
+#                grepl("[*?]", paste(features, collapse = "")))
+# 
+
+# dfm(inaugTexts[1:2], ngrams = 2, ignoredFeatures = stopwords("english"))
+# removeFeatures(dfm(inaugTexts[1:2], ngrams = 2), stopwords("english"))
+
+
+    

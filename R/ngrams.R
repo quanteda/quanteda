@@ -81,6 +81,7 @@ wrapVector <- function(x, n, window = 1) {
 ngrams.tokenizedTexts <- function(x, n = 2, window = 1, concatenator = "_", ...) {
     ngramsResult <- parallel::mclapply(x, ngrams.character, n, window, concatenator, ...)
     class(ngramsResult) <- c("tokenizedTexts", class(ngramsResult))
+    attributes(ngramsResult) <- attributes(x)
     ngramsResult
 }
 

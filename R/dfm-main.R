@@ -198,15 +198,15 @@ dfm.character <- function(x,
 
     # if ngrams > 1 and ignoredFeatures are specified, then convert these into a
     # regex that will remove any ngram containing one of the words
-    if (!identical(attr(tokenizedTexts, "ngrams"), 1) & !is.null(ignoredFeatures)) {
-        conc <- attr(tokenizedTexts, "concatenator")
-        if (valuetype == "glob") {
-            ignoredFeatures <- gsub("\\*", ".*", ignoredFeatures)
-            ignoredFeatures <- gsub("\\?", ".{1}", ignoredFeatures)
-        }
-        ignoredFeatures <- paste0("(\\b|(\\w+", conc, ")+)", ignoredFeatures, "(\\b|(", conc, "\\w+)+)")
-        valuetype <- "regex"
-    }
+#     if (!identical(attr(tokenizedTexts, "ngrams"), 1) & !is.null(ignoredFeatures)) {
+#         conc <- attr(tokenizedTexts, "concatenator")
+#         if (valuetype == "glob") {
+#             ignoredFeatures <- gsub("\\*", ".*", ignoredFeatures)
+#             ignoredFeatures <- gsub("\\?", ".{1}", ignoredFeatures)
+#         }
+#         ignoredFeatures <- paste0("(\\b|(\\w+", conc, ")+)", ignoredFeatures, "(\\b|(", conc, "\\w+)+)")
+#         valuetype <- "regex"
+#     }
     
     dfm(tokenizedTexts, verbose=verbose, toLower=toLower, stem=stem, 
         ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
@@ -233,6 +233,9 @@ dfm.tokenizedTexts <- function(x,
                                valuetype = c("glob", "regex", "fixed"),
                                dictionary_regex = FALSE,
                                ...) {
+    
+    settings_ngrams <- attr(x, "ngrams")
+    settings_concatenator <- attr(x, "concatenator")
     
     valuetype <- match.arg(valuetype)
     dots <- list(...)
@@ -292,6 +295,10 @@ dfm.tokenizedTexts <- function(x,
     dfmresult <- dfmresult[, -match("**_NULL_**", colnames(dfmresult)), drop = FALSE]
     # construct the dfmSparse type object
     dfmresult <- new("dfmSparse", dfmresult)
+    
+    # copy attributes
+    dfmresult@ngrams <- settings_ngrams
+    dfmresult@concatenator <- settings_concatenator
     
     if (dictionary_regex & valuetype != "regex") {
         warning("dictionary_regex is deprecated, use valuetype = \"regex\" instead.")

@@ -337,8 +337,8 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
                                removeSeparators = TRUE,
                                removeTwitter = FALSE,
                                # removeURL = TRUE,
-                               ngrams = 1,
-                               window = 1,
+                               ngrams = 1L,
+                               window = 1L,
                                concatenator = "_",
                                simplify = FALSE,
                                verbose = FALSE,  ## FOR TESTING
@@ -346,6 +346,8 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
     
     what <- match.arg(what)
 
+    if (!is.integer(ngrams)) ngrams <- as.integer(ngrams)
+    
     if (verbose) cat("Starting tokenization...\n")
     result <- x
     
@@ -446,7 +448,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         class(result) <- c("tokenizedTexts", class(result))
     #}
 
-    if (!identical(ngrams, 1)) {
+    if (!identical(ngrams, 1L)) {
         if (verbose) {
             cat("  ...creating ngrams")
             startTimeClean <- proc.time()
@@ -489,10 +491,8 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
     
     # add settings for ngrams and concatenator
     attr(result, "ngrams") <- ngrams
-    if (!identical(ngrams, 1)) {
-        attr(result, "concatenator") <- concatenator
-    }
-        
+    attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
+
     result
 }
 
@@ -515,18 +515,20 @@ is.tokenizedTexts <- function(x) {
 
 #' print a tokenizedTexts objects
 #' 
-#' print method for a \link[tokenize]{tokenizedText} object
-#' @rdname tokenize
+#' print method for a \link{tokenize}dText object
+#' @param x a tokenizedText object created by \link{tokenize}
+#' @param ... further arguments passed to base print method
 #' @export
+#' @method print tokenizedTexts
 print.tokenizedTexts <- function(x, ...) {
     ndocuments <- ifelse(is.list(x), length(x), 1)
     cat("tokenizedText object from ", ndocuments, " document", 
         ifelse(ndocuments > 1, "s", ""), "\n", sep = "")
     if (is.list(x)) { 
         class(x) <- "listof"
-        print(x)
+        print(x, ...)
     } else {
         x <- as.character(x)
-        print(x)
+        print(x, ...)
     }
 }
