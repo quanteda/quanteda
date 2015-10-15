@@ -145,7 +145,7 @@ kwic.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex
 
 
 # return the first index position of a sequence seq in a vector of values vec
-matchSequence <- function(seq, vec) {
+matchSequenceOld <- function(seq, vec) {
     vecTrimmed <- vec # vec[1 : (length(vec) - length(seq) + 1)]
     matches <- seq[1] == vecTrimmed
     if (length(seq) == 1) return(which(matches))
@@ -153,6 +153,16 @@ matchSequence <- function(seq, vec) {
         matches <- cbind(matches, seq[i] == wrapVector(vecTrimmed, i - 1))
     }
     which(rowSums(matches) == i)
+}
+
+## solution from alexis_laz 
+## http://stackoverflow.com/questions/33027611/how-to-index-a-vector-sequence-within-a-vector-sequence
+matchSequence = function(pat, x) {
+    ff = function(.pat, .x, acc = if (length(.pat)) seq_along(.x) else integer(0)) {
+        if (!length(.pat)) return(acc)
+        Recall(.pat[-1], .x, acc[which(.pat[1] == .x[acc])] + 1)
+    }
+    ff(pat, x) - length(pat)
 }
 
 # helper function for matchSequence

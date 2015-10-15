@@ -380,7 +380,7 @@ selectFeatures.dfm <- function(x, features = NULL, selection = c("keep", "remove
     # convert glob to fixed if no actual glob characters (since fixed is much faster)
     if (valuetype == "glob") {
         # treat as fixed if no glob characters detected
-        if (1) #!sum(stringi::stri_detect_charclass(features, c("[*?]"))))
+        if (!sum(stringi::stri_detect_charclass(features, c("[*?]"))))
             valuetype <- "fixed"
         else {
             features <- sapply(features, utils::glob2rx, USE.NAMES = FALSE)

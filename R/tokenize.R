@@ -523,7 +523,7 @@ is.tokenizedTexts <- function(x) {
 print.tokenizedTexts <- function(x, ...) {
     ndocuments <- ifelse(is.list(x), length(x), 1)
     cat("tokenizedText object from ", ndocuments, " document", 
-        ifelse(ndocuments > 1, "s", ""), "\n", sep = "")
+        ifelse(ndocuments > 1, "s", ""), ".\n", sep = "")
     if (is.list(x)) { 
         class(x) <- "listof"
         print(x, ...)
