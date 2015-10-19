@@ -66,6 +66,7 @@ mydict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
                           notintext = "blahblah"))
 selectFeatures(myDfm, mydict)
 selectFeatures(myDfm, mydict, case_insensitive = FALSE)
+selectFeatures(myDfm, c("s$", ".y"), "keep")
 selectFeatures(myDfm, c("s$", ".y"), "keep", valuetype = "regex")
 selectFeatures(myDfm, c("s$", ".y"), "remove", valuetype = "regex")
 selectFeatures(myDfm, stopwords("english"), "keep", valuetype = "fixed")

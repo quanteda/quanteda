@@ -1,3 +1,10 @@
+quanteda 0.8.7
+==============
+
+Bug Fixes
+---------
+*  corrected inaccurate printing of valuetype in verbose note of selectFeatures.dfm().  (Did not affect functionality.)
+
 quanteda 0.8.6
 ==============
 
