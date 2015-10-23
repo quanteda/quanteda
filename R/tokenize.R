@@ -13,61 +13,6 @@ segmentSentence <- function(x, delimiter = NULL, perl = FALSE) {
     result <- unlist(tokenize(x, what = "sentence"), use.names = FALSE)
 }
 
-segmentSentenceOld <- function(x, delimiter="[.!?:;]", perl=FALSE) {
-    # strip out CRs and LFs, tabs
-    text <- gsub("\\n+|\\t+", " ", x)
-    # remove trailing and leading spaces
-    text <- gsub("^ +| +$", "", text)
-    
-    # remove . delimiter from common title abbreviations
-    exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph",  
-                    "M", "MM")
-    findregex <- paste("\\b(", paste(exceptions, collapse="|"), ")\\.", sep="")
-    text <- gsub(findregex, "\\1", text)
-    
-    # deal with i.e. e.g. pp. p. Cf. cf.
-    text <- gsub("i\\.e\\.", "_IE_", text)
-    text <- gsub("e\\.g\\.", "_EG_", text)
-    text <- gsub("(\\b|\\()(p\\.)", "\\1_P_", text)
-    text <- gsub("(\\b|\\()(pp\\.)", "\\1_PP_", text)
-    text <- gsub("(\\b|\\()([cC]f\\.)", "\\1_CF_", text)
-    
-    exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph", "M", "MM")
-    findregex <- paste("\\b(", paste(exceptions, collapse="|"), ")\\.", sep="")
-    text <- gsub(findregex, "\\1", text)
-    
-    # preserve decimals - also i.e. pp. p. e.g. etc.
-    numbersWithDecimalsregex <- "([\\d])\\.([\\d])"
-    text <- gsub(numbersWithDecimalsregex, "\\1_DECIMAL_\\2", text, perl=TRUE)
-    
-    # preserve ellipses
-    text <- gsub("\\.{3}", "_ELIPSIS_", text)
-    
-    # recover punctuation characters
-    tkns <- tokenize(text, removePunct=FALSE, simplify=TRUE)
-    punctpos <- grep(paste(delimiter, "$", sep=""), tkns)
-    puncts <- substr(tkns[punctpos], nchar(tkns[punctpos]), nchar(tkns[punctpos]))
-    
-    # split the text into sentences
-    sentences <- unlist(strsplit(text, delimiter, perl=perl))
-    # paste punctuation marks back onto sentences
-    result <- paste(sentences, puncts, sep="")
-    # put decimals back
-    result <- gsub("_DECIMAL_", "\\.", result)
-    # put elipses back
-    result <- gsub("_ELIPSIS_", "...", result)
-    
-    # put i.e. e.g. pp. p. Cf. cf. back
-    result <- gsub("_IE_", "i.e.", result)
-    result <- gsub("_EG_", "e.g.", result)
-    result <- gsub("(\\b|\\()_P_", "\\1p.", result)
-    result <- gsub("(\\b|\\()_PP_", "\\1pp.", result)
-    result <- gsub("(\\b|\\()_CF_", "\\1cf.", result)
-    
-    # remove leading and trailing spaces and return
-    gsub("^ +| +$", "", result)
-}
-
 # @rdname segment
 # @return \code{segmentParagraph} returns a character vector of paragraphs that
 #   have been segmented
@@ -82,8 +27,6 @@ segmentParagraph <- function(x, delimiter="\\n{2}", perl=FALSE) {
     tmp <- unlist(strsplit(x, delimiter, perl=perl))
     tmp[which(tmp != "")]
 }
-
-
 
 #' segment texts into component elements
 #' 
@@ -240,6 +183,11 @@ tokenize <- function(x, ...) {
 #' @param removePunct remove all punctuation
 #' @param removeTwitter remove Twitter characters \code{@@} and \code{#}; set to
 #'   \code{FALSE} if you wish to eliminate these.
+#' @param removeHyphens if \code{TRUE}, split words that are connected by 
+#'   hyphenation and hyphenation-like characters in between words, e.g. 
+#'   \code{"self-storage"} becomes \code{c("self", "storage")}.  Default is
+#'   \code{FALSE} to preserve such words as is, with the hyphens.  Only applies if 
+#'   \code{what = "word"}.
 #' @param removeSeparators remove Separators and separator characters (spaces 
 #'   and variations of spaces, plus tab, newlines, and anything else in the 
 #'   Unicode "separator" category) when \code{removePunct=FALSE}.  Only 
@@ -253,7 +201,7 @@ tokenize <- function(x, ...) {
 #'   bigrams and unigrams, use \code{1:2}.  You can even include irregular 
 #'   sequences such as \code{2:3} for bigrams and trigrams only.
 #' @param window integer vector specifying the adjacency width for tokens 
-#'   forming the \emph{n}-grams, default is 1 for only immediately neighbouring
+#'   forming the \emph{n}-grams, default is 1 for only immediately neighbouring 
 #'   words. Only applies if \code{ngrams} is different from the default of 1.
 #' @param concatenator character to use in concatenating \emph{n}-grams, default
 #'   is "\code{_}", which is recommended since this is included in the regular 
@@ -291,6 +239,9 @@ tokenize <- function(x, ...) {
 #' head(tokenize(toLower(inaugTexts[57]), simplify=TRUE, removePunct=TRUE), 30)
 #' # keeping case and punctuation
 #' head(tokenize(inaugTexts[57], simplify=TRUE), 30)
+#' # keeping versus removing hyphens
+#' tokenize("quanteda data objects are auto-loading.", removePunct = TRUE)
+#' tokenize("quanteda data objects are auto-loading.", removePunct = TRUE, removeHyphens = TRUE)
 #' 
 #' ## MORE COMPARISONS
 #' txt <- "#textanalysis is MY <3 4U @@myhandle gr8 #stuff :-)"
@@ -336,6 +287,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
                                removePunct = FALSE,
                                removeSeparators = TRUE,
                                removeTwitter = FALSE,
+                               removeHyphens = FALSE,
                                # removeURL = TRUE,
                                ngrams = 1L,
                                window = 1L,
@@ -394,17 +346,18 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         
     } else if (what == "word") {
         
-        keepHyphens <- TRUE  # fix this, for now
-        
         # to preserve intra-word hyphens, replace with _hy_
-        if (keepHyphens & removePunct)
+        if (!removeHyphens & removePunct)
             result <- stri_replace_all_regex(result, "(\\w)[\\p{Pd}](\\w)", "$1_hy_$2")
+        else if (removeHyphens)
+            result <- stri_replace_all_regex(result, "(\\w)[\\p{Pd}](\\w)", "$1 $2")
+            
         result <- stringi::stri_split_boundaries(result, 
                                                  type = "word", 
                                                  skip_word_none = removePunct, # this is what obliterates currency symbols, Twitter tags, and URLs
                                                  skip_word_number = removeNumbers) # but does not remove 4u, 2day, etc.
-        # put hyphens back the fast way (the ski mask way)
-        if (keepHyphens & removePunct)
+        # put hyphens back the fast way
+        if (!removeHyphens & removePunct)
             result <- lapply(result, stri_replace_all_fixed, "_hy_", "-")
         # remove separators if option is TRUE
         if (removeSeparators & !removePunct) {

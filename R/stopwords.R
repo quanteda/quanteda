@@ -50,7 +50,7 @@
 #' ## example for collocations
 #' (myCollocs <- collocations(inaugTexts[1:3], top=20))
 #' removeFeatures(myCollocs, stopwords("english", verbose=FALSE))
-removeFeatures <- function(x, stopwords=NULL, verbose=TRUE, ...) {
+removeFeatures <- function(x, stopwords = NULL, verbose = TRUE, ...) {
     UseMethod("removeFeatures")
 }
 

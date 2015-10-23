@@ -249,6 +249,7 @@ get_docs <- function(filemask, encodingFrom = NULL, encodingTo = "UTF-8") {
     pattern <- getRootFileNames(filemask)
     # get the directory name
     path <- substr(filemask, 1, nchar(filemask) - nchar(pattern))
+    if (path == "") path <- "."
     # get the filenames
     filenames <- list.files(path, pattern, full.names=TRUE)
     # read texts from call to get_doc, discarding any docv

@@ -13,9 +13,9 @@ tokenize(x, ...)
 
 \method{tokenize}{character}(x, what = c("word", "sentence", "character",
   "fastestword", "fasterword"), removeNumbers = FALSE, removePunct = FALSE,
-  removeSeparators = TRUE, removeTwitter = FALSE, ngrams = 1L,
-  window = 1L, concatenator = "_", simplify = FALSE, verbose = FALSE,
-  ...)
+  removeSeparators = TRUE, removeTwitter = FALSE, removeHyphens = FALSE,
+  ngrams = 1L, window = 1L, concatenator = "_", simplify = FALSE,
+  verbose = FALSE, ...)
 
 \method{tokenize}{corpus}(x, ...)
 
@@ -46,6 +46,12 @@ carefully.}
 
 \item{removeTwitter}{remove Twitter characters \code{@} and \code{#}; set to
 \code{FALSE} if you wish to eliminate these.}
+
+\item{removeHyphens}{if \code{TRUE}, split words that are connected by
+hyphenation and hyphenation-like characters in between words, e.g.
+\code{"self-storage"} becomes \code{c("self", "storage")}.  Default is
+\code{FALSE} to preserve such words as is, with the hyphens.  Only applies if
+\code{what = "word"}.}
 
 \item{ngrams}{integer vector of the \emph{n} for \emph{n}-grams, defaulting
 to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for
@@ -110,6 +116,9 @@ head(tokenize(inaugTexts[57], simplify=TRUE), 10)
 head(tokenize(toLower(inaugTexts[57]), simplify=TRUE, removePunct=TRUE), 30)
 # keeping case and punctuation
 head(tokenize(inaugTexts[57], simplify=TRUE), 30)
+# keeping versus removing hyphens
+tokenize("quanteda data objects are auto-loading.", removePunct = TRUE)
+tokenize("quanteda data objects are auto-loading.", removePunct = TRUE, removeHyphens = TRUE)
 
 ## MORE COMPARISONS
 txt <- "#textanalysis is MY <3 4U @myhandle gr8 #stuff :-)"
