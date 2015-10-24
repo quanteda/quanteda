@@ -144,6 +144,6 @@ kwic(uk2010immigCorpus, "deport", 3)
 mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
 dim(mydfm)              # basic dimensions of the dfm
 topfeatures(mydfm, 20)  # 20 top words
-plot(mydfm, min.freq = 20)             # word cloud     
+plot(mydfm, min.freq = 6, random.order = FALSE)             # word cloud     
 ```
 
