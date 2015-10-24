@@ -127,7 +127,7 @@ as `demo(quanteda)`.
 Example
 -------
 
-```{r quanteda_example, fig.width=6, fig.height=6}
+```{r quanteda_example, fig.width=7, fig.height=7}
 library(quanteda)
 # create a corpus from the immigration texts from UK party platforms
 uk2010immigCorpus <- corpus(ukimmigTexts,

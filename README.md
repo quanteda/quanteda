@@ -110,7 +110,7 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 #>          UKIP   311    633        38         UKIP
 #> 
 #> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/* on x86_64 by kbenoit
-#> Created: Sat Oct 24 11:44:05 2015
+#> Created: Sat Oct 24 11:45:17 2015
 #> Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -131,7 +131,7 @@ mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
 #>    ... removed 97 features, from 175 supplied (glob) feature types
 #>    ... created a 9 x 1489 sparse dfm
 #>    ... complete. 
-#> Elapsed time: 0.04 seconds.
+#> Elapsed time: 0.043 seconds.
 dim(mydfm)              # basic dimensions of the dfm
 #> [1]    9 1489
 topfeatures(mydfm, 20)  # 20 top words
