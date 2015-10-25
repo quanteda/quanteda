@@ -6,6 +6,20 @@
 
 using namespace Rcpp;
 
+// ngramcpp
+std::vector<std::string> ngramcpp(std::vector< std::string > strings, int n, int window, std::string concatenator);
+RcppExport SEXP quanteda_ngramcpp(SEXP stringsSEXP, SEXP nSEXP, SEXP windowSEXP, SEXP concatenatorSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::vector< std::string > >::type strings(stringsSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type window(windowSEXP);
+    Rcpp::traits::input_parameter< std::string >::type concatenator(concatenatorSEXP);
+    __result = Rcpp::wrap(ngramcpp(strings, n, window, concatenator));
+    return __result;
+END_RCPP
+}
 // wordfishcpp
 Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol);
 RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP) {
