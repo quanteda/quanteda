@@ -12,15 +12,18 @@ Author: Kenneth Benoit [aut, cre],
     Pablo Barberá [ctb],
     Kohei Watanabe [ctb],
     Benjamin Lauderdale [ctb]
-Version: 0.7.4
-Date: 2015-05-28
+Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
+Version: 0.8.7-3
+Date: 2015-10-24
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
 Depends:
-    R (>= 3.0)
+    R (>= 3.2.0)
 Imports:
     methods,
+    utils,
+    stats,
     Matrix (>= 1.1),
     data.table (>= 1.9.3),
     SnowballC,
@@ -39,7 +42,10 @@ Suggests:
     streamR,
     tm (>= 0.6),
     slam,
-    ggplot2
+    ggplot2,
+    XML,
+    testthat,
+    RColorBrewer
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
@@ -47,30 +53,33 @@ LazyData: TRUE
 VignetteBuilder: knitr
 Collate:
     'RcppExports.R'
-    'clean.R'
-    'dictionaryFunctions.R'
+    'dictionaries.R'
     'collocations.R'
     'converters.R'
-    'corpus-sources-S4.R'
     'corpus.R'
     'dataDocs.R'
     'describe-texts.R'
     'dfm-classes.R'
     'dfm-main.R'
+    'dfm-methods.R'
     'distance.R'
-    'gui.R'
+    'encoding.R'
     'kwic.R'
     'lexdiv.R'
     'ngrams.R'
-    'onLoad.R'
     'plots.R'
     'quanteda-package.R'
+    'readability.R'
     'resample.R'
     'settings.R'
     'stopwords.R'
     'syllables.R'
+    'textfile.R'
     'textmodel-ca.R'
     'textmodel-generics.R'
     'textmodel-wordfish.R'
     'textmodel-wordscores.R'
+    'toLower.R'
     'tokenize.R'
+    'tokenize_outtakes.R'
+    'wordstem.R'

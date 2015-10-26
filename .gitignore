@@ -8,3 +8,5 @@ inst/doc
 .Rhistory
 *.o
 *.so
+.httr-oauth
+*Rcheck*

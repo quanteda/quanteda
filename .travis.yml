@@ -1,0 +1,11 @@
+r_github_packages:
+  - jimhester/covr
+
+language: r
+sudo: required
+
+r_binary_packages:
+- topicmodels
+
+after_success:
+  - Rscript -e 'library(covr);codecov()'

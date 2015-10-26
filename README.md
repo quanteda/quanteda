@@ -1,187 +1,149 @@
----
-output:
-  md_document:
-    variant: markdown_github
----
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+**Development branch** [![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=dev)][![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev)](<https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev>) **Master branch** [![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)][![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](<https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master>)
 
-
+See the [Getting Started Vignette](http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html).
 
 quanteda: Quantitative Analysis of Textual Data
 ===============================================
 
 An R package for managing and analyzing text, by Ken Benoit and Paul Nulty.
 
-quanteda makes it easy to manage texts in the form of a
-corpus, defined as a collection of texts that includes document-level
-variables specific to each text, as well as meta-data for documents
-and for the collection as a whole. quanteda includes tools to make it
-easy and fast to manuipulate the texts in a corpus, for
-instance by tokenizing them, with or without stopwords or stemming, or
-to segment them by sentence or paragraph units. 
+**quanteda** makes it easy to manage texts in the form of a corpus, defined as a collection of texts that includes document-level variables specific to each text, as well as meta-data for documents and for the collection as a whole. **quanteda** includes tools to make it easy and fast to manuipulate the texts in a corpus, by performing the most common natural language processing tasks simply and quickly, such as tokenizing, stemming, or forming ngrams. **quanteda**'s functions for tokenizing texts and forming multiple tokenized documents into a *document-feature matrix* are both extremely fast and extremely simple to use. **quanteda** can segment texts easily by words, paragraphs, sentences, or even user-supplied delimiters and tags.
 
-quanteda implements
-bootstrapping methods for texts that makes it easy to resample texts
-from pre-defined units, to facilitate computation of confidence
-intervals on textual statistics using techniques of non-parametric
-bootstrapping, but applied to the original texts as data. quanteda
-includes a suite of sophisticated tools to extract features of the
-texts into a quantitative matrix, where these features can be defined
-according to a dictionary or thesaurus, including the declaration of
-collocations to be treated as single features. 
+Built on the text processing functions in the **stringi** package, which is in turn built on C++ implementation of the [ICU](http://www.icu-project.org/) libraries for Unicode text handling, **quanteda** pays special attention to fast and correct implementation of Unicode and the handling of text in any character set, following conversion internally to UTF-8.
 
-Once converted into a
-quantitative matrix (known as a "dfm" for document-feature matrix),
-the textual feature can be analyzed using quantitative methods for
-describing, comparing, or scaling texts, or used to train machine
-learning methods for class prediction.
+**quanteda** is built for efficiency and speed, through its design around three infrastructures: the **string** package for text processing, the **data.table** package for indexing large documents efficiently, and the **Matrix** package for sparse matrix objects. If you can fit it into memory, **quanteda** will handle it quickly. (And eventually, we will make it possible to process objects even larger than available memory.)
 
+**quanteda** is principally designed to allow users a fast and convenient method to go from a corpus of texts to a selected matrix of documents by features, after defining what the documents and features. The package makes it easy to redefine documents, for instance by splitting them into sentences or paragraphs, or by tags, as well as to group them into larger documents by document variables, or to subset them based on logical conditions or combinations of document variables. The package also implements common NLP feature selection functions, such as removing stopwords and stemming in numerous languages, selecting words found in dictionaries, treating words as equivalent based on a user-defined "thesaurus", and trimming and weighting features based on document frequency, feature frequency, and related measures such as *tf-idf*.
+
+Once constructed, a **quanteda** "dfm"" can be easily analyzed using either quanteda's built-in tools for scaling document positions, or used with a number of other text analytic tools, such as:
+
+-   topic models (including converters for direct use with the **topicmodels**, **LDA**, and **stm** packages)
+
+-   document scaling (using **quanteda**'s own functions for the "wordfish" and "Wordscores" models, direct use with the **ca** package for correspondence analysis, or scaling with the **austin** package)
+
+-   machine learning through a variety of other packages that take matrix or matrix-like inputs.
+
+**Additional features** of quanteda include:
+
+-   the ability to explore texts using *key-words-in-context*;
+
+-   fast computation of a variety of readability indexes;
+
+-   fast computation of a variety of lexical diversity measures;
+
+-   quick computation of word or document association measures, for clustering or to compute similarity scores for other purposes; and
+
+-   a comprehensive suite of descriptive statistics on text such as the number of sentences, words, characters, or syllables per document.
+
+**Planned features** coming soon to **quanteda** are:
+
+-   bootstrapping methods for texts that makes it easy to resample texts from pre-defined units, to facilitate computation of confidence intervals on textual statistics using techniques of non-parametric bootstrapping, but applied to the original texts as data.
+
+-   expansion of the document-feature matrix structure through a standard interface called `textmodel()`. (As of version 0.8.0, textmodel works in a basic fashion only for the "Wordscores" and "wordfish" scaling models.)
 
 How to Install
 --------------
 
-You can download the files and build the package from source, or you can use the devtools library to install the package directly from github.
+As of version 0.8.0, the GitHub master repository will always contain the development version of quanteda, while the CRAN version will contain the latest "stable" version. You therefore have two options for installing the package:
 
-Some preliminaries:
+1.  From CRAN, using your R package installer, or simply
 
-1.  To install the package from github, you will need to install the `devtools` package, using (from R):
+        install.packages("quanteda")
 
-    ```S
-    install.packages("devtools")
-    ```
+2.  (For the development version) From GitHub, using
 
-2.  To build the C++ parts of quanteda on Windows platforms, you will need also to install the [Rtools](http://cran.r-project.org/bin/windows/Rtools/) software available from CRAN.  (OS X and Linux users can skip this step.)
+        devtools::install_github("kbenoit/quanteda")
 
-4.  (Optional) You can install the additional corpus data from **quantedaData** using
+    Because this compiles some C++ source code, you will need a compiler installed. If you are using a Windows platform, this means you will need also to install the [Rtools](http://cran.r-project.org/bin/windows/Rtools/) software available from CRAN. If you are using OS X, you will probably need to install XCode, available for free from the App Store.
 
-    ```S
+3.  (Optional) You can install some additional corpus data from **quantedaData** using
+
+    ``` s
     ## devtools required to install quanteda from Github
     devtools::install_github("kbenoit/quantedaData")
     ```
 
-To install the latest master branch of `quanteda`:
-
-```S
-devtools::install_github("kbenoit/quanteda")
-
-## ALTERNATIVELY, to install the latest version `dev` branch version:
-devtools::install_github("kbenoit/quanteda", ref="dev")
-```
-
-**Additional Libraries you may need for installation:**
-
-*  the LAPACK C libraries
-    *  for Mac, install [homebrew](http://brew.sh/) and then `brew install LAPACK`
-    *  for Windows, this should be installed already when you installed [Rtools](http://cran.r-project.org/bin/windows/Rtools/) as per the above instructions
-    *  for Linux, `sudo apt-get install liblapack-dev`
-
 Documentation
 -------------
-
-An introductory vignette is in progress and can be viewed here: [here](http://pnulty.github.io).
 
 In-depth tutorials in the form of a gitbook will be available here [here](http://kbenoit.github.io/quanteda).
 
 Examples for any function can also be seen using (for instance, for `corpus()`):
-```S
+
+``` s
 example(corpus)
 ```
-There are also some demo functions that show off some of the package capabilities, such 
-as `demo(quanteda)`.
 
+There are also some demo functions that show off some of the package capabilities, such as `demo(quanteda)`.
 
 Example
 -------
 
-
-```r
+``` r
 library(quanteda)
+#> 
+#> Attaching package: 'quanteda'
+#> 
+#> The following object is masked from 'package:base':
+#> 
+#>     sample
 # create a corpus from the immigration texts from UK party platforms
 uk2010immigCorpus <- corpus(ukimmigTexts,
                             docvars=data.frame(party=names(ukimmigTexts)),
                             notes="Immigration-related sections of 2010 UK party manifestos",
                             enc="UTF-8")
-#>   note: converted texts from UTF-8 to UTF-8.
 uk2010immigCorpus
 #> Corpus consisting of 9 documents.
 summary(uk2010immigCorpus, showmeta=TRUE)
 #> Corpus consisting of 9 documents.
 #> 
-#>          Text Types Tokens Sentences        party _encoding
-#>           BNP   969   2765       130          BNP     UTF-8
-#>     Coalition   133    231        12    Coalition     UTF-8
-#>  Conservative   234    452        15 Conservative     UTF-8
-#>        Greens   301    608        29       Greens     UTF-8
-#>        Labour   279    615        29       Labour     UTF-8
-#>        LibDem   239    434        22       LibDem     UTF-8
-#>            PC    72    101         5           PC     UTF-8
-#>           SNP    81    124         4          SNP     UTF-8
-#>          UKIP   303    625        41         UKIP     UTF-8
+#>          Text Types Tokens Sentences        party
+#>           BNP  1023   2851       137          BNP
+#>     Coalition   133    231        12    Coalition
+#>  Conservative   234    452        21 Conservative
+#>        Greens   303    610        30       Greens
+#>        Labour   278    620        34       Labour
+#>        LibDem   240    435        26       LibDem
+#>            PC    72    101         5           PC
+#>           SNP    81    124         4          SNP
+#>          UKIP   311    633        38         UKIP
 #> 
-#> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/* on x86_64 by kbenoit.
-#> Created: Tue May  5 18:10:48 2015.
-#> Notes:   Immigration-related sections of 2010 UK party manifestos.
+#> Source:  /Users/kbenoit/Dropbox/QUANTESS/quanteda_kenlocal_gh/* on x86_64 by kbenoit
+#> Created: Sat Oct 24 11:45:17 2015
+#> Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
 kwic(uk2010immigCorpus, "deport", 3)
-#>                                               preword         word
-#>     [BNP, 71]                further immigration, the deportation 
-#>    [BNP, 139]                            The BNP will    deport   
-#>   [BNP, 1628] long-term resettlement programme.\n\n2.    Deport   
-#>   [BNP, 1633]          illegal immigrants\n\nWe shall    deport   
-#>   [BNP, 1653]                current unacceptably lax deportation 
-#>   [BNP, 1659]                           of people are   deported  
-#>   [BNP, 2169]                     enforced by instant deportation,
-#>   [BNP, 2180]         British immigration laws.\n\n8. Deportation 
-#>   [BNP, 2186]           Foreign Criminals\n\nWe shall    deport   
-#>   [BNP, 2198]                       This includes the deportation 
-#> [Greens, 566]                      subject to summary deportation.
-#> [LibDem, 194]         illegal labour.\n\n- Prioritise deportation 
-#> [LibDem, 394]                  flight risks.\n\n- End deportations
-#>   [UKIP, 317]                            laws or face deportation.
-#>                                   postword
-#>     [BNP, 71] of all illegal              
-#>    [BNP, 139] all foreigners convicted    
-#>   [BNP, 1628] all illegal immigrants\n\nWe
-#>   [BNP, 1633] all illegal immigrants      
-#>   [BNP, 1653] policies, thousands of      
-#>   [BNP, 1659] from the UK                 
-#>   [BNP, 2169] for anyone found            
-#>   [BNP, 2180] of all Foreign              
-#>   [BNP, 2186] all criminal entrants,      
-#>   [BNP, 2198] of all Muslim               
-#> [Greens, 566] They should receive         
-#> [LibDem, 194] efforts on criminals,       
-#> [LibDem, 394] of refugees to              
-#>   [UKIP, 317] Such citizens will
+#>                        contextPre keyword                contextPost
+#>  [BNP, 159]        The BNP will [  deport ] all foreigners convicted
+#> [BNP, 1970]                . 2. [  Deport ] all illegal immigrants  
+#> [BNP, 1976] immigrants We shall [  deport ] all illegal immigrants  
+#> [BNP, 2621]  Criminals We shall [  deport ] all criminal entrants
 
 # create a dfm, removing stopwords
-mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english", verbose=FALSE)))
+mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
 #> Creating a dfm from a corpus ...
-#>    ... indexing 9 documents
-#>    ... tokenizing texts, found 6,141 total tokens
-#>    ... cleaning the tokens, 186 removed entirely
-#>    ... ignoring 175 feature types, discarding 2,590 total features (43.5%)
-#>    ... summing tokens by document
-#>    ... indexing 1,491 feature types
-#>    ... building sparse matrix
-#>    ... created a 9 x 1491 sparse dfm
-#>    ... complete. Elapsed time: 0.093 seconds.
+#>    ... lowercasing
+#>    ... tokenizing
+#>    ... indexing documents: 9 documents
+#>    ... indexing features: 1,586 feature types
+#>    ... removed 97 features, from 175 supplied (glob) feature types
+#>    ... created a 9 x 1489 sparse dfm
+#>    ... complete. 
+#> Elapsed time: 0.043 seconds.
 dim(mydfm)              # basic dimensions of the dfm
-#> [1]    9 1491
+#> [1]    9 1489
 topfeatures(mydfm, 20)  # 20 top words
-#> immigration     british      people      asylum     britain      system 
+#> immigration     british      people      asylum     britain          uk 
 #>          66          37          35          29          28          27 
-#>          uk  population     country         new      ensure  immigrants 
+#>      system  population     country         new  immigrants      ensure 
 #>          27          21          20          19          17          17 
-#>       shall citizenship    national      social         bnp     illegal 
+#>       shall citizenship      social    national         bnp     illegal 
 #>          17          16          14          14          13          13 
-#>        work      ethnic 
+#>        work     percent 
 #>          13          12
-if (Sys.info()['sysname']=="Darwin") quartz() # open nicer window, Mac only
-plot(mydfm)             # word cloud     
+plot(mydfm, min.freq = 6, random.order = FALSE)             # word cloud     
 ```
 
-![plot of chunk quanteda_example](README-quanteda_example-1.png) 
-
+![](README-quanteda_example-1.png)

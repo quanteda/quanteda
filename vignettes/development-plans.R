@@ -13,7 +13,7 @@
 #  subset
 #  summary
 #  textfile
-#  texts, <-    # see Question below
+#  texts
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  tokenize
@@ -82,4 +82,11 @@
 ## ---- eval=FALSE---------------------------------------------------------
 #  mydfm <- texts(mycorpus, group = "party") %>% toLower %>% tokenize %>% wordstem %>%
 #                                  removeFeatures(stopwords("english")) %>% dfm
+
+## ---- eval=FALSE---------------------------------------------------------
+#  mydfm <- texts(ie2010Corpus, groups = "party") %>% toLower %>% tokenize %>%
+#               removeFeatures(stopwords("english")) %>% wordstem %>% dfm
+#  
+#  # same as:
+#  mydfm2 <- dfm(ie2010Corpus, groups = "party", ignoredFeatures = stopwords("english"), stem = TRUE)
 

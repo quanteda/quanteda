@@ -6,7 +6,6 @@
 #' Document variables contain the year of the address and the last name of the president.
 #' @examples
 #' # some operations on the inaugural corpus
-#' data(inaugCorpus)
 #' summary(inaugCorpus)
 #' head(docvars(inaugCorpus), 10)
 #' @references \url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and 
@@ -21,25 +20,9 @@ NULL
 #' @docType data
 #' @examples
 #' # working with the character vector only
-#' data(inaugTexts)
 #' str(inaugTexts)
 #' head(docvars(inaugCorpus), 10)
 #' mycorpus <- corpus(inaugTexts)
-NULL
-
-
-# @name uk2010immig
-# @title Immigration-related sections of 2010 UK party manifestos
-# @docType data
-# @description Extracts from the election manifestos of 9 UK political parties from 2010, related
-# to immigration or asylum-seekers.
-# @format A named character vector of plain ASCII texts
-# @examples
-# data(uk2010immig)
-# uk2010immigCorpus <- corpus(uk2010immig, docvars=list(party=names(uk2010immig)))
-# language(uk2010immigCorpus) <- "english"
-# encoding(uk2010immigCorpus) <- "UTF-8"
-# summary(uk2010immigCorpus)
 NULL
 
 #' @name ukimmigTexts
@@ -49,18 +32,16 @@ NULL
 #' to immigration or asylum-seekers.
 #' @format A named character vector of plain ASCII texts
 #' @examples
-#' data(ukimmigTexts)
-#' ukimmigCorpus <- corpus(ukimmigTexts, docvars=list(party=names(ukimmigTexts)))
-#' language(ukimmigCorpus) <- "english"
-#' encoding(ukimmigCorpus) <- "UTF-8"
-#' summary(ukimmigCorpus)
+#' ukimmigCorpus <- corpus(ukimmigTexts, docvars=data.frame(party=names(ukimmigTexts)))
+#' metadoc(ukimmigCorpus, "language") <- "english"
+#' summary(ukimmigCorpus, showmeta = TRUE)
 NULL
 
 #' @name syllables
 #' @aliases englishSyllables
 #' @rdname syllables
 #' @docType data
-#' @source \code{englishSyllables} is built from the freely available CMU pronunciation dictionary at \url{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
+#' @source \code{englishSyllables} is built from the freely available CMU pronunciation dictionary at \code{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
 #' 
 NULL
 
@@ -115,6 +96,43 @@ NULL
 #' @format character vector with one element
 #' @docType data
 #' @examples
-#' data(exampleString)
-#' clean(exampleString)
+#' tokenize(exampleString, removePunct = TRUE)
 NULL
+
+#' @name encodedTexts
+#' @title encoded texts for testing
+#' @description \code{encodedTexts} is a 10-element character vector with 10 different encodings
+#' @docType data
+#' @examples
+#' Encoding(encodedTexts)
+#' data.frame(labelled = names(encodedTexts), detected = encoding(encodedTexts)$all)
+NULL
+
+
+#' @name wordlists
+#' @title word lists used in some readability indexes
+#' @description \code{wordlists} is a named list of character vectors where each list element corresponds to a different readability index.  These are:
+#' \describe{
+#' \item{\code{DaleChall}}{The long Dale-Chall list of 3,000 familiar (English) words needed to compute the Dale-Chall Readability Formula.}
+#' \item{\code{Spache}}{The revised Spache word list (see Klare 1975, 73) needed to compute the Spache Revised Formula of readability (Spache 1974.}
+#' }
+#' @references 
+#' Chall, J. S., & Dale, E.  1995. \emph{Readability Revisited: The New Dale-Chall Readability Formula}. Brookline Books.
+#' 
+#' Klare, G. R. 1975. "Assessing readability." \emph{Reading Research Quarterly} 10(1): 62–102.
+#' 
+#' Spache, G. 1953. "A new readability formula for primary-grade reading materials." \emph{The Elementary School Journal} 53: 410-413.
+#' @docType data
+NULL
+# makeWordList <- function(filename) {
+#     wordList <- textfile(filename, cache = FALSE)@texts
+#     wordList <- stringi::stri_replace_all_regex(wordList, "-", "_")
+#     wordList <- tokenize(wordList, simplify = TRUE)
+#     wordList <- stringi::stri_replace_all_regex(wordList, "_", "-")
+#     wordList
+# }
+# dalechall    <- makeWordList("~/Dropbox/QUANTESS/quanteda_working_files/readability/Dale-Chall.txt")
+# spache    <- makeWordList("~/Dropbox/QUANTESS/quanteda_working_files/readability/Spache.txt")
+# wordlists <- list(dalechall = dalechall, spache = spache)
+# save(wordlists, file = "data/wordlists.RData")
+

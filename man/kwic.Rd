@@ -4,33 +4,44 @@
 \alias{kwic}
 \alias{kwic.character}
 \alias{kwic.corpus}
+\alias{kwic.tokenizedTexts}
 \title{List key words in context from a text or a corpus of texts.}
 \usage{
-kwic(x, word, window = 5, wholeword = FALSE)
+kwic(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE, ...)
 
-\method{kwic}{character}(x, word, window = 5, wholeword = FALSE)
+\method{kwic}{character}(x, keywords, window = 5, valuetype = c("glob",
+  "regex", "fixed"), case_insensitive = TRUE, ...)
 
-\method{kwic}{corpus}(x, word, window = 5, wholeword = FALSE)
+\method{kwic}{corpus}(x, keywords, window = 5, valuetype = c("glob",
+  "regex", "fixed"), case_insensitive = TRUE, ...)
+
+\method{kwic}{tokenizedTexts}(x, keywords, window = 5, valuetype = c("glob",
+  "regex", "fixed"), case_insensitive = TRUE, ...)
 }
 \arguments{
 \item{x}{A text character scalar or a quanteda corpus.  (Currently does not
 support character vectors.)}
 
-\item{word}{A keyword chosen by the user.}
+\item{keywords}{A keyword or phrase consisting of multiple keywords, possibly
+including punctuation.  If a phrase, \code{keywords} will be tokenized
+using the \code{...} options.}
 
-\item{window}{The number of context words to be displayed around the
-keyword.}
+\item{window}{The number of context words to be displayed around the keyword.}
 
-\item{wholeword}{If \code{TRUE}, then only search for the entire "word".
-Otherwise \code{word} is interpreted as a regular expression, which
-matches any occurrence of \code{word} in the text, so that the the
-concordance will include all words in which the search term appears, and
-not just when it appears as an entire word.  For instance, searching for
-the word "key" will also return "whiskey".  This is the default.}
+\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for
+"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
+or \code{"fixed"} for exact matching (entire words, for instance).  If
+\code{"fixed"} is used with \code{case_insensitive = TRUE}, the text will
+be lowercased prior to matching.}
+
+\item{case_insensitive}{match without respect to case if \code{TRUE}}
+
+\item{...}{additional arguments passed to \link{tokenize}, for applicable methods}
 }
 \value{
-A data frame with the context before (\code{preword}), the keyword
-  in its original format (\code{word}, preserving case and attached
+A data frame with the context before (\code{preword}), the keyword in
+  its original format (\code{word}, preserving case and attached
   punctuation), and the context after (\code{postword}).  The rows of the
   dataframe will be named with the word index position, or the text name and
   the index position for a corpus object.
@@ -43,10 +54,14 @@ line number, since the text may or may not be segmented using end-of-line
 delimiters.)
 }
 \examples{
-kwic(inaugTexts, "terror")
-kwic(inaugTexts, "terror", wholeword=TRUE)  # returns only whole word, without trailing punctuation
+head(kwic(inaugTexts, "secure*", window = 3, valuetype = "glob"))
+head(kwic(inaugTexts, "secur", window = 3, valuetype = "regex"))
+head(kwic(inaugTexts, "security", window = 3, valuetype = "fixed"))
+
+kwic(inaugCorpus, "war against")
+kwic(inaugCorpus, "war against", valuetype = "regex")
 }
 \author{
-Kenneth Benoit and Paul Nulty
+Kenneth Benoit
 }
 

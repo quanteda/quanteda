@@ -83,7 +83,7 @@ identical(ws@Sw, wsform@Sw)  # compare wordscores from the two models
 bs <- textmodel(ieDfm[5:6,], refscores[5:6], model="wordscores", scale="logit", smooth=1)
 plot(ws@Sw, bs@Sw, xlim=c(-1, 1), xlab="Linear word score", ylab="Logit word score")
 
-\donttest{wf <- textmodel(ieDfm, model="wordfish", dir = c(6,5))
+\dontrun{wf <- textmodel(ieDfm, model="wordfish", dir = c(6,5))
 wf}
 }
 \seealso{

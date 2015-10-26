@@ -44,7 +44,7 @@ whose document-term matrix representation the dfm will be converted:
   \link[lda]{lda.collapsed.gibbs.sampler} from the \pkg{lda} package}
 \item{\code{"tm"}}{a \link[tm]{DocumentTermMatrix} from the \pkg{tm} package}
 \item{\code{"stm"}}{the  format for the \pkg{stm} package}
-\item{\code{"austin"}}{the \code{wfm} format from the \code{austin} package}
+\item{\code{"austin"}}{the \code{wfm} format from the \strong{austin} package}
 \item{\code{"topicmodels"}}{the "dtm" format as used by the \pkg{topicmodels} package}
 }}
 
@@ -56,6 +56,8 @@ See conversion target package documentation for more detailed descriptions
 of the return formats.
 
 For individual converters in the foreign package idioms, return values are:
+
+DETAILS
 
 \code{dfm2ldaformat} returns a list with components "documents" and "vocab" as needed by
   \code{\link[lda]{lda.collapsed.gibbs.sampler}}.
@@ -71,10 +73,17 @@ all other text analysis packages for which conversions are defined.  To
 make the usage as consistent as possible with other packages, however,
 quanteda also provides direct conversion functions in the idiom of
 the foreign packages, for example  \code{as.wfm} to
-coerce a dfm into the \code{wfm} format from the \code{austin} package,
+coerce a dfm into the \code{wfm} format from the \strong{austin} package,
 and \code{quantedaformat2dtm} for using a dfm with the \pkg{topicmodels} package.
 }
 \details{
+We recommend using \code{convert()} rather than the specific functions.  In fact,
+it's worth considering whether we should simply remove all of them and \strong{only}
+support calling these through `convert()`.
+
+We may also use this function, eventually, for converting other classes of objects
+such as a `corpus` or `tokenizedList`.
+
 \code{as.wfm} converts a quanteda \link{dfm} into the
 \code{wfm} format used by the \code{austin} package.
 

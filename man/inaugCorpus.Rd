@@ -13,11 +13,9 @@ Document variables contain the year of the address and the last name of the pres
 }
 \examples{
 # some operations on the inaugural corpus
-data(inaugCorpus)
 summary(inaugCorpus)
 head(docvars(inaugCorpus), 10)
 # working with the character vector only
-data(inaugTexts)
 str(inaugTexts)
 head(docvars(inaugCorpus), 10)
 mycorpus <- corpus(inaugTexts)

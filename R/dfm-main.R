@@ -4,22 +4,23 @@
 ## Ken Benoit
 ####################################################################
 
+
 # @include dfm-classes.R
 NULL
 
 #' create a document-feature matrix
 #' 
-#' Create a sparse matrix document-feature matrix from a corpus or a vector of texts.  The sparse
-#' matrix construction uses  the
-#' \pkg{Matrix} package, and is both much faster and much more memory efficient
-#' than the corresponding dense (regular \code{matrix}) representation.  For details on the
-#' structure of the dfm class, see \link{dfm-class}.
+#' Create a sparse matrix document-feature matrix from a corpus or a vector of
+#' texts.  The sparse matrix construction uses  the \pkg{Matrix} package, and is
+#' both much faster and much more memory efficient than the corresponding dense
+#' (regular \code{matrix}) representation.  For details on the structure of the
+#' dfm class, see \link{dfm-class}.
 #' 
-#' New as of v0.7: All dfms are by default sparse, a change from the previous behaviour.  
-#' You can still create the older (S3) dense matrix type dfm object, but you will receive
-#' a disapproving warning message while doing so, suggesting you make the switch.
-#' @param x corpus or character vector from which to generate the document-feature matrix
-#' @param ... additional arguments passed to \code{\link{clean}}
+#' @param x corpus or character vector from which to generate the
+#'   document-feature matrix
+#' @param ... additional arguments passed to \link{tokenize}, which can include for
+#'   instance \code{ngrams} and \code{concatenator} for tokenizing multi-token
+#'   sequences
 #' @import Matrix
 #' @export
 #' @name dfm
@@ -29,24 +30,28 @@ dfm <- function(x, ...) {
 
 #' @rdname dfm
 #' @param verbose display messages if \code{TRUE}
-#' @param clean if \code{FALSE}, do no cleaning of the text.  This offers a 
-#'   one-argument easy method to turn off any cleaning of the texts during 
-#'   construction of the dfm.
+#' @param toLower convert texts to lowercase
+#' @param removeNumbers remove numbers, see \link{tokenize}
+#' @param removePunct remove numbers, see \link{tokenize}
+#' @param removeTwitter if \code{FALSE}, preserve \code{#} and \code{@@} 
+#'   characters, see \link{tokenize} #' @param removeSeparators remove 
+#'   separators (whitespace), see \link{tokenize}
 #' @param stem if \code{TRUE}, stem words
 #' @param ignoredFeatures a character vector of user-supplied features to 
 #'   ignore, such as "stop words".  Formerly, this was a Boolean option for 
 #'   \code{stopwords = TRUE}, but requiring the user to supply the list 
 #'   highlights the choice involved in using any stopword list.  To access one 
-#'   possible list (from any list you wish), use \code{\link{stopwords}()}.
+#'   possible list (from any list you wish), use \code{\link{stopwords}()}.  The
+#'   pattern matching type will be set by \code{valuetype}.  For behaviour of 
+#'   \code{ingoredFeatures} with \code{ngrams > 1}, see Details.
 #' @param keptFeatures a use supplied regular expression defining which features
 #'   to keep, while excluding all others.  This can be used in lieu of a 
 #'   dictionary if there are only specific features that a user wishes to keep. 
 #'   To extract only Twitter usernames, for example, set \code{keptFeatures = 
-#'   "^@@\\\w+\\\b"} and make sure that \code{removeTwitter = FALSE} as an 
-#'   additional argument passed to \link{clean}.  (Note: \code{keptFeatures = 
-#'   "^@@"} will also retrieve usernames, but does not enforce the username 
-#'   convention that a username must contain one and only one \code{@@} symbol, 
-#'   at the beginning of the username.)
+#'   "@@*"} and make sure that \code{removeTwitter = FALSE} as an additional 
+#'   argument passed to \link{tokenize}.  Note: \code{keptFeatures = 
+#'   "^@@\\\w+\\\b"} would be the regular expression version of this matching 
+#'   pattern.  The pattern matching type will be set by \code{valuetype}.
 #' @param dictionary A list of character vector dictionary entries, including 
 #'   regular expressions (see examples)
 #' @param thesaurus A list of character vector "thesaurus" entries, in a 
@@ -56,16 +61,13 @@ dfm <- function(x, ...) {
 #'   the first match in the list will be used.  Thesaurus keys are converted to 
 #'   upper case to create a feature label in the dfm, as a reminder that this 
 #'   was not a type found in the text, but rather the label of a thesaurus key.
+#' @param valuetype \code{fixed} for words as is; \code{"regex"} for regular 
+#'   expressions; or \code{"glob"} for "glob"-style wildcard.  Glob format is 
+#'   the default.  See \code{\link{selectFeatures}}.
 #' @param dictionary_regex \code{TRUE} means the dictionary is already in 
-#'   regular expression format, otherwise it will be converted from "wildcard" 
-#'   format
-#' @param bigrams include bigrams as well as unigram features, if \code{TRUE}
-#' @param include.unigrams exclude unigrams if \code{TRUE}; only used if
-#'   \code{bigrams=TRUE}
-#' @param addto \code{NULL} by default, but if an existing dfm object is 
-#'   specified, then the new dfm will be added to the one named. If both 
-#'   \link{dfm}'s are built from dictionaries, the combined dfm will have its 
-#'   \code{Non_Dictionary} total adjusted.
+#'   regular expression format, otherwise it will be converted from the "glob" 
+#'   format.  This is a legacy argument that will soon be phased out in favour 
+#'   of \code{valuetype}.
 #' @param language Language for stemming and stopwords.  Choices are 
 #'   \code{danish}, \code{dutch}, \code{english}, \code{finnish}, \code{french},
 #'   \code{german}, \code{hungarian}, \code{italian}, \code{norwegian}, 
@@ -76,41 +78,40 @@ dfm <- function(x, ...) {
 #'   \code{catalan}, \code{dutch}, \code{finnish}, \code{german}, 
 #'   \code{italian}, \code{portuguese}, \code{spanish}, \code{arabic} for 
 #'   stopwords.
-#' @param matrixType if \code{dense}, produce a dense matrix; or it 
-#'   \code{sparse} produce a sparse matrix of class \code{dgCMatrix} from the 
-#'   \pkg{\link{Matrix}} package.
-#' @param fromCorpus a system flag used internally, soon to be phased out.
-#' @param multicore if TRUE, tokenization is parallelized with mcmapply, using
-#'   detectCores(). parallel uses forking, so will not work on Windows.
+#' @param matrixType deprecated, used to produce a dense matrix if \code{dense},
+#'   but this was removed in 0.8.2.  All dfm objects are now created as a sparse
+#'   matrix of class \code{dgCMatrix} from the \pkg{\link{Matrix}} package.
 #' @return A \link{dfm-class} object containing a sparse matrix representation 
 #'   of the counts of features by document, along with associated settings and 
 #'   metadata.
-#'   
-#'   If you used \code{matrixType = "dense"} then the return is an old-style S3 
-#'   matrix class object with additional attributes representing meta-data.
+#' @details The default behavior for \code{ignoredFeatures} when constructing
+#'   ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to remove any ngram that
+#'   contains any item in \code{ignoredFeatures}.  If you wish to remove these before
+#'   constructing ngrams, you will need to first tokenize the texts with ngrams, then
+#'   remove the features to be ignored, and then construct the dfm using this modified
+#'   tokenization object.  See the code examples for an illustration.
 #' @author Kenneth Benoit
-#' @importFrom parallel detectCores mcmapply
+#' @importFrom parallel mclapply
 #' @import data.table Matrix
 #' @export
 #' @examples
-#' \donttest{# with inaugural texts
-#' (size1 <- object.size(dfm(inaugTexts, matrixType="sparse")))
-#' (size2 <- object.size(dfm(inaugTexts, matrixType="dense")))
+#' # why we phased out dense matrix dfm objects
+#' (size1 <- object.size(dfm(inaugTexts, verbose = FALSE)))
+#' (size2 <- object.size(as.matrix(dfm(inaugTexts, verbose = FALSE))))
 #' cat("Compacted by ", round(as.numeric((1-size1/size2)*100), 1), "%.\n", sep="")
-#' }
 #' 
 #' # for a corpus
 #' mydfm <- dfm(subset(inaugCorpus, Year>1980))
+#' mydfm <- dfm(subset(inaugCorpus, Year>1980), toLower=FALSE)
 #' 
 #' # grouping documents by docvars in a corpus
 #' mydfmGrouped <- dfm(subset(inaugCorpus, Year>1980), groups = "President")
 #' 
-#' # with stopwords English, stemming, and dense matrix
+#' # with English stopwords and stemming
 #' dfmsInaug2 <- dfm(subset(inaugCorpus, Year>1980), 
-#'                   ignoredFeatures=stopwords("english"),
-#'                   stem=TRUE, matrixType="dense")
+#'                   ignoredFeatures=stopwords("english"), stem=TRUE)
 #' 
-#' ## with dictionaries
+#' # with dictionaries
 #' mycorpus <- subset(inaugCorpus, Year>1900)
 #' mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
 #'                opposition=c("Opposition", "reject", "notincorpus"),
@@ -121,72 +122,250 @@ dfm <- function(x, ...) {
 #' dictDfm <- dfm(mycorpus, dictionary=mydict)
 #' dictDfm
 #' 
-#' ## with the thesaurus feature
+#' # with the thesaurus feature
 #' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
 #'              "New York City has raised a taxes: an income tax and a sales tax.")
 #' mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax")))
-#' dfm(phrasetotoken(mytexts, mydict), thesaurus=lapply(mydict, function(x) gsub("\\s", "_", x)))
+#' dfm(phrasetotoken(mytexts, mydict), thesaurus = lapply(mydict, function(x) gsub("\\s", "_", x)))
 #' # pick up "taxes" with "tax" as a regex
-#' dfm(phrasetotoken(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE)
+#' dfm(phrasetotoken(mytexts, mydict), thesaurus = list(anytax = "tax"), valuetype = "regex")
 #' 
-#' ## removing stopwords
+#' # removing stopwords
 #' testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
 #'              the newspaper from a boy named Seamus, in his mouth."
 #' testCorpus <- corpus(testText)
-#' # settings(testCorpus, "stopwords")
-#' dfm(testCorpus, ignoredFeatures=stopwords("english"))
-#' features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE))
-#' features(dfm(testCorpus, verbose=FALSE, bigrams=TRUE, include.unigrams=FALSE))
+#' # note: "also" is not in the default stopwords("english")
+#' features(dfm(testCorpus, ignoredFeatures = stopwords("english")))
+#' # for ngrams
+#' features(dfm(testCorpus, ngrams = 2, ignoredFeatures = stopwords("english")))
+#' features(dfm(testCorpus, ngrams = 1:2, ignoredFeatures = stopwords("english")))
 #' 
-#' ## keep only certain words
-#' dfm(testCorpus, keptFeatures="s$", verbose=FALSE)  # keep only words ending in "s"
+#' ## removing stopwords before constructing ngrams
+#' tokensAll <- tokenize(toLower(testText), removePunct = TRUE)
+#' tokensNoStopwords <- removeFeatures(tokensAll, stopwords("english"))
+#' tokensNgramsNoStopwords <- ngrams(tokensNoStopwords, 2)
+#' features(dfm(tokensNgramsNoStopwords, ngrams = 1:2))
+#' 
+#' # keep only certain words
+#' dfm(testCorpus, keptFeatures = "*s", verbose = FALSE)  # keep only words ending in "s"
+#' dfm(testCorpus, keptFeatures = "s$", valuetype = "regex", verbose = FALSE)
+#' 
+#' # testing Twitter functions
 #' testTweets <- c("My homie @@justinbieber #justinbieber shopping in #LA yesterday #beliebers",
 #'                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
 #'                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
+#' dfm(testTweets, keptFeatures = "#*", removeTwitter = FALSE)  # keep only hashtags
+#' dfm(testTweets, keptFeatures = "^#.*$", valuetype = "regex", removeTwitter = FALSE)
 #' 
-#' dfm(testTweets, keptFeatures="^#")  # keep only hashtags
-#' 
-#' \dontrun{
-#' # try it with approx 35,000 court documents from Lauderdale and Clark (200?)
-#' load('~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/lauderdaleClark/Opinion_files.RData')
-#' txts <- unlist(Opinion_files[1])
-#' names(txts) <- NULL
-#' 
-#' # dfms without cleaning
-#' require(Matrix)
-#' system.time(dfmsBig <- dfm(txts, clean=FALSE, verbose=FALSE))
-#' object.size(dfmsBig)
-#' dim(dfmsBig)
-#' # compare with tm
-#' require(tm)
-#' tmcorp <- VCorpus(VectorSource(txts))
-#' system.time(tmDTM <- DocumentTermMatrix(tmcorp))
-#' object.size(tmDTM)
-#' dim(tmDTM)
-#'  
-#' # with cleaning - the gsub() calls in clean() take a long time
-#' system.time(dfmsBig <- dfm(txts, clean=TRUE, additional="[-_\\x{h2014}]")) 
-#' object.size(dfmsBig)
-#' dim(dfmsBig) 
-#' # 100 top features
-#' topf <- colSums(dfmsBig)
-#' names(topf) <- colnames(dfmsBig)
-#' head(sort(topf, decreasing=TRUE), 100)
-#' }
-dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, 
-                          ignoredFeatures = NULL, keptFeatures=NULL,
+dfm.character <- function(x, 
+                          verbose=TRUE, 
+                          toLower=TRUE, 
+                          removeNumbers = TRUE, 
+                          removePunct = TRUE,
+                          removeSeparators = TRUE,
+                          removeTwitter = FALSE,
+                          # removeCurrency = TRUE,
+                          # removeURL = TRUE,
+                          stem = FALSE, 
+                          ignoredFeatures = NULL, 
+                          keptFeatures=NULL,
                           matrixType=c("sparse", "dense"), 
                           language="english",
-                          fromCorpus=FALSE, bigrams=FALSE,
-                          include.unigrams=TRUE,
-                          thesaurus=NULL, dictionary=NULL, dictionary_regex=FALSE, 
-                          addto=NULL, multicore=FALSE,
+                          thesaurus=NULL, 
+                          dictionary=NULL,
+                          valuetype = c("glob", "regex", "fixed"),
+                          dictionary_regex = FALSE, 
                           ...) {
     startTime <- proc.time()
     matrixType <- match.arg(matrixType)
-    if (!fromCorpus & verbose) 
-        cat("Creating a dfm from a character vector ...")
+    valuetype <- match.arg(valuetype)
     
+    if (verbose && grepl("^dfm\\.character", sys.calls()[[2]]))
+        cat("Creating a dfm from a character vector ...")
+
+    # case conversion and tokenization
+    # includes bigram tokenization but this will be merged soon into tokenize()
+    if (toLower) {
+        if (verbose) cat("\n   ... lowercasing", sep="")
+        x <- toLower(x)
+    }
+    
+    if (verbose) cat("\n   ... tokenizing", sep="")
+    tokenizedTexts <- tokenize(x, removeNumbers = removeNumbers, 
+                               removeSeparators = removeSeparators, removePunct = removePunct,
+                               removeTwitter = removeTwitter,
+                               ...)
+
+    # if ngrams > 1 and ignoredFeatures are specified, then convert these into a
+    # regex that will remove any ngram containing one of the words
+#     if (!identical(attr(tokenizedTexts, "ngrams"), 1) & !is.null(ignoredFeatures)) {
+#         conc <- attr(tokenizedTexts, "concatenator")
+#         if (valuetype == "glob") {
+#             ignoredFeatures <- gsub("\\*", ".*", ignoredFeatures)
+#             ignoredFeatures <- gsub("\\?", ".{1}", ignoredFeatures)
+#         }
+#         ignoredFeatures <- paste0("(\\b|(\\w+", conc, ")+)", ignoredFeatures, "(\\b|(", conc, "\\w+)+)")
+#         valuetype <- "regex"
+#     }
+    
+    dfm(tokenizedTexts, verbose=verbose, toLower=toLower, stem=stem, 
+        ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
+        matrixType=matrixType, language=language,
+        thesaurus=thesaurus, dictionary=dictionary, valuetype = valuetype, 
+        dictionary_regex = dictionary_regex,
+        startTime = startTime)
+}
+
+    
+#' @rdname dfm
+#' @importFrom utils glob2rx
+#' @export
+dfm.tokenizedTexts <- function(x, 
+                               verbose=TRUE,
+                               toLower = TRUE,
+                               stem=FALSE, 
+                               ignoredFeatures=NULL, 
+                               keptFeatures=NULL,
+                               matrixType=c("sparse", "dense"), 
+                               language="english",
+                               thesaurus=NULL, 
+                               dictionary=NULL, 
+                               valuetype = c("glob", "regex", "fixed"),
+                               dictionary_regex = FALSE,
+                               ...) {
+    
+    settings_ngrams <- attr(x, "ngrams")
+    settings_concatenator <- attr(x, "concatenator")
+    
+    valuetype <- match.arg(valuetype)
+    dots <- list(...)
+    startTime <- proc.time()
+    if ("startTime" %in% names(dots)) startTime <- dots$startTime
+    
+    if ("codeType" %in% names(dots))
+        return(dfmTokenizeTextsOld(x, verbose=verbose, toLower=toLower, stem=stem, 
+                                   ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
+                                   matrixType=matrixType, language=language,
+                                   thesaurus=thesaurus, dictionary=dictionary, dictionary_regex=dictionary_regex,
+                                   startTime = startTime))
+    
+    # argument checking
+    matrixType <- match.arg(matrixType)
+    if (matrixType == "dense")
+        warning("matrixType = \"dense\" no longer supported, created sparse dfm instead")
+    language <- tolower(language)
+    
+    if (verbose && grepl("^dfm\\.tokenizedTexts", sys.calls()[[2]])) {
+        cat("Creating a dfm from a tokenizedTexts object ...")
+    }
+
+    # add a "NULL" token to every tokenized text, in case some are empty
+    x <- lapply(x, function(t) t <- c(t, "**_NULL_**"))
+    class(x) <- c("tokenizedTexts", "list")
+    
+    # get document names
+    if (is.null(names(x))) {
+        docNames <- paste("text", 1:length(x), sep="")
+    } else docNames <- names(x)
+    
+    # index documents
+    if (verbose) cat("\n   ... indexing documents: ", 
+                     format(length(x), big.mark=","), " document",
+                     ifelse(length(x) > 1, "s", ""), sep="")
+    nTokens <- lengths(x)
+    docIndex <- rep(seq_along(nTokens), nTokens)
+    
+    # index features
+    if (verbose) cat("\n   ... indexing features: ")
+    allFeatures <- unlist(x)
+    uniqueFeatures <- unique(allFeatures)
+    totalfeatures <- length(uniqueFeatures)
+    if (verbose) cat(format(totalfeatures - 1, big.mark=","), " feature type",
+                     ifelse(totalfeatures - 1  > 1, "s", ""), sep="")
+    featureIndex <- match(allFeatures, uniqueFeatures)
+    
+    if (verbose) cat("\n")
+    
+    # make the dfm
+    dfmresult <- sparseMatrix(i = docIndex, 
+                              j = featureIndex, 
+                              x = 1L, 
+                              dimnames = list(docs = docNames, features = uniqueFeatures))
+    # remove null term
+    dfmresult <- dfmresult[, -match("**_NULL_**", colnames(dfmresult)), drop = FALSE]
+    # construct the dfmSparse type object
+    dfmresult <- new("dfmSparse", dfmresult)
+    
+    # copy attributes
+    dfmresult@ngrams <- settings_ngrams
+    dfmresult@concatenator <- settings_concatenator
+    
+    if (dictionary_regex & valuetype != "regex") {
+        warning("dictionary_regex is deprecated, use valuetype = \"regex\" instead.")
+        valuetype <- "regex"
+    }
+    
+    if (!is.null(dictionary) | !is.null(thesaurus)) {
+        if (!is.null(thesaurus)) dictionary <- thesaurus
+        if (verbose) cat("   ... ")
+        dfmresult <- applyDictionary(dfmresult, dictionary,
+                                     exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
+                                     valuetype = valuetype,
+                                     verbose = verbose,
+                                     ...)
+    }
+    
+    if (stem) {
+        if (verbose) cat("   ... stemming features (", stri_trans_totitle(language), ")", sep="")
+        oldNfeature <- nfeature(dfmresult)
+        dfmresult <- wordstem(dfmresult, language)
+        if (verbose & (oldNfeature - nfeature(dfmresult)) > 0) 
+            cat(", trimmed", oldNfeature - nfeature(dfmresult), "feature variants\n")
+        else cat("\n")
+    }
+    
+    if (!is.null(ignoredFeatures)) {
+        if (verbose) cat("   ... ")
+        dfmresult <- selectFeatures(dfmresult, ignoredFeatures, selection = "remove", valuetype = valuetype, verbose = verbose)
+    }
+    
+    if (!is.null(keptFeatures)) {
+        if (verbose) cat("   ... ")
+        dfmresult <- selectFeatures(dfmresult, keptFeatures, selection = "keep", valuetype = valuetype, verbose = verbose)
+    }
+    
+    if (verbose) 
+        cat("   ... created a", paste(dim(dfmresult), collapse=" x "), 
+            "sparse dfm\n   ... complete. \nElapsed time:", (proc.time() - startTime)[3], "seconds.\n")
+    
+    return(dfmresult)
+}
+
+    
+    
+dfmTokenizeTextsOld <- function(x, 
+                               verbose=TRUE,
+                               toLower = TRUE,
+                               stem=FALSE, 
+                               ignoredFeatures=NULL, 
+                               keptFeatures=NULL,
+                               matrixType=c("sparse", "dense"), 
+                               language="english",
+                               thesaurus=NULL, 
+                               dictionary=NULL, 
+                               dictionary_regex=FALSE,
+                               ...) {
+    dots <- list(...)
+    if ("startTime" %in% names(dots)) startTime <- dots$startTime
+    
+    matrixType <- match.arg(matrixType)
+
+    if (verbose && grepl("^dfm\\.tokenizedTexts", sys.calls()[[2]])) {
+        cat("Creating a dfm from a tokenizedTexts object ...")
+        startTime <- proc.time()
+    }
+    
+    # index documents
     if (verbose) cat("\n   ... indexing ", 
                      format(length(x), big.mark=","), " document",
                      ifelse(length(x) > 1, "s", ""), sep="")
@@ -194,59 +373,30 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     if (is.null(names(x))) 
         names(docIndex) <- factor(paste("text", 1:length(x), sep="")) else
             names(docIndex) <- names(x)
-    #?clean
-    if (verbose) cat("\n   ... ", ifelse(clean, "cleaning and ", ""), "tokenizing texts", sep="")
-    if (!bigrams) {
-        # tokenizedTexts <- lapply(x, tokenizeSingle2, sep=" ")
-        if (clean){
-            if(multicore){
-                if(verbose) cat(paste(" using ", detectCores(), " cores...", sep=""))
-                tempFun <- function(y) tokenize(y, ...)
-                tokenizedTexts <- mcmapply(x, FUN=tempFun,  USE.NAMES=FALSE, mc.cores=detectCores())
-            }else{
-                tokenizedTexts <- tokenize(x, ...)
-            }
-        }
-        else{
-            tokenizedTexts <- tokenize(x, removeDigits = FALSE, removePunct = FALSE, toLower = FALSE, removeURL = FALSE)
-        }
-            
-        
-    } else {
-        if (verbose) cat("\n   ...", ifelse(clean, "cleaning and ", ""), "forming bigrams", sep="")
-        if (clean) x <- clean(x, ...)
-        tokenizedTexts <- bigrams(x, include.unigrams=include.unigrams)
-    }
-    
-    #if (verbose) cat("\n   ... shaping tokens into data.table")
-    alltokens <- data.table(docIndex = rep(docIndex, sapply(tokenizedTexts, length)),
-                            features = unlist(tokenizedTexts))
-    alltokens <- alltokens[features != ""]
+
+    # index features
+    if (verbose) cat("\n   ... shaping tokens into data.table")
+    alltokens <- data.table(docIndex = rep(docIndex, sapply(x, length)),
+                            features = unlist(x, use.names = FALSE))
+    alltokens <- alltokens[features != ""]  # if there are any "blank" features
     if (verbose) cat(", found", format(nrow(alltokens), big.mark=","), "total tokens")
-    if (verbose & bigrams) 
-        cat(" incl.", format(sum(grepl("_", alltokens$features)), big.mark=","), "bigrams")
+#     if (verbose & bigrams) 
+#         cat(" incl.", format(sum(grepl("_", alltokens$features)), big.mark=","), "bigrams")
     
-#     if (clean) {
-#         if (verbose) cat("\n   ... cleaning the tokens")
-#         alltokens$features <- clean(alltokens$features, ...)
-#         if (verbose) cat(", ", nrow(alltokens[features == ""]), " removed entirely", sep="")
-#         # remove any features eliminated entirely by cleaning
-#         alltokens <- alltokens[features != ""]  ## KB 12 Feb to fix failure on dfm(inaugTexts[1])
-#     }
-    ## commented out to keep words that get removed in cleaning 
-    # alltokens <- alltokens[features != ""]
-    
+    # stemming features
     if (stem == TRUE) {
-        # require(SnowballC, quietly=TRUE)
         language <- tolower(language)
         if (!(language %in% SnowballC::getStemLanguages())) {
             cat("\n   ... WARNING: not stemming because language", language, "is unavailable")
         } else {
             if (verbose) cat("\n   ... stemming the tokens (", language, ")", sep="")
-            alltokens$features <- wordstem(alltokens$features, language=language)
+            # parallelization with just two cores seems to speed things up by x2
+            # alltokens[, features := simplify2array(mclapply(alltokens$features, wordstem, language=language))]
+            alltokens[, features := wordstem(alltokens$features, language=language)]
         }
     }
     
+    # "stop words" through ignoredFeatures
     if (!is.null(ignoredFeatures)) {
         if (!is.character(ignoredFeatures)) {
             cat("\n   ... WARNING: not ignoring words because not a character vector")
@@ -268,7 +418,7 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     if (!is.null(thesaurus)) {
         thesaurus <- flatten.dictionary(thesaurus)
         if (!dictionary_regex)
-            thesaurus <- lapply(thesaurus, makeRegEx)
+            thesaurus <- lapply(thesaurus, utils::glob2rx) # makeRegEx)
         for (l in names(thesaurus)) 
             alltokens$features[grep(paste(tolower(thesaurus[[l]]), collapse="|"), alltokens$features)] <- toupper(l)
     }
@@ -281,97 +431,69 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     # dictionary function to select only dictionary terms
     if (!is.null(dictionary)) {
         if (verbose) cat("\n   ... applying a dictionary ")
-        # NEED SOME ERROR CHECKING HERE
         # flatten the dictionary
         dictionary <- flatten.dictionary(dictionary)
         if (verbose) cat("consisting of ", length(dictionary), " key entr", 
                          ifelse(length(dictionary) > 1, "ies", "y"), sep="")
         # convert wildcards to regular expressions (if needed)
         if (!dictionary_regex)
-            dictionary <- lapply(dictionary, makeRegEx)
-        # append the dictionary keys to the table
-        alltokens <- cbind(alltokens,
-                           matrix(0, nrow=nrow(alltokens),
-                                  ncol=length(names(dictionary)),
-                                  dimnames=list(NULL, names(dictionary))))
-        #      alltokens$dictionaryWord <- "other"
-        # loop through dictionary keys and entries and increment counters
-        for (i in 1:length(dictionary)) {
-            dictionary_word_index <- grep(paste(tolower(dictionary[[i]]), collapse="|"),
-                                          alltokens$features)
-            alltokens[dictionary_word_index, 2+i] <- 1
-        }
-        # condition is to handle "null string" features (removed entirely in clean step)
-        alltokens$All_Words <- ifelse(alltokens$features != "", 1, 0)
-        dictsplit <- split(alltokens[, 3:ncol(alltokens), with=FALSE], alltokens$docIndex)
-        dictsum <- sapply(dictsplit, colSums)
-        dfmresult <- as.data.frame.matrix(t(dictsum))
-        dimnames(dfmresult) <- list(docs=names(docIndex), features=colnames(dfmresult))
-        # doing it this way avoids an error using rowSums if only one dictionary column
-        dfmresult$Non_Dictionary <- 2*dfmresult$All_Words - rowSums(dfmresult)
-        dfmresult <- dfmresult[, -(ncol(dfmresult)-1)]
-        
-        # convert to a sparse matrix
-        dfmresult <- Matrix(as.matrix(dfmresult), sparse=TRUE)
-        
-    } else {
-        n <- NULL
-        if (verbose) cat("\n   ... summing tokens by document")
-        alltokens[, "n":=1L]
-        alltokens <- alltokens[, by=list(docIndex,features), sum(n)]
-        
-        if (verbose) cat("\n   ... indexing ")
-        uniqueFeatures <- unique(unlist(alltokens$features))
-        uniqueFeatures <- sort(uniqueFeatures)
-        # are any features the null string?
-        blankFeatureIndex <- which(uniqueFeatures == "")
-        totalfeatures <- length(uniqueFeatures) - (length(blankFeatureIndex) > 0)
-        if (verbose) cat(format(totalfeatures, big.mark=","), " feature type",
-                         ifelse(totalfeatures > 1, "s", ""), sep="")
-        # much faster than using factor(alltokens$features, levels=uniqueFeatures) !!
-        featureTable <- data.table(featureIndex = 1:length(uniqueFeatures),
-                                   features = uniqueFeatures)
-        setkey(alltokens, features)
-        setkey(featureTable, features)
-        # merge, data.table style.  warnings suppressed or it moans about mixed encodings
-        suppressWarnings(alltokens <- alltokens[featureTable])
-        
-        if (verbose) cat("\n   ... building sparse matrix")
-        suppressWarnings(dfmresult <- sparseMatrix(i = alltokens$docIndex, 
-                                                   j = alltokens$featureIndex, 
-                                                   x = alltokens$V1, 
-                                                   dimnames=list(docs=names(docIndex), features=uniqueFeatures)))
-        # zero out "" counts for documents that count other features, meaning that
-        # only documents with NO OTHER features than null "" (because of cleaning)
-        # will have a positive count for the "" field.  To count "" from cleaning,
-        # just comment this next command out
-        #
-        # the reason to record a positive count for documents whose only 
-        # feature is a null feature is that sparse matrixes cannot be all zero
-        # blankFeatureIndex <- which(uniqueFeatures == "")
-        # dfmresult[which(rowSums(dfmresult[, -blankFeatureIndex]) > 0), ""] <- 0
-        
-        # different approach: remove null strings entirely
-        if (length(blankFeatureIndex) > 0) dfmresult <- dfmresult[, -blankFeatureIndex]
+            dictionary <- lapply(dictionary, utils::glob2rx) # makeRegEx)
+        # lowercase the dictionary if toLower == TRUE
+        if (toLower) dictionary <- lapply(dictionary, toLower)
+        # call the dictionary entry counting function and return new alltokens
+        alltokens <- countDictionaryEntries(alltokens, dictionary)
     }
+    
+    n <- NULL
+    if (verbose) cat("\n   ... summing", ifelse(is.null(dictionary), "tokens", "dictionary-matched features"), "by document")
+    alltokens[, "n":=1L]
+    alltokens <- alltokens[, by=list(docIndex,features), sum(n)]
+    
+    if (verbose) cat("\n   ... indexing ")
+    uniqueFeatures <- unique(alltokens$features)
+    
+    # now remove the docIndex == 0, now that all dictionary keys are indexed as features
+    alltokens <- alltokens[docIndex > 0]
+    
+    ## BETTER METHOD, BUT SLOWER, IS stri_unique()
+    uniqueFeatures <- sort(uniqueFeatures)
+    # are any features the null string?
+    blankFeatureIndex <- which(uniqueFeatures == "")
+    totalfeatures <- length(uniqueFeatures) - (length(blankFeatureIndex) > 0)
+    if (verbose) cat(format(totalfeatures, big.mark=","), " feature type",
+                     ifelse(totalfeatures > 1, "s", ""), sep="")
+    # much faster than using factor(alltokens$features, levels=uniqueFeatures) !!
+    featureTable <- data.table(featureIndex = 1:length(uniqueFeatures),
+                               features = uniqueFeatures)
+    setkey(alltokens, features)
+    setkey(featureTable, features)
+    # merge, data.table style.  warnings suppressed or it moans about mixed encodings
+    ## suppressWarnings(alltokens <- alltokens[featureTable])
+    suppressWarnings(alltokens <- alltokens[featureTable, allow.cartesian = TRUE])
+    alltokens[is.na(docIndex), c("docIndex", "V1") := list(1, 0)]
+    if (verbose) cat("\n   ... building sparse matrix")
+    #suppressWarnings(
+    dfmresult <- sparseMatrix(i = alltokens$docIndex, 
+                              j = alltokens$featureIndex, 
+                              x = alltokens$V1, 
+                              dimnames=list(docs=names(docIndex), features=uniqueFeatures))
+    #    )
+    
+    # zero out "" counts for documents that count other features, meaning that
+    # only documents with NO OTHER features than null "" (because of cleaning)
+    # will have a positive count for the "" field.  To count "" from cleaning,
+    # just comment this next command out
+    #
+    # the reason to record a positive count for documents whose only 
+    # feature is a null feature is that sparse matrixes cannot be all zero
+    # blankFeatureIndex <- which(uniqueFeatures == "")
+    # dfmresult[which(rowSums(dfmresult[, -blankFeatureIndex]) > 0), ""] <- 0
+    
+    # different approach: remove null strings entirely
+    if (length(blankFeatureIndex) > 0) dfmresult <- dfmresult[, -blankFeatureIndex]
     
     # make into sparse S4 class inheriting from dgCMatrix
     dfmresult <- new("dfmSparse", dfmresult)
-    
-    if (!is.null(addto)) {
-        if (sum(rownames(dfmresult) != rownames(addto)) > 0) {
-            stop("Cannot add to dfm: different document set.")
-        }
-        addIndex <- which(!(colnames(addto) %in% colnames(dfm)))
-        # adjust the "Non_Dictionary" count for the combined object if both are dictionary-based
-        if ("Non_Dictionary" %in% colnames(addto) & "Non_Dictionary" %in% colnames(dfmresult)) {
-            dfm[, "Non_Dictionary"] <- addto[, "Non_Dictionary"] - rowSums(as.matrix(dfmresult[, -ncol(dfmresult)]))
-        }
-        dfmresult <- cbind(addto[, addIndex], dfmresult)
-        
-        #dfmS4 <- setClass("dfm", contains = "dgCMatrix")
-        #dfmresult <- dfmS4(dfmresult)
-    }
     
     # add settings as an attribute
     # attr(resultdfm, "settings") <- settings(x)
@@ -386,56 +508,32 @@ dfm.character <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE,
     if (verbose) {
         cat("\n   ... created a", paste(dim(dfmresult), collapse=" x "), 
             ifelse(matrixType=="dense", "dense", "sparse"), "dfm")
-        cat("\n   ... complete. Elapsed time:", (proc.time() - startTime)[3], "seconds.\n")
+        cat("\n   ... complete. \nElapsed time:", (proc.time() - startTime)[3], "seconds.\n")
     }
     if (matrixType == "dense")
         cat("  Note: matrixType dense is being phased out, try sparse instead.\n")
+    
     return(dfmresult)
 }
 
-
-tokenizeSingle2 <- function(s, sep=" ", useclean=FALSE, ...) {
-    if (useclean) s <- clean(s, ...)
-    # s <- unlist(s)
-    tokens <- scan(what="char", text=s, quiet=TRUE, quote="", sep=sep)
-    return(tokens)
-}
-
 #' @rdname dfm
-#' @param groups Grouping variable for aggregating documents
+#' @param groups character vector containing the names of document variables for
+#'   aggregating documents
 #' @export
-dfm.corpus <- function(x, verbose=TRUE, clean=TRUE, stem=FALSE, 
-                       ignoredFeatures=NULL, 
-                       keptFeatures=NULL,
-                       matrixType=c("sparse", "dense"), language="english",
-                       groups=NULL, bigrams=FALSE, 
-                       include.unigrams=TRUE,
-                       thesaurus=NULL, dictionary=NULL, dictionary_regex=FALSE,
-                       addto=NULL, ...) {
+dfm.corpus <- function(x, verbose = TRUE, groups = NULL, ...) {
     if (verbose) cat("Creating a dfm from a corpus ...")
     
     if (!is.null(groups)) {
         if (verbose) cat("\n   ... grouping texts by variable", 
                          ifelse(length(groups)==1, "", "s"), ": ", 
                          paste(groups, collapse=", "), sep="")
-        if (length(groups)>1) {
-            group.split <- lapply(documents(x)[, groups], as.factor)
-        } else {
-            group.split <- as.factor(documents(x)[,groups])
-        }
-        texts <- split(texts(x), group.split)
-        texts <- sapply(texts, paste, collapse = " ")
+        texts <- texts(x, groups = groups)
     } else {
         texts <- texts(x)
         names(texts) <- docnames(x)
     }
     
-    dfm(texts, verbose=verbose, clean=clean, stem=stem, 
-        ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
-        matrixType=matrixType, language=language,
-        thesaurus=thesaurus, dictionary=dictionary, dictionary_regex=dictionary_regex,
-        fromCorpus=TRUE, bigrams=bigrams, include.unigrams=include.unigrams,
-        addto=addto, ...)
+    dfm(texts, verbose = verbose, ...)
 }
 
 
@@ -520,462 +618,28 @@ makeRegEx <- function(wildcardregex) {
     ##   [ab] meaning a or b
 }
 
-
-
-#' Trim a dfm using threshold-based or random feature selection
-#'
-#' Returns a document by feature matrix reduced in size based on document and term frequency, and/or subsampling.
-#' @param x document-feature matrix of \link{dfm-class}
-#' @param minCount minimum feature count
-#' @param minDoc minimum number of documents in which a feature appears
-# @param minTotal minimum total feature threshold to retain a document
-#' @param nsample how many features to retain (based on random selection)
-#' @param verbose print messages
-#' @return A \link{dfm-class} object reduced in features
-#' @name trim
-#' @export
-#' @author Ken Benoit, inspired by code by Will Lowe (see \code{trim} from the \code{austin} package)
-#' @examples
-#' dtm <- dfm(inaugCorpus)
-#' dim(dtm)
-#' dtmReduced <- trim(dtm, minCount=10, minDoc=2) # only words occuring >=5 times and in >=2 docs
-#' dim(dtmReduced)
-#' topfeatures(dtmReduced, decreasing=FALSE)
-#' dtmSampled <- trim(dtm, minCount=20, nsample=50)  # sample 50 words over 20 count
-#' dtmSampled # 57 x 50 words
-#' topfeatures(dtmSampled)  
-#' @export
-setGeneric("trim", 
-           signature = c("x", "minCount", "minDoc", "nsample", "verbose"),
-           def = function(x, minCount=1, minDoc=1, nsample=NULL, verbose=TRUE)
-               standardGeneric("trim"))
-
-#' @rdname trim
-setMethod("trim", signature(x="dfm"), 
-          function(x, minCount=1, minDoc=1, nsample=NULL, verbose=TRUE) {
-              
-              featIndexAboveMinCount <- which(colSums(x) >= minCount, useNames = FALSE)
-              if (verbose & minCount>1)
-                  cat("Features occurring less than", minCount, "times:", 
-                      nfeature(x) - length(featIndexAboveMinCount), "\n")
-              
-              featIndexAboveMinDoc <- which(docfreq(x) >= minDoc)
-              if (verbose & minDoc>1)
-                  cat("Features occurring in fewer than", minDoc, "documents:", 
-                      nfeature(x) - length(featIndexAboveMinDoc), "\n")
-              
-              featureKeepIndex <- intersect(featIndexAboveMinCount, featIndexAboveMinDoc)
-              if (length(featureKeepIndex)==0)  stop("No features left after trimming.")
-              
-              x <- x[, featureKeepIndex]
-              
-              if (!is.null(nsample)) {
-                  if (nsample > nfeature(x))
-                      cat("Retained features smaller in number than sample size so resetting nsample to nfeature.")
-                  nsample <- min(nfeature(x), nsample)
-                  x <- x[, sample(1:nsample)]
-                  if (verbose) cat("Retaining a random sample of", nsample, "words\n")
-              }
-              
-              sort(x)
-          })
-
-#' @rdname trim
-#' @param ... only included to allow legacy \code{trimdfm} to pass arguments to \code{trim}
-#' @export
-trimdfm <- function(x, ...) {
-    cat("note: trimdfm deprecated: use trim instead.\n")
-    UseMethod("trim")
+countDictionaryEntries <- function(alltokens, dictionary) {
+    dictIndex <- docIndex <- word <- NULL
+    # get unique tokens from all tokens
+    alltokensFeatures <- unique(alltokens$features)
+    # create a data table of all dictionary keys and entries as single regexes
+    allDictEntries <- data.table(dictIndex = names(dictionary), 
+                                 regex = sapply(dictionary, paste, collapse = "|", USE.NAMES = FALSE))
+    # match unique tokens in dictionary to each dictionary category
+    alltokensFeaturesInDict <- alltokensFeatures[stri_detect_regex(alltokensFeatures, 
+                                                                   paste(allDictEntries$regex, collapse = "|"))]
+    # now lookup each unique word in each dictionary category
+    tmp <- parallel::mclapply(alltokensFeaturesInDict, function(x) which(stri_detect_regex(x, allDictEntries$regex)))
+    # make list of matches into a data.table
+    tmp <- data.table(word = rep(alltokensFeaturesInDict, sapply(tmp, length)),
+                      features = allDictEntries[unlist(tmp), dictIndex])
+    # use data.table merging to merge with original set of features
+    setkey(tmp, word)
+    setkey(alltokens, features)
+    merged <- tmp[alltokens, allow.cartesian=TRUE]
+    merged <- merged[!is.na(features), list(docIndex, features)]
+    # paste the empty categories too as docIndex 0 and return
+    rbind(data.table(docIndex = 0, features = names(dictionary)), merged)
 }
 
 
-
-#' @export
-#' @rdname ndoc
-ndoc.dfm <- function(x, ...) {
-    nrow(x)
-}
-
-
-
-
-#' extract the feature labels from a dfm
-#'
-#' Extract the features from a document-feature matrix, which are stored as the column names
-#' of the \link{dfm} object.
-#' @param x the object (dfm) whose features will be extracted
-#' @return Character vector of the features
-#' @examples
-#' features(dfm(inaugTexts))[1:50]  # first 50 features (alphabetically sorted)
-#' @export
-features <- function(x) {
-    UseMethod("features")
-}
-
-#' @export
-#' @rdname features
-features.dfm <- function(x) {
-    colnames(x)
-}
-
-#' @rdname docnames
-#' @examples
-#' # query the document names of a dfm
-#' docnames(dfm(inaugTexts[1:5]))
-#' @export
-docnames.dfm <- function(x) {
-    rownames(x)
-}
-
-#' @details \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
-#' @rdname dfm
-#' @export
-is.dfm <- function(x) {
-    is(x, "dfm")
-    # "dfm" %in% class(x)
-}
-
-#' @details \code{as.dfm} coerces a matrix or data.frame to a dfm
-#' @rdname dfm
-#' @export
-as.dfm <- function(x) {
-    if (!any((c("matrix", "data.frame") %in% class(x))))
-        stop("as.dfm only applicable to matrix(-like) objects.")
-    new("dfmSparse", Matrix(as.matrix(x), sparse=TRUE))
-    #     
-    #     m <- as.matrix(x)
-    #     attr(m, "settings") <- attr(x, "settings")
-    #     attr(m, "weighting") <- attr(x, "weighting")
-    #     class(m) <- class(x)
-    #     m
-}
-
-
-#' sort a dfm by one or more margins
-#'
-#' Sorts a \link{dfm} by frequency of total features, total features in
-#' documents, or both
-#'
-#' @param x Document-feature matrix created by \code{\link{dfm}}
-#' @param margin which margin to sort on \code{features} to sort by frequency of
-#'   features, \code{docs} to sort by total feature counts in documents, and
-#'   \code{both} to sort by both
-#' @param decreasing TRUE (default) if sort will be in descending order,
-#'   otherwise sort in increasing order
-#' @param ... additional arguments passed to base method \code{sort.int}
-#' @return A sorted \link{dfm} matrix object
-#' @export
-#' @author Ken Benoit
-#' @examples
-#' dtm <- dfm(inaugCorpus)
-#' dtm[1:10, 1:5]
-#' dtm <- sort(dtm)
-#' sort(dtm)[1:10, 1:5]
-#' sort(dtm, TRUE, "both")[1:10, 1:5]  # note that the decreasing=TRUE argument
-#'                                     # must be second, because of the order of the
-#'                                     # formals in the generic method of sort()
-sort.dfm <- function(x, decreasing=TRUE, margin = c("features", "docs", "both"), ...) {
-    margin <- match.arg(margin)
-    class_xorig <- class(x)
-    if (margin=="features") {
-        x <- x[, order(colSums(x), decreasing=decreasing)]
-    } else if (margin=="docs") {
-        x <- x[order(rowSums(x), decreasing=decreasing), ]
-    } else if (margin=="both") {
-        x <- x[order(rowSums(x), decreasing=decreasing),
-               order(colSums(x), decreasing=decreasing)]
-    }
-    class(x) <- class_xorig
-    return(x)
-}
-
-
-
-
-#' @rdname ndoc
-#' @export
-nfeature <- function(x) {
-    UseMethod("nfeature")
-}
-
-#' @rdname ndoc
-#' @export
-nfeature.corpus <- function(x) {
-    stop("nfeature not yet implemented for corpus objects.")
-}
-
-#' @rdname ndoc
-#' @export
-#' @examples
-#' nfeature(dfm(inaugCorpus))
-#' nfeature(trim(dfm(inaugCorpus), minDoc=5, minCount=10))
-nfeature.dfm <- function(x) {
-    ncol(x)
-}
-
-
-
-#' Weight the feature frequencies in a dfm by various methods
-#' 
-#' Returns a document by feature matrix with the feature frequencies weighted 
-#' according to one of several common methods. 
-#' 
-#' @param x document-feature matrix created by \link{dfm}
-#' @param type The weighting function to aapply to the dfm. One of: 
-#' \itemize{ 
-#'   \item normTf - Length normalization: dividing the frequency of the feature 
-#'   by the length of the document) 
-#'   \item logTf - The natural log of the term frequency 
-#'   \item tf-idf - Term-frequency * inverse 
-#'   document frequency. For a full explanation, see, for example, 
-#'   \url{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html}.
-#'    This implementation will not return negative values. 
-#'   \item maxTf - The term frequency divided 
-#'   by the frequency of the most frequent term in the document 
-#'   \item ppmi -   Positive Pointwise Mutual Information }
-#' @param smooth amount to apply as additive smoothing to the document-feature matrix prior to
-#'    weighting, default is 0.5, set to \code{smooth=0} for no smoothing.
-#' @param normalize if \code{TRUE} (default) then normalize the dfm by relative
-#'   term frequency prior to computing tfidf
-#' @param verbose if \code{TRUE} output status messages
-#' @param ... not currently used
-#' @return The dfm with weighted values
-#' @export
-#' @author Paul Nulty and Kenneth Benoit
-#' @examples
-#' dtm <- dfm(inaugCorpus)
-#' x <- apply(dtm, 1, function(tf) tf/max(tf))
-#' topfeatures(dtm)
-#' normDtm <- weight(dtm)
-#' topfeatures(normDtm)
-#' maxTfDtm <- weight(dtm, type="relMaxFreq")
-#' topfeatures(maxTfDtm)
-#' logTfDtm <- weight(dtm, type="logFreq")
-#' topfeatures(logTfDtm)
-#' tfidfDtm <- weight(dtm, type="tfidf")
-#' topfeatures(tfidfDtm)
-#' 
-#' # combine these methods for more complex weightings, e.g. as in Section 6.4 of
-#' # Introduction to Information Retrieval
-#' logTfDtm <- weight(dtm, type="logFreq")
-#' wfidfDtm <- weight(logTfDtm, type="tfidf", normalize=FALSE)
-#' 
-#' @references Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
-#'   Introduction to information retrieval. Vol. 1. Cambridge: Cambridge 
-#'   university press, 2008.
-setGeneric("weight", function(x, ...) standardGeneric("weight"))
-
-#' @rdname weight
-#' @examples
-#' \dontshow{
-#' testdfm <- dfm(inaugTexts[1:5])
-#' print(testdfm[, 1:5])
-#' for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
-#'     testw <- weight(testdfm, w)
-#'     cat("\nweight test for:", w, "; class:", class(testw), "\n")
-#'     print(testw[, 1:5])
-#' }
-#' }
-setMethod("weight", signature = "dfm", 
-          definition = function(x, type=c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"), #, "ppmi"), 
-                                smooth = 0, normalize = TRUE, verbose=TRUE, ...) {
-              type = match.arg(type)
-              x <- x + smooth
-              if (weighting(x) != "frequency") {
-                  cat("  No weighting applied: you should not weight an already weighted dfm.\n")
-              } else if (type=="relFreq") {
-                  ## UGLY HACK
-                  if (is(x, "dfmSparse"))
-                      x <- new("dfmSparse", x/rowSums(x))
-                  else if (is(x, "dfmDense"))
-                      x <- new("dfmDense", x/rowSums(x))
-                  else 
-                      x <- x/rowSums(x)
-              } else if (type=="relMaxFreq") {
-                  x <- x / apply(x, 1, max)
-              } else if (type=="logFreq") {
-                  x <- log(x + ifelse(smooth==0, 1, smooth))
-              } else if (type=="tfidf") {
-                  # complicated as, is is to control coercion to a class for which logical operator is
-                  # properly defined as a method, currently not dfm and child classes
-                  idf <- log(ndoc(x)) - log(docfreq(x, smooth))
-                  if (normalize) x <- weight(x, "relFreq")
-                  if (nfeature(x) != length(idf)) 
-                      stop("missing some values in idf calculation")
-                  # currently this strips the dfm of its special class, but this is a problem in 
-                  # the t() method for dfms, not an issue with this operation
-                  x <- t(t(x) * idf)
-                  class(x) <- c("dfm", class(x))
-              }
-              #               } else if (type=="ppmi") {
-              #                   pij <- x/rowSums(x)
-              #                   pij[is.na(pij)] <- 0
-              #                   pi <- colSums(x)
-              #                   pj <- rowSums(x)
-              #                   pj[is.na(pj)] <- 0
-              #                   pmi <- (pij / t(outer(pi,pj)))
-              #                   x <- abs(pmi)
-              #              } else warning(sprintf("Type %s not implmented, no weighting performed.", type))
-              
-              if (is(x, "dfm")) x@weighting <- type
-              # x[is.infinite(x)] <- 0
-              return(x)
-          })
-
-#' @rdname weight
-#' @details \code{tf} is a shortcut for \code{weight(x, "relFreq")}
-#' @export
-tf <- function(x) {
-    if (isS4(x))
-        weight(x, "relFreq")
-    else 
-        x / rowSums(x)
-}
-
-#' @rdname weight
-#' @details \code{tfidf} is a shortcut for \code{weight(x, "tfidf")}
-#' @export
-tfidf <- function(x) weight(x, "tfidf")
-
-#' @rdname weight
-#' @details \code{smoother} is a shortcut for \code{weight(x, "frequency", smooth)}
-#' @export
-smoother <- function(x, smooth) weight(x, "frequency", smooth=smooth)
-
-
-#' @rdname weight
-#' @export
-setGeneric("weighting", function(object) standardGeneric("weighting"))
-
-#' @rdname weight
-#' @param object the dfm object for accessing the weighting setting
-#' @details \code{weighting} queries (but cannot set) the weighting applied to the dfm.
-#' @return \code{weighting} returns a character object describing the type of weighting applied to the dfm.
-setMethod("weighting", signature(object="dfm"), function(object) {
-    if (isS4(object)) 
-        object@weighting
-    else 
-        attr(object, "weighting")
-})
-
-
-# have a separate method here to allow S3 dfm to still exist
-# @rdname weight
-#setMethod("weight", signature = "dfmDense", getMethod("weight", "dfmSparse"))
-
-#' get the document frequency of a feature
-#' 
-#' Returns the document frequency of a feature in a \link{dfm-class} object, 
-#' which occurs greater than a threshold.
-#' @param object a \link{dfm-class} document-feature matrix
-#' @param threshold numeric value of the threshold for counting a feature
-#' as existing in the document, default is 0
-#' @export
-setGeneric("docfreq", signature = c("object", "threshold"), 
-           def=function(object, threshold=0) standardGeneric("docfreq"))
-
-#' @rdname docfreq
-setMethod("docfreq", signature(object="dfmDense", threshold="numeric"), 
-          function(object, threshold=0) colSums(as(object, "dgeMatrix") > threshold))
-#' @rdname docfreq
-setMethod("docfreq", signature(object="dfmDense", threshold="missing"), 
-          function(object, threshold=0) colSums(as(object, "dgeMatrix") > threshold))
-#' @rdname docfreq
-setMethod("docfreq", signature(object="dfmSparse", threshold="numeric"), 
-          function(object, threshold=0) colSums(as(object, "dgCMatrix") > threshold))
-#' @rdname docfreq
-setMethod("docfreq", signature(object="dfmSparse", threshold="missing"), 
-          function(object, threshold=0) colSums(as(object, "dgCMatrix") > threshold))
-#' @rdname docfreq
-setMethod("docfreq", signature(object="dfm", threshold="numeric"), 
-          function(object, threshold=0) colSums(object > threshold))
-#' @rdname docfreq
-setMethod("docfreq", signature(object="dfm", threshold="missing"), 
-          function(object, threshold=0) colSums(object > threshold))
-## Note: need the coercion to dg[C,e]Matrix because > Op not currently 
-## working for the dfmSparse,Dense classes
-
-
-
-# Additive smoothing of feature frequencies in a dfm
-# 
-# Smooths the feature counts by adding a small value (default 0.5) to remove
-# zero counts. Zero counts are problematic for probability-based models.
-# 
-# @param x document-feature matrix created by \link{dfm}
-# @param alpha The value to add to all counts. Default is 0.5
-# @return The original dfm, with values weighted according to type function.
-# @export
-# @author Paul Nulty
-# @examples
-# dtm <- dfm(inaugCorpus)
-# dtm[1:5,1:10]
-# smDtm <- smoothdfm(dtm)
-# smDtm[1:5,1:10]
-smoothdfm <- function(x, alpha=0.5) {
-    attr_orig <- attributes(x)
-    x <- x + alpha
-    attributes(x) <- attr_orig
-    x
-}
-
-
-#' list the most frequent features
-#'
-#' List the most frequently occuring features in a \link{dfm}
-#' @name topfeatures
-#' @aliases topFeatures
-#' @param x the object whose features will be returned
-#' @param n how many top features should be returned
-#' @param decreasing If TRUE, return the \code{n} most frequent features, if
-#'   FALSE, return the \code{n} least frequent features
-#' @param ci confidence interval from 0-1.0 for use if dfm is resampled
-#' @param ... additional arguments passed to other methods
-#' @export
-topfeatures <- function(x, ...) {
-    UseMethod("topfeatures")
-}
-
-#' @return A named numeric vector of feature counts, where the names are the feature labels.
-#' @examples
-#' topfeatures(dfm(subset(inaugCorpus, Year>1980), verbose=FALSE))
-#' topfeatures(dfm(subset(inaugCorpus, Year>1980), ignoredFeatures=stopwords("english"),
-#'             verbose=FALSE))
-#' # least frequent features
-#' topfeatures(dfm(subset(inaugCorpus, Year>1980), verbose=FALSE), decreasing=FALSE)
-#' @export
-#' @rdname topfeatures
-topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ci=.95, ...) {
-    if (is.null(n)) n <- ncol(x)
-    if (is.resampled(x)) {
-        subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
-        subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
-        return(data.frame(#features=colnames(subdfm),
-            freq=colSums(subdfm[,,1]),
-            cilo=apply(colSums(subdfm), 1, quantile, (1-ci)/2),
-            cihi=apply(colSums(subdfm), 1, quantile, 1-(1-ci)/2)))
-    } else {
-        subdfm <- sort(colSums(x), decreasing)
-        return(subdfm[1:n])
-    }
-}
-
-#' @export
-#' @rdname topfeatures
-topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ...) {
-    if (is.null(n)) n <- ncol(x)
-    #     if (is.resampled(x)) {
-    #         subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
-    #         subdfm <- subdfm[, 1:n, ]   # only top n need to be computed
-    #         return(data.frame(#features=colnames(subdfm),
-    #             freq=colSums(subdfm[,,1]),
-    #             cilo=apply(colSums(subdfm), 1, quantile, (1-ci)/2),
-    #             cihi=apply(colSums(subdfm), 1, quantile, 1-(1-ci)/2)))
-    #     } else {
-    
-    csums <- colSums(x)
-    names(csums) <- x@Dimnames$features
-    subdfm <- sort(csums, decreasing)
-    return(subdfm[1:n])
-    #    }
-}

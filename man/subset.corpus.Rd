@@ -4,25 +4,31 @@
 \alias{subset.corpus}
 \title{extract a subset of a corpus}
 \usage{
-\method{subset}{corpus}(x, subset = NULL, select = NULL, ...)
+\method{subset}{corpus}(x, subset, select, ...)
 }
 \arguments{
 \item{x}{corpus object to be subsetted.}
 
-\item{subset}{logical expression indicating elements or rows to keep: missing values are taken as false.}
+\item{subset}{logical expression indicating elements or rows to keep: missing
+values are taken as false.}
 
 \item{select}{expression, indicating the attributes to select from the corpus}
 
-\item{...}{additional arguments affecting the summary produced}
+\item{...}{not used}
 }
 \value{
 corpus object
 }
 \description{
-Works just like the normal subset command but for corpus objects
+Returns subsets of a corpus that meet certain conditions, including direct
+logical operations on docvars (document-level variables).  Works just like
+the normal subset command but for corpus objects.
 }
 \examples{
 summary(subset(inaugCorpus, Year>1980))
 summary(subset(inaugCorpus, Year>1930 & President=="Roosevelt", select=Year))
+}
+\seealso{
+\code{\link{select}}
 }
 

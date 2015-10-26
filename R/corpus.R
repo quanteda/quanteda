@@ -1,18 +1,18 @@
 
 #' constructor for corpus objects
-#'   
-#' Creates a corpus from a document source.  The current available
-#'   document sources are: \itemize{ \item a character vector (as in R class
-#'   \code{char}) of texts; \item a \link{corpusSource-class} object,
-#'   constructed using \code{\link{textfile}}; \item a \pkg{tm}
-#'   \link[tm]{VCorpus} class corpus object, meaning that anything you can use
-#'   to create a \pkg{tm} corpus, including all of the tm plugins plus the 
-#'   built-in functions of tm for importing pdf, Word, and XML documents, can be
-#'   used to create a quanteda \link{corpus}. } Corpus-level meta-data can be
-#'   specified at creation, containing (for example) citation information and
-#'   notes, as can document-level variables and document-level meta-data.
-#' @param x a source of texts to form the documents in the corpus, a character
-#'   vector or a \link{corpusSource-class} object created using
+#' 
+#' Creates a corpus from a document source.  The current available document
+#' sources are: \itemize{ \item a character vector (as in R class \code{char})
+#' of texts; \item a \link{corpusSource-class} object, constructed using
+#' \code{\link{textfile}}; \item a \pkg{tm} \link[tm]{VCorpus} class corpus
+#' object, meaning that anything you can use to create a \pkg{tm} corpus,
+#' including all of the tm plugins plus the built-in functions of tm for
+#' importing pdf, Word, and XML documents, can be used to create a quanteda
+#' \link{corpus}. } Corpus-level meta-data can be specified at creation,
+#' containing (for example) citation information and notes, as can
+#' document-level variables and document-level meta-data.
+#' @param x a source of texts to form the documents in the corpus, a character 
+#'   vector or a \link{corpusSource-class} object created using 
 #'   \code{\link{textfile}}.
 #' @param ... additional arguments
 #' @return A corpus class object containing the original texts, document-level 
@@ -24,9 +24,9 @@
 #'   list object is:
 #'   
 #'   \item{$documents}{A data frame containing the document level information, 
-#'   consisting of \code{\link{texts}}, user-named \code{\link{docvars}}
-#'   variables describing attributes of the documents, and \code{metadoc}
-#'   document-level metadata whose names begin with an underscore character,
+#'   consisting of \code{\link{texts}}, user-named \code{\link{docvars}} 
+#'   variables describing attributes of the documents, and \code{metadoc} 
+#'   document-level metadata whose names begin with an underscore character, 
 #'   such as \code{_language}.}
 #'   
 #'   \item{$metadata}{A named list set of corpus-level meta-data, including 
@@ -39,133 +39,106 @@
 #'   
 #'   \item{$tokens}{An indexed list of tokens and types tabulated by document, 
 #'   including information on positions.  Not yet fully implemented.}
-#' @seealso \link{docvars}, \link{metadoc}, \link{metacorpus}, \link{language}, 
-#'   \link{encoding}, \link{settings}, \link{texts}
+#' @seealso \link{docvars}, \link{metadoc}, \link{metacorpus}, \link{settings},
+#'   \link{texts}
 #' @author Kenneth Benoit and Paul Nulty
 #' @export
 corpus <- function(x, ...) {
     UseMethod("corpus")
 }
 
-# @param docvarsfrom  Argument to specify where docvars are to be taken, from 
-# parsing the filenames separated
-# by \code{sep} or from meta-data embedded in the text file header (\code{headers}).
-# @param docvarnames Character vector of variable names for \code{docvars}
-# @param sep Separator if \code{\link{docvars}} names are taken from the filenames.
-# @warning Only files with the extension \code{.txt} are read in using the directory method.
-# @param pattern filename extension - set to "*" if all files are desired.  This is a 
-# \link[=regex]{regular expression}.
-# @rdname corpus
-# @export
-# @examples 
-# \dontrun{
-# # import texts from a directory of files
-# summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), 
-#                enc="UTF-8", docvarsfrom="filenames",
-#                source="Ken's UK manifesto archive",
-#                docvarnames=c("Country", "Level", "Year", "language")), 5))
-# summary(corpus(directory("~/Dropbox/QUANTESS/corpora/ukManRenamed"), 
-#                enc="UTF-8", docvarsfrom="filenames",
-#                source="Ken's UK manifesto archive",
-#                docvarnames=c("Country", "Level", "Year", "language", "Party")), 5))
-# 
-# # choose a directory using a GUI
-# corpus(directory())
-#
-# # from a zip file on the web
-# myzipcorp <- corpus(zipfiles("http://kenbenoit.net/files/EUcoalsubsidies.zip"),
-#                     notes="From some EP debate about coal mine subsidies")
-# docvars(myzipcorp, speakername=docnames(myzipcorp))
-# summary(myzipcorp)
-# }
-# corpus.directory <- function(x, enc=NULL, docnames=NULL, 
-#                             docvarsfrom=c("none", "filenames", "headers"), 
-#                             docvarnames=NULL, sep='_', pattern="\\.txt$",
-#                             source=NULL, notes=NULL, citation=NULL, ...) {
-#     if (class(x)[1] != "directory") stop("first argument must be a directory")
-#     dvars <- NULL
-#     docvarsfrom <- match.arg(docvarsfrom)
-#     texts <- getTextDir(x, pattern=pattern)
-#     fnames <- NULL
-#     if (docvarsfrom == "filenames") {
-#         fnames <- list.files(x, full.names=TRUE)
-#         snames <- getRootFileNames(fnames)
-#         snames <- gsub(".txt", "", snames)
-#         parts <- strsplit(snames, sep)
-#         if (var(sapply(parts, length)) != 0)
-#             stop("Filename elements are not equal in length.")
-#         dvars <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE), 
-#                             stringsAsFactors=FALSE)
-#         # assign default names in any case
-#         names(dvars) <- paste("docvar", 1:ncol(dvars), sep="")  
-#         if (!is.null(docvarnames)) {
-#             names(dvars)[1:length(docvarnames)] <- docvarnames
-#             if (length(docvarnames) != ncol(dvars)) {
-#                 warning("Fewer docnames supplied than exist docvars - last ",
-#                         ncol(dvars) - length(docvarnames), " docvars were given generic names.")
-#             }
-#         }
-#         # remove the filename extension from the document names
-#         names(texts) <- gsub(".txt", "", names(texts))
-#     } else if (docvarsfrom == "headers") 
-#         stop("headers argument not yet implemented.")
-# 
-# 
-#     tmpCorp <- NextMethod(x=texts, enc=enc, docnames=docnames, docvars=dvars,
-#                           source=source, notes=notes, citation=citation)
-#     
-#     # set document source as filename
-#     if (!is.null(fnames)) {
-#         metadoc(tmpCorp, "source") <- fnames
-#     }
-#     
-#     tmpCorp
-# }
 
-
-
-
-
-# Corpus constructor for a character method
-# 
-# Details here.
-# 
-#' @param docnames Names to be assigned to the texts, defaults to the names of the 
-#' character vector (if any), otherwise assigns "text1", "text2", etc.
+#' @param docnames Names to be assigned to the texts, defaults to the names of 
+#'   the character vector (if any), otherwise assigns "text1", "text2", etc.
 #' @param docvars A data frame of attributes that is associated with each text.
-#' @param source A string specifying the source of the texts, used for referencing.
+#' @param source A string specifying the source of the texts, used for 
+#'   referencing.
 #' @param citation Information on how to cite the corpus.
-#' @param notes A string containing notes about who created the text, warnings, To Dos, etc.
-#' @param enc A string specifying the input encoding for texts in the 
-#' corpus.  Must be a valid entry in \code{\link{iconvlist}()}, since the code in 
-#' \code{corpus.character} will convert this to \code{UTF-8} using \code{\link{iconv}}.  
-#' Currently only one input encoding can be specified for a collection of input texts, 
-#' meaning that you should not mix input text encoding types in a single \code{corpus} call.
+#' @param notes A string containing notes about who created the text, warnings, 
+#'   To Dos, etc.
+#' @param enc a string specifying the input encoding for texts in the corpus. 
+#'   Must be a valid entry in \code{\link[stringi]{stri_enc_list}()}, since 
+#'   the code in \code{corpus.character} will convert this to \code{encTo} using
+#'   \code{\link[stringi]{stri_encode}}.  We recommend that you do
+#'   \strong{not} use \code{enc}, since if left \code{NULL} (the default) then
+#'   \code{corpus()} will detect the input encoding(s) and convert
+#'   automatically.
+#'   
+#'   Currently only one input encoding can be specified for a collection of 
+#'   input texts, meaning that you should not mix input text encoding types in a
+#'   single \code{corpus} call.  However if you suspect multiple encodings, omit
+#'   the \code{enc} argument and \code{corpus()} will detect and convert each
+#'   file automatically.
+#' @param encTo target encoding, default is UTF-8.  Unless you have strong reasons
+#' to use an alternative encoding, we strongly recommend you leave this at its 
+#' default.  Must be a valid entry in \code{\link[stringi]{stri_enc_list}()}
 #' @rdname corpus
 #' @export
 #' @examples
-#' #
 #' # create a corpus from texts
 #' corpus(inaugTexts)
 #' 
 #' # create a corpus from texts and assign meta-data and document variables
 #' ukimmigCorpus <- corpus(ukimmigTexts, 
-#'                             docvars=data.frame(party=names(ukimmigTexts)), 
-#'                             enc="UTF-8") 
-#'                             
-corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
+#'                         docvars = data.frame(party=names(ukimmigTexts)), 
+#'                         encTo = "UTF-16") 
+#'
+#' corpus(texts(ie2010Corpus))
+#' 
+corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvars=NULL,
                              source=NULL, notes=NULL, citation=NULL, ...) {
+    
+    # check validity of encoding label(s)
+    if (!is.null(enc)) {
+        if (!(enc %in% stringi::stri_enc_list(simplify = TRUE))) 
+            stop("enc = ", enc, " argument not found in stri_enc_list()")
+    }
+    if (!(encTo %in% stringi::stri_enc_list(simplify = TRUE))) 
+        stop("encTo = ", enc, " argument not found in stri_enc_list()")
+
+    x_names <- names(x)
+    
+    # convert the dreaded "curly quotes" to ASCII equivalents
+    x <- stringi::stri_replace_all_fixed(x, 
+                                         c("\u201C", "\u201D", "\u201F",
+                                           "\u2018", "\u201B", "\u2019"),                                     
+                                         c("\"", "\"", "\"", 
+                                           "\'", "\'", "\'"), vectorize_all = FALSE)
+
+    # detect encoding based on 100 documents
+    detectSampleSize <- 100
+    detectedEncoding <- encoding(x[sample(length(x), min(detectSampleSize, length(x)))], verbose = FALSE)$probably
+    # cat("Detected encoding:", detectedEncoding, "\n")
+#     if (!is.null(enc))
+#         if (enc != detectedEncoding)
+#             cat("  NOTE:", enc, "specified as input encoding, but", detectedEncoding, "detected.  Are you SURE?\n\n")
+    # use specified enc, not detected encoding
+    detected <- FALSE
+    if (is.null(enc)) {
+        enc <- detectedEncoding
+        detected <- TRUE
+    }
+
+    # convert to "enc" if not already UTF-8 **unless** ISO-8859-1 detected, in which case do not do automatically
+    if (enc != encTo) {
+        if (enc != "ISO-8859-1" & encTo == "UTF-8") {
+            cat("Non-", encTo, " encoding ", ifelse(detected, "(possibly) detected ", "specified"), " :", 
+                enc, ".\n", sep="")
+            # suppressWarnings(x <- stringi::stri_encode(x, from = enc, to = encTo))
+        }
+    }
+
     # name the texts vector
     if (!is.null(docnames)) {
         stopifnot(length(docnames)==length(x))
         names(x) <- docnames
-    } else if (is.null(names(x))) {
+    } else if (is.null(x_names)) {
         names(x) <- paste("text", 1:length(x), sep="")
+    } else if (is.null(names(x))) {
+        # if they previously existed, but got obliterated by a stringi function
+        names(x) <- x_names
     }
-    
-    # check validity of encoding label(s)
-    if (!is.null(enc) && !(enc %in% iconvlist())) stop("enc argument not found in iconvlist()")
-    
+
     # create document-meta-data
     if (is.null(source)) {
         source <- paste(getwd(), "/* ", "on ",  Sys.info()["machine"], " by ", Sys.info()["user"], sep="")
@@ -177,19 +150,12 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
     documents <- data.frame(texts=x, row.names=names(x),
                             check.rows=TRUE, stringsAsFactors=FALSE)
 
-    
     # user-supplied document-level variables (one kind of meta-data)
     if (!is.null(docvars)) {
-        stopifnot(nrow(docvars)==length(x))
-        documents <- cbind(documents, docvars)
-    } 
-
-    # set the encoding label if specified
-    if (!is.null(enc) && enc != "unknown") {
-        documents$texts <- iconv(documents$texts, enc, "UTF-8")
-        #if (verbose)
-        cat("  note: converted texts from", enc, "to UTF-8.")
-        documents$"_encoding" <- "UTF-8"
+        if (nrow(docvars) > 0) {
+            stopifnot(nrow(docvars)==length(x))
+            documents <- cbind(documents, docvars)
+        } 
     }
     
     # build and return the corpus object
@@ -205,17 +171,22 @@ corpus.character <- function(x, enc=NULL, docnames=NULL, docvars=NULL,
 #' @rdname corpus
 #' @export
 #' @examples
-#' \donttest{# the fifth column of this csv file is the text field
-#' mytexts <- textfile("http://www.kenbenoit.net/files/text_example.csv", textField=5)
-#' str(mytexts)
+#' \dontrun{# the fifth column of this csv file is the text field
+#' mytexts <- textfile("http://www.kenbenoit.net/files/text_example.csv", textField = 5)
 #' mycorp <- corpus(mytexts)
-#' mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField="Title"))
+#' mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField = "Title"))
 #' identical(texts(mycorp), texts(mycorp2))
-#' identical(docvars(mycorp), docvars(mycorp2))}
-corpus.corpusSource <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
+#' identical(docvars(mycorp), docvars(mycorp2))
+#' }
+corpus.corpusSource <- function(x, ...) {
     sources <- NULL
-    load(x@texts, envir = environment())  # load from tempfile only into function environment
-    corpus(sources$txts, docvars=sources$docv)
+    if (x@cachedfile == "") {
+        return(corpus(texts(x), docvars = docvars(x), ...))
+    } else {
+        # load from tempfile only into function environment
+        load(x@cachedfile, envir = environment())
+        return(corpus(sources$txts, docvars = sources$docv, ...))
+    }
 }
 
 #' @rdname corpus
@@ -224,22 +195,23 @@ corpus.corpusSource <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
 #'   no corpus-level metadata is imported, but we will add that soon.
 #' @examples 
 #' # import a tm VCorpus
-#' if (require(tm)) {
-#'     data(crude)    # load in a tm example VCorpus
+#' if ("tm" %in% rownames(installed.packages())) {
+#'     data(crude, package = "tm")    # load in a tm example VCorpus
 #'     mytmCorpus <- corpus(crude)
 #'     summary(mytmCorpus, showmeta=TRUE)
 #'     
-#'     data(acq)
+#'     data(acq, package = "tm")
 #'     summary(corpus(acq), 5, showmeta=TRUE)
 #'     
-#'     tmCorp <- VCorpus(VectorSource(inaugTexts[49:57]))
+#'     tmCorp <- tm::VCorpus(tm::VectorSource(inaugTexts[49:57]))
 #'     quantCorp <- corpus(tmCorp)
 #'     summary(quantCorp)
 #' }
 #' @export
-corpus.VCorpus <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
+corpus.VCorpus <- function(x, ...) {
     # extract the content (texts)
-    texts <- sapply(x, function(x) x$content)
+    #texts <- sapply(x, function(x) x$content)
+    texts <- sapply(x, as.character)
     
     # special handling for VCorpus meta-data
     metad <- as.data.frame(t(as.data.frame(sapply(x, function(x) x$meta))))
@@ -249,14 +221,12 @@ corpus.VCorpus <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
     if (length(datetimestampIndex))
         metad$datetimestamp <- t(as.data.frame((lapply(metad$datetimestamp, as.POSIXlt))))[,1]
     # give them the underscore character required
-    names(metad) <- paste("_", names(metad), sep="")
+    # names(metad) <- paste("_", names(metad), sep="")
     
     # using docvars inappropriately here but they show up as docmeta given 
     # the _ in the variable names
-    corpus(texts, docvars=metad,
-           source=paste("Converted from tm VCorpus \'", 
-                        deparse(substitute(x)), "\'", sep=""), 
-           enc=enc, ...)
+    corpus(texts, docvars = metad,
+           source = paste("Converted from tm VCorpus \'", deparse(substitute(x)), "\'", sep=""), ...)
 }
 
 
@@ -271,14 +241,14 @@ corpus.VCorpus <- function(x, enc=NULL, notes=NULL, citation=NULL, ...) {
 print.corpus <- function(x, ...) {
     cat("Corpus consisting of ", ndoc(x), " document",
         ifelse(ndoc(x)>1, "s", ""), ".\n", sep="")
-#         ", ",
-#         ifelse(is.null(corp$tokens), "un", ""),
-#         "indexed.\n", sep="")
-#     cat("Settings:")
-#      tempSettings <- unlist(settings(corp))
-#      for (i in 1:length(tempSettings)) {
-#          print(tempSettings[i])
-#      }
+    #         ", ",
+    #         ifelse(is.null(corp$tokens), "un", ""),
+    #         "indexed.\n", sep="")
+    #     cat("Settings:")
+    #      tempSettings <- unlist(settings(corp))
+    #      for (i in 1:length(tempSettings)) {
+    #          print(tempSettings[i])
+    #      }
 }
 
 #' @return \code{is.corpus} returns \code{TRUE} if the object is a corpus
@@ -346,11 +316,12 @@ documents <- function(corp) {
 }
 
 
-#' get or set corpus texts
+#' get corpus texts
 #' 
-#' Get or replace the texts in a quanteda corpus object.
+#' Get the texts in a quanteda corpus object, with grouping options
 #' 
-#' @param corp A quanteda corpus object
+#' @param x A quanteda corpus object
+#' @param ... not currently used
 #' @return For \code{texts}, a character vector of the texts in the corpus.
 #' 
 #' For \code{texts <-}, the corpus with the updated texts.
@@ -358,20 +329,42 @@ documents <- function(corp) {
 #' @examples
 #' texts(inaugCorpus)[1]
 #' sapply(texts(inaugCorpus), nchar)  # length in characters of the inaugual corpus texts
-#'
-#' ## this doesn't work yet - need to overload `[` for this replacement function
-#' # texts(inaugTexts)[55] <- "GW Bush's second inaugural address, the condensed version."
-texts <- function(corp) {
-    temp <- documents(corp)$texts
-    names(temp) <- rownames(documents(corp))
-    temp
+#' str(texts(ie2010Corpus, groups = "party"))
+texts <- function(x, ...) {
+    UseMethod("texts")
 }
 
+#' @rdname texts
+#' @param groups character vector containing the names of document variables for
+#'   aggregating documents
+#' @export
+texts.corpus <- function(x, groups = NULL, ...) {
+    texts <- documents(x)$texts
+    if (!is.null(groups)) {
+        if (length(groups) > 1) {
+            # if more than one grouping variable
+            group.split <- lapply(documents(x)[, groups], as.factor)
+        } else {
+            # if only one grouping variable
+            group.split <- as.factor(documents(x)[,groups])
+        }
+        texts <- split(texts, group.split)
+        texts <- sapply(texts, paste, collapse = " ")
+    } else {
+        names(texts) <- docnames(x)
+    }
+    return(texts)
+}
+
+
+# -- REMOVED
+# -- REMOVED - CORPUS TEXTS SHOULD NOT BE MODIFIED IN THIS WAY
+# -- REMOVED
 # replacement function for texts
 # warning about no data
-#' @param value character vector of the new texts
-#' @rdname texts
-#' @export
+# @param value character vector of the new texts
+# @rdname texts
+# @export
 "texts<-" <- function(corp, value) { #}, rownames=FALSE) {
     documents(corp)$texts <- value
     # if (rownames) rownames(documents(corp)) <- names(value) 
@@ -389,7 +382,7 @@ texts <- function(corp) {
 #'   
 #'   For \code{texts <-}, the corpus with the updated texts.
 #' @note Document-level meta-data names are preceded by an underscore character,
-#'   such as \code{_encoding}, but when named in in the \code{field} argument,
+#'   such as \code{_language}, but when named in in the \code{field} argument,
 #'   do \emph{not} need the underscore character.
 #' @export
 #' @examples
@@ -457,10 +450,17 @@ metadoc <- function(corp, field=NULL) {
 #' Get or set variables for the documents in a corpus
 #' @param x corpus whose document-level variables will be read or set
 #' @param field string containing the document-level variable name
+#' @param ... not used
 #' @return \code{docvars} returns a data.frame of the document-level variables
 #' @examples head(docvars(inaugCorpus))
 #' @export
-docvars <- function(x, field=NULL) {
+docvars <- function(x, ...) {
+    UseMethod("docvars")
+}
+
+#' @rdname docvars
+#' @export
+docvars.corpus <- function(x, field = NULL, ...) {
     docvarsIndex <- intersect(which(substr(names(documents(x)), 1, 1) != "_"),
                               which(names(documents(x)) != "texts"))
     if (length(docvarsIndex)==0)
@@ -477,6 +477,13 @@ docvars <- function(x, field=NULL) {
 #' @examples 
 #' docvars(inaugCorpus, "President") <- paste("prez", 1:ndoc(inaugCorpus), sep="")
 #' head(docvars(inaugCorpus))
+#' @export
+"docvars<-" <- function(x, field = NULL, value) {
+    UseMethod("docvars<-")
+}
+
+
+#' @rdname docvars
 #' @export
 "docvars<-" <- function(x, field=NULL, value) {
     if ("texts" %in% field) stop("You should use texts() instead to replace the corpus texts.")
@@ -558,9 +565,9 @@ docnames.corpus <- function(x) {
 
 #' get the number of documents or features
 #' 
-#' Returns the number of documents or features in a quanteda object.
+#' \code{ndoc} returns the number of documents or features in a quanteda object, which can be 
+#' a corpus, dfm, or tokenized texts.
 #' @param x a corpus or dfm object
-#' @param ... additional parameters
 #' @return an integer (count) of the number of documents or features in the corpus or dfm
 #' @export
 ndoc <- function(x) {
@@ -576,143 +583,109 @@ ndoc.corpus <- function(x) {
     nrow(x$documents)
 }
 
-#' get or set the language of corpus documents
-#' 
-#' Get or set the \code{_language} document-level metadata field in a corpus.
-#' @param corp a corpus object
-#' @param drop return as a vector if \code{TRUE}, otherwise return a \code{data.frame}
-#' @details This function modifies the \code{_language} value set by
-#'   \code{\link{metadoc}}.  It is a wrapper for \code{metadoc(corp, "language")}.
-#' @export
-language <- function(corp, drop=TRUE) {
-    if ("_language" %in% names(metadoc(corp))) {
-        result <- metadoc(corp, "language")
-        return(result[,1, drop=drop])
-    } else
-        return(rep(NULL, ndoc(corp)))
-}
-
-#' @rdname language
-#' @param value the new value for the language meta-data field, a string or
-#'   character vector equal in length to \code{ndoc(corp)}
-#' @export
-"language<-" <- function(corp, value){
-    metadoc(corp, "language") <- value
-    # corp$documents$"_language" <- value
-    corp
-}
-
-#' get the encoding of documents in a corpus
-#' 
-#' Get or set the \code{_encoding} document-level metadata field(s) in a corpus.
-#' @param x a corpus object
-#' @param drop  return as a vector if \code{TRUE}, otherwise return a \code{data.frame}
-#' @details This function modifies the \code{_encoding} value set by 
-#'   \code{\link{metadoc}}.  It is a wrapper for \code{metadoc(corp, "encoding")}.
-#'   
-#' @note This function differs from R's built-in \link{Encoding} function, which
-#'   only allows the four values of "latin1", "UTF-8", "bytes", and "unknown"
-#'   (and which assigns "unknown" to any text that contains only ASCII characters).
-#'   Legal values for encodings must be from \link{iconvlist}.  Note that encoding
-#'   does not convert or set encodings, it simply records a user declaration of a 
-#'   valid encoding.  (We hope to implement checking and conversion later.)
-#' @export
-encoding <- function(x, drop=TRUE) {
-    if ("_encoding" %in% names(metadoc(x))) {
-        result <- metadoc(x, "encoding") 
-        return(result[,1, drop=drop])
-    } else
-        return(rep(NULL, ndoc(x)))
-}
-
-#' @param value a character vector or scalar representing the new value of the encoding (see Note)
-#' @rdname encoding
-#' @export
-"encoding<-" <- function(x, value){
-    metadoc(x, "encoding") <- value
-    x
-}
-
-
-# # Corpus sampling
-# #
-# # Takes a random sample of the specified size from a corpus, with or without replacement
+# # get or set the language of corpus documents
 # # 
-# # @param corpus An existing corpus to be sampled
-# # @param size A positive number, the number of texts to return
-# # @param replace Should sampling be with replacement?
-# # @param prob Not implemented
+# # Get or set the \code{_language} document-level metadata field in a corpus.
+# # @param corp a corpus object
+# # @param drop return as a vector if \code{TRUE}, otherwise return a \code{data.frame}
+# # @details This function modifies the \code{_language} value set by
+# #   \code{\link{metadoc}}.  It is a wrapper for \code{metadoc(corp, "language")}.
 # # @export
-# # @examples
-# # data(inaugCorpus)
-# # inaugSamp <- sample(inaugCorpus, 200, replace=TRUE)
-# sample.corpus <- function(corpus, size=n, replace=FALSE, prob=NULL){
-#   if(!is.null(prob)) stop("prob argument is not implemented for corpus")
-#   atts <- corpus$docvars
-#   sampleInds <- sample(nrow(atts), size=size, replace=replace)
-#   newAtts <- atts[sampleInds,]
-#   newTexts <- newAtts[[1]]
-#   newAtts <- newAtts[2:length(newAtts)]
-#   newCorp <- corpusCreate(newTexts, newAtts)
-#   newCorp$metadata["created"] <- paste(newCorp$metadata["created"], "sampled from",
-#                                        corpus$metadata["source"], collapse= " ")
-#   return(newCorp)
+# language <- function(corp, drop=TRUE) {
+#     if ("_language" %in% names(metadoc(corp))) {
+#         result <- metadoc(corp, "language")
+#         return(result[,1, drop=drop])
+#     } else
+#         return(rep(NULL, ndoc(corp)))
+# }
+# 
+# # @rdname language
+# # @param value the new value for the language meta-data field, a string or
+# #   character vector equal in length to \code{ndoc(corp)}
+# # @export
+# "language<-" <- function(corp, value){
+#     metadoc(corp, "language") <- value
+#     # corp$documents$"_language" <- value
+#     corp
 # }
 
 
-corpus.subset.inner <- function(corpus, subsetExpr=NULL, selectExpr=NULL, drop=FALSE) {
-  # This is the "inner" function to be called by other functions
-  # to return a subset directly, use corpus.subset
-  
-  # The select argument exists only for the methods for data frames and matrices. 
-  # It works by first replacing column names in the selection expression with the 
-  # corresponding column numbers in the data frame and then using the resulting 
-  # integer vector to index the columns. This allows the use of the standard indexing 
-  # conventions so that for example ranges of columns can be specified easily, 
-  # or single columns can be dropped
-  # as in:
-  # subset(airquality, Temp > 80, select = c(Ozone, Temp))
-  # subset(airquality, Day == 1, select = -Temp)
-  # subset(airquality, select = Ozone:Wind)
-    if (is.null(subsetExpr)) 
-        rows <- TRUE
-    else {
-        rows <- eval(subsetExpr, documents(corpus), parent.frame())
-        if (!is.logical(rows)) 
-            stop("'subset' must evaluate to logical")
-        rows <- rows & !is.na(rows)
-    }
-    
-    if (is.null(selectExpr)) 
-        vars <- TRUE
-    else {
-        nl <- as.list(seq_along(documents(corpus)))
-        names(nl) <- names(documents(corpus))
-        vars <- c(1, eval(selectExpr, nl, parent.frame()))
-    }
-    # implement subset, select, and drop
-    # documents(corpus) <- documents(corpus)[rows, vars, drop=drop]
-    documents(corpus) <- corpus$documents[rows, vars, drop=drop]
-    return(corpus)
+
+#' @export
+#' @return A corpus object with number of documents equal to \code{size}, drawn 
+#'   from the corpus \code{x}.  The returned corpus object will contain all of 
+#'   the meta-data of the original corpus, and the same document variables for 
+#'   the documents selected.
+#' @seealso \code{\link{sample}}
+#' @rdname sample
+#' @examples
+#' # sampling from a corpus
+#' summary(sample(inaugCorpus, 5)) 
+#' summary(sample(inaugCorpus, 10, replace=TRUE))
+sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, ...) {
+    documents(x) <- documents(x)[sample(ndoc(x), size, replace, prob), ]
+    x
+}
+
+#' Randomly sample documents or features
+#' 
+#' Takes a random sample or documents or features of the specified size from a 
+#' corpus or document-feature matrix, with or without replacement
+#' 
+#' @param x a corpus or dfm object whose documents or features will be sampled
+#' @param size a positive number, the number of documents to select
+#' @param replace Should sampling be with replacement?
+#' @param prob A vector of probability weights for obtaining the elements of the
+#'   vector being sampled.
+#' @param ... required for defining methods that extend
+#'   \code{\link[base]{sample}}, which is not defined as a generic
+#'   method in the \pkg{base} package.
+#' @export
+sample <- function(x, size, replace = FALSE, prob = NULL, ...) {
+    UseMethod("sample")
+}
+
+#' @export
+#' @rdname sample
+sample.default <- function(x, size, replace = FALSE, prob = NULL, ...) {
+    base::sample(x, size, replace, prob)
 }
 
 
 #' extract a subset of a corpus
 #' 
-#' Works just like the normal subset command but for corpus objects
+#' Returns subsets of a corpus that meet certain conditions, including direct 
+#' logical operations on docvars (document-level variables).  Works just like
+#' the normal subset command but for corpus objects.
 #' 
 #' @param x corpus object to be subsetted.
-#' @param subset logical expression indicating elements or rows to keep: missing values are taken as false.
+#' @param subset logical expression indicating elements or rows to keep: missing
+#'   values are taken as false.
 #' @param select expression, indicating the attributes to select from the corpus
-#' @param ...  additional arguments affecting the summary produced
+#' @param ... not used
 #' @return corpus object
 #' @export
+#' @seealso \code{\link{select}}
 #' @examples
 #' summary(subset(inaugCorpus, Year>1980))
 #' summary(subset(inaugCorpus, Year>1930 & President=="Roosevelt", select=Year))
-subset.corpus <- function(x, subset=NULL, select=NULL, ...) {
-    tempcorp <- corpus.subset.inner(x, substitute(subset), substitute(select))
-    return(tempcorp)
+subset.corpus <- function(x, subset, select, ...) {
+    r <- if (missing(subset)) {
+        rep_len(TRUE, nrow(documents(x)))
+    } else {
+        e <- substitute(subset)
+        r <- eval(e, documents(x), parent.frame())
+        r & !is.na(r)
+    }
+    vars <- if (missing(select)) 
+        TRUE
+    else {
+        nl <- as.list(seq_along(documents(x)))
+        names(nl) <- names(documents(x))
+        c(1, eval(substitute(select), nl, parent.frame()))
+    }
+    documents(x) <- documents(x)[r, vars, drop = FALSE]
+    x
 }
 
 #' summarize a corpus or a vector of texts
@@ -739,7 +712,6 @@ subset.corpus <- function(x, subset=NULL, select=NULL, ...) {
 #' summary(mycorpus, showmeta=TRUE)  # show the meta-data
 #' mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
 #' mysummary$Types / mysummary$Tokens             # crude type-token ratio
-#' 
 summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
     
     cat("Corpus consisting of ", ndoc(object), " document",
@@ -747,13 +719,13 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
         ifelse(ndoc(object)<=n, "", 
                paste(", showing ", n, " document", ifelse(n>1, "s", ""), sep="")),
         ".\n", sep="")
-
+    
     #print(object)
     cat("\n")
     ### Turn off describeTexts until we can speed this up
     # dtexts <- describeTexts(texts(object), verbose=FALSE)
     outputdf <- data.frame(summary(texts(object)[1:min(c(n, ndoc(object)))], 
-                                         verbose=FALSE))
+                                   verbose=FALSE))
     if (!is.null(docvars(object)))
         outputdf <- cbind(outputdf, docvars(object)[1:min(c(n, ndoc(object))),, drop=FALSE])
     # if (detail) outputdf <- cbind(outputdf, metadoc(object))
@@ -761,9 +733,9 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
         outputdf[names(metadoc(object))] <- metadoc(object)[1:min(c(n, ndoc(object))),,drop=FALSE]
     if (verbose) {
         print(head(outputdf, n), row.names=FALSE)
-        cat("\nSource:  ", unlist(metacorpus(object, "source")), ".\n", sep="")
-        cat("Created: ",   unlist(metacorpus(object, "created")), ".\n", sep="")
-        cat("Notes:   ",   unlist(metacorpus(object, "notes")), ".\n\n", sep="")
+        cat("\nSource:  ", unlist(metacorpus(object, "source")), "\n", sep="")
+        cat("Created: ",   unlist(metacorpus(object, "created")), "\n", sep="")
+        cat("Notes:   ",   unlist(metacorpus(object, "notes")), "\n\n", sep="")
     }
     # invisibly pass the summary of the texts from describetexts()
     return(invisible(outputdf))
@@ -778,15 +750,15 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
 #' @param corp corpus whose document units will be reshaped
 #' @param to new documents units for the corpus to be recast in
 #' @param ... passes additional arguments to \code{\link{segment}}
-
+#' @return a corpus object with the documents defined as the new units
 #' @export
 #' @examples
 #' # simple example
-#' mycorpus <- corpus(c(textone="This is a sentence.  Another sentence.  Yet another.", 
-#'                      textwo="Premiere phrase.  Deuxieme phrase."), 
-#'                    docvars=list(country=c("UK", "USA"), year=c(1990, 2000)),
-#'                    notes="This is a simple example to show how changeunits() works.")
-#' language(mycorpus) <- c("english", "french")                   
+#' mycorpus <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
+#'                      textwo = "Premiere phrase.  Deuxieme phrase."), 
+#'                    docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
+#'                    notes = "This is a simple example to show how changeunits() works.")
+#' metadoc(mycorpus, "language") <- c("english", "french")                   
 #' summary(mycorpus)
 #' summary(changeunits(mycorpus, to="sentences"), showmeta=TRUE)
 #' 
@@ -819,11 +791,11 @@ changeunits <- function(corp, to=c("sentences", "paragraphs", "documents"), ...)
     # copy settings and corpus metadata
     newcorpus$settings <- corp$settings
     newcorpus$metadata <- corp$metadata
-
+    
     # modify settings flag for changeunits info
     settings(newcorpus, "unitsoriginal") <- settings(newcorpus, "units")
     settings(newcorpus, "units") <- to
-
+    
     newcorpus
 }
 
@@ -860,7 +832,7 @@ rep.data.frame <- function(x, ...)
         if (!identical(metacorpus(c1, field), metacorpus(c2, field)))
             metacorpus(c1, field) <- paste(metacorpus(c1, field), metacorpus(c2, field))
     }
-
+    
     # combine the documents info, after warning if not column-conforming
     if (!setequal(names(c1$documents), names(c2$documents)))
         warning("different document-level data found, filling missing values with NAs.", noBreaks.=TRUE)
@@ -869,7 +841,7 @@ rep.data.frame <- function(x, ...)
     
     # settings
     ### currently just use the c1 settings
-
+    
     return(c1)
 }
 
@@ -933,57 +905,127 @@ combineByName <- function(A, B, ...) {
 }
 
 
-#' count the number of tokens
+#' count the number of tokens or types
 #' 
-#' Return the count of tokens in a text, corpus, or dfm.  "tokens" here
-#' means all words, not unique words, and these are not cleaned
-#' prior to counting.
-#' @param x texts or corpus whose tokens will be counted
-#' @param block.size how many texts to process at a time; experimentation
-#' indicates that for bery large collections of texts, 200 seems fastest.  Not used for dfm objects.
-#' @param verbose if \code{TRUE} print progress indicator and time elapsed
+#' Return the count of tokens (total features) or types (unique features) in a
+#' text, corpus, or dfm.  "tokens" here means all words, not unique words, and
+#' these are not cleaned prior to counting.
+#' @param x texts or corpus whose tokens or types will be counted
+#' @param ... additional arguments passed to \code{\link{tokenize}}
 #' @note Due to differences between raw text tokens and features that have been 
-#' defined for a \link{dfm}, the counts be different for dfm objects and the texts 
-#' from which the dfm was generated.
-#' @return scalar count of the total tokens
+#'   defined for a \link{dfm}, the counts be different for dfm objects and the 
+#'   texts from which the dfm was generated.  Because the method tokenizes the 
+#'   text in order to count the tokens, your results will depend on the options 
+#'   passed through to \code{\link{tokenize}}
+#' @return scalar count of the total tokens or types
 #' @examples
-#' ntoken(inaugTexts[49:57], verbose=FALSE)
-#' ntoken(subset(inaugCorpus, Year>1980), verbose=FALSE)
-#' ntoken(dfm(subset(inaugCorpus, Year>1980), verbose=FALSE))
+#' # simple example
+#' txt <- c(text1 = "This is a sentence, this.", text2 = "A word. Repeated repeated.")
+#' ntoken(txt)
+#' ntype(txt)
+#' ntoken(toLower(txt))  # same
+#' ntype(toLower(txt))   # fewer types
+#' ntoken(toLower(txt), removePunct = TRUE)
+#' ntype(toLower(txt), removePunct = TRUE)
+#' 
+#' # with some real texts
+#' ntoken(subset(inaugCorpus, Year<1806, removePunct = TRUE))
+#' ntype(subset(inaugCorpus, Year<1806, removePunct = TRUE))
+#' ntoken(dfm(subset(inaugCorpus, Year<1800)))
+#' ntype(dfm(subset(inaugCorpus, Year<1800)))
 #' @export
-ntoken <- function(x, block.size=200, verbose=TRUE) {
+ntoken <- function(x, ...) {
     UseMethod("ntoken")
 }
 
 #' @rdname ntoken
 #' @export
-ntoken.corpus <- function(x, block.size=200, verbose=TRUE) {
-    ntoken(texts(x), block.size, verbose)
+ntype <- function(x, ...) {
+    UseMethod("ntype")
 }
 
 #' @rdname ntoken
 #' @export
-ntoken.character <- function(x, block.size=200, verbose=TRUE) {
-    startTime <- proc.time()
-    i <- 1
-    totWords <- 0
-    if (verbose) cat("Counting tokens (block size ", block.size, "):      ", sep="")
-    while (i < length(x)) {
-        pct <- i / length(x) * 100
-        if (verbose) cat("\b\b\b\b\b", formatC(round(pct), width=3), " %", sep="")
-        this.size <- ifelse(length(x) < i + block.size,
-                            length(x) - i,
-                            block.size - 1)
-        totWords <- totWords + length(unlist(tokenize(x[i:(i+this.size)], removePunct=FALSE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)))
-        i <- i + this.size + 1
-    }
-    if (verbose) cat("\b\b\b\b\b", formatC(100, width=3), " %", sep="")
-    if (verbose) cat(", elapsed time", round((proc.time() - startTime)[3], 2), "seconds.\n")
-    totWords
+ntoken.corpus <- function(x, ...) {
+    ntoken(texts(x), ...)
 }
 
 #' @rdname ntoken
 #' @export
-ntoken.dfm <- function(x, block.size=0, verbose=TRUE) {
-    sum(x)
+ntype.corpus <- function(x, ...) {
+    ntype(texts(x), ...)
+}
+
+
+#' @rdname ntoken
+#' @export
+ntoken.character <- function(x, ...) {
+    #if (removePunct(list(...))
+    #if ("removePunct" %in% list(...))
+    sapply(tokenize(x, ...), length)
+}
+
+#' @rdname ntoken
+#' @export
+ntype.character <- function(x, ...) {
+    #if (removePunct(list(...))
+    #if ("removePunct" %in% list(...))
+    sapply(lapply(tokenize(x, ...), unique), length)
+}
+
+
+#' @rdname ntoken
+#' @export
+ntoken.dfm <- function(x, ...) {
+    if (length(list(...)) > 0)
+        warning("additional arguments not used for ntoken.dfm()")
+    rowSums(x)
+}
+
+#' @rdname ntoken
+#' @export
+ntype.dfm <- function(x, ...) {
+    if (length(list(...)) > 0)
+        warning("additional arguments not used for ntoken.dfm()")
+    # apply(x, 1, function(dfmrow) sum(dfmrow > 0))
+    tmp <- sparseMatrix(i = x@i, p = x@p, x = x@x > 0, index1 = FALSE, dims = x@Dim)
+    tmp <- rowSums(tmp)
+    names(tmp) <- docnames(x)
+    tmp
+}
+
+
+#' count the number of sentences
+#' 
+#' Return the count of sentences in a corpus or character.
+#' @param x texts or corpus whose sentences will be counted
+#' @param ... additional arguments passed to \code{\link{tokenize}}
+#' @note `nsentence()` relies on the boundaries definitions in the \pkg{stringi}
+#'   package (see \link[stringi]{stri_opts_brkiter}).  It does not count
+#'   sentences correctly if the text has been transformed to lower case, and for
+#'   this reason `nsentence()` will stop with an error if it detects all
+#'   lower-cased text.
+#' @return scalar count(s) of the total sentences per text
+#' @examples
+#' # simple example
+#' txt <- c(text1 = "This is a sentence: second part of first sentence.",
+#'          text2 = "A word. Repeated repeated.")
+#' nsentence(txt)
+#' @export
+nsentence <- function(x, ...) {
+    UseMethod("nsentence")
+}
+
+#' @rdname nsentence
+#' @export
+nsentence.character <- function(x, ...) {
+    if (!any(stringi::stri_detect_charclass(x, "[A-Z]")))
+        stop("nsentence() does not correctly count sentences in all lower-cased text")
+    lengths(tokenize(x, what = "sentence", ...))
+}
+
+#' @rdname nsentence
+#' @export
+nsentence.corpus <- function(x, ...) {
+    nsentence(texts(x), ...)
 }

@@ -138,8 +138,8 @@ textmodel_wordscores <- function(data, scores,
 #'   called (for instance, how many rescaled scores, and whether standard errors
 #'   were requested.)  (Note: We may very well change this soon so that it is a 
 #'   list similar to other existing fitted objects.)
-#' @author Ken Benoit
 #' @export
+#' @importFrom stats qnorm median sd
 predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling = "none", 
                                level=0.95, verbose=TRUE, ...) {    
     if (length(list(...))>0) 
@@ -174,7 +174,7 @@ predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling 
     for (i in 1:length(textscore_raw_se))
         textscore_raw_se[i] <- sqrt(sum(Fwv[i, , drop=FALSE] * (textscore_raw[i] - Sw)^2)) / sqrt(rowSums(scorable.newd)[i])
     
-    z <- qnorm(1 - (1-level)/2)
+    z <- stats::qnorm(1 - (1-level)/2)
     
     result <- data.frame(textscore_raw,
                          textscore_raw_se,
@@ -195,9 +195,9 @@ predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling 
     } 
     
     if ("lbg" %in% rescaling) {
-        SDr <- sd(object@y, na.rm=TRUE)
+        SDr <- stats::sd(object@y, na.rm=TRUE)
         Sv <- mean(textscore_raw, na.rm=TRUE)
-        SDv <- ifelse(length(textscore_raw)<2, 0, sd(textscore_raw))
+        SDv <- ifelse(length(textscore_raw)<2, 0, stats::sd(textscore_raw))
         mult <- ifelse(SDv==0, 0, SDr/SDv)
         textscore_lbg <- (textscore_raw - Sv) * mult + Sv
         # borrowed the next few lines from https://github.com/conjugateprior/austin
@@ -273,7 +273,7 @@ summary.textmodel_wordscores_fitted <- function(object, ...) {
                      Min=apply(object@x, 1, min),
                      Max=apply(object@x, 1, max),
                      Mean=apply(object@x, 1, mean),
-                     Median=apply(object@x, 1, median))
+                     Median=apply(object@x, 1, stats::median))
     rownames(dd) <- docnames(object@x)
     print(dd, ...)
     invisible(dd)

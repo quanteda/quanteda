@@ -27,7 +27,7 @@ language and corpus.
 }
 \note{
 Document-level meta-data names are preceded by an underscore character,
-  such as \code{_encoding}, but when named in in the \code{field} argument,
+  such as \code{_language}, but when named in in the \code{field} argument,
   do \emph{not} need the underscore character.
 }
 \examples{

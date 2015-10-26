@@ -33,12 +33,15 @@
 #' @docType class
 #' @name dfm-class
 setClass("dfm",
-         slots = c(settings = "list", weighting = "character", smooth = "numeric"),
+         slots = c(settings = "list", weighting = "character", smooth = "numeric",
+                   ngrams = "integer", concatenator = "character"),
          prototype = list(settings = list(NULL),
                           Dim = integer(2), 
                           Dimnames = list(docs=NULL, features=NULL),
                           weighting = "frequency", 
-                          smooth = 0),
+                          smooth = 0,
+                          ngrams = 1L,
+                          concatenator = ""),
          contains = "Matrix")
 
 #' @rdname dfm-class
@@ -81,44 +84,114 @@ setClass("dfmDense",
 #' @name print.dfm
 NULL
 
-#' @param x the dfm to be printed
-#' @param show.values print the dfm as a matrix or array (if resampled).
-#' @param show.settings Print the settings used to create the dfm.  See
-#'   \link{settings}.
-#' @param ... further arguments passed to or from other methods
-#' @export 
+#' Return the first or last part of a dfm
+#' 
+#' For a \link{dfm-class} object, returns the first or last \code{n} documents
+#' and first \code{ncol} features for inspection.
+#' @export
+#' @method head dfm
+#' @param x a dfm object
+#' @param n a single integer.  If positive, size for the resulting object: 
+#'   number of first/last documents for the dfm. If negative, all but the n
+#'   last/first number of documents of x.
+#' @param nfeature the number of features to return, where the resulting object
+#'   will contain the first \code{ncol} features
+#' @param ... arguments to be passed to or from other methods.
+#' @return A \link{dfm-class} class object corresponding to the subset defined
+#'   by \code{n} and \code{ncol}.
+#' @examples
+#' myDfm <- dfm(inaugCorpus, ngrams = 2, verbose = FALSE)
+#' head(myDfm)
+#' tail(myDfm)
+#' tail(myDfm, nfeature = 4)
+head.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
+    print(x, show.values = FALSE)
+    cat("(showing first", min(ndoc(x), n), "documents and first", min(nfeature, nfeature(x)), "features)\n")
+    #print(as.matrix(x[1:min(ndoc(x), n), 1:min(nfeature(x), nfeature)])) #, show.summary = FALSE, ndoc = n, nfeature = nfeature)
+    print(head(as.matrix(x[, 1:min(nfeature(x), nfeature)]), n))
+    return(invisible(x[1:min(ndoc(x), n), 1:min(nfeature(x), nfeature)]))
+}
+
+#' @export
+#' @method tail dfm
+#' @rdname head.dfm
+#' @return A \link{dfm-class} class object corresponding to the subset
+#'   defined by \code{n} and \code{ncol}.
+tail.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
+    print(x, show.values = FALSE)
+    cat("(showing last", min(ndoc(x), n), "documents and first", min(nfeature, nfeature(x)), "features)\n")
+    print(tail(as.matrix(x[, 1:min(nfeature(x), nfeature)]), n))
+    return(invisible(x[max(ndoc(x) - n + 1, 1) : ndoc(x), 1:min(nfeature(x), nfeature)]))
+}
+
+#' @export
 #' @rdname print.dfm
-setMethod("print", signature(x = "dfmSparse"), 
-          function(x, show.values=FALSE, show.settings=FALSE, ...) {
-              cat("Document-feature matrix of: ",
-                  ndoc(x), " document",
-                  ifelse(ndoc(x)>1, "s, ", ", "),
-                  dim(x)[2], " feature",
-                  ifelse(dim(x)[2]>1, "s", ""),
-                  ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
-                  ".\n", sep="")
+setMethod("print", signature(x = "dfm"), 
+          function(x, show.values=FALSE, show.settings=FALSE, show.summary = TRUE, ndoc = 20L, nfeature = 20L, ...) {
+              if (show.summary) {
+                  cat("Document-feature matrix of: ",
+                      format(ndoc(x), , big.mark=","), " document",
+                      ifelse(ndoc(x)>1 | ndoc(x)==0, "s, ", ", "),
+                      format(nfeature(x), big.mark=","), " feature",
+                      ifelse(nfeature(x)>1 | nfeature(x)==0, "s", ""),
+                      ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
+                      ".\n", sep="")
+              }
               if (show.settings) {
                   cat("Settings: TO BE IMPLEMENTED.")
               }
-              if (show.values | (nrow(x)<=20 & ncol(x)<=20)) {
-                  Matrix::printSpMatrix2(x, col.names=TRUE, zero.print=0, ...)
+              if (show.values | (nrow(x)<=ndoc & ncol(x)<=nfeature)) {
+                  Matrix::printSpMatrix2(x[1:min(ndoc, ndoc(x)), 1:min(nfeature, nfeature(x))], 
+                                         col.names=TRUE, zero.print=0, ...)
+              }
+          })
+
+#' @param x the dfm to be printed
+#' @param show.values print the dfm as a matrix or array (if resampled).
+#' @param show.settings print the settings used to create the dfm.  See 
+#'   \link{settings}.
+#' @param show.summary print a brief summary indicating the number of documents and features
+#' @param ndoc max number of documents to print
+#' @param nfeature max number of features to print
+#' @param ... further arguments passed to or from other methods
+#' @export
+#' @rdname print.dfm
+setMethod("print", signature(x = "dfmSparse"), 
+          function(x, show.values=FALSE, show.settings=FALSE, show.summary = TRUE, ndoc = 20L, nfeature = 20L, ...) {
+              if (show.summary) {
+                  cat("Document-feature matrix of: ",
+                      format(ndoc(x), , big.mark=","), " document",
+                      ifelse(ndoc(x)>1 | ndoc(x)==0, "s, ", ", "),
+                      format(nfeature(x), big.mark=","), " feature",
+                      ifelse(nfeature(x)>1 | nfeature(x)==0, "s", ""),
+                      ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
+                      ".\n", sep="")
+              }
+              if (show.settings) {
+                  cat("Settings: TO BE IMPLEMENTED.")
+              }
+              if (show.values | (nrow(x) <= ndoc & ncol(x) <= nfeature)) {
+                  Matrix::printSpMatrix2(x[1:min(ndoc, ndoc(x)), 1:min(nfeature, nfeature(x))], 
+                                         col.names=TRUE, zero.print=0, ...)
               }
           })
 
 #' @rdname print.dfm
 setMethod("print", signature(x = "dfmDense"), 
-          function(x, show.values=FALSE, show.settings=FALSE, ...) {
-              cat("Document-feature matrix of: ",
-                  ndoc(x), " document",
-                  ifelse(ndoc(x)>1, "s, ", ", "),
-                  dim(x)[2], " feature",
-                  ifelse(dim(x)[2]>1, "s", ""),
-                  ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
-                  ".\n", sep="")
+          function(x, show.values=FALSE, show.settings=FALSE, show.summary = TRUE, ndoc = 20L, nfeature = 20L, ...) {
+              if (show.summary) {
+                  cat("Document-feature matrix of: ",
+                      format(ndoc(x), , big.mark=","), " document",
+                      ifelse(ndoc(x)>1 | ndoc(x)==0, "s, ", ", "),
+                      format(nfeature(x), big.mark=","), " feature",
+                      ifelse(nfeature(x)>1 | nfeature(x)==0, "s", ""),
+                      ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
+                      ".\n", sep="")
+              }
               if (show.settings) {
                   cat("Settings: TO BE IMPLEMENTED.")
               }
-              if (show.values | (nrow(x)<=20 & ncol(x)<=20)) {
+              if (show.values | (nrow(x)<=ndoc & ncol(x)<=nfeature)) {
                   getMethod("show", "denseMatrix")(x, ...)
               }
           })
@@ -132,23 +205,25 @@ setMethod("show", signature(object = "dfmDense"), function(object) print(object)
 
 #' @method print dfm
 #' @rdname print.dfm
-print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, ...) {
-    cat("Document-feature matrix of: ",
-        ndoc(x), " document",
-        ifelse(ndoc(x)>1, "s, ", ", "),
-        dim(x)[2], " feature",
-        ifelse(dim(x)[2]>1, "s", ""), ".\n", sep="")
+print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, show.summary = TRUE, ndoc = 20L, nfeature = 20L, ...) {
+    if (show.summary) {
+        cat("Document-feature matrix of: ",
+            ndoc(x), " document",
+            ifelse(ndoc(x)>1, "s, ", ", "),
+            dim(x)[2], " feature",
+            ifelse(dim(x)[2]>1, "s", ""), ".\n", sep="")
+    }
     cat(ndoc(x), "x", nfeature(x), "dense matrix of (S3) class \"dfm\"\n")
     #    ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
     
     if (show.settings) {
         cat("Settings: TO BE IMPLEMENTED.")
     }
-    if (show.values | (nrow(x)<=20 & ncol(x)<=20)) {
+    if (show.values | (nrow(x)<=ndoc & ncol(x)<=nfeature)) {
         class(x) <- class(x)[2]
         attr(x, "settings") <- NULL
         attr(x, "weighting") <- NULL
-        print(x)
+        print(x[1:ndoc, 1:nfeature])
     }
 }
 

@@ -1,7 +1,182 @@
-quanteda 0.7.4
+quanteda 0.8.7
 ==============
+
+*  tokenize() has a new argument, removeHyphens, that controls the treatment of intra-word hyphens.
+
+Bug Fixes
+---------
+*  corrected inaccurate printing of valuetype in verbose note of selectFeatures.dfm().  (Did not affect functionality.)
+
+quanteda 0.8.6
+==============
+
+*  removeFeatures.dfm(x, stopwords), selectFeatures.dfm(x, features), and dfm(x, ignoredFeatures) now work on objects created with ngrams.  (Any ngram containing a stopword is removed.)  Performance on these functions is already good but will be improved further soon.
+
+*  selectFeatures(x, features = <anotherdfm>) is now possible, to produce a selection of features from x identical to those in <dfm>.  Not only are only features kept in x that are in <anotherdfm>, but also fatures in <anotherdfm> not in x are added to x as padded zero counts.  This functionality can also be accessed via dfm(x, keptFeatures = <anotherdfm>).  This is useful when new data used in a test set needs to have identical features as a training set dfm constructed at an earlier stage.
+
+*  head.dfm() and tail.dfm() methods added.
+
+*  kwic() has new formals and new functionality, including a completely flexible set of matching for phrases, as well as control over how the texts and matching keyword(s) are tokenized.
+
+*  segment(x, what = "sentence"), and changeunits(x, to = "sentences") now uses tokenize(x, what = "sentence").  Annoying warning messages now gone.
+
+*  smoother() and weight() formal "smooth" now changed to "smoothing" to avoid clashes with stats::smooth().
+
+*  Updated `corpus.VCorpus()` to work with recent updates to the **tm** package.
+
+*  added print method for tokenizedTexts
+
+Bug fixes
+---------
+
+*  fixed signature error message caused by `weight(x, "relFreq")` and `weight(x, "tfidf")`.  Both now correctly produce objects of class dfmSparse.
+
+*  fixed bug in dfm(, keptFeatures = "whatever") that passed it through as a glob rather than a regex to selectFeatures().  Now takes a regex, as per the manual description.
+
+*  fixed textfeatures() for type json, where now it can call jsonlite::fromJSON() on a file directly.
+
+*  dictionary(x, format = "LIWC") now expanded to 25 categories by default, and handles entries that are listed on multiple lines in .dic files, such as those distributed with the LIWC.
+
+quanteda 0.8.4
+==============
+
+*  ngrams() rewritten to accept fully vectorized arguments for `n` and for `window`, thus implementing "skip-grams".
+   Separate function skipgrams() behaves in the standard "skipgram" fashion.
+   bigrams(), deprecated since 0.7, has been removed from the namespace.
+
+*  corpus() no longer checks all documents for text encoding; rather, this is now based on a random sample of max()
+
+*  wordstem.dfm() both faster and more robust when working with large objects.
+
+*  toLower.NULL() now allows toLower() to work on texts with no words (returns NULL for NULL input)
+
+*  textfile() now works on zip archives of *.txt files, although this may not be entirely portable.
+
+
+Bug fixes
+---------
+
+*  fixed bug in selectFeatures() / removeFeatures() that returned zero features if no features were found matching removal pattern
+
+*  corpus() previously removed document names, now fixed
+
+*  non-portable \donttest{} examples now removed completely from all documentation
+
+
+quanteda 0.8.2
+==============
+
+*  0.8.2-1: Changed R version dependency to 3.2.0 so that Mac binary would build on CRAN.
+
+*  0.8.2-1: `sample.corpus()` now samples documents from a corpus, and `sample.dfm()` samples documents 
+   or features from a dfm.  `trim()` method for with `nsample` argument now calls `sample.dfm()`.
+
+* `sample.corpus()` now samples documents from a corpus, and `sample.dfm()` samples documents 
+   or features from a dfm.  `trim()` method for with `nsample` argument now calls `sample.dfm()`.
+
+* tokenize improvements for what = "sentence": more robust to specifying options, and does not split
+  sentences after common abbreviations such as "Dr.", "Prof.", etc.
+  
+* corpus() no longer automatically converts encodings detected as non-UTF-8, as this detection is too imprecise.
+
+* new function `scrabble()` computes English Scrabble word values for any text, applying any summary numerical function.
+
+* dfm() now 2x faster, replacing previous data.table matching with direct construction of sparse matrix from match().  
+  Code is also much simpler, based on using three new functions that are also available directly:
+
+    * new "dfm" method for removeFeatures()  
+    * new "dfm" method: selectFeatures() that is now how features can be added or removed from a dfm, based on vectors of regular expressions, globs, or fixed matching  
+    * new "dfm" method: applyDictionary() that can replace features through matching with values in key-value lists from a dictionary class objects, based on vectors of regular expressions, globs, or fixed matching for dictionary values.  All functionality for applying dictionaries now takes place through applyDictionary().
+
+
+Bug Fixes
+---------
+* fixed the problem that document names were getting erased in corpus() because stringi functions
+  were removing them
+* fixed problem in tokenize(x, "character", removePunct = TRUE) that deleted texts that had no punctuation to begin with
+* fixed problem in dictionary(, format = "LIWC") causing import to fail for some LIWC dictionaries.
+* fixed problem in tokenize(x, ngrams = N) where N > length(x).  Now returns NULL instead of an erroneously tokenized set of ngrams.
+* Fixed a bug in `subset.corpus()` related to environments that sometimes caused the method to break if
+  nested in function environments.
+
+Deletions
+---------
+* clean() is no more.
+
+API changes
+-----------
+* addto option removed from dfm()
+
+Imminent Changes
+----------------
+* change behaviour of `ignoredFeatures` and `removeFeatures()` applied to ngrams; change behaviour of stem = TRUE applied to ngrams (in `dfm()`)
+* create ngrams.tokenizedTexts() method, replacing current ngrams(), bigrams()
+
+
+quanteda 0.8.0
+==============
+
+Syntax changes and workflow streamlining
+----------------------------------------
+The workflow is now more logical and more streamlined, with a new workflow vignette
+as well as a design vignette explaining the principles behind the workflow and the
+commands that encourage this workflow.  The document also details the development
+plans and things remaining to be done on the project.
+
+Encoding detection and conversion
+---------------------------------
+Newly rewritten command encoding() detects encoding for character, corpus, and corpusSource objects
+(created by textfile).  When creating a corpus using corpus(), detection is automatic to UTF-8 if
+an encoding other than UTF-8, ASCII, or ISO-8859-1 is detected.
+
+Major infrastructural changes
+-----------------------------
+The tokenization, cleaning, lower-casing, and dfm construction functions now use the `stringi` package, based on the ICU library.  This results not only in substantial speed improvements,
+but also more correctly handles Unicode characters and strings.
+
 * tokenize() and clean() now using stringi, resulting in much faster 
   performance and more consistent behaviour across platforms.
+
+* tokenize() now works on sentences
+
+* summary.corpus() and summary.character() now use the new tokenization functions
+  for counting tokens
+
+* dfm(x, dictionary = mydict) now uses stringi and is both more reliable and
+  many many times faster.
+  
+* phrasetotoken() now using stringi.
+
+* removeFeatures() now using stringi and fixed binary matches on tokenized texts
+
+Other changes
+-------------
+* textfile has a new option, cache = FALSE, for not writing the data to a temporary file, but rather
+  storing the object in memory if that is preferred.
+  
+* language() is removed.  (See Encoding... section  above for changes to encoding().)
+
+* new object encodedTexts contains some encoded character objects for testing.
+
+* ie2010Corpus now has UTF-8 encoded texts (previously was unicode escaped for non-ASCII characters)
+
+* texts() and docvars() methods added for corpusSource objects.
+
+* new methods for `tokenizedTexts` objects: `dfm()`, `removeFeatures()`, and `syllables()`
+
+* `syllables()` is now much faster, using matching through `stringi` and merging using `data.table`.
+
+* added `readability()` to compute (fast!) readability indexes on a text or corpus
+
+* tokenize() now creates ngrams of any length, with two new arguments: `ngrams =` <integer vector> and 
+  `concatenator = "_"`.  The new arguments to `tokenize()` can be passed through from `dfm()`.
+
+Bug fixes
+---------
+* fixed a problem in `textfile()` causing it to fail on Windows machines when loading `*.txt`
+
+* nsentence() was not counting sentences correctly if the text was lower-cased - now issues an 
+  error if no upper-case characters are detected.  This was also causing readability() to fail.
 
 quanteda 0.7.3
 ==============

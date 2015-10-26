@@ -29,7 +29,7 @@ paragraphs, and other.  Segmenting on \code{other} allows segmentation of a
 text on any user-defined value, and must be accompanied by the
 \code{delimiter} argument.}
 
-\item{delimiter}{delimiter defined as a \link{regex} for segmentation. Each
+\item{delimiter}{delimiter defined as a \code{\link{regex}} for segmentation. Each
 type has its own default, except \code{other}, which requires a value to be
 specified.}
 
@@ -45,14 +45,14 @@ Segment text(s) into tokens, sentences, paragraphs, or other sections.
 delimiters to be defined.  See details.
 }
 \details{
-Tokens are delimited by whitespace.  For sentences, the delimiter
+Tokens are delimited by Separators.  For sentences, the delimiter
   can be defined by the user.  The default for sentences includes \code{.},
   \code{!}, \code{?}, plus \code{;} and \code{:}.
 
   For paragraphs, the default is two carriage returns, although this could be
   changed to a single carriage return by changing the value of
  \code{delimiter} to \code{"\\\n{1}"} which is the R version of the
-  \link{regex} for one newline character.  (You might
+  \code{\link{regex}} for one newline character.  (You might
   need this if the document was created in a word processor, for instance,
   and the lines were wrapped in the window rather than being hard-wrapped
   with a newline character.)

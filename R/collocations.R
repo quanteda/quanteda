@@ -1,56 +1,64 @@
-#' @include dictionaryFunctions.R
+#' @include dictionaries.R
 NULL
 
 #' Detect collocations from text
 #' 
-#' Detects collocations (currently, bigrams and trigrams) from texts or a corpus, returning a
-#' data.frame of collocations and their scores, sorted in descending order of the association
-#' measure.  Words separated by punctuation delimiters \code{.,!?;:(){}[]} are not counted as adjacent
-#' and hence are not eligible to be collocations.
+#' Detects collocations (currently, bigrams and trigrams) from texts or a
+#' corpus, returning a data.frame of collocations and their scores, sorted in
+#' descending order of the association measure.  Words separated by punctuation
+#' delimiters are not counted as adjacent and hence are not eligible to be
+#' collocations.
 #' @param x a text, a character vector of texts, or a corpus
-#' @param method association measure for detecting collocations.  Let \eqn{i} index documents, and
-#' \eqn{j} index features, \eqn{n_{ij}} refers to observed counts, 
-#' and \eqn{m_{ij}} the expected counts in a collocations frequency table of dimensions \eqn{(J - size + 1)^2}.  
-#' Available measures are computed as:
-#'   \describe{ 
-#'   \item{\code{"lr"}}{The likelihood ratio statistic \eqn{G^2}, computed as:
-#'          \deqn{2 * \sum_i \sum_j ( n_{ij} * log \frac{n_{ij}}{m_{ij}} )}
-#'      }
-#'   \item{\code{"chi2"}}{Pearson's \eqn{\chi^2} statistic, computed as:
-#'          \deqn{\sum_i \sum_j \frac{(n_{ij} - m_{ij})^2}{m_{ij}}}
-#'      }
-#'   \item{\code{"pmi"}}{point-wise mutual information score, computed as log \eqn{n_{11}/m_{11}}}
-#'   \item{\code{"dice"}}{the Dice coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
-#'   \item{\code{"all"}}{returns all of the above}
-#'   }
-#' @details Because of incompatibilities with the join operations in \link{data.table} 
-#' when input files have slightly different encoding settings, \code{collocations} currently 
-#' converts all text to ASCII prior to processing.  We hope to improve on this in the 
-#' future.
-#' @param size length of the collocation.  Only bigram (\code{n=2}) and trigram (\code{n=3}) 
-#' collocations are implemented so far.  Can be \code{c(2,3)} (or \code{2:3}) to return
-#' both bi- and tri-gram collocations.
-#' @param n the number of collocations to return, sorted in descending order
-#'   of the requested statistic, or \eqn{G^2} if none is specified.
-#' @param ... additional parameters passed to \link{clean}
+#' @param method association measure for detecting collocations.  Let \eqn{i}
+#'   index documents, and \eqn{j} index features, \eqn{n_{ij}} refers to
+#'   observed counts, and \eqn{m_{ij}} the expected counts in a collocations
+#'   frequency table of dimensions \eqn{(J - size + 1)^2}. Available measures
+#'   are computed as: \describe{ \item{\code{"lr"}}{The likelihood ratio
+#'   statistic \eqn{G^2}, computed as: \deqn{2 * \sum_i \sum_j ( n_{ij} * log
+#'   \frac{n_{ij}}{m_{ij}} )} } \item{\code{"chi2"}}{Pearson's \eqn{\chi^2}
+#'   statistic, computed as: \deqn{\sum_i \sum_j \frac{(n_{ij} -
+#'   m_{ij})^2}{m_{ij}}} } \item{\code{"pmi"}}{point-wise mutual information
+#'   score, computed as log \eqn{n_{11}/m_{11}}} \item{\code{"dice"}}{the Dice
+#'   coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}} 
+#'   \item{\code{"all"}}{returns all of the above} }
+#' @details Because of incompatibilities with the join operations in
+#'   \link{data.table} when input files have slightly different encoding
+#'   settings, \code{collocations} currently converts all text to ASCII prior to
+#'   processing.  We hope to improve on this in the future.
+#' @param size length of the collocation.  Only bigram (\code{n=2}) and trigram
+#'   (\code{n=3}) collocations are implemented so far.  Can be \code{c(2,3)} (or
+#'   \code{2:3}) to return both bi- and tri-gram collocations.
+#' @param n the number of collocations to return, sorted in descending order of
+#'   the requested statistic, or \eqn{G^2} if none is specified.
+#' @param ... additional parameters passed to \code{\link{tokenize}}.  If wanted
+#'   to include collocations separated by punctuation, then you can use this to
+#'   send \code{removePunct = TRUE} to \code{\link{tokenize}}.
 #' @return A data.table of collocations, their frequencies, and the computed 
 #'   association measure(s).
 #' @export
 #' @import data.table
-#' @references McInnes, B T. 2004. "Extending the Log Likelihood Measure to Improve Collocation Identification."  M.Sc. Thesis, University of Minnesota.
-#' @seealso \link{bigrams}, \link{ngrams}
+#' @references McInnes, B T. 2004. "Extending the Log Likelihood Measure to
+#'   Improve Collocation Identification."  M.Sc. Thesis, University of
+#'   Minnesota.
+#' @seealso \link{ngrams}
 #' @author Kenneth Benoit
 #' @examples
+#' txt <- c("This is software testing: looking for (word) pairs!  
+#'          This [is] a software testing again. For.",
+#'          "Here: this is more Software Testing, looking again for word pairs.")
+#' collocations(txt)
+#' collocations(txt, removePunct = TRUE)
+#' collocations(txt, size=2:3)
+#' removeFeatures(collocations(txt, size=2:3), stopwords("english"))
+#' 
+#' collocations("@@textasdata We really, really love the #quanteda package - thanks!!")
+#' collocations("@@textasdata We really, really love the #quanteda package - thanks!!",
+#'               removeTwitter = TRUE)
+#' 
 #' collocations(inaugTexts[49:57], n=10)
 #' collocations(inaugTexts[49:57], method="all", n=10)
 #' collocations(inaugTexts[49:57], method="chi2", size=3, n=10)
 #' collocations(subset(inaugCorpus, Year>1980), method="pmi", size=3, n=10)
-#' txt <- c("This is software testing: looking for (word) pairs!  
-#'          This [is] a software testing again. For.",
-#'          "Here: is a software testing, looking again for word pairs.")
-#' collocations(txt)
-#' collocations(txt, size=2:3)
-#' removeFeatures(collocations(txt, size=2:3), stopwords("english"))
 collocations <- function(x, ...) {
     UseMethod("collocations")
 }
@@ -101,13 +109,7 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     method <- match.arg(method)
     if (size != 2) stop("Only bigrams (n=2) implemented so far.")
     
-    # to prevent warning messages during CHECK
-    #w1 <- w2 <- count <- w1w2n <- w1w2Exp <- w1notw2Exp <- notw1w2 <- notw1w2Exp <- NULL
-    #notw1notw2 <- notw1notw2Exp <- NULL
-    
-    #text <- clean(x, removePunct=FALSE, ...)
-    #t <- unlist(tokenizeOnlyCppKB(text), use.names=FALSE)
-    t <- tokenize(x, simplify=TRUE, removePunct=FALSE)
+    t <- tokenize(toLower(x), simplify=TRUE, ...)
     
     # create a data.table of all adjacent bigrams
     wordpairs <- data.table(w1 = t[1:(length(t)-1)], 
@@ -115,20 +117,8 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
                             count = 1)
     
     # eliminate non-adjacent words (where a blank is in a pair)
-    #if (tagset=="none" | tagset=="google") {
-        wordpairs[, containsPunct := grepl(wFIRSTGREP, w1) | grepl(wLASTGREP, w2)]
-    #} else if (tagset=="penn") {
-    #    wordpairs[, containsPunct := grepl(wFIRSTGREPpenn, w1) | grepl(wLASTGREPpenn, w2)]
-    #}
-    wordpairs <- wordpairs[containsPunct==FALSE]
+    wordpairs <- wordpairs[!(stri_detect_regex(w1, "^[:punct:]$") | stri_detect_regex(w2, "^[:punct:]$"))]
 
-    # then remove any remaining punctuation
-    wordpairs[, w1 := clean(w1, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
-    wordpairs[, w2 := clean(w2, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
-    
-    # eliminate any pair with a word cleaned to the null string
-    wordpairs <- wordpairs[w1 != "" & w2 != ""]
-    
     # set the data.table sort key
     setkey(wordpairs, w1, w2)
     
@@ -152,8 +142,10 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     }
     
     setkey(wordpairsTable, w1)
-    suppressWarnings(allTable <- wordpairsTable[w1Table])
+    # suppressWarnings(allTable <- wordpairsTable[w1Table])
     # otherwise gives an encoding warning
+    allTable <- wordpairsTable[w1Table]
+    
     rm(w1Table)
     
     # tabulate all w2 counts
@@ -169,8 +161,9 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     }
     
     setkey(allTable, w2)
-    suppressWarnings(allTable2 <- allTable[w2Table])
+    # suppressWarnings(allTable2 <- allTable[w2Table])
     # otherwise gives an encoding warning
+    allTable2 <- allTable[w2Table]
     rm(w2Table)
     rm(allTable)
     
@@ -264,16 +257,13 @@ collocations.corpus <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"),
 }
 
 
-
 collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=3, n=NULL, ...) {
     method <- match.arg(method)
     
     # to not issue the check warnings:
     w1 <- w2 <- w3 <- c123 <- c12 <- c13 <- c1 <- c23 <- c2 <- c3 <- X2 <- G2 <- count <- NULL
     
-    #text <- clean(x, removePunct=FALSE, ...)
-    #t <- unlist(tokenizeOnlyCppKB(text), use.names=FALSE)
-    t <- tokenize(x, simplify=TRUE, removePunct=FALSE)
+    t <- tokenize(toLower(x), simplify=TRUE, ...)
     
     # create a data.table of all adjacent bigrams
     wordpairs <- data.table(w1 = t[1:(length(t)-2)], 
@@ -281,20 +271,11 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
                             w3 = t[3:(length(t))],
                             count = 1)
     
-    # eliminate non-adjacent words (where a blank is in a pair)
-    wordpairs[, containsPunct := grepl(wFIRSTGREP, w1) | grepl(wMIDDLEGREP, w2) | grepl(wLASTGREP, w3)]
-    wordpairs <- wordpairs[containsPunct==FALSE]
-    # then remove any remaining punctuation
-    wordpairs[, w1 := clean(w1, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
-    wordpairs[, w2 := clean(w2, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
-    wordpairs[, w3 := clean(w3, removePunct=TRUE, removeDigits=FALSE, toLower=FALSE, removeURL=FALSE)]
-    #wordpairs[, w1 := gsub("[[:punct:]]", "", w1)]
-    #wordpairs[, w2 := gsub("[[:punct:]]", "", w2)]
-    #wordpairs[, w3 := gsub("[[:punct:]]", "", w3)]    
-    
-    # eliminate non-adjacent words (where a blank is in a triplet)
-    wordpairs <- wordpairs[w1!="" & w2!="" & w3!=""]
-    
+    # eliminate non-adjacent words
+    wordpairs <- wordpairs[!(stri_detect_regex(w1, "^[:punct:]$") | 
+                             stri_detect_regex(w2, "^[:punct:]$") |
+                             stri_detect_regex(w3, "^[:punct:]$"))]
+
     # set the data.table sort key
     setkey(wordpairs, w1, w2, w3)
     
@@ -549,26 +530,23 @@ setGeneric("phrasetotoken",
 setMethod("phrasetotoken", signature=c("character", "dictionary", "ANY"), 
           function(object, phrases, concatenator="_") {
               phrases <- unlist(phrases, use.names=FALSE)
-              compoundPhrases <- phrases[grep(" ", phrases)]
+              compoundPhrases <- phrases[stringi::stri_detect_fixed(phrases, " ")]
               # now replace hyphens with something else
-              compoundPhrases <- gsub("-", "__", compoundPhrases)
+              compoundPhrases <- stringi::stri_replace_all_fixed(compoundPhrases, "-", "__")
               compoundPhrasesList <- tokenize(compoundPhrases)
               
               # replace intra-word hyphens in text with __
-              object <- gsub("(\\w+)[-](\\w+)", "\\1__\\2", object)
+              object <- stringi::stri_replace_all_regex(object, "(\\w+)[-](\\w+)", "$1__$2")
               
-              # contenate the phrases in
-              # gsub("(word1)\\s(word2)", "\\1_\\2", "word1 word2")
-              ## [1] "word1_word2"
               for (l in compoundPhrasesList) {
                   # match phrases with space delimiters or (already added) concatenator
                   # this catches trigram collocations that have already been processed partly as bigrams
                   re.pattern <- paste("(", paste(l, collapse=paste0(")[\\s", concatenator, "](")), ")", sep="")
-                  re.replace <- paste("\\", 1:length(l), sep="", collapse=concatenator)
-                  object <- gsub(re.pattern, re.replace, object, perl=TRUE, ignore.case=TRUE)
+                  re.replace <- paste("$", 1:length(l), sep="", collapse=concatenator)
+                  object <- stringi::stri_replace_all_regex(object, re.pattern, re.replace, case_insensitive=TRUE)
               }
               # now transform hyphens back
-              object <- gsub("__", "-", object)
+              object <- stringi::stri_replace_all_fixed(object, "__", "-")
               object
           })
 

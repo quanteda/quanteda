@@ -11,14 +11,13 @@
 \usage{
 corpus(x, ...)
 
-\method{corpus}{character}(x, enc = NULL, docnames = NULL, docvars = NULL,
-  source = NULL, notes = NULL, citation = NULL, ...)
-
-\method{corpus}{corpusSource}(x, enc = NULL, notes = NULL,
+\method{corpus}{character}(x, enc = NULL, encTo = "UTF-8",
+  docnames = NULL, docvars = NULL, source = NULL, notes = NULL,
   citation = NULL, ...)
 
-\method{corpus}{VCorpus}(x, enc = NULL, notes = NULL, citation = NULL,
-  ...)
+\method{corpus}{corpusSource}(x, ...)
+
+\method{corpus}{VCorpus}(x, ...)
 
 is.corpus(x)
 
@@ -31,20 +30,34 @@ vector or a \link{corpusSource-class} object created using
 
 \item{...}{additional arguments}
 
-\item{enc}{A string specifying the input encoding for texts in the
-corpus.  Must be a valid entry in \code{\link{iconvlist}()}, since the code in
-\code{corpus.character} will convert this to \code{UTF-8} using \code{\link{iconv}}.
-Currently only one input encoding can be specified for a collection of input texts,
-meaning that you should not mix input text encoding types in a single \code{corpus} call.}
+\item{enc}{a string specifying the input encoding for texts in the corpus.
+  Must be a valid entry in \code{\link[stringi]{stri_enc_list}()}, since
+  the code in \code{corpus.character} will convert this to \code{encTo} using
+  \code{\link[stringi]{stri_encode}}.  We recommend that you do
+  \strong{not} use \code{enc}, since if left \code{NULL} (the default) then
+  \code{corpus()} will detect the input encoding(s) and convert
+  automatically.
 
-\item{docnames}{Names to be assigned to the texts, defaults to the names of the
-character vector (if any), otherwise assigns "text1", "text2", etc.}
+  Currently only one input encoding can be specified for a collection of
+  input texts, meaning that you should not mix input text encoding types in a
+  single \code{corpus} call.  However if you suspect multiple encodings, omit
+  the \code{enc} argument and \code{corpus()} will detect and convert each
+  file automatically.}
+
+\item{encTo}{target encoding, default is UTF-8.  Unless you have strong reasons
+to use an alternative encoding, we strongly recommend you leave this at its
+default.  Must be a valid entry in \code{\link[stringi]{stri_enc_list}()}}
+
+\item{docnames}{Names to be assigned to the texts, defaults to the names of
+the character vector (if any), otherwise assigns "text1", "text2", etc.}
 
 \item{docvars}{A data frame of attributes that is associated with each text.}
 
-\item{source}{A string specifying the source of the texts, used for referencing.}
+\item{source}{A string specifying the source of the texts, used for
+referencing.}
 
-\item{notes}{A string containing notes about who created the text, warnings, To Dos, etc.}
+\item{notes}{A string containing notes about who created the text, warnings,
+To Dos, etc.}
 
 \item{citation}{Information on how to cite the corpus.}
 
@@ -81,16 +94,16 @@ A corpus class object containing the original texts, document-level
 \code{is.corpus} returns \code{TRUE} if the object is a corpus
 }
 \description{
-Creates a corpus from a document source.  The current available
-  document sources are: \itemize{ \item a character vector (as in R class
-  \code{char}) of texts; \item a \link{corpusSource-class} object,
-  constructed using \code{\link{textfile}}; \item a \pkg{tm}
-  \link[tm]{VCorpus} class corpus object, meaning that anything you can use
-  to create a \pkg{tm} corpus, including all of the tm plugins plus the
-  built-in functions of tm for importing pdf, Word, and XML documents, can be
-  used to create a quanteda \link{corpus}. } Corpus-level meta-data can be
-  specified at creation, containing (for example) citation information and
-  notes, as can document-level variables and document-level meta-data.
+Creates a corpus from a document source.  The current available document
+sources are: \itemize{ \item a character vector (as in R class \code{char})
+of texts; \item a \link{corpusSource-class} object, constructed using
+\code{\link{textfile}}; \item a \pkg{tm} \link[tm]{VCorpus} class corpus
+object, meaning that anything you can use to create a \pkg{tm} corpus,
+including all of the tm plugins plus the built-in functions of tm for
+importing pdf, Word, and XML documents, can be used to create a quanteda
+\link{corpus}. } Corpus-level meta-data can be specified at creation,
+containing (for example) citation information and notes, as can
+document-level variables and document-level meta-data.
 }
 \details{
 The \code{+} operator for a corpus object will combine two corpus
@@ -114,31 +127,32 @@ When \code{x} is a \link[tm]{VCorpus} object, the fixed metadata
   no corpus-level metadata is imported, but we will add that soon.
 }
 \examples{
-#
 # create a corpus from texts
 corpus(inaugTexts)
 
 # create a corpus from texts and assign meta-data and document variables
 ukimmigCorpus <- corpus(ukimmigTexts,
-                            docvars=data.frame(party=names(ukimmigTexts)),
-                            enc="UTF-8")
-\donttest{# the fifth column of this csv file is the text field
-mytexts <- textfile("http://www.kenbenoit.net/files/text_example.csv", textField=5)
-str(mytexts)
+                        docvars = data.frame(party=names(ukimmigTexts)),
+                        encTo = "UTF-16")
+
+corpus(texts(ie2010Corpus))
+\dontrun{# the fifth column of this csv file is the text field
+mytexts <- textfile("http://www.kenbenoit.net/files/text_example.csv", textField = 5)
 mycorp <- corpus(mytexts)
-mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField="Title"))
+mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField = "Title"))
 identical(texts(mycorp), texts(mycorp2))
-identical(docvars(mycorp), docvars(mycorp2))}
+identical(docvars(mycorp), docvars(mycorp2))
+}
 # import a tm VCorpus
-if (require(tm)) {
-    data(crude)    # load in a tm example VCorpus
+if ("tm" \%in\% rownames(installed.packages())) {
+    data(crude, package = "tm")    # load in a tm example VCorpus
     mytmCorpus <- corpus(crude)
     summary(mytmCorpus, showmeta=TRUE)
 
-    data(acq)
+    data(acq, package = "tm")
     summary(corpus(acq), 5, showmeta=TRUE)
 
-    tmCorp <- VCorpus(VectorSource(inaugTexts[49:57]))
+    tmCorp <- tm::VCorpus(tm::VectorSource(inaugTexts[49:57]))
     quantCorp <- corpus(tmCorp)
     summary(quantCorp)
 }
@@ -147,7 +161,7 @@ if (require(tm)) {
 Kenneth Benoit and Paul Nulty
 }
 \seealso{
-\link{docvars}, \link{metadoc}, \link{metacorpus}, \link{language},
-  \link{encoding}, \link{settings}, \link{texts}
+\link{docvars}, \link{metadoc}, \link{metacorpus}, \link{settings},
+  \link{texts}
 }
 
