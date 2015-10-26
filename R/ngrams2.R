@@ -1,6 +1,6 @@
 
 require(Rcpp)
-Rcpp::sourceCpp('src/ngram.cpp')
+Rcpp::sourceCpp('src/ngrams.cpp')
 
 #' @rdname ngrams_c
 ngrams_c <- function(x, n=2, concatenator="_"){

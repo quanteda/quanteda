@@ -7,10 +7,9 @@ using namespace Rcpp;
 using namespace std;
 
 // [[Rcpp::export]]
-<<<<<<< HEAD
 std::vector< std::string > ngramcpp(std::vector< std::string > words,
                                     int n, int skip, std::string delim 
-                                    ){
+){
   
   std::vector <std::string> ngams;
   int len = words.size();
@@ -27,28 +26,6 @@ std::vector< std::string > ngramcpp(std::vector< std::string > words,
       ngram = ngram + delim + words[i];
       count++;
       if(count == n){
-=======
-std::vector<std::string> ngramcpp(std::vector< std::string > strings,
-                                    int n, int window, std::string concatenator 
-                                    ){
-  
-  // Rename parameters
-  int step = window;
-  std::string sep = concatenator;
-  
-  std::vector <std::string> ngams;
-  int len = strings.size();
-  for( int h = 0; h < len; h++ ) {
-    int count = 1;
-    std::string ngram = strings[h];
-    //for( int i = std::max(0, h-window); i < std::min(len, h+window+1); i += step ) {
-    for( int i = std::max(h, h - (step * n)); i < std::min(len, h + (step * n) + 1); i += step ) {  
-      if( h == i) continue;
-      // Rcout << h << "-" << i << ":" << strings[h] << "-" << strings[i] << "\n";
-      ngram = ngram + sep + strings[i];
-      count++;
-      if (count == n) {
->>>>>>> ea24e2f8cc0abfbed431d62df8d5ea3f64b56063
         ngams.push_back(ngram);
         break;
       }
@@ -56,12 +33,11 @@ std::vector<std::string> ngramcpp(std::vector< std::string > strings,
   }
   return ngams;
 }
-<<<<<<< HEAD
 
 // [[Rcpp::export]]
 std::vector< std::string > skipgramcpp(std::vector< std::string > words,
-                                        int n, int skip, std::string delim 
-                                        ){
+                                       int n, int skip, std::string delim 
+){
   std::vector< std::string > skipgrams;
   for(int k = 1; k <= skip; k++){
     //Rcout << "Skip" << k << "\n";
@@ -104,5 +80,3 @@ std::vector< std::vector<std::string> > skipgramcppl(SEXP x, int n, int skip, st
 }
 
 
-=======
->>>>>>> ea24e2f8cc0abfbed431d62df8d5ea3f64b56063
