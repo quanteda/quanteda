@@ -30,54 +30,54 @@
 #' 
 #' # skipgrams
 ngrams <- function(x, ...) {
-    UseMethod("ngrams")
+  UseMethod("ngrams")
 }
 
 #' @rdname ngrams
 #' @importFrom stats complete.cases
 #' @export
 ngrams.character <- function(x, n = 2, skip = 0, concatenator = "_", ...) {
-    window <- skip + 1
-    if (any(stringi::stri_detect_fixed(x, " ")) & concatenator != " ")
-        stop("whitespace detected: please tokenize() before using ngrams()")
+  window <- skip + 1
+  if (any(stringi::stri_detect_fixed(x, " ")) & concatenator != " ")
+    stop("whitespace detected: please tokenize() before using ngrams()")
+  
+  if (length(x) < min(n)) return(NULL)
+  if (identical(n, 1)) {
+    if (!identical(window, 1))
+      warning("skip argument ignored for n = 1")
+    return(x)
+  }
+  
+  ngrams <- c()
+  for (w in window) {
+    winIndex <- findWindowSequence(max(n), w)
+    wordtable <- data.table(w1 = c(rep(NA, max(n)-1), x))
+    for (i in 2:(length(winIndex)))
+      wordtable[, paste0("w", i) := wrapVector(wordtable$w1, winIndex[i]-1, w)]
     
-    if (length(x) < min(n)) return(NULL)
-    if (identical(n, 1)) {
-        if (!identical(window, 1))
-            warning("skip argument ignored for n = 1")
-        return(x)
+    for (nsize in n) {
+      nonMissing <- stats::complete.cases(wordtable[, 1:nsize, with = FALSE])
+      ngrams <- c(ngrams, 
+                  apply(wordtable[nonMissing, 1:nsize, with = FALSE], 
+                        1, paste, collapse = concatenator))
     }
-    
-    ngrams <- c()
-    for (w in window) {
-        winIndex <- findWindowSequence(max(n), w)
-        wordtable <- data.table(w1 = c(rep(NA, max(n)-1), x))
-        for (i in 2:(length(winIndex)))
-            wordtable[, paste0("w", i) := wrapVector(wordtable$w1, winIndex[i]-1, w)]
-
-        for (nsize in n) {
-            nonMissing <- stats::complete.cases(wordtable[, 1:nsize, with = FALSE])
-            ngrams <- c(ngrams, 
-                        apply(wordtable[nonMissing, 1:nsize, with = FALSE], 
-                              1, paste, collapse = concatenator))
-        }
-    }    
-    ngrams
+  }    
+  ngrams
 }
 
 findWindowSequence <- function(n, w) {
-    seq(1, (n * w) - (w-1), by = w)
+  seq(1, (n * w) - (w-1), by = w)
 }
 
 wrapVector <- function(x, n, window = 1) {
-    if (n == length(x)) 
-        return(x)
-    while (n > length(x)) 
-        n <- n - 20
-    result <- c(x[(n+1):length(x)], x[1:n])
-    if (window > 1)
-        result[(length(result) - n + 1) : length(result)] <- NA
-    result
+  if (n == length(x)) 
+    return(x)
+  while (n > length(x)) 
+    n <- n - 20
+  result <- c(x[(n+1):length(x)], x[1:n])
+  if (window > 1)
+    result[(length(result) - n + 1) : length(result)] <- NA
+  result
 }
 
 #' @param ... additional arguments passed to \code{\link[parallel]{mclapply}}
@@ -85,10 +85,10 @@ wrapVector <- function(x, n, window = 1) {
 #' @rdname ngrams
 #' @export
 ngrams.tokenizedTexts <- function(x, n = 2, skip = 0, concatenator = "_", ...) {
-    ngramsResult <- parallel::mclapply(x, ngrams.character, n, skip, concatenator, ...)
-    class(ngramsResult) <- c("tokenizedTexts", class(ngramsResult))
-    attributes(ngramsResult) <- attributes(x)
-    ngramsResult
+  ngramsResult <- parallel::mclapply(x, ngrams.character, n, skip, concatenator, ...)
+  class(ngramsResult) <- c("tokenizedTexts", class(ngramsResult))
+  attributes(ngramsResult) <- attributes(x)
+  ngramsResult
 }
 
 
@@ -119,53 +119,53 @@ skipgrams <- function(x, ...) UseMethod("skipgrams")
 #' @rdname ngrams
 #' @export
 skipgrams.character <- function(x, n = 2, skip = 1, concatenator = "_", ...) {
-    if (n < skip) {
-        warning("n cannot be less than skip for skipgrams, returning NULL")
-        return(NULL)
-    }    
-    ngrams2(x, n, window = skip + 1, concatenator, skipgrams = TRUE)
+  if (n < skip) {
+    warning("n cannot be less than skip for skipgrams, returning NULL")
+    return(NULL)
+  }    
+  ngrams2(x, n, window = skip + 1, concatenator, skipgrams = TRUE)
 }
 
 #' @rdname ngrams
 #' @export
 skipgrams.tokenizedTexts <- function(x, n = 2, skip = 1, concatenator = "_", ...)
-    parallel::mclapply(x, skipgrams.character, n, skip, concatenator, ...)
+  parallel::mclapply(x, skipgrams.character, n, skip, concatenator, ...)
 
 
 ngrams2 <- function(x, n = 2, window = 1, concatenator = "_", skipgrams = FALSE, ...) {
-    ngr.index <- ngramIndex(n, window, skipgrams)
-    # get rid of those indexed outside of the valid range
-    ngr.index <- ngr.index[sapply(ngr.index, function(i) max(i) <= length(x))]
-    # x <- c(x, rep(NA, max(unlist(ngr.index))-1))
-    result <- sapply(ngr.index, function(indexes) {
-        totsize <- max(unlist(indexes))
-        j <- indexes[1] + 1:length(x) - 1
-        ngr <- x[j]
-        indexes <- indexes[-1]
-        while (length(indexes)) {
-            j <- indexes[1] + 1:length(x) - 1
-            ngr <- paste(ngr, x[j], sep = concatenator)
-            indexes <- indexes[-1]
-        }
-        ngr[1 : (length(x) - totsize + 1)]
-        #         (indexMat <- matrix(1:length(x), ncol = length(i), nrow = length(x)) + 
-        #                      matrix(i, nrow = length(x), ncol = length(i), byrow = TRUE) - 1)
-        #         indexMat[indexMat > length(x)] <- NA
-        #         indexMat <- indexMat[complete.cases(indexMat), ]
-        #         apply(indexMat, 1, function(i) paste(x[i], collapse = concatenator))
-    })
-    unique(as.character(unlist(result)))
+  ngr.index <- ngramIndex(n, window, skipgrams)
+  # get rid of those indexed outside of the valid range
+  ngr.index <- ngr.index[sapply(ngr.index, function(i) max(i) <= length(x))]
+  # x <- c(x, rep(NA, max(unlist(ngr.index))-1))
+  result <- sapply(ngr.index, function(indexes) {
+    totsize <- max(unlist(indexes))
+    j <- indexes[1] + 1:length(x) - 1
+    ngr <- x[j]
+    indexes <- indexes[-1]
+    while (length(indexes)) {
+      j <- indexes[1] + 1:length(x) - 1
+      ngr <- paste(ngr, x[j], sep = concatenator)
+      indexes <- indexes[-1]
+    }
+    ngr[1 : (length(x) - totsize + 1)]
+    #         (indexMat <- matrix(1:length(x), ncol = length(i), nrow = length(x)) + 
+    #                      matrix(i, nrow = length(x), ncol = length(i), byrow = TRUE) - 1)
+    #         indexMat[indexMat > length(x)] <- NA
+    #         indexMat <- indexMat[complete.cases(indexMat), ]
+    #         apply(indexMat, 1, function(i) paste(x[i], collapse = concatenator))
+  })
+  unique(as.character(unlist(result)))
 }
 
 ngramIndex <- function(n, window = 1, skipgrams = FALSE) {
-    #     if (n <= window)
-    #         stop("n must be greater than ", 
-    #              ifelse(skipgrams, "or equal to k", "window"))
-    if (!skipgrams)
-        (sequence <- seq(along.with = 1:n, by = window))
-    else 
-        (sequence <- seq(1, n + window - 1, by = 1))
-    utils::combn(sequence, n, simplify = FALSE)
+  #     if (n <= window)
+  #         stop("n must be greater than ", 
+  #              ifelse(skipgrams, "or equal to k", "window"))
+  if (!skipgrams)
+    (sequence <- seq(along.with = 1:n, by = window))
+  else 
+    (sequence <- seq(1, n + window - 1, by = 1))
+  utils::combn(sequence, n, simplify = FALSE)
 }
 
 ### C versions
@@ -203,8 +203,12 @@ ngramIndex <- function(n, window = 1, skipgrams = FALSE) {
 #' ngrams_c(LETTERS[1:6], n = 2, skip = 2) # [1] "A_D" "B_E" "C_F"
 #' ngrams(LETTERS[1:6], n = 2, skip = 2)   # [1] "A_D" "B_E" "C_F"
 #' @export
-ngrams_c <- function(x, n=2, skip = 0, concatenator="_"){
-    ngramcpp(x, n, skip + 1, concatenator)
+ngrams_c <- function(x, ns=2, skip = 0, concatenator="_"){
+  ngs <- c()
+  for(n in ns){
+    ngs <- c(ngs, ngramcpp(x, n, skip + 1, concatenator))
+  }
+  return(ngs)
 }
 
 
@@ -233,8 +237,12 @@ ngrams_c <- function(x, n=2, skip = 0, concatenator="_"){
 #' skipgrams(tokens, n = 2, skip = 2, concatenator = " ")
 #' skipgrams_c(tokens, n = 2, skip = 2, concatenator = " ")
 #' @export
-skipgrams_c <- function(x, n, skip, concatenator="_"){
-    skipgramcpp(x, n, 1 + skip, concatenator)
+skipgrams_c <- function(x, ns, skip, concatenator="_"){
+  sgs <- c()
+  for(n in ns){  
+    sgs <- c(sgs, skipgramcpp(x, n, 1 + skip, concatenator))
+  }
+  return(sgs);
 }
 
 
