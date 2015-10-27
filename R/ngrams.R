@@ -2,27 +2,32 @@
 #' 
 #' Create a set of ngrams (words in sequence) from tokenized text(s)
 #' @author Ken Benoit
-#' @return a tokenizedTexts object consisting a list of character vectors of
-#'   ngrams, one list element per text, or a character vector if called on a
+#' @return a tokenizedTexts object consisting a list of character vectors of 
+#'   ngrams, one list element per text, or a character vector if called on a 
 #'   simple character vector
 #' @param x a tokenizedText object or a character vector of tokens
-#' @param n integer vector specifying the number of elements to be concatenated
+#' @param n integer vector specifying the number of elements to be concatenated 
 #'   in each ngram
-#' @param window integer vector specifying the adjacency width for tokens 
-#'   forming the ngrams, default is 1 for only immediately neighbouring words
+#' @param skip integer vector specifying the adjacency skip size for tokens 
+#'   forming the ngrams, default is 0 for only immediately neighbouring words. 
+#'   For \code{skipgrams}, \code{skip} is the distance for which this number or
+#'   fewer skips are used to construct the $n$-gram.  Thus a "4-skip-n-gram"
+#'   produces results that include 4 skips, 3 skips, 2 skips, 1 skip, and 0
+#'   skips (where 0 skips are typical n-grams formed from adjacent words).  See
+#'   Guthrie et al (2006).
 #' @param concatenator character for combining words, default is \code{_} 
 #'   (underscore) character
 #' @export
 #' @examples
-#' ngrams(LETTERS, n = 2, window = 2)
-#' ngrams(LETTERS, n = 3, window = 2)
-#' ngrams(LETTERS, n = 3, window = 3)
+#' ngrams(LETTERS, n = 2, skip = 2)
+#' ngrams(LETTERS, n = 3, skip = 2)
+#' ngrams(LETTERS, n = 3, skip = 3)
 #' 
 #' tokens <- tokenize("the quick brown fox jumped over the lazy dog.", 
 #'                    removePunct = TRUE, simplify = TRUE)
 #' ngrams(tokens, n = 1:3)
-#' ngrams(tokens, n = c(2,4), window = 1:2, concatenator = " ")
-#'
+#' ngrams(tokens, n = c(2,4), skip = 1:2, concatenator = " ")
+#' 
 #' # skipgrams
 ngrams <- function(x, ...) {
     UseMethod("ngrams")
@@ -31,14 +36,15 @@ ngrams <- function(x, ...) {
 #' @rdname ngrams
 #' @importFrom stats complete.cases
 #' @export
-ngrams.character <- function(x, n = 2, window = 1, concatenator = "_", ...) {
+ngrams.character <- function(x, n = 2, skip = 0, concatenator = "_", ...) {
+    window <- skip + 1
     if (any(stringi::stri_detect_fixed(x, " ")) & concatenator != " ")
         stop("whitespace detected: please tokenize() before using ngrams()")
     
     if (length(x) < min(n)) return(NULL)
     if (identical(n, 1)) {
         if (!identical(window, 1))
-            warning("window argument ignored for n = 1")
+            warning("skip argument ignored for n = 1")
         return(x)
     }
     
@@ -78,8 +84,8 @@ wrapVector <- function(x, n, window = 1) {
 #'   which applies \code{ngram.character()} to the \code{tokenizedTexts} list object
 #' @rdname ngrams
 #' @export
-ngrams.tokenizedTexts <- function(x, n = 2, window = 1, concatenator = "_", ...) {
-    ngramsResult <- parallel::mclapply(x, ngrams.character, n, window, concatenator, ...)
+ngrams.tokenizedTexts <- function(x, n = 2, skip = 0, concatenator = "_", ...) {
+    ngramsResult <- parallel::mclapply(x, ngrams.character, n, skip, concatenator, ...)
     class(ngramsResult) <- c("tokenizedTexts", class(ngramsResult))
     attributes(ngramsResult) <- attributes(x)
     ngramsResult
@@ -87,13 +93,6 @@ ngrams.tokenizedTexts <- function(x, n = 2, window = 1, concatenator = "_", ...)
 
 
 #' @rdname ngrams
-#' @param k for skip-grams only, \code{k} is the number of skips used to 
-#'   construct the $n$-gram. Skip-grams for a given skip distance $k$ allow a 
-#'   total of $k$ or less skips to construct the $n$-gram.  Thus a 
-#'   "4-skip-n-gram" produces results that include 4 skips, 3 skips, 2 skips, 1 
-#'   skip, and 0 skips (where 0 skips are typical n-grams formed from adjacent
-#'   words).  See Guthrie et al (2006).
-
 #' @details Normally, \code{\link{ngrams}} will be called through 
 #'   \code{\link{tokenize}}, but these functions are also exported in case a 
 #'   user wants to perform lower-level ngram construction on tokenized texts.
@@ -112,26 +111,25 @@ ngrams.tokenizedTexts <- function(x, n = 2, window = 1, concatenator = "_", ...)
 #' @examples 
 #' tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."), 
 #'                    removePunct = TRUE, simplify = TRUE)
-#' skipgrams(tokens, n = 2, k = 2, concatenator = " ")   
-#' skipgrams(tokens, n = 3, k = 2, concatenator = " ")   
+#' skipgrams(tokens, n = 2, skip = 2, concatenator = " ")   
+#' skipgrams(tokens, n = 3, skip = 2, concatenator = " ")   
 skipgrams <- function(x, ...) UseMethod("skipgrams")
 
 #' @rdname ngrams
 #' @export
-skipgrams.character <- function(x, n = 2, k = 1, concatenator = "_", ...) {
-    if (n < k) {
+skipgrams.character <- function(x, n = 2, skip = 1, concatenator = "_", ...) {
+    if (n < skip) {
         warning("n cannot be less than k for skipgrams, returning NULL")
         return(NULL)
     }    
-    ngrams2(x, n, window = k+1, concatenator, skipgrams = TRUE)
+    ngrams2(x, n, window = skip + 1, concatenator, skipgrams = TRUE)
 }
     #ngrams.character(x, n, window = 1:(k+1), concatenator)
 
 #' @rdname ngrams
 #' @export
-skipgrams.tokenizedTexts <- function(x, n = 2, k = 1, concatenator = "_", ...)
-    parallel::mclapply(x, skipgrams.character, n, k, concatenator, ...)
-    #ngrams.tokenizedTexts(x, n, window = 1:(k+1), concatenator, ...)
+skipgrams.tokenizedTexts <- function(x, n = 2, skip = 1, concatenator = "_", ...)
+    parallel::mclapply(x, skipgrams.character, n, skip, concatenator, ...)
 
 ## to make this match Guthrie et al (2006), needs to implement R version of
 ## http://stackoverflow.com/questions/31847682/how-to-compute-skipgrams-in-python
@@ -190,7 +188,7 @@ ngrams2 <- function(x, n = 2, window = 1, concatenator = "_", skipgrams = FALSE,
     unique(as.character(unlist(result)))
 }
 
-# x <- LETTERS[1:5]; n <- 2; window <- 2; concatenator = "_"
+# x <- LETTERS[1:6]; n <- 2; window <- 2; concatenator = "_"
 # tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."), removePunct = TRUE, simplify = TRUE)
 # ngrams2(tokens, 2, 2, skipgrams = TRUE)
 # ngrams2(tokens, 3, 2, skipgrams = TRUE)
@@ -212,38 +210,40 @@ ngramIndex <- function(n, window = 1, skipgrams = FALSE) {
 #' C++ version of ngrams and skipgrams for character vectors
 #' 
 #' Form ngrams and skipgrams from character vectors using a faster C++ method
+#' @param x a character vector of tokens
+#' @param n integer vector specifying the number of elements to be concatenated
+#'   in each ngram
+#' @param skip integer vector specifying the adjacency skips for tokens 
+#'   forming the ngrams or skipgrams, default is 0 for only immediately neighbouring words
+#' @param concatenator character for combining words, default is \code{_} 
+#'   (underscore) character
 #' @note \strong{KOHEI:} See how the argument to \code{n} and \code{window} work for the existing
 #' \code{ngrams()} -- would it be faster to implement this in C++, or call it as in the existing code multiple times when 
 #' the arguments are vectorized?  See examples.
 #' @examples
 #' ## form ngrams
-#' #' ngrams_c(head(LETTERS), n = 3, window = 1) #"A_B_C" "B_C_D" "C_D_E" "D_E_F"
-#' ngrams(head(LETTERS), n = 3, window = 1) #"A_B_C" "B_C_D" "C_D_E" "D_E_F"
+#' ngrams_c(LETTERS[1:6], n = 3) # "A_B_C" "B_C_D" "C_D_E" "D_E_F"
+#' ngrams(LETTERS[1:6], n = 3)   # "A_B_C" "B_C_D" "C_D_E" "D_E_F"
 #' 
 #' tokens <- tokenize("the quick brown fox jumped over the lazy dog.",
 #' removePunct = TRUE, simplify = TRUE)
-#' ngrams(tokens, n = c(2,4), window = 1:2, concatenator = " ")
+#' ngrams(tokens, n = c(2,4), concatenator = " ")
 #' ## BUT THIS FAILS
-#' \dontrun{ngrams_c(tokens, n = c(2,4), window = 1:2, concatenator = " ")}
+#' \dontrun{#' ngrams_c(tokens, n = c(2,4), concatenator = " ")}
 #' 
-#' ngrams_c(head(LETTERS), n = 3, window = 1) #"A_B_C" "B_C_D" "C_D_E" "D_E_F"
-#' ngrams(head(LETTERS), n = 3, window = 1) #"A_B_C" "B_C_D" "C_D_E" "D_E_F"
-#' ngrams_c(head(LETTERS), n = 3, window = 2) #"A_C_E" "B_D_F"
-#' ngrams(head(LETTERS), n = 3, window = 2) #"A_C_E" "B_D_F"
-#' ngrams_c(head(LETTERS), n = 3, window = 3) # None
-#' ngrams(head(LETTERS), n = 3, window = 3) # None
-#' 
-#' ## form skipgrams
-#' skipgrams_c(head(LETTERS), n = 2, k = 1) #"A_B" "B_C" "C_D" "D_E" "E_F" "A_C" "B_D" "C_E" "D_F"
-#' skipgrams(head(LETTERS), n = 2, k = 1)   #"A_B" "B_C" "C_D" "D_E" "E_F" "A_C" "B_D" "C_E" "D_F"
-#' 
-#' skipgrams_c(head(LETTERS), n = 2, k = 2) #"A_B" "B_C" "C_D" "D_E" "E_F" "A_C" "B_D" "C_E" "D_F" "A_D" "B_E" "C_F"
-#' skipgrams(head(LETTERS), n = 2, k = 2)   #"A_B" "B_C" "C_D" "D_E" "E_F" "A_C" "B_D" "C_E" "D_F" "A_D" "B_E" "C_F"
+#' ngrams_c(LETTERS[1:6], n = 3, skip = 0) #"A_B_C" "B_C_D" "C_D_E" "D_E_F"
+#' ngrams(LETTERS[1:6], n = 3, skip = 0)   #"A_B_C" "B_C_D" "C_D_E" "D_E_F"
+#' ngrams_c(LETTERS[1:6], n = 3, skip = 1) #"A_C_E" "B_D_F"
+#' ngrams(LETTERS[1:6], n = 3, skip = 1)   #"A_C_E" "B_D_F"
+#' ngrams_c(LETTERS[1:6], n = 3, skip = 2) # None
+#' ngrams(LETTERS[1:6], n = 3, skip = 2)   # None
+#' ngrams_c(LETTERS[1:6], n = 2, skip = 2) # [1] "A_D" "B_E" "C_F"
+#' ngrams(LETTERS[1:6], n = 2, skip = 2)   # [1] "A_D" "B_E" "C_F"
 #' @export
-ngrams_c <- function(x, n=2, window=1, concatenator="_"){
-    #ngramcpp(units, targets)
-    ngramcpp(x, n, window, concatenator)
+ngrams_c <- function(x, n=2, skip = 0, concatenator="_"){
+    ngramcpp(x, n, skip + 1, concatenator)
 }
+
 
 #' @rdname ngrams_c
 #' @note 
@@ -254,17 +254,23 @@ ngrams_c <- function(x, n=2, window=1, concatenator="_"){
 #' D., B. Allison, W. Liu, and L. Guthrie. 2006. "A Closer Look at Skip-Gram 
 #' Modelling."}
 #' @examples 
-#' tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."),
-#' removePunct = TRUE, simplify = TRUE)
-#' skipgrams(tokens, n = 2, k = 2, concatenator = " ")
-#' skipgrams_c(tokens, n = 3, k = 2, concatenator = " ")
+#' 
+#' ## form skipgrams
+#' skipgrams_c(LETTERS[1:6], n = 2, skip = 1) 
+#' ## "A_B" "B_C" "C_D" "D_E" "E_F" "A_C" "B_D" "C_E" "D_F"
+#' skipgrams(LETTERS[1:6], n = 2, skip = 1)   
+#' ## "A_B" "B_C" "C_D" "D_E" "E_F" "A_C" "B_D" "C_E" "D_F"
+#' skipgrams_c(LETTERS[1:6], n = 2, skip = 2) 
+#' ## "A_B" "B_C" "C_D" "D_E" "E_F" "A_C" "B_D" "C_E" "D_F" "A_D" "B_E" "C_F"
+#' skipgrams(LETTERS[1:6], n = 2, skip = 2)      
+#' ## "A_B" "B_C" "C_D" "D_E" "E_F" "A_C" "B_D" "C_E" "D_F" "A_D" "B_E" "C_F"
+#'
+#' tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."), 
+#'                    removePunct = TRUE, simplify = TRUE)
+#' skipgrams(tokens, n = 2, skip = 2, concatenator = " ")
+#' skipgrams_c(tokens, n = 2, skip = 2, concatenator = " ")
 #' @export
-skipgrams_c <- function(x, n, k, concatenator="_"){
-    ngrams <- c()
-    for (window in 1:(k+1)) {
-        ngrams <- c(ngrams, ngrams_c(x, n, window, concatenator))
-    }
-    return(ngrams)
+skipgrams_c <- function(x, n, skip, concatenator="_"){
+    skipgramcpp(x, n, 1 + skip, concatenator)
 }
-
 

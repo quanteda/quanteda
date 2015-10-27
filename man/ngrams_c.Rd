@@ -5,9 +5,21 @@
 \alias{skipgrams_c}
 \title{C++ version of ngrams and skipgrams for character vectors}
 \usage{
-ngrams_c(x, n = 2, window = 1, concatenator = "_")
+ngrams_c(x, n = 2, skip = 0, concatenator = "_")
 
-skipgrams_c(x, n, k, concatenator = "_")
+skipgrams_c(x, n, skip, concatenator = "_")
+}
+\arguments{
+\item{x}{a character vector of tokens}
+
+\item{n}{integer vector specifying the number of elements to be concatenated
+in each ngram}
+
+\item{skip}{integer vector specifying the adjacency skips for tokens
+forming the ngrams or skipgrams, default is 0 for only immediately neighbouring words}
+
+\item{concatenator}{character for combining words, default is \code{_}
+(underscore) character}
 }
 \description{
 Form ngrams and skipgrams from character vectors using a faster C++ method
@@ -26,31 +38,36 @@ Modelling."}
 }
 \examples{
 ## form ngrams
-#' ngrams_c(head(LETTERS), n = 3, window = 1) #"A_B_C" "B_C_D" "C_D_E" "D_E_F"
-ngrams(head(LETTERS), n = 3, window = 1) #"A_B_C" "B_C_D" "C_D_E" "D_E_F"
+ngrams_c(LETTERS[1:6], n = 3) # "A_B_C" "B_C_D" "C_D_E" "D_E_F"
+ngrams(LETTERS[1:6], n = 3)   # "A_B_C" "B_C_D" "C_D_E" "D_E_F"
 
 tokens <- tokenize("the quick brown fox jumped over the lazy dog.",
 removePunct = TRUE, simplify = TRUE)
-ngrams(tokens, n = c(2,4), window = 1:2, concatenator = " ")
+ngrams(tokens, n = c(2,4), concatenator = " ")
 ## BUT THIS FAILS
-\dontrun{ngrams_c(tokens, n = c(2,4), window = 1:2, concatenator = " ")}
+\dontrun{#' ngrams_c(tokens, n = c(2,4), concatenator = " ")}
 
-ngrams_c(head(LETTERS), n = 3, window = 1) #"A_B_C" "B_C_D" "C_D_E" "D_E_F"
-ngrams(head(LETTERS), n = 3, window = 1) #"A_B_C" "B_C_D" "C_D_E" "D_E_F"
-ngrams_c(head(LETTERS), n = 3, window = 2) #"A_C_E" "B_D_F"
-ngrams(head(LETTERS), n = 3, window = 2) #"A_C_E" "B_D_F"
-ngrams_c(head(LETTERS), n = 3, window = 3) # None
-ngrams(head(LETTERS), n = 3, window = 3) # None
-
+ngrams_c(LETTERS[1:6], n = 3, skip = 0) #"A_B_C" "B_C_D" "C_D_E" "D_E_F"
+ngrams(LETTERS[1:6], n = 3, skip = 0)   #"A_B_C" "B_C_D" "C_D_E" "D_E_F"
+ngrams_c(LETTERS[1:6], n = 3, skip = 1) #"A_C_E" "B_D_F"
+ngrams(LETTERS[1:6], n = 3, skip = 1)   #"A_C_E" "B_D_F"
+ngrams_c(LETTERS[1:6], n = 3, skip = 2) # None
+ngrams(LETTERS[1:6], n = 3, skip = 2)   # None
+ngrams_c(LETTERS[1:6], n = 2, skip = 2) # [1] "A_D" "B_E" "C_F"
+ngrams(LETTERS[1:6], n = 2, skip = 2)   # [1] "A_D" "B_E" "C_F"
 ## form skipgrams
-skipgrams_c(head(LETTERS), n = 2, k = 1) #"A_B" "B_C" "C_D" "D_E" "E_F" "A_C" "B_D" "C_E" "D_F"
-skipgrams(head(LETTERS), n = 2, k = 1)   #"A_B" "B_C" "C_D" "D_E" "E_F" "A_C" "B_D" "C_E" "D_F"
+skipgrams_c(LETTERS[1:6], n = 2, skip = 1)
+## "A_B" "B_C" "C_D" "D_E" "E_F" "A_C" "B_D" "C_E" "D_F"
+skipgrams(LETTERS[1:6], n = 2, skip = 1)
+## "A_B" "B_C" "C_D" "D_E" "E_F" "A_C" "B_D" "C_E" "D_F"
+skipgrams_c(LETTERS[1:6], n = 2, skip = 2)
+## "A_B" "B_C" "C_D" "D_E" "E_F" "A_C" "B_D" "C_E" "D_F" "A_D" "B_E" "C_F"
+skipgrams(LETTERS[1:6], n = 2, skip = 2)
+## "A_B" "B_C" "C_D" "D_E" "E_F" "A_C" "B_D" "C_E" "D_F" "A_D" "B_E" "C_F"
 
-skipgrams_c(head(LETTERS), n = 2, k = 2) #"A_B" "B_C" "C_D" "D_E" "E_F" "A_C" "B_D" "C_E" "D_F" "A_D" "B_E" "C_F"
-skipgrams(head(LETTERS), n = 2, k = 2)   #"A_B" "B_C" "C_D" "D_E" "E_F" "A_C" "B_D" "C_E" "D_F" "A_D" "B_E" "C_F"
 tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."),
-removePunct = TRUE, simplify = TRUE)
-skipgrams(tokens, n = 2, k = 2, concatenator = " ")
-skipgrams_c(tokens, n = 3, k = 2, concatenator = " ")
+                   removePunct = TRUE, simplify = TRUE)
+skipgrams(tokens, n = 2, skip = 2, concatenator = " ")
+skipgrams_c(tokens, n = 2, skip = 2, concatenator = " ")
 }
 

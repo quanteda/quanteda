@@ -11,16 +11,16 @@
 \usage{
 ngrams(x, ...)
 
-\method{ngrams}{character}(x, n = 2, window = 1, concatenator = "_", ...)
+\method{ngrams}{character}(x, n = 2, skip = 0, concatenator = "_", ...)
 
-\method{ngrams}{tokenizedTexts}(x, n = 2, window = 1, concatenator = "_",
+\method{ngrams}{tokenizedTexts}(x, n = 2, skip = 0, concatenator = "_",
   ...)
 
 skipgrams(x, ...)
 
-\method{skipgrams}{character}(x, n = 2, k = 1, concatenator = "_", ...)
+\method{skipgrams}{character}(x, n = 2, skip = 1, concatenator = "_", ...)
 
-\method{skipgrams}{tokenizedTexts}(x, n = 2, k = 1, concatenator = "_",
+\method{skipgrams}{tokenizedTexts}(x, n = 2, skip = 1, concatenator = "_",
   ...)
 }
 \arguments{
@@ -32,18 +32,16 @@ which applies \code{ngram.character()} to the \code{tokenizedTexts} list object}
 \item{n}{integer vector specifying the number of elements to be concatenated
 in each ngram}
 
-\item{window}{integer vector specifying the adjacency width for tokens
-forming the ngrams, default is 1 for only immediately neighbouring words}
+\item{skip}{integer vector specifying the adjacency skip size for tokens
+forming the ngrams, default is 0 for only immediately neighbouring words.
+For \code{skipgrams}, \code{skip} is the distance for which this number or
+fewer skips are used to construct the $n$-gram.  Thus a "4-skip-n-gram"
+produces results that include 4 skips, 3 skips, 2 skips, 1 skip, and 0
+skips (where 0 skips are typical n-grams formed from adjacent words).  See
+Guthrie et al (2006).}
 
 \item{concatenator}{character for combining words, default is \code{_}
 (underscore) character}
-
-\item{k}{for skip-grams only, \code{k} is the number of skips used to
-construct the $n$-gram. Skip-grams for a given skip distance $k$ allow a
-total of $k$ or less skips to construct the $n$-gram.  Thus a
-"4-skip-n-gram" produces results that include 4 skips, 3 skips, 2 skips, 1
-skip, and 0 skips (where 0 skips are typical n-grams formed from adjacent
-words).  See Guthrie et al (2006).}
 }
 \value{
 a tokenizedTexts object consisting a list of character vectors of
@@ -65,20 +63,20 @@ Normally, \code{\link{ngrams}} will be called through
   $(k-i)==0$ (which includes 0 skip-grams).
 }
 \examples{
-ngrams(LETTERS, n = 2, window = 2)
-ngrams(LETTERS, n = 3, window = 2)
-ngrams(LETTERS, n = 3, window = 3)
+ngrams(LETTERS, n = 2, skip = 2)
+ngrams(LETTERS, n = 3, skip = 2)
+ngrams(LETTERS, n = 3, skip = 3)
 
 tokens <- tokenize("the quick brown fox jumped over the lazy dog.",
                    removePunct = TRUE, simplify = TRUE)
 ngrams(tokens, n = 1:3)
-ngrams(tokens, n = c(2,4), window = 1:2, concatenator = " ")
+ngrams(tokens, n = c(2,4), skip = 1:2, concatenator = " ")
 
 # skipgrams
 tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."),
                    removePunct = TRUE, simplify = TRUE)
-skipgrams(tokens, n = 2, k = 2, concatenator = " ")
-skipgrams(tokens, n = 3, k = 2, concatenator = " ")
+skipgrams(tokens, n = 2, skip = 2, concatenator = " ")
+skipgrams(tokens, n = 3, skip = 2, concatenator = " ")
 }
 \author{
 Ken Benoit
