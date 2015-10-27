@@ -3,6 +3,8 @@ quanteda 0.8.7
 
 *  tokenize() has a new argument, removeHyphens, that controls the treatment of intra-word hyphens.
 
+*  added new measures from readability for mean syllables per word and mean words per sentence directly.
+
 Bug Fixes
 ---------
 *  corrected inaccurate printing of valuetype in verbose note of selectFeatures.dfm().  (Did not affect functionality.)
