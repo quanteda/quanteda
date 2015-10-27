@@ -203,12 +203,8 @@ ngramIndex <- function(n, window = 1, skipgrams = FALSE) {
 #' ngrams_c(LETTERS[1:6], n = 2, skip = 2) # [1] "A_D" "B_E" "C_F"
 #' ngrams(LETTERS[1:6], n = 2, skip = 2)   # [1] "A_D" "B_E" "C_F"
 #' @export
-ngrams_c <- function(x, ns=2, skip = 0, concatenator="_"){
-  ngs <- c()
-  for(n in ns){
-    ngs <- c(ngs, ngramcpp(x, n, skip + 1, concatenator))
-  }
-  return(ngs)
+ngrams_c <- function(x, n=2, skip = 0, concatenator="_"){
+  ngramcpp(x, n, skip + 1, concatenator)
 }
 
 
@@ -237,12 +233,8 @@ ngrams_c <- function(x, ns=2, skip = 0, concatenator="_"){
 #' skipgrams(tokens, n = 2, skip = 2, concatenator = " ")
 #' skipgrams_c(tokens, n = 2, skip = 2, concatenator = " ")
 #' @export
-skipgrams_c <- function(x, ns, skip, concatenator="_"){
-  sgs <- c()
-  for(n in ns){  
-    sgs <- c(sgs, skipgramcpp(x, n, 1 + skip, concatenator))
-  }
-  return(sgs);
+skipgrams_c <- function(x, n, skip, concatenator="_"){
+  skipgramcpp(x, n, 1 + skip, concatenator);
 }
 
 
