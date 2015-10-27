@@ -42,7 +42,7 @@ ngrams_c(LETTERS[1:6], n = 3) # "A_B_C" "B_C_D" "C_D_E" "D_E_F"
 ngrams(LETTERS[1:6], n = 3)   # "A_B_C" "B_C_D" "C_D_E" "D_E_F"
 
 tokens <- tokenize("the quick brown fox jumped over the lazy dog.",
-removePunct = TRUE, simplify = TRUE)
+                   removePunct = TRUE, simplify = TRUE)
 ngrams(tokens, n = c(2,4), concatenator = " ")
 ## BUT THIS FAILS
 \dontrun{#' ngrams_c(tokens, n = c(2,4), concatenator = " ")}

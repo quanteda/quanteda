@@ -111,7 +111,8 @@ ngrams.tokenizedTexts <- function(x, n = 2, skip = 0, concatenator = "_", ...) {
 #' @examples 
 #' tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."), 
 #'                    removePunct = TRUE, simplify = TRUE)
-#' skipgrams(tokens, n = 2, skip = 2, concatenator = " ")   
+#' skipgrams(tokens, n = 2, skip = 1, concatenator = " ") 
+#' skipgrams(tokens, n = 2, skip = 2, concatenator = " ") 
 #' skipgrams(tokens, n = 3, skip = 2, concatenator = " ")   
 skipgrams <- function(x, ...) UseMethod("skipgrams")
 
@@ -119,48 +120,16 @@ skipgrams <- function(x, ...) UseMethod("skipgrams")
 #' @export
 skipgrams.character <- function(x, n = 2, skip = 1, concatenator = "_", ...) {
     if (n < skip) {
-        warning("n cannot be less than k for skipgrams, returning NULL")
+        warning("n cannot be less than skip for skipgrams, returning NULL")
         return(NULL)
     }    
     ngrams2(x, n, window = skip + 1, concatenator, skipgrams = TRUE)
 }
-    #ngrams.character(x, n, window = 1:(k+1), concatenator)
 
 #' @rdname ngrams
 #' @export
 skipgrams.tokenizedTexts <- function(x, n = 2, skip = 1, concatenator = "_", ...)
     parallel::mclapply(x, skipgrams.character, n, skip, concatenator, ...)
-
-## to make this match Guthrie et al (2006), needs to implement R version of
-## http://stackoverflow.com/questions/31847682/how-to-compute-skipgrams-in-python
-
-# # n = 2, window = 1
-# combn(c(1, 2), 2, simplify = FALSE)
-# ngramIndex(2, 1)
-# # n = 2, window = 2
-# combn(c(1, 3), 2, simplify = FALSE)
-# ngramIndex(2, 2)
-# # n = 2, window = 2, skipgrams
-# combn(c(1, 2, 3), 2, simplify = FALSE)
-# ngramIndex(2, 2, skipgrams = TRUE)
-# 
-# # n = 3, window = 1
-# combn(c(1, 2, 3), 3, simplify = FALSE)
-# ngramIndex(3, 1)
-# # n = 3, window = 2
-# combn(c(1, 3, 5), 3, simplify = FALSE)
-# ngramIndex(3, 2)
-# # n = 3, window = 2, skipgrams
-# combn(c(1, 2, 3, 4, 5), 3, simplify = FALSE)
-# ngramIndex(3, 2, skipgrams = TRUE)
-
-## n    window  start  stop  by  skipgrams
-## 2      1       1      2    1      F
-## 2      2       1      3    2      F
-## 3      1       1      3    1      F
-## 3      2       1      5    2      F
-## 2      2       1      3    1      T
-## 3      2       1      5    1      T
 
 
 ngrams2 <- function(x, n = 2, window = 1, concatenator = "_", skipgrams = FALSE, ...) {
@@ -179,31 +148,25 @@ ngrams2 <- function(x, n = 2, window = 1, concatenator = "_", skipgrams = FALSE,
             indexes <- indexes[-1]
         }
         ngr[1 : (length(x) - totsize + 1)]
-#         (indexMat <- matrix(1:length(x), ncol = length(i), nrow = length(x)) + 
-#                      matrix(i, nrow = length(x), ncol = length(i), byrow = TRUE) - 1)
-#         indexMat[indexMat > length(x)] <- NA
-#         indexMat <- indexMat[complete.cases(indexMat), ]
-#         apply(indexMat, 1, function(i) paste(x[i], collapse = concatenator))
+        #         (indexMat <- matrix(1:length(x), ncol = length(i), nrow = length(x)) + 
+        #                      matrix(i, nrow = length(x), ncol = length(i), byrow = TRUE) - 1)
+        #         indexMat[indexMat > length(x)] <- NA
+        #         indexMat <- indexMat[complete.cases(indexMat), ]
+        #         apply(indexMat, 1, function(i) paste(x[i], collapse = concatenator))
     })
     unique(as.character(unlist(result)))
 }
 
-# x <- LETTERS[1:6]; n <- 2; window <- 2; concatenator = "_"
-# tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."), removePunct = TRUE, simplify = TRUE)
-# ngrams2(tokens, 2, 2, skipgrams = TRUE)
-# ngrams2(tokens, 3, 2, skipgrams = TRUE)
- 
 ngramIndex <- function(n, window = 1, skipgrams = FALSE) {
-#     if (n <= window)
-#         stop("n must be greater than ", 
-#              ifelse(skipgrams, "or equal to k", "window"))
+    #     if (n <= window)
+    #         stop("n must be greater than ", 
+    #              ifelse(skipgrams, "or equal to k", "window"))
     if (!skipgrams)
         (sequence <- seq(along.with = 1:n, by = window))
     else 
         (sequence <- seq(1, n + window - 1, by = 1))
     utils::combn(sequence, n, simplify = FALSE)
 }
-
 
 ### C versions
 
@@ -226,7 +189,7 @@ ngramIndex <- function(n, window = 1, skipgrams = FALSE) {
 #' ngrams(LETTERS[1:6], n = 3)   # "A_B_C" "B_C_D" "C_D_E" "D_E_F"
 #' 
 #' tokens <- tokenize("the quick brown fox jumped over the lazy dog.",
-#' removePunct = TRUE, simplify = TRUE)
+#'                    removePunct = TRUE, simplify = TRUE)
 #' ngrams(tokens, n = c(2,4), concatenator = " ")
 #' ## BUT THIS FAILS
 #' \dontrun{#' ngrams_c(tokens, n = c(2,4), concatenator = " ")}
@@ -273,4 +236,21 @@ ngrams_c <- function(x, n=2, skip = 0, concatenator="_"){
 skipgrams_c <- function(x, n, skip, concatenator="_"){
     skipgramcpp(x, n, 1 + skip, concatenator)
 }
+
+
+##
+## UNCOMMENT AND EXECUTE FOR SPEED COMPARISONS
+##
+# require(microbenchmark)
+# mycheck <- function(values)
+#     all(sapply(values[-1], function(x) identical(sort(values[[1]]), sort(x))))
+# 
+# toksN3 <- tokenize(toLower(inaugTexts[1:5]), removePunct = TRUE)
+# microbenchmark(unit = "relative", times = 50,
+#                ngrams_R = ngrams(toks, n = 3),
+#                ngrams_Cpp = lapply(toks, ngrams_c, n = 3))
+# 
+# microbenchmark(unit = "relative", times = 50,
+#                skipgrams_R = skipgrams(toks, n = 3, skip = 2),
+#                skipgrams_Cpp = lapply(toks, skipgrams_c, n = 3, skip = 2))
 

@@ -75,6 +75,7 @@ ngrams(tokens, n = c(2,4), skip = 1:2, concatenator = " ")
 # skipgrams
 tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."),
                    removePunct = TRUE, simplify = TRUE)
+skipgrams(tokens, n = 2, skip = 1, concatenator = " ")
 skipgrams(tokens, n = 2, skip = 2, concatenator = " ")
 skipgrams(tokens, n = 3, skip = 2, concatenator = " ")
 }
