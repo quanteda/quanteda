@@ -112,8 +112,8 @@ head(docvars(inaugCorpus))
 metacorpus(inaugCorpus)
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-txt <- c(text1="This is $10 in 999 different ways,\n up and down; left and right!", 
-         text2="@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123.")
+txt <- c(text1 = "This is $10 in 999 different ways,\n up and down; left and right!", 
+         text2 = "@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123.")
 tokenize(txt)
 tokenize(txt, removeNumbers=TRUE, removePunct=TRUE)
 tokenize(txt, removeNumbers=FALSE, removePunct=TRUE)

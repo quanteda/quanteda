@@ -47,7 +47,7 @@ readability.character <- function(x, measure = c("all", "ARI", "ARI.simple", "Bo
                                                  "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de", 
                                                  "Spache", "Spache.old", "Strain",
                                                  "Traenkle.Bailer", "Traenkle.Bailer.2",
-                                                 "Wheeler.Smith"),
+                                                 "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
                                   drop = TRUE) {
     
     # check that all measures are legal values
@@ -65,7 +65,9 @@ readability.character <- function(x, measure = c("all", "ARI", "ARI.simple", "Bo
                                    "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de", 
                                    "Spache", "Spache.old", "Strain",
                                    "Traenkle.Bailer", "Traenkle.Bailer.2",
-                                   "Wheeler.Smith")
+                                   "Wheeler.Smith",
+                                   "meanSentenceLength",
+                                   "meanWordSyllables")
     if (!all(checkMeasure))
         stop("Invalid readability measures: ", measure[!checkMeasure])
 
@@ -78,7 +80,7 @@ readability.character <- function(x, measure = c("all", "ARI", "ARI.simple", "Bo
         FORCAST <- FORCAST.RGL <- Fucks <- Linsear.Write <- LIW <- nWS <- nWS.2 <- nWS.3 <- nWS.4 <- 
         RIX <- SMOG <- SMOG.C <- SMOG.simple <- SMOG.de <- Spache <- Spache.old <- Strain <- Wheeler.Smith <- 
         wordlists <- Bormuth.MC <- Bl <- Traenkle.Bailer <- Traenkle.Bailer.2 <- Bormuth <- 
-        Coleman.Liau <- NULL
+        Coleman.Liau <- meanSentenceLength <- meanWordSyllables <- NULL
     
     if (is.null(names(x)))
         names(x) <- paste0("text", 1:length(x))
@@ -199,6 +201,12 @@ readability.character <- function(x, measure = c("all", "ARI", "ARI.simple", "Bo
     
     if (any(c("all", "Flesch.Kincaid") %in% measure))
         textFeatures[, Flesch.Kincaid := 0.39 * W / St + 11.8 * Sy / W - 15.59]
+    
+    if (any(c("all", "meanSentenceLength") %in% measure))
+        textFeatures[, meanSentenceLength := W / St]
+    
+    if (any(c("all", "meanWordSyllables") %in% measure))
+        textFeatures[, meanWordSyllables := Sy / W]
     
     if (any(c("all", "FOG") %in% measure))
         textFeatures[, FOG := 0.4 * ( W / St + 100 * W3Sy / W )]

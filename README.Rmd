@@ -127,7 +127,7 @@ as `demo(quanteda)`.
 Example
 -------
 
-```{r quanteda_example}
+```{r quanteda_example, fig.width=7, fig.height=7}
 library(quanteda)
 # create a corpus from the immigration texts from UK party platforms
 uk2010immigCorpus <- corpus(ukimmigTexts,
@@ -144,7 +144,6 @@ kwic(uk2010immigCorpus, "deport", 3)
 mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
 dim(mydfm)              # basic dimensions of the dfm
 topfeatures(mydfm, 20)  # 20 top words
-if (Sys.info()['sysname']=="Darwin") quartz() # open nicer window, Mac only
-plot(mydfm)             # word cloud     
+plot(mydfm, min.freq = 6, random.order = FALSE)             # word cloud     
 ```
 

@@ -2,6 +2,7 @@
 % Please edit documentation in R/tokenize.R
 \name{tokenize}
 \alias{clean}
+\alias{is.tokenizedTexts}
 \alias{tokenise}
 \alias{tokenize}
 \alias{tokenize.character}
@@ -12,10 +13,13 @@ tokenize(x, ...)
 
 \method{tokenize}{character}(x, what = c("word", "sentence", "character",
   "fastestword", "fasterword"), removeNumbers = FALSE, removePunct = FALSE,
-  removeSeparators = TRUE, removeTwitter = FALSE, ngrams = 1,
-  concatenator = "_", simplify = FALSE, verbose = FALSE, ...)
+  removeSeparators = TRUE, removeTwitter = FALSE, removeHyphens = FALSE,
+  ngrams = 1L, window = 1L, concatenator = "_", simplify = FALSE,
+  verbose = FALSE, ...)
 
 \method{tokenize}{corpus}(x, ...)
+
+is.tokenizedTexts(x)
 }
 \arguments{
 \item{x}{The text(s) or corpus to be tokenized}
@@ -33,19 +37,30 @@ words that start with digits, e.g. \code{2day}}
 
 \item{removeSeparators}{remove Separators and separator characters (spaces
 and variations of spaces, plus tab, newlines, and anything else in the
-Unicode "separator" category) when \code{removePunct=FALSE}.  Only applicable
-for \code{what = "character"} (when you probably want it to be \code{FALSE})
-and for \code{what = "word"} (when you probably want it to be \code{TRUE}).  Note that
-if \code{what = "word"} and you set \code{removePunct = TRUE}, then
-\code{removeSeparators} has no effect.  Use carefully.}
+Unicode "separator" category) when \code{removePunct=FALSE}.  Only
+applicable for \code{what = "character"} (when you probably want it to be
+\code{FALSE}) and for \code{what = "word"} (when you probably want it to be
+\code{TRUE}).  Note that if \code{what = "word"} and you set
+\code{removePunct = TRUE}, then \code{removeSeparators} has no effect.  Use
+carefully.}
 
 \item{removeTwitter}{remove Twitter characters \code{@} and \code{#}; set to
 \code{FALSE} if you wish to eliminate these.}
+
+\item{removeHyphens}{if \code{TRUE}, split words that are connected by
+hyphenation and hyphenation-like characters in between words, e.g.
+\code{"self-storage"} becomes \code{c("self", "storage")}.  Default is
+\code{FALSE} to preserve such words as is, with the hyphens.  Only applies if
+\code{what = "word"}.}
 
 \item{ngrams}{integer vector of the \emph{n} for \emph{n}-grams, defaulting
 to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for
 bigrams and unigrams, use \code{1:2}.  You can even include irregular
 sequences such as \code{2:3} for bigrams and trigrams only.}
+
+\item{window}{integer vector specifying the adjacency width for tokens
+forming the \emph{n}-grams, default is 1 for only immediately neighbouring
+words. Only applies if \code{ngrams} is different from the default of 1.}
 
 \item{concatenator}{character to use in concatenating \emph{n}-grams, default
 is "\code{_}", which is recommended since this is included in the regular
@@ -63,10 +78,12 @@ default}
 A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
 
 a \strong{tokenizedText} (S3) object, essentially a list of character
-  vectors. If \code{simplify=TRUE} then return a single character vector.
+  vectors. If \code{simplify = TRUE} then return a single character vector.
 }
 \description{
 Tokenize the texts from a character vector or from a corpus.
+
+\code{is.tokenizedTexts} returns \code{TRUE} if the object is of class tokenizedTexts, \code{FALSE} otherwise.
 }
 \details{
 The tokenizer is designed to be fast and flexible as well as to
@@ -99,6 +116,9 @@ head(tokenize(inaugTexts[57], simplify=TRUE), 10)
 head(tokenize(toLower(inaugTexts[57]), simplify=TRUE, removePunct=TRUE), 30)
 # keeping case and punctuation
 head(tokenize(inaugTexts[57], simplify=TRUE), 30)
+# keeping versus removing hyphens
+tokenize("quanteda data objects are auto-loading.", removePunct = TRUE)
+tokenize("quanteda data objects are auto-loading.", removePunct = TRUE, removeHyphens = TRUE)
 
 ## MORE COMPARISONS
 txt <- "#textanalysis is MY <3 4U @myhandle gr8 #stuff :-)"
@@ -137,9 +157,13 @@ tokenize(txt, removePunct = TRUE)
 removeFeatures(tokenize(txt, removePunct = TRUE), stopwords("english"))
 tokenize(txt, removePunct = TRUE, ngrams = 2)
 tokenize(txt, removePunct = TRUE, ngrams = 1:2)
+tokenize(txt, removePunct = TRUE, ngrams = 2, window = 2, concatenator = " ")
 removeFeatures(tokenize(txt, removePunct = TRUE, ngrams = 1:2), stopwords("english"))
 }
 \author{
 Ken Benoit and Paul Nulty
+}
+\seealso{
+\code{\link{ngrams}}
 }
 

@@ -16,12 +16,13 @@ dfm(x, ...)
   removeTwitter = FALSE, stem = FALSE, ignoredFeatures = NULL,
   keptFeatures = NULL, matrixType = c("sparse", "dense"),
   language = "english", thesaurus = NULL, dictionary = NULL,
-  dictionary_regex = FALSE, ...)
+  valuetype = c("glob", "regex", "fixed"), dictionary_regex = FALSE, ...)
 
 \method{dfm}{tokenizedTexts}(x, verbose = TRUE, toLower = TRUE,
   stem = FALSE, ignoredFeatures = NULL, keptFeatures = NULL,
   matrixType = c("sparse", "dense"), language = "english",
-  thesaurus = NULL, dictionary = NULL, dictionary_regex = FALSE, ...)
+  thesaurus = NULL, dictionary = NULL, valuetype = c("glob", "regex",
+  "fixed"), dictionary_regex = FALSE, ...)
 
 \method{dfm}{corpus}(x, verbose = TRUE, groups = NULL, ...)
 
@@ -57,17 +58,18 @@ characters, see \link{tokenize} #'}
 ignore, such as "stop words".  Formerly, this was a Boolean option for
 \code{stopwords = TRUE}, but requiring the user to supply the list
 highlights the choice involved in using any stopword list.  To access one
-possible list (from any list you wish), use \code{\link{stopwords}()}.}
+possible list (from any list you wish), use \code{\link{stopwords}()}.  The
+pattern matching type will be set by \code{valuetype}.  For behaviour of
+\code{ingoredFeatures} with \code{ngrams > 1}, see Details.}
 
 \item{keptFeatures}{a use supplied regular expression defining which features
 to keep, while excluding all others.  This can be used in lieu of a
 dictionary if there are only specific features that a user wishes to keep.
 To extract only Twitter usernames, for example, set \code{keptFeatures =
-"^@\\\w+\\\b"} and make sure that \code{removeTwitter = FALSE} as an
-additional argument passed to \link{tokenize}.  (Note: \code{keptFeatures =
-"^@"} will also retrieve usernames, but does not enforce the username
-convention that a username must contain one and only one \code{@} symbol,
-at the beginning of the username.)}
+"@*"} and make sure that \code{removeTwitter = FALSE} as an additional
+argument passed to \link{tokenize}.  Note: \code{keptFeatures =
+"^@\\\w+\\\b"} would be the regular expression version of this matching
+pattern.  The pattern matching type will be set by \code{valuetype}.}
 
 \item{matrixType}{deprecated, used to produce a dense matrix if \code{dense},
 but this was removed in 0.8.2.  All dfm objects are now created as a sparse
@@ -95,9 +97,14 @@ was not a type found in the text, but rather the label of a thesaurus key.}
 \item{dictionary}{A list of character vector dictionary entries, including
 regular expressions (see examples)}
 
+\item{valuetype}{\code{fixed} for words as is; \code{"regex"} for regular
+expressions; or \code{"glob"} for "glob"-style wildcard.  Glob format is
+the default.  See \code{\link{selectFeatures}}.}
+
 \item{dictionary_regex}{\code{TRUE} means the dictionary is already in
-regular expression format, otherwise it will be converted from "wildcard"
-format}
+regular expression format, otherwise it will be converted from the "glob"
+format.  This is a legacy argument that will soon be phased out in favour
+of \code{valuetype}.}
 
 \item{groups}{character vector containing the names of document variables for
 aggregating documents}
@@ -115,6 +122,13 @@ both much faster and much more memory efficient than the corresponding dense
 dfm class, see \link{dfm-class}.
 }
 \details{
+The default behavior for \code{ignoredFeatures} when constructing
+  ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to remove any ngram that
+  contains any item in \code{ignoredFeatures}.  If you wish to remove these before
+  constructing ngrams, you will need to first tokenize the texts with ngrams, then
+  remove the features to be ignored, and then construct the dfm using this modified
+  tokenization object.  See the code examples for an illustration.
+
 \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
 
 \code{as.dfm} coerces a matrix or data.frame to a dfm
@@ -151,42 +165,36 @@ dictDfm
 mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
              "New York City has raised a taxes: an income tax and a sales tax.")
 mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax")))
-dfm(phrasetotoken(mytexts, mydict), thesaurus=lapply(mydict, function(x) gsub("\\\\s", "_", x)))
+dfm(phrasetotoken(mytexts, mydict), thesaurus = lapply(mydict, function(x) gsub("\\\\s", "_", x)))
 # pick up "taxes" with "tax" as a regex
-dfm(phrasetotoken(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE)
+dfm(phrasetotoken(mytexts, mydict), thesaurus = list(anytax = "tax"), valuetype = "regex")
 
 # removing stopwords
 testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
              the newspaper from a boy named Seamus, in his mouth."
 testCorpus <- corpus(testText)
-# settings(testCorpus, "stopwords")
-dfm(testCorpus, ignoredFeatures = stopwords("english"))
-features(dfm(testCorpus, verbose = FALSE, ngrams = 1:2))
-features(dfm(testCorpus, verbose = FALSE, ngrams = 2))
+# note: "also" is not in the default stopwords("english")
+features(dfm(testCorpus, ignoredFeatures = stopwords("english")))
+# for ngrams
+features(dfm(testCorpus, ngrams = 2, ignoredFeatures = stopwords("english")))
+features(dfm(testCorpus, ngrams = 1:2, ignoredFeatures = stopwords("english")))
+
+## removing stopwords before constructing ngrams
+tokensAll <- tokenize(toLower(testText), removePunct = TRUE)
+tokensNoStopwords <- removeFeatures(tokensAll, stopwords("english"))
+tokensNgramsNoStopwords <- ngrams(tokensNoStopwords, 2)
+features(dfm(tokensNgramsNoStopwords, ngrams = 1:2))
 
 # keep only certain words
-dfm(testCorpus, keptFeatures = "s$", verbose = FALSE)  # keep only words ending in "s"
+dfm(testCorpus, keptFeatures = "*s", verbose = FALSE)  # keep only words ending in "s"
+dfm(testCorpus, keptFeatures = "s$", valuetype = "regex", verbose = FALSE)
 
 # testing Twitter functions
 testTweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday #beliebers",
                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-dfm(testTweets, keptFeatures = "^#", removeTwitter = FALSE)  # keep only hashtags
-
-\dontrun{
-# try it with approx 35,000 court documents from Lauderdale and Clark (200?)
-load('~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/lauderdaleClark/Opinion_files.RData')
-txts <- unlist(Opinion_files[1])
-names(txts) <- NULL
-system.time(dfmsBig <- dfm(txts))
-object.size(dfmsBig)
-
-# compare with tm
-require(tm)
-tmcorp <- VCorpus(VectorSource(txts))
-system.time(tmDTM <- DocumentTermMatrix(tmcorp))
-object.size(tmDTM)
-}
+dfm(testTweets, keptFeatures = "#*", removeTwitter = FALSE)  # keep only hashtags
+dfm(testTweets, keptFeatures = "^#.*$", valuetype = "regex", removeTwitter = FALSE)
 }
 \author{
 Kenneth Benoit

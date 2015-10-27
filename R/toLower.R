@@ -47,12 +47,14 @@ toLower.NULL <- function(x, ...) NULL
 #' @rdname toLower
 #' @export
 toLower.tokenizedTexts <- function(x, keepAcronyms=FALSE, ...) {
+    attributes_saved <- attributes(x)
     typeTest <- all(sapply(x, is.character))
     if (!typeTest) {
         stop("Each element of the list must be a character vector.")
     }
     x <- lapply(x, toLower, keepAcronyms=keepAcronyms, ...)
     class(x) <- c("tokenizedTexts", class(x))
+    attributes(x) <- attributes_saved
     x
 }
 

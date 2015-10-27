@@ -41,16 +41,17 @@ dfm <- function(x, ...) {
 #'   ignore, such as "stop words".  Formerly, this was a Boolean option for 
 #'   \code{stopwords = TRUE}, but requiring the user to supply the list 
 #'   highlights the choice involved in using any stopword list.  To access one 
-#'   possible list (from any list you wish), use \code{\link{stopwords}()}.
+#'   possible list (from any list you wish), use \code{\link{stopwords}()}.  The
+#'   pattern matching type will be set by \code{valuetype}.  For behaviour of 
+#'   \code{ingoredFeatures} with \code{ngrams > 1}, see Details.
 #' @param keptFeatures a use supplied regular expression defining which features
 #'   to keep, while excluding all others.  This can be used in lieu of a 
 #'   dictionary if there are only specific features that a user wishes to keep. 
 #'   To extract only Twitter usernames, for example, set \code{keptFeatures = 
-#'   "^@@\\\w+\\\b"} and make sure that \code{removeTwitter = FALSE} as an 
-#'   additional argument passed to \link{tokenize}.  (Note: \code{keptFeatures =
-#'   "^@@"} will also retrieve usernames, but does not enforce the username 
-#'   convention that a username must contain one and only one \code{@@} symbol, 
-#'   at the beginning of the username.)
+#'   "@@*"} and make sure that \code{removeTwitter = FALSE} as an additional 
+#'   argument passed to \link{tokenize}.  Note: \code{keptFeatures = 
+#'   "^@@\\\w+\\\b"} would be the regular expression version of this matching 
+#'   pattern.  The pattern matching type will be set by \code{valuetype}.
 #' @param dictionary A list of character vector dictionary entries, including 
 #'   regular expressions (see examples)
 #' @param thesaurus A list of character vector "thesaurus" entries, in a 
@@ -60,9 +61,13 @@ dfm <- function(x, ...) {
 #'   the first match in the list will be used.  Thesaurus keys are converted to 
 #'   upper case to create a feature label in the dfm, as a reminder that this 
 #'   was not a type found in the text, but rather the label of a thesaurus key.
+#' @param valuetype \code{fixed} for words as is; \code{"regex"} for regular 
+#'   expressions; or \code{"glob"} for "glob"-style wildcard.  Glob format is 
+#'   the default.  See \code{\link{selectFeatures}}.
 #' @param dictionary_regex \code{TRUE} means the dictionary is already in 
-#'   regular expression format, otherwise it will be converted from "wildcard" 
-#'   format
+#'   regular expression format, otherwise it will be converted from the "glob" 
+#'   format.  This is a legacy argument that will soon be phased out in favour 
+#'   of \code{valuetype}.
 #' @param language Language for stemming and stopwords.  Choices are 
 #'   \code{danish}, \code{dutch}, \code{english}, \code{finnish}, \code{french},
 #'   \code{german}, \code{hungarian}, \code{italian}, \code{norwegian}, 
@@ -79,6 +84,12 @@ dfm <- function(x, ...) {
 #' @return A \link{dfm-class} object containing a sparse matrix representation 
 #'   of the counts of features by document, along with associated settings and 
 #'   metadata.
+#' @details The default behavior for \code{ignoredFeatures} when constructing
+#'   ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to remove any ngram that
+#'   contains any item in \code{ignoredFeatures}.  If you wish to remove these before
+#'   constructing ngrams, you will need to first tokenize the texts with ngrams, then
+#'   remove the features to be ignored, and then construct the dfm using this modified
+#'   tokenization object.  See the code examples for an illustration.
 #' @author Kenneth Benoit
 #' @importFrom parallel mclapply
 #' @import data.table Matrix
@@ -115,42 +126,37 @@ dfm <- function(x, ...) {
 #' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
 #'              "New York City has raised a taxes: an income tax and a sales tax.")
 #' mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inheritance tax")))
-#' dfm(phrasetotoken(mytexts, mydict), thesaurus=lapply(mydict, function(x) gsub("\\s", "_", x)))
+#' dfm(phrasetotoken(mytexts, mydict), thesaurus = lapply(mydict, function(x) gsub("\\s", "_", x)))
 #' # pick up "taxes" with "tax" as a regex
-#' dfm(phrasetotoken(mytexts, mydict), thesaurus=list(anytax="tax"), dictionary_regex=TRUE)
+#' dfm(phrasetotoken(mytexts, mydict), thesaurus = list(anytax = "tax"), valuetype = "regex")
 #' 
 #' # removing stopwords
 #' testText <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
 #'              the newspaper from a boy named Seamus, in his mouth."
 #' testCorpus <- corpus(testText)
-#' # settings(testCorpus, "stopwords")
-#' dfm(testCorpus, ignoredFeatures = stopwords("english"))
-#' features(dfm(testCorpus, verbose = FALSE, ngrams = 1:2))
-#' features(dfm(testCorpus, verbose = FALSE, ngrams = 2))
+#' # note: "also" is not in the default stopwords("english")
+#' features(dfm(testCorpus, ignoredFeatures = stopwords("english")))
+#' # for ngrams
+#' features(dfm(testCorpus, ngrams = 2, ignoredFeatures = stopwords("english")))
+#' features(dfm(testCorpus, ngrams = 1:2, ignoredFeatures = stopwords("english")))
+#' 
+#' ## removing stopwords before constructing ngrams
+#' tokensAll <- tokenize(toLower(testText), removePunct = TRUE)
+#' tokensNoStopwords <- removeFeatures(tokensAll, stopwords("english"))
+#' tokensNgramsNoStopwords <- ngrams(tokensNoStopwords, 2)
+#' features(dfm(tokensNgramsNoStopwords, ngrams = 1:2))
 #' 
 #' # keep only certain words
-#' dfm(testCorpus, keptFeatures = "s$", verbose = FALSE)  # keep only words ending in "s"
+#' dfm(testCorpus, keptFeatures = "*s", verbose = FALSE)  # keep only words ending in "s"
+#' dfm(testCorpus, keptFeatures = "s$", valuetype = "regex", verbose = FALSE)
 #' 
 #' # testing Twitter functions
 #' testTweets <- c("My homie @@justinbieber #justinbieber shopping in #LA yesterday #beliebers",
 #'                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
 #'                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-#' dfm(testTweets, keptFeatures = "^#", removeTwitter = FALSE)  # keep only hashtags
+#' dfm(testTweets, keptFeatures = "#*", removeTwitter = FALSE)  # keep only hashtags
+#' dfm(testTweets, keptFeatures = "^#.*$", valuetype = "regex", removeTwitter = FALSE)
 #' 
-#' \dontrun{
-#' # try it with approx 35,000 court documents from Lauderdale and Clark (200?)
-#' load('~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/lauderdaleClark/Opinion_files.RData')
-#' txts <- unlist(Opinion_files[1])
-#' names(txts) <- NULL
-#' system.time(dfmsBig <- dfm(txts))
-#' object.size(dfmsBig)
-#' 
-#' # compare with tm
-#' require(tm)
-#' tmcorp <- VCorpus(VectorSource(txts))
-#' system.time(tmDTM <- DocumentTermMatrix(tmcorp))
-#' object.size(tmDTM)
-#' }
 dfm.character <- function(x, 
                           verbose=TRUE, 
                           toLower=TRUE, 
@@ -166,11 +172,13 @@ dfm.character <- function(x,
                           matrixType=c("sparse", "dense"), 
                           language="english",
                           thesaurus=NULL, 
-                          dictionary=NULL, 
-                          dictionary_regex=FALSE, 
+                          dictionary=NULL,
+                          valuetype = c("glob", "regex", "fixed"),
+                          dictionary_regex = FALSE, 
                           ...) {
     startTime <- proc.time()
     matrixType <- match.arg(matrixType)
+    valuetype <- match.arg(valuetype)
     
     if (verbose && grepl("^dfm\\.character", sys.calls()[[2]]))
         cat("Creating a dfm from a character vector ...")
@@ -188,12 +196,24 @@ dfm.character <- function(x,
                                removeTwitter = removeTwitter,
                                ...)
 
+    # if ngrams > 1 and ignoredFeatures are specified, then convert these into a
+    # regex that will remove any ngram containing one of the words
+#     if (!identical(attr(tokenizedTexts, "ngrams"), 1) & !is.null(ignoredFeatures)) {
+#         conc <- attr(tokenizedTexts, "concatenator")
+#         if (valuetype == "glob") {
+#             ignoredFeatures <- gsub("\\*", ".*", ignoredFeatures)
+#             ignoredFeatures <- gsub("\\?", ".{1}", ignoredFeatures)
+#         }
+#         ignoredFeatures <- paste0("(\\b|(\\w+", conc, ")+)", ignoredFeatures, "(\\b|(", conc, "\\w+)+)")
+#         valuetype <- "regex"
+#     }
+    
     dfm(tokenizedTexts, verbose=verbose, toLower=toLower, stem=stem, 
         ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
         matrixType=matrixType, language=language,
-        thesaurus=thesaurus, dictionary=dictionary, dictionary_regex=dictionary_regex,
+        thesaurus=thesaurus, dictionary=dictionary, valuetype = valuetype, 
+        dictionary_regex = dictionary_regex,
         startTime = startTime)
-    
 }
 
     
@@ -210,8 +230,14 @@ dfm.tokenizedTexts <- function(x,
                                language="english",
                                thesaurus=NULL, 
                                dictionary=NULL, 
-                               dictionary_regex=FALSE,
+                               valuetype = c("glob", "regex", "fixed"),
+                               dictionary_regex = FALSE,
                                ...) {
+    
+    settings_ngrams <- attr(x, "ngrams")
+    settings_concatenator <- attr(x, "concatenator")
+    
+    valuetype <- match.arg(valuetype)
     dots <- list(...)
     startTime <- proc.time()
     if ("startTime" %in% names(dots)) startTime <- dots$startTime
@@ -233,6 +259,10 @@ dfm.tokenizedTexts <- function(x,
         cat("Creating a dfm from a tokenizedTexts object ...")
     }
 
+    # add a "NULL" token to every tokenized text, in case some are empty
+    x <- lapply(x, function(t) t <- c(t, "**_NULL_**"))
+    class(x) <- c("tokenizedTexts", "list")
+    
     # get document names
     if (is.null(names(x))) {
         docNames <- paste("text", 1:length(x), sep="")
@@ -248,10 +278,10 @@ dfm.tokenizedTexts <- function(x,
     # index features
     if (verbose) cat("\n   ... indexing features: ")
     allFeatures <- unlist(x)
-    uniqueFeatures <- unique(allFeatures) 
+    uniqueFeatures <- unique(allFeatures)
     totalfeatures <- length(uniqueFeatures)
-    if (verbose) cat(format(totalfeatures, big.mark=","), " feature type",
-                     ifelse(totalfeatures > 1, "s", ""), sep="")
+    if (verbose) cat(format(totalfeatures - 1, big.mark=","), " feature type",
+                     ifelse(totalfeatures - 1  > 1, "s", ""), sep="")
     featureIndex <- match(allFeatures, uniqueFeatures)
     
     if (verbose) cat("\n")
@@ -261,16 +291,18 @@ dfm.tokenizedTexts <- function(x,
                               j = featureIndex, 
                               x = 1L, 
                               dimnames = list(docs = docNames, features = uniqueFeatures))
+    # remove null term
+    dfmresult <- dfmresult[, -match("**_NULL_**", colnames(dfmresult)), drop = FALSE]
+    # construct the dfmSparse type object
     dfmresult <- new("dfmSparse", dfmresult)
     
-    if (!is.null(ignoredFeatures)) {
-        if (verbose) cat("   ... ")
-        dfmresult <- selectFeatures(dfmresult, ignoredFeatures, selection = "remove", verbose = verbose)
-    }
+    # copy attributes
+    dfmresult@ngrams <- settings_ngrams
+    dfmresult@concatenator <- settings_concatenator
     
-    if (!is.null(keptFeatures)) {
-        if (verbose) cat("   ... ")
-        dfmresult <- selectFeatures(dfmresult, keptFeatures, selection = "keep", verbose = verbose)
+    if (dictionary_regex & valuetype != "regex") {
+        warning("dictionary_regex is deprecated, use valuetype = \"regex\" instead.")
+        valuetype <- "regex"
     }
     
     if (!is.null(dictionary) | !is.null(thesaurus)) {
@@ -278,7 +310,7 @@ dfm.tokenizedTexts <- function(x,
         if (verbose) cat("   ... ")
         dfmresult <- applyDictionary(dfmresult, dictionary,
                                      exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
-                                     valuetype = ifelse(dictionary_regex, "regex", "glob"),
+                                     valuetype = valuetype,
                                      verbose = verbose,
                                      ...)
     }
@@ -289,6 +321,17 @@ dfm.tokenizedTexts <- function(x,
         dfmresult <- wordstem(dfmresult, language)
         if (verbose & (oldNfeature - nfeature(dfmresult)) > 0) 
             cat(", trimmed", oldNfeature - nfeature(dfmresult), "feature variants\n")
+        else cat("\n")
+    }
+    
+    if (!is.null(ignoredFeatures)) {
+        if (verbose) cat("   ... ")
+        dfmresult <- selectFeatures(dfmresult, ignoredFeatures, selection = "remove", valuetype = valuetype, verbose = verbose)
+    }
+    
+    if (!is.null(keptFeatures)) {
+        if (verbose) cat("   ... ")
+        dfmresult <- selectFeatures(dfmresult, keptFeatures, selection = "keep", valuetype = valuetype, verbose = verbose)
     }
     
     if (verbose) 

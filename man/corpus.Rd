@@ -136,31 +136,23 @@ ukimmigCorpus <- corpus(ukimmigTexts,
                         encTo = "UTF-16")
 
 corpus(texts(ie2010Corpus))
-
-\dontrun{# automatically russian tests from windows-1251 to UTF-8
-myRussianCorpus <- corpus(textfile("~/Dropbox/QUANTESS/corpora/pozhdata/*.txt"))
-cat(texts(myRussianCorpus)[1])
-}
-\donttest{# the fifth column of this csv file is the text field
+\dontrun{# the fifth column of this csv file is the text field
 mytexts <- textfile("http://www.kenbenoit.net/files/text_example.csv", textField = 5)
 mycorp <- corpus(mytexts)
 mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField = "Title"))
 identical(texts(mycorp), texts(mycorp2))
 identical(docvars(mycorp), docvars(mycorp2))
-# some Cyrillic texts in WINDOWS-1251 - auto-detected and converted
-mycorp <- corpus(textfile("~/Dropbox/QUANTESS/corpora/pozhdata/*.txt"))
-cat(texts(mycorp)[1])
 }
 # import a tm VCorpus
-if (require(tm)) {
-    data(crude)    # load in a tm example VCorpus
+if ("tm" \%in\% rownames(installed.packages())) {
+    data(crude, package = "tm")    # load in a tm example VCorpus
     mytmCorpus <- corpus(crude)
     summary(mytmCorpus, showmeta=TRUE)
 
-    data(acq)
+    data(acq, package = "tm")
     summary(corpus(acq), 5, showmeta=TRUE)
 
-    tmCorp <- VCorpus(VectorSource(inaugTexts[49:57]))
+    tmCorp <- tm::VCorpus(tm::VectorSource(inaugTexts[49:57]))
     quantCorp <- corpus(tmCorp)
     summary(quantCorp)
 }

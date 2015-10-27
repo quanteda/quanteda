@@ -43,8 +43,8 @@ encoding(ukimmigTexts)
 encoding(inaugCorpus)
 encoding(ie2010Corpus)
 
-\dontrun{# Russian texts
-mytextfile <- textfile("~/Dropbox/QUANTESS/corpora/pozhdata/*.txt", cache = FALSE)
+\dontrun{# Russian text, Windows-1251
+mytextfile <- textfile("http://www.kenbenoit.net/files/01_er_5.txt", cache = FALSE)
 encoding(mytextfile)
 }
 }

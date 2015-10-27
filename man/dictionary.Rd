@@ -5,7 +5,7 @@
 \title{create a dictionary}
 \usage{
 dictionary(x = NULL, file = NULL, format = NULL, enc = "",
-  tolower = TRUE, maxcats = 10)
+  tolower = TRUE, maxcats = 25)
 }
 \arguments{
 \item{x}{a list of character vector dictionary entries, including regular
@@ -54,12 +54,12 @@ mydict <-
 dfm(mycorpus, dictionary=mydict)
 \dontrun{
 # import the Laver-Garry dictionary from http://bit.ly/1FH2nvf
-lgdict <- dictionary(file="~/Dropbox/QUANTESS/dictionaries/Misc Provalis/LaverGarry.cat",
+lgdict <- dictionary(file="http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat",
                      format="wordstat")
 dfm(inaugTexts, dictionary=lgdict)
 
 # import a LIWC formatted dictionary
-liwcdict <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
+liwcdict <- dictionary(file = "http://www.kenbenoit.net/files/LIWC2001_English.dic",
                        format = "LIWC")
 dfm(inaugTexts, dictionary=liwcdict)
 }

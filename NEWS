@@ -1,5 +1,50 @@
-quanteda 0.8.3
+quanteda 0.8.7
 ==============
+
+*  tokenize() has a new argument, removeHyphens, that controls the treatment of intra-word hyphens.
+
+*  added new measures from readability for mean syllables per word and mean words per sentence directly.
+
+Bug Fixes
+---------
+*  corrected inaccurate printing of valuetype in verbose note of selectFeatures.dfm().  (Did not affect functionality.)
+
+quanteda 0.8.6
+==============
+
+*  removeFeatures.dfm(x, stopwords), selectFeatures.dfm(x, features), and dfm(x, ignoredFeatures) now work on objects created with ngrams.  (Any ngram containing a stopword is removed.)  Performance on these functions is already good but will be improved further soon.
+
+*  selectFeatures(x, features = <anotherdfm>) is now possible, to produce a selection of features from x identical to those in <dfm>.  Not only are only features kept in x that are in <anotherdfm>, but also fatures in <anotherdfm> not in x are added to x as padded zero counts.  This functionality can also be accessed via dfm(x, keptFeatures = <anotherdfm>).  This is useful when new data used in a test set needs to have identical features as a training set dfm constructed at an earlier stage.
+
+*  head.dfm() and tail.dfm() methods added.
+
+*  kwic() has new formals and new functionality, including a completely flexible set of matching for phrases, as well as control over how the texts and matching keyword(s) are tokenized.
+
+*  segment(x, what = "sentence"), and changeunits(x, to = "sentences") now uses tokenize(x, what = "sentence").  Annoying warning messages now gone.
+
+*  smoother() and weight() formal "smooth" now changed to "smoothing" to avoid clashes with stats::smooth().
+
+*  Updated `corpus.VCorpus()` to work with recent updates to the **tm** package.
+
+*  added print method for tokenizedTexts
+
+Bug fixes
+---------
+
+*  fixed signature error message caused by `weight(x, "relFreq")` and `weight(x, "tfidf")`.  Both now correctly produce objects of class dfmSparse.
+
+*  fixed bug in dfm(, keptFeatures = "whatever") that passed it through as a glob rather than a regex to selectFeatures().  Now takes a regex, as per the manual description.
+
+*  fixed textfeatures() for type json, where now it can call jsonlite::fromJSON() on a file directly.
+
+*  dictionary(x, format = "LIWC") now expanded to 25 categories by default, and handles entries that are listed on multiple lines in .dic files, such as those distributed with the LIWC.
+
+quanteda 0.8.4
+==============
+
+*  ngrams() rewritten to accept fully vectorized arguments for `n` and for `window`, thus implementing "skip-grams".
+   Separate function skipgrams() behaves in the standard "skipgram" fashion.
+   bigrams(), deprecated since 0.7, has been removed from the namespace.
 
 *  corpus() no longer checks all documents for text encoding; rather, this is now based on a random sample of max()
 
@@ -7,7 +52,8 @@ quanteda 0.8.3
 
 *  toLower.NULL() now allows toLower() to work on texts with no words (returns NULL for NULL input)
 
-*  textfile() now works on zip archives of *.txt files
+*  textfile() now works on zip archives of *.txt files, although this may not be entirely portable.
+
 
 Bug fixes
 ---------
@@ -15,6 +61,9 @@ Bug fixes
 *  fixed bug in selectFeatures() / removeFeatures() that returned zero features if no features were found matching removal pattern
 
 *  corpus() previously removed document names, now fixed
+
+*  non-portable \donttest{} examples now removed completely from all documentation
+
 
 quanteda 0.8.2
 ==============

@@ -105,3 +105,27 @@ wordstem.dfm <- function(x, language = "porter") {
 #                                wordstem(xdfm), 
 #                                wordstem2(xdfm))
 
+
+# FOR LEMMATIZATION:
+# (see http://stackoverflow.com/questions/22993796/lemmatizer-in-r-or-python-am-are-is-be/22994954#22994954)
+#     
+#     lemmatize <- function(wordlist) {
+#         get.lemma <- function(word, url) {
+#             response <- GET(url,query=list(spelling=word,standardize="",
+#                                            wordClass="",wordClass2="",
+#                                            corpusConfig="ncf",    # Nineteenth Century Fiction
+#                                            media="xml"))
+#             content <- content(response,type="text")
+#             xml     <- xmlInternalTreeParse(content)
+#             return(xmlValue(xml["//lemma"][[1]]))    
+#         }
+#         require(httr)
+#         require(XML)
+#         url <- "http://devadorner.northwestern.edu/maserver/lemmatizer"
+#         return(sapply(wordlist,get.lemma,url=url))
+#     }
+# 
+# words <- c("is","am","was","are")
+# lemmatize(words)
+# #   is   am  was  are 
+# # "be" "be" "be" "be" 

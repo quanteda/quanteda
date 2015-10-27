@@ -85,10 +85,6 @@ corpus <- function(x, ...) {
 #'
 #' corpus(texts(ie2010Corpus))
 #' 
-#' \dontrun{# automatically russian tests from windows-1251 to UTF-8
-#' myRussianCorpus <- corpus(textfile("~/Dropbox/QUANTESS/corpora/pozhdata/*.txt"))
-#' cat(texts(myRussianCorpus)[1])
-#' }
 corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvars=NULL,
                              source=NULL, notes=NULL, citation=NULL, ...) {
     
@@ -175,15 +171,12 @@ corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvar
 #' @rdname corpus
 #' @export
 #' @examples
-#' \donttest{# the fifth column of this csv file is the text field
+#' \dontrun{# the fifth column of this csv file is the text field
 #' mytexts <- textfile("http://www.kenbenoit.net/files/text_example.csv", textField = 5)
 #' mycorp <- corpus(mytexts)
 #' mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", textField = "Title"))
 #' identical(texts(mycorp), texts(mycorp2))
 #' identical(docvars(mycorp), docvars(mycorp2))
-#' # some Cyrillic texts in WINDOWS-1251 - auto-detected and converted
-#' mycorp <- corpus(textfile("~/Dropbox/QUANTESS/corpora/pozhdata/*.txt"))
-#' cat(texts(mycorp)[1])
 #' }
 corpus.corpusSource <- function(x, ...) {
     sources <- NULL
@@ -202,22 +195,23 @@ corpus.corpusSource <- function(x, ...) {
 #'   no corpus-level metadata is imported, but we will add that soon.
 #' @examples 
 #' # import a tm VCorpus
-#' if (require(tm)) {
-#'     data(crude)    # load in a tm example VCorpus
+#' if ("tm" %in% rownames(installed.packages())) {
+#'     data(crude, package = "tm")    # load in a tm example VCorpus
 #'     mytmCorpus <- corpus(crude)
 #'     summary(mytmCorpus, showmeta=TRUE)
 #'     
-#'     data(acq)
+#'     data(acq, package = "tm")
 #'     summary(corpus(acq), 5, showmeta=TRUE)
 #'     
-#'     tmCorp <- VCorpus(VectorSource(inaugTexts[49:57]))
+#'     tmCorp <- tm::VCorpus(tm::VectorSource(inaugTexts[49:57]))
 #'     quantCorp <- corpus(tmCorp)
 #'     summary(quantCorp)
 #' }
 #' @export
 corpus.VCorpus <- function(x, ...) {
     # extract the content (texts)
-    texts <- sapply(x, function(x) x$content)
+    #texts <- sapply(x, function(x) x$content)
+    texts <- sapply(x, as.character)
     
     # special handling for VCorpus meta-data
     metad <- as.data.frame(t(as.data.frame(sapply(x, function(x) x$meta))))
@@ -227,11 +221,11 @@ corpus.VCorpus <- function(x, ...) {
     if (length(datetimestampIndex))
         metad$datetimestamp <- t(as.data.frame((lapply(metad$datetimestamp, as.POSIXlt))))[,1]
     # give them the underscore character required
-    names(metad) <- paste("_", names(metad), sep="")
+    # names(metad) <- paste("_", names(metad), sep="")
     
     # using docvars inappropriately here but they show up as docmeta given 
     # the _ in the variable names
-    corpus(texts, docvars=metad,
+    corpus(texts, docvars = metad,
            source = paste("Converted from tm VCorpus \'", deparse(substitute(x)), "\'", sep=""), ...)
 }
 
@@ -739,9 +733,9 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
         outputdf[names(metadoc(object))] <- metadoc(object)[1:min(c(n, ndoc(object))),,drop=FALSE]
     if (verbose) {
         print(head(outputdf, n), row.names=FALSE)
-        cat("\nSource:  ", unlist(metacorpus(object, "source")), ".\n", sep="")
-        cat("Created: ",   unlist(metacorpus(object, "created")), ".\n", sep="")
-        cat("Notes:   ",   unlist(metacorpus(object, "notes")), ".\n\n", sep="")
+        cat("\nSource:  ", unlist(metacorpus(object, "source")), "\n", sep="")
+        cat("Created: ",   unlist(metacorpus(object, "created")), "\n", sep="")
+        cat("Notes:   ",   unlist(metacorpus(object, "notes")), "\n\n", sep="")
     }
     # invisibly pass the summary of the texts from describetexts()
     return(invisible(outputdf))

@@ -2,6 +2,7 @@
 % Please edit documentation in R/dfm-classes.R
 \docType{methods}
 \name{print.dfm}
+\alias{print,dfm-method}
 \alias{print,dfmDense-method}
 \alias{print,dfmSparse-method}
 \alias{print.dfm}
@@ -9,25 +10,35 @@
 \alias{show,dfmSparse-method}
 \title{print a dfm object}
 \usage{
+\S4method{print}{dfm}(x, show.values = FALSE, show.settings = FALSE,
+  show.summary = TRUE, ndoc = 20L, nfeature = 20L, ...)
+
 \S4method{print}{dfmSparse}(x, show.values = FALSE, show.settings = FALSE,
-  ...)
+  show.summary = TRUE, ndoc = 20L, nfeature = 20L, ...)
 
 \S4method{print}{dfmDense}(x, show.values = FALSE, show.settings = FALSE,
-  ...)
+  show.summary = TRUE, ndoc = 20L, nfeature = 20L, ...)
 
 \S4method{show}{dfmSparse}(object)
 
 \S4method{show}{dfmDense}(object)
 
-\method{print}{dfm}(x, show.values = FALSE, show.settings = FALSE, ...)
+\method{print}{dfm}(x, show.values = FALSE, show.settings = FALSE,
+  show.summary = TRUE, ndoc = 20L, nfeature = 20L, ...)
 }
 \arguments{
 \item{x}{the dfm to be printed}
 
 \item{show.values}{print the dfm as a matrix or array (if resampled).}
 
-\item{show.settings}{Print the settings used to create the dfm.  See
+\item{show.settings}{print the settings used to create the dfm.  See
 \link{settings}.}
+
+\item{show.summary}{print a brief summary indicating the number of documents and features}
+
+\item{ndoc}{max number of documents to print}
+
+\item{nfeature}{max number of features to print}
 
 \item{...}{further arguments passed to or from other methods}
 

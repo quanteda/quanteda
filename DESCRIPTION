@@ -12,8 +12,9 @@ Author: Kenneth Benoit [aut, cre],
     Pablo Barberá [ctb],
     Kohei Watanabe [ctb],
     Benjamin Lauderdale [ctb]
-Version: 0.8.3-3
-Date: 2015-08-26
+Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
+Version: 0.8.7-4
+Date: 2015-10-26
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -80,4 +81,5 @@ Collate:
     'textmodel-wordscores.R'
     'toLower.R'
     'tokenize.R'
+    'tokenize_outtakes.R'
     'wordstem.R'

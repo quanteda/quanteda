@@ -114,6 +114,7 @@ setMethod("show",
 #' @author Kenneth Benoit and Paul Nulty
 #' @export
 #' @importFrom stats var
+#' @importFrom utils download.file unzip
 setGeneric("textfile",
            function(file, textField, encodingFrom = NULL, encodingTo = "UTF-8",
                     cache = FALSE, docvarsfrom = c("filenames"), dvsep="_", 
@@ -128,25 +129,18 @@ setGeneric("textfile",
 #' @rdname textfile
 #' @export
 #' @examples 
-#' \donttest{# Twitter json
-#' mytf1 <- textfile("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
+#' \dontrun{# Twitter json
+#' mytf1 <- textfile("http://www.kenbenoit.net/files/tweets.json")
 #' summary(corpus(mytf1), 5)
 #' # generic json - needs a textField specifier
-#' mytf2 <- textfile("~/Dropbox/QUANTESS/Manuscripts/Collocations/Corpora/sotu/sotu.json",
+#' mytf2 <- textfile("http://www.kenbenoit.net/files/sotu.json",
 #'                   textField = "text")
 #' summary(corpus(mytf2))
 #' # text file
-#' mytf3 <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
+#' mytf3 <- textfile("https://www.gutenberg.org/cache/epub/2701/pg2701.txt", cache = FALSE)
 #' summary(corpus(mytf3))
-#' # multiple text files
-#' mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
-#' summary(corpus(mytf4))
-#' # multiple text files with docvars from filenames
-#' mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", 
-#'                   docvarsfrom="filenames", dvsep="-", docvarnames=c("Year", "President"))
-#' summary(corpus(mytf5))
 #' # XML data
-#' mytf6 <- textfile("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml", 
+#' mytf6 <- textfile("http://www.kenbenoit.net/files/plant_catalog.xml", 
 #'                   textField = "COMMON")
 #' summary(corpus(mytf6))
 #' # csv file
@@ -255,6 +249,7 @@ get_docs <- function(filemask, encodingFrom = NULL, encodingTo = "UTF-8") {
     pattern <- getRootFileNames(filemask)
     # get the directory name
     path <- substr(filemask, 1, nchar(filemask) - nchar(pattern))
+    if (path == "") path <- "."
     # get the filenames
     filenames <- list.files(path, pattern, full.names=TRUE)
     # read texts from call to get_doc, discarding any docv
@@ -279,8 +274,8 @@ get_docs <- function(filemask, encodingFrom = NULL, encodingTo = "UTF-8") {
 get_zipfile <- function(f, ...) {
     td <- tempdir()
     if (substr(f, 1, 4) == "http")
-        download.file(f, destfile = (flocal <- paste0(td, "/temp.zip", quiet = TRUE)))
-    unzip(flocal, exdir = td)
+        utils::download.file(f, destfile = (flocal <- paste0(td, "/temp.zip", quiet = TRUE)))
+    utils::unzip(flocal, exdir = td)
     # cat("file:", paste0(td, "*.txt"), "\n")
     get_docs(paste0(td, "/*.txt"))
 }
@@ -372,14 +367,15 @@ get_json_tweets <- function(path=NULL, source="twitter", ...) {
 }
 
 ## general json
-get_json <- function(path=NULL, textField, ...) {
+get_json <- function(path, textField, ...) {
     if (!requireNamespace("jsonlite", quietly = TRUE))
         stop("You must have jsonlite installed to read json files.")
-    raw <- readLines(path)
-    parsed <- lapply(raw, jsonlite::fromJSON, flatten=TRUE)
-    df <- data.frame(matrix(unlist(parsed), nrow=length(parsed), ncol=length(parsed[[1]]), byrow=TRUE),
-                     stringsAsFactors=FALSE)
-    names(df) <- names(parsed[[1]])
+    # raw <- readLines(path)
+    #parsed <- lapply(path, jsonlite::fromJSON, flatten=TRUE)
+    df <- jsonlite::fromJSON(path, flatten=TRUE)
+#     df <- data.frame(matrix(unlist(parsed), nrow=length(parsed), ncol=length(parsed[[1]]), byrow=TRUE),
+#                      stringsAsFactors=FALSE)
+#     names(df) <- names(parsed[[1]])
     textFieldi <- which(names(df)==textField)
     if (length(textFieldi)==0)
         stop("column name", textField, "not found.")

@@ -14,11 +14,10 @@ selectFeatures(x, features, ...)
 \arguments{
 \item{x}{object whose features will be selected}
 
-\item{features}{character vector of \link{regex}{regular expressions}
-definding the features to be selected, or a dictionary class object whose
-values will provide the features to be selected.  If a dictionary class
-object, the values will be interpreted as regular expressions.  (We may add
-the option for other formats in the next revision.)}
+\item{features}{one of: a character vector of features to be selected, a
+\link{dfm} whose features will be used for selection, or a dictionary class
+object whose values (not keys) will provide the features to be selected.
+For \link{dfm} objects, see details in the Value section below.}
 
 \item{...}{supplementary arguments passed to the underlying functions in
 \code{\link[stringi]{stri_detect_regex}}.  (This is how
@@ -35,11 +34,22 @@ is; \code{"regex"} for regular expressions; or \code{"glob"} for
 \item{verbose}{if \code{TRUE} print message about how many features were
 removed}
 }
+\value{
+A dfm after the feature selection has been applied.
+
+  When \code{features} is a \link{dfm-class} object, then the returned object
+  will be identical in its feature set to the dfm supplied as the
+  \code{features} argument.  This means that any features in \code{x} not in
+  \code{features} will be discarded, and that any features in found in the
+  dfm supplied as \code{features} but not found in \code{x} will be added
+  with all zero counts.  This is useful when you have trained a model on one dfm, and
+  need to project this onto a test set whose features must be identical.
+}
 \description{
 This function selects or discards features from a dfm.variety of objects,
-such as tokenized texts, a dfm, or a list of collocations.  The most common usage for
-\code{removeFeatures} will be to eliminate stop words from a text or
-text-based object, or to select only features from a list of regular
+such as tokenized texts, a dfm, or a list of collocations.  The most common
+usage for \code{removeFeatures} will be to eliminate stop words from a text
+or text-based object, or to select only features from a list of regular
 expression.
 }
 \note{
@@ -56,10 +66,19 @@ mydict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
                           notintext = "blahblah"))
 selectFeatures(myDfm, mydict)
 selectFeatures(myDfm, mydict, case_insensitive = FALSE)
+selectFeatures(myDfm, c("s$", ".y"), "keep")
 selectFeatures(myDfm, c("s$", ".y"), "keep", valuetype = "regex")
 selectFeatures(myDfm, c("s$", ".y"), "remove", valuetype = "regex")
 selectFeatures(myDfm, stopwords("english"), "keep", valuetype = "fixed")
 selectFeatures(myDfm, stopwords("english"), "remove", valuetype = "fixed")
+
+# selecting on a dfm
+textVec1 <- c("This is text one.", "This, the second text.", "Here: the third text.")
+textVec2 <- c("Here are new words.", "New words in this text.")
+features(dfm1 <- dfm(textVec1))
+features(dfm2a <- dfm(textVec2))
+(dfm2b <- selectFeatures(dfm2a, dfm1))
+identical(features(dfm1), features(dfm2b))
 }
 \seealso{
 \code{\link{removeFeatures}}, \code{\link{trim}}
