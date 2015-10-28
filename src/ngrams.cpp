@@ -15,17 +15,17 @@ std::vector< std::string > ngramcpp(std::vector< std::string > words,
   std::vector <std::string> ngams;
   int len_ns = ns.size();
   int len_words = words.size();
-  for (int g = 0; g <= len_ns; g++) {
-    for (int h = 0; h < len_words; h++) {
-      int n = ns[g];
-      
-      std::string ngram = words[h];
-      int count = 1;
-      if(n > 1){
-        //Rcout << i_start << "to" << i_last << "\n";
+  for (int g = 0; g < len_ns; g++) {
+    int n = ns[g];
+    //Rcout << n << "\n";
+    if(n > 1){
+      for (int h = 0; h < len_words; h++) {
+        std::string ngram = words[h];
+        int count = 1;
         for (int i = std::max(h, h - (k * n)); i < std::min(len_words, h + (k * n) + 1); i += k ) {  
-          if (h == i) continue;
           //Rcout << h << "-" << i << delim << words[h] << "-" << words[i] << "\n";
+          if (h == i) continue;
+          
           ngram = ngram + delim + words[i];
           count++;
           if (count == n) {
@@ -33,8 +33,10 @@ std::vector< std::string > ngramcpp(std::vector< std::string > words,
             break;
           }
         }
-      }else{
-        ngams.push_back(ngram);
+      }
+    }else{
+      for (int h = 0; h < len_words; h++) {
+        ngams.push_back(words[h]);
       }
     }
   }
@@ -48,8 +50,8 @@ std::vector< std::string > skipgramcpp(std::vector< std::string > words,
                                        std::string delim 
 ){
   std::vector< std::string > skipgrams;
-  int ks_len = ks.size();
-  for (int j = 0; j < ks_len; j++) {
+  int len_ks = ks.size();
+  for (int j = 0; j < len_ks; j++) {
     //Rcout << "Skip" << k << "\n";
     int k = ks[j];
     std::vector <std::string> skipgrams_new = ngramcpp(words, ns, k, delim);
@@ -70,7 +72,7 @@ std::vector< std::vector<std::string> > ngramcppl(SEXP x,
   
   int len_texts = texts.size();
   for (int g=0; g < len_texts; g++){
-    Rcout << "Text" << g << "\n";
+    //Rcout << "Text" << g << "\n";
     std::vector< std::string > words = texts[g];
     texts_ng.push_back(ngramcpp(words, ns, k, delim));
   }
