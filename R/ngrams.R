@@ -193,17 +193,19 @@ ngramIndex <- function(n, window = 1, skipgrams = FALSE) {
 #' ngrams(tokens, n = c(2,4), concatenator = " ")
 #' ngrams_c(tokens, n = c(2,4), concatenator = " ")
 #' 
-#' ngrams_c(LETTERS[1:6], n = 3, skip = 0) #"A_B_C" "B_C_D" "C_D_E" "D_E_F"
-#' ngrams(LETTERS[1:6], n = 3, skip = 0)   #"A_B_C" "B_C_D" "C_D_E" "D_E_F"
-#' ngrams_c(LETTERS[1:6], n = 3, skip = 1) #"A_C_E" "B_D_F"
-#' ngrams(LETTERS[1:6], n = 3, skip = 1)   #"A_C_E" "B_D_F"
-#' ngrams_c(LETTERS[1:6], n = 3, skip = 2) # None
-#' ngrams(LETTERS[1:6], n = 3, skip = 2)   # None
-#' ngrams_c(LETTERS[1:6], n = 2, skip = 2) # [1] "A_D" "B_E" "C_F"
-#' ngrams(LETTERS[1:6], n = 2, skip = 2)   # [1] "A_D" "B_E" "C_F"
+# ngrams_c(LETTERS[1:6], n = 3, skip = 0) #"A_B_C" "B_C_D" "C_D_E" "D_E_F"
+# ngrams(LETTERS[1:6], n = 3, skip = 0)   #"A_B_C" "B_C_D" "C_D_E" "D_E_F"
+# ngrams_c(LETTERS[1:6], n = 3, skip = 1) #"A_C_E" "B_D_F"
+# ngrams(LETTERS[1:6], n = 3, skip = 1)   #"A_C_E" "B_D_F"
+# ngrams_c(LETTERS[1:6], n = 3, skip = 2) # None
+# ngrams(LETTERS[1:6], n = 3, skip = 2)   # None
+# ngrams_c(LETTERS[1:6], n = 2, skip = 2) # [1] "A_D" "B_E" "C_F"
+# ngrams(LETTERS[1:6], n = 2, skip = 2)   # [1] "A_D" "B_E" "C_F"
+
+
 #' @export
 ngrams_c <- function(x, n=2, skip = 0, concatenator="_"){
-  ngramcpp(x, n, skip + 1, concatenator)
+  skipgramcpp(x, n, skip + 1, concatenator)
 }
 
 
@@ -227,10 +229,20 @@ ngrams_c <- function(x, n=2, skip = 0, concatenator="_"){
 #' skipgrams(LETTERS[1:6], n = 2, skip = 2)      
 #' ## "A_B" "B_C" "C_D" "D_E" "E_F" "A_C" "B_D" "C_E" "D_F" "A_D" "B_E" "C_F"
 #'
-#' tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."), 
-#'                    removePunct = TRUE, simplify = TRUE)
-#' skipgrams(tokens, n = 2, skip = 2, concatenator = " ")
-#' skipgrams_c(tokens, n = 2, skip = 2, concatenator = " ")
+# tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."), 
+#                     removePunct = TRUE, simplify = TRUE)
+# 
+# 
+# skipgrams(tokens, n = 2, skip = 1, concatenator = " ")
+# skipgrams_c(tokens, n = 2, skip = 1, concatenator = " ")
+# 
+# skipgrams(tokens, n = 2, skip = 2, concatenator = " ")
+# skipgrams_c(tokens, n = 2, skip = 0:2, concatenator = " ")
+# 
+# skipgrams(tokens, n = 3, skip = 2, concatenator = " ")
+# skipgrams_c(tokens, n = 3, skip = 0:2, concatenator = " ")
+# 
+# 
 #' @export
 skipgrams_c <- function(x, n, skip, concatenator="_"){
   skipgramcpp(x, n, 1 + skip, concatenator);

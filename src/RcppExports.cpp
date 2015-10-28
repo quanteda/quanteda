@@ -6,6 +6,20 @@
 
 using namespace Rcpp;
 
+// skipgramcpp2
+std::vector< std::string > skipgramcpp2(std::vector< std::string > tokens, std::vector< int > ns, std::vector< int > ks, std::string delim);
+RcppExport SEXP quanteda_skipgramcpp2(SEXP tokensSEXP, SEXP nsSEXP, SEXP ksSEXP, SEXP delimSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::vector< std::string > >::type tokens(tokensSEXP);
+    Rcpp::traits::input_parameter< std::vector< int > >::type ns(nsSEXP);
+    Rcpp::traits::input_parameter< std::vector< int > >::type ks(ksSEXP);
+    Rcpp::traits::input_parameter< std::string >::type delim(delimSEXP);
+    __result = Rcpp::wrap(skipgramcpp2(tokens, ns, ks, delim));
+    return __result;
+END_RCPP
+}
 // ngramcpp
 std::vector< std::string > ngramcpp(std::vector< std::string > words, std::vector< int > ns, int k, std::string delim);
 RcppExport SEXP quanteda_ngramcpp(SEXP wordsSEXP, SEXP nsSEXP, SEXP kSEXP, SEXP delimSEXP) {
