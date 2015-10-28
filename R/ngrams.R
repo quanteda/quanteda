@@ -10,11 +10,13 @@
 #'   in each ngram
 #' @param skip integer vector specifying the adjacency skip size for tokens 
 #'   forming the ngrams, default is 0 for only immediately neighbouring words. 
-#'   For \code{skipgrams}, \code{skip} is the distance for which this number or
-#'   fewer skips are used to construct the $n$-gram.  Thus a "4-skip-n-gram"
-#'   produces results that include 4 skips, 3 skips, 2 skips, 1 skip, and 0
-#'   skips (where 0 skips are typical n-grams formed from adjacent words).  See
-#'   Guthrie et al (2006).
+#'   For \code{skipgrams}, \code{skip} can be a vector of integers, as the
+#'   "classic" approach to forming skip-grams is to set skip = $k$ where $k$ is
+#'   the distance for which $k$ or fewer skips are used to construct the
+#'   $n$-gram.  Thus a "4-skip-n-gram" defined as \code{skip = 0:4} produces
+#'   results that include 4 skips, 3 skips, 2 skips, 1 skip, and 0 skips (where
+#'   0 skips are typical n-grams formed from adjacent words).  See Guthrie et al
+#'   (2006).
 #' @param concatenator character for combining words, default is \code{_} 
 #'   (underscore) character
 #' @export
@@ -26,7 +28,8 @@
 #' tokens <- tokenize("the quick brown fox jumped over the lazy dog.", 
 #'                    removePunct = TRUE, simplify = TRUE)
 #' ngrams(tokens, n = 1:3)
-#' ngrams(tokens, n = c(2,4), skip = 1:2, concatenator = " ")
+#' ngrams(tokens, n = c(2,4), concatenator = " ")
+#' ngrams(tokens, n = c(2,4), skip = 1, concatenator = " ")
 #' 
 #' # skipgrams
 ngrams <- function(x, ...) {
@@ -230,7 +233,10 @@ ngrams_c <- function(x, n=2, skip = 0, concatenator="_"){
 #' tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."), 
 #'                    removePunct = TRUE, simplify = TRUE)
 #' skipgrams(tokens, n = 2, skip = 2, concatenator = " ")
-#' skipgrams_c(tokens, n = 2, skip = 2, concatenator = " ")
+#' skipgrams_c(tokens, n = 2, skip = 0:2, concatenator = " ")
+#' skipgrams(tokens, n = 3, skip = 2, concatenator = " ")
+#' skipgrams_c(tokens, n = 3, skip = 0:2, concatenator = " ")
+#' ### NOT THE SAME ###
 #' @export
 skipgrams_c <- function(x, n, skip, concatenator="_"){
   skipgramcpp(x, n, 1 + skip, concatenator);
