@@ -67,6 +67,9 @@ skipgrams(LETTERS[1:6], n = 2, skip = 2)
 tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."),
                    removePunct = TRUE, simplify = TRUE)
 skipgrams(tokens, n = 2, skip = 2, concatenator = " ")
-skipgrams_c(tokens, n = 2, skip = 2, concatenator = " ")
+skipgrams_c(tokens, n = 2, skip = 0:2, concatenator = " ")
+skipgrams(tokens, n = 3, skip = 2, concatenator = " ")
+skipgrams_c(tokens, n = 3, skip = 0:2, concatenator = " ")
+### NOT THE SAME ###
 }
 
