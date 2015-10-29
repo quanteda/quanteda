@@ -7,21 +7,20 @@
 \alias{skipgrams}
 \alias{skipgrams.character}
 \alias{skipgrams.tokenizedTexts}
-\title{Create ngrams}
+\title{Create ngrams and skipgrams}
 \usage{
 ngrams(x, ...)
 
-\method{ngrams}{character}(x, n = 2, skip = 0, concatenator = "_", ...)
+\method{ngrams}{character}(x, n = 2L, skip = 0L, concatenator = "_", ...)
 
-\method{ngrams}{tokenizedTexts}(x, n = 2, skip = 0, concatenator = "_",
+\method{ngrams}{tokenizedTexts}(x, n = 2L, skip = 0L, concatenator = "_",
   ...)
 
 skipgrams(x, ...)
 
-\method{skipgrams}{character}(x, n = 2, skip = 1, concatenator = "_", ...)
+\method{skipgrams}{character}(x, n, skip, concatenator = "_", ...)
 
-\method{skipgrams}{tokenizedTexts}(x, n = 2, skip = 1, concatenator = "_",
-  ...)
+\method{skipgrams}{tokenizedTexts}(x, n, skip, concatenator = "_", ...)
 }
 \arguments{
 \item{x}{a tokenizedText object or a character vector of tokens}
@@ -51,23 +50,29 @@ a tokenizedTexts object consisting a list of character vectors of
   simple character vector
 }
 \description{
-Create a set of ngrams (words in sequence) from tokenized text(s)
+Create a set of ngrams (tokens in sequence) from character vectors or tokenized text objects, with
+an optional skip argument to form skipgrams.  Both the ngram length and the skip lengths take vectors of arguments to form
+multiple lengths or skips in one pass.  \code{ngrams()} is implemented in C++ for efficiency.
 }
 \details{
 Normally, \code{\link{ngrams}} will be called through
   \code{\link{tokenize}}, but these functions are also exported in case a
   user wants to perform lower-level ngram construction on tokenized texts.
 
-  \code{\link{skipgrams}} is a wrapper to \code{\link{ngrams}} that simply
-  passes through a \code{window} value of \code{1:(k+1)}, conforming to the
+  \code{\link{skipgrams}} is a wrapper to \code{\link{ngrams}} that requires
+  arguments to be supplied for both \code{n} and \code{skip}.  For $k$-skip
+  skipgrams, set \code{skip} to \code{0:}$k$, in order to conform to the
   definition of skip-grams found in Guthrie et al (2006): A $k$ skip-gram is
   an ngram which is a superset of all ngrams and each $(k-i)$ skipgram until
   $(k-i)==0$ (which includes 0 skip-grams).
 }
 \examples{
-ngrams(LETTERS, n = 2, skip = 2)
-ngrams(LETTERS, n = 3, skip = 2)
-ngrams(LETTERS, n = 3, skip = 3)
+# ngrams
+ngrams(LETTERS, n = 2)
+ngrams(LETTERS, n = 2, skip = 1)
+ngrams(LETTERS, n = 2, skip = 0:1)
+ngrams(LETTERS, n = 1:2)
+ngrams(LETTERS, n = c(2,3), skip = 0:1)
 
 tokens <- tokenize("the quick brown fox jumped over the lazy dog.",
                    removePunct = TRUE, simplify = TRUE)
@@ -78,16 +83,16 @@ ngrams(tokens, n = c(2,4), skip = 1, concatenator = " ")
 # skipgrams
 tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."),
                    removePunct = TRUE, simplify = TRUE)
-skipgrams(tokens, n = 2, skip = 1, concatenator = " ")
-skipgrams(tokens, n = 2, skip = 2, concatenator = " ")
-skipgrams(tokens, n = 3, skip = 2, concatenator = " ")
+skipgrams(tokens, n = 2, skip = 0:1, concatenator = " ")
+skipgrams(tokens, n = 2, skip = 0:2, concatenator = " ")
+skipgrams(tokens, n = 3, skip = 0:2, concatenator = " ")
 }
 \author{
-Ken Benoit
+Kohei Watanabe and Ken Benoit
 }
 \references{
 \href{http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf}{Guthrie,
-  D., B. Allison, W. Liu, and L. Guthrie. 2006. "A Closer Look at Skip-Gram
-  Modelling."}
+D., B. Allison, W. Liu, and L. Guthrie. 2006. "A Closer Look at Skip-Gram
+Modelling."}
 }
 

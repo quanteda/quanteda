@@ -6,9 +6,9 @@
 
 using namespace Rcpp;
 
-// skipgramcpp2
-std::vector< std::string > skipgramcpp2(std::vector< std::string > tokens, std::vector< int > ns, std::vector< int > ks, std::string delim);
-RcppExport SEXP quanteda_skipgramcpp2(SEXP tokensSEXP, SEXP nsSEXP, SEXP ksSEXP, SEXP delimSEXP) {
+// skipgramcpp
+std::vector< std::string > skipgramcpp(std::vector< std::string > tokens, std::vector< int > ns, std::vector< int > ks, std::string delim);
+RcppExport SEXP quanteda_skipgramcpp(SEXP tokensSEXP, SEXP nsSEXP, SEXP ksSEXP, SEXP delimSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -16,49 +16,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::vector< int > >::type ns(nsSEXP);
     Rcpp::traits::input_parameter< std::vector< int > >::type ks(ksSEXP);
     Rcpp::traits::input_parameter< std::string >::type delim(delimSEXP);
-    __result = Rcpp::wrap(skipgramcpp2(tokens, ns, ks, delim));
-    return __result;
-END_RCPP
-}
-// ngramcpp
-std::vector< std::string > ngramcpp(std::vector< std::string > words, std::vector< int > ns, int k, std::string delim);
-RcppExport SEXP quanteda_ngramcpp(SEXP wordsSEXP, SEXP nsSEXP, SEXP kSEXP, SEXP delimSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< std::vector< std::string > >::type words(wordsSEXP);
-    Rcpp::traits::input_parameter< std::vector< int > >::type ns(nsSEXP);
-    Rcpp::traits::input_parameter< int >::type k(kSEXP);
-    Rcpp::traits::input_parameter< std::string >::type delim(delimSEXP);
-    __result = Rcpp::wrap(ngramcpp(words, ns, k, delim));
-    return __result;
-END_RCPP
-}
-// skipgramcpp
-std::vector< std::string > skipgramcpp(std::vector< std::string > words, std::vector< int > ns, std::vector< int > ks, std::string delim);
-RcppExport SEXP quanteda_skipgramcpp(SEXP wordsSEXP, SEXP nsSEXP, SEXP ksSEXP, SEXP delimSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< std::vector< std::string > >::type words(wordsSEXP);
-    Rcpp::traits::input_parameter< std::vector< int > >::type ns(nsSEXP);
-    Rcpp::traits::input_parameter< std::vector< int > >::type ks(ksSEXP);
-    Rcpp::traits::input_parameter< std::string >::type delim(delimSEXP);
-    __result = Rcpp::wrap(skipgramcpp(words, ns, ks, delim));
-    return __result;
-END_RCPP
-}
-// ngramcppl
-std::vector< std::vector<std::string> > ngramcppl(SEXP x, std::vector< int > ns, int k, std::string delim);
-RcppExport SEXP quanteda_ngramcppl(SEXP xSEXP, SEXP nsSEXP, SEXP kSEXP, SEXP delimSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
-    Rcpp::traits::input_parameter< std::vector< int > >::type ns(nsSEXP);
-    Rcpp::traits::input_parameter< int >::type k(kSEXP);
-    Rcpp::traits::input_parameter< std::string >::type delim(delimSEXP);
-    __result = Rcpp::wrap(ngramcppl(x, ns, k, delim));
+    __result = Rcpp::wrap(skipgramcpp(tokens, ns, ks, delim));
     return __result;
 END_RCPP
 }

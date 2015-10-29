@@ -185,9 +185,9 @@ tokenize <- function(x, ...) {
 #'   \code{FALSE} if you wish to eliminate these.
 #' @param removeHyphens if \code{TRUE}, split words that are connected by 
 #'   hyphenation and hyphenation-like characters in between words, e.g. 
-#'   \code{"self-storage"} becomes \code{c("self", "storage")}.  Default is
-#'   \code{FALSE} to preserve such words as is, with the hyphens.  Only applies if 
-#'   \code{what = "word"}.
+#'   \code{"self-storage"} becomes \code{c("self", "storage")}.  Default is 
+#'   \code{FALSE} to preserve such words as is, with the hyphens.  Only applies
+#'   if \code{what = "word"}.
 #' @param removeSeparators remove Separators and separator characters (spaces 
 #'   and variations of spaces, plus tab, newlines, and anything else in the 
 #'   Unicode "separator" category) when \code{removePunct=FALSE}.  Only 
@@ -199,10 +199,10 @@ tokenize <- function(x, ...) {
 #' @param ngrams integer vector of the \emph{n} for \emph{n}-grams, defaulting 
 #'   to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for 
 #'   bigrams and unigrams, use \code{1:2}.  You can even include irregular 
-#'   sequences such as \code{2:3} for bigrams and trigrams only.
-#' @param window integer vector specifying the adjacency width for tokens 
-#'   forming the \emph{n}-grams, default is 1 for only immediately neighbouring 
-#'   words. Only applies if \code{ngrams} is different from the default of 1.
+#'   sequences such as \code{2:3} for bigrams and trigrams only.  See \code{\link{ngrams}}.
+#' @param skip integer vector specifying the skips for skip-grams, default is 0
+#'   for only immediately neighbouring words. Only applies if \code{ngrams} is
+#'   different from the default of 1.  See \code{\link{skipgrams}}.
 #' @param concatenator character to use in concatenating \emph{n}-grams, default
 #'   is "\code{_}", which is recommended since this is included in the regular 
 #'   expression and Unicode definitions of "word" characters
@@ -280,7 +280,7 @@ tokenize <- function(x, ...) {
 #' removeFeatures(tokenize(txt, removePunct = TRUE), stopwords("english"))
 #' tokenize(txt, removePunct = TRUE, ngrams = 2)
 #' tokenize(txt, removePunct = TRUE, ngrams = 1:2)
-#' tokenize(txt, removePunct = TRUE, ngrams = 2, window = 2, concatenator = " ")
+#' tokenize(txt, removePunct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
 #' removeFeatures(tokenize(txt, removePunct = TRUE, ngrams = 1:2), stopwords("english"))
 tokenize.character <- function(x, what=c("word", "sentence", "character", "fastestword", "fasterword"),
                                removeNumbers = FALSE, 
@@ -290,7 +290,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
                                removeHyphens = FALSE,
                                # removeURL = TRUE,
                                ngrams = 1L,
-                               window = 1L,
+                               skip = 0L,
                                concatenator = "_",
                                simplify = FALSE,
                                verbose = FALSE,  ## FOR TESTING
@@ -406,7 +406,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
             cat("  ...creating ngrams")
             startTimeClean <- proc.time()
         }
-        result <- ngrams(result, n = ngrams, window = window, concatenator = concatenator)
+        result <- ngrams(result, n = ngrams, skip = skip, concatenator = concatenator)
         # is the ngram set serial starting with 1? use single call if so (most efficient)
         # if (sum(1:length(ngrams)) == sum(ngrams)) {
         #     result <- lapply(result, ngram, n = length(ngrams), concatenator = concatenator, include.all = TRUE)

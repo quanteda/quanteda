@@ -1,6 +1,9 @@
 quanteda 0.8.7
 ==============
 
+*  ngrams() and skipgrams() now use the same underlying function, with `skip` replacing the previous
+   `window` argument (where a skip = window - 1).  For efficiency, both are now implemented in C++.
+
 *  tokenize() has a new argument, removeHyphens, that controls the treatment of intra-word hyphens.
 
 *  added new measures from readability for mean syllables per word and mean words per sentence directly.

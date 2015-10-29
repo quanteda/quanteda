@@ -14,7 +14,7 @@ tokenize(x, ...)
 \method{tokenize}{character}(x, what = c("word", "sentence", "character",
   "fastestword", "fasterword"), removeNumbers = FALSE, removePunct = FALSE,
   removeSeparators = TRUE, removeTwitter = FALSE, removeHyphens = FALSE,
-  ngrams = 1L, window = 1L, concatenator = "_", simplify = FALSE,
+  ngrams = 1L, skip = 0L, concatenator = "_", simplify = FALSE,
   verbose = FALSE, ...)
 
 \method{tokenize}{corpus}(x, ...)
@@ -50,17 +50,17 @@ carefully.}
 \item{removeHyphens}{if \code{TRUE}, split words that are connected by
 hyphenation and hyphenation-like characters in between words, e.g.
 \code{"self-storage"} becomes \code{c("self", "storage")}.  Default is
-\code{FALSE} to preserve such words as is, with the hyphens.  Only applies if
-\code{what = "word"}.}
+\code{FALSE} to preserve such words as is, with the hyphens.  Only applies
+if \code{what = "word"}.}
 
 \item{ngrams}{integer vector of the \emph{n} for \emph{n}-grams, defaulting
 to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for
 bigrams and unigrams, use \code{1:2}.  You can even include irregular
-sequences such as \code{2:3} for bigrams and trigrams only.}
+sequences such as \code{2:3} for bigrams and trigrams only.  See \code{\link{ngrams}}.}
 
-\item{window}{integer vector specifying the adjacency width for tokens
-forming the \emph{n}-grams, default is 1 for only immediately neighbouring
-words. Only applies if \code{ngrams} is different from the default of 1.}
+\item{skip}{integer vector specifying the skips for skip-grams, default is 0
+for only immediately neighbouring words. Only applies if \code{ngrams} is
+different from the default of 1.  See \code{\link{skipgrams}}.}
 
 \item{concatenator}{character to use in concatenating \emph{n}-grams, default
 is "\code{_}", which is recommended since this is included in the regular
@@ -157,7 +157,7 @@ tokenize(txt, removePunct = TRUE)
 removeFeatures(tokenize(txt, removePunct = TRUE), stopwords("english"))
 tokenize(txt, removePunct = TRUE, ngrams = 2)
 tokenize(txt, removePunct = TRUE, ngrams = 1:2)
-tokenize(txt, removePunct = TRUE, ngrams = 2, window = 2, concatenator = " ")
+tokenize(txt, removePunct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
 removeFeatures(tokenize(txt, removePunct = TRUE, ngrams = 1:2), stopwords("english"))
 }
 \author{
