@@ -17,34 +17,28 @@ std::string join(std::vector< std::string > ngram,
 }
 
 
-std::vector< std::vector<std::string> > branch(std::vector< std::string > tokens,
+void skip(std::vector< std::string > &tokens,
                                   int start,
                                   int n, 
                                   std::vector< int > ks,
-                                  std::vector<std::string> ngram
+                                  std::vector<std::string> ngram,
+                                  std::vector< std::vector<std::string> > &ngrams
 ){
 
   int len_tokens = tokens.size();
   int len_ks = ks.size();
-  std::vector< std::vector<std::string> > ngrams_done;
-  
+   
   ngram.push_back(tokens[start]);
   if(ngram.size() < n){
     for (int j = 0; j < len_ks; j++){
       int next = start + ks[j];
       if(next > len_tokens - 1) break;
-      std::vector< std::vector<std::string> > ngrams_done_temp = branch(tokens, next, n, ks, ngram);
-      ngrams_done_temp.reserve(ngrams_done.size() + ngrams_done_temp.size() ); 
-      ngrams_done.insert(ngrams_done.end(), ngrams_done_temp.begin(), ngrams_done_temp.end() );
+      skip(tokens, next, n, ks, ngram, ngrams);
     }
   }else{
-    ngrams_done.push_back(ngram);
+    ngrams.push_back(ngram);
   }
-  return ngrams_done;
 }
-
-
-
 
 // [[Rcpp::export]]
 std::vector< std::string > skipgramcpp(std::vector< std::string > tokens,
@@ -52,20 +46,24 @@ std::vector< std::string > skipgramcpp(std::vector< std::string > tokens,
                                     std::vector< int > ks, 
                                     std::string delim 
 ){
+  
+  // Generate skipgrams recursively
   std::vector<std::string> ngram;
-  std::vector< std::vector<std::string> > ngrams;
-  std::vector< std::string > tokens_ngram;
+  std::vector< std::vector<std::string> > ngrams; // For the rerusive function
   int len_ns = ns.size();
   int len_tokens = tokens.size();
   for (int g = 0; g < len_ns; g++) {
     int n = ns[g];
     for (int h = 0; h < len_tokens; h++) {
-      ngrams = branch(tokens, h, n, ks, ngram);
-      int len_ngrams = ngrams.size();
-      for (int h = 0; h < len_ngrams; h++) {
-        tokens_ngram.push_back(join(ngrams[h], delim));
-      }
+      skip(tokens, h, n, ks, ngram, ngrams); // Get ngrams as reference
     }
+  }
+  
+  // Join elemtns of ngrams
+  std::vector< std::string > tokens_ngram;
+  int len_ngrams = ngrams.size();
+  for (int h = 0; h < len_ngrams; h++) {
+    tokens_ngram.push_back(join(ngrams[h], delim));
   }
   return tokens_ngram;
 }
@@ -73,21 +71,21 @@ std::vector< std::string > skipgramcpp(std::vector< std::string > tokens,
 
 
 // [[Rcpp::export]]
-std::vector< std::vector<std::string> > skipgramcppl(SEXP x,
+std::vector< std::vector<std::string> > skipgramcppl(SEXP units,
                                                      std::vector< int > ns, 
                                                      std::vector< int > ks,
                                                      std::string delim){
   
-  //Rcpp::CharacterVector texts(list);                                     
-  Rcpp::List texts(x);
-  std::vector< std::vector<std::string> > texts_sg;
+  //Rcpp::CharacterVector units(list);                                     
+  Rcpp::List units_in(units);
+  std::vector< std::vector<std::string> > units_out;
   
-  int len_texts = texts.size();
-  for (int g=0; g < len_texts; g++){
-    //Rcout << "Text" << g << "\n";
-    std::vector <std::string> words = texts[g];
-    texts_sg.push_back(skipgramcpp(words, ns, ks, delim));
+  int len_units = units_in.size();
+  for (int g=0; g < len_units; g++){
+    //Rcout << "Unit" << g << "\n";
+    std::vector <std::string> tokens = units_in[g];
+    units_out.push_back(skipgramcpp(tokens, ns, ks, delim));
   }
-  return texts_sg;
+  return units_out;
 }
 
