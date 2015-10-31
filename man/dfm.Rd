@@ -55,9 +55,7 @@ characters, see \link{tokenize} #'}
 \item{stem}{if \code{TRUE}, stem words}
 
 \item{ignoredFeatures}{a character vector of user-supplied features to
-ignore, such as "stop words".  Formerly, this was a Boolean option for
-\code{stopwords = TRUE}, but requiring the user to supply the list
-highlights the choice involved in using any stopword list.  To access one
+ignore, such as "stop words".  To access one
 possible list (from any list you wish), use \code{\link{stopwords}()}.  The
 pattern matching type will be set by \code{valuetype}.  For behaviour of
 \code{ingoredFeatures} with \code{ngrams > 1}, see Details.}
@@ -75,16 +73,11 @@ pattern.  The pattern matching type will be set by \code{valuetype}.}
 but this was removed in 0.8.2.  All dfm objects are now created as a sparse
 matrix of class \code{dgCMatrix} from the \pkg{\link{Matrix}} package.}
 
-\item{language}{Language for stemming and stopwords.  Choices are
+\item{language}{Language for stemming.  Choices are
 \code{danish}, \code{dutch}, \code{english}, \code{finnish}, \code{french},
 \code{german}, \code{hungarian}, \code{italian}, \code{norwegian},
 \code{porter}, \code{portuguese}, \code{romanian}, \code{russian},
-\code{spanish}, \code{swedish}, \code{turkish} for stemming, and
-\code{SMART}, \code{danish}, \code{english}, \code{french},
-\code{hungarian}, \code{norwegian}, \code{russian}, \code{swedish},
-\code{catalan}, \code{dutch}, \code{finnish}, \code{german},
-\code{italian}, \code{portuguese}, \code{spanish}, \code{arabic} for
-stopwords.}
+\code{spanish}, \code{swedish}, \code{turkish}.}
 
 \item{thesaurus}{A list of character vector "thesaurus" entries, in a
 dictionary list format, which can also include regular expressions  if

@@ -103,6 +103,7 @@ removeFeatures.dfm <- function(x, stopwords = NULL, verbose = TRUE, ...) {
 #' @export
 removeFeatures.collocations <- function(x, stopwords=NULL, verbose=TRUE, pos=c(1,2,3), ...) {
     word <- word1 <- word2 <- word3 <- NULL
+    origclass <- class(x)
     if (is.null(stopwords))
         stop("Must supply a character vector of stopwords, e.g. stopwords(\"english\")")
     if (!all(pos %in% 1:3))
@@ -142,7 +143,7 @@ removeFeatures.collocations <- function(x, stopwords=NULL, verbose=TRUE, pos=c(1
                      "%) of ", format(nstart, big.mark=","), 
                      " collocations containing one of ", 
                      length(stopwords), " stopwords.\n", sep="")
-    x
+    class(x) <- origclass
 }
 
 
@@ -408,4 +409,91 @@ selectFeatures.dfm <- function(x, features = NULL, selection = c("keep", "remove
 # removeFeatures(dfm(inaugTexts[1:2], ngrams = 2), stopwords("english"))
 
 
-    
+# require(data.table)
+# removeFeatures2 <- function(x, features = NULL, verbose = TRUE, pos=c(1,2,3), 
+#                             valuetype = c("glob", "fixed", "regex"), 
+#                             case_insensitive = TRUE, ...) 
+# {
+#     word <- word1 <- word2 <- word3 <- NULL
+#     origclass <- class(x)
+#     if (is.null(features))
+#         stop("Must supply a character vector of features to be removed, e.g. stopwords(\"english\")")
+#     if (!all(pos %in% 1:3))
+#         stop("pos for collocation position can only be 1, 2, and/or 3")
+# 
+#     originalvaluetype <- valuetype
+#     # convert glob to fixed if no actual glob characters (since fixed is much faster)
+#     if (valuetype == "glob") {
+#         # treat as fixed if no glob characters detected
+#         if (!sum(stringi::stri_detect_charclass(features, c("[*?]"))))
+#             valuetype <- "fixed"
+#         else {
+#             features <- sapply(features, utils::glob2rx, USE.NAMES = FALSE)
+#             valuetype <- "regex"
+#         }
+#     }
+#     
+#     features_x <- features(x)
+#     if (case_insensitive & valuetype == "fixed") {
+#         features_x <- toLower(features_x)
+#         features <- toLower(features)
+#     }
+# 
+#     if (valuetype == "regex") {
+#         if (all.equal(x@ngrams, 1L)==TRUE) {
+#             featIndex <- which(stringi::stri_detect_regex(features_x, paste0(features, collapse = "|"), 
+#                                                           case_insensitive = case_insensitive, ...))
+#         } else {
+#             ####
+#             ####
+#             matchPattern <- paste0(features, collapse = "|")
+#             featIndex <- which(sapply(features_x, 
+#                                       function(x) any(stringi::stri_detect_regex(x, matchPattern, 
+#                                                                                  case_insensitive = case_insensitive, ...))))
+#         }
+#     } else {
+#         if (all.equal(x@ngrams, 1L)==TRUE)
+#             featIndex <- which(features(x) %in% features)  # unigrams
+#         else
+#             featIndex <- which(sapply(features_x, function(f) any(f %in% features), USE.NAMES = FALSE)) # ngrams
+#     }
+#     
+#     removeIndex <- stri::stri_detect_fixed()
+#     
+#         nstart <- nrow(x)
+#     stopwordTable <- data.table(word=stopwords, remove=1)
+#     setkey(stopwordTable, word)
+#     x$order <- 1:nrow(x)
+#     
+#     if (3 %in% pos) {
+#         setnames(stopwordTable, 1, "word3")
+#         setkey(x, word3)
+#         x <- stopwordTable[x]
+#         x <- x[is.na(remove)]
+#         x[, remove:=NULL]
+#     }
+#     if (2 %in% pos) {
+#         setnames(stopwordTable, 1, "word2")
+#         setkey(x, word2)
+#         x <- stopwordTable[x]
+#         x <- x[is.na(remove)]
+#         x[, remove:=NULL]
+#     }
+#     if (1 %in% pos) {
+#         setnames(stopwordTable, 1, "word1")
+#         setkey(x, word1)
+#         x <- stopwordTable[x]
+#         x <- x[is.na(remove)]
+#         x[, remove:=NULL]
+#     }
+#     setorder(x, order)
+#     setcolorder(x, c("word1", "word2", "word3", names(x)[4:ncol(x)]))
+#     x[, order:=NULL]
+#     nend <- nrow(x)
+#     if (verbose) cat("Removed ", format(nstart - nend, big.mark=","),  
+#                      " (", format((nstart - nend)/nstart*100, digits=3),
+#                      "%) of ", format(nstart, big.mark=","), 
+#                      " collocations containing one of ", 
+#                      length(stopwords), " stopwords.\n", sep="")
+#     class(x) <- origclass
+# }

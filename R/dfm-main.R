@@ -38,9 +38,7 @@ dfm <- function(x, ...) {
 #'   separators (whitespace), see \link{tokenize}
 #' @param stem if \code{TRUE}, stem words
 #' @param ignoredFeatures a character vector of user-supplied features to 
-#'   ignore, such as "stop words".  Formerly, this was a Boolean option for 
-#'   \code{stopwords = TRUE}, but requiring the user to supply the list 
-#'   highlights the choice involved in using any stopword list.  To access one 
+#'   ignore, such as "stop words".  To access one 
 #'   possible list (from any list you wish), use \code{\link{stopwords}()}.  The
 #'   pattern matching type will be set by \code{valuetype}.  For behaviour of 
 #'   \code{ingoredFeatures} with \code{ngrams > 1}, see Details.
@@ -68,16 +66,11 @@ dfm <- function(x, ...) {
 #'   regular expression format, otherwise it will be converted from the "glob" 
 #'   format.  This is a legacy argument that will soon be phased out in favour 
 #'   of \code{valuetype}.
-#' @param language Language for stemming and stopwords.  Choices are 
+#' @param language Language for stemming.  Choices are 
 #'   \code{danish}, \code{dutch}, \code{english}, \code{finnish}, \code{french},
 #'   \code{german}, \code{hungarian}, \code{italian}, \code{norwegian}, 
 #'   \code{porter}, \code{portuguese}, \code{romanian}, \code{russian}, 
-#'   \code{spanish}, \code{swedish}, \code{turkish} for stemming, and 
-#'   \code{SMART}, \code{danish}, \code{english}, \code{french}, 
-#'   \code{hungarian}, \code{norwegian}, \code{russian}, \code{swedish}, 
-#'   \code{catalan}, \code{dutch}, \code{finnish}, \code{german}, 
-#'   \code{italian}, \code{portuguese}, \code{spanish}, \code{arabic} for 
-#'   stopwords.
+#'   \code{spanish}, \code{swedish}, \code{turkish}.
 #' @param matrixType deprecated, used to produce a dense matrix if \code{dense},
 #'   but this was removed in 0.8.2.  All dfm objects are now created as a sparse
 #'   matrix of class \code{dgCMatrix} from the \pkg{\link{Matrix}} package.

@@ -21,9 +21,7 @@
 #'   (2006).
 #' @param concatenator character for combining words, default is \code{_} 
 #'   (underscore) character
-#' @param ... additional arguments passed to \code{\link[parallel]{mclapply}}
-#'   which applies \code{ngram.character()} to the \code{tokenizedTexts} list object
-
+#' @param ... not used
 #' @export
 #' @examples
 #' # ngrams
@@ -63,7 +61,9 @@ ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
 #' @rdname ngrams
 #' @export
 ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
-    ngramsResult <- parallel::mclapply(x, ngrams.character, n, skip, concatenator, ...)
+    ngramsResult <- lapply(x, ngrams.character, n, skip, concatenator)
+    # removed mclapply because not faster
+    # ngramsResult <- parallel::mclapply(x, ngrams.character, n, skip, concatenator, ...)
     class(ngramsResult) <- c("tokenizedTexts", class(ngramsResult))
     attributes(ngramsResult) <- attributes(x)
     ngramsResult
@@ -104,3 +104,4 @@ skipgrams.character <- function(x, n, skip, concatenator="_", ...)
 #' @export
 skipgrams.tokenizedTexts <- function(x, n, skip, concatenator="_", ...)
     ngrams.tokenizedTexts(x, n, skip, concatenator, ...)
+

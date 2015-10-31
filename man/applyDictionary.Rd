@@ -14,12 +14,13 @@ applyDictionary(x, dictionary, ...)
 \arguments{
 \item{x}{object to which dictionary or thesaurus will be supplied}
 
-\item{dictionary}{the \link{dictionary}-class object that will be applied to \code{x}}
+\item{dictionary}{the \link{dictionary}-class object that will be applied to
+\code{x}}
 
 \item{...}{not used}
 
 \item{exclusive}{if \code{TRUE}, remove all features not in dictionary,
-otherwise, replace values in dictionary keys with keys while leaving other
+otherwise, replace values in dictionary with keys while leaving other
 features unaffected}
 
 \item{valuetype}{how to interpret dictionary values: \code{"glob"} for
@@ -35,7 +36,8 @@ uppercase to distinguish them from other features}
 \item{verbose}{print status messages if \code{TRUE}}
 }
 \value{
-an object of the type passed with the value-matching features replaced by dictionary keys
+an object of the type passed with the value-matching features
+  replaced by dictionary keys
 }
 \description{
 Convert features into equivalence classes defined by values of a dictionary
@@ -43,9 +45,11 @@ object.
 }
 \note{
 Selecting only features defined in a "dictionary" is traditionally
-known in text analysis as a dictionary method, even though technically this is more like a thesarus.
-If a more truly thesaurus-like application is desired, set \code{keeponly = FALSE} to convert features
-defined as values in a dictionary into their keys, while keeping all other features.
+  known in text analysis as a \emph{dictionary method}, even though
+  technically this they operate more like a thesarus.  If a more truly thesaurus-like
+  application is desired, set \code{keeponly = FALSE} to convert features
+  defined as values in a dictionary into their keys, while keeping all other
+  features.
 }
 \examples{
 myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),

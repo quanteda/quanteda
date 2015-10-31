@@ -9,7 +9,9 @@
   variables for year, debate, serial number, first and last name of the
   speaker, and the speaker's party.}
 \source{
-Lowe and Benoit (2013)
+Lowe, Will, and Kenneth R Benoit. 2013. "Validating Estimates of
+  Latent Traits From Textual Data Using Human Judgment as a Benchmark."
+  \emph{Political Analysis} 21: 298-313.
 }
 \description{
 Speeches and document-level variables from the debate over the
@@ -17,10 +19,5 @@ Speeches and document-level variables from the debate over the
 }
 \examples{
 summary(ie2010Corpus)
-}
-\references{
-Lowe, Will, and Kenneth R Benoit. 2013. "Validating Estimates of
-  Latent Traits From Textual Data Using Human Judgment as a Benchmark."
-  \emph{Political Analysis} 21: 298-313.
 }
 

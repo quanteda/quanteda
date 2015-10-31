@@ -3,42 +3,45 @@ NULL
 
 #' Detect collocations from text
 #' 
-#' Detects collocations (currently, bigrams and trigrams) from texts or a
-#' corpus, returning a data.frame of collocations and their scores, sorted in
-#' descending order of the association measure.  Words separated by punctuation
-#' delimiters are not counted as adjacent and hence are not eligible to be
+#' Detects collocations (currently, bigrams and trigrams) from texts or a 
+#' corpus, returning a data.frame of collocations and their scores, sorted in 
+#' descending order of the association measure.  Words separated by punctuation 
+#' delimiters are not counted as adjacent and hence are not eligible to be 
 #' collocations.
 #' @param x a text, a character vector of texts, or a corpus
-#' @param method association measure for detecting collocations.  Let \eqn{i}
-#'   index documents, and \eqn{j} index features, \eqn{n_{ij}} refers to
-#'   observed counts, and \eqn{m_{ij}} the expected counts in a collocations
-#'   frequency table of dimensions \eqn{(J - size + 1)^2}. Available measures
-#'   are computed as: \describe{ \item{\code{"lr"}}{The likelihood ratio
-#'   statistic \eqn{G^2}, computed as: \deqn{2 * \sum_i \sum_j ( n_{ij} * log
-#'   \frac{n_{ij}}{m_{ij}} )} } \item{\code{"chi2"}}{Pearson's \eqn{\chi^2}
-#'   statistic, computed as: \deqn{\sum_i \sum_j \frac{(n_{ij} -
-#'   m_{ij})^2}{m_{ij}}} } \item{\code{"pmi"}}{point-wise mutual information
-#'   score, computed as log \eqn{n_{11}/m_{11}}} \item{\code{"dice"}}{the Dice
+#' @param method association measure for detecting collocations.  Let \eqn{i} 
+#'   index documents, and \eqn{j} index features, \eqn{n_{ij}} refers to 
+#'   observed counts, and \eqn{m_{ij}} the expected counts in a collocations 
+#'   frequency table of dimensions \eqn{(J - size + 1)^2}. Available measures 
+#'   are computed as: \describe{ \item{\code{"lr"}}{The likelihood ratio 
+#'   statistic \eqn{G^2}, computed as: \deqn{2 * \sum_i \sum_j ( n_{ij} * log 
+#'   \frac{n_{ij}}{m_{ij}} )} } \item{\code{"chi2"}}{Pearson's \eqn{\chi^2} 
+#'   statistic, computed as: \deqn{\sum_i \sum_j \frac{(n_{ij} - 
+#'   m_{ij})^2}{m_{ij}}} } \item{\code{"pmi"}}{point-wise mutual information 
+#'   score, computed as log \eqn{n_{11}/m_{11}}} \item{\code{"dice"}}{the Dice 
 #'   coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}} 
 #'   \item{\code{"all"}}{returns all of the above} }
-#' @details Because of incompatibilities with the join operations in
-#'   \link{data.table} when input files have slightly different encoding
+#' @details Because of incompatibilities with the join operations in 
+#'   \link{data.table} when input files have slightly different encoding 
 #'   settings, \code{collocations} currently converts all text to ASCII prior to
 #'   processing.  We hope to improve on this in the future.
-#' @param size length of the collocation.  Only bigram (\code{n=2}) and trigram
+#' @param size length of the collocation.  Only bigram (\code{n=2}) and trigram 
 #'   (\code{n=3}) collocations are implemented so far.  Can be \code{c(2,3)} (or
 #'   \code{2:3}) to return both bi- and tri-gram collocations.
-#' @param n the number of collocations to return, sorted in descending order of
+#' @param n the number of collocations to return, sorted in descending order of 
 #'   the requested statistic, or \eqn{G^2} if none is specified.
+#' @param spanPunct if \code{FALSE}, then collocations will not span punctuation
+#'   marks, so that for instance \emph{marks, so} is not a collocation of
+#'   \code{marks so}.  If \code{TRUE}, do not handle punctuation specially.
 #' @param ... additional parameters passed to \code{\link{tokenize}}.  If wanted
-#'   to include collocations separated by punctuation, then you can use this to
+#'   to include collocations separated by punctuation, then you can use this to 
 #'   send \code{removePunct = TRUE} to \code{\link{tokenize}}.
 #' @return A data.table of collocations, their frequencies, and the computed 
 #'   association measure(s).
 #' @export
 #' @import data.table
-#' @references McInnes, B T. 2004. "Extending the Log Likelihood Measure to
-#'   Improve Collocation Identification."  M.Sc. Thesis, University of
+#' @references McInnes, B T. 2004. "Extending the Log Likelihood Measure to 
+#'   Improve Collocation Identification."  M.Sc. Thesis, University of 
 #'   Minnesota.
 #' @seealso \link{ngrams}
 #' @author Kenneth Benoit
@@ -72,188 +75,10 @@ wFIRSTGREPpenn <- "([,:.]|''|``|-rrb-)_.*"
 wMIDDLEGREPpenn <- "([,:.]|''|``|-[lr]rb-)_.*"
 wLASTGREPpenn <- "-lrb-_.*"
 
-
-#' @rdname collocations
-#' @export    
-collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, ...) {
-    method <- match.arg(method)
-    
-    #  "Enough is enough! I have had it with these motherfucking snakes on this motherfucking plane!"
-    x <- iconv(x, "UTF-8", "ASCII",  sub="") # opening some windows
-    
-    # tagset <- match.arg(tagset)
-    
-    if (any(!(size %in% 2:3)))
-        stop("Only bigram and trigram collocations implemented so far.")
-    
-    coll <- NULL
-    if (2 %in% size)
-        coll <- collocations2(x, method, 2, n, ...)
-    if (3 %in% size) {
-        if (is.null(coll)) 
-            coll <- collocations3(x, method, 3, n, ...)
-        else {
-            coll <- rbind(coll, collocations3(x, method, 3, n, ...))
-            class(coll) <- c("collocations", class(coll))
-        }
-    }
-    coll
-}
-    
-
-collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, ...) {
-    
-    # to not issue the check warnings:
-    w1 <- w2 <- count <- w1wn <- w1w2n <- chi2 <- pmi <- dice <- lrratio <- NULL
-    
-    method <- match.arg(method)
-    if (size != 2) stop("Only bigrams (n=2) implemented so far.")
-    
-    t <- tokenize(toLower(x), simplify=TRUE, ...)
-    
-    # create a data.table of all adjacent bigrams
-    wordpairs <- data.table(w1 = t[1:(length(t)-1)], 
-                            w2 = t[2:length(t)],
-                            count = 1)
-    
-    # eliminate non-adjacent words (where a blank is in a pair)
-    wordpairs <- wordpairs[!(stri_detect_regex(w1, "^[:punct:]$") | stri_detect_regex(w2, "^[:punct:]$"))]
-
-    # set the data.table sort key
-    setkey(wordpairs, w1, w2)
-    
-    # tabulate (count) w1 w2 pairs
-    wordpairsTable <- wordpairs[, j=sum(count), by="w1,w2"]
-    setnames(wordpairsTable, "V1", "w1w2n")
-    
-    # tabulate all word marginal counts
-    setkey(wordpairs, w1)
-    w1Table <- wordpairs[, sum(count), by=w1]
-    setnames(w1Table, "V1", "w1n")
-    # sort by w1 and set key
-    setkey(w1Table, w1)
-
-    # eliminate any duplicates in w1 - although this ought not to happen!
-    # bug in data.table??  encoding problem on our end??
-    dups <- which(duplicated(w1Table[,w1]))
-    if (length(dups)) {
-        cat("  ...NOTE: dropping duplicates in word1:", w1Table[dups, w1], "\n")
-        w1Table <- w1Table[-dups]
-    }
-    
-    setkey(wordpairsTable, w1)
-    # suppressWarnings(allTable <- wordpairsTable[w1Table])
-    # otherwise gives an encoding warning
-    allTable <- wordpairsTable[w1Table]
-    
-    rm(w1Table)
-    
-    # tabulate all w2 counts
-    w2Table <- wordpairs[, sum(count), by=w2]
-    setnames(w2Table, "V1", "w2n")
-    setkey(w2Table, w2)
-    
-    # eliminate any duplicates in w2 - although this ought not to happen!
-    dups <- which(duplicated(w2Table[,w2]))
-    if (length(dups)) {
-        cat("...NOTE: dropping duplicates found in word2:", w2Table[dups, w2], "\n")
-        w2Table <- w2Table[-dups]
-    }
-    
-    setkey(allTable, w2)
-    # suppressWarnings(allTable2 <- allTable[w2Table])
-    # otherwise gives an encoding warning
-    allTable2 <- allTable[w2Table]
-    rm(w2Table)
-    rm(allTable)
-    
-    setkey(allTable2, w1, w2)
-    
-    # remove any rows where count is NA
-    missingCounts <- which(is.na(allTable2$w1w2n))
-    if (length(missingCounts))
-        allTable2 <- allTable2[-missingCounts]
-    
-    # N <- wordpairsTable[, sum(w1w2n)]  # total number of collocations (table N for all tables)
-    N <- allTable2[, sum(w1w2n)] 
-    
-    # fill in cells of 2x2 tables
-    allTable2$w1notw2 <- allTable2$w1n - allTable2$w1w2
-    allTable2$notw1w2 <- allTable2$w2n - allTable2$w1w2
-    allTable2$notw1notw2 <- N - (allTable2$w1w2 + allTable2$w1notw2 + allTable2$notw1w2)
-    
-    # calculate expected values
-    allTable2$w1w2Exp <- exp(log(allTable2$w1n) + log(allTable2$w2n) - log(N))
-    allTable2$w1notw2Exp <- exp(log(allTable2$w1n) + log((N - allTable2$w2n)) - log(N))
-    allTable2$notw1w2Exp <- exp(log(allTable2$w2n) + log((N - allTable2$w1n)) - log(N))
-    allTable2$notw1notw2Exp <- exp(log(N - allTable2$w2n) + log(N - allTable2$w1n) - log(N))
-    
-    # vectorized lr stat
-    epsilon <- .000000001  # to offset zero cell counts
-    if (method=="all" | method=="lr") {
-        allTable2$lrratio <- 2 *  ((allTable2$w1w2n * log(allTable2$w1w2n / (allTable2$w1w2Exp + epsilon) + epsilon)) +
-                                   (allTable2$w1notw2 * log(allTable2$w1notw2 / (allTable2$w1notw2Exp + epsilon) + epsilon)) +
-                                   (allTable2$notw1w2 * log(allTable2$notw1w2 / (allTable2$notw1w2Exp + epsilon) + epsilon)) +
-                                   (allTable2$notw1notw2 * log(allTable2$notw1notw2 / (allTable2$notw1notw2Exp + epsilon) + epsilon)))
-    }
-    if (method=="all" | method=="chi2") {
-        allTable2$chi2 <- (allTable2$w1w2n - allTable2$w1w2Exp)^2 / allTable2$w1w2Exp +
-            (allTable2$w1notw2 - allTable2$w1notw2Exp)^2 / allTable2$w1notw2Exp +
-            (allTable2$notw1w2 - allTable2$notw1w2Exp)^2 / allTable2$notw1w2Exp +
-            (allTable2$notw1notw2 - allTable2$notw1notw2Exp)^2 / allTable2$notw1notw2Exp
-    }
-    if (method=="all" | method=="pmi") {
-        allTable2$pmi <- log(allTable2$w1w2n / allTable2$w1w2Exp)
-    }
-    if (method=="all" | method=="dice") {
-        allTable2$dice <- 2 * allTable2$w1w2n / (2*allTable2$w1w2n + allTable2$w1notw2 + allTable2$notw1w2) 
-    }
-    if (method=="chi2") {
-        setorder(allTable2, -chi2)
-        df <- data.table(word1=allTable2$w1, 
-                         word2=allTable2$w2,
-                         word3="",
-                         count=allTable2$w1w2n,
-                         X2=allTable2$chi2)
-    } else if (method=="pmi") {
-        setorder(allTable2, -pmi)
-        df <- data.table(word1=allTable2$w1, 
-                         word2=allTable2$w2,
-                         word3="",
-                         count=allTable2$w1w2n,
-                         pmi=allTable2$pmi) 
-    
-    } else if (method=="dice") {
-        setorder(allTable2, -dice)
-        df <- data.table(word1=allTable2$w1, 
-                         word2=allTable2$w2,
-                         word3="",
-                         count=allTable2$w1w2n,
-                         dice=allTable2$dice) 
-    } else {
-        setorder(allTable2, -lrratio)
-        df <- data.table(word1=allTable2$w1, 
-                         word2=allTable2$w2,
-                         word3="",
-                         count=allTable2$w1w2n,
-                         G2=allTable2$lrratio) 
-    }
-        
-    if (method=="all") {
-        df$G2 <- allTable2$lrratio
-        df$X2 <- allTable2$chi2
-        df$pmi <- allTable2$pmi
-        df$dice <- allTable2$dice
-    }
-        
-    class(df) <- c("collocations", class(df))
-    df[1:ifelse(is.null(n), nrow(df), n), ]
-}
-
 #' @rdname collocations
 #' @export
-collocations.corpus <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, ...) {
-    collocations(texts(x), method, size, n, ...)
+collocations.corpus <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, spanPunct = FALSE, ...) {
+    collocations(texts(x), method, size, n, spanPunct, ...)
 }
 
 
@@ -616,3 +441,197 @@ setMethod("phrasetotoken", signature=c("character", "collocations", "ANY"),
 #     # now remove the rest of the stuff not yet cleaned
 #     clean(tokenVec, removeDigits = FALSE, toLower = FALSE, removeURL = FALSE)
 # }
+
+
+#' @rdname collocations
+#' @export    
+collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, 
+                                   n=NULL, spanPunct = FALSE, ...) {
+    method <- match.arg(method)
+    #  "Enough is enough! I have had it with these motherfucking snakes on this motherfucking plane!"
+    #x <- iconv(x, "UTF-8", "ASCII",  sub="") # opening some windows
+    # tagset <- match.arg(tagset)
+    x <- tokenize(toLower(x), ...)
+    collocations(x, method, size, n, spanPunct)
+}
+
+#' @rdname collocations
+#' @export    
+collocations.tokenizedTexts <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, spanPunct = FALSE, ...) 
+{
+    x <- unlist(x, use.names = FALSE)
+    method <- match.arg(method)
+    if (any(!(size %in% 2:3)))
+        stop("Only bigram and trigram collocations implemented so far.")
+    
+    coll <- NULL
+    if (2 %in% size)
+        coll <- collocations2(x, method, 2, n, spanPunct)
+    if (3 %in% size) {
+        if (is.null(coll)) 
+            coll <- collocations3(x, method, 3, n, ...)
+        else {
+            coll <- rbind(coll, collocations3(x, method, 3, n, ...))
+            class(coll) <- c("collocations", class(coll))
+        }
+    }
+    coll
+}
+
+
+collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), 
+                         size=2, n=NULL, spanPunct = FALSE, ...) 
+{
+    
+    # to not issue the check warnings:
+    w1 <- w2 <- count <- w1wn <- w1w2n <- chi2 <- pmi <- dice <- lrratio <- NULL
+
+    method <- match.arg(method)
+
+    t <- x
+    #t <- factor(x)
+    #tlevels <- levels(t)
+    #t <- as.integer(t)
+    
+    # create a data.table of all adjacent bigrams
+    wordpairs <- data.table(w1 = t[1:(length(t)-1)], 
+                            w2 = t[2:length(t)],
+                            count = 1)
+    
+    # eliminate non-adjacent words (where a blank is in a pair)
+    if (!spanPunct) {
+        wordpairs <- wordpairs[!(stringi::stri_detect_regex(w1, "^[\\p{P}\\p{S}]$") | 
+                                     stringi::stri_detect_regex(w2, "^[\\p{P}\\p{S}]$"))]
+    }
+    
+    # set the data.table sort key
+    setkey(wordpairs, w1, w2)
+    
+    # tabulate (count) w1 w2 pairs
+    wordpairsTable <- wordpairs[, j=sum(count), by="w1,w2"]
+    setnames(wordpairsTable, "V1", "w1w2n")
+    
+    # tabulate all word marginal counts
+    setkey(wordpairs, w1)
+    w1Table <- wordpairs[, sum(count), by=w1]
+    setnames(w1Table, "V1", "w1n")
+    # sort by w1 and set key
+    setkey(w1Table, w1)
+    
+    # eliminate any duplicates in w1 - although this ought not to happen!
+    # bug in data.table??  encoding problem on our end??
+    dups <- which(duplicated(w1Table[,w1]))
+    if (length(dups)) {
+        cat("  ...NOTE: dropping duplicates in word1:", w1Table[dups, w1], "\n")
+        w1Table <- w1Table[-dups]
+    }
+    
+    setkey(wordpairsTable, w1)
+    suppressWarnings(allTable <- wordpairsTable[w1Table])
+    # otherwise gives an encoding warning
+
+    rm(w1Table)
+    
+    # tabulate all w2 counts
+    w2Table <- wordpairs[, sum(count), by=w2]
+    setnames(w2Table, "V1", "w2n")
+    setkey(w2Table, w2)
+    
+    # eliminate any duplicates in w2 - although this ought not to happen!
+    dups <- which(duplicated(w2Table[,w2]))
+    if (length(dups)) {
+        cat("...NOTE: dropping duplicates found in word2:", w2Table[dups, w2], "\n")
+        w2Table <- w2Table[-dups]
+    }
+    
+    setkey(allTable, w2)
+    suppressWarnings(allTable2 <- allTable[w2Table])
+    # otherwise gives an encoding warning
+    rm(w2Table)
+    rm(allTable)
+    
+    setkey(allTable2, w1, w2)
+    
+    # remove any rows where count is NA
+    missingCounts <- which(is.na(allTable2$w1w2n))
+    if (length(missingCounts))
+        allTable2 <- allTable2[-missingCounts]
+    
+    # N <- wordpairsTable[, sum(w1w2n)]  # total number of collocations (table N for all tables)
+    N <- allTable2[, sum(w1w2n)] 
+    
+    # fill in cells of 2x2 tables
+    allTable2$w1notw2 <- allTable2$w1n - allTable2$w1w2
+    allTable2$notw1w2 <- allTable2$w2n - allTable2$w1w2
+    allTable2$notw1notw2 <- N - (allTable2$w1w2 + allTable2$w1notw2 + allTable2$notw1w2)
+    
+    # calculate expected values
+    allTable2$w1w2Exp <- exp(log(allTable2$w1n) + log(allTable2$w2n) - log(N))
+    allTable2$w1notw2Exp <- exp(log(allTable2$w1n) + log((N - allTable2$w2n)) - log(N))
+    allTable2$notw1w2Exp <- exp(log(allTable2$w2n) + log((N - allTable2$w1n)) - log(N))
+    allTable2$notw1notw2Exp <- exp(log(N - allTable2$w2n) + log(N - allTable2$w1n) - log(N))
+    
+    # vectorized lr stat
+    epsilon <- .000000001  # to offset zero cell counts
+    if (method=="all" | method=="lr") {
+        allTable2$lrratio <- 2 *  ((allTable2$w1w2n * log(allTable2$w1w2n / (allTable2$w1w2Exp + epsilon) + epsilon)) +
+                                       (allTable2$w1notw2 * log(allTable2$w1notw2 / (allTable2$w1notw2Exp + epsilon) + epsilon)) +
+                                       (allTable2$notw1w2 * log(allTable2$notw1w2 / (allTable2$notw1w2Exp + epsilon) + epsilon)) +
+                                       (allTable2$notw1notw2 * log(allTable2$notw1notw2 / (allTable2$notw1notw2Exp + epsilon) + epsilon)))
+    }
+    if (method=="all" | method=="chi2") {
+        allTable2$chi2 <- (allTable2$w1w2n - allTable2$w1w2Exp)^2 / allTable2$w1w2Exp +
+            (allTable2$w1notw2 - allTable2$w1notw2Exp)^2 / allTable2$w1notw2Exp +
+            (allTable2$notw1w2 - allTable2$notw1w2Exp)^2 / allTable2$notw1w2Exp +
+            (allTable2$notw1notw2 - allTable2$notw1notw2Exp)^2 / allTable2$notw1notw2Exp
+    }
+    if (method=="all" | method=="pmi") {
+        allTable2$pmi <- log(allTable2$w1w2n / allTable2$w1w2Exp)
+    }
+    if (method=="all" | method=="dice") {
+        allTable2$dice <- 2 * allTable2$w1w2n / (2*allTable2$w1w2n + allTable2$w1notw2 + allTable2$notw1w2) 
+    }
+    if (method=="chi2") {
+        setorder(allTable2, -chi2)
+        df <- data.table(word1=allTable2$w1, 
+                         word2=allTable2$w2,
+                         word3="",
+                         count=allTable2$w1w2n,
+                         X2=allTable2$chi2)
+    } else if (method=="pmi") {
+        setorder(allTable2, -pmi)
+        df <- data.table(word1=allTable2$w1, 
+                         word2=allTable2$w2,
+                         word3="",
+                         count=allTable2$w1w2n,
+                         pmi=allTable2$pmi) 
+        
+    } else if (method=="dice") {
+        setorder(allTable2, -dice)
+        df <- data.table(word1=allTable2$w1, 
+                         word2=allTable2$w2,
+                         word3="",
+                         count=allTable2$w1w2n,
+                         dice=allTable2$dice) 
+    } else {
+        setorder(allTable2, -lrratio)
+        df <- data.table(word1=allTable2$w1, 
+                         word2=allTable2$w2,
+                         word3="",
+                         count=allTable2$w1w2n,
+                         G2=allTable2$lrratio) 
+    }
+    
+    if (method=="all") {
+        df$G2 <- allTable2$lrratio
+        df$X2 <- allTable2$chi2
+        df$pmi <- allTable2$pmi
+        df$dice <- allTable2$dice
+    }
+    
+    #df[, word1 := factor(word1, levels = 1:length(tlevels), labels = tlevels)]
+    #df[, word2 := factor(word2, levels = 1:length(tlevels), labels = tlevels)]
+    class(df) <- c("collocations", class(df))
+    df[1:ifelse(is.null(n), nrow(df), n), ]
+}
+

@@ -20,8 +20,7 @@ kwic(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"),
   "regex", "fixed"), case_insensitive = TRUE, ...)
 }
 \arguments{
-\item{x}{A text character scalar or a quanteda corpus.  (Currently does not
-support character vectors.)}
+\item{x}{a text character scalar or a quanteda corpus}
 
 \item{keywords}{A keyword or phrase consisting of multiple keywords, possibly
 including punctuation.  If a phrase, \code{keywords} will be tokenized

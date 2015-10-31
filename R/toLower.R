@@ -58,6 +58,7 @@ toLower.tokenizedTexts <- function(x, keepAcronyms=FALSE, ...) {
     x
 }
 
+
 #' @rdname toLower
 #' @export
 toLower.corpus <- function(x, keepAcronyms=FALSE, ...) {

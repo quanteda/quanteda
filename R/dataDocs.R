@@ -70,8 +70,7 @@ NULL
 #' @format The corpus object for the 2010 budget speeches, with document-level 
 #'   variables for year, debate, serial number, first and last name of the 
 #'   speaker, and the speaker's party.
-#' @source Lowe and Benoit (2013)
-#' @references Lowe, Will, and Kenneth R Benoit. 2013. "Validating Estimates of
+#' @source Lowe, Will, and Kenneth R Benoit. 2013. "Validating Estimates of
 #'   Latent Traits From Textual Data Using Human Judgment as a Benchmark."
 #'   \emph{Political Analysis} 21: 298-313.
 #' @docType data

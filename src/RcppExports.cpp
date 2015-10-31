@@ -21,16 +21,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // skipgramcppl
-std::vector< std::vector<std::string> > skipgramcppl(SEXP x, std::vector< int > ns, std::vector< int > ks, std::string delim);
-RcppExport SEXP quanteda_skipgramcppl(SEXP xSEXP, SEXP nsSEXP, SEXP ksSEXP, SEXP delimSEXP) {
+std::vector< std::vector<std::string> > skipgramcppl(SEXP units, std::vector< int > ns, std::vector< int > ks, std::string delim);
+RcppExport SEXP quanteda_skipgramcppl(SEXP unitsSEXP, SEXP nsSEXP, SEXP ksSEXP, SEXP delimSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type units(unitsSEXP);
     Rcpp::traits::input_parameter< std::vector< int > >::type ns(nsSEXP);
     Rcpp::traits::input_parameter< std::vector< int > >::type ks(ksSEXP);
     Rcpp::traits::input_parameter< std::string >::type delim(delimSEXP);
-    __result = Rcpp::wrap(skipgramcppl(x, ns, ks, delim));
+    __result = Rcpp::wrap(skipgramcppl(units, ns, ks, delim));
     return __result;
 END_RCPP
 }

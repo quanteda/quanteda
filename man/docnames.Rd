@@ -26,9 +26,7 @@ docnames(x) <- value
 \code{docnames<-} assigns a character vector of the document names in a corpus
 }
 \description{
-Extract the document names from a corpus or a document-feature matrix.  Document names are the
-rownames of the documents data.frame in a corpus, or the rownames of the \link{dfm}
-object for a dfm.
+Extract the document names from a corpus or a document-feature matrix.
 of the \link{dfm} object.
 
 \code{docnames} queries the document names of a corpus or a dfm

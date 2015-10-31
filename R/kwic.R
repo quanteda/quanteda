@@ -6,8 +6,7 @@
 #' line number, since the text may or may not be segmented using end-of-line 
 #' delimiters.)
 #' 
-#' @param x A text character scalar or a quanteda corpus.  (Currently does not 
-#'   support character vectors.)
+#' @param x a text character scalar or a quanteda corpus
 #' @param keywords A keyword or phrase consisting of multiple keywords, possibly
 #'   including punctuation.  If a phrase, \code{keywords} will be tokenized 
 #'   using the \code{...} options.

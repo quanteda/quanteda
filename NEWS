@@ -1,6 +1,9 @@
 quanteda 0.8.7
 ==============
 
+*  indexing corpus objects is now possible, for extracting texts or docvars using
+   convenient notation.  See ?corpus Details.
+
 *  ngrams() and skipgrams() now use the same underlying function, with `skip` replacing the previous
    `window` argument (where a skip = window - 1).  For efficiency, both are now implemented in C++.
 
@@ -11,6 +14,8 @@ quanteda 0.8.7
 Bug Fixes
 ---------
 *  corrected inaccurate printing of valuetype in verbose note of selectFeatures.dfm().  (Did not affect functionality.)
+
+*  fixed broken quanteda.R demo, expanded demonstration code.
 
 quanteda 0.8.6
 ==============

@@ -2,6 +2,7 @@
 % Please edit documentation in R/corpus.R
 \name{corpus}
 \alias{+.corpus}
+\alias{[.corpus}
 \alias{corpus}
 \alias{corpus.VCorpus}
 \alias{corpus.character}
@@ -22,6 +23,8 @@ corpus(x, ...)
 is.corpus(x)
 
 \method{+}{corpus}(c1, c2)
+
+\method{[}{corpus}(x, i, j = NULL, ..., drop = TRUE)
 }
 \arguments{
 \item{x}{a source of texts to form the documents in the corpus, a character
@@ -64,6 +67,14 @@ To Dos, etc.}
 \item{c1}{corpus one to be added}
 
 \item{c2}{corpus two to be added}
+
+\item{i}{index for documents or rows of document variables}
+
+\item{j}{index for column of document variables}
+
+\item{drop}{if \code{TRUE} the result is coerced to the lowest possible
+dimension (see the examples). This only works for extracting elements, not
+for the replacement. See \code{\link{drop}} for further details.}
 }
 \value{
 A corpus class object containing the original texts, document-level
@@ -106,6 +117,12 @@ containing (for example) citation information and notes, as can
 document-level variables and document-level meta-data.
 }
 \details{
+The texts and document variables of corpus objects can also be
+  accessed using index notation. Indexing a corpus object as a vector will
+  return its text, equivalent to \code{texts(x)}.  Indexing a corpus using
+  two indexes (integers or column names) will return the document variables,
+  equivalent to \code{docvars(x)}.
+
 The \code{+} operator for a corpus object will combine two corpus
   objects, resolving any non-matching \code{\link{docvars}} or
   \code{\link{metadoc}} fields by making them into \code{NA} values for the

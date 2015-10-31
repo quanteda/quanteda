@@ -362,7 +362,7 @@ setMethod("weighting", signature(object="dfm"), function(object) {
 #' get the document frequency of a feature
 #' 
 #' For a \link{dfm-class} object, returns the number of documents in which a 
-#' feature in occurs greater than a given frequency threshold.  The default is 
+#' feature occurs more than a given frequency threshold.  The default is 
 #' greater than zero, meaning that a feature occurs at least once in a document.
 #' @param object a \link{dfm-class} document-feature matrix
 #' @param threshold numeric value of the threshold \emph{above which} a feature

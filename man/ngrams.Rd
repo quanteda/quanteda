@@ -25,8 +25,7 @@ skipgrams(x, ...)
 \arguments{
 \item{x}{a tokenizedText object or a character vector of tokens}
 
-\item{...}{additional arguments passed to \code{\link[parallel]{mclapply}}
-which applies \code{ngram.character()} to the \code{tokenizedTexts} list object}
+\item{...}{not used}
 
 \item{n}{integer vector specifying the number of elements to be concatenated
 in each ngram}

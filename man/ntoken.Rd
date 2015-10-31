@@ -5,10 +5,12 @@
 \alias{ntoken.character}
 \alias{ntoken.corpus}
 \alias{ntoken.dfm}
+\alias{ntoken.tokenizedTexts}
 \alias{ntype}
 \alias{ntype.character}
 \alias{ntype.corpus}
 \alias{ntype.dfm}
+\alias{ntype.tokenizedTexts}
 \title{count the number of tokens or types}
 \usage{
 ntoken(x, ...)
@@ -21,11 +23,15 @@ ntype(x, ...)
 
 \method{ntoken}{character}(x, ...)
 
+\method{ntoken}{tokenizedTexts}(x, ...)
+
 \method{ntype}{character}(x, ...)
 
 \method{ntoken}{dfm}(x, ...)
 
 \method{ntype}{dfm}(x, ...)
+
+\method{ntype}{tokenizedTexts}(x, ...)
 }
 \arguments{
 \item{x}{texts or corpus whose tokens or types will be counted}

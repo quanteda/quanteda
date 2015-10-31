@@ -1,15 +1,14 @@
-
 #' constructor for corpus objects
 #' 
-#' Creates a corpus from a document source.  The current available document
-#' sources are: \itemize{ \item a character vector (as in R class \code{char})
-#' of texts; \item a \link{corpusSource-class} object, constructed using
-#' \code{\link{textfile}}; \item a \pkg{tm} \link[tm]{VCorpus} class corpus
-#' object, meaning that anything you can use to create a \pkg{tm} corpus,
-#' including all of the tm plugins plus the built-in functions of tm for
-#' importing pdf, Word, and XML documents, can be used to create a quanteda
-#' \link{corpus}. } Corpus-level meta-data can be specified at creation,
-#' containing (for example) citation information and notes, as can
+#' Creates a corpus from a document source.  The current available document 
+#' sources are: \itemize{ \item a character vector (as in R class \code{char}) 
+#' of texts; \item a \link{corpusSource-class} object, constructed using 
+#' \code{\link{textfile}}; \item a \pkg{tm} \link[tm]{VCorpus} class corpus 
+#' object, meaning that anything you can use to create a \pkg{tm} corpus, 
+#' including all of the tm plugins plus the built-in functions of tm for 
+#' importing pdf, Word, and XML documents, can be used to create a quanteda 
+#' \link{corpus}. } Corpus-level meta-data can be specified at creation, 
+#' containing (for example) citation information and notes, as can 
 #' document-level variables and document-level meta-data.
 #' @param x a source of texts to form the documents in the corpus, a character 
 #'   vector or a \link{corpusSource-class} object created using 
@@ -39,8 +38,13 @@
 #'   
 #'   \item{$tokens}{An indexed list of tokens and types tabulated by document, 
 #'   including information on positions.  Not yet fully implemented.}
-#' @seealso \link{docvars}, \link{metadoc}, \link{metacorpus}, \link{settings},
+#' @seealso \link{docvars}, \link{metadoc}, \link{metacorpus}, \link{settings}, 
 #'   \link{texts}
+#' @details The texts and document variables of corpus objects can also be 
+#'   accessed using index notation. Indexing a corpus object as a vector will 
+#'   return its text, equivalent to \code{texts(x)}.  Indexing a corpus using
+#'   two indexes (integers or column names) will return the document variables,
+#'   equivalent to \code{docvars(x)}.
 #' @author Kenneth Benoit and Paul Nulty
 #' @export
 corpus <- function(x, ...) {
@@ -522,9 +526,7 @@ tokens.corpus <- function(corp) {
 
 #' get or set document names
 #' 
-#' Extract the document names from a corpus or a document-feature matrix.  Document names are the
-#' rownames of the documents data.frame in a corpus, or the rownames of the \link{dfm}
-#' object for a dfm.
+#' Extract the document names from a corpus or a document-feature matrix.
 #' of the \link{dfm} object.
 #' @param x the object with docnames
 #' @export
@@ -960,17 +962,19 @@ ntype.corpus <- function(x, ...) {
 #' @rdname ntoken
 #' @export
 ntoken.character <- function(x, ...) {
-    #if (removePunct(list(...))
-    #if ("removePunct" %in% list(...))
-    sapply(tokenize(x, ...), length)
+    ntoken(tokenize(x, ...))
+}
+
+#' @rdname ntoken
+#' @export
+ntoken.tokenizedTexts <- function(x, ...) {
+    sapply(x, length)
 }
 
 #' @rdname ntoken
 #' @export
 ntype.character <- function(x, ...) {
-    #if (removePunct(list(...))
-    #if ("removePunct" %in% list(...))
-    sapply(lapply(tokenize(x, ...), unique), length)
+    ntype(tokenize(x, ...))
 }
 
 
@@ -994,6 +998,12 @@ ntype.dfm <- function(x, ...) {
     tmp
 }
 
+#' @rdname ntoken
+#' @export
+ntype.tokenizedTexts <- function(x, ...) {
+    sapply(lapply(x, unique), length)
+}
+    
 
 #' count the number of sentences
 #' 
@@ -1029,3 +1039,33 @@ nsentence.character <- function(x, ...) {
 nsentence.corpus <- function(x, ...) {
     nsentence(texts(x), ...)
 }
+
+#' @export
+#' @param i index for documents or rows of document variables
+#' @param j index for column of document variables
+#' @param drop if \code{TRUE} the result is coerced to the lowest possible
+#'   dimension (see the examples). This only works for extracting elements, not
+#'   for the replacement. See \code{\link{drop}} for further details.
+#' @method [ corpus
+#' @rdname corpus
+`[.corpus` <- function(x, i, j = NULL, ..., drop = TRUE) {
+    if (is.null(j))
+        return(texts(x)[i, ...])
+    else
+        return(docvars(x)[i, j, ..., drop = TRUE])
+}
+
+
+# #' @param i index for documents or rows of document variables
+# #' @param j index for column of document variables
+# #' @param drop if \code{TRUE} the result is coerced to the lowest possible dimension
+# #'   (see the examples). This only works for extracting elements, not for the
+# #'   replacement. See \code{\link{drop}} for further details.
+# #' @param ... vectors or empty (missing) or \code{NULL}, see \code{\link{`[`}}
+# #' @rdname corpus
+# setMethod("[", signature(x = "corpus", i = "index", j = "index", drop = "ANY"),
+#           function(x, i, j, ..., drop = FALSE) docvars(x)[i, j, ..., drop])
+# 
+# #' @rdname corpus
+# setMethod("[", signature(x = "corpus", i = "index", j = "MISSING", drop = "MISSING"),
+#           function(x, i, j, ..., drop = FALSE) texts(x)[i])
