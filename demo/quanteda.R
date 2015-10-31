@@ -1,3 +1,4 @@
+
 # a demonstration of the capabilities of quanteda
 
 str(ukimmigTexts)
@@ -28,7 +29,7 @@ wordstem(toks)
 removeFeatures(toks, stopwords("english"))
 
 
-## more demonstrations
+## more demonstrations
 
 
 # extract a document-feature matrix
