@@ -1,7 +1,7 @@
 ---
 title: "Design Principles and Development Plans"
 author: "Ken Benoit and Paul Nulty"
-date: "2015-07-16"
+date: "2015-11-02"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Design Principles and Development Plans}
@@ -48,6 +48,8 @@ vignette: >
     
 2.  **Text manipulation.**  These operate on character vectors, and return character vectors.
 
+    **NOTE: This is a bit out of date now -- we are working on a table by function of input and output objects.**
+
     1.  Operations on character vectors or the character vector of texts from a corpus.
     
         Returns a list of character vectors:
@@ -90,9 +92,8 @@ vignette: >
     3.  Operations that *previously* worked (currently work) on character vectors of any size, but that will now be folded into Workflow Step 2 functions (see below) as part of tokenize:
     
         ```{r, eval=FALSE}
-        bigrams
         ngrams
-        clean
+        skipgrams
         ```
     
 3.  **`dfm` construction and manipulation.**
@@ -346,20 +347,20 @@ We *always* welcome hearing about your experiences (and problems!) in using quan
 *   **DONE** added readability statistics through `readability()`
 *   **DONE** added `nsentence()`
 *   **DONE** `ngrams` added as an option to `tokenize()`
+*   **DONE** `dfm` objects need a subset method for selection rows, not just columns
+*   **DONE** rewrite `segment()` to make use of new tokenizer that segments on sentences
+*   **DONE** make sure `corpus.VCorpus()` is fully working
+*   **DONE** rewrite `kwic` to use new tokenizer, and to allow searches for multi-word regular expressions
 
 
 ## To Do Remaining
 
-*   fix `collocations()` behaviour, changed since new `tokenize()`
-*   `weight()` breaks for dfm objects with all zero counts, for instance those that have been `trim()`med
-*   `dfm` objects need a subset method for selection rows, not just columns
+*   fix `collocations()` behaviour, changed since new `tokenize()` (**IN PROGRESS**)
+*   `weight()` breaks for dfms with all zero count documents, for instance those that have been `trim()`med
 *   rewrite `lexdiv()` to make the API similar to `readability()` and to use data.table
-*   rewrite `segment()` to make use of new tokenizer that segments on sentences
 *   integrate `collocations` code for bigrams and trigrams and reduce the internal memory usage
-*   make sure `corpus.VCorpus()` is fully working
 *   `dfm` documentation needs to group arguments into sections and describe how these correspond to the logical workflow
 *   need to figure out how to exclude specific signatures (especially S4 signatures) from the man (.Rd) pages.  For instance `?"dfm-class" has far more details on methods signatures than any user will find useful.
-*   rewrite `kwic` to use new tokenizer, and to allow searches for multi-word regular expressions
 *   Devise a scheme for `settings()` and figure out how to add additional objects to a corpus, namely one or more:
     *   dictionary objects
     *   collocation objects
@@ -370,14 +371,16 @@ We *always* welcome hearing about your experiences (and problems!) in using quan
 *   Move more functions to S4
 *   Documentation for `convert()` needs substantial work
 *   Vignettes:
-    *   Vastly revise the Workflow vignette
     *   Add a Performance analysis and comparison vignette
+    *   Replication vignette for Jockers, *Text Analysis with R for Students of Literature*
+*   stripplot for keywords occurrence across documents, serially
 *   Define full set of operators for dfmSparse and dfmDense.  Right now, only `+` is defined.
 *   `resample` functionality to enable resampling from different text units
 *   `index` (?) for pre-tokenizing and indexing a corpus
 *    specific textmodel types:
     *   Improve wordfish and round out methods
     *   Add CA scaling
-
+*   incorporate a word2vec-type model (see [wordvectors](https://github.com/bmschmidt/wordVectors))
+*   add POS tagging, through an interface to the Stanford NLP library, or through an existing R package that provides this functionality
 
 
