@@ -103,9 +103,6 @@ Alternative visualizations, using ggplot. Better for comparisons.
 require('ggplot2')
 qplot(whales, geom="histogram", binwidth=1000) 
 qplot(whales, geom="density", adjust=0.1)
-ahab <- which(mobyWords == "ahab")
-p <- ggplot(ahab, aes(x = rating))
-
 ```
 
 
