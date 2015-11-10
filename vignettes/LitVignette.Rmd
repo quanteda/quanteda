@@ -1,0 +1,134 @@
+---
+title: "Use Cases from 'Text Analysis with R for Students of Literature"
+output:
+  rmarkdown::html_document:
+    theme: null
+    css: mystyle.css
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Literature}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{Quickstart}
+-->
+
+In this use case I will implement some of the analysis from the book "Text Analysis with R for Students of Literature" by Matthew L Jockers. 
+
+# 2 Moby Dick: Descriptive analysis
+
+## 2.1 scanning text and lines from the web
+
+The code below scans and splits the text of Moby Dick from Project Gutenberg, more or less as implemented in the textbook.
+```{r eval=TRUE}
+require(quanteda)
+text <- scan("http://www.gutenberg.org/cache/epub/2701/pg2701.txt",
+what="character", sep="\n")
+start  <- which(text == "CHAPTER 1. Loomings.")
+end  <- which(text == "orphan.")
+body <- text[start:end]
+body[1]
+mobyWords <- unlist(strsplit(text, "\\W"))
+which(mobyWords=="whale")
+```
+
+## 2.2-2.4 Comparing word frequencies
+Below is the initial word frequency analysis performed using a `quanteda` corpus.
+
+```{r eval=TRUE}
+require(stringi)
+
+flatText <- stri_flatten(body)
+
+
+# ten most frequent words
+mobyCorp <- corpus(flatText)
+mobyDfm <- dfm(mobyCorp)
+
+# type and token frequencies
+ntype(mobyCorp) / ntoken(mobyCorp)
+
+
+
+
+
+
+mobyWords <- unlist(tokenize(mobyCorp))
+
+# whale:token ratio
+length(which(mobyWords == "whale")) / ntoken(mobyCorp)
+
+```
+
+
+# 3: More word frequencies
+```{r eval=TRUE}
+
+# frequencies of 'he' and 'she' - these are matrixes, not numerics
+mobyDfm[,'he']
+mobyDfm[,'she']
+
+# relative frequencies:
+mobyDfm <- weight(mobyDfm, type='relFreq')
+mobyDfm[,'he']
+mobyDfm[,'she']
+
+topfeatures(mobyDfm, n=10)
+plot(topfeatures(mobyDfm, n=10))
+
+```
+
+# 4: Dispersion plots
+Example 4.1 in the book plots the frequency of certain words across the length of the text. 
+
+```{r eval=TRUE}
+# using words from tokenized corpus for dispersion
+mobyWords <- unlist(tokenize(mobyCorp))
+nTime <- seq(1:length(mobyWords))
+whales <- which(mobyWords == "whale")
+wcount <- rep(NA,length(nTime))
+wcount[whales] <- 1
+
+# dispersion plot as in book.
+plot(wcount, main="Dispersion Plot of `whale' in Moby Dick",
+xlab="Novel Time", ylab="whale", type="h", ylim=c(0,1), yaxt='n')
+```
+
+Alternative visualizations, using ggplot. Better for comparisons.
+
+```{r eval = TRUE}
+require('ggplot2')
+qplot(whales, geom="histogram", binwidth=1000) 
+qplot(whales, geom="density", adjust=0.1)
+ahab <- which(mobyWords == "ahab")
+p <- ggplot(ahab, aes(x = rating))
+
+```
+
+
+
+## Breaking by chapter, searching, and counting
+```{r eval=TRUE}
+kwic(mobyCorp, 'chapter')
+chapters <- segment(mobyCorp, what='other', delimiter="CHAPTER\\s\\d", perl=TRUE)
+chapDfm <- dfm(chapters)
+barplot(as.numeric(chapDfm[, 'whale']))
+barplot(as.numeric(chapDfm[, 'ahab']))
+
+```
+
+## Measures of Lexical Variety
+
+Correlation of type-token ratio and chapter length:
+
+```{r eval=TRUE}
+#ttr <- statLexdiv(chapDfm)
+#lens <- length(rowSums(chapDfm))
+
+```
+
+
+
