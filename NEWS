@@ -11,6 +11,8 @@ quanteda 0.8.7
 
 *  added new measures from readability for mean syllables per word and mean words per sentence directly.
 
+*  wordstem now works on ngrams (tokenizedTexts and dfm objects).
+
 Bug Fixes
 ---------
 *  corrected inaccurate printing of valuetype in verbose note of selectFeatures.dfm().  (Did not affect functionality.)
