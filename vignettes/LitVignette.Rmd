@@ -1,0 +1,124 @@
+---
+title: "Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*"
+output:
+  rmarkdown::html_document:
+    theme: null
+    css: mystyle.css
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Literature}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{Quickstart}
+-->
+
+In this vignette we show it the **quanteda** package can be used to replicate the analysis from Matthew Jockers' book **Text Analysis with R for Students of Literature** (London: Springer, 2014).  Each section corresponds to a chapter.
+
+
+# 2 Moby Dick: Descriptive analysis
+
+## 2.1 scanning text and lines from the web
+
+The code below scans and splits the text of Moby Dick from Project Gutenberg, more or less as implemented in the textbook.
+```{r eval=TRUE}
+require(quanteda)
+# read the text as a single file
+text <- texts(textfile("https://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
+# extract the header information
+endMetadataIndex <- regexec("CHAPTER 1. Loomings.", text)[[1]]
+metadata <- substring(text, 1, endMetadataIndex - 1)
+# extract the novel
+novel.v <- substring(text, endMetadataIndex)
+# lowercase
+novel.lower.v <- toLower(novel.v)
+# tokenize
+moby.word.v <- tokenize(novel.lower.v, what = "fastestword", simplify = TRUE)
+moby.word.v[1:10]
+moby.word.v[99986]  # different because we removed punctiation
+head(which(moby.word.v=="whale"))
+```
+
+## 2.2-2.4 Comparing word frequencies
+Below is the initial word frequency analysis performed using a `quanteda` corpus.
+
+```{r eval=TRUE}
+# ten most frequent words
+mobyDfm <- dfm(novel.lower.v, what = "fastestword", verbose = FALSE)
+mobyDfm[, "whale"]
+# type and token frequencies
+ntype(mobyDfm) / ntoken(mobyDfm)
+
+topfeatures(mobyDfm)
+plot(topfeatures(mobyDfm, 100), log = "y", cex = .6)
+
+# whale:token ratio
+length(which(moby.word.v == "whale")) / ntoken(mobyDfm)
+```
+
+
+# 3: More word frequencies
+```{r eval=TRUE}
+# frequencies of 'he' and 'she' - these are matrixes, not numerics
+mobyDfm[, c("he", "she")]
+
+# relative frequencies:
+mobyDfm <- weight(mobyDfm, type='relFreq')
+mobyDfm[, c("he", "she")]
+
+topfeatures(mobyDfm, n=10)
+plot(topfeatures(mobyDfm, n=10))
+
+```
+
+# 4: Dispersion plots
+Example 4.1 in the book plots the frequency of certain words across the length of the text. 
+
+```{r eval=TRUE}
+# using words from tokenized corpus for dispersion
+nTime <- seq(1:length(mobyWords))
+whales <- which(mobyWords == "whale")
+wcount <- rep(NA,length(nTime))
+wcount[whales] <- 1
+
+# dispersion plot as in book.
+dev.new(height = 3, width = 6)
+plot(wcount, main="Dispersion Plot of `whale' in Moby Dick",
+     xlab="Novel Time", ylab="whale", type="h", ylim=c(0,1), yaxt='n')
+```
+
+Alternative visualizations, using ggplot. Better for comparisons.
+
+```{r eval = TRUE}
+require('ggplot2')
+qplot(whales, geom="histogram", binwidth=1000) 
+qplot(whales, geom="density", adjust=0.1)
+```
+
+
+
+## Breaking by chapter, searching, and counting
+```{r eval=TRUE}
+kwic(mobyCorp, 'chapter')
+chapters <- segment(mobyCorp, what='other', delimiter="CHAPTER\\s\\d", perl=TRUE)
+chapDfm <- dfm(chapters)
+barplot(as.numeric(chapDfm[, 'whale']))
+barplot(as.numeric(chapDfm[, 'ahab']))
+
+```
+
+## Measures of Lexical Variety
+
+Correlation of type-token ratio and chapter length:
+
+```{r eval=TRUE}
+#ttr <- statLexdiv(chapDfm)
+#lens <- length(rowSums(chapDfm))
+
+```
+
+
+
