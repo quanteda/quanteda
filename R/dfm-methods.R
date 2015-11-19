@@ -540,4 +540,24 @@ sample.dfm <- function(x, size = ndoc(x), replace = FALSE, prob = NULL,
     x
 }
 
+#' combine dfm object by columns
+#' 
+#' Combine two or more dfm objects by columns.  An implementation of
+#' \code{\link{cbind}} for \link{dfm} objects. Calls \code{\link{cbind2}}
+#' defined for object classes in the \pkg{Matrix} package.
+#' @param x a \link{dfm} object
+#' @param y a second \link{dfm} object to be joined column-wise to the first
+#' @param ... optional arguments for methods
+#' @return A dfm object with combined features from input dfm objects.  The attributes of this
+#' new dfm are not currently preserved.
+#' @export
+#' @examples 
+#' dfm1 <- dfm("This is a sample text.", verbose = FALSE)
+#' dfm2 <- dfm("one two three", verbose = FALSE)
+#' cbind(dfm1, dfm2)
+cbind.dfm <- function(x, y, ...) {
+    result <- Matrix::cbind2(x, y, ...)
+    new("dfmSparse", result)
+}
+
 

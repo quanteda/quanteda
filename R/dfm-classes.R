@@ -524,3 +524,4 @@ setMethod("as.matrix", signature(x="dfm"),
 #' }
 setMethod("as.data.frame", signature(x="dfm"), function(x) as.data.frame(as.matrix(x)))
 
+
