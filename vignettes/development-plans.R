@@ -38,9 +38,8 @@
 #  removeFeatures
 
 ## ---- eval=FALSE---------------------------------------------------------
-#  bigrams
 #  ngrams
-#  clean
+#  skipgrams
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  dfm         # also works directly on (the texts of) a corpus

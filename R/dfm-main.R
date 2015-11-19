@@ -103,6 +103,8 @@ dfm <- function(x, ...) {
 #' # with English stopwords and stemming
 #' dfmsInaug2 <- dfm(subset(inaugCorpus, Year>1980), 
 #'                   ignoredFeatures=stopwords("english"), stem=TRUE)
+#' # works for both words in ngrams too
+#' dfm("Banking industry", stem = TRUE, ngrams = 2, verbose = FALSE)
 #' 
 #' # with dictionaries
 #' mycorpus <- subset(inaugCorpus, Year>1900)
@@ -312,9 +314,11 @@ dfm.tokenizedTexts <- function(x,
         if (verbose) cat("   ... stemming features (", stri_trans_totitle(language), ")", sep="")
         oldNfeature <- nfeature(dfmresult)
         dfmresult <- wordstem(dfmresult, language)
-        if (verbose & (oldNfeature - nfeature(dfmresult)) > 0) 
-            cat(", trimmed", oldNfeature - nfeature(dfmresult), "feature variants\n")
-        else cat("\n")
+        if (verbose) 
+            if (oldNfeature - nfeature(dfmresult) > 0) 
+                cat(", trimmed", oldNfeature - nfeature(dfmresult), "feature variants\n")
+            else
+                cat("\n")
     }
     
     if (!is.null(ignoredFeatures)) {

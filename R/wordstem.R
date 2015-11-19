@@ -1,4 +1,3 @@
-
 #' stem words
 #' 
 #' Apply a stemmer to words.  This is a wrapper to \link[SnowballC]{wordStem} 
@@ -50,10 +49,26 @@ wordstem.character <- function(x, language = "porter") {
 wordstem.tokenizedTexts <- function(x, language = "porter") {
     if (any(unlist(lapply(x, stringi::stri_detect_fixed, " "))))
         stop("whitespace detected: you can only stem tokenized texts")
-    result <- lapply(x, SnowballC::wordStem, language)
+    if (identical(attributes(x)$ngrams, 1))
+        result <- lapply(x, SnowballC::wordStem, language)
+    else {
+        result <- wordstem_Ngrams(x, attributes(x)$concatenator, language)
+    }
     class(result) <- c("tokenizedTexts", class(result))
     result
 }
+
+
+# stemming for ngrams, internal function
+wordstem_Ngrams <- function(x, concatenator, language) {
+    result <- lapply(x, strsplit, concatenator, fixed = TRUE)
+    result <- lapply(result, function(y) lapply(y, SnowballC::wordStem, language = language))
+    result <- lapply(result, function(y) sapply(y, paste, collapse = concatenator))
+    # simple way to return a character vector if supplied a character vector
+    if (!is.list(x) == 1) result <- unlist(result)
+    result
+}
+
 
 #' @rdname wordstem
 #' @import stringi 
@@ -63,7 +78,10 @@ wordstem.dfm <- function(x, language = "porter") {
     j <- as(x, "TsparseMatrix")@j + 1
 
     oldFeatures <- features(x)[j]
-    oldFeaturesStemmed <- wordstem(oldFeatures, language)
+    if (identical(x@ngrams, 1)) 
+        oldFeaturesStemmed <- wordstem(oldFeatures, language)
+    else
+        oldFeaturesStemmed <- wordstem_Ngrams(oldFeatures, x@concatenator, language)
     newFeatures <- unique(oldFeaturesStemmed)
     newFeatureIndex <- match(oldFeaturesStemmed, newFeatures)
 

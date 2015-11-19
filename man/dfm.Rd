@@ -142,6 +142,8 @@ mydfmGrouped <- dfm(subset(inaugCorpus, Year>1980), groups = "President")
 # with English stopwords and stemming
 dfmsInaug2 <- dfm(subset(inaugCorpus, Year>1980),
                   ignoredFeatures=stopwords("english"), stem=TRUE)
+# works for both words in ngrams too
+dfm("Banking industry", stem = TRUE, ngrams = 2, verbose = FALSE)
 
 # with dictionaries
 mycorpus <- subset(inaugCorpus, Year>1900)
