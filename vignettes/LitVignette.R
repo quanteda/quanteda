@@ -1,11 +1,12 @@
 ## ----eval=FALSE----------------------------------------------------------
 #  install.packages("quanteda", dependencies = TRUE)
-#  require(quanteda)
 
 ## ----eval=TRUE-----------------------------------------------------------
+require(quanteda)
+
 # read the text as a single file
-# mobydicktf <- textfile("https://www.gutenberg.org/cache/epub/2701/pg2701.txt")
-mobydicktf <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")
+mobydicktf <- textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt")
+# mobydicktf <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")
 mobydicktf
 
 ## ------------------------------------------------------------------------
@@ -79,10 +80,10 @@ plot(topfeatures(mobyDfmPct), type="b",
      xlab="Top Ten Words", ylab="Percentage of Full Text", xaxt ="n")
 axis(1, 1:10, labels = names(topfeatures(mobyDfmPct)))
 
-## ----eval=FALSE----------------------------------------------------------
-#  # using words from tokenized corpus for dispersion
-#  kwic_whale <- kwic(novel.v, "whale")
-#  plot(kwic_whale)
+## ----eval=TRUE, fig.width=8, fig.height=2--------------------------------
+# using words from tokenized corpus for dispersion
+kwic_whale <- kwic(novel.v, "whale")
+plot(kwic_whale)
 
 ## ----eval = FALSE--------------------------------------------------------
 #  require('ggplot2')
