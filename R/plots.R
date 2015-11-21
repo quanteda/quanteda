@@ -28,6 +28,18 @@ plot.dfm <- function(x, ...) {
 }
 
 
-
+#' plot a dispersion plot of key word(s)
+#' 
+#' Plots a dispersion or "x-ray" plot of a selected word pattern across a text.
+#' @param x a \link{kwic} class object
+#' @param ... additional arguments passed to \code{\link{plot}}
+#' @note Currently works only for a a single document
+#' @export
+plot.kwic <- function(x, ...) {
+    pos <- integer(attr(x, "ntoken"))
+    pos[x$position] <- 1L
+    plot(pos, xlab="Token Index", ylab = attr(x, "keyword"), type="h", 
+         ylim=c(0,1), yaxt="n", col = "grey30", ...)
+}
 
 

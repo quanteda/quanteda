@@ -1,62 +1,104 @@
-## ----eval=TRUE-----------------------------------------------------------
-require(quanteda)
-text <- scan("http://www.gutenberg.org/cache/epub/2701/pg2701.txt",
-what="character", sep="\n")
-start  <- which(text == "CHAPTER 1. Loomings.")
-end  <- which(text == "orphan.")
-body <- text[start:end]
-body[1]
-mobyWords <- unlist(strsplit(text, "\\W"))
-which(mobyWords=="whale")
+## ----eval=FALSE----------------------------------------------------------
+#  install.packages("quanteda", dependencies = TRUE)
+#  require(quanteda)
 
 ## ----eval=TRUE-----------------------------------------------------------
-require(stringi)
+# read the text as a single file
+# mobydicktf <- textfile("https://www.gutenberg.org/cache/epub/2701/pg2701.txt")
+mobydicktf <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")
+mobydicktf
 
-flatText <- stri_flatten(body)
+## ------------------------------------------------------------------------
+substring(texts(mobydicktf), 1, 75)
 
+## ------------------------------------------------------------------------
+# extract the header information
+mobydickText <- texts(mobydicktf)
+endMetadataIndex <- regexec("CHAPTER 1. Loomings.", mobydickText)[[1]]
+metadata.v <- substring(texts(mobydicktf), 1, endMetadataIndex - 1)
 
+# verify that "orphan" is the end of the novel
+kwic(mobydickText, "orphan")
+
+# extract the novel -- a better way
+novel.v <- substring(mobydickText, endMetadataIndex, 
+                     regexec("End of Project Gutenberg's Moby Dick.", mobydickText)[[1]]-1)
+
+## ------------------------------------------------------------------------
+# lowercase
+novel.lower.v <- toLower(novel.v)
+# tokenize
+moby.word.v <- tokenize(novel.lower.v, removePunct = TRUE, simplify = TRUE)
+str(moby.word.v)
+moby.word.v[1:10]
+moby.word.v[99986]  # different because we removed punctiation
+
+moby.word.v[c(4,5,6)]
+
+head(which(moby.word.v=="whale"))
+
+## ------------------------------------------------------------------------
+length(moby.word.v[which(moby.word.v=="whale")])
+length(moby.word.v)
+ntoken(novel.v, removePunct = TRUE)
+
+whale.hits.v <- length(moby.word.v[which(moby.word.v=="whale")])
+
+# Put a count of total words into total.words.v 
+total.words.v <- length(moby.word.v)
+# now divide
+whale.hits.v/total.words.v
+
+# total unique words
+length(unique(moby.word.v))
+ntype(toLower(novel.v), removePunct = TRUE)
+
+## ----eval=TRUE-----------------------------------------------------------
 # ten most frequent words
-mobyCorp <- corpus(flatText)
-mobyDfm <- dfm(mobyCorp)
+mobyDfm <- dfm(novel.lower.v)
+mobyDfm[, "whale"]
 
-# type and token frequencies
-ntype(mobyCorp) / ntoken(mobyCorp)
-
-
-
-
-
-
-mobyWords <- unlist(tokenize(mobyCorp))
+topfeatures(mobyDfm)
+plot(topfeatures(mobyDfm, 100), log = "y", cex = .6)
 
 # whale:token ratio
-length(which(mobyWords == "whale")) / ntoken(mobyCorp)
-
+length(which(moby.word.v == "whale")) / ntoken(mobyDfm)
 
 ## ----eval=TRUE-----------------------------------------------------------
-
 # frequencies of 'he' and 'she' - these are matrixes, not numerics
-mobyDfm[,'he']
-mobyDfm[,'she']
+mobyDfm[, c("he", "she", "him", "her")]
 
-# relative frequencies:
-mobyDfm <- weight(mobyDfm, type='relFreq')
-mobyDfm[,'he']
-mobyDfm[,'she']
+mobyDfm[, "him"]/mobyDfm[, "her"]
+mobyDfm[, "he"]/mobyDfm[, "she"]
 
-topfeatures(mobyDfm, n=10)
-plot(topfeatures(mobyDfm, n=10))
+## ------------------------------------------------------------------------
+mobyDfmPct <- weight(mobyDfm, "relFreq") * 100
+mobyDfmPct[, "the"]
 
+plot(topfeatures(mobyDfmPct), type="b",
+     xlab="Top Ten Words", ylab="Percentage of Full Text", xaxt ="n")
+axis(1, 1:10, labels = names(topfeatures(mobyDfmPct)))
+
+## ----eval=FALSE----------------------------------------------------------
+#  # using words from tokenized corpus for dispersion
+#  kwic_whale <- kwic(novel.v, "whale")
+#  plot(kwic_whale)
+
+## ----eval = FALSE--------------------------------------------------------
+#  require('ggplot2')
+#  qplot(whales, geom="histogram", binwidth=1000)
+#  qplot(whales, geom="density", adjust=0.1)
+
+## ----eval=FALSE----------------------------------------------------------
+#  kwic(mobyCorp, 'chapter')
+#  chapters <- segment(mobyCorp, what='other', delimiter="CHAPTER\\s\\d", perl=TRUE)
+#  chapDfm <- dfm(chapters)
+#  barplot(as.numeric(chapDfm[, 'whale']))
+#  barplot(as.numeric(chapDfm[, 'ahab']))
+#  
 
 ## ----eval=TRUE-----------------------------------------------------------
-# using words from tokenized corpus for dispersion
-mobyWords <- unlist(tokenize(mobyCorp))
-nTime <- seq(1:length(mobyWords))
-whales <- which(mobyWords == "whale")
-wcount <- rep(NA,length(nTime))
-wcount[whales] <- 1
+#ttr <- statLexdiv(chapDfm)
+#lens <- length(rowSums(chapDfm))
 
-# dispersion plot as in book.
-plot(wcount, main="Dispersion Plot of `whale' in Moby Dick",
-xlab="Novel Time", ylab="whale", type="h", ylim=c(0,1), yaxt='n')
 

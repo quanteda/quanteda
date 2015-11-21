@@ -5,6 +5,7 @@
 \alias{kwic.character}
 \alias{kwic.corpus}
 \alias{kwic.tokenizedTexts}
+\alias{print.kwic}
 \title{List key words in context from a text or a corpus of texts.}
 \usage{
 kwic(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"),
@@ -18,6 +19,8 @@ kwic(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"),
 
 \method{kwic}{tokenizedTexts}(x, keywords, window = 5, valuetype = c("glob",
   "regex", "fixed"), case_insensitive = TRUE, ...)
+
+\method{print}{kwic}(x, ...)
 }
 \arguments{
 \item{x}{a text character scalar or a quanteda corpus}
@@ -36,14 +39,16 @@ be lowercased prior to matching.}
 
 \item{case_insensitive}{match without respect to case if \code{TRUE}}
 
-\item{...}{additional arguments passed to \link{tokenize}, for applicable methods}
+\item{...}{additional arguments passed to \link{tokenize}, for applicable
+methods}
 }
 \value{
-A data frame with the context before (\code{preword}), the keyword in
-  its original format (\code{word}, preserving case and attached
-  punctuation), and the context after (\code{postword}).  The rows of the
-  dataframe will be named with the word index position, or the text name and
-  the index position for a corpus object.
+A kwic object classed data.frame, with the context before
+  (\code{preword}), the keyword in its original format (\code{word},
+  preserving case and attached punctuation), the context after
+  (\code{postword}), and the index position of the match (\code{position}).
+  The rows of the dataframe will be named with the word index position, or
+  the text name and the index position for a corpus object.
 }
 \description{
 For a text or a collection of texts (in a quanteda corpus object), return a

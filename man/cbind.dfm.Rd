@@ -13,6 +13,10 @@ cbind.dfm(x, y, ...)
 
 \item{...}{optional arguments for methods}
 }
+\value{
+A dfm object with combined features from input dfm objects.  The attributes of this
+new dfm are not currently preserved.
+}
 \description{
 Combine two or more dfm objects by columns.  An implementation of
 \code{\link{cbind}} for \link{dfm} objects. Calls \code{\link{cbind2}}

@@ -1,7 +1,7 @@
 quanteda 0.8.7
 ==============
 
-*  indexing corpus objects is now possible, for extracting texts or docvars using
+*  [i] and [i, j] indexing of corpus objects is now possible, for extracting texts or docvars using
    convenient notation.  See ?corpus Details.
 
 *  ngrams() and skipgrams() now use the same underlying function, with `skip` replacing the previous
@@ -9,9 +9,12 @@ quanteda 0.8.7
 
 *  tokenize() has a new argument, removeHyphens, that controls the treatment of intra-word hyphens.
 
-*  added new measures from readability for mean syllables per word and mean words per sentence directly.
+*  Added new measures from readability for mean syllables per word and mean words per sentence directly.
 
 *  wordstem now works on ngrams (tokenizedTexts and dfm objects).
+
+*  Enhanced operation of kwic(), including the definition of a kwic class object, and a plot method for
+   this object (produces a dispersion plot).
 
 Bug Fixes
 ---------

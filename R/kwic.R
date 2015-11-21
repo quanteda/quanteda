@@ -12,17 +12,19 @@
 #'   using the \code{...} options.
 #' @param window The number of context words to be displayed around the keyword.
 #' @param valuetype how to interpret keyword expressions: \code{"glob"} for 
-#'   "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-#'   or \code{"fixed"} for exact matching (entire words, for instance).  If
-#'   \code{"fixed"} is used with \code{case_insensitive = TRUE}, the text will
+#'   "glob"-style wildcard expressions; \code{"regex"} for regular expressions; 
+#'   or \code{"fixed"} for exact matching (entire words, for instance).  If 
+#'   \code{"fixed"} is used with \code{case_insensitive = TRUE}, the text will 
 #'   be lowercased prior to matching.
 #' @param case_insensitive match without respect to case if \code{TRUE}
-#' @param ... additional arguments passed to \link{tokenize}, for applicable methods
-#' @return A data frame with the context before (\code{preword}), the keyword in
-#'   its original format (\code{word}, preserving case and attached 
-#'   punctuation), and the context after (\code{postword}).  The rows of the 
-#'   dataframe will be named with the word index position, or the text name and 
-#'   the index position for a corpus object.
+#' @param ... additional arguments passed to \link{tokenize}, for applicable 
+#'   methods
+#' @return A kwic object classed data.frame, with the context before
+#'   (\code{preword}), the keyword in its original format (\code{word},
+#'   preserving case and attached punctuation), the context after
+#'   (\code{postword}), and the index position of the match (\code{position}). 
+#'   The rows of the dataframe will be named with the word index position, or
+#'   the text name and the index position for a corpus object.
 #' @author Kenneth Benoit
 #' @export
 #' @examples
@@ -50,13 +52,13 @@ kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     kwic(texts(x), keywords, window, valuetype, case_insensitive, ...)
 }
 
-
 #' @rdname kwic
 #' @method kwic tokenizedTexts
 #' @export 
 kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
-    keywords <- tokenize(keywords, simplify = TRUE, what = "fastestword", ...)
-    contexts <- lapply(x, kwic.tokenizedText, keywords, window, valuetype, case_insensitive)
+    valuetype <- match.arg(valuetype)
+    keywordsTokenized <- tokenize(keywords, simplify = TRUE, what = "fastestword", ...)
+    contexts <- lapply(x, kwic.tokenizedText, keywordsTokenized, window, valuetype, case_insensitive)
     if (sum(is.na(contexts)) == length(contexts)) return(NA) # means no search term found
     # name the text vector
     if (!is.null(names(x))) {
@@ -65,25 +67,37 @@ kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "
         names(contexts) <- paste("text", 1:length(x), sep="")
     }
     contexts <- contexts[!is.na(contexts)]
-    contexts <- do.call("rbind", contexts)
-    contexts$position <- paste0("[", gsub("^(.*)\\.\\d+$", "\\1", rownames(contexts)), ", ", contexts$position, "]")
-    contexts$position <- format(contexts$position, justify="right")
+    contexts <- cbind(docname = rep(names(contexts), sapply(contexts, nrow)), do.call(rbind, contexts))
+    row.names(contexts) <- NULL
     contexts$contextPre <- stringi::stri_trim_right(contexts$contextPre)
     contexts$contextPre <- stringi::stri_replace_all_regex(contexts$contextPre, "(\\w*) (\\W)", "$1$2")
     contexts$contextPre <- format(contexts$contextPre, justify="right")
     contexts$contextPost <- stringi::stri_replace_all_regex(contexts$contextPost, "(\\w*) (\\W)", "$1$2")
     contexts$contextPost <- format(contexts$contextPost, justify="left")
-    
-    contexts$contextPre <- paste(contexts$contextPre, "[")
-    contexts$contextPost <- paste("]", contexts$contextPost)
-    
     contexts$keyword <- format(contexts$keyword, justify="centre")
-    rownames(contexts) <- contexts$position
-    contexts$position <- NULL
-    #names(contexts)[1] <- "contextPre  "
-    #names(contexts)[3]
+    
+    attr(contexts, "valuetype") <- valuetype
+    attr(contexts, "ntoken") <- ntoken(x)
+    attr(contexts, "keywords") <- keywords
+    attr(contexts, "tokenize_opts") <- list(...)
+    class(contexts) <- c("kwic", class(contexts))
     contexts
 }
+
+#' @rdname kwic
+#' @method print kwic
+#' @export
+print.kwic <- function(x, ...) {
+    contexts <- x
+    contexts$positionLabel <- paste0("[", contexts$docname, ", ", contexts$position, "]")
+    contexts$positionLabel <- format(contexts$positionLabel, justify="right")
+    rownames(contexts) <- contexts$positionLabel
+    contexts$positionLabel <- contexts$docname <- contexts$position <- NULL
+    contexts$contextPre <- paste(contexts$contextPre, "[")
+    contexts$contextPost <- paste("]", contexts$contextPost)
+    print(as.data.frame(contexts))
+}
+
 
 kwic.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE) {
     valuetype <- match.arg(valuetype)
@@ -133,6 +147,11 @@ kwic.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex
                          contextPre = apply(indexPre, 1, concatIndexes, x),
                          keyword = apply(indexKeyword, 1, concatIndexes, x),
                          contextPost = apply(indexPost, 1, concatIndexes, x))
+
+    # override pre/post if window = 0
+    if (window == 0) {
+        result$contextPre <- result$contextPost <- ""
+    }
     
     # left-justify the post-word part
     result$contextPre <- format(result$contextPre, justify="left")
