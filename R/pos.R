@@ -13,7 +13,7 @@ anno_sent <- Simple_Sent_Token_Annotator(function(s){
 
 # @examples
 # tokens <- tokenize(inaugTexts[1], simplify=TRUE)
-# pos <- tagPOS(tokens)
+# pos <- tagPOS(tokens) # tokens should be sentence
 # 
 # @export
 tagPOS <- function(x, ...){
