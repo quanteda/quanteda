@@ -32,7 +32,9 @@ Imports:
     parallel,
     Rcpp,
     ca,
-    stringi
+    stringi,
+    NLP,
+    openNLP
 LinkingTo: Rcpp, RcppArmadillo
 Suggests:
     knitr,
