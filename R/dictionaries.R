@@ -385,7 +385,7 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
     newFeatures <- names(dictionary)
     uniqueFeatures <- features(x)
     newFeatureIndexList <- lapply(dictionary, function(x) {
-        # ind <- grep(paste(x, collapse = "|"), uniqueFeatures, ignore.case = case_insensitive)
+        # ind <- grep(paste(x, collapse = "|"), uniqueFeatures, ignore.case = case_insensitive)
         if (valuetype == "fixed") {
             if (case_insensitive)  
                 ind <- which(toLower(uniqueFeatures) %in% (toLower(x)))

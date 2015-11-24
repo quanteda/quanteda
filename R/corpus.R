@@ -340,8 +340,6 @@ documents <- function(corp) {
 #' sapply(texts(inaugCorpus), nchar)  # length in characters of the inaugual corpus texts
 #' str(texts(ie2010Corpus, groups = "party"))
 texts <- function(x, ...) {
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     UseMethod("texts")
 }
 
@@ -350,6 +348,8 @@ texts <- function(x, ...) {
 #'   aggregating documents
 #' @export
 texts.corpus <- function(x, groups = NULL, ...) {
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     texts <- documents(x)$texts
     if (!is.null(groups)) {
         if (length(groups) > 1) {
