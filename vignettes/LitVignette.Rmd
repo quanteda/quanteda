@@ -40,8 +40,8 @@ The code below scans and splits the text of Moby Dick from Project Gutenberg, as
 require(quanteda)
 
 # read the text as a single file
-# mobydicktf <- textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt")
-mobydicktf <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")
+mobydicktf <- textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt")
+# mobydicktf <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")
 mobydicktf
 ```
 
@@ -75,6 +75,8 @@ novel.v <- substring(mobydickText, endMetadataIndex,
 novel.lower.v <- toLower(novel.v)
 # tokenize
 moby.word.v <- tokenize(novel.lower.v, removePunct = TRUE, simplify = TRUE)
+
+length(moby.word.v[which(moby.word.v == "whale")])
 str(moby.word.v)
 moby.word.v[1:10]
 moby.word.v[99986]  # different because we removed punctiation
@@ -87,11 +89,15 @@ head(which(moby.word.v=="whale"))
 ## 2.3 Beginning the analysis
 
 ```{r}
-length(moby.word.v[which(moby.word.v=="whale")])
+# total occurrences of 'whale' including possessive
+length(moby.word.v[which(moby.word.v == "whale")]) + length(moby.word.v[which(moby.word.v == "whale's")])
 length(moby.word.v)
 ntoken(novel.v, removePunct = TRUE)
 
 whale.hits.v <- length(moby.word.v[which(moby.word.v=="whale")])
+
+withPunct <- kwic(novel.lower.v, "whale", removePunctuation=FALSE)
+noPunct <- kwic(novel.lower.v, "whale", case_insensitive = FALSE)
 
 # Put a count of total words into total.words.v 
 total.words.v <- length(moby.word.v)
@@ -176,13 +182,24 @@ chapDfm <- dfm(chaptersCorp)
 barplot(as.numeric(chapDfm[, 'whale']))
 barplot(as.numeric(chapDfm[, 'ahab']))
 ```
-## rest of 4.x output around here
 
 
+The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we can weight the document-frequency matrix:
+
+## Relative frequency barplots of whale and ahab
+```{r eval=TRUE}
+relDfm <- weight(chapDfm, type='relFreq')
+barplot(as.numeric(relDfm[, 'whale']))
+barplot(as.numeric(relDfm[, 'ahab']))
+```
+
+Alternative plots using ggplot2
+```{r}
+require('ggplot2')	
+qplot(as.numeric(relDfm[, 'whale']), geom="histogram", binwidth=0.001)
+qplot(as.numeric(relDfm[, 'whale']), geom="density", adjust=0.1)
+```
 # 5 Correlation
-
-
-
 # To be integrated or removed
 
 
