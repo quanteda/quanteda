@@ -5,8 +5,8 @@
 require(quanteda)
 
 # read the text as a single file
-mobydicktf <- textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt")
-# mobydicktf <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")
+# mobydicktf <- textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt")
+mobydicktf <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")
 mobydicktf
 
 ## ------------------------------------------------------------------------

@@ -658,14 +658,14 @@ sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, ...) 
 #'   method in the \pkg{base} package.
 #' @export
 sample <- function(x, size, replace = FALSE, prob = NULL, ...) {
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     UseMethod("sample")
 }
 
 #' @export
 #' @rdname sample
 sample.default <- function(x, size, replace = FALSE, prob = NULL, ...) {
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     base::sample(x, size, replace, prob)
 }
 
