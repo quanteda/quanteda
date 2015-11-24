@@ -34,8 +34,8 @@ segmentParagraph <- function(x, delimiter="\\n{2}", perl=FALSE) {
 #' \code{segment} works on a character vector or corpus object, and allows the 
 #' delimiters to be defined.  See details.
 #' @param x text or corpus object to be segmented
-#' @param ... provides additional passed to the regular expression, such as \code{perl=TRUE},
-#' or arguments to be passed to \link{clean} if \code{what=tokens},
+#' @param ... provides additional arguments passed to \code{\link{tokenize}}, if
+#'   \code{what = "tokens"} is used
 #' @return A list of segmented texts, with each element of the list correponding
 #'   to one of the original texts.
 #' @details Tokens are delimited by Separators.  For sentences, the delimiter 
@@ -44,11 +44,11 @@ segmentParagraph <- function(x, delimiter="\\n{2}", perl=FALSE) {
 #'   
 #'   For paragraphs, the default is two carriage returns, although this could be
 #'   changed to a single carriage return by changing the value of 
-#'  \code{delimiter} to \code{"\\\n{1}"} which is the R version of the 
-#'   \code{\link{regex}} for one newline character.  (You might 
-#'   need this if the document was created in a word processor, for instance, 
-#'   and the lines were wrapped in the window rather than being hard-wrapped 
-#'   with a newline character.)
+#'   \code{delimiter} to \code{"\\\n{1}"} which is the R version of the 
+#'   \code{\link{regex}} for one newline character.  (You might need this if the
+#'   document was created in a word processor, for instance, and the lines were
+#'   wrapped in the window rather than being hard-wrapped with a newline
+#'   character.)
 #' @export
 segment <- function(x, ...) {
     # warning("segment() is deprecated, use tokenize() instead.")
@@ -297,6 +297,9 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
                                ...) {
     
     what <- match.arg(what)
+
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
 
     if (!is.integer(ngrams)) ngrams <- as.integer(ngrams)
     

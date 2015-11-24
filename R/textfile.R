@@ -494,7 +494,9 @@ texts.corpusSource <- function(x, groups = NULL, ...) {
 
 #' @rdname docvars
 #' @export
-docvars.corpusSource <- function(x, ...) {
+docvars.corpusSource <- function(x, field = NULL) {
+    if (!is.null(field))
+        warning("field argument not used for docvars on a corpusSource object", noBreaks. = TRUE)
     x@docvars
 }
 

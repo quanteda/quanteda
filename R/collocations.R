@@ -21,10 +21,6 @@ NULL
 #'   score, computed as log \eqn{n_{11}/m_{11}}} \item{\code{"dice"}}{the Dice 
 #'   coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}} 
 #'   \item{\code{"all"}}{returns all of the above} }
-#' @details Because of incompatibilities with the join operations in 
-#'   \link{data.table} when input files have slightly different encoding 
-#'   settings, \code{collocations} currently converts all text to ASCII prior to
-#'   processing.  We hope to improve on this in the future.
 #' @param size length of the collocation.  Only bigram (\code{n=2}) and trigram 
 #'   (\code{n=3}) collocations are implemented so far.  Can be \code{c(2,3)} (or
 #'   \code{2:3}) to return both bi- and tri-gram collocations.
@@ -63,6 +59,9 @@ NULL
 #' collocations(inaugTexts[49:57], method="chi2", size=3, n=10)
 #' collocations(subset(inaugCorpus, Year>1980), method="pmi", size=3, n=10)
 collocations <- function(x, ...) {
+#     addedArgs <- names(list(...))
+#     if (length(addedArgs) && any(!(addedArgs %in% names(formals(getS3method("tokenize", "character"))))))
+#         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), addedArgs, " not used.", sep = "", noBreaks. = TRUE)
     UseMethod("collocations")
 }
  
