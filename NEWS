@@ -1,6 +1,9 @@
 quanteda 0.8.7
 ==============
 
+*  trim() now accepts proportions in addition to integer thresholds.  Also accepts a new sparsity argument, which works
+   like tm's removeSparseTerms(x, sparse = ) (for those who really want to think of sparsity this way).
+
 *  [i] and [i, j] indexing of corpus objects is now possible, for extracting texts or docvars using
    convenient notation.  See ?corpus Details.
 
