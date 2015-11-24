@@ -2,35 +2,46 @@
 % Please edit documentation in R/corpus.R, R/textfile.R
 \name{texts}
 \alias{texts}
+\alias{texts.character}
 \alias{texts.corpus}
 \alias{texts.corpusSource}
 \title{get corpus texts}
 \usage{
-texts(x, ...)
+texts(x, groups = NULL, ...)
 
 \method{texts}{corpus}(x, groups = NULL, ...)
+
+\method{texts}{character}(x, groups = NULL, ...)
 
 \method{texts}{corpusSource}(x, groups = NULL, ...)
 }
 \arguments{
 \item{x}{A quanteda corpus object}
 
-\item{...}{not currently used}
+\item{groups}{character vector containing the names of document variables in
+a corpus, or a factor equal in length to the number of documents, used for 
+aggregating the texts through concatenation.  If \code{x} is of type character,
+then \code{groups} must be a factor.}
 
-\item{groups}{character vector containing the names of document variables for
-aggregating documents}
+\item{...}{unused}
 }
 \value{
 For \code{texts}, a character vector of the texts in the corpus.
-
-For \code{texts <-}, the corpus with the updated texts.
+  
+  For \code{texts <-}, the corpus with the updated texts.
 }
 \description{
-Get the texts in a quanteda corpus object, with grouping options
+Get the texts in a quanteda corpus object, with grouping options.  Works for plain character
+vectors too, if \code{groups} is a factor.
 }
 \examples{
-texts(inaugCorpus)[1]
-sapply(texts(inaugCorpus), nchar)  # length in characters of the inaugual corpus texts
-str(texts(ie2010Corpus, groups = "party"))
+nchar(texts(subset(inaugCorpus, Year < 1806)))
+
+# grouping on a document variable
+nchar(texts(subset(inaugCorpus, Year < 1806), groups = "President"))
+
+# grouping a character vector using a factor
+nchar(inaugTexts[1:5])
+nchar(texts(inaugTexts[1:5], groups = as.factor(inaugCorpus[1:5, "President"])))
 }
 

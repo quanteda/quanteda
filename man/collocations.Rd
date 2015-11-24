@@ -60,12 +60,6 @@ descending order of the association measure.  Words separated by punctuation
 delimiters are not counted as adjacent and hence are not eligible to be 
 collocations.
 }
-\details{
-Because of incompatibilities with the join operations in 
-  \link{data.table} when input files have slightly different encoding 
-  settings, \code{collocations} currently converts all text to ASCII prior to
-  processing.  We hope to improve on this in the future.
-}
 \examples{
 txt <- c("This is software testing: looking for (word) pairs!  
          This [is] a software testing again. For.",

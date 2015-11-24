@@ -32,10 +32,6 @@
 #' See conversion target package documentation for more detailed descriptions 
 #' of the return formats.  
 #' 
-#' For individual converters in the foreign package idioms, return values are:
-#' 
-#' DETAILS
-#' 
 #' @export
 #' @examples
 #' mycorpus <- subset(inaugCorpus, Year>1970)
@@ -71,6 +67,9 @@ convert <- function(x, to, ...) {
 # @importFrom topicmodels dtm2ldaformat
 convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels"), ...) {
     to <- match.arg(to)
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+    
     if (to=="tm") 
         return(dfm2tmformat(x, ...))
     else if (to=="lda")

@@ -2,19 +2,23 @@
 % Please edit documentation in R/corpus.R
 \name{changeunits}
 \alias{changeunits}
+\alias{changeunits.corpus}
 \title{change the document units of a corpus}
 \usage{
-changeunits(corp, to = c("sentences", "paragraphs", "documents"), ...)
+changeunits(x, ...)
+
+\method{changeunits}{corpus}(x, to = c("sentences", "paragraphs",
+  "documents"), ...)
 }
 \arguments{
-\item{corp}{corpus whose document units will be reshaped}
+\item{x}{corpus whose document units will be reshaped}
+
+\item{...}{not used}
 
 \item{to}{new documents units for the corpus to be recast in}
-
-\item{...}{passes additional arguments to \code{\link{segment}}}
 }
 \value{
-a corpus object with the documents defined as the new units
+A corpus object with the documents defined as the new units, including document-level meta-data identifying the original documents.
 }
 \description{
 For a corpus, recast the documents down or up a level of aggregation.  "Down"
@@ -28,13 +32,11 @@ mycorpus <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet anot
                      textwo = "Premiere phrase.  Deuxieme phrase."), 
                    docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
                    notes = "This is a simple example to show how changeunits() works.")
-metadoc(mycorpus, "language") <- c("english", "french")                   
 summary(mycorpus)
-summary(changeunits(mycorpus, to="sentences"), showmeta=TRUE)
+summary(changeunits(mycorpus, to = "sentences"), showmeta=TRUE)
 
 # example with inaugural corpus speeches
-mycorpus2 <- subset(inaugCorpus, Year>2004)
-mycorpus2
+(mycorpus2 <- subset(inaugCorpus, Year>2004))
 paragCorpus <- changeunits(mycorpus2, to="paragraphs")
 paragCorpus
 summary(paragCorpus, 100, showmeta=TRUE)

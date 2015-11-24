@@ -24,7 +24,7 @@ if you simply want to assign the output to a \code{data.frame}}
 \item{showmeta}{for a corpus, set to \code{TRUE} to include document-level
 meta-data}
 
-\item{...}{additional arguments affecting the summary produced}
+\item{...}{unused here}
 }
 \description{
 Displays information about a corpus or vector of texts.  For a corpus, this 

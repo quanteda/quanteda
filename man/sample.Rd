@@ -27,7 +27,7 @@ sample(x, size, replace = FALSE, prob = NULL, ...)
 \item{prob}{A vector of probability weights for obtaining the elements of the
 vector being sampled.}
 
-\item{...}{required for defining methods that extend
+\item{...}{unused
 \code{\link[base]{sample}}, which is not defined as a generic
 method in the \pkg{base} package.}
 

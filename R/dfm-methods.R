@@ -10,9 +10,10 @@
 #' Returns a document by feature matrix reduced in size based on document and 
 #' term frequency, and/or subsampling.
 #' @param x document-feature matrix of \link{dfm-class}
-#' @param minCount minimum feature count
-#' @param minDoc minimum number of documents in which a feature appears
+#' @param minCount minimum count or fraction of features in across all documents 
+#' @param minDoc minimum number or fraction of documents in which a feature appears
 #' @param nsample how many features to retain (based on random selection)
+#' @param sparsity equivalent to 1 - minDoc, included for comparison with tm
 #' @param verbose print messages
 #' @return A \link{dfm-class} object reduced in features (with the same number 
 #'   of documents)
@@ -23,38 +24,66 @@
 #'   attributes of the features themselves -- such as selecting features 
 #'   matching a regular expression, or removing features matching a stopword 
 #'   list, use \link{selectFeatures}.
-#' @author Ken Benoit, inspired by code by Will Lowe (see \code{trim} from the 
+#' @author Paul Nulty and Ken Benoit, some inspiration from Will Lowe's (see \code{trim} from the 
 #'   \code{austin} package)
 #' @seealso \code{\link{selectFeatures}}
 #' @examples
-#' dtm <- dfm(inaugCorpus)
-#' dim(dtm)
-#' dtmReduced <- trim(dtm, minCount = 10, minDoc = 2) # only words occuring >=5 times and in >=2 docs
-#' dim(dtmReduced)
-#' topfeatures(dtmReduced, decreasing = FALSE)
-#' dtmSampled <- trim(dtm, minCount = 20, nsample = 50)  # sample 50 words over 20 count
-#' dtmSampled # 57 x 50 words
-#' topfeatures(dtmSampled)  
+#' (myDfm <- dfm(inaugCorpus, verbose = FALSE))
+#' # only words occuring >=10 times and in >=2 docs
+#' trim(myDfm, minCount = 10, minDoc = 2) 
+#' # only words occuring >=10 times and in at least 0.4 of the documents
+#' trim(myDfm, minCount = 10, minDoc = 0.4)
+#' # only words occuring at least 0.01 times and in >=2 documents
+#' trim(myDfm, minCount = .01, minDoc = 2)
+#' # only words occuring 5 times in 1000
+#' trim(myDfm, minDoc = 0.2, minCount = 0.005)
+#' # sample 50 words occurring at least 20 times each
+#' (myDfmSampled <- trim(myDfm, minCount = 20, nsample = 50))  
+#' topfeatures(myDfmSampled)
+#' \dontrun{
+#' if (require(tm)) {
+#'     (tmdtm <- convert(myDfm, "tm"))
+#'     removeSparseTerms(tmdtm, 0.7)
+#'     trim(td, minDoc = 0.3)
+#'     trim(td, sparsity = 0.7)
+#' }
+#' }
 #' @export
 setGeneric("trim", 
-           signature = c("x", "minCount", "minDoc", "nsample", "verbose"),
-           def = function(x, minCount=1, minDoc=1, nsample=NULL, verbose=TRUE)
+           signature = c("x", "minCount", "minDoc", "sparsity", "nsample", "verbose"),
+           def = function(x, minCount=1, minDoc=1, sparsity=NULL, nsample=NULL, verbose=TRUE)
                standardGeneric("trim"))
 
 #' @rdname trim
 setMethod("trim", signature(x = "dfm"), 
-          function(x, minCount=1, minDoc=1, nsample=NULL, verbose=TRUE) {
+          function(x, minCount=1, minDoc=1, sparsity=NULL, nsample=NULL, verbose=TRUE) {
+              stopifnot(minCount > 0, minDoc > 0)
+              messageSparsity <- messageMinCount <- messageMinDoc <- ""
+              if (!is.null(sparsity)) {
+                  if (minDoc != 1)
+                      stop("minDoc and sparsity both refer to a document threshold, both should not be specified")
+                  minDoc <- (1 - sparsity)
+                  if (verbose) cat("Note: converting sparsity into minDoc = 1 -", sparsity, "=", minDoc, ".\n")
+              }             
               
+              if (minCount < 1) {
+                  messageMinCount <- paste0(minCount, " * ", nfeature(x), " = ")
+                  minCount <- (nfeature(x) * minCount)
+              }
+              if (minDoc < 1) {
+                  messageMinDoc <- paste0(minDoc, " * ", ndoc(x), " = ")
+                  minDoc <- (ndoc(x) * minDoc)
+              }
               featIndexAboveMinCount <- which(colSums(x) >= minCount, useNames = FALSE)
-              if (verbose & minCount>1)
-                  cat("Features occurring less than", minCount, "times:", 
-                      nfeature(x) - length(featIndexAboveMinCount), "\n")
+              if (verbose & minCount != 1)
+                  cat("Removing features occurring fewer than ", messageMinCount, minCount, " times: ", 
+                      nfeature(x) - length(featIndexAboveMinCount), "\n", sep = "")
               
               featIndexAboveMinDoc <- which(docfreq(x) >= minDoc)
-              if (verbose & minDoc>1)
-                  cat("Features occurring in fewer than", minDoc, "documents:", 
-                      nfeature(x) - length(featIndexAboveMinDoc), "\n")
-              
+              if (verbose & minDoc != 1)
+                  cat("Removing features occurring in fewer than ", messageMinDoc, minDoc, " documents: ", 
+                      nfeature(x) - length(featIndexAboveMinDoc), "\n", sep = "")
+
               featureKeepIndex <- intersect(featIndexAboveMinCount, featIndexAboveMinDoc)
               if (length(featureKeepIndex)==0)  stop("No features left after trimming.")
               
@@ -62,10 +91,10 @@ setMethod("trim", signature(x = "dfm"),
               
               if (!is.null(nsample)) {
                   if (nsample > nfeature(x))
-                      cat("Retained features smaller in number than sample size so resetting nsample to nfeature.")
+                      cat("Note: retained features smaller in number than sample size so resetting nsample to nfeature.\n")
                   nsample <- min(nfeature(x), nsample)
                   # x <- x[, sample(1:nsample)]
-                  x <- sample(x, nsample, what = "features")
+                  x <- sample(x, size = nsample, what = "features")
                   if (verbose) cat("Retaining a random sample of", nsample, "words\n")
               }
               
@@ -272,6 +301,8 @@ setGeneric("weight", function(x, ...) standardGeneric("weight"))
 setMethod("weight", signature = "dfm", 
           definition = function(x, type=c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"), #, "ppmi"), 
                                 smoothing = 0, normalize = TRUE, verbose=TRUE, ...) {
+              if (length(addedArgs <- list(...)))
+                  warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
               type = match.arg(type)
               x <- x + smoothing
               if (weighting(x) != "frequency") {
@@ -283,10 +314,10 @@ setMethod("weight", signature = "dfm",
                       #tmp[is.na(tmp)] <- 0
                       x <- new("dfmSparse", x/rowSums(x))
                   } else 
-                 if (is(x, "dfmDense"))
-                      x <- new("dfmDense", x/rowSums(x))
-                 else 
-                     x <- x/rowSums(x)
+                      if (is(x, "dfmDense"))
+                          x <- new("dfmDense", x/rowSums(x))
+                      else 
+                          x <- x/rowSums(x)
               } else if (type=="relMaxFreq") {
                   x <- x / apply(x, 1, max)
               } else if (type=="logFreq") {
@@ -460,6 +491,8 @@ smoothdfm <- function(x, alpha=0.5) {
 #' @param ... additional arguments passed to other methods
 #' @export
 topfeatures <- function(x, ...) {
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     UseMethod("topfeatures")
 }
 
@@ -559,5 +592,3 @@ cbind.dfm <- function(x, y, ...) {
     result <- Matrix::cbind2(x, y, ...)
     new("dfmSparse", result)
 }
-
-

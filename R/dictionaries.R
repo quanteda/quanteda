@@ -369,6 +369,8 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
                                 verbose = TRUE, ...) {
     valuetype <- match.arg(valuetype)
     dictionary <- flatten.dictionary(dictionary)
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     
     if (verbose) cat("applying a dictionary consisting of ", length(dictionary), " key", 
                      ifelse(length(dictionary) > 1, "s", ""), "\n", sep="")
@@ -383,7 +385,7 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
     newFeatures <- names(dictionary)
     uniqueFeatures <- features(x)
     newFeatureIndexList <- lapply(dictionary, function(x) {
-        # ind <- grep(paste(x, collapse = "|"), uniqueFeatures, ignore.case = case_insensitive)
+        # ind <- grep(paste(x, collapse = "|"), uniqueFeatures, ignore.case = case_insensitive)
         if (valuetype == "fixed") {
             if (case_insensitive)  
                 ind <- which(toLower(uniqueFeatures) %in% (toLower(x)))

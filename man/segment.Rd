@@ -21,8 +21,8 @@ segment(x, ...)
 \arguments{
 \item{x}{text or corpus object to be segmented}
 
-\item{...}{provides additional passed to the regular expression, such as \code{perl=TRUE},
-or arguments to be passed to \link{clean} if \code{what=tokens},}
+\item{...}{provides additional arguments passed to \code{\link{tokenize}}, if
+\code{what = "tokens"} is used}
 
 \item{what}{unit of segmentation.  Current options are tokens, sentences, 
 paragraphs, and other.  Segmenting on \code{other} allows segmentation of a
@@ -51,11 +51,11 @@ Tokens are delimited by Separators.  For sentences, the delimiter
   
   For paragraphs, the default is two carriage returns, although this could be
   changed to a single carriage return by changing the value of 
- \code{delimiter} to \code{"\\\n{1}"} which is the R version of the 
-  \code{\link{regex}} for one newline character.  (You might 
-  need this if the document was created in a word processor, for instance, 
-  and the lines were wrapped in the window rather than being hard-wrapped 
-  with a newline character.)
+  \code{delimiter} to \code{"\\\n{1}"} which is the R version of the 
+  \code{\link{regex}} for one newline character.  (You might need this if the
+  document was created in a word processor, for instance, and the lines were
+  wrapped in the window rather than being hard-wrapped with a newline
+  character.)
 }
 \note{
 Does not currently record document segments if segmenting a multi-text corpus

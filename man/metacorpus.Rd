@@ -2,15 +2,18 @@
 % Please edit documentation in R/corpus.R
 \name{metacorpus}
 \alias{metacorpus}
+\alias{metacorpus.corpus}
 \alias{metacorpus<-}
 \title{get or set corpus metadata}
 \usage{
-metacorpus(corp, field = NULL)
+metacorpus(x, field = NULL)
 
-metacorpus(corp, field) <- value
+\method{metacorpus}{corpus}(x, field = NULL)
+
+metacorpus(x, field) <- value
 }
 \arguments{
-\item{corp}{A quanteda corpus object}
+\item{x}{A quanteda corpus object}
 
 \item{field}{Metadata field name(s).  If \code{NULL} (default), return all
 metadata names.}

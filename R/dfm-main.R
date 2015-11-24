@@ -34,8 +34,8 @@ dfm <- function(x, ...) {
 #' @param removeNumbers remove numbers, see \link{tokenize}
 #' @param removePunct remove numbers, see \link{tokenize}
 #' @param removeTwitter if \code{FALSE}, preserve \code{#} and \code{@@} 
-#'   characters, see \link{tokenize} #' @param removeSeparators remove 
-#'   separators (whitespace), see \link{tokenize}
+#'   characters, see \link{tokenize} 
+#' @param removeSeparators remove separators (whitespace), see \link{tokenize}
 #' @param stem if \code{TRUE}, stem words
 #' @param ignoredFeatures a character vector of user-supplied features to 
 #'   ignore, such as "stop words".  To access one 
@@ -234,6 +234,9 @@ dfm.tokenizedTexts <- function(x,
     
     valuetype <- match.arg(valuetype)
     dots <- list(...)
+    if (length(dots) && any(!(names(dots)) %in% c("startTime", "codeType")))
+        warning("Argument", ifelse(length(dots)>1, "s ", " "), names(dots), " not used.", sep = "", noBreaks. = TRUE)
+    
     startTime <- proc.time()
     if ("startTime" %in% names(dots)) startTime <- dots$startTime
     
@@ -306,8 +309,7 @@ dfm.tokenizedTexts <- function(x,
         dfmresult <- applyDictionary(dfmresult, dictionary,
                                      exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
                                      valuetype = valuetype,
-                                     verbose = verbose,
-                                     ...)
+                                     verbose = verbose)
     }
     
     if (stem) {
@@ -521,9 +523,10 @@ dfm.corpus <- function(x, verbose = TRUE, groups = NULL, ...) {
     if (verbose) cat("Creating a dfm from a corpus ...")
     
     if (!is.null(groups)) {
+        groupsLab <- ifelse(is.factor(groups), deparse(substitute(groups)), groups)
         if (verbose) cat("\n   ... grouping texts by variable", 
-                         ifelse(length(groups)==1, "", "s"), ": ", 
-                         paste(groups, collapse=", "), sep="")
+                         ifelse(length(groupsLab)==1, "", "s"), ": ", 
+                         paste(groupsLab, collapse=", "), sep="")
         texts <- texts(x, groups = groups)
     } else {
         texts <- texts(x)

@@ -46,9 +46,10 @@ sequences}
 
 \item{removePunct}{remove numbers, see \link{tokenize}}
 
+\item{removeSeparators}{remove separators (whitespace), see \link{tokenize}}
+
 \item{removeTwitter}{if \code{FALSE}, preserve \code{#} and \code{@} 
-characters, see \link{tokenize} #' @param removeSeparators remove 
-separators (whitespace), see \link{tokenize}}
+characters, see \link{tokenize}}
 
 \item{stem}{if \code{TRUE}, stem words}
 

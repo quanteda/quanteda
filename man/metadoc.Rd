@@ -2,17 +2,22 @@
 % Please edit documentation in R/corpus.R
 \name{metadoc}
 \alias{metadoc}
+\alias{metadoc.corpus}
 \alias{metadoc<-}
 \title{get or set document-level meta-data}
 \usage{
-metadoc(corp, field = NULL)
+metadoc(x, field = NULL)
 
-metadoc(corp, field = NULL) <- value
+\method{metadoc}{corpus}(x, field = NULL)
+
+metadoc(x, field = NULL) <- value
+
+metadoc(x, field = NULL) <- value
 }
 \arguments{
-\item{corp}{A quanteda corpus object}
+\item{x}{A quanteda corpus object}
 
-\item{field}{string containing the name of the metadata field(s) to be queried or set}
+\item{field}{character, the name of the metadata field(s) to be queried or set}
 
 \item{value}{the new value of the new meta-data field}
 }
@@ -32,10 +37,10 @@ Document-level meta-data names are preceded by an underscore character,
 }
 \examples{
 mycorp <- subset(inaugCorpus, Year>1990)
-summary(mycorp, showmeta=TRUE)
+summary(mycorp, showmeta = TRUE)
 metadoc(mycorp, "encoding") <- "UTF-8"
 metadoc(mycorp)
 metadoc(mycorp, "language") <- "english"
-summary(mycorp, showmeta=TRUE)
+summary(mycorp, showmeta = TRUE)
 }
 

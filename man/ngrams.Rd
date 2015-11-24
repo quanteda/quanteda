@@ -32,13 +32,13 @@ in each ngram}
 
 \item{skip}{integer vector specifying the adjacency skip size for tokens 
 forming the ngrams, default is 0 for only immediately neighbouring words. 
-For \code{skipgrams}, \code{skip} can be a vector of integers, as the
-"classic" approach to forming skip-grams is to set skip = $k$ where $k$ is
-the distance for which $k$ or fewer skips are used to construct the
-$n$-gram.  Thus a "4-skip-n-gram" defined as \code{skip = 0:4} produces
-results that include 4 skips, 3 skips, 2 skips, 1 skip, and 0 skips (where
-0 skips are typical n-grams formed from adjacent words).  See Guthrie et al
-(2006).}
+For \code{skipgrams}, \code{skip} can be a vector of integers, as the 
+"classic" approach to forming skip-grams is to set skip = \eqn{k} where
+\eqn{k} is the distance for which $k$ or fewer skips are used to construct
+the \eqn{n}-gram.  Thus a "4-skip-n-gram" defined as \code{skip = 0:4}
+produces results that include 4 skips, 3 skips, 2 skips, 1 skip, and 0
+skips (where 0 skips are typical n-grams formed from adjacent words).  See
+Guthrie et al (2006).}
 
 \item{concatenator}{character for combining words, default is \code{_} 
 (underscore) character}
@@ -49,9 +49,11 @@ a tokenizedTexts object consisting a list of character vectors of
   simple character vector
 }
 \description{
-Create a set of ngrams (tokens in sequence) from character vectors or tokenized text objects, with
-an optional skip argument to form skipgrams.  Both the ngram length and the skip lengths take vectors of arguments to form
-multiple lengths or skips in one pass.  \code{ngrams()} is implemented in C++ for efficiency.
+Create a set of ngrams (tokens in sequence) from character vectors or
+tokenized text objects, with an optional skip argument to form skipgrams. 
+Both the ngram length and the skip lengths take vectors of arguments to form 
+multiple lengths or skips in one pass.  \code{ngrams()} is implemented in C++
+for efficiency.
 }
 \details{
 Normally, \code{\link{ngrams}} will be called through 
@@ -59,11 +61,11 @@ Normally, \code{\link{ngrams}} will be called through
   user wants to perform lower-level ngram construction on tokenized texts.
   
   \code{\link{skipgrams}} is a wrapper to \code{\link{ngrams}} that requires 
-  arguments to be supplied for both \code{n} and \code{skip}.  For $k$-skip 
-  skipgrams, set \code{skip} to \code{0:}$k$, in order to conform to the
-  definition of skip-grams found in Guthrie et al (2006): A $k$ skip-gram is
-  an ngram which is a superset of all ngrams and each $(k-i)$ skipgram until
-  $(k-i)==0$ (which includes 0 skip-grams).
+  arguments to be supplied for both \code{n} and \code{skip}.  For \eqn{k}-skip 
+  skipgrams, set \code{skip} to \code{0:}\eqn{k}, in order to conform to the
+  definition of skip-grams found in Guthrie et al (2006): A \eqn{k} skip-gram is
+  an ngram which is a superset of all ngrams and each \eqn{(k-i)} skipgram until
+  \eqn{(k-i)==0} (which includes 0 skip-grams).
 }
 \examples{
 # ngrams

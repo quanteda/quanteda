@@ -7,20 +7,18 @@
 \alias{docvars<-}
 \title{get or set for document-level variables}
 \usage{
-docvars(x, ...)
+docvars(x, field = NULL)
 
-\method{docvars}{corpus}(x, field = NULL, ...)
-
-docvars(x, field = NULL) <- value
+\method{docvars}{corpus}(x, field = NULL)
 
 docvars(x, field = NULL) <- value
 
-\method{docvars}{corpusSource}(x, ...)
+docvars(x, field = NULL) <- value
+
+\method{docvars}{corpusSource}(x, field = NULL)
 }
 \arguments{
 \item{x}{corpus whose document-level variables will be read or set}
-
-\item{...}{not used}
 
 \item{field}{string containing the document-level variable name}
 

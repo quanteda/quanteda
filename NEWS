@@ -1,6 +1,9 @@
 quanteda 0.8.7
 ==============
 
+*  trim() now accepts proportions in addition to integer thresholds.  Also accepts a new sparsity argument, which works
+   like tm's removeSparseTerms(x, sparse = ) (for those who really want to think of sparsity this way).
+
 *  [i] and [i, j] indexing of corpus objects is now possible, for extracting texts or docvars using
    convenient notation.  See ?corpus Details.
 
@@ -15,12 +18,22 @@ quanteda 0.8.7
 
 *  Enhanced operation of kwic(), including the definition of a kwic class object, and a plot method for
    this object (produces a dispersion plot).
+   
+*  Lots more error checking of arguments passed to ... (and potentially misspecified or misspelled).
+   Addresses Issue #62.
+   
+*  Almost all methods are now methods defined for objects, from a generic.
+
+*  texts(x, groups = ) now allows groups to be factors, not just document variable labels.  There is a new
+   method for texts.character(x, groups = ) which is useful for supplying a factor to concatenate character
+   objects by group.
 
 Bug Fixes
 ---------
 *  corrected inaccurate printing of valuetype in verbose note of selectFeatures.dfm().  (Did not affect functionality.)
 
 *  fixed broken quanteda.R demo, expanded demonstration code.
+
 
 quanteda 0.8.6
 ==============

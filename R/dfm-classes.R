@@ -96,7 +96,7 @@ NULL
 #'   last/first number of documents of x.
 #' @param nfeature the number of features to return, where the resulting object
 #'   will contain the first \code{ncol} features
-#' @param ... arguments to be passed to or from other methods.
+#' @param ... unused
 #' @return A \link{dfm-class} class object corresponding to the subset defined
 #'   by \code{n} and \code{ncol}.
 #' @examples
@@ -105,6 +105,8 @@ NULL
 #' tail(myDfm)
 #' tail(myDfm, nfeature = 4)
 head.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     print(x, show.values = FALSE)
     cat("(showing first", min(ndoc(x), n), "documents and first", min(nfeature, nfeature(x)), "features)\n")
     #print(as.matrix(x[1:min(ndoc(x), n), 1:min(nfeature(x), nfeature)])) #, show.summary = FALSE, ndoc = n, nfeature = nfeature)
@@ -118,6 +120,8 @@ head.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
 #' @return A \link{dfm-class} class object corresponding to the subset
 #'   defined by \code{n} and \code{ncol}.
 tail.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     print(x, show.values = FALSE)
     cat("(showing last", min(ndoc(x), n), "documents and first", min(nfeature, nfeature(x)), "features)\n")
     print(tail(as.matrix(x[, 1:min(nfeature(x), nfeature)]), n))

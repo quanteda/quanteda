@@ -53,11 +53,7 @@ whose document-term matrix representation the dfm will be converted:
 \value{
 A converted object determined by the value of \code{to} (see above). 
 See conversion target package documentation for more detailed descriptions 
-of the return formats.  
-
-For individual converters in the foreign package idioms, return values are:
-
-DETAILS
+of the return formats.
 
 \code{dfm2ldaformat} returns a list with components "documents" and "vocab" as needed by 
   \code{\link[lda]{lda.collapsed.gibbs.sampler}}.

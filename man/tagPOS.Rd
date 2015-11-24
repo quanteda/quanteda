@@ -2,16 +2,17 @@
 % Please edit documentation in R/pos.R
 \name{tagPOS}
 \alias{tagPOS}
+\alias{tagPOS.tokenizedTexts}
 \title{tag parts of speech in a tokenized list}
 \usage{
-tagPOS(l, ...)
+tagPOS(x, ...)
 
-tagPOS(l, ...)
+\method{tagPOS}{tokenizedTexts}(x, ...)
 }
 \arguments{
-\item{...}{not currently used}
-
 \item{x}{list of tokens to tag}
+
+\item{...}{not currently used}
 }
 \description{
 Add tags to a tokenized list of parts of speech

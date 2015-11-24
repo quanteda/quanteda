@@ -48,6 +48,8 @@
 #' @author Kenneth Benoit and Paul Nulty
 #' @export
 corpus <- function(x, ...) {
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     UseMethod("corpus")
 }
 
@@ -266,7 +268,7 @@ is.corpus <- function(x) {
 #' 
 #' Get or set the corpus-level metadata in a quanteda corpus object.
 #' 
-#' @param corp A quanteda corpus object
+#' @param x A quanteda corpus object
 #' @param field Metadata field name(s).  If \code{NULL} (default), return all
 #'   metadata names.
 #' @return For \code{metacorpus}, a list of the metadata fields in the corpus. 
@@ -280,15 +282,18 @@ is.corpus <- function(x) {
 #' metacorpus(inaugCorpus, "source")
 #' metacorpus(inaugCorpus, "citation") <- "Presidential Speeches Online Project (2014)."
 #' metacorpus(inaugCorpus, "citation")
-metacorpus <- function(corp, field=NULL) {
-    if (!is.corpus(corp))
-        stop("Not a valid corpus object.")
+metacorpus <- function(x, field = NULL)
+    UseMethod("metacorpus")
+ 
+#' @rdname metacorpus
+#' @export
+metacorpus.corpus <- function(x, field = NULL) {
     if (!is.null(field)) {
         stopifnot(TRUE)
         ## NEED TO CHECK HERE THAT FIELD LIST MATCHES METADATA FIELD NAMES
-        return(corp$metadata[field])
+        return(x$metadata[field])
     } else {
-        return(corp$metadata)
+        return(x$metadata)
     }
 }
 
@@ -296,13 +301,13 @@ metacorpus <- function(corp, field=NULL) {
 #' @param value new value of the corpus metadata field
 #' @export
 #' @rdname metacorpus
-"metacorpus<-" <- function(corp, field, value) {
+"metacorpus<-" <- function(x, field, value) {
     if (!is.null(field)) {
         stopifnot(TRUE)
         ## NEED TO CHECK HERE THAT FIELD LIST MATCHES METADATA FIELD NAMES
     }
-    corp$metadata[field] <- value
-    corp
+    x$metadata[field] <- value
+    x
 }
 
 
@@ -322,42 +327,70 @@ documents <- function(corp) {
 
 #' get corpus texts
 #' 
-#' Get the texts in a quanteda corpus object, with grouping options
-#' 
+#' Get the texts in a quanteda corpus object, with grouping options.  Works for plain character
+#' vectors too, if \code{groups} is a factor.
 #' @param x A quanteda corpus object
-#' @param ... not currently used
+#' @param groups character vector containing the names of document variables in
+#'   a corpus, or a factor equal in length to the number of documents, used for 
+#'   aggregating the texts through concatenation.  If \code{x} is of type character,
+#'   then \code{groups} must be a factor.
+#' @param ... unused
 #' @return For \code{texts}, a character vector of the texts in the corpus.
-#' 
-#' For \code{texts <-}, the corpus with the updated texts.
+#'   
+#'   For \code{texts <-}, the corpus with the updated texts.
 #' @export
 #' @examples
-#' texts(inaugCorpus)[1]
-#' sapply(texts(inaugCorpus), nchar)  # length in characters of the inaugual corpus texts
-#' str(texts(ie2010Corpus, groups = "party"))
-texts <- function(x, ...) {
+#' nchar(texts(subset(inaugCorpus, Year < 1806)))
+#' 
+#' # grouping on a document variable
+#' nchar(texts(subset(inaugCorpus, Year < 1806), groups = "President"))
+#' 
+#' # grouping a character vector using a factor
+#' nchar(inaugTexts[1:5])
+#' nchar(texts(inaugTexts[1:5], groups = as.factor(inaugCorpus[1:5, "President"])))
+texts <- function(x, groups = NULL, ...) {
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     UseMethod("texts")
 }
 
 #' @rdname texts
-#' @param groups character vector containing the names of document variables for
-#'   aggregating documents
 #' @export
 texts.corpus <- function(x, groups = NULL, ...) {
-    texts <- documents(x)$texts
-    if (!is.null(groups)) {
+    txts <- documents(x)$texts
+    
+    # without groups
+    if (is.null(groups)) {
+        names(txts) <- docnames(x)
+        return(txts)
+    }
+        
+    # with groups as a factor
+    if (any(!groups %in% names(docvars(x)))) {
+        stop("Check your docvar names.", 
+             ifelse(length(groups) == ndoc(x), "  Try groups = as.factor()...", ""))
+    }
+    if (is.factor(groups)) {
+        group.split <- groups
+    } else {
         if (length(groups) > 1) {
             # if more than one grouping variable
             group.split <- lapply(documents(x)[, groups], as.factor)
         } else {
             # if only one grouping variable
-            group.split <- as.factor(documents(x)[,groups])
+            group.split <- as.factor(documents(x)[, groups])
         }
-        texts <- split(texts, group.split)
-        texts <- sapply(texts, paste, collapse = " ")
-    } else {
-        names(texts) <- docnames(x)
     }
-    return(texts)
+    texts(txts, groups = group.split)
+}
+
+#' @rdname texts
+#' @export
+texts.character <- function(x, groups = NULL, ...) {
+    if (is.null(groups)) return(x)
+    if (!is.factor(groups)) stop("groups must be a factor")
+    x <- split(x, groups)
+    sapply(x, paste, collapse = " ")
 }
 
 
@@ -379,9 +412,8 @@ texts.corpus <- function(x, groups = NULL, ...) {
 #' 
 #' Get or set the document-level meta-data, including reserved fields for 
 #' language and corpus.
-#' 
-#' @param corp A quanteda corpus object
-#' @param field string containing the name of the metadata field(s) to be queried or set
+#' @param x A quanteda corpus object
+#' @param field character, the name of the metadata field(s) to be queried or set
 #' @return For \code{texts}, a character vector of the texts in the corpus.
 #'   
 #'   For \code{texts <-}, the corpus with the updated texts.
@@ -389,33 +421,43 @@ texts.corpus <- function(x, groups = NULL, ...) {
 #'   such as \code{_language}, but when named in in the \code{field} argument,
 #'   do \emph{not} need the underscore character.
 #' @export
+metadoc <- function(x, field = NULL) 
+    UseMethod("metadoc")
+
+#' @rdname metadoc 
+#' @export
 #' @examples
 #' mycorp <- subset(inaugCorpus, Year>1990)
-#' summary(mycorp, showmeta=TRUE)
+#' summary(mycorp, showmeta = TRUE)
 #' metadoc(mycorp, "encoding") <- "UTF-8"
 #' metadoc(mycorp)
 #' metadoc(mycorp, "language") <- "english"
-#' summary(mycorp, showmeta=TRUE)
-metadoc <- function(corp, field=NULL) {
+#' summary(mycorp, showmeta = TRUE)
+metadoc.corpus <- function(x, field = NULL) {
     # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
     # (this check not yet implemented)
-    if (length(field)>1)
+    if (length(field) > 1)
         stop("cannot assign multiple fields.")
     if (is.null(field)) {
-        documents(corp)[, grep("^\\_", names(documents(corp))), drop=FALSE]
+        documents(x)[, grep("^\\_", names(documents(x))), drop=FALSE]
     } else {
         ## error if field not defined in data
         fieldname <- ifelse(substr(field, 1, 1)=="_", 
                             field, 
                             paste("_", field, sep=""))
-        documents(corp)[, fieldname, drop=FALSE]
+        documents(x)[, fieldname, drop=FALSE]
     }
 }
 
 #' @param value the new value of the new meta-data field
 #' @rdname metadoc
 #' @export
-"metadoc<-" <- function(corp, field=NULL, value) {
+"metadoc<-" <- function(x, field = NULL, value) 
+    UseMethod("metadoc")
+
+#' @rdname metadoc
+#' @export
+"metadoc<-" <- function(x, field = NULL, value) {
     # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
     # (this check not yet implemented)
     if (is.null(field)) {
@@ -425,8 +467,8 @@ metadoc <- function(corp, field=NULL) {
     } else {
         field <- paste("_", field, sep="")
     }
-    documents(corp)[field] <- value
-    corp
+    documents(x)[field] <- value
+    x
 }
 
 # replacement function for document-level metadata
@@ -454,24 +496,22 @@ metadoc <- function(corp, field=NULL) {
 #' Get or set variables for the documents in a corpus
 #' @param x corpus whose document-level variables will be read or set
 #' @param field string containing the document-level variable name
-#' @param ... not used
 #' @return \code{docvars} returns a data.frame of the document-level variables
 #' @examples head(docvars(inaugCorpus))
 #' @export
-docvars <- function(x, ...) {
+docvars <- function(x, field = NULL) {
     UseMethod("docvars")
 }
 
 #' @rdname docvars
 #' @export
-docvars.corpus <- function(x, field = NULL, ...) {
+docvars.corpus <- function(x, field = NULL) {
     docvarsIndex <- intersect(which(substr(names(documents(x)), 1, 1) != "_"),
                               which(names(documents(x)) != "texts"))
     if (length(docvarsIndex)==0)
         return(NULL)
     if (is.null(field))
         return(documents(x)[, docvarsIndex, drop=FALSE])
-    #return(documents(x)[, field, drop=FALSE])
     return(documents(x)[, field, drop=TRUE])
 }
 
@@ -489,7 +529,7 @@ docvars.corpus <- function(x, field = NULL, ...) {
 
 #' @rdname docvars
 #' @export
-"docvars<-" <- function(x, field=NULL, value) {
+"docvars<-" <- function(x, field = NULL, value) {
     if ("texts" %in% field) stop("You should use texts() instead to replace the corpus texts.")
     if (is.null(field)) {
         field <- names(value)
@@ -639,7 +679,7 @@ sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, ...) 
 #' @param replace Should sampling be with replacement?
 #' @param prob A vector of probability weights for obtaining the elements of the
 #'   vector being sampled.
-#' @param ... required for defining methods that extend
+#' @param ... unused
 #'   \code{\link[base]{sample}}, which is not defined as a generic
 #'   method in the \pkg{base} package.
 #' @export
@@ -650,6 +690,8 @@ sample <- function(x, size, replace = FALSE, prob = NULL, ...) {
 #' @export
 #' @rdname sample
 sample.default <- function(x, size, replace = FALSE, prob = NULL, ...) {
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     base::sample(x, size, replace, prob)
 }
 
@@ -672,6 +714,8 @@ sample.default <- function(x, size, replace = FALSE, prob = NULL, ...) {
 #' summary(subset(inaugCorpus, Year>1980))
 #' summary(subset(inaugCorpus, Year>1930 & President=="Roosevelt", select=Year))
 subset.corpus <- function(x, subset, select, ...) {
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     r <- if (missing(subset)) {
         rep_len(TRUE, nrow(documents(x)))
     } else {
@@ -703,7 +747,7 @@ subset.corpus <- function(x, subset, select, ...) {
 #'   if you simply want to assign the output to a \code{data.frame}
 #' @param showmeta for a corpus, set to \code{TRUE} to include document-level
 #'   meta-data
-#' @param ...  additional arguments affecting the summary produced
+#' @param ... unused here
 #' @export
 #' @method summary corpus
 #' @examples
@@ -715,6 +759,8 @@ subset.corpus <- function(x, subset, select, ...) {
 #' mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
 #' mysummary$Types / mysummary$Tokens             # crude type-token ratio
 summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     
     cat("Corpus consisting of ", ndoc(object), " document",
         ifelse(ndoc(object)>1, "s", ""), 
@@ -743,16 +789,23 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
     return(invisible(outputdf))
 }
 
+
+
 #' change the document units of a corpus
 #' 
 #' For a corpus, recast the documents down or up a level of aggregation.  "Down"
 #' would mean going from documents to sentences, for instance.  "Up" means from 
 #' sentences back to documents.  This makes it easy to reshape a corpus from a 
 #' collection of documents into a collection of sentences, for instance.
-#' @param corp corpus whose document units will be reshaped
+#' @param x corpus whose document units will be reshaped
 #' @param to new documents units for the corpus to be recast in
-#' @param ... passes additional arguments to \code{\link{segment}}
-#' @return a corpus object with the documents defined as the new units
+#' @param ... not used
+#' @export
+changeunits <- function(x, ...) 
+    UseMethod("changeunits")
+
+#' @rdname changeunits
+#' @return A corpus object with the documents defined as the new units, including document-level meta-data identifying the original documents.
 #' @export
 #' @examples
 #' # simple example
@@ -760,30 +813,30 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
 #'                      textwo = "Premiere phrase.  Deuxieme phrase."), 
 #'                    docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
 #'                    notes = "This is a simple example to show how changeunits() works.")
-#' metadoc(mycorpus, "language") <- c("english", "french")                   
 #' summary(mycorpus)
-#' summary(changeunits(mycorpus, to="sentences"), showmeta=TRUE)
+#' summary(changeunits(mycorpus, to = "sentences"), showmeta=TRUE)
 #' 
 #' # example with inaugural corpus speeches
-#' mycorpus2 <- subset(inaugCorpus, Year>2004)
-#' mycorpus2
+#' (mycorpus2 <- subset(inaugCorpus, Year>2004))
 #' paragCorpus <- changeunits(mycorpus2, to="paragraphs")
 #' paragCorpus
 #' summary(paragCorpus, 100, showmeta=TRUE)
 #' ## Note that Bush 2005 is recorded as a single paragraph because that text used a single
 #' ## \n to mark the end of a paragraph.
-changeunits <- function(corp, to=c("sentences", "paragraphs", "documents"), ...) {
-    if (!is.corpus(corp)) stop("changeunits must have a valid corpus as its first argument.")
+changeunits.corpus <- function(x, to = c("sentences", "paragraphs", "documents"), ...) {
     to <- match.arg(to)
-    if (to=="documents") stop("documents not yet implemented.")
+    if (to == "documents") stop("documents not yet implemented.")
+    
+    if (length(addedArgs <- names(list(...))))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     
     # make the new corpus
-    segmentedTexts <- segment(texts(corp), to, ...)
+    segmentedTexts <- segment(texts(x), to)
     lengthSegments <- sapply(segmentedTexts, length)
     newcorpus <- corpus(unlist(segmentedTexts))
     # repeat the docvars and existing document metadata
-    docvars(newcorpus, names(docvars(corp))) <- as.data.frame(lapply(docvars(corp), rep, lengthSegments))
-    docvars(newcorpus, names(metadoc(corp))) <- as.data.frame(lapply(metadoc(corp), rep, lengthSegments))
+    docvars(newcorpus, names(docvars(x))) <- as.data.frame(lapply(docvars(x), rep, lengthSegments))
+    docvars(newcorpus, names(metadoc(x))) <- as.data.frame(lapply(metadoc(x), rep, lengthSegments))
     # add original document name as metadata
     metadoc(newcorpus, "document") <- rep(names(segmentedTexts), lengthSegments)
     # give a serial number (within document) to each sentence
@@ -791,8 +844,8 @@ changeunits <- function(corp, to=c("sentences", "paragraphs", "documents"), ...)
     metadoc(newcorpus, "serialno") <- unlist(sentenceid, use.names=FALSE)
     
     # copy settings and corpus metadata
-    newcorpus$settings <- corp$settings
-    newcorpus$metadata <- corp$metadata
+    newcorpus$settings <- x$settings
+    newcorpus$metadata <- x$metadata
     
     # modify settings flag for changeunits info
     settings(newcorpus, "unitsoriginal") <- settings(newcorpus, "units")
