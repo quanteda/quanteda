@@ -7,25 +7,28 @@
 \alias{trimdfm}
 \title{Trim a dfm using threshold-based or random feature selection}
 \usage{
-trim(x, minCount = 1, minDoc = 1, nsample = NULL, verbose = TRUE)
-
-\S4method{trim}{dfm}(x, minCount = 1, minDoc = 1, nsample = NULL,
+trim(x, minCount = 1, minDoc = 1, sparsity = NULL, nsample = NULL,
   verbose = TRUE)
+
+\S4method{trim}{dfm}(x, minCount = 1, minDoc = 1, sparsity = NULL,
+  nsample = NULL, verbose = TRUE)
 
 trimdfm(x, ...)
 }
 \arguments{
 \item{x}{document-feature matrix of \link{dfm-class}}
 
-\item{minCount}{minimum feature count}
+\item{minCount}{minimum count or fraction of features in across all documents}
 
-\item{minDoc}{minimum number of documents in which a feature appears}
+\item{minDoc}{minimum number or fraction of documents in which a feature appears}
 
 \item{nsample}{how many features to retain (based on random selection)}
 
 \item{verbose}{print messages}
 
 \item{...}{only included to allow legacy \code{trimdfm} to pass arguments to \code{trim}}
+
+\item{equivalent}{to 1 - minDoc, included for comparison with tm}
 }
 \value{
 A \link{dfm-class} object reduced in features (with the same number 
@@ -50,10 +53,11 @@ dim(dtmReduced)
 topfeatures(dtmReduced, decreasing = FALSE)
 dtmSampled <- trim(dtm, minCount = 20, nsample = 50)  # sample 50 words over 20 count
 dtmSampled # 57 x 50 words
+dim(trim(dtm, minDoc = 0.2, minCount = 0.0005))
 topfeatures(dtmSampled)  
 }
 \author{
-Ken Benoit, inspired by code by Will Lowe (see \code{trim} from the 
+Ken Benoit, Paul Nulty, inspired by code by Will Lowe (see \code{trim} from the 
   \code{austin} package)
 }
 \seealso{

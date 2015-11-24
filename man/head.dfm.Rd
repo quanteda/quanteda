@@ -19,7 +19,7 @@ last/first number of documents of x.}
 \item{nfeature}{the number of features to return, where the resulting object
 will contain the first \code{ncol} features}
 
-\item{...}{arguments to be passed to or from other methods.}
+\item{...}{unused}
 }
 \value{
 A \link{dfm-class} class object corresponding to the subset defined

@@ -268,7 +268,7 @@ is.corpus <- function(x) {
 #' 
 #' Get or set the corpus-level metadata in a quanteda corpus object.
 #' 
-#' @param corp A quanteda corpus object
+#' @param x A quanteda corpus object
 #' @param field Metadata field name(s).  If \code{NULL} (default), return all
 #'   metadata names.
 #' @return For \code{metacorpus}, a list of the metadata fields in the corpus. 
@@ -282,15 +282,17 @@ is.corpus <- function(x) {
 #' metacorpus(inaugCorpus, "source")
 #' metacorpus(inaugCorpus, "citation") <- "Presidential Speeches Online Project (2014)."
 #' metacorpus(inaugCorpus, "citation")
-metacorpus <- function(corp, field=NULL) {
-    if (!is.corpus(corp))
-        stop("Not a valid corpus object.")
+metacorpus <- function(x, field = NULL)
+    UseMethod("metacorpus")
+ 
+#' @rdname metacorpus
+metacorpus.corpus <- function(x, field = NULL) {
     if (!is.null(field)) {
         stopifnot(TRUE)
         ## NEED TO CHECK HERE THAT FIELD LIST MATCHES METADATA FIELD NAMES
-        return(corp$metadata[field])
+        return(x$metadata[field])
     } else {
-        return(corp$metadata)
+        return(x$metadata)
     }
 }
 
@@ -298,13 +300,13 @@ metacorpus <- function(corp, field=NULL) {
 #' @param value new value of the corpus metadata field
 #' @export
 #' @rdname metacorpus
-"metacorpus<-" <- function(corp, field, value) {
+"metacorpus<-" <- function(x, field, value) {
     if (!is.null(field)) {
         stopifnot(TRUE)
         ## NEED TO CHECK HERE THAT FIELD LIST MATCHES METADATA FIELD NAMES
     }
-    corp$metadata[field] <- value
-    corp
+    x$metadata[field] <- value
+    x
 }
 
 
