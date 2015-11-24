@@ -83,3 +83,4 @@ Collate:
     'tokenize.R'
     'tokenize_outtakes.R'
     'wordstem.R'
+RoxygenNote: 5.0.1

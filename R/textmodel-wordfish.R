@@ -60,24 +60,35 @@ setClass("textmodel_wordfish_predicted",
 #'   Journal of Political Science} 52(3):705-772.
 #' @author Benjamin Lauderdale and Kenneth Benoit
 #' @examples
-#' ie2010dfm <- dfm(ie2010Corpus, verbose=FALSE)
-#' wfmodel <- textmodel_wordfish(LBGexample, dir = c(6,5))
-#' wfmodel
-#' 
-#' \dontrun{if (require(austin)) {
+#' textmodel_wordfish(LBGexample, dir = c(1,5)
+#' \dontrun{
+#' ie2010dfm <- dfm(ie2010Corpus, verbose = FALSE)
+#' textmodel_wordfish(ie2010Corpus, dir = c(6,5))
+#' textmodel_wordfish(ie2010Corpus, dir = c(6,5), dispersion = "quasipoisson")
+#' if (require(austin)) {
 #'         wfmodelAustin <- wordfish(quanteda::as.wfm(LBGexample), dir = c(6,5))
 #'         cor(wfmodel@@theta, wfmodelAustin$theta)
 #' }}
 #' @export
-textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8), dispersion="poisson") {
+textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8), 
+                               dispersion = c("poisson", "quasipoisson"), dispersionLevel = c("feature", "overall"),
+                               dispersionFloor = TRUE) {
+    
     # check quasi-poisson settings and translate into numerical values  
-    quasitypes <- c("poisson","overall","byterm","bytermfloor")
-    if (is.element(dispersion,quasitypes)) {
-      disp = which(dispersion == quasitypes)
-    } else {
-      stop(paste0("Method ",dispersion," is not a valid option for the usequasi setting, must be ",quasitypes[1],", ",quasitypes[2],", ",quasitypes[3],", or ",quasitypes[4]))
-    }
-  
+    # 1 = Poisson, 2 = quasi-Poisson, overall dispersion, 
+    # 3 = quasi-Poisson, term dispersion, 4 = quasi-Poisson, term dispersion w/floor
+    dispersion <- match.arg(dispersion)
+    dispersionLevel <- match.arg(dispersionLevel)
+    if (dispersion == "poisson") disp <- 1L
+    else if (dispersion == "quasipoisson" & dispersionLevel == "overall") disp <- 2L
+    else if (dispersion == "quasipoisson" & dispersionLevel == "feature") {
+        if (dispersionFloor) disp <- 4L
+        else disp <- 3L
+    } else
+        stop("Illegal option combination.")
+
+    cat("disp = ", disp, "\n")
+    
     wfresult <- wordfishcpp(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp)
     # NOTE: psi is a 1 x nfeature matrix, not a numeric vector
     #       alpha is a ndoc x 1 matrix, not a numeric vector
