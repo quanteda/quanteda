@@ -23,7 +23,7 @@
 #'   attributes of the features themselves -- such as selecting features 
 #'   matching a regular expression, or removing features matching a stopword 
 #'   list, use \link{selectFeatures}.
-#' @author Ken Benoit, inspired by code by Will Lowe (see \code{trim} from the 
+#' @author Ken Benoit, Paul Nulty, inspired by code by Will Lowe (see \code{trim} from the 
 #'   \code{austin} package)
 #' @seealso \code{\link{selectFeatures}}
 #' @examples
@@ -34,24 +34,37 @@
 #' topfeatures(dtmReduced, decreasing = FALSE)
 #' dtmSampled <- trim(dtm, minCount = 20, nsample = 50)  # sample 50 words over 20 count
 #' dtmSampled # 57 x 50 words
+#' 
+#' dim(trim(dtm, ndoc = 0.2, minCount = 0.005))
+#' 
 #' topfeatures(dtmSampled)  
 #' @export
 setGeneric("trim", 
-           signature = c("x", "minCount", "minDoc", "nsample", "verbose"),
-           def = function(x, minCount=1, minDoc=1, nsample=NULL, verbose=TRUE)
+           signature = c("x", "minCount", "minDoc", "sparsity", "nsample", "verbose"),
+           def = function(x, minCount=1, minDoc=1, sparsity=NULL, nsample=NULL, verbose=TRUE)
                standardGeneric("trim"))
 
 #' @rdname trim
 setMethod("trim", signature(x = "dfm"), 
-          function(x, minCount=1, minDoc=1, nsample=NULL, verbose=TRUE) {
-              
+          function(x, minCount=1, minDoc=1, sparsity=NULL,nsample=NULL, verbose=TRUE) {
+              stopifnot(minCount > 0, minDoc > 0)
+              if ( !is.null(sparsity)){
+                  if(minDoc != 1)
+                      stop("minDoc and sparsity both refer to a document threshold, both should not be specified")
+                  minDoc <- (1 - sparsity) 
+              }             
+                    
+              if (minCount < 1)
+                  minCount <- (nfeature(x) * minCount)
+              if (minDoc < 1)
+                  minDoc <- (ndoc(x) * minDoc)
               featIndexAboveMinCount <- which(colSums(x) >= minCount, useNames = FALSE)
-              if (verbose & minCount>1)
+              if (verbose & minCount != 1)
                   cat("Features occurring less than", minCount, "times:", 
                       nfeature(x) - length(featIndexAboveMinCount), "\n")
               
               featIndexAboveMinDoc <- which(docfreq(x) >= minDoc)
-              if (verbose & minDoc>1)
+              if (verbose & minDoc != 1)
                   cat("Features occurring in fewer than", minDoc, "documents:", 
                       nfeature(x) - length(featIndexAboveMinDoc), "\n")
               
