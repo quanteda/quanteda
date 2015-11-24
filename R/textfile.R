@@ -155,6 +155,8 @@ setMethod("textfile",
                     cache = "ANY", 
                     docvarsfrom="missing", dvsep="missing", docvarnames="missing"),
           definition = function(file, textField, cache = FALSE, ...) {
+              if (length(addedArgs <- list(...)))
+                  warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
               if (length(textField) != 1)
                   stop("textField must be a single field name or column number identifying the texts.")
               fileType <- getFileType(file)
@@ -175,6 +177,9 @@ setMethod("textfile",
                     encodingFrom="ANY", encodingTo="ANY", cache = "ANY",
                     docvarsfrom="missing", dvsep="missing", docvarnames="missing"),
           definition = function(file, encodingFrom = NULL, encodingTo = "UTF-8", cache = FALSE, ...) {
+              if (length(addedArgs <- list(...)))
+                  warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+              
               fileType <- getFileType(file)
               if (fileType=="filemask") {
                   sources <- get_docs(file, encodingFrom, encodingTo)
@@ -193,6 +198,8 @@ setMethod("textfile",
                     docvarsfrom="character", dvsep="ANY", docvarnames="ANY"),
           definition = function(file, textField=NULL, cache = FALSE, 
                                 docvarsfrom=c("headers"), dvsep="_", docvarnames=NULL, ...) {
+              if (length(addedArgs <- list(...)))
+                  warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
               fileType <- getFileType(file)
               if (fileType=="filemask") {
                   sources <- get_docs(file, encodingFrom, encodingTo)
