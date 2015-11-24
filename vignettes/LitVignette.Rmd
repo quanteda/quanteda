@@ -1,0 +1,218 @@
+---
+title: "Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*"
+output:
+  rmarkdown::html_document:
+    theme: null
+    css: mystyle.css
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Literature}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{Quickstart}
+-->
+
+In this vignette we show how the **quanteda** package can be used to replicate the analysis from Matthew Jockers' book *Text Analysis with R for Students of Literature* (London: Springer, 2014).  Most of the Jockers book consists of loading, transforming, and analyzing quantities derived from text and data from text.  Because **quanteda** has built in most of the code to perform these data transformations and analyses, it makes it possible to replicate the results from the book with far less code.
+
+In what follows, each section corresponds to a chapter in the book.
+
+# 1 R Basics
+
+Our closest equivalent is simply:
+```{r eval=FALSE}
+install.packages("quanteda", dependencies = TRUE)
+```
+
+But if you are reading this vignette, than chances are that you have already completed this step.
+
+# 2 First Foray
+
+Moby Dick: Descriptive analysis
+
+## 2.1 Loading the first text file
+
+The code below scans and splits the text of Moby Dick from Project Gutenberg, as implemented in the text.  The command `textfile()` loads almost any file, including those found on the Internet (beginning with a URL, such as "http://" or "https://").
+```{r eval=TRUE}
+require(quanteda)
+
+# read the text as a single file
+mobydicktf <- textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt")
+# mobydicktf <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")
+mobydicktf
+```
+
+The `textfile()` loads the text and places inside a structured, intermediate object known as a `corpusSource` object.  We see this by outputting it to the global environment, as above.
+
+We can access the text from a `corpusSource` object (and also, as we will see, a `corpus` class object), using the `texts()` method.  Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel.  We do this using the `substring()` function, which shows the 1st through the 75th characters of the texts of our new object `mobydicktf`.  Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.
+```{r}
+substring(texts(mobydicktf), 1, 75)
+```
+
+## 2.2 Separate content from metadata
+
+```{r}
+# extract the header information
+mobydickText <- texts(mobydicktf)
+endMetadataIndex <- regexec("CHAPTER 1. Loomings.", mobydickText)[[1]]
+metadata.v <- substring(texts(mobydicktf), 1, endMetadataIndex - 1)
+
+# verify that "orphan" is the end of the novel
+kwic(mobydickText, "orphan")
+
+# extract the novel -- a better way
+novel.v <- substring(mobydickText, endMetadataIndex, 
+                     regexec("End of Project Gutenberg's Moby Dick.", mobydickText)[[1]]-1)
+```
+
+## 2.3 Reprocessing the content
+
+```{r}
+# lowercase
+novel.lower.v <- toLower(novel.v)
+# tokenize
+moby.word.v <- tokenize(novel.lower.v, removePunct = TRUE, simplify = TRUE)
+
+length(moby.word.v[which(moby.word.v == "whale")])
+str(moby.word.v)
+moby.word.v[1:10]
+moby.word.v[99986]  # different because we removed punctiation
+
+moby.word.v[c(4,5,6)]
+
+head(which(moby.word.v=="whale"))
+```
+
+## 2.3 Beginning the analysis
+
+```{r}
+# total occurrences of 'whale' including possessive
+length(moby.word.v[which(moby.word.v == "whale")]) + length(moby.word.v[which(moby.word.v == "whale's")])
+length(moby.word.v)
+ntoken(novel.v, removePunct = TRUE)
+
+whale.hits.v <- length(moby.word.v[which(moby.word.v=="whale")])
+
+withPunct <- kwic(novel.lower.v, "whale", removePunctuation=FALSE)
+noPunct <- kwic(novel.lower.v, "whale", case_insensitive = FALSE)
+
+# Put a count of total words into total.words.v 
+total.words.v <- length(moby.word.v)
+# now divide
+whale.hits.v/total.words.v
+
+# total unique words
+length(unique(moby.word.v))
+ntype(toLower(novel.v), removePunct = TRUE)
+```
+
+```{r eval=TRUE}
+# ten most frequent words
+mobyDfm <- dfm(novel.lower.v)
+mobyDfm[, "whale"]
+
+topfeatures(mobyDfm)
+plot(topfeatures(mobyDfm, 100), log = "y", cex = .6, ylab = "Term frequency")
+
+# whale:token ratio
+length(which(moby.word.v == "whale")) / ntoken(mobyDfm)
+```
+
+
+# 3 Accessing and Comparing Word Frequency Data
+
+## 3.1 Accessing Word Data
+
+```{r eval=TRUE}
+# frequencies of 'he' and 'she' - these are matrixes, not numerics
+mobyDfm[, c("he", "she", "him", "her")]
+
+mobyDfm[, "him"]/mobyDfm[, "her"]
+mobyDfm[, "he"]/mobyDfm[, "she"]
+```
+
+## 3.2 Recycling
+
+```{r}
+mobyDfmPct <- weight(mobyDfm, "relFreq") * 100
+mobyDfmPct[, "the"]
+
+plot(topfeatures(mobyDfmPct), type="b",
+     xlab="Top Ten Words", ylab="Percentage of Full Text", xaxt ="n")
+axis(1, 1:10, labels = names(topfeatures(mobyDfmPct)))
+```
+
+
+# 4 Token Distribution Analysis
+
+## 4.1 Dispersion plots
+
+```{r eval=TRUE, fig.width=8, fig.height=2}
+# using words from tokenized corpus for dispersion
+plot(kwic(novel.v, "whale"))
+plot(kwic(novel.v, "Ahab"))
+```
+
+## 4.2 Searching with `grep`
+
+```{r eval = FALSE}
+# identify the chapter break locations
+(chap.positions.v <- kwic(novel.v, "CHAPTER \\d", valuetype = "regex")$position)
+```
+
+
+## Identifying chapter breaks
+
+Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a `corpus` object to hold the texts. Initially, we make a single-document corpus, and then use the `segment` function to split this by the string which specifies the chapter breaks. 
+
+```{r}
+mobyCorp <- corpus(mobydickText)
+kwic(mobydickText, 'chapter')
+chaptersCorp <- segment(mobyCorp, what='other', delimiter="CHAPTER\\s\\d", perl=TRUE)
+```
+
+With the corpus split into chapters, we can use the `dfm` command to create a matrix of counts of each word in each chapter -- a document-frequency matrix.
+
+## Fig 4.4 barplots of whale and ahab
+```{r eval=TRUE}
+chapDfm <- dfm(chaptersCorp)
+barplot(as.numeric(chapDfm[, 'whale']))
+barplot(as.numeric(chapDfm[, 'ahab']))
+```
+
+
+The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we can weight the document-frequency matrix:
+
+## Relative frequency barplots of whale and ahab
+```{r eval=TRUE}
+relDfm <- weight(chapDfm, type='relFreq')
+barplot(as.numeric(relDfm[, 'whale']))
+barplot(as.numeric(relDfm[, 'ahab']))
+```
+
+Alternative plots using ggplot2
+```{r}
+require('ggplot2')	
+qplot(as.numeric(relDfm[, 'whale']), geom="histogram", binwidth=0.001)
+qplot(as.numeric(relDfm[, 'whale']), geom="density", adjust=0.1)
+```
+# 5 Correlation
+# To be integrated or removed
+
+
+
+## Measures of Lexical Variety
+
+Correlation of type-token ratio and chapter length:
+
+```{r eval=TRUE}
+#ttr <- statLexdiv(chapDfm)
+#lens <- length(rowSums(chapDfm))
+
+```
+
+
+
