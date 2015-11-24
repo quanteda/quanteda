@@ -109,7 +109,7 @@ mobyDfm <- dfm(novel.lower.v)
 mobyDfm[, "whale"]
 
 topfeatures(mobyDfm)
-plot(topfeatures(mobyDfm, 100), log = "y", cex = .6)
+plot(topfeatures(mobyDfm, 100), log = "y", cex = .6, ylab = "Term frequency")
 
 # whale:token ratio
 length(which(moby.word.v == "whale")) / ntoken(mobyDfm)
@@ -146,9 +146,17 @@ axis(1, 1:10, labels = names(topfeatures(mobyDfmPct)))
 
 ```{r eval=TRUE, fig.width=8, fig.height=2}
 # using words from tokenized corpus for dispersion
-kwic_whale <- kwic(novel.v, "whale")
-plot(kwic_whale)
+plot(kwic(novel.v, "whale"))
+plot(kwic(novel.v, "Ahab"))
 ```
+
+## 4.2 Searching with `grep`
+
+```{r eval = FALSE}
+# identify the chapter break locations
+(chap.positions.v <- kwic(novel.v, "CHAPTER \\d", valuetype = "regex")$position)
+```
+
 
 Alternative visualizations, using ggplot. Better for comparisons.
 
@@ -158,7 +166,14 @@ qplot(whales, geom="histogram", binwidth=1000)
 qplot(whales, geom="density", adjust=0.1)
 ```
 
+## rest of 4.x output around here
 
+
+# 5 Correlation
+
+
+
+# To be integrated or removed
 
 ## Breaking by chapter, searching, and counting
 ```{r eval=FALSE}

@@ -60,7 +60,7 @@ mobyDfm <- dfm(novel.lower.v)
 mobyDfm[, "whale"]
 
 topfeatures(mobyDfm)
-plot(topfeatures(mobyDfm, 100), log = "y", cex = .6)
+plot(topfeatures(mobyDfm, 100), log = "y", cex = .6, ylab = "Term frequency")
 
 # whale:token ratio
 length(which(moby.word.v == "whale")) / ntoken(mobyDfm)
@@ -82,8 +82,8 @@ axis(1, 1:10, labels = names(topfeatures(mobyDfmPct)))
 
 ## ----eval=TRUE, fig.width=8, fig.height=2--------------------------------
 # using words from tokenized corpus for dispersion
-kwic_whale <- kwic(novel.v, "whale")
-plot(kwic_whale)
+plot(kwic(novel.v, "whale"))
+plot(kwic(novel.v, "Ahab"))
 
 ## ----eval = FALSE--------------------------------------------------------
 #  require('ggplot2')
