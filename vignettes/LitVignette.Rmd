@@ -158,14 +158,24 @@ plot(kwic(novel.v, "Ahab"))
 ```
 
 
-Alternative visualizations, using ggplot. Better for comparisons.
+## Identifying chapter breaks
 
-```{r eval = FALSE}
-require('ggplot2')
-qplot(whales, geom="histogram", binwidth=1000) 
-qplot(whales, geom="density", adjust=0.1)
+Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a `corpus` object to hold the texts. Initially, we make a single-document corpus, and then use the `segment` function to split this by the string which specifies the chapter breaks. 
+
+```{r}
+mobyCorp <- corpus(mobydickText)
+kwic(mobydickText, 'chapter')
+chaptersCorp <- segment(mobyCorp, what='other', delimiter="CHAPTER\\s\\d", perl=TRUE)
 ```
 
+With the corpus split into chapters, we can use the `dfm` command to create a matrix of counts of each word in each chapter -- a document-frequency matrix.
+
+## Fig 4.4 barplots of whale and ahab
+```{r eval=TRUE}
+chapDfm <- dfm(chaptersCorp)
+barplot(as.numeric(chapDfm[, 'whale']))
+barplot(as.numeric(chapDfm[, 'ahab']))
+```
 ## rest of 4.x output around here
 
 
@@ -175,15 +185,7 @@ qplot(whales, geom="density", adjust=0.1)
 
 # To be integrated or removed
 
-## Breaking by chapter, searching, and counting
-```{r eval=FALSE}
-kwic(mobyCorp, 'chapter')
-chapters <- segment(mobyCorp, what='other', delimiter="CHAPTER\\s\\d", perl=TRUE)
-chapDfm <- dfm(chapters)
-barplot(as.numeric(chapDfm[, 'whale']))
-barplot(as.numeric(chapDfm[, 'ahab']))
 
-```
 
 ## Measures of Lexical Variety
 
