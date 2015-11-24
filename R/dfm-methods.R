@@ -10,9 +10,10 @@
 #' Returns a document by feature matrix reduced in size based on document and 
 #' term frequency, and/or subsampling.
 #' @param x document-feature matrix of \link{dfm-class}
-#' @param minCount minimum feature count
-#' @param minDoc minimum number of documents in which a feature appears
+#' @param minCount minimum count or fraction of features in across all documents 
+#' @param minDoc minimum number or fraction of documents in which a feature appears
 #' @param nsample how many features to retain (based on random selection)
+#' @param equivalent to 1 - minDoc, included for comparison with tm
 #' @param verbose print messages
 #' @return A \link{dfm-class} object reduced in features (with the same number 
 #'   of documents)
@@ -34,9 +35,7 @@
 #' topfeatures(dtmReduced, decreasing = FALSE)
 #' dtmSampled <- trim(dtm, minCount = 20, nsample = 50)  # sample 50 words over 20 count
 #' dtmSampled # 57 x 50 words
-#' 
-#' dim(trim(dtm, ndoc = 0.2, minCount = 0.005))
-#' 
+#' dim(trim(dtm, minDoc = 0.2, minCount = 0.0005))
 #' topfeatures(dtmSampled)  
 #' @export
 setGeneric("trim", 
