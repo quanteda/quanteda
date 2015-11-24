@@ -286,6 +286,7 @@ metacorpus <- function(x, field = NULL)
     UseMethod("metacorpus")
  
 #' @rdname metacorpus
+#' @export
 metacorpus.corpus <- function(x, field = NULL) {
     if (!is.null(field)) {
         stopifnot(TRUE)

@@ -15,12 +15,18 @@ quanteda 0.8.7
 
 *  Enhanced operation of kwic(), including the definition of a kwic class object, and a plot method for
    this object (produces a dispersion plot).
+   
+*  Lots more error checking of arguments passed to ... (and potentially misspecified or misspelled).
+   Addresses Issue #62.
+   
+*  Almost all methods are now methods defined for objects, from a generic.
 
 Bug Fixes
 ---------
 *  corrected inaccurate printing of valuetype in verbose note of selectFeatures.dfm().  (Did not affect functionality.)
 
 *  fixed broken quanteda.R demo, expanded demonstration code.
+
 
 quanteda 0.8.6
 ==============
