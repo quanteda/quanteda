@@ -10,9 +10,10 @@
 #' Returns a document by feature matrix reduced in size based on document and 
 #' term frequency, and/or subsampling.
 #' @param x document-feature matrix of \link{dfm-class}
-#' @param minCount minimum feature count
-#' @param minDoc minimum number of documents in which a feature appears
+#' @param minCount minimum count or fraction of features in across all documents 
+#' @param minDoc minimum number or fraction of documents in which a feature appears
 #' @param nsample how many features to retain (based on random selection)
+#' @param equivalent to 1 - minDoc, included for comparison with tm
 #' @param verbose print messages
 #' @return A \link{dfm-class} object reduced in features (with the same number 
 #'   of documents)
@@ -23,7 +24,7 @@
 #'   attributes of the features themselves -- such as selecting features 
 #'   matching a regular expression, or removing features matching a stopword 
 #'   list, use \link{selectFeatures}.
-#' @author Ken Benoit, inspired by code by Will Lowe (see \code{trim} from the 
+#' @author Ken Benoit, Paul Nulty, inspired by code by Will Lowe (see \code{trim} from the 
 #'   \code{austin} package)
 #' @seealso \code{\link{selectFeatures}}
 #' @examples
@@ -34,24 +35,35 @@
 #' topfeatures(dtmReduced, decreasing = FALSE)
 #' dtmSampled <- trim(dtm, minCount = 20, nsample = 50)  # sample 50 words over 20 count
 #' dtmSampled # 57 x 50 words
+#' dim(trim(dtm, minDoc = 0.2, minCount = 0.0005))
 #' topfeatures(dtmSampled)  
 #' @export
 setGeneric("trim", 
-           signature = c("x", "minCount", "minDoc", "nsample", "verbose"),
-           def = function(x, minCount=1, minDoc=1, nsample=NULL, verbose=TRUE)
+           signature = c("x", "minCount", "minDoc", "sparsity", "nsample", "verbose"),
+           def = function(x, minCount=1, minDoc=1, sparsity=NULL, nsample=NULL, verbose=TRUE)
                standardGeneric("trim"))
 
 #' @rdname trim
 setMethod("trim", signature(x = "dfm"), 
-          function(x, minCount=1, minDoc=1, nsample=NULL, verbose=TRUE) {
+          function(x, minCount=1, minDoc=1, sparsity=NULL,nsample=NULL, verbose=TRUE) {
+              stopifnot(minCount > 0, minDoc > 0)
+              if ( !is.null(sparsity)){
+                  if(minDoc != 1)
+                      stop("minDoc and sparsity both refer to a document threshold, both should not be specified")
+                  minDoc <- (1 - sparsity) 
+              }             
               
+              if (minCount < 1)
+                  minCount <- (nfeature(x) * minCount)
+              if (minDoc < 1)
+                  minDoc <- (ndoc(x) * minDoc)
               featIndexAboveMinCount <- which(colSums(x) >= minCount, useNames = FALSE)
-              if (verbose & minCount>1)
+              if (verbose & minCount != 1)
                   cat("Features occurring less than", minCount, "times:", 
                       nfeature(x) - length(featIndexAboveMinCount), "\n")
               
               featIndexAboveMinDoc <- which(docfreq(x) >= minDoc)
-              if (verbose & minDoc>1)
+              if (verbose & minDoc != 1)
                   cat("Features occurring in fewer than", minDoc, "documents:", 
                       nfeature(x) - length(featIndexAboveMinDoc), "\n")
               
@@ -283,10 +295,10 @@ setMethod("weight", signature = "dfm",
                       #tmp[is.na(tmp)] <- 0
                       x <- new("dfmSparse", x/rowSums(x))
                   } else 
-                 if (is(x, "dfmDense"))
-                      x <- new("dfmDense", x/rowSums(x))
-                 else 
-                     x <- x/rowSums(x)
+                      if (is(x, "dfmDense"))
+                          x <- new("dfmDense", x/rowSums(x))
+                      else 
+                          x <- x/rowSums(x)
               } else if (type=="relMaxFreq") {
                   x <- x / apply(x, 1, max)
               } else if (type=="logFreq") {
@@ -559,5 +571,3 @@ cbind.dfm <- function(x, y, ...) {
     result <- Matrix::cbind2(x, y, ...)
     new("dfmSparse", result)
 }
-
-
