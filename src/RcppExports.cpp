@@ -35,8 +35,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // wordfishcpp
-Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol);
-RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP) {
+Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp);
+RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP, SEXP dispSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -44,7 +44,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type dir(dirSEXP);
     Rcpp::traits::input_parameter< SEXP >::type priors(priorsSEXP);
     Rcpp::traits::input_parameter< SEXP >::type tol(tolSEXP);
-    __result = Rcpp::wrap(wordfishcpp(wfm, dir, priors, tol));
+    Rcpp::traits::input_parameter< SEXP >::type disp(dispSEXP);
+    __result = Rcpp::wrap(wordfishcpp(wfm, dir, priors, tol, disp));
     return __result;
 END_RCPP
 }
