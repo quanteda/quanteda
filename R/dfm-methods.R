@@ -301,6 +301,8 @@ setGeneric("weight", function(x, ...) standardGeneric("weight"))
 setMethod("weight", signature = "dfm", 
           definition = function(x, type=c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"), #, "ppmi"), 
                                 smoothing = 0, normalize = TRUE, verbose=TRUE, ...) {
+              if (length(addedArgs <- list(...)))
+                  warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
               type = match.arg(type)
               x <- x + smoothing
               if (weighting(x) != "frequency") {
@@ -489,6 +491,8 @@ smoothdfm <- function(x, alpha=0.5) {
 #' @param ... additional arguments passed to other methods
 #' @export
 topfeatures <- function(x, ...) {
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     UseMethod("topfeatures")
 }
 
