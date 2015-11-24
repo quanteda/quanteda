@@ -4,14 +4,16 @@
 \alias{plot.dfm}
 \title{plot features as a wordcloud}
 \usage{
-\method{plot}{dfm}(x, ...)
+\method{plot}{dfm}(x, comparison = FALSE, ...)
 }
 \arguments{
 \item{x}{a dfm object}
 
-\item{...}{additional parameters passed to to
-\link[wordcloud]{wordcloud} or to \link{text} (and \link{strheight},
-\link{strwidth})}
+\item{comparison}{if TRUE, plot a \link[wordcloud]{comparison.cloud} 
+comparison cloud instead of a simple wordcloud}
+
+\item{...}{additional parameters passed to to \link[wordcloud]{wordcloud} or 
+to \link{text} (and \link{strheight}, \link{strwidth})}
 }
 \description{
 The default plot method for a \code{\link{dfm}} object.  Produces a wordcloud
@@ -29,7 +31,11 @@ plot(mydfm)
 # plot only Lincoln's inaugural address
 plot(dfm(subset(inaugCorpus, President=="Lincoln"), verbose=FALSE,
      ignoredFeatures=stopwords("english")))
-
+#comparison plot of Irish government vs opposition
+side <- ifelse(docvars(ie2010Corpus, 'party') == 'FF' | docvars(ie2010Corpus, 'party') == 'FF', "govt", "opp")
+docvars(ie2010Corpus, 'side') <- side
+sideDfm <- weight(dfm(ie2010Corpus, groups = 'side'), type='tfidf')
+plot(sideDfm, comparison=TRUE)
 # plot in colors with some additional options passed to wordcloud
 plot(mydfm, random.color=TRUE, rot.per=.25, colors=sample(colors()[2:128], 5))
 }
