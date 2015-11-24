@@ -63,8 +63,8 @@ setClass("textmodel_wordfish_predicted",
 #' textmodel_wordfish(LBGexample, dir = c(1,5)
 #' \dontrun{
 #' ie2010dfm <- dfm(ie2010Corpus, verbose = FALSE)
-#' textmodel_wordfish(ie2010Corpus, dir = c(6,5))
-#' textmodel_wordfish(ie2010Corpus, dir = c(6,5), dispersion = "quasipoisson")
+#' textmodel_wordfish(ie2010dfm, dir = c(6,5))
+#' textmodel_wordfish(ie2010dfm, dir = c(6,5), dispersion = "quasipoisson")
 #' if (require(austin)) {
 #'         wfmodelAustin <- wordfish(quanteda::as.wfm(LBGexample), dir = c(6,5))
 #'         cor(wfmodel@@theta, wfmodelAustin$theta)
