@@ -15,28 +15,28 @@ tagPOS <- function(x, ...)
 #' tokens <- lapply(sents, function(x) tokenize(x, simplify=TRUE))
 #' pos <- tagPOS(tokens) # tokens should be sentence
 #' @export
-tagPOS <- function(l, ...){
-  
-  model <- openNLP::Maxent_POS_Tag_Annotator()
-  anno_word <- Simple_Word_Token_Annotator(function(s){
-    token <- stringi::stri_split_fixed(s, '|', simplify=TRUE)
-    length <- stringi::stri_length(token)
-    to <- as.integer(cumsum(length))
-    from <- as.integer(to - (length - 1))
-    return(NLP::Span(from, to))
-  })
-  
-  anno_sent <- Simple_Sent_Token_Annotator(function(s){
-    return(NLP::Span(1, stringi::stri_length(s)))
-  })
-  
-  pos <- lapply(l, function(x){
-    str <- as.String(paste(x, collapse='|'))
-    anno <- annotate(str, model, annotate(str, list(anno_sent, anno_word)))
-    anno <- subset(anno, type == "word")
-    return(sapply(anno$features, '[[', "POS"))
-  })
-  return(pos)
+tagPOS.tokenizedTexts <- function(x, ...){
+    
+    model <- openNLP::Maxent_POS_Tag_Annotator()
+    anno_word <- NLP::Simple_Word_Token_Annotator(function(s){
+        token <- stringi::stri_split_fixed(s, '|', simplify=TRUE)
+        length <- stringi::stri_length(token)
+        to <- as.integer(cumsum(length))
+        from <- as.integer(to - (length - 1))
+        return(NLP::Span(from, to))
+    })
+    
+    anno_sent <- NLP::Simple_Sent_Token_Annotator(function(s){
+        return(NLP::Span(1, stringi::stri_length(s)))
+    })
+    
+    pos <- lapply(x, function(y) {
+        str <- NLP::as.String(paste(y, collapse='|'))
+        anno <- NLP::annotate(str, model, NLP::annotate(str, list(anno_sent, anno_word)))
+        anno <- subset(anno, type == "word")
+        return(sapply(anno$features, '[[', "POS"))
+    })
+    pos
 }
 
 

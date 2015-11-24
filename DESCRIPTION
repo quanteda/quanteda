@@ -70,6 +70,7 @@ Collate:
     'lexdiv.R'
     'ngrams.R'
     'plots.R'
+    'pos.R'
     'quanteda-package.R'
     'readability.R'
     'resample.R'
@@ -85,3 +86,4 @@ Collate:
     'tokenize.R'
     'tokenize_outtakes.R'
     'wordstem.R'
+RoxygenNote: 5.0.1
