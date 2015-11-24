@@ -13,7 +13,7 @@
 #' @param minCount minimum count or fraction of features in across all documents 
 #' @param minDoc minimum number or fraction of documents in which a feature appears
 #' @param nsample how many features to retain (based on random selection)
-#' @param equivalent to 1 - minDoc, included for comparison with tm
+#' @param sparsity equivalent to 1 - minDoc, included for comparison with tm
 #' @param verbose print messages
 #' @return A \link{dfm-class} object reduced in features (with the same number 
 #'   of documents)
