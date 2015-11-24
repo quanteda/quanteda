@@ -24,6 +24,10 @@ quanteda 0.8.7
    
 *  Almost all methods are now methods defined for objects, from a generic.
 
+*  texts(x, groups = ) now allows groups to be factors, not just document variable labels.  There is a new
+   method for texts.character(x, groups = ) which is useful for supplying a factor to concatenate character
+   objects by group.
+
 Bug Fixes
 ---------
 *  corrected inaccurate printing of valuetype in verbose note of selectFeatures.dfm().  (Did not affect functionality.)

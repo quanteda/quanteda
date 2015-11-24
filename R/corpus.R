@@ -327,44 +327,70 @@ documents <- function(corp) {
 
 #' get corpus texts
 #' 
-#' Get the texts in a quanteda corpus object, with grouping options
-#' 
+#' Get the texts in a quanteda corpus object, with grouping options.  Works for plain character
+#' vectors too, if \code{groups} is a factor.
 #' @param x A quanteda corpus object
-#' @param ... not currently used
+#' @param groups character vector containing the names of document variables in
+#'   a corpus, or a factor equal in length to the number of documents, used for 
+#'   aggregating the texts through concatenation.  If \code{x} is of type character,
+#'   then \code{groups} must be a factor.
+#' @param ... unused
 #' @return For \code{texts}, a character vector of the texts in the corpus.
-#' 
-#' For \code{texts <-}, the corpus with the updated texts.
+#'   
+#'   For \code{texts <-}, the corpus with the updated texts.
 #' @export
 #' @examples
-#' texts(inaugCorpus)[1]
-#' sapply(texts(inaugCorpus), nchar)  # length in characters of the inaugual corpus texts
-#' str(texts(ie2010Corpus, groups = "party"))
-texts <- function(x, ...) {
+#' nchar(texts(subset(inaugCorpus, Year < 1806)))
+#' 
+#' # grouping on a document variable
+#' nchar(texts(subset(inaugCorpus, Year < 1806), groups = "President"))
+#' 
+#' # grouping a character vector using a factor
+#' nchar(inaugTexts[1:5])
+#' nchar(texts(inaugTexts[1:5], groups = as.factor(inaugCorpus[1:5, "President"])))
+texts <- function(x, groups = NULL, ...) {
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     UseMethod("texts")
 }
 
 #' @rdname texts
-#' @param groups character vector containing the names of document variables for
-#'   aggregating documents
 #' @export
 texts.corpus <- function(x, groups = NULL, ...) {
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-    texts <- documents(x)$texts
-    if (!is.null(groups)) {
+    txts <- documents(x)$texts
+    
+    # without groups
+    if (is.null(groups)) {
+        names(txts) <- docnames(x)
+        return(txts)
+    }
+        
+    # with groups as a factor
+    if (any(!groups %in% names(docvars(x)))) {
+        stop("Check your docvar names.", 
+             ifelse(length(groups) == ndoc(x), "  Try groups = as.factor()...", ""))
+    }
+    if (is.factor(groups)) {
+        group.split <- groups
+    } else {
         if (length(groups) > 1) {
             # if more than one grouping variable
             group.split <- lapply(documents(x)[, groups], as.factor)
         } else {
             # if only one grouping variable
-            group.split <- as.factor(documents(x)[,groups])
+            group.split <- as.factor(documents(x)[, groups])
         }
-        texts <- split(texts, group.split)
-        texts <- sapply(texts, paste, collapse = " ")
-    } else {
-        names(texts) <- docnames(x)
     }
-    return(texts)
+    texts(txts, groups = group.split)
+}
+
+#' @rdname texts
+#' @export
+texts.character <- function(x, groups = NULL, ...) {
+    if (is.null(groups)) return(x)
+    if (!is.factor(groups)) stop("groups must be a factor")
+    x <- split(x, groups)
+    sapply(x, paste, collapse = " ")
 }
 
 
