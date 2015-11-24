@@ -9,7 +9,7 @@ skipgramcppl <- function(units, ns, ks, delim) {
     .Call('quanteda_skipgramcppl', PACKAGE = 'quanteda', units, ns, ks, delim)
 }
 
-wordfishcpp <- function(wfm, dir, priors, tol) {
-    .Call('quanteda_wordfishcpp', PACKAGE = 'quanteda', wfm, dir, priors, tol)
+wordfishcpp <- function(wfm, dir, priors, tol, disp) {
+    .Call('quanteda_wordfishcpp', PACKAGE = 'quanteda', wfm, dir, priors, tol, disp)
 }
 

@@ -8,10 +8,12 @@ setClass("textmodel_wordfish_fitted",
                    beta = "numeric",
                    psi = "numeric",
                    alpha = "numeric",
+                   phi = "numeric",
                    docs = "character",
                    features = "character",
                    sigma = "numeric",
                    ll = "numeric",
+                   dispersion = "character",
                    se.theta = "numeric"),
          contains = "textmodel_fitted")
 
@@ -36,6 +38,8 @@ setClass("textmodel_wordfish_predicted",
 #' @param priors priors for \eqn{\theta_i}, \eqn{\alpha_i}, \eqn{\psi_j}, and 
 #'   \eqn{\beta_j} where \eqn{i} indexes documents and \eqn{j} indexes features
 #' @param tol tolerances for convergence (explain why a pair)
+#' @param dispersion sets whether a quasi-poisson quasi-likelihood should be used based on a single
+#' dispersion parameter ("single"), dispersion parameters for each work ("byterm" or "bytermfloor"), or not ("none")
 #' @param ... additional arguments passed to other functions
 #' @return An object of class textmodel_fitted_wordfish.  This is a list 
 #'   containing: \item{dir}{global identification of the dimension} 
@@ -65,8 +69,16 @@ setClass("textmodel_wordfish_predicted",
 #'         cor(wfmodel@@theta, wfmodelAustin$theta)
 #' }}
 #' @export
-textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8)) {
-    wfresult <- wordfishcpp(as.matrix(data), as.integer(dir), 1/(priors^2), tol)
+textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8), dispersion="poisson") {
+    # check quasi-poisson settings and translate into numerical values  
+    quasitypes <- c("poisson","overall","byterm","bytermfloor")
+    if (is.element(dispersion,quasitypes)) {
+      disp = which(dispersion == quasitypes)
+    } else {
+      stop(paste0("Method ",dispersion," is not a valid option for the usequasi setting, must be ",quasitypes[1],", ",quasitypes[2],", ",quasitypes[3],", or ",quasitypes[4]))
+    }
+  
+    wfresult <- wordfishcpp(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp)
     # NOTE: psi is a 1 x nfeature matrix, not a numeric vector
     #       alpha is a ndoc x 1 matrix, not a numeric vector
     new("textmodel_wordfish_fitted", 
@@ -74,11 +86,14 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
         docs = docnames(data), 
         features = features(data),
         dir = dir,
+        dispersion = dispersion,
         priors = priors,
         theta = wfresult$theta,
         beta = wfresult$beta,
         psi = as.numeric(wfresult$psi),
         alpha = as.numeric(wfresult$alpha),
+        phi = as.numeric(wfresult$phi),
+        se.theta = wfresult$thetaSE ,
         call = match.call())
 }
 
@@ -96,9 +111,9 @@ print.textmodel_wordfish_fitted <- function(x, n=30L, ...) {
     cat("\nEstimated document positions:\n\n")
     results <- data.frame(Documents=docnames(x@x),
                           theta = x@theta,
-                          SE = NA,
-                          lower = NA,
-                          upper = NA)
+                          SE = x@se.theta,
+                          lower = x@theta - 1.96*x@se.theta,
+                          upper = x@theta + 1.96*x@se.theta)
     print(results, ...)
     if (n>0) {
         cat("\nEstimated feature scores: ")
@@ -129,9 +144,9 @@ summary.textmodel_wordfish_fitted <- function(object, ...) {
     
     cat("\nEstimated document positions:\n")
     results <- data.frame(theta = object@theta,
-                          SE = NA,
-                          lower = NA,
-                          upper = NA)
+                          SE = object@se.theta,
+                          lower = object@theta - 1.96*object@se.theta,
+                          upper = object@theta + 1.96*object@se.theta)
     
     rownames(results) <- object@docs
     print(results, ...)

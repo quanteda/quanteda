@@ -8,14 +8,15 @@ using namespace Rcpp;
 
 // [[Rcpp::export]]
 
-Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol){
+Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp){
 
 	// DEFINE INPUTS
 	
 		Rcpp::NumericMatrix Y(wfm); 
 		Rcpp::NumericVector priorvec(priors);
 		Rcpp::NumericVector tolvec(tol); 
-  	Rcpp::IntegerVector dirvec(dir);     
+  	Rcpp::IntegerVector dirvec(dir);  
+  	Rcpp::IntegerVector disptype(disp);
 		
 		double priorprecalpha = priorvec(0);
 		double priorprecpsi = priorvec(1);
@@ -31,6 +32,9 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol){
 		Rcpp::NumericVector psi(K); 
 		Rcpp::NumericVector beta(K); 
 		Rcpp::NumericVector theta(N); 
+		
+		Rcpp::NumericVector thetaSE(N); // document position standard errors
+		Rcpp::NumericVector phi(K,1.0); // word-level dispersion parameters
 		
 		// Construct Chi-Sq Residuals	
 		arma::mat C(Y.begin(),N,K); 
@@ -64,6 +68,8 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol){
 		Rcpp::NumericMatrix G(2,1);
 		Rcpp::NumericMatrix H(2,2);
 		double loglambdaik;
+		double mutmp;		
+		double phitmp;
 		Rcpp::NumericVector lambdai(K);
 		Rcpp::NumericVector lambdak(N);
 		double stepsize = 1.0;
@@ -83,7 +89,7 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol){
 	// BEGIN WHILE LOOP
 	while(((lp - lastlp) > tolvec(0)) && outeriter < 100){	
 		outeriter++;
-	
+	  	
 		// UPDATE WORD PARAMETERS
 			for (int k=0; k < K; k++){
 				cc = 1;
@@ -92,12 +98,12 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol){
 				while ((cc > tolvec(1)) && inneriter < 10){
 					inneriter++;
 					lambdak = exp(alpha + psi(k) + beta(k)*theta);
-					G(0,0) = sum(Y(_,k) - lambdak) - psi(k)*(priorprecpsi);
-					G(1,0) = sum(theta*(Y(_,k) - lambdak)) - beta(k)*(priorprecbeta);
-					H(0,0) = -sum(lambdak) - priorprecpsi;
-					H(1,0) = -sum(theta*lambdak);
+					G(0,0) = sum(Y(_,k) - lambdak)/phi(k) - psi(k)*(priorprecpsi);
+					G(1,0) = sum(theta*(Y(_,k) - lambdak))/phi(k) - beta(k)*(priorprecbeta);
+					H(0,0) = -sum(lambdak)/phi(k) - priorprecpsi;
+					H(1,0) = -sum(theta*lambdak)/phi(k);
 					H(0,1) = H(1,0);
-					H(1,1) = -sum((theta*theta)*lambdak) - priorprecbeta;
+					H(1,1) = -sum((theta*theta)*lambdak)/phi(k) - priorprecbeta;
 					pars(0,0) = psi(k);
 					pars(1,0) = beta(k);
 					newpars(0,0) = pars(0,0) - stepsize*(H(1,1)*G(0,0) - H(0,1)*G(1,0))/(H(0,0)*H(1,1) - H(0,1)*H(1,0));
@@ -118,12 +124,12 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol){
 				while ((cc > tolvec(1)) && inneriter < 10){
 					inneriter++;
 					lambdai = exp(alpha(i) + psi + beta*theta(i));
-					G(0,0) = sum(Y(i,_) - lambdai) - alpha(i)*priorprecalpha;
-					G(1,0) = sum(beta*(Y(i,_) - lambdai)) - theta(i)*priorprectheta;		
-					H(0,0) = -sum(lambdai) - priorprecalpha;
-					H(1,0) = -sum(beta*lambdai);
+					G(0,0) = sum((Y(i,_) - lambdai)/phi) - alpha(i)*priorprecalpha;
+					G(1,0) = sum((beta*(Y(i,_) - lambdai))/phi) - theta(i)*priorprectheta;		
+					H(0,0) = -sum(lambdai/phi) - priorprecalpha;
+					H(1,0) = -sum((beta*lambdai)/phi);
 					H(0,1) = H(1,0);
-					H(1,1) = -sum((beta* beta)*lambdai) - priorprectheta;
+					H(1,1) = -sum(((beta* beta)*lambdai)/phi) - priorprectheta;
 					pars(0,0) = alpha(i);
 					pars(1,0) = theta(i);
 					newpars(0,0) = pars(0,0) - stepsize*(H(1,1)*G(0,0) - H(0,1)*G(1,0))/(H(0,0)*H(1,1) - H(0,1)*H(1,0));
@@ -134,6 +140,33 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol){
 					stepsize = 1.0;
 				}	
 			}
+			
+			// UPDATE DISPERSION PARAMETERS	  
+			
+			if (disptype(0) == 2){ // single dispersion parameter for all words
+			  phitmp = 0.0;
+			  for (int k=0; k < K; k++){
+			    for (int i=0; i < N; i++){
+			      mutmp = exp(alpha(i) + psi(k) + beta(k)*theta(i));
+			      phitmp = phitmp + (Y(i,k) - mutmp)*(Y(i,k) - mutmp)/mutmp;
+			    }   
+			  }	    
+			  phitmp = phitmp/(N*K - 2*N - 2*K);
+			  for (int k=0; k < K; k++) phi(k) = phitmp;
+			}
+			
+			if (disptype(0) >= 3){ // individual dispersion parameter for each word
+			  for (int k=0; k < K; k++){
+			    phitmp = 0.0;
+			    for (int i=0; i < N; i++){
+			      mutmp = exp(alpha(i) + psi(k) + beta(k)*theta(i));
+			      phitmp = phitmp + (Y(i,k) - mutmp)*(Y(i,k) - mutmp)/mutmp;	        
+			    }   
+			    phitmp = ((K)*phitmp)/(N*K - 2*N - 2*K);
+			    phi(k) = phitmp;
+			    if (disptype(0) == 4) phi(k) = fmax(1.0,phi(k));
+			  }
+			}	  			
 		
 		alpha = alpha - mean(alpha);
 		theta = (theta - mean(theta))/sd(theta);		
@@ -160,13 +193,25 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol){
     beta = -beta;
     theta = -theta;
   }
+  
+  // COMPUTE DOCUMENT STANDARD ERRORS
+  for (int i=0; i < N; i++){
+    lambdai = exp(alpha(i) + psi + beta*theta(i));
+    H(0,0) = -sum(lambdai/phi) - priorprecalpha;
+    H(1,0) = -sum((beta*lambdai)/phi);
+    H(0,1) = H(1,0);
+    H(1,1) = -sum(((beta* beta)*lambdai)/phi) - priorprectheta;
+    thetaSE(i) = sqrt(-1.0*H(0,0)/(H(0,0)*H(1,1)-H(1,0)*H(0,1)));
+  }  
 		
 	// DEFINE OUTPUT	
 	
 	return Rcpp::List::create(Rcpp::Named("theta") = theta,
                           Rcpp::Named("alpha") = alpha,
                           Rcpp::Named("psi") = psi,
-                          Rcpp::Named("beta") = beta);
+                          Rcpp::Named("beta") = beta,
+                          Rcpp::Named("phi") = phi,
+                          Rcpp::Named("thetaSE") = thetaSE);
 
 }
 

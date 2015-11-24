@@ -9,7 +9,7 @@
 \title{wordfish text model}
 \usage{
 textmodel_wordfish(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
-  tol = c(1e-06, 1e-08))
+  tol = c(1e-06, 1e-08), dispersion = "poisson")
 
 \method{print}{textmodel_wordfish_fitted}(x, n = 30L, ...)
 
@@ -27,6 +27,9 @@ documents such that \eqn{\hat{\theta}_{dir[1]} < \hat{\theta}_{dir[2]}}.}
 \eqn{\beta_j} where \eqn{i} indexes documents and \eqn{j} indexes features}
 
 \item{tol}{tolerances for convergence (explain why a pair)}
+
+\item{dispersion}{sets whether a quasi-poisson quasi-likelihood should be used based on a single
+dispersion parameter ("single"), dispersion parameters for each work ("byterm" or "bytermfloor"), or not ("none")}
 
 \item{x}{for print method, the object to be printed}
 
