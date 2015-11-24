@@ -22,13 +22,13 @@ trimdfm(x, ...)
 
 \item{minDoc}{minimum number or fraction of documents in which a feature appears}
 
+\item{sparsity}{equivalent to 1 - minDoc, included for comparison with tm}
+
 \item{nsample}{how many features to retain (based on random selection)}
 
 \item{verbose}{print messages}
 
 \item{...}{only included to allow legacy \code{trimdfm} to pass arguments to \code{trim}}
-
-\item{equivalent}{to 1 - minDoc, included for comparison with tm}
 }
 \value{
 A \link{dfm-class} object reduced in features (with the same number 
