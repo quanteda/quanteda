@@ -491,8 +491,6 @@ smoothdfm <- function(x, alpha=0.5) {
 #' @param ... additional arguments passed to other methods
 #' @export
 topfeatures <- function(x, ...) {
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     UseMethod("topfeatures")
 }
 
@@ -507,6 +505,8 @@ topfeatures <- function(x, ...) {
 #' @rdname topfeatures
 #' @importFrom stats quantile
 topfeatures.dfm <- function(x, n=10, decreasing=TRUE, ci=.95, ...) {
+    if (length(addedArgs <- list(...)))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     if (is.null(n)) n <- ncol(x)
     if (is.resampled(x)) {
         subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
