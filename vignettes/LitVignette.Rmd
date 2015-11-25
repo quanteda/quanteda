@@ -42,18 +42,19 @@ require(quanteda)
 # read the text as a single file
 mobydicktf <- textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt")
 # mobydicktf <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")
-mobydicktf
+#mobydicktf
 ```
 
 The `textfile()` loads the text and places inside a structured, intermediate object known as a `corpusSource` object.  We see this by outputting it to the global environment, as above.
 
 We can access the text from a `corpusSource` object (and also, as we will see, a `corpus` class object), using the `texts()` method.  Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel.  We do this using the `substring()` function, which shows the 1st through the 75th characters of the texts of our new object `mobydicktf`.  Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.
+
 ```{r}
 substring(texts(mobydicktf), 1, 75)
 ```
 
 ## 2.2 Separate content from metadata
-
+The Gutenburg edition of the text contains some metadata before and after the text of the novel. The code below uses the `regexec` and `substring` functions to separate this from the text.
 ```{r}
 # extract the header information
 mobydickText <- texts(mobydicktf)
@@ -63,6 +64,7 @@ metadata.v <- substring(texts(mobydicktf), 1, endMetadataIndex - 1)
 ```
 
 To trim the extra text at the end of the Gutenburg version of the text, we can use the keyword-in-context (`kwic`) function to view the contexts around the word 'orphan', which we know should occur at the end of the book.
+
 ```{r}
 # verify that "orphan" is the end of the novel
 kwic(mobydickText, "orphan")
@@ -72,48 +74,67 @@ novel.v <- substring(mobydickText, endMetadataIndex,
                      regexec("End of Project Gutenberg's Moby Dick.", mobydickText)[[1]]-1)
 ```
 
+T
 ## 2.3 Reprocessing the content
+
+We begin processing the text by converting to lower case. `quanteda`'s `toLower` function works like the built-in `tolower`, with an extra option to preserve upper-case acronyms when detected.
+
 ```{r}
 # lowercase
 novel.lower.v <- toLower(novel.v)
+```
+
+`quanteda`'s `tokenize` function splits the text into words, with many options available for which characters should be preserved, and which should be used to define word boundaries. The default behaviour works similarly to splitting on the regular expression for word boundary (`\W`), but does not treat apostrophes as word boundaries. This means that *'s* and *'t* are not treated as whole words from possessive forms and contractions. 
+
+```{r}
 # tokenize
 moby.word.v <- tokenize(novel.lower.v, removePunct = TRUE, simplify = TRUE)
-
-length(moby.word.v[which(moby.word.v == "whale")])
+length(moby.word.v)
+total.length <- length(moby.word.v)
 str(moby.word.v)
 moby.word.v[1:10]
-moby.word.v[99986]  # different because we removed punctiation
+moby.word.v[99986] 
 
 moby.word.v[c(4,5,6)]
 
 head(which(moby.word.v=="whale"))
 ```
 
-## 2.3 Beginning the analysis
+## 2.4 Beginning the analysis
 
+The code below uses the tokenized text to the occurrence of the word *whale*. To include the possessive form *whale's*, we may sum the counts of both forms, count the keyword-in-context matches by regular expression or glob[^1].  `quanteda`'s tokenize function separates punctuation into tokens by default. To match the counts in the book, we can choose to remove the punctuation.
 
+[^1] A *glob* is a simple wildcard matching pattern common on Unix systems -- asterisks match zero or more characters.
 
 ```{r}
+
+moby.word.v <- tokenize(novel.lower.v, simplify = TRUE)
+# count of the word 'whale'
+length(moby.word.v[which(moby.word.v == "whale")])
+
 # total occurrences of 'whale' including possessive
 length(moby.word.v[which(moby.word.v == "whale")]) + length(moby.word.v[which(moby.word.v == "whale's")])
-length(moby.word.v)
-ntoken(novel.v, removePunct = TRUE)
 
-whale.hits.v <- length(moby.word.v[which(moby.word.v=="whale")])
+nrow(kwic(novel.lower.v, "whale"))
+nrow(kwic(novel.lower.v, "whale*")) # includes words like 'whalemen'
+total.whale.hits <- nrow(kwic(novel.lower.v, "^whale('s)?\\b", valuetype = 'regex'))
+```
 
-withPunct <- kwic(novel.lower.v, "whale", removePunctuation=FALSE)
-noPunct <- kwic(novel.lower.v, "whale", case_insensitive = FALSE)
+What fraction of the total words in the novel are 'whale'?
+```{r}
+total.whale.hits/ntoken(novel.lower.v, removePunct=TRUE)  
+```
 
-# Put a count of total words into total.words.v 
-total.words.v <- length(moby.word.v)
-# now divide
-whale.hits.v/total.words.v
 
+Calculating the size of the vocabulary -- includes possessive forms.
+```{r}
 # total unique words
 length(unique(moby.word.v))
 ntype(toLower(novel.v), removePunct = TRUE)
 ```
 
+
+To quickly sort the word types by their frequency, we can use the `dfm` command to create a matrix of counts of each word type -- a document-frequency matrix. In this case there is only one document, the entire book.
 ```{r eval=TRUE}
 # ten most frequent words
 mobyDfm <- dfm(novel.lower.v)
@@ -121,9 +142,6 @@ mobyDfm[, "whale"]
 
 topfeatures(mobyDfm)
 plot(topfeatures(mobyDfm, 100), log = "y", cex = .6, ylab = "Term frequency")
-
-# whale:token ratio
-length(which(moby.word.v == "whale")) / ntoken(mobyDfm)
 ```
 
 
@@ -131,10 +149,11 @@ length(which(moby.word.v == "whale")) / ntoken(mobyDfm)
 
 ## 3.1 Accessing Word Data
 
+We can query the document-frequency matrix to retrieve word frequencies, as with a normal matrix:
 ```{r eval=TRUE}
 # frequencies of 'he' and 'she' - these are matrixes, not numerics
 mobyDfm[, c("he", "she", "him", "her")]
-
+mobyDfm[, "her"]
 mobyDfm[, "him"]/mobyDfm[, "her"]
 mobyDfm[, "he"]/mobyDfm[, "she"]
 ```
@@ -155,6 +174,7 @@ axis(1, 1:10, labels = names(topfeatures(mobyDfmPct)))
 
 ## 4.1 Dispersion plots
 
+A dispersion plot allows us to visualize the occurrences of particular terms throughout the text. The object returned by the `kwic` function can be plotted to display a dispersion plot.
 ```{r eval=TRUE, fig.width=8, fig.height=2}
 # using words from tokenized corpus for dispersion
 plot(kwic(novel.v, "whale"))
@@ -208,6 +228,9 @@ qplot(as.numeric(relDfm[, 'whale']), geom="density", adjust=0.1)
 # To be integrated or removed
 
 
+library(ggplot2)
+x = read.csv(paste0("http://","kjhealy.co/tdata.csv "))
+ggplot(x) + geom_tile(aes(x=H,y=T,fill=tc))+scale_fill_identity()
 
 ## Measures of Lexical Variety
 
