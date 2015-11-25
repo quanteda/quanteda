@@ -73,7 +73,7 @@ novel.v <- substring(mobydickText, endMetadataIndex,
                      regexec("End of Project Gutenberg's Moby Dick.", mobydickText)[[1]]-1)
 ```
 
-T
+
 ## 2.3 Reprocessing the content
 
 We begin processing the text by converting to lower case. `quanteda`'s `toLower` function works like the built-in `tolower`, with an extra option to preserve upper-case acronyms when detected.
@@ -226,9 +226,7 @@ qplot(as.numeric(relDfm[, 'whale']), geom="density", adjust=0.1)
 # To be integrated or removed
 
 
-library(ggplot2)
-x = read.csv(paste0("http://","kjhealy.co/tdata.csv "))
-ggplot(x) + geom_tile(aes(x=H,y=T,fill=tc))+scale_fill_identity()
+
 
 ## Measures of Lexical Variety
 
