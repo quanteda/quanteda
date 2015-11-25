@@ -60,6 +60,10 @@ mobydickText <- texts(mobydicktf)
 endMetadataIndex <- regexec("CHAPTER 1. Loomings.", mobydickText)[[1]]
 metadata.v <- substring(texts(mobydicktf), 1, endMetadataIndex - 1)
 
+```
+
+To trim the extra text at the end of the Gutenburg version of the text, we can use the keyword-in-context (`kwic`) function to view the contexts around the word 'orphan', which we know should occur at the end of the book.
+```{r}
 # verify that "orphan" is the end of the novel
 kwic(mobydickText, "orphan")
 
@@ -69,7 +73,6 @@ novel.v <- substring(mobydickText, endMetadataIndex,
 ```
 
 ## 2.3 Reprocessing the content
-
 ```{r}
 # lowercase
 novel.lower.v <- toLower(novel.v)
@@ -87,6 +90,8 @@ head(which(moby.word.v=="whale"))
 ```
 
 ## 2.3 Beginning the analysis
+
+
 
 ```{r}
 # total occurrences of 'whale' including possessive
