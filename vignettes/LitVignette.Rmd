@@ -277,6 +277,16 @@ sum(chapDfm[1,])/ntype(chaptersCorp[1], removePunct=TRUE)
 
 ##6.3 Extracting Word Usage Means
 
+The `rowMeans` matrix function, which operates on a dfm, allows us to retreieve the means for all of the chapters.
+```{r}
+chapMeans <- Matrix::rowMeans(chapDfm)
+plot(chapMeans, type="h")
+```
+
+## 6.4
+```{r}
+
+```
 
 # To be integrated or removed
 
