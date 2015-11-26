@@ -192,9 +192,10 @@ plot(kwic(novel.v, "Ahab"))
 Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a `corpus` object to hold the texts. Initially, we make a single-document corpus, and then use the `segment` function to split this by the string which specifies the chapter breaks. 
 
 ```{r}
-mobyCorp <- corpus(mobydickText)
-kwic(mobydickText, 'chapter')
-chaptersCorp <- segment(mobyCorp, what='other', delimiter="CHAPTER\\s\\d", perl=TRUE)
+kwic(novel.v, 'chapter')
+chaptersVec <-unlist(segment(novel.v, what='other', delimiter="CHAPTER\\s\\d", perl=TRUE))
+chaptersLowerVec <- toLower(chaptersVec)
+chaptersCorp <- corpus(chaptersVec)
 ```
 
 With the corpus split into chapters, we can use the `dfm` command to create a matrix of counts of each word in each chapter -- a document-frequency matrix.
@@ -207,14 +208,18 @@ barplot(as.numeric(chapDfm[, 'ahab']))
 ```
 
 
-The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we can weight the document-frequency matrix:
+The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we can weight the document-frequency matrix. To obtain expected word frequency per 100 words, we multiply by 100. To get a feel for what the resulting weighted dfm (document feature matrix) looks like, you can inspect it with the `head` function, which prints the first few rows and columns.
 
 ## Relative frequency barplots of whale and ahab
 ```{r eval=TRUE}
-relDfm <- weight(chapDfm, type='relFreq')
+relDfm <- weight(chapDfm, type='relFreq') * 100
+head(relDfm)
 barplot(as.numeric(relDfm[, 'whale']))
 barplot(as.numeric(relDfm[, 'ahab']))
 ```
+
+
+
 
 Alternative plots using ggplot2
 ```{r}
@@ -223,6 +228,56 @@ qplot(as.numeric(relDfm[, 'whale']), geom="histogram", binwidth=0.001)
 qplot(as.numeric(relDfm[, 'whale']), geom="density", adjust=0.1)
 ```
 # 5 Correlation
+
+## 5.2 Correlation Analysis
+
+The `dfm` function constructs a matrix which contains zeroes (rather than NAs) for words that do not occur in a chapter, so there's no need to manually convert NAs. We can compute the individual correlation or the correlation for a matrix of the two columns.
+
+```{r}
+wf <- as.numeric(relDfm[,'whale'])
+af <- as.numeric(relDfm[,'ahab'])
+cor(wf, af)
+
+waDfm <- cbind(relDfm[,'whale'], relDfm[,'ahab'])
+cor(as.matrix(waDfm))
+```
+
+With the ahab frequency and whale frequency vectors extracted from the dfm, it is easy to calculate the significance of the correlation.
+
+##  5.4 Random Sampling
+```{r}
+samples <- replicate(1000, cor(sample(af), sample(wf)))
+
+h <- hist(samples, breaks=100, col="grey",
+xlab="Correlation Coefficient",
+main="Histogram of Random Correlation Coefficients\n
+with Normal Curve",
+plot=T)
+xfit <- seq(min(samples),max(samples),length=1000)
+yfit <- dnorm(xfit,mean=mean(samples),sd=sd(samples))
+yfit <- yfit*diff(h$mids[1:2])*length(samples)
+lines(xfit, yfit, col="black", lwd=2)
+
+cor.test(wf, af)
+
+```
+
+
+# 6 Measures of Lexical Variety
+
+## 6.2 Mean word frequency
+The mean word frequency for a particular chapter can be calculated simply with the dfm. Each row is a document (chapter), so, for example, the mean word frequency of the first chapter is the sum of the first row of the matrix, divided by the number of word types in the first chapter. To get the number of word types in the first chapter only, we can either exclude words in that row which have a frequency of zero, or use the `ntype` function on the first document in the corpus to achieve the same result.
+
+```{r}
+firstChap <- as.matrix(chapDfm[1,])
+numWords <- length(firstChap[firstChap > 0])
+sum(chapDfm[1,])/numWords
+sum(chapDfm[1,])/ntype(chaptersCorp[1], removePunct=TRUE)
+```
+
+##6.3 Extracting Word Usage Means
+
+
 # To be integrated or removed
 
 

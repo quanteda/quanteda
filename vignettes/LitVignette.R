@@ -18,7 +18,6 @@ mobydickText <- texts(mobydicktf)
 endMetadataIndex <- regexec("CHAPTER 1. Loomings.", mobydickText)[[1]]
 metadata.v <- substring(texts(mobydicktf), 1, endMetadataIndex - 1)
 
-
 ## ------------------------------------------------------------------------
 # verify that "orphan" is the end of the novel
 kwic(mobydickText, "orphan")
@@ -45,20 +44,19 @@ moby.word.v[c(4,5,6)]
 head(which(moby.word.v=="whale"))
 
 ## ------------------------------------------------------------------------
-
 moby.word.v <- tokenize(novel.lower.v, simplify = TRUE)
 # count of the word 'whale'
 length(moby.word.v[which(moby.word.v == "whale")])
 
 # total occurrences of 'whale' including possessive
 length(moby.word.v[which(moby.word.v == "whale")]) + length(moby.word.v[which(moby.word.v == "whale's")])
-
+# same thing using kwic()
 nrow(kwic(novel.lower.v, "whale"))
 nrow(kwic(novel.lower.v, "whale*")) # includes words like 'whalemen'
-total.whale.hits <- nrow(kwic(novel.lower.v, "^whale('s)?\\b", valuetype = 'regex'))
+(total.whale.hits <- nrow(kwic(novel.lower.v, "^whale('s){0,1}$", valuetype = 'regex')))
 
 ## ------------------------------------------------------------------------
-total.whale.hits/ntoken(novel.lower.v, removePunct=TRUE)  
+total.whale.hits / ntoken(novel.lower.v, removePunct=TRUE)  
 
 ## ------------------------------------------------------------------------
 # total unique words
