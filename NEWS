@@ -1,4 +1,4 @@
-quanteda 0.8.7
+quanteda 0.9.0
 ==============
 
 *  trim() now accepts proportions in addition to integer thresholds.  Also accepts a new sparsity argument, which works
