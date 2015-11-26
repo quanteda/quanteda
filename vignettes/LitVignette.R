@@ -5,9 +5,8 @@
 require(quanteda)
 
 # read the text as a single file
-# mobydicktf <- textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt")
-mobydicktf <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")
-#mobydicktf
+mobydicktf <- textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt")
+mobydicktf
 
 ## ------------------------------------------------------------------------
 substring(texts(mobydicktf), 1, 75)
@@ -96,9 +95,10 @@ plot(kwic(novel.v, "Ahab"))
 #  (chap.positions.v <- kwic(novel.v, "CHAPTER \\d", valuetype = "regex")$position)
 
 ## ------------------------------------------------------------------------
-mobyCorp <- corpus(mobydickText)
-kwic(mobydickText, 'chapter')
-chaptersCorp <- segment(mobyCorp, what='other', delimiter="CHAPTER\\s\\d", perl=TRUE)
+head(kwic(novel.v, 'chapter'))
+chaptersVec <-unlist(segment(novel.v, what='other', delimiter="CHAPTER\\s\\d", perl=TRUE))
+chaptersLowerVec <- toLower(chaptersVec)
+chaptersCorp <- corpus(chaptersVec)
 
 ## ----eval=TRUE-----------------------------------------------------------
 chapDfm <- dfm(chaptersCorp)
@@ -106,17 +106,42 @@ barplot(as.numeric(chapDfm[, 'whale']))
 barplot(as.numeric(chapDfm[, 'ahab']))
 
 ## ----eval=TRUE-----------------------------------------------------------
-relDfm <- weight(chapDfm, type='relFreq')
+relDfm <- weight(chapDfm, type='relFreq') * 100
+head(relDfm)
 barplot(as.numeric(relDfm[, 'whale']))
 barplot(as.numeric(relDfm[, 'ahab']))
 
 ## ------------------------------------------------------------------------
-require('ggplot2')	
-qplot(as.numeric(relDfm[, 'whale']), geom="histogram", binwidth=0.001)
-qplot(as.numeric(relDfm[, 'whale']), geom="density", adjust=0.1)
+wf <- as.numeric(relDfm[,'whale'])
+af <- as.numeric(relDfm[,'ahab'])
+cor(wf, af)
 
-## ----eval=TRUE-----------------------------------------------------------
-#ttr <- statLexdiv(chapDfm)
-#lens <- length(rowSums(chapDfm))
+waDfm <- cbind(relDfm[,'whale'], relDfm[,'ahab'])
+cor(as.matrix(waDfm))
 
+## ------------------------------------------------------------------------
+samples <- replicate(1000, cor(sample(af), sample(wf)))
+
+h <- hist(samples, breaks=100, col="grey",
+xlab="Correlation Coefficient",
+main="Histogram of Random Correlation Coefficients\n
+with Normal Curve",
+plot=T)
+xfit <- seq(min(samples),max(samples),length=1000)
+yfit <- dnorm(xfit,mean=mean(samples),sd=sd(samples))
+yfit <- yfit*diff(h$mids[1:2])*length(samples)
+lines(xfit, yfit, col="black", lwd=2)
+
+cor.test(wf, af)
+
+
+## ------------------------------------------------------------------------
+firstChap <- as.matrix(chapDfm[1,])
+numWords <- length(firstChap[firstChap > 0])
+sum(chapDfm[1,])/numWords
+sum(chapDfm[1,])/ntype(chaptersCorp[1], removePunct=TRUE)
+
+## ------------------------------------------------------------------------
+chapMeans <- Matrix::rowMeans(chapDfm)
+plot(chapMeans, type="h")
 

@@ -40,9 +40,8 @@ The code below scans and splits the text of Moby Dick from Project Gutenberg, as
 require(quanteda)
 
 # read the text as a single file
-# mobydicktf <- textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt")
-mobydicktf <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt")
-#mobydicktf
+mobydicktf <- textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt")
+mobydicktf
 ```
 
 The `textfile()` loads the text and places inside a structured, intermediate object known as a `corpusSource` object.  We see this by outputting it to the global environment, as above.
@@ -192,7 +191,7 @@ plot(kwic(novel.v, "Ahab"))
 Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a `corpus` object to hold the texts. Initially, we make a single-document corpus, and then use the `segment` function to split this by the string which specifies the chapter breaks. 
 
 ```{r}
-kwic(novel.v, 'chapter')
+head(kwic(novel.v, 'chapter'))
 chaptersVec <-unlist(segment(novel.v, what='other', delimiter="CHAPTER\\s\\d", perl=TRUE))
 chaptersLowerVec <- toLower(chaptersVec)
 chaptersCorp <- corpus(chaptersVec)
@@ -218,15 +217,6 @@ barplot(as.numeric(relDfm[, 'whale']))
 barplot(as.numeric(relDfm[, 'ahab']))
 ```
 
-
-
-
-Alternative plots using ggplot2
-```{r}
-require('ggplot2')	
-qplot(as.numeric(relDfm[, 'whale']), geom="histogram", binwidth=0.001)
-qplot(as.numeric(relDfm[, 'whale']), geom="density", adjust=0.1)
-```
 # 5 Correlation
 
 ## 5.2 Correlation Analysis
@@ -275,33 +265,11 @@ sum(chapDfm[1,])/numWords
 sum(chapDfm[1,])/ntype(chaptersCorp[1], removePunct=TRUE)
 ```
 
-##6.3 Extracting Word Usage Means
+## 6.3 Extracting Word Usage Means
 
 The `rowMeans` matrix function, which operates on a dfm, allows us to retreieve the means for all of the chapters.
 ```{r}
 chapMeans <- Matrix::rowMeans(chapDfm)
 plot(chapMeans, type="h")
 ```
-
-## 6.4
-```{r}
-
-```
-
-# To be integrated or removed
-
-
-
-
-## Measures of Lexical Variety
-
-Correlation of type-token ratio and chapter length:
-
-```{r eval=TRUE}
-#ttr <- statLexdiv(chapDfm)
-#lens <- length(rowSums(chapDfm))
-
-```
-
-
 
