@@ -52,7 +52,7 @@ ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
         stop("whitespace detected: please tokenize() before using ngrams()")
     if (length(x) < min(n)) return(NULL)
     if (identical(n, 1)) {
-        if (!identical(window, 1))
+        if (!identical(n, 1))
             warning("skip argument ignored for n = 1")
         return(x)
     }
