@@ -1,3 +1,10 @@
+quanteda 0.9.1
+==============
+
+*  textfile() now takes a vector of filenames, if you wish to construct these yourself.  See ?textfile
+   examples.
+
+
 quanteda 0.9.0
 ==============
 
