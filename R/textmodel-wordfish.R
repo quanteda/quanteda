@@ -33,13 +33,21 @@ setClass("textmodel_wordfish_predicted",
 #' @importFrom Rcpp evalCpp
 #' @useDynLib quanteda
 #' @param data the dfm on which the model will be fit
-#' @param dir set global identification by specifying the indexes for a pair of
+#' @param dir set global identification by specifying the indexes for a pair of 
 #'   documents such that \eqn{\hat{\theta}_{dir[1]} < \hat{\theta}_{dir[2]}}.
 #' @param priors priors for \eqn{\theta_i}, \eqn{\alpha_i}, \eqn{\psi_j}, and 
 #'   \eqn{\beta_j} where \eqn{i} indexes documents and \eqn{j} indexes features
 #' @param tol tolerances for convergence (explain why a pair)
-#' @param dispersion sets whether a quasi-poisson quasi-likelihood should be used based on a single
-#' dispersion parameter ("single"), dispersion parameters for each work ("byterm" or "bytermfloor"), or not ("none")
+#' @param dispersion sets whether a quasi-poisson quasi-likelihood should be 
+#'   used based on a single dispersion parameter (\code{"poisson"}), or 
+#'   quasi-Poisson (\code{"quasipoisson"})
+#' @param dispersionLevel sets the unit level for the dispersion parameter, 
+#'   options are \code{"feature"} for term-level variances, or \code{"overall"}
+#'   for a single dispersion parameter
+#' @param dispersionFloor constraint set to 1.0 for the minimal dispersion
+#'   multiplier in the quasi-Poisson model.  Used to minimize the distorting effect
+#'   of terms with rare term or document frequencies that appear to be severely
+#'   underdispersed.  (We will replace this with a threshold value soon.)
 #' @param ... additional arguments passed to other functions
 #' @return An object of class textmodel_fitted_wordfish.  This is a list 
 #'   containing: \item{dir}{global identification of the dimension} 
@@ -50,34 +58,46 @@ setClass("textmodel_wordfish_predicted",
 #'   betas in Poisson form} \item{ll}{log likelihood at convergence} 
 #'   \item{se.theta}{standard errors for theta-hats} \item{data}{dfm to which 
 #'   the model was fit}
-#' @details The returns match those of Will Lowe's R implementation of
-#'   \code{wordfish} (see the austin package), except that here we have renamed \code{words} to
-#'   be \code{features}.  (This return list may change.)  We have also followed the practice begun with
-#'   Slapin and Proksch's early implementation of the model that used a regularization parameter of 
+#' @details The returns match those of Will Lowe's R implementation of 
+#'   \code{wordfish} (see the austin package), except that here we have renamed 
+#'   \code{words} to be \code{features}.  (This return list may change.)  We 
+#'   have also followed the practice begun with Slapin and Proksch's early 
+#'   implementation of the model that used a regularization parameter of 
 #'   se\eqn{(\sigma) = 3}, through the third element in \code{priors}.
 #' @references Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
 #'   for Estimating Time-Series Party Positions from Texts." \emph{American 
 #'   Journal of Political Science} 52(3):705-772.
 #' @author Benjamin Lauderdale and Kenneth Benoit
 #' @examples
-#' ie2010dfm <- dfm(ie2010Corpus, verbose=FALSE)
-#' wfmodel <- textmodel_wordfish(LBGexample, dir = c(6,5))
-#' wfmodel
-#' 
-#' \dontrun{if (require(austin)) {
-#'         wfmodelAustin <- wordfish(quanteda::as.wfm(LBGexample), dir = c(6,5))
-#'         cor(wfmodel@@theta, wfmodelAustin$theta)
+#' textmodel_wordfish(LBGexample, dir = c(1,5))
+#' \dontrun{
+#' ie2010dfm <- dfm(ie2010Corpus, verbose = FALSE)
+#' (wfmodel <- textmodel_wordfish(ie2010dfm, dir = c(6,5)))
+#' textmodel_wordfish(ie2010dfm, dir = c(6,5), dispersion = "quasipoisson", dispersionFloor = TRUE)
+#' if (require(austin)) {
+#'     wfmodelAustin <- austin::wordfish(quanteda::as.wfm(ie2010dfm), dir = c(6,5))
+#'     cor(wfmodel@@theta, wfmodelAustin$theta)
 #' }}
 #' @export
-textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8), dispersion="poisson") {
+textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8), 
+                               dispersion = c("poisson", "quasipoisson"), dispersionLevel = c("feature", "overall"),
+                               dispersionFloor = FALSE) {
+    
     # check quasi-poisson settings and translate into numerical values  
-    quasitypes <- c("poisson","overall","byterm","bytermfloor")
-    if (is.element(dispersion,quasitypes)) {
-      disp = which(dispersion == quasitypes)
-    } else {
-      stop(paste0("Method ",dispersion," is not a valid option for the usequasi setting, must be ",quasitypes[1],", ",quasitypes[2],", ",quasitypes[3],", or ",quasitypes[4]))
-    }
-  
+    # 1 = Poisson, 2 = quasi-Poisson, overall dispersion, 
+    # 3 = quasi-Poisson, term dispersion, 4 = quasi-Poisson, term dispersion w/floor
+    dispersion <- match.arg(dispersion)
+    dispersionLevel <- match.arg(dispersionLevel)
+    if (dispersion == "poisson") disp <- 1L
+    else if (dispersion == "quasipoisson" & dispersionLevel == "overall") disp <- 2L
+    else if (dispersion == "quasipoisson" & dispersionLevel == "feature") {
+        if (dispersionFloor) disp <- 4L
+        else disp <- 3L
+    } else
+        stop("Illegal option combination.")
+
+    cat("disp = ", disp, "\n")
+    
     wfresult <- wordfishcpp(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp)
     # NOTE: psi is a 1 x nfeature matrix, not a numeric vector
     #       alpha is a ndoc x 1 matrix, not a numeric vector
