@@ -54,11 +54,13 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' @param x a \link{kwic} class object
 #' @param ... additional arguments passed to \code{\link{plot}}
 #' @note Currently works only for a a single document
+#' @importFrom stats window
+#' @importFrom graphics plot
 #' @export
 plot.kwic <- function(x, ...) {
     pos <- integer(attr(x, "ntoken"))
     pos[x$position] <- 1L
-    plot(pos, xlab="Token Index", ylab = attr(x, "keyword"), type="h", 
+    graphics::plot(pos, xlab="Token Index", ylab = attr(x, "keyword"), type="h", 
          ylim=c(0,1), yaxt="n", col = "grey30", ...)
 }
 
