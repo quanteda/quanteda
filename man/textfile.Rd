@@ -134,7 +134,8 @@ mytf7 <- textfile("/tmp/inaugTexts.csv", textField = "inaugSpeech")
 summary(corpus(mytf7))
 
 # vector of full filenames for a recursive structure
-textfile(list.files(full.names = TRUE, path = "~/Desktop/texts", pattern = "\\\\.txt$", recursive = TRUE))
+textfile(list.files(path = "~/Desktop/texts", pattern = "\\\\.txt$",
+                    full.names = TRUE, recursive = TRUE))
 }
 }
 \author{
