@@ -9,7 +9,8 @@
 \title{wordfish text model}
 \usage{
 textmodel_wordfish(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
-  tol = c(1e-06, 1e-08), dispersion = "poisson")
+  tol = c(1e-06, 1e-08), dispersion = c("poisson", "quasipoisson"),
+  dispersionLevel = c("feature", "overall"), dispersionFloor = FALSE)
 
 \method{print}{textmodel_wordfish_fitted}(x, n = 30L, ...)
 
@@ -20,7 +21,7 @@ textmodel_wordfish(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
 \arguments{
 \item{data}{the dfm on which the model will be fit}
 
-\item{dir}{set global identification by specifying the indexes for a pair of
+\item{dir}{set global identification by specifying the indexes for a pair of 
 documents such that \eqn{\hat{\theta}_{dir[1]} < \hat{\theta}_{dir[2]}}.}
 
 \item{priors}{priors for \eqn{\theta_i}, \eqn{\alpha_i}, \eqn{\psi_j}, and 
@@ -28,8 +29,18 @@ documents such that \eqn{\hat{\theta}_{dir[1]} < \hat{\theta}_{dir[2]}}.}
 
 \item{tol}{tolerances for convergence (explain why a pair)}
 
-\item{dispersion}{sets whether a quasi-poisson quasi-likelihood should be used based on a single
-dispersion parameter ("single"), dispersion parameters for each work ("byterm" or "bytermfloor"), or not ("none")}
+\item{dispersion}{sets whether a quasi-poisson quasi-likelihood should be 
+used based on a single dispersion parameter (\code{"poisson"}), or 
+quasi-Poisson (\code{"quasipoisson"})}
+
+\item{dispersionLevel}{sets the unit level for the dispersion parameter, 
+options are \code{"feature"} for term-level variances, or \code{"overall"}
+for a single dispersion parameter}
+
+\item{dispersionFloor}{constraint set to 1.0 for the minimal dispersion
+multiplier in the quasi-Poisson model.  Used to minimize the distorting effect
+of terms with rare term or document frequencies that appear to be severely
+underdispersed.  (We will replace this with a threshold value soon.)}
 
 \item{x}{for print method, the object to be printed}
 
@@ -55,20 +66,22 @@ Estimate Slapin and Proksch's (2008) "wordfish" Poisson scaling model of
 one-dimensional document positions using conditional maximum likelihood.
 }
 \details{
-The returns match those of Will Lowe's R implementation of
-  \code{wordfish} (see the austin package), except that here we have renamed \code{words} to
-  be \code{features}.  (This return list may change.)  We have also followed the practice begun with
-  Slapin and Proksch's early implementation of the model that used a regularization parameter of 
+The returns match those of Will Lowe's R implementation of 
+  \code{wordfish} (see the austin package), except that here we have renamed 
+  \code{words} to be \code{features}.  (This return list may change.)  We 
+  have also followed the practice begun with Slapin and Proksch's early 
+  implementation of the model that used a regularization parameter of 
   se\eqn{(\sigma) = 3}, through the third element in \code{priors}.
 }
 \examples{
-ie2010dfm <- dfm(ie2010Corpus, verbose=FALSE)
-wfmodel <- textmodel_wordfish(LBGexample, dir = c(6,5))
-wfmodel
-
-\dontrun{if (require(austin)) {
-        wfmodelAustin <- wordfish(quanteda::as.wfm(LBGexample), dir = c(6,5))
-        cor(wfmodel@theta, wfmodelAustin$theta)
+textmodel_wordfish(LBGexample, dir = c(1,5))
+\dontrun{
+ie2010dfm <- dfm(ie2010Corpus, verbose = FALSE)
+(wfmodel <- textmodel_wordfish(ie2010dfm, dir = c(6,5)))
+textmodel_wordfish(ie2010dfm, dir = c(6,5), dispersion = "quasipoisson", dispersionFloor = TRUE)
+if (require(austin)) {
+    wfmodelAustin <- austin::wordfish(quanteda::as.wfm(ie2010dfm), dir = c(6,5))
+    cor(wfmodel@theta, wfmodelAustin$theta)
 }}
 }
 \author{

@@ -146,7 +146,8 @@ kwic.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex
     result <- data.frame(position, 
                          contextPre = apply(indexPre, 1, concatIndexes, x),
                          keyword = apply(indexKeyword, 1, concatIndexes, x),
-                         contextPost = apply(indexPost, 1, concatIndexes, x))
+                         contextPost = apply(indexPost, 1, concatIndexes, x),
+                         stringsAsFactors = FALSE)
 
     # override pre/post if window = 0
     if (window == 0) {
