@@ -33,8 +33,10 @@ toLower.character <- function(x, keepAcronyms=FALSE, ...) {
     x <- stri_trans_tolower(x, ...)
     if (keepAcronyms) {
         m1 <- unique(unlist(stri_extract_all_regex(x, "\\b_[a-z]+_\\b", omit_no_match = TRUE, ...)))
-        m2 <- stri_replace_all_fixed(stri_trans_toupper(m1, ...), "_", "", ...)
-        x <- sapply(x, function(s) stri_replace_all_regex(s, m1,  m2, vectorize_all = FALSE, ...))
+        if (length(m1) > 0) {
+            m2 <- stri_replace_all_fixed(stri_trans_toupper(m1, ...), "_", "", ...)
+            x <- sapply(x, function(s) stri_replace_all_regex(s, m1,  m2, vectorize_all = FALSE, ...))
+        }
     }
     names(x) <- savedNames
     return(x)
