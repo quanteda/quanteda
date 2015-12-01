@@ -19,7 +19,7 @@ Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
 Depends:
-    R (>= 3.2.0)
+    R (>= 3.2.2)
 Imports:
     methods,
     utils,
