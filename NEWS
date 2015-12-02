@@ -3,6 +3,12 @@ quanteda 0.9.1
 
 *  textfile() now takes a vector of filenames, if you wish to construct these yourself.  See ?textfile
    examples.
+   
+Bug fixes
+---------
+*  Fixed a problem where wordstem was not working on ngram=1 tokenied objects
+
+*  Fixed toLower(x, keepAcronyms = TRUE) that caused an error when x contained no acronyms.
 
 
 quanteda 0.9.0
