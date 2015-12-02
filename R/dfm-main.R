@@ -312,17 +312,6 @@ dfm.tokenizedTexts <- function(x,
                                      verbose = verbose)
     }
     
-    if (stem) {
-        if (verbose) cat("   ... stemming features (", stri_trans_totitle(language), ")", sep="")
-        oldNfeature <- nfeature(dfmresult)
-        dfmresult <- wordstem(dfmresult, language)
-        if (verbose) 
-            if (oldNfeature - nfeature(dfmresult) > 0) 
-                cat(", trimmed", oldNfeature - nfeature(dfmresult), "feature variants\n")
-            else
-                cat("\n")
-    }
-    
     if (!is.null(ignoredFeatures)) {
         if (verbose) cat("   ... ")
         dfmresult <- selectFeatures(dfmresult, ignoredFeatures, selection = "remove", valuetype = valuetype, verbose = verbose)
@@ -331,6 +320,18 @@ dfm.tokenizedTexts <- function(x,
     if (!is.null(keptFeatures)) {
         if (verbose) cat("   ... ")
         dfmresult <- selectFeatures(dfmresult, keptFeatures, selection = "keep", valuetype = valuetype, verbose = verbose)
+    }
+    
+    if (stem) {
+        if (verbose) cat("   ... stemming features (", stri_trans_totitle(language), ")", sep="")
+        oldNfeature <- nfeature(dfmresult)
+        dfmresult <- wordstem(dfmresult, language)
+        if (verbose) 
+            if (oldNfeature - nfeature(dfmresult) > 0) 
+                cat(", trimmed ", oldNfeature - nfeature(dfmresult), " feature variant",
+                    ifelse(oldNfeature - nfeature(dfmresult) != 1, "s", ""), "\n", sep = "")
+        else
+            cat("\n")
     }
     
     if (verbose) 
