@@ -49,9 +49,10 @@ wordstem.character <- function(x, language = "porter") {
 wordstem.tokenizedTexts <- function(x, language = "porter") {
     if (any(unlist(lapply(x, stringi::stri_detect_fixed, " "))))
         stop("whitespace detected: you can only stem tokenized texts")
-    if (identical(attributes(x)$ngrams, 1))
+    if (all.equal(attributes(x)$ngrams, 1))
         result <- lapply(x, SnowballC::wordStem, language)
     else {
+        # cat("Ngrams wordstem\n")
         result <- wordstem_Ngrams(x, attributes(x)$concatenator, language)
     }
     class(result) <- c("tokenizedTexts", class(result))
@@ -65,9 +66,22 @@ wordstem_Ngrams <- function(x, concatenator, language) {
     result <- lapply(result, function(y) lapply(y, SnowballC::wordStem, language = language))
     result <- lapply(result, function(y) sapply(y, paste, collapse = concatenator))
     # simple way to return a character vector if supplied a character vector
-    if (!is.list(x) == 1) result <- unlist(result)
+    if (!is.list(x)) result <- unlist(result)
     result
 }
+
+# txt <- "women people like men feminism just gt feminist feminists think"
+# wordstem(tokenize(txt))
+## tokenizedText object from 1 document.
+## Component 1 :
+##  [1] "women"    "peopl"    "like"     "men"      "femin"    "just"     "gt"       "feminist" "feminist" "think"   
+# dfm(txt, stem = TRUE, verbose = FALSE)
+# Document-feature matrix of: 1 document, 9 features.
+# 1 x 9 sparse Matrix of class "dfmSparse"
+#        features
+# docs    women peopl like men femin just gt feminist think
+#   text1     1     1    1   1     1    1  1        2     1
+
 
 
 #' @rdname wordstem
@@ -78,7 +92,7 @@ wordstem.dfm <- function(x, language = "porter") {
     j <- as(x, "TsparseMatrix")@j + 1
 
     oldFeatures <- features(x)[j]
-    if (identical(x@ngrams, 1)) 
+    if (identical(as.integer(x@ngrams), 1L)) 
         oldFeaturesStemmed <- wordstem(oldFeatures, language)
     else
         oldFeaturesStemmed <- wordstem_Ngrams(oldFeatures, x@concatenator, language)
