@@ -44,11 +44,10 @@ setClass("textmodel_wordfish_predicted",
 #' @param dispersionLevel sets the unit level for the dispersion parameter, 
 #'   options are \code{"feature"} for term-level variances, or \code{"overall"}
 #'   for a single dispersion parameter
-#' @param dispersionFloor constraint set to 1.0 for the minimal dispersion
+#' @param dispersionFloor constraint for the minimal underdispersion
 #'   multiplier in the quasi-Poisson model.  Used to minimize the distorting effect
 #'   of terms with rare term or document frequencies that appear to be severely
-#'   underdispersed.  (We will replace this with a threshold value soon.)
-#' @param ... additional arguments passed to other functions
+#'   underdispersed.  Default is 0, but this only applies if \code{dispersion = "quasipoisson"}.
 #' @return An object of class textmodel_fitted_wordfish.  This is a list 
 #'   containing: \item{dir}{global identification of the dimension} 
 #'   \item{theta}{estimated document positions} \item{alpha}{estimated document 
@@ -70,19 +69,44 @@ setClass("textmodel_wordfish_predicted",
 #' @author Benjamin Lauderdale and Kenneth Benoit
 #' @examples
 #' textmodel_wordfish(LBGexample, dir = c(1,5))
+#' 
 #' \dontrun{
 #' ie2010dfm <- dfm(ie2010Corpus, verbose = FALSE)
-#' (wfmodel <- textmodel_wordfish(ie2010dfm, dir = c(6,5)))
-#' textmodel_wordfish(ie2010dfm, dir = c(6,5), dispersion = "quasipoisson", dispersionFloor = TRUE)
+#' (wfm1 <- textmodel_wordfish(ie2010dfm, dir = c(6,5)))
+#' (wfm2a <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
+#'                              dispersion = "quasipoisson", dispersionFloor = 0))
+#' (wfm2b <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
+#'                              dispersion = "quasipoisson", dispersionFloor = .5))
+#' plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
+#'      xlim = c(0, 1.0), ylim = c(0, 1.0))
+#' plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
+#'      xlim = c(0, 1.0), ylim = c(0, 1.0), type = "n")
+#' underdispersedTerms <- sample(which(wfm2a@phi < 1.0), 5)
+#' which(features(ie2010dfm) %in% names(topfeatures(ie2010dfm, 20)))
+#' text(wfm2a@phi, wfm2b@phi, wfm2a@features, 
+#'      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "grey90")
+#' text(wfm2a@phi[underdispersedTerms], wfm2b@phi[underdispersedTerms], 
+#'      wfm2a@features[underdispersedTerms], 
+#'      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "black")
 #' if (require(austin)) {
 #'     wfmodelAustin <- austin::wordfish(quanteda::as.wfm(ie2010dfm), dir = c(6,5))
-#'     cor(wfmodel@@theta, wfmodelAustin$theta)
+#'     cor(wfm1@@theta, wfm1Austin$theta)
 #' }}
 #' @export
 textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8), 
-                               dispersion = c("poisson", "quasipoisson"), dispersionLevel = c("feature", "overall"),
-                               dispersionFloor = FALSE) {
+                               dispersion = c("poisson", "quasipoisson"), 
+                               dispersionLevel = c("feature", "overall"),
+                               dispersionFloor = 0) {
     
+    if (dispersionFloor < 0 | dispersionFloor > 1.0)
+        stop("dispersionFloor must be between 0 and 1.0")
+    
+    if (dispersion == "poisson" & dispersionFloor != 0)
+        warning("dispersionFloor argument ignored for poisson")
+    
+#     if (length(addedArgs <- list(...)))
+#         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+
     # check quasi-poisson settings and translate into numerical values  
     # 1 = Poisson, 2 = quasi-Poisson, overall dispersion, 
     # 3 = quasi-Poisson, term dispersion, 4 = quasi-Poisson, term dispersion w/floor
@@ -96,9 +120,9 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
     } else
         stop("Illegal option combination.")
 
-    cat("disp = ", disp, "\n")
+    # cat("disp = ", disp, "\n")
     
-    wfresult <- wordfishcpp(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp)
+    wfresult <- wordfishcpp(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor)
     # NOTE: psi is a 1 x nfeature matrix, not a numeric vector
     #       alpha is a ndoc x 1 matrix, not a numeric vector
     new("textmodel_wordfish_fitted", 

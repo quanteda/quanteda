@@ -8,15 +8,16 @@ using namespace Rcpp;
 
 // [[Rcpp::export]]
 
-Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp){
+Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEXP dispfloor){
 
 	// DEFINE INPUTS
 	
 		Rcpp::NumericMatrix Y(wfm); 
 		Rcpp::NumericVector priorvec(priors);
 		Rcpp::NumericVector tolvec(tol); 
-  	Rcpp::IntegerVector dirvec(dir);  
-  	Rcpp::IntegerVector disptype(disp);
+  	    Rcpp::IntegerVector dirvec(dir);  
+  	    Rcpp::IntegerVector disptype(disp);
+  	    Rcpp::NumericVector dispmin(dispfloor);
 		
 		double priorprecalpha = priorvec(0);
 		double priorprecpsi = priorvec(1);
@@ -143,7 +144,7 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp){
 			
 			// UPDATE DISPERSION PARAMETERS	  
 			
-			if (disptype(0) == 2){ // single dispersion parameter for all words
+			if (disptype(0) == 2) { // single dispersion parameter for all words
 			  phitmp = 0.0;
 			  for (int k=0; k < K; k++){
 			    for (int i=0; i < N; i++){
@@ -155,7 +156,7 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp){
 			  for (int k=0; k < K; k++) phi(k) = phitmp;
 			}
 			
-			if (disptype(0) >= 3){ // individual dispersion parameter for each word
+			if (disptype(0) >= 3) { // individual dispersion parameter for each word
 			  for (int k=0; k < K; k++){
 			    phitmp = 0.0;
 			    for (int i=0; i < N; i++){
@@ -164,7 +165,8 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp){
 			    }   
 			    phitmp = ((K)*phitmp)/(N*K - 2*N - 2*K);
 			    phi(k) = phitmp;
-			    if (disptype(0) == 4) phi(k) = fmax(1.0,phi(k));
+			    // set ceiling on underdispersion
+			    if (disptype(0) == 4) phi(k) = fmax(dispmin(0), phi(k));
 			  }
 			}	  			
 		
@@ -195,7 +197,7 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp){
   }
   
   // COMPUTE DOCUMENT STANDARD ERRORS
-  for (int i=0; i < N; i++){
+  for (int i=0; i < N; i++) {
     lambdai = exp(alpha(i) + psi + beta*theta(i));
     H(0,0) = -sum(lambdai/phi) - priorprecalpha;
     H(1,0) = -sum((beta*lambdai)/phi);

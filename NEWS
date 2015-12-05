@@ -1,6 +1,9 @@
 quanteda 0.9.1
 ==============
 
+*  textmodel_wordfish() now accepts an integer `dispersionFloor` argument to constrain the phi parameter
+   to a minimium value (of underdispersion).
+
 *  textfile() now takes a vector of filenames, if you wish to construct these yourself.  See ?textfile
    examples.
    
