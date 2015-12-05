@@ -35,19 +35,25 @@ setClass("textmodel_wordfish_predicted",
 #' @param data the dfm on which the model will be fit
 #' @param dir set global identification by specifying the indexes for a pair of 
 #'   documents such that \eqn{\hat{\theta}_{dir[1]} < \hat{\theta}_{dir[2]}}.
-#' @param priors priors for \eqn{\theta_i}, \eqn{\alpha_i}, \eqn{\psi_j}, and 
-#'   \eqn{\beta_j} where \eqn{i} indexes documents and \eqn{j} indexes features
-#' @param tol tolerances for convergence (explain why a pair)
+#' @param priors prior precisions for the estimated parameters \eqn{\alpha_i}, 
+#'   \eqn{\psi_j}, \eqn{\beta_j}, and \eqn{\theta_i}, where \eqn{i} indexes 
+#'   documents and \eqn{j} indexes features
+#' @param tol tolerances for convergence.  The first value is a convergence 
+#'   threshold for the log-posterior of the model, the second value is the 
+#'   tolerance in the difference in parameter values from the iterative 
+#'   conditional maximum likelihood (from conditionally estimating 
+#'   document-level, then feature-level parameters).
 #' @param dispersion sets whether a quasi-poisson quasi-likelihood should be 
 #'   used based on a single dispersion parameter (\code{"poisson"}), or 
 #'   quasi-Poisson (\code{"quasipoisson"})
 #' @param dispersionLevel sets the unit level for the dispersion parameter, 
-#'   options are \code{"feature"} for term-level variances, or \code{"overall"}
+#'   options are \code{"feature"} for term-level variances, or \code{"overall"} 
 #'   for a single dispersion parameter
-#' @param dispersionFloor constraint for the minimal underdispersion
-#'   multiplier in the quasi-Poisson model.  Used to minimize the distorting effect
-#'   of terms with rare term or document frequencies that appear to be severely
-#'   underdispersed.  Default is 0, but this only applies if \code{dispersion = "quasipoisson"}.
+#' @param dispersionFloor constraint for the minimal underdispersion multiplier 
+#'   in the quasi-Poisson model.  Used to minimize the distorting effect of 
+#'   terms with rare term or document frequencies that appear to be severely 
+#'   underdispersed.  Default is 0, but this only applies if \code{dispersion = 
+#'   "quasipoisson"}.
 #' @return An object of class textmodel_fitted_wordfish.  This is a list 
 #'   containing: \item{dir}{global identification of the dimension} 
 #'   \item{theta}{estimated document positions} \item{alpha}{estimated document 
@@ -66,6 +72,10 @@ setClass("textmodel_wordfish_predicted",
 #' @references Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
 #'   for Estimating Time-Series Party Positions from Texts." \emph{American 
 #'   Journal of Political Science} 52(3):705-772.
+#'   
+#'   Lowe, Will and Kenneth Benoit. 2013. "Validating Estimates of Latent Traits
+#'   from Textual Data Using Human Judgment as a Benchmark." \emph{Political Analysis}
+#'   21(3), 298-313. \link{http://doi.org/10.1093/pan/mpt002}
 #' @author Benjamin Lauderdale and Kenneth Benoit
 #' @examples
 #' textmodel_wordfish(LBGexample, dir = c(1,5))
