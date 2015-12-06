@@ -52,6 +52,8 @@ underdispersed.  Default is 0, but this only applies if \code{dispersion =
 
 \item{n}{max rows of dfm to print}
 
+\item{...}{additional arguments passed to \code{\link{print}}}
+
 \item{object}{wordfish fitted or predicted object to be shown}
 }
 \value{
@@ -113,6 +115,6 @@ Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model
   
   Lowe, Will and Kenneth Benoit. 2013. "Validating Estimates of Latent Traits
   from Textual Data Using Human Judgment as a Benchmark." \emph{Political Analysis}
-  21(3), 298-313. \link{http://doi.org/10.1093/pan/mpt002}
+  21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
 }
 

@@ -4,12 +4,9 @@
 \name{stopwords}
 \alias{.stopwords}
 \alias{stopwords}
-\alias{stopwordsGet}
 \title{access built-in stopwords}
 \usage{
 stopwords(kind = "english", verbose = FALSE)
-
-stopwordsGet(kind = "english")
 }
 \arguments{
 \item{kind}{The pre-set kind of stopwords (as a character string).  Allowed

@@ -13,8 +13,8 @@ Author: Kenneth Benoit [aut, cre],
     Kohei Watanabe [ctb],
     Benjamin Lauderdale [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.1-0
-Date: 2015-12-05
+Version: 0.9.1-1
+Date: 2015-12-06
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -71,6 +71,7 @@ Collate:
     'quanteda-package.R'
     'readability.R'
     'resample.R'
+    'selectFeatures.R'
     'settings.R'
     'stopwords.R'
     'syllables.R'

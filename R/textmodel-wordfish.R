@@ -75,7 +75,7 @@ setClass("textmodel_wordfish_predicted",
 #'   
 #'   Lowe, Will and Kenneth Benoit. 2013. "Validating Estimates of Latent Traits
 #'   from Textual Data Using Human Judgment as a Benchmark." \emph{Political Analysis}
-#'   21(3), 298-313. \link{http://doi.org/10.1093/pan/mpt002}
+#'   21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
 #' @author Benjamin Lauderdale and Kenneth Benoit
 #' @examples
 #' textmodel_wordfish(LBGexample, dir = c(1,5))
@@ -155,7 +155,8 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
 
 #' @rdname textmodel_wordfish
 #' @param x for print method, the object to be printed
-#' @param n max rows of dfm to print 
+#' @param n max rows of dfm to print
+#' @param ... additional arguments passed to \code{\link{print}}
 #' @export
 #' @method print textmodel_wordfish_fitted
 print.textmodel_wordfish_fitted <- function(x, n=30L, ...) {

@@ -7,6 +7,9 @@ quanteda 0.9.1
 *  textfile() now takes a vector of filenames, if you wish to construct these yourself.  See ?textfile
    examples.
    
+*  removeFeatures() and selectFeatures.collocations() now all use a consistent interface and same underlying
+   code, with removeFeatures() acting as a wrapper to selectFeatures().
+   
 Bug fixes
 ---------
 *  Fixed a problem where wordstem was not working on ngram=1 tokenied objects
