@@ -305,7 +305,7 @@ setMethod("weight", signature = "dfm",
               if (weighting(x) != "frequency") {
                   cat("  No weighting applied: you should not weight an already weighted dfm.\n")
               } else if (type=="relFreq") {
-                  x / rowSums(x)
+                  x <- x / rowSums(x)
               } else if (type=="relMaxFreq") {
                   x <- x / apply(x, 1, max)
               } else if (type=="logFreq") {
@@ -318,21 +318,10 @@ setMethod("weight", signature = "dfm",
               return(x)
           })
 
-#' @rdname tfidf
-#' @details \code{tf} is a shortcut to compute relative term frequecies (sasme as 
-#' \code{\link{weight}(x, "relFreq")}).
-#' @export
-tf <- function(x) {
-    if (!is.dfm(x)) stop("tf() only works for dfm objects")
-    if (isS4(x))
-        weight(x, "relFreq")
-    else 
-        x / rowSums(x)
-}
 
 #' compute tf-idf weights from a dfm
 #' 
-#' Compute tf-idf, inverse document frequency, and relative term frequency on
+#' Compute tf-idf, inverse document frequency, and relative term frequency on 
 #' document-feature matrices.  See also \code{\link{weight}}.
 #' @param x object for which idf or tf-idf will be computed (a document-feature 
 #'   matrix)
@@ -340,6 +329,16 @@ tf <- function(x) {
 #' @param smoothing amount to apply as additive smoothing to the 
 #'   document-feature matrix prior to weighting, default is \code{0} for no 
 #'   smoothing.  Another sensible value would be 0.5.
+#' @details \code{tfidf} computes term frequency-inverse document frequency 
+#'   weighting.  The default is to normalize term frequency (by computing 
+#'   relative term frequency within document) but this is not performed if 
+#'   \code{normalize = FALSE}.
+#' @examples 
+#' head(LBGexample[, 5:10])
+#' head(tfidf(LBGexample)[, 5:10])
+#' idf(LBGexample)[5:15]
+#' head(tf(LBGexample)[, 5:10])
+#' 
 #' @export
 tfidf <- function(x, ...) UseMethod("tfidf")
 # @details \code{tfidf} is a shortcut for \code{weight(x, "tfidf")}
@@ -363,6 +362,9 @@ tfidf.dfm <- function(x, normalize = TRUE, smoothing = 0L, k = 1, ...) {
 #'   the resulting numeric vector
 #' @param ... not used
 #' @export
+#' @details \code{idf} computes inverse document frequency with a constant \code{k}
+#' added to the denominator of log document frequency.
+#' @seealso \code{\link{docfreq}}, \code{\link{weight}}
 idf <- function(x, ...) UseMethod("idf")
 
 #' @rdname tfidf
@@ -372,6 +374,19 @@ idf.dfm <- function(x, k = 1, USE.NAMES = TRUE, ...) {
     if (!USE.NAMES) names(x) <- NULL
     x
 }
+
+#' @rdname tfidf
+#' @details \code{tf} is a shortcut to compute relative term frequecies (identical to 
+#' \code{\link{weight}(x, "relFreq")}).
+#' @export
+tf <- function(x) {
+    if (!is.dfm(x)) stop("tf() only works for dfm objects")
+    if (isS4(x))
+        weight(x, "relFreq")
+    else 
+        x / rowSums(x)
+}
+
 
 #' @rdname weight
 #' @details \code{smoother(x, smoothing)} is a shortcut for \code{weight(x, "frequency", smoothing)}
