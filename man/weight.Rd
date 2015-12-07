@@ -3,8 +3,6 @@
 \docType{methods}
 \name{weight}
 \alias{smoother}
-\alias{tf}
-\alias{tfidf}
 \alias{weight}
 \alias{weight,dfm-method}
 \alias{weighting}
@@ -14,12 +12,7 @@
 weight(x, ...)
 
 \S4method{weight}{dfm}(x, type = c("frequency", "relFreq", "relMaxFreq",
-  "logFreq", "tfidf"), smoothing = 0, normalize = TRUE, verbose = TRUE,
-  ...)
-
-tf(x)
-
-tfidf(x)
+  "logFreq", "tfidf"), smoothing = 0, verbose = TRUE, ...)
 
 smoother(x, smoothing)
 
@@ -32,24 +25,20 @@ weighting(object)
 
 \item{...}{not currently used}
 
-\item{type}{The weighting function to aapply to the dfm. One of: 
-\itemize{ 
-  \item normTf - Length normalization: dividing the frequency of the feature 
-  by the length of the document) 
-  \item logTf - The natural log of the term frequency 
-  \item tf-idf - Term-frequency * inverse 
-  document frequency. For a full explanation, see, for example, 
-  \url{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html}.
-   This implementation will not return negative values. 
-  \item maxTf - The term frequency divided 
-  by the frequency of the most frequent term in the document 
-  \item ppmi -   Positive Pointwise Mutual Information }}
+\item{type}{The weighting function to aapply to the dfm. One of: \itemize{ 
+\item normTf - Length normalization: dividing the frequency of the feature 
+by the length of the document) \item logTf - The natural log of the term
+frequency \item tf-idf - Term-frequency * inverse document frequency. For a
+full explanation, see, for example, 
+\url{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html}.
+ This implementation will not return negative values.  For finer-grained
+control, call \code{\link{tfidf}} directly. \item maxTf - The term
+frequency divided by the frequency of the most frequent term in the
+document \item ppmi -   Positive Pointwise Mutual Information }}
 
-\item{smoothing}{amount to apply as additive smoothing to the document-feature matrix prior to
-weighting, default is 0.5, set to \code{smoothing=0} for no smoothing.}
-
-\item{normalize}{if \code{TRUE} (default) then normalize the dfm by relative
-term frequency prior to computing tfidf}
+\item{smoothing}{amount to apply as additive smoothing to the
+document-feature matrix prior to weighting, default is 0.5, set to
+\code{smoothing=0} for no smoothing.}
 
 \item{verbose}{if \code{TRUE} output status messages}
 
@@ -65,10 +54,6 @@ Returns a document by feature matrix with the feature frequencies weighted
 according to one of several common methods.
 }
 \details{
-\code{tf} is a shortcut for \code{weight(x, "relFreq")}
-
-\code{tfidf} is a shortcut for \code{weight(x, "tfidf")}
-
 \code{smoother(x, smoothing)} is a shortcut for \code{weight(x, "frequency", smoothing)}
 
 \code{weighting} queries (but cannot set) the weighting applied to the dfm.
@@ -88,12 +73,11 @@ topfeatures(tfidfDtm)
 
 # combine these methods for more complex weightings, e.g. as in Section 6.4 of
 # Introduction to Information Retrieval
-logTfDtm <- weight(dtm, type="logFreq")
-wfidfDtm <- weight(logTfDtm, type="tfidf", normalize=FALSE)
+head(logTfDtm <- weight(dtm, type="logFreq"))
+head(tfidf(logTfDtm, normalize = FALSE))
 
 \dontshow{
-testdfm <- dfm(inaugTexts[1:5])
-head(testdfm)
+testdfm <- dfm(inaugTexts[1:5], verbose = FALSE)
 for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
     testw <- weight(testdfm, w)
     cat("\\n\\n=== weight() TEST for:", w, "; class:", class(testw), "\\n")
@@ -108,5 +92,8 @@ Paul Nulty and Kenneth Benoit
 Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
   Introduction to information retrieval. Vol. 1. Cambridge: Cambridge 
   university press, 2008.
+}
+\seealso{
+\code{\link{tfidf}}
 }
 

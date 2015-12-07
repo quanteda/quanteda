@@ -240,29 +240,27 @@ nfeature.dfm <- function(x) {
 #' Weight the feature frequencies in a dfm by various methods
 #' 
 #' Returns a document by feature matrix with the feature frequencies weighted 
-#' according to one of several common methods. 
+#' according to one of several common methods.
 #' 
 #' @param x document-feature matrix created by \link{dfm}
-#' @param type The weighting function to aapply to the dfm. One of: 
-#' \itemize{ 
+#' @param type The weighting function to aapply to the dfm. One of: \itemize{ 
 #'   \item normTf - Length normalization: dividing the frequency of the feature 
-#'   by the length of the document) 
-#'   \item logTf - The natural log of the term frequency 
-#'   \item tf-idf - Term-frequency * inverse 
-#'   document frequency. For a full explanation, see, for example, 
+#'   by the length of the document) \item logTf - The natural log of the term
+#'   frequency \item tf-idf - Term-frequency * inverse document frequency. For a
+#'   full explanation, see, for example, 
 #'   \url{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html}.
-#'    This implementation will not return negative values. 
-#'   \item maxTf - The term frequency divided 
-#'   by the frequency of the most frequent term in the document 
-#'   \item ppmi -   Positive Pointwise Mutual Information }
-#' @param smoothing amount to apply as additive smoothing to the document-feature matrix prior to
-#'    weighting, default is 0.5, set to \code{smoothing=0} for no smoothing.
-#' @param normalize if \code{TRUE} (default) then normalize the dfm by relative
-#'   term frequency prior to computing tfidf
+#'    This implementation will not return negative values.  For finer-grained
+#'   control, call \code{\link{tfidf}} directly. \item maxTf - The term
+#'   frequency divided by the frequency of the most frequent term in the
+#'   document \item ppmi -   Positive Pointwise Mutual Information }
+#' @param smoothing amount to apply as additive smoothing to the
+#'   document-feature matrix prior to weighting, default is 0.5, set to
+#'   \code{smoothing=0} for no smoothing.
 #' @param verbose if \code{TRUE} output status messages
 #' @param ... not currently used
 #' @return The dfm with weighted values
 #' @export
+#' @seealso \code{\link{tfidf}}
 #' @author Paul Nulty and Kenneth Benoit
 #' @examples
 #' dtm <- dfm(inaugCorpus)
@@ -279,8 +277,8 @@ nfeature.dfm <- function(x) {
 #' 
 #' # combine these methods for more complex weightings, e.g. as in Section 6.4 of
 #' # Introduction to Information Retrieval
-#' logTfDtm <- weight(dtm, type="logFreq")
-#' wfidfDtm <- weight(logTfDtm, type="tfidf", normalize=FALSE)
+#' head(logTfDtm <- weight(dtm, type="logFreq"))
+#' head(tfidf(logTfDtm, normalize = FALSE))
 #' 
 #' @references Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
 #'   Introduction to information retrieval. Vol. 1. Cambridge: Cambridge 
@@ -290,8 +288,7 @@ setGeneric("weight", function(x, ...) standardGeneric("weight"))
 #' @rdname weight
 #' @examples
 #' \dontshow{
-#' testdfm <- dfm(inaugTexts[1:5])
-#' head(testdfm)
+#' testdfm <- dfm(inaugTexts[1:5], verbose = FALSE)
 #' for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
 #'     testw <- weight(testdfm, w)
 #'     cat("\n\n=== weight() TEST for:", w, "; class:", class(testw), "\n")
@@ -300,7 +297,7 @@ setGeneric("weight", function(x, ...) standardGeneric("weight"))
 #' }
 setMethod("weight", signature = "dfm", 
           definition = function(x, type=c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"), #, "ppmi"), 
-                                smoothing = 0, normalize = TRUE, verbose=TRUE, ...) {
+                                smoothing = 0, verbose=TRUE, ...) {
               if (length(addedArgs <- list(...)))
                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
               type = match.arg(type)
@@ -308,61 +305,73 @@ setMethod("weight", signature = "dfm",
               if (weighting(x) != "frequency") {
                   cat("  No weighting applied: you should not weight an already weighted dfm.\n")
               } else if (type=="relFreq") {
-                  ## UGLY HACK
-                  if (is(x, "dfmSparse")) {
-                      #tmp <- x/rowSums(x)
-                      #tmp[is.na(tmp)] <- 0
-                      x <- new("dfmSparse", x/rowSums(x))
-                  } else 
-                      if (is(x, "dfmDense"))
-                          x <- new("dfmDense", x/rowSums(x))
-                      else 
-                          x <- x/rowSums(x)
+                  x / rowSums(x)
               } else if (type=="relMaxFreq") {
                   x <- x / apply(x, 1, max)
               } else if (type=="logFreq") {
                   x <- log(x + ifelse(smoothing==0, 1, smoothing))
               } else if (type=="tfidf") {
-                  # complicated as, is is to control coercion to a class for which logical operator is
-                  # properly defined as a method, currently not dfm and child classes
-                  idf <- log(ndoc(x)) - log(docfreq(x, smoothing))
-                  if (normalize) x <- weight(x, "relFreq")
-                  if (nfeature(x) != length(idf)) 
-                      stop("missing some values in idf calculation")
-                  # currently this strips the dfm of its special class, but this is a problem in 
-                  # the t() method for dfms, not an issue with this operation
-                  x <- new("dfmSparse", Matrix::Matrix(t(t(x) * idf)))
-                  # class(x) <- c("dfm", class(x))
+                  x <- tfidf(x)
               }
-              #               } else if (type=="ppmi") {
-              #                   pij <- x/rowSums(x)
-              #                   pij[is.na(pij)] <- 0
-              #                   pi <- colSums(x)
-              #                   pj <- rowSums(x)
-              #                   pj[is.na(pj)] <- 0
-              #                   pmi <- (pij / t(outer(pi,pj)))
-              #                   x <- abs(pmi)
-              #              } else warning(sprintf("Type %s not implmented, no weighting performed.", type))
-              
               if (is(x, "dfm")) x@weighting <- type
               # x[is.infinite(x)] <- 0
               return(x)
           })
 
-#' @rdname weight
-#' @details \code{tf} is a shortcut for \code{weight(x, "relFreq")}
+#' @rdname tfidf
+#' @details \code{tf} is a shortcut to compute relative term frequecies (sasme as 
+#' \code{\link{weight}(x, "relFreq")}).
 #' @export
 tf <- function(x) {
+    if (!is.dfm(x)) stop("tf() only works for dfm objects")
     if (isS4(x))
         weight(x, "relFreq")
     else 
         x / rowSums(x)
 }
 
-#' @rdname weight
-#' @details \code{tfidf} is a shortcut for \code{weight(x, "tfidf")}
+#' compute tf-idf weights from a dfm
+#' 
+#' Compute tf-idf, inverse document frequency, and relative term frequency on
+#' document-feature matrices.  See also \code{\link{weight}}.
+#' @param x object for which idf or tf-idf will be computed (a document-feature 
+#'   matrix)
+#' @param normalize if \code{TRUE}, use relative term frequency
+#' @param smoothing amount to apply as additive smoothing to the 
+#'   document-feature matrix prior to weighting, default is \code{0} for no 
+#'   smoothing.  Another sensible value would be 0.5.
 #' @export
-tfidf <- function(x) weight(x, "tfidf")
+tfidf <- function(x, ...) UseMethod("tfidf")
+# @details \code{tfidf} is a shortcut for \code{weight(x, "tfidf")}
+
+
+#' @rdname tfidf
+#' @export
+tfidf.dfm <- function(x, normalize = TRUE, smoothing = 0L, k = 1, ...) {
+    invdocfr <- idf(x, k = k, USE.NAMES = FALSE)
+    if (normalize) x <- weight(x, "relFreq", smoothing = smoothing)
+    if (nfeature(x) != length(invdocfr)) 
+        stop("missing some values in idf calculation")
+    # NEED TO PRESERVE SETTINGS
+    t(t(x) * invdocfr)
+}
+
+#' @rdname tfidf
+#' @param k additional constant to add to the denominator in \emph{idf} 
+#'   computation, default is \code{k = 1}
+#' @param USE.NAMES	logical; if \code{TRUE} attach feature labels as names of 
+#'   the resulting numeric vector
+#' @param ... not used
+#' @export
+idf <- function(x, ...) UseMethod("idf")
+
+#' @rdname tfidf
+#' @export
+idf.dfm <- function(x, k = 1, USE.NAMES = TRUE, ...) {
+    x <- log(ndoc(x)) - log(docfreq(x) + k)
+    if (!USE.NAMES) names(x) <- NULL
+    x
+}
 
 #' @rdname weight
 #' @details \code{smoother(x, smoothing)} is a shortcut for \code{weight(x, "frequency", smoothing)}

@@ -238,13 +238,13 @@ print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, show.summary = 
 # @method t dfmSparse
 #setMethod("t", signature(x = "dfmSparse"), getMethod("t", "dgCMatrix"))
 
-## S4 Method for the S4 class dense/weighted dfm
-# @rdname dfm-class
-# @method t dfmSparse
-# setMethod("t", signature(x = "dfmDense"), definition = 
-#               function(x) {
-#                   selectMethod("t", "dgeMatrix")
-#               }) #getMethod("t", "dgeMatrix"))
+# S4 Method for the S4 class dense/weighted dfm
+#' @export
+#' @rdname dfm-class
+setMethod("t", signature(x = "dfmDense"), definition = 
+              function(x) {
+                  getMethod("t", "dgeMatrix")(x)
+              }) #getMethod("t", "dgeMatrix"))
 
 
 ## S4 Method for the S3 class dense dfm
@@ -252,10 +252,12 @@ print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, show.summary = 
 #' @param x the dfm object
 #' @rdname dfm-class 
 setMethod("t",
-          signature = (x = "dfm"),
+          signature = (x = "dfmSparse"),
           definition = function(x) {
-              newx <- t(matrix(x, nrow=nrow(x)))
-              dimnames(newx) <- rev(dimnames(x))
+              new("dfmSparse", getMethod("t", "dgCMatrix")(x))
+          })
+#               newx <- t(matrix(x, nrow=nrow(x)))
+#               dimnames(newx) <- rev(dimnames(x))
 #               if (isS4(x)) {
 #                   newx <- t(as.Matrix(x))
 #                   attributes(newx)$dimnames <- rev(x@Dimnames)
@@ -263,8 +265,8 @@ setMethod("t",
 #                   attsorig <- attributes(x)
 #                   attributes(newx)$dimnames <- rev(attsorig$dimnames)
 #               }
-              newx
-          })
+#              newx
+#})
 
 
 # @details \code{rowSums} and \code{colSums} form row and column sums and means for \link{dfm-class} objects.

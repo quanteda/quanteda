@@ -32,10 +32,13 @@
 \alias{dfmSparse-class}
 \alias{rowSums,dfmDense-method}
 \alias{rowSums,dfmSparse-method}
-\alias{t,dfm-method}
+\alias{t,dfmDense-method}
+\alias{t,dfmSparse-method}
 \title{Virtual class "dfm" for a document-feature matrix}
 \usage{
-\S4method{t}{dfm}(x)
+\S4method{t}{dfmDense}(x)
+
+\S4method{t}{dfmSparse}(x)
 
 \S4method{colSums}{dfmSparse}(x, na.rm = FALSE, dims = 1L, ...)
 

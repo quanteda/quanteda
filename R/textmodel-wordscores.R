@@ -89,7 +89,8 @@ textmodel_wordscores <- function(data, scores,
     x <- data[inRefSet, ]         # select only the reference texts
     
     Fwr <- tf(x)                  # normalize words to term frequencies "Fwr"
-    Pwr <- tf(t(Fwr))             # posterior word probability Pwr
+    tFwr <- t(Fwr)
+    Pwr <- tFwr / rowSums(tFwr)    # posterior word probability Pwr
     # compute likelihoods "Pwr" Pr(this word | document)
     if (scale=="linear") {
         Sw <- Pwr %*% setscores
