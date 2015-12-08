@@ -2,7 +2,8 @@ quanteda 0.9.1
 ==============
 
 *  better implementation of tf-idf, and relative frequency weighting, especially for very large sparse
-   matrix objects.
+   matrix objects.  tf(), idf(), and tfidf() now provide relative term frequency, inverse document frequency,
+   and tf-idf directly.
 
 *  textmodel_wordfish() now accepts an integer `dispersionFloor` argument to constrain the phi parameter
    to a minimium value (of underdispersion).

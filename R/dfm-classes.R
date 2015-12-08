@@ -115,10 +115,19 @@ head.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
 }
 
 #' @export
+#' @rdname head.dfm
+setMethod("head", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) 
+    head.dfm(x, n = n, nfeature = nfeature, ...))
+
+#' @export
+#' @rdname head.dfm
+setMethod("tail", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) 
+    tail.dfm(x, n = n, nfeature = nfeature, ...))
+
+
+#' @export
 #' @method tail dfm
 #' @rdname head.dfm
-#' @return A \link{dfm-class} class object corresponding to the subset
-#'   defined by \code{n} and \code{ncol}.
 tail.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
