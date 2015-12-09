@@ -62,6 +62,7 @@ Collate:
     'dfm-classes.R'
     'dfm-main.R'
     'dfm-methods.R'
+    'dfm-weighting.R'
     'distance.R'
     'encoding.R'
     'kwic.R'
@@ -83,6 +84,5 @@ Collate:
     'toLower.R'
     'tokenize.R'
     'tokenize_outtakes.R'
-    'weighting.R'
     'wordstem.R'
 RoxygenNote: 5.0.1

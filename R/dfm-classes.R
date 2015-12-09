@@ -33,12 +33,13 @@
 #' @docType class
 #' @name dfm-class
 setClass("dfm",
-         slots = c(settings = "list", weighting = "character", smooth = "numeric",
+         slots = c(settings = "list", weightTf = "list", weightDf = "list", smooth = "numeric",
                    ngrams = "integer", concatenator = "character"),
          prototype = list(settings = list(NULL),
                           Dim = integer(2), 
                           Dimnames = list(docs=NULL, features=NULL),
-                          weighting = "frequency", 
+                          weightTf = list(scheme = "count", base = NULL, K = NULL),
+                          weightDf = list(scheme = "unary", base = NULL, K = NULL),
                           smooth = 0,
                           ngrams = 1L,
                           concatenator = ""),

@@ -61,15 +61,6 @@ setClass("textmodel_fitted",
 #'   is not terribly obvious. (Blame it on the S3 system.)
 #' @export
 #' @examples
-# data(ie2010Corpus)
-#  # test with old-style matrix-based dense dfm
-#  ieDfmd <- dfm(ie2010Corpus, matrixType="dense", verbose=FALSE)
-#  refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
-#  ws <- textmodel(ieDfmd, refscores, model="wordscores", smooth=1)
-#  ws <- textmodel(ieDfmd, refscores, model="wordscores")
-#  ws <- textmodel(refscores ~ . -1, data=ieDfmd, model="wordscores")
-#  rm(ieDfmd)
-# 
 #' ieDfm <- dfm(ie2010Corpus, verbose=FALSE)
 #' refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
 #' ws <- textmodel(ieDfm, refscores, model="wordscores", smooth=1)
@@ -77,7 +68,7 @@ setClass("textmodel_fitted",
 #' # alternative formula notation - but slower
 #' # need the - 1 to remove the intercept, as this is literal formula notation
 #' wsform <- textmodel(refscores ~ . - 1, data=ieDfm, model="wordscores", smooth=1)
-#' identical(ws@@Sw, wsform@@Sw)  # compare wordscores from the two models
+#' identical(ws@Sw, wsform@Sw)  # compare wordscores from the two models
 #' 
 #' 
 #' # compare the logit and linear wordscores

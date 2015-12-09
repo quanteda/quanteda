@@ -27,7 +27,7 @@
 #' dtm <- dfm(inaugCorpus)
 #' x <- apply(dtm, 1, function(tf) tf/max(tf))
 #' topfeatures(dtm)
-#' normDtm <- weight(dtm)
+#' normDtm <- weight(dtm, "relFreq")
 #' topfeatures(normDtm)
 #' maxTfDtm <- weight(dtm, type="relMaxFreq")
 #' topfeatures(maxTfDtm)
@@ -63,20 +63,21 @@ setMethod("weight", signature = "dfm",
                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
               type = match.arg(type)
               x <- x + smoothing
-              if (weighting(x) != "frequency") {
-                  cat("  No weighting applied: you should not weight an already weighted dfm.\n")
+             if (x@weightTf[["scheme"]] != "count") {
+                 cat("  No weighting applied: you should not weight an already weighted dfm.\n")
               } else if (type=="relFreq") {
-                  x <- tf(x)
+                  return(tf(x, "prop"))
               } else if (type=="relMaxFreq") {
-                  x <- x / apply(x, 1, max)
+                  return(tf(x, "propmax"))
               } else if (type=="logFreq") {
-                  x <- log(x + ifelse(smoothing==0, 1, smoothing))
+                  return(tf(x, "log"))
               } else if (type=="tfidf") {
-                  x <- tfidf(x)
-              }
-              if (is(x, "dfm")) x@weighting <- type
+                  return(tfidf(x))
+              } else if (type == "frequency") {
+                  return(x)
+              } else stop("unknown weighting type")
+#               if (is(x, "dfm")) x@weighting <- type
               # x[is.infinite(x)] <- 0
-              return(x)
           })
 
 
@@ -216,7 +217,7 @@ tfidf <- function(x, ...) UseMethod("tfidf")
 tfidf.dfm <- function(x, normalize = TRUE, smoothing = 0L, ...) {
     invdocfr <- idf(x, ...)
     if (smoothing > 0) x <- x + smoothing
-    if (normalize) x <- tf(x)
+    if (normalize) x <- tf(x, "prop")
     if (nfeature(x) != length(invdocfr)) 
         stop("missing some values in idf calculation")
     t(t(x) * invdocfr)
@@ -248,22 +249,124 @@ idf.dfm <- function(x, k = 1, USE.NAMES = TRUE, base = 10) {
 #' @rdname tfidf
 #' @export
 setGeneric("tf", 
-           function(x)
+           function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augmented", "logave"),
+                    base = 10, K = 0.5)
                standardGeneric("tf"))
 
 #' @rdname tfidf
+#' @param scheme divisor for the normalization of feature frequencies by document.  Valid types include:
+#' \describe{
+#' \item{\code{unity}}{default, each feature count will remain as feature counts, 
+#' equivalent to dividing by 1}
+#' \item{\code{total}}{total number of features per document, so that the sum of the normalized feature
+#' values is 1.0}
+#' \item{\code{maxCount}}{maximum feature count per document}
 #' @details \code{tf} is a shortcut to compute relative term frequecies (identical to 
 #' \code{\link{weight}(x, "relFreq")}).
+#' @param base base for the logarithm when \code{scheme} is \code{"log"} or \code{logave}
+#' @param K the K for the augmentation when \code{scheme = "augmented"}
 #' @export
-setMethod("tf", signature(x = "dfmSparse"), definition = 
-           function(x) {
-               N <- rowSums(x)
-               x@x <- x@x / N[x@i+1]
-               x
-           })
+setMethod("tf", signature(x = "dfm"), definition = 
+              function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augmented", "logave"),
+                       base = 10, K = 0.5) {
+                  
+                  scheme <- match.arg(scheme)
+                  args <- as.list(match.call(expand.dots=FALSE))
+                  if ("base" %in% names(args) & !(scheme %in% c("log", "logave")))
+                      warning("base not used for this scheme")
+                  if ("K" %in% names(args) & scheme != "augmented")
+                      warning("K not used for this scheme")
+                  if (K < 0 | K > 1.0)
+                      stop("K must be in the [0, 1] interval")
+                  
+                  if (x@weightTf[["scheme"]] != "count")
+                      stop("this dfm has already been term weighted as:", x@tf)
+                  
+                  if (scheme == "count") {
+                      return(x)
+                      
+                  } else if (scheme == "prop") {
+                      div <- rowSums(x)
+                      if (is(x, "dfmSparse"))
+                          x@x <- x@x / div[x@i+1]
+                      else
+                          x <- x / div
+                      
+                  } else if (scheme == "propmax") {
+                      div <- maxtf(x)
+                      if (is(x, "dfmSparse"))
+                          x@x <- x@x / div[x@i+1]
+                      else 
+                          x <- x / div
+                      
+                  } else if (scheme == "boolean") {
+                      x@x <- as.numeric(x@x > 0)
+                      
+                  } else if (scheme == "log") {
+                      x@x <- 1 + log(x@x, base)
+                      x@x[is.infinite(x@x)] <- 0
+                      x@weightTf[["base"]] <- base
+                      
+                  } else if (scheme == "augmented") {
+                      maxtf <- maxtf(x)
+                      if (is(x, "dfmSparse"))
+                          x@x <- K + (1 - K) * x@x / maxtf[x@i+1]
+                      else
+                          x <- K + (1 - K) * x / maxtf
+                      x@weightTf[["K"]] <- K
+                      
+                  } else if (scheme == "logave") {
+                      meantf <- Matrix::rowMeans(x)
+                      if (is(x, "dfmSparse"))
+                          x@x <- (1 + log(x@x, base)) / (1 + log(meantf[x@i+1], base))
+                      else
+                          x <- (1 + log(x, base)) / (1 + log(meantf, base))
+                      x@weightTf[["base"]] <- base
+                      
+                  } else {
+                      stop("shouldn't be here!")
+                  }
+                  
+                  x@weightTf[["scheme"]] <- scheme
+                  return(x)
+              })
 
-#' @rdname tfidf
-#' @export
-setMethod("tf", signature(x = "dfmDense"), definition = 
-              function(x) x / rowSums(x))
-              
+
+
+## internal function to get maximum term frequency by document
+## only applies to CsparseMatrix formats (dfmSparse)
+setGeneric("maxtf", function(x) standardGeneric("maxtf"))
+
+setMethod("maxtf", signature(x = "dfmSparse"), definition = function(x) {
+    dt <- data.table(doc = t(x)@i, freq = x@x)
+    dt[, max(freq), by = doc][, V1]
+    ## note: this is faster for small dfms:
+    # sapply(split(x@x, x@i), max)
+})
+
+setMethod("maxtf", signature(x = "dfmDense"), definition = function(x) {
+    apply(x, 1, max)
+})
+
+
+
+
+## BENCHMARKING
+
+# microbenchmark(m1 <- apply(NSFdfm, 1, max), m2 <- NSFdfm[, max.col(t(NSFdfm))])
+
+# require(data.table)
+# f1 <- function(x) {
+#     dt <- data.table(doc = t(x)@i, freq = x@x)
+#     dt[, max(freq), by = doc][, V1]
+# }
+# 
+# f2 <- function(x) {
+#     sapply(split(x@x, x@i), max)
+# }
+# 
+# myDfm <- dfm(inaugCorpus, verbose = FALSE)
+# microbenchmark(f1(myDfm), f2(myDfm))
+# microbenchmark(f1(NSFdfm), f2(NSFdfm), times = 5)
+
+          

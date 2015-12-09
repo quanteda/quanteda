@@ -85,10 +85,10 @@ textmodel_wordscores <- function(data, scores,
         stop("wordscores model requires numeric scores.")
     
     setscores <- scores[inRefSet] # only non-NA reference texts
-    if (smooth) data <- smoother(data, smooth) # smooth if not 0
+    if (smooth) data <- data + 1 # smooth if not 0
     x <- data[inRefSet, ]         # select only the reference texts
     
-    Fwr <- tf(x)                  # normalize words to term frequencies "Fwr"
+    Fwr <- tf(x, "prop")          # normalize words to term frequencies "Fwr"
     tFwr <- t(Fwr)
     Pwr <- tFwr / rowSums(tFwr)    # posterior word probability Pwr
     # compute likelihoods "Pwr" Pr(this word | document)
@@ -168,10 +168,10 @@ predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling 
     #scorable.newd <- Fw[, featureIndex]  # then exclude any features not found/scored
     scorable.newd <- data[, scorable]
     ## NOTE: This is different from computing term weights on only the scorable words
-    textscore_raw <- as.matrix(tf(scorable.newd) %*% Sw)
+    textscore_raw <- as.matrix(tf(scorable.newd, "prop") %*% Sw)
     
     textscore_raw_se <- rep(NA, length(textscore_raw))
-    Fwv <- tf(scorable.newd)
+    Fwv <- tf(scorable.newd, "prop")
     for (i in 1:length(textscore_raw_se))
         textscore_raw_se[i] <- sqrt(sum(Fwv[i, , drop=FALSE] * (textscore_raw[i] - Sw)^2)) / sqrt(rowSums(scorable.newd)[i])
     
