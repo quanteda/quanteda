@@ -1,6 +1,7 @@
 r_packages:
   - covr
   - knitr
+  - rmarkdown
 
 language: r
 sudo: true
