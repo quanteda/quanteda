@@ -1,5 +1,6 @@
 r_github_packages:
   - jimhester/covr
+  - knitr
 
 language: r
 sudo: required

@@ -2,7 +2,6 @@
 
 S3method("+",corpus)
 S3method("[",corpus)
-S3method("[",dfm)
 S3method(applyDictionary,dfm)
 S3method(as.DocumentTermMatrix,dfm)
 S3method(as.wfm,dfm)

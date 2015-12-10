@@ -112,66 +112,48 @@ setMethod("weighting", signature(object="dfm"), function(object) {
 #' get the document frequency of a feature
 #' 
 #' For a \link{dfm-class} object, returns the number of documents in which a 
-#' feature occurs more than a given frequency threshold.  The default is 
-#' greater than zero, meaning that a feature occurs at least once in a document.
-#' @param object a \link{dfm-class} document-feature matrix
-#' @param threshold numeric value of the threshold \emph{above which} a feature
-#'   will considered in the computation of document frequency.  The default is
-#'   0, meaning that a feature's document frequency will be the number of
+#' feature occurs more than a given frequency threshold.  The default is greater
+#' than zero, meaning that a feature occurs at least once in a document.
+#' @param x a \link{dfm-class} document-feature matrix
+#' @param threshold numeric value of the threshold \emph{above which} a feature 
+#'   will considered in the computation of document frequency.  The default is 
+#'   0, meaning that a feature's document frequency will be the number of 
 #'   documents in which it occurs greater than zero times.
+#' @param USE.NAMES	logical; if \code{TRUE} attach feature labels as names of 
+#'   the resulting numeric vector
 #' @return a numeric vector of document frequencies for each feature
 #' @export
 #' @examples 
 #' mydfm <- dfm(inaugTexts[1:2], verbose = FALSE)
 #' docfreq(mydfm[, 1:20])
-setGeneric("docfreq", signature = c("object", "threshold"), 
-           def=function(object, threshold=0) standardGeneric("docfreq"))
-
-## Note: need the coercions to dg[C,e]Matrix because > Op not currently 
-## working for the dfmSparse,Dense classes
+setGeneric("docfreq", function(x, threshold = 0, USE.NAMES = TRUE) standardGeneric("docfreq"))
 
 #' @rdname docfreq
-setMethod("docfreq", signature(object="dfmDense", threshold="numeric"), 
-          function(object, threshold=0) {
-              tmp <- colSums(as(object, "dgeMatrix") > threshold)
-              names(tmp) <- features(object)
-              tmp
+setMethod("docfreq", signature(x = "dfmSparse"), 
+          function(x, threshold = 0, USE.NAMES = TRUE) {
+              tx <- t(x)
+              featfactor <- factor(tx@i, 0:(nfeature(x)-1), labels = features(x))
+              result <- as.integer(table(featfactor[tx@x > threshold]))
+              if (USE.NAMES) names(result) <- features(x)
+              result
           })
+
 #' @rdname docfreq
-setMethod("docfreq", signature(object="dfmDense", threshold="missing"), 
-          function(object, threshold=0) {
-              tmp <- colSums(as(object, "dgeMatrix") > threshold)
-              names(tmp) <- features(object)
-              tmp
+setMethod("docfreq", signature(x = "dfmDense"), 
+          function(x, threshold = 0, USE.NAMES = TRUE) {
+              if (!any(x@x <= threshold)) 
+                  result <- rep(ndoc(x), nfeature(x))
+              else
+                  result <- colSums(as.matrix(x) > threshold)
+              
+              if (!USE.NAMES) 
+                  names(result) <- NULL
+              else 
+                  names(result) <- features(x)
+              
+              result
           })
-#' @rdname docfreq
-setMethod("docfreq", signature(object="dfmSparse", threshold="numeric"), 
-          function(object, threshold=0) {
-              tmp <- colSums(as(object, "dgCMatrix") > threshold)
-              names(tmp) <- features(object)
-              tmp
-          })
-#' @rdname docfreq
-setMethod("docfreq", signature(object="dfmSparse", threshold="missing"), 
-          function(object, threshold=0) {
-              tmp <- colSums(as(object, "dgCMatrix") > threshold)
-              names(tmp) <- features(object)
-              tmp
-          })
-#' @rdname docfreq
-setMethod("docfreq", signature(object="dfm", threshold="numeric"), 
-          function(object, threshold=0) {
-              tmp <- colSums(object > threshold)
-              names(tmp) <- features(object)
-              tmp
-          })
-#' @rdname docfreq
-setMethod("docfreq", signature(object="dfm", threshold="missing"), 
-          function(object, threshold=0) {
-              tmp <- colSums(object > threshold)
-              names(tmp) <- features(object)
-              tmp
-          })
+
 
 
 #' compute tf-idf weights from a dfm
@@ -227,9 +209,9 @@ tfidf.dfm <- function(x, normalize = TRUE, smoothing = 0L, ...) {
 #' @rdname tfidf
 #' @param k additional constant to add to the denominator in \emph{idf} 
 #'   computation, default is \code{k = 1}
-#' @param base the base with respect to which logarithms in \emph{idf}
-#'   computation are computed, default is 10 (see Manning, Raghavan, and Schutze
-#'   2008, p123).
+#' @param base the base with respect to which logarithms in \code{\link{idf}}
+#'   and \code{\link{tf}}} computation are computed, default is 10 (see Manning,
+#'   Raghavan, and Schutze 2008, p123).
 #' @param USE.NAMES	logical; if \code{TRUE} attach feature labels as names of 
 #'   the resulting numeric vector
 #' @export
@@ -241,7 +223,7 @@ idf <- function(x, k = 1, USE.NAMES = TRUE, base = 10) UseMethod("idf")
 #' @rdname tfidf
 #' @export
 idf.dfm <- function(x, k = 1, USE.NAMES = TRUE, base = 10) {
-    x <- log(ndoc(x), base = base) - log(docfreq(x) + k, base = base)
+    x <- log(ndoc(x), base = base) - log(docfreq(x, USE.NAMES = FALSE) + k, base = base)
     if (!USE.NAMES) names(x) <- NULL
     x
 }
@@ -260,7 +242,7 @@ setGeneric("tf",
 #' equivalent to dividing by 1}
 #' \item{\code{total}}{total number of features per document, so that the sum of the normalized feature
 #' values is 1.0}
-#' \item{\code{maxCount}}{maximum feature count per document}
+#' \item{\code{maxCount}}{maximum feature count per document}}
 #' @details \code{tf} is a shortcut to compute relative term frequecies (identical to 
 #' \code{\link{weight}(x, "relFreq")}).
 #' @param base base for the logarithm when \code{scheme} is \code{"log"} or \code{logave}
@@ -338,6 +320,7 @@ setMethod("tf", signature(x = "dfm"), definition =
 setGeneric("maxtf", function(x) standardGeneric("maxtf"))
 
 setMethod("maxtf", signature(x = "dfmSparse"), definition = function(x) {
+    freq <- doc <- V1 <- NULL 
     dt <- data.table(doc = t(x)@i, freq = x@x)
     dt[, max(freq), by = doc][, V1]
     ## note: this is faster for small dfms:

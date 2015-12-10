@@ -266,41 +266,7 @@ setMethod("t",
           definition = function(x) {
               new("dfmSparse", getMethod("t", "dgCMatrix")(x))
           })
-#               newx <- t(matrix(x, nrow=nrow(x)))
-#               dimnames(newx) <- rev(dimnames(x))
-#               if (isS4(x)) {
-#                   newx <- t(as.Matrix(x))
-#                   attributes(newx)$dimnames <- rev(x@Dimnames)
-#               } else {
-#                   attsorig <- attributes(x)
-#                   attributes(newx)$dimnames <- rev(attsorig$dimnames)
-#               }
-#              newx
-#})
 
-
-# @details \code{rowSums} and \code{colSums} form row and column sums and means for \link{dfm-class} objects.
-# @param x a dfm, inheriting from \link[Matrix]{Matrix}
-# @param na.rm if \code{TRUE}, omit missing values (including \code{NaN}) from
-#   the calculations
-# @param dims ignored
-# @param ... additional arguments, for methods/generic compatibility
-# @return returns a named (non-sparse) numeric vector
-# @rdname dfm-class
-# @aliases colSums rowSums
-# @export
-# @examples
-# myDfm <- dfm(inaugTexts, verbose=FALSE)
-# colSums(myDfm[, 1:10])
-# rowSums(myDfm)
-# @export
-# setGeneric("colSums",
-#           def = function(x, na.rm = FALSE, dims = 1L, ...) standardGeneric("colSums"))
-# 
-# # @export
-# # @rdname dfm-class
-# setGeneric("rowSums",
-#            def = function(x, na.rm = FALSE, dims = 1L, ...) standardGeneric("rowSums"))
 
 
 #' @method colSums dfmSparse
@@ -311,59 +277,39 @@ setMethod("t",
 #' @export
 setMethod("colSums", 
           signature = (x = "dfmSparse"),
-          definition = function(x, na.rm = FALSE, dims = 1L, ...) {
-              csums <- callNextMethod()
-              names(csums) <- features(x)
-              csums
-          })
-
-#' @method colSums dfmDense
-#' @rdname dfm-class
-#' @export
-setMethod("colSums", 
-          signature = (x = "dfmDense"),
-          definition = function(x, na.rm = FALSE, dims = 1L, ...) {
-              csums <- callNextMethod()
-              names(csums) <- features(x)
-              csums
-          })
+          function(x, na.rm = FALSE, dims = 1L, ...) callNextMethod())
 
 #' @method rowSums dfmSparse
 #' @rdname dfm-class
 #' @export
 setMethod("rowSums", 
           signature = (x = "dfmSparse"),
-          definition = function(x, na.rm = FALSE, dims = 1L, ...) {
-              rsums <- callNextMethod()
-              names(rsums) <- docnames(x)
-              rsums
-          })
-
-#' @method rowSums dfmDense
-#' @rdname dfm-class
-#' @export
-setMethod("rowSums", 
-          signature = (x = "dfmDense"),
-          definition = function(x, na.rm = FALSE, dims = 1L, ...) {
-              rsums <- callNextMethod()
-              names(rsums) <- docnames(x)
-              rsums
-          })
+          function(x, na.rm = FALSE, dims = 1L, ...) callNextMethod())
 
 
 
-## S3 METHODS FOR INDEXING DENSE dfm object
-#' @export
-#' @method [ dfm
-#' @rdname dfm-class
-`[.dfm` <- function(x, i, j, ..., drop=FALSE) {
-    if (drop) warning("drop=TRUE not currently supported")
-    m <- NextMethod("[", drop=FALSE)
-    attr(m, "settings") <- attr(x, "settings")
-    attr(m, "weighting") <- attr(x, "weighting")
-    class(m) <- class(x)
-    m
-}
+# #' @param i index for documents
+# #' @param j index for features
+# #' @param drop always set to \code{FALSE}
+# #' @param ... additional arguments not used here
+# #' @export
+# #' @rdname dfm-class
+# setMethod("[", 
+#           signature = c(x = "dfmSparse", i = "ANY", j = "ANY", drop = "logical"),
+#           function(x, i, j, ..., drop = FALSE) {
+#               cat("XXXXXX\n")
+#               new("dfmSparse", getMethod("[", "dgCMatrix")(x, i, j, ..., drop = FALSE))
+#               })
+# 
+# #' @rdname dfm-class
+# #' @export
+# setMethod("[", 
+#           signature = (x = "dfmDense"),
+#           function(x, i, j, ..., drop = FALSE) {
+#               cat("OH YEAH\n")
+#               new("dfmDense", callNextMethod())
+#           })
+# 
 
 ## S4 METHODS FOR INDEXING SPARSE dfm (dfmSparse) objects
 

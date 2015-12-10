@@ -43,13 +43,17 @@ computation, default is \code{k = 1}}
 \item{USE.NAMES}{logical; if \code{TRUE} attach feature labels as names of 
 the resulting numeric vector}
 
-\item{base}{the base with respect to which logarithms in \emph{idf}
-computation are computed, default is 10 (see Manning, Raghavan, and Schutze
-2008, p123).}
+\item{base}{base for the logarithm when \code{scheme} is \code{"log"} or \code{logave}}
+
+\item{scheme}{divisor for the normalization of feature frequencies by document.  Valid types include:
+\describe{
+\item{\code{unity}}{default, each feature count will remain as feature counts, 
+equivalent to dividing by 1}
+\item{\code{total}}{total number of features per document, so that the sum of the normalized feature
+values is 1.0}
+\item{\code{maxCount}}{maximum feature count per document}}}
 
 \item{K}{the K for the augmentation when \code{scheme = "augmented"}}
-
-\item{base}{base for the logarithm when \code{scheme} is \code{"log"} or \code{logave}}
 }
 \description{
 Compute tf-idf, inverse document frequency, and relative term frequency on 

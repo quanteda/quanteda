@@ -3,43 +3,34 @@
 \docType{methods}
 \name{docfreq}
 \alias{docfreq}
-\alias{docfreq,dfm,missing-method}
-\alias{docfreq,dfm,numeric-method}
-\alias{docfreq,dfmDense,missing-method}
-\alias{docfreq,dfmDense,numeric-method}
-\alias{docfreq,dfmSparse,missing-method}
-\alias{docfreq,dfmSparse,numeric-method}
+\alias{docfreq,dfmDense-method}
+\alias{docfreq,dfmSparse-method}
 \title{get the document frequency of a feature}
 \usage{
-docfreq(object, threshold = 0)
+docfreq(x, threshold = 0, USE.NAMES = TRUE)
 
-\S4method{docfreq}{dfmDense,numeric}(object, threshold = 0)
+\S4method{docfreq}{dfmSparse}(x, threshold = 0, USE.NAMES = TRUE)
 
-\S4method{docfreq}{dfmDense,missing}(object, threshold = 0)
-
-\S4method{docfreq}{dfmSparse,numeric}(object, threshold = 0)
-
-\S4method{docfreq}{dfmSparse,missing}(object, threshold = 0)
-
-\S4method{docfreq}{dfm,numeric}(object, threshold = 0)
-
-\S4method{docfreq}{dfm,missing}(object, threshold = 0)
+\S4method{docfreq}{dfmDense}(x, threshold = 0, USE.NAMES = TRUE)
 }
 \arguments{
-\item{object}{a \link{dfm-class} document-feature matrix}
+\item{x}{a \link{dfm-class} document-feature matrix}
 
-\item{threshold}{numeric value of the threshold \emph{above which} a feature
-will considered in the computation of document frequency.  The default is
-0, meaning that a feature's document frequency will be the number of
+\item{threshold}{numeric value of the threshold \emph{above which} a feature 
+will considered in the computation of document frequency.  The default is 
+0, meaning that a feature's document frequency will be the number of 
 documents in which it occurs greater than zero times.}
+
+\item{USE.NAMES}{logical; if \code{TRUE} attach feature labels as names of 
+the resulting numeric vector}
 }
 \value{
 a numeric vector of document frequencies for each feature
 }
 \description{
 For a \link{dfm-class} object, returns the number of documents in which a 
-feature occurs more than a given frequency threshold.  The default is 
-greater than zero, meaning that a feature occurs at least once in a document.
+feature occurs more than a given frequency threshold.  The default is greater
+than zero, meaning that a feature occurs at least once in a document.
 }
 \examples{
 mydfm <- dfm(inaugTexts[1:2], verbose = FALSE)
