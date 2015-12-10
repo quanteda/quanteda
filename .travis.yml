@@ -3,10 +3,11 @@ r_packages:
   - knitr
 
 language: r
-sudo: false
+sudo: true
 
 r_binary_packages:
 - topicmodels
+- testthat
 
 after_success:
   - Rscript -e 'library(covr);codecov()'
