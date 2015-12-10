@@ -3,7 +3,7 @@ r_packages:
   - knitr
 
 language: r
-sudo: required
+sudo: false
 
 r_binary_packages:
 - topicmodels
