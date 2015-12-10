@@ -58,6 +58,8 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' @importFrom graphics plot
 #' @export
 plot.kwic <- function(x, ...) {
+    nt <- attr(x, "ntoken")
+    if(length(nt) > 1) stop("kwic plots currently only implemented for single documents.")
     pos <- integer(attr(x, "ntoken"))
     pos[x$position] <- 1L
     graphics::plot(pos, xlab="Token Index", ylab = attr(x, "keyword"), type="h", 
