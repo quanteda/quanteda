@@ -38,10 +38,6 @@ Create a quanteda dictionary, either from a list or by importing from a
 foreign format.  Currently supported formats are the Wordstat and LIWC 
 formats.
 }
-\note{
-We will eventually change this to an S4 class with validators and
-  additional methods.
-}
 \examples{
 mycorpus <- subset(inaugCorpus, Year>1900)
 mydict <- 
@@ -58,8 +54,8 @@ lgdict <- dictionary(file="http://www.kenbenoit.net/courses/essex2014qta/LaverGa
                      format="wordstat")
 dfm(inaugTexts, dictionary=lgdict)
 
-# import a LIWC formatted dictionary
-liwcdict <- dictionary(file = "http://www.kenbenoit.net/files/LIWC2001_English.dic",
+# import a LIWC formatted dictionary from http://www.moralfoundations.org
+mfdict <- dictionary(file = dictionary(file = "http://www.moralfoundations.org/sites/default/files/files/downloads/moral\%20foundations\%20dictionary.dic", format = "LIWC"),
                        format = "LIWC")
 dfm(inaugTexts, dictionary=liwcdict)
 }

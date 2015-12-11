@@ -42,8 +42,6 @@ setMethod("show", "dictionary",
 #'   enough.
 #' @return A dictionary class object, essentially a specially classed named list
 #'   of characters.
-#' @note We will eventually change this to an S4 class with validators and
-#'   additional methods.
 #' @references Wordstat dictionaries page, from Provalis Research 
 #' \url{http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/}.
 #' 
@@ -67,8 +65,8 @@ setMethod("show", "dictionary",
 #'                      format="wordstat")
 #' dfm(inaugTexts, dictionary=lgdict)
 #' 
-#' # import a LIWC formatted dictionary
-#' liwcdict <- dictionary(file = "http://www.kenbenoit.net/files/LIWC2001_English.dic",
+#' # import a LIWC formatted dictionary from http://www.moralfoundations.org
+#' mfdict <- dictionary(file = dictionary(file = "http://www.moralfoundations.org/sites/default/files/files/downloads/moral%20foundations%20dictionary.dic", format = "LIWC"),
 #'                        format = "LIWC")
 #' dfm(inaugTexts, dictionary=liwcdict)
 #' }
