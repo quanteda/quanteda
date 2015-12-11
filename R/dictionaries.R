@@ -66,9 +66,8 @@ setMethod("show", "dictionary",
 #' dfm(inaugTexts, dictionary=lgdict)
 #' 
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
-#' mfdict <- dictionary(file = dictionary(file = "http://www.moralfoundations.org/sites/default/files/files/downloads/moral%20foundations%20dictionary.dic", format = "LIWC"),
-#'                        format = "LIWC")
-#' dfm(inaugTexts, dictionary=liwcdict)
+#' mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
+#' dfm(inaugTexts, dictionary = mfdict)
 #' }
 #' @export
 dictionary <- function(x=NULL, file=NULL, format=NULL, enc="", tolower=TRUE, maxcats=25) {
