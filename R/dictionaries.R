@@ -193,7 +193,7 @@ readWStatDictNested <- function(path) {
 # @export
 readLIWCdict <- function(path, enc="", toLower = TRUE) {
     
-    d <- readLines(path)
+    d <- readLines(path, warn = FALSE)
     
     # get the row number that signals the end of the category guide
     guideRowEnd <- max(which(d == "%"))
@@ -207,6 +207,7 @@ readLIWCdict <- function(path, enc="", toLower = TRUE) {
     colnames(guide) <- c('catNum', 'catName' )
     guide$catNum <- as.integer(guide$catNum)
     if (toLower) guide$catName <- toLower(guide$catName)
+
     # initialize the dictionary as list of NAs
     dictionary <- list()
     length(dictionary) <- nrow(guide)
@@ -220,44 +221,18 @@ readLIWCdict <- function(path, enc="", toLower = TRUE) {
     catlist[, 2:ncol(catlist)] <- lapply(catlist[2:ncol(catlist)], as.integer)
     names(catlist)[1] <- "category"
     if (toLower) catlist$category <- toLower(catlist$category)
-
-    mergeNums <- function(x, y) {
-        # helper function    
-        result <- sort(unique(c(as.numeric(x), as.numeric(y))))
-        if (length(result) > length(x))
-            stop("too long: call Tech Support!")
-        if (length(result) < length(x))
-            result <- c(result, rep(NA, length(x) - length(result)))
-        result
-    }
+    # remove any blank rows
+    blankRowIndex <- which(is.na(catlist$category))
+    if (length(blankRowIndex)) 
+        catlist <- catlist[-blankRowIndex, ]
     
-    consolidateCatlist <- function(catlist) {
-        dups <- which(duplicated(catlist[, 1]))
-        # cat("Found duplicates at rows:", dups, "\n\n")
-        while (length(dups)) {
-            # cat("Duplicates = ", length(dups), "\n\n")
-            i <- dups[1]
-            # cat("merging row [", i-1, "]", catlist[i-1, 1], as.numeric(catlist[i-1, 2:ncol(catlist)]), "\n")
-            # cat("   with row [", i, "]", catlist[i, 1], as.numeric(catlist[i, 2:ncol(catlist)]), "\n")
-            catlist[i-1, 2:ncol(catlist)] <- mergeNums(catlist[i-1, 2:ncol(catlist)], catlist[i, 2:ncol(catlist)])
-            catlist <- catlist[-i, ]
-            # cat("   NEW row [", i-1, "]", catlist[i-1, 1], as.numeric(catlist[i-1, 2:ncol(catlist)]), "\n\n")
-            dups <- dups[-1] - 1 
-        }
-        catlist
-    }
-    
-    catlist <- catlist[order(catlist[,1]), ]
-    # merge key categories of duplicate terms - this makes the function work with some LIWC-supplied
-    # dictionaries that repeat term entries across different lines
-    dups <- which(duplicated(catlist[, 1]))
-    if (length(dups)) {
-        cat("Found", length(dups), "duplicated entries, and merged them.\n")
-        catlist <- consolidateCatlist(catlist)
-    }
-    
-    rownames(catlist) <- catlist[,1]
-    catlist <- catlist[, -1]
+    # merge terms that appear on more than one line
+    catlist <- split(catlist[, 2:ncol(catlist)], catlist$category)
+    catlist <- lapply(catlist, function(y) sort(unique(unlist(y))))
+    catnames <- names(catlist)
+    catlist <- as.data.frame(do.call(rbind, lapply(catlist, '[', 1:max(sapply(catlist, length)))), stringsAsFactors = FALSE)
+    rownames(catlist) <- catnames
+ 
     terms <- as.list(rep(NA, nrow(catlist)))
     names(terms) <- rownames(catlist)
     for (i in 1:nrow(catlist)) {

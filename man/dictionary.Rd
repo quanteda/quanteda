@@ -50,8 +50,7 @@ lgdict <- dictionary(file="http://www.kenbenoit.net/courses/essex2014qta/LaverGa
 dfm(inaugTexts, dictionary=lgdict)
 
 # import a LIWC formatted dictionary from http://www.moralfoundations.org
-mfdict <- dictionary(file = dictionary(file = "http://www.moralfoundations.org/sites/default/files/files/downloads/moral\%20foundations\%20dictionary.dic", format = "LIWC"),
-                       format = "LIWC")
+mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
 dfm(inaugTexts, dictionary = mfdict)
 }
 }
