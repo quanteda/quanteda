@@ -195,6 +195,15 @@ readLIWCdict <- function(path, enc="", toLower = TRUE) {
     
     d <- readLines(path, warn = FALSE)
     
+    # remove any lines with <of>
+    oflines <- grep("<of>", d)
+    if (length(oflines)) {
+        cat("note: ", length(oflines), " term",
+            ifelse(length(oflines)>1, "s", ""), 
+            " ignored because contains unsupported <of> tag", sep = "")
+        d <- d[-oflines]
+    }
+    
     # get the row number that signals the end of the category guide
     guideRowEnd <- max(which(d == "%"))
     if (guideRowEnd < 1) {

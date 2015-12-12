@@ -1,6 +1,8 @@
 quanteda 0.9.1
 ==============
 
+*  more robust implementation of LIWC-formatted dictionary file imports
+
 *  better implementation of tf-idf, and relative frequency weighting, especially for very large sparse
    matrix objects.  tf(), idf(), and tfidf() now provide relative term frequency, inverse document frequency,
    and tf-idf directly.
