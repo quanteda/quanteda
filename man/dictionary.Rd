@@ -5,7 +5,7 @@
 \title{create a dictionary}
 \usage{
 dictionary(x = NULL, file = NULL, format = NULL, enc = "",
-  tolower = TRUE, maxcats = 25)
+  toLower = TRUE)
 }
 \arguments{
 \item{x}{a list of character vector dictionary entries, including regular 
@@ -22,12 +22,7 @@ the Linguistic Inquiry and Word Count software} }}
 This uses the \link{iconv} labels for encoding.  See the "Encoding" section
 of the help for \link{file}.}
 
-\item{tolower}{if \code{TRUE}, convert all dictionary functions to lower}
-
-\item{maxcats}{optional maximum categories to which a word could belong in a 
-LIWC dictionary file, defaults to 10 (which is more than the actual LIWC 
-2007 dictionary uses).  The default value of 10 is likely to be more than 
-enough.}
+\item{toLower}{if \code{TRUE}, convert all dictionary keys and values to lower}
 }
 \value{
 A dictionary class object, essentially a specially classed named list
@@ -57,7 +52,7 @@ dfm(inaugTexts, dictionary=lgdict)
 # import a LIWC formatted dictionary from http://www.moralfoundations.org
 mfdict <- dictionary(file = dictionary(file = "http://www.moralfoundations.org/sites/default/files/files/downloads/moral\%20foundations\%20dictionary.dic", format = "LIWC"),
                        format = "LIWC")
-dfm(inaugTexts, dictionary=liwcdict)
+dfm(inaugTexts, dictionary = mfdict)
 }
 }
 \references{
