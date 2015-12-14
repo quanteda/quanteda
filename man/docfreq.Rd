@@ -3,15 +3,16 @@
 \docType{methods}
 \name{docfreq}
 \alias{docfreq}
-\alias{docfreq,dfmDense-method}
-\alias{docfreq,dfmSparse-method}
+\alias{docfreq,dfm-method}
 \title{get the document frequency of a feature}
 \usage{
-docfreq(x, threshold = 0, USE.NAMES = TRUE)
+docfreq(x, scheme = c("unary", "count", "inverse", "inversemax",
+  "inverseprob"), smoothing = 0, c = 1, base = 10, threshold = 0,
+  USE.NAMES = TRUE)
 
-\S4method{docfreq}{dfmSparse}(x, threshold = 0, USE.NAMES = TRUE)
-
-\S4method{docfreq}{dfmDense}(x, threshold = 0, USE.NAMES = TRUE)
+\S4method{docfreq}{dfm}(x, scheme = c("unary", "count", "inverse",
+  "inversemax", "inverseprob"), smoothing = 0, c = 1, base = 10,
+  threshold = 0, USE.NAMES = TRUE)
 }
 \arguments{
 \item{x}{a \link{dfm-class} document-feature matrix}
@@ -35,5 +36,17 @@ than zero, meaning that a feature occurs at least once in a document.
 \examples{
 mydfm <- dfm(inaugTexts[1:2], verbose = FALSE)
 docfreq(mydfm[, 1:20])
+
+#' # replication of worked example from
+# https://en.wikipedia.org/wiki/Tf–idf#Example_of_tf.E2.80.93idf
+(wikiDfm <- new("dfmSparse", 
+                Matrix::Matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
+                   byrow = TRUE, nrow = 2,  
+                   dimnames = list(docs = c("document1", "document2"), 
+                     features = c("this", "is", "a", "sample", "another",
+                                  "example")), sparse = TRUE)))
+docfreq(wikiDfm, scheme = "inverse", c = 0)
+docfreq(wikiDfm, scheme = "unary")
+docfreq(wikiDfm, scheme = "count")
 }
 

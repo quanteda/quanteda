@@ -218,7 +218,10 @@ corpus.VCorpus <- function(x, ...) {
     # extract the content (texts)
     #texts <- sapply(x, function(x) x$content)
     texts <- sapply(x, as.character)
-    
+    # paste together texts if they appear to be vectors
+    if (any(lengths(texts) > 1))
+        texts <- sapply(texts, paste, collapse = " ")
+        
     # special handling for VCorpus meta-data
     metad <- as.data.frame(t(as.data.frame(sapply(x, function(x) x$meta))))
     makechar <- function(x) gsub("character\\(0\\)", NA, as.character(x))

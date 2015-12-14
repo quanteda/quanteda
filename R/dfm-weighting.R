@@ -126,34 +126,88 @@ setMethod("weighting", signature(object="dfm"), function(object) {
 #' @examples 
 #' mydfm <- dfm(inaugTexts[1:2], verbose = FALSE)
 #' docfreq(mydfm[, 1:20])
-setGeneric("docfreq", function(x, threshold = 0, USE.NAMES = TRUE) standardGeneric("docfreq"))
+#' 
+#' #' # replication of worked example from
+#' # https://en.wikipedia.org/wiki/Tf–idf#Example_of_tf.E2.80.93idf
+#' (wikiDfm <- new("dfmSparse", 
+#'                 Matrix::Matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
+#'                    byrow = TRUE, nrow = 2,  
+#'                    dimnames = list(docs = c("document1", "document2"), 
+#'                      features = c("this", "is", "a", "sample", "another",
+#'                                   "example")), sparse = TRUE)))
+#' docfreq(wikiDfm, scheme = "inverse", c = 0)
+#' docfreq(wikiDfm, scheme = "unary")
+#' docfreq(wikiDfm, scheme = "count")
+setGeneric("docfreq", function(x, scheme = c("unary", "count", "inverse", "inversemax", "inverseprob"),
+                               smoothing = 0, c = 1, base = 10,
+                               threshold = 0, USE.NAMES = TRUE) standardGeneric("docfreq"))
+# setGeneric("df", getMethod("docfreq"))
 
 #' @rdname docfreq
-setMethod("docfreq", signature(x = "dfmSparse"), 
-          function(x, threshold = 0, USE.NAMES = TRUE) {
-              tx <- t(x)
-              featfactor <- factor(tx@i, 0:(nfeature(x)-1), labels = features(x))
-              result <- as.integer(table(featfactor[tx@x > threshold]))
+setMethod("docfreq", signature(x = "dfm"), 
+          function(x, scheme = c("unary", "count", "inverse", "inversemax", "inverseprob"),
+                   smoothing = 0, c = 1, base = 10,
+                   threshold = 0, USE.NAMES = TRUE) {
+
+              scheme <- match.arg(scheme)
+              args <- as.list(match.call(expand.dots=FALSE))
+              if ("base" %in% names(args) & !(substring(scheme, 1, 7) == "inverse"))
+                  warning("base not used for this scheme")
+              if ("c" %in% names(args) & !(substring(scheme, 1, 7) == "inverse"))
+                  warning("c not used for this scheme")
+              if (c < 0)
+                  stop("c must be >= 0")
+              
+              if (x@weightDf[["scheme"]] != "unary")
+                  stop("this dfm has already been term weighted as:", x@weightDf)
+              
+              if (scheme == "unary") {
+                  result <- rep(1, nfeature(x))
+
+              } else if (scheme == "count") {
+                  if (is(x, "dfmSparse")) {
+                      tx <- t(x)
+                      featfactor <- factor(tx@i, 0:(nfeature(x)-1), labels = features(x))
+                      result <- as.integer(table(featfactor[tx@x > threshold]))
+                  } else {
+                      if (!any(x@x <= threshold)) 
+                          result <- rep(ndoc(x), nfeature(x))
+                      else
+                          result <- colSums(as.matrix(x) > threshold)
+                  }
+
+              } else if (scheme == "inverse") {
+                  result <- log(ndoc(x), base = base) - 
+                      log(c + docfreq(x, "count", USE.NAMES = FALSE) + c, base = base)
+
+              } else if (scheme == "inversemax") {
+                  stop("not yet implemented")
+
+              } else if (scheme == "inverseprob") {
+                  stop("not yet implemented")
+                  
+              }
+
               if (USE.NAMES) names(result) <- features(x)
               result
           })
 
-#' @rdname docfreq
-setMethod("docfreq", signature(x = "dfmDense"), 
-          function(x, threshold = 0, USE.NAMES = TRUE) {
-              if (!any(x@x <= threshold)) 
-                  result <- rep(ndoc(x), nfeature(x))
-              else
-                  result <- colSums(as.matrix(x) > threshold)
-              
-              if (!USE.NAMES) 
-                  names(result) <- NULL
-              else 
-                  names(result) <- features(x)
-              
-              result
-          })
-
+#  @rdname docfreq
+# setMethod("docfreq", signature(x = "dfmDense"), 
+#           function(x, threshold = 0, USE.NAMES = TRUE) {
+#               if (!any(x@x <= threshold)) 
+#                   result <- rep(ndoc(x), nfeature(x))
+#               else
+#                   result <- colSums(as.matrix(x) > threshold)
+#               
+#               if (!USE.NAMES) 
+#                   names(result) <- NULL
+#               else 
+#                   names(result) <- features(x)
+#               
+#               result
+#           })
+# 
 
 
 #' compute tf-idf weights from a dfm
@@ -262,7 +316,7 @@ setMethod("tf", signature(x = "dfm"), definition =
                       stop("K must be in the [0, 1] interval")
                   
                   if (x@weightTf[["scheme"]] != "count")
-                      stop("this dfm has already been term weighted as:", x@tf)
+                      stop("this dfm has already been term weighted as:", x@weightTf)
                   
                   if (scheme == "count") {
                       return(x)
