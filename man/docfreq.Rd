@@ -2,20 +2,37 @@
 % Please edit documentation in R/dfm-weighting.R
 \docType{methods}
 \name{docfreq}
+\alias{df}
+\alias{df,dfm-method}
 \alias{docfreq}
 \alias{docfreq,dfm-method}
-\title{get the document frequency of a feature}
+\title{compute the (weighted) document frequency of a feature}
 \usage{
-docfreq(x, scheme = c("unary", "count", "inverse", "inversemax",
-  "inverseprob"), smoothing = 0, c = 1, base = 10, threshold = 0,
+docfreq(x, scheme = c("count", "inverse", "inversemax", "inverseprob",
+  "unary"), smoothing = 0, k = 0, base = 10, threshold = 0,
   USE.NAMES = TRUE)
 
-\S4method{docfreq}{dfm}(x, scheme = c("unary", "count", "inverse",
-  "inversemax", "inverseprob"), smoothing = 0, c = 1, base = 10,
+\S4method{docfreq}{dfm}(x, scheme = c("count", "inverse", "inversemax",
+  "inverseprob", "unary"), smoothing = 0, k = 0, base = 10,
   threshold = 0, USE.NAMES = TRUE)
+
+df(x, ...)
+
+\S4method{df}{dfm}(x, ...)
 }
 \arguments{
 \item{x}{a \link{dfm-class} document-feature matrix}
+
+\item{scheme}{type of document frequency weighting}
+
+\item{smoothing}{added to the quotient before taking the logarithm}
+
+\item{k}{added to the denominator in the "inverse" weighting types, to 
+prevent a zero document count for a term}
+
+\item{base}{the base with respect to which logarithms in the inverse document
+frequency weightings are computed; default is 10 (see Manning, 
+  Raghavan, and Schutze 2008, p123).}
 
 \item{threshold}{numeric value of the threshold \emph{above which} a feature 
 will considered in the computation of document frequency.  The default is 
@@ -24,14 +41,18 @@ documents in which it occurs greater than zero times.}
 
 \item{USE.NAMES}{logical; if \code{TRUE} attach feature labels as names of 
 the resulting numeric vector}
+
+\item{...}{not used}
 }
 \value{
 a numeric vector of document frequencies for each feature
 }
 \description{
-For a \link{dfm-class} object, returns the number of documents in which a 
-feature occurs more than a given frequency threshold.  The default is greater
-than zero, meaning that a feature occurs at least once in a document.
+For a \link{dfm-class} object, returns a (weighted) document frequency for 
+each term.  The default is a simple count of the number of documents in which
+a feature occurs more than a given frequency threshold.  (The default 
+threshold is  zero, meaning that any feature occuring at least once in a 
+document will be counted.)
 }
 \examples{
 mydfm <- dfm(inaugTexts[1:2], verbose = FALSE)
@@ -45,8 +66,16 @@ docfreq(mydfm[, 1:20])
                    dimnames = list(docs = c("document1", "document2"), 
                      features = c("this", "is", "a", "sample", "another",
                                   "example")), sparse = TRUE)))
-docfreq(wikiDfm, scheme = "inverse", c = 0)
+docfreq(wikiDfm)
+df(wikiDfm)
+docfreq(wikiDfm, scheme = "inverse")
+docfreq(wikiDfm, scheme = "inverse", k = 1, smoothing = 1)
 docfreq(wikiDfm, scheme = "unary")
-docfreq(wikiDfm, scheme = "count")
+docfreq(wikiDfm, scheme = "inversemax")
+docfreq(wikiDfm, scheme = "inverseprob")
+}
+\references{
+Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
+  \emph{Introduction to Information Retrieval}. Cambridge University Press.
 }
 

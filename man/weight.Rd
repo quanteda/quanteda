@@ -7,12 +7,12 @@
 \alias{weight,dfm-method}
 \alias{weighting}
 \alias{weighting,dfm-method}
-\title{Weight the feature frequencies in a dfm by various methods}
+\title{weight the feature frequencies in a dfm by various methods}
 \usage{
 weight(x, ...)
 
 \S4method{weight}{dfm}(x, type = c("frequency", "relFreq", "relMaxFreq",
-  "logFreq", "tfidf"), smoothing = 0, verbose = TRUE, ...)
+  "logFreq", "tfidf"), ...)
 
 smoother(x, smoothing)
 
@@ -36,11 +36,7 @@ control, call \code{\link{tfidf}} directly. \item maxTf - The term
 frequency divided by the frequency of the most frequent term in the
 document \item ppmi -   Positive Pointwise Mutual Information }}
 
-\item{smoothing}{amount to apply as additive smoothing to the
-document-feature matrix prior to weighting, default is 0.5, set to
-\code{smoothing=0} for no smoothing.}
-
-\item{verbose}{if \code{TRUE} output status messages}
+\item{smoothing}{constant added to the dfm cells for smoothing}
 
 \item{object}{the dfm object for accessing the weighting setting}
 }
