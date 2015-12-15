@@ -200,10 +200,10 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
             result <- lapply(x, function(x) x[which((x %in% features))])
     } else if (valuetype == "regex") {
         if (selection == "remove") {
-            result <- lapply(x, function(y) y[!which(stringi::stri_detect_regex(y, paste0(features, collapse = "|"), 
+            result <- lapply(x, function(y) y[-which(stringi::stri_detect_regex(y, rep(paste0(features, collapse = "|"), length(y)), 
                                                                                 case_insensitive = case_insensitive, ...))])
         } else {
-            result <- lapply(x, function(y) y[which(stringi::stri_detect_regex(y, paste0(features, collapse = "|"), 
+            result <- lapply(x, function(y) y[which(stringi::stri_detect_regex(y, rep(paste0(features, collapse = "|"), length(y)), 
                                                                                case_insensitive = case_insensitive, ...))])
         }
     }
