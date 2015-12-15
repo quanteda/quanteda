@@ -22,6 +22,8 @@ Bug fixes
 
 *  Fixed toLower(x, keepAcronyms = TRUE) that caused an error when x contained no acronyms.
 
+*  Creating a corpus from a tm VCorpus now works if a "document" is a vector of texts rather than a single text
+
 
 quanteda 0.9.0
 ==============
