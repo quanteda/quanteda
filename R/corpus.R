@@ -376,13 +376,13 @@ texts.corpus <- function(x, groups = NULL, ...) {
     if (is.factor(groups)) {
         group.split <- groups
     } else {
-        if (length(groups) > 1) {
-            # if more than one grouping variable
-            group.split <- lapply(documents(x)[, groups], as.factor)
-        } else {
-            # if only one grouping variable
-            group.split <- as.factor(documents(x)[, groups])
-        }
+#        if (length(groups) > 1) {
+#            # if more than one grouping variable
+            group.split <- as.factor(interaction(documents(x)[, groups], drop = TRUE))
+#        } else {
+#            # if only one grouping variable
+#            group.split <- as.factor(documents(x)[, groups])
+#        }
     }
     texts(txts, groups = group.split)
 }

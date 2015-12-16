@@ -6,7 +6,9 @@ require(quanteda)
 
 # read the text as a single file
 mobydicktf <- textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt")
-mobydicktf
+# mobydicktf <- textfile(system.file("extdata", "pg2701.txt.zip", package = "quanteda"))
+#mobydicktf <- textfile("inst/extdata/pg2701.txt.zip")
+#mobydicktf
 
 ## ------------------------------------------------------------------------
 substring(texts(mobydicktf), 1, 75)

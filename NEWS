@@ -24,6 +24,8 @@ Bug fixes
 
 *  Creating a corpus from a tm VCorpus now works if a "document" is a vector of texts rather than a single text
 
+*  Fixed a bug in texts(x, groups = MORE THAN ONE DOCVAR) that now groups correctly on combinations of multiple groups
+
 
 quanteda 0.9.0
 ==============

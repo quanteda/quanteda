@@ -40,8 +40,8 @@ The code below scans and splits the text of Moby Dick from Project Gutenberg, as
 require(quanteda)
 
 # read the text as a single file
-mobydicktf <- textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt")
-mobydicktf
+# mobydicktf <- textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt")
+mobydicktf <- textfile(unzip(system.file("extdata", "pg2701.txt.zip", package = "quanteda")))
 ```
 
 The `textfile()` loads the text and places inside a structured, intermediate object known as a `corpusSource` object.  We see this by outputting it to the global environment, as above.
