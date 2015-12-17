@@ -67,7 +67,7 @@ segment <- function(x, ...) {
 #' @export
 #' @examples
 #' # same as tokenize()
-#' identical(tokenize(ukimmigTexts, lower=FALSE), segment(ukimmigTexts, lower=FALSE))
+#' identical(tokenize(ukimmigTexts), segment(ukimmigTexts))
 #' 
 #' # segment into paragraphs
 #' segment(ukimmigTexts[3:4], "paragraphs")
@@ -85,7 +85,7 @@ segment.character <- function(x, what=c("tokens", "sentences", "paragraphs", "ta
                               ...) {
     what <- match.arg(what)
     if (what=="tokens") {
-        return(tokenize(x, sep=delimiter, ...)) 
+        return(tokenize(x, ...)) 
     } else if (what=="sentences") {
         # warning("consider using tokenize(x, what = \"sentence\") instead.")
         return(lapply(x, segmentSentence, delimiter, perl=perl)) 

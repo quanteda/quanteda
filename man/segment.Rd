@@ -63,7 +63,7 @@ into smaller units. For this, use \link{changeunits} instead.
 }
 \examples{
 # same as tokenize()
-identical(tokenize(ukimmigTexts, lower=FALSE), segment(ukimmigTexts, lower=FALSE))
+identical(tokenize(ukimmigTexts), segment(ukimmigTexts))
 
 # segment into paragraphs
 segment(ukimmigTexts[3:4], "paragraphs")
