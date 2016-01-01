@@ -1,6 +1,9 @@
 quanteda 0.9.1
 ==============
 
+*  added new methods for similarity(), including sparse matrix computation for method = "correlation" and "cosine".
+   (More planned soon.)  Also allows easy conversion to a matrix using as.matrix() on similarity lists.
+
 *  more robust implementation of LIWC-formatted dictionary file imports
 
 *  better implementation of tf-idf, and relative frequency weighting, especially for very large sparse
