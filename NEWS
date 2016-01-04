@@ -21,6 +21,9 @@ quanteda 0.9.1
    
 Bug fixes
 ---------
+*  Fixed a nasty bug problem in `convert(x, to = "stm")` that mixed up the word indexes.  Thanks Felix Haass for 
+   spotting this!
+
 *  Fixed a problem where wordstem was not working on ngram=1 tokenied objects
 
 *  Fixed toLower(x, keepAcronyms = TRUE) that caused an error when x contained no acronyms.

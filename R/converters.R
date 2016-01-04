@@ -244,10 +244,8 @@ dfm2stmformat <- function(data) {
     length(stmdocs) <- ndoc(data)
     names(stmdocs) <- docnames(data)
     for (d in docnames(data)) {
-        temp <- as.matrix(rbind(1:length(vocab), as.integer(as.matrix(data[d, ]))))
+        temp <- as.matrix(rbind(1:length(vocab), as.integer(as.matrix(sortedData[d, ]))))
         stmdocs[[d]] <- temp[, which(temp[2, ] > 0), drop=FALSE]
     }
-    list(documents=stmdocs, vocab=vocab, meta=NULL)
+    list(documents=stmdocs, vocab = vocab, meta = NULL)
 }
-
-

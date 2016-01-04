@@ -128,7 +128,7 @@ corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvar
     # convert to "enc" if not already UTF-8 **unless** ISO-8859-1 detected, in which case do not do automatically
     if (enc != encTo) {
         if (enc != "ISO-8859-1" & encTo == "UTF-8") {
-            cat("Non-", encTo, " encoding ", ifelse(detected, "(possibly) detected ", "specified"), " :", 
+            cat("Non-", encTo, " encoding ", ifelse(detected, "(possibly) detected", "specified"), ": ", 
                 enc, ".\n", sep="")
             # suppressWarnings(x <- stringi::stri_encode(x, from = enc, to = encTo))
         }
