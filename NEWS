@@ -19,6 +19,9 @@ quanteda 0.9.1
 *  removeFeatures() and selectFeatures.collocations() now all use a consistent interface and same underlying
    code, with removeFeatures() acting as a wrapper to selectFeatures().
    
+*  convert(x, to = "stm") now about 3-4x faster because it uses index positions from the dgCMatrix to convert to the 
+   sparse matrix format expected by stm.
+   
 Bug fixes
 ---------
 *  Fixed a nasty bug problem in `convert(x, to = "stm")` that mixed up the word indexes.  Thanks Felix Haass for 
