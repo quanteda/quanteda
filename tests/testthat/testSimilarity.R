@@ -39,7 +39,7 @@ test_that("test similarity method = \"cosine\" against proxy simil(): documents"
     
     #(cosQlcMatrix <- round(as.matrix(qlcMatrix::cosSparse(t(presDfm))), 6))
     
-    expect_equal(cosQuanteda, cosProxy) #<, cosQlcMatrix)
+    expect_equal(cosQuanteda - cosProxy, 0) #<, cosQlcMatrix)
 })
 
 
