@@ -1,5 +1,8 @@
 require(quanteda)
 require(testthat)
+require(proxy)
+#require(qlcMatrix)
+
 
 test_that("test similarity method = \"correlation\" against base cor()", {
     presDfm <- dfm(subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
@@ -34,9 +37,9 @@ test_that("test similarity method = \"cosine\" against proxy simil(): documents"
     cosProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "cosine", by_rows = TRUE))[, "1981-Reagan"], 6), decreasing = TRUE)
     (cosProxy <- round(as.matrix(proxy::simil(as.matrix(presDfm), "cosine", by_rows = TRUE), diag = 1.0), 6))
     
-    (cosQlcMatrix <- round(as.matrix(qlcMatrix::cosSparse(t(presDfm))), 6))
+    #(cosQlcMatrix <- round(as.matrix(qlcMatrix::cosSparse(t(presDfm))), 6))
     
-    expect_equal(cosQuanteda, cosProxy, cosQlcMatrix)
+    expect_equal(cosQuanteda, cosProxy) #<, cosQlcMatrix)
 })
 
 
