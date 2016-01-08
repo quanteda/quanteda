@@ -243,7 +243,7 @@ get_doc <- function(f, encodingFrom = NULL, encodingTo = "UTF-8") {
                result <- list(txts = paste(suppressWarnings(readLines(fn)), collapse="\n"), docv=data.frame())
                close(fn)
                if (encodingTo != "UTF-8")
-                   result <- iconv(result, from = "UTF-8", to = encodingTo)
+                   result$txts <- iconv(result$txts, from = encodingFrom, to = encodingTo, sub = "")
                return(result)
            },
            doc =  { return(list(txts = get_word(f), docv=data.frame())) },

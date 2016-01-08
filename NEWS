@@ -24,6 +24,8 @@ quanteda 0.9.1
    
 Bug fixes
 ---------
+*  Fixed a bug in textfile() preventing encodingFrom and encodingTo from working properly.
+
 *  Fixed a nasty bug problem in `convert(x, to = "stm")` that mixed up the word indexes.  Thanks Felix Haass for 
    spotting this!
 
