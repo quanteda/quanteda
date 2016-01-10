@@ -239,12 +239,10 @@ get_doc <- function(f, encodingFrom = NULL, encodingTo = "UTF-8") {
     switch(fileType,
            txt =  { 
                if (is.null(encodingFrom)) encodingFrom <- getOption("encoding")
-               fn <- file(f, open = "rt", encoding = encodingFrom)
-               result <- list(txts = paste(suppressWarnings(readLines(fn)), collapse="\n"), docv=data.frame())
-               close(fn)
-               if (encodingTo != "UTF-8")
-                   result$txts <- iconv(result$txts, from = encodingFrom, to = encodingTo, sub = "")
-               return(result)
+               txts <- readLines(f, encoding = encodingFrom, warn = FALSE)
+               if (!(encodingTo %in% c("UTF-8", "utf-8", "UTF8")))
+                   txts <- iconv(txts, from = encodingFrom, to = encodingTo, sub = "")
+               return(list(txts = paste(txts, collapse="\n"), docv=data.frame()))
            },
            doc =  { return(list(txts = get_word(f), docv=data.frame())) },
            json = { return(get_json_tweets(f)) },
