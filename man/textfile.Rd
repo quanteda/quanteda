@@ -3,67 +3,50 @@
 \docType{methods}
 \name{textfile}
 \alias{textfile}
-\alias{textfile,character,index,missing,missing,ANY,missing,missing,missing-method}
-\alias{textfile,character,missing,ANY,ANY,ANY,missing,missing,missing-method}
-\alias{textfile,character,missing,missing,missing,ANY,character,ANY,ANY-method}
+\alias{textfile,character,index,ANY,missing,missing,missing-method}
+\alias{textfile,character,missing,ANY,character,ANY,ANY-method}
+\alias{textfile,character,missing,ANY,missing,missing,missing-method}
 \title{read a text corpus source from a file}
 \usage{
-textfile(file, textField, encodingFrom = NULL, encodingTo = "UTF-8",
-  cache = FALSE, docvarsfrom = c("filenames"), dvsep = "_",
+textfile(file, textField, cache = FALSE, docvarsfrom = c("filenames"),
+  dvsep = "_", docvarnames = NULL, ...)
+
+\S4method{textfile}{character,index,ANY,missing,missing,missing}(file,
+  textField, cache = FALSE, docvarsfrom = c("filenames"), dvsep = "_",
   docvarnames = NULL, ...)
 
+\S4method{textfile}{character,missing,ANY,missing,missing,missing}(file,
+  textField, cache = FALSE, docvarsfrom = c("filenames"), dvsep = "_",
+  docvarnames = NULL, ...)
 
-  \S4method{textfile}{character,index,missing,missing,ANY,missing,missing,missing}(file,
-  textField, encodingFrom = NULL, encodingTo = "UTF-8", cache = FALSE,
-  docvarsfrom = c("filenames"), dvsep = "_", docvarnames = NULL, ...)
-
-
-  \S4method{textfile}{character,missing,ANY,ANY,ANY,missing,missing,missing}(file,
-  textField, encodingFrom = NULL, encodingTo = "UTF-8", cache = FALSE,
-  docvarsfrom = c("filenames"), dvsep = "_", docvarnames = NULL, ...)
-
-
-  \S4method{textfile}{character,missing,missing,missing,ANY,character,ANY,ANY}(file,
-  textField, encodingFrom = NULL, encodingTo = "UTF-8", cache = FALSE,
-  docvarsfrom = c("filenames"), dvsep = "_", docvarnames = NULL, ...)
+\S4method{textfile}{character,missing,ANY,character,ANY,ANY}(file,
+  textField = NULL, cache = FALSE, docvarsfrom = c("headers"),
+  dvsep = "_", docvarnames = NULL, ...)
 }
 \arguments{
-\item{file}{the complete filename(s) to be read.  The value can be a vector
-of file names, a single file name, or a file "mask" using a "glob"-type
-wildcard value.  Currently available file value types are: \describe{
-\item{\code{txt}}{plain text files} \item{\code{json}}{data in JavaScript
-Object Notation, consisting of the texts and additional document-level
+\item{file}{the complete filename(s) to be read.  The value can be a vector 
+of file names, a single file name, or a file "mask" using a "glob"-type 
+wildcard value.  Currently available file value types are: \describe{ 
+\item{\code{txt}}{plain text files} \item{\code{json}}{data in JavaScript 
+Object Notation, consisting of the texts and additional document-level 
 variables and document-level meta-data.  The text key must be identified by
-specifying a \code{textField} value.} \item{\code{csv}}{comma separated
+specifying a \code{textField} value.} \item{\code{csv}}{comma separated 
 value data, consisting of the texts and additional document-level variables
-and document-level meta-data.  The text file must be identified by
-specifying a \code{textField} value.} \item{\code{tab, tsv}}{tab-separated
+and document-level meta-data.  The text file must be identified by 
+specifying a \code{textField} value.} \item{\code{tab, tsv}}{tab-separated 
 value data, consisting of the texts and additional document-level variables
-and document-level meta-data.  The text file must be identified by
-specifying a \code{textField} value.} \item{a wildcard value}{any valid
-pathname with a wildcard ("glob") expression that can be expanded by the
-operating system.  This may consist of multiple file types.}
-\item{\code{xml}}{Basic flat XML documents are supported -- those of the
+and document-level meta-data.  The text file must be identified by 
+specifying a \code{textField} value.} \item{a wildcard value}{any valid 
+pathname with a wildcard ("glob") expression that can be expanded by the 
+operating system.  This may consist of multiple file types.} 
+\item{\code{xml}}{Basic flat XML documents are supported -- those of the 
 kind supported by the function xmlToDataFrame function of the \strong{XML} 
-package.} \item{\code{zip}}{zip archive file, containing \code{*.txt}
+package.} \item{\code{zip}}{zip archive file, containing \code{*.txt} 
 files.  This may be a URL to a zip file.} }}
 
 \item{textField}{a variable (column) name or column number indicating where 
 to find the texts that form the documents for the corpus.  This must be 
 specified for file types \code{.csv} and \code{.json}.}
-
-\item{encodingFrom}{a single character value specifying the input file 
-encoding, or a vector of character values where each element corresponds to
-a single file, if a filemask or multiple filenames are supplied as 
-\code{file}.  These work in the same was as the \code{encoding} argument 
-supplied to \link{file}, which uses the naming conventions and conversion 
-functions of \link{iconv}.  If no \code{encodingFrom} argument is supplied,
-then the default encoding is assumed, which may very well be incorrect. 
-Currently, this argument only works when reading text (\code{txt}) files.}
-
-\item{encodingTo}{an optional value that can specify the encoding you wish 
-the files to be converted to, but we strongly encourage you to use the 
-default of UTF-8.}
 
 \item{cache}{If \code{TRUE}, write the object to a temporary file and store 
 the temporary filename in the \link{corpusSource-class} object definition. 
@@ -89,7 +72,11 @@ or from meta-data embedded in the text file header (\code{headers}).}
 \code{docvarsfrom} is specified.  If this argument is not used, default 
 docvar names will be used (\code{docvar1}, \code{docvar2}, ...).}
 
-\item{...}{additional arguments passed through to other functions}
+\item{...}{additional arguments passed through to low-level file reading
+function, such as \code{\link{file}}, \code{\link{read.csv}}, etc.  Useful
+for specifying an input encoding option, which is specified in the same was
+as it would be give to \code{\link{iconv}}.  See the Encoding section of
+\link{file} for details.}
 }
 \value{
 an object of class \link{corpusSource-class} that can be read by 

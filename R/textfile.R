@@ -45,39 +45,28 @@ setMethod("show",
 #' a set of texts in columns and document variables and document-level meta-data
 #' in additional columns.  For spreadsheet-like files, the first row must be a 
 #' header.
-#' @param file the complete filename(s) to be read.  The value can be a vector
-#'   of file names, a single file name, or a file "mask" using a "glob"-type
-#'   wildcard value.  Currently available file value types are: \describe{
-#'   \item{\code{txt}}{plain text files} \item{\code{json}}{data in JavaScript
-#'   Object Notation, consisting of the texts and additional document-level
+#' @param file the complete filename(s) to be read.  The value can be a vector 
+#'   of file names, a single file name, or a file "mask" using a "glob"-type 
+#'   wildcard value.  Currently available file value types are: \describe{ 
+#'   \item{\code{txt}}{plain text files} \item{\code{json}}{data in JavaScript 
+#'   Object Notation, consisting of the texts and additional document-level 
 #'   variables and document-level meta-data.  The text key must be identified by
-#'   specifying a \code{textField} value.} \item{\code{csv}}{comma separated
+#'   specifying a \code{textField} value.} \item{\code{csv}}{comma separated 
 #'   value data, consisting of the texts and additional document-level variables
-#'   and document-level meta-data.  The text file must be identified by
-#'   specifying a \code{textField} value.} \item{\code{tab, tsv}}{tab-separated
+#'   and document-level meta-data.  The text file must be identified by 
+#'   specifying a \code{textField} value.} \item{\code{tab, tsv}}{tab-separated 
 #'   value data, consisting of the texts and additional document-level variables
-#'   and document-level meta-data.  The text file must be identified by
-#'   specifying a \code{textField} value.} \item{a wildcard value}{any valid
-#'   pathname with a wildcard ("glob") expression that can be expanded by the
-#'   operating system.  This may consist of multiple file types.}
-#'   \item{\code{xml}}{Basic flat XML documents are supported -- those of the
+#'   and document-level meta-data.  The text file must be identified by 
+#'   specifying a \code{textField} value.} \item{a wildcard value}{any valid 
+#'   pathname with a wildcard ("glob") expression that can be expanded by the 
+#'   operating system.  This may consist of multiple file types.} 
+#'   \item{\code{xml}}{Basic flat XML documents are supported -- those of the 
 #'   kind supported by the function xmlToDataFrame function of the \strong{XML} 
-#'   package.} \item{\code{zip}}{zip archive file, containing \code{*.txt}
+#'   package.} \item{\code{zip}}{zip archive file, containing \code{*.txt} 
 #'   files.  This may be a URL to a zip file.} }
 #' @param textField a variable (column) name or column number indicating where 
 #'   to find the texts that form the documents for the corpus.  This must be 
 #'   specified for file types \code{.csv} and \code{.json}.
-#' @param encodingFrom a single character value specifying the input file 
-#'   encoding, or a vector of character values where each element corresponds to
-#'   a single file, if a filemask or multiple filenames are supplied as 
-#'   \code{file}.  These work in the same was as the \code{encoding} argument 
-#'   supplied to \link{file}, which uses the naming conventions and conversion 
-#'   functions of \link{iconv}.  If no \code{encodingFrom} argument is supplied,
-#'   then the default encoding is assumed, which may very well be incorrect. 
-#'   Currently, this argument only works when reading text (\code{txt}) files.
-#' @param encodingTo an optional value that can specify the encoding you wish 
-#'   the files to be converted to, but we strongly encourage you to use the 
-#'   default of UTF-8.
 #' @param docvarsfrom  used to specify that docvars should be taken from the 
 #'   filenames, when the \code{textfile} inputs are filenames and the elements 
 #'   of the filenames are document variables, separated by a delimiter 
@@ -98,7 +87,11 @@ setMethod("show",
 #'   settings of encoding conversion when creating a corpus from a 
 #'   \link{corpusSource-class} object, without having to load in all of the 
 #'   source data again.
-#' @param ... additional arguments passed through to other functions
+#' @param ... additional arguments passed through to low-level file reading
+#'   function, such as \code{\link{file}}, \code{\link{read.csv}}, etc.  Useful
+#'   for specifying an input encoding option, which is specified in the same was
+#'   as it would be give to \code{\link{iconv}}.  See the Encoding section of
+#'   \link{file} for details.
 #' @details The constructor does not store a copy of the texts, but rather reads
 #'   in the texts and associated data, and saves them to a temporary disk file 
 #'   whose location is specified in the \link{corpusSource-class} object.  This 
@@ -115,7 +108,7 @@ setMethod("show",
 #' @importFrom stats var
 #' @importFrom utils download.file unzip
 setGeneric("textfile",
-           function(file, textField, encodingFrom = NULL, encodingTo = "UTF-8",
+           function(file, textField, 
                     cache = FALSE, docvarsfrom = c("filenames"), dvsep="_", 
                     docvarnames = NULL,  ...) 
                standardGeneric("textfile"))
@@ -154,12 +147,11 @@ setGeneric("textfile",
 #' }
 setMethod("textfile", 
           signature(file = "character", textField = "index", 
-                    encodingFrom="missing", encodingTo="missing",
                     cache = "ANY", 
                     docvarsfrom="missing", dvsep="missing", docvarnames="missing"),
           definition = function(file, textField, cache = FALSE, ...) {
-              if (length(addedArgs <- list(...)))
-                  warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+#               if ((!(addedArgs <- list(...)) %in% names(formals(file))))
+#                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
               if (length(textField) != 1)
                   stop("textField must be a single field name or column number identifying the texts.")
               fileType <- getFileType(file)
@@ -177,17 +169,17 @@ setMethod("textfile",
 #' @export
 setMethod("textfile", 
           signature(file = "character", textField = "missing",
-                    encodingFrom="ANY", encodingTo="ANY", cache = "ANY",
+                    cache = "ANY",
                     docvarsfrom="missing", dvsep="missing", docvarnames="missing"),
-          definition = function(file, encodingFrom = NULL, encodingTo = "UTF-8", cache = FALSE, ...) {
+          definition = function(file, cache = FALSE, ...) {
 #               if (length(addedArgs <- list(...)))
 #                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
               
               fileType <- getFileType(file)
               if (fileType=="filemask" | fileType=="vector") {
-                  sources <- get_docs(file, encodingFrom, encodingTo, ...)
+                  sources <- get_docs(file, ...)
               } else {
-                  sources <- get_doc(file, encodingFrom, encodingTo)
+                  sources <- get_doc(file, ...)
               }
               returnCorpusSource(sources, cache)
           })
@@ -196,16 +188,15 @@ setMethod("textfile",
 #' @export
 setMethod("textfile", 
           signature(file = "character", textField = "missing", 
-                    encodingFrom="missing", encodingTo="missing", 
                     cache = "ANY",
                     docvarsfrom="character", dvsep="ANY", docvarnames="ANY"),
           definition = function(file, textField=NULL, cache = FALSE, 
                                 docvarsfrom=c("headers"), dvsep="_", docvarnames=NULL, ...) {
-              if (length(addedArgs <- list(...)))
-                  warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+#               if (length(addedArgs <- list(...)))
+#                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
               fileType <- getFileType(file)
               if (fileType=="filemask") {
-                  sources <- get_docs(file, encodingFrom, encodingTo)
+                  sources <- get_docs(file, ...)
               } else {
                   stop("File type ", fileType, " not supported with these arguments.")
               }
@@ -232,33 +223,34 @@ returnCorpusSource <- function(sources, cache) {
 
 
 # read a document from a text-only file.
-get_doc <- function(f, encodingFrom = NULL, encodingTo = "UTF-8") {
+get_doc <- function(f, ...) {
     txts <- c()
     fileType <- getFileType(f)
     # cat("fileType = ", fileType, "\n")
     switch(fileType,
            txt =  { 
-               if (is.null(encodingFrom)) encodingFrom <- getOption("encoding")
-               txts <- readLines(f, encoding = encodingFrom, warn = FALSE)
-               if (!(encodingTo %in% c("UTF-8", "utf-8", "UTF8")))
-                   txts <- iconv(txts, from = encodingFrom, to = encodingTo, sub = "")
-               return(list(txts = paste(txts, collapse="\n"), docv=data.frame()))
+               # if (is.null(encodingFrom)) encodingFrom <- getOption("encoding")
+               fn <- file(f, open = "rt", ...)
+               result <- list(txts = paste(readLines(fn, warn = FALSE), collapse="\n"), docv = data.frame())
+               close(fn)
+#                if (!(encodingTo %in% c("UTF-8", "utf-8", "UTF8")))
+#                    txts <- iconv(txts, from = encodingFrom, to = encodingTo, sub = "")
+               return(result)
            },
-           doc =  { return(list(txts = get_word(f), docv=data.frame())) },
-           json = { return(get_json_tweets(f)) },
+           doc =  { return(list(txts = get_word(f), docv = data.frame())) },
+           json = { return(get_json_tweets(f, ...)) },
            zip = { return(get_zipfile(f)) },
-           pdf =  { return(list(txts = get_pdf(f), docv=data.frame())) }
+           pdf =  { return(list(txts = get_pdf(f), docv = data.frame())) }
     )
     stop("unrecognized fileType:", fileType)
 }
 
-get_docs <- function(filemask, encodingFrom = NULL, encodingTo = "UTF-8", ...) {
-    
+get_docs <- function(filemask, ...) {
     if (length(filemask) == 1) {
         # get the pattern at the end
         pattern <- getRootFileNames(filemask)
         # get the directory name
-        path <- substr(filemask, 1, nchar(filemask) - nchar(pattern))
+        path <- substr(filemask, 1, nchar(filemask) - nchar(pattern) - 1)
         if (path == "") path <- "."
         # get the filenames
         filenames <- list.files(path, pattern, full.names=TRUE)
@@ -267,6 +259,11 @@ get_docs <- function(filemask, encodingFrom = NULL, encodingTo = "UTF-8", ...) {
     }
     
     # read texts from call to get_doc, discarding any docv
+    if ("encoding" %in% names(args <- (list(...)))) {
+        encodingFrom <- args$encoding
+    } else {
+        encodingFrom <- getOption("encoding")
+    }
     if (!is.null(encodingFrom)) {
         if (length(encodingFrom) > 1) {
             if (length(filenames) != length(encodingFrom))
@@ -277,7 +274,7 @@ get_docs <- function(filemask, encodingFrom = NULL, encodingTo = "UTF-8", ...) {
     # loop through filenames and load each one
     textsvec <- c()
     for (i in 1:length(filenames))
-        textsvec[i] <- get_doc(filenames[i], encodingFrom[i], encodingTo)$txts
+        textsvec[i] <- get_doc(filenames[i], encoding = encodingFrom[i])$txts
     
     # name the vector with the filename by default
     names(textsvec) <- getRootFileNames(filenames)
