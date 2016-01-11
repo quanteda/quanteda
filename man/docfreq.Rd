@@ -59,7 +59,7 @@ mydfm <- dfm(inaugTexts[1:2], verbose = FALSE)
 docfreq(mydfm[, 1:20])
 
 #' # replication of worked example from
-# https://en.wikipedia.org/wiki/Tf–idf#Example_of_tf.E2.80.93idf
+# https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
 (wikiDfm <- new("dfmSparse", 
                 Matrix::Matrix(c(1,1,2,1,0,0, 1,1,0,0,2,3),
                    byrow = TRUE, nrow = 2,  

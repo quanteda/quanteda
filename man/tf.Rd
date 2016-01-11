@@ -45,6 +45,6 @@ Paul Nulty and Kenneth Benoit
 Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
   \emph{Introduction to Information Retrieval}. Cambridge University Press.
 
-\url{https://en.wikipedia.org/wiki/Tf–idf#Term_frequency_2}
+\url{https://en.wikipedia.org/wiki/Tf-idf#Term_frequency_2}
 }
 
