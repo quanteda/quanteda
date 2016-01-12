@@ -129,7 +129,7 @@ setGeneric("textfile",
 #'                   textField = "text")
 #' summary(corpus(mytf2))
 #' # text file
-#' mytf3 <- textfile("https://www.gutenberg.org/cache/epub/2701/pg2701.txt", cache = FALSE)
+#' mytf3 <- textfile(unzip(system.file("extdata", "pg2701.txt.zip", package = "quanteda")))
 #' summary(corpus(mytf3))
 #' # XML data
 #' mytf6 <- textfile("http://www.kenbenoit.net/files/plant_catalog.xml", 
@@ -229,12 +229,9 @@ get_doc <- function(f, ...) {
     # cat("fileType = ", fileType, "\n")
     switch(fileType,
            txt =  { 
-               # if (is.null(encodingFrom)) encodingFrom <- getOption("encoding")
-               fn <- file(f, open = "rt", ...)
-               result <- list(txts = paste(readLines(fn, warn = FALSE), collapse="\n"), docv = data.frame())
-               close(fn)
-#                if (!(encodingTo %in% c("UTF-8", "utf-8", "UTF8")))
-#                    txts <- iconv(txts, from = encodingFrom, to = encodingTo, sub = "")
+               txt <- readLines(con <- file(f, ...), warn = FALSE)
+               close(con)
+               result <- list(txts = paste(txt, collapse="\n"), docv = data.frame())
                return(result)
            },
            doc =  { return(list(txts = get_word(f), docv = data.frame())) },
@@ -250,7 +247,7 @@ get_docs <- function(filemask, ...) {
         # get the pattern at the end
         pattern <- getRootFileNames(filemask)
         # get the directory name
-        path <- substr(filemask, 1, nchar(filemask) - nchar(pattern) - 1)
+        path <- substr(filemask, 1, nchar(filemask) - nchar(pattern))
         if (path == "") path <- "."
         # get the filenames
         filenames <- list.files(path, pattern, full.names=TRUE)
@@ -259,11 +256,10 @@ get_docs <- function(filemask, ...) {
     }
     
     # read texts from call to get_doc, discarding any docv
-    if ("encoding" %in% names(args <- (list(...)))) {
+    if ("encoding" %in% (args <- list(...)))
         encodingFrom <- args$encoding
-    } else {
+    else 
         encodingFrom <- getOption("encoding")
-    }
     if (!is.null(encodingFrom)) {
         if (length(encodingFrom) > 1) {
             if (length(filenames) != length(encodingFrom))

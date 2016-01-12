@@ -108,7 +108,7 @@ mytf2 <- textfile("http://www.kenbenoit.net/files/sotu.json",
                   textField = "text")
 summary(corpus(mytf2))
 # text file
-mytf3 <- textfile("https://www.gutenberg.org/cache/epub/2701/pg2701.txt", cache = FALSE)
+mytf3 <- textfile(unzip(system.file("extdata", "pg2701.txt.zip", package = "quanteda")))
 summary(corpus(mytf3))
 # XML data
 mytf6 <- textfile("http://www.kenbenoit.net/files/plant_catalog.xml", 
