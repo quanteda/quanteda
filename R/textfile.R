@@ -157,9 +157,9 @@ setMethod("textfile",
               fileType <- getFileType(file)
               # print('1')
               if (fileType == 'filemask'){
-                  sources <- get_datas(file, textField)
+                  sources <- get_datas(file, textField, ...)
               } else {
-                  sources <- get_data(file, textField, fileType)
+                  sources <- get_data(file, textField, fileType, ...)
               }
               returnCorpusSource(sources, cache)
           })
@@ -341,7 +341,7 @@ get_csv <- function(file, textField, sep=",", ...) {
         textField <- textFieldi
     }
     txts <- docv[, textField]
-    docv <- docv[, -textField]
+    docv <- docv[, -textField, drop = FALSE]
     list(txts=txts, docv=docv)
 }
 
@@ -370,7 +370,7 @@ get_json_tweets <- function(path=NULL, source="twitter", ...) {
     # parsing into a data frame
     # reading tweets into a data frame
     results <- streamR::parseTweets(txt, verbose=FALSE, ...)
-    list(txts = results[, 1], docv = as.data.frame(results[, -1]))
+    list(txts = results[, 1], docv = as.data.frame(results[, -1, drop = FALSE]))
 }
 
 ## general json
@@ -386,7 +386,7 @@ get_json <- function(path, textField, ...) {
     textFieldi <- which(names(df)==textField)
     if (length(textFieldi)==0)
         stop("column name", textField, "not found.")
-    list(txts=df[, textFieldi], docv=df[, -textFieldi])
+    list(txts=df[, textFieldi], docv=df[, -textFieldi, drop = FALSE])
 }
 
 
@@ -402,7 +402,7 @@ get_xml <- function(file, textField, sep=",", ...) {
         textField <- textFieldi
     }
     txts <- docv[, textField]
-    docv <- docv[, -textField]
+    docv <- docv[, -textField, drop = FALSE]
     list(txts=txts, docv=docv)
 }
 

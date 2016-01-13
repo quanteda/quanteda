@@ -1,3 +1,13 @@
+quanteda 0.9.3
+==============
+
+Bug fixes
+---------
+*  Fixed a bug in textfile() that prevented passthrough arguments in ..., such as `fileEncoding =`
+
+*  Fixed a bug in textfile() that caused exceptions with input documents containing docvars when there was only a single column of docvars (such as .csv files)
+
+
 quanteda 0.9.2
 ==============
 
