@@ -23,18 +23,20 @@ weighting(object)
 \arguments{
 \item{x}{document-feature matrix created by \link{dfm}}
 
-\item{...}{not currently used}
+\item{...}{not currently used.  For finer grained control, consider calling \code{\link{tf}} or \code{\link{tfidf}} directly.}
 
-\item{type}{The weighting function to aapply to the dfm. One of: \itemize{ 
-\item normTf - Length normalization: dividing the frequency of the feature 
-by the length of the document) \item logTf - The natural log of the term
-frequency \item tf-idf - Term-frequency * inverse document frequency. For a
-full explanation, see, for example, 
-\url{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html}.
- This implementation will not return negative values.  For finer-grained
-control, call \code{\link{tfidf}} directly. \item maxTf - The term
-frequency divided by the frequency of the most frequent term in the
-document \item ppmi -   Positive Pointwise Mutual Information }}
+\item{type}{The weighting function to aapply to the dfm. One of: 
+\describe{
+ \item{\code{"frequency"}}{integer feature count (default when a dfm is created)}
+ \item{\code{"relFreq"}}{the proportion of the feature counts of total feature counts (aka relative frequency)}
+ \item{\code{"relMaxFreq"}}{the proportion of the feature counts of the highest feature count in a document}
+ \item{\code{"logFreq"}}{natural logarithm of the feature count}
+ \item{\code{"tfidf"}}{Term-frequency * inverse document frequency. For a
+  full explanation, see, for example, 
+  \url{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html}.
+   This implementation will not return negative values.  For finer-grained
+  control, call \code{\link{tfidf}} directly}
+  }}
 
 \item{smoothing}{constant added to the dfm cells for smoothing}
 

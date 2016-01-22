@@ -3,9 +3,18 @@ quanteda 0.9.3
 
 Bug fixes
 ---------
-*  Fixed a bug in textfile() that prevented passthrough arguments in ..., such as `fileEncoding =`
+*  Fixed a bug in which a corpusSource object (from `textfile()`) with empty docvars prevented this argument
+   from being supplied to `corpus(corpusSourceObject, docvars = something)`.
 
-*  Fixed a bug in textfile() that caused exceptions with input documents containing docvars when there was only a single column of docvars (such as .csv files)
+*  Fixed inaccurate documentation for `weight()`, which previously listed unavailable options.
+
+*  More accurate and complete documentation for `tokenize()`.
+
+*  traps an exception when calling wordstem.tokenizedTexts(x) where x was not word tokenized.
+
+*  Fixed a bug in `textfile()` that prevented passthrough arguments in ..., such as `fileEncoding =`
+
+*  Fixed a bug in `textfile()` that caused exceptions with input documents containing docvars when there was only a single column of docvars (such as .csv files)
 
 
 quanteda 0.9.2

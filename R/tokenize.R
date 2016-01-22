@@ -175,9 +175,15 @@ tokenize <- function(x, ...) {
 
 #' @rdname tokenize
 #' @aliases clean
-#' @param what the unit for splitting the text, defaults to \code{"word"}. 
-#'   Available alternatives are \code{c("character", "word", "line_break", 
-#'   "sentence")}. See \link[stringi]{stringi-search-boundaries}.
+#' @param what the unit for splitting the text, available alternatives are:
+#'  \describe{ 
+#'  \item{\code{"word"}}{(recommended default) smartest, but slowest, word tokenization method; see \link[stringi]{stringi-search-boundaries} for details.}
+#'  \item{\code{"fasterword"}}{dumber, but faster, word tokenizeation method, \code{\link[stringi]{stri_split_regex}(x, "\\\\s")}}
+#'  \item{\code{"fastestword"}}{dumbest, but fastest, word tokenization method, calls \code{\link[stringi]{stri_split_fixed}(x, " ")}}
+#'  \item{\code{"character"}}{tokenization into individual characters}
+#'  \item{\code{"sentence"}}{sentence segmenter, smart enough to handle some exceptions in English such as "Prof. Plum killed Mrs. Peacock." 
+#'    (but far from perfect).}
+#'  } 
 #' @param removeNumbers remove tokens that consist only of numbers, but not 
 #'   words that start with digits, e.g. \code{2day}
 #' @param removePunct remove all punctuation
@@ -186,7 +192,7 @@ tokenize <- function(x, ...) {
 #' @param removeHyphens if \code{TRUE}, split words that are connected by 
 #'   hyphenation and hyphenation-like characters in between words, e.g. 
 #'   \code{"self-storage"} becomes \code{c("self", "storage")}.  Default is 
-#'   \code{FALSE} to preserve such words as is, with the hyphens.  Only applies
+#'   \code{FALSE} to preserve such words as is, with the hyphens.  Only applies 
 #'   if \code{what = "word"}.
 #' @param removeSeparators remove Separators and separator characters (spaces 
 #'   and variations of spaces, plus tab, newlines, and anything else in the 
@@ -199,9 +205,10 @@ tokenize <- function(x, ...) {
 #' @param ngrams integer vector of the \emph{n} for \emph{n}-grams, defaulting 
 #'   to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for 
 #'   bigrams and unigrams, use \code{1:2}.  You can even include irregular 
-#'   sequences such as \code{2:3} for bigrams and trigrams only.  See \code{\link{ngrams}}.
-#' @param skip integer vector specifying the skips for skip-grams, default is 0
-#'   for only immediately neighbouring words. Only applies if \code{ngrams} is
+#'   sequences such as \code{2:3} for bigrams and trigrams only.  See
+#'   \code{\link{ngrams}}.
+#' @param skip integer vector specifying the skips for skip-grams, default is 0 
+#'   for only immediately neighbouring words. Only applies if \code{ngrams} is 
 #'   different from the default of 1.  See \code{\link{skipgrams}}.
 #' @param concatenator character to use in concatenating \emph{n}-grams, default
 #'   is "\code{_}", which is recommended since this is included in the regular 
@@ -219,7 +226,8 @@ tokenize <- function(x, ...) {
 #'   intermediate step.  Since \code{tokenize()} is most likely to be used by 
 #'   more technical users, we have set its options to default to minimal 
 #'   intervention. This means that punctuation is tokenized as well, and that 
-#'   nothing is removed from the
+#'   nothing is removed by default from the text being tokenized except
+#'   inter-word spacing and equivalent characters.
 #' @return a \strong{tokenizedText} (S3) object, essentially a list of character
 #'   vectors. If \code{simplify = TRUE} then return a single character vector.
 #' @note This replaces an older function named \code{clean()}, removed from 
@@ -445,7 +453,8 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         class(result) <- c("tokenizedTexts", class(result))
     }
     
-    # add settings for ngrams and concatenator
+    # add settings
+    attr(result, "what") <- what
     attr(result, "ngrams") <- ngrams
     attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
 

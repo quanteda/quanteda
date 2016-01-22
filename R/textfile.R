@@ -362,7 +362,7 @@ get_json_tweets <- function(path=NULL, source="twitter", ...) {
         fls <- path
     }
     # read raw json data
-    txt <- unlist(sapply(fls, readLines))
+    txt <- unlist(sapply(fls, readLines, ...))
     # crude json type check here
     if (!grepl("retweet_count", txt[1]))
         stop("Not a Twitter json formatted file.")
@@ -379,7 +379,7 @@ get_json <- function(path, textField, ...) {
         stop("You must have jsonlite installed to read json files.")
     # raw <- readLines(path)
     #parsed <- lapply(path, jsonlite::fromJSON, flatten=TRUE)
-    df <- jsonlite::fromJSON(path, flatten=TRUE)
+    df <- jsonlite::fromJSON(path, flatten=TRUE, ...)
 #     df <- data.frame(matrix(unlist(parsed), nrow=length(parsed), ncol=length(parsed[[1]]), byrow=TRUE),
 #                      stringsAsFactors=FALSE)
 #     names(df) <- names(parsed[[1]])
@@ -394,7 +394,7 @@ get_json <- function(path, textField, ...) {
 get_xml <- function(file, textField, sep=",", ...) {
     if (!requireNamespace("XML", quietly = TRUE))
         stop("You must have XML installed to read XML files.")
-    docv <- XML::xmlToDataFrame(file, stringsAsFactors = FALSE)
+    docv <- XML::xmlToDataFrame(file, stringsAsFactors = FALSE, ...)
     if (is.character(textField)) {
         textFieldi <- which(names(docv)==textField)
         if (length(textFieldi)==0)

@@ -26,9 +26,15 @@ is.tokenizedTexts(x)
 
 \item{...}{additional arguments not used}
 
-\item{what}{the unit for splitting the text, defaults to \code{"word"}. 
-Available alternatives are \code{c("character", "word", "line_break", 
-"sentence")}. See \link[stringi]{stringi-search-boundaries}.}
+\item{what}{the unit for splitting the text, available alternatives are:
+\describe{ 
+\item{\code{"word"}}{(recommended default) smartest, but slowest, word tokenization method; see \link[stringi]{stringi-search-boundaries} for details.}
+\item{\code{"fasterword"}}{dumber, but faster, word tokenizeation method, \code{\link[stringi]{stri_split_regex}(x, "\\\\s")}}
+\item{\code{"fastestword"}}{dumbest, but fastest, word tokenization method, calls \code{\link[stringi]{stri_split_fixed}(x, " ")}}
+\item{\code{"character"}}{tokenization into individual characters}
+\item{\code{"sentence"}}{sentence segmenter, smart enough to handle some exceptions in English such as "Prof. Plum killed Mrs. Peacock." 
+  (but far from perfect).}
+}}
 
 \item{removeNumbers}{remove tokens that consist only of numbers, but not 
 words that start with digits, e.g. \code{2day}}
@@ -50,16 +56,17 @@ carefully.}
 \item{removeHyphens}{if \code{TRUE}, split words that are connected by 
 hyphenation and hyphenation-like characters in between words, e.g. 
 \code{"self-storage"} becomes \code{c("self", "storage")}.  Default is 
-\code{FALSE} to preserve such words as is, with the hyphens.  Only applies
+\code{FALSE} to preserve such words as is, with the hyphens.  Only applies 
 if \code{what = "word"}.}
 
 \item{ngrams}{integer vector of the \emph{n} for \emph{n}-grams, defaulting 
 to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for 
 bigrams and unigrams, use \code{1:2}.  You can even include irregular 
-sequences such as \code{2:3} for bigrams and trigrams only.  See \code{\link{ngrams}}.}
+sequences such as \code{2:3} for bigrams and trigrams only.  See
+\code{\link{ngrams}}.}
 
-\item{skip}{integer vector specifying the skips for skip-grams, default is 0
-for only immediately neighbouring words. Only applies if \code{ngrams} is
+\item{skip}{integer vector specifying the skips for skip-grams, default is 0 
+for only immediately neighbouring words. Only applies if \code{ngrams} is 
 different from the default of 1.  See \code{\link{skipgrams}}.}
 
 \item{concatenator}{character to use in concatenating \emph{n}-grams, default
@@ -92,7 +99,8 @@ The tokenizer is designed to be fast and flexible as well as to
   intermediate step.  Since \code{tokenize()} is most likely to be used by 
   more technical users, we have set its options to default to minimal 
   intervention. This means that punctuation is tokenized as well, and that 
-  nothing is removed from the
+  nothing is removed by default from the text being tokenized except
+  inter-word spacing and equivalent characters.
 }
 \note{
 This replaces an older function named \code{clean()}, removed from 

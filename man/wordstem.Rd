@@ -16,7 +16,8 @@ wordstem(x, language = "porter")
 \method{wordstem}{dfm}(x, language = "porter")
 }
 \arguments{
-\item{x}{a character vector or corpus, whose word stems are to be removed}
+\item{x}{a character vector or set of tokenized texts, whose word stems are to be removed.  If tokenized texts, 
+the tokenization must be word-based.}
 
 \item{language}{the name of a recognized language, as returned by 
 \link[SnowballC]{getStemLanguages}, or a two- or three-letter ISO-639 code 

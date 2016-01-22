@@ -187,11 +187,17 @@ corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvar
 corpus.corpusSource <- function(x, ...) {
     sources <- NULL
     if (x@cachedfile == "") {
-        return(corpus(texts(x), docvars = docvars(x), ...))
+        if (prod(dim(docvars(x))) == 0)
+            return(corpus(texts(x), ...))
+        else
+            return(corpus(texts(x), docvars = quanteda::docvars(x), ...))
     } else {
         # load from tempfile only into function environment
         load(x@cachedfile, envir = environment())
-        return(corpus(sources$txts, docvars = sources$docv, ...))
+        if (prod(dim(sources$docv)) == 0)
+            return(corpus(sources$txts, ...))
+        else
+            return(corpus(sources$txts, docvars = sources$docv, ...))
     }
 }
 

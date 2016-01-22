@@ -135,3 +135,4 @@ NULL
 # wordlists <- list(dalechall = dalechall, spache = spache)
 # save(wordlists, file = "data/wordlists.RData")
 
+

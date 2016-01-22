@@ -16,13 +16,13 @@
 #' @param method a valid method for computing similarity from 
 #'   \code{\link[proxy]{pr_DB}}
 #' @param sorted sort results in descending order if \code{TRUE}
-#' @param normalize if \code{TRUE}, normalize the dfm by term frequency within 
-#'   document (so that the dfm values will be relative term frequency within 
-#'   each document)
+#' @param normalize a deprecated argument retained (temporarily) for legacy
+#'   reasons.  If you want to compute similarity on a "normalized" dfm objects
+#'   (e.g. \code{x}), wrap it in \code{\link{weight}(x, "relFreq")}.
 #' @return a named list of the selection labels, with a sorted named vector of 
 #'   similarity measures.
-#' @note The method for computing feature similarities can be quite slow when
-#'   there are large numbers of feature types.  Future implementations will
+#' @note The method for computing feature similarities can be quite slow when 
+#'   there are large numbers of feature types.  Future implementations will 
 #'   hopefully speed this up.
 #' @examples
 #' # create a dfm from inaugural addresses from Reagan onwards

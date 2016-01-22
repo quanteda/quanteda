@@ -37,9 +37,9 @@ documents.}
 
 \item{sorted}{sort results in descending order if \code{TRUE}}
 
-\item{normalize}{if \code{TRUE}, normalize the dfm by term frequency within 
-document (so that the dfm values will be relative term frequency within 
-each document)}
+\item{normalize}{a deprecated argument retained (temporarily) for legacy
+reasons.  If you want to compute similarity on a "normalized" dfm objects
+(e.g. \code{x}), wrap it in \code{\link{weight}(x, "relFreq")}.}
 
 \item{...}{unused}
 
@@ -56,8 +56,8 @@ Compute similarities between documents and/or features from a
 measures, or how to create your own.
 }
 \note{
-The method for computing feature similarities can be quite slow when
-  there are large numbers of feature types.  Future implementations will
+The method for computing feature similarities can be quite slow when 
+  there are large numbers of feature types.  Future implementations will 
   hopefully speed this up.
 }
 \examples{
