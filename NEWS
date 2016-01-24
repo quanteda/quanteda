@@ -3,6 +3,9 @@ quanteda 0.9.3
 
 Bug fixes
 ---------
+*  Fixed a bug in `as.matrix.similMatrix()` that caused scrambled conversion when feature sets compared were unequal, which 
+   normally occurs when setting `similarity(x, n = <something>)` when n < nfeature(x)
+
 *  Fixed a bug in which a corpusSource object (from `textfile()`) with empty docvars prevented this argument
    from being supplied to `corpus(corpusSourceObject, docvars = something)`.
 

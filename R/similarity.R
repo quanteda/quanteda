@@ -152,6 +152,7 @@ setMethod("similarity",
                result
            })
 
+
 #' @rdname similarity
 #' @param ... unused
 #' @export
@@ -166,12 +167,16 @@ as.matrix.similMatrix <- function(x, ...) {
     })
     names(x) <- itemNames
 
-    # preserve document order 
-    docOrder <- order(names(x))
-    # sort the names to same order in each element
-    x <- lapply(x, function(i) i[order(names(i))])
-    do.call(rbind, x)[docOrder, ]
+    # now combine the lists taking into account that features may differ
+    tmpdf <- do.call(rbind, lapply(lapply(x, unlist), "[",
+                                   unique(unlist(c(sapply(x, names))))))
+    tmpdf <- as.data.frame(tmpdf)
+    names(tmpdf) <- unique(unlist(c(sapply(x, names))))
+    
+    as.matrix(tmpdf)
 }
+
+
 
 #' @rdname similarity
 #' @param digits decimal places to display similarity values
