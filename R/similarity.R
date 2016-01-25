@@ -173,7 +173,7 @@ as.matrix.similMatrix <- function(x, ...) {
     tmpdf <- as.data.frame(tmpdf)
     names(tmpdf) <- unique(unlist(c(sapply(x, names))))
     
-    as.matrix(tmpdf)
+    as.matrix(t(tmpdf))
 }
 
 
