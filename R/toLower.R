@@ -29,10 +29,10 @@ toLower <- function(x, keepAcronyms=FALSE, ...) {
 toLower.character <- function(x, keepAcronyms=FALSE, ...) {
     savedNames <- names(x)
     if (keepAcronyms)
-        x <- stri_replace_all_regex(x, "\\b([A-Z]{2,})\\b",  "_$1_", ...)
+        x <- stri_replace_all_regex(x, "\\b(\\p{Uppercase_Letter}{2,})\\b",  "_$1_", ...)
     x <- stri_trans_tolower(x, ...)
     if (keepAcronyms) {
-        m1 <- unique(unlist(stri_extract_all_regex(x, "\\b_[a-z]+_\\b", omit_no_match = TRUE, ...)))
+        m1 <- unique(unlist(stri_extract_all_regex(x, "\\b_\\p{Lowercase_Letter}+_\\b", omit_no_match = TRUE, ...)))
         if (length(m1) > 0) {
             m2 <- stri_replace_all_fixed(stri_trans_toupper(m1, ...), "_", "", ...)
             x <- sapply(x, function(s) stri_replace_all_regex(s, m1,  m2, vectorize_all = FALSE, ...))
