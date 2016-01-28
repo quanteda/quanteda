@@ -39,14 +39,14 @@ coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
 \item{\code{"all"}}{returns all of the above} }}
 
 \item{size}{length of the collocation.  Only bigram (\code{n=2}) and trigram 
-(\code{n=3}) collocations are implemented so far.  Can be \code{c(2,3)} (or
-\code{2:3}) to return both bi- and tri-gram collocations.}
+(\code{n=3}) collocations are currently implemented.  Can be \code{c(2,3)}
+(or \code{2:3}) to return both bi- and tri-gram collocations.}
 
 \item{n}{the number of collocations to return, sorted in descending order of 
 the requested statistic, or \eqn{G^2} if none is specified.}
 
 \item{spanPunct}{if \code{FALSE}, then collocations will not span punctuation
-marks, so that for instance \emph{marks, so} is not a collocation of
+marks, so that for instance \emph{marks, so} is not a collocation of 
 \code{marks so}.  If \code{TRUE}, do not handle punctuation specially.}
 }
 \value{
@@ -54,11 +54,11 @@ A data.table of collocations, their frequencies, and the computed
   association measure(s).
 }
 \description{
-Detects collocations (currently, bigrams and trigrams) from texts or a 
-corpus, returning a data.frame of collocations and their scores, sorted in 
-descending order of the association measure.  Words separated by punctuation 
-delimiters are not counted as adjacent and hence are not eligible to be 
-collocations.
+Detects collocations from texts or a corpus, returning a data.frame of
+collocations and their scores, sorted in descending order of the association
+measure.  Words separated by punctuation delimiters are not counted by
+default (\code{spanPunct = FALSE})  as adjacent and hence are not eligible to
+be collocations.
 }
 \examples{
 txt <- c("This is software testing: looking for (word) pairs!  

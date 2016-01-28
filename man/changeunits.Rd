@@ -18,13 +18,16 @@ changeunits(x, ...)
 \item{to}{new documents units for the corpus to be recast in}
 }
 \value{
-A corpus object with the documents defined as the new units, including document-level meta-data identifying the original documents.
+A corpus object with the documents defined as the new units,
+  including document-level meta-data identifying the original documents.
 }
 \description{
 For a corpus, recast the documents down or up a level of aggregation.  "Down"
 would mean going from documents to sentences, for instance.  "Up" means from 
 sentences back to documents.  This makes it easy to reshape a corpus from a 
 collection of documents into a collection of sentences, for instance.
+(Because the corpus object records its current "units" status, there is no 
+\code{from} option, only \code{to}.)
 }
 \examples{
 # simple example

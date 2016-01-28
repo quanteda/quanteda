@@ -806,6 +806,8 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
 #' would mean going from documents to sentences, for instance.  "Up" means from 
 #' sentences back to documents.  This makes it easy to reshape a corpus from a 
 #' collection of documents into a collection of sentences, for instance.
+#' (Because the corpus object records its current "units" status, there is no 
+#' \code{from} option, only \code{to}.)
 #' @param x corpus whose document units will be reshaped
 #' @param to new documents units for the corpus to be recast in
 #' @param ... not used
@@ -814,7 +816,8 @@ changeunits <- function(x, ...)
     UseMethod("changeunits")
 
 #' @rdname changeunits
-#' @return A corpus object with the documents defined as the new units, including document-level meta-data identifying the original documents.
+#' @return A corpus object with the documents defined as the new units,
+#'   including document-level meta-data identifying the original documents.
 #' @export
 #' @examples
 #' # simple example

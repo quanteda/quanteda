@@ -1,8 +1,13 @@
 quanteda 0.9.3
 ==============
 
+*  Improved documentation.
+
 Bug fixes
 ---------
+*  Fix issue #91 removeHyphens = FALSE not working in tokenise for some multiple intra-word hyphens, such as
+   "one-of-a-kind"
+
 *  Fixed a bug in `as.matrix.similMatrix()` that caused scrambled conversion when feature sets compared were unequal, which 
    normally occurs when setting `similarity(x, n = <something>)` when n < nfeature(x)
 

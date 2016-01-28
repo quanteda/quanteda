@@ -30,7 +30,7 @@ formatted dictionary values); \code{"regex"} for regular expressions; or
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 
-\item{capkeys}{if \code{TRUE}, convert dictionary or thesaurus keys to 
+\item{capkeys}{if \code{TRUE}, convert dictionary keys to
 uppercase to distinguish them from other features}
 
 \item{verbose}{print status messages if \code{TRUE}}
@@ -46,8 +46,8 @@ object.
 \note{
 Selecting only features defined in a "dictionary" is traditionally 
   known in text analysis as a \emph{dictionary method}, even though
-  technically this they operate more like a thesarus.  If a more truly thesaurus-like
-  application is desired, set \code{keeponly = FALSE} to convert features 
+  technically this they operate more like a thesarus.  If a thesaurus-like
+  application is desired, set \code{exclusive = FALSE} to convert features 
   defined as values in a dictionary into their keys, while keeping all other
   features.
 }

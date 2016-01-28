@@ -150,10 +150,8 @@ dfm2ldaformat <- function(x) {
 #' of terms in documents used by tghe \pkg{lda} package.  
 #' @return \code{dfm2ldaformat} returns a list with components "documents" and "vocab" as needed by 
 #'   \code{\link[lda]{lda.collapsed.gibbs.sampler}}.
-# @import topicmodels
 #' @export
 #' @examples
-#' 
 #' # calling dfm2ldaformat directly
 #' ldadfm <- dfm2ldaformat(quantdfm)
 #' str(ldadfm)

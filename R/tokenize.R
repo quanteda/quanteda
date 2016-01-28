@@ -359,9 +359,9 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         
         # to preserve intra-word hyphens, replace with _hy_
         if (!removeHyphens & removePunct)
-            result <- stri_replace_all_regex(result, "(\\w)[\\p{Pd}](\\w)", "$1_hy_$2")
+            result <- stri_replace_all_regex(result, "(\\b)[\\p{Pd}](\\b)", "$1_hy_$2")
         else if (removeHyphens)
-            result <- stri_replace_all_regex(result, "(\\w)[\\p{Pd}](\\w)", "$1 $2")
+            result <- stri_replace_all_regex(result, "(\\b)[\\p{Pd}](\\b)", "$1 $2")
             
         result <- stringi::stri_split_boundaries(result, 
                                                  type = "word", 

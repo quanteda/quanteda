@@ -125,7 +125,6 @@ ldadfm <- convert(quantdfm, to="lda")
 str(ldadfm)
 identical(ldadfm, stmdfm[1:2])
 
-
 # calling dfm2ldaformat directly
 ldadfm <- dfm2ldaformat(quantdfm)
 str(ldadfm)
