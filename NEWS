@@ -5,6 +5,11 @@ quanteda 0.9.3
 
 Bug fixes
 ---------
+*  Fixed an exception thrown by wordstem.character(x) if one element of x was NA.  
+
+*  dfm() on a text or tokenized text containing an NA element now returns a row with 0 feature counts.  Previously 
+   it returned a count of 1 for an NA feature.
+
 *  Fix issue #91 removeHyphens = FALSE not working in tokenise for some multiple intra-word hyphens, such as
    "one-of-a-kind"
 

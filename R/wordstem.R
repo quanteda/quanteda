@@ -33,9 +33,11 @@ wordstem <- function(x, language = "porter") {
 #' @import stringi 
 #' @export
 wordstem.character <- function(x, language = "porter") {
-    if (any(stringi::stri_detect_fixed(x, " ")))
+    if (any(stringi::stri_detect_fixed(x, " ") & !is.na(x)))
         stop("whitespace detected: you can only stem tokenized texts")
-    SnowballC::wordStem(x, language)
+    result <- SnowballC::wordStem(x, language)
+    result[which(is.na(x))] <- NA
+    result
 }
 
 # 
@@ -48,7 +50,7 @@ wordstem.character <- function(x, language = "porter") {
 #' @import stringi 
 #' @export
 wordstem.tokenizedTexts <- function(x, language = "porter") {
-    if (!grepl("word", attr(x, "what")) || any(unlist(lapply(x, stringi::stri_detect_fixed, " "))))
+    if (!grepl("word", attr(x, "what")) || any(unlist(lapply(x, function(y) stringi::stri_detect_fixed(y, " ") & !is.na(y)))))
         stop("whitespace detected: you can only stem word-tokenized texts")
     if (all.equal(attributes(x)$ngrams, 1))
         result <- lapply(x, SnowballC::wordStem, language)
@@ -57,6 +59,7 @@ wordstem.tokenizedTexts <- function(x, language = "porter") {
         result <- wordstem_Ngrams(x, attributes(x)$concatenator, language)
     }
     class(result) <- c("tokenizedTexts", class(result))
+    result[which(is.na(x))] <- NA
     result
 }
 

@@ -289,8 +289,9 @@ dfm.tokenizedTexts <- function(x,
                               j = featureIndex, 
                               x = 1L, 
                               dimnames = list(docs = docNames, features = uniqueFeatures))
-    # remove null term
+    # remove null term & "<NA>"
     dfmresult <- dfmresult[, -match("**_NULL_**", colnames(dfmresult)), drop = FALSE]
+    dfmresult <- dfmresult[, -which(is.na(colnames(dfmresult))), drop = FALSE]
     # construct the dfmSparse type object
     dfmresult <- new("dfmSparse", dfmresult)
     
