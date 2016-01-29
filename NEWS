@@ -3,6 +3,8 @@ quanteda 0.9.3
 
 *  Improved documentation.
 
+*  Added c.corpus() method for concatenating arbitarily large sets of corpus objects.
+
 Bug fixes
 ---------
 *  Fixed an exception thrown by wordstem.character(x) if one element of x was NA.  

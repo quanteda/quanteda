@@ -879,6 +879,9 @@ rep.data.frame <- function(x, ...)
 #'   for \code{source} and \code{notes}, which are stamped with information 
 #'   pertaining to the creation of the new joined corpus.
 #'   
+#'   The `c()` operator is also defined for corpus class objects, and provides an easy way to 
+#'   combine multiple corpus objects.
+#'   
 #'   There are some issues that need to be addressed in future revisions of 
 #'   quanteda concerning the use of factors to store document variables and 
 #'   meta-data.  Currently most or all of these are not recorded as factors, 
@@ -901,15 +904,35 @@ rep.data.frame <- function(x, ...)
     }
     
     # combine the documents info, after warning if not column-conforming
-    if (!setequal(names(c1$documents), names(c2$documents)))
-        warning("different document-level data found, filling missing values with NAs.", noBreaks.=TRUE)
+#     if (!setequal(names(c1$documents), names(c2$documents)))
+#         warning("different document-level data found, filling missing values with NAs.", noBreaks.=TRUE)
     c1$documents <- combineByName(c1$documents, c2$documents)
-    
-    
+
     # settings
     ### currently just use the c1 settings
     
     return(c1)
+}
+
+
+#' @rdname corpus
+#' @param recursive logical used by `c()` method, always set to `FALSE`
+#' @examples 
+#' corpus1 <- corpus(inaugTexts[1:2])
+#' corpus2 <- corpus(inaugTexts[3:4])
+#' corpus3 <- subset(inaugCorpus, President == "Obama")
+#' summary(c(corpus1, corpus2, corpus3))
+#' @export
+#' 
+c.corpus <- function(..., recursive = FALSE) {
+    dots <- list(...)
+    if (length(dots) == 1) return(dots[[1]])
+    result <- dots[[1]] + dots[[2]]
+    metacorpus(result, "source") <- paste0("Concatenation by c.corpus(", names(dots), ")")
+    if (length(dots) == 2) return(result)
+    for (i in 3:length(dots))
+        result <- result + dots[[i]]
+    return(result)
 }
 
 
@@ -967,8 +990,7 @@ combineByName <- function(A, B, ...) {
         C[[i]] <- vec
     }
     names(C) <- all.names
-    C <- as.data.frame(C) #, stringsAsFactors=TRUE)
-    return(C)
+    data.frame(C, stringsAsFactors = FALSE) #, stringsAsFactors=TRUE)
 }
 
 

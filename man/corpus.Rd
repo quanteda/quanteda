@@ -3,6 +3,7 @@
 \name{corpus}
 \alias{+.corpus}
 \alias{[.corpus}
+\alias{c.corpus}
 \alias{corpus}
 \alias{corpus.VCorpus}
 \alias{corpus.character}
@@ -23,6 +24,8 @@ corpus(x, ...)
 is.corpus(x)
 
 \method{+}{corpus}(c1, c2)
+
+\method{c}{corpus}(..., recursive = FALSE)
 
 \method{[}{corpus}(x, i, j = NULL, ..., drop = TRUE)
 }
@@ -67,6 +70,8 @@ To Dos, etc.}
 \item{c1}{corpus one to be added}
 
 \item{c2}{corpus two to be added}
+
+\item{recursive}{logical used by `c()` method, always set to `FALSE`}
 
 \item{i}{index for documents or rows of document variables}
 
@@ -130,6 +135,9 @@ The \code{+} operator for a corpus object will combine two corpus
   for \code{source} and \code{notes}, which are stamped with information 
   pertaining to the creation of the new joined corpus.
   
+  The `c()` operator is also defined for corpus class objects, and provides an easy way to 
+  combine multiple corpus objects.
+  
   There are some issues that need to be addressed in future revisions of 
   quanteda concerning the use of factors to store document variables and 
   meta-data.  Currently most or all of these are not recorded as factors, 
@@ -174,6 +182,10 @@ if ("tm" \%in\% rownames(installed.packages())) {
     quantCorp <- corpus(tmCorp)
     summary(quantCorp)
 }
+corpus1 <- corpus(inaugTexts[1:2])
+corpus2 <- corpus(inaugTexts[3:4])
+corpus3 <- subset(inaugCorpus, President == "Obama")
+summary(c(corpus1, corpus2, corpus3))
 }
 \author{
 Kenneth Benoit and Paul Nulty

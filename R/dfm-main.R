@@ -289,9 +289,8 @@ dfm.tokenizedTexts <- function(x,
                               j = featureIndex, 
                               x = 1L, 
                               dimnames = list(docs = docNames, features = uniqueFeatures))
-    # remove null term & "<NA>"
+    # remove null term
     dfmresult <- dfmresult[, -match("**_NULL_**", colnames(dfmresult)), drop = FALSE]
-    dfmresult <- dfmresult[, -which(is.na(colnames(dfmresult))), drop = FALSE]
     # construct the dfmSparse type object
     dfmresult <- new("dfmSparse", dfmresult)
     
@@ -338,6 +337,10 @@ dfm.tokenizedTexts <- function(x,
     if (verbose) 
         cat("   ... created a", paste(dim(dfmresult), collapse=" x "), 
             "sparse dfm\n   ... complete. \nElapsed time:", (proc.time() - startTime)[3], "seconds.\n")
+    
+    # remove any NA named columns
+    if (any(naFeatures <- is.na(features(dfmresult))))
+        dfmresult <- dfmresult[, -which(naFeatures), drop = FALSE]
     
     return(dfmresult)
 }
