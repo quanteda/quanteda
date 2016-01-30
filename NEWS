@@ -3,7 +3,10 @@ quanteda 0.9.3
 
 *  Improved documentation.
 
-*  Added c.corpus() method for concatenating arbitarily large sets of corpus objects.
+*  Added `c.corpus()` method for concatenating arbitarily large sets of corpus objects.
+
+*  Default for `similarity()` is now `margin = "documents"` -- prevents overly massive results if
+   `selection = NULL`
 
 Bug fixes
 ---------
