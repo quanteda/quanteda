@@ -11,13 +11,13 @@
 #' @param n the top \code{n} most similar items will be returned, sorted in 
 #'   descending order.  If n is \code{NULL}, return all items.
 #' @param margin identifies the margin of the dfm on which similarity will be 
-#'   computed: \code{features} for word/term features or \code{documents} for 
-#'   documents.
+#'   computed:  \code{documents} for documents or \code{features} for word/term
+#'   features.
 #' @param method a valid method for computing similarity from 
 #'   \code{\link[proxy]{pr_DB}}
 #' @param sorted sort results in descending order if \code{TRUE}
-#' @param normalize a deprecated argument retained (temporarily) for legacy
-#'   reasons.  If you want to compute similarity on a "normalized" dfm objects
+#' @param normalize a deprecated argument retained (temporarily) for legacy 
+#'   reasons.  If you want to compute similarity on a "normalized" dfm objects 
 #'   (e.g. \code{x}), wrap it in \code{\link{weight}(x, "relFreq")}.
 #' @return a named list of the selection labels, with a sorted named vector of 
 #'   similarity measures.
@@ -41,7 +41,7 @@
 #' similarity(presDfm, "2005-Bush", margin = "documents", method = "eJaccard", sorted = FALSE)
 #' 
 #' # compute some term similarities
-#' similarity(presDfm, c("fair", "health", "terror"), method="cosine")
+#' similarity(presDfm, c("fair", "health", "terror"), method="cosine", margin = "features", 20)
 #' 
 #' \dontrun{
 #' # compare to tm
@@ -54,8 +54,8 @@
 #' tdm <- TermDocumentMatrix(crude)
 #' findAssocs(tdm, c("oil", "opec", "xyz"), c(0.75, 0.82, 0.1))
 #' # in quanteda
-#' quantedaDfm <- new("dfmSparse", Matrix(t(as.matrix(tdm))))
-#' similarity(quantedaDfm, c("oil", "opec", "xyz"), n = 14)
+#' quantedaDfm <- new("dfmSparse", Matrix::Matrix(t(as.matrix(tdm))))
+#' similarity(quantedaDfm, c("oil", "opec", "xyz"), margin = "features", n = 14)
 #' corMat <- as.matrix(proxy::simil(as.matrix(quantedaDfm), by_rows = FALSE))
 #' round(head(sort(corMat[, "oil"], decreasing = TRUE), 14), 2)
 #' round(head(sort(corMat[, "opec"], decreasing = TRUE), 9), 2)
@@ -64,7 +64,7 @@
 setGeneric("similarity", 
            signature = c("x", "selection", "n", "margin", "sorted", "normalize"),
            def = function(x, selection = NULL, n = NULL, 
-                          margin = c("features", "documents"),
+                          margin = c("documents", "features"),
                           method = "correlation",
                           sorted = TRUE, normalize = FALSE)
                standardGeneric("similarity"))
@@ -74,7 +74,7 @@ setGeneric("similarity",
 setMethod("similarity", 
            signature = signature("dfm", "ANY"),
            def = function(x, selection = NULL, n = NULL, 
-                          margin = c("features", "documents"),
+                          margin = c("documents", "features"),
                           method = "correlation",
                           sorted = TRUE, normalize = FALSE) {
 
@@ -193,23 +193,23 @@ print.similMatrix <- function(x, digits = 4, ...) {
 ## used Matrix::crossprod and Matrix::tcrossprod for sparse Matrix handling
 
 # L2 norm
-norm2 <- function(x,s) { drop(crossprod(x^2, s)) ^ 0.5 }
+norm2 <- function(x,s) { drop(Matrix::crossprod(x^2, s)) ^ 0.5 }
 # L1 norm
-norm1 <- function(x,s) { drop(crossprod(abs(x),s)) }
+norm1 <- function(x,s) { drop(Matrix::crossprod(abs(x),s)) }
 
 cosineSparse <- function(x, y = NULL, margin = 1, norm = norm2) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     if (margin == 1) x <- t(x)
     S <- rep(1, nrow(x))			
-    N <- Diagonal( x = norm(x, S)^-1 )
+    N <- Matrix::Diagonal( x = norm(x, S)^-1 )
     x <- x %*% N
     if (!is.null(y)) {
         if (margin == 1) y <- t(y)
-        N <- Diagonal( x = match.fun(norm)(y, S)^-1 )
+        N <- Matrix::Diagonal( x = match.fun(norm)(y, S)^-1 )
         y <- y %*% N
-        return(as.matrix(crossprod(x,y)))
+        return(as.matrix(Matrix::crossprod(x,y)))
     } else
-        return(as.matrix(crossprod(x)))
+        return(as.matrix(Matrix::crossprod(x)))
 }
 
 correlationSparse <- function(x, y = NULL, margin = 1) {

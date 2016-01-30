@@ -583,7 +583,7 @@ plot(presCluster)
 
 We can also look at term similarities:
 ```{r}
-similarity(presDfm, c("fair", "health", "terror"), method = "cosine", normalize = FALSE)
+similarity(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features", n = 20)
 ```
 
 ## Scaling document positions

@@ -9,7 +9,7 @@
 \title{compute similarities between documents and/or features}
 \usage{
 similarity(x, selection = NULL, n = NULL, margin = c("documents",
-  "features", ), method = "correlation", sorted = TRUE, normalize = FALSE)
+  "features"), method = "correlation", sorted = TRUE, normalize = FALSE)
 
 \S4method{similarity}{dfm}(x, selection = NULL, n = NULL,
   margin = c("documents", "features"), method = "correlation",
@@ -77,7 +77,7 @@ similarity(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents", method
 similarity(presDfm, "2005-Bush", margin = "documents", method = "eJaccard", sorted = FALSE)
 
 # compute some term similarities
-similarity(presDfm, c("fair", "health", "terror"), method="cosine", margin = "features")
+similarity(presDfm, c("fair", "health", "terror"), method="cosine", margin = "features", 20)
 
 \dontrun{
 # compare to tm
@@ -90,7 +90,7 @@ crude <- tm_map(crude, stemDocument)
 tdm <- TermDocumentMatrix(crude)
 findAssocs(tdm, c("oil", "opec", "xyz"), c(0.75, 0.82, 0.1))
 # in quanteda
-quantedaDfm <- new("dfmSparse", Matrix(t(as.matrix(tdm))))
+quantedaDfm <- new("dfmSparse", Matrix::Matrix(t(as.matrix(tdm))))
 similarity(quantedaDfm, c("oil", "opec", "xyz"), margin = "features", n = 14)
 corMat <- as.matrix(proxy::simil(as.matrix(quantedaDfm), by_rows = FALSE))
 round(head(sort(corMat[, "oil"], decreasing = TRUE), 14), 2)

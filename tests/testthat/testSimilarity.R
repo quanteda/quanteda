@@ -7,7 +7,7 @@ require(proxy)
 test_that("test similarity method = \"correlation\" against base cor()", {
     presDfm <- dfm(subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
-    corQuanteda <- round(similarity(presDfm, "union", method = "correlation")[["union"]], 6)
+    corQuanteda <- round(similarity(presDfm, "union", method = "correlation", margin = "features")[["union"]], 6)
     corStats <- sort(round(cor(as.matrix(presDfm))[, "union"], 6), decreasing = TRUE)
     expect_equal(corQuanteda[1:10], corStats[2:11])
 })
@@ -17,7 +17,7 @@ test_that("test similarity method = \"cosine\" against proxy simil()", {
     presDfm <- dfm(subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    cosQuanteda <- round(similarity(presDfm, "soviet", method = "cosine")[["soviet"]], 4)
+    cosQuanteda <- round(similarity(presDfm, "soviet", method = "cosine", margin = "features")[["soviet"]], 4)
     
     cosProxy <- sort(round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), by_rows = FALSE)), 4), decreasing = TRUE)
     
