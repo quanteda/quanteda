@@ -10,6 +10,9 @@ quanteda 0.9.3
 
 Bug fixes
 ---------
+*  Fixed an issue for `mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")` causing it to fail 
+   because of the irregular combination of tabs and spaces in the dictionary file.
+
 *  Fixed an exception thrown by wordstem.character(x) if one element of x was NA.  
 
 *  dfm() on a text or tokenized text containing an NA element now returns a row with 0 feature counts.  Previously 

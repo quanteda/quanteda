@@ -4,8 +4,8 @@
 \alias{dictionary}
 \title{create a dictionary}
 \usage{
-dictionary(x = NULL, file = NULL, format = NULL, enc = "",
-  toLower = TRUE)
+dictionary(x = NULL, file = NULL, format = NULL, toLower = TRUE,
+  encoding = "")
 }
 \arguments{
 \item{x}{a list of character vector dictionary entries, including regular 
@@ -18,11 +18,11 @@ Available options are: \describe{ \item{\code{"wordstat"}}{format used by
 Provalis Research's Wordstat software} \item{\code{"LIWC"}}{format used by
 the Linguistic Inquiry and Word Count software} }}
 
-\item{enc}{optional encoding value for reading in imported dictionaries. 
+\item{toLower}{if \code{TRUE}, convert all dictionary keys and values to lower}
+
+\item{encoding}{additional optional encoding value for reading in imported dictionaries. 
 This uses the \link{iconv} labels for encoding.  See the "Encoding" section
 of the help for \link{file}.}
-
-\item{toLower}{if \code{TRUE}, convert all dictionary keys and values to lower}
 }
 \value{
 A dictionary class object, essentially a specially classed named list
@@ -42,16 +42,16 @@ mydict <-
                     taxation="taxation",
                     taxregex="tax*",
                     country="united states"))
-dfm(mycorpus, dictionary=mydict)                     
+head(dfm(mycorpus, dictionary=mydict))
 \dontrun{
 # import the Laver-Garry dictionary from http://bit.ly/1FH2nvf
-lgdict <- dictionary(file="http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat",
-                     format="wordstat")
-dfm(inaugTexts, dictionary=lgdict)
+lgdict <- dictionary(file = "http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat",
+                     format = "wordstat")
+head(dfm(inaugTexts, dictionary=lgdict))
 
 # import a LIWC formatted dictionary from http://www.moralfoundations.org
 mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
-dfm(inaugTexts, dictionary = mfdict)
+head(dfm(inaugTexts, dictionary = mfdict))
 }
 }
 \references{

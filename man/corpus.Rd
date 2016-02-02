@@ -182,6 +182,8 @@ if ("tm" \%in\% rownames(installed.packages())) {
     quantCorp <- corpus(tmCorp)
     summary(quantCorp)
 }
+
+# concatenate corpus objects
 corpus1 <- corpus(inaugTexts[1:2])
 corpus2 <- corpus(inaugTexts[3:4])
 corpus3 <- subset(inaugCorpus, President == "Obama")

@@ -918,12 +918,13 @@ rep.data.frame <- function(x, ...)
 #' @rdname corpus
 #' @param recursive logical used by `c()` method, always set to `FALSE`
 #' @examples 
+#' 
+#' # concatenate corpus objects
 #' corpus1 <- corpus(inaugTexts[1:2])
 #' corpus2 <- corpus(inaugTexts[3:4])
 #' corpus3 <- subset(inaugCorpus, President == "Obama")
 #' summary(c(corpus1, corpus2, corpus3))
 #' @export
-#' 
 c.corpus <- function(..., recursive = FALSE) {
     dots <- list(...)
     if (length(dots) == 1) return(dots[[1]])

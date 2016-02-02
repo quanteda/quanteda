@@ -32,7 +32,7 @@ setMethod("show", "dictionary",
 #'   Available options are: \describe{ \item{\code{"wordstat"}}{format used by
 #'   Provalis Research's Wordstat software} \item{\code{"LIWC"}}{format used by
 #'   the Linguistic Inquiry and Word Count software} }
-#' @param enc optional encoding value for reading in imported dictionaries. 
+#' @param encoding additional optional encoding value for reading in imported dictionaries. 
 #'   This uses the \link{iconv} labels for encoding.  See the "Encoding" section
 #'   of the help for \link{file}.
 #' @param toLower if \code{TRUE}, convert all dictionary keys and values to lower
@@ -54,19 +54,19 @@ setMethod("show", "dictionary",
 #'                     taxation="taxation",
 #'                     taxregex="tax*",
 #'                     country="united states"))
-#' dfm(mycorpus, dictionary=mydict)                     
+#' head(dfm(mycorpus, dictionary=mydict))
 #' \dontrun{
 #' # import the Laver-Garry dictionary from http://bit.ly/1FH2nvf
-#' lgdict <- dictionary(file="http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat",
-#'                      format="wordstat")
-#' dfm(inaugTexts, dictionary=lgdict)
+#' lgdict <- dictionary(file = "http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat",
+#'                      format = "wordstat")
+#' head(dfm(inaugTexts, dictionary=lgdict))
 #' 
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
 #' mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
-#' dfm(inaugTexts, dictionary = mfdict)
+#' head(dfm(inaugTexts, dictionary = mfdict))
 #' }
 #' @export
-dictionary <- function(x=NULL, file=NULL, format=NULL, enc="", toLower = TRUE) {
+dictionary <- function(x = NULL, file = NULL, format = NULL, toLower = TRUE, encoding = "") {
     if (!is.null(x) & !is.list(x))
         stop("Dictionaries must be named lists.")
     x <- flatten.dictionary(x)
@@ -78,9 +78,9 @@ dictionary <- function(x=NULL, file=NULL, format=NULL, enc="", toLower = TRUE) {
             stop("You must specify a format for file", file)
         format <- match.arg(format, c("wordstat", "LIWC"))
         if (format=="wordstat") 
-            x <- readWStatDict(file, enc = enc, toLower = toLower)
+            x <- readWStatDict(file, enc = encoding, toLower = toLower)
         else if (format=="LIWC") 
-            x <- readLIWCdict(file, enc = enc, toLower = toLower)
+            x <- readLIWCdict(file, toLower = toLower, encoding = encoding)
     }
     
     new("dictionary", x)
@@ -148,33 +148,6 @@ readWStatDict <- function(path, enc="", toLower=TRUE) {
 }
 
 
-
-
-# old code:
-# makes a list of lists from a two-level wordstat dictionary
-readWStatDictNested <- function(path) {
-    lines <- readLines(path)
-    allDicts <- list()
-    curDict <- list()
-    n <- list()
-    for (i in 1:length(lines)) {
-        word <- unlist(strsplit(lines[i], '\\('))[[1]]
-        #if it doesn't start with a tab, it's a category
-        if (substr(word,1,1) != "\t") {
-            n <- c(n,word)
-            if(length(curDict) >0) allDicts = c(allDicts, list(word=c(curDict)))
-            curDict = list()
-        } else {
-            word <- gsub(' ','', word)
-            curDict = c(curDict, gsub('\t','',(word)))
-        } 
-    }
-    # add the last dicationary
-    allDicts = c(allDicts, list(word=c(curDict)))
-    names(allDicts) <- n
-    return(allDicts)
-}
-
 # Import a LIWC-formatted dictionary
 # 
 # Make a flattened dictionary list object from a LIWC dictionary file.
@@ -191,31 +164,35 @@ readWStatDictNested <- function(path) {
 #   is a list of the dictionary terms corresponding to that level.
 # @author Kenneth Benoit
 # @export
-readLIWCdict <- function(path, enc="", toLower = TRUE) {
+readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding")) {
     
-    d <- readLines(path, warn = FALSE)
-    
+    if (encoding == "") encoding <- getOption("encoding")
+    d <- readLines(con <- file(path, encoding = encoding), warn = FALSE)
+    close(con)
+
     # remove any lines with <of>
     oflines <- grep("<of>", d)
     if (length(oflines)) {
         cat("note: ", length(oflines), " term",
             ifelse(length(oflines)>1, "s", ""), 
-            " ignored because contains unsupported <of> tag", sep = "")
+            " ignored because contains unsupported <of> tag\n", sep = "")
         d <- d[-oflines]
     }
     
     # get the row number that signals the end of the category guide
-    guideRowEnd <- max(which(d == "%"))
+    guideRowEnd <- max(grep("^%\\b", d))
     if (guideRowEnd < 1) {
         stop('Expected a guide (a category legend) delimited by percentage symbols at start of file, none found')
     }
     # extract the category guide
     guide <- d[2:(guideRowEnd-1)]
     
-    guide <- data.frame(do.call(rbind, strsplit(guide, "\t")), stringsAsFactors = FALSE)
+    guide <- data.frame(do.call(rbind, tokenize(guide)), stringsAsFactors = FALSE)
+    #guide
+    #guide <- data.frame(do.call(rbind, strsplit(guide, "\t")), stringsAsFactors = FALSE)
     colnames(guide) <- c('catNum', 'catName' )
     guide$catNum <- as.integer(guide$catNum)
-    if (toLower) guide$catName <- toLower(guide$catName)
+    # if (toLower) guide$catName <- toLower(guide$catName)
 
     # initialize the dictionary as list of NAs
     dictionary <- list()
@@ -225,7 +202,16 @@ readLIWCdict <- function(path, enc="", toLower = TRUE) {
     
     # make a list of terms with their category numbers
     catlist <- d[(guideRowEnd+1):length(d)]
-    catlist <- strsplit(catlist, "\t")
+    
+    # remove odd parenthetical codes
+    foundParens <- grep("^\\w+\\s+\\(.+\\)", catlist)
+    cat("note: ignoring parenthetical expressions in lines:\n")
+    for (i in foundParens)
+        cat("  [line ", foundParens + guideRowEnd, ":] ", catlist[i], "\n", sep = "")
+    catlist <- gsub("\\(.+\\)", "", catlist)
+    
+    # catlist <- strsplit(catlist, "\t")
+    catlist <- tokenize(catlist, what = "fasterword", removeNumbers = FALSE)
     catlist <- as.data.frame(do.call(rbind, lapply(catlist, '[', 1:max(sapply(catlist, length)))), stringsAsFactors = FALSE)
     catlist[, 2:ncol(catlist)] <- lapply(catlist[2:ncol(catlist)], as.integer)
     names(catlist)[1] <- "category"
