@@ -32,16 +32,17 @@
 #' plot(mydfm, random.color = TRUE, rot.per = .25, colors = sample(colors()[2:128], 5))
 #'
 #' \dontrun{# comparison plot of Irish government vs opposition
-#' govtopp <- factor(ifelse(ie2010Corpus[, "party"] %in% c("FF", "Green"), "Govt", "Opp"))
-#' govtoppDfm <- dfm(ie2010Corpus, groups = govtopp, verbose = FALSE)
+#' docvars(ie2010Corpus, "govtopp") <- factor(ifelse(ie2010Corpus[, "party"] %in% c("FF", "Green"), "Govt", "Opp"))
+#' govtoppDfm <- dfm(ie2010Corpus, groups = "govtopp", verbose = FALSE)
 #' plot(tfidf(govtoppDfm), comparison = TRUE)
 #' # compare to non-tf-idf version
-#' plot(sideDfm, comparison = TRUE)}
+#' plot(govtoppDfm, comparison = TRUE)
+#' }
 #' @export
 plot.dfm <- function(x, comparison = FALSE, ...) {
     if (comparison) {
         if (ndoc(x) > 8) stop("Too many documents to plot comparison, use 8 or fewer documents.")
-        wordcloud::comparison.cloud(t(x))
+        wordcloud::comparison.cloud(t(as.matrix(x)), ...)
     } else {
         wordcloud::wordcloud(features(x), colSums(x), ...)
     }

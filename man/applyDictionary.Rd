@@ -46,7 +46,7 @@ object.
 \note{
 Selecting only features defined in a "dictionary" is traditionally 
   known in text analysis as a \emph{dictionary method}, even though
-  technically this they operate more like a thesarus.  If a thesaurus-like
+  technically this "dictionary" operates more like a thesarus.  If a thesaurus-like
   application is desired, set \code{exclusive = FALSE} to convert features 
   defined as values in a dictionary into their keys, while keeping all other
   features.

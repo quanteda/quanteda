@@ -287,6 +287,21 @@ setMethod("rowSums",
           function(x, na.rm = FALSE, dims = 1L, ...) callNextMethod())
 
 
+#' @method colMeans dfmSparse
+#' @rdname dfm-class
+#' @export
+setMethod("colMeans", 
+          signature = (x = "dfmSparse"),
+          function(x, na.rm = FALSE, dims = 1L, ...) callNextMethod())
+
+#' @method rowSums dfmSparse
+#' @rdname dfm-class
+#' @export
+setMethod("rowMeans", 
+          signature = (x = "dfmSparse"),
+          function(x, na.rm = FALSE, dims = 1L, ...) callNextMethod())
+
+
 
 # #' @param i index for documents
 # #' @param j index for features

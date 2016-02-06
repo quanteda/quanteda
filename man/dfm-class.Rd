@@ -24,10 +24,12 @@
 \alias{[,dfmSparse,missing,missing,missing-method}
 \alias{as.data.frame,dfm-method}
 \alias{as.matrix,dfm-method}
+\alias{colMeans,dfmSparse-method}
 \alias{colSums,dfmSparse-method}
 \alias{dfm-class}
 \alias{dfmDense-class}
 \alias{dfmSparse-class}
+\alias{rowMeans,dfmSparse-method}
 \alias{rowSums,dfmSparse-method}
 \alias{t,dfmDense-method}
 \alias{t,dfmSparse-method}
@@ -40,6 +42,10 @@
 \S4method{colSums}{dfmSparse}(x, na.rm = FALSE, dims = 1L, ...)
 
 \S4method{rowSums}{dfmSparse}(x, na.rm = FALSE, dims = 1L, ...)
+
+\S4method{colMeans}{dfmSparse}(x, na.rm = FALSE, dims = 1L, ...)
+
+\S4method{rowMeans}{dfmSparse}(x, na.rm = FALSE, dims = 1L, ...)
 
 \S4method{[}{dfmDense,index,index,missing}(x, i = NULL, j = NULL, ...,
   drop = FALSE)

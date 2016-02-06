@@ -6,10 +6,14 @@ quanteda 0.9.3
 *  Added `c.corpus()` method for concatenating arbitarily large sets of corpus objects.
 
 *  Default for `similarity()` is now `margin = "documents"` -- prevents overly massive results if
-   `selection = NULL`
+   `selection = NULL`.
+   
+*  Defined `rowMeans()` and `colMeans()` methods for dfm objects.
 
 Bug fixes
 ---------
+*  Fix bug in `plot.dfm(x, comparison = TRUE)` method causing warning about rowMeans() failing.
+
 *  Fixed an issue for `mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")` causing it to fail 
    because of the irregular combination of tabs and spaces in the dictionary file.
 
