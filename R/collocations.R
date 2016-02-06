@@ -336,16 +336,16 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
 #' dfm(cw, verbose=FALSE)
 #' 
 #' # when used as a dictionary for dfm creation
-#' mydfm2 <- dfm(cw, dictionary=lapply(mydict, function(x) gsub(" ", "_", x)))
+#' mydfm2 <- dfm(cw, dictionary = lapply(mydict, function(x) gsub(" ", "_", x)))
 #' mydfm2
-#' # to pick up "taxes" in the second text, set dictionary_regex=TRUE
-#' mydfm3 <- dfm(cw, dictionary=lapply(mydict, phrasetotoken, mydict),
-#'               dictionary_regex=TRUE)
+#' # to pick up "taxes" in the second text, set valuetype = "regex"
+#' mydfm3 <- dfm(cw, dictionary = lapply(mydict, phrasetotoken, mydict),
+#'               valuetype = "regex")
 #' mydfm3
 #' ## one more token counted for "tax" than before
 setGeneric("phrasetotoken", 
            function(object, phrases, concatenator="_") standardGeneric("phrasetotoken"))
-# phrasetotoken <- function(x, dictionary, concatenator="_") {
+# phrasetotoken <- function(x, dictionary, concatenator = "_") {
 #     UseMethod("phrasetotoken")
 # }
 

@@ -16,13 +16,13 @@ dfm(x, ...)
   removeTwitter = FALSE, stem = FALSE, ignoredFeatures = NULL,
   keptFeatures = NULL, matrixType = c("sparse", "dense"),
   language = "english", thesaurus = NULL, dictionary = NULL,
-  valuetype = c("glob", "regex", "fixed"), dictionary_regex = FALSE, ...)
+  valuetype = c("glob", "regex", "fixed"), ...)
 
 \method{dfm}{tokenizedTexts}(x, verbose = TRUE, toLower = TRUE,
   stem = FALSE, ignoredFeatures = NULL, keptFeatures = NULL,
   matrixType = c("sparse", "dense"), language = "english",
   thesaurus = NULL, dictionary = NULL, valuetype = c("glob", "regex",
-  "fixed"), dictionary_regex = FALSE, ...)
+  "fixed"), ...)
 
 \method{dfm}{corpus}(x, verbose = TRUE, groups = NULL, ...)
 
@@ -94,11 +94,6 @@ regular expressions (see examples)}
 \item{valuetype}{\code{fixed} for words as is; \code{"regex"} for regular 
 expressions; or \code{"glob"} for "glob"-style wildcard.  Glob format is 
 the default.  See \code{\link{selectFeatures}}.}
-
-\item{dictionary_regex}{\code{TRUE} means the dictionary is already in 
-regular expression format, otherwise it will be converted from the "glob" 
-format.  This is a legacy argument that will soon be phased out in favour 
-of \code{valuetype}.}
 
 \item{groups}{character vector containing the names of document variables for
 aggregating documents}

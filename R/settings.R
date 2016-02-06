@@ -2,7 +2,7 @@
 SETTINGS_OPTIONS <- c("stopwords",
                       "collocations",
                       "dictionary",
-                      "dictionary_regex",
+                      "valuetype",
                       "stem",
                       "delimiter_word",
                       "delimiter_sentence",
@@ -89,7 +89,7 @@ settingsInitialize <- function() {
     tempsettings <- list(stopwords=NULL,
                          collocations=NULL,
                          dictionary=NULL,
-                         dictionary_regex=FALSE,
+                         valuetype = "glob",
                          stem=FALSE,
                          delimiter_word=DEFAULT_DELIM_WORD,
                          delimiter_sentence=DEFAULT_DELIM_SENTENCE,
@@ -134,8 +134,8 @@ settingsGet <- function(corp, match.call.list) {
     callingenv <- parent.frame()
     if (is.null(match.call.list$dictionary))
         assign("dictionary", settings(corp, "dictionary"), callingenv)
-    if (is.null(match.call.list$dictionary_regex))
-        assign("dictionary_regex", settings(corp, "dictionary_regex"), callingenv)
+    if (is.null(match.call.list$valuetype))
+        assign("valuetype", settings(corp, "valuetype"), callingenv)
     if (is.null(match.call.list$stem))
         assign("stem", settings(corp, "stem"), callingenv)   
     if (is.null(match.call.list$stopwords))
