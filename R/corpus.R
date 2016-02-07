@@ -52,6 +52,23 @@ corpus <- function(x, ...) {
 }
 
 
+# @param enc a string specifying the input encoding for texts in the corpus. 
+#   Must be a valid entry in \code{\link[stringi]{stri_enc_list}()}, since 
+#   the code in \code{corpus.character} will convert this to \code{encTo} using
+#   \code{\link[stringi]{stri_encode}}.  We recommend that you do
+#   \strong{not} use \code{enc}, since if left \code{NULL} (the default) then
+#   \code{corpus()} will detect the input encoding(s) and convert
+#   automatically.
+#   
+#   Currently only one input encoding can be specified for a collection of 
+#   input texts, meaning that you should not mix input text encoding types in a
+#   single \code{corpus} call.  However if you suspect multiple encodings, omit
+#   the \code{enc} argument and \code{corpus()} will detect and convert each
+#   file automatically.
+# @param encTo target encoding, default is UTF-8.  Unless you have strong reasons
+# to use an alternative encoding, we strongly recommend you leave this at its 
+# default.  Must be a valid entry in \code{\link[stringi]{stri_enc_list}()}
+
 #' @param docnames Names to be assigned to the texts, defaults to the names of 
 #'   the character vector (if any), otherwise assigns "text1", "text2", etc.
 #' @param docvars A data frame of attributes that is associated with each text.
@@ -60,22 +77,6 @@ corpus <- function(x, ...) {
 #' @param citation Information on how to cite the corpus.
 #' @param notes A string containing notes about who created the text, warnings, 
 #'   To Dos, etc.
-#' @param enc a string specifying the input encoding for texts in the corpus. 
-#'   Must be a valid entry in \code{\link[stringi]{stri_enc_list}()}, since 
-#'   the code in \code{corpus.character} will convert this to \code{encTo} using
-#'   \code{\link[stringi]{stri_encode}}.  We recommend that you do
-#'   \strong{not} use \code{enc}, since if left \code{NULL} (the default) then
-#'   \code{corpus()} will detect the input encoding(s) and convert
-#'   automatically.
-#'   
-#'   Currently only one input encoding can be specified for a collection of 
-#'   input texts, meaning that you should not mix input text encoding types in a
-#'   single \code{corpus} call.  However if you suspect multiple encodings, omit
-#'   the \code{enc} argument and \code{corpus()} will detect and convert each
-#'   file automatically.
-#' @param encTo target encoding, default is UTF-8.  Unless you have strong reasons
-#' to use an alternative encoding, we strongly recommend you leave this at its 
-#' default.  Must be a valid entry in \code{\link[stringi]{stri_enc_list}()}
 #' @rdname corpus
 #' @export
 #' @examples
@@ -84,23 +85,22 @@ corpus <- function(x, ...) {
 #' 
 #' # create a corpus from texts and assign meta-data and document variables
 #' ukimmigCorpus <- corpus(ukimmigTexts, 
-#'                         docvars = data.frame(party=names(ukimmigTexts)), 
-#'                         encTo = "UTF-16") 
+#'                         docvars = data.frame(party = names(ukimmigTexts))) 
 #'
 #' corpus(texts(ie2010Corpus))
 #' 
-corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvars=NULL,
-                             source=NULL, notes=NULL, citation=NULL, ...) {
+corpus.character <- function(x, docnames = NULL, docvars = NULL,
+                             source = NULL, notes = NULL, citation = NULL, ...) {
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     
-    # check validity of encoding label(s)
-    if (!is.null(enc)) {
-        if (!(enc %in% stringi::stri_enc_list(simplify = TRUE))) 
-            stop("enc = ", enc, " argument not found in stri_enc_list()")
-    }
-    if (!(encTo %in% stringi::stri_enc_list(simplify = TRUE))) 
-        stop("encTo = ", enc, " argument not found in stri_enc_list()")
+#     # check validity of encoding label(s)
+#     if (!is.null(enc)) {
+#         if (!(enc %in% stringi::stri_enc_list(simplify = TRUE))) 
+#             stop("enc = ", enc, " argument not found in stri_enc_list()")
+#     }
+#     if (!(encTo %in% stringi::stri_enc_list(simplify = TRUE))) 
+#         stop("encTo = ", enc, " argument not found in stri_enc_list()")
 
     x_names <- names(x)
     
@@ -112,27 +112,27 @@ corpus.character <- function(x, enc=NULL, encTo = "UTF-8", docnames=NULL, docvar
                                            "\'", "\'", "\'"), vectorize_all = FALSE)
 
     # detect encoding based on 100 documents
-    detectSampleSize <- 100
-    detectedEncoding <- encoding(x[sample(length(x), min(detectSampleSize, length(x)))], verbose = FALSE)$probably
+#     detectSampleSize <- 100
+#    detectedEncoding <- encoding(x[sample(length(x), min(detectSampleSize, length(x)))], verbose = FALSE)$probably
     # cat("Detected encoding:", detectedEncoding, "\n")
 #     if (!is.null(enc))
 #         if (enc != detectedEncoding)
 #             cat("  NOTE:", enc, "specified as input encoding, but", detectedEncoding, "detected.  Are you SURE?\n\n")
     # use specified enc, not detected encoding
-    detected <- FALSE
-    if (is.null(enc)) {
-        enc <- detectedEncoding
-        detected <- TRUE
-    }
-
-    # convert to "enc" if not already UTF-8 **unless** ISO-8859-1 detected, in which case do not do automatically
-    if (enc != encTo) {
-        if (enc != "ISO-8859-1" & encTo == "UTF-8") {
-            cat("Non-", encTo, " encoding ", ifelse(detected, "(possibly) detected", "specified"), ": ", 
-                enc, ".\n", sep="")
-            # suppressWarnings(x <- stringi::stri_encode(x, from = enc, to = encTo))
-        }
-    }
+#     detected <- FALSE
+#     if (is.null(enc)) {
+#         enc <- detectedEncoding
+#         detected <- TRUE
+#     }
+# 
+#     # convert to "enc" if not already UTF-8 **unless** ISO-8859-1 detected, in which case do not do automatically
+#     if (enc != encTo) {
+#         if (enc != "ISO-8859-1" & encTo == "UTF-8") {
+#             cat("Non-", encTo, " encoding ", ifelse(detected, "(possibly) detected", "specified"), ": ", 
+#                 enc, ".\n", sep="")
+#             # suppressWarnings(x <- stringi::stri_encode(x, from = enc, to = encTo))
+#         }
+#     }
 
     # name the texts vector
     if (!is.null(docnames)) {

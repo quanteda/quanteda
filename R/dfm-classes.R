@@ -466,15 +466,9 @@ setMethod("+", signature(e1 = "numeric", e2 = "dfmDense"),
 #' @rdname dfm-class
 #' @export
 #' @examples
-#' \dontrun{
-#' dfmSparse <- dfm(inaugTexts, verbose=FALSE)
+#' # coercion to matrix
+#' dfmSparse <- dfm(inaugTexts, verbose = FALSE)
 #' str(as.matrix(dfmSparse))
-#' class(as.matrix(dfmSparse))
-#' dfmDense <- dfm(inaugTexts, verbose=FALSE, matrixType="dense")
-#' str(as.matrix(dfmDense))
-#' class(as.matrix(dfmDense))
-#' identical(as.matrix(dfmSparse), as.matrix(dfmDense))
-#' }
 setMethod("as.matrix", signature(x="dfm"),
           function(x) {
               if (isS4(x)) {
@@ -490,15 +484,36 @@ setMethod("as.matrix", signature(x="dfm"),
 #' @rdname dfm-class
 #' @export
 #' @examples
-#' \dontrun{
-#' dfmSparse <- dfm(inaugTexts, verbose=FALSE)
+#' 
+#' # coercion to data.frame
+#' dfmSparse <- dfm(inaugTexts, verbose = FALSE)
 #' str(as.data.frame(dfmSparse))
-#' class(as.data.frame(dfmSparse))
-#' dfmDense <- dfm(inaugTexts, verbose=FALSE, matrixType="dense")
-#' str(as.data.frame(dfmDense))
-#' class(as.data.frame(dfmDense))
-#' identical(as.data.frame(dfmSparse), as.data.frame(dfmDense))
-#' }
-setMethod("as.data.frame", signature(x="dfm"), function(x) as.data.frame(as.matrix(x)))
+setMethod("as.data.frame", signature(x = "dfm"), function(x) as.data.frame(as.matrix(x)))
 
+# @param x a \link{dfm} object
+# @param ... optional arguments for other methods
+
+#' @rdname dfm-class
+#' @param y a second \link{dfm} object to be joined column-wise to the first
+#' @details \code{cbind(x, y, ...)} combines dfm objects by columns, returning a
+#'   dfm object with combined features from input dfm objects.  Calls 
+#'   \code{\link{cbind2}} defined for object classes in the \pkg{Matrix}
+#'   package. The attributes and settings of this new dfm are not currently
+#'   preserved.
+#' @export
+#' @examples 
+#' 
+#' # cbind() for dfm objects
+#' dfm1 <- dfm("This is a sample text.", verbose = FALSE)
+#' dfm2 <- dfm("one two three", verbose = FALSE)
+#' cbind(dfm1, dfm2)
+cbind.dfm <- function(x, y, ...) {
+    result <- Matrix::cbind2(x, y, ...)
+    new("dfmSparse", result)
+}
+
+# setMethod("cbind", signature(x = "dfmSparse", y = "dfmSparse"), function(x, y, ...) {
+#     getMethod("cbind", "dgCMatrix")(x, y, ...)
+# })
+#     
 

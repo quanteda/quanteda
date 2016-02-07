@@ -13,9 +13,8 @@
 \usage{
 corpus(x, ...)
 
-\method{corpus}{character}(x, enc = NULL, encTo = "UTF-8",
-  docnames = NULL, docvars = NULL, source = NULL, notes = NULL,
-  citation = NULL, ...)
+\method{corpus}{character}(x, docnames = NULL, docvars = NULL,
+  source = NULL, notes = NULL, citation = NULL, ...)
 
 \method{corpus}{corpusSource}(x, ...)
 
@@ -35,24 +34,6 @@ vector or a \link{corpusSource-class} object created using
 \code{\link{textfile}}.}
 
 \item{...}{additional arguments}
-
-\item{enc}{a string specifying the input encoding for texts in the corpus. 
-Must be a valid entry in \code{\link[stringi]{stri_enc_list}()}, since 
-the code in \code{corpus.character} will convert this to \code{encTo} using
-\code{\link[stringi]{stri_encode}}.  We recommend that you do
-\strong{not} use \code{enc}, since if left \code{NULL} (the default) then
-\code{corpus()} will detect the input encoding(s) and convert
-automatically.
-
-Currently only one input encoding can be specified for a collection of 
-input texts, meaning that you should not mix input text encoding types in a
-single \code{corpus} call.  However if you suspect multiple encodings, omit
-the \code{enc} argument and \code{corpus()} will detect and convert each
-file automatically.}
-
-\item{encTo}{target encoding, default is UTF-8.  Unless you have strong reasons
-to use an alternative encoding, we strongly recommend you leave this at its 
-default.  Must be a valid entry in \code{\link[stringi]{stri_enc_list}()}}
 
 \item{docnames}{Names to be assigned to the texts, defaults to the names of 
 the character vector (if any), otherwise assigns "text1", "text2", etc.}
@@ -157,8 +138,7 @@ corpus(inaugTexts)
 
 # create a corpus from texts and assign meta-data and document variables
 ukimmigCorpus <- corpus(ukimmigTexts, 
-                        docvars = data.frame(party=names(ukimmigTexts)), 
-                        encTo = "UTF-16") 
+                        docvars = data.frame(party = names(ukimmigTexts))) 
 
 corpus(texts(ie2010Corpus))
 

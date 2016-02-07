@@ -23,7 +23,8 @@ setMethod("show", "dictionary",
 #' create a dictionary
 #' 
 #' Create a quanteda dictionary, either from a list or by importing from a 
-#' foreign format.  Currently supported formats are the Wordstat and LIWC 
+#' foreign format.  Currently supported input file formats are the Wordstat and
+#' LIWC
 #' formats.
 #' @param x a list of character vector dictionary entries, including regular 
 #'   expressions (see examples)
@@ -35,7 +36,7 @@ setMethod("show", "dictionary",
 #' @param encoding additional optional encoding value for reading in imported dictionaries. 
 #'   This uses the \link{iconv} labels for encoding.  See the "Encoding" section
 #'   of the help for \link{file}.
-#' @param toLower if \code{TRUE}, convert all dictionary keys and values to lower
+#' @param toLower if \code{TRUE}, convert all dictionary values to lower case
 #' @return A dictionary class object, essentially a specially classed named list
 #'   of characters.
 #' @references Wordstat dictionaries page, from Provalis Research 

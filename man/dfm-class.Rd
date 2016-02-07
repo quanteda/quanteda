@@ -24,6 +24,7 @@
 \alias{[,dfmSparse,missing,missing,missing-method}
 \alias{as.data.frame,dfm-method}
 \alias{as.matrix,dfm-method}
+\alias{cbind.dfm}
 \alias{colMeans,dfmSparse-method}
 \alias{colSums,dfmSparse-method}
 \alias{dfm-class}
@@ -94,6 +95,8 @@
 \S4method{as.matrix}{dfm}(x)
 
 \S4method{as.data.frame}{dfm}(x)
+
+cbind.dfm(x, y, ...)
 }
 \arguments{
 \item{x}{the dfm object}
@@ -114,6 +117,8 @@ the calculations}
 \item{e1}{first quantity in "+" operation for dfm}
 
 \item{e2}{second quantity in "+" operation for dfm}
+
+\item{y}{a second \link{dfm} object to be joined column-wise to the first}
 }
 \description{
 The dfm class of object is a type of \link[Matrix]{Matrix-class}
@@ -145,6 +150,12 @@ are converted through weighting or other transformations into cells without zero
 be automatically converted to the dfmDense class.  This will necessarily be a much larger sized
 object than one of \code{dfmSparse} class, because each cell is recorded as a numeric (double) type
 requiring 8 bytes of storage.
+
+\code{cbind(x, y, ...)} combines dfm objects by columns, returning a
+  dfm object with combined features from input dfm objects.  Calls 
+  \code{\link{cbind2}} defined for object classes in the \pkg{Matrix}
+  package. The attributes and settings of this new dfm are not currently
+  preserved.
 }
 \section{Slots}{
 
@@ -165,24 +176,18 @@ either the \code{\link{smooth}} or the \code{\link{weight}} methods.}
 named \code{docs} and \code{features} respectively.}
 }}
 \examples{
-\dontrun{
-dfmSparse <- dfm(inaugTexts, verbose=FALSE)
+# coercion to matrix
+dfmSparse <- dfm(inaugTexts, verbose = FALSE)
 str(as.matrix(dfmSparse))
-class(as.matrix(dfmSparse))
-dfmDense <- dfm(inaugTexts, verbose=FALSE, matrixType="dense")
-str(as.matrix(dfmDense))
-class(as.matrix(dfmDense))
-identical(as.matrix(dfmSparse), as.matrix(dfmDense))
-}
-\dontrun{
-dfmSparse <- dfm(inaugTexts, verbose=FALSE)
+
+# coercion to data.frame
+dfmSparse <- dfm(inaugTexts, verbose = FALSE)
 str(as.data.frame(dfmSparse))
-class(as.data.frame(dfmSparse))
-dfmDense <- dfm(inaugTexts, verbose=FALSE, matrixType="dense")
-str(as.data.frame(dfmDense))
-class(as.data.frame(dfmDense))
-identical(as.data.frame(dfmSparse), as.data.frame(dfmDense))
-}
+
+# cbind() for dfm objects
+dfm1 <- dfm("This is a sample text.", verbose = FALSE)
+dfm2 <- dfm("one two three", verbose = FALSE)
+cbind(dfm1, dfm2)
 }
 \seealso{
 \link{dfm}
