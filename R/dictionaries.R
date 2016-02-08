@@ -36,7 +36,7 @@ setMethod("show", "dictionary",
 #' @param encoding additional optional encoding value for reading in imported dictionaries. 
 #'   This uses the \link{iconv} labels for encoding.  See the "Encoding" section
 #'   of the help for \link{file}.
-#' @param toLower if \code{TRUE}, convert all dictionary values to lower case
+#' @param toLower if \code{TRUE}, convert all dictionary values to lowercase
 #' @return A dictionary class object, essentially a specially classed named list
 #'   of characters.
 #' @references Wordstat dictionaries page, from Provalis Research 
@@ -56,6 +56,7 @@ setMethod("show", "dictionary",
 #'                     taxregex="tax*",
 #'                     country="united states"))
 #' head(dfm(mycorpus, dictionary=mydict))
+#' 
 #' \dontrun{
 #' # import the Laver-Garry dictionary from http://bit.ly/1FH2nvf
 #' lgdict <- dictionary(file = "http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat",
@@ -64,8 +65,7 @@ setMethod("show", "dictionary",
 #' 
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
 #' mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
-#' head(dfm(inaugTexts, dictionary = mfdict))
-#' }
+#' head(dfm(inaugTexts, dictionary = mfdict))}
 #' @export
 dictionary <- function(x = NULL, file = NULL, format = NULL, toLower = TRUE, encoding = "") {
     if (!is.null(x) & !is.list(x))

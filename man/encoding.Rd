@@ -27,7 +27,8 @@ encodings will be detected.}
 Detect the encoding of texts in a character, \link{corpus}, or 
 \link{corpusSource-class} object and report on the most likely encoding.  Useful in
 detecting the encoding of input texts, so that a source encoding can be 
-specified when (re)constructing a corpus using \code{\link{corpus}}.
+(re)specified when inputting a set of texts using \code{\link{textfile}}, prior
+to constructing a corpus.
 }
 \details{
 Based on \link[stringi]{stri_enc_detect}, which is in turn based on the 
@@ -45,7 +46,6 @@ encoding(ie2010Corpus)
 
 \dontrun{# Russian text, Windows-1251
 mytextfile <- textfile("http://www.kenbenoit.net/files/01_er_5.txt", cache = FALSE)
-encoding(mytextfile)
-}
+encoding(mytextfile)}
 }
 

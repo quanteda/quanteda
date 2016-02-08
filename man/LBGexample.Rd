@@ -3,12 +3,12 @@
 \docType{data}
 \name{LBGexample}
 \alias{LBGexample}
-\title{dfm containing example data from Table 1 of Laver Benoit and Garry
+\title{dfm with example data from Table 1 of Laver Benoit and Garry
   (2003)}
 \format{A \link{dfm} object with 6 documents and 37 features}
 \description{
-Example data to demonstrate the Wordscores algorithm, from Laver
-  Benoit and Garry (2003)
+Constructed example data to demonstrate the Wordscores algorithm, from Laver
+  Benoit and Garry (2003), Table 1.
 }
 \details{
 This is the example word count data from Laver, Benoit and Garry's

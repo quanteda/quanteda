@@ -20,6 +20,15 @@ Extract the features from a document-feature matrix, which are stored as the col
 of the \link{dfm} object.
 }
 \examples{
-features(dfm(inaugTexts))[1:50]  # first 50 features (alphabetically sorted)
+inaugDfm <- dfm(inaugTexts, verbose = FALSE)
+
+# first 50 features (in original text order)
+head(features(inaugDfm), 50)
+
+# first 50 features alphabetically
+head(sort(features(inaugDfm)), 50)
+
+# contrast with descending total frequency order from topfeatures()
+names(topfeatures(inaugDfm, 50))
 }
 

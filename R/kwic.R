@@ -6,10 +6,10 @@
 #' line number, since the text may or may not be segmented using end-of-line 
 #' delimiters.)
 #' 
-#' @param x a text character scalar or a quanteda corpus
-#' @param keywords A keyword or phrase consisting of multiple keywords, possibly
-#'   including punctuation.  If a phrase, \code{keywords} will be tokenized 
-#'   using the \code{...} options.
+#' @param x a text character, quanteda corpus, or tokenizedTexts object
+#' @param keywords A keyword pattern or phrase consisting of multiple keyword 
+#'   patterns, possibly including punctuation.  If a phrase, \code{keywords} 
+#'   will be tokenized using the \code{...} options.
 #' @param window The number of context words to be displayed around the keyword.
 #' @param valuetype how to interpret keyword expressions: \code{"glob"} for 
 #'   "glob"-style wildcard expressions; \code{"regex"} for regular expressions; 
@@ -19,12 +19,11 @@
 #' @param case_insensitive match without respect to case if \code{TRUE}
 #' @param ... additional arguments passed to \link{tokenize}, for applicable 
 #'   methods
-#' @return A kwic object classed data.frame, with the context before
-#'   (\code{preword}), the keyword in its original format (\code{word},
-#'   preserving case and attached punctuation), the context after
-#'   (\code{postword}), and the index position of the match (\code{position}). 
-#'   The rows of the dataframe will be named with the word index position, or
-#'   the text name and the index position for a corpus object.
+#' @return A kwic object classed data.frame, with the document name 
+#'   (\code{docname}), the token index position (\code{position}), the context
+#'   before (\code{contextPre}), the keyword in its original format
+#'   (\code{keyword}, preserving case and attached punctuation), and the context
+#'   after (\code{contextPost}).
 #' @author Kenneth Benoit
 #' @export
 #' @examples

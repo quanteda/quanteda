@@ -18,7 +18,7 @@ Available options are: \describe{ \item{\code{"wordstat"}}{format used by
 Provalis Research's Wordstat software} \item{\code{"LIWC"}}{format used by
 the Linguistic Inquiry and Word Count software} }}
 
-\item{toLower}{if \code{TRUE}, convert all dictionary keys and values to lower}
+\item{toLower}{if \code{TRUE}, convert all dictionary values to lowercase}
 
 \item{encoding}{additional optional encoding value for reading in imported dictionaries. 
 This uses the \link{iconv} labels for encoding.  See the "Encoding" section
@@ -30,7 +30,8 @@ A dictionary class object, essentially a specially classed named list
 }
 \description{
 Create a quanteda dictionary, either from a list or by importing from a 
-foreign format.  Currently supported formats are the Wordstat and LIWC 
+foreign format.  Currently supported input file formats are the Wordstat and
+LIWC
 formats.
 }
 \examples{
@@ -43,6 +44,7 @@ mydict <-
                     taxregex="tax*",
                     country="united states"))
 head(dfm(mycorpus, dictionary=mydict))
+
 \dontrun{
 # import the Laver-Garry dictionary from http://bit.ly/1FH2nvf
 lgdict <- dictionary(file = "http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat",
@@ -51,8 +53,7 @@ head(dfm(inaugTexts, dictionary=lgdict))
 
 # import a LIWC formatted dictionary from http://www.moralfoundations.org
 mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
-head(dfm(inaugTexts, dictionary = mfdict))
-}
+head(dfm(inaugTexts, dictionary = mfdict))}
 }
 \references{
 Wordstat dictionaries page, from Provalis Research 

@@ -502,32 +502,41 @@ metadoc.corpus <- function(x, field = NULL) {
 
 #' get or set for document-level variables
 #' 
-#' Get or set variables for the documents in a corpus
+#' Get or set document-level variables in a corpus.
 #' @param x corpus whose document-level variables will be read or set
 #' @param field string containing the document-level variable name
+#' @param drop If TRUE the result is coerced to a vector, if only one column is
+#'   selected. This only works for extracting elements, not for the replacement.
+#'   See \code{\link{drop}} for further details.
 #' @return \code{docvars} returns a data.frame of the document-level variables
-#' @examples head(docvars(inaugCorpus))
+#' @examples 
+#' # get docvars
+#' head(docvars(ie2010Corpus))
+#' head(docvars(ie2010Corpus, "party"))
+#' head(docvars(ie2010Corpus, "party", drop = FALSE))
 #' @export
-docvars <- function(x, field = NULL) {
+docvars <- function(x, field = NULL, drop = TRUE) {
     UseMethod("docvars")
 }
 
 #' @rdname docvars
 #' @export
-docvars.corpus <- function(x, field = NULL) {
+docvars.corpus <- function(x, field = NULL, drop = TRUE) {
     docvarsIndex <- intersect(which(substr(names(documents(x)), 1, 1) != "_"),
                               which(names(documents(x)) != "texts"))
     if (length(docvarsIndex)==0)
         return(NULL)
     if (is.null(field))
-        return(documents(x)[, docvarsIndex, drop=FALSE])
-    return(documents(x)[, field, drop=TRUE])
+        return(documents(x)[, docvarsIndex, drop = drop])
+    return(documents(x)[, field, drop = drop])
 }
 
 #' @rdname docvars
 #' @param value the new values of the document-level variable
 #' @return \code{docvars<-} assigns \code{value} to the named \code{field}
-#' @examples 
+#' @examples
+#'  
+#' # replacement
 #' docvars(inaugCorpus, "President") <- paste("prez", 1:ndoc(inaugCorpus), sep="")
 #' head(docvars(inaugCorpus))
 #' @export
@@ -538,7 +547,7 @@ docvars.corpus <- function(x, field = NULL) {
 
 #' @rdname docvars
 #' @export
-"docvars<-" <- function(x, field = NULL, value) {
+"docvars<-.corpus" <- function(x, field = NULL, value) {
     if ("texts" %in% field) stop("You should use texts() instead to replace the corpus texts.")
     if (is.null(field)) {
         field <- names(value)
@@ -575,8 +584,7 @@ tokens.corpus <- function(corp) {
 
 #' get or set document names
 #' 
-#' Extract the document names from a corpus or a document-feature matrix.
-#' of the \link{dfm} object.
+#' Get or set the document names from a corpus or a \link{dfm} object.
 #' @param x the object with docnames
 #' @export
 docnames <- function(x) {
@@ -594,6 +602,13 @@ docnames.corpus <- function(x) {
     rownames(x$documents)
 }
 
+#' @rdname docnames
+#' @export
+"docnames<-" <- function(x, value) {
+    UseMethod("docnames<-")
+}
+
+
 #' \code{docnames <-} assigns new values to the document names of a corpus.  (Does not work
 #' for dfm objects, whose document names are fixed.)
 #' @param value a character vector of the same length as \code{x}
@@ -601,13 +616,13 @@ docnames.corpus <- function(x) {
 #' @export
 #' @examples 
 #' # query the document names of the inaugural speech corpus
-#' docnames(inaugCorpus) <- paste("Speech", 1:ndoc(inaugCorpus), sep="")
+#' docnames(inaugCorpus)
 #' 
 #' # reassign the document names of the inaugural speech corpus
 #' docnames(inaugCorpus) <- paste("Speech", 1:ndoc(inaugCorpus), sep="")
 #' 
 #' @rdname docnames
-"docnames<-" <- function(x, value) {
+"docnames<-.corpus" <- function(x, value) {
     if (!is.corpus(x))
         stop("docnames<-  only valid for corpus objects.")
     rownames(x$documents) <- value

@@ -2,6 +2,8 @@
 
 S3method("+",corpus)
 S3method("[",corpus)
+S3method("docnames<-",corpus)
+S3method("docvars<-",corpus)
 S3method(applyDictionary,dfm)
 S3method(as.DocumentTermMatrix,dfm)
 S3method(as.matrix,similMatrix)

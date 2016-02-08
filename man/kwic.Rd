@@ -23,11 +23,11 @@ kwic(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"),
 \method{print}{kwic}(x, ...)
 }
 \arguments{
-\item{x}{a text character scalar or a quanteda corpus}
+\item{x}{a text character, quanteda corpus, or tokenizedTexts object}
 
-\item{keywords}{A keyword or phrase consisting of multiple keywords, possibly
-including punctuation.  If a phrase, \code{keywords} will be tokenized 
-using the \code{...} options.}
+\item{keywords}{A keyword pattern or phrase consisting of multiple keyword 
+patterns, possibly including punctuation.  If a phrase, \code{keywords} 
+will be tokenized using the \code{...} options.}
 
 \item{window}{The number of context words to be displayed around the keyword.}
 
@@ -43,12 +43,11 @@ be lowercased prior to matching.}
 methods}
 }
 \value{
-A kwic object classed data.frame, with the context before
-  (\code{preword}), the keyword in its original format (\code{word},
-  preserving case and attached punctuation), the context after
-  (\code{postword}), and the index position of the match (\code{position}). 
-  The rows of the dataframe will be named with the word index position, or
-  the text name and the index position for a corpus object.
+A kwic object classed data.frame, with the document name 
+  (\code{docname}), the token index position (\code{position}), the context
+  before (\code{contextPre}), the keyword in its original format
+  (\code{keyword}, preserving case and attached punctuation), and the context
+  after (\code{contextPost}).
 }
 \description{
 For a text or a collection of texts (in a quanteda corpus object), return a 

@@ -5,6 +5,7 @@
 \alias{docnames.corpus}
 \alias{docnames.dfm}
 \alias{docnames<-}
+\alias{docnames<-.corpus}
 \title{get or set document names}
 \usage{
 docnames(x)
@@ -12,6 +13,8 @@ docnames(x)
 \method{docnames}{corpus}(x)
 
 docnames(x) <- value
+
+\method{docnames}{corpus}(x) <- value
 
 \method{docnames}{dfm}(x)
 }
@@ -26,8 +29,7 @@ docnames(x) <- value
 \code{docnames<-} assigns a character vector of the document names in a corpus
 }
 \description{
-Extract the document names from a corpus or a document-feature matrix.
-of the \link{dfm} object.
+Get or set the document names from a corpus or a \link{dfm} object.
 
 \code{docnames} queries the document names of a corpus or a dfm
 
@@ -36,7 +38,7 @@ for dfm objects, whose document names are fixed.)
 }
 \examples{
 # query the document names of the inaugural speech corpus
-docnames(inaugCorpus) <- paste("Speech", 1:ndoc(inaugCorpus), sep="")
+docnames(inaugCorpus)
 
 # reassign the document names of the inaugural speech corpus
 docnames(inaugCorpus) <- paste("Speech", 1:ndoc(inaugCorpus), sep="")
