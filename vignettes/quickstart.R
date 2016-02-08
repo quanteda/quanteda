@@ -17,7 +17,7 @@ require(quanteda)
 ## ------------------------------------------------------------------------
 str(inaugTexts)  # this gives us some information about the object
 myCorpus <- corpus(inaugTexts)  # build the corpus
-summary(myCorpus, n=5)
+summary(myCorpus, n = 5)
 
 ## ------------------------------------------------------------------------
 docvars(myCorpus, "President") <- substring(names(inaugTexts), 6)
@@ -26,8 +26,8 @@ summary(myCorpus, n=5)
 
 ## ------------------------------------------------------------------------
 metadoc(myCorpus, "language") <- "english"
-metadoc(myCorpus, "docsource")  <- paste("inaugTexts", 1:ndoc(myCorpus), sep="_")
-summary(myCorpus, n=5, showmeta=TRUE)
+metadoc(myCorpus, "docsource")  <- paste("inaugTexts", 1:ndoc(myCorpus), sep = "_")
+summary(myCorpus, n = 5, showmeta = TRUE)
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  # Twitter json
@@ -89,8 +89,8 @@ tokenInfo[which.max(tokenInfo$Tokens),]
 
 ## ------------------------------------------------------------------------
 library(quanteda)
-mycorpus1 <- corpus(inaugTexts[1:5], note="First five inaug speeches.")
-mycorpus2 <- corpus(inaugTexts[53:57], note="Last five inaug speeches.")
+mycorpus1 <- corpus(inaugTexts[1:5], note = "First five inaug speeches.")
+mycorpus2 <- corpus(inaugTexts[53:57], note = "Last five inaug speeches.")
 mycorpus3 <- mycorpus1 + mycorpus2
 summary(mycorpus3)
 
@@ -101,8 +101,8 @@ summary(subset(inaugCorpus, President == "Adams"))
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 options(width = 200)
 kwic(inaugCorpus, "terror")
-kwic(inaugCorpus, "terror", wholeword = TRUE)
-kwic(inaugCorpus, "communist")
+kwic(inaugCorpus, "terror", valuetype = "regex")
+kwic(inaugCorpus, "communist*")
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # inspect the document-level variables
@@ -115,16 +115,16 @@ metacorpus(inaugCorpus)
 txt <- c(text1 = "This is $10 in 999 different ways,\n up and down; left and right!", 
          text2 = "@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123.")
 tokenize(txt)
-tokenize(txt, removeNumbers=TRUE, removePunct=TRUE)
-tokenize(txt, removeNumbers=FALSE, removePunct=TRUE)
-tokenize(txt, removeNumbers=TRUE, removePunct=FALSE)
-tokenize(txt, removeNumbers=FALSE, removePunct=FALSE)
-tokenize(txt, removeNumbers=FALSE, removePunct=FALSE, removeSeparators=FALSE)
+tokenize(txt, removeNumbers = TRUE, removePunct = TRUE)
+tokenize(txt, removeNumbers = FALSE, removePunct = TRUE)
+tokenize(txt, removeNumbers = TRUE, removePunct = FALSE)
+tokenize(txt, removeNumbers = FALSE, removePunct = FALSE)
+tokenize(txt, removeNumbers = FALSE, removePunct = FALSE, removeSeparators = FALSE)
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-tokenize("Great website: http://textasdata.com?page=123.", what="character")
-tokenize("Great website: http://textasdata.com?page=123.", what="character", 
-         removeSeparators=FALSE)
+tokenize("Great website: http://textasdata.com?page=123.", what = "character")
+tokenize("Great website: http://textasdata.com?page=123.", what = "character", 
+         removeSeparators = FALSE)
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # sentence level         
@@ -142,7 +142,7 @@ myDfm[, 1:5]
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # make a dfm, removing stopwords and applying stemming
-myStemMat <- dfm(myCorpus, ignoredFeatures = stopwords("english"), stem=TRUE)
+myStemMat <- dfm(myCorpus, ignoredFeatures = stopwords("english"), stem = TRUE)
 myStemMat[, 1:5]
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -162,7 +162,7 @@ plot(mydfm)
 
 ## ----warning=FALSE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 if (require(RColorBrewer))
-    plot(mydfm, max.words=100, colors = brewer.pal(6, "Dark2"), scale=c(8, .5))
+    plot(mydfm, max.words = 100, colors = brewer.pal(6, "Dark2"), scale = c(8, .5))
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 byPartyDfm <- dfm(ie2010Corpus, groups = "party", ignoredFeatures = stopwords("english"))
@@ -210,7 +210,7 @@ dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
 #  plot(presCluster)
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-similarity(presDfm, c("fair", "health", "terror"), method = "cosine", normalize = FALSE)
+similarity(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features", n = 20)
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # make prettier document names

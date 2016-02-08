@@ -5,16 +5,15 @@
 \alias{docvars.corpus}
 \alias{docvars.corpusSource}
 \alias{docvars<-}
-\alias{docvars<-.corpus}
 \title{get or set for document-level variables}
 \usage{
-docvars(x, field = NULL, drop = TRUE)
+docvars(x, field = NULL)
 
-\method{docvars}{corpus}(x, field = NULL, drop = TRUE)
+\method{docvars}{corpus}(x, field = NULL)
 
 docvars(x, field = NULL) <- value
 
-\method{docvars}{corpus}(x, field = NULL) <- value
+docvars(x, field = NULL) <- value
 
 \method{docvars}{corpusSource}(x, field = NULL)
 }
@@ -22,10 +21,6 @@ docvars(x, field = NULL) <- value
 \item{x}{corpus whose document-level variables will be read or set}
 
 \item{field}{string containing the document-level variable name}
-
-\item{drop}{If TRUE the result is coerced to a vector, if only one column is
-selected. This only works for extracting elements, not for the replacement.
-See \code{\link{drop}} for further details.}
 
 \item{value}{the new values of the document-level variable}
 }
@@ -35,15 +30,10 @@ See \code{\link{drop}} for further details.}
 \code{docvars<-} assigns \code{value} to the named \code{field}
 }
 \description{
-Get or set document-level variables in a corpus.
+Get or set variables for the documents in a corpus
 }
 \examples{
-# get docvars
-head(docvars(ie2010Corpus))
-head(docvars(ie2010Corpus, "party"))
-head(docvars(ie2010Corpus, "party", drop = FALSE))
- 
-# replacement
+head(docvars(inaugCorpus))
 docvars(inaugCorpus, "President") <- paste("prez", 1:ndoc(inaugCorpus), sep="")
 head(docvars(inaugCorpus))
 }
