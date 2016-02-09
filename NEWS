@@ -1,6 +1,8 @@
 quanteda 0.9.3
 ==============
 
+*  Added textmodel implementation of multinomial and Bernoulli Naive Bayes.
+
 *  Improved documentation.
 
 *  Added `c.corpus()` method for concatenating arbitarily large sets of corpus objects.

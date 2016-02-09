@@ -118,8 +118,7 @@ textmodel_wordscores <- function(data, scores,
 
 
 #' @rdname textmodel_wordscores
-#' @param object the fitted wordscores textmodel on which prediction will be 
-#'   made
+#' @param object a fitted Wordscores textmodel
 #' @param level probability level for confidence interval width
 #' @param rescaling \code{none} for "raw" scores; \code{lbg} for LBG (2003) 
 #'   rescaling; or \code{mv} for the rescaling proposed by Martin and Vanberg 

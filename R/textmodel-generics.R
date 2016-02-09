@@ -29,7 +29,7 @@ setClass("textmodel_fitted",
 #' @param x a quanteda \link{dfm} object containing feature counts by document
 #' @param y for supervised models, a vector of class labels or values for 
 #'   training the model, with \code{NA} for documents to be excluded from the 
-#'   training set; for unsupervised models, this will be left NULL
+#'   training set; for unsupervised models, this will be left \code{NULL}.
 #' @param model the model type to be fit.  Currently implemented methods are: 
 #'   \describe{ \item{\code{wordscores}}{Fits the "wordscores" model of Laver, 
 #'   Benoit, and Garry (2003). Options include the original linear scale of LBG 
@@ -44,7 +44,10 @@ setClass("textmodel_fitted",
 #'   
 #'   \item{\code{wordfish}}{Fits the "wordfish" model of Slapin and Proksch (2008).}
 #'   
-#'   \item{\code{lda}}{Fit a topic model based on latent Dirichlet allocation.  Temporarily removed.}
+#'   \item{\code{lda}}{Fit a topic model based on latent Dirichlet allocation.  
+#'   Not yet implemented -- use \code{\link{convert}}
+#'   to convert a dfm into the applicable input format and then use your favourite 
+#'   topic modelling package directly.}
 #'   
 #'   \item{\code{kNN}}{k-nearest neighbour classification, coming soon.}
 #'   }
@@ -101,10 +104,10 @@ setMethod("textmodel", signature(x = "dfm", y="ANY", data="missing", model = "ch
                       if (!is.null(y))
                           warning("y values not used with wordfish model. ")
                       result <- textmodel_wordfish(x, ...)
-#                   } else if (model=="NB") {
-#                       if (nrow(x) != length(y))
-#                           stop("x and y contain different numbers of documents.")
-#                       result <- textmodel_NB(x, y, ...)
+                  } else if (model=="NB") {
+                      if (nrow(x) != length(y))
+                          stop("x and y contain different numbers of documents.")
+                      result <- textmodel_NB(x, y, ...)
 #                   } else if (model=="lda") {
 #                       if (!is.null(y))
 #                           warning("y values not used with wordfish model. ")

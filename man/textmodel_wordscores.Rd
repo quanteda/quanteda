@@ -37,8 +37,7 @@ logit scale of log posterior differences}
 \item{smooth}{a smoothing parameter for word counts; defaults to zero for the
 to match the LBG (2003) method.}
 
-\item{object}{the fitted wordscores textmodel on which prediction will be 
-made}
+\item{object}{a fitted Wordscores textmodel}
 
 \item{newdata}{dfm on which prediction should be made}
 
