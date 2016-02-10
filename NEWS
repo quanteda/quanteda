@@ -16,6 +16,8 @@ quanteda 0.9.3
 
 Bug fixes
 ---------
+*  Fixed a bug preventing `smoother()` from working.
+
 *  Fixed a bug in segment.corpus(x, what = "tag") that was failing to recover the tag values after the first text.
 
 *  Fix bug in `plot.dfm(x, comparison = TRUE)` method causing warning about rowMeans() failing.

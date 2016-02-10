@@ -76,10 +76,11 @@ setMethod("weight", signature = "dfm",
 
 
 #' @rdname weight
-#' @param smoothing constant added to the dfm cells for smoothing
-#' @details \code{smoother(x, smoothing)} is a shortcut for \code{weight(x, "frequency", smoothing)}
+#' @param smoothing constant added to the dfm cells for smoothing, default is 1
+#' @details This converts a matrix from sparse to dense format, so may exceed memory
+#' requirements depending on the size of your input matrix.
 #' @export
-smoother <- function(x, smoothing) weight(x, "frequency", smoothing = smoothing)
+smoother <- function(x, smoothing = 1) x + smoothing
 
 
 #' @rdname weight

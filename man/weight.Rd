@@ -14,7 +14,7 @@ weight(x, ...)
 \S4method{weight}{dfm}(x, type = c("frequency", "relFreq", "relMaxFreq",
   "logFreq", "tfidf"), ...)
 
-smoother(x, smoothing)
+smoother(x, smoothing = 1)
 
 weighting(object)
 
@@ -38,7 +38,7 @@ weighting(object)
   control, call \code{\link{tfidf}} directly}
   }}
 
-\item{smoothing}{constant added to the dfm cells for smoothing}
+\item{smoothing}{constant added to the dfm cells for smoothing, default is 1}
 
 \item{object}{the dfm object for accessing the weighting setting}
 }
@@ -52,7 +52,8 @@ Returns a document by feature matrix with the feature frequencies weighted
 according to one of several common methods.
 }
 \details{
-\code{smoother(x, smoothing)} is a shortcut for \code{weight(x, "frequency", smoothing)}
+This converts a matrix from sparse to dense format, so may exceed memory
+requirements depending on the size of your input matrix.
 
 \code{weighting} queries (but cannot set) the weighting applied to the dfm.
 }
