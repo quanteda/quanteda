@@ -129,11 +129,11 @@ segment.corpus <- function(x, what = c("tokens", "sentences", "paragraphs", "tag
                         notes = paste0("segment.corpus(", match.call(), ")"))
     
     if (what == "tags") {
-        tagIndex <- gregexpr(delimiter, texts(x), perl=perl)[[1]]
+        tagIndex <- gregexpr(delimiter, cattxt <- paste0(texts(x), collapse = ""), perl=perl)[[1]]
         tags <- character()
         length(tags) <- ndoc(newCorpus)
         for (i in 1:length(tagIndex))
-            tags[i] <- substr(texts(x), start = tagIndex[i],
+            tags[i] <- substr(cattxt, start = tagIndex[i],
                               stop = tagIndex[i] + attr(tagIndex, "match.length")[i] - 1)
         docvars(newCorpus, "tag") <- tags
     }

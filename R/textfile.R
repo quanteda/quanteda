@@ -256,10 +256,14 @@ get_docs <- function(filemask, ...) {
     }
     
     # read texts from call to get_doc, discarding any docv
-    if ("encoding" %in% (args <- list(...)))
+    if ("encoding" %in% names(args <- list(...))) {
         encodingFrom <- args$encoding
-    else 
+    } else {
         encodingFrom <- getOption("encoding")
+    }
+    
+    #cat("arg = ", args, "\n\n")
+    
     if (!is.null(encodingFrom)) {
         if (length(encodingFrom) > 1) {
             if (length(filenames) != length(encodingFrom))
@@ -270,6 +274,7 @@ get_docs <- function(filemask, ...) {
     # loop through filenames and load each one
     textsvec <- c()
     for (i in 1:length(filenames))
+        # cat("encoding = ", encodingFrom[i], "\n")
         textsvec[i] <- get_doc(filenames[i], encoding = encodingFrom[i])$txts
     
     # name the vector with the filename by default

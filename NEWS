@@ -14,6 +14,8 @@ quanteda 0.9.3
 
 Bug fixes
 ---------
+*  Fixed a bug in segment.corpus(x, what = "tag") that was failing to recover the tag values after the first text.
+
 *  Fix bug in `plot.dfm(x, comparison = TRUE)` method causing warning about rowMeans() failing.
 
 *  Fixed an issue for `mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")` causing it to fail 
@@ -39,7 +41,7 @@ Bug fixes
 
 *  traps an exception when calling wordstem.tokenizedTexts(x) where x was not word tokenized.
 
-*  Fixed a bug in `textfile()` that prevented passthrough arguments in ..., such as `fileEncoding =`
+*  Fixed a bug in `textfile()` that prevented passthrough arguments in ..., such as `fileEncoding =` or `encoding =`
 
 *  Fixed a bug in `textfile()` that caused exceptions with input documents containing docvars when there was only a single column of docvars (such as .csv files)
 
