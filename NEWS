@@ -12,6 +12,8 @@ quanteda 0.9.3
    
 *  Defined `rowMeans()` and `colMeans()` methods for dfm objects.
 
+*  Added n = to summary.character().
+
 Bug fixes
 ---------
 *  Fixed a bug in segment.corpus(x, what = "tag") that was failing to recover the tag values after the first text.

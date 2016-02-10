@@ -9,9 +9,9 @@
 \method{summary}{corpus}(object, n = 100, verbose = TRUE,
   showmeta = FALSE, ...)
 
-\method{summary}{character}(object, verbose = TRUE, ...)
+\method{summary}{character}(object, n = 100, verbose = TRUE, ...)
 
-describeTexts(object, verbose = TRUE, ...)
+describeTexts(object, n = 100, verbose = TRUE, ...)
 }
 \arguments{
 \item{object}{corpus or texts to be summarized}
@@ -40,10 +40,11 @@ mycorpus <- corpus(ukimmigTexts, docvars=data.frame(party=names(ukimmigTexts)), 
 summary(mycorpus, showmeta=TRUE)  # show the meta-data
 mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
 mysummary$Types / mysummary$Tokens             # crude type-token ratio
-# 
+
 # summarize texts
-summary(c("testing this text", "and this one"))
+summary(c("Testing this text.  Second sentence.", "And this one."))
 summary(ukimmigTexts)
-myTextSummaryDF <- summary(ukimmigTexts, verbose=FALSE)
+myTextSummaryDF <- summary(ukimmigTexts, verbose = FALSE)
+head(myTextSummaryDF)
 }
 

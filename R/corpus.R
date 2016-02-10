@@ -781,8 +781,7 @@ summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
     cat("\n")
     ### Turn off describeTexts until we can speed this up
     # dtexts <- describeTexts(texts(object), verbose=FALSE)
-    outputdf <- data.frame(summary(texts(object)[1:min(c(n, ndoc(object)))], 
-                                   verbose=FALSE))
+    outputdf <- data.frame(summary(texts(object), n, verbose = FALSE))
     if (!is.null(docvars(object)))
         outputdf <- cbind(outputdf, docvars(object)[1:min(c(n, ndoc(object))),, drop=FALSE])
     # if (detail) outputdf <- cbind(outputdf, metadoc(object))
@@ -1118,7 +1117,7 @@ nsentence <- function(x, ...) {
 #' @export
 nsentence.character <- function(x, ...) {
     if (!any(stringi::stri_detect_charclass(x, "[A-Z]")))
-        stop("nsentence() does not correctly count sentences in all lower-cased text")
+        warning("nsentence() does not correctly count sentences in all lower-cased text")
     lengths(tokenize(x, what = "sentence", ...))
 }
 
