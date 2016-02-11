@@ -12,13 +12,15 @@
 #' summary(ukimmigTexts)
 #' myTextSummaryDF <- summary(ukimmigTexts, verbose = FALSE)
 #' head(myTextSummaryDF)
-summary.character <- function(object, n = 100, verbose = TRUE, ...) {
+summary.character <- function(object, n = 100, verbose = TRUE, toLower = FALSE, ...) {
     object <- object[1 : min(c(n, length(object)))]
     if (is.null(names(object))) 
         names(object) <- paste("text", 1:length(object), sep="")
-    ntokens <- ntoken(object, ...)
-    ntypes <- nsentence(object, ...)
     nsents  <- nsentence(object, ...)
+    if (toLower) object <- toLower(object)
+    toks <- tokenize(object, ...)
+    ntokens <- ntoken(toks)
+    ntypes <- ntype(toks)
     results <- data.frame(Text=names(object),
                           Types=ntypes,
                           Tokens=ntokens,

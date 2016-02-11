@@ -7,9 +7,10 @@
 \title{summarize a corpus or a vector of texts}
 \usage{
 \method{summary}{corpus}(object, n = 100, verbose = TRUE,
-  showmeta = FALSE, ...)
+  showmeta = FALSE, toLower = FALSE, ...)
 
-\method{summary}{character}(object, n = 100, verbose = TRUE, ...)
+\method{summary}{character}(object, n = 100, verbose = TRUE,
+  toLower = FALSE, ...)
 
 describeTexts(object, n = 100, verbose = TRUE, ...)
 }
@@ -24,7 +25,9 @@ if you simply want to assign the output to a \code{data.frame}}
 \item{showmeta}{for a corpus, set to \code{TRUE} to include document-level
 meta-data}
 
-\item{...}{unused here}
+\item{toLower}{convert texts to lower case before counting types}
+
+\item{...}{additional arguments passed through to \code{\link{tokenize}}}
 }
 \description{
 Displays information about a corpus or vector of texts.  For a corpus, this 

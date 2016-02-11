@@ -12,7 +12,8 @@ quanteda 0.9.3
    
 *  Defined `rowMeans()` and `colMeans()` methods for dfm objects.
 
-*  Added n = to summary.character().
+*  Enhancements to summary.character() and summary.corpus(): Added n = to summary.character(); added pass-through options to tokenize() in summary.corpus() and summary.character() methods; added toLower as an argument to both.
+
 
 Bug fixes
 ---------

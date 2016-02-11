@@ -756,7 +756,8 @@ subset.corpus <- function(x, subset, select, ...) {
 #'   if you simply want to assign the output to a \code{data.frame}
 #' @param showmeta for a corpus, set to \code{TRUE} to include document-level
 #'   meta-data
-#' @param ... unused here
+#' @param toLower convert texts to lower case before counting types
+#' @param ... additional arguments passed through to \code{\link{tokenize}}
 #' @export
 #' @method summary corpus
 #' @examples
@@ -767,21 +768,22 @@ subset.corpus <- function(x, subset, select, ...) {
 #' summary(mycorpus, showmeta=TRUE)  # show the meta-data
 #' mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
 #' mysummary$Types / mysummary$Tokens             # crude type-token ratio
-summary.corpus <- function(object, n=100, verbose=TRUE, showmeta=FALSE, ...) {
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+summary.corpus <- function(object, n = 100, verbose = TRUE, showmeta = FALSE, toLower = FALSE, ...) {
+#     if (!(addedArgs <- names(list(...)) %in% )
+#         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+     
+    if (verbose) {
+        cat("Corpus consisting of ", ndoc(object), " document",
+            ifelse(ndoc(object)>1, "s", ""), 
+            ifelse(ndoc(object)<=n, "", 
+                   paste(", showing ", n, " document", ifelse(n>1, "s", ""), sep="")),
+            ".\n", sep="")
+    }
     
-    cat("Corpus consisting of ", ndoc(object), " document",
-        ifelse(ndoc(object)>1, "s", ""), 
-        ifelse(ndoc(object)<=n, "", 
-               paste(", showing ", n, " document", ifelse(n>1, "s", ""), sep="")),
-        ".\n", sep="")
-    
-    #print(object)
-    cat("\n")
+    if (verbose) cat("\n")
     ### Turn off describeTexts until we can speed this up
     # dtexts <- describeTexts(texts(object), verbose=FALSE)
-    outputdf <- data.frame(summary(texts(object), n, verbose = FALSE))
+    outputdf <- data.frame(summary(texts(object), n, verbose = FALSE, toLower = toLower, ...))
     if (!is.null(docvars(object)))
         outputdf <- cbind(outputdf, docvars(object)[1:min(c(n, ndoc(object))),, drop=FALSE])
     # if (detail) outputdf <- cbind(outputdf, metadoc(object))

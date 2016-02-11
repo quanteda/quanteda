@@ -69,11 +69,15 @@ setMethod("show", "dictionary",
 #' @export
 dictionary <- function(x = NULL, file = NULL, format = NULL, toLower = TRUE, encoding = "") {
     if (!is.null(x) & !is.list(x))
-        stop("Dictionaries must be named lists.")
+        stop("Dictionaries must be named lists or lists of named lists.")
+    if (any(missingLabels <- which(names(x) == ""))) 
+        stop("missing key name for list element", 
+             ifelse(length(missingLabels)>1, "s ", " "),
+             missingLabels, "\n") 
     x <- flatten.dictionary(x)
     if (!is.null(x) & !is.list(x))
         stop("Dictionaries must be named lists or lists of named lists.")
-    
+
     if (!is.null(file)) {
         if (is.null(format))
             stop("You must specify a format for file", file)
@@ -245,8 +249,9 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     return(dictionary)
 }
 
-
 flatten.dictionary <- function(elms, parent = '', dict = list()) {
+    if (any(names(elms) == ""))
+        stop("missing name for a nested key")
     for (self in names(elms)) {
         elm <- elms[[self]]
         if (parent != '') {
