@@ -10,6 +10,7 @@
 \alias{[,dfmDense,index,index,missing-method}
 \alias{[,dfmDense,index,missing,logical-method}
 \alias{[,dfmDense,index,missing,missing-method}
+\alias{[,dfmDense,logical,missing,missing-method}
 \alias{[,dfmDense,missing,index,logical-method}
 \alias{[,dfmDense,missing,index,missing-method}
 \alias{[,dfmDense,missing,missing,logical-method}
@@ -18,6 +19,7 @@
 \alias{[,dfmSparse,index,index,missing-method}
 \alias{[,dfmSparse,index,missing,logical-method}
 \alias{[,dfmSparse,index,missing,missing-method}
+\alias{[,dfmSparse,logical,missing,missing-method}
 \alias{[,dfmSparse,missing,index,logical-method}
 \alias{[,dfmSparse,missing,index,missing-method}
 \alias{[,dfmSparse,missing,missing,logical-method}
@@ -56,6 +58,8 @@
 
 \S4method{[}{dfmDense,index,missing,missing}(x, i, j, ..., drop = FALSE)
 
+\S4method{[}{dfmDense,logical,missing,missing}(x, i, j, ..., drop = FALSE)
+
 \S4method{[}{dfmDense,index,missing,logical}(x, i, j, ..., drop = FALSE)
 
 \S4method{[}{dfmDense,missing,index,missing}(x, i, j, ..., drop = FALSE)
@@ -71,6 +75,8 @@
 
 \S4method{[}{dfmSparse,index,index,logical}(x, i = NULL, j = NULL, ...,
   drop = FALSE)
+
+\S4method{[}{dfmSparse,logical,missing,missing}(x, i, j, ..., drop = FALSE)
 
 \S4method{[}{dfmSparse,index,missing,missing}(x, i, j, ..., drop = FALSE)
 

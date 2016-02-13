@@ -362,6 +362,11 @@ setMethod("[", signature(x = "dfmDense", i = "index", j = "missing", drop = "mis
               new("dfmDense", "["(as(x, "denseMatrix"), i, , ..., drop=FALSE)))
 
 #' @rdname dfm-class
+setMethod("[", signature(x = "dfmDense", i = "logical", j = "missing", drop = "missing"),
+          function(x, i, j, ..., drop=FALSE)
+              new("dfmDense", "["(as(x, "denseMatrix"), which(i), , ..., drop=FALSE)))
+
+#' @rdname dfm-class
 setMethod("[", signature(x = "dfmDense", i = "index", j = "missing", drop = "logical"),
           function(x, i, j, ..., drop=FALSE) {
               if (drop) warning("drop=TRUE not currently supported")
@@ -400,10 +405,18 @@ setMethod("[", signature(x = "dfmSparse", i = "index", j = "index", drop = "miss
 setMethod("[", signature(x = "dfmSparse", i = "index", j = "index", drop = "logical"),
           wrapIndexOperation)
 
+
+#' @rdname dfm-class
+setMethod("[", signature(x = "dfmSparse", i = "logical", j = "missing", drop = "missing"),
+          function(x, i, j, ..., drop = FALSE) {
+              new("dfmSparse", "["(as(x, "sparseMatrix"), which(i), , ..., drop=FALSE))
+          })
+
 #' @rdname dfm-class
 setMethod("[", signature(x = "dfmSparse", i = "index", j = "missing", drop = "missing"),
-          function(x, i, j, ..., drop=FALSE)
-              new("dfmSparse", "["(as(x, "sparseMatrix"), i, , ..., drop=FALSE)))
+          function(x, i, j, ..., drop=FALSE) {
+              new("dfmSparse", "["(as(x, "sparseMatrix"), i, , ..., drop=FALSE))
+          })
 
 #' @rdname dfm-class
 setMethod("[", signature(x = "dfmSparse", i = "index", j = "missing", drop = "logical"),

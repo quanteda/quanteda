@@ -17,13 +17,14 @@ test_that("test similarity method = \"cosine\" against proxy simil()", {
     presDfm <- dfm(subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    cosQuanteda <- round(similarity(presDfm, "soviet", method = "cosine", margin = "features")[["soviet"]], 4)
+    cosQuanteda <- round(similarity(presDfm, "soviet", method = "cosine", margin = "features")[["soviet"]], 2)
     
-    cosProxy <- sort(round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), by_rows = FALSE)), 4), decreasing = TRUE)
+    cosProxy <- sort(round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), by_rows = FALSE)), 2), decreasing = TRUE)
     
     # cosQlcMatrix <- sort(round(drop(qlcMatrix::cosSparse(presDfm, presDfm[, "soviet"])), 4), decreasing = TRUE)
     
-    ### expect_equal(cosQuanteda[1:10], cosProxy[2:11]) #, cosQlcMatrix[2:11])
+    ## NOT EQUAL
+    ## expect_equal(cosQuanteda[1:10], cosProxy[2:11]) #, cosQlcMatrix[2:11])
 })
 
 test_that("test similarity method = \"cosine\" against proxy simil(): documents", {
@@ -32,16 +33,27 @@ test_that("test similarity method = \"cosine\" against proxy simil(): documents"
                    stem = TRUE, verbose = FALSE)
     
     cosQuanteda <- round(similarity(presDfm, method = "cosine", margin = "documents")[["1981-Reagan"]], 6)[-1]
-    (cosQuanteda <- round(as.matrix(similarity(presDfm, method = "cosine", margin = "documents")), 6))
+    cosQuanteda <- round(as.matrix(similarity(presDfm, method = "cosine", margin = "documents")), 6)
+    (cosQuanteda <- cosQuanteda[order(rownames(cosQuanteda)), ])
     
     cosProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "cosine", by_rows = TRUE))[, "1981-Reagan"], 6), decreasing = TRUE)
-    (cosProxy <- round(as.matrix(proxy::simil(as.matrix(presDfm), "cosine", by_rows = TRUE), diag = 1.0), 6))
-    
+    cosProxy <- round(proxy::as.matrix(proxy::simil(as.matrix(presDfm), "cosine", by_rows = TRUE), diag = 1.0), 6)
+    (cosProxy <- cosProxy[order(rownames(cosProxy)), ])
     #(cosQlcMatrix <- round(as.matrix(qlcMatrix::cosSparse(t(presDfm))), 6))
     
-    # expect_equal(cosQuanteda - cosProxy, 0) #<, cosQlcMatrix)
+    expect_equal(cosQuanteda, cosProxy)
 })
 
+test_that("test similarity method = \"correlation\" against proxy simil(): documents", {
+    require(proxy)
+    presDfm <- dfm(subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    
+    corQuanteda <- round(similarity(presDfm, method = "correlation", margin = "documents")[["1981-Reagan"]], 6)
+    corProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "correlation", by_rows = TRUE))[, "1981-Reagan"], 6), decreasing = TRUE)
+    corCor <- sort(cor(as.matrix(t(presDfm)))[, "1981-Reagan"], decreasing = TRUE)
+    expect_equal(corQuanteda, corProxy[-9], corCor[-1])
+})
 
 
 test_that("simple similarity comparisons method = \"cosine\" against proxy simil()", {
@@ -50,11 +62,14 @@ test_that("simple similarity comparisons method = \"cosine\" against proxy simil
                   "My lazy dog who looks like a quick fox was in the newspaper.")
     d <- dfm(testText, verbose = FALSE)
 
-    matProxy <- round(as.matrix(proxy::simil(as.matrix(d), "cosine", by_rows = FALSE)), 6)
-    matQuanteda <- round(as.matrix(similarity(d, method = "cosine", margin = "features")), 6)
-    res1 <- sort(as.numeric(matQuanteda[2:nrow(matQuanteda), "a"]))
-    res2 <- sort(as.numeric(matProxy[, "a"]))
-    ### expect_true(all.equal(res1, res2))
+    matQuanteda <- as.matrix(similarity(d, "a", method = "cosine", margin = "features"))
+    res1 <- matQuanteda[order(rownames(matQuanteda)), , drop = FALSE]
+        
+    matProxy <- proxy::simil(as.matrix(d), as.matrix(d[,"a"]), "cosine", by_rows = FALSE)
+    res2 <- matProxy[order(rownames(matProxy)), , drop = FALSE]
+    
+    expect_equal(rownames(res1), rownames(res2))
+    expect_equal(res1[,1], res2[,1])
 })
     
 # sort(as.matrix(proxy::simil(as.matrix(d), as.matrix(d[, "seamus"]), "cosine", by_rows = FALSE))[, 1], decreasing = TRUE)[-2]
