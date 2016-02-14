@@ -14,6 +14,8 @@ quanteda 0.9.3
 
 *  Enhancements to summary.character() and summary.corpus(): Added n = to summary.character(); added pass-through options to tokenize() in summary.corpus() and summary.character() methods; added toLower as an argument to both.
 
+*  Enhancements to corpus object indexing, including [[ and [[<-.
+
 
 Bug fixes
 ---------

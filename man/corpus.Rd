@@ -3,6 +3,8 @@
 \name{corpus}
 \alias{+.corpus}
 \alias{[.corpus}
+\alias{[[.corpus}
+\alias{[[<-.corpus}
 \alias{c.corpus}
 \alias{corpus}
 \alias{corpus.VCorpus}
@@ -27,6 +29,10 @@ is.corpus(x)
 \method{c}{corpus}(..., recursive = FALSE)
 
 \method{[}{corpus}(x, i, j = NULL, ..., drop = TRUE)
+
+\method{[[}{corpus}(x, i, ...)
+
+\method{[[}{corpus}(x, i) <- value
 }
 \arguments{
 \item{x}{a source of texts to form the documents in the corpus, a character 
@@ -58,9 +64,11 @@ To Dos, etc.}
 
 \item{j}{index for column of document variables}
 
-\item{drop}{if \code{TRUE} the result is coerced to the lowest possible
-dimension (see the examples). This only works for extracting elements, not
-for the replacement. See \code{\link{drop}} for further details.}
+\item{drop}{if \code{TRUE}, return a vector if extracting a single document
+variable; if \code{FALSE}, return it as a single-column data.frame.  See
+\code{\link{drop}} for further details.}
+
+\item{value}{a vector that will form a new docvar}
 }
 \value{
 A corpus class object containing the original texts, document-level 
@@ -168,6 +176,16 @@ corpus1 <- corpus(inaugTexts[1:2])
 corpus2 <- corpus(inaugTexts[3:4])
 corpus3 <- subset(inaugCorpus, President == "Obama")
 summary(c(corpus1, corpus2, corpus3))
+
+# ways to index corpus elements
+inaugCorpus["1793-Washington"]    # 2nd Washington inaugural speech
+inaugCorpus[2]                    # same
+ie2010Corpus[, "year"]            # access the docvars from ie2010Corpus
+ie2010Corpus[["year"]]            # same
+# create a new document variable
+ie2010Corpus[["govtopp"]] <- ifelse(ie2010Corpus[["party"]] \%in\% c("FF", "Greens"), 
+                                    "Government", "Opposition")
+docvars(ie2010Corpus)
 }
 \author{
 Kenneth Benoit and Paul Nulty

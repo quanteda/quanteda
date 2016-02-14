@@ -46,18 +46,22 @@ NULL
 #'          This [is] a software testing again. For.",
 #'          "Here: this is more Software Testing, looking again for word pairs.")
 #' collocations(txt)
-#' collocations(txt, removePunct = TRUE)
-#' collocations(txt, size=2:3)
-#' removeFeatures(collocations(txt, size=2:3), stopwords("english"))
+#' collocations(txt, spanPunct = FALSE, removePunct = FALSE)  # default
+#' collocations(txt, spanPunct = FALSE, removePunct = TRUE)   # includes "testing looking"
+#' collocations(txt, spanPunct = TRUE, removePunct = TRUE)    # same as previous 
+#' collocations(txt, spanPunct = TRUE, removePunct = FALSE)   # keep punctuation marks as "grams"
+#'
+#' collocations(txt, size = 2:3)
+#' removeFeatures(collocations(txt, size = 2:3), stopwords("english"))
 #' 
 #' collocations("@@textasdata We really, really love the #quanteda package - thanks!!")
 #' collocations("@@textasdata We really, really love the #quanteda package - thanks!!",
 #'               removeTwitter = TRUE)
 #' 
-#' collocations(inaugTexts[49:57], n=10)
-#' collocations(inaugTexts[49:57], method="all", n=10)
-#' collocations(inaugTexts[49:57], method="chi2", size=3, n=10)
-#' collocations(subset(inaugCorpus, Year>1980), method="pmi", size=3, n=10)
+#' collocations(inaugTexts[49:57], n = 10)
+#' collocations(inaugTexts[49:57], method = "all", n = 10)
+#' collocations(inaugTexts[49:57], method = "chi2", size = 3, n = 10)
+#' collocations(subset(inaugCorpus, Year>1980), method = "pmi", size = 3, n = 10)
 collocations <- function(x, ...) {
 #     addedArgs <- names(list(...))
 #     if (length(addedArgs) && any(!(addedArgs %in% names(formals(getS3method("tokenize", "character"))))))

@@ -48,13 +48,12 @@ setMethod("show", "dictionary",
 #' @seealso \link{dfm}
 #' @examples
 #' mycorpus <- subset(inaugCorpus, Year>1900)
-#' mydict <- 
-#'     dictionary(list(christmas=c("Christmas", "Santa", "holiday"),
-#'                     opposition=c("Opposition", "reject", "notincorpus"),
-#'                     taxing="taxing",
-#'                     taxation="taxation",
-#'                     taxregex="tax*",
-#'                     country="united states"))
+#' mydict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
+#'                           opposition = c("Opposition", "reject", "notincorpus"),
+#'                           taxing = "taxing",
+#'                           taxation = "taxation",
+#'                           taxregex = "tax*",
+#'                           country = "united states"))
 #' head(dfm(mycorpus, dictionary=mydict))
 #' 
 #' \dontrun{

@@ -538,7 +538,7 @@ docvars.corpus <- function(x, field = NULL) {
 
 #' @rdname docvars
 #' @export
-"docvars<-" <- function(x, field = NULL, value) {
+"docvars<-.corpus" <- function(x, field = NULL, value) {
     if ("texts" %in% field) stop("You should use texts() instead to replace the corpus texts.")
     if (is.null(field)) {
         field <- names(value)
@@ -575,7 +575,7 @@ tokens.corpus <- function(corp) {
 
 #' get or set document names
 #' 
-#' Extract the document names from a corpus or a document-feature matrix.
+#' Get or set the document names from a corpus or a document-feature matrix.
 #' of the \link{dfm} object.
 #' @param x the object with docnames
 #' @export
@@ -583,8 +583,6 @@ docnames <- function(x) {
     UseMethod("docnames")
 }
 
-#' \code{docnames} queries the document names of a corpus or a dfm
-#' 
 #' @return \code{docnames} returns a character vector of the document names
 #' @export
 #' @rdname docnames
@@ -594,10 +592,9 @@ docnames.corpus <- function(x) {
     rownames(x$documents)
 }
 
-#' \code{docnames <-} assigns new values to the document names of a corpus.  (Does not work
-#' for dfm objects, whose document names are fixed.)
 #' @param value a character vector of the same length as \code{x}
-#' @return \code{docnames<-} assigns a character vector of the document names in a corpus
+#' @return \code{docnames <-} assigns new values to the document names of a corpus. (Does not work
+#' for dfm objects, whose document names are fixed.)
 #' @export
 #' @examples 
 #' # query the document names of the inaugural speech corpus
@@ -1132,17 +1129,51 @@ nsentence.corpus <- function(x, ...) {
 #' @export
 #' @param i index for documents or rows of document variables
 #' @param j index for column of document variables
-#' @param drop if \code{TRUE} the result is coerced to the lowest possible
-#'   dimension (see the examples). This only works for extracting elements, not
-#'   for the replacement. See \code{\link{drop}} for further details.
+#' @param drop if \code{TRUE}, return a vector if extracting a single document
+#'   variable; if \code{FALSE}, return it as a single-column data.frame.  See
+#'   \code{\link{drop}} for further details.
 #' @method [ corpus
 #' @rdname corpus
+#' @examples 
+#' 
+#' # ways to index corpus elements
+#' inaugCorpus["1793-Washington"]    # 2nd Washington inaugural speech
+#' inaugCorpus[2]                    # same
+#' ie2010Corpus[, "year"]            # access the docvars from ie2010Corpus
+#' ie2010Corpus[["year"]]            # same
+#' # create a new document variable
+#' ie2010Corpus[["govtopp"]] <- ifelse(ie2010Corpus[["party"]] %in% c("FF", "Greens"), 
+#'                                     "Government", "Opposition")
+#' docvars(ie2010Corpus)
 `[.corpus` <- function(x, i, j = NULL, ..., drop = TRUE) {
     if (is.null(j))
         return(texts(x)[i, ...])
-    else
-        return(docvars(x)[i, j, ..., drop = TRUE])
+    else {
+        if (!is.null(docvars(x)))
+        x$documents <- x$documents[-1]  # remove texts
+        return(x$documents[i, j, ..., drop = drop])
+    }
 }
+
+#' @export
+#' @method [[ corpus
+#' @rdname corpus
+`[[.corpus` <- function(x, i, ...) {
+    if (is.null(docvars(x)))
+        stop("cannot index docvars this way because none exist")
+    x$documents <- x$documents[-1]  # remove texts
+    x$documents[[i, ...]]
+}
+
+#' @export
+#' @param value a vector that will form a new docvar
+#' @method [[<- corpus
+#' @rdname corpus
+`[[<-.corpus` <- function(x, i, value) {
+    x$documents[[i]] <- value
+    x
+}
+
 
 
 # #' @param i index for documents or rows of document variables

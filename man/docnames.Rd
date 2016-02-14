@@ -23,16 +23,12 @@ docnames(x) <- value
 \value{
 \code{docnames} returns a character vector of the document names
 
-\code{docnames<-} assigns a character vector of the document names in a corpus
+\code{docnames <-} assigns new values to the document names of a corpus. (Does not work
+for dfm objects, whose document names are fixed.)
 }
 \description{
-Extract the document names from a corpus or a document-feature matrix.
+Get or set the document names from a corpus or a document-feature matrix.
 of the \link{dfm} object.
-
-\code{docnames} queries the document names of a corpus or a dfm
-
-\code{docnames <-} assigns new values to the document names of a corpus.  (Does not work
-for dfm objects, whose document names are fixed.)
 }
 \examples{
 # query the document names of the inaugural speech corpus

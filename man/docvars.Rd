@@ -5,6 +5,7 @@
 \alias{docvars.corpus}
 \alias{docvars.corpusSource}
 \alias{docvars<-}
+\alias{docvars<-.corpus}
 \title{get or set for document-level variables}
 \usage{
 docvars(x, field = NULL)
@@ -13,7 +14,7 @@ docvars(x, field = NULL)
 
 docvars(x, field = NULL) <- value
 
-docvars(x, field = NULL) <- value
+\method{docvars}{corpus}(x, field = NULL) <- value
 
 \method{docvars}{corpusSource}(x, field = NULL)
 }

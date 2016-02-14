@@ -69,9 +69,6 @@ dfm <- function(x, ...) {
 #'   \code{hungarian}, \code{italian}, \code{norwegian}, \code{porter},
 #'   \code{portuguese}, \code{romanian}, \code{russian}, \code{spanish},
 #'   \code{swedish}, \code{turkish}.
-#' @param matrixType deprecated, used to produce a dense matrix if \code{dense},
-#'   but this was removed in 0.8.2.  All dfm objects are now created as a sparse
-#'   matrix of class \code{dgCMatrix} from the \pkg{\link{Matrix}} package.
 #' @return A \link{dfm-class} object containing a sparse matrix representation 
 #'   of the counts of features by document, along with associated settings and 
 #'   metadata.
@@ -163,14 +160,12 @@ dfm.character <- function(x,
                           stem = FALSE, 
                           ignoredFeatures = NULL, 
                           keptFeatures=NULL,
-                          matrixType=c("sparse", "dense"), 
                           language="english",
                           thesaurus=NULL, 
                           dictionary=NULL,
                           valuetype = c("glob", "regex", "fixed"),
                           ...) {
     startTime <- proc.time()
-    matrixType <- match.arg(matrixType)
     valuetype <- match.arg(valuetype)
     
     if (verbose && grepl("^dfm\\.character", sys.calls()[[2]]))
@@ -203,7 +198,7 @@ dfm.character <- function(x,
     
     dfm(tokenizedTexts, verbose=verbose, toLower=toLower, stem=stem, 
         ignoredFeatures=ignoredFeatures, keptFeatures = keptFeatures,
-        matrixType=matrixType, language=language,
+        language=language,
         thesaurus=thesaurus, dictionary=dictionary, valuetype = valuetype, 
         startTime = startTime)
 }
@@ -218,7 +213,6 @@ dfm.tokenizedTexts <- function(x,
                                stem=FALSE, 
                                ignoredFeatures=NULL, 
                                keptFeatures=NULL,
-                               matrixType=c("sparse", "dense"), 
                                language="english",
                                thesaurus=NULL, 
                                dictionary=NULL, 
@@ -237,9 +231,6 @@ dfm.tokenizedTexts <- function(x,
     if ("startTime" %in% names(dots)) startTime <- dots$startTime
     
     # argument checking
-    matrixType <- match.arg(matrixType)
-    if (matrixType == "dense")
-        warning("matrixType = \"dense\" no longer supported, created sparse dfm instead")
     language <- tolower(language)
     
     if (verbose && grepl("^dfm\\.tokenizedTexts", sys.calls()[[2]])) {

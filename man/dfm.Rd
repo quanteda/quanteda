@@ -14,15 +14,13 @@ dfm(x, ...)
 \method{dfm}{character}(x, verbose = TRUE, toLower = TRUE,
   removeNumbers = TRUE, removePunct = TRUE, removeSeparators = TRUE,
   removeTwitter = FALSE, stem = FALSE, ignoredFeatures = NULL,
-  keptFeatures = NULL, matrixType = c("sparse", "dense"),
-  language = "english", thesaurus = NULL, dictionary = NULL,
-  valuetype = c("glob", "regex", "fixed"), ...)
+  keptFeatures = NULL, language = "english", thesaurus = NULL,
+  dictionary = NULL, valuetype = c("glob", "regex", "fixed"), ...)
 
 \method{dfm}{tokenizedTexts}(x, verbose = TRUE, toLower = TRUE,
   stem = FALSE, ignoredFeatures = NULL, keptFeatures = NULL,
-  matrixType = c("sparse", "dense"), language = "english",
-  thesaurus = NULL, dictionary = NULL, valuetype = c("glob", "regex",
-  "fixed"), ...)
+  language = "english", thesaurus = NULL, dictionary = NULL,
+  valuetype = c("glob", "regex", "fixed"), ...)
 
 \method{dfm}{corpus}(x, verbose = TRUE, groups = NULL, ...)
 
@@ -67,10 +65,6 @@ To extract only Twitter usernames, for example, set \code{keptFeatures =
 argument passed to \link{tokenize}.  Note: \code{keptFeatures = 
 "^@\\\w+\\\b"} would be the regular expression version of this matching 
 pattern.  The pattern matching type will be set by \code{valuetype}.}
-
-\item{matrixType}{deprecated, used to produce a dense matrix if \code{dense},
-but this was removed in 0.8.2.  All dfm objects are now created as a sparse
-matrix of class \code{dgCMatrix} from the \pkg{\link{Matrix}} package.}
 
 \item{language}{Language for stemming.  Choices are \code{danish},
 \code{dutch}, \code{english}, \code{finnish}, \code{french}, \code{german},
