@@ -1124,7 +1124,11 @@ nsentence <- function(x, ...) {
 #' @rdname nsentence
 #' @export
 nsentence.character <- function(x, ...) {
-    if (!any(stringi::stri_detect_charclass(x, "[A-Z]")))
+upcase <- try(any(stringi::stri_detect_charclass(x, "[A-Z]")), silent = TRUE)
+    if (!is.logical(upcase)) {
+        warning("Input text contains non-UTF-8 characters.")
+    }
+    else if (!upcase)
         warning("nsentence() does not correctly count sentences in all lower-cased text")
     lengths(tokenize(x, what = "sentence", ...))
 }
