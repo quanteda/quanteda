@@ -34,7 +34,7 @@ in each ngram}
 forming the ngrams, default is 0 for only immediately neighbouring words. 
 For \code{skipgrams}, \code{skip} can be a vector of integers, as the 
 "classic" approach to forming skip-grams is to set skip = \eqn{k} where
-\eqn{k} is the distance for which $k$ or fewer skips are used to construct
+\eqn{k} is the distance for which \eqn{k} or fewer skips are used to construct
 the \eqn{n}-gram.  Thus a "4-skip-n-gram" defined as \code{skip = 0:4}
 produces results that include 4 skips, 3 skips, 2 skips, 1 skip, and 0
 skips (where 0 skips are typical n-grams formed from adjacent words).  See

@@ -15,6 +15,14 @@
 Plots a dispersion or "x-ray" plot of a selected word pattern across a text.
 }
 \note{
-Currently works only for a a single document
+Currently works only for a a single document.  Because the dispersion plot is
+designed to be a "strip", the height and width of your plotting object will determine
+whether this plot looks correct or not.  See examples.
+}
+\examples{
+\dontrun{
+mobydick <- corpus(textfile(unzip(system.file("extdata", "pg2701.txt.zip", package = "quanteda"))))
+plot(kwic(mobydick, "Ahab*"))
+}
 }
 

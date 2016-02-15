@@ -28,8 +28,9 @@ The default is to plot the word cloud of all of the features in the
   document or set of documents, you need to slice out the document(s) from
   the dfm.
   
-  Comparison word cloud plots may be plotted by setting \code{comparison = 
-  TRUE}, which plots a separate grouping for \emph{each document} in the dfm.
+  Comparison word cloud plots may be plotted by setting 
+  \code{comparison = TRUE}, which plots a separate grouping for 
+  \emph{each document} in the dfm.
   This means that you will need to slice out just a few documents from the
   dfm, or to create a dfm where the "documents" represent a subset or a
   grouping of documents by some document variable.
@@ -43,9 +44,10 @@ plot(mydfm)
 # plot in colors with some additional options passed to wordcloud
 plot(mydfm, random.color = TRUE, rot.per = .25, colors = sample(colors()[2:128], 5))
 
-\dontrun{# comparison plot of Irish government vs opposition
-docvars(ie2010Corpus, "govtopp") <- f
-    actor(ifelse(ie2010Corpus[, "party"] \%in\% c("FF", "Green"), "Govt", "Opp"))
+\dontrun{
+# comparison plot of Irish government vs opposition
+docvars(ie2010Corpus, "govtopp") <- 
+    factor(ifelse(ie2010Corpus[, "party"] \%in\% c("FF", "Green"), "Govt", "Opp"))
 govtoppDfm <- dfm(ie2010Corpus, groups = "govtopp", verbose = FALSE)
 plot(tfidf(govtoppDfm), comparison = TRUE)
 # compare to non-tf-idf version

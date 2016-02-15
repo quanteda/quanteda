@@ -318,7 +318,6 @@ topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ...) {
 #'   from the corpus \code{x}.  The returned corpus object will contain all of 
 #'   the meta-data of the original corpus, and the same document variables for 
 #'   the documents selected.
-#' @seealso \code{\link{sample}}
 #' @rdname sample
 #' @examples
 #' # sampling from a dfm

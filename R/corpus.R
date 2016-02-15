@@ -526,9 +526,18 @@ docvars.corpus <- function(x, field = NULL) {
 
 #' @rdname docvars
 #' @param value the new values of the document-level variable
+#' @note Another way to access and set docvars is through indexing of the corpus \code{j} element, 
+#' such as \code{ie2010Corpus[, c("foren", "name"]} or for a single docvar, \code{ie2010Corpus[["name"]]}.  The latter
+#' also permits assignment, including the easy creation of new document varibles, e.g. \code{ie2010Corpus[["newvar"]] <- 1:ndoc(ie2010Corpus)}.
+#' See \code{\link{[.corpus}} for details.
 #' @return \code{docvars<-} assigns \code{value} to the named \code{field}
 #' @examples 
 #' docvars(inaugCorpus, "President") <- paste("prez", 1:ndoc(inaugCorpus), sep="")
+#' head(docvars(inaugCorpus))
+#' 
+#' # alternative using indexing
+#' head(inaugCorpus[, "Year"])
+#' inaugCorpus[["President2"]] <- paste("prezTwo", 1:ndoc(inaugCorpus), sep="")
 #' head(docvars(inaugCorpus))
 #' @export
 "docvars<-" <- function(x, field = NULL, value) {
@@ -659,22 +668,6 @@ ndoc.corpus <- function(x) {
 
 
 
-#' @export
-#' @return A corpus object with number of documents equal to \code{size}, drawn 
-#'   from the corpus \code{x}.  The returned corpus object will contain all of 
-#'   the meta-data of the original corpus, and the same document variables for 
-#'   the documents selected.
-#' @seealso \code{\link{sample}}
-#' @rdname sample
-#' @examples
-#' # sampling from a corpus
-#' summary(sample(inaugCorpus, 5)) 
-#' summary(sample(inaugCorpus, 10, replace=TRUE))
-sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, ...) {
-    documents(x) <- documents(x)[sample(ndoc(x), size, replace, prob), ]
-    x
-}
-
 #' Randomly sample documents or features
 #' 
 #' Takes a random sample or documents or features of the specified size from a 
@@ -701,6 +694,22 @@ sample.default <- function(x, size, replace = FALSE, prob = NULL, ...) {
     base::sample(x, size, replace, prob)
 }
 
+
+#' @export
+#' @return A corpus object with number of documents equal to \code{size}, drawn 
+#'   from the corpus \code{x}.  The returned corpus object will contain all of 
+#'   the meta-data of the original corpus, and the same document variables for 
+#'   the documents selected.
+#' @seealso \code{\link{sample}}
+#' @rdname sample
+#' @examples
+#' # sampling from a corpus
+#' summary(sample(inaugCorpus, 5)) 
+#' summary(sample(inaugCorpus, 10, replace=TRUE))
+sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, ...) {
+    documents(x) <- documents(x)[sample(ndoc(x), size, replace, prob), ]
+    x
+}
 
 #' extract a subset of a corpus
 #' 

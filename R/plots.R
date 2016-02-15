@@ -9,8 +9,9 @@
 #'   document or set of documents, you need to slice out the document(s) from
 #'   the dfm.
 #'   
-#'   Comparison word cloud plots may be plotted by setting \code{comparison = 
-#'   TRUE}, which plots a separate grouping for \emph{each document} in the dfm.
+#'   Comparison word cloud plots may be plotted by setting 
+#'   \code{comparison = TRUE}, which plots a separate grouping for 
+#'   \emph{each document} in the dfm.
 #'   This means that you will need to slice out just a few documents from the
 #'   dfm, or to create a dfm where the "documents" represent a subset or a
 #'   grouping of documents by some document variable.
@@ -31,9 +32,10 @@
 #' # plot in colors with some additional options passed to wordcloud
 #' plot(mydfm, random.color = TRUE, rot.per = .25, colors = sample(colors()[2:128], 5))
 #'
-#' \dontrun{# comparison plot of Irish government vs opposition
-#' docvars(ie2010Corpus, "govtopp") <- f
-#'     actor(ifelse(ie2010Corpus[, "party"] %in% c("FF", "Green"), "Govt", "Opp"))
+#' \dontrun{
+#' # comparison plot of Irish government vs opposition
+#' docvars(ie2010Corpus, "govtopp") <- 
+#'     factor(ifelse(ie2010Corpus[, "party"] %in% c("FF", "Green"), "Govt", "Opp"))
 #' govtoppDfm <- dfm(ie2010Corpus, groups = "govtopp", verbose = FALSE)
 #' plot(tfidf(govtoppDfm), comparison = TRUE)
 #' # compare to non-tf-idf version
@@ -55,9 +57,16 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' Plots a dispersion or "x-ray" plot of a selected word pattern across a text.
 #' @param x a \link{kwic} class object
 #' @param ... additional arguments passed to \code{\link{plot}}
-#' @note Currently works only for a a single document
+#' @note Currently works only for a a single document.  Because the dispersion plot is
+#' designed to be a "strip", the height and width of your plotting object will determine
+#' whether this plot looks correct or not.  See examples.
 #' @importFrom stats window
 #' @importFrom graphics plot
+#' @examples 
+#' \dontrun{
+#' mobydick <- corpus(textfile(unzip(system.file("extdata", "pg2701.txt.zip", package = "quanteda"))))
+#' plot(kwic(mobydick, "Ahab*"))
+#' }
 #' @export
 plot.kwic <- function(x, ...) {
     nt <- attr(x, "ntoken")
