@@ -12,7 +12,8 @@
 #' \url{http://jmlr.csail.mit.edu/papers/volume5/lewis04a/a11-smart-stop-list/english.stop})
 #' and a set of stopword lists from the Snowball stemmer project in different
 #' languages (obtained from 
-#' \url{http://svn.tartarus.org/snowball/trunk/website/algorithms/*/stop.txt}).
+#' \url{http://svn.tartarus.org/snowball/trunk/website/algorithms/} -- 
+#' see the stop.txt files in each subdirectory).
 #' Supported languages are arabic, danish, dutch, english, finnish, french,
 #' german, hungarian, italian, norwegian, portuguese, russian, spanish, and 
 #' swedish. Language names are case sensitive.

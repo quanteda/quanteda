@@ -124,7 +124,7 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
     else if (prior=="termfreq") {
         # weighted means the priors are by total words in each class
         # (the probability that any given word is in a particular class)
-        temp <- aggregate(x.trset, by = list(y.trclass), sum)
+        temp <- stats::aggregate(x.trset, by = list(y.trclass), sum)
         temp2 <- apply(temp[,-1], 1, sum)
         names(temp2) <- temp[,1]
         Pc <- prop.table(as.table(temp2))

@@ -1,5 +1,7 @@
-quanteda 0.9.3
+quanteda 0.9.4
 ==============
+
+*  Added presidents' first names to inaugCorpus
 
 *  Added textmodel implementation of multinomial and Bernoulli Naive Bayes.
 
