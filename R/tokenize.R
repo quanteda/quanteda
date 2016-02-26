@@ -135,6 +135,9 @@ segment.corpus <- function(x, what = c("tokens", "sentences", "paragraphs", "tag
         for (i in 1:length(tagIndex))
             tags[i] <- substr(cattxt, start = tagIndex[i],
                               stop = tagIndex[i] + attr(tagIndex, "match.length")[i] - 1)
+        # remove white space at both ends
+        tags <- stringi::stri_trim_both(tags)
+        # remove tags for which there is no 
         docvars(newCorpus, "tag") <- tags
     }
     

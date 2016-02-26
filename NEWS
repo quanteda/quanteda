@@ -1,3 +1,9 @@
+quanteda 0.9.5
+==============  
+*  Improved tag handling for segment(x, what = "tags")
+
+
+
 quanteda 0.9.4
 ==============
 
