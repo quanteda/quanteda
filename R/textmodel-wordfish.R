@@ -108,6 +108,16 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
                                dispersionLevel = c("feature", "overall"),
                                dispersionFloor = 0) {
     
+    dispersion <- match.arg(dispersion)
+    dispersionLevel <- match.arg(dispersionLevel)
+    
+    # some error checking
+    if (length(priors) != 4)
+        stop("priors requires 4 elements")
+    if (length(tol) != 2)
+        stop("tol requires 2 elements")
+    if (!is.numeric(priors) | !is.numeric(tol))
+        stop("priors and tol must be numeric")
     if (dispersionFloor < 0 | dispersionFloor > 1.0)
         stop("dispersionFloor must be between 0 and 1.0")
     
@@ -120,8 +130,6 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
     # check quasi-poisson settings and translate into numerical values  
     # 1 = Poisson, 2 = quasi-Poisson, overall dispersion, 
     # 3 = quasi-Poisson, term dispersion, 4 = quasi-Poisson, term dispersion w/floor
-    dispersion <- match.arg(dispersion)
-    dispersionLevel <- match.arg(dispersionLevel)
     if (dispersion == "poisson") disp <- 1L
     else if (dispersion == "quasipoisson" & dispersionLevel == "overall") disp <- 2L
     else if (dispersion == "quasipoisson" & dispersionLevel == "feature") {
