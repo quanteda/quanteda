@@ -6,9 +6,9 @@
 \alias{readability.corpus}
 \title{calculate readability}
 \usage{
-readability(x, measure, drop = TRUE)
+readability(x, ...)
 
-\method{readability}{corpus}(x, measure, drop = TRUE)
+\method{readability}{corpus}(x, ...)
 
 \method{readability}{character}(x, measure = c("all", "ARI", "ARI.simple",
   "Bormuth", "Bormuth.GP", "Coleman", "Coleman.C2", "Coleman.Liau",
@@ -19,10 +19,13 @@ readability(x, measure, drop = TRUE)
   "Fucks", "Linsear.Write", "LIW", "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX",
   "Scrabble", "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de",      "Spache",
   "Spache.old", "Strain", "Traenkle.Bailer", "Traenkle.Bailer.2",
-  "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"), drop = TRUE)
+  "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"), drop = TRUE,
+  ...)
 }
 \arguments{
 \item{x}{a \link{corpus} object or character vector}
+
+\item{...}{not used}
 
 \item{measure}{character vector defining the readability measure to calculate}
 

@@ -6,6 +6,8 @@ Bug fixes
 ---------
 *  Fixed a false-alarm warning message in textmodel_wordfish()
 
+*  Argument defaults for readability.corpus() now same as readability.character().  Fixes #107.
+
 
 quanteda 0.9.4
 ==============

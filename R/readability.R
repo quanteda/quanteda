@@ -7,12 +7,13 @@
 #' @param measure character vector defining the readability measure to calculate
 #' @param drop  if \code{TRUE}, the result is returned as a numeric vector if only a single measure is requested;
 #'   otherwise, a data.frame is returned with each column consisting of a requested measure.
+#' @param ... not used
 #' @author Kenneth Benoit, re-engineered from the function of the same name by 
 #'   Meik Michalke in the \pkg{koRpus} package.
 #' @return a data.frame object consisting of the documents as rows, and the
 #'   readability statistics as columns
 #' @export
-readability <- function(x, measure, drop = TRUE) {
+readability <- function(x, ...) {
     UseMethod("readability")
 }
 
@@ -20,8 +21,8 @@ readability <- function(x, measure, drop = TRUE) {
 #' @export
 #' @examples 
 #' readability(inaugCorpus, measure = "Flesch.Kincaid")
-readability.corpus <- function(x, measure, drop = TRUE) {
-    readability(texts(x), measure)
+readability.corpus <- function(x, ...) {
+    readability(texts(x), ...)
 }
     
 
@@ -48,8 +49,12 @@ readability.character <- function(x, measure = c("all", "ARI", "ARI.simple", "Bo
                                                  "Spache", "Spache.old", "Strain",
                                                  "Traenkle.Bailer", "Traenkle.Bailer.2",
                                                  "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
-                                  drop = TRUE) {
+                                  drop = TRUE, ...) {
     
+    addedArgs <- names(list(...))
+    if (length(addedArgs))
+        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), addedArgs, " not used.", sep = "", noBreaks. = TRUE)
+
     # check that all measures are legal values
     checkMeasure <- measure %in% c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP", 
                                    "Coleman", "Coleman.C2", 
