@@ -23,8 +23,8 @@ segmentSentence <- function(x, delimiter = NULL, perl = FALSE) {
 # str(segmentParagraph(ukimmigTexts[3]))   # a 12-element char vector
 # 
 # @export
-segmentParagraph <- function(x, delimiter="\\n{2}", perl=FALSE) {
-    tmp <- unlist(strsplit(x, delimiter, perl=perl))
+segmentParagraph <- function(x, delimiter="\\n{2}", perl = FALSE, fixed = FALSE) {
+    tmp <- unlist(strsplit(x, delimiter, fixed = fixed, perl = perl))
     tmp[which(tmp != "")]
 }
 
@@ -56,13 +56,18 @@ segment <- function(x, ...) {
 }
 
 #' @rdname segment
-#' @param what unit of segmentation.  Current options are tokens, sentences, 
-#'   paragraphs, and other.  Segmenting on \code{other} allows segmentation of a
-#'   text on any user-defined value, and must be accompanied by the 
-#'   \code{delimiter} argument.
-#' @param delimiter  delimiter defined as a \code{\link{regex}} for segmentation. Each 
-#'   type has its own default, except \code{other}, which requires a value to be
-#'   specified.
+#' @param what unit of segmentation.  Current options are \code{"tokens"} 
+#'   (default), \code{"sentences"}, \code{"paragraphs"}, \code{"tags"}, and 
+#'   \code{"other"}.  Segmenting on \code{other} allows segmentation of a text 
+#'   on any user-defined value, and must be accompanied by the \code{delimiter} 
+#'   argument.  Segmenting on \code{tags} performs the same function but 
+#'   preserves the tags as a document variable in the segmented corpus.
+#' @param delimiter  delimiter defined as a \code{\link{regex}} for 
+#'   segmentation. Each type has its own default, except \code{other}, which 
+#'   requires a value to be specified.
+#' @param valuetype how to interpret the delimiter: \code{fixed} for exact
+#'   matching; \code{"regex"} for regular expressions; or \code{"glob"} for 
+#'   "glob"-style wildcard patterns
 #' @param perl logical. Should Perl-compatible regular expressions be used?
 #' @export
 #' @examples
@@ -81,22 +86,34 @@ segment.character <- function(x, what=c("tokens", "sentences", "paragraphs", "ta
                                                         ifelse(what=="paragraphs", "\\n{2}", 
                                                                ifelse(what=="tags", "##\\w+\\b", 
                                                                       NULL)))),
+                              valuetype = c("regex", "fixed", "glob"),
                               perl=FALSE,
                               ...) {
     what <- match.arg(what)
+    valuetype <- match.arg(valuetype)
+    if (valuetype == "glob") {
+        # treat as fixed if no glob characters detected
+        if (!sum(stringi::stri_detect_charclass(delimiter, c("[*?]"))))
+            valuetype <- "fixed"
+        else {
+            features <- sapply(delimiter, utils::glob2rx, USE.NAMES = FALSE)
+            valuetype <- "regex"
+        }
+    }
+    
     if (what=="tokens") {
         return(tokenize(x, ...)) 
     } else if (what=="sentences") {
         # warning("consider using tokenize(x, what = \"sentence\") instead.")
         return(lapply(x, segmentSentence, delimiter, perl=perl)) 
     } else if (what=="paragraphs") {
-        return(lapply(x, segmentParagraph, delimiter, perl=perl)) 
+        return(lapply(x, segmentParagraph, delimiter, perl = perl, fixed = (valuetype == "fixed"))) 
     } else if (what=="tags") {
-        return(lapply(x, segmentParagraph, delimiter, perl=perl))         
+        return(lapply(x, segmentParagraph, delimiter, perl = perl, fixed = (valuetype == "fixed")))         
     } else if (what=="other") {
         if (is.null(delimiter))
             stop("For type other, you must supply a delimiter value.")
-        return(lapply(x, segmentParagraph, delimiter, perl=perl))
+        return(lapply(x, segmentParagraph, delimiter, perl = perl, fixed = (valuetype == "fixed"))) 
     }
 }
 
@@ -122,14 +139,31 @@ segment.corpus <- function(x, what = c("tokens", "sentences", "paragraphs", "tag
                                                      ifelse(what=="paragraphs", "\\n{2}", 
                                                             ifelse(what=="tags", "##\\w+\\b", 
                                                                    NULL)))),
+                           valuetype = c("regex", "fixed", "glob"),
                            perl=FALSE,
                            ...) {
-    newCorpus <- corpus(unlist(segment(texts(x), what, delimiter, perl=perl, ...)),
+    what <- match.arg(what)
+    valuetype <- match.arg(valuetype)
+    # automatically detect and override valuetype
+    if (gsub("[*?]|\\w|\\s", "", delimiter) != "" & valuetype != "regex") {
+        warning("delimiter looks like it contains a regex", noBreaks. = TRUE)
+    } else if (valuetype == "glob") {
+        # treat as fixed if no glob characters detected
+        if (!sum(stringi::stri_detect_charclass(delimiter, c("[*?]"))))
+            valuetype <- "fixed"
+        else {
+            features <- sapply(delimiter, utils::glob2rx, USE.NAMES = FALSE)
+            valuetype <- "regex"
+        }
+    }
+    
+    newCorpus <- corpus(unlist(segment(texts(x), what, delimiter, perl = perl, valuetype = valuetype, ...)),
                         source = metacorpus(x, "source"),
                         notes = paste0("segment.corpus(", match.call(), ")"))
     
     if (what == "tags") {
-        tagIndex <- gregexpr(delimiter, cattxt <- paste0(texts(x), collapse = ""), perl=perl)[[1]]
+        tagIndex <- gregexpr(delimiter, cattxt <- paste0(texts(x), collapse = ""), 
+                             perl = perl, fixed = (valuetype == "fixed"))[[1]]
         tags <- character()
         length(tags) <- ndoc(newCorpus)
         for (i in 1:length(tagIndex))

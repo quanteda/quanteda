@@ -11,12 +11,14 @@ segment(x, ...)
 \method{segment}{character}(x, what = c("tokens", "sentences", "paragraphs",
   "tags", "other"), delimiter = ifelse(what == "tokens", " ", ifelse(what ==
   "sentences", "[.!?:;]", ifelse(what == "paragraphs", "\\\\n{2}", ifelse(what
-  == "tags", "##\\\\w+\\\\b", NULL)))), perl = FALSE, ...)
+  == "tags", "##\\\\w+\\\\b", NULL)))), valuetype = c("regex", "fixed",
+  "glob"), perl = FALSE, ...)
 
 \method{segment}{corpus}(x, what = c("tokens", "sentences", "paragraphs",
   "tags", "other"), delimiter = ifelse(what == "tokens", " ", ifelse(what ==
   "sentences", "[.!?:;]", ifelse(what == "paragraphs", "\\\\n{2}", ifelse(what
-  == "tags", "##\\\\w+\\\\b", NULL)))), perl = FALSE, ...)
+  == "tags", "##\\\\w+\\\\b", NULL)))), valuetype = c("regex", "fixed",
+  "glob"), perl = FALSE, ...)
 }
 \arguments{
 \item{x}{text or corpus object to be segmented}
@@ -24,14 +26,20 @@ segment(x, ...)
 \item{...}{provides additional arguments passed to \code{\link{tokenize}}, if
 \code{what = "tokens"} is used}
 
-\item{what}{unit of segmentation.  Current options are tokens, sentences, 
-paragraphs, and other.  Segmenting on \code{other} allows segmentation of a
-text on any user-defined value, and must be accompanied by the 
-\code{delimiter} argument.}
+\item{what}{unit of segmentation.  Current options are \code{"tokens"} 
+(default), \code{"sentences"}, \code{"paragraphs"}, \code{"tags"}, and 
+\code{"other"}.  Segmenting on \code{other} allows segmentation of a text 
+on any user-defined value, and must be accompanied by the \code{delimiter} 
+argument.  Segmenting on \code{tags} performs the same function but 
+preserves the tags as a document variable in the segmented corpus.}
 
-\item{delimiter}{delimiter defined as a \code{\link{regex}} for segmentation. Each 
-type has its own default, except \code{other}, which requires a value to be
-specified.}
+\item{delimiter}{delimiter defined as a \code{\link{regex}} for 
+segmentation. Each type has its own default, except \code{other}, which 
+requires a value to be specified.}
+
+\item{valuetype}{how to interpret the delimiter: \code{fixed} for exact
+matching; \code{"regex"} for regular expressions; or \code{"glob"} for 
+"glob"-style wildcard patterns}
 
 \item{perl}{logical. Should Perl-compatible regular expressions be used?}
 }

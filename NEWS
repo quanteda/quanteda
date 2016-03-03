@@ -2,6 +2,8 @@ quanteda 0.9.5
 ==============  
 *  Improved tag handling for segment(x, what = "tags")
 
+*  Added valuetype argument to segment() methods, which allows faster and more robust segmentation on large texts.
+
 Bug fixes
 ---------
 *  Fixed a false-alarm warning message in textmodel_wordfish()
