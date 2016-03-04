@@ -32,7 +32,7 @@ dfm <- function(x, ...) {
 #' @param verbose display messages if \code{TRUE}
 #' @param toLower convert texts to lowercase
 #' @param removeNumbers remove numbers, see \link{tokenize}
-#' @param removePunct remove numbers, see \link{tokenize}
+#' @param removePunct remove punctuation, see \link{tokenize}
 #' @param removeTwitter if \code{FALSE}, preserve \code{#} and \code{@@} 
 #'   characters, see \link{tokenize}
 #' @param removeSeparators remove separators (whitespace), see \link{tokenize}
