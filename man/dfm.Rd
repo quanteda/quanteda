@@ -42,7 +42,7 @@ sequences}
 
 \item{removeNumbers}{remove numbers, see \link{tokenize}}
 
-\item{removePunct}{remove numbers, see \link{tokenize}}
+\item{removePunct}{remove punctuation, see \link{tokenize}}
 
 \item{removeSeparators}{remove separators (whitespace), see \link{tokenize}}
 
