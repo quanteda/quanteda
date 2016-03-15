@@ -118,15 +118,22 @@ segment.character <- function(x, what=c("tokens", "sentences", "paragraphs", "ta
 }
 
 #' @rdname segment
+#' @param keepdocvars if \code{TRUE}, repeat the docvar values for each
+#'   segmented text; if \code{FALSE}, drop the docvars in the segmented corpus. 
+#'   Dropping the docvars might be useful in order to conserve space or if these 
+#'   are not desired for the segmented corpus.
 #' @export
-#' @note Does not currently record document segments if segmenting a multi-text corpus
-#' into smaller units. For this, use \link{changeunits} instead.
+#' @note Does not currently record document segments if segmenting a multi-text
+#'   corpus into smaller units. For this, use \link{changeunits} instead.
 #' @examples
-#' testCorpus <- corpus("##INTRO This is the introduction. 
-#'                       ##DOC1 This is the first document.  
-#'                       Second sentence in Doc 1.  
-#'                       ##DOC3 Third document starts here.  
-#'                       End of third document.")
+#' testCorpus <- corpus(c("##INTRO This is the introduction. 
+#'                        ##DOC1 This is the first document.  
+#'                        Second sentence in Doc 1.  
+#'                        ##DOC3 Third document starts here.  
+#'                        End of third document.",
+#'                       "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
+#' # add a docvar
+#' testCorpus[["serialno"]] <- paste0("textSerial", 1:ndoc(testCorpus))
 #' testCorpusSeg <- segment(testCorpus, "tags")
 #' summary(testCorpusSeg)
 #' texts(testCorpusSeg)
@@ -141,6 +148,7 @@ segment.corpus <- function(x, what = c("tokens", "sentences", "paragraphs", "tag
                                                                    NULL)))),
                            valuetype = c("regex", "fixed", "glob"),
                            perl=FALSE,
+                           keepdocvars = TRUE, 
                            ...) {
     what <- match.arg(what)
     valuetype <- match.arg(valuetype)
@@ -157,7 +165,10 @@ segment.corpus <- function(x, what = c("tokens", "sentences", "paragraphs", "tag
         }
     }
     
-    newCorpus <- corpus(unlist(segment(texts(x), what, delimiter, perl = perl, valuetype = valuetype, ...)),
+    segTxt <- segment(texts(x), what, delimiter, perl = perl, valuetype = valuetype, ...)
+    names(segTxt) <- paste0(names(segTxt), ".")
+    
+    newCorpus <- corpus(unlist(segTxt),
                         source = metacorpus(x, "source"),
                         notes = paste0("segment.corpus(", match.call(), ")"))
     
@@ -171,9 +182,13 @@ segment.corpus <- function(x, what = c("tokens", "sentences", "paragraphs", "tag
                               stop = tagIndex[i] + attr(tagIndex, "match.length")[i] - 1)
         # remove white space at both ends
         tags <- stringi::stri_trim_both(tags)
-        # remove tags for which there is no 
+        # add tag as a docvar
         docvars(newCorpus, "tag") <- tags
     }
+
+    # add repeated versions of remaining docvars
+    if (!is.null(docvars(x)) & keepdocvars)
+        docvars(newCorpus) <- cbind(docvars(newCorpus), lapply(docvars(x), rep, lengths(segTxt)))
     
     newCorpus
 }

@@ -16,35 +16,26 @@
 #' @param ... additional arguments
 #' @return A corpus class object containing the original texts, document-level 
 #'   variables, document-level metadata, corpus-level metadata, and default 
-#'   settings for subsequent processing of the corpus.  A corpus consists of a 
-#'   list of elements described below, although these should only be accessed 
-#'   through accessor and replacement functions, not directly (since the 
-#'   internals may be subject to change).  The structure of a corpus classed 
-#'   list object is:
-#'   
-#'   \item{$documents}{A data frame containing the document level information, 
-#'   consisting of \code{\link{texts}}, user-named \code{\link{docvars}} 
-#'   variables describing attributes of the documents, and \code{metadoc} 
-#'   document-level metadata whose names begin with an underscore character, 
-#'   such as \code{_language}.}
-#'   
-#'   \item{$metadata}{A named list set of corpus-level meta-data, including 
-#'   \code{source} and \code{created} (both generated automatically unless 
-#'   assigned), \code{notes}, and \code{citation}.}
-#'   
-#'   \item{$settings}{Settings for the corpus which record options that govern 
-#'   the subsequent processing of the corpus when it is converted into a 
-#'   document-feature matrix (\link{dfm}).  See \link{settings}.}
-#'   
-#'   \item{$tokens}{An indexed list of tokens and types tabulated by document, 
-#'   including information on positions.  Not yet fully implemented.}
+#'   settings for subsequent processing of the corpus.  A corpus currently 
+#'   consists of an S3 specially classed list of elements, but **you should not 
+#'   access these elements directly**. Use the extractor and replacement 
+#'   functions instead, or else your code is not only going to be uglier, but
+#'   also likely to break should the internal structure of a corpus object
+#'   change (as it inevitably will as we continue to develop the package,
+#'   including moving corpus objects to the S4 class system).
 #' @seealso \link{docvars}, \link{metadoc}, \link{metacorpus}, \link{settings}, 
-#'   \link{texts}
+#'   \link{texts}, \link{ndoc}, \link{docnames}
 #' @details The texts and document variables of corpus objects can also be 
 #'   accessed using index notation. Indexing a corpus object as a vector will 
-#'   return its text, equivalent to \code{texts(x)}.  Indexing a corpus using
-#'   two indexes (integers or column names) will return the document variables,
-#'   equivalent to \code{docvars(x)}.
+#'   return its text, equivalent to \code{texts(x)}.  Note that this is not the 
+#'   same as subsetting the entire corpus -- this should be done using the 
+#'   \code{\link{subset}} method for a corpus.
+#'   
+#'   Indexing a corpus using two indexes (integers or column names) will return 
+#'   the document variables, equivalent to \code{docvars(x)}.  Because a corpus 
+#'   is also a list, it is also possible to access, create, or replace docvars 
+#'   using list notation, e.g. \code{myCorpus[["newSerialDocvar"]] <- 
+#'   paste0("tag", 1:ndoc(myCorpus))}.
 #' @author Kenneth Benoit and Paul Nulty
 #' @export
 corpus <- function(x, ...) {
@@ -110,6 +101,9 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
                                            "\u2018", "\u201B", "\u2019"),                                     
                                          c("\"", "\"", "\"", 
                                            "\'", "\'", "\'"), vectorize_all = FALSE)
+    
+    # replace all hyphens with simple hyphen
+    x <- stringi::stri_replace_all_regex(x, "\\p{Pd}", "-")
 
     # detect encoding based on 100 documents
 #     detectSampleSize <- 100

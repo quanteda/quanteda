@@ -4,6 +4,12 @@ quanteda 0.9.5
 
 *  Added valuetype argument to segment() methods, which allows faster and more robust segmentation on large texts.
 
+*  corpus() now converts all hyphen-like characters to simple hyphen
+
+*  segment.corpus() now preserves all existing docvars.
+
+*  corpus documentation now removes the description of the corpus object's structure since too many users were accessing these internal elements directly, which is strongly discouraged, as we are likely to change the corpus internals (soon and often).  Repeat after me: "encapsulation".
+
 Bug fixes
 ---------
 *  Fixed a false-alarm warning message in textmodel_wordfish()
