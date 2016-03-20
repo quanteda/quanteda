@@ -16,6 +16,8 @@ Bug fixes
 
 *  Argument defaults for readability.corpus() now same as readability.character().  Fixes #107.
 
+*  Fixed a bug causing LIWC format dictionary imports to fail if extra characters followed the closing % in the file header.
+
 
 quanteda 0.9.4
 ==============
