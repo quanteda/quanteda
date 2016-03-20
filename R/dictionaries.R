@@ -184,7 +184,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     }
     
     # get the row number that signals the end of the category guide
-    guideRowEnd <- max(grep("^%\\b", d))
+    guideRowEnd <- max(grep("^%\\s+$", d))
     if (guideRowEnd < 1) {
         stop('Expected a guide (a category legend) delimited by percentage symbols at start of file, none found')
     }
@@ -209,11 +209,13 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     
     # remove odd parenthetical codes
     foundParens <- grep("^\\w+\\s+\\(.+\\)", catlist)
-    cat("note: ignoring parenthetical expressions in lines:\n")
-    for (i in foundParens)
-        cat("  [line ", foundParens + guideRowEnd, ":] ", catlist[i], "\n", sep = "")
-    catlist <- gsub("\\(.+\\)", "", catlist)
-    
+    if (length(foundParens)) {
+        cat("note: ignoring parenthetical expressions in lines:\n")
+        for (i in foundParens)
+            cat("  [line ", foundParens + guideRowEnd, ":] ", catlist[i], "\n", sep = "")
+        catlist <- gsub("\\(.+\\)", "", catlist)
+    }
+        
     # catlist <- strsplit(catlist, "\t")
     catlist <- tokenize(catlist, what = "fasterword", removeNumbers = FALSE)
     catlist <- as.data.frame(do.call(rbind, lapply(catlist, '[', 1:max(sapply(catlist, length)))), stringsAsFactors = FALSE)
