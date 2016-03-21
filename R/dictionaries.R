@@ -184,7 +184,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     }
     
     # get the row number that signals the end of the category guide
-    guideRowEnd <- max(grep("^%\\s+$", d))
+    guideRowEnd <- max(grep("^%\\s*$", d))
     if (guideRowEnd < 1) {
         stop('Expected a guide (a category legend) delimited by percentage symbols at start of file, none found')
     }
