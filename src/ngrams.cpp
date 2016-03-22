@@ -18,8 +18,8 @@ std::string join(std::vector< std::string > ngram,
 
 
 void skip(std::vector< std::string > &tokens,
-                                  int start,
-                                  int n, 
+                                  unsigned int start,
+                                  unsigned int n, 
                                   std::vector< int > ks,
                                   std::vector<std::string> ngram,
                                   std::vector< std::vector<std::string> > &ngrams
@@ -47,11 +47,13 @@ std::vector< std::string > skipgramcpp(std::vector< std::string > tokens,
                                     std::string delim 
 ){
   
+  
   // Generate skipgrams recursively
   std::vector<std::string> ngram;
   std::vector< std::vector<std::string> > ngrams; // For the rerusive function
   int len_ns = ns.size();
   int len_tokens = tokens.size();
+  
   for (int g = 0; g < len_ns; g++) {
     int n = ns[g];
     for (int h = 0; h < len_tokens; h++) {
