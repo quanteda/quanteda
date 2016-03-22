@@ -379,8 +379,10 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
                                dimnames=list(docs = docnames(x), 
                                              features = newFeatures))
     if (!exclusive) {
-        keyIndex <- unlist(newFeatureIndexList, use.names = FALSE)
-        dfmresult2 <- cbind(x[, -keyIndex], dfmresult2)
+        if (!all(is.null(keyIndex <- unlist(newFeatureIndexList, use.names = FALSE))))
+            dfmresult2 <- cbind(x[, -keyIndex], dfmresult2)
+        else
+            dfmresult2 <- cbind(x, dfmresult2)
     }
     
     new("dfmSparse", dfmresult2)

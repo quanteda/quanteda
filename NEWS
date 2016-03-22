@@ -18,6 +18,8 @@ Bug fixes
 
 *  Fixed a bug causing LIWC format dictionary imports to fail if extra characters followed the closing % in the file header.
 
+*  Fixed a bug in applyDictionary(x, dictionary, exclusive = FALSE) when the dictionary produced no matches at all, caused by an attempt to negative index a NULL.  #115
+
 
 quanteda 0.9.4
 ==============
