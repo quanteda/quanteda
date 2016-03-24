@@ -217,13 +217,16 @@ corpus.corpusSource <- function(x, ...) {
 corpus.VCorpus <- function(x, ...) {
     # extract the content (texts)
     #texts <- sapply(x, function(x) x$content)
-    texts <- sapply(x, as.character)
+    # texts <- sapply(x, as.character)
+    texts <- sapply(x$content, "[[", "content")
     # paste together texts if they appear to be vectors
     if (any(lengths(texts) > 1))
         texts <- sapply(texts, paste, collapse = " ")
         
     # special handling for VCorpus meta-data
-    metad <- as.data.frame(t(as.data.frame(sapply(x, function(x) x$meta))))
+    # metad <- as.data.frame(t(as.data.frame(sapply(x$content, "[[", "meta"))))
+    metad <- as.data.frame(do.call(rbind, (lapply(x$content, "[[", "meta"))),
+                           stringsAsFactors = FALSE, row.names = FALSE)
     makechar <- function(x) gsub("character\\(0\\)", NA, as.character(x))
     datetimestampIndex <- which(names(metad) == "datetimestamp")
     metad[, -datetimestampIndex] <- apply(metad[, -datetimestampIndex], 2, makechar)

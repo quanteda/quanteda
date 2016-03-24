@@ -168,6 +168,9 @@ dfm.character <- function(x,
     startTime <- proc.time()
     valuetype <- match.arg(valuetype)
     
+#     if (length(addedArgs <- list(...)) && !(addedArgs %in% names(formals(getS3method("tokenize", "character")))))
+#         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+
     if (verbose && grepl("^dfm\\.character", sys.calls()[[2]]))
         cat("Creating a dfm from a character vector ...")
 

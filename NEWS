@@ -10,6 +10,8 @@ quanteda 0.9.5
 
 *  corpus documentation now removes the description of the corpus object's structure since too many users were accessing these internal elements directly, which is strongly discouraged, as we are likely to change the corpus internals (soon and often).  Repeat after me: "encapsulation".
 
+*  Improve robustness of `corpus.VCorpus()` for constructing a corpus from a tm Corpus object.
+
 Bug fixes
 ---------
 *  Fixed a false-alarm warning message in textmodel_wordfish()
