@@ -50,6 +50,7 @@ wordstem.character <- function(x, language = "porter") {
 #' @import stringi 
 #' @export
 wordstem.tokenizedTexts <- function(x, language = "porter") {
+    origAttrs <- attributes(x)
     if (!grepl("word", attr(x, "what")) || any(unlist(lapply(x, function(y) stringi::stri_detect_fixed(y, " ") & !is.na(y)))))
         stop("whitespace detected: you can only stem word-tokenized texts")
     if (all.equal(attributes(x)$ngrams, 1))
@@ -60,6 +61,7 @@ wordstem.tokenizedTexts <- function(x, language = "porter") {
     }
     class(result) <- c("tokenizedTexts", class(result))
     result[which(is.na(x))] <- NA
+    attributes(result) <- origAttrs
     result
 }
 
