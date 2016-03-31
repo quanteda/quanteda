@@ -12,6 +12,8 @@ quanteda 0.9.5
 
 *  Improve robustness of `corpus.VCorpus()` for constructing a corpus from a tm Corpus object.
 
+*  Add UTF-8 preservation to ngrams.cpp.
+
 Bug fixes
 ---------
 *  Fixed a false-alarm warning message in textmodel_wordfish()
