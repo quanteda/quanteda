@@ -234,9 +234,10 @@ get_doc <- function(f, ...) {
                
                # convert to UTF-8 if an input encoding was specified and if
                # the native.enc is not already UTF-8
-               if ("encoding" %in% names(args <- list(...)) & !(grepl("UTF-8", Sys.getlocale("LC_CTYPE")))) {
-                   iconv(txt, from = args$encoding, to = "UTF-8")
-               }
+#                if ("encoding" %in% names(args <- list(...)) & !(grepl("UTF-8", Sys.getlocale("LC_CTYPE")))) {
+#                    iconv(txt, from = args$encoding, to = "UTF-8")
+#                }
+               
                
                result <- list(txts = paste(txt, collapse="\n"), docv = data.frame())
                return(result)

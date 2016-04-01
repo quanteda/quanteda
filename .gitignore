@@ -10,3 +10,5 @@ inst/doc
 *.so
 .httr-oauth
 *Rcheck*
+*.dll
+
