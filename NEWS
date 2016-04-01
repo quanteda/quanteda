@@ -14,6 +14,8 @@ quanteda 0.9.5
 
 *  Add UTF-8 preservation to ngrams.cpp.
 
+*  Fix encoding issues for textfile(), improve functionality.
+
 Bug fixes
 ---------
 *  Fixed a false-alarm warning message in textmodel_wordfish()

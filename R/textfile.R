@@ -212,7 +212,7 @@ setMethod("textfile",
 
 # function common to all textfile methods to return either the cached
 # textfile object link, or the textfile object itself
-returnCorpusSource <- function(sources, cache) {
+returnCorpusSource <- function(sources, cache = FALSE) {
     if (cache) {
         tempCorpusFilename <- tempfile()
         save(sources, file=tempCorpusFilename)
