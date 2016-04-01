@@ -150,8 +150,8 @@ setMethod("textfile",
                     cache = "ANY", 
                     docvarsfrom="missing", dvsep="missing", docvarnames="missing"),
           definition = function(file, textField, cache = FALSE, ...) {
-#               if ((!(addedArgs <- list(...)) %in% names(formals(file))))
-#                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+              #               if ((!(addedArgs <- list(...)) %in% names(formals(file))))
+              #                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
               if (length(textField) != 1)
                   stop("textField must be a single field name or column number identifying the texts.")
               fileType <- getFileType(file)
@@ -172,8 +172,8 @@ setMethod("textfile",
                     cache = "ANY",
                     docvarsfrom="missing", dvsep="missing", docvarnames="missing"),
           definition = function(file, cache = FALSE, ...) {
-#               if (length(addedArgs <- list(...)))
-#                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+              #               if (length(addedArgs <- list(...)))
+              #                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
               
               fileType <- getFileType(file)
               if (fileType=="filemask" | fileType=="vector") {
@@ -192,8 +192,8 @@ setMethod("textfile",
                     docvarsfrom="character", dvsep="ANY", docvarnames="ANY"),
           definition = function(file, textField=NULL, cache = FALSE, 
                                 docvarsfrom=c("headers"), dvsep="_", docvarnames=NULL, ...) {
-#               if (length(addedArgs <- list(...)))
-#                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+              #               if (length(addedArgs <- list(...)))
+              #                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
               fileType <- getFileType(file)
               if (fileType=="filemask") {
                   sources <- get_docs(file, ...)
@@ -231,6 +231,13 @@ get_doc <- function(f, ...) {
            txt =  { 
                txt <- readLines(con <- file(f, ...), warn = FALSE)
                close(con)
+               
+               # convert to UTF-8 if an input encoding was specified and if
+               # the native.enc is not already UTF-8
+               if ("encoding" %in% names(args <- list(...)) & !(grepl("UTF-8", Sys.getlocale("LC_CTYPE")))) {
+                   iconv(txt, from = args$encoding, to = "UTF-8")
+               }
+               
                result <- list(txts = paste(txt, collapse="\n"), docv = data.frame())
                return(result)
            },
@@ -385,9 +392,9 @@ get_json <- function(path, textField, ...) {
     # raw <- readLines(path)
     #parsed <- lapply(path, jsonlite::fromJSON, flatten=TRUE)
     df <- jsonlite::fromJSON(path, flatten=TRUE, ...)
-#     df <- data.frame(matrix(unlist(parsed), nrow=length(parsed), ncol=length(parsed[[1]]), byrow=TRUE),
-#                      stringsAsFactors=FALSE)
-#     names(df) <- names(parsed[[1]])
+    #     df <- data.frame(matrix(unlist(parsed), nrow=length(parsed), ncol=length(parsed[[1]]), byrow=TRUE),
+    #                      stringsAsFactors=FALSE)
+    #     names(df) <- names(parsed[[1]])
     textFieldi <- which(names(df)==textField)
     if (length(textFieldi)==0)
         stop("column name", textField, "not found.")
