@@ -252,11 +252,10 @@ get_doc <- function(f, ...) {
 
 get_docs <- function(filemask, ...) {
     if (length(filemask) == 1) {
-        # get the pattern at the end
-        pattern <- getRootFileNames(filemask)
+        # get the pattern at the end, as a regex
+        pattern <- utils::glob2rx(basename(filemask))
         # get the directory name
-        path <- substr(filemask, 1, nchar(filemask) - nchar(pattern))
-        if (path == "") path <- "."
+        path <- dirname(filemask)
         # get the filenames
         filenames <- list.files(path, pattern, full.names=TRUE)
     } else {
@@ -450,33 +449,6 @@ getFileType <- function(filenameChar) {
             return("tab")
         else return("unknown") }, USE.NAMES=FALSE)
 }    
-
-
-# Truncate absolute filepaths to root filenames
-#
-# This function takes an absolute filepath and returns just the 
-# document name
-#
-# @param longFilenames Absolute filenames including a full path with directory
-# @return character vector of filenames withouth directory path
-# @export
-# @author Paul Nulty
-# @examples
-# \dontrun{
-# getRootFileNames('/home/paul/documents/libdem09.txt')
-# }
-getRootFileNames <- function(longFilenames) {
-    ## function to return just the filename, path not included
-    ## might need to detect .Platform$OS.type to change the delimiter
-    delim <- "/"
-    
-    # replace forward slashes used in Windows
-    osName <- (Sys.info()[['sysname']] )
-    if (osName=="Windows") 
-        gsub("(\\\\)", "/", longFilenames) 
-    splitFilenames <- strsplit(longFilenames, delim)
-    return(sapply(splitFilenames, tail, n=1))
-}
 
 
 getdocvarsFromHeaders <- function(fnames, dvsep="_", docvarnames=NULL) {
