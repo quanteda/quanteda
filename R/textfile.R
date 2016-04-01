@@ -285,7 +285,7 @@ get_docs <- function(filemask, ...) {
         textsvec[i] <- get_doc(filenames[i], encoding = encodingFrom[i])$txts
     
     # name the vector with the filename by default
-    names(textsvec) <- getRootFileNames(filenames)
+    names(textsvec) <- basename(filenames)
     
     list(txts = textsvec, docv = data.frame())    
 }
