@@ -400,6 +400,13 @@ texts.character <- function(x, groups = NULL, ...) {
 }
 
 
+#' @param value character vector of the new texts
+#' @rdname texts
+#' @export
+"texts<-" <- function(x, value) {
+    UseMethod("texts<-")
+}
+
 #' @rdname texts
 #' @export
 #' @note You are strongly encouraged as a good practice of text analysis 
@@ -425,6 +432,7 @@ texts.character <- function(x, groups = NULL, ...) {
     documents(x)$texts <- value
     x
 }
+
 
 #' get or set document-level meta-data
 #' 

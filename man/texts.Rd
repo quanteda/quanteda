@@ -5,6 +5,7 @@
 \alias{texts.character}
 \alias{texts.corpus}
 \alias{texts.corpusSource}
+\alias{texts<-}
 \alias{texts<-.corpus}
 \title{get corpus texts}
 \usage{
@@ -14,7 +15,9 @@ texts(x, groups = NULL, ...)
 
 \method{texts}{character}(x, groups = NULL, ...)
 
-texts.corpus(x) <- value
+texts(x) <- value
+
+\method{texts}{corpus}(x) <- value
 
 \method{texts}{corpusSource}(x, groups = NULL, ...)
 }
@@ -27,6 +30,8 @@ aggregating the texts through concatenation.  If \code{x} is of type character,
 then \code{groups} must be a factor.}
 
 \item{...}{unused}
+
+\item{value}{character vector of the new texts}
 }
 \value{
 For \code{texts}, a character vector of the texts in the corpus.
