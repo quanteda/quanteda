@@ -16,6 +16,8 @@ quanteda 0.9.5
 
 *  Fix encoding issues for textfile(), improve functionality.
 
+*  Added two data objects: Moby Dick is now available as `mobydickText`, without needing to access a zipped text file; `encodedTextFiles.zip` is now a zipped archive of different encodings of (mainly) the UN Declaration of Human Rights, for testing conversions from 8-bit encodings in different (non-Roman) languages.
+
 Bug fixes
 ---------
 *  Fixed a false-alarm warning message in textmodel_wordfish()
@@ -29,6 +31,8 @@ Bug fixes
 *  Fixed #117, a bug where wordstem.tokenizedTexts() removed attributes from the object, causing a failure of dfm.tokenizedTexts().
 
 *  Fixed #119, a bug in selectFeatures.tokenizedTexts(x, features, selection = "remove") that returned a NULL for a document's tokens when no matching pattern for removal was found.
+
+*  Improved the behaviour of the `removeHyphens` option to `tokenize()` when `what = "fasterword"` or `what "fastestword"`. 
 
 
 quanteda 0.9.4

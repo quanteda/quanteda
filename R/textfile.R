@@ -318,7 +318,7 @@ get_data <- function(f, textField, sep = ",", ...){
 # read a document from a structured file containing text and data
 get_datas <- function(filemask, textField='index', fileType, ...){
     # get the pattern at the end
-    pattern <- getRootFileNames(filemask)
+    pattern <- basename(filemask)
     # get the directory name
     path <- substr(filemask, 1, nchar(filemask) - nchar(pattern))
     # get the filenames

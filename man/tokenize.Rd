@@ -118,54 +118,57 @@ str(tokensFromChar)
 # returned as a list
 head(tokenize(inaugTexts[57])[[1]], 10)
 # returned as a character vector using simplify=TRUE
-head(tokenize(inaugTexts[57], simplify=TRUE), 10)
+head(tokenize(inaugTexts[57], simplify = TRUE), 10)
 
 # removing punctuation marks and lowecasing texts
-head(tokenize(toLower(inaugTexts[57]), simplify=TRUE, removePunct=TRUE), 30)
+head(tokenize(toLower(inaugTexts[57]), simplify = TRUE, removePunct = TRUE), 30)
 # keeping case and punctuation
-head(tokenize(inaugTexts[57], simplify=TRUE), 30)
+head(tokenize(inaugTexts[57], simplify = TRUE), 30)
 # keeping versus removing hyphens
 tokenize("quanteda data objects are auto-loading.", removePunct = TRUE)
 tokenize("quanteda data objects are auto-loading.", removePunct = TRUE, removeHyphens = TRUE)
 
 ## MORE COMPARISONS
 txt <- "#textanalysis is MY <3 4U @myhandle gr8 #stuff :-)"
-tokenize(txt, removePunct=TRUE)
-tokenize(txt, removePunct=TRUE, removeTwitter=TRUE)
-#tokenize("great website http://textasdata.com", removeURL=FALSE)
-#tokenize("great website http://textasdata.com", removeURL=TRUE)
+tokenize(txt, removePunct = TRUE)
+tokenize(txt, removePunct = TRUE, removeTwitter = TRUE)
+#tokenize("great website http://textasdata.com", removeURL = FALSE)
+#tokenize("great website http://textasdata.com", removeURL = TRUE)
 
 txt <- c(text1="This is $10 in 999 different ways,\\n up and down; left and right!", 
          text2="@kenbenoit working: on #quanteda 2day\\t4ever, http://textasdata.com?page=123.")
-tokenize(txt, verbose=TRUE)
-tokenize(txt, removeNumbers=TRUE, removePunct=TRUE)
-tokenize(txt, removeNumbers=FALSE, removePunct=TRUE)
-tokenize(txt, removeNumbers=TRUE, removePunct=FALSE)
-tokenize(txt, removeNumbers=FALSE, removePunct=FALSE)
-tokenize(txt, removeNumbers=FALSE, removePunct=FALSE, removeSeparators=FALSE)
+tokenize(txt, verbose = TRUE)
+tokenize(txt, removeNumbers = TRUE, removePunct = TRUE)
+tokenize(txt, removeNumbers = FALSE, removePunct = TRUE)
+tokenize(txt, removeNumbers = TRUE, removePunct = FALSE)
+tokenize(txt, removeNumbers = FALSE, removePunct = FALSE)
+tokenize(txt, removeNumbers = FALSE, removePunct = FALSE, removeSeparators = FALSE)
 
 # character level
-tokenize("Great website: http://textasdata.com?page=123.", what="character")
-tokenize("Great website: http://textasdata.com?page=123.", what="character", 
-         removeSeparators=FALSE)
+tokenize("Great website: http://textasdata.com?page=123.", what = "character")
+tokenize("Great website: http://textasdata.com?page=123.", what = "character", 
+         removeSeparators = FALSE)
 
 # sentence level         
 tokenize(c("Kurt Vongeut said; only assholes use semi-colons.", 
            "Today is Thursday in Canberra:  It is yesterday in London.", 
            "Today is Thursday in Canberra:  \\nIt is yesterday in London.",
-           "To be?  Or\\not to be?"), 
+           "To be?  Or\\nnot to be?"), 
           what = "sentence")
 tokenize(inaugTexts[c(2,40)], what = "sentence", simplify = TRUE)
 
-# creating ngrams
+# removing features (stopwords) from tokenized texts
 txt <- toLower(c(mytext1 = "This is a short test sentence.",
-                mytext2 = "Short.",
-                mytext3 = "Short, shorter, and shortest."))
+                 mytext2 = "Short.",
+                 mytext3 = "Short, shorter, and shortest."))
 tokenize(txt, removePunct = TRUE)
 removeFeatures(tokenize(txt, removePunct = TRUE), stopwords("english"))
+
+# ngram tokenization
 tokenize(txt, removePunct = TRUE, ngrams = 2)
-tokenize(txt, removePunct = TRUE, ngrams = 1:2)
 tokenize(txt, removePunct = TRUE, ngrams = 2, skip = 1, concatenator = " ")
+tokenize(txt, removePunct = TRUE, ngrams = 1:2)
+# removing features from ngram tokens
 removeFeatures(tokenize(txt, removePunct = TRUE, ngrams = 1:2), stopwords("english"))
 }
 \author{

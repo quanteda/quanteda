@@ -5,17 +5,17 @@
 require(quanteda)
 
 # read the text as a single file
-# mobydicktf <- textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt")
-mobydicktf <- textfile(unzip(system.file("extdata", "pg2701.txt.zip", package = "quanteda")))
+# alternative:
+# mobydickText <- texts(textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
+summary(mobydickText)
 
 ## ------------------------------------------------------------------------
-substring(texts(mobydicktf), 1, 75)
+substring(mobydickText, 1, 75)
 
 ## ------------------------------------------------------------------------
 # extract the header information
-mobydickText <- texts(mobydicktf)
 endMetadataIndex <- regexec("CHAPTER 1. Loomings.", mobydickText)[[1]]
-metadata.v <- substring(texts(mobydicktf), 1, endMetadataIndex - 1)
+metadata.v <- substring(mobydickText, 1, endMetadataIndex - 1)
 
 ## ------------------------------------------------------------------------
 # verify that "orphan" is the end of the novel
