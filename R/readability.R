@@ -5,12 +5,17 @@
 #' Calculate the readability of text(s).
 #' @param x a \link{corpus} object or character vector
 #' @param measure character vector defining the readability measure to calculate
-#' @param drop  if \code{TRUE}, the result is returned as a numeric vector if only a single measure is requested;
-#'   otherwise, a data.frame is returned with each column consisting of a requested measure.
+#' @param drop  if \code{TRUE}, the result is returned as a numeric vector if 
+#'   only a single measure is requested; otherwise, a data.frame is returned 
+#'   with each column consisting of a requested measure.
+#' @param removeHyphens if \code{TRUE}, treat constituent words in hyphenated as
+#'   separate terms, for purposes of computing word lengths, e.g. 
+#'   "decision-making" as two terms of lengths 8 and 6 characters respectively,
+#'   rather than as a single word of 15 characters
 #' @param ... not used
 #' @author Kenneth Benoit, re-engineered from the function of the same name by 
 #'   Meik Michalke in the \pkg{koRpus} package.
-#' @return a data.frame object consisting of the documents as rows, and the
+#' @return a data.frame object consisting of the documents as rows, and the 
 #'   readability statistics as columns
 #' @export
 readability <- function(x, ...) {
@@ -35,7 +40,8 @@ readability.corpus <- function(x, ...) {
 #' readability(txt, c("FOG", "FOG.PSK", "FOG.NRI"))
 #' inaugReadability <- readability(inaugCorpus, "all")
 #' round(cor(inaugReadability), 3)
-readability.character <- function(x, measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP", 
+readability.character <- function(x,  
+                                  measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP", 
                                                  "Coleman", "Coleman.C2", 
                                                  "Coleman.Liau", "Coleman.Liau.grade", "Coleman.short",
                                                  "Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK",
@@ -49,6 +55,7 @@ readability.character <- function(x, measure = c("all", "ARI", "ARI.simple", "Bo
                                                  "Spache", "Spache.old", "Strain",
                                                  "Traenkle.Bailer", "Traenkle.Bailer.2",
                                                  "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
+                                  removeHyphens = TRUE,
                                   drop = TRUE, ...) {
     
     addedArgs <- names(list(...))
@@ -95,7 +102,7 @@ readability.character <- function(x, measure = c("all", "ARI", "ARI.simple", "Bo
     
     # get the word length and syllable info for use in computing quantities
     x <- toLower(x)
-    tokenizedWords <- tokenize(x, removePunct = TRUE)
+    tokenizedWords <- tokenize(x, removePunct = TRUE, removeHyphens = removeHyphens)
     
     # number of syllables
     tmpSyll <- syllables(tokenizedWords)

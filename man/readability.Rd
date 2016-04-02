@@ -19,8 +19,8 @@ readability(x, ...)
   "Fucks", "Linsear.Write", "LIW", "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX",
   "Scrabble", "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de",      "Spache",
   "Spache.old", "Strain", "Traenkle.Bailer", "Traenkle.Bailer.2",
-  "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"), drop = TRUE,
-  ...)
+  "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
+  removeHyphens = TRUE, drop = TRUE, ...)
 }
 \arguments{
 \item{x}{a \link{corpus} object or character vector}
@@ -29,11 +29,17 @@ readability(x, ...)
 
 \item{measure}{character vector defining the readability measure to calculate}
 
-\item{drop}{if \code{TRUE}, the result is returned as a numeric vector if only a single measure is requested;
-otherwise, a data.frame is returned with each column consisting of a requested measure.}
+\item{removeHyphens}{if \code{TRUE}, treat constituent words in hyphenated as
+separate terms, for purposes of computing word lengths, e.g. 
+"decision-making" as two terms of lengths 8 and 6 characters respectively,
+rather than as a single word of 15 characters}
+
+\item{drop}{if \code{TRUE}, the result is returned as a numeric vector if 
+only a single measure is requested; otherwise, a data.frame is returned 
+with each column consisting of a requested measure.}
 }
 \value{
-a data.frame object consisting of the documents as rows, and the
+a data.frame object consisting of the documents as rows, and the 
   readability statistics as columns
 }
 \description{
