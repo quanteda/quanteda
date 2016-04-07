@@ -1,4 +1,4 @@
-quanteda 0.9.5
+quanteda 0.9.5 
 ==============  
 *  Improved tag handling for segment(x, what = "tags")
 
@@ -34,6 +34,7 @@ Bug fixes
 
 *  Improved the behaviour of the `removeHyphens` option to `tokenize()` when `what = "fasterword"` or `what "fastestword"`. 
 
+*  readability() now returns measures in order called, not function definition order.
 
 quanteda 0.9.4
 ==============

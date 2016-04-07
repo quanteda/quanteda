@@ -278,7 +278,6 @@ readability.character <- function(x,
         # number of words which are not in the Spache word list
         textFeatures[, W_wl.Spache := sapply(tokenizedWords, function(x) sum(!(x %in% quanteda::wordlists$spache)))]
         textFeatures[, Spache := 0.121 * W / St + 0.082 * (100 * W_wl.Spache / W) + 0.659]
-        textFeatures[, Spache.old := 0.141 * W / St + 0.086 * (100 * W_wl.Spache / W) + 0.839]
         textFeatures[, W_wl.Spache := NULL]
     }
 
@@ -321,10 +320,12 @@ readability.character <- function(x,
     tempIndex <- which(names(textFeatures) == "Wlt3Sy")
     textFeatures <- as.data.frame(textFeatures)
     ret <- textFeatures[, (tempIndex+1) : ncol(textFeatures), drop = drop]
-    if (!is.vector(ret))
+    if (!is.vector(ret)) {
         row.names(ret) <- textFeatures$textID
-    else 
+        ret <- ret[, measure] # put in order of measures specified in call
+    } else {
         names(ret) <- textFeatures$textID
+    }
     ret
 }
 
