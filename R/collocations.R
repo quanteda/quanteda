@@ -378,14 +378,13 @@ setMethod("phrasetotoken", signature=c("character", "dictionary", "ANY"),
               object
           })
 
-#  need an S3 method for the S3 corpus object
 #' @rdname phrasetotoken
 #' @export
-phrasetotoken.corpus <- function(object, phrases, concatenator="_") {
-    texts(object) <- phrasetotoken(texts(object), phrases, concatenator)
-    object
-}
-
+setMethod("phrasetotoken", signature=c("corpus", "ANY", "ANY"), 
+          function(object, phrases, concatenator="_") {
+              texts(object) <- phrasetotoken(texts(object), phrases, concatenator)
+              object
+          })
 
 setClass("collocations", contains = "data.table")
 

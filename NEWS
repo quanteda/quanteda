@@ -18,6 +18,8 @@ quanteda 0.9.5
 
 *  Added two data objects: Moby Dick is now available as `mobydickText`, without needing to access a zipped text file; `encodedTextFiles.zip` is now a zipped archive of different encodings of (mainly) the UN Declaration of Human Rights, for testing conversions from 8-bit encodings in different (non-Roman) languages.
 
+*  phrasetotoken() now has a method correctly defined for corpus class objects.
+
 Bug fixes
 ---------
 *  Fixed a false-alarm warning message in textmodel_wordfish()
