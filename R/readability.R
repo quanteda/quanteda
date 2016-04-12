@@ -39,11 +39,11 @@ readability.corpus <- function(x, ...) {
 #' readability(txt, "Flesch.Kincaid", drop = FALSE)
 #' readability(txt, c("FOG", "FOG.PSK", "FOG.NRI"))
 #' inaugReadability <- readability(inaugCorpus, "all")
-#' round(cor(inaugReadability), 3)
+#' round(cor(inaugReadability), 2)
 readability.character <- function(x,  
                                   measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP", 
                                                  "Coleman", "Coleman.C2", 
-                                                 "Coleman.Liau", "Coleman.Liau.grade", "Coleman.short",
+                                                 "Coleman.Liau", "Coleman.Liau.grade", "Coleman.Liau.short",
                                                  "Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK",
                                                  "Danielson.Bryan", "Danielson.Bryan.2",
                                                  "Dickes.Steiwer", "DRP", "ELF", "Farr.Jenkins.Paterson", 
@@ -63,26 +63,29 @@ readability.character <- function(x,
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), addedArgs, " not used.", sep = "", noBreaks. = TRUE)
 
     # check that all measures are legal values
-    checkMeasure <- measure %in% c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP", 
-                                   "Coleman", "Coleman.C2", 
-                                   "Coleman.Liau", "Coleman.Liau.grade", "Coleman.short",
-                                   "Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK",
-                                   "Danielson.Bryan", "Danielson.Bryan.2",
-                                   "Dickes.Steiwer", "DRP", "ELF", "Farr.Jenkins.Paterson", 
-                                   "Flesch", "Flesch.PSK", "Flesch.Kincaid", 
-                                   "FOG", "FOG.PSK", "FOG.NRI", "FORCAST", "FORCAST.RGL",
-                                   "Fucks", "Linsear.Write", "LIW",
-                                   "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX",
-                                   "Scrabble",
-                                   "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de", 
-                                   "Spache", "Spache.old", "Strain",
-                                   "Traenkle.Bailer", "Traenkle.Bailer.2",
-                                   "Wheeler.Smith",
-                                   "meanSentenceLength",
-                                   "meanWordSyllables")
+    validMeasures <- c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
+                       "Coleman", "Coleman.C2",
+                       "Coleman.Liau", "Coleman.Liau.grade", "Coleman.Liau.short",
+                       "Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK",
+                       "Danielson.Bryan", "Danielson.Bryan.2",
+                       "Dickes.Steiwer", "DRP", "ELF", "Farr.Jenkins.Paterson",
+                       "Flesch", "Flesch.PSK", "Flesch.Kincaid",
+                       "FOG", "FOG.PSK", "FOG.NRI", "FORCAST", "FORCAST.RGL",
+                       "Fucks", "Linsear.Write", "LIW",
+                       "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX",
+                       "Scrabble",
+                       "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de",
+                       "Spache", "Spache.old", "Strain",
+                       "Traenkle.Bailer", "Traenkle.Bailer.2",
+                       "Wheeler.Smith",
+                       "meanSentenceLength",
+                       "meanWordSyllables")
+    checkMeasure <- measure %in% validMeasures
     if (!all(checkMeasure))
         stop("Invalid readability measures: ", measure[!checkMeasure])
-
+    if ("all" %in% measure) 
+        measure <- validMeasures[-1]
+    
     # to avoid "no visible binding for global variable" CHECK NOTE
     textID <- W <- St <- C <- Sy <- W3Sy <- W2Sy <- W_1Sy <- W6C <- W7C <- Wlt3Sy <- W_wl.Dale.Chall <- 
         W_wl.Spache <- ARI <- ARI.NRI <- ARI.simple <- Bormuth.GP <- Coleman <- Coleman.C2 <- 
@@ -320,9 +323,9 @@ readability.character <- function(x,
     tempIndex <- which(names(textFeatures) == "Wlt3Sy")
     textFeatures <- as.data.frame(textFeatures)
     ret <- textFeatures[, (tempIndex+1) : ncol(textFeatures), drop = drop]
-    if (!is.vector(ret)) {
+    if (!is.vector(ret) & !("all" %in% measure)) {
         row.names(ret) <- textFeatures$textID
-        ret <- ret[, measure] # put in order of measures specified in call
+        ret <- ret[, measure, drop = drop] # put in order of measures specified in call
     } else {
         names(ret) <- textFeatures$textID
     }

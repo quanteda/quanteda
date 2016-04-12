@@ -12,12 +12,12 @@ readability(x, ...)
 
 \method{readability}{character}(x, measure = c("all", "ARI", "ARI.simple",
   "Bormuth", "Bormuth.GP", "Coleman", "Coleman.C2", "Coleman.Liau",
-  "Coleman.Liau.grade", "Coleman.short", "Dale.Chall", "Dale.Chall.old",
+  "Coleman.Liau.grade", "Coleman.Liau.short", "Dale.Chall", "Dale.Chall.old",
   "Dale.Chall.PSK", "Danielson.Bryan", "Danielson.Bryan.2", "Dickes.Steiwer",
   "DRP", "ELF", "Farr.Jenkins.Paterson", "Flesch", "Flesch.PSK",
   "Flesch.Kincaid", "FOG", "FOG.PSK", "FOG.NRI", "FORCAST", "FORCAST.RGL",
   "Fucks", "Linsear.Write", "LIW", "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX",
-  "Scrabble", "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de",      "Spache",
+  "Scrabble", "SMOG", "SMOG.C", "SMOG.simple",      "SMOG.de", "Spache",
   "Spache.old", "Strain", "Traenkle.Bailer", "Traenkle.Bailer.2",
   "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
   removeHyphens = TRUE, drop = TRUE, ...)
@@ -52,7 +52,7 @@ readability(txt, "Flesch.Kincaid")
 readability(txt, "Flesch.Kincaid", drop = FALSE)
 readability(txt, c("FOG", "FOG.PSK", "FOG.NRI"))
 inaugReadability <- readability(inaugCorpus, "all")
-round(cor(inaugReadability), 3)
+round(cor(inaugReadability), 2)
 }
 \author{
 Kenneth Benoit, re-engineered from the function of the same name by 
