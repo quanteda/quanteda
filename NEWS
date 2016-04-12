@@ -40,6 +40,8 @@ Bug fixes
 
 *  readability() now returns measures in order called, not function definition order.
 
+*  textmodel(x, model = "wordfish") now removes zero-frequency documents and words prior to calling Rcpp.
+
 quanteda 0.9.4
 ==============
 
