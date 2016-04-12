@@ -82,7 +82,7 @@ readability.character <- function(x,
                        "meanWordSyllables")
     checkMeasure <- measure %in% validMeasures
     if (!all(checkMeasure))
-        stop("Invalid readability measures: ", measure[!checkMeasure])
+        stop("Invalid measure(s): ", measure[!checkMeasure])
     if ("all" %in% measure) 
         measure <- validMeasures[-1]
     

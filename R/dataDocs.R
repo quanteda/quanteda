@@ -147,7 +147,7 @@ NULL
 #' @examples
 #' \dontrun{# unzip the files to a temporary directory
 #' FILEDIR <- tempdir()
-#' unzip(system.file("extdata", "encodedTextFiles.zip", package = "quantedaData"), exdir = FILEDIR)
+#' unzip(system.file("extdata", "encodedTextFiles.zip", package = "quanteda"), exdir = FILEDIR)
 #' 
 #' # get encoding from filename
 #' filenames <- list.files(FILEDIR, "\\.txt$")

@@ -20,6 +20,8 @@ quanteda 0.9.5
 
 *  phrasetotoken() now has a method correctly defined for corpus class objects.
 
+*  lexdiv() now works just like readability(), and is faster (based on data.table) and the code is simpler.
+
 Bug fixes
 ---------
 *  Fixed a false-alarm warning message in textmodel_wordfish()
