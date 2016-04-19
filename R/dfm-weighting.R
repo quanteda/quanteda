@@ -139,7 +139,6 @@ setMethod("weighting", signature(object="dfm"), function(object) {
 #'                               sparse = TRUE))
 #' wikiDfm
 #' docfreq(wikiDfm)
-#' df(wikiDfm)
 #' docfreq(wikiDfm, scheme = "inverse")
 #' docfreq(wikiDfm, scheme = "inverse", k = 1, smoothing = 1)
 #' docfreq(wikiDfm, scheme = "unary")
@@ -204,14 +203,13 @@ setMethod("docfreq", signature(x = "dfm"),
           })
 
 
-#' @rdname docfreq
-#' @export
-setGeneric("df", function(x, ...) standardGeneric("df"))
-
-#' @rdname docfreq
-#' @export
-setMethod("df", signature(x = "dfm"), function(x, ...) docfreq(x, ...))
-
+# #' @rdname docfreq
+# #' @export
+# setGeneric("df", function(x, ...) standardGeneric("df"))
+# 
+# #' @rdname docfreq
+# #' @export
+# setMethod("df", signature(x = "dfm"), function(x, ...) docfreq(x, ...))
 
 
 #' compute tf-idf weights from a dfm

@@ -54,7 +54,7 @@ setMethod("show", "dictionary",
 #'                           taxation = "taxation",
 #'                           taxregex = "tax*",
 #'                           country = "united states"))
-#' head(dfm(mycorpus, dictionary=mydict))
+#' head(dfm(mycorpus, dictionary = mydict))
 #' 
 #' \dontrun{
 #' # import the Laver-Garry dictionary from http://bit.ly/1FH2nvf
@@ -373,11 +373,11 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
                                        else 
                                            rep(0, nrow(x))
                                    })
-    dfmresult2 <- sparseMatrix(i = newDocIndex,
+    dfmresult2 <- new("dfmSparse", sparseMatrix(i = newDocIndex,
                                j = rep(1:length(dictionary), each = ndoc(x)),
                                x = unlist(newFeatureCountsList),
                                dimnames=list(docs = docnames(x), 
-                                             features = newFeatures))
+                                             features = newFeatures)))
     if (!exclusive) {
         if (!all(is.null(keyIndex <- unlist(newFeatureIndexList, use.names = FALSE))))
             dfmresult2 <- cbind(x[, -keyIndex], dfmresult2)
@@ -385,6 +385,6 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
             dfmresult2 <- cbind(x, dfmresult2)
     }
     
-    new("dfmSparse", dfmresult2)
+    dfmresult2
 }
 

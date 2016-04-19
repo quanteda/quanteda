@@ -97,7 +97,7 @@ NULL
 #'   last/first number of documents of x.
 #' @param nfeature the number of features to return, where the resulting object
 #'   will contain the first \code{ncol} features
-#' @param ... unused
+#' @param ... not used
 #' @return A \link{dfm-class} class object corresponding to the subset defined
 #'   by \code{n} and \code{ncol}.
 #' @examples
@@ -506,22 +506,44 @@ setMethod("as.data.frame", signature(x = "dfm"), function(x) as.data.frame(as.ma
 # @param x a \link{dfm} object
 # @param ... optional arguments for other methods
 
-#' @rdname dfm-class
-#' @param y a second \link{dfm} object to be joined column-wise to the first
-#' @details \code{cbind(x, y, ...)} combines dfm objects by columns, returning a
-#'   dfm object with combined features from input dfm objects.  Calls 
-#'   \code{\link{cbind2}} defined for object classes in the \pkg{Matrix}
-#'   package. The attributes and settings of this new dfm are not currently
-#'   preserved.
-#' @export
-#' @examples 
+#' Combine dfm objects by Rows or Columns
 #' 
+#' Take a sequence of \link{dfm-class} objects and combine by columns or
+#' rows, returning a dfm with the combined documents or features, respectively.
+#' 
+#' @param ... \link{dfm} objects to be joined column-wise (\code{cbind}) or
+#'   row-wise (\code{rbind}) to the first
+#' @details \code{cbind(x, y, ...)} combines dfm objects by columns, returning a
+#'   dfm object with combined features from input dfm objects.  Note that this should be used
+#'   with extreme caution, as joining dfms with different documents will result in a new row
+#'   with the docname(s) of the first dfm, merging in those from the second.  Furthermore, 
+#'   if features are shared between the dfms being cbinded, then duplicate feature labels will 
+#'   result.  In both instances, warning messages will result.
+#' @export
+#' @method cbind dfm
+#' @examples 
 #' # cbind() for dfm objects
-#' dfm1 <- dfm("This is a sample text.", verbose = FALSE)
-#' dfm2 <- dfm("one two three", verbose = FALSE)
+#' (dfm1 <- dfm("This is one sample text sample.", verbose = FALSE))
+#' (dfm2 <- dfm("More words here.", verbose = FALSE))
 #' cbind(dfm1, dfm2)
-cbind.dfm <- function(x, y, ...) {
-    result <- Matrix::cbind2(x, y, ...)
+cbind.dfm <- function(...) {
+    args <- list(...)
+    if (!all(sapply(args, is.dfm)))
+        stop("all arguments must be dfm objects")
+    dnames <- sapply(args, docnames)
+    # make into a matrix-like object for apply to work below, even if just one document per input
+    if (is.null(dim(dnames)))
+        dnames <- matrix(dnames, ncol = length(dnames))
+    if (!all(apply(dnames, 1, function(x) length(table(x)) == 1)))
+        warning("cbinding dfms with different docnames", noBreaks. = TRUE)
+    if (length(Reduce(intersect, lapply(args, features))))
+        warning("cbinding dfms with overlapping features will result in duplicated features", noBreaks. = TRUE)
+    
+    result <- Matrix::cbind2(args[[1]], args[[2]])
+    if (length(args) > 2) {
+        for (y in args[3:length(args)]) 
+            result <- Matrix::cbind2(result, y)
+    }
     new("dfmSparse", result)
 }
 
@@ -530,3 +552,59 @@ cbind.dfm <- function(x, y, ...) {
 # })
 #     
 
+#' @rdname cbind.dfm
+#' @details  \code{rbind(x, y, ...)} combines dfm objects by rows, returning a dfm
+#'   object with combined features from input dfm objects.  Features are matched
+#'   between the two dfm objects, so that the order and names of the features
+#'   does not need to match.  The resulting row combined dfm will have its
+#'   features alphabetically sorted.  The matching is performed by 
+#'   \code{\link{rbind2}} defined for object classes in the \pkg{Matrix} 
+#'   package.  The attributes and settings of this new dfm are not currently 
+#'   preserved.
+#' @export
+#' @method rbind dfm
+#' @examples 
+#' 
+#' # rbind() for dfm objects
+#' (dfm1 <- dfm(c(doc1 = "This is one sample text sample."), verbose = FALSE))
+#' (dfm2 <- dfm(c(doc2 = "One two three text text."), verbose = FALSE))
+#' (dfm3 <- dfm(c(doc3 = "This is the fourth sample text."), verbose = FALSE))
+#' rbind(dfm1, dfm2)
+#' rbind(dfm1, dfm2, dfm3)
+rbind.dfm <- function(...) {
+    args <- list(...)
+    if (!all(sapply(args, is.dfm)))
+        stop("all arguments must be dfm objects")
+    cat(names(args))
+    if (length(args) <= 2) {
+        return(combineDfms(args[[1]], args[[2]]))
+    } else {
+        result <- combineDfms(args[[1]], args[[2]])
+        for (y in args[3:length(args)]) 
+            result <- combineDfms(result, y)
+        return(result)
+    }
+}
+
+
+combineDfms <- function(x, y) {
+    x.names <- features(x)
+    y.names <- features(y)
+    all.names <- union(x.names, y.names)
+    
+    toAddx <- setdiff(all.names, x.names)
+    toAddy <- setdiff(all.names, y.names)
+    
+    addedx <- new("dfmSparse", Matrix::cbind2(x, 
+                           sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x), length(toAddx)), 
+                                    dimnames = list(docnames(x), toAddx))))
+    addedy <- new("dfmSparse", Matrix::cbind2(y, 
+                           sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(y), length(toAddy)), 
+                                    dimnames = list(docnames(y), toAddy))))
+
+    # sort in same feature order
+    addedx <- addedx[, order(features(addedx))]
+    addedy <- addedy[, order(features(addedy))]
+    
+    new("dfmSparse", Matrix::rbind2(addedx, addedy))
+}

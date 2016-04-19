@@ -1219,3 +1219,5 @@ nsentence.corpus <- function(x, ...) {
 # #' @rdname corpus
 # setMethod("[", signature(x = "corpus", i = "index", j = "MISSING", drop = "MISSING"),
 #           function(x, i, j, ..., drop = FALSE) texts(x)[i])
+
+setOldClass("corpus")

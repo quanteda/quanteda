@@ -53,10 +53,14 @@
 #' # selecting on a dfm
 #' textVec1 <- c("This is text one.", "This, the second text.", "Here: the third text.")
 #' textVec2 <- c("Here are new words.", "New words in this text.")
-#' features(dfm1 <- dfm(textVec1))
-#' features(dfm2a <- dfm(textVec2))
+#' (dfm1 <- dfm(textVec1, verbose = FALSE))
+#' (dfm2a <- dfm(textVec2, verbose = FALSE))
 #' (dfm2b <- selectFeatures(dfm2a, dfm1))
-#' identical(features(dfm1), features(dfm2b))
+#' setequal(features(dfm1), features(dfm2b))
+#' 
+#' # more selection on a dfm
+#' selectFeatures(dfm1, dfm2a)
+#' selectFeatures(dfm1, dfm2a, selection = "remove")
 selectFeatures <- function(x, features, ...) {
     UseMethod("selectFeatures")
 }
@@ -74,8 +78,12 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
     if (!(is.character(features) | is.dfm(features) | is(features, "dictionary")))
         stop("features must be of type character, dictionary, or dfm")
     if (is.dfm(features)) {
-        features_dfm <- features <- features(features)
-        features_from_dfm <- TRUE
+        if (selection == "keep") {
+            features_dfm <- features <- features(features)
+            features_from_dfm <- TRUE
+        } else {
+            features <- features(features)
+        }
     }
     
     features <- unique(unlist(features))  # to convert any dictionaries
@@ -127,20 +135,20 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
             ", from ", length(features), " supplied (", originalvaluetype, ") feature type",
             ifelse(length(features) > 0 | length(featIndex)==0, "s", ""),
             "\n", sep = "")
-    if (verbose & features_from_dfm)
-        cat(ifelse(selection=="keep", "found", "zeroed"), " ", 
-            format(length(featIndex), big.mark=","),
-            " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
-            " from ", length(features), " supplied type",
-            ifelse(length(features) > 0 | length(featIndex)==0, "s", ""),
-            " in a dfm,", sep = "")
-    
-    # if no features were removed, return original dfm
-    if (length(featIndex) == 0)
-        return(x)
-    
+
     # pad the zeros if features was a dfm, return in same feature order as original dfm
+    # for selection = "keep" only
     if (features_from_dfm) {
+        
+        if (verbose)
+            cat(ifelse(selection=="keep", "found", "zeroed"), " ", 
+                format(length(featIndex), big.mark=","),
+                " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
+                " from ", length(features), " supplied type",
+                ifelse(length(features) > 0 | length(featIndex)==0, "s", ""),
+                " in a dfm,", sep = "")
+        
+        
         # remove features in x that are not in features (from supplied dfm)
         x2 <- x[, featIndex]
         # now add zero-valued features to x that are not in x but are in features
@@ -149,13 +157,24 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
         xOriginalFeatures <- features(x2)
         ### NEED a cbind() operation for dfm that preserves settings! ###
         if (verbose) cat(" padding 0s for another", length(origDfmFeatureIndex), "\n")
-        x2 <- new("dfmSparse", cbind(x2, matrix(0, nrow = ndoc(x2), ncol = length(origDfmFeatureIndex))))
-        colnames(x2)[(xOriginalFeatureLength + 1) : nfeature(x2)] <- features[origDfmFeatureIndex]
-        return(x2[, features_dfm])
+        x <- new("dfmSparse", Matrix::cbind2(x2,
+                                              sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x2), length(origDfmFeatureIndex)), 
+                                                           dimnames = list(docnames(x2), features[origDfmFeatureIndex]))))
+#                  matrix(0, nrow = ndoc(x2), ncol = length(origDfmFeatureIndex))))
+#        x <- cbind(x2, )
+#        colnames(x2)[(xOriginalFeatureLength + 1) : nfeature(x2)] <- features[origDfmFeatureIndex]
+        featIndex <- match(features_dfm, features(x))
+        # x <- x2 #[, features_dfm]
     }
     
-    # otherwise select to keep or remove features and return
-    if (selection == "keep") 
+    ##
+    ## MIGHT NEED TO ADD BACK ORIGINAL ATTRIBUTES HERE
+    ##
+    
+    if (!length(featIndex)) 
+        return(x)
+    
+    if (selection == "keep")
         return(x[, featIndex])
     else 
         return(x[, -featIndex])

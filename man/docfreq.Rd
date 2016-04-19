@@ -2,8 +2,6 @@
 % Please edit documentation in R/dfm-weighting.R
 \docType{methods}
 \name{docfreq}
-\alias{df}
-\alias{df,dfm-method}
 \alias{docfreq}
 \alias{docfreq,dfm-method}
 \title{compute the (weighted) document frequency of a feature}
@@ -15,10 +13,6 @@ docfreq(x, scheme = c("count", "inverse", "inversemax", "inverseprob",
 \S4method{docfreq}{dfm}(x, scheme = c("count", "inverse", "inversemax",
   "inverseprob", "unary"), smoothing = 0, k = 0, base = 10,
   threshold = 0, USE.NAMES = TRUE)
-
-df(x, ...)
-
-\S4method{df}{dfm}(x, ...)
 }
 \arguments{
 \item{x}{a \link{dfm-class} document-feature matrix}
@@ -69,7 +63,6 @@ wikiDfm <- new("dfmSparse",
                               sparse = TRUE))
 wikiDfm
 docfreq(wikiDfm)
-df(wikiDfm)
 docfreq(wikiDfm, scheme = "inverse")
 docfreq(wikiDfm, scheme = "inverse", k = 1, smoothing = 1)
 docfreq(wikiDfm, scheme = "unary")

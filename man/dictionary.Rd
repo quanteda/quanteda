@@ -42,7 +42,7 @@ mydict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                           taxation = "taxation",
                           taxregex = "tax*",
                           country = "united states"))
-head(dfm(mycorpus, dictionary=mydict))
+head(dfm(mycorpus, dictionary = mydict))
 
 \dontrun{
 # import the Laver-Garry dictionary from http://bit.ly/1FH2nvf

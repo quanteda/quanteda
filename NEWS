@@ -22,6 +22,16 @@ quanteda 0.9.5
 
 *  lexdiv() now works just like readability(), and is faster (based on data.table) and the code is simpler.
 
+*  removed quanteda::df() as a synonym for docfreq(), as this conflicted with stats::df().
+
+*  added version information when package is attached.
+
+*  improved rbind() and cbind() methods for dfm.  Both now take any length sequence of dfms and perform better type checking.  
+   rbind.dfm() also knits together dfms with different features, which can be useful for information and retrieval purposes 
+   or machine learning.
+   
+*  selectFeatures(x, anyDfm) (where the second argument is a dfm) now works with a selection = "remove" option.
+
 Bug fixes
 ---------
 *  Fixed a false-alarm warning message in textmodel_wordfish()

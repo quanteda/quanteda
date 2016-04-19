@@ -88,10 +88,14 @@ selectFeatures(myDfm, stopwords("english"), "remove", valuetype = "fixed")
 # selecting on a dfm
 textVec1 <- c("This is text one.", "This, the second text.", "Here: the third text.")
 textVec2 <- c("Here are new words.", "New words in this text.")
-features(dfm1 <- dfm(textVec1))
-features(dfm2a <- dfm(textVec2))
+(dfm1 <- dfm(textVec1, verbose = FALSE))
+(dfm2a <- dfm(textVec2, verbose = FALSE))
 (dfm2b <- selectFeatures(dfm2a, dfm1))
-identical(features(dfm1), features(dfm2b))
+setequal(features(dfm1), features(dfm2b))
+
+# more selection on a dfm
+selectFeatures(dfm1, dfm2a)
+selectFeatures(dfm1, dfm2a, selection = "remove")
 toks <- tokenize(c("This is some example text from me.", "More of the example text."), 
                  removePunct = TRUE)
 selectFeatures(toks, stopwords("english"), "remove")
