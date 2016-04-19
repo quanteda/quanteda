@@ -32,6 +32,8 @@ quanteda 0.9.5
    
 *  selectFeatures(x, anyDfm) (where the second argument is a dfm) now works with a selection = "remove" option.
 
+*  tokenize.character adds a removeURL option.
+
 Bug fixes
 ---------
 *  Fixed a false-alarm warning message in textmodel_wordfish()

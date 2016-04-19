@@ -227,21 +227,28 @@ tokenize <- function(x, ...) {
 
 #' @rdname tokenize
 #' @aliases clean
-#' @param what the unit for splitting the text, available alternatives are:
-#'  \describe{ 
-#'  \item{\code{"word"}}{(recommended default) smartest, but slowest, word tokenization method; see \link[stringi]{stringi-search-boundaries} for details.}
-#'  \item{\code{"fasterword"}}{dumber, but faster, word tokenizeation method, \code{\link[stringi]{stri_split_regex}(x, "\\\\s")}}
-#'  \item{\code{"fastestword"}}{dumbest, but fastest, word tokenization method, calls \code{\link[stringi]{stri_split_fixed}(x, " ")}}
-#'  \item{\code{"character"}}{tokenization into individual characters}
-#'  \item{\code{"sentence"}}{sentence segmenter, smart enough to handle some exceptions in English such as "Prof. Plum killed Mrs. Peacock." 
-#'    (but far from perfect).}
-#'  } 
+#' @param what the unit for splitting the text, available alternatives are: 
+#'   \describe{ \item{\code{"word"}}{(recommended default) smartest, but 
+#'   slowest, word tokenization method; see 
+#'   \link[stringi]{stringi-search-boundaries} for details.} 
+#'   \item{\code{"fasterword"}}{dumber, but faster, word tokenizeation method, 
+#'   uses {\link[stringi]{stri_split_charclass}(x, "\\\\p{WHITE_SPACE}")}} 
+#'   \item{\code{"fastestword"}}{dumbest, but fastest, word tokenization method,
+#'   calls \code{\link[stringi]{stri_split_fixed}(x, " ")}} 
+#'   \item{\code{"character"}}{tokenization into individual characters} 
+#'   \item{\code{"sentence"}}{sentence segmenter, smart enough to handle some 
+#'   exceptions in English such as "Prof. Plum killed Mrs. Peacock." (but far 
+#'   from perfect).} }
 #' @param removeNumbers remove tokens that consist only of numbers, but not 
 #'   words that start with digits, e.g. \code{2day}
-#' @param removePunct if \code{TRUE}, remove all characters in the Unicode "Punctuation" [P] class
-#' @param removeSymbols if \code{TRUE}, remove all characters in the Unicode "Symbol" [S] class
+#' @param removePunct if \code{TRUE}, remove all characters in the Unicode 
+#'   "Punctuation" [P] class
+#' @param removeSymbols if \code{TRUE}, remove all characters in the Unicode 
+#'   "Symbol" [S] class
 #' @param removeTwitter remove Twitter characters \code{@@} and \code{#}; set to
 #'   \code{TRUE} if you wish to eliminate these.
+#' @param removeURL if \code{TRUE}, find and eliminate URLs beginning with
+#'   http(s) -- see section "Dealing with URLs".
 #' @param removeHyphens if \code{TRUE}, split words that are connected by 
 #'   hyphenation and hyphenation-like characters in between words, e.g. 
 #'   \code{"self-storage"} becomes \code{c("self", "storage")}.  Default is 
@@ -258,7 +265,7 @@ tokenize <- function(x, ...) {
 #' @param ngrams integer vector of the \emph{n} for \emph{n}-grams, defaulting 
 #'   to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for 
 #'   bigrams and unigrams, use \code{1:2}.  You can even include irregular 
-#'   sequences such as \code{2:3} for bigrams and trigrams only.  See
+#'   sequences such as \code{2:3} for bigrams and trigrams only.  See 
 #'   \code{\link{ngrams}}.
 #' @param skip integer vector specifying the skips for skip-grams, default is 0 
 #'   for only immediately neighbouring words. Only applies if \code{ngrams} is 
@@ -279,8 +286,17 @@ tokenize <- function(x, ...) {
 #'   intermediate step.  Since \code{tokenize()} is most likely to be used by 
 #'   more technical users, we have set its options to default to minimal 
 #'   intervention. This means that punctuation is tokenized as well, and that 
-#'   nothing is removed by default from the text being tokenized except
+#'   nothing is removed by default from the text being tokenized except 
 #'   inter-word spacing and equivalent characters.
+#' @section Dealing with URLs: URLs are tricky to tokenize, because they contain
+#'   a number of symbols and punctuation characters.  If you wish to remove 
+#'   these, as most people do, and your text contains URLs, then you should set
+#'   \code{what = "fasterword"} and \code{removeURL = TRUE}.  If you wish to
+#'   keep the URLs, but do not want them mangled, then your options are more
+#'   limited, since removing punctuation and symbols will also remove them from
+#'   URLs.  We are working on improving this behaviour.
+#'   
+#'   See the examples below.
 #' @return a \strong{tokenizedText} (S3) object, essentially a list of character
 #'   vectors. If \code{simplify = TRUE} then return a single character vector.
 #' @note This replaces an older function named \code{clean()}, removed from 
@@ -309,6 +325,14 @@ tokenize <- function(x, ...) {
 #' tokenize("<tags> and other + symbols.", removeSymbols = FALSE, what = "fasterword")
 #' tokenize("<tags> and other + symbols.", removeSymbols = TRUE, what = "fasterword")
 #' 
+#' ## examples with URLs - hardly perfect!
+#' txt <- "Repo https://githib.com/kbenoit/quanteda, and www.stackoverflow.com."
+#' tokenize(txt, removeURL = TRUE, removePunct = TRUE)
+#' tokenize(txt, removeURL = FALSE, removePunct = TRUE)
+#' tokenize(txt, removeURL = FALSE, removePunct = TRUE, what = "fasterword")
+#' tokenize(txt, removeURL = FALSE, removePunct = FALSE, what = "fasterword")
+#' 
+#' 
 #' ## MORE COMPARISONS
 #' txt <- "#textanalysis is MY <3 4U @@myhandle gr8 #stuff :-)"
 #' tokenize(txt, removePunct = TRUE)
@@ -324,6 +348,7 @@ tokenize <- function(x, ...) {
 #' tokenize(txt, removeNumbers = TRUE, removePunct = FALSE)
 #' tokenize(txt, removeNumbers = FALSE, removePunct = FALSE)
 #' tokenize(txt, removeNumbers = FALSE, removePunct = FALSE, removeSeparators = FALSE)
+#' tokenize(txt, removeNumbers = TRUE, removePunct = TRUE, removeURL = TRUE)
 #' 
 #' # character level
 #' tokenize("Great website: http://textasdata.com?page=123.", what = "character")
@@ -358,7 +383,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
                                removeSeparators = TRUE,
                                removeTwitter = FALSE,
                                removeHyphens = FALSE,
-                               # removeURL = TRUE,
+                               removeURL = FALSE,
                                ngrams = 1L,
                                skip = 0L,
                                concatenator = "_",
@@ -394,6 +419,12 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         else if (removeHyphens)
             result <- stri_replace_all_regex(result, "(\\b)[\\p{Pd}](\\b)", "$1 $2")
         
+        if (removeURL) {
+            if (verbose & removeURL) cat(", removing URLs")
+            URLREGEX <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
+            result <- stri_replace_all_regex(result, URLREGEX, "")
+        }
+
         if (what == "fasterword" | what == "fastestword") {
         
             if (verbose & removeNumbers==TRUE) cat(", removing numbers")
@@ -414,8 +445,11 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
             if (what=="fastestword")
                 result <- stringi::stri_split_fixed(result, " ")
             else if (what=="fasterword")
-                result <- stringi::stri_split_charclass(result, "\\p{Z}")
+                result <- stringi::stri_split_charclass(result, "\\p{WHITE_SPACE}")
             result <- lapply(result, function(x) x <- x[which(x != "")])
+            
+            # if (removeURL)
+            #     result <- lapply(result, function(x) x <- x[-which(substring(x, 1, 4) == "http")])
 
         } else {
             result <- stringi::stri_split_boundaries(result, 
