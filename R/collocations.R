@@ -101,9 +101,9 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
                             count = 1)
     
     # eliminate non-adjacent words
-    wordpairs <- wordpairs[!(stri_detect_regex(w1, "^[:punct:]$") | 
-                             stri_detect_regex(w2, "^[:punct:]$") |
-                             stri_detect_regex(w3, "^[:punct:]$"))]
+    wordpairs <- wordpairs[!(stri_detect_regex(w1, "^\\p{P}$") | 
+                             stri_detect_regex(w2, "^\\p{P}$") |
+                             stri_detect_regex(w3, "^\\p{P}$"))]
 
     # set the data.table sort key
     setkey(wordpairs, w1, w2, w3)
@@ -328,7 +328,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
 #'   making up the multi-word phrases.  The default \code{_} is highly 
 #'   recommended since it will not be removed during normal cleaning and 
 #'   tokenization (while nearly all other punctuation characters, at least those
-#'   in the POSIX class \code{[:punct:]}) will be removed.
+#'   in the Unicode punctuation class [P] will be removed.
 #' @return character or character vector of texts with phrases replaced by 
 #'   compound "words" joined by the concatenator
 #' @export

@@ -30,7 +30,7 @@ by \code{\link{collocations}}}
 making up the multi-word phrases.  The default \code{_} is highly 
 recommended since it will not be removed during normal cleaning and 
 tokenization (while nearly all other punctuation characters, at least those
-in the POSIX class \code{[:punct:]}) will be removed.}
+in the Unicode punctuation class [P] will be removed.}
 }
 \value{
 character or character vector of texts with phrases replaced by 

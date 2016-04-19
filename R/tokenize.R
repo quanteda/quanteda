@@ -238,9 +238,10 @@ tokenize <- function(x, ...) {
 #'  } 
 #' @param removeNumbers remove tokens that consist only of numbers, but not 
 #'   words that start with digits, e.g. \code{2day}
-#' @param removePunct remove all punctuation
+#' @param removePunct if \code{TRUE}, remove all characters in the Unicode "Punctuation" [P] class
+#' @param removeSymbols if \code{TRUE}, remove all characters in the Unicode "Symbol" [S] class
 #' @param removeTwitter remove Twitter characters \code{@@} and \code{#}; set to
-#'   \code{FALSE} if you wish to eliminate these.
+#'   \code{TRUE} if you wish to eliminate these.
 #' @param removeHyphens if \code{TRUE}, split words that are connected by 
 #'   hyphenation and hyphenation-like characters in between words, e.g. 
 #'   \code{"self-storage"} becomes \code{c("self", "storage")}.  Default is 
@@ -302,6 +303,11 @@ tokenize <- function(x, ...) {
 #' # keeping versus removing hyphens
 #' tokenize("quanteda data objects are auto-loading.", removePunct = TRUE)
 #' tokenize("quanteda data objects are auto-loading.", removePunct = TRUE, removeHyphens = TRUE)
+#' # keeping versus removing symbols
+#' tokenize("<tags> and other + symbols.", removeSymbols = FALSE)
+#' tokenize("<tags> and other + symbols.", removeSymbols = TRUE)
+#' tokenize("<tags> and other + symbols.", removeSymbols = FALSE, what = "fasterword")
+#' tokenize("<tags> and other + symbols.", removeSymbols = TRUE, what = "fasterword")
 #' 
 #' ## MORE COMPARISONS
 #' txt <- "#textanalysis is MY <3 4U @@myhandle gr8 #stuff :-)"
@@ -346,8 +352,9 @@ tokenize <- function(x, ...) {
 #' # removing features from ngram tokens
 #' removeFeatures(tokenize(txt, removePunct = TRUE, ngrams = 1:2), stopwords("english"))
 tokenize.character <- function(x, what=c("word", "sentence", "character", "fastestword", "fasterword"),
-                               removeNumbers = FALSE, 
+                               removeNumbers = FALSE,
                                removePunct = FALSE,
+                               removeSymbols = FALSE,
                                removeSeparators = TRUE,
                                removeTwitter = FALSE,
                                removeHyphens = FALSE,
@@ -391,22 +398,29 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         
             if (verbose & removeNumbers==TRUE) cat(", removing numbers")
             if (verbose & removePunct==TRUE) cat(", removing punctuation")
-            regexToEliminate <- paste0(ifelse(removeNumbers, "\\b\\d+\\b|", ""),
-                                       ifelse(removePunct, paste0("(?![", ifelse(removeTwitter, "_", "@#_"), "])[[:punct:]]"), "|"))
-            if (regexToEliminate != "|")
+            if (verbose & removeSymbols==TRUE) cat(", removing symbols")
+            regexToEliminate <- paste(ifelse(removeNumbers, "\\b\\d+\\b", ""),
+                                      ifelse(removePunct, paste0("(?![", ifelse(removeTwitter, "_", "@#_"),  "])[\\p{P}]"), ""),
+                                      ifelse(removeSymbols, "[\\p{S}]", ""),
+                                      sep = "|")
+            # cat("\n..", regexToEliminate, "..\n", sep = "")
+            regexToEliminate <- gsub("^\\|+", "", regexToEliminate)
+            regexToEliminate <- gsub("\\|+$", "", regexToEliminate)
+            # cat("\n..", regexToEliminate, "..\n", sep = "")
+            if (gsub("|", "", regexToEliminate, fixed = TRUE) != "")
                 result <- stri_replace_all_regex(result, regexToEliminate, "")
             
-            if (verbose & removePunct==TRUE) cat(", ", what, "tokenizing", sep="")
+            if (verbose & removePunct==TRUE) cat(", ", what, " tokenizing", sep="")
             if (what=="fastestword")
                 result <- stringi::stri_split_fixed(result, " ")
             else if (what=="fasterword")
-                result <- stringi::stri_split_regex(result, "\\s")
+                result <- stringi::stri_split_charclass(result, "\\p{Z}")
             result <- lapply(result, function(x) x <- x[which(x != "")])
 
         } else {
             result <- stringi::stri_split_boundaries(result, 
                                                      type = "word", 
-                                                     skip_word_none = removePunct, # this is what obliterates currency symbols, Twitter tags, and URLs
+                                                     skip_word_none = (removePunct | removeSymbols), # this is what obliterates currency symbols, Twitter tags, and URLs
                                                      skip_word_number = removeNumbers) # but does not remove 4u, 2day, etc.
             # remove separators if option is TRUE
             if (removeSeparators & !removePunct) {
@@ -425,12 +439,17 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         result <- stringi::stri_split_boundaries(result, type = "character")
         if (removePunct) {
             if (verbose) cat("   ...removing punctuation.\n")
-            result <- lapply(result, stringi::stri_replace_all_charclass, "[\\p{P}\\p{S}]", "")
+            result <- lapply(result, stringi::stri_replace_all_charclass, "[\\p{P}]", "")
+            result <- lapply(result, function(x) x <- x[which(x != "")])
+        } 
+        if (removeSymbols) {
+            if (verbose) cat("   ...removing symbols.\n")
+            result <- lapply(result, stringi::stri_replace_all_charclass, "[\\p{S}]", "")
             result <- lapply(result, function(x) x <- x[which(x != "")])
         } 
         if (removeSeparators) {
             if (verbose) cat("   ...removing separators.\n")
-            result <- lapply(result, function(x) x[!stringi::stri_detect_regex(x, "^\\s$")])
+            result <- lapply(result, function(x) x[!stringi::stri_detect_regex(x, "^\\p{Z}$")])
         }
         
     } else if (what == "sentence") {
@@ -451,8 +470,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
 
         # trim trailing spaces
         result <- lapply(result, stringi::stri_trim_right)
-        
-                
+
         # replace the non-full-stop "." characters
         result <- lapply(result, stri_replace_all_fixed, "_pd_", ".")
 

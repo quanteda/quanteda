@@ -13,9 +13,9 @@ tokenize(x, ...)
 
 \method{tokenize}{character}(x, what = c("word", "sentence", "character",
   "fastestword", "fasterword"), removeNumbers = FALSE, removePunct = FALSE,
-  removeSeparators = TRUE, removeTwitter = FALSE, removeHyphens = FALSE,
-  ngrams = 1L, skip = 0L, concatenator = "_", simplify = FALSE,
-  verbose = FALSE, ...)
+  removeSymbols = FALSE, removeSeparators = TRUE, removeTwitter = FALSE,
+  removeHyphens = FALSE, ngrams = 1L, skip = 0L, concatenator = "_",
+  simplify = FALSE, verbose = FALSE, ...)
 
 \method{tokenize}{corpus}(x, ...)
 
@@ -39,7 +39,9 @@ is.tokenizedTexts(x)
 \item{removeNumbers}{remove tokens that consist only of numbers, but not 
 words that start with digits, e.g. \code{2day}}
 
-\item{removePunct}{remove all punctuation}
+\item{removePunct}{if \code{TRUE}, remove all characters in the Unicode "Punctuation" [P] class}
+
+\item{removeSymbols}{if \code{TRUE}, remove all characters in the Unicode "Symbol" [S] class}
 
 \item{removeSeparators}{remove Separators and separator characters (spaces 
 and variations of spaces, plus tab, newlines, and anything else in the 
@@ -51,7 +53,7 @@ applicable for \code{what = "character"} (when you probably want it to be
 carefully.}
 
 \item{removeTwitter}{remove Twitter characters \code{@} and \code{#}; set to
-\code{FALSE} if you wish to eliminate these.}
+\code{TRUE} if you wish to eliminate these.}
 
 \item{removeHyphens}{if \code{TRUE}, split words that are connected by 
 hyphenation and hyphenation-like characters in between words, e.g. 
@@ -127,6 +129,11 @@ head(tokenize(inaugTexts[57], simplify = TRUE), 30)
 # keeping versus removing hyphens
 tokenize("quanteda data objects are auto-loading.", removePunct = TRUE)
 tokenize("quanteda data objects are auto-loading.", removePunct = TRUE, removeHyphens = TRUE)
+# keeping versus removing symbols
+tokenize("<tags> and other + symbols.", removeSymbols = FALSE)
+tokenize("<tags> and other + symbols.", removeSymbols = TRUE)
+tokenize("<tags> and other + symbols.", removeSymbols = FALSE, what = "fasterword")
+tokenize("<tags> and other + symbols.", removeSymbols = TRUE, what = "fasterword")
 
 ## MORE COMPARISONS
 txt <- "#textanalysis is MY <3 4U @myhandle gr8 #stuff :-)"
