@@ -242,6 +242,47 @@ corpus.VCorpus <- function(x, ...) {
 }
 
 
+#' @rdname corpus
+#' @param textField the character name or integer index of the source data.frame
+#'   indicating the column to be read in as text.  This must be of mode
+#'   character.
+#' @note When \code{x} is a \code{data.frame}, then there is no encoding
+#'   conversion performed on the character input.  It is highly recommended that you 
+#'   detect and convert this input to UTF-8 prior to using it as input for a corpus.
+#' @examples 
+#' 
+#' # construct a corpus from a data.frame
+#' mydf <- data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
+#'                   some_ints = 1L:6L,
+#'                   some_text = paste0("This is text number ", 1:6, "."),
+#'                   stringsAsFactors = FALSE,
+#'                   row.names = paste0("fromDf_", 1:6))
+#' mydf
+#' summary(corpus(mydf, textField = "some_text", source = "From a data.frame called mydf."))
+#' @export
+corpus.data.frame <- function(x, textField, ...) {
+
+    args <- list(...)
+    if ("docvars" %in% names(args))
+        stop("docvars are assigned automatically for data.frames", )
+
+    if (is.character(textField)) {
+        textFieldi <- which(names(x)==textField)
+        if (length(textFieldi)==0)
+            stop("column name ", textField, " not found.")
+        textField <- textFieldi
+    }
+    if (!is.character(x[, textFieldi]))
+        stop("textField must refer to a character mode column")
+    
+    corpus(x[, textFieldi], 
+           docvars = x[, -textFieldi, drop = FALSE],
+           docnames = if (!identical(row.names(x), as.character(1:nrow(x)))) row.names(x) else NULL, #paste0("text", 1:nrow(x)),
+           ...)
+}
+
+
+
 # print a corpus object
 #
 # print method for corpus objects
@@ -1171,6 +1212,7 @@ nsentence.corpus <- function(x, ...) {
 #' inaugCorpus[2]                    # same
 #' ie2010Corpus[, "year"]            # access the docvars from ie2010Corpus
 #' ie2010Corpus[["year"]]            # same
+#' 
 #' # create a new document variable
 #' ie2010Corpus[["govtopp"]] <- ifelse(ie2010Corpus[["party"]] %in% c("FF", "Greens"), 
 #'                                     "Government", "Opposition")

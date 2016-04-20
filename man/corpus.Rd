@@ -10,6 +10,7 @@
 \alias{corpus.VCorpus}
 \alias{corpus.character}
 \alias{corpus.corpusSource}
+\alias{corpus.data.frame}
 \alias{is.corpus}
 \title{constructor for corpus objects}
 \usage{
@@ -21,6 +22,8 @@ corpus(x, ...)
 \method{corpus}{corpusSource}(x, ...)
 
 \method{corpus}{VCorpus}(x, ...)
+
+\method{corpus}{data.frame}(x, textField, ...)
 
 is.corpus(x)
 
@@ -53,6 +56,10 @@ referencing.}
 To Dos, etc.}
 
 \item{citation}{Information on how to cite the corpus.}
+
+\item{textField}{the character name or integer index of the source data.frame
+indicating the column to be read in as text.  This must be of mode
+character.}
 
 \item{c1}{corpus one to be added}
 
@@ -130,6 +137,10 @@ The \code{+} operator for a corpus object will combine two corpus
 When \code{x} is a \link[tm]{VCorpus} object, the fixed metadata 
   fields from that object are imported as document-level metadata. Currently
   no corpus-level metadata is imported, but we will add that soon.
+
+When \code{x} is a \code{data.frame}, then there is no encoding
+  conversion performed on the character input.  It is highly recommended that you 
+  detect and convert this input to UTF-8 prior to using it as input for a corpus.
 }
 \examples{
 # create a corpus from texts
@@ -162,6 +173,15 @@ if ("tm" \%in\% rownames(installed.packages())) {
     summary(quantCorp)
 }
 
+# construct a corpus from a data.frame
+mydf <- data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
+                  some_ints = 1L:6L,
+                  some_text = paste0("This is text number ", 1:6, "."),
+                  stringsAsFactors = FALSE,
+                  row.names = paste0("fromDf_", 1:6))
+mydf
+summary(corpus(mydf, textField = "some_text", source = "From a data.frame called mydf."))
+
 # concatenate corpus objects
 corpus1 <- corpus(inaugTexts[1:2])
 corpus2 <- corpus(inaugTexts[3:4])
@@ -173,6 +193,7 @@ inaugCorpus["1793-Washington"]    # 2nd Washington inaugural speech
 inaugCorpus[2]                    # same
 ie2010Corpus[, "year"]            # access the docvars from ie2010Corpus
 ie2010Corpus[["year"]]            # same
+
 # create a new document variable
 ie2010Corpus[["govtopp"]] <- ifelse(ie2010Corpus[["party"]] \%in\% c("FF", "Greens"), 
                                     "Government", "Opposition")
