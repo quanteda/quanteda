@@ -72,11 +72,13 @@ or from meta-data embedded in the text file header (\code{headers}).}
 \code{docvarsfrom} is specified.  If this argument is not used, default 
 docvar names will be used (\code{docvar1}, \code{docvar2}, ...).}
 
-\item{...}{additional arguments passed through to low-level file reading
-function, such as \code{\link{file}}, \code{\link{read.csv}}, etc.  Useful
+\item{...}{additional arguments passed through to low-level file reading 
+function, such as \code{\link{file}}, \code{\link{read.csv}}, etc.  Useful 
 for specifying an input encoding option, which is specified in the same was
-as it would be give to \code{\link{iconv}}.  See the Encoding section of
-\link{file} for details.}
+as it would be give to \code{\link{iconv}}.  See the Encoding section of 
+\link{file} for details.  Also useful for passing arguments through to
+\code{\link{read.csv}}, for instance `quote = ""`, if quotes are causing
+problems within comma-delimited fields.}
 }
 \value{
 an object of class \link{corpusSource-class} that can be read by 

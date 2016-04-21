@@ -36,6 +36,8 @@ quanteda 0.9.5
 
 *  added a corpus method for data.frame objects, so that a corpus can be constructed directly from a data.frame.  Requires the addition of a `textField` argument (similar to textfile).
 
+*  added compress.dfm() to combine identically named columns or rows.  #123
+
 Bug fixes
 ---------
 *  Fixed a false-alarm warning message in textmodel_wordfish()

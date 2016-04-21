@@ -342,3 +342,67 @@ sample.dfm <- function(x, size = ndoc(x), replace = FALSE, prob = NULL,
     x
 }
 
+
+#' compress a dfm by combining similarly named dimensions
+#' 
+#' "Compresses" a dfm whose dimension names are the same, for either documents 
+#' or features.  This may happen, for instance, if features are made equivalent 
+#' through application of a thesaurus.  It may also occur after lower-casing or 
+#' stemming the features of a dfm, but this should only be done in very rare 
+#' cases (approaching never: it's better to do this \emph{before} constructing 
+#' the dfm.)  It could also be needed , after a \code{\link{cbind.dfm}} or 
+#' \code{\link{rbind.dfm}} operation.
+#' 
+#' @param x input object, a \link{dfm}
+#' @param margin character indicating which margin to compress on, either
+#'   \code{"documents"}, \code{"features"}, or \code{"both"} (default)
+#' @param ... additional arguments passed from generic to specific methods
+#' @export
+compress <- function(x, ...)  UseMethod("compress")
+
+#' @rdname compress
+#' @examples 
+#' mat <- rbind(dfm(c("a b A", "a b B C C"), toLower = FALSE, verbose = FALSE),
+#'              dfm("A C C C C C", toLower = FALSE, verbose = FALSE))
+#' colnames(mat) <- toLower(features(mat))
+#' mat
+#' compress(mat, margin = "documents")
+#' compress(mat, margin = "features")
+#' compress(mat)
+#' 
+#' # no effect if no compression needed
+#' compress(dfm(inaugTexts, verbose = FALSE))
+#' @export
+compress.dfm <- function(x, margin = c("both", "documents", "features"), ...) {
+    margin <- match.arg(margin)
+
+    # combine documents
+    if (margin %in% c("both", "documents")) {
+        dnames <- rownames(x)
+        if (any(duplicated(dnames))) 
+            x <- t(crossprod(x, as(sapply(unique(dnames),"==", dnames), "dgCMatrix")))
+            #SLOWER: t(t(x) %*% Matrix(sapply(unique(dnames),"==", dnames)))
+    }
+    
+    # combine features
+    if (margin %in% c("both", "features")) {
+        fnames <- colnames(x)
+        if (any(duplicated(fnames))) 
+            x <- x %*% Matrix(sapply(unique(fnames),"==", fnames))
+            #SLOWER: x <- t(crossprod(t(x), Matrix(sapply(unique(fnames),"==", fnames))))
+    }
+    new("dfmSparse", x)
+} 
+
+# rnames <- colnames(x)
+# dnames <- rownames(x)
+# microbenchmark::microbenchmark(m1 = t(crossprod(x, Matrix(sapply(unique(dnames),"==", dnames)))),
+#                                m2 = t(t(x) %*% Matrix(sapply(unique(dnames),"==", dnames))), 
+#                                times = 100)
+ 
+
+
+
+
+
+
