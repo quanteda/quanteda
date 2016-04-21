@@ -236,3 +236,9 @@ correlationSparse <- function(x, y = NULL, margin = 1) {
     cormat
 }
 
+## FOR DISTANCE:
+
+## NEED EUCLIDEAN SPARSE
+
+## JACCARD SPARSE:  See http://stackoverflow.com/questions/36220585/efficient-jaccard-similarity-documenttermmatrix
+

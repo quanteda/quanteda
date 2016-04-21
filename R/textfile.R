@@ -87,11 +87,13 @@ setMethod("show",
 #'   settings of encoding conversion when creating a corpus from a 
 #'   \link{corpusSource-class} object, without having to load in all of the 
 #'   source data again.
-#' @param ... additional arguments passed through to low-level file reading
-#'   function, such as \code{\link{file}}, \code{\link{read.csv}}, etc.  Useful
+#' @param ... additional arguments passed through to low-level file reading 
+#'   function, such as \code{\link{file}}, \code{\link{read.csv}}, etc.  Useful 
 #'   for specifying an input encoding option, which is specified in the same was
-#'   as it would be give to \code{\link{iconv}}.  See the Encoding section of
-#'   \link{file} for details.
+#'   as it would be give to \code{\link{iconv}}.  See the Encoding section of 
+#'   \link{file} for details.  Also useful for passing arguments through to
+#'   \code{\link{read.csv}}, for instance `quote = ""`, if quotes are causing
+#'   problems within comma-delimited fields.
 #' @details The constructor does not store a copy of the texts, but rather reads
 #'   in the texts and associated data, and saves them to a temporary disk file 
 #'   whose location is specified in the \link{corpusSource-class} object.  This 
