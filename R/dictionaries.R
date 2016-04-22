@@ -1,7 +1,12 @@
+
+setClassUnion("charNULL", c("character", "NULL"))
+
 # @rdname dictionary
 # @export 
 # NEED TO ADD A VALIDATOR
-setClass("dictionary", contains = "list")
+setClass("dictionary", contains = c("list"),
+         slots = c(concatenator = "character", format = "charNULL", file = "charNULL"),
+         prototype = prototype(concatenator = " ", format = NULL, file = NULL))
 
 #' print a dictionary object
 #' 
@@ -23,28 +28,31 @@ setMethod("show", "dictionary",
 #' create a dictionary
 #' 
 #' Create a quanteda dictionary, either from a list or by importing from a 
-#' foreign format.  Currently supported input file formats are the Wordstat and
-#' LIWC
-#' formats.
+#' foreign format.  Currently supported input file formats are the Wordstat and 
+#' LIWC formats.
 #' @param x a list of character vector dictionary entries, including regular 
 #'   expressions (see examples)
 #' @param file file identifier for a foreign dictionary
 #' @param format character identifier for the format of the foreign dictionary. 
-#'   Available options are: \describe{ \item{\code{"wordstat"}}{format used by
-#'   Provalis Research's Wordstat software} \item{\code{"LIWC"}}{format used by
+#'   Available options are: \describe{ \item{\code{"wordstat"}}{format used by 
+#'   Provalis Research's Wordstat software} \item{\code{"LIWC"}}{format used by 
 #'   the Linguistic Inquiry and Word Count software} }
-#' @param encoding additional optional encoding value for reading in imported dictionaries. 
-#'   This uses the \link{iconv} labels for encoding.  See the "Encoding" section
-#'   of the help for \link{file}.
+#' @param concatenator the character in between multi-word dictionary values. 
+#'   This defaults to \code{"_"} except LIWC-formatted files, which defaults to
+#'   a single space \code{" "}.
+#' @param encoding additional optional encoding value for reading in imported
+#'   dictionaries. This uses the \link{iconv} labels for encoding.  See the
+#'   "Encoding" section of the help for \link{file}.
 #' @param toLower if \code{TRUE}, convert all dictionary values to lowercase
 #' @return A dictionary class object, essentially a specially classed named list
 #'   of characters.
 #' @references Wordstat dictionaries page, from Provalis Research 
-#' \url{http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/}.
-#' 
-#' Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J. 
-#' (2007). The development and psychometric properties of LIWC2007. [Software 
-#' manual]. Austin, TX (\url{www.liwc.net}).
+#'   \url{http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/}.
+#'   
+#'   
+#'   Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J. 
+#'   (2007). The development and psychometric properties of LIWC2007. [Software 
+#'   manual]. Austin, TX (\url{www.liwc.net}).
 #' @seealso \link{dfm}
 #' @examples
 #' mycorpus <- subset(inaugCorpus, Year>1900)
@@ -66,7 +74,9 @@ setMethod("show", "dictionary",
 #' mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
 #' head(dfm(inaugTexts, dictionary = mfdict))}
 #' @export
-dictionary <- function(x = NULL, file = NULL, format = NULL, toLower = TRUE, encoding = "") {
+dictionary <- function(x = NULL, file = NULL, format = NULL, 
+                       concatenator = " ", 
+                       toLower = TRUE, encoding = "") {
     if (!is.null(x) & !is.list(x))
         stop("Dictionaries must be named lists or lists of named lists.")
     if (any(missingLabels <- which(names(x) == ""))) 
@@ -83,11 +93,11 @@ dictionary <- function(x = NULL, file = NULL, format = NULL, toLower = TRUE, enc
         format <- match.arg(format, c("wordstat", "LIWC"))
         if (format=="wordstat") 
             x <- readWStatDict(file, enc = encoding, toLower = toLower)
-        else if (format=="LIWC") 
+        else if (format=="LIWC")
             x <- readLIWCdict(file, toLower = toLower, encoding = encoding)
     }
     
-    new("dictionary", x)
+    new("dictionary", x, format = format, file = file, concatenator = concatenator)
 }
 
 
@@ -216,8 +226,8 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
         catlist <- gsub("\\(.+\\)", "", catlist)
     }
         
-    # catlist <- strsplit(catlist, "\t")
-    catlist <- tokenize(catlist, what = "fasterword", removeNumbers = FALSE)
+    catlist <- strsplit(catlist, "\t")
+    # catlist <- tokenize(catlist, what = "fasterword", removeNumbers = FALSE)
     catlist <- as.data.frame(do.call(rbind, lapply(catlist, '[', 1:max(sapply(catlist, length)))), stringsAsFactors = FALSE)
     catlist[, 2:ncol(catlist)] <- lapply(catlist[2:ncol(catlist)], as.integer)
     names(catlist)[1] <- "category"
@@ -226,6 +236,9 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     blankRowIndex <- which(is.na(catlist$category))
     if (length(blankRowIndex)) 
         catlist <- catlist[-blankRowIndex, ]
+    
+    # remove any parentheses
+    catlist[["category"]] <- gsub("(\\s|\\w|\\b)[()](\\w|\\s)", "\\1\\2", catlist[["category"]])
     
     # merge terms that appear on more than one line
     catlist <- split(catlist[, 2:ncol(catlist)], catlist$category)

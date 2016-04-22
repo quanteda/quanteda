@@ -4,8 +4,8 @@
 \alias{dictionary}
 \title{create a dictionary}
 \usage{
-dictionary(x = NULL, file = NULL, format = NULL, toLower = TRUE,
-  encoding = "")
+dictionary(x = NULL, file = NULL, format = NULL, concatenator = " ",
+  toLower = TRUE, encoding = "")
 }
 \arguments{
 \item{x}{a list of character vector dictionary entries, including regular 
@@ -14,15 +14,19 @@ expressions (see examples)}
 \item{file}{file identifier for a foreign dictionary}
 
 \item{format}{character identifier for the format of the foreign dictionary. 
-Available options are: \describe{ \item{\code{"wordstat"}}{format used by
-Provalis Research's Wordstat software} \item{\code{"LIWC"}}{format used by
+Available options are: \describe{ \item{\code{"wordstat"}}{format used by 
+Provalis Research's Wordstat software} \item{\code{"LIWC"}}{format used by 
 the Linguistic Inquiry and Word Count software} }}
+
+\item{concatenator}{the character in between multi-word dictionary values. 
+This defaults to \code{"_"} except LIWC-formatted files, which defaults to
+a single space \code{" "}.}
 
 \item{toLower}{if \code{TRUE}, convert all dictionary values to lowercase}
 
-\item{encoding}{additional optional encoding value for reading in imported dictionaries. 
-This uses the \link{iconv} labels for encoding.  See the "Encoding" section
-of the help for \link{file}.}
+\item{encoding}{additional optional encoding value for reading in imported
+dictionaries. This uses the \link{iconv} labels for encoding.  See the
+"Encoding" section of the help for \link{file}.}
 }
 \value{
 A dictionary class object, essentially a specially classed named list
@@ -30,9 +34,8 @@ A dictionary class object, essentially a specially classed named list
 }
 \description{
 Create a quanteda dictionary, either from a list or by importing from a 
-foreign format.  Currently supported input file formats are the Wordstat and
-LIWC
-formats.
+foreign format.  Currently supported input file formats are the Wordstat and 
+LIWC formats.
 }
 \examples{
 mycorpus <- subset(inaugCorpus, Year>1900)
@@ -56,11 +59,12 @@ head(dfm(inaugTexts, dictionary = mfdict))}
 }
 \references{
 Wordstat dictionaries page, from Provalis Research 
-\url{http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/}.
-
-Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J. 
-(2007). The development and psychometric properties of LIWC2007. [Software 
-manual]. Austin, TX (\url{www.liwc.net}).
+  \url{http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/}.
+  
+  
+  Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J. 
+  (2007). The development and psychometric properties of LIWC2007. [Software 
+  manual]. Austin, TX (\url{www.liwc.net}).
 }
 \seealso{
 \link{dfm}

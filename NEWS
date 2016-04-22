@@ -38,6 +38,8 @@ quanteda 0.9.5
 
 *  added compress.dfm() to combine identically named columns or rows.  #123
 
+*  Much better phrasetotoken(), with additional methods for all combinations of corpus/character v. dictionary/character/collocations.
+
 Bug fixes
 ---------
 *  Fixed a false-alarm warning message in textmodel_wordfish()
