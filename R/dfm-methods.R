@@ -375,23 +375,35 @@ compress <- function(x, ...)  UseMethod("compress")
 #' @export
 compress.dfm <- function(x, margin = c("both", "documents", "features"), ...) {
     margin <- match.arg(margin)
+    uniquednames <- unique(rownames(x))
+    uniquefnames <- unique(colnames(x))
+    if (length(uniquednames) == nrow(x) & length(uniquefnames) == ncol(x)) 
+        return(x)
 
-    # combine documents
-    if (margin %in% c("both", "documents")) {
-        dnames <- rownames(x)
-        if (any(duplicated(dnames))) 
-            x <- t(crossprod(x, as(sapply(unique(dnames),"==", dnames), "dgCMatrix")))
-            #SLOWER: t(t(x) %*% Matrix(sapply(unique(dnames),"==", dnames)))
-    }
+    # add 1 since stored from 0, but constructor requires indexing from 1
+    new_i <- x@i + 1
+    new_j <- as(x, "dgTMatrix")@j + 1
     
+    # combine documents
+    if (margin %in% c("both", "documents") & length(uniquednames) < nrow(x))
+        new_i <- match(rownames(x), uniquednames)[new_i]
+    else
+        uniquednames <- rownames(x)
+
     # combine features
-    if (margin %in% c("both", "features")) {
-        fnames <- colnames(x)
-        if (any(duplicated(fnames))) 
-            x <- x %*% Matrix(sapply(unique(fnames),"==", fnames))
-            #SLOWER: x <- t(crossprod(t(x), Matrix(sapply(unique(fnames),"==", fnames))))
-    }
-    new("dfmSparse", x)
+    if (margin %in% c("both", "features") & length(uniquefnames) < ncol(x))
+        new_j <- match(colnames(x), uniquefnames)[new_j]
+    else
+        uniquefnames <- colnames(x)
+
+    new("dfmSparse", sparseMatrix(i = new_i, j = new_j, x = x@x,
+                                  dimnames = list(docs = uniquednames, features = uniquefnames)),
+        settings = x@settings,
+        weightTf = x@weightTf,
+        weightDf = x@weightDf,
+        smooth = x@smooth,
+        ngrams = x@ngrams,
+        concatenator = x@concatenator)
 } 
 
 # rnames <- colnames(x)
@@ -400,9 +412,3 @@ compress.dfm <- function(x, margin = c("both", "documents", "features"), ...) {
 #                                m2 = t(t(x) %*% Matrix(sapply(unique(dnames),"==", dnames))), 
 #                                times = 100)
  
-
-
-
-
-
-
