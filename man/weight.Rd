@@ -4,28 +4,23 @@
 \name{weight}
 \alias{smoother}
 \alias{weight}
-\alias{weight,dfm-method}
-\alias{weighting}
-\alias{weighting,dfm-method}
-\title{weight the feature frequencies in a dfm by various methods}
+\alias{weight,dfm,character-method}
+\alias{weight,dfm,numeric-method}
+\title{weight the feature frequencies in a dfm}
 \usage{
-weight(x, ...)
+weight(x, type, ...)
 
-\S4method{weight}{dfm}(x, type = c("frequency", "relFreq", "relMaxFreq",
-  "logFreq", "tfidf"), ...)
+\S4method{weight}{dfm,character}(x, type = c("frequency", "relFreq",
+  "relMaxFreq", "logFreq", "tfidf"), ...)
+
+\S4method{weight}{dfm,numeric}(x, type, ...)
 
 smoother(x, smoothing = 1)
-
-weighting(object)
-
-\S4method{weighting}{dfm}(object)
 }
 \arguments{
 \item{x}{document-feature matrix created by \link{dfm}}
 
-\item{...}{not currently used.  For finer grained control, consider calling \code{\link{tf}} or \code{\link{tfidf}} directly.}
-
-\item{type}{The weighting function to aapply to the dfm. One of: 
+\item{type}{a label of the weight type, or a named numeric vector of values to apply to the dfm. One of:
 \describe{
  \item{\code{"frequency"}}{integer feature count (default when a dfm is created)}
  \item{\code{"relFreq"}}{the proportion of the feature counts of total feature counts (aka relative frequency)}
@@ -35,17 +30,20 @@ weighting(object)
   full explanation, see, for example, 
   \url{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html}.
    This implementation will not return negative values.  For finer-grained
-  control, call \code{\link{tfidf}} directly}
+  control, call \code{\link{tfidf}} directly.}
+  \item{a named numeric vector}{a named numeric vector of weights to be applied to the dfm, 
+  where the names of the vector correspond to feature labels of the dfm, and 
+  the weights will be applied as multipliers to the existing feature counts 
+  for the corresponding named fatures.  Any features not named will be 
+  assigned a weight of 1.0 (meaning they will be unchanged).}
   }}
 
-\item{smoothing}{constant added to the dfm cells for smoothing, default is 1}
+\item{...}{not currently used.  For finer grained control, consider calling \code{\link{tf}} or \code{\link{tfidf}} directly.}
 
-\item{object}{the dfm object for accessing the weighting setting}
+\item{smoothing}{constant added to the dfm cells for smoothing, default is 1}
 }
 \value{
-The dfm with weighted values
-
-\code{weighting} returns a character object describing the type of weighting applied to the dfm.
+The dfm with weighted values.
 }
 \description{
 Returns a document by feature matrix with the feature frequencies weighted 
@@ -54,8 +52,6 @@ according to one of several common methods.
 \details{
 This converts a matrix from sparse to dense format, so may exceed memory
 requirements depending on the size of your input matrix.
-
-\code{weighting} queries (but cannot set) the weighting applied to the dfm.
 }
 \examples{
 dtm <- dfm(inaugCorpus)
@@ -70,27 +66,30 @@ topfeatures(logTfDtm)
 tfidfDtm <- weight(dtm, type="tfidf")
 topfeatures(tfidfDtm)
 
-# combine these methods for more complex weightings, e.g. as in Section 6.4 of
-# Introduction to Information Retrieval
+# combine these methods for more complex weightings, e.g. as in Section 6.4
+# of Introduction to Information Retrieval
 head(logTfDtm <- weight(dtm, type="logFreq"))
 head(tfidf(logTfDtm, normalize = FALSE))
-
 \dontshow{
 testdfm <- dfm(inaugTexts[1:5], verbose = FALSE)
 for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
     testw <- weight(testdfm, w)
     cat("\\n\\n=== weight() TEST for:", w, "; class:", class(testw), "\\n")
     head(testw)
-}
-}
+}}
+# apply numeric weights
+str <- c("apple is better than banana", "banana banana apple much better")
+weights <- c(apple = 5, banana = 3, much = 0.5)
+(mydfm <- dfm(str, ignoredFeatures = stopwords("english"), verbose = FALSE))
+weight(mydfm, weights)
 }
 \author{
 Paul Nulty and Kenneth Benoit
 }
 \references{
 Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
-  Introduction to information retrieval. Vol. 1. Cambridge: Cambridge 
-  university press, 2008.
+  \emph{Introduction to Information Retrieval}. Vol. 1. Cambridge: Cambridge 
+  University Press, 2008.
 }
 \seealso{
 \code{\link{tfidf}}

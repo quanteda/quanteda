@@ -1,10 +1,10 @@
-#' weight the feature frequencies in a dfm by various methods
+#' weight the feature frequencies in a dfm
 #' 
 #' Returns a document by feature matrix with the feature frequencies weighted 
 #' according to one of several common methods.
 #' 
 #' @param x document-feature matrix created by \link{dfm}
-#' @param type The weighting function to aapply to the dfm. One of: 
+#' @param type a label of the weight type, or a named numeric vector of values to apply to the dfm. One of:
 #' \describe{
 #'  \item{\code{"frequency"}}{integer feature count (default when a dfm is created)}
 #'  \item{\code{"relFreq"}}{the proportion of the feature counts of total feature counts (aka relative frequency)}
@@ -14,10 +14,15 @@
 #'   full explanation, see, for example, 
 #'   \url{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html}.
 #'    This implementation will not return negative values.  For finer-grained
-#'   control, call \code{\link{tfidf}} directly}
+#'   control, call \code{\link{tfidf}} directly.}
+#'   \item{a named numeric vector}{a named numeric vector of weights to be applied to the dfm, 
+#'   where the names of the vector correspond to feature labels of the dfm, and 
+#'   the weights will be applied as multipliers to the existing feature counts 
+#'   for the corresponding named fatures.  Any features not named will be 
+#'   assigned a weight of 1.0 (meaning they will be unchanged).}
 #'   }
 #' @param ... not currently used.  For finer grained control, consider calling \code{\link{tf}} or \code{\link{tfidf}} directly.
-#' @return The dfm with weighted values
+#' @return The dfm with weighted values.
 #' @export
 #' @seealso \code{\link{tfidf}}
 #' @author Paul Nulty and Kenneth Benoit
@@ -34,15 +39,14 @@
 #' tfidfDtm <- weight(dtm, type="tfidf")
 #' topfeatures(tfidfDtm)
 #' 
-#' # combine these methods for more complex weightings, e.g. as in Section 6.4 of
-#' # Introduction to Information Retrieval
+#' # combine these methods for more complex weightings, e.g. as in Section 6.4
+#' # of Introduction to Information Retrieval
 #' head(logTfDtm <- weight(dtm, type="logFreq"))
 #' head(tfidf(logTfDtm, normalize = FALSE))
-#' 
 #' @references Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
-#'   Introduction to information retrieval. Vol. 1. Cambridge: Cambridge 
-#'   university press, 2008.
-setGeneric("weight", function(x, ...) standardGeneric("weight"))
+#'   \emph{Introduction to Information Retrieval}. Vol. 1. Cambridge: Cambridge 
+#'   University Press, 2008.
+setGeneric("weight", function(x, type, ...) standardGeneric("weight"))
 
 #' @rdname weight
 #' @examples
@@ -52,9 +56,8 @@ setGeneric("weight", function(x, ...) standardGeneric("weight"))
 #'     testw <- weight(testdfm, w)
 #'     cat("\n\n=== weight() TEST for:", w, "; class:", class(testw), "\n")
 #'     head(testw)
-#' }
-#' }
-setMethod("weight", signature = "dfm", 
+#' }}
+setMethod("weight", signature = c("dfm", "character"),
           definition = function(x, type = c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"), ...) {
               if (length(addedArgs <- list(...)))
                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
@@ -74,6 +77,33 @@ setMethod("weight", signature = "dfm",
               } else stop("unknown weighting type")
           })
 
+#' @rdname weight
+#' @examples 
+#' # apply numeric weights
+#' str <- c("apple is better than banana", "banana banana apple much better")
+#' weights <- c(apple = 5, banana = 3, much = 0.5)
+#' (mydfm <- dfm(str, ignoredFeatures = stopwords("english"), verbose = FALSE))
+#' weight(mydfm, weights)
+setMethod("weight", signature = c("dfm", "numeric"), 
+          definition = function(x, type, ...) {
+              weights <- type
+              if (any(!(matchedWeights <- names(weights) %in% features(x)))) {
+                  warning("ignoring", names(weights)[matchedWeights], ", not a feature match")
+                  weights <- weights[matchedWeights]
+              }
+              
+              # # set weighting slot/attribute
+              # x@weighting <- weights
+              
+              # use name matching for indexing, sorts too, returns NA where no match is found
+              weights <- weights[features(mydfm)]
+              # reassign 1 to non-matched NAs
+              weights[is.na(weights)] <- 1
+              # works because of column-wise recycling of weights vector
+              mydfm * weights
+          })
+
+
 
 #' @rdname weight
 #' @param smoothing constant added to the dfm cells for smoothing, default is 1
@@ -83,21 +113,19 @@ setMethod("weight", signature = "dfm",
 smoother <- function(x, smoothing = 1) x + smoothing
 
 
-#' @rdname weight
-#' @export
-setGeneric("weighting", function(object) standardGeneric("weighting"))
+# #' @rdname weight
+# #' @export
+# setGeneric("weighting", function(object) standardGeneric("weighting"))
 
-#' @rdname weight
-#' @param object the dfm object for accessing the weighting setting
-#' @details \code{weighting} queries (but cannot set) the weighting applied to the dfm.
-#' @return \code{weighting} returns a character object describing the type of weighting applied to the dfm.
-setMethod("weighting", signature(object="dfm"), function(object) {
-    if (isS4(object)) 
-        object@weighting
-    else 
-        attr(object, "weighting")
-})
-
+#' #' @rdname weight
+#' #' @return \code{weight, x} with no \code{type} argument queries the weighting applied to the dfm, returning 
+#' setMethod("weight", signature(c("dfm", "MISSING")), function(x) {
+#'     if (isS4(x)) 
+#'         x@weighting
+#'     else 
+#'         attr(x, "weighting")
+#' })
+#' 
 
 
 #' compute the (weighted) document frequency of a feature

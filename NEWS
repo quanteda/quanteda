@@ -40,6 +40,8 @@ quanteda 0.9.5
 
 *  Much better phrasetotoken(), with additional methods for all combinations of corpus/character v. dictionary/character/collocations.
 
+*  Added a weight(x, type, ...) signature where the second argument can be a named numeric vector of weights, not just a label for a type of weight.  Thanks http://stackoverflow.com/questions/36815926/assigning-weights-to-different-features-in-r/36823475#36823475.
+
 Bug fixes
 ---------
 *  Fixed a false-alarm warning message in textmodel_wordfish()
