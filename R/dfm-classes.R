@@ -87,18 +87,20 @@ NULL
 
 #' Return the first or last part of a dfm
 #' 
-#' For a \link{dfm-class} object, returns the first or last \code{n} documents
+#' For a \link{dfm-class} object, returns the first or last \code{n} documents 
 #' and first \code{ncol} features for inspection.
 #' @export
 #' @method head dfm
 #' @param x a dfm object
 #' @param n a single integer.  If positive, size for the resulting object: 
-#'   number of first/last documents for the dfm. If negative, all but the n
+#'   number of first/last documents for the dfm. If negative, all but the n 
 #'   last/first number of documents of x.
-#' @param nfeature the number of features to return, where the resulting object
+#' @param nfeature the number of features to return, where the resulting object 
 #'   will contain the first \code{ncol} features
-#' @param ... not used
-#' @return A \link{dfm-class} class object corresponding to the subset defined
+#' @param ... additional arguments passed to functions classed for dfms, for
+#'   instance ... is passed to \code{\link{as.data.frame}} when calling the dfm
+#'   method for this function
+#' @return A \link{dfm-class} class object corresponding to the subset defined 
 #'   by \code{n} and \code{ncol}.
 #' @examples
 #' myDfm <- dfm(inaugCorpus, ngrams = 2, verbose = FALSE)
@@ -499,9 +501,10 @@ setMethod("as.matrix", signature(x="dfm"),
 #' @examples
 #' 
 #' # coercion to data.frame
-#' dfmSparse <- dfm(inaugTexts, verbose = FALSE)
-#' str(as.data.frame(dfmSparse))
-setMethod("as.data.frame", signature(x = "dfm"), function(x) as.data.frame(as.matrix(x)))
+#' inaugDfm <- dfm(inaugTexts, verbose = FALSE)
+#' as.data.frame(inaugDfm[1:5, 1:10])
+setMethod("as.data.frame", signature(x = "dfm"), 
+          function(x, ...) as.data.frame(as.matrix(x), ...))
 
 # @param x a \link{dfm} object
 # @param ... optional arguments for other methods
