@@ -92,15 +92,14 @@ setMethod("weight", signature = c("dfm", "numeric"),
                   weights <- weights[matchedWeights]
               }
               
-              # # set weighting slot/attribute
-              # x@weighting <- weights
-              
+              ## set weighting slot/attribute -- NEED TO ADD
+
               # use name matching for indexing, sorts too, returns NA where no match is found
-              weights <- weights[features(mydfm)]
+              weights <- weights[features(x)]
               # reassign 1 to non-matched NAs
               weights[is.na(weights)] <- 1
               # works because of column-wise recycling of weights vector
-              mydfm * weights
+              x * weights
           })
 
 

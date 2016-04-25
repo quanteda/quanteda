@@ -24,7 +24,6 @@
 \alias{[,dfmSparse,missing,index,missing-method}
 \alias{[,dfmSparse,missing,missing,logical-method}
 \alias{[,dfmSparse,missing,missing,missing-method}
-\alias{as.data.frame,dfm-method}
 \alias{as.matrix,dfm-method}
 \alias{colMeans,dfmSparse-method}
 \alias{colSums,dfmSparse-method}
@@ -98,8 +97,6 @@
 \S4method{+}{numeric,dfmDense}(e1, e2)
 
 \S4method{as.matrix}{dfm}(x)
-
-\S4method{as.data.frame}{dfm}(x)
 }
 \arguments{
 \item{x}{the dfm object}
@@ -174,10 +171,6 @@ named \code{docs} and \code{features} respectively.}
 # coercion to matrix
 dfmSparse <- dfm(inaugTexts, verbose = FALSE)
 str(as.matrix(dfmSparse))
-
-# coercion to data.frame
-dfmSparse <- dfm(inaugTexts, verbose = FALSE)
-str(as.data.frame(dfmSparse))
 }
 \seealso{
 \link{dfm}

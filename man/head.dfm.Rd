@@ -20,20 +20,20 @@
 \item{x}{a dfm object}
 
 \item{n}{a single integer.  If positive, size for the resulting object: 
-number of first/last documents for the dfm. If negative, all but the n
+number of first/last documents for the dfm. If negative, all but the n 
 last/first number of documents of x.}
 
-\item{nfeature}{the number of features to return, where the resulting object
+\item{nfeature}{the number of features to return, where the resulting object 
 will contain the first \code{ncol} features}
 
-\item{...}{not used}
+\item{...}{additional arguments passed to other functions}
 }
 \value{
-A \link{dfm-class} class object corresponding to the subset defined
+A \link{dfm-class} class object corresponding to the subset defined 
   by \code{n} and \code{ncol}.
 }
 \description{
-For a \link{dfm-class} object, returns the first or last \code{n} documents
+For a \link{dfm-class} object, returns the first or last \code{n} documents 
 and first \code{ncol} features for inspection.
 }
 \examples{
