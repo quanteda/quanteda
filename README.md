@@ -1,5 +1,5 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-**Development branch** [![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=dev)][![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev)](<https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev>) **Master branch** [![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)][![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](<https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master>)
+**Development branch** \[![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=dev)\]\[![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev)\](<https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev>) **Master branch** \[![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)\]\[![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)\](<https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master>)
 
 See the [Getting Started Vignette](http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html).
 
@@ -14,7 +14,7 @@ Built on the text processing functions in the **stringi** package, which is in t
 
 **quanteda** is built for efficiency and speed, through its design around three infrastructures: the **stringi** package for text processing, the **data.table** package for indexing large documents efficiently, and the **Matrix** package for sparse matrix objects. If you can fit it into memory, **quanteda** will handle it quickly. (And eventually, we will make it possible to process objects even larger than available memory.)
 
-**quanteda** is principally designed to allow users a fast and convenient method to go from a corpus of texts to a selected matrix of documents by features, after defining what the documents and features. The package makes it easy to redefine documents, for instance by splitting them into sentences or paragraphs, or by tags, as well as to group them into larger documents by document variables, or to subset them based on logical conditions or combinations of document variables. The package also implements common NLP feature selection functions, such as removing stopwords and stemming in numerous languages, selecting words found in dictionaries, treating words as equivalent based on a user-defined "thesaurus", and trimming and weighting features based on document frequency, feature frequency, and related measures such as *tf-idf*.
+**quanteda** is principally designed to allow users a fast and convenient method to go from a corpus of texts to a selected matrix of documents by features, after defining and selecting the documents and features. The package makes it easy to redefine documents, for instance by splitting them into sentences or paragraphs, or by tags, as well as to group them into larger documents by document variables, or to subset them based on logical conditions or combinations of document variables. The package also implements common NLP feature selection functions, such as removing stopwords and stemming in numerous languages, selecting words found in dictionaries, treating words as equivalent based on a user-defined "thesaurus", and trimming and weighting features based on document frequency, feature frequency, and related measures such as *tf-idf*.
 
 Once constructed, a **quanteda** "dfm"" can be easily analyzed using either quanteda's built-in tools for scaling document positions, or used with a number of other text analytic tools, such as:
 
@@ -82,11 +82,9 @@ Example
 
 ``` r
 library(quanteda)
+#> quanteda version 0.9.5.23
 #> 
 #> Attaching package: 'quanteda'
-#> The following object is masked from 'package:stats':
-#> 
-#>     df
 #> The following object is masked from 'package:base':
 #> 
 #>     sample
@@ -95,24 +93,26 @@ uk2010immigCorpus <- corpus(ukimmigTexts,
                             docvars=data.frame(party=names(ukimmigTexts)),
                             notes="Immigration-related sections of 2010 UK party manifestos",
                             enc="UTF-8")
+#> Warning in corpus.character(ukimmigTexts, docvars = data.frame(party =
+#> names(ukimmigTexts)), : Argument enc not used.
 uk2010immigCorpus
 #> Corpus consisting of 9 documents.
 summary(uk2010immigCorpus, showmeta=TRUE)
 #> Corpus consisting of 9 documents.
 #> 
 #>          Text Types Tokens Sentences        party
-#>           BNP  1023   2851       137          BNP
-#>     Coalition   133    231        12    Coalition
-#>  Conservative   234    452        21 Conservative
-#>        Greens   303    610        30       Greens
-#>        Labour   278    620        34       Labour
-#>        LibDem   240    435        26       LibDem
-#>            PC    72    101         5           PC
-#>           SNP    81    124         4          SNP
-#>          UKIP   311    633        38         UKIP
+#>           BNP  1126   3330        88          BNP
+#>     Coalition   144    268         4    Coalition
+#>  Conservative   252    503        15 Conservative
+#>        Greens   325    687        21       Greens
+#>        Labour   296    703        29       Labour
+#>        LibDem   257    499        14       LibDem
+#>            PC    80    118         5           PC
+#>           SNP    90    136         4          SNP
+#>          UKIP   346    739        27         UKIP
 #> 
 #> Source:  /Users/kbenoit/Dropbox/GitHub/quanteda/* on x86_64 by kbenoit
-#> Created: Sat Jan 23 15:49:43 2016
+#> Created: Mon Apr 25 15:23:35 2016
 #> Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -133,7 +133,7 @@ mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
 #>    ... removed 97 features, from 175 supplied (glob) feature types
 #>    ... created a 9 x 1489 sparse dfm
 #>    ... complete. 
-#> Elapsed time: 0.048 seconds.
+#> Elapsed time: 0.036 seconds.
 dim(mydfm)              # basic dimensions of the dfm
 #> [1]    9 1489
 topfeatures(mydfm, 20)  # 20 top words
@@ -148,4 +148,4 @@ topfeatures(mydfm, 20)  # 20 top words
 plot(mydfm, min.freq = 6, random.order = FALSE)             # word cloud     
 ```
 
-![](README-quanteda_example-1.png)
+![](README-quanteda_example-1.png)<!-- -->
