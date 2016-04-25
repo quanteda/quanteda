@@ -497,22 +497,23 @@ setMethod("as.matrix", signature(x="dfm"),
 #' coerce a dfm to a data.frame
 #' 
 #' Method for coercing a \link{dfm-class} object to a data.frame
+#' @aliases as.data.frame.dfm
 #' @param x dfm to be coerced to a data.frame
 #' @param row.names if \code{FALSE}, do not set the row names of the data.frame
 #'   to the docnames of the dfm (default); or a vector of values to which the
 #'   row names will be set.
 #' @param optional not applicable to this method
 #' @param ... not used for this method
-#' @method as.data.frame dfm
 #' @export
 #' @examples
 #' inaugDfm <- dfm(inaugTexts[1:5], verbose = FALSE)
 #' as.data.frame(inaugDfm[, 1:10])
 #' str(as.data.frame(inaugDfm))
 #' as.data.frame(inaugDfm[, 1:10], row.names = FALSE)
-as.data.frame.dfm <- function(x, row.names = NULL, optional = FALSE , ...) {
-    as.data.frame(as.matrix(x), row.names = row.names, optional = optional, ...)
-}
+setMethod("as.data.frame", signature = "dfm", 
+          function(x, row.names = NULL, optional = FALSE , ...) {
+              as.data.frame(as.matrix(x), row.names = row.names, optional = optional, ...)
+})
 
 
 #' Combine dfm objects by Rows or Columns
