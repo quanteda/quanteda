@@ -50,7 +50,7 @@ internally to UTF-8.
 
 **quanteda** is principally designed to allow users a fast and convenient method to go from 
 a corpus of texts to a selected matrix of documents by features, after defining what 
-the documents and features.  The package makes it easy to redefine documents, for instance by splitting them into sentences or paragraphs, or by tags, as well as to group them into larger documents by document variables, or to subset them based on logical conditions or combinations of document variables.  The package also implements common NLP feature selection functions, such as removing stopwords and stemming in numerous languages, selecting words found in dictionaries, treating words as equivalent based on a user-defined "thesaurus", and trimming and weighting features based on document frequency, feature frequency, and related measures such as *tf-idf*.
+the documents and features are.  The package makes it easy to redefine documents, for instance by splitting them into sentences or paragraphs, or by tags, as well as to group them into larger documents by document variables, or to subset them based on logical conditions or combinations of document variables.  The package also implements common NLP feature selection functions, such as removing stopwords and stemming in numerous languages, selecting words found in dictionaries, treating words as equivalent based on a user-defined "thesaurus", and trimming and weighting features based on document frequency, feature frequency, and related measures such as *tf-idf*.
  
 Once constructed, a **quanteda** "dfm"" can be easily analyzed using either quanteda's built-in tools for scaling document positions, or used with a number of other text analytic tools, such as:
 
