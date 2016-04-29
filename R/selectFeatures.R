@@ -250,6 +250,55 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
     
 }
 
+# @export
+selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
+                                          valuetype = c("glob", "regex", "fixed"),
+                                          case_insensitive = TRUE, spacer=FALSE,
+                                          verbose = TRUE, ...) {
+  selection <- match.arg(selection)
+  valuetype <- match.arg(valuetype)
+  features <- unique(unlist(features))  # to convert any dictionaries
+  
+  originalvaluetype <- valuetype
+  # convert glob to fixed if no actual glob characters (since fixed is much faster)
+  if (valuetype == "glob") {
+    # treat as fixed if no glob characters detected
+    if (!sum(stringi::stri_detect_charclass(features, c("[*?]"))))
+      valuetype <- "fixed"
+    else {
+      features <- sapply(features, utils::glob2rx, USE.NAMES = FALSE)
+      valuetype <- "regex"
+    }
+  }
+  
+  if (case_insensitive) {
+    features <- toLower(features)
+    x <- toLower(x)
+  }
+  
+  if (valuetype == "fixed") {
+    if (selection == "remove") 
+      result <- select_tokens_cpp(x, features, TRUE, spacer)
+    else 
+      result <- select_tokens_cpp(x, features, FALSE, spacer)
+  } else if (valuetype == "regex") {
+    regex <- rep(paste0(features, collapse = "|"))
+    types <- unique(unlist(x))
+    types <- types[stringi::stri_detect_regex(types, regex)] # get all the unique types that match regex
+    if (selection == "remove") {
+      result <- select_tokens_cpp(x, features, TRUE, spacer) # search as fixed
+    } else {
+      result <- select_tokens_cpp(x, features, FALSE, spacer) # search as fixed
+    }
+  }
+  
+  class(result) <- c("tokenizedTexts", class(result))
+  attributes(result) <- attributes(x)
+  result
+}
+
+
+
 #' @rdname selectFeatures
 #' @param pos indexes of word position if called on collocations: remove if word
 #'   \code{pos} is a stopword
