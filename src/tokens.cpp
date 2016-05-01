@@ -20,7 +20,7 @@ List select_tokens_cpp(SEXP x,  std::vector< std::string > types, bool remove, b
       if(is_in == remove){
         //Rcout << "Match " << i << ' ' << token << "\n";
         if(spacer){
-          text_temp.push_back('\0');
+          text_temp.push_back("");
         }
       }else{
         text_temp.push_back(token);
