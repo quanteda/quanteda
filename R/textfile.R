@@ -322,7 +322,7 @@ get_datas <- function(filemask, textField='index', fileType, ...){
     # get the pattern at the end
     pattern <- basename(filemask)
     # get the directory name
-    path <- substr(filemask, 1, nchar(filemask) - nchar(pattern))
+    path <- dirname(filemask)
     # get the filenames
     filenames <- list.files(path, utils::glob2rx(pattern), full.names=TRUE)
     # read texts into a character vector
@@ -330,8 +330,14 @@ get_datas <- function(filemask, textField='index', fileType, ...){
     docv <- data.frame()
     for (f in filenames) {
         src <- get_data(f,  textField, ...)
-        thisdocv <- src$docv
-        textsvec <- c(textsvec, thisdocv$txts)
+        textsvec <- c(textsvec, src$txts)
+	docv <- tryCatch({
+		rbind(docv, src$docv)
+	},
+		error = function(e) {
+			stop('Data files do not have identical columns or variables')
+	}
+	)
     }
     list(txts=textsvec, docv=docv)
     # return(src)
