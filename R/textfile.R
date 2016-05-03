@@ -330,8 +330,14 @@ get_datas <- function(filemask, textField='index', fileType, ...){
     docv <- data.frame()
     for (f in filenames) {
         src <- get_data(f,  textField, ...)
-        thisdocv <- src$docv
-        textsvec <- c(textsvec, thisdocv$txts)
+        textsvec <- c(textsvec, src$txts)
+	docv <- tryCatch({
+		rbind(docv, src$docv)
+	},
+		error = function(e) {
+			stop('Data files do not have identical columns or variables')
+	}
+	)
     }
     list(txts=textsvec, docv=docv)
     # return(src)
