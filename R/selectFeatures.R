@@ -284,11 +284,11 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
   } else if (valuetype == "regex") {
     regex <- rep(paste0(features, collapse = "|"))
     types <- unique(unlist(x))
-    types_match <- types[stringi::stri_detect_regex(types, regex)] # get all the unique types that match regex
+    types <- types[stringi::stri_detect_regex(types, regex)] # get all the unique types that match regex
     if (selection == "remove") {
-      result <- select_tokens_cpp(x, types_match, TRUE, spacer) # search as fixed
+      result <- select_tokens_cpp(x, features, TRUE, spacer) # search as fixed
     } else {
-      result <- select_tokens_cpp(x, types_match, FALSE, spacer) # search as fixed
+      result <- select_tokens_cpp(x, features, FALSE, spacer) # search as fixed
     }
   }
   
