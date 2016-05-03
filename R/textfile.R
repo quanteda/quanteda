@@ -322,7 +322,7 @@ get_datas <- function(filemask, textField='index', fileType, ...){
     # get the pattern at the end
     pattern <- basename(filemask)
     # get the directory name
-    path <- substr(filemask, 1, nchar(filemask) - nchar(pattern))
+    path <- dirname(filemask)
     # get the filenames
     filenames <- list.files(path, utils::glob2rx(pattern), full.names=TRUE)
     # read texts into a character vector
