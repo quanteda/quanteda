@@ -13,8 +13,8 @@ Author: Kenneth Benoit [aut, cre],
     Kohei Watanabe [ctb],
     Benjamin Lauderdale [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.5-23
-Date: 2016-04-25
+Version: 0.9.5-24
+Date: 2016-05-03
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3

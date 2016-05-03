@@ -64,6 +64,8 @@ Bug fixes
 
 *  textmodel(x, model = "wordfish") now removes zero-frequency documents and words prior to calling Rcpp.
 
+*  Fixed a bug in sample.corpus() that caused an error when no docvars existed. #128
+
 quanteda 0.9.4
 ==============
 
