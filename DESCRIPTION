@@ -47,7 +47,8 @@ Suggests:
     ggplot2,
     XML,
     testthat,
-    RColorBrewer
+    RColorBrewer,
+    grid
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
