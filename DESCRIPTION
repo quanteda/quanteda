@@ -32,7 +32,9 @@ Imports:
     parallel,
     Rcpp,
     ca,
-    stringi
+    stringi,
+    NLP,
+    openNLP
 LinkingTo: Rcpp, RcppArmadillo
 Suggests:
     knitr,
@@ -69,6 +71,7 @@ Collate:
     'ngrams.R'
     'phrases.R'
     'plots.R'
+    'pos.R'
     'quanteda-package.R'
     'readability.R'
     'resample.R'
