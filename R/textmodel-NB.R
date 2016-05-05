@@ -94,7 +94,7 @@ colNorm <- function(x) {
 #'                                         "Shanghai", "Tokyo"))))
 #' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered=TRUE)
 #' ## replicate IIR p261 prediction for test set (document 5)
-#' (nb.p261 <- textmodel_NB(trainingset, trainingclass, prior = "docfreq"))
+#' (nb.p261 <- textmodel_NB(trainingset, trainingclass)) #, prior = "docfreq"))
 #' predict(nb.p261, newdata = trainingset[5, ])
 #' 
 #' @export
@@ -104,7 +104,7 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
     prior <- match.arg(prior)
     distribution <- match.arg(distribution)
     
-    y <- factor(y) # no effect if already a factor    
+    #y <- factor(y) # no effect if already a factor    
     x.trset <- x[which(!is.na(y)), ]
     y.trclass <- y[!is.na(y)]
     types <- colnames(x)
@@ -133,8 +133,11 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
     } else stop("Prior must be either docfreq (default), wordfreq, or uniform")
     
     ## multinomial ikelihood: class x words, rows sum to 1
-    # d <- aggregate(x.trset, by=list(CLS=y.trclass), sum)  ## SO SLOW!!!
-    d <- t(sapply(split(as.data.frame(x.trset), y.trclass), colSums))
+    # d <- t(sapply(split(as.data.frame(x.trset), y.trclass), colSums))
+    # combine all of the class counts
+    rownames(x.trset) <- y.trclass
+    d <- compress(x.trset, margin = "documents")
+    
     PwGc <- rowNorm(d + smooth)
     names(Pc) <- rownames(d)
     
@@ -144,31 +147,11 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
     ## P(w)
     Pw <- t(PwGc) %*% Pc
     
-    ll <- list(call=call, PwGc=PwGc, Pc=Pc, PcGw=PcGw, Pw=Pw, data=list(x=x, y=y), 
-               distribution=distribution, prior=prior, smooth=smooth)
+    ll <- list(call=call, PwGc=PwGc, Pc=Pc, PcGw = PcGw, Pw = Pw, 
+               data = list(x=x, y=y), 
+               distribution = distribution, prior = prior, smooth = smooth)
     class(ll) <- c("textmodel_NB_fitted", class(ll))
     return(ll)
-    
-    #     new("textmodel_wordscores_fitted", Sw=Sw, x=data, y=scores, 
-    #         method="wordscores", scale=scale, call = match.call())
-}
-
-
-predictold.naivebayes <- function(object, newdata=NULL, log.probs=FALSE, normalise=TRUE) {
-    ## does not check that we have the same set of words
-    ## log.probs: would you like the class conditional sums of log prior + sum log word given class?
-    log.lik   <- t(log(object$PwGc))  
-    log.prior <- log(object$Pc)
-    if (is.null(newdata))
-        newdata <- object$data$x
-    
-    D <- newdata %*% log.lik  ## D_ij = sum^V_w count_w-in-i log P(w-in-j | class=j) 
-    lp <- D + outer(rep(1, nrow(newdata)), log.prior)
-    if (log.probs)
-        return(lp) 
-    else if (normalise)
-        return(rowNorm(exp(lp)))  # numeric underflow with any real data!
-    else return(exp(lp))
 }
 
 
@@ -192,11 +175,15 @@ predictold.naivebayes <- function(object, newdata=NULL, log.probs=FALSE, normali
 #' @rdname predict.textmodel
 #' @examples 
 #' (nbfit <- textmodel_NB(LBGexample, c("A", "A", "B", "C", "C", NA)))
-#' predict(nbfit)  ## ERRORS
+#' (nbpred <- predict(nbfit))
 #' @export
 predict.textmodel_NB_fitted <- function(object, newdata = NULL, ...) {
+    
+    call <- match.call()
+    
     if (is.null(newdata))
         newdata <- object$data$x
+    
     
     # remove any words for which zero probabilities exist in training set --
     # would happen if smooth=0
@@ -210,41 +197,32 @@ predict.textmodel_NB_fitted <- function(object, newdata = NULL, ...) {
         newdata <- newdata[,-notinref] 
     }
     
-    log.lik   <- t(log(object$PwGc))
-    lPwGc <- newdata %*% log.lik     # log P(w|c) class conditional word likelihood
+    # log P(d|c) class conditional document likelihoods
+    log.lik <- newdata %*% t(log(object$PwGc))
+    # weight by class priors
+    log.posterior.lik <- t(apply(log.lik, 1, "+", log(object$Pc)))
     
-    # compute the scaled quantities that come from the training set words
-    if (!is.null(scores)) {
-        if (length(object$Pc)!=length(scores))
-            stop("scores must be equal in length to number of classes.")
-        bayesscore.word <- log.lik %*% scores
-        wordscore.word <- t(object$PcGw) %*% scores
-        bayesscore.doc <- rowNorm(newdata) %*% bayesscore.word 
-        #  newdata * t(outer(as.vector(temp), rep(1, nrow(newdata))))
-        wordscore.doc <- rowNorm(newdata) %*% wordscore.word
-        wordscore.doc <- wordscore.doc[, 1]
+    # predict MAP class
+    nb.predicted <- colnames(log.posterior.lik)[apply(log.posterior.lik, 1, which.max)]
+    
+    ## now compute class posterior probabilities
+    # initialize posterior probabilities matrix
+    posterior.prob <- matrix(NA, ncol = ncol(log.posterior.lik), 
+                             nrow = nrow(log.posterior.lik),
+                             dimnames = dimnames(log.posterior.lik))
+
+    # compute posterior probabilities
+    for (j in 1:ncol(log.posterior.lik)) {
+        base.lpl <- log.posterior.lik[, j]
+        posterior.prob[, j] <- 1 / (1 + rowSums(exp(log.posterior.lik[, -j] - base.lpl)))
     }
-    
-    eta <- lPwGc[,1] - lPwGc[,2]
-    # eta <- bayesscore.doc * rowSums(newdata) + log(object$Pc[2]/object$Pc[1])
-    bayesscore.doc <- bayesscore.doc + log(object$Pc[2]/object$Pc[1])
-    bayesscore.doc <- bayesscore.doc[, 1]
-    PcGw <- cbind(1/(1+exp(eta)), 1/(1+exp(-eta))) 
-    colnames(PcGw) <- colnames(lPwGc)  
-    
-    nb.predicted <- colnames(PcGw)[apply(PcGw, 1, which.max)]
-    dirtest <- ifelse(!is.null(scores) && scores[1]>scores[2], -1, 1)
-    ws.predicted <- colnames(PcGw)[(dirtest*wordscore.doc > 0)+1]
-    bs.predicted <- colnames(PcGw)[(dirtest*bayesscore.doc > 0)+1]
-    # can't predict these without a smoother
-    
-    if (sum(object$PwGc==0)) nb.predicted <- bs.predicted <- rep(NA, nrow(wordscore.doc))
-    
-    df.doc <- data.frame(as.matrix(PcGw), predicted = nb.predicted, ws.predicted, bs.predicted, wordscore.doc, bayesscore.doc) 
-    df.doc$posterior.diff <- 1 - 2*PcGw[,1]  ## ONLY WORKS NOW FOR 2-CLASS SOLUTIONS
-    df.doc$posterior.logdiff <- log(1-PcGw[,1]) - log(PcGw[,1])  ## ONLY WORKS NOW FOR 2-CLASS SOLUTIONS
-    df.words <- data.frame(wordscore.word, bayesscore.word)
-    result <- list(docs = df.doc, words = df.words, classlabels = names(object$Pc))
+
+    result <- list(log.posterior.lik = log.posterior.lik, 
+                   posterior.prob = posterior.prob, 
+                   nb.predicted = nb.predicted, 
+                   Pc = object$Pc, 
+                   classlabels = names(object$Pc), 
+                   call = call)
     class(result) <- c("textmodel_NB_predicted", class(result))
     result
 }
@@ -280,12 +258,16 @@ print.textmodel_NB_fitted <- function(x, n=30L, ...) {
 
 #' @export
 #' @method print textmodel_NB_predicted
-print.textmodel_NB_predicted <- function(x, n=30L, digits=2, ...) {
+print.textmodel_NB_predicted <- function(x, n = 30L, digits = 2, ...) {
     cat("Predicted textmodel of type: Naive Bayes\n\n")
-    if (nrow(x$docs) > n) {
+    if (nrow(x$log.posterior.lik) > n) {
         cat("(showing", n, "of", nrow(x$docs), "documents)\n")
     }
-    print(x$docs[1:(min(n, nrow(x$docs))), c(x$classlabels, "predicted")], digits = digits)
+    docsDf <- data.frame(x$log.posterior.lik, x$posterior.prob, x$nb.predicted)
+    names(docsDf) <- c(paste0("lp(", x$classlabels, ")"),
+                       paste0("Pr(", x$classlabels, ")"),
+                       "Predicted")
+    print(docsDf[1:(min(n, nrow(docsDf))), ], digits = digits)
     cat("\n")
 }
 
