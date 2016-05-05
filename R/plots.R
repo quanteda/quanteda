@@ -77,12 +77,13 @@ plot.kwic <- function(...) {
 
    plot <- ggplot2::ggplot(x, ggplot2::aes(x=position, y=1)) + ggplot2::geom_segment(ggplot2::aes(xend=position, yend=0)) + 
    ggplot2::theme(axis.line=ggplot2::element_blank(),
-       panel.border=ggplot2::element_blank(),panel.grid.major.y=ggplot2::element_blank(),
+       panel.background=ggplot2::element_blank(),panel.grid.major.y=ggplot2::element_blank(),
        panel.grid.minor.y=ggplot2::element_blank(), plot.background=ggplot2::element_blank(),
        axis.ticks.y=ggplot2::element_blank(), axis.text.y=ggplot2::element_blank(),
-       panel.margin = grid::unit(0.1, "lines"),
+       panel.margin = grid::unit(0.1, "lines"), panel.border=ggplot2::element_rect(colour = "gray", fill=NA),
        strip.text.y=ggplot2::element_text(angle=0)
-   )
+   ) 
+
 
    if ((length(unique(x$docname)) > 1)) {
       plot <- plot + ggplot2::facet_grid(docname~keyword) + 
