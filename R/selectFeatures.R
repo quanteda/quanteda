@@ -250,7 +250,15 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
     
 }
 
-# @export
+#' @export
+#' @examples 
+#' txts <- c(exampleString, inaugTexts[2])
+#' toks <- tokenize(txts)
+#' selectFeatures2.tokenizedTexts(toks, stopwords("english"), "remove")
+#' selectFeatures2.tokenizedTexts(toks, stopwords("english"), "keep")
+#' selectFeatures2.tokenizedTexts(toks, stopwords("english"), "remove", spacer = TRUE)
+#' selectFeatures2.tokenizedTexts(toks, stopwords("english"), "keep", spacer= TRUE)
+#' selectFeatures2.tokenizedTexts(encodedTexts[1], stopwords("english"), "remove", spacer= TRUE)
 selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                           valuetype = c("glob", "regex", "fixed"),
                                           case_insensitive = TRUE, spacer=FALSE,
