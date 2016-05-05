@@ -5,8 +5,8 @@ skipgramcpp <- function(tokens, ns, ks, delim) {
     .Call('quanteda_skipgramcpp', PACKAGE = 'quanteda', tokens, ns, ks, delim)
 }
 
-select_tokens_cpp <- function(x, types, remove, spacer) {
-    .Call('quanteda_select_tokens_cpp', PACKAGE = 'quanteda', x, types, remove, spacer)
+select_tokens_cppl <- function(x, types, remove, spacer) {
+    .Call('quanteda_select_tokens_cppl', PACKAGE = 'quanteda', x, types, remove, spacer)
 }
 
 wordfishcpp <- function(wfm, dir, priors, tol, disp, dispfloor) {

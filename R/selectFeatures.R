@@ -250,59 +250,108 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
     
 }
 
+#' working prototype for faster selectFeatures.tokenizedTexts
+#' 
+#' Calls C++ for super-fast selection or removal of features from a 
+#' set of tokens.
+#' @inheritParams selectFeatures
+#' @export
+selectFeatures2 <- function(x, ...) UseMethod("selectFeatures2")
+
+#' @rdname selectFeatures2
+#' @param spacer if \code{TRUE}, leave an empty string where the removed tokens 
+#'   previously existed.  This is useful if a positional match is needed between
+#'   the pre- and post-selected features, for instance if a window of adjacency 
+#'   needs to be computed.
 #' @export
 #' @examples 
+#' # with simple examples
+#' toks <- tokenize(c("This is a sentence.", "This is a second sentence."), 
+#'                  removePunct = TRUE)
+#' toks.copy <- toks
+#' selectFeatures2(toks, c("is", "a", "this"), selection = "remove", 
+#'                 valuetype = "fixed", spacer = TRUE, case_insensitive = TRUE)
+#' ##### look at the output -- this modified by reference!!
+#' toks 
+#' ##### and even modified the copy!
+#' toks.copy
+#' 
+#' # case_insensitive now working as it should
+#' toks <- tokenize(c("This is a sentence.", "This is a second sentence."), removePunct = TRUE)
+#' selectFeatures2(toks, c("is", "a", "this"), selection = "remove", 
+#'                 valuetype = "fixed", spacer = TRUE, case_insensitive = FALSE)
+#' toks <- tokenize(c("This is a sentence.", "This is a second sentence."), removePunct = TRUE)
+#' selectFeatures2(toks, c("is", "a", "this"), selection = "remove", 
+#'                 valuetype = "fixed", spacer = TRUE, case_insensitive = TRUE)
+#' toks <- tokenize(c("This is a sentence.", "This is a second sentence."), removePunct = TRUE)
+#' selectFeatures2(toks, c("is", "a", "this"), selection = "remove", 
+#'                 valuetype = "glob", spacer = TRUE, case_insensitive = TRUE)
+#' toks <- tokenize(c("This is a sentence.", "This is a second sentence."), removePunct = TRUE)
+#' selectFeatures2(toks, c("is", "a", "this"), selection = "remove", 
+#'                 valuetype = "glob", spacer = TRUE, case_insensitive = FALSE)
+#'
+#' # with longer texts
 #' txts <- c(exampleString, inaugTexts[2])
 #' toks <- tokenize(txts)
-#' selectFeatures2.tokenizedTexts(toks, stopwords("english"), "remove")
-#' selectFeatures2.tokenizedTexts(toks, stopwords("english"), "keep")
-#' selectFeatures2.tokenizedTexts(toks, stopwords("english"), "remove", spacer = TRUE)
-#' selectFeatures2.tokenizedTexts(toks, stopwords("english"), "keep", spacer= TRUE)
-#' selectFeatures2.tokenizedTexts(encodedTexts[1], stopwords("english"), "remove", spacer= TRUE)
+#' selectFeatures2(toks, stopwords("english"), "remove")
+#' selectFeatures2(toks, stopwords("english"), "keep")
+#' selectFeatures2(toks, stopwords("english"), "remove", spacer = TRUE)
+#' selectFeatures2(toks, stopwords("english"), "keep", spacer = TRUE)
+#' selectFeatures2(tokenize(encodedTexts[1]), stopwords("english"), "remove", spacer = TRUE)
 selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                           valuetype = c("glob", "regex", "fixed"),
-                                          case_insensitive = TRUE, spacer=FALSE,
+                                          case_insensitive = TRUE, spacer = FALSE,
                                           verbose = TRUE, ...) {
-  selection <- match.arg(selection)
-  valuetype <- match.arg(valuetype)
-  features <- unique(unlist(features))  # to convert any dictionaries
-  
-  originalvaluetype <- valuetype
-  # convert glob to fixed if no actual glob characters (since fixed is much faster)
-  if (valuetype == "glob") {
-    # treat as fixed if no glob characters detected
-    if (!sum(stringi::stri_detect_charclass(features, c("[*?]"))))
-      valuetype <- "fixed"
-    else {
-      features <- sapply(features, utils::glob2rx, USE.NAMES = FALSE)
-      valuetype <- "regex"
+    selection <- match.arg(selection)
+    valuetype <- match.arg(valuetype)
+    features <- unique(unlist(features))  # to convert any dictionaries
+    
+    originalvaluetype <- valuetype
+    # convert glob to fixed if no actual glob characters (since fixed is much faster)
+    if (valuetype == "glob") {
+        # treat as fixed if no glob characters detected
+        if (!sum(stringi::stri_detect_charclass(features, c("[*?]"))))
+            valuetype <- "fixed"
+        else {
+            features <- sapply(features, utils::glob2rx, USE.NAMES = FALSE)
+            valuetype <- "regex"
+        }
     }
-  }
-  
-  if (case_insensitive) {
-    features <- toLower(features)
-    x <- toLower(x)
-  }
-  
-  if (valuetype == "fixed") {
-    if (selection == "remove") 
-      result <- select_tokens_cppl(x, features, TRUE, spacer)
-    else 
-      result <- select_tokens_cppl(x, features, FALSE, spacer)
-  } else if (valuetype == "regex") {
-    regex <- rep(paste0(features, collapse = "|"))
-    types <- unique(unlist(x))
-    types_match <- types[stringi::stri_detect_regex(types, regex)] # get all the unique types that match regex
-    if (selection == "remove") {
-      result <- select_tokens_cppl(x, types_match, TRUE, spacer) # search as fixed
-    } else {
-      result <- select_tokens_cppl(x, types_match, FALSE, spacer) # search as fixed
+    
+    ## NOTE TO KOHEI
+    ## Had to remove this because it meant that you input upper case but get back lower case.
+    ## Now ought to be slightly faster because toLower only called for fixed. --KB
+    # if (case_insensitive) {
+    #     features <- toLower(features)
+    #     x <- toLower(x)
+    # }
+    
+    if (valuetype == "fixed") {
+        types <- unique(unlist(x))
+        if (case_insensitive) {
+            types_match <- types[which(toLower(types) %in% toLower(features))]
+        } else {
+            types_match <- types[which(types %in% features)]
+        }
+        if (selection == "remove") 
+            result <- select_tokens_cppl(x, types_match, TRUE, spacer)
+        else 
+            result <- select_tokens_cppl(x, types_match, FALSE, spacer)
+    } else if (valuetype == "regex") {
+        regex <- rep(paste0(features, collapse = "|"))  ##### WHY THE rep()?? --KB
+        types <- unique(unlist(x))
+        # get all the unique types that match regex
+        types_match <- types[stringi::stri_detect_regex(types, regex, case_insensitive = case_insensitive, ...)]  
+        if (selection == "remove") {
+            result <- select_tokens_cppl(x, types_match, TRUE, spacer)  # search as fixed
+        } else {
+            result <- select_tokens_cppl(x, types_match, FALSE, spacer) # search as fixed
+        }
     }
-  }
-  
-  class(result) <- c("tokenizedTexts", class(result))
-  attributes(result) <- attributes(x)
-  result
+    
+    class(result) <- c("tokenizedTexts", class(result))
+    attributes(result) <- attributes(x)
+    result
 }
 
 

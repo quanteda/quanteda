@@ -20,9 +20,9 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// select_tokens_cpp
-List select_tokens_cpp(SEXP x, std::vector< std::string > types, bool remove, bool spacer);
-RcppExport SEXP quanteda_select_tokens_cpp(SEXP xSEXP, SEXP typesSEXP, SEXP removeSEXP, SEXP spacerSEXP) {
+// select_tokens_cppl
+List select_tokens_cppl(SEXP x, std::vector< std::string > types, bool remove, bool spacer);
+RcppExport SEXP quanteda_select_tokens_cppl(SEXP xSEXP, SEXP typesSEXP, SEXP removeSEXP, SEXP spacerSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -30,7 +30,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::vector< std::string > >::type types(typesSEXP);
     Rcpp::traits::input_parameter< bool >::type remove(removeSEXP);
     Rcpp::traits::input_parameter< bool >::type spacer(spacerSEXP);
-    __result = Rcpp::wrap(select_tokens_cpp(x, types, remove, spacer));
+    __result = Rcpp::wrap(select_tokens_cppl(x, types, remove, spacer));
     return __result;
 END_RCPP
 }
