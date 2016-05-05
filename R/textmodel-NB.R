@@ -98,13 +98,15 @@ colNorm <- function(x) {
 #' predict(nb.p261, newdata = trainingset[5, ])
 #' @export
 textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
-                         distribution = c("multinomial", "Bernoulli"), ...)
-{
-    x.trset <- x[which(!is.na(y)), ]
-    y.trclass <- y[!is.na(y)]
+                         distribution = c("multinomial", "Bernoulli"), ...)  {
+    
     call <- match.call()
     prior <- match.arg(prior)
     distribution <- match.arg(distribution)
+    
+    y <- factor(y) # no effect if already a factor    
+    x.trset <- x[which(!is.na(y)), ]
+    y.trclass <- y[!is.na(y)]
     types <- colnames(x)
     docs <- rownames(x)  
     levs <- levels(y.trclass)
