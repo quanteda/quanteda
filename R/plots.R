@@ -54,15 +54,15 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 
 #' plot a dispersion plot of key word(s)
 #' 
-#' Plots a dispersion or "x-ray" plot of a selected word pattern(s) across one or more texts.
+#' Plots a dispersion or "x-ray" plot of selected word pattern(s) across one or more texts.
 #' @param ... any number of \link{kwic} class objects
 #' @import ggplot2
 #' @import grid
 #' @author Adam Obeng
 #' @examples 
 #' \dontrun{
-#' mobydick <- corpus(textfile(unzip(system.file("extdata", "pg2701.txt.zip", package = "quanteda"))))
-#' plot(kwic(mobydick, "Ahab*"))
+#' plot(kwic(inaugCorpus, "american"))
+#' plot(kwic(inaugCorpus, "american"), kwic(inaugCorpus, "people"))
 #' }
 #' @export
 plot.kwic <- function(...) {
