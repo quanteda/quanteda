@@ -4,7 +4,7 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-List select_tokens_cpp(SEXP x,  std::vector< std::string > types, bool remove, bool spacer){
+List select_tokens_cppl(SEXP x,  std::vector< std::string > types, bool remove, bool spacer){
   
   Rcpp::List texts(x);
   std::set<std::string> set_types (types.begin(), types.end());
