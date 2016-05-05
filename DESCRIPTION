@@ -32,7 +32,9 @@ Imports:
     parallel,
     Rcpp,
     ca,
-    stringi
+    stringi,
+    NLP,
+    openNLP
 LinkingTo: Rcpp, RcppArmadillo
 Suggests:
     knitr,
@@ -45,7 +47,8 @@ Suggests:
     ggplot2,
     XML,
     testthat,
-    RColorBrewer
+    RColorBrewer,
+    grid
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
@@ -69,6 +72,7 @@ Collate:
     'ngrams.R'
     'phrases.R'
     'plots.R'
+    'pos.R'
     'quanteda-package.R'
     'readability.R'
     'resample.R'

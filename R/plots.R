@@ -69,12 +69,26 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' }
 #' @export
 plot.kwic <- function(x, ...) {
-    nt <- attr(x, "ntoken")
-    if(length(nt) > 1) stop("kwic plots currently only implemented for single documents.")
-    pos <- integer(attr(x, "ntoken"))
-    pos[x$position] <- 1L
-    graphics::plot(pos, xlab="Token Index", ylab = attr(x, "keyword"), type="h", 
-         ylim=c(0,1), yaxt="n", col = "grey30", ...)
+    if (requireNamespace("ggplot2", quietly = TRUE) & requireNamespace("grid", quietly = TRUE)) {
+        ggplot2::ggplot(x, ggplot2::aes(x=position, y=1)) + ggplot2::geom_segment(ggplot2::aes(xend=position, yend=0)) + 
+        ggplot2::facet_grid(docname~.) +
+        ggplot2::labs(x='Token index', y='Document', title = paste('Lexical dispersion plot, keyword:', paste0('"', attr(x, 'keyword'), '"'))) +
+        ggplot2::theme(axis.line=ggplot2::element_blank(),
+            panel.border=ggplot2::element_blank(),panel.grid.major.y=ggplot2::element_blank(),
+            panel.grid.minor.y=ggplot2::element_blank(), plot.background=ggplot2::element_blank(),
+            axis.ticks.y=ggplot2::element_blank(), axis.text.y=ggplot2::element_blank(),
+            panel.margin = grid::unit(0.1, "lines"),
+            strip.text.y=ggplot2::element_text(angle=0)
+        )
+    }
+    else {
+       nt <- attr(x, "ntoken")
+       if(length(nt) > 1) stop("kwic plots for multiple documents require the ggplot2 package.")
+       pos <- integer(attr(x, "ntoken"))
+       pos[x$position] <- 1L
+       graphics::plot(pos, xlab="Token Index", ylab = attr(x, "keyword"), type="h", 
+       ylim=c(0,1), yaxt="n", col = "grey30", ...)
+    }
 }
 
 
