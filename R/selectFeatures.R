@@ -265,7 +265,7 @@ selectFeatures2 <- function(x, ...) UseMethod("selectFeatures2")
 #'   features, for instance if a window of adjacency needs to be computed.
 #' @export
 #' @examples 
-#' ## performance comparisons
+#' \dontrun{## performance comparisons
 #' data(SOTUCorpus, package = "quantedaData")
 #' toks <- tokenize(toLower(SOTUCorpus), removePunct = TRUE)
 #' # head to head, old v. new
@@ -286,7 +286,7 @@ selectFeatures2 <- function(x, ...) UseMethod("selectFeatures2")
 #' microbenchmark::microbenchmark(
 #'     pre = dfm(removeFeatures2(toks, stopwords("english")), verbose = FALSE),
 #'     post = dfm(toks, ignoredFeatures = stopwords("english"), verbose = FALSE),
-#'     times = 5, unit = "relative")
+#'     times = 5, unit = "relative")}
 #'     
 #' 
 #' ## with simple examples

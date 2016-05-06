@@ -44,7 +44,7 @@ Calls C++ for super-fast selection or removal of features from a
 set of tokens.
 }
 \examples{
-## performance comparisons
+\dontrun{## performance comparisons
 data(SOTUCorpus, package = "quantedaData")
 toks <- tokenize(toLower(SOTUCorpus), removePunct = TRUE)
 # head to head, old v. new
@@ -65,7 +65,7 @@ microbenchmark::microbenchmark(
 microbenchmark::microbenchmark(
     pre = dfm(removeFeatures2(toks, stopwords("english")), verbose = FALSE),
     post = dfm(toks, ignoredFeatures = stopwords("english"), verbose = FALSE),
-    times = 5, unit = "relative")
+    times = 5, unit = "relative")}
     
 
 ## with simple examples
