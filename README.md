@@ -1,5 +1,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-**Development branch** \[![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=dev)\]\[![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev)\](<https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev>) **Master branch** \[![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)\]\[![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)\](<https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master>)
+**Development branch** ![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=dev) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev)](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev)
+
+**Master branch** ![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)
 
 See the [Getting Started Vignette](http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html).
 
@@ -82,7 +84,7 @@ Example
 
 ``` r
 library(quanteda)
-#> quanteda version 0.9.5.23
+#> quanteda version 0.9.5.24
 #> 
 #> Attaching package: 'quanteda'
 #> The following object is masked from 'package:base':
@@ -111,8 +113,8 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 #>           SNP    90    136         4          SNP
 #>          UKIP   346    739        27         UKIP
 #> 
-#> Source:  /Users/kbenoit/Dropbox/GitHub/quanteda/* on x86_64 by kbenoit
-#> Created: Mon Apr 25 15:23:35 2016
+#> Source:  /Users/adam/code/quanteda/* on x86_64 by adam
+#> Created: Fri May  6 14:02:19 2016
 #> Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -133,7 +135,7 @@ mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
 #>    ... removed 97 features, from 175 supplied (glob) feature types
 #>    ... created a 9 x 1489 sparse dfm
 #>    ... complete. 
-#> Elapsed time: 0.036 seconds.
+#> Elapsed time: 0.216 seconds.
 dim(mydfm)              # basic dimensions of the dfm
 #> [1]    9 1489
 topfeatures(mydfm, 20)  # 20 top words
@@ -148,4 +150,4 @@ topfeatures(mydfm, 20)  # 20 top words
 plot(mydfm, min.freq = 6, random.order = FALSE)             # word cloud     
 ```
 
-![](README-quanteda_example-1.png)<!-- -->
+![](README-quanteda_example-1.png)
