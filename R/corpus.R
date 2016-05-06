@@ -293,7 +293,8 @@ corpus.data.frame <- function(x, textField, ...) {
 #' @method print corpus
 print.corpus <- function(x, ...) {
     cat("Corpus consisting of ", ndoc(x), " document",
-        ifelse(ndoc(x)>1, "s", ""), ".\n", sep="")
+        ifelse(ndoc(x)>1, "s", ""), " and ",
+        ncol(docvars(x)), " docvar", ifelse(ncol(docvars(x)) == 1, "", "s"), ".\n", sep="")
     #         ", ",
     #         ifelse(is.null(corp$tokens), "un", ""),
     #         "indexed.\n", sep="")
