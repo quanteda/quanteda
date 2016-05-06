@@ -38,15 +38,17 @@ quanteda 0.9.5
 
 *  added a corpus method for data.frame objects, so that a corpus can be constructed directly from a data.frame.  Requires the addition of a `textField` argument (similar to textfile).
 
-*  added compress.dfm() to combine identically named columns or rows.  #123
+*  added `compress.dfm()` to combine identically named columns or rows.  #123
 
-*  Much better phrasetotoken(), with additional methods for all combinations of corpus/character v. dictionary/character/collocations.
+*  Much better `phrasetotoken()`, with additional methods for all combinations of corpus/character v. dictionary/character/collocations.
 
-*  Added a weight(x, type, ...) signature where the second argument can be a named numeric vector of weights, not just a label for a type of weight.  Thanks http://stackoverflow.com/questions/36815926/assigning-weights-to-different-features-in-r/36823475#36823475.
+*  Added a` weight(x, type, ...`) signature where the second argument can be a named numeric vector of weights, not just a label for a type of weight.  Thanks http://stackoverflow.com/questions/36815926/assigning-weights-to-different-features-in-r/36823475#36823475.
 
-*  as.data.frame for dfms now passes ... to as.data.frame.matrix.
+*  `as.data.frame` for dfms now passes `...` to `as.data.frame.matrix`.
 
-*  Fixed bug in predict.fitted_textmodel_NB() that caused a failure with k > 2 classes (#129)
+*  Fixed bug in `predict.fitted_textmodel_NB()` that caused a failure with k > 2 classes (#129)
+
+*  Improved `dfm.tokenizedTexts()` performance by taking care of zero-token documents more efficiently.
 
 Bug fixes
 ---------

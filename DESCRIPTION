@@ -3,17 +3,20 @@ Type: Package
 Title: Quantitative Analysis of Textual Data
 Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     c("aut", "cre")), person("Paul", "Nulty", email = "paul.nulty@gmail.com",
-    role = "aut"), person("Pablo", "Barberá", email = "pablo.barbera@nyu.edu",
-    role = "ctb"), person("Kohei", "Watanabe", email =
+    role = "aut"), person("Kohei", "Watanabe", email =
     "watanabe.kohei@gmail.com", role = "ctb"), person("Benjamin", "Lauderdale",
-    email = "B.E.lauderdale@lse.ac.uk", role = "ctb"))
+    email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
+    person("Obeng, Adam", email = "adam@adamobeng.com", role = "ctb"),
+    person("Pablo", "Barberá", email = "pablo.barbera@nyu.edu",
+    role = "ctb"))
 Author: Kenneth Benoit [aut, cre],
     Paul Nulty [aut],
-    Pablo Barberá [ctb],
     Kohei Watanabe [ctb],
-    Benjamin Lauderdale [ctb]
+    Benjamin Lauderdale [ctb],
+    Adam Obeng [ctb],
+    Pablo Barberá [ctb],
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.5-25
+Version: 0.9.5-26
 Date: 2016-05-06
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
