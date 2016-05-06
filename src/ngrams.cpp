@@ -48,7 +48,7 @@ StringVector skipgramcpp(std::vector < std::string > tokens,
     
     // Generate skipgrams recursively
     std::vector<std::string> ngram;
-    std::vector< std::vector<std::string> > ngrams; // For the rerusive function
+    std::vector< std::vector<std::string> > ngrams; // For the recursive function
     int len_ns = ns.size();
     int len_tokens = tokens.size();
     
