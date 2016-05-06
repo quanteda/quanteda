@@ -1,5 +1,7 @@
 quanteda 0.9.5 
 ==============  
+*  Improved Naive Bayes model and prediction, `textmodel(x, y, method = "NB")`, now works correctly on k > 2.
+
 *  Improved tag handling for segment(x, what = "tags")
 
 *  Added valuetype argument to segment() methods, which allows faster and more robust segmentation on large texts.
@@ -43,6 +45,8 @@ quanteda 0.9.5
 *  Added a weight(x, type, ...) signature where the second argument can be a named numeric vector of weights, not just a label for a type of weight.  Thanks http://stackoverflow.com/questions/36815926/assigning-weights-to-different-features-in-r/36823475#36823475.
 
 *  as.data.frame for dfms now passes ... to as.data.frame.matrix.
+
+*  Fixed bug in predict.fitted_textmodel_NB() that caused a failure with k > 2 classes (#129)
 
 Bug fixes
 ---------
