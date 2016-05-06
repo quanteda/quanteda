@@ -172,10 +172,18 @@ axis(1, 1:10, labels = names(topfeatures(mobyDfmPct)))
 ## 4.1 Dispersion plots
 
 A dispersion plot allows us to visualize the occurrences of particular terms throughout the text. The object returned by the `kwic` function can be plotted to display a dispersion plot.
-```{r eval=TRUE, fig.width=8, fig.height=2}
+```{r eval=TRUE, fig.width=8, fig.height=1.5}
 # using words from tokenized corpus for dispersion
 plot(kwic(novel.v, "whale"))
-plot(kwic(novel.v, "Ahab"))
+```
+
+You can also pass multiple kwic objects to `plot` to compare the dispersion of different terms:
+```{r eval=TRUE, fig.width=8, fig.height=2.5}
+plot(
+     kwic(novel.v, "whale"),
+     kwic(novel.v, "Ahab"),
+     kwic(novel.v, "Pequod")
+)
 ```
 
 ## 4.2 Searching with `grep`

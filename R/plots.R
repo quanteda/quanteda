@@ -57,7 +57,7 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' Plots a dispersion or "x-ray" plot of selected word pattern(s) across one or more texts.
 #' The format of the plot depends on the number of \link{kwic} class objects passed: if there
 #' is only one document, keywords are plotted one below the other. If there are multiple documents
-#' they are plotted one below the other, with keywords shown side-by-side.
+#' the documents are plotted one below the other, with keywords shown side-by-side.
 #' @param ... any number of \link{kwic} class objects
 #' @import ggplot2
 #' @import grid
