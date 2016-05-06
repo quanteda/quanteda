@@ -4,13 +4,13 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-List select_tokens_cppl(SEXP x,  
+Rcpp::List select_tokens_cppl(SEXP x,  
                         std::vector< std::string > types, 
                         const bool &remove, 
                         const bool &spacer){
   
   Rcpp::List texts(x);
-  Rcpp::List texts_temp(x);
+  Rcpp::List texts_temp = clone(texts);
   std::set<std::string> set_types (types.begin(), types.end());
   
   int len_texts = texts.size();
