@@ -10,7 +10,7 @@ Rcpp::List select_tokens_cppl(SEXP x,
                         const bool &spacer){
   
   Rcpp::List texts(x);
-  Rcpp::List texts_temp = clone(texts);
+  Rcpp::List texts_temp = clone(texts); // copy to keep original objects intact (uses more memory)
   std::set<std::string> set_types (types.begin(), types.end());
   
   int len_texts = texts.size();
