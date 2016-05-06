@@ -765,7 +765,7 @@ sample.default <- function(x, size, replace = FALSE, prob = NULL, ...) {
 #' summary(sample(inaugCorpus, 5)) 
 #' summary(sample(inaugCorpus, 10, replace=TRUE))
 sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, ...) {
-    documents(x) <- documents(x)[sample(ndoc(x), size, replace, prob), ]
+    documents(x) <- documents(x)[sample(ndoc(x), size, replace, prob), , drop = FALSE]
     x
 }
 

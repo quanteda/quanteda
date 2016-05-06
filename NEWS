@@ -1,5 +1,7 @@
 quanteda 0.9.5 
 ==============  
+*  Improved Naive Bayes model and prediction, `textmodel(x, y, method = "NB")`, now works correctly on k > 2.
+
 *  Improved tag handling for segment(x, what = "tags")
 
 *  Added valuetype argument to segment() methods, which allows faster and more robust segmentation on large texts.
@@ -44,6 +46,8 @@ quanteda 0.9.5
 
 *  as.data.frame for dfms now passes ... to as.data.frame.matrix.
 
+*  Fixed bug in predict.fitted_textmodel_NB() that caused a failure with k > 2 classes (#129)
+
 Bug fixes
 ---------
 *  Fixed a false-alarm warning message in textmodel_wordfish()
@@ -63,6 +67,8 @@ Bug fixes
 *  readability() now returns measures in order called, not function definition order.
 
 *  textmodel(x, model = "wordfish") now removes zero-frequency documents and words prior to calling Rcpp.
+
+*  Fixed a bug in sample.corpus() that caused an error when no docvars existed. #128
 
 quanteda 0.9.4
 ==============

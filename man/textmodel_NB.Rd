@@ -61,13 +61,14 @@ trainingset <- as.dfm(matrix(c(1, 2, 0, 0, 0, 0,
                         0, 1, 1, 0, 0, 1,
                         0, 3, 1, 0, 0, 1), 
                       ncol=6, nrow=5, byrow=TRUE,
-                      dimnames = list(docs=paste("d", 1:5, sep=""),
-                                      features=c("Beijing", "Chinese",  "Japan", "Macao", 
-                                        "Shanghai", "Tokyo"))))
-trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered=TRUE)
+                      dimnames = list(docs = paste("d", 1:5, sep = ""),
+                                      features = c("Beijing", "Chinese",  "Japan", "Macao", 
+                                                   "Shanghai", "Tokyo"))))
+trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 ## replicate IIR p261 prediction for test set (document 5)
-(nb.p261 <- textmodel_NB(trainingset, trainingclass, prior = "docfreq"))
+(nb.p261 <- textmodel_NB(trainingset, trainingclass)) #, prior = "docfreq"))
 predict(nb.p261, newdata = trainingset[5, ])
+
 }
 \author{
 Kenneth Benoit

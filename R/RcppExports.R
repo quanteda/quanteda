@@ -5,10 +5,13 @@ skipgramcpp <- function(tokens, ns, ks, delim) {
     .Call('quanteda_skipgramcpp', PACKAGE = 'quanteda', tokens, ns, ks, delim)
 }
 
+<<<<<<< HEAD
 select_tokens_cppl <- function(x, types, remove, spacer) {
     .Call('quanteda_select_tokens_cppl', PACKAGE = 'quanteda', x, types, remove, spacer)
 }
 
+=======
+>>>>>>> master
 wordfishcpp <- function(wfm, dir, priors, tol, disp, dispfloor) {
     .Call('quanteda_wordfishcpp', PACKAGE = 'quanteda', wfm, dir, priors, tol, disp, dispfloor)
 }
