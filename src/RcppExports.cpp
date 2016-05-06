@@ -21,7 +21,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // select_tokens_cppl
-List select_tokens_cppl(SEXP x, std::vector< std::string > types, const bool& remove, const bool& spacer);
+Rcpp::List select_tokens_cppl(SEXP x, std::vector< std::string > types, const bool& remove, const bool& spacer);
 RcppExport SEXP quanteda_select_tokens_cppl(SEXP xSEXP, SEXP typesSEXP, SEXP removeSEXP, SEXP spacerSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;

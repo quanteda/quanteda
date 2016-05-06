@@ -259,48 +259,63 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
 selectFeatures2 <- function(x, ...) UseMethod("selectFeatures2")
 
 #' @rdname selectFeatures2
-#' @param spacer if \code{TRUE}, leave an empty string where the removed tokens 
-#'   previously existed.  This is useful if a positional match is needed between
-#'   the pre- and post-selected features, for instance if a window of adjacency 
-#'   needs to be computed.
+#' @param padding (only for \code{tokenizedTexts} objects) if \code{TRUE}, leave
+#'   an empty string where the removed tokens previously existed.  This is
+#'   useful if a positional match is needed between the pre- and post-selected
+#'   features, for instance if a window of adjacency needs to be computed.
 #' @export
 #' @examples 
-#' # with simple examples
+#' ## performance comparisons
+#' data(SOTUCorpus, package = "quantedaData")
+#' toks <- tokenize(toLower(SOTUCorpus), removePunct = TRUE)
+#' # head to head, old v. new
+#' system.time(selectFeatures2(toks, stopwords("english"), "remove", verbose = FALSE))
+#' system.time(selectFeatures(toks, stopwords("english"), "remove", verbose = FALSE))
+#' system.time(selectFeatures2(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"))
+#' system.time(selectFeatures(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"))
+#' #' microbenchmark::microbenchmark(
+#'     new = selectFeatures2(toks, stopwords("english"), "remove", verbose = FALSE),
+#'     old = selectFeatures(toks, stopwords("english"), "remove", verbose = FALSE),
+#'     times = 5, unit = "relative")
+#' microbenchmark::microbenchmark(
+#'     new = selectFeatures2(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"),
+#'     old = selectFeatures(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"),
+#'     times = 2, unit = "relative")
+#'     
+#' # removing tokens before dfm, versus after
+#' microbenchmark::microbenchmark(
+#'     pre = dfm(removeFeatures2(toks, stopwords("english")), verbose = FALSE),
+#'     post = dfm(toks, ignoredFeatures = stopwords("english"), verbose = FALSE),
+#'     times = 5, unit = "relative")
+#'     
+#' 
+#' ## with simple examples
 #' toks <- tokenize(c("This is a sentence.", "This is a second sentence."), 
 #'                  removePunct = TRUE)
-#' toks.copy <- toks
 #' selectFeatures2(toks, c("is", "a", "this"), selection = "remove", 
-#'                 valuetype = "fixed", spacer = TRUE, case_insensitive = TRUE)
-#' ##### look at the output -- this modified by reference!!
-#' toks 
-#' ##### and even modified the copy!
-#' toks.copy
+#'                 valuetype = "fixed", padding = TRUE, case_insensitive = TRUE)
 #' 
-#' # case_insensitive now working as it should
-#' toks <- tokenize(c("This is a sentence.", "This is a second sentence."), removePunct = TRUE)
+#' # how case_insensitive works
 #' selectFeatures2(toks, c("is", "a", "this"), selection = "remove", 
-#'                 valuetype = "fixed", spacer = TRUE, case_insensitive = FALSE)
-#' toks <- tokenize(c("This is a sentence.", "This is a second sentence."), removePunct = TRUE)
+#'                 valuetype = "fixed", padding = TRUE, case_insensitive = FALSE)
 #' selectFeatures2(toks, c("is", "a", "this"), selection = "remove", 
-#'                 valuetype = "fixed", spacer = TRUE, case_insensitive = TRUE)
-#' toks <- tokenize(c("This is a sentence.", "This is a second sentence."), removePunct = TRUE)
+#'                 valuetype = "fixed", padding = TRUE, case_insensitive = TRUE)
 #' selectFeatures2(toks, c("is", "a", "this"), selection = "remove", 
-#'                 valuetype = "glob", spacer = TRUE, case_insensitive = TRUE)
-#' toks <- tokenize(c("This is a sentence.", "This is a second sentence."), removePunct = TRUE)
+#'                 valuetype = "glob", padding = TRUE, case_insensitive = TRUE)
 #' selectFeatures2(toks, c("is", "a", "this"), selection = "remove", 
-#'                 valuetype = "glob", spacer = TRUE, case_insensitive = FALSE)
-#'
+#'                 valuetype = "glob", padding = TRUE, case_insensitive = FALSE)
+#' 
 #' # with longer texts
 #' txts <- c(exampleString, inaugTexts[2])
 #' toks <- tokenize(txts)
 #' selectFeatures2(toks, stopwords("english"), "remove")
 #' selectFeatures2(toks, stopwords("english"), "keep")
-#' selectFeatures2(toks, stopwords("english"), "remove", spacer = TRUE)
-#' selectFeatures2(toks, stopwords("english"), "keep", spacer = TRUE)
-#' selectFeatures2(tokenize(encodedTexts[1]), stopwords("english"), "remove", spacer = TRUE)
+#' selectFeatures2(toks, stopwords("english"), "remove", padding = TRUE)
+#' selectFeatures2(toks, stopwords("english"), "keep", padding = TRUE)
+#' selectFeatures2(tokenize(encodedTexts[1]), stopwords("english"), "remove", padding = TRUE)
 selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                           valuetype = c("glob", "regex", "fixed"),
-                                          case_insensitive = TRUE, spacer = FALSE,
+                                          case_insensitive = TRUE, padding = FALSE,
                                           verbose = TRUE, ...) {
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
@@ -318,14 +333,6 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
         }
     }
     
-    ## NOTE TO KOHEI
-    ## Had to remove this because it meant that you input upper case but get back lower case.
-    ## Now ought to be slightly faster because toLower only called for fixed. --KB
-    # if (case_insensitive) {
-    #     features <- toLower(features)
-    #     x <- toLower(x)
-    # }
-    
     if (valuetype == "fixed") {
         types <- unique(unlist(x))
         if (case_insensitive) {
@@ -334,18 +341,18 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
             types_match <- types[which(types %in% features)]
         }
         if (selection == "remove") 
-            result <- select_tokens_cppl(x, types_match, TRUE, spacer)
+            result <- select_tokens_cppl(x, types_match, TRUE, padding)
         else 
-            result <- select_tokens_cppl(x, types_match, FALSE, spacer)
+            result <- select_tokens_cppl(x, types_match, FALSE, padding)
     } else if (valuetype == "regex") {
         regex <- rep(paste0(features, collapse = "|"))  ##### WHY THE rep()?? --KB
         types <- unique(unlist(x))
         # get all the unique types that match regex
         types_match <- types[stringi::stri_detect_regex(types, regex, case_insensitive = case_insensitive, ...)]  
         if (selection == "remove") {
-            result <- select_tokens_cppl(x, types_match, TRUE, spacer)  # search as fixed
+            result <- select_tokens_cppl(x, types_match, TRUE, padding)  # search as fixed
         } else {
-            result <- select_tokens_cppl(x, types_match, FALSE, spacer) # search as fixed
+            result <- select_tokens_cppl(x, types_match, FALSE, padding) # search as fixed
         }
     }
     
