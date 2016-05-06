@@ -1,58 +1,3 @@
-
-## make rows add up to one
-rowNorm <- function(x) {
-    x / outer(rowSums(x), rep(1, ncol(x)))
-}
-
-## make cols add up to one
-colNorm <- function(x) {
-    x / outer(rep(1, nrow(x)), colSums(x))
-}
-
-
-# Naive Bayes text model
-#
-# \code{textmodel_NB} implements Naive Bayes model for class prediction on a
-# set of labelled texts.
-# @param trainData the dfm on which the model will be fit.  Does not need to contain
-#   only the training documents, since the index of these will be identified in
-#   \code{train}.
-# @param trainLabels vector of training labels associated with each document
-#   identified in \code{train}.  (These will be converted to factors if not
-#   already factors.)
-# @param smooth a smoothing parameter for word counts, default is 1.0.
-# @param distribution either \code{multinomial} to count all word occurrences,
-# or \code{bernoulli} to count feature occurrences as binary
-# @param classpriors an optional named vector of class priors, corresponding to
-#   the levels or values of \code{train.class}.  This does not need to be
-#   ordered, but must be named, and the names must match 1:1 to the levels of
-#   \code{train.class}.  Default is uniform class priors, not based on the
-#   balance of trainind documents, but rather uniform across the possible
-#   classes.  See details.
-# @section Class priors: Details on this will be provided soon.
-# @section Smoothing values: Smoothing values are added to features observed in
-#   each class, which consist of all observed features per class, not per
-#   document.  More soon.
-# @author Kenneth Benoit
-# @references Laver, Benoit and Garry (2003); Martin and Vanberg (2007)
-# @export
-# textmodel_NB <- function(trainData, trainLabels, smooth=1,
-#                         distribution=c("multinomial", "bernoulli"),
-#                         classpriors=1/length(table(trainLabels))) {
-#     thecall <- match.call()
-#     distribution <- match.arg(distribution)
-#     labels <- levels(as.factor(trainLabels))
-#     trainData <- trainData + smooth
-#     Pwc <- rowSums(log(trainData))
-#     
-#     warning("textmodel_NB not implented yet!")
-#     
-#     # model <- list(featureScores = NULL, train=train, train.class=train.class)
-#     class(model) <- c("NB", class(model))
-#     return(model)
-# }
-
-
 #' Naive Bayes classifier for texts
 #' 
 #' Currently working for vectors of texts -- not specially defined for a dfm.
@@ -89,10 +34,10 @@ colNorm <- function(x) {
 #'                         0, 1, 1, 0, 0, 1,
 #'                         0, 3, 1, 0, 0, 1), 
 #'                       ncol=6, nrow=5, byrow=TRUE,
-#'                       dimnames = list(docs=paste("d", 1:5, sep=""),
-#'                                       features=c("Beijing", "Chinese",  "Japan", "Macao", 
-#'                                         "Shanghai", "Tokyo"))))
-#' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered=TRUE)
+#'                       dimnames = list(docs = paste("d", 1:5, sep = ""),
+#'                                       features = c("Beijing", "Chinese",  "Japan", "Macao", 
+#'                                                    "Shanghai", "Tokyo"))))
+#' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 #' ## replicate IIR p261 prediction for test set (document 5)
 #' (nb.p261 <- textmodel_NB(trainingset, trainingclass)) #, prior = "docfreq"))
 #' predict(nb.p261, newdata = trainingset[5, ])
@@ -104,7 +49,7 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
     prior <- match.arg(prior)
     distribution <- match.arg(distribution)
     
-    #y <- factor(y) # no effect if already a factor    
+    y <- factor(y) # no effect if already a factor    
     x.trset <- x[which(!is.na(y)), ]
     y.trclass <- y[!is.na(y)]
     types <- colnames(x)
@@ -160,8 +105,6 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
 #' implements class predictions using trained Naive Bayes examples 
 #' @param object a fitted Naive Bayes textmodel 
 #' @param newdata dfm on which prediction should be made
-#' @param scores "reference" values when the wordscores equivalent implementation
-#' of Naive Bayes prediction is used.  Default is \code{c(-1, 1)}.
 #' @param ... not used
 #' @return A list of two data frames, named \code{docs} and \code{words} corresponding
 #' to word- and document-level predicted quantities
@@ -180,11 +123,8 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
 predict.textmodel_NB_fitted <- function(object, newdata = NULL, ...) {
     
     call <- match.call()
-    
-    if (is.null(newdata))
-        newdata <- object$data$x
-    
-    
+    if (is.null(newdata)) newdata <- object$data$x
+
     # remove any words for which zero probabilities exist in training set --
     # would happen if smooth=0
     # the condition assigns the index of zero occurring words to vector "notinref" and only 
@@ -214,7 +154,7 @@ predict.textmodel_NB_fitted <- function(object, newdata = NULL, ...) {
     # compute posterior probabilities
     for (j in 1:ncol(log.posterior.lik)) {
         base.lpl <- log.posterior.lik[, j]
-        posterior.prob[, j] <- 1 / (1 + rowSums(exp(log.posterior.lik[, -j] - base.lpl)))
+        posterior.prob[, j] <- 1 / (1 + rowSums(exp(log.posterior.lik[, -j, drop = FALSE] - base.lpl)))
     }
 
     result <- list(log.posterior.lik = log.posterior.lik, 
@@ -227,11 +167,11 @@ predict.textmodel_NB_fitted <- function(object, newdata = NULL, ...) {
     result
 }
 
+# not used any more
 logsumexp <- function(x) {
     xmax <- which.max(x)
     log1p(sum(exp(x[-xmax] - x[xmax]))) + x[xmax]
 }
-
 
 # @rdname print.textmodel
 #' @export
@@ -240,6 +180,7 @@ print.textmodel_NB_fitted <- function(x, n=30L, ...) {
     cat("Fitted Naive Bayes model:\n")
     cat("Call:\n\t")
     print(x$call)
+    cat("\n")
     
     cat("\nTraining classes and priors:\n")
     print(x$Pc)
@@ -258,80 +199,41 @@ print.textmodel_NB_fitted <- function(x, n=30L, ...) {
 
 #' @export
 #' @method print textmodel_NB_predicted
-print.textmodel_NB_predicted <- function(x, n = 30L, digits = 2, ...) {
-    cat("Predicted textmodel of type: Naive Bayes\n\n")
-    if (nrow(x$log.posterior.lik) > n) {
+print.textmodel_NB_predicted <- function(x, n = 30L, digits = 4, ...) {
+    
+    cat("Predicted textmodel of type: Naive Bayes\n")
+    # cat("Call:\n\t")
+    # print(x$call)
+    if (nrow(x$log.posterior.lik) > n)
         cat("(showing", n, "of", nrow(x$docs), "documents)\n")
-    }
+    cat("\n")
+    
     docsDf <- data.frame(x$log.posterior.lik, x$posterior.prob, x$nb.predicted)
     names(docsDf) <- c(paste0("lp(", x$classlabels, ")"),
                        paste0("Pr(", x$classlabels, ")"),
                        "Predicted")
+    k <- length(x$classlabels)
+    docsDf[, 1:k] <- format(docsDf[, 1:k], nsmall = digits) #digits = digits + 6)
+    docsDf[, (k+1):(2*k)] <- round(docsDf[, (k+1):(2*k)], digits) #, digits = digits)
+    docsDf[, (k+1):(2*k)] <- format(docsDf[, (k+1):(2*k)], nsmall = digits) #, digits = digits)
+    
+    # add a whitespace column for visual padding
+    docsDf <- cbind(docsDf[, 1:k], " " = rep("  ", nrow(docsDf)), docsDf[, (k+1):(2*k+1)])
+    
     print(docsDf[1:(min(n, nrow(docsDf))), ], digits = digits)
     cat("\n")
 }
 
-predictOLD.textmodel_NB_fitted <- function(object, newdata = NULL, scores = c(-1, 1), ...) {
-    ## does not check that we have the same set of words
-    ## log.probs: would you like the class conditional sums of log prior + sum log word given class?
-    bayesscore.word <- NULL
-    bayesscore.doc <- NULL
-    wordscore.word <- NULL
-    wordscore.doc <- NULL
-    if (is.null(newdata))
-        newdata <- object$data$x
-    # need to check that has same dimensions as x if (!is.null(newdata))
-    
-    # remove any words for which zero probabilities exist in training set --
-    # would happen if smooth=0
-    # the condition assigns the index of zero occurring words to vector "notinref" and only 
-    # trims the objects if this index has length>0
-    if (length(notinref <- which(colSums(object$PwGc)==0))) {
-        object$PwGc <- object$PwGc[-notinref]
-        object$PcGw <- object$PcGw[-notinref]
-        object$Pw   <- object$Pw[-notinref]
-        object$data$x <- object$data$x[,-notinref]
-        newdata <- newdata[,-notinref] 
-    }
-    
-    log.lik   <- t(log(object$PwGc))
-    lPwGc <- (newdata %*% log.lik)  # log P(w|c) class conditional word likelihood
-    # lPc <- outer(rep(1, nrow(newdata)), log(object$Pc))  # log P(c) class prior
-    # lPw <- sum(log(object$Pw))
-    # lPcGw <- lPc + lPwGc - lPw  # log P(c|w), prop to since excludes P(w) normalization constant
-    
-    # compute the scaled quantities that come from the training set words
-    if (!is.null(scores)) {
-        if (length(object$Pc)!=length(scores))
-            stop("scores must be equal in length to number of classes.")
-        bayesscore.word <- log.lik %*% scores
-        wordscore.word <- t(object$PcGw) %*% scores
-        bayesscore.doc <- rowNorm(newdata) %*% bayesscore.word 
-        #  newdata * t(outer(as.vector(temp), rep(1, nrow(newdata))))
-        wordscore.doc <- rowNorm(newdata) %*% wordscore.word
-        wordscore.doc <- wordscore.doc[, 1]
-    }
-    
-    # eta <- lPwGc[,1] - lPwGc[,2]
-    eta <- bayesscore.doc * rowSums(newdata) + log(object$Pc[2]/object$Pc[1])
-    bayesscore.doc <- bayesscore.doc + log(object$Pc[2]/object$Pc[1])
-    bayesscore.doc <- bayesscore.doc[, 1]
-    PcGw <- cbind(1/(1+exp(eta)), 1/(1+exp(-eta))) 
-    colnames(PcGw) <- colnames(lPwGc)  
-    
-    nb.predicted <- colnames(PcGw)[apply(PcGw, 1, which.max)]
-    dirtest <- ifelse(!is.null(scores) && scores[1]>scores[2], -1, 1)
-    ws.predicted <- colnames(PcGw)[(dirtest*wordscore.doc > 0)+1]
-    bs.predicted <- colnames(PcGw)[(dirtest*bayesscore.doc > 0)+1]
-    # can't predict these without a smoother
-    
-    if (sum(object$PwGc==0)) nb.predicted <- bs.predicted <- rep(NA, nrow(wordscore.doc))
-    
-    df.doc <- data.frame(as.matrix(PcGw), predicted = nb.predicted, ws.predicted, bs.predicted, wordscore.doc, bayesscore.doc) 
-    df.doc$posterior.diff <- 1 - 2*PcGw[,1]  ## ONLY WORKS NOW FOR 2-CLASS SOLUTIONS
-    df.doc$posterior.logdiff <- log(1-PcGw[,1]) - log(PcGw[,1])  ## ONLY WORKS NOW FOR 2-CLASS SOLUTIONS
-    df.words <- data.frame(wordscore.word, bayesscore.word)
-    result <- list(docs = df.doc, words = df.words, classlabels = names(object$Pc))
-    class(result) <- c("textmodel_NB_predicted", class(result))
-    result
+
+## some helper functions
+
+## make rows add up to one
+rowNorm <- function(x) {
+    x / outer(rowSums(x), rep(1, ncol(x)))
 }
+
+## make cols add up to one
+colNorm <- function(x) {
+    x / outer(rep(1, nrow(x)), colSums(x))
+}
+

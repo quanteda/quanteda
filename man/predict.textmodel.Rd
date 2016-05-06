@@ -12,9 +12,6 @@
 \item{newdata}{dfm on which prediction should be made}
 
 \item{...}{not used}
-
-\item{scores}{"reference" values when the wordscores equivalent implementation
-of Naive Bayes prediction is used.  Default is \code{c(-1, 1)}.}
 }
 \value{
 A list of two data frames, named \code{docs} and \code{words} corresponding
