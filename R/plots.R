@@ -55,10 +55,14 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' plot a dispersion plot of key word(s)
 #' 
 #' Plots a dispersion or "x-ray" plot of selected word pattern(s) across one or more texts.
+#' The format of the plot depends on the number of \link{kwic} class objects passed: if there
+#' is only one document, keywords are plotted one below the other. If there are multiple documents
+#' they are plotted one below the other, with keywords shown side-by-side.
 #' @param ... any number of \link{kwic} class objects
 #' @import ggplot2
 #' @import grid
 #' @author Adam Obeng
+#' @return \code{plot.kwic} returns a ggplot object
 #' @examples 
 #' \dontrun{
 #' plot(kwic(inaugCorpus, "american"))
@@ -86,13 +90,16 @@ plot.kwic <- function(...) {
 
 
    if ((length(unique(x$docname)) > 1)) {
+      # If there is more than one document, put documents on the panel y-axis and keyword(s)
+      # on the panel x-axis
       plot <- plot + ggplot2::facet_grid(docname~keyword) + 
       ggplot2::labs(x='Token index', y='Document', title = paste('Lexical dispersion plot'))
    }
    else {
+      # If not, put keywords on the panel y-axis and the document name in the title
       plot <- plot + ggplot2::facet_grid(keyword~.) + 
       ggplot2::labs(x='Token index',
-          y='Document', title = paste('Lexical dispersion plot, document:', x$docname[[1]]))
+          y='', title = paste('Lexical dispersion plot, document:', x$docname[[1]]))
    }
 
    plot
