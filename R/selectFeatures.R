@@ -250,7 +250,7 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
     
 }
 
-<<<<<<< HEAD
+
 #' working prototype for faster selectFeatures.tokenizedTexts
 #' 
 #' Calls C++ for super-fast selection or removal of features from a 
@@ -269,6 +269,7 @@ selectFeatures2 <- function(x, ...) UseMethod("selectFeatures2")
 #' \dontrun{## performance comparisons
 #' data(SOTUCorpus, package = "quantedaData")
 #' toks <- tokenize(toLower(SOTUCorpus), removePunct = TRUE)
+#' toks <- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), removePunct = TRUE)
 #' # head to head, old v. new
 #' system.time(selectFeatures2(toks, stopwords("english"), "remove", verbose = FALSE))
 #' system.time(selectFeatures(toks, stopwords("english"), "remove", verbose = FALSE))
@@ -282,6 +283,13 @@ selectFeatures2 <- function(x, ...) UseMethod("selectFeatures2")
 #'     new = selectFeatures2(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"),
 #'     old = selectFeatures(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"),
 #'     times = 2, unit = "relative")
+#'     
+#' types <- unique(unlist(toks))
+#' numbers <- types[stringi::stri_detect_regex(types, '[0-9]')]
+#' microbenchmark::microbenchmark(
+#'     new = selectFeatures2(toks, numbers, "remove", verbose = FALSE, valuetype = "fixed"),
+#'     old = selectFeatures(toks, numbers, "remove", verbose = FALSE, valuetype = "fixed"),
+#'     times = 2, unit = "s")  
 #'     
 #' # removing tokens before dfm, versus after
 #' microbenchmark::microbenchmark(
@@ -320,7 +328,7 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
                                           verbose = TRUE, ...) {
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
-    features <- unique(unlist(features))  # to convert any dictionaries
+    features <- unique(unlist(features, use.names=FALSE))  # to convert any dictionaries
     
     originalvaluetype <- valuetype
     # convert glob to fixed if no actual glob characters (since fixed is much faster)
@@ -335,11 +343,12 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
     }
     
     if (valuetype == "fixed") {
-        types <- unique(unlist(x))
+
         if (case_insensitive) {
-            types_match <- types[which(toLower(types) %in% toLower(features))]
+            types <- unique(unlist(x, use.names=FALSE))
+            types_match <- types[toLower(types) %in% toLower(features)]
         } else {
-            types_match <- types[which(types %in% features)]
+            types_match <- features
         }
         if (selection == "remove") 
             result <- select_tokens_cppl(x, types_match, TRUE, padding)
@@ -347,7 +356,7 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
             result <- select_tokens_cppl(x, types_match, FALSE, padding)
     } else if (valuetype == "regex") {
         regex <- rep(paste0(features, collapse = "|"))  ##### WHY THE rep()?? --KB
-        types <- unique(unlist(x))
+        types <- unique(unlist(x, use.names=FALSE))
         # get all the unique types that match regex
         types_match <- types[stringi::stri_detect_regex(types, regex, case_insensitive = case_insensitive, ...)]  
         if (selection == "remove") {
@@ -364,8 +373,6 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
 
 
 
-=======
->>>>>>> master
 #' @rdname selectFeatures
 #' @param pos indexes of word position if called on collocations: remove if word
 #'   \code{pos} is a stopword
