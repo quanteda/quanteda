@@ -273,7 +273,7 @@ selectFeatures2 <- function(x, ...) UseMethod("selectFeatures2")
 #' system.time(selectFeatures(toks, stopwords("english"), "remove", verbose = FALSE))
 #' system.time(selectFeatures2(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"))
 #' system.time(selectFeatures(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"))
-#' #' microbenchmark::microbenchmark(
+#' microbenchmark::microbenchmark(
 #'     new = selectFeatures2(toks, stopwords("english"), "remove", verbose = FALSE),
 #'     old = selectFeatures(toks, stopwords("english"), "remove", verbose = FALSE),
 #'     times = 5, unit = "relative")
