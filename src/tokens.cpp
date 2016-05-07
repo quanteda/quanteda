@@ -15,17 +15,14 @@ Rcpp::List select_tokens_cppl(SEXP x,
   Rcpp::List texts(x);
   Rcpp::List texts_temp(texts.size());
   std::unordered_set<std::string> set_types (types.begin(), types.end());
-  //const std::string space = "";
   int len_texts = texts.size();
   for (int h=0; h < len_texts; h++){
-    CharacterVector text = texts[h];
-    CharacterVector text_temp(text.size()); // make vector in the same length as original
-    //text_temp.reserve(text.size());
+    //Rcout << "Text " << h << "\n";
+    Rcpp::CharacterVector text = texts[h];
+    Rcpp::CharacterVector text_temp(text.size()); // make vector in the same length as original
     int j = 0;
-    //int omit = 0;
     for (int i=0; i < text.size(); i++){
       Rcpp::String token = text[i];
-      //std::string token = text[i];
       bool is_in = set_types.find(token) != set_types.end();
       if(is_in == remove){
         //Rcout << "Match " << i << ' ' << text_temp[i] << "\n";
@@ -38,7 +35,11 @@ Rcpp::List select_tokens_cppl(SEXP x,
         j++;
       }
     }
-    texts_temp[h] = text_temp[seq(0, j-1)];
+    if(j == 0){
+      texts_temp[h] = Rcpp::CharacterVector(); // nothing left
+    }else{
+      texts_temp[h] = text_temp[seq(0, j - 1)];
+    }
   }
   return texts_temp;
 }

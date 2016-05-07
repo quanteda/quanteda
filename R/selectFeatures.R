@@ -268,7 +268,7 @@ selectFeatures2 <- function(x, ...) UseMethod("selectFeatures2")
 #' @examples 
 #' \dontrun{## performance comparisons
 #' data(SOTUCorpus, package = "quantedaData")
-#' toks <- tokenize(toLower(SOTUCorpus), removePunct = TRUE)
+#' toks <- tokenize(SOTUCorpus, removePunct = TRUE)
 #' toks <- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), removePunct = TRUE)
 #' # head to head, old v. new
 #' system.time(selectFeatures2(toks, stopwords("english"), "remove", verbose = FALSE))
@@ -291,11 +291,11 @@ selectFeatures2 <- function(x, ...) UseMethod("selectFeatures2")
 #'     old = selectFeatures(toks, numbers, "remove", verbose = FALSE, valuetype = "fixed"),
 #'     times = 2, unit = "s")  
 #'     
-#' # removing tokens before dfm, versus after
+#' #removing tokens before dfm, versus after
 #' microbenchmark::microbenchmark(
 #'     pre = dfm(removeFeatures2(toks, stopwords("english")), verbose = FALSE),
 #'     post = dfm(toks, ignoredFeatures = stopwords("english"), verbose = FALSE),
-#'     times = 5, unit = "relative")}
+#'     times = 5, unit = "relative")
 #'     
 #' 
 #' ## with simple examples
