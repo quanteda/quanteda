@@ -328,7 +328,7 @@ summary(ie2010Corpus)
 
 We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:
 
-```{r}
+```{r, fig.width = 8}
 tokenInfo <- summary(inaugCorpus)
 if (require(ggplot2))
     ggplot(data=tokenInfo, aes(x=Year, y=Tokens, group=1)) + geom_line() + geom_point() +
@@ -488,12 +488,12 @@ topfeatures(mydfm, 20)  # 20 top words
 ```
 
 Plotting a word cloud is very simple, since this is the default `plot()` method for a `dfm` class object:
-```{r warning=FALSE}
+```{r warning=FALSE, fig.width = 7, fig.height = 7}
 plot(mydfm)
 ```
 
 The `plot.dfm()` method passes arguments through to `wordcloud()` from the **wordcloud** package, and can prettify the plot using the same arguments:
-```{r warning=FALSE}
+```{r warning=FALSE, fig.width = 7, fig.height = 7}
 if (require(RColorBrewer))
     plot(mydfm, max.words = 100, colors = brewer.pal(6, "Dark2"), scale = c(8, .5))
 ```
@@ -553,7 +553,7 @@ liwcdfm[, 1:10]
 
 ## Similarities between texts
 
-```{r}
+```{r fig.width = 6}
 presDfm <- dfm(subset(inaugCorpus, Year>1980), 
                ignoredFeatures = stopwords("english"),
                stem=TRUE, verbose=FALSE)
@@ -564,9 +564,9 @@ dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
 
 
 We can use these distances to plot a dendrogram, clustering presidents:
-```{r, eval=FALSE}
+```{r, fig.width = 10, fig.height = 7}
 data(SOTUCorpus, package="quantedaData")
-presDfm <- dfm(subset(SOTUCorpus, year > 1960), verbose = FALSE, stem = TRUE,
+presDfm <- dfm(subset(SOTUCorpus, Date > as.Date("1960-01-01")), verbose = FALSE, stem = TRUE,
                ignoredFeatures = stopwords("english"))
 presDfm <- trim(presDfm, minCount=5, minDoc=3)
 # hierarchical clustering - get distances on normalized dfm
@@ -576,7 +576,7 @@ presCluster <- hclust(presDistMat)
 # label with document names
 presCluster$labels <- docnames(presDfm)
 # plot as a dendrogram
-plot(presCluster)
+plot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
 ```
 
 
@@ -589,7 +589,7 @@ similarity(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "
 ## Scaling document positions
 
 We have a lot of development work to do on the `textmodel()` function, but here is a demonstration of unsupervised document scaling comparing the "wordfish" model to scaling from correspondence analysis:
-```{r}
+```{r fig.width = 6, fig.height = 6}
 # make prettier document names
 docnames(ie2010Corpus) <- 
     paste(docvars(ie2010Corpus, "name"), docvars(ie2010Corpus, "party"))

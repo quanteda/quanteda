@@ -78,7 +78,7 @@ texts(inaugCorpus)[2]
 ## ------------------------------------------------------------------------
 summary(ie2010Corpus)
 
-## ------------------------------------------------------------------------
+## ---- fig.width = 8------------------------------------------------------
 tokenInfo <- summary(inaugCorpus)
 if (require(ggplot2))
     ggplot(data=tokenInfo, aes(x=Year, y=Tokens, group=1)) + geom_line() + geom_point() +
@@ -157,10 +157,10 @@ mydfm
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 topfeatures(mydfm, 20)  # 20 top words
 
-## ----warning=FALSE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----warning=FALSE, fig.width = 7, fig.height = 7-----------------------------------------------------------------------------------------------------------------------------------------------------
 plot(mydfm)
 
-## ----warning=FALSE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----warning=FALSE, fig.width = 7, fig.height = 7-----------------------------------------------------------------------------------------------------------------------------------------------------
 if (require(RColorBrewer))
     plot(mydfm, max.words = 100, colors = brewer.pal(6, "Dark2"), scale = c(8, .5))
 
@@ -187,7 +187,7 @@ byPresMat
 #  liwcdfm <- dfm(inaugTexts[52:57], dictionary = liwcdict, verbose = FALSE)
 #  liwcdfm[, 1:10]
 
-## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----fig.width = 6------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 presDfm <- dfm(subset(inaugCorpus, Year>1980), 
                ignoredFeatures = stopwords("english"),
                stem=TRUE, verbose=FALSE)
@@ -195,24 +195,24 @@ obamaSimil <- similarity(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL,
                             margin = "documents", method = "cosine", normalize = FALSE)
 dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
 
-## ---- eval=FALSE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#  data(SOTUCorpus, package="quantedaData")
-#  presDfm <- dfm(subset(SOTUCorpus, year > 1960), verbose = FALSE, stem = TRUE,
-#                 ignoredFeatures = stopwords("english"))
-#  presDfm <- trim(presDfm, minCount=5, minDoc=3)
-#  # hierarchical clustering - get distances on normalized dfm
-#  presDistMat <- dist(as.matrix(weight(presDfm, "relFreq")))
-#  # hiarchical clustering the distance object
-#  presCluster <- hclust(presDistMat)
-#  # label with document names
-#  presCluster$labels <- docnames(presDfm)
-#  # plot as a dendrogram
-#  plot(presCluster)
+## ---- fig.width = 10, fig.height = 7------------------------------------------------------------------------------------------------------------------------------------------------------------------
+data(SOTUCorpus, package="quantedaData")
+presDfm <- dfm(subset(SOTUCorpus, Date > as.Date("1960-01-01")), verbose = FALSE, stem = TRUE,
+               ignoredFeatures = stopwords("english"))
+presDfm <- trim(presDfm, minCount=5, minDoc=3)
+# hierarchical clustering - get distances on normalized dfm
+presDistMat <- dist(as.matrix(weight(presDfm, "relFreq")))
+# hiarchical clustering the distance object
+presCluster <- hclust(presDistMat)
+# label with document names
+presCluster$labels <- docnames(presDfm)
+# plot as a dendrogram
+plot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 similarity(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features", n = 20)
 
-## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----fig.width = 6, fig.height = 6--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # make prettier document names
 docnames(ie2010Corpus) <- 
     paste(docvars(ie2010Corpus, "name"), docvars(ie2010Corpus, "party"))
