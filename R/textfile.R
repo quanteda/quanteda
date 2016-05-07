@@ -27,8 +27,8 @@ setMethod("show",
               if (object@cachedfile != "") {
                   cat("corpusSource object with data cached in", object@cachedfile, "\n")
               } else {
-                  cat("corpusSource object containing ", length(texts(object)), 
-                      " text", ifelse(length(texts(object)) == 1, "", "s"), " and ", 
+                  cat("corpusSource object consisting of ", length(texts(object)), 
+                      " document", ifelse(length(texts(object)) == 1, "", "s"), " and ", 
                       ncol(docvars(object)), " docvar", ifelse(ncol(docvars(object)) == 1, "", "s"), ".\n", sep="")
               }
           })
