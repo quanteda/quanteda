@@ -250,6 +250,7 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
     
 }
 
+<<<<<<< HEAD
 #' working prototype for faster selectFeatures.tokenizedTexts
 #' 
 #' Calls C++ for super-fast selection or removal of features from a 
@@ -363,6 +364,8 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
 
 
 
+=======
+>>>>>>> master
 #' @rdname selectFeatures
 #' @param pos indexes of word position if called on collocations: remove if word
 #'   \code{pos} is a stopword

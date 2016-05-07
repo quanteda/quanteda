@@ -20,6 +20,7 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+<<<<<<< HEAD
 // select_tokens_cppl
 Rcpp::List select_tokens_cppl(SEXP x, std::vector< std::string > types, const bool& remove, const bool& spacer);
 RcppExport SEXP quanteda_select_tokens_cppl(SEXP xSEXP, SEXP typesSEXP, SEXP removeSEXP, SEXP spacerSEXP) {
@@ -34,6 +35,8 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+=======
+>>>>>>> master
 // wordfishcpp
 Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEXP dispfloor);
 RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP, SEXP dispSEXP, SEXP dispfloorSEXP) {
