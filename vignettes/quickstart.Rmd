@@ -279,33 +279,6 @@ mytf7 <- textfile("/tmp/inaugTexts.csv", textField = "inaugSpeech")
 summary(corpus(mytf7), 5)
 ```
 
-### Creating a corpus from a Twitter search
-
-`quanteda` provides an interface to retrieve and store data from a twitter search as a corpus object. The REST API query uses the [twitteR package](https://github.com/geoffjentry/twitteR), and an API authorization from twitter is required. The process of obtaining this authorization is described in detail here: <https://openhatch.org/wiki/Community_Data_Science_Workshops/Twitter_authentication_setup>, correct as of October 2014. The twitter API is a commercial service, and rate limits and the data returned are determined by twitter.
-
-Four keys are required, to be passed to `quanteda`'s `getTweets` source function, in addition to the search query term and the number of results required. The maximum number of results that can be obtained is not exactly identified in the API documentation, but experimentation indicates an upper bound of around 1500 results from a single query, with a frequency limit of one query per minute.
-
-The code below performs authentication and runs a search for the string 'quantitative'. Many other functions for working with the API are available from the [twitteR package](https://github.com/geoffjentry/twitteR). An R interface to the streaming API is also available [link](link).
-
-```{r eval=FALSE}
-# These keys are examples and may not work! Get your own key at dev.twitter.com
-consumer_key="vRLy03ef6OFAZB7oCL4jA"
-consumer_secret="wWF35Lr1raBrPerVHSDyRftv8qB1H7ltV0T3Srb3s"
-access_token="1577780816-wVbOZEED8KZs70PwJ2q5ld2w9CcvcZ2kC6gPnAo"
-token_secret="IeC6iYlgUK9csWiP524Jb4UNM8RtQmHyetLi9NZrkJA"
-
-
-tw <- getTweets('quantitative', numResults=20, consumer_key, consumer_secret, access_token, token_secret)
-```
-
-The return value from the above query is a source object which can be passed to quanteda's corpus constructor, and the document variables are set to correspond with tweet metadata returned by the API.
-
-```{r eval=FALSE}
-twCorpus <- corpus(tw)
-names(docvars(twCorpus))
-```
-
-
 
 ## How a quanteda corpus works
 

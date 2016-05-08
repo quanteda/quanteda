@@ -1,5 +1,6 @@
-quanteda 0.9.5 
-==============  
+quanteda 0.9.6 
+==============
+
 *  Improved Naive Bayes model and prediction, `textmodel(x, y, method = "NB")`, now works correctly on k > 2.
 
 *  Improved tag handling for segment(x, what = "tags")

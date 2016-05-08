@@ -6,7 +6,7 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     role = "aut"), person("Kohei", "Watanabe", email =
     "watanabe.kohei@gmail.com", role = "ctb"), person("Benjamin", "Lauderdale",
     email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
-    person("Obeng, Adam", email = "adam@adamobeng.com", role = "ctb"),
+    person("Adam", "Obeng", email = "adam@adamobeng.com", role = "ctb"),
     person("Pablo", "Barberá", email = "pablo.barbera@nyu.edu",
     role = "ctb"))
 Author: Kenneth Benoit [aut, cre],
@@ -16,8 +16,8 @@ Author: Kenneth Benoit [aut, cre],
     Adam Obeng [ctb],
     Pablo Barberá [ctb],
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.5-26
-Date: 2016-05-06
+Version: 0.9.6-0
+Date: 2016-05-08
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3

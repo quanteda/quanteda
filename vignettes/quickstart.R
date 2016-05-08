@@ -1,5 +1,6 @@
 ## ----echo = FALSE--------------------------------------------------------
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+knitr::opts_chunk$set(collapse = TRUE, 
+                      comment = "#>")
 
 ## ----eval=FALSE----------------------------------------------------------
 #  install.packages("quanteda")
@@ -57,20 +58,6 @@ summary(myCorpus, n = 5, showmeta = TRUE)
 #            file = "/tmp/inaugTexts.csv", row.names = FALSE)
 #  mytf7 <- textfile("/tmp/inaugTexts.csv", textField = "inaugSpeech")
 #  summary(corpus(mytf7), 5)
-
-## ----eval=FALSE----------------------------------------------------------
-#  # These keys are examples and may not work! Get your own key at dev.twitter.com
-#  consumer_key="vRLy03ef6OFAZB7oCL4jA"
-#  consumer_secret="wWF35Lr1raBrPerVHSDyRftv8qB1H7ltV0T3Srb3s"
-#  access_token="1577780816-wVbOZEED8KZs70PwJ2q5ld2w9CcvcZ2kC6gPnAo"
-#  token_secret="IeC6iYlgUK9csWiP524Jb4UNM8RtQmHyetLi9NZrkJA"
-#  
-#  
-#  tw <- getTweets('quantitative', numResults=20, consumer_key, consumer_secret, access_token, token_secret)
-
-## ----eval=FALSE----------------------------------------------------------
-#  twCorpus <- corpus(tw)
-#  names(docvars(twCorpus))
 
 ## ------------------------------------------------------------------------
 texts(inaugCorpus)[2]
@@ -150,14 +137,14 @@ head(stopwords("english"), 20)
 head(stopwords("russian"), 10)
 head(stopwords("arabic"), 10)
 
-## ----warning=FALSE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-mydfm <- dfm(ukimmigTexts, ignoredFeatures=c("will", stopwords("english")))
+## ----warning=FALSE, fig.width = 8, fig.height = 8-----------------------------------------------------------------------------------------------------------------------------------------------------
+mydfm <- dfm(ukimmigTexts, ignoredFeatures = c("will", stopwords("english")))
 mydfm
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 topfeatures(mydfm, 20)  # 20 top words
 
-## ----warning=FALSE, fig.width = 7, fig.height = 7-----------------------------------------------------------------------------------------------------------------------------------------------------
+## ----warning = FALSE, fig.width = 8, fig.height = 8---------------------------------------------------------------------------------------------------------------------------------------------------
 plot(mydfm)
 
 ## ----warning=FALSE, fig.width = 7, fig.height = 7-----------------------------------------------------------------------------------------------------------------------------------------------------
