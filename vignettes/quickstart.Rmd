@@ -16,7 +16,8 @@ vignette: >
 -->
 
 ```{r echo = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+knitr::opts_chunk$set(collapse = TRUE, 
+                      comment = "#>")
 ```
 
 
@@ -477,8 +478,8 @@ head(stopwords("arabic"), 10)
 ### Viewing the document-frequency matrix
 
 The dfm can be inspected in the Enviroment pane in RStudio, or by calling R's `View` function. Calling `plot` on a dfm will display a wordcloud using the [wordcloud package](link.)
-```{r warning=FALSE}
-mydfm <- dfm(ukimmigTexts, ignoredFeatures=c("will", stopwords("english")))
+```{r warning=FALSE, fig.width = 8, fig.height = 8}
+mydfm <- dfm(ukimmigTexts, ignoredFeatures = c("will", stopwords("english")))
 mydfm
 ```
 
@@ -488,7 +489,7 @@ topfeatures(mydfm, 20)  # 20 top words
 ```
 
 Plotting a word cloud is very simple, since this is the default `plot()` method for a `dfm` class object:
-```{r warning=FALSE, fig.width = 7, fig.height = 7}
+```{r warning = FALSE, fig.width = 8, fig.height = 8}
 plot(mydfm)
 ```
 
@@ -564,7 +565,7 @@ dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
 
 
 We can use these distances to plot a dendrogram, clustering presidents:
-```{r, fig.width = 10, fig.height = 7}
+```{r, fig.width = 10, fig.height = 7, eval = FALSE}
 data(SOTUCorpus, package="quantedaData")
 presDfm <- dfm(subset(SOTUCorpus, Date > as.Date("1960-01-01")), verbose = FALSE, stem = TRUE,
                ignoredFeatures = stopwords("english"))
@@ -578,7 +579,7 @@ presCluster$labels <- docnames(presDfm)
 # plot as a dendrogram
 plot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
 ```
-
+<img src="images/prescluster.png" alt="Presidential Cluster Dendrogram" style="width: 780px;"/>
 
 
 We can also look at term similarities:

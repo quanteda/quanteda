@@ -195,19 +195,19 @@ obamaSimil <- similarity(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL,
                             margin = "documents", method = "cosine", normalize = FALSE)
 dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
 
-## ---- fig.width = 10, fig.height = 7------------------------------------------------------------------------------------------------------------------------------------------------------------------
-data(SOTUCorpus, package="quantedaData")
-presDfm <- dfm(subset(SOTUCorpus, Date > as.Date("1960-01-01")), verbose = FALSE, stem = TRUE,
-               ignoredFeatures = stopwords("english"))
-presDfm <- trim(presDfm, minCount=5, minDoc=3)
-# hierarchical clustering - get distances on normalized dfm
-presDistMat <- dist(as.matrix(weight(presDfm, "relFreq")))
-# hiarchical clustering the distance object
-presCluster <- hclust(presDistMat)
-# label with document names
-presCluster$labels <- docnames(presDfm)
-# plot as a dendrogram
-plot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
+## ---- fig.width = 10, fig.height = 7, eval = FALSE----------------------------------------------------------------------------------------------------------------------------------------------------
+#  data(SOTUCorpus, package="quantedaData")
+#  presDfm <- dfm(subset(SOTUCorpus, Date > as.Date("1960-01-01")), verbose = FALSE, stem = TRUE,
+#                 ignoredFeatures = stopwords("english"))
+#  presDfm <- trim(presDfm, minCount=5, minDoc=3)
+#  # hierarchical clustering - get distances on normalized dfm
+#  presDistMat <- dist(as.matrix(weight(presDfm, "relFreq")))
+#  # hiarchical clustering the distance object
+#  presCluster <- hclust(presDistMat)
+#  # label with document names
+#  presCluster$labels <- docnames(presDfm)
+#  # plot as a dendrogram
+#  plot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 similarity(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features", n = 20)
