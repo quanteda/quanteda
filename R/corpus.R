@@ -292,9 +292,13 @@ corpus.data.frame <- function(x, textField, ...) {
 #  see http://stackoverflow.com/questions/6517222/how-to-properly-document-a-s3-method-of-a-generic-from-a-different-package-usin
 #' @method print corpus
 print.corpus <- function(x, ...) {
-    cat("Corpus consisting of ", ndoc(x), " document",
-        ifelse(ndoc(x)>1, "s", ""), " and ",
-        ncol(docvars(x)), " docvar", ifelse(ncol(docvars(x)) == 1, "", "s"), ".\n", sep="")
+    cat("Corpus consisting of ", format(ndoc(x), big.mark=","), " document",
+        ifelse(ndoc(x)>1, "s", ""), sep = "")
+    if (!is.null(docvars(x))) 
+        cat(" and ", format(ncol(docvars(x)), big.mark=","), " docvar", 
+            ifelse(ncol(docvars(x)) == 1, "", "s"), "", sep="")
+    cat(".\n")
+    
     #         ", ",
     #         ifelse(is.null(corp$tokens), "un", ""),
     #         "indexed.\n", sep="")
