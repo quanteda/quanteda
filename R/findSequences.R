@@ -8,17 +8,17 @@
 #' types <- unique(unlist(tokens))
 #' 
 #' # Extracting multi-part nouns
-#' types_upper <- types[stri_detect_regex(types, "^([A-Z]{2,}|[A-Z][0-9]{1,}|[A-Z][a-z\\-]{2,})")]
-#' findSequences(tokens, types_upper)
+#' types_upper <- types[stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
+#' findSequences(tokens, types_upper, count_min=2)
 #'
 #' # Types can be any words
 #' types_lower <- types[stri_detect_regex(types, "^([a-z]+)$") & !types %in%stopwords()]
 #' findSequences(tokens, types_lower, count_min=2)
 #' 
 
-findSequences <- function(x, tokens, count_min=5, len_max = 5){
+findSequences <- function(x, tokens, count_min=2, len_max = 5, smooth=0.001){
   
-  seqs <- find_sequence_cppl(x, tokens, count_min, len_max);
+  seqs <- find_sequence_cppl(x, tokens, count_min, len_max, smooth);
   seqs$z <- seqs$lambda / seqs$sigma
   seqs$p <- 1 - pnorm(seqs$z)
   class(seqs) <- "tokenSequences"

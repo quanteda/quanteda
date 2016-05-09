@@ -58,8 +58,10 @@ double lambda(vector<int> &counts, const int &n, const double &smooth){
 // [[Rcpp::plugins(cpp11)]]
 // [[Rcpp::export]]
 Rcpp::List find_sequence_cppl(SEXP x,
-                               const vector<string> &types,
-                               const int &min){
+                              const vector<string> &types,
+                              const int &count_min,
+                              const int &len_max,
+                              const double &smooth){
   
   Rcpp::List texts(x);
   vector<string> tokens_seq;
@@ -75,7 +77,7 @@ Rcpp::List find_sequence_cppl(SEXP x,
     vector<string> tokens_seq;
     
     int len = tokens.size();
-    for (int i = 1; i < len; i++){ // ignore first words in sentences
+    for (int i = 1; i < min(len, len_max); i++){ // has to ignore first words in sentences
       Rcpp::String token = tokens[i];
       if(token == "") continue;
       bool is_in = set_types.find(token) != set_types.end();
@@ -97,12 +99,12 @@ Rcpp::List find_sequence_cppl(SEXP x,
   Rcpp::List sequences;
   for(auto it1 = counts_seq.begin(); it1 != counts_seq.end(); ++it1 ){
     if(it1->first.size()  < 2) continue;
-    if(it1->second < min) continue;
+    if(it1->second < count_min) continue;
     // Initialize
     int n = it1->first.size();
     vector<int> counts_bit(n + 1);
     for(auto it2 = counts_seq.begin(); it2 != counts_seq.end(); ++it2 ){
-      if(it2->second <  min) continue;
+      if(it2->second <  count_min) continue;
       if(it1->first == it2->first) continue; // do not compare with itself
       int bit = match_bit(it1->first, it2->first);
       counts_bit[bit] += it1->second;
@@ -116,8 +118,8 @@ Rcpp::List find_sequence_cppl(SEXP x,
     //tokens_seq_temp.push_back(join(it1->first, "-"));
     sequences.push_back(it1->first);
     //ms.push_back(m);
-    sigmas.push_back(sigma(counts_bit, n, 0.5));
-    lambdas.push_back(lambda(counts_bit, n, 0.5));
+    sigmas.push_back(sigma(counts_bit, n, smooth));
+    lambdas.push_back(lambda(counts_bit, n, smooth));
   }
   return Rcpp::List::create(Rcpp::Named("sequence") = sequences,
                             //Rcpp::Named("mue") = ms,
