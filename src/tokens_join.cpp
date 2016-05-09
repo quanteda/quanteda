@@ -1,8 +1,6 @@
 #include <Rcpp.h>
-#include <set>
 #include <vector>
-// [[Rcpp::plugins(cpp11)]]
-//#include <unordered_set>
+
 using namespace Rcpp;
 using namespace std;
 
