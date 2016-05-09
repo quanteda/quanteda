@@ -17,10 +17,10 @@ joinTokens <- function(x, seqs_token, concatenator='-'){
     seq_token <- seqs_token[[i]]
     if(is.list(seq_token) | !is.vector(seq_token) | length(seq_token) == 0) stop('Invalid token sequence\n');
     if(!all(seq_token %in% colnames(index))){
-      cat(paste0(seq_token, concatenate=''), 'was not found', '\n')
+      cat(paste0(seq_token, concatenate=''), 'are not found', '\n')
     }else{
       flag <- rowSums(as(index[,seq_token], 'nMatrix')) == length(seq_token)
-      cat(paste0('"', seq_token, concatenate='', '"'), 'was found in', sum(flag) ,'documents joining ...\n')
+      cat(paste0('"', seq_token, concatenate='', '"'), 'are found in', sum(flag) ,'documents ...\n')
       tokens <- join_tokens_cppl(tokens, flag, seq_token, concatenator)
     }
   }
