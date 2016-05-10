@@ -54,7 +54,9 @@ setClass("textmodel_wordshoal_predicted",
 #' @examples
 #' \dontrun{
 #' wordshoalfit <- textmodel_wordshoal(ie30corpus,groupvar="debateID",authorvar="member.name")
-#' summary(wordshoalfit)
+#' fitdf <- merge(as.data.frame(summary(wordshoalfit)),docvars(ie30corpus),by.x="row.names",by.y="member.name")
+#' fitdf <- subset(fitdf,!duplicated(memberID))
+#' print(aggregate(theta~party.name,data=fitdf,mean))
 #' }
 #' 
 #' @export
