@@ -7,8 +7,8 @@ setClass("textmodel_wordshoal_fitted",
                    beta = "numeric",
                    alpha = "numeric",
                    psi = "numeric",
-                   groups = "character",
-                   authors = "character",
+                   groups = "factor",
+                   authors = "factor",
                    ll = "numeric",
                    se.theta = "numeric"),
          contains = "textmodel_fitted")
@@ -32,8 +32,8 @@ setClass("textmodel_wordshoal_predicted",
 #' @importFrom Rcpp evalCpp
 #' @useDynLib quanteda
 #' @param data the corpus on which the model will be fit
-#' @param groups a factor giving the document group for each document
-#' @param authors a factor giving the author of each document
+#' @param groupvar the name of a variable in the document variables for data giving the document group for each document
+#' @param authorvar the name of a variable in the document variables for data giving the author of each document
 #' @param dir set global identification by specifying the indexes for a pair of 
 #'   authors such that \eqn{\hat{\theta}_{dir[1]} < \hat{\theta}_{dir[2]}}.
 #' @param tol tolerance for convergence.  A convergence 
@@ -47,15 +47,20 @@ setClass("textmodel_wordshoal_predicted",
 #'   \item{authors}{document authors} \item{ll}{log likelihood at convergence} 
 #'   \item{se.theta}{standard errors for theta-hats} \item{data}{corpus to which 
 #'   the model was fit}
-#' @details 
+#' @details Returns estimates of relative author positions across the full corpus of texts.
 #' @references Benjamin E Lauderdale and Alexander Herzog.  2016. "A Scaling Model 
 #'   for Estimating Time-Series Party Positions from Texts." \emph{Political Analysis}.
 #' @author Benjamin Lauderdale and Kenneth Benoit
 #' @examples
-#' textmodel_wordshoal(dail30.corpus,groups=debateID,authors=member.name,dir = c(1,2))
+#' \dontrun{
+#' wordshoalfit <- textmodel_wordshoal(ie30corpus,groupvar="debateID",authorvar="member.name")
+#' summary(wordshoalfit)
+#' }
 #' 
 #' @export
-textmodel_wordshoal <- function(data, groupvar, authorvar, dir = c(1, 2), tol = 1e-3) {
+textmodel_wordshoal <- function(data, groupvar, authorvar, dir = c(1,2), tol = 1e-3) {
+  
+    startTime <- proc.time()
   
     if (!is.element("corpus",class(data)))
       stop("data must be quanteda corpus")
@@ -64,14 +69,14 @@ textmodel_wordshoal <- function(data, groupvar, authorvar, dir = c(1, 2), tol = 
     corpusdfm <- dfm(data)  # TO DO: ADD SETTINGS TO CONTROL THIS CONVERSION
     
     S <- nrow(docvars(data))
-    psi <- rep(0,S)
+    psi <- rep(NA,S)
     
     N <- nlevels(authors)
     M <- nlevels(groups)
     
     ## FIRST-LEVEL SCALING ##
     
-    cat("\n Scaling ",M," document groups",sep="")
+    cat("\nScaling ",M," document groups",sep="")
     
     for (j in 1:M){
       
@@ -93,8 +98,9 @@ textmodel_wordshoal <- function(data, groupvar, authorvar, dir = c(1, 2), tol = 
     
     ## SECOND-LEVEL SCALING ##
     
-    print("Factor Analysis on Debate-Level Scales...",quote=F)	
+    cat("\nFactor Analysis on Debate-Level Scales")	
     
+    psi <- replace(psi,is.na(psi),0) # debates that failed to scale
     jVec <- as.integer(groups)
     iVec <- as.integer(authors)
 
@@ -126,7 +132,9 @@ textmodel_wordshoal <- function(data, groupvar, authorvar, dir = c(1, 2), tol = 
     
     # Until log-posterior stops changing...
     
-    while((lp - lastlp) > 0.01){	
+    while((lp - lastlp) > abs(tol)){	
+      
+      cat(".")
       
       # Update debate parameters
       
@@ -179,8 +187,12 @@ textmodel_wordshoal <- function(data, groupvar, authorvar, dir = c(1, 2), tol = 
    
     ## Return results 
     
+    cat("\nElapsed time:", (proc.time() - startTime)[3], "seconds.\n")
+    
     new("textmodel_wordshoal_fitted", 
+        tol = tol,
         authors = authors,
+        groups = groups,
         theta = theta,
         beta = beta,
         alpha = alpha,
@@ -193,7 +205,6 @@ textmodel_wordshoal <- function(data, groupvar, authorvar, dir = c(1, 2), tol = 
 
 #' @rdname textmodel_wordshoal
 #' @param x for print method, the object to be printed
-#' @param n max rows of dfm to print
 #' @param ... additional arguments passed to \code{\link{print}}
 #' @export
 #' @method print textmodel_wordshoal_fitted
@@ -206,7 +217,7 @@ print.textmodel_wordshoal_fitted <- function(x, ...) {
                           SE = x@se.theta,
                           lower = x@theta - 1.96*x@se.theta,
                           upper = x@theta + 1.96*x@se.theta)
-    rownames(results) <- x@authors
+    rownames(results) <- levels(x@authors)
     print(results,...)
 }
 
@@ -232,7 +243,7 @@ summary.textmodel_wordshoal_fitted <- function(object, ...) {
                           lower = object@theta - 1.96*object@se.theta,
                           upper = object@theta + 1.96*object@se.theta)
     
-    rownames(results) <- object@authors
+    rownames(results) <- levels(object@authors)
     print(results, ...)
     invisible(results)
 }

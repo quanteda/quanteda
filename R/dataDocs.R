@@ -98,7 +98,7 @@ NULL
 #'   for Estimating Time-Series Party Positions from Texts." \emph{Political Analysis}.
 #' @docType data
 #' @examples
-#' summary(ie2010corpus)
+#' summary(ie30corpus)
 NULL
 
 #' @name exampleString
