@@ -1,3 +1,12 @@
+quanteda >= 0.9.6-3
+===================
+
+Bug fixes
+---------  
+*  Fix bug in phrasetotoken, signature 'corpus,ANY' that was causing an infinite loop.
+
+
+
 quanteda 0.9.6 
 ==============
 
