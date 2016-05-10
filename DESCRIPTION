@@ -83,6 +83,7 @@ Collate:
     'textmodel-generics.R'
     'textmodel-wordfish.R'
     'textmodel-wordscores.R'
+    'textmodel-wordshoal.R'   
     'toLower.R'
     'tokenize.R'
     'tokenize_outtakes.R'

@@ -1,19 +1,15 @@
 #' @rdname textmodel_fitted-class 
 #' @export
 setClass("textmodel_wordshoal_fitted",
-         slots = c(priors = "numeric", 
-                   tol = "numeric",
+         slots = c(tol = "numeric",
                    dir = "numeric",
                    theta = "numeric",
                    beta = "numeric",
-                   psi = "numeric",
                    alpha = "numeric",
-                   phi = "numeric",
-                   docs = "character",
-                   features = "character",
-                   sigma = "numeric",
+                   psi = "numeric",
+                   groups = "character",
+                   authors = "character",
                    ll = "numeric",
-                   dispersion = "character",
                    se.theta = "numeric"),
          contains = "textmodel_fitted")
 
@@ -31,89 +27,165 @@ setClass("textmodel_wordshoal_predicted",
 #' Estimate Lauderdale and Herzog's (2016) model for one-dimensional document author (eg speakers)
 #' positions based on multiple groups of texts (eg debates).  Each group of texts is scaled using
 #' Slapin and Proksch's (2008) "wordfish" Poisson scaling model of one-dimensional document
-#' positions using conditional maximum likelihood, and then the positions from a particular author 
-#' are scaled across groups using a second-level linear factor model.
+#' positions, and then the positions from a particular author are scaled across groups
+#' using a second-level linear factor model, using conditional maximum likelihood.
 #' @importFrom Rcpp evalCpp
 #' @useDynLib quanteda
-#' @param data the dfm on which the model will be fit
-#' @param groups a factor giving the group for each document
-#' @param authors a factor giving the author for each document
+#' @param data the corpus on which the model will be fit
+#' @param groups a factor giving the document group for each document
+#' @param authors a factor giving the author of each document
 #' @param dir set global identification by specifying the indexes for a pair of 
-#'   document sources (eg speakers) such that \eqn{\hat{\theta}_{dir[1]} < \hat{\theta}_{dir[2]}}.
+#'   authors such that \eqn{\hat{\theta}_{dir[1]} < \hat{\theta}_{dir[2]}}.
 #' @param tol tolerance for convergence.  A convergence 
 #'   threshold for the log-posterior of the model.
 #' @return An object of class textmodel_fitted_wordshoal.  This is a list 
-#'   containing: \item{dir}{global identification of the dimension} 
-#'   \item{theta}{estimated document positions} \item{alpha}{estimated document 
-#'   fixed effects} \item{beta}{estimated feature marginal effects} 
-#'   \item{psi}{estimated word fixed effects} \item{docs}{document labels} 
-#'   \item{features}{feature labels} \item{sigma}{regularization parameter for 
-#'   betas in Poisson form} \item{ll}{log likelihood at convergence} 
-#'   \item{se.theta}{standard errors for theta-hats} \item{data}{dfm to which 
+#'   containing: \item{tol}{log-posterior tolerance used in fitting} 
+#'   \item{dir}{global identification of the dimension} 
+#'   \item{theta}{estimated document positions} \item{beta}{debate marginal effects} 
+#'   \item{alpha}{estimated document fixed effects} 
+#'   \item{psi}{estimated document debate-level positions} \item{groups}{document groups} 
+#'   \item{authors}{document authors} \item{ll}{log likelihood at convergence} 
+#'   \item{se.theta}{standard errors for theta-hats} \item{data}{corpus to which 
 #'   the model was fit}
-#' @details The returns match those of Will Lowe's R implementation of 
-#'   \code{wordfish} (see the austin package), except that here we have renamed 
-#'   \code{words} to be \code{features}.  (This return list may change.)  We 
-#'   have also followed the practice begun with Slapin and Proksch's early 
-#'   implementation of the model that used a regularization parameter of 
-#'   se\eqn{(\sigma) = 3}, through the third element in \code{priors}.
+#' @details 
 #' @references Benjamin E Lauderdale and Alexander Herzog.  2016. "A Scaling Model 
 #'   for Estimating Time-Series Party Positions from Texts." \emph{Political Analysis}.
 #' @author Benjamin Lauderdale and Kenneth Benoit
 #' @examples
-#' textmodel_wordshoal(ExampleData,groups,authors,dir = c(1,5))
+#' textmodel_wordshoal(dail30.corpus,groups=debateID,authors=member.name,dir = c(1,2))
 #' 
 #' @export
-textmodel_wordshoal <- function(data, groups, authors, dir = c(1, 2), tol = 1e-3) {
+textmodel_wordshoal <- function(data, groupvar, authorvar, dir = c(1, 2), tol = 1e-3) {
+  
+    if (!is.element("corpus",class(data)))
+      stop("data must be quanteda corpus")
+    groups <- as.factor(docvars(data,groupvar))
+    authors <- as.factor(docvars(data,authorvar))  
+    corpusdfm <- dfm(data)  # TO DO: ADD SETTINGS TO CONTROL THIS CONVERSION
     
-    # check that no rows or columns are all zero
-    zeroLengthDocs <- which(ntoken(data) == 0)
-    if (length(zeroLengthDocs)) {
-        data <- data[-zeroLengthDocs, ]
-        cat("Note: removed the following zero-token documents:", docnames(data[zeroLengthDocs, ]), "\n")
+    S <- nrow(docvars(data))
+    psi <- rep(0,S)
+    
+    N <- nlevels(authors)
+    M <- nlevels(groups)
+    
+    ## FIRST-LEVEL SCALING ##
+    
+    cat("\n Scaling ",M," document groups",sep="")
+    
+    for (j in 1:M){
+      
+      # Extract dfm rows for current document group
+      groupdfm <- corpusdfm[groups == levels(groups)[j],]
+      
+      # Remove features that do not appear in at least one document
+      groupdfm <- groupdfm[,colSums(groupdfm) > 1]
+      
+      # Run wordfish on document group
+      wfresult <- wordfishcpp(as.matrix(groupdfm), c(1,2), c(0, 0, 1/9, 1), c(1e-2, 1e-4), 1L, 0L)
+      
+      # Save the results
+      psi[groups == levels(groups)[j]] <- wfresult$theta
+      
+      if (j %% 20 == 0) cat(j,sep="") else cat(".")
+      
     }
-    zeroLengthFeatures <- which(docfreq(data) == 0)
-    if (length(zeroLengthFeatures)) {
-            data <- data[, -zeroLengthFeatures]
-        cat("Note: removed the following zero-count features:", features(data[, zeroLengthFeatures]), "\n")
-    }
-    if (length(zeroLengthDocs) | length(zeroLengthFeatures)) cat("\n")
+    
+    ## SECOND-LEVEL SCALING ##
+    
+    print("Factor Analysis on Debate-Level Scales...",quote=F)	
+    
+    jVec <- as.integer(groups)
+    iVec <- as.integer(authors)
 
-    # some error checking
+    ## Factor Analysis on Debate Score Matrix ##
     
-    # MISSING check length(groups) = length(authors) = number of docs in data
-    # MISSING check that groups and authors are factor variables
+    prioralpha <- 0.5
+    priorbeta <- 0.5
+    priortheta <- 1
+    priortau <- 1
     
-    if (length(tol) != 1)
-        stop("tol requires 1 element")
-    if (!is.numeric(priors) | !is.numeric(tol))
-        stop("tol must be numeric")
+    # Dumb (but deterministic!) initial values
     
-    ## MISSING Loop extracting the dfms for each group, fitting wordfish, saving relevant bits of info
+    alpha <- rep(0,M)
+    beta <- rep(0,M)
+    theta <- seq(-2,2,length.out=N)
+    tau <- rep(1,N)
     
+    # Calculate initial log-posterior...
     
-    wfresult <- wordfishcpp(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor)
-    # NOTE: psi is a 1 x nfeature matrix, not a numeric vector
-    #       alpha is a ndoc x 1 matrix, not a numeric vector
+    lastlp <- -Inf
+    lp <- sum(dnorm(alpha,0,prioralpha,log=TRUE))
+    lp <- lp + sum(dnorm(beta,0,priorbeta,log=TRUE))
+    lp <- lp + sum(dnorm(theta,0,priortheta,log=TRUE))
+    lp <- lp + sum(dgamma(tau,1,1,log=TRUE))
+    for (s in 1:S){
+      lps = alpha[jVec[s]] + beta[jVec[s]]*theta[iVec[s]];
+      lp = lp + dnorm(psi[s],lps,(tau[iVec[s]])^(-1/2),log=TRUE);
+    }
     
+    # Until log-posterior stops changing...
     
+    while((lp - lastlp) > 0.01){	
+      
+      # Update debate parameters
+      
+      priordebate <- solve(matrix(c(prioralpha^2,0,0,priorbeta^2),2,2)) 
+      
+      for (j in 1:M){
+        locs <- which(jVec == j)
+        Ytmp <- psi[locs]
+        Xtmp <- cbind(1,theta[iVec[locs]])
+        Wtmp <- diag(tau[iVec[locs]])
+        coeftmp <- solve(t(Xtmp) %*% Wtmp %*% Xtmp + priordebate) %*% t(Xtmp) %*% Wtmp %*% Ytmp
+        alpha[j] <- coeftmp[1]
+        beta[j] <- coeftmp[2] 
+      }
+      
+      # Update speaker parameters
+      
+      for (i in 1:N){
+        locs <- which(iVec == i)
+        Ytmp <- matrix(psi[locs] - alpha[jVec[locs]],ncol=1)
+        Xtmp <- matrix(beta[jVec[locs]],ncol=1)
+        coeftmp <- solve(t(Xtmp) %*% Xtmp + priortheta^(-2)) %*% t(Xtmp) %*% Ytmp
+        theta[i] <- coeftmp[1,1]
+        mutmp <- solve(t(Xtmp) %*% Xtmp + priortheta^(-2)) %*% t(Xtmp) %*% Xtmp %*% coeftmp
+        tau[i] <- (priortau + 0.5*length(Ytmp))/(priortau+0.5*(sum(Ytmp^2) - mutmp*(priortheta^(-2))*mutmp))
+      }
+      
+      # Recalculate log-posterior
+      
+      lastlp <- lp
+      lp <- sum(dnorm(alpha,0,prioralpha,log=TRUE))
+      lp <- lp + sum(dnorm(beta,0,priorbeta,log=TRUE))
+      lp <- lp + sum(dnorm(theta,0,priortheta,log=TRUE))
+      lp <- lp + sum(dgamma(tau,priortau,priortau,log=TRUE))
+      for (s in 1:S){
+        lps = alpha[jVec[s]] + beta[jVec[s]]*theta[iVec[s]];
+        lp = lp + dnorm(psi[s],lps,(tau[iVec[s]])^(-1/2),log=TRUE);
+      }  
+      
+    } # end while  
     
-    ## MISSING Fit second-level model here
+    ## Calculate standard errors for thetas
     
+    thetaSE <- rep(NA,N)
+    for (i in 1:N){
+      locs <- which(iVec == i)
+      Xtmp <- matrix(beta[jVec[locs]],ncol=1)
+      thetaSE[i] <- sqrt(solve(t(Xtmp) %*% Xtmp + priortheta^(-2)) / tau[i])
+    }
+   
+    ## Return results 
     
     new("textmodel_wordshoal_fitted", 
-        x = data,
-        docs = docnames(data), 
-        features = features(data),
-        dir = dir,
-        dispersion = dispersion,
-        priors = priors,
-        theta = wfresult$theta,
-        beta = wfresult$beta,
-        psi = as.numeric(wfresult$psi),
-        alpha = as.numeric(wfresult$alpha),
-        phi = as.numeric(wfresult$phi),
-        se.theta = wfresult$thetaSE ,
+        authors = authors,
+        theta = theta,
+        beta = beta,
+        alpha = alpha,
+        psi = psi,
+        se.theta = thetaSE,
         call = match.call())
 }
 
@@ -125,26 +197,17 @@ textmodel_wordshoal <- function(data, groups, authors, dir = c(1, 2), tol = 1e-3
 #' @param ... additional arguments passed to \code{\link{print}}
 #' @export
 #' @method print textmodel_wordshoal_fitted
-print.textmodel_wordshoal_fitted <- function(x, n=30L, ...) {
+print.textmodel_wordshoal_fitted <- function(x, ...) {
     cat("Fitted wordshoal model:\n")
     cat("Call:\n\t")
     print(x@call)
-    cat("\nEstimated document positions:\n\n")
-    results <- data.frame(Documents=docnames(x@x),
-                          theta = x@theta,
+    cat("\nEstimated author positions:\n\n")
+    results <- data.frame(theta = x@theta,
                           SE = x@se.theta,
                           lower = x@theta - 1.96*x@se.theta,
                           upper = x@theta + 1.96*x@se.theta)
-    print(results, ...)
-    if (n>0) {
-        cat("\nEstimated feature scores: ")
-        if (length(x@psi) > n)
-            cat("showing first", n, "beta-hats for features")
-        cat("\n\n")
-        tempBetas <- x@beta
-        names(tempBetas) <- x@features
-        print(head(tempBetas, n), ...)
-    }
+    rownames(results) <- x@authors
+    print(results,...)
 }
 
 #' @rdname textmodel_wordshoal
