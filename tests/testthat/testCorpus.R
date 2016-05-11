@@ -40,13 +40,6 @@ test_that("test c.corpus", {
         grepl('Concatenation by c.corpus', metacorpus(concat.corpus)$source)
     )
 
-    expect_that(
-        texts(concat.corpus),
-        equals(
-           c(texts(inaugCorpus), texts(inaugCorpus))
-           )
-    )
-
 })
 
 
