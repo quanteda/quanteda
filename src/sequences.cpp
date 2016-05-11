@@ -1,17 +1,16 @@
 #include <Rcpp.h>
 #include <set>
 #include <map>
-#include <unordered_map>
 #include <unordered_set>
 #include <vector>
-//using namespace Rcpp;
-using namespace std;
 
-string join(const vector<string> tokens, 
-                 const string delim){
+using namespace Rcpp;
+
+std::string join(const std::vector<std::string> tokens, 
+                 const std::string delim){
   
   if(tokens.size() == 0) return "";
-  string token_joined = tokens[0];
+  std::string token_joined = tokens[0];
   for(int i = 1; i < tokens.size(); ++i){
     //Rcout << "Join " << i << ' ' << token_joined << "\n";
     token_joined = token_joined + delim + tokens[i];
@@ -20,12 +19,12 @@ string join(const vector<string> tokens,
 }
 
 // [[Rcpp::export]]
-int match_bit(const vector<string> &tokens1, 
-              const vector<string> &tokens2){
+int match_bit(const std::vector<std::string> &tokens1, 
+              const std::vector<std::string> &tokens2){
   
   int len1 = tokens1.size();
   int len2 = tokens2.size();
-  int len = min(len1, len2);
+  int len = std::min(len1, len2);
   int bit = 0;
   for (int i = 0; i < len; i++){
     bit += tokens1[i] == tokens2[i];
@@ -34,7 +33,7 @@ int match_bit(const vector<string> &tokens1,
   return bit;
 }
 
-double sigma(vector<int> &counts, const int &n, const double &smooth){
+double sigma(std::vector<int> &counts, const int &n, const double &smooth){
   
   double s = 0;
   for (int b = 1; b <= n; b++){
@@ -44,7 +43,7 @@ double sigma(vector<int> &counts, const int &n, const double &smooth){
   return s;
 }
 
-double lambda(vector<int> &counts, const int &n, const double &smooth){
+double lambda(std::vector<int> &counts, const int &n, const double &smooth){
   
   double l = log(counts[n]+ smooth);
   for (int b = 1; b < n; b++){
@@ -58,26 +57,26 @@ double lambda(vector<int> &counts, const int &n, const double &smooth){
 // [[Rcpp::plugins(cpp11)]]
 // [[Rcpp::export]]
 Rcpp::List find_sequence_cppl(SEXP x,
-                              const vector<string> &types,
+                              const std::vector<std::string> &types,
                               const int &count_min,
                               const int &len_max,
                               const double &smooth){
   
   Rcpp::List texts(x);
-  vector<string> tokens_seq;
-  map<vector<string>, int> counts_seq;
-  unordered_set<string> set_types (types.begin(), types.end());
+  std::vector<std::string> tokens_seq;
+  std::map<std::vector<std::string>, int> counts_seq; // unorderd_map cannot take vector as key
+  std::unordered_set<std::string> set_types (types.begin(), types.end());
   
   // Find all sequences of specified types
   int len = texts.size();
   for (int h = 0; h < len; h++){
     
     //Rcout << "Text " << h << "\n";
-    vector<string> tokens = texts[h];
-    vector<string> tokens_seq;
+    std::vector<std::string> tokens = texts[h];
+    std::vector<std::string> tokens_seq;
     
     int len = tokens.size();
-    for (int i = 1; i < min(len, len_max); i++){ // has to ignore first words in sentences
+    for (int i = 1; i < std::min(len, len_max); i++){ // has to ignore first words in sentences
       Rcpp::String token = tokens[i];
       if(token == "") continue;
       bool is_in = set_types.find(token) != set_types.end();
@@ -94,15 +93,15 @@ Rcpp::List find_sequence_cppl(SEXP x,
   // Find significance of sequences
   
   //vector<double> ms;
-  vector<double> sigmas;
-  vector<double> lambdas;
+  std::vector<double> sigmas;
+  std::vector<double> lambdas;
   Rcpp::List sequences;
   for(auto it1 = counts_seq.begin(); it1 != counts_seq.end(); ++it1 ){
     if(it1->first.size()  < 2) continue;
     if(it1->second < count_min) continue;
     // Initialize
     int n = it1->first.size();
-    vector<int> counts_bit(n + 1);
+    std::vector<int> counts_bit(n + 1);
     for(auto it2 = counts_seq.begin(); it2 != counts_seq.end(); ++it2 ){
       if(it2->second <  count_min) continue;
       if(it1->first == it2->first) continue; // do not compare with itself

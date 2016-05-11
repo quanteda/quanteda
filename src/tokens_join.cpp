@@ -2,14 +2,13 @@
 #include <vector>
 
 using namespace Rcpp;
-using namespace std;
 
 // [[Rcpp::export]]
 std::string join(const std::vector<std::string> tokens, 
                  const std::string delim){
   
   if(tokens.size() == 0) return "";
-  string token_joined = tokens[0];
+  std::string token_joined = tokens[0];
   for(int i = 1; i < tokens.size(); ++i){
     //Rcout << "Join " << i << ' ' << token_joined << "\n";
     token_joined = token_joined + delim + tokens[i];
@@ -19,8 +18,8 @@ std::string join(const std::vector<std::string> tokens,
 
 // [[Rcpp::export]]
 StringVector join_tokens_cpp(SEXP x, 
-                             const vector<string> &tokens_join,
-                             const string &delim){
+                             const std::vector<std::string> &tokens_join,
+                             const std::string &delim){
   StringVector tokens(x);
   int len = tokens.size();
   int len_join = tokens_join.size();
@@ -75,9 +74,9 @@ StringVector join_tokens_cpp(SEXP x,
 
 // [[Rcpp::export]]
 List join_tokens_cppl(SEXP x, 
-                      const vector< bool > &flag,
-                      const vector< string > &tokens_join,
-                      const string &delim){
+                      const std::vector<bool> &flag,
+                      const std::vector<std::string> &tokens_join,
+                      const std::string &delim){
   List texts(x);
   int len = texts.size();
   if(flag.size() != len){
