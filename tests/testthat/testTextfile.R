@@ -4,7 +4,7 @@ context('Testing textfile.R')
 
 test_that("test reading structured text files with different columns", {
     testcorpus <- textfile(
-        "./tests/testthat/data/fruits*.csv",
+        "data/fruits*.csv",
         textField='text'
     )
 
