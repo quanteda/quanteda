@@ -969,10 +969,9 @@ rep.data.frame <- function(x, ...)
             metacorpus(c1, field) <- paste(metacorpus(c1, field), metacorpus(c2, field))
     }
     
-    # combine the documents info, after warning if not column-conforming
-#     if (!setequal(names(c1$documents), names(c2$documents)))
-#         warning("different document-level data found, filling missing values with NAs.", noBreaks.=TRUE)
-    c1$documents <- data.table::rbindlist(list(c1$documents, c2$documents), use.names=T, fill=T)
+    c1$documents <- data.frame(
+       data.table::rbindlist(list(c1$documents, c2$documents), use.names=T, fill=T)
+    )
 
     # settings
     ### currently just use the c1 settings
