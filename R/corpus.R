@@ -994,10 +994,10 @@ c.corpus <- function(..., recursive = FALSE) {
     dots <- list(...)
     if (length(dots) == 1) return(dots[[1]])
     result <- dots[[1]] + dots[[2]]
-    metacorpus(result, "source") <- paste0("Concatenation by c.corpus(", names(dots), ")")
     if (length(dots) == 2) return(result)
     for (i in 3:length(dots))
         result <- result + dots[[i]]
+    metacorpus(result, "source") <- paste0("Concatenation by c.corpus(", names(dots), ")")
     return(result)
 }
 
