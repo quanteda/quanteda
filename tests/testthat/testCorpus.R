@@ -9,7 +9,7 @@ test_that("docvars of corpus is a data.frame", {
     )
 })
 
-test_that("test corpus.c", {
+test_that("test c.corpus", {
     concat.corpus <- c(inaugCorpus, inaugCorpus, inaugCorpus)
 
     expect_that(
@@ -32,7 +32,7 @@ test_that("test corpus.c", {
     )
     expect_that(
         texts(concat.corpus),
-        is_a('data.frame')
+        is_a('character')
     )
 
 
