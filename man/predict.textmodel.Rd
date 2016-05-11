@@ -4,16 +4,12 @@
 \alias{predict.textmodel_NB_fitted}
 \title{prediction method for Naive Bayes classifier objects}
 \usage{
-\method{predict}{textmodel_NB_fitted}(object, newdata = NULL, scores = c(-1,
-  1), ...)
+\method{predict}{textmodel_NB_fitted}(object, newdata = NULL, ...)
 }
 \arguments{
 \item{object}{a fitted Naive Bayes textmodel}
 
 \item{newdata}{dfm on which prediction should be made}
-
-\item{scores}{"reference" values when the wordscores equivalent implementation
-of Naive Bayes prediction is used.  Default is \code{c(-1, 1)}.}
 
 \item{...}{not used}
 }
@@ -31,6 +27,10 @@ wordscore.word, bayesscore.word}
 }
 \description{
 implements class predictions using trained Naive Bayes examples
+}
+\examples{
+(nbfit <- textmodel_NB(LBGexample, c("A", "A", "B", "C", "C", NA)))
+(nbpred <- predict(nbfit))
 }
 \author{
 Kenneth Benoit

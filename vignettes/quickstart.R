@@ -1,5 +1,6 @@
 ## ----echo = FALSE--------------------------------------------------------
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+knitr::opts_chunk$set(collapse = TRUE, 
+                      comment = "#>")
 
 ## ----eval=FALSE----------------------------------------------------------
 #  install.packages("quanteda")
@@ -58,27 +59,13 @@ summary(myCorpus, n = 5, showmeta = TRUE)
 #  mytf7 <- textfile("/tmp/inaugTexts.csv", textField = "inaugSpeech")
 #  summary(corpus(mytf7), 5)
 
-## ----eval=FALSE----------------------------------------------------------
-#  # These keys are examples and may not work! Get your own key at dev.twitter.com
-#  consumer_key="vRLy03ef6OFAZB7oCL4jA"
-#  consumer_secret="wWF35Lr1raBrPerVHSDyRftv8qB1H7ltV0T3Srb3s"
-#  access_token="1577780816-wVbOZEED8KZs70PwJ2q5ld2w9CcvcZ2kC6gPnAo"
-#  token_secret="IeC6iYlgUK9csWiP524Jb4UNM8RtQmHyetLi9NZrkJA"
-#  
-#  
-#  tw <- getTweets('quantitative', numResults=20, consumer_key, consumer_secret, access_token, token_secret)
-
-## ----eval=FALSE----------------------------------------------------------
-#  twCorpus <- corpus(tw)
-#  names(docvars(twCorpus))
-
 ## ------------------------------------------------------------------------
 texts(inaugCorpus)[2]
 
 ## ------------------------------------------------------------------------
 summary(ie2010Corpus)
 
-## ------------------------------------------------------------------------
+## ---- fig.width = 8------------------------------------------------------
 tokenInfo <- summary(inaugCorpus)
 if (require(ggplot2))
     ggplot(data=tokenInfo, aes(x=Year, y=Tokens, group=1)) + geom_line() + geom_point() +
@@ -150,17 +137,17 @@ head(stopwords("english"), 20)
 head(stopwords("russian"), 10)
 head(stopwords("arabic"), 10)
 
-## ----warning=FALSE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-mydfm <- dfm(ukimmigTexts, ignoredFeatures=c("will", stopwords("english")))
+## ----warning=FALSE, fig.width = 8, fig.height = 8-----------------------------------------------------------------------------------------------------------------------------------------------------
+mydfm <- dfm(ukimmigTexts, ignoredFeatures = c("will", stopwords("english")))
 mydfm
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 topfeatures(mydfm, 20)  # 20 top words
 
-## ----warning=FALSE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----warning = FALSE, fig.width = 8, fig.height = 8---------------------------------------------------------------------------------------------------------------------------------------------------
 plot(mydfm)
 
-## ----warning=FALSE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----warning=FALSE, fig.width = 7, fig.height = 7-----------------------------------------------------------------------------------------------------------------------------------------------------
 if (require(RColorBrewer))
     plot(mydfm, max.words = 100, colors = brewer.pal(6, "Dark2"), scale = c(8, .5))
 
@@ -187,7 +174,7 @@ byPresMat
 #  liwcdfm <- dfm(inaugTexts[52:57], dictionary = liwcdict, verbose = FALSE)
 #  liwcdfm[, 1:10]
 
-## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----fig.width = 6------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 presDfm <- dfm(subset(inaugCorpus, Year>1980), 
                ignoredFeatures = stopwords("english"),
                stem=TRUE, verbose=FALSE)
@@ -195,9 +182,9 @@ obamaSimil <- similarity(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL,
                             margin = "documents", method = "cosine", normalize = FALSE)
 dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
 
-## ---- eval=FALSE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ---- fig.width = 10, fig.height = 7, eval = FALSE----------------------------------------------------------------------------------------------------------------------------------------------------
 #  data(SOTUCorpus, package="quantedaData")
-#  presDfm <- dfm(subset(SOTUCorpus, year > 1960), verbose = FALSE, stem = TRUE,
+#  presDfm <- dfm(subset(SOTUCorpus, Date > as.Date("1960-01-01")), verbose = FALSE, stem = TRUE,
 #                 ignoredFeatures = stopwords("english"))
 #  presDfm <- trim(presDfm, minCount=5, minDoc=3)
 #  # hierarchical clustering - get distances on normalized dfm
@@ -207,12 +194,12 @@ dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
 #  # label with document names
 #  presCluster$labels <- docnames(presDfm)
 #  # plot as a dendrogram
-#  plot(presCluster)
+#  plot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 similarity(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features", n = 20)
 
-## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----fig.width = 6, fig.height = 6--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # make prettier document names
 docnames(ie2010Corpus) <- 
     paste(docvars(ie2010Corpus, "name"), docvars(ie2010Corpus, "party"))

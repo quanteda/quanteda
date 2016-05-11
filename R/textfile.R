@@ -27,8 +27,8 @@ setMethod("show",
               if (object@cachedfile != "") {
                   cat("corpusSource object with data cached in", object@cachedfile, "\n")
               } else {
-                  cat("corpusSource object containing ", length(texts(object)), 
-                      " text", ifelse(length(texts(object)) == 1, "", "s"), " and ", 
+                  cat("corpusSource object consisting of ", length(texts(object)), 
+                      " document", ifelse(length(texts(object)) == 1, "", "s"), " and ", 
                       ncol(docvars(object)), " docvar", ifelse(ncol(docvars(object)) == 1, "", "s"), ".\n", sep="")
               }
           })
@@ -131,7 +131,7 @@ setGeneric("textfile",
 #'                   textField = "text")
 #' summary(corpus(mytf2))
 #' # text file
-#' mytf3 <- textfile(unzip(system.file("extdata", "pg2701.txt.zip", package = "quanteda")))
+#' mytf3 <- textfile("https://wordpress.org/plugins/about/readme.txt")
 #' summary(corpus(mytf3))
 #' # XML data
 #' mytf6 <- textfile("http://www.kenbenoit.net/files/plant_catalog.xml", 
