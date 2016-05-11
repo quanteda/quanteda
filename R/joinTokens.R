@@ -1,4 +1,4 @@
-#' @export
+
 #' @examples
 #' data(SOTUCorpus, package = "quantedaData")
 #' toks <- tokenize(SOTUCorpus, removePunct = TRUE)
@@ -7,6 +7,7 @@
 #' kwic(toks2, 'foreign_policy', window=1) # joined
 #' kwic(toks2, c('foreign', 'policy'), window=1) # not joined
 #' kwic(toks2, 'United_States', window=1) # joined
+#' @export
 joinTokens <- function(x, seqs_token, concatenator='-'){
   
   tokens <- x

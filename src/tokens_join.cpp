@@ -3,17 +3,29 @@
 
 using namespace Rcpp;
 
-// [[Rcpp::export]]
-std::string join(const std::vector<std::string> tokens, 
-                 const std::string delim){
-  
-  if(tokens.size() == 0) return "";
-  std::string token_joined = tokens[0];
-  for(int i = 1; i < tokens.size(); ++i){
-    //Rcout << "Join " << i << ' ' << token_joined << "\n";
-    token_joined = token_joined + delim + tokens[i];
+// std::string join(const std::vector<std::string> tokens, 
+//                  const std::string delim){
+//   
+//   if(tokens.size() == 0) return "";
+//   std::string token_joined = tokens[0];
+//   for(int i = 1; i < tokens.size(); ++i){
+//     //Rcout << "Join " << i << ' ' << token_joined << "\n";
+//     token_joined = token_joined + delim + tokens[i];
+//   }
+//   return token_joined;
+// }
+String join2(std::vector< std::string > ngram, 
+            std::string delim){
+  if(ngram.size() == 0) return "";
+  String token_ngram = ngram[0];
+  int len_ngram = ngram.size();
+  for (int i = 1; i < len_ngram; i++) {
+    token_ngram += token_ngram;
+    token_ngram += delim;
+    token_ngram += ngram[i];
   }
-  return token_joined;
+  token_ngram.set_encoding(CE_UTF8);
+  return token_ngram;
 }
 
 // [[Rcpp::export]]
@@ -28,7 +40,7 @@ StringVector join_tokens_cpp(SEXP x,
   }
   int start = -1;
   bool change = FALSE;
-  String token_joined = join(tokens_join, delim);
+  String token_joined = join2(tokens_join, delim);
   for (int i = 0; i < len - (len_join - 1); i++){
     if(tokens[i] == tokens_join[0] & tokens[i + 1] == tokens_join[1]){ // Initial match
       start = i;

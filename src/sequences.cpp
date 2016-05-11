@@ -1,24 +1,13 @@
 #include <Rcpp.h>
 #include <set>
 #include <map>
-#include <unordered_set>
 #include <vector>
+// [[Rcpp::plugins(cpp11)]]
+#include <unordered_set>
+
 
 using namespace Rcpp;
 
-std::string join(const std::vector<std::string> tokens, 
-                 const std::string delim){
-  
-  if(tokens.size() == 0) return "";
-  std::string token_joined = tokens[0];
-  for(int i = 1; i < tokens.size(); ++i){
-    //Rcout << "Join " << i << ' ' << token_joined << "\n";
-    token_joined = token_joined + delim + tokens[i];
-  }
-  return token_joined;
-}
-
-// [[Rcpp::export]]
 int match_bit(const std::vector<std::string> &tokens1, 
               const std::vector<std::string> &tokens2){
   
@@ -53,8 +42,6 @@ double lambda(std::vector<int> &counts, const int &n, const double &smooth){
   return l;
 }
 
-
-// [[Rcpp::plugins(cpp11)]]
 // [[Rcpp::export]]
 Rcpp::List find_sequence_cppl(SEXP x,
                               const std::vector<std::string> &types,

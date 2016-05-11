@@ -9,16 +9,8 @@ skipgramcpp <- function(tokens, ns, ks, delim) {
     .Call('quanteda_skipgramcpp', PACKAGE = 'quanteda', tokens, ns, ks, delim)
 }
 
-match_bit <- function(tokens1, tokens2) {
-    .Call('quanteda_match_bit', PACKAGE = 'quanteda', tokens1, tokens2)
-}
-
 find_sequence_cppl <- function(x, types, count_min, len_max, smooth) {
     .Call('quanteda_find_sequence_cppl', PACKAGE = 'quanteda', x, types, count_min, len_max, smooth)
-}
-
-join <- function(tokens, delim) {
-    .Call('quanteda_join', PACKAGE = 'quanteda', tokens, delim)
 }
 
 join_tokens_cpp <- function(x, tokens_join, delim) {

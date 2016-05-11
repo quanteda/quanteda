@@ -33,18 +33,6 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// match_bit
-int match_bit(const std::vector<std::string>& tokens1, const std::vector<std::string>& tokens2);
-RcppExport SEXP quanteda_match_bit(SEXP tokens1SEXP, SEXP tokens2SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type tokens1(tokens1SEXP);
-    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type tokens2(tokens2SEXP);
-    __result = Rcpp::wrap(match_bit(tokens1, tokens2));
-    return __result;
-END_RCPP
-}
 // find_sequence_cppl
 Rcpp::List find_sequence_cppl(SEXP x, const std::vector<std::string>& types, const int& count_min, const int& len_max, const double& smooth);
 RcppExport SEXP quanteda_find_sequence_cppl(SEXP xSEXP, SEXP typesSEXP, SEXP count_minSEXP, SEXP len_maxSEXP, SEXP smoothSEXP) {
@@ -57,18 +45,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const int& >::type len_max(len_maxSEXP);
     Rcpp::traits::input_parameter< const double& >::type smooth(smoothSEXP);
     __result = Rcpp::wrap(find_sequence_cppl(x, types, count_min, len_max, smooth));
-    return __result;
-END_RCPP
-}
-// join
-std::string join(const std::vector<std::string> tokens, const std::string delim);
-RcppExport SEXP quanteda_join(SEXP tokensSEXP, SEXP delimSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< const std::vector<std::string> >::type tokens(tokensSEXP);
-    Rcpp::traits::input_parameter< const std::string >::type delim(delimSEXP);
-    __result = Rcpp::wrap(join(tokens, delim));
     return __result;
 END_RCPP
 }

@@ -1,6 +1,6 @@
 #' This function automatically identify sequences of tokens. This algorithm is   
 #' based on Blaheta and Johnson's “Unsupervised Learning of Multi-Word Verbs”.
-#' @export
+
 #' @examples 
 #' data(SOTUCorpus, package = "quantedaData")
 #' sents <- tokenize(SOTUCorpus, what='sentence', simplify = TRUE)
@@ -8,14 +8,14 @@
 #' types <- unique(unlist(tokens))
 #' 
 #' # Extracting multi-part nouns
-#' types_upper <- types[stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
+#' types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
 #' findSequences(tokens, types_upper, count_min=2)
 #'
 #' # Types can be any words
 #' types_lower <- types[stri_detect_regex(types, "^([a-z]+)$") & !types %in%stopwords()]
 #' findSequences(tokens, types_lower, count_min=2)
 #' 
-
+#' @export
 findSequences <- function(x, tokens, count_min=2, len_max = 5, smooth=0.001){
   
   seqs <- find_sequence_cppl(x, tokens, count_min, len_max, smooth);
