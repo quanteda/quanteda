@@ -3,36 +3,27 @@
 
 using namespace Rcpp;
 
-// std::string join(const std::vector<std::string> tokens, 
-//                  const std::string delim){
-//   
-//   if(tokens.size() == 0) return "";
-//   std::string token_joined = tokens[0];
-//   for(int i = 1; i < tokens.size(); ++i){
-//     //Rcout << "Join " << i << ' ' << token_joined << "\n";
-//     token_joined = token_joined + delim + tokens[i];
-//   }
-//   return token_joined;
-// }
+
 String join2(std::vector< std::string > ngram, 
             std::string delim){
   if(ngram.size() == 0) return "";
   String token_ngram = ngram[0];
   int len_ngram = ngram.size();
   for (int i = 1; i < len_ngram; i++) {
-    token_ngram += token_ngram;
     token_ngram += delim;
     token_ngram += ngram[i];
+    //Rcout << "Joined " << token_ngram.get_cstring()  << "\n";
   }
   token_ngram.set_encoding(CE_UTF8);
   return token_ngram;
 }
 
 // [[Rcpp::export]]
-StringVector join_tokens_cpp(SEXP x, 
+StringVector join_tokens_cpp(StringVector tokens_original, 
                              const std::vector<std::string> &tokens_join,
                              const std::string &delim){
-  StringVector tokens(x);
+  //StringVector tokens(x);
+  StringVector tokens = clone(tokens_original);
   int len = tokens.size();
   int len_join = tokens_join.size();
   if(len_join == 1){ // Do nothing for single token
@@ -42,6 +33,7 @@ StringVector join_tokens_cpp(SEXP x,
   bool change = FALSE;
   String token_joined = join2(tokens_join, delim);
   for (int i = 0; i < len - (len_join - 1); i++){
+    //Rcout << "Now " << i << " " << tokens[i] << "\n";
     if(tokens[i] == tokens_join[0] & tokens[i + 1] == tokens_join[1]){ // Initial match
       start = i;
       //Rcout << "Start " << start << " " << tokens[i] << "\n";
@@ -70,7 +62,6 @@ StringVector join_tokens_cpp(SEXP x,
     int j = 0;
     for (int i = 0; i < len; i++){
       if(tokens[i] != ""){
-        //tokens_joined.push_back(tokens[i]);
         tokens_joined[j] = tokens[i];
         j++;
       }
@@ -85,11 +76,12 @@ StringVector join_tokens_cpp(SEXP x,
 }
 
 // [[Rcpp::export]]
-List join_tokens_cppl(SEXP x, 
+List join_tokens_cppl(List texts_original, 
                       const std::vector<bool> &flag,
                       const std::vector<std::string> &tokens_join,
                       const std::string &delim){
-  List texts(x);
+  //List texts(x);
+  List texts = clone(texts_original);
   int len = texts.size();
   if(flag.size() != len){
     Rcout << "Invalid flag is given\n";
