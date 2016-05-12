@@ -5,8 +5,18 @@
 // [[Rcpp::plugins(cpp11)]]
 #include <unordered_set>
 
-
 using namespace Rcpp;
+
+// Function for development
+void print_vector(const std::string label,
+                  const std::vector<std::string> tokens){
+  if(tokens.size() == 0) return;
+  std::string token_joined = tokens[0];
+  for(int i = 1; i < tokens.size(); ++i){
+    token_joined = token_joined + " " + tokens[i];
+  }
+  Rcout << label << ": " << token_joined << "\n";
+}
 
 // [[Rcpp::export]]
 int match_bit(const std::vector<std::string> &tokens1, 
@@ -47,33 +57,45 @@ double lambda(std::vector<int> &counts, const int &n, const double &smooth){
 Rcpp::List find_sequence_cppl(List texts,
                               const std::vector<std::string> &types,
                               const int &count_min,
-                              const int &len_max,
                               const double &smooth){
   
   //Rcpp::List texts(x);
-  std::vector<std::string> tokens_seq;
   std::map<std::vector<std::string>, int> counts_seq; // unorderd_map cannot take vector as key
   std::unordered_set<std::string> set_types (types.begin(), types.end());
   
   // Find all sequences of specified types
-  int len = texts.size();
-  for (int h = 0; h < len; h++){
+  for (int h = 0; h < texts.size(); h++){
     
     //Rcout << "Text " << h << "\n";
-    std::vector<std::string> tokens = texts[h];
+    std::vector<std::string> text = texts[h];
     std::vector<std::string> tokens_seq;
     
-    int len = tokens.size();
-    for (int i = 1; i < std::min(len, len_max); i++){ // has to ignore first words in sentences
-      Rcpp::String token = tokens[i];
-      if(token == "") continue;
-      bool is_in = set_types.find(token) != set_types.end();
-      if(is_in){
-        tokens_seq.push_back(token);
-      }else{
-        counts_seq[tokens_seq]++;
-        //if(seqs[tokens_seq] >= min) Rcout << join(tokens_seq, "-") << ' ' << seqs[tokens_seq] << "\n";
-        tokens_seq.clear();
+    int len_text = text.size();
+    int len_min = 2;
+    //Rcout << len << " " << len_min << "\n";
+    //print_vector("Text", text);
+    for (int i = 1; i < len_text ; i++){ // ignore first words in sentences
+      for (int j = i; j < len_text; j++){ // collect subsequence starting  from i
+        //Rcout << i << " " << j << "\n";
+        Rcpp::String token = text[j];
+        if(token == "") continue;
+        bool is_in = set_types.find(token) != set_types.end();
+        if(is_in){
+          //Rcout << "Match: " << token.get_cstring() << "\n";
+          tokens_seq.push_back(token);
+        }else{
+          //Rcout << "Not match: " <<  token.get_cstring() << "\n";
+          if(tokens_seq.size() >= len_min){
+            counts_seq[tokens_seq]++;
+            //print_vector("Sequence", tokens_seq);
+            tokens_seq.clear();
+            break;
+          }else{
+            //print_vector("Reset", tokens_seq);
+            tokens_seq.clear();
+            break;
+          }
+        }
       }
     }
   }
