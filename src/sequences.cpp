@@ -10,6 +10,7 @@ using namespace Rcpp;
 // Function for development
 void print_vector(const std::string label,
                   const std::vector<std::string> tokens){
+  
   if(tokens.size() == 0) return;
   std::string token_joined = tokens[0];
   for(int i = 1; i < tokens.size(); ++i){
@@ -33,7 +34,9 @@ int match_bit(const std::vector<std::string> &tokens1,
   return bit;
 }
 
-double sigma(std::vector<int> &counts, const int &n, const double &smooth){
+double sigma(std::vector<int> &counts, 
+             const int &n, 
+             const double &smooth){
   
   double s = 0;
   for (int b = 1; b <= n; b++){
@@ -43,7 +46,9 @@ double sigma(std::vector<int> &counts, const int &n, const double &smooth){
   return std::sqrt(s);
 }
 
-double lambda(std::vector<int> &counts, const int &n, const double &smooth){
+double lambda(std::vector<int> &counts, 
+              const int &n, 
+              const double &smooth){
   
   double l = std::log(counts[n]+ smooth);
   for (int b = 1; b < n; b++){
@@ -72,29 +77,29 @@ Rcpp::List find_sequence_cppl(List texts,
     text.push_back(""); // add empty token to include last words
     
     int len_text = text.size();
-    int len_min = 2;
-    //Rcout << len << " " << len_min << "\n";
     //print_vector("Text", text);
-    for (int i = 1; i < len_text ; i++){ // ignore first words in sentences
-      for (int j = i; j < len_text; j++){ // collect subsequence starting  from i
+    for (int i = 1; i < len_text - 1; i++){ // ignore first words in sentences
+      for (int j = i; j < len_text - 1; j++){ // collect subsequence starting  from i
         //Rcout << i << " " << j << "\n";
         Rcpp::String token = text[j];
-        bool is_in = set_types.find(token) != set_types.end();
-        if(token != "" && is_in){
+        bool is_in;
+        if(token == ""){
+          is_in = FALSE;
+        }else{
+          is_in = set_types.find(token) != set_types.end();
+        }
+        if(is_in){
           //Rcout << "Match: " << token.get_cstring() << "\n";
           tokens_seq.push_back(token);
         }else{
           //Rcout << "Not match: " <<  token.get_cstring() << "\n";
-          if(tokens_seq.size() >= len_min){
+          if(tokens_seq.size() > 1){
             counts_seq[tokens_seq]++;
             //print_vector("Sequence", tokens_seq);
-            tokens_seq.clear();
-            break;
-          }else{
-            //print_vector("Reset", tokens_seq);
-            tokens_seq.clear();
-            break;
           }
+          //print_vector("Reset", tokens_seq);
+          tokens_seq.clear();
+          break;
         }
       }
     }
