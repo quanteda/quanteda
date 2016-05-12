@@ -20,7 +20,7 @@ findSequences <- function(x, tokens, count_min=2, len_max = 5, smooth=0.001){
   
   seqs <- find_sequence_cppl(x, tokens, count_min, len_max, smooth);
   seqs$z <- seqs$lambda / seqs$sigma
-  seqs$p <- 1 - pnorm(seqs$z)
+  seqs$p <- pnorm(seqs$z)
   class(seqs) <- "tokenSequences"
   seqs
 }
