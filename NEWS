@@ -1,10 +1,13 @@
 quanteda >= 0.9.6-3
 ===================
 
+Enhancements
+------------  
+*  `dictionary(file = "liwc_formatted_dict.dic", format = "LIWC")` now handles poorly formatted dictionary files better, such as the Moral Foundations Dictionary in the examples for `?dictionary`.
+
 Bug fixes
 ---------  
 *  Fix bug in phrasetotoken, signature 'corpus,ANY' that was causing an infinite loop.
-
 
 
 quanteda 0.9.6 

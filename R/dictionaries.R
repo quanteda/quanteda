@@ -226,6 +226,16 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
         catlist <- gsub("\\(.+\\)", "", catlist)
     }
         
+    ## clean up irregular dictionary files
+    # remove any repeated \t
+    catlist <- gsub("\t\t+", "\t", catlist)
+    # remove any spaced before a \t
+    catlist <- gsub(" +\t", "\t", catlist)
+    # replace any blanks that should be \t with \t (e.g. in Moral Foundations dictionary)
+    catlist <- gsub("(\\d+) +(\\d+)", "\\1\t\\2", catlist)
+    # remove any \t only lines or empty lines
+    catlist <- catlist[-grep("^\\s*$", catlist)]
+    
     catlist <- strsplit(catlist, "\t")
     # catlist <- tokenize(catlist, what = "fasterword", removeNumbers = FALSE)
     catlist <- as.data.frame(do.call(rbind, lapply(catlist, '[', 1:max(sapply(catlist, length)))), stringsAsFactors = FALSE)
@@ -253,7 +263,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
         terms[[i]] <- as.numeric(catlist[i, !is.na(catlist[i,])])
     }
     
-    for(ind in 1:length(terms)){
+    for (ind in 1:length(terms)) {
         for(num in as.numeric(terms[[ind]])){
             thisCat <- guide$catName[which(guide$catNum==num)]
             thisTerm <- names(terms[ind])
