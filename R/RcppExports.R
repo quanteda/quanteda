@@ -13,16 +13,16 @@ find_sequence_cppl <- function(x, types, count_min, len_max, smooth) {
     .Call('quanteda_find_sequence_cppl', PACKAGE = 'quanteda', x, types, count_min, len_max, smooth)
 }
 
-join_tokens_cpp <- function(x, tokens_join, delim) {
-    .Call('quanteda_join_tokens_cpp', PACKAGE = 'quanteda', x, tokens_join, delim)
+join_tokens_cpp <- function(tokens_original, tokens_join, delim) {
+    .Call('quanteda_join_tokens_cpp', PACKAGE = 'quanteda', tokens_original, tokens_join, delim)
 }
 
-join_tokens_cppl <- function(x, flag, tokens_join, delim) {
-    .Call('quanteda_join_tokens_cppl', PACKAGE = 'quanteda', x, flag, tokens_join, delim)
+join_tokens_cppl <- function(texts_original, flag, tokens_join, delim) {
+    .Call('quanteda_join_tokens_cppl', PACKAGE = 'quanteda', texts_original, flag, tokens_join, delim)
 }
 
-select_tokens_cppl <- function(x, types, remove, spacer) {
-    .Call('quanteda_select_tokens_cppl', PACKAGE = 'quanteda', x, types, remove, spacer)
+select_tokens_cppl <- function(texts_original, types, remove, spacer) {
+    .Call('quanteda_select_tokens_cppl', PACKAGE = 'quanteda', texts_original, types, remove, spacer)
 }
 
 wordfishcpp <- function(wfm, dir, priors, tol, disp, dispfloor) {
