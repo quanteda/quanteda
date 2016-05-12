@@ -6,7 +6,7 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     role = "aut"), person("Kohei", "Watanabe", email =
     "watanabe.kohei@gmail.com", role = "ctb"), person("Benjamin", "Lauderdale",
     email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
-    person("Adam", "Obeng", email = "adam@adamobeng.com", role = "ctb"),
+    person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "ctb"),
     person("Pablo", "Barberá", email = "pablo.barbera@nyu.edu",
     role = "ctb"))
 Author: Kenneth Benoit [aut, cre],
