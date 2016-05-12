@@ -21,6 +21,7 @@ findSequences <- function(x, tokens, count_min=2, smooth=0.001){
   seqs <- find_sequence_cppl(x, tokens, count_min, smooth);
   seqs$z <- seqs$lambda / seqs$sigma
   seqs$p <- 1 - pnorm(seqs$z)
+  seqs$mue <- seqs$lambda - (3.29 * seqs$sigma) # mue should be greater than zero
   class(seqs) <- "tokenSequences"
   seqs
 }
@@ -38,7 +39,8 @@ print.tokenSequences <- function(x, ...){
                      #lambda=x$lambda,
                      #sigma=x$sigma,
                      z=x$z,
-                     p=x$p)
+                     p=x$p,
+                     mue=x$mu)
     df <- df[order(df$z),]
     print(df, ...)
 }

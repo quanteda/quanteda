@@ -69,6 +69,7 @@ Rcpp::List find_sequence_cppl(List texts,
     //Rcout << "Text " << h << "\n";
     std::vector<std::string> text = texts[h];
     std::vector<std::string> tokens_seq;
+    text.push_back(""); // add empty token to include last words
     
     int len_text = text.size();
     int len_min = 2;
@@ -78,9 +79,8 @@ Rcpp::List find_sequence_cppl(List texts,
       for (int j = i; j < len_text; j++){ // collect subsequence starting  from i
         //Rcout << i << " " << j << "\n";
         Rcpp::String token = text[j];
-        if(token == "") continue;
         bool is_in = set_types.find(token) != set_types.end();
-        if(is_in){
+        if(token != "" && is_in){
           //Rcout << "Match: " << token.get_cstring() << "\n";
           tokens_seq.push_back(token);
         }else{
@@ -107,7 +107,7 @@ Rcpp::List find_sequence_cppl(List texts,
   std::vector<double> lambdas;
   Rcpp::List sequences;
   for(auto it1 = counts_seq.begin(); it1 != counts_seq.end(); ++it1 ){
-    if(it1->first.size()  < 2) continue;
+    if(it1->first.size() < 2) continue;
     if(it1->second < count_min) continue;
     // Initialize
     int n = it1->first.size();
@@ -123,15 +123,15 @@ Rcpp::List find_sequence_cppl(List texts,
     //double s = sigma(counts_bit, n, 0.5);
     //double l = lambda(counts_bit, n, 0.5);
     //double m = l - (3.29 * s);
+    //print_vector("Token", it1->first);
+    //Rcout << m << "\n";
     //Rcout << join(it1->first, "-") << ": " << m << "\n";
     //tokens_seq_temp.push_back(join(it1->first, "-"));
     sequences.push_back(it1->first);
-    //ms.push_back(m);
     sigmas.push_back(sigma(counts_bit, n, smooth));
     lambdas.push_back(lambda(counts_bit, n, smooth));
   }
   return Rcpp::List::create(Rcpp::Named("sequence") = sequences,
-                            //Rcpp::Named("mue") = ms,
                             Rcpp::Named("lambda") = lambdas,
                             Rcpp::Named("sigma") = sigmas
                             );
