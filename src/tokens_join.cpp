@@ -70,7 +70,7 @@ StringVector join_tokens_cpp(StringVector tokens_original,
     //Rcout << "Done\n";
     return tokens_joined[seq(0, j - 1)];
   }else{
-    return tokens; // Return original if there is no change
+    return tokens_original; // Return original if there is no change
   }
   
 }

@@ -43,13 +43,13 @@ double lambda(std::vector<int> &counts, const int &n, const double &smooth){
 }
 
 // [[Rcpp::export]]
-Rcpp::List find_sequence_cppl(SEXP x,
+Rcpp::List find_sequence_cppl(List texts,
                               const std::vector<std::string> &types,
                               const int &count_min,
                               const int &len_max,
                               const double &smooth){
   
-  Rcpp::List texts(x);
+  //Rcpp::List texts(x);
   std::vector<std::string> tokens_seq;
   std::map<std::vector<std::string>, int> counts_seq; // unorderd_map cannot take vector as key
   std::unordered_set<std::string> set_types (types.begin(), types.end());
