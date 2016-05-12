@@ -969,9 +969,12 @@ rep.data.frame <- function(x, ...)
             metacorpus(c1, field) <- paste(metacorpus(c1, field), metacorpus(c2, field))
     }
     
+    row.names <- c(rownames(c1$documents), rownames(c2$documents))
     c1$documents <- data.frame(
        data.table::rbindlist(list(c1$documents, c2$documents), use.names=T, fill=T)
     )
+    #  Put rownames back in because the hadleyverse discards them
+    rownames(c1$documents) <- make.unique(row.names, sep='')
 
     # settings
     ### currently just use the c1 settings
