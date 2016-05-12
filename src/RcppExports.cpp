@@ -34,17 +34,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // find_sequence_cppl
-Rcpp::List find_sequence_cppl(SEXP x, const std::vector<std::string>& types, const int& count_min, const int& len_max, const double& smooth);
-RcppExport SEXP quanteda_find_sequence_cppl(SEXP xSEXP, SEXP typesSEXP, SEXP count_minSEXP, SEXP len_maxSEXP, SEXP smoothSEXP) {
+Rcpp::List find_sequence_cppl(List texts, const std::vector<std::string>& types, const int& count_min, const int& len_max, const double& smooth);
+RcppExport SEXP quanteda_find_sequence_cppl(SEXP textsSEXP, SEXP typesSEXP, SEXP count_minSEXP, SEXP len_maxSEXP, SEXP smoothSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    Rcpp::traits::input_parameter< List >::type texts(textsSEXP);
     Rcpp::traits::input_parameter< const std::vector<std::string>& >::type types(typesSEXP);
     Rcpp::traits::input_parameter< const int& >::type count_min(count_minSEXP);
     Rcpp::traits::input_parameter< const int& >::type len_max(len_maxSEXP);
     Rcpp::traits::input_parameter< const double& >::type smooth(smoothSEXP);
-    __result = Rcpp::wrap(find_sequence_cppl(x, types, count_min, len_max, smooth));
+    __result = Rcpp::wrap(find_sequence_cppl(texts, types, count_min, len_max, smooth));
     return __result;
 END_RCPP
 }
