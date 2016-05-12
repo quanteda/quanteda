@@ -332,6 +332,7 @@ get_datas <- function(filemask, textField='index', fileType, ...){
         src <- get_data(f,  textField, ...)
         textsvec <- c(textsvec, src$txts)
 	docv <- data.table::rbindlist(list(docv, src$docv), use.names=T, fill=T)
+        data.frame(docv)
     }
     list(txts=textsvec, docv=docv)
     # return(src)
