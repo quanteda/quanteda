@@ -64,6 +64,8 @@ Collate:
     'dfm-methods.R'
     'dfm-weighting.R'
     'encoding.R'
+    'findSequences.R'
+    'joinTokens.R'
     'kwic.R'
     'lexdiv.R'
     'ngrams.R'
@@ -88,7 +90,5 @@ Collate:
     'tokenize_outtakes.R'
     'wordstem.R'
     'zzz.R'
-    'findSequences.R'
-    'joinTokens.R'
 RoxygenNote: 5.0.1
 SystemRequirements: C++11

@@ -1,4 +1,9 @@
-
+#' join tokens function
+#' 
+#' Needs some more explanation
+#' @param x some object
+#' @param seqs_token something
+#' @param concatenator character used for joining tokens
 #' @examples
 #' data(SOTUCorpus, package = "quantedaData")
 #' toks <- tokenize(SOTUCorpus, removePunct = TRUE)

@@ -1,6 +1,7 @@
+#' find sequences of tokens
+#'
 #' This function automatically identify sequences of tokens. This algorithm is   
 #' based on Blaheta and Johnson's “Unsupervised Learning of Multi-Word Verbs”.
-
 #' @examples 
 #' data(SOTUCorpus, package = "quantedaData")
 #' sents <- tokenize(SOTUCorpus, what='sentence', simplify = TRUE)
@@ -14,7 +15,6 @@
 #' # Types can be any words
 #' types_lower <- types[stri_detect_regex(types, "^([a-z]+)$") & !types %in%stopwords()]
 #' findSequences(tokens, types_lower, count_min=2)
-#' 
 #' @export
 findSequences <- function(x, tokens, count_min=2, len_max = 5, smooth=0.001){
   
@@ -25,14 +25,20 @@ findSequences <- function(x, tokens, count_min=2, len_max = 5, smooth=0.001){
   seqs
 }
 
-print.tokenSequences <- function(x){
-  
-  df <- data.frame(name=sapply(x[['sequence']], paste, collapse = " "),
-                   len=sapply(x[['sequence']], length),
-                   #lambda=x$lambda,
-                   #sigma=x$sigma,
-                   z=x$z,
-                   p=x$p)
-  df <- df[order(df$z),]
-  print(df)
+#' print a tokenSequences objects
+#' 
+#' print method for a \link{tokenSequences} object
+#' @param x a tokenSequences object created by \link{findSequences}
+#' @param ... further arguments passed to base print method
+#' @export
+#' @method print tokenSequences
+print.tokenSequences <- function(x, ...){
+    df <- data.frame(name=sapply(x[['sequence']], paste, collapse = " "),
+                     len=sapply(x[['sequence']], length),
+                     #lambda=x$lambda,
+                     #sigma=x$sigma,
+                     z=x$z,
+                     p=x$p)
+    df <- df[order(df$z),]
+    print(df, ...)
 }

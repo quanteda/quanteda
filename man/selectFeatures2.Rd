@@ -46,13 +46,14 @@ set of tokens.
 \examples{
 \dontrun{## performance comparisons
 data(SOTUCorpus, package = "quantedaData")
-toks <- tokenize(toLower(SOTUCorpus), removePunct = TRUE)
+toks <- tokenize(SOTUCorpus, removePunct = TRUE)
+toks <- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), removePunct = TRUE)
 # head to head, old v. new
 system.time(selectFeatures2(toks, stopwords("english"), "remove", verbose = FALSE))
 system.time(selectFeatures(toks, stopwords("english"), "remove", verbose = FALSE))
 system.time(selectFeatures2(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"))
 system.time(selectFeatures(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"))
-#' microbenchmark::microbenchmark(
+microbenchmark::microbenchmark(
     new = selectFeatures2(toks, stopwords("english"), "remove", verbose = FALSE),
     old = selectFeatures(toks, stopwords("english"), "remove", verbose = FALSE),
     times = 5, unit = "relative")
@@ -61,12 +62,19 @@ microbenchmark::microbenchmark(
     old = selectFeatures(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"),
     times = 2, unit = "relative")
     
+types <- unique(unlist(toks))
+numbers <- types[stringi::stri_detect_regex(types, '[0-9]')]
+microbenchmark::microbenchmark(
+    new = selectFeatures2(toks, numbers, "remove", verbose = FALSE, valuetype = "fixed"),
+    old = selectFeatures(toks, numbers, "remove", verbose = FALSE, valuetype = "fixed"),
+    times = 2, unit = "s")  
+    
 # removing tokens before dfm, versus after
 microbenchmark::microbenchmark(
-    pre = dfm(removeFeatures2(toks, stopwords("english")), verbose = FALSE),
+    pre = dfm(selectFeatures2(toks, stopwords("english"), "remove"), verbose = FALSE),
     post = dfm(toks, ignoredFeatures = stopwords("english"), verbose = FALSE),
-    times = 5, unit = "relative")}
-    
+    times = 5, unit = "relative")
+}
 
 ## with simple examples
 toks <- tokenize(c("This is a sentence.", "This is a second sentence."), 

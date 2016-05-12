@@ -291,12 +291,12 @@ selectFeatures2 <- function(x, ...) UseMethod("selectFeatures2")
 #'     old = selectFeatures(toks, numbers, "remove", verbose = FALSE, valuetype = "fixed"),
 #'     times = 2, unit = "s")  
 #'     
-#' #removing tokens before dfm, versus after
+#' # removing tokens before dfm, versus after
 #' microbenchmark::microbenchmark(
-#'     pre = dfm(removeFeatures2(toks, stopwords("english")), verbose = FALSE),
+#'     pre = dfm(selectFeatures2(toks, stopwords("english"), "remove"), verbose = FALSE),
 #'     post = dfm(toks, ignoredFeatures = stopwords("english"), verbose = FALSE),
 #'     times = 5, unit = "relative")
-#'     
+#' }
 #' 
 #' ## with simple examples
 #' toks <- tokenize(c("This is a sentence.", "This is a second sentence."), 
