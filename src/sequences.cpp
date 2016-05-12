@@ -8,6 +8,7 @@
 
 using namespace Rcpp;
 
+// [[Rcpp::export]]
 int match_bit(const std::vector<std::string> &tokens1, 
               const std::vector<std::string> &tokens2){
   
@@ -29,14 +30,14 @@ double sigma(std::vector<int> &counts, const int &n, const double &smooth){
     s += 1 / (counts[b] + smooth);
   }
   s += pow((n - 1), 2) / (counts[0] + smooth);
-  return s;
+  return std::sqrt(s);
 }
 
 double lambda(std::vector<int> &counts, const int &n, const double &smooth){
   
-  double l = log(counts[n]+ smooth);
+  double l = std::log(counts[n]+ smooth);
   for (int b = 1; b < n; b++){
-    l -= log(counts[b] + smooth);
+    l -= std::log(counts[b] + smooth);
   }
   l += (n - 1) * log(counts[0] + smooth);
   return l;
