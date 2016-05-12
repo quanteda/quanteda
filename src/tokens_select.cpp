@@ -22,10 +22,10 @@ Rcpp::List select_tokens_cppl(Rcpp::List texts_original,
     Rcpp::CharacterVector text(text_original.size()); // make vector in the same length as original
     int j = 0;
     for (int i=0; i < text.size(); i++){
-      Rcpp::String token = text[i];
+      Rcpp::String token = text_original[i];
       bool is_in = set_types.find(token) != set_types.end();
       if(is_in == remove){
-        //Rcout << "Match " << i << ' ' << text[i] << "\n";
+        //Rcout << "Match " << i << ' ' << token.get_cstring() << "\n";
         if(spacer){
           text[j] = "";
           j++;
