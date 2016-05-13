@@ -83,8 +83,14 @@ Once constructed, a **quanteda** "dfm"" can be easily analyzed using either quan
    intervals on textual statistics using techniques of non-parametric
    bootstrapping, but applied to the original texts as data. 
    
-*  expansion of the document-feature matrix structure through a standard interface called `textmodel()`.  (As of version 0.8.0, textmodel works in a basic fashion only for the "Wordscores" and "wordfish" scaling models.)
+*  expansion of predictive and analytic methods called through the standard 
+   interface called `textmodel()`.  Current model types include correspondence analysis, "Wordscores", "Wordfish", and Naive Bayes.
 
+*  Addition of settings to corpus projects, that will propogate through downstream objects.
+
+*  Addition of a history that will propogate through downstream objects.
+
+**Acknowledgements**:  This research was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
 How to Install
 --------------

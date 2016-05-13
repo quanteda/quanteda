@@ -42,7 +42,13 @@ Once constructed, a **quanteda** "dfm"" can be easily analyzed using either quan
 
 -   bootstrapping methods for texts that makes it easy to resample texts from pre-defined units, to facilitate computation of confidence intervals on textual statistics using techniques of non-parametric bootstrapping, but applied to the original texts as data.
 
--   expansion of the document-feature matrix structure through a standard interface called `textmodel()`. (As of version 0.8.0, textmodel works in a basic fashion only for the "Wordscores" and "wordfish" scaling models.)
+-   expansion of predictive and analytic methods called through the standard interface called `textmodel()`. Current model types include correspondence analysis, "Wordscores", "Wordfish", and Naive Bayes.
+
+-   Addition of settings to corpus projects, that will propogate through downstream objects.
+
+-   Addition of a history that will propogate through downstream objects.
+
+**Acknowledgements**: This research was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
 How to Install
 --------------
@@ -84,7 +90,7 @@ Example
 
 ``` r
 library(quanteda)
-#> quanteda version 0.9.5.26
+#> quanteda version 0.9.6.5
 #> 
 #> Attaching package: 'quanteda'
 #> The following object is masked from 'package:base':
@@ -114,7 +120,7 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 #>          UKIP   346    739        27         UKIP
 #> 
 #> Source:  /Users/kbenoit/Dropbox/GitHub/quanteda/* on x86_64 by kbenoit
-#> Created: Sun May  8 18:34:15 2016
+#> Created: Fri May 13 15:40:29 2016
 #> Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -135,7 +141,7 @@ mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
 #>    ... removed 97 features, from 175 supplied (glob) feature types
 #>    ... created a 9 x 1489 sparse dfm
 #>    ... complete. 
-#> Elapsed time: 0.031 seconds.
+#> Elapsed time: 0.034 seconds.
 dim(mydfm)              # basic dimensions of the dfm
 #> [1]    9 1489
 topfeatures(mydfm, 20)  # 20 top words

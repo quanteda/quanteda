@@ -546,32 +546,31 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
 
+        
     if (simplify == FALSE) {
         # stri_* destroys names, so put them back
         startTimeClean <- proc.time()
         if (verbose) cat("  ...replacing names")
         names(result) <- names(x)
         if (verbose) cat("...total elapsed: ", (proc.time() - startTimeClean)[3], "seconds.\n")
+        # make this an S3 class item, if a list
+        if (!is.tokenizedTexts(result))
+            class(result) <- c("tokenizedTexts", class(result))
+        attr(result, "what") <- what
+        attr(result, "ngrams") <- ngrams
+        attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
     } else {
         # or just return the tokens as a single character vector
         if (verbose) cat("  ...unlisting results.\n")
-        result <- unlist(result)
+        result <- unlist(result, use.names = FALSE)
+        # clear attributes
+        attributes(result) <- NULL
     }
-    
+
     if (verbose) 
         cat("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n") 
-    #, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
-
-    # make this an S3 class item, if a list
-    if (simplify == FALSE & !is.tokenizedTexts(result)) {
-        class(result) <- c("tokenizedTexts", class(result))
-    }
-    
-    # add settings
-    attr(result, "what") <- what
-    attr(result, "ngrams") <- ngrams
-    attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
-
+        #, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
+        
     result
 }
 

@@ -29,7 +29,9 @@ setMethod("show", "dictionary",
 #' 
 #' Create a quanteda dictionary, either from a list or by importing from a 
 #' foreign format.  Currently supported input file formats are the Wordstat and 
-#' LIWC formats.
+#' LIWC formats.  The import using the LIWC format works with all currently
+#' available dictionary files supplied as part of the LIWC 2001, 2007, and 2015
+#' software (see References).
 #' @param x a list of character vector dictionary entries, including regular 
 #'   expressions (see examples)
 #' @param file file identifier for a foreign dictionary
@@ -38,10 +40,10 @@ setMethod("show", "dictionary",
 #'   Provalis Research's Wordstat software} \item{\code{"LIWC"}}{format used by 
 #'   the Linguistic Inquiry and Word Count software} }
 #' @param concatenator the character in between multi-word dictionary values. 
-#'   This defaults to \code{"_"} except LIWC-formatted files, which defaults to
+#'   This defaults to \code{"_"} except LIWC-formatted files, which defaults to 
 #'   a single space \code{" "}.
-#' @param encoding additional optional encoding value for reading in imported
-#'   dictionaries. This uses the \link{iconv} labels for encoding.  See the
+#' @param encoding additional optional encoding value for reading in imported 
+#'   dictionaries. This uses the \link{iconv} labels for encoding.  See the 
 #'   "Encoding" section of the help for \link{file}.
 #' @param toLower if \code{TRUE}, convert all dictionary values to lowercase
 #' @return A dictionary class object, essentially a specially classed named list
