@@ -2,6 +2,10 @@
 #'
 #' This function automatically identify sequences of tokens. This algorithm is   
 #' based on Blaheta and Johnson's “Unsupervised Learning of Multi-Word Verbs”.
+#' @param x tokenizedTexts objects
+#' @param tokens types of token in sequuences
+#' @param count_min minimum frequency of sequences
+#' @param smooth smoothing factor
 #' @examples 
 #' data(SOTUCorpus, package = "quantedaData")
 #' sents <- tokenize(SOTUCorpus, what='sentence', simplify = TRUE)
@@ -15,6 +19,7 @@
 #' # Types can be any words
 #' types_lower <- types[stri_detect_regex(types, "^([a-z]+)$") & !types %in%stopwords()]
 #' findSequences(tokens, types_lower, count_min=2)
+#' @rdname tokenSequences
 #' @export
 findSequences <- function(x, tokens, count_min=2, smooth=0.001){
   
