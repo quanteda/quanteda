@@ -4,6 +4,7 @@
 #' @param x some object
 #' @param seqs_token something
 #' @param concatenator character used for joining tokens
+#' @param display progress
 #' @examples
 #' data(SOTUCorpus, package = "quantedaData")
 #' toks <- tokenize(SOTUCorpus, removePunct = TRUE)
@@ -13,20 +14,20 @@
 #' kwic(toks2, c('foreign', 'policy'), window=1) # not joined
 #' kwic(toks2, 'United_States', window=1) # joined
 #' @export
-joinTokens <- function(x, seqs_token, concatenator='-'){
+joinTokens <- function(x, seqs_token, concatenator='-', verbose=TRUE){
   
   tokens <- x
-  cat("Indexing tokens ...\n")
+  if(verbose) cat("Indexing tokens ...\n")
   index <- dfm(tokens, verbose = FALSE)
   
   for(i in 1:length(seqs_token)){
     seq_token <- seqs_token[[i]]
     if(is.list(seq_token) | !is.vector(seq_token) | length(seq_token) == 0) stop('Invalid token sequence\n');
     if(!all(seq_token %in% colnames(index))){
-      cat(paste0(seq_token, concatenate=''), 'are not found', '\n')
+      if(verbose) cat(paste0(seq_token, concatenate=''), 'are not found', '\n')
     }else{
       flag <- rowSums(as(index[,seq_token], 'nMatrix')) == length(seq_token)
-      cat(paste0('"', seq_token, concatenate='', '"'), 'are found in', sum(flag) ,'documents ...\n')
+      if(verbose) cat(paste0('"', seq_token, concatenate='', '"'), 'are found in', sum(flag) ,'documents ...\n')
       tokens <- join_tokens_cppl(tokens, flag, seq_token, concatenator)
     }
   }
