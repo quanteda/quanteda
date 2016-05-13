@@ -86,6 +86,7 @@ Collate:
     'textmodel-wordfish.R'
     'textmodel-wordscores.R'
     'toLower.R'
+    'toUpper.R'
     'tokenize.R'
     'tokenize_outtakes.R'
     'wordstem.R'
