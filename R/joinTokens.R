@@ -22,6 +22,7 @@ joinTokens <- function(x, seqs_token, concatenator='-', verbose=TRUE){
   
   for(i in 1:length(seqs_token)){
     seq_token <- seqs_token[[i]]
+    if(length(seq_token) < 2) next
     if(is.list(seq_token) | !is.vector(seq_token) | length(seq_token) == 0) stop('Invalid token sequence\n');
     if(!all(seq_token %in% colnames(index))){
       if(verbose) cat(paste0(seq_token, concatenate=''), 'are not found', '\n')
