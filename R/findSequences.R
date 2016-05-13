@@ -34,7 +34,7 @@ findSequences <- function(x, tokens, count_min=2, smooth=0.001){
 #' @export
 #' @method print tokenSequences
 print.tokenSequences <- function(x, ...){
-    df <- data.frame(name=sapply(x[['sequence']], paste, collapse = " "),
+    df <- data.frame(sequence=sapply(x[['sequence']], paste, collapse = " "),
                      len=sapply(x[['sequence']], length),
                      #lambda=x$lambda,
                      #sigma=x$sigma,
