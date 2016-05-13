@@ -51,8 +51,8 @@ ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
     if (any(stringi::stri_detect_fixed(x, " ")) & concatenator != " ")
         stop("whitespace detected: please tokenize() before using ngrams()")
     if (length(x) < min(n)) return(NULL)
-    if (identical(n, 1)) {
-        if (!identical(skip, 0))
+    if (identical(as.integer(n), 1L)) {
+        if (!identical(as.integer(skip), 0L))
             warning("skip argument ignored for n = 1")
         return(x)
     }
