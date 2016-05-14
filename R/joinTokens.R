@@ -52,7 +52,7 @@ joinTokens <- function(x, sequences, concatenator='-', valueType='fixed', verbos
   }
   #cat("seqs_token--------------------\n")
   #print(seqs_token)
-  
+  if(length(seqs_token) == 0) return(tokens)
   for(i in 1:length(seqs_token)){
     seq_token <- seqs_token[[i]]
     if(length(seq_token) < 2) next
@@ -65,5 +65,5 @@ joinTokens <- function(x, sequences, concatenator='-', valueType='fixed', verbos
       tokens <- join_tokens_cppl(tokens, flag, seq_token, concatenator)
     }
   }
-  tokens
+  return(tokens)
 }
