@@ -7,11 +7,11 @@
 \method{print}{tokenSequences}(x, ...)
 }
 \arguments{
-\item{x}{a tokenSequences object created by \link{findSequences}}
+\item{x}{a tokenSequences object created by findSequences}
 
 \item{...}{further arguments passed to base print method}
 }
 \description{
-print method for a \link{tokenSequences} object
+print method for a tokenSequences object
 }
 

@@ -4,7 +4,7 @@
 \alias{joinTokens}
 \title{join tokens function}
 \usage{
-joinTokens(x, seqs_token, concatenator = "-")
+joinTokens(x, seqs_token, concatenator = "-", verbose = TRUE)
 }
 \arguments{
 \item{x}{some object}
@@ -12,6 +12,8 @@ joinTokens(x, seqs_token, concatenator = "-")
 \item{seqs_token}{something}
 
 \item{concatenator}{character used for joining tokens}
+
+\item{verbose}{display progress}
 }
 \description{
 Needs some more explanation
