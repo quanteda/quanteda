@@ -38,7 +38,7 @@ findSequences <- function(x, tokens, count_min=2, smooth=0.001){
 #' print a tokenSequences objects
 #' 
 #' print method for a tokenSequences object
-#' @param x a tokenSequences object created by findSequences
+#' @param x a tokenSequences object created by \link{findSequences}
 #' @param ... further arguments passed to base print method
 #' @export
 #' @method print tokenSequences
