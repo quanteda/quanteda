@@ -21,7 +21,7 @@
 #' kwic(toks2, c('foreign', 'policy'), window=1) # not joined
 #' kwic(toks2, 'United_States', window=1) # joined
 #' @export
-joinTokens <- function(x, sequences, concatenator='-', valueType='fixed', verbose=FALSe){
+joinTokens <- function(x, sequences, concatenator='-', valueType='fixed', verbose=FALSE){
   
   tokens <- x
   if(verbose) cat("Indexing tokens...\n")
