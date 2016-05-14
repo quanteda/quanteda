@@ -61,7 +61,7 @@ joinTokens <- function(x, sequences, concatenator='-', valueType='fixed', verbos
       if(verbose) cat(paste0('"', seq_token, concatenate='', '"'), 'are not found', '\n')
     }else{
       flag <- rowSums(as(index[,seq_token], 'nMatrix')) == length(seq_token)
-      if(verbose) cat(paste0('"', seq_token, concatenate='', '"'), 'are found in', sum(flag) ,'documents ...\n')
+      if(verbose) cat(paste0('"', seq_token, concatenate='', '"'), 'are found in', sum(flag) ,'documents...\n')
       tokens <- join_tokens_cppl(tokens, flag, seq_token, concatenator)
     }
   }
