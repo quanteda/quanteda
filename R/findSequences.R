@@ -1,3 +1,5 @@
+
+
 #' find sequences of tokens
 #'
 #' This function automatically identify sequences of tokens. This algorithm is   
@@ -14,12 +16,14 @@
 #' 
 #' # Extracting multi-part nouns
 #' types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
-#' findSequences(tokens, types_upper, count_min=2)
-#'
+#' seqs <- findSequences(tokens, types_upper, count_min=2)
+#' head(seqs)
+#' 
 #' # Types can be any words
-#' types_lower <- types[stri_detect_regex(types, "^([a-z]+)$") & !types %in%stopwords()]
-#' findSequences(tokens, types_lower, count_min=2)
-#' @rdname tokenSequences
+#' types_lower <- types[stringi::stri_detect_regex(types, "^([a-z]+)$") & !types %in%stopwords()]
+#' seqs2 <- findSequences(tokens, types_lower, count_min=2)
+#' head(seqs2)
+#' @rdname findSequences
 #' @export
 findSequences <- function(x, tokens, count_min=2, smooth=0.001){
   
@@ -33,7 +37,7 @@ findSequences <- function(x, tokens, count_min=2, smooth=0.001){
 
 #' print a tokenSequences objects
 #' 
-#' print method for a \link{tokenSequences} object
+#' print method for a tokenSequences object
 #' @param x a tokenSequences object created by \link{findSequences}
 #' @param ... further arguments passed to base print method
 #' @export

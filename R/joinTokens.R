@@ -4,7 +4,7 @@
 #' @param x some object
 #' @param seqs_token something
 #' @param concatenator character used for joining tokens
-#' @param display progress
+#' @param verbose display progress
 #' @examples
 #' data(SOTUCorpus, package = "quantedaData")
 #' toks <- tokenize(SOTUCorpus, removePunct = TRUE)
