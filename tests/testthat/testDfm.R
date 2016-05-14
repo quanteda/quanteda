@@ -1,3 +1,4 @@
+context('Testing dfm*.R')
 
 mycorpus <- subset(inaugCorpus, Year > 1900)
 mydict <- dictionary(list(christmas=c("Christmas", "Santa", "holiday"),
@@ -87,5 +88,9 @@ expect_equal(nfeature(trim(preDictDfm, sparsity = 0.95)), nfeature(trim(preDictD
 expect_equal(nfeature(trim(preDictDfm, minDoc = 0.05)), 3077)
 
 
-
-
+test_that("test c.corpus",
+    expect_that(
+        matrix(dfm(corpus(c('What does the fox say?', 'What does the fox say?', '')))),
+        equals(matrix(rep(c(1, 1, 0), 5), nrow=15, ncol=1))
+    )
+)
