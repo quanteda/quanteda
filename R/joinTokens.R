@@ -50,8 +50,8 @@ joinTokens <- function(x, sequences, concatenator='-', valueType='fixed', verbos
   }else{
     seqs_token <- sequences  
   }
-  #cat("seqs_token--------------------\n")
-  #print(seqs_token)
+  cat("seqs_token--------------------\n")
+  print(seqs_token)
   
   for(i in 1:length(seqs_token)){
     seq_token <- seqs_token[[i]]
