@@ -78,8 +78,8 @@ Rcpp::List find_sequence_cppl(List texts,
     
     int len_text = text.size();
     //print_vector("Text", text);
-    for (int i = 1; i < len_text - 1; i++){ // ignore first words in sentences
-      for (int j = i; j < len_text - 1; j++){ // collect subsequence starting  from i
+    for (int i = 1; i < len_text; i++){ // scan texts ignoring first words in texts
+      for (int j = i; j < len_text; j++){ // collect nested sequence starting from i
         //Rcout << i << " " << j << "\n";
         Rcpp::String token = text[j];
         bool is_in;

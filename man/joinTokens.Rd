@@ -4,14 +4,19 @@
 \alias{joinTokens}
 \title{join tokens function}
 \usage{
-joinTokens(x, seqs_token, concatenator = "-", verbose = TRUE)
+joinTokens(x, sequences, concatenator = "-", valueType = "fixed",
+  verbose = TRUE)
 }
 \arguments{
 \item{x}{some object}
 
-\item{seqs_token}{something}
+\item{sequences}{list of vector of features to concatenate}
 
 \item{concatenator}{character used for joining tokens}
+
+\item{valueType}{how to interpret sequences: \code{fixed} for words as 
+is; \code{"regex"} for regular expressions; or \code{"glob"} for 
+"glob"-style wildcard}
 
 \item{verbose}{display progress}
 }
@@ -22,7 +27,11 @@ Needs some more explanation
 data(SOTUCorpus, package = "quantedaData")
 toks <- tokenize(SOTUCorpus, removePunct = TRUE)
 seqs_token <- list(c('foreign', 'policy'), c('United', 'States'))
-toks2 <- joinTokens(toks, seqs_token, "_")
+seqs_glob <- list(c('foreign', 'polic*'), c('United', 'States'))
+seqs_regex <- list(c('^foreign', '^polic(ie|y)'), c('^United', '^States'))
+toks2 <- joinTokens(toks, seqs_token, "_", 'glob')
+toks2 <- joinTokens(toks, seqs_glob, "_", 'glob')
+toks2 <- joinTokens(toks, seqs_regex, "_", 'regex')
 kwic(toks2, 'foreign_policy', window=1) # joined
 kwic(toks2, c('foreign', 'policy'), window=1) # not joined
 kwic(toks2, 'United_States', window=1) # joined
