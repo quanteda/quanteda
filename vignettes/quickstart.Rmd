@@ -27,8 +27,8 @@ An R package for managing and analyzing text, by Ken Benoit and Paul Nulty.[^tha
 
 [^thanks]: This research was supported by the European
     Research Council grant ERC-2011-StG 283794-QUANTESS.  Code
-    contributors to the project include Ben Lauderdale, Pablo Barberà, and 
-    Kohei Watanabe.
+    contributors to the project include Ben Lauderdale, Pablo Barberà,
+    Kohei Watanabe, and Adam Obeng.
 
 **quanteda** makes it easy to manage texts in the form of a
 corpus, defined as a collection of texts that includes document-level

@@ -35,7 +35,8 @@ Imports:
     parallel,
     Rcpp,
     ca,
-    stringi
+    stringi,
+    ggplot2
 LinkingTo: Rcpp, RcppArmadillo
 Suggests:
     knitr,
@@ -45,7 +46,6 @@ Suggests:
     streamR,
     tm (>= 0.6),
     slam,
-    ggplot2,
     XML,
     testthat,
     RColorBrewer
