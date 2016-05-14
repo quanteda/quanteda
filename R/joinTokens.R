@@ -12,7 +12,11 @@
 #' data(SOTUCorpus, package = "quantedaData")
 #' toks <- tokenize(SOTUCorpus, removePunct = TRUE)
 #' seqs_token <- list(c('foreign', 'policy'), c('United', 'States'))
-#' toks2 <- joinTokens(toks, seqs_token, "_")
+#' seqs_glob <- list(c('foreign', 'polic*'), c('United', 'States'))
+#' seqs_regex <- list(c('^foreign', '^polic(ie|y)'), c('^United', '^States'))
+#' toks2 <- joinTokens(toks, seqs_token, "_", 'glob')
+#' toks2 <- joinTokens(toks, seqs_glob, "_", 'glob')
+#' toks2 <- joinTokens(toks, seqs_regex, "_", 'regex')
 #' kwic(toks2, 'foreign_policy', window=1) # joined
 #' kwic(toks2, c('foreign', 'policy'), window=1) # not joined
 #' kwic(toks2, 'United_States', window=1) # joined
@@ -20,22 +24,34 @@
 joinTokens <- function(x, sequences, concatenator='-', valueType='fixed', verbose=TRUE){
   
   tokens <- x
-  seqs_token <- sequences
-  if(verbose) cat("Indexing tokens ...\n")
+  if(verbose) cat("Indexing tokens...\n")
   index <- dfm(tokens, verbose = FALSE)
   
-  if(valuetype=='glob'){
-    
-    regex <- unlist(lapply(parts, utils::glob2rx))
-    #cat("regex--------------------\n")
-    #print(regex)
-    match <- lapply(regex, function(x, y) y[stringi::stri_detect_regex(y, x)], colnames(index))
-    #cat("match--------------------\n")
-    #print(match)
-    #print(length(match))
-    if(length(unlist(regex)) != length(match)) next
-    seqs_token <- do.call(expand.grid, c(match, stringsAsFactors=FALSE)) # Produce all possible combinations
+  seqs_token <- list()
+  if(valueType=='regex' | valueType=='glob'){
+    if(verbose) cat("Converting patterns to tokens...\n")
+    for(sequence in sequences){
+      if(valueType=='glob'){
+        seq_regex <- unlist(lapply(sequence, utils::glob2rx))
+      }else{
+        seq_regex <- sequence
+      }
+      #cat("seq_regex--------------------\n")
+      #print(seq_regex)
+      match <- lapply(seq_regex, function(x, y) y[stringi::stri_detect_regex(y, x)], colnames(index))
+      #cat("match--------------------\n")
+      #print(match)
+      if(length(unlist(seq_regex)) != length(match)) next
+      match_comb <- do.call(expand.grid, c(match, stringsAsFactors=FALSE)) # Produce all possible combinations
+      #cat("match_comb--------------------\n")
+      #print(match_comb)
+      seqs_token <- c(seqs_token, split_df_cpp(t(match_comb)))
+    }
+  }else{
+    seqs_token <- sequences  
   }
+  #cat("seqs_token--------------------\n")
+  #print(seqs_token)
   
   for(i in 1:length(seqs_token)){
     seq_token <- seqs_token[[i]]

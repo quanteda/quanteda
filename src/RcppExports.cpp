@@ -100,6 +100,17 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// split_df_cpp
+std::vector<CharacterVector> split_df_cpp(DataFrame df);
+RcppExport SEXP quanteda_split_df_cpp(SEXP dfSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< DataFrame >::type df(dfSEXP);
+    __result = Rcpp::wrap(split_df_cpp(df));
+    return __result;
+END_RCPP
+}
 // wordfishcpp
 Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEXP dispfloor);
 RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP, SEXP dispSEXP, SEXP dispfloorSEXP) {

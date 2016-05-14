@@ -29,6 +29,10 @@ select_tokens_cppl <- function(texts_original, types, remove, spacer) {
     .Call('quanteda_select_tokens_cppl', PACKAGE = 'quanteda', texts_original, types, remove, spacer)
 }
 
+split_df_cpp <- function(df) {
+    .Call('quanteda_split_df_cpp', PACKAGE = 'quanteda', df)
+}
+
 wordfishcpp <- function(wfm, dir, priors, tol, disp, dispfloor) {
     .Call('quanteda_wordfishcpp', PACKAGE = 'quanteda', wfm, dir, priors, tol, disp, dispfloor)
 }
