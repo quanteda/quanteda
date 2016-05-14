@@ -263,11 +263,13 @@ dfm.tokenizedTexts <- function(x,
     if (verbose) cat(format(totalfeatures - 1, big.mark=","), " feature type",
                      ifelse(totalfeatures - 1  > 1, "s", ""), sep="")
     featureIndex <- match(allFeatures, uniqueFeatures)
+    print(max(featureIndex))
     # add an arbitrary "feature" for empty docs
     if (length(emptyDocs)) {
-        featureIndex <- c(featureIndex, rep(length(allFeatures)+1, length(emptyDocs)))
+        featureIndex <- c(featureIndex, rep(length(uniqueFeatures)+1, length(emptyDocs)))
         uniqueFeatures <- c(uniqueFeatures, "__TEMPFEATURE__")
     }
+    print(max(featureIndex))
     
     if (verbose) cat("\n")
     
