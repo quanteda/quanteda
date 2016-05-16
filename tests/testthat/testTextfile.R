@@ -99,6 +99,26 @@ test_that("test textfile with glob-style mask", {
 })
 
 
+test_that("test non-implemented functions", {
+
+    expect_that(
+        textfile('tests/testthat/data/empty/test.doc'),
+        throws_error('doc files not implemented yet')
+    )
+
+    expect_that(
+        textfile('tests/testthat/data/empty/test.docx'),
+        throws_error('doc files not implemented yet')
+    )
+
+    expect_that(
+        textfile('tests/testthat/data/empty/test.pdf'),
+        throws_error('pdf files not implemented yet')
+    )
+
+
+})
+
 test_that("test get_csv", {
     testcorpus <- textfile('tests/testthat/data/csv/test.csv', textField='text')
     expect_that(
