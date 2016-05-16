@@ -434,27 +434,16 @@ getFileType <- function(filenameChar) {
         return("filemask")
     filenameExt <- file_ext(filenameChar)
 
-    if (filenameExt %in% c("xls", "xlsx"))
-        return("excel")
-    else if (filenameExt %in% c("csv"))
-        return("csv")
-    else if (filenameExt %in% c("txt"))
-        return("txt")
-    else if (filenameExt %in% c("doc", "docx"))
-        return("word")
-    else if (filenameExt %in% c("json"))
-        return("json")
-    else if (filenameExt %in% c("zip"))
-        return("zip")
-    else if (filenameExt %in% c("gz"))
-        return("gz")
-    else if (filenameExt %in% c("tar"))
-        return("tar")
-    else if (filenameExt %in% c("xml"))
-        return("xml")
-    else if (filenameExt %in% c("tab", "tsv"))
-        return("tab")
-    else return("unknown")
+    fileTypeMapping <-        c('excel', 'excel', 'csv', 'txt', 'word', 'word', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tab')
+    names(fileTypeMapping) <- c('xls',   'xlsx',  'csv', 'txt', 'doc',  'docx', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tsv')
+
+    fileType <- tryCatch({
+         fileTypeMapping[[filenameExt]]
+    }, error = function(e) {
+        'unknown'
+    })
+
+    return(fileType)
 }    
 
 
