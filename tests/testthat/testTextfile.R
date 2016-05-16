@@ -151,6 +151,14 @@ test_that("test getdocvarsFromFilenames", {
         throws_error("Filename elements are not equal in length.")
     )
 
+    expect_that(
+        getdocvarsFromFilenames(
+            fnames=c('1_apple_red.json', '2_orange_orange.json'),
+            doc
+        ),
+        equals(data.frame(list(docvar1=c('1','2'), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
+    )
+
 
 
 })
