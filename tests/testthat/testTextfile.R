@@ -129,5 +129,12 @@ test_that("test getdocvarsFromFilenames", {
         equals(data.frame(list(docvar1=c('1','2'), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
     )
 
+    expect_that(
+        getdocvarsFromFilenames(
+            fnames=c('1_apple_red.json', '2_orange_orange.json')
+        ),
+        equals(data.frame(list(docvar1=c('1','2'), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
+    )
+
 
 })
