@@ -105,3 +105,10 @@ test_that("test texts.corpusSource error with groups!=NULL", {
         throws_error()
      )
 })
+
+test_that("test docvars.corpusSource warning with field!=NULL", {
+    expect_that(
+        docvars(textfile('tests/testthat/data/fox/fox.txt'), field='anything'),
+        gives_warning()
+     )
+})
