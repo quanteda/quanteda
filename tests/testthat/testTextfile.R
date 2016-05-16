@@ -39,13 +39,36 @@ test_that("test show.corpus", {
 
 })
 
-fox <- "The quick brown fox jumps over the lazy dog."
+
+# TODO: Add tests for the various method signatures
+
 
 test_that("test textfile with single filename", {
+    fox <- "The quick brown fox jumps over the lazy dog."
     expect_equal(
         texts(textfile('tests/testthat/data/fox/fox.txt')),
         fox
     )
+
+})
+
+test_that("test classes, slots, and extractor functions", {
+
+    testtextfile <- textfile('tests/testthat/data/fox/fox.txt')
+
+
+    expect_equal(
+        slotNames(testtextfile),
+        c('texts', 'docvars', 'source', 'created', 'cachedfile')
+    )
+
+
+    expect_is(testtextfile, 'corpusSource')
+    expect_is(testtextfile@texts, 'chr')
+    expect_is(testtextfile@docvars, 'data.frame')
+    expect_is(testtextfile@source, 'chr')
+    expect_is(testtextfile@cachedfile, 'character')
+
 
 })
 
