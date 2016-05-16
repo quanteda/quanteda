@@ -411,8 +411,12 @@ get_xml <- function(file, textField, sep=",", ...) {
     if (is.character(textField)) {
         textFieldi <- which(names(docv)==textField)
         if (length(textFieldi)==0)
-            stop("node", textField, "not found.")
+            stop(paste("node", textField, "not found."))
         textField <- textFieldi
+    }
+    else {
+        warning(paste("You should specify textField by name rather than by index, unless",
+                "you're certain that your XML file's fields are always in the same order."))
     }
     txts <- docv[, textField]
     docv <- docv[, -textField, drop = FALSE]

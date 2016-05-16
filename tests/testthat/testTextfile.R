@@ -99,6 +99,45 @@ test_that("test textfile with glob-style mask", {
 })
 
 
+test_that("test get_xml", {
+    testtext <- get_xml('tests/testthat/data/xml/test.xml', textField='text')
+    expect_that(
+        testtext$docv,
+        equals(data.frame(list(number=c(42, 99))))
+    )
+    expect_that(
+        testtext$txts,
+        equals(c('Lorem ipsum', 'Dolor sit'))
+    )
+
+    testcorpus <- textfile('tests/testthat/data/xml/test.xml', textField='text')
+
+    expect_that(
+        docvars(testtext),
+        equals(data.frame(list(number=c(42, 99))))
+    )
+    expect_that(
+        texts(testtext),
+        equals(c('Lorem ipsum', 'Dolor sit'))
+    )
+
+    expect_that(
+        textfile('tests/testthat/data/xml/test.xml', textField='nonexistant'),
+        throws_error('node .* not found')
+    )
+
+    expect_that(
+        textfile('tests/testthat/data/xml/test.xml', textField=1),
+        gives_warning('You should specify textField by name.*')
+    )
+    expect_that(
+        texts(textfile('tests/testthat/data/xml/test.xml', textField=1)),
+        equals(c('Lorem ipsum', 'Dolor sit'))
+    )
+
+
+}
+
 test_that("test getFileType", {
 
       expect_equal(getFileType(c('anything', 'or', 'other')), 'vector')
