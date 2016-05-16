@@ -107,7 +107,6 @@ setMethod("show",
 #'   \link{corpus} to construct a corpus
 #' @author Kenneth Benoit and Paul Nulty
 #' @export
-#' @importFrom stats var
 #' @importFrom utils download.file unzip
 setGeneric("textfile",
            function(file, textField, 
@@ -464,7 +463,7 @@ getdocvarsFromFilenames <- function(fnames, dvsep="_", docvarnames=NULL) {
     snames <- fnames
     snames <- file_path_sans_ext(snames)
     parts <- strsplit(snames, dvsep)
-    if (stats::var(sapply(parts, length)) != 0)
+    if (!all(sapply(parts,function(x) identical(length(x), length(parts[[1]])))))
         stop("Filename elements are not equal in length.")
     dvars <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE), 
                          stringsAsFactors=FALSE)
