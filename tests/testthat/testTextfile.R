@@ -112,3 +112,22 @@ test_that("test docvars.corpusSource warning with field!=NULL", {
         gives_warning()
      )
 })
+
+test_that("test getdocvarsFromFilenames", {
+
+    expect_that(
+        getdocvarsFromFilenames(
+            fnames=c('1_apple.txt', '2_orange.txt')
+        ),
+        equals(data.frame(list(docvar1=c('1','2'), docvar2=c('apple', 'orange')), stringsAsFactors=F))
+    )
+
+    expect_that(
+        getdocvarsFromFilenames(
+            fnames=c('1_apple_red.txt', '2_orange_orange.txt')
+        ),
+        equals(data.frame(list(docvar1=c('1','2'), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
+    )
+
+
+})
