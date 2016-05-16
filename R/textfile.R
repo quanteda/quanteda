@@ -203,7 +203,7 @@ setMethod("textfile",
                   stop("File type ", fileType, " not supported with these arguments.")
               }
               if (docvarsfrom == "filenames") {
-                  sources$docv <- getdocvarsFromHeaders(names(sources$txts), dvsep=dvsep, docvarnames=docvarnames)
+                  sources$docv <- getdocvarsFromFilenames(names(sources$txts), dvsep=dvsep, docvarnames=docvarnames)
               } else {
                   warning("docvarsfrom=", docvarsfrom, " not supported.")
               }
@@ -459,7 +459,7 @@ getFileType <- function(filenameChar) {
 }    
 
 
-getdocvarsFromHeaders <- function(fnames, dvsep="_", docvarnames=NULL) {
+getdocvarsFromFilenames <- function(fnames, dvsep="_", docvarnames=NULL) {
     snames <- fnames
     snames <- gsub(".txt", "", snames)
     parts <- strsplit(snames, dvsep)
