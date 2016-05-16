@@ -432,7 +432,7 @@ getFileType <- function(filenameChar) {
         return("vector")
     if (!substr(filenameChar, 1, 4)=="http" & grepl("[?*]", filenameChar))
         return("filemask")
-    filenameExt <- file_ext(filenameChar)
+    filenameExt <- tools::file_ext(filenameChar)
 
     fileTypeMapping <-        c('excel', 'excel', 'csv', 'txt', 'word', 'word', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tab')
     names(fileTypeMapping) <- c('xls',   'xlsx',  'csv', 'txt', 'doc',  'docx', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tsv')
