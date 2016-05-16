@@ -97,3 +97,11 @@ test_that("test textfile with glob-style mask", {
     # TODO: glob special characters in filename
 
 })
+
+
+test_that("test texts.corpusSource error with groups!=NULL", {
+    expect_that(
+        texts(textfile('tests/testthat/data/fox/fox.txt'), groups='anything'),
+        throws_error()
+     )
+})
