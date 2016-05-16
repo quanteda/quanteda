@@ -99,6 +99,26 @@ test_that("test textfile with glob-style mask", {
 })
 
 
+test_that("test handling of json and twitterjson files by get_json and get_json_tweets", {
+
+    # This is not a twitter-json formatted file
+    expect_equal(
+        texts(textfile('tests/testthat/data/fox/fox.json')),
+        fox
+    )
+    # This is a twitter-json formatted file
+    expect_equal(
+        texts(textfile('tests/testthat/data/tweets/tweets.json')),
+        fox
+    )
+ 
+    # TODO: Test that folders whose names end in '.json' are handled correctly
+    # textfile('tests/testhat/data/tweetsfolder.json')
+
+
+})
+
+
 test_that("test getFileType", {
 
       expect_equal(getFileType(c('anything', 'or', 'other')), 'vector')

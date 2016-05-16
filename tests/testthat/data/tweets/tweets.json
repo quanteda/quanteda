@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Renart T. Fox",
+    "text": "I jumped over the lazy @dog",
+    "user": {
+      "screen_name": "@rendart"
+    },
+    "retweet_count": 1585
+  },
+  {
+    "text": "I didn't do anything today, so I'm tweeting about it.",
+    "user": {
+      "screen_name": "@dog"
+    },
+    "retweet_count": 0
+  }
+]

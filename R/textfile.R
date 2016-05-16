@@ -244,7 +244,7 @@ get_doc <- function(f, ...) {
                return(result)
            },
            doc =  { return(list(txts = get_word(f), docv = data.frame())) },
-           json = { return(get_json_tweets(f, ...)) },
+           json = { return(get_json(f, ...)) },
            zip = { return(get_zipfile(f)) },
            pdf =  { return(list(txts = get_pdf(f), docv = data.frame())) }
     )
@@ -366,9 +366,14 @@ get_csv <- function(file, textField, sep=",", ...) {
 
 
 
-## Twitter json
-get_json_tweets <- function(path=NULL, source="twitter", ...) {
+#  Dispatch to get_json_general or get_json_tweets depending on whether 
+#  it looks like a twitter json file
+get_json <- function(path, ...) {
     stopifnot(file.exists(path))
+}
+
+## Twitter json
+get_json_tweets <- function(path, source="twitter", ...) {
     if (!requireNamespace("streamR", quietly = TRUE))
         stop("You must have streamR installed to read Twitter json files.")
     # identifying whether it is a folder
@@ -387,7 +392,7 @@ get_json_tweets <- function(path=NULL, source="twitter", ...) {
 }
 
 ## general json
-get_json <- function(path, textField, ...) {
+get_json_general <- function(path, textField, ...) {
     if (!requireNamespace("jsonlite", quietly = TRUE))
         stop("You must have jsonlite installed to read json files.")
     # raw <- readLines(path)
