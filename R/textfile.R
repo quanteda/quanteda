@@ -246,7 +246,8 @@ get_doc <- function(f, ...) {
            doc =  { return(list(txts = get_word(f), docv = data.frame())) },
            json = { return(get_json_tweets(f, ...)) },
            zip = { return(get_zipfile(f)) },
-           pdf =  { return(list(txts = get_pdf(f), docv = data.frame())) }
+           pdf =  { return(list(txts = get_pdf(f), docv = data.frame())) },
+           word =  { return(list(txts = get_word(f), docv = data.frame())) }
     )
     stop("unrecognized fileType:", fileType)
 }
@@ -432,8 +433,8 @@ getFileType <- function(filenameChar) {
         return("filemask")
     filenameExt <- tools::file_ext(filenameChar)
 
-    fileTypeMapping <-        c('excel', 'excel', 'csv', 'txt', 'word', 'word', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tab')
-    names(fileTypeMapping) <- c('xls',   'xlsx',  'csv', 'txt', 'doc',  'docx', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tsv')
+    fileTypeMapping <-        c('excel', 'excel', 'csv', 'txt', 'word', 'word', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tab', 'pdf')
+    names(fileTypeMapping) <- c('xls',   'xlsx',  'csv', 'txt', 'doc',  'docx', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tsv', 'pdf')
 
     fileType <- tryCatch({
          fileTypeMapping[[filenameExt]]
