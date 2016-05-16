@@ -99,6 +99,25 @@ test_that("test textfile with glob-style mask", {
 })
 
 
+test_that("test get_csv", {
+    testcorpus <- textfile('tests/testthat/data/csv/test.csv', textField='text')
+    expect_that(
+        testtext$docv,
+        equals(data.frame(list(number=c(42, 99))))
+    )
+    expect_that(
+        testtext$txts,
+        equals(c('Lorem ipsum', 'Dolor sit'))
+    )
+
+    expect_that(
+        textfile('tests/testthat/data/csv/test.csv', textField='nonexistant'),
+        throws_error('column name nonexistant not found')
+    )
+
+})
+## TODO: tests for get_json and get_json_tweets go here
+
 test_that("test get_xml", {
     testtext <- get_xml('tests/testthat/data/xml/test.xml', textField='text')
     expect_that(
