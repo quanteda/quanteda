@@ -426,13 +426,13 @@ get_xml <- function(file, textField, sep=",", ...) {
 }
 
 
+#' @importFrom tools file_ext
 getFileType <- function(filenameChar) {
     if (length(filenameChar) > 1)
         return("vector")
     if (!substr(filenameChar, 1, 4)=="http" & grepl("[?*]", filenameChar))
         return("filemask")
-    filenameParts <- strsplit(filenameChar, ".", fixed=TRUE)
-    filenameExts <- sapply(filenameParts, function(x) x[length(x)])
+    filenameExts <- file_ext(filenameChar)
     sapply(filenameExts, function(x) {
         if (x %in% c("xls", "xlsx"))
             return("excel")
