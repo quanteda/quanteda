@@ -38,3 +38,62 @@ test_that("test show.corpus", {
     # TODO: Add tests for cached corpus
 
 })
+
+fox <- "The quick brown fox jumps over the lazy dog."
+
+test_that("test textfile with single filename", {
+    expect_equal(
+        texts(textfile('tests/testthat/data/fox/fox.txt')),
+        fox
+    )
+
+})
+
+test_that("test textfile with vector of filenames", {
+    expect_equal(
+        length(texts(textfile(
+            c(
+                'tests/testthat/data/fruits/apple.txt',
+                'tests/testthat/data/fruits/orange.txt'
+             )
+        ))),
+        2
+    )
+})
+
+test_that("test textfile with glob-style mask", {
+    expect_equal(
+        length(texts(textfile(
+                'tests/testthat/data/glob/*.txt'
+        ))),
+        5
+    )
+
+    expect_equal(
+        length(texts(textfile(
+                'tests/testthat/data/glob/?.txt'
+        ))),
+        4
+    )
+
+
+    # Glob in non-last part of filename
+    expect_equal(
+        length(texts(textfile(
+                'tests/testthat/data/glob/*/1.txt'
+        ))),
+        2
+    )
+
+
+    # TODO: glob multiple filetypes
+    # expect_equal(
+    #     length(texts(textfile(
+    #             'tests/testthat/data/glob/*'
+    #     ))),
+    #     6
+    # )
+
+    # TODO: glob special characters in filename
+
+})
