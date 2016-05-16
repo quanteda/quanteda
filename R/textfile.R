@@ -382,12 +382,6 @@ get_json_tweets <- function(path=NULL, source="twitter", ...) {
     }
     # read raw json data
     txt <- unlist(sapply(fls, readLines, ...))
-    # crude json type check here
-    if (!any(grepl("retweet_count", txt)))
-        stop("Not a Twitter json formatted file.")
-    
-    # parsing into a data frame
-    # reading tweets into a data frame
     results <- streamR::parseTweets(txt, verbose=FALSE, ...)
     list(txts = results[, 1], docv = as.data.frame(results[, -1, drop = FALSE]))
 }
