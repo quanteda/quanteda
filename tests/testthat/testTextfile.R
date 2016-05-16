@@ -99,6 +99,24 @@ test_that("test textfile with glob-style mask", {
 })
 
 
+test_that("test getFileType", {
+
+      expect_equal(getFileType(c('anything', 'or', 'other')), 'vector')
+
+      expect_equal(getFileType('*.txt'), 'filemask')
+      expect_equal(getFileType('http://example.org/*test.txt'), 'txt')
+      expect_equal(getFileType('http://example.org/test.txt'), 'txt')
+
+      expect_equal(getFileType('test.txt'), 'txt')
+      expect_equal(getFileType('test.tar.gz'), 'gz')
+      expect_equal(getFileType('test.docx'), 'word')
+      expect_equal(getFileType('test.somethingelse'), 'unknown')
+      expect_equal(getFileType('test'), 'unknown')
+
+      # TODO: filenames with glob specialchars
+      # TODO: Should it support multiple filenames?
+})
+
 test_that("test getdocvarsFromFilenames", {
 
     expect_that(
