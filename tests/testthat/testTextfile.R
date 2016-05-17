@@ -163,7 +163,7 @@ test_that("test get_csv", {
 test_that("test handling of three types of json files: real JSON, twitter-specific JSON, and line-delimited JSON", {
 
     # This is a valid JSON file
-    testtexts <- textfile('tests/testthat/data/json/valid.json')
+    testtexts <- textfile('tests/testthat/data/json/valid.json', textField='text')
     expect_equal(
         texts(testtexts),
         c("The quick brown fox jumps over the lazy dog.", 
@@ -175,7 +175,7 @@ test_that("test handling of three types of json files: real JSON, twitter-specif
     )
 
    # This is a line-delimited JSON file
-    testtexts <- textfile('tests/testthat/data/json/lines.json')
+    testtexts <- textfile('tests/testthat/data/json/lines.json', textField='text')
     expect_equal(
         texts(testtexts),
         c("The quick brown fox jumps over the lazy dog.", 
