@@ -39,13 +39,36 @@ test_that("test show.corpus", {
 
 })
 
-fox <- "The quick brown fox jumps over the lazy dog."
+
+# TODO: Add tests for the various method signatures
+
 
 test_that("test textfile with single filename", {
+    fox <- "The quick brown fox jumps over the lazy dog."
     expect_equal(
         texts(textfile('tests/testthat/data/fox/fox.txt')),
         fox
     )
+
+})
+
+test_that("test classes, slots, and extractor functions", {
+
+    testtextfile <- textfile('tests/testthat/data/fox/fox.txt')
+
+
+    expect_equal(
+        slotNames(testtextfile),
+        c('texts', 'docvars', 'source', 'created', 'cachedfile')
+    )
+
+
+    expect_is(testtextfile, 'corpusSource')
+    expect_is(testtextfile@texts, 'chr')
+    expect_is(testtextfile@docvars, 'data.frame')
+    expect_is(testtextfile@source, 'chr')
+    expect_is(testtextfile@cachedfile, 'character')
+
 
 })
 
@@ -99,24 +122,133 @@ test_that("test textfile with glob-style mask", {
 })
 
 
-test_that("test handling of json and twitterjson files by get_json and get_json_tweets", {
+test_that("test non-implemented functions", {
 
-    # This is not a twitter-json formatted file
-    expect_equal(
-        texts(textfile('tests/testthat/data/fox/fox.json')),
-        fox
+    expect_that(
+        textfile('tests/testthat/data/empty/test.doc'),
+        throws_error('doc files not implemented yet')
     )
-    # This is a twitter-json formatted file
-    expect_equal(
-        texts(textfile('tests/testthat/data/tweets/tweets.json')),
-        fox
+
+    expect_that(
+        textfile('tests/testthat/data/empty/test.docx'),
+        throws_error('doc files not implemented yet')
     )
- 
+
+    expect_that(
+        textfile('tests/testthat/data/empty/test.pdf'),
+        throws_error('pdf files not implemented yet')
+    )
+
+
+})
+
+test_that("test get_csv", {
+    testcorpus <- textfile('tests/testthat/data/csv/test.csv', textField='text')
+    expect_that(
+        testtext$docv,
+        equals(data.frame(list(number=c(42, 99))))
+    )
+    expect_that(
+        testtext$txts,
+        equals(c('Lorem ipsum', 'Dolor sit'))
+    )
+
+    expect_that(
+        textfile('tests/testthat/data/csv/test.csv', textField='nonexistant'),
+        throws_error('column name nonexistant not found')
+    )
+
+})
+
+test_that("test handling of three types of json files: real JSON, twitter-specific JSON, and line-delimited JSON", {
+
+    # This is a valid JSON file
+    testtexts <- textfile('tests/testthat/data/json/valid.json')
+    expect_equal(
+        texts(testtexts),
+        c("The quick brown fox jumps over the lazy dog.", 
+          "Lorem ipsum dolor sit amet")
+    )
+    expect_equal(
+        docvars(testtexts),
+        data.frame(list(color=c('green', 'red'), number =c(1, 42)), stringsAsFactors=F)
+    )
+
+   # This is a line-delimited JSON file
+    testtexts <- textfile('tests/testthat/data/json/lines.json')
+    expect_equal(
+        texts(testtexts),
+        c("The quick brown fox jumps over the lazy dog.", 
+          "lorem ipsum dolor sit amet")
+    )
+
+    expect_equal(
+        docvars(testtexts),
+        data.frame(list(color=c('green', 'red'), number =c(1, 42)), stringsAsFactors=F)
+    )
+
+    # This is a line-delimited Twitter Json file
+    testtexts <- textfile('tests/testthat/data/json/tweets-lines.json')
+    expect_equal(
+        texts(testtexts),
+        c("I jumped over the lazy @dog", 
+          "I didn't do anything today, so I'm tweeting about it.")
+    )
+    expect_equal(
+        length(docvars(testtexts)),
+        41
+    )
+
+
+
+
     # TODO: Test that folders whose names end in '.json' are handled correctly
     # textfile('tests/testhat/data/tweetsfolder.json')
 
 
 })
+
+
+test_that("test get_xml", {
+    testtext <- get_xml('tests/testthat/data/xml/test.xml', textField='text')
+    expect_that(
+        testtext$docv,
+        equals(data.frame(list(number=c(42, 99))))
+    )
+    expect_that(
+        testtext$txts,
+        equals(c('Lorem ipsum', 'Dolor sit'))
+    )
+
+    testcorpus <- textfile('tests/testthat/data/xml/test.xml', textField='text')
+
+    expect_that(
+        docvars(testtext),
+        equals(data.frame(list(number=c(42, 99))))
+    )
+    expect_that(
+        texts(testtext),
+        equals(c('Lorem ipsum', 'Dolor sit'))
+    )
+
+    expect_that(
+        textfile('tests/testthat/data/xml/test.xml', textField='nonexistant'),
+        throws_error('node .* not found')
+    )
+
+    expect_that(
+        textfile('tests/testthat/data/xml/test.xml', textField=1),
+        gives_warning('You should specify textField by name.*')
+    )
+    expect_that(
+        texts(textfile('tests/testthat/data/xml/test.xml', textField=1)),
+        equals(c('Lorem ipsum', 'Dolor sit'))
+    )
+
+
+})
+
+
 
 
 test_that("test getFileType", {

@@ -252,6 +252,7 @@ get_doc <- function(f, ...) {
 }
 
 get_docs <- function(filemask, ...) {
+# called by textfile(..., textField=NULL)
     if (length(filemask) == 1) {
         # get the pattern at the end, as a regex
         pattern <- utils::glob2rx(basename(filemask))
@@ -309,14 +310,14 @@ get_data <- function(f, textField, sep = ",", ...){
            csv = {src <- get_csv(f, textField, ...)},
            tab = {src <- get_csv(f, textField, sep = "\t", ...)},
            tsv = {src <- get_csv(f, textField, sep = "\t", ...)},
-           json = {src <- get_json(f, textField, ...)},
-           xml = {src <- get_xml(f, textField, ...)}
+           json = {src <- get_json(f, textField, ...)}, xml = {src <- get_xml(f, textField, ...)}
     )
     # print(names(src))
     return(src)
 }
 
 # read a document from a structured file containing text and data
+# called by textfile(..., textField!=NULL)
 get_datas <- function(filemask, textField='index', fileType, ...){
     # get the pattern at the end
     pattern <- basename(filemask)
@@ -370,6 +371,20 @@ get_csv <- function(file, textField, sep=",", ...) {
 #  it looks like a twitter json file
 get_json <- function(path, ...) {
     stopifnot(file.exists(path))
+    tryCatch({
+        return(get_json_tweets(path, ...))
+    },
+        error=function(e) {
+            tryCatch({
+                warning("Doesn't look like Tweets json file, trying general JSON")
+                return(get_json_general(path, textField, ...))
+            },
+            error=function(e) {
+                warning("File doesn't contain a single valid JSON object, trying line-delimited json")
+                return(get_json_lines(path, textField, ...))
+            })
+    })
+
 }
 
 ## Twitter json
@@ -387,25 +402,48 @@ get_json_tweets <- function(path, source="twitter", ...) {
     }
     # read raw json data
     txt <- unlist(sapply(fls, readLines, ...))
+        
+    # parsing into a data frame
+    # reading tweets into a data frame
     results <- streamR::parseTweets(txt, verbose=FALSE, ...)
     list(txts = results[, 1], docv = as.data.frame(results[, -1, drop = FALSE]))
 }
 
 ## general json
+#' @importFrom data.table data.table
 get_json_general <- function(path, textField, ...) {
     if (!requireNamespace("jsonlite", quietly = TRUE))
         stop("You must have jsonlite installed to read json files.")
-    # raw <- readLines(path)
-    #parsed <- lapply(path, jsonlite::fromJSON, flatten=TRUE)
-    df <- jsonlite::fromJSON(path, flatten=TRUE, ...)
-    #     df <- data.frame(matrix(unlist(parsed), nrow=length(parsed), ncol=length(parsed[[1]]), byrow=TRUE),
-    #                      stringsAsFactors=FALSE)
-    #     names(df) <- names(parsed[[1]])
-    textFieldi <- which(names(df)==textField)
-    if (length(textFieldi)==0)
-        stop("column name", textField, "not found.")
-    list(txts=df[, textFieldi], docv=df[, -textFieldi, drop = FALSE])
+    docs <- jsonlite::fromJSON(path, flatten=TRUE, ...)
+    docs <- data.table(docs)
+    list(
+        txts = docs[[textField]],
+        docv = docs[,-textField, with=F]
+    )
 }
+
+#' @importFrom data.table rbindlist
+get_json_lines <- function(path, textField, ...) {
+    if (!requireNamespace("jsonlite", quietly = TRUE))
+        stop("You must have jsonlite installed to read json files.")
+
+    lines <- readLines(path)
+
+    docs <- data.table::rbindlist(
+      lapply(lines, function(x)jsonlite::fromJSON(x, flatten=TRUE, ...))
+    )
+
+    list(
+        txts = docs[[textField]],
+        docv = docs[,-textField, with=F]
+    )
+}
+
+
+
+# One JSON object per line
+# The file as a whole is not valid JSON, but each of the lines is
+get_json_lines
 
 
 ## flat xml format

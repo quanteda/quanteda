@@ -60,6 +60,7 @@ Collate:
     'corpus.R'
     'collocations.R'
     'converters.R'
+    'cooccurence.R'
     'dataDocs.R'
     'describe-texts.R'
     'dfm-classes.R'
