@@ -200,6 +200,32 @@ test_that("test handling of three types of json files: real JSON, twitter-specif
     )
 
 
+    #  Twitter API JSON file with little whitespace
+    #  contains search metadata in addition to tweets
+    testtexts <- textfile('tests/testthat/data/json/tweets-api-compact.json')
+    expect_equal(
+        texts(testtexts),
+        c("I jumped over the lazy @dog", 
+          "I didn't do anything today, so I'm tweeting about it.")
+    )
+    expect_equal(
+        length(docvars(testtexts)),
+        41
+    )
+
+
+    # Twitter API JSON file with lots of whitespace
+    testtexts <- textfile('tests/testthat/data/json/tweets-api-pretty.json')
+    expect_equal(
+        texts(testtexts),
+        c("I jumped over the lazy @dog", 
+          "I didn't do anything today, so I'm tweeting about it.")
+    )
+    expect_equal(
+        length(docvars(testtexts)),
+        41
+    )
+
 
 
     # TODO: Test that folders whose names end in '.json' are handled correctly
