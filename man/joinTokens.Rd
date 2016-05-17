@@ -5,7 +5,7 @@
 \title{join tokens function}
 \usage{
 joinTokens(x, sequences, concatenator = "-", valueType = "fixed",
-  verbose = TRUE)
+  verbose = FALSE)
 }
 \arguments{
 \item{x}{some object}

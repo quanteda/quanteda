@@ -355,7 +355,7 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
         else 
             result <- select_tokens_cppl(x, types_match, FALSE, padding)
     } else if (valuetype == "regex") {
-        regex <- rep(paste0(features, collapse = "|"))  ##### WHY THE rep()?? --KB
+        regex <- paste0(features, collapse = "|")
         types <- unique(unlist(x, use.names=FALSE))
         # get all the unique types that match regex
         types_match <- types[stringi::stri_detect_regex(types, regex, case_insensitive = case_insensitive, ...)]  
