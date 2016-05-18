@@ -198,7 +198,7 @@ test_that("test get_xml", {
     )
 
 
-}
+})
 
 test_that("test getFileType", {
 
