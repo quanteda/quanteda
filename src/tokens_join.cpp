@@ -4,26 +4,26 @@
 using namespace Rcpp;
 
 
-String join2(std::vector< std::string > ngram, 
-            std::string delim){
-  if(ngram.size() == 0) return "";
-  String token_ngram = ngram[0];
-  int len_ngram = ngram.size();
+String join2(const CharacterVector &tokens, 
+             const String &delim){
+  if(tokens.size() == 0) return "";
+  String token = tokens[0];
+  int len_ngram = tokens.size();
   for (int i = 1; i < len_ngram; i++) {
-    token_ngram += delim;
-    token_ngram += ngram[i];
-    //Rcout << "Joined " << token_ngram.get_cstring()  << "\n";
+    token += delim;
+    token += tokens[i];
+    //Rcout << "Joined " << token.get_cstring()  << "\n";
   }
-  token_ngram.set_encoding(CE_UTF8);
-  return token_ngram;
+  token.set_encoding(CE_UTF8);
+  return token;
 }
 
 // [[Rcpp::export]]
-StringVector join_tokens_cpp(StringVector tokens_original, 
-                             const std::vector<std::string> &tokens_join,
-                             const std::string &delim){
-  //StringVector tokens(x);
-  StringVector tokens = clone(tokens_original);
+CharacterVector join_tokens_cpp(CharacterVector tokens_original, 
+                                const CharacterVector tokens_join,
+                                const String &delim){
+  //CharacterVector tokens(x);
+  CharacterVector tokens = clone(tokens_original);
   int len = tokens.size();
   int len_join = tokens_join.size();
   if(len_join == 1){ // Do nothing for single token
@@ -55,7 +55,7 @@ StringVector join_tokens_cpp(StringVector tokens_original,
     }
   }
   
-  StringVector tokens_joined(len);
+  CharacterVector tokens_joined(len);
   int space = 0;
   if(change){
     //Rcout << "Remove spacer\n";
@@ -78,8 +78,8 @@ StringVector join_tokens_cpp(StringVector tokens_original,
 // [[Rcpp::export]]
 List join_tokens_cppl(List texts_original, 
                       const std::vector<bool> &flag,
-                      const std::vector<std::string> &tokens_join,
-                      const std::string &delim){
+                      const CharacterVector &tokens_join,
+                      const String &delim){
   //List texts(x);
   List texts = clone(texts_original);
   int len = texts.size();
