@@ -230,7 +230,7 @@ test_that("test getdocvarsFromFilenames", {
     expect_that(
         getdocvarsFromFilenames(
             fnames=c('1-apple.txt', '2-orange.txt'),
-            dvsep="_"
+            dvsep="-"
         ),
         equals(data.frame(list(docvar1=c('1','2'), docvar2=c('apple', 'orange')), stringsAsFactors=F))
     )
