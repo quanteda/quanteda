@@ -63,9 +63,9 @@ test_that("test classes, slots, and extractor functions", {
 
 
     expect_is(testtextfile, 'corpusSource')
-    expect_is(testtextfile@texts, 'chr')
+    expect_is(testtextfile@texts, 'character')
     expect_is(testtextfile@docvars, 'data.frame')
-    expect_is(testtextfile@source, 'chr')
+    expect_is(testtextfile@source, 'character')
     expect_is(testtextfile@cachedfile, 'character')
 
 
