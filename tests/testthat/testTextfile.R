@@ -46,15 +46,14 @@ test_that("test show.corpus", {
 test_that("test textfile with single filename", {
     fox <- "The quick brown fox jumps over the lazy dog."
     expect_equal(
-        texts(textfile('tests/testthat/data/fox/fox.txt')),
+        texts(textfile('../data/fox/fox.txt')),
         fox
     )
-
 })
 
 test_that("test classes, slots, and extractor functions", {
 
-    testtextfile <- textfile('tests/testthat/data/fox/fox.txt')
+    testtextfile <- textfile('../data/fox/fox.txt')
 
 
     expect_equal(
@@ -76,8 +75,8 @@ test_that("test textfile with vector of filenames", {
     expect_equal(
         length(texts(textfile(
             c(
-                'tests/testthat/data/fruits/apple.txt',
-                'tests/testthat/data/fruits/orange.txt'
+                '../data/fruits/apple.txt',
+                '../data/fruits/orange.txt'
              )
         ))),
         2
@@ -87,14 +86,14 @@ test_that("test textfile with vector of filenames", {
 test_that("test textfile with glob-style mask", {
     expect_equal(
         length(texts(textfile(
-                'tests/testthat/data/glob/*.txt'
+                '../data/glob/*.txt'
         ))),
         5
     )
 
     expect_equal(
         length(texts(textfile(
-                'tests/testthat/data/glob/?.txt'
+                '../data/glob/?.txt'
         ))),
         4
     )
@@ -103,7 +102,7 @@ test_that("test textfile with glob-style mask", {
     # Glob in non-last part of filename
     expect_equal(
         length(texts(textfile(
-                'tests/testthat/data/glob/*/1.txt'
+                '../data/glob/*/1.txt'
         ))),
         2
     )
@@ -112,7 +111,7 @@ test_that("test textfile with glob-style mask", {
     # TODO: glob multiple filetypes
     # expect_equal(
     #     length(texts(textfile(
-    #             'tests/testthat/data/glob/*'
+    #             '../data/glob/*'
     #     ))),
     #     6
     # )
@@ -125,17 +124,17 @@ test_that("test textfile with glob-style mask", {
 test_that("test non-implemented functions", {
 
     expect_that(
-        textfile('tests/testthat/data/empty/test.doc'),
+        textfile('../data/empty/test.doc'),
         throws_error('doc files not implemented yet')
     )
 
     expect_that(
-        textfile('tests/testthat/data/empty/test.docx'),
+        textfile('../data/empty/test.docx'),
         throws_error('doc files not implemented yet')
     )
 
     expect_that(
-        textfile('tests/testthat/data/empty/test.pdf'),
+        textfile('../data/empty/test.pdf'),
         throws_error('pdf files not implemented yet')
     )
 
@@ -143,7 +142,7 @@ test_that("test non-implemented functions", {
 })
 
 test_that("test get_csv", {
-    testcorpus <- textfile('tests/testthat/data/csv/test.csv', textField='text')
+    testcorpus <- textfile('../data/csv/test.csv', textField='text')
     expect_that(
         testtext$docv,
         equals(data.frame(list(number=c(42, 99))))
@@ -154,7 +153,7 @@ test_that("test get_csv", {
     )
 
     expect_that(
-        textfile('tests/testthat/data/csv/test.csv', textField='nonexistant'),
+        textfile('../data/csv/test.csv', textField='nonexistant'),
         throws_error('column name nonexistant not found')
     )
 
@@ -162,7 +161,7 @@ test_that("test get_csv", {
 ## TODO: tests for get_json and get_json_tweets go here
 
 test_that("test get_xml", {
-    testtext <- get_xml('tests/testthat/data/xml/test.xml', textField='text')
+    testtext <- get_xml('../data/xml/test.xml', textField='text')
     expect_that(
         testtext$docv,
         equals(data.frame(list(number=c(42, 99))))
@@ -172,7 +171,7 @@ test_that("test get_xml", {
         equals(c('Lorem ipsum', 'Dolor sit'))
     )
 
-    testcorpus <- textfile('tests/testthat/data/xml/test.xml', textField='text')
+    testcorpus <- textfile('../data/xml/test.xml', textField='text')
 
     expect_that(
         docvars(testtext),
@@ -184,16 +183,16 @@ test_that("test get_xml", {
     )
 
     expect_that(
-        textfile('tests/testthat/data/xml/test.xml', textField='nonexistant'),
+        textfile('../data/xml/test.xml', textField='nonexistant'),
         throws_error('node .* not found')
     )
 
     expect_that(
-        textfile('tests/testthat/data/xml/test.xml', textField=1),
+        textfile('../data/xml/test.xml', textField=1),
         gives_warning('You should specify textField by name.*')
     )
     expect_that(
-        texts(textfile('tests/testthat/data/xml/test.xml', textField=1)),
+        texts(textfile('../data/xml/test.xml', textField=1)),
         equals(c('Lorem ipsum', 'Dolor sit'))
     )
 
@@ -288,14 +287,14 @@ test_that("test getdocvarsFromFilenames", {
 
 test_that("test texts.corpusSource error with groups!=NULL", {
     expect_that(
-        texts(textfile('tests/testthat/data/fox/fox.txt'), groups='anything'),
+        texts(textfile('../data/fox/fox.txt'), groups='anything'),
         throws_error()
      )
 })
 
 test_that("test docvars.corpusSource warning with field!=NULL", {
     expect_that(
-        docvars(textfile('tests/testthat/data/fox/fox.txt'), field='anything'),
+        docvars(textfile('../data/fox/fox.txt'), field='anything'),
         gives_warning()
      )
 })
