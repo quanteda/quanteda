@@ -50,6 +50,44 @@ print.tokenSequences <- function(x, ...){
                      z=x$z,
                      p=x$p,
                      mue=x$mu)
-    df <- df[order(df$z),]
+    df <- df[order(-df$z),]
     print(df, ...)
+}
+
+#' print a tokenSequences objects
+#' 
+#' print method for a tokenSequences object
+#' @param x a tokenSequences object created by \link{findSequences}
+#' @param ... further arguments passed to base print method
+#' @export
+#' @method head tokenSequences
+head.tokenSequences <- function(x, ...){
+  
+    df <- data.frame(sequence=sapply(x[['sequence']], paste, collapse = " "),
+                     len=sapply(x[['sequence']], length),
+                     z=x$z,
+                     p=x$p,
+                     mue=x$mu)
+    df <- df[order(-df$z),]
+    print(head(df, ...))
+  
+}
+
+#' print a tokenSequences objects
+#' 
+#' print method for a tokenSequences object
+#' @param x a tokenSequences object created by \link{findSequences}
+#' @param ... further arguments passed to base print method
+#' @export
+#' @method tail tokenSequences
+tail.tokenSequences <- function(x, ...){
+  
+  df <- data.frame(sequence=sapply(x[['sequence']], paste, collapse = " "),
+                   len=sapply(x[['sequence']], length),
+                   z=x$z,
+                   p=x$p,
+                   mue=x$mu)
+  df <- df[order(-df$z),]
+  print(head(df, ...))
+  
 }
