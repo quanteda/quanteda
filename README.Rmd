@@ -19,8 +19,9 @@ knitr::opts_chunk$set(
 **Master branch** ![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)][2]
 
 
-[1]: https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev
-[2]: https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master
+[1]: https://codecov.io/gh/kbenoit/quanteda/branch/dev
+[2]: https://codecov.io/gh/kbenoit/quanteda/branch/master
+
 
 See the [Getting Started Vignette](http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html).
 
