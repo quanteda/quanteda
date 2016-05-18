@@ -421,6 +421,15 @@ get_xml <- function(file, textField, sep=",", ...) {
     }
     txts <- docv[, textField]
     docv <- docv[, -textField, drop = FALSE]
+
+    #  Because XML::xmlToDataFrame doesn't impute column types, we have to do it
+    #  ourselves, to match get_csv's behaviour
+    #  Impute types of columns, just like read.table
+    docv[] <- lapply(docv, function(x) type.convert(x, as.is=T))
+    #  And convert columns which have been made into factors into strings
+    factor_cols <- sapply(docv, is.factor)
+    docv[factor_cols] <- lapply(docv[factor_cols], as.character)
+
     list(txts=txts, docv=docv)
 }
 
