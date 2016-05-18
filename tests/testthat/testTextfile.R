@@ -165,11 +165,11 @@ test_that("test get_xml", {
     testtext <- get_xml('../data/xml/test.xml', textField='text')
     expect_that(
         testtext$docv,
-        equals(data.frame(list(colour=c('green', 'red'), number=c(42, 99))))
+        equals(data.frame(list(colour=c('green', 'red'), number=c(42, 99)), stringsAsFactors=F))
     )
     expect_that(
         testtext$txts,
-        equals(c('Lorem ipsum', 'Dolor sit'))
+        equals(c('Lorem ipsum.', 'Dolor sit'))
     )
 
     testcorpus <- textfile('../data/xml/test.xml', textField='text')
