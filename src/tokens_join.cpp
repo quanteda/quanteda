@@ -20,7 +20,7 @@ String join2(const CharacterVector &tokens,
 
 // [[Rcpp::export]]
 CharacterVector join_tokens_cpp(CharacterVector tokens_original, 
-                                const CharacterVector tokens_join,
+                                CharacterVector tokens_join,
                                 const String &delim){
   //CharacterVector tokens(x);
   CharacterVector tokens = clone(tokens_original);

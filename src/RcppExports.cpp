@@ -60,28 +60,28 @@ BEGIN_RCPP
 END_RCPP
 }
 // join_tokens_cpp
-StringVector join_tokens_cpp(StringVector tokens_original, const std::vector<std::string>& tokens_join, const std::string& delim);
+CharacterVector join_tokens_cpp(CharacterVector tokens_original, const CharacterVector tokens_join, const String& delim);
 RcppExport SEXP quanteda_join_tokens_cpp(SEXP tokens_originalSEXP, SEXP tokens_joinSEXP, SEXP delimSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< StringVector >::type tokens_original(tokens_originalSEXP);
-    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type tokens_join(tokens_joinSEXP);
-    Rcpp::traits::input_parameter< const std::string& >::type delim(delimSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type tokens_original(tokens_originalSEXP);
+    Rcpp::traits::input_parameter< const CharacterVector >::type tokens_join(tokens_joinSEXP);
+    Rcpp::traits::input_parameter< const String& >::type delim(delimSEXP);
     __result = Rcpp::wrap(join_tokens_cpp(tokens_original, tokens_join, delim));
     return __result;
 END_RCPP
 }
 // join_tokens_cppl
-List join_tokens_cppl(List texts_original, const std::vector<bool>& flag, const std::vector<std::string>& tokens_join, const std::string& delim);
+List join_tokens_cppl(List texts_original, const std::vector<bool>& flag, const CharacterVector& tokens_join, const String& delim);
 RcppExport SEXP quanteda_join_tokens_cppl(SEXP texts_originalSEXP, SEXP flagSEXP, SEXP tokens_joinSEXP, SEXP delimSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< List >::type texts_original(texts_originalSEXP);
     Rcpp::traits::input_parameter< const std::vector<bool>& >::type flag(flagSEXP);
-    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type tokens_join(tokens_joinSEXP);
-    Rcpp::traits::input_parameter< const std::string& >::type delim(delimSEXP);
+    Rcpp::traits::input_parameter< const CharacterVector& >::type tokens_join(tokens_joinSEXP);
+    Rcpp::traits::input_parameter< const String& >::type delim(delimSEXP);
     __result = Rcpp::wrap(join_tokens_cppl(texts_original, flag, tokens_join, delim));
     return __result;
 END_RCPP
