@@ -141,14 +141,14 @@ test_that("test non-implemented functions", {
 
 })
 
-test_that("test get_csv", {
+# TODO: Refactor this to loop over loading functions
+test_that("test csv files", {
+    # Test corpus object
     testcorpus <- textfile('../data/csv/test.csv', textField='text')
-
     expect_that(
         docvars(testcorpus),
         equals(data.frame(list(colour=c('green', 'red'), number=c(42, 99)), stringsAsFactors=F))
     )
-
     expect_that(
         texts(testcorpus),
         equals(c('Lorem ipsum.', 'Dolor sit'))
@@ -161,26 +161,16 @@ test_that("test get_csv", {
 
 })
 
-test_that("test get_xml", {
-    testtext <- get_xml('../data/xml/test.xml', textField='text')
+test_that("test xml files", {
+    # Test corpus object
+    testcorpus <- textfile('../data/xml/test.xml', textField='text')
     expect_that(
-        testtext$docv,
+        docvars(testcorpus),
         equals(data.frame(list(colour=c('green', 'red'), number=c(42, 99)), stringsAsFactors=F))
     )
     expect_that(
-        testtext$txts,
+        texts(testcorpus),
         equals(c('Lorem ipsum.', 'Dolor sit'))
-    )
-
-    testcorpus <- textfile('../data/xml/test.xml', textField='text')
-
-    expect_that(
-        docvars(testtext),
-        equals(data.frame(list(colour=c('green', 'red'), number=c(42, 99))))
-    )
-    expect_that(
-        texts(testtext),
-        equals(c('Lorem ipsum', 'Dolor sit'))
     )
 
     expect_that(
@@ -194,7 +184,7 @@ test_that("test get_xml", {
     )
     expect_that(
         texts(textfile('../data/xml/test.xml', textField=1)),
-        equals(c('Lorem ipsum', 'Dolor sit'))
+        equals(c('Lorem ipsum.', 'Dolor sit'))
     )
 
 
@@ -309,5 +299,3 @@ test_that("test docvars.corpusSource warning with field!=NULL", {
         gives_warning()
      )
 })
-
-
