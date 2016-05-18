@@ -265,7 +265,7 @@ dfm.tokenizedTexts <- function(x,
     featureIndex <- match(allFeatures, uniqueFeatures)
     # add an arbitrary "feature" for empty docs
     if (length(emptyDocs)) {
-        featureIndex <- c(featureIndex, rep(length(allFeatures)+1, length(emptyDocs)))
+        featureIndex <- c(featureIndex, rep(length(uniqueFeatures)+1, length(emptyDocs)))
         uniqueFeatures <- c(uniqueFeatures, "__TEMPFEATURE__")
     }
     
