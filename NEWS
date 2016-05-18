@@ -9,6 +9,8 @@ Bug fixes
 ---------  
 *  Fix bug in phrasetotoken, signature 'corpus,ANY' that was causing an infinite loop.
 
+*  Fixed bug introduced in commit b88287f (0.9.5-26) that caused a failure in dfm() with empty (zero-token) documents.  Also fixes Issue #168.
+
 
 quanteda 0.9.6 
 ==============
