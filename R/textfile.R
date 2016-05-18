@@ -449,7 +449,7 @@ getFileType <- function(filenameChar) {
 #' @importFrom tools file_path_sans_ext
 getdocvarsFromFilenames <- function(fnames, dvsep="_", docvarnames=NULL) {
     snames <- fnames
-    snames <- file_path_sans_ext(snames)
+    snames <- tools::file_path_sans_ext(snames)
     parts <- strsplit(snames, dvsep)
     if (!all(sapply(parts,function(x) identical(length(x), length(parts[[1]])))))
         stop("Filename elements are not equal in length.")
