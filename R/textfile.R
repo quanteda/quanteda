@@ -460,8 +460,10 @@ getdocvarsFromFilenames <- function(fnames, dvsep="_", docvarnames=NULL) {
     if (!is.null(docvarnames)) {
         names(dvars)[1:length(docvarnames)] <- docvarnames
         if (length(docvarnames) != ncol(dvars)) {
-            warning("Fewer docnames supplied than exist docvars - last ",
-                    ncol(dvars) - length(docvarnames), " docvars were given generic names.")
+            warning("Fewer docnames supplied than existing docvars - last ",
+                    ncol(dvars) - length(docvarnames), " docvar",
+                    ifelse((ncol(dvars) - length(docvarnames))==1, "", "s"),
+                    " given generic names.")
         }
     }
     dvars

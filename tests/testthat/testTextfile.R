@@ -270,8 +270,20 @@ test_that("test getdocvarsFromFilenames", {
             fnames=c('1_apple_red.json', '2_orange_orange.json'),
             docvarnames=c('id', 'fruit')
         ),
-        gives_warning('Fewer docnames supplied than exist docvars - last 1 docvars were given generic names.')
+        gives_warning('Fewer docnames supplied than existing docvars - last 1 docvar given generic names.')
     )
+
+    expect_that(
+        getdocvarsFromFilenames(
+            fnames=c('1_apple_red.json', '2_orange_orange.json'),
+            docvarnames=c('id')
+        ),
+        gives_warning('Fewer docnames supplied than existing docvars - last 2 docvars given generic names.')
+    )
+
+    #TODO: What happens if you supply more docnames?
+
+
 
 
     expect_that(
@@ -281,8 +293,6 @@ test_that("test getdocvarsFromFilenames", {
         ),
         equals(data.frame(list(id=c('1','2'), fruit=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
     )
-
-
 
 })
 
