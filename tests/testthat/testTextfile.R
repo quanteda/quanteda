@@ -143,13 +143,15 @@ test_that("test non-implemented functions", {
 
 test_that("test get_csv", {
     testcorpus <- textfile('../data/csv/test.csv', textField='text')
+
     expect_that(
-        testtext$docv,
-        equals(data.frame(list(number=c(42, 99))))
+        docvars(testcorpus),
+        equals(data.frame(list(colour=c('green', 'red'), number=c(42, 99)), stringsAsFactors=F))
     )
+
     expect_that(
-        testtext$txts,
-        equals(c('Lorem ipsum', 'Dolor sit'))
+        texts(testcorpus),
+        equals(c('Lorem ipsum.', 'Dolor sit'))
     )
 
     expect_that(
@@ -158,13 +160,12 @@ test_that("test get_csv", {
     )
 
 })
-## TODO: tests for get_json and get_json_tweets go here
 
 test_that("test get_xml", {
     testtext <- get_xml('../data/xml/test.xml', textField='text')
     expect_that(
         testtext$docv,
-        equals(data.frame(list(number=c(42, 99))))
+        equals(data.frame(list(colour=c('green', 'red'), number=c(42, 99))))
     )
     expect_that(
         testtext$txts,
@@ -175,7 +176,7 @@ test_that("test get_xml", {
 
     expect_that(
         docvars(testtext),
-        equals(data.frame(list(number=c(42, 99))))
+        equals(data.frame(list(colour=c('green', 'red'), number=c(42, 99))))
     )
     expect_that(
         texts(testtext),
