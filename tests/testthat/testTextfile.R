@@ -24,7 +24,6 @@ test_that("test show.corpusSource", {
     )
 
 
-    # TODO: Add tests for cached corpus
     testcorpusSource <- textfile( '../data/fox/fox.txt', cache=T)
     expect_that(
         show(testcorpusSource),
@@ -159,7 +158,7 @@ test_that("test non-implemented functions", {
 
 })
 
-# TODO: Refactor this to loop over loading functions
+# TODO: Refactor this to loop over filetypes
 test_that("test csv files", {
     # Test corpus object
     testcorpus <- textfile('../data/csv/test.csv', textField='text')
@@ -226,79 +225,66 @@ test_that("test getFileType", {
       # TODO: Should it support multiple filenames?
 })
 
-test_that("test getdocvarsFromFilenames", {
+test_that("test textfile() with docvarsfrom=filenames", {
 
     expect_that(
-        getdocvarsFromFilenames(
-            fnames=c('1_apple.txt', '2_orange.txt')
-        ),
-        equals(data.frame(list(docvar1=c('1','2'), docvar2=c('apple', 'orange')), stringsAsFactors=F))
+        docvars(textfile('../data/docvars/one/*', docvarsfrom='filenames')),
+        equals(data.frame(list(docvar1=c(1,2), docvar2=c('apple', 'orange')), stringsAsFactors=F))
     )
 
     expect_that(
-        getdocvarsFromFilenames(
-            fnames=c('1-apple.txt', '2-orange.txt'),
-            dvsep="-"
-        ),
-        equals(data.frame(list(docvar1=c('1','2'), docvar2=c('apple', 'orange')), stringsAsFactors=F))
+        docvars(textfile('../data/docvars/dash/*', docvarsfrom='filenames', dvsep='-')),
+        equals(data.frame(list(docvar1=c(1,2), docvar2=c('apple', 'orange')), stringsAsFactors=F))
     )
 
-    expect_that(
-        getdocvarsFromFilenames(
-            fnames=c('1_apple_red.txt', '2_orange_orange.txt')
-        ),
-        equals(data.frame(list(docvar1=c('1','2'), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
-    )
 
     expect_that(
-        getdocvarsFromFilenames(
-            fnames=c('1_apple_red.json', '2_orange_orange.json')
-        ),
-        equals(data.frame(list(docvar1=c('1','2'), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
+        docvars(textfile('../data/docvars/two/*txt', docvarsfrom='filenames')),
+        equals(data.frame(list(docvar1=c(1,2), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
     )
 
+    #  docvarsfrom='filenames' only works with txt files, by design?
+    #  expect_that(
+    #      docvars(textfile('../data/docvars/two/*json', docvarsfrom='filenames', textField='nonesuch')),
+    #      equals(data.frame(list(docvar1=c(1,2), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
+    #  )
+
     expect_that(
-        getdocvarsFromFilenames(
-            fnames=c('1_apple_red.json', '2_orange.json')
-        ),
+        docvars(textfile('../data/docvars/unequal/*', docvarsfrom='filenames')),
         throws_error("Filename elements are not equal in length.")
     )
 
     expect_that(
-        getdocvarsFromFilenames(
-            fnames=c('1_apple_red.json', '2_orange_orange.json'),
+        docvars(textfile('../data/docvars/two/*txt', docvarsfrom='filenames',
             docvarnames=c('id', 'fruit', 'colour')
-        ),
-        equals(data.frame(list(id=c('1','2'), fruit=c('apple', 'orange')), colour=c('red', 'orange'), stringsAsFactors=F))
+        )),
+        equals(data.frame(list(id=c(1,2), fruit=c('apple', 'orange')), colour=c('red', 'orange'), stringsAsFactors=F))
     )
 
 
     expect_that(
-        getdocvarsFromFilenames(
-            fnames=c('1_apple_red.json', '2_orange_orange.json'),
+        docvars(textfile('../data/docvars/two/*txt', docvarsfrom='filenames',
             docvarnames=c('id', 'fruit')
-        ),
+        )),
         gives_warning('Fewer docnames supplied than existing docvars - last 1 docvar given generic names.')
     )
+    expect_that(
+        docvars(textfile('../data/docvars/two/*txt', docvarsfrom='filenames',
+            docvarnames=c('id', 'fruit')
+        )),
+        equals(data.frame(list(id=c(1,2), fruit=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
+    )
+
 
     expect_that(
-        getdocvarsFromFilenames(
-            fnames=c('1_apple_red.json', '2_orange_orange.json'),
+        docvars(textfile('../data/docvars/two/*txt', docvarsfrom='filenames',
             docvarnames=c('id')
-        ),
+        )),
         gives_warning('Fewer docnames supplied than existing docvars - last 2 docvars given generic names.')
     )
 
     #TODO: What happens if you supply more docnames?
 
-
-    expect_that(
-        getdocvarsFromFilenames(
-            fnames=c('1_apple_red.json', '2_orange_orange.json'),
-            docvarnames=c('id', 'fruit')
-        ),
-        equals(data.frame(list(id=c('1','2'), fruit=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
-    )
 
 })
 
