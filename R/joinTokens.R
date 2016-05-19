@@ -53,7 +53,8 @@ joinTokens <- function(x, sequences, concatenator='-', valuetype='fixed', verbos
   #cat("seqs_token--------------------\n")
   #print(seqs_token)
   if(length(seqs_token) == 0) return(tokens)
-  for(i in 1:length(seqs_token)){
+  len <- length(seqs_token)
+  for(i in 1:len){
     seq_token <- seqs_token[[i]]
     if(length(seq_token) < 2) next
     if(is.list(seq_token) | !is.vector(seq_token) | length(seq_token) == 0) stop('Invalid token sequence\n');
@@ -61,7 +62,8 @@ joinTokens <- function(x, sequences, concatenator='-', valuetype='fixed', verbos
       if(verbose) cat(paste0('"', seq_token, concatenate='', '"'), 'are not found', '\n')
     }else{
       flag <- rowSums(as(index[,seq_token], 'nMatrix')) == length(seq_token)
-      if(verbose) cat(paste0('"', seq_token, concatenate='', '"'), 'are found in', sum(flag) ,'documents...\n')
+      #if(verbose) cat(paste0('"', seq_token, concatenate='', '"'), 'are found in', sum(flag) ,'documents...\n')
+      if(verbose) cat(sprintf('%d/%d "%s" are found in %d documents\n', i, len, paste0(seq_token, collapse=' '), sum(flag)))
       tokens <- join_tokens_cppl(tokens, flag, seq_token, concatenator)
     }
   }

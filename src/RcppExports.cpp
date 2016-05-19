@@ -60,13 +60,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // join_tokens_cpp
-CharacterVector join_tokens_cpp(CharacterVector tokens_original, const CharacterVector tokens_join, const String& delim);
+CharacterVector join_tokens_cpp(CharacterVector tokens_original, CharacterVector tokens_join, const String& delim);
 RcppExport SEXP quanteda_join_tokens_cpp(SEXP tokens_originalSEXP, SEXP tokens_joinSEXP, SEXP delimSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< CharacterVector >::type tokens_original(tokens_originalSEXP);
-    Rcpp::traits::input_parameter< const CharacterVector >::type tokens_join(tokens_joinSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type tokens_join(tokens_joinSEXP);
     Rcpp::traits::input_parameter< const String& >::type delim(delimSEXP);
     __result = Rcpp::wrap(join_tokens_cpp(tokens_original, tokens_join, delim));
     return __result;
