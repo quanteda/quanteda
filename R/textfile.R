@@ -219,7 +219,8 @@ returnCorpusSource <- function(sources, cache = FALSE) {
         save(sources, file=tempCorpusFilename)
         return(new("corpusSource", cachedfile=tempCorpusFilename))
     } else
-        return(new("corpusSource", texts = sources$txts, docvars = sources$docv))
+        return(new("corpusSource", texts = sources$txts, docvars = imputeDocvarsTypes(sources$docv)))
+        #return(new("corpusSource", texts = sources$txts, docvars = sources$docv))
 }
 
 
@@ -424,17 +425,16 @@ get_xml <- function(file, textField, sep=",", ...) {
 
     #  Because XML::xmlToDataFrame doesn't impute column types, we have to do it
     #  ourselves, to match get_csv's behaviour
-    docv <- imputeDocvarsTypes(docv)
     list(txts=txts, docv=docv)
 }
 
 imputeDocvarsTypes <- function(docv) {
     #  Impute types of columns, just like read.table
-    docv[] <- lapply(docv, function(x) type.convert(x, as.is=T))
+    docv[] <- lapply(docv, function(x) type.convert(as.character(x), as.is=T))
     #  And convert columns which have been made into factors into strings
-    factor_cols <- sapply(docv, is.factor)
+    factor_cols <- vapply(docv, is.factor, FUN.VALUE=c(T))
     docv[factor_cols] <- lapply(docv[factor_cols], as.character)
-    docv
+    data.frame(docv)
 }
 
 
