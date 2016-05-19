@@ -123,6 +123,21 @@ test_that("test textfile with glob-style mask", {
 
 })
 
+test_that("test structured textfile with glob-style mask", {
+    expect_equal(
+        length(texts(textfile(
+                '../data/csv/*.csv', textField='text'
+        ))),
+        4
+    )
+    expect_equal(
+        length(docvars(textfile(
+                '../data/csv/*.csv', textField='text'
+        ))),
+        4
+    )
+})
+
 
 test_that("test non-implemented functions", {
 
