@@ -14,7 +14,7 @@ test_that("test show.corpusSource", {
          )
     )
     expect_that(
-        show(testcorpus),
+        show(testcorpusSource),
         prints_text('corpusSource object consisting of 2 document and 0 docvars.')
     )
 
@@ -42,6 +42,14 @@ test_that("test textfile with single filename", {
     fox <- "The quick brown fox jumps over the lazy dog."
     expect_equal(
         texts(textfile('../data/fox/fox.txt')),
+        fox
+    )
+})
+
+test_that("test cached textfile with single filename", {
+    fox <- "The quick brown fox jumps over the lazy dog."
+    expect_equal(
+        texts(textfile('../data/fox/fox.txt'), cache=T),
         fox
     )
 })
