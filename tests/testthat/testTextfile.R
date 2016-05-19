@@ -15,12 +15,12 @@ test_that("test show.corpusSource", {
     )
     expect_that(
         show(testcorpusSource),
-        prints_text('corpusSource object consisting of 2 document and 0 docvars.')
+        prints_text('corpusSource object consisting of 2 documents and 0 docvars.')
     )
 
     expect_that(
         show(textfile('../data/csv/test.csv', textField='text')),
-        prints_text('corpusSource object consisting of 2 document and 2 docvars.')
+        prints_text('corpusSource object consisting of 2 documents and 2 docvars.')
     )
 
 
@@ -49,7 +49,7 @@ test_that("test textfile with single filename", {
 test_that("test cached textfile with single filename", {
     fox <- "The quick brown fox jumps over the lazy dog."
     expect_equal(
-        texts(textfile('../data/fox/fox.txt'), cache=T),
+        texts(textfile('../data/fox/fox.txt', cache=T)),
         fox
     )
 })
@@ -131,7 +131,7 @@ test_that("test structured textfile with glob-style mask", {
         4
     )
     expect_equal(
-        length(docvars(textfile(
+        nrow(docvars(textfile(
                 '../data/csv/*.csv', textField='text'
         ))),
         4
