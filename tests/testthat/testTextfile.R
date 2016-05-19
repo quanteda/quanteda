@@ -285,6 +285,18 @@ test_that("test textfile() with docvarsfrom=filenames", {
 
     #TODO: What happens if you supply more docnames?
 
+    expect_that(
+        docvars(textfile('../data/docvars/two/1_apple_red.txt', docvarsfrom='filenames')),
+        throws_error('File type txt not supported with these arguments.')
+    )
+
+    expect_that(
+        docvars(textfile('../data/docvars/two/*txt', docvarsfrom='nonesuch')),
+        gives_warning('docvarsfrom=nonesuch not supported.')
+    )
+
+
+
 
 })
 
