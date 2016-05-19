@@ -1,41 +1,36 @@
 context('test textfile.R')
 
-test_that("test show.corpus", {
+test_that("test show.corpusSource", {
 
-    testcorpus <- corpus(c('The'))
     expect_that(
-        show(testcorpus),
-        prints_text('Corpus consisting of 1 document.')
+        show(textfile( '../data/fox/fox.txt')),
+        prints_text('corpusSource object consisting of 1 document and 0 docvars.')
     )
 
-
-    testcorpus <- corpus(
-        c('The', 'quick', 'brown', 'fox')
-    )
-    expect_that(
-        show(testcorpus),
-        prints_text('Corpus consisting of 4 documents.')
-    )
-
-    testcorpus <- corpus(
-        c('The', 'quick', 'brown', 'fox'),
-        docvars=data.frame(list(test=1:4))
+    testcorpusSource <- textfile(
+        c(
+            '../data/fruits/apple.txt',
+            '../data/fruits/orange.txt'
+         )
     )
     expect_that(
         show(testcorpus),
-        prints_text('Corpus consisting of 4 documents and 1 docvar.')
+        prints_text('corpusSource object consisting of 2 document and 0 docvars.')
     )
 
-    testcorpus <- corpus(
-        c('The', 'quick', 'brown', 'fox'),
-        docvars=data.frame(list(test=1:4, test2=1:4))
-    )
     expect_that(
-        show(testcorpus),
-        prints_text('Corpus consisting of 4 documents and 2 docvars.')
+        show(textfile('../data/csv/test.csv', textField='text')),
+        prints_text('corpusSource object consisting of 2 document and 2 docvars.')
     )
+
 
     # TODO: Add tests for cached corpus
+    testcorpusSource <- textfile( '../data/fox/fox.txt', cache=T)
+    expect_that(
+        show(testcorpusSource),
+        prints_text('corpusSource object with data cached')
+    )
+
 
 })
 
@@ -272,8 +267,6 @@ test_that("test getdocvarsFromFilenames", {
     )
 
     #TODO: What happens if you supply more docnames?
-
-
 
 
     expect_that(
