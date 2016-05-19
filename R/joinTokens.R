@@ -4,7 +4,7 @@
 #' @param x some object
 #' @param sequences list of vector of features to concatenate
 #' @param concatenator character used for joining tokens
-#' @param valueType how to interpret sequences: \code{fixed} for words as 
+#' @param valuetype how to interpret sequences: \code{fixed} for words as 
 #'   is; \code{"regex"} for regular expressions; or \code{"glob"} for 
 #'   "glob"-style wildcard
 #' @param verbose display progress
@@ -21,17 +21,17 @@
 #' kwic(toks2, c('foreign', 'policy'), window=1) # not joined
 #' kwic(toks2, 'United_States', window=1) # joined
 #' @export
-joinTokens <- function(x, sequences, concatenator='-', valueType='fixed', verbose=FALSE){
+joinTokens <- function(x, sequences, concatenator='-', valuetype='fixed', verbose=FALSE){
   
   tokens <- x
   if(verbose) cat("Indexing tokens...\n")
   index <- dfm(tokens, verbose = FALSE)
   
   seqs_token <- list()
-  if(valueType=='regex' | valueType=='glob'){
+  if(valuetype=='regex' | valuetype=='glob'){
     if(verbose) cat("Converting patterns to tokens...\n")
     for(sequence in sequences){
-      if(valueType=='glob'){
+      if(valuetype=='glob'){
         seq_regex <- unlist(lapply(sequence, utils::glob2rx))
       }else{
         seq_regex <- sequence
