@@ -228,7 +228,7 @@ returnCorpusSource <- function(sources, cache = FALSE) {
 get_doc <- function(f, ...) {
     txts <- c()
     fileType <- getFileType(f)
-    # cat("fileType = ", fileType, "\n")
+    cat("fileType = ", fileType, "\n")
     switch(fileType,
            txt =  { 
                txt <- readLines(con <- file(f, ...), warn = FALSE)
@@ -244,7 +244,6 @@ get_doc <- function(f, ...) {
                result <- list(txts = paste(txt, collapse="\n"), docv = data.frame())
                return(result)
            },
-           doc =  { return(list(txts = get_word(f), docv = data.frame())) },
            json = { return(get_json_tweets(f, ...)) },
            zip = { return(get_zipfile(f)) },
            pdf =  { return(list(txts = get_pdf(f), docv = data.frame())) },
