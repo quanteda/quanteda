@@ -60,44 +60,41 @@ BEGIN_RCPP
 END_RCPP
 }
 // join_tokens_cpp
-CharacterVector join_tokens_cpp(CharacterVector tokens_original, CharacterVector tokens_join, const String& delim);
-RcppExport SEXP quanteda_join_tokens_cpp(SEXP tokens_originalSEXP, SEXP tokens_joinSEXP, SEXP delimSEXP) {
+void join_tokens_cpp(CharacterVector tokens, CharacterVector tokens_join, const String& delim);
+RcppExport SEXP quanteda_join_tokens_cpp(SEXP tokensSEXP, SEXP tokens_joinSEXP, SEXP delimSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< CharacterVector >::type tokens_original(tokens_originalSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type tokens(tokensSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type tokens_join(tokens_joinSEXP);
     Rcpp::traits::input_parameter< const String& >::type delim(delimSEXP);
-    __result = Rcpp::wrap(join_tokens_cpp(tokens_original, tokens_join, delim));
-    return __result;
+    join_tokens_cpp(tokens, tokens_join, delim);
+    return R_NilValue;
 END_RCPP
 }
 // join_tokens_cppl
-List join_tokens_cppl(List texts_original, const std::vector<bool>& flag, const CharacterVector& tokens_join, const String& delim);
-RcppExport SEXP quanteda_join_tokens_cppl(SEXP texts_originalSEXP, SEXP flagSEXP, SEXP tokens_joinSEXP, SEXP delimSEXP) {
+void join_tokens_cppl(List texts, const std::vector<bool>& flag, const CharacterVector& tokens_join, const String& delim);
+RcppExport SEXP quanteda_join_tokens_cppl(SEXP textsSEXP, SEXP flagSEXP, SEXP tokens_joinSEXP, SEXP delimSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< List >::type texts_original(texts_originalSEXP);
+    Rcpp::traits::input_parameter< List >::type texts(textsSEXP);
     Rcpp::traits::input_parameter< const std::vector<bool>& >::type flag(flagSEXP);
     Rcpp::traits::input_parameter< const CharacterVector& >::type tokens_join(tokens_joinSEXP);
     Rcpp::traits::input_parameter< const String& >::type delim(delimSEXP);
-    __result = Rcpp::wrap(join_tokens_cppl(texts_original, flag, tokens_join, delim));
-    return __result;
+    join_tokens_cppl(texts, flag, tokens_join, delim);
+    return R_NilValue;
 END_RCPP
 }
 // select_tokens_cppl
-Rcpp::List select_tokens_cppl(Rcpp::List texts_original, const std::vector< std::string >& types, const bool& remove, const bool& spacer);
-RcppExport SEXP quanteda_select_tokens_cppl(SEXP texts_originalSEXP, SEXP typesSEXP, SEXP removeSEXP, SEXP spacerSEXP) {
+void select_tokens_cppl(Rcpp::List texts, const std::vector< std::string >& types, const bool& remove, const bool& spacer);
+RcppExport SEXP quanteda_select_tokens_cppl(SEXP textsSEXP, SEXP typesSEXP, SEXP removeSEXP, SEXP spacerSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< Rcpp::List >::type texts_original(texts_originalSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type texts(textsSEXP);
     Rcpp::traits::input_parameter< const std::vector< std::string >& >::type types(typesSEXP);
     Rcpp::traits::input_parameter< const bool& >::type remove(removeSEXP);
     Rcpp::traits::input_parameter< const bool& >::type spacer(spacerSEXP);
-    __result = Rcpp::wrap(select_tokens_cppl(texts_original, types, remove, spacer));
-    return __result;
+    select_tokens_cppl(texts, types, remove, spacer);
+    return R_NilValue;
 END_RCPP
 }
 // split_df_cpp

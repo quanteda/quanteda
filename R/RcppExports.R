@@ -17,16 +17,16 @@ find_sequence_cppl <- function(texts, types, count_min, smooth) {
     .Call('quanteda_find_sequence_cppl', PACKAGE = 'quanteda', texts, types, count_min, smooth)
 }
 
-join_tokens_cpp <- function(tokens_original, tokens_join, delim) {
-    .Call('quanteda_join_tokens_cpp', PACKAGE = 'quanteda', tokens_original, tokens_join, delim)
+join_tokens_cpp <- function(tokens, tokens_join, delim) {
+    invisible(.Call('quanteda_join_tokens_cpp', PACKAGE = 'quanteda', tokens, tokens_join, delim))
 }
 
-join_tokens_cppl <- function(texts_original, flag, tokens_join, delim) {
-    .Call('quanteda_join_tokens_cppl', PACKAGE = 'quanteda', texts_original, flag, tokens_join, delim)
+join_tokens_cppl <- function(texts, flag, tokens_join, delim) {
+    invisible(.Call('quanteda_join_tokens_cppl', PACKAGE = 'quanteda', texts, flag, tokens_join, delim))
 }
 
-select_tokens_cppl <- function(texts_original, types, remove, spacer) {
-    .Call('quanteda_select_tokens_cppl', PACKAGE = 'quanteda', texts_original, types, remove, spacer)
+select_tokens_cppl <- function(texts, types, remove, spacer) {
+    invisible(.Call('quanteda_select_tokens_cppl', PACKAGE = 'quanteda', texts, types, remove, spacer))
 }
 
 split_df_cpp <- function(df) {

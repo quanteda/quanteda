@@ -23,10 +23,6 @@
 #' @export
 joinTokens <- function(x, sequences, concatenator='-', valuetype='fixed', verbose=FALSE){
   
-  tokens <- x
-  if(verbose) cat("Indexing tokens...\n")
-  index <- dfm(tokens, verbose = FALSE)
-  
   seqs_token <- list()
   if(valuetype=='regex' | valuetype=='glob'){
     if(verbose) cat("Converting patterns to tokens...\n")
@@ -42,7 +38,7 @@ joinTokens <- function(x, sequences, concatenator='-', valuetype='fixed', verbos
       #cat("match--------------------\n")
       #print(match)
       if(length(unlist(seq_regex)) != length(match)) next
-      match_comb <- do.call(expand.grid, c(match, stringsAsFactors=FALSE)) # Produce all possible combinations
+      match_comb <- do.call(expand.grid, c(match, stringsAsFactors=FALSE)) # produce all possible combinations
       #cat("match_comb--------------------\n")
       #print(match_comb)
       seqs_token <- c(seqs_token, split_df_cpp(t(match_comb)))
@@ -52,19 +48,26 @@ joinTokens <- function(x, sequences, concatenator='-', valuetype='fixed', verbos
   }
   #cat("seqs_token--------------------\n")
   #print(seqs_token)
-  if(length(seqs_token) == 0) return(tokens)
   n_seqs <- length(seqs_token)
+  if(n_seqs == 0) return(x)
+  
+  if(verbose) cat("Indexing tokens...\n")
+  index <- dfm(x, verbose = FALSE)
+  index_binary <- as(index, 'nMatrix')
+  types <- colnames(index_binary)
+  
+  y <- x # copy x to y to prevent changes in x
   for(i in 1:n_seqs){
     seq_token <- seqs_token[[i]]
     if(length(seq_token) < 2) next
     if(is.list(seq_token) | !is.vector(seq_token) | length(seq_token) == 0) stop('Invalid token sequence\n');
-    if(!all(seq_token %in% colnames(index))){
+    if(!all(seq_token %in% types)){
       if(verbose) cat(paste0('"', seq_token, concatenate='', '"'), 'are not found', '\n')
     }else{
-      flag <- Matrix::rowSums(as(index[,seq_token], 'nMatrix')) == length(seq_token)
-      if(verbose) cat(i, '/', n_seqs, paste0('"', seq_token, '"'), 'are found in', sum(flag) ,'documents...\n')
-      tokens <- join_tokens_cppl(tokens, flag, seq_token, concatenator)
+      flag <- Matrix::rowSums(index_binary[,seq_token]) == length(seq_token)
+      if(verbose) cat(i, '/', n_seqs, paste0(c('"', paste(seq_token, collapse=' '), '"'), collapse=''), 'are found in', sum(flag) ,'texts\n')
+      join_tokens_cppl(y, flag, seq_token, concatenator) # pass y as reference
     }
   }
-  return(tokens)
+  return(y)
 }

@@ -329,6 +329,7 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     features <- unique(unlist(features, use.names=FALSE))  # to convert any dictionaries
+    y <- x # copy x to y prevent to changes in x
     
     originalvaluetype <- valuetype
     # convert glob to fixed if no actual glob characters (since fixed is much faster)
@@ -351,24 +352,24 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
             types_match <- features
         }
         if (selection == "remove") 
-            result <- select_tokens_cppl(x, types_match, TRUE, padding)
+            select_tokens_cppl(y, types_match, TRUE, padding)
         else 
-            result <- select_tokens_cppl(x, types_match, FALSE, padding)
+            select_tokens_cppl(y, types_match, FALSE, padding)
     } else if (valuetype == "regex") {
         regex <- paste0(features, collapse = "|")
-        types <- unique(unlist(x, use.names=FALSE))
+        types <- unique(unlist(y, use.names=FALSE))
         # get all the unique types that match regex
         types_match <- types[stringi::stri_detect_regex(types, regex, case_insensitive = case_insensitive, ...)]  
         if (selection == "remove") {
-            result <- select_tokens_cppl(x, types_match, TRUE, padding)  # search as fixed
+            select_tokens_cppl(y, types_match, TRUE, padding)  # search as fixed
         } else {
-            result <- select_tokens_cppl(x, types_match, FALSE, padding) # search as fixed
+            select_tokens_cppl(y, types_match, FALSE, padding) # search as fixed
         }
     }
     
-    class(result) <- c("tokenizedTexts", class(result))
-    attributes(result) <- attributes(x)
-    result
+    class(y) <- c("tokenizedTexts", class(x))
+    attributes(y) <- attributes(x)
+    return(y)
 }
 
 

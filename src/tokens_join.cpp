@@ -19,15 +19,15 @@ String join2(const CharacterVector &tokens,
 }
 
 // [[Rcpp::export]]
-CharacterVector join_tokens_cpp(CharacterVector tokens_original, 
-                                CharacterVector tokens_join,
-                                const String &delim){
+void join_tokens_cpp(CharacterVector tokens, 
+                     CharacterVector tokens_join,
+                     const String &delim){
+  
   //CharacterVector tokens(x);
-  CharacterVector tokens = clone(tokens_original);
   int len = tokens.size();
   int len_join = tokens_join.size();
   if(len_join == 1){ // Do nothing for single token
-    return tokens ;
+    return ;
   }
   int start = -1;
   bool change = FALSE;
@@ -68,31 +68,27 @@ CharacterVector join_tokens_cpp(CharacterVector tokens_original,
       
     }
     //Rcout << "Done\n";
-    return tokens_joined[seq(0, j - 1)];
-  }else{
-    return tokens_original; // Return original if there is no change
+    tokens = tokens_joined[seq(0, j - 1)];
   }
-  
 }
 
 // [[Rcpp::export]]
-List join_tokens_cppl(List texts_original, 
+void join_tokens_cppl(List texts, 
                       const std::vector<bool> &flag,
                       const CharacterVector &tokens_join,
                       const String &delim){
   //List texts(x);
-  List texts = clone(texts_original);
+  //List texts = clone(texts_original);
   int len = texts.size();
   if(flag.size() != len){
     Rcout << "Invalid flag is given\n";
-    return texts;
+    return;
   }
   for (int h = 0; h < len; h++){
     if(flag[h]){
       //Rcout << "Text " << h << "\n";
-      texts[h] = join_tokens_cpp(texts[h], tokens_join, delim);
+      join_tokens_cpp(texts[h], tokens_join, delim);
     }
   }
-  return texts;
 }
 
