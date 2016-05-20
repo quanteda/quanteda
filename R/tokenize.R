@@ -610,3 +610,19 @@ print.tokenizedTexts <- function(x, ...) {
         print(x, ...)
     }
 }
+
+#' @rdname tokenize
+#' @details \code{as.tokenizedTexts} coerces a list of character tokens to a tokenizedText class object, 
+#' making the methods available for this object type available to this object.
+#' @export
+as.tokenizedTexts <- function(x) {
+    if (!is.list(x)) 
+        if (!all(is.character(unlist(x))))
+            stop("input must be a list of character types")
+    class(x) <- c("tokenizedTexts", class(x))
+    attr(x, "what") <- "user"
+    attr(x, "ngrams") <- 1L
+    attr(x, "concatenator") <- ""
+    x
+}
+

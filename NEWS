@@ -1,3 +1,12 @@
+quanteda 0.9.7
+==============
+
+Enhancements
+------------  
+*  added `as.tokenizedTexts` to coerce any list of characters to a tokenizedTexts object.
+
+
+
 quanteda >= 0.9.6-3
 ===================
 
