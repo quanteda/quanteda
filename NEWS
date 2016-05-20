@@ -11,6 +11,7 @@ Bug fixes
 
 *  Fixed bug introduced in commit b88287f (0.9.5-26) that caused a failure in dfm() with empty (zero-token) documents.  Also fixes Issue #168.
 
+*  Fixed bug that caused dfm() to break if no features or only one feature was found.
 
 quanteda 0.9.6 
 ==============

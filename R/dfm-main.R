@@ -257,6 +257,10 @@ dfm.tokenizedTexts <- function(x,
 
     # index features
     if (verbose) cat("\n   ... indexing features: ")
+    if (sum(nTokens) == 0) {
+        cat("\n   ... Error in dfm.tokenizedTexts(): no features found.\n")
+        return(NULL)
+    }
     allFeatures <- unlist(x)
     uniqueFeatures <- unique(allFeatures)
     totalfeatures <- length(uniqueFeatures)
@@ -277,7 +281,7 @@ dfm.tokenizedTexts <- function(x,
                               x = 1L, 
                               dimnames = list(docs = docNames, features = uniqueFeatures))
     # remove dummy feature if needed
-    if (length(emptyDocs)) dfmresult <- dfmresult[, -ncol(dfmresult)]
+    if (length(emptyDocs)) dfmresult <- dfmresult[, -ncol(dfmresult), drop = FALSE]
     # construct the dfmSparse type object
     dfmresult <- new("dfmSparse", dfmresult)
     
