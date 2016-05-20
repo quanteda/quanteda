@@ -65,7 +65,7 @@ joinTokens <- function(x, sequences, concatenator='-', valuetype='fixed', verbos
       if(verbose) cat(paste0('"', seq_token, concatenate='', '"'), 'are not found', '\n')
     }else{
       flag <- Matrix::rowSums(index_binary[,seq_token]) == length(seq_token)
-      if(verbose) cat(i, '/', n_seqs, paste0(c('"', paste(seq_token, collapse=' '), '"'), collapse=''), 'is found in', sum(flag) ,'texts\n')
+      if(verbose) cat(sprintf('%d/%d "%s" is found in %d texts\n', i, n_seqs, paste(seq_token, collapse=' '), sum(flag)))
       join_tokens_cppl(y, flag, seq_token, concatenator) # pass y as reference
     }
   }
