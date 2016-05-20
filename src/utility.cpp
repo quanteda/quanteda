@@ -13,6 +13,12 @@ std::vector<CharacterVector> split_df_cpp(DataFrame df) {
   return cols;
 }
 
+// [[Rcpp::export]]
+Rcpp::List deepcopy(Rcpp::List x){
+  Rcpp::List y = clone(x);
+  return(y);
+}
+
 
 // You can include R code blocks in C++ files processed with sourceCpp
 // (useful for testing and development). The R code will be automatically

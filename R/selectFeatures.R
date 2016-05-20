@@ -329,7 +329,7 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     features <- unique(unlist(features, use.names=FALSE))  # to convert any dictionaries
-    y <- x # copy x to y prevent to changes in x
+    y <- deepcopy(x) # copy x to y prevent to changes in x
     
     originalvaluetype <- valuetype
     # convert glob to fixed if no actual glob characters (since fixed is much faster)
@@ -346,7 +346,7 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
     if (valuetype == "fixed") {
 
         if (case_insensitive) {
-            types <- unique(unlist(x, use.names=FALSE))
+            types <- unique(unlist(y, use.names=FALSE))
             types_match <- types[toLower(types) %in% toLower(features)]
         } else {
             types_match <- features

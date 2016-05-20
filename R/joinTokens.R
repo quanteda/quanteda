@@ -56,7 +56,7 @@ joinTokens <- function(x, sequences, concatenator='-', valuetype='fixed', verbos
   index_binary <- as(index, 'nMatrix')
   types <- colnames(index_binary)
   
-  y <- x # copy x to y to prevent changes in x
+  y <- deepcopy(x) # copy x to y to prevent changes in x
   for(i in 1:n_seqs){
     seq_token <- seqs_token[[i]]
     if(length(seq_token) < 2) next

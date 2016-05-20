@@ -33,6 +33,10 @@ split_df_cpp <- function(df) {
     .Call('quanteda_split_df_cpp', PACKAGE = 'quanteda', df)
 }
 
+deepcopy <- function(x) {
+    .Call('quanteda_deepcopy', PACKAGE = 'quanteda', x)
+}
+
 wordfishcpp <- function(wfm, dir, priors, tol, disp, dispfloor) {
     .Call('quanteda_wordfishcpp', PACKAGE = 'quanteda', wfm, dir, priors, tol, disp, dispfloor)
 }

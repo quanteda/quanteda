@@ -108,6 +108,17 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// deepcopy
+Rcpp::List deepcopy(Rcpp::List x);
+RcppExport SEXP quanteda_deepcopy(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< Rcpp::List >::type x(xSEXP);
+    __result = Rcpp::wrap(deepcopy(x));
+    return __result;
+END_RCPP
+}
 // wordfishcpp
 Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEXP dispfloor);
 RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP, SEXP dispSEXP, SEXP dispfloorSEXP) {
