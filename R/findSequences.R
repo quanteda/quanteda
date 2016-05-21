@@ -17,12 +17,12 @@
 #' # Extracting multi-part nouns
 #' types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
 #' seqs <- findSequences(tokens, types_upper, count_min=2)
-#' head(seqs)
+#' head(seqs, 20)
 #' 
 #' # Types can be any words
 #' types_lower <- types[stringi::stri_detect_regex(types, "^([a-z]+)$") & !types %in%stopwords()]
-#' seqs2 <- findSequences(tokens, types_lower, count_min=2)
-#' head(seqs2)
+#' seqs2 <- findSequences(tokens, types_lower, count_min=10)
+#' head(seqs2, 20)
 #' @rdname findSequences
 #' @export
 findSequences <- function(x, tokens, count_min=2, smooth=0.001){
