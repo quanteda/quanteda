@@ -1,7 +1,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-**Development branch** ![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=dev) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev)](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev)
+**Development branch** ![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=dev) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev)](https://codecov.io/gh/kbenoit/quanteda/branch/dev)
 
-**Master branch** ![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)
+**Master branch** ![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
 
 See the [Getting Started Vignette](http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html).
 
