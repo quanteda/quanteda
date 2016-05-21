@@ -62,7 +62,8 @@ double lambda(std::vector<int> &counts,
 Rcpp::List find_sequence_cppl(List texts,
                               const std::vector<std::string> &types,
                               const int &count_min,
-                              const double &smooth){
+                              const double &smooth,
+                              const bool &nested){
   
   //Rcpp::List texts(x);
   std::map<std::vector<std::string>, int> counts_seq; // unorderd_map cannot take vector as key
@@ -84,7 +85,7 @@ Rcpp::List find_sequence_cppl(List texts,
         Rcpp::String token = text[j];
         bool is_in;
         if(token == ""){
-          is_in = FALSE;
+          is_in = false;
         }else{
           is_in = set_types.find(token) != set_types.end();
         }
@@ -99,6 +100,7 @@ Rcpp::List find_sequence_cppl(List texts,
           }
           //print_vector("Reset", tokens_seq);
           tokens_seq.clear();
+          if(!nested) i = j; // jump if nested is false
           break;
         }
       }
@@ -112,7 +114,7 @@ Rcpp::List find_sequence_cppl(List texts,
   std::vector<double> lambdas;
   Rcpp::List sequences;
   for(auto it1 = counts_seq.begin(); it1 != counts_seq.end(); ++it1 ){
-    if(it1->first.size() < 2) continue;
+    if(it1->first.size() < 2) continue; // ignore single words
     if(it1->second < count_min) continue;
     // Initialize
     int n = it1->first.size();
