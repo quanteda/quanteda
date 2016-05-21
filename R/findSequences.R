@@ -8,6 +8,7 @@
 #' @param tokens types of token in sequuences
 #' @param count_min minimum frequency of sequences
 #' @param smooth smoothing factor
+#' @param nested collect nested sub-sequence
 #' @examples 
 #' data(SOTUCorpus, package = "quantedaData")
 #' sents <- tokenize(SOTUCorpus, what='sentence', simplify = TRUE)
@@ -23,11 +24,14 @@
 #' types_lower <- types[stringi::stri_detect_regex(types, "^([a-z]+)$") & !types %in%stopwords()]
 #' seqs2 <- findSequences(tokens, types_lower, count_min=10)
 #' head(seqs2, 20)
+#' 
 #' @rdname findSequences
 #' @export
-findSequences <- function(x, tokens, count_min=2, smooth=0.001){
+findSequences <- function(x, tokens, count_min, smooth=0.001, nested=TRUE){
   
-  seqs <- find_sequence_cppl(x, tokens, count_min, smooth);
+  if(missing(count_min)) count_min <- max(2, length(unlist(tokens)) / 10 ^ 6) # alt least twice of one in million
+  
+  seqs <- find_sequence_cppl(x, tokens, count_min, smooth, nested)
   seqs$z <- seqs$lambda / seqs$sigma
   seqs$p <- 1 - pnorm(seqs$z)
   seqs$mue <- seqs$lambda - (3.29 * seqs$sigma) # mue should be greater than zero

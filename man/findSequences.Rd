@@ -4,7 +4,7 @@
 \alias{findSequences}
 \title{find sequences of tokens}
 \usage{
-findSequences(x, tokens, count_min = 2, smooth = 0.001)
+findSequences(x, tokens, count_min, smooth = 0.001, nested = TRUE)
 }
 \arguments{
 \item{x}{tokenizedTexts objects}
@@ -14,6 +14,8 @@ findSequences(x, tokens, count_min = 2, smooth = 0.001)
 \item{count_min}{minimum frequency of sequences}
 
 \item{smooth}{smoothing factor}
+
+\item{nested}{collect nested sub-sequence}
 }
 \description{
 This function automatically identify sequences of tokens. This algorithm is   
@@ -28,11 +30,12 @@ types <- unique(unlist(tokens))
 # Extracting multi-part nouns
 types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\\\-]{2,})")]
 seqs <- findSequences(tokens, types_upper, count_min=2)
-head(seqs)
+head(seqs, 20)
 
 # Types can be any words
 types_lower <- types[stringi::stri_detect_regex(types, "^([a-z]+)$") & !types \%in\%stopwords()]
-seqs2 <- findSequences(tokens, types_lower, count_min=2)
-head(seqs2)
+seqs2 <- findSequences(tokens, types_lower, count_min=10)
+head(seqs2, 20)
+
 }
 

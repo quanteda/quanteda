@@ -46,8 +46,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // find_sequence_cppl
-Rcpp::List find_sequence_cppl(List texts, const std::vector<std::string>& types, const int& count_min, const double& smooth);
-RcppExport SEXP quanteda_find_sequence_cppl(SEXP textsSEXP, SEXP typesSEXP, SEXP count_minSEXP, SEXP smoothSEXP) {
+Rcpp::List find_sequence_cppl(List texts, const std::vector<std::string>& types, const int& count_min, const double& smooth, const bool& nested);
+RcppExport SEXP quanteda_find_sequence_cppl(SEXP textsSEXP, SEXP typesSEXP, SEXP count_minSEXP, SEXP smoothSEXP, SEXP nestedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -55,7 +55,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const std::vector<std::string>& >::type types(typesSEXP);
     Rcpp::traits::input_parameter< const int& >::type count_min(count_minSEXP);
     Rcpp::traits::input_parameter< const double& >::type smooth(smoothSEXP);
-    __result = Rcpp::wrap(find_sequence_cppl(texts, types, count_min, smooth));
+    Rcpp::traits::input_parameter< const bool& >::type nested(nestedSEXP);
+    __result = Rcpp::wrap(find_sequence_cppl(texts, types, count_min, smooth, nested));
     return __result;
 END_RCPP
 }

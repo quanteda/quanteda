@@ -4,7 +4,7 @@
 \alias{joinTokens}
 \title{join tokens function}
 \usage{
-joinTokens(x, sequences, concatenator = "-", valueType = "fixed",
+joinTokens(x, sequences, concatenator = "-", valuetype = "fixed",
   verbose = FALSE)
 }
 \arguments{
@@ -14,7 +14,7 @@ joinTokens(x, sequences, concatenator = "-", valueType = "fixed",
 
 \item{concatenator}{character used for joining tokens}
 
-\item{valueType}{how to interpret sequences: \code{fixed} for words as 
+\item{valuetype}{how to interpret sequences: \code{fixed} for words as 
 is; \code{"regex"} for regular expressions; or \code{"glob"} for 
 "glob"-style wildcard}
 
