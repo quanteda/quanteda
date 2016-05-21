@@ -33,7 +33,7 @@ findSequences <- function(x, tokens, count_min, smooth=0.001, nested=TRUE){
   
   seqs <- find_sequence_cppl(x, tokens, count_min, smooth, nested)
   seqs$z <- seqs$lambda / seqs$sigma
-  seqs$p <- 1 - pnorm(seqs$z)
+  seqs$p <- 1 - stats::pnorm(seqs$z)
   seqs$mue <- seqs$lambda - (3.29 * seqs$sigma) # mue should be greater than zero
   class(seqs) <- "tokenSequences"
   seqs
