@@ -141,10 +141,10 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
 #' @param case_insensitive case sensitivity
 #' @export
 regex2fixed <- function(regex, types, case_insensitive=TRUE){
-  regex <- paste0(features, collapse = "|")
+  regex_joined <- paste0(regex, collapse = "|")
   types <- unique(unlist(x, use.names=FALSE))
   # Get all the unique types that match regex
-  types_match <- types[stringi::stri_detect_regex(types, regex, case_insensitive = case_insensitive, ...)]  
+  types_match <- types[stringi::stri_detect_regex(types, regex_joined, case_insensitive = case_insensitive, ...)]  
   return(types_match)
 }
 
