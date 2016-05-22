@@ -14,9 +14,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-**Development branch** ![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=dev) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev)][1]
-
-**Master branch** ![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)][2]
+[![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](http://cran.r-project.org/package=quanteda)
+![Downloads](http://cranlogs.r-pkg.org/badges/quanteda)
+[![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda)
+[![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)][2]
 
 
 [1]: https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev
