@@ -371,9 +371,8 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
             select_tokens_cppl(y, flag, types_match, FALSE, padding)
         }
     } else if (valuetype == "regex") {
-        regex <- paste0(features, collapse = "|")
-        #types <- unique(unlist(y, use.names=FALSE))
-        types_match <- regex2fixed(regex, types) # get all the unique types that match regex
+        types_match <- regex2fixed(features, types) # get all the unique types that match regex
+        print(types_match)
         if(indexing) flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
         if(verbose) cat(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
         if (selection == "remove") {
@@ -396,7 +395,11 @@ regex2fixed <- function(regex, types){
   flag <- stringi::stri_startswith_fixed(regex, '^') & stringi::stri_endswith_fixed(regex, '$') # detect fixed patterns
   types_fixed <- stringi::stri_sub(regex[flag], 2, -2) # remove regex operators
   regex <- regex[!flag] # only non-fixed patterns
-  types_match <- types[types %in% types_fixed | stringi::stri_detect_regex(types, paste0(regex, collapse='|'))]
+  #types_match <- types[types %in% types_fixed | stringi::stri_detect_regex(types, paste0(regex, collapse='|'))]
+  #cat('types_fixed -------------------\n')
+  #print(types_fixed)
+  #cat('-------------------\n')
+  types_match <- types[types %in% types_fixed]
   return(types_match)
 }
 
