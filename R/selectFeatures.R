@@ -264,6 +264,7 @@ selectFeatures2 <- function(x, ...) UseMethod("selectFeatures2")
 #'   an empty string where the removed tokens previously existed.  This is
 #'   useful if a positional match is needed between the pre- and post-selected
 #'   features, for instance if a window of adjacency needs to be computed.
+#' @param indexing use dfm-based index to efficiently process large tokenizedTexts object
 #' @export
 #' @examples 
 #' \dontrun{## performance comparisons
@@ -324,14 +325,23 @@ selectFeatures2 <- function(x, ...) UseMethod("selectFeatures2")
 #' selectFeatures2(tokenize(encodedTexts[1]), stopwords("english"), "remove", padding = TRUE)
 selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                           valuetype = c("glob", "regex", "fixed"),
-                                          case_insensitive = TRUE, padding = FALSE,
+                                          case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
                                           verbose = TRUE, ...) {
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
-    features <- unique(unlist(features, use.names=FALSE))  # to convert any dictionaries
-    y <- deepcopy(x) # copy x to y prevent to changes in x
-    
     originalvaluetype <- valuetype
+    features <- unique(unlist(features, use.names=FALSE))  # to convert any dictionaries
+    y <- deepcopy(x) # copy x to y to prevent changes in x
+    
+    if(indexing){
+      if(verbose) cat("Indexing tokens...\n")
+      index <- dfm(y, verbose = FALSE)
+      index_binary <- as(index, 'nMatrix')
+      types <- colnames(index_binary)
+    }else{
+      types <- unique(unlist(y, use.names=FALSE))
+    }
+
     # convert glob to fixed if no actual glob characters (since fixed is much faster)
     if (valuetype == "glob") {
         # treat as fixed if no glob characters detected
@@ -346,24 +356,34 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
     if (valuetype == "fixed") {
 
         if (case_insensitive) {
-            types <- unique(unlist(y, use.names=FALSE))
+            #types <- unique(unlist(y, use.names=FALSE))
             types_match <- types[toLower(types) %in% toLower(features)]
         } else {
             types_match <- features
         }
-        if (selection == "remove") 
-            select_tokens_cppl(y, types_match, TRUE, padding)
-        else 
-            select_tokens_cppl(y, types_match, FALSE, padding)
+        if(indexing){
+            flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
+        }else{
+            flag <- rep(TRUE, length(y))
+        }
+        if(selection == "remove"){
+            select_tokens_cppl(y, flag, types_match, TRUE, padding)
+        }else{ 
+            select_tokens_cppl(y, flag, types_match, FALSE, padding)
+        }
     } else if (valuetype == "regex") {
         regex <- paste0(features, collapse = "|")
-        types <- unique(unlist(y, use.names=FALSE))
-        # get all the unique types that match regex
-        types_match <- types[stringi::stri_detect_regex(types, regex, case_insensitive = case_insensitive, ...)]  
+        #types <- unique(unlist(y, use.names=FALSE))
+        types_match <- regex2fixed(regex, types) # get all the unique types that match regex
+        if(indexing){
+            flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
+        }else{
+            flag <- rep(TRUE, length(y))
+        }
         if (selection == "remove") {
-            select_tokens_cppl(y, types_match, TRUE, padding)  # search as fixed
+            select_tokens_cppl(y, flag, types_match, TRUE, padding)  # search as fixed
         } else {
-            select_tokens_cppl(y, types_match, FALSE, padding) # search as fixed
+            select_tokens_cppl(y, flag, types_match, FALSE, padding) # search as fixed
         }
     }
     
@@ -372,7 +392,17 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
     return(y)
 }
 
-
+#' Convert regex to fixed
+#' @param regex regular expression
+#' @param types unique types of tokens
+#' @export
+regex2fixed <- function(regex, types){
+  flag <- stringi::stri_startswith_fixed(regex, '^') & stringi::stri_endswith_fixed(regex, '$') # detect fixed patterns
+  types_fixed <- stri_sub(regex[flag], 2, -2) # remove regex operators
+  regex <- regex[!flag] # only non-fixed patterns
+  types_match <- types[types %in% types_fixed | stringi::stri_detect_regex(types, paste0(regex, collapse='|'))]
+  return(types_match)
+}
 
 #' @rdname selectFeatures
 #' @param pos indexes of word position if called on collocations: remove if word

@@ -73,28 +73,29 @@ BEGIN_RCPP
 END_RCPP
 }
 // join_tokens_cppl
-void join_tokens_cppl(List texts, const std::vector<bool>& flag, const CharacterVector& tokens_join, const String& delim);
-RcppExport SEXP quanteda_join_tokens_cppl(SEXP textsSEXP, SEXP flagSEXP, SEXP tokens_joinSEXP, SEXP delimSEXP) {
+void join_tokens_cppl(List texts, const std::vector<bool>& flags, const CharacterVector& tokens_join, const String& delim);
+RcppExport SEXP quanteda_join_tokens_cppl(SEXP textsSEXP, SEXP flagsSEXP, SEXP tokens_joinSEXP, SEXP delimSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< List >::type texts(textsSEXP);
-    Rcpp::traits::input_parameter< const std::vector<bool>& >::type flag(flagSEXP);
+    Rcpp::traits::input_parameter< const std::vector<bool>& >::type flags(flagsSEXP);
     Rcpp::traits::input_parameter< const CharacterVector& >::type tokens_join(tokens_joinSEXP);
     Rcpp::traits::input_parameter< const String& >::type delim(delimSEXP);
-    join_tokens_cppl(texts, flag, tokens_join, delim);
+    join_tokens_cppl(texts, flags, tokens_join, delim);
     return R_NilValue;
 END_RCPP
 }
 // select_tokens_cppl
-void select_tokens_cppl(Rcpp::List texts, const std::vector< std::string >& types, const bool& remove, const bool& spacer);
-RcppExport SEXP quanteda_select_tokens_cppl(SEXP textsSEXP, SEXP typesSEXP, SEXP removeSEXP, SEXP spacerSEXP) {
+void select_tokens_cppl(Rcpp::List texts, const std::vector<bool>& flags, const std::vector< std::string >& types, const bool& remove, const bool& spacer);
+RcppExport SEXP quanteda_select_tokens_cppl(SEXP textsSEXP, SEXP flagsSEXP, SEXP typesSEXP, SEXP removeSEXP, SEXP spacerSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< Rcpp::List >::type texts(textsSEXP);
+    Rcpp::traits::input_parameter< const std::vector<bool>& >::type flags(flagsSEXP);
     Rcpp::traits::input_parameter< const std::vector< std::string >& >::type types(typesSEXP);
     Rcpp::traits::input_parameter< const bool& >::type remove(removeSEXP);
     Rcpp::traits::input_parameter< const bool& >::type spacer(spacerSEXP);
-    select_tokens_cppl(texts, types, remove, spacer);
+    select_tokens_cppl(texts, flags, types, remove, spacer);
     return R_NilValue;
 END_RCPP
 }

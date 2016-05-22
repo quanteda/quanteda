@@ -23,6 +23,11 @@
 #' @export
 joinTokens <- function(x, sequences, concatenator='-', valuetype='fixed', verbose=FALSE){
   
+  if(verbose) cat("Indexing tokens...\n")
+  index <- dfm(x, verbose = FALSE)
+  index_binary <- as(index, 'nMatrix')
+  types <- colnames(index_binary)
+  
   seqs_token <- list()
   if(valuetype=='regex' | valuetype=='glob'){
     if(verbose) cat("Converting patterns to tokens...\n")
@@ -34,7 +39,7 @@ joinTokens <- function(x, sequences, concatenator='-', valuetype='fixed', verbos
       }
       #cat("seq_regex--------------------\n")
       #print(seq_regex)
-      match <- lapply(seq_regex, function(x, y) y[stringi::stri_detect_regex(y, x)], colnames(index))
+      match <- lapply(seq_regex, function(x, y) y[stringi::stri_detect_regex(y, x)], types)
       #cat("match--------------------\n")
       #print(match)
       if(length(unlist(seq_regex)) != length(match)) next
@@ -47,15 +52,10 @@ joinTokens <- function(x, sequences, concatenator='-', valuetype='fixed', verbos
     seqs_token <- sequences  
   }
   #cat("seqs_token--------------------\n")
-  #print(seqs_token)
+  print(seqs_token)
   n_seqs <- length(seqs_token)
   if(n_seqs == 0) return(x)
-  
-  if(verbose) cat("Indexing tokens...\n")
-  index <- dfm(x, verbose = FALSE)
-  index_binary <- as(index, 'nMatrix')
-  types <- colnames(index_binary)
-  
+
   y <- deepcopy(x) # copy x to y to prevent changes in x
   for(i in 1:n_seqs){
     seq_token <- seqs_token[[i]]

@@ -21,12 +21,12 @@ join_tokens_cpp <- function(tokens, tokens_join, delim) {
     invisible(.Call('quanteda_join_tokens_cpp', PACKAGE = 'quanteda', tokens, tokens_join, delim))
 }
 
-join_tokens_cppl <- function(texts, flag, tokens_join, delim) {
-    invisible(.Call('quanteda_join_tokens_cppl', PACKAGE = 'quanteda', texts, flag, tokens_join, delim))
+join_tokens_cppl <- function(texts, flags, tokens_join, delim) {
+    invisible(.Call('quanteda_join_tokens_cppl', PACKAGE = 'quanteda', texts, flags, tokens_join, delim))
 }
 
-select_tokens_cppl <- function(texts, types, remove, spacer) {
-    invisible(.Call('quanteda_select_tokens_cppl', PACKAGE = 'quanteda', texts, types, remove, spacer))
+select_tokens_cppl <- function(texts, flags, types, remove, spacer) {
+    invisible(.Call('quanteda_select_tokens_cppl', PACKAGE = 'quanteda', texts, flags, types, remove, spacer))
 }
 
 split_df_cpp <- function(df) {

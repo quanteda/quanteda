@@ -16,7 +16,7 @@ std::vector<CharacterVector> split_df_cpp(DataFrame df) {
 // [[Rcpp::export]]
 Rcpp::List deepcopy(Rcpp::List x){
   Rcpp::List y = clone(x);
-  return(y);
+  return y;
 }
 
 

@@ -74,18 +74,18 @@ void join_tokens_cpp(CharacterVector tokens,
 
 // [[Rcpp::export]]
 void join_tokens_cppl(List texts, 
-                      const std::vector<bool> &flag,
+                      const std::vector<bool> &flags,
                       const CharacterVector &tokens_join,
                       const String &delim){
   //List texts(x);
   //List texts = clone(texts_original);
   int len = texts.size();
-  if(flag.size() != len){
+  if(flags.size() != len){
     Rcout << "Invalid flag is given\n";
     return;
   }
   for (int h = 0; h < len; h++){
-    if(flag[h]){
+    if(flags[h]){
       //Rcout << "Text " << h << "\n";
       join_tokens_cpp(texts[h], tokens_join, delim);
     }

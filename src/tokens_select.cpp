@@ -8,15 +8,35 @@ using namespace Rcpp;
 
 // [[Rcpp::export]]
 void select_tokens_cppl(Rcpp::List texts,
-                              const std::vector< std::string > &types,
-                              const bool &remove,
-                              const bool &spacer){
+                        const std::vector<bool> &flags,
+                        const std::vector< std::string > &types,
+                        const bool &remove,
+                        const bool &spacer){
+  
+  int len = texts.size();
+  if(flags.size() != len){
+    Rcout << "Invalid flag is given\n";
+    return;
+  }
   
   //Rcpp::List texts(x);
   std::unordered_set<std::string> set_types (types.begin(), types.end());
-  for (int h=0; h < texts.size(); h++){
+  for (int h=0; h < len; h++){
     //Rcout << "Text " << h << "\n";
     Rcpp::CharacterVector text = texts[h];
+    
+    if(!flags[h]){
+      if(!remove){
+        if(spacer){
+          texts[h] = Rcpp::CharacterVector(text.size()); // all empty in origina length
+        }else{
+          texts[h] = Rcpp::CharacterVector(); // nothing left
+        }
+      }
+      Rcout << "Skip " << h << "\n";
+      continue;
+    }
+
     Rcpp::CharacterVector text_temp(text.size()); // make vector in the same length as original
     int j = 0;
     for (int i=0; i < text_temp.size(); i++){

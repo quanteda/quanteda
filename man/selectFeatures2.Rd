@@ -9,7 +9,8 @@ selectFeatures2(x, ...)
 
 \method{selectFeatures2}{tokenizedTexts}(x, features, selection = c("keep",
   "remove"), valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, padding = FALSE, verbose = TRUE, ...)
+  case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
+  verbose = TRUE, ...)
 }
 \arguments{
 \item{x}{object whose features will be selected}
@@ -35,6 +36,8 @@ is; \code{"regex"} for regular expressions; or \code{"glob"} for
 an empty string where the removed tokens previously existed.  This is
 useful if a positional match is needed between the pre- and post-selected
 features, for instance if a window of adjacency needs to be computed.}
+
+\item{indexing}{use dfm-based index to efficiently process large tokenizedTexts object}
 
 \item{verbose}{if \code{TRUE} print message about how many features were 
 removed}
