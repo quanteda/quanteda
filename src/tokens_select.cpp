@@ -33,7 +33,7 @@ void select_tokens_cppl(Rcpp::List texts,
           texts[h] = Rcpp::CharacterVector(); // nothing left
         }
       }
-      Rcout << "Skip " << h << "\n";
+      //Rcout << "Skip " << h << "\n";
       continue;
     }
 

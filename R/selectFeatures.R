@@ -398,7 +398,7 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
 #' @export
 regex2fixed <- function(regex, types){
   flag <- stringi::stri_startswith_fixed(regex, '^') & stringi::stri_endswith_fixed(regex, '$') # detect fixed patterns
-  types_fixed <- stri_sub(regex[flag], 2, -2) # remove regex operators
+  types_fixed <- stringi::stri_sub(regex[flag], 2, -2) # remove regex operators
   regex <- regex[!flag] # only non-fixed patterns
   types_match <- types[types %in% types_fixed | stringi::stri_detect_regex(types, paste0(regex, collapse='|'))]
   return(types_match)
