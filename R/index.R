@@ -22,7 +22,7 @@ dfm2 <- function(x){
   index_cpp(x, types, index_document, index_feature)
   #print(range(index_document))
   #print(range(index_feature))
-  cat("Making sparseMatrix\n");
+  cat("Making sparseMatrix\n")
   mx <- Matrix::sparseMatrix(i = index_document, 
                              j = index_feature, 
                              x = 1L,
