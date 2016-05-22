@@ -75,6 +75,7 @@ Collate:
     'readability.R'
     'resample.R'
     'selectFeatures.R'
+    'selectFeatures2.R'
     'settings.R'
     'similarity.R'
     'stopwords.R'
