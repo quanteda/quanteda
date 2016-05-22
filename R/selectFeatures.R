@@ -332,6 +332,7 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
     originalvaluetype <- valuetype
     features <- unique(unlist(features, use.names=FALSE))  # to convert any dictionaries
     y <- deepcopy(x) # copy x to y to prevent changes in x
+    n <- length(y)
     
     if(indexing){
       if(verbose) cat("Indexing tokens...\n")
@@ -340,6 +341,7 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
       types <- colnames(index_binary)
     }else{
       types <- unique(unlist(y, use.names=FALSE))
+      flag <- rep(TRUE, n)
     }
 
     # convert glob to fixed if no actual glob characters (since fixed is much faster)
@@ -361,11 +363,8 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
         } else {
             types_match <- features
         }
-        if(indexing){
-            flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
-        }else{
-            flag <- rep(TRUE, length(y))
-        }
+        if(indexing) flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
+        if(verbose) cat(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
         if(selection == "remove"){
             select_tokens_cppl(y, flag, types_match, TRUE, padding)
         }else{ 
@@ -375,11 +374,8 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
         regex <- paste0(features, collapse = "|")
         #types <- unique(unlist(y, use.names=FALSE))
         types_match <- regex2fixed(regex, types) # get all the unique types that match regex
-        if(indexing){
-            flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
-        }else{
-            flag <- rep(TRUE, length(y))
-        }
+        if(indexing) flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
+        if(verbose) cat(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
         if (selection == "remove") {
             select_tokens_cppl(y, flag, types_match, TRUE, padding)  # search as fixed
         } else {
