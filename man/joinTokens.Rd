@@ -24,8 +24,7 @@ is; \code{"regex"} for regular expressions; or \code{"glob"} for
 Needs some more explanation
 }
 \examples{
-data(SOTUCorpus, package = "quantedaData")
-toks <- tokenize(SOTUCorpus, removePunct = TRUE)
+toks <- tokenize(inaugCorpus, removePunct = TRUE)
 seqs_token <- list(c('foreign', 'policy'), c('United', 'States'))
 seqs_glob <- list(c('foreign', 'polic*'), c('United', 'States'))
 seqs_regex <- list(c('^foreign', '^polic(ie|y)'), c('^United', '^States'))

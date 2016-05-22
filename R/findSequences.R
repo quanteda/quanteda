@@ -10,8 +10,7 @@
 #' @param smooth smoothing factor
 #' @param nested collect nested sub-sequence
 #' @examples 
-#' data(SOTUCorpus, package = "quantedaData")
-#' sents <- tokenize(SOTUCorpus, what='sentence', simplify = TRUE)
+#' sents <- tokenize(inaugCorpus, what = "sentence", simplify = TRUE)
 #' tokens <- tokenize(sents, removePunct = TRUE)
 #' types <- unique(unlist(tokens))
 #' 

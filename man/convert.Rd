@@ -123,7 +123,7 @@ identical(topicmodelsdfm, convert(quantdfm, to="topicmodels"))
 # lda package format
 ldadfm <- convert(quantdfm, to="lda")
 str(ldadfm)
-identical(ldadfm, stmdfm[1:2])
+identical(ldadfm[1], stmdfm[1])
 
 # calling dfm2ldaformat directly
 ldadfm <- dfm2ldaformat(quantdfm)

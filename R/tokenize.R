@@ -546,32 +546,31 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
 
+        
     if (simplify == FALSE) {
         # stri_* destroys names, so put them back
         startTimeClean <- proc.time()
         if (verbose) cat("  ...replacing names")
         names(result) <- names(x)
         if (verbose) cat("...total elapsed: ", (proc.time() - startTimeClean)[3], "seconds.\n")
+        # make this an S3 class item, if a list
+        if (!is.tokenizedTexts(result))
+            class(result) <- c("tokenizedTexts", class(result))
+        attr(result, "what") <- what
+        attr(result, "ngrams") <- ngrams
+        attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
     } else {
         # or just return the tokens as a single character vector
         if (verbose) cat("  ...unlisting results.\n")
-        result <- unlist(result)
+        result <- unlist(result, use.names = FALSE)
+        # clear attributes
+        attributes(result) <- NULL
     }
-    
+
     if (verbose) 
         cat("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n") 
-    #, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
-
-    # make this an S3 class item, if a list
-    if (simplify == FALSE & !is.tokenizedTexts(result)) {
-        class(result) <- c("tokenizedTexts", class(result))
-    }
-    
-    # add settings
-    attr(result, "what") <- what
-    attr(result, "ngrams") <- ngrams
-    attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
-
+        #, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
+        
     result
 }
 
@@ -611,3 +610,18 @@ print.tokenizedTexts <- function(x, ...) {
         print(x, ...)
     }
 }
+
+#' @rdname tokenize
+#' @details \code{as.tokenizedTexts} coerces a list of character tokens to a tokenizedText class object, 
+#' making the methods available for this object type available to this object.
+#' @export
+as.tokenizedTexts <- function(x) {
+    if (!is.list(x) || (!all(sapply(x, function(l) all(is.character(l))))))
+            stop("input must be a list of character types")
+    class(x) <- c("tokenizedTexts", class(x))
+    attr(x, "what") <- "user"
+    attr(x, "ngrams") <- 1L
+    attr(x, "concatenator") <- ""
+    x
+}
+

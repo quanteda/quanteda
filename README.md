@@ -1,5 +1,5 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-**Development branch** \[![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=dev)\]\[![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev)\](<https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev>) **Master branch** \[![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)\]\[![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)\](<https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master>)
+[![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](http://cran.r-project.org/package=quanteda) ![Downloads](http://cranlogs.r-pkg.org/badges/quanteda) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)
 
 See the [Getting Started Vignette](http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html).
 
@@ -40,7 +40,13 @@ Once constructed, a **quanteda** "dfm"" can be easily analyzed using either quan
 
 -   bootstrapping methods for texts that makes it easy to resample texts from pre-defined units, to facilitate computation of confidence intervals on textual statistics using techniques of non-parametric bootstrapping, but applied to the original texts as data.
 
--   expansion of the document-feature matrix structure through a standard interface called `textmodel()`. (As of version 0.8.0, textmodel works in a basic fashion only for the "Wordscores" and "wordfish" scaling models.)
+-   expansion of predictive and analytic methods called through the standard interface called `textmodel()`. Current model types include correspondence analysis, "Wordscores", "Wordfish", and Naive Bayes.
+
+-   Addition of settings to corpus projects, that will propogate through downstream objects.
+
+-   Addition of a history that will propogate through downstream objects.
+
+**Acknowledgements**: This research was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
 How to Install
 --------------
@@ -82,7 +88,7 @@ Example
 
 ``` r
 library(quanteda)
-#> quanteda version 0.9.5.23
+#> quanteda version 0.9.6.9
 #> 
 #> Attaching package: 'quanteda'
 #> The following object is masked from 'package:base':
@@ -96,7 +102,7 @@ uk2010immigCorpus <- corpus(ukimmigTexts,
 #> Warning in corpus.character(ukimmigTexts, docvars = data.frame(party =
 #> names(ukimmigTexts)), : Argument enc not used.
 uk2010immigCorpus
-#> Corpus consisting of 9 documents.
+#> Corpus consisting of 9 documents and 1 docvar.
 summary(uk2010immigCorpus, showmeta=TRUE)
 #> Corpus consisting of 9 documents.
 #> 
@@ -112,7 +118,7 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 #>          UKIP   346    739        27         UKIP
 #> 
 #> Source:  /Users/kbenoit/Dropbox/GitHub/quanteda/* on x86_64 by kbenoit
-#> Created: Mon Apr 25 15:23:35 2016
+#> Created: Sun May 22 10:53:12 2016
 #> Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -129,11 +135,11 @@ mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
 #>    ... lowercasing
 #>    ... tokenizing
 #>    ... indexing documents: 9 documents
-#>    ... indexing features: 1,586 feature types
+#>    ... indexing features: 1,585 feature types
 #>    ... removed 97 features, from 175 supplied (glob) feature types
 #>    ... created a 9 x 1489 sparse dfm
 #>    ... complete. 
-#> Elapsed time: 0.036 seconds.
+#> Elapsed time: 0.031 seconds.
 dim(mydfm)              # basic dimensions of the dfm
 #> [1]    9 1489
 topfeatures(mydfm, 20)  # 20 top words
@@ -148,4 +154,4 @@ topfeatures(mydfm, 20)  # 20 top words
 plot(mydfm, min.freq = 6, random.order = FALSE)             # word cloud     
 ```
 
-![](README-quanteda_example-1.png)<!-- -->
+![](images/quanteda_example-1.png)

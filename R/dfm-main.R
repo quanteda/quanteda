@@ -240,10 +240,6 @@ dfm.tokenizedTexts <- function(x,
         cat("Creating a dfm from a tokenizedTexts object ...")
     }
 
-    # add a "NULL" token to every tokenized text, in case some are empty
-    x <- lapply(x, function(t) t <- c(t, "**_NULL_**"))
-    class(x) <- c("tokenizedTexts", "list")
-    
     # get document names
     if (is.null(names(x))) {
         docNames <- paste("text", 1:length(x), sep="")
@@ -254,16 +250,28 @@ dfm.tokenizedTexts <- function(x,
                      format(length(x), big.mark=","), " document",
                      ifelse(length(x) > 1, "s", ""), sep="")
     nTokens <- lengths(x)
-    docIndex <- rep(seq_along(nTokens), nTokens)
-    
+    # find out which documents have zero feature counts
+    emptyDocs <- which(nTokens == 0)
+    # add docIndex positions for any zero-token docs; no effect if emptyDocs is empty
+    docIndex <- c(rep(seq_along(nTokens), nTokens), emptyDocs)
+
     # index features
     if (verbose) cat("\n   ... indexing features: ")
+    if (sum(nTokens) == 0) {
+        cat("\n   ... Error in dfm.tokenizedTexts(): no features found.\n")
+        return(NULL)
+    }
     allFeatures <- unlist(x)
     uniqueFeatures <- unique(allFeatures)
     totalfeatures <- length(uniqueFeatures)
     if (verbose) cat(format(totalfeatures - 1, big.mark=","), " feature type",
                      ifelse(totalfeatures - 1  > 1, "s", ""), sep="")
     featureIndex <- match(allFeatures, uniqueFeatures)
+    # add an arbitrary "feature" for empty docs
+    if (length(emptyDocs)) {
+        featureIndex <- c(featureIndex, rep(length(uniqueFeatures)+1, length(emptyDocs)))
+        uniqueFeatures <- c(uniqueFeatures, "__TEMPFEATURE__")
+    }
     
     if (verbose) cat("\n")
     
@@ -272,8 +280,8 @@ dfm.tokenizedTexts <- function(x,
                               j = featureIndex, 
                               x = 1L, 
                               dimnames = list(docs = docNames, features = uniqueFeatures))
-    # remove null term
-    dfmresult <- dfmresult[, -match("**_NULL_**", colnames(dfmresult)), drop = FALSE]
+    # remove dummy feature if needed
+    if (length(emptyDocs)) dfmresult <- dfmresult[, -ncol(dfmresult), drop = FALSE]
     # construct the dfmSparse type object
     dfmresult <- new("dfmSparse", dfmresult)
     

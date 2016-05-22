@@ -31,7 +31,7 @@
 #' @return A converted object determined by the value of \code{to} (see above). 
 #' See conversion target package documentation for more detailed descriptions 
 #' of the return formats.  
-#' 
+#' @importFrom utils installed.packages
 #' @export
 #' @examples
 #' mycorpus <- subset(inaugCorpus, Year>1970)
@@ -56,7 +56,7 @@
 #' # lda package format
 #' ldadfm <- convert(quantdfm, to="lda")
 #' str(ldadfm)
-#' identical(ldadfm, stmdfm[1:2])
+#' identical(ldadfm[1], stmdfm[1])
 #' 
 convert <- function(x, to, ...) {
     UseMethod("convert")
@@ -107,9 +107,9 @@ dfm2austinformat <- function(d) {
 
 ## convert to tm format
 dfm2tmformat <- function(x, weighting=tm::weightTf) {
-    if (system.file(package = "tm")=="") #!require(tm))
+    if (!("tm" %in% installed.packages()[, "Package"])) 
         stop("You must install the tm package installed for this conversion.")
-    if (system.file(package = "slam")=="") #(!require(slam))
+    if (!("slam" %in% installed.packages()[, "Package"]))
         stop("You must install the slam package installed for this conversion.")
     sl <- slam::as.simple_triplet_matrix(x)
     td <- tm::as.DocumentTermMatrix(sl, weighting=weighting)
@@ -156,7 +156,7 @@ dfm2ldaformat <- function(x) {
 #' ldadfm <- dfm2ldaformat(quantdfm)
 #' str(ldadfm)
 dfm2ldaformat.dfm <- function(x) {
-    if (system.file(package = "slam")=="") #(!require(slam))
+    if (!("tm" %in% installed.packages()[, "Package"]))
         stop("You must install the slam package installed for this conversion.")
     tmDTM <- dfm2tmformat(x)
     return(dtm2ldaformat(tmDTM))
@@ -165,7 +165,7 @@ dfm2ldaformat.dfm <- function(x) {
 ## from the package topicmodels
 dtm2ldaformat <- function (x, omit_empty = TRUE) 
 {
-    if (system.file(package = "slam")=="") #(!require(slam))
+    if (!("slam" %in% installed.packages()[, "Package"]))
         stop("You must install the slam package installed for this conversion.")
     
     split.matrix <- function(x, f, drop = FALSE, ...) lapply(split(seq_len(ncol(x)), 
@@ -202,9 +202,9 @@ quantedaformat2dtm.dfm <- function(x) {
 
 ldaformat2dtm <- function (documents, vocab, omit_empty = TRUE) 
 {
-    if (system.file(package = "tm")=="") #!require(tm))
+    if (!("tm" %in% installed.packages()[, "Package"]))
         stop("You must install the tm package installed for this conversion.")
-    if (system.file(package = "slam")=="") #(!require(slam))
+    if (!("slam" %in% installed.packages()[, "Package"]))
         stop("You must install the slam package installed for this conversion.")
 
     stm <- slam::simple_triplet_matrix(i = rep(seq_along(documents), 

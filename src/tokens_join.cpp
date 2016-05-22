@@ -56,7 +56,7 @@ void join_tokens_cpp(CharacterVector tokens,
   }
   
   CharacterVector tokens_joined(len);
-  int space = 0;
+  // int space = 0;
   if(change){
     //Rcout << "Remove spacer\n";
     int j = 0;
