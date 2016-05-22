@@ -7,16 +7,16 @@
 using namespace Rcpp;
 
 // index_cpp
-Rcpp::List index_cpp(SEXP x, const std::vector< std::string >& types, const int& n);
-RcppExport SEXP quanteda_index_cpp(SEXP xSEXP, SEXP typesSEXP, SEXP nSEXP) {
+void index_cpp(Rcpp::List& texts, const CharacterVector& types, IntegerVector& index_d, IntegerVector& index_f);
+RcppExport SEXP quanteda_index_cpp(SEXP textsSEXP, SEXP typesSEXP, SEXP index_dSEXP, SEXP index_fSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const std::vector< std::string >& >::type types(typesSEXP);
-    Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
-    __result = Rcpp::wrap(index_cpp(x, types, n));
-    return __result;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type texts(textsSEXP);
+    Rcpp::traits::input_parameter< const CharacterVector& >::type types(typesSEXP);
+    Rcpp::traits::input_parameter< IntegerVector& >::type index_d(index_dSEXP);
+    Rcpp::traits::input_parameter< IntegerVector& >::type index_f(index_fSEXP);
+    index_cpp(texts, types, index_d, index_f);
+    return R_NilValue;
 END_RCPP
 }
 // skipgramcpp

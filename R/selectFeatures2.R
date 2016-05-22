@@ -140,7 +140,7 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
 #' @param types unique types of tokens
 #' @param case_insensitive case sensitivity
 #' @export
-regex2fixed <- function(regex, types, case_insensitive=TRUE){
+regex2fixed <- function(regex, types, case_insensitive=TRUE, ...){
   regex_joined <- paste0(regex, collapse = "|")
   types <- unique(unlist(x, use.names=FALSE))
   # Get all the unique types that match regex

@@ -4,12 +4,14 @@
 \alias{regex2fixed}
 \title{Convert regex to fixed}
 \usage{
-regex2fixed(regex, types)
+regex2fixed(regex, types, case_insensitive = TRUE, ...)
 }
 \arguments{
 \item{regex}{regular expression}
 
 \item{types}{unique types of tokens}
+
+\item{case_insensitive}{case sensitivity}
 }
 \description{
 Convert regex to fixed
