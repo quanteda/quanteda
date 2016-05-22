@@ -296,6 +296,8 @@ get_zipfile <- function(f, ...) {
     td <- tempdir()
     if (substr(f, 1, 4) == "http")
         utils::download.file(f, destfile = (flocal <- paste0(td, "/temp.zip", quiet = TRUE)))
+    else
+        flocal <- f
     utils::unzip(flocal, exdir = td)
     # cat("file:", paste0(td, "*.txt"), "\n")
     get_docs(paste0(td, "/*.txt"))
