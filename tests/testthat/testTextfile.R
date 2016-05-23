@@ -380,32 +380,10 @@ test_that("test docvars.corpusSource warning with field!=NULL", {
 
 
 test_that("test textfile encoding parameter", {
-
-  fox <- "The quick brown fox jumps over the lazy dog."
-  # Test ASCII encoded file, read as ASCII
-   expect_that(
-      texts(textfile('../data/encoding/ascii.txt', encoding='ascii')),
-      equals(fox)
-    )
-  # Test ASCII encoded file, read as UTF-8
-   expect_that(
-      texts(textfile('../data/encoding/ascii.txt', encoding='utf-8')),
-      equals(fox)
-    )
-  # Test ASCII encoded file, read as UTF-16: should not work
-   expect_that(
-      texts(textfile('../data/encoding/ascii.txt', encoding='utf-16')) == fox,
-      is_false()
-    )
-
-  # Test Latin-1/ISO-8859-1 encoded text
-   expect_that(
-      texts(textfile('../data/encoding/latin1.txt', encoding='latin1')),
-      equals('"Fix, Schwyz!" quäkt Jürgen blöd vom Paß')
-    )
-
    
-  # Test Unicode encoded files:
+  # Test encoded files:
+  #    - ASCII read as ASCII
+  #    - ASCII read as UTF-8
   #    - UTF-8 with BOM
   #    - UTF-8 without BOM
   #    - UTF-16 big-endian with BOM
@@ -413,18 +391,31 @@ test_that("test textfile encoding parameter", {
   #    - UTF-16 little-endian with BOM
   #    - UTF-16 little-endian without BOM
   #    - Windows-1252
+  #    - Latin-1/ISO-8859-1
 
+   fox <- "The quick brown fox jumps over the lazy dog."
    frenchText <- "Le cœur déçu mais l'âme plutôt naïve, Louÿs rêva de crapaüter en canoë au delà des îles, près du mälström où brûlent les novæ."
+   germanText <- '"Fix, Schwyz!" quäkt Jürgen blöd vom Paß'
 
-   encodings = c('utf-8',       'utf-8',     'utf-16',     'utf-16',       'utf-16',       'utf-16le',       'latin1', 'windows-1252')
-   filenames = c('utf-8-nobom', 'utf-8-bom', 'utf-16-bom', 'utf-16-nobom', 'utf-16le-bom', 'utf-16le-nobom', 'latin1', 'windows-1252')
+   encodings = c('ascii', 'utf-8', 'utf-8',       'utf-8',     'utf-16',     'utf-16',       'utf-16',       'utf-16le',       'windows-1252', 'latin1')
+   filenames = c('ascii', 'ascii', 'utf-8-nobom', 'utf-8-bom', 'utf-16-bom', 'utf-16-nobom', 'utf-16le-bom', 'utf-16le-nobom', 'windows-1252', 'latin1')
+   testtexts = c(fox,     fox,     frenchText,    frenchText,   frenchText,   frenchText,    frenchText,     frenchText,       frenchText,      germanText)
+
+
 
    for (i in 1:length(encodings)) {
      print(paste(filenames[[i]], encodings[[i]]))
      expect_that(
       texts(textfile(paste0('../data/encoding/', filenames[[i]], '.txt'), encoding=encodings[[i]])),
-      equals(frenchText)
+      equals(testtexts[[i]])
     )
    }
+
+  # Test ASCII encoded file, read as UTF-16: should not work
+   expect_that(
+      texts(textfile('../data/encoding/ascii.txt', encoding='utf-16')) == fox,
+      is_false()
+    )
+
 
   })
