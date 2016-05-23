@@ -615,28 +615,30 @@ rbind2.dfm <- function(x, y) {
     only_x_names <- setdiff(x_names, y_names)
     only_y_names <- setdiff(y_names, x_names)
 
-    # This is kinda unreadable, sorry
-    new_dfm <- new("dfmSparse", Matrix::rbind2(
-        Matrix::cbind2(
-            Matrix::cbind2(
+    xcols <- Matrix::cbind2(
                 x[, common_names],
                 x[, only_x_names]
-            ),
-            Matrix::sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x), 
+    )
+    empty_ycols <- Matrix::sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x), 
                 length(only_y_names)), dimnames = list(NULL, only_y_names))
-        ),
-        Matrix::cbind2(
-            Matrix::cbind2(
-                y[, common_names],
-                Matrix::sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(y), 
+
+    empty_xcols <- Matrix::sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(y), 
                     length(only_x_names)), dimnames = list(NULL, only_x_names))
-            ),
-                y[, only_y_names]
+
+    y_with_xcols <- Matrix::cbind2(
+                y[, common_names],
+                empty_xcols
             )
-    )
-    )
+
+    # This is kinda unreadable, sorry
+    new_dfm <- new("dfmSparse", Matrix::rbind2(
+        Matrix::cbind2( xcols, empty_ycols),
+        Matrix::cbind2( y_with_xcols, y[, only_y_names])
+    ))
+
     new_dfm[, order(features(new_dfm))]
 }
+
 rbind2.dfm.old <- function(x, y) {
     x.names <- features(x)
     y.names <- features(y)
