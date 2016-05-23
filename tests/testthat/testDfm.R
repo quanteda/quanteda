@@ -144,3 +144,15 @@ test_that("test rbind.dfm with different columns, three args and repeated words"
 
 })
 
+test_that("test rbind.dfm with a single argument", {
+    fox <-'What does the fox say?'
+    expect_equal(
+        rbind(dfm(fox)),
+        dfm(fox)
+        )
+
+    expect_that(
+        rbind(dfm(fox)),
+        gives_warning('rbind.dfm called on single dfm')
+        )
+})
