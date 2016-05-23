@@ -1,5 +1,5 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](http://cran.r-project.org/package=quanteda) ![Downloads](http://cranlogs.r-pkg.org/badges/quanteda) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)
+[![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](http://cran.r-project.org/package=quanteda) ![Downloads](http://cranlogs.r-pkg.org/badges/quanteda) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
 
 See the [Getting Started Vignette](http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html).
 
