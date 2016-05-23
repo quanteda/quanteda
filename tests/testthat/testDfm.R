@@ -156,3 +156,20 @@ test_that("test rbind.dfm with a single argument", {
         gives_warning('rbind.dfm called on single dfm')
         )
 })
+
+test_that("test rbind.dfm with the same features, but in a different order", {
+
+    fox <-'What does the fox say?'
+    xof <-'say fox the does What??'
+    foxdfm <- rep(1, 20)
+    dim(foxdfm) <- c(4,5)
+    colnames(foxdfm) <- c('does', 'fox', 'say', 'the', 'what')
+    rownames(foxdfm) <-  rep(c('text1', 'text2'), 2)
+
+    dfm1 <- dfm(c(fox, xof))
+
+    expect_true(
+        all(rbind(dfm1, dfm1) == foxdfm)
+    )
+
+})

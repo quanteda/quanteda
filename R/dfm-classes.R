@@ -605,6 +605,11 @@ rbind.dfm <- function(...) {
 combineDfms <- function(x, y) {
     x.names <- features(x)
     y.names <- features(y)
+
+      if (identical(x.names, y.names)) {
+          return(new("dfmSparse", Matrix::rbind2(x, y)))
+      }
+
     all.names <- union(x.names, y.names)
     
     toAddx <- setdiff(all.names, x.names)
