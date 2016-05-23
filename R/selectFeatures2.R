@@ -38,7 +38,7 @@ selectFeatures2 <- function(x, ...) UseMethod("selectFeatures2")
 #' microbenchmark::microbenchmark(
 #'     new = selectFeatures2(toks, numbers, "remove", verbose = FALSE, valuetype = "fixed"),
 #'     old = selectFeatures(toks, numbers, "remove", verbose = FALSE, valuetype = "fixed"),
-#'     times = 2, unit = "s")  
+#'     times = 2, unit = "relative")  
 #'     
 #' # removing tokens before dfm, versus after
 #' microbenchmark::microbenchmark(
@@ -74,7 +74,7 @@ selectFeatures2 <- function(x, ...) UseMethod("selectFeatures2")
 selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                           valuetype = c("glob", "regex", "fixed"),
                                           case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
-                                          verbose = TRUE, ...) {
+                                          verbose = FALSE, ...) {
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     originalvaluetype <- valuetype
@@ -111,15 +111,15 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
         } else {
             types_match <- features
         }
-        if(indexing) flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
-        if(verbose) cat(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
+        if (indexing) flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
+        if (verbose) cat(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
         if(selection == "remove"){
             select_tokens_cppl(y, flag, types_match, TRUE, padding)
         }else{ 
             select_tokens_cppl(y, flag, types_match, FALSE, padding)
         }
     } else if (valuetype == "regex") {
-        if(verbose) cat("Converting regex to fixed...\n")
+        if (verbose) cat("Converting regex to fixed...\n")
         types_match <- regex2fixed(features, types, case_insensitive) # get all the unique types that match regex
         if(indexing) flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
         if(verbose) cat(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
@@ -139,6 +139,7 @@ selectFeatures2.tokenizedTexts <- function(x, features, selection = c("keep", "r
 #' @param regex regular expression
 #' @param types unique types of tokens
 #' @param case_insensitive case sensitivity
+#' @param ... additional arguments passed to \code{\link[stringi]{stri_detect_regex}}
 #' @export
 regex2fixed <- function(regex, types, case_insensitive=TRUE, ...){
   regex_joined <- paste0(regex, collapse = "|")

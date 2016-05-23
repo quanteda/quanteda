@@ -11,7 +11,7 @@
 #' dfm(toks),
 #' dfm2(toks),
 #' times=1, unit='relative')
-#' 
+#' }
 dfm2 <- function(x){
   docNames <- names(x)
   all <- unlist(x, use.names = FALSE)

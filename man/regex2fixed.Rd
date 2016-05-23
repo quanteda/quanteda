@@ -12,6 +12,8 @@ regex2fixed(regex, types, case_insensitive = TRUE, ...)
 \item{types}{unique types of tokens}
 
 \item{case_insensitive}{case sensitivity}
+
+\item{...}{additional arguments passed to \code{\link[stringi]{stri_detect_regex}}}
 }
 \description{
 Convert regex to fixed

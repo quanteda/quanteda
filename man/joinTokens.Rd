@@ -14,8 +14,8 @@ joinTokens(x, sequences, concatenator = "-", valuetype = "fixed",
 
 \item{concatenator}{character used for joining tokens}
 
-\item{valuetype}{how to interpret sequences: \code{fixed} for words as 
-is; \code{"regex"} for regular expressions; or \code{"glob"} for 
+\item{valuetype}{how to interpret sequences: \code{fixed} for words as
+is; \code{"regex"} for regular expressions; or \code{"glob"} for
 "glob"-style wildcard}
 
 \item{verbose}{display progress}

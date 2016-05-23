@@ -10,7 +10,7 @@ selectFeatures2(x, ...)
 \method{selectFeatures2}{tokenizedTexts}(x, features, selection = c("keep",
   "remove"), valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
-  verbose = TRUE, ...)
+  verbose = FALSE, ...)
 }
 \arguments{
 \item{x}{object whose features will be selected}
@@ -70,7 +70,7 @@ numbers <- types[stringi::stri_detect_regex(types, '[0-9]')]
 microbenchmark::microbenchmark(
     new = selectFeatures2(toks, numbers, "remove", verbose = FALSE, valuetype = "fixed"),
     old = selectFeatures(toks, numbers, "remove", verbose = FALSE, valuetype = "fixed"),
-    times = 2, unit = "s")  
+    times = 2, unit = "relative")  
     
 # removing tokens before dfm, versus after
 microbenchmark::microbenchmark(

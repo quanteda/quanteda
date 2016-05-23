@@ -12,4 +12,15 @@ dfm2(x)
 \description{
 Experimental c++ indexing
 }
+\examples{
+\dontrun{## performance comparisons
+data(SOTUCorpus, package = "quantedaData")
+toks <- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), removePunct = TRUE)
+
+microbenchmark::microbenchmark(
+dfm(toks),
+dfm2(toks),
+times=1, unit='relative')
+}
+}
 
