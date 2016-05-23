@@ -602,7 +602,41 @@ rbind.dfm <- function(...) {
     }
 }
 
+rbind2.dfm <- function(x, y) {
+    x_names <- features(x)
+    y_names <- features(y)
 
+      if (identical(x_names, y_names)) {
+          return(new("dfmSparse", Matrix::rbind2(x, y)))
+      }
+
+    common_names <- intersect(x_names, y_names)
+
+    only_x_names <- setdiff(x_names, y_names)
+    only_y_names <- setdiff(y_names, x_names)
+
+    # This is kinda unreadable, sorry
+    new_dfm <- new("dfmSparse", Matrix::rbind2(
+        Matrix::cbind2(
+            Matrix::cbind2(
+                x[, common_names],
+                x[, only_x_names]
+            ),
+            Matrix::sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x), 
+                length(only_y_names)), dimnames = list(NULL, only_y_names))
+        ),
+        Matrix::cbind2(
+            Matrix::cbind2(
+                y[, common_names],
+                Matrix::sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(y), 
+                    length(only_x_names)), dimnames = list(NULL, only_x_names))
+            ),
+                y[, only_y_names]
+            )
+    )
+    )
+    new_dfm[, order(features(new_dfm))]
+}
 rbind2.dfm.old <- function(x, y) {
     x.names <- features(x)
     y.names <- features(y)
