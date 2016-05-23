@@ -227,7 +227,9 @@ returnCorpusSource <- function(sources, cache = FALSE) {
 # read a document from a text-only file.
 get_doc <- function(f, ...) {
     txts <- c()
+    print(f)
     fileType <- getFileType(f)
+    print(fileType)
     # cat("fileType = ", fileType, "\n")
     switch(fileType,
            txt =  { 
@@ -294,13 +296,13 @@ get_docs <- function(filemask, ...) {
 
 get_zipfile <- function(f, ...) {
     td <- tempdir()
+    flocal <- ''
     if (substr(f, 1, 4) == "http")
-        utils::download.file(f, destfile = (flocal <- paste0(td, "/temp.zip", quiet = TRUE)))
+        utils::download.file(f, destfile = (flocal <- file.path(td, "temp.zip", quiet = TRUE)))
     else
         flocal <- f
     utils::unzip(flocal, exdir = td)
-    # cat("file:", paste0(td, "*.txt"), "\n")
-    get_docs(paste0(td, "/*.txt"))
+    get_docs(file.path(td, "*txt"))
 }
 
 # read a document from a structured file containing text and data
