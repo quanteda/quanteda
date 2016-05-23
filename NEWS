@@ -64,6 +64,8 @@ Bug fixes >= 0.9.6-3
 
 *  Fixed bug that caused dfm() to break if no features or only one feature was found.
 
+*  Fixed bug in predict.fitted_textmodel_NB() that caused a failure with k > 2 classes (#129)
+
 Bug fixes
 ---------
 *  Fixed a false-alarm warning message in textmodel_wordfish()

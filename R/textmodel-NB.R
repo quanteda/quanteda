@@ -82,7 +82,7 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
     # combine all of the class counts
     rownames(x.trset) <- y.trclass
     d <- compress(x.trset, margin = "both")
-    
+
     PwGc <- rowNorm(d + smooth)
     names(Pc) <- rownames(d)
     

@@ -250,6 +250,7 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
     
 }
 
+
 #' @rdname selectFeatures
 #' @param pos indexes of word position if called on collocations: remove if word
 #'   \code{pos} is a stopword
