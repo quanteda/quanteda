@@ -586,7 +586,12 @@ rbind.dfm <- function(...) {
     if (!all(sapply(args, is.dfm)))
         stop("all arguments must be dfm objects")
     cat(names(args))
-    if (length(args) <= 2) {
+
+    if (length(args) == 1) {
+        warning('rbind.dfm called on single dfm')
+        return(args[[1]])
+    }
+    else if (length(args) == 2) {
         return(combineDfms(args[[1]], args[[2]]))
     } else {
         result <- combineDfms(args[[1]], args[[2]])
