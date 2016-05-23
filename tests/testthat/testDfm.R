@@ -144,17 +144,32 @@ test_that("test rbind.dfm with different columns, three args and repeated words"
 
 })
 
-test_that("test rbind.dfm with a single argument", {
+test_that("test rbind.dfm with a single argument returns the same dfm", {
     fox <-'What does the fox say?'
     expect_equal(
-        rbind(dfm(fox)),
-        dfm(fox)
+        as.data.frame(rbind(dfm(fox))),
+        as.data.frame(dfm(fox))[, order(features(dfm(fox)))]
         )
+})
 
+test_that("test that rbind.dfm with a single argument prints a warning", {
+    fox <-'What does the fox say?'
     expect_that(
         rbind(dfm(fox)),
         gives_warning('rbind.dfm called on single dfm')
         )
+
+})
+
+test_that("test that rbind.dfm with a single argument sorts features", {
+    fox <-'What does the fox say?'
+    xof <-'say fox the does What??'
+
+    expect_equivalent(
+        as.data.frame(rbind(dfm(xof))),
+        as.data.frame(dfm(fox))[, order(features(dfm(fox)))]
+    )
+
 })
 
 test_that("test rbind.dfm with the same features, but in a different order", {

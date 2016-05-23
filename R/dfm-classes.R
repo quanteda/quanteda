@@ -589,11 +589,12 @@ rbind.dfm <- function(...) {
 
     if (length(args) == 1) {
         warning('rbind.dfm called on single dfm')
-        return(args[[1]])
+        return(args[[1]][, order(features(args[[1]]))])
     }
     else if (length(args) == 2) {
         return(rbind2.dfm(args[[1]], args[[2]]))
     } else {
+        # Recursive call
         result <- rbind2.dfm(args[[1]], args[[2]])
         for (y in args[3:length(args)]) 
             result <- rbind2.dfm(result, y)
