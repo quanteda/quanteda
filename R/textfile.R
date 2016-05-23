@@ -227,7 +227,9 @@ returnCorpusSource <- function(sources, cache = FALSE) {
 # read a document from a text-only file.
 get_doc <- function(f, ...) {
     txts <- c()
+    print(f)
     fileType <- getFileType(f)
+    print(fileType)
     # cat("fileType = ", fileType, "\n")
     switch(fileType,
            txt =  { 
