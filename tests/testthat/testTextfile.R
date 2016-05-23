@@ -178,6 +178,45 @@ test_that("test csv files", {
 
 })
 
+test_that("test tab files", {
+    # Test corpus object
+    testcorpus <- textfile('../data/tab/test.tab', textField='text')
+    expect_that(
+        docvars(testcorpus),
+        equals(data.frame(list(colour=c('green', 'red'), number=c(42, 99)), stringsAsFactors=F))
+    )
+    expect_that(
+        texts(testcorpus),
+        equals(c('Lorem ipsum.', 'Dolor sit'))
+    )
+
+    expect_that(
+        textfile('../data/tab/test.tab', textField='nonexistant'),
+        throws_error('column name nonexistant not found')
+    )
+
+})
+
+test_that("test tsv files", {
+    # Test corpus object
+    testcorpus <- textfile('../data/tsv/test.tsv', textField='text')
+    expect_that(
+        docvars(testcorpus),
+        equals(data.frame(list(colour=c('green', 'red'), number=c(42, 99)), stringsAsFactors=F))
+    )
+    expect_that(
+        texts(testcorpus),
+        equals(c('Lorem ipsum.', 'Dolor sit'))
+    )
+
+    expect_that(
+        textfile('../data/tsv/test.tsv', textField='nonexistant'),
+        throws_error('column name nonexistant not found')
+    )
+
+})
+
+
 test_that("test xml files", {
     # Test corpus object
     testcorpus <- textfile('../data/xml/test.xml', textField='text')
