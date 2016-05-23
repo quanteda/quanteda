@@ -246,6 +246,16 @@ test_that("test xml files", {
 
 })
 
+# TODO: This doesn't appear to work at all
+#  test_that("test zip files", {
+#      # TODO: Only supports zipfiles which contain txt files
+#      testcorpus <- textfile('../data/zip/test.zip')
+#      expect_that(
+#          texts(testcorpus),
+#          equals(c('Lorem ipsum.', 'The quick', 'Dolor sit', 'brown fox'))
+#      )
+#  })
+
 test_that("test getFileType", {
 
       expect_equal(getFileType(c('anything', 'or', 'other')), 'vector')
