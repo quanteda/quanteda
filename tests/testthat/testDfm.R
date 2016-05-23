@@ -111,6 +111,10 @@ test_that("test rbind.dfm with the same columns", {
     expect_true(
         all(rbind(dfm1, dfm1) == foxdfm)
     )
+    expect_that(
+        rbind(dfm1, dfm1),
+        is_a('dfmSparse')
+    )
 
 })
 
@@ -126,6 +130,11 @@ test_that("test rbind.dfm with different columns", {
 
     expect_true(
         all(rbind(dfm1, dfm2) == foxdfm)
+    )
+
+    expect_that(
+        rbind(dfm1, dfm2),
+        is_a('dfmSparse')
     )
 
 })
@@ -146,6 +155,11 @@ test_that("test rbind.dfm with different columns, three args and repeated words"
         all(rbind(dfm1, dfm2, dfm3) == foxdfm)
     )
 
+    expect_that(
+        rbind(dfm1, dfm2, dfm3),
+        is_a('dfmSparse')
+    )
+
 })
 
 test_that("test rbind.dfm with a single argument returns the same dfm", {
@@ -154,6 +168,10 @@ test_that("test rbind.dfm with a single argument returns the same dfm", {
         all(
             rbind(dfm(fox)) == dfm(fox)[, order(features(dfm(fox)))]
         )
+    )
+    expect_that(
+        rbind(dfm(fox)),
+        is_a('dfmSparse')
     )
 })
 
