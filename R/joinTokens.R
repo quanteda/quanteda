@@ -1,11 +1,11 @@
 #' join tokens function
-#' 
+#'
 #' Needs some more explanation
 #' @param x some object
 #' @param sequences list of vector of features to concatenate
 #' @param concatenator character used for joining tokens
-#' @param valuetype how to interpret sequences: \code{fixed} for words as 
-#'   is; \code{"regex"} for regular expressions; or \code{"glob"} for 
+#' @param valuetype how to interpret sequences: \code{fixed} for words as
+#'   is; \code{"regex"} for regular expressions; or \code{"glob"} for
 #'   "glob"-style wildcard
 #' @param verbose display progress
 #' @examples
@@ -21,12 +21,12 @@
 #' kwic(toks2, 'United_States', window=1) # joined
 #' @export
 joinTokens <- function(x, sequences, concatenator='-', valuetype='fixed', verbose=FALSE){
-  
+
   if(verbose) cat("Indexing tokens...\n")
   index <- dfm(x, verbose = FALSE)
   index_binary <- as(index, 'nMatrix')
   types <- colnames(index_binary)
-  
+
   seqs_token <- list()
   if(valuetype=='regex' | valuetype=='glob'){
     if(verbose) cat("Converting patterns to tokens...\n")
@@ -48,10 +48,10 @@ joinTokens <- function(x, sequences, concatenator='-', valuetype='fixed', verbos
       seqs_token <- c(seqs_token, split_df_cpp(t(match_comb)))
     }
   }else{
-    seqs_token <- sequences  
+    seqs_token <- sequences
   }
   #cat("seqs_token--------------------\n")
-  print(seqs_token)
+  #print(seqs_token)
   n_seqs <- length(seqs_token)
   if(n_seqs == 0) return(x)
 
