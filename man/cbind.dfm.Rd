@@ -28,11 +28,9 @@ rows, returning a dfm with the combined documents or features, respectively.
 \code{rbind(x, y, ...)} combines dfm objects by rows, returning a dfm
   object with combined features from input dfm objects.  Features are matched
   between the two dfm objects, so that the order and names of the features
-  does not need to match.  The resulting row combined dfm will have its
-  features alphabetically sorted.  The matching is performed by 
-  \code{\link{rbind2}} defined for object classes in the \pkg{Matrix} 
-  package.  The attributes and settings of this new dfm are not currently 
-  preserved.
+  do not need to match.  The order of the features in the resulting dfm
+  is not guaranteed.  The attributes and settings of this new dfm are not
+  currently preserved.
 }
 \examples{
 # cbind() for dfm objects
