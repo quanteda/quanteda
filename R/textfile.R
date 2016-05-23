@@ -63,7 +63,8 @@ setMethod("show",
 #'   \item{\code{xml}}{Basic flat XML documents are supported -- those of the 
 #'   kind supported by the function xmlToDataFrame function of the \strong{XML} 
 #'   package.} \item{\code{zip}}{zip archive file, containing \code{*.txt} 
-#'   files.  This may be a URL to a zip file.} }
+#'   files either at the top level or in a single directory.
+#    'This may also be a URL to a zip file.} }
 #' @param textField a variable (column) name or column number indicating where 
 #'   to find the texts that form the documents for the corpus.  This must be 
 #'   specified for file types \code{.csv} and \code{.json}.
@@ -293,6 +294,7 @@ get_docs <- function(filemask, ...) {
 }
 
 get_zipfile <- function(f, ...) {
+    #  Only supports .txt files, either at the toplevel or in a single directory
     td <- tempdir()
     flocal <- ''
     if (substr(f, 1, 4) == "http")
