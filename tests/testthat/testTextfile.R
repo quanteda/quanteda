@@ -158,6 +158,14 @@ test_that("test non-implemented functions", {
 
 })
 
+test_that("test warning for unrecognized filetype", {
+    expect_that(
+        textfile('../data/empty/test.nonesuch'),
+        throws_error('unrecognized fileType:unknown')
+    )
+})
+
+
 # TODO: Refactor this to loop over filetypes
 test_that("test csv files", {
     # Test corpus object
