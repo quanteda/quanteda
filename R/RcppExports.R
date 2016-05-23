@@ -5,6 +5,10 @@ index_cpp <- function(texts, types, index_d, index_f) {
     invisible(.Call('quanteda_index_cpp', PACKAGE = 'quanteda', texts, types, index_d, index_f))
 }
 
+index_cpp2 <- function(texts, types, n) {
+    .Call('quanteda_index_cpp2', PACKAGE = 'quanteda', texts, types, n)
+}
+
 skipgramcpp <- function(tokens, ns, ks, delim) {
     .Call('quanteda_skipgramcpp', PACKAGE = 'quanteda', tokens, ns, ks, delim)
 }

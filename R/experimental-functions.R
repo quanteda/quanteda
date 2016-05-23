@@ -8,10 +8,20 @@
 #' \dontrun{## performance comparisons
 #' data(SOTUCorpus, package = "quantedaData")
 #' toks <- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), removePunct = TRUE)
-#' 
+
 #' microbenchmark::microbenchmark(
 #' dfm(toks),
 #' dfm2(toks),
+#' dfm3(toks),
+#' times=1, unit='relative')
+#' }
+#' 
+#' toks2 <- rep(toks, 20)
+#' attributes(toks2) <- attributes(toks)
+#' microbenchmark::microbenchmark(
+#' dfm(toks2),
+#' dfm2(toks2),
+#' dfm3(toks2),
 #' times=1, unit='relative')
 #' }
 dfm2 <- function(x) {
@@ -30,4 +40,18 @@ dfm2 <- function(x) {
                                x = 1L,
                                dimnames = list(docs = docNames, features = types))
     return(mx)
+}
+
+dfm3 <- function(x) {
+  docNames <- names(x)
+  all <- unlist(x, use.names = FALSE)
+  types <- unique(all)
+  n <- length(all)
+  index <- index_cpp2(x, types, n)
+  cat("Making sparseMatrix\n")
+  mx <- Matrix::sparseMatrix(i = index$doc, 
+                             j = index$feature, 
+                             x = 1L,
+                             dimnames = list(docs = docNames, features = types))
+  return(mx)
 }

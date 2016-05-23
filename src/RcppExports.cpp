@@ -19,6 +19,19 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// index_cpp2
+Rcpp::List index_cpp2(Rcpp::List& texts, const CharacterVector& types, const int& n);
+RcppExport SEXP quanteda_index_cpp2(SEXP textsSEXP, SEXP typesSEXP, SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type texts(textsSEXP);
+    Rcpp::traits::input_parameter< const CharacterVector& >::type types(typesSEXP);
+    Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
+    __result = Rcpp::wrap(index_cpp2(texts, types, n));
+    return __result;
+END_RCPP
+}
 // skipgramcpp
 StringVector skipgramcpp(std::vector < std::string > tokens, std::vector < int > ns, std::vector < int > ks, std::string delim);
 RcppExport SEXP quanteda_skipgramcpp(SEXP tokensSEXP, SEXP nsSEXP, SEXP ksSEXP, SEXP delimSEXP) {

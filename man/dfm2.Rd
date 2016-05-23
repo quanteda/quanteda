@@ -21,6 +21,7 @@ toks <- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), removeP
 microbenchmark::microbenchmark(
 dfm(toks),
 dfm2(toks),
+dfm3(toks),
 times=1, unit='relative')
 }
 }

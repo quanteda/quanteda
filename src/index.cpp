@@ -42,4 +42,36 @@ void index_cpp(Rcpp::List &texts,
   Rcout << "Indexing completed\n";
 }
 
+// [[Rcpp::export]]
+Rcpp::List index_cpp2(Rcpp::List &texts,
+               const CharacterVector &types,
+               const int &n){
+  
+  IntegerVector index_d(n);
+  IntegerVector index_f(n);
+  
+  Rcout << "Assigning IDs\n";
+  
+  // Assign integer IDs
+  std::unordered_map<String, int> index(types.size());
+  for (int g = 0; g < types.size(); g++){
+    index[types[g]] = g + 1;
+  }
+  
+  Rcout << "Converting to IDs\n";
+  // Convert tokens to IDs
+  int k = 0;
+  for (int h = 0; h < texts.size(); h++){
+    StringVector tokens = texts[h];
+    //Rcout << "Text " <<  h << "\n";
+    for (int i = 0; i < tokens.size(); i++){
+      //Rcout << "Token " <<  tokens[i] << "\n";
+      index_d[k] = h + 1;
+      index_f[k] = index[tokens[i]];
+      k++;
+    }
+  }
+  Rcout << "Indexing completed\n";
+  return List::create(Named("doc") = index_d , Named("feature") = index_f);
+}
 
