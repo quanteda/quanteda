@@ -418,4 +418,10 @@ test_that("test textfile encoding parameter", {
     )
 
 
+  #  Test loading multiple files at once with different encodings
+  expect_that(
+    unname(texts(textfile(paste0('../data/encoding/', filenames, '.txt'), encoding=encodings))),
+    equals(testtexts)
+  )
+
   })
