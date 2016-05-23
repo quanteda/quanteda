@@ -16,7 +16,7 @@ Author: Kenneth Benoit [aut, cre],
     Adam Obeng [ctb],
     Pablo Barberá [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.7-0
+Version: 0.9.7-1
 Date: 2016-05-23
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
@@ -67,8 +67,8 @@ Collate:
     'dfm-methods.R'
     'dfm-weighting.R'
     'encoding.R'
+    'experimental-functions.R'
     'findSequences.R'
-    'index.R'
     'joinTokens.R'
     'kwic.R'
     'lexdiv.R'
@@ -79,7 +79,7 @@ Collate:
     'readability.R'
     'resample.R'
     'selectFeatures.R'
-    'selectFeatures2.R'
+    'selectFeatures_outtakes.R'
     'settings.R'
     'similarity.R'
     'stopwords.R'
@@ -91,7 +91,6 @@ Collate:
     'textmodel-wordfish.R'
     'textmodel-wordscores.R'
     'toLower.R'
-    'toUpper.R'
     'tokenize.R'
     'tokenize_outtakes.R'
     'wordstem.R'

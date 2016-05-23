@@ -135,7 +135,7 @@ dfm <- function(x, ...) {
 #' tokensAll <- tokenize(toLower(testText), removePunct = TRUE)
 #' tokensNoStopwords <- removeFeatures(tokensAll, stopwords("english"))
 #' tokensNgramsNoStopwords <- ngrams(tokensNoStopwords, 2)
-#' features(dfm(tokensNgramsNoStopwords, ngrams = 1:2))
+#' features(dfm(tokensNgramsNoStopwords, verbose = FALSE))
 #' 
 #' # keep only certain words
 #' dfm(testCorpus, keptFeatures = "*s", verbose = FALSE)  # keep only words ending in "s"
@@ -147,7 +147,6 @@ dfm <- function(x, ...) {
 #'                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
 #' dfm(testTweets, keptFeatures = "#*", removeTwitter = FALSE)  # keep only hashtags
 #' dfm(testTweets, keptFeatures = "^#.*$", valuetype = "regex", removeTwitter = FALSE)
-#' 
 dfm.character <- function(x, 
                           verbose=TRUE, 
                           toLower=TRUE, 
