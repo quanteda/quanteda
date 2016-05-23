@@ -592,17 +592,17 @@ rbind.dfm <- function(...) {
         return(args[[1]])
     }
     else if (length(args) == 2) {
-        return(combineDfms(args[[1]], args[[2]]))
+        return(rbind2.dfm(args[[1]], args[[2]]))
     } else {
-        result <- combineDfms(args[[1]], args[[2]])
+        result <- rbind2.dfm(args[[1]], args[[2]])
         for (y in args[3:length(args)]) 
-            result <- combineDfms(result, y)
+            result <- rbind2.dfm(result, y)
         return(result)
     }
 }
 
 
-combineDfms <- function(x, y) {
+rbind2.dfm <- function(x, y) {
     x.names <- features(x)
     y.names <- features(y)
 
