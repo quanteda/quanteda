@@ -95,6 +95,9 @@ test_that("test c.corpus",
     )
 )
 
+## rbind.dfm
+## TODO: Test classes returned
+
 test_that("test rbind.dfm with the same columns", {
 
     fox <-'What does the fox say?'
@@ -112,18 +115,19 @@ test_that("test rbind.dfm with the same columns", {
 })
 
 test_that("test rbind.dfm with different columns", {
-    dfm1 <- dfm('What does the?')
+    dfm1 <- dfm('What does the fox?')
     dfm2 <- dfm('fox say')
 
-    foxdfm <- c(1, 0, 0, 1, 0, 1, 1, 0, 1, 0)
+    foxdfm <- c(1, 0, 1, 1, 0, 1, 1, 0, 1, 0)
     dim(foxdfm) <- c(2,5)
     colnames(foxdfm) <- c('does', 'fox', 'say', 'the', 'what')
     rownames(foxdfm) <-  c('text1', 'text2')
     foxdfm <- as.matrix(foxdfm)
 
     expect_true(
-        all(rbind(dfm1, dfm2) ==foxdfm)
+        all(rbind(dfm1, dfm2) == foxdfm)
     )
+
 })
 
 test_that("test rbind.dfm with different columns, three args and repeated words", {
@@ -146,10 +150,11 @@ test_that("test rbind.dfm with different columns, three args and repeated words"
 
 test_that("test rbind.dfm with a single argument returns the same dfm", {
     fox <-'What does the fox say?'
-    expect_equal(
-        as.data.frame(rbind(dfm(fox))),
-        as.data.frame(dfm(fox))[, order(features(dfm(fox)))]
+    expect_true(
+        all(
+            rbind(dfm(fox)) == dfm(fox)[, order(features(dfm(fox)))]
         )
+    )
 })
 
 test_that("test that rbind.dfm with a single argument prints a warning", {
@@ -164,13 +169,13 @@ test_that("test that rbind.dfm with a single argument prints a warning", {
 test_that("test that rbind.dfm with a single argument sorts features", {
     fox <-'What does the fox say?'
     xof <-'say fox the does What??'
-
-    expect_equivalent(
-        as.data.frame(rbind(dfm(xof))),
-        as.data.frame(dfm(fox))[, order(features(dfm(fox)))]
+    expect_true(
+        all(
+            rbind(dfm(xof)) == dfm(fox)[, order(features(dfm(fox)))]
+        )
     )
-
 })
+
 
 test_that("test rbind.dfm with the same features, but in a different order", {
 
