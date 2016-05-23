@@ -107,7 +107,7 @@ setMethod("show",
 #'   \link{corpus} to construct a corpus
 #' @author Kenneth Benoit and Paul Nulty
 #' @export
-#' @importFrom utils download.file unzip
+#' @importFrom utils download.file unzip type.convert
 setGeneric("textfile",
            function(file, textField, 
                     cache = FALSE, docvarsfrom = c("filenames"), dvsep="_", 
