@@ -107,7 +107,6 @@ setMethod("show",
 #'   \link{corpus} to construct a corpus
 #' @author Kenneth Benoit and Paul Nulty
 #' @export
-#' @importFrom stats var
 #' @importFrom utils download.file unzip
 setGeneric("textfile",
            function(file, textField, 
@@ -203,7 +202,7 @@ setMethod("textfile",
                   stop("File type ", fileType, " not supported with these arguments.")
               }
               if (docvarsfrom == "filenames") {
-                  sources$docv <- getdocvarsFromHeaders(names(sources$txts), dvsep=dvsep, docvarnames=docvarnames)
+                  sources$docv <- getdocvarsFromFilenames(names(sources$txts), dvsep=dvsep, docvarnames=docvarnames)
               } else {
                   warning("docvarsfrom=", docvarsfrom, " not supported.")
               }
@@ -220,7 +219,8 @@ returnCorpusSource <- function(sources, cache = FALSE) {
         save(sources, file=tempCorpusFilename)
         return(new("corpusSource", cachedfile=tempCorpusFilename))
     } else
-        return(new("corpusSource", texts = sources$txts, docvars = sources$docv))
+        return(new("corpusSource", texts = sources$txts, docvars = imputeDocvarsTypes(sources$docv)))
+        #return(new("corpusSource", texts = sources$txts, docvars = sources$docv))
 }
 
 
@@ -228,7 +228,7 @@ returnCorpusSource <- function(sources, cache = FALSE) {
 get_doc <- function(f, ...) {
     txts <- c()
     fileType <- getFileType(f)
-    # cat("fileType = ", fileType, "\n")
+    #cat("fileType = ", fileType, "\n")
     switch(fileType,
            txt =  { 
                txt <- readLines(con <- file(f, ...), warn = FALSE)
@@ -244,10 +244,10 @@ get_doc <- function(f, ...) {
                result <- list(txts = paste(txt, collapse="\n"), docv = data.frame())
                return(result)
            },
-           doc =  { return(list(txts = get_word(f), docv = data.frame())) },
            json = { return(get_json_tweets(f, ...)) },
            zip = { return(get_zipfile(f)) },
-           pdf =  { return(list(txts = get_pdf(f), docv = data.frame())) }
+           pdf =  { return(list(txts = get_pdf(f), docv = data.frame())) },
+           word =  { return(list(txts = get_word(f), docv = data.frame())) }
     )
     stop("unrecognized fileType:", fileType)
 }
@@ -383,12 +383,6 @@ get_json_tweets <- function(path=NULL, source="twitter", ...) {
     }
     # read raw json data
     txt <- unlist(sapply(fls, readLines, ...))
-    # crude json type check here
-    if (!grepl("retweet_count", txt[1]))
-        stop("Not a Twitter json formatted file.")
-    
-    # parsing into a data frame
-    # reading tweets into a data frame
     results <- streamR::parseTweets(txt, verbose=FALSE, ...)
     list(txts = results[, 1], docv = as.data.frame(results[, -1, drop = FALSE]))
 }
@@ -418,52 +412,58 @@ get_xml <- function(file, textField, sep=",", ...) {
     if (is.character(textField)) {
         textFieldi <- which(names(docv)==textField)
         if (length(textFieldi)==0)
-            stop("node", textField, "not found.")
+            stop(paste("node", textField, "not found."))
         textField <- textFieldi
+    }
+    else {
+        warning(paste("You should specify textField by name rather than by index, unless",
+                "you're certain that your XML file's fields are always in the same order."))
     }
     txts <- docv[, textField]
     docv <- docv[, -textField, drop = FALSE]
+
+    #  Because XML::xmlToDataFrame doesn't impute column types, we have to do it
+    #  ourselves, to match get_csv's behaviour
     list(txts=txts, docv=docv)
 }
 
+imputeDocvarsTypes <- function(docv) {
+    #  Impute types of columns, just like read.table
+    docv[] <- lapply(docv, function(x) type.convert(as.character(x), as.is=T))
+    #  And convert columns which have been made into factors into strings
+    factor_cols <- vapply(docv, is.factor, FUN.VALUE=c(T))
+    docv[factor_cols] <- lapply(docv[factor_cols], as.character)
+    data.frame(docv)
+}
 
+
+#' @importFrom tools file_ext
 getFileType <- function(filenameChar) {
     if (length(filenameChar) > 1)
         return("vector")
     if (!substr(filenameChar, 1, 4)=="http" & grepl("[?*]", filenameChar))
         return("filemask")
-    filenameParts <- strsplit(filenameChar, ".", fixed=TRUE)
-    filenameExts <- sapply(filenameParts, function(x) x[length(x)])
-    sapply(filenameExts, function(x) {
-        if (x %in% c("xls", "xlsx"))
-            return("excel")
-        else if (x %in% c("csv"))
-            return("csv")
-        else if (x %in% c("txt"))
-            return("txt")
-        else if (x %in% c("doc", "docx"))
-            return("word")
-        else if (x %in% c("json"))
-            return("json")
-        else if (x %in% c("zip"))
-            return("zip")
-        else if (x %in% c("gz"))
-            return("gz")
-        else if (x %in% c("tar"))
-            return("tar")
-        else if (x %in% c("xml"))
-            return("xml")
-        else if (x %in% c("tab", "tsv"))
-            return("tab")
-        else return("unknown") }, USE.NAMES=FALSE)
+    filenameExt <- tools::file_ext(filenameChar)
+
+    fileTypeMapping <-        c('excel', 'excel', 'csv', 'txt', 'word', 'word', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tab', 'pdf')
+    names(fileTypeMapping) <- c('xls',   'xlsx',  'csv', 'txt', 'doc',  'docx', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tsv', 'pdf')
+
+    fileType <- tryCatch({
+         fileTypeMapping[[filenameExt]]
+    }, error = function(e) {
+        'unknown'
+    })
+
+    return(fileType)
 }    
 
 
-getdocvarsFromHeaders <- function(fnames, dvsep="_", docvarnames=NULL) {
+#' @importFrom tools file_path_sans_ext
+getdocvarsFromFilenames <- function(fnames, dvsep="_", docvarnames=NULL) {
     snames <- fnames
-    snames <- gsub(".txt", "", snames)
+    snames <- tools::file_path_sans_ext(snames)
     parts <- strsplit(snames, dvsep)
-    if (stats::var(sapply(parts, length)) != 0)
+    if (!all(sapply(parts,function(x) identical(length(x), length(parts[[1]])))))
         stop("Filename elements are not equal in length.")
     dvars <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE), 
                          stringsAsFactors=FALSE)
@@ -472,8 +472,10 @@ getdocvarsFromHeaders <- function(fnames, dvsep="_", docvarnames=NULL) {
     if (!is.null(docvarnames)) {
         names(dvars)[1:length(docvarnames)] <- docvarnames
         if (length(docvarnames) != ncol(dvars)) {
-            warning("Fewer docnames supplied than exist docvars - last ",
-                    ncol(dvars) - length(docvarnames), " docvars were given generic names.")
+            warning("Fewer docnames supplied than existing docvars - last ",
+                    ncol(dvars) - length(docvarnames), " docvar",
+                    ifelse((ncol(dvars) - length(docvarnames))==1, "", "s"),
+                    " given generic names.")
         }
     }
     dvars
