@@ -34,15 +34,23 @@ selectFeaturesOLD.tokenizedTexts <- function(x, features, selection = c("keep", 
     }
     
     if (valuetype == "fixed") {
+
         if (case_insensitive) {
-            features <- toLower(features)
-            x <- toLower(x)
+            if (selection == "remove") {
+                result <- lapply(x, function(x) x[which(!(toLower(x) %in% toLower(features)))])
+            } else {
+                result <- lapply(x, function(x) x[which((toLower(x) %in% toLower(features)))])
+            }
+        } else {
+            if (selection == "remove") {
+                result <- lapply(x, function(x) x[which(!(x %in% features))])
+            } else {
+                result <- lapply(x, function(x) x[which(x %in% features)])
+            }
         }
-        if (selection == "remove") 
-            result <- lapply(x, function(x) x[which(!(x %in% features))])
-        else 
-            result <- lapply(x, function(x) x[which((x %in% features))])
+
     } else if (valuetype == "regex") {
+        
         if (selection == "remove") {
             result <- lapply(x, function(y) {
                 removeIndex <- which(stringi::stri_detect_regex(y, rep(paste0(features, collapse = "|"), length(y)), 
@@ -58,19 +66,4 @@ selectFeaturesOLD.tokenizedTexts <- function(x, features, selection = c("keep", 
     class(result) <- c("tokenizedTexts", class(result))
     attributes(result) <- attributes(x)
     result
-    #     if (verbose & !features_from_dfm) 
-    #         cat(ifelse(selection=="keep", "kept", "removed"), " ", 
-    #             format(length(featIndex), big.mark=","),
-    #             " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
-    #             ", from ", length(features), " supplied (", originalvaluetype, ") feature type",
-    #             ifelse(length(features) > 0 | length(featIndex)==0, "s", ""),
-    #             "\n", sep = "")
-    #     if (verbose & features_from_dfm)
-    #         cat(ifelse(selection=="keep", "found", "zeroed"), " ", 
-    #             format(length(featIndex), big.mark=","),
-    #             " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
-    #             " from ", length(features), " supplied type",
-    #             ifelse(length(features) > 0 | length(featIndex)==0, "s", ""),
-    #             " in a dfm,", sep = "")
-    
 }

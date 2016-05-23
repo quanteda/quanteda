@@ -9,20 +9,17 @@
 #' data(SOTUCorpus, package = "quantedaData")
 #' toks <- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), removePunct = TRUE)
 
-#' microbenchmark::microbenchmark(
-#' dfm(toks),
-#' dfm2(toks),
-#' dfm3(toks),
-#' times=1, unit='relative')
-#' }
+#' microbenchmark::microbenchmark(dfm(toks2),
+#'                                dfm2(toks2),
+#'                                dfm3(toks2),
+#'                                times=1, unit='relative')
 #' 
 #' toks2 <- rep(toks, 20)
 #' attributes(toks2) <- attributes(toks)
-#' microbenchmark::microbenchmark(
-#' dfm(toks2),
-#' dfm2(toks2),
-#' dfm3(toks2),
-#' times=1, unit='relative')
+#' microbenchmark::microbenchmark(dfm(toks2),
+#'                                dfm2(toks2),
+#'                                dfm3(toks2),
+#'                                times=1, unit='relative')
 #' }
 dfm2 <- function(x) {
     docNames <- names(x)

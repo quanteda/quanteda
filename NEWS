@@ -1,7 +1,7 @@
 quanteda 0.9.7
 ==============
 
-
+*  Improve performance of `selectFeatures.tokenizedTexts()`.
 
 
 quanteda 0.9.6 

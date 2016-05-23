@@ -107,15 +107,15 @@ selectFeatures(dfm1, dfm2a, selection = "remove")
 \dontrun{## performance comparisons
 data(SOTUCorpus, package = "quantedaData")
 toks <- tokenize(SOTUCorpus, removePunct = TRUE)
-toks <- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), removePunct = TRUE)
+# toks <- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), removePunct = TRUE)
 # head to head, old v. new
 system.time(selectFeaturesOLD(toks, stopwords("english"), "remove", verbose = FALSE))
 system.time(selectFeatures(toks, stopwords("english"), "remove", verbose = FALSE))
 system.time(selectFeaturesOLD(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"))
 system.time(selectFeatures(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"))
 microbenchmark::microbenchmark(
-    new = selectFeaturesOLD(toks, stopwords("english"), "remove", verbose = FALSE),
-    old = selectFeatures(toks, stopwords("english"), "remove", verbose = FALSE),
+    old = selectFeaturesOLD(toks, stopwords("english"), "remove", verbose = FALSE),
+    new = selectFeatures(toks, stopwords("english"), "remove", verbose = FALSE),
     times = 5, unit = "relative")
 microbenchmark::microbenchmark(
     new = selectFeaturesOLD(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"),
