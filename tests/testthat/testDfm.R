@@ -94,3 +94,118 @@ test_that("test c.corpus",
         equals(matrix(rep(c(1, 1, 0), 5), nrow=15, ncol=1))
     )
 )
+
+## rbind.dfm
+## TODO: Test classes returned
+
+test_that("test rbind.dfm with the same columns", {
+
+    fox <-'What does the fox say?'
+    foxdfm <- rep(1, 20)
+    dim(foxdfm) <- c(4,5)
+    colnames(foxdfm) <- c('does', 'fox', 'say', 'the', 'what')
+    rownames(foxdfm) <-  rep(c('text1', 'text2'), 2)
+
+    dfm1 <- dfm(c(fox, fox))
+
+    expect_true(
+        all(rbind(dfm1, dfm1) == foxdfm)
+    )
+    expect_that(
+        rbind(dfm1, dfm1),
+        is_a('dfmSparse')
+    )
+
+})
+
+# TODO: Add function for testing the equality of dfms
+
+test_that("test rbind.dfm with different columns", {
+    dfm1 <- dfm('What does the fox?')
+    dfm2 <- dfm('fox say')
+
+    foxdfm <- c(1, 0, 1, 1, 0, 1, 1, 0, 1, 0)
+    dim(foxdfm) <- c(2,5)
+    colnames(foxdfm) <- c('does', 'fox', 'say', 'the', 'what')
+    rownames(foxdfm) <-  c('text1', 'text2')
+    foxdfm <- as.matrix(foxdfm)
+
+    testdfm <- rbind(dfm1, dfm2)
+
+    expect_true(
+        ##  Order of the result is not guaranteed
+        all(testdfm[,order(colnames(testdfm))] == foxdfm[,order(colnames(foxdfm))])
+    )
+
+    expect_that(
+        rbind(dfm1, dfm2),
+        is_a('dfmSparse')
+    )
+
+})
+
+test_that("test rbind.dfm with different columns, three args and repeated words", {
+
+    dfm1 <- dfm('What does the?')
+    dfm2 <- dfm('fox say fox')
+    dfm3 <- dfm('The quick brown fox')
+
+    foxdfm <- c(0, 0, 1, 1, 0, 0, 0, 2, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0)
+    dim(foxdfm) <- c(3,7)
+    colnames(foxdfm) <- c('brown', 'does', 'fox', 'quick', 'say', 'the', 'what')
+    rownames(foxdfm) <-  c('text1', 'text1', 'text1')
+    foxdfm <- as.matrix(foxdfm)
+
+    testdfm <- rbind(dfm1, dfm2, dfm3)
+    expect_true(
+        all(testdfm[,order(colnames(testdfm))] == foxdfm[,order(colnames(foxdfm))])
+    )
+
+    expect_that(
+        rbind(dfm1, dfm2, dfm3),
+        is_a('dfmSparse')
+    )
+
+})
+
+test_that("test rbind.dfm with a single argument returns the same dfm", {
+    fox <-'What does the fox say?'
+    expect_true(
+        all(
+            rbind(dfm(fox)) == dfm(fox)
+        )
+    )
+    expect_that(
+        rbind(dfm(fox)),
+        is_a('dfmSparse')
+    )
+})
+
+test_that("test that rbind.dfm with a single argument prints a warning", {
+    fox <-'What does the fox say?'
+    expect_that(
+        rbind(dfm(fox)),
+        gives_warning('rbind.dfm called on single dfm')
+        )
+
+})
+
+
+
+test_that("test rbind.dfm with the same features, but in a different order", {
+
+    fox <-'What does the fox say?'
+    xof <-'say fox the does What??'
+    foxdfm <- rep(1, 20)
+    dim(foxdfm) <- c(4,5)
+    colnames(foxdfm) <- c('does', 'fox', 'say', 'the', 'what')
+    rownames(foxdfm) <-  rep(c('text1', 'text2'), 2)
+
+    dfm1 <- dfm(c(fox, xof))
+
+    expect_true(
+        all(rbind(dfm1, dfm1) == foxdfm)
+    )
+
+
+})
