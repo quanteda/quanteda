@@ -603,7 +603,7 @@ rbind.dfm <- function(...) {
 }
 
 
-rbind2.dfm <- function(x, y) {
+rbind2.dfm.old <- function(x, y) {
     x.names <- features(x)
     y.names <- features(y)
 
