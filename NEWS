@@ -3,6 +3,14 @@ quanteda 0.9.7
 
 *  Improve performance of `selectFeatures.tokenizedTexts()`.
 
+*  Improve performance of rbind.dfm()
+
+Bug fixes
+---------
+
+*  fix bug in textfile() where source is a remote .zip set.  #172
+
+
 
 quanteda 0.9.6 
 ==============
