@@ -5,10 +5,14 @@ quanteda 0.9.7
 
 *  Improve performance of rbind.dfm()
 
+*  Added support for different docvars when importing multiple files using textfile().  (#147)
+
+*  Add support for comparison dispersion plots in `plot.kwic()`. (#146)
+
 Bug fixes
 ---------
 
-*  fix bug in textfile() where source is a remote .zip set.  #172
+*  fix bug in textfile() where source is a remote .zip set.  (#172)
 
 
 

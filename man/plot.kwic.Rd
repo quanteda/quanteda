@@ -2,27 +2,30 @@
 % Please edit documentation in R/plots.R
 \name{plot.kwic}
 \alias{plot.kwic}
-\title{plot a dispersion plot of key word(s)}
+\title{plot the dispersion of key word(s)}
 \usage{
-\method{plot}{kwic}(x, ...)
+\method{plot}{kwic}(...)
 }
 \arguments{
-\item{x}{a \link{kwic} class object}
-
-\item{...}{additional arguments passed to \code{\link{plot}}}
+\item{...}{any number of \link{kwic} class objects}
+}
+\value{
+\code{plot.kwic} returns a ggplot object
 }
 \description{
-Plots a dispersion or "x-ray" plot of a selected word pattern across a text.
-}
-\note{
-Currently works only for a a single document.  Because the dispersion plot is
-designed to be a "strip", the height and width of your plotting object will determine
-whether this plot looks correct or not.  See examples.
+Plots a dispersion or "x-ray" plot of selected word pattern(s) across one or more texts.
+The format of the plot depends on the number of \link{kwic} class objects passed: if there
+is only one document, keywords are plotted one below the other. If there are multiple documents
+the documents are plotted one below the other, with keywords shown side-by-side.
 }
 \examples{
 \dontrun{
-mobydick <- corpus(textfile(unzip(system.file("extdata", "pg2701.txt.zip", package = "quanteda"))))
-plot(kwic(mobydick, "Ahab*"))
+inaugCorpusPost70 <- subset(inaugCorpus, Year > 1970)
+plot(kwic(inaugCorpusPost70, "american"))
+plot(kwic(inaugCorpusPost70, "american"), kwic(inaugCorpusPost70, "people"))
 }
+}
+\author{
+Adam Obeng
 }
 

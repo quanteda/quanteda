@@ -45,10 +45,11 @@ Suggests:
     streamR,
     tm (>= 0.6),
     slam,
-    ggplot2,
     XML,
     testthat,
-    RColorBrewer
+    RColorBrewer,
+    ggplot2,
+    grid
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues

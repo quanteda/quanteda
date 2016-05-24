@@ -52,29 +52,57 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 }
 
 
-#' plot a dispersion plot of key word(s)
+#' plot the dispersion of key word(s)
 #' 
-#' Plots a dispersion or "x-ray" plot of a selected word pattern across a text.
-#' @param x a \link{kwic} class object
-#' @param ... additional arguments passed to \code{\link{plot}}
-#' @note Currently works only for a a single document.  Because the dispersion plot is
-#' designed to be a "strip", the height and width of your plotting object will determine
-#' whether this plot looks correct or not.  See examples.
-#' @importFrom stats window
-#' @importFrom graphics plot
+#' Plots a dispersion or "x-ray" plot of selected word pattern(s) across one or more texts.
+#' The format of the plot depends on the number of \link{kwic} class objects passed: if there
+#' is only one document, keywords are plotted one below the other. If there are multiple documents
+#' the documents are plotted one below the other, with keywords shown side-by-side.
+#' @param ... any number of \link{kwic} class objects
+#' @author Adam Obeng
+#' @return \code{plot.kwic} returns a ggplot object
 #' @examples 
 #' \dontrun{
-#' mobydick <- corpus(textfile(unzip(system.file("extdata", "pg2701.txt.zip", package = "quanteda"))))
-#' plot(kwic(mobydick, "Ahab*"))
+#' inaugCorpusPost70 <- subset(inaugCorpus, Year > 1970)
+#' plot(kwic(inaugCorpusPost70, "american"))
+#' plot(kwic(inaugCorpusPost70, "american"), kwic(inaugCorpusPost70, "people"))
 #' }
 #' @export
-plot.kwic <- function(x, ...) {
-    nt <- attr(x, "ntoken")
-    if(length(nt) > 1) stop("kwic plots currently only implemented for single documents.")
-    pos <- integer(attr(x, "ntoken"))
-    pos[x$position] <- 1L
-    graphics::plot(pos, xlab="Token Index", ylab = attr(x, "keyword"), type="h", 
-         ylim=c(0,1), yaxt="n", col = "grey30", ...)
+plot.kwic <- function(...) {
+    if (!requireNamespace("ggplot2", quietly = TRUE))
+        stop("You must have ggplot2 installed to make a dispersion plot.")
+    if(!requireNamespace("grid", quietly = TRUE)) 
+        stop("You must have grid installed to make a dispersion plot.")
+    
+    position <- NULL    
+    
+    arguments <- list(...)
+    x <- lapply(arguments, function(x) { x$keyword <- attr(x, 'keyword'); x})
+    x <- do.call(rbind, x)
+    
+    plot <- ggplot2::ggplot(x, ggplot2::aes(x=position, y=1)) + ggplot2::geom_segment(ggplot2::aes(xend=position, yend=0)) + 
+        ggplot2::theme(axis.line=ggplot2::element_blank(),
+                       panel.background=ggplot2::element_blank(),panel.grid.major.y=ggplot2::element_blank(),
+                       panel.grid.minor.y=ggplot2::element_blank(), plot.background=ggplot2::element_blank(),
+                       axis.ticks.y=ggplot2::element_blank(), axis.text.y=ggplot2::element_blank(),
+                       panel.margin = grid::unit(0.1, "lines"), panel.border=ggplot2::element_rect(colour = "gray", fill=NA),
+                       strip.text.y=ggplot2::element_text(angle=0)
+        ) 
+    
+    if ((length(unique(x$docname)) > 1)) {
+        # If there is more than one document, put documents on the panel y-axis and keyword(s)
+        # on the panel x-axis
+        plot <- plot + ggplot2::facet_grid(docname~keyword) + 
+            ggplot2::labs(x = 'Token index', y = 'Document', title = paste('Lexical dispersion plot'))
+    }
+    else {
+        # If not, put keywords on the panel y-axis and the document name in the title
+        plot <- plot + ggplot2::facet_grid(keyword~.) + 
+            ggplot2::labs(x='Token index',
+                          y = '', title = paste('Lexical dispersion plot, document:', x$docname[[1]]))
+    }
+    
+    plot
 }
 
 
