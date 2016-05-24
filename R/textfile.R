@@ -346,9 +346,10 @@ get_datas <- function(filemask, textField='index', fileType, ...){
                          error = function(e) {
                             stop('Data files do not have identical columns or variables')
                          })
+        docv <- data.table::rbindlist(list(docv, src$docv), use.names = TRUE, fill = TRUE)
+        data.frame(docv)
     }
     list(txts=textsvec, docv=docv)
-    # return(src)
 }
 
 get_word <- function(f){
