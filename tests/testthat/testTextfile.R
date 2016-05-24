@@ -7,19 +7,17 @@
 
 context('test textfile.R')
 
-TESTDATADIR <- "tests/data/"
-
 test_that("test show.corpusSource", {
 
     expect_that(
-        show(textfile( 'tests/data/fox/fox.txt')),
+        show(textfile( '../data/fox/fox.txt')),
         prints_text('corpusSource object consisting of 1 document and 0 docvars.')
     )
 
     testcorpusSource <- textfile(
         c(
-            'tests/data/fruits/apple.txt',
-            'tests/data/fruits/orange.txt'
+            '../data/fruits/apple.txt',
+            '../data/fruits/orange.txt'
          )
     )
     expect_that(
@@ -28,12 +26,12 @@ test_that("test show.corpusSource", {
     )
 
     expect_that(
-        show(textfile('tests/data/csv/test.csv', textField='text')),
+        show(textfile('../data/csv/test.csv', textField='text')),
         prints_text('corpusSource object consisting of 2 documents and 2 docvars.')
     )
 
 
-    testcorpusSource <- textfile( 'tests/data/fox/fox.txt', cache=T)
+    testcorpusSource <- textfile( '../data/fox/fox.txt', cache=T)
     expect_that(
         show(testcorpusSource),
         prints_text('corpusSource object with data cached')
@@ -49,7 +47,7 @@ test_that("test show.corpusSource", {
 test_that("test textfile with single filename", {
     fox <- "The quick brown fox jumps over the lazy dog."
     expect_equal(
-        texts(textfile('tests/data/fox/fox.txt')),
+        texts(textfile('../data/fox/fox.txt')),
         fox
     )
 })
@@ -57,14 +55,14 @@ test_that("test textfile with single filename", {
 test_that("test cached textfile with single filename", {
     fox <- "The quick brown fox jumps over the lazy dog."
     expect_equal(
-        texts(textfile('tests/data/fox/fox.txt', cache=T)),
+        texts(textfile('../data/fox/fox.txt', cache=T)),
         fox
     )
 })
 
 test_that("test classes, slots, and extractor functions", {
 
-    testtextfile <- textfile('tests/data/fox/fox.txt')
+    testtextfile <- textfile('../data/fox/fox.txt')
 
 
     expect_equal(
@@ -86,8 +84,8 @@ test_that("test textfile with vector of filenames", {
     expect_equal(
         length(texts(textfile(
             c(
-                'tests/data/fruits/apple.txt',
-                'tests/data/fruits/orange.txt'
+                '../data/fruits/apple.txt',
+                '../data/fruits/orange.txt'
              )
         ))),
         2
@@ -97,14 +95,14 @@ test_that("test textfile with vector of filenames", {
 test_that("test textfile with glob-style mask", {
     expect_equal(
         length(texts(textfile(
-                'tests/data/glob/*.txt'
+                '../data/glob/*.txt'
         ))),
         5
     )
 
     expect_equal(
         length(texts(textfile(
-                'tests/data/glob/?.txt'
+                '../data/glob/?.txt'
         ))),
         4
     )
@@ -113,7 +111,7 @@ test_that("test textfile with glob-style mask", {
     # TODO: Glob in non-last part of filename
     #  expect_equal(
     #      length(texts(textfile(
-    #              'tests/data/glob/*/1.txt'
+    #              '../data/glob/*/1.txt'
     #      ))),
     #      2
     #  )
@@ -122,7 +120,7 @@ test_that("test textfile with glob-style mask", {
     # TODO: glob multiple filetypes
     # expect_equal(
     #     length(texts(textfile(
-    #             'tests/data/glob/*'
+    #             '../data/glob/*'
     #     ))),
     #     6
     # )
@@ -134,13 +132,13 @@ test_that("test textfile with glob-style mask", {
 test_that("test structured textfile with glob-style mask", {
     expect_equal(
         length(texts(textfile(
-                'tests/data/csv/*.csv', textField='text'
+                '../data/csv/*.csv', textField='text'
         ))),
         4
     )
     expect_equal(
         nrow(docvars(textfile(
-                'tests/data/csv/*.csv', textField='text'
+                '../data/csv/*.csv', textField='text'
         ))),
         4
     )
@@ -150,17 +148,17 @@ test_that("test structured textfile with glob-style mask", {
 test_that("test non-implemented functions", {
 
     expect_that(
-        textfile('tests/data/empty/test.doc'),
+        textfile('../data/empty/test.doc'),
         throws_error('doc files not implemented yet')
     )
 
     expect_that(
-        textfile('tests/data/empty/test.docx'),
+        textfile('../data/empty/test.docx'),
         throws_error('doc files not implemented yet')
     )
 
     expect_that(
-        textfile('tests/data/empty/test.pdf'),
+        textfile('../data/empty/test.pdf'),
         throws_error('pdf files not implemented yet')
     )
 
@@ -169,7 +167,7 @@ test_that("test non-implemented functions", {
 
 test_that("test warning for unrecognized filetype", {
     expect_that(
-        textfile('tests/data/empty/test.nonesuch'),
+        textfile('../data/empty/test.nonesuch'),
         throws_error('unrecognized fileType:unknown')
     )
 })
@@ -178,7 +176,7 @@ test_that("test warning for unrecognized filetype", {
 # TODO: Refactor this to loop over filetypes
 test_that("test csv files", {
     # Test corpus object
-    testcorpus <- textfile('tests/data/csv/test.csv', textField='text')
+    testcorpus <- textfile('../data/csv/test.csv', textField='text')
     expect_that(
         docvars(testcorpus),
         equals(data.frame(list(colour=c('green', 'red'), number=c(42, 99)), stringsAsFactors=F))
@@ -189,7 +187,7 @@ test_that("test csv files", {
     )
 
     expect_that(
-        textfile('tests/data/csv/test.csv', textField='nonexistant'),
+        textfile('../data/csv/test.csv', textField='nonexistant'),
         throws_error('column name nonexistant not found')
     )
 
@@ -197,7 +195,7 @@ test_that("test csv files", {
 
 test_that("test tab files", {
     # Test corpus object
-    testcorpus <- textfile('tests/data/tab/test.tab', textField='text')
+    testcorpus <- textfile('../data/tab/test.tab', textField='text')
     expect_that(
         docvars(testcorpus),
         equals(data.frame(list(colour=c('green', 'red'), number=c(42, 99)), stringsAsFactors=F))
@@ -208,7 +206,7 @@ test_that("test tab files", {
     )
 
     expect_that(
-        textfile('tests/data/tab/test.tab', textField='nonexistant'),
+        textfile('../data/tab/test.tab', textField='nonexistant'),
         throws_error('column name nonexistant not found')
     )
 
@@ -216,7 +214,7 @@ test_that("test tab files", {
 
 test_that("test tsv files", {
     # Test corpus object
-    testcorpus <- textfile('tests/data/tsv/test.tsv', textField='text')
+    testcorpus <- textfile('../data/tsv/test.tsv', textField='text')
     expect_that(
         docvars(testcorpus),
         equals(data.frame(list(colour=c('green', 'red'), number=c(42, 99)), stringsAsFactors=F))
@@ -227,7 +225,7 @@ test_that("test tsv files", {
     )
 
     expect_that(
-        textfile('tests/data/tsv/test.tsv', textField='nonexistant'),
+        textfile('../data/tsv/test.tsv', textField='nonexistant'),
         throws_error('column name nonexistant not found')
     )
 
@@ -236,7 +234,7 @@ test_that("test tsv files", {
 
 test_that("test xml files", {
     # Test corpus object
-    testcorpus <- textfile('tests/data/xml/test.xml', textField='text')
+    testcorpus <- textfile('../data/xml/test.xml', textField='text')
     expect_that(
         docvars(testcorpus),
         equals(data.frame(list(colour=c('green', 'red'), number=c(42, 99)), stringsAsFactors=F))
@@ -247,16 +245,16 @@ test_that("test xml files", {
     )
 
     expect_that(
-        textfile('tests/data/xml/test.xml', textField='nonexistant'),
+        textfile('../data/xml/test.xml', textField='nonexistant'),
         throws_error('node .* not found')
     )
 
     expect_that(
-        textfile('tests/data/xml/test.xml', textField=1),
+        textfile('../data/xml/test.xml', textField=1),
         gives_warning('You should specify textField by name.*')
     )
     expect_that(
-        texts(textfile('tests/data/xml/test.xml', textField=1)),
+        texts(textfile('../data/xml/test.xml', textField=1)),
         equals(c('Lorem ipsum.', 'Dolor sit'))
     )
 
@@ -266,7 +264,7 @@ test_that("test xml files", {
 # TODO: This doesn't appear to work at all
 #  test_that("test zip files", {
 #      # TODO: Only supports zipfiles which contain txt files
-#      testcorpus <- textfile('tests/data/zip/test.zip')
+#      testcorpus <- textfile('../data/zip/test.zip')
 #      expect_that(
 #          texts(testcorpus),
 #          equals(c('Lorem ipsum.', 'The quick', 'Dolor sit', 'brown fox'))
@@ -294,34 +292,34 @@ test_that("test getFileType", {
 test_that("test textfile() with docvarsfrom=filenames", {
 
     expect_that(
-        docvars(textfile('tests/data/docvars/one/*', docvarsfrom='filenames')),
+        docvars(textfile('../data/docvars/one/*', docvarsfrom='filenames')),
         equals(data.frame(list(docvar1=c(1,2), docvar2=c('apple', 'orange')), stringsAsFactors=F))
     )
 
     expect_that(
-        docvars(textfile('tests/data/docvars/dash/*', docvarsfrom='filenames', dvsep='-')),
+        docvars(textfile('../data/docvars/dash/*', docvarsfrom='filenames', dvsep='-')),
         equals(data.frame(list(docvar1=c(1,2), docvar2=c('apple', 'orange')), stringsAsFactors=F))
     )
 
 
     expect_that(
-        docvars(textfile('tests/data/docvars/two/*txt', docvarsfrom='filenames')),
+        docvars(textfile('../data/docvars/two/*txt', docvarsfrom='filenames')),
         equals(data.frame(list(docvar1=c(1,2), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
     )
 
     #  docvarsfrom='filenames' only works with txt files, by design?
     #  expect_that(
-    #      docvars(textfile('tests/data/docvars/two/*json', docvarsfrom='filenames', textField='nonesuch')),
+    #      docvars(textfile('../data/docvars/two/*json', docvarsfrom='filenames', textField='nonesuch')),
     #      equals(data.frame(list(docvar1=c(1,2), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
     #  )
 
     expect_that(
-        docvars(textfile('tests/data/docvars/unequal/*', docvarsfrom='filenames')),
+        docvars(textfile('../data/docvars/unequal/*', docvarsfrom='filenames')),
         throws_error("Filename elements are not equal in length.")
     )
 
     expect_that(
-        docvars(textfile('tests/data/docvars/two/*txt', docvarsfrom='filenames',
+        docvars(textfile('../data/docvars/two/*txt', docvarsfrom='filenames',
             docvarnames=c('id', 'fruit', 'colour')
         )),
         equals(data.frame(list(id=c(1,2), fruit=c('apple', 'orange')), colour=c('red', 'orange'), stringsAsFactors=F))
@@ -329,13 +327,13 @@ test_that("test textfile() with docvarsfrom=filenames", {
 
 
     expect_that(
-        docvars(textfile('tests/data/docvars/two/*txt', docvarsfrom='filenames',
+        docvars(textfile('../data/docvars/two/*txt', docvarsfrom='filenames',
             docvarnames=c('id', 'fruit')
         )),
         gives_warning('Fewer docnames supplied than existing docvars - last 1 docvar given generic names.')
     )
     expect_that(
-        docvars(textfile('tests/data/docvars/two/*txt', docvarsfrom='filenames',
+        docvars(textfile('../data/docvars/two/*txt', docvarsfrom='filenames',
             docvarnames=c('id', 'fruit')
         )),
         equals(data.frame(list(id=c(1,2), fruit=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
@@ -343,7 +341,7 @@ test_that("test textfile() with docvarsfrom=filenames", {
 
 
     expect_that(
-        docvars(textfile('tests/data/docvars/two/*txt', docvarsfrom='filenames',
+        docvars(textfile('../data/docvars/two/*txt', docvarsfrom='filenames',
             docvarnames=c('id')
         )),
         gives_warning('Fewer docnames supplied than existing docvars - last 2 docvars given generic names.')
@@ -352,12 +350,12 @@ test_that("test textfile() with docvarsfrom=filenames", {
     #TODO: What happens if you supply more docnames?
 
     expect_that(
-        docvars(textfile('tests/data/docvars/two/1_apple_red.txt', docvarsfrom='filenames')),
+        docvars(textfile('../data/docvars/two/1_apple_red.txt', docvarsfrom='filenames')),
         throws_error('File type txt not supported with these arguments.')
     )
 
     expect_that(
-        docvars(textfile('tests/data/docvars/two/*txt', docvarsfrom='nonesuch')),
+        docvars(textfile('../data/docvars/two/*txt', docvarsfrom='nonesuch')),
         gives_warning('docvarsfrom=nonesuch not supported.')
     )
 
@@ -368,14 +366,14 @@ test_that("test textfile() with docvarsfrom=filenames", {
 
 test_that("test texts.corpusSource error with groups!=NULL", {
     expect_that(
-        texts(textfile('tests/data/fox/fox.txt'), groups='anything'),
+        texts(textfile('../data/fox/fox.txt'), groups='anything'),
         throws_error()
      )
 })
 
 test_that("test docvars.corpusSource warning with field!=NULL", {
     expect_that(
-        docvars(textfile('tests/data/fox/fox.txt'), field='anything'),
+        docvars(textfile('../data/fox/fox.txt'), field='anything'),
         gives_warning()
      )
 })
@@ -386,23 +384,23 @@ test_that("test textfile encoding parameter", {
   fox <- "The quick brown fox jumps over the lazy dog."
   # Test ASCII encoded file, read as ASCII
    expect_that(
-      texts(textfile('tests/data/encoding/ascii.txt', encoding='ascii')),
+      texts(textfile('../data/encoding/ascii.txt', encoding='ascii')),
       equals(fox)
     )
   # Test ASCII encoded file, read as UTF-8
    expect_that(
-      texts(textfile('tests/data/encoding/ascii.txt', encoding='utf-8')),
+      texts(textfile('../data/encoding/ascii.txt', encoding='utf-8')),
       equals(fox)
     )
   # Test ASCII encoded file, read as UTF-16: should not work
    expect_that(
-      texts(textfile('tests/data/encoding/ascii.txt', encoding='utf-16')) == fox,
+      texts(textfile('../data/encoding/ascii.txt', encoding='utf-16')) == fox,
       is_false()
     )
 
   # Test Latin-1/ISO-8859-1 encoded text
    expect_that(
-      texts(textfile('tests/data/encoding/latin1.txt', encoding='latin1')),
+      texts(textfile('../data/encoding/latin1.txt', encoding='latin1')),
       equals('"Fix, Schwyz!" quäkt Jürgen blöd vom Paß')
     )
 
@@ -428,7 +426,7 @@ test_that("test textfile encoding parameter", {
    # for (i in 1:length(encodings)) {
    #   print(paste(filenames[[i]], encodings[[i]]))
    #   expect_that(
-   #    texts(textfile(paste0('tests/data/encoding/', filenames[[i]], '.txt'), encoding=encodings[[i]])),
+   #    texts(textfile(paste0('../data/encoding/', filenames[[i]], '.txt'), encoding=encodings[[i]])),
    #    equals(frenchText)
    #  )
    # }
@@ -437,7 +435,7 @@ test_that("test textfile encoding parameter", {
 context('Loading a corpus from a zip file.')
 
 test_that("A single-level zip file containing txt files can be loaded",{
-    tf <- textfile('data/inauguralTopLevel.zip')
+    tf <- textfile('../data/zip/inauguralTopLevel.zip')
     qc <- corpus(tf)
     expect_equal(ndoc(qc), 57)
 })
