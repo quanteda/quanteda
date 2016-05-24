@@ -440,3 +440,26 @@ test_that("A single-level zip file containing txt files can be loaded",{
     qc <- corpus(tf)
     expect_equal(ndoc(qc), 57)
 })
+
+
+test_that("test reading structured text files with different columns", {
+    testcorpus <- textfile(
+        "data/fruits*.csv",
+        textField='text'
+    )
+
+    expect_that(
+         docvars(testcorpus),
+         equals(data.frame(list(
+            color=c('green', 'orange', NA, NA), 
+            shape=c(NA, NA, 'round', 'long')
+            ),
+            stringsAsFactors=F
+        ))
+    )
+    expect_that(
+         texts(testcorpus),
+         equals(c('apple', 'orange', 'apple', 'banana'))
+    )
+})
+
