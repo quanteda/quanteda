@@ -58,6 +58,8 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' The format of the plot depends on the number of \link{kwic} class objects passed: if there
 #' is only one document, keywords are plotted one below the other. If there are multiple documents
 #' the documents are plotted one below the other, with keywords shown side-by-side.
+#' Given that this returns a ggplot object, you can modify the plot by adding ggplot layers
+#' (see example).
 #' @param ... any number of \link{kwic} class objects
 #' @author Adam Obeng
 #' @return \code{plot.kwic} returns a ggplot object
@@ -66,6 +68,9 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' inaugCorpusPost70 <- subset(inaugCorpus, Year > 1970)
 #' plot(kwic(inaugCorpusPost70, "american"))
 #' plot(kwic(inaugCorpusPost70, "american"), kwic(inaugCorpusPost70, "people"))
+#' library(ggplot2)
+#' g <- plot(kwic(inaugCorpusPost70, "american"), kwic(inaugCorpusPost70, "people"))
+#' g + aes(color=keyword) + scale_color_manual(values=c('red', 'blue'))
 #' }
 #' @export
 plot.kwic <- function(...) {
