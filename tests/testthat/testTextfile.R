@@ -1,8 +1,8 @@
 #TODO: merge json
 #TODO: merge rbindall
-# TODO: RTL
-# TODO: bi-directional text
-# TODO: encodings in filenames
+#TODO: RTL
+#TODO: bi-directional text
+#TODO: encodings in filenames
 
 
 context('test textfile.R')
@@ -41,7 +41,7 @@ test_that("test show.corpusSource", {
 })
 
 
-# TODO: Add tests for the various method signatures
+#TODO: Add tests for the various method signatures
 
 
 test_that("test textfile with single filename", {
@@ -109,15 +109,15 @@ test_that("test textfile with glob-style mask", {
 
 
     # TODO: Glob in non-last part of filename
-    #  expect_equal(
-    #      length(texts(textfile(
-    #              '../data/glob/*/1.txt'
-    #      ))),
-    #      2
-    #  )
+    # expect_equal(
+    #     length(texts(textfile(
+    #             '../data/glob/*/1.txt'
+    #     ))),
+    #     2
+    # )
 
 
-    # TODO: glob multiple filetypes
+    #TODO: glob multiple filetypes
     # expect_equal(
     #     length(texts(textfile(
     #             '../data/glob/*'
@@ -286,7 +286,7 @@ test_that("test getFileType", {
       expect_equal(getFileType('test'), 'unknown')
 
       # TODO: filenames with glob specialchars
-      # TODO: Should it support multiple filenames?
+      #TODO: Should it support multiple filenames?
 })
 
 test_that("test textfile() with docvarsfrom=filenames", {
@@ -307,7 +307,7 @@ test_that("test textfile() with docvarsfrom=filenames", {
         equals(data.frame(list(docvar1=c(1,2), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
     )
 
-    #  docvarsfrom='filenames' only works with txt files, by design?
+    # docvarsfrom='filenames' only works with txt files, by design?
     #  expect_that(
     #      docvars(textfile('../data/docvars/two/*json', docvarsfrom='filenames', textField='nonesuch')),
     #      equals(data.frame(list(docvar1=c(1,2), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
@@ -398,18 +398,19 @@ test_that("test textfile encoding parameter", {
       is_false()
     )
 
-  # Test Latin-1/ISO-8859-1 encoded text
-   expect_that(
-      texts(textfile('../data/encoding/latin1.txt', encoding='latin1')),
-      equals('"Fix, Schwyz!" quäkt Jürgen blöd vom Paß')
-    )
+   # ## Test Latin-1/ISO-8859-1 encoded text
+   # txtToMatch <- enc2utf8('\"Fix, Schwyz!\" quäkt Jürgen blöd vom Paß')
+   # expect_that(
+   #    txtFromFile <- texts(textfile('../data/encoding/latin1.txt', encoding='latin1')),
+   #    equals(txtToMatch)
+   # )
 
    
   ####
   #### See ?encodedTextFiles
   ####
    
-  # Test Unicode encoded files:
+  #Test Unicode encoded files:
   #    - UTF-8 with BOM
   #    - UTF-8 without BOM
   #    - UTF-16 big-endian with BOM
