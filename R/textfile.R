@@ -63,7 +63,8 @@ setMethod("show",
 #'   \item{\code{xml}}{Basic flat XML documents are supported -- those of the 
 #'   kind supported by the function xmlToDataFrame function of the \strong{XML} 
 #'   package.} \item{\code{zip}}{zip archive file, containing \code{*.txt} 
-#'   files.  This may be a URL to a zip file.} }
+#'   files either at the top level or in a single directory.
+#    'This may also be a URL to a zip file.} }
 #' @param textField a variable (column) name or column number indicating where 
 #'   to find the texts that form the documents for the corpus.  This must be 
 #'   specified for file types \code{.csv} and \code{.json}.
@@ -293,12 +294,15 @@ get_docs <- function(filemask, ...) {
 }
 
 get_zipfile <- function(f, ...) {
+    #  Only supports .txt files, either at the toplevel or in a single directory
     td <- tempdir()
+    flocal <- ''
     if (substr(f, 1, 4) == "http")
-        utils::download.file(f, destfile = (flocal <- paste0(td, "/temp.zip", quiet = TRUE)))
+        utils::download.file(f, destfile = (flocal <- file.path(td, "temp.zip", quiet = TRUE)))
+    else
+        flocal <- f
     utils::unzip(flocal, exdir = td)
-    # cat("file:", paste0(td, "*.txt"), "\n")
-    get_docs(paste0(td, "/*.txt"))
+    get_docs(file.path(td, "*txt"))
 }
 
 # read a document from a structured file containing text and data
@@ -331,13 +335,10 @@ get_datas <- function(filemask, textField='index', fileType, ...){
     for (f in filenames) {
         src <- get_data(f,  textField, ...)
         textsvec <- c(textsvec, src$txts)
-	docv <- tryCatch({
-		rbind(docv, src$docv)
-	},
-		error = function(e) {
-			stop('Data files do not have identical columns or variables')
-	}
-	)
+        docv <- tryCatch({rbind(docv, src$docv)},
+                         error = function(e) {
+                            stop('Data files do not have identical columns or variables')
+                         })
     }
     list(txts=textsvec, docv=docv)
     # return(src)
