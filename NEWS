@@ -12,7 +12,10 @@ quanteda 0.9.7
 Bug fixes
 ---------
 
-*  fix bug in textfile() where source is a remote .zip set.  (#172)
+*  Fixed bug in textfile() where source is a remote .zip set.  (#172)
+
+*  Fixed bug in wordstem.dfm() that caused an error if supplied a dfm with a feature whose total frequency 
+   count was zero, or with a feature whose total docfreq was zero.  Fixes #181.
 
 
 
