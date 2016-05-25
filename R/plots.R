@@ -66,8 +66,12 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' @examples 
 #' \dontrun{
 #' inaugCorpusPost70 <- subset(inaugCorpus, Year > 1970)
+#' # compare multiple documents
 #' plot(kwic(inaugCorpusPost70, "american"))
+#' # compare multiple terms across multiple documents
 #' plot(kwic(inaugCorpusPost70, "american"), kwic(inaugCorpusPost70, "people"))
+#' 
+#' # how to modify the ggplot with different options
 #' library(ggplot2)
 #' g <- plot(kwic(inaugCorpusPost70, "american"), kwic(inaugCorpusPost70, "people"))
 #' g + aes(color=keyword) + scale_color_manual(values=c('red', 'blue'))
