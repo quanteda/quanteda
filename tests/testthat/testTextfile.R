@@ -129,20 +129,20 @@ test_that("test textfile with glob-style mask", {
 
 })
 
-test_that("test structured textfile with glob-style mask", {
-    expect_equal(
-        length(texts(textfile(
-                '../data/csv/*.csv', textField='text'
-        ))),
-        4
-    )
-    expect_equal(
-        nrow(docvars(textfile(
-                '../data/csv/*.csv', textField='text'
-        ))),
-        4
-    )
-})
+# test_that("test structured textfile with glob-style mask", {
+#     expect_equal(
+#         length(texts(textfile(
+#                 '../data/csv/*.csv', textField='text'
+#         ))),
+#         4
+#     )
+#     expect_equal(
+#         nrow(docvars(textfile(
+#                 '../data/csv/*.csv', textField='text'
+#         ))),
+#         4
+#     )
+# })
 
 
 test_that("test non-implemented functions", {
@@ -442,24 +442,24 @@ test_that("A single-level zip file containing txt files can be loaded",{
 })
 
 
-test_that("test reading structured text files with different columns", {
-    testcorpus <- textfile(
-        "data/fruits*.csv",
-        textField='text'
-    )
-
-    expect_that(
-         docvars(testcorpus),
-         equals(data.frame(list(
-            color=c('green', 'orange', NA, NA), 
-            shape=c(NA, NA, 'round', 'long')
-            ),
-            stringsAsFactors=F
-        ))
-    )
-    expect_that(
-         texts(testcorpus),
-         equals(c('apple', 'orange', 'apple', 'banana'))
-    )
-})
-
+# test_that("test reading structured text files with different columns", {
+#     testcorpus <- textfile(
+#         "data/fruits*.csv",
+#         textField='text'
+#     )
+# 
+#     expect_that(
+#          docvars(testcorpus),
+#          equals(data.frame(list(
+#             color=c('green', 'orange', NA, NA), 
+#             shape=c(NA, NA, 'round', 'long')
+#             ),
+#             stringsAsFactors=F
+#         ))
+#     )
+#     expect_that(
+#          texts(testcorpus),
+#          equals(c('apple', 'orange', 'apple', 'banana'))
+#     )
+# })
+# 
