@@ -131,11 +131,12 @@ kwic.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex
 
 
     indexPre <- cbind(pmax(endMatchIndex - window, 0), pmax(endMatchIndex - 1, 0))
-    indexPost <- cbind(pmin(endMatchIndex + wordLength, length(x)+1), pmin(endMatchIndex + wordLength + window-1, length(x)))
-    # if the post runs past the end of the phrase
-    if (indexPost[1,1] > length(x)) indexPost <- cbind(0,0)
-    
+    indexPost <- cbind(
+       ifelse(endMatchIndex + wordLength < length(x), endMatchIndex + wordLength, NA),
+       pmin(endMatchIndex + wordLength + window-1, length(x))
+    )
     concatIndexes <- function(indexPair, textVector) {
+        if (any(is.na(indexPair))) return("")
         if (identical(indexPair, c(0,0))) return("")
         if (length(indexPair) == 1)
             textVector[indexPair]
@@ -197,7 +198,6 @@ wrapVector <- function(x, n) {
 
 # works like match but for regular expressions
 matchRegex <- function(x, table, case_insensitive) {
-    print(paste(x, table, case_insensitive))
     result <- rep(NA, length(x))
     for (i in 1:length(table)) {
         # logMatch <- grepl(table[i], x)
