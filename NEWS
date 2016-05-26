@@ -9,6 +9,8 @@ quanteda 0.9.7
 
 *  Add support for comparison dispersion plots in `plot.kwic()`. (#146)
 
+*  Add corpus constructor method for kwic objects.
+
 Bug fixes
 ---------
 

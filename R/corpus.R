@@ -282,6 +282,39 @@ corpus.data.frame <- function(x, textField, ...) {
 }
 
 
+#' @rdname corpus
+#' @examples 
+#' 
+#' # construct a corpus from a kwic object
+#' mykwic <- kwic(inaugCorpus, "southern")
+#' summary(corpus(mykwic))
+#' @export
+corpus.kwic <- function(x, ...) {
+    
+    args <- list(...)
+    if ("docvars" %in% names(args))
+        stop("docvars are assigned automatically for kwic objects", )
+    
+    class(x) <- "data.frame"
+    
+    result <- corpus(x, textField = "contextPre", ...)
+    result[["contextPost"]] <- NULL
+    result[["context"]] <- "pre"
+    docnames(result) <- paste0(docnames(result), ".pre")
+
+    tempCorp <- corpus(x, textField = "contextPost", ...)
+    tempCorp[["contextPre"]] <- NULL
+    tempCorp[["context"]] <- "post"
+    docnames(tempCorp) <- paste0(docnames(tempCorp), ".post")
+    
+    result <- result + tempCorp
+    metacorpus(result, "source") <- paste0("Corpus created from kwic(x, keywords = \"", attr(x, "keywords"), "\")")
+
+    result
+}
+
+
+
 
 # print a corpus object
 #
