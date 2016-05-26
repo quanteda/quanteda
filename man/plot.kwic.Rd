@@ -4,9 +4,12 @@
 \alias{plot.kwic}
 \title{plot the dispersion of key word(s)}
 \usage{
-\method{plot}{kwic}(...)
+\method{plot}{kwic}(scale = c("relative", "absolute"), ...)
 }
 \arguments{
+\item{scale}{whether to scale the token index axis by absolute position of the token in the 
+document or by relative position}
+
 \item{...}{any number of \link{kwic} class objects}
 }
 \value{

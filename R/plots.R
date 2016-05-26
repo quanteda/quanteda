@@ -61,6 +61,8 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' Given that this returns a ggplot object, you can modify the plot by adding ggplot layers
 #' (see example).
 #' @param ... any number of \link{kwic} class objects
+#' @param scale whether to scale the token index axis by absolute position of the token in the 
+#' document or by relative position
 #' @author Adam Obeng
 #' @return \code{plot.kwic} returns a ggplot object
 #' @examples 
