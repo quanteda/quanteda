@@ -83,21 +83,6 @@ kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "
     contexts
 }
 
-#' @rdname kwic
-#' @method print kwic
-#' @export
-print.kwic <- function(x, ...) {
-    contexts <- x
-    contexts$positionLabel <- paste0("[", contexts$docname, ", ", contexts$position, "]")
-    contexts$positionLabel <- format(contexts$positionLabel, justify="right")
-    rownames(contexts) <- contexts$positionLabel
-    contexts$positionLabel <- contexts$docname <- contexts$position <- NULL
-    contexts$contextPre <- paste(contexts$contextPre, "[")
-    contexts$contextPost <- paste("]", contexts$contextPost)
-    print(as.data.frame(contexts))
-}
-
-
 kwic.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE) {
     valuetype <- match.arg(valuetype)
     
@@ -161,6 +146,21 @@ kwic.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex
     result
 }
 
+#' @rdname kwic
+#' @method print kwic
+#' @export
+print.kwic <- function(x, ...) {
+    contexts <- x
+    contexts$positionLabel <- paste0("[", contexts$docname, ", ", contexts$position, "]")
+    contexts$positionLabel <- format(contexts$positionLabel, justify="right")
+    rownames(contexts) <- contexts$positionLabel
+    contexts$positionLabel <- contexts$docname <- contexts$position <- NULL
+    contexts$contextPre <- paste(contexts$contextPre, "[")
+    contexts$contextPost <- paste("]", contexts$contextPost)
+    print(as.data.frame(contexts))
+}
+
+
 
 
 ## solution from alexis_laz 
@@ -208,4 +208,3 @@ matchFixed <- function(x, table, case_insensitive) {
 #     }
 #     result
 }
-
