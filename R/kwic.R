@@ -108,29 +108,30 @@ kwic.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex
     
     if (valuetype == "fixed") {
         if (case_insensitive)
-            matchIndex <- matchFixed(x, word, case_insensitive)
+            startMatchIndex <- matchFixed(x, word, case_insensitive)
         else
-            matchIndex <- match(x, word)
+            startMatchIndex <- match(x, word)
     } else if (valuetype == "glob") {
-        matchIndex <- matchRegex(x, utils::glob2rx(word), case_insensitive)
+        startMatchIndex <- matchRegex(x, utils::glob2rx(word), case_insensitive)
     } else {
-        matchIndex <- matchRegex(x, word, case_insensitive)
+        startMatchIndex <- matchRegex(x, word, case_insensitive)
     }
 
     # vectorized location of keyword position
-    matchIndex2 <- matchSequence(1:wordLength, matchIndex)
-    if (!length(matchIndex2)) return(NA)
+    endMatchIndex <- matchSequence(1:wordLength, startMatchIndex)
+    if (!length(endMatchIndex)) return(NA)
     
     if (wordLength > 1) {
-        indexKeyword <- cbind(matchIndex2, matchIndex2 + wordLength - 1)
-        position <- sapply(matchIndex2, function(y) paste(c(y, y + wordLength - 1), collapse = ":"))
+        indexKeyword <- cbind(endMatchIndex, endMatchIndex + wordLength - 1)
+        position <- sapply(endMatchIndex, function(y) paste(c(y, y + wordLength - 1), collapse = ":"))
     } else {
-        position <- matchIndex2
-        indexKeyword <- cbind(matchIndex2, matchIndex2)
+        position <- endMatchIndex
+        indexKeyword <- cbind(endMatchIndex, endMatchIndex)
     }
 
-    indexPre <- cbind(pmax(matchIndex2 - window, 0), pmax(matchIndex2 - 1, 0))
-    indexPost <- cbind(pmin(matchIndex2 + wordLength, length(x)+1), pmin(matchIndex2 + wordLength + window-1, length(x)))
+
+    indexPre <- cbind(pmax(endMatchIndex - window, 0), pmax(endMatchIndex - 1, 0))
+    indexPost <- cbind(pmin(endMatchIndex + wordLength, length(x)+1), pmin(endMatchIndex + wordLength + window-1, length(x)))
     # if the post runs past the end of the phrase
     if (indexPost[1,1] > length(x)) indexPost <- cbind(0,0)
     
@@ -196,6 +197,7 @@ wrapVector <- function(x, n) {
 
 # works like match but for regular expressions
 matchRegex <- function(x, table, case_insensitive) {
+    print(paste(x, table, case_insensitive))
     result <- rep(NA, length(x))
     for (i in 1:length(table)) {
         # logMatch <- grepl(table[i], x)
