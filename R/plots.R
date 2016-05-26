@@ -77,18 +77,31 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' g + aes(color=keyword) + scale_color_manual(values=c('red', 'blue'))
 #' }
 #' @export
-plot.kwic <- function(...) {
+plot.kwic <- function(scale=c('relative', 'absolute'), ...) {
     if (!requireNamespace("ggplot2", quietly = TRUE))
         stop("You must have ggplot2 installed to make a dispersion plot.")
     if(!requireNamespace("grid", quietly = TRUE)) 
         stop("You must have grid installed to make a dispersion plot.")
     
+    scale <- match.arg(scale)
+
     position <- NULL    
     
     arguments <- list(...)
-    x <- lapply(arguments, function(x) { x$keyword <- attr(x, 'keyword'); x})
-    x <- do.call(rbind, x)
+    x <- lapply(arguments, function(i) { i$keyword <- attr(i, 'keyword'); i})
+    x <- lapply(arguments, function(i) {
+       ntokens <- data.table::data.table(
+           docname = names(attr(i, 'ntoken')),
+           ntoken = attr(i, 'ntoken')
+       )
+       merge(i, ntokens, all.x=TRUE, by='docname')
+    })
+    x <- data.table(do.call(rbind, x))
     
+    if (scale == 'relative')
+        x <- x[,position:=position/ntoken]
+
+
     plot <- ggplot2::ggplot(x, ggplot2::aes(x=position, y=1)) + ggplot2::geom_segment(ggplot2::aes(xend=position, yend=0)) + 
         ggplot2::theme(axis.line=ggplot2::element_blank(),
                        panel.background=ggplot2::element_blank(),panel.grid.major.y=ggplot2::element_blank(),
@@ -98,19 +111,28 @@ plot.kwic <- function(...) {
                        strip.text.y=ggplot2::element_text(angle=0)
         ) 
     
+    if (scale == 'absolute')
+        plot <- plot + ggplot2::geom_rect(ggplot2::aes(xmin=ntoken, xmax=max(x$ntoken), ymin=0, ymax=1), fill='gray90')
+
     if ((length(unique(x$docname)) > 1)) {
         # If there is more than one document, put documents on the panel y-axis and keyword(s)
         # on the panel x-axis
         plot <- plot + ggplot2::facet_grid(docname~keyword) + 
-            ggplot2::labs(x = 'Token index', y = 'Document', title = paste('Lexical dispersion plot'))
+            ggplot2::labs(y = 'Document', title = paste('Lexical dispersion plot'))
     }
     else {
         # If not, put keywords on the panel y-axis and the document name in the title
         plot <- plot + ggplot2::facet_grid(keyword~.) + 
-            ggplot2::labs(x='Token index',
-                          y = '', title = paste('Lexical dispersion plot, document:', x$docname[[1]]))
+            ggplot2::labs(y = '', title = paste('Lexical dispersion plot, document:', x$docname[[1]]))
     }
     
+    if (scale == 'relative') {
+        plot <- plot + ggplot2::labs(x='Relative token index')
+    }
+    else {
+        plot <- plot + ggplot2::labs(x='Token index')
+    }
+
     plot
 }
 
