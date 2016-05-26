@@ -76,7 +76,15 @@ kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "
     contexts$keyword <- format(contexts$keyword, justify="centre")
     
     attr(contexts, "valuetype") <- valuetype
-    attr(contexts, "ntoken") <- ntoken(x)
+
+    
+    #  If these tokenized texts are not named, then their ntokens will not have names either
+    ntoken <- ntoken(x)
+    if (is.null(names(ntoken)))
+        names(ntoken) <- paste("text", 1:length(x), sep="")
+
+    attr(contexts, "ntoken")  <- ntoken
+
     attr(contexts, "keywords") <- keywords
     attr(contexts, "tokenize_opts") <- list(...)
     class(contexts) <- c("kwic", class(contexts))
