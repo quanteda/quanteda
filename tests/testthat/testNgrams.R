@@ -42,11 +42,23 @@ test_that("test that ngrams produces the results from Guthrie 2006", {
           setdiff(ngrams(toks, n=2, skip=0:2), two_skip_bi_grams),
           equals(character(0))
       )
+      # Same function called via `skipgrams`
+      expect_that(
+          setdiff(skipgrams(toks, n=2, skip=0:2), two_skip_bi_grams),
+          equals(character(0))
+      )
+
 
       expect_that(
           setdiff(ngrams(toks, n=3, skip=0), tri_grams),
           equals(character(0))
       )
+      # Same function called via `skipgrams`
+      expect_that(
+          setdiff(skipgrams(toks, n=3, skip=0), tri_grams),
+          equals(character(0))
+      )
+
 
       expect_that(
           setdiff(ngrams(toks, n=3, skip=0:2), two_skip_tri_grams),
@@ -54,4 +66,37 @@ test_that("test that ngrams produces the results from Guthrie 2006", {
       )
 
 
+})
+
+test_that("test `ngrams` on tokenized texts", {
+      testtokenized <- tokenize(c('insurgents killed in ongoing fighting', 'insurgents killed in ongoing fighting'))
+      testngrams <- ngrams(testtokenized, 2, 0)
+      expectedngrams <- list(
+          c('insurgents_killed', 'killed_in', 'in_ongoing', 'ongoing_fighting'),
+          c('insurgents_killed', 'killed_in', 'in_ongoing', 'ongoing_fighting')
+      )
+
+      expect_that(
+          testngrams,
+          is_equivalent_to(expectedngrams)
+      )
+      expect_that(
+          testngrams,
+          is_a('tokenizedTexts')
+      )
+      expect_that(
+          attributes(testngrams),
+          equals(attributes(testtokenized))
+      )
+
+      expect_that(
+          skipgrams(testtokenized, 2, 0),
+          is_equivalent_to(expectedngrams)
+      )
+
+      print('testngrams')
+      print(testngrams)
+      str(testngrams)
+      print('skipgrams')
+      str(skipgrams(testtokenized, 2, 0))
 })
