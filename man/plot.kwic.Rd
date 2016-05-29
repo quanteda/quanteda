@@ -4,13 +4,13 @@
 \alias{plot.kwic}
 \title{plot the dispersion of key word(s)}
 \usage{
-\method{plot}{kwic}(scale = c("relative", "absolute"), ...)
+\method{plot}{kwic}(..., scale = c("relative", "absolute"))
 }
 \arguments{
+\item{...}{any number of \link{kwic} class objects}
+
 \item{scale}{whether to scale the token index axis by absolute position of the token in the 
 document or by relative position}
-
-\item{...}{any number of \link{kwic} class objects}
 }
 \value{
 \code{plot.kwic} returns a ggplot object
@@ -29,12 +29,12 @@ inaugCorpusPost70 <- subset(inaugCorpus, Year > 1970)
 # compare multiple documents
 plot(kwic(inaugCorpusPost70, "american"))
 # compare multiple terms across multiple documents
-plot(kwic(inaugCorpusPost70, "american"), kwic(inaugCorpusPost70, "people"))
+plot(kwic(inaugCorpusPost70, "america*"), kwic(inaugCorpusPost70, "people"))
 
 # how to modify the ggplot with different options
 library(ggplot2)
 g <- plot(kwic(inaugCorpusPost70, "american"), kwic(inaugCorpusPost70, "people"))
-g + aes(color=keyword) + scale_color_manual(values=c('red', 'blue'))
+g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue', 'orange'))
 }
 }
 \author{

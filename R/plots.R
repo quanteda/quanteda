@@ -71,15 +71,15 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' # compare multiple documents
 #' plot(kwic(inaugCorpusPost70, "american"))
 #' # compare multiple terms across multiple documents
-#' plot(kwic(inaugCorpusPost70, "american"), kwic(inaugCorpusPost70, "people"))
+#' plot(kwic(inaugCorpusPost70, "america*"), kwic(inaugCorpusPost70, "people"))
 #' 
 #' # how to modify the ggplot with different options
 #' library(ggplot2)
 #' g <- plot(kwic(inaugCorpusPost70, "american"), kwic(inaugCorpusPost70, "people"))
-#' g + aes(color=keyword) + scale_color_manual(values=c('red', 'blue'))
+#' g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue', 'orange'))
 #' }
 #' @export
-plot.kwic <- function(scale=c('relative', 'absolute'), ...) {
+plot.kwic <- function(..., scale=c("relative", "absolute")) {
     if (!requireNamespace("ggplot2", quietly = TRUE))
         stop("You must have ggplot2 installed to make a dispersion plot.")
     if(!requireNamespace("grid", quietly = TRUE)) 
@@ -87,22 +87,34 @@ plot.kwic <- function(scale=c('relative', 'absolute'), ...) {
     
     scale <- match.arg(scale)
 
-    position <- NULL    
+    position <- keyword <- docname <- ntokens <- NULL    
     
     arguments <- list(...)
-    x <- lapply(arguments, function(i) { i$keyword <- attr(i, 'keyword'); i})
-    x <- lapply(arguments, function(i) {
-       ntokens <- data.table::data.table(
-           docname = names(attr(i, 'ntoken')),
-           ntoken = attr(i, 'ntoken')
-       )
-       merge(i, ntokens, all.x=TRUE, by='docname')
-    })
-    x <- data.table(do.call(rbind, x))
+
+    ## edited by KB 29 May 2016
+    # x <- lapply(arguments, function(i) { i$keyword <- attr(i, 'keyword'); i})
+    # x <- lapply(arguments, function(i) {
+    #     ntokens <- data.table::data.table(
+    #         docname = names(attr(i, 'ntoken')),
+    #         ntoken = attr(i, 'ntoken')
+    #     )
+    #     merge(i, ntokens, all.x=TRUE, by='docname')
+    # })
+    # x <- data.table::data.table(do.call(rbind, x))
+    
+    ## edited by KB 29 May 2016
+    # create a data.table from the kwic arguments
+    x <- data.table(do.call(rbind, arguments))
+    # get the vector of ntokens
+    ntokensByDoc <- unlist(lapply(arguments, attr, "ntoken"))
+    # add ntokens to data.table as an indexed "merge"
+    x[, ntokens := ntokensByDoc[as.character(x[, docname])]]
+    
+    # replace "found" keyword with patterned keyword
+    x[, keyword := unlist(sapply(arguments, function(l) rep(attr(l, "keyword"), nrow(l))))]
     
     if (scale == 'relative')
-        x <- x[,position:=position/ntoken]
-
+        x <- x[, position := position/ntokens]
 
     plot <- ggplot2::ggplot(x, ggplot2::aes(x=position, y=1)) + ggplot2::geom_segment(ggplot2::aes(xend=position, yend=0)) + 
         ggplot2::theme(axis.line=ggplot2::element_blank(),
@@ -114,7 +126,7 @@ plot.kwic <- function(scale=c('relative', 'absolute'), ...) {
         ) 
     
     if (scale == 'absolute')
-        plot <- plot + ggplot2::geom_rect(ggplot2::aes(xmin=ntoken, xmax=max(x$ntoken), ymin=0, ymax=1), fill='gray90')
+        plot <- plot + ggplot2::geom_rect(ggplot2::aes(xmin=ntokens, xmax=max(x$ntokens), ymin=0, ymax=1), fill = 'gray90')
 
     if ((length(unique(x$docname)) > 1)) {
         # If there is more than one document, put documents on the panel y-axis and keyword(s)
