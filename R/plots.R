@@ -62,7 +62,8 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' (see example).
 #' @param ... any number of \link{kwic} class objects
 #' @param scale whether to scale the token index axis by absolute position of the token in the 
-#' document or by relative position
+#' document or by relative position. Defaults are absolute for single document and relative for
+#' multiple documents.
 #' @author Adam Obeng
 #' @return \code{plot.kwic} returns a ggplot object
 #' @examples 
@@ -79,14 +80,12 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue', 'orange'))
 #' }
 #' @export
-plot.kwic <- function(..., scale=c("relative", "absolute")) {
+plot.kwic <- function(..., scale=c("absolute", "relative")) {
     if (!requireNamespace("ggplot2", quietly = TRUE))
         stop("You must have ggplot2 installed to make a dispersion plot.")
     if(!requireNamespace("grid", quietly = TRUE)) 
         stop("You must have grid installed to make a dispersion plot.")
     
-    scale <- match.arg(scale)
-
     position <- keyword <- docname <- ntokens <- NULL    
     
     arguments <- list(...)
@@ -112,6 +111,24 @@ plot.kwic <- function(..., scale=c("relative", "absolute")) {
     
     # replace "found" keyword with patterned keyword
     x[, keyword := unlist(sapply(arguments, function(l) rep(attr(l, "keyword"), nrow(l))))]
+
+    multiple_documents <- length(unique(x$docname)) > 1
+
+    #  Deal with the scale argument:
+    #  if there is a user-supplied value, use that after passing through match.argj
+    #  if not, use relative for multiple documents and absolute for single documents
+    if (!missing(scale)) {
+        scale <- match.arg(scale)
+    }
+    else {
+        if (multiple_documents) {
+            scale <- "relative"
+        }
+        else {
+            scale <- "absolute"
+        }
+    }
+
     
     if (scale == 'relative')
         x <- x[, position := position/ntokens]
@@ -128,7 +145,7 @@ plot.kwic <- function(..., scale=c("relative", "absolute")) {
     if (scale == 'absolute')
         plot <- plot + ggplot2::geom_rect(ggplot2::aes(xmin=ntokens, xmax=max(x$ntokens), ymin=0, ymax=1), fill = 'gray90')
 
-    if ((length(unique(x$docname)) > 1)) {
+    if (multiple_documents) {
         # If there is more than one document, put documents on the panel y-axis and keyword(s)
         # on the panel x-axis
         plot <- plot + ggplot2::facet_grid(docname~keyword) + 
