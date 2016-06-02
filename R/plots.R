@@ -61,8 +61,9 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' below the other, with keywords shown side-by-side. Given that this returns a
 #' ggplot object, you can modify the plot by adding ggplot layers (see example).
 #' @param ... any number of \link{kwic} class objects
-#' @param scale whether to scale the token index axis by absolute position of
-#'   the token in the document or by relative position
+#' @param scale whether to scale the token index axis by absolute position of the token in the 
+#' document or by relative position. Defaults are absolute for single document and relative for
+#' multiple documents.
 #' @author Adam Obeng
 #' @return \code{plot.kwic} returns a ggplot object
 #' @examples 
@@ -70,14 +71,14 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' inaugCorpusPost70 <- subset(inaugCorpus, Year > 1970)
 #' # compare multiple documents
 #' plot(kwic(inaugCorpusPost70, "american"))
-#' plot(kwic(inaugCorpusPost70, "american"), scale = "relative")
+#' plot(kwic(inaugCorpusPost70, "american"), scale = "absolute")
 #' # compare multiple terms across multiple documents
 #' plot(kwic(inaugCorpusPost70, "america*"), kwic(inaugCorpusPost70, "people"))
 #' 
 #' # how to modify the ggplot with different options
 #' library(ggplot2)
 #' g <- plot(kwic(inaugCorpusPost70, "american"), kwic(inaugCorpusPost70, "people"))
-#' g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue', 'orange'))
+#' g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue'))
 #' }
 #' @export
 plot.kwic <- function(..., scale = c("absolute", "relative")) {
@@ -86,8 +87,6 @@ plot.kwic <- function(..., scale = c("absolute", "relative")) {
     if(!requireNamespace("grid", quietly = TRUE)) 
         stop("You must have grid installed to make a dispersion plot.")
     
-    scale <- match.arg(scale)
-
     position <- keyword <- docname <- ntokens <- NULL    
     
     arguments <- list(...)
@@ -113,26 +112,49 @@ plot.kwic <- function(..., scale = c("absolute", "relative")) {
     
     # replace "found" keyword with patterned keyword
     x[, keyword := unlist(sapply(arguments, function(l) rep(attr(l, "keyword"), nrow(l))))]
+
+    multiple_documents <- length(unique(x$docname)) > 1
+
+    # Deal with the scale argument:
+    # if there is a user-supplied value, use that after passing through match.argj
+    # if not, use relative for multiple documents and absolute for single documents
+    if (!missing(scale)) {
+        scale <- match.arg(scale)
+    }
+    else {
+        if (multiple_documents) {
+            scale <- "relative"
+        }
+        else {
+            scale <- "absolute"
+        }
+    }
+
     
     if (scale == 'relative')
         x <- x[, position := position/ntokens]
 
     plot <- ggplot2::ggplot(x, ggplot2::aes(x=position, y=1)) + ggplot2::geom_segment(ggplot2::aes(xend=position, yend=0)) + 
-        ggplot2::theme(axis.line=ggplot2::element_blank(),
-                       panel.background=ggplot2::element_blank(),panel.grid.major.y=ggplot2::element_blank(),
-                       panel.grid.minor.y=ggplot2::element_blank(), plot.background=ggplot2::element_blank(),
-                       axis.ticks.y=ggplot2::element_blank(), axis.text.y=ggplot2::element_blank(),
-                       panel.margin = grid::unit(0.1, "lines"), panel.border=ggplot2::element_rect(colour = "gray", fill=NA),
-                       strip.text.y=ggplot2::element_text(angle=0)
+        ggplot2::theme(axis.line = ggplot2::element_blank(),
+                       panel.background = ggplot2::element_blank(),
+                       panel.grid.major.y = ggplot2::element_blank(),
+                       panel.grid.minor.y = ggplot2::element_blank(), 
+                       plot.background = ggplot2::element_blank(),
+                       axis.ticks.y = ggplot2::element_blank(), 
+                       axis.text.y = ggplot2::element_blank(),
+                       panel.margin = grid::unit(0.1, "lines"), 
+                       panel.border = ggplot2::element_rect(colour = "gray", fill=NA),
+                       strip.text.y = ggplot2::element_text(angle=0)
         ) 
     
     if (scale == 'absolute')
-        plot <- plot + ggplot2::geom_rect(ggplot2::aes(xmin=ntokens, xmax=max(x$ntokens), ymin=0, ymax=1), fill = 'gray90')
+        plot <- plot + ggplot2::geom_rect(ggplot2::aes(xmin=ntokens, xmax=max(x$ntokens), 
+                                                       ymin=0, ymax=1), fill = 'gray90')
 
-    if ((length(unique(x$docname)) > 1)) {
+    if (multiple_documents) {
         # If there is more than one document, put documents on the panel y-axis and keyword(s)
         # on the panel x-axis
-        plot <- plot + ggplot2::facet_grid(docname~keyword) + 
+        plot <- plot + ggplot2::facet_grid(docname ~ keyword) + 
             ggplot2::labs(y = 'Document', title = paste('Lexical dispersion plot'))
     }
     else {

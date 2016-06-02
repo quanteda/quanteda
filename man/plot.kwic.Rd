@@ -9,8 +9,9 @@
 \arguments{
 \item{...}{any number of \link{kwic} class objects}
 
-\item{scale}{whether to scale the token index axis by absolute position of
-the token in the document or by relative position}
+\item{scale}{whether to scale the token index axis by absolute position of the token in the 
+document or by relative position. Defaults are absolute for single document and relative for
+multiple documents.}
 }
 \value{
 \code{plot.kwic} returns a ggplot object
@@ -28,14 +29,14 @@ ggplot object, you can modify the plot by adding ggplot layers (see example).
 inaugCorpusPost70 <- subset(inaugCorpus, Year > 1970)
 # compare multiple documents
 plot(kwic(inaugCorpusPost70, "american"))
-plot(kwic(inaugCorpusPost70, "american"), scale = "relative")
+plot(kwic(inaugCorpusPost70, "american"), scale = "absolute")
 # compare multiple terms across multiple documents
 plot(kwic(inaugCorpusPost70, "america*"), kwic(inaugCorpusPost70, "people"))
 
 # how to modify the ggplot with different options
 library(ggplot2)
 g <- plot(kwic(inaugCorpusPost70, "american"), kwic(inaugCorpusPost70, "people"))
-g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue', 'orange'))
+g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue'))
 }
 }
 \author{
