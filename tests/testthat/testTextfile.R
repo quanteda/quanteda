@@ -381,47 +381,59 @@ test_that("test docvars.corpusSource warning with field!=NULL", {
 
 test_that("test textfile encoding parameter", {
    
-  # Test encoded files:
-  #    - ASCII read as ASCII
-  #    - ASCII read as UTF-8
-  #    - UTF-8 with BOM
-  #    - UTF-8 without BOM
-  #    - UTF-16 big-endian with BOM
-  #    - UTF-16 big-endian without BOM
-  #    - UTF-16 little-endian with BOM
-  #    - UTF-16 little-endian without BOM
-  #    - Windows-1252
-  #    - Latin-1/ISO-8859-1
-
-   fox <- "The quick brown fox jumps over the lazy dog."
-   frenchText <- "Le cœur déçu mais l'âme plutôt naïve, Louÿs rêva de crapaüter en canoë au delà des îles, près du mälström où brûlent les novæ."
-   germanText <- '"Fix, Schwyz!" quäkt Jürgen blöd vom Paß'
-
-   encodings = c('ascii', 'utf-8', 'utf-8',       'utf-8',     'utf-16',     'utf-16',       'utf-16',       'utf-16le',       'windows-1252', 'latin1')
-   filenames = c('ascii', 'ascii', 'utf-8-nobom', 'utf-8-bom', 'utf-16-bom', 'utf-16-nobom', 'utf-16le-bom', 'utf-16le-nobom', 'windows-1252', 'latin1')
-   testtexts = c(fox,     fox,     frenchText,    frenchText,   frenchText,   frenchText,    frenchText,     frenchText,       frenchText,      germanText)
-
-
-
-   for (i in 1:length(encodings)) {
-     print(paste(filenames[[i]], encodings[[i]]))
-     expect_that(
-      texts(textfile(paste0('../data/encoding/', filenames[[i]], '.txt'), encoding=encodings[[i]])),
-      equals(testtexts[[i]])
-    )
-   }
-
-  # Test ASCII encoded file, read as UTF-16: should not work
-   expect_that(
-      texts(textfile('../data/encoding/ascii.txt', encoding='utf-16')) == fox,
-      is_false()
-    )
-
-
-  #  Test loading multiple files at once with different encodings
-  expect_that(
-    unname(texts(textfile(paste0('../data/encoding/', filenames, '.txt'), encoding=encodings))),
-    equals(testtexts)
+  # Currently, these encodings don't work for reasons that seem unrelated 
+  # to quanteda
+  broken_encodings <- c(
+      "437", "850", "852", "855", "857", "860", "861", "862", "863", "865", 
+      "869", "BIG5-HKSCS", "CHINESE", "CP1251", "CP1255", "CP1256", "CP1361",
+      "CP154", "CP737", "CP858", "CP864", "CP932", "CP950", "EUC-JISX0213", 
+      "EUC-JP", "EUC-KR", "HEBREW", "HZ", "ISO-2022-JP-2", "ISO-2022-JP-3", 
+      "ISO-8859-11", "ISO-IR-166", "KOI8-R", "MACCENTRALEUROPE", "MACCYRILLIC",
+      "MACGREEK", "MACICELAND", "MACTURKISH", "MS_KANJI", "SHIFT_JISX0213"
   )
 
-  })
+  FILEDIR <- tempdir()
+  unzip(system.file("extdata", "encodedExampleFiles.zip", package = "quanteda"), exdir = FILEDIR)
+
+  filenames <- list.files(FILEDIR, "*__characters.txt$")
+  parts <- strsplit(gsub(".txt$", "", filenames), "__")
+  fileencodings <- sapply(parts, "[", 1)
+
+  fileencodings <- fileencodings[!(fileencodings %in% broken_encodings)]
+  filenames <- file.path(FILEDIR, paste0(fileencodings,  "__characters.txt"))
+
+
+  for (i in 1:length(fileencodings)) {
+      filename <- filenames[[i]]
+      encoding <- fileencodings[[i]]
+      print(paste('Testing loading from encoding', encoding))
+      characters <- as.numeric(charToRaw(
+        texts(textfile(filename, encoding=fileencodings[[i]]))
+      ))
+      bytes <- data.table::fread(gsub('__characters.txt', '__bytes.tsv', filename))[[1]]
+      expect_equal(characters, bytes)
+  }
+
+  #  Test loading all these files at once with different encodings
+  #encodedTextfilesCorpus <- corpus(textfile(filenames, encoding=fileencodings))
+
+  # Test UTF-8 encoded file, read as UTF-16: should not work
+   expect_warning(
+     misread_texts <- texts(textfile(file.path(FILEDIR, 'UTF-8__characters.txt'), encoding='utf-16'))
+   )
+   utf8_bytes <- data.table::fread(file.path(FILEDIR, 'UTF-8__bytes.tsv'))[[1]]
+   expect_false(
+          all(as.numeric(charToRaw(misread_texts)) == utf8_bytes)
+   )
+
+   # Test ASCII encoded file, read as UTF-8:
+   expect_that(
+      as.numeric(charToRaw(
+          texts(textfile(file.path(FILEDIR, 'UTF-8__characters.txt'), encoding='utf-8'),
+      ))),
+      equals(utf8_bytes)
+   )
+
+})
+
+
