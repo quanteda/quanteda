@@ -85,10 +85,16 @@ plot(topfeatures(mobyDfmPct), type="b",
      xlab="Top Ten Words", ylab="Percentage of Full Text", xaxt ="n")
 axis(1, 1:10, labels = names(topfeatures(mobyDfmPct)))
 
-## ----eval=TRUE, fig.width=8, fig.height=2--------------------------------
+## ----eval=TRUE, fig.width=8, fig.height=1.5------------------------------
 # using words from tokenized corpus for dispersion
 plot(kwic(novel.v, "whale"))
-plot(kwic(novel.v, "Ahab"))
+
+## ----eval=TRUE, fig.width=8, fig.height=2.5------------------------------
+plot(
+     kwic(novel.v, "whale"),
+     kwic(novel.v, "Ahab"),
+     kwic(novel.v, "Pequod")
+)
 
 ## ----eval = FALSE--------------------------------------------------------
 #  # identify the chapter break locations

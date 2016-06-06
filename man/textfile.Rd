@@ -26,23 +26,31 @@ textfile(file, textField, cache = FALSE, docvarsfrom = c("filenames"),
 \arguments{
 \item{file}{the complete filename(s) to be read.  The value can be a vector 
 of file names, a single file name, or a file "mask" using a "glob"-type 
-wildcard value.  Currently available file value types are: \describe{ 
-\item{\code{txt}}{plain text files} \item{\code{json}}{data in JavaScript 
+wildcard value.  Currently available file value types are: 
+\describe{ 
+\item{\code{txt}}{plain text files}
+\item{\code{json}}{data in JavaScript 
 Object Notation, consisting of the texts and additional document-level 
 variables and document-level meta-data.  The text key must be identified by
-specifying a \code{textField} value.} \item{\code{csv}}{comma separated 
+specifying a \code{textField} value.}
+\item{\code{csv}}{comma separated 
 value data, consisting of the texts and additional document-level variables
 and document-level meta-data.  The text file must be identified by 
-specifying a \code{textField} value.} \item{\code{tab, tsv}}{tab-separated 
+specifying a \code{textField} value.}
+\item{\code{tab, tsv}}{tab-separated 
 value data, consisting of the texts and additional document-level variables
 and document-level meta-data.  The text file must be identified by 
-specifying a \code{textField} value.} \item{a wildcard value}{any valid 
+specifying a \code{textField} value.}
+ \item{a wildcard value}{any valid 
 pathname with a wildcard ("glob") expression that can be expanded by the 
 operating system.  This may consist of multiple file types.} 
 \item{\code{xml}}{Basic flat XML documents are supported -- those of the 
 kind supported by the function xmlToDataFrame function of the \strong{XML} 
-package.} \item{\code{zip}}{zip archive file, containing \code{*.txt} 
-files.  This may be a URL to a zip file.} }}
+package.}
+\item{\code{zip}}{zip archive file, containing \code{*.txt} 
+files either at the top level or in a single directory.
+ This may also be a URL to a zip file.}
+}}
 
 \item{textField}{a variable (column) name or column number indicating where 
 to find the texts that form the documents for the corpus.  This must be 

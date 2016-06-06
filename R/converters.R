@@ -31,7 +31,7 @@
 #' @return A converted object determined by the value of \code{to} (see above). 
 #' See conversion target package documentation for more detailed descriptions 
 #' of the return formats.  
-#' 
+#' @importFrom utils installed.packages
 #' @export
 #' @examples
 #' mycorpus <- subset(inaugCorpus, Year>1970)

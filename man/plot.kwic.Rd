@@ -2,27 +2,44 @@
 % Please edit documentation in R/plots.R
 \name{plot.kwic}
 \alias{plot.kwic}
-\title{plot a dispersion plot of key word(s)}
+\title{plot the dispersion of key word(s)}
 \usage{
-\method{plot}{kwic}(x, ...)
+\method{plot}{kwic}(..., scale = c("absolute", "relative"))
 }
 \arguments{
-\item{x}{a \link{kwic} class object}
+\item{...}{any number of \link{kwic} class objects}
 
-\item{...}{additional arguments passed to \code{\link{plot}}}
+\item{scale}{whether to scale the token index axis by absolute position of the token in the 
+document or by relative position. Defaults are absolute for single document and relative for
+multiple documents.}
+}
+\value{
+\code{plot.kwic} returns a ggplot object
 }
 \description{
-Plots a dispersion or "x-ray" plot of a selected word pattern across a text.
-}
-\note{
-Currently works only for a a single document.  Because the dispersion plot is
-designed to be a "strip", the height and width of your plotting object will determine
-whether this plot looks correct or not.  See examples.
+Plots a dispersion or "x-ray" plot of selected word pattern(s) across one or
+more texts. The format of the plot depends on the number of \link{kwic} class
+objects passed: if there is only one document, keywords are plotted one below
+the other. If there are multiple documents the documents are plotted one
+below the other, with keywords shown side-by-side. Given that this returns a
+ggplot object, you can modify the plot by adding ggplot layers (see example).
 }
 \examples{
 \dontrun{
-mobydick <- corpus(textfile(unzip(system.file("extdata", "pg2701.txt.zip", package = "quanteda"))))
-plot(kwic(mobydick, "Ahab*"))
+inaugCorpusPost70 <- subset(inaugCorpus, Year > 1970)
+# compare multiple documents
+plot(kwic(inaugCorpusPost70, "american"))
+plot(kwic(inaugCorpusPost70, "american"), scale = "absolute")
+# compare multiple terms across multiple documents
+plot(kwic(inaugCorpusPost70, "america*"), kwic(inaugCorpusPost70, "people"))
+
+# how to modify the ggplot with different options
+library(ggplot2)
+g <- plot(kwic(inaugCorpusPost70, "american"), kwic(inaugCorpusPost70, "people"))
+g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue'))
 }
+}
+\author{
+Adam Obeng
 }
 

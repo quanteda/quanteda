@@ -1,7 +1,5 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-**Development branch** ![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=dev) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev)](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev)
-
-**Master branch** ![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)
+[![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](http://cran.r-project.org/package=quanteda) ![Downloads](http://cranlogs.r-pkg.org/badges/quanteda) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
 
 See the [Getting Started Vignette](http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html).
 
@@ -90,7 +88,7 @@ Example
 
 ``` r
 library(quanteda)
-#> quanteda version 0.9.6.5
+#> quanteda version 0.9.6.9
 #> 
 #> Attaching package: 'quanteda'
 #> The following object is masked from 'package:base':
@@ -120,7 +118,7 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 #>          UKIP   346    739        27         UKIP
 #> 
 #> Source:  /Users/kbenoit/Dropbox/GitHub/quanteda/* on x86_64 by kbenoit
-#> Created: Fri May 13 15:40:29 2016
+#> Created: Sun May 22 10:53:12 2016
 #> Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -141,7 +139,7 @@ mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
 #>    ... removed 97 features, from 175 supplied (glob) feature types
 #>    ... created a 9 x 1489 sparse dfm
 #>    ... complete. 
-#> Elapsed time: 0.034 seconds.
+#> Elapsed time: 0.031 seconds.
 dim(mydfm)              # basic dimensions of the dfm
 #> [1]    9 1489
 topfeatures(mydfm, 20)  # 20 top words
@@ -156,4 +154,4 @@ topfeatures(mydfm, 20)  # 20 top words
 plot(mydfm, min.freq = 6, random.order = FALSE)             # word cloud     
 ```
 
-![](images/quanteda_example-1.png)<!-- -->
+![](images/quanteda_example-1.png)

@@ -5,6 +5,34 @@ skipgramcpp <- function(tokens, ns, ks, delim) {
     .Call('quanteda_skipgramcpp', PACKAGE = 'quanteda', tokens, ns, ks, delim)
 }
 
+match_bit <- function(tokens1, tokens2) {
+    .Call('quanteda_match_bit', PACKAGE = 'quanteda', tokens1, tokens2)
+}
+
+find_sequence_cppl <- function(texts, types, count_min, smooth, nested) {
+    .Call('quanteda_find_sequence_cppl', PACKAGE = 'quanteda', texts, types, count_min, smooth, nested)
+}
+
+join_tokens_cpp <- function(tokens, tokens_join, delim) {
+    invisible(.Call('quanteda_join_tokens_cpp', PACKAGE = 'quanteda', tokens, tokens_join, delim))
+}
+
+join_tokens_cppl <- function(texts, flags, tokens_join, delim) {
+    invisible(.Call('quanteda_join_tokens_cppl', PACKAGE = 'quanteda', texts, flags, tokens_join, delim))
+}
+
+select_tokens_cppl <- function(texts, flags, types, remove, spacer) {
+    invisible(.Call('quanteda_select_tokens_cppl', PACKAGE = 'quanteda', texts, flags, types, remove, spacer))
+}
+
+split_df_cpp <- function(df) {
+    .Call('quanteda_split_df_cpp', PACKAGE = 'quanteda', df)
+}
+
+deepcopy <- function(x) {
+    .Call('quanteda_deepcopy', PACKAGE = 'quanteda', x)
+}
+
 wordfishcpp <- function(wfm, dir, priors, tol, disp, dispfloor) {
     .Call('quanteda_wordfishcpp', PACKAGE = 'quanteda', wfm, dir, priors, tol, disp, dispfloor)
 }

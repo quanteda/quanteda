@@ -236,12 +236,13 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     # replace any blanks that should be \t with \t (e.g. in Moral Foundations dictionary)
     catlist <- gsub("(\\d+) +(\\d+)", "\\1\t\\2", catlist)
     # remove any \t only lines or empty lines
-    catlist <- catlist[-grep("^\\s*$", catlist)]
-    
+    if (length(blanklines <- grep("^\\s*$", catlist))) 
+        catlist <- catlist[-blanklines]
+
     catlist <- strsplit(catlist, "\t")
     # catlist <- tokenize(catlist, what = "fasterword", removeNumbers = FALSE)
     catlist <- as.data.frame(do.call(rbind, lapply(catlist, '[', 1:max(sapply(catlist, length)))), stringsAsFactors = FALSE)
-    catlist[, 2:ncol(catlist)] <- lapply(catlist[2:ncol(catlist)], as.integer)
+    catlist[, 2:ncol(catlist)] <- suppressWarnings(apply(catlist[, 2:ncol(catlist)], 2, as.integer))
     names(catlist)[1] <- "category"
     if (toLower) catlist$category <- toLower(catlist$category)
     # remove any blank rows

@@ -135,7 +135,7 @@ dfm <- function(x, ...) {
 #' tokensAll <- tokenize(toLower(testText), removePunct = TRUE)
 #' tokensNoStopwords <- removeFeatures(tokensAll, stopwords("english"))
 #' tokensNgramsNoStopwords <- ngrams(tokensNoStopwords, 2)
-#' features(dfm(tokensNgramsNoStopwords, ngrams = 1:2))
+#' features(dfm(tokensNgramsNoStopwords, verbose = FALSE))
 #' 
 #' # keep only certain words
 #' dfm(testCorpus, keptFeatures = "*s", verbose = FALSE)  # keep only words ending in "s"
@@ -147,7 +147,6 @@ dfm <- function(x, ...) {
 #'                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
 #' dfm(testTweets, keptFeatures = "#*", removeTwitter = FALSE)  # keep only hashtags
 #' dfm(testTweets, keptFeatures = "^#.*$", valuetype = "regex", removeTwitter = FALSE)
-#' 
 dfm.character <- function(x, 
                           verbose=TRUE, 
                           toLower=TRUE, 
@@ -257,6 +256,10 @@ dfm.tokenizedTexts <- function(x,
 
     # index features
     if (verbose) cat("\n   ... indexing features: ")
+    if (sum(nTokens) == 0) {
+        cat("\n   ... Error in dfm.tokenizedTexts(): no features found.\n")
+        return(NULL)
+    }
     allFeatures <- unlist(x)
     uniqueFeatures <- unique(allFeatures)
     totalfeatures <- length(uniqueFeatures)
@@ -277,7 +280,7 @@ dfm.tokenizedTexts <- function(x,
                               x = 1L, 
                               dimnames = list(docs = docNames, features = uniqueFeatures))
     # remove dummy feature if needed
-    if (length(emptyDocs)) dfmresult <- dfmresult[, -ncol(dfmresult)]
+    if (length(emptyDocs)) dfmresult <- dfmresult[, -ncol(dfmresult), drop = FALSE]
     # construct the dfmSparse type object
     dfmresult <- new("dfmSparse", dfmresult)
     

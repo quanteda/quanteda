@@ -47,23 +47,31 @@ setMethod("show",
 #' header.
 #' @param file the complete filename(s) to be read.  The value can be a vector 
 #'   of file names, a single file name, or a file "mask" using a "glob"-type 
-#'   wildcard value.  Currently available file value types are: \describe{ 
-#'   \item{\code{txt}}{plain text files} \item{\code{json}}{data in JavaScript 
+#'   wildcard value.  Currently available file value types are: 
+#'   \describe{ 
+#'   \item{\code{txt}}{plain text files}
+#'   \item{\code{json}}{data in JavaScript 
 #'   Object Notation, consisting of the texts and additional document-level 
 #'   variables and document-level meta-data.  The text key must be identified by
-#'   specifying a \code{textField} value.} \item{\code{csv}}{comma separated 
+#'   specifying a \code{textField} value.}
+#'   \item{\code{csv}}{comma separated 
 #'   value data, consisting of the texts and additional document-level variables
 #'   and document-level meta-data.  The text file must be identified by 
-#'   specifying a \code{textField} value.} \item{\code{tab, tsv}}{tab-separated 
+#'   specifying a \code{textField} value.}
+#'   \item{\code{tab, tsv}}{tab-separated 
 #'   value data, consisting of the texts and additional document-level variables
 #'   and document-level meta-data.  The text file must be identified by 
-#'   specifying a \code{textField} value.} \item{a wildcard value}{any valid 
+#'   specifying a \code{textField} value.}
+#'    \item{a wildcard value}{any valid 
 #'   pathname with a wildcard ("glob") expression that can be expanded by the 
 #'   operating system.  This may consist of multiple file types.} 
 #'   \item{\code{xml}}{Basic flat XML documents are supported -- those of the 
 #'   kind supported by the function xmlToDataFrame function of the \strong{XML} 
-#'   package.} \item{\code{zip}}{zip archive file, containing \code{*.txt} 
-#'   files.  This may be a URL to a zip file.} }
+#'   package.}
+#'   \item{\code{zip}}{zip archive file, containing \code{*.txt} 
+#'   files either at the top level or in a single directory.
+#'    This may also be a URL to a zip file.}
+#'   }
 #' @param textField a variable (column) name or column number indicating where 
 #'   to find the texts that form the documents for the corpus.  This must be 
 #'   specified for file types \code{.csv} and \code{.json}.
@@ -107,7 +115,7 @@ setMethod("show",
 #'   \link{corpus} to construct a corpus
 #' @author Kenneth Benoit and Paul Nulty
 #' @export
-#' @importFrom utils download.file unzip
+#' @importFrom utils download.file unzip type.convert
 setGeneric("textfile",
            function(file, textField, 
                     cache = FALSE, docvarsfrom = c("filenames"), dvsep="_", 
@@ -293,12 +301,15 @@ get_docs <- function(filemask, ...) {
 }
 
 get_zipfile <- function(f, ...) {
+    #  Only supports .txt files, either at the toplevel or in a single directory
     td <- tempdir()
+    flocal <- ''
     if (substr(f, 1, 4) == "http")
-        utils::download.file(f, destfile = (flocal <- paste0(td, "/temp.zip", quiet = TRUE)))
+        utils::download.file(f, destfile = (flocal <- file.path(td, "temp.zip", quiet = TRUE)))
+    else
+        flocal <- f
     utils::unzip(flocal, exdir = td)
-    # cat("file:", paste0(td, "*.txt"), "\n")
-    get_docs(paste0(td, "/*.txt"))
+    get_docs(file.path(td, "*txt"))
 }
 
 # read a document from a structured file containing text and data
@@ -331,16 +342,10 @@ get_datas <- function(filemask, textField='index', fileType, ...){
     for (f in filenames) {
         src <- get_data(f,  textField, ...)
         textsvec <- c(textsvec, src$txts)
-	docv <- tryCatch({
-		rbind(docv, src$docv)
-	},
-		error = function(e) {
-			stop('Data files do not have identical columns or variables')
-	}
-	)
+        docv <- data.table::rbindlist(list(docv, src$docv), use.names = TRUE, fill = TRUE)
+        data.frame(docv)
     }
     list(txts=textsvec, docv=docv)
-    # return(src)
 }
 
 get_word <- function(f){
@@ -422,15 +427,15 @@ get_xml <- function(file, textField, sep=",", ...) {
     txts <- docv[, textField]
     docv <- docv[, -textField, drop = FALSE]
 
-    #  Because XML::xmlToDataFrame doesn't impute column types, we have to do it
-    #  ourselves, to match get_csv's behaviour
+    # Because XML::xmlToDataFrame doesn't impute column types, we have to do it
+    # ourselves, to match get_csv's behaviour
     list(txts=txts, docv=docv)
 }
 
 imputeDocvarsTypes <- function(docv) {
-    #  Impute types of columns, just like read.table
+    # Impute types of columns, just like read.table
     docv[] <- lapply(docv, function(x) type.convert(as.character(x), as.is=T))
-    #  And convert columns which have been made into factors into strings
+    # And convert columns which have been made into factors into strings
     factor_cols <- vapply(docv, is.factor, FUN.VALUE=c(T))
     docv[factor_cols] <- lapply(docv[factor_cols], as.character)
     data.frame(docv)
