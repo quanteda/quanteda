@@ -379,7 +379,7 @@ test_that("test docvars.corpusSource warning with field!=NULL", {
 })
 
 
-test_that("test textfile encoding parameter", {
+test_that("test textfile encoding parameter with demo files", {
    
   # Currently, these encodings don't work for reasons that seem unrelated 
   # to quanteda, and are either a problem in base R or on travis-ci
@@ -416,10 +416,13 @@ test_that("test textfile encoding parameter", {
       expect_equal(characters, bytes)
   }
 
-  #  Test loading all these files at once with different encodings
-  #encodedTextfilesCorpus <- corpus(textfile(filenames, encoding=fileencodings))
+})
 
-  # Test UTF-8 encoded file, read as UTF-16: should not work
+test_that("test loading all encoding demo files at once", {
+  #encodedTextfilesCorpus <- corpus(textfile(filenames, encoding=fileencodings))
+})
+
+test_that("Test UTF-8 encoded file, read as UTF-16: should not work", {
 #   expect_warning(
 #     misread_texts <- texts(textfile(file.path(FILEDIR, 'UTF-8__characters.txt'), encoding='utf-16'))
 #   )
@@ -427,8 +430,9 @@ test_that("test textfile encoding parameter", {
 #   expect_false(
 #          all(as.numeric(charToRaw(misread_texts)) == utf8_bytes)
 #   )
+})
 
-   # Test ASCII encoded file, read as UTF-8:
+test_that("Test ASCII encoded file, read as UTF-8", {
    expect_that(
       as.numeric(charToRaw(
           texts(textfile(file.path(FILEDIR, 'UTF-8__characters.txt'), encoding='utf-8'),
