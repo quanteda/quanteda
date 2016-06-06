@@ -423,10 +423,10 @@ test_that("test textfile encoding parameter", {
 #   expect_warning(
 #     misread_texts <- texts(textfile(file.path(FILEDIR, 'UTF-8__characters.txt'), encoding='utf-16'))
 #   )
-   utf8_bytes <- data.table::fread(file.path(FILEDIR, 'UTF-8__bytes.tsv'))[[1]]
-   expect_false(
-          all(as.numeric(charToRaw(misread_texts)) == utf8_bytes)
-   )
+#   utf8_bytes <- data.table::fread(file.path(FILEDIR, 'UTF-8__bytes.tsv'))[[1]]
+#   expect_false(
+#          all(as.numeric(charToRaw(misread_texts)) == utf8_bytes)
+#   )
 
    # Test ASCII encoded file, read as UTF-8:
    expect_that(
