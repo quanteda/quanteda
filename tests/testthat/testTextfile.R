@@ -382,13 +382,14 @@ test_that("test docvars.corpusSource warning with field!=NULL", {
 test_that("test textfile encoding parameter", {
    
   # Currently, these encodings don't work for reasons that seem unrelated 
-  # to quanteda
+  # to quanteda, and are either a problem in base R or on travis-ci
   broken_encodings <- c(
       "437", "850", "852", "855", "857", "860", "861", "862", "863", "865", 
       "869", "BIG5-HKSCS", "CHINESE", "CP1251", "CP1255", "CP1256", "CP1361",
       "CP154", "CP737", "CP858", "CP864", "CP856", "CP932", "CP950", "EUC-JISX0213", 
       "EUC-JP", "EUC-KR", "GB18030", "HEBREW", "HZ","ISO-2022-JP-1", "ISO-2022-JP-2", 
-      "ISO-2022-JP-3", "ISO-8859-11", "ISO-IR-166", "KOI8-R", 
+      "ISO-2022-JP-3", "ISO-8859-11", "ISO-IR-166", "KOI8-R",
+      "UNICODE-1-1-UTF-7",
       "MACCENTRALEUROPE", "MACCYRILLIC", "MACGREEK", "MACICELAND", "MACTURKISH",
       "MS_KANJI", "SHIFT_JISX0213"
   )
