@@ -435,6 +435,5 @@ test_that("test reading structured text files with different columns", {
           equals(c('apple', 'orange', 'apple', 'banana'))
      )
  })
-
 # TODO: XML warning test
 # TODO: imputedocvars
