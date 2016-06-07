@@ -490,5 +490,3 @@ test_that("Test mktemp function for test dirs",{
   )
 
 })
-
-
