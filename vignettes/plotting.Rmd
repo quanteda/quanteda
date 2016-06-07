@@ -1,0 +1,162 @@
+---
+title: "plotting with quanteda"
+output:
+  rmarkdown::html_document:
+    theme: null
+    css: mystyle.css
+    toc: yes
+vignette: >
+  %\VignetteIndexEntry{Plotting}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r eval=TRUE}
+library(quanteda)
+```
+
+At the moment, two quanteda objects, `dfm` and `kwic` have custom plot methods: `dfm` is plotted as a wordcloud, `kwic` as a lexical dispersion plot. There are also other plots of interest which can be made with the standard R techniques.
+
+# 1. Wordcloud 
+
+Plotting a `dfm` object will create a wordcloud using the `wordcloud` pacakge.
+
+```{r eval=TRUE, fig.width=8, fig.height=8}
+inaugDfm <- dfm(inaugCorpus)
+suppressWarnings( # Some words will not fit on a plot this size, so suppress those warings
+                 plot(inaugDfm)
+)
+```
+
+You can also plot a "comparison cloud", but this can only be done with fewer than eight documents:
+
+```{r eval=TRUE, fig.width=8, fig.height=8}
+firstDfm <- dfm(texts(inaugCorpus)[0:8])
+suppressWarnings( # Some words will not fit on a plot this size, so suppress those warings
+  plot(firstDfm, comparison=T)
+)
+```
+
+Plot will pass through additional arguments to the underlying call to `wordcloud`.
+```{r eval=TRUE, fig.width=8, fig.height=8}
+inaugDfm <- dfm(inaugCorpus,
+                colors=c('red', 'yellow', 'pink', 'green', 'purple', 'orange', 'blue')
+            )
+suppressWarnings( # Some words will not fit on a plot this size, so suppress those warings
+  plot(inaugDfm)
+)
+```
+
+# 2. Lexical dispersion plot
+
+Plotting a `kwic` object produces a lexical dispersion plot which allows us to visualize the occurrences of particular terms throughout the text.
+
+```{r eval=TRUE, fig.width=8, fig.height=2.5}
+# using words from tokenized corpus for dispersion
+plot(kwic(inaugCorpus, "american"))
+```
+
+You can also pass multiple kwic objects to `plot` to compare the dispersion of different terms:
+```{r eval=TRUE, fig.width=8, fig.height=12}
+plot(
+     kwic(inaugCorpus, "american"),
+     kwic(inaugCorpus, "people"),
+     kwic(inaugCorpus, "communist")
+)
+```
+
+If you're only plotting a single document, but with multiple keywords, then the keywords are displayed one below the other rather than side-by-side.
+
+```{r eval=TRUE, fig.width=8, fig.height=4}
+inaugAdams <- corpus(inaugTexts[[3]])
+
+#  plot(
+#       kwic(inaugAdams, "america"),
+#       kwic(inaugAdams, "citizen"),
+#       kwic(inaugAdams, "heart")
+#  )
+
+```
+
+You might also have noticed that the x-axis scale is the absolute token index for single texts and relative token index when multiple texts are being compared. If you prefer, you can explicity specify that you want an absolute scale:
+
+```{r eval=TRUE, fig.width=8, fig.height=12}
+plot(
+     kwic(inaugCorpus, "american"),
+     kwic(inaugCorpus, "people"),
+     kwic(inaugCorpus, "communist"),
+     scale='absolute'
+)
+```
+
+In this case, the texts may not have the same length, and the tokens that don't exist in a particular text are shaded in grey.
+
+## Modifying lexical dispersion plots
+
+The object returned is a ggplot object, which can be modified using ggplot:
+
+```{r eval=TRUE, fig.width=8, fig.height=12}
+library(ggplot2)
+theme_set(theme_bw())
+g <- plot(
+     kwic(inaugCorpus, "american"),
+     kwic(inaugCorpus, "people"),
+     kwic(inaugCorpus, "communist")
+)
+g + aes(color = keyword) + scale_color_manual(values = c('blue', 'red', 'green'))
+
+```
+
+
+# 3. Frequency plots
+
+
+You can plot the frequency of the top features in a text using `topfeatures`.
+
+```{r eval=TRUE, fig.width=8, fig.height=4}
+inaugFeatures <- topfeatures(inaugDfm, 100)
+
+# Create a data.frame for ggplot
+topDf <- data.frame(
+  list(
+    term = names(inaugFeatures),
+    frequency = unname(inaugFeatures)
+    )
+)
+
+# Sort by reverse frequency order
+topDf$term <- with(topDf, reorder(term, -frequency))
+
+ggplot(topDf) + geom_point(aes(x=term, y=frequency)) +
+  theme(axis.text.x=element_text(angle=90, hjust=1))
+```
+
+If you wanted to compare the frequency of a single term across different texts, you could plot the dfm matrix like this:
+
+```{r eval=TRUE, fig.width=8, fig.height=4}
+
+  americanFreq <- data.frame(list(
+    document = rownames(inaugDfm[, 'american']),
+    frequency = unname(as.matrix(inaugDfm[, 'american']))
+  ))
+
+  ggplot(americanFreq) + geom_point(aes(x=document,y=frequency)) +
+    theme(axis.text.x=element_text(angle=90, hjust=1))
+
+```
+
+The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we can weight the document-frequency matrix. To obtain expected word frequency per 100 words, we multiply by 100. To get a feel for what the resulting weighted dfm (document feature matrix) looks like, you can inspect it with the `head` function, which prints the first few rows and columns.
+
+## Relative frequency barplots of whale and ahab
+```{r eval=TRUE}
+relDfm <- weight(inaugDfm, type='relFreq') * 100
+head(relDfm)
+
+relFreq <- data.frame(list(
+  document = rownames(inaugDfm[, 'american']),
+  frequency = unname(as.matrix(inaugDfm[, 'american']))
+))
+
+ggplot(relFreq) + geom_point(aes(x=document,y=frequency)) +
+  theme(axis.text.x=element_text(angle=90, hjust=1))
+```
