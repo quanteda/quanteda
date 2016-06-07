@@ -417,7 +417,7 @@ test_that("A single-level zip file containing txt files can be loaded",{
 
 test_that("test reading structured text files with different columns", {
      testcorpus <- textfile(
-         "data/fruits*.csv",
+         "../data/fruits/*.csv",
          textField='text'
      )
  
