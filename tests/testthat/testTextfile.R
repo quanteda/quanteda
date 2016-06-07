@@ -436,4 +436,27 @@ test_that("test reading structured text files with different columns", {
      )
  })
 # TODO: XML warning test
-# TODO: imputedocvars
+})
+
+test_that("Test mktemp function for test dirs",{
+  filename <- quanteda::mktemp()
+  expect_true(file.exists(filename))
+  filename2 <- quanteda::mktemp()
+  expect_true(file.exists(filename2))
+  print(paste(filename, filename2))
+  expect_false(filename == filename2)
+
+  # test directory parameter
+  dirname <- quanteda::mktemp(directory=T)
+  expect_true(dir.exists(dirname))
+  
+  # test prefix parameter
+  filename <- quanteda::mktemp(prefix='testprefix')
+  expect_equal(
+    substr(basename(filename), 1, 10),
+    'testprefix'
+  )
+
+})
+
+

@@ -302,7 +302,7 @@ get_docs <- function(filemask, ...) {
 
 get_zipfile <- function(f, ...) {
     #  Only supports .txt files, either at the toplevel or in a single directory
-    td <- tempdir()
+    td <- mktemp(directory=T)
     flocal <- ''
     if (substr(f, 1, 4) == "http")
         utils::download.file(f, destfile = (flocal <- file.path(td, "temp.zip", quiet = TRUE)))
@@ -509,3 +509,29 @@ docvars.corpusSource <- function(x, field = NULL) {
     x@docvars
 }
 
+#' @export
+mktemp <- function(prefix='tmp.', base_path=NULL, directory=F) {
+    #  Create a randomly-named temporary file or directory, sort of like
+    #  https://www.mktemp.org/manual.html
+    if (is.null(base_path))
+        base_path <- tempdir()
+
+    alphanumeric <- c(0:9, LETTERS, letters)
+
+    filename <- paste0(sample(alphanumeric, 10, replace=T), collapse='')
+    filename <- paste0(prefix, filename)
+    filename <- file.path(base_path, filename)
+    while (file.exists(filename) | dir.exists(filename)) {
+        filename <- paste0(sample(alphanumeric, 10, replace=T), collapse='')
+        filename <- paste0(prefix, filename)
+    }
+
+    if (directory) {
+        dir.create(filename)
+    }
+    else {
+        file.create(filename)
+    }
+
+    return(filename)
+}
