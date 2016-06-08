@@ -412,7 +412,6 @@ test_that("test textfile encoding parameter", {
       characters <- as.numeric(charToRaw(
         texts(textfile(filename, encoding=fileencodings[[i]]))
       ))
-      print(filename)
       bytes <- data.table::fread(gsub('__characters.txt', '__bytes.tsv', filename))[[1]]
       expect_equal(characters, bytes)
   }
