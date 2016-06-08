@@ -4,13 +4,14 @@
 \alias{plot.kwic}
 \title{plot the dispersion of key word(s)}
 \usage{
-\method{plot}{kwic}(..., scale = c("relative", "absolute"))
+\method{plot}{kwic}(..., scale = c("absolute", "relative"))
 }
 \arguments{
 \item{...}{any number of \link{kwic} class objects}
 
 \item{scale}{whether to scale the token index axis by absolute position of the token in the 
-document or by relative position}
+document or by relative position. Defaults are absolute for single document and relative for
+multiple documents.}
 }
 \value{
 \code{plot.kwic} returns a ggplot object

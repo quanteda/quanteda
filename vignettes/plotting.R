@@ -2,7 +2,10 @@
 library(quanteda)
 
 ## ----eval=TRUE, fig.width=8, fig.height=8--------------------------------
-inaugDfm <- dfm(inaugCorpus)
+inaugDfm <- dfm(
+                inaugCorpus[0:10],
+                remove.features=stopwords('english')
+            ) # Create a dfm from a somewhat smaller corpus
 suppressWarnings( # Some words will not fit on a plot this size, so suppress those warings
                  plot(inaugDfm)
 )
@@ -14,15 +17,13 @@ suppressWarnings( # Some words will not fit on a plot this size, so suppress tho
 )
 
 ## ----eval=TRUE, fig.width=8, fig.height=8--------------------------------
-inaugDfm <- dfm(inaugCorpus,
-                colors=c('red', 'yellow', 'pink', 'green', 'purple', 'orange', 'blue')
-            )
 suppressWarnings( # Some words will not fit on a plot this size, so suppress those warings
-  plot(inaugDfm)
+  plot(inaugDfm, 
+    colors=c('red', 'yellow', 'pink', 'green', 'purple', 'orange', 'blue')
+ )
 )
 
-## ----eval=TRUE, fig.width=8, fig.height=2.5------------------------------
-# using words from tokenized corpus for dispersion
+## ----eval=TRUE, fig.width=8, fig.height=12-------------------------------
 plot(kwic(inaugCorpus, "american"))
 
 ## ----eval=TRUE, fig.width=8, fig.height=12-------------------------------
@@ -33,13 +34,12 @@ plot(
 )
 
 ## ----eval=TRUE, fig.width=8, fig.height=4--------------------------------
-inaugAdams <- corpus(inaugTexts[[3]])
+  mobydickCorpus <- corpus(mobydickText)
 
-#  plot(
-#       kwic(inaugAdams, "america"),
-#       kwic(inaugAdams, "citizen"),
-#       kwic(inaugAdams, "heart")
-#  )
+  plot(
+       kwic(mobydickCorpus, "whale"),
+       kwic(mobydickCorpus, "ahab")
+  )
 
 
 ## ----eval=TRUE, fig.width=8, fig.height=12-------------------------------
@@ -95,11 +95,9 @@ head(relDfm)
 
 relFreq <- data.frame(list(
   document = rownames(inaugDfm[, 'american']),
-  frequency = unname(as.matrix(inaugDfm[, 'american']))
+  frequency = unname(as.matrix(relDfm[, 'american']))
 ))
 
 ggplot(relFreq) + geom_point(aes(x=document,y=frequency)) +
   theme(axis.text.x=element_text(angle=90, hjust=1))
-
-
 

@@ -22,7 +22,10 @@ At the moment, two quanteda objects, `dfm` and `kwic` have custom plot methods: 
 Plotting a `dfm` object will create a wordcloud using the `wordcloud` pacakge.
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
-inaugDfm <- dfm(inaugCorpus)
+inaugDfm <- dfm(
+                inaugCorpus[0:10],
+                remove.features=stopwords('english')
+            ) # Create a dfm from a somewhat smaller corpus
 suppressWarnings( # Some words will not fit on a plot this size, so suppress those warings
                  plot(inaugDfm)
 )
@@ -39,11 +42,10 @@ suppressWarnings( # Some words will not fit on a plot this size, so suppress tho
 
 Plot will pass through additional arguments to the underlying call to `wordcloud`.
 ```{r eval=TRUE, fig.width=8, fig.height=8}
-inaugDfm <- dfm(inaugCorpus,
-                colors=c('red', 'yellow', 'pink', 'green', 'purple', 'orange', 'blue')
-            )
 suppressWarnings( # Some words will not fit on a plot this size, so suppress those warings
-  plot(inaugDfm)
+  plot(inaugDfm, 
+    colors=c('red', 'yellow', 'pink', 'green', 'purple', 'orange', 'blue')
+ )
 )
 ```
 
@@ -51,8 +53,7 @@ suppressWarnings( # Some words will not fit on a plot this size, so suppress tho
 
 Plotting a `kwic` object produces a lexical dispersion plot which allows us to visualize the occurrences of particular terms throughout the text.
 
-```{r eval=TRUE, fig.width=8, fig.height=2.5}
-# using words from tokenized corpus for dispersion
+```{r eval=TRUE, fig.width=8, fig.height=12}
 plot(kwic(inaugCorpus, "american"))
 ```
 
@@ -68,17 +69,16 @@ plot(
 If you're only plotting a single document, but with multiple keywords, then the keywords are displayed one below the other rather than side-by-side.
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
-inaugAdams <- corpus(inaugTexts[[3]])
+  mobydickCorpus <- corpus(mobydickText)
 
-#  plot(
-#       kwic(inaugAdams, "america"),
-#       kwic(inaugAdams, "citizen"),
-#       kwic(inaugAdams, "heart")
-#  )
+  plot(
+       kwic(mobydickCorpus, "whale"),
+       kwic(mobydickCorpus, "ahab")
+  )
 
 ```
 
-You might also have noticed that the x-axis scale is the absolute token index for single texts and relative token index when multiple texts are being compared. If you prefer, you can explicity specify that you want an absolute scale:
+You might also have noticed that the x-axis scale is the absolute token index for single texts and relative token index when multiple texts are being compared. If you prefer, you can specify that you want an absolute scale:
 
 ```{r eval=TRUE, fig.width=8, fig.height=12}
 plot(
@@ -89,7 +89,7 @@ plot(
 )
 ```
 
-In this case, the texts may not have the same length, and the tokens that don't exist in a particular text are shaded in grey.
+In this case, the texts may not have the same length, so the tokens that don't exist in a particular text are shaded in grey.
 
 ## Modifying lexical dispersion plots
 
@@ -145,16 +145,15 @@ If you wanted to compare the frequency of a single term across different texts, 
 
 ```
 
-The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we can weight the document-frequency matrix. To obtain expected word frequency per 100 words, we multiply by 100. To get a feel for what the resulting weighted dfm (document feature matrix) looks like, you can inspect it with the `head` function, which prints the first few rows and columns.
+The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we can weight the document-frequency matrix. To obtain expected word frequency per 100 words, we multiply by 100. 
 
-## Relative frequency barplots of whale and ahab
 ```{r eval=TRUE}
 relDfm <- weight(inaugDfm, type='relFreq') * 100
 head(relDfm)
 
 relFreq <- data.frame(list(
   document = rownames(inaugDfm[, 'american']),
-  frequency = unname(as.matrix(inaugDfm[, 'american']))
+  frequency = unname(as.matrix(relDfm[, 'american']))
 ))
 
 ggplot(relFreq) + geom_point(aes(x=document,y=frequency)) +
