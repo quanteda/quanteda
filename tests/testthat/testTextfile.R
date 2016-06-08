@@ -378,9 +378,6 @@ test_that("test docvars.corpusSource warning with field!=NULL", {
      )
 })
 
-
-test_that("test textfile encoding parameter", {
-   
   # Currently, these encodings don't work for reasons that seem unrelated 
   # to quanteda, and are either a problem in base R or on travis-ci
   broken_encodings <- c(
@@ -394,15 +391,19 @@ test_that("test textfile encoding parameter", {
       "MS_KANJI", "SHIFT_JISX0213"
   )
 
-  FILEDIR <- quanteda:::mktemp(directory=T)
-  unzip(system.file("extdata", "encodedExampleFiles.zip", package = "quanteda"), exdir = FILEDIR)
 
-  filenames <- list.files(FILEDIR, "*__characters.txt$")
-  parts <- strsplit(gsub(".txt$", "", filenames), "__")
-  fileencodings <- sapply(parts, "[", 1)
+FILEDIR <- quanteda:::mktemp(directory=T)
+unzip(system.file("extdata", "encodedExampleFiles.zip", package = "quanteda"), exdir = FILEDIR)
 
-  fileencodings <- fileencodings[!(fileencodings %in% broken_encodings)]
-  filenames <- file.path(FILEDIR, paste0(fileencodings,  "__characters.txt"))
+filenames <- list.files(FILEDIR, "*__characters.txt$")
+parts <- strsplit(gsub(".txt$", "", filenames), "__")
+fileencodings <- sapply(parts, "[", 1)
+
+fileencodings <- fileencodings[!(fileencodings %in% broken_encodings)]
+filenames <- file.path(FILEDIR, paste0(fileencodings,  "__characters.txt"))
+
+test_that("test textfile encoding parameter", {
+   
 
 
   for (i in 1:length(fileencodings)) {
@@ -415,28 +416,31 @@ test_that("test textfile encoding parameter", {
       bytes <- data.table::fread(gsub('__characters.txt', '__bytes.tsv', filename))[[1]]
       expect_equal(characters, bytes)
   }
+})
 
-  #  Test loading all these files at once with different encodings
-  #encodedTextfilesCorpus <- corpus(textfile(filenames, encoding=fileencodings))
+test_that("Test loading all these files at once with different encodings", {
+  encodedTextfilesCorpus <- corpus(textfile(filenames, encoding=fileencodings))
+})
 
 
-#test textfile encoding parameter: UTF-8 encoded file, read as UTF-16 (should not work)"
+test_that("test textfile encoding parameter: UTF-8 encoded file, read as UTF-16 (should not work)", {
+     expect_warning(
+       misread_texts <- texts(textfile(file.path(FILEDIR, 'UTF-8__characters.txt'), encoding='utf-16'))
+     )
+     utf8_bytes <- data.table::fread(file.path(FILEDIR, 'UTF-8__bytes.tsv'))[[1]]
+     expect_false(
+            all(as.numeric(charToRaw(misread_texts)) == utf8_bytes)
+     )
+})
 
-   #  expect_warning(
-   #    misread_texts <- texts(textfile(file.path(FILEDIR, 'UTF-8__characters.txt'), encoding='utf-16'))
-   #  )
-   #  utf8_bytes <- data.table::fread(file.path(FILEDIR, 'UTF-8__bytes.tsv'))[[1]]
-   #  expect_false(
-   #         all(as.numeric(charToRaw(misread_texts)) == utf8_bytes)
-   #  )
-
-# test textfile encoding parameter: ASCII encoded file, read as UTF-8: (should work)",
-  #   expect_that(
-  #      as.numeric(charToRaw(
-  #          texts(textfile(file.path(FILEDIR, 'UTF-8__characters.txt'), encoding='utf-8'),
-  #      ))),
-  #      equals(utf8_bytes)
-  #   )
+test_that("test textfile encoding parameter: ASCII encoded file, read as UTF-8: (should work)", {
+   utf8_bytes <- data.table::fread(file.path(FILEDIR, 'UTF-8__bytes.tsv'))[[1]]
+   expect_that(
+      as.numeric(charToRaw(
+          texts(textfile(file.path(FILEDIR, 'UTF-8__characters.txt'), encoding='utf-8'),
+      ))),
+      equals(utf8_bytes)
+   )
 })
 
 context('Loading a corpus from a zip file.')
