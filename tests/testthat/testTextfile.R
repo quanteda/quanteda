@@ -419,7 +419,9 @@ test_that("test textfile encoding parameter", {
   #  Test loading all these files at once with different encodings
   #encodedTextfilesCorpus <- corpus(textfile(filenames, encoding=fileencodings))
 
-  # Test UTF-8 encoded file, read as UTF-16: should not work
+
+#test textfile encoding parameter: UTF-8 encoded file, read as UTF-16 (should not work)"
+
    expect_warning(
      misread_texts <- texts(textfile(file.path(FILEDIR, 'UTF-8__characters.txt'), encoding='utf-16'))
    )
@@ -428,13 +430,14 @@ test_that("test textfile encoding parameter", {
           all(as.numeric(charToRaw(misread_texts)) == utf8_bytes)
    )
 
-   # Test ASCII encoded file, read as UTF-8:
+# test textfile encoding parameter: ASCII encoded file, read as UTF-8: (should work)",
    expect_that(
       as.numeric(charToRaw(
           texts(textfile(file.path(FILEDIR, 'UTF-8__characters.txt'), encoding='utf-8'),
       ))),
       equals(utf8_bytes)
    )
+})
 
 context('Loading a corpus from a zip file.')
 
@@ -468,22 +471,20 @@ test_that("test reading structured text files with different columns", {
 
 
 # TODO: XML warning test
-})
 
 test_that("Test mktemp function for test dirs",{
-  filename <- quanteda::mktemp()
+  filename <- quanteda:::mktemp()
   expect_true(file.exists(filename))
-  filename2 <- quanteda::mktemp()
+  filename2 <- quanteda:::mktemp()
   expect_true(file.exists(filename2))
-  print(paste(filename, filename2))
   expect_false(filename == filename2)
 
   # test directory parameter
-  dirname <- quanteda::mktemp(directory=T)
+  dirname <- quanteda:::mktemp(directory=T)
   expect_true(dir.exists(dirname))
   
   # test prefix parameter
-  filename <- quanteda::mktemp(prefix='testprefix')
+  filename <- quanteda:::mktemp(prefix='testprefix')
   expect_equal(
     substr(basename(filename), 1, 10),
     'testprefix'
