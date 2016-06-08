@@ -204,6 +204,7 @@ NULL
 #' ))
 #' bytes <- data.table::fread(gsub('__characters.txt', '__bytes.tsv', filename))[[1]]¬
 #' characters ==  bytes
+#' }
 NULL
 
 
