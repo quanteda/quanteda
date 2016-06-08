@@ -412,6 +412,7 @@ test_that("test textfile encoding parameter", {
       characters <- as.numeric(charToRaw(
         texts(textfile(filename, encoding=fileencodings[[i]]))
       ))
+      print(filename)
       bytes <- data.table::fread(gsub('__characters.txt', '__bytes.tsv', filename))[[1]]
       expect_equal(characters, bytes)
   }
@@ -422,6 +423,7 @@ test_that("test textfile encoding parameter", {
 
 #test textfile encoding parameter: UTF-8 encoded file, read as UTF-16 (should not work)"
 
+  print(file.path(FILEDIR, 'UTF-8__characters.txt'))
    expect_warning(
      misread_texts <- texts(textfile(file.path(FILEDIR, 'UTF-8__characters.txt'), encoding='utf-16'))
    )
