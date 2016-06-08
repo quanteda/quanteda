@@ -509,7 +509,6 @@ docvars.corpusSource <- function(x, field = NULL) {
     x@docvars
 }
 
-#' @export
 mktemp <- function(prefix='tmp.', base_path=NULL, directory=F) {
     #  Create a randomly-named temporary file or directory, sort of like
     #  https://www.mktemp.org/manual.html
