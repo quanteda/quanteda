@@ -426,6 +426,7 @@ test_that("Test loading all these files at once with different encodings", {
 test_that("test textfile encoding parameter: UTF-8 encoded file, read as UTF-16 (should not work)", {
      print(file.path(FILEDIR, 'UTF-8__characters.txt'))
      print(file.exists(file.path(FILEDIR, 'UTF-8__characters.txt')))
+     print(texts(textfile(file.path(FILEDIR, 'UTF-8__characters.txt'), encoding='utf-16')))
      expect_warning(
        misread_texts <- texts(textfile(file.path(FILEDIR, 'UTF-8__characters.txt'), encoding='utf-16'))
      )
