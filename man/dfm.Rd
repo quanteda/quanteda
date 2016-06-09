@@ -17,7 +17,7 @@ dfm(x, ...)
   keptFeatures = NULL, language = "english", thesaurus = NULL,
   dictionary = NULL, valuetype = c("glob", "regex", "fixed"), ...)
 
-\method{dfm}{tokenizedTexts}(x, verbose = TRUE, toLower = TRUE,
+\method{dfm}{tokenizedTexts}(x, verbose = TRUE, toLower = FALSE,
   stem = FALSE, ignoredFeatures = NULL, keptFeatures = NULL,
   language = "english", thesaurus = NULL, dictionary = NULL,
   valuetype = c("glob", "regex", "fixed"), ...)
