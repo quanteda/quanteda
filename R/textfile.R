@@ -254,20 +254,22 @@ listMatchingFiles <- function(x, ignoreMissing=F) {
             if (!(extension %in% names(SUPPORTED_FILETYPE_MAPPING))) {
                 stop('Remote URL does not end in known extension. Please download the file manually.')
             }
-            tryCatch({
-                localfile <- paste0(mktemp(), '.', extension) 
-                utils::download.file(i, destfile = localfile)
-                filenames <- c(filenames, localfile)
-            },
-            warning =  function(e) {
-                if (ignoreMissing) {return}
-                else {stop(e)}
-            },
-            error =  function(e) {
-                if (ignoreMissing) {return}
-                else {stop(e)}
+            if (ignoreMissing)
+                tryCatch({
+                    localfile <- paste0(mktemp(), '.', extension) 
+                    utils::download.file(i, destfile = localfile)
+                    filenames <- c(filenames, localfile)
+                },
+                warning = function(e) {warning(e)},
+                exception = function(e) {warning(e)}
+                )
+            else {
+                tryCatch({
+                    localfile <- paste0(mktemp(), '.', extension) 
+                    utils::download.file(i, destfile = localfile)
+                    filenames <- c(filenames, localfile)
+                })
             }
-            )
         }
     }
     filenames
