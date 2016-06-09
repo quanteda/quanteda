@@ -414,3 +414,13 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
     dfmresult2
 }
 
+
+#' @rdname applyDictionary
+applyDictionary.tokenizedTexts <- function(x, dictionary, ...) {
+    
+        
+}
+    
+
+
+
