@@ -185,28 +185,6 @@ NULL
 #' }
 NULL
 
-#' @name encodedExampleFiles
-#' @title a zip archive of variously encoded textfiles
-#' @docType data
-#' @description A .zip file of containing files which contain (almost) all the
-#' characters encodable in most of the encodings which R supports. The files
-#' ending in '__characters.txt' are the encoded files, those ending in 
-#' '__bytes.txt' contain a list of the bytes of the text file converted to UTF-8,
-#' quanteda's default internal format.
-#' The archive also contains the python script which generated these text files,
-#' These files are used for testing encoding-related functions.
-#' @examples
-#' \dontrun{# unzip the files to a temporary directory
-#' FILEDIR <- tempdir()
-#' unzip(system.file("extdata", "encodedExampleFiles", package = "quanteda"), exdir = FILEDIR)
-#' characters <- as.numeric(charToRaw(
-#'     texts(textfile(paste0(FILEDIR, '/857__characters.txt', encoding='857')))
-#' ))
-#' bytes <- data.table::fread(gsub('__characters.txt', '__bytes.tsv', filename))[[1]]¬
-#' characters ==  bytes
-#' }
-NULL
-
 
 #' @name mobydickText
 #' @title Project Gutenberg text of Herman Melville's \emph{Moby Dick}
