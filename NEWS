@@ -18,6 +18,8 @@ Bug fixes
 
 *  Fixed bug in wordstem.dfm() that caused an error if supplied a dfm with a feature whose total frequency 
    count was zero, or with a feature whose total docfreq was zero.  Fixes #181.
+   
+*  Fixed non-functional `toLower = ` argument in `dfm.tokenizedTexts()`.
 
 
 
