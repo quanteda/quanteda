@@ -523,6 +523,7 @@ mktemp <- function(prefix='tmp.', base_path=NULL, directory=F) {
     while (file.exists(filename) | dir.exists(filename)) {
         filename <- paste0(sample(alphanumeric, 10, replace=T), collapse='')
         filename <- paste0(prefix, filename)
+        filename <- file.path(base_path, filename)
     }
 
     if (directory) {
