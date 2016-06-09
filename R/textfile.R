@@ -116,7 +116,7 @@ setMethod("show",
 #' @export
 #' @importFrom utils download.file unzip type.convert
 setGeneric("textfile",
-           function(file, ignoreMissingFiles=FALSE, textField, 
+           function(file, ignoreMissingFiles=FALSE, textField=NULL, 
                     cache = FALSE, docvarsfrom = c("filenames"), dvsep="_", 
                     docvarnames = NULL,  ...) 
                standardGeneric("textfile"))
@@ -157,13 +157,31 @@ setMethod("textfile",
           signature(file = "character", ignoreMissingFiles = "ANY", textField = "ANY", 
                     cache = "ANY", docvarsfrom="ANY", dvsep="ANY", docvarnames="ANY"),
           definition = function(file, ignoreMissingFiles=FALSE, textField=NULL,
-                    cache = FALSE, docvarsfrom=NULL, dvsep=NULL, docvarnames=NULL) {
+                    cache = FALSE, docvarsfrom=c('metadata', 'filename'), dvsep=NULL, docvarnames=NULL,
+                    ...) {
 
+              if (is.null(textField)) textField <- 1
               files <- listMatchingFiles(file, ignoreMissing=ignoreMissingFiles)
 
-              sources <- sapply(files, getSource)
+              sources <- sapply(files, function(x) {
+                  getSource(x, textField=textField, ...)}
+              )
 
-              returnCorpusSource(sources, cache)
+              docvarsfrom <- match.arg(docvarsfrom)
+              docvars <- c()
+              if ('metadata' %in% docvarsfrom) {
+                  docvars <- data.table::rbindlist(lapply(sources, function(x) x$docv))
+              }
+              else if ('filename' %in% docvarsfrom){
+              }
+
+              returnCorpusSource(
+                  list(
+                       txts = c(unlist(sapply(sources, function(x) x$txts))),
+                       docvars = docvars
+                   ),
+                  cache
+              )
 })
 
 
@@ -274,7 +292,7 @@ listMatchingFiles <- function(x, ignoreMissing=F) {
 # textfile object link, or the textfile object itself
 returnCorpusSource <- function(sources, cache = FALSE) {
     if (cache) {
-        tempCorpusFilename <- tempfile()
+        tempCorpusFilename <- mktemp()
         save(sources, file=tempCorpusFilename)
         return(new("corpusSource", cachedfile=tempCorpusFilename))
     } else
@@ -283,7 +301,25 @@ returnCorpusSource <- function(sources, cache = FALSE) {
 }
 
 
-getSource(
+#' @importFrom tools file_ext
+getSource <- function(f, textField, ...) {
+    extension <- tools::file_ext(f)
+
+    fileType <- tryCatch({
+         SUPPORTED_FILETYPE_MAPPING[[extension]]
+    }, error = function(e) {
+        stop('unsupported extension', extension, 'of file', f)
+    })
+
+    txt <- list()
+    switch(fileType, 
+           csv = {txt <- get_csv(f, textField, sep=',', ...)},
+           tab = {txt <- get_csv(f, textField, sep='\t', ...)},
+           tsv = {txt <- get_csv(f, textField, sep='\t', ...)}
+    )
+    return(list(txts=txt))
+}
+
 # read a document from a text-only file.
 get_doc <- function(f, ...) {
     txts <- c()
@@ -409,8 +445,8 @@ get_pdf <- function(f){
 }
 
 ## csv format
-get_csv <- function(file, textField, sep=",", ...) {
-    docv <- utils::read.csv(file, stringsAsFactors=FALSE, sep=sep, ...)
+get_csv <- function(file, textField, ...) {
+    docv <- utils::read.csv(file, stringsAsFactors=FALSE, ...)
     if (is.character(textField)) {
         textFieldi <- which(names(docv)==textField)
         if (length(textFieldi)==0)
@@ -492,25 +528,6 @@ imputeDocvarsTypes <- function(docv) {
     docv[factor_cols] <- lapply(docv[factor_cols], as.character)
     data.frame(docv)
 }
-
-
-#' @importFrom tools file_ext
-getFileType <- function(filenameChar) {
-    if (length(filenameChar) > 1)
-        return("vector")
-    if (!substr(filenameChar, 1, 4)=="http" & grepl("[?*]", filenameChar))
-        return("filemask")
-    filenameExt <- tools::file_ext(filenameChar)
-
-
-    fileType <- tryCatch({
-         SUPPORTED_FILETYPE_MAPPING[[filenameExt]]
-    }, error = function(e) {
-        'unknown'
-    })
-
-    return(fileType)
-}    
 
 
 #' @importFrom tools file_path_sans_ext
