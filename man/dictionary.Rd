@@ -19,13 +19,13 @@ Provalis Research's Wordstat software} \item{\code{"LIWC"}}{format used by
 the Linguistic Inquiry and Word Count software} }}
 
 \item{concatenator}{the character in between multi-word dictionary values. 
-This defaults to \code{"_"} except LIWC-formatted files, which defaults to
+This defaults to \code{"_"} except LIWC-formatted files, which defaults to 
 a single space \code{" "}.}
 
 \item{toLower}{if \code{TRUE}, convert all dictionary values to lowercase}
 
-\item{encoding}{additional optional encoding value for reading in imported
-dictionaries. This uses the \link{iconv} labels for encoding.  See the
+\item{encoding}{additional optional encoding value for reading in imported 
+dictionaries. This uses the \link{iconv} labels for encoding.  See the 
 "Encoding" section of the help for \link{file}.}
 }
 \value{
@@ -35,7 +35,9 @@ A dictionary class object, essentially a specially classed named list
 \description{
 Create a quanteda dictionary, either from a list or by importing from a 
 foreign format.  Currently supported input file formats are the Wordstat and 
-LIWC formats.
+LIWC formats.  The import using the LIWC format works with all currently
+available dictionary files supplied as part of the LIWC 2001, 2007, and 2015
+software (see References).
 }
 \examples{
 mycorpus <- subset(inaugCorpus, Year>1900)

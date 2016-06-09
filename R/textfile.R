@@ -27,8 +27,8 @@ setMethod("show",
               if (object@cachedfile != "") {
                   cat("corpusSource object with data cached in", object@cachedfile, "\n")
               } else {
-                  cat("corpusSource object containing ", length(texts(object)), 
-                      " text", ifelse(length(texts(object)) == 1, "", "s"), " and ", 
+                  cat("corpusSource object consisting of ", length(texts(object)), 
+                      " document", ifelse(length(texts(object)) == 1, "", "s"), " and ", 
                       ncol(docvars(object)), " docvar", ifelse(ncol(docvars(object)) == 1, "", "s"), ".\n", sep="")
               }
           })
@@ -47,23 +47,31 @@ setMethod("show",
 #' header.
 #' @param file the complete filename(s) to be read.  The value can be a vector 
 #'   of file names, a single file name, or a file "mask" using a "glob"-type 
-#'   wildcard value.  Currently available file value types are: \describe{ 
-#'   \item{\code{txt}}{plain text files} \item{\code{json}}{data in JavaScript 
+#'   wildcard value.  Currently available file value types are: 
+#'   \describe{ 
+#'   \item{\code{txt}}{plain text files}
+#'   \item{\code{json}}{data in JavaScript 
 #'   Object Notation, consisting of the texts and additional document-level 
 #'   variables and document-level meta-data.  The text key must be identified by
-#'   specifying a \code{textField} value.} \item{\code{csv}}{comma separated 
+#'   specifying a \code{textField} value.}
+#'   \item{\code{csv}}{comma separated 
 #'   value data, consisting of the texts and additional document-level variables
 #'   and document-level meta-data.  The text file must be identified by 
-#'   specifying a \code{textField} value.} \item{\code{tab, tsv}}{tab-separated 
+#'   specifying a \code{textField} value.}
+#'   \item{\code{tab, tsv}}{tab-separated 
 #'   value data, consisting of the texts and additional document-level variables
 #'   and document-level meta-data.  The text file must be identified by 
-#'   specifying a \code{textField} value.} \item{a wildcard value}{any valid 
+#'   specifying a \code{textField} value.}
+#'    \item{a wildcard value}{any valid 
 #'   pathname with a wildcard ("glob") expression that can be expanded by the 
 #'   operating system.  This may consist of multiple file types.} 
 #'   \item{\code{xml}}{Basic flat XML documents are supported -- those of the 
 #'   kind supported by the function xmlToDataFrame function of the \strong{XML} 
-#'   package.} \item{\code{zip}}{zip archive file, containing \code{*.txt} 
-#'   files.  This may be a URL to a zip file.} }
+#'   package.}
+#'   \item{\code{zip}}{zip archive file, containing \code{*.txt} 
+#'   files either at the top level or in a single directory.
+#'    This may also be a URL to a zip file.}
+#'   }
 #' @param textField a variable (column) name or column number indicating where 
 #'   to find the texts that form the documents for the corpus.  This must be 
 #'   specified for file types \code{.csv} and \code{.json}.
@@ -107,8 +115,7 @@ setMethod("show",
 #'   \link{corpus} to construct a corpus
 #' @author Kenneth Benoit and Paul Nulty
 #' @export
-#' @importFrom stats var
-#' @importFrom utils download.file unzip
+#' @importFrom utils download.file unzip type.convert
 setGeneric("textfile",
            function(file, textField, 
                     cache = FALSE, docvarsfrom = c("filenames"), dvsep="_", 
@@ -131,7 +138,7 @@ setGeneric("textfile",
 #'                   textField = "text")
 #' summary(corpus(mytf2))
 #' # text file
-#' mytf3 <- textfile(unzip(system.file("extdata", "pg2701.txt.zip", package = "quanteda")))
+#' mytf3 <- textfile("https://wordpress.org/plugins/about/readme.txt")
 #' summary(corpus(mytf3))
 #' # XML data
 #' mytf6 <- textfile("http://www.kenbenoit.net/files/plant_catalog.xml", 
@@ -203,7 +210,7 @@ setMethod("textfile",
                   stop("File type ", fileType, " not supported with these arguments.")
               }
               if (docvarsfrom == "filenames") {
-                  sources$docv <- getdocvarsFromHeaders(names(sources$txts), dvsep=dvsep, docvarnames=docvarnames)
+                  sources$docv <- getdocvarsFromFilenames(names(sources$txts), dvsep=dvsep, docvarnames=docvarnames)
               } else {
                   warning("docvarsfrom=", docvarsfrom, " not supported.")
               }
@@ -220,7 +227,8 @@ returnCorpusSource <- function(sources, cache = FALSE) {
         save(sources, file=tempCorpusFilename)
         return(new("corpusSource", cachedfile=tempCorpusFilename))
     } else
-        return(new("corpusSource", texts = sources$txts, docvars = sources$docv))
+        return(new("corpusSource", texts = sources$txts, docvars = imputeDocvarsTypes(sources$docv)))
+        #return(new("corpusSource", texts = sources$txts, docvars = sources$docv))
 }
 
 
@@ -228,7 +236,7 @@ returnCorpusSource <- function(sources, cache = FALSE) {
 get_doc <- function(f, ...) {
     txts <- c()
     fileType <- getFileType(f)
-    # cat("fileType = ", fileType, "\n")
+    #cat("fileType = ", fileType, "\n")
     switch(fileType,
            txt =  { 
                txt <- readLines(con <- file(f, ...), warn = FALSE)
@@ -244,10 +252,10 @@ get_doc <- function(f, ...) {
                result <- list(txts = paste(txt, collapse="\n"), docv = data.frame())
                return(result)
            },
-           doc =  { return(list(txts = get_word(f), docv = data.frame())) },
            json = { return(get_json_tweets(f, ...)) },
            zip = { return(get_zipfile(f)) },
-           pdf =  { return(list(txts = get_pdf(f), docv = data.frame())) }
+           pdf =  { return(list(txts = get_pdf(f), docv = data.frame())) },
+           word =  { return(list(txts = get_word(f), docv = data.frame())) }
     )
     stop("unrecognized fileType:", fileType)
 }
@@ -293,12 +301,15 @@ get_docs <- function(filemask, ...) {
 }
 
 get_zipfile <- function(f, ...) {
+    #  Only supports .txt files, either at the toplevel or in a single directory
     td <- tempdir()
+    flocal <- ''
     if (substr(f, 1, 4) == "http")
-        utils::download.file(f, destfile = (flocal <- paste0(td, "/temp.zip", quiet = TRUE)))
+        utils::download.file(f, destfile = (flocal <- file.path(td, "temp.zip", quiet = TRUE)))
+    else
+        flocal <- f
     utils::unzip(flocal, exdir = td)
-    # cat("file:", paste0(td, "*.txt"), "\n")
-    get_docs(paste0(td, "/*.txt"))
+    get_docs(file.path(td, "*txt"))
 }
 
 # read a document from a structured file containing text and data
@@ -331,16 +342,10 @@ get_datas <- function(filemask, textField='index', fileType, ...){
     for (f in filenames) {
         src <- get_data(f,  textField, ...)
         textsvec <- c(textsvec, src$txts)
-	docv <- tryCatch({
-		rbind(docv, src$docv)
-	},
-		error = function(e) {
-			stop('Data files do not have identical columns or variables')
-	}
-	)
+        docv <- data.table::rbindlist(list(docv, src$docv), use.names = TRUE, fill = TRUE)
+        data.frame(docv)
     }
     list(txts=textsvec, docv=docv)
-    # return(src)
 }
 
 get_word <- function(f){
@@ -383,12 +388,6 @@ get_json_tweets <- function(path=NULL, source="twitter", ...) {
     }
     # read raw json data
     txt <- unlist(sapply(fls, readLines, ...))
-    # crude json type check here
-    if (!grepl("retweet_count", txt[1]))
-        stop("Not a Twitter json formatted file.")
-    
-    # parsing into a data frame
-    # reading tweets into a data frame
     results <- streamR::parseTweets(txt, verbose=FALSE, ...)
     list(txts = results[, 1], docv = as.data.frame(results[, -1, drop = FALSE]))
 }
@@ -418,52 +417,58 @@ get_xml <- function(file, textField, sep=",", ...) {
     if (is.character(textField)) {
         textFieldi <- which(names(docv)==textField)
         if (length(textFieldi)==0)
-            stop("node", textField, "not found.")
+            stop(paste("node", textField, "not found."))
         textField <- textFieldi
+    }
+    else {
+        warning(paste("You should specify textField by name rather than by index, unless",
+                "you're certain that your XML file's fields are always in the same order."))
     }
     txts <- docv[, textField]
     docv <- docv[, -textField, drop = FALSE]
+
+    # Because XML::xmlToDataFrame doesn't impute column types, we have to do it
+    # ourselves, to match get_csv's behaviour
     list(txts=txts, docv=docv)
 }
 
+imputeDocvarsTypes <- function(docv) {
+    # Impute types of columns, just like read.table
+    docv[] <- lapply(docv, function(x) type.convert(as.character(x), as.is=T))
+    # And convert columns which have been made into factors into strings
+    factor_cols <- vapply(docv, is.factor, FUN.VALUE=c(T))
+    docv[factor_cols] <- lapply(docv[factor_cols], as.character)
+    data.frame(docv)
+}
 
+
+#' @importFrom tools file_ext
 getFileType <- function(filenameChar) {
     if (length(filenameChar) > 1)
         return("vector")
     if (!substr(filenameChar, 1, 4)=="http" & grepl("[?*]", filenameChar))
         return("filemask")
-    filenameParts <- strsplit(filenameChar, ".", fixed=TRUE)
-    filenameExts <- sapply(filenameParts, function(x) x[length(x)])
-    sapply(filenameExts, function(x) {
-        if (x %in% c("xls", "xlsx"))
-            return("excel")
-        else if (x %in% c("csv"))
-            return("csv")
-        else if (x %in% c("txt"))
-            return("txt")
-        else if (x %in% c("doc", "docx"))
-            return("word")
-        else if (x %in% c("json"))
-            return("json")
-        else if (x %in% c("zip"))
-            return("zip")
-        else if (x %in% c("gz"))
-            return("gz")
-        else if (x %in% c("tar"))
-            return("tar")
-        else if (x %in% c("xml"))
-            return("xml")
-        else if (x %in% c("tab", "tsv"))
-            return("tab")
-        else return("unknown") }, USE.NAMES=FALSE)
+    filenameExt <- tools::file_ext(filenameChar)
+
+    fileTypeMapping <-        c('excel', 'excel', 'csv', 'txt', 'word', 'word', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tab', 'pdf')
+    names(fileTypeMapping) <- c('xls',   'xlsx',  'csv', 'txt', 'doc',  'docx', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tsv', 'pdf')
+
+    fileType <- tryCatch({
+         fileTypeMapping[[filenameExt]]
+    }, error = function(e) {
+        'unknown'
+    })
+
+    return(fileType)
 }    
 
 
-getdocvarsFromHeaders <- function(fnames, dvsep="_", docvarnames=NULL) {
+#' @importFrom tools file_path_sans_ext
+getdocvarsFromFilenames <- function(fnames, dvsep="_", docvarnames=NULL) {
     snames <- fnames
-    snames <- gsub(".txt", "", snames)
+    snames <- tools::file_path_sans_ext(snames)
     parts <- strsplit(snames, dvsep)
-    if (stats::var(sapply(parts, length)) != 0)
+    if (!all(sapply(parts,function(x) identical(length(x), length(parts[[1]])))))
         stop("Filename elements are not equal in length.")
     dvars <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE), 
                          stringsAsFactors=FALSE)
@@ -472,8 +477,10 @@ getdocvarsFromHeaders <- function(fnames, dvsep="_", docvarnames=NULL) {
     if (!is.null(docvarnames)) {
         names(dvars)[1:length(docvarnames)] <- docvarnames
         if (length(docvarnames) != ncol(dvars)) {
-            warning("Fewer docnames supplied than exist docvars - last ",
-                    ncol(dvars) - length(docvarnames), " docvars were given generic names.")
+            warning("Fewer docnames supplied than existing docvars - last ",
+                    ncol(dvars) - length(docvarnames), " docvar",
+                    ifelse((ncol(dvars) - length(docvarnames))==1, "", "s"),
+                    " given generic names.")
         }
     }
     dvars

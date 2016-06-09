@@ -15,7 +15,8 @@ selectFeatures(x, features, ...)
 
 \method{selectFeatures}{tokenizedTexts}(x, features, selection = c("keep",
   "remove"), valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, verbose = TRUE, ...)
+  case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
+  verbose = FALSE, ...)
 
 \method{selectFeatures}{collocations}(x, features, selection = c("keep",
   "remove"), valuetype = c("glob", "regex", "fixed"),
@@ -43,6 +44,13 @@ is; \code{"regex"} for regular expressions; or \code{"glob"} for
 
 \item{verbose}{if \code{TRUE} print message about how many features were 
 removed}
+
+\item{padding}{(only for \code{tokenizedTexts} objects) if \code{TRUE}, leave
+an empty string where the removed tokens previously existed.  This is
+useful if a positional match is needed between the pre- and post-selected
+features, for instance if a window of adjacency needs to be computed.}
+
+\item{indexing}{use dfm-based index to efficiently process large tokenizedTexts object}
 
 \item{pos}{indexes of word position if called on collocations: remove if word
 \code{pos} is a stopword}
@@ -96,10 +104,62 @@ setequal(features(dfm1), features(dfm2b))
 # more selection on a dfm
 selectFeatures(dfm1, dfm2a)
 selectFeatures(dfm1, dfm2a, selection = "remove")
-toks <- tokenize(c("This is some example text from me.", "More of the example text."), 
+\dontrun{## performance comparisons
+data(SOTUCorpus, package = "quantedaData")
+toks <- tokenize(SOTUCorpus, removePunct = TRUE)
+# toks <- tokenize(tokenize(SOTUCorpus, what='sentence', simplify = TRUE), removePunct = TRUE)
+# head to head, old v. new
+system.time(selectFeaturesOLD(toks, stopwords("english"), "remove", verbose = FALSE))
+system.time(selectFeatures(toks, stopwords("english"), "remove", verbose = FALSE))
+system.time(selectFeaturesOLD(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"))
+system.time(selectFeatures(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"))
+microbenchmark::microbenchmark(
+    old = selectFeaturesOLD(toks, stopwords("english"), "remove", verbose = FALSE),
+    new = selectFeatures(toks, stopwords("english"), "remove", verbose = FALSE),
+    times = 5, unit = "relative")
+microbenchmark::microbenchmark(
+    new = selectFeaturesOLD(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"),
+    old = selectFeatures(toks, c("and", "of"), "remove", verbose = FALSE, valuetype = "regex"),
+    times = 2, unit = "relative")
+    
+types <- unique(unlist(toks))
+numbers <- types[stringi::stri_detect_regex(types, '[0-9]')]
+microbenchmark::microbenchmark(
+    new = selectFeaturesOLD(toks, numbers, "remove", verbose = FALSE, valuetype = "fixed"),
+    old = selectFeatures(toks, numbers, "remove", verbose = FALSE, valuetype = "fixed"),
+    times = 2, unit = "relative")  
+    
+# removing tokens before dfm, versus after
+microbenchmark::microbenchmark(
+    pre = dfm(selectFeaturesOLD(toks, stopwords("english"), "remove"), verbose = FALSE),
+    post = dfm(toks, ignoredFeatures = stopwords("english"), verbose = FALSE),
+    times = 5, unit = "relative")
+}
+
+## with simple examples
+toks <- tokenize(c("This is a sentence.", "This is a second sentence."), 
                  removePunct = TRUE)
+selectFeatures(toks, c("is", "a", "this"), selection = "remove", 
+                valuetype = "fixed", padding = TRUE, case_insensitive = TRUE)
+
+# how case_insensitive works
+selectFeatures(toks, c("is", "a", "this"), selection = "remove", 
+               valuetype = "fixed", padding = TRUE, case_insensitive = FALSE)
+selectFeatures(toks, c("is", "a", "this"), selection = "remove", 
+               valuetype = "fixed", padding = TRUE, case_insensitive = TRUE)
+selectFeatures(toks, c("is", "a", "this"), selection = "remove", 
+               valuetype = "glob", padding = TRUE, case_insensitive = TRUE)
+selectFeatures(toks, c("is", "a", "this"), selection = "remove", 
+               valuetype = "glob", padding = TRUE, case_insensitive = FALSE)
+
+# with longer texts
+txts <- c(exampleString, inaugTexts[2])
+toks <- tokenize(txts)
 selectFeatures(toks, stopwords("english"), "remove")
-selectFeatures(toks, "ex", "keep", valuetype = "regex")
+selectFeatures(toks, stopwords("english"), "keep")
+selectFeatures(toks, stopwords("english"), "remove", padding = TRUE)
+selectFeatures(toks, stopwords("english"), "keep", padding = TRUE)
+selectFeatures(tokenize(encodedTexts[1]), stopwords("english"), "remove", padding = TRUE)
  
 
 ## example for collocations

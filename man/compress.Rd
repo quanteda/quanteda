@@ -27,7 +27,7 @@ the dfm.)  It could also be needed , after a \code{\link{cbind.dfm}} or
 \code{\link{rbind.dfm}} operation.
 }
 \examples{
-mat <- rbind(dfm(c("a b A", "a b B C C"), toLower = FALSE, verbose = FALSE),
+mat <- rbind(dfm(c("b A A", "C C a b B"), toLower = FALSE, verbose = FALSE),
              dfm("A C C C C C", toLower = FALSE, verbose = FALSE))
 colnames(mat) <- toLower(features(mat))
 mat

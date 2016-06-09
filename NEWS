@@ -1,5 +1,29 @@
-quanteda 0.9.5 
-==============  
+quanteda 0.9.7
+==============
+
+*  Improve performance of `selectFeatures.tokenizedTexts()`.
+
+*  Improve performance of rbind.dfm()
+
+*  Added support for different docvars when importing multiple files using textfile().  (#147)
+
+*  Add support for comparison dispersion plots in `plot.kwic()`. (#146)
+
+*  Add corpus constructor method for kwic objects.
+
+Bug fixes
+---------
+
+*  Fixed bug in textfile() where source is a remote .zip set.  (#172)
+
+*  Fixed bug in wordstem.dfm() that caused an error if supplied a dfm with a feature whose total frequency 
+   count was zero, or with a feature whose total docfreq was zero.  Fixes #181.
+
+
+
+quanteda 0.9.6 
+==============
+
 *  Improved Naive Bayes model and prediction, `textmodel(x, y, method = "NB")`, now works correctly on k > 2.
 
 *  Improved tag handling for segment(x, what = "tags")
@@ -38,13 +62,30 @@ quanteda 0.9.5
 
 *  added a corpus method for data.frame objects, so that a corpus can be constructed directly from a data.frame.  Requires the addition of a `textField` argument (similar to textfile).
 
-*  added compress.dfm() to combine identically named columns or rows.  #123
+*  added `compress.dfm()` to combine identically named columns or rows.  #123
 
-*  Much better phrasetotoken(), with additional methods for all combinations of corpus/character v. dictionary/character/collocations.
+*  Much better `phrasetotoken()`, with additional methods for all combinations of corpus/character v. dictionary/character/collocations.
 
-*  Added a weight(x, type, ...) signature where the second argument can be a named numeric vector of weights, not just a label for a type of weight.  Thanks http://stackoverflow.com/questions/36815926/assigning-weights-to-different-features-in-r/36823475#36823475.
+*  Added a` weight(x, type, ...`) signature where the second argument can be a named numeric vector of weights, not just a label for a type of weight.  Thanks http://stackoverflow.com/questions/36815926/assigning-weights-to-different-features-in-r/36823475#36823475.
 
-*  as.data.frame for dfms now passes ... to as.data.frame.matrix.
+*  `as.data.frame` for dfms now passes `...` to `as.data.frame.matrix`.
+
+*  Fixed bug in `predict.fitted_textmodel_NB()` that caused a failure with k > 2 classes (#129)
+
+*  Improved `dfm.tokenizedTexts()` performance by taking care of zero-token documents more efficiently.
+
+*  `dictionary(file = "liwc_formatted_dict.dic", format = "LIWC")` now handles poorly formatted dictionary files better, such as the Moral Foundations Dictionary in the examples for `?dictionary`.
+
+*  added `as.tokenizedTexts` to coerce any list of characters to a tokenizedTexts object.
+
+
+Bug fixes >= 0.9.6-3
+--------------------    
+*  Fix bug in phrasetotoken, signature 'corpus,ANY' that was causing an infinite loop.
+
+*  Fixed bug introduced in commit b88287f (0.9.5-26) that caused a failure in dfm() with empty (zero-token) documents.  Also fixes Issue #168.
+
+*  Fixed bug that caused dfm() to break if no features or only one feature was found.
 
 *  Fixed bug in predict.fitted_textmodel_NB() that caused a failure with k > 2 classes (#129)
 

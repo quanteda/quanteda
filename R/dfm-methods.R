@@ -362,7 +362,7 @@ compress <- function(x, ...)  UseMethod("compress")
 
 #' @rdname compress
 #' @examples 
-#' mat <- rbind(dfm(c("a b A", "a b B C C"), toLower = FALSE, verbose = FALSE),
+#' mat <- rbind(dfm(c("b A A", "C C a b B"), toLower = FALSE, verbose = FALSE),
 #'              dfm("A C C C C C", toLower = FALSE, verbose = FALSE))
 #' colnames(mat) <- toLower(features(mat))
 #' mat
@@ -375,6 +375,7 @@ compress <- function(x, ...)  UseMethod("compress")
 #' @export
 compress.dfm <- function(x, margin = c("both", "documents", "features"), ...) {
     margin <- match.arg(margin)
+    
     uniquednames <- unique(rownames(x))
     uniquefnames <- unique(colnames(x))
     if (length(uniquednames) == nrow(x) & length(uniquefnames) == ncol(x)) 
@@ -383,7 +384,9 @@ compress.dfm <- function(x, margin = c("both", "documents", "features"), ...) {
     # add 1 since stored from 0, but constructor requires indexing from 1
     new_i <- x@i + 1
     new_j <- as(x, "dgTMatrix")@j + 1
-    
+
+    allZeroFeatures <- match(names(which(colSums(x)==0)), uniquefnames)
+        
     # combine documents
     if (margin %in% c("both", "documents") & length(uniquednames) < nrow(x))
         new_i <- match(rownames(x), uniquednames)[new_i]
@@ -396,7 +399,13 @@ compress.dfm <- function(x, margin = c("both", "documents", "features"), ...) {
     else
         uniquefnames <- colnames(x)
 
-    new("dfmSparse", sparseMatrix(i = new_i, j = new_j, x = x@x,
+    if (nf <- length(allZeroFeatures)) {
+        new_i <- c(new_i, rep(1, nf))
+        new_j <- c(new_j, allZeroFeatures)
+    }
+        
+    new("dfmSparse", sparseMatrix(i = new_i, j = new_j, 
+                                  x = c(x@x, rep(0, length(allZeroFeatures))),
                                   dimnames = list(docs = uniquednames, features = uniquefnames)),
         settings = x@settings,
         weightTf = x@weightTf,

@@ -3,18 +3,21 @@ Type: Package
 Title: Quantitative Analysis of Textual Data
 Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     c("aut", "cre")), person("Paul", "Nulty", email = "paul.nulty@gmail.com",
-    role = "aut"), person("Pablo", "Barberá", email = "pablo.barbera@nyu.edu",
-    role = "ctb"), person("Kohei", "Watanabe", email =
+    role = "aut"), person("Kohei", "Watanabe", email =
     "watanabe.kohei@gmail.com", role = "ctb"), person("Benjamin", "Lauderdale",
-    email = "B.E.lauderdale@lse.ac.uk", role = "ctb"))
+    email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
+    person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "ctb"),
+    person("Pablo", "Barberá", email = "pablo.barbera@nyu.edu",
+    role = "ctb"))
 Author: Kenneth Benoit [aut, cre],
     Paul Nulty [aut],
-    Pablo Barberá [ctb],
     Kohei Watanabe [ctb],
-    Benjamin Lauderdale [ctb]
+    Benjamin Lauderdale [ctb],
+    Adam Obeng [ctb],
+    Pablo Barberá [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.5-25
-Date: 2016-05-06
+Version: 0.9.7-8
+Date: 2016-06-02
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -42,10 +45,11 @@ Suggests:
     streamR,
     tm (>= 0.6),
     slam,
-    ggplot2,
     XML,
     testthat,
-    RColorBrewer
+    RColorBrewer,
+    ggplot2,
+    grid
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
@@ -64,6 +68,8 @@ Collate:
     'dfm-methods.R'
     'dfm-weighting.R'
     'encoding.R'
+    'findSequences.R'
+    'joinTokens.R'
     'kwic.R'
     'lexdiv.R'
     'ngrams.R'
@@ -72,6 +78,7 @@ Collate:
     'quanteda-package.R'
     'readability.R'
     'resample.R'
+    'selectFeatures-old.R'
     'selectFeatures.R'
     'settings.R'
     'similarity.R'
@@ -89,3 +96,4 @@ Collate:
     'wordstem.R'
     'zzz.R'
 RoxygenNote: 5.0.1
+SystemRequirements: C++11

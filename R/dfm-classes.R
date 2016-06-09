@@ -566,11 +566,9 @@ cbind.dfm <- function(...) {
 #' @details  \code{rbind(x, y, ...)} combines dfm objects by rows, returning a dfm
 #'   object with combined features from input dfm objects.  Features are matched
 #'   between the two dfm objects, so that the order and names of the features
-#'   does not need to match.  The resulting row combined dfm will have its
-#'   features alphabetically sorted.  The matching is performed by 
-#'   \code{\link{rbind2}} defined for object classes in the \pkg{Matrix} 
-#'   package.  The attributes and settings of this new dfm are not currently 
-#'   preserved.
+#'   do not need to match.  The order of the features in the resulting dfm
+#'   is not guaranteed.  The attributes and settings of this new dfm are not
+#'   currently preserved.
 #' @export
 #' @method rbind dfm
 #' @examples 
@@ -586,20 +584,71 @@ rbind.dfm <- function(...) {
     if (!all(sapply(args, is.dfm)))
         stop("all arguments must be dfm objects")
     cat(names(args))
-    if (length(args) <= 2) {
-        return(combineDfms(args[[1]], args[[2]]))
+
+    if (length(args) == 1) {
+        warning('rbind.dfm called on single dfm')
+        return(args[[1]])
+    }
+    else if (length(args) == 2) {
+        return(rbind2.dfm(args[[1]], args[[2]]))
     } else {
-        result <- combineDfms(args[[1]], args[[2]])
+        # Recursive call
+        result <- rbind2.dfm(args[[1]], args[[2]])
         for (y in args[3:length(args)]) 
-            result <- combineDfms(result, y)
+            result <- rbind2.dfm(result, y)
         return(result)
     }
 }
 
+rbind2.dfm <- function(x, y) {
+    x_names <- features(x)
+    y_names <- features(y)
 
-combineDfms <- function(x, y) {
+      if (identical(x_names, y_names)) {
+          return(new("dfmSparse", Matrix::rbind2(x, y)))
+      }
+
+    common_names <- intersect(x_names, y_names)
+
+    only_x_names <- setdiff(x_names, y_names)
+    only_y_names <- setdiff(y_names, x_names)
+
+    #  Evetually, we want to rbind together two rows with the same columns
+    #  we acheive this by re-ordering the columns in the original matrices, and adding
+    #  in some blank ones
+
+    #  Here's what we're constructing:
+    #  row x ... <columns in both x and y> ... <columns only in x> ... <blank columns>
+    #  row y ... <columns in both x and y> ... <blank columns>     ... <columns only in y>
+    xcols <- Matrix::cbind2(
+                x[, common_names],
+                x[, only_x_names]
+    )
+    empty_ycols <- Matrix::sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x), 
+                length(only_y_names)), dimnames = list(NULL, only_y_names))
+
+    empty_xcols <- Matrix::sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(y), 
+                    length(only_x_names)), dimnames = list(NULL, only_x_names))
+
+    y_with_xcols <- Matrix::cbind2(
+                y[, common_names],
+                empty_xcols
+            )
+
+    new_dfm <- new("dfmSparse", Matrix::rbind2(
+        Matrix::cbind2( xcols, empty_ycols),
+        Matrix::cbind2( y_with_xcols, y[, only_y_names])
+    ))
+}
+
+rbind2.dfm.old <- function(x, y) {
     x.names <- features(x)
     y.names <- features(y)
+
+      if (identical(x.names, y.names)) {
+          return(new("dfmSparse", Matrix::rbind2(x, y)))
+      }
+
     all.names <- union(x.names, y.names)
     
     toAddx <- setdiff(all.names, x.names)

@@ -11,6 +11,7 @@
 \alias{corpus.character}
 \alias{corpus.corpusSource}
 \alias{corpus.data.frame}
+\alias{corpus.kwic}
 \alias{is.corpus}
 \title{constructor for corpus objects}
 \usage{
@@ -24,6 +25,8 @@ corpus(x, ...)
 \method{corpus}{VCorpus}(x, ...)
 
 \method{corpus}{data.frame}(x, textField, ...)
+
+\method{corpus}{kwic}(x, ...)
 
 is.corpus(x)
 
@@ -181,6 +184,10 @@ mydf <- data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
                   row.names = paste0("fromDf_", 1:6))
 mydf
 summary(corpus(mydf, textField = "some_text", source = "From a data.frame called mydf."))
+
+# construct a corpus from a kwic object
+mykwic <- kwic(inaugCorpus, "southern")
+summary(corpus(mykwic))
 
 # concatenate corpus objects
 corpus1 <- corpus(inaugTexts[1:2])

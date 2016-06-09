@@ -10,17 +10,17 @@ output:
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "README-"
+  fig.path = "images/"
 )
 ```
 
-**Development branch** ![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=dev) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev)][1]
+[![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](http://cran.r-project.org/package=quanteda)
+![Downloads](http://cranlogs.r-pkg.org/badges/quanteda)
+[![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda)
+[![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)][1]
 
-**Master branch** ![Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)][2]
 
-
-[1]: https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=dev
-[2]: https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master
+[1]: https://codecov.io/gh/kbenoit/quanteda/branch/master
 
 See the [Getting Started Vignette](http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html).
 
@@ -83,8 +83,14 @@ Once constructed, a **quanteda** "dfm"" can be easily analyzed using either quan
    intervals on textual statistics using techniques of non-parametric
    bootstrapping, but applied to the original texts as data. 
    
-*  expansion of the document-feature matrix structure through a standard interface called `textmodel()`.  (As of version 0.8.0, textmodel works in a basic fashion only for the "Wordscores" and "wordfish" scaling models.)
+*  expansion of predictive and analytic methods called through the standard 
+   interface called `textmodel()`.  Current model types include correspondence analysis, "Wordscores", "Wordfish", and Naive Bayes.
 
+*  Addition of settings to corpus projects, that will propogate through downstream objects.
+
+*  Addition of a history that will propogate through downstream objects.
+
+**Acknowledgements**:  This research was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
 How to Install
 --------------

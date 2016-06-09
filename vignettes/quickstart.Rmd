@@ -16,7 +16,8 @@ vignette: >
 -->
 
 ```{r echo = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+knitr::opts_chunk$set(collapse = TRUE, 
+                      comment = "#>")
 ```
 
 
@@ -26,8 +27,8 @@ An R package for managing and analyzing text, by Ken Benoit and Paul Nulty.[^tha
 
 [^thanks]: This research was supported by the European
     Research Council grant ERC-2011-StG 283794-QUANTESS.  Code
-    contributors to the project include Ben Lauderdale, Pablo Barberà, and 
-    Kohei Watanabe.
+    contributors to the project include Ben Lauderdale, Pablo Barberà,
+    Kohei Watanabe, and Adam Obeng.
 
 **quanteda** makes it easy to manage texts in the form of a
 corpus, defined as a collection of texts that includes document-level
@@ -278,33 +279,6 @@ mytf7 <- textfile("/tmp/inaugTexts.csv", textField = "inaugSpeech")
 summary(corpus(mytf7), 5)
 ```
 
-### Creating a corpus from a Twitter search
-
-`quanteda` provides an interface to retrieve and store data from a twitter search as a corpus object. The REST API query uses the [twitteR package](https://github.com/geoffjentry/twitteR), and an API authorization from twitter is required. The process of obtaining this authorization is described in detail here: <https://openhatch.org/wiki/Community_Data_Science_Workshops/Twitter_authentication_setup>, correct as of October 2014. The twitter API is a commercial service, and rate limits and the data returned are determined by twitter.
-
-Four keys are required, to be passed to `quanteda`'s `getTweets` source function, in addition to the search query term and the number of results required. The maximum number of results that can be obtained is not exactly identified in the API documentation, but experimentation indicates an upper bound of around 1500 results from a single query, with a frequency limit of one query per minute.
-
-The code below performs authentication and runs a search for the string 'quantitative'. Many other functions for working with the API are available from the [twitteR package](https://github.com/geoffjentry/twitteR). An R interface to the streaming API is also available [link](link).
-
-```{r eval=FALSE}
-# These keys are examples and may not work! Get your own key at dev.twitter.com
-consumer_key="vRLy03ef6OFAZB7oCL4jA"
-consumer_secret="wWF35Lr1raBrPerVHSDyRftv8qB1H7ltV0T3Srb3s"
-access_token="1577780816-wVbOZEED8KZs70PwJ2q5ld2w9CcvcZ2kC6gPnAo"
-token_secret="IeC6iYlgUK9csWiP524Jb4UNM8RtQmHyetLi9NZrkJA"
-
-
-tw <- getTweets('quantitative', numResults=20, consumer_key, consumer_secret, access_token, token_secret)
-```
-
-The return value from the above query is a source object which can be passed to quanteda's corpus constructor, and the document variables are set to correspond with tweet metadata returned by the API.
-
-```{r eval=FALSE}
-twCorpus <- corpus(tw)
-names(docvars(twCorpus))
-```
-
-
 
 ## How a quanteda corpus works
 
@@ -328,7 +302,7 @@ summary(ie2010Corpus)
 
 We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:
 
-```{r}
+```{r, fig.width = 8}
 tokenInfo <- summary(inaugCorpus)
 if (require(ggplot2))
     ggplot(data=tokenInfo, aes(x=Year, y=Tokens, group=1)) + geom_line() + geom_point() +
@@ -477,8 +451,8 @@ head(stopwords("arabic"), 10)
 ### Viewing the document-frequency matrix
 
 The dfm can be inspected in the Enviroment pane in RStudio, or by calling R's `View` function. Calling `plot` on a dfm will display a wordcloud using the [wordcloud package](link.)
-```{r warning=FALSE}
-mydfm <- dfm(ukimmigTexts, ignoredFeatures=c("will", stopwords("english")))
+```{r warning=FALSE, fig.width = 8, fig.height = 8}
+mydfm <- dfm(ukimmigTexts, ignoredFeatures = c("will", stopwords("english")))
 mydfm
 ```
 
@@ -488,12 +462,12 @@ topfeatures(mydfm, 20)  # 20 top words
 ```
 
 Plotting a word cloud is very simple, since this is the default `plot()` method for a `dfm` class object:
-```{r warning=FALSE}
+```{r warning = FALSE, fig.width = 8, fig.height = 8}
 plot(mydfm)
 ```
 
 The `plot.dfm()` method passes arguments through to `wordcloud()` from the **wordcloud** package, and can prettify the plot using the same arguments:
-```{r warning=FALSE}
+```{r warning=FALSE, fig.width = 7, fig.height = 7}
 if (require(RColorBrewer))
     plot(mydfm, max.words = 100, colors = brewer.pal(6, "Dark2"), scale = c(8, .5))
 ```
@@ -553,7 +527,7 @@ liwcdfm[, 1:10]
 
 ## Similarities between texts
 
-```{r}
+```{r fig.width = 6}
 presDfm <- dfm(subset(inaugCorpus, Year>1980), 
                ignoredFeatures = stopwords("english"),
                stem=TRUE, verbose=FALSE)
@@ -564,9 +538,9 @@ dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
 
 
 We can use these distances to plot a dendrogram, clustering presidents:
-```{r, eval=FALSE}
+```{r, fig.width = 10, fig.height = 7, eval = FALSE}
 data(SOTUCorpus, package="quantedaData")
-presDfm <- dfm(subset(SOTUCorpus, year > 1960), verbose = FALSE, stem = TRUE,
+presDfm <- dfm(subset(SOTUCorpus, Date > as.Date("1960-01-01")), verbose = FALSE, stem = TRUE,
                ignoredFeatures = stopwords("english"))
 presDfm <- trim(presDfm, minCount=5, minDoc=3)
 # hierarchical clustering - get distances on normalized dfm
@@ -576,9 +550,9 @@ presCluster <- hclust(presDistMat)
 # label with document names
 presCluster$labels <- docnames(presDfm)
 # plot as a dendrogram
-plot(presCluster)
+plot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
 ```
-
+<img src="images/prescluster.png" alt="Presidential Cluster Dendrogram" style="width: 780px;"/>
 
 
 We can also look at term similarities:
@@ -589,7 +563,7 @@ similarity(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "
 ## Scaling document positions
 
 We have a lot of development work to do on the `textmodel()` function, but here is a demonstration of unsupervised document scaling comparing the "wordfish" model to scaling from correspondence analysis:
-```{r}
+```{r fig.width = 6, fig.height = 6}
 # make prettier document names
 docnames(ie2010Corpus) <- 
     paste(docvars(ie2010Corpus, "name"), docvars(ie2010Corpus, "party"))

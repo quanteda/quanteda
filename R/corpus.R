@@ -282,6 +282,39 @@ corpus.data.frame <- function(x, textField, ...) {
 }
 
 
+#' @rdname corpus
+#' @examples 
+#' 
+#' # construct a corpus from a kwic object
+#' mykwic <- kwic(inaugCorpus, "southern")
+#' summary(corpus(mykwic))
+#' @export
+corpus.kwic <- function(x, ...) {
+    
+    args <- list(...)
+    if ("docvars" %in% names(args))
+        stop("docvars are assigned automatically for kwic objects", )
+    
+    class(x) <- "data.frame"
+    
+    result <- corpus(x, textField = "contextPre", ...)
+    result[["contextPost"]] <- NULL
+    result[["context"]] <- "pre"
+    docnames(result) <- paste0(docnames(result), ".pre")
+
+    tempCorp <- corpus(x, textField = "contextPost", ...)
+    tempCorp[["contextPre"]] <- NULL
+    tempCorp[["context"]] <- "post"
+    docnames(tempCorp) <- paste0(docnames(tempCorp), ".post")
+    
+    result <- result + tempCorp
+    metacorpus(result, "source") <- paste0("Corpus created from kwic(x, keywords = \"", attr(x, "keywords"), "\")")
+
+    result
+}
+
+
+
 
 # print a corpus object
 #
@@ -292,8 +325,13 @@ corpus.data.frame <- function(x, textField, ...) {
 #  see http://stackoverflow.com/questions/6517222/how-to-properly-document-a-s3-method-of-a-generic-from-a-different-package-usin
 #' @method print corpus
 print.corpus <- function(x, ...) {
-    cat("Corpus consisting of ", ndoc(x), " document",
-        ifelse(ndoc(x)>1, "s", ""), ".\n", sep="")
+    cat("Corpus consisting of ", format(ndoc(x), big.mark=","), " document",
+        ifelse(ndoc(x)>1, "s", ""), sep = "")
+    if (!is.null(docvars(x))) 
+        cat(" and ", format(ncol(docvars(x)), big.mark=","), " docvar", 
+            ifelse(ncol(docvars(x)) == 1, "", "s"), "", sep="")
+    cat(".\n")
+    
     #         ", ",
     #         ifelse(is.null(corp$tokens), "un", ""),
     #         "indexed.\n", sep="")
@@ -968,10 +1006,12 @@ rep.data.frame <- function(x, ...)
             metacorpus(c1, field) <- paste(metacorpus(c1, field), metacorpus(c2, field))
     }
     
-    # combine the documents info, after warning if not column-conforming
-#     if (!setequal(names(c1$documents), names(c2$documents)))
-#         warning("different document-level data found, filling missing values with NAs.", noBreaks.=TRUE)
-    c1$documents <- combineByName(c1$documents, c2$documents)
+    row.names <- c(rownames(c1$documents), rownames(c2$documents))
+    c1$documents <- data.frame(
+       data.table::rbindlist(list(c1$documents, c2$documents), use.names=T, fill=T)
+    )
+    #  Put rownames back in because the hadleyverse discards them
+    rownames(c1$documents) <- make.unique(row.names, sep='')
 
     # settings
     ### currently just use the c1 settings
@@ -994,69 +1034,11 @@ c.corpus <- function(..., recursive = FALSE) {
     dots <- list(...)
     if (length(dots) == 1) return(dots[[1]])
     result <- dots[[1]] + dots[[2]]
-    metacorpus(result, "source") <- paste0("Concatenation by c.corpus(", names(dots), ")")
     if (length(dots) == 2) return(result)
     for (i in 3:length(dots))
         result <- result + dots[[i]]
+    metacorpus(result, "source") <- paste0("Concatenation by c.corpus(", names(dots), ")")
     return(result)
-}
-
-
-### from http://stackoverflow.com/questions/3402371/rbind-different-number-of-columns
-### combines data frames (like rbind) but by matching column names
-# columns without matches in the other data frame are still combined
-# but with NA in the rows corresponding to the data frame without
-# the variable
-# A warning is issued if there is a type mismatch between columns of
-# the same name and an attempt is made to combine the columns
-combineByName <- function(A, B, ...) {
-    a.names <- names(A)
-    b.names <- names(B)
-    all.names <- union(a.names,b.names)
-    #print(paste("Number of columns:",length(all.names)))
-    a.type <- NULL
-    for (i in 1:ncol(A)) {
-        a.type[i] <- typeof(A[,i])
-    }
-    b.type <- NULL
-    for (i in 1:ncol(B)) {
-        b.type[i] <- typeof(B[,i])
-    }
-    a_b.names <- names(A)[!names(A)%in%names(B)]
-    b_a.names <- names(B)[!names(B)%in%names(A)]
-    if (length(a_b.names)>0 | length(b_a.names)>0){
-        #print("Columns in data frame A but not in data frame B:")
-        #print(a_b.names)
-        #print("Columns in data frame B but not in data frame A:")
-        #print(b_a.names)
-    } else if (a.names==b.names && a.type==b.type) {
-        C <- rbind(A, B)
-        return(C)
-    }
-    C <- list()
-    for(i in 1:length(all.names)) {
-        l.a <- all.names[i]%in%a.names
-        pos.a <- match(all.names[i],a.names)
-        typ.a <- a.type[pos.a]
-        l.b <- all.names[i]%in%b.names
-        pos.b <- match(all.names[i],b.names)
-        typ.b <- b.type[pos.b]
-        if(l.a & l.b) {
-            if(typ.a==typ.b) {
-                vec <- c(A[,pos.a],B[,pos.b])
-            } else {
-                warning(c("Type mismatch in variable named: ",all.names[i],"\n"))
-                vec <- try(c(A[,pos.a],B[,pos.b]))
-            }
-        } else if (l.a) {
-            vec <- c(A[,pos.a],rep(NA,nrow(B)))
-        } else {
-            vec <- c(rep(NA,nrow(A)),B[,pos.b])
-        }
-        C[[i]] <- vec
-    }
-    names(C) <- all.names
-    data.frame(C, stringsAsFactors = FALSE) #, stringsAsFactors=TRUE)
 }
 
 

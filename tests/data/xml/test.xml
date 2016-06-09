@@ -1,0 +1,12 @@
+<docs>
+ <doc>
+   <text>Lorem ipsum.</text>
+   <colour>green</colour>
+   <number>42</number>
+ </doc>
+ <doc>
+   <colour>red</colour>
+   <text>Dolor sit</text>
+   <number>99</number>
+ </doc>
+</docs>

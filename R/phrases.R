@@ -42,7 +42,7 @@ setGeneric("phrasetotoken",
 #' @export
 setMethod("phrasetotoken", signature = c("corpus", "ANY"), 
           function(object, phrases, ...) {
-              texts(object) <- phrasetotoken(object, phrases, ...)
+              texts(object) <- phrasetotoken(texts(object), phrases, ...)
               object
           })
 
@@ -67,18 +67,6 @@ setMethod("phrasetotoken", signature = c("character", "dictionary"),
               phrasetotoken(object, compoundPhrases, ...)
           })
 
-
-          
-# object <- c("Kind of cool, yeah text is cool is kind.",
-#          "shit fire, Shitty fire.")
-# phrases <- dictionary(list(one = c("kind of"), two = c("shit* fire")), concatenator = " ")
-# valuetype <- "glob"
-# phrasetotoken(object, phrases)
-# 
-# stri_replace_all_regex(c("Fuck fire is kind of hot, yeah kind of cool is kind.", "fuck fire, Shit fuck fire."),
-#                     c("\\bis\\p{WHITE_SPACE}kind\\b", "\\bfuck\\p{WHITE_SPACE}fire\\b"), c("A_B", "C_D"),
-#                     vectorize_all = TRUE)
-# 
 
 setClass("collocations", contains = "data.table")
 
@@ -125,44 +113,3 @@ setMethod("phrasetotoken", signature = c("character", "character"),
           })
 
 
-
-# @rdname phrasetotoken
-# @export
-# phrasetotoken.character <- function(x, dictionary, concatenator="_") {
-#     # get the tokenized list of compound phrases from a dictionary (list)
-#     phrases <- unlist(dictionary, use.names=FALSE)
-#     compoundPhrases <- phrases[grep(" ", phrases)]
-#     compoundPhrasesList <- tokenize(compoundPhrases)
-#     
-#     # contenate the phrases in
-#     # gsub("(word1)\\s(word2)", "\\1_\\2", "word1 word2")
-#     ## [1] "word1_word2"
-#     for (l in compoundPhrasesList) {
-#         re.pattern <- paste("(", 
-#                             paste(l, collapse=")\\s("),
-#                             ")", sep="")
-#         re.replace <- paste("\\", 1:length(l), sep="", collapse=concatenator)
-#         x <- gsub(re.pattern, re.replace, x, perl=TRUE)
-#     }
-#     x    
-# }
-
-# gapTokenize <- function(txt) {
-#     tokenVec <- tokenize(txt, removePunct=FALSE, simplify=TRUE)
-#     punctEndIndex <- grep("[])};:,.?!]", tokenVec) # don't pad if last token
-#     if (length(punctEndIndex) > 0) {
-#         for (i in 1:(length(punctEndIndex))) {
-#             if (punctEndIndex[i]+i-1 == length(tokenVec)) break
-#             tokenVec <- c(tokenVec[1:(i-1+punctEndIndex[i])], "", tokenVec[(i+punctEndIndex[i]):length(tokenVec)])
-#         }
-#     }
-#     punctBegIndex <- grep("[[({]", tokenVec)
-#     if (length(punctBegIndex) > 0) {
-#         for (i in 1:(length(punctBegIndex))) {
-#             if (punctBegIndex[i] == 1) continue  # don't pad if first token
-#             tokenVec <- c(tokenVec[1:(i-2+punctBegIndex[i])], "", tokenVec[(i-1+punctBegIndex[i]):length(tokenVec)])
-#         }
-#     }
-#     # now remove the rest of the stuff not yet cleaned
-#     clean(tokenVec, removeDigits = FALSE, toLower = FALSE, removeURL = FALSE)
-# }
