@@ -70,6 +70,7 @@ setMethod("show",
 #'   files either at the top level or in a single directory.
 #'    This may also be a URL to a zip file.}
 #'   }
+#' @param ignoreMissingFiles
 #' @param textField a variable (column) name or column number indicating where 
 #'   to find the texts that form the documents for the corpus.  This must be 
 #'   specified for file types \code{.csv} and \code{.json}.
@@ -115,7 +116,7 @@ setMethod("show",
 #' @export
 #' @importFrom utils download.file unzip type.convert
 setGeneric("textfile",
-           function(file, textField, 
+           function(file, ignoreMissingFiles=FALSE, textField, 
                     cache = FALSE, docvarsfrom = c("filenames"), dvsep="_", 
                     docvarnames = NULL,  ...) 
                standardGeneric("textfile"))
@@ -153,69 +154,63 @@ setGeneric("textfile",
 #'                     full.names = TRUE, recursive = TRUE))
 #' }
 setMethod("textfile", 
-          signature(file = "character", textField = "index", 
-                    cache = "ANY", 
-                    docvarsfrom="missing", dvsep="missing", docvarnames="missing"),
-          definition = function(file, textField, cache = FALSE, ...) {
-              #               if ((!(addedArgs <- list(...)) %in% names(formals(file))))
-              #                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-              if (length(textField) != 1)
-                  stop("textField must be a single field name or column number identifying the texts.")
-              fileType <- getFileType(file)
-              # print('1')
-              if (fileType == 'filemask'){
-                  sources <- get_datas(file, textField, ...)
-              } else {
-                  sources <- get_data(file, textField, fileType, ...)
-              }
+          signature(file = "character", ignoreMissingFiles = "ANY", textField = "ANY", 
+                    cache = "ANY", docvarsfrom="ANY", dvsep="ANY", docvarnames="ANY"),
+          definition = function(file, ignoreMissingFiles=FALSE, textField=NULL,
+                    cache = FALSE, docvarsfrom=NULL, dvsep=NULL, docvarnames=NULL) {
+
+              files <- listMatchingFiles(file, ignoreMissing=ignoreMissingFiles)
+
+              sources <- sapply(files, getSource)
+
               returnCorpusSource(sources, cache)
-          })
+})
 
 
-#' @rdname textfile
-#' @export
-setMethod("textfile", 
-          signature(file = "character", textField = "missing",
-                    cache = "ANY",
-                    docvarsfrom="missing", dvsep="missing", docvarnames="missing"),
-          definition = function(file, cache = FALSE, ...) {
-              #               if (length(addedArgs <- list(...)))
-              #                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-              
-              fileType <- getFileType(file)
-              if (fileType=="filemask" | fileType=="vector") {
-                  sources <- get_docs(file, ...)
-              } else {
-                  sources <- get_doc(file, ...)
-              }
-              returnCorpusSource(sources, cache)
-          })
-
-#' @rdname textfile
-#' @export
-setMethod("textfile", 
-          signature(file = "character", textField = "missing", 
-                    cache = "ANY",
-                    docvarsfrom="character", dvsep="ANY", docvarnames="ANY"),
-          definition = function(file, textField=NULL, cache = FALSE, 
-                                docvarsfrom=c("headers"), dvsep="_", docvarnames=NULL, ...) {
-              #               if (length(addedArgs <- list(...)))
-              #                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-              fileType <- getFileType(file)
-              if (fileType=="filemask") {
-                  sources <- get_docs(file, ...)
-              } else {
-                  stop("File type ", fileType, " not supported with these arguments.")
-              }
-              if (docvarsfrom == "filenames") {
-                  sources$docv <- getdocvarsFromFilenames(names(sources$txts), dvsep=dvsep, docvarnames=docvarnames)
-              } else {
-                  warning("docvarsfrom=", docvarsfrom, " not supported.")
-              }
-              returnCorpusSource(sources, cache)
-          })
-
-
+# #' @rdname textfile
+# #' @export
+# setMethod("textfile", 
+#           signature(file = "character", textField = "missing",
+#                     cache = "ANY",
+#                     docvarsfrom="missing", dvsep="missing", docvarnames="missing"),
+#           definition = function(file, cache = FALSE, ...) {
+#               #               if (length(addedArgs <- list(...)))
+#               #                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+#               
+#               fileType <- getFileType(file)
+#               if (fileType=="filemask" | fileType=="vector") {
+#                   sources <- get_docs(file, ...)
+#               } else {
+#                   sources <- get_doc(file, ...)
+#               }
+#               returnCorpusSource(sources, cache)
+#           })
+# 
+# #' @rdname textfile
+# #' @export
+# setMethod("textfile", 
+#           signature(file = "character", textField = "missing", 
+#                     cache = "ANY",
+#                     docvarsfrom="character", dvsep="ANY", docvarnames="ANY"),
+#           definition = function(file, textField=NULL, cache = FALSE, 
+#                                 docvarsfrom=c("headers"), dvsep="_", docvarnames=NULL, ...) {
+#               #               if (length(addedArgs <- list(...)))
+#               #                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+#               fileType <- getFileType(file)
+#               if (fileType=="filemask") {
+#                   sources <- get_docs(file, ...)
+#               } else {
+#                   stop("File type ", fileType, " not supported with these arguments.")
+#               }
+#               if (docvarsfrom == "filenames") {
+#                   sources$docv <- getdocvarsFromFilenames(names(sources$txts), dvsep=dvsep, docvarnames=docvarnames)
+#               } else {
+#                   warning("docvarsfrom=", docvarsfrom, " not supported.")
+#               }
+#               returnCorpusSource(sources, cache)
+#           })
+# 
+# 
 
 listMatchingFiles <- function(x, ignoreMissing=F) {
     # There are four possible types of values for x
@@ -288,6 +283,7 @@ returnCorpusSource <- function(sources, cache = FALSE) {
 }
 
 
+getSource(
 # read a document from a text-only file.
 get_doc <- function(f, ...) {
     txts <- c()
