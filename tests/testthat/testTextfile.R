@@ -506,3 +506,98 @@ test_that("Test mktemp function for test dirs",{
 
 
 })
+
+context("Tests of new textfile internals. If these fail, it doesn't necessarily affect the exposed API")
+
+context("Tests for listMatchingFiles")
+
+test_that("Test function to list files", {
+  expect_that(
+    listMatchingFiles('nonesuch://example.org/test.txt'),
+    throws_error('Unsupported URL scheme')
+  )           
+
+  testExistingFile <- mktemp()
+  expect_equal(listMatchingFiles(testExistingFile), testExistingFile)
+  expect_equal(listMatchingFiles(paste0('file://',testExistingFile)), testExistingFile)
+
+
+  # Test vector of filenames
+  testExistingFile2 <- mktemp()
+  expect_equal(
+    listMatchingFiles(c(testExistingFile, testExistingFile2)),
+    c(testExistingFile, testExistingFile2)
+  )
+
+  # TODO Test vector of filename and URL
+  #  expect_equal(
+  #    listMatchingFiles(c(testExistingFile, testExistingFile2)),
+  #    c(testExistingFile, testExistingFile2)
+  #  )
+
+  file.remove(testExistingFile)
+  expect_that(
+    listMatchingFiles(testExistingFile),
+    throws_error('File does not exist')
+   )
+  expect_equal(
+    listMatchingFiles(testExistingFile, ignoreMissing=T),
+    character(0)
+   )
+
+
+  # Test globbing
+  tempdir <- mktemp(directory=T)
+
+  file.create(file.path(tempdir, '1.tsv'))
+  file.create(file.path(tempdir, '2.tsv'))
+  file.create(file.path(tempdir, '10.tsv'))
+
+  expect_equal(
+    length(listMatchingFiles(paste0(tempdir, '/', '*.tsv' ))),
+    3
+  )
+
+  expect_equal(
+    length(listMatchingFiles(paste0(tempdir, '/', '?.tsv' ))),
+    2
+  )
+
+  expect_that(
+    length(listMatchingFiles(paste0(tempdir, '/', '?.txt' ))),
+    throws_error('File does not exist')
+  )
+
+
+  # Test globbing subdir
+
+  tempsubdir1 <- mktemp(base_path=tempdir, directory=T)
+  tempsubdir2 <- mktemp(base_path=tempdir, directory=T)
+
+  file.create(file.path(tempsubdir1, '1.tsv'))
+  file.create(file.path(tempsubdir1, '2.tsv'))
+  file.create(file.path(tempsubdir2, '1.tsv'))
+
+  expect_equal(
+    length(listMatchingFiles(paste0(tempdir, '/', '*/', '?.tsv' ))),
+    3
+  )
+
+
+  expect_that(
+    listMatchingFiles('http://example.org/test.nonesuch'),
+    throws_error('Remote URL does not end in known extension.')
+  )
+
+
+  expect_that(
+    listMatchingFiles('http://www.google.com/404.txt'),
+    throws_error('cannot open URL')
+  )
+
+  expect_true(
+    is.null(listMatchingFiles('http://www.google.com/404.txt', ignoreMissing=T))
+  )
+
+
+})

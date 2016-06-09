@@ -1,3 +1,6 @@
+SUPPORTED_FILETYPE_MAPPING <-        c('excel', 'excel', 'csv', 'txt', 'word', 'word', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tab', 'pdf')
+names(SUPPORTED_FILETYPE_MAPPING) <- c('xls',   'xlsx',  'csv', 'txt', 'doc',  'docx', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tsv', 'pdf')
+
 #' corpus source classes
 #' 
 #' The \code{corpusSource} virtual class is a parent class for more specific 
@@ -32,11 +35,6 @@ setMethod("show",
                       ncol(docvars(object)), " docvar", ifelse(ncol(docvars(object)) == 1, "", "s"), ".\n", sep="")
               }
           })
-
-
-# textsourcefile(file="myfile.xlsx", textIndex = NULL, format = NULL)
-# textsourcefile(file="myfile.csv", textIndex = 1)
-# textsourcefile(file="myfile.json", textIndex = 1)
 
 
 #' read a text corpus source from a file
@@ -217,7 +215,63 @@ setMethod("textfile",
               returnCorpusSource(sources, cache)
           })
 
-## New internals
+
+
+listMatchingFiles <- function(x, ignoreMissing=F) {
+    # There are four possible types of values for x
+    #     - a simple filename
+    #     - a remote URL
+    #     - a glob pattern
+    #     - a vector of some combination of the above
+
+    filenames <- c()
+    for (i in x) {
+
+        scheme <- stringr::str_match(i, '^([a-z][a-z+.-]*):')[, 2]
+        #  First, check that this is not a URL with an unsupported scheme
+        if (!(
+              (scheme %in% c('http', 'https', 'ftp', 'file')) | is.na(scheme)
+           )) {
+            stop(paste('Unsupported URL scheme', scheme))
+        }
+
+        # If it's a file:// URL or not a URL, treat it as a local file
+        if (scheme =='file' | is.na(scheme)) {
+        #  here, x could be a regular filename or a glob pattern but given
+        #  that regular filenames are a subset of globs, we can just treat
+        #  it like a glob
+        i <- stringr::str_replace(i, '^file://', '')
+        globbedFiles <- Sys.glob(i)
+        if ((length(globbedFiles) == 0) & !ignoreMissing) {
+            stop(paste('File does not exist', i))
+        }
+        filenames <- c(filenames, globbedFiles)
+        }
+
+        else {
+            # If this is a supported-scheme remote URL
+            extension <- tools::file_ext(i)
+            if (!(extension %in% names(SUPPORTED_FILETYPE_MAPPING))) {
+                stop('Remote URL does not end in known extension. Please download the file manually.')
+            }
+            tryCatch({
+                localfile <- paste0(mktemp(), '.', extension) 
+                utils::download.file(i, destfile = localfile)
+                filenames <- c(filenames, localfile)
+            },
+            warning =  function(e) {
+                if (ignoreMissing) {return}
+                else {stop(e)}
+            },
+            error =  function(e) {
+                if (ignoreMissing) {return}
+                else {stop(e)}
+            }
+            )
+        }
+    }
+    filenames
+}
 
 # function common to all textfile methods to return either the cached
 # textfile object link, or the textfile object itself
@@ -450,11 +504,9 @@ getFileType <- function(filenameChar) {
         return("filemask")
     filenameExt <- tools::file_ext(filenameChar)
 
-    fileTypeMapping <-        c('excel', 'excel', 'csv', 'txt', 'word', 'word', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tab', 'pdf')
-    names(fileTypeMapping) <- c('xls',   'xlsx',  'csv', 'txt', 'doc',  'docx', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tsv', 'pdf')
 
     fileType <- tryCatch({
-         fileTypeMapping[[filenameExt]]
+         SUPPORTED_FILETYPE_MAPPING[[filenameExt]]
     }, error = function(e) {
         'unknown'
     })
