@@ -495,4 +495,14 @@ test_that("Test mktemp function for test dirs",{
     'testprefix'
   )
 
+  # test that a new filename will be given if the original already exists
+  set.seed(0)
+  original_filename <- quanteda:::mktemp()
+  set.seed(0)
+  new_filename <- quanteda:::mktemp()
+  expect(false(original_filename == new_filename))
+  expect_true(file.exists(original_filename))
+  expect_true(file.exists(new_filename))
+
+
 })
