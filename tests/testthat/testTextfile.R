@@ -392,8 +392,7 @@ broken_encodings <- c(
 )
 
 
-FILEDIR <- quanteda:::mktemp(directory=T)
-unzip(system.file("extdata", "encodedExampleFiles.zip", package = "quanteda"), exdir = FILEDIR)
+FILEDIR <- '../data/encoding'
 
 filenames <- list.files(FILEDIR, "*__characters.txt$")
 parts <- strsplit(gsub(".txt$", "", filenames), "__")
