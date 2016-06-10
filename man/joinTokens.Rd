@@ -33,23 +33,23 @@ txt <- c("The United States is bordered by the Atlantic Ocean and the Pacific Oc
          "luv the united states XXOO :-)")
 toks <- tokenize(txt)
 phrasesFixed <- tokenize(c("United States", "Supreme Court", "Atlantic Ocean", "Pacific Ocean"))
-joinTokens(toks, phrasesFixed, valuetype = "fixed", case_insensitive = FALSE)
+joinTokens(toks, phrasesFixed, valuetype = "fixed", case_insensitive = FALSE, verbose=TRUE)
 ## NOT WORKING
-joinTokens(toks, phrasesFixed, valuetype = "fixed", case_insensitive = TRUE)
+joinTokens(toks, phrasesFixed, valuetype = "fixed", case_insensitive = TRUE, verbose=TRUE)
 ## NOT WORKING
 joinTokens(toks, phrasesFixed, valuetype = "regex", verbose = TRUE)
 
 ## OTHER STRANGE BEHAVIOUR
 toks <- tokenize("Simon sez the multi word expression plural is multi word expressions, Simon sez.")
 phrases <- tokenize(c("multi word expression", "multi word expressions", "Simon sez"))
-joinTokens(toks, phrases, valuetype = "fixed")
+joinTokens(toks, phrases, valuetype = "fixed", verbose = TRUE)
 # now rearrange the order of the phrases
-joinTokens(toks, phrases[c(2,1,3)], valuetype = "fixed")
+joinTokens(toks, phrases[c(2,1,3)], valuetype = "fixed", verbose = TRUE)
 
 ## MORE BIZARRE BEHAVIOUR
-toks <- tokenize("The multi word expression plural is multi word expressions.")
+toks <- tokenize("The multi word expression plural is multi word expressions")
 phrases <- tokenize(c("multi word expression", "multi word expressions"))
-joinTokens(toks, phrases, valuetype = "fixed")
+joinTokens(toks, phrases, valuetype = "fixed", verbose = TRUE)
 
 # with the inaugural corpus
 toks <- tokenize(inaugCorpus, removePunct = TRUE)

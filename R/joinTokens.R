@@ -18,23 +18,23 @@
 #'          "luv the united states XXOO :-)")
 #' toks <- tokenize(txt)
 #' phrasesFixed <- tokenize(c("United States", "Supreme Court", "Atlantic Ocean", "Pacific Ocean"))
-#' joinTokens(toks, phrasesFixed, valuetype = "fixed", case_insensitive = FALSE)
+#' joinTokens(toks, phrasesFixed, valuetype = "fixed", case_insensitive = FALSE, verbose=TRUE)
 #' ## NOT WORKING
-#' joinTokens(toks, phrasesFixed, valuetype = "fixed", case_insensitive = TRUE)
+#' joinTokens(toks, phrasesFixed, valuetype = "fixed", case_insensitive = TRUE, verbose=TRUE)
 #' ## NOT WORKING
 #' joinTokens(toks, phrasesFixed, valuetype = "regex", verbose = TRUE)
 #' 
 #' ## OTHER STRANGE BEHAVIOUR
 #' toks <- tokenize("Simon sez the multi word expression plural is multi word expressions, Simon sez.")
 #' phrases <- tokenize(c("multi word expression", "multi word expressions", "Simon sez"))
-#' joinTokens(toks, phrases, valuetype = "fixed")
+#' joinTokens(toks, phrases, valuetype = "fixed", verbose = TRUE)
 #' # now rearrange the order of the phrases
-#' joinTokens(toks, phrases[c(2,1,3)], valuetype = "fixed")
+#' joinTokens(toks, phrases[c(2,1,3)], valuetype = "fixed", verbose = TRUE)
 #' 
 #' ## MORE BIZARRE BEHAVIOUR
-#' toks <- tokenize("The multi word expression plural is multi word expressions.")
+#' toks <- tokenize("The multi word expression plural is multi word expressions")
 #' phrases <- tokenize(c("multi word expression", "multi word expressions"))
-#' joinTokens(toks, phrases, valuetype = "fixed")
+#' joinTokens(toks, phrases, valuetype = "fixed", verbose = TRUE)
 #' 
 #' # with the inaugural corpus
 #' toks <- tokenize(inaugCorpus, removePunct = TRUE)
@@ -53,49 +53,51 @@ joinTokens <- function(x, sequences, concatenator = "_", valuetype = c("glob", "
     valuetype <- match.arg(valuetype)
     
     if (verbose) cat("Indexing tokens...\n")
-    index <- dfm(x, toLower = case_insensitive, verbose = FALSE)
+    index <- dfm(x, verbose = FALSE) # index is always case-sensitive
     index_binary <- as(index, 'nMatrix')
     types <- colnames(index_binary)
     
-    # convert to regular expressions, then to fixed
+    # Convert to regular expressions, then to fixed
     if (valuetype %in% c("glob"))
         sequences <- lapply(sequences, glob2rx)
-    if (valuetype %in% c("glob", "regex")) {
-        seqs_token <- regexToFixed(x, sequences, case_insensitive, types)
-    } else 
+    if (valuetype %in% c("glob", "regex") | case_insensitive) {
+        # Generates all possible patterns of sequences
+        seqs_token <- grid_sequence(x, sequences, types, valuetype, case_insensitive)
+    } else {
         seqs_token <- sequences
-
+    }
+    #print(str(seqs_token))
     n_seqs <- length(seqs_token)
     if (n_seqs == 0) return(x)
-    
     y <- deepcopy(x) # copy x to y to prevent changes in x
     for (i in 1:n_seqs) {
         seq_token <- seqs_token[[i]]
         if (length(seq_token) < 2) next
         if (is.list(seq_token) | !is.vector(seq_token) | length(seq_token) == 0) stop('Invalid token sequence\n');
         if (!all(seq_token %in% types)) {
-            if(verbose) cat(paste0('"', seq_token, concatenate='', '"'), 'are not found', '\n')
+            if(verbose) cat(sprintf('%d/%d "%s" is not found\n', i, n_seqs, paste(seq_token, collapse=' ')))
         } else {
             flag <- Matrix::rowSums(index_binary[,seq_token, drop = FALSE]) == length(seq_token)
             if (verbose) cat(sprintf('%d/%d "%s" is found in %d texts\n', i, n_seqs, paste(seq_token, collapse=' '), sum(flag)))
             join_tokens_cppl(y, flag, seq_token, concatenator) # pass y as reference
         }
     }
-    
     removeFeatures(y, "")
 }
 
-
-regexToFixed <- function(tokens, patterns, case_insensitive = FALSE, types = NULL) {
-    
-    # get unique token types
-    if (is.null(types)) types <- unique(unlist(tokens))
+grid_sequence <- function(tokens, seqs_pat, types, valuetype, case_insensitive = FALSE) {
     
     seqs_token <- list()
-    for (seq_regex in patterns) {
-        match <- lapply(seq_regex, function(x, y) y[stringi::stri_detect_regex(y, x, case_insensitive = case_insensitive)], types)
-        if (length(unlist(seq_regex)) != length(match)) next
-        match_comb <- do.call(expand.grid, c(match, stringsAsFactors = FALSE)) # produce all possible combinations
+    for (seq_pat in seqs_pat) {
+        if(valuetype == 'fixed'){
+          seq_match <- lapply(seq_pat, function(x, y) y[toLower(y) %in% toLower(x)], types)
+        }else{
+          seq_match <- lapply(seq_pat, function(x, y) y[stringi::stri_detect_regex(y, x, case_insensitive = case_insensitive)], types)
+        }
+        #print(seq_match)
+        if (length(unlist(seq_pat)) != length(seq_match)) next
+        match_comb <- do.call(expand.grid, c(seq_match, stringsAsFactors = FALSE)) # produce all possible combinations
+        #print(match_comb)
         seqs_token <- c(seqs_token, split_df_cpp(t(match_comb)))
     }
     seqs_token

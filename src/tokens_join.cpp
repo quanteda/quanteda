@@ -30,11 +30,11 @@ void join_tokens_cpp(CharacterVector tokens,
     return ;
   }
   int start = -1;
-  bool change = FALSE;
+  bool change = false;
   String token_joined = join2(tokens_join, delim);
-  for (int i = 0; i < len - (len_join - 1); i++){
+  for (int i = 0; i < len; i++){
     //Rcout << "Now " << i << " " << tokens[i] << "\n";
-    if(tokens[i] == tokens_join[0] & tokens[i + 1] == tokens_join[1]){ // Initial match
+    if(i < len - (len_join - 1)  && tokens[i] == tokens_join[0] && tokens[i + 1] == tokens_join[1]){ // Initial match
       start = i;
       //Rcout << "Start " << start << " " << tokens[i] << "\n";
     }
@@ -47,7 +47,7 @@ void join_tokens_cpp(CharacterVector tokens,
           //Rcout << "Remove " << k << ' ' << tokens[k] << "\n";
           tokens[k] = "";
         }
-        change = TRUE;
+        change = true;
         start = -1; // Reset
       }else{
         if(tokens[i] != tokens_join[j]) start = -1; // Partial match
