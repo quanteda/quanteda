@@ -19,21 +19,12 @@
 #' toks <- tokenize(txt)
 #' phrasesFixed <- tokenize(c("United States", "Supreme Court", "Atlantic Ocean", "Pacific Ocean"))
 #' joinTokens(toks, phrasesFixed, valuetype = "fixed", case_insensitive = FALSE, verbose=TRUE)
-#' ## NOT WORKING
 #' joinTokens(toks, phrasesFixed, valuetype = "fixed", case_insensitive = TRUE, verbose=TRUE)
 #' ## NOT WORKING
 #' joinTokens(toks, phrasesFixed, valuetype = "regex", verbose = TRUE)
 #' 
-#' ## OTHER STRANGE BEHAVIOUR
 #' toks <- tokenize("Simon sez the multi word expression plural is multi word expressions, Simon sez.")
 #' phrases <- tokenize(c("multi word expression", "multi word expressions", "Simon sez"))
-#' joinTokens(toks, phrases, valuetype = "fixed", verbose = TRUE)
-#' # now rearrange the order of the phrases
-#' joinTokens(toks, phrases[c(2,1,3)], valuetype = "fixed", verbose = TRUE)
-#' 
-#' ## MORE BIZARRE BEHAVIOUR
-#' toks <- tokenize("The multi word expression plural is multi word expressions")
-#' phrases <- tokenize(c("multi word expression", "multi word expressions"))
 #' joinTokens(toks, phrases, valuetype = "fixed", verbose = TRUE)
 #' 
 #' # with the inaugural corpus
@@ -98,6 +89,22 @@ grid_sequence <- function(tokens, seqs_pat, types, valuetype, case_insensitive =
         if (length(unlist(seq_pat)) != length(seq_match)) next
         match_comb <- do.call(expand.grid, c(seq_match, stringsAsFactors = FALSE)) # produce all possible combinations
         #print(match_comb)
+        seqs_token <- c(seqs_token, split_df_cpp(t(match_comb)))
+    }
+    seqs_token
+}
+
+## older function called from selectFeatures.R
+regexToFixed <- function(tokens, patterns, case_insensitive = FALSE, types = NULL) {
+    
+    # get unique token types
+    if (is.null(types)) types <- unique(unlist(tokens))
+    
+    seqs_token <- list()
+    for (seq_regex in patterns) {
+        match <- lapply(seq_regex, function(x, y) y[stringi::stri_detect_regex(y, x, case_insensitive = case_insensitive)], types)
+        if (length(unlist(seq_regex)) != length(match)) next
+        match_comb <- do.call(expand.grid, c(match, stringsAsFactors = FALSE)) # produce all possible combinations
         seqs_token <- c(seqs_token, split_df_cpp(t(match_comb)))
     }
     seqs_token
