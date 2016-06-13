@@ -148,18 +148,18 @@ test_that("test structured textfile with glob-style mask", {
 test_that("test non-implemented functions", {
 
     expect_that(
-        textfile('../data/empty/test.doc'),
-        throws_error('doc files not implemented yet')
+        textfile('../data/empty/empty.doc'),
+        throws_error('Unsupported extension doc')
     )
 
     expect_that(
-        textfile('../data/empty/test.docx'),
-        throws_error('doc files not implemented yet')
+        textfile('../data/empty/empty.docx'),
+        throws_error('Unsupported extension docx')
     )
 
     expect_that(
-        textfile('../data/empty/test.pdf'),
-        throws_error('pdf files not implemented yet')
+        textfile('../data/empty/empty.pdf'),
+        throws_error('Unsupported extension pdf')
     )
 
 

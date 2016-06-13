@@ -1,5 +1,5 @@
-SUPPORTED_FILETYPE_MAPPING <-        c('excel', 'excel', 'csv', 'txt', 'word', 'word', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tab', 'pdf')
-names(SUPPORTED_FILETYPE_MAPPING) <- c('xls',   'xlsx',  'csv', 'txt', 'doc',  'docx', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tsv', 'pdf')
+SUPPORTED_FILETYPE_MAPPING <-        c('excel', 'excel', 'csv', 'txt', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tab')
+names(SUPPORTED_FILETYPE_MAPPING) <- c('xls',   'xlsx',  'csv', 'txt', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tsv')
 
 #' corpus source classes
 #' 
@@ -316,7 +316,8 @@ getSource <- function(f, textField, ...) {
            txt = {return(get_txt(f, ...))},
            csv = {return(get_csv(f, textField, sep=',', ...))},
            tab = {return(get_csv(f, textField, sep='\t', ...))},
-           tsv = {return(get_csv(f, textField, sep='\t', ...))}
+           tsv = {return(get_csv(f, textField, sep='\t', ...))},
+           xml = {return(get_xml(f, textField, ...))}
     )
 }
 
@@ -503,7 +504,7 @@ get_json <- function(path, textField, ...) {
 
 
 ## flat xml format
-get_xml <- function(file, textField, sep=",", ...) {
+get_xml <- function(file, textField, ...) {
     if (!requireNamespace("XML", quietly = TRUE))
         stop("You must have XML installed to read XML files.")
     docv <- XML::xmlToDataFrame(file, stringsAsFactors = FALSE, ...)
