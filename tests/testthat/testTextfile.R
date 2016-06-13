@@ -3,6 +3,9 @@
 # TODO: RTL
 # TODO: bi-directional text
 # TODO: encodings in filenames
+# TODO: re-do docs
+# TODO: Check and remove extranous codes
+# TODO: Add commented-out checks, json
 
 
 context('test textfile.R')
