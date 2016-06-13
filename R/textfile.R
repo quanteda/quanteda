@@ -163,8 +163,8 @@ setMethod("textfile",
               if (is.null(textField)) textField <- 1
               files <- listMatchingFiles(file, ignoreMissing=ignoreMissingFiles)
 
-              sources <- sapply(files, function(x) {
-                  getSource(x, textField=textField, ...)}
+              sources <- lapply(files, function(x) {
+                  getSource(x, ...)}
               )
 
               docvarsfrom <- match.arg(docvarsfrom)
@@ -172,7 +172,7 @@ setMethod("textfile",
               if ('metadata' %in% docvarsfrom) {
                   docvars <- data.table::rbindlist(lapply(sources, function(x) x$docv))
               }
-              else if ('filename' %in% docvarsfrom){
+              else if ('filename' %in% docvarsfrom) {
               }
 
               returnCorpusSource(
@@ -302,7 +302,7 @@ returnCorpusSource <- function(sources, cache = FALSE) {
 
 
 #' @importFrom tools file_ext
-getSource <- function(f, textField, ...) {
+getSource <- function(f, ...) {
     extension <- tools::file_ext(f)
 
     fileType <- tryCatch({
@@ -312,12 +312,14 @@ getSource <- function(f, textField, ...) {
     })
 
     txt <- list()
+    docv <- data.frame()
     switch(fileType, 
+           txt = {txt <- readLines(con <- file(f, ...)); close(con)},
            csv = {txt <- get_csv(f, textField, sep=',', ...)},
            tab = {txt <- get_csv(f, textField, sep='\t', ...)},
            tsv = {txt <- get_csv(f, textField, sep='\t', ...)}
     )
-    return(list(txts=txt))
+    return(list(txts=txt, docv=docv))
 }
 
 # read a document from a text-only file.
@@ -521,6 +523,7 @@ get_xml <- function(file, textField, sep=",", ...) {
 }
 
 imputeDocvarsTypes <- function(docv) {
+    if (nrow(docv) == 0) return(docv)
     # Impute types of columns, just like read.table
     docv[] <- lapply(docv, function(x) type.convert(as.character(x), as.is=T))
     # And convert columns which have been made into factors into strings
