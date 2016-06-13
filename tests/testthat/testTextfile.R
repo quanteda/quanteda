@@ -333,8 +333,10 @@ test_that("test textfile() with docvarsfrom=filenames", {
 
     expect_that(
         docvars(textfile('../data/docvars/two/*txt', docvarsfrom='nonesuch')),
-        gives_warning('docvarsfrom=nonesuch not supported.')
+        throws_error('docvarsfrom must be')
     )
+
+docvars(textfile('../data/docvars/csv/*', docvarsfrom=c('metadata'), docvarnames=c('id', 'fruit'), textField='text'))
 
     #  Docvars from metadata and filename
     expect_equal(

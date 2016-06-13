@@ -167,6 +167,9 @@ setMethod("textfile",
                   getSource(x, textField, ...)}
               )
 
+              if (any(!(docvarsfrom %in% c('metadata', 'filenames'))))
+                  stop("docvarsfrom must be 'metadata', 'filename', or c('metadata', 'filename')")
+
               docvars <- NULL
               if ('metadata' %in% docvarsfrom) {
                   docvars <- data.table::rbindlist(lapply(sources, function(x) x$docv), use.names=T, fill=T)
