@@ -167,8 +167,8 @@ test_that("test non-implemented functions", {
 
 test_that("test warning for unrecognized filetype", {
     expect_that(
-        textfile('../data/empty/test.nonesuch'),
-        throws_error('unrecognized fileType:unknown')
+        textfile('../data/empty/empty.nonesuch'),
+        throws_error('Unsupported extension nonesuch')
     )
 })
 

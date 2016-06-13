@@ -309,7 +309,7 @@ getSource <- function(f, textField, ...) {
     fileType <- tryCatch({
          SUPPORTED_FILETYPE_MAPPING[[extension]]
     }, error = function(e) {
-        stop('unsupported extension', extension, 'of file', f)
+        stop(paste('Unsupported extension', extension, 'of file', f))
     })
 
     switch(fileType, 
