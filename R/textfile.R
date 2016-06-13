@@ -168,9 +168,8 @@ setMethod("textfile",
               )
 
               docvarsfrom <- match.arg(docvarsfrom)
+
               docvars <- c()
-              print(data.frame(sources))
-              
               if ('metadata' %in% docvarsfrom) {
                   docvars <- data.table::rbindlist(lapply(sources, function(x) x$docv))
               }
@@ -179,7 +178,7 @@ setMethod("textfile",
 
               returnCorpusSource(
                   list(
-                       txts = data.frame(sources, stringsAsFactors=F)$txts,
+                       txts = unlist(lapply(sources, function(x) x$txts)),
                        docvars = docvars
                    ),
                   cache
@@ -313,17 +312,19 @@ getSource <- function(f, textField, ...) {
         stop('unsupported extension', extension, 'of file', f)
     })
 
-    txt <- list()
-    docv <- data.frame()
     switch(fileType, 
-           txt = {txt <- paste(readLines(con <- file(f, ...)), collapse="\n"); close(con)},
+           txt = {return(get_txt(f, ...))},
            csv = {return(get_csv(f, textField, sep=',', ...))},
            tab = {return(get_csv(f, textField, sep='\t', ...))},
            tsv = {return(get_csv(f, textField, sep='\t', ...))}
     )
-    return(list(txts=txt, docv=docv))
 }
 
+get_txt <- function(f, ...) {
+    txt <- paste(readLines(con <- file(f, ...)), collapse="\n")
+    close(con)
+    list(txts=txt, docv=data.frame())
+}
 # read a document from a text-only file.
 get_doc <- function(f, ...) {
     txts <- c()
