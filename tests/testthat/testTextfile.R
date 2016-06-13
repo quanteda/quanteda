@@ -332,15 +332,15 @@ test_that("test textfile() with docvarsfrom=filenames", {
     #TODO: What happens if you supply more docnames?
 
     expect_that(
-        docvars(textfile('../data/docvars/two/1_apple_red.txt', docvarsfrom='filenames')),
-        throws_error('File type txt not supported with these arguments.')
-    )
-
-    expect_that(
         docvars(textfile('../data/docvars/two/*txt', docvarsfrom='nonesuch')),
         gives_warning('docvarsfrom=nonesuch not supported.')
     )
 
+    #  Docvars from metadata and filename
+    expect_equal(
+        docvars(textfile('../data/docvars/csv/*', docvarsfrom=c('filenames', 'metadata'), docvarnames=c('id', 'fruit'), textField='text')),
+        data.frame(list(id=c(1, 2), fruit=c('apple', 'orange'), shape=c('round', NA), texture=c(NA, 'rough')), stringsAsFactors=FALSE)
+    )
 
 
 

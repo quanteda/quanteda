@@ -157,7 +157,7 @@ setMethod("textfile",
           signature(file = "character", ignoreMissingFiles = "ANY", textField = "ANY", 
                     cache = "ANY", docvarsfrom="ANY", dvsep="ANY", docvarnames="ANY"),
           definition = function(file, ignoreMissingFiles=FALSE, textField=NULL,
-                    cache = FALSE, docvarsfrom=c('metadata', 'filename'), dvsep=NULL, docvarnames=NULL,
+                    cache = FALSE, docvarsfrom='metadata', dvsep='_', docvarnames=NULL,
                     ...) {
 
               if (is.null(textField)) textField <- 1
@@ -167,19 +167,25 @@ setMethod("textfile",
                   getSource(x, textField, ...)}
               )
 
-              docvarsfrom <- match.arg(docvarsfrom)
-
-              docvars <- c()
+              docvars <- NULL
               if ('metadata' %in% docvarsfrom) {
-                  docvars <- data.table::rbindlist(lapply(sources, function(x) x$docv))
+                  docvars <- data.table::rbindlist(lapply(sources, function(x) x$docv), use.names=T, fill=T)
               }
-              else if ('filename' %in% docvarsfrom) {
+
+              if ('filenames' %in% docvarsfrom) {
+                  filenameDocvars <- getdocvarsFromFilenames(files, dvsep=dvsep, docvarnames=docvarnames)
+                  if (!is.null(docvars)) {
+                      docvars <- cbind(filenameDocvars, docvars)
+                  }
+                  else {
+                      docvars <- filenameDocvars
+                  }
               }
 
               returnCorpusSource(
                   list(
                        txts = unlist(lapply(sources, function(x) x$txts)),
-                       docvars = docvars
+                       docvars = data.frame(docvars)
                    ),
                   cache
               )
@@ -540,10 +546,12 @@ imputeDocvarsTypes <- function(docv) {
 #' @importFrom tools file_path_sans_ext
 getdocvarsFromFilenames <- function(fnames, dvsep="_", docvarnames=NULL) {
     snames <- fnames
-    snames <- tools::file_path_sans_ext(snames)
+    snames <- tools::file_path_sans_ext(basename(snames))
     parts <- strsplit(snames, dvsep)
+
     if (!all(sapply(parts,function(x) identical(length(x), length(parts[[1]])))))
         stop("Filename elements are not equal in length.")
+
     dvars <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE), 
                          stringsAsFactors=FALSE)
     # assign default names in any case
