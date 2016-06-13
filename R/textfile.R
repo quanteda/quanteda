@@ -264,6 +264,13 @@ listMatchingFiles <- function(x, ignoreMissing=F) {
         #  that regular filenames are a subset of globs, we can just treat
         #  it like a glob
         i <- stringr::str_replace(i, '^file://', '')
+
+        if (tools::file_ext(i) == 'zip' | tools::file_ext(i) == 'gz') {
+            td <- mktemp(directory=T)
+            utils::unzip(i, exdir = td)
+            # Create a glob that matches all the files in the archive
+            i <- file.path(td, '*')
+        }
         globbedFiles <- Sys.glob(i)
         if ((length(globbedFiles) == 0) & !ignoreMissing) {
             stop(paste('File does not exist', i))
@@ -403,17 +410,6 @@ get_docs <- function(filemask, ...) {
     list(txts = textsvec, docv = data.frame())    
 }
 
-get_zipfile <- function(f, ...) {
-    #  Only supports .txt files, either at the toplevel or in a single directory
-    td <- mktemp(directory=T)
-    flocal <- ''
-    if (substr(f, 1, 4) == "http")
-        utils::download.file(f, destfile = (flocal <- file.path(td, "temp.zip", quiet = TRUE)))
-    else
-        flocal <- f
-    utils::unzip(flocal, exdir = td)
-    get_docs(file.path(td, "*txt"))
-}
 
 # read a document from a structured file containing text and data
 get_data <- function(f, textField, sep = ",", ...){
