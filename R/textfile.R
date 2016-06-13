@@ -164,11 +164,13 @@ setMethod("textfile",
               files <- listMatchingFiles(file, ignoreMissing=ignoreMissingFiles)
 
               sources <- lapply(files, function(x) {
-                  getSource(x, ...)}
+                  getSource(x, textField, ...)}
               )
 
               docvarsfrom <- match.arg(docvarsfrom)
               docvars <- c()
+              print(data.frame(sources))
+              
               if ('metadata' %in% docvarsfrom) {
                   docvars <- data.table::rbindlist(lapply(sources, function(x) x$docv))
               }
@@ -177,7 +179,7 @@ setMethod("textfile",
 
               returnCorpusSource(
                   list(
-                       txts = c(unlist(sapply(sources, function(x) x$txts))),
+                       txts = data.frame(sources, stringsAsFactors=F)$txts,
                        docvars = docvars
                    ),
                   cache
@@ -302,7 +304,7 @@ returnCorpusSource <- function(sources, cache = FALSE) {
 
 
 #' @importFrom tools file_ext
-getSource <- function(f, ...) {
+getSource <- function(f, textField, ...) {
     extension <- tools::file_ext(f)
 
     fileType <- tryCatch({
@@ -314,10 +316,10 @@ getSource <- function(f, ...) {
     txt <- list()
     docv <- data.frame()
     switch(fileType, 
-           txt = {txt <- readLines(con <- file(f, ...)); close(con)},
-           csv = {txt <- get_csv(f, textField, sep=',', ...)},
-           tab = {txt <- get_csv(f, textField, sep='\t', ...)},
-           tsv = {txt <- get_csv(f, textField, sep='\t', ...)}
+           txt = {txt <- paste(readLines(con <- file(f, ...)), collapse="\n"); close(con)},
+           csv = {return(get_csv(f, textField, sep=',', ...))},
+           tab = {return(get_csv(f, textField, sep='\t', ...))},
+           tsv = {return(get_csv(f, textField, sep='\t', ...))}
     )
     return(list(txts=txt, docv=docv))
 }
