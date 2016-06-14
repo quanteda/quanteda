@@ -1,7 +1,6 @@
-#TODO: redo json
 # TODO: re-do docs
 # TODO: Check and remove extranous codes
-# TODO: Add commented-out checks, json
+# TODO: Add commented-out checks
 # TODO: encoding of non-txt file
 # TODO: check encoginds length
 
