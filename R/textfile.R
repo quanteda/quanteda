@@ -254,6 +254,7 @@ setMethod("textfile",
 # 
 # 
 
+#' @importFrom stringr str_match,str_replace
 listMatchingFiles <- function(x, ignoreMissing=F) {
     # There are four possible types of values for x
     #     - a simple filename
