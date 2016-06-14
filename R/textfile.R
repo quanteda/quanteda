@@ -340,7 +340,7 @@ get_csv <- function(path, textField, ...) {
 
 
 
-#  Dispatch to get_json_general or get_json_tweets depending on whether 
+#  Dispatch to get_json_object or get_json_tweets depending on whether 
 #  it looks like a twitter json file
 get_json <- function(path, textField, encoding, ...) {
     # encoding param is not used
@@ -351,7 +351,7 @@ get_json <- function(path, textField, encoding, ...) {
         error=function(e) {
             tryCatch({
                 warning("Doesn't look like Tweets json file, trying general JSON")
-                return(get_json_general(path, textField, ...))
+                return(get_json_object(path, textField, ...))
             },
             error=function(e) {
                 warning("File doesn't contain a single valid JSON object, trying line-delimited json")
@@ -385,7 +385,7 @@ get_json_tweets <- function(path, source="twitter", ...) {
 
 ## general json
 #' @importFrom data.table setDT
-get_json_general <- function(path, textField, ...) {
+get_json_object <- function(path, textField, ...) {
     if (!requireNamespace("jsonlite", quietly = TRUE))
         stop("You must have jsonlite installed to read json files.")
     if (is.numeric(textField)) {
