@@ -2,26 +2,19 @@
 library(quanteda)
 
 ## ----eval=TRUE, fig.width=8, fig.height=8--------------------------------
-inaugDfm <- dfm(
-                inaugCorpus[0:10],
-                remove.features=stopwords('english')
-            ) # Create a dfm from a somewhat smaller corpus
-suppressWarnings( # Some words will not fit on a plot this size, so suppress those warings
-                 plot(inaugDfm)
-)
+# Create a dfm from a somewhat smaller corpus
+inaugDfm <- dfm(inaugCorpus[0:10], ignoredFeatures = stopwords('english'))
+# Some words will not fit on a plot this size, so suppress those warings
+plot(trim(inaugDfm, minCount = 10, verbose = FALSE))
 
 ## ----eval=TRUE, fig.width=8, fig.height=8--------------------------------
-firstDfm <- dfm(texts(inaugCorpus)[0:8])
-suppressWarnings( # Some words will not fit on a plot this size, so suppress those warings
-  plot(firstDfm, comparison=T)
-)
+compDfm <- dfm(subset(inaugCorpus, President %in% c("Washington", "Jefferson", "Madison")),
+               groups = "President", ignoredFeatures = stopwords("english"))
+plot(trim(compDfm, minCount = 5, verbose = FALSE), comparison = TRUE)
 
 ## ----eval=TRUE, fig.width=8, fig.height=8--------------------------------
-suppressWarnings( # Some words will not fit on a plot this size, so suppress those warings
-  plot(inaugDfm, 
-    colors=c('red', 'yellow', 'pink', 'green', 'purple', 'orange', 'blue')
- )
-)
+plot(inaugDfm, min.freq = 10,
+     colors = c('red', 'pink', 'green', 'purple', 'orange', 'blue'))
 
 ## ----eval=TRUE, fig.width=8, fig.height=12-------------------------------
 plot(kwic(inaugCorpus, "american"))
@@ -47,7 +40,7 @@ plot(
      kwic(inaugCorpus, "american"),
      kwic(inaugCorpus, "people"),
      kwic(inaugCorpus, "communist"),
-     scale='absolute'
+     scale = 'absolute'
 )
 
 ## ----eval=TRUE, fig.width=8, fig.height=12-------------------------------
@@ -66,26 +59,26 @@ inaugFeatures <- topfeatures(inaugDfm, 100)
 
 # Create a data.frame for ggplot
 topDf <- data.frame(
-  list(
-    term = names(inaugFeatures),
-    frequency = unname(inaugFeatures)
+    list(
+        term = names(inaugFeatures),
+        frequency = unname(inaugFeatures)
     )
 )
 
-# Sort by reverse frequency order
+# Sort by reverse frequency order
 topDf$term <- with(topDf, reorder(term, -frequency))
 
 ggplot(topDf) + geom_point(aes(x=term, y=frequency)) +
-  theme(axis.text.x=element_text(angle=90, hjust=1))
+    theme(axis.text.x=element_text(angle=90, hjust=1))
 
 ## ----eval=TRUE, fig.width=8, fig.height=4--------------------------------
 
-  americanFreq <- data.frame(list(
+americanFreq <- data.frame(list(
     document = rownames(inaugDfm[, 'american']),
     frequency = unname(as.matrix(inaugDfm[, 'american']))
-  ))
+))
 
-  ggplot(americanFreq) + geom_point(aes(x=document,y=frequency)) +
+ggplot(americanFreq) + geom_point(aes(x=document,y=frequency)) +
     theme(axis.text.x=element_text(angle=90, hjust=1))
 
 
@@ -94,10 +87,10 @@ relDfm <- weight(inaugDfm, type='relFreq') * 100
 head(relDfm)
 
 relFreq <- data.frame(list(
-  document = rownames(inaugDfm[, 'american']),
-  frequency = unname(as.matrix(relDfm[, 'american']))
+    document = rownames(inaugDfm[, 'american']),
+    frequency = unname(as.matrix(relDfm[, 'american']))
 ))
 
 ggplot(relFreq) + geom_point(aes(x=document,y=frequency)) +
-  theme(axis.text.x=element_text(angle=90, hjust=1))
+    theme(axis.text.x=element_text(angle=90, hjust=1))
 
