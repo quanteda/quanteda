@@ -94,7 +94,10 @@ setMethod("show",
 #'   settings of encoding conversion when creating a corpus from a 
 #'   \link{corpusSource-class} object, without having to load in all of the 
 #'   source data again.
-#' @param encoding
+#' @param encoding vector: either the encoding of all files, or one encoding
+#'   for each files
+#' @param ignoreMissingFiles boolean: whether to throw an error if a missing 
+#'  file is specified.
 #' @param ... additional arguments passed through to low-level file reading 
 #'   function, such as \code{\link{file}}, \code{\link{read.csv}}, etc.  Useful 
 #'   for specifying an input encoding option, which is specified in the same was
