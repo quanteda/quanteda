@@ -255,8 +255,8 @@ setMethod("textfile",
 # 
 # 
 
-#' @importFrom stringr str_match
-#' @importFrom stringr str_replace
+#' @importFrom stringi stri_match
+#' @importFrom stringi stri_replace
 listMatchingFiles <- function(x, ignoreMissing=F) {
     # There are four possible types of values for x
     #     - a simple filename
@@ -267,7 +267,7 @@ listMatchingFiles <- function(x, ignoreMissing=F) {
     filenames <- c()
     for (i in x) {
 
-        scheme <- stringr::str_match(i, '^([a-z][a-z+.-]*):')[, 2]
+        scheme <- stringi::stri_match(i, regex='^([a-z][a-z+.-]*):')[, 2]
         #  First, check that this is not a URL with an unsupported scheme
         if (!(
               (scheme %in% c('http', 'https', 'ftp', 'file')) | is.na(scheme)
@@ -280,7 +280,7 @@ listMatchingFiles <- function(x, ignoreMissing=F) {
         #  here, x could be a regular filename or a glob pattern but given
         #  that regular filenames are a subset of globs, we can just treat
         #  it like a glob
-        i <- stringr::str_replace(i, '^file://', '')
+        i <- stringi::stri_replace(i, replacement ='', regex='^file://')
 
         if (tools::file_ext(i) == 'zip' | tools::file_ext(i) == 'gz') {
             td <- mktemp(directory=T)
