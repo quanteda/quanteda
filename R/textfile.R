@@ -118,7 +118,7 @@ setMethod("show",
 setGeneric("textfile",
            function(file, ignoreMissingFiles=FALSE, textField=NULL, 
                     cache = FALSE, docvarsfrom = c("filenames"), dvsep="_", 
-                    docvarnames = NULL,  ...) 
+                    docvarnames = NULL,  encoding=NULL, ...) 
                standardGeneric("textfile"))
 #signature = c("file", "textField", "encodingFrom", "encodingTo", "docvarsfrom", 
 #              "dvsep", "docvarnames", "cache", "encodingFrom", "encodingTo"))
@@ -155,17 +155,31 @@ setGeneric("textfile",
 #' }
 setMethod("textfile", 
           signature(file = "character", ignoreMissingFiles = "ANY", textField = "ANY", 
-                    cache = "ANY", docvarsfrom="ANY", dvsep="ANY", docvarnames="ANY"),
+                    cache = "ANY", docvarsfrom="ANY", dvsep="ANY", docvarnames="ANY", encoding="ANY"),
           definition = function(file, ignoreMissingFiles=FALSE, textField=NULL,
-                    cache = FALSE, docvarsfrom='metadata', dvsep='_', docvarnames=NULL,
+                    cache = FALSE, docvarsfrom='metadata', dvsep='_', docvarnames=NULL, encoding=NULL,
                     ...) {
 
               if (is.null(textField)) textField <- 1
               files <- listMatchingFiles(file, ignoreMissing=ignoreMissingFiles)
 
-              sources <- lapply(files, function(x) {
-                  getSource(x, textField, ...)}
-              )
+              if (is.null(encoding)) {
+                  encoding <- getOption("encoding")
+              }
+              if (length(encoding) > 1) {
+                  sources <- mapply(function(x, e) {
+                      getSource(f=x, textField=textField, encoding=e, ...)
+                  },
+                      files, encoding,
+                      SIMPLIFY=FALSE
+                  )
+              }
+              else {
+                  sources <- lapply(files, function(x) {
+                      getSource(x, textField, encoding=encoding, ...)}
+                  )
+              }
+              
 
               if (any(!(docvarsfrom %in% c('metadata', 'filenames'))))
                   stop("docvarsfrom must be 'metadata', 'filename', or c('metadata', 'filename')")
@@ -509,7 +523,8 @@ get_json <- function(path, textField, ...) {
 
 
 ## flat xml format
-get_xml <- function(file, textField, ...) {
+get_xml <- function(file, textField, encoding,...) {
+    # TODO: encoding param is ignored
     if (!requireNamespace("XML", quietly = TRUE))
         stop("You must have XML installed to read XML files.")
     docv <- XML::xmlToDataFrame(file, stringsAsFactors = FALSE, ...)
