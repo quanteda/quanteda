@@ -1,4 +1,4 @@
-SUPPORTED_FILETYPE_MAPPING <-        c('excel', 'excel', 'csv', 'txt', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tab')
+SUPPORTED_FILETYPE_MAPPING <-        c('excel', 'excel', 'csv', 'txt', 'json', 'zip', 'gz', 'tar', 'xml', 'tsv', 'tsv')
 names(SUPPORTED_FILETYPE_MAPPING) <- c('xls',   'xlsx',  'csv', 'txt', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tsv')
 
 #' corpus source classes
@@ -307,7 +307,6 @@ getSource <- function(f, textField, ...) {
     switch(fileType, 
            txt = {return(get_txt(f, ...))},
            csv = {return(get_csv(f, textField, sep=',', ...))},
-           tab = {return(get_csv(f, textField, sep='\t', ...))},
            tsv = {return(get_csv(f, textField, sep='\t', ...))},
            json = {return(get_json(f, textField, ...))},
            xml = {return(get_xml(f, textField, ...))}
