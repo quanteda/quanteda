@@ -309,6 +309,7 @@ getSource <- function(f, textField, ...) {
            csv = {return(get_csv(f, textField, sep=',', ...))},
            tab = {return(get_csv(f, textField, sep='\t', ...))},
            tsv = {return(get_csv(f, textField, sep='\t', ...))},
+           json = {return(get_json(f, ...))},
            xml = {return(get_xml(f, textField, ...))}
     )
 }
