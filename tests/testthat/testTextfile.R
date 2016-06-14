@@ -309,8 +309,8 @@ test_that("test textfile() with docvarsfrom=filenames", {
     )
 
     expect_that(
-          docvars(textfile('../data/docvars/two/*json', docvarsfrom='filenames', textField='nonesuch')),
-          equals(data.frame(list(docvar1=c(1,2), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
+          docvars(textfile('../data/docvars/two/*json', textField='nonesuch', docvarsfrom='filenames')),
+          throws_error("There is no text field called")
     )
 
     expect_that(

@@ -387,6 +387,9 @@ get_json_general <- function(path, textField, ...) {
         stop("You must have jsonlite installed to read json files.")
     docs <- jsonlite::fromJSON(path, flatten=TRUE, ...)
     docs <- data.table::setDT(docs)
+    if (!(textField %in% colnames(docs))) {
+        stop(paste("There is no text field called", textField, "in file", path))
+    }
     list(
         txts = docs[[textField]],
         docv = docs[,-textField, with=F]
@@ -405,6 +408,9 @@ get_json_lines <- function(path, textField, ...) {
       use.names=TRUE, fill=TRUE
     )
 
+    if (!(textField %in% colnames(docs))) {
+        stop(paste("There is no text field called", textField, "in file", path))
+    }
     list(
         txts = docs[[textField]],
         docv = docs[,-textField, with=F]
