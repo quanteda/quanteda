@@ -3,6 +3,7 @@
 # TODO: Add commented-out checks
 # TODO: encoding of non-txt file
 # TODO: check encoginds length
+# TODO: multiple filetypes, what happens to textField?
 
 
 context('test textfile.R')
@@ -39,9 +40,6 @@ test_that("test show.corpusSource", {
 
 
 })
-
-
-# TODO: Add tests for the various method signatures
 
 
 test_that("test textfile with single filename", {
@@ -97,7 +95,7 @@ test_that("test textfile with glob-style mask", {
         length(texts(textfile(
                 '../data/glob/*.txt'
         ))),
-        5
+        6
     )
 
     expect_equal(
@@ -108,24 +106,22 @@ test_that("test textfile with glob-style mask", {
     )
 
 
-    # TODO: Glob in non-last part of filename
-    #  expect_equal(
-    #      length(texts(textfile(
-    #              '../data/glob/*/1.txt'
-    #      ))),
-    #      2
-    #  )
+    # Glob in non-last part of filename
+    expect_equal(
+        length(texts(textfile(
+                '../data/glob/*/test.txt'
+        ))),
+        2
+    )
 
+    expect_equal(
+        length(texts(textfile(
+                '../data/glob/special/\*.txt'
+        ))),
+        1
+    )
 
-    # TODO: glob multiple filetypes
-    # expect_equal(
-    #     length(texts(textfile(
-    #             '../data/glob/*'
-    #     ))),
-    #     6
-    # )
-
-    # TODO: glob special characters in filename
+    # escaped glob doesn't special characters in filename
 
 })
 
