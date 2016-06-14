@@ -309,7 +309,7 @@ getSource <- function(f, textField, ...) {
            csv = {return(get_csv(f, textField, sep=',', ...))},
            tab = {return(get_csv(f, textField, sep='\t', ...))},
            tsv = {return(get_csv(f, textField, sep='\t', ...))},
-           json = {return(get_json(f, ...))},
+           json = {return(get_json(f, textField, ...))},
            xml = {return(get_xml(f, textField, ...))}
     )
 }
@@ -339,7 +339,8 @@ get_csv <- function(file, textField, ...) {
 
 #  Dispatch to get_json_general or get_json_tweets depending on whether 
 #  it looks like a twitter json file
-get_json <- function(path, ...) {
+get_json <- function(path, textField, encoding, ...) {
+    # encoding param is not used
     stopifnot(file.exists(path))
     tryCatch({
         return(get_json_tweets(path, ...))
@@ -380,12 +381,12 @@ get_json_tweets <- function(path, source="twitter", ...) {
 }
 
 ## general json
-#' @importFrom data.table data.table
+#' @importFrom data.table setDT
 get_json_general <- function(path, textField, ...) {
     if (!requireNamespace("jsonlite", quietly = TRUE))
         stop("You must have jsonlite installed to read json files.")
     docs <- jsonlite::fromJSON(path, flatten=TRUE, ...)
-    docs <- data.table(docs)
+    docs <- data.table::setDT(docs)
     list(
         txts = docs[[textField]],
         docv = docs[,-textField, with=F]
@@ -400,7 +401,8 @@ get_json_lines <- function(path, textField, ...) {
     lines <- readLines(path)
 
     docs <- data.table::rbindlist(
-      lapply(lines, function(x)jsonlite::fromJSON(x, flatten=TRUE, ...))
+      lapply(lines, function(x)jsonlite::fromJSON(x, flatten=TRUE, ...)),
+      use.names=TRUE, fill=TRUE
     )
 
     list(
