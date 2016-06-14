@@ -4,6 +4,7 @@
 # TODO: encoding of non-txt file
 # TODO: check encoginds length
 # TODO: multiple filetypes, what happens to textField?
+# TODO: support folders
 
 
 context('test textfile.R')

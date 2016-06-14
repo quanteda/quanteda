@@ -366,20 +366,10 @@ get_json <- function(path, textField, encoding, ...) {
 get_json_tweets <- function(path, source="twitter", ...) {
     if (!requireNamespace("streamR", quietly = TRUE))
         stop("You must have streamR installed to read Twitter json files.")
-    # identifying whether it is a folder
-    if (!grepl("*.json$", path)){
-        # prepare list of files if it's a folder
-        fls <- list.files(path, full.names=TRUE)
-        fls <- fls[grepl("*.json$", fls)]
-    }
-    if (grepl("*.json$", path)){
-        fls <- path
-    }
+    
     # read raw json data
-    txt <- unlist(sapply(fls, readLines, ...))
+    txt <- readLines(path, ...)
         
-    # parsing into a data frame
-    # reading tweets into a data frame
     results <- streamR::parseTweets(txt, verbose=FALSE, ...)
     list(txts = results[, 1], docv = as.data.frame(results[, -1, drop = FALSE]))
 }
