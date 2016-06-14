@@ -298,6 +298,12 @@ test_that("test json files", {
         throws_error('Cannot use numeric textField with json file')
     )
 
+    expect_that(
+        texts(textfile('../data/json/test3.json', textField='nonesuch')),
+        throws_error('There is no field called nonesuch in file')
+    )
+
+
 })
 
 
