@@ -116,7 +116,7 @@ test_that("test textfile with glob-style mask", {
 
     expect_equal(
         length(texts(textfile(
-                '../data/glob/special/\*.txt'
+                '../data/glob/special/\\*.txt'
         ))),
         1
     )
