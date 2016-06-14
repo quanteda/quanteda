@@ -264,20 +264,19 @@ test_that("test xml files", {
 
 test_that("test json files", {
     expect_equal(
-        texts(textfile('../data/json/*json')),
+        texts(textfile('../data/json/*json', textField='text')),
         c('Lorem ipsum', 'Dolor sit', 'The quick', 'brown fox', 'Now is the winter')
     )
 
     #  test.json and test2.json are newline-delimited json
     #  test3.json is a single json object
     expect_equal(
-        texts(textfile('../data/json/*json')),
-        equals(data.frame(list(
+        docvars(textfile('../data/json/*json', textField='text')),
+        data.frame(list(
           colour=c('green', 'red', 'orange', 'blue', NA), 
           number=c(42, 99, 0, NA, 3)),
-          stringsAsFactors=F))
-     )
-
+          stringsAsFactors=F)
+    )
 })
 
 
