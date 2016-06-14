@@ -323,18 +323,18 @@ get_txt <- function(f, ...) {
 
 ## csv format
 get_csv <- function(path, textField, ...) {
-    docv <- utils::read.csv(path, stringsAsFactors=FALSE, ...)
+    docs <- utils::read.csv(path, stringsAsFactors=FALSE, ...)
     if (is.character(textField)) {
-        textFieldi <- which(names(docv)==textField)
+        textFieldi <- which(names(docs)==textField)
         if (length(textFieldi)==0)
             stop(paste("There is no field called", textField, "in file", path))
         textField <- textFieldi
-    } else if (is.numeric(textField) & (textField > ncol(docv))) {
+    } else if (is.numeric(textField) & (textField > ncol(docs))) {
         stop(paste0("There is no ", textField, "th field in file ", path))
     }
 
-    txts <- docv[, textField]
-    docv <- docv[, -textField, drop = FALSE]
+    txts <- docs[, textField]
+    docv <- docs[, -textField, drop = FALSE]
     list(txts=txts, docv=docv)
 }
 
@@ -434,12 +434,12 @@ get_xml <- function(path, textField, encoding,...) {
     if (!requireNamespace("XML", quietly = TRUE))
         stop("You must have XML installed to read XML files.")
 
-    docv <- XML::xmlToDataFrame(path, stringsAsFactors = FALSE, ...)
-    if (is.numeric(textField) & (textField > ncol(docv))) {
+    docs <- XML::xmlToDataFrame(path, stringsAsFactors = FALSE, ...)
+    if (is.numeric(textField) & (textField > ncol(docs))) {
         stop(paste0("There is no ", textField, "th field in file ", path))
     }
     if (is.character(textField)) {
-        textFieldi <- which(names(docv)==textField)
+        textFieldi <- which(names(docs)==textField)
         if (length(textFieldi)==0)
             stop(paste("There is no node called", textField, "in file", path))
         textField <- textFieldi
@@ -449,8 +449,8 @@ get_xml <- function(path, textField, encoding,...) {
                 "you're certain that your XML file's fields are always in the same order."))
     }
 
-    txts <- docv[, textField]
-    docv <- docv[, -textField, drop = FALSE]
+    txts <- docs[, textField]
+    docv <- docs[, -textField, drop = FALSE]
 
     # Because XML::xmlToDataFrame doesn't impute column types, we have to do it
     # ourselves, to match get_csv's behaviour
