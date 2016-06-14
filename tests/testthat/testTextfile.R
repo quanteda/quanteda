@@ -141,6 +141,21 @@ test_that("test structured textfile with glob-style mask", {
 })
 
 
+test_that("test remote text file", {
+  expect_equal(
+      length(texts(textfile('https://cloud.r-project.org/bin/windows/base/md5sum.txt'))),
+      1
+  )
+  # ignoreMissing with an existing file should make no difference
+  expect_equal(
+      length(texts(textfile('https://cloud.r-project.org/bin/windows/base/md5sum.txt', ignoreMissing=T))),
+      1
+  )
+
+})
+
+
+
 test_that("test non-implemented functions", {
 
     expect_that(
