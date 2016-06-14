@@ -94,6 +94,7 @@ setMethod("show",
 #'   settings of encoding conversion when creating a corpus from a 
 #'   \link{corpusSource-class} object, without having to load in all of the 
 #'   source data again.
+#' @param encoding
 #' @param ... additional arguments passed through to low-level file reading 
 #'   function, such as \code{\link{file}}, \code{\link{read.csv}}, etc.  Useful 
 #'   for specifying an input encoding option, which is specified in the same was
@@ -254,7 +255,8 @@ setMethod("textfile",
 # 
 # 
 
-#' @importFrom stringr str_match,str_replace
+#' @importFrom stringr str_match
+#' @importFrom stringr str_replace
 listMatchingFiles <- function(x, ignoreMissing=F) {
     # There are four possible types of values for x
     #     - a simple filename

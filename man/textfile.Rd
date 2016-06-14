@@ -3,25 +3,16 @@
 \docType{methods}
 \name{textfile}
 \alias{textfile}
-\alias{textfile,character,index,ANY,missing,missing,missing-method}
-\alias{textfile,character,missing,ANY,character,ANY,ANY-method}
-\alias{textfile,character,missing,ANY,missing,missing,missing-method}
+\alias{textfile,character-method}
 \title{read a text corpus source from a file}
 \usage{
-textfile(file, textField, cache = FALSE, docvarsfrom = c("filenames"),
-  dvsep = "_", docvarnames = NULL, ...)
+textfile(file, ignoreMissingFiles = FALSE, textField = NULL,
+  cache = FALSE, docvarsfrom = c("filenames"), dvsep = "_",
+  docvarnames = NULL, encoding = NULL, ...)
 
-\S4method{textfile}{character,index,ANY,missing,missing,missing}(file,
-  textField, cache = FALSE, docvarsfrom = c("filenames"), dvsep = "_",
-  docvarnames = NULL, ...)
-
-\S4method{textfile}{character,missing,ANY,missing,missing,missing}(file,
-  textField, cache = FALSE, docvarsfrom = c("filenames"), dvsep = "_",
-  docvarnames = NULL, ...)
-
-\S4method{textfile}{character,missing,ANY,character,ANY,ANY}(file,
-  textField = NULL, cache = FALSE, docvarsfrom = c("headers"),
-  dvsep = "_", docvarnames = NULL, ...)
+\S4method{textfile}{character}(file, ignoreMissingFiles = FALSE,
+  textField = NULL, cache = FALSE, docvarsfrom = "metadata",
+  dvsep = "_", docvarnames = NULL, encoding = NULL, ...)
 }
 \arguments{
 \item{file}{the complete filename(s) to be read.  The value can be a vector 
