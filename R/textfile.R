@@ -213,50 +213,6 @@ setMethod("textfile",
 })
 
 
-# #' @rdname textfile
-# #' @export
-# setMethod("textfile", 
-#           signature(file = "character", textField = "missing",
-#                     cache = "ANY",
-#                     docvarsfrom="missing", dvsep="missing", docvarnames="missing"),
-#           definition = function(file, cache = FALSE, ...) {
-#               #               if (length(addedArgs <- list(...)))
-#               #                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-#               
-#               fileType <- getFileType(file)
-#               if (fileType=="filemask" | fileType=="vector") {
-#                   sources <- get_docs(file, ...)
-#               } else {
-#                   sources <- get_doc(file, ...)
-#               }
-#               returnCorpusSource(sources, cache)
-#           })
-# 
-# #' @rdname textfile
-# #' @export
-# setMethod("textfile", 
-#           signature(file = "character", textField = "missing", 
-#                     cache = "ANY",
-#                     docvarsfrom="character", dvsep="ANY", docvarnames="ANY"),
-#           definition = function(file, textField=NULL, cache = FALSE, 
-#                                 docvarsfrom=c("headers"), dvsep="_", docvarnames=NULL, ...) {
-#               #               if (length(addedArgs <- list(...)))
-#               #                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-#               fileType <- getFileType(file)
-#               if (fileType=="filemask") {
-#                   sources <- get_docs(file, ...)
-#               } else {
-#                   stop("File type ", fileType, " not supported with these arguments.")
-#               }
-#               if (docvarsfrom == "filenames") {
-#                   sources$docv <- getdocvarsFromFilenames(names(sources$txts), dvsep=dvsep, docvarnames=docvarnames)
-#               } else {
-#                   warning("docvarsfrom=", docvarsfrom, " not supported.")
-#               }
-#               returnCorpusSource(sources, cache)
-#           })
-# 
-# 
 
 #' @importFrom stringi stri_match
 #' @importFrom stringi stri_replace
