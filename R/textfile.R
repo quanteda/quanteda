@@ -322,14 +322,17 @@ get_txt <- function(f, ...) {
 
 
 ## csv format
-get_csv <- function(file, textField, ...) {
-    docv <- utils::read.csv(file, stringsAsFactors=FALSE, ...)
+get_csv <- function(path, textField, ...) {
+    docv <- utils::read.csv(path, stringsAsFactors=FALSE, ...)
     if (is.character(textField)) {
         textFieldi <- which(names(docv)==textField)
         if (length(textFieldi)==0)
-            stop("column name ", textField, " not found.")
+            stop(paste("There is no field called", textField, "in file", path))
         textField <- textFieldi
+    } else if (is.numeric(textField) & (textField > ncol(docv))) {
+        stop(paste0("There is no ", textField, "th field in file ", path))
     }
+
     txts <- docv[, textField]
     docv <- docv[, -textField, drop = FALSE]
     list(txts=txts, docv=docv)
@@ -385,10 +388,14 @@ get_json_tweets <- function(path, source="twitter", ...) {
 get_json_general <- function(path, textField, ...) {
     if (!requireNamespace("jsonlite", quietly = TRUE))
         stop("You must have jsonlite installed to read json files.")
+    if (is.numeric(textField)) {
+        stop('Cannot use numeric textField with json file')
+    }
+
     docs <- jsonlite::fromJSON(path, flatten=TRUE, ...)
     docs <- data.table::setDT(docs)
     if (!(textField %in% colnames(docs))) {
-        stop(paste("There is no text field called", textField, "in file", path))
+        stop(paste("There is no field called", textField, "in file", path))
     }
     list(
         txts = docs[[textField]],
@@ -400,6 +407,9 @@ get_json_general <- function(path, textField, ...) {
 get_json_lines <- function(path, textField, ...) {
     if (!requireNamespace("jsonlite", quietly = TRUE))
         stop("You must have jsonlite installed to read json files.")
+    if (is.numeric(textField)) {
+        stop('Cannot use numeric textField with json file')
+    }
 
     lines <- readLines(path)
 
@@ -409,7 +419,7 @@ get_json_lines <- function(path, textField, ...) {
     )
 
     if (!(textField %in% colnames(docs))) {
-        stop(paste("There is no text field called", textField, "in file", path))
+        stop(paste("There is no field called", textField, "in file", path))
     }
     list(
         txts = docs[[textField]],
@@ -425,21 +435,26 @@ get_json_lines
 
 
 ## flat xml format
-get_xml <- function(file, textField, encoding,...) {
+get_xml <- function(path, textField, encoding,...) {
     # TODO: encoding param is ignored
     if (!requireNamespace("XML", quietly = TRUE))
         stop("You must have XML installed to read XML files.")
-    docv <- XML::xmlToDataFrame(file, stringsAsFactors = FALSE, ...)
+
+    docv <- XML::xmlToDataFrame(path, stringsAsFactors = FALSE, ...)
+    if (is.numeric(textField) & (textField > ncol(docv))) {
+        stop(paste0("There is no ", textField, "th field in file ", path))
+    }
     if (is.character(textField)) {
         textFieldi <- which(names(docv)==textField)
         if (length(textFieldi)==0)
-            stop(paste("node", textField, "not found."))
+            stop(paste("There is no node called", textField, "in file", path))
         textField <- textFieldi
     }
     else {
         warning(paste("You should specify textField by name rather than by index, unless",
                 "you're certain that your XML file's fields are always in the same order."))
     }
+
     txts <- docv[, textField]
     docv <- docv[, -textField, drop = FALSE]
 

@@ -188,8 +188,13 @@ test_that("test csv files", {
     )
 
     expect_that(
-        textfile('../data/csv/test.csv', textField='nonexistant'),
-        throws_error('column name nonexistant not found')
+          docvars(textfile('../data/csv/*', textField='nonesuch')),
+          throws_error("There is no field called")
+    )
+
+    expect_that(
+          docvars(textfile('../data/csv/*', textField=9000)),
+          throws_error("There is no 9000th field")
     )
 
 })
@@ -208,7 +213,7 @@ test_that("test tab files", {
 
     expect_that(
         textfile('../data/tab/test.tab', textField='nonexistant'),
-        throws_error('column name nonexistant not found')
+        throws_error('There is no field called nonexistant')
     )
 
 })
@@ -227,7 +232,7 @@ test_that("test tsv files", {
 
     expect_that(
         textfile('../data/tsv/test.tsv', textField='nonexistant'),
-        throws_error('column name nonexistant not found')
+        throws_error('There is no field called nonexistant')
     )
 
 })
@@ -246,11 +251,6 @@ test_that("test xml files", {
     )
 
     expect_that(
-        textfile('../data/xml/test.xml', textField='nonexistant'),
-        throws_error('node .* not found')
-    )
-
-    expect_that(
         textfile('../data/xml/test.xml', textField=1),
         gives_warning('You should specify textField by name.*')
     )
@@ -259,7 +259,14 @@ test_that("test xml files", {
         equals(c('Lorem ipsum.', 'Dolor sit'))
     )
 
-
+    expect_that(
+          docvars(textfile('../data/xml/*', textField='nonesuch')),
+          throws_error("There is no node called")
+    )
+    expect_that(
+          docvars(textfile('../data/xml/*', textField=9000)),
+          throws_error("There is no 9000th field")
+    )
 })
 
 test_that("test json files", {
@@ -277,6 +284,12 @@ test_that("test json files", {
           number=c(42, 99, 0, NA, 3)),
           stringsAsFactors=F)
     )
+
+    expect_that(
+        texts(textfile('../data/json/*json', textField=1)),
+        throws_error('Cannot use numeric textField with json file')
+    )
+
 })
 
 
@@ -310,7 +323,7 @@ test_that("test textfile() with docvarsfrom=filenames", {
 
     expect_that(
           docvars(textfile('../data/docvars/two/*json', textField='nonesuch', docvarsfrom='filenames')),
-          throws_error("There is no text field called")
+          throws_error("There is no field called")
     )
 
     expect_that(
