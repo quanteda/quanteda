@@ -428,12 +428,6 @@ get_json_lines <- function(path, textField, ...) {
 }
 
 
-
-# One JSON object per line
-# The file as a whole is not valid JSON, but each of the lines is
-get_json_lines
-
-
 ## flat xml format
 get_xml <- function(path, textField, encoding,...) {
     # TODO: encoding param is ignored
