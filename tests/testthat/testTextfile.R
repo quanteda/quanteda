@@ -115,14 +115,17 @@ test_that("test textfile with glob-style mask", {
         2
     )
 
-    expect_equal(
-        length(texts(textfile(
-                '../data/glob/special/\\*.txt'
-        ))),
-        1
-    )
+    # It would be nice to be able to test that escaped glob doesn't special 
+    # characters in filename, but R check won't allow a file of this name to
+    # exist in the package... This should still pass if run the test manually
+    # (having created the file, supposing your platform supports it)
+    #  expect_equal(
+    #      length(texts(textfile(
+    #              '../data/glob/special/\\*.txt'
+    #      ))),
+    #      1
+    #  )
 
-    # escaped glob doesn't special characters in filename
 
 })
 
