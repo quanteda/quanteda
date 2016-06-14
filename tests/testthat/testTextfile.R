@@ -262,6 +262,25 @@ test_that("test xml files", {
 
 })
 
+test_that("test json files", {
+    expect_equal(
+        texts(textfile('../data/json/*json')),
+        c('Lorem ipsum', 'Dolor sit', 'The quick', 'brown fox', 'Now is the winter')
+    )
+
+    #  test.json and test2.json are newline-delimited json
+    #  test3.json is a single json object
+    expect_equal(
+        texts(textfile('../data/json/*json')),
+        equals(data.frame(list(
+          colour=c('green', 'red', 'orange', 'blue', NA), 
+          number=c(42, 99, 0, NA, 3)),
+          stringsAsFactors=F))
+     )
+
+})
+
+
 # TODO: This doesn't appear to work at all
 #  test_that("test zip files", {
 #      # TODO: Only supports zipfiles which contain txt files
@@ -290,11 +309,10 @@ test_that("test textfile() with docvarsfrom=filenames", {
         equals(data.frame(list(docvar1=c(1,2), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
     )
 
-    #  docvarsfrom='filenames' only works with txt files, by design?
-    #  expect_that(
-    #      docvars(textfile('../data/docvars/two/*json', docvarsfrom='filenames', textField='nonesuch')),
-    #      equals(data.frame(list(docvar1=c(1,2), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
-    #  )
+    expect_that(
+          docvars(textfile('../data/docvars/two/*json', docvarsfrom='filenames', textField='nonesuch')),
+          equals(data.frame(list(docvar1=c(1,2), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
+    )
 
     expect_that(
         docvars(textfile('../data/docvars/unequal/*', docvarsfrom='filenames')),
@@ -337,15 +355,17 @@ test_that("test textfile() with docvarsfrom=filenames", {
         throws_error('docvarsfrom must be')
     )
 
-docvars(textfile('../data/docvars/csv/*', docvarsfrom=c('metadata'), docvarnames=c('id', 'fruit'), textField='text'))
-
-    #  Docvars from metadata and filename
+    #  Docvars from both metadata and filename
     expect_equal(
         docvars(textfile('../data/docvars/csv/*', docvarsfrom=c('filenames', 'metadata'), docvarnames=c('id', 'fruit'), textField='text')),
         data.frame(list(id=c(1, 2), fruit=c('apple', 'orange'), shape=c('round', NA), texture=c(NA, 'rough')), stringsAsFactors=FALSE)
     )
 
-
+    #  Docvars from both metadata and filename
+    expect_equal(
+        docvars(textfile('../data/docvars/json/*', docvarsfrom=c('filenames', 'metadata'), docvarnames=c('id', 'fruit'), textField='text')),
+        data.frame(list(id=c(1, 2), fruit=c('apple', 'orange'), shape=c('round', NA), texture=c(NA, 'rough')), stringsAsFactors=FALSE)
+    )
 
 })
 
