@@ -266,7 +266,7 @@ listMatchingFiles <- function(x, ignoreMissing=F) {
                     utils::download.file(i, destfile = localfile)
                     filenames <- c(filenames, localfile)
                 },
-                exception = function(e) {warning(e)}
+                error = function(e) {warning(e)}
                 )
             else {
                 tryCatch({
