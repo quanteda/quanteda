@@ -43,6 +43,9 @@ files either at the top level or in a single directory.
  This may also be a URL to a zip file.}
 }}
 
+\item{ignoreMissingFiles}{boolean: whether to throw an error if a missing 
+file is specified.}
+
 \item{textField}{a variable (column) name or column number indicating where 
 to find the texts that form the documents for the corpus.  This must be 
 specified for file types \code{.csv} and \code{.json}.}
@@ -81,9 +84,6 @@ as it would be give to \code{\link{iconv}}.  See the Encoding section of
 \link{file} for details.  Also useful for passing arguments through to
 \code{\link{read.csv}}, for instance `quote = ""`, if quotes are causing
 problems within comma-delimited fields.}
-
-\item{ignoreMissing}{files boolean: whether to throw an error if a missing 
-file is specified.}
 }
 \value{
 an object of class \link{corpusSource-class} that can be read by 
