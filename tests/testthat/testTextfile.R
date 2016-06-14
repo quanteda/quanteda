@@ -15,14 +15,14 @@ test_that("test show.corpusSource", {
         prints_text('corpusSource object consisting of 1 document and 0 docvars.')
     )
 
-    testcorpusSource <- textfile(
+    testCorpusSource <- textfile(
         c(
             '../data/fruits/apple.txt',
             '../data/fruits/orange.txt'
          )
     )
     expect_that(
-        show(testcorpusSource),
+        show(testCorpusSource),
         prints_text('corpusSource object consisting of 2 documents and 0 docvars.')
     )
 
@@ -32,9 +32,9 @@ test_that("test show.corpusSource", {
     )
 
 
-    testcorpusSource <- textfile( '../data/fox/fox.txt', cache=T)
+    testCorpusSource <- textfile( '../data/fox/fox.txt', cache=T)
     expect_that(
-        show(testcorpusSource),
+        show(testCorpusSource),
         prints_text('corpusSource object with data cached')
     )
 
@@ -210,14 +210,13 @@ test_that("test csv files", {
 })
 
 test_that("test tab files", {
-    # Test corpus object
-    testcorpus <- textfile('../data/tab/test.tab', textField='text')
+    testCorpusSource <- textfile('../data/tab/test.tab', textField='text')
     expect_that(
-        docvars(testcorpus),
+        docvars(testCorpusSource),
         equals(data.frame(list(colour=c('green', 'red'), number=c(42, 99)), stringsAsFactors=F))
     )
     expect_that(
-        texts(testcorpus),
+        texts(testCorpusSource),
         equals(c('Lorem ipsum.', 'Dolor sit'))
     )
 
@@ -229,14 +228,13 @@ test_that("test tab files", {
 })
 
 test_that("test tsv files", {
-    # Test corpus object
-    testcorpus <- textfile('../data/tsv/test.tsv', textField='text')
+    testCorpusSource <- textfile('../data/tsv/test.tsv', textField='text')
     expect_that(
-        docvars(testcorpus),
+        docvars(testCorpusSource),
         equals(data.frame(list(colour=c('green', 'red'), number=c(42, 99)), stringsAsFactors=F))
     )
     expect_that(
-        texts(testcorpus),
+        texts(testCorpusSource),
         equals(c('Lorem ipsum.', 'Dolor sit'))
     )
 
