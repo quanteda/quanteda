@@ -266,7 +266,6 @@ listMatchingFiles <- function(x, ignoreMissing=F) {
                     utils::download.file(i, destfile = localfile)
                     filenames <- c(filenames, localfile)
                 },
-                warning = function(e) {warning(e)},
                 exception = function(e) {warning(e)}
                 )
             else {
@@ -353,6 +352,9 @@ get_json <- function(path, textField, encoding, ...) {
                 return(get_json_object(path, textField, ...))
             },
             error=function(e) {
+                if (e == paste("There is no field called", textField, "in file", path)) {
+                    stop(e)
+                }
                 warning("File doesn't contain a single valid JSON object, trying line-delimited json")
                 return(get_json_lines(path, textField, ...))
             })
