@@ -308,6 +308,25 @@ test_that("test json files", {
     )
 
 
+    # Twitter json files
+    tweetSource <- textfile('../data/tweets/stream.json')
+
+    expect_equal(
+      texts(tweetSource),
+      c("I jumped over the lazy @dog", "Yawn")
+    )
+
+    expect_equal(
+        docvars(tweetSource)$statuses_count,
+        c(16204, 200)
+      )
+
+    expect_equal(
+        docvars(tweetSource)$screen_name,
+        c('foxxy', 'dog')
+      )
+
+
 })
 
 
