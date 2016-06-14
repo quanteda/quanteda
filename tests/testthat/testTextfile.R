@@ -1,8 +1,4 @@
-#TODO: merge json
-#TODO: merge rbindall
-# TODO: RTL
-# TODO: bi-directional text
-# TODO: encodings in filenames
+#TODO: redo json
 # TODO: re-do docs
 # TODO: Check and remove extranous codes
 # TODO: Add commented-out checks, json
