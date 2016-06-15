@@ -152,9 +152,15 @@ test_that("test remote text file", {
       texts(textfile('https://raw.githubusercontent.com/kbenoit/quanteda/master/tests/data/fox/fox.txt', ignoreMissing=T)),
       'The quick brown fox jumps over the lazy dog.'
   )
-
 })
 
+
+test_that("test remote csv file", {
+      expect_equal(
+        texts(textfile("https://raw.githubusercontent.com/kbenoit/quanteda/master/tests/data/csv/test.csv", textField='text')),
+        c('Lorem ipsum.', 'Dolor sit')
+       )
+})
 
 
 test_that("test non-implemented functions", {
@@ -672,3 +678,4 @@ test_that("Test function to list files", {
 
 
 })
+
