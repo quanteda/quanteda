@@ -1,60 +1,68 @@
 #' convert a dfm to a non-quanteda format
-#'
-#' Convert a quanteda \link{dfm-class} object to a format useable by
-#' other text analysis packages.  The general function \code{convert} provides 
-#' easy conversion from a dfm to the document-term representations used in 
-#' all other text analysis packages for which conversions are defined.  To 
-#' make the usage as consistent as possible with other packages, however, 
-#' quanteda also provides direct conversion functions in the idiom of 
-#' the foreign packages, for example  \code{as.wfm} to 
-#' coerce a dfm into the \code{wfm} format from the \strong{austin} package,
-#' and \code{quantedaformat2dtm} for using a dfm with the \pkg{topicmodels} package.
 #' 
-#' We recommend using \code{convert()} rather than the specific functions.  In fact, 
-#' it's worth considering whether we should simply remove all of them and \strong{only}
-#' support calling these through `convert()`.
+#' Convert a quanteda \link{dfm-class} object to a format useable by other text
+#' analysis packages.  The general function \code{convert} provides easy
+#' conversion from a dfm to the document-term representations used in all other
+#' text analysis packages for which conversions are defined.  To make the usage
+#' as consistent as possible with other packages, however, quanteda also
+#' provides direct conversion functions in the idiom of the foreign packages,
+#' for example  \code{as.wfm} to coerce a dfm into the \code{wfm} format from
+#' the \strong{austin} package, and \code{quantedaformat2dtm} for using a dfm
+#' with the \pkg{topicmodels} package.
 #' 
-#' We may also use this function, eventually, for converting other classes of objects 
-#' such as a `corpus` or `tokenizedList`.
+#' We recommend using \code{convert()} rather than the specific functions.  In
+#' fact, it's worth considering whether we should simply remove all of them and
+#' \strong{only} support calling these through `convert()`.
+#' 
+#' We may also use this function, eventually, for converting other classes of
+#' objects such as a `corpus` or `tokenizedList`.
 #' 
 #' @param x dfm to be converted
-#' @param to target conversion format, consisting of the name of the package into 
-#' whose document-term matrix representation the dfm will be converted:
-#' \describe{
-#' \item{\code{"lda"}}{a list with components "documents" and "vocab" as needed by 
-#'   \link[lda]{lda.collapsed.gibbs.sampler} from the \pkg{lda} package}
-#' \item{\code{"tm"}}{a \link[tm]{DocumentTermMatrix} from the \pkg{tm} package} 
-#' \item{\code{"stm"}}{the  format for the \pkg{stm} package}
-#' \item{\code{"austin"}}{the \code{wfm} format from the \strong{austin} package}
-#' \item{\code{"topicmodels"}}{the "dtm" format as used by the \pkg{topicmodels} package}
-#' }
+#' @param to target conversion format, consisting of the name of the package
+#'   into whose document-term matrix representation the dfm will be converted: 
+#'   \describe{ \item{\code{"lda"}}{a list with components "documents" and
+#'   "vocab" as needed by \link[lda]{lda.collapsed.gibbs.sampler} from the
+#'   \pkg{lda} package} \item{\code{"tm"}}{a \link[tm]{DocumentTermMatrix} from
+#'   the \pkg{tm} package} \item{\code{"stm"}}{the  format for the \pkg{stm}
+#'   package} \item{\code{"austin"}}{the \code{wfm} format from the
+#'   \strong{austin} package} \item{\code{"topicmodels"}}{the "dtm" format as
+#'   used by the \pkg{topicmodels} package} }
+#' @param docvars optional data.frame of document variables used as the
+#'   \code{meta} information in conversion to the STM package format.  This aids
+#'   in selecting the document variables only corresponding to the documents
+#'   with non-zero counts.
 #' @return A converted object determined by the value of \code{to} (see above). 
-#' See conversion target package documentation for more detailed descriptions 
-#' of the return formats.  
+#'   See conversion target package documentation for more detailed descriptions 
+#'   of the return formats.
 #' @importFrom utils installed.packages
 #' @export
 #' @examples
-#' mycorpus <- subset(inaugCorpus, Year>1970)
-#' quantdfm <- dfm(mycorpus, verbose=FALSE)
+#' mycorpus <- subset(inaugCorpus, Year > 1970)
+#' quantdfm <- dfm(mycorpus, verbose = FALSE)
 #' 
 #' # austin's wfm format
 #' austindfm <- as.wfm(quantdfm)
-#' identical(austindfm, convert(quantdfm, to="austin"))
+#' identical(austindfm, convert(quantdfm, to = "austin"))
 #' 
 #' # tm's DocumentTermMatrix format
 #' tmdfm <- as.DocumentTermMatrix(quantdfm)
 #' str(tmdfm)
 #' 
 #' # stm package format
-#' stmdfm <- convert(quantdfm, to="stm")
+#' stmdfm <- convert(quantdfm, to = "stm")
 #' str(stmdfm)
-#' 
+#' # illustrate what happens with zero-length documents
+#' quantdfm2 <- dfm(c(punctOnly = "!!!", mycorpus[-1]), verbose = FALSE)
+#' rowSums(quantdfm2)
+#' stmdfm2 <- convert(quantdfm2, to = "stm", docvars = docvars(mycorpus))
+#' str(stmdfm2)
+#'  
 #' # topicmodels package format
 #' topicmodelsdfm <- quantedaformat2dtm(quantdfm)
-#' identical(topicmodelsdfm, convert(quantdfm, to="topicmodels"))
+#' identical(topicmodelsdfm, convert(quantdfm, to = "topicmodels"))
 #' 
 #' # lda package format
-#' ldadfm <- convert(quantdfm, to="lda")
+#' ldadfm <- convert(quantdfm, to = "lda")
 #' str(ldadfm)
 #' identical(ldadfm[1], stmdfm[1])
 #' 
@@ -65,17 +73,24 @@ convert <- function(x, to, ...) {
 #' @export
 #' @rdname convert
 # @importFrom topicmodels dtm2ldaformat
-convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels"), ...) {
+convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels"), docvars = NULL, ...) {
     to <- match.arg(to)
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+    
+    if (!is.null(docvars)) {
+        if (!is.data.frame(docvars))
+            stop("docvars must be a data.frame")
+        if (nrow(docvars) != ndoc(x))
+            stop("docvars must have the same number of rows as ndoc(x)")
+    }
     
     if (to=="tm") 
         return(dfm2tmformat(x, ...))
     else if (to=="lda")
         return(dfm2ldaformat(x))
     else if (to=="stm")
-        return(dfm2stmformat(x))
+        return(dfm2stmformat(x, docvars))
     else if (to=="austin")
         return(dfm2austinformat(x))
     else if (to=="topicmodels")
@@ -236,7 +251,7 @@ ldaformat2dtm <- function (documents, vocab, omit_empty = TRUE)
 # str(mydfmStm)
 # @export
 
-dfm2stmformat <- function(data) {
+dfm2stmformat <- function(data, meta) {
     # sort features into alphabetical order
     data <- data[, order(features(data))]
     data <- as(data, "dgTMatrix")
@@ -248,8 +263,12 @@ dfm2stmformat <- function(data) {
     documents <- ijv.to.doc(data[non_empty_docs, ]@i, data[non_empty_docs, ]@j, data[non_empty_docs, ]@x) 
     names(documents) <- rownames(data)[non_empty_docs]
     
+    # select docvars for non-empty docs
+    if (!is.null(meta))
+        meta <- meta[non_empty_docs, , drop = FALSE]
+    
     # return the object
-    list(documents = documents, vocab = colnames(data), meta = NULL)
+    list(documents = documents, vocab = colnames(data), meta = meta)
 }
 
 
