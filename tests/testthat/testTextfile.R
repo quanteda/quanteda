@@ -299,6 +299,7 @@ test_that("test json files", {
     )
     print("DOCVARS")
     print(docvars(textfile('../data/json/*json', textField='text')))
+    print(Sys.glob('../data/json/*json'))
 
     expect_that(
         texts(textfile('../data/json/*json', textField=1)),
