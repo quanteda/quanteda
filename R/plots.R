@@ -114,6 +114,10 @@ plot.kwic <- function(..., scale = c("absolute", "relative"), sort=FALSE) {
     # replace "found" keyword with patterned keyword
     x[, keyword := unlist(sapply(kwics, function(l) rep(attr(l, "keyword"), nrow(l))))]
 
+    # pre-emptively convert keyword to factor before ggplot does it, so that we
+    # can keep the order of the factor the same as the order of the kwic objects
+    x[, keyword:=factor(keyword, levels=unique(keyword))]
+
     multiple_documents <- length(unique(x$docname)) > 1
 
     # Deal with the scale argument:
