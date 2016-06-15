@@ -241,12 +241,23 @@ listMatchingFiles <- function(x, ignoreMissing=F) {
         #  it like a glob
         i <- stringi::stri_replace(i, replacement ='', regex='^file://')
 
-        if (tools::file_ext(i) == 'zip' | tools::file_ext(i) == 'gz') {
+        if (tools::file_ext(i) == 'zip') {
             td <- mktemp(directory=T)
             utils::unzip(i, exdir = td)
             # Create a glob that matches all the files in the archive
             i <- file.path(td, '*')
         }
+        if (
+            tools::file_ext(i) == 'gz' |
+            tools::file_ext(i) == 'tar' |
+            tools::file_ext(i) == 'bz') {
+            td <- mktemp(directory=T)
+            utils::untar(i, exdir = td)
+            # Create a glob that matches all the files in the archive
+            i <- file.path(td, '*')
+        }
+
+
         globbedFiles <- sort(Sys.glob(i))
         if ((length(globbedFiles) == 0) & !ignoreMissing) {
             stop(paste('File does not exist', i))
