@@ -2,7 +2,6 @@
 # TODO: Check and remove extranous codes
 # TODO: Add commented-out checks
 # TODO: encoding of non-txt file
-# TODO: check encoginds length
 # TODO: multiple filetypes, what happens to textField?
 # TODO: XML warning test
 # TODO: support folders
