@@ -4,6 +4,7 @@
 # TODO: encoding of non-txt file
 # TODO: check encoginds length
 # TODO: multiple filetypes, what happens to textField?
+# TODO: XML warning test
 # TODO: support folders
 
 
@@ -330,16 +331,6 @@ test_that("test json files", {
 })
 
 
-# TODO: This doesn't appear to work at all
-#  test_that("test zip files", {
-#      # TODO: Only supports zipfiles which contain txt files
-#      testcorpus <- textfile('../data/zip/test.zip')
-#      expect_that(
-#          texts(testcorpus),
-#          equals(c('Lorem ipsum.', 'The quick', 'Dolor sit', 'brown fox'))
-#      )
-#  })
-
 test_that("test textfile() with docvarsfrom=filenames", {
 
     expect_that(
@@ -529,7 +520,6 @@ test_that("test reading structured text files with different columns", {
  })
 
 
-# TODO: XML warning test
 
 test_that("Test mktemp function for test dirs",{
   filename <- quanteda:::mktemp()
@@ -583,11 +573,11 @@ test_that("Test function to list files", {
     c(testExistingFile, testExistingFile2)
   )
 
-  # TODO Test vector of filename and URL
-  #  expect_equal(
-  #    listMatchingFiles(c(testExistingFile, testExistingFile2)),
-  #    c(testExistingFile, testExistingFile2)
-  #  )
+  # TODO: Test vector of filename and URL
+  expect_equal(
+    listMatchingFiles(c(testExistingFile, testExistingFile2)),
+    c(testExistingFile, testExistingFile2)
+  )
 
   file.remove(testExistingFile)
   expect_that(
