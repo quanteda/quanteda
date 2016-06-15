@@ -1,6 +1,5 @@
 # TODO: re-do docs
 # TODO: Check and remove extranous codes
-# TODO: encoding of non-txt file
 
 
 context('test textfile.R')
@@ -491,8 +490,7 @@ test_that("test that textfile encoding argument must be either length 1 or same 
   )
 })
 
-context('Loading a corpus from a zip file.')
-
+context('Loading a corpus from a zip archive')
 test_that("A single-level zip file containing txt files can be loaded",{
     qc <- corpus(textfile('../data/zip/inauguralTopLevel.zip'))
     expect_equal(ndoc(qc), 57)
