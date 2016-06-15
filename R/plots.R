@@ -90,11 +90,11 @@ plot.kwic <- function(..., scale = c("absolute", "relative"), sort=FALSE) {
     
     position <- keyword <- docname <- ntokens <- NULL    
     
-    arguments <- list(...)
+    kwics <- list(...)
 
     ## edited by KB 29 May 2016
-    # x <- lapply(arguments, function(i) { i$keyword <- attr(i, 'keyword'); i})
-    # x <- lapply(arguments, function(i) {
+    # x <- lapply(kwics, function(i) { i$keyword <- attr(i, 'keyword'); i})
+    # x <- lapply(kwics, function(i) {
     #     ntokens <- data.table::data.table(
     #         docname = names(attr(i, 'ntoken')),
     #         ntoken = attr(i, 'ntoken')
@@ -105,14 +105,14 @@ plot.kwic <- function(..., scale = c("absolute", "relative"), sort=FALSE) {
     
     ## edited by KB 29 May 2016
     # create a data.table from the kwic arguments
-    x <- data.table(do.call(rbind, arguments))
+    x <- data.table(do.call(rbind, kwics))
     # get the vector of ntokens
-    ntokensByDoc <- unlist(lapply(arguments, attr, "ntoken"))
+    ntokensByDoc <- unlist(lapply(kwics, attr, "ntoken"))
     # add ntokens to data.table as an indexed "merge"
     x[, ntokens := ntokensByDoc[as.character(x[, docname])]]
     
     # replace "found" keyword with patterned keyword
-    x[, keyword := unlist(sapply(arguments, function(l) rep(attr(l, "keyword"), nrow(l))))]
+    x[, keyword := unlist(sapply(kwics, function(l) rep(attr(l, "keyword"), nrow(l))))]
 
     multiple_documents <- length(unique(x$docname)) > 1
 
