@@ -247,7 +247,7 @@ listMatchingFiles <- function(x, ignoreMissing=F) {
             # Create a glob that matches all the files in the archive
             i <- file.path(td, '*')
         }
-        globbedFiles <- Sys.glob(i)
+        globbedFiles <- sort(Sys.glob(i))
         if ((length(globbedFiles) == 0) & !ignoreMissing) {
             stop(paste('File does not exist', i))
         }
