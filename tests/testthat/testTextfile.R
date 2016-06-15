@@ -486,6 +486,16 @@ test_that("test textfile encoding parameter: ASCII encoded file, read as UTF-8: 
    )
 })
 
+test_that("test that textfile encoding argument must be either length 1 or same length as the number of files", {
+  expect_that(
+    textfile(
+      c('../data/fox/fox.txt', '../data/fox/fox.txt', '../data/fox/fox.txt', '../data/fox/fox.txt'),
+      encoding=c('utf-8', 'utf-8')
+    ),
+  throws_error('encoding parameter must be length 1, or as long as the number of files')
+  )
+})
+
 context('Loading a corpus from a zip file.')
 
 test_that("A single-level zip file containing txt files can be loaded",{
