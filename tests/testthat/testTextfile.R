@@ -297,10 +297,7 @@ test_that("test json files", {
           number=c(42, 99, 0, NA, 3)),
           stringsAsFactors=F)
     )
-    print("DOCVARS")
-    print(docvars(textfile('../data/json/*json', textField='text')))
-    print(Sys.glob('../data/json/*json'))
-
+    
     expect_that(
         texts(textfile('../data/json/*json', textField=1)),
         throws_error('Cannot use numeric textField with json file')
@@ -492,10 +489,35 @@ test_that("test textfile encoding parameter: ASCII encoded file, read as UTF-8: 
 context('Loading a corpus from a zip file.')
 
 test_that("A single-level zip file containing txt files can be loaded",{
-    tf <- textfile('../data/zip/inauguralTopLevel.zip')
-    qc <- corpus(tf)
+    qc <- corpus(textfile('../data/zip/inauguralTopLevel.zip'))
     expect_equal(ndoc(qc), 57)
 })
+
+context('Loading a corpus from a tar archive')
+test_that("A single-level tar file containing txt files can be loaded",{
+    expect_equal(
+      texts(corpus(textfile('../data/tar/test.tar'))),
+      c(text1='Lorem ipsum', text2='brown fox', text3='Dolor sit', text4='The quick')
+    )
+})
+
+context('Loading a corpus from a gzipped tar archive')
+test_that("A single-level tar.gz file containing txt files can be loaded",{
+    expect_equal(
+      texts(corpus(textfile('../data/targz/test.tar.gz'))),
+      c(text1='Lorem ipsum', text2='brown fox', text3='Dolor sit', text4='The quick')
+    )
+})
+
+context('Loading a corpus from a bzipped tar archive')
+test_that("A single-level tar.bz file containing txt files can be loaded",{
+    expect_equal(
+      texts(corpus(textfile('../data/tarbz/test.tar.bz'))),
+      c(text1='Lorem ipsum', text2='brown fox', text3='Dolor sit', text4='The quick')
+    )
+})
+
+
 
 
 test_that("test reading structured text files with different columns", {
