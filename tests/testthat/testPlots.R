@@ -75,3 +75,15 @@ test_that("test plot.kwic facet order parameter", {
 
 
 })
+
+test_that("test plot.kwic keeps order of keywords passed", {
+    p <- plot(kwic(inaugCorpus, 'people'), kwic(inaugCorpus, 'american'), sort=TRUE)
+    expect_equal(
+        as.character(unique(ggplot2::ggplot_build(p)$panel$layout$keyword)),
+        c('people', 'american')
+    )
+})
+
+kwics <- list(kwic(inaugCorpus, 'people'), kwic(inaugCorpus, 'american'))
+
+
