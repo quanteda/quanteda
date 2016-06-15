@@ -277,10 +277,6 @@ listMatchingFiles <- function(x, ignoreMissing=F) {
                     utils::download.file(i, destfile = localfile, quiet=T)
                     return(localfile)
                 },
-                error = function(e) {
-                    warning(e)
-                    return(NULL)
-                },
                 warning = function(e) {
                     warning(e)
                     return(NULL)
