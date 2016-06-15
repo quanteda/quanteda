@@ -64,6 +64,7 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' @param scale whether to scale the token index axis by absolute position of the token in the 
 #' document or by relative position. Defaults are absolute for single document and relative for
 #' multiple documents.
+#' @param sort whether to sort the rows of a multiple document plot by document name
 #' @author Adam Obeng
 #' @return \code{plot.kwic} returns a ggplot object
 #' @examples 
@@ -81,7 +82,7 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue'))
 #' }
 #' @export
-plot.kwic <- function(..., scale = c("absolute", "relative")) {
+plot.kwic <- function(..., scale = c("absolute", "relative"), sort=FALSE) {
     if (!requireNamespace("ggplot2", quietly = TRUE))
         stop("You must have ggplot2 installed to make a dispersion plot.")
     if(!requireNamespace("grid", quietly = TRUE)) 
@@ -130,7 +131,9 @@ plot.kwic <- function(..., scale = c("absolute", "relative")) {
         }
     }
 
-    
+    if (sort) 
+        x[,docname:=factor(docname, levels=levels(docname)[order(levels(docname))])]
+
     if (scale == 'relative')
         x <- x[, position := position/ntokens]
 
