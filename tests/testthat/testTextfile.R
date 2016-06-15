@@ -1,5 +1,7 @@
 # TODO: re-do docs
 # TODO: Check and remove extranous codes
+# TODO: recurse file listing for e.g. remote ZIP file
+# TODO: textfile with csv doesn't seem to require textField
 
 
 context('test textfile.R')
@@ -142,13 +144,13 @@ test_that("test structured textfile with glob-style mask", {
 
 test_that("test remote text file", {
   expect_equal(
-      length(texts(textfile('https://cloud.r-project.org/bin/windows/base/md5sum.txt'))),
-      1
+      texts(textfile('https://raw.githubusercontent.com/kbenoit/quanteda/master/tests/data/fox/fox.txt')),
+      'The quick brown fox jumps over the lazy dog.'
   )
   # ignoreMissing with an existing file should make no difference
   expect_equal(
-      length(texts(textfile('https://cloud.r-project.org/bin/windows/base/md5sum.txt', ignoreMissing=T))),
-      1
+      texts(textfile('https://raw.githubusercontent.com/kbenoit/quanteda/master/tests/data/fox/fox.txt', ignoreMissing=T)),
+      'The quick brown fox jumps over the lazy dog.'
   )
 
 })
