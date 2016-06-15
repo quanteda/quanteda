@@ -1,5 +1,5 @@
-SUPPORTED_FILETYPE_MAPPING <-        c('excel', 'excel', 'csv', 'txt', 'json', 'zip', 'gz', 'tar', 'xml', 'tsv', 'tsv')
-names(SUPPORTED_FILETYPE_MAPPING) <- c('xls',   'xlsx',  'csv', 'txt', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tsv')
+SUPPORTED_FILETYPE_MAPPING <-        c('csv', 'txt', 'json', 'zip', 'gz', 'tar', 'xml', 'tsv', 'tsv')
+names(SUPPORTED_FILETYPE_MAPPING) <- c('csv', 'txt', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tsv')
 
 #' corpus source classes
 #' 
@@ -39,10 +39,9 @@ setMethod("show",
 
 #' read a text corpus source from a file
 #' 
-#' Read a text corpus from a source file, where the single file will consist of 
-#' a set of texts in columns and document variables and document-level meta-data
-#' in additional columns.  For spreadsheet-like files, the first row must be a 
-#' header.
+#' Read a text corpus from one or more source files. The texts of the corpus
+#' come from (some part of) the content of the files, and the document-level
+#' metadata (docvars) come from either the file contents or filenames.
 #' @param file the complete filename(s) to be read.  The value can be a vector 
 #'   of file names, a single file name, or a file "mask" using a "glob"-type 
 #'   wildcard value.  Currently available file value types are: 
