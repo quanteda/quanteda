@@ -297,6 +297,8 @@ test_that("test json files", {
           number=c(42, 99, 0, NA, 3)),
           stringsAsFactors=F)
     )
+    print("DOCVARS")
+    print(docvars(textfile('../data/json/*json', textField='text')))
 
     expect_that(
         texts(textfile('../data/json/*json', textField=1)),
