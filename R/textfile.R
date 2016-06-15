@@ -263,7 +263,7 @@ listMatchingFiles <- function(x, ignoreMissing=F) {
             if (ignoreMissing) {
                 localfile <- tryCatch({
                     localfile <- paste0(mktemp(), '.', extension) 
-                    utils::download.file(i, destfile = localfile)
+                    utils::download.file(i, destfile = localfile, quiet=T)
                     return(localfile)
                 },
                 error = function(e) {
@@ -277,7 +277,7 @@ listMatchingFiles <- function(x, ignoreMissing=F) {
             )}
             else {
                 localfile <- paste0(mktemp(), '.', extension) 
-                utils::download.file(i, destfile = localfile)
+                utils::download.file(i, destfile = localfile, quiet=T)
             }
             filenames <- c(filenames, localfile)
         }
