@@ -1,9 +1,6 @@
 # TODO: re-do docs
 # TODO: Check and remove extranous codes
-# TODO: Add commented-out checks
 # TODO: encoding of non-txt file
-# TODO: multiple filetypes, what happens to textField?
-# TODO: support folders
 
 
 context('test textfile.R')
