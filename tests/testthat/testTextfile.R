@@ -3,7 +3,6 @@
 # TODO: Add commented-out checks
 # TODO: encoding of non-txt file
 # TODO: multiple filetypes, what happens to textField?
-# TODO: XML warning test
 # TODO: support folders
 
 
