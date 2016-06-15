@@ -172,7 +172,7 @@ setMethod("textfile",
               }
               if (length(encoding) > 1) {
                   if (length(encoding) != length(files)) {
-                    stop('encoding parameter must be length 1, or as long as the number of files'
+                    stop('encoding parameter must be length 1, or as long as the number of files')
                   }
                   sources <- mapply(function(x, e) {
                       getSource(f=x, textField=textField, encoding=e, ...)
