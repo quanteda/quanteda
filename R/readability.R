@@ -173,10 +173,10 @@ readability.character <- function(x,
         textFeatures[, Dale.Chall := 64 - 0.95 * 100 * W_wl.Dale.Chall / W - 0.69 * W / St]
     
     if (any(c("all", "Dale.Chall.old") %in% measure))
-        textFeatures[, Dale.Chall.old := 0.1579 - 100 * W_wl.Dale.Chall / W + 0.0496 * W / St + 3.6365]
+        textFeatures[, Dale.Chall.old := 0.1579 * 100 * W_wl.Dale.Chall / W + 0.0496 * W / St + 3.6365]
     
     if (any(c("all", "Dale.Chall.PSK") %in% measure))
-        textFeatures[, Dale.Chall.PSK := 0.1155 - 100 * W_wl.Dale.Chall / W + 0.0596 * W / St + 3.2672]
+        textFeatures[, Dale.Chall.PSK := 0.1155 * 100 * W_wl.Dale.Chall / W + 0.0596 * W / St + 3.2672]
 
     if (any(c("all", "Danielson.Bryan") %in% measure)) {
         textFeatures[, Bl := W - 1]  # could be more accurate if count spaces
@@ -192,7 +192,7 @@ readability.character <- function(x,
     
     if (any(c("all", "Dickes.Steiwer") %in% measure)) {
         TTR <- lexdiv(dfm(x, verbose = FALSE), measure = "TTR") 
-        textFeatures[, Dickes.Steiwer := (73.021 * C / W) - (12.56438 * W / St) - (50.03293 * TTR)]
+        textFeatures[, Dickes.Steiwer := 235.95993 - (73.021 * C / W) - (12.56438 * W / St) - (50.03293 * TTR)]
     }
     
     if (any(c("all", "DRP") %in% measure)) {
@@ -206,7 +206,7 @@ readability.character <- function(x,
         textFeatures[, ELF := W2Sy / St]
     
     if (any(c("all", "Farr.Jenkins.Paterson") %in% measure))
-        textFeatures[, Farr.Jenkins.Paterson := -31.517 - 1.015 * W / St - 1.599 * W_1Sy / W]
+        textFeatures[, Farr.Jenkins.Paterson := -31.517 - 1.015 * W / St + 1.599 * W_1Sy / W]
     
     if (any(c("all", "Flesch") %in% measure))
         textFeatures[, Flesch := 206.835 - 1.015 * W / St - 84.6 * Sy / W ]

@@ -1,21 +1,23 @@
 quanteda 0.9.7
 ==============
 
-*  Improve performance of `selectFeatures.tokenizedTexts()`.  
-*  Improve performance of rbind.dfm()  
-*  Added support for different docvars when importing multiple files using textfile().  (#147)  
-*  Add support for comparison dispersion plots in `plot.kwic()`. (#146)  
-*  Add corpus constructor method for kwic objects.  
-*  Substantially improve performance of `convert(x, to = "stm")` for dfm export. (#209)
+## New Features
 
-Bug fixes
----------
+*  Improved the performance of `selectFeatures.tokenizedTexts()`.  
+*  Improved the performance of `rbind.dfm()`.  
+*  Added support for different docvars when importing multiple files using `textfile()`.  (#147)  
+*  Added support for comparison dispersion plots in `plot.kwic()`. (#146)  
+*  Added a corpus constructor method for kwic objects.  
+*  Substantially improved the performance of `convert(x, to = "stm")` for dfm export, including adding an argument for meta-data (docvars, in quanteda parlance). (#209)
+
+## Bug fixes
 
 *  Fixed bug in textfile() where source is a remote .zip set.  (#172)  
-*  Fixed bug in wordstem.dfm() that caused an error if supplied a dfm with a feature whose total frequency 
+*  Fixed bug in wordstem.dfm() that caused an error if supplied a dfm with a feature whose total frequency
    count was zero, or with a feature whose total docfreq was zero.  Fixes #181.  
-*  Fixed non-functional `toLower = ` argument in `dfm.tokenizedTexts()`.  
-
+*  Fix #214 "mysterious stemmed token" bug in `wordstem.dfm()`, introduced in fixing #181.  
+*  Fixed previously non-functional `toLower = ` argument in `dfm.tokenizedTexts()`.
+*  Fixed some errors in the computation of a few readability formulas (#215).
 
 
 quanteda 0.9.6 
