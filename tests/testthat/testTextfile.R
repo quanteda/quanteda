@@ -163,6 +163,26 @@ test_that("test remote csv file", {
 })
 
 
+context('test that require recursive invocation of listFileNames (i.e. because a special filename resolves to another special filename)')
+
+test_that("test remote zip file", {
+  expect_equal(
+    length(texts(
+          textfile('https://github.com/kbenoit/quanteda/raw/master/inst/extdata/encodedTextFiles.zip')
+    )),
+           41
+  )
+})
+
+test_that("test globbed tar file",{
+    expect_equal(
+      texts(textfile('../data/tar/*')),
+      c('Lorem ipsum', 'brown fox', 'Dolor sit', 'The quick')
+    )
+})
+
+
+
 test_that("test non-implemented functions", {
 
     expect_that(
@@ -520,6 +540,7 @@ test_that("A single-level tar.gz file containing txt files can be loaded",{
     )
 })
 
+
 context('Loading a corpus from a bzipped tar archive')
 test_that("A single-level tar.bz file containing txt files can be loaded",{
     expect_equal(
@@ -529,6 +550,13 @@ test_that("A single-level tar.bz file containing txt files can be loaded",{
 })
 
 
+context('Loading an empty gzipped tar archive')
+test_that("An empty tar.gz file raises an error",{
+    expect_that(
+      textfile('../data/empty/test.tar.gz'),
+      throws_error("File ../data/empty/test.tar.gz does not exist")
+    )
+})
 
 
 test_that("test reading structured text files with different columns", {
@@ -672,8 +700,9 @@ test_that("Test function to list files", {
     throws_error('cannot open URL')
   )
 
-  expect_true(
-    is.null(listMatchingFiles('http://www.google.com/404.txt', ignoreMissing=T))
+  expect_equal(
+    length(listMatchingFiles('http://www.google.com/404.txt', ignoreMissing=T)),
+    0
   )
 
 

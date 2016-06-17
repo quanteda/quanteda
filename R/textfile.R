@@ -42,34 +42,45 @@ setMethod("show",
 #' Read a text corpus from one or more source files. The texts of the corpus
 #' come from (some part of) the content of the files, and the document-level
 #' metadata (docvars) come from either the file contents or filenames.
-#' @param file the complete filename(s) to be read.  The value can be a vector 
-#'   of file names, a single file name, or a file "mask" using a "glob"-type 
-#'   wildcard value.  Currently available file value types are: 
+#' @param file the complete filename(s) to be read. This is designed to 
+#'   automagically handle a number of common scenarios, so the value can be a
+#    single filename, a vector of file names a remote URL, or a file "mask" using a 
+#'   "glob"-type'  wildcard value.  Currently available filetypes are: 
 #'   \describe{ 
 #'   \item{\code{txt}}{plain text files}
-#'   \item{\code{json}}{data in JavaScript 
-#'   Object Notation, consisting of the texts and additional document-level 
-#'   variables and document-level meta-data.  The text key must be identified by
-#'   specifying a \code{textField} value.}
-#'   \item{\code{csv}}{comma separated 
-#'   value data, consisting of the texts and additional document-level variables
-#'   and document-level meta-data.  The text file must be identified by 
-#'   specifying a \code{textField} value.}
-#'   \item{\code{tab, tsv}}{tab-separated 
-#'   value data, consisting of the texts and additional document-level variables
-#'   and document-level meta-data.  The text file must be identified by 
-#'   specifying a \code{textField} value.}
-#'    \item{a wildcard value}{any valid 
-#'   pathname with a wildcard ("glob") expression that can be expanded by the 
-#'   operating system.  This may consist of multiple file types.} 
+#'   So-called structured text files, which describe both texts and metadata:
+#'   For all structued text filetypes, the column, field, or node 
+#'   which contains the the text must be specified with the \code{textField}
+#'   parameter, and all other fields are treated as docvars.
+#'   \item{\code{json}}{data in some form of JavaScript 
+#'   Object Notation, consisting of the texts and optionally additional docvars.
+#'   The supported formats are:
+#'   \item{a single JSON object per file}{}
+#'   \item{line-delimited JSON, with one object per line}{}
+#'   \item{line-delimited JSON, of the format produced from a Twitter stream.
+#'   This type of file has special handling which simplifies the Twitter format
+#'   into docvars.}{}
+#'   The correct format for each JSON file is automatically detected.}
+#'   \item{\code{csv,tab,tsv}}{comma- or tab-separated values }
 #'   \item{\code{xml}}{Basic flat XML documents are supported -- those of the 
 #'   kind supported by the function xmlToDataFrame function of the \strong{XML} 
 #'   package.}
-#'   \item{\code{zip}}{zip archive file, containing \code{*.txt} 
-#'   files either at the top level or in a single directory.
-#'    This may also be a URL to a zip file.}
+#'   \code{file} can also not be a path to a single local file, such as
+#'    \item{a wildcard value}{any valid 
+#'   pathname with a wildcard ("glob") expression that can be expanded by the 
+#'   operating system.  This may consist of multiple file types.} 
+#'   \item{a URL to a remote}{which is downloaded then loaded} 
+#'   \item{\code{zip,tar,tar.gz,tar.bz}}{archive file, which is unzipped. The 
+#'   contained files must be either at the top level or in a single directory. }
+#'   Archives, remote URLs and glob patterns can resolve to any of the other 
+#'   filetypes, so you could have, for example, a remote URL to a zip file which
+#'   contained Twitter JSON files.
 #'   }
-#' @param ignoreMissingFiles
+#' @param ignoreMissingFiles if ignoreMissingFiles is FALSE, then if the file
+#'   argument doesn't resolve to an existing file, then an error will be thrown.
+#'   Note that this can happen in a number of ways, including passing a path 
+#'   to a file that does not exist, to an empty archive file, or to a glob 
+#'   pattern that matches no files.
 #' @param textField a variable (column) name or column number indicating where 
 #'   to find the texts that form the documents for the corpus.  This must be 
 #'   specified for file types \code{.csv} and \code{.json}.
@@ -216,83 +227,157 @@ setMethod("textfile",
 
 
 
-#' @importFrom stringi stri_match
-#' @importFrom stringi stri_replace
-listMatchingFiles <- function(x, ignoreMissing=F) {
-    # There are four possible types of values for x
+downloadRemote <- function (i, ignoreMissing) {
+    #  First, check that this is not a URL with an unsupported scheme
+    scheme <- stringi::stri_match(i, regex='^([a-z][a-z+.-]*):')[, 2]
+    if (!(scheme %in% c('http', 'https', 'ftp'))) {
+        stop(paste('Unsupported URL scheme', scheme))
+    }
+
+    # If this is a supported-scheme remote URL
+    extension <- tools::file_ext(i)
+    if (!(extension %in% names(SUPPORTED_FILETYPE_MAPPING))) {
+        stop('Remote URL does not end in known extension. Please download the file manually.')
+    }
+    if (ignoreMissing) {
+        localfile <- tryCatch({
+            localfile <- paste0(mktemp(), '.', extension) 
+            utils::download.file(i, destfile = localfile, quiet=T)
+            return(localfile)
+        },
+        warning = function(e) {
+            warning(e)
+            return(NULL)
+        }
+    )}
+    else {
+        localfile <- paste0(mktemp(), '.', extension) 
+        utils::download.file(i, destfile = localfile, quiet=T)
+    }
+    localfile
+}
+
+listMatchingFiles <- function(x, ignoreMissing=F, lastRound=F) {
+    #  The implementation of listMatchingFiles and listMatchingFile might seem
+    #  very complex, but it was arrived at after a lot of toil. The main design
+    #  decision made here is that the user should be able to pass many
+    #  different types of string to listMatchingFiles and get a consistent result:
+    #  a list of local filenames. (One additional wrinkle is that there are two
+    #  functions, listMatchingFiles and listMatchingFile. This is to ensure that
+    #  listMatchingFile is only ever called with a length 1 argument, even though
+    #  it can return multiple filenames. For the purposes of this explanation, 
+    #  this distinction is elided).
+    #  There are four possible types of values for x
     #     - a simple filename
     #     - a remote URL
     #     - a glob pattern
     #     - a vector of some combination of the above
+    #  listMatchingFiles has a recursive design, because  some of these 
+    #  arguments can resolve to arguments which need further processing: e.g.
+    #  a remote URL could resolve to a zip file which needs to be extracted.
+    #  The termination condition for the recursion is when the argument passed
+    #  is a local filepath which refers to a single file and needs no further
+    #  processing, e.g. something like '/path/to/text.tsv'. However, it is not
+    #  possible to determine if a given argument is a path to a single file 
+    #  or a glob pattern which matches multiple files, without actually trying
+    #  the match. This matters because if it's the result of a globbing expression,
+    #  then it could potentially need further processing, but if it's not, it the recursion
+    #  needs to end. We can't know beforehand because the rules for globbing are 
+    #  implementation-dependent (systems might treat '/path/to/file\*.tsv' as
+    #  either a filename or a path depending on  whether they support escaping
+    #  of glob wildcards. We could have tested the return value from Sys.glob
+    #  to see whether the system treats a given string as a glob pattern or a 
+    #  simple filename. Unfortunately, Sys.glob() will return character(0)
+    #  for either a glob pattern which matches no files, or a non-glob filename
+    #  for a file that doesn't exist, so that doesn't work either.
+    #  We also can't test whether a pattern is a regular file by looking at the
+    #  extension, because '/path/to/*.zip' is a glob expression with a 'zip'
+    #  extension.
+
+    if (!(ignoreMissing || (length(x) > 0))) {
+       stop("File does not exist.")
+    }
+
+    matchingFiles <- unlist(
+        lapply(x, function (x) listMatchingFile(
+            x,
+            ignoreMissing=ignoreMissing,
+            lastRound=lastRound)
+        )
+    )
+
+    if (is.null(matchingFiles)) return(character(0))
+
+    matchingFiles
+}
+
+extractArchive <- function(i, ignoreMissing) {
+    if (!(ignoreMissing || file.exists(i)))
+        stop(paste("File", i, "does not exist."))
+
+    td <- mktemp(directory=T)
+    if (tools::file_ext(i) == 'zip')
+        utils::unzip(i, exdir = td)
+    else if ( tools::file_ext(i) == 'gz' ||
+        tools::file_ext(i) == 'tar' ||
+        tools::file_ext(i) == 'bz' )
+        utils::untar(i, exdir = td)
+
+    # Create a glob that matches all the files in the archive
+    file.path(td, '*')
+}
+
+#' @importFrom stringi stri_match
+#' @importFrom stringi stri_replace
+listMatchingFile <- function(x, ignoreMissing, verbose=F, lastRound) {
 
     filenames <- c()
-    for (i in x) {
+    #  Remove 'file' scheme
+    i <- stringi::stri_replace(x, replacement ='', regex='^file://')
 
-        scheme <- stringi::stri_match(i, regex='^([a-z][a-z+.-]*):')[, 2]
-        #  First, check that this is not a URL with an unsupported scheme
-        if (!(
-              (scheme %in% c('http', 'https', 'ftp', 'file')) | is.na(scheme)
-           )) {
-            stop(paste('Unsupported URL scheme', scheme))
-        }
-
-        # If it's a file:// URL or not a URL, treat it as a local file
-        if (scheme =='file' | is.na(scheme)) {
-        #  here, x could be a regular filename or a glob pattern but given
-        #  that regular filenames are a subset of globs, we can just treat
-        #  it like a glob
-        i <- stringi::stri_replace(i, replacement ='', regex='^file://')
-
-        if (tools::file_ext(i) == 'zip') {
-            td <- mktemp(directory=T)
-            utils::unzip(i, exdir = td)
-            # Create a glob that matches all the files in the archive
-            i <- file.path(td, '*')
-        }
-        if (
-            tools::file_ext(i) == 'gz' |
-            tools::file_ext(i) == 'tar' |
-            tools::file_ext(i) == 'bz') {
-            td <- mktemp(directory=T)
-            utils::untar(i, exdir = td)
-            # Create a glob that matches all the files in the archive
-            i <- file.path(td, '*')
-        }
-
-
-        globbedFiles <- sort(Sys.glob(i))
-        if ((length(globbedFiles) == 0) & !ignoreMissing) {
-            stop(paste('File does not exist', i))
-        }
-        filenames <- c(filenames, globbedFiles)
-        }
-
-        else {
-            # If this is a supported-scheme remote URL
-            extension <- tools::file_ext(i)
-            if (!(extension %in% names(SUPPORTED_FILETYPE_MAPPING))) {
-                stop('Remote URL does not end in known extension. Please download the file manually.')
-            }
-            if (ignoreMissing) {
-                localfile <- tryCatch({
-                    localfile <- paste0(mktemp(), '.', extension) 
-                    utils::download.file(i, destfile = localfile, quiet=T)
-                    return(localfile)
-                },
-                warning = function(e) {
-                    warning(e)
-                    return(NULL)
-                }
-            )}
-            else {
-                localfile <- paste0(mktemp(), '.', extension) 
-                utils::download.file(i, destfile = localfile, quiet=T)
-            }
-            filenames <- c(filenames, localfile)
-        }
+    scheme <- stringi::stri_match(i, regex='^([a-z][a-z+.-]*):')[, 2]
+    
+    # If not a URL (or a file:// URL) , treat it as a local file
+    if (!is.na(scheme)) {
+        if (verbose) print('Remote file')
+        #  If there is a non-'file' scheme, treat it as remote
+        localfile <- downloadRemote(i, ignoreMissing=ignoreMissing)
+        return(listMatchingFiles(localfile, ignoreMissing=ignoreMissing))
     }
-    filenames
+
+    # Now, special local files
+    if (tools::file_ext(i) == 'zip' ||
+        tools::file_ext(i) == 'gz' ||
+        tools::file_ext(i) == 'tar' ||
+        tools::file_ext(i) == 'bz' 
+        ) {
+        if (verbose) print('archive')
+        archiveFiles <- extractArchive(i, ignoreMissing=ignoreMissing)
+        return(listMatchingFiles(archiveFiles, ignoreMissing=ignoreMissing))
+    }
+
+    #  At this point, it may be a simple local file or a glob pattern, but as
+    #  above, we have no way of telling a priori whether this is the case
+    if (lastRound) {
+        #  We get to this point if the path wasn't to some file that needed
+        #  special treatment (zip, remote, etc.) and it was treated as a glob
+        #  pattern, which means that it is definitely not a glob pattern this
+        #  time
+        if (!(ignoreMissing || file.exists(i))) stop("File", i, "does not exist.")
+        if (verbose) print('regular file')
+        return(i)
+    }
+    else {
+        #  If it wasn't a glob pattern last time, then it may be this time
+        if (verbose) print('possible glob pattern')
+        i <- Sys.glob(i)
+        return(
+           listMatchingFiles(i, ignoreMissing=ignoreMissing, lastRound=T)
+        )
+    }
+
 }
+
 
 # function common to all textfile methods to return either the cached
 # textfile object link, or the textfile object itself
@@ -314,7 +399,12 @@ getSource <- function(f, textField, ...) {
     fileType <- tryCatch({
          SUPPORTED_FILETYPE_MAPPING[[extension]]
     }, error = function(e) {
-        stop(paste('Unsupported extension', extension, 'of file', f))
+        if (e == 'subscript out of bounds') {
+            stop(paste('Unsupported extension', extension, 'of file', f))
+        }
+        else {
+            stop(e)
+        }
     })
 
     switch(fileType, 
@@ -532,7 +622,7 @@ mktemp <- function(prefix='tmp.', base_path=NULL, directory=F) {
     filename <- paste0(sample(alphanumeric, 10, replace=T), collapse='')
     filename <- paste0(prefix, filename)
     filename <- file.path(base_path, filename)
-    while (file.exists(filename) | dir.exists(filename)) {
+    while (file.exists(filename) || dir.exists(filename)) {
         filename <- paste0(sample(alphanumeric, 10, replace=T), collapse='')
         filename <- paste0(prefix, filename)
         filename <- file.path(base_path, filename)
