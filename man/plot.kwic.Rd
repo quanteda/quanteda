@@ -4,7 +4,7 @@
 \alias{plot.kwic}
 \title{plot the dispersion of key word(s)}
 \usage{
-\method{plot}{kwic}(..., scale = c("absolute", "relative"))
+\method{plot}{kwic}(..., scale = c("absolute", "relative"), sort = FALSE)
 }
 \arguments{
 \item{...}{any number of \link{kwic} class objects}
@@ -12,30 +12,33 @@
 \item{scale}{whether to scale the token index axis by absolute position of the token in the 
 document or by relative position. Defaults are absolute for single document and relative for
 multiple documents.}
+
+\item{sort}{whether to sort the rows of a multiple document plot by document name}
 }
 \value{
 \code{plot.kwic} returns a ggplot object
 }
 \description{
-Plots a dispersion or "x-ray" plot of selected word pattern(s) across one or more texts.
-The format of the plot depends on the number of \link{kwic} class objects passed: if there
-is only one document, keywords are plotted one below the other. If there are multiple documents
-the documents are plotted one below the other, with keywords shown side-by-side.
-Given that this returns a ggplot object, you can modify the plot by adding ggplot layers
-(see example).
+Plots a dispersion or "x-ray" plot of selected word pattern(s) across one or
+more texts. The format of the plot depends on the number of \link{kwic} class
+objects passed: if there is only one document, keywords are plotted one below
+the other. If there are multiple documents the documents are plotted one
+below the other, with keywords shown side-by-side. Given that this returns a
+ggplot object, you can modify the plot by adding ggplot layers (see example).
 }
 \examples{
 \dontrun{
 inaugCorpusPost70 <- subset(inaugCorpus, Year > 1970)
 # compare multiple documents
 plot(kwic(inaugCorpusPost70, "american"))
+plot(kwic(inaugCorpusPost70, "american"), scale = "absolute")
 # compare multiple terms across multiple documents
 plot(kwic(inaugCorpusPost70, "america*"), kwic(inaugCorpusPost70, "people"))
 
 # how to modify the ggplot with different options
 library(ggplot2)
 g <- plot(kwic(inaugCorpusPost70, "american"), kwic(inaugCorpusPost70, "people"))
-g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue', 'orange'))
+g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue'))
 }
 }
 \author{

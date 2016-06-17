@@ -1,8 +1,8 @@
 #TODO: merge json
 #TODO: merge rbindall
-#TODO: RTL
-#TODO: bi-directional text
-#TODO: encodings in filenames
+# TODO: RTL
+# TODO: bi-directional text
+# TODO: encodings in filenames
 
 
 context('test textfile.R')
@@ -41,7 +41,7 @@ test_that("test show.corpusSource", {
 })
 
 
-#TODO: Add tests for the various method signatures
+# TODO: Add tests for the various method signatures
 
 
 test_that("test textfile with single filename", {
@@ -109,15 +109,15 @@ test_that("test textfile with glob-style mask", {
 
 
     # TODO: Glob in non-last part of filename
-    # expect_equal(
-    #     length(texts(textfile(
-    #             '../data/glob/*/1.txt'
-    #     ))),
-    #     2
-    # )
+    #  expect_equal(
+    #      length(texts(textfile(
+    #              '../data/glob/*/1.txt'
+    #      ))),
+    #      2
+    #  )
 
 
-    #TODO: glob multiple filetypes
+    # TODO: glob multiple filetypes
     # expect_equal(
     #     length(texts(textfile(
     #             '../data/glob/*'
@@ -129,20 +129,20 @@ test_that("test textfile with glob-style mask", {
 
 })
 
-# test_that("test structured textfile with glob-style mask", {
-#     expect_equal(
-#         length(texts(textfile(
-#                 '../data/csv/*.csv', textField='text'
-#         ))),
-#         4
-#     )
-#     expect_equal(
-#         nrow(docvars(textfile(
-#                 '../data/csv/*.csv', textField='text'
-#         ))),
-#         4
-#     )
-# })
+test_that("test structured textfile with glob-style mask", {
+    expect_equal(
+        length(texts(textfile(
+                '../data/csv/*.csv', textField='text'
+        ))),
+        4
+    )
+    expect_equal(
+        nrow(docvars(textfile(
+                '../data/csv/*.csv', textField='text'
+        ))),
+        4
+    )
+})
 
 
 test_that("test non-implemented functions", {
@@ -286,7 +286,7 @@ test_that("test getFileType", {
       expect_equal(getFileType('test'), 'unknown')
 
       # TODO: filenames with glob specialchars
-      #TODO: Should it support multiple filenames?
+      # TODO: Should it support multiple filenames?
 })
 
 test_that("test textfile() with docvarsfrom=filenames", {
@@ -307,7 +307,7 @@ test_that("test textfile() with docvarsfrom=filenames", {
         equals(data.frame(list(docvar1=c(1,2), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
     )
 
-    # docvarsfrom='filenames' only works with txt files, by design?
+    #  docvarsfrom='filenames' only works with txt files, by design?
     #  expect_that(
     #      docvars(textfile('../data/docvars/two/*json', docvarsfrom='filenames', textField='nonesuch')),
     #      equals(data.frame(list(docvar1=c(1,2), docvar2=c('apple', 'orange')), docvar3=c('red', 'orange'), stringsAsFactors=F))
@@ -378,61 +378,72 @@ test_that("test docvars.corpusSource warning with field!=NULL", {
      )
 })
 
+# Currently, these encodings don't work for reasons that seem unrelated 
+# to quanteda, and are either a problem in base R or on travis-ci
+broken_encodings <- c(
+    "437", "850", "852", "855", "857", "860", "861", "862", "863", "865", 
+    "869", "BIG5-HKSCS", "CHINESE", "CP1251", "CP1255", "CP1256", "CP1361",
+    "CP154", "CP737", "CP858", "CP864", "CP856", "CP932", "CP950", "EUC-JISX0213", 
+    "EUC-JP", "EUC-KR", "GB18030", "HEBREW", "HZ","ISO-2022-JP-1", "ISO-2022-JP-2", 
+    "ISO-2022-JP-3", "ISO-8859-11", "ISO-IR-166", "KOI8-R",
+    "UNICODE-1-1-UTF-7",
+    "MACCENTRALEUROPE", "MACCYRILLIC", "MACGREEK", "MACICELAND", "MACTURKISH",
+    "MS_KANJI", "SHIFT_JISX0213"
+)
+
+
+FILEDIR <- '../data/encoding'
+
+filenames <- list.files(FILEDIR, "*__characters.txt$")
+parts <- strsplit(gsub(".txt$", "", filenames), "__")
+fileencodings <- sapply(parts, "[", 1)
+
+fileencodings <- fileencodings[!(fileencodings %in% broken_encodings)]
+filenames <- file.path(FILEDIR, paste0(fileencodings,  "__characters.txt"))
 
 test_that("test textfile encoding parameter", {
-
-  fox <- "The quick brown fox jumps over the lazy dog."
-  # Test ASCII encoded file, read as ASCII
-   expect_that(
-      texts(textfile('../data/encoding/ascii.txt', encoding='ascii')),
-      equals(fox)
-    )
-  # Test ASCII encoded file, read as UTF-8
-   expect_that(
-      texts(textfile('../data/encoding/ascii.txt', encoding='utf-8')),
-      equals(fox)
-    )
-  # Test ASCII encoded file, read as UTF-16: should not work
-   expect_that(
-      texts(textfile('../data/encoding/ascii.txt', encoding='utf-16')) == fox,
-      is_false()
-    )
-
-   # ## Test Latin-1/ISO-8859-1 encoded text
-   # txtToMatch <- enc2utf8('\"Fix, Schwyz!\" quäkt Jürgen blöd vom Paß')
-   # expect_that(
-   #    txtFromFile <- texts(textfile('../data/encoding/latin1.txt', encoding='latin1')),
-   #    equals(txtToMatch)
-   # )
-
    
-  ####
-  #### See ?encodedTextFiles
-  ####
-   
-  #Test Unicode encoded files:
-  #    - UTF-8 with BOM
-  #    - UTF-8 without BOM
-  #    - UTF-16 big-endian with BOM
-  #    - UTF-16 big-endian without BOM
-  #    - UTF-16 little-endian with BOM
-  #    - UTF-16 little-endian without BOM
-  #    - Windows-1252
 
-   # frenchText <- "Le cœur déçu mais l'âme plutôt naïve, Louÿs rêva de crapaüter en canoë au delà des îles, près du mälström où brûlent les novæ."
-   # 
-   # encodings = c('utf-8',       'utf-8',     'utf-16',     'utf-16',       'utf-16',       'utf-16le',       'latin1', 'windows-1252')
-   # filenames = c('utf-8-nobom', 'utf-8-bom', 'utf-16-bom', 'utf-16-nobom', 'utf-16le-bom', 'utf-16le-nobom', 'latin1', 'windows-1252')
-   # 
-   # for (i in 1:length(encodings)) {
-   #   print(paste(filenames[[i]], encodings[[i]]))
-   #   expect_that(
-   #    texts(textfile(paste0('../data/encoding/', filenames[[i]], '.txt'), encoding=encodings[[i]])),
-   #    equals(frenchText)
-   #  )
-   # }
 
-  })
+  for (i in 1:length(fileencodings)) {
+      filename <- filenames[[i]]
+      encoding <- fileencodings[[i]]
+      print(paste('Testing loading from encoding', encoding))
+      characters <- as.numeric(charToRaw(
+        texts(textfile(filename, encoding=fileencodings[[i]]))
+      ))
+      bytes <- data.table::fread(gsub('__characters.txt', '__bytes.tsv', filename))[[1]]
+      expect_equal(characters, bytes)
+  }
+})
+
+test_that("Test loading all these files at once with different encodings", {
+  encodedTextfilesCorpus <- corpus(textfile(filenames, encoding=fileencodings))
+})
+
+
+#  test_that("test textfile encoding parameter: UTF-8 encoded file, read as UTF-16 (should not work)", {
+#       print(file.path(FILEDIR, 'UTF-8__characters.txt'))
+#       print(file.exists(file.path(FILEDIR, 'UTF-8__characters.txt')))
+#       expect_warning(
+#         misread_texts <- texts(textfile(file.path(FILEDIR, 'UTF-8__characters.txt'), encoding='utf-16'))
+#       )
+#       utf8_bytes <- data.table::fread(file.path(FILEDIR, 'UTF-8__bytes.tsv'))[[1]]
+#       expect_false(
+#              all(as.numeric(charToRaw(misread_texts)) == utf8_bytes)
+#       )
+#  })
+
+test_that("test textfile encoding parameter: ASCII encoded file, read as UTF-8: (should work)", {
+   utf8_bytes <- data.table::fread(file.path(FILEDIR, 'UTF-8__bytes.tsv'))[[1]]
+   expect_that(
+      as.numeric(charToRaw(
+          texts(textfile(file.path(FILEDIR, 'UTF-8__characters.txt'), encoding='utf-8'),
+      ))),
+      equals(utf8_bytes)
+   )
+})
+
 context('Loading a corpus from a zip file.')
 
 test_that("A single-level zip file containing txt files can be loaded",{
@@ -444,7 +455,7 @@ test_that("A single-level zip file containing txt files can be loaded",{
 
 test_that("test reading structured text files with different columns", {
      testcorpus <- textfile(
-         "data/fruits*.csv",
+         "../data/fruits/*.csv",
          textField='text'
      )
  
@@ -463,5 +474,35 @@ test_that("test reading structured text files with different columns", {
      )
  })
 
+
 # TODO: XML warning test
-# TODO: imputedocvars
+
+test_that("Test mktemp function for test dirs",{
+  filename <- quanteda:::mktemp()
+  expect_true(file.exists(filename))
+  filename2 <- quanteda:::mktemp()
+  expect_true(file.exists(filename2))
+  expect_false(filename == filename2)
+
+  # test directory parameter
+  dirname <- quanteda:::mktemp(directory=T)
+  expect_true(dir.exists(dirname))
+  
+  # test prefix parameter
+  filename <- quanteda:::mktemp(prefix='testprefix')
+  expect_equal(
+    substr(basename(filename), 1, 10),
+    'testprefix'
+  )
+
+  # test that a new filename will be given if the original already exists
+  set.seed(0)
+  original_filename <- quanteda:::mktemp()
+  set.seed(0)
+  new_filename <- quanteda:::mktemp()
+  expect_false(original_filename == new_filename)
+  expect_true(file.exists(original_filename))
+  expect_true(file.exists(new_filename))
+
+
+})
