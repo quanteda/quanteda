@@ -126,7 +126,7 @@ setMethod("show",
 #'   called.
 #' @return an object of class \link{corpusSource-class} that can be read by 
 #'   \link{corpus} to construct a corpus
-#' @author Kenneth Benoit and Paul Nulty
+#' @author Adam Obeng, Kenneth Benoit, and Paul Nulty
 #' @export
 #' @importFrom utils download.file unzip type.convert
 setGeneric("textfile",

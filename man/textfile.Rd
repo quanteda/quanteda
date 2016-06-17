@@ -144,6 +144,6 @@ textfile(list.files(path = "~/Desktop/texts", pattern = "\\\\.txt$",
 }
 }
 \author{
-Kenneth Benoit and Paul Nulty
+Adam Obeng, Kenneth Benoit, and Paul Nulty
 }
 
