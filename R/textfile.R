@@ -279,7 +279,7 @@ listMatchingFiles <- function(x, ignoreMissing=F, lastRound=F) {
     #  is a local filepath which refers to a single file and needs no further
     #  processing, e.g. something like '/path/to/text.tsv'. However, it is not
     #  possible to determine if a given argument is a path to a single file 
-    #  or a glob pattern which matches multiple files, without actually trying
+    #  or a glob pattern which matches multiple files, without actually trying
     #  the match. This matters because if it's the result of a globbing expression,
     #  then it could potentially need further processing, but if it's not, it the recursion
     #  needs to end. We can't know beforehand because the rules for globbing are 
