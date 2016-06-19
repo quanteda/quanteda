@@ -18,22 +18,22 @@ textfile(file, ignoreMissingFiles = FALSE, textField = NULL,
 \item{file}{the complete filename(s) to be read. This is designed to 
 automagically handle a number of common scenarios, so the value can be a
 "glob"-type'  wildcard value.  Currently available filetypes are: 
-\describe{ 
-\item{\code{txt}}{plain text files}
+\describe{
+\item{\code{txt}}{plain text files:
 So-called structured text files, which describe both texts and metadata:
-For all structued text filetypes, the column, field, or node 
+For all structured text filetypes, the column, field, or node 
 which contains the the text must be specified with the \code{textField}
-parameter, and all other fields are treated as docvars.
+parameter, and all other fields are treated as docvars.}
 \item{\code{json}}{data in some form of JavaScript 
 Object Notation, consisting of the texts and optionally additional docvars.
 The supported formats are:
-\item{a single JSON object per file}{}
-\item{line-delimited JSON, with one object per line}{}
-\item{line-delimited JSON, of the format produced from a Twitter stream.
+\itemize{
+\item a single JSON object per file
+\item line-delimited JSON, with one object per line
+\item line-delimited JSON, of the format produced from a Twitter stream.
 This type of file has special handling which simplifies the Twitter format
-into docvars.}{}
-The correct format for each JSON file is automatically detected.}
-\item{\code{csv,tab,tsv}}{comma- or tab-separated values }
+into docvars.  The correct format for each JSON file is automatically detected.}}
+\item{\code{csv,tab,tsv}}{comma- or tab-separated values}
 \item{\code{xml}}{Basic flat XML documents are supported -- those of the 
 kind supported by the function xmlToDataFrame function of the \strong{XML} 
 package.}
@@ -43,13 +43,13 @@ pathname with a wildcard ("glob") expression that can be expanded by the
 operating system.  This may consist of multiple file types.} 
 \item{a URL to a remote}{which is downloaded then loaded} 
 \item{\code{zip,tar,tar.gz,tar.bz}}{archive file, which is unzipped. The 
-contained files must be either at the top level or in a single directory. }
+contained files must be either at the top level or in a single directory.
 Archives, remote URLs and glob patterns can resolve to any of the other 
 filetypes, so you could have, for example, a remote URL to a zip file which
-contained Twitter JSON files.
+contained Twitter JSON files.}
 }}
 
-\item{ignoreMissingFiles}{if ignoreMissingFiles is FALSE, then if the file
+\item{ignoreMissingFiles}{if \code{FALSE}, then if the file
 argument doesn't resolve to an existing file, then an error will be thrown.
 Note that this can happen in a number of ways, including passing a path 
 to a file that does not exist, to an empty archive file, or to a glob 
@@ -67,7 +67,7 @@ copies in memory: one as a \link{corpusSource-class} object and the second
 as a \link{corpus} class object.  It also provides a way to try different 
 settings of encoding conversion when creating a corpus from a 
 \link{corpusSource-class} object, without having to load in all of the 
-source data again.}
+source data again}
 
 \item{docvarsfrom}{used to specify that docvars should be taken from the 
 filenames, when the \code{textfile} inputs are filenames and the elements 
@@ -93,9 +93,6 @@ as it would be give to \code{\link{iconv}}.  See the Encoding section of
 \link{file} for details.  Also useful for passing arguments through to
 \code{\link{read.csv}}, for instance `quote = ""`, if quotes are causing
 problems within comma-delimited fields.}
-
-\item{ignoreMissingFiles}{boolean: whether to throw an error if a missing 
-file is specified.}
 }
 \value{
 an object of class \link{corpusSource-class} that can be read by 
@@ -107,7 +104,8 @@ come from (some part of) the content of the files, and the document-level
 metadata (docvars) come from either the file contents or filenames.
 }
 \details{
-The constructor does not store a copy of the texts, but rather reads
+If \code{cache = TRUE}, the constructor does not store a copy of 
+  the texts, but rather reads
   in the texts and associated data, and saves them to a temporary disk file 
   whose location is specified in the \link{corpusSource-class} object.  This 
   prevents a complete copy of the object from cluttering the global 
