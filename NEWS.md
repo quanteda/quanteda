@@ -8,7 +8,8 @@ quanteda 0.9.7
 *  Added support for different docvars when importing multiple files using `textfile()`.  (#147)  
 *  Added support for comparison dispersion plots in `plot.kwic()`. (#146)  
 *  Added a corpus constructor method for kwic objects.  
-*  Substantially improved the performance of `convert(x, to = "stm")` for dfm export, including adding an argument for meta-data (docvars, in quanteda parlance). (#209)
+*  Substantially improved the performance of `convert(x, to = "stm")` for dfm export, including adding an argument for meta-data (docvars, in quanteda parlance). (#209)  
+*  Internal rewrite of `textfile()`, now supports more file types, more wildcard patterns, and is far more robust generally.  
 
 ## Bug fixes
 
