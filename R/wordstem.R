@@ -120,7 +120,7 @@ wordstem.dfm <- function(x, language = "porter") {
                            x = x@x, 
                            dimnames = list(docs = docnames(x), 
                                            features = newFeatures))
-    new("dfmSparse", result)[-ndoc(x), -nfeature(x)]
+    new("dfmSparse", result)[-nrow(result), -ncol(result)]
 }
 
 
