@@ -312,6 +312,8 @@ test_that("test json files", {
     
     #  test.json and test2.json are newline-delimited json
     #  test3.json is a single json object
+    print('TEST JSON DOCVARS')
+    print(docvars(textfile('../data/json/*json', textField='text')))
     expect_equal(
         docvars(textfile('../data/json/*json', textField='text')),
         data.frame(list(
@@ -528,7 +530,7 @@ test_that("A single-level zip file containing txt files can be loaded",{
 })
 
 context('Loading a corpus from a tar archive')
-print(texts(corpus(textfile('../data/tar/test.tar'))))
+print(sort(texts(corpus(textfile('../data/tar/test.tar')))))
 test_that("A single-level tar file containing txt files can be loaded",{
     expect_equal(
       sort(texts(corpus(textfile('../data/tar/test.tar')))),
@@ -537,7 +539,7 @@ test_that("A single-level tar file containing txt files can be loaded",{
 })
 
 context('Loading a corpus from a gzipped tar archive')
-print(texts(corpus(textfile('../data/targz/test.tar.gz'))))
+print(sort(texts(corpus(textfile('../data/targz/test.tar.gz')))))
 test_that("A single-level tar.gz file containing txt files can be loaded",{
     expect_equal(
       sort(texts(corpus(textfile('../data/targz/test.tar.gz')))),
@@ -545,9 +547,8 @@ test_that("A single-level tar.gz file containing txt files can be loaded",{
     )
 })
 
-
 context('Loading a corpus from a bzipped tar archive')
-print(texts(corpus(textfile('../data/tarbz/test.tar.bz'))))
+print(sort(texts(corpus(textfile('../data/tarbz/test.tar.bz')))))
 test_that("A single-level tar.bz file containing txt files can be loaded",{
     expect_equal(
       sort(texts(corpus(textfile('../data/tarbz/test.tar.bz')))),
