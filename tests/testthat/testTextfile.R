@@ -544,14 +544,14 @@ test_that("A single-level tar.gz file containing txt files can be loaded",{
 })
 
 
-# context('Loading a corpus from a bzipped tar archive')
-# test_that("A single-level tar.bz file containing txt files can be loaded",{
-#     expect_equal(
-#         texts(corpus(textfile('../data/tarbz/test.tar.bz'))),
-#         c(text1='Lorem ipsum', text2='brown fox', text3='Dolor sit', text4='The quick')
-#     )
-# })
-# 
+context('Loading a corpus from a bzipped tar archive')
+test_that("A single-level tar.bz file containing txt files can be loaded",{
+    expect_equal(
+        texts(corpus(textfile('../data/tarbz/test.tar.bz'))),
+        c(text1='Lorem ipsum', text2='brown fox', text3='Dolor sit', text4='The quick')
+    )
+})
+
 
 context('Loading an empty gzipped tar archive')
 test_that("An empty tar.gz file raises an error",{
