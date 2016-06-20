@@ -176,8 +176,8 @@ test_that("test remote zip file", {
 
 test_that("test globbed tar file",{
     expect_equal(
-        texts(textfile('../data/tar/*')),
-        c('Lorem ipsum', 'brown fox', 'Dolor sit', 'The quick')
+     sort(texts(textfile('../data/tar/*'))),
+      c('brown fox', 'Dolor sit', 'Lorem ipsum', 'The quick')
     )
 })
 
@@ -306,8 +306,8 @@ test_that("test xml files", {
 
 test_that("test json files", {
     expect_equal(
-        texts(textfile('../data/json/*json', textField='text')),
-        c('Lorem ipsum', 'Dolor sit', 'The quick', 'brown fox', 'Now is the winter')
+        sort(texts(textfile('../data/json/*json', textField='text'))),
+        c('brown fox', 'Dolor sit', 'Lorem ipsum', 'Now is the winter', 'The quick')
     )
     
     #  test.json and test2.json are newline-delimited json
@@ -530,16 +530,16 @@ test_that("A single-level zip file containing txt files can be loaded",{
 context('Loading a corpus from a tar archive')
 test_that("A single-level tar file containing txt files can be loaded",{
     expect_equal(
-        texts(corpus(textfile('../data/tar/test.tar'))),
-        c(text1='Lorem ipsum', text2='brown fox', text3='Dolor sit', text4='The quick')
+      sort(texts(corpus(textfile('../data/tar/test.tar')))),
+      c(text2='brown fox', text3='Dolor sit', text1='Lorem ipsum', text4='The quick')
     )
 })
 
 context('Loading a corpus from a gzipped tar archive')
 test_that("A single-level tar.gz file containing txt files can be loaded",{
     expect_equal(
-        texts(corpus(textfile('../data/targz/test.tar.gz'))),
-        c(text1='Lorem ipsum', text2='brown fox', text3='Dolor sit', text4='The quick')
+      sort(texts(corpus(textfile('../data/targz/test.tar.gz')))),
+      c(text2='brown fox', text3='Dolor sit', text1='Lorem ipsum', text4='The quick')
     )
 })
 
@@ -547,8 +547,8 @@ test_that("A single-level tar.gz file containing txt files can be loaded",{
 context('Loading a corpus from a bzipped tar archive')
 test_that("A single-level tar.bz file containing txt files can be loaded",{
     expect_equal(
-        texts(corpus(textfile('../data/tarbz/test.tar.bz'))),
-        c(text1='Lorem ipsum', text2='brown fox', text3='Dolor sit', text4='The quick')
+      sort(texts(corpus(textfile('../data/tarbz/test.tar.bz')))),
+      c(text2='brown fox', text3='Dolor sit', text1='Lorem ipsum', text4='The quick')
     )
 })
 
