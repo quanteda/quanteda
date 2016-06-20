@@ -323,8 +323,6 @@ test_that("test json files", {
     row.names(actual_docvars) <- NULL
     row.names(actual_docvars)
     row.names(expected_docvars)
-    print(expected_docvars)
-    print(actual_docvars)
     expect_equal(
         actual_docvars,
         expected_docvars
