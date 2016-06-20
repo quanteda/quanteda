@@ -312,14 +312,18 @@ test_that("test json files", {
     
     #  test.json and test2.json are newline-delimited json
     #  test3.json is a single json object
-    print('TEST JSON DOCVARS')
-    print(docvars(textfile('../data/json/*json', textField='text')))
-    expect_equal(
-        docvars(textfile('../data/json/*json', textField='text')),
-        data.frame(list(
+    expected_docvars <- data.frame(list(
             colour=c('green', 'red', 'orange', 'blue', NA), 
             number=c(42, 99, 0, NA, 3)),
             stringsAsFactors=F)
+    expected_docvars <- expected_docvars[order(expected_docvars$number),]
+    actual_docvars <- docvars(textfile('../data/json/*json', textField='text'))
+    actual_docvars <- actual_docvars[order(actual_docvars$number),]
+    print(expected_docvars)
+    print(actual_docvars)
+    expect_equal(
+        actual_docvars,
+        expected_docvars
     )
     
     expect_that(
@@ -533,8 +537,8 @@ context('Loading a corpus from a tar archive')
 print(sort(texts(corpus(textfile('../data/tar/test.tar')))))
 test_that("A single-level tar file containing txt files can be loaded",{
     expect_equal(
-      sort(texts(corpus(textfile('../data/tar/test.tar')))),
-      c(text2='brown fox', text3='Dolor sit', text1='Lorem ipsum', text4='The quick')
+      unname(sort(texts(corpus(textfile('../data/tar/test.tar'))))),
+      c('brown fox', 'Dolor sit', 'Lorem ipsum', 'The quick')
     )
 })
 
@@ -542,8 +546,8 @@ context('Loading a corpus from a gzipped tar archive')
 print(sort(texts(corpus(textfile('../data/targz/test.tar.gz')))))
 test_that("A single-level tar.gz file containing txt files can be loaded",{
     expect_equal(
-      sort(texts(corpus(textfile('../data/targz/test.tar.gz')))),
-      c(text2='brown fox', text3='Dolor sit', text1='Lorem ipsum', text4='The quick')
+      unname(sort(texts(corpus(textfile('../data/targz/test.tar.gz'))))),
+      c('brown fox', 'Dolor sit', 'Lorem ipsum', 'The quick')
     )
 })
 
@@ -551,8 +555,8 @@ context('Loading a corpus from a bzipped tar archive')
 print(sort(texts(corpus(textfile('../data/tarbz/test.tar.bz')))))
 test_that("A single-level tar.bz file containing txt files can be loaded",{
     expect_equal(
-      sort(texts(corpus(textfile('../data/tarbz/test.tar.bz')))),
-      c(text2='brown fox', text3='Dolor sit', text1='Lorem ipsum', text4='The quick')
+      unname(sort(texts(corpus(textfile('../data/tarbz/test.tar.bz'))))),
+      c('brown fox', 'Dolor sit', 'Lorem ipsum', 'The quick')
     )
 })
 
