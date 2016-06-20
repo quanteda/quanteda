@@ -55,18 +55,22 @@ As of version 0.8.0, the GitHub master repository will always contain the develo
 
 1.  From CRAN, using your R package installer, or simply
 
-        install.packages("quanteda")
+    ``` r
+    install.packages("quanteda")
+    ```
 
 2.  (For the development version) From GitHub, using
 
-        devtools::install_github("kbenoit/quanteda")
+    ``` r
+    # devtools packaged required to install quanteda from Github
+    devtools::install_github("kbenoit/quanteda")
+    ```
 
     Because this compiles some C++ source code, you will need a compiler installed. If you are using a Windows platform, this means you will need also to install the [Rtools](http://cran.r-project.org/bin/windows/Rtools/) software available from CRAN. If you are using OS X, you will need to to install XCode, available for free from the App Store, or if you prefer a lighter footprint set of tools, [just the Xcode command line tools](http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/), using the command `xcode-select --install` from the Terminal.
 
 3.  (Optional) You can install some additional corpus data from **quantedaData** using
 
-    ``` s
-    ## devtools required to install quanteda from Github
+    ``` r
     devtools::install_github("kbenoit/quantedaData")
     ```
 
@@ -77,7 +81,7 @@ In-depth tutorials in the form of a gitbook will be available here [here](http:/
 
 Examples for any function can also be seen using (for instance, for `corpus()`):
 
-``` s
+``` r
 example(corpus)
 ```
 
@@ -118,7 +122,7 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 #>          UKIP   346    739        27         UKIP
 #> 
 #> Source:  /Users/kbenoit/Dropbox/GitHub/quanteda/* on x86_64 by kbenoit
-#> Created: Mon Jun 20 09:56:19 2016
+#> Created: Mon Jun 20 10:05:14 2016
 #> Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -139,7 +143,7 @@ mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
 #>    ... removed 97 features, from 175 supplied (glob) feature types
 #>    ... created a 9 x 1489 sparse dfm
 #>    ... complete. 
-#> Elapsed time: 0.03 seconds.
+#> Elapsed time: 0.028 seconds.
 dim(mydfm)              # basic dimensions of the dfm
 #> [1]    9 1489
 topfeatures(mydfm, 20)  # 20 top words

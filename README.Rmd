@@ -99,13 +99,14 @@ As of version 0.8.0, the GitHub master repository will always contain the develo
 
 1.  From CRAN, using your R package installer, or simply
 
-    ```
+    ```r
     install.packages("quanteda")
     ```
 
 2.  (For the development version) From GitHub, using
 
-    ```
+    ```r
+    # devtools packaged required to install quanteda from Github
     devtools::install_github("kbenoit/quanteda")
     ```
 
@@ -114,8 +115,7 @@ As of version 0.8.0, the GitHub master repository will always contain the develo
 
 3.  (Optional) You can install some additional corpus data from **quantedaData** using
 
-    ```S
-    ## devtools required to install quanteda from Github
+    ```r
     devtools::install_github("kbenoit/quantedaData")
     ```
 
@@ -126,7 +126,7 @@ Documentation
 In-depth tutorials in the form of a gitbook will be available here [here](http://kbenoit.github.io/quanteda).
 
 Examples for any function can also be seen using (for instance, for `corpus()`):
-```S
+```r
 example(corpus)
 ```
 There are also some demo functions that show off some of the package capabilities, such 
