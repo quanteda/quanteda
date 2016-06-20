@@ -321,6 +321,8 @@ test_that("test json files", {
     actual_docvars <- docvars(textfile('../data/json/*json', textField='text'))
     actual_docvars <- actual_docvars[order(actual_docvars$number),]
     row.names(actual_docvars) <- NULL
+    row.names(actual_docvars)
+    row.names(expected_docvars)
     print(expected_docvars)
     print(actual_docvars)
     expect_equal(
@@ -536,7 +538,6 @@ test_that("A single-level zip file containing txt files can be loaded",{
 })
 
 context('Loading a corpus from a tar archive')
-print(sort(texts(corpus(textfile('../data/tar/test.tar')))))
 test_that("A single-level tar file containing txt files can be loaded",{
     expect_equal(
       unname(sort(texts(corpus(textfile('../data/tar/test.tar'))))),
@@ -545,7 +546,6 @@ test_that("A single-level tar file containing txt files can be loaded",{
 })
 
 context('Loading a corpus from a gzipped tar archive')
-print(sort(texts(corpus(textfile('../data/targz/test.tar.gz')))))
 test_that("A single-level tar.gz file containing txt files can be loaded",{
     expect_equal(
       unname(sort(texts(corpus(textfile('../data/targz/test.tar.gz'))))),
@@ -554,7 +554,6 @@ test_that("A single-level tar.gz file containing txt files can be loaded",{
 })
 
 context('Loading a corpus from a bzipped tar archive')
-print(sort(texts(corpus(textfile('../data/tarbz/test.tar.bz')))))
 test_that("A single-level tar.bz file containing txt files can be loaded",{
     expect_equal(
       unname(sort(texts(corpus(textfile('../data/tarbz/test.tar.bz'))))),
