@@ -109,7 +109,8 @@ As of version 0.8.0, the GitHub master repository will always contain the develo
     devtools::install_github("kbenoit/quanteda")
     ```
 
-    Because this compiles some C++ source code, you will need a compiler installed.  If you are using a Windows platform, this means you will need also to install the [Rtools](http://cran.r-project.org/bin/windows/Rtools/) software available from CRAN.  If you are using OS X, you will probably need to install XCode, available for free from the App Store.
+    Because this compiles some C++ source code, you will need a compiler installed.  If you are using a Windows platform, this means you will need also to install the [Rtools](http://cran.r-project.org/bin/windows/Rtools/) software available from CRAN.  If you are using OS X, you will need to to install XCode, available for free from the App Store, or if you prefer a lighter footprint set of tools, [just the Xcode command line tools](http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/
+), using the command `xcode-select --install` from the Terminal.
 
 3.  (Optional) You can install some additional corpus data from **quantedaData** using
 
