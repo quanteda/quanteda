@@ -528,6 +528,7 @@ test_that("A single-level zip file containing txt files can be loaded",{
 })
 
 context('Loading a corpus from a tar archive')
+print(texts(corpus(textfile('../data/tar/test.tar'))))
 test_that("A single-level tar file containing txt files can be loaded",{
     expect_equal(
       sort(texts(corpus(textfile('../data/tar/test.tar')))),
@@ -536,6 +537,7 @@ test_that("A single-level tar file containing txt files can be loaded",{
 })
 
 context('Loading a corpus from a gzipped tar archive')
+print(texts(corpus(textfile('../data/targz/test.tar.gz'))))
 test_that("A single-level tar.gz file containing txt files can be loaded",{
     expect_equal(
       sort(texts(corpus(textfile('../data/targz/test.tar.gz')))),
@@ -545,6 +547,7 @@ test_that("A single-level tar.gz file containing txt files can be loaded",{
 
 
 context('Loading a corpus from a bzipped tar archive')
+print(texts(corpus(textfile('../data/tarbz/test.tar.bz'))))
 test_that("A single-level tar.bz file containing txt files can be loaded",{
     expect_equal(
       sort(texts(corpus(textfile('../data/tarbz/test.tar.bz')))),
