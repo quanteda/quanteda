@@ -317,8 +317,10 @@ test_that("test json files", {
             number=c(42, 99, 0, NA, 3)),
             stringsAsFactors=F)
     expected_docvars <- expected_docvars[order(expected_docvars$number),]
+    row.names(expected_docvars) <- NULL
     actual_docvars <- docvars(textfile('../data/json/*json', textField='text'))
     actual_docvars <- actual_docvars[order(actual_docvars$number),]
+    row.names(actual_docvars) <- NULL
     print(expected_docvars)
     print(actual_docvars)
     expect_equal(
