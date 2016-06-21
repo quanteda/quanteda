@@ -306,7 +306,7 @@ test_that("test xml files", {
 
 test_that("test json files", {
     expect_equal(
-        sort(texts(textfile('../data/json/*json', textField='text'))),
+        sort(unname(texts(textfile('../data/json/*json', textField='text')))),
         c('brown fox', 'Dolor sit', 'Lorem ipsum', 'Now is the winter', 'The quick')
     )
     
