@@ -1,3 +1,6 @@
+SUPPORTED_FILETYPE_MAPPING <-        c('csv', 'txt', 'json', 'zip', 'gz', 'tar', 'xml', 'tsv', 'tsv')
+names(SUPPORTED_FILETYPE_MAPPING) <- c('csv', 'txt', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tsv')
+
 #' corpus source classes
 #' 
 #' The \code{corpusSource} virtual class is a parent class for more specific 
@@ -34,43 +37,44 @@ setMethod("show",
           })
 
 
-# textsourcefile(file="myfile.xlsx", textIndex = NULL, format = NULL)
-# textsourcefile(file="myfile.csv", textIndex = 1)
-# textsourcefile(file="myfile.json", textIndex = 1)
-
-
 #' read a text corpus source from a file
 #' 
-#' Read a text corpus from a source file, where the single file will consist of 
-#' a set of texts in columns and document variables and document-level meta-data
-#' in additional columns.  For spreadsheet-like files, the first row must be a 
-#' header.
-#' @param file the complete filename(s) to be read.  The value can be a vector 
-#'   of file names, a single file name, or a file "mask" using a "glob"-type 
-#'   wildcard value.  Currently available file value types are: 
-#'   \describe{ 
-#'   \item{\code{txt}}{plain text files}
-#'   \item{\code{json}}{data in JavaScript 
-#'   Object Notation, consisting of the texts and additional document-level 
-#'   variables and document-level meta-data.  The text key must be identified by
-#'   specifying a \code{textField} value.}
-#'   \item{\code{csv}}{comma separated 
-#'   value data, consisting of the texts and additional document-level variables
-#'   and document-level meta-data.  The text file must be identified by 
-#'   specifying a \code{textField} value.}
-#'   \item{\code{tab, tsv}}{tab-separated 
-#'   value data, consisting of the texts and additional document-level variables
-#'   and document-level meta-data.  The text file must be identified by 
-#'   specifying a \code{textField} value.}
-#'    \item{a wildcard value}{any valid 
-#'   pathname with a wildcard ("glob") expression that can be expanded by the 
-#'   operating system.  This may consist of multiple file types.} 
+#' Read a text corpus from one or more source files. The texts of the corpus
+#' come from (some part of) the content of the files, and the document-level
+#' metadata (docvars) come from either the file contents or filenames.
+#' @param file the complete filename(s) to be read. This is designed to 
+#'   automagically handle a number of common scenarios, so the value can be a
+#    single filename, a vector of file names a remote URL, or a file "mask" using a 
+#'   "glob"-type'  wildcard value.  Currently available filetypes are: 
+#'   \describe{
+#'   \item{\code{txt}}{plain text files:
+#'   So-called structured text files, which describe both texts and metadata:
+#'   For all structured text filetypes, the column, field, or node 
+#'   which contains the the text must be specified with the \code{textField}
+#'   parameter, and all other fields are treated as docvars.}
+#'   \item{\code{json}}{data in some form of JavaScript 
+#'   Object Notation, consisting of the texts and optionally additional docvars.
+#'   The supported formats are:
+#'   \itemize{
+#'   \item a single JSON object per file
+#'   \item line-delimited JSON, with one object per line
+#'   \item line-delimited JSON, of the format produced from a Twitter stream.
+#'   This type of file has special handling which simplifies the Twitter format
+#'   into docvars.  The correct format for each JSON file is automatically detected.}}
+#'   \item{\code{csv,tab,tsv}}{comma- or tab-separated values}
 #'   \item{\code{xml}}{Basic flat XML documents are supported -- those of the 
 #'   kind supported by the function xmlToDataFrame function of the \strong{XML} 
 #'   package.}
-#'   \item{\code{zip}}{zip archive file, containing \code{*.txt} 
-#'   files either at the top level or in a single directory.
-#'    This may also be a URL to a zip file.}
+#'   \code{file} can also not be a path to a single local file, such as
+#'    \item{a wildcard value}{any valid 
+#'   pathname with a wildcard ("glob") expression that can be expanded by the 
+#'   operating system.  This may consist of multiple file types.} 
+#'   \item{a URL to a remote}{which is downloaded then loaded} 
+#'   \item{\code{zip,tar,tar.gz,tar.bz}}{archive file, which is unzipped. The 
+#'   contained files must be either at the top level or in a single directory.
+#'   Archives, remote URLs and glob patterns can resolve to any of the other 
+#'   filetypes, so you could have, for example, a remote URL to a zip file which
+#'   contained Twitter JSON files.}
 #'   }
 #' @param textField a variable (column) name or column number indicating where 
 #'   to find the texts that form the documents for the corpus.  This must be 
@@ -94,7 +98,14 @@ setMethod("show",
 #'   as a \link{corpus} class object.  It also provides a way to try different 
 #'   settings of encoding conversion when creating a corpus from a 
 #'   \link{corpusSource-class} object, without having to load in all of the 
-#'   source data again.
+#'   source data again
+#' @param encoding vector: either the encoding of all files, or one encoding
+#'   for each files
+#' @param ignoreMissingFiles if \code{FALSE}, then if the file
+#'   argument doesn't resolve to an existing file, then an error will be thrown.
+#'   Note that this can happen in a number of ways, including passing a path 
+#'   to a file that does not exist, to an empty archive file, or to a glob 
+#'   pattern that matches no files.
 #' @param ... additional arguments passed through to low-level file reading 
 #'   function, such as \code{\link{file}}, \code{\link{read.csv}}, etc.  Useful 
 #'   for specifying an input encoding option, which is specified in the same was
@@ -102,7 +113,8 @@ setMethod("show",
 #'   \link{file} for details.  Also useful for passing arguments through to
 #'   \code{\link{read.csv}}, for instance `quote = ""`, if quotes are causing
 #'   problems within comma-delimited fields.
-#' @details The constructor does not store a copy of the texts, but rather reads
+#' @details If \code{cache = TRUE}, the constructor does not store a copy of 
+#'   the texts, but rather reads
 #'   in the texts and associated data, and saves them to a temporary disk file 
 #'   whose location is specified in the \link{corpusSource-class} object.  This 
 #'   prevents a complete copy of the object from cluttering the global 
@@ -113,13 +125,13 @@ setMethod("show",
 #'   called.
 #' @return an object of class \link{corpusSource-class} that can be read by 
 #'   \link{corpus} to construct a corpus
-#' @author Kenneth Benoit and Paul Nulty
+#' @author Adam Obeng, Kenneth Benoit, and Paul Nulty
 #' @export
 #' @importFrom utils download.file unzip type.convert
 setGeneric("textfile",
-           function(file, textField, 
+           function(file, ignoreMissingFiles=FALSE, textField=NULL, 
                     cache = FALSE, docvarsfrom = c("filenames"), dvsep="_", 
-                    docvarnames = NULL,  ...) 
+                    docvarnames = NULL,  encoding=NULL, ...) 
                standardGeneric("textfile"))
 #signature = c("file", "textField", "encodingFrom", "encodingTo", "docvarsfrom", 
 #              "dvsep", "docvarnames", "cache", "encodingFrom", "encodingTo"))
@@ -155,75 +167,222 @@ setGeneric("textfile",
 #'                     full.names = TRUE, recursive = TRUE))
 #' }
 setMethod("textfile", 
-          signature(file = "character", textField = "index", 
-                    cache = "ANY", 
-                    docvarsfrom="missing", dvsep="missing", docvarnames="missing"),
-          definition = function(file, textField, cache = FALSE, ...) {
-              #               if ((!(addedArgs <- list(...)) %in% names(formals(file))))
-              #                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-              if (length(textField) != 1)
-                  stop("textField must be a single field name or column number identifying the texts.")
-              fileType <- getFileType(file)
-              # print('1')
-              if (fileType == 'filemask'){
-                  sources <- get_datas(file, textField, ...)
-              } else {
-                  sources <- get_data(file, textField, fileType, ...)
+          signature(file = "character", ignoreMissingFiles = "ANY", textField = "ANY", 
+                    cache = "ANY", docvarsfrom="ANY", dvsep="ANY", docvarnames="ANY", encoding="ANY"),
+          definition = function(file, ignoreMissingFiles=FALSE, textField=NULL,
+                    cache = FALSE, docvarsfrom='metadata', dvsep='_', docvarnames=NULL, encoding=NULL,
+                    ...) {
+
+              if (is.null(textField)) textField <- 1
+              files <- listMatchingFiles(file, ignoreMissing=ignoreMissingFiles)
+
+              if (is.null(encoding)) {
+                  encoding <- getOption("encoding")
               }
-              returnCorpusSource(sources, cache)
-          })
-
-
-#' @rdname textfile
-#' @export
-setMethod("textfile", 
-          signature(file = "character", textField = "missing",
-                    cache = "ANY",
-                    docvarsfrom="missing", dvsep="missing", docvarnames="missing"),
-          definition = function(file, cache = FALSE, ...) {
-              #               if (length(addedArgs <- list(...)))
-              #                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+              if (length(encoding) > 1) {
+                  if (length(encoding) != length(files)) {
+                    stop('encoding parameter must be length 1, or as long as the number of files')
+                  }
+                  sources <- mapply(function(x, e) {
+                      getSource(f=x, textField=textField, encoding=e, ...)
+                  },
+                      files, encoding,
+                      SIMPLIFY=FALSE
+                  )
+              }
+              else {
+                  sources <- lapply(files, function(x) {
+                      getSource(x, textField, encoding=encoding, ...)}
+                  )
+              }
               
-              fileType <- getFileType(file)
-              if (fileType=="filemask" | fileType=="vector") {
-                  sources <- get_docs(file, ...)
-              } else {
-                  sources <- get_doc(file, ...)
-              }
-              returnCorpusSource(sources, cache)
-          })
 
-#' @rdname textfile
-#' @export
-setMethod("textfile", 
-          signature(file = "character", textField = "missing", 
-                    cache = "ANY",
-                    docvarsfrom="character", dvsep="ANY", docvarnames="ANY"),
-          definition = function(file, textField=NULL, cache = FALSE, 
-                                docvarsfrom=c("headers"), dvsep="_", docvarnames=NULL, ...) {
-              #               if (length(addedArgs <- list(...)))
-              #                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-              fileType <- getFileType(file)
-              if (fileType=="filemask") {
-                  sources <- get_docs(file, ...)
-              } else {
-                  stop("File type ", fileType, " not supported with these arguments.")
-              }
-              if (docvarsfrom == "filenames") {
-                  sources$docv <- getdocvarsFromFilenames(names(sources$txts), dvsep=dvsep, docvarnames=docvarnames)
-              } else {
-                  warning("docvarsfrom=", docvarsfrom, " not supported.")
-              }
-              returnCorpusSource(sources, cache)
-          })
+              if (any(!(docvarsfrom %in% c('metadata', 'filenames'))))
+                  stop("docvarsfrom must be 'metadata', 'filename', or c('metadata', 'filename')")
 
-## New internals
+              docvars <- NULL
+              if ('metadata' %in% docvarsfrom) {
+                  docvars <- data.table::rbindlist(lapply(sources, function(x) x$docv), use.names=T, fill=T)
+              }
+
+              if ('filenames' %in% docvarsfrom) {
+                  filenameDocvars <- getdocvarsFromFilenames(files, dvsep=dvsep, docvarnames=docvarnames)
+                  if (!is.null(docvars)) {
+                      docvars <- cbind(filenameDocvars, docvars)
+                  }
+                  else {
+                      docvars <- filenameDocvars
+                  }
+              }
+
+              returnCorpusSource(
+                  list(
+                       txts = unlist(lapply(sources, function(x) x$txts)),
+                       docvars = data.frame(docvars)
+                   ),
+                  cache
+              )
+})
+
+
+
+downloadRemote <- function (i, ignoreMissing) {
+    # First, check that this is not a URL with an unsupported scheme
+    scheme <- stringi::stri_match(i, regex='^([a-z][a-z+.-]*):')[, 2]
+    if (!(scheme %in% c('http', 'https', 'ftp'))) {
+        stop(paste('Unsupported URL scheme', scheme))
+    }
+
+    # If this is a supported-scheme remote URL
+    extension <- tools::file_ext(i)
+    if (!(extension %in% names(SUPPORTED_FILETYPE_MAPPING))) {
+        stop('Remote URL does not end in known extension. Please download the file manually.')
+    }
+    if (ignoreMissing) {
+        localfile <- tryCatch({
+            localfile <- paste0(mktemp(), '.', extension) 
+            utils::download.file(i, destfile = localfile, quiet=T)
+            return(localfile)
+        },
+        warning = function(e) {
+            warning(e)
+            return(NULL)
+        }
+    )}
+    else {
+        localfile <- paste0(mktemp(), '.', extension) 
+        utils::download.file(i, destfile = localfile, quiet=T)
+    }
+    localfile
+}
+
+listMatchingFiles <- function(x, ignoreMissing=F, lastRound=F) {
+    #  The implementation of listMatchingFiles and listMatchingFile might seem
+    #  very complex, but it was arrived at after a lot of toil. The main design
+    #  decision made here is that the user should be able to pass many
+    #  different types of string to listMatchingFiles and get a consistent result:
+    #  a list of local filenames. (One additional wrinkle is that there are two
+    #  functions, listMatchingFiles and listMatchingFile. This is to ensure that
+    #  listMatchingFile is only ever called with a length 1 argument, even though
+    #  it can return multiple filenames. For the purposes of this explanation, 
+    #  this distinction is elided).
+    #  There are four possible types of values for x
+    #     - a simple filename
+    #     - a remote URL
+    #     - a glob pattern
+    #     - a vector of some combination of the above
+    #  listMatchingFiles has a recursive design, because  some of these 
+    #  arguments can resolve to arguments which need further processing: e.g.
+    #  a remote URL could resolve to a zip file which needs to be extracted.
+    #  The termination condition for the recursion is when the argument passed
+    #  is a local filepath which refers to a single file and needs no further
+    #  processing, e.g. something like '/path/to/text.tsv'. However, it is not
+    #  possible to determine if a given argument is a path to a single file 
+    #  or a glob pattern which matches multiple files, without actually trying
+    #  the match. This matters because if it's the result of a globbing expression,
+    #  then it could potentially need further processing, but if it's not, it the recursion
+    #  needs to end. We can't know beforehand because the rules for globbing are 
+    #  implementation-dependent (systems might treat '/path/to/file\*.tsv' as
+    #  either a filename or a path depending on  whether they support escaping
+    #  of glob wildcards. We could have tested the return value from Sys.glob
+    #  to see whether the system treats a given string as a glob pattern or a 
+    #  simple filename. Unfortunately, Sys.glob() will return character(0)
+    #  for either a glob pattern which matches no files, or a non-glob filename
+    #  for a file that doesn't exist, so that doesn't work either.
+    #  We also can't test whether a pattern is a regular file by looking at the
+    #  extension, because '/path/to/*.zip' is a glob expression with a 'zip'
+    #  extension.
+
+    if (!(ignoreMissing || (length(x) > 0))) {
+       stop("File does not exist.")
+    }
+
+    matchingFiles <- unlist(
+        lapply(x, function (x) listMatchingFile(
+            x,
+            ignoreMissing=ignoreMissing,
+            lastRound=lastRound)
+        )
+    )
+
+    if (is.null(matchingFiles)) return(character(0))
+
+    matchingFiles
+}
+
+extractArchive <- function(i, ignoreMissing) {
+    if (!(ignoreMissing || file.exists(i)))
+        stop(paste("File", i, "does not exist."))
+
+    td <- mktemp(directory=T)
+    if (tools::file_ext(i) == 'zip')
+        utils::unzip(i, exdir = td)
+    else if ( tools::file_ext(i) == 'gz' ||
+        tools::file_ext(i) == 'tar' ||
+        tools::file_ext(i) == 'bz' )
+        utils::untar(i, exdir = td)
+
+    # Create a glob that matches all the files in the archive
+    file.path(td, '*')
+}
+
+#' @importFrom stringi stri_match
+#' @importFrom stringi stri_replace
+listMatchingFile <- function(x, ignoreMissing, verbose=F, lastRound) {
+
+    filenames <- c()
+    #  Remove 'file' scheme
+    i <- stringi::stri_replace(x, replacement ='', regex='^file://')
+
+    scheme <- stringi::stri_match(i, regex='^([a-z][a-z+.-]*):')[, 2]
+    
+    # If not a URL (or a file:// URL) , treat it as a local file
+    if (!is.na(scheme)) {
+        if (verbose) print('Remote file')
+        #  If there is a non-'file' scheme, treat it as remote
+        localfile <- downloadRemote(i, ignoreMissing=ignoreMissing)
+        return(listMatchingFiles(localfile, ignoreMissing=ignoreMissing))
+    }
+
+    # Now, special local files
+    if (tools::file_ext(i) == 'zip' ||
+        tools::file_ext(i) == 'gz' ||
+        tools::file_ext(i) == 'tar' ||
+        tools::file_ext(i) == 'bz' 
+        ) {
+        if (verbose) print('archive')
+        archiveFiles <- extractArchive(i, ignoreMissing=ignoreMissing)
+        return(listMatchingFiles(archiveFiles, ignoreMissing=ignoreMissing))
+    }
+
+    #  At this point, it may be a simple local file or a glob pattern, but as
+    #  above, we have no way of telling a priori whether this is the case
+    if (lastRound) {
+        #  We get to this point if the path wasn't to some file that needed
+        #  special treatment (zip, remote, etc.) and it was treated as a glob
+        #  pattern, which means that it is definitely not a glob pattern this
+        #  time
+        if (!(ignoreMissing || file.exists(i))) stop("File", i, "does not exist.")
+        if (verbose) print('regular file')
+        return(i)
+    }
+    else {
+        #  If it wasn't a glob pattern last time, then it may be this time
+        if (verbose) print('possible glob pattern')
+        i <- Sys.glob(i)
+        return(
+           listMatchingFiles(i, ignoreMissing=ignoreMissing, lastRound=T)
+        )
+    }
+
+}
+
 
 # function common to all textfile methods to return either the cached
 # textfile object link, or the textfile object itself
 returnCorpusSource <- function(sources, cache = FALSE) {
     if (cache) {
-        tempCorpusFilename <- tempfile()
+        tempCorpusFilename <- mktemp()
         save(sources, file=tempCorpusFilename)
         return(new("corpusSource", cachedfile=tempCorpusFilename))
     } else
@@ -232,200 +391,160 @@ returnCorpusSource <- function(sources, cache = FALSE) {
 }
 
 
-# read a document from a text-only file.
-get_doc <- function(f, ...) {
-    txts <- c()
-    fileType <- getFileType(f)
-    #cat("fileType = ", fileType, "\n")
-    switch(fileType,
-           txt =  { 
-               txt <- readLines(con <- file(f, ...), warn = FALSE)
-               close(con)
-               
-               # convert to UTF-8 if an input encoding was specified and if
-               # the native.enc is not already UTF-8
-#                if ("encoding" %in% names(args <- list(...)) & !(grepl("UTF-8", Sys.getlocale("LC_CTYPE")))) {
-#                    iconv(txt, from = args$encoding, to = "UTF-8")
-#                }
-               
-               
-               result <- list(txts = paste(txt, collapse="\n"), docv = data.frame())
-               return(result)
-           },
-           json = { return(get_json_tweets(f, ...)) },
-           zip = { return(get_zipfile(f)) },
-           pdf =  { return(list(txts = get_pdf(f), docv = data.frame())) },
-           word =  { return(list(txts = get_word(f), docv = data.frame())) }
+#' @importFrom tools file_ext
+getSource <- function(f, textField, ...) {
+    extension <- tools::file_ext(f)
+
+    fileType <- tryCatch({
+         SUPPORTED_FILETYPE_MAPPING[[extension]]
+    }, error = function(e) {
+        if (e == 'subscript out of bounds') {
+            stop(paste('Unsupported extension', extension, 'of file', f))
+        }
+        else {
+            stop(e)
+        }
+    })
+
+    switch(fileType, 
+           txt = {return(get_txt(f, ...))},
+           csv = {return(get_csv(f, textField, sep=',', ...))},
+           tsv = {return(get_csv(f, textField, sep='\t', ...))},
+           json = {return(get_json(f, textField, ...))},
+           xml = {return(get_xml(f, textField, ...))}
     )
-    stop("unrecognized fileType:", fileType)
 }
 
-get_docs <- function(filemask, ...) {
-    if (length(filemask) == 1) {
-        # get the pattern at the end, as a regex
-        pattern <- utils::glob2rx(basename(filemask))
-        # get the directory name
-        path <- dirname(filemask)
-        # get the filenames
-        filenames <- list.files(path, pattern, full.names=TRUE)
-    } else {
-        filenames <- filemask
-    }
-    
-    # read texts from call to get_doc, discarding any docv
-    if ("encoding" %in% names(args <- list(...))) {
-        encodingFrom <- args$encoding
-    } else {
-        encodingFrom <- getOption("encoding")
-    }
-    
-    #cat("arg = ", args, "\n\n")
-    
-    if (!is.null(encodingFrom)) {
-        if (length(encodingFrom) > 1) {
-            if (length(filenames) != length(encodingFrom))
-                stop("length of encodingFrom (", length(encodingFrom), ") different from length of filenames (", length(filenames), ")")    
-        } else
-            encodingFrom <- rep(encodingFrom, length(filenames))
-    }
-    # loop through filenames and load each one
-    textsvec <- c()
-    for (i in 1:length(filenames))
-        # cat("encoding = ", encodingFrom[i], "\n")
-        textsvec[i] <- get_doc(filenames[i], encoding = encodingFrom[i])$txts
-    
-    # name the vector with the filename by default
-    names(textsvec) <- basename(filenames)
-    
-    list(txts = textsvec, docv = data.frame())    
+get_txt <- function(f, ...) {
+    txt <- paste(readLines(con <- file(f, ...)), collapse="\n")
+    close(con)
+    list(txts=txt, docv=data.frame())
 }
 
-get_zipfile <- function(f, ...) {
-    #  Only supports .txt files, either at the toplevel or in a single directory
-    td <- mktemp(directory=T)
-    flocal <- ''
-    if (substr(f, 1, 4) == "http")
-        utils::download.file(f, destfile = (flocal <- file.path(td, "temp.zip", quiet = TRUE)))
-    else
-        flocal <- f
-    utils::unzip(flocal, exdir = td)
-    get_docs(file.path(td, "*txt"))
-}
-
-# read a document from a structured file containing text and data
-get_data <- function(f, textField, sep = ",", ...){
-    src <- list()
-    # print('fileType')
-    fileType <- getFileType(f)
-    switch(fileType,
-           csv = {src <- get_csv(f, textField, ...)},
-           tab = {src <- get_csv(f, textField, sep = "\t", ...)},
-           tsv = {src <- get_csv(f, textField, sep = "\t", ...)},
-           json = {src <- get_json(f, textField, ...)},
-           xml = {src <- get_xml(f, textField, ...)}
-    )
-    # print(names(src))
-    return(src)
-}
-
-# read a document from a structured file containing text and data
-get_datas <- function(filemask, textField='index', fileType, ...){
-    # get the pattern at the end
-    pattern <- basename(filemask)
-    # get the directory name
-    path <- dirname(filemask)
-    # get the filenames
-    filenames <- list.files(path, utils::glob2rx(pattern), full.names=TRUE)
-    # read texts into a character vector
-    textsvec <- c()
-    docv <- data.frame()
-    for (f in filenames) {
-        src <- get_data(f,  textField, ...)
-        textsvec <- c(textsvec, src$txts)
-        docv <- data.table::rbindlist(list(docv, src$docv), use.names = TRUE, fill = TRUE)
-        data.frame(docv)
-    }
-    list(txts=textsvec, docv=docv)
-}
-
-get_word <- function(f){
-    stop('doc files not implemented yet')
-}
-
-get_pdf <- function(f){
-    stop('pdf files not implemented yet')
-}
 
 ## csv format
-get_csv <- function(file, textField, sep=",", ...) {
-    docv <- utils::read.csv(file, stringsAsFactors=FALSE, sep=sep, ...)
+get_csv <- function(path, textField, ...) {
+    docs <- utils::read.csv(path, stringsAsFactors=FALSE, ...)
     if (is.character(textField)) {
-        textFieldi <- which(names(docv)==textField)
+        textFieldi <- which(names(docs)==textField)
         if (length(textFieldi)==0)
-            stop("column name ", textField, " not found.")
+            stop(paste("There is no field called", textField, "in file", path))
         textField <- textFieldi
+    } else if (is.numeric(textField) & (textField > ncol(docs))) {
+        stop(paste0("There is no ", textField, "th field in file ", path))
     }
-    txts <- docv[, textField]
-    docv <- docv[, -textField, drop = FALSE]
+
+    txts <- docs[, textField]
+    docv <- docs[, -textField, drop = FALSE]
     list(txts=txts, docv=docv)
 }
 
 
 
-## Twitter json
-get_json_tweets <- function(path=NULL, source="twitter", ...) {
+#  Dispatch to get_json_object or get_json_tweets depending on whether 
+#  it looks like a twitter json file
+get_json <- function(path, textField, encoding, ...) {
+    # encoding param is not used
     stopifnot(file.exists(path))
+    tryCatch({
+        return(get_json_tweets(path, ...))
+    },
+        error=function(e) {
+            tryCatch({
+                warning("Doesn't look like Tweets json file, trying general JSON")
+                return(get_json_object(path, textField, ...))
+            },
+            error=function(e) {
+                if (e == paste("There is no field called", textField, "in file", path)) {
+                    stop(e)
+                }
+                warning("File doesn't contain a single valid JSON object, trying line-delimited json")
+                return(get_json_lines(path, textField, ...))
+            })
+    })
+
+}
+
+## Twitter json
+get_json_tweets <- function(path, source="twitter", ...) {
     if (!requireNamespace("streamR", quietly = TRUE))
         stop("You must have streamR installed to read Twitter json files.")
-    # identifying whether it is a folder
-    if (!grepl("*.json$", path)){
-        # prepare list of files if it's a folder
-        fls <- list.files(path, full.names=TRUE)
-        fls <- fls[grepl("*.json$", fls)]
-    }
-    if (grepl("*.json$", path)){
-        fls <- path
-    }
+    
     # read raw json data
-    txt <- unlist(sapply(fls, readLines, ...))
+    txt <- readLines(path, ...)
+        
     results <- streamR::parseTweets(txt, verbose=FALSE, ...)
     list(txts = results[, 1], docv = as.data.frame(results[, -1, drop = FALSE]))
 }
 
 ## general json
-get_json <- function(path, textField, ...) {
+#' @importFrom data.table setDT
+get_json_object <- function(path, textField, ...) {
     if (!requireNamespace("jsonlite", quietly = TRUE))
         stop("You must have jsonlite installed to read json files.")
-    # raw <- readLines(path)
-    #parsed <- lapply(path, jsonlite::fromJSON, flatten=TRUE)
-    df <- jsonlite::fromJSON(path, flatten=TRUE, ...)
-    #     df <- data.frame(matrix(unlist(parsed), nrow=length(parsed), ncol=length(parsed[[1]]), byrow=TRUE),
-    #                      stringsAsFactors=FALSE)
-    #     names(df) <- names(parsed[[1]])
-    textFieldi <- which(names(df)==textField)
-    if (length(textFieldi)==0)
-        stop("column name", textField, "not found.")
-    list(txts=df[, textFieldi], docv=df[, -textFieldi, drop = FALSE])
+    if (is.numeric(textField)) {
+        stop('Cannot use numeric textField with json file')
+    }
+
+    docs <- jsonlite::fromJSON(path, flatten=TRUE, ...)
+    docs <- data.table::setDT(docs)
+    if (!(textField %in% colnames(docs))) {
+        stop(paste("There is no field called", textField, "in file", path))
+    }
+    list(
+        txts = docs[[textField]],
+        docv = docs[,-textField, with=F]
+    )
+}
+
+#' @importFrom data.table rbindlist
+get_json_lines <- function(path, textField, ...) {
+    if (!requireNamespace("jsonlite", quietly = TRUE))
+        stop("You must have jsonlite installed to read json files.")
+    if (is.numeric(textField)) {
+        stop('Cannot use numeric textField with json file')
+    }
+
+    lines <- readLines(path)
+
+    docs <- data.table::rbindlist(
+      lapply(lines, function(x)jsonlite::fromJSON(x, flatten=TRUE, ...)),
+      use.names=TRUE, fill=TRUE
+    )
+
+    if (!(textField %in% colnames(docs))) {
+        stop(paste("There is no field called", textField, "in file", path))
+    }
+    list(
+        txts = docs[[textField]],
+        docv = docs[,-textField, with=F]
+    )
 }
 
 
 ## flat xml format
-get_xml <- function(file, textField, sep=",", ...) {
+get_xml <- function(path, textField, encoding,...) {
+    # TODO: encoding param is ignored
     if (!requireNamespace("XML", quietly = TRUE))
         stop("You must have XML installed to read XML files.")
-    docv <- XML::xmlToDataFrame(file, stringsAsFactors = FALSE, ...)
+
+    docs <- XML::xmlToDataFrame(path, stringsAsFactors = FALSE, ...)
+    if (is.numeric(textField) & (textField > ncol(docs))) {
+        stop(paste0("There is no ", textField, "th field in file ", path))
+    }
     if (is.character(textField)) {
-        textFieldi <- which(names(docv)==textField)
+        textFieldi <- which(names(docs)==textField)
         if (length(textFieldi)==0)
-            stop(paste("node", textField, "not found."))
+            stop(paste("There is no node called", textField, "in file", path))
         textField <- textFieldi
     }
     else {
         warning(paste("You should specify textField by name rather than by index, unless",
                 "you're certain that your XML file's fields are always in the same order."))
     }
-    txts <- docv[, textField]
-    docv <- docv[, -textField, drop = FALSE]
+
+    txts <- docs[, textField]
+    docv <- docs[, -textField, drop = FALSE]
 
     # Because XML::xmlToDataFrame doesn't impute column types, we have to do it
     # ourselves, to match get_csv's behaviour
@@ -433,6 +552,7 @@ get_xml <- function(file, textField, sep=",", ...) {
 }
 
 imputeDocvarsTypes <- function(docv) {
+    if (nrow(docv) == 0) return(docv)
     # Impute types of columns, just like read.table
     docv[] <- lapply(docv, function(x) type.convert(as.character(x), as.is=T))
     # And convert columns which have been made into factors into strings
@@ -442,34 +562,15 @@ imputeDocvarsTypes <- function(docv) {
 }
 
 
-#' @importFrom tools file_ext
-getFileType <- function(filenameChar) {
-    if (length(filenameChar) > 1)
-        return("vector")
-    if (!substr(filenameChar, 1, 4)=="http" & grepl("[?*]", filenameChar))
-        return("filemask")
-    filenameExt <- tools::file_ext(filenameChar)
-
-    fileTypeMapping <-        c('excel', 'excel', 'csv', 'txt', 'word', 'word', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tab', 'pdf')
-    names(fileTypeMapping) <- c('xls',   'xlsx',  'csv', 'txt', 'doc',  'docx', 'json', 'zip', 'gz', 'tar', 'xml', 'tab', 'tsv', 'pdf')
-
-    fileType <- tryCatch({
-         fileTypeMapping[[filenameExt]]
-    }, error = function(e) {
-        'unknown'
-    })
-
-    return(fileType)
-}    
-
-
 #' @importFrom tools file_path_sans_ext
 getdocvarsFromFilenames <- function(fnames, dvsep="_", docvarnames=NULL) {
     snames <- fnames
-    snames <- tools::file_path_sans_ext(snames)
+    snames <- tools::file_path_sans_ext(basename(snames))
     parts <- strsplit(snames, dvsep)
+
     if (!all(sapply(parts,function(x) identical(length(x), length(parts[[1]])))))
         stop("Filename elements are not equal in length.")
+
     dvars <-  data.frame(matrix(unlist(parts), nrow=length(parts), byrow=TRUE), 
                          stringsAsFactors=FALSE)
     # assign default names in any case
@@ -511,7 +612,7 @@ docvars.corpusSource <- function(x, field = NULL) {
 
 mktemp <- function(prefix='tmp.', base_path=NULL, directory=F) {
     #  Create a randomly-named temporary file or directory, sort of like
-    #  https://www.mktemp.org/manual.html
+    #  https://www.mktemp.org/manual.html
     if (is.null(base_path))
         base_path <- tempdir()
 
@@ -520,7 +621,7 @@ mktemp <- function(prefix='tmp.', base_path=NULL, directory=F) {
     filename <- paste0(sample(alphanumeric, 10, replace=T), collapse='')
     filename <- paste0(prefix, filename)
     filename <- file.path(base_path, filename)
-    while (file.exists(filename) | dir.exists(filename)) {
+    while (file.exists(filename) || dir.exists(filename)) {
         filename <- paste0(sample(alphanumeric, 10, replace=T), collapse='')
         filename <- paste0(prefix, filename)
         filename <- file.path(base_path, filename)

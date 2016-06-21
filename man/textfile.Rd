@@ -3,54 +3,57 @@
 \docType{methods}
 \name{textfile}
 \alias{textfile}
-\alias{textfile,character,index,ANY,missing,missing,missing-method}
-\alias{textfile,character,missing,ANY,character,ANY,ANY-method}
-\alias{textfile,character,missing,ANY,missing,missing,missing-method}
+\alias{textfile,character-method}
 \title{read a text corpus source from a file}
 \usage{
-textfile(file, textField, cache = FALSE, docvarsfrom = c("filenames"),
-  dvsep = "_", docvarnames = NULL, ...)
+textfile(file, ignoreMissingFiles = FALSE, textField = NULL,
+  cache = FALSE, docvarsfrom = c("filenames"), dvsep = "_",
+  docvarnames = NULL, encoding = NULL, ...)
 
-\S4method{textfile}{character,index,ANY,missing,missing,missing}(file,
-  textField, cache = FALSE, docvarsfrom = c("filenames"), dvsep = "_",
-  docvarnames = NULL, ...)
-
-\S4method{textfile}{character,missing,ANY,missing,missing,missing}(file,
-  textField, cache = FALSE, docvarsfrom = c("filenames"), dvsep = "_",
-  docvarnames = NULL, ...)
-
-\S4method{textfile}{character,missing,ANY,character,ANY,ANY}(file,
-  textField = NULL, cache = FALSE, docvarsfrom = c("headers"),
-  dvsep = "_", docvarnames = NULL, ...)
+\S4method{textfile}{character}(file, ignoreMissingFiles = FALSE,
+  textField = NULL, cache = FALSE, docvarsfrom = "metadata",
+  dvsep = "_", docvarnames = NULL, encoding = NULL, ...)
 }
 \arguments{
-\item{file}{the complete filename(s) to be read.  The value can be a vector 
-of file names, a single file name, or a file "mask" using a "glob"-type 
-wildcard value.  Currently available file value types are: 
-\describe{ 
-\item{\code{txt}}{plain text files}
-\item{\code{json}}{data in JavaScript 
-Object Notation, consisting of the texts and additional document-level 
-variables and document-level meta-data.  The text key must be identified by
-specifying a \code{textField} value.}
-\item{\code{csv}}{comma separated 
-value data, consisting of the texts and additional document-level variables
-and document-level meta-data.  The text file must be identified by 
-specifying a \code{textField} value.}
-\item{\code{tab, tsv}}{tab-separated 
-value data, consisting of the texts and additional document-level variables
-and document-level meta-data.  The text file must be identified by 
-specifying a \code{textField} value.}
- \item{a wildcard value}{any valid 
-pathname with a wildcard ("glob") expression that can be expanded by the 
-operating system.  This may consist of multiple file types.} 
+\item{file}{the complete filename(s) to be read. This is designed to 
+automagically handle a number of common scenarios, so the value can be a
+"glob"-type'  wildcard value.  Currently available filetypes are: 
+\describe{
+\item{\code{txt}}{plain text files:
+So-called structured text files, which describe both texts and metadata:
+For all structured text filetypes, the column, field, or node 
+which contains the the text must be specified with the \code{textField}
+parameter, and all other fields are treated as docvars.}
+\item{\code{json}}{data in some form of JavaScript 
+Object Notation, consisting of the texts and optionally additional docvars.
+The supported formats are:
+\itemize{
+\item a single JSON object per file
+\item line-delimited JSON, with one object per line
+\item line-delimited JSON, of the format produced from a Twitter stream.
+This type of file has special handling which simplifies the Twitter format
+into docvars.  The correct format for each JSON file is automatically detected.}}
+\item{\code{csv,tab,tsv}}{comma- or tab-separated values}
 \item{\code{xml}}{Basic flat XML documents are supported -- those of the 
 kind supported by the function xmlToDataFrame function of the \strong{XML} 
 package.}
-\item{\code{zip}}{zip archive file, containing \code{*.txt} 
-files either at the top level or in a single directory.
- This may also be a URL to a zip file.}
+\code{file} can also not be a path to a single local file, such as
+ \item{a wildcard value}{any valid 
+pathname with a wildcard ("glob") expression that can be expanded by the 
+operating system.  This may consist of multiple file types.} 
+\item{a URL to a remote}{which is downloaded then loaded} 
+\item{\code{zip,tar,tar.gz,tar.bz}}{archive file, which is unzipped. The 
+contained files must be either at the top level or in a single directory.
+Archives, remote URLs and glob patterns can resolve to any of the other 
+filetypes, so you could have, for example, a remote URL to a zip file which
+contained Twitter JSON files.}
 }}
+
+\item{ignoreMissingFiles}{if \code{FALSE}, then if the file
+argument doesn't resolve to an existing file, then an error will be thrown.
+Note that this can happen in a number of ways, including passing a path 
+to a file that does not exist, to an empty archive file, or to a glob 
+pattern that matches no files.}
 
 \item{textField}{a variable (column) name or column number indicating where 
 to find the texts that form the documents for the corpus.  This must be 
@@ -64,7 +67,7 @@ copies in memory: one as a \link{corpusSource-class} object and the second
 as a \link{corpus} class object.  It also provides a way to try different 
 settings of encoding conversion when creating a corpus from a 
 \link{corpusSource-class} object, without having to load in all of the 
-source data again.}
+source data again}
 
 \item{docvarsfrom}{used to specify that docvars should be taken from the 
 filenames, when the \code{textfile} inputs are filenames and the elements 
@@ -80,6 +83,9 @@ or from meta-data embedded in the text file header (\code{headers}).}
 \code{docvarsfrom} is specified.  If this argument is not used, default 
 docvar names will be used (\code{docvar1}, \code{docvar2}, ...).}
 
+\item{encoding}{vector: either the encoding of all files, or one encoding
+for each files}
+
 \item{...}{additional arguments passed through to low-level file reading 
 function, such as \code{\link{file}}, \code{\link{read.csv}}, etc.  Useful 
 for specifying an input encoding option, which is specified in the same was
@@ -93,13 +99,13 @@ an object of class \link{corpusSource-class} that can be read by
   \link{corpus} to construct a corpus
 }
 \description{
-Read a text corpus from a source file, where the single file will consist of 
-a set of texts in columns and document variables and document-level meta-data
-in additional columns.  For spreadsheet-like files, the first row must be a 
-header.
+Read a text corpus from one or more source files. The texts of the corpus
+come from (some part of) the content of the files, and the document-level
+metadata (docvars) come from either the file contents or filenames.
 }
 \details{
-The constructor does not store a copy of the texts, but rather reads
+If \code{cache = TRUE}, the constructor does not store a copy of 
+  the texts, but rather reads
   in the texts and associated data, and saves them to a temporary disk file 
   whose location is specified in the \link{corpusSource-class} object.  This 
   prevents a complete copy of the object from cluttering the global 
@@ -136,6 +142,6 @@ textfile(list.files(path = "~/Desktop/texts", pattern = "\\\\.txt$",
 }
 }
 \author{
-Kenneth Benoit and Paul Nulty
+Adam Obeng, Kenneth Benoit, and Paul Nulty
 }
 
