@@ -175,9 +175,8 @@ test_that("test remote zip file", {
 })
 
 test_that("test globbed tar file",{
-    skip_on_os("windows")
     expect_equal(
-     sort(texts(textfile('../data/tar/*'))),
+     sort(unname(texts(textfile('../data/tar/*')))),
       c('brown fox', 'Dolor sit', 'Lorem ipsum', 'The quick')
     )
 })
@@ -537,7 +536,6 @@ test_that("A single-level zip file containing txt files can be loaded",{
 
 context('Loading a corpus from a tar archive')
 test_that("A single-level tar file containing txt files can be loaded",{
-    skip_on_os("windows")
     expect_equal(
       unname(sort(texts(corpus(textfile('../data/tar/test.tar'))))),
       c('brown fox', 'Dolor sit', 'Lorem ipsum', 'The quick')
@@ -546,9 +544,8 @@ test_that("A single-level tar file containing txt files can be loaded",{
 
 context('Loading a corpus from a gzipped tar archive')
 test_that("A single-level tar.gz file containing txt files can be loaded",{
-    skip_on_os("windows")
     expect_equal(
-      unname(sort(texts(corpus(textfile('../data/targz/test.tar.gz'))))),
+      sort(unname(texts(corpus(textfile('../data/targz/test.tar.gz'))))),
       c('brown fox', 'Dolor sit', 'Lorem ipsum', 'The quick')
     )
 })
@@ -557,7 +554,7 @@ context('Loading a corpus from a bzipped tar archive')
 test_that("A single-level tar.bz file containing txt files can be loaded",{
     skip_on_os("windows")
     expect_equal(
-      unname(sort(texts(corpus(textfile('../data/tarbz/test.tar.bz'))))),
+      sort(unname(texts(corpus(textfile('../data/tarbz/test.tar.bz'))))),
       c('brown fox', 'Dolor sit', 'Lorem ipsum', 'The quick')
     )
 })
