@@ -476,25 +476,24 @@ fileencodings <- sapply(parts, "[", 1)
 fileencodings <- fileencodings[!(fileencodings %in% broken_encodings)]
 filenames <- file.path(FILEDIR, paste0(fileencodings,  "__characters.txt"))
 
-##
-## Commented out by KB, does not seem to be portable cross-platform
-##
-# for (i in 1:length(fileencodings)) {
-#     filename <- filenames[[i]]
-#     encoding <- fileencodings[[i]]
-#     
-#     test_that(paste("test textfile encoding parameter, encoding", encoding), {
-#         characters <- as.numeric(charToRaw(
-#             texts(textfile(filename, encoding=fileencodings[[i]]))
-#         ))
-#         bytes <- data.table::fread(gsub('__characters.txt', '__bytes.tsv', filename))[[1]]
-#         expect_equal(characters, bytes)
-#     })
-# }
-# 
-# test_that("Test loading all these files at once with different encodings", {
-#   encodedTextfilesCorpus <- corpus(textfile(filenames, encoding=fileencodings))
-# })
+for (i in 1:length(fileencodings)) {
+    filename <- filenames[[i]]
+    encoding <- fileencodings[[i]]
+    
+    test_that(paste("test textfile encoding parameter, encoding", encoding), {
+    skip_on_cran()
+        characters <- as.numeric(charToRaw(
+            texts(textfile(filename, encoding=fileencodings[[i]]))
+        ))
+        bytes <- data.table::fread(gsub('__characters.txt', '__bytes.tsv', filename))[[1]]
+        expect_equal(characters, bytes)
+    })
+}
+
+test_that("Test loading all these files at once with different encodings", {
+    skip_on_cran()
+    encodedTextfilesCorpus <- corpus(textfile(filenames, encoding=fileencodings))
+})
 
 
 #  test_that("test textfile encoding parameter: UTF-8 encoded file, read as UTF-16 (should not work)", {
@@ -704,21 +703,18 @@ test_that("Test function to list files", {
         throws_error('Remote URL does not end in known extension.')
     )
     
+})
     
-    ##
-    ## Commented out by KB 20 Jun 2016
-    ##
+test_that("Test function to list files with remote sources", {
+    skip_on_cran()
+    expect_that(
+      quanteda:::listMatchingFiles('http://www.google.com/404.txt'),
+      throws_error('cannot open URL')
+    )
     
-    # expect_that(
-    #   quanteda:::listMatchingFiles('http://www.google.com/404.txt'),
-    #   throws_error('cannot open URL')
-    # )
-    
-    # expect_equal(
-    #   length(quanteda:::listMatchingFiles('http://www.google.com/404.txt', ignoreMissing=T)),
-    #   0
-    # )
-    
-    
+    expect_equal(
+      length(quanteda:::listMatchingFiles('http://www.google.com/404.txt', ignoreMissing=T)),
+      0
+    )
 })
 
