@@ -490,7 +490,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         if (verbose) cat("\n   ...separating into sentences.")
         
         # replace . delimiter from common title abbreviations, with _pd_
-        exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM")
+        exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM", "St", "etc")
         findregex <- paste0("\\b(", exceptions, ")\\.")
         result <- stri_replace_all_regex(result, findregex, "$1_pd_", vectorize_all = FALSE)
 

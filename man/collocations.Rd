@@ -10,13 +10,14 @@
 collocations(x, ...)
 
 \method{collocations}{corpus}(x, method = c("lr", "chi2", "pmi", "dice",
-  "all"), size = 2, n = NULL, spanPunct = FALSE, ...)
+  "all"), size = 2, n = NULL, toLower = TRUE, spanPunct = FALSE, ...)
 
 \method{collocations}{character}(x, method = c("lr", "chi2", "pmi", "dice",
-  "all"), size = 2, n = NULL, spanPunct = FALSE, ...)
+  "all"), size = 2, n = NULL, toLower = TRUE, spanPunct = FALSE, ...)
 
 \method{collocations}{tokenizedTexts}(x, method = c("lr", "chi2", "pmi",
-  "dice", "all"), size = 2, n = NULL, spanPunct = FALSE, ...)
+  "dice", "all"), size = 2, n = NULL, toLower = FALSE,
+  spanPunct = FALSE, ...)
 }
 \arguments{
 \item{x}{a text, a character vector of texts, or a corpus}
