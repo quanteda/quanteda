@@ -188,11 +188,11 @@ dtm2ldaformat <- function (x, omit_empty = TRUE)
     documents <- vector(mode = "list", length = nrow(x))
     names(documents) <- rownames(x)
     documents[slam::row_sums(x) > 0] <- split(rbind(as.integer(x$j) - 
-                                                  1L, as.integer(x$v)), as.integer(x$i))
+                                                        1L, as.integer(x$v)), as.integer(x$i))
     if (omit_empty) 
         documents[slam::row_sums(x) == 0] <- NULL
     else documents[slam::row_sums(x) == 0] <- rep(list(matrix(integer(), 
-                                                        ncol = 0, nrow = 2)), sum(slam::row_sums(x) == 0))
+                                                              ncol = 0, nrow = 2)), sum(slam::row_sums(x) == 0))
     list(documents = documents, vocab = colnames(x))
 }
 
@@ -221,7 +221,7 @@ ldaformat2dtm <- function (documents, vocab, omit_empty = TRUE)
         stop("You must install the tm package installed for this conversion.")
     if (!("slam" %in% installed.packages()[, "Package"]))
         stop("You must install the slam package installed for this conversion.")
-
+    
     stm <- slam::simple_triplet_matrix(i = rep(seq_along(documents), 
                                                sapply(documents, ncol)), j = as.integer(unlist(lapply(documents, 
                                                                                                       "[", 1, )) + 1L), v = as.integer(unlist(lapply(documents, 
@@ -260,7 +260,7 @@ dfm2stmformat <- function(data, meta) {
     non_empty_docs <- which(rowSums(data) != 0)
     
     # convert counts to STM documents format
-    documents <- ijv.to.doc(data[non_empty_docs, ]@i, data[non_empty_docs, ]@j, data[non_empty_docs, ]@x) 
+    documents <- ijv.to.doc(data[non_empty_docs, ]@i+1, data[non_empty_docs, ]@j+1, data[non_empty_docs, ]@x) 
     names(documents) <- rownames(data)[non_empty_docs]
     
     # select docvars for non-empty docs
