@@ -127,7 +127,9 @@ setMethod("show",
 #'   \link{corpus} to construct a corpus
 #' @author Adam Obeng, Kenneth Benoit, and Paul Nulty
 #' @export
-#' @importFrom utils download.file unzip type.convert
+#' @importFrom utils unzip type.convert
+#' @importFrom httr GET write_disk
+
 setGeneric("textfile",
            function(file, ignoreMissingFiles=FALSE, textField=NULL, 
                     cache = FALSE, docvarsfrom = c("filenames"), dvsep="_", 
@@ -241,7 +243,7 @@ downloadRemote <- function (i, ignoreMissing) {
     if (ignoreMissing) {
         localfile <- tryCatch({
             localfile <- paste0(mktemp(), '.', extension) 
-            utils::download.file(i, destfile = localfile, quiet=T)
+            httr::GET(i, httr::write_disk(localfile))
             return(localfile)
         },
         warning = function(e) {
@@ -251,7 +253,7 @@ downloadRemote <- function (i, ignoreMissing) {
     )}
     else {
         localfile <- paste0(mktemp(), '.', extension) 
-        utils::download.file(i, destfile = localfile, quiet=T)
+        httr::GET(i, httr::write_disk(localfile))
     }
     localfile
 }
