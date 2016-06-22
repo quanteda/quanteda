@@ -48,7 +48,8 @@ the requested statistic, or \eqn{G^2} if none is specified.}
 
 \item{spanPunct}{if \code{FALSE}, then collocations will not span punctuation
 marks, so that for instance \emph{marks, so} is not a collocation of 
-\code{marks so}.  If \code{TRUE}, do not handle punctuation specially.}
+\code{marks so}.  If \code{TRUE}, do not handle punctuation specially.
+@param toLower if \code{TRUE}, convert input into lower case}
 }
 \value{
 A data.table of collocations, their frequencies, and the computed 
