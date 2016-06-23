@@ -340,7 +340,7 @@ listMatchingFile <- function(x, ignoreMissing, verbose=F, lastRound) {
     
     # If not a URL (or a file:// URL) , treat it as a local file
     if (!is.na(scheme)) {
-        if (verbose) print('Remote file')
+        if (verbose) messages('Remote file')
         #  If there is a non-'file' scheme, treat it as remote
         localfile <- downloadRemote(i, ignoreMissing=ignoreMissing)
         return(listMatchingFiles(localfile, ignoreMissing=ignoreMissing))
@@ -352,7 +352,7 @@ listMatchingFile <- function(x, ignoreMissing, verbose=F, lastRound) {
         tools::file_ext(i) == 'tar' ||
         tools::file_ext(i) == 'bz' 
         ) {
-        if (verbose) print('archive')
+        if (verbose) messages('archive')
         archiveFiles <- extractArchive(i, ignoreMissing=ignoreMissing)
         return(listMatchingFiles(archiveFiles, ignoreMissing=ignoreMissing))
     }
@@ -365,12 +365,12 @@ listMatchingFile <- function(x, ignoreMissing, verbose=F, lastRound) {
         #  pattern, which means that it is definitely not a glob pattern this
         #  time
         if (!(ignoreMissing || file.exists(i))) stop("File", i, "does not exist.")
-        if (verbose) print('regular file')
+        if (verbose) messages('regular file')
         return(i)
     }
     else {
         #  If it wasn't a glob pattern last time, then it may be this time
-        if (verbose) print('possible glob pattern')
+        if (verbose) messages('possible glob pattern')
         i <- Sys.glob(i)
         return(
            listMatchingFiles(i, ignoreMissing=ignoreMissing, lastRound=T)
@@ -610,31 +610,4 @@ docvars.corpusSource <- function(x, field = NULL) {
     if (!is.null(field))
         warning("field argument not used for docvars on a corpusSource object", noBreaks. = TRUE)
     x@docvars
-}
-
-mktemp <- function(prefix='tmp.', base_path=NULL, directory=F) {
-    #  Create a randomly-named temporary file or directory, sort of like
-    #  https://www.mktemp.org/manual.html
-    if (is.null(base_path))
-        base_path <- tempdir()
-
-    alphanumeric <- c(0:9, LETTERS, letters)
-
-    filename <- paste0(sample(alphanumeric, 10, replace=T), collapse='')
-    filename <- paste0(prefix, filename)
-    filename <- file.path(base_path, filename)
-    while (file.exists(filename) || dir.exists(filename)) {
-        filename <- paste0(sample(alphanumeric, 10, replace=T), collapse='')
-        filename <- paste0(prefix, filename)
-        filename <- file.path(base_path, filename)
-    }
-
-    if (directory) {
-        dir.create(filename)
-    }
-    else {
-        file.create(filename)
-    }
-
-    return(filename)
 }
