@@ -310,8 +310,7 @@ readYKdict <- function(path){
     XML::xpathSApply(x, ".//pnode", XML::xmlGetAttr, name="name")
   }
   cats <- XML::getNodeSet(xx, "/dictionary/cnode/cnode")
-  names(cats) <- catnames
-  lapply(cats, get_patterns_in_subtree)
+  setNames(lapply(cats, get_patterns_in_subtree), catnames)
 }
 
 flatten.dictionary <- function(elms, parent = '', dict = list()) {
@@ -337,7 +336,7 @@ flatten.dictionary <- function(elms, parent = '', dict = list()) {
     return(dict)
 }
 
-#' apply a dictionary or thesarus to an object
+#' apply a dictionary or thesaurus to an object
 #' 
 #' Convert features into equivalence classes defined by values of a dictionary 
 #' object.
