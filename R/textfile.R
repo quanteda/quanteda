@@ -406,13 +406,17 @@ getSource <- function(f, textField, ...) {
         }
     })
 
-    switch(fileType, 
-           txt = {return(get_txt(f, ...))},
-           csv = {return(get_csv(f, textField, sep=',', ...))},
-           tsv = {return(get_csv(f, textField, sep='\t', ...))},
-           json = {return(get_json(f, textField, ...))},
-           xml = {return(get_xml(f, textField, ...))}
-    )
+    newSource <- switch(fileType, 
+               txt = get_txt(f, ...),
+               csv = get_csv(f, textField, sep=',', ...),
+               tsv = get_csv(f, textField, sep='\t', ...),
+               json = get_json(f, textField, ...),
+               xml = get_xml(f, textField, ...)
+        )
+
+    names(newSource$txts) <- basename(f)
+
+    return(newSource)
 }
 
 get_txt <- function(f, ...) {
