@@ -729,3 +729,47 @@ test_that("Test function to list files with remote sources", {
     )
 })
 
+
+test_that("text vectors have names of the files they come from by default (bug 221)", {
+
+        expect_equal(
+            names(texts(textfile(
+                '../data/fox/fox.txt'
+            ))),
+            'fox.txt'
+        )
+
+        actual_names <- names(texts(textfile(
+            '../data/csv/*.csv', textField='text'
+        )))
+        expect_equal(
+            setdiff(
+                c('test.csv', 'test2.csv'),
+                actual_names
+            ),
+            character(0)
+        )
+
+        actual_names <- names(texts(textfile(
+            '../data/glob/*.txt'
+        )))
+        expect_equal(
+            setdiff(
+                c('1.txt', '2.txt', '3.txt', '4.txt', '10.txt'),
+                actual_names
+            ),
+            character(0)
+        )
+
+        actual_names <- names(texts(textfile(
+            '../data/tar/test.tar'
+        )))
+        expect_equal(
+            setdiff(
+                c('test.txt', 'test2.txt', 'test3.txt', 'test4.txt'),
+                actual_names
+            ),
+            character(0)
+        )
+
+}) 
