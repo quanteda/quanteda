@@ -120,7 +120,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     # eliminate any duplicates in w1 - see note above in collocations2
     dups <- which(duplicated(w1Table[,w1]))
     if (length(dups)) {
-        cat("  ...NOTE: dropping duplicates in word1:", w1Table[dups, w1], "\n")
+        catm("  ...NOTE: dropping duplicates in word1:", w1Table[dups, w1], "\n")
         w1Table <- w1Table[-dups]
     }
     setkey(wordpairsTable, w1)
@@ -135,7 +135,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     # eliminate any duplicates in w2 - see note above in collocations2
     dups <- which(duplicated(w2Table[,w2]))
     if (length(dups)) {
-        cat("  ...NOTE: dropping duplicates in word2:", w2Table[dups, w2], "\n")
+        catm("  ...NOTE: dropping duplicates in word2:", w2Table[dups, w2], "\n")
         w2Table <- w2Table[-dups]
     }
     suppressWarnings(allTable2 <- allTable[w2Table])
@@ -150,7 +150,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     # eliminate any duplicates in w3 - see note above in collocations2
     dups <- which(duplicated(w3Table[,w3]))
     if (length(dups)) {
-        cat("  ...NOTE: dropping duplicates in word3:", w3Table[dups, w3], "\n")
+        catm("  ...NOTE: dropping duplicates in word3:", w3Table[dups, w3], "\n")
         w3Table <- w3Table[-dups]
     }
     suppressWarnings(allTable3 <- allTable2[w3Table])
@@ -165,7 +165,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
 #     # eliminate any duplicates in w3 - see note above in collocations2
 #     dups <- which(duplicated(w12Table[, w1, w2]))
 #     if (length(dups)) {
-#         cat("  ...NOTE: dropping duplicates in word1,2: ... \n", w12Table[dups, w1, w2], "\n")
+#         catm("  ...NOTE: dropping duplicates in word1,2: ... \n", w12Table[dups, w1, w2], "\n")
 #         w3Table <- w3Table[-dups]
 #     }
     suppressWarnings(allTable4 <- allTable3[w12Table])
@@ -393,7 +393,7 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"),
     # bug in data.table??  encoding problem on our end??
     dups <- which(duplicated(w1Table[,w1]))
     if (length(dups)) {
-        cat("  ...NOTE: dropping duplicates in word1:", w1Table[dups, w1], "\n")
+        catm("  ...NOTE: dropping duplicates in word1:", w1Table[dups, w1], "\n")
         w1Table <- w1Table[-dups]
     }
     
@@ -411,7 +411,7 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"),
     # eliminate any duplicates in w2 - although this ought not to happen!
     dups <- which(duplicated(w2Table[,w2]))
     if (length(dups)) {
-        cat("...NOTE: dropping duplicates found in word2:", w2Table[dups, w2], "\n")
+        catm("...NOTE: dropping duplicates found in word2:", w2Table[dups, w2], "\n")
         w2Table <- w2Table[-dups]
     }
     

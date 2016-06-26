@@ -79,6 +79,7 @@ setMethod("show", "dictionary",
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
 #' mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
 #' head(dfm(inaugTexts, dictionary = mfdict))}
+#' @importFrom stats setNames
 #' @export
 dictionary <- function(x = NULL, file = NULL, format = NULL, 
                        concatenator = " ", 
@@ -194,7 +195,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     # remove any lines with <of>
     oflines <- grep("<of>", d)
     if (length(oflines)) {
-        cat("note: ", length(oflines), " term",
+        catm("note: ", length(oflines), " term",
             ifelse(length(oflines)>1, "s", ""), 
             " ignored because contains unsupported <of> tag\n", sep = "")
         d <- d[-oflines]
@@ -227,9 +228,9 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     # remove odd parenthetical codes
     foundParens <- grep("^\\w+\\s+\\(.+\\)", catlist)
     if (length(foundParens)) {
-        cat("note: ignoring parenthetical expressions in lines:\n")
+        catm("note: ignoring parenthetical expressions in lines:\n")
         for (i in foundParens)
-            cat("  [line ", foundParens + guideRowEnd, ":] ", catlist[i], "\n", sep = "")
+            catm("  [line ", foundParens + guideRowEnd, ":] ", catlist[i], "\n", sep = "")
         catlist <- gsub("\\(.+\\)", "", catlist)
     }
         
@@ -300,17 +301,17 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
 # ykdict <- readYoshikoderDict(path)
 # }
 readYKdict <- function(path){
-  if (!requireNamespace("XML", quietly = TRUE))
-    stop("You must have package XML installed to parse Yoshikoder dictionary files.")
-
-  xx <- XML::xmlParse(path)
-  catnames <- XML::xpathSApply(xx, "/dictionary/cnode/cnode", 
-                               XML::xmlGetAttr, name="name")
-  get_patterns_in_subtree <- function(x){
-    XML::xpathSApply(x, ".//pnode", XML::xmlGetAttr, name="name")
-  }
-  cats <- XML::getNodeSet(xx, "/dictionary/cnode/cnode")
-  setNames(lapply(cats, get_patterns_in_subtree), catnames)
+    if (!requireNamespace("XML", quietly = TRUE))
+        stop("You must have package XML installed to parse Yoshikoder dictionary files.")
+    
+    xx <- XML::xmlParse(path)
+    catnames <- XML::xpathSApply(xx, "/dictionary/cnode/cnode", 
+                                 XML::xmlGetAttr, name="name")
+    get_patterns_in_subtree <- function(x){
+        XML::xpathSApply(x, ".//pnode", XML::xmlGetAttr, name="name")
+    }
+    cats <- XML::getNodeSet(xx, "/dictionary/cnode/cnode")
+    stats::setNames(lapply(cats, get_patterns_in_subtree), catnames)
 }
 
 flatten.dictionary <- function(elms, parent = '', dict = list()) {
@@ -401,7 +402,7 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     
-    if (verbose) cat("applying a dictionary consisting of ", length(dictionary), " key", 
+    if (verbose) catm("applying a dictionary consisting of ", length(dictionary), " key", 
                      ifelse(length(dictionary) > 1, "s", ""), "\n", sep="")
     
     # convert wildcards to regular expressions (if needed)

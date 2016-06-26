@@ -67,7 +67,7 @@ settings.corpus <- function(x, field=NULL, ...) {
     if (is(x, "dfm")) stop("Cannot assign settings to a dfm object.")
     if (!(field %in% SETTINGS_OPTIONS)) stop(paste(field, "not valid setting."))
     x$settings[field] <- value
-    # cat("note: corpus settings are not yet used in dfm construction.\n")
+    # catm("note: corpus settings are not yet used in dfm construction.\n")
     x
 }
 
@@ -79,7 +79,7 @@ settings.corpus <- function(x, field=NULL, ...) {
 #' @export 
 settings.dfm <- function(x, ...) {
     # attributes(x)$settings
-    cat("note: dfm settings are not yet implemented - coming soon.\n")
+    catm("note: dfm settings are not yet implemented - coming soon.\n")
 }
 
 

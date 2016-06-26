@@ -37,7 +37,8 @@ Imports:
     parallel,
     Rcpp,
     ca,
-    stringi
+    stringi,
+    httr
 LinkingTo: Rcpp, RcppArmadillo
 Suggests:
     knitr,
@@ -95,6 +96,7 @@ Collate:
     'toLower.R'
     'tokenize.R'
     'tokenize_outtakes.R'
+    'util.R'
     'wordstem.R'
     'zzz.R'
 RoxygenNote: 5.0.1

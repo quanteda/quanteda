@@ -96,8 +96,8 @@ kwic.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex
     
     wordLength <- length(word)
     
-#     cat("valuetype = ", valuetype, "\n")
-#     cat("case_insensitive = ", case_insensitive, "\n")
+#     catm("valuetype = ", valuetype, "\n")
+#     catm("case_insensitive = ", case_insensitive, "\n")
     
     if (valuetype == "fixed") {
         if (case_insensitive)
