@@ -340,7 +340,7 @@ listMatchingFile <- function(x, ignoreMissing, verbose=F, lastRound) {
     
     # If not a URL (or a file:// URL) , treat it as a local file
     if (!is.na(scheme)) {
-        if (verbose) messages('Remote file')
+        if (verbose) message('Remote file')
         #  If there is a non-'file' scheme, treat it as remote
         localfile <- downloadRemote(i, ignoreMissing=ignoreMissing)
         return(listMatchingFiles(localfile, ignoreMissing=ignoreMissing))
@@ -352,7 +352,7 @@ listMatchingFile <- function(x, ignoreMissing, verbose=F, lastRound) {
         tools::file_ext(i) == 'tar' ||
         tools::file_ext(i) == 'bz' 
         ) {
-        if (verbose) messages('archive')
+        if (verbose) message('archive')
         archiveFiles <- extractArchive(i, ignoreMissing=ignoreMissing)
         return(listMatchingFiles(archiveFiles, ignoreMissing=ignoreMissing))
     }
@@ -365,12 +365,12 @@ listMatchingFile <- function(x, ignoreMissing, verbose=F, lastRound) {
         #  pattern, which means that it is definitely not a glob pattern this
         #  time
         if (!(ignoreMissing || file.exists(i))) stop("File", i, "does not exist.")
-        if (verbose) messages('regular file')
+        if (verbose) message('regular file')
         return(i)
     }
     else {
         #  If it wasn't a glob pattern last time, then it may be this time
-        if (verbose) messages('possible glob pattern')
+        if (verbose) message('possible glob pattern')
         i <- Sys.glob(i)
         return(
            listMatchingFiles(i, ignoreMissing=ignoreMissing, lastRound=T)

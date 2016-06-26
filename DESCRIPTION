@@ -37,7 +37,8 @@ Imports:
     parallel,
     Rcpp,
     ca,
-    stringi
+    stringi,
+    httr
 LinkingTo: Rcpp, RcppArmadillo
 Suggests:
     knitr,

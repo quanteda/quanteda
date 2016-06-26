@@ -79,6 +79,7 @@ setMethod("show", "dictionary",
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
 #' mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
 #' head(dfm(inaugTexts, dictionary = mfdict))}
+#' @importFrom stats setNames
 #' @export
 dictionary <- function(x = NULL, file = NULL, format = NULL, 
                        concatenator = " ", 
@@ -300,17 +301,17 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
 # ykdict <- readYoshikoderDict(path)
 # }
 readYKdict <- function(path){
-  if (!requireNamespace("XML", quietly = TRUE))
-    stop("You must have package XML installed to parse Yoshikoder dictionary files.")
-
-  xx <- XML::xmlParse(path)
-  catnames <- XML::xpathSApply(xx, "/dictionary/cnode/cnode", 
-                               XML::xmlGetAttr, name="name")
-  get_patterns_in_subtree <- function(x){
-    XML::xpathSApply(x, ".//pnode", XML::xmlGetAttr, name="name")
-  }
-  cats <- XML::getNodeSet(xx, "/dictionary/cnode/cnode")
-  setNames(lapply(cats, get_patterns_in_subtree), catnames)
+    if (!requireNamespace("XML", quietly = TRUE))
+        stop("You must have package XML installed to parse Yoshikoder dictionary files.")
+    
+    xx <- XML::xmlParse(path)
+    catnames <- XML::xpathSApply(xx, "/dictionary/cnode/cnode", 
+                                 XML::xmlGetAttr, name="name")
+    get_patterns_in_subtree <- function(x){
+        XML::xpathSApply(x, ".//pnode", XML::xmlGetAttr, name="name")
+    }
+    cats <- XML::getNodeSet(xx, "/dictionary/cnode/cnode")
+    stats::setNames(lapply(cats, get_patterns_in_subtree), catnames)
 }
 
 flatten.dictionary <- function(elms, parent = '', dict = list()) {

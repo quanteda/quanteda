@@ -32,6 +32,6 @@ mktemp <- function(prefix='tmp.', base_path=NULL, directory=F) {
 #' @rdname catm
 #' messages() with some of the same syntax as cat(): takes a sep argument and
 #' does not append a newline by default
-catm <- function(..., sep=" ", appendLF=F) {
-    message(paste(..., sep=sep), appendLF=appendLF)
+catm <- function(..., sep = " ", appendLF = F) {
+    message(paste(..., sep = sep), appendLF = appendLF)
 }
