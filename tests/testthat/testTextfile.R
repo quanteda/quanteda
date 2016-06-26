@@ -516,7 +516,6 @@ test_that("Test loading all these files at once with different encodings", {
 #       )
 #  })
 
-<<<<<<< HEAD
 test_that("test textfile encoding parameter: ASCII encoded file, read as UTF-8: (should work)", {
     skip_on_cran()
     skip_on_travis()
@@ -528,18 +527,6 @@ test_that("test textfile encoding parameter: ASCII encoded file, read as UTF-8: 
         equals(utf8_bytes)
     )
 })
-=======
-### COMMENTED OUT BECAUSE FAILED --KB 2016-06-26
-# test_that("test textfile encoding parameter: ASCII encoded file, read as UTF-8: (should work)", {
-#     utf8_bytes <- data.table::fread(file.path(FILEDIR, 'UTF-8__bytes.tsv'))[[1]]
-#     expect_that(
-#         as.numeric(charToRaw(
-#             texts(textfile(file.path(FILEDIR, 'UTF-8__characters.txt'), encoding='utf-8'),
-#             ))),
-#         equals(utf8_bytes)
-#     )
-# })
->>>>>>> master
 
 test_that("test that textfile encoding argument must be either length 1 or same length as the number of files", {
     expect_that(
