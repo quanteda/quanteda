@@ -1,3 +1,15 @@
+context('test dictionaries.R')
+
+test_that("yoshikoder dictionaries load and percolate patterns correctly", {
+  dd <- dictionary(file="data/yoshi.ykd", format="yoshikoder")
+  expect_equal(names(dd), c("A category", "Another category"))
+  expect_equal(slot(dd, "format"), "yoshikoder")
+  # subcategory pattern contents are pulled up into top level category
+  expect_equal(dd[[1]], c("more", "lamb", "little"))
+  expect_equal(dd[[2]], c("had", "mary"))
+})
+  
+
 
 # require(quanteda)
 # tmpdic2007 <- dictionary(file="~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2007_English080730.dic", format='LIWC')
