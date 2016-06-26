@@ -90,9 +90,9 @@ setGeneric("textmodel",
 setMethod("textmodel", signature(x = "dfm", y="ANY", data="missing", model = "character"),
           definition = 
               function(x, y=NULL, model=c("wordscores", "NB", "wordfish", "ca"), ...) {
-                  #cat("x is:"); print(x)
-                  #cat("y is:"); print(y)
-                  #cat("model is:", model, "\n")
+                  #catm("x is:"); print(x)
+                  #catm("y is:"); print(y)
+                  #catm("model is:", model, "\n")
                   model <- match.arg(model)
                   call <- match.call()
                   Yname <- deparse(substitute(y))
@@ -143,7 +143,7 @@ setMethod("textmodel", signature(x = "formula", y="missing", data="dfm", model =
                   
                   # x <- model.matrix(attr(mf, "terms"), data=mf)
                   y <- stats::model.response(mf)
-                  # cat("HERE\n")
+                  # catm("HERE\n")
                   textmodel(data[which(docnames(data) %in% names(y)), 
                                  which(features(data) %in% names(mf))], 
                             y, model = model, ...)

@@ -63,7 +63,7 @@ setMethod("weight", signature = c("dfm", "character"),
                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
               type = match.arg(type)
               if (x@weightTf[["scheme"]] != "count") {
-                  cat("  No weighting applied: you should not weight an already weighted dfm.\n")
+                  catm("  No weighting applied: you should not weight an already weighted dfm.\n")
               } else if (type=="relFreq") {
                   return(tf(x, "prop"))
               } else if (type=="relMaxFreq") {
