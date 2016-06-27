@@ -84,6 +84,11 @@ setMethod("trim", signature(x = "dfm"),
                   catm("Removing features occurring in fewer than ", messageMinDoc, minDoc, " documents: ", 
                       nfeature(x) - length(featIndexAboveMinDoc), "\n", sep = "")
 
+              if (minCount == 1 & minDoc == 1) {
+                  catm("No features removed.", appendLF = TRUE)
+                  return(x)
+              }
+
               featureKeepIndex <- intersect(featIndexAboveMinCount, featIndexAboveMinDoc)
               if (length(featureKeepIndex)==0)  stop("No features left after trimming.")
               
