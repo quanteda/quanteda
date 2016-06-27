@@ -94,7 +94,7 @@ dictionary <- function(x = NULL, file = NULL, format = NULL,
   if (!is.null(x) & !is.list(x))
     stop("Dictionaries must be named lists or lists of named lists.")
   
-  dict_format_mapping <- c(cat="wordstat", dic="LIWC", ykd="yoshikoder")
+  dict_format_mapping <- c(cat="wordstat", dic="LIWC", ykd="yoshikoder", lcd="lexicoder")
   if (!is.null(file)) {
 
     if (is.null(format)) {
@@ -117,6 +117,9 @@ dictionary <- function(x = NULL, file = NULL, format = NULL,
       x <- readLIWCdict(file, toLower = toLower, encoding = encoding)
     else if (format=="yoshikoder")
       x <- readYKdict(file)
+    else if (format=="lexicoder")
+      x <- readLexicoderDict(file)
+
   }
   
   new("dictionary", x, format = format, file = file, concatenator = concatenator)
@@ -349,6 +352,37 @@ flatten.dictionary <- function(elms, parent = '', dict = list()) {
     }
     return(dict)
 }
+
+# Import a Lexicoder dictionary
+# 
+# @param path full pathname of the lexicoder dictionary file (usually ending in .lcd)
+# @param toLower if \code{TRUE} (default), convert the dictionary entries to lower case
+# @return a named list, where each the name of element is a category/key and each element is a list of
+#   the dictionary terms corresponding to that level.
+# @author Adam Obeng
+# @export
+readLexicoderDict <- function(path, toLower=TRUE) {
+  current_key <- NULL
+  current_terms <- c()
+  dict <- list() 
+  #  Lexicoder 3.0 files are always UTF-8
+  for (l in readLines(con <- file(path, encoding = 'utf-8'))) {
+    if (toLower) l <- tolower(l)
+    if (substr(l, 1, 1) == '+') {
+      if (length(current_terms) > 0) {
+        dict[[current_key]] <- current_terms
+      }
+      current_key <- substr(l, 2, nchar(l))
+      current_terms <- c()
+    }
+    else {
+      current_terms <- c(current_terms, l)
+    }
+  }
+  dict[[current_key]] <- current_terms
+  return(dict)
+}
+
 
 #' apply a dictionary or thesaurus to an object
 #' 
