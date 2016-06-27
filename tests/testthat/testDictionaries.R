@@ -13,25 +13,28 @@ test_that("yoshikoder dictionaries load and percolate patterns correctly", {
 test_that("dictionary formats are autodetected from filenames", {
 
   expected_dict <- dictionary(list(
-    'A category'=c('more', 'lamb', 'little'),
+    'A category'=c('lamb', 'little', 'more'),
     'Another category'=c('had', 'mary')
   ))
 
   actual_dict <- dictionary(file="../data/dictionaries/mary.dic")
   expect_true(is(actual_dict, "dictionary"))
   expect_equal(actual_dict@format, "LIWC")
-  expect_equal(actual_dict@.Data, expected_dict@.Data)
+  expect_equal(lapply(actual_dict@.Data, sort), expected_dict@.Data)
+
+  
+
 
   actual_dict <- dictionary(file="../data/dictionaries/mary.cat")
   expect_true(is(actual_dict, "dictionary"))
   expect_equal(actual_dict@format, "wordstat")
-  expect_equal(actual_dict@.Data, expected_dict@.Data)
+  expect_equal(lapply(actual_dict@.Data, sort), expected_dict@.Data)
 
 
   actual_dict <- dictionary(file="../data/dictionaries/mary.ykd")
   expect_true(is(actual_dict, "dictionary"))
   expect_equal(actual_dict@format, "yoshikoder")
-  expect_equal(actual_dict@.Data, expected_dict@.Data)
+  expect_equal(lapply(actual_dict@.Data, sort), expected_dict@.Data)
 
 
 })
