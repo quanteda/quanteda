@@ -240,7 +240,7 @@ downloadRemote <- function (i, ignoreMissing) {
     }
     if (ignoreMissing) {
         localfile <- tryCatch({
-            localfile <- paste0(mktemp(), '.', extension) 
+            localfile <- file.path(mktemp(directory=T), basename(i))
             utils::download.file(i, destfile = localfile, quiet=T)
             return(localfile)
         },
@@ -250,7 +250,7 @@ downloadRemote <- function (i, ignoreMissing) {
         }
     )}
     else {
-        localfile <- paste0(mktemp(), '.', extension) 
+        localfile <- file.path(mktemp(directory=T), basename(i))
         utils::download.file(i, destfile = localfile, quiet=T)
     }
     localfile
