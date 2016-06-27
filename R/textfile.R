@@ -244,6 +244,9 @@ downloadRemote <- function (i, ignoreMissing) {
     r <- httr::GET(i, httr::write_disk(localfile))
     if (ignoreMissing) {
         httr::warn_for_status(r)
+        if (httr::http_error(r)) {
+            return(NULL)
+        }
     }
     else {
         httr::stop_for_status(r)
