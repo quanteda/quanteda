@@ -108,10 +108,10 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
     # detect encoding based on 100 documents
 #     detectSampleSize <- 100
 #    detectedEncoding <- encoding(x[sample(length(x), min(detectSampleSize, length(x)))], verbose = FALSE)$probably
-    # cat("Detected encoding:", detectedEncoding, "\n")
+    # catm("Detected encoding:", detectedEncoding, "\n")
 #     if (!is.null(enc))
 #         if (enc != detectedEncoding)
-#             cat("  NOTE:", enc, "specified as input encoding, but", detectedEncoding, "detected.  Are you SURE?\n\n")
+#             catm("  NOTE:", enc, "specified as input encoding, but", detectedEncoding, "detected.  Are you SURE?\n\n")
     # use specified enc, not detected encoding
 #     detected <- FALSE
 #     if (is.null(enc)) {
@@ -122,7 +122,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
 #     # convert to "enc" if not already UTF-8 **unless** ISO-8859-1 detected, in which case do not do automatically
 #     if (enc != encTo) {
 #         if (enc != "ISO-8859-1" & encTo == "UTF-8") {
-#             cat("Non-", encTo, " encoding ", ifelse(detected, "(possibly) detected", "specified"), ": ", 
+#             catm("Non-", encTo, " encoding ", ifelse(detected, "(possibly) detected", "specified"), ": ", 
 #                 enc, ".\n", sep="")
 #             # suppressWarnings(x <- stringi::stri_encode(x, from = enc, to = encTo))
 #         }

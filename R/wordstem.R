@@ -56,7 +56,7 @@ wordstem.tokenizedTexts <- function(x, language = "porter") {
     if (all.equal(attributes(x)$ngrams, 1))
         result <- lapply(x, SnowballC::wordStem, language)
     else {
-        # cat("Ngrams wordstem\n")
+        # catm("Ngrams wordstem\n")
         result <- wordstem_Ngrams(x, attributes(x)$concatenator, language)
     }
     class(result) <- c("tokenizedTexts", class(result))

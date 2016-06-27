@@ -48,7 +48,7 @@ stopwords <- function(kind="english", verbose=FALSE) {
                       "german", "italian", "portuguese", "spanish", "arabic"))) {
         stop(paste(kind, "is not a recognized stopword list type."))
     }
-    if (verbose) cat("note: using", kind, "builtin stopwords, but beware that one size may not fit all.\n")
+    if (verbose) catm("note: using", kind, "builtin stopwords, but beware that one size may not fit all.\n")
     # data(stopwords, envir = environment())
     quanteda::.stopwords[[kind]]
 }
@@ -63,14 +63,14 @@ NULL
 # @rdname removeFeatures
 # @export
 stopwordsRemove <- function(x, stopwords=NULL, verbose=TRUE) {
-    cat("stopwordsRemove is deprecated, use removeFeatures instead.")
+    catm("stopwordsRemove is deprecated, use removeFeatures instead.")
     UseMethod("removeFeatures")
 }
 
 # @rdname stopwords
 # @export
 stopwordsGet <- function(kind="english") {
-    cat("stopwordsGet() is deprecated, use stopwords() instead.\n")
+    catm("stopwordsGet() is deprecated, use stopwords() instead.\n")
     stopwords(kind)
 }
 

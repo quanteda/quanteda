@@ -17,3 +17,4 @@ __MACOSX
 quanteda.pdf
 ^images
 ^tests/data/encoding/.*$
+^CONDUCT\.md$
