@@ -672,7 +672,7 @@ test_that("Test function to list files with remote sources", {
     skip_on_cran()
     expect_error(
       quanteda:::listMatchingFiles('http://www.google.com/404.txt'),
-      ".*Not Found (HTTP 404)..*"
+      ".*404.*"
     )
     
     expect_equal(
