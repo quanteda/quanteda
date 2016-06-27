@@ -40,13 +40,13 @@ test_that("dictionary formats are autodetected from filenames", {
   actual_dict <- dictionary(file="../data/dictionaries/mary.lc3")
   expect_true(is(actual_dict, "dictionary"))
   expect_equal(actual_dict@format, "lexicoder")
-  expect_equal(actual_dict@.Data, expected_dict@.Data)
+  expect_equal(lapply(actual_dict@.Data, sort), expected_dict@.Data)
   
 
   actual_dict <- dictionary(file="../data/dictionaries/mary.lcd")
   expect_true(is(actual_dict, "dictionary"))
   expect_equal(actual_dict@format, "yoshikoder")
-  expect_equal(actual_dict@.Data, expected_dict@.Data)
+  expect_equal(lapply(actual_dict@.Data, sort), expected_dict@.Data)
 
 
 })
