@@ -18,19 +18,19 @@ test_that("dictionary formats are autodetected from filenames", {
   ))
 
   actual_dict <- dictionary(file="../data/dictionaries/mary.dic")
-  expect_true(is(dd, "dictionary"))
-  expect_equal(dd@format, "LIWC")
+  expect_true(is(actual_dict, "dictionary"))
+  expect_equal(actual_dict@format, "LIWC")
   expect_equal(actual_dict@.Data, expected_dict@.Data)
 
   actual_dict <- dictionary(file="../data/dictionaries/mary.cat")
-  expect_true(is(dd, "dictionary"))
-  expect_equal(dd@format, "wordstat")
+  expect_true(is(actual_dict, "dictionary"))
+  expect_equal(actual_dict@format, "wordstat")
   expect_equal(actual_dict@.Data, expected_dict@.Data)
 
 
   actual_dict <- dictionary(file="../data/dictionaries/mary.ykd")
-  expect_true(is(dd, "dictionary"))
-  expect_equal(dd@format, "yoshikoder")
+  expect_true(is(actual_dict, "dictionary"))
+  expect_equal(actual_dict@format, "yoshikoder")
   expect_equal(actual_dict@.Data, expected_dict@.Data)
 
 
