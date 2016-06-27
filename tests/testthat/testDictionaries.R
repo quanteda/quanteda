@@ -56,7 +56,7 @@ test_that("explicit format overrides autodetected dictionary format", {
 test_that("unknown dictionary format raises error", {
   expect_error(
     dictionary(file="../data/dictionaries/mary.nonesuch", format='nonesuch'),
-    "'arg' should be one of “wordstat”, “LIWC”, “yoshikoder”"
+    "'arg' should be one of .*"
    )
 })
 
