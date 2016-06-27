@@ -110,7 +110,7 @@ ngramSingle <- function(text, n=2, concatenator="_", include.all=FALSE, ...) {
 bigrams <- function(text, window = 1, concatenator="_", include.unigrams=FALSE, 
                     ignoredFeatures=NULL, skipGrams=FALSE, ...) {
     
-    cat("note: bigrams() is being phased out, and replaced by tokenize(x, ngrams=2)\n")
+    catm("note: bigrams() is being phased out, and replaced by tokenize(x, ngrams=2)\n")
     
     removeIgnoredFeatures <- function(bigramCharVector, ignoredFeatures) {
         ignoredfeatIndex <- 

@@ -65,35 +65,35 @@ encoding.character <- function(x, verbose = TRUE, ...) {
     topEncodingsTable[, conf := conf/sum(conf)]
     topEncodingsTable <- topEncodingsTable[order(-conf)]
         
-    if (verbose) cat("Probable encoding: ", topEncodingsTable[1, encoding], sep = "")
+    if (verbose) catm("Probable encoding: ", topEncodingsTable[1, encoding], sep = "")
     if (nrow(topEncodingsTable) == 1 & topEncodingsTable[1, encoding] == "ISO-8859-1")
-        if (verbose) cat("\n  (but note: detector often reports ISO-8859-1 when encoding is actually UTF-8.)")
+        if (verbose) catm("\n  (but note: detector often reports ISO-8859-1 when encoding is actually UTF-8.)")
     if (nrow(topEncodingsTable) > 1) {
         if (verbose) 
-            cat("   (but ", "other encodings",
+            catm("   (but ", "other encodings",
             # paste(topEncodingsTable[2:nrow(topEncodingsTable), encoding], collapse = ", "),
             " also detected)\n", sep = "")
         barsize <- 60
         proportions <- round(topEncodingsTable$conf * barsize)
         plotsymbols <- c("*", "-", ".", "~", letters[1:5])
-        if (verbose) cat("  Encoding proportions: ")
-        if (verbose) cat("[", rep(plotsymbols[1:nrow(topEncodingsTable)], proportions[1:nrow(topEncodingsTable)]), "]", sep="")
+        if (verbose) catm("  Encoding proportions: ")
+        if (verbose) catm("[", rep(plotsymbols[1:nrow(topEncodingsTable)], proportions[1:nrow(topEncodingsTable)]), "]", sep="")
 #         spacer <- "\n                         "
-#         cat(spacer)
-#         cat(paste(topEncodingsTable$encoding, " (", 
+#         catm(spacer)
+#         catm(paste(topEncodingsTable$encoding, " (", 
 #                   format(topEncodingsTable$conf, nsmall=3, digits=3), ") ", plotsymbols[1:nrow(topEncodingsTable)],
 #                   collapse = spacer, sep=""))
         if (verbose) {
-            cat("\n  Samples of the first text as:\n")
+            catm("\n  Samples of the first text as:\n")
             for (i in 1:nrow(topEncodingsTable)) {
-                cat(sprintf("%-21s", paste0("  [", plotsymbols[i], "] ",
+                catm(sprintf("%-21s", paste0("  [", plotsymbols[i], "] ",
                                             topEncodingsTable$encoding[i])),
                     stri_sub(suppressWarnings(stri_encode(x[1], topEncodingsTable$encoding[i])), length = 60),
                     "\n", sep = "")
             }
         }
     } else 
-        if (verbose) cat("\n")
+        if (verbose) catm("\n")
 
     invisible(list(probably = topEncodingsTable[1, encoding], 
                    all = sapply(detectedEncodings, function(x) x$Encoding[1])))

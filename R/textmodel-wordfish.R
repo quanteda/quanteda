@@ -115,14 +115,14 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
     zeroLengthDocs <- which(ntoken(data) == 0)
     if (length(zeroLengthDocs)) {
         data <- data[-zeroLengthDocs, ]
-        cat("Note: removed the following zero-token documents:", docnames(data[zeroLengthDocs, ]), "\n")
+        catm("Note: removed the following zero-token documents:", docnames(data[zeroLengthDocs, ]), "\n")
     }
     zeroLengthFeatures <- which(docfreq(data) == 0)
     if (length(zeroLengthFeatures)) {
             data <- data[, -zeroLengthFeatures]
-        cat("Note: removed the following zero-count features:", features(data[, zeroLengthFeatures]), "\n")
+        catm("Note: removed the following zero-count features:", features(data[, zeroLengthFeatures]), "\n")
     }
-    if (length(zeroLengthDocs) | length(zeroLengthFeatures)) cat("\n")
+    if (length(zeroLengthDocs) | length(zeroLengthFeatures)) catm("\n")
 
     # some error checking
     if (length(priors) != 4)
@@ -151,7 +151,7 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
     } else
         stop("Illegal option combination.")
 
-    # cat("disp = ", disp, "\n")
+    # catm("disp = ", disp, "\n")
     
     wfresult <- wordfishcpp(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor)
     # NOTE: psi is a 1 x nfeature matrix, not a numeric vector

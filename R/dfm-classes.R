@@ -583,7 +583,7 @@ rbind.dfm <- function(...) {
     args <- list(...)
     if (!all(sapply(args, is.dfm)))
         stop("all arguments must be dfm objects")
-    cat(names(args))
+    catm(names(args))
 
     if (length(args) == 1) {
         warning('rbind.dfm called on single dfm')
