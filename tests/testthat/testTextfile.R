@@ -453,8 +453,10 @@ test_that("test docvars.corpusSource warning with field!=NULL", {
     )
 })
 
-#  All this stuff will fail 
-tryCatch({
+test_that("test encoding handling (skipped on travis and CRAN", {
+    skip_on_cran()
+    skip_on_travis()
+
     # Currently, these encodings don't work for reasons that seem unrelated 
     # to quanteda, and are either a problem in base R or on travis-ci
     broken_encodings <- c(
@@ -483,25 +485,18 @@ tryCatch({
         encoding <- fileencodings[[i]]
         
         test_that(paste("test textfile encoding parameter, encoding", encoding), {
-        skip_on_travis()
-        skip_on_cran()
-            characters <- as.numeric(charToRaw(
+                characters <- as.numeric(charToRaw(
                 texts(textfile(filename, encoding=fileencodings[[i]]))
             ))
             bytes <- data.table::fread(gsub('__characters.txt', '__bytes.tsv', filename))[[1]]
             expect_equal(characters, bytes)
         })
     }
-}, error = function(e) {
-        skip_on_travis()
-        skip_on_cran()
+    test_that("Test loading all these files at once with different encodings", {
+            encodedTextfilesCorpus <- corpus(textfile(filenames, encoding=fileencodings))
+    })
 })
 
-test_that("Test loading all these files at once with different encodings", {
-    skip_on_cran()
-    skip_on_travis()
-    encodedTextfilesCorpus <- corpus(textfile(filenames, encoding=fileencodings))
-})
 
 
 #  test_that("test textfile encoding parameter: UTF-8 encoded file, read as UTF-16 (should not work)", {
@@ -691,9 +686,9 @@ test_that("Test function to list files", {
     
 test_that("Test function to list files with remote sources", {
     skip_on_cran()
-    expect_that(
+    expect_error(
       quanteda:::listMatchingFiles('http://www.google.com/404.txt'),
-      throws_error('cannot open URL')
+      ".*404.*"
     )
     
     expect_equal(
