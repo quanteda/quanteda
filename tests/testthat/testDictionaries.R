@@ -44,11 +44,25 @@ test_that("explicit format overrides autodetected dictionary format", {
   ))
 
   actual_dict <- dictionary(file="../data/dictionaries/actually_ykd.cat", format='yoshikoder')
-  expect_true(is(dd, "dictionary"))
-  expect_equal(dd@format, "yoshikoder")
+  expect_true(is(actual_dict, "dictionary"))
+  expect_equal(actual_dict@format, "yoshikoder")
   expect_equal(actual_dict@.Data, expected_dict@.Data)
 })
 
+
+test_that("unknown dictionary format raises error", {
+  expect_error(
+    dictionary(file="../data/dictionaries/mary.nonesuch", format='nonesuch'),
+    "'arg' should be one of “wordstat”, “LIWC”, “yoshikoder”"
+   )
+})
+
+test_that("unknown dictionary file extension raises error", {
+  expect_error(
+    dictionary(file="../data/dictionaries/mary.nonesuch"),
+    "Unknown dictionary file extension nonesuch"
+   )
+})
 
 # require(quanteda)
 # tmpdic2007 <- dictionary(file="~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2007_English080730.dic", format='LIWC')
