@@ -240,20 +240,16 @@ downloadRemote <- function (i, ignoreMissing) {
     if (!(extension %in% names(SUPPORTED_FILETYPE_MAPPING))) {
         stop('Remote URL does not end in known extension. Please download the file manually.')
     }
+    localfile <- paste0(mktemp(), '.', extension) 
+    r <- httr::GET(i, httr::write_disk(localfile))
     if (ignoreMissing) {
-        localfile <- tryCatch({
-            localfile <- file.path(mktemp(directory=T), basename(i))
-            httr::GET(i, httr::write_disk(localfile))
-            return(localfile)
-        },
-        warning = function(e) {
-            warning(e)
+        httr::warn_for_status(r)
+        if (httr::http_error(r)) {
             return(NULL)
         }
-    )}
+    }
     else {
-        localfile <- file.path(mktemp(directory=T), basename(i))
-        httr::GET(i, httr::write_disk(localfile))
+        httr::stop_for_status(r)
     }
     localfile
 }
