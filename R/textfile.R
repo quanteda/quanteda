@@ -240,7 +240,7 @@ downloadRemote <- function (i, ignoreMissing) {
     if (!(extension %in% names(SUPPORTED_FILETYPE_MAPPING))) {
         stop('Remote URL does not end in known extension. Please download the file manually.')
     }
-    localfile <- paste0(mktemp(), '.', extension) 
+    localfile <- file.path(mktemp(directory=T), basename(i))
     r <- httr::GET(i, httr::write_disk(localfile))
     if (ignoreMissing) {
         httr::warn_for_status(r)
