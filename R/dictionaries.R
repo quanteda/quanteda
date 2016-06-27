@@ -94,10 +94,25 @@ dictionary <- function(x = NULL, file = NULL, format = NULL,
   if (!is.null(x) & !is.list(x))
     stop("Dictionaries must be named lists or lists of named lists.")
   
+  dict_format_mapping <- c(cat="wordstat", dic="LIWC", ykd="yoshikoder")
   if (!is.null(file)) {
-    if (is.null(format))
-      stop("You must specify a format for file", file)
-    format <- match.arg(format, c("wordstat", "LIWC", "yoshikoder"))
+
+    if (is.null(format)) {
+      ext <- file_ext(file)
+      print(paste("FILEEXT", ext))
+      if (ext %in% names(dict_format_mapping)) {
+        format <- dict_format_mapping[[ext]]
+        print(paste("FORMAT", format))
+      }
+      else {
+        stop(paste("Unknown dictionary file extension", ext))
+      }
+    }
+    else {
+      format <- match.arg(format, dict_format_mapping)
+    }
+    format <- unname(format)
+
     if (format=="wordstat") 
       x <- readWStatDict(file, enc = encoding, toLower = toLower)
     else if (format=="LIWC")
