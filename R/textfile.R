@@ -414,7 +414,7 @@ getSource <- function(f, textField, ...) {
                xml = get_xml(f, textField, ...)
         )
 
-    names(newSource$txts) <- basename(f)
+    names(newSource$txts) <- rep(basename(f), length(newSource$txts))
 
     return(newSource)
 }
