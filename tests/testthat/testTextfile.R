@@ -41,7 +41,7 @@ test_that("test show.corpusSource", {
 
 
 test_that("test textfile with single filename", {
-    fox <- "The quick brown fox jumps over the lazy dog."
+    fox <- c(fox.txt = "The quick brown fox jumps over the lazy dog.")
     expect_equal(
         texts(textfile('../data/fox/fox.txt')),
         fox
@@ -49,7 +49,7 @@ test_that("test textfile with single filename", {
 })
 
 test_that("test cached textfile with single filename", {
-    fox <- "The quick brown fox jumps over the lazy dog."
+    fox <- c(fox.txt = "The quick brown fox jumps over the lazy dog.")
     expect_equal(
         texts(textfile('../data/fox/fox.txt', cache=T)),
         fox
@@ -145,12 +145,12 @@ test_that("test structured textfile with glob-style mask", {
 test_that("test remote text file", {
     expect_equal(
         texts(textfile('https://raw.githubusercontent.com/kbenoit/quanteda/master/tests/data/fox/fox.txt')),
-        'The quick brown fox jumps over the lazy dog.'
+        c(fox.txt='The quick brown fox jumps over the lazy dog.')
     )
     # ignoreMissing with an existing file should make no difference
     expect_equal(
         texts(textfile('https://raw.githubusercontent.com/kbenoit/quanteda/master/tests/data/fox/fox.txt', ignoreMissing=T)),
-        'The quick brown fox jumps over the lazy dog.'
+        c(fox.txt='The quick brown fox jumps over the lazy dog.')
     )
 })
 
@@ -158,7 +158,7 @@ test_that("test remote text file", {
 test_that("test remote csv file", {
     expect_equal(
         texts(textfile("https://raw.githubusercontent.com/kbenoit/quanteda/master/tests/data/csv/test.csv", textField='text')),
-        c('Lorem ipsum.', 'Dolor sit')
+        c(test.csv='Lorem ipsum.', test.csv='Dolor sit')
     )
 })
 
@@ -219,9 +219,9 @@ test_that("test csv files", {
         docvars(testcorpus),
         equals(data.frame(list(colour=c('green', 'red'), number=c(42, 99)), stringsAsFactors=F))
     )
-    expect_that(
+    expect_equal(
         texts(testcorpus),
-        equals(c('Lorem ipsum.', 'Dolor sit'))
+        c(test.csv='Lorem ipsum.', test.csv='Dolor sit')
     )
     
     expect_that(
@@ -244,7 +244,7 @@ test_that("test tab files", {
     )
     expect_that(
         texts(testCorpusSource),
-        equals(c('Lorem ipsum.', 'Dolor sit'))
+        equals(c(test.tab='Lorem ipsum.', test.tab='Dolor sit'))
     )
     
     expect_that(
@@ -262,7 +262,7 @@ test_that("test tsv files", {
     )
     expect_that(
         texts(testCorpusSource),
-        equals(c('Lorem ipsum.', 'Dolor sit'))
+        equals(c(test.tsv='Lorem ipsum.', test.tsv='Dolor sit'))
     )
     
     expect_that(
@@ -282,7 +282,7 @@ test_that("test xml files", {
     )
     expect_that(
         texts(testcorpus),
-        equals(c('Lorem ipsum.', 'Dolor sit'))
+        equals(c(test.xml='Lorem ipsum.', test.xml='Dolor sit'))
     )
     
     expect_that(
@@ -291,7 +291,7 @@ test_that("test xml files", {
     )
     expect_that(
         texts(textfile('../data/xml/test.xml', textField=1)),
-        equals(c('Lorem ipsum.', 'Dolor sit'))
+        equals(c(test.xml='Lorem ipsum.', test.xml='Dolor sit'))
     )
     
     expect_that(
@@ -344,7 +344,7 @@ test_that("test json files", {
     
     expect_equal(
         texts(tweetSource),
-        c("I jumped over the lazy @dog", "Yawn")
+        c(stream.json="I jumped over the lazy @dog", stream.json="Yawn")
     )
     
     expect_equal(
@@ -594,9 +594,11 @@ test_that("test reading structured text files with different columns", {
         stringsAsFactors=F
         ))
     )
+    expected_texts <- c('apple', 'orange', 'apple', 'banana')
+    names(expected_texts) <- c('1.csv', '1.csv', '2.csv', '2.csv')
     expect_that(
         texts(testcorpus),
-        equals(c('apple', 'orange', 'apple', 'banana'))
+        equals(expected_texts)
     )
 })
 
