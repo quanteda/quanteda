@@ -261,7 +261,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     catlist <- strsplit(catlist, "\t")
     # catlist <- tokenize(catlist, what = "fasterword", removeNumbers = FALSE)
     catlist <- as.data.frame(do.call(rbind, lapply(catlist, '[', 1:max(sapply(catlist, length)))), stringsAsFactors = FALSE)
-    catlist[, 2:ncol(catlist)] <- suppressWarnings(apply(catlist[, 2:ncol(catlist)], 2, as.integer))
+    catlist[, 2:ncol(catlist)] <- sapply(catlist[, 2:ncol(catlist)], as.integer)
     names(catlist)[1] <- "category"
     if (toLower) catlist$category <- toLower(catlist$category)
     # remove any blank rows
