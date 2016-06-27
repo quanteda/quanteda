@@ -94,7 +94,7 @@ dictionary <- function(x = NULL, file = NULL, format = NULL,
   if (!is.null(x) & !is.list(x))
     stop("Dictionaries must be named lists or lists of named lists.")
   
-  dict_format_mapping <- c(cat="wordstat", dic="LIWC", ykd="yoshikoder", lcd="lexicoder")
+  dict_format_mapping <- c(cat="wordstat", dic="LIWC", ykd="yoshikoder", lcd="yoshikoder", lc3="lexicoder")
   if (!is.null(file)) {
 
     if (is.null(format)) {
