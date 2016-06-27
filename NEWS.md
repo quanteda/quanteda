@@ -10,6 +10,15 @@ quanteda 0.9.7
 *  Added a corpus constructor method for kwic objects.  
 *  Substantially improved the performance of `convert(x, to = "stm")` for dfm export, including adding an argument for meta-data (docvars, in quanteda parlance). (#209)  
 *  Internal rewrite of `textfile()`, now supports more file types, more wildcard patterns, and is far more robust generally.  
+* Add support for loading external dictionary formats: 
+  - yoshikoder, 
+  - lexicoder v2 and v3 (#228)
+* Autodetect dictionary file format from file extension, so no longer require `format` keyword for loading dictionaries (#227)
+* Imrpove compatibility with rOpenSci guidelines (#218):
+  - Use httr to get remote files
+  - Use `messages()` to display messages rather than `print` or `cat`
+  - Reorganise sections in README file
+
 
 ## Bug fixes
 
@@ -19,6 +28,12 @@ quanteda 0.9.7
 *  Fix #214 "mysterious stemmed token" bug in `wordstem.dfm()`, introduced in fixing #181.  
 *  Fixed previously non-functional `toLower = ` argument in `dfm.tokenizedTexts()`.
 *  Fixed some errors in the computation of a few readability formulas (#215).
+* Add filenames names to text vectors returned by `textfile` (#221)
+* Support LIWC dictionaries where all terms belong to one key (#229)
+* Print a warning message from `trim.dfm` if no features are removed (#223)
+* Skip some platform-dependent tests on CRAN, travis-ci and Windows
+* Index stm dfm from 1, not 0 (#222)
+* Remove temporary stemmed token (#214)
 
 
 quanteda 0.9.6 
