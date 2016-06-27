@@ -10,6 +10,45 @@ test_that("yoshikoder dictionaries load and percolate patterns correctly", {
 })
   
 
+test_that("dictionary formats are autodetected from filenames", {
+
+  expected_dict <- dictionary(list(
+    'A category'=c('more', 'lamb', 'little'),
+    'Another category'=c('had', 'mary')
+  ))
+
+  actual_dict <- dictionary(file="../data/dictionaries/mary.dic")
+  expect_true(is(dd, "dictionary"))
+  expect_equal(dd@format, "LIWC")
+  expect_equal(actual_dict@.Data, expected_dict@.Data)
+
+  actual_dict <- dictionary(file="../data/dictionaries/mary.cat")
+  expect_true(is(dd, "dictionary"))
+  expect_equal(dd@format, "wordstat")
+  expect_equal(actual_dict@.Data, expected_dict@.Data)
+
+
+  actual_dict <- dictionary(file="../data/dictionaries/mary.ykd")
+  expect_true(is(dd, "dictionary"))
+  expect_equal(dd@format, "yoshikoder")
+  expect_equal(actual_dict@.Data, expected_dict@.Data)
+
+
+})
+
+
+test_that("explicit format overrides autodetected dictionary format", {
+  expected_dict <- dictionary(list(
+    'A category'=c('more', 'lamb', 'little'),
+    'Another category'=c('had', 'mary')
+  ))
+
+  actual_dict <- dictionary(file="../data/dictionaries/actually_ykd.cat", format='yoshikoder')
+  expect_true(is(dd, "dictionary"))
+  expect_equal(dd@format, "yoshikoder")
+  expect_equal(actual_dict@.Data, expected_dict@.Data)
+})
+
 
 # require(quanteda)
 # tmpdic2007 <- dictionary(file="~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2007_English080730.dic", format='LIWC')
