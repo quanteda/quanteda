@@ -1,4 +1,4 @@
-context('test collocation.R')
+context('test collocations.R')
 
 row_in_df <- function(df, row) {
     nrow(merge(df, row)) > 0
