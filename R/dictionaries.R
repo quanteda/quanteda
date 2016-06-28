@@ -29,17 +29,21 @@ setMethod("show", "dictionary",
 #' 
 #' Create a quanteda dictionary, either from a list or by importing from a 
 #' foreign format.  Currently supported input file formats are the Wordstat,
-#' LIWC, and Yoshikoder formats.  The import using the LIWC format works with 
+#' LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import using the 
+#' LIWC format works with 
 #' all currently available dictionary files supplied as part of the LIWC 2001, 
 #' 2007, and 2015 software (see References).
 #' @param x a list of character vector dictionary entries, including regular 
 #'   expressions (see examples)
 #' @param file file identifier for a foreign dictionary
 #' @param format character identifier for the format of the foreign dictionary. 
+#'   If not supplied, the format is guessed from the dictionary file's
+#'   extension.
 #'   Available options are: \describe{ \item{\code{"wordstat"}}{format used by 
 #'   Provalis Research's Wordstat software} \item{\code{"LIWC"}}{format used by 
 #'   the Linguistic Inquiry and Word Count software} \item{\code{"yoshikoder"}}{
-#'   format used by Yoshikoder software} }
+#'   format used by Yoshikoder software} \item{\code{"lexicoder"}}{format used
+#'   by Lexicoder}}
 #' @param concatenator the character in between multi-word dictionary values. 
 #'   This defaults to \code{"_"} except LIWC-formatted files, which defaults to 
 #'   a single space \code{" "}.
@@ -94,16 +98,32 @@ dictionary <- function(x = NULL, file = NULL, format = NULL,
   if (!is.null(x) & !is.list(x))
     stop("Dictionaries must be named lists or lists of named lists.")
   
+  dict_format_mapping <- c(cat="wordstat", dic="LIWC", ykd="yoshikoder", lcd="yoshikoder", lc3="lexicoder")
   if (!is.null(file)) {
-    if (is.null(format))
-      stop("You must specify a format for file", file)
-    format <- match.arg(format, c("wordstat", "LIWC", "yoshikoder"))
+
+    if (is.null(format)) {
+      ext <- file_ext(file)
+      if (ext %in% names(dict_format_mapping)) {
+        format <- dict_format_mapping[[ext]]
+      }
+      else {
+        stop(paste("Unknown dictionary file extension", ext))
+      }
+    }
+    else {
+      format <- match.arg(format, dict_format_mapping)
+    }
+    format <- unname(format)
+
     if (format=="wordstat") 
       x <- readWStatDict(file, enc = encoding, toLower = toLower)
     else if (format=="LIWC")
       x <- readLIWCdict(file, toLower = toLower, encoding = encoding)
     else if (format=="yoshikoder")
       x <- readYKdict(file)
+    else if (format=="lexicoder")
+      x <- readLexicoderDict(file)
+
   }
   
   new("dictionary", x, format = format, file = file, concatenator = concatenator)
@@ -248,7 +268,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     catlist <- strsplit(catlist, "\t")
     # catlist <- tokenize(catlist, what = "fasterword", removeNumbers = FALSE)
     catlist <- as.data.frame(do.call(rbind, lapply(catlist, '[', 1:max(sapply(catlist, length)))), stringsAsFactors = FALSE)
-    catlist[, 2:ncol(catlist)] <- suppressWarnings(apply(catlist[, 2:ncol(catlist)], 2, as.integer))
+    catlist[, 2:ncol(catlist)] <- sapply(catlist[, 2:ncol(catlist)], as.integer)
     names(catlist)[1] <- "category"
     if (toLower) catlist$category <- toLower(catlist$category)
     # remove any blank rows
@@ -336,6 +356,37 @@ flatten.dictionary <- function(elms, parent = '', dict = list()) {
     }
     return(dict)
 }
+
+# Import a Lexicoder dictionary
+# 
+# @param path full pathname of the lexicoder dictionary file (usually ending in .lcd)
+# @param toLower if \code{TRUE} (default), convert the dictionary entries to lower case
+# @return a named list, where each the name of element is a category/key and each element is a list of
+#   the dictionary terms corresponding to that level.
+# @author Adam Obeng
+# @export
+readLexicoderDict <- function(path, toLower=TRUE) {
+  current_key <- NULL
+  current_terms <- c()
+  dict <- list() 
+  #  Lexicoder 3.0 files are always UTF-8
+  for (l in readLines(con <- file(path, encoding = 'utf-8'))) {
+    if (toLower) l <- tolower(l)
+    if (substr(l, 1, 1) == '+') {
+      if (length(current_terms) > 0) {
+        dict[[current_key]] <- current_terms
+      }
+      current_key <- substr(l, 2, nchar(l))
+      current_terms <- c()
+    }
+    else {
+      current_terms <- c(current_terms, l)
+    }
+  }
+  dict[[current_key]] <- current_terms
+  return(dict)
+}
+
 
 #' apply a dictionary or thesaurus to an object
 #' 
