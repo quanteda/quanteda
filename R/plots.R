@@ -180,7 +180,14 @@ plot.kwic <- function(..., scale = c("absolute", "relative"), sort=FALSE) {
     plot
 }
 
-#' @rdname textmodel_wordfish
+
+#' plot a fitted wordfish model
+#' 
+#' either as an ideal point-style plot (theta plus confidence interval on the 
+#' x-axis, document labels on the y) with optional renaming and sorting, or as
+#' 'eiffel tower' plots (beta on the x, psi on the y, feature names over-plotted
+#' with alpha transparency, optionally some highlighted) as in
+#' Slapin and Proksch, 2008.
 #' @param x for plot method, the object to be plotted
 #' @param type \code{docs} to plot document scores (the default) or \code{feats} to 
 #'             plot psi against beta parameters
