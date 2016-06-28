@@ -7,7 +7,7 @@ row_in_df <- function(df, row) {
 test_that("test that collocations do not span texts by default", {
     actual_collocations <- data.frame(
             collocations(
-                tokenize(c('this is a test', 'this: also a test'))
+                tokenize(c('this is a test', 'this also a test'))
             )
         )
     expect_false(
@@ -27,7 +27,7 @@ test_that("test that collocations do not span texts by default", {
 test_that("test that collocations span punctuation, but not texts, if spanPunct = TRUE", {
     actual_collocations <- data.frame(
         collocations(
-            tokenize(c('This is a test.', 'This: also a test.')), spanPunct = TRUE
+            tokenize(c('This is a test.', 'This also, a test.')), spanPunct = TRUE
         )
     )
     expect_false(
@@ -36,10 +36,10 @@ test_that("test that collocations span punctuation, but not texts, if spanPunct 
             data.frame(word1='test', word2='this')
         )
     )
-    expect_false(
+    expect_true(
         row_in_df(
             actual_collocations,
-            data.frame(word1='this', word2='also')
+            data.frame(word1='also', word2='a')
         )
     )
 })
@@ -48,13 +48,7 @@ test_that("test that collocations span punctuation, but not texts, if spanPunct 
 test_that("test that collocations do not span punctuation by default", {
     actual_collocations <- data.frame(
         collocations(
-            tokenize(c('This is a test.', 'This: also a test.'))
-        )
-    )
-    expect_false(
-        row_in_df(
-            actual_collocations,
-            data.frame(word1='test', word2='this')
+            tokenize(c('This is a test.', 'This also a test.'))
         )
     )
     expect_false(
@@ -77,19 +71,16 @@ test_that("test that collocations which span punctuation do not include punctuat
 })
 
 
-char <- "This, a test."
-
-collocations(char)
-collocations(char, spanPunct = FALSE)
-collocations(char, spanPunct = TRUE)
-collocations(char, spanPunct = FALSE, removePunct = TRUE)
-collocations(char, spanPunct = TRUE, removePunct = TRUE)
-
-collocations(tokenize(char))
-collocations(tokenize(char), spanPunct = FALSE)
-collocations(tokenize(char), spanPunct = TRUE)
-collocations(tokenize(char, removePunct = TRUE), spanPunct = FALSE)
-collocations(tokenize(char, removePunct = TRUE), spanPunct = TRUE)
-
-
-
+#  char <- "This, a test."
+#  
+#  collocations(char)
+#  collocations(char, spanPunct = FALSE)
+#  collocations(char, spanPunct = TRUE)
+#  collocations(char, spanPunct = FALSE, removePunct = TRUE)
+#  collocations(char, spanPunct = TRUE, removePunct = TRUE)
+#  
+#  collocations(tokenize(char))
+#  collocations(tokenize(char), spanPunct = FALSE)
+#  collocations(tokenize(char), spanPunct = TRUE)
+#  collocations(tokenize(char, removePunct = TRUE), spanPunct = FALSE)
+#  collocations(tokenize(char, removePunct = TRUE), spanPunct = TRUE)
