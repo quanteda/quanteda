@@ -10,13 +10,14 @@
 collocations(x, ...)
 
 \method{collocations}{corpus}(x, method = c("lr", "chi2", "pmi", "dice",
-  "all"), size = 2, n = NULL, spanPunct = FALSE, ...)
+  "all"), size = 2, n = NULL, toLower = TRUE, spanPunct = FALSE, ...)
 
 \method{collocations}{character}(x, method = c("lr", "chi2", "pmi", "dice",
-  "all"), size = 2, n = NULL, spanPunct = FALSE, ...)
+  "all"), size = 2, n = NULL, toLower = TRUE, spanPunct = FALSE, ...)
 
 \method{collocations}{tokenizedTexts}(x, method = c("lr", "chi2", "pmi",
-  "dice", "all"), size = 2, n = NULL, spanPunct = FALSE, ...)
+  "dice", "all"), size = 2, n = NULL, toLower = FALSE,
+  spanPunct = FALSE, ...)
 }
 \arguments{
 \item{x}{a text, a character vector of texts, or a corpus}
@@ -47,7 +48,8 @@ the requested statistic, or \eqn{G^2} if none is specified.}
 
 \item{spanPunct}{if \code{FALSE}, then collocations will not span punctuation
 marks, so that for instance \emph{marks, so} is not a collocation of 
-\code{marks so}.  If \code{TRUE}, do not handle punctuation specially.}
+\code{marks so}.  If \code{TRUE}, do not handle punctuation specially.
+@param toLower if \code{TRUE}, convert input into lower case}
 }
 \value{
 A data.table of collocations, their frequencies, and the computed 

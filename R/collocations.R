@@ -30,6 +30,7 @@ NULL
 #' @param spanPunct if \code{FALSE}, then collocations will not span punctuation
 #'   marks, so that for instance \emph{marks, so} is not a collocation of 
 #'   \code{marks so}.  If \code{TRUE}, do not handle punctuation specially.
+#'   @param toLower if \code{TRUE}, convert input into lower case
 #' @param ... additional parameters passed to \code{\link{tokenize}}.  If wanted
 #'   to include collocations separated by punctuation, then you can use this to 
 #'   send \code{removePunct = TRUE} to \code{\link{tokenize}}.
@@ -81,8 +82,48 @@ wLASTGREPpenn <- "-lrb-_.*"
 
 #' @rdname collocations
 #' @export
-collocations.corpus <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, spanPunct = FALSE, ...) {
-    collocations(texts(x), method, size, n, spanPunct, ...)
+collocations.corpus <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
+                                n = NULL, toLower = TRUE, spanPunct = FALSE, ...) {
+    collocations(texts(x), method = method, size = size, n = n, spanPunct = spanPunct, ...)
+}
+
+#' @rdname collocations
+#' @export    
+collocations.character <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
+                                   n = NULL, toLower = TRUE, spanPunct = FALSE, ...) {
+    method <- match.arg(method)
+    x <- tokenize((if (toLower) toLower(x) else x), ...)
+    collocations(x, method = method, size = size , n = n, spanPunct = spanPunct)
+}
+
+#' @rdname collocations
+#' @export    
+collocations.tokenizedTexts <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
+                                        n = NULL, toLower = FALSE, spanPunct = FALSE, ...) 
+{
+    # add a dummy token denoting the end of the line
+    DUMMY_TOKEN <- "_END_OF_TEXT_"
+    x <- lapply(x, function(toks) c(toks, DUMMY_TOKEN))
+    
+    x <- unlist(x, use.names = FALSE)
+    method <- match.arg(method)
+    if (any(!(size %in% 2:3)))
+        stop("Only bigram and trigram collocations implemented so far.")
+    
+    coll <- NULL
+    if (2 %in% size)
+        coll <- collocations2(x, method, 2, n, spanPunct)
+    if (3 %in% size) {
+        if (is.null(coll)) 
+            coll <- collocations3(x, method, 3, n, ...)
+        else {
+            coll <- rbind(coll, collocations3(x, method, 3, n, ...))
+            class(coll) <- c("collocations", class(coll))
+        }
+    }
+    # remove any "collocations" containing the dummy token, return
+    word1 <- word2 <- word3 <- NULL
+    coll[word1 != DUMMY_TOKEN & word2 != DUMMY_TOKEN & word3 != DUMMY_TOKEN]
 }
 
 
@@ -311,43 +352,6 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     dt[1:ifelse(is.null(n), nrow(dt), n), ]
 }
 
-
-
-
-#' @rdname collocations
-#' @export    
-collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, 
-                                   n=NULL, spanPunct = FALSE, ...) {
-    method <- match.arg(method)
-    #  "Enough is enough! I have had it with these motherfucking snakes on this motherfucking plane!"
-    #x <- iconv(x, "UTF-8", "ASCII",  sub="") # opening some windows
-    # tagset <- match.arg(tagset)
-    x <- tokenize(toLower(x), ...)
-    collocations(x, method, size, n, spanPunct)
-}
-
-#' @rdname collocations
-#' @export    
-collocations.tokenizedTexts <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, spanPunct = FALSE, ...) 
-{
-    x <- unlist(x, use.names = FALSE)
-    method <- match.arg(method)
-    if (any(!(size %in% 2:3)))
-        stop("Only bigram and trigram collocations implemented so far.")
-    
-    coll <- NULL
-    if (2 %in% size)
-        coll <- collocations2(x, method, 2, n, spanPunct)
-    if (3 %in% size) {
-        if (is.null(coll)) 
-            coll <- collocations3(x, method, 3, n, ...)
-        else {
-            coll <- rbind(coll, collocations3(x, method, 3, n, ...))
-            class(coll) <- c("collocations", class(coll))
-        }
-    }
-    coll
-}
 
 
 collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), 
