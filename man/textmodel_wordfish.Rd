@@ -2,6 +2,7 @@
 % Please edit documentation in R/textmodel-wordfish.R
 \docType{methods}
 \name{textmodel_wordfish}
+\alias{plot.textmodel_wordfish_fitted}
 \alias{print.textmodel_wordfish_fitted}
 \alias{show,textmodel_wordfish_fitted-method}
 \alias{show,textmodel_wordfish_predicted-method}
@@ -11,6 +12,10 @@
 textmodel_wordfish(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
   tol = c(1e-06, 1e-08), dispersion = c("poisson", "quasipoisson"),
   dispersionLevel = c("feature", "overall"), dispersionFloor = 0)
+
+\method{plot}{textmodel_wordfish_fitted}(x, type = c("docs", "feats"),
+  doclabels = NULL, sort = TRUE, left.mar = 8, pickout = NULL,
+  alpha = 0.5, ...)
 
 \method{print}{textmodel_wordfish_fitted}(x, n = 30L, ...)
 
@@ -48,13 +53,37 @@ terms with rare term or document frequencies that appear to be severely
 underdispersed.  Default is 0, but this only applies if \code{dispersion = 
 "quasipoisson"}.}
 
-\item{x}{for print method, the object to be printed}
+\item{x}{for plot method, the object to be plotted}
+
+\item{type}{\code{docs} to plot document scores (the default) or \code{feats} to 
+plot psi against beta parameters}
+
+\item{doclabels}{a vector of names for document. If left NULL (the default), ordinary 
+document names will be used.}
+
+\item{sort}{If TRUE (the default), order points from low to high score. 
+If a vector, order according to these values from low to high.
+Only applies when \code{type} is 'docs'}
+
+\item{left.mar}{an overridden left margin, passed to \code{par} (default 8.1). This
+overrides R's default 4.1, which is typically too cramped for document names.}
+
+\item{pickout}{A vector of feature names to draw attention to in a feature plot. Only 
+applies if \code{type} is 'feats'}
+
+\item{alpha}{A number between 0 and 1 (default 0.5) representing the level of alpha
+transparency used to overplot feature names in a feature plot. 
+Only applies if \code{type} is 'feats'.}
+
+\item{...}{additional arguments passed to \code{\link{plot}}}
 
 \item{n}{max rows of dfm to print}
 
-\item{...}{additional arguments passed to \code{\link{print}}}
-
 \item{object}{wordfish fitted or predicted object to be shown}
+
+\item{x}{for print method, the object to be printed}
+
+\item{...}{additional arguments passed to \code{\link{print}}}
 }
 \value{
 An object of class textmodel_fitted_wordfish.  This is a list 
@@ -104,6 +133,11 @@ if (require(austin)) {
     wfmodelAustin <- austin::wordfish(quanteda::as.wfm(ie2010dfm), dir = c(6,5))
     cor(wfm1@theta, wfm1Austin$theta)
 }}
+postwar <- trim(dfm(inaugCorpus[41:57]), minCount = 5, minDoc = 2)
+mod <- textmodel(postwar, model = "wordfish")
+plot(mod, sort=FALSE)
+plot(mod, type="feats", pickout = c("government", "countries", "children", 
+     "the", "nuclear", "federal"))
 }
 \author{
 Benjamin Lauderdale and Kenneth Benoit
