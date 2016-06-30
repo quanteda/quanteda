@@ -14,9 +14,13 @@ expressions (see examples)}
 \item{file}{file identifier for a foreign dictionary}
 
 \item{format}{character identifier for the format of the foreign dictionary. 
+If not supplied, the format is guessed from the dictionary file's
+extension.
 Available options are: \describe{ \item{\code{"wordstat"}}{format used by 
 Provalis Research's Wordstat software} \item{\code{"LIWC"}}{format used by 
-the Linguistic Inquiry and Word Count software} }}
+the Linguistic Inquiry and Word Count software} \item{\code{"yoshikoder"}}{
+format used by Yoshikoder software} \item{\code{"lexicoder"}}{format used
+by Lexicoder}}}
 
 \item{concatenator}{the character in between multi-word dictionary values. 
 This defaults to \code{"_"} except LIWC-formatted files, which defaults to 
@@ -34,10 +38,11 @@ A dictionary class object, essentially a specially classed named list
 }
 \description{
 Create a quanteda dictionary, either from a list or by importing from a 
-foreign format.  Currently supported input file formats are the Wordstat and 
-LIWC formats.  The import using the LIWC format works with all currently
-available dictionary files supplied as part of the LIWC 2001, 2007, and 2015
-software (see References).
+foreign format.  Currently supported input file formats are the Wordstat,
+LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import using the 
+LIWC format works with 
+all currently available dictionary files supplied as part of the LIWC 2001, 
+2007, and 2015 software (see References).
 }
 \examples{
 mycorpus <- subset(inaugCorpus, Year>1900)
@@ -63,10 +68,12 @@ head(dfm(inaugTexts, dictionary = mfdict))}
 Wordstat dictionaries page, from Provalis Research 
   \url{http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/}.
   
-  
   Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J. 
   (2007). The development and psychometric properties of LIWC2007. [Software 
   manual]. Austin, TX (\url{www.liwc.net}).
+  
+  Yoshikoder page, from Will Lowe 
+  \url{http://conjugateprior.org/software/yoshikoder/}.
 }
 \seealso{
 \link{dfm}

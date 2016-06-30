@@ -171,16 +171,16 @@ dfm.character <- function(x,
 #         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
 
     if (verbose && grepl("^dfm\\.character", sys.calls()[[2]]))
-        cat("Creating a dfm from a character vector ...")
+        catm("Creating a dfm from a character vector ...")
 
     # case conversion and tokenization
     # includes bigram tokenization but this will be merged soon into tokenize()
     if (toLower) {
-        if (verbose) cat("\n   ... lowercasing", sep="")
+        if (verbose) catm("\n   ... lowercasing", sep="")
         x <- toLower(x)
     }
     
-    if (verbose) cat("\n   ... tokenizing", sep="")
+    if (verbose) catm("\n   ... tokenizing", sep="")
     tokenizedTexts <- tokenize(x, removeNumbers = removeNumbers, 
                                removeSeparators = removeSeparators, removePunct = removePunct,
                                removeTwitter = removeTwitter,
@@ -236,12 +236,12 @@ dfm.tokenizedTexts <- function(x,
     language <- tolower(language)
     
     if (verbose && grepl("^dfm\\.tokenizedTexts", sys.calls()[[2]])) {
-        cat("Creating a dfm from a tokenizedTexts object ...")
+        catm("Creating a dfm from a tokenizedTexts object ...")
     }
 
     # lowercase if necessary 
     if (toLower) {
-        if (verbose) cat("\n   ... lowercasing", sep="")
+        if (verbose) catm("\n   ... lowercasing", sep="")
         x <- toLower(x)
     }
 
@@ -251,7 +251,7 @@ dfm.tokenizedTexts <- function(x,
     } else docNames <- names(x)
     
     # index documents
-    if (verbose) cat("\n   ... indexing documents: ", 
+    if (verbose) catm("\n   ... indexing documents: ", 
                      format(length(x), big.mark=","), " document",
                      ifelse(length(x) > 1, "s", ""), sep="")
     nTokens <- lengths(x)
@@ -261,15 +261,15 @@ dfm.tokenizedTexts <- function(x,
     docIndex <- c(rep(seq_along(nTokens), nTokens), emptyDocs)
 
     # index features
-    if (verbose) cat("\n   ... indexing features: ")
+    if (verbose) catm("\n   ... indexing features: ")
     if (sum(nTokens) == 0) {
-        cat("\n   ... Error in dfm.tokenizedTexts(): no features found.\n")
+        catm("\n   ... Error in dfm.tokenizedTexts(): no features found.\n")
         return(NULL)
     }
     allFeatures <- unlist(x)
     uniqueFeatures <- unique(allFeatures)
     totalfeatures <- length(uniqueFeatures)
-    if (verbose) cat(format(totalfeatures - 1, big.mark=","), " feature type",
+    if (verbose) catm(format(totalfeatures - 1, big.mark=","), " feature type",
                      ifelse(totalfeatures - 1  > 1, "s", ""), sep="")
     featureIndex <- match(allFeatures, uniqueFeatures)
     # add an arbitrary "feature" for empty docs
@@ -278,7 +278,7 @@ dfm.tokenizedTexts <- function(x,
         uniqueFeatures <- c(uniqueFeatures, "__TEMPFEATURE__")
     }
     
-    if (verbose) cat("\n")
+    if (verbose) catm("\n")
     
     # make the dfm
     dfmresult <- sparseMatrix(i = docIndex, 
@@ -296,7 +296,7 @@ dfm.tokenizedTexts <- function(x,
     
     if (!is.null(dictionary) | !is.null(thesaurus)) {
         if (!is.null(thesaurus)) dictionary <- thesaurus
-        if (verbose) cat("   ... ")
+        if (verbose) catm("   ... ")
         dfmresult <- applyDictionary(dfmresult, dictionary,
                                      exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
                                      valuetype = valuetype,
@@ -304,29 +304,29 @@ dfm.tokenizedTexts <- function(x,
     }
     
     if (!is.null(ignoredFeatures)) {
-        if (verbose) cat("   ... ")
+        if (verbose) catm("   ... ")
         dfmresult <- selectFeatures(dfmresult, ignoredFeatures, selection = "remove", valuetype = valuetype, verbose = verbose)
     }
     
     if (!is.null(keptFeatures)) {
-        if (verbose) cat("   ... ")
+        if (verbose) catm("   ... ")
         dfmresult <- selectFeatures(dfmresult, keptFeatures, selection = "keep", valuetype = valuetype, verbose = verbose)
     }
     
     if (stem) {
-        if (verbose) cat("   ... stemming features (", stri_trans_totitle(language), ")", sep="")
+        if (verbose) catm("   ... stemming features (", stri_trans_totitle(language), ")", sep="")
         oldNfeature <- nfeature(dfmresult)
         dfmresult <- wordstem(dfmresult, language)
         if (verbose) 
             if (oldNfeature - nfeature(dfmresult) > 0) 
-                cat(", trimmed ", oldNfeature - nfeature(dfmresult), " feature variant",
+                catm(", trimmed ", oldNfeature - nfeature(dfmresult), " feature variant",
                     ifelse(oldNfeature - nfeature(dfmresult) != 1, "s", ""), "\n", sep = "")
         else
-            cat("\n")
+            catm("\n")
     }
     
     if (verbose) 
-        cat("   ... created a", paste(dim(dfmresult), collapse=" x "), 
+        catm("   ... created a", paste(dim(dfmresult), collapse=" x "), 
             "sparse dfm\n   ... complete. \nElapsed time:", (proc.time() - startTime)[3], "seconds.\n")
     
     # remove any NA named columns
@@ -343,11 +343,11 @@ dfm.tokenizedTexts <- function(x,
 #'   aggregating documents
 #' @export
 dfm.corpus <- function(x, verbose = TRUE, groups = NULL, ...) {
-    if (verbose) cat("Creating a dfm from a corpus ...")
+    if (verbose) catm("Creating a dfm from a corpus ...")
     
     if (!is.null(groups)) {
         groupsLab <- ifelse(is.factor(groups), deparse(substitute(groups)), groups)
-        if (verbose) cat("\n   ... grouping texts by variable", 
+        if (verbose) catm("\n   ... grouping texts by variable", 
                          ifelse(length(groupsLab)==1, "", "s"), ": ", 
                          paste(groupsLab, collapse=", "), sep="")
         texts <- texts(x, groups = groups)

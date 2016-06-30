@@ -63,7 +63,7 @@ setMethod("trim", signature(x = "dfm"),
                   if (minDoc != 1)
                       stop("minDoc and sparsity both refer to a document threshold, both should not be specified")
                   minDoc <- (1 - sparsity)
-                  if (verbose) cat("Note: converting sparsity into minDoc = 1 -", sparsity, "=", minDoc, ".\n")
+                  if (verbose) catm("Note: converting sparsity into minDoc = 1 -", sparsity, "=", minDoc, ".\n")
               }             
               
               if (minCount < 1) {
@@ -76,13 +76,18 @@ setMethod("trim", signature(x = "dfm"),
               }
               featIndexAboveMinCount <- which(colSums(x) >= minCount, useNames = FALSE)
               if (verbose & minCount != 1)
-                  cat("Removing features occurring fewer than ", messageMinCount, minCount, " times: ", 
+                  catm("Removing features occurring fewer than ", messageMinCount, minCount, " times: ", 
                       nfeature(x) - length(featIndexAboveMinCount), "\n", sep = "")
               
               featIndexAboveMinDoc <- which(docfreq(x) >= minDoc)
               if (verbose & minDoc != 1)
-                  cat("Removing features occurring in fewer than ", messageMinDoc, minDoc, " documents: ", 
+                  catm("Removing features occurring in fewer than ", messageMinDoc, minDoc, " documents: ", 
                       nfeature(x) - length(featIndexAboveMinDoc), "\n", sep = "")
+
+              if (minCount == 1 & minDoc == 1) {
+                  catm("No features removed.", appendLF = TRUE)
+                  return(x)
+              }
 
               featureKeepIndex <- intersect(featIndexAboveMinCount, featIndexAboveMinDoc)
               if (length(featureKeepIndex)==0)  stop("No features left after trimming.")
@@ -91,11 +96,11 @@ setMethod("trim", signature(x = "dfm"),
               
               if (!is.null(nsample)) {
                   if (nsample > nfeature(x))
-                      cat("Note: retained features smaller in number than sample size so resetting nsample to nfeature.\n")
+                      catm("Note: retained features smaller in number than sample size so resetting nsample to nfeature.\n")
                   nsample <- min(nfeature(x), nsample)
                   # x <- x[, sample(1:nsample)]
                   x <- sample(x, size = nsample, what = "features")
-                  if (verbose) cat("Retaining a random sample of", nsample, "words\n")
+                  if (verbose) catm("Retaining a random sample of", nsample, "words\n")
               }
               
               sort(x)
@@ -105,7 +110,7 @@ setMethod("trim", signature(x = "dfm"),
 #' @param ... only included to allow legacy \code{trimdfm} to pass arguments to \code{trim}
 #' @export
 trimdfm <- function(x, ...) {
-    cat("note: trimdfm deprecated: use trim instead.\n")
+    catm("note: trimdfm deprecated: use trim instead.\n")
     UseMethod("trim")
 }
 

@@ -28,17 +28,22 @@ setMethod("show", "dictionary",
 #' create a dictionary
 #' 
 #' Create a quanteda dictionary, either from a list or by importing from a 
-#' foreign format.  Currently supported input file formats are the Wordstat and 
-#' LIWC formats.  The import using the LIWC format works with all currently
-#' available dictionary files supplied as part of the LIWC 2001, 2007, and 2015
-#' software (see References).
+#' foreign format.  Currently supported input file formats are the Wordstat,
+#' LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import using the 
+#' LIWC format works with 
+#' all currently available dictionary files supplied as part of the LIWC 2001, 
+#' 2007, and 2015 software (see References).
 #' @param x a list of character vector dictionary entries, including regular 
 #'   expressions (see examples)
 #' @param file file identifier for a foreign dictionary
 #' @param format character identifier for the format of the foreign dictionary. 
+#'   If not supplied, the format is guessed from the dictionary file's
+#'   extension.
 #'   Available options are: \describe{ \item{\code{"wordstat"}}{format used by 
 #'   Provalis Research's Wordstat software} \item{\code{"LIWC"}}{format used by 
-#'   the Linguistic Inquiry and Word Count software} }
+#'   the Linguistic Inquiry and Word Count software} \item{\code{"yoshikoder"}}{
+#'   format used by Yoshikoder software} \item{\code{"lexicoder"}}{format used
+#'   by Lexicoder}}
 #' @param concatenator the character in between multi-word dictionary values. 
 #'   This defaults to \code{"_"} except LIWC-formatted files, which defaults to 
 #'   a single space \code{" "}.
@@ -51,10 +56,13 @@ setMethod("show", "dictionary",
 #' @references Wordstat dictionaries page, from Provalis Research 
 #'   \url{http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/}.
 #'   
-#'   
 #'   Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J. 
 #'   (2007). The development and psychometric properties of LIWC2007. [Software 
 #'   manual]. Austin, TX (\url{www.liwc.net}).
+#'   
+#'   Yoshikoder page, from Will Lowe 
+#'   \url{http://conjugateprior.org/software/yoshikoder/}.
+#'   
 #' @seealso \link{dfm}
 #' @examples
 #' mycorpus <- subset(inaugCorpus, Year>1900)
@@ -75,33 +83,51 @@ setMethod("show", "dictionary",
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
 #' mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
 #' head(dfm(inaugTexts, dictionary = mfdict))}
+#' @importFrom stats setNames
 #' @export
 dictionary <- function(x = NULL, file = NULL, format = NULL, 
                        concatenator = " ", 
                        toLower = TRUE, encoding = "") {
-    if (!is.null(x) & !is.list(x))
-        stop("Dictionaries must be named lists or lists of named lists.")
-    if (any(missingLabels <- which(names(x) == ""))) 
-        stop("missing key name for list element", 
-             ifelse(length(missingLabels)>1, "s ", " "),
-             missingLabels, "\n") 
-    x <- flatten.dictionary(x)
-    if (!is.null(x) & !is.list(x))
-        stop("Dictionaries must be named lists or lists of named lists.")
+  if (!is.null(x) & !is.list(x))
+    stop("Dictionaries must be named lists or lists of named lists.")
+  if (any(missingLabels <- which(names(x) == ""))) 
+    stop("missing key name for list element", 
+         ifelse(length(missingLabels)>1, "s ", " "),
+         missingLabels, "\n") 
+  x <- flatten.dictionary(x)
+  if (!is.null(x) & !is.list(x))
+    stop("Dictionaries must be named lists or lists of named lists.")
+  
+  dict_format_mapping <- c(cat="wordstat", dic="LIWC", ykd="yoshikoder", lcd="yoshikoder", lc3="lexicoder")
+  if (!is.null(file)) {
 
-    if (!is.null(file)) {
-        if (is.null(format))
-            stop("You must specify a format for file", file)
-        format <- match.arg(format, c("wordstat", "LIWC"))
-        if (format=="wordstat") 
-            x <- readWStatDict(file, enc = encoding, toLower = toLower)
-        else if (format=="LIWC")
-            x <- readLIWCdict(file, toLower = toLower, encoding = encoding)
+    if (is.null(format)) {
+      ext <- file_ext(file)
+      if (ext %in% names(dict_format_mapping)) {
+        format <- dict_format_mapping[[ext]]
+      }
+      else {
+        stop(paste("Unknown dictionary file extension", ext))
+      }
     }
-    
-    new("dictionary", x, format = format, file = file, concatenator = concatenator)
-}
+    else {
+      format <- match.arg(format, dict_format_mapping)
+    }
+    format <- unname(format)
 
+    if (format=="wordstat") 
+      x <- readWStatDict(file, enc = encoding, toLower = toLower)
+    else if (format=="LIWC")
+      x <- readLIWCdict(file, toLower = toLower, encoding = encoding)
+    else if (format=="yoshikoder")
+      x <- readYKdict(file)
+    else if (format=="lexicoder")
+      x <- readLexicoderDict(file)
+
+  }
+  
+  new("dictionary", x, format = format, file = file, concatenator = concatenator)
+}
 
 # Import a Wordstat dictionary
 # 
@@ -189,7 +215,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     # remove any lines with <of>
     oflines <- grep("<of>", d)
     if (length(oflines)) {
-        cat("note: ", length(oflines), " term",
+        catm("note: ", length(oflines), " term",
             ifelse(length(oflines)>1, "s", ""), 
             " ignored because contains unsupported <of> tag\n", sep = "")
         d <- d[-oflines]
@@ -222,9 +248,9 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     # remove odd parenthetical codes
     foundParens <- grep("^\\w+\\s+\\(.+\\)", catlist)
     if (length(foundParens)) {
-        cat("note: ignoring parenthetical expressions in lines:\n")
+        catm("note: ignoring parenthetical expressions in lines:\n")
         for (i in foundParens)
-            cat("  [line ", foundParens + guideRowEnd, ":] ", catlist[i], "\n", sep = "")
+            catm("  [line ", foundParens + guideRowEnd, ":] ", catlist[i], "\n", sep = "")
         catlist <- gsub("\\(.+\\)", "", catlist)
     }
         
@@ -242,7 +268,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     catlist <- strsplit(catlist, "\t")
     # catlist <- tokenize(catlist, what = "fasterword", removeNumbers = FALSE)
     catlist <- as.data.frame(do.call(rbind, lapply(catlist, '[', 1:max(sapply(catlist, length)))), stringsAsFactors = FALSE)
-    catlist[, 2:ncol(catlist)] <- suppressWarnings(apply(catlist[, 2:ncol(catlist)], 2, as.integer))
+    catlist[, 2:ncol(catlist)] <- sapply(catlist[, 2:ncol(catlist)], as.integer)
     names(catlist)[1] <- "category"
     if (toLower) catlist$category <- toLower(catlist$category)
     # remove any blank rows
@@ -276,6 +302,38 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     return(dictionary)
 }
 
+# Import a Yoshikoder dictionary
+# 
+# Make a flattened list from a hierarchical Yoshikoder dictionary.  
+# 
+# Parsing Yoshikoder dictionary requires the XML package to be installed.
+# 
+# @param path full pathname of the Yoshikoder dictionary file (ending in \code{.ykd})
+# @return a named list, where each the name of element is a \textit{top} level
+#   category in the hierarchical Yoshikoder dictionary. Each element of the
+#   list is is a vector of the dictionary patterns in that category or any of its
+#   sub-categories.
+# @author Will Lowe
+# @export
+# @examples
+# \dontrun{
+# path <- 'http://dl.conjugateprior.org/laver-garry-ajps.ykd'
+# ykdict <- readYoshikoderDict(path)
+# }
+readYKdict <- function(path){
+    if (!requireNamespace("XML", quietly = TRUE))
+        stop("You must have package XML installed to parse Yoshikoder dictionary files.")
+    
+    xx <- XML::xmlParse(path)
+    catnames <- XML::xpathSApply(xx, "/dictionary/cnode/cnode", 
+                                 XML::xmlGetAttr, name="name")
+    get_patterns_in_subtree <- function(x){
+        XML::xpathSApply(x, ".//pnode", XML::xmlGetAttr, name="name")
+    }
+    cats <- XML::getNodeSet(xx, "/dictionary/cnode/cnode")
+    stats::setNames(lapply(cats, get_patterns_in_subtree), catnames)
+}
+
 flatten.dictionary <- function(elms, parent = '', dict = list()) {
     if (any(names(elms) == ""))
         stop("missing name for a nested key")
@@ -299,7 +357,38 @@ flatten.dictionary <- function(elms, parent = '', dict = list()) {
     return(dict)
 }
 
-#' apply a dictionary or thesarus to an object
+# Import a Lexicoder dictionary
+# 
+# @param path full pathname of the lexicoder dictionary file (usually ending in .lcd)
+# @param toLower if \code{TRUE} (default), convert the dictionary entries to lower case
+# @return a named list, where each the name of element is a category/key and each element is a list of
+#   the dictionary terms corresponding to that level.
+# @author Adam Obeng
+# @export
+readLexicoderDict <- function(path, toLower=TRUE) {
+  current_key <- NULL
+  current_terms <- c()
+  dict <- list() 
+  #  Lexicoder 3.0 files are always UTF-8
+  for (l in readLines(con <- file(path, encoding = 'utf-8'))) {
+    if (toLower) l <- tolower(l)
+    if (substr(l, 1, 1) == '+') {
+      if (length(current_terms) > 0) {
+        dict[[current_key]] <- current_terms
+      }
+      current_key <- substr(l, 2, nchar(l))
+      current_terms <- c()
+    }
+    else {
+      current_terms <- c(current_terms, l)
+    }
+  }
+  dict[[current_key]] <- current_terms
+  return(dict)
+}
+
+
+#' apply a dictionary or thesaurus to an object
 #' 
 #' Convert features into equivalence classes defined by values of a dictionary 
 #' object.
@@ -364,7 +453,7 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     
-    if (verbose) cat("applying a dictionary consisting of ", length(dictionary), " key", 
+    if (verbose) catm("applying a dictionary consisting of ", length(dictionary), " key", 
                      ifelse(length(dictionary) > 1, "s", ""), "\n", sep="")
     
     # convert wildcards to regular expressions (if needed)

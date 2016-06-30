@@ -8,16 +8,18 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
     person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "ctb"),
     person("Pablo", "Barberá", email = "pablo.barbera@nyu.edu",
-    role = "ctb"))
+    role = "ctb"),
+    person("Will", "Lowe", email="wlowe@princeton.edu", role="ctb"))
 Author: Kenneth Benoit [aut, cre],
     Paul Nulty [aut],
     Kohei Watanabe [ctb],
     Benjamin Lauderdale [ctb],
     Adam Obeng [ctb],
-    Pablo Barberá [ctb]
+    Pablo Barberá [ctb],
+    Will Lowe [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.7-15
-Date: 2016-06-20
+Version: 0.9.7-19
+Date: 2016-06-27
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -35,7 +37,8 @@ Imports:
     parallel,
     Rcpp,
     ca,
-    stringi
+    stringi,
+    httr
 LinkingTo: Rcpp, RcppArmadillo
 Suggests:
     knitr,
@@ -93,6 +96,7 @@ Collate:
     'toLower.R'
     'tokenize.R'
     'tokenize_outtakes.R'
+    'util.R'
     'wordstem.R'
     'zzz.R'
 RoxygenNote: 5.0.1

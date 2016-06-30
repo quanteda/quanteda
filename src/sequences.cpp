@@ -42,7 +42,8 @@ double sigma(std::vector<int> &counts,
   for (int b = 1; b <= n; b++){
     s += 1 / (counts[b] + smooth);
   }
-  s += pow((n - 1), 2) / (counts[0] + smooth);
+  double base = n - 1; 
+  s += pow(base, 2) / (counts[0] + smooth);
   return std::sqrt(s);
 }
 

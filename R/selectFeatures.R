@@ -129,7 +129,7 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
     }
     
     if (verbose & !features_from_dfm) 
-        cat(ifelse(selection=="keep", "kept", "removed"), " ", 
+        catm(ifelse(selection=="keep", "kept", "removed"), " ", 
             format(length(featIndex), big.mark=","),
             " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
             ", from ", length(features), " supplied (", originalvaluetype, ") feature type",
@@ -141,7 +141,7 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
     if (features_from_dfm) {
         
         if (verbose)
-            cat(ifelse(selection=="keep", "found", "zeroed"), " ", 
+            catm(ifelse(selection=="keep", "found", "zeroed"), " ", 
                 format(length(featIndex), big.mark=","),
                 " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
                 " from ", length(features), " supplied type",
@@ -156,7 +156,7 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
         xOriginalFeatureLength <- nfeature(x2)
         xOriginalFeatures <- features(x2)
         ### NEED a cbind() operation for dfm that preserves settings! ###
-        if (verbose) cat(" padding 0s for another", length(origDfmFeatureIndex), "\n")
+        if (verbose) catm(" padding 0s for another", length(origDfmFeatureIndex), "\n")
         x <- new("dfmSparse", Matrix::cbind2(x2,
                                               sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x2), length(origDfmFeatureIndex)), 
                                                            dimnames = list(docnames(x2), features[origDfmFeatureIndex]))))
@@ -256,7 +256,7 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
     n <- length(y)
     
     if(indexing){
-        if(verbose) cat("Indexing tokens...\n")
+        if(verbose) catm("Indexing tokens...\n")
         index <- dfm(y, verbose = FALSE)
         index_binary <- as(index, 'nMatrix')
         types <- colnames(index_binary)
@@ -285,17 +285,17 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
             types_match <- features
         }
         if (indexing) flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
-        if (verbose) cat(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
+        if (verbose) catm(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
         if(selection == "remove"){
             select_tokens_cppl(y, flag, types_match, TRUE, padding)
         }else{ 
             select_tokens_cppl(y, flag, types_match, FALSE, padding)
         }
     } else if (valuetype == "regex") {
-        if (verbose) cat("Converting regex to fixed...\n")
+        if (verbose) catm("Converting regex to fixed...\n")
         types_match <- regex2fixed(features, types, case_insensitive) # get all the unique types that match regex
         if(indexing) flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
-        if(verbose) cat(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
+        if(verbose) catm(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
         if (selection == "remove") {
             select_tokens_cppl(y, flag, types_match, TRUE, padding)  # search as fixed
         } else {
@@ -382,7 +382,7 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
     setcolorder(x, c("word1", "word2", "word3", names(x)[4:ncol(x)]))
     x[, order:=NULL]
     nend <- nrow(x)
-    if (verbose) cat("Removed ", format(nstart - nend, big.mark=","),  
+    if (verbose) catm("Removed ", format(nstart - nend, big.mark=","),  
                      " (", format((nstart - nend)/nstart*100, digits=3),
                      "%) of ", format(nstart, big.mark=","), 
                      " collocations containing one of ", 
