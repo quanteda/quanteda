@@ -418,9 +418,9 @@ getSource <- function(f, textField, ...) {
 }
 
 get_txt <- function(f, ...) {
-    txt <- paste(readLines(con <- file(f, ...)), collapse="\n")
+    txt <- paste(readLines(con <- file(f, ...), warn = FALSE), collapse="\n")
     close(con)
-    list(txts=txt, docv=data.frame())
+    list(txts = txt, docv = data.frame())
 }
 
 
@@ -473,7 +473,7 @@ get_json_tweets <- function(path, source="twitter", ...) {
         stop("You must have streamR installed to read Twitter json files.")
     
     # read raw json data
-    txt <- readLines(path, ...)
+    txt <- readLines(path, warn = FALSE, ...)
         
     results <- streamR::parseTweets(txt, verbose=FALSE, ...)
     list(txts = results[, 1], docv = as.data.frame(results[, -1, drop = FALSE]))
@@ -507,7 +507,7 @@ get_json_lines <- function(path, textField, ...) {
         stop('Cannot use numeric textField with json file')
     }
 
-    lines <- readLines(path)
+    lines <- readLines(path, warn = FALSE)
 
     docs <- data.table::rbindlist(
       lapply(lines, function(x)jsonlite::fromJSON(x, flatten=TRUE, ...)),
