@@ -14,10 +14,11 @@ quanteda 0.9.7
   - yoshikoder, 
   - lexicoder v2 and v3 (#228)
 * Autodetect dictionary file format from file extension, so no longer require `format` keyword for loading dictionaries (#227)
-* Imrpove compatibility with rOpenSci guidelines (#218):
+* Improve compatibility with rOpenSci guidelines (#218):
   - Use httr to get remote files
   - Use `messages()` to display messages rather than `print` or `cat`
-  - Reorganise sections in README file
+  - Reorganise sections in README file  
+* Add new `punctuation` argument to `collocations()` to provide new options for handling collocations separated by punctuation characters (#220).
 
 
 ## Bug fixes

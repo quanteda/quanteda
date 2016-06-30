@@ -22,10 +22,10 @@ test_that("test that collocations do not span texts", {
 test_that("test that collocations span punctuation, but not texts, if punctuation = 'span'", {
     actual_collocations <- data.frame(
         collocations(
-            tokenize(c('This is a test.', 'This also, a test.')), punctuation = "span"
+            tokenize(c('This is a test.', 'This also, a test.')), punctuation = "ignore"
         )
     )
-    #  Never span texts
+    #  Never span texts
     expect_false(
         row_in_df(
             actual_collocations,
@@ -55,7 +55,7 @@ test_that("test that collocations includes punctuation is punctuation = 'include
             data.frame(word1='test', word2='this')
         )
     )
-    #  Never span texts, even including punctuation
+    #  Never span texts, even including punctuation
     expect_false(
         row_in_df(
             actual_collocations,
@@ -83,10 +83,10 @@ test_that("test that collocations includes punctuation is punctuation = 'include
 })
 
 
-test_that("test that collocations span punctuation, but not texts, if punctuation = 'remove'", {
+test_that("test that collocations span punctuation, but not texts, if punctuation is removed.", {
     actual_collocations <- data.frame(
         collocations(
-            tokenize(c('This is a test.', 'This also, a test.')), punctuation = "remove"
+            tokenize(c('This is a test.', 'This also, a test.'), removePunct = TRUE), punctuation = "ignore"
         )
     )
     #  Never span texts
@@ -96,7 +96,7 @@ test_that("test that collocations span punctuation, but not texts, if punctuatio
             data.frame(word1='test', word2='this')
         )
     )
-    expect_false(
+    expect_true(
         row_in_df(
             actual_collocations,
             data.frame(word1='also', word2='a')
