@@ -327,7 +327,9 @@ dfm.tokenizedTexts <- function(x,
     
     if (verbose) 
         catm("   ... created a", paste(dim(dfmresult), collapse=" x "), 
-            "sparse dfm\n   ... complete. \nElapsed time:", (proc.time() - startTime)[3], "seconds.\n")
+            "sparse dfm\n   ... complete. \nElapsed time:", 
+            format((proc.time() - startTime)[3], digits = 3),
+            "seconds.\n")
     
     # remove any NA named columns
     if (any(naFeatures <- is.na(features(dfmresult))))
