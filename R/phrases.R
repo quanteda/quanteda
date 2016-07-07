@@ -75,6 +75,8 @@ setClass("collocations", contains = "data.table")
 setMethod("phrasetotoken", signature = c("character", "collocations"), 
           function(object, phrases, ...) {
               word1 <- word2 <- word3 <- NULL
+              # sort by word3 so that trigrams will be processed before bigrams
+              data.table::setorder(phrases, -word3, word1)
               # concatenate the words                               
               word123 <- phrases[, list(word1, word2, word3)]
               mwes <- apply(word123, 1, paste, collapse=" ")
