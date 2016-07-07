@@ -23,8 +23,9 @@ quanteda 0.9.7
 
 ## Bug fixes
 
-*  Fixed bug in textfile() where source is a remote .zip set.  (#172)  
-*  Fixed bug in wordstem.dfm() that caused an error if supplied a dfm with a feature whose total frequency
+*  Fixed bug in `phrasetotoken()` where if pattern included a `+` for `valuetype = c("glob", "fixed")` it threw a regex error.  #239  
+*  Fixed bug in `textfile()` where source is a remote .zip set.  (#172)  
+*  Fixed bug in `wordstem.dfm()` that caused an error if supplied a dfm with a feature whose total frequency
    count was zero, or with a feature whose total docfreq was zero.  Fixes #181.  
 *  Fix #214 "mysterious stemmed token" bug in `wordstem.dfm()`, introduced in fixing #181.  
 *  Fixed previously non-functional `toLower = ` argument in `dfm.tokenizedTexts()`.
