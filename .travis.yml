@@ -17,8 +17,5 @@ env:
 after_success:
   - Rscript -e 'library(covr);codecov()'
 
-os:
-  - linux
-  - osx
-  - windows
+
   
