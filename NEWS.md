@@ -34,6 +34,7 @@ quanteda 0.9.7
 * `dictionary()` now works correctly when reading LIWC dictionaries where all terms belong to one key (#229).
 * `convert(x, to = "stm") now indexes the dfm components from 1, not 0 (#222).
 *  Remove temporary stemmed token (#214).
+*  Fixed bug in textmodel_NB() for non-"uniform" priors (#241)
 
 ## Changes
 

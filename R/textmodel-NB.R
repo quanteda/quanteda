@@ -1,4 +1,4 @@
-#' Naive Bayes classifier for texts
+#' Naive Bayes classifier for texts 
 #' 
 #' Currently working for vectors of texts -- not specially defined for a dfm.
 #' 
@@ -39,8 +39,12 @@
 #'                                                    "Shanghai", "Tokyo"))))
 #' trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 #' ## replicate IIR p261 prediction for test set (document 5)
-#' (nb.p261 <- textmodel_NB(trainingset, trainingclass)) #, prior = "docfreq"))
+#' (nb.p261 <- textmodel_NB(trainingset, trainingclass))
 #' predict(nb.p261, newdata = trainingset[5, ])
+#' 
+#' # contrast with other priors
+#' predict(textmodel_NB(trainingset, trainingclass, prior = "docfreq"))
+#' predict(textmodel_NB(trainingset, trainingclass, prior = "termfreq"))
 #' 
 #' @export
 textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"), 
@@ -71,10 +75,12 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
     else if (prior=="termfreq") {
         # weighted means the priors are by total words in each class
         # (the probability that any given word is in a particular class)
-        temp <- stats::aggregate(x.trset, by = list(y.trclass), sum)
-        temp2 <- apply(temp[,-1], 1, sum)
-        names(temp2) <- temp[,1]
-        Pc <- prop.table(as.table(temp2))
+        temp <- x.trset
+        rownames(temp) <- y.trclass
+        colnames(temp) <- rep("all_same", nfeature(temp))
+        temp <- compress(temp)
+        Pc <- prop.table(as.matrix(temp))
+        attributes(Pc) <- NULL
     } else stop("Prior must be either docfreq (default), wordfreq, or uniform")
     
     ## multinomial ikelihood: class x words, rows sum to 1
@@ -87,10 +93,10 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
     names(Pc) <- rownames(d)
     
     ## posterior: class x words, cols sum to 1
-    PcGw <- colNorm(PwGc * outer(Pc, rep(1, ncol(PwGc))))  
+    PcGw <- colNorm(PwGc * base::outer(Pc, rep(1, ncol(PwGc))))  
     
     ## P(w)
-    Pw <- t(PwGc) %*% Pc
+    Pw <- t(PwGc) %*% as.numeric(Pc)
     
     ll <- list(call=call, PwGc=PwGc, Pc=Pc, PcGw = PcGw, Pw = Pw, 
                data = list(x=x, y=y), 
