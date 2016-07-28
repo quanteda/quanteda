@@ -1,4 +1,4 @@
-quanteda 0.9.7
+quanteda 0.9.8
 ==============
 
 ## New Features
