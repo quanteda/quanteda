@@ -158,7 +158,7 @@ test_that("test remote text file", {
 test_that("test remote csv file", {
     expect_equal(
         texts(textfile("https://raw.githubusercontent.com/kbenoit/quanteda/master/tests/data/csv/test.csv", textField='text')),
-        c(test.csv='Lorem ipsum.', test.csv='Dolor sit')
+        c(test.csv.1 = 'Lorem ipsum.', test.csv.2 = 'Dolor sit')
     )
 })
 
@@ -215,7 +215,7 @@ test_that("test csv files", {
     )
     expect_equal(
         texts(testcorpus),
-        c(test.csv='Lorem ipsum.', test.csv='Dolor sit')
+        c(test.csv.1='Lorem ipsum.', test.csv.2='Dolor sit')
     )
     
     expect_that(
@@ -238,7 +238,7 @@ test_that("test tab files", {
     )
     expect_that(
         texts(testCorpusSource),
-        equals(c(test.tab='Lorem ipsum.', test.tab='Dolor sit'))
+        equals(c(test.tab.1='Lorem ipsum.', test.tab.2='Dolor sit'))
     )
     
     expect_that(
@@ -256,7 +256,7 @@ test_that("test tsv files", {
     )
     expect_that(
         texts(testCorpusSource),
-        equals(c(test.tsv='Lorem ipsum.', test.tsv='Dolor sit'))
+        equals(c(test.tsv.1='Lorem ipsum.', test.tsv.2='Dolor sit'))
     )
     
     expect_that(
@@ -276,7 +276,7 @@ test_that("test xml files", {
     )
     expect_that(
         texts(testcorpus),
-        equals(c(test.xml='Lorem ipsum.', test.xml='Dolor sit'))
+        equals(c(test.xml.1='Lorem ipsum.', test.xml.2='Dolor sit'))
     )
     
     expect_that(
@@ -285,7 +285,7 @@ test_that("test xml files", {
     )
     expect_that(
         texts(textfile('../data/xml/test.xml', textField=1)),
-        equals(c(test.xml='Lorem ipsum.', test.xml='Dolor sit'))
+        equals(c(test.xml.1='Lorem ipsum.', test.xml.2='Dolor sit'))
     )
     
     expect_that(
@@ -452,7 +452,7 @@ test_that("test reading structured text files with different columns", {
         ))
     )
     expected_texts <- c('apple', 'orange', 'apple', 'banana')
-    names(expected_texts) <- c('1.csv', '1.csv', '2.csv', '2.csv')
+    names(expected_texts) <- c('1.csv.1', '1.csv.2', '2.csv.1', '2.csv.2')
     expect_that(
         texts(testcorpus),
         equals(expected_texts)
@@ -574,7 +574,7 @@ test_that("text vectors have names of the files they come from by default (bug 2
         )))
         expect_equal(
             setdiff(
-                c('test.csv', 'test2.csv'),
+                c('test.csv.1', 'test.csv.2', 'test2.csv.1', 'test2.csv.2'),
                 actual_names
             ),
             character(0)

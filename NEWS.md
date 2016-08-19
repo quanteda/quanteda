@@ -1,3 +1,11 @@
+quanteda 0.9.9
+==============
+
+## Bug Fixes
+
+*  Fixed a bug in textfile() causing all texts to have the same name, for types using the "textField" argument (a single file containing multiple documents).
+
+
 quanteda 0.9.8
 ==============
 
