@@ -2,16 +2,6 @@
 knitr::opts_chunk$set(collapse = TRUE, 
                       comment = "#>")
 
-## ----eval=FALSE----------------------------------------------------------
-#  install.packages("quanteda")
-
-## ----eval=FALSE----------------------------------------------------------
-#  devtools::install_github("kbenoit/quanteda")
-
-## ----eval=FALSE----------------------------------------------------------
-#  ## devtools required to install quanteda from Github
-#  devtools::install_github("kbenoit/quantedaData")
-
 ## ----show=FALSE----------------------------------------------------------
 require(quanteda)
 
