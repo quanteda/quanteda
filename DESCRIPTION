@@ -79,7 +79,7 @@ Collate:
     'ngrams.R'
     'phrases.R'
     'plots.R'
-    'quanteda-package.R'
+    'quanteda.R'
     'readability.R'
     'resample.R'
     'selectFeatures-old.R'
