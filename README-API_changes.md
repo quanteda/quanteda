@@ -50,9 +50,6 @@ new name | original name | methods | output object | keyword
 `nfeature` | unchanged | corpus, dfm | int | quanteda
 `nsentence` | unchanged | character, corpus | int | quanteda
 `ntoken` | unchanged | character, corpus | int | quanteda
-
-
-
 *quanteda core* | | |
 dictionary_create | dictionary | named list | dictionary | dictionary
 dictionary_apply | applyDictionary | dfm, dictionary | dfm | dictionary
