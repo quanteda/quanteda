@@ -38,7 +38,8 @@ Imports:
     Rcpp,
     ca,
     stringi,
-    httr
+    httr,
+    fastmatch
 LinkingTo: Rcpp, RcppArmadillo
 Suggests:
     knitr,
@@ -72,7 +73,7 @@ Collate:
     'dfm-weighting.R'
     'encoding.R'
     'findSequences.R'
-    'hashingTokens.R'
+    'hashTokens.R'
     'joinTokens.R'
     'kwic.R'
     'lexdiv.R'

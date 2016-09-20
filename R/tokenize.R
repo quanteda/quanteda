@@ -615,7 +615,13 @@ print.tokenizedTexts <- function(x, ...) {
 #' @details \code{as.tokenizedTexts} coerces a list of character tokens to a tokenizedText class object, 
 #' making the methods available for this object type available to this object.
 #' @export
-as.tokenizedTexts <- function(x) {
+as.tokenizedTexts <- function(x, ...) {
+    UseMethod("as.tokenizedTexts")
+}
+
+#' @rdname tokenize
+#' @export
+as.tokenizedTexts.list <- function(x, ...) {
     if (!is.list(x) || (!all(sapply(x, function(l) all(is.character(l))))))
             stop("input must be a list of character types")
     class(x) <- c("tokenizedTexts", class(x))
