@@ -91,6 +91,8 @@ print.tokenizedTextsHashed <- function(x, ...) {
   }
 }
 
+#' This function creates tokenizedTextsHashed object from characters vactors 
+#' without creating a large intermidiate tokenizedTexts object.
 #' @examples 
 #' txt <- c('a b c d e', 'd e f g h', 'f g h i j', 'i j k l m')
 #' tokenizeHashed(txt, size_chunk=2)
