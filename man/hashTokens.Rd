@@ -19,7 +19,7 @@ hashTokens(x, ...)
 
 is.tokenizedTextsHashed(x)
 
-tokenizeHashed(x, size_chunk = 100, ...)
+tokenizeHashed(x, size_chunk = 1000, ...)
 }
 \arguments{
 \item{x}{a source of tokenizedText}
@@ -52,14 +52,11 @@ as.list(toksHashed)
 as.tokenizedTexts(toksHashed)
 txt <- c('a b c d e', 'd e f g h', 'f g h i j', 'i j k l m')
 tokenizeHashed(txt, size_chunk=2)
-
+library(pryr::mem_used)
 data(SOTUCorpus, package = "quantedaData")
-toks <- hashTokens(tokenize(texts(SOTUCorpus)))
-gc()
-toks2 <- tokenizeHashed(texts(SOTUCorpus))
-gc()
-tail(toks[[1]], 20)
-tail(toks2[[1]], 20)
+txt <- rep(unlist(tokenize(SOTUCorpus, what='sentence')), 10)
+toks <- hashTokens(tokenize(txt))
+toks2 <- tokenizeHashed(txt)
 
 
 }
