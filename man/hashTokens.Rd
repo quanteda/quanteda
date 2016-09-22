@@ -6,17 +6,20 @@
 \alias{hashTokens}
 \alias{hashTokens.tokenizedTexts}
 \alias{is.tokenizedTextsHashed}
+\alias{tokenizeHashed}
 \title{Constructor for tokenizedTextsHashed objects}
 \usage{
 hashTokens(x, ...)
 
-\method{hashTokens}{tokenizedTexts}(x, ...)
+\method{hashTokens}{tokenizedTexts}(x, vocabulary, ...)
 
 \method{as.tokenizedTexts}{tokenizedTextsHashed}(x, ...)
 
 \method{as.list}{tokenizedTextsHashed}(x, ...)
 
 is.tokenizedTextsHashed(x)
+
+tokenizeHashed(x, size_chunk = 100, ...)
 }
 \arguments{
 \item{x}{a source of tokenizedText}
@@ -47,6 +50,18 @@ toksHashed <- hashTokens(toks)
 as.list(toksHashed)
 # returned as a tokenized Text
 as.tokenizedTexts(toksHashed)
+txt <- c('a b c d e', 'd e f g h', 'f g h i j', 'i j k l m')
+tokenizeHashed(txt, size_chunk=2)
+
+data(SOTUCorpus, package = "quantedaData")
+toks <- hashTokens(tokenize(texts(SOTUCorpus)))
+gc()
+toks2 <- tokenizeHashed(texts(SOTUCorpus))
+gc()
+tail(toks[[1]], 20)
+tail(toks2[[1]], 20)
+
+
 }
 \author{
 Kenneth Benoit and Haiyan Wang

@@ -28,13 +28,18 @@ hashTokens <- function(x, ...) {
 
 #' @rdname hashTokens
 #' @export
-hashTokens.tokenizedTexts <- function(x,...){
+hashTokens.tokenizedTexts <- function(x, vocabulary, ...){
     if (!is.tokenizedTexts(x)) 
         stop("Input must be tokenizedTexts")
     types <- unique(unlist(x, use.names = FALSE))
-    xNumeric <- mclapply(x, function(x,y) fmatch(x,y), types)
+    if(missing(vocabulary)){
+      vocabulary <- types  
+    }else{
+      vocabulary <- c(vocabulary, types[!types %in% vocabulary]) 
+    }
+    xNumeric <- lapply(x, function(x,y) fmatch(x,y), vocabulary)
     class(xNumeric) <- c("tokenizedTextsHashed", class(xNumeric))
-    attr(xNumeric, "vocabulary") <- types
+    attr(xNumeric, "vocabulary") <- vocabulary
     return(xNumeric)
 }
 
@@ -47,7 +52,7 @@ as.tokenizedTexts.tokenizedTextsHashed <- function(x, ...) {
         stop("input must be a tokenizedTextsHashed types")
     
       types <- attr(x, "vocabulary")
-      xTt <- mclapply(x, function(x,y) y[x], types)
+      xTt <- lapply(x, function(x,y) y[x], types)
       xTt
 }
 
@@ -85,3 +90,39 @@ print.tokenizedTextsHashed <- function(x, ...) {
         print(x, ...)
     }
 }
+
+#' @examples 
+#' txt <- c('a b c d e', 'd e f g h', 'f g h i j', 'i j k l m')
+#' tokenizeHashed(txt, size_chunk=2)
+#' 
+#' data(SOTUCorpus, package = "quantedaData")
+#' toks <- hashTokens(tokenize(texts(SOTUCorpus)))
+#' gc()
+#' toks2 <- tokenizeHashed(texts(SOTUCorpus))
+#' gc()
+#' tail(toks[[1]], 20)
+#' tail(toks2[[1]], 20)
+#' 
+#' 
+#' @rdname hashTokens
+#' @export
+tokenizeHashed <- function(x, size_chunk=100, ...){
+  
+  xSubs <- split(x, ceiling(seq_along(x)/size_chunk))
+  xTokSubs <- list()
+  for(i in 1:length(xSubs)){
+    cat('Tokenizing and hashing ...\n')
+    if(i == 1){
+      xTokSubs[[i]] <- hashTokens(tokenize(xSubs[[i]]))
+    }else{
+      xTokSubs[[i]] <- hashTokens(tokenize(xSubs[[i]]), attr(xTokSubs[[i-1]], "vocabulary"))
+    }
+  }
+  xTok <- unlist(xTokSubs, recursive = FALSE)
+  class(xTok) <- c("tokenizedTextsHashed", class(xTok))
+  attr(xTok, "vocabulary") <- attr(xTokSubs[[length(xTokSubs)]], "vocabulary")
+  return(xTok)
+  
+}
+
+
