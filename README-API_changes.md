@@ -70,7 +70,7 @@ new name | original name | methods | output object | keyword
 `print` | - | settings | (printed output) | internal
 `print` | - | similMatrix | (printed output) | internal
 `print` | - | tokenSequences | (printed output) | internal
-`show` | - | dictioary | (printed output) | internal
+`show` | - | dictionary | (printed output) | internal
 
 ### R-like functions
 
@@ -94,34 +94,51 @@ new name | original name | methods | output object | keyword
 `as.tokenizedTexts`	| - | list: char | tokenizedTexts | quanteda
 
 
-*inter-package converter functions* | | | |
+### Converter functions for working with other R packages
+
+new name | original name | methods | output object | keyword
+:--------|:------------- |:------- |:------------- |:-------
 `as.wfm`| - | dfm | austin::wfm | conversion
-`as.DocumentTermMatrix`	| - | dfm |  tm::DocumentTermMatrix | quanteda
+`as.DocumentTermMatrix`	| - | dfm |  tm::DocumentTermMatrix | conversion
 `convert` | - | dfm | *(multiple)* | conversion
 `dfm2ldaformat` | - | dfm | **lda** input object | conversion
 `quantedaformat2dtm` | - | dfm | tm::DocumentTermMatrix | conversion
-*quanteda core* | | | |
-dictionary_create | dictionary | named list | dictionary | dictionary
-dictionary_apply | applyDictionary | dfm, dictionary | dfm | dictionary
-dictionary_apply | applyDictionary | dfm, dictionary | dfm | dictionary
-*classes* | | |
-quanteda_class_corpus | corpus | | | internal
-quanteda_class_dfm | dfm | | | internal
-quanteda_class_dictionary | dictionary | | | internal
-quanteda_class_tokenizedTexts | tokenizedTexts | | |  internal
-quanteda_class_corpusSource | corpusSource | | |  internal
-quanteda_class_kwic | kwic | | | internal
-quanteda_class_collocations | collocations | | |  internal
-quanteda_class_similmstrix | similMatrix | | | internal
-quanteda_class_corpussource | corpusSource | | |  internal
-quanteda_class_dfm_sparse | dfmDense | | | internal
-quanteda_class_dfm_dense | dfm | | | internal
-* need to classify* | | | |
+
+### **quanteda** classes
+
+These are the core classes defined by **quanteda** and used for method dispatch.  They 
+
+new name | original name | constructor function
+:--------|:------------- |:------- 
+quanteda_class_collocations | collocations | `collocations()`
+quanteda_class_corpus | corpus | `corpus()`
+quanteda_class_corpussource | corpusSource | `textfile()`
+quanteda_class_dictionary | dictionary | `dictionary()`
+quanteda_class_dfm | dfm, dfmDense, dfmSparse | `dfm()`
+quanteda_class_kwic | kwic | `kwic()`
+quanteda_class_similmatrix | similMatrix | `similarity()`
+quanteda_class_tokenizedTexts | tokenizedTexts | `tokenize()`
+
+### **quanteda** constructor functions
+
+new name | original name | methods | output object | keyword
+:--------|:------------- |:------- |:------------- |:-------
+`dictionary_create` | `dictionary` | named list | dictionary | dictionary
+`dictionary_apply` | `applyDictionary` | dfm, dictionary | dfm | dictionary
+`dictionary_apply` | `applyDictionary` | dfm, dictionary | dfm | dictionary
+`collocations` | | | collocations | constructor
+`corpus` | | corpusSource, character, data.frame, VCorpus | corpus | constructor
+`dfm` | | corpus, character | dfm | constructor
+`kwic` | | corpus, character | kwic | constructor
+`similarity` | | dfm | similMatrix | constructor
+`tokenize` | | corpus, character | tokenizedTexts | constructor 
+
+### Still needing classification
+
+new name | original name | methods | output object | keyword
+:--------|:------------- |:------- |:------------- |:-------
+`compress` | | | | constructor
 `changeunits` | | | |
-`collocations` | | | |
-`compress` | | | |
-`corpus` | | | |
-`dfm` | | | |
 `docfreq` | | | |  
 `docnames` | | | |
 `docvars` | | | |
@@ -129,7 +146,6 @@ quanteda_class_dfm_dense | dfm | | | internal
 `features` | | | |
 `findSequences` | | | |
 `joinTokens` | | | |
-`kwic` | | | |
 `lexdiv` | | | |
 `metacorpus` | | | |
 `metadoc` | | | |
@@ -143,7 +159,6 @@ quanteda_class_dfm_dense | dfm | | | internal
 `selectFeatures` | | | |
 `settings` | | | |
 `scrabble` | | | |
-`similarity` | | | |
 `skipgrams` | | | |
 `smoother` | | | |
 `stopwords` | | | |
@@ -151,13 +166,16 @@ quanteda_class_dfm_dense | dfm | | | internal
 `textfile` | | | |
 `texts` | | | |
 `tfidf` | | | |
-`tokenize` | | | |
 `topfeatures` | | | |
 `trim` | | | |
 `weight` | | | |
 `wordlists` | | | |
 `wordstem` | | | |
-**textmodel** |
+
+### Text modelling functions
+
+new name | original name | methods | output object | keyword
+:--------|:------------- |:------- |:------------- |:-------
 predict.textmodel_NB_fitted	 | | | |
 predict.textmodel_wordscores_fitted | | | |
 print.textmodel_wordfish_fitted	| | | |
@@ -175,6 +193,10 @@ textmodel_wordfish_predicted-class	 | | | |
 textmodel_wordscores	 | | | |
 textmodel_wordscores_fitted-class	 | | | |
 textmodel_wordscores_predicted-class  | | | |
-**REMOVE** |
+
+### Functions to kill off
+
+new name | original name | methods | output object | keyword
+:--------|:------------- |:------- |:------------- |:-------
 `describeTexts` | REMOVE | character | | REMOVE
 `clean` | REMOVE | | |
