@@ -12,22 +12,37 @@ The package started to get a bit haphazard in terms of names and functionality, 
 
 The following table maps the new functions to the old, and identifies the input object classes for which methods are defined, and identifies the object type produced:
 
+### Package-level
+
 new name | original name | methods | output object | keyword
---------------| -------- | ------- | ---- | ---
-*Data* | | | |
-`data_char_encodedtexts` | `encodedTexts` | - | *data object* | data
-`data_char_inaug` | `inaugTexts` | - | *data object* | data
-`data_char_sampletext` | `exampleString` | - | *data object* | data
-`data_char_ukimmigration` | `ukimmigTexts` | - | *data object* | data
-`data_corpus_ie2010` | `ie2010Corpus` | - | *data object* | data
-`data_corpus_inaug` | `inaugCorpus` | - | *data object* | data
-`data_dfm_LBGexample` | `LBGexample` | - | *data object* | data
-`data_int_syllables` | `englishSyllables` | - | (used by `syllables`) | internal
-`data_list_char_wordlists` | `wordlists` | - | (used by `readability()`) | internal
-`data_list_char_stopwords` | `.stopwords` | - | (used by `stopwords()`) | internal
-*package-level* | | |
+:--------|:------------- |:------- |:------------- |:-------
 `quanteda-package` | - | - | - | -
-*R functions* | | |
+
+This will be a help page describing the package, its development, its contributors, and future plans.  It will also detail the classes and provide links to the class definitions, which will be otherwise removed from the manual index by attaching the `internal`
+keywords to them.
+
+### Data Objects
+
+new name | original name | notes | keyword
+:--------|:------------- |:----- |:-------
+`data_char_encodedtexts` | `encodedTexts` | | data
+`data_char_inaug` | `inaugTexts` |  | data
+`data_char_sampletext` | `exampleString` |   | data
+`data_char_ukimmigration` | `ukimmigTexts` |   | data
+`data_corpus_ie2010` | `ie2010Corpus` |   | data
+`data_corpus_inaug` | `inaugCorpus` |   | data
+`data_dfm_LBGexample` | `LBGexample` |  | data
+`data_int_syllables` | `englishSyllables` |  (used by `syllables`) | internal
+`data_list_char_wordlists` | `wordlists` |  (used by `readability()`) | internal
+`data_list_char_stopwords` | `.stopwords` | (used by `stopwords()`) | internal
+
+
+### R functions
+
+These are fucntions in the core R package for which methods have been written 
+
+new name | original name | methods | output object | keyword
+:--------|:------------- |:------- |:------------- |:-------
 `as.data.frame` | - | dfm | data.frame | ?
 `cbind` | - | dfm | dfm | ?
 `rbind` | - | dfm | dfm | ?
@@ -133,7 +148,7 @@ quanteda_class_dfm_dense | dfm | | | internal
 `weight` | | | |
 `wordlists` | | | |
 `wordstem` | | | |
-**textmodel** | 
+**textmodel** |
 predict.textmodel_NB_fitted	 | | | |
 predict.textmodel_wordscores_fitted | | | |
 print.textmodel_wordfish_fitted	| | | |
