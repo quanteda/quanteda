@@ -39,15 +39,30 @@ new name | original name | notes | keyword
 
 ### R functions
 
-These are fucntions in the core R package for which methods have been written 
+These are functions in the core R package for which methods have been defined in quanteda, in order to extend their functionality to quanteda objects.  The motivation is that for those familiar with how these work in R, the extension of these methods will provide an intuitive and natural application to quanteda objects.
 
 new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
-`as.data.frame` | - | dfm | data.frame | ?
-`cbind` | - | dfm | dfm | ?
-`rbind` | - | dfm | dfm | ?
-`plot`  | - | dfm | (plot) | ?
-`plot`  | - | kwic | (plot) | ?
+`as.data.frame` | - | dfm | data.frame | extensions
+`c` | - | corpus | corpus | (with `corpus`)
+`cbind` | - | dfm | dfm | extensions
+`rbind` | - | dfm | dfm | extensions
+`plot`  | - | dfm | (plot) | plotting
+`plot`  | - | kwic | (plot) | plotting
+`head` | - | dfm | dfm | extensions
+`head` | - | tokenSequences | tokenSequences | extensions
+`colMeans` | - | dfm |  numeric | extensions
+`colSums` | - | dfm |  numeric | extensions
+`rowMeans` | - | dfm |  numeric | extensions
+`rowSums` | - | dfm |  numeric | extensions
+`sample` | - | corpus | corpus | extensions
+`sample` | - | dfm | dfm | extensions
+`sort` | - | dfm | dfm | extensions
+`subset` | - | corpus | corpus | extensions
+`summary` | - | corpus | (invisible) data.frame | extensions
+`t` | - | dfm | dfm | extensions
+`tail` | - | dfm | dfm | extensions
+`tail` | - | tokenSequences | tokenSequences | extensions
 `print` | - | dfm | (printed output) | internal
 `print` | - | tokenizedTexts | (printed output) | internal
 `print` | - | tokenSequences | (printed output) | internal
@@ -56,27 +71,19 @@ new name | original name | methods | output object | keyword
 `print` | - | similMatrix | (printed output) | internal
 `print` | - | tokenSequences | (printed output) | internal
 `show` | - | dictioary | (printed output) | internal
-`sample` | - | corpus | corpus | ?
-`sample` | - | dfm | dfm | ?
-`sort` | - | dfm | dfm | ?
-`subset` | - | corpus | corpus | ?
-`summary` | - | corpus | (invisible) data.frame | ?
-`head` | - | dfm | dfm | ?
-`head` | - | tokenSequences | tokenSequences | ?
-`tail` | - | dfm | dfm | ?
-`tail` | - | tokenSequences | tokenSequences | ?
-`c` | - | corpus | corpus | ?
-`colMeans` | - | dfm |  numeric | quanteda
-`colSums` | - | dfm |  numeric | quanteda
-`rowMeans` | - | dfm |  numeric | quanteda
-`rowSums` | - | dfm |  numeric | quanteda
-`sort` | - | dfm | dfm | quanteda
-`t` | - | dfm | dfm | quanteda
-*R-like functions* | | |
+
+### R-like functions
+
+These are functions that are not extensions of base R methods, but rather additions to base R-*like* methods, defined for **quanteda** objects.  These follow the R conventions for naming and syntax as closely as possible.  For instance, `ntype()` and `ntoken()` return the number of types and tokens in an object respectively, similar to `nrow()` and `ncol()` in base R.  (Note the use of singular for the **quanteda** functions, just as in base R.)  Each method is defined for numerous **quanteda** object classes as appropriate.  When a method does not work for a specific object class, for instnace `nfeature()` does not work for a `character` class object, this is by design -- in this case, because features have to be defined through user choice, as "features" do not exist inherently in a character string without the user having first defined and selected features.  
+
+There are some fudges to this, for instance the definition of an `ntoken()` and `ntype()` methods for `character` and `corpus` objects, since tokens (and types) are only countable after the user has tokenized the text.  For this reason, however, `ntoken()` and `ntype()` methods pass through options in `...` to `tokenize()`, which is called as a result of dispatching these methods on `character` and `corpus` objects.  Calls to these functions are performed by the `summary.character()` method, for instance, which returns counts of tokens, types, and sentences. 
+
+new name | original name | methods | output object | keyword
+:--------|:------------- |:------- |:------------- |:-------
 `ndoc` | - | corpus, dfm | int | quanteda
 `nfeature` | - | corpus, dfm | int | quanteda
 `nsentence` | - | character, corpus | int | quanteda
-`ntoken` | - | character, corpus | int | quanteda
+`ntoken` | - | character, corpus, tokenizedTexts, dfm | int | quanteda
 `ntype` | - | character, corpus, tokenizedTexts, dfm | int | quanteda
 `is.corpus` | - | any | logical | quanteda
 `is.dfm` | - | any | logical | quanteda
@@ -85,6 +92,8 @@ new name | original name | methods | output object | keyword
 `as.matrix.similMatrix`	| - | similMatrix | matrix | quanteda
 `is.tokenizedTexts`	| - | any | logical | quanteda
 `as.tokenizedTexts`	| - | list: char | tokenizedTexts | quanteda
+
+
 *inter-package converter functions* | | | |
 `as.wfm`| - | dfm | austin::wfm | conversion
 `as.DocumentTermMatrix`	| - | dfm |  tm::DocumentTermMatrix | quanteda
