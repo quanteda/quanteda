@@ -63,7 +63,7 @@ qatd_class_dictionary | dictionary | `dictionary()`
 qatd_class_dfm | dfm, dfmDense, dfmSparse | `dfm()`
 qatd_class_kwic | kwic | `kwic()`
 qatd_class_similmatrix | similMatrix | `similarity()`
-qatd_class_tokenizedTexts | tokenizedTexts | `tokenize()`
+qatd_class_tokens | tokenizedTexts | `tokenize()`
 
 
 ## Function Inventory
@@ -76,10 +76,9 @@ These functions process one object, either a base or a quanteda type, and create
 
 new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
-`dictionary_create` | `dictionary` | named list | dictionary | dictionary
+`dictionary` | `dictionary` | named list | dictionary | dictionary
 `dictionary_apply` | `applyDictionary` | dfm, dictionary | dfm | dictionary
-`dictionary_apply` | `applyDictionary` | dfm, dictionary | dfm | dictionary
-`collocations` | | | collocations | constructor
+`collocations` | | corpus, character, tokenizedTexts | collocations | constructor
 `corpus` | | corpusSource, character, data.frame, VCorpus | corpus | constructor
 `dfm` | | corpus, character | dfm | constructor
 `kwic` | | corpus, character | kwic | constructor
@@ -90,14 +89,16 @@ new name | original name | methods | output object | keyword
 
 new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
-`compress` | | dfm | | constructor
-`changeunits` | | corpus | |
-`docfreq` | | dfm | |  
+`dfm_compress` | `compress` | dfm | | dfm
+`corpus_reshape` | `changeunits` | corpus | | corpus
+`docfreq` | | dfm | |  dfm
 `docnames` | | corpus, dfm (tokenizedTexts) | |
+`docnames<-` | | corpus, dfm (tokenizedTexts) | |
 `docvars` | | corpus | |
-`encoding` | | character, corpus | |
-`features` | | dfm | character |
-`findSequences` | | tokenizedTexts| ? |
+`docvars<-` | | corpus | |
+`encoding` | | character, corpus | | character corpus
+`features` | | dfm | character | dfm
+`findSequences` | | tokenizedTexts | ? |
 `joinTokens` | | tokenizedTexts | ? |
 `lexdiv` | | dfm | data.frame |
 `metacorpus` | | corpus | corpus |
@@ -105,22 +106,22 @@ new name | original name | methods | output object | keyword
 `ngrams` / `skipgrams` | | character, tokenizedTexts | tokenizedTexts |
 `phrasetotoken` | | (corpus, character) / (character, dictionary, collocations) | corpus |
 `readability` | | (same as input) | data.frame |
-`removeFeatures` / `selectFeatures` | | dfm, tokenizedTexts, collocations | (same as input) |
-`scrabble` | | character | integer |
+`features_remove` / `features_select`| `removeFeatures` / `selectFeatures` | dfm, tokenizedTexts, collocations | (same as input) | dfm tokenizedTexts
+`scrabble` | | character | integer | internal
 `segment` | | | |
 `settings` | | | |
 `scrabble` | | | |
 `skipgrams` | | | |
 `smoother` | | | |
-`stopwords` | | | character |
-`syllables` | | character | integer |
+`syllables` | | character, tokenizedTexts | integer | character
 `textfile` | | | |
-`texts` | | corpus | character | `as.character()`?
-`tfidf` | | | |
+ `as.character()` | `texts` | corpus | character | corpus
+`tfidf` | | dfm | dfm | dfm
 `topfeatures` | | | |
-`trim` | | | |
-`weight` | | | |
-`wordlists` | | | |
+`subset` | `trim` | dfm | dfm | dfm
+`dfm_weight` | `weight` | dfm | dfm |
+`stopwords` | | | character |
+`wordlists` | | | character | internal
 `wordstem` | | | |
 
 ### R functions extended for **quanteda** objects
