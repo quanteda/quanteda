@@ -70,8 +70,7 @@ void skip_hashed(NumericVector &tokens,
 // [[Rcpp::export]]
 List skipgramcpp_hashed(NumericVector tokens,
                                 NumericVector ns, 
-                                NumericVector ks,
-                                std::string delim) {
+                                NumericVector ks) {
     
     // Generate skipgrams recursively
     NumericVector ngram;
@@ -106,8 +105,11 @@ List skipgramcpp_hashed(NumericVector tokens,
 tokens <- rep(letters[1:5], 20)
 types <- unique(tokens)
 toks_hash <- match(tokens, types)
-res <- skipgramcpp_hashed(toks_hash, 2:3, 1:2, '-')
 
+#microbenchmark::microbenchmark(skipgramcpp(tokens, 2:3, 1:2, '-'),
+#                               skipgramcpp_hashed(toks_hash, 2:3, 1:2))
+
+res <- skipgramcpp_hashed(toks_hash, 2:3, 1:2)
 ngram <- res$ngram
 ngram_ids <- res$id
 ngram_types <- unlist(lapply(res$token, function(x, y, z) paste(y[x], collapse=z) , types, '-'))
