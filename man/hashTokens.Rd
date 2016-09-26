@@ -25,6 +25,10 @@ tokenizeHashed(x, size_chunk = 1000, ...)
 \item{x}{a source of tokenizedText}
 
 \item{...}{additional arguments}
+
+\item{vocabulary}{optional vocabulary for mapping of tokens}
+
+\item{size_chunk}{size for batches of conversion of texts (number of documents)}
 }
 \value{
 A list the hashed tokens found in each text
@@ -33,13 +37,18 @@ A list the hashed tokens found in each text
 Creates a hashed object of tokenizedTexts.
 }
 \details{
-The hashTokens is designed to hash the tokenizedTexts object
-and create the tokenizedTextsHashed object for functions like \code{\link{dfm}},
-\code{\link{cfm}}, \code{\link{selectFeatures}} etc. to improve the performance
-of these functions in terms of speed, especially for large dataset.
+The hashTokens is designed to hash the tokenizedTexts object and
+  create the tokenizedTextsHashed object for functions like
+  \code{\link{dfm}}, \code{\link{cfm}}, \code{\link{selectFeatures}} etc. to
+  improve the performance of these functions in terms of speed, especially
+  for large dataset.
 
-\code{as.tokenizedTexts} coerces tokenizedTextsHashed to a tokenizedText class object, 
-making the methods available for this object type available to this object.
+\code{as.tokenizedTexts} coerces tokenizedTextsHashed to a
+  tokenizedText class object, making the methods available for this object
+  type available to this object.
+
+\code{tokenizeHashed} creates tokenizedTextsHashed object from characters vactors 
+without creating a large intermidiate tokenizedTexts object.
 }
 \examples{
 txt <- c("The quick brown fox jumped over the lazy dog.",
@@ -52,13 +61,12 @@ as.list(toksHashed)
 as.tokenizedTexts(toksHashed)
 txt <- c('a b c d e', 'd e f g h', 'f g h i j', 'i j k l m')
 tokenizeHashed(txt, size_chunk=2)
-library(pryr::mem_used)
-data(SOTUCorpus, package = "quantedaData")
-txt <- rep(unlist(tokenize(SOTUCorpus, what='sentence')), 10)
-toks <- hashTokens(tokenize(txt))
-toks2 <- tokenizeHashed(txt)
 
-
+\dontrun{data(SOTUCorpus, package = "quantedaData")
+txt <- rep(unlist(tokenize(SOTUCorpus, what='sentence')), 20)
+system.time(toks <- hashTokens(tokenize(txt)))
+system.time(toks2 <- tokenizeHashed(txt))
+}
 }
 \author{
 Kenneth Benoit and Haiyan Wang
