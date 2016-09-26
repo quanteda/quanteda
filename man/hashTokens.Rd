@@ -6,22 +6,29 @@
 \alias{hashTokens}
 \alias{hashTokens.tokenizedTexts}
 \alias{is.tokenizedTextsHashed}
+\alias{tokenizeHashed}
 \title{Constructor for tokenizedTextsHashed objects}
 \usage{
 hashTokens(x, ...)
 
-\method{hashTokens}{tokenizedTexts}(x, ...)
+\method{hashTokens}{tokenizedTexts}(x, vocabulary, ...)
 
 \method{as.tokenizedTexts}{tokenizedTextsHashed}(x, ...)
 
 \method{as.list}{tokenizedTextsHashed}(x, ...)
 
 is.tokenizedTextsHashed(x)
+
+tokenizeHashed(x, size_chunk = 1000, ...)
 }
 \arguments{
 \item{x}{a source of tokenizedText}
 
 \item{...}{additional arguments}
+
+\item{vocabulary}{optional vocabulary for mapping of tokens}
+
+\item{size_chunk}{size for batches of conversion of texts (number of documents)}
 }
 \value{
 A list the hashed tokens found in each text
@@ -30,13 +37,18 @@ A list the hashed tokens found in each text
 Creates a hashed object of tokenizedTexts.
 }
 \details{
-The hashTokens is designed to hash the tokenizedTexts object
-and create the tokenizedTextsHashed object for functions like \code{\link{dfm}},
-\code{\link{cfm}}, \code{\link{selectFeatures}} etc. to improve the performance
-of these functions in terms of speed, especially for large dataset.
+The hashTokens is designed to hash the tokenizedTexts object and
+  create the tokenizedTextsHashed object for functions like
+  \code{\link{dfm}}, \code{\link{cfm}}, \code{\link{selectFeatures}} etc. to
+  improve the performance of these functions in terms of speed, especially
+  for large dataset.
 
-\code{as.tokenizedTexts} coerces tokenizedTextsHashed to a tokenizedText class object, 
-making the methods available for this object type available to this object.
+\code{as.tokenizedTexts} coerces tokenizedTextsHashed to a
+  tokenizedText class object, making the methods available for this object
+  type available to this object.
+
+\code{tokenizeHashed} creates tokenizedTextsHashed object from characters vactors 
+without creating a large intermidiate tokenizedTexts object.
 }
 \examples{
 txt <- c("The quick brown fox jumped over the lazy dog.",
@@ -47,6 +59,14 @@ toksHashed <- hashTokens(toks)
 as.list(toksHashed)
 # returned as a tokenized Text
 as.tokenizedTexts(toksHashed)
+txt <- c('a b c d e', 'd e f g h', 'f g h i j', 'i j k l m')
+tokenizeHashed(txt, size_chunk=2)
+
+\dontrun{data(SOTUCorpus, package = "quantedaData")
+txt <- rep(unlist(tokenize(SOTUCorpus, what='sentence')), 20)
+system.time(toks <- hashTokens(tokenize(txt)))
+system.time(toks2 <- tokenizeHashed(txt))
+}
 }
 \author{
 Kenneth Benoit and Haiyan Wang
