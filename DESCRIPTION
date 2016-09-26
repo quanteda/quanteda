@@ -61,13 +61,16 @@ LazyData: TRUE
 VignetteBuilder: knitr
 Collate:
     'RcppExports.R'
+    'dfm-classes.R'
+    'cfm.R'
+    'cfm3.R'
+    'cfm4.R'
     'dictionaries.R'
     'corpus.R'
     'collocations.R'
     'converters.R'
     'dataDocs.R'
     'describe-texts.R'
-    'dfm-classes.R'
     'dfm-main.R'
     'dfm-methods.R'
     'dfm-weighting.R'

@@ -6,6 +6,57 @@
 
 using namespace Rcpp;
 
+// fcm_cpp
+arma::sp_mat fcm_cpp(Rcpp::List& texts, const CharacterVector& types, const String& count, const int& window, const NumericVector& weights, const bool& ordered, const int& nvec);
+RcppExport SEXP quanteda_fcm_cpp(SEXP textsSEXP, SEXP typesSEXP, SEXP countSEXP, SEXP windowSEXP, SEXP weightsSEXP, SEXP orderedSEXP, SEXP nvecSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type texts(textsSEXP);
+    Rcpp::traits::input_parameter< const CharacterVector& >::type types(typesSEXP);
+    Rcpp::traits::input_parameter< const String& >::type count(countSEXP);
+    Rcpp::traits::input_parameter< const int& >::type window(windowSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type ordered(orderedSEXP);
+    Rcpp::traits::input_parameter< const int& >::type nvec(nvecSEXP);
+    rcpp_result_gen = Rcpp::wrap(fcm_cpp(texts, types, count, window, weights, ordered, nvec));
+    return rcpp_result_gen;
+END_RCPP
+}
+// fcm_cpp3
+List fcm_cpp3(List& texts, const CharacterVector& types, const String& count, const int& window, const NumericVector& weights, const bool& ordered, const int& n);
+RcppExport SEXP quanteda_fcm_cpp3(SEXP textsSEXP, SEXP typesSEXP, SEXP countSEXP, SEXP windowSEXP, SEXP weightsSEXP, SEXP orderedSEXP, SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List& >::type texts(textsSEXP);
+    Rcpp::traits::input_parameter< const CharacterVector& >::type types(typesSEXP);
+    Rcpp::traits::input_parameter< const String& >::type count(countSEXP);
+    Rcpp::traits::input_parameter< const int& >::type window(windowSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type ordered(orderedSEXP);
+    Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
+    rcpp_result_gen = Rcpp::wrap(fcm_cpp3(texts, types, count, window, weights, ordered, n));
+    return rcpp_result_gen;
+END_RCPP
+}
+// fcm_cpp4
+arma::sp_mat fcm_cpp4(Rcpp::List& texts, const int& n_types, const String& count, const int& window, const NumericVector& weights, const bool& ordered, const int& nvec);
+RcppExport SEXP quanteda_fcm_cpp4(SEXP textsSEXP, SEXP n_typesSEXP, SEXP countSEXP, SEXP windowSEXP, SEXP weightsSEXP, SEXP orderedSEXP, SEXP nvecSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type texts(textsSEXP);
+    Rcpp::traits::input_parameter< const int& >::type n_types(n_typesSEXP);
+    Rcpp::traits::input_parameter< const String& >::type count(countSEXP);
+    Rcpp::traits::input_parameter< const int& >::type window(windowSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type ordered(orderedSEXP);
+    Rcpp::traits::input_parameter< const int& >::type nvec(nvecSEXP);
+    rcpp_result_gen = Rcpp::wrap(fcm_cpp4(texts, n_types, count, window, weights, ordered, nvec));
+    return rcpp_result_gen;
+END_RCPP
+}
 // skipgramcpp
 StringVector skipgramcpp(std::vector < std::string > tokens, std::vector < int > ns, std::vector < int > ks, std::string delim);
 RcppExport SEXP quanteda_skipgramcpp(SEXP tokensSEXP, SEXP nsSEXP, SEXP ksSEXP, SEXP delimSEXP) {
