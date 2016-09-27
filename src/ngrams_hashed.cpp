@@ -29,7 +29,7 @@ int generate(Ngram ngram,
              std::unordered_map<Ngram, unsigned int> &map_ngram){
   
   
-  
+  // Add new Id without multiple access
   unsigned int &id_ngram = map_ngram[ngram];
   if(id_ngram){
     //Rcout << "Found " << id_ngram << "\n";
@@ -37,18 +37,6 @@ int generate(Ngram ngram,
     id_ngram = map_ngram.size() + 1;
     //Rcout << "Not found " << id_ngram << "\n";
   }
-  
-  // unsigned int id_ngram;
-  // auto exist = map_ngram.find(ngram);
-  // if(exist != map_ngram.end()){
-  //   id_ngram = exist->second;
-  //   //id_ngram = map_ngram[ngram];
-  //   //Rcout << "Found " << id_ngram << "\n";
-  // }else{
-  //   id_ngram = map_ngram.size() + 1;
-  //   map_ngram[ngram] = id_ngram;
-  //   //Rcout << "Not found " << id_ngram << "\n";
-  // }
   //Rcout << "ID: " << id_ngram << " for " << map_ngram[id_ngram] << "\n";
   return id_ngram;
   
