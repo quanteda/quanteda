@@ -4,6 +4,7 @@
 \alias{ngrams}
 \alias{ngrams.character}
 \alias{ngrams.tokenizedTexts}
+\alias{ngrams.tokenizedTextsHashed}
 \alias{skipgrams}
 \alias{skipgrams.character}
 \alias{skipgrams.tokenizedTexts}
@@ -15,6 +16,9 @@ ngrams(x, ...)
 
 \method{ngrams}{tokenizedTexts}(x, n = 2L, skip = 0L, concatenator = "_",
   ...)
+
+\method{ngrams}{tokenizedTextsHashed}(x, n = 2L, skip = 0L,
+  concatenator = "_", ...)
 
 skipgrams(x, ...)
 

@@ -48,7 +48,7 @@ The hashTokens is designed to hash the tokenizedTexts object and
   type available to this object.
 
 \code{tokenizeHashed} creates tokenizedTextsHashed object from characters vactors 
-without creating a large intermidiate tokenizedTexts object.
+without creating a large intermediate tokenizedTexts object.
 }
 \examples{
 txt <- c("The quick brown fox jumped over the lazy dog.",

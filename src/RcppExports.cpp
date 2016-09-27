@@ -20,6 +20,32 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// skipgramcpp_hashed_vector
+List skipgramcpp_hashed_vector(NumericVector tokens, NumericVector ns, NumericVector skips);
+RcppExport SEXP quanteda_skipgramcpp_hashed_vector(SEXP tokensSEXP, SEXP nsSEXP, SEXP skipsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type tokens(tokensSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ns(nsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type skips(skipsSEXP);
+    __result = Rcpp::wrap(skipgramcpp_hashed_vector(tokens, ns, skips));
+    return __result;
+END_RCPP
+}
+// skipgramcpp_hashed_list
+List skipgramcpp_hashed_list(List texts, NumericVector ns, NumericVector skips);
+RcppExport SEXP quanteda_skipgramcpp_hashed_list(SEXP textsSEXP, SEXP nsSEXP, SEXP skipsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< List >::type texts(textsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ns(nsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type skips(skipsSEXP);
+    __result = Rcpp::wrap(skipgramcpp_hashed_list(texts, ns, skips));
+    return __result;
+END_RCPP
+}
 // match_bit
 int match_bit(const std::vector<std::string>& tokens1, const std::vector<std::string>& tokens2);
 RcppExport SEXP quanteda_match_bit(SEXP tokens1SEXP, SEXP tokens2SEXP) {

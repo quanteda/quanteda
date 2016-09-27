@@ -1,6 +1,4 @@
 #include <Rcpp.h>
-#include <string>
-#include <algorithm>
 #include <unordered_map>
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
@@ -99,6 +97,7 @@ NumericVector skipgramcpp_hashed(NumericVector tokens,
 List skipgramcpp_hashed_vector(NumericVector tokens,
                                NumericVector ns, 
                                NumericVector skips){
+  
   // Register both ngram (key) and unigram (value) IDs in a hash table
   std::unordered_map<unsigned int, NumericVector> map_ngram;
   NumericVector ngrams = skipgramcpp_hashed(tokens, ns, skips, map_ngram);
@@ -119,8 +118,8 @@ List skipgramcpp_hashed_vector(NumericVector tokens,
 
 // [[Rcpp::export]]
 List skipgramcpp_hashed_list(List texts,
-                         NumericVector ns,
-                         NumericVector skips) {
+                             NumericVector ns,
+                             NumericVector skips) {
 
   // Register both ngram (key) and unigram (value) IDs in a hash table
   std::unordered_map<unsigned int, NumericVector> map_ngram;
@@ -130,7 +129,8 @@ List skipgramcpp_hashed_list(List texts,
   for (int h = 0; h < len; h++){
       texts_ngram[h] = skipgramcpp_hashed(texts[h], ns, skips, map_ngram);
   }
-
+  
+  
   // Separate key and values of unordered_map
   NumericVector ids_ngram;
   List ids_unigram;
@@ -146,14 +146,14 @@ List skipgramcpp_hashed_list(List texts,
 }
 
 /*** R
-tokens <- rep(letters[1:5], 20)
+tokens <- rep(letters, 20)
 types <- unique(tokens)
-toks_hash <- match(tokens, types)
+tokens_hashed <- match(tokens, types)
 
 #microbenchmark::microbenchmark(skipgramcpp(tokens, 2:3, 1:2, '-'),
-#                               skipgramcpp_hashed_vector(toks_hash, 2:3, 1:2))
+#                               skipgramcpp_hashed_vector(tokens_hashed, 2:3, 1:2))
 
-res <- skipgramcpp_hashed_vector(toks_hash, 2, 1)
+res <- skipgramcpp_hashed_vector(tokens_hashed, 2, 1)
 ngram <- res$ngram
 ngram_ids <- res$id_ngram
 ngram_types <- unlist(lapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-'))

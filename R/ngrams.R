@@ -73,6 +73,74 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
     ngramsResult
 }
 
+#' @rdname ngrams
+#' @examples 
+#' tokens <- tokenize(c('a b c d e', 'c d e f g'))
+#' tokens_hashed <- hashTokens(tokens)
+#' ngrams <- ngrams(tokens, n = 2, skip = 0:1, concatenator = "-")
+#' ngrams_hashed <- ngrams(tokens_hashed, n = 2, skip = 0:1, concatenator = "-")
+#' as.tokenizedTexts(ngrams_hashed)
+#' '\dontrun{
+#' 
+#' tokens2 <- tokenize(head(inaugTexts, 1), removePunct=TRUE)
+#' tokens2_hashed <- hashTokens(tokens2)
+#' 
+#' microbenchmark::microbenchmark(
+#'  old=ngrams(tokens2, n = 2:3, skip = 1:2, concatenator = "-"),
+#'  new=ngrams(tokens2_hashed, n = 2:3, skip = 1:2, concatenator = "-"),
+#'  times=1
+#' )
+#' 
+#' microbenchmark::microbenchmark(
+#'    old=skipgramcpp(tokens2[[1]], 2:3, 1:2, '-'),
+#'    new=skipgramcpp_hashed_vector(tokens2_hashed[[1]], 2:3, 1:2),
+#'    times=1
+#' )
+#' 
+#' Rcpp::sourceCpp('src/ngrams_hashed.cpp')
+#' Rcpp::sourceCpp('src/ngrams.cpp')
+#' 
+#' tokens3 <- rep(letters, 50)
+#' types3 <- unique(tokens3)
+#' tokens3_hashed <- match(tokens3, types3)
+#' microbenchmark::microbenchmark(
+#'    old=skipgramcpp(tokens3, 2:3, 1:2, '-'),
+#'    new=skipgramcpp_hashed_vector(tokens3_hashed, 2:3, 1:2),
+#'    times=10
+#'  )
+#' 
+#' # Test with greater diversity
+#' tokens4 <- paste0(sample(letters, length(tokens3), replace=TRUE), 
+#'                   sample(letters, length(tokens3), replace=TRUE))
+#' types4 <- unique(tokens4)
+#' tokens4_hashed <- match(tokens4, types4)
+#' microbenchmark::microbenchmark(
+#'    low=skipgramcpp_hashed_vector(tokens3_hashed, 2:3, 1:2),
+#'    high=skipgramcpp_hashed_vector(tokens4_hashed, 2:3, 1:2),
+#'    times=10
+#' )
+#' 
+#' 
+#' }
+#' @export
+ngrams.tokenizedTextsHashed <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
+  
+  # Generate ngrams
+  res <- skipgramcpp_hashed_list(x, n, skip)
+  
+  # Make character tokens of ngrams
+  ngram_ids <- res$id_ngram
+  ngram_types <- unlist(lapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , 
+                               attr(x, 'vocabulary'), concatenator))
+  # Re-number ngram IDs
+  ngram <- lapply(res$text, function(x, y) fastmatch::fmatch(x, y), ngram_ids)
+  
+  ngramsResult <- ngram
+  attr(ngramsResult, 'vocabulary') <- ngram_types
+  class(ngramsResult) <- c("tokenizedTextsHashed")
+  return(ngramsResult)
+}
+
 
 #' @rdname ngrams
 #' @details Normally, \code{\link{ngrams}} will be called through 

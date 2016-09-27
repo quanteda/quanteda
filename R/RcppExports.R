@@ -5,6 +5,14 @@ skipgramcpp <- function(tokens, ns, ks, delim) {
     .Call('quanteda_skipgramcpp', PACKAGE = 'quanteda', tokens, ns, ks, delim)
 }
 
+skipgramcpp_hashed_vector <- function(tokens, ns, skips) {
+    .Call('quanteda_skipgramcpp_hashed_vector', PACKAGE = 'quanteda', tokens, ns, skips)
+}
+
+skipgramcpp_hashed_list <- function(texts, ns, skips) {
+    .Call('quanteda_skipgramcpp_hashed_list', PACKAGE = 'quanteda', texts, ns, skips)
+}
+
 match_bit <- function(tokens1, tokens2) {
     .Call('quanteda_match_bit', PACKAGE = 'quanteda', tokens1, tokens2)
 }
