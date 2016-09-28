@@ -15,14 +15,16 @@ namespace std {
       // Hash function for NmericVector
       // See http://stackoverflow.com/questions/17016175
       std::size_t hash = 17;
-      for(auto& elm : vec) {
-        hash = 31 * hash + std::hash<int>()(elm);
+      int sum = 0;
+      for (unsigned int elm : vec){
+          hash = 31 * hash + std::hash<unsigned int>()(elm);
       }
       //Rcout << "Hash " << ": "<< hash << "\n";
       return hash;
     }
   };
 }
+
 
 
 int generate(Ngram ngram,

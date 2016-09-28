@@ -98,7 +98,7 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #' microbenchmark::microbenchmark(
 #'    old=skipgramcpp(tokens2[[1]], 2:3, 1:2, '-'),
 #'    new=skipgramcpp_hashed_vector(tokens2_hashed[[1]], 2:3, 1:2),
-#'    times=1
+#'    times=10
 #' )
 #' 
 #' 
@@ -111,7 +111,7 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #'    times=10
 #'  )
 #' 
-#' # Test with greater diversity
+#' # Test with greater lexical diversity
 #' tokens4 <- paste0(sample(letters, length(tokens3), replace=TRUE), 
 #'                   sample(letters, length(tokens3), replace=TRUE))
 #' types4 <- unique(tokens4)
@@ -119,7 +119,7 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #' microbenchmark::microbenchmark(
 #'    low=skipgramcpp_hashed_vector(tokens3_hashed, 2:3, 1:2),
 #'    high=skipgramcpp_hashed_vector(tokens4_hashed, 2:3, 1:2),
-#'    times=10
+#'    times=10, unit='relative'
 #' )
 #' 
 #' 
