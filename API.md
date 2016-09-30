@@ -1,4 +1,4 @@
-# **quanteda** API taxonomy and suggested changes
+# **quanteda** Major API Changes in *quanteda* 0.99
 
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
@@ -8,7 +8,11 @@
 - [**quanteda** classes](#quanteda-classes)
 - [Function Inventory](#function-inventory)
 	- [Constructor functions](#constructor-functions)
-	- [Functions for working with **quanteda** classes](#functions-for-working-with-quanteda-classes)
+	- [Functions for working with `corpus` objects](#functions-for-working-with-corpus-objects)
+	- [Functions for working with `tokens` objects](#functions-for-working-with-tokens-objects)
+	- [Functions for working with `dfm` objects](#functions-for-working-with-dfm-objects)
+	- [Package-level functions](#package-level-functions)
+	- [to be classified](#to-be-classified)
 	- [R functions extended for **quanteda** objects](#r-functions-extended-for-quanteda-objects)
 	- [R-like functions](#r-like-functions)
 	- [Converter functions for working with other R packages](#converter-functions-for-working-with-other-r-packages)
@@ -16,6 +20,8 @@
 	- [Functions to kill off](#functions-to-kill-off)
 
 <!-- /TOC -->
+
+In anticipation of the announcment of "**quanteda** 1.0", we have made some major changes to the API to **quanteda**, to make the function names more consistent and easier to learn.  This follows long discussions with the core contributors, reflections on user experiences following many training sessions, classes taught using the package, and user feedback through various on-line forums.  This document explains the changes and their logic, and maps the new function names to the old.
 
 ## Motivations for the change
 
@@ -32,9 +38,11 @@ new name | original name | methods | output object | keyword
 `quanteda-package` | - | - | - | -
 
 This will be a help page describing the package, its development, its contributors, and future plans.  It will also detail the classes and provide links to the class definitions, which will be otherwise removed from the manual index by attaching the `internal`
-keywords to them.
+keywords to them.  Many of the functions previously indexed separately will now be listed only in this section, such as references to base R functions (e.g. `cbind()` for dfm objects, `c()` for corpus concatenation, etc.) that have been extended to **quanteda** objects.
 
 ## Data Objects
+
+Used for demonstration purposes, these have been renamed to reflect that they are data, a tag for the object class, and a description.  Internal objects will be hidden from the index through keywords.
 
 new name | original name | notes | keyword
 :--------|:------------- |:----- |:-------
@@ -46,29 +54,35 @@ new name | original name | notes | keyword
 `data_corpus_inaug` | `inaugCorpus` |   | data
 `data_dfm_LBGexample` | `LBGexample` |  | data
 `data_int_syllables` | `englishSyllables` |  (used by `syllables`) | internal
-`data_list_char_wordlists` | `wordlists` |  (used by `readability()`) | internal
-`data_list_char_stopwords` | `.stopwords` | (used by `stopwords()`) | internal
+`data_char_wordlists` | `wordlists` |  (used by `readability()`) | internal
+`data_char_stopwords` | `.stopwords` | (used by `stopwords()`) -- but see below| internal
+
+**Proposed function change:**  replace stopwords() with a built-in data object `data_char_stopwords`, which requires the user to specify the list element.  Instead of `stopwords("english")`, the user would now simply access the data directly as `data_char_stopwords$english`.   
 
 
 ## **quanteda** classes
 
-These are the core classes defined by **quanteda** and used for method dispatch.  They
+These are the core classes defined by **quanteda** and used for method dispatch.  The logic here is that a constructor function will create a quanteda object class of the same name.  These classes would be internal, however, and (mostly) hidden from users.  They would not be documented except in the source code.
 
 new name | original name | constructor function
 :--------|:------------- |:-------
-qatd_class_collocations | collocations | `collocations()`
-qatd_class_corpus | corpus | `corpus()`
-qatd_class_corpussource | corpusSource | `textfile()`
-qatd_class_dictionary | dictionary | `dictionary()`
-qatd_class_dfm | dfm, dfmDense, dfmSparse | `dfm()`
-qatd_class_kwic | kwic | `kwic()`
-qatd_class_similmatrix | similMatrix | `similarity()`
-qatd_class_tokens | tokenizedTexts | `tokenize()`
+collocations | collocations | `collocations()`
+corpus | corpus | `corpus()`
+dictionary | dictionary | `dictionary()`
+dfm | dfm, dfmDense, dfmSparse | `dfm()`
+kwic | kwic | `kwic()`
+similarity | similarity | `similarity()`
+tokens | tokenizedTexts | `tokenize()`
+REMOVE | corpusSource | `textfile()`
 
 
 ## Function Inventory
 
-The following table maps the new functions to the old, and identifies the input object classes for which methods are defined, and identifies the object type produced:
+Using the new logic, we would define a constructor function of a simple name (mostly) corresponding to the existing constructor function names: `corpus()`, `dfm()`, etc.  The idea is to make these consistent, with the function name describing the noun of the object it creates.  This means that `tokenize()` will become `tokens()`, creating a class of tokenized texts called `tokens` (replacing the existing class name of `tokenizedTexts`.  Each function that works with these objects will be named using an *object*`_`*verb* scheme, such as `corpus_subset()`.  To be included in this scheme, a function will operate on the object class, and return a modified version of that object class.  Only functions that behave in this "functional programming" fashion, and return the object class of input, will be named using this scheme.
+
+The following table maps the new functions to the old, and identifies the input
+object classes for which methods are defined, and identifies the object type
+produced:
 
 ### Constructor functions
 
@@ -76,53 +90,104 @@ These functions process one object, either a base or a quanteda type, and create
 
 new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
-`dictionary` | `dictionary` | named list | dictionary | dictionary
-`dictionary_apply` | `applyDictionary` | dfm, dictionary | dfm | dictionary
-`collocations` | | corpus, character, tokenizedTexts | collocations | constructor
-`corpus` | | corpusSource, character, data.frame, VCorpus | corpus | constructor
-`dfm` | | corpus, character | dfm | constructor
-`kwic` | | corpus, character | kwic | constructor
-`similarity` | | dfm | similMatrix | constructor
-`tokenize` | | corpus, character | tokenizedTexts | constructor
+`corpus` | | corpusSource, character, data.frame, VCorpus | corpus | corpus
+`dfm` | | corpus, character | dfm | dfm
+`dictionary` |  | named list | dictionary | dictionary
+`collocations` | | corpus, character, tokenizedTexts | collocations | collocations
+`tokens` | `tokenize` | corpus, character | tokenizedTexts | tokens
 
-### Functions for working with **quanteda** classes
+### Functions for working with `corpus` objects
 
 new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
-`dfm_compress` | `compress` | dfm | | dfm
-`corpus_reshape` | `changeunits` | corpus | | corpus
-`docfreq` | | dfm | |  dfm
-`docnames` | | corpus, dfm (tokenizedTexts) | |
-`docnames<-` | | corpus, dfm (tokenizedTexts) | |
-`docvars` | | corpus | |
-`docvars<-` | | corpus | |
+`corpus` | `corpus`      | character, data.frame, VCorpus, *files* | corpus | corpus
+`corpus_segment` | `segment`      | corpus | corpus | corpus
+`corpus_reshape` | `changeunits`      | corpus | corpus | corpus
+`corpus_subset` | `subset`      | corpus | corpus | corpus
+`corpus_metadata` | `metadoc`, `metacorpus` | corpus | corpus | corpus
+`corpus_docvars<-` | `docvars<-` | corpus + data.frame | corpus | corpus
+`corpus_docvars` | `docvars` | corpus | data.frame | corpus
+`corpus_sample` | `docvars` | corpus | data.frame | corpus
+`corpus_docnames<-` | `docnames<-` | corpus + character | corpus | corpus
+`corpus_docnames` | `docnames` | corpus | character | corpus
+
+### Functions for working with `tokens` objects
+
+new name | original name | methods | output object | keyword
+:--------|:------------- |:------- |:------------- |:-------
+`tokens` | `tokenize`    | character, corpus | tokens | tokens
+`tokens_join` | `phrasetotoken` | tokens + collocations/dictionary/character | tokens | tokens
+`tokens_select` | `selectTokens` | tokens + collocations/dictionary/character | tokens | tokens
+`tokens_remove` | `removeTokens` | tokens + collocations/dictionary/character | tokens | tokens
+`tokens_stem` | `wordstem` | tokens | tokens | tokens
+`tokens_ngrams` | `ngrams` | tokens | tokens | tokens
+`tokens_skipgrams` | `skipgrams` | tokens | tokens | tokens
+`tokens_sample` | `sample` | tokens | tokens | tokens
+`tokens_tolower` | `toLower` | tokens | tokens | tokens
+`tokens_toupper` | `toUpper` | tokens | tokens | tokens
+`tokens_hash`    | *in progress* | tokens | tokens_hashed | tokens
+`tokens_tag`    | *in progress* | tokens | tokens_tagged | tokens
+
+### Functions for working with `dfm` objects
+
+new name | original name | methods | output object | keyword
+:--------|:------------- |:------- |:------------- |:-------
+`dfm` | `dfm`    | character, corpus, tokens | dfm | dfm
+`dfm_compress` | `compress` | dfm  | dfm | dfm
+`dfm_select` | `selectFeatures` | dfm + collocations/dictionary/character | dfm | dfm
+`dfm_remove` | `removeFeatures` | dfm + collocations/dictionary/character | dfm | dfm
+`dfm_trim`   | `trim` | dfm | dfm | dfm
+`dfm_stem` | `wordstem` | dfm | dfm | dfm
+`dfm_weight` | `weight` (also: `tfidf`) | dfm | dfm | dfm
+`dfm_smooth` | `smoother` | dfm | dfm | dfm
+`dfm_sample` | (`trim` option) | dfm | dfm | dfm
+`dfm_tolower` | `toLower` | dfm | dfm | dfm
+`dfm_toupper` | `toUpper` | dfm | dfm | dfm
+`dfm_dictionary` | `applyDictionary` | dfm | dfm | dfm
+`dfm_convert`    | `convert` | dfm | dfm | dfm
+`dfm_sort`    | `sort` | dfm | dfm | dfm
+
+What about:
+
+new name | original name | methods | output object | keyword
+:--------|:------------- |:------- |:------------- |:-------
+| `docnames` | dfm + character | dfm |
+| `docnames<-` | dfm | character |
+| `docfreq` | dfm | numeric |
+| `topfeatures` | dfm | (named) numeric
+
+
+
+In progress:  Figure out how to integrate `cfm()`, the "context-feature matrix".  (Proposal: rename this "feature co-occurrence matrix", or `fcm()`).
+
+### Package-level functions
+
+new name | original name | notes
+:--------|:------------- |:-------
+`settings` | `settings`  | Could use system `options()` and define quanteda options, e.g. `quanteda_remove_punct`
+`history` |  | works for any object
+
+
+### to be classified
+
+new name | original name | methods | output object | keyword
+:--------|:------------- |:------- |:------------- |:-------
 `encoding` | | character, corpus | | character corpus
 `features` | | dfm | character | dfm
 `findSequences` | | tokenizedTexts | ? |
 `joinTokens` | | tokenizedTexts | ? |
 `lexdiv` | | dfm | data.frame |
-`metacorpus` | | corpus | corpus |
-`metadoc` | | corpus | corpus |
 `ngrams` / `skipgrams` | | character, tokenizedTexts | tokenizedTexts |
-`phrasetotoken` | | (corpus, character) / (character, dictionary, collocations) | corpus |
 `readability` | | (same as input) | data.frame |
-`features_remove` / `features_select`| `removeFeatures` / `selectFeatures` | dfm, tokenizedTexts, collocations | (same as input) | dfm tokenizedTexts
 `scrabble` | | character | integer | internal
-`segment` | | | |
 `settings` | | | |
 `scrabble` | | | |
 `skipgrams` | | | |
 `smoother` | | | |
 `syllables` | | character, tokenizedTexts | integer | character
-`textfile` | | | |
- `as.character()` | `texts` | corpus | character | corpus
-`tfidf` | | dfm | dfm | dfm
 `topfeatures` | | | |
 `subset` | `trim` | dfm | dfm | dfm
 `dfm_weight` | `weight` | dfm | dfm |
-`stopwords` | | | character |
-`wordlists` | | | character | internal
-`wordstem` | | | |
 
 ### R functions extended for **quanteda** objects
 
@@ -179,17 +244,11 @@ new name | original name | methods | output object | keyword
 `as.matrix.similMatrix`	| - | similMatrix | matrix | quanteda
 `is.tokenizedTexts`	| - | any | logical | quanteda
 `as.tokenizedTexts`	| - | list: char | tokenizedTexts | quanteda
+`as.character()` | `texts` | corpus | character | corpus
 
 
 ### Converter functions for working with other R packages
 
-new name | original name | methods | output object | keyword
-:--------|:------------- |:------- |:------------- |:-------
-`as.wfm`| - | dfm | austin::wfm | conversion
-`as.DocumentTermMatrix`	| - | dfm |  tm::DocumentTermMatrix | conversion
-`convert` | - | dfm | *(multiple)* | conversion
-`dfm2ldaformat` | - | dfm | **lda** input object | conversion
-`quantedaformat2dtm` | - | dfm | tm::DocumentTermMatrix | conversion
 
 
 ### Text modeling functions
@@ -218,5 +277,12 @@ textmodel_wordscores_predicted-class  | | | |
 
 new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
-`describeTexts` | REMOVE | character | | REMOVE
+`describeTexts` | REMOVE | character | |
 `clean` | REMOVE | | |
+`corpus(file = "")` | `textfile` | *files* | corpus | corpus
+`convert` | `as.wfm`|  dfm | austin::wfm | conversion
+`convert` | `as.DocumentTermMatrix`	|  dfm |  tm::DocumentTermMatrix | dfm
+`convert` | `dfm2ldaformat` |  dfm | **lda** input object | conversion
+`convert` | `quantedaformat2dtm` | dfm | tm::DocumentTermMatrix | conversion
+`stopwords` | | | character |
+`wordlists` | | | character | internal
