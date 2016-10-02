@@ -18,8 +18,8 @@ Author: Kenneth Benoit [aut, cre],
     Pablo Barberá [ctb],
     Will Lowe [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.7-21
-Date: 2016-07-07
+Version: 0.9.9.2
+Date: 2016-09-18
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -42,6 +42,7 @@ Imports:
 LinkingTo: Rcpp, RcppArmadillo
 Suggests:
     knitr,
+    rmarkdown,
     lda,
     topicmodels,
     jsonlite (>= 0.9.10),
@@ -78,7 +79,7 @@ Collate:
     'ngrams.R'
     'phrases.R'
     'plots.R'
-    'quanteda-package.R'
+    'quanteda.R'
     'readability.R'
     'resample.R'
     'selectFeatures-old.R'

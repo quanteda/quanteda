@@ -1,4 +1,12 @@
-quanteda 0.9.7
+quanteda 0.9.9
+==============
+
+## Bug Fixes
+
+*  Fixed a bug in textfile() causing all texts to have the same name, for types using the "textField" argument (a single file containing multiple documents).
+
+
+quanteda 0.9.8
 ==============
 
 ## New Features
@@ -23,8 +31,9 @@ quanteda 0.9.7
 
 ## Bug fixes
 
-*  Fixed bug in textfile() where source is a remote .zip set.  (#172)  
-*  Fixed bug in wordstem.dfm() that caused an error if supplied a dfm with a feature whose total frequency
+*  Fixed bug in `phrasetotoken()` where if pattern included a `+` for `valuetype = c("glob", "fixed")` it threw a regex error.  #239  
+*  Fixed bug in `textfile()` where source is a remote .zip set.  (#172)  
+*  Fixed bug in `wordstem.dfm()` that caused an error if supplied a dfm with a feature whose total frequency
    count was zero, or with a feature whose total docfreq was zero.  Fixes #181.  
 *  Fix #214 "mysterious stemmed token" bug in `wordstem.dfm()`, introduced in fixing #181.  
 *  Fixed previously non-functional `toLower = ` argument in `dfm.tokenizedTexts()`.
@@ -33,6 +42,7 @@ quanteda 0.9.7
 * `dictionary()` now works correctly when reading LIWC dictionaries where all terms belong to one key (#229).
 * `convert(x, to = "stm") now indexes the dfm components from 1, not 0 (#222).
 *  Remove temporary stemmed token (#214).
+*  Fixed bug in textmodel_NB() for non-"uniform" priors (#241)
 
 ## Changes
 

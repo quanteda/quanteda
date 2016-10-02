@@ -186,15 +186,15 @@ setMethod("textfile",
                     stop('encoding parameter must be length 1, or as long as the number of files')
                   }
                   sources <- mapply(function(x, e) {
-                      getSource(f=x, textField=textField, encoding=e, ...)
+                      getSource(f=x, textField = textField, encoding = e, ...)
                   },
                       files, encoding,
-                      SIMPLIFY=FALSE
+                      SIMPLIFY = FALSE
                   )
               }
               else {
                   sources <- lapply(files, function(x) {
-                      getSource(x, textField, encoding=encoding, ...)}
+                      getSource(x, textField, encoding = encoding, ...)}
                   )
               }
               
@@ -412,7 +412,12 @@ getSource <- function(f, textField, ...) {
                xml = get_xml(f, textField, ...)
         )
 
-    names(newSource$txts) <- rep(basename(f), length(newSource$txts))
+    # assign filename (variants) unique text names
+    if ((len <- length(newSource$txts)) > 1) {
+        names(newSource$txts) <- paste(basename(f), seq_len(len), sep = ".")
+    } else {
+        names(newSource$txts) <- basename(f)
+    }
 
     return(newSource)
 }
@@ -426,10 +431,10 @@ get_txt <- function(f, ...) {
 
 ## csv format
 get_csv <- function(path, textField, ...) {
-    docs <- utils::read.csv(path, stringsAsFactors=FALSE, ...)
+    docs <- utils::read.csv(path, stringsAsFactors = FALSE, ...)
     if (is.character(textField)) {
-        textFieldi <- which(names(docs)==textField)
-        if (length(textFieldi)==0)
+        textFieldi <- which(names(docs) == textField)
+        if (length(textFieldi) == 0)
             stop(paste("There is no field called", textField, "in file", path))
         textField <- textFieldi
     } else if (is.numeric(textField) & (textField > ncol(docs))) {
@@ -438,7 +443,7 @@ get_csv <- function(path, textField, ...) {
 
     txts <- docs[, textField]
     docv <- docs[, -textField, drop = FALSE]
-    list(txts=txts, docv=docv)
+    list(txts = txts, docv = docv)
 }
 
 

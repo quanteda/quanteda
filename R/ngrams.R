@@ -41,13 +41,15 @@
 #' 
 #' # skipgrams
 ngrams <- function(x, ...) {
-  UseMethod("ngrams")
+    UseMethod("ngrams")
 }
 
 #' @rdname ngrams
 #' @importFrom stats complete.cases
 #' @export
 ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
+    # trap condition where a "text" is a single NA
+    if (is.na(x[1]) && length(x)==1) return(NULL)
     if (any(stringi::stri_detect_fixed(x, " ")) & concatenator != " ")
         stop("whitespace detected: please tokenize() before using ngrams()")
     if (length(x) < min(n)) return(NULL)
