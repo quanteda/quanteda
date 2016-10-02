@@ -1,10 +1,3 @@
-quanteda 0.9.9
-==============
-
-## Bug Fixes
-
-*  Fixed a bug in textfile() causing all texts to have the same name, for types using the "textField" argument (a single file containing multiple documents).
-
 
 quanteda 0.9.8
 ==============
@@ -31,6 +24,7 @@ quanteda 0.9.8
 
 ## Bug fixes
 
+*  (0.9.8.2) Fixed a bug in textfile() causing all texts to have the same name, for types using the "textField" argument (a single file containing multiple documents).  
 *  Fixed bug in `phrasetotoken()` where if pattern included a `+` for `valuetype = c("glob", "fixed")` it threw a regex error.  #239  
 *  Fixed bug in `textfile()` where source is a remote .zip set.  (#172)  
 *  Fixed bug in `wordstem.dfm()` that caused an error if supplied a dfm with a feature whose total frequency
