@@ -4,6 +4,12 @@ quanteda: Quantitative Analysis of Textual Data
 
 [![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](http://cran.r-project.org/package=quanteda) ![Downloads](http://cranlogs.r-pkg.org/badges/quanteda) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
 
+### **quanteda** is changing!
+
+See the new, upcoming [major API changes](API.md), to be incorporated into the next minor version 0.9.9 and for CRAN, in a "1.0" release.
+
+### Getting started
+
 See the [Getting Started Vignette](http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html).
 
 An R package for managing and analyzing text, by Ken Benoit and Paul Nulty.
@@ -79,7 +85,7 @@ Example usage
 
 ``` r
 library(quanteda)
-#> quanteda version 0.9.7.7
+#> quanteda version 0.9.9.2
 #> 
 #> Attaching package: 'quanteda'
 #> The following object is masked from 'package:base':
@@ -108,8 +114,8 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 #>           SNP    90    136         4          SNP
 #>          UKIP   346    739        27         UKIP
 #> 
-#> Source:  /Users/kbenoit/Dropbox/GitHub/quanteda/* on x86_64 by kbenoit
-#> Created: Tue Jun 28 11:25:31 2016
+#> Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
+#> Created: Sun Oct  2 17:33:05 2016
 #> Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -123,14 +129,21 @@ kwic(uk2010immigCorpus, "deport", 3)
 # create a dfm, removing stopwords
 mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
 #> Creating a dfm from a corpus ...
+#> 
 #>    ... lowercasing
+#> 
 #>    ... tokenizing
+#> 
 #>    ... indexing documents: 9 documents
-#>    ... indexing features: 1,585 feature types
-#>    ... removed 97 features, from 175 supplied (glob) feature types
+#> 
+#>    ... indexing features:
+#> 1,585 feature types
+#> 
+#> ...
+#> removed 97 features, from 175 supplied (glob) feature types
 #>    ... created a 9 x 1489 sparse dfm
 #>    ... complete. 
-#> Elapsed time: 0.023 seconds.
+#> Elapsed time: 0.032 seconds.
 dim(mydfm)              # basic dimensions of the dfm
 #> [1]    9 1489
 topfeatures(mydfm, 20)  # 20 top words

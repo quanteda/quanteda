@@ -18,3 +18,4 @@ quanteda.pdf
 ^images
 ^tests/data/encoding/.*$
 ^CONDUCT\.md$
+^API.md$

@@ -25,6 +25,12 @@ quanteda: Quantitative Analysis of Textual Data
 
 [1]: https://codecov.io/gh/kbenoit/quanteda/branch/master
 
+### **quanteda** is changing!
+
+See the new, upcoming [major API changes](API.md), to be incorporated into the next minor version 0.9.9 and for CRAN, in a "1.0" release.
+
+### Getting started
+
 See the [Getting Started Vignette](http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html).
 
 An R package for managing and analyzing text, by Ken Benoit and Paul Nulty.
