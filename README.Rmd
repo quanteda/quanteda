@@ -14,8 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-quanteda: Quantitative Analysis of Textual Data
-===============================================
+# quanteda: Quantitative Analysis of Textual Data
 
 [![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](http://cran.r-project.org/package=quanteda)
 ![Downloads](http://cranlogs.r-pkg.org/badges/quanteda)
@@ -25,11 +24,11 @@ quanteda: Quantitative Analysis of Textual Data
 
 [1]: https://codecov.io/gh/kbenoit/quanteda/branch/master
 
-### **quanteda** is changing!
+## **quanteda** is changing!
 
 See the new, upcoming [major API changes](API.md), to be incorporated into the next minor version 0.9.9 and for CRAN, in a "1.0" release.
 
-### Getting started
+## About the package
 
 See the [Getting Started Vignette](http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html).
 
@@ -98,8 +97,7 @@ Once constructed, a **quanteda** "dfm"" can be easily analyzed using either quan
 
 **Acknowledgements**:  This research was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
-How to Install
---------------
+# How to Install
 
 As of version 0.8.0, the GitHub master repository will always contain the development version of quanteda, while the CRAN version will contain the latest "stable" version.  You therefore have two options for installing the package:
 
@@ -125,8 +123,7 @@ As of version 0.8.0, the GitHub master repository will always contain the develo
     devtools::install_github("kbenoit/quantedaData")
     ```
 
-Example usage
--------
+## Example usage
 
 ```{r quanteda_example, fig.width=7, fig.height=7}
 library(quanteda)
@@ -149,8 +146,7 @@ plot(mydfm, min.freq = 6, random.order = FALSE)             # word cloud
 ```
 
 
-Documentation
--------------
+## Documentation
 
 In-depth tutorials in the form of a gitbook will be available here [here](http://kbenoit.github.io/quanteda).
 
