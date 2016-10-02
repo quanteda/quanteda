@@ -30,7 +30,7 @@ void join_tokens_cpp(CharacterVector tokens,
     return ;
   }
   int start = -1;
-  bool change = FALSE;
+  bool change = false;
   String token_joined = join2(tokens_join, delim);
   for (int i = 0; i < len - (len_join - 1); i++){
     //Rcout << "Now " << i << " " << tokens[i] << "\n";
@@ -40,14 +40,14 @@ void join_tokens_cpp(CharacterVector tokens,
     }
     if(start > -1){
       int j = i - start;
-      if(j == len_join - 1){ // Complete match
+      if(j == len_join){ // Complete match
         //Rcout << "End " << start << " " << tokens[i] << "\n";
         tokens[start] = token_joined;
         for(int k = start + 1; k < start + len_join; k++){
           //Rcout << "Remove " << k << ' ' << tokens[k] << "\n";
           tokens[k] = "";
         }
-        change = TRUE;
+        change = true;
         start = -1; // Reset
       }else{
         if(tokens[i] != tokens_join[j]) start = -1; // Partial match
@@ -77,8 +77,7 @@ void join_tokens_cppl(List texts,
                       const std::vector<bool> &flags,
                       const CharacterVector &tokens_join,
                       const String &delim){
-  //List texts(x);
-  //List texts = clone(texts_original);
+
   int len = texts.size();
   if(flags.size() != len){
     Rcout << "Invalid flag is given\n";
