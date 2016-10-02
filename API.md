@@ -73,7 +73,6 @@ dfm | dfm, dfmDense, dfmSparse | `dfm()`
 kwic | kwic | `kwic()`
 similarity | similarity | `similarity()`
 tokens | tokenizedTexts | `tokenize()`
-REMOVE | corpusSource | `textfile()`
 
 
 ## Function Inventory
@@ -93,33 +92,31 @@ new name | original name | methods | output object | keyword
 `corpus` | | corpusSource, character, data.frame, VCorpus | corpus | corpus
 `dfm` | | corpus, character | dfm | dfm
 `dictionary` |  | named list | dictionary | dictionary
-`collocations` | | corpus, character, tokenizedTexts | collocations | collocations
 `tokens` | `tokenize` | corpus, character | tokenizedTexts | tokens
 
 ### Functions for working with `corpus` objects
 
 new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
-`corpus` | `corpus`      | character, data.frame, VCorpus, *files* | corpus | corpus
+`corpus` |      | character, data.frame, VCorpus, *files* | corpus | corpus
 `corpus_segment` | `segment`      | corpus | corpus | corpus
 `corpus_reshape` | `changeunits`      | corpus | corpus | corpus
 `corpus_subset` | `subset`      | corpus | corpus | corpus
+`corpus_sample` | `sample` | corpus | corpus | corpus
 `corpus_metadata` | `metadoc`, `metacorpus` | corpus | corpus | corpus
 `corpus_docvars<-` | `docvars<-` | corpus + data.frame | corpus | corpus
 `corpus_docvars` | `docvars` | corpus | data.frame | corpus
-`corpus_sample` | `docvars` | corpus | data.frame | corpus
-`corpus_docnames<-` | `docnames<-` | corpus + character | corpus | corpus
-`corpus_docnames` | `docnames` | corpus | character | corpus
+
 
 ### Functions for working with `tokens` objects
 
 new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
 `tokens` | `tokenize`    | character, corpus | tokens | tokens
-`tokens_join` | `phrasetotoken` | tokens + collocations/dictionary/character | tokens | tokens
+`tokens_join` | `phrasetotoken`, `joinTokens` | tokens + collocations/dictionary/character | tokens | tokens
 `tokens_select` | `selectTokens` | tokens + collocations/dictionary/character | tokens | tokens
 `tokens_remove` | `removeTokens` | tokens + collocations/dictionary/character | tokens | tokens
-`tokens_stem` | `wordstem` | tokens | tokens | tokens
+`tokens_wordstem` | `wordstem` | tokens | tokens | tokens
 `tokens_ngrams` | `ngrams` | tokens | tokens | tokens
 `tokens_skipgrams` | `skipgrams` | tokens | tokens | tokens
 `tokens_sample` | `sample` | tokens | tokens | tokens
@@ -128,39 +125,32 @@ new name | original name | methods | output object | keyword
 `tokens_hash`    | *in progress* | tokens | tokens_hashed | tokens
 `tokens_tag`    | *in progress* | tokens | tokens_tagged | tokens
 
-### Functions for working with `dfm` objects
+### Functions for working with `dfm` (and `fcm`<sup>1</sup>) objects
 
 new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
-`dfm` | `dfm`    | character, corpus, tokens | dfm | dfm
+`dfm` |     | character, corpus, tokens | dfm | dfm
 `dfm_compress` | `compress` | dfm  | dfm | dfm
 `dfm_select` | `selectFeatures` | dfm + collocations/dictionary/character | dfm | dfm
 `dfm_remove` | `removeFeatures` | dfm + collocations/dictionary/character | dfm | dfm
 `dfm_trim`   | `trim` | dfm | dfm | dfm
-`dfm_stem` | `wordstem` | dfm | dfm | dfm
+`dfm_wordstem` | `wordstem` | dfm | dfm | dfm
 `dfm_weight` | `weight` (also: `tfidf`) | dfm | dfm | dfm
 `dfm_smooth` | `smoother` | dfm | dfm | dfm
 `dfm_sample` | (`trim` option) | dfm | dfm | dfm
 `dfm_tolower` | `toLower` | dfm | dfm | dfm
 `dfm_toupper` | `toUpper` | dfm | dfm | dfm
 `dfm_dictionary` | `applyDictionary` | dfm | dfm | dfm
-`dfm_convert`    | `convert` | dfm | dfm | dfm
 `dfm_sort`    | `sort` | dfm | dfm | dfm
+`dfm_convert`<sup>2</sup>    | `convert` | dfm | *foreign* | dfm
 
-What about:
-
-new name | original name | methods | output object | keyword
-:--------|:------------- |:------- |:------------- |:-------
-| `docnames` | dfm + character | dfm |
-| `docnames<-` | dfm | character |
-| `docfreq` | dfm | numeric |
-| `topfeatures` | dfm | (named) numeric
-
-
-
-In progress:  Figure out how to integrate `cfm()`, the "context-feature matrix".  (Proposal: rename this "feature co-occurrence matrix", or `fcm()`).
+Notes:
+1.  Application to a "context-feature matrix": We would define the same set of functions for `cfm()`, the "context-feature matrix".  (Proposal: rename this "feature co-occurrence matrix", or `fcm()`).
+2.  `dfm_convert`:  Strictly speaking, this may not fit into the scheme, since it starts with `dfm_` but does not return a dfm object.  Should this be renamed?
 
 ### Package-level functions
+
+These are functions designed to work at the package level (e.g. `settings()`) or designed to work with any **quanteda** object, such as `history()`, which provides a list of the commands applied to any object and its predecessor objects.
 
 new name | original name | notes
 :--------|:------------- |:-------
@@ -168,26 +158,24 @@ new name | original name | notes
 `history` |  | works for any object
 
 
-### to be classified
+### Analytic functions
 
 new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
-`encoding` | | character, corpus | | character corpus
-`features` | | dfm | character | dfm
-`findSequences` | | tokenizedTexts | ? |
-`joinTokens` | | tokenizedTexts | ? |
-`lexdiv` | | dfm | data.frame |
-`ngrams` / `skipgrams` | | character, tokenizedTexts | tokenizedTexts |
-`readability` | | (same as input) | data.frame |
-`scrabble` | | character | integer | internal
-`settings` | | | |
-`scrabble` | | | |
-`skipgrams` | | | |
-`smoother` | | | |
-`syllables` | | character, tokenizedTexts | integer | character
-`topfeatures` | | | |
-`subset` | `trim` | dfm | dfm | dfm
-`dfm_weight` | `weight` | dfm | dfm |
+`explore_kwic`       | `kwic` | corpus, character, tokens | data.frame |
+`score_collocations` | `collocations`, `findSequences` | tokens | data.frame |  
+`stats_lexdiv` | `lexdiv` | dfm, tokens | data.frame |
+`stats_readability` | `readability` | character, tokens | data.frame |
+`stats_similarity`  | `similarity`   | dfm |  (similarity) matrix |
+`counts_scrabble` | `scrabble` | character (vector), tokens | integer
+`counts_syllables` | `syllables`   | character (vector), tokens | integer |
+`counts_features`  | `topfeatures` | dfm | integer |
+`counts_docfreq`   | `docfreq` | dfm | integer
+`textmodel_NB`        | | `dfm` | textmodel_NB |
+`textmodel_wordscores`        | | `dfm` | textmodel_wordscores |
+`textmodel_wordfish`        | | `dfm` | textmodel_wordfish |
+`textmodel_ca` | | `dfm` | textmodel_ca |
+
 
 ### R functions extended for **quanteda** objects
 
@@ -244,34 +232,16 @@ new name | original name | methods | output object | keyword
 `as.matrix.similMatrix`	| - | similMatrix | matrix | quanteda
 `is.tokenizedTexts`	| - | any | logical | quanteda
 `as.tokenizedTexts`	| - | list: char | tokenizedTexts | quanteda
-`as.character()` | `texts` | corpus | character | corpus
+`as.character` | `texts` | corpus | character | corpus
+`as.data.frame` | `docvars` | corpus | data.frame | corpus
+`docnames` | `docnames` | corpus, tokens, dfm | character |
+`docnames<-` | `docnames<-` | corpus | character |
+`featnames` | `features` | dfm | character |
+`as.list` | | `tokens` | list of character |
+`encoding`<sup>1</sup> |  | character, corpus | data.frame (of character encoding labels) |
 
-
-### Converter functions for working with other R packages
-
-
-
-### Text modeling functions
-
-new name | original name | methods | output object | keyword
-:--------|:------------- |:------- |:------------- |:-------
-predict.textmodel_NB_fitted	 | | | |
-predict.textmodel_wordscores_fitted | | | |
-print.textmodel_wordfish_fitted	| | | |
-print.textmodel_wordscores_fitted	| | | |
-print.textmodel_wordscores_predicted	| | | |
-`show-method` | | internal  |
-textmodel	| | |  |
-textmodel-method | | | |
-textmodel_ca	| | |  |
-textmodel_fitted-class	| | | |
-textmodel_NB	| | | |
-textmodel_wordfish	| | | |
-textmodel_wordfish_fitted-class	| | | |
-textmodel_wordfish_predicted-class	 | | | |
-textmodel_wordscores	 | | | |
-textmodel_wordscores_fitted-class	 | | | |
-textmodel_wordscores_predicted-class  | | | |
+Notes:
+1. `encoding`: This is similar to, but quite different in terms of how it works, the `base::Encoding()` which queries or sets simple encoding bits for character vectors.  Since that is not a generic, it cannot be overloaded without redefining it as a generic (and therefore issuing a "masked function" warning when the package is loaded).  For consistency with the scheme described here, it cannot be `corpus_encoding` since it does not return a corpus.
 
 ### Functions to kill off
 
