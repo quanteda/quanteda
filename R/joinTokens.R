@@ -13,7 +13,7 @@
 #' seqs_token <- list(c('foreign', 'policy'), c('United', 'States'))
 #' seqs_glob <- list(c('foreign', 'polic*'), c('United', 'States'))
 #' seqs_regex <- list(c('^foreign', '^polic(ie|y)'), c('^United', '^States'))
-#' toks2 <- joinTokens(toks, seqs_token, "_", 'glob')
+#' toks2 <- joinTokens(toks, seqs_token, "_", 'fixed')
 #' toks2 <- joinTokens(toks, seqs_glob, "_", 'glob')
 #' toks2 <- joinTokens(toks, seqs_regex, "_", 'regex')
 #' kwic(toks2, 'foreign_policy', window=1) # joined
