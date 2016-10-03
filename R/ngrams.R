@@ -80,6 +80,7 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #' ngrams <- ngrams(tokens, n = 2, skip = 0:1, concatenator = "-")
 #' ngrams_hashed <- ngrams(tokens_hashed, n = 2, skip = 0:1, concatenator = "-")
 #' as.tokenizedTexts(ngrams_hashed)
+#' 
 #' '\dontrun{
 #' 
 #' tokens2 <- tokenize(head(inaugTexts, 1), removePunct=TRUE)
@@ -91,14 +92,15 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #'  times=1
 #' )
 #' 
+#' Rcpp::sourceCpp('src/ngrams_hashed.cpp')
+#' Rcpp::sourceCpp('src/ngrams.cpp')
+#' 
 #' microbenchmark::microbenchmark(
 #'    old=skipgramcpp(tokens2[[1]], 2:3, 1:2, '-'),
 #'    new=skipgramcpp_hashed_vector(tokens2_hashed[[1]], 2:3, 1:2),
-#'    times=1
+#'    times=10
 #' )
 #' 
-#' Rcpp::sourceCpp('src/ngrams_hashed.cpp')
-#' Rcpp::sourceCpp('src/ngrams.cpp')
 #' 
 #' tokens3 <- rep(letters, 50)
 #' types3 <- unique(tokens3)
@@ -109,7 +111,7 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #'    times=10
 #'  )
 #' 
-#' # Test with greater diversity
+#' # Test with greater lexical diversity
 #' tokens4 <- paste0(sample(letters, length(tokens3), replace=TRUE), 
 #'                   sample(letters, length(tokens3), replace=TRUE))
 #' types4 <- unique(tokens4)
@@ -117,7 +119,7 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #' microbenchmark::microbenchmark(
 #'    low=skipgramcpp_hashed_vector(tokens3_hashed, 2:3, 1:2),
 #'    high=skipgramcpp_hashed_vector(tokens4_hashed, 2:3, 1:2),
-#'    times=10
+#'    times=10, unit='relative'
 #' )
 #' 
 #' 
@@ -132,10 +134,7 @@ ngrams.tokenizedTextsHashed <- function(x, n = 2L, skip = 0L, concatenator = "_"
   ngram_ids <- res$id_ngram
   ngram_types <- unlist(lapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , 
                                attr(x, 'vocabulary'), concatenator))
-  # Re-number ngram IDs
-  ngram <- lapply(res$text, function(x, y) fastmatch::fmatch(x, y), ngram_ids)
-  
-  ngramsResult <- ngram
+  ngramsResult <- res$text
   attr(ngramsResult, 'vocabulary') <- ngram_types
   class(ngramsResult) <- c("tokenizedTextsHashed")
   return(ngramsResult)
