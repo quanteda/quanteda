@@ -7,30 +7,26 @@
 #' txt <- subset(inaugCorpus, Year > 1900)
 #' data(SOTUCorpus, package = "quantedaData")
 #' txt<-SOTUCorpus
-#' microbenchmark::microbenchmark(
-#'                              text2vecPfm(txt),
-#'                              cfm3Pfm(txt),
-#'                              cfmPfm(txt),
-#'                              cfm4Pfm(txt),
-#'                              times = 1,
-#'                              unit = 'relative') 
+
 #' microbenchmark::microbenchmark(
 #'                              text2vecPfm(tokens,vectorizer),
-#'                              cfmPfm(toks),
-#'                              cfm4numericToCpp(toks),
-#'                              cfm2numericToken(numericX),
+#'                              cfm(toks,context="window",tri=FALSE), 
+#'                              cfm(toksHashed, context="window",tri=FALSE),
 #'                              times = 1,
-#'                              unit = 'relative')                              
+#'                              unit = 'relative')   
+#'                              
+#'                                                         
+#'   
+
 tokens <- txt %>% tolower %>% word_tokenizer
 it <- itoken(tokens)
 v <- create_vocabulary(it)
 vectorizer <- vocab_vectorizer(v, grow_dtm = FALSE, skip_grams_window = 3L)
 
 toks <- tokenize(toLower(txt), removePunct = TRUE)
+toksHashed <- hashTokens(toks)
+hashOnly <- as.list(toksHashed)
 
-types <- unique(unlist(toks, use.names = FALSE))
-types <- sort(types)
-numericX<- lapply(toks, function(x, y) match(x, y), types)
 
 text2vecPfm <- function(tokens,vectorizer ){
     #tokens <- txt %>% tolower %>% word_tokenizer
@@ -78,18 +74,15 @@ cfm2numericToken <- function(numericX){
 #|=====================================================================================================| 100%Unit: relative
 ##inaugCorpus
 # : relative
-#               expr       min        lq      mean    median        uq       max neval
-#text2vecPfm(tokens)     2.543569  2.543569  2.543569  2.543569  2.543569  2.543569     1
-#cfmPfm(toks)           18.058517 18.058517 18.058517 18.058517 18.058517 18.058517     1
-#cfm4numericToCpp(toks) 17.349280 17.349280 17.349280 17.349280 17.349280 17.349280     1
-#cfm2numericToken(toks)  1.000000  1.000000  1.000000  1.000000  1.000000  1.000000     1
+#    expr           min        lq      mean    median        uq       max       neval
+#text2vecPfm()      1.000000 1.000000 1.000000 1.000000 1.000000    1.000000     1
+#cfm(toks)          2.472970 2.472970 2.472970 2.472970 2.472970    2.472970     1
+#cfm(toksHashed)    1.533484 1.533484 1.533484 1.533484 1.533484    1.533484     1
 
 #|=====================================================================================================| 100%Unit: relative
 # quantedaData
-#relative
-# expr                              min        lq      mean    median        uq       max
-# cfm3Pfm(toks)                     44.372591 44.372591 44.372591 44.372591 44.372591 44.372591
-# text2vecPfm(tokens, vectorizer)   3.347731  3.347731  3.347731  3.347731  3.347731  3.347731
-# cfmPfm(toks)                      32.027275 32.027275 32.027275 32.027275 32.027275 32.027275
-# cfm4numericToCpp(toks)            29.427185 29.427185 29.427185 29.427185 29.427185 29.427185
-# cfm2numericToken(numericX)        1.000000  1.000000  1.000000  1.000000  1.000000  1.000000
+#       expr      min       lq     mean        median     uq        max     neval
+#text2vecPfm()   1.000000 1.000000 1.000000 1.000000 1.000000   1.000000     1
+#cfm(toks)       2.560103 2.560103 2.560103 2.560103 2.560103   2.560103     1
+#cfm(toksHashed) 1.563512 1.563512 1.563512 1.563512 1.563512   1.563512     1
+

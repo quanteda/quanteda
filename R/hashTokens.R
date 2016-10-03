@@ -33,20 +33,17 @@ hashTokens.tokenizedTexts <- function(x, vocabulary, ...) {
     if (!is.tokenizedTexts(x)) 
         stop("Input must be tokenizedTexts")
     types <- unique(unlist(x, use.names = FALSE))
-<<<<<<< HEAD
-   
+
     # order the features alphabetically
     types <- sort(types)
-    # xNumeric <- mclapply(x, function(x,y) fmatch(x,y), types)
-    xNumeric <- mclapply(x, function(x,y) fmatch(x,y), types)
-=======
+   
     if (missing(vocabulary)) {
         vocabulary <- types  
     } else {
         vocabulary <- c(vocabulary, types[!types %in% vocabulary]) 
     }
     xNumeric <- lapply(x, function(x,y) fmatch(x,y), vocabulary)
->>>>>>> dc599276e0290a80715815bd4a2f44972d75ef68
+
     class(xNumeric) <- c("tokenizedTextsHashed", class(xNumeric))
     attr(xNumeric, "vocabulary") <- vocabulary
     return(xNumeric)

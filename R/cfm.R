@@ -99,7 +99,7 @@ cfm <- function(x, ...) {
 #' txt <- "A D A C E A D F E B A C E D"
 #' cfm(txt, context = "window", window = 2)
 #' cfm(txt, context = "window", count = "weighted", window = 3)
-#' cfm(txt, context = "window", count = "weighted", window = 3, weights = c(3,2,1), ,ordered = TRUE, tri = FALSE)
+#' cfm(txt, context = "window", count = "weighted", window = 3, weights = c(3,2,1), ordered = TRUE, tri = FALSE)
 #' 
 #' # with multiple documents
 #' txts <- c("a a a b b c", "a a c e", "a c e f g")
@@ -154,7 +154,6 @@ cfm.tokenizedTexts <- function(x, context = c("document", "window"),
                                           x = tokenCoSum[ft],
                                           dims = c(lengthToken , lengthToken))
         diag(result) <- 0
-        
         result <- result + diagCount
         
         # order the features alphabetically
@@ -164,7 +163,7 @@ cfm.tokenizedTexts <- function(x, context = c("document", "window"),
     if (context == "window") { 
         try(if(window < 2) stop("The window size is too small.")) 
             
-        if (count == "weighted"){
+        if (count == "weighted") {
             if (!missing(weights) & length(weights) != window){
                 warning ("weights length is not equal to the window size, weights are assigned by default!")
                 weights <- 1
@@ -175,12 +174,10 @@ cfm.tokenizedTexts <- function(x, context = c("document", "window"),
         # order the features alphabetically
         types <- sort(types)
         n <- sum(lengths(x)) * (window + 1)
-        result <- fcm_cpp(x, types, count, window, weights, ordered, n)
+        result <- fcm_cpp(x, types, count, window, weights, ordered, tri, n)
         # set the dimnames of result
         dimnames(result) <- list(contexts = types, features = types)
     }
-
-    
 
     # discard the lower diagonal if tri == TRUE
     if (tri)
@@ -203,6 +200,85 @@ cfm.tokenizedTextsHashed <- function(x, context = c("document", "window"),
                               weights = 1L,
                               ordered = FALSE,
                               span_sentence = TRUE, tri = TRUE, ...) {
+    
+    context <- match.arg(context)
+    count <- match.arg(count)
+    
+    feature <- V1 <- NULL  # to avoid no visible binding errors in CHECK
+    # could add a warning if not roundly coerced to integer
+    window <- as.integer(window)
+    
+    if (!span_sentence)
+      warning("spanSentence = FALSE not yet implemented")
+    # 
+    # if (context == "document") {
+    #   tokenCount <- dfm(x, toLower = FALSE, verbose = FALSE)
+    # 
+    #   if (count == "boolean") {
+    #     x <- tf(tokenCount, "boolean")
+    #     result <- Matrix::crossprod(x)
+    #     tokenCo <- tokenCount > 1
+    #   } else if (count == "frequency") {
+    #     result <- Matrix::crossprod(tokenCount)
+    #     tokenCo <- apply(tokenCount, MARGIN=c(1,2), function(x) choose(x,2))
+    #   } else {
+    #     stop("Cannot have weighted counts with context = \"document\"")
+    #   }
+    # 
+    #   # compute co_occurrence of the diagonal elements
+    #   tokenCoSum <- apply(tokenCo, MARGIN = 2, sum)
+    #   ft <- tokenCoSum >= 1
+    #   diagIndex <- which(ft)
+    #   lengthToken <- length(ft)
+    #   diagCount <- Matrix::sparseMatrix(i = diagIndex,
+    #                                     j = diagIndex,
+    #                                     x = tokenCoSum[ft],
+    #                                     dims = c(lengthToken , lengthToken))
+    #   diag(result) <- 0
+    # 
+    #   result <- result + diagCount
+    # 
+    #   # order the features alphabetically
+    #   result <- result[order(rownames(result)), order(colnames(result))]
+    # }
+    
+    if (context == "window") { 
+        try(if(window < 2) stop("The window size is too small.")) 
+        
+        if (count == "weighted"){
+            if (!missing(weights) & length(weights) != window) {
+                warning ("weights length is not equal to the window size, weights are assigned by default!")
+                weights <- 1
+            }
+        }
+        n <- sum(lengths(unlist(x))) * (window + 1)
+        
+        result <- fcm_hash_cpp(x, length(unique(unlist(x))), count, window, weights, ordered, tri, n)
+        # set the dimnames of result
+        types <- attr(x, "vocabulary")
+        dimnames(result) <- list(contexts = types, features = types)
+    }
+    # discard the lower diagonal if tri == TRUE
+    if (tri)
+        result[lower.tri(result, diag = FALSE)] <- 0
+    
+    # create a new feature context matrix
+    result <- new("cfm", as(result, "dgCMatrix"), count = count,
+                  context = context, window = window, weights = weights, tri = tri)
+    # set the names 
+    names(result@Dimnames) <- c("contexts", "features")
+    result
+}
+
+
+#' @rdname cfm
+#' @export
+cfm.list <- function(x, context = c("document", "window"), 
+                                     count = c("frequency", "boolean", "weighted"),
+                                     window = 5L,
+                                     weights = 1L,
+                                     ordered = FALSE,
+                                     span_sentence = TRUE, tri = TRUE, ...) {
     
     context <- match.arg(context)
     count <- match.arg(count)
@@ -249,25 +325,29 @@ cfm.tokenizedTextsHashed <- function(x, context = c("document", "window"),
         try(if(window < 2) stop("The window size is too small.")) 
         
         if (count == "weighted"){
-            if (!missing(weights) & length(weights) != window){
+            if (!missing(weights) & length(weights) != window) {
                 warning ("weights length is not equal to the window size, weights are assigned by default!")
                 weights <- 1
             }
         }
-        #types <- unique(unlist(x, use.names = FALSE))
-        
-        # order the features alphabetically
-        #types <- sort(types)
-        
-        #numericX<- lapply(x, function(x, y) match(x, y), types)
         n <- sum(lengths(unlist(x))) * (window + 1)
         
-        result <- fcm_cpp4(x, length(unique(unlist(x))), count, window, weights, ordered, n)
+        result <- fcm_hash_cpp(x, length(unique(unlist(x))), count, window, weights, ordered, n)
         # set the dimnames of result
+        #types <- attr(x, "vocabulary")
         #dimnames(result) <- list(contexts = types, features = types)
     }
+    # discard the lower diagonal if tri == TRUE
+    #if (tri)
+    #    result[lower.tri(result, diag = FALSE)] <- 0
+    
+    # create a new feature context matrix
+    #result <- new("cfm", as(result, "dgCMatrix"), count = count,
+                 # context = context, window = window, weights = weights, tri = tri)
+    # set the names 
+    #names(result@Dimnames) <- c("contexts", "features")
+    # result
 }
-
 
 #' @rdname cfm
 #' @export

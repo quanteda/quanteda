@@ -4,6 +4,7 @@
 \alias{cfm}
 \alias{cfm.character}
 \alias{cfm.corpus}
+\alias{cfm.list}
 \alias{cfm.tokenizedTexts}
 \alias{cfm.tokenizedTextsHashed}
 \title{create a context-feature co-occurrence matrix}
@@ -15,6 +16,10 @@ cfm(x, ...)
   weights = 1L, ordered = FALSE, span_sentence = TRUE, tri = TRUE, ...)
 
 \method{cfm}{tokenizedTextsHashed}(x, context = c("document", "window"),
+  count = c("frequency", "boolean", "weighted"), window = 5L,
+  weights = 1L, ordered = FALSE, span_sentence = TRUE, tri = TRUE, ...)
+
+\method{cfm}{list}(x, context = c("document", "window"),
   count = c("frequency", "boolean", "weighted"), window = 5L,
   weights = 1L, ordered = FALSE, span_sentence = TRUE, tri = TRUE, ...)
 
@@ -91,7 +96,7 @@ The funciton \link{cfm} provides a very general implementation of a
 txt <- "A D A C E A D F E B A C E D"
 cfm(txt, context = "window", window = 2)
 cfm(txt, context = "window", count = "weighted", window = 3)
-cfm(txt, context = "window", count = "weighted", window = 3, weights = c(3,2,1), ,ordered = TRUE, tri = FALSE)
+cfm(txt, context = "window", count = "weighted", window = 3, weights = c(3,2,1), ordered = TRUE, tri = FALSE)
 
 # with multiple documents
 txts <- c("a a a b b c", "a a c e", "a c e f g")
