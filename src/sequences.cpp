@@ -85,6 +85,7 @@ Rcpp::List find_sequence_cppl(List texts,
         }else{
           is_in = set_types.find(token) != set_types.end();
         }
+        //if(is_in & tokens_seq.size() < len_max){
         if(is_in){
           //Rcout << "Match: " << token.get_cstring() << "\n";
           tokens_seq.push_back(token);
