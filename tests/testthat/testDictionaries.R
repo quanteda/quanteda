@@ -1,3 +1,83 @@
+context('test dictionaries.R')
+
+test_that("yoshikoder dictionaries load and percolate patterns correctly", {
+  dd <- dictionary(file="data/yoshi.ykd", format="yoshikoder")
+  expect_equal(names(dd), c("A category", "Another category"))
+  expect_equal(slot(dd, "format"), "yoshikoder")
+  # subcategory pattern contents are pulled up into top level category
+  expect_equal(dd[[1]], c("more", "lamb", "little"))
+  expect_equal(dd[[2]], c("had", "mary"))
+})
+  
+
+test_that("dictionary formats are autodetected from filenames", {
+
+  expected_dict <- dictionary(list(
+    'A category'=c('lamb', 'little', 'more'),
+    'Another category'=c('had', 'mary')
+  ))
+
+  actual_dict <- dictionary(file="../data/dictionaries/mary.dic")
+  expect_true(is(actual_dict, "dictionary"))
+  expect_equal(actual_dict@format, "LIWC")
+  expect_equal(lapply(actual_dict@.Data, sort), expected_dict@.Data)
+
+  
+
+
+  actual_dict <- dictionary(file="../data/dictionaries/mary.cat")
+  expect_true(is(actual_dict, "dictionary"))
+  expect_equal(actual_dict@format, "wordstat")
+  expect_equal(lapply(actual_dict@.Data, sort), expected_dict@.Data)
+
+
+  actual_dict <- dictionary(file="../data/dictionaries/mary.ykd")
+  expect_true(is(actual_dict, "dictionary"))
+  expect_equal(actual_dict@format, "yoshikoder")
+  expect_equal(lapply(actual_dict@.Data, sort), expected_dict@.Data)
+
+
+  actual_dict <- dictionary(file="../data/dictionaries/mary.lc3")
+  expect_true(is(actual_dict, "dictionary"))
+  expect_equal(actual_dict@format, "lexicoder")
+  expect_equal(lapply(actual_dict@.Data, sort), expected_dict@.Data)
+  
+
+  actual_dict <- dictionary(file="../data/dictionaries/mary.lcd")
+  expect_true(is(actual_dict, "dictionary"))
+  expect_equal(actual_dict@format, "yoshikoder")
+  expect_equal(lapply(actual_dict@.Data, sort), expected_dict@.Data)
+
+
+})
+
+
+test_that("explicit format overrides autodetected dictionary format", {
+  expected_dict <- dictionary(list(
+    'A category'=c('more', 'lamb', 'little'),
+    'Another category'=c('had', 'mary')
+  ))
+
+  actual_dict <- dictionary(file="../data/dictionaries/actually_ykd.cat", format='yoshikoder')
+  expect_true(is(actual_dict, "dictionary"))
+  expect_equal(actual_dict@format, "yoshikoder")
+  expect_equal(actual_dict@.Data, expected_dict@.Data)
+})
+
+
+test_that("unknown dictionary format raises error", {
+  expect_error(
+    dictionary(file="../data/dictionaries/mary.nonesuch", format='nonesuch'),
+    "'arg' should be one of .*"
+   )
+})
+
+test_that("unknown dictionary file extension raises error", {
+  expect_error(
+    dictionary(file="../data/dictionaries/mary.nonesuch"),
+    "Unknown dictionary file extension nonesuch"
+   )
+})
 
 # require(quanteda)
 # tmpdic2007 <- dictionary(file="~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2007_English080730.dic", format='LIWC')

@@ -3,7 +3,7 @@
 \name{applyDictionary}
 \alias{applyDictionary}
 \alias{applyDictionary.dfm}
-\title{apply a dictionary or thesarus to an object}
+\title{apply a dictionary or thesaurus to an object}
 \usage{
 applyDictionary(x, dictionary, ...)
 

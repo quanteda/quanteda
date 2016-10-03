@@ -130,7 +130,7 @@ when features are abstracted from a corpus, `quanteda` provides:
 *  expansion of the document-feature matrix structure through a standard interface called `textmodel()`.  (As of version 0.8.0, textmodel works in a basic fashion only for the "Wordscores" and "wordfish" scaling models.)
 
 
-## Working with other text analysis packages
+## Working with other text analysis packages
 
 `quanteda` is hardly unique in providing facilities for working with
 text -- the excellent *tm* package already provides many of the
@@ -159,30 +159,7 @@ additional analysis of topic models or scaling, such as:
 
 # How to Install
 
-As of version 0.8.0, the GitHub master repository will always contain the development version of quanteda, while the CRAN version will contain the latest "stable" version.  You therefore have two options for installing the package:
-
-1.  From CRAN, using your R package installer, or simply
-
-    ```{r eval=FALSE}
-    install.packages("quanteda")
-    ```
-
-2.  (For the development version) From GitHub, using
-
-    ```{r eval=FALSE}
-    devtools::install_github("kbenoit/quanteda")
-    ```
-
-    Because this compiles some C++ source code, you will need a compiler installed.  If you are using a Windows platform, this means you will need also to install the [Rtools](http://cran.r-project.org/bin/windows/Rtools/) software available from CRAN.  If you are using OS X, you will probably need to install XCode, available for free from the App Store.
-
-3.  (Optional) You can install some additional corpus data from **quantedaData** using
-
-    ```{r eval=FALSE}
-    ## devtools required to install quanteda from Github
-    devtools::install_github("kbenoit/quantedaData")
-    ```
-
-
+Through a normal installation of the package from CRAN, or for the GitHub version, see the installation instructions at https://github.com/kbenoit/quanteda.
 
 # Creating and Working with a Corpus
 

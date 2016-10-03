@@ -127,7 +127,9 @@ setMethod("show",
 #'   \link{corpus} to construct a corpus
 #' @author Adam Obeng, Kenneth Benoit, and Paul Nulty
 #' @export
-#' @importFrom utils download.file unzip type.convert
+#' @importFrom utils unzip type.convert
+#' @importFrom httr GET write_disk
+
 setGeneric("textfile",
            function(file, ignoreMissingFiles=FALSE, textField=NULL, 
                     cache = FALSE, docvarsfrom = c("filenames"), dvsep="_", 
@@ -184,15 +186,15 @@ setMethod("textfile",
                     stop('encoding parameter must be length 1, or as long as the number of files')
                   }
                   sources <- mapply(function(x, e) {
-                      getSource(f=x, textField=textField, encoding=e, ...)
+                      getSource(f=x, textField = textField, encoding = e, ...)
                   },
                       files, encoding,
-                      SIMPLIFY=FALSE
+                      SIMPLIFY = FALSE
                   )
               }
               else {
                   sources <- lapply(files, function(x) {
-                      getSource(x, textField, encoding=encoding, ...)}
+                      getSource(x, textField, encoding = encoding, ...)}
                   )
               }
               
@@ -238,20 +240,16 @@ downloadRemote <- function (i, ignoreMissing) {
     if (!(extension %in% names(SUPPORTED_FILETYPE_MAPPING))) {
         stop('Remote URL does not end in known extension. Please download the file manually.')
     }
+    localfile <- file.path(mktemp(directory=T), basename(i))
+    r <- httr::GET(i, httr::write_disk(localfile))
     if (ignoreMissing) {
-        localfile <- tryCatch({
-            localfile <- paste0(mktemp(), '.', extension) 
-            utils::download.file(i, destfile = localfile, quiet=T)
-            return(localfile)
-        },
-        warning = function(e) {
-            warning(e)
+        httr::warn_for_status(r)
+        if (httr::http_error(r)) {
             return(NULL)
         }
-    )}
+    }
     else {
-        localfile <- paste0(mktemp(), '.', extension) 
-        utils::download.file(i, destfile = localfile, quiet=T)
+        httr::stop_for_status(r)
     }
     localfile
 }
@@ -338,7 +336,7 @@ listMatchingFile <- function(x, ignoreMissing, verbose=F, lastRound) {
     
     # If not a URL (or a file:// URL) , treat it as a local file
     if (!is.na(scheme)) {
-        if (verbose) print('Remote file')
+        if (verbose) message('Remote file')
         #  If there is a non-'file' scheme, treat it as remote
         localfile <- downloadRemote(i, ignoreMissing=ignoreMissing)
         return(listMatchingFiles(localfile, ignoreMissing=ignoreMissing))
@@ -350,7 +348,7 @@ listMatchingFile <- function(x, ignoreMissing, verbose=F, lastRound) {
         tools::file_ext(i) == 'tar' ||
         tools::file_ext(i) == 'bz' 
         ) {
-        if (verbose) print('archive')
+        if (verbose) message('archive')
         archiveFiles <- extractArchive(i, ignoreMissing=ignoreMissing)
         return(listMatchingFiles(archiveFiles, ignoreMissing=ignoreMissing))
     }
@@ -363,12 +361,12 @@ listMatchingFile <- function(x, ignoreMissing, verbose=F, lastRound) {
         #  pattern, which means that it is definitely not a glob pattern this
         #  time
         if (!(ignoreMissing || file.exists(i))) stop("File", i, "does not exist.")
-        if (verbose) print('regular file')
+        if (verbose) message('regular file')
         return(i)
     }
     else {
         #  If it wasn't a glob pattern last time, then it may be this time
-        if (verbose) print('possible glob pattern')
+        if (verbose) message('possible glob pattern')
         i <- Sys.glob(i)
         return(
            listMatchingFiles(i, ignoreMissing=ignoreMissing, lastRound=T)
@@ -406,28 +404,37 @@ getSource <- function(f, textField, ...) {
         }
     })
 
-    switch(fileType, 
-           txt = {return(get_txt(f, ...))},
-           csv = {return(get_csv(f, textField, sep=',', ...))},
-           tsv = {return(get_csv(f, textField, sep='\t', ...))},
-           json = {return(get_json(f, textField, ...))},
-           xml = {return(get_xml(f, textField, ...))}
-    )
+    newSource <- switch(fileType, 
+               txt = get_txt(f, ...),
+               csv = get_csv(f, textField, sep=',', ...),
+               tsv = get_csv(f, textField, sep='\t', ...),
+               json = get_json(f, textField, ...),
+               xml = get_xml(f, textField, ...)
+        )
+
+    # assign filename (variants) unique text names
+    if ((len <- length(newSource$txts)) > 1) {
+        names(newSource$txts) <- paste(basename(f), seq_len(len), sep = ".")
+    } else {
+        names(newSource$txts) <- basename(f)
+    }
+
+    return(newSource)
 }
 
 get_txt <- function(f, ...) {
-    txt <- paste(readLines(con <- file(f, ...)), collapse="\n")
+    txt <- paste(readLines(con <- file(f, ...), warn = FALSE), collapse="\n")
     close(con)
-    list(txts=txt, docv=data.frame())
+    list(txts = txt, docv = data.frame())
 }
 
 
 ## csv format
 get_csv <- function(path, textField, ...) {
-    docs <- utils::read.csv(path, stringsAsFactors=FALSE, ...)
+    docs <- utils::read.csv(path, stringsAsFactors = FALSE, ...)
     if (is.character(textField)) {
-        textFieldi <- which(names(docs)==textField)
-        if (length(textFieldi)==0)
+        textFieldi <- which(names(docs) == textField)
+        if (length(textFieldi) == 0)
             stop(paste("There is no field called", textField, "in file", path))
         textField <- textFieldi
     } else if (is.numeric(textField) & (textField > ncol(docs))) {
@@ -436,7 +443,7 @@ get_csv <- function(path, textField, ...) {
 
     txts <- docs[, textField]
     docv <- docs[, -textField, drop = FALSE]
-    list(txts=txts, docv=docv)
+    list(txts = txts, docv = docv)
 }
 
 
@@ -471,7 +478,7 @@ get_json_tweets <- function(path, source="twitter", ...) {
         stop("You must have streamR installed to read Twitter json files.")
     
     # read raw json data
-    txt <- readLines(path, ...)
+    txt <- readLines(path, warn = FALSE, ...)
         
     results <- streamR::parseTweets(txt, verbose=FALSE, ...)
     list(txts = results[, 1], docv = as.data.frame(results[, -1, drop = FALSE]))
@@ -505,7 +512,7 @@ get_json_lines <- function(path, textField, ...) {
         stop('Cannot use numeric textField with json file')
     }
 
-    lines <- readLines(path)
+    lines <- readLines(path, warn = FALSE)
 
     docs <- data.table::rbindlist(
       lapply(lines, function(x)jsonlite::fromJSON(x, flatten=TRUE, ...)),
@@ -608,31 +615,4 @@ docvars.corpusSource <- function(x, field = NULL) {
     if (!is.null(field))
         warning("field argument not used for docvars on a corpusSource object", noBreaks. = TRUE)
     x@docvars
-}
-
-mktemp <- function(prefix='tmp.', base_path=NULL, directory=F) {
-    #  Create a randomly-named temporary file or directory, sort of like
-    #  https://www.mktemp.org/manual.html
-    if (is.null(base_path))
-        base_path <- tempdir()
-
-    alphanumeric <- c(0:9, LETTERS, letters)
-
-    filename <- paste0(sample(alphanumeric, 10, replace=T), collapse='')
-    filename <- paste0(prefix, filename)
-    filename <- file.path(base_path, filename)
-    while (file.exists(filename) || dir.exists(filename)) {
-        filename <- paste0(sample(alphanumeric, 10, replace=T), collapse='')
-        filename <- paste0(prefix, filename)
-        filename <- file.path(base_path, filename)
-    }
-
-    if (directory) {
-        dir.create(filename)
-    }
-    else {
-        file.create(filename)
-    }
-
-    return(filename)
 }

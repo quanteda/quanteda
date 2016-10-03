@@ -13,7 +13,7 @@
 #' seqs_token <- list(c('foreign', 'policy'), c('United', 'States'))
 #' seqs_glob <- list(c('foreign', 'polic*'), c('United', 'States'))
 #' seqs_regex <- list(c('^foreign', '^polic(ie|y)'), c('^United', '^States'))
-#' toks2 <- joinTokens(toks, seqs_token, "_", 'glob')
+#' toks2 <- joinTokens(toks, seqs_token, "_", 'fixed')
 #' toks2 <- joinTokens(toks, seqs_glob, "_", 'glob')
 #' toks2 <- joinTokens(toks, seqs_regex, "_", 'regex')
 #' kwic(toks2, 'foreign_policy', window=1) # joined
@@ -22,35 +22,35 @@
 #' @export
 joinTokens <- function(x, sequences, concatenator='-', valuetype='fixed', verbose=FALSE){
 
-  if(verbose) cat("Indexing tokens...\n")
+  if(verbose) catm("Indexing tokens...\n")
   index <- dfm(x, verbose = FALSE)
   index_binary <- as(index, 'nMatrix')
   types <- colnames(index_binary)
 
   seqs_token <- list()
   if(valuetype=='regex' | valuetype=='glob'){
-    if(verbose) cat("Converting patterns to tokens...\n")
+    if(verbose) catm("Converting patterns to tokens...\n")
     for(sequence in sequences){
       if(valuetype=='glob'){
         seq_regex <- unlist(lapply(sequence, utils::glob2rx))
       }else{
         seq_regex <- sequence
       }
-      #cat("seq_regex--------------------\n")
+      #catm("seq_regex--------------------\n")
       #print(seq_regex)
       match <- lapply(seq_regex, function(x, y) y[stringi::stri_detect_regex(y, x)], types)
-      #cat("match--------------------\n")
+      #catm("match--------------------\n")
       #print(match)
       if(length(unlist(seq_regex)) != length(match)) next
       match_comb <- do.call(expand.grid, c(match, stringsAsFactors=FALSE)) # produce all possible combinations
-      #cat("match_comb--------------------\n")
+      #catm("match_comb--------------------\n")
       #print(match_comb)
       seqs_token <- c(seqs_token, split_df_cpp(t(match_comb)))
     }
   }else{
     seqs_token <- sequences
   }
-  #cat("seqs_token--------------------\n")
+  #catm("seqs_token--------------------\n")
   #print(seqs_token)
   n_seqs <- length(seqs_token)
   if(n_seqs == 0) return(x)
@@ -61,10 +61,10 @@ joinTokens <- function(x, sequences, concatenator='-', valuetype='fixed', verbos
     if(length(seq_token) < 2) next
     if(is.list(seq_token) | !is.vector(seq_token) | length(seq_token) == 0) stop('Invalid token sequence\n');
     if(!all(seq_token %in% types)){
-      if(verbose) cat(paste0('"', seq_token, concatenate='', '"'), 'are not found', '\n')
+      if(verbose) catm(paste0('"', seq_token, concatenate='', '"'), 'are not found', '\n')
     }else{
       flag <- Matrix::rowSums(index_binary[,seq_token]) == length(seq_token)
-      if(verbose) cat(sprintf('%d/%d "%s" is found in %d texts\n', i, n_seqs, paste(seq_token, collapse=' '), sum(flag)))
+      if(verbose) catm(sprintf('%d/%d "%s" is found in %d texts\n', i, n_seqs, paste(seq_token, collapse=' '), sum(flag)))
       join_tokens_cppl(y, flag, seq_token, concatenator) # pass y as reference
     }
   }

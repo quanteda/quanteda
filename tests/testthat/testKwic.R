@@ -156,3 +156,51 @@ test_that("test kwic with multiple matches, where one is the last (fixed bug)", 
     )
 })
 
+
+txt <- inaugTexts["2005-Bush"]
+
+test_that("test that kwic works for glob types", {
+    kwicGlob <- kwic(txt, "secur*", window = 3, valuetype = "glob", case_insensitive = TRUE)
+    expect_true(
+        setequal(c("security", "secured", "securing", "Security"),
+                 unique(kwicGlob$keyword))
+    )
+    
+    kwicGlob <- kwic(txt, "secur*", window = 3, valuetype = "glob", case_insensitive = FALSE)
+    expect_true(
+        setequal(c("security", "secured", "securing"),
+                 unique(kwicGlob$keyword))
+    )
+    
+})
+
+test_that("test that kwic works for regex types", {
+    kwicRegex <- kwic(txt, "^secur", window = 3, valuetype = "regex", case_insensitive = TRUE)
+    expect_true(
+        setequal(c("security", "secured", "securing", "Security"),
+                 unique(kwicRegex$keyword))
+    )
+    
+    kwicRegex <- kwic(txt, "^secur", window = 3, valuetype = "regex", case_insensitive = FALSE)
+    expect_true(
+        setequal(c("security", "secured", "securing"),
+                 unique(kwicRegex$keyword))
+    )
+    
+})
+
+test_that("test that kwic works for fixed types", {
+    kwicFixed <- kwic(inaugTexts, "security", window = 3, valuetype = "fixed", case_insensitive = TRUE)
+    expect_true(
+        setequal(c("security", "Security"),
+                 unique(kwicFixed$keyword))
+    )
+    
+    kwicFixed <- kwic(inaugTexts, "security", window = 3, valuetype = "fixed", case_insensitive = FALSE)
+    expect_true(
+        setequal(c("security"),
+                 unique(kwicFixed$keyword))
+    )
+})
+
+
