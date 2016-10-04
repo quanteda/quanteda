@@ -1,20 +1,11 @@
 #include <Rcpp.h>
 #include <string>
 #include <algorithm>
+#include "quanteda.hpp"
 
 using namespace Rcpp;
 using namespace std;
-
-std::string join(std::vector< std::string > ngram, 
-                 std::string delim){
-    if(ngram.size() == 0) return "";
-    std::string token_ngram = ngram[0];
-    int len_ngram = ngram.size();
-    for (int i = 1; i < len_ngram; i++) {
-        token_ngram = token_ngram + delim + ngram[i];
-    }
-    return token_ngram;
-}
+using namespace quanteda;
 
 
 void skip(std::vector< std::string > &tokens,
@@ -63,7 +54,7 @@ StringVector skipgramcpp(std::vector < std::string > tokens,
     StringVector tokens_ngram;
     int len_ngrams = ngrams.size();
     for (int h = 0; h < len_ngrams; h++) {
-        Rcpp::String str(join(ngrams[h], delim));
+        Rcpp::String str(join_vector(ngrams[h], delim));
         str.set_encoding(CE_UTF8);
         tokens_ngram.push_back(str);
     }

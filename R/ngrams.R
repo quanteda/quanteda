@@ -141,11 +141,11 @@ ngrams.tokenizedTextsHashed <- function(x, n = 2L, skip = 0L, concatenator = "_"
   
   # Generate ngrams
   res <- qatd_cpp_ngram_hashed_list(x, n, skip)
+  vocabulary <- sapply(res$id_unigram, function(x, y, z) paste0(y[x], collapse=z), attr(x, 'vocabulary'), concatenator)
   
   # Make character tokens of ngrams
-  ngram_types <- sapply(res$id_unigram, function(x, y, z) paste0(y[x], collapse=z), attr(x, 'vocabulary'), concatenator)
   ngramsResult <- res$text
-  attr(ngramsResult, 'vocabulary') <- ngram_types
+  attr(ngramsResult, 'vocabulary') <- vocabulary
   class(ngramsResult) <- c("tokenizedTextsHashed")
   return(ngramsResult)
 }
