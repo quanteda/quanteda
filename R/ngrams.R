@@ -83,22 +83,24 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #' 
 #' '\dontrun{
 #' 
-#' tokens2 <- tokenize(head(inaugTexts, 1), removePunct=TRUE)
+#' 
+#' tokens2 <- tokenize(head(inaugTexts, 10), removePunct=TRUE)
 #' tokens2_hashed <- hashTokens(tokens2)
 #' 
 #' microbenchmark::microbenchmark(
 #'  old=ngrams(tokens2, n = 2:3, skip = 1:2, concatenator = "-"),
 #'  new=ngrams(tokens2_hashed, n = 2:3, skip = 1:2, concatenator = "-"),
-#'  times=1
+#'  times=1, unit='relative'
 #' )
+#' 
 #' 
 #' Rcpp::sourceCpp('src/ngrams_hashed.cpp')
 #' Rcpp::sourceCpp('src/ngrams.cpp')
 #' 
 #' microbenchmark::microbenchmark(
 #'    old=skipgramcpp(tokens2[[1]], 2:3, 1:2, '-'),
-#'    new=skipgramcpp_hashed_vector(tokens2_hashed[[1]], 2:3, 1:2),
-#'    times=10
+#'    new=qatd_cpp_ngram_hashed_vector(tokens2_hashed[[1]], 2:3, 1:2),
+#'    times=1, unit='relative'
 #' )
 #' 
 #' 
@@ -107,8 +109,8 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #' tokens3_hashed <- match(tokens3, types3)
 #' microbenchmark::microbenchmark(
 #'    old=skipgramcpp(tokens3, 2:3, 1:2, '-'),
-#'    new=skipgramcpp_hashed_vector(tokens3_hashed, 2:3, 1:2),
-#'    times=10
+#'    new=qatd_cpp_ngram_hashed_vector(tokens3_hashed, 2:3, 1:2),
+#'    times=10, unit='relative'
 #'  )
 #' 
 #' # Test with greater lexical diversity
@@ -117,18 +119,25 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #' types4 <- unique(tokens4)
 #' tokens4_hashed <- match(tokens4, types4)
 #' microbenchmark::microbenchmark(
-#'    low=skipgramcpp_hashed_vector(tokens3_hashed, 2:3, 1:2),
-#'    high=skipgramcpp_hashed_vector(tokens4_hashed, 2:3, 1:2),
-#'    times=10, unit='relative'
+#'    low=qatd_cpp_ngram_hashed_vector(tokens3_hashed, 2:3, 1:2),
+#'    high=qatd_cpp_ngram_hashed_vector(tokens4_hashed, 2:3, 1:2),
+#'    times=100, unit='relative'
 #' )
 #' 
 #' 
-#' }
+#' # Comparison with tokenizers's skip-grams
+#' tokenizers::tokenize_skip_ngrams('a b c d e', n=3, k=1) 
+#' # "a c e" "a b c" "b c d" "c d e"
+#' ngrams(tokenize('a b c d e'), n=3, skip=0:1, concatenator=' ') 
+#' # "a b c" "a b d" "a c d" "a c e" "b c d" "b c e" "b d e" "c d e"
+#' 
+#'}
+#' 
 #' @export
 ngrams.tokenizedTextsHashed <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
   
   # Generate ngrams
-  res <- skipgramcpp_hashed_list(x, n, skip)
+  res <- qatd_cpp_ngram_hashed_list(x, n, skip)
   
   # Make character tokens of ngrams
   ngram_ids <- res$id_ngram

@@ -13,16 +13,20 @@ fcm_cpp3 <- function(texts, types, count, window, weights, ordered, n) {
     .Call('quanteda_fcm_cpp3', PACKAGE = 'quanteda', texts, types, count, window, weights, ordered, n)
 }
 
+fcm_cpp4 <- function(texts, n_types, count, window, weights, ordered, nvec) {
+    .Call('quanteda_fcm_cpp4', PACKAGE = 'quanteda', texts, n_types, count, window, weights, ordered, nvec)
+}
+
 skipgramcpp <- function(tokens, ns, ks, delim) {
     .Call('quanteda_skipgramcpp', PACKAGE = 'quanteda', tokens, ns, ks, delim)
 }
 
-skipgramcpp_hashed_vector <- function(tokens, ns, skips) {
-    .Call('quanteda_skipgramcpp_hashed_vector', PACKAGE = 'quanteda', tokens, ns, skips)
+qatd_cpp_ngram_hashed_vector <- function(tokens, ns, skips) {
+    .Call('quanteda_qatd_cpp_ngram_hashed_vector', PACKAGE = 'quanteda', tokens, ns, skips)
 }
 
-skipgramcpp_hashed_list <- function(texts, ns, skips) {
-    .Call('quanteda_skipgramcpp_hashed_list', PACKAGE = 'quanteda', texts, ns, skips)
+qatd_cpp_ngram_hashed_list <- function(texts, ns, skips) {
+    .Call('quanteda_qatd_cpp_ngram_hashed_list', PACKAGE = 'quanteda', texts, ns, skips)
 }
 
 match_bit <- function(tokens1, tokens2) {
