@@ -6,6 +6,7 @@ using namespace Rcpp;
 using namespace std;
 
 typedef std::vector<unsigned int> Ngram;
+typedef std::vector<unsigned int> Ngrams;
 
 namespace std {
   template <>
@@ -21,11 +22,10 @@ namespace std {
   };
 }
 
-
 int ngram_id(Ngram ngram,
              std::unordered_map<Ngram, unsigned int> &map_ngram){
   
-  // Add new Id without multiple access
+  // Add new ID without multiple access
   unsigned int &id_ngram = map_ngram[ngram];
   if(id_ngram){
       return id_ngram;
@@ -39,7 +39,7 @@ void skip_hashed(NumericVector &tokens,
           unsigned int n, 
           NumericVector skips,
           Ngram ngram,
-          NumericVector &ngrams,
+          Ngrams &ngrams,
           std::unordered_map<Ngram, unsigned int> &map_ngram,
           int pos_tokens, int &pos_ngrams
 ){
@@ -64,14 +64,23 @@ void skip_hashed(NumericVector &tokens,
 }
 
 
-NumericVector skipgramcpp_hashed(NumericVector tokens,
-                                 NumericVector ns, 
-                                 NumericVector skips,
-                                 std::unordered_map<Ngram, unsigned int> &map_ngram) {
+Ngrams skipgramcpp_hashed(NumericVector tokens,
+                          NumericVector ns, 
+                          NumericVector skips,
+                          std::unordered_map<Ngram, unsigned int> &map_ngram) {
     
     int pos_tokens = 0; // Position in tokens
-    int pos_ngrams = 0; // Position in ngrams 
-    NumericVector ngrams(std::pow(tokens.size(), ns.size())); // Pre-allocate memory
+    int pos_ngrams = 0; // Position in ngrams
+    
+    int size_reserve = 0;
+    for (int k = 0; k < ns.size(); k++) {
+      size_reserve += std::pow(skips.size(), ns[k]) * tokens.size();
+      Rcout << "Tokens: " << tokens.size()  << "\n";
+      Rcout << "Skips: " << skips.size() << "\n";
+      Rcout << "Pow: " << std::pow(skips.size(), ns[k]) << "\n";
+    }
+    Rcout << "Allocate: " << size_reserve << "\n";
+    Ngrams ngrams(size_reserve); // Pre-allocate memory
     
     // Generate skipgrams recursively
     for (int k = 0; k < ns.size(); k++) {
@@ -81,23 +90,25 @@ NumericVector skipgramcpp_hashed(NumericVector tokens,
             skip_hashed(tokens, start, n, skips, ngram, ngrams, map_ngram, pos_tokens, pos_ngrams); // Get ngrams as reference
         }
     }
-    return ngrams[seq(0, pos_ngrams - 1)];
+    ngrams.resize(pos_ngrams - 1);
+    return ngrams;
 }
 
 // [[Rcpp::export]]
 List qatd_cpp_ngram_hashed_vector(NumericVector tokens,
-                                     NumericVector ns, 
-                                     NumericVector skips){
+                                  NumericVector ns, 
+                                  NumericVector skips){
   
   // Register both ngram (key) and unigram (value) IDs in a hash table
   std::unordered_map<Ngram, unsigned int> map_ngram;
-  NumericVector ngrams = skipgramcpp_hashed(tokens, ns, skips, map_ngram);
+  Ngrams ngrams = skipgramcpp_hashed(tokens, ns, skips, map_ngram);
   
   // Separate key and values of unordered_map
   NumericVector ids_ngram(map_ngram.size());
   List ids_unigram(map_ngram.size());
   int l = 0;
   for (std::pair<Ngram, unsigned int> iter : map_ngram){
+    //Rcout << l << ": " << iter.second << "\n";
     ids_unigram[l] = iter.first;
     ids_ngram[l] = iter.second;
     l++;
@@ -127,6 +138,7 @@ List qatd_cpp_ngram_hashed_list(List texts,
   List ids_unigram(map_ngram.size());
   int l = 0;
   for (std::pair<Ngram, unsigned int> iter : map_ngram){
+    //Rcout << l << ": " << iter.second << "\n";
     ids_unigram[l] = iter.first;
     ids_ngram[l] = iter.second;
     l++;
@@ -140,18 +152,20 @@ List qatd_cpp_ngram_hashed_list(List texts,
 
 /*** R
 
+size_max <- function(l, n) (l * n) ^ (l / n)
+size_max <- function(l, n) prod(l:(l-n+1))
 
 tokens <- rep(head(letters), 2)
 types <- unique(tokens)
 tokens_hashed <- match(tokens, types)
 
-#microbenchmark::microbenchmark(skipgramcpp(tokens, 2:3, 1:2, '-'),
-#                               qatd_cpp_ngram_hashed_vector(tokens_hashed, 2:3, 1:2))
+res <- qatd_cpp_ngram_hashed_vector(tokens_hashed, 1:4, 1:5)
+length(res$ngram)
 
-res <- qatd_cpp_ngram_hashed_vector(tokens_hashed, 1:5, 1:2)
+
 ngram <- res$ngram
 ngram_ids <- res$id_ngram
-ngram_types <- unlist(lapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-'))
+ngram_types <- sapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-')
 names(ngram_ids) <- ngram_types
 names(ngram_ids[match(ngram, ngram_ids)])
 */

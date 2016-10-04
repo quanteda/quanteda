@@ -141,15 +141,12 @@ ngrams.tokenizedTextsHashed <- function(x, n = 2L, skip = 0L, concatenator = "_"
   
   # Make character tokens of ngrams
   ngram_ids <- res$id_ngram
-  ngram_types <- unlist(lapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , 
-                               attr(x, 'vocabulary'), concatenator), use.names=FALSE)
+  ngram_types <- sapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z), attr(x, 'vocabulary'), concatenator)
   ngramsResult <- res$text
   attr(ngramsResult, 'vocabulary') <- ngram_types
   class(ngramsResult) <- c("tokenizedTextsHashed")
   return(ngramsResult)
 }
-
-unlist(lapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z), attr(res, 'vocabulary'), " "))
 
 #' @rdname ngrams
 #' @details Normally, \code{\link{ngrams}} will be called through 
