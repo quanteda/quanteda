@@ -75,7 +75,7 @@ NumericVector skipgramcpp_hashed(NumericVector tokens,
     int len_skips = skips.size();
     int e = 0; // Local index for unigrams in ngram
     int f = 0; // Global index for generated ngrams 
-    NumericVector ngrams(std::pow(len_ns * len_tokens, len_skips)); // Pre-allocate memory
+    NumericVector ngrams(std::pow(len_tokens, len_ns)); // Pre-allocate memory
     
     // Generate skipgrams recursively
     for (int g = 0; g < len_ns; g++) {
@@ -155,7 +155,7 @@ tokens_hashed <- match(tokens, types)
 #microbenchmark::microbenchmark(skipgramcpp(tokens, 2:3, 1:2, '-'),
 #                               qatd_cpp_ngram_hashed_vector(tokens_hashed, 2:3, 1:2))
 
-res <- qatd_cpp_ngram_hashed_vector(tokens_hashed, 2, 1)
+res <- qatd_cpp_ngram_hashed_vector(tokens_hashed, 1:5, 1:2)
 ngram <- res$ngram
 ngram_ids <- res$id_ngram
 ngram_types <- unlist(lapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-'))

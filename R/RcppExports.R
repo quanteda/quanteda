@@ -37,6 +37,26 @@ find_sequence_cppl <- function(texts, types, count_min, smooth, nested) {
     .Call('quanteda_find_sequence_cppl', PACKAGE = 'quanteda', texts, types, count_min, smooth, nested)
 }
 
+list_defined_charactor <- function(texts, tokens) {
+    .Call('quanteda_list_defined_charactor', PACKAGE = 'quanteda', texts, tokens)
+}
+
+list_defined_numeric <- function(texts, tokens) {
+    .Call('quanteda_list_defined_numeric', PACKAGE = 'quanteda', texts, tokens)
+}
+
+list_undefined <- function(texts, tokens) {
+    .Call('quanteda_list_undefined', PACKAGE = 'quanteda', texts, tokens)
+}
+
+set_std <- function(tokens, types) {
+    .Call('quanteda_set_std', PACKAGE = 'quanteda', tokens, types)
+}
+
+set_rcpp <- function(tokens, types) {
+    .Call('quanteda_set_rcpp', PACKAGE = 'quanteda', tokens, types)
+}
+
 join_tokens_cpp <- function(tokens, tokens_join, delim) {
     invisible(.Call('quanteda_join_tokens_cpp', PACKAGE = 'quanteda', tokens, tokens_join, delim))
 }
@@ -47,6 +67,14 @@ join_tokens_cppl <- function(texts, flags, tokens_join, delim) {
 
 select_tokens_cppl <- function(texts, flags, types, remove, spacer) {
     invisible(.Call('quanteda_select_tokens_cppl', PACKAGE = 'quanteda', texts, flags, types, remove, spacer))
+}
+
+qatd_cpp_selecttokens_mt <- function(x, types, remove, spacer) {
+    .Call('quanteda_qatd_cpp_selecttokens_mt', PACKAGE = 'quanteda', x, types, remove, spacer)
+}
+
+qatd_cpp_selecttokens_mt_hashed <- function(x, types, remove, spacer) {
+    .Call('quanteda_qatd_cpp_selecttokens_mt_hashed', PACKAGE = 'quanteda', x, types, remove, spacer)
 }
 
 split_df_cpp <- function(df) {

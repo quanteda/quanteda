@@ -36,11 +36,12 @@ Imports:
     proxy,
     parallel,
     Rcpp,
+    RcppParallel,
     ca,
     stringi,
     httr,
     fastmatch
-LinkingTo: Rcpp, RcppArmadillo
+LinkingTo: Rcpp, RcppParallel, RcppArmadillo
 Suggests:
     knitr,
     lda,

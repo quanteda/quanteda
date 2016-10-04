@@ -143,6 +143,66 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// list_defined_charactor
+ListOf<CharacterVector> list_defined_charactor(ListOf<CharacterVector> texts, CharacterVector tokens);
+RcppExport SEXP quanteda_list_defined_charactor(SEXP textsSEXP, SEXP tokensSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< ListOf<CharacterVector> >::type texts(textsSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type tokens(tokensSEXP);
+    rcpp_result_gen = Rcpp::wrap(list_defined_charactor(texts, tokens));
+    return rcpp_result_gen;
+END_RCPP
+}
+// list_defined_numeric
+ListOf<NumericVector> list_defined_numeric(ListOf<NumericVector> texts, NumericVector tokens);
+RcppExport SEXP quanteda_list_defined_numeric(SEXP textsSEXP, SEXP tokensSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< ListOf<NumericVector> >::type texts(textsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type tokens(tokensSEXP);
+    rcpp_result_gen = Rcpp::wrap(list_defined_numeric(texts, tokens));
+    return rcpp_result_gen;
+END_RCPP
+}
+// list_undefined
+List list_undefined(List texts, CharacterVector tokens);
+RcppExport SEXP quanteda_list_undefined(SEXP textsSEXP, SEXP tokensSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type texts(textsSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type tokens(tokensSEXP);
+    rcpp_result_gen = Rcpp::wrap(list_undefined(texts, tokens));
+    return rcpp_result_gen;
+END_RCPP
+}
+// set_std
+CharacterVector set_std(CharacterVector tokens, CharacterVector types);
+RcppExport SEXP quanteda_set_std(SEXP tokensSEXP, SEXP typesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type tokens(tokensSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type types(typesSEXP);
+    rcpp_result_gen = Rcpp::wrap(set_std(tokens, types));
+    return rcpp_result_gen;
+END_RCPP
+}
+// set_rcpp
+CharacterVector set_rcpp(CharacterVector tokens, CharacterVector types);
+RcppExport SEXP quanteda_set_rcpp(SEXP tokensSEXP, SEXP typesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type tokens(tokensSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type types(typesSEXP);
+    rcpp_result_gen = Rcpp::wrap(set_rcpp(tokens, types));
+    return rcpp_result_gen;
+END_RCPP
+}
 // join_tokens_cpp
 void join_tokens_cpp(CharacterVector tokens, CharacterVector tokens_join, const String& delim);
 RcppExport SEXP quanteda_join_tokens_cpp(SEXP tokensSEXP, SEXP tokens_joinSEXP, SEXP delimSEXP) {
@@ -180,6 +240,34 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const bool& >::type spacer(spacerSEXP);
     select_tokens_cppl(texts, flags, types, remove, spacer);
     return R_NilValue;
+END_RCPP
+}
+// qatd_cpp_selecttokens_mt
+List qatd_cpp_selecttokens_mt(SEXP x, CharacterVector& types, const bool& remove, const bool& spacer);
+RcppExport SEXP quanteda_qatd_cpp_selecttokens_mt(SEXP xSEXP, SEXP typesSEXP, SEXP removeSEXP, SEXP spacerSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    Rcpp::traits::input_parameter< CharacterVector& >::type types(typesSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type remove(removeSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type spacer(spacerSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_selecttokens_mt(x, types, remove, spacer));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_selecttokens_mt_hashed
+List qatd_cpp_selecttokens_mt_hashed(SEXP x, std::vector<int>& types, const bool& remove, const bool& spacer);
+RcppExport SEXP quanteda_qatd_cpp_selecttokens_mt_hashed(SEXP xSEXP, SEXP typesSEXP, SEXP removeSEXP, SEXP spacerSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    Rcpp::traits::input_parameter< std::vector<int>& >::type types(typesSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type remove(removeSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type spacer(spacerSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_selecttokens_mt_hashed(x, types, remove, spacer));
+    return rcpp_result_gen;
 END_RCPP
 }
 // split_df_cpp
