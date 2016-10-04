@@ -90,7 +90,7 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #' microbenchmark::microbenchmark(
 #'  old=ngrams(tokens2, n = 2:3, skip = 1:2, concatenator = "-"),
 #'  new=ngrams(tokens2_hashed, n = 2:3, skip = 1:2, concatenator = "-"),
-#'  times=1, unit='relative'
+#'  times=10, unit='relative'
 #' )
 #' 
 #' 
@@ -142,13 +142,14 @@ ngrams.tokenizedTextsHashed <- function(x, n = 2L, skip = 0L, concatenator = "_"
   # Make character tokens of ngrams
   ngram_ids <- res$id_ngram
   ngram_types <- unlist(lapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , 
-                               attr(x, 'vocabulary'), concatenator))
+                               attr(x, 'vocabulary'), concatenator), use.names=FALSE)
   ngramsResult <- res$text
   attr(ngramsResult, 'vocabulary') <- ngram_types
   class(ngramsResult) <- c("tokenizedTextsHashed")
   return(ngramsResult)
 }
 
+unlist(lapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z), attr(res, 'vocabulary'), " "))
 
 #' @rdname ngrams
 #' @details Normally, \code{\link{ngrams}} will be called through 
