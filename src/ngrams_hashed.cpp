@@ -41,25 +41,25 @@ void skip_hashed(NumericVector &tokens,
           Ngram ngram,
           NumericVector &ngrams,
           std::unordered_map<Ngram, unsigned int> &map_ngram,
-          int e, int &f
+          int pos_tokens, int &pos_ngrams
 ){
     
-    ngram[e] = tokens[start];
-    e++;
+    ngram[pos_tokens] = tokens[start];
+    pos_tokens++;
     
     //Rcout << "Token " << tokens[start] << "\n";
-    if(e < n){
+    if(pos_tokens < n){
         for (int j = 0; j < skips.size(); j++){
             int next = start + skips[j];
             if(next < 0 || tokens.size() - 1 < next) break;
-            //Rcout << "Join " << ngram << " at " << e << " " << next << "\n";
-            skip_hashed(tokens, next, n, skips, ngram, ngrams, map_ngram, e, f);
+            //Rcout << "Join " << ngram << " at " << pos_tokens << " " << next << "\n";
+            skip_hashed(tokens, next, n, skips, ngram, ngrams, map_ngram, pos_tokens, pos_ngrams);
         }
     }else{
-        //Rcout << "Add " << ngram << " at " << f << "/" << ngrams.size() << "\n";
-        ngrams[f] = ngram_id(ngram, map_ngram);
-        e = 0;
-        f++;
+        //Rcout << "Add " << ngram << " at " << pos_ngrams << "/" << ngrams.size() << "\n";
+        ngrams[pos_ngrams] = ngram_id(ngram, map_ngram);
+        pos_tokens = 0;
+        pos_ngrams++;
     }
 }
 
@@ -69,19 +69,19 @@ NumericVector skipgramcpp_hashed(NumericVector tokens,
                                  NumericVector skips,
                                  std::unordered_map<Ngram, unsigned int> &map_ngram) {
     
-    int e = 0; // Local index for unigrams in ngram
-    int f = 0; // Global index for generated ngrams 
+    int pos_tokens = 0; // Position in tokens
+    int pos_ngrams = 0; // Position in ngrams 
     NumericVector ngrams(std::pow(tokens.size(), ns.size())); // Pre-allocate memory
     
     // Generate skipgrams recursively
-    for (int g = 0; g < ns.size(); g++) {
-        int n = ns[g];
+    for (int k = 0; k < ns.size(); k++) {
+        int n = ns[k];
         Ngram ngram(n);
         for (int start = 0; start < tokens.size() - (n - 1); start++) {
-            skip_hashed(tokens, start, n, skips, ngram, ngrams, map_ngram, e, f); // Get ngrams as reference
+            skip_hashed(tokens, start, n, skips, ngram, ngrams, map_ngram, pos_tokens, pos_ngrams); // Get ngrams as reference
         }
     }
-    return ngrams[seq(0, f - 1)];
+    return ngrams[seq(0, pos_ngrams - 1)];
 }
 
 // [[Rcpp::export]]
@@ -96,11 +96,11 @@ List qatd_cpp_ngram_hashed_vector(NumericVector tokens,
   // Separate key and values of unordered_map
   NumericVector ids_ngram(map_ngram.size());
   List ids_unigram(map_ngram.size());
-  int k = 0;
+  int l = 0;
   for (std::pair<Ngram, unsigned int> iter : map_ngram){
-    ids_unigram[k] = iter.first;
-    ids_ngram[k] = iter.second;
-    k++;
+    ids_unigram[l] = iter.first;
+    ids_ngram[l] = iter.second;
+    l++;
   }
   
   return Rcpp::List::create(Rcpp::Named("ngram") = ngrams,
@@ -125,11 +125,11 @@ List qatd_cpp_ngram_hashed_list(List texts,
   // Separate key and values of unordered_map
   NumericVector ids_ngram(map_ngram.size());
   List ids_unigram(map_ngram.size());
-  int k = 0;
+  int l = 0;
   for (std::pair<Ngram, unsigned int> iter : map_ngram){
-    ids_unigram[k] = iter.first;
-    ids_ngram[k] = iter.second;
-    k++;
+    ids_unigram[l] = iter.first;
+    ids_ngram[l] = iter.second;
+    l++;
   }
 
   return Rcpp::List::create(Rcpp::Named("text") = texts_ngram,
