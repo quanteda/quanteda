@@ -32,7 +32,6 @@ int ngram_id(Ngram ngram,
   }
   id_ngram = map_ngram.size() + 1;
   return id_ngram;
-  
 }
 
 void skip_hashed(NumericVector &tokens,
@@ -70,22 +69,18 @@ NumericVector skipgramcpp_hashed(NumericVector tokens,
                                  NumericVector skips,
                                  std::unordered_map<Ngram, unsigned int> &map_ngram) {
     
-    int len_tokens = tokens.size();
-    int len_ns = ns.size();
-    int len_skips = skips.size();
     int e = 0; // Local index for unigrams in ngram
     int f = 0; // Global index for generated ngrams 
-    NumericVector ngrams(std::pow(len_tokens, len_ns)); // Pre-allocate memory
+    NumericVector ngrams(std::pow(tokens.size(), ns.size())); // Pre-allocate memory
     
     // Generate skipgrams recursively
-    for (int g = 0; g < len_ns; g++) {
+    for (int g = 0; g < ns.size(); g++) {
         int n = ns[g];
         Ngram ngram(n);
-        for (int start = 0; start < len_tokens - (n - 1); start++) {
+        for (int start = 0; start < tokens.size() - (n - 1); start++) {
             skip_hashed(tokens, start, n, skips, ngram, ngrams, map_ngram, e, f); // Get ngrams as reference
         }
     }
-
     return ngrams[seq(0, f - 1)];
 }
 
@@ -103,7 +98,6 @@ List qatd_cpp_ngram_hashed_vector(NumericVector tokens,
   List ids_unigram(map_ngram.size());
   int k = 0;
   for (std::pair<Ngram, unsigned int> iter : map_ngram){
-    //Rcout << "ID: " << iter.second << " for " << iter.first << "\n";
     ids_unigram[k] = iter.first;
     ids_ngram[k] = iter.second;
     k++;
@@ -121,10 +115,10 @@ List qatd_cpp_ngram_hashed_list(List texts,
 
   // Register both ngram (key) and unigram (value) IDs in a hash table
   std::unordered_map<Ngram, unsigned int> map_ngram;
-
-  int len = texts.size();
-  List texts_ngram(len);
-  for (int h = 0; h < len; h++){
+  
+  // Itterate over documents
+  List texts_ngram(texts.size());
+  for (int h = 0; h < texts.size(); h++){
       texts_ngram[h] = skipgramcpp_hashed(texts[h], ns, skips, map_ngram);
   }
   
@@ -133,7 +127,6 @@ List qatd_cpp_ngram_hashed_list(List texts,
   List ids_unigram(map_ngram.size());
   int k = 0;
   for (std::pair<Ngram, unsigned int> iter : map_ngram){
-    //Rcout << "ID: " << iter.second << " for " << iter.first << "\n";
     ids_unigram[k] = iter.first;
     ids_ngram[k] = iter.second;
     k++;
