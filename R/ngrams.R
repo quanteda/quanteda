@@ -128,6 +128,9 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #' # Comparison with tokenizers's skip-grams
 #' tokenizers::tokenize_skip_ngrams('a b c d e', n=3, k=1) 
 #' # "a c e" "a b c" "b c d" "c d e"
+#' tokenizers::tokenize_skip_ngrams('a b c d e', n=3, k=2) 
+#' # "a c e" "a b c" "b c d" "c d e"
+#' 
 #' ngrams(tokenize('a b c d e'), n=3, skip=0:1, concatenator=' ') 
 #' # "a b c" "a b d" "a c d" "a c e" "b c d" "b c e" "b d e" "c d e"
 #' 
@@ -140,8 +143,7 @@ ngrams.tokenizedTextsHashed <- function(x, n = 2L, skip = 0L, concatenator = "_"
   res <- qatd_cpp_ngram_hashed_list(x, n, skip)
   
   # Make character tokens of ngrams
-  ngram_ids <- res$id_ngram
-  ngram_types <- sapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z), attr(x, 'vocabulary'), concatenator)
+  ngram_types <- sapply(res$id_unigram, function(x, y, z) paste0(y[x], collapse=z), attr(x, 'vocabulary'), concatenator)
   ngramsResult <- res$text
   attr(ngramsResult, 'vocabulary') <- ngram_types
   class(ngramsResult) <- c("tokenizedTextsHashed")

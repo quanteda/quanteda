@@ -72,15 +72,12 @@ Ngrams skipgramcpp_hashed(NumericVector tokens,
     int pos_tokens = 0; // Position in tokens
     int pos_ngrams = 0; // Position in ngrams
     
+    // Pre-allocate memory
     int size_reserve = 0;
     for (int k = 0; k < ns.size(); k++) {
-      size_reserve += std::pow(skips.size(), ns[k]) * tokens.size();
-      Rcout << "Tokens: " << tokens.size()  << "\n";
-      Rcout << "Skips: " << skips.size() << "\n";
-      Rcout << "Pow: " << std::pow(skips.size(), ns[k]) << "\n";
+        size_reserve += std::pow(skips.size(), ns[k]) * tokens.size();
     }
-    Rcout << "Allocate: " << size_reserve << "\n";
-    Ngrams ngrams(size_reserve); // Pre-allocate memory
+    Ngrams ngrams(size_reserve);
     
     // Generate skipgrams recursively
     for (int k = 0; k < ns.size(); k++) {
