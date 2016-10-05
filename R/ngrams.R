@@ -100,7 +100,7 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #' microbenchmark::microbenchmark(
 #'    old=skipgramcpp(tokens2[[1]], 2:3, 1:2, '-'),
 #'    new=qatd_cpp_ngram_hashed_vector(tokens2_hashed[[1]], 2:3, 1:2),
-#'    times=1, unit='relative'
+#'    times=10, unit='relative'
 #' )
 #' 
 #' 
@@ -141,11 +141,11 @@ ngrams.tokenizedTextsHashed <- function(x, n = 2L, skip = 0L, concatenator = "_"
   
   # Generate ngrams
   res <- qatd_cpp_ngram_hashed_list(x, n, skip)
-  vocabulary <- sapply(res$id_unigram, function(x, y, z) paste0(y[x], collapse=z), attr(x, 'vocabulary'), concatenator)
   
   # Make character tokens of ngrams
+  ngram_types <- sapply(res$id_unigram, function(x, y, z) paste0(y[x], collapse=z), attr(x, 'vocabulary'), concatenator)
   ngramsResult <- res$text
-  attr(ngramsResult, 'vocabulary') <- vocabulary
+  attr(ngramsResult, 'vocabulary') <- ngram_types
   class(ngramsResult) <- c("tokenizedTextsHashed")
   return(ngramsResult)
 }

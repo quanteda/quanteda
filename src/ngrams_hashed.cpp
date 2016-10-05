@@ -33,13 +33,12 @@ int ngram_id(Ngram ngram,
   unsigned int &id_ngram = map_ngram[ngram];
   if(id_ngram){
       //Rcout << "Old " << id_ngram << ": ";
-      //print_ngram_hashed(ngram);
+      //dev::print_ngram_hashed(ngram);
       return id_ngram;
   }
-  id_ngram = map_ngram.size() + 1;
-  id_ngram = id_ngram - 1; // offset to start ID from 1
+  id_ngram = map_ngram.size();
   //Rcout << "New " << id_ngram << ": ";
-  //print_ngram_hashed(ngram);
+  //dev::print_ngram_hashed(ngram);
   return id_ngram;
 }
 
