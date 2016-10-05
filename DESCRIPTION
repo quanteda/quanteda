@@ -32,7 +32,7 @@ Imports:
     Matrix (>= 1.2),
     data.table (>= 1.9.6),
     SnowballC,
-    wordcloud,
+    wordcloud2,
     proxy,
     parallel,
     Rcpp,
