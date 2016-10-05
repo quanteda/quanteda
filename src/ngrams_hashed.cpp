@@ -150,19 +150,19 @@ List qatd_cpp_ngram_hashed_list(List texts,
 
 /*** R
 
-tokens <- tokenize(c('a b c d e', 'c d e f g'))
-tokens_hashed <- hashTokens(tokens)
-res <- qatd_cpp_ngram_hashed_list(tokens_hashed, 2, 0:1)
-res$text
+# tokens <- tokenize(c('a b c d e', 'c d e f g'))
+# tokens_hashed <- hashTokens(tokens)
+# res <- qatd_cpp_ngram_hashed_list(tokens_hashed, 2, 0:1)
+# res$text
 
-# tokens <- rep(head(letters), 2)
-# types <- unique(tokens)
-# tokens_hashed <- match(tokens, types)
-# res <- qatd_cpp_ngram_hashed_vector(tokens_hashed, 1:4, 1:5)
-# ngram <- res$ngram
-# ngram_ids <- res$id_ngram
-# ngram_types <- sapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-')
-# names(ngram_ids) <- ngram_types
-# names(ngram_ids[match(ngram, ngram_ids)])
+tokens <- rep(head(letters), 2)
+types <- unique(tokens)
+tokens_hashed <- match(tokens, types)
+res <- qatd_cpp_ngram_hashed_vector(tokens_hashed, 3, 1)
+ngram <- res$ngram
+ngram_ids <- res$id_ngram
+vocaburary <- sapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-')
+vocaburary[ngram]
+
 */
 
