@@ -2,6 +2,7 @@
 #include <string>
 #include <algorithm>
 #include "quanteda.hpp"
+#include "quanteda.hpp"
 
 using namespace Rcpp;
 using namespace std;

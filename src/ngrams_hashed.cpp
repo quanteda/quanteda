@@ -133,6 +133,7 @@ List qatd_cpp_ngram_hashed_list(List texts,
   List texts_ngram(texts.size());
   for (int h = 0; h < texts.size(); h++){
       texts_ngram[h] = skipgram_hashed(texts[h], ns, skips, map_ngram);
+      Rcpp::checkUserInterrupt(); // allow user to stop
   }
   
   // Separate key and values of unordered_map
