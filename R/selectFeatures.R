@@ -572,9 +572,9 @@ selectFeaturesParallel.tokenizedTexts <- function(x, features, selection = c("ke
     }
     if (verbose) cat(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
     if(selection == "remove"){
-      y <- select_tokens_cppl_mt(x, types_match, TRUE, padding)
+      y <- qatd_cpp_selecttokens_mt(x, types_match, TRUE, padding)
     }else{ 
-      y <- select_tokens_cppl_mt(x, types_match, FALSE, padding)
+      y <- qatd_cpp_selecttokens_mt(x, types_match, FALSE, padding)
     }
   } else if (valuetype == "regex") {
     if (verbose) cat("Converting regex to fixed...\n")
@@ -582,9 +582,9 @@ selectFeaturesParallel.tokenizedTexts <- function(x, features, selection = c("ke
     if(indexing) flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
     if(verbose) cat(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
     if (selection == "remove") {
-      y <- select_tokens_cppl_mt(x, types_match, TRUE, padding)  # search as fixed
+      y <- qatd_cpp_selecttokens_mt(x, types_match, TRUE, padding)  # search as fixed
     } else {
-      y <- select_tokens_cppl_mt(x, types_match, FALSE, padding) # search as fixed
+      y <- qatd_cpp_selecttokens_mt(x, types_match, FALSE, padding) # search as fixed
     }
   }
   
@@ -621,9 +621,9 @@ selectFeaturesParallel.indexedTexts <- function(x, features, selection = c("keep
                                                 case_insensitive = TRUE, padding = FALSE, verbose = FALSE, ...) {
   toks <- list(1:50, 200:250)
   if(selection=='remove'){
-    y <-  select_tokens_cppl_mt4(x, features, TRUE, padding)
+    y <-  qatd_cpp_selecttokens_mt_hashed(x, features, TRUE, padding)
   }else{
-    y <-  select_tokens_cppl_mt4(x, features, FALSE, padding)
+    y <-  qatd_cpp_selecttokens_mt_hashed(x, features, FALSE, padding)
   }
   return(y)
 }
