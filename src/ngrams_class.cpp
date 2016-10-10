@@ -103,36 +103,32 @@ class ngramMaker {
     }
     
 
-    List qatd_cpp_ngram_hashed_vector(NumericVector tokens,
+    List ngram_hashed_vector(NumericVector tokens,
                                       NumericVector ns, 
                                       NumericVector skips){
       
         // Register both ngram (key) and unigram (value) IDs in a hash table
         Ngrams ngrams = skipgram_hashed(tokens, ns, skips);
         
-        // Separate key and values of unordered_map
-        List ids_unigram(map_ngram.size());
-        for (std::pair<Ngram, unsigned int> iter : map_ngram){
-          //Rcout << "ID " << to_string(iter.second) << ": ";
-          //print_ngram_hashed(iter.first);
-          ids_unigram[iter.second - 1] = iter.first;
-        }
-        
         return Rcpp::List::create(Rcpp::Named("ngram") = ngrams,
-                                  Rcpp::Named("id_unigram") = ids_unigram);
+                                  Rcpp::Named("id_unigram") = vocaburary());
     }
     
-    List qatd_cpp_ngram_hashed_list(List texts,
+    List ngram_hashed_list(List texts,
                                     NumericVector ns,
                                     NumericVector skips) {
         
-    
         // Itterate over documents
         List texts_ngram(texts.size());
         for (int h = 0; h < texts.size(); h++){
-          texts_ngram[h] = skipgram_hashed(texts[h], ns, skips);
-          Rcpp::checkUserInterrupt(); // allow user to stop
+            texts_ngram[h] = skipgram_hashed(texts[h], ns, skips);
+            Rcpp::checkUserInterrupt(); // allow user to stop
         }
+        return Rcpp::List::create(Rcpp::Named("text") = texts_ngram,
+                                  Rcpp::Named("id_unigram") = vocaburary());
+    }
+      
+    List vocaburary(){
         
         // Separate key and values of unordered_map
         List ids_unigram(map_ngram.size());
@@ -140,10 +136,8 @@ class ngramMaker {
           //Rcout << "ID " << to_string(iter.second) << ": ";
           //print_ngram_hashed(iter.first);
           ids_unigram[iter.second - 1] = iter.first;
-        }
-        
-        return Rcpp::List::create(Rcpp::Named("text") = texts_ngram,
-                                  Rcpp::Named("id_unigram") = ids_unigram);
+        }  
+        return ids_unigram;
     }
     
     private:
@@ -154,7 +148,7 @@ class ngramMaker {
 RCPP_MODULE(ngram_module) {
   class_<ngramMaker>("ngramMaker")
   .constructor()
-  .method("generate", &ngramMaker::qatd_cpp_ngram_hashed_vector)
+  .method("generate", &ngramMaker::ngram_hashed_vector)
   ;
 }
 
