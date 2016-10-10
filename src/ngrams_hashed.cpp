@@ -1,7 +1,7 @@
 #include <Rcpp.h>
 #include <unordered_map>
 #include <numeric>
-#include "dev.h"
+#include "dev.hpp"
 #include "quanteda.hpp"
 
 // [[Rcpp::plugins(cpp11)]]
@@ -16,10 +16,8 @@ namespace std {
   template <>
 
   // Custom hash function for Ngram objects
-  struct hash<Ngram>
-  {
-    std::size_t operator()(const Ngram &vec) const
-    {
+  struct hash<Ngram> {
+    std::size_t operator()(const Ngram &vec) const {
       unsigned int seed = std::accumulate(vec.begin(), vec.end(), 0);
       return std::hash<unsigned int>()(seed);
     }

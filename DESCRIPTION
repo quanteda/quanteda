@@ -105,5 +105,6 @@ Collate:
     'util.R'
     'wordstem.R'
     'zzz.R'
+RcppModules: ngramMaker
 RoxygenNote: 5.0.1
 SystemRequirements: C++11
