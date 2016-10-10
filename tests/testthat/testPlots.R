@@ -49,7 +49,7 @@ test_that("test plot.kwic scale argument default", {
 test_that("test plot.kwic facet order parameter", {
 
     p <- plot(kwic(inaugCorpus, 'american'), sort=TRUE)
-    plot_docnames <- as.character(ggplot2::ggplot_build(p)$panel$layout$docname)
+    plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
     expect_true(
         all(
             plot_docnames[order(plot_docnames)] == plot_docnames
@@ -57,7 +57,7 @@ test_that("test plot.kwic facet order parameter", {
     )
 
     p <- plot(kwic(inaugCorpus, 'american'), kwic(inaugCorpus, 'people'), sort=TRUE)
-    plot_docnames <- as.character(ggplot2::ggplot_build(p)$panel$layout$docname)
+    plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
     expect_true(
         all(
             plot_docnames[order(plot_docnames)] == plot_docnames
@@ -65,8 +65,9 @@ test_that("test plot.kwic facet order parameter", {
     )
 
     # Default should be false
+    #TODO Fix this
     p <- plot(kwic(inaugCorpus, 'american'), kwic(inaugCorpus, 'people'))
-    plot_docnames <- as.character(ggplot2::ggplot_build(p)$panel$layout$docname)
+    plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
     expect_false(
         all(
             plot_docnames[order(plot_docnames)] == plot_docnames
@@ -79,11 +80,7 @@ test_that("test plot.kwic facet order parameter", {
 test_that("test plot.kwic keeps order of keywords passed", {
     p <- plot(kwic(inaugCorpus, 'people'), kwic(inaugCorpus, 'american'), sort=TRUE)
     expect_equal(
-        as.character(unique(ggplot2::ggplot_build(p)$panel$layout$keyword)),
+        as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$keyword)),
         c('people', 'american')
     )
 })
-
-kwics <- list(kwic(inaugCorpus, 'people'), kwic(inaugCorpus, 'american'))
-
-
