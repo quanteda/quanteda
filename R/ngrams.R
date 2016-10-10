@@ -95,12 +95,15 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #' 
 #' 
 #' Rcpp::sourceCpp('src/ngrams_hashed.cpp')
+#' Rcpp::sourceCpp('src/ngrams_class.cpp')
 #' Rcpp::sourceCpp('src/ngrams.cpp')
-#' 
+#' nm <- new(ngramMaker)
+#'
 #' microbenchmark::microbenchmark(
 #'    old=skipgramcpp(tokens2[[1]], 2:3, 1:2, '-'),
 #'    new=qatd_cpp_ngram_hashed_vector(tokens2_hashed[[1]], 2:3, 1:2),
-#'    times=10, unit='relative'
+#'    class=nm$generate(tokens2_hashed[[1]], 2:3, 1:2),
+#'    times=100, unit='relative'
 #' )
 #' 
 #' 

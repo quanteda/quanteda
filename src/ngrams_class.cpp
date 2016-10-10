@@ -1,7 +1,7 @@
 #include <Rcpp.h>
 #include <unordered_map>
 #include <numeric>
-#include "dev.h"
+#include "dev.hpp"
 #include "quanteda.hpp"
 
 // [[Rcpp::plugins(cpp11)]]
@@ -14,12 +14,9 @@ typedef std::vector<unsigned int> Ngrams;
 
 namespace std {
   template <>
-
   // Custom hash function for Ngram objects
-  struct hash<Ngram>
-  {
-    std::size_t operator()(const Ngram &vec) const
-    {
+  struct hash<Ngram> {
+    std::size_t operator()(const Ngram &vec) const {
       unsigned int seed = std::accumulate(vec.begin(), vec.end(), 0);
       return std::hash<unsigned int>()(seed);
     }
@@ -47,7 +44,7 @@ class ngramMaker {
         return id_ngram;
     }
     
-    void skip_hashed(NumericVector &tokens,
+    void skip(NumericVector &tokens,
                      unsigned int start,
                      unsigned int n, 
                      NumericVector skips,
@@ -65,7 +62,7 @@ class ngramMaker {
               int next = start + skips[j];
               if(next < 0 || tokens.size() - 1 < next) break;
               //Rcout << "Join " << ngram << " at " << pos_tokens << " " << next << "\n";
-              skip_hashed(tokens, next, n, skips, ngram, ngrams, pos_tokens, pos_ngrams);
+              skip(tokens, next, n, skips, ngram, ngrams, pos_tokens, pos_ngrams);
             }
         }else{
             //Rcout << "Add " << ngram << " at " << pos_ngrams << "/" << ngrams.size() << "\n";
@@ -76,9 +73,7 @@ class ngramMaker {
     }
     
     
-    Ngrams skipgram_hashed(NumericVector tokens,
-                           NumericVector ns, 
-                           NumericVector skips) {
+    Ngrams ngram(NumericVector tokens, NumericVector ns, NumericVector skips) {
       
         int pos_tokens = 0; // Position in tokens
         int pos_ngrams = 0; // Position in ngrams
@@ -95,7 +90,7 @@ class ngramMaker {
           int n = ns[k];
           Ngram ngram(n);
           for (int start = 0; start < tokens.size() - (n - 1); start++) {
-            skip_hashed(tokens, start, n, skips, ngram, ngrams, pos_tokens, pos_ngrams); // Get ngrams as reference
+            skip(tokens, start, n, skips, ngram, ngrams, pos_tokens, pos_ngrams); // Get ngrams as reference
           }
         }
         ngrams.resize(pos_ngrams - 1);
@@ -103,25 +98,21 @@ class ngramMaker {
     }
     
 
-    List ngram_hashed_vector(NumericVector tokens,
-                                      NumericVector ns, 
-                                      NumericVector skips){
+    List ngram_vector(NumericVector tokens, NumericVector ns, NumericVector skips){
       
         // Register both ngram (key) and unigram (value) IDs in a hash table
-        Ngrams ngrams = skipgram_hashed(tokens, ns, skips);
+        Ngrams ngrams = ngram(tokens, ns, skips);
         
         return Rcpp::List::create(Rcpp::Named("ngram") = ngrams,
                                   Rcpp::Named("id_unigram") = vocaburary());
     }
     
-    List ngram_hashed_list(List texts,
-                                    NumericVector ns,
-                                    NumericVector skips) {
+    List ngram_list(List texts, NumericVector ns, NumericVector skips) {
         
         // Itterate over documents
         List texts_ngram(texts.size());
         for (int h = 0; h < texts.size(); h++){
-            texts_ngram[h] = skipgram_hashed(texts[h], ns, skips);
+            texts_ngram[h] = ngram(texts[h], ns, skips);
             Rcpp::checkUserInterrupt(); // allow user to stop
         }
         return Rcpp::List::create(Rcpp::Named("text") = texts_ngram,
@@ -145,10 +136,11 @@ class ngramMaker {
         std::unordered_map<Ngram, unsigned int> map_ngram; 
 };
 
+// Expose C++ class to R
 RCPP_MODULE(ngram_module) {
   class_<ngramMaker>("ngramMaker")
   .constructor()
-  .method("generate", &ngramMaker::ngram_hashed_vector)
+  .method("generate", &ngramMaker::ngram_vector)
   ;
 }
 
