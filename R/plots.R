@@ -149,7 +149,7 @@ plot.kwic <- function(..., scale = c("absolute", "relative"), sort=FALSE) {
                        plot.background = ggplot2::element_blank(),
                        axis.ticks.y = ggplot2::element_blank(), 
                        axis.text.y = ggplot2::element_blank(),
-                       panel.margin = grid::unit(0.1, "lines"), 
+                       panel.spacing = grid::unit(0.1, "lines"), 
                        panel.border = ggplot2::element_rect(colour = "gray", fill=NA),
                        strip.text.y = ggplot2::element_text(angle=0)
         ) 
