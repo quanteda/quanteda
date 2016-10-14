@@ -106,6 +106,12 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #'    times=100, unit='relative'
 #' )
 #' 
+#' microbenchmark::microbenchmark(
+#'  obj=nm$generate_list(tokens2_hashed, 2:3, 1:2),
+#'  ptr=nm$generate_list_ptr(tokens2_hashed, 2:3, 1:2),
+#'  times=100, unit='relative'
+#' )
+#' 
 #' 
 #' tokens3 <- rep(letters, 50)
 #' types3 <- unique(tokens3)

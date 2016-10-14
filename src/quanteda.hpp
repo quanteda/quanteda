@@ -28,6 +28,13 @@ namespace quanteda{
         }
         return token_ngram;
     }
+
+    // Tokens object
+    class Tokens {
+      public:
+      Tokens(List documents_, List vocaburary_): documents(documents_), vocaburary(vocaburary_){}
+      Rcpp::List documents, vocaburary;;
+    };
 }
 
 #endif
