@@ -1,3 +1,23 @@
+#' Extract vocaburary
+#' @rdname hashTokens
+#' @param x tokenizedText
+#' @export
+vocaburary <- function(x, ...) {
+  UseMethod("vocaburary")
+}
+
+#' @rdname hashTokens
+#' @export
+vocaburary.tokenizedTexts <- function(x){
+  return(unique(unlist(x, use.names = FALSE)))
+}
+
+#' @rdname hashTokens
+#' @export
+vocaburary.tokenizedTextsHashed <- function(x){
+  return(attr(x, "vocabulary"))
+}
+
 #' Constructor for tokenizedTextsHashed objects
 #' 
 #' Creates a hashed object of tokenizedTexts.
