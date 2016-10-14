@@ -52,7 +52,7 @@ Suggests:
     XML,
     testthat,
     RColorBrewer,
-    ggplot2,
+    ggplot2 (>= 2.1.0),
     grid
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
