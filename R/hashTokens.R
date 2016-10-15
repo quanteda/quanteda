@@ -56,9 +56,10 @@ hashTokens.tokenizedTexts <- function(x, vocabulary, ...) {
 
     # order the features alphabetically
     types <- sort(types)
-   
+    types <- types[types!=''] # make padding NA
+    
     if (missing(vocabulary)) {
-        vocabulary <- types  
+        vocabulary <- types
     } else {
         vocabulary <- c(vocabulary, types[!types %in% vocabulary]) 
     }
