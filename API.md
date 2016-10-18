@@ -104,7 +104,7 @@ These functions process one object, either a base or a **quanteda** type, and cr
 
 new name | original name | methods | output object | family
 :--------|:------------- |:------- |:------------- |:-------
-`corpus` | | corpusSource, character, data.frame, VCorpus | corpus | corpus
+`corpus` | | readtext, character, data.frame, VCorpus | corpus | corpus
 `dfm` | | corpus, character | dfm | dfm
 `dictionary` |  | named list | dictionary | dictionary
 `tokens` | `tokenize` | corpus, character | tokenizedTexts | tokens
@@ -154,10 +154,9 @@ new name | original name | methods | output object | family
 `dfm_sample` | (`trim` option) | dfm | dfm | dfm
 `dfm_tolower` | `toLower` | dfm | dfm | dfm
 `dfm_toupper` | `toUpper` | dfm | dfm | dfm
-`dfm_dictionarize`<sup>1</sup> | `applyDictionary` | dfm | dfm | dfm
+`dfm_lookup` | `applyDictionary` | dfm | dfm | dfm
 `dfm_sort`    | `sort` | dfm | dfm | dfm
 
-<sup>1</sup> Can anyone think of a verb that would describe the application of a dictionary??
 
 **For `fcm`**:  
 
@@ -239,8 +238,9 @@ new name | original name | methods | output object | family
 :--------|:------------- |:------- |:------------- |:-------
 `textplot_wordcloud` | `plot.dfm` | dfm | (wordcloud plot) | textplot
 `textplot_xray`  | `plot_kwic` |  kwic | (x-ray plot) | textplot
+`textplot_positions`  | `plot.textmodel_wordfish_fitted` |  textmodel_wordfish_fitted | scaled positions with intervals | textplot
 
-We can think of additional functions to produce other plot types (from `fcm` objects).  
+We can think of (many) additional functions to produce other plot types (from `fcm` objects).  
 
 
 
@@ -324,16 +324,17 @@ function | notes | output object | family
 `plot.kwic` | same as `textplot_xray` for a kwic class object, and will be undocumented but equivalent to that command | (plot) | textplot
 
 
-### Functions that will be removed
+### Functions that will be deprecated and removed
 
-The biggest change here is the phasing out of `textfile()`, the intermediate function to load files into R for use in constructing a corpus.  The new version of `corpus()` will allow this to take place directly.
+The biggest change here is the phasing out of `textfile()`, the intermediate function to load files into R for use in constructing a corpus.  Instead, this will be put into a new package, called **readtext**.  This package will also handle the encoding (detecting and conversion) issues. This would create a special class of object, from which `quanteda::corpus()` would construct a corpus (with metadata and docvars) directly. *readtext* would also have coercion methods to make a data.frame, extract texts as a character object, etc.  This not only moves this tricky functions outside of **quanteda**, but also makes it possible for others to use the functions for reading texts, even if they are not using quanteda.
 
-function name | methods | input object | output object | notes
+
+function name | replacement name | input object | output object | notes
 :--------|:------------- |:------- |:------------- |:-------
 `describeTexts` | `describeTexts` | character | |
 `clean` |  | | |
-`corpus(file = "")` | `textfile` | *files* | corpus | incorporated into `corpus()`
-`convert` | `as.wfm`|  dfm | austin::wfm |
-`convert` | `dfm2ldaformat` |  dfm | **lda** input object |
-`convert` | `quantedaformat2dtm` | dfm | tm::DocumentTermMatrix |
-`wordlists` | | | character | replaced by `data_char_wordlists`
+`textfile` | (new **readtext** package) | *(files)* | corpus | incorporated into `corpus()`
+`as.wfm`|`convert` |   dfm | austin::wfm |
+`dfm2ldaformat` | `convert` |  dfm | **lda** input object |
+`quantedaformat2dtm` | `convert` |  dfm | tm::DocumentTermMatrix |
+`wordlists` | `data_char_wordlists` | *(data)* | character | replaced by
