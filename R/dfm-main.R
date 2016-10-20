@@ -269,8 +269,8 @@ dfm.tokenizedTexts <- function(x,
     allFeatures <- unlist(x)
     uniqueFeatures <- unique(allFeatures)
     totalfeatures <- length(uniqueFeatures)
-    if (verbose) catm(format(totalfeatures - 1, big.mark=","), " feature type",
-                     ifelse(totalfeatures - 1  > 1, "s", ""), sep="")
+    if (verbose) catm(format(totalfeatures, big.mark=","), " feature type",
+                     ifelse(totalfeatures > 1, "s", ""), sep="")
     featureIndex <- match(allFeatures, uniqueFeatures)
     # add an arbitrary "feature" for empty docs
     if (length(emptyDocs)) {
