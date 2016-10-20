@@ -30,9 +30,7 @@ The stopword list are SMART English stopwords from the SMART information
 retrieval system (obtained from 
 \url{http://jmlr.csail.mit.edu/papers/volume5/lewis04a/a11-smart-stop-list/english.stop})
 and a set of stopword lists from the Snowball stemmer project in different
-languages (obtained from 
-\url{http://svn.tartarus.org/snowball/trunk/website/algorithms/} -- 
-see the stop.txt files in each subdirectory).
+languages (see \url{http://snowballstem.org/projects.html}).
 Supported languages are arabic, danish, dutch, english, finnish, french,
 german, hungarian, italian, norwegian, portuguese, russian, spanish, and 
 swedish. Language names are case sensitive.

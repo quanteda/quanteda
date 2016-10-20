@@ -123,7 +123,7 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
         }
     } else {
         if (all.equal(x@ngrams, 1L)==TRUE)
-            featIndex <- which(features(x) %in% features)  # unigrams
+            featIndex <- which(features_x %in% features)  # unigrams
         else
             featIndex <- which(sapply(features_x, function(f) any(f %in% features), USE.NAMES = FALSE)) # ngrams
     }
@@ -155,14 +155,10 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
         origDfmFeatureIndex <- which(!(toLower(features) %in% toLower(features(x2))))
         xOriginalFeatureLength <- nfeature(x2)
         xOriginalFeatures <- features(x2)
-        ### NEED a cbind() operation for dfm that preserves settings! ###
         if (verbose) catm(" padding 0s for another", length(origDfmFeatureIndex), "\n")
         x <- new("dfmSparse", Matrix::cbind2(x2,
                                               sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x2), length(origDfmFeatureIndex)), 
                                                            dimnames = list(docnames(x2), features[origDfmFeatureIndex]))))
-#                  matrix(0, nrow = ndoc(x2), ncol = length(origDfmFeatureIndex))))
-#        x <- cbind(x2, )
-#        colnames(x2)[(xOriginalFeatureLength + 1) : nfeature(x2)] <- features[origDfmFeatureIndex]
         featIndex <- match(features_dfm, features(x))
         # x <- x2 #[, features_dfm]
     }
