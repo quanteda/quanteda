@@ -182,7 +182,7 @@ arma::sp_mat fcm_hash_cpp(Rcpp::List &texts,
                     if (!ordered){  //if not ordered, a-b will be counted twice as a-b & b-a
                         vFrom = vTo + 1;
                         vTo = vFrom + length -1;
-                        Rcout<<"vTo="<<vTo<<" length="<<length<<"\n";
+                        //Rcout<<"vTo="<<vTo<<" length="<<length<<"\n";
                         index_mat.row(0).subvec(vFrom, vTo) = text.tail(length);
                         index_mat.row(1).subvec(vFrom, vTo) = text.head(length); 
                         w_values.subvec(vFrom, vTo).fill(window_weights[i]);

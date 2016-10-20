@@ -214,8 +214,26 @@ cfm.tokenizedTextsHashed <- function(x, context = c("document", "window"),
       warning("spanSentence = FALSE not yet implemented")
     
     if (context == "document") {
-        tokenCount <- dfm(x, toLower = FALSE, verbose = FALSE)
+        #tokenCount <- dfm(x, toLower = FALSE, verbose = FALSE)
+        nTokens <- lengths(x)
+        # find out which documents have zero feature counts
+        emptyDocs <- which(nTokens == 0)
+        # add docIndex positions for any zero-token docs; no effect if emptyDocs is empty
+        docIndex <- c(rep(seq_along(nTokens), nTokens), emptyDocs)
+        featureIndex <- unlist(x)
+        # add an arbitrary "feature" for empty docs
+        #if (length(emptyDocs)) {
+       #     featureIndex <- c(featureIndex, rep(length(uniqueFeatures)+1, length(emptyDocs)))
+        #    uniqueFeatures <- c(uniqueFeatures, "__TEMPFEATURE__")
+        #}
+        # make the dfm
         
+        docNames <- paste("text", 1:length(x), sep="")
+        tokenCount <- Matrix::sparseMatrix(i = docIndex, 
+                                  j = featureIndex, 
+                                  x = 1L, 
+                                  dimnames = list(docs = docNames, features = attr(x, "vocabulary")))
+        tokenCount <- new("dfmSparse", tokenCount)
         if (count == "boolean") {
             x <- tf(tokenCount, "boolean")
             result <- Matrix::crossprod(x)
@@ -240,8 +258,12 @@ cfm.tokenizedTextsHashed <- function(x, context = c("document", "window"),
         
         result <- result + diagCount
         
-        # order the features alphabetically
-        result <- result[order(rownames(result)), order(colnames(result))]
+        # discard the lower diagonal if tri == TRUE
+        if (tri)
+           result[lower.tri(result, diag = FALSE)] <- 0
+        
+        #order the features alphabetically
+        #result <- result[order(rownames(result)), order(colnames(result))]
     }
     
     if (context == "window") { 
@@ -260,9 +282,7 @@ cfm.tokenizedTextsHashed <- function(x, context = c("document", "window"),
         types <- attr(x, "vocabulary")
         dimnames(result) <- list(contexts = types, features = types)
     }
-    # discard the lower diagonal if tri == TRUE
-    #if (tri)
-    #    result[lower.tri(result, diag = FALSE)] <- 0
+    
     
     # create a new feature context matrix
     result <- new("cfm", as(result, "dgCMatrix"), count = count,
