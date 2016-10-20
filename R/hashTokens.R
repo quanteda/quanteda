@@ -1,3 +1,23 @@
+#' Extract vocaburary
+#' @rdname hashTokens
+#' @param x tokenizedText
+#' @export
+vocaburary <- function(x, ...) {
+  UseMethod("vocaburary")
+}
+
+#' @rdname hashTokens
+#' @export
+vocaburary.tokenizedTexts <- function(x){
+  return(unique(unlist(x, use.names = FALSE)))
+}
+
+#' @rdname hashTokens
+#' @export
+vocaburary.tokenizedTextsHashed <- function(x){
+  return(attr(x, "vocabulary"))
+}
+
 #' Constructor for tokenizedTextsHashed objects
 #' 
 #' Creates a hashed object of tokenizedTexts.
@@ -36,9 +56,10 @@ hashTokens.tokenizedTexts <- function(x, vocabulary, ...) {
 
     # order the features alphabetically
     types <- sort(types)
-   
+    types <- types[types!=''] # make padding NA
+    
     if (missing(vocabulary)) {
-        vocabulary <- types  
+        vocabulary <- types
     } else {
         vocabulary <- c(vocabulary, types[!types %in% vocabulary]) 
     }
