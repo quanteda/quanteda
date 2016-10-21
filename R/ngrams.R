@@ -75,6 +75,7 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 
 #' @rdname ngrams
 #' @examples 
+#' 
 #' tokens <- tokenize(c('a b c d e', 'c d e f g'))
 #' tokens_hashed <- hashTokens(tokens)
 #' ngrams <- ngrams(tokens, n = 2, skip = 0:1, concatenator = "-")
@@ -82,10 +83,12 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #' as.tokenizedTexts(ngrams_hashed)
 #' 
 #' '\dontrun{
-#' 
-#' 
 #' tokens2 <- tokenize(head(inaugTexts, 10), removePunct=TRUE)
 #' tokens2_hashed <- hashTokens(tokens2)
+#' 
+#' profvis::profvis({
+#' ngrams(tokens2_hashed, n = 2:3, skip = 1:2, concatenator = "-")
+#' })
 #' 
 #' microbenchmark::microbenchmark(
 #'  old=ngrams(tokens2, n = 2:3, skip = 1:2, concatenator = "-"),
