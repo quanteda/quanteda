@@ -17,7 +17,7 @@ test_that("test similarity method = \"cosine\" against proxy simil()", {
     presDfm <- dfm(subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    cosQuanteda <- round(similarity(presDfm, "soviet", method = "cosine", margin = "features")[["soviet"]], 2)
+    cosQuanteda <- round(similarity(presDfm, "soviet", method = "cosine", 253margin = "features")[["soviet"]], 2)
     
     cosProxy <- sort(round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), by_rows = FALSE)), 2), decreasing = TRUE)
     
@@ -75,5 +75,16 @@ test_that("simple similarity comparisons method = \"cosine\" against proxy simil
 # sort(as.matrix(proxy::simil(as.matrix(d), as.matrix(d[, "seamus"]), "cosine", by_rows = FALSE))[, 1], decreasing = TRUE)[-2]
 # similarity(d, "seamus", method = "cosine")[["seamus"]]
 
+
+## issue #253 test
+test_that("correlation works, to test or fix issue \#253", {
+    presDfm <- dfm(subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    quant_cor <- as.matrix(similarity(presDfm, margin = "documents", method = "correlation"))
+    quant_cor <- quant_cor[order(rownames(quant_cor)), order(colnames(quant_cor))]
+    diag(quant_cor) <- 0
+    simil_cor <- as.matrix(proxy::simil(as.matrix(presDfm)))
+    expect_equal(quant_cor, simil_cor)
+})
 
 
