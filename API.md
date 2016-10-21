@@ -12,13 +12,17 @@
 	- [Constructor functions](#constructor-functions)
 	- [Functions for working with `corpus` objects](#functions-for-working-with-corpus-objects)
 	- [Functions for working with `tokens` objects](#functions-for-working-with-tokens-objects)
-	- [Functions for working with `dfm` (and `fcm`<sup>1</sup>) objects](#functions-for-working-with-dfm-and-fcmsup1sup-objects)
+	- [Functions for working with dfm and fcm objects](#functions-for-working-with-dfm-and-fcm-objects)
 	- [Package-level functions](#package-level-functions)
 	- [Analytic functions](#analytic-functions)
+		- ["Discovery" functions](#discovery-functions)
+		- [Functions that compute stuff](#functions-that-compute-stuff)
+		- [Functions that fit models to dfm objects](#functions-that-fit-models-to-dfm-objects)
+		- [Plotting functions](#plotting-functions)
 	- [R functions extended for **quanteda** objects](#r-functions-extended-for-quanteda-objects)
 	- [R-like functions](#r-like-functions)
 	- [Functions retained for backwards compatibility](#functions-retained-for-backwards-compatibility)
-	- [Functions to kill off](#functions-to-kill-off)
+	- [Functions that will be deprecated and removed](#functions-that-will-be-deprecated-and-removed)
 
 <!-- /TOC -->
 
@@ -199,8 +203,8 @@ This makes sense as a scheme, but is inconsistent with the broader scheme.  Is t
 
 new name | original name | methods | output object | family
 :--------|:------------- |:------- |:------------- |:-------
-`textscore_collocations` | `collocations`, `findSequences` | tokens | data.frame | textscore
-`textcount_kwic`       | `kwic` | corpus, character, tokens | data.frame |  textcount
+`collocations` | `collocations`, `findSequences` | tokens | data.frame | textscore
+`kwic`         | `kwic` | corpus, character, tokens | data.frame |  textcount
 
 These are the worst fitting, in my opinion.  Surely there are better alternatives!
 
@@ -210,16 +214,10 @@ new name | original name | methods | output object | family
 :--------|:------------- |:------- |:------------- |:-------
 `textstat_lexdiv` | `lexdiv` | dfm, tokens | data.frame | textstat
 `textstat_readability` | `readability` | character, tokens | data.frame | textstat
-`textstat_similarity`  | `similarity`   | dfm |  (similarity) matrix `textstat_similarity_matrix`, which can be coerced using `as.list()` into a `textstat_similarity_list` similar to thr object returned by `tm::findAssocs` |  textstat
+`textstat_simil`, `simil`  | `similarity`   | dfm |  dist | textstat
+`textstat_dist`, `dist`   | `similarity`   | dfm |  dist | textstat
 
-#### Functions that count or lookup quantities
 
-new name | original name | methods | output object | family
-:--------|:------------- |:------- |:------------- |:-------
-`textcount_scrabble` | `scrabble` | character (vector), tokens | integer | textcount
-`textcount_syllables` | `syllables`   | character (vector), tokens | integer | textcount
-`textcount_features`  | `topfeatures` | dfm | integer | textcount
-`textcount_docfreq`   | `docfreq` | dfm | integer | textcount
 
 #### Functions that fit models to dfm objects
 
@@ -279,6 +277,7 @@ new name | original name | methods | output object | family
 `as.list`   | -  | dictionary | list of character | internal
 `as.character` | `texts` | corpus | character | (with `corpus`)
 `as.data.frame` | `docvars` | corpus | data.frame | (with `corpus`)
+`as.list.simil` | `similarity` | dist | list | (with `textstat_simil`)
 
 
 
@@ -291,10 +290,12 @@ There are some fudges to this, for instance the definition of an `ntoken()` and 
 new name | original name | methods | output object | family
 :--------|:------------- |:------- |:------------- |:-------
 `ndoc` | - | corpus, dfm | int | quanteda
-`nfeature` | - | corpus, dfm | int | quanteda
-`nsentence` | - | character, corpus | int | quanteda
-`ntoken` | - | character, corpus, tokenizedTexts, dfm | int | quanteda
-`ntype` | - | character, corpus, tokenizedTexts, dfm | int | quanteda
+`nfeature` | - | corpus, dfm | integer | quanteda
+`nsentence` | - | character, corpus | integer | quanteda
+`ntoken` | - | character, corpus, tokenizedTexts, dfm | integer | quanteda
+`ntype` | - | character, corpus, tokenizedTexts, dfm | integer | quanteda
+`nscrabble` | `scrabble` | character (vector), tokens | integer | textcount
+`nsyllable` | `syllables`   | character (vector), tokens | integer | textcount
 `is.corpus` | - | any | logical | quanteda
 `is.dfm` | - | any | logical | quanteda
 `as.dfm` | - | matrix, data.frame | dfm | quanteda
@@ -312,7 +313,7 @@ Notes:
 
 These functions are inconsistent with the naming scheme, but are retained for convenience and because they are so widely used from earlier versions of the package.
 
-function | notes | output object | family
+function | notes | output object | keyword
 :------------- |:------- |:------------- |:-------
 `stopwords` | *input: character indicating language* | character |
 `as.DocumentTermMatrix.dfm`	|  coerces/converts to a **tm** matrix, redundant with `convert()` |  tm::DocumentTermMatrix | dfm
@@ -322,6 +323,8 @@ function | notes | output object | family
 `kwic` | performs keyword in context search | data.frame
 `plot.dfm` | same as `textplot_wordcloud` for a dfm, and will be undocumented but equivalent to that command | (plot) | textplot
 `plot.kwic` | same as `textplot_xray` for a kwic class object, and will be undocumented but equivalent to that command | (plot) | textplot
+`topfeatures`  | sorted list of n top occurring features from a dfm | integer | ?
+`docfreq`   | document frequency of features | integer | weight
 
 
 ### Functions that will be deprecated and removed
