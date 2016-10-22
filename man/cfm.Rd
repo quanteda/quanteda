@@ -108,7 +108,9 @@ txt <- c("The quick brown fox jumped over the lazy dog.",
          "The dog jumped and ate the fox.")
 toks <- tokenize(toLower(txt), removePunct = TRUE)
 cfm(toks, context = "document")
+toksHashed <- hashTokens(toks)
 cfm(toks, context = "window", window = 3)
+cfm(toksHashed, context = "window", window = 3)
 }
 \author{
 Kenneth Benoit (R), Kohei Watanabe (C++) and Haiyan Wang

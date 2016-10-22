@@ -155,7 +155,8 @@ ngrams.tokenizedTextsHashed <- function(x, n = 2L, skip = 0L, concatenator = "_"
   res <- qatd_cpp_ngram_hashed_list(x, n, skip)
   
   # Make character tokens of ngrams
-  ngram_types <- sapply(res$id_unigram, function(x, y, z) paste0(y[x], collapse=z), attr(x, 'vocabulary'), concatenator)
+  #ngram_types <- sapply(res$id_unigram, function(x, y, z) paste0(y[x], collapse=z), attr(x, 'vocabulary'), concatenator)
+  ngram_types <- qatd_cpp_ngram_unhash_vocab(res$id_unigram, attr(x, 'vocabulary'), concatenator)
   ngramsResult <- res$text
   attr(ngramsResult, 'vocabulary') <- ngram_types
   class(ngramsResult) <- c("tokenizedTextsHashed")

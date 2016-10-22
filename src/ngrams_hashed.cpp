@@ -145,6 +145,15 @@ List qatd_cpp_ngram_hashed_list(List texts,
                             Rcpp::Named("id_unigram") = ids_unigram);
 }
 
+// [[Rcpp::export]]
+CharacterVector qatd_cpp_ngram_unhash_vocab(ListOf<NumericVector> ids_ngram, CharacterVector tokens, String delim){
+  tokens.push_front(""); // offset tokens to match index in C++
+  CharacterVector tokens_ngram(ids_ngram.size());
+  for(int i=0; i < ids_ngram.size(); i++){
+    tokens_ngram[i] = join_character_vector(tokens[ids_ngram[i]], delim);
+  }
+  return tokens_ngram;
+}
 
 /*** R
 
@@ -161,6 +170,11 @@ ngram <- res$ngram
 ngram_ids <- res$id_ngram
 vocaburary <- sapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-')
 vocaburary[ngram]
+
+microbenchmark::microbenchmark(
+  sapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-'),
+  qatd_cpp_ngram_unhash_vocab(res$id_unigram, types, '-')
+)
 
 */
 

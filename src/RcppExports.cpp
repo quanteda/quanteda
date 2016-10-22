@@ -116,6 +116,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qatd_cpp_ngram_unhash_vocab
+CharacterVector qatd_cpp_ngram_unhash_vocab(ListOf<NumericVector> ids_ngram, CharacterVector tokens, String delim);
+RcppExport SEXP quanteda_qatd_cpp_ngram_unhash_vocab(SEXP ids_ngramSEXP, SEXP tokensSEXP, SEXP delimSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< ListOf<NumericVector> >::type ids_ngram(ids_ngramSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type tokens(tokensSEXP);
+    Rcpp::traits::input_parameter< String >::type delim(delimSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_ngram_unhash_vocab(ids_ngram, tokens, delim));
+    return rcpp_result_gen;
+END_RCPP
+}
 // match_bit
 int match_bit(const std::vector<std::string>& tokens1, const std::vector<std::string>& tokens2);
 RcppExport SEXP quanteda_match_bit(SEXP tokens1SEXP, SEXP tokens2SEXP) {

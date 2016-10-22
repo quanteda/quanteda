@@ -28,15 +28,15 @@ class ngramMaker {
 public:
   ngramMaker(){};
       
-  List ngram_vector(NumericVector tokens, NumericVector ns, NumericVector skips){
+  List MakeNgramVector(NumericVector tokens, NumericVector ns, NumericVector skips){
     
     // Register both ngram (key) and unigram (value) IDs in a hash table
     Ngrams ngrams = ngram(tokens, ns, skips);
     return Rcpp::List::create(Rcpp::Named("ngram") = ngrams,
-                              Rcpp::Named("id_unigram") = vocaburary());
+                              Rcpp::Named("id_unigram") = dump());
   }
   
-  List ngram_list(List texts, NumericVector ns, NumericVector skips) {
+  List MakeNgramList(List texts, NumericVector ns, NumericVector skips) {
       
     // Itterate over documents
     List texts_ngram(texts.size());
@@ -45,10 +45,10 @@ public:
       texts_ngram[h] = ngram(texts[h], ns, skips);
     }
     return Rcpp::List::create(Rcpp::Named("text") = texts_ngram,
-                              Rcpp::Named("id_unigram") = vocaburary());
+                              Rcpp::Named("id_unigram") = dump());
   }
   
-  XPtr<Tokens> ngram_list_ptr(List texts, NumericVector ns, NumericVector skips) {
+  XPtr<Tokens> MakeNgramListPtr(List texts, NumericVector ns, NumericVector skips) {
     
     // Itterate over documents
     List texts_ngram(texts.size());
@@ -58,8 +58,17 @@ public:
     }
     
     // Return pointer to Tokens object
-    Tokens* tokens = new Tokens(texts_ngram, vocaburary());
+    Tokens* tokens = new Tokens(texts_ngram, dump());
     return Rcpp::XPtr<Tokens>(tokens);
+  }
+  
+  CharacterVector UnhashVocab(ListOf<NumericVector> ids_ngram, CharacterVector tokens, String delim){
+    tokens.push_front(""); // offset tokens to match index in C++
+    CharacterVector tokens_ngram(ids_ngram.size());
+    for(int i=0; i < ids_ngram.size(); i++){
+      tokens_ngram[i] = join_character_vector(tokens[ids_ngram[i]], delim);
+    }
+    return tokens_ngram;
   }
   
 private:
@@ -136,7 +145,7 @@ private:
     return ngrams;
   }
   
-  List vocaburary(){
+  List dump(){
     // Separate key and values of unordered_map
     List ids_unigram(map_ngram.size());
     for (std::pair<Ngram, unsigned int> iter : map_ngram){
@@ -149,13 +158,16 @@ private:
   
 };
 
+
+
 // Expose C++ class to R
 RCPP_MODULE(ngram_module) {
   class_<ngramMaker>("ngramMaker")
   .constructor()
-  .method("generate_vector", &ngramMaker::ngram_vector)
-  .method("generate_list", &ngramMaker::ngram_list)
-  .method("generate_list_ptr", &ngramMaker::ngram_list_ptr)
+  .method("generate_vector", &ngramMaker::MakeNgramVector)
+  .method("generate_list", &ngramMaker::MakeNgramList)
+  .method("generate_list_ptr", &ngramMaker::MakeNgramListPtr)
+  .method("unhash_vocab", &ngramMaker::UnhashVocab)
   ;
 }
 
@@ -171,13 +183,21 @@ res <- nm$generate_vector(chars_hashed, 3, 1)
 
 ngram <- res$ngram
 ngram_ids <- res$id_ngram
+
 vocaburary <- sapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-')
 vocaburary[ngram]
+
+microbenchmark::microbenchmark(
+  sapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-'),
+  nm$unhash_vocab(res$id_unigram, types, "-")
+)
 
 tokens <- tokenize(c('a b c d e', 'c d e f g'))
 tokens_hashed <- hashTokens(tokens)
 res <- nm$generate_list(tokens_hashed, 2, 0:1)
 ptr <- nm$generate_list_ptr(tokens_hashed, 2, 0:1)
+
+
 
 
 */

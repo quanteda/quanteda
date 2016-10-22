@@ -29,6 +29,10 @@ qatd_cpp_ngram_hashed_list <- function(texts, ns, skips) {
     .Call('quanteda_qatd_cpp_ngram_hashed_list', PACKAGE = 'quanteda', texts, ns, skips)
 }
 
+qatd_cpp_ngram_unhash_vocab <- function(ids_ngram, tokens, delim) {
+    .Call('quanteda_qatd_cpp_ngram_unhash_vocab', PACKAGE = 'quanteda', ids_ngram, tokens, delim)
+}
+
 match_bit <- function(tokens1, tokens2) {
     .Call('quanteda_match_bit', PACKAGE = 'quanteda', tokens1, tokens2)
 }
