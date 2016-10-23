@@ -9,8 +9,7 @@ namespace quanteda{
     inline String join_character_vector(const CharacterVector &tokens, const String &delim){
         if(tokens.size() == 0) return "";
         String token = tokens[0];
-        int len_ngram = tokens.size();
-        for (int i = 1; i < len_ngram; i++) {
+        for (int i = 1; i < tokens.size(); i++) {
           token += delim;
           token += tokens[i];
           //Rcout << "Joined " << token.get_cstring()  << "\n";
@@ -19,14 +18,13 @@ namespace quanteda{
         return token;
       }
     
-    inline std::string join_vector(std::vector< std::string > ngram, std::string delim){
-        if(ngram.size() == 0) return "";
-        std::string token_ngram = ngram[0];
-        int len_ngram = ngram.size();
-        for (int i = 1; i < len_ngram; i++) {
-          token_ngram = token_ngram + delim + ngram[i];
+    inline std::string join_vector(std::vector< std::string > tokens, std::string delim){
+        if(tokens.size() == 0) return "";
+        std::string token = tokens[0];
+        for (int i = 1; i < tokens.size(); i++) {
+          token += delim + tokens[i];
         }
-        return token_ngram;
+        return token;
     }
 
     // Tokens object

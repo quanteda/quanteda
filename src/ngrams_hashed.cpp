@@ -120,8 +120,8 @@ List qatd_cpp_ngram_hashed_vector(NumericVector tokens,
 
 // [[Rcpp::export]]
 List qatd_cpp_ngram_hashed_list(List texts,
-                                   NumericVector ns,
-                                   NumericVector skips) {
+                                NumericVector ns,
+                                NumericVector skips) {
 
   // Register both ngram (key) and unigram (value) IDs in a hash table
   std::unordered_map<Ngram, unsigned int> map_ngram;
@@ -146,7 +146,8 @@ List qatd_cpp_ngram_hashed_list(List texts,
 }
 
 // [[Rcpp::export]]
-CharacterVector qatd_cpp_ngram_unhash_vocab(ListOf<NumericVector> ids_ngram, CharacterVector tokens, String delim){
+CharacterVector qatd_cpp_ngram_unhash_vocab(ListOf<NumericVector> ids_ngram, 
+                                            CharacterVector tokens, String delim){
   tokens.push_front(""); // offset tokens to match index in C++
   CharacterVector tokens_ngram(ids_ngram.size());
   for(int i=0; i < ids_ngram.size(); i++){
@@ -173,7 +174,8 @@ vocaburary[ngram]
 
 microbenchmark::microbenchmark(
   sapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-'),
-  qatd_cpp_ngram_unhash_vocab(res$id_unigram, types, '-')
+  qatd_cpp_ngram_unhash_vocab(res$id_unigram, types, '-'),
+  unit='relative'
 )
 
 */
