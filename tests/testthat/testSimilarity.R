@@ -24,11 +24,11 @@ test_that("test similarity method = \"cosine\" against proxy simil()", {
     cosProxy <- cosProxy[order(names(cosProxy))]
     cosProxy <- cosProxy[-which(names(cosProxy) == "soviet")]
 
-    cosQlcMatrix <- round(drop(qlcMatrix::cosSparse(presDfm, presDfm[, "soviet"])), 4)
-    cosQlcMatrix2 <- cosQlcMatrix[, 1]
-    names(cosQlcMatrix2) <- rownames(cosQlcMatrix)
-    cosQlcMatrix2 <- cosQlcMatrix2[order(names(cosQlcMatrix2))]
-    cosQlcMatrix2 <- cosQlcMatrix2[-which(names(cosQlcMatrix2) == "soviet")]
+    # cosQlcMatrix <- round(drop(qlcMatrix::cosSparse(presDfm, presDfm[, "soviet"])), 4)
+    # cosQlcMatrix2 <- cosQlcMatrix[, 1]
+    # names(cosQlcMatrix2) <- rownames(cosQlcMatrix)
+    # cosQlcMatrix2 <- cosQlcMatrix2[order(names(cosQlcMatrix2))]
+    # cosQlcMatrix2 <- cosQlcMatrix2[-which(names(cosQlcMatrix2) == "soviet")]
     
     ## NOT EQUAL - only proxy records negative numbers
     ## expect_equal(cosQuanteda, cosProxy, cosQlcMatrix2)
@@ -84,7 +84,7 @@ test_that("simple similarity comparisons method = \"cosine\" against proxy simil
 
 
 ## issue #253 test
-test_that("correlation works, to test or fix issue \#253", {
+test_that("correlation works, to test or fix issue #253", {
     presDfm <- dfm(subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     quant_cor <- as.matrix(similarity(presDfm, margin = "documents", method = "correlation"))
