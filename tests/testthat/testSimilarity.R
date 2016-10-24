@@ -17,14 +17,21 @@ test_that("test similarity method = \"cosine\" against proxy simil()", {
     presDfm <- dfm(subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    cosQuanteda <- round(similarity(presDfm, "soviet", method = "cosine", 253margin = "features")[["soviet"]], 2)
+    cosQuanteda <- round(similarity(presDfm, "soviet", method = "cosine", margin = "features")[["soviet"]], 2)
+    cosQuanteda <- cosQuanteda[order(names(cosQuanteda))]
     
-    cosProxy <- sort(round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), by_rows = FALSE)), 2), decreasing = TRUE)
+    cosProxy <- round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), by_rows = FALSE)), 2)
+    cosProxy <- cosProxy[order(names(cosProxy))]
+    cosProxy <- cosProxy[-which(names(cosProxy) == "soviet")]
+
+    cosQlcMatrix <- round(drop(qlcMatrix::cosSparse(presDfm, presDfm[, "soviet"])), 4)
+    cosQlcMatrix2 <- cosQlcMatrix[, 1]
+    names(cosQlcMatrix2) <- rownames(cosQlcMatrix)
+    cosQlcMatrix2 <- cosQlcMatrix2[order(names(cosQlcMatrix2))]
+    cosQlcMatrix2 <- cosQlcMatrix2[-which(names(cosQlcMatrix2) == "soviet")]
     
-    # cosQlcMatrix <- sort(round(drop(qlcMatrix::cosSparse(presDfm, presDfm[, "soviet"])), 4), decreasing = TRUE)
-    
-    ## NOT EQUAL
-    ## expect_equal(cosQuanteda[1:10], cosProxy[2:11]) #, cosQlcMatrix[2:11])
+    ## NOT EQUAL - only proxy records negative numbers
+    ## expect_equal(cosQuanteda, cosProxy, cosQlcMatrix2)
 })
 
 test_that("test similarity method = \"cosine\" against proxy simil(): documents", {
