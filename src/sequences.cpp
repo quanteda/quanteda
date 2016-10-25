@@ -46,9 +46,9 @@ double sigma(std::vector<int> &counts, const int &n){
 
 double lambda(std::vector<int> &counts, const int &n){
   
-  double l = std::log(counts[n]);
+  double l = std::log((long)counts[n]); // type casting for Solaris
   for (int b = 1; b < n; b++){
-    l -= std::log(counts[b]);
+    l -= std::log((long)counts[b]); // type casting for Solaris
   }
   l += (n - 1) * std::log((long)counts[0]); // type casting for Solaris
   return l;
