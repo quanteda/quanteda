@@ -20,18 +20,11 @@ test_that("test similarity method = \"cosine\" against proxy simil()", {
     cosQuanteda <- round(similarity(presDfm, "soviet", method = "cosine", margin = "features")[["soviet"]], 2)
     cosQuanteda <- cosQuanteda[order(names(cosQuanteda))]
     
-    cosProxy <- round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), by_rows = FALSE)), 2)
+    cosProxy <- round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), "cosine", by_rows = FALSE)), 2)
     cosProxy <- cosProxy[order(names(cosProxy))]
     cosProxy <- cosProxy[-which(names(cosProxy) == "soviet")]
 
-    # cosQlcMatrix <- round(drop(qlcMatrix::cosSparse(presDfm, presDfm[, "soviet"])), 4)
-    # cosQlcMatrix2 <- cosQlcMatrix[, 1]
-    # names(cosQlcMatrix2) <- rownames(cosQlcMatrix)
-    # cosQlcMatrix2 <- cosQlcMatrix2[order(names(cosQlcMatrix2))]
-    # cosQlcMatrix2 <- cosQlcMatrix2[-which(names(cosQlcMatrix2) == "soviet")]
-    
-    ## NOT EQUAL - only proxy records negative numbers
-    ## expect_equal(cosQuanteda, cosProxy, cosQlcMatrix2)
+    expect_equal(cosQuanteda, cosProxy)
 })
 
 test_that("test similarity method = \"cosine\" against proxy simil(): documents", {
@@ -81,7 +74,6 @@ test_that("simple similarity comparisons method = \"cosine\" against proxy simil
     
 # sort(as.matrix(proxy::simil(as.matrix(d), as.matrix(d[, "seamus"]), "cosine", by_rows = FALSE))[, 1], decreasing = TRUE)[-2]
 # similarity(d, "seamus", method = "cosine")[["seamus"]]
-
 
 ## issue #253 test
 test_that("correlation works, to test or fix issue #253", {
