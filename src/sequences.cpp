@@ -109,7 +109,7 @@ Rcpp::List find_sequence_cppl(List texts,
   //vector<double> ms;
   std::vector<double> sigmas;
   std::vector<double> lambdas;
-  std::vector<int> counts; 
+  std::vector<int> counts;
   Rcpp::List sequences;
   for(auto it1 = counts_seq.begin(); it1 != counts_seq.end(); ++it1 ){
     if(it1->first.size() < 2) continue; // ignore single words
