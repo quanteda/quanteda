@@ -76,13 +76,3 @@ test_that("simple similarity comparisons method = \"cosine\" against proxy simil
 # sort(as.matrix(proxy::simil(as.matrix(d), as.matrix(d[, "seamus"]), "cosine", by_rows = FALSE))[, 1], decreasing = TRUE)[-2]
 # similarity(d, "seamus", method = "cosine")[["seamus"]]
 
-#
-#> expect_equal(cosQuanteda[1:10], cosProxy[1:10])
-#> cosQuanteda <- round(similarity(presDfm, "soviet", method = "correlation", margin = "features")[["soviet"]], 2)
-#> cosQuanteda <- cosQuanteda[order(names(cosQuanteda))]
-#> 
-#    > cosProxy <- round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), by_rows = FALSE)), 2)
-#> cosProxy <- cosProxy[order(names(cosProxy))]
-#> cosProxy <- cosProxy[-which(names(cosProxy) == "soviet")]
-#> expect_equal(cosQuanteda[1:10], cosProxy[1:10])
-
