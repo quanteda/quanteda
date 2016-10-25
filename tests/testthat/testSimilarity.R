@@ -20,18 +20,11 @@ test_that("test similarity method = \"cosine\" against proxy simil()", {
     cosQuanteda <- round(similarity(presDfm, "soviet", method = "cosine", margin = "features")[["soviet"]], 2)
     cosQuanteda <- cosQuanteda[order(names(cosQuanteda))]
     
-    cosProxy <- round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), by_rows = FALSE)), 2)
+    cosProxy <- round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), "cosine", by_rows = FALSE)), 2)
     cosProxy <- cosProxy[order(names(cosProxy))]
     cosProxy <- cosProxy[-which(names(cosProxy) == "soviet")]
 
-    # cosQlcMatrix <- round(drop(qlcMatrix::cosSparse(presDfm, presDfm[, "soviet"])), 4)
-    # cosQlcMatrix2 <- cosQlcMatrix[, 1]
-    # names(cosQlcMatrix2) <- rownames(cosQlcMatrix)
-    # cosQlcMatrix2 <- cosQlcMatrix2[order(names(cosQlcMatrix2))]
-    # cosQlcMatrix2 <- cosQlcMatrix2[-which(names(cosQlcMatrix2) == "soviet")]
-    
-    ## NOT EQUAL - only proxy records negative numbers
-    ## expect_equal(cosQuanteda, cosProxy, cosQlcMatrix2)
+    expect_equal(cosQuanteda, cosProxy)
 })
 
 test_that("test similarity method = \"cosine\" against proxy simil(): documents", {
@@ -89,7 +82,7 @@ test_that("correlation works, to test or fix issue #253", {
                    stem = TRUE, verbose = FALSE)
     quant_cor <- as.matrix(similarity(presDfm, margin = "documents", method = "correlation"))
     quant_cor <- quant_cor[order(rownames(quant_cor)), order(colnames(quant_cor))]
-    diag(quant_cor) <- 0
+    diag(quant_cor) <- NA
     simil_cor <- as.matrix(proxy::simil(as.matrix(presDfm)))
     expect_equal(quant_cor, simil_cor)
 })
