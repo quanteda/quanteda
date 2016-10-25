@@ -39,8 +39,8 @@ double sigma(std::vector<int> &counts, const int &n){
   for (int b = 1; b <= n; b++){
     s += 1.0 / counts[b];
   }
-  double base = n - 1; 
-  s += std::pow(base, 2) / counts[0];
+  //double base = n - 1; // for Solaris
+  s += std::pow((long)n - 1, 2) / counts[0]; // type casting for Solaris
   return std::sqrt(s);
 }
 
@@ -50,7 +50,7 @@ double lambda(std::vector<int> &counts, const int &n){
   for (int b = 1; b < n; b++){
     l -= std::log(counts[b]);
   }
-  l += (n - 1) * log(counts[0]);
+  l += (n - 1) * std::log((long)counts[0]); // type casting for Solaris
   return l;
 }
 
@@ -137,5 +137,5 @@ Rcpp::List find_sequence_cppl(List texts,
                             Rcpp::Named("lambda") = lambdas,
                             Rcpp::Named("sigma") = sigmas,
                             Rcpp::Named("count") = counts
-                            );
+  );
 }
