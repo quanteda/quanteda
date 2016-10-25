@@ -18,13 +18,20 @@ test_that("test similarity method = \"cosine\" against proxy simil()", {
                    stem = TRUE, verbose = FALSE)
     
     cosQuanteda <- round(similarity(presDfm, "soviet", method = "cosine", margin = "features")[["soviet"]], 2)
+    cosQuanteda <- cosQuanteda[order(names(cosQuanteda))]
     
-    cosProxy <- sort(round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), by_rows = FALSE)), 2), decreasing = TRUE)
+    cosProxy <- round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), by_rows = FALSE)), 2)
+    cosProxy <- cosProxy[order(names(cosProxy))]
+    cosProxy <- cosProxy[-which(names(cosProxy) == "soviet")]
+
+    # cosQlcMatrix <- round(drop(qlcMatrix::cosSparse(presDfm, presDfm[, "soviet"])), 4)
+    # cosQlcMatrix2 <- cosQlcMatrix[, 1]
+    # names(cosQlcMatrix2) <- rownames(cosQlcMatrix)
+    # cosQlcMatrix2 <- cosQlcMatrix2[order(names(cosQlcMatrix2))]
+    # cosQlcMatrix2 <- cosQlcMatrix2[-which(names(cosQlcMatrix2) == "soviet")]
     
-    # cosQlcMatrix <- sort(round(drop(qlcMatrix::cosSparse(presDfm, presDfm[, "soviet"])), 4), decreasing = TRUE)
-    
-    ## NOT EQUAL
-    ## expect_equal(cosQuanteda[1:10], cosProxy[2:11]) #, cosQlcMatrix[2:11])
+    ## NOT EQUAL - only proxy records negative numbers
+    ## expect_equal(cosQuanteda, cosProxy, cosQlcMatrix2)
 })
 
 test_that("test similarity method = \"cosine\" against proxy simil(): documents", {
@@ -75,5 +82,16 @@ test_that("simple similarity comparisons method = \"cosine\" against proxy simil
 # sort(as.matrix(proxy::simil(as.matrix(d), as.matrix(d[, "seamus"]), "cosine", by_rows = FALSE))[, 1], decreasing = TRUE)[-2]
 # similarity(d, "seamus", method = "cosine")[["seamus"]]
 
+
+## issue #253 test
+test_that("correlation works, to test or fix issue #253", {
+    presDfm <- dfm(subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    quant_cor <- as.matrix(similarity(presDfm, margin = "documents", method = "correlation"))
+    quant_cor <- quant_cor[order(rownames(quant_cor)), order(colnames(quant_cor))]
+    diag(quant_cor) <- 0
+    simil_cor <- as.matrix(proxy::simil(as.matrix(presDfm)))
+    expect_equal(quant_cor, simil_cor)
+})
 
 

@@ -112,21 +112,6 @@ setMethod("weight", signature = c("dfm", "numeric"),
 smoother <- function(x, smoothing = 1) x + smoothing
 
 
-# #' @rdname weight
-# #' @export
-# setGeneric("weighting", function(object) standardGeneric("weighting"))
-
-#' #' @rdname weight
-#' #' @return \code{weight, x} with no \code{type} argument queries the weighting applied to the dfm, returning 
-#' setMethod("weight", signature(c("dfm", "MISSING")), function(x) {
-#'     if (isS4(x)) 
-#'         x@weighting
-#'     else 
-#'         attr(x, "weighting")
-#' })
-#' 
-
-
 #' compute the (weighted) document frequency of a feature
 #' 
 #' For a \link{dfm-class} object, returns a (weighted) document frequency for 
