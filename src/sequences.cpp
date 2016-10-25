@@ -33,24 +33,24 @@ int match_bit(const std::vector<std::string> &tokens1,
   return bit;
 }
 
-double sigma(std::vector<long> &counts, const int &n){
+double sigma(std::vector<int> &counts, const int &n){
   
   double s = 0;
   for (int b = 1; b <= n; b++){
     s += 1.0 / counts[b];
   }
-  double base = n - 1; // for Solaris
-  s += std::pow(base, 2) / counts[0];
+  //double base = n - 1; // for Solaris
+  s += std::pow((long)n - 1, 2) / counts[0]; // type casting for Solaris
   return std::sqrt(s);
 }
 
-double lambda(std::vector<long> &counts, const int &n){
+double lambda(std::vector<int> &counts, const int &n){
   
   double l = std::log(counts[n]);
   for (int b = 1; b < n; b++){
     l -= std::log(counts[b]);
   }
-  l += (n - 1) * std::log(counts[0]);
+  l += (n - 1) * std::log((long)counts[0]); // type casting for Solaris
   return l;
 }
 
@@ -116,7 +116,7 @@ Rcpp::List find_sequence_cppl(List texts,
     if(it1->second < count_min) continue;
     // Initialize
     int len = it1->first.size();
-    std::vector<long> counts_bit; // type must be long for Solaris
+    std::vector<int> counts_bit;
     for(int i = 0; i <= len; i++){
       counts_bit.push_back(1); // add one smoothing
     }
@@ -137,5 +137,5 @@ Rcpp::List find_sequence_cppl(List texts,
                             Rcpp::Named("lambda") = lambdas,
                             Rcpp::Named("sigma") = sigmas,
                             Rcpp::Named("count") = counts
-                            );
+  );
 }
