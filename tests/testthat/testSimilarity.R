@@ -75,7 +75,6 @@ test_that("simple similarity comparisons method = \"cosine\" against proxy simil
 # sort(as.matrix(proxy::simil(as.matrix(d), as.matrix(d[, "seamus"]), "cosine", by_rows = FALSE))[, 1], decreasing = TRUE)[-2]
 # similarity(d, "seamus", method = "cosine")[["seamus"]]
 
-
 ## issue #253 test
 test_that("correlation works, to test or fix issue #253", {
     presDfm <- dfm(subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
