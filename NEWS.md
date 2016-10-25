@@ -24,6 +24,7 @@ quanteda 0.9.8
 
 ## Bug fixes
 
+*  (0.9.8.5) Fixed an incompatibility in sequences.cpp with Solaris x86 (#257)
 *  (0.9.8.4) Fix bug in verbose output of dfm that causes misreporting of number of features (#250)
 *  (0.9.8.4) Fix a bug in `selectFeatures.dfm()` that ignored `case_insensitive = TRUE` settings (#251) 
    correct the documentation for this function.
