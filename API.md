@@ -329,7 +329,7 @@ function | notes | output object | keyword
 
 ### Functions that will be deprecated and removed
 
-The biggest change here is the phasing out of `textfile()`, the intermediate function to load files into R for use in constructing a corpus.  Instead, this will be put into a new package, called **readtext**.  This package will also handle the encoding (detecting and conversion) issues. This would create a special class of object, from which `quanteda::corpus()` would construct a corpus (with metadata and docvars) directly. *readtext* would also have coercion methods to make a data.frame, extract texts as a character object, etc.  This not only moves this tricky functions outside of **quanteda**, but also makes it possible for others to use the functions for reading texts, even if they are not using quanteda.
+The biggest change here is the phasing out of `textfile()`, the intermediate function to load files into R for use in constructing a corpus.  Instead, this will be put into a new package, called **readtext**.  This package will also handle the encoding (detecting and conversion) issues. This would create a data.frame, from which `quanteda::corpus()` would construct a corpus (with metadata and docvars) directly. This not only moves this tricky functions outside of **quanteda**, but also makes it possible for others to use the functions for reading texts, even if they are not using quanteda.
 
 
 function name | replacement name | input object | output object | notes
