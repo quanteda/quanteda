@@ -33,24 +33,24 @@ int match_bit(const std::vector<std::string> &tokens1,
   return bit;
 }
 
-double sigma(std::vector<int> &counts, const int &n){
+double sigma(std::vector<long> &counts, const int &n){
   
   double s = 0;
   for (int b = 1; b <= n; b++){
     s += 1.0 / counts[b];
   }
-  double base = n - 1; 
+  double base = n - 1; // for Solaris
   s += std::pow(base, 2) / counts[0];
   return std::sqrt(s);
 }
 
-double lambda(std::vector<int> &counts, const int &n){
+double lambda(std::vector<long> &counts, const int &n){
   
   double l = std::log(counts[n]);
   for (int b = 1; b < n; b++){
     l -= std::log(counts[b]);
   }
-  l += (n - 1) * log(counts[0]);
+  l += (n - 1) * std::log(counts[0]);
   return l;
 }
 
@@ -109,14 +109,14 @@ Rcpp::List find_sequence_cppl(List texts,
   //vector<double> ms;
   std::vector<double> sigmas;
   std::vector<double> lambdas;
-  std::vector<int> counts;
+  std::vector<int> counts; 
   Rcpp::List sequences;
   for(auto it1 = counts_seq.begin(); it1 != counts_seq.end(); ++it1 ){
     if(it1->first.size() < 2) continue; // ignore single words
     if(it1->second < count_min) continue;
     // Initialize
     int len = it1->first.size();
-    std::vector<int> counts_bit;
+    std::vector<long> counts_bit; // type must be long for Solaris
     for(int i = 0; i <= len; i++){
       counts_bit.push_back(1); // add one smoothing
     }
