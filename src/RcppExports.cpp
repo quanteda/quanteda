@@ -20,18 +20,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// match_bit
-int match_bit(const std::vector<std::string>& tokens1, const std::vector<std::string>& tokens2);
-RcppExport SEXP quanteda_match_bit(SEXP tokens1SEXP, SEXP tokens2SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type tokens1(tokens1SEXP);
-    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type tokens2(tokens2SEXP);
-    rcpp_result_gen = Rcpp::wrap(match_bit(tokens1, tokens2));
-    return rcpp_result_gen;
-END_RCPP
-}
 // find_sequence_cppl
 Rcpp::List find_sequence_cppl(List texts, const std::vector<std::string>& types, const int& count_min, const double& smooth, const bool& nested);
 RcppExport SEXP quanteda_find_sequence_cppl(SEXP textsSEXP, SEXP typesSEXP, SEXP count_minSEXP, SEXP smoothSEXP, SEXP nestedSEXP) {

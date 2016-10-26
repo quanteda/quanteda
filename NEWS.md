@@ -24,6 +24,11 @@ quanteda 0.9.8
 
 ## Bug fixes
 
+*  (0.9.8.4) Fix bug in verbose output of dfm that causes misreporting of number of features (#250)
+*  (0.9.8.4) Fix a bug in `selectFeatures.dfm()` that ignored `case_insensitive = TRUE` settings (#251) 
+   correct the documentation for this function.
+*  (0.9.8.3) Fix a bug in `tf(x, scheme = "propmax")` that returned a wrong computation; 
+   correct the documentation for this function.
 *  (0.9.8.2) Fixed a bug in textfile() causing all texts to have the same name, for types using the "textField" argument (a single file containing multiple documents).  
 *  Fixed bug in `phrasetotoken()` where if pattern included a `+` for `valuetype = c("glob", "fixed")` it threw a regex error.  #239  
 *  Fixed bug in `textfile()` where source is a remote .zip set.  (#172)  

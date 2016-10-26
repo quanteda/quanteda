@@ -5,10 +5,6 @@ skipgramcpp <- function(tokens, ns, ks, delim) {
     .Call('quanteda_skipgramcpp', PACKAGE = 'quanteda', tokens, ns, ks, delim)
 }
 
-match_bit <- function(tokens1, tokens2) {
-    .Call('quanteda_match_bit', PACKAGE = 'quanteda', tokens1, tokens2)
-}
-
 find_sequence_cppl <- function(texts, types, count_min, smooth, nested) {
     .Call('quanteda_find_sequence_cppl', PACKAGE = 'quanteda', texts, types, count_min, smooth, nested)
 }
