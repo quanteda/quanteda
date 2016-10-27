@@ -62,10 +62,9 @@ familys to them.  Many of the functions previously indexed separately will now b
 
 Used for demonstration purposes, these have been renamed to reflect that they are data, a tag for the object class, and a description.  Internal objects will be hidden from the index through familys.
 
-new name | original name | notes | family
+new name | original name | notes | keyword
 :--------|:------------- |:----- |:-------
 `data_char_encodedtexts` | `encodedTexts` | | data
-`data_files_encodedtexts` | `encodedTextFiles` |  | data
 `data_char_sampletext` | `exampleString` |   | data
 `data_char_mobydick`   | `mobydickText` | | data
 `data_char_ukimmigration` | `ukimmigTexts` |   | data
@@ -76,6 +75,7 @@ new name | original name | notes | family
 `data_int_syllables` | `englishSyllables` |  (used by `textcount_syllables()`) | internal
 `data_char_wordlists` | `wordlists` |  (used by `readability()`) | internal
 `data_char_stopwords` | `.stopwords` | (used by `stopwords()` -- see [below](#functions-retained-for-backwards-compatibility)) | internal
+`data_files_encodedtexts` | `encodedTextFiles` | (moved to **readtext**) | -
 
 
 ## **quanteda** classes
@@ -84,14 +84,13 @@ These are the core classes defined by **quanteda** and used for method dispatch.
 
 new name | original name | constructor function
 :--------|:------------- |:-------
-collocations | collocations | `collocations()`
-corpus | corpus | `corpus()`
-dictionary | dictionary | `dictionary()`
-dfm | dfm, dfmDense, dfmSparse | `dfm()`
+collocations |  | `collocations()`
+corpus |  | `corpus()`
+dictionary |  | `dictionary()`
+(dist) | similarity | `textstat_simil()`, `textstat_dist()`, `simil()`, `dist()`
+dfm |  | `dfm()`
+kwic |  | `kwic()`
 tokens | tokenizedTexts | `tokens()`
-explore_kwic | kwic | `explore_kwic()`
-textstat_similarity_matrix | similarity | `textstat_similarity()`
-textstat_similarity_list | similarity | `textstat_similarity()`
 
 
 ## Function Inventory
@@ -106,18 +105,20 @@ produced:
 
 These functions process one object, either a base or a **quanteda** type, and create a new, quanteda-class object.
 
-new name | original name | methods | output object | family
+new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
-`corpus` | | readtext, character, data.frame, VCorpus | corpus | corpus
+`corpus` | | readtext, character, data.frame, readtext, VCorpus | corpus | corpus
 `dfm` | | corpus, character | dfm | dfm
+`fcm`    | *new* | tokens | fcm | fcm
 `dictionary` |  | named list | dictionary | dictionary
 `tokens` | `tokenize` | corpus, character | tokenizedTexts | tokens
+`kwic`   | | corpus, character | kwic | kwic
+`collocations` | | tokens | collocations | collocations
 
 ### Functions for working with `corpus` objects
 
-new name | original name | methods | output object | family
+new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
-`corpus` |      | character, data.frame, VCorpus, *files* | corpus | corpus
 `corpus_segment` | `segment`      | corpus | corpus | corpus
 `corpus_reshape` | `changeunits`      | corpus | corpus | corpus
 `corpus_subset` | `subset`      | corpus | corpus | corpus
@@ -126,9 +127,8 @@ new name | original name | methods | output object | family
 
 ### Functions for working with `tokens` objects
 
-new name | original name | methods | output object | family
+new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
-`tokens` | `tokenize`    | character, corpus | tokens | tokens
 `tokens_join` | `phrasetotoken`, `joinTokens` | tokens + collocations/dictionary/character | tokens | tokens
 `tokens_select` | `selectTokens` | tokens + collocations/dictionary/character | tokens | tokens
 `tokens_remove` | `removeTokens` | tokens + collocations/dictionary/character | tokens | tokens
@@ -143,9 +143,8 @@ new name | original name | methods | output object | family
 
 ### Functions for working with dfm and fcm objects
 
-new name | original name | methods | output object | family
+new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
-`dfm` |     | character, corpus, tokens | dfm | dfm
 `dfm_compress` | `compress` | dfm  | dfm | dfm
 `dfm_select` | `selectFeatures` | dfm + collocations/dictionary/character | dfm | dfm
 `dfm_remove` | `removeFeatures` | dfm + collocations/dictionary/character | dfm | dfm
@@ -168,9 +167,8 @@ Construction of a "feature co-occurrence matrix" would be slightly different fro
 
 Some of these will be internal only (e.g. `fcm_compress()`), as users are unlikely to need them, although they are useful when available to other functions.  Others are not defined, such as `fcm_wordstem` and `fcm_tolower`, because collapsing these and treating them as equivalent (as for a dfm object) is incorrect for the context in which co-occurrence is defined, such as a +/- 5 token window.
 
-new name | original name | methods | output object | family
+new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
-`fcm` |     | tokens | fcm | fcm
 `fcm_select` | `selectFeatures` | fcm + collocations/dictionary/character | fcm | fcm
 `fcm_remove` | `removeFeatures` | fcm + collocations/dictionary/character | fcm | fcm
 `fcm_sort`    | `sort` | fcm | fcm | fcm
@@ -191,26 +189,19 @@ new name | original name | notes
 
 ### Analytic functions
 
-These are still very much a **work in progress**, so input much appreciated!
-
-The challenge is to figure out an accurate, descriptive, consistent, and not overly cumbersome naming convention.  This should group similar functions, and also describe what they do.  This is very important because extensions (and extension packages) built on quanteda will take cues from this naming convention for analytic objects.  
-
 The proposed naming convention here breaks from the previous `x_y` scheme in that the "x" does not identify a previously constructed object to which a verb "x" is applied, but rather provides a hierachy of analytic functions where "x" is the general category and "y" is the more specific analysis applied.
-
-This makes sense as a scheme, but is inconsistent with the broader scheme.  Is this something we should therefore avoid?  And if so, what is the alternative that remains consistent?
 
 #### "Discovery" functions
 
-new name | original name | methods | output object | family
+new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
 `collocations` | `collocations`, `findSequences` | tokens | data.frame | textscore
 `kwic`         | `kwic` | corpus, character, tokens | data.frame |  textcount
 
-These are the worst fitting, in my opinion.  Surely there are better alternatives!
 
 #### Functions that compute stuff
 
-new name | original name | methods | output object | family
+new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
 `textstat_lexdiv` | `lexdiv` | dfm, tokens | data.frame | textstat
 `textstat_readability` | `readability` | character, tokens | data.frame | textstat
@@ -221,9 +212,9 @@ new name | original name | methods | output object | family
 
 #### Functions that fit models to dfm objects
 
-(These are already implemeted this way, so no change needed.)
+(These are already implemented this way, so no change needed.)
 
-new name | original name | methods | output object | family
+new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
 `textmodel_NB`        | `textmodel_NB` | dfm | textmodel_NB | textmodel
 `textmodel_wordscores`        | `textmodel_wordscores`  | dfm | textmodel_wordscores | textmodel
@@ -232,9 +223,10 @@ new name | original name | methods | output object | family
 
 #### Plotting functions
 
-new name | original name | methods | output object | family
+new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
 `textplot_wordcloud` | `plot.dfm` | dfm | (wordcloud plot) | textplot
+`textplot_wordcloud2` | *new* | dfm | (wordcloud2 plot) | textplot
 `textplot_xray`  | `plot_kwic` |  kwic | (x-ray plot) | textplot
 `textplot_positions`  | `plot.textmodel_wordfish_fitted` |  textmodel_wordfish_fitted | scaled positions with intervals | textplot
 
@@ -246,7 +238,7 @@ We can think of (many) additional functions to produce other plot types (from `f
 
 These are functions in the core R package for which methods have been defined in quanteda, in order to extend their functionality to quanteda objects.  The motivation is that for those familiar with how these work in R, the extension of these methods will provide an intuitive and natural application to quanteda objects.
 
-new name | original name | methods | output object | family
+new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
 `as.data.frame` | - | dfm | data.frame | (with `dfm`)
 `as.matrix` | - | dfm | matrix | (with `dfm`)
@@ -287,7 +279,7 @@ These are functions that are not extensions of base R methods, but rather additi
 
 There are some fudges to this, for instance the definition of an `ntoken()` and `ntype()` methods for `character` and `corpus` objects, since tokens (and types) are only countable after the user has tokenized the text.  For this reason, however, `ntoken()` and `ntype()` methods pass through options in `...` to `tokenize()`, which is called as a result of dispatching these methods on `character` and `corpus` objects.  Calls to these functions are performed by the `summary.character()` method, for instance, which returns counts of tokens, types, and sentences.
 
-new name | original name | methods | output object | family
+new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
 `ndoc` | - | corpus, dfm | int | quanteda
 `nfeature` | - | corpus, dfm | integer | quanteda
