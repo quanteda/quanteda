@@ -301,8 +301,8 @@ new name | original name | methods | output object | family
 `as.dfm` | - | matrix, data.frame | dfm | quanteda
 `is.tokens`	| - | any | logical | quanteda
 `as.tokens`	| - | list: char | tokenizedTexts | quanteda
-`docnames` | `docnames` | corpus, tokens, dfm | character |
-`docnames<-` | `docnames<-` | corpus | character |
+`docnames` | - | corpus, tokens, dfm | character |
+`docnames<-` | - | corpus | character |
 `featnames` | `features` | dfm | character |
 `encoding`<sup>1</sup> |  | character, corpus | data.frame (of character encoding labels) |
 
