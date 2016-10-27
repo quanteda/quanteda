@@ -75,14 +75,13 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 
 #' @rdname ngrams
 #' @examples 
-#' 
 #' tokens <- tokenize(c('a b c d e', 'c d e f g'))
 #' tokens_hashed <- hashTokens(tokens)
 #' ngrams <- ngrams(tokens, n = 2, skip = 0:1, concatenator = "-")
 #' ngrams_hashed <- ngrams(tokens_hashed, n = 2, skip = 0:1, concatenator = "-")
 #' as.tokenizedTexts(ngrams_hashed)
 #' 
-#' '\dontrun{
+#' \dontrun{
 #' tokens2 <- tokenize(head(inaugTexts, 10), removePunct=TRUE)
 #' tokens2_hashed <- hashTokens(tokens2)
 #' 

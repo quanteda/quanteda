@@ -67,7 +67,7 @@ arma::sp_mat fcm_cpp(Rcpp::List &texts,
         }
         
         int vFrom = 0;
-        int vTo = 0; 
+        int vTo = 0;
         for (int h = 0; h < texts.size(); h++) {
             StringVector text = texts[h];
             int len = text.size();
@@ -187,7 +187,6 @@ arma::sp_mat fcm_hash_cpp(Rcpp::List &texts,
                         index_mat.row(1).subvec(vFrom, vTo) = text.head(length); 
                         w_values.subvec(vFrom, vTo).fill(window_weights[i]);
                     }
-                    
                 } else {
                     int length = len - i -1;
                     arma::uvec upper = find (text.tail(length) >= text.head(length));

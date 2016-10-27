@@ -1,8 +1,8 @@
 #include <Rcpp.h>
 #include <string>
 #include <algorithm>
-#include "quanteda.hpp"
-#include "quanteda.hpp"
+#include "quanteda.h"
+#include "quanteda.h"
 
 using namespace Rcpp;
 using namespace std;

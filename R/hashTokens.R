@@ -1,23 +1,3 @@
-#' Extract vocaburary
-#' @rdname hashTokens
-#' @param x tokenizedText
-#' @export
-vocaburary <- function(x, ...) {
-  UseMethod("vocaburary")
-}
-
-#' @rdname hashTokens
-#' @export
-vocaburary.tokenizedTexts <- function(x){
-  return(unique(unlist(x, use.names = FALSE)))
-}
-
-#' @rdname hashTokens
-#' @export
-vocaburary.tokenizedTextsHashed <- function(x){
-  return(attr(x, "vocabulary"))
-}
-
 #' Constructor for tokenizedTextsHashed objects
 #' 
 #' Creates a hashed object of tokenizedTexts.
@@ -28,7 +8,7 @@ vocaburary.tokenizedTextsHashed <- function(x){
 #' @import fastmatch
 #' @details The hashTokens is designed to hash the tokenizedTexts object and
 #'   create the tokenizedTextsHashed object for functions like
-#'   \code{\link{dfm}}, \code{\link{cfm}}, \code{\link{selectFeatures}} etc. to
+#'   \code{\link{dfm}}, \code{\link{fcm}}, \code{\link{selectFeatures}} etc. to
 #'   improve the performance of these functions in terms of speed, especially
 #'   for large dataset.
 #' @author Kenneth Benoit and Haiyan Wang

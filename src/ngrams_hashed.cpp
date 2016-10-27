@@ -1,8 +1,8 @@
 #include <Rcpp.h>
 #include <unordered_map>
 #include <numeric>
-#include "dev.hpp"
-#include "quanteda.hpp"
+#include "dev.h"
+#include "quanteda.h"
 
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;

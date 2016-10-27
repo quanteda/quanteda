@@ -9,14 +9,6 @@ fcm_hash_cpp <- function(texts, n_types, count, window, weights, ordered, tri, n
     .Call('quanteda_fcm_hash_cpp', PACKAGE = 'quanteda', texts, n_types, count, window, weights, ordered, tri, nvec)
 }
 
-fcm_cpp3 <- function(texts, types, count, window, weights, ordered, n) {
-    .Call('quanteda_fcm_cpp3', PACKAGE = 'quanteda', texts, types, count, window, weights, ordered, n)
-}
-
-fcm_cpp4 <- function(texts, n_types, count, window, weights, ordered, nvec) {
-    .Call('quanteda_fcm_cpp4', PACKAGE = 'quanteda', texts, n_types, count, window, weights, ordered, nvec)
-}
-
 skipgramcpp <- function(tokens, ns, ks, delim) {
     .Call('quanteda_skipgramcpp', PACKAGE = 'quanteda', tokens, ns, ks, delim)
 }

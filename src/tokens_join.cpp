@@ -1,6 +1,6 @@
 #include <Rcpp.h>
 #include <vector>
-#include "quanteda.hpp"
+#include "quanteda.h"
 
 using namespace Rcpp;
 using namespace std;
