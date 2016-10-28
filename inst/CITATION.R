@@ -2,15 +2,13 @@ citHeader("To cite package 'quanteda' in publications please use the following."
 
 if (!exists("meta") || is.null(meta)) 
     meta <- packageDescription("quanteda")
-year <- sub("-.*", "", meta$Date)
-note <- sprintf("R package version %s", meta$Version)
 
 citEntry(entry = "Manual",
          title = "quanteda: Quantitative Analysis of Textual Data",
          author = personList(as.person("Kenneth Benoit"),
                              as.person("Paul Nulty")),                            
-         year = year,
-         note = note,
+         year = substring(meta$Date, 1, 4),
+         note = sprintf("R package version %s", meta$Version),
          url = "https://github.com/kbenoit/quanteda",
          
          textVersion = 
