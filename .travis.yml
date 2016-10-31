@@ -17,5 +17,5 @@ env:
 after_success:
   - Rscript -e 'library(covr);codecov()'
 
-
-  
+notifications:
+    slack: quanteda:W4x9WmNKqE7kVtkKZDWld7IP

@@ -1,16 +1,11 @@
-quanteda 0.9.9
-==============
-
-## Bug Fixes
-
-*  Fixed a bug in textfile() causing all texts to have the same name, for types using the "textField" argument (a single file containing multiple documents).
-
 
 quanteda 0.9.8
 ==============
 
 ## New Features
 
+*  Added feature co-occurence matrix functions (`fcm`) (0.9.8.7).  
+*  Added tokenizedTextsHashed methods (0.9.8.7).  
 *  Improved the performance of `selectFeatures.tokenizedTexts()`.  
 *  Improved the performance of `rbind.dfm()`.  
 *  Added support for different docvars when importing multiple files using `textfile()`.  (#147)  
@@ -31,6 +26,13 @@ quanteda 0.9.8
 
 ## Bug fixes
 
+*  (0.9.8.5) Fixed an incompatibility in sequences.cpp with Solaris x86 (#257)
+*  (0.9.8.4) Fix bug in verbose output of dfm that causes misreporting of number of features (#250)
+*  (0.9.8.4) Fix a bug in `selectFeatures.dfm()` that ignored `case_insensitive = TRUE` settings (#251) 
+   correct the documentation for this function.
+*  (0.9.8.3) Fix a bug in `tf(x, scheme = "propmax")` that returned a wrong computation; 
+   correct the documentation for this function.
+*  (0.9.8.2) Fixed a bug in textfile() causing all texts to have the same name, for types using the "textField" argument (a single file containing multiple documents).  
 *  Fixed bug in `phrasetotoken()` where if pattern included a `+` for `valuetype = c("glob", "fixed")` it threw a regex error.  #239  
 *  Fixed bug in `textfile()` where source is a remote .zip set.  (#172)  
 *  Fixed bug in `wordstem.dfm()` that caused an error if supplied a dfm with a feature whose total frequency
