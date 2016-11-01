@@ -42,7 +42,7 @@ wordstem.character <- function(x, language = "porter") {
 
 # 
 # toks <- unlist(tokenize(toLower(inaugTexts[1:5]), removePunct = TRUE, removeNumbers = TRUE), use.names = FALSE)
-# microbenchmark(wordstem(toks), 
+# microbenchmark::microbenchmark(wordstem(toks), 
 #                wordstemP(toks),
 #                simplify2array(parallel::mclapply(toks, wordstem, language=language)))
 
