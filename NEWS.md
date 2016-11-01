@@ -4,8 +4,8 @@ quanteda 0.9.8
 
 ## New Features
 
-*  Added feature co-occurence matrix functions (`fcm`) (0.9.8.7).  
-*  Added tokenizedTextsHashed methods (0.9.8.7).  
+*  Added feature co-occurence matrix functions (`fcm`) (0.9.8.6).  
+*  Added tokenizedTextsHashed methods (0.9.8.6).  
 *  Improved the performance of `selectFeatures.tokenizedTexts()`.  
 *  Improved the performance of `rbind.dfm()`.  
 *  Added support for different docvars when importing multiple files using `textfile()`.  (#147)  
