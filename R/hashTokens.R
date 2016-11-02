@@ -57,7 +57,7 @@ hashTokens.tokenizedTexts <- function(x, vocabulary, ...) {
     xNumeric <- lapply(x, function(x,y) fmatch(x,y), vocabulary)
 
     attributes(xNumeric) <- attr_input
-    class(xNumeric) <- c("tokenizedTextsHashed", "tokenizedTexts", class(xNumeric))
+    class(xNumeric) <- c("tokenizedTextsHashed", class(xNumeric))
     attr(xNumeric, "vocabulary") <- as.vector(vocabulary)
     return(xNumeric)
 }
@@ -72,8 +72,13 @@ as.tokenizedTexts.tokenizedTextsHashed <- function(x, ...) {
         stop("input must be a tokenizedTextsHashed types")
     
     types <- attr(x, "vocabulary")
-    xTt <- lapply(x, function(x,y) y[x], types)
-    xTt
+    x_unhashed <- lapply(x, function(x, y) y[x], types)
+    attributes(x_unhashed) <- attributes(x)
+    # remove vocabulary attribute
+    attr(x_unhashed, "vocabulary") <- NULL
+    # remove tokenizedTextsHashed label
+    class(x_unhashed) <- class(x_unhashed)[-1]
+    x_unhashed
 }
 
 #' @rdname hashTokens
@@ -81,7 +86,7 @@ as.tokenizedTexts.tokenizedTextsHashed <- function(x, ...) {
 as.list.tokenizedTextsHashed <- function(x, ...){
   if (!is.tokenizedTextsHashed(x))
     stop("input must be a tokenizedTextsHashed types")
-  attr(x,"vocabulary") <- NULL
+  attr(x, "vocabulary") <- NULL
   xList <- unclass(x)
   xList
 }
@@ -99,17 +104,7 @@ is.tokenizedTextsHashed <- function(x){
 #' @export
 #' @method print tokenizedTextsHashed
 print.tokenizedTextsHashed <- function(x, ...) {
-  ndocuments <- ifelse(is.list(x), length(x), 1)
-  cat("tokenizedTextHashed object from ", ndocuments, " document", 
-      ifelse(ndocuments > 1, "s", ""), ".\n", sep = "")
-  print(as.tokenizedTexts(x))
-  # if (is.list(x)) { 
-  #   class(x) <- "listof"
-  #   print(x, ...)
-  # } else {
-  #   x <- as.character(x)
-  #   print(x, ...)
-  # }
+    print(as.tokenizedTexts(x))
 }
 
 #' @details \code{tokenizeHashed} creates tokenizedTextsHashed object from characters vactors 
@@ -162,9 +157,8 @@ tokens_hashed_recompile <- function(x) {
     
     v <- vocabulary(x)
     v_unique <- unique(v)
-    v_unique_int <- seq_along(v_unique)
-    
-    x_new <- lapply(x, function(y) v_unique_int[match(v, v_unique)])
+    index_mapping <- match(v, v_unique)
+    x_new <- lapply(x, function(y) index_mapping[y])
     attributes(x_new) <- attrs_input
     attr(x_new, "vocabulary") <- v_unique
     x_new

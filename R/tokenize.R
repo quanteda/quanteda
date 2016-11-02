@@ -600,7 +600,11 @@ is.tokenizedTexts <- function(x) {
 #' @method print tokenizedTexts
 print.tokenizedTexts <- function(x, ...) {
     ndocuments <- ifelse(is.list(x), length(x), 1)
-    cat("tokenizedText object from ", ndocuments, " document", 
+    # to figure out if this was passed from tokenizedTextsHashed after conversion
+    # clunky but WELCOME TO S3
+    xtype <- ifelse(grepl("tokenizedTextsHashed", sys.calls()[[2]])[1],
+                    "tokenizedTextsHashed", "tokenizedTexts")
+    cat(xtype, " object from ", ndocuments, " document", 
         ifelse(ndocuments > 1, "s", ""), ".\n", sep = "")
     if (is.list(x)) { 
         class(x) <- "listof"
