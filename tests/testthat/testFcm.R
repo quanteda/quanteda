@@ -1,7 +1,10 @@
+require(quanteda)
+require(testthat)
+require(text2vec)
 context('Testing fcm*.R')
 
 test_that("compare the output feature co-occurrence matrix to that of the text2vec package", {
-    library(text2vec)
+    #library(text2vec)
     txt <- "A D A C E A D F E B A C E D"
     #txt <- c("The quick brown fox jumped over the lazy dog.",
     #          "The dog jumped and ate the fox.")
