@@ -4,7 +4,9 @@ quanteda 0.9.8
 
 ## New Features
 
-*  Added feature co-occurence matrix functions (`fcm`) (0.9.8.6).  
+*  Added additional methods for tokenizedTextsHashed objects, including dfm,
+   and more efficient wordstem, toLower, and toUpper (0.9.8.7).
+*  Added feature co-occurence matrix functions (`fcm`) (0.9.8.6).
 *  Added tokenizedTextsHashed methods (0.9.8.6).  
 *  Improved the performance of `selectFeatures.tokenizedTexts()`.  
 *  Improved the performance of `rbind.dfm()`.  
@@ -26,6 +28,7 @@ quanteda 0.9.8
 
 ## Bug fixes
 
+*  (0.9.8.7) Added feature co-occurence matrix functions (`fcm`).
 *  (0.9.8.5) Fixed an incompatibility in sequences.cpp with Solaris x86 (#257)
 *  (0.9.8.4) Fix bug in verbose output of dfm that causes misreporting of number of features (#250)
 *  (0.9.8.4) Fix a bug in `selectFeatures.dfm()` that ignored `case_insensitive = TRUE` settings (#251) 
