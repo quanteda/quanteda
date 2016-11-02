@@ -4,7 +4,6 @@
 \alias{fcm}
 \alias{fcm.character}
 \alias{fcm.tokenizedTexts}
-\alias{fcm.tokenizedTextsHashed}
 \title{create a feature co-occurrence matrix}
 \usage{
 fcm(x, ...)
@@ -12,10 +11,6 @@ fcm(x, ...)
 \method{fcm}{character}(x, ...)
 
 \method{fcm}{tokenizedTexts}(x, context = c("document", "window"),
-  count = c("frequency", "boolean", "weighted"), window = 5L,
-  weights = 1L, ordered = FALSE, span_sentence = TRUE, tri = TRUE, ...)
-
-\method{fcm}{tokenizedTextsHashed}(x, context = c("document", "window"),
   count = c("frequency", "boolean", "weighted"), window = 5L,
   weights = 1L, ordered = FALSE, span_sentence = TRUE, tri = TRUE, ...)
 }
@@ -107,7 +102,7 @@ fcm(toks, context = "window", window = 3)
 fcm(toksHashed, context = "window", window = 3)
 }
 \author{
-Haiyan Wang (R, C++), Kenneth Benoit (R), Kohei Watanabe (C++)
+Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)
 }
 \references{
 Momtazi, S., Khudanpur, S., & Klakow, D. (2010). 

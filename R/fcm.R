@@ -32,7 +32,7 @@ setClass("fcm",
 #' vector of weights applied to the co-occurrence counts.
 #' @param x character vector, corpus, or tokenized texts from which to generate 
 #'   the context-feature co-occurrence matrix
-#' @author Haiyan Wang (R, C++), Kenneth Benoit (R), Kohei Watanabe (C++)
+#' @author Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)
 #' @import Matrix
 #' @export
 #' @details The function \code{\link{fcm}} provides a very general
@@ -188,118 +188,34 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
                 weights <- 1
             }
         }
-        types <- unique(unlist(x, use.names = FALSE))
         
-        # order the features alphabetically
-        types <- sort(types)
-        n <- sum(lengths(x)) * (window + 1)
-        result <- fcm_cpp(x, types, count, window, weights, ordered, tri, n)
+        if (is.tokenizedTextsHashed(x)) {
+            n <- sum(lengths(unlist(x))) * window * 2
+            result <- fcm_hash_cpp(x, length(unique(unlist(x))), count, window, weights, ordered, tri, n)
+            # set the dimnames of result
+            types <- attr(x, "vocabulary")
+        } else {
+            types <- unique(unlist(x, use.names = FALSE))
+            # order the features alphabetically
+            types <- sort(types)
+            n <- sum(lengths(x)) * (window + 1)
+            result <- fcm_cpp(x, types, count, window, weights, ordered, tri, n)
+        }
         # set the dimnames of result
-        dimnames(result) <- list(contexts = types, features = types)
+        dimnames(result) <- list(features = types, features = types)
     }
 
     # discard the lower diagonal if tri == TRUE
-    if (tri)
+    if (tri & !is.tokenizedTextsHashed(x))
         result <- Matrix::triu(result)
 
     # create a new feature context matrix
     result <- new("fcm", as(result, "dgCMatrix"), count = count,
                   context = context, window = window, weights = weights, tri = tri)
     # set the names 
-    names(result@Dimnames) <- c("contexts", "features")
+    names(result@Dimnames) <- c("features", "features")
     result
 }     
-
-#' @rdname fcm
-#' @export
-fcm.tokenizedTextsHashed <- function(x, context = c("document", "window"), 
-                              count = c("frequency", "boolean", "weighted"),
-                              window = 5L,
-                              weights = 1L,
-                              ordered = FALSE,
-                              span_sentence = TRUE, tri = TRUE, ...) {
-    
-    context <- match.arg(context)
-    count <- match.arg(count)
-    
-    feature <- V1 <- NULL  # to avoid no visible binding errors in CHECK
-    # could add a warning if not roundly coerced to integer
-    window <- as.integer(window)
-    
-    if (!span_sentence)
-      warning("spanSentence = FALSE not yet implemented")
-    
-    if (context == "document") {
-        
-        nTokens <- lengths(x)
-        # find out which documents have zero feature counts
-        emptyDocs <- which(nTokens == 0)
-        # add docIndex positions for any zero-token docs; no effect if emptyDocs is empty
-        docIndex <- c(rep(seq_along(nTokens), nTokens), emptyDocs)
-        featureIndex <- unlist(x, use.names = FALSE)
-        docNames <- paste("text", 1:length(x), sep="")
-        tokenCount <- Matrix::sparseMatrix(i = docIndex, 
-                                  j = featureIndex, 
-                                  x = 1L, 
-                                  dimnames = list(docs = docNames, features = attr(x, "vocabulary")))
-        tokenCount <- new("dfmSparse", tokenCount)
-        if (count == "boolean") {
-            x <- tf(tokenCount, "boolean")
-            result <- Matrix::crossprod(x)
-            tokenCo <- tokenCount > 1
-        } else if (count == "frequency") {
-            result <- Matrix::crossprod(tokenCount)
-            tokenCo <- apply(tokenCount, MARGIN=c(1,2), function(x) choose(x,2))
-        } else {
-            stop("Cannot have weighted counts with context = \"document\"")
-        }
-        
-        # compute co_occurrence of the diagonal elements
-        tokenCoSum <- apply(tokenCo, MARGIN = 2, sum)
-        ft <- tokenCoSum >= 1
-        diagIndex <- which(ft)
-        lengthToken <- length(ft)
-        diagCount <- Matrix::sparseMatrix(i = diagIndex,
-                                          j = diagIndex,
-                                          x = tokenCoSum[ft],
-                                          dims = c(lengthToken , lengthToken))
-        diag(result) <- 0
-        
-        result <- result + diagCount
-        
-        # discard the lower diagonal if tri == TRUE
-        if (tri)
-            result <- Matrix::triu(result)
-
-        #order the features alphabetically
-        #result <- result[order(rownames(result)), order(colnames(result))]
-    }
-    
-    if (context == "window") { 
-        try (if(window < 2) stop("The window size is too small.")) 
-        
-        if (count == "weighted"){
-            if (!missing(weights) & length(weights) != window) {
-                warning ("weights length is not equal to the window size, weights are assigned by default!")
-                weights <- 1
-            }
-        }
-        n <- sum(lengths(unlist(x))) * window * 2
-        
-        result <- fcm_hash_cpp(x, length(unique(unlist(x))), count, window, weights, ordered, tri, n)
-        # set the dimnames of result
-        types <- attr(x, "vocabulary")
-        dimnames(result) <- list(contexts = types, features = types)
-    }
-    
-    
-    # create a new feature context matrix
-    result <- new("fcm", as(result, "dgCMatrix"), count = count,
-                  context = context, window = window, weights = weights, tri = tri)
-    # set the names 
-    names(result@Dimnames) <- c("contexts", "features")
-    result
-}
 
 
 #' @rdname print.dfm
@@ -309,8 +225,8 @@ setMethod("print", signature(x = "fcm"),
               ndoc <- nfeature
               if (show.summary) {
                   cat("Feature co-occurrence matrix of: ",
-                      format(ndoc(x), , big.mark = ","), " context",
-                      ifelse(ndoc(x) > 1 | ndoc(x) == 0, "s, ", ", "),
+                      format(ndoc(x), , big.mark = ","), " by ",
+                      # ifelse(ndoc(x) > 1 | ndoc(x) == 0, "s, ", ", "),
                       format(nfeature(x), big.mark = ","), " feature",
                       ifelse(nfeature(x) > 1 | nfeature(x) == 0, "s", ""),
                       ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep = ""), ""),
