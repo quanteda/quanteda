@@ -2,8 +2,7 @@
 
 #' @title Virtual class "fcm" for a feature co-occurrence matrix
 #' 
-# @description The fcm class of object is a special type of \link{dfm-class}.
-#' @description The fcm class of object is a type of \link[Matrix]{Matrix-class}
+#' @description The fcm class of object is a special type of \link{dfm-class}
 #'   object with additional slots, described below.  
 #'     
 #' @slot context the context definition
@@ -18,43 +17,49 @@
 #' @import methods
 #' @docType class
 #' @name fcm-class
+#' @keywords internal
 setClass("fcm",
          slots = c(context = "character", window = "integer", count = "character", weights = "numeric", ordered = "logical", tri = "logical"),
          # prototype = list(Dimnames = list(contexts = NULL, features = NULL)),
          contains = c("dfm", "dgCMatrix"))
 
 
-
-#' create a context-feature co-occurrence matrix
+#' create a feature co-occurrence matrix
 #' 
-#' Create a sparse context-feature co-occurrence matrix, measuring 
-#' co-occurrences of features within a user-defined context. The context can be 
-#' defined as a document or a window within a collection of documents, with an 
-#' optional vector of weights applied to the co-occurrence counts.
+#' Create a sparse feature co-occurrence matrix, measuring co-occurrences of
+#' features within a user-defined context. The context can be defined as a
+#' document or a window within a collection of documents, with an optional
+#' vector of weights applied to the co-occurrence counts.
 #' @param x character vector, corpus, or tokenized texts from which to generate 
-#'   the context-feature co-occurrence matrix.
-#' @author Kenneth Benoit (R), Kohei Watanabe (C++) and Haiyan Wang
+#'   the context-feature co-occurrence matrix
+#' @author Haiyan Wang (R, C++), Kenneth Benoit (R), Kohei Watanabe (C++)
 #' @import Matrix
 #' @export
-#' @details The funciton \link{fcm} provides a very general implementation of a 
-#'   "context-feature" matrix, consisting of a count of feature co-occurrence 
-#'   within a defined context.  This context, following Momtazi et. al. (2010), 
-#'   can be defined as the \emph{document}, \emph{sentences} within documents, 
-#'   \emph{syntactic relationships} beteeen features (nouns within a sentence,
-#'   for instance), or according to a \emph{window}.  When the context is a window, 
-#'   a weighting function is typically applied that is a function of distance from the 
-#'   target word (see Jurafsky and Martin 2015, Ch. 16) and ordered co-occurrence of 
-#'   the two features is considered (see Chruch, K.W. & Hanks, P. (1990)).  
+#' @details The function \code{\link{fcm}} provides a very general
+#'   implementation of a "context-feature" matrix, consisting of a count of
+#'   feature co-occurrence within a defined context.  This context, following
+#'   Momtazi et. al. (2010), can be defined as the \emph{document},
+#'   \emph{sentences} within documents, \emph{syntactic relationships} beteeen
+#'   features (nouns within a sentence, for instance), or according to a
+#'   \emph{window}.  When the context is a window, a weighting function is
+#'   typically applied that is a function of distance from the target word (see
+#'   Jurafsky and Martin 2015, Ch. 16) and ordered co-occurrence of the two
+#'   features is considered (see Chruch, K.W. & Hanks, P. (1990)).
 #'   
-#'   \link{fcm} provides all of this functionality, returning a \eqn{V * V} matrix
-#'   (where \eqn{V} is the vocabulary size, returned by \code{\link{ntype}}). The \code{tri = TRUE} option will only return the upper
-#'   part of the matrix.
+#'   \link{fcm} provides all of this functionality, returning a \eqn{V * V}
+#'   matrix (where \eqn{V} is the vocabulary size, returned by
+#'   \code{\link{ntype}}). The \code{tri = TRUE} option will only return the
+#'   upper part of the matrix.
 #'   
-#'   Unlike some implementations of co-occurrences, \link{fcm} counts feature co-occurrences 
-#'   with themselves, meaning that the diagonal will not be zero.
+#'   Unlike some implementations of co-occurrences, \link{fcm} counts feature
+#'   co-occurrences with themselves, meaning that the diagonal will not be zero.
 #'   
-#'   \link{fcm} also provides "boolean" counting within the context of "window", which differs from the counting within "document".  
-#' @references Momtazi, S., Khudanpur, S., & Klakow, D. (2010). 
+#'   \link{fcm} also provides "boolean" counting within the context of "window",
+#'   which differs from the counting within "document".
+#'   
+#' @references 
+#'   
+#'   Momtazi, S., Khudanpur, S., & Klakow, D. (2010). 
 #'   "\href{https://www.lsv.uni-saarland.de/fileadmin/publications/SaeedehMomtazi-HLT_NAACL10.pdf}{A
 #'    comparative study of word co-occurrence for term clustering in language 
 #'   model-based sentence retrieval.}" \emph{Human Language Technologies: The 
@@ -66,11 +71,18 @@ setClass("fcm",
 #'   \href{https://web.stanford.edu/~jurafsky/slp3/16.pdf}{Chapter 16, Semantics
 #'   with Dense Vectors.}
 #'   
-#'   Chruch, K.W. & Hanks, P. (1990)  "\href{http://dl.acm.org/citation.fcm?id=89095}{Word 
-#'   association norms, mutual information, and lexicography}" \emph{Computational Linguistics}, 16(1):22–29.
-
+#'   Chruch, K.W. & Hanks, P. (1990) 
+#'   "\href{http://dl.acm.org/citation.fcm?id=89095}{Word association norms,
+#'   mutual information, and lexicography}" \emph{Computational Linguistics},
+#'   16(1):22–29.
 fcm <- function(x, ...) {
     UseMethod("fcm")
+}
+
+#' @rdname fcm
+#' @export
+fcm.character <- function(x, ...) {
+    fcm(tokenize(x), ...)
 }
 
 #' @rdname fcm
@@ -152,7 +164,7 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
         }
         
         # compute co_occurrence of the diagonal elements
-        tokenCoSum <- apply(tokenCo, MARGIN = 2, sum)
+        tokenCoSum <- colSums(tokenCo) # apply(tokenCo, MARGIN = 2, sum)
         ft <- tokenCoSum >= 1
         diagIndex <- which(ft)
         lengthToken <- length(ft)
@@ -168,10 +180,10 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
     }
         
     if (context == "window") { 
-        try(if(window < 2) stop("The window size is too small.")) 
+        try (if (window < 2) stop("The window size is too small.")) 
             
         if (count == "weighted") {
-            if (!missing(weights) & length(weights) != window){
+            if (!missing(weights) & length(weights) != window) {
                 warning ("weights length is not equal to the window size, weights are assigned by default!")
                 weights <- 1
             }
@@ -188,7 +200,7 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
 
     # discard the lower diagonal if tri == TRUE
     if (tri)
-        result[lower.tri(result, diag = FALSE)] <- 0
+        result <- Matrix::triu(result)
 
     # create a new feature context matrix
     result <- new("fcm", as(result, "dgCMatrix"), count = count,
@@ -198,7 +210,6 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
     result
 }     
 
-#' # method for tokenizedTextsHashed input(numerical vector)
 #' @rdname fcm
 #' @export
 fcm.tokenizedTextsHashed <- function(x, context = c("document", "window"), 
@@ -258,14 +269,14 @@ fcm.tokenizedTextsHashed <- function(x, context = c("document", "window"),
         
         # discard the lower diagonal if tri == TRUE
         if (tri)
-           result[lower.tri(result, diag = FALSE)] <- 0
-        
+            result <- Matrix::triu(result)
+
         #order the features alphabetically
         #result <- result[order(rownames(result)), order(colnames(result))]
     }
     
     if (context == "window") { 
-        try(if(window < 2) stop("The window size is too small.")) 
+        try (if(window < 2) stop("The window size is too small.")) 
         
         if (count == "weighted"){
             if (!missing(weights) & length(weights) != window) {
@@ -290,11 +301,6 @@ fcm.tokenizedTextsHashed <- function(x, context = c("document", "window"),
     result
 }
 
-#' @rdname fcm
-#' @export
-fcm.character <- function(x, ...) {
-    fcm(tokenize(x), ...)
-}
 
 #' @rdname print.dfm
 #' @export
@@ -302,7 +308,7 @@ setMethod("print", signature(x = "fcm"),
           function(x, show.values = FALSE, show.settings = FALSE, show.summary = TRUE, nfeature = 20L, ...) {
               ndoc <- nfeature
               if (show.summary) {
-                  cat("Context-feature matrix of: ",
+                  cat("Feature co-occurrence matrix of: ",
                       format(ndoc(x), , big.mark = ","), " context",
                       ifelse(ndoc(x) > 1 | ndoc(x) == 0, "s, ", ", "),
                       format(nfeature(x), big.mark = ","), " feature",
