@@ -1103,7 +1103,7 @@ ntoken.character <- function(x, ...) {
 #' @rdname ntoken
 #' @export
 ntoken.tokenizedTexts <- function(x, ...) {
-    sapply(x, length)
+    lengths(x)
 }
 
 #' @rdname ntoken

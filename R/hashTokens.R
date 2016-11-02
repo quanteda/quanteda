@@ -23,6 +23,14 @@
 #' as.list(toksHashed)
 #' # returned as a tokenized Text
 #' as.tokenizedTexts(toksHashed)
+#' 
+#' # change case
+#' toksh <- hashTokens(tokenize(c(one = "a b c d A B C D",
+#'                                two = "A B C d")))
+#' tolower(toksh)
+#' 
+#' # wordstem
+#' 
 hashTokens <- function(x, ...) {
   UseMethod("hashTokens")
 }
@@ -138,3 +146,47 @@ tokenizeHashed <- function(x, size_chunk = 1000, ...) {
 }
 
 
+#' recompile a hashed tokens object
+#' 
+#' This function recompiles a hashed tokens object when the vocabulary has been changed in 
+#' a way that makes some of its types identical, such as lowercasing when a lowercased 
+#' version of the type already exists in the hash table.
+#' @param x the \link[=hashTokens]{tokenizedTexts} object to be recompiled
+#' @examples 
+#' toksh <- hashTokens(tokenize(c(one = "a b c d A B C D",
+#'                                two = "A B C d")))
+#' vocabulary(toksh) <- toLower(vocabulary(toksh))
+#' tokens_hashed_recompile(toksh)
+tokens_hashed_recompile <- function(x) {
+    attrs_input <- attributes(x)
+    
+    v <- vocabulary(x)
+    v_unique <- unique(v)
+    v_unique_int <- seq_along(v_unique)
+    
+    x_new <- lapply(x, function(y) v_unique_int[match(v, v_unique)])
+    attributes(x_new) <- attrs_input
+    attr(x_new, "vocabulary") <- v_unique
+    x_new
+}
+
+vocabulary <- function(x) {
+    UseMethod("vocabulary")
+}
+
+vocabulary.tokenizedTextsHashed <- function(x) {
+    as.character(attr(x, "vocabulary"))
+}
+
+"vocabulary<-" <- function(x, value) {
+    UseMethod("vocabulary<-")
+}
+
+"vocabulary<-.tokenizedTextsHashed" <- function(x, value) {
+    if (length(vocabulary(x)) != length(value))
+        stop("replacement value must equal length of existing vocabulary")
+    if (!is.character(value))
+        stop("replacement value must be character")
+    attr(x, "vocabulary") <- value
+    x
+}
