@@ -32,17 +32,18 @@ test_that("test that ngrams produces the results from Guthrie 2006", {
           'insurgents_ongoing_fighting', 'killed_in_ongoing', 
           'killed_in_fighting', 'killed_ongoing_fighting', 
           'in_ongoing_fighting')
-
+      
       expect_that(
           setdiff(ngrams(toks, n=2, skip=0), bi_grams),
           equals(character(0))
       )
+      
 
       expect_that(
           setdiff(ngrams(toks, n=2, skip=0:2), two_skip_bi_grams),
           equals(character(0))
       )
-      # Same function called via `skipgrams`
+      # Same function called via `skipgrams`
       expect_that(
           setdiff(skipgrams(toks, n=2, skip=0:2), two_skip_bi_grams),
           equals(character(0))
@@ -53,18 +54,25 @@ test_that("test that ngrams produces the results from Guthrie 2006", {
           setdiff(ngrams(toks, n=3, skip=0), tri_grams),
           equals(character(0))
       )
-      # Same function called via `skipgrams`
+      # Same function called via `skipgrams`
       expect_that(
           setdiff(skipgrams(toks, n=3, skip=0), tri_grams),
           equals(character(0))
       )
 
-
       expect_that(
           setdiff(ngrams(toks, n=3, skip=0:2), two_skip_tri_grams),
           equals(character(0))
       )
-
+      
+      toks2 <- tokenize(c('a b c d e', 'c d e f g'))
+      toks2_hashed <- hashTokens(toks2)
+      mix_grams <- list(c("a_b", "b_c", "c_d", "d_e", "a_b_c", "b_c_d", "c_d_e"),
+                        c("c_d", "d_e", "e_f", "f_g", "c_d_e", "d_e_f", "e_f_g"))
+      expect_identical(
+        ngrams(toks2, n = 2:3),
+        as.tokenizedTexts(ngrams(toks2_hashed, n = 2:3))
+      )
 
 })
 

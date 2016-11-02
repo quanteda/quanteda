@@ -112,8 +112,8 @@ private:
         skip(tokens, next, n, skips, ngram, ngrams, pos_tokens, pos_ngrams);
       }
     }else{
-      //Rcout << "Add " << ngram << " at " << pos_ngrams << "/" << ngrams.size() << "\n";
       ngrams[pos_ngrams] = ngram_id(ngram);
+      //Rcout << "Add " << ngrams[pos_ngrams] << " at " << pos_ngrams << "/" << ngrams.size() << "\n";
       pos_tokens = 0;
       pos_ngrams++;
     }
@@ -141,7 +141,7 @@ private:
         skip(tokens, start, n, skips, ngram, ngrams, pos_tokens, pos_ngrams); // get ngrams as reference
       }
     }
-    ngrams.resize(pos_ngrams - 1);
+    ngrams.resize(pos_ngrams);
     return ngrams;
   }
   
