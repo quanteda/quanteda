@@ -23,23 +23,21 @@ test_that("wordstem works as expected for tokens_hashed", {
     expect_equal(classic, as.tokenizedTexts(hashed))
 })
 
-### FAILS
 test_that("ngrams works as expected for tokens_hashed", {
     toks <- tokenize(c(one = toLower("Insurgents killed in ongoing fighting."),
                        two = "A B C D E"), removePunct = TRUE)
     toksh <- hashTokens(toks)
     classic <- ngrams(toks, n = 2:3)
     hashed <- ngrams(toksh, n = 2:3)
-    ## expect_equal(classic, as.tokenizedTexts(hashed))
+    expect_equal(classic, as.tokenizedTexts(hashed))
 })
 
-### FAILS
 test_that("skipgrams works as expected for tokens_hashed", {
     toks <- tokenize(c(one = "insurgents killed in ongoing fighting"))
     toksh <- hashTokens(toks)
     classic <- skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")
     hashed <- skipgrams(toksh, n = 3, skip = 0:2, concatenator = " ")
-    ## expect_equal(classic, as.tokenizedTexts(hashed))
+    expect_equal(classic, as.tokenizedTexts(hashed))
 })
 
 
