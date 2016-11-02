@@ -70,7 +70,8 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
     # ngramsResult <- parallel::mclapply(x, ngrams.character, n, skip, concatenator, ...)
     class(ngramsResult) <- c("tokenizedTexts", class(ngramsResult))
     attributes(ngramsResult) <- attributes(x)
-    attr(ngramsResult, "ngrams") <- n
+    attr(ngramsResult, "ngrams") <- as.integer(n)
+    attr(ngramsResult, "skip") <- as.integer(skip)
     attr(ngramsResult, "concatenator") <- concatenator
     ngramsResult
 }
@@ -93,7 +94,8 @@ ngrams.tokenizedTextsHashed <- function(x, n = 2L, skip = 0L, concatenator = "_"
     names(ngramsResult) <- names(x)
     attributes(ngramsResult) <- attrs_orig
     attr(ngramsResult, "vocabulary") <- ngram_types
-    attr(ngramsResult, "ngrams") <- n
+    attr(ngramsResult, "ngrams") <- as.integer(n)
+    attr(ngramsResult, "skip") <- as.integer(skip)
     attr(ngramsResult, "concatenator") <- concatenator
     ngramsResult
 }

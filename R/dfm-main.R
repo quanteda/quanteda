@@ -222,6 +222,7 @@ dfm.tokenizedTexts <- function(x,
                                ...) {
     
     settings_ngrams <- attr(x, "ngrams")
+    settings_skip <- attr(x, "skip")
     settings_concatenator <- attr(x, "concatenator")
     
     valuetype <- match.arg(valuetype)
@@ -254,7 +255,8 @@ dfm.tokenizedTexts <- function(x,
     dfmresult <- compile_dfm(x, verbose = verbose)
         
     # copy attributes
-    dfmresult@ngrams <- settings_ngrams
+    dfmresult@ngrams <- as.integer(settings_ngrams)
+    dfmresult@skip <- as.integer(settings_skip)
     dfmresult@concatenator <- settings_concatenator
     
     if (!is.null(dictionary) | !is.null(thesaurus)) {

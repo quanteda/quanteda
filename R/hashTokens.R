@@ -141,17 +141,17 @@ tokenizeHashed <- function(x, size_chunk = 1000, ...) {
 }
 
 
-#' recompile a hashed tokens object
-#' 
-#' This function recompiles a hashed tokens object when the vocabulary has been changed in 
-#' a way that makes some of its types identical, such as lowercasing when a lowercased 
-#' version of the type already exists in the hash table.
-#' @param x the \link[=hashTokens]{tokenizedTexts} object to be recompiled
-#' @examples 
-#' toksh <- hashTokens(tokenize(c(one = "a b c d A B C D",
-#'                                two = "A B C d")))
-#' vocabulary(toksh) <- toLower(vocabulary(toksh))
-#' tokens_hashed_recompile(toksh)
+# recompile a hashed tokens object
+# 
+# This function recompiles a hashed tokens object when the vocabulary has been changed in 
+# a way that makes some of its types identical, such as lowercasing when a lowercased 
+# version of the type already exists in the hash table.
+# @param x the \link[=hashTokens]{tokenizedTexts} object to be recompiled
+# @examples 
+# toksh <- hashTokens(tokenize(c(one = "a b c d A B C D",
+#                                two = "A B C d")))
+# vocabulary(toksh) <- toLower(vocabulary(toksh))
+# tokens_hashed_recompile(toksh)
 tokens_hashed_recompile <- function(x) {
     attrs_input <- attributes(x)
     
