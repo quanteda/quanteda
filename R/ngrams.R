@@ -85,8 +85,9 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #' @export
 ngrams.tokenizedTextsHashed <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
     attrs_orig <- attributes(x)
+    if(any(n <= 0)) stop("ngram length has to be greater than zero")
     # Generate ngrams
-    res <- qatd_cpp_ngram_hashed_list(x, n, skip)
+    res <- qatd_cpp_ngram_hashed_list(x, n, skip + 1)
     
     # Make character tokens of ngrams
     ngram_types <- qatd_cpp_ngram_unhash_vocab(res$id_unigram, attr(x, 'vocabulary'), concatenator)

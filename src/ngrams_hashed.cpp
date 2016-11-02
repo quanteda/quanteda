@@ -58,12 +58,13 @@ void skip_hashed(NumericVector &tokens,
         for (int j = 0; j < skips.size(); j++){
             int next = start + skips[j];
             if(next < 0 || tokens.size() - 1 < next) break;
-            //Rcout << "Join " << ngram << " at " << pos_tokens << " " << next << "\n";
+            //if(next > tokens.size() - 1) break;
+            //Rcout << "Join " << tokens[start] << " at " << pos_tokens << " " << next << "\n";
             skip_hashed(tokens, next, n, skips, ngram, ngrams, map_ngram, pos_tokens, pos_ngrams);
         }
     }else{
-        //Rcout << "Add " << ngram << " at " << pos_ngrams << "/" << ngrams.size() << "\n";
         ngrams[pos_ngrams] = ngram_id(ngram, map_ngram);
+        //Rcout << "Add " << ngrams[pos_ngrams] << " at " << pos_ngrams << "/" << ngrams.size() << "\n";
         pos_tokens = 0;
         pos_ngrams++;
     }
@@ -93,7 +94,7 @@ Ngrams skipgram_hashed(NumericVector tokens,
             skip_hashed(tokens, start, n, skips, ngram, ngrams, map_ngram, pos_tokens, pos_ngrams); // Get ngrams as reference
         }
     }
-    ngrams.resize(pos_ngrams - 1);
+    ngrams.resize(pos_ngrams);
     return ngrams;
 }
 
@@ -158,25 +159,25 @@ CharacterVector qatd_cpp_ngram_unhash_vocab(ListOf<NumericVector> ids_ngram,
 
 /*** R
 
-# tokens <- tokenize(c('a b c d e', 'c d e f g'))
-# tokens_hashed <- hashTokens(tokens)
-# res <- qatd_cpp_ngram_hashed_list(tokens_hashed, 2, 0:1)
-# res$text
+tokens <- tokenize(c('a b c d e', 'c d e f g'))
+tokens_hashed <- hashTokens(tokens)
+res <- qatd_cpp_ngram_hashed_list(tokens_hashed, 3, 1)
+res$text
 
-tokens <- rep(head(letters), 2)
-types <- unique(tokens)
-tokens_hashed <- match(tokens, types)
-res <- qatd_cpp_ngram_hashed_vector(tokens_hashed, 3, 1)
-ngram <- res$ngram
-ngram_ids <- res$id_ngram
-vocaburary <- sapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-')
-vocaburary[ngram]
-
-microbenchmark::microbenchmark(
-  sapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-'),
-  qatd_cpp_ngram_unhash_vocab(res$id_unigram, types, '-'),
-  unit='relative'
-)
+# tokens <- rep(head(letters), 2)
+# types <- unique(tokens)
+# tokens_hashed <- match(tokens, types)
+# res <- qatd_cpp_ngram_hashed_vector(tokens_hashed, 3, 1)
+# ngram <- res$ngram
+# ngram_ids <- res$id_ngram
+# vocaburary <- sapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-')
+# vocaburary[ngram]
+# 
+# microbenchmark::microbenchmark(
+#   sapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-'),
+#   qatd_cpp_ngram_unhash_vocab(res$id_unigram, types, '-'),
+#   unit='relative'
+# )
 
 */
 
