@@ -50,7 +50,7 @@ hashTokens.tokenizedTexts <- function(x, vocabulary, ...) {
 
     attributes(xNumeric) <- attr_input
     class(xNumeric) <- c("tokenizedTextsHashed", "tokenizedTexts", class(xNumeric))
-    attr(xNumeric, "vocabulary") <- vocabulary
+    attr(xNumeric, "vocabulary") <- as.vector(vocabulary)
     return(xNumeric)
 }
 
