@@ -222,6 +222,7 @@ dfm.tokenizedTexts <- function(x,
                                ...) {
     
     settings_ngrams <- attr(x, "ngrams")
+    settings_skip <- attr(x, "skip")
     settings_concatenator <- attr(x, "concatenator")
     
     valuetype <- match.arg(valuetype)
@@ -236,7 +237,7 @@ dfm.tokenizedTexts <- function(x,
     language <- tolower(language)
     
     if (verbose && grepl("^dfm\\.tokenizedTexts", sys.calls()[[2]])) {
-        catm("Creating a dfm from a tokenizedTexts object ...")
+        catm("Creating a dfm from a", class(x), "object ...")
     }
 
     # lowercase if necessary 
@@ -245,53 +246,17 @@ dfm.tokenizedTexts <- function(x,
         x <- toLower(x)
     }
 
-    # get document names
+    # set document names if none
     if (is.null(names(x))) {
-        docNames <- paste("text", 1:length(x), sep="")
-    } else docNames <- names(x)
-    
-    # index documents
-    if (verbose) catm("\n   ... indexing documents: ", 
-                     format(length(x), big.mark=","), " document",
-                     ifelse(length(x) > 1, "s", ""), sep="")
-    nTokens <- lengths(x)
-    # find out which documents have zero feature counts
-    emptyDocs <- which(nTokens == 0)
-    # add docIndex positions for any zero-token docs; no effect if emptyDocs is empty
-    docIndex <- c(rep(seq_along(nTokens), nTokens), emptyDocs)
+        names(x) <- paste("text", 1:length(x), sep="")
+    } 
 
-    # index features
-    if (verbose) catm("\n   ... indexing features: ")
-    if (sum(nTokens) == 0) {
-        catm("\n   ... Error in dfm.tokenizedTexts(): no features found.\n")
-        return(NULL)
-    }
-    allFeatures <- unlist(x)
-    uniqueFeatures <- unique(allFeatures)
-    totalfeatures <- length(uniqueFeatures)
-    if (verbose) catm(format(totalfeatures, big.mark=","), " feature type",
-                     ifelse(totalfeatures > 1, "s", ""), sep="")
-    featureIndex <- match(allFeatures, uniqueFeatures)
-    # add an arbitrary "feature" for empty docs
-    if (length(emptyDocs)) {
-        featureIndex <- c(featureIndex, rep(length(uniqueFeatures)+1, length(emptyDocs)))
-        uniqueFeatures <- c(uniqueFeatures, "__TEMPFEATURE__")
-    }
-    
-    if (verbose) catm("\n")
-    
-    # make the dfm
-    dfmresult <- sparseMatrix(i = docIndex, 
-                              j = featureIndex, 
-                              x = 1L, 
-                              dimnames = list(docs = docNames, features = uniqueFeatures))
-    # remove dummy feature if needed
-    if (length(emptyDocs)) dfmresult <- dfmresult[, -ncol(dfmresult), drop = FALSE]
-    # construct the dfmSparse type object
-    dfmresult <- new("dfmSparse", dfmresult)
-    
+    # compile the dfm
+    dfmresult <- compile_dfm(x, verbose = verbose)
+        
     # copy attributes
-    dfmresult@ngrams <- settings_ngrams
+    dfmresult@ngrams <- as.integer(settings_ngrams)
+    dfmresult@skip <- as.integer(settings_skip)
     dfmresult@concatenator <- settings_concatenator
     
     if (!is.null(dictionary) | !is.null(thesaurus)) {
@@ -338,6 +303,89 @@ dfm.tokenizedTexts <- function(x,
     return(dfmresult)
 }
 
+
+## internal function to compile the dfm
+compile_dfm <- function(x, verbose = TRUE) {
+    UseMethod("compile_dfm")
+}
+
+## internal function to compile the dfm
+compile_dfm.tokenizedTexts <- function(x, verbose = TRUE) {
+
+    # get document names
+    docNames <- names(x)
+    
+    # index documents
+    if (verbose) catm("\n   ... indexing documents: ", 
+                      format(length(x), big.mark=","), " document",
+                      ifelse(length(x) > 1, "s", ""), sep="")
+    nTokens <- lengths(x)
+    # find out which documents have zero feature counts
+    emptyDocs <- which(nTokens == 0)
+    # add docIndex positions for any zero-token docs; no effect if emptyDocs is empty
+    docIndex <- c(rep(seq_along(nTokens), nTokens), emptyDocs)
+    
+    # index features
+    if (verbose) catm("\n   ... indexing features: ")
+    if (sum(nTokens) == 0) {
+        catm("\n   ... Error in dfm.tokenizedTexts(): no features found.\n")
+        return(NULL)
+    }
+    allFeatures <- unlist(x)
+    uniqueFeatures <- unique(allFeatures)
+    totalfeatures <- length(uniqueFeatures)
+    if (verbose) catm(format(totalfeatures, big.mark=","), " feature type",
+                      ifelse(totalfeatures > 1, "s", ""), sep="")
+    featureIndex <- match(allFeatures, uniqueFeatures)
+    # add an arbitrary "feature" for empty docs
+    if (length(emptyDocs)) {
+        featureIndex <- c(featureIndex, rep(length(uniqueFeatures)+1, length(emptyDocs)))
+        uniqueFeatures <- c(uniqueFeatures, "__TEMPFEATURE__")
+    }
+    
+    if (verbose) catm("\n")
+    
+    # make the dfm
+    dfmresult <- sparseMatrix(i = docIndex, 
+                              j = featureIndex, 
+                              x = 1L, 
+                              dimnames = list(docs = docNames, features = uniqueFeatures))
+    # remove dummy feature if needed
+    if (length(emptyDocs)) dfmresult <- dfmresult[, -ncol(dfmresult), drop = FALSE]
+    
+    # return the dfmSparse type object
+    new("dfmSparse", dfmresult)
+}
+
+compile_dfm.tokenizedTextsHashed <- function(x, verbose = TRUE) {
+    
+    if (verbose) {
+        catm("\n   ... found  ", 
+             format(length(x), big.mark = ","), " document",
+             ifelse(length(x) > 1, "s", ""), ### replace with: ntoken()
+             ", ",
+             format(length(attr(x, "vocabulary")), big.mark = ","),  ### replace with: ntype()
+             " feature",
+             ifelse(length(attr(x, "vocabulary")) > 1, "s", ""), 
+             sep="")
+    }
+
+    # get document names
+    docNames <- names(x)
+    
+    nTokens <- lengths(x)  ### replace with: ntoken()
+    # find out which documents have zero feature counts
+    emptyDocs <- which(nTokens == 0)
+    # add docIndex positions for any zero-token docs; no effect if emptyDocs is empty
+    docIndex <- c(rep(seq_along(nTokens), nTokens), emptyDocs)
+    featureIndex <- unlist(x, use.names = FALSE)
+    docNames <- paste("text", 1:length(x), sep="")
+    tokenCount <- Matrix::sparseMatrix(i = docIndex, 
+                                       j = featureIndex, 
+                                       x = 1L, 
+                                       dimnames = list(docs = docNames, features = attr(x, "vocabulary")))
+    new("dfmSparse", tokenCount)
+}
     
 
 #' @rdname dfm

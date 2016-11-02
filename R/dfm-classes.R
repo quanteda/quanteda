@@ -34,7 +34,7 @@
 #' @name dfm-class
 setClass("dfm",
          slots = c(settings = "list", weightTf = "list", weightDf = "list", smooth = "numeric",
-                   ngrams = "integer", concatenator = "character"),
+                   ngrams = "integer", skip = "integer", concatenator = "character"),
          prototype = list(settings = list(NULL),
                           Dim = integer(2), 
                           Dimnames = list(docs=NULL, features=NULL),
@@ -42,6 +42,7 @@ setClass("dfm",
                           weightDf = list(scheme = "unary", base = NULL, c = NULL, smoothing = NULL, threshold = NULL),
                           smooth = 0,
                           ngrams = 1L,
+                          skip = 0L,
                           concatenator = ""),
          contains = "Matrix")
 

@@ -1,3 +1,4 @@
+#define RCPP_USING_CXX11
 #include <RcppArmadillo.h>
 // [[Rcpp::depends("RcppArmadillo")]]
 #include <unordered_map>

@@ -53,9 +53,24 @@ syllables.character <- function(x, syllableDict = quanteda::englishSyllables, ..
 
 
 #' @rdname syllables
+#' @examples 
+#' \dontshow{
+#' toks <- tokenize(c(one = "super freakily yes",
+#'                    two = "merrily all go aerodynamic"))
+#' toksh <- hashTokens(toks)
+#' syllables(toks)
+#' syllables(toksh)
+#' }
+#' @export
+syllables.tokenizedTextsHashed <- function(x, syllableDict = quanteda::englishSyllables, ...) { 
+    vocab_sylls <- syllables(vocabulary(x))
+    sapply(x, function(y) vocab_sylls[y])
+}
+
+#' @rdname syllables
 #' @export
 syllables.tokenizedTexts <- function(x, syllableDict = quanteda::englishSyllables, ...) { 
-
+    
     # make tokenized list into a data table
     syllablesDT <- data.table(docIndex = rep(1:length(x), lengths(x)),
                               word = unlist(x), 
@@ -63,7 +78,7 @@ syllables.tokenizedTexts <- function(x, syllableDict = quanteda::englishSyllable
     
     # call the syllables data.table function
     nSyllables <- syllables.data.table(syllablesDT, syllableDict)    
-
+    
     # restore names
     names(nSyllables) <- names(x)    
     
