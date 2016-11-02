@@ -28,6 +28,7 @@ quanteda 0.9.8
 
 ## Bug fixes
 
+*  (0.9.8.7) Solved #267 in which `fcm(x, tri = TRUE)` temporarily created a dense logical matrix.
 *  (0.9.8.7) Added feature co-occurence matrix functions (`fcm`).
 *  (0.9.8.5) Fixed an incompatibility in sequences.cpp with Solaris x86 (#257)
 *  (0.9.8.4) Fix bug in verbose output of dfm that causes misreporting of number of features (#250)
