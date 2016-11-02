@@ -4,6 +4,8 @@ using namespace std;
 #ifndef __QUANTEDA__
 #define __QUANTEDA__
 
+
+#define RCPP_USING_CXX11
 namespace quanteda{
 
     inline String join_character_vector(const CharacterVector &tokens, const String &delim){
