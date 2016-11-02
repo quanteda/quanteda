@@ -55,7 +55,8 @@ Suggests:
     testthat,
     RColorBrewer,
     ggplot2 (>= 2.1.0),
-    grid
+    grid,
+    text2vec
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
@@ -106,4 +107,4 @@ Collate:
     'zzz.R'
 RcppModules: ngramMaker
 RoxygenNote: 5.0.1
-SystemRequirements: C++11
+SystemRequirements: C++11,GNU make
