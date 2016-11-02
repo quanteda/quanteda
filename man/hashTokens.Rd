@@ -59,6 +59,14 @@ toksHashed <- hashTokens(toks)
 as.list(toksHashed)
 # returned as a tokenized Text
 as.tokenizedTexts(toksHashed)
+
+# change case
+toksh <- hashTokens(tokenize(c(one = "a b c d A B C D",
+                               two = "A B C d")))
+tolower(toksh)
+
+# wordstem
+
 txt <- c('a b c d e', 'd e f g h', 'f g h i j', 'i j k l m')
 tokenizeHashed(txt, size_chunk=2)
 

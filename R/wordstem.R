@@ -65,6 +65,26 @@ wordstem.tokenizedTexts <- function(x, language = "porter") {
     result
 }
 
+#' @rdname wordstem
+#' @import stringi 
+#' @export
+#' @examples 
+#' \dontshow{
+#' txt <- c(one = "Eating eater eaters eats ate.",
+#'          two = "Taxing taxes taxed my tax return.")
+#' th <- hashTokens(tokenize(toLower(txt)))
+#' wordstem(th)
+#' attr(wordstem(th), "vocabulary")
+#' }
+wordstem.tokenizedTextsHashed <- function(x, language = "porter") {
+    if (all.equal(attributes(x)$ngrams, 1))
+        vocabulary(x) <- wordstem(vocabulary(x), language = language)
+    else 
+        vocabulary(x) <- wordstem_Ngrams(vocabulary(x), language = language)
+
+    tokens_hashed_recompile(x)
+}
+
 
 # stemming for ngrams, internal function
 wordstem_Ngrams <- function(x, concatenator, language) {

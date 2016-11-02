@@ -1,3 +1,4 @@
+#define RCPP_USING_CXX11
 #include <Rcpp.h>
 #include <vector>
 

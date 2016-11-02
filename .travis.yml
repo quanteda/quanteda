@@ -3,6 +3,8 @@ cache: packages
 sudo: true
 r_packages:
   - covr
+r_binary_packages:
+  - topicmodels
 
 env:
   global:

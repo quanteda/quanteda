@@ -84,10 +84,6 @@ test_that("test `ngrams` on tokenized texts", {
           testngrams,
           is_a('tokenizedTexts')
       )
-      expect_that(
-          attributes(testngrams),
-          equals(attributes(testtokenized))
-      )
 
       expect_that(
           skipgrams(testtokenized, 2, 0),

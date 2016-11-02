@@ -4,24 +4,19 @@
 \alias{fcm}
 \alias{fcm.character}
 \alias{fcm.tokenizedTexts}
-\alias{fcm.tokenizedTextsHashed}
-\title{create a context-feature co-occurrence matrix}
+\title{create a feature co-occurrence matrix}
 \usage{
 fcm(x, ...)
+
+\method{fcm}{character}(x, ...)
 
 \method{fcm}{tokenizedTexts}(x, context = c("document", "window"),
   count = c("frequency", "boolean", "weighted"), window = 5L,
   weights = 1L, ordered = FALSE, span_sentence = TRUE, tri = TRUE, ...)
-
-\method{fcm}{tokenizedTextsHashed}(x, context = c("document", "window"),
-  count = c("frequency", "boolean", "weighted"), window = 5L,
-  weights = 1L, ordered = FALSE, span_sentence = TRUE, tri = TRUE, ...)
-
-\method{fcm}{character}(x, ...)
 }
 \arguments{
 \item{x}{character vector, corpus, or tokenized texts from which to generate 
-the context-feature co-occurrence matrix.}
+the context-feature co-occurrence matrix}
 
 \item{...}{not used here}
 
@@ -56,32 +51,33 @@ sentences}
 \item{tri}{if \code{TRUE} return only upper triangle (including diagonal)}
 }
 \description{
-Create a sparse context-feature co-occurrence matrix, measuring 
-co-occurrences of features within a user-defined context. The context can be 
-defined as a document or a window within a collection of documents, with an 
-optional vector of weights applied to the co-occurrence counts.
-
-# method for tokenizedTextsHashed input(numerical vector)
+Create a sparse feature co-occurrence matrix, measuring co-occurrences of
+features within a user-defined context. The context can be defined as a
+document or a window within a collection of documents, with an optional
+vector of weights applied to the co-occurrence counts.
 }
 \details{
-The funciton \link{fcm} provides a very general implementation of a 
-  "context-feature" matrix, consisting of a count of feature co-occurrence 
-  within a defined context.  This context, following Momtazi et. al. (2010), 
-  can be defined as the \emph{document}, \emph{sentences} within documents, 
-  \emph{syntactic relationships} beteeen features (nouns within a sentence,
-  for instance), or according to a \emph{window}.  When the context is a window, 
-  a weighting function is typically applied that is a function of distance from the 
-  target word (see Jurafsky and Martin 2015, Ch. 16) and ordered co-occurrence of 
-  the two features is considered (see Chruch, K.W. & Hanks, P. (1990)).  
+The function \code{\link{fcm}} provides a very general
+  implementation of a "context-feature" matrix, consisting of a count of
+  feature co-occurrence within a defined context.  This context, following
+  Momtazi et. al. (2010), can be defined as the \emph{document},
+  \emph{sentences} within documents, \emph{syntactic relationships} beteeen
+  features (nouns within a sentence, for instance), or according to a
+  \emph{window}.  When the context is a window, a weighting function is
+  typically applied that is a function of distance from the target word (see
+  Jurafsky and Martin 2015, Ch. 16) and ordered co-occurrence of the two
+  features is considered (see Chruch, K.W. & Hanks, P. (1990)).
   
-  \link{fcm} provides all of this functionality, returning a \eqn{V * V} matrix
-  (where \eqn{V} is the vocabulary size, returned by \code{\link{ntype}}). The \code{tri = TRUE} option will only return the upper
-  part of the matrix.
+  \link{fcm} provides all of this functionality, returning a \eqn{V * V}
+  matrix (where \eqn{V} is the vocabulary size, returned by
+  \code{\link{ntype}}). The \code{tri = TRUE} option will only return the
+  upper part of the matrix.
   
-  Unlike some implementations of co-occurrences, \link{fcm} counts feature co-occurrences 
-  with themselves, meaning that the diagonal will not be zero.
+  Unlike some implementations of co-occurrences, \link{fcm} counts feature
+  co-occurrences with themselves, meaning that the diagonal will not be zero.
   
-  \link{fcm} also provides "boolean" counting within the context of "window", which differs from the counting within "document".
+  \link{fcm} also provides "boolean" counting within the context of "window",
+  which differs from the counting within "document".
 }
 \examples{
 # see http://bit.ly/29b2zOA
@@ -106,7 +102,7 @@ fcm(toks, context = "window", window = 3)
 fcm(toksHashed, context = "window", window = 3)
 }
 \author{
-Kenneth Benoit (R), Kohei Watanabe (C++) and Haiyan Wang
+Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)
 }
 \references{
 Momtazi, S., Khudanpur, S., & Klakow, D. (2010). 
@@ -121,7 +117,9 @@ Momtazi, S., Khudanpur, S., & Klakow, D. (2010).
   \href{https://web.stanford.edu/~jurafsky/slp3/16.pdf}{Chapter 16, Semantics
   with Dense Vectors.}
   
-  Chruch, K.W. & Hanks, P. (1990)  "\href{http://dl.acm.org/citation.fcm?id=89095}{Word 
-  association norms, mutual information, and lexicography}" \emph{Computational Linguistics}, 16(1):22–29.
+  Chruch, K.W. & Hanks, P. (1990) 
+  "\href{http://dl.acm.org/citation.fcm?id=89095}{Word association norms,
+  mutual information, and lexicography}" \emph{Computational Linguistics},
+  16(1):22–29.
 }
 
