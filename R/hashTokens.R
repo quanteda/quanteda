@@ -30,6 +30,9 @@ hashTokens <- function(x, ...) {
 #' @rdname hashTokens
 #' @export
 hashTokens.tokenizedTexts <- function(x, vocabulary, ...) {
+    
+    attr_input <- attributes(x)
+    
     if (!is.tokenizedTexts(x)) 
         stop("Input must be tokenizedTexts")
     types <- unique(unlist(x, use.names = FALSE))
@@ -45,7 +48,8 @@ hashTokens.tokenizedTexts <- function(x, vocabulary, ...) {
     }
     xNumeric <- lapply(x, function(x,y) fmatch(x,y), vocabulary)
 
-    class(xNumeric) <- c("tokenizedTextsHashed", class(xNumeric))
+    attributes(xNumeric) <- attr_input
+    class(xNumeric) <- c("tokenizedTextsHashed", "tokenizedTexts", class(xNumeric))
     attr(xNumeric, "vocabulary") <- vocabulary
     return(xNumeric)
 }
@@ -90,13 +94,14 @@ print.tokenizedTextsHashed <- function(x, ...) {
   ndocuments <- ifelse(is.list(x), length(x), 1)
   cat("tokenizedTextHashed object from ", ndocuments, " document", 
       ifelse(ndocuments > 1, "s", ""), ".\n", sep = "")
-  if (is.list(x)) { 
-    class(x) <- "listof"
-    print(x, ...)
-  } else {
-    x <- as.character(x)
-    print(x, ...)
-  }
+  print(as.tokenizedTexts(x))
+  # if (is.list(x)) { 
+  #   class(x) <- "listof"
+  #   print(x, ...)
+  # } else {
+  #   x <- as.character(x)
+  #   print(x, ...)
+  # }
 }
 
 #' @details \code{tokenizeHashed} creates tokenizedTextsHashed object from characters vactors 
@@ -114,22 +119,22 @@ print.tokenizedTextsHashed <- function(x, ...) {
 #' @rdname hashTokens
 #' @export
 tokenizeHashed <- function(x, size_chunk = 1000, ...) {
-  
-  xSubs <- split(x, ceiling(seq_along(x)/size_chunk))
-  xTokSubs <- list()
-  for(i in 1:length(xSubs)){
-    #cat('Tokenizing and hashing ...\n')
-    if(i == 1){
-      xTokSubs[[i]] <- hashTokens(tokenize(xSubs[[i]], ...))
-    }else{
-      xTokSubs[[i]] <- hashTokens(tokenize(xSubs[[i]], ...), attr(xTokSubs[[i-1]], "vocabulary"))
+    
+    xSubs <- split(x, ceiling(seq_along(x) / size_chunk))
+    xTokSubs <- list()
+    for (i in 1:length(xSubs)) {
+        #cat('Tokenizing and hashing ...\n')
+        if (i == 1) {
+            xTokSubs[[i]] <- hashTokens(tokenize(xSubs[[i]], ...))
+        } else {
+            xTokSubs[[i]] <- hashTokens(tokenize(xSubs[[i]], ...), attr(xTokSubs[[i-1]], "vocabulary"))
+        }
     }
-  }
-  xTok <- unlist(xTokSubs, recursive = FALSE)
-  class(xTok) <- c("tokenizedTextsHashed", class(xTok))
-  attr(xTok, "vocabulary") <- attr(xTokSubs[[length(xTokSubs)]], "vocabulary")
-  return(xTok)
-  
+    xTok <- unlist(xTokSubs, recursive = FALSE)
+    class(xTok) <- c("tokenizedTextsHashed", "tokenizedTexts", class(xTok))
+    attr(xTok, "vocabulary") <- attr(xTokSubs[[length(xTokSubs)]], "vocabulary")
+    return(xTok)
+    
 }
 
 

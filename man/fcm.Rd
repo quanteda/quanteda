@@ -60,8 +60,6 @@ Create a sparse feature co-occurrence matrix, measuring co-occurrences of
 features within a user-defined context. The context can be defined as a
 document or a window within a collection of documents, with an optional
 vector of weights applied to the co-occurrence counts.
-
-# method for tokenizedTextsHashed input(numerical vector)
 }
 \details{
 The function \code{\link{fcm}} provides a very general
