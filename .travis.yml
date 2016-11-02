@@ -1,14 +1,8 @@
+language: r
+cache: packages
+sudo: true
 r_packages:
   - covr
-  - knitr
-  - rmarkdown
-
-language: r
-sudo: true
-
-r_binary_packages:
-- topicmodels
-- testthat
 
 env:
   global:
