@@ -180,7 +180,8 @@ setMethod("print", signature(x = "dfmSparse"),
                       format(nfeature(x), big.mark=","), " feature",
                       ifelse(nfeature(x)>1 | nfeature(x)==0, "s", ""),
                       ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
-                      ".\n", sep="")
+                      " (", format(sparsity(x)*100, digits = 3),
+                      "% sparse).\n", sep="")
               }
               if (show.settings) {
                   cat("Settings: TO BE IMPLEMENTED.")
@@ -201,7 +202,8 @@ setMethod("print", signature(x = "dfmDense"),
                       format(nfeature(x), big.mark=","), " feature",
                       ifelse(nfeature(x)>1 | nfeature(x)==0, "s", ""),
                       ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
-                      ".\n", sep="")
+                      " (", format(sparsity(x)*100, digits = 3),
+                      "% sparse).\n", sep="")
               }
               if (show.settings) {
                   cat("Settings: TO BE IMPLEMENTED.")
@@ -226,7 +228,9 @@ print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, show.summary = 
             ndoc(x), " document",
             ifelse(ndoc(x)>1, "s, ", ", "),
             dim(x)[2], " feature",
-            ifelse(dim(x)[2]>1, "s", ""), ".\n", sep="")
+            ifelse(dim(x)[2]>1, "s", ""), 
+            ", ", format(sparsity(x)*100, digits = 3),
+            "% sparse.\n", sep="")
     }
     cat(ndoc(x), "x", nfeature(x), "dense matrix of (S3) class \"dfm\"\n")
     #    ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),

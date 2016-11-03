@@ -4,6 +4,7 @@ quanteda 0.9.8
 
 ## New Features
 
+*  Added `sparsity()` function to compute the sparsity of a dfm (0.9.8.7).
 *  Added additional methods for tokenizedTextsHashed objects, including dfm,
    and more efficient wordstem, toLower, and toUpper (0.9.8.7).
 *  Added feature co-occurence matrix functions (`fcm`) (0.9.8.6).
