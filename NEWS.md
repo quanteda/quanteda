@@ -4,6 +4,8 @@ quanteda 0.9.8
 
 ## New Features
 
+*  Added fast `applyDictionary()` method for tokenizedTexts, that also works with 
+   dictionaries that have multi-word keys (0.9.9.8).  Addresses but does not entirely yet solve #188.
 *  Added `sparsity()` function to compute the sparsity of a dfm (0.9.8.7).
 *  Added additional methods for tokenizedTextsHashed objects, including dfm,
    and more efficient wordstem, toLower, and toUpper (0.9.8.7).
