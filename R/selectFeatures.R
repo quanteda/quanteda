@@ -123,13 +123,13 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
         }
     } else {
         if (all.equal(x@ngrams, 1L)==TRUE)
-            featIndex <- which(features(x) %in% features)  # unigrams
+            featIndex <- which(features_x %in% features)  # unigrams
         else
             featIndex <- which(sapply(features_x, function(f) any(f %in% features), USE.NAMES = FALSE)) # ngrams
     }
     
     if (verbose & !features_from_dfm) 
-        cat(ifelse(selection=="keep", "kept", "removed"), " ", 
+        catm(ifelse(selection=="keep", "kept", "removed"), " ", 
             format(length(featIndex), big.mark=","),
             " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
             ", from ", length(features), " supplied (", originalvaluetype, ") feature type",
@@ -141,7 +141,7 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
     if (features_from_dfm) {
         
         if (verbose)
-            cat(ifelse(selection=="keep", "found", "zeroed"), " ", 
+            catm(ifelse(selection=="keep", "found", "zeroed"), " ", 
                 format(length(featIndex), big.mark=","),
                 " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
                 " from ", length(features), " supplied type",
@@ -155,14 +155,10 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
         origDfmFeatureIndex <- which(!(toLower(features) %in% toLower(features(x2))))
         xOriginalFeatureLength <- nfeature(x2)
         xOriginalFeatures <- features(x2)
-        ### NEED a cbind() operation for dfm that preserves settings! ###
-        if (verbose) cat(" padding 0s for another", length(origDfmFeatureIndex), "\n")
+        if (verbose) catm(" padding 0s for another", length(origDfmFeatureIndex), "\n")
         x <- new("dfmSparse", Matrix::cbind2(x2,
                                               sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x2), length(origDfmFeatureIndex)), 
                                                            dimnames = list(docnames(x2), features[origDfmFeatureIndex]))))
-#                  matrix(0, nrow = ndoc(x2), ncol = length(origDfmFeatureIndex))))
-#        x <- cbind(x2, )
-#        colnames(x2)[(xOriginalFeatureLength + 1) : nfeature(x2)] <- features[origDfmFeatureIndex]
         featIndex <- match(features_dfm, features(x))
         # x <- x2 #[, features_dfm]
     }
@@ -256,7 +252,7 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
     n <- length(y)
     
     if(indexing){
-        if(verbose) cat("Indexing tokens...\n")
+        if(verbose) catm("Indexing tokens...\n")
         index <- dfm(y, verbose = FALSE)
         index_binary <- as(index, 'nMatrix')
         types <- colnames(index_binary)
@@ -285,17 +281,17 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
             types_match <- features
         }
         if (indexing) flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
-        if (verbose) cat(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
+        if (verbose) catm(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
         if(selection == "remove"){
             select_tokens_cppl(y, flag, types_match, TRUE, padding)
         }else{ 
             select_tokens_cppl(y, flag, types_match, FALSE, padding)
         }
     } else if (valuetype == "regex") {
-        if (verbose) cat("Converting regex to fixed...\n")
+        if (verbose) catm("Converting regex to fixed...\n")
         types_match <- regex2fixed(features, types, case_insensitive) # get all the unique types that match regex
         if(indexing) flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
-        if(verbose) cat(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
+        if(verbose) catm(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
         if (selection == "remove") {
             select_tokens_cppl(y, flag, types_match, TRUE, padding)  # search as fixed
         } else {
@@ -382,7 +378,7 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
     setcolorder(x, c("word1", "word2", "word3", names(x)[4:ncol(x)]))
     x[, order:=NULL]
     nend <- nrow(x)
-    if (verbose) cat("Removed ", format(nstart - nend, big.mark=","),  
+    if (verbose) catm("Removed ", format(nstart - nend, big.mark=","),  
                      " (", format((nstart - nend)/nstart*100, digits=3),
                      "%) of ", format(nstart, big.mark=","), 
                      " collocations containing one of ", 
@@ -510,7 +506,7 @@ selectFeatures_collocations <- function(x, features, selection = c("keep", "remo
 
 # require(microbenchmark)
 # myCollocs <- collocations(inaugCorpus, size=2:3)
-# microbenchmark(
+# microbenchmark::microbenchmark(
 #     old = removeFeatures(myCollocs, stopwords("english"), verbose = FALSE),
 #                          new = selectFeatures(myCollocs, stopwords("english"), "remove"),
 #                          unit = "relative", times = 30
@@ -527,5 +523,114 @@ regex2fixed <- function(regex, types, case_insensitive = TRUE, ...){
     types_match <- types[stringi::stri_detect_regex(types, regex_joined, case_insensitive = case_insensitive, ...)]  
     return(types_match)
 }
+
+
+#' Parallel version of selectFeatures
+#' @inheritParams selectFeatures.tokenizedTexts
+#' @export
+#' @importFrom RcppParallel RcppParallelLibs
+#' @useDynLib 
+#' @examples 
+#' \dontrun{
+#' data(SOTUCorpus, package = "quantedaData")
+#' toks <- tokenize(SOTUCorpus, removePunct = TRUE)
+#' # head to head, old v. new
+#' system.time(selectFeaturesParallel.tokenizedTexts(toks, stopwords("english"), 
+#'              selection="remove", verbose = FALSE))
+#' microbenchmark::microbenchmark(
+#'     seri = selectFeatures(toks, stopwords("english"), "remove", 
+#'                              verbose = FALSE),
+#'     para = selectFeaturesParallel.tokenizedTexts(toks, stopwords("english"), 
+#'                  selection="remove", verbose = FALSE),
+#'     times = 5, unit = "relative")
+#' }
+selectFeaturesParallel.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
+                                                  valuetype = c("glob", "regex", "fixed"),
+                                                  case_insensitive = TRUE, padding = FALSE, verbose = FALSE, ...) {
+    selection <- match.arg(selection)
+    valuetype <- match.arg(valuetype)
+    originalvaluetype <- valuetype
+    features <- unique(unlist(features, use.names=FALSE))  # to convert any dictionaries
+    types <- unique(unlist(x, use.names=FALSE))
+    
+    # convert glob to fixed if no actual glob characters (since fixed is much faster)
+    if (valuetype == "glob") {
+        # treat as fixed if no glob characters detected
+        if (!sum(stringi::stri_detect_charclass(features, c("[*?]"))))
+            valuetype <- "fixed"
+        else {
+            features <- sapply(features, utils::glob2rx, USE.NAMES = FALSE)
+            valuetype <- "regex"
+        }
+    }
+    
+    if (valuetype == "fixed") {
+        if (case_insensitive) {
+            types_match <- types[toLower(types) %in% toLower(features)]
+        } else {
+            types_match <- features
+        }
+        if(selection == "remove"){
+            y <- qatd_cpp_selecttokens_mt(x, types_match, TRUE, padding)
+        }else{ 
+            y <- qatd_cpp_selecttokens_mt(x, types_match, FALSE, padding)
+        }
+    } else if (valuetype == "regex") {
+        if (verbose) cat("Converting regex to fixed...\n")
+        types_match <- regex2fixed(features, types, case_insensitive) # get all the unique types that match regex
+        if (selection == "remove") {
+            y <- qatd_cpp_selecttokens_mt(x, types_match, TRUE, padding)  # search as fixed
+        } else {
+            y <- qatd_cpp_selecttokens_mt(x, types_match, FALSE, padding) # search as fixed
+        }
+    }
+    
+    class(y) <- c("tokenizedTexts", class(x))
+    attributes(y) <- attributes(x)
+    return(y)
+}
+
+
+#' Parallel version of selectFeatures for index tokens
+#' @inheritParams selectFeatures.tokenizedTexts
+#' @importFrom RcppParallel RcppParallelLibs
+#' @useDynLib 
+#' @examples
+
+#'\dontrun{
+#' library(fastmatch)
+#' data(SOTUCorpus, package = "quantedaData")
+#' toks <- tokenize(SOTUCorpus, removePunct = TRUE)
+#' types <- unique(unlist(toks, use.names=FALSE))
+#' toks_index <- lapply(toks, function(x, y) match(x, y), types)
+#' stopwords_index <- match(stopwords("english"), types)
+#' stopwords_index <- stopwords_index[!is.na(stopwords_index)]
+#' toks2 <- selectFeatures(toks, stopwords("english"), case_insensitive=FALSE, 
+#'                      selection="remove", verbose = FALSE)
+#' toks2_index <- selectFeaturesParallel.indexedTexts(toks_index, stopwords_index, "remove")
+#' head(toks2[[1]], 20)
+#' head(types[toks2_index[[1]]], 20)
+#' microbenchmark::microbenchmark(
+#'    seri = selectFeatures(toks, stopwords("english"), case_insensitive=FALSE, 
+#'              selection="remove", verbose = FALSE),
+#'    para = selectFeaturesParallel.tokenizedTexts(toks, stopwords("english"), 
+#'              selection="remove", verbose = FALSE),
+#'    paraint = selectFeaturesParallel.indexedTexts(toks_index, stopwords_index, selection="remove"),
+#'    unit='relative'
+#' )
+#' }
+#' @export
+selectFeaturesParallel.indexedTexts <- function(x, features, selection = c("keep", "remove"), 
+                                                valuetype = c("glob", "regex", "fixed"),
+                                                case_insensitive = TRUE, padding = FALSE, verbose = FALSE, ...) {
+    toks <- list(1:50, 200:250)
+    if(selection=='remove'){
+        y <-  qatd_cpp_selecttokens_mt_hashed(x, features, TRUE, padding)
+    }else{
+        y <-  qatd_cpp_selecttokens_mt_hashed(x, features, FALSE, padding)
+    }
+    return(y)
+}
+
 
 

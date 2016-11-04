@@ -398,17 +398,17 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
 
     if (!is.integer(ngrams)) ngrams <- as.integer(ngrams)
     
-    if (verbose) cat("Starting tokenization...\n")
+    if (verbose) catm("Starting tokenization...\n")
     result <- x
     
     if (removeTwitter == FALSE & !(what %in% c("fastword", "fastestword"))) {
-        if (verbose) cat("  ...preserving Twitter characters (#, @)")
+        if (verbose) catm("  ...preserving Twitter characters (#, @)")
         startTimeClean <- proc.time()
         result <- stringi::stri_replace_all_fixed(result, c("#", "@"), c("_ht_", "_as_"), vectorize_all = FALSE)
-        if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
+        if (verbose) catm("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
     
-    if (verbose) cat("  ...tokenizing texts")
+    if (verbose) catm("  ...tokenizing texts")
     startTimeTok <- proc.time()
     
     if (grepl("word$", what)) {
@@ -420,28 +420,28 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
             result <- stri_replace_all_regex(result, "(\\b)[\\p{Pd}](\\b)", "$1 $2")
         
         if (removeURL) {
-            if (verbose & removeURL) cat(", removing URLs")
+            if (verbose & removeURL) catm(", removing URLs")
             URLREGEX <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
             result <- stri_replace_all_regex(result, URLREGEX, "")
         }
 
         if (what == "fasterword" | what == "fastestword") {
         
-            if (verbose & removeNumbers==TRUE) cat(", removing numbers")
-            if (verbose & removePunct==TRUE) cat(", removing punctuation")
-            if (verbose & removeSymbols==TRUE) cat(", removing symbols")
+            if (verbose & removeNumbers==TRUE) catm(", removing numbers")
+            if (verbose & removePunct==TRUE) catm(", removing punctuation")
+            if (verbose & removeSymbols==TRUE) catm(", removing symbols")
             regexToEliminate <- paste(ifelse(removeNumbers, "\\b\\d+\\b", ""),
                                       ifelse(removePunct, paste0("(?![", ifelse(removeTwitter, "_", "@#_"),  "])[\\p{P}]"), ""),
                                       ifelse(removeSymbols, "[\\p{S}]", ""),
                                       sep = "|")
-            # cat("\n..", regexToEliminate, "..\n", sep = "")
+            # catm("\n..", regexToEliminate, "..\n", sep = "")
             regexToEliminate <- gsub("^\\|+", "", regexToEliminate)
             regexToEliminate <- gsub("\\|+$", "", regexToEliminate)
-            # cat("\n..", regexToEliminate, "..\n", sep = "")
+            # catm("\n..", regexToEliminate, "..\n", sep = "")
             if (gsub("|", "", regexToEliminate, fixed = TRUE) != "")
                 result <- stri_replace_all_regex(result, regexToEliminate, "")
             
-            if (verbose & removePunct==TRUE) cat(", ", what, " tokenizing", sep="")
+            if (verbose & removePunct==TRUE) catm(", ", what, " tokenizing", sep="")
             if (what=="fastestword")
                 result <- stringi::stri_split_fixed(result, " ")
             else if (what=="fasterword")
@@ -458,7 +458,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
                                                      skip_word_number = removeNumbers) # but does not remove 4u, 2day, etc.
             # remove separators if option is TRUE
             if (removeSeparators & !removePunct) {
-                if (verbose) cat("\n  ...removing separators.")
+                if (verbose) catm("\n  ...removing separators.")
                 result <- lapply(result, function(x) x[!stri_detect_regex(x, "^\\s$")])
             }
         }
@@ -472,25 +472,25 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         # note: does not implement removeNumbers
         result <- stringi::stri_split_boundaries(result, type = "character")
         if (removePunct) {
-            if (verbose) cat("   ...removing punctuation.\n")
+            if (verbose) catm("   ...removing punctuation.\n")
             result <- lapply(result, stringi::stri_replace_all_charclass, "[\\p{P}]", "")
             result <- lapply(result, function(x) x <- x[which(x != "")])
         } 
         if (removeSymbols) {
-            if (verbose) cat("   ...removing symbols.\n")
+            if (verbose) catm("   ...removing symbols.\n")
             result <- lapply(result, stringi::stri_replace_all_charclass, "[\\p{S}]", "")
             result <- lapply(result, function(x) x <- x[which(x != "")])
         } 
         if (removeSeparators) {
-            if (verbose) cat("   ...removing separators.\n")
+            if (verbose) catm("   ...removing separators.\n")
             result <- lapply(result, function(x) x[!stringi::stri_detect_regex(x, "^\\p{Z}$")])
         }
         
     } else if (what == "sentence") {
-        if (verbose) cat("\n   ...separating into sentences.")
+        if (verbose) catm("\n   ...separating into sentences.")
         
         # replace . delimiter from common title abbreviations, with _pd_
-        exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM")
+        exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM", "St", "etc")
         findregex <- paste0("\\b(", exceptions, ")\\.")
         result <- stri_replace_all_regex(result, findregex, "$1_pd_", vectorize_all = FALSE)
 
@@ -512,13 +512,13 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         stop(what, " not implemented in tokenize().")
     }
 
-    if (verbose) cat("...total elapsed: ", (proc.time() - startTimeTok)[3], "seconds.\n")
+    if (verbose) catm("...total elapsed: ", (proc.time() - startTimeTok)[3], "seconds.\n")
     
     if (removeTwitter == FALSE & !(what %in% c("fastword", "fastestword"))) {
-        if (verbose) cat("  ...replacing Twitter characters (#, @)")
+        if (verbose) catm("  ...replacing Twitter characters (#, @)")
         startTimeClean <- proc.time()
         result <- lapply(result, stringi::stri_replace_all_fixed, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
-        if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
+        if (verbose) catm("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
     
     # make this an S3 class item, if a list
@@ -528,7 +528,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
 
     if (!identical(ngrams, 1L)) {
         if (verbose) {
-            cat("  ...creating ngrams")
+            catm("  ...creating ngrams")
             startTimeClean <- proc.time()
         }
         result <- ngrams(result, n = ngrams, skip = skip, concatenator = concatenator)
@@ -543,16 +543,16 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
 #                 xnew
 #             })
         # }
-        if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
+        if (verbose) catm("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
 
         
     if (simplify == FALSE) {
         # stri_* destroys names, so put them back
         startTimeClean <- proc.time()
-        if (verbose) cat("  ...replacing names")
+        if (verbose) catm("  ...replacing names")
         names(result) <- names(x)
-        if (verbose) cat("...total elapsed: ", (proc.time() - startTimeClean)[3], "seconds.\n")
+        if (verbose) catm("...total elapsed: ", (proc.time() - startTimeClean)[3], "seconds.\n")
         # make this an S3 class item, if a list
         if (!is.tokenizedTexts(result))
             class(result) <- c("tokenizedTexts", class(result))
@@ -561,14 +561,14 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
     } else {
         # or just return the tokens as a single character vector
-        if (verbose) cat("  ...unlisting results.\n")
+        if (verbose) catm("  ...unlisting results.\n")
         result <- unlist(result, use.names = FALSE)
         # clear attributes
         attributes(result) <- NULL
     }
 
     if (verbose) 
-        cat("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n") 
+        catm("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n") 
         #, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
         
     result
@@ -600,7 +600,11 @@ is.tokenizedTexts <- function(x) {
 #' @method print tokenizedTexts
 print.tokenizedTexts <- function(x, ...) {
     ndocuments <- ifelse(is.list(x), length(x), 1)
-    cat("tokenizedText object from ", ndocuments, " document", 
+    # to figure out if this was passed from tokenizedTextsHashed after conversion
+    # clunky but WELCOME TO S3
+    xtype <- ifelse(grepl("tokenizedTextsHashed", sys.calls()[[2]])[1],
+                    "tokenizedTextsHashed", "tokenizedTexts")
+    cat(xtype, " object from ", ndocuments, " document", 
         ifelse(ndocuments > 1, "s", ""), ".\n", sep = "")
     if (is.list(x)) { 
         class(x) <- "listof"
@@ -615,7 +619,13 @@ print.tokenizedTexts <- function(x, ...) {
 #' @details \code{as.tokenizedTexts} coerces a list of character tokens to a tokenizedText class object, 
 #' making the methods available for this object type available to this object.
 #' @export
-as.tokenizedTexts <- function(x) {
+as.tokenizedTexts <- function(x, ...) {
+    UseMethod("as.tokenizedTexts")
+}
+
+#' @rdname tokenize
+#' @export
+as.tokenizedTexts.list <- function(x, ...) {
     if (!is.list(x) || (!all(sapply(x, function(l) all(is.character(l))))))
             stop("input must be a list of character types")
     class(x) <- c("tokenizedTexts", class(x))

@@ -4,7 +4,7 @@
 \alias{applyDictionary}
 \alias{applyDictionary.dfm}
 \alias{applyDictionary.tokenizedTexts}
-\title{apply a dictionary or thesarus to an object}
+\title{apply a dictionary or thesaurus to an object}
 \usage{
 applyDictionary(x, dictionary, ...)
 
@@ -12,7 +12,9 @@ applyDictionary(x, dictionary, ...)
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
   capkeys = !exclusive, verbose = TRUE, ...)
 
-\method{applyDictionary}{tokenizedTexts}(x, dictionary, ...)
+\method{applyDictionary}{tokenizedTexts}(x, dictionary, exclusive = TRUE,
+  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
+  capkeys = !exclusive, verbose = TRUE, ...)
 }
 \arguments{
 \item{x}{object to which dictionary or thesaurus will be supplied}

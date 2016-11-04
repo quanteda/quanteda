@@ -158,7 +158,7 @@ predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling 
     scorable <- which(colnames(data) %in% names(object@Sw))
     Sw <- object@Sw[features(data)[scorable]]
     if (verbose)
-        cat(paste(length(scorable), " of ", nfeature(data), " features (",
+        catm(paste(length(scorable), " of ", nfeature(data), " features (",
                   round(100*length(scorable)/nfeature(data), 2),
                   "%) can be scored\n\n", sep=""))
     

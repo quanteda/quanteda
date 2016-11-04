@@ -12,16 +12,17 @@
 #' @examples 
 #' sents <- tokenize(inaugCorpus, what = "sentence", simplify = TRUE)
 #' tokens <- tokenize(sents, removePunct = TRUE)
+#' tokens <- selectFeatures(tokens, stopwords(), 'remove', padding=TRUE)
 #' types <- unique(unlist(tokens))
 #' 
 #' # Extracting multi-part nouns
 #' types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
 #' seqs <- findSequences(tokens, types_upper, count_min=2)
-#' head(seqs, 20)
+#' head(seqs, 30)
 #' 
 #' # Types can be any words
 #' types_lower <- types[stringi::stri_detect_regex(types, "^([a-z]+)$") & !types %in%stopwords()]
-#' seqs2 <- findSequences(tokens, types_lower, count_min=10)
+#' seqs2 <- findSequences(tokens, types_lower, count_min=3)
 #' head(seqs2, 20)
 #' 
 #' @rdname findSequences

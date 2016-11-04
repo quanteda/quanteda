@@ -11,9 +11,7 @@
 #' retrieval system (obtained from 
 #' \url{http://jmlr.csail.mit.edu/papers/volume5/lewis04a/a11-smart-stop-list/english.stop})
 #' and a set of stopword lists from the Snowball stemmer project in different
-#' languages (obtained from 
-#' \url{http://svn.tartarus.org/snowball/trunk/website/algorithms/} -- 
-#' see the stop.txt files in each subdirectory).
+#' languages (see \url{http://snowballstem.org/projects.html}).
 #' Supported languages are arabic, danish, dutch, english, finnish, french,
 #' german, hungarian, italian, norwegian, portuguese, russian, spanish, and 
 #' swedish. Language names are case sensitive.
@@ -48,7 +46,7 @@ stopwords <- function(kind="english", verbose=FALSE) {
                       "german", "italian", "portuguese", "spanish", "arabic"))) {
         stop(paste(kind, "is not a recognized stopword list type."))
     }
-    if (verbose) cat("note: using", kind, "builtin stopwords, but beware that one size may not fit all.\n")
+    if (verbose) catm("note: using", kind, "builtin stopwords, but beware that one size may not fit all.\n")
     # data(stopwords, envir = environment())
     quanteda::.stopwords[[kind]]
 }
@@ -63,14 +61,14 @@ NULL
 # @rdname removeFeatures
 # @export
 stopwordsRemove <- function(x, stopwords=NULL, verbose=TRUE) {
-    cat("stopwordsRemove is deprecated, use removeFeatures instead.")
+    catm("stopwordsRemove is deprecated, use removeFeatures instead.")
     UseMethod("removeFeatures")
 }
 
 # @rdname stopwords
 # @export
 stopwordsGet <- function(kind="english") {
-    cat("stopwordsGet() is deprecated, use stopwords() instead.\n")
+    catm("stopwordsGet() is deprecated, use stopwords() instead.\n")
     stopwords(kind)
 }
 

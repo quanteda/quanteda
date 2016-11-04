@@ -64,6 +64,7 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' @param scale whether to scale the token index axis by absolute position of the token in the 
 #' document or by relative position. Defaults are absolute for single document and relative for
 #' multiple documents.
+#' @param sort whether to sort the rows of a multiple document plot by document name
 #' @author Adam Obeng
 #' @return \code{plot.kwic} returns a ggplot object
 #' @examples 
@@ -81,7 +82,7 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue'))
 #' }
 #' @export
-plot.kwic <- function(..., scale = c("absolute", "relative")) {
+plot.kwic <- function(..., scale = c("absolute", "relative"), sort=FALSE) {
     if (!requireNamespace("ggplot2", quietly = TRUE))
         stop("You must have ggplot2 installed to make a dispersion plot.")
     if(!requireNamespace("grid", quietly = TRUE)) 
@@ -89,11 +90,11 @@ plot.kwic <- function(..., scale = c("absolute", "relative")) {
     
     position <- keyword <- docname <- ntokens <- NULL    
     
-    arguments <- list(...)
+    kwics <- list(...)
 
     ## edited by KB 29 May 2016
-    # x <- lapply(arguments, function(i) { i$keyword <- attr(i, 'keyword'); i})
-    # x <- lapply(arguments, function(i) {
+    # x <- lapply(kwics, function(i) { i$keyword <- attr(i, 'keyword'); i})
+    # x <- lapply(kwics, function(i) {
     #     ntokens <- data.table::data.table(
     #         docname = names(attr(i, 'ntoken')),
     #         ntoken = attr(i, 'ntoken')
@@ -104,14 +105,18 @@ plot.kwic <- function(..., scale = c("absolute", "relative")) {
     
     ## edited by KB 29 May 2016
     # create a data.table from the kwic arguments
-    x <- data.table(do.call(rbind, arguments))
+    x <- data.table(do.call(rbind, kwics))
     # get the vector of ntokens
-    ntokensByDoc <- unlist(lapply(arguments, attr, "ntoken"))
+    ntokensByDoc <- unlist(lapply(kwics, attr, "ntoken"))
     # add ntokens to data.table as an indexed "merge"
     x[, ntokens := ntokensByDoc[as.character(x[, docname])]]
     
     # replace "found" keyword with patterned keyword
-    x[, keyword := unlist(sapply(arguments, function(l) rep(attr(l, "keyword"), nrow(l))))]
+    x[, keyword := unlist(sapply(kwics, function(l) rep(attr(l, "keyword"), nrow(l))))]
+
+    # pre-emptively convert keyword to factor before ggplot does it, so that we
+    # can keep the order of the factor the same as the order of the kwic objects
+    x[, keyword:=factor(keyword, levels=unique(keyword))]
 
     multiple_documents <- length(unique(x$docname)) > 1
 
@@ -130,7 +135,9 @@ plot.kwic <- function(..., scale = c("absolute", "relative")) {
         }
     }
 
-    
+    if (sort) 
+        x[,docname:=factor(docname, levels=levels(docname)[order(levels(docname))])]
+
     if (scale == 'relative')
         x <- x[, position := position/ntokens]
 

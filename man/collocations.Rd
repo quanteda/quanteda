@@ -10,20 +10,21 @@
 collocations(x, ...)
 
 \method{collocations}{corpus}(x, method = c("lr", "chi2", "pmi", "dice",
-  "all"), size = 2, n = NULL, spanPunct = FALSE, ...)
+  "all"), size = 2, n = NULL, toLower = TRUE,
+  punctuation = c("dontspan", "ignore", "include"), ...)
 
 \method{collocations}{character}(x, method = c("lr", "chi2", "pmi", "dice",
-  "all"), size = 2, n = NULL, spanPunct = FALSE, ...)
+  "all"), size = 2, n = NULL, toLower = TRUE,
+  punctuation = c("dontspan", "ignore", "include"), ...)
 
 \method{collocations}{tokenizedTexts}(x, method = c("lr", "chi2", "pmi",
-  "dice", "all"), size = 2, n = NULL, spanPunct = FALSE, ...)
+  "dice", "all"), size = 2, n = NULL, toLower = FALSE,
+  punctuation = c("dontspan", "ignore", "include"), ...)
 }
 \arguments{
 \item{x}{a text, a character vector of texts, or a corpus}
 
-\item{...}{additional parameters passed to \code{\link{tokenize}}.  If wanted
-to include collocations separated by punctuation, then you can use this to 
-send \code{removePunct = TRUE} to \code{\link{tokenize}}.}
+\item{...}{additional parameters passed to \code{\link{tokenize}}}
 
 \item{method}{association measure for detecting collocations.  Let \eqn{i} 
 index documents, and \eqn{j} index features, \eqn{n_{ij}} refers to 
@@ -45,9 +46,17 @@ coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
 \item{n}{the number of collocations to return, sorted in descending order of 
 the requested statistic, or \eqn{G^2} if none is specified.}
 
-\item{spanPunct}{if \code{FALSE}, then collocations will not span punctuation
-marks, so that for instance \emph{marks, so} is not a collocation of 
-\code{marks so}.  If \code{TRUE}, do not handle punctuation specially.}
+\item{toLower}{convert collocations to lower case if \code{TRUE} (default)}
+
+\item{punctuation}{how to handle tokens separated by punctuation characters.  Options are:
+\describe{
+\item{\code{dontspan}}{do not form collocations from tokens separated by punctuation characters (default)}
+\item{\code{ignore}}{ignore punctuation characters when forming collocations, meaning that collocations will 
+include those separated by punctuation characters in the text.  The punctuation characters themselves are not
+returned.}
+\item{\code{include}}{do not treat punctuation characters specially, meaning that collocations will include
+punctuation characters as tokens}
+}}
 }
 \value{
 A data.table of collocations, their frequencies, and the computed 
@@ -64,11 +73,10 @@ be collocations.
 txt <- c("This is software testing: looking for (word) pairs!  
          This [is] a software testing again. For.",
          "Here: this is more Software Testing, looking again for word pairs.")
-collocations(txt)
-collocations(txt, spanPunct = FALSE, removePunct = FALSE)  # default
-collocations(txt, spanPunct = FALSE, removePunct = TRUE)   # includes "testing looking"
-collocations(txt, spanPunct = TRUE, removePunct = TRUE)    # same as previous 
-collocations(txt, spanPunct = TRUE, removePunct = FALSE)   # keep punctuation marks as "grams"
+collocations(txt, punctuation = "dontspan") # default
+collocations(txt, punctuation = "dontspan", removePunct = TRUE)  # includes "testing looking"
+collocations(txt, punctuation = "ignore", removePunct = TRUE)    # same as previous 
+collocations(txt, punctuation = "include", removePunct = FALSE)  # keep punctuation as tokens
 
 collocations(txt, size = 2:3)
 removeFeatures(collocations(txt, size = 2:3), stopwords("english"))

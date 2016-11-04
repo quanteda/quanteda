@@ -41,13 +41,15 @@
 #' 
 #' # skipgrams
 ngrams <- function(x, ...) {
-  UseMethod("ngrams")
+    UseMethod("ngrams")
 }
 
 #' @rdname ngrams
 #' @importFrom stats complete.cases
 #' @export
 ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
+    # trap condition where a "text" is a single NA
+    if (is.na(x[1]) && length(x)==1) return(NULL)
     if (any(stringi::stri_detect_fixed(x, " ")) & concatenator != " ")
         stop("whitespace detected: please tokenize() before using ngrams()")
     if (length(x) < min(n)) return(NULL)
@@ -68,9 +70,36 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
     # ngramsResult <- parallel::mclapply(x, ngrams.character, n, skip, concatenator, ...)
     class(ngramsResult) <- c("tokenizedTexts", class(ngramsResult))
     attributes(ngramsResult) <- attributes(x)
+    attr(ngramsResult, "ngrams") <- as.integer(n)
+    attr(ngramsResult, "skip") <- as.integer(skip)
+    attr(ngramsResult, "concatenator") <- concatenator
     ngramsResult
 }
 
+#' @rdname ngrams
+#' @examples 
+#' tokens <- tokenize(c('a b c d e', 'c d e f g'))
+#' tokens_hashed <- hashTokens(tokens)
+#' (classic <- ngrams(tokens, n = 2:3))
+#' (hashed <- ngrams(tokens_hashed, n = 2:3))
+#' @export
+ngrams.tokenizedTextsHashed <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
+    attrs_orig <- attributes(x)
+    if(any(n <= 0)) stop("ngram length has to be greater than zero")
+    # Generate ngrams
+    res <- qatd_cpp_ngram_hashed_list(x, n, skip + 1)
+    
+    # Make character tokens of ngrams
+    ngram_types <- qatd_cpp_ngram_unhash_vocab(res$id_unigram, attr(x, 'vocabulary'), concatenator)
+    ngramsResult <- res$text
+    names(ngramsResult) <- names(x)
+    attributes(ngramsResult) <- attrs_orig
+    attr(ngramsResult, "vocabulary") <- ngram_types
+    attr(ngramsResult, "ngrams") <- as.integer(n)
+    attr(ngramsResult, "skip") <- as.integer(skip)
+    attr(ngramsResult, "concatenator") <- concatenator
+    ngramsResult
+}
 
 #' @rdname ngrams
 #' @details Normally, \code{\link{ngrams}} will be called through 
@@ -90,8 +119,7 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 #' Modelling."}
 #' @importFrom utils combn
 #' @examples 
-#' tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."), 
-#'                    removePunct = TRUE, simplify = TRUE)
+#' tokens <- tokenize("insurgents killed in ongoing fighting", simplify = TRUE)
 #' skipgrams(tokens, n = 2, skip = 0:1, concatenator = " ") 
 #' skipgrams(tokens, n = 2, skip = 0:2, concatenator = " ") 
 #' skipgrams(tokens, n = 3, skip = 0:2, concatenator = " ")   
@@ -100,10 +128,14 @@ skipgrams <- function(x, ...) UseMethod("skipgrams")
 #' @rdname ngrams
 #' @export
 skipgrams.character <- function(x, n, skip, concatenator="_", ...)
-    ngrams.character(x, n, skip, concatenator)
+    ngrams(x, n, skip, concatenator)
 
 #' @rdname ngrams
 #' @export
 skipgrams.tokenizedTexts <- function(x, n, skip, concatenator="_", ...)
-    ngrams.tokenizedTexts(x, n, skip, concatenator, ...)
+    ngrams(x, n, skip, concatenator, ...)
 
+#' @rdname ngrams
+#' @export
+skipgrams.tokenizedTextsHashed <- function(x, n, skip, concatenator="_", ...)
+    ngrams(x, n, skip, concatenator, ...)

@@ -34,7 +34,7 @@
 #' @name dfm-class
 setClass("dfm",
          slots = c(settings = "list", weightTf = "list", weightDf = "list", smooth = "numeric",
-                   ngrams = "integer", concatenator = "character"),
+                   ngrams = "integer", skip = "integer", concatenator = "character"),
          prototype = list(settings = list(NULL),
                           Dim = integer(2), 
                           Dimnames = list(docs=NULL, features=NULL),
@@ -42,6 +42,7 @@ setClass("dfm",
                           weightDf = list(scheme = "unary", base = NULL, c = NULL, smoothing = NULL, threshold = NULL),
                           smooth = 0,
                           ngrams = 1L,
+                          skip = 0L,
                           concatenator = ""),
          contains = "Matrix")
 
@@ -179,7 +180,8 @@ setMethod("print", signature(x = "dfmSparse"),
                       format(nfeature(x), big.mark=","), " feature",
                       ifelse(nfeature(x)>1 | nfeature(x)==0, "s", ""),
                       ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
-                      ".\n", sep="")
+                      " (", format(sparsity(x)*100, digits = 3),
+                      "% sparse).\n", sep="")
               }
               if (show.settings) {
                   cat("Settings: TO BE IMPLEMENTED.")
@@ -200,7 +202,8 @@ setMethod("print", signature(x = "dfmDense"),
                       format(nfeature(x), big.mark=","), " feature",
                       ifelse(nfeature(x)>1 | nfeature(x)==0, "s", ""),
                       ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
-                      ".\n", sep="")
+                      " (", format(sparsity(x)*100, digits = 3),
+                      "% sparse).\n", sep="")
               }
               if (show.settings) {
                   cat("Settings: TO BE IMPLEMENTED.")
@@ -225,7 +228,9 @@ print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, show.summary = 
             ndoc(x), " document",
             ifelse(ndoc(x)>1, "s, ", ", "),
             dim(x)[2], " feature",
-            ifelse(dim(x)[2]>1, "s", ""), ".\n", sep="")
+            ifelse(dim(x)[2]>1, "s", ""), 
+            ", ", format(sparsity(x)*100, digits = 3),
+            "% sparse.\n", sep="")
     }
     cat(ndoc(x), "x", nfeature(x), "dense matrix of (S3) class \"dfm\"\n")
     #    ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
@@ -583,7 +588,7 @@ rbind.dfm <- function(...) {
     args <- list(...)
     if (!all(sapply(args, is.dfm)))
         stop("all arguments must be dfm objects")
-    cat(names(args))
+    catm(names(args))
 
     if (length(args) == 1) {
         warning('rbind.dfm called on single dfm')

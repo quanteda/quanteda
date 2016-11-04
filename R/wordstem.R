@@ -42,7 +42,7 @@ wordstem.character <- function(x, language = "porter") {
 
 # 
 # toks <- unlist(tokenize(toLower(inaugTexts[1:5]), removePunct = TRUE, removeNumbers = TRUE), use.names = FALSE)
-# microbenchmark(wordstem(toks), 
+# microbenchmark::microbenchmark(wordstem(toks), 
 #                wordstemP(toks),
 #                simplify2array(parallel::mclapply(toks, wordstem, language=language)))
 
@@ -56,13 +56,33 @@ wordstem.tokenizedTexts <- function(x, language = "porter") {
     if (all.equal(attributes(x)$ngrams, 1))
         result <- lapply(x, SnowballC::wordStem, language)
     else {
-        # cat("Ngrams wordstem\n")
+        # catm("Ngrams wordstem\n")
         result <- wordstem_Ngrams(x, attributes(x)$concatenator, language)
     }
     class(result) <- c("tokenizedTexts", class(result))
     result[which(is.na(x))] <- NA
     attributes(result) <- origAttrs
     result
+}
+
+#' @rdname wordstem
+#' @import stringi 
+#' @export
+#' @examples 
+#' \dontshow{
+#' txt <- c(one = "Eating eater eaters eats ate.",
+#'          two = "Taxing taxes taxed my tax return.")
+#' th <- hashTokens(tokenize(toLower(txt)))
+#' wordstem(th)
+#' attr(wordstem(th), "vocabulary")
+#' }
+wordstem.tokenizedTextsHashed <- function(x, language = "porter") {
+    if (all.equal(attributes(x)$ngrams, 1))
+        vocabulary(x) <- wordstem(vocabulary(x), language = language)
+    else 
+        vocabulary(x) <- wordstem_Ngrams(vocabulary(x), language = language)
+
+    tokens_hashed_recompile(x)
 }
 
 
@@ -120,7 +140,7 @@ wordstem.dfm <- function(x, language = "porter") {
                            x = x@x, 
                            dimnames = list(docs = docnames(x), 
                                            features = newFeatures))
-    new("dfmSparse", result)[-ndoc(x), -nfeature(x)]
+    new("dfmSparse", result)[-nrow(result), -ncol(result)]
 }
 
 

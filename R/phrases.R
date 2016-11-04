@@ -77,6 +77,8 @@ setClass("collocations", contains = "data.table")
 setMethod("phrasetotoken", signature = c("textORtokens", "collocations"), 
           function(object, phrases, ...) {
               word1 <- word2 <- word3 <- NULL
+              # sort by word3 so that trigrams will be processed before bigrams
+              data.table::setorder(phrases, -word3, word1)
               # concatenate the words                               
               word123 <- phrases[, list(word1, word2, word3)]
               mwes <- apply(word123, 1, paste, collapse=" ")
@@ -99,10 +101,13 @@ setMethod("phrasetotoken", signature = c("character", "character"),
           function(object, phrases, concatenator = "_", valuetype = c("glob", "regex", "fixed"), 
                    case_insensitive = TRUE, ...) {
               valuetype <- match.arg(valuetype)
-              if (valuetype == "glob" | valuetype == "fixed")
+              if (valuetype == "glob" | valuetype == "fixed") {
                   compoundPhrases <- stringi::stri_replace_all_fixed(phrases, c("*", "?"), 
                                                                      c("[^\\s]*", "[^\\s]"), 
                                                                      vectorize_all = FALSE)
+                  # replace any + symbols that are tokens by escaped \\+ #239
+                  compoundPhrases <- stringi::stri_replace_all_regex(phrases, "(\\s{0,1})\\+(\\s{0,1})", "$1\\\\\\+$2")
+              }
               
               compoundPhrasesList <- strsplit(compoundPhrases, "\\s")
               

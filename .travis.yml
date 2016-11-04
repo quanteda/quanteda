@@ -1,14 +1,10 @@
+language: r
+cache: packages
+sudo: true
 r_packages:
   - covr
-  - knitr
-  - rmarkdown
-
-language: r
-sudo: true
-
 r_binary_packages:
-- topicmodels
-- testthat
+  - topicmodels
 
 env:
   global:
@@ -16,3 +12,6 @@ env:
 
 after_success:
   - Rscript -e 'library(covr);codecov()'
+
+notifications:
+    slack: quanteda:W4x9WmNKqE7kVtkKZDWld7IP

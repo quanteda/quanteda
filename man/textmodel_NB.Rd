@@ -66,8 +66,12 @@ trainingset <- as.dfm(matrix(c(1, 2, 0, 0, 0, 0,
                                                    "Shanghai", "Tokyo"))))
 trainingclass <- factor(c("Y", "Y", "Y", "N", NA), ordered = TRUE)
 ## replicate IIR p261 prediction for test set (document 5)
-(nb.p261 <- textmodel_NB(trainingset, trainingclass)) #, prior = "docfreq"))
+(nb.p261 <- textmodel_NB(trainingset, trainingclass))
 predict(nb.p261, newdata = trainingset[5, ])
+
+# contrast with other priors
+predict(textmodel_NB(trainingset, trainingclass, prior = "docfreq"))
+predict(textmodel_NB(trainingset, trainingclass, prior = "termfreq"))
 
 }
 \author{
