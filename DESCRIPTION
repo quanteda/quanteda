@@ -74,6 +74,7 @@ Collate:
     'dfm-main.R'
     'dfm-methods.R'
     'dfm-weighting.R'
+    'dict.R'
     'encoding.R'
     'fcm.R'
     'findSequences.R'

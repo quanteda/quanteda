@@ -23,7 +23,7 @@ void join_tokens_cpp(CharacterVector tokens,
   String token_joined = join_character_vector(tokens_join, delim);
   for (int i = 0; i < len - (len_join - 1); i++){
     //Rcout << "Now " << i << " " << tokens[i] << "\n";
-    if(tokens[i] == tokens_join[0] & tokens[i + 1] == tokens_join[1]){ // Initial match
+    if(i < len - (len_join - 1)  && tokens[i] == tokens_join[0] && tokens[i + 1] == tokens_join[1]){ // Initial match
       start = i;
       //Rcout << "Start " << start << " " << tokens[i] << "\n";
     }

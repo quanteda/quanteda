@@ -4,8 +4,8 @@
 \alias{joinTokens}
 \title{join tokens function}
 \usage{
-joinTokens(x, sequences, concatenator = "-", valuetype = "fixed",
-  verbose = FALSE)
+joinTokens(x, sequences, concatenator = "_", valuetype = c("glob", "fixed",
+  "regex"), verbose = FALSE, case_insensitive = TRUE)
 }
 \arguments{
 \item{x}{some object}
@@ -19,11 +19,31 @@ is; \code{"regex"} for regular expressions; or \code{"glob"} for
 "glob"-style wildcard}
 
 \item{verbose}{display progress}
+
+\item{case_insensitive}{if \code{TRUE}, ignore case when matching}
 }
 \description{
 Needs some more explanation
 }
 \examples{
+# simple example
+txt <- c("The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
+         "The Supreme Court of the United States is seldom in a united state.",
+         "It's Arsenal versus Manchester United, states the announcer.", 
+         "luv the united states XXOO :-) atlantical oceania")
+toks <- tokenize(txt)
+phrasesFixed <- tokenize(c("United States", "Supreme Court", "Atlantic* Ocean*", "Pacific Ocean"))
+joinTokens(toks, phrasesFixed, valuetype = "fixed", case_insensitive = FALSE, verbose=TRUE)
+joinTokens(toks, phrasesFixed, valuetype = "fixed", case_insensitive = TRUE, verbose=TRUE)
+## NOT WORKING
+# joinTokens(toks, phrasesFixed, valuetype = "regex", case_insensitive = TRUE)
+joinTokens(toks, phrasesFixed, valuetype = "glob", case_insensitive = TRUE)
+
+toks <- tokenize("Simon sez the multi word expression plural is multi word expressions, Simon sez.")
+phrases <- tokenize(c("multi word expression", "multi word expressions", "Simon sez"))
+joinTokens(toks, phrases, valuetype = "fixed", verbose = TRUE)
+
+# with the inaugural corpus
 toks <- tokenize(inaugCorpus, removePunct = TRUE)
 seqs_token <- list(c('foreign', 'policy'), c('United', 'States'))
 seqs_glob <- list(c('foreign', 'polic*'), c('United', 'States'))
@@ -31,8 +51,11 @@ seqs_regex <- list(c('^foreign', '^polic(ie|y)'), c('^United', '^States'))
 toks2 <- joinTokens(toks, seqs_token, "_", 'fixed')
 toks2 <- joinTokens(toks, seqs_glob, "_", 'glob')
 toks2 <- joinTokens(toks, seqs_regex, "_", 'regex')
-kwic(toks2, 'foreign_policy', window=1) # joined
-kwic(toks2, c('foreign', 'policy'), window=1) # not joined
-kwic(toks2, 'United_States', window=1) # joined
+kwic(toks2, 'foreign_policy', window = 1) # joined
+kwic(toks2, c('foreign', 'policy'), window = 1) # not joined
+kwic(toks2, 'United_States', window = 1) # joined
+}
+\author{
+Kohei Watanabe and Kenneth Benoit
 }
 
