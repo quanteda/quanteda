@@ -448,6 +448,12 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
                                 case_insensitive = TRUE,
                                 capkeys = !exclusive,
                                 verbose = TRUE, ...) {
+    
+    # cannot/should not apply dictionaries with multi-word keys to a dfm
+    if (any(stringi::stri_detect_charclass(dictionary, "\\p{Z}"))) {
+        warning("You will probably not get correct behaviour applying a dictionary with multi-word keys to a dfm.")
+    }
+    
     valuetype <- match.arg(valuetype)
     dictionary <- flatten.dictionary(dictionary)
     if (length(addedArgs <- list(...)))
