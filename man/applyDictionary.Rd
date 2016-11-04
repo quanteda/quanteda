@@ -3,11 +3,16 @@
 \name{applyDictionary}
 \alias{applyDictionary}
 \alias{applyDictionary.dfm}
+\alias{applyDictionary.tokenizedTexts}
 \title{apply a dictionary or thesaurus to an object}
 \usage{
 applyDictionary(x, dictionary, ...)
 
 \method{applyDictionary}{dfm}(x, dictionary, exclusive = TRUE,
+  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
+  capkeys = !exclusive, verbose = TRUE, ...)
+
+\method{applyDictionary}{tokenizedTexts}(x, dictionary, exclusive = TRUE,
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
   capkeys = !exclusive, verbose = TRUE, ...)
 }
