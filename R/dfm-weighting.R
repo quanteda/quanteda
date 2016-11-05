@@ -112,21 +112,6 @@ setMethod("weight", signature = c("dfm", "numeric"),
 smoother <- function(x, smoothing = 1) x + smoothing
 
 
-# #' @rdname weight
-# #' @export
-# setGeneric("weighting", function(object) standardGeneric("weighting"))
-
-#' #' @rdname weight
-#' #' @return \code{weight, x} with no \code{type} argument queries the weighting applied to the dfm, returning 
-#' setMethod("weight", signature(c("dfm", "MISSING")), function(x) {
-#'     if (isS4(x)) 
-#'         x@weighting
-#'     else 
-#'         attr(x, "weighting")
-#' })
-#' 
-
-
 #' compute the (weighted) document frequency of a feature
 #' 
 #' For a \link{dfm-class} object, returns a (weighted) document frequency for 
@@ -292,24 +277,34 @@ tfidf.dfm <- function(x, normalize = FALSE, scheme = "inverse", ...) {
 #' Apply varieties of term frequency weightings to a \link{dfm}.
 #' @param x object for which idf or tf-idf will be computed (a document-feature 
 #'   matrix)
-#' @param scheme divisor for the normalization of feature frequencies by document.  Valid types include:
-#' \describe{
-#' \item{\code{unity}}{default, each feature count will remain as feature counts, 
-#' equivalent to dividing by 1}
-#' \item{\code{total}}{total number of features per document, so that the sum of the normalized feature
-#' values is 1.0}
-#' \item{\code{maxCount}}{maximum feature count per document}}
-#' @details \code{tf} is a shortcut to compute relative term frequecies (identical to 
-#' \code{\link{weight}(x, "relFreq")}).
-#' @param base base for the logarithm when \code{scheme} is \code{"log"} or \code{logave}
+#' @param scheme divisor for the normalization of feature frequencies by 
+#'   document.  Valid types include: 
+#'   \describe{ 
+#'   \item{\code{count}}{default, 
+#'   each feature count will remain as feature counts, equivalent to dividing by
+#'   1} 
+#'   \item{\code{prop}}{feature proportions within document, equivalent to 
+#'   dividing each term by the total count of features in the document.} 
+#'   \item{\code{propmax}}{feature proportions relative to the most frequent
+#'   term of the document, equivalent to dividing term counts by the frequency
+#'   of the most frequent term in the document.} 
+#'   \item{\code{boolean}}{recode all non-zero counts as 1} 
+#'   \item{\code{log}}{take the logarithm of 1 + each
+#'   count, for base \code{base}}
+#'   \item{\code{augmented}}{equivalent to K + (1 - K) * \code{tf(x, "propmax")}}
+#'   \item{\code{logave}}{(1 + the log of the counts) / (1 + log of the counts / the average count within document)} 
+#'   }
+#' @details \code{tf(x, scheme = "prop")} is equivalent to \code{\link{weight}(x, "relFreq")}).
+#' @param base base for the logarithm when \code{scheme} is \code{"log"} or 
+#'   \code{logave}
 #' @param K the K for the augmentation when \code{scheme = "augmented"}
-#' @return A document feature matrix to which the weighting scheme has been applied.
-#' @author Paul Nulty and Kenneth Benoit
-#' @references 
-#' Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
+#' @return A document feature matrix to which the weighting scheme has been 
+#'   applied.
+#' @author Kenneth Benoit and Paul Nulty
+#' @references Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
 #'   \emph{Introduction to Information Retrieval}. Cambridge University Press.
-#'
-#' \url{https://en.wikipedia.org/wiki/Tf-idf#Term_frequency_2}
+#'   
+#'   \url{https://en.wikipedia.org/wiki/Tf-idf#Term_frequency_2}
 #' @export
 setGeneric("tf", 
            function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augmented", "logave"),
@@ -390,7 +385,8 @@ setGeneric("maxtf", function(x) standardGeneric("maxtf"))
 
 setMethod("maxtf", signature(x = "dfmSparse"), definition = function(x) {
     freq <- doc <- V1 <- NULL 
-    dt <- data.table(doc = t(x)@i, freq = x@x)
+#    dt <- data.table(doc = t(x)@i, freq = x@x)
+    dt <- data.table(doc = x@i, freq = x@x)
     dt[, max(freq), by = doc][, V1]
     ## note: this is faster for small dfms:
     # sapply(split(x@x, x@i), max)
@@ -405,7 +401,7 @@ setMethod("maxtf", signature(x = "dfmDense"), definition = function(x) {
 
 ## BENCHMARKING
 
-# microbenchmark(m1 <- apply(NSFdfm, 1, max), m2 <- NSFdfm[, max.col(t(NSFdfm))])
+# microbenchmark::microbenchmark(m1 <- apply(NSFdfm, 1, max), m2 <- NSFdfm[, max.col(t(NSFdfm))])
 
 # require(data.table)
 # f1 <- function(x) {
@@ -418,8 +414,8 @@ setMethod("maxtf", signature(x = "dfmDense"), definition = function(x) {
 # }
 # 
 # myDfm <- dfm(inaugCorpus, verbose = FALSE)
-# microbenchmark(f1(myDfm), f2(myDfm))
-# microbenchmark(f1(NSFdfm), f2(NSFdfm), times = 5)
+# microbenchmark::microbenchmark(f1(myDfm), f2(myDfm))
+# microbenchmark::microbenchmark(f1(NSFdfm), f2(NSFdfm), times = 5)
 
           
 # #' @rdname tfidf

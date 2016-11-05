@@ -1,9 +1,8 @@
-#' @name quanteda-package
-#' @aliases quanteda
-#' @docType package
-#' @title An R package for the quantitative analysis of textual data
+#' An R package for the quantitative analysis of textual data
+#'
 #' @author Ken Benoit and Paul Nulty
-#' @description A set of functions for creating and managing text corpora,
+#' 
+#' A set of functions for creating and managing text corpora,
 #'   extracting features from text corpora, and analyzing those features using
 #'   quantitative methods.
 #'   
@@ -63,4 +62,6 @@
 #'   \item{a comprehensive suite of \link[=summary.corpus]{descriptive statistics on text} such as the number of sentences, words, characters, or
 #'   syllables per document.}
 #'   }
-NULL
+"_PACKAGE"
+
+

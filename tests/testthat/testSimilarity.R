@@ -18,14 +18,15 @@ test_that("test similarity method = \"cosine\" against proxy simil()", {
                    stem = TRUE, verbose = FALSE)
     
     cosQuanteda <- round(similarity(presDfm, "soviet", method = "cosine", margin = "features")[["soviet"]], 2)
+    cosQuanteda <- cosQuanteda[order(names(cosQuanteda))]
     
-    cosProxy <- sort(round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), by_rows = FALSE)), 2), decreasing = TRUE)
-    
-    # cosQlcMatrix <- sort(round(drop(qlcMatrix::cosSparse(presDfm, presDfm[, "soviet"])), 4), decreasing = TRUE)
-    
-    ## NOT EQUAL
-    ## expect_equal(cosQuanteda[1:10], cosProxy[2:11]) #, cosQlcMatrix[2:11])
+    cosProxy <- round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), "cosine", by_rows = FALSE)), 2)
+    cosProxy <- cosProxy[order(names(cosProxy))]
+    cosProxy <- cosProxy[-which(names(cosProxy) == "soviet")]
+
+    expect_equal(cosQuanteda, cosProxy)
 })
+
 
 test_that("test similarity method = \"cosine\" against proxy simil(): documents", {
     require(proxy)
@@ -75,5 +76,12 @@ test_that("simple similarity comparisons method = \"cosine\" against proxy simil
 # sort(as.matrix(proxy::simil(as.matrix(d), as.matrix(d[, "seamus"]), "cosine", by_rows = FALSE))[, 1], decreasing = TRUE)[-2]
 # similarity(d, "seamus", method = "cosine")[["seamus"]]
 
-
-
+#
+#> expect_equal(cosQuanteda[1:10], cosProxy[1:10])
+#> cosQuanteda <- round(similarity(presDfm, "soviet", method = "correlation", margin = "features")[["soviet"]], 2)
+#> cosQuanteda <- cosQuanteda[order(names(cosQuanteda))]
+#> 
+#    > cosProxy <- round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), by_rows = FALSE)), 2)
+#> cosProxy <- cosProxy[order(names(cosProxy))]
+#> cosProxy <- cosProxy[-which(names(cosProxy) == "soviet")]
+#> expect_equal(cosQuanteda[1:10], cosProxy[1:10])

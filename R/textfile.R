@@ -186,15 +186,15 @@ setMethod("textfile",
                     stop('encoding parameter must be length 1, or as long as the number of files')
                   }
                   sources <- mapply(function(x, e) {
-                      getSource(f=x, textField=textField, encoding=e, ...)
+                      getSource(f=x, textField = textField, encoding = e, ...)
                   },
                       files, encoding,
-                      SIMPLIFY=FALSE
+                      SIMPLIFY = FALSE
                   )
               }
               else {
                   sources <- lapply(files, function(x) {
-                      getSource(x, textField, encoding=encoding, ...)}
+                      getSource(x, textField, encoding = encoding, ...)}
                   )
               }
               
@@ -412,24 +412,29 @@ getSource <- function(f, textField, ...) {
                xml = get_xml(f, textField, ...)
         )
 
-    names(newSource$txts) <- rep(basename(f), length(newSource$txts))
+    # assign filename (variants) unique text names
+    if ((len <- length(newSource$txts)) > 1) {
+        names(newSource$txts) <- paste(basename(f), seq_len(len), sep = ".")
+    } else {
+        names(newSource$txts) <- basename(f)
+    }
 
     return(newSource)
 }
 
 get_txt <- function(f, ...) {
-    txt <- paste(readLines(con <- file(f, ...)), collapse="\n")
+    txt <- paste(readLines(con <- file(f, ...), warn = FALSE), collapse="\n")
     close(con)
-    list(txts=txt, docv=data.frame())
+    list(txts = txt, docv = data.frame())
 }
 
 
 ## csv format
 get_csv <- function(path, textField, ...) {
-    docs <- utils::read.csv(path, stringsAsFactors=FALSE, ...)
+    docs <- utils::read.csv(path, stringsAsFactors = FALSE, ...)
     if (is.character(textField)) {
-        textFieldi <- which(names(docs)==textField)
-        if (length(textFieldi)==0)
+        textFieldi <- which(names(docs) == textField)
+        if (length(textFieldi) == 0)
             stop(paste("There is no field called", textField, "in file", path))
         textField <- textFieldi
     } else if (is.numeric(textField) & (textField > ncol(docs))) {
@@ -438,7 +443,7 @@ get_csv <- function(path, textField, ...) {
 
     txts <- docs[, textField]
     docv <- docs[, -textField, drop = FALSE]
-    list(txts=txts, docv=docv)
+    list(txts = txts, docv = docv)
 }
 
 
@@ -473,7 +478,7 @@ get_json_tweets <- function(path, source="twitter", ...) {
         stop("You must have streamR installed to read Twitter json files.")
     
     # read raw json data
-    txt <- readLines(path, ...)
+    txt <- readLines(path, warn = FALSE, ...)
         
     results <- streamR::parseTweets(txt, verbose=FALSE, ...)
     list(txts = results[, 1], docv = as.data.frame(results[, -1, drop = FALSE]))
@@ -507,7 +512,7 @@ get_json_lines <- function(path, textField, ...) {
         stop('Cannot use numeric textField with json file')
     }
 
-    lines <- readLines(path)
+    lines <- readLines(path, warn = FALSE)
 
     docs <- data.table::rbindlist(
       lapply(lines, function(x)jsonlite::fromJSON(x, flatten=TRUE, ...)),

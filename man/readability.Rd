@@ -30,16 +30,16 @@ readability(x, ...)
 \item{measure}{character vector defining the readability measure to calculate}
 
 \item{removeHyphens}{if \code{TRUE}, treat constituent words in hyphenated as
-separate terms, for purposes of computing word lengths, e.g. 
+separate terms, for purposes of computing word lengths, e.g.
 "decision-making" as two terms of lengths 8 and 6 characters respectively,
 rather than as a single word of 15 characters}
 
-\item{drop}{if \code{TRUE}, the result is returned as a numeric vector if 
-only a single measure is requested; otherwise, a data.frame is returned 
+\item{drop}{if \code{TRUE}, the result is returned as a numeric vector if
+only a single measure is requested; otherwise, a data.frame is returned
 with each column consisting of a requested measure.}
 }
 \value{
-a data.frame object consisting of the documents as rows, and the 
+a data.frame object consisting of the documents as rows, and the
   readability statistics as columns
 }
 \description{
@@ -55,7 +55,7 @@ inaugReadability <- readability(inaugCorpus, "all")
 round(cor(inaugReadability), 2)
 }
 \author{
-Kenneth Benoit, re-engineered from the function of the same name by 
+Kenneth Benoit, re-engineered from the function of the same name by
   Meik Michalke in the \pkg{koRpus} package.
 }
 

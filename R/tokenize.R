@@ -490,7 +490,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         if (verbose) catm("\n   ...separating into sentences.")
         
         # replace . delimiter from common title abbreviations, with _pd_
-        exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM")
+        exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM", "St", "etc")
         findregex <- paste0("\\b(", exceptions, ")\\.")
         result <- stri_replace_all_regex(result, findregex, "$1_pd_", vectorize_all = FALSE)
 
@@ -600,7 +600,11 @@ is.tokenizedTexts <- function(x) {
 #' @method print tokenizedTexts
 print.tokenizedTexts <- function(x, ...) {
     ndocuments <- ifelse(is.list(x), length(x), 1)
-    cat("tokenizedText object from ", ndocuments, " document", 
+    # to figure out if this was passed from tokenizedTextsHashed after conversion
+    # clunky but WELCOME TO S3
+    xtype <- ifelse(grepl("tokenizedTextsHashed", sys.calls()[[2]])[1],
+                    "tokenizedTextsHashed", "tokenizedTexts")
+    cat(xtype, " object from ", ndocuments, " document", 
         ifelse(ndocuments > 1, "s", ""), ".\n", sep = "")
     if (is.list(x)) { 
         class(x) <- "listof"
@@ -615,7 +619,13 @@ print.tokenizedTexts <- function(x, ...) {
 #' @details \code{as.tokenizedTexts} coerces a list of character tokens to a tokenizedText class object, 
 #' making the methods available for this object type available to this object.
 #' @export
-as.tokenizedTexts <- function(x) {
+as.tokenizedTexts <- function(x, ...) {
+    UseMethod("as.tokenizedTexts")
+}
+
+#' @rdname tokenize
+#' @export
+as.tokenizedTexts.list <- function(x, ...) {
     if (!is.list(x) || (!all(sapply(x, function(l) all(is.character(l))))))
             stop("input must be a list of character types")
     class(x) <- c("tokenizedTexts", class(x))

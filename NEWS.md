@@ -1,8 +1,16 @@
-quanteda 0.9.7
+
+quanteda 0.9.8
 ==============
 
 ## New Features
 
+*  Added fast `applyDictionary()` method for tokenizedTexts, that also works with 
+   dictionaries that have multi-word keys (0.9.9.8).  Addresses but does not entirely yet solve #188.
+*  Added `sparsity()` function to compute the sparsity of a dfm (0.9.8.7).
+*  Added additional methods for tokenizedTextsHashed objects, including dfm,
+   and more efficient wordstem, toLower, and toUpper (0.9.8.7).
+*  Added feature co-occurence matrix functions (`fcm`) (0.9.8.6).
+*  Added tokenizedTextsHashed methods (0.9.8.6).  
 *  Improved the performance of `selectFeatures.tokenizedTexts()`.  
 *  Improved the performance of `rbind.dfm()`.  
 *  Added support for different docvars when importing multiple files using `textfile()`.  (#147)  
@@ -10,30 +18,47 @@ quanteda 0.9.7
 *  Added a corpus constructor method for kwic objects.  
 *  Substantially improved the performance of `convert(x, to = "stm")` for dfm export, including adding an argument for meta-data (docvars, in quanteda parlance). (#209)  
 *  Internal rewrite of `textfile()`, now supports more file types, more wildcard patterns, and is far more robust generally.  
-* Add support for loading external dictionary formats: 
+*  Add support for loading external dictionary formats: 
   - yoshikoder, 
   - lexicoder v2 and v3 (#228)
 * Autodetect dictionary file format from file extension, so no longer require `format` keyword for loading dictionaries (#227)
-* Imrpove compatibility with rOpenSci guidelines (#218):
+* Improved compatibility with rOpenSci guidelines (#218):
   - Use httr to get remote files
   - Use `messages()` to display messages rather than `print` or `cat`
-  - Reorganise sections in README file
+  - Reorganise sections in README file  
+* Added new `punctuation` argument to `collocations()` to provide new options for handling collocations separated by punctuation characters (#220).
 
 
 ## Bug fixes
 
-*  Fixed bug in textfile() where source is a remote .zip set.  (#172)  
-*  Fixed bug in wordstem.dfm() that caused an error if supplied a dfm with a feature whose total frequency
+*  (0.9.8.7) Solved #267 in which `fcm(x, tri = TRUE)` temporarily created a dense logical matrix.
+*  (0.9.8.7) Added feature co-occurence matrix functions (`fcm`).
+*  (0.9.8.5) Fixed an incompatibility in sequences.cpp with Solaris x86 (#257)
+*  (0.9.8.4) Fix bug in verbose output of dfm that causes misreporting of number of features (#250)
+*  (0.9.8.4) Fix a bug in `selectFeatures.dfm()` that ignored `case_insensitive = TRUE` settings (#251) 
+   correct the documentation for this function.
+*  (0.9.8.3) Fix a bug in `tf(x, scheme = "propmax")` that returned a wrong computation; 
+   correct the documentation for this function.
+*  (0.9.8.2) Fixed a bug in textfile() causing all texts to have the same name, for types using the "textField" argument (a single file containing multiple documents).  
+*  Fixed bug in `phrasetotoken()` where if pattern included a `+` for `valuetype = c("glob", "fixed")` it threw a regex error.  #239  
+*  Fixed bug in `textfile()` where source is a remote .zip set.  (#172)  
+*  Fixed bug in `wordstem.dfm()` that caused an error if supplied a dfm with a feature whose total frequency
    count was zero, or with a feature whose total docfreq was zero.  Fixes #181.  
 *  Fix #214 "mysterious stemmed token" bug in `wordstem.dfm()`, introduced in fixing #181.  
 *  Fixed previously non-functional `toLower = ` argument in `dfm.tokenizedTexts()`.
 *  Fixed some errors in the computation of a few readability formulas (#215).
-* Add filenames names to text vectors returned by `textfile` (#221)
-* Support LIWC dictionaries where all terms belong to one key (#229)
-* Print a warning message from `trim.dfm` if no features are removed (#223)
-* Skip some platform-dependent tests on CRAN, travis-ci and Windows
-* Index stm dfm from 1, not 0 (#222)
-* Remove temporary stemmed token (#214)
+* Added filenames names to text vectors returned by `textfile` (#221).
+* `dictionary()` now works correctly when reading LIWC dictionaries where all terms belong to one key (#229).
+* `convert(x, to = "stm") now indexes the dfm components from 1, not 0 (#222).
+*  Remove temporary stemmed token (#214).
+*  Fixed bug in textmodel_NB() for non-"uniform" priors (#241)
+
+## Changes
+
+*  Added `warn = FALSE` to the `readLines()` calls in `textfile()`, so that no warnings are issued when files are read that are missing a final EOL or that contain  embedded nuls.
+* `trim()` now prints an output message even when no features are removed (#223)
+* We now skip some platform-dependent tests on CRAN, travis-ci and Windows.
+
 
 
 quanteda 0.9.6 

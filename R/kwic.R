@@ -73,7 +73,8 @@ kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "
     contexts$contextPre <- format(contexts$contextPre, justify="right")
     contexts$contextPost <- stringi::stri_replace_all_regex(contexts$contextPost, "(\\w*) (\\W)", "$1$2")
     contexts$contextPost <- format(contexts$contextPost, justify="left")
-    contexts$keyword <- format(contexts$keyword, justify="centre")
+    # contexts$keyword <- format(contexts$keyword, justify="left")
+    contexts$keyword <- stringi::stri_trim_both(contexts$keyword)
     
     attr(contexts, "valuetype") <- valuetype
 
@@ -150,8 +151,8 @@ kwic.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex
     
     # left-justify the post-word part
     result$contextPre <- format(result$contextPre, justify="left")
-    # centre the post-word part
-    result$keyword <- format(result$keyword, justify="centre")
+    # trim trailing spaces from keyword
+    result$keyword <- stringi::stri_trim_both(result$keyword)
     class(result) <- c("kwic", class(result))
     result
 }
@@ -163,6 +164,7 @@ print.kwic <- function(x, ...) {
     contexts <- x
     contexts$positionLabel <- paste0("[", contexts$docname, ", ", contexts$position, "]")
     contexts$positionLabel <- format(contexts$positionLabel, justify="right")
+    contexts$keyword <- format(contexts$keyword, justify="centre")
     rownames(contexts) <- contexts$positionLabel
     contexts$positionLabel <- contexts$docname <- contexts$position <- NULL
     contexts$contextPre <- paste(contexts$contextPre, "[")

@@ -4,14 +4,7 @@
 \name{docfreq}
 \alias{docfreq}
 \alias{docfreq,dfm-method}
-\title{#' @rdname weight
-#' @return \code{weight, x} with no \code{type} argument queries the weighting applied to the dfm, returning 
-setMethod("weight", signature(c("dfm", "MISSING")), function(x) {
-    if (isS4(x)) 
-        x@weighting
-    else 
-        attr(x, "weighting")
-})}
+\title{compute the (weighted) document frequency of a feature}
 \usage{
 docfreq(x, scheme = c("count", "inverse", "inversemax", "inverseprob",
   "unary"), smoothing = 0, k = 0, base = 10, threshold = 0,
@@ -49,9 +42,6 @@ the resulting numeric vector}
 a numeric vector of document frequencies for each feature
 }
 \description{
-compute the (weighted) document frequency of a feature
-}
-\details{
 For a \link{dfm-class} object, returns a (weighted) document frequency for 
 each term.  The default is a simple count of the number of documents in which
 a feature occurs more than a given frequency threshold.  (The default 

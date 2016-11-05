@@ -4,9 +4,11 @@
 \alias{ngrams}
 \alias{ngrams.character}
 \alias{ngrams.tokenizedTexts}
+\alias{ngrams.tokenizedTextsHashed}
 \alias{skipgrams}
 \alias{skipgrams.character}
 \alias{skipgrams.tokenizedTexts}
+\alias{skipgrams.tokenizedTextsHashed}
 \title{Create ngrams and skipgrams}
 \usage{
 ngrams(x, ...)
@@ -16,11 +18,16 @@ ngrams(x, ...)
 \method{ngrams}{tokenizedTexts}(x, n = 2L, skip = 0L, concatenator = "_",
   ...)
 
+\method{ngrams}{tokenizedTextsHashed}(x, n = 2L, skip = 0L,
+  concatenator = "_", ...)
+
 skipgrams(x, ...)
 
 \method{skipgrams}{character}(x, n, skip, concatenator = "_", ...)
 
 \method{skipgrams}{tokenizedTexts}(x, n, skip, concatenator = "_", ...)
+
+\method{skipgrams}{tokenizedTextsHashed}(x, n, skip, concatenator = "_", ...)
 }
 \arguments{
 \item{x}{a tokenizedText object or a character vector of tokens}
@@ -82,8 +89,11 @@ ngrams(tokens, n = c(2,4), concatenator = " ")
 ngrams(tokens, n = c(2,4), skip = 1, concatenator = " ")
 
 # skipgrams
-tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."), 
-                   removePunct = TRUE, simplify = TRUE)
+tokens <- tokenize(c('a b c d e', 'c d e f g'))
+tokens_hashed <- hashTokens(tokens)
+(classic <- ngrams(tokens, n = 2:3))
+(hashed <- ngrams(tokens_hashed, n = 2:3))
+tokens <- tokenize("insurgents killed in ongoing fighting", simplify = TRUE)
 skipgrams(tokens, n = 2, skip = 0:1, concatenator = " ") 
 skipgrams(tokens, n = 2, skip = 0:2, concatenator = " ") 
 skipgrams(tokens, n = 3, skip = 0:2, concatenator = " ")   
