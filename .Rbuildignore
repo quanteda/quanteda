@@ -14,8 +14,10 @@
 __MACOSX
 \.DS_Store
 \.Rproj\.user
-quanteda.pdf
+^quanteda\.pdf$
 ^images
 ^tests/data/encoding/.*$
 ^CONDUCT\.md$
-^API.md$
+^API\.md$
+^benchmarks
+
