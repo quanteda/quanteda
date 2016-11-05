@@ -11,40 +11,50 @@
 \arguments{
 \item{x}{for plot method, the object to be plotted}
 
-\item{type}{\code{docs} to plot document scores (the default) or \code{feats} to 
-plot psi against beta parameters}
+\item{type}{\code{docs} to plot document scores (the default) or \code{feats}
+to plot psi against beta parameters}
 
-\item{doclabels}{a vector of names for document. If left NULL (the default), ordinary 
-document names will be used.}
+\item{doclabels}{a vector of names for document. If left NULL (the default),
+ordinary document names will be used.}
 
-\item{sort}{If TRUE (the default), order points from low to high score. 
-If a vector, order according to these values from low to high.
-Only applies when \code{type} is 'docs'}
+\item{sort}{If TRUE (the default), order points from low to high score. If a
+vector, order according to these values from low to high. Only applies when
+\code{type} is 'docs'}
 
-\item{left.mar}{an overridden left margin, passed to \code{par} (default 8.1). This
-overrides R's default 4.1, which is typically too cramped for document names.}
+\item{left.mar}{an overridden left margin, passed to \code{par} (default
+8.1). This overrides R's default 4.1, which is typically too cramped for
+document names.}
 
-\item{pickout}{A vector of feature names to draw attention to in a feature plot. Only 
-applies if \code{type} is 'feats'}
+\item{pickout}{A vector of feature names to draw attention to in a feature
+plot. Only applies if \code{type} is 'feats'}
 
-\item{alpha}{A number between 0 and 1 (default 0.5) representing the level of alpha
-transparency used to overplot feature names in a feature plot. 
-Only applies if \code{type} is 'feats'.}
+\item{alpha}{A number between 0 and 1 (default 0.5) representing the level of
+alpha transparency used to overplot feature names in a feature plot. Only
+applies if \code{type} is 'feats'.}
 
 \item{...}{additional arguments passed to \code{\link{plot}}}
 }
 \description{
-either as an ideal point-style plot (theta plus confidence interval on the 
-x-axis, document labels on the y) with optional renaming and sorting, or as
-'eiffel tower' plots (beta on the x, psi on the y, feature names over-plotted
-with alpha transparency, optionally some highlighted) as in
-Slapin and Proksch, 2008.
+Plot a fitted wordfish model, either as an ideal point-style plot (theta plus
+confidence interval on the x-axis, document labels on the y) with optional
+renaming and sorting, or as a plot of estimated feature-level parameters (beta on the x, psi on the
+y, feature names over-plotted with alpha transparency, optionally some
+highlighted) as in Slapin and Proksch, 2008.
 }
 \examples{
 postwar <- trim(dfm(inaugCorpus[41:57]), minCount = 5, minDoc = 2)
 mod <- textmodel(postwar, model = "wordfish")
-plot(mod, sort=FALSE)
-plot(mod, type="feats", pickout = c("government", "countries", "children", 
+plot(mod, sort = FALSE)
+plot(mod, sort = TRUE)
+plot(mod, type = "feats", pickout = c("government", "countries", "children", 
      "the", "nuclear", "federal"))
+}
+\author{
+Adam Obeng
+}
+\references{
+Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
+  for Estimating Time-Series Party Positions from Texts." \emph{American 
+  Journal of Political Science} 52(3):705-772.
 }
 
