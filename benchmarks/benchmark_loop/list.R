@@ -1,13 +1,17 @@
 Rcpp::sourceCpp('benchmarks/benchmark_loop/list.cpp')
 
-numbers <- 1:26
-toks <- rep(list(LETTERS), 100000)
-toks_hash <- rep(list(numbers), 100000)
-microbenchmark::microbenchmark(list_undefined(toks, letters),
-                               list_defined_numeric(toks_hash, numbers),
-                               list_defined_charactor(toks, letters))
+loop_r <- function(list, values){
+  lapply(list, function(x, y) x <- y, values)
+}
 
-toks_out1 <- list_undefined(toks, letters)
-object.size(toks_out1)
-toks_out2 <- list_defined_charactor(toks, letters)
-object.size(toks_out2)
+numbers <- 1:26
+toks <- rep(list(letters), 100000)
+toks_hash <- rep(list(numbers), 100000)
+microbenchmark::microbenchmark(
+  loop_chr(toks, letters),
+  loop_int(toks_hash, numbers),
+  loop_defined_chr(toks, letters),
+  loop_defined_int(toks_hash, numbers),
+  loop_r(toks, letters),
+  loop_r(toks, numbers))
+

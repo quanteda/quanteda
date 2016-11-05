@@ -2,18 +2,9 @@
 using namespace Rcpp;
 
 
-// template <typename WHAT>
-// class ListOf : public List {
-// public:
-//   template <typename T>
-//   ListOf( const T& x) : List(x){}
-//   WHAT operator[](int i){ return as<WHAT>( ( (List*)this)->operator[]( i) ) ; }
-//   
-// };
-
 // [[Rcpp::export]]
-ListOf<CharacterVector> list_defined_charactor(ListOf<CharacterVector> texts,
-                                     CharacterVector tokens){
+ListOf<CharacterVector> loop_defined_chr(ListOf<CharacterVector> texts,
+                                          CharacterVector tokens){
   for(int i=0; i < texts.size(); i++){
     texts[i] = tokens;
     //Rcout << i << "\n";
@@ -22,8 +13,8 @@ ListOf<CharacterVector> list_defined_charactor(ListOf<CharacterVector> texts,
 }
 
 // [[Rcpp::export]]
-ListOf<NumericVector> list_defined_numeric(ListOf<NumericVector> texts,
-                                           NumericVector tokens){
+ListOf<NumericVector> loop_defined_int(ListOf<NumericVector> texts,
+                                       NumericVector tokens){
   for(int i=0; i < texts.size(); i++){
     texts[i] = tokens;
     //Rcout << i << "\n";
@@ -32,8 +23,18 @@ ListOf<NumericVector> list_defined_numeric(ListOf<NumericVector> texts,
 }
 
 // [[Rcpp::export]]
-List list_undefined(List texts,
-                    CharacterVector tokens){
+List loop_chr(List texts,
+              CharacterVector tokens){
+  for(int i=0; i < texts.size(); i++){
+    texts[i] = tokens;
+    //Rcout << i << "\n";
+  }
+  return texts;
+}
+
+// [[Rcpp::export]]
+List loop_int(List texts,
+              NumericVector tokens){
   for(int i=0; i < texts.size(); i++){
     texts[i] = tokens;
     //Rcout << i << "\n";
@@ -46,7 +47,7 @@ List list_undefined(List texts,
 # toks <- rep(list(LETTERS), 100000)
 # toks_hash <- rep(list(numbers), 100000)
 
-#list_undefined(toks, letters)
-#list_defined_charactor(toks, letters)
+#loopundefined(toks, letters)
+#loop_defined_chr(toks, letters)
 
 */
