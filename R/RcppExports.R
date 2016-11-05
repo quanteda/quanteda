@@ -29,34 +29,6 @@ find_sequence_cppl <- function(texts, types, count_min, smooth, nested) {
     .Call('quanteda_find_sequence_cppl', PACKAGE = 'quanteda', texts, types, count_min, smooth, nested)
 }
 
-equal_cpp_chr <- function(tokens_, type_) {
-    .Call('quanteda_equal_cpp_chr', PACKAGE = 'quanteda', tokens_, type_)
-}
-
-equal_cpp_num <- function(tokens_, type_) {
-    .Call('quanteda_equal_cpp_num', PACKAGE = 'quanteda', tokens_, type_)
-}
-
-list_defined_charactor <- function(texts, tokens) {
-    .Call('quanteda_list_defined_charactor', PACKAGE = 'quanteda', texts, tokens)
-}
-
-list_defined_numeric <- function(texts, tokens) {
-    .Call('quanteda_list_defined_numeric', PACKAGE = 'quanteda', texts, tokens)
-}
-
-list_undefined <- function(texts, tokens) {
-    .Call('quanteda_list_undefined', PACKAGE = 'quanteda', texts, tokens)
-}
-
-set_cpp_chr <- function(tokens_, types_) {
-    .Call('quanteda_set_cpp_chr', PACKAGE = 'quanteda', tokens_, types_)
-}
-
-set_cpp_num <- function(tokens_, types_) {
-    .Call('quanteda_set_cpp_num', PACKAGE = 'quanteda', tokens_, types_)
-}
-
 join_tokens_cpp <- function(tokens, tokens_join, delim) {
     invisible(.Call('quanteda_join_tokens_cpp', PACKAGE = 'quanteda', tokens, tokens_join, delim))
 }

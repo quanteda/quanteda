@@ -1,4 +1,4 @@
-Rcpp::sourceCpp('benchmarks/unorderedset.cpp')
+Rcpp::sourceCpp('benchmarks/benchmark_substitution/unorderedset.cpp')
 
 set_r_chr <- function(tokens, types){
   tokens[(tokens %in% types)] <- ''

@@ -1,4 +1,4 @@
-Rcpp::sourceCpp('benchmarks/equal.cpp')
+Rcpp::sourceCpp('benchmarks/benchmark_substitution/equal.cpp')
 
 equal_r_chr <- function(tokens, type){
   tokens[tokens == type] <- ''
