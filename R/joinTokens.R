@@ -77,6 +77,80 @@ joinTokens <- function(x, sequences, concatenator = "_", valuetype = c("glob", "
     removeFeatures(y, "")
 }
 
+#' join tokens function
+#' @inherit joinTokens
+#' @examples
+#' # simple example
+#' txt <- c("The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
+#'          "The Supreme Court of the United States is seldom in a united state.",
+#'          "It's Arsenal versus Manchester United, states the announcer.", 
+#'          "luv the united states XXOO :-) atlantical oceania")
+#' toks_hash <- hashTokens(tokenize(txt))
+#' dfm(as.tokenizedTexts(toks_hash))
+#' phrasesFixed <- tokenize(c("United States", "Supreme Court", "Atlantic* Ocean*", "Pacific Ocean"), what="fastestword")
+#' joinTokens.tokenizedTextsHashed(toks_hash, phrasesFixed, valuetype = "glob", case_insensitive = TRUE, verbose=TRUE)
+#' 
+#' # For development
+#' x <- toks_hash
+#' sequences <- phrasesFixed
+#' valuetype <- 'glob'
+#' concatenator = "_"
+#' verbose = TRUE
+#' case_insensitive = TRUE
+
+#' @export
+joinTokens.tokenizedTextsHashed <- function(x, sequences, concatenator = "_", valuetype = c("glob", "fixed", "regex"), 
+                       verbose = FALSE, case_insensitive = TRUE) {
+  
+  valuetype <- match.arg(valuetype)
+ 
+  if (verbose) cat("Indexing tokens...\n")
+  types <- attr(x, 'vocabulary')
+  index <- dfm(as.tokenizedTexts(x), verbose = FALSE, toLower=FALSE) # index is always case-sensitive
+  index_binary <- as(index, 'nMatrix')
+
+  # Convert to regular expressions, then to fixed
+  if (valuetype %in% c("glob"))
+    sequences <- lapply(sequences, glob2rx)
+  if (valuetype %in% c("glob", "regex") | case_insensitive) {
+    # Generates all possible patterns of sequences
+    seqs_token <- grid_sequence(x, sequences, types, valuetype, case_insensitive)
+  } else {
+    seqs_token <- sequences
+  }
+  
+  # Check if joind tokens are in vocabulary
+  types_new <- sapply(seqs_token, paste0, collapse=concatenator)
+  ids_exist <- match(types_new, types)
+  id_new <- length(types) + 1
+  
+  n_seqs <- length(seqs_token)
+  if (n_seqs == 0) return(x)
+  for (i in 1:n_seqs) {
+    seq_token <- seqs_token[[i]]
+    if (length(seq_token) < 2) next
+    if (is.list(seq_token) | !is.vector(seq_token) | length(seq_token) == 0) stop('Invalid token sequence\n');
+    if (!all(seq_token %in% types)) {
+      if(verbose) cat(sprintf('%d/%d "%s" is not found\n', i, n_seqs, paste(seq_token, collapse=' ')))
+    } else {
+      flag <- Matrix::rowSums(index_binary[,seq_token, drop = FALSE]) == length(seq_token)
+      if (verbose) cat(sprintf('%d/%d "%s" is found in %d texts\n', i, n_seqs, paste(seq_token, collapse=' '), sum(flag)))
+      x <- qatd_cpp_replace_hash_list(x, flag, match(seq_token, types), id_new)
+      
+      # Add to vocabulary only if exists
+      if(is.na(ids_exist[i]) & any(id_new %in% unlist(x, use.names = FALSE))){
+        #cat('Add', types_new[i], 'to vocabulary as', id_new, '\n')
+        types <- c(types, types_new[i])
+        id_new <- id_new + 1
+      }
+    }
+  }
+  print(types)
+  attr(x, 'vocabulary') <- types
+  return(x)
+}
+
+
 grid_sequence <- function(tokens, seqs_pat, types, valuetype, case_insensitive = FALSE) {
     
     seqs_token <- list()
@@ -92,23 +166,5 @@ grid_sequence <- function(tokens, seqs_pat, types, valuetype, case_insensitive =
         #print(match_comb)
         seqs_token <- c(seqs_token, split_df_cpp(t(match_comb)))
     }
-    seqs_token
+    return(seqs_token)
 }
-
-## older function called from selectFeatures.R
-regexToFixed <- function(tokens, patterns, case_insensitive = FALSE, types = NULL) {
-    
-    # get unique token types
-    if (is.null(types)) types <- unique(unlist(tokens))
-    
-    seqs_token <- list()
-    for (seq_regex in patterns) {
-        match <- lapply(seq_regex, function(x, y) y[stringi::stri_detect_regex(y, x, case_insensitive = case_insensitive)], types)
-        if (length(unlist(seq_regex)) != length(match)) next
-        match_comb <- do.call(expand.grid, c(match, stringsAsFactors = FALSE)) # produce all possible combinations
-        seqs_token <- c(seqs_token, split_df_cpp(t(match_comb)))
-    }
-    seqs_token
-}
-
-

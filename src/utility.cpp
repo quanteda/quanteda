@@ -3,9 +3,9 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-std::vector<CharacterVector> split_df_cpp(DataFrame df) {
+List split_df_cpp(DataFrame df) {
   int len_cols=df.size();
-  std::vector<CharacterVector> cols(len_cols);
+  List cols(len_cols);
   for (int i=0; i < len_cols; i++) {
     CharacterVector column = df[i] ;
     cols[i] = column ;

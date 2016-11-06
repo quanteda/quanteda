@@ -37,6 +37,14 @@ join_tokens_cppl <- function(texts, flags, tokens_join, delim) {
     invisible(.Call('quanteda_join_tokens_cppl', PACKAGE = 'quanteda', texts, flags, tokens_join, delim))
 }
 
+qatd_cpp_replace_hash_vector <- function(tokens_, seq_, id) {
+    .Call('quanteda_qatd_cpp_replace_hash_vector', PACKAGE = 'quanteda', tokens_, seq_, id)
+}
+
+qatd_cpp_replace_hash_list <- function(texts_, flags, seq, id) {
+    .Call('quanteda_qatd_cpp_replace_hash_list', PACKAGE = 'quanteda', texts_, flags, seq, id)
+}
+
 select_tokens_cppl <- function(texts, flags, types, remove, spacer) {
     invisible(.Call('quanteda_select_tokens_cppl', PACKAGE = 'quanteda', texts, flags, types, remove, spacer))
 }

@@ -10,8 +10,8 @@ using namespace quanteda;
 
 // [[Rcpp::export]]
 NumericVector qatd_cpp_replace_hash_vector(NumericVector tokens_, 
-                                        NumericVector seq_,
-                                        int id){
+                                           NumericVector seq_,
+                                           int id){
   
   std::vector<int> tokens = Rcpp::as< std::vector<int> >(tokens_);
   std::vector<int> seq = Rcpp::as< std::vector<int> >(seq_);
@@ -35,9 +35,10 @@ NumericVector qatd_cpp_replace_hash_vector(NumericVector tokens_,
 
 // [[Rcpp::export]]
 List qatd_cpp_replace_hash_list(List texts_, 
-                                const std::vector<bool> flags,
-                                const NumericVector seq,
-                                const int id){
+                                std::vector<bool> flags,
+                                NumericVector seq,
+                                int id){
+  //Rcout << id << "\n";
   List texts = clone(texts_);
   int len = texts.size();
   if(flags.size() != len){
@@ -54,10 +55,10 @@ List qatd_cpp_replace_hash_list(List texts_,
 }
 
 /***R
-toks <- rep(letters, 1000)
-toks_hash <- rep(1:26, 1000)
-
-qatd_cpp_replace_hash_vector(toks_hash, c(3, 4, 5), 9999)
+# toks <- rep(letters, 1000)
+# toks_hash <- rep(1:26, 1000)
+# 
+# qatd_cpp_replace_hash_vector(toks_hash, c(3, 4, 5), 9999)
 
 # microbenchmark::microbenchmark(
 #   qatd_cpp_replace_hash_vector(toks_hash, c(3, 4), 9999),
