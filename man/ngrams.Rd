@@ -68,12 +68,6 @@ Normally, \code{\link{ngrams}} will be called through
 }
 \examples{
 # ngrams
-ngrams(LETTERS, n = 2)
-ngrams(LETTERS, n = 2, skip = 1)
-ngrams(LETTERS, n = 2, skip = 0:1)
-ngrams(LETTERS, n = 1:2)
-ngrams(LETTERS, n = c(2,3), skip = 0:1)
-
 tokens <- tokens("the quick brown fox jumped over the lazy dog.", 
                    removePunct = TRUE, simplify = TRUE)
 ngrams(tokens, n = 1:3)
@@ -83,9 +77,7 @@ ngrams(tokens, n = c(2,4), skip = 1, concatenator = " ")
 # skipgrams
 txt <- c("a b c d e", "c d e f g")
 toks <- tokens(txt)
-toks_hashed <- tokens(txt)
-(classic <- ngrams(toks, n = 2:3))
-(hashed <- ngrams(toks_hashed, n = 2:3))
+ngrams(toks_hashed, n = 2:3)
 tokens <- tokens("insurgents killed in ongoing fighting", simplify = TRUE)
 skipgrams(tokens, n = 2, skip = 0:1, concatenator = " ") 
 skipgrams(tokens, n = 2, skip = 0:2, concatenator = " ") 

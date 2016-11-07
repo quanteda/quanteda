@@ -15,7 +15,6 @@ join tokens function
 # simple example
 txt <- c("a b c d e f g", "A B C D E F G", "A b C d E f G", "aaa bbb ccc ddd eee fff ggg", "a_b b_c c_d d_e e_f f_g") 
 toks_hash <- tokens(txt)
-attr(toks_hash, 'types')
 seqs <- tokens(c("a b", "C D", "aa* bb*", "eEE FFf", "d_e e_f"), hash=FALSE, what="fastestword")
 joinTokens.tokenizedTextsHashed(toks_hash, seqs, valuetype = "glob", case_insensitive = TRUE, verbose=TRUE)
 joinTokens.tokenizedTextsHashed(toks_hash, seqs, valuetype = "glob", case_insensitive = FALSE, verbose=TRUE)

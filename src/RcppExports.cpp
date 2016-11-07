@@ -42,20 +42,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// skipgramcpp
-StringVector skipgramcpp(std::vector < std::string > tokens, std::vector < int > ns, std::vector < int > ks, std::string delim);
-RcppExport SEXP quanteda_skipgramcpp(SEXP tokensSEXP, SEXP nsSEXP, SEXP ksSEXP, SEXP delimSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::vector < std::string > >::type tokens(tokensSEXP);
-    Rcpp::traits::input_parameter< std::vector < int > >::type ns(nsSEXP);
-    Rcpp::traits::input_parameter< std::vector < int > >::type ks(ksSEXP);
-    Rcpp::traits::input_parameter< std::string >::type delim(delimSEXP);
-    rcpp_result_gen = Rcpp::wrap(skipgramcpp(tokens, ns, ks, delim));
-    return rcpp_result_gen;
-END_RCPP
-}
 // qatd_cpp_ngram_hashed_vector
 List qatd_cpp_ngram_hashed_vector(NumericVector tokens, NumericVector ns, NumericVector skips);
 RcppExport SEXP quanteda_qatd_cpp_ngram_hashed_vector(SEXP tokensSEXP, SEXP nsSEXP, SEXP skipsSEXP) {
@@ -91,11 +77,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< ListOf<NumericVector> >::type ids_ngram(ids_ngramSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type tokens(tokensSEXP);
     Rcpp::traits::input_parameter< String >::type delim(delimSEXP);
-<<<<<<< HEAD
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_ngram_unhash_vocab(ids_ngram, tokens, delim));
-=======
     rcpp_result_gen = Rcpp::wrap(qatd_cpp_ngram_unhash_type(ids_ngram, tokens, delim));
->>>>>>> dev_ngrams
     return rcpp_result_gen;
 END_RCPP
 }
@@ -139,18 +121,12 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-<<<<<<< HEAD
 // qatd_cpp_replace_hash_vector
 NumericVector qatd_cpp_replace_hash_vector(NumericVector tokens_, NumericVector seq_, int id);
 RcppExport SEXP quanteda_qatd_cpp_replace_hash_vector(SEXP tokens_SEXP, SEXP seq_SEXP, SEXP idSEXP) {
-=======
-// select_tokens_cppl
-void select_tokens_cppl(Rcpp::List texts, const std::vector<bool>& flags, const std::vector< std::string >& types, const bool& remove, const bool& spacer);
-RcppExport SEXP quanteda_select_tokens_cppl(SEXP textsSEXP, SEXP flagsSEXP, SEXP typesSEXP, SEXP removeSEXP, SEXP spacerSEXP) {
->>>>>>> dev_ngrams
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-<<<<<<< HEAD
     Rcpp::traits::input_parameter< NumericVector >::type tokens_(tokens_SEXP);
     Rcpp::traits::input_parameter< NumericVector >::type seq_(seq_SEXP);
     Rcpp::traits::input_parameter< int >::type id(idSEXP);
@@ -177,8 +153,6 @@ void select_tokens_cppl(Rcpp::List texts, const std::vector<bool>& flags, const 
 RcppExport SEXP quanteda_select_tokens_cppl(SEXP textsSEXP, SEXP flagsSEXP, SEXP typesSEXP, SEXP removeSEXP, SEXP spacerSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-=======
->>>>>>> dev_ngrams
     Rcpp::traits::input_parameter< Rcpp::List >::type texts(textsSEXP);
     Rcpp::traits::input_parameter< const std::vector<bool>& >::type flags(flagsSEXP);
     Rcpp::traits::input_parameter< const std::vector< std::string >& >::type types(typesSEXP);
@@ -216,25 +190,37 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// split_df_cpp
-List split_df_cpp(DataFrame df);
-RcppExport SEXP quanteda_split_df_cpp(SEXP dfSEXP) {
+// qatd_cpp_split_df
+List qatd_cpp_split_df(DataFrame df);
+RcppExport SEXP quanteda_qatd_cpp_split_df(SEXP dfSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< DataFrame >::type df(dfSEXP);
-    rcpp_result_gen = Rcpp::wrap(split_df_cpp(df));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_split_df(df));
     return rcpp_result_gen;
 END_RCPP
 }
-// deepcopy
-Rcpp::List deepcopy(Rcpp::List x);
-RcppExport SEXP quanteda_deepcopy(SEXP xSEXP) {
+// qatd_cpp_deepcopy
+Rcpp::List qatd_cpp_deepcopy(Rcpp::List x);
+RcppExport SEXP quanteda_qatd_cpp_deepcopy(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::List >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(deepcopy(x));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_deepcopy(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_remove_string_list
+List qatd_cpp_remove_string_list(List list_, String elem_remove);
+RcppExport SEXP quanteda_qatd_cpp_remove_string_list(SEXP list_SEXP, SEXP elem_removeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type list_(list_SEXP);
+    Rcpp::traits::input_parameter< String >::type elem_remove(elem_removeSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_remove_string_list(list_, elem_remove));
     return rcpp_result_gen;
 END_RCPP
 }

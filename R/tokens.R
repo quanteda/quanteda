@@ -233,7 +233,8 @@ tokens.character <- function(x, what=c("word", "sentence", "character", "fastest
                 result <- stringi::stri_split_fixed(result, " ")
             else if (what=="fasterword")
                 result <- stringi::stri_split_charclass(result, "\\p{WHITE_SPACE}")
-            result <- lapply(result, function(x) x <- x[which(x != "")])
+            #result <- lapply(result, function(x) x <- x[which(x != "")]) # this is dealy slow
+            result <- qatd_cpp_remove_string_list(result, "")
             
             # if (removeURL)
             #     result <- lapply(result, function(x) x <- x[-which(substring(x, 1, 4) == "http")])
