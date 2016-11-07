@@ -45,6 +45,6 @@ List qatd_cpp_remove_string_list(List list_, String elem_remove){
 
 /*** R
 
-#df <- expand.grid(LETTERS[1:3], LETTERS[4:5], LETTERS[6], stringsAsFactors=FALSE)
-#split_df_cpp(df)
+df <- expand.grid(LETTERS[1:3], LETTERS[4:5], LETTERS[6], stringsAsFactors=FALSE)
+qatd_cpp_split_df(df)
 */
