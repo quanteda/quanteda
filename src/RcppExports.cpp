@@ -202,13 +202,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_deepcopy
-Rcpp::List qatd_cpp_deepcopy(Rcpp::List x);
-RcppExport SEXP quanteda_qatd_cpp_deepcopy(SEXP xSEXP) {
+List qatd_cpp_deepcopy(List x_);
+RcppExport SEXP quanteda_qatd_cpp_deepcopy(SEXP x_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_deepcopy(x));
+    Rcpp::traits::input_parameter< List >::type x_(x_SEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_deepcopy(x_));
     return rcpp_result_gen;
 END_RCPP
 }

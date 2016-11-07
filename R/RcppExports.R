@@ -57,8 +57,8 @@ qatd_cpp_split_df <- function(df) {
     .Call('quanteda_qatd_cpp_split_df', PACKAGE = 'quanteda', df)
 }
 
-qatd_cpp_deepcopy <- function(x) {
-    .Call('quanteda_qatd_cpp_deepcopy', PACKAGE = 'quanteda', x)
+qatd_cpp_deepcopy <- function(x_) {
+    .Call('quanteda_qatd_cpp_deepcopy', PACKAGE = 'quanteda', x_)
 }
 
 qatd_cpp_remove_string_list <- function(list_, elem_remove) {
