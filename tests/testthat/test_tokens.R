@@ -3,9 +3,10 @@
 ##
 
 test_that("syllables works as expected for tokens_hashed", {
-    toks <- tokenize(c(one = "super freakily yes",
-                       two = "merrily all go aerodynamic"))
-    toksh <- hashTokens(toks)
+    txt <- c(one = "super freakily yes",
+             two = "merrily all go aerodynamic")
+    toks <- tokenize(txt)
+    toksh <- tokens(txt)
     classic <- syllables(toks)
     hashed <- syllables(toksh)
     expect_equal(classic, hashed)
@@ -17,27 +18,29 @@ test_that("wordstem works as expected for tokens_hashed", {
     txt <- c(one = "Eating eater eaters eats ate.",
              two = "Taxing taxes taxed my tax return.")
     toks <- tokenize(toLower(txt), removePunct = TRUE)
-    toksh <- hashTokens(toks)
+    toksh <- tokens(toLower(txt), removePunct = TRUE)
     classic <- wordstem(toks)
     hashed <- wordstem(toksh)
-    expect_equal(classic, as.tokenizedTexts(hashed))
+    expect_equivalent(classic, as.tokenizedTexts(hashed))
 })
 
 test_that("ngrams works as expected for tokens_hashed", {
-    toks <- tokenize(c(one = toLower("Insurgents killed in ongoing fighting."),
-                       two = "A B C D E"), removePunct = TRUE)
-    toksh <- hashTokens(toks)
+    txt <- c(one = toLower("Insurgents killed in ongoing fighting."),
+             two = "A B C D E")
+    toks <- tokenize(txt, removePunct = TRUE)
+    toksh <- tokens(txt, removePunct = TRUE)
     classic <- ngrams(toks, n = 2:3)
     hashed <- ngrams(toksh, n = 2:3)
-    expect_equal(classic, as.tokenizedTexts(hashed))
+    expect_equivalent(classic, as.tokenizedTexts(hashed))
 })
 
 test_that("skipgrams works as expected for tokens_hashed", {
-    toks <- tokenize(c(one = "insurgents killed in ongoing fighting"))
-    toksh <- hashTokens(toks)
+    txt <- c(one = "insurgents killed in ongoing fighting")
+    toks <- tokenize(txt)
+    toksh <- tokens(txt)
     classic <- skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")
     hashed <- skipgrams(toksh, n = 3, skip = 0:2, concatenator = " ")
-    expect_equal(classic, as.tokenizedTexts(hashed))
+    expect_equivalent(classic, as.tokenizedTexts(hashed))
 })
 
 

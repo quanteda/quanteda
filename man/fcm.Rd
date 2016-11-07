@@ -97,7 +97,9 @@ txt <- c("The quick brown fox jumped over the lazy dog.",
          "The dog jumped and ate the fox.")
 toks <- tokenize(toLower(txt), removePunct = TRUE)
 fcm(toks, context = "document")
-toksHashed <- hashTokens(toks)
+
+# with hashed tokens
+toksHashed <- tokens(toLower(txt), removePunct = TRUE)
 fcm(toks, context = "window", window = 3)
 fcm(toksHashed, context = "window", window = 3)
 }

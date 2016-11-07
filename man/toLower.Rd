@@ -6,13 +6,13 @@
 \alias{toLower.character}
 \alias{toLower.corpus}
 \alias{toLower.tokenizedTexts}
-\alias{toLower.tokenizedTextsHashed}
+\alias{toLower.tokens}
 \alias{toUpper}
 \alias{toUpper.NULL}
 \alias{toUpper.character}
 \alias{toUpper.corpus}
 \alias{toUpper.tokenizedTexts}
-\alias{toUpper.tokenizedTextsHashed}
+\alias{toUpper.tokens}
 \title{Convert texts to lower (or upper) case}
 \usage{
 toLower(x, keepAcronyms = FALSE, ...)
@@ -23,9 +23,9 @@ toLower(x, keepAcronyms = FALSE, ...)
 
 \method{toLower}{tokenizedTexts}(x, keepAcronyms = FALSE, ...)
 
-\method{toLower}{tokenizedTextsHashed}(x, ...)
+\method{toLower}{tokens}(x, ...)
 
-\method{toUpper}{tokenizedTextsHashed}(x, ...)
+\method{toUpper}{tokens}(x, ...)
 
 \method{toLower}{corpus}(x, keepAcronyms = FALSE, ...)
 

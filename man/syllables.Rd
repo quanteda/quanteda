@@ -6,7 +6,7 @@
 \alias{syllables}
 \alias{syllables.character}
 \alias{syllables.tokenizedTexts}
-\alias{syllables.tokenizedTextsHashed}
+\alias{syllables.tokens}
 \title{count syllables in a text}
 \source{
 \code{englishSyllables} is built from the freely available CMU pronunciation dictionary at \code{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
@@ -17,8 +17,7 @@ syllables(x, ...)
 \method{syllables}{character}(x, syllableDict = quanteda::englishSyllables,
   ...)
 
-\method{syllables}{tokenizedTextsHashed}(x,
-  syllableDict = quanteda::englishSyllables, ...)
+\method{syllables}{tokens}(x, syllableDict = quanteda::englishSyllables, ...)
 
 \method{syllables}{tokenizedTexts}(x,
   syllableDict = quanteda::englishSyllables, ...)
@@ -68,9 +67,10 @@ syllables(myTexts)
 syllables(tokenize(myTexts, removePunct = TRUE))
 syllables("supercalifragilisticexpialidocious")
 \dontshow{
-toks <- tokenize(c(one = "super freakily yes",
-                   two = "merrily all go aerodynamic"))
-toksh <- hashTokens(toks)
+txt <- c(one = "super freakily yes",
+                two = "merrily all go aerodynamic")
+toks <- tokenize(txt)
+toksh <- tokens(txt)
 syllables(toks)
 syllables(toksh)
 }

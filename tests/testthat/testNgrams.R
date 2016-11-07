@@ -66,10 +66,10 @@ test_that("test that ngrams produces the results from Guthrie 2006", {
       )
       
       toks2 <- tokenize(c('a b c d e', 'c d e f g'))
-      toks2_hashed <- hashTokens(toks2)
+      toks2_hashed <- tokens(c('a b c d e', 'c d e f g'))
       mix_grams <- list(c("a_b", "b_c", "c_d", "d_e", "a_b_c", "b_c_d", "c_d_e"),
                         c("c_d", "d_e", "e_f", "f_g", "c_d_e", "d_e_f", "e_f_g"))
-      expect_identical(
+      expect_equivalent(
         ngrams(toks2, n = 2:3),
         as.tokenizedTexts(ngrams(toks2_hashed, n = 2:3))
       )

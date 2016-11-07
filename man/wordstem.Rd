@@ -5,7 +5,7 @@
 \alias{wordstem.character}
 \alias{wordstem.dfm}
 \alias{wordstem.tokenizedTexts}
-\alias{wordstem.tokenizedTextsHashed}
+\alias{wordstem.tokens}
 \title{stem words}
 \usage{
 wordstem(x, language = "porter")
@@ -14,7 +14,7 @@ wordstem(x, language = "porter")
 
 \method{wordstem}{tokenizedTexts}(x, language = "porter")
 
-\method{wordstem}{tokenizedTextsHashed}(x, language = "porter")
+\method{wordstem}{tokens}(x, language = "porter")
 
 \method{wordstem}{dfm}(x, language = "porter")
 }
@@ -46,9 +46,8 @@ wordstem(c("win", "winning", "wins", "won", "winner"))
 \dontshow{
 txt <- c(one = "Eating eater eaters eats ate.",
          two = "Taxing taxes taxed my tax return.")
-th <- hashTokens(tokenize(toLower(txt)))
+th <- tokens(toLower(txt))
 wordstem(th)
-attr(wordstem(th), "vocabulary")
 }
 }
 \references{

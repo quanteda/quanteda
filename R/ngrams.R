@@ -78,23 +78,24 @@ ngrams.tokenizedTexts <- function(x, n = 2L, skip = 0L, concatenator = "_", ...)
 
 #' @rdname ngrams
 #' @examples 
-#' tokens <- tokenize(c('a b c d e', 'c d e f g'))
-#' tokens_hashed <- hashTokens(tokens)
-#' (classic <- ngrams(tokens, n = 2:3))
-#' (hashed <- ngrams(tokens_hashed, n = 2:3))
+#' txt <- c("a b c d e", "c d e f g")
+#' toks <- tokenize(txt)
+#' toks_hashed <- tokens(txt)
+#' (classic <- ngrams(toks, n = 2:3))
+#' (hashed <- ngrams(toks_hashed, n = 2:3))
 #' @export
-ngrams.tokenizedTextsHashed <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
+ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
     attrs_orig <- attributes(x)
-    if(any(n <= 0)) stop("ngram length has to be greater than zero")
+    if (any(n <= 0)) stop("ngram length has to be greater than zero")
     # Generate ngrams
     res <- qatd_cpp_ngram_hashed_list(x, n, skip + 1)
     
     # Make character tokens of ngrams
-    ngram_types <- qatd_cpp_ngram_unhash_vocab(res$id_unigram, attr(x, 'vocabulary'), concatenator)
+    ngram_types <- qatd_cpp_ngram_unhash_vocab(res$id_unigram, types(x), concatenator)
     ngramsResult <- res$text
     names(ngramsResult) <- names(x)
     attributes(ngramsResult) <- attrs_orig
-    attr(ngramsResult, "vocabulary") <- ngram_types
+    types(ngramsResult) <- ngram_types
     attr(ngramsResult, "ngrams") <- as.integer(n)
     attr(ngramsResult, "skip") <- as.integer(skip)
     attr(ngramsResult, "concatenator") <- concatenator
@@ -137,5 +138,5 @@ skipgrams.tokenizedTexts <- function(x, n, skip, concatenator="_", ...)
 
 #' @rdname ngrams
 #' @export
-skipgrams.tokenizedTextsHashed <- function(x, n, skip, concatenator="_", ...)
+skipgrams.tokens <- function(x, n, skip, concatenator="_", ...)
     ngrams(x, n, skip, concatenator, ...)
