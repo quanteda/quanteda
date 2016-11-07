@@ -3,6 +3,7 @@
 \name{tokens}
 \alias{as.list.tokens}
 \alias{as.tokenizedTexts.tokens}
+\alias{as.tokens}
 \alias{is.tokens}
 \alias{tokens}
 \alias{tokens.character}
@@ -21,6 +22,8 @@ tokens(x, ...)
 \method{tokens}{corpus}(x, ...)
 
 is.tokens(x)
+
+as.tokens(x)
 
 \method{as.tokenizedTexts}{tokens}(x, ...)
 
@@ -107,6 +110,8 @@ Tokenize the texts from a character vector or from a corpus.
 
 \code{is.tokens} returns \code{TRUE} if the object is of class
   tokens, \code{FALSE} otherwise.
+
+coerces a list or tokens object into a (hashed) \link{tokens} object
 }
 \details{
 The tokenizer is designed to be fast and flexible as well as to 
