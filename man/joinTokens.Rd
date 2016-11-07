@@ -2,10 +2,13 @@
 % Please edit documentation in R/joinTokens.R
 \name{joinTokens}
 \alias{joinTokens}
+\alias{joinTokens.tokenizedTexts}
 \alias{joinTokens.tokens}
 \title{join tokens function}
 \usage{
 joinTokens(x, ...)
+
+\method{joinTokens}{tokenizedTexts}(x, ...)
 
 \method{joinTokens}{tokens}(x, sequences, concatenator = "_",
   valuetype = c("glob", "fixed", "regex"), verbose = FALSE,
@@ -16,7 +19,7 @@ joinTokens(x, ...)
 
 \item{...}{additional arguments passed to other methods}
 
-\item{sequences}{list of vector of features to concatenate}
+\item{sequences}{features to concatenate, a list of characters}
 
 \item{concatenator}{character used for joining tokens}
 
