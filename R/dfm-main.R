@@ -351,7 +351,6 @@ compile_dfm.tokenizedTexts <- function(x, verbose = TRUE) {
     # remove dummy feature if needed
     if (length(emptyDocs)) dfmresult <- dfmresult[, -ncol(dfmresult), drop = FALSE]
     
-    # return the dfmSparse type object
     new("dfmSparse", dfmresult)
 }
 
@@ -369,15 +368,25 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
              sep="")
     }
 
-    tokenCount <- Matrix::sparseMatrix(i = unlist(x, use.names = FALSE), 
-                                       p = cumsum(c(1, ntoken(x))) - 1, 
-                                       x = 1L, 
-                                       dimnames = list(features = types(x), 
-                                                       docs = names(x)))
-    new("dfmSparse", t(tokenCount))
+    ## special handling for empty documents
+    # find out which documents have zero feature counts
+    emptyDocs <- which(lengths(x) == 0)
+    # add an arbitrary "feature" for empty docs
+    if (length(emptyDocs)) {
+        x[emptyDocs] <- length(types(x)) + 1
+        types(x) <- c(types(x), "__TEMPFEATURE__")
+    }
+
+    dfmresult <- t(Matrix::sparseMatrix(i = unlist(x, use.names = FALSE), 
+                                        p = cumsum(c(1, ntoken(x))) - 1, 
+                                        x = 1L, 
+                                        dimnames = list(features = types(x), 
+                                                        docs = names(x))))
+    # remove dummy feature if needed
+    if (length(emptyDocs)) dfmresult <- dfmresult[, -ncol(dfmresult), drop = FALSE]
+    
+    new("dfmSparse", dfmresult)
 }
-
-
 
 
 

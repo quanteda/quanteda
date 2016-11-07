@@ -6,8 +6,6 @@
 #' @param x objet to be tokenized
 #' @param ... additional arguments not used
 #' @export
-#' @examples 
-#' @export
 tokens <- function(x, ...) {
     UseMethod("tokens")
 }
