@@ -110,8 +110,7 @@ dfm <- function(x, ...) {
 #'                taxation="taxation",
 #'                taxregex="tax*",
 #'                country="united states")
-#' dictDfm <- dfm(mycorpus, dictionary=mydict)
-#' dictDfm
+#' dfm(mycorpus, dictionary = mydict)
 #' 
 #' # with the thesaurus feature
 #' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
@@ -170,7 +169,7 @@ dfm.character <- function(x,
 #     if (length(addedArgs <- list(...)) && !(addedArgs %in% names(formals(getS3method("tokenize", "character")))))
 #         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
 
-    if (verbose && grepl("^dfm\\.character", sys.calls()[[2]]))
+    if (verbose && grepl("^dfm\\.character", sys.calls()[2]))
         catm("Creating a dfm from a character vector ...")
 
     # case conversion and tokenization
@@ -180,7 +179,7 @@ dfm.character <- function(x,
         x <- toLower(x)
     }
     
-    if (verbose) catm("\n   ... tokenizing", sep="")
+    if (verbose) catm("\n   ... tokenizing", sep = "")
     tokenizedTexts <- tokens(x, removeNumbers = removeNumbers, 
                                removeSeparators = removeSeparators, removePunct = removePunct,
                                removeTwitter = removeTwitter,
@@ -236,7 +235,7 @@ dfm.tokenizedTexts <- function(x,
     # argument checking
     language <- tolower(language)
     
-    if (verbose)
+    if (verbose & grepl("^dfm\\.token", sys.calls()[2]))
         catm("Creating a dfm from a", class(x)[1], "object ...")
 
     # lowercase if necessary 

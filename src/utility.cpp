@@ -4,6 +4,23 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
+std::vector<CharacterVector> split_df_cpp(DataFrame df) {
+    int len_cols=df.size();
+    std::vector<CharacterVector> cols(len_cols);
+    for (int i=0; i < len_cols; i++) {
+        CharacterVector column = df[i] ;
+        cols[i] = column ;
+    }
+    return cols;
+}
+
+// [[Rcpp::export]]
+Rcpp::List deepcopy(Rcpp::List x){
+    Rcpp::List y = clone(x);
+    return y;
+}
+
+// [[Rcpp::export]]
 List qatd_cpp_split_df(DataFrame df) {
   List cols(df.size());
   for (int i=0; i < df.size(); i++) {

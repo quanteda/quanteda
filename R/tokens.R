@@ -314,6 +314,13 @@ tokens.character <- function(x, what=c("word", "sentence", "character", "fastest
     class(result) <- c("tokenizedTexts", class(result))
     #}
     
+    # hash the tokens
+    if (hash == TRUE) {
+        if (verbose) 
+            catm("...hashing tokens\n")
+        result <- tokens_hash(result)
+    } 
+    
     if (!identical(ngrams, 1L)) {
         if (verbose) {
             catm("  ...creating ngrams")
@@ -346,14 +353,6 @@ tokens.character <- function(x, what=c("word", "sentence", "character", "fastest
     attr(result, "what") <- what
     attr(result, "ngrams") <- ngrams
     attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
-    attr(result, "types") <- NULL
-    
-    # hash the tokens
-    if (hash == TRUE) {
-        if (verbose) 
-            catm("...hashing tokens\n")
-        result <- tokens_hash(result)
-    } 
     
     if (verbose) 
         catm("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n") 

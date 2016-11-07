@@ -2,6 +2,8 @@
 % Please edit documentation in R/ngrams.R
 \name{ngrams}
 \alias{ngrams}
+\alias{ngrams.character}
+\alias{ngrams.tokenizedTexts}
 \alias{ngrams.tokens}
 \alias{skipgrams}
 \alias{skipgrams.character}
@@ -10,6 +12,10 @@
 \title{Create ngrams and skipgrams}
 \usage{
 ngrams(x, ...)
+
+\method{ngrams}{character}(x, n = 2L, skip = 0L, concatenator = "_", ...)
+
+\method{ngrams}{tokenizedTexts}(x, ...)
 
 \method{ngrams}{tokens}(x, n = 2L, skip = 0L, concatenator = "_", ...)
 
@@ -75,8 +81,12 @@ ngrams(tokens, n = c(2,4), concatenator = " ")
 ngrams(tokens, n = c(2,4), skip = 1, concatenator = " ")
 
 # skipgrams
+# with "classic" tokenized objects
 txt <- c("a b c d e", "c d e f g")
-toks <- tokens(txt)
+toks <- tokenize(txt)
+ngrams(toks, n = 2:3)
+txt <- c("a b c d e", "c d e f g")
+toks_hashed <- tokens(txt)
 ngrams(toks_hashed, n = 2:3)
 tokens <- tokens("insurgents killed in ongoing fighting", simplify = TRUE)
 skipgrams(tokens, n = 2, skip = 0:1, concatenator = " ") 

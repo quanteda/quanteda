@@ -38,11 +38,38 @@ ngrams <- function(x, ...) {
     UseMethod("ngrams")
 }
 
+#' @rdname ngrams
+#' @importFrom stats complete.cases
+#' @export
+ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
+    # trap condition where a "text" is a single NA
+    if (is.na(x[1]) && length(x)==1) return(NULL)
+    if (any(stringi::stri_detect_fixed(x, " ")) & concatenator != " ")
+        warning("whitespace detected: you may need to run tokens() first")
+    if (length(x) < min(n)) return(NULL)
+    if (identical(as.integer(n), 1L)) {
+        if (!identical(as.integer(skip), 0L))
+            warning("skip argument ignored for n = 1")
+        return(x)
+    }
+    skipgramcpp(x, n, skip + 1, concatenator)
+}
+
+#' @rdname ngrams
+#' @examples 
+#' # with "classic" tokenized objects
+#' txt <- c("a b c d e", "c d e f g")
+#' toks <- tokenize(txt)
+#' ngrams(toks, n = 2:3)
+#' @export
+ngrams.tokenizedTexts <- function(x, ...) {
+    as.tokenizedTexts(ngrams(as.tokens(x), ...))
+}
 
 #' @rdname ngrams
 #' @examples 
 #' txt <- c("a b c d e", "c d e f g")
-#' toks <- tokens(txt)
+#' toks_hashed <- tokens(txt)
 #' ngrams(toks_hashed, n = 2:3)
 #' @export
 ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
