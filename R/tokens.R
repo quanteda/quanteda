@@ -379,6 +379,25 @@ is.tokens <- function(x) {
     ifelse("tokens" %in% class(x), TRUE, FALSE)
 }
 
+#' @export
+#' @description coerces a list or tokens object into a (hashed) \link{tokens} object
+#' @rdname tokens
+as.tokens <- function(x) {
+    UseMethod("as.tokens")
+}
+
+#' @export
+#' @noRd
+as.tokens.list <- function(x) {
+    tokens_hash(x)
+}
+
+#' @export
+#' @noRd
+as.tokens.tokenizedTexts <- function(x) {
+    tokens_hash(x)
+}
+
 
 #' Function to hash list-of-character tokens
 #' 

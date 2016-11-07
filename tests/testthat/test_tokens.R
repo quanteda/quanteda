@@ -44,6 +44,31 @@ test_that("skipgrams works as expected for tokens_hashed", {
 })
 
 
+test_that("as.tokens tokenizedTexts works as expected", {
+    txt <- c(doc1 = "The first sentence is longer than the second.",
+             doc2 = "Told you so.")
+    toks <- tokenize(txt)
+    toksh <- tokens(txt) 
+    expect_equivalent(toksh, 
+                      as.tokens(toks))
+})
+
+test_that("as.tokens list version works as expected", {
+    txt <- c(doc1 = "The first sentence is longer than the second.",
+             doc2 = "Told you so.")
+    toksh <- tokens(txt) 
+    toks <- tokenize(txt)
+    attributes(toks) <- NULL
+    names(toks) <- names(txt)
+    expect_equal(class(toks), "list")
+    expect_equivalent(toksh, 
+                      as.tokens(toks))
+})
+
+
+#' # coerce an object into a tokens class
+#' as.tokens(toks)
+
 
 #' \dontrun{
 #' tokens2 <- tokenize(head(inaugTexts, 10), removePunct=TRUE)
