@@ -181,7 +181,7 @@ dfm.character <- function(x,
     }
     
     if (verbose) catm("\n   ... tokenizing", sep="")
-    tokenizedTexts <- tokenize(x, removeNumbers = removeNumbers, 
+    tokenizedTexts <- tokens(x, removeNumbers = removeNumbers, 
                                removeSeparators = removeSeparators, removePunct = removePunct,
                                removeTwitter = removeTwitter,
                                ...)
@@ -236,9 +236,8 @@ dfm.tokenizedTexts <- function(x,
     # argument checking
     language <- tolower(language)
     
-    if (verbose && grepl("^dfm\\.tokenizedTexts", sys.calls()[[2]])) {
-        catm("Creating a dfm from a", class(x), "object ...")
-    }
+    if (verbose)
+        catm("Creating a dfm from a", class(x)[1], "object ...")
 
     # lowercase if necessary 
     if (toLower) {
@@ -291,7 +290,8 @@ dfm.tokenizedTexts <- function(x,
     }
     
     if (verbose) 
-        catm("   ... created a", paste(dim(dfmresult), collapse=" x "), 
+        catm("   ... created a", paste(format(dim(dfmresult), big.mark=",", trim = TRUE), 
+                                       collapse=" x "), 
             "sparse dfm\n   ... complete. \nElapsed time:", 
             format((proc.time() - startTime)[3], digits = 3),
             "seconds.\n")
@@ -312,9 +312,6 @@ compile_dfm <- function(x, verbose = TRUE) {
 ## internal function to compile the dfm
 compile_dfm.tokenizedTexts <- function(x, verbose = TRUE) {
 
-    # get document names
-    docNames <- names(x)
-    
     # index documents
     if (verbose) catm("\n   ... indexing documents: ", 
                       format(length(x), big.mark=","), " document",
@@ -349,44 +346,49 @@ compile_dfm.tokenizedTexts <- function(x, verbose = TRUE) {
     dfmresult <- sparseMatrix(i = docIndex, 
                               j = featureIndex, 
                               x = 1L, 
-                              dimnames = list(docs = docNames, features = uniqueFeatures))
+                              dimnames = list(docs = names(x), 
+                                              features = uniqueFeatures))
     # remove dummy feature if needed
     if (length(emptyDocs)) dfmresult <- dfmresult[, -ncol(dfmresult), drop = FALSE]
     
-    # return the dfmSparse type object
     new("dfmSparse", dfmresult)
 }
 
-compile_dfm.tokenizedTextsHashed <- function(x, verbose = TRUE) {
+compile_dfm.tokens <- function(x, verbose = TRUE) {
     
     if (verbose) {
-        catm("\n   ... found  ", 
+        catm("\n   ... found ", 
              format(length(x), big.mark = ","), " document",
              ifelse(length(x) > 1, "s", ""), ### replace with: ntoken()
              ", ",
-             format(length(attr(x, "vocabulary")), big.mark = ","),  ### replace with: ntype()
+             format(length(types(x)), big.mark = ","),  ### replace with: ntype()
              " feature",
-             ifelse(length(attr(x, "vocabulary")) > 1, "s", ""), 
+             ifelse(length(types(x)) > 1, "s", ""),
+             "\n",
              sep="")
     }
 
-    # get document names
-    docNames <- names(x)
-    
-    nTokens <- lengths(x)  ### replace with: ntoken()
+    ## special handling for empty documents
     # find out which documents have zero feature counts
-    emptyDocs <- which(nTokens == 0)
-    # add docIndex positions for any zero-token docs; no effect if emptyDocs is empty
-    docIndex <- c(rep(seq_along(nTokens), nTokens), emptyDocs)
-    featureIndex <- unlist(x, use.names = FALSE)
-    docNames <- paste("text", 1:length(x), sep="")
-    tokenCount <- Matrix::sparseMatrix(i = docIndex, 
-                                       j = featureIndex, 
-                                       x = 1L, 
-                                       dimnames = list(docs = docNames, features = attr(x, "vocabulary")))
-    new("dfmSparse", tokenCount)
-}
+    emptyDocs <- which(lengths(x) == 0)
+    # add an arbitrary "feature" for empty docs
+    if (length(emptyDocs)) {
+        x[emptyDocs] <- length(types(x)) + 1
+        types(x) <- c(types(x), "__TEMPFEATURE__")
+    }
+
+    dfmresult <- t(Matrix::sparseMatrix(i = unlist(x, use.names = FALSE), 
+                                        p = cumsum(c(1, ntoken(x))) - 1, 
+                                        x = 1L, 
+                                        dimnames = list(features = types(x), 
+                                                        docs = names(x))))
+    # remove dummy feature if needed
+    if (length(emptyDocs)) dfmresult <- dfmresult[, -ncol(dfmresult), drop = FALSE]
     
+    new("dfmSparse", dfmresult)
+}
+
+
 
 #' @rdname dfm
 #' @param groups character vector containing the names of document variables for

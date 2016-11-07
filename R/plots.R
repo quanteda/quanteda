@@ -181,3 +181,86 @@ plot.kwic <- function(..., scale = c("absolute", "relative"), sort=FALSE) {
 }
 
 
+#' plot a fitted wordfish model
+#' 
+#' Plot a fitted wordfish model, either as an ideal point-style plot (theta plus
+#' confidence interval on the x-axis, document labels on the y) with optional
+#' renaming and sorting, or as a plot of estimated feature-level parameters (beta on the x, psi on the
+#' y, feature names over-plotted with alpha transparency, optionally some
+#' highlighted) as in Slapin and Proksch, 2008.
+#' @param x for plot method, the object to be plotted
+#' @param type \code{docs} to plot document scores (the default) or \code{feats}
+#'   to plot psi against beta parameters
+#' @param sort If TRUE (the default), order points from low to high score. If a
+#'   vector, order according to these values from low to high. Only applies when
+#'   \code{type} is 'docs'
+#' @param doclabels a vector of names for document. If left NULL (the default),
+#'   ordinary document names will be used.
+#' @param left.mar an overridden left margin, passed to \code{par} (default
+#'   8.1). This overrides R's default 4.1, which is typically too cramped for
+#'   document names.
+#' @param pickout A vector of feature names to draw attention to in a feature
+#'   plot. Only applies if \code{type} is 'feats'
+#' @param alpha A number between 0 and 1 (default 0.5) representing the level of
+#'   alpha transparency used to overplot feature names in a feature plot. Only
+#'   applies if \code{type} is 'feats'.
+#' @param ... additional arguments passed to \code{\link{plot}}
+#' @export
+#' @method plot textmodel_wordfish_fitted
+#' @references Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
+#'   for Estimating Time-Series Party Positions from Texts." \emph{American 
+#'   Journal of Political Science} 52(3):705-772.
+#' @author Adam Obeng
+#' @importFrom graphics plot segments axis points par text
+#' @importFrom grDevices rgb
+#' @examples 
+#' postwar <- trim(dfm(inaugCorpus[41:57]), minCount = 5, minDoc = 2)
+#' mod <- textmodel(postwar, model = "wordfish")
+#' plot(mod, sort = FALSE)
+#' plot(mod, sort = TRUE)
+#' plot(mod, type = "feats", pickout = c("government", "countries", "children", 
+#'      "the", "nuclear", "federal"))
+plot.textmodel_wordfish_fitted <- function(x, type = c("docs", "feats"), doclabels = NULL,
+                                           sort = TRUE, left.mar = 8, pickout = NULL, alpha = 0.5, ...) {
+    type <- match.arg(type)
+    if (type == "docs"){
+        n <- length(x@theta)
+        
+        if (is.null(doclabels)) 
+            doclabels <- docnames(x@x)
+        stopifnot(length(doclabels)==n)
+        
+        results <- data.frame(doclabels = doclabels,
+                              theta = x@theta,
+                              lower = x@theta - 1.96*x@se.theta,
+                              upper = x@theta + 1.96*x@se.theta)
+        sorting <- 1:n
+        if (length(sort) > 1){
+            stopifnot(length(sort) == n)
+            sorting <- order(sort)
+        } else if (sort)
+            sorting <- order(results$theta)
+        
+        with(results[sorting,], {
+            oldmar <- par("mar") ## adjust the left plot margin
+            par(mar=c(oldmar[1], left.mar, oldmar[3], oldmar[4]))
+            
+            plot(theta, 1:n, ylab = "", xlab = "Theta", xlim = c(min(lower), max(upper)), 
+                 type = 'n', yaxt = "n", ...)
+            segments(x0 = lower, x1 = upper, y0 = 1:n, y1 = 1:n, col = 'grey', lwd = 2)
+            points(theta, 1:n, pch = 20)
+            
+            axis(2, at = 1:n, labels = doclabels, las = 1)
+            par(mar = oldmar) ## put it back again
+        })
+        
+    } else {
+        plot(x@beta, x@psi, type = 'n', xlab = "Beta", ylab = "Psi", ...)
+        text(x@beta, x@psi, labels = x@features, col = grDevices::rgb(0.7, 0.7, 0.7, alpha))
+        
+        if (!is.null(pickout)){
+            wch <- x@features %in% pickout ## will quietly drop pickouts that do not appear in model
+            text(x@beta[wch], x@psi[wch], labels = x@features[wch], col = "black")
+        }
+    }
+}

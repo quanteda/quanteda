@@ -18,8 +18,8 @@ Author: Kenneth Benoit [aut, cre],
     Pablo Barberá [ctb],
     Will Lowe [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.8.8
-Date: 2016-11-04
+Version: 0.9.8.9
+Date: 2016-11-05
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -78,7 +78,6 @@ Collate:
     'encoding.R'
     'fcm.R'
     'findSequences.R'
-    'hashTokens.R'
     'joinTokens.R'
     'kwic.R'
     'lexdiv.R'
@@ -88,6 +87,7 @@ Collate:
     'quanteda.R'
     'readability.R'
     'resample.R'
+    'segment.R'
     'selectFeatures-old.R'
     'selectFeatures.R'
     'settings.R'
@@ -103,6 +103,7 @@ Collate:
     'toLower.R'
     'tokenize.R'
     'tokenize_outtakes.R'
+    'tokens.R'
     'util.R'
     'wordstem.R'
     'zzz.R'

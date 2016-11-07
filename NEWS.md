@@ -4,6 +4,9 @@ quanteda 0.9.8
 
 ## New Features
 
+*  Improved `dfm.character()` by using new `tokens()` constructor to create hashed tokenized texts by default when creating a dfm, resulting in performance gains when constructing a dfm.  Creating a dfm from a hashed `tokens` object is now 4-5 times faster than the older `tokenizedTexts` object (0.9.9.9).
+*  Added new (hashed) `tokens` class object replacing the `tokenizedTextsHashed` class (0.9.9.9).
+*  Added plot method for fitted textmodel_wordscores objects (0.9.9.8).  
 *  Added fast `applyDictionary()` method for tokenizedTexts, that also works with 
    dictionaries that have multi-word keys (0.9.9.8).  Addresses but does not entirely yet solve #188.
 *  Added `sparsity()` function to compute the sparsity of a dfm (0.9.8.7).

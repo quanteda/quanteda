@@ -128,18 +128,20 @@ fcm.character <- function(x, ...) {
 #'          "The dog jumped and ate the fox.")
 #' toks <- tokenize(toLower(txt), removePunct = TRUE)
 #' fcm(toks, context = "document")
-#' toksHashed <- hashTokens(toks)
+#' 
+#' # with hashed tokens
+#' toksHashed <- tokens(toLower(txt), removePunct = TRUE)
 #' fcm(toks, context = "window", window = 3)
 #' fcm(toksHashed, context = "window", window = 3)
 #' @import data.table
 #' @import Matrix
 #' @export
 fcm.tokenizedTexts <- function(x, context = c("document", "window"), 
-                               count = c("frequency", "boolean", "weighted"),
-                               window = 5L,
-                               weights = 1L,
-                               ordered = FALSE,
-                               span_sentence = TRUE, tri = TRUE, ...) {
+                       count = c("frequency", "boolean", "weighted"),
+                       window = 5L,
+                       weights = 1L,
+                       ordered = FALSE,
+                       span_sentence = TRUE, tri = TRUE, ...) {
     context <- match.arg(context)
     count <- match.arg(count)
     feature <- V1 <- NULL  # to avoid no visible binding errors in CHECK
@@ -189,11 +191,11 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
             }
         }
         
-        if (is.tokenizedTextsHashed(x)) {
+        if (is.tokens(x)) {
             n <- sum(lengths(unlist(x))) * window * 2
             result <- fcm_hash_cpp(x, length(unique(unlist(x))), count, window, weights, ordered, tri, n)
             # set the dimnames of result
-            types <- attr(x, "vocabulary")
+            types <- types(x)
         } else {
             types <- unique(unlist(x, use.names = FALSE))
             # order the features alphabetically
@@ -206,7 +208,7 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
     }
 
     # discard the lower diagonal if tri == TRUE
-    if (tri & !is.tokenizedTextsHashed(x))
+    if (tri & !is.tokens(x))
         result <- Matrix::triu(result)
 
     # create a new feature context matrix

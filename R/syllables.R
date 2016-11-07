@@ -55,16 +55,17 @@ syllables.character <- function(x, syllableDict = quanteda::englishSyllables, ..
 #' @rdname syllables
 #' @examples 
 #' \dontshow{
-#' toks <- tokenize(c(one = "super freakily yes",
-#'                    two = "merrily all go aerodynamic"))
-#' toksh <- hashTokens(toks)
+#' txt <- c(one = "super freakily yes",
+#'                 two = "merrily all go aerodynamic")
+#' toks <- tokenize(txt)
+#' toksh <- tokens(txt)
 #' syllables(toks)
 #' syllables(toksh)
 #' }
 #' @export
-syllables.tokenizedTextsHashed <- function(x, syllableDict = quanteda::englishSyllables, ...) { 
-    vocab_sylls <- syllables(vocabulary(x))
-    sapply(x, function(y) vocab_sylls[y])
+syllables.tokens <- function(x, syllableDict = quanteda::englishSyllables, ...) { 
+    vocab_sylls <- syllables(types(x))
+    sapply(unclass(x), function(y) vocab_sylls[y])
 }
 
 #' @rdname syllables
