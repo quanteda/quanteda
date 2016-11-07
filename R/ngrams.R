@@ -60,7 +60,7 @@ ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
     attr(ngramsResult, "ngrams") <- as.integer(n)
     attr(ngramsResult, "skip") <- as.integer(skip)
     attr(ngramsResult, "concatenator") <- concatenator
-    ngramsResult
+    return(as.list(ngramsResult))
 }
 
 #' @rdname ngrams
@@ -90,12 +90,7 @@ skipgrams <- function(x, ...) UseMethod("skipgrams")
 #' @rdname ngrams
 #' @export
 skipgrams.character <- function(x, n, skip, concatenator="_", ...)
-    ngrams(x, n, skip, concatenator)
-
-#' @rdname ngrams
-#' @export
-skipgrams.tokenizedTexts <- function(x, n, skip, concatenator="_", ...)
-    ngrams(x, n, skip, concatenator, ...)
+    ngrams(tokens(x), n, skip, concatenator)
 
 #' @rdname ngrams
 #' @export

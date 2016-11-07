@@ -5,7 +5,6 @@
 \alias{ngrams.tokens}
 \alias{skipgrams}
 \alias{skipgrams.character}
-\alias{skipgrams.tokenizedTexts}
 \alias{skipgrams.tokens}
 \title{Create ngrams and skipgrams}
 \usage{
@@ -16,8 +15,6 @@ ngrams(x, ...)
 skipgrams(x, ...)
 
 \method{skipgrams}{character}(x, n, skip, concatenator = "_", ...)
-
-\method{skipgrams}{tokenizedTexts}(x, n, skip, concatenator = "_", ...)
 
 \method{skipgrams}{tokens}(x, n, skip, concatenator = "_", ...)
 }
