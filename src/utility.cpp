@@ -1,12 +1,12 @@
 #include <Rcpp.h>
+#include <vector>
 
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-std::vector<CharacterVector> split_df_cpp(DataFrame df) {
-  int len_cols=df.size();
-  std::vector<CharacterVector> cols(len_cols);
-  for (int i=0; i < len_cols; i++) {
+List qatd_cpp_split_df(DataFrame df) {
+  List cols(df.size());
+  for (int i=0; i < df.size(); i++) {
     CharacterVector column = df[i] ;
     cols[i] = column ;
   }
@@ -14,9 +14,27 @@ std::vector<CharacterVector> split_df_cpp(DataFrame df) {
 }
 
 // [[Rcpp::export]]
-Rcpp::List deepcopy(Rcpp::List x){
-  Rcpp::List y = clone(x);
-  return y;
+List qatd_cpp_deepcopy(List x_){
+  List x = clone(x_);
+  return x;
+}
+
+// [[Rcpp::export]]
+List qatd_cpp_remove_string_list(List list_, String elem_remove){
+  List list = clone(list_);
+  for(int h=0; h < list.size(); h++){
+    CharacterVector elems = list[h];
+    CharacterVector elems_new(elems.size());
+    int j = 0;
+    for(int i=0; i < elems.size(); i++){
+      if(elems[i] != elem_remove){
+        elems_new[j] = elems[i];
+        j++;
+      }
+    }
+    list[h] = elems_new[seq(0, j - 1)];
+  }
+  return list;
 }
 
 
@@ -26,6 +44,7 @@ Rcpp::List deepcopy(Rcpp::List x){
 //
 
 /*** R
-#df <- expand.grid(LETTERS[1:3], LETTERS[4:5], LETTERS[6], stringsAsFactors=FALSE)
-#split_df_cpp(df)
+
+# df <- expand.grid(LETTERS[1:3], LETTERS[4:5], LETTERS[6], stringsAsFactors=FALSE)
+# qatd_cpp_split_df(df)
 */

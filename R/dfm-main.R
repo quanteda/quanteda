@@ -328,7 +328,7 @@ compile_dfm.tokenizedTexts <- function(x, verbose = TRUE) {
         catm("\n   ... Error in dfm.tokenizedTexts(): no features found.\n")
         return(NULL)
     }
-    allFeatures <- unlist(x)
+    allFeatures <- unlist(x, use.names=FALSE)
     uniqueFeatures <- unique(allFeatures)
     totalfeatures <- length(uniqueFeatures)
     if (verbose) catm(format(totalfeatures, big.mark=","), " feature type",
