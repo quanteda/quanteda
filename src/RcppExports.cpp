@@ -68,30 +68,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_ngram_unhash_vocab
-CharacterVector qatd_cpp_ngram_unhash_vocab(ListOf<NumericVector> ids_ngram, CharacterVector tokens, String delim);
-RcppExport SEXP quanteda_qatd_cpp_ngram_unhash_vocab(SEXP ids_ngramSEXP, SEXP tokensSEXP, SEXP delimSEXP) {
+// qatd_cpp_ngram_unhash_type
+CharacterVector qatd_cpp_ngram_unhash_type(ListOf<NumericVector> ids_ngram, CharacterVector tokens, String delim);
+RcppExport SEXP quanteda_qatd_cpp_ngram_unhash_type(SEXP ids_ngramSEXP, SEXP tokensSEXP, SEXP delimSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< ListOf<NumericVector> >::type ids_ngram(ids_ngramSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type tokens(tokensSEXP);
     Rcpp::traits::input_parameter< String >::type delim(delimSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_ngram_unhash_vocab(ids_ngram, tokens, delim));
-    return rcpp_result_gen;
-END_RCPP
-}
-// skipgramcpp
-StringVector skipgramcpp(std::vector < std::string > tokens, std::vector < int > ns, std::vector < int > ks, std::string delim);
-RcppExport SEXP quanteda_skipgramcpp(SEXP tokensSEXP, SEXP nsSEXP, SEXP ksSEXP, SEXP delimSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::vector < std::string > >::type tokens(tokensSEXP);
-    Rcpp::traits::input_parameter< std::vector < int > >::type ns(nsSEXP);
-    Rcpp::traits::input_parameter< std::vector < int > >::type ks(ksSEXP);
-    Rcpp::traits::input_parameter< std::string >::type delim(delimSEXP);
-    rcpp_result_gen = Rcpp::wrap(skipgramcpp(tokens, ns, ks, delim));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_ngram_unhash_type(ids_ngram, tokens, delim));
     return rcpp_result_gen;
 END_RCPP
 }

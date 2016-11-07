@@ -3,6 +3,7 @@
 \name{tokens}
 \alias{as.list.tokens}
 \alias{as.tokenizedTexts.tokens}
+\alias{as.tokens}
 \alias{is.tokens}
 \alias{tokens}
 \alias{tokens.character}
@@ -21,6 +22,8 @@ tokens(x, ...)
 \method{tokens}{corpus}(x, ...)
 
 is.tokens(x)
+
+as.tokens(x, ...)
 
 \method{as.tokenizedTexts}{tokens}(x, ...)
 
@@ -117,6 +120,10 @@ The tokenizer is designed to be fast and flexible as well as to
   intervention. This means that punctuation is tokenized as well, and that 
   nothing is removed by default from the text being tokenized except 
   inter-word spacing and equivalent characters.
+
+\code{as.tokens} coerces a list of character tokens (including a 
+  "classic" tokenizedText class object) into a hashed \code{\link{tokens}}
+  class object.
 
 \code{as.tokenizedTexts} coerces tokenizedTextsHashed to a
   tokenizedText class object, making the methods available for this object

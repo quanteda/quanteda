@@ -17,12 +17,8 @@ qatd_cpp_ngram_hashed_list <- function(texts, ns, skips) {
     .Call('quanteda_qatd_cpp_ngram_hashed_list', PACKAGE = 'quanteda', texts, ns, skips)
 }
 
-qatd_cpp_ngram_unhash_vocab <- function(ids_ngram, tokens, delim) {
-    .Call('quanteda_qatd_cpp_ngram_unhash_vocab', PACKAGE = 'quanteda', ids_ngram, tokens, delim)
-}
-
-skipgramcpp <- function(tokens, ns, ks, delim) {
-    .Call('quanteda_skipgramcpp', PACKAGE = 'quanteda', tokens, ns, ks, delim)
+qatd_cpp_ngram_unhash_type <- function(ids_ngram, tokens, delim) {
+    .Call('quanteda_qatd_cpp_ngram_unhash_type', PACKAGE = 'quanteda', ids_ngram, tokens, delim)
 }
 
 find_sequence_cppl <- function(texts, types, count_min, smooth, nested) {
