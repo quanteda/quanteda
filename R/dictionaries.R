@@ -450,7 +450,7 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
                                 verbose = TRUE, ...) {
     
     # cannot/should not apply dictionaries with multi-word keys to a dfm
-    if (any(stringi::stri_detect_charclass(dictionary, "\\p{Z}"))) {
+    if (any(stringi::stri_detect_charclass(unlist(dictionary, use.names = FALSE), "\\p{Z}"))) {
         warning("You will probably not get correct behaviour applying a dictionary with multi-word keys to a dfm.")
     }
     

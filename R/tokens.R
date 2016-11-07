@@ -309,9 +309,14 @@ tokens.character <- function(x, what=c("word", "sentence", "character", "fastest
     }
     
     # make this an S3 class item, if a list
-    #if (simplify == FALSE) {
     class(result) <- c("tokenizedTexts", class(result))
-    #}
+
+    # hash the tokens
+    if (hash == TRUE) {
+        if (verbose) 
+            catm("...hashing tokens\n")
+        result <- tokens_hash(result)
+    } 
     
     if (!identical(ngrams, 1L)) {
         if (verbose) {
@@ -345,15 +350,7 @@ tokens.character <- function(x, what=c("word", "sentence", "character", "fastest
     attr(result, "what") <- what
     attr(result, "ngrams") <- ngrams
     attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
-    attr(result, "types") <- NULL
-    
-    # hash the tokens
-    if (hash == TRUE) {
-        if (verbose) 
-            catm("...hashing tokens\n")
-        result <- tokens_hash(result)
-    } 
-    
+
     if (verbose) 
         catm("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n") 
     #, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
@@ -434,6 +431,28 @@ tokens_hash <- function(x, types, ...) {
     attr(x_hashed, "types") <- types
     class(x_hashed) <- c("tokens", class(x_hashed))
     x_hashed
+}
+
+
+#' @rdname tokens
+#' @details \code{as.tokens} coerces a list of character tokens (including a 
+#'   "classic" tokenizedText class object) into a hashed \code{\link{tokens}}
+#'   class object.
+#' @export
+as.tokens <- function(x, ...) {
+    UseMethod("as.tokens")
+}
+
+#' @rdname tokenize
+#' @export
+as.tokens.list <- function(x, ...) {
+    if (!is.list(x) || (!all(sapply(x, function(l) all(is.character(l))))))
+        stop("input must be a list of character types")
+    class(x) <- c("tokenizedTexts", class(x))
+    attr(x, "what") <- "user"
+    attr(x, "ngrams") <- 1L
+    attr(x, "concatenator") <- ""
+    x
 }
 
 

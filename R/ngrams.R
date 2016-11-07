@@ -38,7 +38,6 @@ ngrams <- function(x, ...) {
     UseMethod("ngrams")
 }
 
-
 #' @rdname ngrams
 #' @examples 
 #' txt <- c("a b c d e", "c d e f g")
@@ -62,6 +61,7 @@ ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
     attr(ngramsResult, "concatenator") <- concatenator
     ngramsResult
 }
+
 
 #' @rdname ngrams
 #' @details Normally, \code{\link{ngrams}} will be called through 

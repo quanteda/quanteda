@@ -53,16 +53,16 @@ join_tokens_cppl <- function(texts, flags, tokens_join, delim) {
     invisible(.Call('quanteda_join_tokens_cppl', PACKAGE = 'quanteda', texts, flags, tokens_join, delim))
 }
 
-select_tokens_cppl <- function(texts, flags, types, remove, spacer) {
-    invisible(.Call('quanteda_select_tokens_cppl', PACKAGE = 'quanteda', texts, flags, types, remove, spacer))
+qatd_cpp_selecttokens_mt_hashed <- function(x, types, remove, spacer) {
+    .Call('quanteda_qatd_cpp_selecttokens_mt_hashed', PACKAGE = 'quanteda', x, types, remove, spacer)
 }
 
 qatd_cpp_selecttokens_mt <- function(x, types, remove, spacer) {
     .Call('quanteda_qatd_cpp_selecttokens_mt', PACKAGE = 'quanteda', x, types, remove, spacer)
 }
 
-qatd_cpp_selecttokens_mt_hashed <- function(x, types, remove, spacer) {
-    .Call('quanteda_qatd_cpp_selecttokens_mt_hashed', PACKAGE = 'quanteda', x, types, remove, spacer)
+select_tokens_cppl <- function(texts, flags, types, remove, spacer) {
+    invisible(.Call('quanteda_select_tokens_cppl', PACKAGE = 'quanteda', texts, flags, types, remove, spacer))
 }
 
 split_df_cpp <- function(df) {
