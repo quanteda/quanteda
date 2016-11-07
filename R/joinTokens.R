@@ -94,7 +94,7 @@ joinTokens <- function(x, sequences, concatenator = "_",
  
   if (verbose) cat("Indexing tokens...\n")
   types <- attr(x, 'types')
-  index <- dfm(as.tokenizedTexts(x), verbose = FALSE, toLower=FALSE) # index is always case-sensitive
+  index <- dfm(x, verbose = FALSE, toLower=FALSE) # index is always case-sensitive
   index_binary <- as(index, 'nMatrix')
 
   # Convert to regular expressions, then to fixed
