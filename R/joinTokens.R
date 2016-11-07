@@ -54,7 +54,7 @@ joinTokens <- function(x, sequences, concatenator = "_", valuetype = c("glob", "
         sequences <- lapply(sequences, glob2rx)
     if (valuetype %in% c("glob", "regex") | case_insensitive) {
         # Generates all possible patterns of sequences
-        seqs_token <- grid_sequence(x, sequences, types, valuetype, case_insensitive)
+        seqs_token <- grid_sequence(sequences, types, valuetype, case_insensitive)
     } else {
         seqs_token <- sequences
     }
@@ -81,14 +81,11 @@ joinTokens <- function(x, sequences, concatenator = "_", valuetype = c("glob", "
 #' @inherit joinTokens
 #' @examples
 #' # simple example
-#' txt <- c("The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
-#'          "The Supreme Court of the United States is seldom in a united state.",
-#'          "It's Arsenal versus Manchester United, states the announcer.", 
-#'          "luv the united states XXOO :-) atlantical oceania")
-#' toks_hash <- hashTokens(tokenize(txt))
-#' dfm(as.tokenizedTexts(toks_hash))
-#' phrasesFixed <- tokenize(c("United States", "Supreme Court", "Atlantic* Ocean*", "Pacific Ocean"), what="fastestword")
-#' joinTokens.tokenizedTextsHashed(toks_hash, phrasesFixed, valuetype = "glob", case_insensitive = TRUE, verbose=TRUE)
+#' txt <- c("a b c d e f g", "A B C D E F G", "A b C d E f G", "aaa bbb ccc ddd eee fff ggg", "a_b b_c c_d d_e e_f f_g") 
+#' toks_hash <- tokens(txt)
+#' seqs <- tokens(c("a b", "C D", "aa* bb*", "eEE FFf", "d_e e_f"), hash=FALSE, what="fastestword")
+#' joinTokens.tokenizedTextsHashed(toks_hash, seqs, valuetype = "glob", case_insensitive = TRUE, verbose=TRUE)
+#' joinTokens.tokenizedTextsHashed(toks_hash, seqs, valuetype = "glob", case_insensitive = FALSE, verbose=TRUE)
 #' 
 #' # For development
 #' x <- toks_hash
@@ -105,7 +102,7 @@ joinTokens.tokenizedTextsHashed <- function(x, sequences, concatenator = "_", va
   valuetype <- match.arg(valuetype)
  
   if (verbose) cat("Indexing tokens...\n")
-  types <- attr(x, 'vocabulary')
+  types <- attr(x, 'types')
   index <- dfm(as.tokenizedTexts(x), verbose = FALSE, toLower=FALSE) # index is always case-sensitive
   index_binary <- as(index, 'nMatrix')
 
@@ -114,7 +111,7 @@ joinTokens.tokenizedTextsHashed <- function(x, sequences, concatenator = "_", va
     sequences <- lapply(sequences, glob2rx)
   if (valuetype %in% c("glob", "regex") | case_insensitive) {
     # Generates all possible patterns of sequences
-    seqs_token <- grid_sequence(x, sequences, types, valuetype, case_insensitive)
+    seqs_token <- grid_sequence(sequences, types, valuetype, case_insensitive)
   } else {
     seqs_token <- sequences
   }
@@ -123,7 +120,6 @@ joinTokens.tokenizedTextsHashed <- function(x, sequences, concatenator = "_", va
   types_new <- sapply(seqs_token, paste0, collapse=concatenator)
   ids_exist <- match(types_new, types)
   id_new <- length(types) + 1
-  
   n_seqs <- length(seqs_token)
   if (n_seqs == 0) return(x)
   for (i in 1:n_seqs) {
@@ -135,23 +131,30 @@ joinTokens.tokenizedTextsHashed <- function(x, sequences, concatenator = "_", va
     } else {
       flag <- Matrix::rowSums(index_binary[,seq_token, drop = FALSE]) == length(seq_token)
       if (verbose) cat(sprintf('%d/%d "%s" is found in %d texts\n', i, n_seqs, paste(seq_token, collapse=' '), sum(flag)))
-      x <- qatd_cpp_replace_hash_list(x, flag, match(seq_token, types), id_new)
+      
+      # Use exisitng id
+      if(is.na(ids_exist[i])){
+        id <- id_new
+      }else{
+        id <- ids_exist[i]
+      }
+      if (verbose) cat(' Use', id , 'for', types_new[i], '\n')
+      x <- qatd_cpp_replace_hash_list(x, flag, match(seq_token, types), id)
       
       # Add to vocabulary only if exists
-      if(is.na(ids_exist[i]) & any(id_new %in% unlist(x, use.names = FALSE))){
-        #cat('Add', types_new[i], 'to vocabulary as', id_new, '\n')
+      if(is.na(ids_exist[i]) & id %in% unlist(x, use.names = FALSE)){
+        if (verbose) cat(' Add', id, 'for', types_new[i], '\n')
         types <- c(types, types_new[i])
         id_new <- id_new + 1
       }
     }
   }
-  print(types)
-  attr(x, 'vocabulary') <- types
+  attr(x, 'types') <- types
   return(x)
 }
 
 
-grid_sequence <- function(tokens, seqs_pat, types, valuetype, case_insensitive = FALSE) {
+grid_sequence <- function(seqs_pat, types, valuetype, case_insensitive = FALSE) {
     
     seqs_token <- list()
     for (seq_pat in seqs_pat) {
