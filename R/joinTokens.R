@@ -43,7 +43,7 @@ joinTokensOld <- function(x, sequences, concatenator = "_", valuetype = c("glob"
     #print(str(seqs_token))
     n_seqs <- length(seqs_token)
     if (n_seqs == 0) return(x)
-    y <- deepcopy(x) # copy x to y to prevent changes in x
+    y <-  qatd_cpp_deepcopy(x) # copy x to y to prevent changes in x
     for (i in 1:n_seqs) {
         seq_token <- seqs_token[[i]]
         if (length(seq_token) < 2) next
@@ -74,8 +74,8 @@ joinTokensOld <- function(x, sequences, concatenator = "_", valuetype = c("glob"
 #' txt <- c("a b c d e f g", "A B C D E F G", "A b C d E f G", "aaa bbb ccc ddd eee fff ggg", "a_b b_c c_d d_e e_f f_g") 
 #' toks_hash <- tokens(txt)
 #' seqs <- tokens(c("a b", "C D", "aa* bb*", "eEE FFf", "d_e e_f"), hash=FALSE, what="fastestword")
-#' joinTokens.tokenizedTextsHashed(toks_hash, seqs, valuetype = "glob", case_insensitive = TRUE, verbose=TRUE)
-#' joinTokens.tokenizedTextsHashed(toks_hash, seqs, valuetype = "glob", case_insensitive = FALSE, verbose=TRUE)
+#' joinTokens(toks_hash, seqs, valuetype = "glob", case_insensitive = TRUE, verbose=TRUE)
+#' joinTokens(toks_hash, seqs, valuetype = "glob", case_insensitive = FALSE, verbose=TRUE)
 #' 
 #' # For development
 #' x <- toks_hash
@@ -86,14 +86,14 @@ joinTokensOld <- function(x, sequences, concatenator = "_", valuetype = c("glob"
 #' case_insensitive = TRUE
 
 #' @export
-joinTokens <- function(x, sequences, concatenator = "_", 
+joinTokens.tokens <- function(x, sequences, concatenator = "_", 
                       valuetype = c("glob", "fixed", "regex"), 
                       verbose = FALSE, case_insensitive = TRUE) {
   
   valuetype <- match.arg(valuetype)
  
   if (verbose) cat("Indexing tokens...\n")
-  types <- attr(x, 'types')
+  types <- types(x)
   index <- dfm(x, verbose = FALSE, toLower=FALSE) # index is always case-sensitive
   index_binary <- as(index, 'nMatrix')
 
@@ -132,7 +132,7 @@ joinTokens <- function(x, sequences, concatenator = "_",
       if (verbose) cat(' Use', id , 'for', types_new[i], '\n')
       x <- qatd_cpp_replace_hash_list(x, flag, match(seq_token, types), id)
       
-      # Add new ID to vocabulary only if used
+      # Add new ID to types only if used
       if(is.na(ids_exist[i]) & id %in% unlist(x, use.names = FALSE)){
         if (verbose) cat(' Add', id, 'for', types_new[i], '\n')
         types <- c(types, types_new[i])
@@ -140,7 +140,7 @@ joinTokens <- function(x, sequences, concatenator = "_",
       }
     }
   }
-  attr(x, 'types') <- types
+  types(x) <- types
   return(x)
 }
 
