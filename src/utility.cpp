@@ -5,9 +5,8 @@ using namespace Rcpp;
 
 // [[Rcpp::export]]
 List qatd_cpp_split_df(DataFrame df) {
-  int len_cols=df.size();
-  List cols(len_cols);
-  for (int i=0; i < len_cols; i++) {
+  List cols(df.size());
+  for (int i=0; i < df.size(); i++) {
     CharacterVector column = df[i] ;
     cols[i] = column ;
   }
@@ -15,9 +14,9 @@ List qatd_cpp_split_df(DataFrame df) {
 }
 
 // [[Rcpp::export]]
-Rcpp::List qatd_cpp_deepcopy(Rcpp::List x){
-  Rcpp::List y = clone(x);
-  return y;
+List qatd_cpp_deepcopy(List x_){
+  List x = clone(x_);
+  return x;
 }
 
 // [[Rcpp::export]]
@@ -35,7 +34,7 @@ List qatd_cpp_remove_string_list(List list_, String elem_remove){
     }
     list[h] = elems_new[seq(0, j - 1)];
   }
-  return(list);
+  return list;
 }
 
 
