@@ -21,8 +21,13 @@ qatd_cpp_ngram_hashed_list <- function(texts, ns, skips) {
     .Call('quanteda_qatd_cpp_ngram_hashed_list', PACKAGE = 'quanteda', texts, ns, skips)
 }
 
+<<<<<<< HEAD
 qatd_cpp_ngram_unhash_vocab <- function(ids_ngram, tokens, delim) {
     .Call('quanteda_qatd_cpp_ngram_unhash_vocab', PACKAGE = 'quanteda', ids_ngram, tokens, delim)
+=======
+qatd_cpp_ngram_unhash_type <- function(ids_ngram, tokens, delim) {
+    .Call('quanteda_qatd_cpp_ngram_unhash_type', PACKAGE = 'quanteda', ids_ngram, tokens, delim)
+>>>>>>> dev_ngrams
 }
 
 find_sequence_cppl <- function(texts, types, count_min, smooth, nested) {
@@ -37,16 +42,21 @@ join_tokens_cppl <- function(texts, flags, tokens_join, delim) {
     invisible(.Call('quanteda_join_tokens_cppl', PACKAGE = 'quanteda', texts, flags, tokens_join, delim))
 }
 
+<<<<<<< HEAD
 qatd_cpp_replace_hash_vector <- function(tokens_, seq_, id) {
     .Call('quanteda_qatd_cpp_replace_hash_vector', PACKAGE = 'quanteda', tokens_, seq_, id)
+=======
+select_tokens_cppl <- function(texts, flags, types, remove, spacer) {
+    invisible(.Call('quanteda_select_tokens_cppl', PACKAGE = 'quanteda', texts, flags, types, remove, spacer))
+>>>>>>> dev_ngrams
 }
 
 qatd_cpp_replace_hash_list <- function(texts_, flags, seq, id) {
     .Call('quanteda_qatd_cpp_replace_hash_list', PACKAGE = 'quanteda', texts_, flags, seq, id)
 }
 
-select_tokens_cppl <- function(texts, flags, types, remove, spacer) {
-    invisible(.Call('quanteda_select_tokens_cppl', PACKAGE = 'quanteda', texts, flags, types, remove, spacer))
+qatd_cpp_selecttokens_mt_hashed <- function(x, types, remove, spacer) {
+    .Call('quanteda_qatd_cpp_selecttokens_mt_hashed', PACKAGE = 'quanteda', x, types, remove, spacer)
 }
 
 qatd_cpp_selecttokens_mt <- function(x, types, remove, spacer) {
