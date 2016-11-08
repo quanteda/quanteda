@@ -510,6 +510,7 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
 }
 
 #' @rdname applyDictionary
+#' @param concatenator a charactor that connect words in multi-words entries
 #' @examples 
 #' toks <- tokens(inaugCorpus)
 #' head(kwic(toks, 'united_states'))

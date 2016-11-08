@@ -43,6 +43,8 @@ formatted dictionary values); \code{"regex"} for regular expressions; or
 uppercase to distinguish them from other features}
 
 \item{verbose}{print status messages if \code{TRUE}}
+
+\item{concatenator}{a charactor that connect words in multi-words entries}
 }
 \value{
 an object of the type passed with the value-matching features
