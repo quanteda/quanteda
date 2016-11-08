@@ -510,6 +510,29 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
 }
 
 #' @rdname applyDictionary
+#' @examples 
+#' toks <- tokens(inaugCorpus)
+#' head(kwic(toks, 'united_states'))
+#' dict <- dictionary(list(country = "united_states"))
+#' toks2 <- applyDictionary(toks, dict, concatenator='_')
+#' head(kwic(toks2, 'united_states'))
+#' head(dfm(toks2, dictionary=dict)[,'country'])
+#' 
+#' @export 
+applyDictionary.tokens <- function(x, dictionary,
+                                   valuetype = c("glob", "regex", "fixed"), 
+                                   case_insensitive = TRUE,
+                                   verbose = FALSE, 
+                                   concatenator = '_') {
+    valuetype <- match.arg(valuetype)
+    keys <- unlist(dict@.Data, use.names = FALSE)
+    keys_multi <- keys[stringi::stri_detect_fixed(keys, concatenator)]
+    seqs <- stringi::stri_split_fixed(keys_multi, concatenator)
+    res <- joinTokens(x, seqs, verbose = verbose, valuetype = valuetype, concatenator = concatenator)
+    return(res)
+}
+
+#' @rdname applyDictionary
 #' @export 
 applyDictionary.tokenizedTexts <- function(x, dictionary, exclusive = TRUE, 
                                            valuetype = c("glob", "regex", "fixed"), 

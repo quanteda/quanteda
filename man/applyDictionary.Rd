@@ -4,6 +4,7 @@
 \alias{applyDictionary}
 \alias{applyDictionary.dfm}
 \alias{applyDictionary.tokenizedTexts}
+\alias{applyDictionary.tokens}
 \title{apply a dictionary or thesaurus to an object}
 \usage{
 applyDictionary(x, dictionary, ...)
@@ -11,6 +12,9 @@ applyDictionary(x, dictionary, ...)
 \method{applyDictionary}{dfm}(x, dictionary, exclusive = TRUE,
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
   capkeys = !exclusive, verbose = TRUE, ...)
+
+\method{applyDictionary}{tokens}(x, dictionary, valuetype = c("glob", "regex",
+  "fixed"), case_insensitive = TRUE, verbose = FALSE, concatenator = "_")
 
 \method{applyDictionary}{tokenizedTexts}(x, dictionary, exclusive = TRUE,
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
@@ -78,5 +82,12 @@ applyDictionary(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE)
 # fixed format: no pattern matching
 applyDictionary(myDfm, myDict, valuetype = "fixed")
 applyDictionary(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
+toks <- tokens(inaugCorpus)
+head(kwic(toks, 'united_states'))
+dict <- dictionary(list(country = "united_states"))
+toks2 <- applyDictionary(toks, dict, concatenator='_')
+head(kwic(toks2, 'united_states'))
+head(dfm(toks2, dictionary=dict)[,'country'])
+
 }
 
