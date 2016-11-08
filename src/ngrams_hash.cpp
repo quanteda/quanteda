@@ -147,7 +147,7 @@ List qatd_cpp_ngram_hashed_list(List texts,
 }
 
 // [[Rcpp::export]]
-CharacterVector qatd_cpp_ngram_unhash_vocab(ListOf<NumericVector> ids_ngram, 
+CharacterVector qatd_cpp_ngram_unhash_type(ListOf<NumericVector> ids_ngram, 
                                             CharacterVector tokens, String delim){
   tokens.push_front(""); // offset tokens to match index in C++
   CharacterVector tokens_ngram(ids_ngram.size());
@@ -157,12 +157,24 @@ CharacterVector qatd_cpp_ngram_unhash_vocab(ListOf<NumericVector> ids_ngram,
   return tokens_ngram;
 }
 
+
+
 /*** R
 
-tokens <- tokenize(c('a b c d e', 'c d e f g'))
-tokens_hashed <- hashTokens(tokens)
-res <- qatd_cpp_ngram_hashed_list(tokens_hashed, 3, 1)
+txt <- c('a b c d e', 'c d e f g')
+toks <- tokens(txt, hasn=FALSE)
+toks_hash <- tokens(txt, hasn=TRUE)
+res <- qatd_cpp_ngram_hashed_list(toks_hash, 3, 1)
 res$text
+
+toks_char <- rep(letters, 100)
+toks_int <- rep(1:26, 100)
+
+microbenchmark::microbenchmark(
+  old=skipgramcpp(toks_char, 3, 1, '-'),
+  new=qatd_cpp_ngram_hashed_vector(toks_int, 3, 1), 
+  unit='relative'
+)
 
 # tokens <- rep(head(letters), 2)
 # types <- unique(tokens)
@@ -175,7 +187,7 @@ res$text
 # 
 # microbenchmark::microbenchmark(
 #   sapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-'),
-#   qatd_cpp_ngram_unhash_vocab(res$id_unigram, types, '-'),
+#   qatd_cpp_ngram_unhash_type(res$id_unigram, types, '-'),
 #   unit='relative'
 # )
 

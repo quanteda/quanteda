@@ -233,7 +233,8 @@ tokens.character <- function(x, what=c("word", "sentence", "character", "fastest
                 result <- stringi::stri_split_fixed(result, " ")
             else if (what=="fasterword")
                 result <- stringi::stri_split_charclass(result, "\\p{WHITE_SPACE}")
-            result <- lapply(result, function(x) x <- x[which(x != "")])
+            #result <- lapply(result, function(x) x <- x[which(x != "")]) # this is dealy slow
+            result <- qatd_cpp_remove_string_list(result, "")
             
             # if (removeURL)
             #     result <- lapply(result, function(x) x <- x[-which(substring(x, 1, 4) == "http")])
@@ -313,6 +314,13 @@ tokens.character <- function(x, what=c("word", "sentence", "character", "fastest
     class(result) <- c("tokenizedTexts", class(result))
     #}
     
+    # hash the tokens
+    if (hash == TRUE) {
+        if (verbose) 
+            catm("...hashing tokens\n")
+        result <- tokens_hash(result)
+    } 
+    
     if (!identical(ngrams, 1L)) {
         if (verbose) {
             catm("  ...creating ngrams")
@@ -345,14 +353,6 @@ tokens.character <- function(x, what=c("word", "sentence", "character", "fastest
     attr(result, "what") <- what
     attr(result, "ngrams") <- ngrams
     attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
-    attr(result, "types") <- NULL
-    
-    # hash the tokens
-    if (hash == TRUE) {
-        if (verbose) 
-            catm("...hashing tokens\n")
-        result <- tokens_hash(result)
-    } 
     
     if (verbose) 
         catm("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n") 

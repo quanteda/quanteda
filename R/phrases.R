@@ -140,13 +140,27 @@ setMethod("phrasetotoken", signature = c("tokenizedTexts", "character"),
               
               if (valuetype %in% c("glob", "fixed"))
                   phrasesTok <- lapply(phrasesTok, glob2rx)
-              phrasesTokFixed <- quanteda:::regexToFixed(object, phrasesTok, case_insensitive = case_insensitive)
+              phrasesTokFixed <- regexToFixed(object, phrasesTok, case_insensitive = case_insensitive)
               attributes(phrasesTokFixed) <- attr.orig
               class(phrasesTokFixed) <- class.orig
               
               joinTokens(object, phrasesTokFixed, valuetype = "fixed", case_insensitive = FALSE)
 })
 
+regexToFixed <- function(tokens, patterns, case_insensitive = FALSE, types = NULL) {
+    
+    # get unique token types
+    if (is.null(types)) types <- unique(unlist(tokens))
+    
+    seqs_token <- list()
+    for (seq_regex in patterns) {
+        match <- lapply(seq_regex, function(x, y) y[stringi::stri_detect_regex(y, x, case_insensitive = case_insensitive)], types)
+        if (length(unlist(seq_regex)) != length(match)) next
+        match_comb <- do.call(expand.grid, c(match, stringsAsFactors = FALSE)) # produce all possible combinations
+        seqs_token <- c(seqs_token, split_df_cpp(t(match_comb)))
+    }
+    seqs_token
+}
 
 
 
