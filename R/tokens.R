@@ -450,7 +450,7 @@ tokens_hash <- function(x, types, ...) {
     
     # restore and add additional attributes
     attributes(x_hashed) <- attr_input
-    attr(x_hashed, "types") <- types
+    attr(x_hashed, "types") <- as.vector(types)
     class(x_hashed) <- c("tokens", class(x_hashed))
     x_hashed
 }
