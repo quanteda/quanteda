@@ -175,9 +175,9 @@ grid_sequence <- function(seqs_pat, types, valuetype, case_insensitive = FALSE) 
         }
         #print(seq_match)
         if (length(unlist(seq_pat)) != length(seq_match)) next
-        match_comb <- do.call(expand.grid, c(seq_match, stringsAsFactors = FALSE)) # produce all possible combinations
+        match_comb <- as.matrix(do.call(expand.grid, c(seq_match, stringsAsFactors = FALSE))) # produce all possible combinations
         #print(match_comb)
-        seqs_token <- c(seqs_token, qatd_cpp_split_df(t(match_comb)))
+        seqs_token <- c(seqs_token, unname(split(match_comb, row(match_comb))))
     }
     return(seqs_token)
 }
