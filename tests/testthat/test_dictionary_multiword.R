@@ -8,6 +8,7 @@ txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacif
          d5 = "United statehood is a good state.",
          d6 = "luv the united states XXOO!")
 toks <- tokenize(txt, removePunct = TRUE)
+toks_hash <- tokens(txt, removePunct = TRUE)
 
 test_that("multi-word dictionary keys are counted correctly", {
     
@@ -17,6 +18,7 @@ test_that("multi-word dictionary keys are counted correctly", {
                                      team = c("Manchester United", "Arsenal")))
     tokens_case_asis <- 
         applyDictionary(toks, dict_mw_fixed, valuetype = "fixed", case_insensitive = FALSE)
+    
     dfm_case_asis <- dfm(tokens_case_asis)
     expect_equal(as.vector(dfm_case_asis[, "Countries"]), c(1, 1, 0, 1, 0, 0))
     expect_equal(as.vector(dfm_case_asis[, "team"]), c(0, 0, 2, 0, 0, 0))
@@ -33,7 +35,22 @@ test_that("multi-word dictionary keys are counted correctly", {
     expect_equal(as.vector(dfm_case_ignore["d3", "team"]), 2)
     # note the overlap of Manchester United states in d3
     expect_equal(as.vector(dfm_case_ignore["d3", "Countries"]), 1)
-
+    
+    
+    tokens_case_asis_hash <- 
+        applyDictionary(toks_hash, dict_mw_fixed, valuetype = "fixed", case_insensitive = FALSE, concatenator = ' ')
+    dfm_case_asis_hash <- dfm(tokens_case_asis_hash, dictionary=dict_mw_fixed)
+    expect_equal(as.vector(dfm_case_asis_hash[, "Countries"]), c(1, 1, 0, 1, 0, 0))
+    expect_equal(as.vector(dfm_case_asis_hash[, "team"]), c(0, 0, 2, 0, 0, 0))
+    
+    tokens_case_ignore_hash <- 
+      applyDictionary(toks_hash, dict_mw_fixed, valuetype = "fixed", case_insensitive = TRUE, concatenator = ' ')
+    dfm_case_ignore_hash <- dfm(tokens_case_ignore_hash, dictionary=dict_mw_fixed)
+    expect_equal(as.vector(dfm_case_ignore_hash[, "Countries"]), c(1, 1, 1, 1, 0, 1))
+    
+    expect_equal(as.vector(dfm_case_ignore_hash["d3", "team"]), 2)
+    # note the overlap of Manchester United states in d3
+    expect_equal(as.vector(dfm_case_ignore_hash["d3", "Countries"]), 1)
 })
 
 test_that("entirely single-word dictionary keys are counted correctly", {

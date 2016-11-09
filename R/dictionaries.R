@@ -526,10 +526,10 @@ applyDictionary.tokens <- function(x, dictionary,
                                    verbose = FALSE, 
                                    concatenator = '_') {
     valuetype <- match.arg(valuetype)
-    keys <- unlist(dict@.Data, use.names = FALSE)
+    keys <- unlist(dictionary@.Data, use.names = FALSE)
     keys_multi <- keys[stringi::stri_detect_fixed(keys, concatenator)]
     seqs <- stringi::stri_split_fixed(keys_multi, concatenator)
-    res <- joinTokens(x, seqs, verbose = verbose, valuetype = valuetype, concatenator = concatenator)
+    res <- joinTokens(x, seqs, concatenator, valuetype, verbose, case_insensitive)
     return(res)
 }
 
