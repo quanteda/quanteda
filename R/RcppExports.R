@@ -37,6 +37,14 @@ qatd_cpp_count_hash_list <- function(texts_, flags, seq) {
     .Call('quanteda_qatd_cpp_count_hash_list', PACKAGE = 'quanteda', texts_, flags, seq)
 }
 
+qatd_cpp_detect_hash_vector <- function(tokens_, tokens_loc_, seq_, id) {
+    .Call('quanteda_qatd_cpp_detect_hash_vector', PACKAGE = 'quanteda', tokens_, tokens_loc_, seq_, id)
+}
+
+qatd_cpp_detect_hash_list <- function(texts_, texts_loc_, flags, seq, id) {
+    .Call('quanteda_qatd_cpp_detect_hash_list', PACKAGE = 'quanteda', texts_, texts_loc_, flags, seq, id)
+}
+
 join_tokens_cpp <- function(tokens, tokens_join, delim) {
     invisible(.Call('quanteda_join_tokens_cpp', PACKAGE = 'quanteda', tokens, tokens_join, delim))
 }
@@ -73,8 +81,12 @@ qatd_cpp_deepcopy <- function(x_) {
     .Call('quanteda_qatd_cpp_deepcopy', PACKAGE = 'quanteda', x_)
 }
 
-qatd_cpp_remove_string_list <- function(list_, elem_remove) {
-    .Call('quanteda_qatd_cpp_remove_string_list', PACKAGE = 'quanteda', list_, elem_remove)
+qatd_cpp_remove_chr_list <- function(list_, elem_remove) {
+    .Call('quanteda_qatd_cpp_remove_chr_list', PACKAGE = 'quanteda', list_, elem_remove)
+}
+
+qatd_cpp_remove_int_list <- function(list_, elem_remove) {
+    .Call('quanteda_qatd_cpp_remove_int_list', PACKAGE = 'quanteda', list_, elem_remove)
 }
 
 wordfishcpp <- function(wfm, dir, priors, tol, disp, dispfloor) {

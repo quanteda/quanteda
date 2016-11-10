@@ -514,8 +514,8 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
 #' @examples 
 #' toks <- tokens(inaugCorpus)
 #' dict <- dictionary(list(country = "united_states", law=c('law*', 'constitution')))
-#' mx <- applyDictionary(toks, dict, concatenator='_', 'glob', verbose=TRUE)
-#' head(mx)
+#' toks2 <- applyDictionary(toks, dict, concatenator='_', 'glob', verbose=TRUE)
+#' head(dfm(toks2))
 #' 
 #' @export 
 applyDictionary.tokens <- function(x, dictionary,
@@ -526,10 +526,9 @@ applyDictionary.tokens <- function(x, dictionary,
     valuetype <- match.arg(valuetype)
     
     # Initialize
-    docIndex <- rep(rep(1:length(x)), length(dictionary))
-    featureIndex <- rep(1:length(dictionary), each=length(x))
-    keyCount <- c()
+    tokens <- NULL
     
+    # Index tokens
     if (verbose) message("Indexing tokens...")
     types <- types(x)
     index <- dfm(x, verbose = FALSE, toLower = FALSE) # index is always case-sensitive
@@ -551,23 +550,18 @@ applyDictionary.tokens <- function(x, dictionary,
           seqs_token <- sequences
       }
       
-      count <- rep(0, length(x)) # reset
       for(i in 1:length(seqs_token)){
           seq_token <- seqs_token[[i]]
           if(verbose) message('   "', seq_token, '"')
           #flag <- rep(TRUE, length(x))
           flag <- Matrix::rowSums(index_binary[,seq_token, drop = FALSE]) == length(seq_token)
-          count <- count + qatd_cpp_count_hash_list(x, flag, fmatch(seq_token, types))
+          tokens <- qatd_cpp_detect_hash_list(x, tokens, flag, fmatch(seq_token, types), h)
       }
-      keyCount <- c(keyCount, count)
     }
-    dfmresult <- sparseMatrix(i = docIndex, 
-                              j = featureIndex, 
-                              x = keyCount,
-                              dimnames = list(docs = names(x), 
-                                              features = names(dictionary)))
-    
-    new("dfmSparse", dfmresult)
+    tokens <- qatd_cpp_remove_int_list(tokens, 0) # remove padding
+    class(tokens) <- class(x)
+    types(tokens) <- names(dictionary)
+    return(tokens)
 }
 
 #' @rdname applyDictionary
