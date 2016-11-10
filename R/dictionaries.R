@@ -557,7 +557,7 @@ applyDictionary.tokens <- function(x, dictionary,
           if(verbose) message('   "', seq_token, '"')
           #flag <- rep(TRUE, length(x))
           flag <- Matrix::rowSums(index_binary[,seq_token, drop = FALSE]) == length(seq_token)
-          count <- count + qatd_cpp_count_hash_list(x, flag, match(seq_token, types))
+          count <- count + qatd_cpp_count_hash_list(x, flag, fmatch(seq_token, types))
       }
       keyCount <- c(keyCount, count)
     }
