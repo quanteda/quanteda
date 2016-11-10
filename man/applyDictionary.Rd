@@ -85,7 +85,7 @@ applyDictionary(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE)
 applyDictionary(myDfm, myDict, valuetype = "fixed")
 applyDictionary(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
 toks <- tokens(inaugCorpus)
-dict <- dictionary(list(country = "united_states", law=c('law*', 'constitution'), freedom=c('free*', 'liber*')))
+dict <- dictionary(list(country = "united_states", law=c('law*', 'constitution'), freedom=c('free*', 'libert*')))
 toks2 <- applyDictionary(toks, dict, concatenator='_', 'glob', verbose=TRUE)
 head(dfm(toks2))
 

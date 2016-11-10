@@ -559,7 +559,7 @@ applyDictionary.tokens <- function(x, dictionary,
       }
     }
     tokens <- qatd_cpp_remove_int_list(tokens, 0) # remove padding
-    class(tokens) <- class(x)
+    attributes(tokens) <- attributes(x)
     types(tokens) <- names(dictionary)
     attr(tokens, "what") <- "dictionary"
     attr(tokens, "dictionary") <- dictionary
