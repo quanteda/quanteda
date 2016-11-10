@@ -513,11 +513,9 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
 #' @param concatenator a charactor that connect words in multi-words entries
 #' @examples 
 #' toks <- tokens(inaugCorpus)
-#' head(kwic(toks, 'united_states'))
-#' dict <- dictionary(list(country = "united_states"))
-#' toks2 <- applyDictionary(toks, dict, concatenator='_')
-#' head(kwic(toks2, 'united_states'))
-#' head(dfm(toks2, dictionary=dict)[,'country'])
+#' dict <- dictionary(list(country = "united_states", law=c('law*', 'constitution')))
+#' mx <- applyDictionary(toks, dict, concatenator='_', 'glob', verbose=TRUE)
+#' head(mx)
 #' 
 #' @export 
 applyDictionary.tokens <- function(x, dictionary,
@@ -526,11 +524,50 @@ applyDictionary.tokens <- function(x, dictionary,
                                    verbose = FALSE, 
                                    concatenator = '_') {
     valuetype <- match.arg(valuetype)
-    keys <- unlist(dictionary@.Data, use.names = FALSE)
-    keys_multi <- keys[stringi::stri_detect_fixed(keys, concatenator)]
-    seqs <- stringi::stri_split_fixed(keys_multi, concatenator)
-    res <- joinTokens(x, seqs, concatenator, valuetype, verbose, case_insensitive)
-    return(res)
+    
+    # Initialize
+    docIndex <- rep(rep(1:length(x)), length(dictionary))
+    featureIndex <- rep(1:length(dictionary), each=length(x))
+    keyCount <- c()
+    
+    if (verbose) message("Indexing tokens...")
+    types <- types(x)
+    index <- dfm(x, verbose = FALSE, toLower = FALSE) # index is always case-sensitive
+    index_binary <- as(index, 'nMatrix')
+    
+    for(h in 1:length(dictionary)){
+      
+      if(verbose) message('Searching words in "', names(dictionary[h]), '"...')
+      
+      sequences <- stringi::stri_split_fixed(dictionary[[h]], concatenator)
+    
+      # Convert to regular expressions, then to fixed
+      if (valuetype %in% c("glob"))
+          sequences <- lapply(sequences, glob2rx)
+      if (valuetype %in% c("glob", "regex") | case_insensitive) {
+          # Generates all possible patterns of sequences
+          seqs_token <- grid_sequence(sequences, types, valuetype, case_insensitive)
+      } else {
+          seqs_token <- sequences
+      }
+      
+      count <- rep(0, length(x)) # reset
+      for(i in 1:length(seqs_token)){
+          seq_token <- seqs_token[[i]]
+          if(verbose) message('   "', seq_token, '"')
+          #flag <- rep(TRUE, length(x))
+          flag <- Matrix::rowSums(index_binary[,seq_token, drop = FALSE]) == length(seq_token)
+          count <- count + qatd_cpp_count_hash_list(x, flag, match(seq_token, types))
+      }
+      keyCount <- c(keyCount, count)
+    }
+    dfmresult <- sparseMatrix(i = docIndex, 
+                              j = featureIndex, 
+                              x = keyCount,
+                              dimnames = list(docs = names(x), 
+                                              features = names(dictionary)))
+    
+    new("dfmSparse", dfmresult)
 }
 
 #' @rdname applyDictionary
