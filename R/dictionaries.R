@@ -553,6 +553,7 @@ applyDictionary.tokens <- function(x, dictionary,
       for(i in 1:length(seqs_token)){
           seq_token <- seqs_token[[i]]
           if(verbose) message('   "', seq_token, '"')
+          if (!all(seq_token %in% types)) next
           #flag <- rep(TRUE, length(x))
           flag <- Matrix::rowSums(index_binary[,seq_token, drop = FALSE]) == length(seq_token)
           tokens <- qatd_cpp_detect_hash_list(x, tokens, flag, fmatch(seq_token, types), h)
@@ -561,6 +562,9 @@ applyDictionary.tokens <- function(x, dictionary,
     tokens <- qatd_cpp_remove_int_list(tokens, 0) # remove padding
     class(tokens) <- class(x)
     types(tokens) <- names(dictionary)
+    attr(tokens, "what") <- "dictionary"
+    attr(tokens, "dictionary") <- dictionary
+    
     return(tokens)
 }
 
