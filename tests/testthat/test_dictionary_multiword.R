@@ -107,6 +107,71 @@ test_that("selection of tokens from single-word dictionaries works", {
 })
 
 
+test_that("multi-word dictionary behavior is not sensitive to the order of dictionary entries", {
 
+    txt <- c(d1 = "The United States is a country.", 
+             d2 = "Arsenal v Manchester United, states the announcer.")
+    toks <- tokens(txt, removePunct = TRUE)
+    toks_old <- tokenize(txt, removePunct = TRUE)
+    dict1 <- dictionary(list(Countries = c("United States"),
+                             team = c("Manchester United", "Arsenal")))
+    dict2 <- dictionary(list(team = c("Manchester United", "Arsenal"),
+                             Countries = c("United States")))
+    expect_equal(
+        as.list(applyDictionary(toks, dictionary = dict1, valuetype = "fixed", 
+                        case_insensitive = TRUE, concatenator = " ")),
+        as.list(applyDictionary(toks, dictionary = dict2, valuetype = "fixed", 
+                        case_insensitive = TRUE, concatenator = " "))
+                 )
 
+    expect_equal(
+        as.list(applyDictionary(toks_old, dictionary = dict1, valuetype = "fixed", 
+                                case_insensitive = TRUE, concatenator = " ")),
+        as.list(applyDictionary(toks_old, dictionary = dict2, valuetype = "fixed", 
+                                case_insensitive = TRUE, concatenator = " "))
+    )
+    
+})
 
+test_that("tokenizedTexts and tokens behave the same", {
+    
+    txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
+             d2 = "The Supreme Court of the United States is seldom in a united state.",
+             d3 = "It's Arsenal versus Manchester United, states the announcer.",
+             d4 = "We need Manchester Unity in the Federal Republic of Germany today.",
+             d5 = "United statehood is a good state.",
+             d6 = "luv the united states XXOO!")
+    toks <- tokenize(txt, removePunct = TRUE)
+    toks_hashed <- tokens(txt, removePunct = TRUE)
+    dict_mw_fixed <- dictionary(list(Countries = c("United States", "Federal Republic of Germany"),
+                                     oceans = c("Atlantic Ocean", "Pacific Ocean"),
+                                     Institutions = c("federal government", "Supreme Court"),
+                                     team = c("Manchester United", "Arsenal")))
+
+    expect_equal(
+        as.tokenizedTexts(applyDictionary(toks_hashed, dictionary = dict_mw_fixed, 
+                                          valuetype = "fixed", 
+                                          case_insensitive = TRUE, concatenator = " ")),
+        applyDictionary(toks, dictionary = dict_mw_fixed, valuetype = "fixed", 
+                                case_insensitive = TRUE, concatenator = " ")
+    )
+})
+
+# not desired output - looks more like joinTokens
+applyDictionary(tokens("The United States is big."), 
+                dictionary = dictionary(list(COUNTRY = "United States")), 
+                valuetype = "fixed", concatenator = " ")
+## tokenizedTexts from 1 document.
+## Component 1 :
+## [1] "The"           "United States" "is"            "big"           "."            
+
+# desired output
+applyDictionary(tokens("The United States is big.", hash = FALSE), 
+                dictionary = dictionary(list(COUNTRY = "United States")), 
+                valuetype = "fixed", concatenator = " ")
+## tokenizedTexts from 2 documents.
+## Component 1 :
+## [1] "COUNTRY"
+##
+## Component 2 :
+## character(0)
