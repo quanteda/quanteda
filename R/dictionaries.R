@@ -513,7 +513,7 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
 #' @param concatenator a charactor that connect words in multi-words entries
 #' @examples 
 #' toks <- tokens(inaugCorpus)
-#' dict <- dictionary(list(country = "united_states", law=c('law*', 'constitution')))
+#' dict <- dictionary(list(country = "united_states", law=c('law*', 'constitution'), freedom=c('free*', 'libert*')))
 #' toks2 <- applyDictionary(toks, dict, concatenator='_', 'glob', verbose=TRUE)
 #' head(dfm(toks2))
 #' 
@@ -549,10 +549,9 @@ applyDictionary.tokens <- function(x, dictionary,
       } else {
           seqs_token <- sequences
       }
-      
       for(i in 1:length(seqs_token)){
           seq_token <- seqs_token[[i]]
-          if(verbose) message('   "', seq_token, '"')
+          if(verbose) message('   "', paste(seq_token, collapse=concatenator), '"')
           if (!all(seq_token %in% types)) next
           #flag <- rep(TRUE, length(x))
           flag <- Matrix::rowSums(index_binary[,seq_token, drop = FALSE]) == length(seq_token)
