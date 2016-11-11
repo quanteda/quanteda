@@ -14,7 +14,8 @@ applyDictionary(x, dictionary, ...)
   capkeys = !exclusive, verbose = TRUE, ...)
 
 \method{applyDictionary}{tokens}(x, dictionary, valuetype = c("glob", "regex",
-  "fixed"), case_insensitive = TRUE, verbose = FALSE, concatenator = "_")
+  "fixed"), case_insensitive = TRUE, concatenator = "_", indexing = TRUE,
+  verbose = FALSE)
 
 \method{applyDictionary}{tokenizedTexts}(x, dictionary, exclusive = TRUE,
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
@@ -45,6 +46,8 @@ uppercase to distinguish them from other features}
 \item{verbose}{print status messages if \code{TRUE}}
 
 \item{concatenator}{a charactor that connect words in multi-words entries}
+
+\item{indexing}{search only documents that containe keywords}
 }
 \value{
 an object of the type passed with the value-matching features
@@ -86,11 +89,8 @@ applyDictionary(myDfm, myDict, valuetype = "fixed")
 applyDictionary(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
 toks <- tokens(inaugCorpus)
 dict <- dictionary(list(country = "united_states", law=c('law*', 'constitution'), freedom=c('free*', 'libert*')))
-toks2 <- applyDictionary(toks, dict, concatenator='_', 'glob', verbose=TRUE)
+toks2 <- applyDictionary(toks, dict, 'glob', concatenator='_', verbose=TRUE)
 head(dfm(toks2))
-
-toks3 <- tokens(c(paste(letters, collapse=' '), ''))
-head(dfm(toks3))
 
 }
 

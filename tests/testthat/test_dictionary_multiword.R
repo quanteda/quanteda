@@ -39,13 +39,13 @@ test_that("multi-word dictionary keys are counted correctly", {
     
     tokens_case_asis_hash <- 
         applyDictionary(toks_hash, dict_mw_fixed, valuetype = "fixed", case_insensitive = FALSE, concatenator = ' ')
-    dfm_case_asis_hash <- dfm(tokens_case_asis_hash, dictionary=dict_mw_fixed)
+    dfm_case_asis_hash <- dfm(tokens_case_asis_hash)
     expect_equal(as.vector(dfm_case_asis_hash[, "Countries"]), c(1, 1, 0, 1, 0, 0))
     expect_equal(as.vector(dfm_case_asis_hash[, "team"]), c(0, 0, 2, 0, 0, 0))
     
     tokens_case_ignore_hash <- 
       applyDictionary(toks_hash, dict_mw_fixed, valuetype = "fixed", case_insensitive = TRUE, concatenator = ' ')
-    dfm_case_ignore_hash <- dfm(tokens_case_ignore_hash, dictionary=dict_mw_fixed)
+    dfm_case_ignore_hash <- dfm(tokens_case_ignore_hash)
     expect_equal(as.vector(dfm_case_ignore_hash[, "Countries"]), c(1, 1, 1, 1, 0, 1))
     
     expect_equal(as.vector(dfm_case_ignore_hash["d3", "team"]), 2)
