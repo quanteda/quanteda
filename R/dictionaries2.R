@@ -22,7 +22,9 @@ applyDictionary2 <- function(x, dictionary, ...) {
 #' @rdname applyDictionary
 #' @param concatenator a charactor that connect words in multi-words entries
 #' @param indexing search only documents that containe keywords
-#' @examples 
+#' @examples
+#' 
+#' dict_liwc <- dictionary(file='/home/kohei/Documents/Dictonary/LIWC/LIWC2007_English.dic')
 #' library(quantedaData)
 #' toks <- tokens(inaugCorpus)
 #' dict <- dictionary(list(country = "united states", law=c('law*', 'constitution'), freedom=c('free*', 'libert*')))
@@ -38,11 +40,18 @@ applyDictionary2 <- function(x, dictionary, ...) {
 #'   cppi=applyDictionary2(toks, dict, valuetype='fixed', verbose=FALSE, indexing=TRUE)
 #' )
 #' 
-#' toks_long <- tokens(tokenize(inaugCorpus, what='sentence', simplify=TRUE))
 #' microbenchmark::microbenchmark(
-#'   r=applyDictionary(toks_long, dict, valuetype='fixed', verbose=FALSE),
-#'   cpp=applyDictionary2(toks_long, dict, valuetype='fixed', verbose=FALSE, indexing=FALSE),
-#'   cppi=applyDictionary2(toks_long, dict, valuetype='fixed', verbose=FALSE, indexing=TRUE)
+#'   r=applyDictionary(toks, dict_liwc, valuetype='fixed', verbose=FALSE),
+#'   cpp=applyDictionary2(toks, dict_liwc, valuetype='glob', verbose=FALSE, indexing=FALSE),
+#'   cppi=applyDictionary2(toks, dict_liwc, valuetype='glob', verbose=FALSE, indexing=TRUE),
+#'   times=1
+#' )
+#' 
+#' toks_short <- tokens(tokenize(inaugCorpus, what='sentence', simplify=TRUE))
+#' microbenchmark::microbenchmark(
+#'   r=applyDictionary(toks_short, dict, valuetype='fixed', verbose=FALSE),
+#'   cpp=applyDictionary2(toks_short, dict, valuetype='fixed', verbose=FALSE, indexing=FALSE),
+#'   cppi=applyDictionary2(toks_short, dict, valuetype='fixed', verbose=FALSE, indexing=TRUE)
 #' )
 #' profvis::profvis(applyDictionary2(toks_long, dict, valuetype='fixed', verbose=FALSE, indexing=FALSE))
 #' 
