@@ -470,7 +470,7 @@ as.tokenizedTexts.tokens <- function(x, ...) {
     # remove types attribute
     attr(x_unhashed, "types") <- NULL
     # replace class tag
-    class(x_unhashed) <- c("tokenizedTexts", "tokens", "list")
+    class(x_unhashed) <- c("tokenizedTexts", "list")
     x_unhashed
 }
 
@@ -490,7 +490,11 @@ as.list.tokens <- function(x, ...){
 #' @export
 #' @method print tokens
 print.tokens <- function(x, ...) {
-    print(as.tokenizedTexts(x))
+    cat(class(x)[1], " from ", ndoc(x), " document", 
+        ifelse(ndoc(x) > 1, "s", ""), ".\n", sep = "")
+    x <- lapply(unclass(x), function(y) types(x)[y])
+    class(x) <- "listof"
+    print(x, ...)
 }
 
 # @details \code{tokenizeHashed} creates tokenizedTextsHashed object from characters vactors 
@@ -526,6 +530,26 @@ tokenizeHashed <- function(x, size_chunk = 1000, ...) {
     
 }
 
+#' @export
+#' @rdname ndoc
+ndoc.tokens <- function(x) {
+    length(x)
+}
+
+#' @export
+#' @rdname ntoken
+ntoken.tokens <- function(x, ...) {
+    lengths(x)
+}
+
+#' @export
+#' @rdname ntoken
+ntype.tokens <- function(x, ...) {
+    length(types(x))
+}
+
+
+
 
 
 ##
@@ -544,14 +568,35 @@ tokenizeHashed <- function(x, size_chunk = 1000, ...) {
 # vocabulary(toksh) <- toLower(vocabulary(toksh))
 # tokens_hashed_recompile(toksh)
 tokens_hashed_recompile <- function(x) {
+    
     attrs_input <- attributes(x)
-    v <- types(x)
-    v_unique <- unique(v)
-    index_mapping <- match(v, v_unique)
-    x_new <- lapply(unclass(x), function(y) index_mapping[y])
-    attributes(x_new) <- attrs_input
-    types(x_new) <- v_unique
-    x_new
+    v_unique_index <- unique(unlist(x, use.names = FALSE))
+    
+    # remove gaps in the type index, if any, remap index
+    if (any(is.na(match(seq_along(v_unique_index), v_unique_index)))) { 
+        v_unique_index <- unique(unlist(x, use.names = FALSE))
+        v_new <- types(x)[v_unique_index]
+        new_types <- seq_along(v_unique_index)
+        x_new <- lapply(unclass(x), function(y) new_types[match(y, v_unique_index)])
+        attributes(x_new) <- attrs_input
+        types(x_new) <- v_new
+        attrs_input <- attributes(x_new)
+        x <- x_new
+    }
+        
+    # reindex duplicates, if any
+    if (any(duplicated(types(x)))) {
+        v <- types(x)
+        v_unique <- unique(v)
+        index_mapping <- match(v, v_unique)
+        x_new <- lapply(unclass(x), function(y) index_mapping[y])
+        attributes(x_new) <- attrs_input
+        types(x_new) <- v_unique
+        attrs_input <- attributes(x_new)
+        x <- x_new
+    }
+
+    return(x)
 }
 
 get_tokens <- function(x) {
@@ -582,3 +627,5 @@ types.tokens <- function(x) {
     attr(x, "types") <- value
     x
 }
+
+

@@ -103,6 +103,12 @@ collocations.character <- function(x, method = c("lr", "chi2", "pmi", "dice", "a
 
 #' @rdname collocations
 #' @export    
+collocations.tokens <- function(x, ...) {
+    collocations(as.tokenizedTexts(x), ...)
+} 
+    
+#' @rdname collocations
+#' @export    
 collocations.tokenizedTexts <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
                                         n = NULL, toLower = FALSE,
                                         punctuation = c("dontspan", "ignore", "include"), ...) {

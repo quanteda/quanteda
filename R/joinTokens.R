@@ -107,7 +107,7 @@ joinTokens.tokens <- function(x, sequences, concatenator = "_",
     
     valuetype <- match.arg(valuetype)
     
-    if (verbose) message("Indexing tokens...\n")
+    if (verbose) message("Indexing tokens...")
     types <- types(x)
     index <- dfm(x, verbose = FALSE, toLower = FALSE) # index is always case-sensitive
     index_binary <- as(index, 'nMatrix')
@@ -135,11 +135,11 @@ joinTokens.tokens <- function(x, sequences, concatenator = "_",
             stop('Invalid token sequence\n');
         if (!all(seq_token %in% types)) {
             if (verbose) 
-                message(sprintf('%d/%d "%s" is not found\n', i, n_seqs, paste(seq_token, collapse=' ')))
+                message(sprintf('%d/%d "%s" is not found', i, n_seqs, paste(seq_token, collapse=' ')))
         } else {
             flag <- Matrix::rowSums(index_binary[,seq_token, drop = FALSE]) == length(seq_token)
             if (verbose) 
-                message(sprintf('%d/%d "%s" is found in %d texts\n', i, n_seqs, 
+                message(sprintf('%d/%d "%s" is found in %d texts', i, n_seqs, 
                                 paste(seq_token, collapse=' '), sum(flag)))
             
             # Use exisitng ID
@@ -148,12 +148,12 @@ joinTokens.tokens <- function(x, sequences, concatenator = "_",
             } else {
                 id <- ids_exist[i]
             }
-            if (verbose) message(' Use', id , 'for', types_new[i], '\n')
+            if (verbose) message(sprintf(' Use %d for %s ', id, types_new[i]))
             x <- qatd_cpp_replace_hash_list(x, flag, match(seq_token, types), id)
             
             # Add new ID to types only if used
             if (is.na(ids_exist[i]) & id %in% unlist(x, use.names = FALSE)) {
-                if (verbose) message(' Add', id, 'for', types_new[i], '\n')
+                if (verbose) message(sprintf(' Add %d for %s', id, types_new[i]))
                 types <- c(types, types_new[i])
                 id_new <- id_new + 1
             }
@@ -175,9 +175,9 @@ grid_sequence <- function(seqs_pat, types, valuetype, case_insensitive = FALSE) 
         }
         #print(seq_match)
         if (length(unlist(seq_pat)) != length(seq_match)) next
-        match_comb <- do.call(expand.grid, c(seq_match, stringsAsFactors = FALSE)) # produce all possible combinations
+        match_comb <- as.matrix(do.call(expand.grid, c(seq_match, stringsAsFactors = FALSE))) # produce all possible combinations
         #print(match_comb)
-        seqs_token <- c(seqs_token, qatd_cpp_split_df(t(match_comb)))
+        seqs_token <- c(seqs_token, unname(split(match_comb, row(match_comb))))
     }
     return(seqs_token)
 }

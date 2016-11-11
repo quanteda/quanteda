@@ -4,11 +4,16 @@
 \alias{applyDictionary}
 \alias{applyDictionary.dfm}
 \alias{applyDictionary.tokenizedTexts}
+\alias{applyDictionary.tokens}
 \title{apply a dictionary or thesaurus to an object}
 \usage{
 applyDictionary(x, dictionary, ...)
 
 \method{applyDictionary}{dfm}(x, dictionary, exclusive = TRUE,
+  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
+  capkeys = !exclusive, verbose = TRUE, ...)
+
+\method{applyDictionary}{tokens}(x, dictionary, exclusive = TRUE,
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
   capkeys = !exclusive, verbose = TRUE, ...)
 
@@ -78,5 +83,10 @@ applyDictionary(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE)
 # fixed format: no pattern matching
 applyDictionary(myDfm, myDict, valuetype = "fixed")
 applyDictionary(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
+toks <- tokens(inaugCorpus)
+head(kwic(toks, "united states"))
+dict <- dictionary(list(country = "united states"))
+toks2 <- applyDictionary(toks, dict, valuetype = "fixed")
+toks2
 }
 
