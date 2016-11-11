@@ -304,6 +304,70 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
     return(y)
 }
 
+#' @export
+#' @rdname selectFeatures
+#' @examples
+#' toksh <- tokens(c(doc1 = "This is a SAMPLE text", doc2 = "this sample text is better"))
+#' feats <- c("this", "sample", "is")
+#' # keeping features
+#' selectFeatures(toksh, feats, selection = "keep")
+#' selectFeatures(toksh, feats, selection = "keep", padding = TRUE)
+#' selectFeatures(toksh, feats, selection = "keep", case_insensitive = FALSE)
+#' selectFeatures(toksh, feats, selection = "keep", padding = TRUE, case_insensitive = FALSE)
+#' # removing features
+#' selectFeatures(toksh, feats, selection = "remove")
+#' selectFeatures(toksh, feats, selection = "remove", padding = TRUE)
+#' selectFeatures(toksh, feats, selection = "remove", case_insensitive = FALSE)
+#' selectFeatures(toksh, feats, selection = "remove", padding = TRUE, case_insensitive = FALSE)
+selectFeatures.tokens <- function(x, features, selection = c("keep", "remove"), 
+                                  valuetype = c("glob", "regex", "fixed"),
+                                  case_insensitive = TRUE, padding = FALSE, ...) {
+    selection <- match.arg(selection)
+    valuetype <- match.arg(valuetype)
+
+    # convert to regular expressions if not already valuetype = "regex"
+    if (valuetype == "glob" | valuetype == "fixed") 
+        features <- sapply(features, utils::glob2rx, USE.NAMES = FALSE)
+
+    # index the matching features from the types vector
+    features <- unique(unlist(features, use.names = FALSE))  # to convert any dictionaries
+    features_index <- 
+        which(stringi::stri_detect_regex(types(x), paste(features, collapse = "|"),
+                                         case_insensitive = case_insensitive))
+    
+    # invert the match index to remove features
+    if (selection == "remove")
+        features_index <- setdiff(seq_along(types(x)), features_index)
+    
+    # save the attributes
+    attrs_pre <- attributes(x)
+    
+    # match the features
+    match_list <- lapply(unclass(x), fastmatch::fmatch, features_index)
+    # get the new word types
+    newfeats_types <- types(x)[features_index[!is.na(features_index)]]
+    
+    if (!padding) {
+        newfeats <- lapply(match_list, function(y) y[!is.na(y)])
+    } else {
+        newfeats_types <- c(newfeats_types, "")
+        newfeats <- lapply(match_list, function(y) { 
+            # add an empty type for non-matches
+            y[is.na(y)] <- length(newfeats_types)
+            y 
+        })
+    } 
+    
+    # replace the attributes
+    attributes(newfeats) <- attrs_pre
+    # but use the new types
+    types(newfeats) <- newfeats_types
+    
+    newfeats
+}
+
+
+
 #' @rdname selectFeatures
 #' @param pos indexes of word position if called on collocations: remove if word
 #'   \code{pos} is a stopword

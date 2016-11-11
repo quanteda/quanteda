@@ -52,6 +52,13 @@ kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
 }
 
 #' @rdname kwic
+#' @method kwic tokens
+#' @export 
+kwic.tokens <- function(x, keywords, ...) {
+    kwic(as.tokenizedTexts(x), keywords, ...)   
+}
+
+#' @rdname kwic
 #' @method kwic tokenizedTexts
 #' @export 
 kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {

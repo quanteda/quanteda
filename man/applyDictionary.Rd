@@ -105,8 +105,9 @@ head(dfm(toks2))
 
 microbenchmark::microbenchmark(
 r=applyDictionary(toks, dict, valuetype='fixed', verbose=FALSE),
-cpp=applyDictionary2(toks, dict, valuetype='fixed', verbose=FALSE)
+cpp=applyDictionary2(toks, dict, valuetype='fixed', verbose=FALSE, indexing=FALSE)
 )
+
 
 }
 

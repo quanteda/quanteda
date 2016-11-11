@@ -5,6 +5,7 @@
 \alias{collocations.character}
 \alias{collocations.corpus}
 \alias{collocations.tokenizedTexts}
+\alias{collocations.tokens}
 \title{Detect collocations from text}
 \usage{
 collocations(x, ...)
@@ -16,6 +17,8 @@ collocations(x, ...)
 \method{collocations}{character}(x, method = c("lr", "chi2", "pmi", "dice",
   "all"), size = 2, n = NULL, toLower = TRUE,
   punctuation = c("dontspan", "ignore", "include"), ...)
+
+\method{collocations}{tokens}(x, ...)
 
 \method{collocations}{tokenizedTexts}(x, method = c("lr", "chi2", "pmi",
   "dice", "all"), size = 2, n = NULL, toLower = FALSE,

@@ -5,6 +5,7 @@
 \alias{kwic.character}
 \alias{kwic.corpus}
 \alias{kwic.tokenizedTexts}
+\alias{kwic.tokens}
 \alias{print.kwic}
 \title{List key words in context from a text or a corpus of texts.}
 \usage{
@@ -16,6 +17,8 @@ kwic(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"),
 
 \method{kwic}{corpus}(x, keywords, window = 5, valuetype = c("glob",
   "regex", "fixed"), case_insensitive = TRUE, ...)
+
+\method{kwic}{tokens}(x, keywords, ...)
 
 \method{kwic}{tokenizedTexts}(x, keywords, window = 5, valuetype = c("glob",
   "regex", "fixed"), case_insensitive = TRUE, ...)

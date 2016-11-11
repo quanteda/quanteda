@@ -130,8 +130,8 @@ new name | original name | methods | output object | keyword
 new name | original name | methods | output object | keyword
 :--------|:------------- |:------- |:------------- |:-------
 `tokens_join` | `phrasetotoken`, `joinTokens` | tokens + collocations/dictionary/character | tokens | tokens
-`tokens_select` | `selectTokens` | tokens + collocations/dictionary/character | tokens | tokens
-`tokens_remove` | `removeTokens` | tokens + collocations/dictionary/character | tokens | tokens
+`tokens_select` | `selectFeatures` | tokens + collocations/dictionary/character | tokens | tokens
+`tokens_remove` | `removeFeatures` | tokens + collocations/dictionary/character | tokens | tokens
 `tokens_wordstem` | `wordstem` | tokens | tokens | tokens
 `tokens_ngrams` | `ngrams` | tokens | tokens | tokens
 `tokens_skipgrams` | `skipgrams` | tokens | tokens | tokens
