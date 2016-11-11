@@ -39,13 +39,13 @@ test_that("multi-word dictionary keys are counted correctly", {
     
     tokens_case_asis_hash <- 
         applyDictionary(toks_hash, dict_mw_fixed, valuetype = "fixed", case_insensitive = FALSE, concatenator = ' ')
-    dfm_case_asis_hash <- dfm(tokens_case_asis_hash, dictionary=dict_mw_fixed)
+    dfm_case_asis_hash <- dfm(tokens_case_asis_hash)
     expect_equal(as.vector(dfm_case_asis_hash[, "Countries"]), c(1, 1, 0, 1, 0, 0))
     expect_equal(as.vector(dfm_case_asis_hash[, "team"]), c(0, 0, 2, 0, 0, 0))
     
     tokens_case_ignore_hash <- 
       applyDictionary(toks_hash, dict_mw_fixed, valuetype = "fixed", case_insensitive = TRUE, concatenator = ' ')
-    dfm_case_ignore_hash <- dfm(tokens_case_ignore_hash, dictionary=dict_mw_fixed)
+    dfm_case_ignore_hash <- dfm(tokens_case_ignore_hash)
     expect_equal(as.vector(dfm_case_ignore_hash[, "Countries"]), c(1, 1, 1, 1, 0, 1))
     
     expect_equal(as.vector(dfm_case_ignore_hash["d3", "team"]), 2)
@@ -118,17 +118,15 @@ test_that("multi-word dictionary behavior is not sensitive to the order of dicti
     dict2 <- dictionary(list(team = c("Manchester United", "Arsenal"),
                              Countries = c("United States")))
     expect_equal(
-        as.list(applyDictionary(toks, dictionary = dict1, valuetype = "fixed", 
-                        case_insensitive = TRUE, concatenator = " ")),
-        as.list(applyDictionary(toks, dictionary = dict2, valuetype = "fixed", 
-                        case_insensitive = TRUE, concatenator = " "))
-                 )
+        lapply(as.list(applyDictionary(toks, dictionary = dict1, valuetype = "fixed")), sort),
+        lapply(as.list(applyDictionary(toks, dictionary = dict2, valuetype = "fixed")), sort)
+    )
 
     expect_equal(
-        as.list(applyDictionary(toks_old, dictionary = dict1, valuetype = "fixed", 
-                                case_insensitive = TRUE, concatenator = " ")),
-        as.list(applyDictionary(toks_old, dictionary = dict2, valuetype = "fixed", 
-                                case_insensitive = TRUE, concatenator = " "))
+        lapply(as.list(applyDictionary(toks_old, dictionary = dict1, valuetype = "fixed", 
+                                case_insensitive = TRUE, concatenator = " ")), sort),
+        lapply(as.list(applyDictionary(toks_old, dictionary = dict2, valuetype = "fixed", 
+                                case_insensitive = TRUE, concatenator = " ")), sort)
     )
     
 })
@@ -149,29 +147,41 @@ test_that("tokenizedTexts and tokens behave the same", {
                                      team = c("Manchester United", "Arsenal")))
 
     expect_equal(
-        as.tokenizedTexts(applyDictionary(toks_hashed, dictionary = dict_mw_fixed, 
-                                          valuetype = "fixed", 
-                                          case_insensitive = TRUE, concatenator = " ")),
+        as.tokenizedTexts(applyDictionary(toks_hashed, dict_mw_fixed, 
+                                          valuetype = "fixed", case_insensitive = TRUE)),
         applyDictionary(toks, dictionary = dict_mw_fixed, valuetype = "fixed", 
                                 case_insensitive = TRUE, concatenator = " ")
     )
 })
 
-# not desired output - looks more like joinTokens
-applyDictionary(tokens("The United States is big."), 
-                dictionary = dictionary(list(COUNTRY = "United States")), 
-                valuetype = "fixed", concatenator = " ")
-## tokenizedTexts from 1 document.
-## Component 1 :
-## [1] "The"           "United States" "is"            "big"           "."            
+test_that("classic and hashed applyDictionary produce equivalent objects", {
 
-# desired output
-applyDictionary(tokens("The United States is big.", hash = FALSE), 
+    expect_equal(
+        applyDictionary(tokens("The United States is big."), 
                 dictionary = dictionary(list(COUNTRY = "United States")), 
-                valuetype = "fixed", concatenator = " ")
-## tokenizedTexts from 2 documents.
-## Component 1 :
-## [1] "COUNTRY"
-##
-## Component 2 :
-## character(0)
+                valuetype = "fixed"),
+        as.tokens(applyDictionary(tokens("The United States is big.", hash = FALSE), 
+                dictionary = dictionary(list(COUNTRY = "United States")), 
+                valuetype = "fixed"))
+    )
+})
+
+test_that("classic and hashed applyDictionary produce same results", {
+
+    # with inaugural texts
+    toks <- tokenize(inaugTexts)
+    toksh <- tokens(inaugTexts)
+    dict <- dictionary(list(institutions = c("Supreme Court", "federal government", 
+                                             "House of Representatives"),
+                            countries = c("United States", "Soviet Union"),
+                            tax = c("income tax", "property tax", "sales tax")))
+    
+    expect_equal(dfm(applyDictionary(toks, dict, valuetype = "fixed"), verbose = FALSE),
+                 dfm(applyDictionary(toksh, dict, valuetype = "fixed"), verbose = FALSE))
+    
+    # microbenchmark::microbenchmark(
+    #     classic = applyDictionary(toks, dict, valuetype = "fixed"),
+    #     hashed = applyDictionary(toksh, dict, valuetype = "fixed"),
+    #     unit = "relative", times = 30
+    # )
+})

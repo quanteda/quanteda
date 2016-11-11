@@ -13,8 +13,9 @@ applyDictionary(x, dictionary, ...)
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
   capkeys = !exclusive, verbose = TRUE, ...)
 
-\method{applyDictionary}{tokens}(x, dictionary, valuetype = c("glob", "regex",
-  "fixed"), case_insensitive = TRUE, verbose = FALSE, concatenator = "_")
+\method{applyDictionary}{tokens}(x, dictionary, exclusive = TRUE,
+  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
+  capkeys = !exclusive, verbose = TRUE, ...)
 
 \method{applyDictionary}{tokenizedTexts}(x, dictionary, exclusive = TRUE,
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
@@ -43,8 +44,6 @@ formatted dictionary values); \code{"regex"} for regular expressions; or
 uppercase to distinguish them from other features}
 
 \item{verbose}{print status messages if \code{TRUE}}
-
-\item{concatenator}{a charactor that connect words in multi-words entries}
 }
 \value{
 an object of the type passed with the value-matching features
@@ -85,11 +84,9 @@ applyDictionary(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE)
 applyDictionary(myDfm, myDict, valuetype = "fixed")
 applyDictionary(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
 toks <- tokens(inaugCorpus)
-head(kwic(toks, 'united_states'))
-dict <- dictionary(list(country = "united_states"))
-toks2 <- applyDictionary(toks, dict, concatenator='_')
-head(kwic(toks2, 'united_states'))
-head(dfm(toks2, dictionary=dict)[,'country'])
-
+head(kwic(toks, "united states"))
+dict <- dictionary(list(country = "united states"))
+toks2 <- applyDictionary(toks, dict, valuetype = "fixed")
+toks2
 }
 
