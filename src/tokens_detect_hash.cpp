@@ -9,9 +9,9 @@ using namespace quanteda;
 
 
 // [[Rcpp::export]]
-NumericVector qatd_cpp_detect_hash_vector(NumericVector tokens_, 
-                                          NumericVector tokens_loc_, 
-                                          NumericVector seq_,
+IntegerVector qatd_cpp_detect_hash_vector(IntegerVector tokens_, 
+                                          IntegerVector tokens_loc_, 
+                                          IntegerVector seq_,
                                           int id){
   
   std::vector<int> tokens = Rcpp::as< std::vector<int> >(tokens_);
@@ -37,7 +37,7 @@ NumericVector qatd_cpp_detect_hash_vector(NumericVector tokens_,
 List qatd_cpp_detect_hash_list(List texts_, 
                                SEXP texts_loc_,
                                std::vector<bool> flags,
-                               NumericVector seq,
+                               IntegerVector seq,
                                int id){
 
   List texts = texts_;
@@ -47,8 +47,8 @@ List qatd_cpp_detect_hash_list(List texts_,
   if(texts_loc_ == R_NilValue){
     //Rcout << "Is NULL\n";
     for(int g=0; g<texts.size(); g++){
-      NumericVector text = texts[g];
-      texts_loc.push_back(NumericVector(text.size()));
+      IntegerVector text = texts[g];
+      texts_loc.push_back(IntegerVector(text.size()));
     }
   }
   int len = texts.size();

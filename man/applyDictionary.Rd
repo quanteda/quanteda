@@ -89,5 +89,8 @@ dict <- dictionary(list(country = "united_states", law=c('law*', 'constitution')
 toks2 <- applyDictionary(toks, dict, concatenator='_', 'glob', verbose=TRUE)
 head(dfm(toks2))
 
+toks3 <- tokens(c(paste(letters, collapse=' '), ''))
+head(dfm(toks3))
+
 }
 

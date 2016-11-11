@@ -49,7 +49,11 @@ List qatd_cpp_remove_chr_list(List list_, String elem_remove){
         j++;
       }
     }
-    if(j > 0) list[h] = elems_new[seq(0, j - 1)];
+    if(j > 0){
+      list[h] = elems_new[seq(0, j - 1)];
+    }else{
+      list[h] = CharacterVector(0);
+    }
   }
   return list;
 }
@@ -58,8 +62,8 @@ List qatd_cpp_remove_chr_list(List list_, String elem_remove){
 List qatd_cpp_remove_int_list(List list_, int elem_remove){
   List list = clone(list_);
   for(int h=0; h < list.size(); h++){
-    NumericVector elems = list[h];
-    NumericVector elems_new(elems.size());
+    IntegerVector elems = list[h];
+    IntegerVector elems_new(elems.size());
     int j = 0;
     for(int i=0; i < elems.size(); i++){
       if(elems[i] != elem_remove){
@@ -67,7 +71,11 @@ List qatd_cpp_remove_int_list(List list_, int elem_remove){
         j++;
       }
     }
-    if(j > 0) list[h] = elems_new[seq(0, j - 1)];
+    if(j > 0){
+      list[h] = elems_new[seq(0, j - 1)];
+    }else{
+      list[h] = IntegerVector(0);
+    }
   }
   return list;
 }
