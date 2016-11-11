@@ -99,15 +99,23 @@ toks2 <- applyDictionary(toks, dict, valuetype = "fixed")
 toks2
 toks <- tokens(inaugCorpus)
 dict <- dictionary(list(country = "united states", law=c('law*', 'constitution'), freedom=c('free*', 'libert*')))
+dict <- dictionary(list(country = "united states", law=c('law', 'constitution'), freedom=c('freedom', 'liberty')))
 dict <- dictionary(list(country = "united states"))
 toks2 <- applyDictionary2(toks, dict, 'glob', verbose=TRUE)
 head(dfm(toks2))
 
 microbenchmark::microbenchmark(
-r=applyDictionary(toks, dict, valuetype='fixed', verbose=FALSE),
-cpp=applyDictionary2(toks, dict, valuetype='fixed', verbose=FALSE, indexing=FALSE)
+  r=applyDictionary(toks, dict, valuetype='fixed', verbose=FALSE),
+  cpp=applyDictionary2(toks, dict, valuetype='fixed', verbose=FALSE, indexing=FALSE)
 )
 
+toks_long <- tokens(tokenize(inaugCorpus, what='sentence', simplify=TRUE))
+microbenchmark::microbenchmark(
+  r=applyDictionary(toks_long, dict, valuetype='fixed', verbose=FALSE),
+  cpp=applyDictionary2(toks_long, dict, valuetype='fixed', verbose=FALSE, indexing=FALSE),
+  cppi=applyDictionary2(toks_long, dict, valuetype='fixed', verbose=FALSE, indexing=TRUE)
+)
+profvis::profvis(applyDictionary2(toks_long, dict, valuetype='fixed', verbose=FALSE, indexing=FALSE))
 
 }
 

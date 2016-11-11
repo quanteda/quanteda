@@ -23,17 +23,28 @@ applyDictionary2 <- function(x, dictionary, ...) {
 #' @param concatenator a charactor that connect words in multi-words entries
 #' @param indexing search only documents that containe keywords
 #' @examples 
+#' library(quantedaData)
 #' toks <- tokens(inaugCorpus)
 #' dict <- dictionary(list(country = "united states", law=c('law*', 'constitution'), freedom=c('free*', 'libert*')))
-#' dict <- dictionary(list(country = "united states"))
+#' dict <- dictionary(list(country = "united states", law=c('law', 'constitution'), freedom=c('freedom', 'liberty')))
+#' dict <- dictionary(list(country = c("united states", "united kingdom")))
+#' dict <- dictionary(list(rare=c("predilection", "flattering", "asylum interruptions", "awaken", "distrustful")))
 #' toks2 <- applyDictionary2(toks, dict, 'glob', verbose=TRUE)
 #' head(dfm(toks2))
 #' 
 #' microbenchmark::microbenchmark(
-#' r=applyDictionary(toks, dict, valuetype='fixed', verbose=FALSE),
-#' cpp=applyDictionary2(toks, dict, valuetype='fixed', verbose=FALSE, indexing=FALSE)
+#'   r=applyDictionary(toks, dict, valuetype='fixed', verbose=FALSE),
+#'   cpp=applyDictionary2(toks, dict, valuetype='fixed', verbose=FALSE, indexing=FALSE),
+#'   cppi=applyDictionary2(toks, dict, valuetype='fixed', verbose=FALSE, indexing=TRUE)
 #' )
 #' 
+#' toks_long <- tokens(tokenize(inaugCorpus, what='sentence', simplify=TRUE))
+#' microbenchmark::microbenchmark(
+#'   r=applyDictionary(toks_long, dict, valuetype='fixed', verbose=FALSE),
+#'   cpp=applyDictionary2(toks_long, dict, valuetype='fixed', verbose=FALSE, indexing=FALSE),
+#'   cppi=applyDictionary2(toks_long, dict, valuetype='fixed', verbose=FALSE, indexing=TRUE)
+#' )
+#' profvis::profvis(applyDictionary2(toks_long, dict, valuetype='fixed', verbose=FALSE, indexing=FALSE))
 #' 
 #' @export 
 applyDictionary2.tokens <- function(x, dictionary,
@@ -44,6 +55,12 @@ applyDictionary2.tokens <- function(x, dictionary,
                                    verbose = FALSE) {
   
     valuetype <- match.arg(valuetype)
+    
+    # Case-insesitive
+    if(case_insensitive){
+      x <- toLower(x)
+      dictionary <- lapply(dictionary, toLower)
+    }
     
     # Initialize
     tokens <- NULL
@@ -63,7 +80,7 @@ applyDictionary2.tokens <- function(x, dictionary,
       # Convert to regular expressions, then to fixed
       if (valuetype %in% c("glob"))
           sequences <- lapply(sequences, glob2rx)
-      if (valuetype %in% c("glob", "regex") | case_insensitive) {
+      if (valuetype %in% c("glob", "regex")) {
           # Generates all possible patterns of sequences
           seqs_token <- grid_sequence(sequences, types, valuetype, case_insensitive)
       } else {

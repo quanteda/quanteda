@@ -15,13 +15,12 @@ IntegerVector qatd_cpp_detect_hash_vector(IntegerVector tokens_,
                                           int id){
   
   std::vector<int> tokens = Rcpp::as< std::vector<int> >(tokens_);
-  std::vector<int> tokens_loc = Rcpp::as< std::vector<int> >(tokens_loc_);
+  IntegerVector tokens_loc = tokens_loc_;
   std::vector<int> seq = Rcpp::as< std::vector<int> >(seq_);
   int len_seq = seq.size();
   std::vector<int>::iterator it;
   it = std::search(tokens.begin(), tokens.end(), seq.begin(), seq.end());
   //Rcout << std::distance(tokens.begin(), it) << "\n";
-  bool match = false;
   while(it != tokens.end()){
     int loc = std::distance(tokens.begin(), it);
     tokens_loc[loc] = id;
@@ -29,7 +28,7 @@ IntegerVector qatd_cpp_detect_hash_vector(IntegerVector tokens_,
     it = std::search(it, tokens.end(), seq.begin(), seq.end());
     //Rcout << loc << "\n";
   }
-  return wrap(tokens_loc);
+  return tokens_loc;
 
 }
 
@@ -42,16 +41,16 @@ List qatd_cpp_detect_hash_list(List texts_,
 
   List texts = texts_;
   List texts_loc = texts_loc_;
+  int len = texts.size();
   
   // Generate empty List
   if(texts_loc_ == R_NilValue){
     //Rcout << "Is NULL\n";
-    for(int g=0; g<texts.size(); g++){
+    for(int g=0; g < len; g++){
       IntegerVector text = texts[g];
       texts_loc.push_back(IntegerVector(text.size()));
     }
   }
-  int len = texts.size();
   if(flags.size() != len){
     Rcout << "Invalid flag is given\n";
     return(texts);
@@ -72,11 +71,10 @@ loc <- qatd_cpp_detect_hash_list(toks_hash, NULL, rep(TRUE, length(toks_hash)), 
 loc <- qatd_cpp_detect_hash_list(toks_hash, loc, rep(TRUE, length(toks_hash)), c(5, 6), 88)
 loc
 
-
-# microbenchmark::microbenchmark(
-#   qatd_cpp_replace_hash_vector(toks_hash, c(3, 4), 9999),
-#   join_tokens_cpp(toks, c('c', 'd'), '_'),
-#   quanteda:::matchSequence(c(3, 4), toks_hash), times=100
-# )
+toks_hash <- rep(1:100, 1000)
+microbenchmark::microbenchmark(
+  qatd_cpp_detect_hash_vector(toks_hash, rep(0, 100000), c(3, 4), 9999),
+  quanteda:::matchSequence(c(3, 4), toks_hash), times=100
+)
 
 */

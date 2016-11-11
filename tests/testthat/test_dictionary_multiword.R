@@ -179,6 +179,9 @@ test_that("classic and hashed applyDictionary produce same results", {
     expect_equal(dfm(applyDictionary(toks, dict, valuetype = "fixed"), verbose = FALSE),
                  dfm(applyDictionary(toksh, dict, valuetype = "fixed"), verbose = FALSE))
     
+    expect_equal(dfm(applyDictionary(toks, dict, valuetype = "fixed"), verbose = FALSE)[,c('institutions', 'countries')],
+                 dfm(applyDictionary2(toksh, dict, valuetype = "fixed"), verbose = FALSE)[,c('institutions', 'countries')])
+    
     # microbenchmark::microbenchmark(
     #     classic = applyDictionary(toks, dict, valuetype = "fixed"),
     #     hashed = applyDictionary(toksh, dict, valuetype = "fixed"),
