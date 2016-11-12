@@ -56,7 +56,7 @@ dict <- dictionary(list(country = "united states",
 dict <- dictionary(list(country = "united states"))
 # toks_ad1 <- applyDictionary(toks, dict, "glob")
 toks_ad2 <- applyDictionary2(toks, dict, "glob")
-head(dfm(toks2))
+head(dfm(toks_ad2, verbose = FALSE))
 
 \dontrun{
 microbenchmark::microbenchmark(
