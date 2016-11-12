@@ -19,29 +19,39 @@ applyDictionary2 <- function(x, dictionary, ...) {
 }
 
 
-#' @rdname applyDictionary
+#' @rdname applyDictionary2
 #' @param concatenator a charactor that connect words in multi-words entries
 #' @param indexing search only documents that containe keywords
+#' @param valuetype how to interpret dictionary values: \code{"glob"} for 
+#'   "glob"-style wildcard expressions (the format used in Wordstat and LIWC
+#'   formatted dictionary values); \code{"regex"} for regular expressions; or
+#'   \code{"fixed"} for exact matching (entire words, for instance)
+#' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
+#' @param verbose print status messages if \code{TRUE}
+#' @param ... not used
 #' @examples 
 #' toks <- tokens(inaugCorpus)
-#' dict <- dictionary(list(country = "united states", law=c('law*', 'constitution'), freedom=c('free*', 'libert*')))
+#' dict <- dictionary(list(country = "united states", 
+#'                         law = c('law*', 'constitution'), 
+#'                         freedom = c('free*', 'libert*')))
 #' dict <- dictionary(list(country = "united states"))
 #' toks2 <- applyDictionary2(toks, dict, 'glob', verbose=TRUE)
 #' head(dfm(toks2))
 #' 
+#' \dontrun{
 #' microbenchmark::microbenchmark(
-#' r=applyDictionary(toks, dict, valuetype='fixed', verbose=FALSE),
-#' cpp=applyDictionary2(toks, dict, valuetype='fixed', verbose=FALSE, indexing=FALSE)
+#'     r   = applyDictionary(toks, dict, valuetype='fixed', verbose=FALSE),
+#'     cpp = applyDictionary2(toks, dict, valuetype='fixed', verbose=FALSE, indexing=FALSE)
 #' )
-#' 
-#' 
+#' }
 #' @export 
 applyDictionary2.tokens <- function(x, dictionary,
                                    valuetype = c("glob", "regex", "fixed"), 
                                    case_insensitive = TRUE,
                                    concatenator = ' ', 
-                                   indexing=TRUE, 
-                                   verbose = FALSE) {
+                                   indexing = TRUE, 
+                                   verbose = FALSE,
+                                   ... ) {
   
     valuetype <- match.arg(valuetype)
     

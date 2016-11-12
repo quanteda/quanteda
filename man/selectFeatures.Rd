@@ -5,6 +5,7 @@
 \alias{selectFeatures.collocations}
 \alias{selectFeatures.dfm}
 \alias{selectFeatures.tokenizedTexts}
+\alias{selectFeatures.tokens}
 \title{select features from an object}
 \usage{
 selectFeatures(x, features, ...)
@@ -17,6 +18,10 @@ selectFeatures(x, features, ...)
   "remove"), valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
   verbose = FALSE, ...)
+
+\method{selectFeatures}{tokens}(x, features, selection = c("keep", "remove"),
+  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
+  padding = FALSE, ...)
 
 \method{selectFeatures}{collocations}(x, features, selection = c("keep",
   "remove"), valuetype = c("glob", "regex", "fixed"),
@@ -160,6 +165,18 @@ selectFeatures(toks, stopwords("english"), "keep")
 selectFeatures(toks, stopwords("english"), "remove", padding = TRUE)
 selectFeatures(toks, stopwords("english"), "keep", padding = TRUE)
 selectFeatures(tokenize(encodedTexts[1]), stopwords("english"), "remove", padding = TRUE)
+toksh <- tokens(c(doc1 = "This is a SAMPLE text", doc2 = "this sample text is better"))
+feats <- c("this", "sample", "is")
+# keeping features
+selectFeatures(toksh, feats, selection = "keep")
+selectFeatures(toksh, feats, selection = "keep", padding = TRUE)
+selectFeatures(toksh, feats, selection = "keep", case_insensitive = FALSE)
+selectFeatures(toksh, feats, selection = "keep", padding = TRUE, case_insensitive = FALSE)
+# removing features
+selectFeatures(toksh, feats, selection = "remove")
+selectFeatures(toksh, feats, selection = "remove", padding = TRUE)
+selectFeatures(toksh, feats, selection = "remove", case_insensitive = FALSE)
+selectFeatures(toksh, feats, selection = "remove", padding = TRUE, case_insensitive = FALSE)
  
 
 ## example for collocations

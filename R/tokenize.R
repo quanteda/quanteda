@@ -394,17 +394,10 @@ is.tokenizedTexts <- function(x) {
 #' @export
 #' @method print tokenizedTexts
 print.tokenizedTexts <- function(x, ...) {
-    ndocuments <- ifelse(is.list(x), length(x), 1)
-    cat(class(x)[1], # ifelse("tokens" %in% class(x), "tokens", "tokenizedTexts"), 
-        " from ", ndocuments, " document", 
-        ifelse(ndocuments > 1, "s", ""), ".\n", sep = "")
-    if (is.list(x)) { 
-        class(x) <- "listof"
-        print(x, ...)
-    } else {
-        x <- as.character(x)
-        print(x, ...)
-    }
+    cat(class(x)[1], " from ", ndoc(x), " document", 
+        ifelse(ndoc(x) > 1, "s", ""), ".\n", sep = "")
+    class(x) <- "listof"
+    print(x, ...)
 }
 
 #' @rdname tokenize
@@ -426,4 +419,11 @@ as.tokenizedTexts.list <- function(x, ...) {
     attr(x, "concatenator") <- ""
     x
 }
+
+#' @export
+#' @rdname ndoc
+ndoc.tokenizedTexts <- function(x) {
+    length(x)
+}
+
 
