@@ -28,7 +28,7 @@ formatted dictionary values); \code{"regex"} for regular expressions; or
 
 \item{concatenator}{a charactor that connect words in multi-words entries}
 
-\item{indexing}{search only documents that containe keywords}
+\item{indexing}{search only documents that contain keywords}
 
 \item{verbose}{print status messages if \code{TRUE}}
 }
@@ -51,17 +51,17 @@ Selecting only features defined in a "dictionary" is traditionally
 \examples{
 toks <- tokens(inaugCorpus)
 dict <- dictionary(list(country = "united states", 
-                        law = c('law*', 'constitution'), 
-                        freedom = c('free*', 'libert*')))
+                        law = c("law*", "constitution"), 
+                        freedom = c("free*", "libert*")))
 dict <- dictionary(list(country = "united states"))
-toks2 <- applyDictionary2(toks, dict, 'glob', verbose=TRUE)
+# toks_ad1 <- applyDictionary(toks, dict, "glob")
+toks_ad2 <- applyDictionary2(toks, dict, "glob")
 head(dfm(toks2))
 
 \dontrun{
 microbenchmark::microbenchmark(
-    r   = applyDictionary(toks, dict, valuetype='fixed', verbose=FALSE),
-    cpp = applyDictionary2(toks, dict, valuetype='fixed', verbose=FALSE, indexing=FALSE)
-)
+    r   = applyDictionary(toks, dict, valuetype = "fixed"),
+    cpp = applyDictionary2(toks, dict, valuetype = "fixed", indexing = FALSE))
 }
 }
 
