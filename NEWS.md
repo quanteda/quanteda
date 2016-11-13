@@ -4,14 +4,15 @@ quanteda 0.9.8
 
 ## New Features
 
-*  Added tokens methods for `collocations()` and `kwic()` (0.9.9.11).
-*  Added fast `selectFeatures.tokens()` (0.9.9.11).
-*  Improved `ngrams()` and `joinTokens()` performance for hashed `tokens` class objects (0.9.9.10).
-*  Improved `dfm.character()` by using new `tokens()` constructor to create hashed tokenized texts by default when creating a dfm, resulting in performance gains when constructing a dfm.  Creating a dfm from a hashed `tokens` object is now 4-5 times faster than the older `tokenizedTexts` object (0.9.9.9).
-*  Added new (hashed) `tokens` class object replacing the `tokenizedTextsHashed` class (0.9.9.9).
-*  Added plot method for fitted textmodel_wordscores objects (0.9.9.8).  
+*  Now using ggplot2 (0.9.8.12)
+*  Added tokens methods for `collocations()` and `kwic()` (0.9.8.11).
+*  Added fast `selectFeatures.tokens()` (0.9.8.11).
+*  Improved `ngrams()` and `joinTokens()` performance for hashed `tokens` class objects (0.9.8.10).
+*  Improved `dfm.character()` by using new `tokens()` constructor to create hashed tokenized texts by default when creating a dfm, resulting in performance gains when constructing a dfm.  Creating a dfm from a hashed `tokens` object is now 4-5 times faster than the older `tokenizedTexts` object (0.9.8.9).
+*  Added new (hashed) `tokens` class object replacing the `tokenizedTextsHashed` class (0.9.8.9).
+*  Added plot method for fitted textmodel_wordscores objects (0.9.8.8).  
 *  Added fast `applyDictionary()` method for tokenizedTexts, that also works with 
-   dictionaries that have multi-word keys (0.9.9.8).  Addresses but does not entirely yet solve #188.
+   dictionaries that have multi-word keys (0.9.8.8).  Addresses but does not entirely yet solve #188.
 *  Added `sparsity()` function to compute the sparsity of a dfm (0.9.8.7).
 *  Added additional methods for tokenizedTextsHashed objects, including dfm,
    and more efficient wordstem, toLower, and toUpper (0.9.8.7).
