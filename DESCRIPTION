@@ -54,7 +54,7 @@ Suggests:
     XML,
     testthat,
     RColorBrewer,
-    ggplot2 (>= 2.1.0),
+    ggplot2 (>= 2.2.0),
     grid,
     text2vec
 URL: http://github.com/kbenoit/quanteda
