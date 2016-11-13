@@ -110,8 +110,7 @@ dfm <- function(x, ...) {
 #'                taxation="taxation",
 #'                taxregex="tax*",
 #'                country="united states")
-#' dictDfm <- dfm(mycorpus, dictionary=mydict)
-#' dictDfm
+#' dfm(mycorpus, dictionary = mydict)
 #' 
 #' # with the thesaurus feature
 #' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
@@ -170,7 +169,7 @@ dfm.character <- function(x,
 #     if (length(addedArgs <- list(...)) && !(addedArgs %in% names(formals(getS3method("tokenize", "character")))))
 #         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
 
-    if (verbose && grepl("^dfm\\.character", sys.calls()[[2]]))
+    if (verbose && grepl("^dfm\\.character", sys.calls()[2]))
         catm("Creating a dfm from a character vector ...")
 
     # case conversion and tokenization
@@ -180,8 +179,8 @@ dfm.character <- function(x,
         x <- toLower(x)
     }
     
-    if (verbose) catm("\n   ... tokenizing", sep="")
-    tokenizedTexts <- tokenize(x, removeNumbers = removeNumbers, 
+    if (verbose) catm("\n   ... tokenizing", sep = "")
+    tokenizedTexts <- tokens(x, removeNumbers = removeNumbers, 
                                removeSeparators = removeSeparators, removePunct = removePunct,
                                removeTwitter = removeTwitter,
                                ...)
@@ -222,6 +221,7 @@ dfm.tokenizedTexts <- function(x,
                                ...) {
     
     settings_ngrams <- attr(x, "ngrams")
+    settings_skip <- attr(x, "skip")
     settings_concatenator <- attr(x, "concatenator")
     
     valuetype <- match.arg(valuetype)
@@ -235,9 +235,8 @@ dfm.tokenizedTexts <- function(x,
     # argument checking
     language <- tolower(language)
     
-    if (verbose && grepl("^dfm\\.tokenizedTexts", sys.calls()[[2]])) {
-        catm("Creating a dfm from a tokenizedTexts object ...")
-    }
+    if (verbose & grepl("^dfm\\.token", sys.calls()[2]))
+        catm("Creating a dfm from a", class(x)[1], "object ...")
 
     # lowercase if necessary 
     if (toLower) {
@@ -245,53 +244,17 @@ dfm.tokenizedTexts <- function(x,
         x <- toLower(x)
     }
 
-    # get document names
+    # set document names if none
     if (is.null(names(x))) {
-        docNames <- paste("text", 1:length(x), sep="")
-    } else docNames <- names(x)
-    
-    # index documents
-    if (verbose) catm("\n   ... indexing documents: ", 
-                     format(length(x), big.mark=","), " document",
-                     ifelse(length(x) > 1, "s", ""), sep="")
-    nTokens <- lengths(x)
-    # find out which documents have zero feature counts
-    emptyDocs <- which(nTokens == 0)
-    # add docIndex positions for any zero-token docs; no effect if emptyDocs is empty
-    docIndex <- c(rep(seq_along(nTokens), nTokens), emptyDocs)
+        names(x) <- paste("text", 1:length(x), sep="")
+    } 
 
-    # index features
-    if (verbose) catm("\n   ... indexing features: ")
-    if (sum(nTokens) == 0) {
-        catm("\n   ... Error in dfm.tokenizedTexts(): no features found.\n")
-        return(NULL)
-    }
-    allFeatures <- unlist(x)
-    uniqueFeatures <- unique(allFeatures)
-    totalfeatures <- length(uniqueFeatures)
-    if (verbose) catm(format(totalfeatures, big.mark=","), " feature type",
-                     ifelse(totalfeatures > 1, "s", ""), sep="")
-    featureIndex <- match(allFeatures, uniqueFeatures)
-    # add an arbitrary "feature" for empty docs
-    if (length(emptyDocs)) {
-        featureIndex <- c(featureIndex, rep(length(uniqueFeatures)+1, length(emptyDocs)))
-        uniqueFeatures <- c(uniqueFeatures, "__TEMPFEATURE__")
-    }
-    
-    if (verbose) catm("\n")
-    
-    # make the dfm
-    dfmresult <- sparseMatrix(i = docIndex, 
-                              j = featureIndex, 
-                              x = 1L, 
-                              dimnames = list(docs = docNames, features = uniqueFeatures))
-    # remove dummy feature if needed
-    if (length(emptyDocs)) dfmresult <- dfmresult[, -ncol(dfmresult), drop = FALSE]
-    # construct the dfmSparse type object
-    dfmresult <- new("dfmSparse", dfmresult)
-    
+    # compile the dfm
+    dfmresult <- compile_dfm(x, verbose = verbose)
+        
     # copy attributes
-    dfmresult@ngrams <- settings_ngrams
+    dfmresult@ngrams <- as.integer(settings_ngrams)
+    dfmresult@skip <- as.integer(settings_skip)
     dfmresult@concatenator <- settings_concatenator
     
     if (!is.null(dictionary) | !is.null(thesaurus)) {
@@ -326,7 +289,8 @@ dfm.tokenizedTexts <- function(x,
     }
     
     if (verbose) 
-        catm("   ... created a", paste(dim(dfmresult), collapse=" x "), 
+        catm("   ... created a", paste(format(dim(dfmresult), big.mark=",", trim = TRUE), 
+                                       collapse=" x "), 
             "sparse dfm\n   ... complete. \nElapsed time:", 
             format((proc.time() - startTime)[3], digits = 3),
             "seconds.\n")
@@ -338,7 +302,92 @@ dfm.tokenizedTexts <- function(x,
     return(dfmresult)
 }
 
+
+## internal function to compile the dfm
+compile_dfm <- function(x, verbose = TRUE) {
+    UseMethod("compile_dfm")
+}
+
+## internal function to compile the dfm
+compile_dfm.tokenizedTexts <- function(x, verbose = TRUE) {
+
+    # index documents
+    if (verbose) catm("\n   ... indexing documents: ", 
+                      format(length(x), big.mark=","), " document",
+                      ifelse(length(x) > 1, "s", ""), sep="")
+    nTokens <- lengths(x)
+    # find out which documents have zero feature counts
+    emptyDocs <- which(nTokens == 0)
+    # add docIndex positions for any zero-token docs; no effect if emptyDocs is empty
+    docIndex <- c(rep(seq_along(nTokens), nTokens), emptyDocs)
     
+    # index features
+    if (verbose) catm("\n   ... indexing features: ")
+    if (sum(nTokens) == 0) {
+        catm("\n   ... Error in dfm.tokenizedTexts(): no features found.\n")
+        return(NULL)
+    }
+    allFeatures <- unlist(x, use.names=FALSE)
+    uniqueFeatures <- unique(allFeatures)
+    totalfeatures <- length(uniqueFeatures)
+    if (verbose) catm(format(totalfeatures, big.mark=","), " feature type",
+                      ifelse(totalfeatures > 1, "s", ""), sep="")
+    featureIndex <- match(allFeatures, uniqueFeatures)
+    # add an arbitrary "feature" for empty docs
+    if (length(emptyDocs)) {
+        featureIndex <- c(featureIndex, rep(length(uniqueFeatures)+1, length(emptyDocs)))
+        uniqueFeatures <- c(uniqueFeatures, "__TEMPFEATURE__")
+    }
+    
+    if (verbose) catm("\n")
+    
+    # make the dfm
+    dfmresult <- sparseMatrix(i = docIndex, 
+                              j = featureIndex, 
+                              x = 1L, 
+                              dimnames = list(docs = names(x), 
+                                              features = uniqueFeatures))
+    # remove dummy feature if needed
+    if (length(emptyDocs)) dfmresult <- dfmresult[, -ncol(dfmresult), drop = FALSE]
+    
+    new("dfmSparse", dfmresult)
+}
+
+compile_dfm.tokens <- function(x, verbose = TRUE) {
+    
+    if (verbose) {
+        catm("\n   ... found ", 
+             format(length(x), big.mark = ","), " document",
+             ifelse(length(x) > 1, "s", ""), ### replace with: ntoken()
+             ", ",
+             format(length(types(x)), big.mark = ","),  ### replace with: ntype()
+             " feature",
+             ifelse(length(types(x)) > 1, "s", ""),
+             "\n",
+             sep="")
+    }
+
+    ## special handling for empty documents
+    # find out which documents have zero feature counts
+    emptyDocs <- which(lengths(x) == 0)
+    # add an arbitrary "feature" for empty docs
+    if (length(emptyDocs)) {
+        x[emptyDocs] <- length(types(x)) + 1
+        types(x) <- c(types(x), "__TEMPFEATURE__")
+    }
+
+    dfmresult <- t(Matrix::sparseMatrix(i = unlist(x, use.names = FALSE), 
+                                        p = cumsum(c(1, ntoken(x))) - 1, 
+                                        x = 1L, 
+                                        dimnames = list(features = types(x), 
+                                                        docs = names(x))))
+    # remove dummy feature if needed
+    if (length(emptyDocs)) dfmresult <- dfmresult[, -ncol(dfmresult), drop = FALSE]
+    
+    new("dfmSparse", dfmresult)
+}
+
+
 
 #' @rdname dfm
 #' @param groups character vector containing the names of document variables for

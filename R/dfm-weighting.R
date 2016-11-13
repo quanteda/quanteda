@@ -401,7 +401,7 @@ setMethod("maxtf", signature(x = "dfmDense"), definition = function(x) {
 
 ## BENCHMARKING
 
-# microbenchmark(m1 <- apply(NSFdfm, 1, max), m2 <- NSFdfm[, max.col(t(NSFdfm))])
+# microbenchmark::microbenchmark(m1 <- apply(NSFdfm, 1, max), m2 <- NSFdfm[, max.col(t(NSFdfm))])
 
 # require(data.table)
 # f1 <- function(x) {
@@ -414,8 +414,8 @@ setMethod("maxtf", signature(x = "dfmDense"), definition = function(x) {
 # }
 # 
 # myDfm <- dfm(inaugCorpus, verbose = FALSE)
-# microbenchmark(f1(myDfm), f2(myDfm))
-# microbenchmark(f1(NSFdfm), f2(NSFdfm), times = 5)
+# microbenchmark::microbenchmark(f1(myDfm), f2(myDfm))
+# microbenchmark::microbenchmark(f1(NSFdfm), f2(NSFdfm), times = 5)
 
           
 # #' @rdname tfidf

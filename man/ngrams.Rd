@@ -4,23 +4,28 @@
 \alias{ngrams}
 \alias{ngrams.character}
 \alias{ngrams.tokenizedTexts}
+\alias{ngrams.tokens}
 \alias{skipgrams}
 \alias{skipgrams.character}
 \alias{skipgrams.tokenizedTexts}
+\alias{skipgrams.tokens}
 \title{Create ngrams and skipgrams}
 \usage{
 ngrams(x, ...)
 
 \method{ngrams}{character}(x, n = 2L, skip = 0L, concatenator = "_", ...)
 
-\method{ngrams}{tokenizedTexts}(x, n = 2L, skip = 0L, concatenator = "_",
-  ...)
+\method{ngrams}{tokenizedTexts}(x, ...)
+
+\method{ngrams}{tokens}(x, n = 2L, skip = 0L, concatenator = "_", ...)
 
 skipgrams(x, ...)
 
 \method{skipgrams}{character}(x, n, skip, concatenator = "_", ...)
 
 \method{skipgrams}{tokenizedTexts}(x, n, skip, concatenator = "_", ...)
+
+\method{skipgrams}{tokens}(x, n, skip, concatenator = "_", ...)
 }
 \arguments{
 \item{x}{a tokenizedText object or a character vector of tokens}
@@ -69,21 +74,21 @@ Normally, \code{\link{ngrams}} will be called through
 }
 \examples{
 # ngrams
-ngrams(LETTERS, n = 2)
-ngrams(LETTERS, n = 2, skip = 1)
-ngrams(LETTERS, n = 2, skip = 0:1)
-ngrams(LETTERS, n = 1:2)
-ngrams(LETTERS, n = c(2,3), skip = 0:1)
-
-tokens <- tokenize("the quick brown fox jumped over the lazy dog.", 
+tokens <- tokens("the quick brown fox jumped over the lazy dog.", 
                    removePunct = TRUE, simplify = TRUE)
 ngrams(tokens, n = 1:3)
 ngrams(tokens, n = c(2,4), concatenator = " ")
 ngrams(tokens, n = c(2,4), skip = 1, concatenator = " ")
 
 # skipgrams
-tokens <- tokenize(toLower("Insurgents killed in ongoing fighting."), 
-                   removePunct = TRUE, simplify = TRUE)
+# with "classic" tokenized objects
+txt <- c("a b c d e", "c d e f g")
+toks <- tokenize(txt)
+ngrams(toks, n = 2:3)
+txt <- c("a b c d e", "c d e f g")
+toks_hashed <- tokens(txt)
+ngrams(toks_hashed, n = 2:3)
+tokens <- tokens("insurgents killed in ongoing fighting", simplify = TRUE)
 skipgrams(tokens, n = 2, skip = 0:1, concatenator = " ") 
 skipgrams(tokens, n = 2, skip = 0:2, concatenator = " ") 
 skipgrams(tokens, n = 3, skip = 0:2, concatenator = " ")   

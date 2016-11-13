@@ -144,8 +144,7 @@ mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
                taxation="taxation",
                taxregex="tax*",
                country="united states")
-dictDfm <- dfm(mycorpus, dictionary=mydict)
-dictDfm
+dfm(mycorpus, dictionary = mydict)
 
 # with the thesaurus feature
 mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",

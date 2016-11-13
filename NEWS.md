@@ -4,6 +4,19 @@ quanteda 0.9.8
 
 ## New Features
 
+*  Added tokens methods for `collocations()` and `kwic()` (0.9.9.11).
+*  Added fast `selectFeatures.tokens()` (0.9.9.11).
+*  Improved `ngrams()` and `joinTokens()` performance for hashed `tokens` class objects (0.9.9.10).
+*  Improved `dfm.character()` by using new `tokens()` constructor to create hashed tokenized texts by default when creating a dfm, resulting in performance gains when constructing a dfm.  Creating a dfm from a hashed `tokens` object is now 4-5 times faster than the older `tokenizedTexts` object (0.9.9.9).
+*  Added new (hashed) `tokens` class object replacing the `tokenizedTextsHashed` class (0.9.9.9).
+*  Added plot method for fitted textmodel_wordscores objects (0.9.9.8).  
+*  Added fast `applyDictionary()` method for tokenizedTexts, that also works with 
+   dictionaries that have multi-word keys (0.9.9.8).  Addresses but does not entirely yet solve #188.
+*  Added `sparsity()` function to compute the sparsity of a dfm (0.9.8.7).
+*  Added additional methods for tokenizedTextsHashed objects, including dfm,
+   and more efficient wordstem, toLower, and toUpper (0.9.8.7).
+*  Added feature co-occurence matrix functions (`fcm`) (0.9.8.6).
+*  Added tokenizedTextsHashed methods (0.9.8.6).  
 *  Improved the performance of `selectFeatures.tokenizedTexts()`.  
 *  Improved the performance of `rbind.dfm()`.  
 *  Added support for different docvars when importing multiple files using `textfile()`.  (#147)  
@@ -24,6 +37,8 @@ quanteda 0.9.8
 
 ## Bug fixes
 
+*  (0.9.8.7) Solved #267 in which `fcm(x, tri = TRUE)` temporarily created a dense logical matrix.
+*  (0.9.8.7) Added feature co-occurence matrix functions (`fcm`).
 *  (0.9.8.5) Fixed an incompatibility in sequences.cpp with Solaris x86 (#257)
 *  (0.9.8.4) Fix bug in verbose output of dfm that causes misreporting of number of features (#250)
 *  (0.9.8.4) Fix a bug in `selectFeatures.dfm()` that ignored `case_insensitive = TRUE` settings (#251) 

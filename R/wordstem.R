@@ -42,7 +42,7 @@ wordstem.character <- function(x, language = "porter") {
 
 # 
 # toks <- unlist(tokenize(toLower(inaugTexts[1:5]), removePunct = TRUE, removeNumbers = TRUE), use.names = FALSE)
-# microbenchmark(wordstem(toks), 
+# microbenchmark::microbenchmark(wordstem(toks), 
 #                wordstemP(toks),
 #                simplify2array(parallel::mclapply(toks, wordstem, language=language)))
 
@@ -63,6 +63,25 @@ wordstem.tokenizedTexts <- function(x, language = "porter") {
     result[which(is.na(x))] <- NA
     attributes(result) <- origAttrs
     result
+}
+
+#' @rdname wordstem
+#' @import stringi 
+#' @export
+#' @examples 
+#' \dontshow{
+#' txt <- c(one = "Eating eater eaters eats ate.",
+#'          two = "Taxing taxes taxed my tax return.")
+#' th <- tokens(toLower(txt))
+#' wordstem(th)
+#' }
+wordstem.tokens <- function(x, language = "porter") {
+    if (all.equal(attributes(x)$ngrams, 1))
+        types(x) <- wordstem(types(x), language = language)
+    else 
+        types(x) <- wordstem_Ngrams(types(x), language = language)
+
+    tokens_hashed_recompile(x)
 }
 
 

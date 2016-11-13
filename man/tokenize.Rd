@@ -2,6 +2,7 @@
 % Please edit documentation in R/tokenize.R
 \name{tokenize}
 \alias{as.tokenizedTexts}
+\alias{as.tokenizedTexts.list}
 \alias{clean}
 \alias{is.tokenizedTexts}
 \alias{tokenise}
@@ -22,7 +23,9 @@ tokenize(x, ...)
 
 is.tokenizedTexts(x)
 
-as.tokenizedTexts(x)
+as.tokenizedTexts(x, ...)
+
+\method{as.tokenizedTexts}{list}(x, ...)
 }
 \arguments{
 \item{x}{The text(s) or corpus to be tokenized}

@@ -46,6 +46,8 @@ setMethod("phrasetotoken", signature = c("corpus", "ANY"),
               object
           })
 
+setOldClass("tokenizedTexts")
+setClassUnion("textORtokens", members =  c("character", "tokenizedTexts"))
 
 #' @rdname phrasetotoken
 #' @export
@@ -57,7 +59,7 @@ setMethod("phrasetotoken", signature = c("corpus", "ANY"),
 #'          "Some damn good stuff, like the text, she likes that too.")
 #' phrasetotoken(txt, myDict)
 #'
-setMethod("phrasetotoken", signature = c("character", "dictionary"), 
+setMethod("phrasetotoken", signature = c("textORtokens", "dictionary"), 
           function(object, phrases, ...) {
               phraseConcatenator <- phrases@concatenator
               phrasesTmp <- unlist(phrases, use.names = FALSE)
@@ -72,7 +74,7 @@ setClass("collocations", contains = "data.table")
 
 #' @rdname phrasetotoken
 #' @export
-setMethod("phrasetotoken", signature = c("character", "collocations"), 
+setMethod("phrasetotoken", signature = c("textORtokens", "collocations"), 
           function(object, phrases, ...) {
               word1 <- word2 <- word3 <- NULL
               # sort by word3 so that trigrams will be processed before bigrams
@@ -116,5 +118,49 @@ setMethod("phrasetotoken", signature = c("character", "character"),
               }
               object
           })
+
+
+#' @rdname phrasetotoken
+#' @export
+#' @examples 
+#' # on simple text
+#' toks <- tokenize("Simon sez the multi word expression plural is multi word expressions, Simon sez.")
+#' phrases <- c("multi word expression*", "Simon sez")
+#' phrasetotoken(toks, phrases)
+#' 
+setMethod("phrasetotoken", signature = c("tokenizedTexts", "character"), 
+          function(object, phrases, concatenator = "_", valuetype = c("glob", "regex", "fixed"), 
+                   case_insensitive = TRUE, ...) {
+              valuetype <- match.arg(valuetype)
+              
+              # convert any patterns to fixed matches
+              phrasesTok <- tokenize(phrases, what = "fasterword")
+              attr.orig <- attributes(phrasesTok)
+              class.orig <- class(phrasesTok)
+              
+              if (valuetype %in% c("glob", "fixed"))
+                  phrasesTok <- lapply(phrasesTok, glob2rx)
+              phrasesTokFixed <- regexToFixed(object, phrasesTok, case_insensitive = case_insensitive)
+              attributes(phrasesTokFixed) <- attr.orig
+              class(phrasesTokFixed) <- class.orig
+              
+              joinTokens(object, phrasesTokFixed, valuetype = "fixed", case_insensitive = FALSE)
+})
+
+regexToFixed <- function(tokens, patterns, case_insensitive = FALSE, types = NULL) {
+    
+    # get unique token types
+    if (is.null(types)) types <- unique(unlist(tokens))
+    
+    seqs_token <- list()
+    for (seq_regex in patterns) {
+        match <- lapply(seq_regex, function(x, y) y[stringi::stri_detect_regex(y, x, case_insensitive = case_insensitive)], types)
+        if (length(unlist(seq_regex)) != length(match)) next
+        match_comb <- do.call(expand.grid, c(match, stringsAsFactors = FALSE)) # produce all possible combinations
+        seqs_token <- c(seqs_token, split_df_cpp(t(match_comb)))
+    }
+    seqs_token
+}
+
 
 

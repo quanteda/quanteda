@@ -172,7 +172,6 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
         call = match.call())
 }
 
-###########################################
 
 #' @rdname textmodel_wordfish
 #' @param x for print method, the object to be printed

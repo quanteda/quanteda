@@ -426,3 +426,19 @@ compress.dfm <- function(x, margin = c("both", "documents", "features"), ...) {
 #                                m2 = t(t(x) %*% Matrix(sapply(unique(dnames),"==", dnames))), 
 #                                times = 100)
  
+#' compute the sparsity of a document-feature matrix
+#'
+#' Return the proportion of sparseness of a document-feature matrix, equal
+#' to the proportion of cells that have zero counts.
+#' @param x the document-feature matrix
+#' @examples 
+#' inaug_dfm <- dfm(inaugCorpus, verbose = FALSE)
+#' sparsity(inaug_dfm)
+#' sparsity(trim(inaug_dfm, minCount = 5))
+#' @export
+sparsity <- function(x) {
+    if (!is.dfm(x))
+        stop("sparsity is only defined for dfm objects")
+    (1 - length(x@x) / prod(dim(x)))
+}
+

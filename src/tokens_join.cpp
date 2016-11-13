@@ -1,22 +1,11 @@
 #include <Rcpp.h>
 #include <vector>
+#include "quanteda.h"
 
 using namespace Rcpp;
+using namespace std;
+using namespace quanteda;
 
-
-String join2(const CharacterVector &tokens, 
-             const String &delim){
-  if(tokens.size() == 0) return "";
-  String token = tokens[0];
-  int len_ngram = tokens.size();
-  for (int i = 1; i < len_ngram; i++) {
-    token += delim;
-    token += tokens[i];
-    //Rcout << "Joined " << token.get_cstring()  << "\n";
-  }
-  token.set_encoding(CE_UTF8);
-  return token;
-}
 
 // [[Rcpp::export]]
 void join_tokens_cpp(CharacterVector tokens, 
@@ -30,11 +19,11 @@ void join_tokens_cpp(CharacterVector tokens,
     return ;
   }
   int start = -1;
-  bool change = false;
-  String token_joined = join2(tokens_join, delim);
+  bool change = FALSE;
+  String token_joined = join_character_vector(tokens_join, delim);
   for (int i = 0; i < len - (len_join - 1); i++){
     //Rcout << "Now " << i << " " << tokens[i] << "\n";
-    if(tokens[i] == tokens_join[0] & tokens[i + 1] == tokens_join[1]){ // Initial match
+    if(i < len - (len_join - 1)  && tokens[i] == tokens_join[0] && tokens[i + 1] == tokens_join[1]){ // Initial match
       start = i;
       //Rcout << "Start " << start << " " << tokens[i] << "\n";
     }
@@ -65,7 +54,6 @@ void join_tokens_cpp(CharacterVector tokens,
         tokens_joined[j] = tokens[i];
         j++;
       }
-      
     }
     //Rcout << "Done\n";
     tokens = tokens_joined[seq(0, j - 1)];

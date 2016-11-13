@@ -60,6 +60,20 @@ toLower.tokenizedTexts <- function(x, keepAcronyms = FALSE, ...) {
     x
 }
 
+#' @rdname toLower
+#' @export
+toLower.tokens <- function(x, ...) {
+    types(x) <- toLower(types(x), ...)
+    tokens_hashed_recompile(x)
+}
+
+#' @rdname toLower
+#' @export
+toUpper.tokens <- function(x, ...) {
+    types(x) <- toUpper(types(x), ...)
+    tokens_hashed_recompile(x)
+}
+
 
 #' @rdname toLower
 #' @export
