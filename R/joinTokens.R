@@ -149,7 +149,7 @@ joinTokens.tokens <- function(x, sequences, concatenator = "_",
                 id <- ids_exist[i]
             }
             if (verbose) message(sprintf(' Use %d for %s ', id, types_new[i]))
-            x <- qatd_cpp_replace_hash_list(x, flag, match(seq_token, types), id)
+            x <- qatd_cpp_replace_hash_list(x, flag, fmatch(seq_token, types), id)
             
             # Add new ID to types only if used
             if (is.na(ids_exist[i]) & id %in% unlist(x, use.names = FALSE)) {

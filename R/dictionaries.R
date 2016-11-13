@@ -88,45 +88,45 @@ setMethod("show", "dictionary",
 dictionary <- function(x = NULL, file = NULL, format = NULL, 
                        concatenator = " ", 
                        toLower = TRUE, encoding = "") {
-  if (!is.null(x) & !is.list(x))
-    stop("Dictionaries must be named lists or lists of named lists.")
-  if (any(missingLabels <- which(names(x) == ""))) 
-    stop("missing key name for list element", 
-         ifelse(length(missingLabels)>1, "s ", " "),
-         missingLabels, "\n") 
-  x <- flatten.dictionary(x)
-  if (!is.null(x) & !is.list(x))
-    stop("Dictionaries must be named lists or lists of named lists.")
-  
-  dict_format_mapping <- c(cat="wordstat", dic="LIWC", ykd="yoshikoder", lcd="yoshikoder", lc3="lexicoder")
-  if (!is.null(file)) {
-
-    if (is.null(format)) {
-      ext <- file_ext(file)
-      if (ext %in% names(dict_format_mapping)) {
-        format <- dict_format_mapping[[ext]]
-      }
-      else {
-        stop(paste("Unknown dictionary file extension", ext))
-      }
+    if (!is.null(x) & !is.list(x))
+        stop("Dictionaries must be named lists or lists of named lists.")
+    if (any(missingLabels <- which(names(x) == ""))) 
+        stop("missing key name for list element", 
+             ifelse(length(missingLabels)>1, "s ", " "),
+             missingLabels, "\n") 
+    x <- flatten.dictionary(x)
+    if (!is.null(x) & !is.list(x))
+        stop("Dictionaries must be named lists or lists of named lists.")
+    
+    dict_format_mapping <- c(cat="wordstat", dic="LIWC", ykd="yoshikoder", lcd="yoshikoder", lc3="lexicoder")
+    if (!is.null(file)) {
+        
+        if (is.null(format)) {
+            ext <- file_ext(file)
+            if (ext %in% names(dict_format_mapping)) {
+                format <- dict_format_mapping[[ext]]
+            }
+            else {
+                stop(paste("Unknown dictionary file extension", ext))
+            }
+        }
+        else {
+            format <- match.arg(format, dict_format_mapping)
+        }
+        format <- unname(format)
+        
+        if (format=="wordstat") 
+            x <- readWStatDict(file, enc = encoding, toLower = toLower)
+        else if (format=="LIWC")
+            x <- readLIWCdict(file, toLower = toLower, encoding = encoding)
+        else if (format=="yoshikoder")
+            x <- readYKdict(file)
+        else if (format=="lexicoder")
+            x <- readLexicoderDict(file)
+        
     }
-    else {
-      format <- match.arg(format, dict_format_mapping)
-    }
-    format <- unname(format)
-
-    if (format=="wordstat") 
-      x <- readWStatDict(file, enc = encoding, toLower = toLower)
-    else if (format=="LIWC")
-      x <- readLIWCdict(file, toLower = toLower, encoding = encoding)
-    else if (format=="yoshikoder")
-      x <- readYKdict(file)
-    else if (format=="lexicoder")
-      x <- readLexicoderDict(file)
-
-  }
-  
-  new("dictionary", x, format = format, file = file, concatenator = concatenator)
+    
+    new("dictionary", x, format = format, file = file, concatenator = concatenator)
 }
 
 # Import a Wordstat dictionary
@@ -172,7 +172,7 @@ readWStatDict <- function(path, enc="", toLower=TRUE) {
     }
     flatDict <- list()
     categ <- list()
-
+    
     # this loop collapses the category cells together and
     # makes the list of named lists compatible with dfm
     for (i in 1:nrow(d)){
@@ -211,13 +211,13 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     if (encoding == "") encoding <- getOption("encoding")
     d <- readLines(con <- file(path, encoding = encoding), warn = FALSE)
     close(con)
-
+    
     # remove any lines with <of>
     oflines <- grep("<of>", d)
     if (length(oflines)) {
         catm("note: ", length(oflines), " term",
-            ifelse(length(oflines)>1, "s", ""), 
-            " ignored because contains unsupported <of> tag\n", sep = "")
+             ifelse(length(oflines)>1, "s", ""), 
+             " ignored because contains unsupported <of> tag\n", sep = "")
         d <- d[-oflines]
     }
     
@@ -235,7 +235,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     colnames(guide) <- c('catNum', 'catName' )
     guide$catNum <- as.integer(guide$catNum)
     # if (toLower) guide$catName <- toLower(guide$catName)
-
+    
     # initialize the dictionary as list of NAs
     dictionary <- list()
     length(dictionary) <- nrow(guide)
@@ -253,7 +253,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
             catm("  [line ", foundParens + guideRowEnd, ":] ", catlist[i], "\n", sep = "")
         catlist <- gsub("\\(.+\\)", "", catlist)
     }
-        
+    
     ## clean up irregular dictionary files
     # remove any repeated \t
     catlist <- gsub("\t\t+", "\t", catlist)
@@ -264,7 +264,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     # remove any \t only lines or empty lines
     if (length(blanklines <- grep("^\\s*$", catlist))) 
         catlist <- catlist[-blanklines]
-
+    
     catlist <- strsplit(catlist, "\t")
     # catlist <- tokenize(catlist, what = "fasterword", removeNumbers = FALSE)
     catlist <- as.data.frame(do.call(rbind, lapply(catlist, '[', 1:max(sapply(catlist, length)))), stringsAsFactors = FALSE)
@@ -285,7 +285,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     catnames <- names(catlist)
     catlist <- as.data.frame(do.call(rbind, lapply(catlist, '[', 1:max(sapply(catlist, length)))), stringsAsFactors = FALSE)
     rownames(catlist) <- catnames
- 
+    
     terms <- as.list(rep(NA, nrow(catlist)))
     names(terms) <- rownames(catlist)
     for (i in 1:nrow(catlist)) {
@@ -366,25 +366,25 @@ flatten.dictionary <- function(elms, parent = '', dict = list()) {
 # @author Adam Obeng
 # @export
 readLexicoderDict <- function(path, toLower=TRUE) {
-  current_key <- NULL
-  current_terms <- c()
-  dict <- list() 
-  #  Lexicoder 3.0 files are always UTF-8
-  for (l in readLines(con <- file(path, encoding = 'utf-8'))) {
-    if (toLower) l <- tolower(l)
-    if (substr(l, 1, 1) == '+') {
-      if (length(current_terms) > 0) {
-        dict[[current_key]] <- current_terms
-      }
-      current_key <- substr(l, 2, nchar(l))
-      current_terms <- c()
+    current_key <- NULL
+    current_terms <- c()
+    dict <- list() 
+    #  Lexicoder 3.0 files are always UTF-8
+    for (l in readLines(con <- file(path, encoding = 'utf-8'))) {
+        if (toLower) l <- tolower(l)
+        if (substr(l, 1, 1) == '+') {
+            if (length(current_terms) > 0) {
+                dict[[current_key]] <- current_terms
+            }
+            current_key <- substr(l, 2, nchar(l))
+            current_terms <- c()
+        }
+        else {
+            current_terms <- c(current_terms, l)
+        }
     }
-    else {
-      current_terms <- c(current_terms, l)
-    }
-  }
-  dict[[current_key]] <- current_terms
-  return(dict)
+    dict[[current_key]] <- current_terms
+    return(dict)
 }
 
 
@@ -460,7 +460,7 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     
     if (verbose) catm("applying a dictionary consisting of ", length(dictionary), " key", 
-                     ifelse(length(dictionary) > 1, "s", ""), "\n", sep="")
+                      ifelse(length(dictionary) > 1, "s", ""), "\n", sep="")
     
     # convert wildcards to regular expressions (if needed)
     if (valuetype == "glob") {
@@ -495,10 +495,10 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
                                            rep(0, nrow(x))
                                    })
     dfmresult2 <- new("dfmSparse", sparseMatrix(i = newDocIndex,
-                               j = rep(1:length(dictionary), each = ndoc(x)),
-                               x = unlist(newFeatureCountsList),
-                               dimnames=list(docs = docnames(x), 
-                                             features = newFeatures)))
+                                                j = rep(1:length(dictionary), each = ndoc(x)),
+                                                x = unlist(newFeatureCountsList),
+                                                dimnames=list(docs = docnames(x), 
+                                                              features = newFeatures)))
     if (!exclusive) {
         if (!all(is.null(keyIndex <- unlist(newFeatureIndexList, use.names = FALSE))))
             dfmresult2 <- cbind(x[, -keyIndex], dfmresult2)
@@ -556,7 +556,7 @@ applyDictionary.tokens <- function(x, dictionary, exclusive = TRUE,
     # match to integers by looking up against x's types
     dict_tokenized <- lapply(dict_tokenized, 
                              function(i) lapply(i, match, types(x)))
-
+    
     # pad each document with a "blank", to prevent spanning documents
     x <- lapply(unclass(x), function(toks) c(toks, NA))
     # get the lengths, including dummy pad
@@ -717,7 +717,6 @@ applyDictionary.tokenizedTexts <- function(x, dictionary, exclusive = TRUE,
 }
 
 
- 
 
 
 

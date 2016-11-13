@@ -2,6 +2,11 @@
 quanteda 0.9.8
 ==============
 
+## Experimental
+
+*  Added temporary `applyDictionary2()` for comparison and testing (0.9.9.12).
+
+
 ## New Features
 
 *  Added tokens methods for `collocations()` and `kwic()` (0.9.9.11).
