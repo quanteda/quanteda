@@ -29,6 +29,13 @@ namespace quanteda{
         return token;
     }
 
+    inline bool has_na(IntegerVector vec) {
+        for (int i = 0; i < vec.size(); ++i) {
+            if(vec[i] == NA_INTEGER) return true;
+        }
+      return false;
+    }
+
     // Tokens object
     class Tokens {
       public:
