@@ -10,6 +10,9 @@ env:
   global:
     - R_CHECK_ARGS="--no-build-vignettes"
 
+before_install:
+  - Rscript -e 'install.packages("devtools")'
+  
 after_success:
   - Rscript -e 'library(covr);codecov()'
 
