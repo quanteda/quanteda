@@ -157,7 +157,7 @@ regexToFixed <- function(tokens, patterns, case_insensitive = FALSE, types = NUL
         match <- lapply(seq_regex, function(x, y) y[stringi::stri_detect_regex(y, x, case_insensitive = case_insensitive)], types)
         if (length(unlist(seq_regex)) != length(match)) next
         match_comb <- as.matrix(do.call(expand.grid, c(match, stringsAsFactors = FALSE))) # produce all possible combinations
-        seqs_token <- c(seqs_token, unname(split(id_comb, row(match_comb))))
+        seqs_token <- c(seqs_token, unname(split(match_comb, row(match_comb))))
     }
     seqs_token
 }
