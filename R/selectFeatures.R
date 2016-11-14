@@ -248,7 +248,7 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
     valuetype <- match.arg(valuetype)
     originalvaluetype <- valuetype
     features <- unique(unlist(features, use.names=FALSE))  # to convert any dictionaries
-    y <- deepcopy(x) # copy x to y to prevent changes in x
+    y <- qatd_cpp_deepcopy(x) # copy x to y to prevent changes in x
     n <- length(y)
     
     if(indexing){
