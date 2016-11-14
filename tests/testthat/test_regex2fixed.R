@@ -1,9 +1,6 @@
-library(quanteda)
-library(testthat)
-
 context('test regex2fixed.R')
 
-test_that("test that egex2fixed converts regex patterns properly", {
+test_that("egex2fixed converts regex patterns correctly", {
       
     regex <- list(c('^a$', '^b'), c('c'), c('d'))
     types <- c('A', 'AA', 'B', 'BB', 'C', 'CC', 'a', 'aa', 'b', 'bb', 'c', 'cc')

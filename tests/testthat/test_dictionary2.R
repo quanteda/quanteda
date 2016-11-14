@@ -84,13 +84,12 @@ test_that("multi-word dictionary behavior is not sensitive to the order of dicti
     toks <- tokens(txt, removePunct = TRUE)
     dict1 <- dictionary(list(Countries = c("United States"),
                              team = c("Manchester United", "Arsenal")))
-    dict2 <- dictionary(list(team = c("Manchester United", "Arsenal"),
+    dict2 <- dictionary(list(team = c("Arsenal", "Manchester United"),
                              Countries = c("United States")))
     expect_equal(
         lapply(as.list(applyDictionary2(toks, dictionary = dict1, valuetype = "fixed")), sort),
         lapply(as.list(applyDictionary2(toks, dictionary = dict2, valuetype = "fixed")), sort)
     )
-
     
 })
 
@@ -102,7 +101,7 @@ test_that("multi-word dictionary preserves the original orders of features", {
     dict <- dictionary(list(Countries = c("United States"),
                             team = c("Manchester United", "Arsenal")))
     expect_equal(
-        unname(as.list(applyDictionary2(toks, dictionary = dict1, valuetype = "fixed"))),
+        unname(as.list(applyDictionary2(toks, dictionary = dict, valuetype = "fixed"))),
         list(c("Countries"), c("team", "team", "Countries"))
     )
     
