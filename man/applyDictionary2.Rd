@@ -2,30 +2,48 @@
 % Please edit documentation in R/dictionaries2.R
 \name{applyDictionary2}
 \alias{applyDictionary2}
-\title{apply a dictionary or thesaurus to an object}
+\title{apply a dictionary to a tokens object}
 \usage{
-applyDictionary2(x, dictionary, ...)
+applyDictionary2(x, dictionary, valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE, concatenator = " ", verbose = FALSE)
 }
 \arguments{
 \item{x}{object to which dictionary or thesaurus will be supplied}
 
 \item{dictionary}{the \link{dictionary}-class object that will be applied to
 \code{x}}
-}
-\value{
-an object of the type passed with the value-matching features
-  replaced by dictionary keys
+
+\item{valuetype}{how to interpret dictionary values: \code{"glob"} for 
+"glob"-style wildcard expressions (the format used in Wordstat and LIWC
+formatted dictionary values); \code{"regex"} for regular expressions; or
+\code{"fixed"} for exact matching (entire words, for instance)}
+
+\item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}
+uppercase to distinguish them from other features}
+
+\item{concatenator}{a charactor that connect words in multi-words entries}
+
+\item{verbose}{print status messages if \code{TRUE}}
 }
 \description{
-Convert features into equivalence classes defined by values of a dictionary 
-object.
+apply a dictionary to a tokens object
 }
-\note{
-Selecting only features defined in a "dictionary" is traditionally 
-  known in text analysis as a \emph{dictionary method}, even though
-  technically this "dictionary" operates more like a thesarus.  If a thesaurus-like
-  application is desired, set \code{exclusive = FALSE} to convert features 
-  defined as values in a dictionary into their keys, while keeping all other
-  features.
+\examples{
+
+
+toks <- tokens(inaugCorpus)
+dict <- dictionary(list(country = "united states", 
+                   law=c('law*', 'constitution'), 
+                   freedom=c('free*', 'libert*')))
+toks2 <- applyDictionary2(toks, dict, 'glob', verbose=TRUE)
+head(dfm(toks2))
+
+dict_fix <- dictionary(list(country = "united states", 
+                       law=c('law', 'constitution'), 
+                       freedom=c('freedom', 'liberty'))) 
+head(dfm(applyDictionary(toks, dict_fix, valuetype='fixed', verbose=TRUE)))
+head(dfm(applyDictionary2(toks, dict_fix, valuetype='fixed', verbose=TRUE)))
+
+
 }
 

@@ -1,32 +1,17 @@
-#' apply a dictionary or thesaurus to an object
+#' apply a dictionary to a tokens object
 #' 
-#' Convert features into equivalence classes defined by values of a dictionary 
-#' object.
-#' @note Selecting only features defined in a "dictionary" is traditionally 
-#'   known in text analysis as a \emph{dictionary method}, even though
-#'   technically this "dictionary" operates more like a thesarus.  If a thesaurus-like
-#'   application is desired, set \code{exclusive = FALSE} to convert features 
-#'   defined as values in a dictionary into their keys, while keeping all other
-#'   features.
-#' @return an object of the type passed with the value-matching features
-#'   replaced by dictionary keys
+#' @rdname applyDictionary2
 #' @param x object to which dictionary or thesaurus will be supplied
 #' @param dictionary the \link{dictionary}-class object that will be applied to
 #'   \code{x}
-#' @export
-applyDictionary2 <- function(x, dictionary, ...) {
-    UseMethod("applyDictionary2")
-}
-
-#' @rdname applyDictionary
 #' @param valuetype how to interpret dictionary values: \code{"glob"} for 
 #'   "glob"-style wildcard expressions (the format used in Wordstat and LIWC
 #'   formatted dictionary values); \code{"regex"} for regular expressions; or
 #'   \code{"fixed"} for exact matching (entire words, for instance)
-#' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
 #' @param concatenator a charactor that connect words in multi-words entries
+#' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
+#'   uppercase to distinguish them from other features
 #' @param verbose print status messages if \code{TRUE}
-#' @param ... not used
 #' @examples
 #' 
 #' 
@@ -45,11 +30,11 @@ applyDictionary2 <- function(x, dictionary, ...) {
 #' 
 #' 
 #' @export 
-applyDictionary2.tokens <- function(x, dictionary,
-                                    valuetype = c("glob", "regex", "fixed"), 
-                                    case_insensitive = TRUE,
-                                    concatenator = ' ', 
-                                    verbose = FALSE, ...) {
+applyDictionary2 <- function(x, dictionary,
+                             valuetype = c("glob", "regex", "fixed"), 
+                             case_insensitive = TRUE,
+                             concatenator = ' ', 
+                             verbose = FALSE) {
     
     valuetype <- match.arg(valuetype)
     
