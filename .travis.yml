@@ -14,7 +14,7 @@ env:
     - R_CHECK_ARGS="--no-build-vignettes"
 
 before_install:
-  - Rscript -e 'install.packages("devtools")'
+  - Rscript -e 'install.packages(c("devtools", "topicmodels", "tm"))'
   
 after_success:
   - Rscript -e 'library(covr);codecov()'
