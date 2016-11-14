@@ -78,7 +78,7 @@ applyDictionary2.tokens <- function(x, dictionary,
     }
     
     # Initialize
-    tokens <- qatd_cpp_structcopy_int_list(x)
+    tokens <- qatd_cpp_structcopy_int_list(x) # create empty tokens object
     types <- types(x)
     
     for(h in 1:length(dictionary)){
@@ -88,15 +88,15 @@ applyDictionary2.tokens <- function(x, dictionary,
         
         # Convert to regular expressions, then to fixed
         if (valuetype %in% c("glob"))
-            keys <- lapply(keys, glob2rx)
+            keys_regex <- lapply(keys, glob2rx)
         if (valuetype %in% c("glob", "regex")) {
             # Generates all possible patterns of keys
-            keys_token <- regex2fixed(keys, types, valuetype, case_insensitive)
+            keys_fixed <- regex2fixed(keys_regex, types, valuetype, case_insensitive)
         } else {
-            keys_token <- keys
+            keys_fixed <- keys
         }
-        if(length(keys_token) == 0) next
-        keys_id <- lapply(keys_token, function(x) fmatch(x, types))
+        if(length(keys_fixed) == 0) next
+        keys_id <- lapply(keys_fixed, function(x) fmatch(x, types))
         #print(keys_id)
         tokens <- qatd_cpp_lookup_int_list(x, tokens, keys_id, h)
     }
