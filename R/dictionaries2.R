@@ -91,7 +91,7 @@ applyDictionary2.tokens <- function(x, dictionary,
             keys <- lapply(keys, glob2rx)
         if (valuetype %in% c("glob", "regex")) {
             # Generates all possible patterns of keys
-            keys_token <- expand_regex(keys, types, valuetype, case_insensitive)
+            keys_token <- regex2fixed(keys, types, valuetype, case_insensitive)
         } else {
             keys_token <- keys
         }
@@ -107,57 +107,4 @@ applyDictionary2.tokens <- function(x, dictionary,
     attr(tokens, "dictionary") <- dictionary
     
     return(tokens)
-}
-
-# mx <- applyDictionary(dfm(toks), dict_liwc)
-# 
-# regex <- list(c('^a$', '^b'), c('c'), c('d'))
-# types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
-# types <- attr(toks, "types")
-# valuetype <- 'glob'
-# case_insensitive = FALSE
-# expand_regex(regex, types, 'fixed', case_insensitive=FALSE)
-# expand_regex(dict_liwc, types, 'glob', case_insensitive=TRUE)
-
-expand_regex <- function(patterns, types, valuetype, case_insensitive = FALSE) {
-    
-    # Initialize
-    ids <- list()
-    
-    # Separate multi and single-entry patterns
-    len <- lengths(patterns)
-    pats_multi <- patterns[len>1] 
-    pats_single <- patterns[len==1]
-    
-    # Process multi-entry patterns
-    for (pat_multi in pats_multi) {
-        if(valuetype == 'fixed'){
-            if(case_insensitive){
-                id_multi <- lapply(pat_multi, function(x, y) y[toLower(y) %in% toLower(x)], types)
-            }else{
-                id_multi <- lapply(pat_multi, function(x, y) y[y %in% x], types)
-            }
-        }else{
-            id_multi <- lapply(pat_multi, function(x, y) stri_subset_regex(y, x, case_insensitive = case_insensitive), types)
-        }
-        id_comb <- as.matrix(do.call(expand.grid, c(id_multi, stringsAsFactors = FALSE))) # create all possible combinations
-        ids <- c(ids, unname(split(id_comb, row(id_comb))))
-    }
-    
-    # Process single-entry patterns
-    if(length(pats_single) > 0){
-        pats_single <- unlist(pats_single, use.names = FALSE)
-        if (valuetype == 'fixed'){
-            if(case_insensitive){
-                id_single <- as.list(types[toLower(types) %in% toLower(pats_single)])
-            }else{
-                id_single <- as.list(types[types %in% pats_single])
-            }
-        }else{
-            pats_single_all <- paste0(pats_single, collapse="|")
-            id_single <- as.list(stri_subset_regex(types, pats_single_all, case_insensitive = case_insensitive))
-        }
-        ids <- c(ids, id_single)
-    }
-    return(ids)
 }
