@@ -51,8 +51,6 @@ uppercase to distinguish them from other features}
 \item{verbose}{print status messages if \code{TRUE}}
 
 \item{concatenator}{a charactor that connect words in multi-words entries}
-
-\item{indexing}{search only documents that containe keywords}
 }
 \value{
 an object of the type passed with the value-matching features
