@@ -576,15 +576,4 @@ selectFeatures_collocations <- function(x, features, selection = c("keep", "remo
 #                          unit = "relative", times = 30
 #     )
 
-# Convert regex to fixed
-# @param regex regular expression
-# @param types unique types of tokens
-# @param case_insensitive case sensitivity
-# @param ... additional arguments passed to \code{\link[stringi]{stri_detect_regex}}
-# @export
-regex2fixed <- function(regex, types, case_insensitive = TRUE, ...){
-    regex_joined <- paste0(regex, collapse = "|")
-    types_match <- types[stringi::stri_detect_regex(types, regex_joined, case_insensitive = case_insensitive, ...)]  
-    return(types_match)
-}
 
