@@ -6,14 +6,12 @@ r_packages:
 r_binary_packages:
   - topicmodels
 
-install:
-- sudo apt-get install libgsl0-dev
-
 env:
   global:
     - R_CHECK_ARGS="--no-build-vignettes"
 
 before_install:
+  - sudo apt-get install libgsl0-dev
   - Rscript -e 'install.packages(c("devtools", "topicmodels", "tm"))'
   
 after_success:
