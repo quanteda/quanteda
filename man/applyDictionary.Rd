@@ -24,7 +24,7 @@ applyDictionary(x, dictionary, ...)
 
 \method{applyDictionary2}{tokens}(x, dictionary, valuetype = c("glob",
   "regex", "fixed"), case_insensitive = TRUE, concatenator = " ",
-  verbose = FALSE)
+  verbose = FALSE, ...)
 }
 \arguments{
 \item{x}{object to which dictionary or thesaurus will be supplied}
@@ -51,6 +51,17 @@ uppercase to distinguish them from other features}
 \item{verbose}{print status messages if \code{TRUE}}
 
 \item{concatenator}{a charactor that connect words in multi-words entries}
+
+\item{valuetype}{how to interpret dictionary values: \code{"glob"} for 
+"glob"-style wildcard expressions (the format used in Wordstat and LIWC
+formatted dictionary values); \code{"regex"} for regular expressions; or
+\code{"fixed"} for exact matching (entire words, for instance)}
+
+\item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
+
+\item{verbose}{print status messages if \code{TRUE}}
+
+\item{...}{not used}
 }
 \value{
 an object of the type passed with the value-matching features

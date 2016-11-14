@@ -18,9 +18,15 @@ applyDictionary2 <- function(x, dictionary, ...) {
     UseMethod("applyDictionary2")
 }
 
-
 #' @rdname applyDictionary
+#' @param valuetype how to interpret dictionary values: \code{"glob"} for 
+#'   "glob"-style wildcard expressions (the format used in Wordstat and LIWC
+#'   formatted dictionary values); \code{"regex"} for regular expressions; or
+#'   \code{"fixed"} for exact matching (entire words, for instance)
+#' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
 #' @param concatenator a charactor that connect words in multi-words entries
+#' @param verbose print status messages if \code{TRUE}
+#' @param ... not used
 #' @examples
 #' 
 #' 
@@ -43,7 +49,7 @@ applyDictionary2.tokens <- function(x, dictionary,
                                     valuetype = c("glob", "regex", "fixed"), 
                                     case_insensitive = TRUE,
                                     concatenator = ' ', 
-                                    verbose = FALSE) {
+                                    verbose = FALSE, ...) {
     
     valuetype <- match.arg(valuetype)
     
