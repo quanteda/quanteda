@@ -235,11 +235,11 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
 #' # with longer texts
 #' txts <- c(exampleString, inaugTexts[2])
 #' toks <- tokenize(txts)
-#' selectFeatures(toks, stopwords("en"), "remove")
-#' selectFeatures(toks, stopwords("en"), "keep")
-#' selectFeatures(toks, stopwords("en"), "remove", padding = TRUE)
-#' selectFeatures(toks, stopwords("en"), "keep", padding = TRUE)
-#' selectFeatures(tokenize(encodedTexts[1]), stopwords("en"), "remove", padding = TRUE)
+#' selectFeatures(toks, stopwords("english"), "remove")
+#' selectFeatures(toks, stopwords("english"), "keep")
+#' selectFeatures(toks, stopwords("english"), "remove", padding = TRUE)
+#' selectFeatures(toks, stopwords("english"), "keep", padding = TRUE)
+#' selectFeatures(tokenize(encodedTexts[1]), stopwords("english"), "remove", padding = TRUE)
 selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                            valuetype = c("glob", "regex", "fixed"),
                                            case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
