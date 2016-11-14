@@ -99,35 +99,43 @@ toks2 <- applyDictionary(toks, dict, valuetype = "fixed")
 toks2
 
 dict_liwc <- dictionary(file='/home/kohei/Documents/Dictonary/LIWC/LIWC2007_English.dic')
-library(quanteda)
 toks <- tokens(inaugCorpus)
-dict <- dictionary(list(country = "united states", law=c('law*', 'constitution'), freedom=c('free*', 'libert*')))
-dict <- dictionary(list(country = "united states", law=c('law', 'constitution'), freedom=c('freedom', 'liberty')))
-dict <- dictionary(list(country = c("united states", "united kingdom")))
-dict <- dictionary(list(rare=c("predilection", "flattering", "asylum interruptions", "awaken", "distrustful")))
+dict <- dictionary(list(country = "united states", 
+                   law=c('law*', 'constitution'), 
+                   freedom=c('free*', 'libert*')))
 toks2 <- applyDictionary2(toks, dict, 'glob', verbose=TRUE)
 head(dfm(toks2))
 
+dict_fix <- dictionary(list(country = "united states", 
+                       law=c('law', 'constitution'), 
+                       freedom=c('freedom', 'liberty'))) 
+head(dfm(applyDictionary(toks, dict_fix, valuetype='fixed', verbose=TRUE)))
+head(dfm(applyDictionary2(toks, dict_fix, valuetype='fixed', verbose=TRUE)))
+
 microbenchmark::microbenchmark(
   r=applyDictionary(toks, dict, valuetype='fixed', verbose=FALSE),
-  cpp=applyDictionary2(toks, dict, valuetype='fixed', verbose=FALSE),
-  cpp2=applyDictionary2(toks, dict, valuetype='fixed', verbose=FALSE)
+  cpp=applyDictionary2(toks, dict, valuetype='fixed', verbose=FALSE)
 )
 
 microbenchmark::microbenchmark(
   r=applyDictionary(toks, dict_liwc, valuetype='fixed', verbose=FALSE),
   cpp=applyDictionary2(toks, dict_liwc, valuetype='fixed', verbose=FALSE),
-  cpp2=applyDictionary2(toks, dict_liwc, valuetype='fixed', verbose=FALSE),
   times=1
 )
 
 toks_short <- tokens(tokenize(inaugCorpus, what='sentence', simplify=TRUE))
 microbenchmark::microbenchmark(
   r=applyDictionary(toks_short, dict, valuetype='fixed', verbose=FALSE),
-  cpp=applyDictionary2(toks_short, dict, valuetype='fixed', verbose=FALSE),
-  cpp2=applyDictionary2(toks_short, dict, valuetype='fixed', verbose=FALSE)
+  cpp=applyDictionary2(toks_short, dict, valuetype='fixed', verbose=FALSE)
 )
-profvis::profvis(applyDictionary2(toks, dict_liwc, valuetype='glob', verbose=FALSE))
+
+microbenchmark::microbenchmark(
+  dfm=applyDictionary(dfm(toks), dict_liwc, valuetype='glob', verbose=FALSE),
+  tokens=applyDictionary2(toks, dict_liwc, valuetype='glob', verbose=FALSE),
+  times=1
+)
+
+profvis::profvis(applyDictionary2(toks, dict_liwc[1], valuetype='glob', verbose=FALSE))
 
 }
 
