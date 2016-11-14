@@ -235,11 +235,11 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
 #' # with longer texts
 #' txts <- c(exampleString, inaugTexts[2])
 #' toks <- tokenize(txts)
-#' selectFeatures(toks, stopwords("english"), "remove")
-#' selectFeatures(toks, stopwords("english"), "keep")
-#' selectFeatures(toks, stopwords("english"), "remove", padding = TRUE)
-#' selectFeatures(toks, stopwords("english"), "keep", padding = TRUE)
-#' selectFeatures(tokenize(encodedTexts[1]), stopwords("english"), "remove", padding = TRUE)
+#' selectFeatures(toks, stopwords("en"), "remove")
+#' selectFeatures(toks, stopwords("en"), "keep")
+#' selectFeatures(toks, stopwords("en"), "remove", padding = TRUE)
+#' selectFeatures(toks, stopwords("en"), "keep", padding = TRUE)
+#' selectFeatures(tokenize(encodedTexts[1]), stopwords("en"), "remove", padding = TRUE)
 selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                            valuetype = c("glob", "regex", "fixed"),
                                            case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
@@ -289,7 +289,7 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
         }
     } else if (valuetype == "regex") {
         if (verbose) catm("Converting regex to fixed...\n")
-        types_match <- regex2fixed(features, types, case_insensitive) # get all the unique types that match regex
+        types_match <- unlist(regex2fixed(features, types, valuetype, case_insensitive), use.names = FALSE) # get all the unique types that match regex
         if(indexing) flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
         if(verbose) catm(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
         if (selection == "remove") {
