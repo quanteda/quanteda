@@ -1,5 +1,6 @@
-
-
+# This function converts regex to fixed patterns. This is one of the coner strones of 
+# the new artchitecture, but not really fast. Performance improvement is needed.
+#
 # regex <- list(c('^a$', '^b'), c('c'), c('d'))
 # types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
 # regex2fixed(regex, types, 'fixed', case_insensitive=TRUE)
