@@ -1,15 +1,19 @@
 language: r
 cache: packages
+warnings_are_errors: true
 sudo: true
 r_packages:
   - covr
 r_binary_packages:
   - topicmodels
-
 env:
   global:
     - R_CHECK_ARGS="--no-build-vignettes"
 
+before_install:
+  - sudo apt-get install libgsl0-dev
+  - Rscript -e 'install.packages(c("devtools", "topicmodels", "tm"))'
+  
 after_success:
   - Rscript -e 'library(covr);codecov()'
 

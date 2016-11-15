@@ -248,7 +248,7 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
     valuetype <- match.arg(valuetype)
     originalvaluetype <- valuetype
     features <- unique(unlist(features, use.names=FALSE))  # to convert any dictionaries
-    y <- deepcopy(x) # copy x to y to prevent changes in x
+    y <- qatd_cpp_deepcopy(x) # copy x to y to prevent changes in x
     n <- length(y)
     
     if(indexing){
@@ -289,7 +289,7 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
         }
     } else if (valuetype == "regex") {
         if (verbose) catm("Converting regex to fixed...\n")
-        types_match <- regex2fixed(features, types, case_insensitive) # get all the unique types that match regex
+        types_match <- unlist(regex2fixed(features, types, valuetype, case_insensitive), use.names = FALSE) # get all the unique types that match regex
         if(indexing) flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
         if(verbose) catm(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
         if (selection == "remove") {
@@ -576,15 +576,4 @@ selectFeatures_collocations <- function(x, features, selection = c("keep", "remo
 #                          unit = "relative", times = 30
 #     )
 
-# Convert regex to fixed
-# @param regex regular expression
-# @param types unique types of tokens
-# @param case_insensitive case sensitivity
-# @param ... additional arguments passed to \code{\link[stringi]{stri_detect_regex}}
-# @export
-regex2fixed <- function(regex, types, case_insensitive = TRUE, ...){
-    regex_joined <- paste0(regex, collapse = "|")
-    types_match <- types[stringi::stri_detect_regex(types, regex_joined, case_insensitive = case_insensitive, ...)]  
-    return(types_match)
-}
 

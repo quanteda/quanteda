@@ -110,6 +110,34 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qatd_cpp_detect_hash_vector
+IntegerVector qatd_cpp_detect_hash_vector(IntegerVector tokens_, IntegerVector tokens_loc_, IntegerVector seq_, int id);
+RcppExport SEXP quanteda_qatd_cpp_detect_hash_vector(SEXP tokens_SEXP, SEXP tokens_loc_SEXP, SEXP seq_SEXP, SEXP idSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type tokens_(tokens_SEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type tokens_loc_(tokens_loc_SEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type seq_(seq_SEXP);
+    Rcpp::traits::input_parameter< int >::type id(idSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_detect_hash_vector(tokens_, tokens_loc_, seq_, id));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_detect_hash_list
+List qatd_cpp_detect_hash_list(List texts_, List texts_loc_, IntegerVector seq, int id);
+RcppExport SEXP quanteda_qatd_cpp_detect_hash_list(SEXP texts_SEXP, SEXP texts_loc_SEXP, SEXP seqSEXP, SEXP idSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< List >::type texts_loc_(texts_loc_SEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type seq(seqSEXP);
+    Rcpp::traits::input_parameter< int >::type id(idSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_detect_hash_list(texts_, texts_loc_, seq, id));
+    return rcpp_result_gen;
+END_RCPP
+}
 // qatd_cpp_replace_hash_vector
 NumericVector qatd_cpp_replace_hash_vector(NumericVector tokens_, NumericVector seq_, int id);
 RcppExport SEXP quanteda_qatd_cpp_replace_hash_vector(SEXP tokens_SEXP, SEXP seq_SEXP, SEXP idSEXP) {
@@ -176,59 +204,63 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// split_df_cpp
-std::vector<CharacterVector> split_df_cpp(DataFrame df);
-RcppExport SEXP quanteda_split_df_cpp(SEXP dfSEXP) {
+// qatd_cpp_lookup_int_list
+List qatd_cpp_lookup_int_list(List texts_, List texts_loc_, List keys, int id);
+RcppExport SEXP quanteda_qatd_cpp_lookup_int_list(SEXP texts_SEXP, SEXP texts_loc_SEXP, SEXP keysSEXP, SEXP idSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< DataFrame >::type df(dfSEXP);
-    rcpp_result_gen = Rcpp::wrap(split_df_cpp(df));
-    return rcpp_result_gen;
-END_RCPP
-}
-// deepcopy
-Rcpp::List deepcopy(Rcpp::List x);
-RcppExport SEXP quanteda_deepcopy(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(deepcopy(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qatd_cpp_split_df
-List qatd_cpp_split_df(DataFrame df);
-RcppExport SEXP quanteda_qatd_cpp_split_df(SEXP dfSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< DataFrame >::type df(dfSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_split_df(df));
+    Rcpp::traits::input_parameter< List >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< List >::type texts_loc_(texts_loc_SEXP);
+    Rcpp::traits::input_parameter< List >::type keys(keysSEXP);
+    Rcpp::traits::input_parameter< int >::type id(idSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_lookup_int_list(texts_, texts_loc_, keys, id));
     return rcpp_result_gen;
 END_RCPP
 }
 // qatd_cpp_deepcopy
-List qatd_cpp_deepcopy(List x_);
+SEXP qatd_cpp_deepcopy(SEXP x_);
 RcppExport SEXP quanteda_qatd_cpp_deepcopy(SEXP x_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type x_(x_SEXP);
+    Rcpp::traits::input_parameter< SEXP >::type x_(x_SEXP);
     rcpp_result_gen = Rcpp::wrap(qatd_cpp_deepcopy(x_));
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_remove_string_list
-List qatd_cpp_remove_string_list(List list_, String elem_remove);
-RcppExport SEXP quanteda_qatd_cpp_remove_string_list(SEXP list_SEXP, SEXP elem_removeSEXP) {
+// qatd_cpp_structcopy_int_list
+List qatd_cpp_structcopy_int_list(List list_);
+RcppExport SEXP quanteda_qatd_cpp_structcopy_int_list(SEXP list_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type list_(list_SEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_structcopy_int_list(list_));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_remove_chr_list
+List qatd_cpp_remove_chr_list(List list_, String elem_remove);
+RcppExport SEXP quanteda_qatd_cpp_remove_chr_list(SEXP list_SEXP, SEXP elem_removeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type list_(list_SEXP);
     Rcpp::traits::input_parameter< String >::type elem_remove(elem_removeSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_remove_string_list(list_, elem_remove));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_remove_chr_list(list_, elem_remove));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_remove_int_list
+List qatd_cpp_remove_int_list(List list_, int elem_remove);
+RcppExport SEXP quanteda_qatd_cpp_remove_int_list(SEXP list_SEXP, SEXP elem_removeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type list_(list_SEXP);
+    Rcpp::traits::input_parameter< int >::type elem_remove(elem_removeSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_remove_int_list(list_, elem_remove));
     return rcpp_result_gen;
 END_RCPP
 }
