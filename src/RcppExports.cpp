@@ -42,20 +42,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// skipgramcpp
-StringVector skipgramcpp(std::vector < std::string > tokens, std::vector < int > ns, std::vector < int > ks, std::string delim);
-RcppExport SEXP quanteda_skipgramcpp(SEXP tokensSEXP, SEXP nsSEXP, SEXP ksSEXP, SEXP delimSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::vector < std::string > >::type tokens(tokensSEXP);
-    Rcpp::traits::input_parameter< std::vector < int > >::type ns(nsSEXP);
-    Rcpp::traits::input_parameter< std::vector < int > >::type ks(ksSEXP);
-    Rcpp::traits::input_parameter< std::string >::type delim(delimSEXP);
-    rcpp_result_gen = Rcpp::wrap(skipgramcpp(tokens, ns, ks, delim));
-    return rcpp_result_gen;
-END_RCPP
-}
 // qatd_cpp_ngram_hashed_vector
 List qatd_cpp_ngram_hashed_vector(NumericVector tokens, NumericVector ns, NumericVector skips);
 RcppExport SEXP quanteda_qatd_cpp_ngram_hashed_vector(SEXP tokensSEXP, SEXP nsSEXP, SEXP skipsSEXP) {
@@ -92,6 +78,20 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< CharacterVector >::type tokens(tokensSEXP);
     Rcpp::traits::input_parameter< String >::type delim(delimSEXP);
     rcpp_result_gen = Rcpp::wrap(qatd_cpp_ngram_unhash_type(ids_ngram, tokens, delim));
+    return rcpp_result_gen;
+END_RCPP
+}
+// skipgramcpp
+StringVector skipgramcpp(std::vector < std::string > tokens, std::vector < int > ns, std::vector < int > ks, std::string delim);
+RcppExport SEXP quanteda_skipgramcpp(SEXP tokensSEXP, SEXP nsSEXP, SEXP ksSEXP, SEXP delimSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector < std::string > >::type tokens(tokensSEXP);
+    Rcpp::traits::input_parameter< std::vector < int > >::type ns(nsSEXP);
+    Rcpp::traits::input_parameter< std::vector < int > >::type ks(ksSEXP);
+    Rcpp::traits::input_parameter< std::string >::type delim(delimSEXP);
+    rcpp_result_gen = Rcpp::wrap(skipgramcpp(tokens, ns, ks, delim));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -138,31 +138,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// join_tokens_cpp
-void join_tokens_cpp(CharacterVector tokens, CharacterVector tokens_join, const String& delim);
-RcppExport SEXP quanteda_join_tokens_cpp(SEXP tokensSEXP, SEXP tokens_joinSEXP, SEXP delimSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type tokens(tokensSEXP);
-    Rcpp::traits::input_parameter< CharacterVector >::type tokens_join(tokens_joinSEXP);
-    Rcpp::traits::input_parameter< const String& >::type delim(delimSEXP);
-    join_tokens_cpp(tokens, tokens_join, delim);
-    return R_NilValue;
-END_RCPP
-}
-// join_tokens_cppl
-void join_tokens_cppl(List texts, const std::vector<bool>& flags, const CharacterVector& tokens_join, const String& delim);
-RcppExport SEXP quanteda_join_tokens_cppl(SEXP textsSEXP, SEXP flagsSEXP, SEXP tokens_joinSEXP, SEXP delimSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type texts(textsSEXP);
-    Rcpp::traits::input_parameter< const std::vector<bool>& >::type flags(flagsSEXP);
-    Rcpp::traits::input_parameter< const CharacterVector& >::type tokens_join(tokens_joinSEXP);
-    Rcpp::traits::input_parameter< const String& >::type delim(delimSEXP);
-    join_tokens_cppl(texts, flags, tokens_join, delim);
-    return R_NilValue;
-END_RCPP
-}
 // qatd_cpp_replace_hash_vector
 NumericVector qatd_cpp_replace_hash_vector(NumericVector tokens_, NumericVector seq_, int id);
 RcppExport SEXP quanteda_qatd_cpp_replace_hash_vector(SEXP tokens_SEXP, SEXP seq_SEXP, SEXP idSEXP) {
@@ -188,6 +163,31 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type id(idSEXP);
     rcpp_result_gen = Rcpp::wrap(qatd_cpp_replace_hash_list(texts_, flags, seq, id));
     return rcpp_result_gen;
+END_RCPP
+}
+// join_tokens_cpp
+void join_tokens_cpp(CharacterVector tokens, CharacterVector tokens_join, const String& delim);
+RcppExport SEXP quanteda_join_tokens_cpp(SEXP tokensSEXP, SEXP tokens_joinSEXP, SEXP delimSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type tokens(tokensSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type tokens_join(tokens_joinSEXP);
+    Rcpp::traits::input_parameter< const String& >::type delim(delimSEXP);
+    join_tokens_cpp(tokens, tokens_join, delim);
+    return R_NilValue;
+END_RCPP
+}
+// join_tokens_cppl
+void join_tokens_cppl(List texts, const std::vector<bool>& flags, const CharacterVector& tokens_join, const String& delim);
+RcppExport SEXP quanteda_join_tokens_cppl(SEXP textsSEXP, SEXP flagsSEXP, SEXP tokens_joinSEXP, SEXP delimSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type texts(textsSEXP);
+    Rcpp::traits::input_parameter< const std::vector<bool>& >::type flags(flagsSEXP);
+    Rcpp::traits::input_parameter< const CharacterVector& >::type tokens_join(tokens_joinSEXP);
+    Rcpp::traits::input_parameter< const String& >::type delim(delimSEXP);
+    join_tokens_cppl(texts, flags, tokens_join, delim);
+    return R_NilValue;
 END_RCPP
 }
 // select_tokens_cppl
