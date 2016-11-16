@@ -72,16 +72,18 @@ joinTokens(toks_hash, seqs, valuetype = "fixed", case_insensitive = FALSE)
 # simple example
 txt <- c("a b c d e f g", "A B C D E F G", "A b C d E f G", 
          "aaa bbb ccc ddd eee fff ggg", "a_b b_c c_d d_e e_f f_g") 
-toks_hash <- tokens(txt)
-seqs <- tokens(c("a b", "C D", "aa* bb*", "eEE FFf", "d_e e_f"), 
+toks <- tokens(txt)
+seqs <- tokens(c("a b", "C D", "aa* bb*", "eEE FFf", "d_e e_f", "z z"), 
                hash = FALSE, what = "fastestword")
-joinTokens(toks_hash, seqs, valuetype = "glob", case_insensitive = TRUE)
-joinTokens(toks_hash, seqs, valuetype = "glob", case_insensitive = FALSE)
+joinTokens(toks, seqs, valuetype = "glob", case_insensitive = TRUE)
+joinTokens2(toks, seqs, valuetype = "glob", case_insensitive = TRUE)
+
+joinTokens(toks, seqs, valuetype = "glob", case_insensitive = FALSE)
 
 seqs <- tokens(c("a b", "C D", "aa bb", "eEE FFf", "d_e e_f"), 
                hash = FALSE, what = "fastestword")
-joinTokens(toks_hash, seqs, valuetype = "fixed", case_insensitive = TRUE)
-joinTokens(toks_hash, seqs, valuetype = "fixed", case_insensitive = FALSE)
+joinTokens(toks, seqs, valuetype = "fixed", case_insensitive = TRUE)
+joinTokens(toks, seqs, valuetype = "fixed", case_insensitive = FALSE)
                
 }
 \author{
