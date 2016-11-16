@@ -28,15 +28,14 @@ joinTokens2.tokenizedTexts <- function(x, ...) {
 #' @examples
 #' 
 #' toks <- tokens(inaugCorpus, removePunct = TRUE)
-#' seqs_token <- list(c('foreign', 'policy'), c('United', 'States'))
-#' seqs_glob <- list(c('foreign', 'polic*'), c('United', 'States'))
-#' seqs_regex <- list(c('^foreign', '^polic(ie|y)'), c('^United', '^States'))
-#' toks2 <- joinTokens(toks, seqs_token, "_", 'fixed')
-#' toks2 <- joinTokens(toks, seqs_glob, "_", 'glob')
-#' toks2 <- joinTokens(toks, seqs_regex, "_", 'regex')
-#' kwic(toks2, 'foreign_policy', window = 1) # joined
-#' kwic(toks2, c('foreign', 'policy'), window = 1) # not joined
-#' kwic(toks2, 'United_States', window = 1) # joined
+#' seqs <- list(c('foreign', 'polic*'), c('United', 'States'))
+#' kwic(toks, 'fUnited_States', window = 1) # no exisit
+#' kwic(toks, 'foreign_policy', window = 1) # no exisit
+#' toks <- joinTokens2(toks, seqs_glob, "_", 'glob')
+#' kwic(toks, 'United_States', window = 1)
+#' kwic(toks, 'foreign_policy', window = 1)
+#' kwic(toks, c('foreign', 'policy'), window = 1) # no longer exisit
+#' kwic(toks, c('united', 'states'), window = 1) # no longer exisit
 #'                
 #' @export
 joinTokens2.tokens <- function(x, sequences, concatenator = "_", 
