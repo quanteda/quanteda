@@ -61,7 +61,7 @@ joinTokens.tokens <- function(x, sequences, concatenator = "_",
         seqs_token <- sequences
     }
     
-    if (verbose) message(sprintf('Join %d sequences', length(seqs_token)))
+    if (verbose) message(sprintf('Join %d pairs of tokens', length(seqs_token)))
     
     # Check if joined tokens are in vocabulary
     types_new <- sapply(seqs_token, paste0, collapse = concatenator)
@@ -103,22 +103,3 @@ joinTokens.tokens <- function(x, sequences, concatenator = "_",
     types(x) <- types
     return(x)
 }
-
-# 
-# grid_sequence <- function(seqs_pat, types, valuetype, case_insensitive = FALSE) {
-#     
-#     seqs_token <- list()
-#     for (seq_pat in seqs_pat) {
-#         if(valuetype == 'fixed'){
-#           seq_match <- lapply(seq_pat, function(x, y) y[toLower(y) %in% toLower(x)], types)
-#         }else{
-#           seq_match <- lapply(seq_pat, function(x, y) y[stringi::stri_detect_regex(y, x, case_insensitive = case_insensitive)], types)
-#         }
-#         #print(seq_match)
-#         if (length(unlist(seq_pat)) != length(seq_match)) next
-#         match_comb <- as.matrix(do.call(expand.grid, c(seq_match, stringsAsFactors = FALSE))) # produce all possible combinations
-#         #print(match_comb)
-#         seqs_token <- c(seqs_token, unname(split(match_comb, row(match_comb))))
-#     }
-#     return(seqs_token)
-# }

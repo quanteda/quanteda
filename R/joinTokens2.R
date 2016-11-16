@@ -68,7 +68,7 @@ joinTokens2.tokens <- function(x, sequences, concatenator = "_",
     } else {
         seqs_fixed <- seqs
     }
-    if(verbose) message(sprintf('Join %d sequences', length(seqs_fixed)))
+    if(verbose) message(sprintf('Join %d pairs of tokens', length(seqs_fixed)))
     if(length(seqs_fixed) == 0) return(x) # do nothing
     
     seqs_id <- lapply(seqs_fixed, fmatch, table=types)
