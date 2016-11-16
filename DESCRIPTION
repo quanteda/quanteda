@@ -79,6 +79,7 @@ Collate:
     'fcm.R'
     'findSequences.R'
     'joinTokens.R'
+    'joinTokens2.R'
     'kwic.R'
     'lexdiv.R'
     'ngrams.R'
