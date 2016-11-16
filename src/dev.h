@@ -6,7 +6,7 @@ using namespace std;
 
 namespace dev{
 
-    inline void print_ngram_hashed(std::vector<unsigned int> vec){
+    inline void print_ngram(std::vector<int> vec){
         for(auto elm : vec){
           Rcout << to_string(elm) << " ";
         }
