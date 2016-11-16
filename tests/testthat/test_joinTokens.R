@@ -1,4 +1,4 @@
-context('test joinTokens2.R')
+context('test joinTokens.R')
 
 test_that("joinTokens join tokens correctly", {
       
@@ -8,7 +8,7 @@ test_that("joinTokens join tokens correctly", {
     seqs <- tokens(c("a b", "C D", "aa* bb*", "eEE FFf", "d_e e_f"), 
                    hash = FALSE, what = "fastestword")
     expect_identical(
-        unname(as.list(joinTokens2(toks, seqs, valuetype = "glob", case_insensitive = TRUE))),
+        unname(as.list(joinTokens(toks, seqs, valuetype = "glob", case_insensitive = TRUE))),
         list(c("a_b", "c_d", "e", "f", "g"),
              c("A_B", "C_D", "E", "F", "G"),
              c("A_b", "C_d", "E", "f", "G"),
@@ -17,7 +17,7 @@ test_that("joinTokens join tokens correctly", {
     )
     
     expect_identical(
-        unname(as.list(joinTokens2(toks, seqs, valuetype = "glob", case_insensitive = FALSE))),
+        unname(as.list(joinTokens(toks, seqs, valuetype = "glob", case_insensitive = FALSE))),
         list(c("a_b", "c", "d", "e", "f", "g"),
              c("A", "B", "C_D", "E", "F", "G"),
              c("A", "b", "C", "d", "E", "f", "G"),
@@ -28,7 +28,7 @@ test_that("joinTokens join tokens correctly", {
     seqs_fixed <- tokens(c("a b", "C D", "aa bb", "eEE FFf", "d_e e_f"), 
                          hash = FALSE, what = "fastestword")
     expect_identical(
-        unname(as.list(joinTokens2(toks, seqs_fixed, valuetype = "glob", case_insensitive = TRUE))),
+        unname(as.list(joinTokens(toks, seqs_fixed, valuetype = "glob", case_insensitive = TRUE))),
         list(c("a_b", "c_d", "e", "f", "g"),
              c("A_B", "C_D", "E", "F", "G"),
              c("A_b", "C_d", "E", "f", "G"),
@@ -37,7 +37,7 @@ test_that("joinTokens join tokens correctly", {
     )
     
     expect_identical(
-        unname(as.list(joinTokens2(toks, seqs_fixed, valuetype = "glob", case_insensitive = FALSE))),
+        unname(as.list(joinTokens(toks, seqs_fixed, valuetype = "glob", case_insensitive = FALSE))),
         list(c("a_b", "c", "d", "e", "f", "g"),
              c("A", "B", "C_D", "E", "F", "G"),
              c("A", "b", "C", "d", "E", "f", "G"),
@@ -53,13 +53,13 @@ test_that("joinTokens join tokens from  longer sequences", {
     seqs <- tokens(c("a b", "a b c d", "E F G", "F G"), 
                    hash = FALSE, what = "fastestword")
     expect_identical(
-        unname(as.list(joinTokens2(toks, seqs, valuetype = "glob", case_insensitive = TRUE))),
+        unname(as.list(joinTokens(toks, seqs, valuetype = "glob", case_insensitive = TRUE))),
         list(c("a_b_c_d", "e_f_g"),
              c("A_B_C_D", "E_F_G"))
     )
     
     expect_identical(
-        unname(as.list(joinTokens2(toks, seqs, valuetype = "glob", case_insensitive = FALSE))),
+        unname(as.list(joinTokens(toks, seqs, valuetype = "glob", case_insensitive = FALSE))),
         list(c("a_b_c_d", "e", "f", "g"),
              c("A", "B", "C", "D", "E_F_G"))
     )
