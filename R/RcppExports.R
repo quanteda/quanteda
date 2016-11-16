@@ -29,14 +29,6 @@ find_sequence_cppl <- function(texts, types, count_min, smooth, nested) {
     .Call('quanteda_find_sequence_cppl', PACKAGE = 'quanteda', texts, types, count_min, smooth, nested)
 }
 
-qatd_cpp_replace_hash_vector <- function(tokens_, seq_, id) {
-    .Call('quanteda_qatd_cpp_replace_hash_vector', PACKAGE = 'quanteda', tokens_, seq_, id)
-}
-
-qatd_cpp_replace_hash_list <- function(texts_, flags, seq, id) {
-    .Call('quanteda_qatd_cpp_replace_hash_list', PACKAGE = 'quanteda', texts_, flags, seq, id)
-}
-
 qatd_cpp_replace_int_list <- function(texts_, seqs, ids, id_start) {
     .Call('quanteda_qatd_cpp_replace_int_list', PACKAGE = 'quanteda', texts_, seqs, ids, id_start)
 }

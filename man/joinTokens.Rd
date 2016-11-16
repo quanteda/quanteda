@@ -38,11 +38,12 @@ is; \code{"regex"} for regular expressions; or \code{"glob"} for
 For a set of tokens, given a set of token sequences, join the tokens matching the sequences.
 }
 \examples{
+
 toks <- tokens(inaugCorpus, removePunct = TRUE)
 seqs <- list(c('foreign', 'polic*'), c('United', 'States'))
 kwic(toks, 'fUnited_States', window = 1) # no exisit
 kwic(toks, 'foreign_policy', window = 1) # no exisit
-toks <- joinTokens(toks, seqs, "_", 'glob')
+toks <- joinTokens(toks, seqs_glob, "_", 'glob')
 kwic(toks, 'United_States', window = 1)
 kwic(toks, 'foreign_policy', window = 1)
 kwic(toks, c('foreign', 'policy'), window = 1) # no longer exisit

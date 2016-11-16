@@ -110,33 +110,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_replace_hash_vector
-NumericVector qatd_cpp_replace_hash_vector(NumericVector tokens_, NumericVector seq_, int id);
-RcppExport SEXP quanteda_qatd_cpp_replace_hash_vector(SEXP tokens_SEXP, SEXP seq_SEXP, SEXP idSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type tokens_(tokens_SEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type seq_(seq_SEXP);
-    Rcpp::traits::input_parameter< int >::type id(idSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_replace_hash_vector(tokens_, seq_, id));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qatd_cpp_replace_hash_list
-List qatd_cpp_replace_hash_list(List texts_, std::vector<bool> flags, NumericVector seq, int id);
-RcppExport SEXP quanteda_qatd_cpp_replace_hash_list(SEXP texts_SEXP, SEXP flagsSEXP, SEXP seqSEXP, SEXP idSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type texts_(texts_SEXP);
-    Rcpp::traits::input_parameter< std::vector<bool> >::type flags(flagsSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type seq(seqSEXP);
-    Rcpp::traits::input_parameter< int >::type id(idSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_replace_hash_list(texts_, flags, seq, id));
-    return rcpp_result_gen;
-END_RCPP
-}
 // qatd_cpp_replace_int_list
 List qatd_cpp_replace_int_list(List texts_, List seqs, IntegerVector ids, int id_start);
 RcppExport SEXP quanteda_qatd_cpp_replace_int_list(SEXP texts_SEXP, SEXP seqsSEXP, SEXP idsSEXP, SEXP id_startSEXP) {
