@@ -4,6 +4,7 @@
 // [[Rcpp::plugins(cpp11)]]
 #include <unordered_map>
 #include "quanteda.h"
+#include "dev.h"
 
 using namespace Rcpp;
 using namespace std;
@@ -15,7 +16,7 @@ typedef std::vector<unsigned int> Key;
 namespace std {
 template <>
 
-// Custom hash function for seqs objects
+// Custom hash function for key objects
 struct hash<Key> {
     std::size_t operator()(const Key &vec) const {
         unsigned int seed = std::accumulate(vec.begin(), vec.end(), 0);
@@ -31,7 +32,7 @@ IntegerVector replace(IntegerVector tokens_,
     
     std::vector<int> tokens = Rcpp::as< std::vector<int> >(tokens_);
     bool match = false;
-    for(int span = span_max; span >= 1; span--){ // start from longer sequences
+    for(int span = span_max; span >= 1; span--){ // substitution starts from longer sequences
         //Rcout << "Span " << span << "\n";
         for(int i = 0; i < tokens.size() - (span - 1); i++){
             Key tokens_sub(tokens.begin() + i, tokens.begin() + i + span);
@@ -39,10 +40,7 @@ IntegerVector replace(IntegerVector tokens_,
             if(id){
                 match = true;
                 if(id < 0){
-                    Rcout << "Use new ID " << id_new << "\n";
                     id = id_new++;
-                }else{
-                    Rcout << "Use exisitng ID " << id << "\n";
                 }
                 std::fill(tokens.begin() + i + 1, tokens.begin() + i + span, -1);
                 tokens[i] = id;
@@ -54,13 +52,21 @@ IntegerVector replace(IntegerVector tokens_,
 }
 
 
+/*
+ * This function is used in joinTokens2 to substitutes sequences of IDs with new IDs.
+ * @author Kohei Watanabe
+ * @param texts_ tokens object to be modified
+ * @param seqs_ a list of integer vectors for sequences
+ * @param ids new IDs to be substibuted with. Note length(seqs_) == length(ids)
+ * @param id_start first newly generated IDs
+ * 
+ */
+
 // [[Rcpp::export]]
 List qatd_cpp_replace_int_list(List texts_, 
                                List seqs,
                                IntegerVector ids,
                                int id_start){
-    
-    List texts = clone(texts_);
     
     std::unordered_map<Key, int> map_seqs;
     int span_max = 0;
@@ -76,8 +82,8 @@ List qatd_cpp_replace_int_list(List texts_,
         }
         if(span_max < key.size()) span_max = key.size();
     }
-    //Rcout << "Span max " << span_max << "\n";
     
+    List texts = clone(texts_);
     int id_new = id_start;
     for (int h = 0; h < texts.size(); h++){
         texts[h] = replace(texts[h], map_seqs, span_max, id_new);
@@ -97,17 +103,21 @@ List qatd_cpp_replace_int_list(List texts_,
 
 /***R
 
-txt <- c("a b c d e f g", "A B C D E F G", "A b C d E f G", 
-      "aaa bbb ccc ddd eee fff ggg", "a_b b_c c_d d_e e_f f_g") 
-toks <- tokens(txt)
-seqs <- tokens(c("a b", "c d", "aaa bbb", "eEE FFf", "d_e e_f", "z z"), 
-            hash = FALSE, what = "fastestword")
-seqs_ids <- lapply(seqs, function(x, y) match(x, y), attr(toks, 'types'))
-types_new <- sapply(seqs, paste0, collapse = '_')
-ids <- match(types_new, attr(toks, 'types'))
-res <- qatd_cpp_replace_int_list(toks, seqs_ids, ids, 100)
-
-res$text
-res$id_new
+# txt <- c("a b c d e f g", "A B C D E F G", "A b C d E f G", 
+#       "aaa bbb ccc ddd eee fff ggg", "a_b b_c c_d d_e e_f f_g") 
+# toks <- tokens(txt)
+# seqs <- tokens(c("a b", "c d", "aaa bbb", "eEE FFf", "d_e e_f", "z z"), 
+#             hash = FALSE, what = "fastestword")
+# seqs_ids <- lapply(seqs, function(x, y) match(x, y), attr(toks, 'types'))
+# types_new <- sapply(seqs, paste0, collapse = '_')
+# ids <- match(types_new, attr(toks, 'types'))
+# res <- qatd_cpp_replace_int_list(toks, seqs_ids, ids, 100)
+# 
+# res$text
+# res$id_new
+# 
+# microbenchmark::microbenchmark(
+#     qatd_cpp_replace_int_list(toks, seqs_ids, ids, 100)
+# )
 
 */

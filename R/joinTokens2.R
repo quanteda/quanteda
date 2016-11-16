@@ -16,7 +16,7 @@ joinTokens2.tokenizedTexts <- function(x, ...) {
 }
 
 
-#' @rdname joinTokens
+#' @rdname joinTokens2
 #' @param sequences features to concatenate, a list of characters
 #' @param concatenator character used for joining tokens
 #' @param valuetype how to interpret sequences: \code{fixed} for words as

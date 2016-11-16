@@ -5,7 +5,6 @@
 \alias{joinTokens.tokenizedTexts}
 \alias{joinTokens.tokens}
 \alias{joinTokens2.tokenizedTexts}
-\alias{joinTokens2.tokens}
 \title{join tokens function}
 \usage{
 joinTokens(x, ...)
@@ -17,10 +16,6 @@ joinTokens(x, ...)
   case_insensitive = TRUE, ...)
 
 \method{joinTokens2}{tokenizedTexts}(x, ...)
-
-\method{joinTokens2}{tokens}(x, sequences, concatenator = "_",
-  valuetype = c("glob", "fixed", "regex"), verbose = FALSE,
-  case_insensitive = TRUE, ...)
 }
 \arguments{
 \item{x}{tokens or tokenizedTexts object}
@@ -38,57 +33,24 @@ is; \code{"regex"} for regular expressions; or \code{"glob"} for
 \item{verbose}{display progress}
 
 \item{case_insensitive}{if \code{TRUE}, ignore case when matching}
-
-\item{sequences}{features to concatenate, a list of characters}
-
-\item{concatenator}{character used for joining tokens}
-
-\item{valuetype}{how to interpret sequences: \code{fixed} for words as
-is; \code{"regex"} for regular expressions; or \code{"glob"} for
-"glob"-style wildcard}
-
-\item{case_insensitive}{if \code{TRUE}, ignore case when matching}
-
-\item{verbose}{display progress}
 }
 \description{
 For a set of tokens, given a set of token sequences, join the tokens matching the sequences.
 }
 \examples{
-# simple example
-txt <- c("a b c d e f g", "A B C D E F G", "A b C d E f G", 
-         "aaa bbb ccc ddd eee fff ggg", "a_b b_c c_d d_e e_f f_g") 
-toks_hash <- tokens(txt)
-seqs <- tokens(c("a b", "C D", "aa* bb*", "eEE FFf", "d_e e_f"), 
-               hash = FALSE, what = "fastestword")
-joinTokens(toks_hash, seqs, valuetype = "glob", case_insensitive = TRUE)
-joinTokens(toks_hash, seqs, valuetype = "glob", case_insensitive = FALSE)
-
-seqs <- tokens(c("a b", "C D", "aa bb", "eEE FFf", "d_e e_f"), 
-               hash = FALSE, what = "fastestword")
-joinTokens(toks_hash, seqs, valuetype = "fixed", case_insensitive = TRUE)
-joinTokens(toks_hash, seqs, valuetype = "fixed", case_insensitive = FALSE)
-               
-# simple example
-txt <- c("a b c d e f g", "A B C D E F G", "A b C d E f G", 
-         "aaa bbb ccc ddd eee fff ggg", "a_b b_c c_d d_e e_f f_g") 
-toks <- tokens(txt)
-seqs <- tokens(c("a b", "C D", "aa* bb*", "eEE FFf", "d_e e_f", "z z"), 
-               hash = FALSE, what = "fastestword")
-joinTokens(toks, seqs, valuetype = "glob", case_insensitive = TRUE)
-joinTokens2(toks, seqs, valuetype = "glob", case_insensitive = TRUE)
-
-joinTokens(toks, seqs, valuetype = "glob", case_insensitive = FALSE)
-
-seqs <- tokens(c("a b", "C D", "aa bb", "eEE FFf", "d_e e_f"), 
-               hash = FALSE, what = "fastestword")
-joinTokens(toks, seqs, valuetype = "fixed", case_insensitive = TRUE)
-joinTokens(toks, seqs, valuetype = "fixed", case_insensitive = FALSE)
+toks <- tokens(inaugCorpus, removePunct = TRUE)
+seqs_token <- list(c('foreign', 'policy'), c('United', 'States'))
+seqs_glob <- list(c('foreign', 'polic*'), c('United', 'States'))
+seqs_regex <- list(c('^foreign', '^polic(ie|y)'), c('^United', '^States'))
+toks2 <- joinTokens(toks, seqs_token, "_", 'fixed')
+toks2 <- joinTokens(toks, seqs_glob, "_", 'glob')
+toks2 <- joinTokens(toks, seqs_regex, "_", 'regex')
+kwic(toks2, 'foreign_policy', window = 1) # joined
+kwic(toks2, c('foreign', 'policy'), window = 1) # not joined
+kwic(toks2, 'United_States', window = 1) # joined
                
 }
 \author{
-Kohei Watanabe and Kenneth Benoit
-
 Kohei Watanabe and Kenneth Benoit
 }
 

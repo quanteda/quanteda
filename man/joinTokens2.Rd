@@ -2,16 +2,49 @@
 % Please edit documentation in R/joinTokens2.R
 \name{joinTokens2}
 \alias{joinTokens2}
+\alias{joinTokens2.tokens}
 \title{join tokens function}
 \usage{
 joinTokens2(x, ...)
+
+\method{joinTokens2}{tokens}(x, sequences, concatenator = "_",
+  valuetype = c("glob", "fixed", "regex"), verbose = FALSE,
+  case_insensitive = TRUE, ...)
 }
 \arguments{
 \item{x}{tokens or tokenizedTexts object}
 
 \item{...}{additional arguments passed to other methods}
+
+\item{sequences}{features to concatenate, a list of characters}
+
+\item{concatenator}{character used for joining tokens}
+
+\item{valuetype}{how to interpret sequences: \code{fixed} for words as
+is; \code{"regex"} for regular expressions; or \code{"glob"} for
+"glob"-style wildcard}
+
+\item{verbose}{display progress}
+
+\item{case_insensitive}{if \code{TRUE}, ignore case when matching}
 }
 \description{
 For a set of tokens, given a set of token sequences, join the tokens matching the sequences.
+}
+\examples{
+
+toks <- tokens(inaugCorpus, removePunct = TRUE)
+seqs <- list(c('foreign', 'polic*'), c('United', 'States'))
+kwic(toks, 'fUnited_States', window = 1) # no exisit
+kwic(toks, 'foreign_policy', window = 1) # no exisit
+toks <- joinTokens2(toks, seqs_glob, "_", 'glob')
+kwic(toks, 'United_States', window = 1)
+kwic(toks, 'foreign_policy', window = 1)
+kwic(toks, c('foreign', 'policy'), window = 1) # no longer exisit
+kwic(toks, c('united', 'states'), window = 1) # no longer exisit
+               
+}
+\author{
+Kohei Watanabe and Kenneth Benoit
 }
 
