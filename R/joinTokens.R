@@ -46,20 +46,22 @@ joinTokens.tokens <- function(x, sequences, concatenator = "_",
     
     valuetype <- match.arg(valuetype)
     
-    if (verbose) message("Indexing tokens...")
     types <- types(x)
-    index <- dfm(x, verbose = FALSE, toLower = FALSE) # index is always case-sensitive
-    index_binary <- as(index, 'nMatrix')
+    # if (verbose) message("Indexing tokens...")
+    # index <- dfm(x, verbose = FALSE, toLower = FALSE) # index is always case-sensitive
+    # index_binary <- as(index, 'nMatrix')
     
     # Convert to regular expressions, then to fixed
     if (valuetype %in% c("glob"))
         sequences <- lapply(sequences, glob2rx)
     if (valuetype %in% c("glob", "regex") | case_insensitive) {
         # Generates all possible patterns of sequences
-        seqs_token <- grid_sequence(sequences, types, valuetype, case_insensitive)
+        seqs_token <- regex2fixed(sequences, types, valuetype, case_insensitive)
     } else {
         seqs_token <- sequences
     }
+    
+    print(seqs_token)
     
     # Check if joined tokens are in vocabulary
     types_new <- sapply(seqs_token, paste0, collapse = concatenator)
@@ -76,10 +78,10 @@ joinTokens.tokens <- function(x, sequences, concatenator = "_",
             if (verbose) 
                 message(sprintf('%d/%d "%s" is not found', i, n_seqs, paste(seq_token, collapse=' ')))
         } else {
-            flag <- Matrix::rowSums(index_binary[,seq_token, drop = FALSE]) == length(seq_token)
-            if (verbose) 
-                message(sprintf('%d/%d "%s" is found in %d texts', i, n_seqs, 
-                                paste(seq_token, collapse=' '), sum(flag)))
+            # flag <- Matrix::rowSums(index_binary[,seq_token, drop = FALSE]) == length(seq_token)
+            # if (verbose) 
+            #     message(sprintf('%d/%d "%s" is found in %d texts', i, n_seqs, 
+            #                     paste(seq_token, collapse=' '), sum(flag)))
             
             # Use exisitng ID
             if (is.na(ids_exist[i])){
@@ -88,7 +90,7 @@ joinTokens.tokens <- function(x, sequences, concatenator = "_",
                 id <- ids_exist[i]
             }
             if (verbose) message(sprintf(' Use %d for %s ', id, types_new[i]))
-            x <- qatd_cpp_replace_hash_list(x, flag, match(seq_token, types), id)
+            x <- qatd_cpp_replace_hash_list(x, rep(TRUE, length(x)), match(seq_token, types), id)
             
             # Add new ID to types only if used
             if (is.na(ids_exist[i]) & id %in% unlist(x, use.names = FALSE)) {
@@ -102,21 +104,21 @@ joinTokens.tokens <- function(x, sequences, concatenator = "_",
     return(x)
 }
 
-
-grid_sequence <- function(seqs_pat, types, valuetype, case_insensitive = FALSE) {
-    
-    seqs_token <- list()
-    for (seq_pat in seqs_pat) {
-        if(valuetype == 'fixed'){
-          seq_match <- lapply(seq_pat, function(x, y) y[toLower(y) %in% toLower(x)], types)
-        }else{
-          seq_match <- lapply(seq_pat, function(x, y) y[stringi::stri_detect_regex(y, x, case_insensitive = case_insensitive)], types)
-        }
-        #print(seq_match)
-        if (length(unlist(seq_pat)) != length(seq_match)) next
-        match_comb <- as.matrix(do.call(expand.grid, c(seq_match, stringsAsFactors = FALSE))) # produce all possible combinations
-        #print(match_comb)
-        seqs_token <- c(seqs_token, unname(split(match_comb, row(match_comb))))
-    }
-    return(seqs_token)
-}
+# 
+# grid_sequence <- function(seqs_pat, types, valuetype, case_insensitive = FALSE) {
+#     
+#     seqs_token <- list()
+#     for (seq_pat in seqs_pat) {
+#         if(valuetype == 'fixed'){
+#           seq_match <- lapply(seq_pat, function(x, y) y[toLower(y) %in% toLower(x)], types)
+#         }else{
+#           seq_match <- lapply(seq_pat, function(x, y) y[stringi::stri_detect_regex(y, x, case_insensitive = case_insensitive)], types)
+#         }
+#         #print(seq_match)
+#         if (length(unlist(seq_pat)) != length(seq_match)) next
+#         match_comb <- as.matrix(do.call(expand.grid, c(seq_match, stringsAsFactors = FALSE))) # produce all possible combinations
+#         #print(match_comb)
+#         seqs_token <- c(seqs_token, unname(split(match_comb, row(match_comb))))
+#     }
+#     return(seqs_token)
+# }
