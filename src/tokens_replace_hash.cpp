@@ -32,8 +32,7 @@ IntegerVector replace(IntegerVector tokens_,
     
     std::vector<int> tokens = Rcpp::as< std::vector<int> >(tokens_);
     bool match = false;
-    for(int span = span_max; span >= 1; span--){ // substitution starts from longer sequences
-        //Rcout << "Span " << span << "\n";
+    for(int span = span_max; span >= 1; span--){ // substitution starts from the longest sequences
         for(int i = 0; i < tokens.size() - (span - 1); i++){
             Key tokens_sub(tokens.begin() + i, tokens.begin() + i + span);
             int &id = seqs[tokens_sub];
@@ -42,7 +41,7 @@ IntegerVector replace(IntegerVector tokens_,
                 if(id < 0){
                     id = id_new++;
                 }
-                std::fill(tokens.begin() + i + 1, tokens.begin() + i + span, -1);
+                std::fill(tokens.begin() + i + 1, tokens.begin() + i + span, -1); // -1 are place holders
                 tokens[i] = id;
             }
         }
