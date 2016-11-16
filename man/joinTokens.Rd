@@ -40,7 +40,7 @@ toks <- tokens(inaugCorpus, removePunct = TRUE)
 seqs <- list(c('foreign', 'polic*'), c('United', 'States'))
 kwic(toks, 'fUnited_States', window = 1) # no exisit
 kwic(toks, 'foreign_policy', window = 1) # no exisit
-toks <- joinTokens(toks, seqs_glob, "_", 'glob')
+toks <- joinTokens(toks, seqs, "_", 'glob')
 kwic(toks, 'United_States', window = 1)
 kwic(toks, 'foreign_policy', window = 1)
 kwic(toks, c('foreign', 'policy'), window = 1) # no longer exisit
