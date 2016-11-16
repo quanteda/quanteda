@@ -61,7 +61,7 @@ joinTokens.tokens <- function(x, sequences, concatenator = "_",
         seqs_token <- sequences
     }
     
-    print(seqs_token)
+    if (verbose) message(sprintf('Join %d sequences', length(seqs_token)))
     
     # Check if joined tokens are in vocabulary
     types_new <- sapply(seqs_token, paste0, collapse = concatenator)
