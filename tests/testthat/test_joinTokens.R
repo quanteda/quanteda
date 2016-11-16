@@ -61,7 +61,7 @@ test_that("joinTokens join tokens from  longer sequences", {
     expect_identical(
         unname(as.list(joinTokens2(toks, seqs, valuetype = "glob", case_insensitive = FALSE))),
         list(c("a_b_c_d", "e", "f", "g"),
-             c("A", "B", "C", "D", "E_F_G"),
+             c("A", "B", "C", "D", "E_F_G"))
     )
     
 })
