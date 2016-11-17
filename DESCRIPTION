@@ -86,6 +86,7 @@ Collate:
     'plots.R'
     'quanteda.R'
     'readability.R'
+    'readtext-methods.R'
     'regex2fixed.R'
     'resample.R'
     'segment.R'
