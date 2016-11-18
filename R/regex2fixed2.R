@@ -39,7 +39,6 @@ regex2fixed2 <- function(regex, types, valuetype, case_insensitive = FALSE) {
                 fixed_multi <- subset_types(pat_multi, types, types)
             }
         }
-        print(fixed_multi)
         fixed_comb <- as.matrix(do.call(expand.grid, c(fixed_multi, stringsAsFactors = FALSE))) # create all possible combinations
         fixed <- c(fixed, unname(split(fixed_comb, row(fixed_comb))))
     }
@@ -64,7 +63,7 @@ regex2fixed2 <- function(regex, types, valuetype, case_insensitive = FALSE) {
         }
         fixed <- c(fixed, fixed_single)
     }
-    return(fixed)
+    return(unique(fixed))
 }
 
 # This function subset types avoiding expensive full regular expression matching
