@@ -20,5 +20,5 @@ __MACOSX
 ^CONDUCT\.md$
 ^API\.md$
 ^benchmarks
-
+^codecov\.yml$
 ^appveyor\.yml$
