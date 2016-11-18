@@ -101,7 +101,7 @@ subset_types_startswith <- function(str, tree, tree_search){
 
 subset_types_endswith <- function(str, tree, tree_search){
     i <- toLower(stri_sub(str, -1, -1))
-    tree$tail[[i]][stri_startswith_fixed(tree_search$head[[i]], str)]
+    tree$tail[[i]][stri_startswith_fixed(tree_search$tail[[i]], str)]
 }
 
 # This function checks if a string is regular expression
