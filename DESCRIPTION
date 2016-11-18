@@ -68,6 +68,8 @@ Collate:
     'corpus.R'
     'collocations.R'
     'converters.R'
+    'corpus-methods-base.R'
+    'corpus-methods-quanteda.R'
     'dataDocs.R'
     'describe-texts.R'
     'dfm-classes.R'

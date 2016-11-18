@@ -13,6 +13,7 @@ names(SUPPORTED_FILETYPE_MAPPING) <- c('csv', 'txt', 'json', 'zip', 'gz', 'tar',
 #' @slot cachedfile if read to a temporary file, a string containing the
 #'   location of the temporary file
 #' @name corpusSource-class
+#' @keywords internal
 #' @export
 setClass("corpusSource", slots = c(texts = "character",
                                    docvars = "data.frame",
