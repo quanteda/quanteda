@@ -2,7 +2,7 @@
 quanteda: Quantitative Analysis of Textual Data
 ===============================================
 
-[![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) ![Downloads](http://cranlogs.r-pkg.org/badges/quanteda) ![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
+[![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) ![Downloads](http://cranlogs.r-pkg.org/badges/quanteda) ![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
 
 **quanteda** is changing!
 -------------------------
@@ -87,7 +87,7 @@ Example usage
 
 ``` r
 library(quanteda)
-#> quanteda version 0.9.8.7
+#> quanteda version 0.9.8.12
 #> 
 #> Attaching package: 'quanteda'
 #> The following object is masked from 'package:base':
@@ -117,7 +117,7 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 #>          UKIP   346    739        27         UKIP
 #> 
 #> Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-#> Created: Wed Nov  2 19:30:10 2016
+#> Created: Fri Nov 18 06:48:59 2016
 #> Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -136,16 +136,12 @@ mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
 #> 
 #>    ... tokenizing
 #> 
-#>    ... indexing documents: 9 documents
-#> 
-#>    ... indexing features:
-#> 1,586 feature types
-#> 
+#>    ... found 9 documents, 1,586 features
 #> ...
 #> removed 97 features, from 175 supplied (glob) feature types
-#>    ... created a 9 x 1489 sparse dfm
+#>    ... created a 9 x 1,489 sparse dfm
 #>    ... complete. 
-#> Elapsed time: 0.032 seconds.
+#> Elapsed time: 0.069 seconds.
 dim(mydfm)              # basic dimensions of the dfm
 #> [1]    9 1489
 topfeatures(mydfm, 20)  # 20 top words

@@ -20,6 +20,7 @@ knitr::opts_chunk$set(
 ![Downloads](http://cranlogs.r-pkg.org/badges/quanteda)
 ![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)
 [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda)
+[![Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda)
 [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)][1]
 
 
