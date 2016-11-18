@@ -1,6 +1,6 @@
 context('test regex2fixed2.R')
 
-test_that("egex2fixed converts regex patterns correctly", {
+test_that("regex2fixed converts regex patterns correctly", {
       
     regex <- list(c('^a$', '^b'), c('c'), c('d'))
     types <- c('A', 'AA', 'B', 'BB', 'C', 'CC', 'a', 'aa', 'b', 'bb', 'c', 'cc')
