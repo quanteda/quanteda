@@ -81,3 +81,37 @@ test_that("test c.corpus", {
 
 })
 
+test_that("test corpus constructors works for kwic", {
+    
+    kwiccorpus <- corpus(kwic(inaugTexts, "christmas"))
+    expect_that(kwiccorpus, is_a("corpus"))
+    expect_equal(names(docvars(kwiccorpus)),
+                 c("docname", "position", "keyword", "context"))
+
+})
+
+
+test_that("test corpus constructors works for character", {
+
+    expect_that(corpus(inaugTexts), is_a("corpus"))
+
+})
+
+
+if ("tm" %in% rownames(installed.packages())) {
+    
+    test_that("test corpus constructor works for tm objects", {
+        
+        data(crude, package = "tm")    # load in a tm example VCorpus
+        mytmCorpus <- corpus(crude)
+        
+        expect_equal(substring(texts(mytmCorpus)[1], 1, 21),
+                     c(reut-00001.xml  = "Diamond Shamrock Corp"))
+        
+        data(acq, package = "tm")
+        mytmCorpus2 <- corpus(acq)
+        expect_equal(dim(docvars(mytmCorpus2)), c(50,15))
+    })
+    
+}
+    
