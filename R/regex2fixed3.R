@@ -67,14 +67,16 @@ subset_types2 <- function (regex, types, types_search, tree, tree_search, exact)
                 }else{
                     head <- (stri_sub(regex, 1, 1) == '^')
                     tail <- (stri_sub(regex, -1, -1) == '$')
-                    if(head & stri_length(regex) == 1){
-                        types # return all types when glob is *
-                    }else if(head & tail & !is_regex((body <- stri_sub(regex, 2, -2)))){
+                    if(head & tail & !is_regex((body <- stri_sub(regex, 2, -2)))){
                         subset_types_exact(body, tree, tree_search)
                     }else if(head & !is_regex((headless <- stri_sub(regex, 2, -1)))){
                         subset_types_startswith(headless, tree, tree_search)
                     }else if(head & !is_regex((tailless <- stri_sub(regex, 1, -2)))){
                         subset_types_endswith(tailless, tree, tree_search)
+                    }else if(head & stri_length(regex) == 1){
+                        types # return all types when glob is *
+                    }else if(regex == ''){
+                        NULL # retun nothing for empty pattern
                     }else{
                         types[stri_detect_regex(types_search, regex)]
                     }
