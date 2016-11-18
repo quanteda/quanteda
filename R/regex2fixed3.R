@@ -43,7 +43,6 @@ regex2fixed3 <- function(regex, types, valuetype, case_insensitive = FALSE) {
     
     # Process multi-entry patterns
     for(pat_multi in pats_multi) {
-        print(pat_multi)
         fixed_multi <- subset_types2(pat_multi, types, types_search, tree, tree_search, exact)
         fixed_comb <- as.matrix(do.call(expand.grid, c(fixed_multi, stringsAsFactors = FALSE))) # create all possible combinations
         fixed <- c(fixed, unname(split(fixed_comb, row(fixed_comb))))
@@ -92,7 +91,6 @@ subset_types2 <- function (regex, types, types_search, tree, tree_search, exact)
 
 subset_types_exact <- function(str, tree, tree_search){
     i <- toLower(stri_sub(str, 1, 1))
-    print(i)
     tree$head[[i]][!is.na(fmatch(tree_search$head[[i]], str))]
 }
 
