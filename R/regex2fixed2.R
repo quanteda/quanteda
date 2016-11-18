@@ -48,9 +48,9 @@ regex2fixed2 <- function(regex, types, valuetype, case_insensitive = FALSE) {
         pats_single <- unlist(pats_single, use.names = FALSE)
         if (valuetype == 'fixed'){
             if(case_insensitive){
-                fixed_single <- as.list(subset_types_fixed(pats_single, types, types_lower))
+                fixed_single <- subset_types_fixed(pats_single, types, types_lower)
             }else{
-                fixed_single <- as.list(subset_types_fixed(pats_single, types, types))
+                fixed_single <- subset_types_fixed(pats_single, types, types)
             }
         }else{
             if(case_insensitive){
