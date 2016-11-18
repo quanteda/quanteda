@@ -68,7 +68,6 @@ regex2fixed2 <- function(regex, types, valuetype, case_insensitive = FALSE) {
 subset_types <- function (regex, types, types_search){
     
     subset <- lapply(regex, function(x, y, z){
-                c("Search ", x, '\n')
                 head <- (stri_sub(x, 1, 1) == '^')
                 tail <- (stri_sub(x, -1, -1) == '$')
                 if(head & tail & !is_regex((body <- stri_sub(x, 2, -2)))){
