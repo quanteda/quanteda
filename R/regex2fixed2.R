@@ -1,5 +1,5 @@
 # This function converts regex to fixed patterns. This is one of the coner strones of 
-# the new artchitecture, but not really fast. Performance improvement is needed.
+# the new artchitecture, but not yet really fast. Performance improvement is needed.
 
 # @param regex regular expression
 # @param types unique types of tokens
@@ -70,7 +70,9 @@ subset_types <- function (regex, types, types_search){
     subset <- lapply(regex, function(x, y, z){
                 head <- (stri_sub(x, 1, 1) == '^')
                 tail <- (stri_sub(x, -1, -1) == '$')
-                if(head & tail & !is_regex((body <- stri_sub(x, 2, -2)))){
+                if(head & stri_length(x) == 1){
+                    y # return all types when glob is *
+                }else if(head & tail & !is_regex((body <- stri_sub(x, 2, -2)))){
                     subset_types_fixed(body, y, z)
                 }else if(head & !is_regex((headless <- stri_sub(x, 2, -1)))){
                     y[stri_startswith_fixed(z, headless)]   
