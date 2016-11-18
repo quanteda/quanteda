@@ -88,6 +88,7 @@ Collate:
     'readability.R'
     'readtext-methods.R'
     'regex2fixed.R'
+    'regex2fixed2.R'
     'resample.R'
     'segment.R'
     'selectFeatures-old.R'
