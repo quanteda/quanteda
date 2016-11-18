@@ -29,4 +29,5 @@ corpus source objects.
 \item{\code{cachedfile}}{if read to a temporary file, a string containing the
 location of the temporary file}
 }}
+\keyword{internal}
 
