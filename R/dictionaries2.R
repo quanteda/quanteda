@@ -58,7 +58,7 @@ applyDictionary2 <- function(x, dictionary,
             keys_regex <- lapply(keys, glob2rx)
         if (valuetype %in% c("glob", "regex")) {
             # Generates all possible patterns of keys
-            keys_fixed <- regex2fixed2(keys_regex, types, valuetype, case_insensitive)
+            keys_fixed <- regex2fixed3(keys_regex, types, valuetype, case_insensitive)
         } else {
             keys_fixed <- keys
         }
