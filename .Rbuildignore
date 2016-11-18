@@ -21,3 +21,4 @@ __MACOSX
 ^API\.md$
 ^benchmarks
 
+^appveyor\.yml$
