@@ -81,3 +81,58 @@ test_that("test c.corpus", {
 
 })
 
+test_that("test corpus constructors works for kwic", {
+    
+    kwiccorpus <- corpus(kwic(inaugTexts, "christmas"))
+    expect_that(kwiccorpus, is_a("corpus"))
+    expect_equal(names(docvars(kwiccorpus)),
+                 c("docname", "position", "keyword", "context"))
+
+})
+
+
+test_that("test corpus constructors works for character", {
+
+    expect_that(corpus(inaugTexts), is_a("corpus"))
+
+})
+
+test_that("test corpus constructors works for data.frame", {
+    
+    mydf <- data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
+                       some_ints = 1L:6L,
+                       some_text = paste0("This is text number ", 1:6, "."),
+                       stringsAsFactors = FALSE,
+                       row.names = paste0("fromDf_", 1:6))
+    mycorp <- corpus(mydf, text_field = "some_text", 
+                     source = "From a data.frame called mydf.")
+    expect_equal(docnames(mycorp), 
+                 paste("fromDf", 1:6, sep = "_"))
+    expect_equal(mycorp[["letter_factor"]][3],
+                 factor("b", levels = c("a", "b", "c")))
+    
+    mydf2 <- mydf
+    names(mydf2)[3] <- "text"
+    expect_equal(corpus(mydf, text_field = "some_text"),
+                 corpus(mydf2))
+
+})
+
+
+if ("tm" %in% rownames(installed.packages())) {
+    
+    test_that("test corpus constructor works for tm objects", {
+        
+        data(crude, package = "tm")    # load in a tm example VCorpus
+        mytmCorpus <- corpus(crude)
+        
+        expect_equal(substring(texts(mytmCorpus)[1], 1, 21),
+                     c("reut-00001.xml"  = "Diamond Shamrock Corp"))
+        
+        data(acq, package = "tm")
+        mytmCorpus2 <- corpus(acq)
+        expect_equal(dim(docvars(mytmCorpus2)), c(50,15))
+    })
+    
+}
+    
