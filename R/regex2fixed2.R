@@ -28,9 +28,9 @@ regex2fixed2 <- function(regex, types, valuetype, case_insensitive = FALSE) {
     for(pat_multi in pats_multi) {
         if(valuetype == 'fixed'){
             if(case_insensitive){
-                fixed_multi <- lapply(pat_multi, function(x, y, z) y[fmatch(x, z)], types, types_lower)
+                fixed_multi <- lapply(pat_multi, subset_types_fixed, types, types_lower)
             }else{
-                fixed_multi <- lapply(pat_multi, function(x, y) y[fmatch(x, y)], types)
+                fixed_multi <- lapply(pat_multi, subset_types_fixed, types, types)
             }
         }else{
             if(case_insensitive){
@@ -39,6 +39,7 @@ regex2fixed2 <- function(regex, types, valuetype, case_insensitive = FALSE) {
                 fixed_multi <- subset_types(pat_multi, types, types)
             }
         }
+        print(fixed_multi)
         fixed_comb <- as.matrix(do.call(expand.grid, c(fixed_multi, stringsAsFactors = FALSE))) # create all possible combinations
         fixed <- c(fixed, unname(split(fixed_comb, row(fixed_comb))))
     }
@@ -48,9 +49,11 @@ regex2fixed2 <- function(regex, types, valuetype, case_insensitive = FALSE) {
         pats_single <- unlist(pats_single, use.names = FALSE)
         if (valuetype == 'fixed'){
             if(case_insensitive){
-                fixed_single <- as.list(types[fmatch(pats_single, types_lower)])
+                fixed_single <- as.list(subset_types_fixed(pats_single, types, types_lower))
+                #fixed_single <- as.list(types[remove_na(fmatch(pats_single, types_lower))])
             }else{
-                fixed_single <- as.list(types[fmatch(pats_single, types)])
+                fixed_single <- as.list(subset_types_fixed(pats_single, types, types))
+                #fixed_single <- as.list(types[remove_na(fmatch(pats_single, types))])
             }
         }else{
             if(case_insensitive){
@@ -68,10 +71,11 @@ regex2fixed2 <- function(regex, types, valuetype, case_insensitive = FALSE) {
 subset_types <- function (regex, types, types_search){
     
     subset <- lapply(regex, function(x, y, z){
+                c("Search ", x, '\n')
                 head <- (stri_sub(x, 1, 1) == '^')
                 tail <- (stri_sub(x, -1, -1) == '$')
                 if(head & tail & !is_regex((body <- stri_sub(x, 2, -2)))){
-                    y[(fmatch(body, z))]
+                    subset_types_fixed(body, y, z)
                 }else if(head & !is_regex((headless <- stri_sub(x, 2, -1)))){
                     y[stri_startswith_fixed(z, headless)]   
                 }else if(head & !is_regex((tailless <- stri_sub(x, 1, -2)))){
@@ -83,7 +87,12 @@ subset_types <- function (regex, types, types_search){
     return(subset)
 }
 
+subset_types_fixed <- function(fixed, types, types_search){
+    id <- fmatch(types_search, fixed)
+    return(types[!is.na(id)])
+}
+
 # This function checks if a string is regular expression
 is_regex <- function(x){
     any(stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
-}    
+}
