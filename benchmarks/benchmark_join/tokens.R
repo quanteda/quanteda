@@ -2,9 +2,7 @@ toks <- tokens(inaugCorpus)
 
 seqs <- list(c('united', 'states'))
 microbenchmark::microbenchmark(
-    #joinTokens(toks, seqs, valuetype='fixed', verbose=TRUE), # too unstable
-    phrasetotoken(inaugCorpus, list('united states')),
-    joinTokens2(toks, seqs, valuetype='fixed', verbose=TRUE),
+    joinTokens(toks, seqs, valuetype='fixed', verbose=TRUE),
     times=10
 )
 
