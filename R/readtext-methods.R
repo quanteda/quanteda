@@ -21,4 +21,16 @@ docvars.readtext <- function(x, field = NULL) {
     as.data.frame(x[, -which(names(x)=="text"), drop = FALSE])
 }
 
+#' @noRd
+#' @export
+docnames.readtext <- function(x) {
+    row.names(x)
+}
 
+#' @noRd
+#' @export
+ndoc.readtext <- function(x) {
+    nrow(x)
+}
+
+    
