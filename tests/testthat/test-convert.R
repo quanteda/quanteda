@@ -7,6 +7,8 @@ d <- dfm(mytexts)
 
 test_that("test STM package converter", {
     skip_on_appveyor()
+    skip_on_travis()
+    skip_on_cran()
     dSTM <- convert(d, to = "stm")
     tP <- stm::textProcessor(mytexts, removestopwords = FALSE, 
                              stem = FALSE, wordLengths = c(1, Inf))

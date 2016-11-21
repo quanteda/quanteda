@@ -4,10 +4,6 @@ warnings_are_errors: true
 sudo: true
 r_packages:
   - covr
-  - slam
-  - tm
-  - lda
-  - stm
 r_binary_packages:
   - topicmodels
 env:
