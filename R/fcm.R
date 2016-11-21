@@ -30,62 +30,8 @@ setClass("fcm",
 #' features within a user-defined context. The context can be defined as a
 #' document or a window within a collection of documents, with an optional
 #' vector of weights applied to the co-occurrence counts.
-#' @param x character vector, corpus, or tokenized texts from which to generate 
-#'   the context-feature co-occurrence matrix
-#' @author Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)
-#' @import Matrix
-#' @export
-#' @details The function \code{\link{fcm}} provides a very general
-#'   implementation of a "context-feature" matrix, consisting of a count of
-#'   feature co-occurrence within a defined context.  This context, following
-#'   Momtazi et. al. (2010), can be defined as the \emph{document},
-#'   \emph{sentences} within documents, \emph{syntactic relationships} beteeen
-#'   features (nouns within a sentence, for instance), or according to a
-#'   \emph{window}.  When the context is a window, a weighting function is
-#'   typically applied that is a function of distance from the target word (see
-#'   Jurafsky and Martin 2015, Ch. 16) and ordered co-occurrence of the two
-#'   features is considered (see Chruch, K.W. & Hanks, P. (1990)).
-#'   
-#'   \link{fcm} provides all of this functionality, returning a \eqn{V * V}
-#'   matrix (where \eqn{V} is the vocabulary size, returned by
-#'   \code{\link{ntype}}). The \code{tri = TRUE} option will only return the
-#'   upper part of the matrix.
-#'   
-#'   Unlike some implementations of co-occurrences, \link{fcm} counts feature
-#'   co-occurrences with themselves, meaning that the diagonal will not be zero.
-#'   
-#'   \link{fcm} also provides "boolean" counting within the context of "window",
-#'   which differs from the counting within "document".
-#'   
-#' @references 
-#'   
-#'   Momtazi, S., Khudanpur, S., & Klakow, D. (2010). 
-#'   "\href{https://www.lsv.uni-saarland.de/fileadmin/publications/SaeedehMomtazi-HLT_NAACL10.pdf}{A
-#'    comparative study of word co-occurrence for term clustering in language 
-#'   model-based sentence retrieval.}" \emph{Human Language Technologies: The 
-#'   2010 Annual Conference of the North American Chapter of the ACL}, Los 
-#'   Angeles, California, June 2010, pp. 325–328.
-#'   
-#'   Daniel Jurafsky & James H. Martin. (2015) \emph{Speech and Language 
-#'   Processing}.  Draft of April 11, 2016. 
-#'   \href{https://web.stanford.edu/~jurafsky/slp3/16.pdf}{Chapter 16, Semantics
-#'   with Dense Vectors.}
-#'   
-#'   Chruch, K.W. & Hanks, P. (1990) 
-#'   "\href{http://dl.acm.org/citation.fcm?id=89095}{Word association norms,
-#'   mutual information, and lexicography}" \emph{Computational Linguistics},
-#'   16(1):22–29.
-fcm <- function(x, ...) {
-    UseMethod("fcm")
-}
-
-#' @rdname fcm
-#' @export
-fcm.character <- function(x, ...) {
-    fcm(tokenize(x), ...)
-}
-
-#' @rdname fcm
+#' @param x character vector, corpus, or tokens object from which to generate 
+#'   the feature co-occurrence matrix
 #' @param context the context in which to consider term co-occurrence: 
 #'   \code{"document"} for co-occurrence counts within document; \code{"window"}
 #'   for co-occurrence within a defined window of words, which requires a 
@@ -110,6 +56,52 @@ fcm.character <- function(x, ...) {
 #'   sentences
 #' @param tri if \code{TRUE} return only upper triangle (including diagonal)
 #' @param ... not used here
+#' @author Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)
+#' @import Matrix
+#' @export
+#' @aliases is.fcm
+#' @details The function \code{\link{fcm}} provides a very general
+#'   implementation of a "context-feature" matrix, consisting of a count of
+#'   feature co-occurrence within a defined context.  This context, following
+#'   Momtazi et. al. (2010), can be defined as the \emph{document},
+#'   \emph{sentences} within documents, \emph{syntactic relationships} beteeen
+#'   features (nouns within a sentence, for instance), or according to a
+#'   \emph{window}.  When the context is a window, a weighting function is
+#'   typically applied that is a function of distance from the target word (see
+#'   Jurafsky and Martin 2015, Ch. 16) and ordered co-occurrence of the two
+#'   features is considered (see Chruch, K.W. & Hanks, P. (1990)).
+#'   
+#'   \link{fcm} provides all of this functionality, returning a \eqn{V * V}
+#'   matrix (where \eqn{V} is the vocabulary size, returned by
+#'   \code{\link{ntype}}). The \code{tri = TRUE} option will only return the
+#'   upper part of the matrix.
+#'   
+#'   Unlike some implementations of co-occurrences, \link{fcm} counts feature
+#'   co-occurrences with themselves, meaning that the diagonal will not be zero.
+#'   
+#'   \link{fcm} also provides "boolean" counting within the context of "window",
+#'   which differs from the counting within "document".
+#'   
+#'   \code{is.fcm(x)} returns \code{TRUE} if and only if its x is an object of 
+#'   type \link{fcm}.
+#'   
+#' @references 
+#'   Momtazi, S., Khudanpur, S., & Klakow, D. (2010). 
+#'   "\href{https://www.lsv.uni-saarland.de/fileadmin/publications/SaeedehMomtazi-HLT_NAACL10.pdf}{A
+#'    comparative study of word co-occurrence for term clustering in language 
+#'   model-based sentence retrieval.}" \emph{Human Language Technologies: The 
+#'   2010 Annual Conference of the North American Chapter of the ACL}, Los 
+#'   Angeles, California, June 2010, pp. 325–328.
+#'   
+#'   Daniel Jurafsky & James H. Martin. (2015) \emph{Speech and Language 
+#'   Processing}.  Draft of April 11, 2016. 
+#'   \href{https://web.stanford.edu/~jurafsky/slp3/16.pdf}{Chapter 16, Semantics
+#'   with Dense Vectors.}
+#'   
+#'   Chruch, K.W. & Hanks, P. (1990) 
+#'   "\href{http://dl.acm.org/citation.fcm?id=89095}{Word association norms,
+#'   mutual information, and lexicography}" \emph{Computational Linguistics},
+#'   16(1):22–29.
 #' @examples
 #' # see http://bit.ly/29b2zOA
 #' txt <- "A D A C E A D F E B A C E D"
@@ -133,6 +125,22 @@ fcm.character <- function(x, ...) {
 #' toksHashed <- tokens(toLower(txt), removePunct = TRUE)
 #' fcm(toks, context = "window", window = 3)
 #' fcm(toksHashed, context = "window", window = 3)
+fcm <- function(x, context = c("document", "window"), 
+                count = c("frequency", "boolean", "weighted"),
+                window = 5L,
+                weights = 1L,
+                ordered = FALSE,
+                span_sentence = TRUE, tri = TRUE, ...) {
+    UseMethod("fcm")
+}
+
+#' @noRd
+#' @export
+fcm.character <- function(x, ...) {
+    fcm(tokenize(x), ...)
+}
+
+#' @noRd
 #' @import data.table
 #' @import Matrix
 #' @export
@@ -208,7 +216,7 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
     }
 
     # discard the lower diagonal if tri == TRUE
-    if (tri & !is.tokens(x))
+    if (tri) # & !is.tokens(x))
         result <- Matrix::triu(result)
 
     # create a new feature context matrix
@@ -245,14 +253,16 @@ setMethod("print", signature(x = "fcm"),
           })
 
 #' @rdname print.dfm
+#' @export
 setMethod("show", signature(object = "fcm"), function(object) print(object))
 
+#' @noRd
+#' @rdname fcm-class
+#' @export
+is.fcm <- function(x) {
+    is(x, "fcm")
+}
 
 
 
-
-
-
-
-      
 

@@ -2,23 +2,16 @@
 % Please edit documentation in R/fcm.R
 \name{fcm}
 \alias{fcm}
-\alias{fcm.character}
-\alias{fcm.tokenizedTexts}
+\alias{is.fcm}
 \title{create a feature co-occurrence matrix}
 \usage{
-fcm(x, ...)
-
-\method{fcm}{character}(x, ...)
-
-\method{fcm}{tokenizedTexts}(x, context = c("document", "window"),
-  count = c("frequency", "boolean", "weighted"), window = 5L,
-  weights = 1L, ordered = FALSE, span_sentence = TRUE, tri = TRUE, ...)
+fcm(x, context = c("document", "window"), count = c("frequency", "boolean",
+  "weighted"), window = 5L, weights = 1L, ordered = FALSE,
+  span_sentence = TRUE, tri = TRUE, ...)
 }
 \arguments{
-\item{x}{character vector, corpus, or tokenized texts from which to generate 
-the context-feature co-occurrence matrix}
-
-\item{...}{not used here}
+\item{x}{character vector, corpus, or tokens object from which to generate 
+the feature co-occurrence matrix}
 
 \item{context}{the context in which to consider term co-occurrence: 
 \code{"document"} for co-occurrence counts within document; \code{"window"}
@@ -49,6 +42,8 @@ are counted seperately. Only makes sense for context = "window".}
 sentences}
 
 \item{tri}{if \code{TRUE} return only upper triangle (including diagonal)}
+
+\item{...}{not used here}
 }
 \description{
 Create a sparse feature co-occurrence matrix, measuring co-occurrences of
@@ -78,6 +73,9 @@ The function \code{\link{fcm}} provides a very general
   
   \link{fcm} also provides "boolean" counting within the context of "window",
   which differs from the counting within "document".
+  
+  \code{is.fcm(x)} returns \code{TRUE} if and only if its x is an object of 
+  type \link{fcm}.
 }
 \examples{
 # see http://bit.ly/29b2zOA

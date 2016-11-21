@@ -35,3 +35,19 @@ mktemp <- function(prefix='tmp.', base_path=NULL, directory=F) {
 catm <- function(..., sep = " ", appendLF = F) {
     message(paste(..., sep = sep), appendLF = appendLF)
 }
+
+##
+## reassign the slots to an S4 dfm-like object
+## necessary when some operation from the Matrix class obliterates them
+## Ken B
+reassign_slots <- function(x_new, x_orig) {
+    snames <- slotNames(x_orig)
+    snames <- snames[!snames %in% 
+                         c("Dim", "Dimnames", "i", "p", "x", "factors")]
+    for (s in snames) {
+        slot(x_new, s) <- slot(x_orig, s)
+    }
+    x_new
+}
+
+
