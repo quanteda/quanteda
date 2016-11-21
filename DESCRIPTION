@@ -67,7 +67,7 @@ Collate:
     'dictionaries.R'
     'corpus.R'
     'collocations.R'
-    'converters.R'
+    'convert.R'
     'corpus-methods-base.R'
     'corpus-methods-quanteda.R'
     'dataDocs.R'
