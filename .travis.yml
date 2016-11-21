@@ -6,6 +6,10 @@ r_packages:
   - covr
 r_binary_packages:
   - topicmodels
+  - slam
+  - tm
+  - lda
+  - stm
 env:
   global:
     - R_CHECK_ARGS="--no-build-vignettes"
