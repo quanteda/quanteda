@@ -18,8 +18,8 @@ Author: Kenneth Benoit [aut, cre],
     Pablo Barberá [ctb],
     Will Lowe [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.8.12
-Date: 2016-11-13
+Version: 0.9.8.13
+Date: 2016-11-20
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -75,9 +75,13 @@ Collate:
     'dfm-classes.R'
     'dfm-main.R'
     'dfm-methods.R'
+    'dfm-subsetting.R'
     'dfm-weighting.R'
+    'dfm_compress.R'
+    'dfm_select.R'
     'dictionaries2.R'
     'encoding.R'
+    'fcm-methods.R'
     'fcm.R'
     'findSequences.R'
     'joinTokens.R'

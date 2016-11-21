@@ -46,7 +46,7 @@ test_that("not weighted",{
                      0, 0, 0, 0, 0, 2,
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
-    expect_true(all(round(fcm, 2) == round(aMat, 2)))
+    expect_equivalent(as.matrix(fcm), aMat)
 })
 
 test_that("weighted by default",{
