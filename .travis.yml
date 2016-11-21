@@ -4,12 +4,12 @@ warnings_are_errors: true
 sudo: true
 r_packages:
   - covr
-r_binary_packages:
-  - topicmodels
   - slam
   - tm
   - lda
   - stm
+r_binary_packages:
+  - topicmodels
 env:
   global:
     - R_CHECK_ARGS="--no-build-vignettes"
