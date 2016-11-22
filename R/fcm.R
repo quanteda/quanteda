@@ -206,8 +206,6 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
             types <- types(x)
         } else {
             types <- unique(unlist(x, use.names = FALSE))
-            # order the features alphabetically
-            types <- sort(types)
             n <- sum(lengths(x)) * (window + 1)
             result <- fcm_cpp(x, types, count, window, weights, ordered, tri, n)
         }
