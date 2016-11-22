@@ -1,4 +1,3 @@
-
 #' @name inaugCorpus
 #' @docType data
 #' @title A corpus of US presidential inaugural addresses from 1789-2013
@@ -35,14 +34,6 @@ NULL
 #' ukimmigCorpus <- corpus(ukimmigTexts, docvars=data.frame(party=names(ukimmigTexts)))
 #' metadoc(ukimmigCorpus, "language") <- "english"
 #' summary(ukimmigCorpus, showmeta = TRUE)
-NULL
-
-#' @name syllables
-#' @aliases englishSyllables
-#' @rdname syllables
-#' @docType data
-#' @source \code{englishSyllables} is built from the freely available CMU pronunciation dictionary at \code{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
-#' 
 NULL
 
 #' @name LBGexample
@@ -107,22 +98,6 @@ NULL
 #' data.frame(labelled = names(encodedTexts), detected = encoding(encodedTexts)$all)
 NULL
 
-
-#' @name wordlists
-#' @title word lists used in some readability indexes
-#' @description \code{wordlists} is a named list of character vectors where each list element corresponds to a different readability index.  These are:
-#' \describe{
-#' \item{\code{DaleChall}}{The long Dale-Chall list of 3,000 familiar (English) words needed to compute the Dale-Chall Readability Formula.}
-#' \item{\code{Spache}}{The revised Spache word list (see Klare 1975, 73) needed to compute the Spache Revised Formula of readability (Spache 1974.}
-#' }
-#' @references 
-#' Chall, J. S., & Dale, E.  1995. \emph{Readability Revisited: The New Dale-Chall Readability Formula}. Brookline Books.
-#' 
-#' Klare, G. R. 1975. "Assessing readability." \emph{Reading Research Quarterly} 10(1): 62–102.
-#' 
-#' Spache, G. 1953. "A new readability formula for primary-grade reading materials." \emph{The Elementary School Journal} 53: 410-413.
-#' @docType data
-NULL
 # makeWordList <- function(filename) {
 #     wordList <- textfile(filename, cache = FALSE)@texts
 #     wordList <- stringi::stri_replace_all_regex(wordList, "-", "_")
@@ -194,4 +169,12 @@ NULL
 #'   \emph{Moby Dick}, EBook no. 2701.
 #' @examples
 #' summary(mobydickText)
+NULL
+
+#' internal data sets
+#' 
+#' Data sets used for mainly internal purposes by the \pkg{quanteda} package.
+#' @name data-internal
+#' @docType data
+#' @keywords internal
 NULL

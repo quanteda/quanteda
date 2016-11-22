@@ -94,7 +94,7 @@ readability.character <- function(x,
         Farr.Jenkins.Paterson <- Flesch <- Flesch.PSK <- Flesch.Kincaid <- FOG <- FOG.PSK <- FOG.NRI <-
         FORCAST <- FORCAST.RGL <- Fucks <- Linsear.Write <- LIW <- nWS <- nWS.2 <- nWS.3 <- nWS.4 <-
         RIX <- SMOG <- SMOG.C <- SMOG.simple <- SMOG.de <- Spache <- Spache.old <- Strain <- Wheeler.Smith <-
-        wordlists <- Bormuth.MC <- Bl <- Traenkle.Bailer <- Traenkle.Bailer.2 <- Bormuth <-
+        data_char_wordlists <- Bormuth.MC <- Bl <- Traenkle.Bailer <- Traenkle.Bailer.2 <- Bormuth <-
         Coleman.Liau <- meanSentenceLength <- meanWordSyllables <- NULL
 
     if (is.null(names(x)))
@@ -123,7 +123,7 @@ readability.character <- function(x,
                                W_1Sy = sapply(tmpSyll, function(x) sum(x == 1)),   # number words with 1 syllable
                                W6C = sapply(wordLengths, function(x) sum(x >= 6)), # number of words with at least 6 letters
                                W7C = sapply(wordLengths, function(x) sum(x >= 7))) # number of words with at least 7 letters
-    textFeatures[, W_wl.Dale.Chall := sapply(tokenizedWords, function(x) sum(!(x %in% quanteda::wordlists$dalechall)))]
+    textFeatures[, W_wl.Dale.Chall := sapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$dalechall)))]
     textFeatures[, Wlt3Sy := Sy - W3Sy]   # number of words with less than three syllables
 
     if (any(c("all", "ARI") %in% measure))
@@ -279,14 +279,14 @@ readability.character <- function(x,
 
     if (any(c("all", "Spache") %in% measure)) {
         # number of words which are not in the Spache word list
-        textFeatures[, W_wl.Spache := sapply(tokenizedWords, function(x) sum(!(x %in% quanteda::wordlists$spache)))]
+        textFeatures[, W_wl.Spache := sapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$spache)))]
         textFeatures[, Spache := 0.121 * W / St + 0.082 * (100 * W_wl.Spache / W) + 0.659]
         textFeatures[, W_wl.Spache := NULL]
     }
 
     if (any(c("all", "Spache.old") %in% measure)) {
         # number of words which are not in the Spache word list
-        textFeatures[, W_wl.Spache := sapply(tokenizedWords, function(x) sum(!(x %in% quanteda::wordlists$spache)))]
+        textFeatures[, W_wl.Spache := sapply(tokenizedWords, function(x) sum(!(x %in% data_char_wordlists$spache)))]
         textFeatures[, Spache.old := 0.141 * W / St + 0.086 * (100 * W_wl.Spache / W) + 0.839]
         textFeatures[, W_wl.Spache := NULL]
     }
@@ -386,6 +386,26 @@ scrabble.character <- function(x, FUN = sum) {
     if (!is.null(names(x))) names(result) <- names(x)
     result
 }
+
+#' @rdname data-internal
+#' @details 
+#' \code{data_char_wordlists} provides word lists used in some readability indexes; 
+#' it is a named list of character vectors where each list element 
+#' corresponds to a different readability index.  
+#' 
+#' These are:
+#' \describe{
+#' \item{\code{DaleChall}}{The long Dale-Chall list of 3,000 familiar (English) words needed to compute the Dale-Chall Readability Formula.}
+#' \item{\code{Spache}}{The revised Spache word list (see Klare 1975, 73) needed to compute the Spache Revised Formula of readability (Spache 1974.}
+#' }
+#' @references
+#' Chall, J. S., & Dale, E.  1995. \emph{Readability Revisited: The New Dale-Chall Readability Formula}. Brookline Books.
+#'
+#' Klare, G. R. 1975. "Assessing readability." \emph{Reading Research Quarterly} 10(1): 62–102.
+#'
+#' Spache, G. 1953. "A new readability formula for primary-grade reading materials." \emph{The Elementary School Journal} 53: 410-413.
+"data_char_wordlists"
+
 
 # (1 point)-A, E, I, O, U, L, N, S, T, R.
 # (2 points)-D, G.
