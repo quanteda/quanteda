@@ -1,3 +1,12 @@
+#' a paragraph of text for testing various text-based functions
+#' 
+#' This is a long paragraph (2,914 characters) of text taken from an Irish budget speech by Joe Higgins.
+#' @format character vector with one element
+#' @aliases exampleString
+#' @examples
+#' tokenize(data_char_sampletext, removePunct = TRUE)
+"data_char_sampletext"
+
 #' @name inaugCorpus
 #' @docType data
 #' @title A corpus of US presidential inaugural addresses from 1789-2013
@@ -80,14 +89,7 @@ NULL
 # texts(ie2010Corpus) <- txts
 # save(ie2010Corpus, file="data/ie2010Corpus.RData")
 
-#' @name exampleString
-#' @title A paragraph of text for testing various text-based functions
-#' @description This is a long paragraph (2,914 characters) of text taken from an Irish budget speech by Joe Higgins.
-#' @format character vector with one element
-#' @docType data
-#' @examples
-#' tokenize(exampleString, removePunct = TRUE)
-NULL
+
 
 #' @name encodedTexts
 #' @title encoded texts for testing
