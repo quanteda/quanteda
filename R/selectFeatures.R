@@ -233,7 +233,7 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
 #'                valuetype = "glob", padding = TRUE, case_insensitive = FALSE)
 #' 
 #' # with longer texts
-#' txts <- c(exampleString, inaugTexts[2])
+#' txts <- c(data_char_sampletext, inaugTexts[2])
 #' toks <- tokenize(txts)
 #' selectFeatures(toks, stopwords("english"), "remove")
 #' selectFeatures(toks, stopwords("english"), "keep")
