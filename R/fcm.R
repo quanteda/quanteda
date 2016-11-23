@@ -184,6 +184,7 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
                                           dims = c(lengthToken , lengthToken))
         diag(result) <- 0
         result <- result + diagCount
+        result <- result[rownames(result), colnames(result)]
     }
         
     if (context == "window") { 
