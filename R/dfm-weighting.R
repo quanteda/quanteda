@@ -27,7 +27,7 @@
 #' @seealso \code{\link{tfidf}}
 #' @author Paul Nulty and Kenneth Benoit
 #' @examples
-#' dtm <- dfm(inaugCorpus)
+#' dtm <- dfm(data_corpus_inaugural)
 #' x <- apply(dtm, 1, function(tf) tf/max(tf))
 #' topfeatures(dtm)
 #' normDtm <- weight(dtm, "relFreq")
@@ -51,7 +51,7 @@ setGeneric("weight", function(x, type, ...) standardGeneric("weight"))
 #' @rdname weight
 #' @examples
 #' \dontshow{
-#' testdfm <- dfm(inaugTexts[1:5], verbose = FALSE)
+#' testdfm <- dfm(data_char_inaugural[1:5], verbose = FALSE)
 #' for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
 #'     testw <- weight(testdfm, w)
 #'     cat("\n\n=== weight() TEST for:", w, "; class:", class(testw), "\n")
@@ -137,7 +137,7 @@ smoother <- function(x, smoothing = 1) x + smoothing
 #' @return a numeric vector of document frequencies for each feature
 #' @export
 #' @examples 
-#' mydfm <- dfm(inaugTexts[1:2], verbose = FALSE)
+#' mydfm <- dfm(data_char_inaugural[1:2], verbose = FALSE)
 #' docfreq(mydfm[, 1:20])
 #' 
 #' # replication of worked example from
@@ -241,10 +241,10 @@ setMethod("docfreq", signature(x = "dfm"),
 #' @references Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
 #'   \emph{Introduction to Information Retrieval}. Cambridge University Press.
 #' @examples 
-#' head(LBGexample[, 5:10])
-#' head(tfidf(LBGexample)[, 5:10])
-#' docfreq(LBGexample)[5:15]
-#' head(tf(LBGexample)[, 5:10])
+#' head(data_dfm_LBGexample[, 5:10])
+#' head(tfidf(data_dfm_LBGexample)[, 5:10])
+#' docfreq(data_dfm_LBGexample)[5:15]
+#' head(tf(data_dfm_LBGexample)[, 5:10])
 #' 
 #' # replication of worked example from
 #' # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
@@ -413,7 +413,7 @@ setMethod("maxtf", signature(x = "dfmDense"), definition = function(x) {
 #     sapply(split(x@x, x@i), max)
 # }
 # 
-# myDfm <- dfm(inaugCorpus, verbose = FALSE)
+# myDfm <- dfm(data_corpus_inaugural, verbose = FALSE)
 # microbenchmark::microbenchmark(f1(myDfm), f2(myDfm))
 # microbenchmark::microbenchmark(f1(NSFdfm), f2(NSFdfm), times = 5)
 

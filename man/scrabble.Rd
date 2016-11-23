@@ -30,7 +30,7 @@ Character values are only defined for non-accented Latin a-z, A-Z
 }
 \examples{
 scrabble(c("muzjiks", "excellency"))
-scrabble(inaugTexts[1:5], mean)
+scrabble(data_char_inaugural[1:5], mean)
 }
 \author{
 Kenneth Benoit

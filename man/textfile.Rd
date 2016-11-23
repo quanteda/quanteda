@@ -131,9 +131,9 @@ mytf6 <- textfile("http://www.kenbenoit.net/files/plant_catalog.xml",
                   textField = "COMMON")
 summary(corpus(mytf6))
 # csv file
-write.csv(data.frame(inaugSpeech = texts(inaugCorpus), docvars(inaugCorpus)), 
-          file = "/tmp/inaugTexts.csv", row.names = FALSE)
-mytf7 <- textfile("/tmp/inaugTexts.csv", textField = "inaugSpeech")
+write.csv(data.frame(inaugSpeech = texts(data_corpus_inaugural), docvars(data_corpus_inaugural)), 
+          file = "/tmp/data_char_inaugural.csv", row.names = FALSE)
+mytf7 <- textfile("/tmp/data_char_inaugural.csv", textField = "inaugSpeech")
 summary(corpus(mytf7))
 
 # vector of full filenames for a recursive structure

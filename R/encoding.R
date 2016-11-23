@@ -14,16 +14,17 @@
 #' @param verbose if \code{FALSE}, do not print diagnostic report
 #' @param ... additional arguments passed to \link[stringi]{stri_enc_detect}
 #' @examples 
-#' encoding(encodedTexts)
+#' encoding(data_char_encodedtexts)
 #' # show detected value for each text, versus known encoding
-#' data.frame(labelled = names(encodedTexts), detected = encoding(encodedTexts)$all)
+#' data.frame(labelled = names(data_char_encodedtexts), 
+#'            detected = encoding(data_char_encodedtexts)$all)
 #' 
-#' encoding(ukimmigTexts)
-#' encoding(inaugCorpus)
-#' encoding(ie2010Corpus)
+#' encoding(data_char_ukimmig2010)
+#' encoding(data_corpus_irishbudget2010)
+#' encoding(data_corpus_inaugural)
 #' 
 #' \dontrun{# Russian text, Windows-1251
-#' mytextfile <- textfile("http://www.kenbenoit.net/files/01_er_5.txt", cache = FALSE)
+#' mytextfile <- textfile("http://www.kenbenoit.net/files/01_er_5.txt")
 #' encoding(mytextfile)}
 #' @export
 encoding <- function(x, verbose = TRUE, ...) {
@@ -114,38 +115,3 @@ encoding.corpusSource <- function(x, verbose = TRUE, ...) {
     encoding(texts(x), verbose, ...)    
 }
 
-
-##
-## previously from corpus.R, no longer used
-##
-
-# get the encoding of documents in a corpus
-# 
-# Get or set the \code{_encoding} document-level metadata field(s) in a corpus.
-# @param x a corpus object
-# @param drop  return as a vector if \code{TRUE}, otherwise return a \code{data.frame}
-# @details This function modifies the \code{_encoding} value set by 
-#   \code{\link{metadoc}}.  It is a wrapper for \code{metadoc(corp, "encoding")}.
-#   
-# @note This function differs from R's built-in \link{Encoding} function, which
-#   only allows the four values of "latin1", "UTF-8", "bytes", and "unknown"
-#   (and which assigns "unknown" to any text that contains only ASCII characters).
-#   Legal values for encodings must be from \link{iconvlist}.  Note that encoding
-#   does not convert or set encodings, it simply records a user declaration of a 
-#   valid encoding.  (We hope to implement checking and conversion later.)
-# @export
-# encoding <- function(x, drop=TRUE) {
-#     if ("_encoding" %in% names(metadoc(x))) {
-#         result <- metadoc(x, "encoding") 
-#         return(result[,1, drop=drop])
-#     } else
-#         return(rep(NULL, ndoc(x)))
-# }
-
-# @param value a character vector or scalar representing the new value of the encoding (see Note)
-# @rdname encoding
-# @export
-# "encoding<-" <- function(x, value){
-#     metadoc(x, "encoding") <- value
-#     x
-# }

@@ -1,5 +1,15 @@
-.stopwords <- NULL
-
+#' @rdname data-internal
+#' @details
+#' \code{data_char_stopwords} provides stopword lists in multiple languages; 
+#' it is a named list of characters with the lowercase language name (in English) as the 
+#' name of each list element.  The English stopwords are taken from the SMART
+#' information retrieval system (obtained from 
+#' \url{http://jmlr.csail.mit.edu/papers/volume5/lewis04a/a11-smart-stop-list/english.stop})
+#' and a set of stopword lists from the Snowball stemmer project in different 
+#' languages (see \url{http://snowballstem.org/projects.html}). Supported
+#' languages are Arabic, Danish, Dutch, English, Finnish, French, German,
+#' Hungarian, Italian, Norwegian, Portuguese, Russian, Spanish, and Swedish.
+"data_char_stopwords"
 
 #' access built-in stopwords
 #' 
@@ -7,68 +17,45 @@
 #' argument and returns the stopword list as a character vector The default is 
 #' English.
 #' 
-#' The stopword list are SMART English stopwords from the SMART information
-#' retrieval system (obtained from 
+#' The stopword list is an internal data object named
+#' \code{\link{data_char_stopwords}}, which consists of English stopwords from the SMART
+#' information retrieval system (obtained from 
 #' \url{http://jmlr.csail.mit.edu/papers/volume5/lewis04a/a11-smart-stop-list/english.stop})
-#' and a set of stopword lists from the Snowball stemmer project in different
-#' languages (see \url{http://snowballstem.org/projects.html}).
-#' Supported languages are arabic, danish, dutch, english, finnish, french,
-#' german, hungarian, italian, norwegian, portuguese, russian, spanish, and 
-#' swedish. Language names are case sensitive.
+#' and a set of stopword lists from the Snowball stemmer project in different 
+#' languages (see \url{http://snowballstem.org/projects.html}). Supported
+#' languages are Arabic, Danish, Dutch, English, Finnish, French, German,
+#' Hungarian, Italian, Norwegian, Portuguese, Russian, Spanish, and Swedish.
+#' Language names should be lower-case (except for "SMART" -- see below) and are  
+#' case sensitive.
 #' @rdname stopwords
-#' @section A note of caution:
-#'  Stop words are an arbitrary choice imposed by the
-#'   user, and accessing a pre-defined list of words to ignore does not mean
-#'   that it will perfectly fit your needs. You are strongly encourged to
-#'   inspect the list and to make sure it fits your particular requirements.  The 
-#'   built-in English stopword list does not contain "will", for instance, because
-#'   of its multiple meanings, but you might want to include this word for your
-#'   own application.
-#' @param kind The pre-set kind of stopwords (as a character string).  Allowed
-#'   values are \code{english}, \code{SMART}, \code{danish}, \code{french},
-#'   \code{hungarian}, \code{norwegian}, \code{russian}, \code{swedish},
-#'   \code{catalan}, \code{dutch}, \code{finnish}, \code{german},
+#' @section A note of caution: Stop words are an arbitrary choice imposed by the
+#'   user, and accessing a pre-defined list of words to ignore does not mean 
+#'   that it will perfectly fit your needs. You are strongly encourged to 
+#'   inspect the list and to make sure it fits your particular requirements. 
+#'   The built-in English stopword list does not contain "will", for instance,
+#'   because of its multiple meanings, but you might want to include this word
+#'   for your own application.
+#' @param kind The pre-set kind of stopwords (as a character string).  Allowed 
+#'   values are \code{english}, \code{SMART}, \code{danish}, \code{french}, 
+#'   \code{hungarian}, \code{norwegian}, \code{russian}, \code{swedish}, 
+#'   \code{catalan}, \code{dutch}, \code{finnish}, \code{german}, 
 #'   \code{italian}, \code{portuguese}, \code{spanish}, \code{arabic}
-#' @param verbose if \code{FALSE}, suppress the annoying warning note
 #' @return a character vector of stopwords
 #' @name stopwords
 #' @export
 #' @examples
-#' stopwords("english")[1:5]
-#' stopwords("italian")[1:5]
-#' stopwords("arabic")[1:5]
-#'
+#' head(stopwords("english"))
+#' head(stopwords("italian"))
+#' head(stopwords("arabic"))
+#' head(stopwords("SMART"))
+#' 
 #' # adding to the built-in stopword list
 #' toks <- tokenize("The judge will sentence Mr. Adams to nine years in prison", removePunct = TRUE)
-    #' removeFeatures(toks, c(stopwords("english"), "will", "mr", "nine"))
-stopwords <- function(kind="english", verbose=FALSE) {
-    if (!(kind %in% c("english", "SMART", "danish", "french", "hungarian", "norwegian", "russian", "swedish", "catalan", "dutch", "finnish",   
-                      "german", "italian", "portuguese", "spanish", "arabic"))) {
-        stop(paste(kind, "is not a recognized stopword list type."))
-    }
-    if (verbose) catm("note: using", kind, "builtin stopwords, but beware that one size may not fit all.\n")
-    # data(stopwords, envir = environment())
-    quanteda::.stopwords[[kind]]
+#' removeFeatures(toks, c(stopwords("english"), "will", "mr", "nine"))
+stopwords <- function(kind = "english") {
+    if (!(kind %in% names(quanteda::data_char_stopwords)))
+        stop(paste0("\"", kind, "\" is not a recognized stopword list name."))
+    quanteda::data_char_stopwords[[kind]]
 }
 
-#' @name .stopwords
-#' @rdname stopwords
-#' @docType data
-NULL
-
-
-
-# @rdname removeFeatures
-# @export
-stopwordsRemove <- function(x, stopwords=NULL, verbose=TRUE) {
-    catm("stopwordsRemove is deprecated, use removeFeatures instead.")
-    UseMethod("removeFeatures")
-}
-
-# @rdname stopwords
-# @export
-stopwordsGet <- function(kind="english") {
-    catm("stopwordsGet() is deprecated, use stopwords() instead.\n")
-    stopwords(kind)
-}
 

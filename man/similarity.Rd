@@ -62,7 +62,7 @@ The method for computing feature similarities can be quite slow when
 }
 \examples{
 # create a dfm from inaugural addresses from Reagan onwards
-presDfm <- dfm(subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+presDfm <- dfm(subset(data_corpus_inaugural, Year > 1980), ignoredFeatures = stopwords("english"),
                stem = TRUE)
 
 # compute some document similarities

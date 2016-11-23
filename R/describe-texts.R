@@ -9,8 +9,8 @@
 #' 
 #' # summarize texts
 #' summary(c("Testing this text.  Second sentence.", "And this one."))
-#' summary(ukimmigTexts)
-#' myTextSummaryDF <- summary(ukimmigTexts, verbose = FALSE)
+#' summary(data_char_ukimmig2010)
+#' myTextSummaryDF <- summary(data_char_ukimmig2010, verbose = FALSE)
 #' head(myTextSummaryDF)
 summary.character <- function(object, n = 100, verbose = TRUE, toLower = FALSE, ...) {
     object <- object[1 : min(c(n, length(object)))]

@@ -30,7 +30,7 @@
 #' @importFrom utils installed.packages
 #' @export
 #' @examples
-#' mycorpus <- subset(inaugCorpus, Year > 1970)
+#' mycorpus <- subset(data_corpus_inaugural, Year > 1970)
 #' quantdfm <- dfm(mycorpus, verbose = FALSE)
 #' 
 #' # austin's wfm format
@@ -115,7 +115,7 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
 #' @name convert-wrappers
 #' @keywords internal
 #' @examples 
-#' mycorpus <- subset(inaugCorpus, Year > 1970)
+#' mycorpus <- subset(data_corpus_inaugural, Year > 1970)
 #' quantdfm <- dfm(mycorpus, verbose = FALSE)
 #' 
 NULL

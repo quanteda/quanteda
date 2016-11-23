@@ -65,7 +65,7 @@ setMethod("show", "dictionary",
 #'   
 #' @seealso \link{dfm}
 #' @examples
-#' mycorpus <- subset(inaugCorpus, Year>1900)
+#' mycorpus <- subset(data_corpus_inaugural, Year>1900)
 #' mydict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
 #'                           opposition = c("Opposition", "reject", "notincorpus"),
 #'                           taxing = "taxing",
@@ -78,11 +78,11 @@ setMethod("show", "dictionary",
 #' # import the Laver-Garry dictionary from http://bit.ly/1FH2nvf
 #' lgdict <- dictionary(file = "http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat",
 #'                      format = "wordstat")
-#' head(dfm(inaugTexts, dictionary=lgdict))
+#' head(dfm(data_char_inaugural, dictionary=lgdict))
 #' 
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
 #' mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
-#' head(dfm(inaugTexts, dictionary = mfdict))}
+#' head(dfm(data_char_inaugural, dictionary = mfdict))}
 #' @importFrom stats setNames
 #' @export
 dictionary <- function(x = NULL, file = NULL, format = NULL, 
@@ -511,7 +511,7 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
 
 #' @rdname applyDictionary
 #' @examples 
-#' toks <- tokens(inaugCorpus)
+#' toks <- tokens(data_corpus_inaugural)
 #' head(kwic(toks, "united states"))
 #' dict <- dictionary(list(country = "united states"))
 #' toks2 <- applyDictionary(toks, dict, valuetype = "fixed")

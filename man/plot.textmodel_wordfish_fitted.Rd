@@ -42,7 +42,7 @@ y, feature names over-plotted with alpha transparency, optionally some
 highlighted) as in Slapin and Proksch, 2008.
 }
 \examples{
-postwar <- trim(dfm(inaugCorpus[41:57]), minCount = 5, minDoc = 2)
+postwar <- trim(dfm(data_corpus_inaugural[41:57]), minCount = 5, minDoc = 2)
 mod <- textmodel(postwar, model = "wordfish")
 plot(mod, sort = FALSE)
 plot(mod, sort = TRUE)

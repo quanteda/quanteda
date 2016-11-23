@@ -76,13 +76,13 @@ Does not currently record document segments if segmenting a multi-text
 }
 \examples{
 # same as tokenize()
-identical(tokenize(ukimmigTexts), segment(ukimmigTexts))
+identical(tokenize(data_char_ukimmig2010), segment(data_char_ukimmig2010))
 
 # segment into paragraphs
-segment(ukimmigTexts[3:4], "paragraphs")
+segment(data_char_ukimmig2010[3:4], "paragraphs")
 
 # segment a text into sentences
-segmentedChar <- segment(ukimmigTexts, "sentences")
+segmentedChar <- segment(data_char_ukimmig2010, "sentences")
 segmentedChar[2]
 testCorpus <- corpus(c("##INTRO This is the introduction. 
                        ##DOC1 This is the first document.  
@@ -96,7 +96,7 @@ testCorpusSeg <- segment(testCorpus, "tags")
 summary(testCorpusSeg)
 texts(testCorpusSeg)
 # segment a corpus into sentences
-segmentedCorpus <- segment(corpus(ukimmigTexts), "sentences")
+segmentedCorpus <- segment(corpus(data_char_ukimmig2010), "sentences")
 identical(ndoc(segmentedCorpus), length(unlist(segmentedChar)))
 }
 

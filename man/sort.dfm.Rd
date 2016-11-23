@@ -27,7 +27,7 @@ Sorts a \link{dfm} by frequency of total features, total features in
 documents, or both
 }
 \examples{
-dtm <- dfm(inaugCorpus)
+dtm <- dfm(data_corpus_inaugural)
 dtm[1:10, 1:5]
 dtm <- sort(dtm)
 sort(dtm)[1:10, 1:5]

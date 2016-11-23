@@ -163,16 +163,16 @@ test_that("test remote csv file", {
 })
 
 
-context('test that require recursive invocation of listFileNames (i.e. because a special filename resolves to another special filename)')
-
-test_that("test remote zip file", {
-    expect_equal(
-        length(texts(
-            textfile('https://github.com/kbenoit/quanteda/raw/master/inst/extdata/encodedTextFiles.zip')
-        )),
-        41
-    )
-})
+# context('test that require recursive invocation of listFileNames (i.e. because a special filename resolves to another special filename)')
+# 
+# test_that("test remote zip file", {
+#     expect_equal(
+#         length(texts(
+#             textfile('https://github.com/kbenoit/quanteda/raw/master/inst/extdata/encodedTextFiles.zip')
+#         )),
+#         41
+#     )
+# })
 
 
 

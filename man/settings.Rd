@@ -45,12 +45,12 @@ Get the settings from a which a \link{dfm} was created
 Calling \code{settings()} with no arguments returns a list of system default settings.
 }
 \examples{
-settings(inaugCorpus, "stopwords")
-(tempdfm <- dfm(subset(inaugCorpus, Year>1980), verbose=FALSE))
-(tempdfmSW <- dfm(subset(inaugCorpus, Year>1980),
+settings(data_corpus_inaugural, "stopwords")
+(tempdfm <- dfm(subset(data_corpus_inaugural, Year>1980), verbose=FALSE))
+(tempdfmSW <- dfm(subset(data_corpus_inaugural, Year>1980),
                  ignoredFeatures=stopwords("english"), verbose=FALSE))
-settings(inaugCorpus, "stopwords") <- TRUE
-tempdfm <- dfm(inaugCorpus, stem=TRUE, verbose=FALSE)
+settings(data_corpus_inaugural, "stopwords") <- TRUE
+tempdfm <- dfm(data_corpus_inaugural, stem=TRUE, verbose=FALSE)
 settings(tempdfm)
 }
 

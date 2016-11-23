@@ -192,22 +192,22 @@ The corpus constructor command `corpus()` works directly on:
 The simplest case is to create a corpus from a vector of texts already in memory in R.  This gives the advanced R user complete flexbility with his or her choice of text inputs, as there are almost endless
 ways to get a vector of texts into R.
 
-If we already have the texts in this form, we can call the corpus constructor function directly.  We can demonstrate this on the built-in character vector of 57 US president inaugural speeches called `inaugTexts`.
+If we already have the texts in this form, we can call the corpus constructor function directly.  We can demonstrate this on the built-in character vector of 57 US president inaugural speeches called `data_char_inaugural`.
 
 ```{r}
-str(inaugTexts)  # this gives us some information about the object
-myCorpus <- corpus(inaugTexts)  # build the corpus
+str(data_char_inaugural)  # this gives us some information about the object
+myCorpus <- corpus(data_char_inaugural)  # build the corpus
 summary(myCorpus, n = 5)
 ```
 
 If we wanted, we could add some document-level variables -- what quanteda calls `docvars` -- to this corpus.
 
 We can do this using the R's `substring()` function to extract characters from a name -- in this case, the 
-name of the character vector `inaugTexts`.  This works using our fixed starting and ending positions with
+name of the character vector `data_char_inaugural`.  This works using our fixed starting and ending positions with
 `substring()` because these names are a very regular format of `YYYY-PresidentName`.
 ```{r}
-docvars(myCorpus, "President") <- substring(names(inaugTexts), 6)
-docvars(myCorpus, "Year") <- as.integer(substring(names(inaugTexts), 1, 4))
+docvars(myCorpus, "President") <- substring(names(data_char_inaugural), 6)
+docvars(myCorpus, "Year") <- as.integer(substring(names(data_char_inaugural), 1, 4))
 summary(myCorpus, n=5)
 ```
 
@@ -215,7 +215,7 @@ If we wanted to tag each document with additional meta-data not considered a doc
 add those to our corpus.
 ```{r}
 metadoc(myCorpus, "language") <- "english"
-metadoc(myCorpus, "docsource")  <- paste("inaugTexts", 1:ndoc(myCorpus), sep = "_")
+metadoc(myCorpus, "docsource")  <- paste("data_char_inaugural", 1:ndoc(myCorpus), sep = "_")
 summary(myCorpus, n = 5, showmeta = TRUE)
 ```
 
@@ -250,9 +250,9 @@ mytf6 <- textfile("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catal
                   textField = "COMMON")
 summary(corpus(mytf6), 5)
 # csv file
-write.csv(data.frame(inaugSpeech = texts(inaugCorpus), docvars(inaugCorpus)), 
-          file = "/tmp/inaugTexts.csv", row.names = FALSE)
-mytf7 <- textfile("/tmp/inaugTexts.csv", textField = "inaugSpeech")
+write.csv(data.frame(inaugSpeech = texts(data_corpus_inaugural), docvars(data_corpus_inaugural)), 
+          file = "/tmp/inaug_texts.csv", row.names = FALSE)
+mytf7 <- textfile("/tmp/inaug_texts.csv", textField = "inaugSpeech")
 summary(corpus(mytf7), 5)
 ```
 
@@ -268,19 +268,19 @@ A corpus is designed to be a more or less static container of texts with respect
 To extract texts from a a corpus, we use an extractor, called `texts()`.  
 
 ```{r}
-texts(inaugCorpus)[2]
+texts(data_corpus_inaugural)[2]
 ```
 
 To summarize the texts from a corpus, we can call a `summary()` method defined for a corpus.
 
 ```{r}
-summary(ie2010Corpus)
+summary(data_corpus_irishbudget2010)
 ```
 
 We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:
 
 ```{r, fig.width = 8}
-tokenInfo <- summary(inaugCorpus)
+tokenInfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
     ggplot(data=tokenInfo, aes(x=Year, y=Tokens, group=1)) + geom_line() + geom_point() +
         scale_x_discrete(labels=c(seq(1789,2012,12)), breaks=seq(1789,2012,12) ) 
@@ -300,8 +300,8 @@ that no information is lost.  Corpus-level medata data is also concatenated.
 
 ```{r}
 library(quanteda)
-mycorpus1 <- corpus(inaugTexts[1:5], note = "First five inaug speeches.")
-mycorpus2 <- corpus(inaugTexts[53:57], note = "Last five inaug speeches.")
+mycorpus1 <- corpus(data_char_inaugural[1:5], note = "First five inaug speeches.")
+mycorpus2 <- corpus(data_char_inaugural[53:57], note = "Last five inaug speeches.")
 mycorpus3 <- mycorpus1 + mycorpus2
 summary(mycorpus3)
 ```
@@ -312,8 +312,8 @@ There is a method of the `subset()` function defined for corpus objects, where a
 be extracted based on logical conditions applied to docvars:
 
 ```{r}
-summary(subset(inaugCorpus, Year > 1990))
-summary(subset(inaugCorpus, President == "Adams"))
+summary(subset(data_corpus_inaugural, Year > 1990))
+summary(subset(data_corpus_inaugural, President == "Adams"))
 ```
 
 
@@ -323,9 +323,9 @@ The `kwic` function (KeyWord In Context) performs a search for a word and allows
 
 ```{r}
 options(width = 200)
-kwic(inaugCorpus, "terror")
-kwic(inaugCorpus, "terror", valuetype = "regex")
-kwic(inaugCorpus, "communist*")
+kwic(data_corpus_inaugural, "terror")
+kwic(data_corpus_inaugural, "terror", valuetype = "regex")
+kwic(data_corpus_inaugural, "communist*")
 ```
 
 
@@ -333,10 +333,10 @@ In the above summary, `Year` and `President` are variables associated with each 
 
 ```{r}
 # inspect the document-level variables
-head(docvars(inaugCorpus))
+head(docvars(data_corpus_inaugural))
 
 # inspect the corpus-level metadata
-metacorpus(inaugCorpus)
+metacorpus(data_corpus_inaugural)
 ```
 
 More corpora are available from the [quantedaData](http://github.com/kbenoit/quantedaData) package.
@@ -400,7 +400,7 @@ the conservative approach taken by `tokenize()`, the `dfm()` function applies ce
 such as `toLower()` -- a separate function for lower-casing texts -- and removes punctuation.  All of the options to `tokenize()` can be passed to `dfm()`, however.
 
 ```{r}
-myCorpus <- subset(inaugCorpus, Year > 1990)
+myCorpus <- subset(data_corpus_inaugural, Year > 1990)
 
 # make a dfm
 myDfm <- dfm(myCorpus)
@@ -429,7 +429,7 @@ head(stopwords("arabic"), 10)
 
 The dfm can be inspected in the Enviroment pane in RStudio, or by calling R's `View` function. Calling `plot` on a dfm will display a wordcloud using the [wordcloud package](link.)
 ```{r warning=FALSE, fig.width = 8, fig.height = 8}
-mydfm <- dfm(ukimmigTexts, ignoredFeatures = c("will", stopwords("english")))
+mydfm <- dfm(data_char_ukimmig2010, ignoredFeatures = c("will", stopwords("english")))
 mydfm
 ```
 
@@ -454,7 +454,7 @@ if (require(RColorBrewer))
 Often, we are interested in analysing how texts differ according to substantive factors which may be encoded in the document variables, rather than simply by the boundaries of the document files. We can group documents which share the same value for a document variable when creating a dfm:
 
 ```{r}
-byPartyDfm <- dfm(ie2010Corpus, groups = "party", ignoredFeatures = stopwords("english"))
+byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", ignoredFeatures = stopwords("english"))
 ```
 
 We can sort this dfm, and inspect it:
@@ -473,7 +473,7 @@ For some applications we have prior knowledge of sets of words that are indicati
 For example, let's look at how words associated with terrorism and words associated with the economy vary by President in the inaugural speeches corpus. From the original corpus, we select Presidents since Clinton:
 
 ```{r}
-recentCorpus <- subset(inaugCorpus, Year > 1991)
+recentCorpus <- subset(data_corpus_inaugural, Year > 1991)
 ```
 
 Now we define a demonstration dictionary:
@@ -494,7 +494,7 @@ LIWC and Provalis Research's Wordstat format.  For instance, we can load the LIW
 ```{r, eval = FALSE}
 liwcdict <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
                        format = "LIWC")
-liwcdfm <- dfm(inaugTexts[52:57], dictionary = liwcdict, verbose = FALSE)
+liwcdfm <- dfm(data_char_inaugural[52:57], dictionary = liwcdict, verbose = FALSE)
 liwcdfm[, 1:10]
 ```
 
@@ -505,7 +505,7 @@ liwcdfm[, 1:10]
 ## Similarities between texts
 
 ```{r fig.width = 6}
-presDfm <- dfm(subset(inaugCorpus, Year>1980), 
+presDfm <- dfm(subset(data_corpus_inaugural, Year>1980), 
                ignoredFeatures = stopwords("english"),
                stem=TRUE, verbose=FALSE)
 obamaSimil <- similarity(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL, 
@@ -542,9 +542,9 @@ similarity(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "
 We have a lot of development work to do on the `textmodel()` function, but here is a demonstration of unsupervised document scaling comparing the "wordfish" model to scaling from correspondence analysis:
 ```{r fig.width = 6, fig.height = 6}
 # make prettier document names
-docnames(ie2010Corpus) <- 
-    paste(docvars(ie2010Corpus, "name"), docvars(ie2010Corpus, "party"))
-ieDfm <- dfm(ie2010Corpus, verbose = FALSE)
+docnames(data_corpus_irishbudget2010) <- 
+    paste(docvars(data_corpus_irishbudget2010, "name"), docvars(data_corpus_irishbudget2010, "party"))
+ieDfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
 wf <- textmodel(ieDfm, model = "wordfish", dir=c(2,1))
 wca <- textmodel(ieDfm, model = "ca")
 # plot the results
@@ -557,7 +557,7 @@ abline(lm(-1*wca$rowcoord[,1] ~ wf@theta), col="grey50", lty="dotted")
 ## Topic models
 
 ```{r}
-quantdfm <- dfm(ie2010Corpus, verbose = FALSE, 
+quantdfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE, 
                 ignoredFeatures = c("will", stopwords("english")))
 
 if (require(topicmodels)) {

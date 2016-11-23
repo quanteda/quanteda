@@ -54,7 +54,7 @@ This converts a matrix from sparse to dense format, so may exceed memory
 requirements depending on the size of your input matrix.
 }
 \examples{
-dtm <- dfm(inaugCorpus)
+dtm <- dfm(data_corpus_inaugural)
 x <- apply(dtm, 1, function(tf) tf/max(tf))
 topfeatures(dtm)
 normDtm <- weight(dtm, "relFreq")
@@ -71,7 +71,7 @@ topfeatures(tfidfDtm)
 head(logTfDtm <- weight(dtm, type="logFreq"))
 head(tfidf(logTfDtm, normalize = FALSE))
 \dontshow{
-testdfm <- dfm(inaugTexts[1:5], verbose = FALSE)
+testdfm <- dfm(data_char_inaugural[1:5], verbose = FALSE)
 for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
     testw <- weight(testdfm, w)
     cat("\\n\\n=== weight() TEST for:", w, "; class:", class(testw), "\\n")

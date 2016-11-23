@@ -1,3 +1,81 @@
+quanteda 0.9.9
+==============
+
+This release has some major changes to the API, as described in this document (LINK).
+
+## Data objects
+
+### Renamed data objects
+
+new name | original name | notes 
+:--------|:------------- |:----- 
+`data_char_sampletext` | `exampleString` | 
+`data_char_mobydick` | `mobydickText`
+`data_dfm_LBGexample | `LBGexample`
+`data_char_encodedtexts` | `encodedTexts`
+
+### Renamed internal data objects
+
+The following objects have been renamed, but will not affect user-level functionality because they are primarily internal.  Their man pages have been moved to a common ?`data-internal` man page, hidden from the index, but linked from some of the functions that use them.
+
+new name | original name | notes 
+:--------|:------------- |:----- 
+`data_char_sampletext` | `exampleString` | 
+`data_int_syllables` | `englishSyllables` |  (used by `textcount_syllables()`) 
+`data_char_wordlists` | `wordlists` |  (used by `readability()`) 
+`data_char_stopwords` | `.stopwords` | (used by `stopwords()`
+
+### Deprecated data objects
+
+In v.0.9.9 the old names remain available, but are deprecated.
+
+new name | original name | notes 
+:--------|:------------- |:----- 
+`data_char_ukimmig2010` | `ukimmigTexts` | 
+`data_corpus_irishbudget2010` | `ie2010Corpus` |
+`data_char_inaugural` | `inaugTexts` |
+`data_corpus_inaugural` | `inaugCorpus` |
+
+
+### Deleted data objects
+
+new name | reason
+:--------|:-------------
+`encodedTextFiles.zip` | moved to the [**readtext**](https://github.com/kbenoit/readtext) package
+
+
+## Deprecated functions
+
+The following functions will still work, but issue a deprecation warning:
+
+new function | old function | contructs:
+:--------|:------------- |:-------
+`tokens()` | `tokenize()` | `tokens` class object
+
+## New functions
+
+The following are new to v0.9.9:
+
+new function | description | ouput class
+:--------|:------------- |:-------
+`fcm()` | constructor for a feature co-occurrence matrix | `fcm` 
+`fcm_select` | selects features from an `fcm` | `fcm`
+`fcm_remove` | removes features from an `fcm` | `fcm`
+`fcm_sort`    | sorts an `fcm` in alpahbetical order of its features| `fcm`
+`fcm_compress` | compacts an `fcm` | `fcm`
+`fcm_tolower` | lowercases the features of an `fcm` and compacts | `fcm`
+`fcm_toupper` | uppercases the features of an `fcm` and compacts | `fcm`
+`dfm_select` | selects features from a `dfm` | `dfm`
+`dfm_remove` | removes features from a `dfm` | `dfm`
+`dfm_sort`    | sorts a `dfm` in alpahbetical order of its features| `dfm`
+`dfm_compress` | compacts a `dfm` | `dfm`
+`dfm_tolower` | lowercases the features of a `dfm` and compacts | `dfm`
+`dfm_toupper` | uppercases the features of a `dfm` and compacts | `dfm`
+
+
+
+
+
 
 quanteda 0.9.8
 ==============

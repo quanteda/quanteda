@@ -22,7 +22,7 @@ This function automatically identify sequences of tokens. This algorithm is
 based on Blaheta and Johnson's “Unsupervised Learning of Multi-Word Verbs”.
 }
 \examples{
-sents <- tokenize(inaugCorpus, what = "sentence", simplify = TRUE)
+sents <- tokenize(data_corpus_inaugural, what = "sentence", simplify = TRUE)
 tokens <- tokenize(sents, removePunct = TRUE)
 tokens <- selectFeatures(tokens, stopwords(), 'remove', padding=TRUE)
 types <- unique(unlist(tokens))

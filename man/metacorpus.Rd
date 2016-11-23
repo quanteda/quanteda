@@ -31,9 +31,9 @@ For \code{metacorpus}, a list of the metadata fields in the corpus.
 Get or set the corpus-level metadata in a quanteda corpus object.
 }
 \examples{
-metacorpus(inaugCorpus)
-metacorpus(inaugCorpus, "source")
-metacorpus(inaugCorpus, "citation") <- "Presidential Speeches Online Project (2014)."
-metacorpus(inaugCorpus, "citation")
+metacorpus(data_corpus_inaugural)
+metacorpus(data_corpus_inaugural, "source")
+metacorpus(data_corpus_inaugural, "citation") <- "Presidential Speeches Online Project (2014)."
+metacorpus(data_corpus_inaugural, "citation")
 }
 

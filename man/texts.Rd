@@ -52,14 +52,14 @@ You are strongly encouraged as a good practice of text analysis
   \code{\link{tokenize}}.
 }
 \examples{
-nchar(texts(subset(inaugCorpus, Year < 1806)))
+nchar(texts(subset(data_corpus_inaugural, Year < 1806)))
 
 # grouping on a document variable
-nchar(texts(subset(inaugCorpus, Year < 1806), groups = "President"))
+nchar(texts(subset(data_corpus_inaugural, Year < 1806), groups = "President"))
 
 # grouping a character vector using a factor
-nchar(inaugTexts[1:5])
-nchar(texts(inaugTexts[1:5], groups = as.factor(inaugCorpus[1:5, "President"])))
+nchar(data_char_inaugural[1:5])
+nchar(texts(data_char_inaugural[1:5], groups = as.factor(data_corpus_inaugural[1:5, "President"])))
 
 BritCorpus <- corpus(c("We must prioritise honour in our neighbourhood.", 
                        "Aluminium is a valourous metal."))

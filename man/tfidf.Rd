@@ -31,10 +31,10 @@ document-feature matrices.  See also \code{\link{weight}}.
   \code{normalize = TRUE}.
 }
 \examples{
-head(LBGexample[, 5:10])
-head(tfidf(LBGexample)[, 5:10])
-docfreq(LBGexample)[5:15]
-head(tf(LBGexample)[, 5:10])
+head(data_dfm_LBGexample[, 5:10])
+head(tfidf(data_dfm_LBGexample)[, 5:10])
+docfreq(data_dfm_LBGexample)[5:15]
+head(tf(data_dfm_LBGexample)[, 5:10])
 
 # replication of worked example from
 # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf

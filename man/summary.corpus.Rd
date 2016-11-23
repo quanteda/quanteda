@@ -37,17 +37,18 @@ including number of types, tokens, and sentences.
 }
 \examples{
 # summarize corpus information
-summary(inaugCorpus)
-summary(inaugCorpus, n=10)
-mycorpus <- corpus(ukimmigTexts, docvars=data.frame(party=names(ukimmigTexts)), enc="UTF-8")
+summary(data_corpus_inaugural)
+summary(data_corpus_inaugural, n=10)
+mycorpus <- corpus(data_char_ukimmig2010, 
+                   docvars = data.frame(party=names(data_char_ukimmig2010))) 
 summary(mycorpus, showmeta=TRUE)  # show the meta-data
 mysummary <- summary(mycorpus, verbose=FALSE)  # (quietly) assign the results
 mysummary$Types / mysummary$Tokens             # crude type-token ratio
 
 # summarize texts
 summary(c("Testing this text.  Second sentence.", "And this one."))
-summary(ukimmigTexts)
-myTextSummaryDF <- summary(ukimmigTexts, verbose = FALSE)
+summary(data_char_ukimmig2010)
+myTextSummaryDF <- summary(data_char_ukimmig2010, verbose = FALSE)
 head(myTextSummaryDF)
 }
 \keyword{corpus}

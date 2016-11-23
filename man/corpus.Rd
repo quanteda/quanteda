@@ -90,13 +90,13 @@ The texts and document variables of corpus objects can also be
 }
 \examples{
 # create a corpus from texts
-corpus(inaugTexts)
+corpus(data_char_inaugural)
 
 # create a corpus from texts and assign meta-data and document variables
-ukimmigCorpus <- corpus(ukimmigTexts, 
-                        docvars = data.frame(party = names(ukimmigTexts))) 
+ukimmigCorpus <- corpus(data_char_ukimmig2010, 
+                        docvars = data.frame(party = names(data_char_ukimmig2010))) 
 
-corpus(texts(ie2010Corpus))
+corpus(texts(data_corpus_irishbudget2010))
 
 # import a tm VCorpus
 if ("tm" \%in\% rownames(installed.packages())) {
@@ -107,7 +107,7 @@ if ("tm" \%in\% rownames(installed.packages())) {
     data(acq, package = "tm")
     summary(corpus(acq), 5, showmeta=TRUE)
     
-    tmCorp <- tm::VCorpus(tm::VectorSource(inaugTexts[49:57]))
+    tmCorp <- tm::VCorpus(tm::VectorSource(data_char_inaugural[49:57]))
     quantCorp <- corpus(tmCorp)
     summary(quantCorp)
 }
@@ -122,7 +122,7 @@ mydf
 summary(corpus(mydf, text_field = "some_text", source = "From a data.frame called mydf."))
 
 # construct a corpus from a kwic object
-mykwic <- kwic(inaugCorpus, "southern")
+mykwic <- kwic(data_corpus_inaugural, "southern")
 summary(corpus(mykwic))
 }
 \author{

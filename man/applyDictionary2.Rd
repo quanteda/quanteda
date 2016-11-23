@@ -31,7 +31,7 @@ apply a dictionary to a tokens object
 \examples{
 
 
-toks <- tokens(inaugCorpus)
+toks <- tokens(data_corpus_inaugural)
 dict <- dictionary(list(country = "united states", 
                    law=c('law*', 'constitution'), 
                    freedom=c('free*', 'libert*')))

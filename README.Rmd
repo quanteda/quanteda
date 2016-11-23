@@ -130,8 +130,8 @@ As of version 0.8.0, the GitHub master repository will always contain the develo
 ```{r quanteda_example, fig.width=7, fig.height=7}
 library(quanteda)
 # create a corpus from the immigration texts from UK party platforms
-uk2010immigCorpus <- corpus(ukimmigTexts,
-                            docvars=data.frame(party=names(ukimmigTexts)),
+uk2010immigCorpus <- corpus(data_char_ukimmig2010,
+                            docvars=data.frame(party=names(data_char_ukimmig2010)),
                             notes="Immigration-related sections of 2010 UK party manifestos",
                             enc="UTF-8")
 uk2010immigCorpus
