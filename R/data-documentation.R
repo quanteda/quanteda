@@ -56,7 +56,6 @@
 #' @source Lowe, Will, and Kenneth R Benoit. 2013. "Validating Estimates of 
 #'   Latent Traits From Textual Data Using Human Judgment as a Benchmark." 
 #'   \emph{Political Analysis} 21: 298-313.
-#' @aliases iebudgets ie2010Corpus
 #' @examples
 #' summary(data_corpus_irishbudget2010)
 "data_corpus_irishbudget2010"
@@ -75,7 +74,8 @@
 
 #' encoded texts for testing
 #' 
-#' \code{data_char_encodedtexts} is a 10-element character vector with 10 different encodings
+#' \code{data_char_encodedtexts} is a 10-element character vector with 10
+#' different encodings
 #' @aliases encodedTexts
 #' @examples
 #' Encoding(data_char_encodedtexts)

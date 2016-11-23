@@ -10,7 +10,8 @@
 data_char_encodedtexts
 }
 \description{
-\code{data_char_encodedtexts} is a 10-element character vector with 10 different encodings
+\code{data_char_encodedtexts} is a 10-element character vector with 10
+different encodings
 }
 \examples{
 Encoding(data_char_encodedtexts)
