@@ -29,6 +29,7 @@ test_that("compare the output feature co-occurrence matrix to that of the text2v
     
     toks <- tokenize(toLower(txt), removePunct = TRUE)
     fcm <- fcm(toks, context = "window", count = "weighted", window = 3)
+    fcm <- fcm_sort(fcm)
     diag(fcm) <- 0
     expect_true(all(round(fcm, 2) == round(tcm, 2)))
     
@@ -46,11 +47,13 @@ test_that("not weighted",{
                      0, 0, 0, 0, 0, 2,
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
+    fcm <- fcm_sort(fcm)
     expect_equivalent(as.matrix(fcm), aMat)
 })
 
 test_that("weighted by default",{
     fcm <- fcm(txt, context = "window", count = "weighted", window = 3)           
+    fcm <- fcm_sort(fcm)
     aMat <- matrix(c(0.83, 1, 2.83, 3.33, 2.83, 0.83,
                      0, 0, 0.5, 0.33, 1.33, 0.50,
                      0, 0, 0, 1.33, 2.33, 0,
@@ -63,6 +66,7 @@ test_that("weighted by default",{
 
 test_that("customized weighting function",{
     fcm <- fcm(txt, context = "window", count = "weighted", weights = c(3,2,1), window = 3)           
+    fcm <- fcm_sort(fcm)
     aMat <- matrix(c(3, 3, 9, 10, 10, 3,
                      0, 0, 2, 1, 4, 2,
                      0, 0, 0, 5, 7, 0,
@@ -77,6 +81,7 @@ test_that("customized weighting function",{
 txt <- "A D A C E A D F E B A C E D"
 test_that("customized weighting function",{
     fcm <- fcm(txt, context = "window", count = "weighted", weights = c(3,2,1), window = 3, ordered = TRUE, tri = FALSE)           
+    fcm <- fcm_sort(fcm)
     aMat <- matrix(c(3, 0, 7, 7, 5, 2,
                      3, 0, 2, 0, 1, 0,
                      2, 0, 0, 3, 6, 0,
@@ -90,7 +95,8 @@ test_that("customized weighting function",{
 # Testing "count" with multiple documents
 txts <- c("a a a b b c", "a a c e", "a c e f g")
 test_that("counting the frequency of the co-occurrences",{
-    fcm <- fcm(txts, context = "document", count = "frequency")           
+    fcm <- fcm(txts, context = "document", count = "frequency", tri = TRUE)           
+    fcm <- fcm_sort(fcm)
     aMat <- matrix(c(4, 6, 6, 3, 1, 1,
                      0, 1, 2, 0, 0, 0,
                      0, 0, 0, 2, 1, 1,
@@ -103,6 +109,7 @@ test_that("counting the frequency of the co-occurrences",{
 
 test_that("counting the co-occurrences in 'boolean' way",{
     fcm <- fcm(txts, context = "document", count = "boolean")           
+    fcm <- fcm_sort(fcm)
     aMat <- matrix(c(2, 1, 3, 2, 1, 1,
                      0, 1, 1, 0, 0, 0,
                      0, 0, 0, 2, 1, 1,
@@ -117,6 +124,7 @@ test_that("counting the co-occurrences in 'boolean' way",{
 txts <- c("a a a b b c", "a a c e", "a c e f g")
 test_that("window = 2",{
     fcm <- fcm(txts, context = "window", count = "boolean", window = 2)           
+    fcm <- fcm_sort(fcm)
     aMat <- matrix(c(2, 1, 2, 2, 0, 0,
                      0, 1, 1, 0, 0, 0,
                      0, 0, 0, 2, 1, 0,
@@ -129,6 +137,7 @@ test_that("window = 2",{
 
 test_that("window = 3",{
     fcm <- fcm(txts, context = "window", count = "boolean", window = 3)           
+    fcm <- fcm_sort(fcm)
     aMat <- matrix(c(2, 1, 3, 2, 1, 0,
                      0, 1, 1, 0, 0, 0,
                      0, 0, 0, 2, 1, 1,
