@@ -274,7 +274,7 @@ texts(inaugCorpus)[2]
 To summarize the texts from a corpus, we can call a `summary()` method defined for a corpus.
 
 ```{r}
-summary(ie2010Corpus)
+summary(data_corpus_irishbudget2010)
 ```
 
 We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:
@@ -454,7 +454,7 @@ if (require(RColorBrewer))
 Often, we are interested in analysing how texts differ according to substantive factors which may be encoded in the document variables, rather than simply by the boundaries of the document files. We can group documents which share the same value for a document variable when creating a dfm:
 
 ```{r}
-byPartyDfm <- dfm(ie2010Corpus, groups = "party", ignoredFeatures = stopwords("english"))
+byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", ignoredFeatures = stopwords("english"))
 ```
 
 We can sort this dfm, and inspect it:
@@ -542,9 +542,9 @@ similarity(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "
 We have a lot of development work to do on the `textmodel()` function, but here is a demonstration of unsupervised document scaling comparing the "wordfish" model to scaling from correspondence analysis:
 ```{r fig.width = 6, fig.height = 6}
 # make prettier document names
-docnames(ie2010Corpus) <- 
-    paste(docvars(ie2010Corpus, "name"), docvars(ie2010Corpus, "party"))
-ieDfm <- dfm(ie2010Corpus, verbose = FALSE)
+docnames(data_corpus_irishbudget2010) <- 
+    paste(docvars(data_corpus_irishbudget2010, "name"), docvars(data_corpus_irishbudget2010, "party"))
+ieDfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
 wf <- textmodel(ieDfm, model = "wordfish", dir=c(2,1))
 wca <- textmodel(ieDfm, model = "ca")
 # plot the results
@@ -557,7 +557,7 @@ abline(lm(-1*wca$rowcoord[,1] ~ wf@theta), col="grey50", lty="dotted")
 ## Topic models
 
 ```{r}
-quantdfm <- dfm(ie2010Corpus, verbose = FALSE, 
+quantdfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE, 
                 ignoredFeatures = c("will", stopwords("english")))
 
 if (require(topicmodels)) {

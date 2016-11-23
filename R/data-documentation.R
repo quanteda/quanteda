@@ -44,6 +44,51 @@
 #' @aliases LBGexample
 "data_dfm_LBGexample"  
 
+#' Irish budget speeches from 2010
+#' 
+#' Speeches and document-level variables from the debate over the Irish budget
+#' of 2010.
+#' @format The corpus object for the 2010 budget speeches, with document-level 
+#'   variables for year, debate, serial number, first and last name of the 
+#'   speaker, and the speaker's party.
+#' @source Lowe, Will, and Kenneth R Benoit. 2013. "Validating Estimates of 
+#'   Latent Traits From Textual Data Using Human Judgment as a Benchmark." 
+#'   \emph{Political Analysis} 21: 298-313.
+#' @aliases iebudgets ie2010Corpus
+#' @examples
+#' summary(data_corpus_irishbudget2010)
+"data_corpus_irishbudget2010"
+
+# data(data_corpus_irishbudget2010, package="quantedaData")
+# txts <- texts(data_corpus_irishbudget2010)
+# for (i in 1:length(txts)) {
+#     temptxt <- system2("native2ascii", input = txts[i], stdout = TRUE)
+#     temptxt[temptxt==""] <- "\n"
+#     temptxt <- paste(temptxt, collapse="")
+#     txts[i] <- temptxt
+# }
+# texts(data_corpus_irishbudget2010) <- txts
+# save(data_corpus_irishbudget2010, file="data/data_corpus_irishbudget2010.RData")
+
+
+#' encoded texts for testing
+#' 
+#' \code{data_char_encodedtexts} is a 10-element character vector with 10 different encodings
+#' @aliases encodedTexts
+#' @examples
+#' Encoding(data_char_encodedtexts)
+#' data.frame(labelled = names(data_char_encodedtexts), 
+#'            detected = encoding(data_char_encodedtexts)$all)
+"data_char_encodedtexts"
+
+#' internal data sets
+#' 
+#' Data sets used for mainly internal purposes by the \pkg{quanteda} package.
+#' @name data-internal
+#' @docType data
+#' @keywords internal
+NULL
+
 
 #' @name inaugCorpus
 #' @docType data
@@ -59,6 +104,7 @@
 #' 
 NULL
 
+
 #' @name inaugTexts
 #' @title Texts of US presidential inaugural addresses from 1789-2013
 #' @rdname inaugCorpus
@@ -71,63 +117,3 @@ NULL
 #' mycorpus <- corpus(inaugTexts)
 NULL
 
-
-
-#' @name ie2010Corpus
-#' @aliases iebudgets
-#' @title Irish budget speeches from 2010
-#' @description Speeches and document-level variables from the debate over the 
-#'   Irish budget of 2010.
-#' @format The corpus object for the 2010 budget speeches, with document-level 
-#'   variables for year, debate, serial number, first and last name of the 
-#'   speaker, and the speaker's party.
-#' @source Lowe, Will, and Kenneth R Benoit. 2013. "Validating Estimates of
-#'   Latent Traits From Textual Data Using Human Judgment as a Benchmark."
-#'   \emph{Political Analysis} 21: 298-313.
-#' @docType data
-#' @examples
-#' summary(ie2010Corpus)
-NULL
-
-# data(ie2010Corpus, package="quantedaData")
-# txts <- texts(ie2010Corpus)
-# for (i in 1:length(txts)) {
-#     temptxt <- system2("native2ascii", input = txts[i], stdout = TRUE)
-#     temptxt[temptxt==""] <- "\n"
-#     temptxt <- paste(temptxt, collapse="")
-#     txts[i] <- temptxt
-# }
-# texts(ie2010Corpus) <- txts
-# save(ie2010Corpus, file="data/ie2010Corpus.RData")
-
-
-
-#' @name encodedTexts
-#' @title encoded texts for testing
-#' @description \code{encodedTexts} is a 10-element character vector with 10 different encodings
-#' @docType data
-#' @examples
-#' Encoding(encodedTexts)
-#' data.frame(labelled = names(encodedTexts), detected = encoding(encodedTexts)$all)
-NULL
-
-# makeWordList <- function(filename) {
-#     wordList <- textfile(filename, cache = FALSE)@texts
-#     wordList <- stringi::stri_replace_all_regex(wordList, "-", "_")
-#     wordList <- tokenize(wordList, simplify = TRUE)
-#     wordList <- stringi::stri_replace_all_regex(wordList, "_", "-")
-#     wordList
-# }
-# dalechall    <- makeWordList("~/Dropbox/QUANTESS/quanteda_working_files/readability/Dale-Chall.txt")
-# spache    <- makeWordList("~/Dropbox/QUANTESS/quanteda_working_files/readability/Spache.txt")
-# wordlists <- list(dalechall = dalechall, spache = spache)
-# save(wordlists, file = "data/wordlists.RData")
-
-
-#' internal data sets
-#' 
-#' Data sets used for mainly internal purposes by the \pkg{quanteda} package.
-#' @name data-internal
-#' @docType data
-#' @keywords internal
-NULL

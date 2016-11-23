@@ -319,8 +319,8 @@ print.textmodel_wordscores_predicted <- function(x, ...) {
 
 # #wordscores
 # require(quantedaData)
-# data(ie2010Corpus)
-# ieDfm <- dfm(ie2010Corpus)
+# data(data_corpus_irishbudget2010)
+# ieDfm <- dfm(data_corpus_irishbudget2010)
 # refData <- ieDfm[5:8,] # Cowen and Kenny
 # refScores <- c(-1,1,NA,NA)
 # fitModel(ieDfm, refScores=c(-1,1), scale="logit")
@@ -330,8 +330,8 @@ print.textmodel_wordscores_predicted <- function(x, ...) {
 #
 # # naive bayes
 # require(quantedaData)
-# data(ie2010Corpus)
-# ieDfm <- dfm(ie2010Corpus)
+# data(data_corpus_irishbudget2010)
+# ieDfm <- dfm(data_corpus_irishbudget2010)
 # trainData <- ieDfm[5:6,] # Cowen and Kenny
 # trainLabels <- c(-1,1)
 # smooth<-1

@@ -164,7 +164,7 @@ selectFeatures(toks, stopwords("english"), "remove")
 selectFeatures(toks, stopwords("english"), "keep")
 selectFeatures(toks, stopwords("english"), "remove", padding = TRUE)
 selectFeatures(toks, stopwords("english"), "keep", padding = TRUE)
-selectFeatures(tokenize(encodedTexts[1]), stopwords("english"), "remove", padding = TRUE)
+selectFeatures(tokenize(data_char_encodedtexts[1]), stopwords("english"), "remove", padding = TRUE)
 toksh <- tokens(c(doc1 = "This is a SAMPLE text", doc2 = "this sample text is better"))
 feats <- c("this", "sample", "is")
 # keeping features

@@ -36,16 +36,17 @@ ICU libraries.  See the ICU User Guide,
 \url{http://userguide.icu-project.org/conversion/detection}.
 }
 \examples{
-encoding(encodedTexts)
+encoding(data_char_encodedtexts)
 # show detected value for each text, versus known encoding
-data.frame(labelled = names(encodedTexts), detected = encoding(encodedTexts)$all)
+data.frame(labelled = names(data_char_encodedtexts), 
+           detected = encoding(data_char_encodedtexts)$all)
 
 encoding(data_char_ukimmig2010)
+encoding(data_corpus_irishbudget2010)
 encoding(inaugCorpus)
-encoding(ie2010Corpus)
 
 \dontrun{# Russian text, Windows-1251
-mytextfile <- textfile("http://www.kenbenoit.net/files/01_er_5.txt", cache = FALSE)
+mytextfile <- textfile("http://www.kenbenoit.net/files/01_er_5.txt")
 encoding(mytextfile)}
 }
 

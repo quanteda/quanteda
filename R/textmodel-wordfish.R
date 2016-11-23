@@ -81,7 +81,7 @@ setClass("textmodel_wordfish_predicted",
 #' textmodel_wordfish(data_dfm_LBGexample, dir = c(1,5))
 #' 
 #' \dontrun{
-#' ie2010dfm <- dfm(ie2010Corpus, verbose = FALSE)
+#' ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
 #' (wfm1 <- textmodel_wordfish(ie2010dfm, dir = c(6,5)))
 #' (wfm2a <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
 #'                              dispersion = "quasipoisson", dispersionFloor = 0))

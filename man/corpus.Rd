@@ -96,7 +96,7 @@ corpus(inaugTexts)
 ukimmigCorpus <- corpus(data_char_ukimmig2010, 
                         docvars = data.frame(party = names(data_char_ukimmig2010))) 
 
-corpus(texts(ie2010Corpus))
+corpus(texts(data_corpus_irishbudget2010))
 
 # import a tm VCorpus
 if ("tm" \%in\% rownames(installed.packages())) {

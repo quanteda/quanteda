@@ -32,6 +32,7 @@ In v.0.9.9 the old names remain available, but are deprecated.
 new name | original name | notes 
 :--------|:------------- |:----- 
 `data_char_ukimmig2010` | `ukimmigTexts` | 
+`data_corpus_irishbudget2010` | `ie2010Corpus` |
 
 
 ### Deleted data objects

@@ -46,9 +46,9 @@ plot(mydfm, random.color = TRUE, rot.per = .25, colors = sample(colors()[2:128],
 
 \dontrun{
 # comparison plot of Irish government vs opposition
-docvars(ie2010Corpus, "govtopp") <- 
-    factor(ifelse(ie2010Corpus[, "party"] \%in\% c("FF", "Green"), "Govt", "Opp"))
-govtoppDfm <- dfm(ie2010Corpus, groups = "govtopp", verbose = FALSE)
+docvars(data_corpus_irishbudget2010, "govtopp") <- 
+    factor(ifelse(data_corpus_irishbudget2010[, "party"] \%in\% c("FF", "Green"), "Govt", "Opp"))
+govtoppDfm <- dfm(data_corpus_irishbudget2010, groups = "govtopp", verbose = FALSE)
 plot(tfidf(govtoppDfm), comparison = TRUE)
 # compare to non-tf-idf version
 plot(govtoppDfm, comparison = TRUE)

@@ -272,8 +272,8 @@ docvars.corpus <- function(x, field = NULL) {
 #' @rdname docvars
 #' @param value the new values of the document-level variable
 #' @note Another way to access and set docvars is through indexing of the corpus \code{j} element, 
-#' such as \code{ie2010Corpus[, c("foren", "name"]} or for a single docvar, \code{ie2010Corpus[["name"]]}.  The latter
-#' also permits assignment, including the easy creation of new document varibles, e.g. \code{ie2010Corpus[["newvar"]] <- 1:ndoc(ie2010Corpus)}.
+#' such as \code{data_corpus_irishbudget2010[, c("foren", "name"]} or for a single docvar, \code{data_corpus_irishbudget2010[["name"]]}.  The latter
+#' also permits assignment, including the easy creation of new document varibles, e.g. \code{data_corpus_irishbudget2010[["newvar"]] <- 1:ndoc(data_corpus_irishbudget2010)}.
 #' See \code{\link{[.corpus}} for details.
 #' @return \code{docvars<-} assigns \code{value} to the named \code{field}
 #' @examples 

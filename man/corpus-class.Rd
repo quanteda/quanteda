@@ -58,15 +58,15 @@ The \code{+} operator for a corpus object will combine two corpus
   for \code{source} and \code{notes}, which are stamped with information 
   pertaining to the creation of the new joined corpus.
   
-  The `c()` operator is also defined for corpus class objects, and provides an easy way to 
-  combine multiple corpus objects.
+  The `c()` operator is also defined for corpus class objects, and provides
+  an easy way to combine multiple corpus objects.
   
   There are some issues that need to be addressed in future revisions of 
   quanteda concerning the use of factors to store document variables and 
   meta-data.  Currently most or all of these are not recorded as factors, 
   because we use \code{stringsAsFactors=FALSE} in the 
   \code{\link{data.frame}} calls that are used to create and store the 
-  document-level information, because the texts should always be stored as
+  document-level information, because the texts should always be stored as 
   character vectors and never as factors.
 }
 \examples{
@@ -80,13 +80,16 @@ summary(c(corpus1, corpus2, corpus3))
 # ways to index corpus elements
 inaugCorpus["1793-Washington"]    # 2nd Washington inaugural speech
 inaugCorpus[2]                    # same
-ie2010Corpus[, "year"]            # access the docvars from ie2010Corpus
-ie2010Corpus[["year"]]            # same
+# access the docvars from data_corpus_irishbudget2010
+data_corpus_irishbudget2010[, "year"]
+# same
+data_corpus_irishbudget2010[["year"]]            
 
 # create a new document variable
-ie2010Corpus[["govtopp"]] <- ifelse(ie2010Corpus[["party"]] \%in\% c("FF", "Greens"), 
-                                    "Government", "Opposition")
-docvars(ie2010Corpus)
+data_corpus_irishbudget2010[["govtopp"]] <- 
+    ifelse(data_corpus_irishbudget2010[["party"]] \%in\% c("FF", "Greens"), 
+           "Government", "Opposition")
+docvars(data_corpus_irishbudget2010)
 }
 \seealso{
 \code{\link{summary.corpus}}
