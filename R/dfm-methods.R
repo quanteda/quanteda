@@ -271,11 +271,12 @@ topfeatures <- function(x, ...) {
 
 #' @return A named numeric vector of feature counts, where the names are the feature labels.
 #' @examples
-#' topfeatures(dfm(subset(data_corpus_inaugural, Year>1980), verbose=FALSE))
-#' topfeatures(dfm(subset(data_corpus_inaugural, Year>1980), ignoredFeatures=stopwords("english"),
-#'             verbose=FALSE))
+#' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE))
+#' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
+#'             ignoredFeatures = stopwords("english"), verbose = FALSE))
 #' # least frequent features
-#' topfeatures(dfm(subset(data_corpus_inaugural, Year>1980), verbose=FALSE), decreasing=FALSE)
+#' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE), 
+#'             decreasing = FALSE)
 #' @export
 #' @rdname topfeatures
 #' @importFrom stats quantile

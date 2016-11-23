@@ -151,7 +151,7 @@ summary.corpus <- function(object, n = 100, verbose = TRUE, showmeta = FALSE, to
 #' # concatenate corpus objects
 #' corpus1 <- corpus(data_char_inaugural[1:2])
 #' corpus2 <- corpus(data_char_inaugural[3:4])
-#' corpus3 <- subset(data_corpus_inaugural, President == "Obama")
+#' corpus3 <- corpus_subset(data_corpus_inaugural, President == "Obama")
 #' summary(c(corpus1, corpus2, corpus3))
 #' @export
 c.corpus <- function(..., recursive = FALSE) {

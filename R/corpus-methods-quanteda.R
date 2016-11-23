@@ -74,10 +74,10 @@ documents <- function(corp) {
 #'   For \code{texts <-}, the corpus with the updated texts.
 #' @export
 #' @examples
-#' nchar(texts(subset(data_corpus_inaugural, Year < 1806)))
+#' nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806)))
 #' 
 #' # grouping on a document variable
-#' nchar(texts(subset(data_corpus_inaugural, Year < 1806), groups = "President"))
+#' nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806), groups = "President"))
 #' 
 #' # grouping a character vector using a factor
 #' nchar(data_char_inaugural[1:5])
@@ -181,7 +181,7 @@ metadoc <- function(x, field = NULL)
 #' @rdname metadoc 
 #' @export
 #' @examples
-#' mycorp <- subset(data_corpus_inaugural, Year>1990)
+#' mycorp <- corpus_subset(data_corpus_inaugural, Year>1990)
 #' summary(mycorp, showmeta = TRUE)
 #' metadoc(mycorp, "encoding") <- "UTF-8"
 #' metadoc(mycorp)
@@ -378,8 +378,8 @@ ndoc <- function(x) {
 
 #' @rdname ndoc
 #' @examples 
-#' ndoc(subset(data_corpus_inaugural, Year>1980))
-#' ndoc(dfm(subset(data_corpus_inaugural, Year>1980), verbose=FALSE))
+#' ndoc(corpus_subset(data_corpus_inaugural, Year>1980))
+#' ndoc(dfm(corpus_subset(data_corpus_inaugural, Year>1980), verbose=FALSE))
 #' @export
 ndoc.corpus <- function(x) {
     nrow(x$documents)
@@ -456,46 +456,6 @@ sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, ...) 
     x
 }
 
-#' extract a subset of a corpus
-#' 
-#' Returns subsets of a corpus that meet certain conditions, including direct 
-#' logical operations on docvars (document-level variables).  Works just like
-#' the normal subset command but for corpus objects.
-#' 
-#' @param x corpus object to be subsetted.
-#' @param subset logical expression indicating elements or rows to keep: missing
-#'   values are taken as false.
-#' @param select expression, indicating the attributes to select from the corpus
-#' @param ... not used
-#' @return corpus object
-#' @export
-#' @seealso \code{\link{select}}
-#' @examples
-#' summary(subset(data_corpus_inaugural, Year>1980))
-#' summary(subset(data_corpus_inaugural, Year>1930 & President=="Roosevelt", select=Year))
-subset.corpus <- function(x, subset, select, ...) {
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-    r <- if (missing(subset)) {
-        rep_len(TRUE, nrow(documents(x)))
-    } else {
-        e <- substitute(subset)
-        r <- eval(e, documents(x), parent.frame())
-        r & !is.na(r)
-    }
-    vars <- if (missing(select)) 
-        TRUE
-    else {
-        nl <- as.list(seq_along(documents(x)))
-        names(nl) <- names(documents(x))
-        c(1, eval(substitute(select), nl, parent.frame()))
-    }
-    documents(x) <- documents(x)[r, vars, drop = FALSE]
-    x
-}
-
-
-
 
 #' change the document units of a corpus
 #' 
@@ -526,7 +486,7 @@ changeunits <- function(x, ...)
 #' summary(changeunits(mycorpus, to = "sentences"), showmeta=TRUE)
 #' 
 #' # example with inaugural corpus speeches
-#' (mycorpus2 <- subset(data_corpus_inaugural, Year>2004))
+#' (mycorpus2 <- corpus_subset(data_corpus_inaugural, Year>2004))
 #' paragCorpus <- changeunits(mycorpus2, to="paragraphs")
 #' paragCorpus
 #' summary(paragCorpus, 100, showmeta=TRUE)
@@ -592,10 +552,10 @@ rep.data.frame <- function(x, ...)
 #' ntype(toLower(txt), removePunct = TRUE)
 #' 
 #' # with some real texts
-#' ntoken(subset(data_corpus_inaugural, Year<1806, removePunct = TRUE))
-#' ntype(subset(data_corpus_inaugural, Year<1806, removePunct = TRUE))
-#' ntoken(dfm(subset(data_corpus_inaugural, Year<1800)))
-#' ntype(dfm(subset(data_corpus_inaugural, Year<1800)))
+#' ntoken(corpus_subset(data_corpus_inaugural, Year<1806, removePunct = TRUE))
+#' ntype(corpus_subset(data_corpus_inaugural, Year<1806, removePunct = TRUE))
+#' ntoken(dfm(corpus_subset(data_corpus_inaugural, Year<1800)))
+#' ntype(dfm(corpus_subset(data_corpus_inaugural, Year<1800)))
 #' @export
 ntoken <- function(x, ...) {
     UseMethod("ntoken")

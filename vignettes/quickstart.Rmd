@@ -308,12 +308,12 @@ summary(mycorpus3)
 
 ### subsetting corpus objects
 
-There is a method of the `subset()` function defined for corpus objects, where a new corpus can 
+There is a method of the `corpus_subset()` function defined for corpus objects, where a new corpus can 
 be extracted based on logical conditions applied to docvars:
 
 ```{r}
-summary(subset(data_corpus_inaugural, Year > 1990))
-summary(subset(data_corpus_inaugural, President == "Adams"))
+summary(corpus_subset(data_corpus_inaugural, Year > 1990))
+summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 ```
 
 
@@ -400,7 +400,7 @@ the conservative approach taken by `tokenize()`, the `dfm()` function applies ce
 such as `toLower()` -- a separate function for lower-casing texts -- and removes punctuation.  All of the options to `tokenize()` can be passed to `dfm()`, however.
 
 ```{r}
-myCorpus <- subset(data_corpus_inaugural, Year > 1990)
+myCorpus <- corpus_subset(data_corpus_inaugural, Year > 1990)
 
 # make a dfm
 myDfm <- dfm(myCorpus)
@@ -473,7 +473,7 @@ For some applications we have prior knowledge of sets of words that are indicati
 For example, let's look at how words associated with terrorism and words associated with the economy vary by President in the inaugural speeches corpus. From the original corpus, we select Presidents since Clinton:
 
 ```{r}
-recentCorpus <- subset(data_corpus_inaugural, Year > 1991)
+recentCorpus <- corpus_subset(data_corpus_inaugural, Year > 1991)
 ```
 
 Now we define a demonstration dictionary:
@@ -505,7 +505,7 @@ liwcdfm[, 1:10]
 ## Similarities between texts
 
 ```{r fig.width = 6}
-presDfm <- dfm(subset(data_corpus_inaugural, Year>1980), 
+presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year>1980), 
                ignoredFeatures = stopwords("english"),
                stem=TRUE, verbose=FALSE)
 obamaSimil <- similarity(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL, 
@@ -517,7 +517,7 @@ dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
 We can use these distances to plot a dendrogram, clustering presidents:
 ```{r, fig.width = 10, fig.height = 7, eval = FALSE}
 data(SOTUCorpus, package="quantedaData")
-presDfm <- dfm(subset(SOTUCorpus, Date > as.Date("1960-01-01")), verbose = FALSE, stem = TRUE,
+presDfm <- dfm(corpus_subset(SOTUCorpus, Date > as.Date("1960-01-01")), verbose = FALSE, stem = TRUE,
                ignoredFeatures = stopwords("english"))
 presDfm <- trim(presDfm, minCount=5, minDoc=3)
 # hierarchical clustering - get distances on normalized dfm

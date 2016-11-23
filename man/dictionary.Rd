@@ -45,7 +45,7 @@ all currently available dictionary files supplied as part of the LIWC 2001,
 2007, and 2015 software (see References).
 }
 \examples{
-mycorpus <- subset(data_corpus_inaugural, Year>1900)
+mycorpus <- corpus_subset(data_corpus_inaugural, Year>1900)
 mydict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                           opposition = c("Opposition", "reject", "notincorpus"),
                           taxing = "taxing",

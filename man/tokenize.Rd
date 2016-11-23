@@ -142,7 +142,7 @@ This replaces an older function named \code{clean()}, removed from
 \examples{
 # same for character vectors and for lists
 tokensFromChar <- tokenize(data_char_inaugural[1:3])
-tokensFromCorp <- tokenize(subset(data_corpus_inaugural, Year<1798))
+tokensFromCorp <- tokenize(corpus_subset(data_corpus_inaugural, Year<1798))
 identical(tokensFromChar, tokensFromCorp)
 str(tokensFromChar)
 # returned as a list

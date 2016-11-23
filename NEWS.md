@@ -48,9 +48,10 @@ new name | reason
 
 The following functions will still work, but issue a deprecation warning:
 
-new function | old function | contructs:
+new function | deprecated function | contructs:
 :--------|:------------- |:-------
 `tokens()` | `tokenize()` | `tokens` class object
+`subset.corpus()` | `corpus_subset` | `corpus` class object
 
 ## New functions
 
