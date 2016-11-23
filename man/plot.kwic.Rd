@@ -33,11 +33,13 @@ data_corpus_inauguralPost70 <- subset(data_corpus_inaugural, Year > 1970)
 plot(kwic(data_corpus_inauguralPost70, "american"))
 plot(kwic(data_corpus_inauguralPost70, "american"), scale = "absolute")
 # compare multiple terms across multiple documents
-plot(kwic(data_corpus_inauguralPost70, "america*"), kwic(data_corpus_inauguralPost70, "people"))
+plot(kwic(data_corpus_inauguralPost70, "america*"), 
+     kwic(data_corpus_inauguralPost70, "people"))
 
 # how to modify the ggplot with different options
 library(ggplot2)
-g <- plot(kwic(data_corpus_inauguralPost70, "american"), kwic(data_corpus_inauguralPost70, "people"))
+g <- plot(kwic(data_corpus_inauguralPost70, "american"), 
+          kwic(data_corpus_inauguralPost70, "people"))
 g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue'))
 }
 }

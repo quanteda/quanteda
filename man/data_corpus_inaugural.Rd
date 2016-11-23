@@ -6,7 +6,7 @@
 \alias{data_corpus_inaugural}
 \alias{inaugCorpus}
 \alias{inaugTexts}
-\title{A corpus of US presidential inaugural addresses from 1789-2013}
+\title{US presidential inaugural address texts}
 \format{An object of class \code{character} of length 57.}
 \usage{
 inaugTexts
@@ -18,8 +18,13 @@ data_corpus_inaugural
 data_char_inaugural
 }
 \description{
-\code{data_corpus_inaugural} is the \link{quanteda-package} corpus object of US presidents' inaugural addresses since 1789.
-Document variables contain the year of the address and the last name of the president.
+US presidential inaugural address texts, and metadata (for the corpus), 
+from 1789 to present.
+}
+\details{
+\code{data_corpus_inaugural} is the \link{quanteda-package} corpus
+  object of US presidents' inaugural addresses since 1789. Document variables
+  contain the year of the address and the last name of the president.
 
 \code{data_char_inaugural} is the character vector of US presidential inaugaration speeches
 }
@@ -41,7 +46,7 @@ mycorpus <- corpus(data_char_inaugural)
 }
 \references{
 \url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and 
-\url{http://www.presidency.ucsb.edu/inaugurals.php}.
+  \url{http://www.presidency.ucsb.edu/inaugurals.php}.
 }
 \keyword{datasets}
 

@@ -4,9 +4,7 @@
 \name{data_char_mobydick}
 \alias{data_char_mobydick}
 \alias{mobydickText}
-\title{Project Gutenberg text of Herman Melville's \emph{Moby Dick}
-Named character object of the ASCII text of Herman Melville's
- \emph{Moby Dick}, EBook no. 2701.}
+\title{text of Herman Melville's \emph{Moby Dick}}
 \format{An object of class \code{character} of length 1.}
 \source{
 Project Gutenberg, \url{http://www.gutenberg.org}
@@ -15,7 +13,6 @@ Project Gutenberg, \url{http://www.gutenberg.org}
 data_char_mobydick
 }
 \description{
-Project Gutenberg text of Herman Melville's \emph{Moby Dick}
 Named character object of the ASCII text of Herman Melville's
  \emph{Moby Dick}, EBook no. 2701.
 }

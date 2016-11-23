@@ -7,7 +7,8 @@
 #' tokenize(data_char_sampletext, removePunct = TRUE)
 "data_char_sampletext"
 
-#' Project Gutenberg text of Herman Melville's \emph{Moby Dick}
+#' text of Herman Melville's \emph{Moby Dick}
+#' 
 #' Named character object of the ASCII text of Herman Melville's
 #'  \emph{Moby Dick}, EBook no. 2701.
 #' @source Project Gutenberg, \url{http://www.gutenberg.org}
@@ -16,7 +17,8 @@
 #' summary(data_char_mobydick)
 "data_char_mobydick"
 
-#' Immigration-related sections of 2010 UK party manifestos
+#' immigration-related sections of 2010 UK party manifestos
+#' 
 #' Extracts from the election manifestos of 9 UK political parties from 2010, related
 #' to immigration or asylum-seekers.
 #' @format A named character vector of plain ASCII texts
@@ -28,7 +30,7 @@
 #' summary(data_corpus_ukimmig2010, showmeta = TRUE)
 "data_char_ukimmig2010"
 
-#' dfm with example data from Table 1 of Laver Benoit and Garry (2003)
+#' dfm from data in Table 1 of Laver, Benoit, and Garry (2003)
 #' 
 #' Constructed example data to demonstrate the Wordscores algorithm, from Laver 
 #' Benoit and Garry (2003), Table 1.
@@ -90,23 +92,25 @@
 NULL
 
 
-#' A corpus of US presidential inaugural addresses from 1789-2013
+#' US presidential inaugural address texts
 #' 
-#' \code{data_corpus_inaugural} is the \link{quanteda-package} corpus object of US presidents' inaugural addresses since 1789.
-#' Document variables contain the year of the address and the last name of the president.
+#' US presidential inaugural address texts, and metadata (for the corpus), 
+#' from 1789 to present.
+#' @details \code{data_corpus_inaugural} is the \link{quanteda-package} corpus
+#'   object of US presidents' inaugural addresses since 1789. Document variables
+#'   contain the year of the address and the last name of the president.
 #' @examples
 #' # some operations on the inaugural corpus
 #' summary(data_corpus_inaugural)
 #' head(docvars(data_corpus_inaugural), 10)
-#' @references \url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and 
-#' \url{http://www.presidency.ucsb.edu/inaugurals.php}.
+#' @references
+#'   \url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and 
+#'   \url{http://www.presidency.ucsb.edu/inaugurals.php}.
 "data_corpus_inaugural"
 
 
-#' character vector of the US presidential inaugural addresses from 1789-2013
-#' 
-#' \code{data_char_inaugural} is the character vector of US presidential inaugaration speeches
 #' @rdname data_corpus_inaugural
+#' @details \code{data_char_inaugural} is the character vector of US presidential inaugaration speeches
 #' @examples
 #' # working with the character vector only
 #' str(data_char_inaugural)

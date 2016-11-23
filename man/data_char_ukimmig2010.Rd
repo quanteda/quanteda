@@ -4,9 +4,7 @@
 \name{ukimmigTexts}
 \alias{data_char_ukimmig2010}
 \alias{ukimmigTexts}
-\title{Immigration-related sections of 2010 UK party manifestos
-Extracts from the election manifestos of 9 UK political parties from 2010, related
-to immigration or asylum-seekers.}
+\title{immigration-related sections of 2010 UK party manifestos}
 \format{An object of class \code{character} of length 9.}
 \usage{
 ukimmigTexts
@@ -14,7 +12,6 @@ ukimmigTexts
 data_char_ukimmig2010
 }
 \description{
-Immigration-related sections of 2010 UK party manifestos
 Extracts from the election manifestos of 9 UK political parties from 2010, related
 to immigration or asylum-seekers.
 }
