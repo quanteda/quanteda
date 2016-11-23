@@ -540,7 +540,7 @@ changeunits.corpus <- function(x, to = c("sentences", "paragraphs", "documents")
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     
     # make the new corpus
-    segmentedTexts <- segment(texts(x), to)
+    segmentedTexts <- char_segment(texts(x), to)
     lengthSegments <- sapply(segmentedTexts, length)
     newcorpus <- corpus(unlist(segmentedTexts))
     # repeat the docvars and existing document metadata
