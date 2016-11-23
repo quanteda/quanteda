@@ -22,7 +22,7 @@ corpus object
 \description{
 Returns subsets of a corpus that meet certain conditions, including direct 
 logical operations on docvars (document-level variables).  `corpus_subset` 
-functions identically to \link{`subset`} where non-standard evaluation is
+functions identically to \link{subset} where non-standard evaluation is
 used to evaluate conditions based on the \link{docvars} in the corpus.
 }
 \examples{

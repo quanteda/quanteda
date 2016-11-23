@@ -43,7 +43,7 @@ resample.corpus <- function(x, n=100, unit=c("sentences", "paragraphs"), ...) {
     
     # add a document serial number
     metadoc(x, "docID") <- 1:ndoc(x)
-    unitCorpus <- changeunits(x, unit, ...)
+    unitCorpus <- corpus_reshape(x, unit, ...)
     
     unitTexts <- as.data.table(unitCorpus$documents[, c("texts", "_docID")])
     setkeyv(unitTexts, "_docID")

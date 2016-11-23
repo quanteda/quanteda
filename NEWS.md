@@ -50,8 +50,9 @@ The following functions will still work, but issue a deprecation warning:
 
 new function | deprecated function | contructs:
 :--------|:------------- |:-------
-`tokens()` | `tokenize()` | `tokens` class object
-`subset.corpus()` | `corpus_subset` | `corpus` class object
+`tokens` | `tokenize()` | `tokens` class object
+`corpus_subset` | `subset.corpus` | `corpus` class object
+`corpus_reshape` | `changeunits` | `corpus` class object
 
 ## New functions
 

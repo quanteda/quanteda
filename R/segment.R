@@ -54,7 +54,7 @@ segment.corpus <- function(x, ...) {
 #'   \code{what = "tokens"} is used
 #' @return A corpus of segmented texts.
 #' @note Does not currently record document segments if segmenting a multi-text 
-#'   corpus into smaller units. For this, use \link{changeunits} instead.
+#'   corpus into smaller units. For this, use \link{corpus_reshape} instead.
 #' @details Tokens are delimited by separators.  For sentences, the delimiter 
 #'   can be defined by the user.  The default for sentences includes \code{.}, 
 #'   \code{!}, \code{?}, plus \code{;} and \code{:}.

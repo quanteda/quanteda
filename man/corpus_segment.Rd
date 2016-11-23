@@ -70,7 +70,7 @@ Tokens are delimited by separators.  For sentences, the delimiter
 }
 \note{
 Does not currently record document segments if segmenting a multi-text 
-  corpus into smaller units. For this, use \link{changeunits} instead.
+  corpus into smaller units. For this, use \link{corpus_reshape} instead.
 }
 \examples{
 testCorpus <- corpus(c("##INTRO This is the introduction. 
