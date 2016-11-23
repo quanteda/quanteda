@@ -65,7 +65,7 @@ setMethod("show", "dictionary",
 #'   
 #' @seealso \link{dfm}
 #' @examples
-#' mycorpus <- subset(data_corpus_inaugural, Year>1900)
+#' mycorpus <- corpus_subset(data_corpus_inaugural, Year>1900)
 #' mydict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
 #'                           opposition = c("Opposition", "reject", "notincorpus"),
 #'                           taxing = "taxing",

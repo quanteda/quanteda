@@ -11,7 +11,7 @@ new name | original name | notes
 :--------|:------------- |:----- 
 `data_char_sampletext` | `exampleString` | 
 `data_char_mobydick` | `mobydickText`
-`data_dfm_LBGexample | `LBGexample`
+`data_dfm_LBGexample` | `LBGexample`
 `data_char_encodedtexts` | `encodedTexts`
 
 ### Renamed internal data objects
@@ -48,11 +48,20 @@ new name | reason
 
 The following functions will still work, but issue a deprecation warning:
 
-new function | old function | contructs:
+new function | deprecated function | contructs:
 :--------|:------------- |:-------
+<<<<<<< HEAD
+`tokens` | `tokenize()` | `tokens` class object
+`corpus_subset` | `subset.corpus` | `corpus` class object
+`corpus_reshape` | `changeunits` | `corpus` class object
+`corpus_sample` | `sample`| `corpus` class object
+`corpus_segment` | `segment`| `corpus` class object
+
+=======
 `tokens()` | `tokenize()` | `tokens` class object
 `segment()` | `corpus_segment()` | `corpus` class object
 `segment()` | `char_segment()` | list of `character`
+>>>>>>> master
 
 ## New functions
 

@@ -8,116 +8,29 @@
 \usage{
 segment(x, ...)
 
-\method{segment}{character}(x, what = c("tokens", "sentences", "paragraphs",
-  "tags", "other"), delimiter = ifelse(what == "tokens", " ", ifelse(what ==
-  "sentences", "[.!?:;]", ifelse(what == "paragraphs", "\\\\n{2}", ifelse(what
-  == "tags", "##\\\\w+\\\\b", NULL)))), valuetype = c("regex", "fixed",
-  "glob"), perl = FALSE, ...)
+\method{segment}{character}(x, ...)
 
-\method{segment}{corpus}(x, what = c("tokens", "sentences", "paragraphs",
-  "tags", "other"), delimiter = ifelse(what == "tokens", " ", ifelse(what ==
-  "sentences", "[.!?:;]", ifelse(what == "paragraphs", "\\\\n{2}", ifelse(what
-  == "tags", "##\\\\w+\\\\b", NULL)))), valuetype = c("regex", "fixed",
-  "glob"), perl = FALSE, keepdocvars = TRUE, ...)
+\method{segment}{corpus}(x, ...)
 
 segment(x, ...)
 
-\method{segment}{character}(x, what = c("tokens", "sentences", "paragraphs",
-  "tags", "other"), delimiter = ifelse(what == "tokens", " ", ifelse(what ==
-  "sentences", "[.!?:;]", ifelse(what == "paragraphs", "\\\\n{2}", ifelse(what
-  == "tags", "##\\\\w+\\\\b", NULL)))), valuetype = c("regex", "fixed",
-  "glob"), perl = FALSE, ...)
+\method{segment}{character}(x, ...)
 
-\method{segment}{corpus}(x, what = c("tokens", "sentences", "paragraphs",
-  "tags", "other"), delimiter = ifelse(what == "tokens", " ", ifelse(what ==
-  "sentences", "[.!?:;]", ifelse(what == "paragraphs", "\\\\n{2}", ifelse(what
-  == "tags", "##\\\\w+\\\\b", NULL)))), valuetype = c("regex", "fixed",
-  "glob"), perl = FALSE, keepdocvars = TRUE, ...)
+\method{segment}{corpus}(x, ...)
 }
 \arguments{
 \item{x}{object to be segmented}
 
 \item{...}{additional arguments passed to  \code{\link{corpus_segment}}.}
 
-\item{what}{unit of segmentation.  Current options are \code{"tokens"} 
-(default), \code{"sentences"}, \code{"paragraphs"}, \code{"tags"}, and 
-\code{"other"}.  Segmenting on \code{other} allows segmentation of a text 
-on any user-defined value, and must be accompanied by the \code{delimiter} 
-argument.  Segmenting on \code{tags} performs the same function but 
-preserves the tags as a document variable in the segmented corpus.}
+\item{x}{object to be segmented}
 
-\item{delimiter}{delimiter defined as a \code{\link{regex}} for 
-segmentation. Each type has its own default, except \code{other}, which 
-requires a value to be specified.}
-
-\item{valuetype}{how to interpret the delimiter: \code{fixed} for exact
-matching; \code{"regex"} for regular expressions; or \code{"glob"} for 
-"glob"-style wildcard patterns}
-
-\item{perl}{logical. Should Perl-compatible regular expressions be used?}
-
-\item{keepdocvars}{if \code{TRUE}, repeat the docvar values for each
-segmented text; if \code{FALSE}, drop the docvars in the segmented corpus. 
-Dropping the docvars might be useful in order to conserve space or if these 
-are not desired for the segmented corpus.}
-
-\item{x}{text or corpus object to be segmented}
-
-\item{...}{provides additional arguments passed to \code{\link{tokenize}}, if
-\code{what = "tokens"} is used}
-}
-\value{
-A list of segmented texts, with each element of the list correponding
-  to one of the original texts.
+\item{...}{additional arguments passed to  \code{\link{corpus_segment}}.}
 }
 \description{
 See \code{\link{corpus_segment}}
 
-Segment text(s) into tokens, sentences, paragraphs, or other sections. 
-\code{segment} works on a character vector or corpus object, and allows the 
-delimiters to be defined.  See details.
-}
-\details{
-Tokens are delimited by Separators.  For sentences, the delimiter 
-  can be defined by the user.  The default for sentences includes \code{.}, 
-  \code{!}, \code{?}, plus \code{;} and \code{:}.
-  
-  For paragraphs, the default is two carriage returns, although this could be
-  changed to a single carriage return by changing the value of 
-  \code{delimiter} to \code{"\\\n{1}"} which is the R version of the 
-  \code{\link{regex}} for one newline character.  (You might need this if the
-  document was created in a word processor, for instance, and the lines were
-  wrapped in the window rather than being hard-wrapped with a newline
-  character.)
-}
-\note{
-Does not currently record document segments if segmenting a multi-text
-  corpus into smaller units. For this, use \link{changeunits} instead.
-}
-\examples{
-# same as tokenize()
-identical(tokenize(data_char_ukimmig2010), segment(data_char_ukimmig2010))
-
-# segment into paragraphs
-segment(data_char_ukimmig2010[3:4], "paragraphs")
-
-# segment a text into sentences
-segmentedChar <- segment(data_char_ukimmig2010, "sentences")
-segmentedChar[2]
-testCorpus <- corpus(c("##INTRO This is the introduction. 
-                       ##DOC1 This is the first document.  
-                       Second sentence in Doc 1.  
-                       ##DOC3 Third document starts here.  
-                       End of third document.",
-                      "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
-# add a docvar
-testCorpus[["serialno"]] <- paste0("textSerial", 1:ndoc(testCorpus))
-testCorpusSeg <- segment(testCorpus, "tags")
-summary(testCorpusSeg)
-texts(testCorpusSeg)
-# segment a corpus into sentences
-segmentedCorpus <- segment(corpus(data_char_ukimmig2010), "sentences")
-identical(ndoc(segmentedCorpus), length(unlist(segmentedChar)))
+See \code{\link{corpus_segment}}
 }
 \keyword{deprecated}
 \keyword{internal}

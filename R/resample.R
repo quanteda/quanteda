@@ -14,7 +14,7 @@
 # @param ... additional arguments passed to \code{\link{segment}}
 # @return a corpus object containing new resampled texts.
 # @examples 
-# testCorp <- resample(subset(data_corpus_inaugural, Year>2000), 10, "sentences")
+# testCorp <- resample(corpus_subset(data_corpus_inaugural, Year>2000), 10, "sentences")
 # testCorpPara <- resample(corpus(data_char_ukimmig2010), 10, "paragraphs")
 # names(metadoc(testCorp))
 # x <- corpus(c("Sentence One C1.  Sentence Two C1.  Sentence Three C1.", 
@@ -43,7 +43,7 @@ resample.corpus <- function(x, n=100, unit=c("sentences", "paragraphs"), ...) {
     
     # add a document serial number
     metadoc(x, "docID") <- 1:ndoc(x)
-    unitCorpus <- changeunits(x, unit, ...)
+    unitCorpus <- corpus_reshape(x, unit, ...)
     
     unitTexts <- as.data.table(unitCorpus$documents[, c("texts", "_docID")])
     setkeyv(unitTexts, "_docID")

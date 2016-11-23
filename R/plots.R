@@ -25,7 +25,7 @@
 #'   \code{\link[wordcloud]{comparison.cloud}}
 #' @examples
 #' # plot the features (without stopwords) from Obama's two inaugural addresses
-#' mydfm <- dfm(subset(data_corpus_inaugural, President=="Obama"), verbose = FALSE,
+#' mydfm <- dfm(corpus_subset(data_corpus_inaugural, President=="Obama"), verbose = FALSE,
 #'              ignoredFeatures = stopwords("english"))
 #' plot(mydfm)
 #' 
@@ -69,7 +69,7 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' @return \code{plot.kwic} returns a ggplot object
 #' @examples 
 #' \dontrun{
-#' data_corpus_inauguralPost70 <- subset(data_corpus_inaugural, Year > 1970)
+#' data_corpus_inauguralPost70 <- corpus_subset(data_corpus_inaugural, Year > 1970)
 #' # compare multiple documents
 #' plot(kwic(data_corpus_inauguralPost70, "american"))
 #' plot(kwic(data_corpus_inauguralPost70, "american"), scale = "absolute")

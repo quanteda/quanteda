@@ -45,7 +45,7 @@ mimic the idioms of the packages into whose format they convert.
 See \link{convert-wrappers} for details.
 }
 \examples{
-mycorpus <- subset(data_corpus_inaugural, Year > 1970)
+mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1970)
 quantdfm <- dfm(mycorpus, verbose = FALSE)
 
 # austin's wfm format

@@ -95,7 +95,7 @@ moby.word.v[99986]
 
 moby.word.v[c(4,5,6)]
 
-head(which(moby.word.v=="whale"))
+head(which(moby.word.v == "whale"))
 ```
 
 ## 2.4 Beginning the analysis
@@ -196,11 +196,11 @@ plot(
 
 ## Identifying chapter breaks
 
-Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a `corpus` object to hold the texts. Initially, we make a single-document corpus, and then use the `segment` function to split this by the string which specifies the chapter breaks. 
+Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a `corpus` object to hold the texts. Initially, we make a single-document corpus, and then use the `char_segment` function to split this by the string which specifies the chapter breaks. 
 
 ```{r}
 head(kwic(novel.v, 'chapter'))
-chaptersVec <-unlist(segment(novel.v, what='other', delimiter="CHAPTER\\s\\d", perl=TRUE))
+chaptersVec <-unlist(char_segment(novel.v, what = 'other', delimiter = "CHAPTER\\s\\d", perl = TRUE))
 chaptersLowerVec <- toLower(chaptersVec)
 chaptersCorp <- corpus(chaptersVec)
 ```
@@ -219,7 +219,7 @@ The above plots are raw frequency plots. For relative frequency plots, (word cou
 
 ## Relative frequency barplots of whale and ahab
 ```{r eval=TRUE}
-relDfm <- weight(chapDfm, type='relFreq') * 100
+relDfm <- weight(chapDfm, type = 'relFreq') * 100
 head(relDfm)
 barplot(as.numeric(relDfm[, 'whale']))
 barplot(as.numeric(relDfm[, 'ahab']))
@@ -232,11 +232,11 @@ barplot(as.numeric(relDfm[, 'ahab']))
 The `dfm` function constructs a matrix which contains zeroes (rather than NAs) for words that do not occur in a chapter, so there's no need to manually convert NAs. We can compute the individual correlation or the correlation for a matrix of the two columns.
 
 ```{r}
-wf <- as.numeric(relDfm[,'whale'])
-af <- as.numeric(relDfm[,'ahab'])
+wf <- as.numeric(relDfm[, 'whale'])
+af <- as.numeric(relDfm[, 'ahab'])
 cor(wf, af)
 
-waDfm <- cbind(relDfm[,'whale'], relDfm[,'ahab'])
+waDfm <- cbind(relDfm[, 'whale'], relDfm[, 'ahab'])
 cor(as.matrix(waDfm))
 ```
 
@@ -246,15 +246,15 @@ With the ahab frequency and whale frequency vectors extracted from the dfm, it i
 ```{r}
 samples <- replicate(1000, cor(sample(af), sample(wf)))
 
-h <- hist(samples, breaks=100, col="grey",
-xlab="Correlation Coefficient",
-main="Histogram of Random Correlation Coefficients\n
+h <- hist(samples, breaks = 100, col = "grey",
+xlab = "Correlation Coefficient",
+main = "Histogram of Random Correlation Coefficients\n
 with Normal Curve",
 plot=T)
-xfit <- seq(min(samples),max(samples),length=1000)
-yfit <- dnorm(xfit,mean=mean(samples),sd=sd(samples))
-yfit <- yfit*diff(h$mids[1:2])*length(samples)
-lines(xfit, yfit, col="black", lwd=2)
+xfit <- seq(min(samples), max(samples), length=1000)
+yfit <- dnorm(xfit, mean = mean(samples), sd = sd(samples))
+yfit <- yfit * diff(h$mids[1:2]) * length(samples)
+lines(xfit, yfit, col = "black", lwd = 2)
 
 cor.test(wf, af)
 

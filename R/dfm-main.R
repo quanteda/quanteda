@@ -90,20 +90,20 @@ dfm <- function(x, ...) {
 #' cat("Compacted by ", round(as.numeric((1-size1/size2)*100), 1), "%.\n", sep="")
 #' 
 #' # for a corpus
-#' mydfm <- dfm(subset(data_corpus_inaugural, Year>1980))
-#' mydfm <- dfm(subset(data_corpus_inaugural, Year>1980), toLower=FALSE)
+#' mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year>1980))
+#' mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year>1980), toLower=FALSE)
 #' 
 #' # grouping documents by docvars in a corpus
-#' mydfmGrouped <- dfm(subset(data_corpus_inaugural, Year>1980), groups = "President")
+#' mydfmGrouped <- dfm(corpus_subset(data_corpus_inaugural, Year>1980), groups = "President")
 #' 
 #' # with English stopwords and stemming
-#' dfmsInaug2 <- dfm(subset(data_corpus_inaugural, Year>1980), 
+#' dfmsInaug2 <- dfm(corpus_subset(data_corpus_inaugural, Year>1980), 
 #'                   ignoredFeatures=stopwords("english"), stem=TRUE)
 #' # works for both words in ngrams too
 #' dfm("Banking industry", stem = TRUE, ngrams = 2, verbose = FALSE)
 #' 
 #' # with dictionaries
-#' mycorpus <- subset(data_corpus_inaugural, Year>1900)
+#' mycorpus <- corpus_subset(data_corpus_inaugural, Year>1900)
 #' mydict <- list(christmas=c("Christmas", "Santa", "holiday"),
 #'                opposition=c("Opposition", "reject", "notincorpus"),
 #'                taxing="taxing",

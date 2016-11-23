@@ -97,7 +97,7 @@ lexdiv <- function(x, ...) {
 #'   vector element corresponding to an input document
 #' @export
 #' @examples
-#' mydfm <- dfm(subset(data_corpus_inaugural, Year > 1980), verbose = FALSE)
+#' mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE)
 #' (results <- lexdiv(mydfm, c("CTTR", "TTR", "U")))
 #' cor(lexdiv(mydfm, "all"))
 #' 

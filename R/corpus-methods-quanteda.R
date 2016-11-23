@@ -74,10 +74,10 @@ documents <- function(corp) {
 #'   For \code{texts <-}, the corpus with the updated texts.
 #' @export
 #' @examples
-#' nchar(texts(subset(data_corpus_inaugural, Year < 1806)))
+#' nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806)))
 #' 
 #' # grouping on a document variable
-#' nchar(texts(subset(data_corpus_inaugural, Year < 1806), groups = "President"))
+#' nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806), groups = "President"))
 #' 
 #' # grouping a character vector using a factor
 #' nchar(data_char_inaugural[1:5])
@@ -181,7 +181,7 @@ metadoc <- function(x, field = NULL)
 #' @rdname metadoc 
 #' @export
 #' @examples
-#' mycorp <- subset(data_corpus_inaugural, Year>1990)
+#' mycorp <- corpus_subset(data_corpus_inaugural, Year>1990)
 #' summary(mycorp, showmeta = TRUE)
 #' metadoc(mycorp, "encoding") <- "UTF-8"
 #' metadoc(mycorp)
@@ -378,8 +378,8 @@ ndoc <- function(x) {
 
 #' @rdname ndoc
 #' @examples 
-#' ndoc(subset(data_corpus_inaugural, Year>1980))
-#' ndoc(dfm(subset(data_corpus_inaugural, Year>1980), verbose=FALSE))
+#' ndoc(corpus_subset(data_corpus_inaugural, Year>1980))
+#' ndoc(dfm(corpus_subset(data_corpus_inaugural, Year>1980), verbose=FALSE))
 #' @export
 ndoc.corpus <- function(x) {
     nrow(x$documents)
@@ -413,160 +413,6 @@ ndoc.corpus <- function(x) {
 
 
 
-#' Randomly sample documents or features
-#' 
-#' Takes a random sample or documents or features of the specified size from a 
-#' corpus or document-feature matrix, with or without replacement
-#' 
-#' @param x a corpus or dfm object whose documents or features will be sampled
-#' @param size a positive number, the number of documents to select
-#' @param replace Should sampling be with replacement?
-#' @param prob A vector of probability weights for obtaining the elements of the
-#'   vector being sampled.
-#' @param ... unused
-#'   \code{\link[base]{sample}}, which is not defined as a generic
-#'   method in the \pkg{base} package.
-#' @export
-sample <- function(x, size, replace = FALSE, prob = NULL, ...) {
-    UseMethod("sample")
-}
-
-#' @export
-#' @rdname sample
-sample.default <- function(x, size, replace = FALSE, prob = NULL, ...) {
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-    base::sample(x, size, replace, prob)
-}
-
-
-#' @export
-#' @return A corpus object with number of documents equal to \code{size}, drawn 
-#'   from the corpus \code{x}.  The returned corpus object will contain all of 
-#'   the meta-data of the original corpus, and the same document variables for 
-#'   the documents selected.
-#' @seealso \code{\link{sample}}
-#' @rdname sample
-#' @examples
-#' # sampling from a corpus
-#' summary(sample(data_corpus_inaugural, 5)) 
-#' summary(sample(data_corpus_inaugural, 10, replace=TRUE))
-sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, ...) {
-    documents(x) <- documents(x)[sample(ndoc(x), size, replace, prob), , drop = FALSE]
-    x
-}
-
-#' extract a subset of a corpus
-#' 
-#' Returns subsets of a corpus that meet certain conditions, including direct 
-#' logical operations on docvars (document-level variables).  Works just like
-#' the normal subset command but for corpus objects.
-#' 
-#' @param x corpus object to be subsetted.
-#' @param subset logical expression indicating elements or rows to keep: missing
-#'   values are taken as false.
-#' @param select expression, indicating the attributes to select from the corpus
-#' @param ... not used
-#' @return corpus object
-#' @export
-#' @seealso \code{\link{select}}
-#' @examples
-#' summary(subset(data_corpus_inaugural, Year>1980))
-#' summary(subset(data_corpus_inaugural, Year>1930 & President=="Roosevelt", select=Year))
-subset.corpus <- function(x, subset, select, ...) {
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-    r <- if (missing(subset)) {
-        rep_len(TRUE, nrow(documents(x)))
-    } else {
-        e <- substitute(subset)
-        r <- eval(e, documents(x), parent.frame())
-        r & !is.na(r)
-    }
-    vars <- if (missing(select)) 
-        TRUE
-    else {
-        nl <- as.list(seq_along(documents(x)))
-        names(nl) <- names(documents(x))
-        c(1, eval(substitute(select), nl, parent.frame()))
-    }
-    documents(x) <- documents(x)[r, vars, drop = FALSE]
-    x
-}
-
-
-
-
-#' change the document units of a corpus
-#' 
-#' For a corpus, recast the documents down or up a level of aggregation.  "Down"
-#' would mean going from documents to sentences, for instance.  "Up" means from 
-#' sentences back to documents.  This makes it easy to reshape a corpus from a 
-#' collection of documents into a collection of sentences, for instance.
-#' (Because the corpus object records its current "units" status, there is no 
-#' \code{from} option, only \code{to}.)
-#' @param x corpus whose document units will be reshaped
-#' @param to new documents units for the corpus to be recast in
-#' @param ... not used
-#' @export
-changeunits <- function(x, ...) 
-    UseMethod("changeunits")
-
-#' @rdname changeunits
-#' @return A corpus object with the documents defined as the new units,
-#'   including document-level meta-data identifying the original documents.
-#' @export
-#' @examples
-#' # simple example
-#' mycorpus <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
-#'                      textwo = "Premiere phrase.  Deuxieme phrase."), 
-#'                    docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
-#'                    notes = "This is a simple example to show how changeunits() works.")
-#' summary(mycorpus)
-#' summary(changeunits(mycorpus, to = "sentences"), showmeta=TRUE)
-#' 
-#' # example with inaugural corpus speeches
-#' (mycorpus2 <- subset(data_corpus_inaugural, Year>2004))
-#' paragCorpus <- changeunits(mycorpus2, to="paragraphs")
-#' paragCorpus
-#' summary(paragCorpus, 100, showmeta=TRUE)
-#' ## Note that Bush 2005 is recorded as a single paragraph because that text used a single
-#' ## \n to mark the end of a paragraph.
-changeunits.corpus <- function(x, to = c("sentences", "paragraphs", "documents"), ...) {
-    to <- match.arg(to)
-    if (to == "documents") stop("documents not yet implemented.")
-    
-    if (length(addedArgs <- names(list(...))))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-    
-    # make the new corpus
-    segmentedTexts <- segment(texts(x), to)
-    lengthSegments <- sapply(segmentedTexts, length)
-    newcorpus <- corpus(unlist(segmentedTexts))
-    # repeat the docvars and existing document metadata
-    docvars(newcorpus, names(docvars(x))) <- as.data.frame(lapply(docvars(x), rep, lengthSegments))
-    docvars(newcorpus, names(metadoc(x))) <- as.data.frame(lapply(metadoc(x), rep, lengthSegments))
-    # add original document name as metadata
-    metadoc(newcorpus, "document") <- rep(names(segmentedTexts), lengthSegments)
-    # give a serial number (within document) to each sentence
-    sentenceid <- lapply(lengthSegments, function(n) seq(from=1, to=n))
-    metadoc(newcorpus, "serialno") <- unlist(sentenceid, use.names=FALSE)
-    
-    # copy settings and corpus metadata
-    newcorpus$settings <- x$settings
-    newcorpus$metadata <- x$metadata
-    
-    # modify settings flag for changeunits info
-    settings(newcorpus, "unitsoriginal") <- settings(newcorpus, "units")
-    settings(newcorpus, "units") <- to
-    
-    newcorpus
-}
-
-rep.data.frame <- function(x, ...)
-    as.data.frame(lapply(x, rep, ...))
-
-
 
 #' count the number of tokens or types
 #' 
@@ -592,10 +438,10 @@ rep.data.frame <- function(x, ...)
 #' ntype(toLower(txt), removePunct = TRUE)
 #' 
 #' # with some real texts
-#' ntoken(subset(data_corpus_inaugural, Year<1806, removePunct = TRUE))
-#' ntype(subset(data_corpus_inaugural, Year<1806, removePunct = TRUE))
-#' ntoken(dfm(subset(data_corpus_inaugural, Year<1800)))
-#' ntype(dfm(subset(data_corpus_inaugural, Year<1800)))
+#' ntoken(corpus_subset(data_corpus_inaugural, Year<1806, removePunct = TRUE))
+#' ntype(corpus_subset(data_corpus_inaugural, Year<1806, removePunct = TRUE))
+#' ntoken(dfm(corpus_subset(data_corpus_inaugural, Year<1800)))
+#' ntype(dfm(corpus_subset(data_corpus_inaugural, Year<1800)))
 #' @export
 ntoken <- function(x, ...) {
     UseMethod("ntoken")

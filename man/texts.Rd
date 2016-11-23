@@ -52,10 +52,10 @@ You are strongly encouraged as a good practice of text analysis
   \code{\link{tokenize}}.
 }
 \examples{
-nchar(texts(subset(data_corpus_inaugural, Year < 1806)))
+nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806)))
 
 # grouping on a document variable
-nchar(texts(subset(data_corpus_inaugural, Year < 1806), groups = "President"))
+nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806), groups = "President"))
 
 # grouping a character vector using a factor
 nchar(data_char_inaugural[1:5])
