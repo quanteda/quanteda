@@ -40,7 +40,7 @@ encoding(encodedTexts)
 # show detected value for each text, versus known encoding
 data.frame(labelled = names(encodedTexts), detected = encoding(encodedTexts)$all)
 
-encoding(ukimmigTexts)
+encoding(data_char_ukimmig2010)
 encoding(inaugCorpus)
 encoding(ie2010Corpus)
 

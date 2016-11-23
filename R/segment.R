@@ -5,9 +5,9 @@
 # @export
 # @examples
 # # segment sentences of the UK 2010 immigration sections of manifestos
-# segmentSentence(ukimmigTexts[1])[1:5]   # 1st 5 sentences from first (BNP) text
-# str(segmentSentence(ukimmigTexts[1]))   # a 132-element char vector
-# str(segmentSentence(ukimmigTexts[1:2])) # a 144-element char vector (143+ 12)
+# segmentSentence(data_char_ukimmig2010[1])[1:5]   # 1st 5 sentences from first (BNP) text
+# str(segmentSentence(data_char_ukimmig2010[1]))   # a 132-element char vector
+# str(segmentSentence(data_char_ukimmig2010[1:2])) # a 144-element char vector (143+ 12)
 # 
 segmentSentence <- function(x, delimiter = NULL, perl = FALSE) {
     result <- unlist(tokenize(x, what = "sentence"), use.names = FALSE)
@@ -19,8 +19,8 @@ segmentSentence <- function(x, delimiter = NULL, perl = FALSE) {
 # @export
 # @examples
 # # segment paragraphs 
-# segmentParagraph(ukimmigTexts[3])[1:2]   # 1st 2 Paragraphs from 3rd (Con) text
-# str(segmentParagraph(ukimmigTexts[3]))   # a 12-element char vector
+# segmentParagraph(data_char_ukimmig2010[3])[1:2]   # 1st 2 Paragraphs from 3rd (Con) text
+# str(segmentParagraph(data_char_ukimmig2010[3]))   # a 12-element char vector
 # 
 # @export
 segmentParagraph <- function(x, delimiter="\\n{2}", perl = FALSE, fixed = FALSE) {
@@ -72,13 +72,13 @@ segment <- function(x, ...) {
 #' @export
 #' @examples
 #' # same as tokenize()
-#' identical(tokenize(ukimmigTexts), segment(ukimmigTexts))
+#' identical(tokenize(data_char_ukimmig2010), segment(data_char_ukimmig2010))
 #' 
 #' # segment into paragraphs
-#' segment(ukimmigTexts[3:4], "paragraphs")
+#' segment(data_char_ukimmig2010[3:4], "paragraphs")
 #' 
 #' # segment a text into sentences
-#' segmentedChar <- segment(ukimmigTexts, "sentences")
+#' segmentedChar <- segment(data_char_ukimmig2010, "sentences")
 #' segmentedChar[2]
 segment.character <- function(x, what=c("tokens", "sentences", "paragraphs", "tags", "other"), 
                               delimiter = ifelse(what=="tokens", " ", 
@@ -138,7 +138,7 @@ segment.character <- function(x, what=c("tokens", "sentences", "paragraphs", "ta
 #' summary(testCorpusSeg)
 #' texts(testCorpusSeg)
 #' # segment a corpus into sentences
-#' segmentedCorpus <- segment(corpus(ukimmigTexts), "sentences")
+#' segmentedCorpus <- segment(corpus(data_char_ukimmig2010), "sentences")
 #' identical(ndoc(segmentedCorpus), length(unlist(segmentedChar)))
 segment.corpus <- function(x, what = c("tokens", "sentences", "paragraphs", "tags", "other"), 
                            delimiter = ifelse(what=="tokens", " ", 

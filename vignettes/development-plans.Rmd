@@ -132,11 +132,11 @@ vignette: >
     Example data objects:
     ```{r, eval=FALSE}
     data_char_sampletext # character, length 1
-    ukimmigTexts         # character, length 14
+    data_char_ukimmig2010  # character, length 14
     inaugTexts           # character, length 57
     ie2010Corpus         # corpus
     inaugCorpus          # corpus
-    LBGexample           # dfm
+    data_dfm_LBGexample  # dfm
     ```
     
     and some built-in objects used by functions:

@@ -10,6 +10,9 @@ This release has some major changes to the API, as described in this document (L
 new name | original name | notes 
 :--------|:------------- |:----- 
 `data_char_sampletext` | `exampleString` | 
+`data_char_mobydick` | `mobydickText`
+`data_dfm_LBGexample | `LBGexample`
+`data_char_encodedtexts` | `encodedTexts`
 
 ### Renamed internal data objects
 
@@ -21,6 +24,15 @@ new name | original name | notes
 `data_int_syllables` | `englishSyllables` |  (used by `textcount_syllables()`) 
 `data_char_wordlists` | `wordlists` |  (used by `readability()`) 
 `data_char_stopwords` | `.stopwords` | (used by `stopwords()`
+
+### Deprecated data objects
+
+In v.0.9.9 the old names remain available, but are deprecated.
+
+new name | original name | notes 
+:--------|:------------- |:----- 
+`data_char_ukimmig2010` | `ukimmigTexts` | 
+
 
 ### Deleted data objects
 

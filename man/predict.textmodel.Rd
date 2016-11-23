@@ -29,7 +29,7 @@ wordscore.word, bayesscore.word}
 implements class predictions using trained Naive Bayes examples
 }
 \examples{
-(nbfit <- textmodel_NB(LBGexample, c("A", "A", "B", "C", "C", NA)))
+(nbfit <- textmodel_NB(data_dfm_LBGexample, c("A", "A", "B", "C", "C", NA)))
 (nbpred <- predict(nbfit))
 }
 \author{

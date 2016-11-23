@@ -14,11 +14,11 @@
 #' @param verbose if \code{FALSE}, do not print diagnostic report
 #' @param ... additional arguments passed to \link[stringi]{stri_enc_detect}
 #' @examples 
-#' encoding(encodedTexts)
+#' encoding(data_char_encodedtexts)
 #' # show detected value for each text, versus known encoding
-#' data.frame(labelled = names(encodedTexts), detected = encoding(encodedTexts)$all)
+#' data.frame(labelled = names(data_char_encodedtexts), detected = encoding(data_char_encodedtexts)$all)
 #' 
-#' encoding(ukimmigTexts)
+#' encoding(data_char_ukimmig2010)
 #' encoding(inaugCorpus)
 #' encoding(ie2010Corpus)
 #' 

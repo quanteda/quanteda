@@ -61,8 +61,8 @@
 #' corpus(inaugTexts)
 #' 
 #' # create a corpus from texts and assign meta-data and document variables
-#' ukimmigCorpus <- corpus(ukimmigTexts, 
-#'                         docvars = data.frame(party = names(ukimmigTexts))) 
+#' ukimmigCorpus <- corpus(data_char_ukimmig2010, 
+#'                         docvars = data.frame(party = names(data_char_ukimmig2010))) 
 #'
 #' corpus(texts(ie2010Corpus))
 #' 

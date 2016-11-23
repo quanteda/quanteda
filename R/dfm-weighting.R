@@ -241,10 +241,10 @@ setMethod("docfreq", signature(x = "dfm"),
 #' @references Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
 #'   \emph{Introduction to Information Retrieval}. Cambridge University Press.
 #' @examples 
-#' head(LBGexample[, 5:10])
-#' head(tfidf(LBGexample)[, 5:10])
-#' docfreq(LBGexample)[5:15]
-#' head(tf(LBGexample)[, 5:10])
+#' head(data_dfm_LBGexample[, 5:10])
+#' head(tfidf(data_dfm_LBGexample)[, 5:10])
+#' docfreq(data_dfm_LBGexample)[5:15]
+#' head(tf(data_dfm_LBGexample)[, 5:10])
 #' 
 #' # replication of worked example from
 #' # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf

@@ -429,7 +429,7 @@ head(stopwords("arabic"), 10)
 
 The dfm can be inspected in the Enviroment pane in RStudio, or by calling R's `View` function. Calling `plot` on a dfm will display a wordcloud using the [wordcloud package](link.)
 ```{r warning=FALSE, fig.width = 8, fig.height = 8}
-mydfm <- dfm(ukimmigTexts, ignoredFeatures = c("will", stopwords("english")))
+mydfm <- dfm(data_char_ukimmig2010, ignoredFeatures = c("will", stopwords("english")))
 mydfm
 ```
 

@@ -123,7 +123,7 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
 #' @author Kenneth Benoit
 #' @rdname predict.textmodel
 #' @examples 
-#' (nbfit <- textmodel_NB(LBGexample, c("A", "A", "B", "C", "C", NA)))
+#' (nbfit <- textmodel_NB(data_dfm_LBGexample, c("A", "A", "B", "C", "C", NA)))
 #' (nbpred <- predict(nbfit))
 #' @export
 predict.textmodel_NB_fitted <- function(object, newdata = NULL, ...) {

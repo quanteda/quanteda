@@ -52,13 +52,14 @@ setClass("textmodel_wordscores_predicted",
 #' @slot method takes a value of \code{wordscores} for this model
 #' @author Kenneth Benoit
 #' @examples 
-#' (ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores"))
+#' (ws <- textmodel(data_dfm_LBGexample, c(seq(-1.5, 1.5, .75), NA), 
+#'                  model = "wordscores"))
 #' predict(ws)
 #' predict(ws, rescaling="mv")
 #' predict(ws, rescaling="lbg")
 #'
 #' # same as:
-#' (ws2 <- textmodel_wordscores(LBGexample, c(seq(-1.5, 1.5, .75), NA)))
+#' (ws2 <- textmodel_wordscores(data_dfm_LBGexample, c(seq(-1.5, 1.5, .75), NA)))
 #' predict(ws2)
 #' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
 #' "Extracting Policy Positions From Political Texts Using Words as Data." 

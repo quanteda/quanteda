@@ -7,6 +7,44 @@
 #' tokenize(data_char_sampletext, removePunct = TRUE)
 "data_char_sampletext"
 
+#' Project Gutenberg text of Herman Melville's \emph{Moby Dick}
+#' Named character object of the ASCII text of Herman Melville's
+#'  \emph{Moby Dick}, EBook no. 2701.
+#' @source Project Gutenberg, \url{http://www.gutenberg.org}
+#' @aliases mobydickText
+#' @examples
+#' summary(data_char_mobydick)
+"data_char_mobydick"
+
+#' Immigration-related sections of 2010 UK party manifestos
+#' Extracts from the election manifestos of 9 UK political parties from 2010, related
+#' to immigration or asylum-seekers.
+#' @format A named character vector of plain ASCII texts
+#' @examples
+#' data_corpus_ukimmig2010 <- 
+#'     corpus(data_char_ukimmig2010, 
+#'            docvars = data.frame(party = names(ukimmigTexts)))
+#' metadoc(data_corpus_ukimmig2010, "language") <- "english"
+#' summary(data_corpus_ukimmig2010, showmeta = TRUE)
+"data_char_ukimmig2010"
+
+#' dfm with example data from Table 1 of Laver Benoit and Garry (2003)
+#' 
+#' Constructed example data to demonstrate the Wordscores algorithm, from Laver 
+#' Benoit and Garry (2003), Table 1.
+#' @details This is the example word count data from Laver, Benoit and Garry's 
+#'   (2003) Table 1. Documents R1 to R5 are assumed to have known positions: 
+#'   -1.5, -0.75, 0, 0.75, 1.5.  Document V1 is assumed unknown, and will have a
+#'   raw text score of approximately -0.45 when computed as per LBG (2003).
+#' @format A \link{dfm} object with 6 documents and 37 features
+#' @references Laver, Michael, Kenneth Benoit, and John Garry.  2003. 
+#'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating policy 
+#'   positions from political text using words as data.}" \emph{American
+#'   Political Science Review} 97(2): 311-331.
+#' @aliases LBGexample
+"data_dfm_LBGexample"  
+
+
 #' @name inaugCorpus
 #' @docType data
 #' @title A corpus of US presidential inaugural addresses from 1789-2013
@@ -33,34 +71,7 @@ NULL
 #' mycorpus <- corpus(inaugTexts)
 NULL
 
-#' @name ukimmigTexts
-#' @title Immigration-related sections of 2010 UK party manifestos
-#' @docType data
-#' @description Extracts from the election manifestos of 9 UK political parties from 2010, related
-#' to immigration or asylum-seekers.
-#' @format A named character vector of plain ASCII texts
-#' @examples
-#' ukimmigCorpus <- corpus(ukimmigTexts, docvars=data.frame(party=names(ukimmigTexts)))
-#' metadoc(ukimmigCorpus, "language") <- "english"
-#' summary(ukimmigCorpus, showmeta = TRUE)
-NULL
 
-#' @name LBGexample
-#' @docType data
-#' @title dfm with example data from Table 1 of Laver Benoit and Garry
-#'   (2003)
-#' @description Constructed example data to demonstrate the Wordscores algorithm, from Laver
-#'   Benoit and Garry (2003), Table 1.
-#' @details This is the example word count data from Laver, Benoit and Garry's
-#'   (2003) Table 1. Documents R1 to R5 are assumed to have known positions:
-#'   -1.5, -0.75, 0, 0.75, 1.5.  Document V1 is assumed unknown, and will have a
-#'   raw text score of approximately -0.45 when computed as per LBG (2003).
-#' @format A \link{dfm} object with 6 documents and 37 features
-#' @references Laver, Michael, Kenneth Benoit, and John Garry.  2003.
-#'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating policy
-#'   positions from political text using words as data.}" \emph{American Political
-#'   Science Review} 97(2): 311-331.
-NULL
 
 #' @name ie2010Corpus
 #' @aliases iebudgets
@@ -112,15 +123,6 @@ NULL
 # wordlists <- list(dalechall = dalechall, spache = spache)
 # save(wordlists, file = "data/wordlists.RData")
 
-#' @name mobydickText
-#' @title Project Gutenberg text of Herman Melville's \emph{Moby Dick}
-#' @source Project Gutenberg, \url{http://www.gutenberg.org}
-#' @docType data
-#' @description Named character object of the ASCII text of Herman Melville's
-#'   \emph{Moby Dick}, EBook no. 2701.
-#' @examples
-#' summary(mobydickText)
-NULL
 
 #' internal data sets
 #' 

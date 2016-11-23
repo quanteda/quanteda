@@ -239,7 +239,7 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
 #' selectFeatures(toks, stopwords("english"), "keep")
 #' selectFeatures(toks, stopwords("english"), "remove", padding = TRUE)
 #' selectFeatures(toks, stopwords("english"), "keep", padding = TRUE)
-#' selectFeatures(tokenize(encodedTexts[1]), stopwords("english"), "remove", padding = TRUE)
+#' selectFeatures(tokenize(data_char_encodedtexts[1]), stopwords("english"), "remove", padding = TRUE)
 selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                            valuetype = c("glob", "regex", "fixed"),
                                            case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
@@ -483,7 +483,7 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
 #' removeFeatures(itText, stopwords("italian"), case_insensitive = TRUE)
 #' 
 #' ## example for dfm objects
-#' mydfm <- dfm(ukimmigTexts, verbose=FALSE)
+#' mydfm <- dfm(data_char_ukimmig2010, verbose=FALSE)
 #' removeFeatures(mydfm, stopwords("english"))
 #' 
 #' ## example for collocations
