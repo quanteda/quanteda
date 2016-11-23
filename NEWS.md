@@ -11,7 +11,7 @@ new name | original name | notes
 :--------|:------------- |:----- 
 `data_char_sampletext` | `exampleString` | 
 `data_char_mobydick` | `mobydickText`
-`data_dfm_LBGexample | `LBGexample`
+`data_dfm_LBGexample` | `LBGexample`
 `data_char_encodedtexts` | `encodedTexts`
 
 ### Renamed internal data objects
@@ -53,6 +53,9 @@ new function | deprecated function | contructs:
 `tokens` | `tokenize()` | `tokens` class object
 `corpus_subset` | `subset.corpus` | `corpus` class object
 `corpus_reshape` | `changeunits` | `corpus` class object
+`corpus_sample` | `sample`| `corpus` class object
+`corpus_segment` | `segment`| `corpus` class object
+
 
 ## New functions
 

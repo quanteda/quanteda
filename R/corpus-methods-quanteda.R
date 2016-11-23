@@ -413,48 +413,6 @@ ndoc.corpus <- function(x) {
 
 
 
-#' Randomly sample documents or features
-#' 
-#' Takes a random sample or documents or features of the specified size from a 
-#' corpus or document-feature matrix, with or without replacement
-#' 
-#' @param x a corpus or dfm object whose documents or features will be sampled
-#' @param size a positive number, the number of documents to select
-#' @param replace Should sampling be with replacement?
-#' @param prob A vector of probability weights for obtaining the elements of the
-#'   vector being sampled.
-#' @param ... unused
-#'   \code{\link[base]{sample}}, which is not defined as a generic
-#'   method in the \pkg{base} package.
-#' @export
-sample <- function(x, size, replace = FALSE, prob = NULL, ...) {
-    UseMethod("sample")
-}
-
-#' @export
-#' @rdname sample
-sample.default <- function(x, size, replace = FALSE, prob = NULL, ...) {
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-    base::sample(x, size, replace, prob)
-}
-
-
-#' @export
-#' @return A corpus object with number of documents equal to \code{size}, drawn 
-#'   from the corpus \code{x}.  The returned corpus object will contain all of 
-#'   the meta-data of the original corpus, and the same document variables for 
-#'   the documents selected.
-#' @seealso \code{\link{sample}}
-#' @rdname sample
-#' @examples
-#' # sampling from a corpus
-#' summary(sample(data_corpus_inaugural, 5)) 
-#' summary(sample(data_corpus_inaugural, 10, replace=TRUE))
-sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, ...) {
-    documents(x) <- documents(x)[sample(ndoc(x), size, replace, prob), , drop = FALSE]
-    x
-}
 
 #' count the number of tokens or types
 #' 

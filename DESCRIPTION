@@ -71,6 +71,7 @@ Collate:
     'corpus-methods-base.R'
     'corpus-methods-quanteda.R'
     'corpus_reshape.R'
+    'corpus_sample.R'
     'corpus_subset.R'
     'data-deprecated.R'
     'data-documentation.R'

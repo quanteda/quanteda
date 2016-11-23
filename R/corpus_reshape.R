@@ -64,8 +64,11 @@ corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"), ..
 }
 
 
-#' @rdname corpus_reshape
-#' @noRd
+#' deprecated name for corpus_reshape
+#' 
+#' The deprecated function name for what is now \code{\link{corpus_reshape}}. 
+#' Please use that instead.
+#' @keywords internal
 #' @export
 changeunits <- corpus_reshape
 

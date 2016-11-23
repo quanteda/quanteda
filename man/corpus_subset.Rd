@@ -22,8 +22,8 @@ corpus object
 \description{
 Returns subsets of a corpus that meet certain conditions, including direct 
 logical operations on docvars (document-level variables).  `corpus_subset` 
-functions identically to \link{subset} where non-standard evaluation is
-used to evaluate conditions based on the \link{docvars} in the corpus.
+functions identically to \code{\link{subset}}, using non-standard evaluation 
+to evaluate conditions based on the \link{docvars} in the corpus.
 }
 \examples{
 summary(corpus_subset(data_corpus_inaugural, Year>1980))
