@@ -51,6 +51,8 @@ The following functions will still work, but issue a deprecation warning:
 new function | old function | contructs:
 :--------|:------------- |:-------
 `tokens()` | `tokenize()` | `tokens` class object
+`segment()` | `corpus_segment()` | `corpus` class object
+`segment()` | `char_segment()` | list of `character`
 
 ## New functions
 
