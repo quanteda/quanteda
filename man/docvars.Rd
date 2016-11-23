@@ -40,13 +40,13 @@ also permits assignment, including the easy creation of new document varibles, e
 See \code{\link{[.corpus}} for details.
 }
 \examples{
-head(docvars(inaugCorpus))
-docvars(inaugCorpus, "President") <- paste("prez", 1:ndoc(inaugCorpus), sep="")
-head(docvars(inaugCorpus))
+head(docvars(data_corpus_inaugural))
+docvars(data_corpus_inaugural, "President") <- paste("prez", 1:ndoc(data_corpus_inaugural), sep="")
+head(docvars(data_corpus_inaugural))
 
 # alternative using indexing
-head(inaugCorpus[, "Year"])
-inaugCorpus[["President2"]] <- paste("prezTwo", 1:ndoc(inaugCorpus), sep="")
-head(docvars(inaugCorpus))
+head(data_corpus_inaugural[, "Year"])
+data_corpus_inaugural[["President2"]] <- paste("prezTwo", 1:ndoc(data_corpus_inaugural), sep="")
+head(docvars(data_corpus_inaugural))
 }
 

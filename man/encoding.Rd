@@ -43,7 +43,7 @@ data.frame(labelled = names(data_char_encodedtexts),
 
 encoding(data_char_ukimmig2010)
 encoding(data_corpus_irishbudget2010)
-encoding(inaugCorpus)
+encoding(data_corpus_inaugural)
 
 \dontrun{# Russian text, Windows-1251
 mytextfile <- textfile("http://www.kenbenoit.net/files/01_er_5.txt")

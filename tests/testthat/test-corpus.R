@@ -39,16 +39,16 @@ test_that("test show.corpus", {
 
 test_that("docvars of corpus is a data.frame", {
     expect_that(
-        docvars(inaugCorpus),
+        docvars(data_corpus_inaugural),
         is_a('data.frame')
     )
 })
 
 test_that("test c.corpus", {
-    concat.corpus <- c(inaugCorpus, inaugCorpus, inaugCorpus)
+    concat.corpus <- c(data_corpus_inaugural, data_corpus_inaugural, data_corpus_inaugural)
 
-    expected_docvars <-rbind(docvars(inaugCorpus), docvars(inaugCorpus), docvars(inaugCorpus))
-    rownames(expected_docvars) <- make.unique(rep(rownames(docvars(inaugCorpus)), 3), sep='')
+    expected_docvars <-rbind(docvars(data_corpus_inaugural), docvars(data_corpus_inaugural), docvars(data_corpus_inaugural))
+    rownames(expected_docvars) <- make.unique(rep(rownames(docvars(data_corpus_inaugural)), 3), sep='')
 
     expect_that(
         docvars(concat.corpus),
@@ -61,8 +61,8 @@ test_that("test c.corpus", {
     )
 
     
-    expected_texts <- c(texts(inaugCorpus), texts(inaugCorpus), texts(inaugCorpus))
-    names(expected_texts) <- make.unique(rep(names(texts(inaugCorpus)), 3), sep='')
+    expected_texts <- c(texts(data_corpus_inaugural), texts(data_corpus_inaugural), texts(data_corpus_inaugural))
+    names(expected_texts) <- make.unique(rep(names(texts(data_corpus_inaugural)), 3), sep='')
   
     expect_that(
         texts(concat.corpus),

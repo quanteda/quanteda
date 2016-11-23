@@ -39,7 +39,7 @@ summary(mycorpus)
 summary(changeunits(mycorpus, to = "sentences"), showmeta=TRUE)
 
 # example with inaugural corpus speeches
-(mycorpus2 <- subset(inaugCorpus, Year>2004))
+(mycorpus2 <- subset(data_corpus_inaugural, Year>2004))
 paragCorpus <- changeunits(mycorpus2, to="paragraphs")
 paragCorpus
 summary(paragCorpus, 100, showmeta=TRUE)

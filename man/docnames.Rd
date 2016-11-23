@@ -32,10 +32,10 @@ of the \link{dfm} object.
 }
 \examples{
 # query the document names of the inaugural speech corpus
-docnames(inaugCorpus) <- paste("Speech", 1:ndoc(inaugCorpus), sep="")
+docnames(data_corpus_inaugural) <- paste("Speech", 1:ndoc(data_corpus_inaugural), sep="")
 
 # reassign the document names of the inaugural speech corpus
-docnames(inaugCorpus) <- paste("Speech", 1:ndoc(inaugCorpus), sep="")
+docnames(data_corpus_inaugural) <- paste("Speech", 1:ndoc(data_corpus_inaugural), sep="")
 
 # query the document names of a dfm
 docnames(dfm(data_char_inaugural[1:5]))

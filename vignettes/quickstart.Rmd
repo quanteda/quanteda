@@ -250,7 +250,7 @@ mytf6 <- textfile("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catal
                   textField = "COMMON")
 summary(corpus(mytf6), 5)
 # csv file
-write.csv(data.frame(inaugSpeech = texts(inaugCorpus), docvars(inaugCorpus)), 
+write.csv(data.frame(inaugSpeech = texts(data_corpus_inaugural), docvars(data_corpus_inaugural)), 
           file = "/tmp/inaug_texts.csv", row.names = FALSE)
 mytf7 <- textfile("/tmp/inaug_texts.csv", textField = "inaugSpeech")
 summary(corpus(mytf7), 5)
@@ -268,7 +268,7 @@ A corpus is designed to be a more or less static container of texts with respect
 To extract texts from a a corpus, we use an extractor, called `texts()`.  
 
 ```{r}
-texts(inaugCorpus)[2]
+texts(data_corpus_inaugural)[2]
 ```
 
 To summarize the texts from a corpus, we can call a `summary()` method defined for a corpus.
@@ -280,7 +280,7 @@ summary(data_corpus_irishbudget2010)
 We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:
 
 ```{r, fig.width = 8}
-tokenInfo <- summary(inaugCorpus)
+tokenInfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
     ggplot(data=tokenInfo, aes(x=Year, y=Tokens, group=1)) + geom_line() + geom_point() +
         scale_x_discrete(labels=c(seq(1789,2012,12)), breaks=seq(1789,2012,12) ) 
@@ -312,8 +312,8 @@ There is a method of the `subset()` function defined for corpus objects, where a
 be extracted based on logical conditions applied to docvars:
 
 ```{r}
-summary(subset(inaugCorpus, Year > 1990))
-summary(subset(inaugCorpus, President == "Adams"))
+summary(subset(data_corpus_inaugural, Year > 1990))
+summary(subset(data_corpus_inaugural, President == "Adams"))
 ```
 
 
@@ -323,9 +323,9 @@ The `kwic` function (KeyWord In Context) performs a search for a word and allows
 
 ```{r}
 options(width = 200)
-kwic(inaugCorpus, "terror")
-kwic(inaugCorpus, "terror", valuetype = "regex")
-kwic(inaugCorpus, "communist*")
+kwic(data_corpus_inaugural, "terror")
+kwic(data_corpus_inaugural, "terror", valuetype = "regex")
+kwic(data_corpus_inaugural, "communist*")
 ```
 
 
@@ -333,10 +333,10 @@ In the above summary, `Year` and `President` are variables associated with each 
 
 ```{r}
 # inspect the document-level variables
-head(docvars(inaugCorpus))
+head(docvars(data_corpus_inaugural))
 
 # inspect the corpus-level metadata
-metacorpus(inaugCorpus)
+metacorpus(data_corpus_inaugural)
 ```
 
 More corpora are available from the [quantedaData](http://github.com/kbenoit/quantedaData) package.
@@ -400,7 +400,7 @@ the conservative approach taken by `tokenize()`, the `dfm()` function applies ce
 such as `toLower()` -- a separate function for lower-casing texts -- and removes punctuation.  All of the options to `tokenize()` can be passed to `dfm()`, however.
 
 ```{r}
-myCorpus <- subset(inaugCorpus, Year > 1990)
+myCorpus <- subset(data_corpus_inaugural, Year > 1990)
 
 # make a dfm
 myDfm <- dfm(myCorpus)
@@ -473,7 +473,7 @@ For some applications we have prior knowledge of sets of words that are indicati
 For example, let's look at how words associated with terrorism and words associated with the economy vary by President in the inaugural speeches corpus. From the original corpus, we select Presidents since Clinton:
 
 ```{r}
-recentCorpus <- subset(inaugCorpus, Year > 1991)
+recentCorpus <- subset(data_corpus_inaugural, Year > 1991)
 ```
 
 Now we define a demonstration dictionary:
@@ -505,7 +505,7 @@ liwcdfm[, 1:10]
 ## Similarities between texts
 
 ```{r fig.width = 6}
-presDfm <- dfm(subset(inaugCorpus, Year>1980), 
+presDfm <- dfm(subset(data_corpus_inaugural, Year>1980), 
                ignoredFeatures = stopwords("english"),
                stem=TRUE, verbose=FALSE)
 obamaSimil <- similarity(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL, 

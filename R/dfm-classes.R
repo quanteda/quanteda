@@ -102,7 +102,7 @@ NULL
 #' @return A \link{dfm-class} class object corresponding to the subset defined 
 #'   by \code{n} and \code{ncol}.
 #' @examples
-#' myDfm <- dfm(inaugCorpus, ngrams = 2, verbose = FALSE)
+#' myDfm <- dfm(data_corpus_inaugural, ngrams = 2, verbose = FALSE)
 #' head(myDfm)
 #' tail(myDfm)
 #' tail(myDfm, nfeature = 4)

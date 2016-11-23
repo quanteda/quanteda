@@ -65,7 +65,7 @@ setMethod("show", "dictionary",
 #'   
 #' @seealso \link{dfm}
 #' @examples
-#' mycorpus <- subset(inaugCorpus, Year>1900)
+#' mycorpus <- subset(data_corpus_inaugural, Year>1900)
 #' mydict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
 #'                           opposition = c("Opposition", "reject", "notincorpus"),
 #'                           taxing = "taxing",
@@ -511,7 +511,7 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
 
 #' @rdname applyDictionary
 #' @examples 
-#' toks <- tokens(inaugCorpus)
+#' toks <- tokens(data_corpus_inaugural)
 #' head(kwic(toks, "united states"))
 #' dict <- dictionary(list(country = "united states"))
 #' toks2 <- applyDictionary(toks, dict, valuetype = "fixed")

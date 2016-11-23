@@ -25,7 +25,7 @@
 #'   \code{\link[wordcloud]{comparison.cloud}}
 #' @examples
 #' # plot the features (without stopwords) from Obama's two inaugural addresses
-#' mydfm <- dfm(subset(inaugCorpus, President=="Obama"), verbose = FALSE,
+#' mydfm <- dfm(subset(data_corpus_inaugural, President=="Obama"), verbose = FALSE,
 #'              ignoredFeatures = stopwords("english"))
 #' plot(mydfm)
 #' 
@@ -69,16 +69,18 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' @return \code{plot.kwic} returns a ggplot object
 #' @examples 
 #' \dontrun{
-#' inaugCorpusPost70 <- subset(inaugCorpus, Year > 1970)
+#' data_corpus_inauguralPost70 <- subset(data_corpus_inaugural, Year > 1970)
 #' # compare multiple documents
-#' plot(kwic(inaugCorpusPost70, "american"))
-#' plot(kwic(inaugCorpusPost70, "american"), scale = "absolute")
+#' plot(kwic(data_corpus_inauguralPost70, "american"))
+#' plot(kwic(data_corpus_inauguralPost70, "american"), scale = "absolute")
 #' # compare multiple terms across multiple documents
-#' plot(kwic(inaugCorpusPost70, "america*"), kwic(inaugCorpusPost70, "people"))
+#' plot(kwic(data_corpus_inauguralPost70, "america*"), 
+#'      kwic(data_corpus_inauguralPost70, "people"))
 #' 
 #' # how to modify the ggplot with different options
 #' library(ggplot2)
-#' g <- plot(kwic(inaugCorpusPost70, "american"), kwic(inaugCorpusPost70, "people"))
+#' g <- plot(kwic(data_corpus_inauguralPost70, "american"), 
+#'           kwic(data_corpus_inauguralPost70, "people"))
 #' g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue'))
 #' }
 #' @export
@@ -214,7 +216,7 @@ plot.kwic <- function(..., scale = c("absolute", "relative"), sort=FALSE) {
 #' @importFrom graphics plot segments axis points par text
 #' @importFrom grDevices rgb
 #' @examples 
-#' postwar <- trim(dfm(inaugCorpus[41:57]), minCount = 5, minDoc = 2)
+#' postwar <- trim(dfm(data_corpus_inaugural[41:57]), minCount = 5, minDoc = 2)
 #' mod <- textmodel(postwar, model = "wordfish")
 #' plot(mod, sort = FALSE)
 #' plot(mod, sort = TRUE)

@@ -89,7 +89,7 @@ This implements only the static measures of lexical diversity, not more
   from the package \pkg{korRpus}.
 }
 \examples{
-mydfm <- dfm(subset(inaugCorpus, Year > 1980), verbose = FALSE)
+mydfm <- dfm(subset(data_corpus_inaugural, Year > 1980), verbose = FALSE)
 (results <- lexdiv(mydfm, c("CTTR", "TTR", "U")))
 cor(lexdiv(mydfm, "all"))
 

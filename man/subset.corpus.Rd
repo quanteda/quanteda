@@ -25,8 +25,8 @@ logical operations on docvars (document-level variables).  Works just like
 the normal subset command but for corpus objects.
 }
 \examples{
-summary(subset(inaugCorpus, Year>1980))
-summary(subset(inaugCorpus, Year>1930 & President=="Roosevelt", select=Year))
+summary(subset(data_corpus_inaugural, Year>1980))
+summary(subset(data_corpus_inaugural, Year>1930 & President=="Roosevelt", select=Year))
 }
 \seealso{
 \code{\link{select}}

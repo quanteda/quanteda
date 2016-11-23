@@ -54,7 +54,7 @@ This converts a matrix from sparse to dense format, so may exceed memory
 requirements depending on the size of your input matrix.
 }
 \examples{
-dtm <- dfm(inaugCorpus)
+dtm <- dfm(data_corpus_inaugural)
 x <- apply(dtm, 1, function(tf) tf/max(tf))
 topfeatures(dtm)
 normDtm <- weight(dtm, "relFreq")

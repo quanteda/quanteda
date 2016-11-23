@@ -25,7 +25,7 @@ readability <- function(x, ...) {
 #' @rdname readability
 #' @export
 #' @examples
-#' readability(inaugCorpus, measure = "Flesch.Kincaid")
+#' readability(data_corpus_inaugural, measure = "Flesch.Kincaid")
 readability.corpus <- function(x, ...) {
     readability(texts(x), ...)
 }
@@ -38,7 +38,7 @@ readability.corpus <- function(x, ...) {
 #' readability(txt, "Flesch.Kincaid")
 #' readability(txt, "Flesch.Kincaid", drop = FALSE)
 #' readability(txt, c("FOG", "FOG.PSK", "FOG.NRI"))
-#' inaugReadability <- readability(inaugCorpus, "all")
+#' inaugReadability <- readability(data_corpus_inaugural, "all")
 #' round(cor(inaugReadability), 2)
 readability.character <- function(x,
                                   measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",

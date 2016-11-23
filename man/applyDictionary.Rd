@@ -83,7 +83,7 @@ applyDictionary(myDfm, myDict, valuetype = "regex", case_insensitive = TRUE)
 # fixed format: no pattern matching
 applyDictionary(myDfm, myDict, valuetype = "fixed")
 applyDictionary(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
-toks <- tokens(inaugCorpus)
+toks <- tokens(data_corpus_inaugural)
 head(kwic(toks, "united states"))
 dict <- dictionary(list(country = "united states"))
 toks2 <- applyDictionary(toks, dict, valuetype = "fixed")

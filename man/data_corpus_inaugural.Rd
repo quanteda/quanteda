@@ -3,6 +3,7 @@
 \docType{data}
 \name{inaugTexts}
 \alias{data_char_inaugural}
+\alias{data_corpus_inaugural}
 \alias{inaugCorpus}
 \alias{inaugTexts}
 \title{A corpus of US presidential inaugural addresses from 1789-2013}
@@ -10,10 +11,14 @@
 \usage{
 inaugTexts
 
+inaugCorpus
+
+data_corpus_inaugural
+
 data_char_inaugural
 }
 \description{
-\code{inaugCorpus} is the \link{quanteda-package} corpus object of US presidents' inaugural addresses since 1789.
+\code{data_corpus_inaugural} is the \link{quanteda-package} corpus object of US presidents' inaugural addresses since 1789.
 Document variables contain the year of the address and the last name of the president.
 
 \code{data_char_inaugural} is the character vector of US presidential inaugaration speeches
@@ -21,14 +26,17 @@ Document variables contain the year of the address and the last name of the pres
 \note{
 \code{inaugTexts} is deprecated; please use
   \code{data_char_inaugural} instead.
+
+\code{inaugCorpus} is deprecated; please use
+  \code{data_corpus_inaugural} instead.
 }
 \examples{
 # some operations on the inaugural corpus
-summary(inaugCorpus)
-head(docvars(inaugCorpus), 10)
+summary(data_corpus_inaugural)
+head(docvars(data_corpus_inaugural), 10)
 # working with the character vector only
 str(data_char_inaugural)
-head(docvars(inaugCorpus), 10)
+head(docvars(data_corpus_inaugural), 10)
 mycorpus <- corpus(data_char_inaugural)
 }
 \references{

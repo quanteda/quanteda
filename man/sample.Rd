@@ -51,8 +51,8 @@ corpus or document-feature matrix, with or without replacement
 }
 \examples{
 # sampling from a corpus
-summary(sample(inaugCorpus, 5)) 
-summary(sample(inaugCorpus, 10, replace=TRUE))
+summary(sample(data_corpus_inaugural, 5)) 
+summary(sample(data_corpus_inaugural, 10, replace=TRUE))
 # sampling from a dfm
 myDfm <- dfm(data_char_inaugural[1:10], verbose = FALSE)
 sample(myDfm)[, 1:10]

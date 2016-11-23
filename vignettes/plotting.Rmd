@@ -23,7 +23,7 @@ Plotting a `dfm` object will create a wordcloud using the `wordcloud` pacakge.
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
 # Create a dfm from a somewhat smaller corpus
-inaugDfm <- dfm(inaugCorpus[0:10], ignoredFeatures = stopwords('english'))
+inaugDfm <- dfm(data_corpus_inaugural[0:10], ignoredFeatures = stopwords('english'))
 # Some words will not fit on a plot this size, so suppress those warings
 plot(trim(inaugDfm, minCount = 10, verbose = FALSE))
 ```
@@ -31,7 +31,7 @@ plot(trim(inaugDfm, minCount = 10, verbose = FALSE))
 You can also plot a "comparison cloud", but this can only be done with fewer than eight documents:
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
-compDfm <- dfm(subset(inaugCorpus, President %in% c("Washington", "Jefferson", "Madison")),
+compDfm <- dfm(subset(data_corpus_inaugural, President %in% c("Washington", "Jefferson", "Madison")),
                groups = "President", ignoredFeatures = stopwords("english"))
 plot(trim(compDfm, minCount = 5, verbose = FALSE), comparison = TRUE)
 ```
@@ -47,15 +47,15 @@ plot(inaugDfm, min.freq = 10,
 Plotting a `kwic` object produces a lexical dispersion plot which allows us to visualize the occurrences of particular terms throughout the text.
 
 ```{r eval=TRUE, fig.width=8, fig.height=12}
-plot(kwic(inaugCorpus, "american"))
+plot(kwic(data_corpus_inaugural, "american"))
 ```
 
 You can also pass multiple kwic objects to `plot` to compare the dispersion of different terms:
 ```{r eval=TRUE, fig.width=8, fig.height=12}
 plot(
-     kwic(inaugCorpus, "american"),
-     kwic(inaugCorpus, "people"),
-     kwic(inaugCorpus, "communist")
+     kwic(data_corpus_inaugural, "american"),
+     kwic(data_corpus_inaugural, "people"),
+     kwic(data_corpus_inaugural, "communist")
 )
 ```
 
@@ -75,9 +75,9 @@ You might also have noticed that the x-axis scale is the absolute token index fo
 
 ```{r eval=TRUE, fig.width=8, fig.height=12}
 plot(
-     kwic(inaugCorpus, "american"),
-     kwic(inaugCorpus, "people"),
-     kwic(inaugCorpus, "communist"),
+     kwic(data_corpus_inaugural, "american"),
+     kwic(data_corpus_inaugural, "people"),
+     kwic(data_corpus_inaugural, "communist"),
      scale = 'absolute'
 )
 ```
@@ -92,9 +92,9 @@ The object returned is a ggplot object, which can be modified using ggplot:
 library(ggplot2)
 theme_set(theme_bw())
 g <- plot(
-     kwic(inaugCorpus, "american"),
-     kwic(inaugCorpus, "people"),
-     kwic(inaugCorpus, "communist")
+     kwic(data_corpus_inaugural, "american"),
+     kwic(data_corpus_inaugural, "people"),
+     kwic(data_corpus_inaugural, "communist")
 )
 g + aes(color = keyword) + scale_color_manual(values = c('blue', 'red', 'green'))
 

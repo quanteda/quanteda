@@ -8,8 +8,13 @@
 #'   \code{data_corpus_irishbudget2010} instead.
 "data_corpus_irishbudget2010"
 
-#' @rdname inaugCorpus
+#' @rdname data_corpus_inaugural
 #' @note \code{inaugTexts} is deprecated; please use
 #'   \code{data_char_inaugural} instead.
 "inaugTexts"
+
+#' @rdname data_corpus_inaugural
+#' @note \code{inaugCorpus} is deprecated; please use
+#'   \code{data_corpus_inaugural} instead.
+"inaugCorpus"
 

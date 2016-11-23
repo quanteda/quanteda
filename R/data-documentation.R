@@ -90,29 +90,27 @@
 NULL
 
 
-#' @name inaugCorpus
-#' @docType data
-#' @title A corpus of US presidential inaugural addresses from 1789-2013
-#' @description \code{inaugCorpus} is the \link{quanteda-package} corpus object of US presidents' inaugural addresses since 1789.
+#' A corpus of US presidential inaugural addresses from 1789-2013
+#' 
+#' \code{data_corpus_inaugural} is the \link{quanteda-package} corpus object of US presidents' inaugural addresses since 1789.
 #' Document variables contain the year of the address and the last name of the president.
 #' @examples
 #' # some operations on the inaugural corpus
-#' summary(inaugCorpus)
-#' head(docvars(inaugCorpus), 10)
+#' summary(data_corpus_inaugural)
+#' head(docvars(data_corpus_inaugural), 10)
 #' @references \url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and 
 #' \url{http://www.presidency.ucsb.edu/inaugurals.php}.
-#' 
-NULL
+"data_corpus_inaugural"
 
 
 #' character vector of the US presidential inaugural addresses from 1789-2013
 #' 
 #' \code{data_char_inaugural} is the character vector of US presidential inaugaration speeches
-#' @rdname inaugCorpus
+#' @rdname data_corpus_inaugural
 #' @examples
 #' # working with the character vector only
 #' str(data_char_inaugural)
-#' head(docvars(inaugCorpus), 10)
+#' head(docvars(data_corpus_inaugural), 10)
 #' mycorpus <- corpus(data_char_inaugural)
 "data_char_inaugural"
 

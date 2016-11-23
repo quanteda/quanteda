@@ -36,7 +36,7 @@ For a set of tokens, given a set of token sequences, join the tokens matching th
 }
 \examples{
 
-toks <- tokens(inaugCorpus, removePunct = TRUE)
+toks <- tokens(data_corpus_inaugural, removePunct = TRUE)
 seqs <- list(c('foreign', 'polic*'), c('United', 'States'))
 kwic(toks, 'fUnited_States', window = 1) # no exisit
 kwic(toks, 'foreign_policy', window = 1) # no exisit

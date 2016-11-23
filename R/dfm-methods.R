@@ -28,7 +28,7 @@
 #'   \code{austin} package)
 #' @seealso \code{\link{selectFeatures}}
 #' @examples
-#' (myDfm <- dfm(inaugCorpus, verbose = FALSE))
+#' (myDfm <- dfm(data_corpus_inaugural, verbose = FALSE))
 #' # only words occuring >=10 times and in >=2 docs
 #' trim(myDfm, minCount = 10, minDoc = 2) 
 #' # only words occuring >=10 times and in at least 0.4 of the documents
@@ -202,7 +202,7 @@ as.dfm <- function(x) {
 #' @export
 #' @author Ken Benoit
 #' @examples
-#' dtm <- dfm(inaugCorpus)
+#' dtm <- dfm(data_corpus_inaugural)
 #' dtm[1:10, 1:5]
 #' dtm <- sort(dtm)
 #' sort(dtm)[1:10, 1:5]
@@ -243,8 +243,8 @@ nfeature.corpus <- function(x) {
 #'   tokenization, so you need to use \code{\link{ntoken}} to count these.
 #' @export
 #' @examples
-#' nfeature(dfm(inaugCorpus))
-#' nfeature(trim(dfm(inaugCorpus), minDoc=5, minCount=10))
+#' nfeature(dfm(data_corpus_inaugural))
+#' nfeature(trim(dfm(data_corpus_inaugural), minDoc=5, minCount=10))
 nfeature.dfm <- function(x) {
     ncol(x)
 }
@@ -271,11 +271,11 @@ topfeatures <- function(x, ...) {
 
 #' @return A named numeric vector of feature counts, where the names are the feature labels.
 #' @examples
-#' topfeatures(dfm(subset(inaugCorpus, Year>1980), verbose=FALSE))
-#' topfeatures(dfm(subset(inaugCorpus, Year>1980), ignoredFeatures=stopwords("english"),
+#' topfeatures(dfm(subset(data_corpus_inaugural, Year>1980), verbose=FALSE))
+#' topfeatures(dfm(subset(data_corpus_inaugural, Year>1980), ignoredFeatures=stopwords("english"),
 #'             verbose=FALSE))
 #' # least frequent features
-#' topfeatures(dfm(subset(inaugCorpus, Year>1980), verbose=FALSE), decreasing=FALSE)
+#' topfeatures(dfm(subset(data_corpus_inaugural, Year>1980), verbose=FALSE), decreasing=FALSE)
 #' @export
 #' @rdname topfeatures
 #' @importFrom stats quantile
@@ -432,7 +432,7 @@ compress.dfm <- function(x, margin = c("both", "documents", "features"), ...) {
 #' to the proportion of cells that have zero counts.
 #' @param x the document-feature matrix
 #' @examples 
-#' inaug_dfm <- dfm(inaugCorpus, verbose = FALSE)
+#' inaug_dfm <- dfm(data_corpus_inaugural, verbose = FALSE)
 #' sparsity(inaug_dfm)
 #' sparsity(trim(inaug_dfm, minCount = 5))
 #' @export

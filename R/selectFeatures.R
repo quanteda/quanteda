@@ -569,7 +569,7 @@ selectFeatures_collocations <- function(x, features, selection = c("keep", "remo
 # pos = 1:3
 
 # require(microbenchmark)
-# myCollocs <- collocations(inaugCorpus, size=2:3)
+# myCollocs <- collocations(data_corpus_inaugural, size=2:3)
 # microbenchmark::microbenchmark(
 #     old = removeFeatures(myCollocs, stopwords("english"), verbose = FALSE),
 #                          new = selectFeatures(myCollocs, stopwords("english"), "remove"),

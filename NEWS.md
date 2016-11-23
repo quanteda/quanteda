@@ -33,6 +33,8 @@ new name | original name | notes
 :--------|:------------- |:----- 
 `data_char_ukimmig2010` | `ukimmigTexts` | 
 `data_corpus_irishbudget2010` | `ie2010Corpus` |
+`data_char_inaugural` | `inaugTexts` |
+`data_corpus_inaugural` | `inaugCorpus` |
 
 
 ### Deleted data objects

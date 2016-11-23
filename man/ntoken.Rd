@@ -70,9 +70,9 @@ ntoken(toLower(txt), removePunct = TRUE)
 ntype(toLower(txt), removePunct = TRUE)
 
 # with some real texts
-ntoken(subset(inaugCorpus, Year<1806, removePunct = TRUE))
-ntype(subset(inaugCorpus, Year<1806, removePunct = TRUE))
-ntoken(dfm(subset(inaugCorpus, Year<1800)))
-ntype(dfm(subset(inaugCorpus, Year<1800)))
+ntoken(subset(data_corpus_inaugural, Year<1806, removePunct = TRUE))
+ntype(subset(data_corpus_inaugural, Year<1806, removePunct = TRUE))
+ntoken(dfm(subset(data_corpus_inaugural, Year<1800)))
+ntype(dfm(subset(data_corpus_inaugural, Year<1800)))
 }
 

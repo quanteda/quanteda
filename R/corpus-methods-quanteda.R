@@ -12,10 +12,10 @@
 #'   For \code{metacorpus <-}, the corpus with the updated metadata.
 #' @export
 #' @examples
-#' metacorpus(inaugCorpus)
-#' metacorpus(inaugCorpus, "source")
-#' metacorpus(inaugCorpus, "citation") <- "Presidential Speeches Online Project (2014)."
-#' metacorpus(inaugCorpus, "citation")
+#' metacorpus(data_corpus_inaugural)
+#' metacorpus(data_corpus_inaugural, "source")
+#' metacorpus(data_corpus_inaugural, "citation") <- "Presidential Speeches Online Project (2014)."
+#' metacorpus(data_corpus_inaugural, "citation")
 metacorpus <- function(x, field = NULL)
     UseMethod("metacorpus")
 
@@ -74,14 +74,14 @@ documents <- function(corp) {
 #'   For \code{texts <-}, the corpus with the updated texts.
 #' @export
 #' @examples
-#' nchar(texts(subset(inaugCorpus, Year < 1806)))
+#' nchar(texts(subset(data_corpus_inaugural, Year < 1806)))
 #' 
 #' # grouping on a document variable
-#' nchar(texts(subset(inaugCorpus, Year < 1806), groups = "President"))
+#' nchar(texts(subset(data_corpus_inaugural, Year < 1806), groups = "President"))
 #' 
 #' # grouping a character vector using a factor
 #' nchar(data_char_inaugural[1:5])
-#' nchar(texts(data_char_inaugural[1:5], groups = as.factor(inaugCorpus[1:5, "President"])))
+#' nchar(texts(data_char_inaugural[1:5], groups = as.factor(data_corpus_inaugural[1:5, "President"])))
 texts <- function(x, groups = NULL, ...) {
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
@@ -181,7 +181,7 @@ metadoc <- function(x, field = NULL)
 #' @rdname metadoc 
 #' @export
 #' @examples
-#' mycorp <- subset(inaugCorpus, Year>1990)
+#' mycorp <- subset(data_corpus_inaugural, Year>1990)
 #' summary(mycorp, showmeta = TRUE)
 #' metadoc(mycorp, "encoding") <- "UTF-8"
 #' metadoc(mycorp)
@@ -251,7 +251,7 @@ metadoc.corpus <- function(x, field = NULL) {
 #' @param x corpus whose document-level variables will be read or set
 #' @param field string containing the document-level variable name
 #' @return \code{docvars} returns a data.frame of the document-level variables
-#' @examples head(docvars(inaugCorpus))
+#' @examples head(docvars(data_corpus_inaugural))
 #' @export
 docvars <- function(x, field = NULL) {
     UseMethod("docvars")
@@ -277,13 +277,13 @@ docvars.corpus <- function(x, field = NULL) {
 #' See \code{\link{[.corpus}} for details.
 #' @return \code{docvars<-} assigns \code{value} to the named \code{field}
 #' @examples 
-#' docvars(inaugCorpus, "President") <- paste("prez", 1:ndoc(inaugCorpus), sep="")
-#' head(docvars(inaugCorpus))
+#' docvars(data_corpus_inaugural, "President") <- paste("prez", 1:ndoc(data_corpus_inaugural), sep="")
+#' head(docvars(data_corpus_inaugural))
 #' 
 #' # alternative using indexing
-#' head(inaugCorpus[, "Year"])
-#' inaugCorpus[["President2"]] <- paste("prezTwo", 1:ndoc(inaugCorpus), sep="")
-#' head(docvars(inaugCorpus))
+#' head(data_corpus_inaugural[, "Year"])
+#' data_corpus_inaugural[["President2"]] <- paste("prezTwo", 1:ndoc(data_corpus_inaugural), sep="")
+#' head(docvars(data_corpus_inaugural))
 #' @export
 "docvars<-" <- function(x, field = NULL, value) {
     UseMethod("docvars<-")
@@ -352,10 +352,10 @@ docnames.corpus <- function(x) {
 #' @export
 #' @examples 
 #' # query the document names of the inaugural speech corpus
-#' docnames(inaugCorpus) <- paste("Speech", 1:ndoc(inaugCorpus), sep="")
+#' docnames(data_corpus_inaugural) <- paste("Speech", 1:ndoc(data_corpus_inaugural), sep="")
 #' 
 #' # reassign the document names of the inaugural speech corpus
-#' docnames(inaugCorpus) <- paste("Speech", 1:ndoc(inaugCorpus), sep="")
+#' docnames(data_corpus_inaugural) <- paste("Speech", 1:ndoc(data_corpus_inaugural), sep="")
 #' 
 #' @rdname docnames
 "docnames<-" <- function(x, value) {
@@ -378,8 +378,8 @@ ndoc <- function(x) {
 
 #' @rdname ndoc
 #' @examples 
-#' ndoc(subset(inaugCorpus, Year>1980))
-#' ndoc(dfm(subset(inaugCorpus, Year>1980), verbose=FALSE))
+#' ndoc(subset(data_corpus_inaugural, Year>1980))
+#' ndoc(dfm(subset(data_corpus_inaugural, Year>1980), verbose=FALSE))
 #' @export
 ndoc.corpus <- function(x) {
     nrow(x$documents)
@@ -449,8 +449,8 @@ sample.default <- function(x, size, replace = FALSE, prob = NULL, ...) {
 #' @rdname sample
 #' @examples
 #' # sampling from a corpus
-#' summary(sample(inaugCorpus, 5)) 
-#' summary(sample(inaugCorpus, 10, replace=TRUE))
+#' summary(sample(data_corpus_inaugural, 5)) 
+#' summary(sample(data_corpus_inaugural, 10, replace=TRUE))
 sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, ...) {
     documents(x) <- documents(x)[sample(ndoc(x), size, replace, prob), , drop = FALSE]
     x
@@ -471,8 +471,8 @@ sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, ...) 
 #' @export
 #' @seealso \code{\link{select}}
 #' @examples
-#' summary(subset(inaugCorpus, Year>1980))
-#' summary(subset(inaugCorpus, Year>1930 & President=="Roosevelt", select=Year))
+#' summary(subset(data_corpus_inaugural, Year>1980))
+#' summary(subset(data_corpus_inaugural, Year>1930 & President=="Roosevelt", select=Year))
 subset.corpus <- function(x, subset, select, ...) {
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
@@ -526,7 +526,7 @@ changeunits <- function(x, ...)
 #' summary(changeunits(mycorpus, to = "sentences"), showmeta=TRUE)
 #' 
 #' # example with inaugural corpus speeches
-#' (mycorpus2 <- subset(inaugCorpus, Year>2004))
+#' (mycorpus2 <- subset(data_corpus_inaugural, Year>2004))
 #' paragCorpus <- changeunits(mycorpus2, to="paragraphs")
 #' paragCorpus
 #' summary(paragCorpus, 100, showmeta=TRUE)
@@ -592,10 +592,10 @@ rep.data.frame <- function(x, ...)
 #' ntype(toLower(txt), removePunct = TRUE)
 #' 
 #' # with some real texts
-#' ntoken(subset(inaugCorpus, Year<1806, removePunct = TRUE))
-#' ntype(subset(inaugCorpus, Year<1806, removePunct = TRUE))
-#' ntoken(dfm(subset(inaugCorpus, Year<1800)))
-#' ntype(dfm(subset(inaugCorpus, Year<1800)))
+#' ntoken(subset(data_corpus_inaugural, Year<1806, removePunct = TRUE))
+#' ntype(subset(data_corpus_inaugural, Year<1806, removePunct = TRUE))
+#' ntoken(dfm(subset(data_corpus_inaugural, Year<1800)))
+#' ntype(dfm(subset(data_corpus_inaugural, Year<1800)))
 #' @export
 ntoken <- function(x, ...) {
     UseMethod("ntoken")

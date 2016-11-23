@@ -42,9 +42,9 @@ a corpus, dfm, or tokenized texts.
   tokenization, so you need to use \code{\link{ntoken}} to count these.
 }
 \examples{
-ndoc(subset(inaugCorpus, Year>1980))
-ndoc(dfm(subset(inaugCorpus, Year>1980), verbose=FALSE))
-nfeature(dfm(inaugCorpus))
-nfeature(trim(dfm(inaugCorpus), minDoc=5, minCount=10))
+ndoc(subset(data_corpus_inaugural, Year>1980))
+ndoc(dfm(subset(data_corpus_inaugural, Year>1980), verbose=FALSE))
+nfeature(dfm(data_corpus_inaugural))
+nfeature(trim(dfm(data_corpus_inaugural), minDoc=5, minCount=10))
 }
 

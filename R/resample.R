@@ -14,7 +14,7 @@
 # @param ... additional arguments passed to \code{\link{segment}}
 # @return a corpus object containing new resampled texts.
 # @examples 
-# testCorp <- resample(subset(inaugCorpus, Year>2000), 10, "sentences")
+# testCorp <- resample(subset(data_corpus_inaugural, Year>2000), 10, "sentences")
 # testCorpPara <- resample(corpus(data_char_ukimmig2010), 10, "paragraphs")
 # names(metadoc(testCorp))
 # x <- corpus(c("Sentence One C1.  Sentence Two C1.  Sentence Three C1.", 
@@ -27,7 +27,7 @@
 # 
 # # tests to see if a corpus contains resampled texts
 # is.resampled(testCorp)
-# is.resampled(inaugCorpus)
+# is.resampled(data_corpus_inaugural)
 # 
 # @note Additional resampling units to be added will include fixed length
 #   samples and random length samples.

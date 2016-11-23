@@ -57,8 +57,8 @@ is.corpus <- function(x) {
 #' @keywords internal corpus
 #' @examples
 #' # summarize corpus information
-#' summary(inaugCorpus)
-#' summary(inaugCorpus, n=10)
+#' summary(data_corpus_inaugural)
+#' summary(data_corpus_inaugural, n=10)
 #' mycorpus <- corpus(data_char_ukimmig2010, 
 #'                    docvars = data.frame(party=names(data_char_ukimmig2010))) 
 #' summary(mycorpus, showmeta=TRUE)  # show the meta-data
@@ -151,7 +151,7 @@ summary.corpus <- function(object, n = 100, verbose = TRUE, showmeta = FALSE, to
 #' # concatenate corpus objects
 #' corpus1 <- corpus(data_char_inaugural[1:2])
 #' corpus2 <- corpus(data_char_inaugural[3:4])
-#' corpus3 <- subset(inaugCorpus, President == "Obama")
+#' corpus3 <- subset(data_corpus_inaugural, President == "Obama")
 #' summary(c(corpus1, corpus2, corpus3))
 #' @export
 c.corpus <- function(..., recursive = FALSE) {
@@ -177,8 +177,8 @@ c.corpus <- function(..., recursive = FALSE) {
 #' @examples 
 #' 
 #' # ways to index corpus elements
-#' inaugCorpus["1793-Washington"]    # 2nd Washington inaugural speech
-#' inaugCorpus[2]                    # same
+#' data_corpus_inaugural["1793-Washington"]    # 2nd Washington inaugural speech
+#' data_corpus_inaugural[2]                    # same
 #' # access the docvars from data_corpus_irishbudget2010
 #' data_corpus_irishbudget2010[, "year"]
 #' # same

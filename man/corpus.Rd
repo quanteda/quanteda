@@ -122,7 +122,7 @@ mydf
 summary(corpus(mydf, text_field = "some_text", source = "From a data.frame called mydf."))
 
 # construct a corpus from a kwic object
-mykwic <- kwic(inaugCorpus, "southern")
+mykwic <- kwic(data_corpus_inaugural, "southern")
 summary(corpus(mykwic))
 }
 \author{

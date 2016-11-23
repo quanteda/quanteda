@@ -27,7 +27,7 @@
 #' @seealso \code{\link{tfidf}}
 #' @author Paul Nulty and Kenneth Benoit
 #' @examples
-#' dtm <- dfm(inaugCorpus)
+#' dtm <- dfm(data_corpus_inaugural)
 #' x <- apply(dtm, 1, function(tf) tf/max(tf))
 #' topfeatures(dtm)
 #' normDtm <- weight(dtm, "relFreq")
@@ -413,7 +413,7 @@ setMethod("maxtf", signature(x = "dfmDense"), definition = function(x) {
 #     sapply(split(x@x, x@i), max)
 # }
 # 
-# myDfm <- dfm(inaugCorpus, verbose = FALSE)
+# myDfm <- dfm(data_corpus_inaugural, verbose = FALSE)
 # microbenchmark::microbenchmark(f1(myDfm), f2(myDfm))
 # microbenchmark::microbenchmark(f1(NSFdfm), f2(NSFdfm), times = 5)
 

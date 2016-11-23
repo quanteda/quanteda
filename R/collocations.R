@@ -66,7 +66,7 @@ NULL
 #' collocations(data_char_inaugural[49:57], n = 10)
 #' collocations(data_char_inaugural[49:57], method = "all", n = 10)
 #' collocations(data_char_inaugural[49:57], method = "chi2", size = 3, n = 10)
-#' collocations(subset(inaugCorpus, Year>1980), method = "pmi", size = 3, n = 10)
+#' collocations(subset(data_corpus_inaugural, Year>1980), method = "pmi", size = 3, n = 10)
 collocations <- function(x, ...) {
 #     addedArgs <- names(list(...))
 #     if (length(addedArgs) && any(!(addedArgs %in% names(formals(getS3method("tokenize", "character"))))))

@@ -121,7 +121,7 @@ dfm_toupper <- function(x) {
 #' @export
 #' @author Ken Benoit
 #' @examples
-#' dtm <- dfm(inaugCorpus)
+#' dtm <- dfm(data_corpus_inaugural)
 #' dtm[1:10, 1:5]
 #' dtm <- sort(dtm)
 #' dfm_sort(dtm)[1:10, 1:5]

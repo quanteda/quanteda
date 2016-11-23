@@ -20,11 +20,11 @@ test_that("test attr(kwic, 'ntoken') with un-named texts", {
 
 test_that("test attr(kwic, 'ntoken') text names", {
               
-    testkwic <- kwic(inaugCorpus, 'american')
+    testkwic <- kwic(data_corpus_inaugural, 'american')
 
     expect_that(
         names(attr(testkwic, 'ntoken')),
-        equals(names(texts(inaugCorpus)))
+        equals(names(texts(data_corpus_inaugural)))
     )
 })
     

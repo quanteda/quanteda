@@ -37,7 +37,7 @@ The default is to plot the word cloud of all of the features in the
 }
 \examples{
 # plot the features (without stopwords) from Obama's two inaugural addresses
-mydfm <- dfm(subset(inaugCorpus, President=="Obama"), verbose = FALSE,
+mydfm <- dfm(subset(data_corpus_inaugural, President=="Obama"), verbose = FALSE,
              ignoredFeatures = stopwords("english"))
 plot(mydfm)
 
