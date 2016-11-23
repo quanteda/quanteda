@@ -50,12 +50,18 @@ The following functions will still work, but issue a deprecation warning:
 
 new function | deprecated function | contructs:
 :--------|:------------- |:-------
+<<<<<<< HEAD
 `tokens` | `tokenize()` | `tokens` class object
 `corpus_subset` | `subset.corpus` | `corpus` class object
 `corpus_reshape` | `changeunits` | `corpus` class object
 `corpus_sample` | `sample`| `corpus` class object
 `corpus_segment` | `segment`| `corpus` class object
 
+=======
+`tokens()` | `tokenize()` | `tokens` class object
+`segment()` | `corpus_segment()` | `corpus` class object
+`segment()` | `char_segment()` | list of `character`
+>>>>>>> master
 
 ## New functions
 
@@ -78,7 +84,9 @@ new function | description | ouput class
 `dfm_toupper` | uppercases the features of a `dfm` and compacts | `dfm`
 
 
+## Other new features
 
+*  Added Greek stopwords.
 
 
 

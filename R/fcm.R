@@ -184,9 +184,7 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
                                           dims = c(lengthToken , lengthToken))
         diag(result) <- 0
         result <- result + diagCount
-        
-        # order the features alphabetically
-        result <- result[order(rownames(result)), order(colnames(result))]
+        result <- result[rownames(result), colnames(result)]
     }
         
     if (context == "window") { 
@@ -206,8 +204,6 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
             types <- types(x)
         } else {
             types <- unique(unlist(x, use.names = FALSE))
-            # order the features alphabetically
-            types <- sort(types)
             n <- sum(lengths(x)) * (window + 1)
             result <- fcm_cpp(x, types, count, window, weights, ordered, tri, n)
         }
