@@ -359,7 +359,7 @@ prepositions <- c("a", "abaft", "abeam", "aboard", "about", "above", "absent", "
 #'   letters.  Lower-casing is unnecessary.
 #' @examples
 #' scrabble(c("muzjiks", "excellency"))
-#' scrabble(inaugTexts[1:5], mean)
+#' scrabble(data_char_inaugural[1:5], mean)
 #' @export
 scrabble <- function(x, FUN = sum) {
     UseMethod("scrabble")

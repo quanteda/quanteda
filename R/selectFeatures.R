@@ -233,7 +233,7 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
 #'                valuetype = "glob", padding = TRUE, case_insensitive = FALSE)
 #' 
 #' # with longer texts
-#' txts <- c(data_char_sampletext, inaugTexts[2])
+#' txts <- c(data_char_sampletext, data_char_inaugural[2])
 #' toks <- tokenize(txts)
 #' selectFeatures(toks, stopwords("english"), "remove")
 #' selectFeatures(toks, stopwords("english"), "keep")
@@ -374,7 +374,7 @@ selectFeatures.tokens <- function(x, features, selection = c("keep", "remove"),
 #' @examples  
 #' 
 #' ## example for collocations
-#' (myCollocs <- collocations(inaugTexts[1:3], n=20))
+#' (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
 #' selectFeatures(myCollocs, stopwords("english"), "remove")
 #' @export
 selectFeatures.collocations <- function(x, features, selection = c("keep", "remove"), 
@@ -487,7 +487,7 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
 #' removeFeatures(mydfm, stopwords("english"))
 #' 
 #' ## example for collocations
-#' (myCollocs <- collocations(inaugTexts[1:3], n=20))
+#' (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
 #' removeFeatures(myCollocs, stopwords("english"))
 #' removeFeatures(myCollocs, stopwords("english"), pos = 2)
 removeFeatures <- function(x, features, ...) {
@@ -502,7 +502,7 @@ removeFeatures <- function(x, features, ...) {
 # @rdname selectFeatures
 # @examples
 # ## example for collocations
-# (myCollocs <- collocations(inaugTexts[1:3], n=20))
+# (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
 # selectFeatures(myCollocs, stopwords("english"), "remove")
 # @export
 selectFeatures_collocations <- function(x, features, selection = c("keep", "remove"), 

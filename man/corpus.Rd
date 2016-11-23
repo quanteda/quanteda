@@ -90,7 +90,7 @@ The texts and document variables of corpus objects can also be
 }
 \examples{
 # create a corpus from texts
-corpus(inaugTexts)
+corpus(data_char_inaugural)
 
 # create a corpus from texts and assign meta-data and document variables
 ukimmigCorpus <- corpus(data_char_ukimmig2010, 
@@ -107,7 +107,7 @@ if ("tm" \%in\% rownames(installed.packages())) {
     data(acq, package = "tm")
     summary(corpus(acq), 5, showmeta=TRUE)
     
-    tmCorp <- tm::VCorpus(tm::VectorSource(inaugTexts[49:57]))
+    tmCorp <- tm::VCorpus(tm::VectorSource(data_char_inaugural[49:57]))
     quantCorp <- corpus(tmCorp)
     summary(quantCorp)
 }

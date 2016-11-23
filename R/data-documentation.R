@@ -105,15 +105,14 @@ NULL
 NULL
 
 
-#' @name inaugTexts
-#' @title Texts of US presidential inaugural addresses from 1789-2013
+#' character vector of the US presidential inaugural addresses from 1789-2013
+#' 
+#' \code{data_char_inaugural} is the character vector of US presidential inaugaration speeches
 #' @rdname inaugCorpus
-#' @description \code{inaugTexts} is the character vector of US presidential inaugaration speeches
-#' @docType data
 #' @examples
 #' # working with the character vector only
-#' str(inaugTexts)
+#' str(data_char_inaugural)
 #' head(docvars(inaugCorpus), 10)
-#' mycorpus <- corpus(inaugTexts)
-NULL
+#' mycorpus <- corpus(data_char_inaugural)
+"data_char_inaugural"
 

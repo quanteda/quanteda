@@ -158,7 +158,7 @@ selectFeatures(toks, c("is", "a", "this"), selection = "remove",
                valuetype = "glob", padding = TRUE, case_insensitive = FALSE)
 
 # with longer texts
-txts <- c(data_char_sampletext, inaugTexts[2])
+txts <- c(data_char_sampletext, data_char_inaugural[2])
 toks <- tokenize(txts)
 selectFeatures(toks, stopwords("english"), "remove")
 selectFeatures(toks, stopwords("english"), "keep")
@@ -180,7 +180,7 @@ selectFeatures(toksh, feats, selection = "remove", padding = TRUE, case_insensit
  
 
 ## example for collocations
-(myCollocs <- collocations(inaugTexts[1:3], n=20))
+(myCollocs <- collocations(data_char_inaugural[1:3], n=20))
 selectFeatures(myCollocs, stopwords("english"), "remove")
 }
 \seealso{

@@ -149,8 +149,8 @@ summary.corpus <- function(object, n = 100, verbose = TRUE, showmeta = FALSE, to
 #' @examples 
 #' 
 #' # concatenate corpus objects
-#' corpus1 <- corpus(inaugTexts[1:2])
-#' corpus2 <- corpus(inaugTexts[3:4])
+#' corpus1 <- corpus(data_char_inaugural[1:2])
+#' corpus2 <- corpus(data_char_inaugural[3:4])
 #' corpus3 <- subset(inaugCorpus, President == "Obama")
 #' summary(c(corpus1, corpus2, corpus3))
 #' @export

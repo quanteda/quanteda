@@ -78,11 +78,11 @@ setMethod("show", "dictionary",
 #' # import the Laver-Garry dictionary from http://bit.ly/1FH2nvf
 #' lgdict <- dictionary(file = "http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat",
 #'                      format = "wordstat")
-#' head(dfm(inaugTexts, dictionary=lgdict))
+#' head(dfm(data_char_inaugural, dictionary=lgdict))
 #' 
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
 #' mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
-#' head(dfm(inaugTexts, dictionary = mfdict))}
+#' head(dfm(data_char_inaugural, dictionary = mfdict))}
 #' @importFrom stats setNames
 #' @export
 dictionary <- function(x = NULL, file = NULL, format = NULL, 

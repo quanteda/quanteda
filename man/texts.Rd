@@ -58,8 +58,8 @@ nchar(texts(subset(inaugCorpus, Year < 1806)))
 nchar(texts(subset(inaugCorpus, Year < 1806), groups = "President"))
 
 # grouping a character vector using a factor
-nchar(inaugTexts[1:5])
-nchar(texts(inaugTexts[1:5], groups = as.factor(inaugCorpus[1:5, "President"])))
+nchar(data_char_inaugural[1:5])
+nchar(texts(data_char_inaugural[1:5], groups = as.factor(inaugCorpus[1:5, "President"])))
 
 BritCorpus <- corpus(c("We must prioritise honour in our neighbourhood.", 
                        "Aluminium is a valourous metal."))

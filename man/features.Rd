@@ -20,7 +20,7 @@ Extract the features from a document-feature matrix, which are stored as the col
 of the \link{dfm} object.
 }
 \examples{
-inaugDfm <- dfm(inaugTexts, verbose = FALSE)
+inaugDfm <- dfm(data_char_inaugural, verbose = FALSE)
 
 # first 50 features (in original text order)
 head(features(inaugDfm), 50)

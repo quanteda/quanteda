@@ -85,8 +85,8 @@ dfm <- function(x, ...) {
 #' @export
 #' @examples
 #' # why we phased out dense matrix dfm objects
-#' (size1 <- object.size(dfm(inaugTexts, verbose = FALSE)))
-#' (size2 <- object.size(as.matrix(dfm(inaugTexts, verbose = FALSE))))
+#' (size1 <- object.size(dfm(data_char_inaugural, verbose = FALSE)))
+#' (size2 <- object.size(as.matrix(dfm(data_char_inaugural, verbose = FALSE))))
 #' cat("Compacted by ", round(as.numeric((1-size1/size2)*100), 1), "%.\n", sep="")
 #' 
 #' # for a corpus

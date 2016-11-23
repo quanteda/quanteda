@@ -51,7 +51,7 @@ setGeneric("weight", function(x, type, ...) standardGeneric("weight"))
 #' @rdname weight
 #' @examples
 #' \dontshow{
-#' testdfm <- dfm(inaugTexts[1:5], verbose = FALSE)
+#' testdfm <- dfm(data_char_inaugural[1:5], verbose = FALSE)
 #' for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
 #'     testw <- weight(testdfm, w)
 #'     cat("\n\n=== weight() TEST for:", w, "; class:", class(testw), "\n")
@@ -137,7 +137,7 @@ smoother <- function(x, smoothing = 1) x + smoothing
 #' @return a numeric vector of document frequencies for each feature
 #' @export
 #' @examples 
-#' mydfm <- dfm(inaugTexts[1:2], verbose = FALSE)
+#' mydfm <- dfm(data_char_inaugural[1:2], verbose = FALSE)
 #' docfreq(mydfm[, 1:20])
 #' 
 #' # replication of worked example from

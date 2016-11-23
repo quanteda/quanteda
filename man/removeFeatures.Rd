@@ -40,7 +40,7 @@ mydfm <- dfm(data_char_ukimmig2010, verbose=FALSE)
 removeFeatures(mydfm, stopwords("english"))
 
 ## example for collocations
-(myCollocs <- collocations(inaugTexts[1:3], n=20))
+(myCollocs <- collocations(data_char_inaugural[1:3], n=20))
 removeFeatures(myCollocs, stopwords("english"))
 removeFeatures(myCollocs, stopwords("english"), pos = 2)
 }

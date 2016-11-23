@@ -23,7 +23,7 @@ row names will be set.}
 Method for coercing a \link{dfm-class} object to a data.frame
 }
 \examples{
-inaugDfm <- dfm(inaugTexts[1:5], verbose = FALSE)
+inaugDfm <- dfm(data_char_inaugural[1:5], verbose = FALSE)
 as.data.frame(inaugDfm[, 1:10])
 str(as.data.frame(inaugDfm))
 as.data.frame(inaugDfm[, 1:10], row.names = FALSE)

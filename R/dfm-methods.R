@@ -132,7 +132,7 @@ ndoc.dfm <- function(x) {
 #' @param x the object (dfm) whose features will be extracted
 #' @return Character vector of the features
 #' @examples
-#' inaugDfm <- dfm(inaugTexts, verbose = FALSE)
+#' inaugDfm <- dfm(data_char_inaugural, verbose = FALSE)
 #' 
 #' # first 50 features (in original text order)
 #' head(features(inaugDfm), 50)
@@ -156,7 +156,7 @@ features.dfm <- function(x) {
 #' @rdname docnames
 #' @examples
 #' # query the document names of a dfm
-#' docnames(dfm(inaugTexts[1:5]))
+#' docnames(dfm(data_char_inaugural[1:5]))
 #' @export
 docnames.dfm <- function(x) {
     rownames(x)
@@ -326,7 +326,7 @@ topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ...) {
 #' @rdname sample
 #' @examples
 #' # sampling from a dfm
-#' myDfm <- dfm(inaugTexts[1:10], verbose = FALSE)
+#' myDfm <- dfm(data_char_inaugural[1:10], verbose = FALSE)
 #' sample(myDfm)[, 1:10]
 #' sample(myDfm, replace = TRUE)[, 1:10]
 #' sample(myDfm, what = "features")[1:10, ]
@@ -376,7 +376,7 @@ compress <- function(x, ...)  UseMethod("compress")
 #' compress(mat)
 #' 
 #' # no effect if no compression needed
-#' compress(dfm(inaugTexts, verbose = FALSE))
+#' compress(dfm(data_char_inaugural, verbose = FALSE))
 #' @export
 compress.dfm <- function(x, margin = c("both", "documents", "features"), ...) {
     margin <- match.arg(margin)

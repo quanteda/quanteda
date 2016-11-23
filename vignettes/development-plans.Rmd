@@ -133,7 +133,7 @@ vignette: >
     ```{r, eval=FALSE}
     data_char_sampletext # character, length 1
     data_char_ukimmig2010  # character, length 14
-    inaugTexts           # character, length 57
+    data_char_inaugural           # character, length 57
     data_corpus_irishbudget2010         # corpus
     inaugCorpus          # corpus
     data_dfm_LBGexample  # dfm

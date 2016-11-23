@@ -71,7 +71,7 @@ topfeatures(tfidfDtm)
 head(logTfDtm <- weight(dtm, type="logFreq"))
 head(tfidf(logTfDtm, normalize = FALSE))
 \dontshow{
-testdfm <- dfm(inaugTexts[1:5], verbose = FALSE)
+testdfm <- dfm(data_char_inaugural[1:5], verbose = FALSE)
 for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
     testw <- weight(testdfm, w)
     cat("\\n\\n=== weight() TEST for:", w, "; class:", class(testw), "\\n")

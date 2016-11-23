@@ -38,6 +38,6 @@ docnames(inaugCorpus) <- paste("Speech", 1:ndoc(inaugCorpus), sep="")
 docnames(inaugCorpus) <- paste("Speech", 1:ndoc(inaugCorpus), sep="")
 
 # query the document names of a dfm
-docnames(dfm(inaugTexts[1:5]))
+docnames(dfm(data_char_inaugural[1:5]))
 }
 

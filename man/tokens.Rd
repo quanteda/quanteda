@@ -198,7 +198,7 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
            "Today is Thursday in Canberra:  \\nIt is yesterday in London.",
            "To be?  Or\\nnot to be?"), 
           what = "sentence")
-tokens(inaugTexts[c(2,40)], what = "sentence")
+tokens(data_char_inaugural[c(2,40)], what = "sentence")
 
 # removing features (stopwords) from tokenized texts
 txt <- toLower(c(mytext1 = "This is a short test sentence.",

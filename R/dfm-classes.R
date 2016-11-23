@@ -334,7 +334,7 @@ setMethod("+", signature(e1 = "numeric", e2 = "dfmDense"),
 #' @export
 #' @examples
 #' # coercion to matrix
-#' dfmSparse <- dfm(inaugTexts, verbose = FALSE)
+#' dfmSparse <- dfm(data_char_inaugural, verbose = FALSE)
 #' str(as.matrix(dfmSparse))
 setMethod("as.matrix", signature(x="dfm"),
           function(x) {
@@ -360,7 +360,7 @@ setMethod("as.matrix", signature(x="dfm"),
 #' @param ... not used for this method
 #' @export
 #' @examples
-#' inaugDfm <- dfm(inaugTexts[1:5], verbose = FALSE)
+#' inaugDfm <- dfm(data_char_inaugural[1:5], verbose = FALSE)
 #' as.data.frame(inaugDfm[, 1:10])
 #' str(as.data.frame(inaugDfm))
 #' as.data.frame(inaugDfm[, 1:10], row.names = FALSE)
