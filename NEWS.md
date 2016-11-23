@@ -75,7 +75,9 @@ new function | description | ouput class
 `dfm_toupper` | uppercases the features of a `dfm` and compacts | `dfm`
 
 
+## Other new features
 
+*  Added Greek stopwords.
 
 
 

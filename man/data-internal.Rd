@@ -8,6 +8,17 @@
 \alias{data_int_syllables}
 \title{internal data sets}
 \format{An object of class \code{list} of length 2.}
+\source{
+The English stopwords are taken from the SMART information retrieval
+system (obtained from 
+\url{http://jmlr.csail.mit.edu/papers/volume5/lewis04a/a11-smart-stop-list/english.stop}).
+
+Additional stopword lists are taken from the Snowball stemmer project in
+different languages (see \url{http://snowballstem.org/projects.html}).
+
+The Greek stopwords were supplied by Carsten Schwemmer (see
+\href{https://github.com/kbenoit/quanteda/issues/282}{GitHub issue #282}).
+}
 \usage{
 data_char_wordlists
 
@@ -29,15 +40,13 @@ These are:
 \item{\code{Spache}}{The revised Spache word list (see Klare 1975, 73) needed to compute the Spache Revised Formula of readability (Spache 1974.}
 }
 
-\code{data_char_stopwords} provides stopword lists in multiple languages; 
-it is a named list of characters with the lowercase language name (in English) as the 
-name of each list element.  The English stopwords are taken from the SMART
-information retrieval system (obtained from 
-\url{http://jmlr.csail.mit.edu/papers/volume5/lewis04a/a11-smart-stop-list/english.stop})
-and a set of stopword lists from the Snowball stemmer project in different 
-languages (see \url{http://snowballstem.org/projects.html}). Supported
-languages are Arabic, Danish, Dutch, English, Finnish, French, German,
-Hungarian, Italian, Norwegian, Portuguese, Russian, Spanish, and Swedish.
+\code{data_char_stopwords} provides stopword lists in multiple
+languages; it is a named list of characters with the lowercase language name
+(in English) as the name of each list element.
+
+Supported languages are Arabic, Danish, Dutch, English, Finnish, French,
+German, Greek, Hungarian, Italian, Norwegian, Portuguese, Russian, Spanish,
+and Swedish.
 
 \code{data_int_syllables} provides an English-language syllables dictionary; it is
 an integer vector whose element names correspond to English words. Built from
