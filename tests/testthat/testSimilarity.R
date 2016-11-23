@@ -5,7 +5,7 @@ require(proxy)
 
 
 test_that("test similarity method = \"correlation\" against base cor()", {
-    presDfm <- dfm(subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+    presDfm <- dfm(subset(data_corpus_inaugural, Year > 1980), ignoredFeatures = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     corQuanteda <- round(similarity(presDfm, "union", method = "correlation", margin = "features")[["union"]], 6)
     corStats <- sort(round(cor(as.matrix(presDfm))[, "union"], 6), decreasing = TRUE)
@@ -14,7 +14,7 @@ test_that("test similarity method = \"correlation\" against base cor()", {
 
 test_that("test similarity method = \"cosine\" against proxy simil()", {
     require(proxy)
-    presDfm <- dfm(subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+    presDfm <- dfm(subset(data_corpus_inaugural, Year > 1980), ignoredFeatures = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     cosQuanteda <- round(similarity(presDfm, "soviet", method = "cosine", margin = "features")[["soviet"]], 2)
@@ -30,7 +30,7 @@ test_that("test similarity method = \"cosine\" against proxy simil()", {
 
 test_that("test similarity method = \"cosine\" against proxy simil(): documents", {
     require(proxy)
-    presDfm <- dfm(subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+    presDfm <- dfm(subset(data_corpus_inaugural, Year > 1980), ignoredFeatures = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     cosQuanteda <- round(similarity(presDfm, method = "cosine", margin = "documents")[["1981-Reagan"]], 6)[-1]
@@ -47,7 +47,7 @@ test_that("test similarity method = \"cosine\" against proxy simil(): documents"
 
 test_that("test similarity method = \"correlation\" against proxy simil(): documents", {
     require(proxy)
-    presDfm <- dfm(subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+    presDfm <- dfm(subset(data_corpus_inaugural, Year > 1980), ignoredFeatures = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     corQuanteda <- round(similarity(presDfm, method = "correlation", margin = "documents")[["1981-Reagan"]], 6)

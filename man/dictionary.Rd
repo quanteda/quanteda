@@ -45,7 +45,7 @@ all currently available dictionary files supplied as part of the LIWC 2001,
 2007, and 2015 software (see References).
 }
 \examples{
-mycorpus <- subset(inaugCorpus, Year>1900)
+mycorpus <- subset(data_corpus_inaugural, Year>1900)
 mydict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                           opposition = c("Opposition", "reject", "notincorpus"),
                           taxing = "taxing",
@@ -58,11 +58,11 @@ head(dfm(mycorpus, dictionary = mydict))
 # import the Laver-Garry dictionary from http://bit.ly/1FH2nvf
 lgdict <- dictionary(file = "http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat",
                      format = "wordstat")
-head(dfm(inaugTexts, dictionary=lgdict))
+head(dfm(data_char_inaugural, dictionary=lgdict))
 
 # import a LIWC formatted dictionary from http://www.moralfoundations.org
 mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
-head(dfm(inaugTexts, dictionary = mfdict))}
+head(dfm(data_char_inaugural, dictionary = mfdict))}
 }
 \references{
 Wordstat dictionaries page, from Provalis Research 

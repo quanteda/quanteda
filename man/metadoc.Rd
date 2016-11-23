@@ -36,7 +36,7 @@ Document-level meta-data names are preceded by an underscore character,
   do \emph{not} need the underscore character.
 }
 \examples{
-mycorp <- subset(inaugCorpus, Year>1990)
+mycorp <- subset(data_corpus_inaugural, Year>1990)
 summary(mycorp, showmeta = TRUE)
 metadoc(mycorp, "encoding") <- "UTF-8"
 metadoc(mycorp)

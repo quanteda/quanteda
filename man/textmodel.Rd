@@ -73,7 +73,7 @@ will depend on which model was called (see \code{model} types below).
   is not terribly obvious. (Blame it on the S3 system.)
 }
 \examples{
-ieDfm <- dfm(ie2010Corpus, verbose=FALSE)
+ieDfm <- dfm(data_corpus_irishbudget2010, verbose=FALSE)
 refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
 ws <- textmodel(ieDfm, refscores, model="wordscores", smooth=1)
 

@@ -60,12 +60,12 @@ line number, since the text may or may not be segmented using end-of-line
 delimiters.)
 }
 \examples{
-head(kwic(inaugTexts, "secure*", window = 3, valuetype = "glob"))
-head(kwic(inaugTexts, "secur", window = 3, valuetype = "regex"))
-head(kwic(inaugTexts, "security", window = 3, valuetype = "fixed"))
+head(kwic(data_char_inaugural, "secure*", window = 3, valuetype = "glob"))
+head(kwic(data_char_inaugural, "secur", window = 3, valuetype = "regex"))
+head(kwic(data_char_inaugural, "security", window = 3, valuetype = "fixed"))
 
-kwic(inaugCorpus, "war against")
-kwic(inaugCorpus, "war against", valuetype = "regex")
+kwic(data_corpus_inaugural, "war against")
+kwic(data_corpus_inaugural, "war against", valuetype = "regex")
 }
 \author{
 Kenneth Benoit

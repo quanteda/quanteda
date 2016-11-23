@@ -87,19 +87,19 @@ Example usage
 
 ``` r
 library(quanteda)
-#> quanteda version 0.9.8.12
+#> quanteda version 0.9.8.13
 #> 
 #> Attaching package: 'quanteda'
 #> The following object is masked from 'package:base':
 #> 
 #>     sample
 # create a corpus from the immigration texts from UK party platforms
-uk2010immigCorpus <- corpus(ukimmigTexts,
-                            docvars=data.frame(party=names(ukimmigTexts)),
+uk2010immigCorpus <- corpus(data_char_ukimmig2010,
+                            docvars=data.frame(party=names(data_char_ukimmig2010)),
                             notes="Immigration-related sections of 2010 UK party manifestos",
                             enc="UTF-8")
-#> Warning in corpus.character(ukimmigTexts, docvars = data.frame(party =
-#> names(ukimmigTexts)), : Argument enc not used.
+#> Warning in corpus.character(data_char_ukimmig2010, docvars =
+#> data.frame(party = names(data_char_ukimmig2010)), : Argument enc not used.
 uk2010immigCorpus
 #> Corpus consisting of 9 documents and 1 docvar.
 summary(uk2010immigCorpus, showmeta=TRUE)
@@ -117,7 +117,7 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 #>          UKIP   346    739        27         UKIP
 #> 
 #> Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-#> Created: Fri Nov 18 06:48:59 2016
+#> Created: Tue Nov 22 19:04:39 2016
 #> Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -141,7 +141,7 @@ mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
 #> removed 97 features, from 175 supplied (glob) feature types
 #>    ... created a 9 x 1,489 sparse dfm
 #>    ... complete. 
-#> Elapsed time: 0.069 seconds.
+#> Elapsed time: 0.03 seconds.
 dim(mydfm)              # basic dimensions of the dfm
 #> [1]    9 1489
 topfeatures(mydfm, 20)  # 20 top words

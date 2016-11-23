@@ -135,7 +135,7 @@ named \code{docs} and \code{features} respectively.}
 }}
 \examples{
 # coercion to matrix
-dfmSparse <- dfm(inaugTexts, verbose = FALSE)
+dfmSparse <- dfm(data_char_inaugural, verbose = FALSE)
 str(as.matrix(dfmSparse))
 # dfm subsetting
 x <- dfm(tokens(c("this contains lots of stopwords",

@@ -41,8 +41,8 @@ require(quanteda)
 
 # read the text as a single file
 # alternative:
-# mobydickText <- texts(textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
-summary(mobydickText)
+# data_char_mobydick <- texts(textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
+summary(data_char_mobydick)
 ```
 
 The `textfile()` loads the text and places inside a structured, intermediate object known as a `corpusSource` object.  We see this by outputting it to the global environment, as above.
@@ -50,26 +50,26 @@ The `textfile()` loads the text and places inside a structured, intermediate obj
 We can access the text from a `corpusSource` object (and also, as we will see, a `corpus` class object), using the `texts()` method.  Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel.  We do this using the `substring()` function, which shows the 1st through the 75th characters of the texts of our new object `mobydicktf`.  Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.
 
 ```{r}
-substring(mobydickText, 1, 75)
+substring(data_char_mobydick, 1, 75)
 ```
 
 ## 2.2 Separate content from metadata
 The Gutenburg edition of the text contains some metadata before and after the text of the novel. The code below uses the `regexec` and `substring` functions to separate this from the text.
 ```{r}
 # extract the header information
-endMetadataIndex <- regexec("CHAPTER 1. Loomings.", mobydickText)[[1]]
-metadata.v <- substring(mobydickText, 1, endMetadataIndex - 1)
+endMetadataIndex <- regexec("CHAPTER 1. Loomings.", data_char_mobydick)[[1]]
+metadata.v <- substring(data_char_mobydick, 1, endMetadataIndex - 1)
 ```
 
 To trim the extra text at the end of the Gutenburg version of the text, we can use the keyword-in-context (`kwic`) function to view the contexts around the word 'orphan', which we know should occur at the end of the book.
 
 ```{r}
 # verify that "orphan" is the end of the novel
-kwic(mobydickText, "orphan")
+kwic(data_char_mobydick, "orphan")
 
 # extract the novel -- a better way
-novel.v <- substring(mobydickText, endMetadataIndex, 
-                     regexec("End of Project Gutenberg's Moby Dick.", mobydickText)[[1]]-1)
+novel.v <- substring(data_char_mobydick, endMetadataIndex, 
+                     regexec("End of Project Gutenberg's Moby Dick.", data_char_mobydick)[[1]]-1)
 ```
 
 

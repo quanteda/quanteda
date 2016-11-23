@@ -24,7 +24,7 @@
 #' dfm_compress(mat)
 #' 
 #' # no effect if no compression needed
-#' compactdfm <- dfm(inaugTexts[1:5], verbose = FALSE)
+#' compactdfm <- dfm(data_char_inaugural[1:5], verbose = FALSE)
 #' dim(compactdfm)
 #' dim(dfm_compress(compactdfm))
 #' 
@@ -121,7 +121,7 @@ dfm_toupper <- function(x) {
 #' @export
 #' @author Ken Benoit
 #' @examples
-#' dtm <- dfm(inaugCorpus)
+#' dtm <- dfm(data_corpus_inaugural)
 #' dtm[1:10, 1:5]
 #' dtm <- sort(dtm)
 #' dfm_sort(dtm)[1:10, 1:5]

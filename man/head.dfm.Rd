@@ -37,7 +37,7 @@ For a \link{dfm-class} object, returns the first or last \code{n} documents
 and first \code{ncol} features for inspection.
 }
 \examples{
-myDfm <- dfm(inaugCorpus, ngrams = 2, verbose = FALSE)
+myDfm <- dfm(data_corpus_inaugural, ngrams = 2, verbose = FALSE)
 head(myDfm)
 tail(myDfm)
 tail(myDfm, nfeature = 4)

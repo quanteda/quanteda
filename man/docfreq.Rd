@@ -49,7 +49,7 @@ threshold is  zero, meaning that any feature occuring at least once in a
 document will be counted.)
 }
 \examples{
-mydfm <- dfm(inaugTexts[1:2], verbose = FALSE)
+mydfm <- dfm(data_char_inaugural[1:2], verbose = FALSE)
 docfreq(mydfm[, 1:20])
 
 # replication of worked example from

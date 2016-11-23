@@ -91,13 +91,14 @@ following slots:
 \item{\code{method}}{takes a value of \code{wordscores} for this model}
 }}
 \examples{
-(ws <- textmodel(LBGexample, c(seq(-1.5, 1.5, .75), NA), model="wordscores"))
+(ws <- textmodel(data_dfm_LBGexample, c(seq(-1.5, 1.5, .75), NA), 
+                 model = "wordscores"))
 predict(ws)
 predict(ws, rescaling="mv")
 predict(ws, rescaling="lbg")
 
 # same as:
-(ws2 <- textmodel_wordscores(LBGexample, c(seq(-1.5, 1.5, .75), NA)))
+(ws2 <- textmodel_wordscores(data_dfm_LBGexample, c(seq(-1.5, 1.5, .75), NA)))
 predict(ws2)
 }
 \author{

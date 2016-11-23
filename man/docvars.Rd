@@ -35,18 +35,18 @@ Get or set variables for the documents in a corpus
 }
 \note{
 Another way to access and set docvars is through indexing of the corpus \code{j} element, 
-such as \code{ie2010Corpus[, c("foren", "name"]} or for a single docvar, \code{ie2010Corpus[["name"]]}.  The latter
-also permits assignment, including the easy creation of new document varibles, e.g. \code{ie2010Corpus[["newvar"]] <- 1:ndoc(ie2010Corpus)}.
+such as \code{data_corpus_irishbudget2010[, c("foren", "name"]} or for a single docvar, \code{data_corpus_irishbudget2010[["name"]]}.  The latter
+also permits assignment, including the easy creation of new document varibles, e.g. \code{data_corpus_irishbudget2010[["newvar"]] <- 1:ndoc(data_corpus_irishbudget2010)}.
 See \code{\link{[.corpus}} for details.
 }
 \examples{
-head(docvars(inaugCorpus))
-docvars(inaugCorpus, "President") <- paste("prez", 1:ndoc(inaugCorpus), sep="")
-head(docvars(inaugCorpus))
+head(docvars(data_corpus_inaugural))
+docvars(data_corpus_inaugural, "President") <- paste("prez", 1:ndoc(data_corpus_inaugural), sep="")
+head(docvars(data_corpus_inaugural))
 
 # alternative using indexing
-head(inaugCorpus[, "Year"])
-inaugCorpus[["President2"]] <- paste("prezTwo", 1:ndoc(inaugCorpus), sep="")
-head(docvars(inaugCorpus))
+head(data_corpus_inaugural[, "Year"])
+data_corpus_inaugural[["President2"]] <- paste("prezTwo", 1:ndoc(data_corpus_inaugural), sep="")
+head(docvars(data_corpus_inaugural))
 }
 

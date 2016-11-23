@@ -36,11 +36,11 @@ itText <- tokenize("Ecco alcuni di testo contenente le parole che vogliamo rimuo
 removeFeatures(itText, stopwords("italian"), case_insensitive = TRUE)
 
 ## example for dfm objects
-mydfm <- dfm(ukimmigTexts, verbose=FALSE)
+mydfm <- dfm(data_char_ukimmig2010, verbose=FALSE)
 removeFeatures(mydfm, stopwords("english"))
 
 ## example for collocations
-(myCollocs <- collocations(inaugTexts[1:3], n=20))
+(myCollocs <- collocations(data_char_inaugural[1:3], n=20))
 removeFeatures(myCollocs, stopwords("english"))
 removeFeatures(myCollocs, stopwords("english"), pos = 2)
 }

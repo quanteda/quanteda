@@ -1,9 +1,9 @@
 
 # a demonstration of the capabilities of quanteda
 
-str(ukimmigTexts)
+str(data_char_ukimmig2010)
 # create a corpus from immigration texts
-immigCorpus <- corpus(ukimmigTexts, notes="Created as part of a demo.")
+immigCorpus <- corpus(data_char_ukimmig2010, notes="Created as part of a demo.")
 docvars(immigCorpus) <- data.frame(party = docnames(immigCorpus), year = 2010)
 summary(immigCorpus)
 
@@ -51,9 +51,9 @@ tokenize(txt, removePunct=TRUE, removeTwitter=TRUE)
 str(toks)
 
 # tokenize sentences
-(sents <- tokenize(ukimmigTexts[1], what = "sentence", simplify = TRUE)[1:5])
+(sents <- tokenize(data_char_ukimmig2010[1], what = "sentence", simplify = TRUE)[1:5])
 # tokenize characters
-tokenize(ukimmigTexts[1], what = "character", simplify = TRUE)[1:100]
+tokenize(data_char_ukimmig2010[1], what = "character", simplify = TRUE)[1:100]
 
 
 ## some descriptive statistics

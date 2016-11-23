@@ -1,26 +1,32 @@
-
+#' @rdname data-internal
+#' @details
+#' \code{data_int_syllables} provides an English-language syllables dictionary; it is
+#' an integer vector whose element names correspond to English words. Built from
+#' the freely available CMU pronunciation dictionary at 
+#' \code{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
+"data_int_syllables"
 
 #' count syllables in a text
 #' 
 #' @description Returns a count of the number of syllables in texts. For English
 #'   words, the syllable count is exact and looked up from the CMU pronunciation
-#'   dictionary, from the default syllable dictionary \code{englishSyllables}. 
+#'   dictionary, from the default syllable dictionary \code{data_int_syllables}. 
 #'   For any word not in the dictionary, the syllable count is estimated by 
 #'   counting vowel clusters.
 #'   
-#'   \code{englishSyllables} is a quanteda-supplied data object consisting of a 
+#'   \code{data_int_syllables} is a quanteda-supplied data object consisting of a 
 #'   named numeric vector of syllable counts for the words used as names.  This 
 #'   is the default object used to count English syllables.  This object that 
 #'   can be accessed directly, but we strongly encourage you to access it only 
 #'   through the \code{syllables()} wrapper function.
 #'   
-#' @param x character vector or \code{tokenizedText-class} object  whose 
+#' @param x character vector or \code{tokens} object  whose 
 #'   syllables will be counted
 #' @param syllableDict optional named integer vector of syllable counts where 
 #'   the names are lower case tokens.  When set to \code{NULL} (default), then 
-#'   the function will use the quanteda data object \code{englishSyllables}, an 
+#'   the function will use the quanteda data object \code{data_int_syllables}, an 
 #'   English pronunciation dictionary from CMU.
-#' @param ... additional arguments passed to tokenize
+#' @param ... additional arguments passed to \code{\link{tokens}}
 #'   
 #' @return If \code{x} is a character vector, a named numeric vector of the 
 #'   counts of the syllables in each text, without tokenization.  If \code{x} 
@@ -40,19 +46,21 @@
 #' syllables(myTexts)
 #' syllables(tokenize(myTexts, removePunct = TRUE))
 #' syllables("supercalifragilisticexpialidocious")
-syllables <- function(x, ...) {
+syllables <- function(x, syllableDict = quanteda::data_int_syllables, ...) {
     UseMethod("syllables")
 }
 
 #' @rdname syllables
+#' @noRd
 #' @export
-syllables.character <- function(x, syllableDict = quanteda::englishSyllables, ...) { 
+syllables.character <- function(x, syllableDict = quanteda::data_int_syllables, ...) { 
     tokenizedwords <- tokenize(x, removePunct = TRUE, removeTwitter = TRUE, removeNumbers = TRUE, ...)
     sapply(syllables(tokenizedwords, syllableDict), sum)
 }
 
 
 #' @rdname syllables
+#' @noRd
 #' @examples 
 #' \dontshow{
 #' txt <- c(one = "super freakily yes",
@@ -63,14 +71,15 @@ syllables.character <- function(x, syllableDict = quanteda::englishSyllables, ..
 #' syllables(toksh)
 #' }
 #' @export
-syllables.tokens <- function(x, syllableDict = quanteda::englishSyllables, ...) { 
+syllables.tokens <- function(x, syllableDict = quanteda::data_int_syllables, ...) { 
     vocab_sylls <- syllables(types(x))
     sapply(unclass(x), function(y) vocab_sylls[y])
 }
 
 #' @rdname syllables
+#' @noRd
 #' @export
-syllables.tokenizedTexts <- function(x, syllableDict = quanteda::englishSyllables, ...) { 
+syllables.tokenizedTexts <- function(x, syllableDict = quanteda::data_int_syllables, ...) { 
     
     # make tokenized list into a data table
     syllablesDT <- data.table(docIndex = rep(1:length(x), lengths(x)),
@@ -87,14 +96,14 @@ syllables.tokenizedTexts <- function(x, syllableDict = quanteda::englishSyllable
 }
 
 
-syllables.data.table <- function(x, syllableDict = quanteda::englishSyllables, ...) {
+syllables.data.table <- function(x, syllableDict = quanteda::data_int_syllables, ...) {
     word <- serial <- NULL
     
     # retrieve or validate syllable list
-    englishSyllables <- NULL
+    data_int_syllables <- NULL
     if (is.null(syllableDict)) {
-        #data(englishSyllables, envir = environment())
-        #syllableDict <- englishSyllables
+        #data(data_int_syllables, envir = environment())
+        #syllableDict <- data_int_syllables
     } else {
         if (!is.integer(syllableDict))
             stop("user-supplied syllableDict must be named integer vector.")

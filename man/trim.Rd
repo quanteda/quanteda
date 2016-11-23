@@ -46,7 +46,7 @@ Trimming a \link{dfm-class} object is an operation based on the values
   list, use \link{selectFeatures}.
 }
 \examples{
-(myDfm <- dfm(inaugCorpus, verbose = FALSE))
+(myDfm <- dfm(data_corpus_inaugural, verbose = FALSE))
 # only words occuring >=10 times and in >=2 docs
 trim(myDfm, minCount = 10, minDoc = 2) 
 # only words occuring >=10 times and in at least 0.4 of the documents

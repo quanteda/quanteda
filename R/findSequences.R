@@ -10,7 +10,7 @@
 #' @param smooth smoothing factor
 #' @param nested collect nested sub-sequence
 #' @examples 
-#' sents <- tokenize(inaugCorpus, what = "sentence", simplify = TRUE)
+#' sents <- tokenize(data_corpus_inaugural, what = "sentence", simplify = TRUE)
 #' tokens <- tokenize(sents, removePunct = TRUE)
 #' tokens <- selectFeatures(tokens, stopwords(), 'remove', padding=TRUE)
 #' types <- unique(unlist(tokens))

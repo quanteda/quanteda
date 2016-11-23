@@ -131,12 +131,12 @@ vignette: >
     
     Example data objects:
     ```{r, eval=FALSE}
-    exampleString       # character, length 1
-    ukimmigTexts        # character, length 14
-    inaugTexts          # character, length 57
-    ie2010Corpus        # corpus
-    inaugCorpus         # corpus
-    LBGexample          # dfm
+    data_char_sampletext # character, length 1
+    data_char_ukimmig2010  # character, length 14
+    data_char_inaugural           # character, length 57
+    data_corpus_irishbudget2010         # corpus
+    data_corpus_inaugural          # corpus
+    data_dfm_LBGexample  # dfm
     ```
     
     and some built-in objects used by functions:
@@ -294,11 +294,11 @@ addto            NULL        dfm                            dfm
 A `dfm` object can be created using piping, or in one step:
 
 ```{r, eval=FALSE}
-mydfm <- texts(ie2010Corpus, groups = "party") %>% toLower %>% tokenize %>% 
+mydfm <- texts(data_corpus_irishbudget2010, groups = "party") %>% toLower %>% tokenize %>% 
              removeFeatures(stopwords("english")) %>% wordstem %>% dfm
     
 # same as:
-mydfm2 <- dfm(ie2010Corpus, groups = "party", ignoredFeatures = stopwords("english"), stem = TRUE)
+mydfm2 <- dfm(data_corpus_irishbudget2010, groups = "party", ignoredFeatures = stopwords("english"), stem = TRUE)
 ```
 
 # Development Guidance
@@ -337,7 +337,7 @@ We *always* welcome hearing about your experiences (and problems!) in using quan
     *   **DONE** `ntoken()`  
     *   **DONE** `ntype()` and `nfeature()`
     *   **DONE** `phrasetotoken()` 
-*   **DONE** encode `ie2010Corpus` (and see if CRAN lets us get away with it)
+*   **DONE** encode `data_corpus_irishbudget2010` (and see if CRAN lets us get away with it)
 *   **DONE** removed `language()`
 *   add methods for `tokenizedTexts` objects:
     *   **DONE** `dfm.tokenizedTexts`

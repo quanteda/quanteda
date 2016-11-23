@@ -8,8 +8,8 @@ test_that("compare the output feature co-occurrence matrix to that of the text2v
     txt <- "A D A C E A D F E B A C E D"
     #txt <- c("The quick brown fox jumped over the lazy dog.",
     #          "The dog jumped and ate the fox.")
-    #txt <- subset(inaugCorpus, Year > 1900)
-    #txt <- subset(inaugCorpus, Year > 1900 & Year<1902)
+    #txt <- subset(data_corpus_inaugural, Year > 1900)
+    #txt <- subset(data_corpus_inaugural, Year > 1900 & Year<1902)
     # text2vec considers txt$metadata, txt$setting as part of the document
     # text2vec doesn't remove '_' , but does remove '-'
     # text2vec treats newline character "\n" as part of the word

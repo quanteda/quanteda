@@ -2,10 +2,10 @@ context('test plots.R')
 
 test_that("test plot.kwic scale argument default", {
 
-    sda <- kwic(texts(inaugCorpus)[[1]], 'american')
-    sdp <- kwic(texts(inaugCorpus)[[1]], 'people')
-    mda <- kwic(inaugCorpus, 'american')
-    mdp <- kwic(inaugCorpus, 'people')
+    sda <- kwic(texts(data_corpus_inaugural)[[1]], 'american')
+    sdp <- kwic(texts(data_corpus_inaugural)[[1]], 'people')
+    mda <- kwic(data_corpus_inaugural, 'american')
+    mdp <- kwic(data_corpus_inaugural, 'people')
 
     # Single document, should be absolute
     p <- plot(sda)
@@ -48,7 +48,7 @@ test_that("test plot.kwic scale argument default", {
 
 test_that("test plot.kwic facet order parameter", {
 
-    p <- plot(kwic(inaugCorpus, 'american'), sort=TRUE)
+    p <- plot(kwic(data_corpus_inaugural, 'american'), sort=TRUE)
     plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
     expect_true(
         all(
@@ -56,7 +56,7 @@ test_that("test plot.kwic facet order parameter", {
         )
     )
 
-    p <- plot(kwic(inaugCorpus, 'american'), kwic(inaugCorpus, 'people'), sort=TRUE)
+    p <- plot(kwic(data_corpus_inaugural, 'american'), kwic(data_corpus_inaugural, 'people'), sort=TRUE)
     plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
     expect_true(
         all(
@@ -66,7 +66,7 @@ test_that("test plot.kwic facet order parameter", {
 
     # Default should be false
     #TODO Fix this
-    p <- plot(kwic(inaugCorpus, 'american'), kwic(inaugCorpus, 'people'))
+    p <- plot(kwic(data_corpus_inaugural, 'american'), kwic(data_corpus_inaugural, 'people'))
     plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
     expect_false(
         all(
@@ -78,7 +78,7 @@ test_that("test plot.kwic facet order parameter", {
 })
 
 test_that("test plot.kwic keeps order of keywords passed", {
-    p <- plot(kwic(inaugCorpus, 'people'), kwic(inaugCorpus, 'american'), sort=TRUE)
+    p <- plot(kwic(data_corpus_inaugural, 'people'), kwic(data_corpus_inaugural, 'american'), sort=TRUE)
     expect_equal(
         as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$keyword)),
         c('people', 'american')
