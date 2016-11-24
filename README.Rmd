@@ -14,8 +14,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-# quanteda: Quantitative Analysis of Textual Data ![quanteda logo](images/quanteda.png | width = 200)
+<img src="images/quanteda.png" width = "300"> 
 
+# quanteda: Quantitative Analysis of Textual Data
 
 [![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
 ![Downloads](http://cranlogs.r-pkg.org/badges/quanteda)
