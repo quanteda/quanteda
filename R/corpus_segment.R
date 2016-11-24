@@ -32,6 +32,7 @@ segment.corpus <- function(x, ...) {
 #' corpus object, and allows the delimiters to be user-defined.  This is useful
 #' for breaking the texts of a corpus into smaller documents based on sentences,
 #' or based on a user defined "tag" pattern.  See details.
+#' @param x corpus object whose texts will be segmented
 #' @param what unit of segmentation.  Current options are \code{"tokens"} 
 #'   (default), \code{"sentences"}, \code{"paragraphs"}, \code{"tags"}, and 
 #'   \code{"other"}.  Segmenting on \code{other} allows segmentation of a text 
@@ -45,7 +46,6 @@ segment.corpus <- function(x, ...) {
 #'   matching; \code{"regex"} for regular expressions; or \code{"glob"} for 
 #'   "glob"-style wildcard patterns
 #' @param perl logical. Should Perl-compatible regular expressions be used?
-#' @param x corpus object whose texts will be segmented
 #' @param keepdocvars (for corpus objects) if \code{TRUE}, repeat the docvar values for each 
 #'   segmented text; if \code{FALSE}, drop the docvars in the segmented corpus. 
 #'   Dropping the docvars might be useful in order to conserve space or if these

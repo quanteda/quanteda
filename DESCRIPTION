@@ -102,7 +102,6 @@ Collate:
     'regex2fixed2.R'
     'regex2fixed3.R'
     'resample.R'
-    'segment.R'
     'selectFeatures-old.R'
     'selectFeatures.R'
     'settings.R'
