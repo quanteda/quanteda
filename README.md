@@ -119,7 +119,7 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 #>          UKIP   346    739        27         UKIP
 #> 
 #> Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-#> Created: Thu Nov 24 14:25:26 2016
+#> Created: Thu Nov 24 14:26:08 2016
 #> Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
