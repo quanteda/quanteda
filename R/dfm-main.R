@@ -147,8 +147,8 @@ dfm <- function(x, ...) {
 #' dfm(testTweets, keptFeatures = "#*", removeTwitter = FALSE)  # keep only hashtags
 #' dfm(testTweets, keptFeatures = "^#.*$", valuetype = "regex", removeTwitter = FALSE)
 dfm.character <- function(x, 
-                          verbose=TRUE, 
-                          toLower=TRUE, 
+                          verbose = FALSE, 
+                          toLower = TRUE, 
                           removeNumbers = TRUE, 
                           removePunct = TRUE,
                           removeSeparators = TRUE,
@@ -209,7 +209,7 @@ dfm.character <- function(x,
 #' @importFrom utils glob2rx
 #' @export
 dfm.tokenizedTexts <- function(x, 
-                               verbose = TRUE,
+                               verbose = FALSE,
                                toLower = FALSE,
                                stem = FALSE, 
                                ignoredFeatures = NULL, 
@@ -393,7 +393,7 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
 #' @param groups character vector containing the names of document variables for
 #'   aggregating documents
 #' @export
-dfm.corpus <- function(x, verbose = TRUE, groups = NULL, ...) {
+dfm.corpus <- function(x, verbose = FALSE, groups = NULL, ...) {
     if (verbose) catm("Creating a dfm from a corpus ...")
     
     if (!is.null(groups)) {

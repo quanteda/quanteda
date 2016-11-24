@@ -11,18 +11,18 @@
 \usage{
 dfm(x, ...)
 
-\method{dfm}{character}(x, verbose = TRUE, toLower = TRUE,
+\method{dfm}{character}(x, verbose = FALSE, toLower = TRUE,
   removeNumbers = TRUE, removePunct = TRUE, removeSeparators = TRUE,
   removeTwitter = FALSE, stem = FALSE, ignoredFeatures = NULL,
   keptFeatures = NULL, language = "english", thesaurus = NULL,
   dictionary = NULL, valuetype = c("glob", "regex", "fixed"), ...)
 
-\method{dfm}{tokenizedTexts}(x, verbose = TRUE, toLower = FALSE,
+\method{dfm}{tokenizedTexts}(x, verbose = FALSE, toLower = FALSE,
   stem = FALSE, ignoredFeatures = NULL, keptFeatures = NULL,
   language = "english", thesaurus = NULL, dictionary = NULL,
   valuetype = c("glob", "regex", "fixed"), ...)
 
-\method{dfm}{corpus}(x, verbose = TRUE, groups = NULL, ...)
+\method{dfm}{corpus}(x, verbose = FALSE, groups = NULL, ...)
 
 is.dfm(x)
 
