@@ -25,14 +25,13 @@ texts_random <- function(n_doc=10,
                          n_word=100, 
                          len_word=5, 
                          n_type=1000, 
-                         punct=FALSE, 
                          fast=FALSE, 
                          code=FALSE,
                          seed, characters){
     
     if(!missing(seed)) set.seed(seed)
     if(missing(characters)){
-        # Empirical distribution in English
+        # Empirical distribution in English (https://en.wikipedia.org/wiki/Letter_frequency)
         chars <- letters
         prob_chars <-c(0.08167, 0.01492, 0.02782, 0.04253, 0.12702, 0.02228, 0.02015, 
                        0.06094, 0.06966, 0.00153, 0.00772, 0.04025, 0.02406, 0.06749,
