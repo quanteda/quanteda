@@ -1,6 +1,7 @@
 source('R/regex2fixed.R')
 source('R/regex2fixed2.R')
 source('R/regex2fixed3.R')
+source('R/regex2fixed4.R')
 
 toks <- tokens(inaugCorpus, removePunct = TRUE)
 types <- attr(toks, 'types')

@@ -101,6 +101,7 @@ Collate:
     'regex2fixed.R'
     'regex2fixed2.R'
     'regex2fixed3.R'
+    'regex2fixed4.R'
     'resample.R'
     'selectFeatures-old.R'
     'selectFeatures.R'
