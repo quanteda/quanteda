@@ -44,8 +44,7 @@ regex2fixed3 <- function(regex, types, valuetype, case_insensitive = FALSE) {
     # Process multi-entry patterns
     for(pat_multi in pats_multi) {
         fixed_multi <- subset_types2(pat_multi, types, types_search, tree, tree_search, exact)
-        fixed_comb <- as.matrix(do.call(expand.grid, c(fixed_multi, stringsAsFactors = FALSE))) # create all possible combinations
-        fixed <- c(fixed, unname(split(fixed_comb, row(fixed_comb))))
+        fixed <- c(fixed, expand(fixed_multi))
     }
     
     # Process single-entry patterns
@@ -102,6 +101,23 @@ subset_types_startswith <- function(str, tree, tree_search){
 subset_types_endswith <- function(str, tree, tree_search){
     i <- toLower(stri_sub(str, -1, -1))
     tree$tail[[i]][stri_startswith_fixed(tree_search$tail[[i]], str)]
+}
+
+expand <- function(val){
+    comb <- vector('list', prod(lengths(val))) # empty list for output
+    expand_resursive(val, 1, comb)
+}
+
+expand_resursive <- function(val, i, comb){
+    h = 1
+    for(j in rep_len(1:length(val[[i]]), length(comb))){
+        comb[[h]] <- c(comb[[h]], val[[i]][[j]])
+        h <- h + 1
+    }
+    if(i < length(val)){
+        comb <- expand_resursive(val, i + 1, comb)
+    }
+    return(comb)
 }
 
 # This function checks if a string is regular expression
