@@ -1,125 +1,14 @@
-library(quanteda)
-library(stringi)
-library(fastmatch)
+# This function converts regex to fixed patterns. This is one of the coner strones of 
+# the new artchitecture, but not yet really fast. Performance improvement is needed.
 
-dict_lex <- dictionary(file='/home/kohei/Documents/Dictonary/Lexicoder/LSDaug2015/LSD2015_NEG.lc3')
-glob_lex <- tokens(unlist(dict_lex, use.names = FALSE), hash=FALSE, what='fastest')
-regex_lex <- lapply(glob_lex, glob2rx)
-
-dict_liwc <- dictionary(file='/home/kohei/Documents/Dictonary/LIWC/LIWC2007_English.dic')
-glob_liwc <- unlist(dict_liwc, use.names = FALSE)
-regex_liwc <- glob2rx(glob_liwc)
-
-
-toks <- tokens(inaugCorpus, removePunct = TRUE)
-types <- attr(toks, 'types')
-
-
-microbenchmark::microbenchmark(
-    regex2fixed3(regex_lex, types, 'regex', FALSE),
-    regex2fixed4(regex_lex, types, 'regex', FALSE),
-    times=10
-)
-
-microbenchmark::microbenchmark(
-    regex2fixed3(regex_lex, types, 'regex', TRUE),
-    regex2fixed4(regex_lex, types, 'regex', TRUE),
-    times=10
-)
-
-microbenchmark::microbenchmark(
-    regex2fixed3(glob_lex, types, 'fixed', TRUE),
-    regex2fixed4(glob_lex, types, 'fixed', TRUE),
-    times=10
-)
-
-setdiff(regex2fixed3(regex_lex, types, 'regex', FALSE),
-        regex2fixed4(regex_lex, types, 'regex', FALSE))
-
-microbenchmark::microbenchmark(
-    regex2fixed3(regex_liwc, types, 'regex', FALSE),
-    regex2fixed4(regex_liwc, types, 'regex', FALSE),
-    times=10
-)
-
-microbenchmark::microbenchmark(
-    types[toLower(types) %in% toLower(glob_liwc)],
-    regex2fixed3(glob_liwc, types, 'fixed', TRUE),
-    regex2fixed4(glob_liwc, types, 'fixed', TRUE),
-    times=10
-)
-
-microbenchmark::microbenchmark(
-    types[toLower(types) %in% toLower(stopwords())],
-    regex2fixed4(stopwords(), types, 'fixed', TRUE),
-    times=10
-)
-
-
-setdiff(regex2fixed3(glob_liwc, types, 'fixed', FALSE),
-        regex2fixed4(glob_liwc, types, 'fixed', FALSE))
-
-chr <- paste0(sample(letters, 80000, TRUE), 
-              sample(letters, 80000, TRUE),
-              sample(letters, 80000, TRUE),
-              sample(letters, 80000, TRUE))
-pos <- 1:length(chr)
-
-microbenchmark::microbenchmark(
-    factor(chr, ordered=TRUE, levels=unique(chr)),
-    factor(chr, ordered=FALSE, levels=unique(chr)),
-    split(pos, chr),
-    split(pos, as.factor(chr)),
-    split(pos, qatd_cpp_string2factor(chr)),
-    times=1
-)
-
-microbenchmark::microbenchmark(
-as.data.frame.matrix(expand.grid(c('a', 'b', 'c'), c('A', 'B'))),
-as.matrix(expand.grid(c('a', 'b', 'c'), c('A', 'B'))))
-
-mx <- as.data.frame.matrix(expand.grid(c('a', 'b', 'c'), c('A', 'B')))
-mx <- as.matrix(expand.grid(c('a', 'b', 'c'), c('A', 'B')))
-
-microbenchmark::microbenchmark(
-    factor(1:nrow(mx), ordered=TRUE, levels=unique(1:nrow(mx))),
-    factor(1:nrow(mx), ordered=FALSE, levels=unique(1:nrow(mx))),
-    split(unname(mx), 1:nrow(mx)),
-    split(mx, 1:nrow(mx)),
-    #split(mx, row(mx)),
-    split(mx, factor(1:nrow(mx), ordered=FALSE, levels=unique(1:nrow(mx)))),
-    #split(mx, factor(row(mx), ordered=FALSE, levels=unique(row(mx)))),
-    times=100
-)
-
-
-
-
-
-expand_grid <- function(x){
-    
-    mx <- as.matrix(expand.grid(x))
-    res <- unname(split(mx, factor(1:nrow(mx), ordered=FALSE, levels=unique(1:nrow(mx)))))
-    return(res)
-}
-
-
-profvis::profvis(regex2fixed4(regex_lex, types, 'regex', FALSE))
-profvis::profvis(regex2fixed4(regex_liwc, types, 'regex', FALSE))
-
-marks <- c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")
-microbenchmark::microbenchmark(
-    stri_sub('^aaa', 1,1) == '^',
-    stri_startswith_fixed('^aaa', '^'),
-    times=1000
-)
-
-
-
-regex <- list(c('^a$', '^b'), c('c'), c('d'))
-types <- c('A', 'AA', 'A', 'B', 'BB', 'BBB', 'C', 'CC')
-regex2fixed4(regex, types, 'fixed', case_insensitive=TRUE)
-regex2fixed4(regex, types, 'regex', case_insensitive=TRUE)
+# @param regex regular expression
+# @param types unique types of tokens
+# @param case_insensitive case sensitivity
+#
+# regex <- list(c('^a$', '^b'), c('c'), c('d'))
+# types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
+# regex2fixed4(regex, types, 'fixed', case_insensitive=TRUE)
+# regex2fixed4(regex, types, 'regex', case_insensitive=TRUE)
 
 regex2fixed4 <- function(regex, types, valuetype, case_insensitive = FALSE) {
     
