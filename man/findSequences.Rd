@@ -19,7 +19,7 @@ findSequences(x, tokens, count_min, smooth = 0.001, nested = TRUE)
 }
 \description{
 This function automatically identify sequences of tokens. This algorithm is   
-based on Blaheta and Johnson's “Unsupervised Learning of Multi-Word Verbs”.
+based on Blaheta and Johnson's <U+9225><U+6DEF>nsupervised Learning of Multi-Word Verbs<U+9225><U+FFFD>.
 }
 \examples{
 sents <- tokenize(data_corpus_inaugural, what = "sentence", simplify = TRUE)

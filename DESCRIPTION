@@ -121,6 +121,8 @@ Collate:
     'textmodel-generics.R'
     'textmodel-wordfish.R'
     'textmodel-wordscores.R'
+    'textstat_dist.R'
+    'textstat_simil.R'
     'toLower.R'
     'tokenize.R'
     'tokenize_outtakes.R'

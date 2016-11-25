@@ -1,0 +1,384 @@
+#' @title Similarity matrix between documents and/or features 
+#' 
+#' @description These functions compute similarity matrix between documents and/or features from a 
+#' \code{\link{dfm}} and return a standard \code{\link[stats]{dist}} object. 
+#' @param x a \link{dfm} object 
+#' @param selection character or character vector of document names or feature 
+#'   labels from the dfm
+#' @param n the top \code{n} most similar items will be returned.  If n is \code{NULL}, return all items.
+#' @param margin identifies the margin of the dfm on which similarity will be 
+#'   computed:  \code{documents} for documents or \code{features} for word/term
+#'   features.
+#' @param method a valid method for computing similarity from 
+#'   \code{\link[proxy]{pr_DB}}, default "correlation".
+#' @param normalize a deprecated argument retained (temporarily) for legacy 
+#'   reasons.  If you want to compute similarity on a "normalized" dfm objects 
+#'   (e.g. \code{x}), wrap it in \code{\link{weight}(x, "relFreq")}.
+#' @param tri whether the upper triangle of the symmetric \eqn{V \times V} matrix is recorded
+#' @param diag whether the diagonal of the distance matrix should be recorded    
+#' @export
+#' @import methods
+#' @examples
+#' # create a dfm from inaugural addresses from Reagan onwards
+#' presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+#'                stem = TRUE)
+#' 
+#' # compute some document similarities
+#' (tmp <- textstat_simil(presDfm, margin = "documents"))
+#' # output as a list
+#' #as.list(tmp)
+#' # for specific comparisons
+#' textstat_simil(presDfm, "1985-Reagan", n = 5, margin = "documents")
+#' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
+#' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
+#' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents", method = "cosine")
+
+#' # compute some term similarities
+#' textstat_simil(presDfm, c("fair", "health", "terror"), method="cosine", margin = "features", 20)
+#' 
+#' @rdname simil-class
+#' @export
+setGeneric(name = "textstat_simil",
+           signature = c("x", "selection", "n", "margin", "normalize"),
+           def = function(x, selection = character(0), n = NULL,
+                          margin = c("documents", "features"),
+                          method = "correlation", 
+                          normalize = FALSE, tri = FALSE, diag = FALSE)
+           {
+               standardGeneric("textstat_simil")
+           })
+
+
+#' @rdname simil-class
+#' @export
+setMethod(f = "textstat_simil", 
+          signature = signature("dfm", "ANY"),
+          def = function(x, selection = character(0), n = NULL, 
+                         margin = c("documents", "features"),
+                         method = "correlation",
+                         normalize = FALSE, tri = TRUE, diag = FALSE ) {
+              
+              # value <- match.arg(value)
+              
+              if (normalize) {
+                  warning("normalize is deprecated, not applied - use weight() instead")
+                  # x <- weight(x, "relFreq")  # normalize by term freq.
+              }
+              
+              margin <- match.arg(margin)
+              if (margin == "features") {
+                  items <- features(x)
+              } else {
+                  items <- docnames(x)
+              }
+              
+              if (is.null(n) || n >= length(items))
+                  #n <- length(items) - 1 # choose all features/docs if n is NULL
+                  n <- length(items) 
+              
+              if (length(selection) != 0L) {
+                  # retain only existing features or documents
+                  selectIndex <- which(items %in% selection)
+                  if (length(selectIndex)==0)
+                      stop("no such documents or feature labels exist.")
+                  
+                  if (margin=="features") {
+                      xSelect <- x[, selectIndex, drop=FALSE]
+                  } else {
+                      xSelect <- x[selectIndex, , drop=FALSE]
+                  }
+              } else xSelect <- NULL
+              
+              vecMethod <- c("cosine", "correlation", "jaccard", "eJaccard", "dice", "eDice", "simple matching")
+              if (method %in% vecMethod){
+                  if (method == "simple matching") method <- "smc"
+                  result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
+              } else {
+                  # use proxy::dist() for all other methods
+                  result <- as.matrix(proxy::dist(as.matrix(x), as.matrix(xSelect), method = method,
+                                                  by_rows = ifelse(margin=="features", FALSE, TRUE)), diag = 1)
+              }
+              
+              # convert NaNs to NA
+              # similmatrix[is.nan(similmatrix)] <- NA
+              
+              # create a full square matrix if result is calculated only for selected features
+              if (length(selection) != 0L) {
+                  # adjust the order of the rows to put the selected features as the top rows
+                  rname <- rownames(result)
+                  cname <- colnames(result)
+                  rname <- c(cname, rname[!rname %in% cname])
+                  result <- result[rname,]
+                  
+                  # create a full square matrix 
+                  nn <- if(length(selection) == 1L) length(result) else nrow(result)
+                  rname <- if(length(selection) == 1L) names(result) else rownames(result)
+                  x <- matrix(data = NA,nrow = nn,ncol = nn, dimnames = list(rname, rname))
+                  if(length(selection) == 1L){
+                      x[, 1] <- result
+                  } else {
+                      x[, 1:ncol(result)] <- as.matrix(result[, 1:ncol(result)])  #some returned result is 'dgCMatrix'
+                  }
+                  result <- x
+              }
+              
+              # truncate to n if n is not NULL
+              if (!is.null(n))
+                  result <- head(result, n)
+              
+              # discard the upper diagonal if tri == TRUE
+              if (tri)
+                  result[upper.tri(result, diag = !diag)]<-0
+              
+              # create a new dist object
+              p <- nrow(result)
+              if(ncol(result) != p) warning("non-square matrix")
+              
+              # only retain lower triangular elements for the dist object
+              distM <- result[row(result) > col(result)]
+              
+              # set the attributes of the dist object
+              attributes(distM) <- NULL
+              attr(distM, "Size") <- nrow(result)
+              if (!is.null(rownames(result))) attr(distM, "Labels") <- rownames(result)
+              attr(distM, "Diag") <- diag
+              attr(distM, "Upper") <- !tri
+              attr(distM, "method") <- method
+              attr(distM, "call") <- match.call()
+              attr(distM, "dimnames") <- NULL
+              class(distM) <- "dist"
+              
+              # This will call Stats::print.dist() and Stats::as.matrix.dist()
+              distM
+          })
+
+
+## code below based on assoc.R from the qlcMatrix package
+## used Matrix::crossprod and Matrix::tcrossprod for sparse Matrix handling
+
+# L2 norm
+norm2 <- function(x,s) { drop(Matrix::crossprod(x^2, s)) ^ 0.5 }
+# L1 norm
+norm1 <- function(x,s) { drop(Matrix::crossprod(abs(x),s)) }
+
+cosineSparse <- function(x, y = NULL, margin = 1, norm = norm2) {
+    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
+    if (margin == 1) x <- t(x)
+    S <- rep(1, nrow(x))			
+    N <- Matrix::Diagonal( x = norm(x, S)^-1 )
+    x <- x %*% N
+    if (!is.null(y)) {
+        if (margin == 1) y <- t(y)
+        N <- Matrix::Diagonal( x = match.fun(norm)(y, S)^-1 )
+        y <- y %*% N
+        return(as.matrix(Matrix::crossprod(x,y)))
+    } else
+        return(as.matrix(Matrix::crossprod(x)))
+}
+
+correlationSparse <- function(x, y = NULL, margin = 1) {
+    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
+    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
+    tcpFun <- if (margin == 2) Matrix::tcrossprod else Matrix::crossprod
+    marginSums <- if (margin == 2) colSums else rowSums
+    
+    n <- if (margin == 2) nrow(x) else ncol(x)
+    muX <- if (margin == 2) colMeans(x) else rowMeans(x)
+    
+    if (!is.null(y)) {
+        stopifnot(ifelse(margin == 2, nrow(x) == nrow(y), ncol(x) == ncol(y)))
+        muY <- if (margin == 2) colMeans(y) else rowMeans(y)
+        covmat <- (as.matrix(cpFun(x,y)) - n * tcrossprod(muX, muY)) / (n-1)
+        sdvecX <- sqrt((marginSums(x^2) - n * muX^2) / (n-1))
+        sdvecY <- sqrt((marginSums(y^2) - n * muY^2) / (n-1))
+        cormat <- covmat / tcrossprod(sdvecX, sdvecY)
+    } else {
+        covmat <- ( as.matrix(cpFun(x)) - drop(n * tcrossprod(muX)) ) / (n-1)
+        sdvec <- sqrt(diag(covmat))
+        cormat <- covmat / tcrossprod(sdvec)
+    }
+    cormat
+}
+
+# Jaccard similarity (binary), See http://stackoverflow.com/questions/36220585/efficient-jaccard-similarity-documenttermmatrix
+# formula: J = |AB|/(|A| + |B| - |AB|)
+jaccardSparse <- function(x, y = NULL, margin = 1) {
+    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
+    
+    # convert to binary matrix
+    x <- tf(x, "boolean") 
+    
+    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
+    marginSums <- if (margin == 2) colSums else rowSums
+    marginNames <- if (margin == 2) colnames else rownames
+    # union 
+    an <- marginSums(x)
+    if (!is.null(y)) {
+        y <- tf(y, "boolean")
+        A <- cpFun(x, y)
+        bn <- marginSums(y)
+        colNm <- marginNames(y)
+    } else {
+        A <- cpFun(x)
+        bn <- an
+        colNm <- marginNames(x)
+    }
+    rowNm <- marginNames(x)
+    # common values
+    im <- which(A > 0, arr.ind=TRUE, useNames = FALSE)
+    # non-zero values of m
+    Aim <- A[im]
+    
+    jacmat <- sparseMatrix( i = im[,1],
+                            j = im[,2],
+                            x = Aim / (an[im[,1]] + bn[im[,2]] - Aim),
+                            dims = dim(A)
+                           )
+    dimnames(jacmat) <- list(rowNm,  colNm)
+    jacmat
+}
+
+# eJaccard similarity (real-valued data)
+# formula: eJ = |AB|/(|A|^2 + |B|^2 - |AB|)
+eJaccardSparse <- function(x, y = NULL, margin = 1) {
+    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
+
+    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
+    marginSums <- if (margin == 2) colSums else rowSums
+    marginNames <- if (margin == 2) colnames else rownames
+    # union 
+    an <- marginSums(x^2)
+    if (!is.null(y)) {
+        A <- cpFun(x, y)
+        bn <- marginSums(y^2)
+        colNm <- marginNames(y)
+    } else {
+        A <- cpFun(x)
+        bn <- an
+        colNm <- marginNames(x)
+    }
+    rowNm <- marginNames(x)
+    # common values
+    im <- which(A > 0, arr.ind=TRUE, useNames = FALSE)
+    # non-zero values of m
+    Aim <- A[im]
+    
+    ejacmat <- sparseMatrix( i = im[,1],
+                            j = im[,2],
+                            x = Aim / (an[im[,1]] + bn[im[,2]] - Aim),
+                            dims = dim(A)
+    )
+    dimnames(ejacmat) <- list(rowNm,  colNm)
+    ejacmat
+}
+
+# Dice similarity coefficient, binary
+# formula: eDice = 2|AB|/(|A| + |B|)
+diceSparse <- function(x, y = NULL, margin = 1) {
+    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
+    
+    # convert to binary matrix
+    x <- tf(x, "boolean") 
+    
+    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
+    marginSums <- if (margin == 2) colSums else rowSums
+    marginNames <- if (margin == 2) colnames else rownames
+    # union 
+    an <- marginSums(x)
+    if (!is.null(y)) {
+        y <- tf(y, "boolean")
+        A <- cpFun(x, y)
+        bn <- marginSums(y)
+        colNm <- marginNames(y)
+    } else {
+        A <- cpFun(x)
+        bn <- an
+        colNm <- marginNames(x)
+    }
+    rowNm <- marginNames(x)
+    # common values
+    im <- which(A > 0, arr.ind=TRUE, useNames = FALSE)
+    # non-zero values of m
+    Aim <- A[im]
+    
+    dicemat <- sparseMatrix( i = im[,1],
+                            j = im[,2],
+                            x = (2 * Aim) / (an[im[,1]] + bn[im[,2]]),
+                            dims = dim(A)
+                           )
+    dimnames(dicemat) <- list(rowNm,  colNm)
+    dicemat
+}
+
+# eDice similarity coefficient, extend from binary Dice to real-valued data 
+# formula: eDice = 2|AB|/(|A|^2 + |B|^2)
+eDiceSparse <- function(x, y = NULL, margin = 1) {
+    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
+    
+    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
+    marginSums <- if (margin == 2) colSums else rowSums
+    marginNames <- if (margin == 2) colnames else rownames
+    # union 
+    an <- marginSums(x^2)
+    if (!is.null(y)) {
+        A <- cpFun(x, y)
+        bn <- marginSums(y^2)
+        colNm <- marginNames(y)
+    } else {
+        A <- cpFun(x)
+        bn <- an
+        colNm <- marginNames(x)
+    }
+    rowNm <- marginNames(x)
+    # common values
+    im <- which(A > 0, arr.ind=TRUE, useNames = FALSE)
+    # non-zero values of m
+    Aim <- A[im]
+    
+    eDicemat <- sparseMatrix( i = im[,1],
+                             j = im[,2],
+                             x = (2 * Aim) / (an[im[,1]] + bn[im[,2]]),
+                             dims = dim(A)
+    )
+    dimnames(eDicemat) <- list(rowNm,  colNm)
+    eDicemat
+}
+
+# simple matching coefficient(SMC) 
+# formula: SMC = (M00+M11)/(M00+M11+M01+M10)
+smcSparse <- function(x, y = NULL, margin = 1) {
+    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
+    
+    # convert to binary matrix
+    x <- tf(x, "boolean") 
+    x0 <- 1 - x
+    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
+    marginSums <- if (margin == 2) nrow else ncol
+    marginNames <- if (margin == 2) colnames else rownames
+    # union 
+    an <- marginSums(x)
+    if (!is.null(y)) {
+        y <- tf(y, "boolean")
+        y0 <- 1 - y
+        A <- cpFun(x, y)
+        A0 <- cpFun(x0, y0)
+        colNm <- marginNames(y)
+    } else {
+        A <- cpFun(x)
+        A0 <- cpFun(x0)
+        colNm <- marginNames(x)
+    }
+    rowNm <- marginNames(x)
+    # common values
+    A <- A + A0
+    im <- which(A > 0, arr.ind=TRUE, useNames = FALSE)
+    # non-zero values of m
+    Aim <- A[im]
+    smcmat <- sparseMatrix( i = im[,1],
+                              j = im[,2],
+                              x = Aim / an ,
+                              dims = dim(A)
+    )
+    dimnames(smcmat) <- list(rowNm,  colNm)
+    smcmat
+}
