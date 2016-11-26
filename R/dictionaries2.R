@@ -47,7 +47,7 @@ applyDictionary2 <- function(x, dictionary,
     # Initialize
     tokens <- qatd_cpp_structcopy_int_list(x) # create empty tokens object
     types <- types(x)
-    
+    index <- index(types, valuetype, case_insensitive)
     for(h in 1:length(dictionary)){
         
         if(verbose) message('Searching words in "', names(dictionary[h]), '"...')
@@ -58,7 +58,7 @@ applyDictionary2 <- function(x, dictionary,
             keys <- lapply(keys, glob2rx)
         if (valuetype %in% c("glob", "regex")) {
             # Generates all possible patterns of keys
-            keys_fixed <- regex2fixed4(keys, types, valuetype, case_insensitive)
+            keys_fixed <- regex2fixed4(keys, index)
         } else {
             keys_fixed <- keys
         }

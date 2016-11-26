@@ -7,19 +7,52 @@
 #
 # regex <- list(c('^a$', '^b'), c('c'), c('d'))
 # types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
-# regex2fixed4(regex, types, 'fixed', case_insensitive=TRUE)
-# regex2fixed4(regex, types, 'regex', case_insensitive=TRUE)
+# regex2fixed4(regex, index(types, 'fixed', case_insensitive=TRUE))
+# regex2fixed4(regex, index(types, 'regex', case_insensitive=TRUE))
 
-regex2fixed4 <- function(regex, types, valuetype, case_insensitive = FALSE) {
+regex2fixed4 <- function(regex, index) {
     
-    # Initialize
+    # Extract arguments
+    valuetype <- attr(index, 'valuetype')
+    exact <- attr(index, 'exact')
+    case_insensitive <- attr(index, 'case_insensitive')
+    types <- attr(index, 'types')
+    types_search <- attr(index, 'types_search')
+    
+    # Make case-insensitive
+    if(case_insensitive) regex <- lapply(regex, stri_trans_tolower)
+    
+    # Separate multi and single-entry patterns
+    len <- lengths(regex)
+    pats_multi <- regex[len>1] 
+    pats_single <- regex[len==1]
+    
+    # Process multi-entry patterns
     fixed <- list()
-    types_lower <- stri_trans_tolower(types)
+    for(pat_multi in pats_multi) {
+        fixed_multi <- select_types_(pat_multi, types, types_search, exact, index)
+        # cat('pat_multi:\n')
+        # print(pat_multi)
+        # cat('fixed_multi:\n')
+        # print(fixed_multi)
+        fixed <- c(fixed, expand_(fixed_multi))
+    }
+    
+    # Process single-entry patterns
+    if(length(pats_single) > 0){
+        pats_single <- unlist(pats_single, use.names = FALSE)
+        fixed_single <- unlist(select_types_(pats_single, types, types_search, exact, index), use.names = FALSE)
+        fixed <- c(fixed, fixed_single)
+    }
+    return(unique(fixed))
+}
 
+# This function create index of types to avoide sequence scanning
+index <- function(types, valuetype, case_insensitive = FALSE){
+    
     # Make case insensitive
     if(case_insensitive){
-        regex <- lapply(regex, stri_trans_tolower)
-        types_search = types_lower
+        types_search = stri_trans_tolower(types)
     }else{
         types_search = types
     }
@@ -30,37 +63,23 @@ regex2fixed4 <- function(regex, types, valuetype, case_insensitive = FALSE) {
         index <- list(exact=index(types_search, 0))
     }else{
         exact <- FALSE
-        index <- list(exact=index(types_search, 0),
-                      head=index(types_search, 1), 
-                      tail=index(types_search, -1))
+        index <- list(exact=index_(types_search, 0),
+                      head=index_(types_search, 1), 
+                      tail=index_(types_search, -1))
     }
     
-    # Separate multi and single-entry patterns
-    len <- lengths(regex)
-    pats_multi <- regex[len>1] 
-    pats_single <- regex[len==1]
+    attr(index, 'valuetype') <- valuetype
+    attr(index, 'exact') <- exact
+    attr(index, 'case_insensitive') <- case_insensitive
+    attr(index, 'types') <- types
+    attr(index, 'types_search') <- types_search
     
-    # Process multi-entry patterns
-    for(pat_multi in pats_multi) {
-        fixed_multi <- subset_types3(pat_multi, types, types_search, exact, index)
-        # cat('pat_multi:\n')
-        # print(pat_multi)
-        # cat('fixed_multi:\n')
-        # print(fixed_multi)
-        fixed <- c(fixed, expand(fixed_multi))
-    }
+    return(index)
     
-    # Process single-entry patterns
-    if(length(pats_single) > 0){
-        pats_single <- unlist(pats_single, use.names = FALSE)
-        fixed_single <- unlist(subset_types3(pats_single, types, types_search, exact, index), use.names = FALSE)
-        fixed <- c(fixed, fixed_single)
-    }
-    return(unique(fixed))
 }
 
 # This function subset types avoiding expensive full regular expression matching
-subset_types3 <- function (regex, types, types_search, exact, index){
+select_types_ <- function (regex, types, types_search, exact, index){
     
     subset <- lapply(regex, function(regex, types, types_search, exact, index){
         if(exact){
@@ -73,13 +92,13 @@ subset_types3 <- function (regex, types, types_search, exact, index){
             if(head & stri_length(regex) == 1){
                 #cat('Any\n')
                 types # return all types when glob is *
-            }else if(head & tail & !is_regex((str <- stri_sub(regex, 2, -2)))){
+            }else if(head & tail & !is_regex_((str <- stri_sub(regex, 2, -2)))){
                 #cat('Exact', str, '\n')
                 types[index[[1]][[str]]]
-            }else if(head & !is_regex((str <- stri_sub(regex, 2, -1)))){
+            }else if(head & !is_regex_((str <- stri_sub(regex, 2, -1)))){
                 #cat('Starts with', str, '\n')
                 types[index[[2]][[str]]]
-            }else if(tail & !is_regex((str <- stri_sub(regex, 1, -2)))){
+            }else if(tail & !is_regex_((str <- stri_sub(regex, 1, -2)))){
                 #cat('End with', str, '\n')
                 types[index[[3]][[str]]]
             }else if(regex == ''){
@@ -92,9 +111,7 @@ subset_types3 <- function (regex, types, types_search, exact, index){
     return(subset)
 }
 
-
-# This function create full-index of types
-index <- function(types, direction){
+index_ <- function(types, direction){
     key <- c()
     pos <- c()
     len <- stri_length(types)
@@ -116,7 +133,7 @@ index <- function(types, direction){
 }
 
 # This function is a simplyfied version of expand.grid() in base package
-expand <- function(elem){
+expand_ <- function(elem){
     
     m <- prod(lengths(elem))
     comb <- vector("list", m)
@@ -136,7 +153,7 @@ expand <- function(elem){
 }
 
 # This function checks if a string is regular expression
-is_regex <- function(x){
+is_regex_ <- function(x){
     any(stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
 }
 

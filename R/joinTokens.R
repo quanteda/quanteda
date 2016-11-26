@@ -54,7 +54,7 @@ joinTokens.tokens <- function(x, sequences, concatenator = "_",
         seqs <- lapply(seqs, glob2rx)
     if (valuetype %in% c("glob", "regex")) {
         # Generates all possible patterns of keys
-        seqs_fixed <- regex2fixed4(seqs, types, valuetype, case_insensitive)
+        seqs_fixed <- regex2fixed4(seqs, index(types, valuetype, case_insensitive))
     } else {
         seqs_fixed <- seqs
     }
