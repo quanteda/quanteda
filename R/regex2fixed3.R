@@ -29,11 +29,12 @@ regex2fixed3 <- function(regex, types, valuetype, case_insensitive = FALSE) {
     if(case_insensitive){
         regex <- lapply(regex, toLower)
         types_search <- types_lower
-        tree_search <- list(head=lapply(tree$head, toLower),
-                            tail=lapply(tree$tail, toLower))
+        tree_search <- list(head=list2env(lapply(tree$head, toLower)),
+                            tail=list2env(lapply(tree$tail, toLower)))
     }else{
         types_search <- types
-        tree_search <- tree
+        tree_search <- list(head=list2env(tree$head, toLower),
+                            tail=list2env(tree$tail, toLower))
     }
     
     # Separate multi and single-entry patterns
@@ -104,13 +105,13 @@ subset_types_endswith <- function(str, tree, tree_search){
 }
 
 # This function is a simplyfied version of expand.grid() in base package
-expand <- function(x){
+expand <- function(elem){
     k <- 1L
-    m <- prod(lengths(x))
+    m <- prod(lengths(elem))
     comb <- vector("list", m)
     if(m == 0) return(comb)
-    for (i in 1:length(x)) {
-        vec <- x[[i]]
+    for (i in 1:length(elem)) {
+        vec <- elem[[i]]
         l <- length(vec)
         m <- m / l
         vec_rep <- vec[rep.int(rep.int(seq_len(l), rep.int(k, l)), m)]
