@@ -29,12 +29,12 @@ regex2fixed3 <- function(regex, types, valuetype, case_insensitive = FALSE) {
     if(case_insensitive){
         regex <- lapply(regex, toLower)
         types_search <- types_lower
-        tree_search <- list(head=list2env(lapply(tree$head, toLower)),
-                            tail=list2env(lapply(tree$tail, toLower)))
+        tree_search <- list(head=lapply(tree$head, toLower),
+                            tail=lapply(tree$tail, toLower))
     }else{
         types_search <- types
-        tree_search <- list(head=list2env(tree$head, toLower),
-                            tail=list2env(tree$tail, toLower))
+        tree_search <- list(head=tree$head, toLower,
+                            tail=tree$tail, toLower)
     }
     
     # Separate multi and single-entry patterns
