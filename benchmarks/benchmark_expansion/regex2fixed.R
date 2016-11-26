@@ -7,8 +7,8 @@ toks <- tokens(inaugCorpus, removePunct = TRUE)
 types <- attr(toks, 'types')
 
 dict_liwc <- dictionary(file='/home/kohei/Documents/Dictonary/LIWC/LIWC2007_English.dic')
-regex_liwc <- glob2rx(unlist(dict_liwc, use.names = FALSE))
 
+regex_liwc <- glob2rx(unlist(dict_liwc, use.names = FALSE))
 microbenchmark::microbenchmark(
     regex2fixed(regex_liwc, types, 'regex', case_insensitive=TRUE),
     regex2fixed2(regex_liwc, types, 'regex', case_insensitive=TRUE),
@@ -17,20 +17,21 @@ microbenchmark::microbenchmark(
     times=1
 )
 
-setdiff(regex2fixed(regex, types, 'regex', case_insensitive=TRUE),
-        regex2fixed2(regex, types, 'regex', case_insensitive=TRUE))
 
-setdiff(regex2fixed(regex, types, 'regex', case_insensitive=FALSE),
-        regex2fixed2(regex, types, 'regex', case_insensitive=FALSE))
+setdiff(regex2fixed(regex_liwc, types, 'regex', case_insensitive=TRUE),
+        regex2fixed2(regex_liwc, types, 'regex', case_insensitive=TRUE))
 
-setdiff(regex2fixed(regex, types, 'regex', case_insensitive=TRUE),
-        regex2fixed3(regex, types, 'regex', case_insensitive=TRUE))
+setdiff(regex2fixed(regex_liwc, types, 'regex', case_insensitive=FALSE),
+        regex2fixed2(regex_liwc, types, 'regex', case_insensitive=FALSE))
 
-setdiff(regex2fixed(regex, types, 'regex', case_insensitive=FALSE),
-        regex2fixed3(regex, types, 'regex', case_insensitive=FALSE))
+setdiff(regex2fixed(regex_liwc, types, 'regex', case_insensitive=TRUE),
+        regex2fixed3(regex_liwc, types, 'regex', case_insensitive=TRUE))
 
-setdiff(regex2fixed(regex, types, 'regex', case_insensitive=FALSE),
-        regex2fixed4(regex, types, 'regex', case_insensitive=FALSE))
+setdiff(regex2fixed(regex_liwc, types, 'regex', case_insensitive=FALSE),
+        regex2fixed3(regex_liwc, types, 'regex', case_insensitive=FALSE))
+
+setdiff(regex2fixed(regex_liwc, types, 'regex', case_insensitive=FALSE),
+        regex2fixed4(regex_liwc, types, 'regex', case_insensitive=FALSE))
 
 dict_lex <- dictionary(file='/home/kohei/Documents/Dictonary/Lexicoder/LSDaug2015/LSD2015_NEG.lc3')
 glob_lex <- tokens(unlist(dict_lex, use.names = FALSE), hash=FALSE, what='fastest')
