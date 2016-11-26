@@ -55,10 +55,10 @@ applyDictionary2 <- function(x, dictionary,
         
         # Convert to regular expressions, then to fixed
         if (valuetype %in% c("glob"))
-            keys_regex <- lapply(keys, glob2rx)
+            keys <- lapply(keys, glob2rx)
         if (valuetype %in% c("glob", "regex")) {
             # Generates all possible patterns of keys
-            keys_fixed <- regex2fixed4(keys_regex, types, valuetype, case_insensitive)
+            keys_fixed <- regex2fixed4(keys, types, valuetype, case_insensitive)
         } else {
             keys_fixed <- keys
         }
