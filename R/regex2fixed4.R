@@ -43,6 +43,10 @@ regex2fixed4 <- function(regex, types, valuetype, case_insensitive = FALSE) {
     # Process multi-entry patterns
     for(pat_multi in pats_multi) {
         fixed_multi <- subset_types3(pat_multi, types, types_search, exact, index)
+        # cat('pat_multi:\n')
+        # print(pat_multi)
+        # cat('fixed_multi:\n')
+        # print(fixed_multi)
         fixed <- c(fixed, expand(fixed_multi))
     }
     
@@ -94,7 +98,7 @@ index <- function(types, direction){
     key <- c()
     pos <- c()
     len <- stri_length(types)
-    for(i in sort(unique(len))){
+    for(i in 1:max(len)){
         if(direction == 0){
             j <- which(len == i)
         }else{
@@ -111,19 +115,22 @@ index <- function(types, direction){
     return(list2env(idx))
 }
 
-expand <- function(val){
-    comb <- vector('list', prod(lengths(val))) # empty list for output
-    expand_resursive(val, 1, comb)
-}
-
-expand_resursive <- function(val, i, comb){
-    h = 1
-    for(j in rep_len(1:length(val[[i]]), length(comb))){
-        comb[[h]] <- c(comb[[h]], val[[i]][[j]])
-        h <- h + 1
-    }
-    if(i < length(val)){
-        comb <- expand_resursive(val, i + 1, comb)
+# This function is a simplyfied version of expand.grid() in base package
+expand <- function(elem){
+    
+    m <- prod(lengths(elem))
+    comb <- vector("list", m)
+    if(m == 0) return(comb)
+    k <- 1L
+    for (i in 1:length(elem)) {
+        vec <- elem[[i]]
+        l <- length(vec)
+        m <- m / l
+        vec_rep <- vec[rep.int(rep.int(seq_len(l), rep.int(k, l)), m)]
+        k <- k * l
+        for (j in 1:length(vec_rep)){
+            comb[[j]] <- c(comb[[j]], vec_rep[j])
+        }
     }
     return(comb)
 }
@@ -132,3 +139,4 @@ expand_resursive <- function(val, i, comb){
 is_regex <- function(x){
     any(stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
 }
+

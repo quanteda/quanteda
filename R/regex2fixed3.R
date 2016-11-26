@@ -103,19 +103,21 @@ subset_types_endswith <- function(str, tree, tree_search){
     tree$tail[[i]][stri_startswith_fixed(tree_search$tail[[i]], str)]
 }
 
-expand <- function(val){
-    comb <- vector('list', prod(lengths(val))) # empty list for output
-    expand_resursive(val, 1, comb)
-}
-
-expand_resursive <- function(val, i, comb){
-    h = 1
-    for(j in rep_len(1:length(val[[i]]), length(comb))){
-        comb[[h]] <- c(comb[[h]], val[[i]][[j]])
-        h <- h + 1
-    }
-    if(i < length(val)){
-        comb <- expand_resursive(val, i + 1, comb)
+# This function is a simplyfied version of expand.grid() in base package
+expand <- function(x){
+    k <- 1L
+    m <- prod(lengths(x))
+    comb <- vector("list", m)
+    if(m == 0) return(comb)
+    for (i in 1:length(x)) {
+        vec <- x[[i]]
+        l <- length(vec)
+        m <- m / l
+        vec_rep <- vec[rep.int(rep.int(seq_len(l), rep.int(k, l)), m)]
+        k <- k * l
+        for (j in 1:length(vec_rep)){
+            comb[[j]] <- c(comb[[j]], vec_rep[j])
+        }
     }
     return(comb)
 }
