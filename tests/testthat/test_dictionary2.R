@@ -43,7 +43,7 @@ test_that("multi-word dictionary keys are counted correctly", {
         applyDictionary2(toks, dict_mw_glob, valuetype = "glob", case_insensitive = FALSE)
     
     dfm_case_asis_glob <- dfm(tokens_case_asis_glob)
-    expect_equal(as.vector(dfm_case_asis_glob[, "Countries"]), c(1, 1, 0, 0, 0, 0))
+    expect_equal(as.vector(dfm_case_asis_glob[, "Countries"]), c(1, 1, 0, 1, 0, 0))
     expect_equal(as.vector(dfm_case_asis_glob[, "oceans"]), c(2, 0, 0, 0, 0, 0))
     expect_equal(as.vector(dfm_case_asis_glob[, "team"]), c(0, 0, 2, 1, 0, 0))
     
