@@ -40,7 +40,7 @@ texts_random <- function(n_doc=10,
     }else{
         # Log-normal distribution
         chars <- characters
-        dist_chars <- rlnorm(length(chars))
+        dist_chars <- stats::rlnorm(length(chars))
         prob_chars <- sort(dist_chars / sum(dist_chars), decreasing = TRUE)
     }
     if(n_type > length(chars) ^ len_word) error('n_type is too large')
@@ -50,7 +50,7 @@ texts_random <- function(n_doc=10,
     if(fast){
         pat <- stri_flatten(c('[', chars, ']'))
         while(n_type > length(type)){
-            type <- unique(c(type, stringi::stri_rand_strings(n_type, 1:len_word, pat)))
+            type <- unique(c(type, stri_rand_strings(n_type, 1:len_word, pat)))
         }
     }else{
         while(n_type > length(type)){
