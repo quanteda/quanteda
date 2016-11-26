@@ -13,7 +13,7 @@ microbenchmark::microbenchmark(
     regex2fixed(regex_liwc, types, 'regex', case_insensitive=TRUE),
     regex2fixed2(regex_liwc, types, 'regex', case_insensitive=TRUE),
     regex2fixed3(regex_liwc, types, 'regex', case_insensitive=TRUE),
-    regex2fixed4(regex_liwc, types, 'regex', case_insensitive=TRUE),
+    regex2fixed4(regex_liwc, index(types, 'regex', case_insensitive=TRUE)),
     times=1
 )
 
@@ -31,7 +31,7 @@ setdiff(regex2fixed(regex_liwc, types, 'regex', case_insensitive=FALSE),
         regex2fixed3(regex_liwc, types, 'regex', case_insensitive=FALSE))
 
 setdiff(regex2fixed(regex_liwc, types, 'regex', case_insensitive=FALSE),
-        regex2fixed4(regex_liwc, types, 'regex', case_insensitive=FALSE))
+        regex2fixed4(regex_liwc, index(types, 'regex', case_insensitive=FALSE)))
 
 dict_lex <- dictionary(file='/home/kohei/Documents/Dictonary/Lexicoder/LSDaug2015/LSD2015_NEG.lc3')
 glob_lex <- tokens(unlist(dict_lex, use.names = FALSE), hash=FALSE, what='fastest')
@@ -41,7 +41,7 @@ microbenchmark::microbenchmark(
     regex2fixed(regex_lex, types, 'regex', case_insensitive=TRUE),
     regex2fixed2(regex_lex, types, 'regex', case_insensitive=TRUE),
     regex2fixed3(regex_lex, types, 'regex', case_insensitive=TRUE),
-    regex2fixed4(regex_lex, types, 'regex', case_insensitive=TRUE),
+    regex2fixed4(regex_lex, index(types, 'regex', case_insensitive=TRUE)),
     times=1
 )
 
