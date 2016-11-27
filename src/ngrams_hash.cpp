@@ -59,6 +59,10 @@ void skip_hashed(IntegerVector &tokens,
                  std::unordered_map<Ngram, unsigned int> &map_ngram,
                  int pos_tokens, int &pos_ngrams) {
     
+    // if(tokens[start] == 0){
+    //     pos_ngrams++;
+    //     return;
+    // }
     ngram[pos_tokens] = tokens[start];
     pos_tokens++;
     
@@ -67,7 +71,7 @@ void skip_hashed(IntegerVector &tokens,
         for (int j = 0; j < skips.size(); j++){
             int next = start + skips[j];
             if(next < 0 || tokens.size() - 1 < next) break;
-            //if(next > tokens.size() - 1) break;
+            if(tokens[next] == 0) break; // Skip padding
             //Rcout << "Join " << tokens[start] << " at " << pos_tokens << " " << next << "\n";
             skip_hashed(tokens, next, n, skips, ngram, ngrams, map_ngram, pos_tokens, pos_ngrams);
         }
@@ -100,6 +104,7 @@ Ngrams skipgram_hashed(IntegerVector tokens,
         int n = ns[k];
         Ngram ngram(n);
         for (int start = 0; start < tokens.size() - (n - 1); start++) {
+            if(tokens[start] == 0) continue; // Skip padding
             skip_hashed(tokens, start, n, skips, ngram, ngrams, map_ngram, pos_tokens, pos_ngrams); // Get ngrams as reference
         }
     }
@@ -171,11 +176,12 @@ CharacterVector qatd_cpp_ngram_unhash_type(ListOf<IntegerVector> ids_ngram,
 /*** R
 
 library(quanteda)
-# txt <- c('a b c d e', 'c d e f g')
-# toks <- tokens(txt, hash=FALSE)
-# toks_hash <- tokens(txt, hash=TRUE)
-# res <- qatd_cpp_ngram_hashed_list(toks_hash, 3, 1)
-# res$text
+txt <- c('a b c d e', 'c d e f g')
+toks <- tokens(txt, what='fastestword')
+toks[[1]][3] <- 0
+res <- qatd_cpp_ngram_hashed_list(toks, 2, 1)
+res$text
+res$id_unigram
 # 
 # toks_char <- rep(letters, 100)
 # toks_int <- rep(1:26, 100)
@@ -190,16 +196,16 @@ library(quanteda)
 # vocaburary[ngram]
 
 
-txt_all <- readLines('~/Documents/Brixit/Analysis/all_bbc_2015.txt')
-tok_all <- tokens(txt_all, removeSymbols = TRUE, removeNumbers = TRUE)
-microbenchmark::microbenchmark(
-    ngrams(tok_all, 2),
-    #ngrams(tok_all, 3),
-    #ngrams(tok_all, 4),
-    times=1
-)
-
-profvis::profvis(ngrams(tok_all, 2))
+# txt_all <- readLines('~/Documents/Brixit/Analysis/all_bbc_2015.txt')
+# tok_all <- tokens(txt_all, removeSymbols = TRUE, removeNumbers = TRUE)
+# microbenchmark::microbenchmark(
+#     ngrams(tok_all, 2),
+#     #ngrams(tok_all, 3),
+#     #ngrams(tok_all, 4),
+#     times=1
+# )
+# 
+# profvis::profvis(ngrams(tok_all, 2))
 
 */
 
