@@ -186,7 +186,7 @@ selectFeatures(toksh, feats, selection = "remove", padding = TRUE, case_insensit
 selectFeatures(myCollocs, stopwords("english"), "remove")
 }
 \seealso{
-\code{\link{removeFeatures}}, \code{\link{trim}}
+\code{\link{removeFeatures}}, \code{\link{dfm_trim}}
 }
 \keyword{internal}
 

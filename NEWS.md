@@ -59,6 +59,8 @@ new function | deprecated function | contructs:
 `dfm_select` | `selectFeatures.dfm` | `dfm` class object
 `dfm_remove` | `removeFeatures.dfm` | `dfm` class object
 `dfm_sort`   | `sort.dfm` | `dfm` class object
+`dfm_trim`   | `trim.dfm` | `dfm` class object
+`dfm_sample`   | `sample.dfm` | `dfm` class object
 
 
 ## New functions

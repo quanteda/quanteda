@@ -519,7 +519,7 @@ We can use these distances to plot a dendrogram, clustering presidents:
 data(SOTUCorpus, package="quantedaData")
 presDfm <- dfm(corpus_subset(SOTUCorpus, Date > as.Date("1960-01-01")), verbose = FALSE, stem = TRUE,
                ignoredFeatures = stopwords("english"))
-presDfm <- trim(presDfm, minCount=5, minDoc=3)
+presDfm <- dfm_trim(presDfm, min_count=5, min_docfreq=3)
 # hierarchical clustering - get distances on normalized dfm
 presDistMat <- dist(as.matrix(weight(presDfm, "relFreq")))
 # hiarchical clustering the distance object

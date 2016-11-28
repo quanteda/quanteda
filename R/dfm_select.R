@@ -23,7 +23,7 @@
 #'   calling `dfm_select` and `fcm_select` with `selection = "remove"`.
 #' @note This function selects features based on their labels.  To select 
 #'   features based on the values of a the document-feature matrix, use 
-#'   \code{\link{trim}}.
+#'   \code{\link{dfm_trim}}.
 #' @return A dfm or fcm after the feature selection has been applied.
 #'   
 #'   When \code{features} is a \link{dfm-class} object, then the returned object

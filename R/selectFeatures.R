@@ -34,7 +34,7 @@
 #'   need to project this onto a test set whose features must be identical.
 #'   
 #' @export
-#' @seealso \code{\link{removeFeatures}}, \code{\link{trim}}
+#' @seealso \code{\link{removeFeatures}}, \code{\link{dfm_trim}}
 selectFeatures <- function(x, features, ...) {
     UseMethod("selectFeatures")
 }

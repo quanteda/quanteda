@@ -45,6 +45,6 @@ a corpus, dfm, or tokenized texts.
 ndoc(corpus_subset(data_corpus_inaugural, Year>1980))
 ndoc(dfm(corpus_subset(data_corpus_inaugural, Year>1980), verbose=FALSE))
 nfeature(dfm(data_corpus_inaugural))
-nfeature(trim(dfm(data_corpus_inaugural), minDoc=5, minCount=10))
+nfeature(dfm_trim(dfm(data_corpus_inaugural), min_docfreq = 5, min_count = 10))
 }
 

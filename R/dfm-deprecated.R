@@ -112,3 +112,39 @@ sort.dfm <- function(x, decreasing=TRUE, margin = c("features", "docs", "both"),
     return(x)
 }
 
+#' deprecated name for dfm_trim
+#' 
+#' Deprecated function name for \code{\link{dfm_trim}}.
+#' @param x dfm whose features or documents will be trimmed
+#' @param ... arguments passed to \code{dfm_trim}
+
+#' @note Deprecated; use \code{\link{dfm_trim}} instead.
+#' @keywords internal deprecated
+#' @export
+trim <- function(x, ...) {
+    UseMethod("trim")
+}
+
+#' @rdname trim
+#' @export
+trim.dfm <- function(x, ...) {
+    .Deprecated("dfm_trim")
+    dfm_trim(x, ...)
+}
+
+#' @rdname trim
+#' @export
+trimdfm <- function(x, ...) {
+    catm("note: trimdfm deprecated: use trim instead.\n")
+    UseMethod("trim")
+}
+
+#' @rdname sample
+#' @export
+sample.dfm <- function(x, ...) {
+    .Deprecated("dfm_sample")
+    dfm_sample(x, ...)
+}
+
+
+
