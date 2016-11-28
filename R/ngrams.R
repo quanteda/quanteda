@@ -67,17 +67,22 @@ ngrams.tokenizedTexts <- function(x, ...) {
 }
 
 #' @rdname ngrams
+#' @param thread numbers of thread in the parallel mode
 #' @examples 
 #' txt <- c("a b c d e", "c d e f g")
 #' toks_hashed <- tokens(txt)
 #' ngrams(toks_hashed, n = 2:3)
 #' @export
-ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
+ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_", thread = 1, ...) {
     attrs_orig <- attributes(x)
     if (any(n <= 0)) stop("ngram length has to be greater than zero")
     # Generate ngrams
-    res <- qatd_cpp_ngram_hashed_list(x, n, skip + 1)
-    
+    if(thread > 1){
+        RcppParallel::setThreadOptions(numThreads = thread)
+        res <- qatd_cpp_ngram_mt_list(x, n, skip + 1)
+    }else{
+        res <- qatd_cpp_ngram_hashed_list(x, n, skip + 1)
+    }
     # Make character tokens of ngrams
     #ngram_types <- qatd_cpp_ngram_unhash_type(res$id_unigram, types(x), concatenator)
     ngram_types <- stri_c_list(lapply(res$id_unigram, function(x, y) y[x] , types(x)), concatenator)
