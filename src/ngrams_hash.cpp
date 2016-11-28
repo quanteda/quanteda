@@ -182,19 +182,19 @@ List qatd_cpp_ngram_hashed_list(List texts_,
 
 struct skipgram_mt : public Worker{
     
-    Texts &input;
-    Texts &output;
-    std::vector<int> ns;
-    std::vector<int> skips;
-    std::unordered_map<Ngram, unsigned int> &map_ngram;
+    Texts input;
+    Texts output;
+    const std::vector<int> ns;
+    const std::vector<int> skips;
+    std::unordered_map<Ngram, unsigned int> map_ngram;
     
     // Constructor
-    skipgram_mt(Texts &input_, Texts &output_, std::vector<int> ns_, 
-                std::vector<int> skips_, std::unordered_map<Ngram, unsigned int> &map_ngram_):
+    skipgram_mt(Texts &input_, Texts &output_, std::vector<int> ns_, std::vector<int> skips_, 
+                std::unordered_map<Ngram, unsigned int> &map_ngram_):
                 input(input_), output(output_), ns(ns_), skips(skips_), map_ngram(map_ngram_){}
     
     // parallelFor calles this function with size_t
-    Text temp_in, temp_out;
+    //Text temp_in, temp_out;
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (int h = begin; h < end; h++){
@@ -212,6 +212,8 @@ struct skipgram_mt : public Worker{
     }
     
 };
+
+
 
 /*
  * This funciton constructs multi-thrad version of qatd_cpp_ngram_hashed_list.
