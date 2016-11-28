@@ -6,18 +6,23 @@
 
 // [[Rcpp::depends(RcppParallel)]]
 #include <RcppParallel.h>
-using namespace RcppParallel;
 
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
 using namespace std;
 using namespace quanteda;
+using namespace RcppParallel;
 
-typedef std::vector<unsigned int> Ngram;
-typedef std::vector<unsigned int> Ngrams;
-typedef std::vector<unsigned int> Text;
-typedef std::vector< std::vector<unsigned int> > Texts;
-tthread::mutex lock_ngram_id;
+namespace ngrams {
+    typedef std::vector<unsigned int> Ngram;
+    typedef std::vector<unsigned int> Ngrams;
+    typedef std::vector<unsigned int> Text;
+    typedef std::vector< std::vector<unsigned int> > Texts;
+    tthread::mutex mutex_id;
+    tthread::mutex mutex_input;
+    tthread::mutex mutex_output;
+}
+using namespace ngrams;
 
 namespace std {
 template <>
@@ -42,9 +47,9 @@ int ngram_id(Ngram ngram,
 
         return id_ngram;
     }
-    lock_ngram_id.lock();
+    mutex_id.lock();
     id_ngram = map_ngram.size();
-    lock_ngram_id.unlock();
+    mutex_id.unlock();
     //Rcout << "New " << id_ngram << ": ";
     //dev::print_ngram_hashed(ngram);
     return id_ngram;
@@ -135,6 +140,14 @@ List qatd_cpp_ngram_hashed_vector(IntegerVector tokens_,
                               Rcpp::Named("id_unigram") = ids_unigram);
 }
 
+/* 
+ * This funciton constructs ngrams from tokens object used in ngrams.tokens().
+ * @creator Kohei Watanabe
+ * @param texts_ tokens ojbect
+ * @n size of ngramss
+ * @skips size of skip (this has to be 1 for ngrams)
+ * 
+ */
 // [[Rcpp::export]]
 List qatd_cpp_ngram_hashed_list(List texts_,
                                 IntegerVector ns_,
@@ -180,32 +193,47 @@ struct skipgram_mt : public Worker{
                 input(input_), output(output_), ns(ns_), skips(skips_), map_ngram(map_ngram_){}
     
     // parallelFor calles this function with size_t
+    Text temp_in, temp_out;
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (int h = begin; h < end; h++){
+            /*
+            mutex_input.lock();
+            temp_in = input[h];
+            mutex_input.unlock();
+            temp_out = skipgram_hashed(temp_in, ns, skips, map_ngram);
+            mutex_output.lock();
+            output[h] = temp_out;
+            mutex_output.unlock();
+            */
             output[h] = skipgram_hashed(input[h], ns, skips, map_ngram);
         }
     }
     
 };
 
+/*
+ * This funciton constructs multi-thrad version of qatd_cpp_ngram_hashed_list.
+ * @creator Kohei Watanabe
+ */
+
 // [[Rcpp::export]]
 List qatd_cpp_ngram_mt_list(List texts_,
                             IntegerVector ns_,
                             IntegerVector skips_) {
     
-    Texts texts = Rcpp::as< Texts >(texts_);
+    Texts input = Rcpp::as< Texts >(texts_);
     std::vector<int> ns = Rcpp::as< std::vector<int> >(ns_);
     std::vector<int> skips = Rcpp::as< std::vector<int> >(skips_);
     
     // Register both ngram (key) and unigram (value) IDs in a hash table
     std::unordered_map<Ngram, unsigned int> map_ngram;
     
-    Texts texts_ngram(texts.size());
-    skipgram_mt skipgram_mt(texts, texts_ngram, ns, skips, map_ngram);
+    Texts ouput(input.size());
+    skipgram_mt skipgram_mt(input, ouput, ns, skips, map_ngram);
     
     // call parallelFor to do the work
-    parallelFor(0, texts.size(), skipgram_mt);
+    parallelFor(0, input.size(), skipgram_mt);
     
     // Separate key and values of unordered_map
     List ids_unigram(map_ngram.size());
@@ -214,19 +242,24 @@ List qatd_cpp_ngram_mt_list(List texts_,
         //print_ngram_hashed(iter.first);
         ids_unigram[iter.second - 1] = iter.first;
     }
+    List texts_ngram = Rcpp::wrap(ouput);
     
     return Rcpp::List::create(Rcpp::Named("text") = texts_ngram,
                               Rcpp::Named("id_unigram") = ids_unigram);
 }
 
 
-// [[Rcpp::export]]
+/* 
+ * This funciton constructs character expressions of ngrams from set of ids and original types,
+ * but not so stable. Should be removed in the future.
+ * @creator Kohei Watanabe
+ */
 CharacterVector qatd_cpp_ngram_unhash_type(ListOf<IntegerVector> ids_ngram, 
-                                           CharacterVector tokens, String delim){
-    tokens.push_front(""); // offset tokens to match index in C++
+                                           CharacterVector types, String delim){
+    types.push_front(""); // offset types to match index in C++
     CharacterVector tokens_ngram(ids_ngram.size());
     for(int i=0; i < ids_ngram.size(); i++){
-        tokens_ngram[i] = join_character_vector(tokens[ids_ngram[i]], delim);
+        tokens_ngram[i] = join_character_vector(types[ids_ngram[i]], delim);
     }
     return tokens_ngram;
 }
@@ -239,24 +272,20 @@ CharacterVector qatd_cpp_ngram_unhash_type(ListOf<IntegerVector> ids_ngram,
 /*** R
 
 library(quanteda)
-txt <- c('a b c d e', 'c d e f g')
-#toks <- tokens(txt, what='fastestword')
+# txt <- c('a b c d e', 'c d e f g')
+# toks <- tokens(txt, what='fastestword')
+# res <- qatd_cpp_ngram_mt_list(toks, 2, 1)
+# res <- qatd_cpp_ngram_hashed_list(toks, 2, 1)
+# res$text
+# res$id_unigram
+
+RcppParallel::setThreadOptions(numThreads = 4)
+toks = rep(list(1:1000, 1001:2000), 10)
 res <- qatd_cpp_ngram_mt_list(toks, 2, 1)
-res <- qatd_cpp_ngram_hashed_list(toks, 2, 1)
+#res <- qatd_cpp_ngram_hashed_list(toks, 2, 1)
 res$text
 res$id_unigram
-# 
-# toks_char <- rep(letters, 100)
-# toks_int <- rep(1:26, 100)
-# 
-# tokens <- rep(head(letters), 2)
-# types <- unique(tokens)
-# tokens_hashed <- match(tokens, types)
-# res <- qatd_cpp_ngram_hashed_vector(tokens_hashed, 3, 1)
-# ngram <- res$ngram
-# ngram_ids <- res$id_ngram
-# vocaburary <- sapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-')
-# vocaburary[ngram]
+
 
 
 */

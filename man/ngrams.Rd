@@ -17,7 +17,8 @@ ngrams(x, ...)
 
 \method{ngrams}{tokenizedTexts}(x, ...)
 
-\method{ngrams}{tokens}(x, n = 2L, skip = 0L, concatenator = "_", ...)
+\method{ngrams}{tokens}(x, n = 2L, skip = 0L, concatenator = "_",
+  thread = 1, ...)
 
 skipgrams(x, ...)
 
@@ -47,6 +48,8 @@ Guthrie et al (2006).}
 
 \item{concatenator}{character for combining words, default is \code{_} 
 (underscore) character}
+
+\item{thread}{numbers of thread in the parallel mode}
 }
 \value{
 a tokenizedTexts object consisting a list of character vectors of 

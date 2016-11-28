@@ -42,10 +42,20 @@ profvis(
 
 txt_all <- readLines('~/Documents/Brixit/Analysis/all_bbc_2015.txt')
 tok_all <- tokens(txt_all, removeSymbols = TRUE, removeNumbers = TRUE)
+
 microbenchmark::microbenchmark(
     ngrams(tok_all, 2),
-    #ngrams(tok_all, 3),
-    #ngrams(tok_all, 4),
+    ngrams(tok_all, 3),
+    ngrams(tok_all, 4),
+    times=1
+)
+
+out <- qatd_cpp_ngram_mt_list(tok_all, 2, 1)
+
+RcppParallel::setThreadOptions(numThreads = 2)
+microbenchmark::microbenchmark(
+    qatd_cpp_ngram_mt_list(tok_all, 2, 1),
+    qatd_cpp_ngram_hashed_list(tok_all, 2, 1),
     times=1
 )
 
