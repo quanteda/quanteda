@@ -54,7 +54,7 @@ StringVector skipgramcpp(std::vector < std::string > tokens,
   StringVector tokens_ngram;
   int len_ngrams = ngrams.size();
   for (int h = 0; h < len_ngrams; h++) {
-    Rcpp::String str(join_vector(ngrams[h], delim));
+    Rcpp::String str(join(ngrams[h], delim));
     str.set_encoding(CE_UTF8);
     tokens_ngram.push_back(str);
   }
