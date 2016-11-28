@@ -13,7 +13,7 @@ kwic(immigCorpus, "illegal immig*", window = 3)
 
 sort(lexdiv(dfm(immigCorpus, verbose=FALSE), "TTR"))
 
-mydfm <- dfm(immigCorpus, stem = TRUE, ignoredFeatures = stopwords("english"))
+mydfm <- dfm(immigCorpus, stem = TRUE, remove = stopwords("english"))
 docnames(mydfm)
 topfeatures(mydfm, 20)
 
@@ -35,7 +35,7 @@ removeFeatures(toks, stopwords("english"))
 # extract a document-feature matrix
 immigDfm <- dfm(subset(immigCorpus, party=="BNP"))
 plot(immigDfm)
-immigDfm <- dfm(subset(immigCorpus, party=="BNP"), ignoredFeatures = stopwords("english"))
+immigDfm <- dfm(subset(immigCorpus, party=="BNP"), remove = stopwords("english"))
 plot(immigDfm, random.color = TRUE, rot.per = .25, colors = sample(colors()[2:128], 5))
 
 # change units to sentences
@@ -104,7 +104,7 @@ print(p)
 
 
 ## Presidential Inaugural Address Corpus
-presDfm <- dfm(inaugCorpus, ignoredFeatures = stopwords("english"))
+presDfm <- dfm(inaugCorpus, remove = stopwords("english"))
 # compute some document similarities
 similarity(presDfm, "1985-Reagan", n=5, margin="documents")
 similarity(presDfm, c("2009-Obama" , "2013-Obama"), n=5, margin="documents", method = "cosine")

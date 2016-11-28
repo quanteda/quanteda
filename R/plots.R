@@ -26,7 +26,7 @@
 #' @examples
 #' # plot the features (without stopwords) from Obama's two inaugural addresses
 #' mydfm <- dfm(corpus_subset(data_corpus_inaugural, President=="Obama"), verbose = FALSE,
-#'              ignoredFeatures = stopwords("english"))
+#'              remove = stopwords("english"))
 #' plot(mydfm)
 #' 
 #' # plot in colors with some additional options passed to wordcloud

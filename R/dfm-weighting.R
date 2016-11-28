@@ -82,7 +82,7 @@ setMethod("weight", signature = c("dfm", "character"),
 #' # apply numeric weights
 #' str <- c("apple is better than banana", "banana banana apple much better")
 #' weights <- c(apple = 5, banana = 3, much = 0.5)
-#' (mydfm <- dfm(str, ignoredFeatures = stopwords("english"), verbose = FALSE))
+#' (mydfm <- dfm(str, remove = stopwords("english"), verbose = FALSE))
 #' weight(mydfm, weights)
 setMethod("weight", signature = c("dfm", "numeric"), 
           definition = function(x, type, ...) {

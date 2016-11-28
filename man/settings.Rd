@@ -48,7 +48,7 @@ Calling \code{settings()} with no arguments returns a list of system default set
 settings(data_corpus_inaugural, "stopwords")
 (tempdfm <- dfm(corpus_subset(data_corpus_inaugural, Year>1980), verbose=FALSE))
 (tempdfmSW <- dfm(corpus_subset(data_corpus_inaugural, Year>1980),
-                 ignoredFeatures=stopwords("english"), verbose=FALSE))
+                 remove = stopwords("english"), verbose=FALSE))
 settings(data_corpus_inaugural, "stopwords") <- TRUE
 tempdfm <- dfm(data_corpus_inaugural, stem=TRUE, verbose=FALSE)
 settings(tempdfm)

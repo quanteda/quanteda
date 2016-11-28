@@ -163,7 +163,7 @@ docnames.dfm <- function(x) {
 }
 
 #' @details \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
-#' @rdname dfm
+#' @rdname dfm-class
 #' @export
 is.dfm <- function(x) {
     is(x, "dfm")
@@ -171,7 +171,7 @@ is.dfm <- function(x) {
 }
 
 #' @details \code{as.dfm} coerces a matrix or data.frame to a dfm
-#' @rdname dfm
+#' @rdname dfm-class
 #' @export
 as.dfm <- function(x) {
     if (!any((c("matrix", "data.frame") %in% class(x))))
@@ -273,7 +273,7 @@ topfeatures <- function(x, ...) {
 #' @examples
 #' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE))
 #' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
-#'             ignoredFeatures = stopwords("english"), verbose = FALSE))
+#'             remove = stopwords("english"), verbose = FALSE))
 #' # least frequent features
 #' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE), 
 #'             decreasing = FALSE)

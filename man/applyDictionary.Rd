@@ -69,7 +69,7 @@ myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                           country = c("United_States", "Sweden")))
 myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
                "Does the United_States or Sweden have more progressive taxation?"),
-             ignoredFeatures = stopwords("english"), verbose = FALSE)
+             remove = stopwords("english"), verbose = FALSE)
 myDfm
 
 # glob format

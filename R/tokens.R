@@ -629,3 +629,17 @@ types.tokens <- function(x) {
 }
 
 
+# # check for deprecated argument names
+# ellipsis_args <- list(...)
+# if (!is.null(ellipsis_args$toLower)) {
+#     warning("argument \"toLower\" is deprecated: use \"tolower\" instead.")
+#     if (missing(tolower)) tolower <- toLower
+# }
+# if (!is.null(ellipsis_args$ignoredFeatures)) {
+#     warning("argument \"ignoredFeatures\" is deprecated: use \"remove\" instead.")
+#     if (missing(remove)) remove <- ignoredFeatures
+# }
+# if (!is.null(ellipsis_args$keptFeatures)) {
+#     warning("argument \"keptFeatures\" is deprecated: use \"select\" instead.")
+#     if (missing(select)) select <- ignoredFeatures
+# }

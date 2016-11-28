@@ -12,7 +12,7 @@ dictDfm[1:10,]
 thesDfm <- dfm(mycorpus, thesaurus = mydict, valuetype = "glob")
 thesDfm[1:10, (nfeature(thesDfm)-8) : nfeature(thesDfm)]
 
-preDictDfm <- dfm(mycorpus)
+preDictDfm <- dfm(mycorpus, removePunct = TRUE, removeNumbers = TRUE)
 applyDictionary(preDictDfm, mydict)
 
 txt <- tokenize(toLower(c("My Christmas was ruined by your opposition tax plan.", 
@@ -42,8 +42,8 @@ inaugTextsTokenized <- tokenize(toLower(inaugTexts[1:10]), removePunct = TRUE)
 txt <- "The tall brown trees with pretty leaves in its branches."
 dfm(txt)
 dfm(txt, stem = TRUE)
-dfm(txt, ignoredFeatures = stopwords("english"))  
-dfm(txt, stem = TRUE, ignoredFeatures = stopwords("english"))
+dfm(txt, remove = stopwords("english"))  
+dfm(txt, stem = TRUE, remove = stopwords("english"))
 
 
 myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
@@ -53,7 +53,7 @@ myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                           country = c("United_States", "Sweden")))
 myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
                "Does the United_States or Sweden have more progressive taxation?"),
-             ignoredFeatures = stopwords("english"),
+             remove = stopwords("english"), removePunct = TRUE,
              verbose = FALSE)
 myDfm
 # glob format
@@ -90,7 +90,7 @@ expect_equal(nfeature(trim(preDictDfm, minDoc = 0.05)), 3077)
 
 test_that("test c.corpus",
     expect_that(
-        matrix(dfm(corpus(c('What does the fox say?', 'What does the fox say?', '')))),
+        matrix(dfm(corpus(c('What does the fox say?', 'What does the fox say?', '')), removePunct = TRUE)),
         equals(matrix(rep(c(1, 1, 0), 5), nrow=15, ncol=1))
     )
 )
@@ -106,7 +106,7 @@ test_that("test rbind.dfm with the same columns", {
     colnames(foxdfm) <- c('does', 'fox', 'say', 'the', 'what')
     rownames(foxdfm) <-  rep(c('text1', 'text2'), 2)
 
-    dfm1 <- dfm(c(fox, fox))
+    dfm1 <- dfm(c(fox, fox), removePunct = TRUE)
 
     expect_true(
         all(rbind(dfm1, dfm1) == foxdfm)
@@ -121,8 +121,8 @@ test_that("test rbind.dfm with the same columns", {
 # TODO: Add function for testing the equality of dfms
 
 test_that("test rbind.dfm with different columns", {
-    dfm1 <- dfm('What does the fox?')
-    dfm2 <- dfm('fox say')
+    dfm1 <- dfm('What does the fox?', removePunct = TRUE)
+    dfm2 <- dfm('fox say', removePunct = TRUE)
 
     foxdfm <- c(1, 0, 1, 1, 0, 1, 1, 0, 1, 0)
     dim(foxdfm) <- c(2,5)
@@ -146,9 +146,9 @@ test_that("test rbind.dfm with different columns", {
 
 test_that("test rbind.dfm with different columns, three args and repeated words", {
 
-    dfm1 <- dfm('What does the?')
-    dfm2 <- dfm('fox say fox')
-    dfm3 <- dfm('The quick brown fox')
+    dfm1 <- dfm('What does the?', removePunct = TRUE)
+    dfm2 <- dfm('fox say fox', removePunct = TRUE)
+    dfm3 <- dfm('The quick brown fox', removePunct = TRUE)
 
     foxdfm <- c(0, 0, 1, 1, 0, 0, 0, 2, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0)
     dim(foxdfm) <- c(3,7)
@@ -176,7 +176,7 @@ test_that("test rbind.dfm with a single argument returns the same dfm", {
         )
     )
     expect_that(
-        rbind(dfm(fox)),
+        rbind(dfm(fox, removePunct = TRUE)),
         is_a('dfmSparse')
     )
 })
@@ -184,7 +184,7 @@ test_that("test rbind.dfm with a single argument returns the same dfm", {
 test_that("test that rbind.dfm with a single argument prints a warning", {
     fox <-'What does the fox say?'
     expect_that(
-        rbind(dfm(fox)),
+        rbind(dfm(fox, removePunct = TRUE)),
         gives_warning('rbind.dfm called on single dfm')
         )
 
@@ -201,7 +201,7 @@ test_that("test rbind.dfm with the same features, but in a different order", {
     colnames(foxdfm) <- c('does', 'fox', 'say', 'the', 'what')
     rownames(foxdfm) <-  rep(c('text1', 'text2'), 2)
 
-    dfm1 <- dfm(c(fox, xof))
+    dfm1 <- dfm(c(fox, xof), removePunct = TRUE)
 
     expect_true(
         all(rbind(dfm1, dfm1) == foxdfm)

@@ -34,7 +34,7 @@ List the most frequently occuring features in a \link{dfm}
 \examples{
 topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE))
 topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
-            ignoredFeatures = stopwords("english"), verbose = FALSE))
+            remove = stopwords("english"), verbose = FALSE))
 # least frequent features
 topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE), 
             decreasing = FALSE)
