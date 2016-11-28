@@ -9,9 +9,10 @@
 
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
+using namespace RcppParallel;
 using namespace std;
 using namespace quanteda;
-using namespace RcppParallel;
+
 
 namespace ngrams {
     typedef std::vector<unsigned int> Ngram;
@@ -259,7 +260,7 @@ CharacterVector qatd_cpp_ngram_unhash_type(ListOf<IntegerVector> ids_ngram,
     types.push_front(""); // offset types to match index in C++
     CharacterVector tokens_ngram(ids_ngram.size());
     for(int i=0; i < ids_ngram.size(); i++){
-        tokens_ngram[i] = join_character_vector(types[ids_ngram[i]], delim);
+        tokens_ngram[i] = join(types[ids_ngram[i]], delim);
     }
     return tokens_ngram;
 }

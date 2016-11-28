@@ -74,7 +74,7 @@ public:
     tokens.push_front(""); // offset tokens to match index in C++
     CharacterVector tokens_ngram(ids_ngram.size());
     for(int i=0; i < ids_ngram.size(); i++){
-      tokens_ngram[i] = join_character_vector(tokens[ids_ngram[i]], delim);
+      tokens_ngram[i] = join(tokens[ids_ngram[i]], delim);
     }
     return tokens_ngram;
   }
