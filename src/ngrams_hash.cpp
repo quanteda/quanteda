@@ -22,16 +22,6 @@ template <>
             return std::hash<unsigned int>()(seed);
         }
     };
-    // struct hash<Ngram> {
-    //     std::size_t operator()(const Ngram &vec) const {
-    //         unsigned int seed = 0;
-    //         for(int i; i < vec.size(); i++){
-    //             //seed += vec[i] * std::pow(10, i);
-    //             seed += vec[i] << i;
-    //         }
-    //         return std::hash<unsigned int>()(seed);
-    //     }
-    // };
 }
 
 int ngram_id(Ngram ngram,
@@ -59,10 +49,6 @@ void skip_hashed(IntegerVector &tokens,
                  std::unordered_map<Ngram, unsigned int> &map_ngram,
                  int pos_tokens, int &pos_ngrams) {
     
-    // if(tokens[start] == 0){
-    //     pos_ngrams++;
-    //     return;
-    // }
     ngram[pos_tokens] = tokens[start];
     pos_tokens++;
     
@@ -175,13 +161,12 @@ CharacterVector qatd_cpp_ngram_unhash_type(ListOf<IntegerVector> ids_ngram,
 
 /*** R
 
-library(quanteda)
-txt <- c('a b c d e', 'c d e f g')
-toks <- tokens(txt, what='fastestword')
-toks[[1]][3] <- 0
-res <- qatd_cpp_ngram_hashed_list(toks, 2, 1)
-res$text
-res$id_unigram
+
+# txt <- c('a b c d e', 'c d e f g')
+# toks <- tokens(txt, what='fastestword')
+# res <- qatd_cpp_ngram_hashed_list(toks, 2, 1)
+# res$text
+# res$id_unigram
 # 
 # toks_char <- rep(letters, 100)
 # toks_int <- rep(1:26, 100)
@@ -195,17 +180,6 @@ res$id_unigram
 # vocaburary <- sapply(res$id_unigram, function(x, y, z) paste(y[x], collapse=z) , types, '-')
 # vocaburary[ngram]
 
-
-# txt_all <- readLines('~/Documents/Brixit/Analysis/all_bbc_2015.txt')
-# tok_all <- tokens(txt_all, removeSymbols = TRUE, removeNumbers = TRUE)
-# microbenchmark::microbenchmark(
-#     ngrams(tok_all, 2),
-#     #ngrams(tok_all, 3),
-#     #ngrams(tok_all, 4),
-#     times=1
-# )
-# 
-# profvis::profvis(ngrams(tok_all, 2))
 
 */
 
