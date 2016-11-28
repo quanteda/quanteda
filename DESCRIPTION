@@ -78,6 +78,7 @@ Collate:
     'data-documentation.R'
     'describe-texts.R'
     'dfm-classes.R'
+    'dfm-deprecated.R'
     'dfm-main.R'
     'dfm-methods.R'
     'dfm-subsetting.R'
