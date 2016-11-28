@@ -80,7 +80,7 @@ for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
 # apply numeric weights
 str <- c("apple is better than banana", "banana banana apple much better")
 weights <- c(apple = 5, banana = 3, much = 0.5)
-(mydfm <- dfm(str, ignoredFeatures = stopwords("english"), verbose = FALSE))
+(mydfm <- dfm(str, remove = stopwords("english"), verbose = FALSE))
 weight(mydfm, weights)
 }
 \author{

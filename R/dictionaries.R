@@ -94,7 +94,7 @@ dictionary <- function(x = NULL, file = NULL, format = NULL,
     stop("missing key name for list element", 
          ifelse(length(missingLabels)>1, "s ", " "),
          missingLabels, "\n") 
-  x <- flatten.dictionary(x)
+  x <- dictionary_flatten(x)
   if (!is.null(x) & !is.list(x))
     stop("Dictionaries must be named lists or lists of named lists.")
   
@@ -334,7 +334,36 @@ readYKdict <- function(path){
     stats::setNames(lapply(cats, get_patterns_in_subtree), catnames)
 }
 
-flatten.dictionary <- function(elms, parent = '', dict = list()) {
+#' Flatten a hierarchical dictionary into a list of character vectors
+#'
+#' Converts a hierarchical dictionary (a named list of named lists, ending in character
+#' vectors at the lowest level) into a flat list of character vectors.  Works like
+#' \code{unlist(dictionary, recursive=TRUE)} except that the recursion does not go to the
+#' bottom level.  Called by \code{\link{dfm}}.
+#'
+#' @param elms list to be flattened
+#' @param parent parent list name, gets built up through recursion in the same way that \code{unlist(dictionary, recursive=TRUE)} works
+#' @param dict the bottom list of dictionary entries ("synonyms") passed up from recursive calls
+#' @return A dictionary flattened down one level further than the one passed
+#' @keywords internal
+#' @author Kohei Watanabe
+#' @export
+#' @examples
+#' dictPopulismEN <- 
+#'     dictionary(list(populism=c("elit*", "consensus*", "undemocratic*", "referend*",
+#'                                "corrupt*", "propagand", "politici*", "*deceit*",
+#'                                "*deceiv*", "*betray*", "shame*", "scandal*", "truth*",
+#'                                "dishonest*", "establishm*", "ruling*")))
+#' dictionary_flatten(dictPopulismEN)
+#'
+#' hdict <- list(level1a = list(level1a1 = c("l1a11", "l1a12"),
+#'                             level1a2 = c("l1a21", "l1a22")),
+#'               level1b = list(level1b1 = c("l1b11", "l1b12"),
+#'                              level1b2 = c("l1b21", "l1b22", "l1b23")),
+#'               level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
+#'                              level1c1b = list(level1c1b1 = c("lowestalone"))))
+#' dictionary_flatten(hdict)
+dictionary_flatten <- function(elms, parent = '', dict = list()) {
     if (any(names(elms) == ""))
         stop("missing name for a nested key")
     for (self in names(elms)) {
@@ -347,7 +376,7 @@ flatten.dictionary <- function(elms, parent = '', dict = list()) {
         if (is.list(elm)) {
             # print("List:")
             # print(names(elm))
-            dict <- flatten.dictionary(elm, self, dict)
+            dict <- dictionary_flatten(elm, self, dict)
         } else {
             # print("Words:")
             dict[[self]] <- elm
@@ -356,6 +385,8 @@ flatten.dictionary <- function(elms, parent = '', dict = list()) {
     }
     return(dict)
 }
+
+
 
 # Import a Lexicoder dictionary
 # 
@@ -430,7 +461,7 @@ applyDictionary <- function(x, dictionary, ...) {
 #'                           country = c("United_States", "Sweden")))
 #' myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
 #'                "Does the United_States or Sweden have more progressive taxation?"),
-#'              ignoredFeatures = stopwords("english"), verbose = FALSE)
+#'              remove = stopwords("english"), verbose = FALSE)
 #' myDfm
 #' 
 #' # glob format
@@ -455,7 +486,7 @@ applyDictionary.dfm <- function(x, dictionary, exclusive = TRUE, valuetype = c("
     }
     
     valuetype <- match.arg(valuetype)
-    dictionary <- flatten.dictionary(dictionary)
+    dictionary <- dictionary_flatten(dictionary)
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     

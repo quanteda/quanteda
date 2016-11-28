@@ -32,6 +32,7 @@
 #' @import methods
 #' @docType class
 #' @name dfm-class
+#' @keywords interna;
 setClass("dfm",
          slots = c(settings = "list", weightTf = "list", weightDf = "list", smooth = "numeric",
                    ngrams = "integer", skip = "integer", concatenator = "character"),

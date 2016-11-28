@@ -1,6 +1,8 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-quanteda: Quantitative Analysis of Textual Data
-===============================================
+<img src="images/quanteda.png" width = "300">
+
+Quantitative Analysis of Textual Data
+=====================================
 
 [![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) ![Downloads](http://cranlogs.r-pkg.org/badges/quanteda) ![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
 
@@ -87,7 +89,7 @@ Example usage
 
 ``` r
 library(quanteda)
-#> quanteda version 0.9.8.13
+#> quanteda version 0.9.8.15
 #> 
 #> Attaching package: 'quanteda'
 #> The following object is masked from 'package:base':
@@ -117,7 +119,7 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 #>          UKIP   346    739        27         UKIP
 #> 
 #> Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-#> Created: Tue Nov 22 19:04:39 2016
+#> Created: Thu Nov 24 14:28:59 2016
 #> Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -130,18 +132,6 @@ kwic(uk2010immigCorpus, "deport", 3)
 
 # create a dfm, removing stopwords
 mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
-#> Creating a dfm from a corpus ...
-#> 
-#>    ... lowercasing
-#> 
-#>    ... tokenizing
-#> 
-#>    ... found 9 documents, 1,586 features
-#> ...
-#> removed 97 features, from 175 supplied (glob) feature types
-#>    ... created a 9 x 1,489 sparse dfm
-#>    ... complete. 
-#> Elapsed time: 0.03 seconds.
 dim(mydfm)              # basic dimensions of the dfm
 #> [1]    9 1489
 topfeatures(mydfm, 20)  # 20 top words

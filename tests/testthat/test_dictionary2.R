@@ -18,7 +18,7 @@ test_that("multi-word dictionary keys are counted correctly", {
     tokens_case_asis <- 
         applyDictionary2(toks, dict_mw_fixed, valuetype = "fixed", case_insensitive = FALSE)
     
-    dfm_case_asis <- dfm(tokens_case_asis)
+    dfm_case_asis <- dfm(tokens_case_asis, tolower = FALSE)
     expect_equal(as.vector(dfm_case_asis[, "Countries"]), c(1, 1, 0, 1, 0, 0))
     expect_equal(as.vector(dfm_case_asis[, "team"]), c(0, 0, 2, 0, 0, 0))
     
@@ -28,7 +28,7 @@ test_that("multi-word dictionary keys are counted correctly", {
     
     tokens_case_ignore <- 
         applyDictionary2(toks, dict_mw_fixed, valuetype = "fixed", case_insensitive = TRUE)
-    dfm_case_ignore <- dfm(tokens_case_ignore)
+    dfm_case_ignore <- dfm(tokens_case_ignore, tolower = FALSE)
     expect_equal(as.vector(dfm_case_ignore[, "Countries"]), c(1, 1, 1, 1, 0, 1))
 
     expect_equal(as.vector(dfm_case_ignore["d3", "team"]), 2)
@@ -42,7 +42,7 @@ test_that("multi-word dictionary keys are counted correctly", {
     tokens_case_asis_glob <- 
         applyDictionary2(toks, dict_mw_glob, valuetype = "glob", case_insensitive = FALSE)
     
-    dfm_case_asis_glob <- dfm(tokens_case_asis_glob)
+    dfm_case_asis_glob <- dfm(tokens_case_asis_glob, tolower = FALSE)
     expect_equal(as.vector(dfm_case_asis_glob[, "Countries"]), c(1, 1, 0, 1, 0, 0))
     expect_equal(as.vector(dfm_case_asis_glob[, "oceans"]), c(2, 0, 0, 0, 0, 0))
     expect_equal(as.vector(dfm_case_asis_glob[, "team"]), c(0, 0, 2, 1, 0, 0))
@@ -58,7 +58,7 @@ test_that("entirely single-word dictionary keys are counted correctly", {
     
     tokens_case_asis <- 
         applyDictionary2(toks, dict_sw_fixed, valuetype = "fixed", case_insensitive = FALSE)
-    dfm_case_asis <- dfm(tokens_case_asis)
+    dfm_case_asis <- dfm(tokens_case_asis, tolower = FALSE)
     expect_equal(as.vector(dfm_case_asis[, "Countries"]), c(1, 1, 0, 1, 0, 0))
     expect_equal(as.vector(dfm_case_asis[, "team"]), c(0, 0, 2, 1, 0, 0))
     
@@ -68,7 +68,7 @@ test_that("entirely single-word dictionary keys are counted correctly", {
     
     tokens_case_ignore <- 
         applyDictionary2(toks, dict_sw_fixed, valuetype = "fixed", case_insensitive = TRUE)
-    dfm_case_ignore <- dfm(tokens_case_ignore)
+    dfm_case_ignore <- dfm(tokens_case_ignore, tolower = FALSE)
     expect_equal(as.vector(dfm_case_ignore[, "Countries"]), c(1, 1, 1, 1, 0, 1))
     
     expect_equal(as.vector(dfm_case_ignore["d3", "team"]), 2)
