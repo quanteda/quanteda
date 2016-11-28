@@ -72,7 +72,7 @@ This function selects features based on their labels.  To select
 \examples{
 myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
                "Does the United_States or Sweden have more progressive taxation?"),
-             toLower = FALSE, verbose = FALSE)
+             tolower = FALSE, verbose = FALSE)
 mydict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
                           wordsEndingInY = c("by", "my"),
                           notintext = "blahblah"))

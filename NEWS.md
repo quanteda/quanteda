@@ -56,6 +56,8 @@ new function | deprecated function | contructs:
 `corpus_sample` | `sample`| `corpus` class object
 `corpus_segment` | `segment`| `corpus` class object
 `dfm_compress` | `compress` | `dfm` class object
+`dfm_select` | `selectFeatures.dfm` | `dfm` class object
+`dfm_remove` | `removeFeatures.dfm` | `dfm` class object
 
 
 ## New functions
@@ -71,8 +73,6 @@ new function | description | ouput class
 `fcm_compress` | compacts an `fcm` | `fcm`
 `fcm_tolower` | lowercases the features of an `fcm` and compacts | `fcm`
 `fcm_toupper` | uppercases the features of an `fcm` and compacts | `fcm`
-`dfm_select` | selects features from a `dfm` | `dfm`
-`dfm_remove` | removes features from a `dfm` | `dfm`
 `dfm_sort`    | sorts a `dfm` in alpahbetical order of its features| `dfm`
 `dfm_tolower` | lowercases the features of a `dfm` and compacts | `dfm`
 `dfm_toupper` | uppercases the features of a `dfm` and compacts | `dfm`
