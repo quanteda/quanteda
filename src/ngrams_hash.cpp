@@ -17,6 +17,7 @@ typedef std::vector<unsigned int> Ngram;
 typedef std::vector<unsigned int> Ngrams;
 typedef std::vector<unsigned int> Text;
 typedef std::vector< std::vector<unsigned int> > Texts;
+tthread::mutex lock_ngram_id;
 
 namespace std {
 template <>
@@ -32,15 +33,18 @@ template <>
 
 int ngram_id(Ngram ngram,
              std::unordered_map<Ngram, unsigned int> &map_ngram){
-    
+
     // Add new ID without multiple access
     unsigned int &id_ngram = map_ngram[ngram];
     if(id_ngram){
         //Rcout << "Old " << id_ngram << ": ";
         //dev::print_ngram_hashed(ngram);
+
         return id_ngram;
     }
+    lock_ngram_id.lock();
     id_ngram = map_ngram.size();
+    lock_ngram_id.unlock();
     //Rcout << "New " << id_ngram << ": ";
     //dev::print_ngram_hashed(ngram);
     return id_ngram;
@@ -68,7 +72,9 @@ void skip_hashed(Text &tokens,
             skip_hashed(tokens, next, n, skips, ngram, ngrams, map_ngram, pos_tokens, pos_ngrams);
         }
     }else{
+        
         ngrams[pos_ngrams] = ngram_id(ngram, map_ngram);
+        
         //Rcout << "Add " << ngrams[pos_ngrams] << " at " << pos_ngrams << "/" << ngrams.size() << "\n";
         pos_tokens = 0;
         pos_ngrams++;
@@ -169,7 +175,8 @@ struct skipgram_mt : public Worker{
     std::unordered_map<Ngram, unsigned int> &map_ngram;
     
     // Constructor
-    skipgram_mt(Texts input_, Texts output_, std::vector<int> ns_, std::vector<int> skips_, std::unordered_map<Ngram, unsigned int> &map_ngram_):
+    skipgram_mt(Texts &input_, Texts &output_, std::vector<int> ns_, 
+                std::vector<int> skips_, std::unordered_map<Ngram, unsigned int> &map_ngram_):
                 input(input_), output(output_), ns(ns_), skips(skips_), map_ngram(map_ngram_){}
     
     // parallelFor calles this function with size_t
@@ -194,12 +201,11 @@ List qatd_cpp_ngram_mt_list(List texts_,
     // Register both ngram (key) and unigram (value) IDs in a hash table
     std::unordered_map<Ngram, unsigned int> map_ngram;
     
-    // Itterate over documents
-    List texts_ngram(texts.size());
-    for (int h = 0; h < texts.size(); h++){
-        texts_ngram[h] = skipgram_hashed(texts[h], ns, skips, map_ngram);
-        Rcpp::checkUserInterrupt(); // allow user to stop
-    }
+    Texts texts_ngram(texts.size());
+    skipgram_mt skipgram_mt(texts, texts_ngram, ns, skips, map_ngram);
+    
+    // call parallelFor to do the work
+    parallelFor(0, texts.size(), skipgram_mt);
     
     // Separate key and values of unordered_map
     List ids_unigram(map_ngram.size());
@@ -232,10 +238,11 @@ CharacterVector qatd_cpp_ngram_unhash_type(ListOf<IntegerVector> ids_ngram,
 
 /*** R
 
-
+library(quanteda)
 txt <- c('a b c d e', 'c d e f g')
-toks <- tokens(txt, what='fastestword')
+#toks <- tokens(txt, what='fastestword')
 res <- qatd_cpp_ngram_mt_list(toks, 2, 1)
+res <- qatd_cpp_ngram_hashed_list(toks, 2, 1)
 res$text
 res$id_unigram
 # 
