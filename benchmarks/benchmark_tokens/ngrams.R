@@ -37,3 +37,16 @@ microbenchmark::microbenchmark(
 profvis(
   quanteda::ngrams(toks_hash, n=3, skip=0)
 )
+
+# Stress test ----------------------------------------------
+
+txt_all <- readLines('~/Documents/Brixit/Analysis/all_bbc_2015.txt')
+tok_all <- tokens(txt_all, removeSymbols = TRUE, removeNumbers = TRUE)
+microbenchmark::microbenchmark(
+    ngrams(tok_all, 2),
+    #ngrams(tok_all, 3),
+    #ngrams(tok_all, 4),
+    times=1
+)
+
+profvis::profvis(ngrams(tok_all, 2))
