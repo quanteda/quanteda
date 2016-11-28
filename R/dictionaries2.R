@@ -1,19 +1,19 @@
 #' apply a dictionary to a tokens object
 #' 
-#' @rdname applyDictionary2
+#' Faster version of applyDictionary for hashed tokens objects created by
+#' \code{\link{tokens}}.
 #' @param x object to which dictionary or thesaurus will be supplied
-#' @param dictionary the \link{dictionary}-class object that will be applied to
+#' @param dictionary the \link{dictionary}-class object that will be applied to 
 #'   \code{x}
 #' @param valuetype how to interpret dictionary values: \code{"glob"} for 
-#'   "glob"-style wildcard expressions (the format used in Wordstat and LIWC
-#'   formatted dictionary values); \code{"regex"} for regular expressions; or
+#'   "glob"-style wildcard expressions (the format used in Wordstat and LIWC 
+#'   formatted dictionary values); \code{"regex"} for regular expressions; or 
 #'   \code{"fixed"} for exact matching (entire words, for instance)
 #' @param concatenator a charactor that connect words in multi-words entries
-#' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
+#' @param case_insensitive ignore the case of dictionary values if \code{TRUE} 
 #'   uppercase to distinguish them from other features
 #' @param verbose print status messages if \code{TRUE}
 #' @examples
-#' 
 #' 
 #' toks <- tokens(data_corpus_inaugural)
 #' dict <- dictionary(list(country = "united states", 
@@ -27,9 +27,7 @@
 #'                        freedom=c('freedom', 'liberty'))) 
 #' head(dfm(applyDictionary(toks, dict_fix, valuetype='fixed', verbose=TRUE)))
 #' head(dfm(applyDictionary2(toks, dict_fix, valuetype='fixed', verbose=TRUE)))
-#' 
-#' 
-#' @export 
+#' @export
 applyDictionary2 <- function(x, dictionary,
                              valuetype = c("glob", "regex", "fixed"), 
                              case_insensitive = TRUE,
@@ -39,7 +37,7 @@ applyDictionary2 <- function(x, dictionary,
     valuetype <- match.arg(valuetype)
     
     # Case-insesitive
-    if(case_insensitive){
+    if (case_insensitive) {
         x <- toLower(x)
         dictionary <- lapply(dictionary, toLower)
     }

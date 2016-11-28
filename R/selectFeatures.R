@@ -35,7 +35,6 @@
 #'   
 #' @export
 #' @seealso \code{\link{removeFeatures}}, \code{\link{trim}}
-#' @examples 
 selectFeatures <- function(x, features, ...) {
     UseMethod("selectFeatures")
 }
@@ -337,6 +336,7 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
 #' @author Kenneth Benoit
 #' @seealso \link{stopwords}
 #' @examples
+#' \dontrun{
 #' ## for tokenized texts 
 #' txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to 
 #'                    execute the functions of its Chief Magistrate.",
@@ -356,6 +356,7 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
 #' (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
 #' removeFeatures(myCollocs, stopwords("english"))
 #' removeFeatures(myCollocs, stopwords("english"), pos = 2)
+#' }
 removeFeatures <- function(x, features, ...) {
     if ("selection" %in% names(list(...)))
         stop("cannot override selection argument in removeFeatures")

@@ -84,9 +84,10 @@ This function selects features based on their labels.  To select
   \code{\link{trim}}.
 }
 \examples{
+\dontrun{
 myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
                "Does the United_States or Sweden have more progressive taxation?"),
-             toLower = FALSE, verbose = FALSE)
+             tolower = FALSE, verbose = FALSE)
 mydict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
                           wordsEndingInY = c("by", "my"),
                           notintext = "blahblah"))
@@ -109,6 +110,7 @@ setequal(features(dfm1), features(dfm2b))
 # more selection on a dfm
 selectFeatures(dfm1, dfm2a)
 selectFeatures(dfm1, dfm2a, selection = "remove")
+}
 \dontrun{## performance comparisons
 data(SOTUCorpus, package = "quantedaData")
 toks <- tokenize(SOTUCorpus, removePunct = TRUE)

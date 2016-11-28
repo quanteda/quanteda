@@ -43,7 +43,7 @@ Trimming a \link{dfm-class} object is an operation based on the values
   in the document-feature \emph{matrix}.  To select subsets of a dfm based on
   attributes of the features themselves -- such as selecting features 
   matching a regular expression, or removing features matching a stopword 
-  list, use \link{selectFeatures}.
+  list, use \link{dfm_select}.
 }
 \examples{
 (myDfm <- dfm(data_corpus_inaugural, verbose = FALSE))
@@ -72,6 +72,6 @@ Paul Nulty and Ken Benoit, some inspiration from Will Lowe's (see \code{trim} fr
   \code{austin} package)
 }
 \seealso{
-\code{\link{selectFeatures}}
+\code{\link{dfm_select}}
 }
 

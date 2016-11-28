@@ -21,7 +21,7 @@ compress <- function(x, ...)  {
 
 #' @rdname compress 
 #' @examples 
-#' \donttest{
+#' \dontrun{
 #' mat <- rbind(dfm(c("b A A", "C C a b B"), toLower = FALSE, verbose = FALSE),
 #'              dfm("A C C C C C", toLower = FALSE, verbose = FALSE))
 #' colnames(mat) <- toLower(features(mat))
@@ -77,3 +77,38 @@ compress.dfm <- function(x, margin = c("both", "documents", "features"), ...) {
         ngrams = x@ngrams,
         concatenator = x@concatenator)
 } 
+
+
+#' sort a dfm by one or more margins
+#'
+#' Sorts a \link{dfm} by frequency of total features, total features in
+#' documents, or both
+#'
+#' @param x Document-feature matrix created by \code{\link{dfm}}
+#' @param margin which margin to sort on \code{features} to sort by frequency of
+#'   features, \code{docs} to sort by total feature counts in documents, and
+#'   \code{both} to sort by both
+#' @param decreasing TRUE (default) if sort will be in descending order,
+#'   otherwise sort in increasing order
+#' @param ... additional arguments passed to base method \code{sort.int}
+#' @note Deprecated; use \code{\link{dfm_sort}} instead.
+#' @return A sorted \link{dfm} matrix object
+#' @keywords internal deprecated
+#' @seealso dfm_sort
+#' @export
+sort.dfm <- function(x, decreasing=TRUE, margin = c("features", "docs", "both"), ...) {
+    .Deprecated("dfm_sort")
+    margin <- match.arg(margin)
+    class_xorig <- class(x)
+    if (margin=="features") {
+        x <- x[, order(colSums(x), decreasing=decreasing)]
+    } else if (margin=="docs") {
+        x <- x[order(rowSums(x), decreasing=decreasing), ]
+    } else if (margin=="both") {
+        x <- x[order(rowSums(x), decreasing=decreasing),
+               order(colSums(x), decreasing=decreasing)]
+    }
+    class(x) <- class_xorig
+    return(x)
+}
+

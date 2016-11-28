@@ -88,10 +88,10 @@ dfm_remove <- function(x, features, ...) {
 #' @keywords internal
 #' @export
 #' @examples 
-#' \donttest{
-#' #' myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
+#' \dontrun{
+#' myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
 #'                "Does the United_States or Sweden have more progressive taxation?"),
-#'              toLower = FALSE, verbose = FALSE)
+#'              tolower = FALSE, verbose = FALSE)
 #' mydict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
 #'                           wordsEndingInY = c("by", "my"),
 #'                           notintext = "blahblah"))
@@ -120,7 +120,7 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
                                case_insensitive = TRUE,
                                verbose = TRUE, ...) {
     
-    if (!grepl("dfm_select", sys.calls()[1])) 
+    if (!grepl("dfm_select", sys.calls()[length(sys.calls())-1])) 
         .Deprecated("dfm_select")
 
     selection <- match.arg(selection)

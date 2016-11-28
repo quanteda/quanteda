@@ -30,7 +30,7 @@ the dfm.)  It could also be needed , after a \code{\link{cbind.dfm}} or
 This function is deprecated: use \code{\link{dfm_compress}} instead.
 }
 \examples{
-\donttest{
+\dontrun{
 mat <- rbind(dfm(c("b A A", "C C a b B"), toLower = FALSE, verbose = FALSE),
              dfm("A C C C C C", toLower = FALSE, verbose = FALSE))
 colnames(mat) <- toLower(features(mat))

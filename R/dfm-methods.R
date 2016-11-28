@@ -23,10 +23,10 @@
 #'   in the document-feature \emph{matrix}.  To select subsets of a dfm based on
 #'   attributes of the features themselves -- such as selecting features 
 #'   matching a regular expression, or removing features matching a stopword 
-#'   list, use \link{selectFeatures}.
+#'   list, use \link{dfm_select}.
 #' @author Paul Nulty and Ken Benoit, some inspiration from Will Lowe's (see \code{trim} from the 
 #'   \code{austin} package)
-#' @seealso \code{\link{selectFeatures}}
+#' @seealso \code{\link{dfm_select}}
 #' @examples
 #' (myDfm <- dfm(data_corpus_inaugural, verbose = FALSE))
 #' # only words occuring >=10 times and in >=2 docs
@@ -103,7 +103,7 @@ setMethod("trim", signature(x = "dfm"),
                   if (verbose) catm("Retaining a random sample of", nsample, "words\n")
               }
               
-              sort(x)
+              dfm_sort(x)
           })
 
 #' @rdname trim
@@ -184,46 +184,6 @@ as.dfm <- function(x) {
     #     class(m) <- class(x)
     #     m
 }
-
-
-#' sort a dfm by one or more margins
-#'
-#' Sorts a \link{dfm} by frequency of total features, total features in
-#' documents, or both
-#'
-#' @param x Document-feature matrix created by \code{\link{dfm}}
-#' @param margin which margin to sort on \code{features} to sort by frequency of
-#'   features, \code{docs} to sort by total feature counts in documents, and
-#'   \code{both} to sort by both
-#' @param decreasing TRUE (default) if sort will be in descending order,
-#'   otherwise sort in increasing order
-#' @param ... additional arguments passed to base method \code{sort.int}
-#' @return A sorted \link{dfm} matrix object
-#' @export
-#' @author Ken Benoit
-#' @examples
-#' dtm <- dfm(data_corpus_inaugural)
-#' dtm[1:10, 1:5]
-#' dtm <- sort(dtm)
-#' sort(dtm)[1:10, 1:5]
-#' sort(dtm, TRUE, "both")[1:10, 1:5]  # note that the decreasing=TRUE argument
-#'                                     # must be second, because of the order of the
-#'                                     # formals in the generic method of sort()
-sort.dfm <- function(x, decreasing=TRUE, margin = c("features", "docs", "both"), ...) {
-    margin <- match.arg(margin)
-    class_xorig <- class(x)
-    if (margin=="features") {
-        x <- x[, order(colSums(x), decreasing=decreasing)]
-    } else if (margin=="docs") {
-        x <- x[order(rowSums(x), decreasing=decreasing), ]
-    } else if (margin=="both") {
-        x <- x[order(rowSums(x), decreasing=decreasing),
-               order(colSums(x), decreasing=decreasing)]
-    }
-    class(x) <- class_xorig
-    return(x)
-}
-
 
 #' @rdname ndoc
 #' @export
