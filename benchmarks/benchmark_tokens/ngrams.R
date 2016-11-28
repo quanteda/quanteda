@@ -52,7 +52,8 @@ microbenchmark::microbenchmark(
 
 out <- qatd_cpp_ngram_mt_list(tok_all, 2, 1)
 
-RcppParallel::setThreadOptions(numThreads = 2)
+RcppParallel::defaultNumThreads()
+RcppParallel::setThreadOptions(4)
 microbenchmark::microbenchmark(
     qatd_cpp_ngram_mt_list(tok_all, 2, 1),
     qatd_cpp_ngram_hashed_list(tok_all, 2, 1),
