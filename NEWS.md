@@ -61,6 +61,10 @@ new function | deprecated function | contructs:
 `dfm_sort`   | `sort.dfm` | `dfm` class object
 `dfm_trim`   | `trim.dfm` | `dfm` class object
 `dfm_sample`   | `sample.dfm` | `dfm` class object
+`tokens_wordstem` | `tokens.dfm` | `tokens` class object
+`tokens_wordstem` | `tokenizedTexts.dfm` | `tokenizedTexts` class object
+`dfm_wordstem` | `wordstem.dfm` | `dfm` class object
+`char_wordstem` | `wordstem.character` | `character` class object
 
 
 ## New functions

@@ -24,9 +24,9 @@ plot(mydfm["BNP",])
 
 # some examples of tokenization and string cleaning
 
-(toks <- tokenize(inaugCorpus[2], removePunct = TRUE))
-wordstem(toks)
-removeFeatures(toks, stopwords("english"))
+(toks <- tokens(inaugCorpus[2], removePunct = TRUE))
+tokens_wordstem(toks)
+tokens_remove(toks, stopwords("english"))
 
 
 ## more demonstrations

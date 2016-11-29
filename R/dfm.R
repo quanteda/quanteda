@@ -4,46 +4,47 @@
 
 #' create a document-feature matrix
 #' 
-#' Construct a sparse document-feature matrix, from a \link{corpus}, 
-#' character object, or \link{tokens} object.
-#' @param x corpus, character, or tokens object
+#' Construct a sparse document-feature matrix, from a character, \link{corpus}, 
+#' or \link{tokens} object.
+#' @param x character, corpus, or tokens object
 #' @param tolower convert all tokens to lowercase
 #' @param stem if \code{TRUE}, stem words
-#' @param remove a character vector of user-supplied features to 
-#'   ignore, such as "stop words".  To access one possible list (from any list
-#'   you wish), use \code{\link{stopwords}()}.  The pattern matching type will
-#'   be set by \code{valuetype}.  For behaviour of \code{remove} with
-#'   \code{ngrams > 1}, see Details.
-#' @param select a use supplied regular expression defining which features
-#'   to keep, while excluding all others.  This can be used in lieu of a 
-#'   dictionary if there are only specific features that a user wishes to keep. 
-#'   To extract only Twitter usernames, for example, set \code{select = 
-#'   "@@*"} and make sure that \code{removeTwitter = FALSE} as an additional 
-#'   argument passed to \link{tokenize}.  Note: \code{select = 
-#'   "^@@\\\w+\\\b"} would be the regular expression version of this matching 
-#'   pattern.  The pattern matching type will be set by \code{valuetype}.
+#' @param remove a character vector of user-supplied features to ignore, such as
+#'   "stop words".  To access one possible list (from any list you wish), use
+#'   \code{\link{stopwords}()}.  The pattern matching type will be set by
+#'   \code{valuetype}.  For behaviour of \code{remove} with \code{ngrams > 1},
+#'   see Details.
+#' @param select a use supplied regular expression defining which features to
+#'   keep, while excluding all others.  This can be used in lieu of a dictionary
+#'   if there are only specific features that a user wishes to keep. To extract
+#'   only Twitter usernames, for example, set \code{select = "@@*"} and make
+#'   sure that \code{removeTwitter = FALSE} as an additional argument passed to
+#'   \link{tokenize}.  Note: \code{select = "^@@\\\w+\\\b"} would be the regular
+#'   expression version of this matching pattern.  The pattern matching type
+#'   will be set by \code{valuetype}.
 #' @param dictionary A list of character vector dictionary entries, including 
 #'   regular expressions (see examples)
 #' @param thesaurus A list of character vector "thesaurus" entries, in a 
-#'   dictionary list format, which operates as a dictionary but without
-#'   excluding values not matched from the dictionary.  Thesaurus keys are
+#'   dictionary list format, which operates as a dictionary but without 
+#'   excluding values not matched from the dictionary.  Thesaurus keys are 
 #'   converted to upper case to create a feature label in the dfm, as a reminder
-#'   that this was not a type found in the text, but rather the label of a
-#'   thesaurus key.  For more fine-grained control over this and other aspects
-#'   of converting features into dictionary/thesaurus keys from pattern matches
-#'   to values, you can use \code{\link{applyDictionary}} after creating the
+#'   that this was not a type found in the text, but rather the label of a 
+#'   thesaurus key.  For more fine-grained control over this and other aspects 
+#'   of converting features into dictionary/thesaurus keys from pattern matches 
+#'   to values, you can use \code{\link{applyDictionary}} after creating the 
 #'   dfm.
 #' @param valuetype \code{fixed} for words as is; \code{"regex"} for regular 
-#'   expressions; or \code{"glob"} for "glob"-style wildcard; \code{"glob"} format is 
-#'   the default.  See \code{\link{dfm_select}}.
+#'   expressions; or \code{"glob"} for "glob"-style wildcard; \code{"glob"}
+#'   format is the default.  See \code{\link{dfm_select}}.
 #' @param groups character vector containing the names of document variables for
 #'   aggregating documents; only applies when calling dfm on a corpus object
 #' @param verbose display messages if \code{TRUE}
-#' @param ... additional arguments passed to \link{tokens}, for character and corpus
-#' @details The default behavior for \code{remove}/\code{select} when constructing 
-#'   ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to remove/select any 
-#'   ngram constructed from a matching feature.  If you wish to 
-#'   remove these before constructing ngrams, you will need to first tokenize 
+#' @param ... additional arguments passed to \link{tokens}, for character and
+#'   corpus
+#' @details The default behavior for \code{remove}/\code{select} when
+#'   constructing ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to
+#'   remove/select any ngram constructed from a matching feature.  If you wish
+#'   to remove these before constructing ngrams, you will need to first tokenize
 #'   the texts with ngrams, then remove the features to be ignored, and then 
 #'   construct the dfm using this modified tokenization object.  See the code 
 #'   examples for an illustration.
@@ -53,7 +54,7 @@
 #' @name dfm
 #' @examples
 #' ## for a corpus
-#'
+#' 
 #' corpus_post80inaug <- corpus_subset(data_corpus_inaugural, Year > 1980)
 #' dfm(corpus_post80inaug)
 #' dfm(corpus_post80inaug, tolower = FALSE)
@@ -267,7 +268,7 @@ dfm.tokenizedTexts <- function(x,
     if (stem) {
         if (verbose) catm("   ... stemming features (", stri_trans_totitle(language), ")", sep="")
         oldNfeature <- nfeature(dfmresult)
-        dfmresult <- wordstem(dfmresult, language)
+        dfmresult <- dfm_wordstem(dfmresult, language)
         if (verbose) 
             if (oldNfeature - nfeature(dfmresult) > 0) 
                 catm(", trimmed ", oldNfeature - nfeature(dfmresult), " feature variant",
