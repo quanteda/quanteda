@@ -114,6 +114,9 @@ Ngrams skipgram(Text tokens,
     return ngrams;
 }
 
+/*
+ *  This function specializes in ngrams but there is not performance gain. 
+ */
 Ngrams ngram(Text tokens,
              std::vector<int> ns, 
              tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> &map_ngram) {
@@ -154,14 +157,8 @@ struct skipgram_mt : public Worker{
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        if(skips[0] == 1 && skips.size() == 1){
-            for (int h = begin; h < end; h++){
-                output[h] = ngram(input[h], ns, map_ngram);
-            }
-        }else{
-            for (int h = begin; h < end; h++){
-                output[h] = skipgram(input[h], ns, skips, map_ngram);
-            }
+        for (int h = begin; h < end; h++){
+            output[h] = skipgram(input[h], ns, skips, map_ngram);
         }
     }
 };
