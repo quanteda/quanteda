@@ -8,7 +8,7 @@
 #' @param prob A vector of probability weights for obtaining the elements of the
 #'   vector being sampled.
 #' @param ... unused
-#' @seealso corpus_sample
+#' @seealso \code{\link{corpus_sample}}, \code{\link{dfm_sample}}
 #' @keywords internal deprecated
 #' @export
 sample <- function(x, size, replace = FALSE, prob = NULL, ...) {
