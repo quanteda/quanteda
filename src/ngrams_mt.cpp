@@ -223,7 +223,7 @@ List qatd_cpp_ngram_mt_list(List texts_,
     Texts ouput(input.size());
     skipgram_mt skipgram_mt(input, ouput, ns, skips, map_ngram);
     
-    // call parallelFor to do the work
+    // Apply skipgram_mt to blocked ranges
     parallelFor(0, input.size(), skipgram_mt);
     
     // Separate key and values of unordered_map

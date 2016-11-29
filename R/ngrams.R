@@ -72,6 +72,7 @@ ngrams.tokenizedTexts <- function(x, ...) {
 #' txt <- c("a b c d e", "c d e f g")
 #' toks_hashed <- tokens(txt)
 #' ngrams(toks_hashed, n = 2:3)
+#' @importFrom RcppParallel RcppParallelLibs
 #' @export
 ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_", thread = 1, ...) {
     attrs_orig <- attributes(x)
