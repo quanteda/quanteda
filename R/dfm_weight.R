@@ -21,43 +21,46 @@
 #'   for the corresponding named fatures.  Any features not named will be 
 #'   assigned a weight of 1.0 (meaning they will be unchanged).}
 #'   }
-#' @param ... not currently used.  For finer grained control, consider calling \code{\link{tf}} or \code{\link{tfidf}} directly.
+#' @param ... not currently used.  
+#' @note For finer grained control, consider calling \code{\link{tf}} or \code{\link{tfidf}} directly.
 #' @return The dfm with weighted values.
 #' @export
 #' @seealso \code{\link{tfidf}}
 #' @author Paul Nulty and Kenneth Benoit
 #' @examples
 #' dtm <- dfm(data_corpus_inaugural)
+#' 
 #' x <- apply(dtm, 1, function(tf) tf/max(tf))
 #' topfeatures(dtm)
-#' normDtm <- weight(dtm, "relFreq")
+#' normDtm <- dfm_weight(dtm, "relFreq")
 #' topfeatures(normDtm)
-#' maxTfDtm <- weight(dtm, type="relMaxFreq")
+#' maxTfDtm <- dfm_weight(dtm, type = "relMaxFreq")
 #' topfeatures(maxTfDtm)
-#' logTfDtm <- weight(dtm, type="logFreq")
+#' logTfDtm <- dfm_weight(dtm, type = "logFreq")
 #' topfeatures(logTfDtm)
-#' tfidfDtm <- weight(dtm, type="tfidf")
+#' tfidfDtm <- dfm_weight(dtm, type = "tfidf")
 #' topfeatures(tfidfDtm)
 #' 
-#' # combine these methods for more complex weightings, e.g. as in Section 6.4
+#' # combine these methods for more complex dfm_weightings, e.g. as in Section 6.4
 #' # of Introduction to Information Retrieval
-#' head(logTfDtm <- weight(dtm, type="logFreq"))
+#' head(logTfDtm <- dfm_weight(dtm, type = "logFreq"))
 #' head(tfidf(logTfDtm, normalize = FALSE))
+#' 
 #' @references Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
 #'   \emph{Introduction to Information Retrieval}. Vol. 1. Cambridge: Cambridge 
 #'   University Press, 2008.
-setGeneric("weight", function(x, type, ...) standardGeneric("weight"))
+setGeneric("dfm_weight", function(x, type, ...) standardGeneric("dfm_weight"))
 
 #' @rdname weight
 #' @examples
 #' \dontshow{
 #' testdfm <- dfm(data_char_inaugural[1:5], verbose = FALSE)
 #' for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
-#'     testw <- weight(testdfm, w)
+#'     testw <- dfm_weight(testdfm, w)
 #'     cat("\n\n=== weight() TEST for:", w, "; class:", class(testw), "\n")
 #'     head(testw)
 #' }}
-setMethod("weight", signature = c("dfm", "character"),
+setMethod("dfm_weight", signature = c("dfm", "character"),
           definition = function(x, type = c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"), ...) {
               if (length(addedArgs <- list(...)))
                   warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
@@ -77,14 +80,16 @@ setMethod("weight", signature = c("dfm", "character"),
               } else stop("unknown weighting type")
           })
 
-#' @rdname weight
+#' @rdname dfm_weight
 #' @examples 
 #' # apply numeric weights
 #' str <- c("apple is better than banana", "banana banana apple much better")
 #' weights <- c(apple = 5, banana = 3, much = 0.5)
-#' (mydfm <- dfm(str, remove = stopwords("english"), verbose = FALSE))
-#' weight(mydfm, weights)
-setMethod("weight", signature = c("dfm", "numeric"), 
+#' (mydfm <- dfm(str, remove = stopwords("english")))
+#' dfm_weight(mydfm, weights)
+#' 
+#' 
+setMethod("dfm_weight", signature = c("dfm", "numeric"), 
           definition = function(x, type, ...) {
               weights <- type
               if (any(!(matchedWeights <- names(weights) %in% features(x)))) {
@@ -104,12 +109,19 @@ setMethod("weight", signature = c("dfm", "numeric"),
 
 
 
-#' @rdname weight
+#' @rdname dfm_weight
 #' @param smoothing constant added to the dfm cells for smoothing, default is 1
 #' @details This converts a matrix from sparse to dense format, so may exceed memory
 #' requirements depending on the size of your input matrix.
 #' @export
-smoother <- function(x, smoothing = 1) x + smoothing
+#' @examples 
+#' # smooth the dfm
+#' dfm_smooth(mydfm, 0.5)
+dfm_smooth <- function(x, smoothing = 1) {
+    if (!is.dfm(x))
+        stop("x must be a dfm object")
+    x + smoothing
+}
 
 
 #' compute the (weighted) document frequency of a feature

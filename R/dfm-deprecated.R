@@ -146,5 +146,24 @@ sample.dfm <- function(x, ...) {
     dfm_sample(x, ...)
 }
 
+#' weight or smooth a dfm
+#' 
+#' Deprecated weighting and smoothing functions for dfm objects.  See instead
+#' \code{\link{dfm_weight}} and \code{\link{dfm_smooth}}.
+#' @param x document-feature matrix created by \link{dfm}
+#' @param ... arguments passed to \code{\link{dfm_weight}} and and \code{\link{dfm_smooth}}
+#' @keywords internal deprecated
+#' @export
+weight <- function(x, ...) {
+    .Deprecated("dfm_weight")
+    dfm_weight(x, ...)
+}
+    
 
+#' @rdname weight
+#' @export
+smoother <- function(x, ...) {
+    .Deprecated("dfm_smooth")
+    dfm_smooth(x, ...)
+}
 

@@ -61,15 +61,13 @@ new function | deprecated function | contructs:
 `dfm_sort`   | `sort.dfm` | `dfm` class object
 `dfm_trim`   | `trim.dfm` | `dfm` class object
 `dfm_sample`   | `sample.dfm` | `dfm` class object
-`tokens_wordstem` | `tokens.dfm` | `tokens` class object
-`tokens_wordstem` | `tokenizedTexts.dfm` | `tokenizedTexts` class object
-`dfm_wordstem` | `wordstem.dfm` | `dfm` class object
-`char_wordstem` | `wordstem.character` | `character` class object
+`dfm_smooth` | `smoother` | `dfm` class object
+`dfm_weight` | `weight` | `dfm` class object
 
 
 ## New functions
 
-The following are new to v0.9.9:
+The following are new to v0.9.9 (and not associated with deprecated functions):
 
 new function | description | ouput class
 :--------|:------------- |:-------
