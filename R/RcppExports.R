@@ -13,14 +13,6 @@ skipgramcpp <- function(tokens, ns, ks, delim) {
     .Call('quanteda_skipgramcpp', PACKAGE = 'quanteda', tokens, ns, ks, delim)
 }
 
-qatd_cpp_ngram_hashed_vector <- function(tokens_, ns_, skips_) {
-    .Call('quanteda_qatd_cpp_ngram_hashed_vector', PACKAGE = 'quanteda', tokens_, ns_, skips_)
-}
-
-qatd_cpp_ngram_hashed_list <- function(texts_, ns_, skips_) {
-    .Call('quanteda_qatd_cpp_ngram_hashed_list', PACKAGE = 'quanteda', texts_, ns_, skips_)
-}
-
 qatd_cpp_ngram_mt_list <- function(texts_, ns_, skips_) {
     .Call('quanteda_qatd_cpp_ngram_mt_list', PACKAGE = 'quanteda', texts_, ns_, skips_)
 }

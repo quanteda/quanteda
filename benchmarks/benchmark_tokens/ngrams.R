@@ -1,63 +1,27 @@
 library(profvis) # for profiling
 library(tokenizers)
-library(ngram)
 library(testthat)
 library(magrittr)
 
-txt <- rep(paste0(letters, collapse=' '), 10000)
-toks <- tokens(txt, hash=FALSE)
-toks_hash <- tokens(txt, hash=TRUE)
-
-testthat("same ngrams", {
-         expect_equivalent(
-             tokenize_skip_ngrams(paste(letters, collapse = " "), n = 3, k = 1),
-             quanteda::ngrams(tokenize(paste(letters, collapse = " ")), n = 3, skip = 0:1, concatenator = " "),
-         )
-})
-
-
-## previously: this was not really fair, since the tokenizers package test
-## started with the character, whereas we started with tokens
-## -- KB
+txt <- readLines('~/Documents/Brixit/Analysis/all_bbc_2015.txt') # 80MB
+tok <- tokens(txt, removeSymbols = TRUE, removeNumbers = TRUE)
 
 microbenchmark::microbenchmark(
-    tokenizers = tokenize_skip_ngrams(txt, n = 3, k = 1),
-    quanteda_hashed = tokens(txt) %>% quanteda::ngrams(n = 3, skip = 1),
-    quanteda_unhashed = tokenize(txt) %>% quanteda::ngrams(n = 3, skip = 1),
-    unit='relative', times = 20
+    tokenizers = tokenize_skip_ngrams(txt, n = 2, k = 1),
+    quanteda_unhashed = tokenize(txt, what='fastestword') %>% quanteda::ngrams(n = 2, skip = 1),
+    quanteda_hashed = tokens(txt, what='fastestword') %>% quanteda::ngrams(n = 2, skip = 1),
+    quanteda_hashed_mt = tokens(txt, what='fastestword') %>% quanteda::ngrams(n = 2, skip = 1, thread=4),
+    unit='relative', times = 1
 )
+
 
 microbenchmark::microbenchmark(
-    tokenize_skip_ngrams(txt, n=3, k=0),
-    quanteda::ngrams(toks_hash, n=3, skip=0),
-    get.phrasetable(ngram(txt, n=3)),
-    unit='relative', times = 20
-)
-
-profvis(
-  quanteda::ngrams(toks_hash, n=3, skip=0)
-)
-
-# Stress test ----------------------------------------------
-
-txt_all <- readLines('~/Documents/Brixit/Analysis/all_bbc_2015.txt')
-tok_all <- tokens(txt_all, removeSymbols = TRUE, removeNumbers = TRUE)
-
-microbenchmark::microbenchmark(
-    ngrams(tok_all, 2),
-    ngrams(tok_all, 3),
-    ngrams(tok_all, 4),
+    ngrams(tok_all, n=2, thread=1),
+    ngrams(tok_all, n=2, thread=2),
+    ngrams(tok_all, n=2, thread=3),
+    ngrams(tok_all, n=2, thread=4),
     times=1
 )
 
-out <- qatd_cpp_ngram_mt_list(tok_all, 2, 1)
-
-RcppParallel::defaultNumThreads()
-RcppParallel::setThreadOptions(4)
-microbenchmark::microbenchmark(
-    qatd_cpp_ngram_mt_list(tok_all, 2, 1),
-    qatd_cpp_ngram_hashed_list(tok_all, 2, 1),
-    times=1
-)
 
 profvis::profvis(ngrams(tok_all, 2))
