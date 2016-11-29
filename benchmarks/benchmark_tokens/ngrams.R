@@ -3,7 +3,7 @@ library(tokenizers)
 library(testthat)
 library(magrittr)
 
-txt <- readLines('~/Documents/Brixit/Analysis/all_bbc_2015.txt') # 80MB
+txt <- readLines('~/Documents/Brexit/Analysis/all_bbc_2015.txt') # 80MB
 tok <- tokens(txt, removeSymbols = TRUE, removeNumbers = TRUE)
 
 microbenchmark::microbenchmark(
