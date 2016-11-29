@@ -1,6 +1,7 @@
 #include <Rcpp.h>
 #include <unordered_map>
 #include <numeric>
+#include <chrono> // only for benchmarking
 #include "dev.h"
 #include "quanteda.h"
 #include "tbb/concurrent_unordered_map.h"
@@ -176,8 +177,8 @@ struct skipgram_mt : public Worker{
 
 // [[Rcpp::export]]
 List qatd_cpp_ngram_mt_list(List texts_,
-                            IntegerVector ns_,
-                            IntegerVector skips_) {
+                                             IntegerVector ns_,
+                                             IntegerVector skips_) {
     
     Texts input = Rcpp::as< Texts >(texts_);
     std::vector<int> ns = Rcpp::as< std::vector<int> >(ns_);
@@ -186,28 +187,36 @@ List qatd_cpp_ngram_mt_list(List texts_,
     // Register both ngram (key) and unigram (value) IDs in a hash table
     tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> map_ngram;
 
-    Texts ouput(input.size());
-    skipgram_mt skipgram_mt(input, ouput, ns, skips, map_ngram);
+    Texts output(input.size());
+    skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram);
     
     // Apply skipgram_mt to blocked ranges
+    auto t_start = std::chrono::high_resolution_clock::now();
     parallelFor(0, input.size(), skipgram_mt);
+    auto t_end = std::chrono::high_resolution_clock::now();
+    Rcout << "Ngrams " << std::chrono::duration<double, std::milli>(t_end - t_start).count() << " millisec\n";
+    
+    auto t_start2 = std::chrono::high_resolution_clock::now();
     
     // Separate key and values of unordered_map
     List ids_unigram(map_ngram.size());
     for (std::pair<Ngram, unsigned int> iter : map_ngram){
         //Rcout << "ID " << to_string(iter.second) << ": ";
         //print_ngram_hashed(iter.first);
-        ids_unigram[iter.second - 1] = iter.first;
+        IntegerVector id_unigram = Rcpp::wrap(iter.first);
+        ids_unigram[iter.second - 1] = id_unigram;
     }
-    List texts_ngram = Rcpp::wrap(ouput);
+    auto t_end2 = std::chrono::high_resolution_clock::now();
+    Rcout << "IDs " << std::chrono::duration<double, std::milli>(t_end2 - t_start2).count() << " millisec\n";
     
-    return Rcpp::List::create(Rcpp::Named("text") = texts_ngram,
-                              Rcpp::Named("id_unigram") = ids_unigram);
+    // Return IDs as attribute
+    ListOf<IntegerVector> texts_ngram = Rcpp::wrap(output);
+    texts_ngram.attr("ids") = ids_unigram;
+    return texts_ngram;
+    //return Rcpp::List::create(Rcpp::Named("text") = texts_ngram,
+    //                          Rcpp::Named("id_unigram") = ids_unigram);
+
 }
-
-
-
-
 
 
 
@@ -217,8 +226,9 @@ library(quanteda)
 txt <- c('a b c d e', 'c d e f g')
 toks <- tokens(txt, what='fastestword')
 res <- qatd_cpp_ngram_mt_list(toks, 3, 1)
-res$text
-res$id_unigram
+str(res)
+#res$text
+#res$id_unigram
 
 #RcppParallel::setThreadOptions(4)
 #toks = rep(list(1:1000, 1001:2000), 10)
