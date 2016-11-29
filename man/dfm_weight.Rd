@@ -4,10 +4,14 @@
 \name{dfm_weight}
 \alias{dfm_smooth}
 \alias{dfm_weight}
+\alias{dfm_weight,dfm,character-method}
 \alias{dfm_weight,dfm,numeric-method}
 \title{weight the feature frequencies in a dfm}
 \usage{
 dfm_weight(x, type, ...)
+
+\S4method{dfm_weight}{dfm,character}(x, type = c("frequency", "relFreq",
+  "relMaxFreq", "logFreq", "tfidf"), ...)
 
 \S4method{dfm_weight}{dfm,numeric}(x, type, ...)
 
@@ -43,7 +47,12 @@ The dfm with weighted values.
 }
 \description{
 Returns a document by feature matrix with the feature frequencies weighted 
-according to one of several common methods.
+according to one of several common methods.  Some shortcuts that offer finer-grained control are:
+\itemize{
+\item{\code{\link{tf}}}{  compute term frequency weights}
+\item{\code{\link{tfidf}}}{  compute term frequency-inverse document frequency weights}
+\item{\code{\link{docfreq}}}{  compute document frequencies of features}
+}
 }
 \details{
 This converts a matrix from sparse to dense format, so may exceed memory
@@ -71,6 +80,13 @@ topfeatures(tfidfDtm)
 head(logTfDtm <- dfm_weight(dtm, type = "logFreq"))
 head(tfidf(logTfDtm, normalize = FALSE))
 
+\dontshow{
+testdfm <- dfm(data_char_inaugural[1:5], verbose = FALSE)
+for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
+    testw <- dfm_weight(testdfm, w)
+    cat("\\n\\n=== weight() TEST for:", w, "; class:", class(testw), "\\n")
+    head(testw)
+}}
 # apply numeric weights
 str <- c("apple is better than banana", "banana banana apple much better")
 weights <- c(apple = 5, banana = 3, much = 0.5)
@@ -90,6 +106,7 @@ Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
   University Press, 2008.
 }
 \seealso{
-\code{\link{tfidf}}
+\code{\link{tf}},  \code{\link{tfidf}}, \code{\link{docfreq}}
 }
+\keyword{weighting}
 

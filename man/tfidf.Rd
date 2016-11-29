@@ -2,23 +2,20 @@
 % Please edit documentation in R/dfm_weight.R
 \name{tfidf}
 \alias{tfidf}
-\alias{tfidf.dfm}
 \title{compute tf-idf weights from a dfm}
 \usage{
-tfidf(x, ...)
-
-\method{tfidf}{dfm}(x, normalize = FALSE, scheme = "inverse", ...)
+tfidf(x, normalize = FALSE, scheme = "inverse", ...)
 }
 \arguments{
 \item{x}{object for which idf or tf-idf will be computed (a document-feature 
 matrix)}
 
-\item{...}{additional arguments passed to \code{\link{docfreq}} when calling
-\code{tfidf}}
-
 \item{normalize}{if \code{TRUE}, use relative term frequency}
 
 \item{scheme}{scheme for \code{\link{docfreq}}}
+
+\item{...}{additional arguments passed to \code{\link{docfreq}} when calling
+\code{tfidf}}
 }
 \description{
 Compute tf-idf, inverse document frequency, and relative term frequency on 
@@ -51,4 +48,6 @@ tfidf(wikiDfm)
 Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
   \emph{Introduction to Information Retrieval}. Cambridge University Press.
 }
+\keyword{internal}
+\keyword{weighting}
 
