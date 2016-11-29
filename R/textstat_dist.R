@@ -102,12 +102,13 @@ setMethod(f = "textstat_dist",
                   }
               } else xSelect <- NULL
               
-              vecMethod <- c("euclidean")
-              vecMethod_simil <- c("euclidean", "jaccard", "eJaccard","simple matching")
+              vecMethod <- c("euclidean", "hamming")
+              vecMethod_simil <- c("jaccard", "binary", "eJaccard","simple matching")
               
               if (method %in% vecMethod){
                   result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
               } else if (method %in% vecMethod_simil) {
+                  if (method == "binary") method = "jaccardf"
                   result <- 1 - get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
               } else{
                   # use proxy::dist() for all other methods
@@ -227,3 +228,34 @@ euclideanSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     eucmat
 }
 
+# Hamming distance
+# formula: hamming = b + c
+hammingSparse <- function(x, y = NULL, margin = 1) {
+    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
+    
+    # convert to binary matrix
+    x <- tf(x, "boolean") 
+    x0 <- 1 - x
+    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
+    marginSums <- if (margin == 2) nrow else ncol
+    marginNames <- if (margin == 2) colnames else rownames
+    # union 
+    an <- marginSums(x)
+    if (!is.null(y)) {
+        y <- tf(y, "boolean")
+        y0 <- 1 - y
+        A <- cpFun(x, y)
+        A0 <- cpFun(x0, y0)
+        colNm <- marginNames(y)
+    } else {
+        A <- cpFun(x)
+        A0 <- cpFun(x0)
+        colNm <- marginNames(x)
+    }
+    rowNm <- marginNames(x)
+    # common values
+    A <- A + A0
+    hammat <- an -A
+    dimnames(hammat) <- list(rowNm,  colNm)
+    hammat
+}

@@ -56,7 +56,7 @@ the freely available CMU pronunciation dictionary at
 \references{
 Chall, J. S., & Dale, E.  1995. \emph{Readability Revisited: The New Dale-Chall Readability Formula}. Brookline Books.
 
-Klare, G. R. 1975. "Assessing readability." \emph{Reading Research Quarterly} 10(1): 62<U+9225><U+FFFD>102.
+Klare, G. R. 1975. "Assessing readability." \emph{Reading Research Quarterly} 10(1): 62–102.
 
 Spache, G. 1953. "A new readability formula for primary-grade reading materials." \emph{The Elementary School Journal} 53: 410-413.
 }

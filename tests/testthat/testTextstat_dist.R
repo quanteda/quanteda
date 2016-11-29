@@ -236,3 +236,30 @@ test_that("test textstat_simil method = \"simple matching\" against proxy::simil
     
     expect_equal(smcQuanteda, smcProxy)
 })
+
+# Hamann similarity (Hamman similarity in proxy::dist)
+test_that("test textstat_simil method = \"hamann\" against proxy::simil(): documents", {
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    
+    hamnQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "hamann", margin = "documents", tri = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    hamnQuanteda <- hamnQuanteda[-which(names(hamnQuanteda) == "1981-Reagan")]
+    hamnProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "hamman", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
+    hamnProxy <- hamnProxy[-which(names(hamnProxy) == "1981-Reagan")]
+    expect_equal(hamnQuanteda, hamnProxy)
+})
+
+test_that("test textstat_simil method = \"hamann\" against proxy::simil(): features", {
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    
+    hamnQuanteda <- round(as.matrix(textstat_simil(presDfm, "soviet", method = "hamann", margin = "features"))[,"soviet"], 2)
+    hamnQuanteda <- hamnQuanteda[order(names(hamnQuanteda))]
+    hamnQuanteda <- hamnQuanteda[-which(names(hamnQuanteda) == "soviet")]
+    
+    hamnProxy <- round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), "hamman", by_rows = FALSE)), 2)
+    hamnProxy <- hamnProxy[order(names(hamnProxy))]
+    hamnProxy <- hamnProxy[-which(names(hamnProxy) == "soviet")]
+    
+    expect_equal(hamnQuanteda, hamnProxy)
+})

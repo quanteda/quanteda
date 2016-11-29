@@ -89,7 +89,7 @@ setMethod(f = "textstat_simil",
                   }
               } else xSelect <- NULL
               
-              vecMethod <- c("cosine", "correlation", "jaccard", "eJaccard", "dice", "eDice", "simple matching")
+              vecMethod <- c("cosine", "correlation", "jaccard", "eJaccard", "dice", "eDice", "simple matching", "hamann")
               if (method %in% vecMethod){
                   if (method == "simple matching") method <- "smc"
                   result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
@@ -161,6 +161,7 @@ norm2 <- function(x,s) { drop(Matrix::crossprod(x^2, s)) ^ 0.5 }
 # L1 norm
 norm1 <- function(x,s) { drop(Matrix::crossprod(abs(x),s)) }
 
+#cosine similarity: xy / sqrt(xx * yy)
 cosineSparse <- function(x, y = NULL, margin = 1, norm = norm2) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     if (margin == 1) x <- t(x)
@@ -176,6 +177,7 @@ cosineSparse <- function(x, y = NULL, margin = 1, norm = norm2) {
         return(as.matrix(Matrix::crossprod(x)))
 }
 
+# Pearson correlation
 correlationSparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
@@ -371,14 +373,41 @@ smcSparse <- function(x, y = NULL, margin = 1) {
     rowNm <- marginNames(x)
     # common values
     A <- A + A0
-    im <- which(A > 0, arr.ind=TRUE, useNames = FALSE)
-    # non-zero values of m
-    Aim <- A[im]
-    smcmat <- sparseMatrix( i = im[,1],
-                              j = im[,2],
-                              x = Aim / an ,
-                              dims = dim(A)
-    )
+    smcmat <- A / an
     dimnames(smcmat) <- list(rowNm,  colNm)
     smcmat
+}
+
+#Hamann similarity: This measure gives the probability that a characteristic has the same state in both items 
+#(present in both or absent from both) minus the probability that a characteristic has different states 
+#in the two items (present in one and absent from the other).
+# formula: Hamman = ((a+d)-(b+c))/n
+# "Hamman" in proxy::dist
+hamannSparse <- function(x, y = NULL, margin = 1) {
+    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
+    
+    # convert to binary matrix
+    x <- tf(x, "boolean") 
+    x0 <- 1 - x
+    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
+    marginSums <- if (margin == 2) nrow else ncol
+    marginNames <- if (margin == 2) colnames else rownames
+    # union 
+    an <- marginSums(x)
+    if (!is.null(y)) {
+        y <- tf(y, "boolean")
+        y0 <- 1 - y
+        A <- cpFun(x, y)
+        A0 <- cpFun(x0, y0)
+        colNm <- marginNames(y)
+    } else {
+        A <- cpFun(x)
+        A0 <- cpFun(x0)
+        colNm <- marginNames(x)
+    }
+    rowNm <- marginNames(x)
+    # common values
+    hamnmat <- (2* (A +A0) - an) / an
+    dimnames(hamnmat) <- list(rowNm,  colNm)
+    hamnmat
 }
