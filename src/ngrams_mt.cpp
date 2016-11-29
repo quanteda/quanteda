@@ -114,6 +114,30 @@ Ngrams skipgram(Text tokens,
     return ngrams;
 }
 
+Ngrams ngram(Text tokens,
+             std::vector<int> ns, 
+             tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> &map_ngram) {
+    
+    int pos_ngrams = 0; // Position in ngrams
+    
+    // Pre-allocate memory
+    int size_reserve = tokens.size();
+    Ngrams ngrams(size_reserve);
+    
+    // Generate ngrams
+    for (int k = 0; k < ns.size(); k++) {
+        int n = ns[k];
+        for(int start = 0; start < tokens.size() - (n - 1); start++){
+            Ngram ngram(tokens.begin() + start, tokens.begin() + start + n);
+            ngrams[pos_ngrams] = ngram_id(ngram, map_ngram);
+            //Rcout << "Add " << ngrams[pos_ngrams] << " at " << ngrams.size() << "\n";
+            pos_ngrams++;
+        }
+    }
+    ngrams.resize(pos_ngrams);
+    return ngrams;
+}
+
 struct skipgram_mt : public Worker{
     
     Texts &input;
@@ -130,8 +154,14 @@ struct skipgram_mt : public Worker{
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        for (int h = begin; h < end; h++){
-            output[h] = skipgram(input[h], ns, skips, map_ngram);
+        if(skips[0] == 1 && skips.size() == 1){
+            for (int h = begin; h < end; h++){
+                output[h] = ngram(input[h], ns, map_ngram);
+            }
+        }else{
+            for (int h = begin; h < end; h++){
+                output[h] = skipgram(input[h], ns, skips, map_ngram);
+            }
         }
     }
 };
@@ -187,18 +217,16 @@ List qatd_cpp_ngram_mt_list(List texts_,
 /*** R
 
 library(quanteda)
-# txt <- c('a b c d e', 'c d e f g')
-# toks <- tokens(txt, what='fastestword')
-# res <- qatd_cpp_ngram_mt_list(toks, 2, 1)
-# res <- qatd_cpp_ngram_hashed_list(toks, 2, 1)
-# res$text
-# res$id_unigram
+txt <- c('a b c d e', 'c d e f g')
+toks <- tokens(txt, what='fastestword')
+res <- qatd_cpp_ngram_mt_list(toks, 3, 1)
+res$text
+res$id_unigram
 
-RcppParallel::setThreadOptions(numThreads = 2)
-toks = rep(list(1:1000, 1001:2000), 10)
+#RcppParallel::setThreadOptions(4)
+#toks = rep(list(1:1000, 1001:2000), 10)
 #toks = rep(list(1:10000, 10001:20000), 10000)
-res <- qatd_cpp_ngram_mt_list(toks, 2, 1)
-#res <- qatd_cpp_ngram_hashed_list(toks, 2, 1)
+#res <- qatd_cpp_ngram_mt_list(toks, 2, 1)
 #res$text
 #res$id_unigram
 
