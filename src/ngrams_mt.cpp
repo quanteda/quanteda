@@ -37,8 +37,6 @@ namespace ngrams {
 using namespace ngrams;
 
 
-
-
 int ngram_id(Ngram ngram,
              tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> &map_ngram){
     
@@ -51,20 +49,19 @@ int ngram_id(Ngram ngram,
         return id_ngram;
     }
     id_ngram = map_ngram.size();
-    
     //Rcout << "New " << id_ngram << ": ";
     //dev::print_ngram_hashed(ngram);
     return id_ngram;
 }
 
-void skip_hashed(Text &tokens,
-                 unsigned int start,
-                 unsigned int n, 
-                 std::vector<int> skips,
-                 Ngram ngram,
-                 Ngrams &ngrams,
-                 tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> &map_ngram,
-                 int pos_tokens, int &pos_ngrams) {
+void skip(Text &tokens,
+          unsigned int start,
+          unsigned int n, 
+          std::vector<int> skips,
+          Ngram ngram,
+          Ngrams &ngrams,
+          tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> &map_ngram,
+          int pos_tokens, int &pos_ngrams) {
     
     ngram[pos_tokens] = tokens[start];
     pos_tokens++;
@@ -76,7 +73,7 @@ void skip_hashed(Text &tokens,
             if(next < 0 || tokens.size() - 1 < next) break;
             if(tokens[next] == 0) break; // Skip padding
             //Rcout << "Join " << tokens[start] << " at " << pos_tokens << " " << next << "\n";
-            skip_hashed(tokens, next, n, skips, ngram, ngrams, map_ngram, pos_tokens, pos_ngrams);
+            skip(tokens, next, n, skips, ngram, ngrams, map_ngram, pos_tokens, pos_ngrams);
         }
     }else{
         
@@ -89,10 +86,10 @@ void skip_hashed(Text &tokens,
 }
 
 
-Ngrams skipgram_hashed(Text tokens,
-                       std::vector<int> ns, 
-                       std::vector<int> skips,
-                       tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> &map_ngram) {
+Ngrams skipgram(Text tokens,
+                std::vector<int> ns, 
+                std::vector<int> skips,
+                tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> &map_ngram) {
     
     int pos_tokens = 0; // Position in tokens
     int pos_ngrams = 0; // Position in ngrams
@@ -110,75 +107,11 @@ Ngrams skipgram_hashed(Text tokens,
         Ngram ngram(n);
         for (int start = 0; start < tokens.size() - (n - 1); start++) {
             if(tokens[start] == 0) continue; // Skip padding
-            skip_hashed(tokens, start, n, skips, ngram, ngrams, map_ngram, pos_tokens, pos_ngrams); // Get ngrams as reference
+            skip(tokens, start, n, skips, ngram, ngrams, map_ngram, pos_tokens, pos_ngrams); // Get ngrams as reference
         }
     }
     ngrams.resize(pos_ngrams);
     return ngrams;
-}
-
-// [[Rcpp::export]]
-List qatd_cpp_ngram_hashed_vector(IntegerVector tokens_,
-                                  IntegerVector ns_, 
-                                  IntegerVector skips_){
-    
-    Text tokens = Rcpp::as< Text >(tokens_);
-    std::vector<int> ns = Rcpp::as< std::vector<int> >(ns_);
-    std::vector<int> skips = Rcpp::as< std::vector<int> >(skips_);
-    
-    // Register both ngram (key) and unigram (value) IDs in a hash table
-    tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> map_ngram;
-    Ngrams ngrams = skipgram_hashed(tokens, ns, skips, map_ngram);
-    
-    // Separate key and values of unordered_map
-    List ids_unigram(map_ngram.size());
-    for (std::pair<Ngram, unsigned int> iter : map_ngram){
-        //Rcout << "ID " << to_string(iter.second) << ": ";
-        //print_ngram_hashed(iter.first);
-        ids_unigram[iter.second - 1] = iter.first;
-    }
-    
-    return Rcpp::List::create(Rcpp::Named("ngram") = ngrams,
-                              Rcpp::Named("id_unigram") = ids_unigram);
-}
-
-/* 
- * This funciton constructs ngrams from tokens object used in ngrams.tokens().
- * @creator Kohei Watanabe
- * @param texts_ tokens ojbect
- * @n size of ngramss
- * @skips size of skip (this has to be 1 for ngrams)
- * 
- */
-// [[Rcpp::export]]
-List qatd_cpp_ngram_hashed_list(List texts_,
-                                IntegerVector ns_,
-                                IntegerVector skips_) {
-    
-    Texts texts = Rcpp::as< Texts >(texts_);
-    std::vector<int> ns = Rcpp::as< std::vector<int> >(ns_);
-    std::vector<int> skips = Rcpp::as< std::vector<int> >(skips_);
-    
-    // Register both ngram (key) and unigram (value) IDs in a hash table
-    tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> map_ngram;
-    
-    // Itterate over documents
-    List texts_ngram(texts.size());
-    for (int h = 0; h < texts.size(); h++){
-        texts_ngram[h] = skipgram_hashed(texts[h], ns, skips, map_ngram);
-        Rcpp::checkUserInterrupt(); // allow user to stop
-    }
-    
-    // Separate key and values of unordered_map
-    List ids_unigram(map_ngram.size());
-    for (std::pair<Ngram, unsigned int> iter : map_ngram){
-        //Rcout << "ID " << to_string(iter.second) << ": ";
-        //print_ngram_hashed(iter.first);
-        ids_unigram[iter.second - 1] = iter.first;
-    }
-    
-    return Rcpp::List::create(Rcpp::Named("text") = texts_ngram,
-                              Rcpp::Named("id_unigram") = ids_unigram);
 }
 
 struct skipgram_mt : public Worker{
@@ -198,14 +131,20 @@ struct skipgram_mt : public Worker{
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (int h = begin; h < end; h++){
-            output[h] = skipgram_hashed(input[h], ns, skips, map_ngram);
+            output[h] = skipgram(input[h], ns, skips, map_ngram);
         }
     }
 };
 
-/*
- * This funciton constructs multi-thrad version of qatd_cpp_ngram_hashed_list.
+/* 
+ * This funciton constructs ngrams from tokens object with multiple threads. 
+ * The number of threads is set by RcppParallel::setThreadOptions()
+ * @used ngrams.tokens()
  * @creator Kohei Watanabe
+ * @param texts_ tokens ojbect
+ * @n size of ngramss
+ * @skips size of skip (this has to be 1 for ngrams)
+ * 
  */
 
 // [[Rcpp::export]]

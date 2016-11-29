@@ -77,13 +77,11 @@ ngrams.tokenizedTexts <- function(x, ...) {
 ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_", thread = 1, ...) {
     attrs_orig <- attributes(x)
     if (any(n <= 0)) stop("ngram length has to be greater than zero")
+    
     # Generate ngrams
-    if(thread > 1){
-        RcppParallel::setThreadOptions(numThreads = thread)
-        res <- qatd_cpp_ngram_mt_list(x, n, skip + 1)
-    }else{
-        res <- qatd_cpp_ngram_hashed_list(x, n, skip + 1)
-    }
+    RcppParallel::setThreadOptions(thread)
+    res <- qatd_cpp_ngram_mt_list(x, n, skip + 1)
+    
     # Make character tokens of ngrams
     #ngram_types <- qatd_cpp_ngram_unhash_type(res$id_unigram, types(x), concatenator)
     ngram_types <- stri_c_list(lapply(res$id_unigram, function(x, y) y[x] , types(x)), concatenator)
