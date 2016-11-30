@@ -35,14 +35,16 @@ Moby Dick: Descriptive analysis
 
 ## 2.1 Loading the first text file
 
-The code below scans and splits the text of Moby Dick from Project Gutenberg, as implemented in the text.  The command `textfile()` loads almost any file, including those found on the Internet (beginning with a URL, such as "http" or "https").
+The code below scans and splits the text of Moby Dick from Project Gutenberg, as implemented in the text.  
 ```{r eval=TRUE}
 require(quanteda)
 
-# read the text as a single file
-# alternative:
-# data_char_mobydick <- texts(textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
+## read the text as a single file
 summary(data_char_mobydick)
+
+## alternative method:
+# require(readtext)
+# data_char_mobydick <- texts(readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
 ```
 
 The `textfile()` loads the text and places inside a structured, intermediate object known as a `corpusSource` object.  We see this by outputting it to the global environment, as above.

@@ -170,9 +170,9 @@ require(quanteda)
 
 ## Currently available corpus sources
 
-quanteda has a simple and powerful tool for loading texts: `textfile()`.  This function takes a file or fileset from disk or a URL, and loads it as a special class of pre-corpus object, known as a `corpusSource` object, from which a corpus can be constructed using a second command, `corpus()`.
+**quanteda** has a simple and powerful companion package for loading texts: [**readtext**](https://github.com/kbenoit/readtext).  The main function in this package, `readtext()`,  takes a file or fileset from disk or a URL, and returns a type of data.frame that can be used directly with the `corpus()` constructor function, to create a **quanteda** corpus object.
 
-`textfile()` works on:
+`readtext()` works on:
 
 * text (`.txt`) files;
 * comma-separated-value (`.csv`) files;
@@ -184,8 +184,8 @@ quanteda has a simple and powerful tool for loading texts: `textfile()`.  This f
 The corpus constructor command `corpus()` works directly on:
 
 * a vector of character objects, for instance that you have already loaded into the workspace using other tools;
-* a `corpusSource` object created using `textfile()`; and
 * a `VCorpus` corpus object from the **tm** package.
+* a data.frame containing a text column and any other document-level metadata.
 
 ### Example: building a corpus from a character vector
 
@@ -224,35 +224,38 @@ a simple tag for our custom metadoc field `docsource`, we used the quanteda func
 the number of documents in our corpus.  This function is deliberately designed to work in a way similar to 
 functions you may already use in R, such as `nrow()` and `ncol()`.
 
-### Example: loading in files using `textfile()`
+### Example: loading in files using the **readtext** package
+
 
 ```{r, eval=FALSE}
+require(readtext)
+
 # Twitter json
-mytf1 <- textfile("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
+mytf1 <- readtext("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
 myCorpusTwitter <- corpus(mytf1)
 summary(myCorpusTwitter, 5)
 # generic json - needs a textField specifier
-mytf2 <- textfile("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
+mytf2 <- readtext("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
                   textField = "text")
 summary(corpus(mytf2), 5)
 # text file
-mytf3 <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
+mytf3 <- readtext("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
 summary(corpus(mytf3), 5)
 # multiple text files
-mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
+mytf4 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
 summary(corpus(mytf4), 5)
 # multiple text files with docvars from filenames
-mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", 
+mytf5 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", 
                   docvarsfrom="filenames", sep="-", docvarnames=c("Year", "President"))
 summary(corpus(mytf5), 5)
 # XML data
-mytf6 <- textfile("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml", 
+mytf6 <- readtext("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml", 
                   textField = "COMMON")
 summary(corpus(mytf6), 5)
 # csv file
 write.csv(data.frame(inaugSpeech = texts(data_corpus_inaugural), docvars(data_corpus_inaugural)), 
           file = "/tmp/inaug_texts.csv", row.names = FALSE)
-mytf7 <- textfile("/tmp/inaug_texts.csv", textField = "inaugSpeech")
+mytf7 <- readtext("/tmp/inaug_texts.csv", textField = "inaugSpeech")
 summary(corpus(mytf7), 5)
 ```
 

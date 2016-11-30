@@ -12,7 +12,6 @@ new name | original name | notes
 `data_char_sampletext` | `exampleString` | 
 `data_char_mobydick` | `mobydickText`
 `data_dfm_LBGexample` | `LBGexample`
-`data_char_encodedtexts` | `encodedTexts`
 
 ### Renamed internal data objects
 
@@ -83,6 +82,10 @@ new name | reason
 :--------|:-------------
 `encodedTextFiles.zip` | moved to the [**readtext**](https://github.com/kbenoit/readtext) package
 `describeTexts` | deprecated several versions ago for `summary.character`
+`textfile` | moved to package [**readtext**](http://github.com/kbenoit/readtext)
+`encodedTexts` | moved to package [**readtext**](http://github.com/kbenoit/readtext), as `data_char_encodedtexts`
+
+
 
 
 

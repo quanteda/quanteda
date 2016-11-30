@@ -188,9 +188,11 @@ corpus.data.frame <- function(x, text_field = "text",
 #' @keywords corpus
 #' @examples
 #' \dontrun{# the fifth column of this csv file is the text field
-#' mytexts <- textfile("http://www.kenbenoit.net/files/text_example.csv", text_field = 5)
+#' require(readtext)
+#' mytexts <- readtext("http://www.kenbenoit.net/files/text_example.csv", textfield = 5)
 #' mycorp <- corpus(mytexts)
-#' mycorp2 <- corpus(textfile("http://www.kenbenoit.net/files/text_example.csv", text_field = "Title"))
+#' mycorp2 <- corpus(readtext("http://www.kenbenoit.net/files/text_example.csv", 
+#'                   textfield = "Title"))
 #' identical(texts(mycorp), texts(mycorp2))
 #' identical(docvars(mycorp), docvars(mycorp2))
 #' }
