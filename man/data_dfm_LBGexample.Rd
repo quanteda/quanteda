@@ -2,7 +2,6 @@
 % Please edit documentation in R/data-documentation.R
 \docType{data}
 \name{data_dfm_LBGexample}
-\alias{LBGexample}
 \alias{data_dfm_LBGexample}
 \title{dfm from data in Table 1 of Laver, Benoit, and Garry (2003)}
 \format{A \link{dfm} object with 6 documents and 37 features}
@@ -25,5 +24,5 @@ Laver, Michael, Kenneth Benoit, and John Garry.  2003.
   positions from political text using words as data.}" \emph{American
   Political Science Review} 97(2): 311-331.
 }
-\keyword{datasets}
+\keyword{data}
 

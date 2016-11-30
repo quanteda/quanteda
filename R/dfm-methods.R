@@ -48,16 +48,22 @@ docnames.dfm <- function(x) {
     rownames(x)
 }
 
-#' @details \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
-#' @rdname dfm-class
+#' coercion and checking functions for dfm objects
+#' 
+#' Check for a dfm, or convert
+#' a matrix into a dfm.
+#' @param x a \link{dfm} object
+#' @return 
+#' \code{is.dfm} returns \code{TRUE} if and only if its argument is a \link{dfm}.
+#' @seealso \code{\link{as.data.frame.dfm}}, \code{\link{as.matrix.dfm}}
 #' @export
 is.dfm <- function(x) {
     is(x, "dfm")
     # "dfm" %in% class(x)
 }
 
-#' @details \code{as.dfm} coerces a matrix or data.frame to a dfm
-#' @rdname dfm-class
+#' @rdname is.dfm
+#' @return \code{as.dfm} coerces a matrix or data.frame to a dfm
 #' @export
 as.dfm <- function(x) {
     if (!any((c("matrix", "data.frame") %in% class(x))))

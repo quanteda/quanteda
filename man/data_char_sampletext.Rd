@@ -3,7 +3,6 @@
 \docType{data}
 \name{data_char_sampletext}
 \alias{data_char_sampletext}
-\alias{exampleString}
 \title{a paragraph of text for testing various text-based functions}
 \format{character vector with one element}
 \usage{
@@ -15,5 +14,5 @@ This is a long paragraph (2,914 characters) of text taken from an Irish budget s
 \examples{
 tokenize(data_char_sampletext, removePunct = TRUE)
 }
-\keyword{datasets}
+\keyword{data}
 

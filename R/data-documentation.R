@@ -2,7 +2,7 @@
 #' 
 #' This is a long paragraph (2,914 characters) of text taken from an Irish budget speech by Joe Higgins.
 #' @format character vector with one element
-#' @aliases exampleString
+#' @keywords data
 #' @examples
 #' tokenize(data_char_sampletext, removePunct = TRUE)
 "data_char_sampletext"
@@ -12,7 +12,7 @@
 #' Named character object of the ASCII text of Herman Melville's
 #'  \emph{Moby Dick}, EBook no. 2701.
 #' @source Project Gutenberg, \url{http://www.gutenberg.org}
-#' @aliases mobydickText
+#' @keywords data
 #' @examples
 #' summary(data_char_mobydick)
 "data_char_mobydick"
@@ -22,6 +22,7 @@
 #' Extracts from the election manifestos of 9 UK political parties from 2010, related
 #' to immigration or asylum-seekers.
 #' @format A named character vector of plain ASCII texts
+#' @keywords data
 #' @examples
 #' data_corpus_ukimmig2010 <- 
 #'     corpus(data_char_ukimmig2010, 
@@ -38,12 +39,12 @@
 #'   (2003) Table 1. Documents R1 to R5 are assumed to have known positions: 
 #'   -1.5, -0.75, 0, 0.75, 1.5.  Document V1 is assumed unknown, and will have a
 #'   raw text score of approximately -0.45 when computed as per LBG (2003).
+#' @keywords data
 #' @format A \link{dfm} object with 6 documents and 37 features
 #' @references Laver, Michael, Kenneth Benoit, and John Garry.  2003. 
 #'   "\href{http://www.kenbenoit.net/pdfs/WORDSCORESAPSR.pdf}{Estimating policy 
 #'   positions from political text using words as data.}" \emph{American
 #'   Political Science Review} 97(2): 311-331.
-#' @aliases LBGexample
 "data_dfm_LBGexample"  
 
 #' Irish budget speeches from 2010
@@ -56,6 +57,7 @@
 #' @source Lowe, Will, and Kenneth R Benoit. 2013. "Validating Estimates of 
 #'   Latent Traits From Textual Data Using Human Judgment as a Benchmark." 
 #'   \emph{Political Analysis} 21: 298-313.
+#' @keywords data
 #' @examples
 #' summary(data_corpus_irishbudget2010)
 "data_corpus_irishbudget2010"
@@ -77,7 +79,7 @@
 #' Data sets used for mainly internal purposes by the \pkg{quanteda} package.
 #' @name data-internal
 #' @docType data
-#' @keywords internal
+#' @keywords data internal
 NULL
 
 
@@ -95,6 +97,7 @@ NULL
 #' @references
 #'   \url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and 
 #'   \url{http://www.presidency.ucsb.edu/inaugurals.php}.
+#' @keywords data
 "data_corpus_inaugural"
 
 
@@ -105,5 +108,6 @@ NULL
 #' str(data_char_inaugural)
 #' head(docvars(data_corpus_inaugural), 10)
 #' mycorpus <- corpus(data_char_inaugural)
+#' @keywords data
 "data_char_inaugural"
 

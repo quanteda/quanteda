@@ -3,6 +3,7 @@
 #' Calls C++ for super-fast selection or removal of features from a 
 #' set of tokens.
 #' @inheritParams selectFeatures
+#' @keywords internal deprecated
 #' @export
 selectFeaturesOLD <- function(x, ...) UseMethod("selectFeaturesOLD")
 

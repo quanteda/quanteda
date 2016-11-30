@@ -253,7 +253,7 @@ dfm.tokenizedTexts <- function(x,
         # if ngrams > 1 and remove or selct is specified, then convert these into a
         # regex that will remove any ngram containing one of the words
         if (!identical(settings_ngrams, 1L)) {
-            remove <- make_ngram_pattern(remove, settings_concatenator)
+            remove <- make_ngram_pattern(remove, valuetype, settings_concatenator)
             valuetype <- "regex"
         }
         dfmresult <- dfm_select(dfmresult, remove, selection = "remove", 
@@ -265,7 +265,7 @@ dfm.tokenizedTexts <- function(x,
         # if ngrams > 1 and remove or selct is specified, then convert these into a
         # regex that will remove any ngram containing one of the words
         if (!identical(settings_ngrams, 1L)) {
-            select <- make_ngram_pattern(select, settings_concatenator)
+            select <- make_ngram_pattern(select, valuetype, settings_concatenator)
             valuetype <- "regex"
         }
         dfmresult <- dfm_select(dfmresult, select, selection = "keep", 
