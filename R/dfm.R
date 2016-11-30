@@ -93,8 +93,8 @@
 #' # note: "also" is not in the default stopwords("english")
 #' features(dfm(testCorpus, select = stopwords("english")))
 #' # for ngrams
-#' features(dfm(testCorpus, ngrams = 2, select = stopwords("english"), removePunct = TRUE))
-#' features(dfm(testCorpus, ngrams = 1:2, select = stopwords("english"), removePunct = TRUE))
+#' #features(dfm(testCorpus, ngrams = 2, select = stopwords("english"), removePunct = TRUE))
+#' #features(dfm(testCorpus, ngrams = 1:2, select = stopwords("english"), removePunct = TRUE))
 #' 
 #' ## removing stopwords before constructing ngrams
 #' tokensAll <- tokenize(toLower(testText), removePunct = TRUE)
