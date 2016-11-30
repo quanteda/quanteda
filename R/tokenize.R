@@ -8,6 +8,7 @@
 #' @param ... additional arguments not used
 #' @return A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
 #' @author Ken Benoit and Paul Nulty
+#' @keywords internal deprecated
 #' @export
 #' @examples 
 #' # same for character vectors and for lists
@@ -387,6 +388,7 @@ is.tokenizedTexts <- function(x) {
 #' @param ... further arguments passed to base print method
 #' @export
 #' @method print tokenizedTexts
+#' @noRd
 print.tokenizedTexts <- function(x, ...) {
     cat(class(x)[1], " from ", ndoc(x), " document", 
         ifelse(ndoc(x) > 1, "s", ""), ".\n", sep = "")

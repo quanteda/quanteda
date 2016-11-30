@@ -5,6 +5,7 @@
 #' @rdname tokens
 #' @param x objet to be tokenized
 #' @param ... additional arguments not used
+#' @keywords tokens
 #' @export
 tokens <- function(x, ...) {
     UseMethod("tokens")
@@ -93,7 +94,8 @@ tokens <- function(x, ...) {
 #'   changes, code built on extracting these objects will still work.
 #' @export
 #' @seealso \code{\link{ngrams}}, \code{\link{skipgrams}}
-#' @examples 
+#' @keywords tokens
+#' @examples
 #' txt <- c(doc1 = "This is a sample: of tokens.",
 #'          doc2 = "Another sentence, to demonstrate how tokens works.")
 #' tokens(txt)
@@ -371,23 +373,19 @@ tokens.corpus <- function(x, ...) {
 }
 
 
+#' coercion and checking functions for tokens objects
+#' 
+#' Coerce a list of character elements to a quanteda \link{tokens} object, or check whether 
+#' an object is a \link{tokens} object.
+#' @param x list of character elements
+#' @return \code{as.tokens} returns a quanteda \link{tokens} object
 #' @export
-#' @description \code{is.tokens} returns \code{TRUE} if the object is of class
-#'   tokens, \code{FALSE} otherwise.
-#' @rdname tokens
-is.tokens <- function(x) {
-    ifelse("tokens" %in% class(x), TRUE, FALSE)
-}
-
-#' @export
-#' @description coerces a list or tokens object into a (hashed) \link{tokens} object
-#' @rdname tokens
 as.tokens <- function(x) {
     UseMethod("as.tokens")
 }
 
+#' @rdname as.tokens
 #' @export
-#' @noRd
 as.tokens.list <- function(x) {
     tokens_hash(x)
 }
@@ -397,6 +395,27 @@ as.tokens.list <- function(x) {
 as.tokens.tokenizedTexts <- function(x) {
     tokens_hash(x)
 }
+
+#' @rdname as.tokens
+#' @param ... unused
+#' @return \code{as.list.tokens} returns a simple list of characters from a
+#'   \link{tokens} object
+#' @export
+as.list.tokens <- function(x, ...){
+    result <- as.tokenizedTexts(x)
+    attributes(result) <- NULL
+    names(result) <- names(x)
+    result
+}
+
+#' @rdname as.tokens
+#' @export
+#' @return \code{is.tokens} returns \code{TRUE} if the object is of class
+#'   tokens, \code{FALSE} otherwise.
+is.tokens <- function(x) {
+    ifelse("tokens" %in% class(x), TRUE, FALSE)
+}
+
 
 
 #' Function to hash list-of-character tokens
@@ -413,6 +432,7 @@ as.tokens.tokenizedTexts <- function(x) {
 #' @note This will be internal only soon.
 #' @export
 #' @seealso \code{\link{tokenize}}
+#' @keywords internal tokens
 #' @examples 
 #' txt <- c(doc1 = "The quick brown fox jumped over the lazy dog.",
 #'          doc2 = "The dog jumped and ate the fox.")
@@ -456,10 +476,11 @@ tokens_hash <- function(x, types, ...) {
 }
 
 
-#' @rdname tokens
+#' @rdname tokenize
 #' @details \code{as.tokenizedTexts} coerces tokenizedTextsHashed to a
 #'   tokenizedText class object, making the methods available for this object
 #'   type available to this object.
+#' @keywords internal tokens
 #' @export
 as.tokenizedTexts.tokens <- function(x, ...) {
     types <- types(x)
@@ -474,21 +495,13 @@ as.tokenizedTexts.tokens <- function(x, ...) {
     x_unhashed
 }
 
-#' @rdname tokens
-#' @export
-as.list.tokens <- function(x, ...){
-    result <- as.tokenizedTexts(x)
-    attributes(result) <- NULL
-    names(result) <- names(x)
-    result
-}
-
 #' print a tokens objects
 #' print method for a tokenizedTextsHashed object
 #' @param x a tokens object created by \code{\link{tokens}}
 #' @param ... further arguments passed to base print method
 #' @export
 #' @method print tokens
+#' @noRd
 print.tokens <- function(x, ...) {
     cat(class(x)[1], " from ", ndoc(x), " document", 
         ifelse(ndoc(x) > 1, "s", ""), ".\n", sep = "")
@@ -497,38 +510,6 @@ print.tokens <- function(x, ...) {
     print(x, ...)
 }
 
-# @details \code{tokenizeHashed} creates tokenizedTextsHashed object from characters vactors 
-# without creating a large intermediate tokenizedTexts object.
-# @param size_chunk size for batches of conversion of texts (number of documents)
-# @examples 
-# txt <- c('a b c d e', 'd e f g h', 'f g h i j', 'i j k l m')
-# tokenizeHashed(txt, size_chunk=2)
-#
-# \dontrun{data(SOTUCorpus, package = "quantedaData")
-# txt <- rep(unlist(tokenize(SOTUCorpus, what='sentence')), 20)
-# system.time(toks <- tokens_hash(tokenize(txt)))
-# system.time(toks2 <- tokenizeHashed(txt))
-# }
-# @rdname tokens_hash
-# @export
-tokenizeHashed <- function(x, size_chunk = 1000, ...) {
-    
-    xSubs <- split(x, ceiling(seq_along(x) / size_chunk))
-    xTokSubs <- list()
-    for (i in 1:length(xSubs)) {
-        #cat('Tokenizing and hashing ...\n')
-        if (i == 1) {
-            xTokSubs[[i]] <- tokens_hash(tokenize(xSubs[[i]], ...))
-        } else {
-            xTokSubs[[i]] <- tokens_hash(tokenize(xSubs[[i]], ...), attr(xTokSubs[[i-1]], "vocabulary"))
-        }
-    }
-    xTok <- unlist(xTokSubs, recursive = FALSE)
-    class(xTok) <- c("tokenizedTextsHashed", "tokenizedTexts", class(xTok))
-    attr(xTok, "vocabulary") <- attr(xTokSubs[[length(xTokSubs)]], "vocabulary")
-    return(xTok)
-    
-}
 
 #' @export
 #' @rdname ndoc
@@ -547,7 +528,6 @@ ntoken.tokens <- function(x, ...) {
 ntype.tokens <- function(x, ...) {
     length(types(x))
 }
-
 
 
 

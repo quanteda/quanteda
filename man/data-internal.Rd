@@ -60,6 +60,7 @@ Klare, G. R. 1975. "Assessing readability." \emph{Reading Research Quarterly} 10
 
 Spache, G. 1953. "A new readability formula for primary-grade reading materials." \emph{The Elementary School Journal} 53: 410-413.
 }
+\keyword{data}
 \keyword{datasets}
 \keyword{internal}
 

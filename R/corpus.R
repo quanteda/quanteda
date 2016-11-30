@@ -96,7 +96,6 @@ corpus <- function(x, ...) {
     UseMethod("corpus")
 }
 
-
 #' @rdname corpus
 #' @export
 corpus.character <- function(x, docnames = NULL, docvars = NULL,

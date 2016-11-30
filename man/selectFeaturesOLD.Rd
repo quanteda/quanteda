@@ -44,4 +44,6 @@ toks <- tokenize(c("This is some example text from me.", "More of the example te
 selectFeaturesOLD(toks, stopwords("english"), "remove")
 selectFeaturesOLD(toks, "ex", "keep", valuetype = "regex")
 }
+\keyword{deprecated}
+\keyword{internal}
 

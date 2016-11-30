@@ -22,5 +22,5 @@ of 2010.
 \examples{
 summary(data_corpus_irishbudget2010)
 }
-\keyword{datasets}
+\keyword{data}
 

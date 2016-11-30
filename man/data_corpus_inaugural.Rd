@@ -35,5 +35,5 @@ mycorpus <- corpus(data_char_inaugural)
 \url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and 
   \url{http://www.presidency.ucsb.edu/inaugurals.php}.
 }
-\keyword{datasets}
+\keyword{data}
 

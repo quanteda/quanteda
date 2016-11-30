@@ -1,10 +1,12 @@
-#' @title datasets with deprecated names 
-#' 
-#' @description Datasets that have been renamed but that have been temporarily retained
-#' for backward compatibility.  Please change your code to use the new names,
-#' as these functions will be removed in future versions.
+#' @title datasets with deprecated or defunct names
+#'   
+#' @description These are datasets that have been renamed but that have been
+#'   temporarily retained for backward compatibility, or that have been renamed
+#'   and the old names removed. Please change your code to use the new names, as
+#'   the deprecated functions will become defunct in future versions.
 #' @docType data
 #' @name data-deprecated
+#' @keywords internal deprecated
 #' @format See the specific object documentation for the renamed objects.
 NULL
 
@@ -27,5 +29,18 @@ NULL
 #' @details \code{inaugCorpus} is deprecated; please use 
 #'   \code{data_corpus_inaugural} instead.
 "inaugCorpus"
+
+#' @name LBGexample
+#' @rdname data-deprecated
+#' @details \code{LBGexample} is defunct; please use 
+#'   \code{data_dfm_LBGexample} instead.
+NULL
+
+#' @name exampleString
+#' @rdname data-deprecated
+#' @details \code{exampleString} is defunct; please use 
+#'   \code{data_char_sampletext} instead.
+NULL
+
 
 
