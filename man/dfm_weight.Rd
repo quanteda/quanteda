@@ -108,5 +108,6 @@ Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
 \seealso{
 \code{\link{tf}},  \code{\link{tfidf}}, \code{\link{docfreq}}
 }
+\keyword{dfm}
 \keyword{weighting}
 

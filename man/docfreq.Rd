@@ -67,6 +67,7 @@ docfreq(wikiDfm, scheme = "inverseprob")
 Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
   \emph{Introduction to Information Retrieval}. Cambridge University Press.
 }
+\keyword{dfm}
 \keyword{internal}
 \keyword{weighting}
 

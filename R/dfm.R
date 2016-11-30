@@ -52,6 +52,7 @@
 #' @import Matrix
 #' @export
 #' @name dfm
+#' @keywords dfm
 #' @examples
 #' ## for a corpus
 #' 
@@ -180,7 +181,14 @@ dfm.corpus <- function(x, tolower = TRUE,
                  paste(groupsLab, collapse=", "), sep="")
         }
     }
-    dfm(texts(x, groups = groups), ...)
+    dfm(texts(x, groups = groups),  tolower = tolower,
+        stem = stem,
+        select = select,
+        remove = remove,
+        thesaurus = thesaurus,
+        dictionary = dictionary,
+        valuetype = valuetype, 
+        verbose = verbose, ...)
 }    
 
     

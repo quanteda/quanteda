@@ -21,6 +21,7 @@
 #'   uppercase to distinguish them from other features
 #' @param verbose print status messages if \code{TRUE}
 #' @export
+#' @keywords dfm
 #' @examples
 #' myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
 #'                           opposition = c("Opposition", "reject", "notincorpus"),
