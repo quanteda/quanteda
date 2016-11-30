@@ -57,7 +57,8 @@ Suggests:
     RColorBrewer,
     ggplot2 (>= 2.2.0),
     grid,
-    text2vec
+    text2vec,
+    ExPosition
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues

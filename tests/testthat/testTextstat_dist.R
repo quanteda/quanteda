@@ -1,6 +1,7 @@
 require(quanteda)
 require(testthat)
 require(proxy)
+require(ExPosition)
 #require(qlcMatrix)
 
 # correlation
@@ -20,7 +21,7 @@ test_that("test textstat_simil method = \"correlation\" against base cor(): feat
                    stem = TRUE, verbose = FALSE)
     corQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "union", method = "correlation", margin = "features"))[,"union"], 6), decreasing = TRUE)
     corStats <- sort(round(cor(as.matrix(presDfm))[, "union"], 6), decreasing = TRUE)
-   expect_equal(corQuanteda[1:10], corStats[2:11])
+    expect_equal(corQuanteda[1:10], corStats[2:11])
 })
 
 # cosine
@@ -90,7 +91,8 @@ test_that("test textstat_dist method = \"Euclidean\" against proxy dist() and st
 # 28.670716 30.075357 29.038453 30.105618 46.34517   100
 
 # SOTUCorpus
-# microbenchmark(eucQuanteda <- textstat_dist(presDfm, method = "Euclidean", margin = "documents"),proxy::dist(xx, "euclidean", diag = FALSE, upper = FALSE, p = 2), dist(xx, method = "euclidean", diag = FALSE, upper = FALSE, p = 2), fastEuc(xx))
+# microbenchmark::microbenchmark(eucQuanteda <- textstat_dist(presDfm, method = "Euclidean", margin = "documents"),
+# proxy::dist(xx, "euclidean", diag = FALSE, upper = FALSE, p = 2), dist(xx, method = "euclidean", diag = FALSE, upper = FALSE, p = 2), fastEuc(xx))
 # Unit: milliseconds
 # expr        min
 # eucQuanteda <- textstat_dist(presDfm, method = "Euclidean", margin = "documents")   65.14323
@@ -262,4 +264,61 @@ test_that("test textstat_simil method = \"hamann\" against proxy::simil(): featu
     hamnProxy <- hamnProxy[-which(names(hamnProxy) == "soviet")]
     
     expect_equal(hamnQuanteda, hamnProxy)
+})
+
+# Faith similarity 
+test_that("test textstat_simil method = \"faith\" against proxy::simil(): documents", {
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    
+    faithQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "faith", margin = "documents", tri = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    faithQuanteda <- faithQuanteda[-which(names(faithQuanteda) == "1981-Reagan")]
+    faithProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "faith", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
+    faithProxy <- faithProxy[-which(names(faithProxy) == "1981-Reagan")]
+    expect_equal(faithQuanteda, faithProxy)
+})
+
+test_that("test textstat_simil method = \"faith\" against proxy::simil(): features", {
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    
+    faithQuanteda <- round(as.matrix(textstat_simil(presDfm, "soviet", method = "faith", margin = "features"))[,"soviet"], 2)
+    faithQuanteda <- faithQuanteda[order(names(faithQuanteda))]
+    faithQuanteda <- faithQuanteda[-which(names(faithQuanteda) == "soviet")]
+    
+    faithProxy <- round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), "faith", by_rows = FALSE)), 2)
+    faithProxy <- faithProxy[order(names(faithProxy))]
+    faithProxy <- faithProxy[-which(names(faithProxy) == "soviet")]
+    
+    expect_equal(faithQuanteda, faithProxy)
+})
+
+# Chi-squared distance 
+# Instead of comparing to Proxy package, ExPosition is compared to. Because Proxy::simil uses different formula
+# eucProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "Chi-squared", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
+test_that("test textstat_dist method = \"Chi-squred\" against ExPosition::chi2Dist(): features", {
+    require(proxy)
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    chiQuanteda <- round(as.matrix(textstat_dist(presDfm, method = "Chisquared", margin = "features"))[,"soviet"], 2)
+    chiQuanteda <- chiQuanteda[order(names(chiQuanteda))]
+    chiQuanteda <- chiQuanteda[-which(names(chiQuanteda) == "soviet")]
+    
+    chiExp <- ExPosition::chi2Dist(t(as.matrix(presDfm)))
+    chiExp <- sort(round(as.matrix(chiExp$D)[, "soviet"], 2), decreasing = FALSE)
+    chiExp <- chiExp[order(names(chiExp))]
+    chiExp <- chiExp[-which(names(chiExp) == "soviet")]
+    
+    expect_equal(chiQuanteda, chiExp)
+})
+
+test_that("test textstat_dist method = \"Chi-squred\" against ExPosition::chi2Dist(): documents", {
+    require(proxy)
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    
+    chiQuanteda <- sort(round(as.matrix(textstat_dist(presDfm, method = "Chisquared", margin = "documents"))[,"1981-Reagan"], 6), decreasing = FALSE)
+    chiExp <- ExPosition::chi2Dist(as.matrix(presDfm))
+    chiExp <- sort(round(as.matrix(chiExp$D)[, "1981-Reagan"], 6), decreasing = FALSE)
+    expect_equal(chiQuanteda, chiExp)
 })

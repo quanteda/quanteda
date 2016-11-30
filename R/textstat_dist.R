@@ -48,7 +48,7 @@ setClass("dist",
 #' textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
 #' textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
 #' #textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
-#' 
+
 #' @rdname dist-class
 #' @export
 setGeneric(name = "textstat_dist",
@@ -102,7 +102,7 @@ setMethod(f = "textstat_dist",
                   }
               } else xSelect <- NULL
               
-              vecMethod <- c("euclidean", "hamming")
+              vecMethod <- c("euclidean", "hamming", "Chisquared","Chi")
               vecMethod_simil <- c("jaccard", "binary", "eJaccard","simple matching")
               
               if (method %in% vecMethod){
@@ -167,7 +167,8 @@ setMethod(f = "textstat_dist",
               
               # This will call Stats::print.dist() and Stats::as.matrix.dist()
               distM
-          })
+          
+              })
 
 # convert the dist class object to the sorted list used in tm::findAssocs()
 #' @param sorted sort results in descending order if \code{TRUE}
@@ -202,7 +203,6 @@ as.list.dist <- function(x, sorted = TRUE, n = NULL, ...) {
 }
 
 ## used Matrix::crossprod and Matrix::tcrossprod for sparse Matrix handling
-
 euclideanSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     marginSums <- if (margin == 2) colSums else rowSums
@@ -229,7 +229,7 @@ euclideanSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
 }
 
 # Hamming distance
-# formula: hamming = b + c
+# formula: hamming = sum(x .!= y)
 hammingSparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
@@ -258,4 +258,93 @@ hammingSparse <- function(x, y = NULL, margin = 1) {
     hammat <- an -A
     dimnames(hammat) <- list(rowNm,  colNm)
     hammat
+}
+
+#Chi-squared distance:divide by row sums and square root of column sums, and adjust for square root of matrix total (Legendre & Gallagher 2001, Bruce McCune & James b. Grace 2002). 
+#http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&_Gallagher.pdf
+# https://www.pcord.com/book.htm
+#formula: Chi = sum((x/rowsum(x) - y/rowsum(y))^2/(colsum(i)/total))
+ChisquaredSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
+    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
+    marginSums <- if (margin == 2) colSums else rowSums
+    marginNames <- if (margin == 2) colnames else rownames
+    aveProfile <- if (margin == 2) sqrt(rowSums(x)/sum(x)) else sqrt(colSums(x)/sum(x))
+    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod   
+    n <- if (margin == 2) ncol(x) else nrow(x)
+    rowNm <- marginNames(x)
+    colNm <- marginNames(x)
+    if (margin == 1 ) {
+        # convert into profiles
+        x <- x/marginSums(x)
+    
+        # weighted by the average profiles
+        x <- x %*% diag(1/aveProfile)
+    } else {
+        x <- x %*% diag(1/marginSums(x))
+        x <- x / aveProfile
+    }
+    
+    if (!is.null(y)) {
+        stopifnot(ifelse(margin == 2, nrow(x) == nrow(y), ncol(x) == ncol(y)))
+        colNm <- marginNames(y)
+        # aveProfile is same as that for x 
+        if (margin == 1 ) {
+            # convert into profiles
+            y <- y/marginSums(y)
+            
+            # weighted by the average profiles
+            y <- y %*% diag(1/aveProfile)
+        } else {
+            y <- y %*% diag(1/marginSums(y))
+            y <- y / aveProfile
+        }
+        an <- marginSums(x^2)
+        bn <- marginSums(y^2)
+        
+        # number of features
+        kk <- y@Dim[1]
+        tmp <- matrix(rep(an, kk), nrow = n) 
+        tmp <-  tmp +  matrix(rep(bn, n), nrow = n, byrow=TRUE)
+        chimat <- tmp - 2 * as.matrix(cpFun(x, y))
+        #chimat <-  sqrt(round(chimat, 2)) 
+    } else {
+        an <- marginSums(x^2)
+        tmp <- matrix(rep(an, n), nrow = n) 
+        tmp <-  tmp +  matrix(rep(an, n), nrow = n, byrow=TRUE)
+        chimat <-  tmp - 2 * as.matrix(cpFun(x))
+        #chimat <-  sqrt(round(chimat, 2)) 
+    }
+    dimnames(chimat) <- list(rowNm,  colNm)
+    chimat
+}
+
+## This chi-squared method is used for histogram: sum((x-y)^2/((x+y)))/2
+##http://www.ariel.ac.il/sites/ofirpele/publications/ECCV2010.pdf
+ChiSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
+    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
+    marginSums <- if (margin == 2) colSums else rowSums
+    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod   
+    n <- if (margin == 2) ncol(x) else nrow(x)
+    
+    if (!is.null(y)) {
+        stopifnot(ifelse(margin == 2, nrow(x) == nrow(y), ncol(x) == ncol(y)))
+        an <- marginSums(x^2)
+        bn <- marginSums(y^2)
+        
+        # number of features
+        kk <- y@Dim[1]
+        tmp <- matrix(rep(an, kk), nrow = n) 
+        tmp <-  tmp +  matrix(rep(bn, n), nrow = n, byrow=TRUE)
+        chimat <- sqrt( tmp - 2 * as.matrix(cpFun(x, y)) )
+    } else {
+        an <- marginSums(x^2)
+        tmp <- matrix(rep(an, n), nrow = n) 
+        tmp <-  tmp +  matrix(rep(an, n), nrow = n, byrow=TRUE)
+        
+        a1 <- marginSums(x)
+        sumij <- matrix(rep(a1, n), nrow = n) + matrix(rep(a1, n), nrow = n, byrow=TRUE)
+        
+        chimat <- ( tmp - 2 * as.matrix(cpFun(x)))/sumij/2
+    }
+    chimat
 }

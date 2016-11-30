@@ -89,7 +89,7 @@ setMethod(f = "textstat_simil",
                   }
               } else xSelect <- NULL
               
-              vecMethod <- c("cosine", "correlation", "jaccard", "eJaccard", "dice", "eDice", "simple matching", "hamann")
+              vecMethod <- c("cosine", "correlation", "jaccard", "eJaccard", "dice", "eDice", "simple matching", "hamann", "faith")
               if (method %in% vecMethod){
                   if (method == "simple matching") method <- "smc"
                   result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
@@ -410,4 +410,38 @@ hamannSparse <- function(x, y = NULL, margin = 1) {
     hamnmat <- (2* (A +A0) - an) / an
     dimnames(hamnmat) <- list(rowNm,  colNm)
     hamnmat
+}
+
+# Faith similarity: This measure includes the
+#negative match but only gave the half credits while giving
+#the full credits for the positive matches.
+# formula: Hamman = a+0.5d/n
+
+faithSparse <- function(x, y = NULL, margin = 1) {
+    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
+    
+    # convert to binary matrix
+    x <- tf(x, "boolean") 
+    x0 <- 1 - x
+    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
+    marginSums <- if (margin == 2) nrow else ncol
+    marginNames <- if (margin == 2) colnames else rownames
+    # union 
+    an <- marginSums(x)
+    if (!is.null(y)) {
+        y <- tf(y, "boolean")
+        y0 <- 1 - y
+        A <- cpFun(x, y)
+        A0 <- cpFun(x0, y0)
+        colNm <- marginNames(y)
+    } else {
+        A <- cpFun(x)
+        A0 <- cpFun(x0)
+        colNm <- marginNames(x)
+    }
+    rowNm <- marginNames(x)
+    # common values
+    faithmat <- (A + 0.5 * A0)/ an
+    dimnames(faithmat) <- list(rowNm,  colNm)
+    faithmat
 }
