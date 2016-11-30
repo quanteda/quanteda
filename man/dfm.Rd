@@ -37,7 +37,7 @@ converted to upper case to create a feature label in the dfm, as a reminder
 that this was not a type found in the text, but rather the label of a 
 thesaurus key.  For more fine-grained control over this and other aspects 
 of converting features into dictionary/thesaurus keys from pattern matches 
-to values, you can use \code{\link{applyDictionary}} after creating the 
+to values, you can use \code{\link{dfm_lookup}} after creating the 
 dfm.}
 
 \item{dictionary}{A list of character vector dictionary entries, including 

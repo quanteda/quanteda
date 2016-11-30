@@ -31,7 +31,7 @@
 #'   that this was not a type found in the text, but rather the label of a 
 #'   thesaurus key.  For more fine-grained control over this and other aspects 
 #'   of converting features into dictionary/thesaurus keys from pattern matches 
-#'   to values, you can use \code{\link{applyDictionary}} after creating the 
+#'   to values, you can use \code{\link{dfm_lookup}} after creating the 
 #'   dfm.
 #' @param valuetype \code{fixed} for words as is; \code{"regex"} for regular 
 #'   expressions; or \code{"glob"} for "glob"-style wildcard; \code{"glob"}
@@ -234,7 +234,7 @@ dfm.tokenizedTexts <- function(x,
     if (!is.null(dictionary) | !is.null(thesaurus)) {
         if (!is.null(thesaurus)) dictionary <- thesaurus
         if (verbose) catm("   ... ")
-        dfmresult <- applyDictionary(dfmresult, dictionary,
+        dfmresult <- dfm_lookup(dfmresult, dictionary,
                                      exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
                                      valuetype = valuetype,
                                      verbose = verbose)

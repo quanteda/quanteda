@@ -56,12 +56,13 @@ new function | deprecated function | contructs:
 `corpus_sample` | `sample`| `corpus` class object
 `corpus_segment` | `segment`| `corpus` class object
 `dfm_compress` | `compress` | `dfm` class object
-`dfm_select` | `selectFeatures.dfm` | `dfm` class object
+`dfm_lookup` | `applyDictionary` | `dfm` class object
 `dfm_remove` | `removeFeatures.dfm` | `dfm` class object
+`dfm_sample`   | `sample.dfm` | `dfm` class object
+`dfm_select` | `selectFeatures.dfm` | `dfm` class object
+`dfm_smooth` | `smoother` | `dfm` class object
 `dfm_sort`   | `sort.dfm` | `dfm` class object
 `dfm_trim`   | `trim.dfm` | `dfm` class object
-`dfm_sample`   | `sample.dfm` | `dfm` class object
-`dfm_smooth` | `smoother` | `dfm` class object
 `dfm_weight` | `weight` | `dfm` class object
 
 

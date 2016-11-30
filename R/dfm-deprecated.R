@@ -167,3 +167,12 @@ smoother <- function(x, ...) {
     dfm_smooth(x, ...)
 }
 
+#' @rdname applyDictionary
+#' @details 
+#' \code{applyDictionary.dfm} is the deprecated function name for \code{\link{dfm_lookup}}.
+#' @export
+applyDictionary.dfm <- function(x, ...) {
+    .Deprecated("dfm_lookup")
+    dfm_lookup(x, ...)
+}
+
