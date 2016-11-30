@@ -442,13 +442,6 @@ readLexicoderDict <- function(path, toLower=TRUE) {
 #' @param x object to which dictionary or thesaurus will be supplied
 #' @param dictionary the \link{dictionary}-class object that will be applied to
 #'   \code{x}
-#' @export
-applyDictionary <- function(x, dictionary, ...) {
-    UseMethod("applyDictionary")
-}
-
-
-#' @rdname applyDictionary
 #' @param exclusive if \code{TRUE}, remove all features not in dictionary, 
 #'   otherwise, replace values in dictionary with keys while leaving other 
 #'   features unaffected
@@ -461,6 +454,13 @@ applyDictionary <- function(x, dictionary, ...) {
 #'   uppercase to distinguish them from other features
 #' @param verbose print status messages if \code{TRUE}
 #' @param ... not used
+#' @export
+applyDictionary <- function(x, dictionary, ...) {
+    UseMethod("applyDictionary")
+}
+
+
+#' @rdname applyDictionary
 #' @examples 
 #' toks <- tokens(data_corpus_inaugural)
 #' head(kwic(toks, "united states"))

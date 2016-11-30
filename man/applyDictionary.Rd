@@ -25,6 +25,8 @@ applyDictionary(x, dictionary, ...)
 \item{dictionary}{the \link{dictionary}-class object that will be applied to
 \code{x}}
 
+\item{...}{not used}
+
 \item{exclusive}{if \code{TRUE}, remove all features not in dictionary, 
 otherwise, replace values in dictionary with keys while leaving other 
 features unaffected}
