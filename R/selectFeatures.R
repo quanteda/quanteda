@@ -98,13 +98,13 @@ selectFeatures <- function(x, features, ...) {
 #'                valuetype = "glob", padding = TRUE, case_insensitive = FALSE)
 #' 
 #' # with longer texts
-#' txts <- c(data_char_sampletext, data_char_inaugural[2])
+#' txts <- data_char_inaugural[1:2]
 #' toks <- tokenize(txts)
 #' selectFeatures(toks, stopwords("english"), "remove")
 #' selectFeatures(toks, stopwords("english"), "keep")
 #' selectFeatures(toks, stopwords("english"), "remove", padding = TRUE)
 #' selectFeatures(toks, stopwords("english"), "keep", padding = TRUE)
-#' selectFeatures(tokenize(data_char_encodedtexts[1]), stopwords("english"), "remove", padding = TRUE)
+#' selectFeatures(tokenize(data_char_inaugural[2]), stopwords("english"), "remove", padding = TRUE)
 selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                            valuetype = c("glob", "regex", "fixed"),
                                            case_insensitive = TRUE, padding = FALSE, indexing = FALSE,

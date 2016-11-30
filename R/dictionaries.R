@@ -92,6 +92,7 @@ setMethod("show", "dictionary",
 #' mfdict <- dictionary(file = "http://ow.ly/VMRkL", format = "LIWC")
 #' head(dfm(data_char_inaugural, dictionary = mfdict))}
 #' @importFrom stats setNames
+#' @importFrom tools file_ext
 #' @export
 dictionary <- function(x = NULL, file = NULL, format = NULL, 
                        concatenator = " ", 

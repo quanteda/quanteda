@@ -160,13 +160,13 @@ selectFeatures(toks, c("is", "a", "this"), selection = "remove",
                valuetype = "glob", padding = TRUE, case_insensitive = FALSE)
 
 # with longer texts
-txts <- c(data_char_sampletext, data_char_inaugural[2])
+txts <- data_char_inaugural[1:2]
 toks <- tokenize(txts)
 selectFeatures(toks, stopwords("english"), "remove")
 selectFeatures(toks, stopwords("english"), "keep")
 selectFeatures(toks, stopwords("english"), "remove", padding = TRUE)
 selectFeatures(toks, stopwords("english"), "keep", padding = TRUE)
-selectFeatures(tokenize(data_char_encodedtexts[1]), stopwords("english"), "remove", padding = TRUE)
+selectFeatures(tokenize(data_char_inaugural[2]), stopwords("english"), "remove", padding = TRUE)
 toksh <- tokens(c(doc1 = "This is a SAMPLE text", doc2 = "this sample text is better"))
 feats <- c("this", "sample", "is")
 # keeping features
