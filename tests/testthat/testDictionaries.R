@@ -1,7 +1,7 @@
 context('test dictionaries.R')
 
 test_that("yoshikoder dictionaries load and percolate patterns correctly", {
-  dd <- dictionary(file="data/yoshi.ykd", format="yoshikoder")
+  dd <- dictionary(file = "../data/dictionaries/yoshi.ykd", format = "yoshikoder")
   expect_equal(names(dd), c("A category", "Another category"))
   expect_equal(slot(dd, "format"), "yoshikoder")
   # subcategory pattern contents are pulled up into top level category

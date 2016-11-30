@@ -165,5 +165,5 @@ y[4:5, 1:5]
 \seealso{
 \link{dfm}
 }
-\keyword{interna;}
+\keyword{internal}
 

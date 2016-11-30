@@ -24,6 +24,7 @@ text-based object.  This function simply provides a convenience wrapper for
 \code{\link{selectFeatures}} where \code{selection = "remove"}.
 }
 \examples{
+\dontrun{
 ## for tokenized texts 
 txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to 
                    execute the functions of its Chief Magistrate.",
@@ -43,6 +44,7 @@ removeFeatures(mydfm, stopwords("english"))
 (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
 removeFeatures(myCollocs, stopwords("english"))
 removeFeatures(myCollocs, stopwords("english"), pos = 2)
+}
 }
 \author{
 Kenneth Benoit

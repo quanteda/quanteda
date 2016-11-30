@@ -13,14 +13,14 @@ test_that("syllables works as expected for tokens_hashed", {
 })
 
 
-test_that("wordstem works as expected for tokens_hashed", {
+test_that("tokens_wordstem works as expected for tokens_hashed", {
 
     txt <- c(one = "Eating eater eaters eats ate.",
              two = "Taxing taxes taxed my tax return.")
     toks <- tokenize(toLower(txt), removePunct = TRUE)
     toksh <- tokens(toLower(txt), removePunct = TRUE)
-    classic <- wordstem(toks)
-    hashed <- wordstem(toksh)
+    classic <- tokens_wordstem(toks)
+    hashed <- tokens_wordstem(toksh)
     expect_equivalent(classic, as.tokenizedTexts(hashed))
 })
 

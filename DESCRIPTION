@@ -18,8 +18,8 @@ Author: Kenneth Benoit [aut, cre],
     Pablo Barberá [ctb],
     Will Lowe [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.8.15
-Date: 2016-11-23
+Version: 0.9.8.9016
+Date: 2016-11-29
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -68,6 +68,7 @@ Collate:
     'corpus.R'
     'collocations.R'
     'convert.R'
+    'corpus-deprecated.R'
     'corpus-methods-base.R'
     'corpus-methods-quanteda.R'
     'corpus_reshape.R'
@@ -78,12 +79,16 @@ Collate:
     'data-documentation.R'
     'describe-texts.R'
     'dfm-classes.R'
+    'dfm-deprecated.R'
     'dfm-methods.R'
     'dfm-subsetting.R'
-    'dfm-weighting.R'
     'dfm.R'
     'dfm_compress.R'
+    'dfm_lookup.R'
+    'dfm_sample.R'
     'dfm_select.R'
+    'dfm_trim.R'
+    'dfm_weight.R'
     'dictionaries2.R'
     'encoding.R'
     'fcm-methods.R'

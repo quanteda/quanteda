@@ -34,33 +34,7 @@
 #'   need to project this onto a test set whose features must be identical.
 #'   
 #' @export
-#' @seealso \code{\link{removeFeatures}}, \code{\link{trim}}
-#' @examples 
-#' myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
-#'                "Does the United_States or Sweden have more progressive taxation?"),
-#'              toLower = FALSE, verbose = FALSE)
-#' mydict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
-#'                           wordsEndingInY = c("by", "my"),
-#'                           notintext = "blahblah"))
-#' selectFeatures(myDfm, mydict)
-#' selectFeatures(myDfm, mydict, case_insensitive = FALSE)
-#' selectFeatures(myDfm, c("s$", ".y"), "keep")
-#' selectFeatures(myDfm, c("s$", ".y"), "keep", valuetype = "regex")
-#' selectFeatures(myDfm, c("s$", ".y"), "remove", valuetype = "regex")
-#' selectFeatures(myDfm, stopwords("english"), "keep", valuetype = "fixed")
-#' selectFeatures(myDfm, stopwords("english"), "remove", valuetype = "fixed")
-#' 
-#' # selecting on a dfm
-#' textVec1 <- c("This is text one.", "This, the second text.", "Here: the third text.")
-#' textVec2 <- c("Here are new words.", "New words in this text.")
-#' (dfm1 <- dfm(textVec1, verbose = FALSE))
-#' (dfm2a <- dfm(textVec2, verbose = FALSE))
-#' (dfm2b <- selectFeatures(dfm2a, dfm1))
-#' setequal(features(dfm1), features(dfm2b))
-#' 
-#' # more selection on a dfm
-#' selectFeatures(dfm1, dfm2a)
-#' selectFeatures(dfm1, dfm2a, selection = "remove")
+#' @seealso \code{\link{removeFeatures}}, \code{\link{dfm_trim}}
 selectFeatures <- function(x, features, ...) {
     UseMethod("selectFeatures")
 }
@@ -362,6 +336,7 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
 #' @author Kenneth Benoit
 #' @seealso \link{stopwords}
 #' @examples
+#' \dontrun{
 #' ## for tokenized texts 
 #' txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to 
 #'                    execute the functions of its Chief Magistrate.",
@@ -381,6 +356,7 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
 #' (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
 #' removeFeatures(myCollocs, stopwords("english"))
 #' removeFeatures(myCollocs, stopwords("english"), pos = 2)
+#' }
 removeFeatures <- function(x, features, ...) {
     if ("selection" %in% names(list(...)))
         stop("cannot override selection argument in removeFeatures")

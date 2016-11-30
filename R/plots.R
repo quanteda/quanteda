@@ -216,7 +216,7 @@ plot.kwic <- function(..., scale = c("absolute", "relative"), sort=FALSE) {
 #' @importFrom graphics plot segments axis points par text
 #' @importFrom grDevices rgb
 #' @examples 
-#' postwar <- trim(dfm(data_corpus_inaugural[41:57]), minCount = 5, minDoc = 2)
+#' postwar <- dfm_trim(dfm(data_corpus_inaugural[41:57]), min_count = 5, min_docfreq = 2)
 #' mod <- textmodel(postwar, model = "wordfish")
 #' plot(mod, sort = FALSE)
 #' plot(mod, sort = TRUE)

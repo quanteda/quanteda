@@ -9,63 +9,64 @@ dfm(x, tolower = TRUE, stem = FALSE, select = NULL, remove = NULL,
   "fixed"), groups = NULL, verbose = FALSE, ...)
 }
 \arguments{
-\item{x}{corpus, character, or tokens object}
+\item{x}{character, corpus, or tokens object}
 
 \item{tolower}{convert all tokens to lowercase}
 
 \item{stem}{if \code{TRUE}, stem words}
 
-\item{select}{a use supplied regular expression defining which features
-to keep, while excluding all others.  This can be used in lieu of a 
-dictionary if there are only specific features that a user wishes to keep. 
-To extract only Twitter usernames, for example, set \code{select = 
-"@*"} and make sure that \code{removeTwitter = FALSE} as an additional 
-argument passed to \link{tokenize}.  Note: \code{select = 
-"^@\\\w+\\\b"} would be the regular expression version of this matching 
-pattern.  The pattern matching type will be set by \code{valuetype}.}
+\item{select}{a use supplied regular expression defining which features to
+keep, while excluding all others.  This can be used in lieu of a dictionary
+if there are only specific features that a user wishes to keep. To extract
+only Twitter usernames, for example, set \code{select = "@*"} and make
+sure that \code{removeTwitter = FALSE} as an additional argument passed to
+\link{tokenize}.  Note: \code{select = "^@\\\w+\\\b"} would be the regular
+expression version of this matching pattern.  The pattern matching type
+will be set by \code{valuetype}.}
 
-\item{remove}{a character vector of user-supplied features to 
-ignore, such as "stop words".  To access one possible list (from any list
-you wish), use \code{\link{stopwords}()}.  The pattern matching type will
-be set by \code{valuetype}.  For behaviour of \code{remove} with
-\code{ngrams > 1}, see Details.}
+\item{remove}{a character vector of user-supplied features to ignore, such as
+"stop words".  To access one possible list (from any list you wish), use
+\code{\link{stopwords}()}.  The pattern matching type will be set by
+\code{valuetype}.  For behaviour of \code{remove} with \code{ngrams > 1},
+see Details.}
 
 \item{thesaurus}{A list of character vector "thesaurus" entries, in a 
-dictionary list format, which operates as a dictionary but without
-excluding values not matched from the dictionary.  Thesaurus keys are
+dictionary list format, which operates as a dictionary but without 
+excluding values not matched from the dictionary.  Thesaurus keys are 
 converted to upper case to create a feature label in the dfm, as a reminder
-that this was not a type found in the text, but rather the label of a
-thesaurus key.  For more fine-grained control over this and other aspects
-of converting features into dictionary/thesaurus keys from pattern matches
-to values, you can use \code{\link{applyDictionary}} after creating the
+that this was not a type found in the text, but rather the label of a 
+thesaurus key.  For more fine-grained control over this and other aspects 
+of converting features into dictionary/thesaurus keys from pattern matches 
+to values, you can use \code{\link{dfm_lookup}} after creating the 
 dfm.}
 
 \item{dictionary}{A list of character vector dictionary entries, including 
 regular expressions (see examples)}
 
 \item{valuetype}{\code{fixed} for words as is; \code{"regex"} for regular 
-expressions; or \code{"glob"} for "glob"-style wildcard; \code{"glob"} format is 
-the default.  See \code{\link{dfm_select}}.}
+expressions; or \code{"glob"} for "glob"-style wildcard; \code{"glob"}
+format is the default.  See \code{\link{dfm_select}}.}
 
 \item{groups}{character vector containing the names of document variables for
 aggregating documents; only applies when calling dfm on a corpus object}
 
 \item{verbose}{display messages if \code{TRUE}}
 
-\item{...}{additional arguments passed to \link{tokens}, for character and corpus}
+\item{...}{additional arguments passed to \link{tokens}, for character and
+corpus}
 }
 \value{
 a \link{dfm-class} object
 }
 \description{
-Construct a sparse document-feature matrix, from a \link{corpus}, 
-character object, or \link{tokens} object.
+Construct a sparse document-feature matrix, from a character, \link{corpus}, 
+or \link{tokens} object.
 }
 \details{
-The default behavior for \code{remove}/\code{select} when constructing 
-  ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to remove/select any 
-  ngram constructed from a matching feature.  If you wish to 
-  remove these before constructing ngrams, you will need to first tokenize 
+The default behavior for \code{remove}/\code{select} when
+  constructing ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to
+  remove/select any ngram constructed from a matching feature.  If you wish
+  to remove these before constructing ngrams, you will need to first tokenize
   the texts with ngrams, then remove the features to be ignored, and then 
   construct the dfm using this modified tokenization object.  See the code 
   examples for an illustration.

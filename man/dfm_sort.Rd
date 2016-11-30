@@ -26,7 +26,6 @@ in documents, or both.
 \examples{
 dtm <- dfm(data_corpus_inaugural)
 dtm[1:10, 1:5]
-dtm <- sort(dtm)
 dfm_sort(dtm)[1:10, 1:5]
 dfm_sort(dtm, decreasing = FALSE, "both")[1:10, 1:5]  
 }
