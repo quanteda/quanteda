@@ -37,12 +37,6 @@ new name | original name | notes
 `data_corpus_inaugural` | `inaugCorpus` |
 
 
-### Deleted data objects
-
-new name | reason
-:--------|:-------------
-`encodedTextFiles.zip` | moved to the [**readtext**](https://github.com/kbenoit/readtext) package
-
 
 ## Deprecated functions
 
@@ -81,6 +75,15 @@ new function | description | ouput class
 `fcm_toupper` | uppercases the features of an `fcm` and compacts | `fcm`
 `dfm_tolower` | lowercases the features of a `dfm` and compacts | `dfm`
 `dfm_toupper` | uppercases the features of a `dfm` and compacts | `dfm`
+
+
+## Deleted functions and data objects
+
+new name | reason
+:--------|:-------------
+`encodedTextFiles.zip` | moved to the [**readtext**](https://github.com/kbenoit/readtext) package
+`describeTexts` | deprecated several versions ago for `summary.character`
+
 
 
 ## Other new features

@@ -30,9 +30,4 @@ summary.character <- function(object, n = 100, verbose = TRUE, toLower = FALSE, 
     return(invisible(results))
 }
 
-#' @rdname summary.corpus
-#' @export
-describeTexts <- function(object, n = 100, verbose=TRUE, ...) {
-    catm("note: describeTexts is deprecated, use summary instead.\n")
-    UseMethod("summary.character")
-}
+
