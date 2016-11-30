@@ -3,7 +3,6 @@
 \name{tokenize}
 \alias{as.tokenizedTexts}
 \alias{as.tokenizedTexts.list}
-\alias{clean}
 \alias{is.tokenizedTexts}
 \alias{tokenise}
 \alias{tokenize}
@@ -28,7 +27,7 @@ as.tokenizedTexts(x, ...)
 \method{as.tokenizedTexts}{list}(x, ...)
 }
 \arguments{
-\item{x}{The text(s) or corpus to be tokenized}
+\item{x}{text(s) or corpus to be tokenized}
 
 \item{...}{additional arguments not used}
 
@@ -120,13 +119,6 @@ The tokenizer is designed to be fast and flexible as well as to
 
 \code{as.tokenizedTexts} coerces a list of character tokens to a tokenizedText class object, 
 making the methods available for this object type available to this object.
-}
-\note{
-This replaces an older function named \code{clean()}, removed from 
-  \pkg{quanteda} in version 0.8.1.  "Cleaning" by removing certain parts of 
-  texts, such as punctuation or numbers, only only works on tokenized texts, 
-  although texts of any length can be converted to lower case using 
-  \code{\link{toLower}}.
 }
 \section{Dealing with URLs}{
  URLs are tricky to tokenize, because they contain

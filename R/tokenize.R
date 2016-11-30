@@ -4,7 +4,7 @@
 #' Tokenize the texts from a character vector or from a corpus.
 #' @rdname tokenize
 #' @aliases tokenise
-#' @param x The text(s) or corpus to be tokenized
+#' @param x text(s) or corpus to be tokenized
 #' @param ... additional arguments not used
 #' @return A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
 #' @author Ken Benoit and Paul Nulty
@@ -21,7 +21,6 @@ tokenize <- function(x, ...) {
 }
 
 #' @rdname tokenize
-#' @aliases clean
 #' @param what the unit for splitting the text, available alternatives are: 
 #'   \describe{ \item{\code{"word"}}{(recommended default) smartest, but 
 #'   slowest, word tokenization method; see 
@@ -94,11 +93,6 @@ tokenize <- function(x, ...) {
 #'   See the examples below.
 #' @return a \strong{tokenizedText} (S3) object, essentially a list of character
 #'   vectors. If \code{simplify = TRUE} then return a single character vector.
-#' @note This replaces an older function named \code{clean()}, removed from 
-#'   \pkg{quanteda} in version 0.8.1.  "Cleaning" by removing certain parts of 
-#'   texts, such as punctuation or numbers, only only works on tokenized texts, 
-#'   although texts of any length can be converted to lower case using 
-#'   \code{\link{toLower}}.
 #' @export
 #' @seealso \code{\link{ngrams}}
 #' @examples 

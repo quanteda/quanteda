@@ -32,6 +32,7 @@
 #' @name dfm_weight
 #' @export
 #' @seealso \code{\link{tf}},  \code{\link{tfidf}}, \code{\link{docfreq}}
+#' @keywords dfm
 #' @author Paul Nulty and Kenneth Benoit
 #' @examples
 #' dtm <- dfm(data_corpus_inaugural)
@@ -95,7 +96,7 @@ setMethod("dfm_weight", signature = c("dfm", "character"),
 #' dfm_weight(mydfm, weights)
 #' 
 #' 
-#' @keywords weighting
+#' @keywords weighting dfm
 setMethod("dfm_weight", signature = c("dfm", "numeric"), 
           definition = function(x, type, ...) {
               weights <- type
@@ -154,7 +155,7 @@ dfm_smooth <- function(x, smoothing = 1) {
 #'   the resulting numeric vector
 #' @param ... not used
 #' @return a numeric vector of document frequencies for each feature
-#' @keywords internal weighting
+#' @keywords internal weighting dfm
 #' @export
 #' @examples 
 #' mydfm <- dfm(data_char_inaugural[1:2], verbose = FALSE)
@@ -249,7 +250,7 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
 #'   \code{normalize = TRUE}.  
 #' @references Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
 #'   \emph{Introduction to Information Retrieval}. Cambridge University Press.
-#' @keywords internal weighting
+#' @keywords internal weighting dfm
 #' @examples 
 #' head(data_dfm_LBGexample[, 5:10])
 #' head(tfidf(data_dfm_LBGexample)[, 5:10])
@@ -314,7 +315,7 @@ tfidf <- function(x, normalize = FALSE, scheme = "inverse", ...) {
 #'   
 #'   \url{https://en.wikipedia.org/wiki/Tf-idf#Term_frequency_2}
 #' @export
-#' @keywords internal weighting
+#' @keywords internal weighting dfm
 tf <- function(x, scheme = c("count", "prop", "propmax", "boolean", "log", "augmented", "logave"),
                base = 10, K = 0.5) {
     if (!is.dfm(x))
@@ -401,47 +402,3 @@ setMethod("maxtf", signature(x = "dfmDense"), definition = function(x) {
 })
 
 
-
-
-## BENCHMARKING
-
-# microbenchmark::microbenchmark(m1 <- apply(NSFdfm, 1, max), m2 <- NSFdfm[, max.col(t(NSFdfm))])
-
-# require(data.table)
-# f1 <- function(x) {
-#     dt <- data.table(doc = t(x)@i, freq = x@x)
-#     dt[, max(freq), by = doc][, V1]
-# }
-# 
-# f2 <- function(x) {
-#     sapply(split(x@x, x@i), max)
-# }
-# 
-# myDfm <- dfm(data_corpus_inaugural, verbose = FALSE)
-# microbenchmark::microbenchmark(f1(myDfm), f2(myDfm))
-# microbenchmark::microbenchmark(f1(NSFdfm), f2(NSFdfm), times = 5)
-
-          
-# #' @rdname tfidf
-# #' @param x object for which idf or tf-idf will be computed (a document-feature 
-# #'   matrix)
-# #' @param k additional constant to add to the denominator in \emph{docfreq} 
-# #'   computation, default is \code{k = 1}
-# #' @param base the base with respect to which logarithms in \emph{idf}
-# #'   and \emph{idf} computation are computed, default is 10 (see Manning,
-# #'   Raghavan, and Schutze 2008, p123).
-# #' @param USE.NAMES	logical; if \code{TRUE} attach feature labels as names of 
-# #'   the resulting numeric vector
-# #' @export
-# #' @details \code{idf} computes inverse document frequency with a constant 
-# #'   \code{k} added to the denominator of log document frequency.
-# #' @seealso \code{\link{docfreq}}, \code{\link{weight}}
-# idf <- function(x, k = 1, USE.NAMES = TRUE, base = 10) UseMethod("idf")
-# 
-# #' @rdname tfidf
-# #' @export
-# idf.dfm <- function(x, k = 1, USE.NAMES = TRUE, base = 10) {
-#     x <- log(ndoc(x), base = base) - log(docfreq(x, USE.NAMES = FALSE) + k, base = base)
-#     if (!USE.NAMES) names(x) <- NULL
-#     x
-# }

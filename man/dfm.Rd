@@ -131,4 +131,5 @@ testTweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday 
 dfm(testTweets, select = "#*", removeTwitter = FALSE)  # keep only hashtags
 dfm(testTweets, select = "^#.*$", valuetype = "regex", removeTwitter = FALSE)
 }
+\keyword{dfm}
 

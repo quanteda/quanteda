@@ -53,6 +53,7 @@ Manning, C. D., Raghavan, P., & Schutze, H. (2008).
   
   \url{https://en.wikipedia.org/wiki/Tf-idf#Term_frequency_2}
 }
+\keyword{dfm}
 \keyword{internal}
 \keyword{weighting}
 

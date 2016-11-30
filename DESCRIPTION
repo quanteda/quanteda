@@ -64,6 +64,7 @@ LazyData: TRUE
 VignetteBuilder: knitr
 Collate:
     'RcppExports.R'
+    'character-methods.R'
     'dictionaries.R'
     'corpus.R'
     'collocations.R'
@@ -77,7 +78,6 @@ Collate:
     'corpus_subset.R'
     'data-deprecated.R'
     'data-documentation.R'
-    'describe-texts.R'
     'dfm-classes.R'
     'dfm-deprecated.R'
     'dfm-methods.R'
@@ -90,7 +90,6 @@ Collate:
     'dfm_trim.R'
     'dfm_weight.R'
     'dictionaries2.R'
-    'encoding.R'
     'fcm-methods.R'
     'fcm.R'
     'findSequences.R'
@@ -113,7 +112,6 @@ Collate:
     'similarity.R'
     'stopwords.R'
     'syllables.R'
-    'textfile.R'
     'textmodel-NB.R'
     'textmodel-ca.R'
     'textmodel-generics.R'

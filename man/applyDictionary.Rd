@@ -52,7 +52,8 @@ Convert features into equivalence classes defined by values of a dictionary
 object.
 }
 \details{
-\code{applyDictionary.dfm} is the deprecated function name for \code{\link{dfm_lookup}}.
+\code{applyDictionary.dfm} is the deprecated function name for
+\code{\link{dfm_lookup}}.
 }
 \note{
 Selecting only features defined in a "dictionary" is traditionally 
@@ -69,4 +70,6 @@ dict <- dictionary(list(country = "united states"))
 toks2 <- applyDictionary(toks, dict, valuetype = "fixed")
 toks2
 }
+\keyword{deprecated}
+\keyword{internal}
 

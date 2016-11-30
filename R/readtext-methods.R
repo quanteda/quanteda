@@ -3,6 +3,18 @@
 ### readtext objects
 ###
 
+#' old function to read texts from files
+#' 
+#' This function was removed from \pkg{quanteda} in v.0.9.9 and moved to a 
+#' separate package, \pkg{readtext}.  Please use \code{readtext} instead
+#' of \code{textfile}.
+#' @param ... any collection of objects
+#' @keywords internal deprecated
+#' @export
+textfile <- function(...) {
+    .Defunct("textfile", package = "readtext")
+}
+
 #' @noRd
 #' @export
 texts.readtext <- function(x, groups = NULL, ...) {
