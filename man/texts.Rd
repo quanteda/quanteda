@@ -4,7 +4,7 @@
 \alias{as.character.corpus}
 \alias{texts}
 \alias{texts<-}
-\title{get corpus texts}
+\title{get or assign corpus texts}
 \usage{
 texts(x, groups = NULL, ...)
 
@@ -15,10 +15,10 @@ texts(x) <- value
 \arguments{
 \item{x}{a quanteda \link{corpus} or character object}
 
-\item{groups}{character vector containing the names of document variables in
+\item{groups}{character vector containing the names of document variables in 
 a corpus, or a factor equal in length to the number of documents, used for 
-aggregating the texts through concatenation.  If \code{x} is of type character,
-then \code{groups} must be a factor.}
+aggregating the texts through concatenation.  If \code{x} is of type
+character, then \code{groups} must be a factor.}
 
 \item{...}{unused}
 
@@ -28,10 +28,12 @@ then \code{groups} must be a factor.}
 For \code{texts}, a character vector of the texts in the corpus.
   
   For \code{texts <-}, the corpus with the updated texts.
+
+for \code{texts <-}, a corpus with the texts replaced by \code{value}
 }
 \description{
-Get the texts in a quanteda corpus object, with grouping options.  Works for plain character
-vectors too, if \code{groups} is a factor.
+Get or replace the texts in a \link{corpus} object, with grouping options. 
+Works for plain character vectors too, if \code{groups} is a factor.
 }
 \details{
 \code{as.character(x)} where \code{x} is a corpus is equivalent to

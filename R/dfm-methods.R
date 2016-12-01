@@ -39,10 +39,7 @@ features.dfm <- function(x) {
     colnames(x)
 }
 
-#' @rdname docnames
-#' @examples
-#' # query the document names of a dfm
-#' docnames(dfm(data_char_inaugural[1:5]))
+#' @noRd
 #' @export
 docnames.dfm <- function(x) {
     rownames(x)

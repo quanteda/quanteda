@@ -2,18 +2,12 @@
 % Please edit documentation in R/corpus-methods-quanteda.R
 \name{docvars}
 \alias{docvars}
-\alias{docvars.corpus}
 \alias{docvars<-}
-\alias{docvars<-.corpus}
 \title{get or set for document-level variables}
 \usage{
 docvars(x, field = NULL)
 
-\method{docvars}{corpus}(x, field = NULL)
-
 docvars(x, field = NULL) <- value
-
-\method{docvars}{corpus}(x, field = NULL) <- value
 }
 \arguments{
 \item{x}{corpus whose document-level variables will be read or set}
