@@ -84,6 +84,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qatd_cpp_unhash
+List qatd_cpp_unhash(ListOf<IntegerVector> tokens_int, CharacterVector types);
+RcppExport SEXP quanteda_qatd_cpp_unhash(SEXP tokens_intSEXP, SEXP typesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< ListOf<IntegerVector> >::type tokens_int(tokens_intSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type types(typesSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_unhash(tokens_int, types));
+    return rcpp_result_gen;
+END_RCPP
+}
 // qatd_cpp_replace_int_list
 List qatd_cpp_replace_int_list(List texts_, List seqs, IntegerVector ids, int id_start);
 RcppExport SEXP quanteda_qatd_cpp_replace_int_list(SEXP texts_SEXP, SEXP seqsSEXP, SEXP idsSEXP, SEXP id_startSEXP) {

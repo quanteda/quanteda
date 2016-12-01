@@ -21,6 +21,10 @@ find_sequence_cppl <- function(texts, types, count_min, smooth, nested) {
     .Call('quanteda_find_sequence_cppl', PACKAGE = 'quanteda', texts, types, count_min, smooth, nested)
 }
 
+qatd_cpp_unhash <- function(tokens_int, types) {
+    .Call('quanteda_qatd_cpp_unhash', PACKAGE = 'quanteda', tokens_int, types)
+}
+
 qatd_cpp_replace_int_list <- function(texts_, seqs, ids, id_start) {
     .Call('quanteda_qatd_cpp_replace_int_list', PACKAGE = 'quanteda', texts_, seqs, ids, id_start)
 }
