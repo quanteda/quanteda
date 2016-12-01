@@ -14,7 +14,7 @@
 #'   \code{\link{stopwords}()}.  The pattern matching type will be set by
 #'   \code{valuetype}.  For behaviour of \code{remove} with \code{ngrams > 1},
 #'   see Details.
-#' @param select a use supplied regular expression defining which features to
+#' @param select a user supplied regular expression defining which features to
 #'   keep, while excluding all others.  This can be used in lieu of a dictionary
 #'   if there are only specific features that a user wishes to keep. To extract
 #'   only Twitter usernames, for example, set \code{select = "@@*"} and make
