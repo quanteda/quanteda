@@ -1,5 +1,7 @@
 #include <Rcpp.h>
+#include "quanteda.h"
 using namespace Rcpp;
+using namespace quanteda;
 
 /*
  * This function is reconstrct character tokens from integer tokens and types.
@@ -9,9 +11,11 @@ using namespace Rcpp;
  */
 
 // [[Rcpp::export]]
-List qatd_cpp_unhash(ListOf<IntegerVector> tokens_int, CharacterVector types){
+List qatd_cpp_unhash(ListOf<IntegerVector> tokens_int, 
+                     CharacterVector types){
+    
     types.push_front(""); // offset types to match index in C++
-    ListOf<CharacterVector> tokens_chr(tokens_int.size());
+    List tokens_chr(tokens_int.size());
     for(int i=0; i < tokens_int.size(); i++){
         tokens_chr[i] = types[tokens_int[i]];
     }
