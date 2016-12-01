@@ -158,6 +158,7 @@ struct skipgram_mt : public Worker{
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
+        unsigned int id = 1;
         for (int h = begin; h < end; h++){
             output[h] = skipgram(input[h], ns, skips, map_ngram);
         }
@@ -177,8 +178,8 @@ struct skipgram_mt : public Worker{
 
 // [[Rcpp::export]]
 List qatd_cpp_ngram_mt_list(List texts_,
-                                             IntegerVector ns_,
-                                             IntegerVector skips_) {
+                            IntegerVector ns_,
+                            IntegerVector skips_) {
     
     Texts input = Rcpp::as< Texts >(texts_);
     std::vector<int> ns = Rcpp::as< std::vector<int> >(ns_);
@@ -191,44 +192,45 @@ List qatd_cpp_ngram_mt_list(List texts_,
     skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram);
     
     // Apply skipgram_mt to blocked ranges
-    auto t_start = std::chrono::high_resolution_clock::now();
+    dev::start_timer("Ngram generation");
     parallelFor(0, input.size(), skipgram_mt);
-    auto t_end = std::chrono::high_resolution_clock::now();
-    Rcout << "Ngrams " << std::chrono::duration<double, std::milli>(t_end - t_start).count() << " millisec\n";
+    dev::stop_timer("Ngram generation");
     
-    auto t_start2 = std::chrono::high_resolution_clock::now();
-    
+    dev::start_timer("ID extraction");
     // Separate key and values of unordered_map
-    List ids_unigram(map_ngram.size());
-    for (std::pair<Ngram, unsigned int> iter : map_ngram){
-        //Rcout << "ID " << to_string(iter.second) << ": ";
-        //print_ngram_hashed(iter.first);
-        IntegerVector id_unigram = Rcpp::wrap(iter.first);
-        ids_unigram[iter.second - 1] = id_unigram;
+    std::vector< std::vector<unsigned int> > ids(map_ngram.size(), std::vector<unsigned int>(1, 0));
+    for (std::pair<Ngram, unsigned int> it : map_ngram){
+        //Rcout << "ID " << to_string(it.second) << ": ";
+        //print_ngram_hashed(it.first);
+        ids[it.second - 1] = it.first;
     }
-    auto t_end2 = std::chrono::high_resolution_clock::now();
-    Rcout << "IDs " << std::chrono::duration<double, std::milli>(t_end2 - t_start2).count() << " millisec\n";
+    dev::stop_timer("ID extraction");
     
     // Return IDs as attribute
     ListOf<IntegerVector> texts_ngram = Rcpp::wrap(output);
+    ListOf<IntegerVector> ids_unigram = Rcpp::wrap(ids);
     texts_ngram.attr("ids") = ids_unigram;
     return texts_ngram;
-    //return Rcpp::List::create(Rcpp::Named("text") = texts_ngram,
-    //                          Rcpp::Named("id_unigram") = ids_unigram);
 
 }
-
 
 
 /*** R
 
 library(quanteda)
-txt <- c('a b c d e', 'c d e f g')
-toks <- tokens(txt, what='fastestword')
-res <- qatd_cpp_ngram_mt_list(toks, 3, 1)
-str(res)
-#res$text
-#res$id_unigram
+#txt <- c('a b c d e', 'c d e f g')
+#txt <- readLines('~/Documents/Brexit/Analysis/all_bbc_2015.txt') # 80MB
+#toks <- tokens(txt, what='fastestword')
+
+RcppParallel::setThreadOptions(2)
+res <- qatd_cpp_ngram_mt_list(toks, 2, 1)
+
+
+# ids <- attr(res, 'ids')
+# types <- attr(toks, 'types')
+# out <- qatd_cpp_unhash(ids[950:1000], types)
+# 
+# out2 <- stringi::stri_c_list(lapply(attr(res, 'ids'), function(x, y) y[x] , attr(toks, 'types')), '-')
 
 #RcppParallel::setThreadOptions(4)
 #toks = rep(list(1:1000, 1001:2000), 10)
