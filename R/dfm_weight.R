@@ -68,7 +68,6 @@
 #' @references Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
 #'   \emph{Introduction to Information Retrieval}. Vol. 1. Cambridge: Cambridge 
 #'   University Press, 2008.
-#' @examples
 dfm_weight <- function(x, 
                        type = c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"),
                        weights = NULL) {
