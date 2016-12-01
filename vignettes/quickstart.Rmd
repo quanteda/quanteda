@@ -441,15 +441,15 @@ To access a list of the most frequently occurring features, we can use `topfeatu
 topfeatures(mydfm, 20)  # 20 top words
 ```
 
-Plotting a word cloud is very simple, since this is the default `plot()` method for a `dfm` class object:
+Plotting a word cloud is done using `textplot_wordcloud()`, for a `dfm` class object:
 ```{r warning = FALSE, fig.width = 8, fig.height = 8}
-plot(mydfm)
+textplot_wordcloud(mydfm)
 ```
 
 The `plot.dfm()` method passes arguments through to `wordcloud()` from the **wordcloud** package, and can prettify the plot using the same arguments:
 ```{r warning=FALSE, fig.width = 7, fig.height = 7}
 if (require(RColorBrewer))
-    plot(mydfm, max.words = 100, colors = brewer.pal(6, "Dark2"), scale = c(8, .5))
+    textplot_wordcloud(mydfm, max.words = 100, colors = brewer.pal(6, "Dark2"), scale = c(8, .5))
 ```
 
 ### Grouping documents by document variable 
