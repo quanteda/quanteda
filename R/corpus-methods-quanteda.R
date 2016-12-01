@@ -63,7 +63,7 @@ documents <- function(corp) {
 #' 
 #' Get the texts in a quanteda corpus object, with grouping options.  Works for plain character
 #' vectors too, if \code{groups} is a factor.
-#' @param x A quanteda corpus object
+#' @param x a quanteda \link{corpus} or character object
 #' @param groups character vector containing the names of document variables in
 #'   a corpus, or a factor equal in length to the number of documents, used for 
 #'   aggregating the texts through concatenation.  If \code{x} is of type character,
@@ -81,14 +81,16 @@ documents <- function(corp) {
 #' 
 #' # grouping a character vector using a factor
 #' nchar(data_char_inaugural[1:5])
-#' nchar(texts(data_char_inaugural[1:5], groups = as.factor(data_corpus_inaugural[1:5, "President"])))
+#' nchar(texts(data_char_inaugural[1:5], 
+#'             groups = as.factor(data_corpus_inaugural[1:5, "President"])))
+#' 
 texts <- function(x, groups = NULL, ...) {
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     UseMethod("texts")
 }
 
-#' @rdname texts
+#' @noRd
 #' @export
 texts.corpus <- function(x, groups = NULL, ...) {
     txts <- documents(x)$texts
@@ -118,7 +120,7 @@ texts.corpus <- function(x, groups = NULL, ...) {
     texts(txts, groups = group.split)
 }
 
-#' @rdname texts
+#' @noRd
 #' @export
 texts.character <- function(x, groups = NULL, ...) {
     if (is.null(groups)) return(x)
@@ -128,14 +130,8 @@ texts.character <- function(x, groups = NULL, ...) {
 }
 
 
+#' @rdname texts
 #' @param value character vector of the new texts
-#' @rdname texts
-#' @export
-"texts<-" <- function(x, value) {
-    UseMethod("texts<-")
-}
-
-#' @rdname texts
 #' @export
 #' @note You are strongly encouraged as a good practice of text analysis 
 #'   workflow \emph{not} to modify the substance of the texts in a corpus. 
@@ -144,8 +140,7 @@ texts.character <- function(x, groups = NULL, ...) {
 #'   will never be able to recover the original case.  Rather, apply 
 #'   \code{\link{toLower}} to the corpus and use the result as an input, e.g. to
 #'   \code{\link{tokenize}}.
-#' @examples 
-#' 
+#' @examples
 #' BritCorpus <- corpus(c("We must prioritise honour in our neighbourhood.", 
 #'                        "Aluminium is a valourous metal."))
 #' texts(BritCorpus) <- 
@@ -156,9 +151,24 @@ texts.character <- function(x, groups = NULL, ...) {
 #' texts(BritCorpus)
 #' texts(BritCorpus)[2] <- "New text number 2."
 #' texts(BritCorpus)
+"texts<-" <- function(x, value) {
+    UseMethod("texts<-")
+}
+
+#' @noRd
+#' @export
 "texts<-.corpus" <- function(x, value) { 
     documents(x)$texts <- value
     x
+}
+
+#' @rdname texts
+#' @details \code{as.character(x)} where \code{x} is a corpus is equivalent to
+#' calling \code{texts(x)}
+#' @method as.character corpus
+#' @export
+as.character.corpus <- function(x, ...) {
+    texts(x)
 }
 
 
