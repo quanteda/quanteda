@@ -2,24 +2,25 @@ Package: quanteda
 Type: Package
 Title: Quantitative Analysis of Textual Data
 Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
-    c("aut", "cre")), person("Paul", "Nulty", email = "paul.nulty@gmail.com",
-    role = "aut"), person("Kohei", "Watanabe", email =
-    "watanabe.kohei@gmail.com", role = "ctb"), person("Benjamin", "Lauderdale",
-    email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
+    c("aut", "cre")), 
+    person("Paul", "Nulty", email = "paul.nulty@gmail.com", role = "ctb"), 
     person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "ctb"),
-    person("Pablo", "Barberá", email = "pablo.barbera@nyu.edu",
-    role = "ctb"),
-    person("Will", "Lowe", email="wlowe@princeton.edu", role="ctb"))
+    person("Kohei", "Watanabe", email = "watanabe.kohei@gmail.com", role = "ctb"), 
+    person("Haiyan", "Wang", email = "h.wang52@lse.ac.uk", role = "ctb"),
+    person("Benjamin", "Lauderdale", email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
+    person("Will", "Lowe", email="wlowe@princeton.edu", role="ctb"),
+    person("Pablo", "Barberá", email = "pablo.barbera@nyu.edu", role = "ctb"))
 Author: Kenneth Benoit [aut, cre],
-    Paul Nulty [aut],
-    Kohei Watanabe [ctb],
-    Benjamin Lauderdale [ctb],
+    Paul Nulty [ctb],
     Adam Obeng [ctb],
-    Pablo Barberá [ctb],
-    Will Lowe [ctb]
+    Kohei Watanabe [ctb],
+    Haiyan Wang [ctb],
+    Benjamin Lauderdale [ctb],
+    Will Lowe [ctb],
+    Pablo Barberá [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.8.9017
-Date: 2016-11-30
+Version: 0.9.8.9018
+Date: 2016-12-01
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
