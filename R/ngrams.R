@@ -44,15 +44,8 @@ ngrams <- function(x, ...) {
 ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_", ...) {
     # trap condition where a "text" is a single NA
     if (is.na(x[1]) && length(x)==1) return(NULL)
-    if (any(stringi::stri_detect_fixed(x, " ")) & concatenator != " ")
-        warning("whitespace detected: you may need to run tokens() first")
-    if (length(x) < min(n)) return(NULL)
-    if (identical(as.integer(n), 1L)) {
-        if (!identical(as.integer(skip), 0L))
-            warning("skip argument ignored for n = 1")
-        return(x)
-    }
-    skipgramcpp(x, n, skip + 1, concatenator)
+    x <- as.list(ngrams(tokens(x), n, skip, concatenator, ...))[[1]]
+    return(x)
 }
 
 #' @rdname ngrams
@@ -85,13 +78,13 @@ ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_", thread = 4, 
     # Generate ngrams
     RcppParallel::setThreadOptions(thread)
     x <- qatd_cpp_ngram_mt_list(x, n, skip + 1)
-
-    # Make character tokens of ngrams
-    attributes(x) <- attrs_org
-    types(x) <- stri_c_list(qatd_cpp_unhash(attr(ngrams, 'ids'), types_org), concatenator)
-    names(x) <- names_org
     
-    attr(x, 'ids') <- NULL
+    types_int <- attr(x, 'ids')
+    attributes(x) <- attrs_org
+    
+    # Create types of ngrams
+    types(x) <- stri_c_list(qatd_cpp_unhash(types_int, types_org), concatenator)
+    names(x) <- names_org
     attr(x, "ngrams") <- as.integer(n)
     attr(x, "skip") <- as.integer(skip)
     attr(x, "concatenator") <- concatenator

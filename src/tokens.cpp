@@ -21,3 +21,10 @@ List qatd_cpp_unhash(ListOf<IntegerVector> tokens_int,
     }
     return tokens_chr;
 }
+
+/*** R
+
+qatd_cpp_unhash(list(1:10,11:20), letters)
+
+
+*/
