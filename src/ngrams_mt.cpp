@@ -158,7 +158,6 @@ struct skipgram_mt : public Worker{
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        unsigned int id = 1;
         for (int h = begin; h < end; h++){
             output[h] = skipgram(input[h], ns, skips, map_ngram);
         }
@@ -198,7 +197,7 @@ List qatd_cpp_ngram_mt_list(List texts_,
     
     dev::start_timer("ID extraction");
     // Separate key and values of unordered_map
-    std::vector< std::vector<unsigned int> > ids(map_ngram.size(), std::vector<unsigned int>(1, 0));
+    std::vector< std::vector<unsigned int> > ids(map_ngram.size(), std::vector<unsigned int>(1, 0)); // set default value to aviode NULL
     for (std::pair<Ngram, unsigned int> it : map_ngram){
         //Rcout << "ID " << to_string(it.second) << ": ";
         //print_ngram_hashed(it.first);
@@ -217,20 +216,12 @@ List qatd_cpp_ngram_mt_list(List texts_,
 
 /*** R
 
-library(quanteda)
 #txt <- c('a b c d e', 'c d e f g')
 #txt <- readLines('~/Documents/Brexit/Analysis/all_bbc_2015.txt') # 80MB
 #toks <- tokens(txt, what='fastestword')
 
-RcppParallel::setThreadOptions(2)
-res <- qatd_cpp_ngram_mt_list(toks, 2, 1)
-
-
-# ids <- attr(res, 'ids')
-# types <- attr(toks, 'types')
-# out <- qatd_cpp_unhash(ids[950:1000], types)
-# 
-# out2 <- stringi::stri_c_list(lapply(attr(res, 'ids'), function(x, y) y[x] , attr(toks, 'types')), '-')
+#RcppParallel::setThreadOptions(2)
+#res <- qatd_cpp_ngram_mt_list(toks, 2, 1)
 
 #RcppParallel::setThreadOptions(4)
 #toks = rep(list(1:1000, 1001:2000), 10)
