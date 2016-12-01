@@ -1,48 +1,56 @@
 #' plot features as a wordcloud
 #' 
-#' The default plot method for a \code{\link{dfm}} object.  Produces a wordcloud
-#' plot for the features of the dfm, where the feature labels are plotted with 
-#' their sizes proportional to their numerical values in the dfm.  When 
-#' \code{comparison = TRUE}, it plots comparison word clouds by document.
-#' @details The default is to plot the word cloud of all of the features in the 
-#'   dfm, summed across documents.  To produce word cloud plots for specific 
-#'   document or set of documents, you need to slice out the document(s) from
-#'   the dfm.
+#' Plot a \link{dfm} or \link{tokens} object as a wordcloud, where the feature 
+#' labels are plotted with their sizes proportional to their numerical values in
+#' the dfm.  When \code{comparison = TRUE}, it plots comparison word clouds by 
+#' document.
+#' @details The default is to plot the word cloud of all features, summed across
+#'   documents.  To produce word cloud plots for specific document or set of 
+#'   documents, you need to slice out the document(s) from the dfm or tokens
+#'   object.
 #'   
-#'   Comparison word cloud plots may be plotted by setting 
-#'   \code{comparison = TRUE}, which plots a separate grouping for 
-#'   \emph{each document} in the dfm.
-#'   This means that you will need to slice out just a few documents from the
-#'   dfm, or to create a dfm where the "documents" represent a subset or a
+#'   Comparison word cloud plots may be plotted by setting \code{comparison = 
+#'   TRUE}, which plots a separate grouping for \emph{each document} in the dfm.
+#'   This means that you will need to slice out just a few documents from the 
+#'   dfm, or to create a dfm where the "documents" represent a subset or a 
 #'   grouping of documents by some document variable.
 #' @param x a dfm object
-#' @param comparison if \code{TRUE}, plot a
-#'   \code{\link[wordcloud]{comparison.cloud}} instead of a simple wordcloud,
+#' @param comparison if \code{TRUE}, plot a 
+#'   \code{\link[wordcloud]{comparison.cloud}} instead of a simple wordcloud, 
 #'   one grouping per document
 #' @param ... additional parameters passed to to \link[wordcloud]{wordcloud} or 
 #'   to \link{text} (and \link{strheight}, \link{strwidth})
-#' @seealso \code{\link[wordcloud]{wordcloud}},
+#' @seealso \code{\link[wordcloud]{wordcloud}}, 
 #'   \code{\link[wordcloud]{comparison.cloud}}
 #' @examples
 #' # plot the features (without stopwords) from Obama's two inaugural addresses
 #' mydfm <- dfm(corpus_subset(data_corpus_inaugural, President=="Obama"), verbose = FALSE,
 #'              remove = stopwords("english"))
-#' plot(mydfm)
+#' textplot_wordcloud(mydfm)
 #' 
 #' # plot in colors with some additional options passed to wordcloud
-#' plot(mydfm, random.color = TRUE, rot.per = .25, colors = sample(colors()[2:128], 5))
-#'
+#' textplot_wordcloud(mydfm, random.color = TRUE, rot.per = .25, 
+#'                    colors = sample(colors()[2:128], 5))
+#' 
 #' \dontrun{
 #' # comparison plot of Irish government vs opposition
 #' docvars(data_corpus_irishbudget2010, "govtopp") <- 
 #'     factor(ifelse(data_corpus_irishbudget2010[, "party"] %in% c("FF", "Green"), "Govt", "Opp"))
 #' govtoppDfm <- dfm(data_corpus_irishbudget2010, groups = "govtopp", verbose = FALSE)
-#' plot(tfidf(govtoppDfm), comparison = TRUE)
+#' textplot_wordcloud(tfidf(govtoppDfm), comparison = TRUE)
 #' # compare to non-tf-idf version
-#' plot(govtoppDfm, comparison = TRUE)
+#' textplot_wordcloud(govtoppDfm, comparison = TRUE)
 #' }
 #' @export
-plot.dfm <- function(x, comparison = FALSE, ...) {
+#' @keywords plot
+textplot_wordcloud <- function(x, comparison = FALSE, ...) {
+    
+    if (!is.dfm(x) & !is.tokens(x))
+        stop("x must be a dfm or tokens object")
+    
+    if (is.tokens(x))
+        x <- dfm(x, verbose = FALSE)
+        
     if (comparison) {
         if (ndoc(x) > 8) stop("Too many documents to plot comparison, use 8 or fewer documents.")
         wordcloud::comparison.cloud(t(as.matrix(x)), ...)
@@ -50,6 +58,8 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
         wordcloud::wordcloud(features(x), colSums(x), ...)
     }
 }
+
+
 
 
 #' plot the dispersion of key word(s)
@@ -71,20 +81,22 @@ plot.dfm <- function(x, comparison = FALSE, ...) {
 #' \dontrun{
 #' data_corpus_inauguralPost70 <- corpus_subset(data_corpus_inaugural, Year > 1970)
 #' # compare multiple documents
-#' plot(kwic(data_corpus_inauguralPost70, "american"))
-#' plot(kwic(data_corpus_inauguralPost70, "american"), scale = "absolute")
+#' textplot_xray(kwic(data_corpus_inauguralPost70, "american"))
+#' textplot_xray(kwic(data_corpus_inauguralPost70, "american"), scale = "absolute")
 #' # compare multiple terms across multiple documents
-#' plot(kwic(data_corpus_inauguralPost70, "america*"), 
-#'      kwic(data_corpus_inauguralPost70, "people"))
+#' textplot_xray(kwic(data_corpus_inauguralPost70, "america*"), 
+#'               kwic(data_corpus_inauguralPost70, "people"))
 #' 
 #' # how to modify the ggplot with different options
 #' library(ggplot2)
-#' g <- plot(kwic(data_corpus_inauguralPost70, "american"), 
-#'           kwic(data_corpus_inauguralPost70, "people"))
+#' g <- textplot_xray(kwic(data_corpus_inauguralPost70, "american"), 
+#'                    kwic(data_corpus_inauguralPost70, "people"))
 #' g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue'))
 #' }
 #' @export
-plot.kwic <- function(..., scale = c("absolute", "relative"), sort=FALSE) {
+#' @keywords plot
+textplot_xray <- function(..., scale = c("absolute", "relative"), sort = FALSE) {
+    
     if (!requireNamespace("ggplot2", quietly = TRUE))
         stop("You must have ggplot2 installed to make a dispersion plot.")
     if(!requireNamespace("grid", quietly = TRUE)) 
@@ -93,19 +105,9 @@ plot.kwic <- function(..., scale = c("absolute", "relative"), sort=FALSE) {
     position <- keyword <- docname <- ntokens <- NULL    
     
     kwics <- list(...)
+    if (!all(sapply(kwics, is.kwic)))
+        stop("objects to plot must be kwic objects")
 
-    ## edited by KB 29 May 2016
-    # x <- lapply(kwics, function(i) { i$keyword <- attr(i, 'keyword'); i})
-    # x <- lapply(kwics, function(i) {
-    #     ntokens <- data.table::data.table(
-    #         docname = names(attr(i, 'ntoken')),
-    #         ntoken = attr(i, 'ntoken')
-    #     )
-    #     merge(i, ntokens, all.x=TRUE, by='docname')
-    # })
-    # x <- data.table::data.table(do.call(rbind, x))
-    
-    ## edited by KB 29 May 2016
     # create a data.table from the kwic arguments
     x <- data.table(do.call(rbind, kwics))
     # get the vector of ntokens
@@ -186,29 +188,28 @@ plot.kwic <- function(..., scale = c("absolute", "relative"), sort=FALSE) {
 #' plot a fitted wordfish model
 #' 
 #' Plot a fitted wordfish model, either as an ideal point-style plot (theta plus
-#' confidence interval on the x-axis, document labels on the y) with optional
-#' renaming and sorting, or as a plot of estimated feature-level parameters (beta on the x, psi on the
-#' y, feature names over-plotted with alpha transparency, optionally some
-#' highlighted) as in Slapin and Proksch, 2008.
-#' @param x for plot method, the object to be plotted
-#' @param type \code{docs} to plot document scores (the default) or \code{feats}
-#'   to plot psi against beta parameters
-#' @param sort If TRUE (the default), order points from low to high score. If a
+#' confidence interval on the x-axis, document labels on the y) with optional 
+#' renaming and sorting, or as a plot of estimated feature-level parameters
+#' (beta on the x, psi on the y, feature names over-plotted with alpha
+#' transparency, optionally some highlighted) as in Slapin and Proksch, 2008.
+#' @param x the fitted \link{textmodel_wordfish} object to be plotted
+#' @param margin \code{"documents"} to plot document scores theta (the default)
+#'   or \code{"features"} to plot psi against beta parameters
+#' @param sort if \code{TRUE} (the default), order points from low to high score. If a 
 #'   vector, order according to these values from low to high. Only applies when
-#'   \code{type} is 'docs'
-#' @param doclabels a vector of names for document. If left NULL (the default),
+#'   \code{margin = "documents"}
+#' @param doclabels a vector of names for document. If left NULL (the default), 
 #'   ordinary document names will be used.
-#' @param left.mar an overridden left margin, passed to \code{par} (default
-#'   8.1). This overrides R's default 4.1, which is typically too cramped for
+#' @param mar_left an overridden left margin, passed to \code{par} (default 
+#'   8.1). This overrides R's default 4.1, which is typically too cramped for 
 #'   document names.
-#' @param pickout A vector of feature names to draw attention to in a feature
-#'   plot. Only applies if \code{type} is 'feats'
+#' @param highlighted a vector of feature names to draw attention to in a feature 
+#'   plot. Only applies if \code{margin = "features"}.
 #' @param alpha A number between 0 and 1 (default 0.5) representing the level of
-#'   alpha transparency used to overplot feature names in a feature plot. Only
-#'   applies if \code{type} is 'feats'.
+#'   alpha transparency used to overplot feature names in a feature plot. Only 
+#'   applies if \code{margin = "features"}.
 #' @param ... additional arguments passed to \code{\link{plot}}
 #' @export
-#' @method plot textmodel_wordfish_fitted
 #' @references Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
 #'   for Estimating Time-Series Party Positions from Texts." \emph{American 
 #'   Journal of Political Science} 52(3):705-772.
@@ -218,14 +219,18 @@ plot.kwic <- function(..., scale = c("absolute", "relative"), sort=FALSE) {
 #' @examples 
 #' postwar <- dfm_trim(dfm(data_corpus_inaugural[41:57]), min_count = 5, min_docfreq = 2)
 #' mod <- textmodel(postwar, model = "wordfish")
-#' plot(mod, sort = FALSE)
-#' plot(mod, sort = TRUE)
-#' plot(mod, type = "feats", pickout = c("government", "countries", "children", 
-#'      "the", "nuclear", "federal"))
-plot.textmodel_wordfish_fitted <- function(x, type = c("docs", "feats"), doclabels = NULL,
-                                           sort = TRUE, left.mar = 8, pickout = NULL, alpha = 0.5, ...) {
-    type <- match.arg(type)
-    if (type == "docs"){
+#' textplot_scale1d(mod, sort = FALSE)
+#' textplot_scale1d(mod, sort = TRUE)
+#' textplot_scale1d(mod, margin = "features", 
+#'                  highlighted = c("government", "countries", "children", 
+#'                              "the", "nuclear", "federal"))
+textplot_scale1d <- function(x, margin = c("documents", "features"), doclabels = NULL,
+                                         sort = TRUE, mar_left = 8, highlighted = NULL, alpha = 0.5, ...) {
+    if (!is(x, "textmodel_wordfish_fitted"))
+        stop("x must be a fitted textmodel_wordfish object")
+    
+    margin <- match.arg(margin)
+    if (margin == "documents") {
         n <- length(x@theta)
         
         if (is.null(doclabels)) 
@@ -245,7 +250,7 @@ plot.textmodel_wordfish_fitted <- function(x, type = c("docs", "feats"), doclabe
         
         with(results[sorting,], {
             oldmar <- par("mar") ## adjust the left plot margin
-            par(mar=c(oldmar[1], left.mar, oldmar[3], oldmar[4]))
+            par(mar=c(oldmar[1], mar_left, oldmar[3], oldmar[4]))
             
             plot(theta, 1:n, ylab = "", xlab = "Theta", xlim = c(min(lower), max(upper)), 
                  type = 'n', yaxt = "n", ...)
@@ -260,8 +265,8 @@ plot.textmodel_wordfish_fitted <- function(x, type = c("docs", "feats"), doclabe
         plot(x@beta, x@psi, type = 'n', xlab = "Beta", ylab = "Psi", ...)
         text(x@beta, x@psi, labels = x@features, col = grDevices::rgb(0.7, 0.7, 0.7, alpha))
         
-        if (!is.null(pickout)){
-            wch <- x@features %in% pickout ## will quietly drop pickouts that do not appear in model
+        if (!is.null(highlighted)){
+            wch <- x@features %in% highlighted ## will quietly drop highlighteds that do not appear in model
             text(x@beta[wch], x@psi[wch], labels = x@features[wch], col = "black")
         }
     }

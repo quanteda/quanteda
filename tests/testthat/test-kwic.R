@@ -203,4 +203,11 @@ test_that("test that kwic works for fixed types", {
     )
 })
 
+test_that("is.kwic works as expected", {
+    mykwic <- kwic(data_corpus_inaugural, "provident*")
+    expect_true(is.kwic(mykwic))
+    expect_false(is.kwic("Not a kwic"))
+})
+
+
 
