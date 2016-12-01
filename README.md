@@ -1,13 +1,13 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<img src="images/quanteda.png" width = "300">
+<img src="images/quanteda-smallest.png" width = "300">
 
 Quantitative Analysis of Textual Data
 =====================================
 
 [![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) ![Downloads](http://cranlogs.r-pkg.org/badges/quanteda) ![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
 
-**quanteda** is changing!
--------------------------
+**quanteda** v0.9.9 under development
+-------------------------------------
 
 See the new, upcoming [major API changes](API.md), to be incorporated into the next minor version 0.9.9 and for CRAN, in a "1.0" release.
 
@@ -16,7 +16,7 @@ About the package
 
 See the [Getting Started Vignette](http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html).
 
-An R package for managing and analyzing text, by Ken Benoit and Paul Nulty.
+An R package for managing and analyzing text, created by Ken Benoit with an amazing team of core [contributors](https://github.com/kbenoit/quanteda/graphs/contributors) including Paul Nulty, Adam Obeng, Kohei Watanabe, Haiyan Wang, Ben Lauderdale, and Will Lowe. Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
 **quanteda** makes it easy to manage texts in the form of a corpus, defined as a collection of texts that includes document-level variables specific to each text, as well as meta-data for documents and for the collection as a whole. **quanteda** includes tools to make it easy and fast to manuipulate the texts in a corpus, by performing the most common natural language processing tasks simply and quickly, such as tokenizing, stemming, or forming ngrams. **quanteda**'s functions for tokenizing texts and forming multiple tokenized documents into a *document-feature matrix* are both extremely fast and extremely simple to use. **quanteda** can segment texts easily by words, paragraphs, sentences, or even user-supplied delimiters and tags.
 
@@ -56,8 +56,6 @@ Once constructed, a **quanteda** "dfm"" can be easily analyzed using either quan
 
 -   Addition of a history that will propogate through downstream objects.
 
-**Acknowledgements**: This research was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
-
 How to Install
 ==============
 
@@ -89,7 +87,9 @@ Example usage
 
 ``` r
 library(quanteda)
-#> quanteda version 0.9.8.15
+#> 
+#> This data.table install has not detected OpenMP support. It will work but slower in single threaded mode.
+#> quanteda version 0.9.8.9018
 #> 
 #> Attaching package: 'quanteda'
 #> The following object is masked from 'package:base':
@@ -97,14 +97,11 @@ library(quanteda)
 #>     sample
 # create a corpus from the immigration texts from UK party platforms
 uk2010immigCorpus <- corpus(data_char_ukimmig2010,
-                            docvars=data.frame(party=names(data_char_ukimmig2010)),
-                            notes="Immigration-related sections of 2010 UK party manifestos",
-                            enc="UTF-8")
-#> Warning in corpus.character(data_char_ukimmig2010, docvars =
-#> data.frame(party = names(data_char_ukimmig2010)), : Argument enc not used.
+                            docvars = data.frame(party=names(data_char_ukimmig2010)),
+                            notes = "Immigration-related sections of 2010 UK party manifestos")
 uk2010immigCorpus
 #> Corpus consisting of 9 documents and 1 docvar.
-summary(uk2010immigCorpus, showmeta=TRUE)
+summary(uk2010immigCorpus)
 #> Corpus consisting of 9 documents.
 #> 
 #>          Text Types Tokens Sentences        party
@@ -119,7 +116,7 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 #>          UKIP   346    739        27         UKIP
 #> 
 #> Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-#> Created: Thu Nov 24 14:28:59 2016
+#> Created: Thu Dec  1 17:34:36 2016
 #> Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -131,9 +128,10 @@ kwic(uk2010immigCorpus, "deport", 3)
 #> [BNP, 2621]  Criminals We shall [  deport ] all criminal entrants
 
 # create a dfm, removing stopwords
-mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
+mydfm <- dfm(uk2010immigCorpus, remove = c("will", stopwords("english")),
+             removePunct = TRUE)
 dim(mydfm)              # basic dimensions of the dfm
-#> [1]    9 1489
+#> [1]    9 1547
 topfeatures(mydfm, 20)  # 20 top words
 #> immigration     british      people      asylum     britain          uk 
 #>          66          37          35          29          28          27 
@@ -143,7 +141,9 @@ topfeatures(mydfm, 20)  # 20 top words
 #>          17          16          14          14          13          13 
 #>        work     percent 
 #>          13          12
-plot(mydfm, min.freq = 6, random.order = FALSE)             # word cloud     
+textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
+                   rot.per = .25, 
+                   colors = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
 ![](images/quanteda_example-1.png)

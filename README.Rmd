@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-<img src="images/quanteda.png" width = "300"> 
+<img src="images/quanteda-smallest.png" width = "300"> 
 
 # Quantitative Analysis of Textual Data
 
@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 
 [1]: https://codecov.io/gh/kbenoit/quanteda/branch/master
 
-## **quanteda** is changing!
+## **quanteda** v0.9.9 under development 
 
 See the new, upcoming [major API changes](API.md), to be incorporated into the next minor version 0.9.9 and for CRAN, in a "1.0" release.
 
@@ -36,7 +36,7 @@ See the new, upcoming [major API changes](API.md), to be incorporated into the n
 
 See the [Getting Started Vignette](http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html).
 
-An R package for managing and analyzing text, by Ken Benoit and Paul Nulty.
+An R package for managing and analyzing text, created by Ken Benoit with an amazing team of core [contributors](https://github.com/kbenoit/quanteda/graphs/contributors) including Paul Nulty, Adam Obeng, Kohei Watanabe, Haiyan Wang, Ben Lauderdale, and Will Lowe.  Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.  
 
 **quanteda** makes it easy to manage texts in the form of a
 corpus, defined as a collection of texts that includes document-level
@@ -99,7 +99,6 @@ Once constructed, a **quanteda** "dfm"" can be easily analyzed using either quan
 
 *  Addition of a history that will propogate through downstream objects.
 
-**Acknowledgements**:  This research was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
 # How to Install
 
@@ -133,20 +132,22 @@ As of version 0.8.0, the GitHub master repository will always contain the develo
 library(quanteda)
 # create a corpus from the immigration texts from UK party platforms
 uk2010immigCorpus <- corpus(data_char_ukimmig2010,
-                            docvars=data.frame(party=names(data_char_ukimmig2010)),
-                            notes="Immigration-related sections of 2010 UK party manifestos",
-                            enc="UTF-8")
+                            docvars = data.frame(party=names(data_char_ukimmig2010)),
+                            notes = "Immigration-related sections of 2010 UK party manifestos")
 uk2010immigCorpus
-summary(uk2010immigCorpus, showmeta=TRUE)
+summary(uk2010immigCorpus)
 
 # key words in context for "deport", 3 words of context
 kwic(uk2010immigCorpus, "deport", 3)
 
 # create a dfm, removing stopwords
-mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
+mydfm <- dfm(uk2010immigCorpus, remove = c("will", stopwords("english")),
+             removePunct = TRUE)
 dim(mydfm)              # basic dimensions of the dfm
 topfeatures(mydfm, 20)  # 20 top words
-plot(mydfm, min.freq = 6, random.order = FALSE)             # word cloud     
+textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
+                   rot.per = .25, 
+                   colors = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
 
