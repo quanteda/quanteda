@@ -98,6 +98,7 @@ Collate:
     'lexdiv.R'
     'ngrams.R'
     'phrases.R'
+    'plots-deprecated.R'
     'plots.R'
     'quanteda.R'
     'readability.R'

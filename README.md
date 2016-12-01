@@ -89,7 +89,9 @@ Example usage
 
 ``` r
 library(quanteda)
-#> quanteda version 0.9.8.15
+#> 
+#> This data.table install has not detected OpenMP support. It will work but slower in single threaded mode.
+#> quanteda version 0.9.8.9017
 #> 
 #> Attaching package: 'quanteda'
 #> The following object is masked from 'package:base':
@@ -119,7 +121,7 @@ summary(uk2010immigCorpus, showmeta=TRUE)
 #>          UKIP   346    739        27         UKIP
 #> 
 #> Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-#> Created: Thu Nov 24 14:28:59 2016
+#> Created: Thu Dec  1 14:24:33 2016
 #> Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -132,18 +134,19 @@ kwic(uk2010immigCorpus, "deport", 3)
 
 # create a dfm, removing stopwords
 mydfm <- dfm(uk2010immigCorpus, ignoredFeatures=c("will", stopwords("english")))
+#> Warning in tokens.character(x, ...): Argument ignoredFeatures not used.
 dim(mydfm)              # basic dimensions of the dfm
-#> [1]    9 1489
+#> [1]    9 1645
 topfeatures(mydfm, 20)  # 20 top words
-#> immigration     british      people      asylum     britain          uk 
-#>          66          37          35          29          28          27 
-#>      system  population     country         new  immigrants      ensure 
-#>          27          21          20          19          17          17 
-#>       shall citizenship      social    national         bnp     illegal 
-#>          17          16          14          14          13          13 
-#>        work     percent 
-#>          13          12
-plot(mydfm, min.freq = 6, random.order = FALSE)             # word cloud     
+#>         the           ,           .          of         and          to 
+#>         339         278         266         228         218         218 
+#>           -          in          we           a        will         for 
+#>         156         117          97          89          86          77 
+#>        that immigration          be         our          is         are 
+#>          76          68          54          53          50          48 
+#>          on           " 
+#>          48          44
+textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE)             # word cloud     
 ```
 
 ![](images/quanteda_example-1.png)

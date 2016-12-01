@@ -7,39 +7,39 @@ test_that("test plot.kwic scale argument default", {
     mda <- kwic(data_corpus_inaugural, 'american')
     mdp <- kwic(data_corpus_inaugural, 'people')
 
-    # Single document, should be absolute
-    p <- plot(sda)
+    # Single document, should be absolute
+    p <- textplot_xray(sda)
     expect_equal(p$labels$x, 'Token index')
 
-    # Single document, multiple keywords, should be absolute
-    p <- plot(sda, sdp)
+    # Single document, multiple keywords, should be absolute
+    p <- textplot_xray(sda, sdp)
     expect_equal(p$labels$x, 'Token index')
 
-    # Multiple documents, should be relative
-    p <- plot(mda)
+    # Multiple documents, should be relative
+    p <- textplot_xray(mda)
     expect_equal(p$labels$x, 'Relative token index')
 
-    # Multiple documents, multiple keywords, should be relative
-    p <- plot(mda, mdp)
+    # Multiple documents, multiple keywords, should be relative
+    p <- textplot_xray(mda, mdp)
     expect_equal(p$labels$x, 'Relative token index')
 
-    # Explicit overrides
-    p <- plot(sda, scale='absolute')
+    # Explicit overrides
+    p <- textplot_xray(sda, scale='absolute')
     expect_equal(p$labels$x, 'Token index')
-    p <- plot(sda, sdp, scale='absolute')
+    p <- textplot_xray(sda, sdp, scale='absolute')
     expect_equal(p$labels$x, 'Token index')
-    p <- plot(mda, scale='absolute')
+    p <- textplot_xray(mda, scale='absolute')
     expect_equal(p$labels$x, 'Token index')
-    p <- plot(mda, mdp, scale='absolute')
+    p <- textplot_xray(mda, mdp, scale='absolute')
     expect_equal(p$labels$x, 'Token index')
 
-    p <- plot(sda, scale='relative')
+    p <- textplot_xray(sda, scale='relative')
     expect_equal(p$labels$x, 'Relative token index')
-    p <- plot(sda, sdp, scale='relative')
+    p <- textplot_xray(sda, sdp, scale='relative')
     expect_equal(p$labels$x, 'Relative token index')
-    p <- plot(mda, scale='relative')
+    p <- textplot_xray(mda, scale='relative')
     expect_equal(p$labels$x, 'Relative token index')
-    p <- plot(mda, mdp, scale='relative')
+    p <- textplot_xray(mda, mdp, scale='relative')
     expect_equal(p$labels$x, 'Relative token index')
 
 
@@ -48,7 +48,7 @@ test_that("test plot.kwic scale argument default", {
 
 test_that("test plot.kwic facet order parameter", {
 
-    p <- plot(kwic(data_corpus_inaugural, 'american'), sort=TRUE)
+    p <- textplot_xray(kwic(data_corpus_inaugural, 'american'), sort=TRUE)
     plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
     expect_true(
         all(
@@ -56,7 +56,7 @@ test_that("test plot.kwic facet order parameter", {
         )
     )
 
-    p <- plot(kwic(data_corpus_inaugural, 'american'), kwic(data_corpus_inaugural, 'people'), sort=TRUE)
+    p <- textplot_xray(kwic(data_corpus_inaugural, 'american'), kwic(data_corpus_inaugural, 'people'), sort=TRUE)
     plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
     expect_true(
         all(
@@ -66,7 +66,7 @@ test_that("test plot.kwic facet order parameter", {
 
     # Default should be false
     #TODO Fix this
-    p <- plot(kwic(data_corpus_inaugural, 'american'), kwic(data_corpus_inaugural, 'people'))
+    p <- textplot_xray(kwic(data_corpus_inaugural, 'american'), kwic(data_corpus_inaugural, 'people'))
     plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
     expect_false(
         all(
@@ -78,9 +78,14 @@ test_that("test plot.kwic facet order parameter", {
 })
 
 test_that("test plot.kwic keeps order of keywords passed", {
-    p <- plot(kwic(data_corpus_inaugural, 'people'), kwic(data_corpus_inaugural, 'american'), sort=TRUE)
+    p <- textplot_xray(kwic(data_corpus_inaugural, 'people'), kwic(data_corpus_inaugural, 'american'), sort=TRUE)
     expect_equal(
         as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$keyword)),
         c('people', 'american')
     )
 })
+
+test_that("test textplot_wordcloud in the most basic way", {
+    expect_silent(textplot_wordcloud(dfm(inaugCorpus[1:5]), min.freq = 10))
+})
+

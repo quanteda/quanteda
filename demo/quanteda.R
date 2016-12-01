@@ -20,7 +20,7 @@ topfeatures(mydfm, 20)
 # open a nicer quartz device on a mac
 if (Sys.info()[1]=="Darwin") quartz("BNP 2010 word cloud", 7, 7)
 # this is necessary currently because no subset is yet implemented for dfm objects
-plot(mydfm["BNP",])
+textplot_wordcloud(mydfm["BNP",])
 
 # some examples of tokenization and string cleaning
 
@@ -34,9 +34,9 @@ tokens_remove(toks, stopwords("english"))
 
 # extract a document-feature matrix
 immigDfm <- dfm(subset(immigCorpus, party=="BNP"))
-plot(immigDfm)
+textplot_wordcloud(immigDfm)
 immigDfm <- dfm(subset(immigCorpus, party=="BNP"), remove = stopwords("english"))
-plot(immigDfm, random.color = TRUE, rot.per = .25, colors = sample(colors()[2:128], 5))
+textplot_wordcloud(immigDfm, random.color = TRUE, rot.per = .25, colors = sample(colors()[2:128], 5))
 
 # change units to sentences
 immigCorpusSent <- changeunits(immigCorpus, to = "sentences")

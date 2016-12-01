@@ -57,6 +57,8 @@ new function | deprecated function | contructs:
 `dfm_sort`   | `sort.dfm` | `dfm` class object
 `dfm_trim`   | `trim.dfm` | `dfm` class object
 `dfm_weight` | `weight` | `dfm` class object
+`plot.dfm`   | `textplot_wordcloud` | (plot)
+`plot.kwic`   | `textplot_xray` | (plot)
 
 
 ## New functions

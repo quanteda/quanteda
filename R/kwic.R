@@ -164,8 +164,8 @@ kwic.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex
     result
 }
 
-#' @rdname kwic
 #' @method print kwic
+#' @noRd
 #' @export
 print.kwic <- function(x, ...) {
     contexts <- x
@@ -180,6 +180,18 @@ print.kwic <- function(x, ...) {
 }
 
 
+#' @rdname kwic
+#' @export
+#' @examples
+#' mykwic <- kwic(data_corpus_inaugural, "provident*")
+#' is.kwic(mykwic)
+#' is.kwic("Not a kwic")
+is.kwic <- function(x) {
+    if (class(x)[1] == "kwic")
+        TRUE
+    else
+        FALSE
+}
 
 
 ## solution from alexis_laz 
