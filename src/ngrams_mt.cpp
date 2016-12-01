@@ -222,7 +222,8 @@ List qatd_cpp_ngram_mt_list(List texts_,
 #toks <- tokens(txt, what='fastestword')
 
 #RcppParallel::setThreadOptions(2)
-res <- qatd_cpp_ngram_mt_list(toks, 2, 1)
+#res <- qatd_cpp_ngram_mt_list(toks, 2, 1)
+#res
 
 #RcppParallel::setThreadOptions(4)
 #toks = rep(list(1:1000, 1001:2000), 10)
