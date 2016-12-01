@@ -10,15 +10,15 @@ applyDictionary2(x, dictionary, valuetype = c("glob", "regex", "fixed"),
 \arguments{
 \item{x}{object to which dictionary or thesaurus will be supplied}
 
-\item{dictionary}{the \link{dictionary}-class object that will be applied to
+\item{dictionary}{the \link{dictionary}-class object that will be applied to 
 \code{x}}
 
 \item{valuetype}{how to interpret dictionary values: \code{"glob"} for 
-"glob"-style wildcard expressions (the format used in Wordstat and LIWC
-formatted dictionary values); \code{"regex"} for regular expressions; or
+"glob"-style wildcard expressions (the format used in Wordstat and LIWC 
+formatted dictionary values); \code{"regex"} for regular expressions; or 
 \code{"fixed"} for exact matching (entire words, for instance)}
 
-\item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}
+\item{case_insensitive}{ignore the case of dictionary values if \code{TRUE} 
 uppercase to distinguish them from other features}
 
 \item{concatenator}{a charactor that connect words in multi-words entries}
@@ -26,10 +26,10 @@ uppercase to distinguish them from other features}
 \item{verbose}{print status messages if \code{TRUE}}
 }
 \description{
-apply a dictionary to a tokens object
+Faster version of applyDictionary for hashed tokens objects created by
+\code{\link{tokens}}.
 }
 \examples{
-
 
 toks <- tokens(data_corpus_inaugural)
 dict <- dictionary(list(country = "united states", 
@@ -43,7 +43,5 @@ dict_fix <- dictionary(list(country = "united states",
                        freedom=c('freedom', 'liberty'))) 
 head(dfm(applyDictionary(toks, dict_fix, valuetype='fixed', verbose=TRUE)))
 head(dfm(applyDictionary2(toks, dict_fix, valuetype='fixed', verbose=TRUE)))
-
-
 }
 

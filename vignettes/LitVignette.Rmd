@@ -35,14 +35,16 @@ Moby Dick: Descriptive analysis
 
 ## 2.1 Loading the first text file
 
-The code below scans and splits the text of Moby Dick from Project Gutenberg, as implemented in the text.  The command `textfile()` loads almost any file, including those found on the Internet (beginning with a URL, such as "http" or "https").
+The code below scans and splits the text of Moby Dick from Project Gutenberg, as implemented in the text.  
 ```{r eval=TRUE}
 require(quanteda)
 
-# read the text as a single file
-# alternative:
-# data_char_mobydick <- texts(textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
+## read the text as a single file
 summary(data_char_mobydick)
+
+## alternative method:
+# require(readtext)
+# data_char_mobydick <- texts(readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
 ```
 
 The `textfile()` loads the text and places inside a structured, intermediate object known as a `corpusSource` object.  We see this by outputting it to the global environment, as above.
@@ -174,12 +176,12 @@ axis(1, 1:10, labels = names(topfeatures(mobyDfmPct)))
 A dispersion plot allows us to visualize the occurrences of particular terms throughout the text. The object returned by the `kwic` function can be plotted to display a dispersion plot.
 ```{r eval=TRUE, fig.width=8, fig.height=1.5}
 # using words from tokenized corpus for dispersion
-plot(kwic(novel.v, "whale"))
+textplot_xray(kwic(novel.v, "whale"))
 ```
 
 You can also pass multiple kwic objects to `plot` to compare the dispersion of different terms:
 ```{r eval=TRUE, fig.width=8, fig.height=2.5}
-plot(
+textplot_xray(
      kwic(novel.v, "whale"),
      kwic(novel.v, "Ahab"),
      kwic(novel.v, "Pequod")

@@ -54,4 +54,6 @@
 \description{
 print methods for document-feature matrices
 }
+\keyword{dfm}
+\keyword{internal}
 

@@ -77,8 +77,6 @@ summary.corpus <- function(object, n = 100, verbose = TRUE, showmeta = FALSE, to
     }
     
     if (verbose) cat("\n")
-    ### Turn off describeTexts until we can speed this up
-    # dtexts <- describeTexts(texts(object), verbose=FALSE)
     outputdf <- data.frame(summary(texts(object), n, verbose = FALSE, toLower = toLower, ...))
     if (!is.null(docvars(object)))
         outputdf <- cbind(outputdf, docvars(object)[1:min(c(n, ndoc(object))),, drop=FALSE])
@@ -91,7 +89,7 @@ summary.corpus <- function(object, n = 100, verbose = TRUE, showmeta = FALSE, to
         cat("Created: ",   unlist(metacorpus(object, "created")), "\n", sep="")
         cat("Notes:   ",   unlist(metacorpus(object, "notes")), "\n\n", sep="")
     }
-    # invisibly pass the summary of the texts from describetexts()
+    # invisibly pass the summary of the texts
     return(invisible(outputdf))
 }
 

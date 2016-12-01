@@ -14,7 +14,6 @@
 \alias{[,dfm,missing,index,missing-method}
 \alias{[,dfm,missing,missing,logical-method}
 \alias{[,dfm,missing,missing,missing-method}
-\alias{as.matrix,dfm-method}
 \alias{colMeans,dfmSparse-method}
 \alias{colSums,dfmSparse-method}
 \alias{dfm-class}
@@ -45,8 +44,6 @@
 \S4method{+}{dfmDense,numeric}(e1, e2)
 
 \S4method{+}{numeric,dfmDense}(e1, e2)
-
-\S4method{as.matrix}{dfm}(x)
 
 \S4method{[}{dfm,index,index,missing}(x, i, j, ..., drop = FALSE)
 
@@ -134,9 +131,6 @@ either the \code{\link{smooth}} or the \code{\link{weight}} methods.}
 named \code{docs} and \code{features} respectively.}
 }}
 \examples{
-# coercion to matrix
-dfmSparse <- dfm(data_char_inaugural, verbose = FALSE)
-str(as.matrix(dfmSparse))
 # dfm subsetting
 x <- dfm(tokens(c("this contains lots of stopwords",
                   "no if, and, or but about it: lots",
@@ -155,4 +149,6 @@ y[4:5, 1:5]
 \seealso{
 \link{dfm}
 }
+\keyword{dfm}
+\keyword{internal}
 

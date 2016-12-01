@@ -2,12 +2,14 @@
 % Please edit documentation in R/data-deprecated.R
 \docType{data}
 \name{data-deprecated}
+\alias{LBGexample}
 \alias{data-deprecated}
+\alias{exampleString}
 \alias{ie2010Corpus}
 \alias{inaugCorpus}
 \alias{inaugTexts}
 \alias{ukimmigTexts}
-\title{datasets with deprecated names}
+\title{datasets with deprecated or defunct names}
 \format{See the specific object documentation for the renamed objects.}
 \usage{
 ukimmigTexts
@@ -19,9 +21,10 @@ inaugTexts
 inaugCorpus
 }
 \description{
-Datasets that have been renamed but that have been temporarily retained
-for backward compatibility.  Please change your code to use the new names,
-as these functions will be removed in future versions.
+These are datasets that have been renamed but that have been
+  temporarily retained for backward compatibility, or that have been renamed
+  and the old names removed. Please change your code to use the new names, as
+  the deprecated functions will become defunct in future versions.
 }
 \details{
 \code{ukimmigTexts} is deprecated; please use 
@@ -35,6 +38,14 @@ as these functions will be removed in future versions.
 
 \code{inaugCorpus} is deprecated; please use 
   \code{data_corpus_inaugural} instead.
+
+\code{LBGexample} is defunct; please use 
+  \code{data_dfm_LBGexample} instead.
+
+\code{exampleString} is defunct; please use 
+  \code{data_char_sampletext} instead.
 }
 \keyword{datasets}
+\keyword{deprecated}
+\keyword{internal}
 

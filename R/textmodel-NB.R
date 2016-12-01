@@ -78,7 +78,7 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
         temp <- x.trset
         rownames(temp) <- y.trclass
         colnames(temp) <- rep("all_same", nfeature(temp))
-        temp <- compress(temp)
+        temp <- dfm_compress(temp)
         Pc <- prop.table(as.matrix(temp))
         attributes(Pc) <- NULL
     } else stop("Prior must be either docfreq (default), wordfreq, or uniform")
@@ -87,7 +87,7 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
     # d <- t(sapply(split(as.data.frame(x.trset), y.trclass), colSums))
     # combine all of the class counts
     rownames(x.trset) <- y.trclass
-    d <- compress(x.trset, margin = "both")
+    d <- dfm_compress(x.trset, margin = "both")
 
     PwGc <- rowNorm(d + smooth)
     names(Pc) <- rownames(d)

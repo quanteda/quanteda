@@ -3,7 +3,6 @@
 \docType{data}
 \name{data_char_mobydick}
 \alias{data_char_mobydick}
-\alias{mobydickText}
 \title{text of Herman Melville's \emph{Moby Dick}}
 \format{An object of class \code{character} of length 1.}
 \source{
@@ -19,5 +18,5 @@ Named character object of the ASCII text of Herman Melville's
 \examples{
 summary(data_char_mobydick)
 }
-\keyword{datasets}
+\keyword{data}
 

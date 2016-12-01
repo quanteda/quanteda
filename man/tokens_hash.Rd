@@ -47,4 +47,6 @@ toksh <- tokens_hash(tokenize(c(one = "a b c d A B C D",
 \seealso{
 \code{\link{tokenize}}
 }
+\keyword{internal}
+\keyword{tokens}
 
