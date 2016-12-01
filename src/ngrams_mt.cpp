@@ -191,11 +191,12 @@ List qatd_cpp_ngram_mt_list(List texts_,
     skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram);
     
     // Apply skipgram_mt to blocked ranges
-    dev::start_timer("Ngram generation");
+    dev::Timer timer;
+    dev::start_timer("Ngram generation", timer);
     parallelFor(0, input.size(), skipgram_mt);
-    dev::stop_timer("Ngram generation");
+    dev::stop_timer("Ngram generation", timer);
     
-    dev::start_timer("ID extraction");
+    dev::start_timer("ID extraction", timer);
     // Separate key and values of unordered_map
     std::vector< std::vector<unsigned int> > ids(map_ngram.size(), std::vector<unsigned int>(1, 0)); // set default value to aviode NULL
     for (std::pair<Ngram, unsigned int> it : map_ngram){
@@ -203,7 +204,7 @@ List qatd_cpp_ngram_mt_list(List texts_,
         //print_ngram_hashed(it.first);
         ids[it.second - 1] = it.first;
     }
-    dev::stop_timer("ID extraction");
+    dev::stop_timer("ID extraction", timer);
     
     // Return IDs as attribute
     ListOf<IntegerVector> texts_ngram = Rcpp::wrap(output);
@@ -221,7 +222,7 @@ List qatd_cpp_ngram_mt_list(List texts_,
 #toks <- tokens(txt, what='fastestword')
 
 #RcppParallel::setThreadOptions(2)
-#res <- qatd_cpp_ngram_mt_list(toks, 2, 1)
+res <- qatd_cpp_ngram_mt_list(toks, 2, 1)
 
 #RcppParallel::setThreadOptions(4)
 #toks = rep(list(1:1000, 1001:2000), 10)
