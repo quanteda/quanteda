@@ -3,7 +3,6 @@
 \docType{methods}
 \name{similarity}
 \alias{as.matrix.similMatrix}
-\alias{print.similMatrix}
 \alias{similarity}
 \alias{similarity,dfm-method}
 \title{compute similarities between documents and/or features}
@@ -16,8 +15,6 @@ similarity(x, selection = NULL, n = NULL, margin = c("documents",
   sorted = TRUE, normalize = FALSE)
 
 \method{as.matrix}{similMatrix}(x, ...)
-
-\method{print}{similMatrix}(x, digits = 4, ...)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -42,8 +39,6 @@ reasons.  If you want to compute similarity on a "normalized" dfm objects
 (e.g. \code{x}), wrap it in \code{\link{weight}(x, "relFreq")}.}
 
 \item{...}{unused}
-
-\item{digits}{decimal places to display similarity values}
 }
 \value{
 a named list of the selection labels, with a sorted named vector of 

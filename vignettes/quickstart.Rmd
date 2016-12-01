@@ -23,12 +23,13 @@ knitr::opts_chunk$set(collapse = TRUE,
 
 # Introduction
 
-An R package for managing and analyzing text, by Ken Benoit and Paul Nulty.[^thanks]
+An R package for managing and analyzing text.[^thanks]
 
-[^thanks]: This research was supported by the European
-    Research Council grant ERC-2011-StG 283794-QUANTESS.  Code
-    contributors to the project include Ben Lauderdale, Pablo Barberà,
-    Kohei Watanabe, and Adam Obeng.
+[^thanks]: This research was supported by  European
+    Research Council grant ERC-2011-StG 283794-QUANTESS, Principal Investigator
+    Kenneth Benoit.  Core
+    contributors to the project include Paul Nulty, Adam Obeng,
+    Kohei Watanabe, Haiyan Wang, Ben Lauderdale, Will Lowe, and Pablo Barberà.
 
 **quanteda** makes it easy to manage texts in the form of a
 corpus, defined as a collection of texts that includes document-level
@@ -413,11 +414,11 @@ myDfm[, 1:5]
 Other options for a `dfm()` include removing stopwords, and stemming the tokens.
 ```{r}
 # make a dfm, removing stopwords and applying stemming
-myStemMat <- dfm(myCorpus, ignoredFeatures = stopwords("english"), stem = TRUE)
+myStemMat <- dfm(myCorpus, remove = stopwords("english"), stem = TRUE, removePunct = TRUE)
 myStemMat[, 1:5]
 ```
 
-The option `ignoredFeatures` provides a list of tokens to be ignored.  Most users will 
+The option `remove` provides a list of tokens to be ignored.  Most users will 
 supply a list of pre-defined "stop words", defined for numerous languages, accessed through 
 the `stopwords()` function:
 ```{r}
@@ -432,7 +433,8 @@ head(stopwords("arabic"), 10)
 
 The dfm can be inspected in the Enviroment pane in RStudio, or by calling R's `View` function. Calling `plot` on a dfm will display a wordcloud using the [wordcloud package](link.)
 ```{r warning=FALSE, fig.width = 8, fig.height = 8}
-mydfm <- dfm(data_char_ukimmig2010, ignoredFeatures = c("will", stopwords("english")))
+mydfm <- dfm(data_char_ukimmig2010, remove = c("will", stopwords("english")), 
+             removePunct = TRUE)
 mydfm
 ```
 
@@ -457,7 +459,7 @@ if (require(RColorBrewer))
 Often, we are interested in analysing how texts differ according to substantive factors which may be encoded in the document variables, rather than simply by the boundaries of the document files. We can group documents which share the same value for a document variable when creating a dfm:
 
 ```{r}
-byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", ignoredFeatures = stopwords("english"))
+byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", remove = stopwords("english"), removePunct = TRUE)
 ```
 
 We can sort this dfm, and inspect it:
@@ -509,8 +511,8 @@ liwcdfm[, 1:10]
 
 ```{r fig.width = 6}
 presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year>1980), 
-               ignoredFeatures = stopwords("english"),
-               stem=TRUE, verbose=FALSE)
+               remove = stopwords("english"),
+               stem = TRUE, verbose = FALSE, removePunct = TRUE)
 obamaSimil <- similarity(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL, 
                             margin = "documents", method = "cosine", normalize = FALSE)
 dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
@@ -521,7 +523,7 @@ We can use these distances to plot a dendrogram, clustering presidents:
 ```{r, fig.width = 10, fig.height = 7, eval = FALSE}
 data(SOTUCorpus, package="quantedaData")
 presDfm <- dfm(corpus_subset(SOTUCorpus, Date > as.Date("1960-01-01")), verbose = FALSE, stem = TRUE,
-               ignoredFeatures = stopwords("english"))
+               remove = stopwords("english"), removePunct = TRUE)
 presDfm <- dfm_trim(presDfm, min_count=5, min_docfreq=3)
 # hierarchical clustering - get distances on normalized dfm
 presDistMat <- dist(as.matrix(weight(presDfm, "relFreq")))
@@ -537,7 +539,8 @@ plot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized 
 
 We can also look at term similarities:
 ```{r}
-similarity(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features", n = 20)
+sim <- similarity(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features", n = 10)
+print(sim, digits = 2)
 ```
 
 ## Scaling document positions
@@ -561,7 +564,7 @@ abline(lm(-1*wca$rowcoord[,1] ~ wf@theta), col="grey50", lty="dotted")
 
 ```{r}
 quantdfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE, 
-                ignoredFeatures = c("will", stopwords("english")))
+                remove = c("will", stopwords("english")))
 
 if (require(topicmodels)) {
     myLDAfit20 <- LDA(convert(quantdfm, to = "topicmodels"), k = 20)

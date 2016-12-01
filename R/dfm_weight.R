@@ -9,7 +9,7 @@
 #' }
 #' 
 #' @param x document-feature matrix created by \link{dfm}
-#' @param type a label of the weight type, or a named numeric vector of values to apply to the dfm. One of:
+#' @param type a label of the weight type:
 #' \describe{
 #'  \item{\code{"frequency"}}{integer feature count (default when a dfm is created)}
 #'  \item{\code{"relFreq"}}{the proportion of the feature counts of total feature counts (aka relative frequency)}
@@ -20,16 +20,16 @@
 #'   \url{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html}.
 #'    This implementation will not return negative values.  For finer-grained
 #'   control, call \code{\link{tfidf}} directly.}
-#'   \item{a named numeric vector}{a named numeric vector of weights to be applied to the dfm, 
+#'   }
+#' @param weights if \code{type} is unused, then \code{weights} can be 
+#'   a named numeric vector of weights to be applied to the dfm, 
 #'   where the names of the vector correspond to feature labels of the dfm, and 
 #'   the weights will be applied as multipliers to the existing feature counts 
 #'   for the corresponding named fatures.  Any features not named will be 
-#'   assigned a weight of 1.0 (meaning they will be unchanged).}
-#'   }
-#' @param ... not currently used.  
-#' @note For finer grained control, consider calling \code{\link{tf}} or \code{\link{tfidf}} directly.
+#'   assigned a weight of 1.0 (meaning they will be unchanged).
+#' @note For finer grained control, consider calling \code{\link{tf}} or 
+#'   \code{\link{tfidf}} directly.
 #' @return The dfm with weighted values.
-#' @name dfm_weight
 #' @export
 #' @seealso \code{\link{tf}},  \code{\link{tfidf}}, \code{\link{docfreq}}
 #' @keywords dfm
@@ -53,13 +53,11 @@
 #' head(logTfDtm <- dfm_weight(dtm, type = "logFreq"))
 #' head(tfidf(logTfDtm, normalize = FALSE))
 #' 
-#' @references Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
-#'   \emph{Introduction to Information Retrieval}. Vol. 1. Cambridge: Cambridge 
-#'   University Press, 2008.
-setGeneric("dfm_weight", function(x, type, ...) standardGeneric("dfm_weight"))
-
-#' @rdname dfm_weight
-#' @examples
+#' #' # apply numeric weights
+#' str <- c("apple is better than banana", "banana banana apple much better")
+#' (mydfm <- dfm(str, remove = stopwords("english")))
+#' dfm_weight(mydfm, weights = c(apple = 5, banana = 3, much = 0.5))
+#' 
 #' \dontshow{
 #' testdfm <- dfm(data_char_inaugural[1:5], verbose = FALSE)
 #' for (w in c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf")) {
@@ -67,54 +65,53 @@ setGeneric("dfm_weight", function(x, type, ...) standardGeneric("dfm_weight"))
 #'     cat("\n\n=== weight() TEST for:", w, "; class:", class(testw), "\n")
 #'     head(testw)
 #' }}
-setMethod("dfm_weight", signature = c("dfm", "character"),
-          definition = function(x, type = c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"), ...) {
-              if (length(addedArgs <- list(...)))
-                  warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
-              type = match.arg(type)
-              if (x@weightTf[["scheme"]] != "count") {
-                  catm("  No weighting applied: you should not weight an already weighted dfm.\n")
-              } else if (type=="relFreq") {
-                  return(tf(x, "prop"))
-              } else if (type=="relMaxFreq") {
-                  return(tf(x, "propmax"))
-              } else if (type=="logFreq") {
-                  return(tf(x, "log"))
-              } else if (type=="tfidf") {
-                  return(tfidf(x))
-              } else if (type == "frequency") {
-                  return(x)
-              } else stop("unknown weighting type")
-          })
+#' @references Manning, Christopher D., Prabhakar Raghavan, and Hinrich Schutze.
+#'   \emph{Introduction to Information Retrieval}. Vol. 1. Cambridge: Cambridge 
+#'   University Press, 2008.
+#' @examples
+dfm_weight <- function(x, 
+                       type = c("frequency", "relFreq", "relMaxFreq", "logFreq", "tfidf"),
+                       weights = NULL) {
+    if (!is.dfm(x))
+        stop("x must be a dfm object")
+    
+    # for numeric weights
+    if (!is.null(weights)) {
+        if (!missing(type))
+            warning("type is ignored when numeric weights are supplied")
+        if (any(!(matchedWeights <- names(weights) %in% features(x)))) {
+            warning("ignoring", names(weights)[matchedWeights], ", not a feature match")
+            weights <- weights[matchedWeights]
+        }
+        
+        ## set weighting slot/attribute -- NEED TO ADD
+        
+        # use name matching for indexing, sorts too, returns NA where no match is found
+        weights <- weights[features(x)]
+        # reassign 1 to non-matched NAs
+        weights[is.na(weights)] <- 1
+        return(x * rep(weights, each = nrow(x)))
+        
+    } else {
+        # named type weights
+        type <- match.arg(type)
+        
+        if (x@weightTf[["scheme"]] != "count") {
+            catm("  No weighting applied: you should not weight an already weighted dfm.\n")
+        } else if (type=="relFreq") {
+            return(tf(x, "prop"))
+        } else if (type=="relMaxFreq") {
+            return(tf(x, "propmax"))
+        } else if (type=="logFreq") {
+            return(tf(x, "log"))
+        } else if (type=="tfidf") {
+            return(tfidf(x))
+        } else if (type == "frequency") {
+            return(x)
+        } else stop("unknown weighting type")
 
-#' @rdname dfm_weight
-#' @examples 
-#' # apply numeric weights
-#' str <- c("apple is better than banana", "banana banana apple much better")
-#' weights <- c(apple = 5, banana = 3, much = 0.5)
-#' (mydfm <- dfm(str, remove = stopwords("english")))
-#' dfm_weight(mydfm, weights)
-#' 
-#' 
-#' @keywords weighting dfm
-setMethod("dfm_weight", signature = c("dfm", "numeric"), 
-          definition = function(x, type, ...) {
-              weights <- type
-              if (any(!(matchedWeights <- names(weights) %in% features(x)))) {
-                  warning("ignoring", names(weights)[matchedWeights], ", not a feature match")
-                  weights <- weights[matchedWeights]
-              }
-              
-              ## set weighting slot/attribute -- NEED TO ADD
-
-              # use name matching for indexing, sorts too, returns NA where no match is found
-              weights <- weights[features(x)]
-              # reassign 1 to non-matched NAs
-              weights[is.na(weights)] <- 1
-              # works because of column-wise recycling of weights vector
-              x * weights
-          })
-
+    }
+}
 
 
 #' @rdname dfm_weight

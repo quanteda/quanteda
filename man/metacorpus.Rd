@@ -2,13 +2,10 @@
 % Please edit documentation in R/corpus-methods-quanteda.R
 \name{metacorpus}
 \alias{metacorpus}
-\alias{metacorpus.corpus}
 \alias{metacorpus<-}
 \title{get or set corpus metadata}
 \usage{
 metacorpus(x, field = NULL)
-
-\method{metacorpus}{corpus}(x, field = NULL)
 
 metacorpus(x, field) <- value
 }
