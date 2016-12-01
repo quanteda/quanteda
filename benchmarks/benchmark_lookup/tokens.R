@@ -19,6 +19,12 @@ microbenchmark::microbenchmark(
 )
 
 microbenchmark::microbenchmark(
+    fixed=applyDictionary2(toks, dict_liwc, valuetype='fixed', verbose=FALSE),
+    glob=applyDictionary2(toks, dict_liwc, valuetype='glob', verbose=FALSE),
+    times=1
+)
+
+microbenchmark::microbenchmark(
     dfm=applyDictionary(dfm(toks), dict_liwc, valuetype='glob', verbose=FALSE),
     tokens=applyDictionary2(toks, dict_liwc, valuetype='glob', verbose=FALSE),
     times=1
@@ -27,7 +33,8 @@ microbenchmark::microbenchmark(
 toks_short <- tokens(tokenize(inaugCorpus, what='sentence', simplify=TRUE))
 microbenchmark::microbenchmark(
     r=applyDictionary(toks_short, dict, valuetype='fixed', verbose=FALSE),
-    cpp=applyDictionary2(toks_short, dict, valuetype='fixed', verbose=FALSE)
+    cpp=applyDictionary2(toks_short, dict, valuetype='fixed', verbose=FALSE),
+    times=1
 )
 
 profvis::profvis(applyDictionary2(toks, dict_liwc[1], valuetype='glob', verbose=FALSE))
