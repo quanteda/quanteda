@@ -44,13 +44,10 @@ test_that("test that ngrams produces the results from Guthrie 2006", {
           ), character(0)
       )
       
-      toks2 <- tokens(c('a b c d e', 'c d e f g'))
-
-      mix_grams <- list(c("a_b", "b_c", "c_d", "d_e", "a_b_c", "b_c_d", "c_d_e"),
-                        c("c_d", "d_e", "e_f", "f_g", "c_d_e", "d_e_f", "e_f_g"))
-      expect_equivalent(
-        as.list(ngrams(toks2, n = 2:3)),
-        mix_grams
+      expect_equivalent(setdiff(
+        as.list(ngrams(toks, n = 2:3))[[1]],
+        c(bi_grams, tri_grams)
+        ), character(0)
       )
 
 })
