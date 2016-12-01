@@ -1,7 +1,5 @@
 #include <Rcpp.h>
-#include <unordered_map>
 #include <numeric>
-#include <chrono> // only for benchmarking
 #include "dev.h"
 #include "quanteda.h"
 #include "tbb/concurrent_unordered_map.h"
