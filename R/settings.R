@@ -21,6 +21,7 @@ DEFAULT_DELIM_PARAGRAPH <- "\n\n"
 #' 
 #' @param  x object from/to which settings are queried or applied
 #' @param  ... additional arguments
+#' @keywords internal settings
 #' @export 
 settings <- function(x, ...) {
     UseMethod("settings")
@@ -104,7 +105,7 @@ settingsInitialize <- function() {
 }
 
 
-#' @rdname settings
+#' @noRd
 #' @method print settings
 #' @export
 print.settings <- function(x, ...) {
