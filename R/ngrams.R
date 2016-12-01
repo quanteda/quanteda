@@ -63,8 +63,8 @@ ngrams.tokenizedTexts <- function(x, ...) {
 #' @param thread numbers of thread in the parallel mode
 #' @examples 
 #' txt <- c("a b c d e", "c d e f g")
-#' toks_hashed <- tokens(txt)
-#' ngrams(toks_hashed, n = 2:3)
+#' toks <- tokens(txt)
+#' ngrams(toks, n = 2:3)
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
 ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_", thread = 4, ...) {
