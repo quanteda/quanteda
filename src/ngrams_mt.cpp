@@ -114,7 +114,7 @@ Ngrams skipgram(Text tokens,
 }
 
 /*
- *  This function specializes in ngrams but there is not performance gain. 
+ *  This function specializes in ngrams but there is no performance gain. 
  */
 Ngrams ngram(Text tokens,
              std::vector<int> ns, 
