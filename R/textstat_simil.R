@@ -9,8 +9,9 @@
 #' @param margin identifies the margin of the dfm on which similarity will be 
 #'   computed:  \code{documents} for documents or \code{features} for word/term
 #'   features.
-#' @param method a valid method for computing similarity from 
-#'   \code{\link[proxy]{pr_DB}}, default "correlation".
+#' @param method method the distance measure to be used, options are "cosine", "correlation", 
+#' "jaccard", "eJaccard", "dice", "eDice", "simple matching", "hamann", "faith", default "correlation". More options are avaible 
+#'  in \code{\link{textstat_dist}}
 #' @param normalize a deprecated argument retained (temporarily) for legacy 
 #'   reasons.  If you want to compute similarity on a "normalized" dfm objects 
 #'   (e.g. \code{x}), wrap it in \code{\link{weight}(x, "relFreq")}.
@@ -20,7 +21,7 @@
 #' @import methods
 #' @examples
 #' # create a dfm from inaugural addresses from Reagan onwards
-#' presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+#' presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
 #'                stem = TRUE)
 #' 
 #' # compute some document similarities
@@ -68,13 +69,14 @@ setMethod(f = "textstat_simil",
               margin <- match.arg(margin)
               if (margin == "features") {
                   items <- features(x)
+                  xsize <- dim(x)[2]
               } else {
                   items <- docnames(x)
+                  xsize <- dim(x)[1]
               }
               
-              if (is.null(n) || n >= length(items))
-                  #n <- length(items) - 1 # choose all features/docs if n is NULL
-                  n <- length(items) 
+              if (is.null(n) || n >= xsize)
+                  n <- xsize # choose all features/docs if n is NULL
               
               if (length(selection) != 0L) {
                   # retain only existing features or documents
@@ -94,9 +96,9 @@ setMethod(f = "textstat_simil",
                   if (method == "simple matching") method <- "smc"
                   result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
               } else {
-                  # use proxy::dist() for all other methods
-                  result <- as.matrix(proxy::dist(as.matrix(x), as.matrix(xSelect), method = method,
-                                                  by_rows = ifelse(margin=="features", FALSE, TRUE)), diag = 1)
+                  stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
+                  #result <- as.matrix(proxy::dist(as.matrix(x), as.matrix(xSelect), method = method,
+                  #                                by_rows = ifelse(margin=="features", FALSE, TRUE)), diag = 1)
               }
               
               # convert NaNs to NA
@@ -416,7 +418,6 @@ hamannSparse <- function(x, y = NULL, margin = 1) {
 #negative match but only gave the half credits while giving
 #the full credits for the positive matches.
 # formula: Hamman = a+0.5d/n
-
 faithSparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     

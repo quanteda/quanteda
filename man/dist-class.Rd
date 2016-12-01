@@ -10,11 +10,11 @@
 \usage{
 textstat_dist(x, selection = character(0), n = NULL,
   margin = c("documents", "features"), method = "euclidean",
-  normalize = FALSE, tri = FALSE, diag = FALSE)
+  normalize = FALSE, tri = FALSE, diag = FALSE, dist = TRUE)
 
 \S4method{textstat_dist}{dfm}(x, selection = character(0), n = NULL,
   margin = c("documents", "features"), method = "euclidean",
-  normalize = FALSE, tri = TRUE, diag = FALSE)
+  normalize = FALSE, tri = TRUE, diag = FALSE, dist = TRUE)
 
 \method{as.list}{dist}(x, sorted = TRUE, n = NULL, ...)
 }
@@ -42,8 +42,9 @@ labels from the dfm}
 computed:  \code{documents} for documents or \code{features} for word/term
 features.}
 
-\item{\code{method}}{a valid method for computing similarity from 
-\code{\link[proxy]{pr_DB}}, default "euclidean".}
+\item{\code{method}}{the distance measure to be used, options are "euclidean", "hamming",
+"Chisquared","Chisquared2" and "kullback", default "euclidean". More options are avaible 
+in \code{\link{textstat_simil}}}
 
 \item{\code{normalize}}{a deprecated argument retained (temporarily) for legacy 
 reasons.  If you want to compute similarity on a "normalized" dfm objects 
@@ -54,10 +55,13 @@ reasons.  If you want to compute similarity on a "normalized" dfm objects
 \item{\code{tri}}{whether the upper triangle of the symmetric \eqn{V \times V} matrix is recorded}
 
 \item{\code{diag}}{whether the diagonal of the distance matrix should be recorded}
+
+\item{\code{dist}}{whether the distance matrix should be converted into an object of class "dist". Distance matrix 
+created from some methods, such as "kullback", is not symmetric.}
 }}
 \examples{
 # create a dfm from inaugural addresses from Reagan onwards
-presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                stem = TRUE)
 
 # compute some document similarities
@@ -68,7 +72,7 @@ presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwo
 textstat_dist(presDfm, "1985-Reagan", n = 5, margin = "documents")
 textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
 textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
-#textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
+textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
 }
 \seealso{
 \link{dfm}

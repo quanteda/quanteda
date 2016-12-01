@@ -26,8 +26,9 @@ labels from the dfm}
 computed:  \code{documents} for documents or \code{features} for word/term
 features.}
 
-\item{method}{a valid method for computing similarity from 
-\code{\link[proxy]{pr_DB}}, default "correlation".}
+\item{method}{method the distance measure to be used, options are "cosine", "correlation", 
+"jaccard", "eJaccard", "dice", "eDice", "simple matching", "hamann", "faith", default "correlation". More options are avaible 
+ in \code{\link{textstat_dist}}}
 
 \item{normalize}{a deprecated argument retained (temporarily) for legacy 
 reasons.  If you want to compute similarity on a "normalized" dfm objects 
@@ -43,7 +44,7 @@ These functions compute similarity matrix between documents and/or features from
 }
 \examples{
 # create a dfm from inaugural addresses from Reagan onwards
-presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                stem = TRUE)
 
 # compute some document similarities

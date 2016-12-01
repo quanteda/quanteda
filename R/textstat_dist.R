@@ -9,14 +9,17 @@
 #' @slot margin identifies the margin of the dfm on which similarity will be 
 #'   computed:  \code{documents} for documents or \code{features} for word/term
 #'   features.
-#' @slot method a valid method for computing similarity from 
-#'   \code{\link[proxy]{pr_DB}}, default "euclidean".
+#' @slot method the distance measure to be used, options are "euclidean", "hamming",
+#'  "Chisquared","Chisquared2" and "kullback", default "euclidean". More options are avaible 
+#'  in \code{\link{textstat_simil}}
 #' @slot normalize a deprecated argument retained (temporarily) for legacy 
 #'   reasons.  If you want to compute similarity on a "normalized" dfm objects 
 #'   (e.g. \code{x}), wrap it in \code{\link{weight}(x, "relFreq")}.
 #' @slot digits decimal places to display similarity values
 #' @slot tri whether the upper triangle of the symmetric \eqn{V \times V} matrix is recorded
 #' @slot diag whether the diagonal of the distance matrix should be recorded
+#' @slot dist whether the distance matrix should be converted into an object of class "dist". Distance matrix 
+#'   created from some methods, such as "kullback", is not symmetric.  
 #' @seealso \link{dfm}
 #' @export
 #' @import methods
@@ -26,7 +29,7 @@
 setClass("dist",
          slots = c(selection = "character", n = "integer", margin = "character", 
                    method = "character", normalize = "logical", 
-                   digits = "integer", tri = "logical", diag = "logical"),
+                   digits = "integer", tri = "logical", diag = "logical", dist = "logical"),
          prototype = list (selection = character(0), n = NULL,
                            margin = c("documents", "features"),
                            method = "euclidean",
@@ -36,7 +39,7 @@ setClass("dist",
 
 #' @examples
 #' # create a dfm from inaugural addresses from Reagan onwards
-#' presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
+#' presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
 #'                stem = TRUE)
 #' 
 #' # compute some document similarities
@@ -47,7 +50,7 @@ setClass("dist",
 #' textstat_dist(presDfm, "1985-Reagan", n = 5, margin = "documents")
 #' textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
 #' textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
-#' #textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
+#' textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
 
 #' @rdname dist-class
 #' @export
@@ -56,7 +59,7 @@ setGeneric(name = "textstat_dist",
            def = function(x, selection = character(0), n = NULL,
                           margin = c("documents", "features"),
                           method = "euclidean", 
-                          normalize = FALSE, tri = FALSE, diag = FALSE)
+                          normalize = FALSE, tri = FALSE, diag = FALSE, dist = TRUE)
                {
                 standardGeneric("textstat_dist")
                })
@@ -69,7 +72,7 @@ setMethod(f = "textstat_dist",
           def = function(x, selection = character(0), n = NULL, 
                          margin = c("documents", "features"),
                          method = "euclidean",
-                         normalize = FALSE, tri = TRUE, diag = FALSE ) {
+                         normalize = FALSE, tri = TRUE, diag = FALSE, dist = TRUE) {
               
               # value <- match.arg(value)
               
@@ -81,13 +84,14 @@ setMethod(f = "textstat_dist",
               margin <- match.arg(margin)
               if (margin == "features") {
                   items <- features(x)
+                  xsize <- dim(x)[2]
               } else {
                   items <- docnames(x)
+                  xsize <- dim(x)[1]
               }
               
-              if (is.null(n) || n >= length(items))
-                  #n <- length(items) - 1 # choose all features/docs if n is NULL
-                  n <- length(items) 
+              if (is.null(n) || n >= xsize)
+                  n <- xsize # choose all features/docs if n is NULL
               
               if (length(selection) != 0L) {
                   # retain only existing features or documents
@@ -102,7 +106,7 @@ setMethod(f = "textstat_dist",
                   }
               } else xSelect <- NULL
               
-              vecMethod <- c("euclidean", "hamming", "Chisquared","Chi")
+              vecMethod <- c("euclidean", "hamming", "Chisquared","Chisquared2", "kullback")
               vecMethod_simil <- c("jaccard", "binary", "eJaccard","simple matching")
               
               if (method %in% vecMethod){
@@ -112,8 +116,9 @@ setMethod(f = "textstat_dist",
                   result <- 1 - get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
               } else{
                   # use proxy::dist() for all other methods
-                  result <- as.matrix(proxy::dist(as.matrix(x), as.matrix(xSelect), method = method,
-                                                  by_rows = ifelse(margin=="features", FALSE, TRUE)), diag = 1)
+                  stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
+                  #result <- as.matrix(proxy::dist(as.matrix(x), as.matrix(xSelect), method = method,
+                  #                                by_rows = ifelse(margin=="features", FALSE, TRUE)), diag = 1)
               }
 
               # convert NaNs to NA
@@ -146,29 +151,33 @@ setMethod(f = "textstat_dist",
               # discard the upper diagonal if tri == TRUE
               if (tri)
                   result[upper.tri(result, diag = !diag)]<-0
-
-              # create a new dist object
-              p <- nrow(result)
-              if(ncol(result) != p) warning("non-square matrix")
+            
+              if (dist){
+                  # create a new dist object
+                  p <- nrow(result)
+                  if(ncol(result) != p) warning("non-square matrix")
               
-              # only retain lower triangular elements for the dist object
-              distM <- result[row(result) > col(result)]
               
-              # set the attributes of the dist object
-              attributes(distM) <- NULL
-              attr(distM, "Size") <- nrow(result)
-              if (!is.null(rownames(result))) attr(distM, "Labels") <- rownames(result)
-              attr(distM, "Diag") <- diag
-              attr(distM, "Upper") <- !tri
-              attr(distM, "method") <- method
-              attr(distM, "call") <- match.call()
-              attr(distM, "dimnames") <- NULL
-              class(distM) <- "dist"
-              
-              # This will call Stats::print.dist() and Stats::as.matrix.dist()
-              distM
-          
-              })
+                  # only retain lower triangular elements for the dist object
+                  distM <- result[row(result) > col(result)]
+                  
+                  # set the attributes of the dist object
+                  attributes(distM) <- NULL
+                  attr(distM, "Size") <- nrow(result)
+                  if (!is.null(rownames(result))) attr(distM, "Labels") <- rownames(result)
+                  attr(distM, "Diag") <- diag
+                  attr(distM, "Upper") <- !tri
+                  attr(distM, "method") <- method
+                  attr(distM, "call") <- match.call()
+                  attr(distM, "dimnames") <- NULL
+                  class(distM) <- "dist"
+                  
+                  # This will call Stats::print.dist() and Stats::as.matrix.dist()
+                  distM
+              } else {
+                  result
+              }
+        })
 
 # convert the dist class object to the sorted list used in tm::findAssocs()
 #' @param sorted sort results in descending order if \code{TRUE}
@@ -320,7 +329,7 @@ ChisquaredSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
 
 ## This chi-squared method is used for histogram: sum((x-y)^2/((x+y)))/2
 ##http://www.ariel.ac.il/sites/ofirpele/publications/ECCV2010.pdf
-ChiSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
+Chisquared2Sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     marginSums <- if (margin == 2) colSums else rowSums
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod   
@@ -347,4 +356,37 @@ ChiSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
         chimat <- ( tmp - 2 * as.matrix(cpFun(x)))/sumij/2
     }
     chimat
+}
+
+# Kullback-Leibler divergence: is a measure of the difference between probability distributions
+# This metric is not symmetric, it is better applied with setting of "dist = FALSE" and "tri= FALSE"
+# to avoid eoercing the result to a dist object.
+# assumption: p(x_i) = 0 implies p(y_i)=0 and in case both p(x_i) and p(y_i) equals to zero, 
+# p(x_i)*log(p(x_i)/p(y_i)) is assumed to be zero as the limit value.
+# formula: sum(p(x)*log(p(x)/p(y)))
+kullbackSparse <- function(x, y = NULL, margin = 1) {
+    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
+    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
+    marginSums <- if (margin == 2) colSums else rowSums
+    marginNames <- if (margin == 2) colnames else rownames
+    
+    # probability
+    x <- x/marginSums(x)
+    logx <- log(x)
+    logx[is.na(logx)] <- 0L
+    logx[is.infinite(logx)] <- 0L
+    if (!is.null(y)) {
+        y <- y/marginSums(y)
+        logy <- log(y)
+        logy[is.na(logy)] <- 0L
+        logy[is.infinite(logy)] <- 0L
+        kullmat <- marginSums(x*logx - cpFun(x, logy))
+        colNm <- marginNames(y)
+    } else {
+        kullmat <- marginSums(x*logx) - cpFun(x, logx)
+        colNm <- marginNames(x)
+    }
+    rowNm <- marginNames(x)
+    dimnames(kullmat) <- list(rowNm,  colNm)
+    kullmat
 }
