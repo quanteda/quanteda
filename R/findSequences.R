@@ -39,14 +39,16 @@ findSequences <- function(x, tokens, count_min, smooth=0.001, nested=TRUE){
   seqs
 }
 
-#' print a tokenSequences objects
-#' 
-#' print method for a tokenSequences object
-#' @param x a tokenSequences object created by \link{findSequences}
-#' @param ... further arguments passed to base print method
+# print a tokenSequences objects
+# 
+# print method for a tokenSequences object
+# @param x a tokenSequences object created by \link{findSequences}
+# @param ... further arguments passed to base print method
+
+#' @noRd
 #' @export
 #' @method print tokenSequences
-print.tokenSequences <- function(x, ...){
+print.tokenSequences <- function(x, ...) {
     df <- data.frame(sequence=sapply(x[['sequence']], paste, collapse = " "),
                      len=sapply(x[['sequence']], length),
                      #lambda=x$lambda,

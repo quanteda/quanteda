@@ -139,7 +139,7 @@ microbenchmark::microbenchmark(
 # removing tokens before dfm, versus after
 microbenchmark::microbenchmark(
     pre = dfm(selectFeaturesOLD(toks, stopwords("english"), "remove"), verbose = FALSE),
-    post = dfm(toks, ignoredFeatures = stopwords("english"), verbose = FALSE),
+    post = dfm(toks, remove = stopwords("english"), verbose = FALSE),
     times = 5, unit = "relative")
 }
 

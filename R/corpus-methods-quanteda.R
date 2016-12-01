@@ -19,7 +19,7 @@
 metacorpus <- function(x, field = NULL)
     UseMethod("metacorpus")
 
-#' @rdname metacorpus
+#' @noRd
 #' @export
 metacorpus.corpus <- function(x, field = NULL) {
     if (!is.null(field)) {
@@ -59,15 +59,15 @@ documents <- function(corp) {
 }
 
 
-#' get corpus texts
+#' get or assign corpus texts
 #' 
-#' Get the texts in a quanteda corpus object, with grouping options.  Works for plain character
-#' vectors too, if \code{groups} is a factor.
-#' @param x A quanteda corpus object
-#' @param groups character vector containing the names of document variables in
+#' Get or replace the texts in a \link{corpus} object, with grouping options. 
+#' Works for plain character vectors too, if \code{groups} is a factor.
+#' @param x a quanteda \link{corpus} or character object
+#' @param groups character vector containing the names of document variables in 
 #'   a corpus, or a factor equal in length to the number of documents, used for 
-#'   aggregating the texts through concatenation.  If \code{x} is of type character,
-#'   then \code{groups} must be a factor.
+#'   aggregating the texts through concatenation.  If \code{x} is of type
+#'   character, then \code{groups} must be a factor.
 #' @param ... unused
 #' @return For \code{texts}, a character vector of the texts in the corpus.
 #'   
@@ -81,14 +81,16 @@ documents <- function(corp) {
 #' 
 #' # grouping a character vector using a factor
 #' nchar(data_char_inaugural[1:5])
-#' nchar(texts(data_char_inaugural[1:5], groups = as.factor(data_corpus_inaugural[1:5, "President"])))
+#' nchar(texts(data_char_inaugural[1:5], 
+#'             groups = as.factor(data_corpus_inaugural[1:5, "President"])))
+#' 
 texts <- function(x, groups = NULL, ...) {
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     UseMethod("texts")
 }
 
-#' @rdname texts
+#' @noRd
 #' @export
 texts.corpus <- function(x, groups = NULL, ...) {
     txts <- documents(x)$texts
@@ -118,7 +120,7 @@ texts.corpus <- function(x, groups = NULL, ...) {
     texts(txts, groups = group.split)
 }
 
-#' @rdname texts
+#' @noRd
 #' @export
 texts.character <- function(x, groups = NULL, ...) {
     if (is.null(groups)) return(x)
@@ -128,14 +130,9 @@ texts.character <- function(x, groups = NULL, ...) {
 }
 
 
+#' @rdname texts
 #' @param value character vector of the new texts
-#' @rdname texts
-#' @export
-"texts<-" <- function(x, value) {
-    UseMethod("texts<-")
-}
-
-#' @rdname texts
+#' @return for \code{texts <-}, a corpus with the texts replaced by \code{value}
 #' @export
 #' @note You are strongly encouraged as a good practice of text analysis 
 #'   workflow \emph{not} to modify the substance of the texts in a corpus. 
@@ -144,8 +141,7 @@ texts.character <- function(x, groups = NULL, ...) {
 #'   will never be able to recover the original case.  Rather, apply 
 #'   \code{\link{toLower}} to the corpus and use the result as an input, e.g. to
 #'   \code{\link{tokenize}}.
-#' @examples 
-#' 
+#' @examples
 #' BritCorpus <- corpus(c("We must prioritise honour in our neighbourhood.", 
 #'                        "Aluminium is a valourous metal."))
 #' texts(BritCorpus) <- 
@@ -156,9 +152,24 @@ texts.character <- function(x, groups = NULL, ...) {
 #' texts(BritCorpus)
 #' texts(BritCorpus)[2] <- "New text number 2."
 #' texts(BritCorpus)
+"texts<-" <- function(x, value) {
+    UseMethod("texts<-")
+}
+
+#' @noRd
+#' @export
 "texts<-.corpus" <- function(x, value) { 
     documents(x)$texts <- value
     x
+}
+
+#' @rdname texts
+#' @details \code{as.character(x)} where \code{x} is a corpus is equivalent to
+#' calling \code{texts(x)}
+#' @method as.character corpus
+#' @export
+as.character.corpus <- function(x, ...) {
+    texts(x)
 }
 
 
@@ -174,19 +185,19 @@ texts.character <- function(x, groups = NULL, ...) {
 #' @note Document-level meta-data names are preceded by an underscore character,
 #'   such as \code{_language}, but when named in in the \code{field} argument,
 #'   do \emph{not} need the underscore character.
-#' @export
-metadoc <- function(x, field = NULL) 
-    UseMethod("metadoc")
-
-#' @rdname metadoc 
-#' @export
-#' @examples
+#' @examples 
 #' mycorp <- corpus_subset(data_corpus_inaugural, Year>1990)
 #' summary(mycorp, showmeta = TRUE)
 #' metadoc(mycorp, "encoding") <- "UTF-8"
 #' metadoc(mycorp)
 #' metadoc(mycorp, "language") <- "english"
 #' summary(mycorp, showmeta = TRUE)
+#' @export
+metadoc <- function(x, field = NULL) 
+    UseMethod("metadoc")
+
+#' @noRd
+#' @export
 metadoc.corpus <- function(x, field = NULL) {
     # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
     # (this check not yet implemented)
@@ -203,13 +214,13 @@ metadoc.corpus <- function(x, field = NULL) {
     }
 }
 
-#' @param value the new value of the new meta-data field
 #' @rdname metadoc
+#' @param value the new value of the new meta-data field
 #' @export
 "metadoc<-" <- function(x, field = NULL, value) 
     UseMethod("metadoc")
 
-#' @rdname metadoc
+#' @noRd
 #' @export
 "metadoc<-" <- function(x, field = NULL, value) {
     # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
@@ -225,25 +236,6 @@ metadoc.corpus <- function(x, field = NULL) {
     x
 }
 
-# replacement function for document-level metadata
-#
-# to get this to work with indexes, e.g. 
-# metadoc(UDHRcorpus, "language")[1] <- "1st Row Only"
-# or
-# language(UDHRcorpus)[1] <- "1st row only"
-# is trickier.  Solution lies in nesting a complex "[" function
-# inside the calling function: see http://cran.r-project.org/doc/manuals/R-lang.html#Subset-assignment
-#
-# @export
-# "metadoc<-[" <- function(corp, value, field) {
-#     # CHECK TO SEE THAT VALUE LIST IS IN VALID DOCUMENT-LEVEL METADATA LIST
-#     # (this check not yet implemented)
-#     field <- paste("_", field, sep="")
-#     documents(corp)[field] <- value
-#     corp
-# }
-
-
 
 #' get or set for document-level variables
 #' 
@@ -257,7 +249,7 @@ docvars <- function(x, field = NULL) {
     UseMethod("docvars")
 }
 
-#' @rdname docvars
+#' @noRd
 #' @export
 docvars.corpus <- function(x, field = NULL) {
     docvarsIndex <- intersect(which(substr(names(documents(x)), 1, 1) != "_"),
@@ -290,7 +282,7 @@ docvars.corpus <- function(x, field = NULL) {
 }
 
 
-#' @rdname docvars
+#' @noRd
 #' @export
 "docvars<-.corpus" <- function(x, field = NULL, value) {
     if ("texts" %in% field) stop("You should use texts() instead to replace the corpus texts.")
@@ -304,42 +296,25 @@ docvars.corpus <- function(x, field = NULL) {
 }
 
 
-# accessor for tokens
-# 
-# Get the tokens object from a corpus
-# @export
-#  return(corp$docvars$tokens)
-tokens <- function(x) {
-    UseMethod("tokens")
-}
-tokens.corpus <- function(corp) {
-    corp$tokens
-}
-
-# # replacement function for tokens
-# # @export
-#  corp$docvars$tokens <- value
-#  return(corp)
-# #"tokens<-" <- function(corp, value){
-#}
-# # @export
-#types <- function(corp) {
-#  return(unique(unlist(tokens(corp))))
-#}
-
 #' get or set document names
 #' 
-#' Get or set the document names from a corpus or a document-feature matrix.
-#' of the \link{dfm} object.
+#' Get or set the document names of a \link{corpus} or a \link{dfm}.
 #' @param x the object with docnames
 #' @export
+#' @return \code{docnames} returns a character vector of the document names
+#' @examples
+#' # query the document names of a corpus
+#' docnames(data_corpus_irishbudget2010)
+#' 
+#' # query the document names of a dfm
+#' docnames(dfm(data_char_inaugural[1:5]))
+#' 
 docnames <- function(x) {
     UseMethod("docnames")
 }
 
-#' @return \code{docnames} returns a character vector of the document names
+#' @noRd
 #' @export
-#' @rdname docnames
 docnames.corpus <- function(x) {
     # didn't use accessor documents() because didn't want to pass
     # that large object
@@ -351,9 +326,6 @@ docnames.corpus <- function(x) {
 #' for dfm objects, whose document names are fixed.)
 #' @export
 #' @examples 
-#' # query the document names of the inaugural speech corpus
-#' docnames(data_corpus_inaugural) <- paste("Speech", 1:ndoc(data_corpus_inaugural), sep="")
-#' 
 #' # reassign the document names of the inaugural speech corpus
 #' docnames(data_corpus_inaugural) <- paste("Speech", 1:ndoc(data_corpus_inaugural), sep="")
 #' 
@@ -384,34 +356,6 @@ ndoc <- function(x) {
 ndoc.corpus <- function(x) {
     nrow(x$documents)
 }
-
-# # get or set the language of corpus documents
-# # 
-# # Get or set the \code{_language} document-level metadata field in a corpus.
-# # @param corp a corpus object
-# # @param drop return as a vector if \code{TRUE}, otherwise return a \code{data.frame}
-# # @details This function modifies the \code{_language} value set by
-# #   \code{\link{metadoc}}.  It is a wrapper for \code{metadoc(corp, "language")}.
-# # @export
-# language <- function(corp, drop=TRUE) {
-#     if ("_language" %in% names(metadoc(corp))) {
-#         result <- metadoc(corp, "language")
-#         return(result[,1, drop=drop])
-#     } else
-#         return(rep(NULL, ndoc(corp)))
-# }
-# 
-# # @rdname language
-# # @param value the new value for the language meta-data field, a string or
-# #   character vector equal in length to \code{ndoc(corp)}
-# # @export
-# "language<-" <- function(corp, value){
-#     metadoc(corp, "language") <- value
-#     # corp$documents$"_language" <- value
-#     corp
-# }
-
-
 
 
 #' count the number of tokens or types

@@ -10,8 +10,10 @@ This release has some major changes to the API, as described in this document (L
 new name | original name | notes 
 :--------|:------------- |:----- 
 `data_char_sampletext` | `exampleString` | 
-`data_char_mobydick` | `mobydickText`
-`data_dfm_LBGexample` | `LBGexample`
+`data_char_mobydick` | `mobydickText`|
+`data_dfm_LBGexample` | `LBGexample` |
+`data_char_sampletext` | `exampleString` | 
+
 
 ### Renamed internal data objects
 
@@ -19,7 +21,6 @@ The following objects have been renamed, but will not affect user-level function
 
 new name | original name | notes 
 :--------|:------------- |:----- 
-`data_char_sampletext` | `exampleString` | 
 `data_int_syllables` | `englishSyllables` |  (used by `textcount_syllables()`) 
 `data_char_wordlists` | `wordlists` |  (used by `readability()`) 
 `data_char_stopwords` | `.stopwords` | (used by `stopwords()`

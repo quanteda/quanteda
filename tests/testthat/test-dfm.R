@@ -209,3 +209,12 @@ test_that("test rbind.dfm with the same features, but in a different order", {
 
 
 })
+
+
+test_that("dfm_weight works", {
+    str <- c("apple is better than banana", "banana banana apple much better")
+    w <- c(apple = 5, banana = 3, much = 0.5)
+    mydfm <- dfm(str, remove = stopwords("english"))
+    expect_equivalent(as.matrix(dfm_weight(mydfm, weights = w)),
+                      matrix(c(5, 5, 1, 1, 3, 6, 0, 0.5), nrow = 2))
+})
