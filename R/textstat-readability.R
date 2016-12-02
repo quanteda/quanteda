@@ -1,9 +1,8 @@
-
-
 #' calculate readability
 #'
-#' Calculate the readability of text(s).
-#' @param x a \link{corpus} object or character vector
+#' Calculate the readability of text(s) using one of a variety of computed 
+#' indexes.
+#' @param x a character or \link{corpus} object containing the texts
 #' @param measure character vector defining the readability measure to calculate
 #' @param drop  if \code{TRUE}, the result is returned as a numeric vector if
 #'   only a single measure is requested; otherwise, a data.frame is returned
@@ -18,29 +17,63 @@
 #' @return a data.frame object consisting of the documents as rows, and the
 #'   readability statistics as columns
 #' @export
-readability <- function(x, ...) {
-    UseMethod("readability")
-}
-
-#' @rdname readability
-#' @export
-#' @examples
-#' readability(data_corpus_inaugural, measure = "Flesch.Kincaid")
-readability.corpus <- function(x, ...) {
-    readability(texts(x), ...)
-}
-
-
-#' @rdname readability
-#' @export
 #' @examples
 #' txt <- c("Readability zero one.  Ten, Eleven.", "The cat in a dilapidated tophat.")
-#' readability(txt, "Flesch.Kincaid")
-#' readability(txt, "Flesch.Kincaid", drop = FALSE)
-#' readability(txt, c("FOG", "FOG.PSK", "FOG.NRI"))
-#' inaugReadability <- readability(data_corpus_inaugural, "all")
+#' textstat_readability(txt, "Flesch.Kincaid")
+#' textstat_readability(txt, "Flesch.Kincaid", drop = FALSE)
+#' textstat_readability(txt, c("FOG", "FOG.PSK", "FOG.NRI"))
+#' inaugReadability <- textstat_readability(data_corpus_inaugural, "all")
 #' round(cor(inaugReadability), 2)
-readability.character <- function(x,
+#' 
+#' textstat_readability(data_corpus_inaugural, measure = "Flesch.Kincaid")
+#' inaugReadability <- textstat_readability(data_corpus_inaugural, "all")
+#' round(cor(inaugReadability), 2)
+textstat_readability <- function(x,
+                        measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
+                                    "Coleman", "Coleman.C2",
+                                    "Coleman.Liau", "Coleman.Liau.grade", "Coleman.Liau.short",
+                                    "Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK",
+                                    "Danielson.Bryan", "Danielson.Bryan.2",
+                                    "Dickes.Steiwer", "DRP", "ELF", "Farr.Jenkins.Paterson",
+                                    "Flesch", "Flesch.PSK", "Flesch.Kincaid",
+                                    "FOG", "FOG.PSK", "FOG.NRI", "FORCAST", "FORCAST.RGL",
+                                    "Fucks", "Linsear.Write", "LIW",
+                                    "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX", "Scrabble",
+                                    "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de",
+                                    "Spache", "Spache.old", "Strain",
+                                    "Traenkle.Bailer", "Traenkle.Bailer.2",
+                                    "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
+                        removeHyphens = TRUE,
+                        drop = TRUE, ...) {
+    UseMethod("textstat_readability")
+}
+
+#' @noRd
+#' @export
+textstat_readability.corpus <- function(x,
+                               measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
+                                           "Coleman", "Coleman.C2",
+                                           "Coleman.Liau", "Coleman.Liau.grade", "Coleman.Liau.short",
+                                           "Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK",
+                                           "Danielson.Bryan", "Danielson.Bryan.2",
+                                           "Dickes.Steiwer", "DRP", "ELF", "Farr.Jenkins.Paterson",
+                                           "Flesch", "Flesch.PSK", "Flesch.Kincaid",
+                                           "FOG", "FOG.PSK", "FOG.NRI", "FORCAST", "FORCAST.RGL",
+                                           "Fucks", "Linsear.Write", "LIW",
+                                           "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX", "Scrabble",
+                                           "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de",
+                                           "Spache", "Spache.old", "Strain",
+                                           "Traenkle.Bailer", "Traenkle.Bailer.2",
+                                           "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
+                               removeHyphens = TRUE,
+                               drop = TRUE, ...) {
+    textstat_readability(texts(x), ...)
+}
+
+
+#' @noRd
+#' @export
+textstat_readability.character <- function(x,
                                   measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
                                                  "Coleman", "Coleman.C2",
                                                  "Coleman.Liau", "Coleman.Liau.grade", "Coleman.Liau.short",
@@ -108,7 +141,7 @@ readability.character <- function(x,
     tokenizedWords <- tokenize(x, removePunct = TRUE, removeHyphens = removeHyphens)
 
     # number of syllables
-    tmpSyll <- syllables(tokenizedWords)
+    tmpSyll <- nsyllable(tokenizedWords)
     # lengths in characters of the words
     wordLengths <- lapply(tokenizedWords, stringi::stri_length)
 
@@ -191,7 +224,7 @@ readability.character <- function(x,
     }
 
     if (any(c("all", "Dickes.Steiwer") %in% measure)) {
-        TTR <- lexdiv(dfm(x, verbose = FALSE), measure = "TTR")
+        TTR <- textstat_lexdiv(dfm(x, verbose = FALSE), measure = "TTR")
         textFeatures[, Dickes.Steiwer := 235.95993 - (73.021 * C / W) - (12.56438 * W / St) - (50.03293 * TTR)]
     }
 
@@ -317,7 +350,7 @@ readability.character <- function(x,
 
     Scrabble <- NULL
     if ("Scrabble" %in% measure)
-        textFeatures[, Scrabble := scrabble(x, mean)]
+        textFeatures[, Scrabble := nscrabble(x, mean)]
 
     # return a data.frame of the indexes
     tempIndex <- which(names(textFeatures) == "Wlt3Sy")
@@ -344,48 +377,6 @@ prepositions <- c("a", "abaft", "abeam", "aboard", "about", "above", "absent", "
                   "underneath", "unlike", "until", "unto", "up", "upon", "versus", "vs", "v", "via", "vis-a-vis", "with", "within",
                   "without", "worth")
 
-#' compute the Scrabble letter values of text
-#'
-#' Compute the Scrabble letter values of text given a user-supplied function,
-#' such as the sum (default) or mean of the character values.
-#' @param x a character vector
-#' @param FUN function to be applied to the character values in the text;
-#'   default is \code{sum}, but could also be \code{mean} or a user-supplied
-#'   function
-#' @author Kenneth Benoit
-#' @return a vector of Scabble letter values, computed using \code{FUN},
-#'   corresponding to the input text(s)
-#' @note Character values are only defined for non-accented Latin a-z, A-Z
-#'   letters.  Lower-casing is unnecessary.
-#' @examples
-#' scrabble(c("muzjiks", "excellency"))
-#' scrabble(data_char_inaugural[1:5], mean)
-#' @export
-scrabble <- function(x, FUN = sum) {
-    UseMethod("scrabble")
-}
-
-#' @rdname scrabble
-#' @export
-scrabble.character <- function(x, FUN = sum) {
-    FUN <- match.fun(FUN)
-    letter <- Char <- docIndex <- values <- V1 <- NULL
-
-    letterVals <- data.table(letter = c(letters, LETTERS),
-                             values = rep(c(1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10), 2))
-    setkey(letterVals, letter)
-
-    textChars <- tokenize(x, what = "character", removePunct = TRUE)
-    textDT <- data.table(docIndex = rep(1:length(textChars), lengths(textChars)),
-                         Char = unlist(textChars, use.names = FALSE))
-    setkey(textDT, Char)
-
-    textDT <- letterVals[textDT]
-    textDT <- textDT[order(docIndex), FUN(values, na.rm = TRUE), by = docIndex]
-    result <- textDT[, V1]
-    if (!is.null(names(x))) names(result) <- names(x)
-    result
-}
 
 #' @rdname data-internal
 #' @details 

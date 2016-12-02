@@ -18,7 +18,7 @@ test_that("test STM package converter", {
 })
 
 test_that("test tm package converter", {
-    dtmq <- convert(d[, order(features(d))], to = "tm")
+    dtmq <- convert(d[, order(featnames(d))], to = "tm")
     dtmtm <- tm::DocumentTermMatrix(tm::VCorpus(tm::VectorSource(toLower(mytexts))),
                                     control = list(removePunctuation = TRUE,
                                                    wordLengths = c(1, Inf)))

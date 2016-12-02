@@ -73,7 +73,7 @@ dfm_lookup <- function(x, dictionary, exclusive = TRUE, valuetype = c("glob", "r
     
     newDocIndex <- rep(1:nrow(x), length(dictionary))
     newFeatures <- names(dictionary)
-    uniqueFeatures <- features(x)
+    uniqueFeatures <- featnames(x)
     newFeatureIndexList <- lapply(dictionary, function(x) {
         # ind <- grep(paste(x, collapse = "|"), uniqueFeatures, ignore.case = case_insensitive)
         if (valuetype == "fixed") {

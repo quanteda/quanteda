@@ -154,10 +154,10 @@ predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling 
         newdata <- data
     }
     
-    featureIndex <- match(names(object@Sw), features(data))
+    featureIndex <- match(names(object@Sw), featnames(data))
     
     scorable <- which(colnames(data) %in% names(object@Sw))
-    Sw <- object@Sw[features(data)[scorable]]
+    Sw <- object@Sw[featnames(data)[scorable]]
     if (verbose)
         catm(paste(length(scorable), " of ", nfeature(data), " features (",
                   round(100*length(scorable)/nfeature(data), 2),

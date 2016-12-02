@@ -2,13 +2,13 @@
 ## tokens_hashed tests
 ##
 
-test_that("syllables works as expected for tokens_hashed", {
+test_that("nsyllable works as expected for tokens_hashed", {
     txt <- c(one = "super freakily yes",
              two = "merrily all go aerodynamic")
     toks <- tokenize(txt)
     toksh <- tokens(txt)
-    classic <- syllables(toks)
-    hashed <- syllables(toksh)
+    classic <- nsyllable(toks)
+    hashed <- nsyllable(toksh)
     expect_equal(classic, hashed)
 })
 

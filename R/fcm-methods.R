@@ -158,10 +158,10 @@ fcm_select <- function(x, features, selection = c("keep", "remove"),
         stop("features must be of type character, dictionary, or dfm")
     if (is.dfm(features)) {
         if (selection == "keep") {
-            features_dfm <- features <- features(features)
+            features_dfm <- features <- featnames(features)
             features_from_dfm <- TRUE
         } else {
-            features <- features(features)
+            features <- featnames(features)
         }
     }
     
@@ -179,7 +179,7 @@ fcm_select <- function(x, features, selection = c("keep", "remove"),
         }
     }
     
-    features_x <- features(x)
+    features_x <- featnames(x)
     if (case_insensitive & valuetype == "fixed") {
         features_x <- toLower(features_x)
         features <- toLower(features)
@@ -231,14 +231,14 @@ fcm_select <- function(x, features, selection = c("keep", "remove"),
         # remove features in x that are not in features (from supplied dfm)
         x2 <- x[featIndex, featIndex]
         # now add zero-valued features to x that are not in x but are in features
-        origDfmFeatureIndex <- which(!(toLower(features) %in% toLower(features(x2))))
+        origDfmFeatureIndex <- which(!(toLower(features) %in% toLower(featnames(x2))))
         xOriginalFeatureLength <- nfeature(x2)
-        xOriginalFeatures <- features(x2)
+        xOriginalFeatures <- featnames(x2)
         if (verbose) catm(" padding 0s for another", length(origDfmFeatureIndex), "\n")
         x <- new("fcm", Matrix::cbind2(x2, sparseMatrix(i = NULL, j = NULL, 
                                                         dims = c(length(origDfmFeatureIndex), length(origDfmFeatureIndex)), 
                                                         dimnames = list(features[origDfmFeatureIndex], features[origDfmFeatureIndex]))))
-        featIndex <- match(features_dfm, features(x))
+        featIndex <- match(features_dfm, featnames(x))
         # x <- x2 #[, features_dfm]
     }
     

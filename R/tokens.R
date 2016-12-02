@@ -511,24 +511,6 @@ print.tokens <- function(x, ...) {
 }
 
 
-#' @export
-#' @rdname ndoc
-ndoc.tokens <- function(x) {
-    length(x)
-}
-
-#' @export
-#' @rdname ntoken
-ntoken.tokens <- function(x, ...) {
-    lengths(x)
-}
-
-#' @export
-#' @rdname ntoken
-ntype.tokens <- function(x, ...) {
-    length(types(x))
-}
-
 
 
 
