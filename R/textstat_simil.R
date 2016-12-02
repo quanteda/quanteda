@@ -215,6 +215,7 @@ jaccardSparse <- function(x, y = NULL, margin = 1) {
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     marginSums <- if (margin == 2) colSums else rowSums
     marginNames <- if (margin == 2) colnames else rownames
+    n <- if (margin == 2) ncol(x) else nrow(x)
     # union 
     an <- marginSums(x)
     if (!is.null(y)) {
@@ -222,22 +223,28 @@ jaccardSparse <- function(x, y = NULL, margin = 1) {
         A <- cpFun(x, y)
         bn <- marginSums(y)
         colNm <- marginNames(y)
+        # number of features
+        kk <- y@Dim[1]
     } else {
         A <- cpFun(x)
         bn <- an
+        kk <- n
         colNm <- marginNames(x)
     }
     rowNm <- marginNames(x)
-    # common values
-    im <- which(A > 0, arr.ind=TRUE, useNames = FALSE)
-    # non-zero values of m
-    Aim <- A[im]
-    
-    jacmat <- sparseMatrix( i = im[,1],
-                            j = im[,2],
-                            x = Aim / (an[im[,1]] + bn[im[,2]] - Aim),
-                            dims = dim(A)
-                           )
+    # # common values
+    # im <- which(A > 0, arr.ind=TRUE, useNames = FALSE)
+    # # non-zero values of m
+    # Aim <- A[im]
+    # 
+    # jacmat <- sparseMatrix( i = im[,1],
+    #                         j = im[,2],
+    #                         x = Aim / (an[im[,1]] + bn[im[,2]] - Aim),
+    #                         dims = dim(A)
+    #                        )
+    tmp <- matrix(rep(an, kk), nrow = n)
+    tmp <-  tmp +  matrix(rep(bn, n), nrow = n, byrow=TRUE)
+    jacmat <- A / (tmp - A)
     dimnames(jacmat) <- list(rowNm,  colNm)
     jacmat
 }
@@ -250,28 +257,26 @@ eJaccardSparse <- function(x, y = NULL, margin = 1) {
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     marginSums <- if (margin == 2) colSums else rowSums
     marginNames <- if (margin == 2) colnames else rownames
+    n <- if (margin == 2) ncol(x) else nrow(x)
     # union 
     an <- marginSums(x^2)
     if (!is.null(y)) {
         A <- cpFun(x, y)
         bn <- marginSums(y^2)
         colNm <- marginNames(y)
+        # number of features
+        kk <- y@Dim[1]
     } else {
         A <- cpFun(x)
         bn <- an
+        kk <- n
         colNm <- marginNames(x)
     }
     rowNm <- marginNames(x)
     # common values
-    im <- which(A > 0, arr.ind=TRUE, useNames = FALSE)
-    # non-zero values of m
-    Aim <- A[im]
-    
-    ejacmat <- sparseMatrix( i = im[,1],
-                            j = im[,2],
-                            x = Aim / (an[im[,1]] + bn[im[,2]] - Aim),
-                            dims = dim(A)
-    )
+    tmp <- matrix(rep(an, kk), nrow = n)
+    tmp <-  tmp +  matrix(rep(bn, n), nrow = n, byrow=TRUE)
+    ejacmat <- A / (tmp - A)
     dimnames(ejacmat) <- list(rowNm,  colNm)
     ejacmat
 }
@@ -300,16 +305,7 @@ diceSparse <- function(x, y = NULL, margin = 1) {
         colNm <- marginNames(x)
     }
     rowNm <- marginNames(x)
-    # common values
-    im <- which(A > 0, arr.ind=TRUE, useNames = FALSE)
-    # non-zero values of m
-    Aim <- A[im]
-    
-    dicemat <- sparseMatrix( i = im[,1],
-                            j = im[,2],
-                            x = (2 * Aim) / (an[im[,1]] + bn[im[,2]]),
-                            dims = dim(A)
-                           )
+    dicemat <- (2 * A)/(an + bn)
     dimnames(dicemat) <- list(rowNm,  colNm)
     dicemat
 }
@@ -335,15 +331,16 @@ eDiceSparse <- function(x, y = NULL, margin = 1) {
     }
     rowNm <- marginNames(x)
     # common values
-    im <- which(A > 0, arr.ind=TRUE, useNames = FALSE)
+    #im <- which(A > 0, arr.ind=TRUE, useNames = FALSE)
     # non-zero values of m
-    Aim <- A[im]
+    #Aim <- A[im]
     
-    eDicemat <- sparseMatrix( i = im[,1],
-                             j = im[,2],
-                             x = (2 * Aim) / (an[im[,1]] + bn[im[,2]]),
-                             dims = dim(A)
-    )
+    #eDicemat <- sparseMatrix( i = im[,1],
+    #                         j = im[,2],
+    #                         x = (2 * Aim) / (an[im[,1]] + bn[im[,2]]),
+    #                         dims = dim(A)
+    #)
+    eDicemat <- (2 * A)/(an + bn)
     dimnames(eDicemat) <- list(rowNm,  colNm)
     eDicemat
 }

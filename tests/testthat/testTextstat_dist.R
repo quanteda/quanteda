@@ -79,31 +79,6 @@ test_that("test textstat_dist method = \"Euclidean\" against proxy dist() and st
     expect_equal(eucQuanteda, eucProxy, eucStats)
 })
 
-# presDfm <- dfm(inaugCorpus, remove = stopwords("english"),
-#                                stem = TRUE, verbose = FALSE)
-# xx<-as.matrix(presDfm)
-# eucQuanteda <- textstat_dist(presDfm, method = "Euclidean", margin = "documents")  3.426478
-# proxy::dist(xx, "euclidean", diag = FALSE, upper = FALSE, p = 2) 28.311618
-# dist(xx, method = "euclidean", diag = FALSE, upper = FALSE, p = 2) 28.332467
-# lq      mean    median        uq      max neval
-# 3.582793  3.741192  3.743696  3.852164  4.19130   100
-# 28.587080 29.579090 28.928832 30.057114 35.73140   100
-# 28.670716 30.075357 29.038453 30.105618 46.34517   100
-
-# SOTUCorpus
-# microbenchmark::microbenchmark(eucQuanteda <- textstat_dist(presDfm, method = "Euclidean", margin = "documents"),
-# proxy::dist(xx, "euclidean", diag = FALSE, upper = FALSE, p = 2), dist(xx, method = "euclidean", diag = FALSE, upper = FALSE, p = 2), fastEuc(xx))
-# Unit: milliseconds
-# expr        min
-# eucQuanteda <- textstat_dist(presDfm, method = "Euclidean", margin = "documents")   65.14323
-# proxy::dist(xx, "euclidean", diag = FALSE, upper = FALSE, p = 2) 2053.12108
-# dist(xx, method = "euclidean", diag = FALSE, upper = FALSE, p = 2) 2055.61283
-# fastEuc(xx)  116.80508
-# lq       mean    median         uq       max neval
-# 65.35865   67.99745   65.6155   67.32011  117.1860   100
-# 2080.42294 2152.55932 2133.0349 2181.27996 2466.2849   100
-# 2107.60094 2161.32041 2134.4416 2177.16187 2487.4410   100
-
 # jaccard - binary
 test_that("test textstat_simil method = \"jaccard\" against proxy::simil(): documents", {
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
@@ -120,7 +95,7 @@ test_that("test textstat_simil method = \"jaccard\" against proxy::simil(): feat
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    jacQuanteda <- round(as.matrix(textstat_simil(presDfm, "soviet", method = "jaccard", margin = "features"))[,"soviet"], 2)
+    jacQuanteda <- round(as.matrix(textstat_simil(presDfm, method = "jaccard", margin = "features"))[,"soviet"], 2)
     jacQuanteda <- jacQuanteda[order(names(jacQuanteda))]
     jacQuanteda <- jacQuanteda[-which(names(jacQuanteda) == "soviet")]
     
@@ -147,7 +122,7 @@ test_that("test textstat_simil method = \"ejaccard\" against proxy::simil(): fea
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    ejacQuanteda <- round(as.matrix(textstat_simil(presDfm, "soviet", method = "eJaccard", margin = "features"))[,"soviet"], 2)
+    ejacQuanteda <- round(as.matrix(textstat_simil(presDfm, method = "eJaccard", margin = "features"))[,"soviet"], 2)
     ejacQuanteda <- ejacQuanteda[order(names(ejacQuanteda))]
     ejacQuanteda <- ejacQuanteda[-which(names(ejacQuanteda) == "soviet")]
     

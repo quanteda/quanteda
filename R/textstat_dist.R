@@ -272,7 +272,7 @@ hammingSparse <- function(x, y = NULL, margin = 1) {
 #Chi-squared distance:divide by row sums and square root of column sums, and adjust for square root of matrix total (Legendre & Gallagher 2001, Bruce McCune & James b. Grace 2002). 
 #http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&_Gallagher.pdf
 # https://www.pcord.com/book.htm
-#formula: Chi = sum((x/rowsum(x) - y/rowsum(y))^2/(colsum(i)/total))
+#formula: Chi = sum((x/rowsum(x_i) - y/rowsum(y_i))^2/(colsum(i)/total))
 ChisquaredSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     marginSums <- if (margin == 2) colSums else rowSums
