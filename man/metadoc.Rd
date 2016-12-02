@@ -2,15 +2,10 @@
 % Please edit documentation in R/corpus-methods-quanteda.R
 \name{metadoc}
 \alias{metadoc}
-\alias{metadoc.corpus}
 \alias{metadoc<-}
 \title{get or set document-level meta-data}
 \usage{
 metadoc(x, field = NULL)
-
-\method{metadoc}{corpus}(x, field = NULL)
-
-metadoc(x, field = NULL) <- value
 
 metadoc(x, field = NULL) <- value
 }

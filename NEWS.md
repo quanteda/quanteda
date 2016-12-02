@@ -10,9 +10,10 @@ This release has some major changes to the API, as described in this document (L
 new name | original name | notes 
 :--------|:------------- |:----- 
 `data_char_sampletext` | `exampleString` | 
-`data_char_mobydick` | `mobydickText`
-`data_dfm_LBGexample` | `LBGexample`
-`data_char_encodedtexts` | `encodedTexts`
+`data_char_mobydick` | `mobydickText`|
+`data_dfm_LBGexample` | `LBGexample` |
+`data_char_sampletext` | `exampleString` | 
+
 
 ### Renamed internal data objects
 
@@ -20,7 +21,6 @@ The following objects have been renamed, but will not affect user-level function
 
 new name | original name | notes 
 :--------|:------------- |:----- 
-`data_char_sampletext` | `exampleString` | 
 `data_int_syllables` | `englishSyllables` |  (used by `textcount_syllables()`) 
 `data_char_wordlists` | `wordlists` |  (used by `readability()`) 
 `data_char_stopwords` | `.stopwords` | (used by `stopwords()`
@@ -37,12 +37,6 @@ new name | original name | notes
 `data_corpus_inaugural` | `inaugCorpus` |
 
 
-### Deleted data objects
-
-new name | reason
-:--------|:-------------
-`encodedTextFiles.zip` | moved to the [**readtext**](https://github.com/kbenoit/readtext) package
-
 
 ## Deprecated functions
 
@@ -50,22 +44,27 @@ The following functions will still work, but issue a deprecation warning:
 
 new function | deprecated function | contructs:
 :--------|:------------- |:-------
-<<<<<<< HEAD
 `tokens` | `tokenize()` | `tokens` class object
 `corpus_subset` | `subset.corpus` | `corpus` class object
 `corpus_reshape` | `changeunits` | `corpus` class object
 `corpus_sample` | `sample`| `corpus` class object
 `corpus_segment` | `segment`| `corpus` class object
+`dfm_compress` | `compress` | `dfm` class object
+`dfm_lookup` | `applyDictionary` | `dfm` class object
+`dfm_remove` | `removeFeatures.dfm` | `dfm` class object
+`dfm_sample`   | `sample.dfm` | `dfm` class object
+`dfm_select` | `selectFeatures.dfm` | `dfm` class object
+`dfm_smooth` | `smoother` | `dfm` class object
+`dfm_sort`   | `sort.dfm` | `dfm` class object
+`dfm_trim`   | `trim.dfm` | `dfm` class object
+`dfm_weight` | `weight` | `dfm` class object
+`plot.dfm`   | `textplot_wordcloud` | (plot)
+`plot.kwic`   | `textplot_xray` | (plot)
 
-=======
-`tokens()` | `tokenize()` | `tokens` class object
-`segment()` | `corpus_segment()` | `corpus` class object
-`segment()` | `char_segment()` | list of `character`
->>>>>>> master
 
 ## New functions
 
-The following are new to v0.9.9:
+The following are new to v0.9.9 (and not associated with deprecated functions):
 
 new function | description | ouput class
 :--------|:------------- |:-------
@@ -76,12 +75,21 @@ new function | description | ouput class
 `fcm_compress` | compacts an `fcm` | `fcm`
 `fcm_tolower` | lowercases the features of an `fcm` and compacts | `fcm`
 `fcm_toupper` | uppercases the features of an `fcm` and compacts | `fcm`
-`dfm_select` | selects features from a `dfm` | `dfm`
-`dfm_remove` | removes features from a `dfm` | `dfm`
-`dfm_sort`    | sorts a `dfm` in alpahbetical order of its features| `dfm`
-`dfm_compress` | compacts a `dfm` | `dfm`
 `dfm_tolower` | lowercases the features of a `dfm` and compacts | `dfm`
 `dfm_toupper` | uppercases the features of a `dfm` and compacts | `dfm`
+
+
+## Deleted functions and data objects
+
+new name | reason
+:--------|:-------------
+`encodedTextFiles.zip` | moved to the [**readtext**](https://github.com/kbenoit/readtext) package
+`describeTexts` | deprecated several versions ago for `summary.character`
+`textfile` | moved to package [**readtext**](http://github.com/kbenoit/readtext)
+`encodedTexts` | moved to package [**readtext**](http://github.com/kbenoit/readtext), as `data_char_encodedtexts`
+
+
+
 
 
 ## Other new features

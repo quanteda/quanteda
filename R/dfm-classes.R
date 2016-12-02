@@ -32,6 +32,7 @@
 #' @import methods
 #' @docType class
 #' @name dfm-class
+#' @keywords internal dfm
 setClass("dfm",
          slots = c(settings = "list", weightTf = "list", weightDf = "list", smooth = "numeric",
                    ngrams = "integer", skip = "integer", concatenator = "character"),
@@ -84,6 +85,7 @@ setClass("dfmDense",
 #'
 #' print methods for document-feature matrices
 #' @name print.dfm
+#' @keywords internal dfm
 NULL
 
 #' Return the first or last part of a dfm
@@ -101,6 +103,7 @@ NULL
 #' @param ... additional arguments passed to other functions
 #' @return A \link{dfm-class} class object corresponding to the subset defined 
 #'   by \code{n} and \code{ncol}.
+#' @keywords dfm
 #' @examples
 #' myDfm <- dfm(data_corpus_inaugural, ngrams = 2, verbose = FALSE)
 #' head(myDfm)
@@ -171,6 +174,7 @@ setMethod("print", signature(x = "dfm"),
 #' @param ... further arguments passed to or from other methods
 #' @export
 #' @rdname print.dfm
+#' @keywords dfm
 setMethod("print", signature(x = "dfmSparse"), 
           function(x, show.values=FALSE, show.settings=FALSE, show.summary = TRUE, ndoc = 20L, nfeature = 20L, ...) {
               if (show.summary) {
@@ -246,12 +250,6 @@ print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, show.summary = 
     }
 }
 
-
-## S4 Method for the S4 class sparse dfm
-# @param x the sparse dfm
-# @rdname dfm-class
-# @method t dfmSparse
-#setMethod("t", signature(x = "dfmSparse"), getMethod("t", "dgCMatrix"))
 
 # S4 Method for the S4 class dense/weighted dfm
 #' @export
@@ -330,44 +328,42 @@ setMethod("+", signature(e1 = "numeric", e2 = "dfmDense"),
           })
 
 
-#' @rdname dfm-class
+#' coerce a dfm to a matrix or data.frame
+#' 
+#' Methods for coercing a \link{dfm-class} object to a matrix or data.frame object.
+#' @rdname as.matrix.dfm
+#' @param x dfm to be coerced
 #' @export
+#' @keywords dfm
+#' @method as.matrix dfm
 #' @examples
 #' # coercion to matrix
-#' dfmSparse <- dfm(data_char_inaugural, verbose = FALSE)
-#' str(as.matrix(dfmSparse))
-setMethod("as.matrix", signature(x="dfm"),
-          function(x) {
-              if (isS4(x)) {
-                  f <- getMethod("as.matrix", "Matrix")
-                  x <- f(x)
-                  names(dimnames(x)) <- c("docs", "features")
-              } else {
-                  x <- matrix(x, nrow=ndoc(x), dimnames = list(docs = docnames(x), features = features(x)))
-              }
-              x
-          })
-
-#' coerce a dfm to a data.frame
+#' mydfm <- dfm(data_char_inaugural)
+#' str(as.matrix(mydfm))
 #' 
-#' Method for coercing a \link{dfm-class} object to a data.frame
-#' @aliases as.data.frame.dfm
-#' @param x dfm to be coerced to a data.frame
+as.matrix.dfm <- function(x, ...) {
+    as(x, "matrix")
+}
+# setMethod("as.matrix", signature(x = "dfm"),
+#           function(x) as(x, "matrix"))
+
+#' @rdname as.matrix.dfm
 #' @param row.names if \code{FALSE}, do not set the row names of the data.frame
 #'   to the docnames of the dfm (default); or a vector of values to which the
 #'   row names will be set.
 #' @param optional not applicable to this method
-#' @param ... not used for this method
+#' @param ... not used 
+#' @method as.data.frame dfm
 #' @export
 #' @examples
-#' inaugDfm <- dfm(data_char_inaugural[1:5], verbose = FALSE)
+#' # coercion to a data.frame
+#' inaugDfm <- dfm(data_char_inaugural[1:5])
 #' as.data.frame(inaugDfm[, 1:10])
-#' str(as.data.frame(inaugDfm))
 #' as.data.frame(inaugDfm[, 1:10], row.names = FALSE)
-setMethod("as.data.frame", signature = "dfm", 
-          function(x, row.names = NULL, optional = FALSE , ...) {
-              as.data.frame(as.matrix(x), row.names = row.names, optional = optional, ...)
-})
+as.data.frame.dfm <- function(x, row.names = NULL, optional = FALSE , ...) {
+    as.data.frame(as.matrix(x), row.names = row.names, optional = optional, ...)
+}
+    
 
 
 #' Combine dfm objects by Rows or Columns
@@ -385,6 +381,7 @@ setMethod("as.data.frame", signature = "dfm",
 #'   result.  In both instances, warning messages will result.
 #' @export
 #' @method cbind dfm
+#' @keywords internal dfm
 #' @examples 
 #' # cbind() for dfm objects
 #' (dfm1 <- dfm("This is one sample text sample.", verbose = FALSE))
@@ -446,7 +443,7 @@ rbind.dfm <- function(...) {
     else if (length(args) == 2) {
         return(rbind2.dfm(args[[1]], args[[2]]))
     } else {
-        # Recursive call
+        # Recursive call
         result <- rbind2.dfm(args[[1]], args[[2]])
         for (y in args[3:length(args)]) 
             result <- rbind2.dfm(result, y)
@@ -467,8 +464,8 @@ rbind2.dfm <- function(x, y) {
     only_x_names <- setdiff(x_names, y_names)
     only_y_names <- setdiff(y_names, x_names)
 
-    #  Evetually, we want to rbind together two rows with the same columns
-    #  we acheive this by re-ordering the columns in the original matrices, and adding
+    #  Evetually, we want to rbind together two rows with the same columns
+    #  we acheive this by re-ordering the columns in the original matrices, and adding
     #  in some blank ones
 
     #  Here's what we're constructing:

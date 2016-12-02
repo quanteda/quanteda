@@ -23,22 +23,22 @@ Plotting a `dfm` object will create a wordcloud using the `wordcloud` pacakge.
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
 # Create a dfm from a somewhat smaller corpus
-inaugDfm <- dfm(data_corpus_inaugural[0:10], ignoredFeatures = stopwords('english'))
+inaugDfm <- dfm(data_corpus_inaugural[0:10], remove = stopwords('english'))
 # Some words will not fit on a plot this size, so suppress those warings
-plot(trim(inaugDfm, minCount = 10, verbose = FALSE))
+textplot_wordcloud(dfm_trim(inaugDfm, min_count = 10, verbose = FALSE))
 ```
 
 You can also plot a "comparison cloud", but this can only be done with fewer than eight documents:
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
 compDfm <- dfm(corpus_subset(data_corpus_inaugural, President %in% c("Washington", "Jefferson", "Madison")),
-               groups = "President", ignoredFeatures = stopwords("english"))
-plot(trim(compDfm, minCount = 5, verbose = FALSE), comparison = TRUE)
+               groups = "President", remove = stopwords("english"))
+textplot_wordcloud(dfm_trim(compDfm, min_count = 5, verbose = FALSE), comparison = TRUE)
 ```
 
 Plot will pass through additional arguments to the underlying call to `wordcloud`.
 ```{r eval=TRUE, fig.width=8, fig.height=8}
-plot(inaugDfm, min.freq = 10,
+textplot_wordcloud(inaugDfm, min.freq = 10,
      colors = c('red', 'pink', 'green', 'purple', 'orange', 'blue'))
 ```
 

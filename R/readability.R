@@ -407,7 +407,7 @@ scrabble.character <- function(x, FUN = sum) {
 "data_char_wordlists"
 
 # makeWordList <- function(filename) {
-#     wordList <- textfile(filename, cache = FALSE)@texts
+#     wordList <- readtext(filename, cache = FALSE)@texts
 #     wordList <- stringi::stri_replace_all_regex(wordList, "-", "_")
 #     wordList <- tokenize(wordList, simplify = TRUE)
 #     wordList <- stringi::stri_replace_all_regex(wordList, "_", "-")

@@ -160,7 +160,7 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
         warning("spanSentence = FALSE not yet implemented")
     
     if (context == "document") {
-        tokenCount <- dfm(x, toLower = FALSE, verbose = FALSE)
+        tokenCount <- dfm(x, tolower = FALSE, verbose = FALSE)
         
         if (count == "boolean") {
             x <- tf(tokenCount, "boolean") 

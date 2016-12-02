@@ -2,24 +2,25 @@ Package: quanteda
 Type: Package
 Title: Quantitative Analysis of Textual Data
 Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
-    c("aut", "cre")), person("Paul", "Nulty", email = "paul.nulty@gmail.com",
-    role = "aut"), person("Kohei", "Watanabe", email =
-    "watanabe.kohei@gmail.com", role = "ctb"), person("Benjamin", "Lauderdale",
-    email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
+    c("aut", "cre")), 
+    person("Paul", "Nulty", email = "paul.nulty@gmail.com", role = "ctb"), 
     person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "ctb"),
-    person("Pablo", "Barberá", email = "pablo.barbera@nyu.edu",
-    role = "ctb"),
-    person("Will", "Lowe", email="wlowe@princeton.edu", role="ctb"))
+    person("Kohei", "Watanabe", email = "watanabe.kohei@gmail.com", role = "ctb"), 
+    person("Haiyan", "Wang", email = "h.wang52@lse.ac.uk", role = "ctb"),
+    person("Benjamin", "Lauderdale", email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
+    person("Will", "Lowe", email="wlowe@princeton.edu", role="ctb"),
+    person("Pablo", "Barberá", email = "pablo.barbera@nyu.edu", role = "ctb"))
 Author: Kenneth Benoit [aut, cre],
-    Paul Nulty [aut],
-    Kohei Watanabe [ctb],
-    Benjamin Lauderdale [ctb],
+    Paul Nulty [ctb],
     Adam Obeng [ctb],
-    Pablo Barberá [ctb],
-    Will Lowe [ctb]
+    Kohei Watanabe [ctb],
+    Haiyan Wang [ctb],
+    Benjamin Lauderdale [ctb],
+    Will Lowe [ctb],
+    Pablo Barberá [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.8.15
-Date: 2016-11-23
+Version: 0.9.8.9019
+Date: 2016-12-02
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -64,10 +65,12 @@ LazyData: TRUE
 VignetteBuilder: knitr
 Collate:
     'RcppExports.R'
+    'character-methods.R'
     'dictionaries.R'
     'corpus.R'
     'collocations.R'
     'convert.R'
+    'corpus-deprecated.R'
     'corpus-methods-base.R'
     'corpus-methods-quanteda.R'
     'corpus_reshape.R'
@@ -76,16 +79,19 @@ Collate:
     'corpus_subset.R'
     'data-deprecated.R'
     'data-documentation.R'
-    'describe-texts.R'
+    'dev.R'
     'dfm-classes.R'
-    'dfm-main.R'
+    'dfm-deprecated.R'
     'dfm-methods.R'
     'dfm-subsetting.R'
-    'dfm-weighting.R'
+    'dfm.R'
     'dfm_compress.R'
+    'dfm_lookup.R'
+    'dfm_sample.R'
     'dfm_select.R'
+    'dfm_trim.R'
+    'dfm_weight.R'
     'dictionaries2.R'
-    'encoding.R'
     'fcm-methods.R'
     'fcm.R'
     'findSequences.R'
@@ -94,6 +100,7 @@ Collate:
     'lexdiv.R'
     'ngrams.R'
     'phrases.R'
+    'plots-deprecated.R'
     'plots.R'
     'quanteda.R'
     'readability.R'
@@ -101,6 +108,7 @@ Collate:
     'regex2fixed.R'
     'regex2fixed2.R'
     'regex2fixed3.R'
+    'regex2fixed4.R'
     'resample.R'
     'selectFeatures-old.R'
     'selectFeatures.R'
@@ -108,7 +116,6 @@ Collate:
     'similarity.R'
     'stopwords.R'
     'syllables.R'
-    'textfile.R'
     'textmodel-NB.R'
     'textmodel-ca.R'
     'textmodel-generics.R'

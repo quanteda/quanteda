@@ -67,12 +67,12 @@ select only terms of interest from a dictionary.
 \note{
 This function selects features based on their labels.  To select 
   features based on the values of a the document-feature matrix, use 
-  \code{\link{trim}}.
+  \code{\link{dfm_trim}}.
 }
 \examples{
 myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
                "Does the United_States or Sweden have more progressive taxation?"),
-             toLower = FALSE, verbose = FALSE)
+             tolower = FALSE, verbose = FALSE)
 mydict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
                           wordsEndingInY = c("by", "my"),
                           notintext = "blahblah"))

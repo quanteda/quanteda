@@ -34,147 +34,12 @@
 #'   need to project this onto a test set whose features must be identical.
 #'   
 #' @export
-#' @seealso \code{\link{removeFeatures}}, \code{\link{trim}}
-#' @examples 
-#' myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
-#'                "Does the United_States or Sweden have more progressive taxation?"),
-#'              toLower = FALSE, verbose = FALSE)
-#' mydict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
-#'                           wordsEndingInY = c("by", "my"),
-#'                           notintext = "blahblah"))
-#' selectFeatures(myDfm, mydict)
-#' selectFeatures(myDfm, mydict, case_insensitive = FALSE)
-#' selectFeatures(myDfm, c("s$", ".y"), "keep")
-#' selectFeatures(myDfm, c("s$", ".y"), "keep", valuetype = "regex")
-#' selectFeatures(myDfm, c("s$", ".y"), "remove", valuetype = "regex")
-#' selectFeatures(myDfm, stopwords("english"), "keep", valuetype = "fixed")
-#' selectFeatures(myDfm, stopwords("english"), "remove", valuetype = "fixed")
-#' 
-#' # selecting on a dfm
-#' textVec1 <- c("This is text one.", "This, the second text.", "Here: the third text.")
-#' textVec2 <- c("Here are new words.", "New words in this text.")
-#' (dfm1 <- dfm(textVec1, verbose = FALSE))
-#' (dfm2a <- dfm(textVec2, verbose = FALSE))
-#' (dfm2b <- selectFeatures(dfm2a, dfm1))
-#' setequal(features(dfm1), features(dfm2b))
-#' 
-#' # more selection on a dfm
-#' selectFeatures(dfm1, dfm2a)
-#' selectFeatures(dfm1, dfm2a, selection = "remove")
+#' @seealso \code{\link{removeFeatures}}, \code{\link{dfm_trim}}
 selectFeatures <- function(x, features, ...) {
     UseMethod("selectFeatures")
 }
 
 
-#' @rdname selectFeatures
-#' @export
-selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"), 
-                               valuetype = c("glob", "regex", "fixed"),
-                               case_insensitive = TRUE,
-                               verbose = TRUE, ...) {
-    selection <- match.arg(selection)
-    valuetype <- match.arg(valuetype)
-    features_from_dfm <- FALSE
-    if (!(is.character(features) | is.dfm(features) | is(features, "dictionary")))
-        stop("features must be of type character, dictionary, or dfm")
-    if (is.dfm(features)) {
-        if (selection == "keep") {
-            features_dfm <- features <- features(features)
-            features_from_dfm <- TRUE
-        } else {
-            features <- features(features)
-        }
-    }
-    
-    features <- unique(unlist(features))  # to convert any dictionaries
-    
-    originalvaluetype <- valuetype
-    # convert glob to fixed if no actual glob characters (since fixed is much faster)
-    if (valuetype == "glob") {
-        # treat as fixed if no glob characters detected
-        if (!sum(stringi::stri_detect_charclass(features, c("[*?]"))))
-            valuetype <- "fixed"
-        else {
-            features <- sapply(features, utils::glob2rx, USE.NAMES = FALSE)
-            valuetype <- "regex"
-        }
-    }
-    
-    features_x <- features(x)
-    if (case_insensitive & valuetype == "fixed") {
-        features_x <- toLower(features_x)
-        features <- toLower(features)
-    }
-    # split features on concatenator if exists
-    if (x@concatenator != "")
-        features_x <- strsplit(features_x, x@concatenator)
-    
-    if (valuetype == "regex") {
-        if (all.equal(x@ngrams, 1L)==TRUE) {
-            featIndex <- which(stringi::stri_detect_regex(features_x, paste0(features, collapse = "|"), 
-                                                          case_insensitive = case_insensitive, ...))
-        } else {
-            ####
-            ####
-            matchPattern <- paste0(features, collapse = "|")
-            featIndex <- which(sapply(features_x, 
-                                      function(x) any(stringi::stri_detect_regex(x, matchPattern, 
-                                                                                 case_insensitive = case_insensitive, ...))))
-        }
-    } else {
-        if (all.equal(x@ngrams, 1L)==TRUE)
-            featIndex <- which(features_x %in% features)  # unigrams
-        else
-            featIndex <- which(sapply(features_x, function(f) any(f %in% features), USE.NAMES = FALSE)) # ngrams
-    }
-    
-    if (verbose & !features_from_dfm) 
-        catm(ifelse(selection=="keep", "kept", "removed"), " ", 
-            format(length(featIndex), big.mark=","),
-            " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
-            ", from ", length(features), " supplied (", originalvaluetype, ") feature type",
-            ifelse(length(features) > 0 | length(featIndex)==0, "s", ""),
-            "\n", sep = "")
-
-    # pad the zeros if features was a dfm, return in same feature order as original dfm
-    # for selection = "keep" only
-    if (features_from_dfm) {
-        
-        if (verbose)
-            catm(ifelse(selection=="keep", "found", "zeroed"), " ", 
-                format(length(featIndex), big.mark=","),
-                " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
-                " from ", length(features), " supplied type",
-                ifelse(length(features) > 0 | length(featIndex)==0, "s", ""),
-                " in a dfm,", sep = "")
-        
-        
-        # remove features in x that are not in features (from supplied dfm)
-        x2 <- x[, featIndex]
-        # now add zero-valued features to x that are not in x but are in features
-        origDfmFeatureIndex <- which(!(toLower(features) %in% toLower(features(x2))))
-        xOriginalFeatureLength <- nfeature(x2)
-        xOriginalFeatures <- features(x2)
-        if (verbose) catm(" padding 0s for another", length(origDfmFeatureIndex), "\n")
-        x <- new("dfmSparse", Matrix::cbind2(x2,
-                                              sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x2), length(origDfmFeatureIndex)), 
-                                                           dimnames = list(docnames(x2), features[origDfmFeatureIndex]))))
-        featIndex <- match(features_dfm, features(x))
-        # x <- x2 #[, features_dfm]
-    }
-    
-    ##
-    ## MIGHT NEED TO ADD BACK ORIGINAL ATTRIBUTES HERE
-    ##
-    
-    if (!length(featIndex)) 
-        return(x)
-    
-    if (selection == "keep")
-        return(x[, featIndex])
-    else 
-        return(x[, -featIndex])
-}
 
 #' @rdname selectFeatures
 #' @param padding (only for \code{tokenizedTexts} objects) if \code{TRUE}, leave
@@ -212,7 +77,7 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
 #' # removing tokens before dfm, versus after
 #' microbenchmark::microbenchmark(
 #'     pre = dfm(selectFeaturesOLD(toks, stopwords("english"), "remove"), verbose = FALSE),
-#'     post = dfm(toks, ignoredFeatures = stopwords("english"), verbose = FALSE),
+#'     post = dfm(toks, remove = stopwords("english"), verbose = FALSE),
 #'     times = 5, unit = "relative")
 #' }
 #' 
@@ -233,13 +98,13 @@ selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"),
 #'                valuetype = "glob", padding = TRUE, case_insensitive = FALSE)
 #' 
 #' # with longer texts
-#' txts <- c(data_char_sampletext, data_char_inaugural[2])
+#' txts <- data_char_inaugural[1:2]
 #' toks <- tokenize(txts)
 #' selectFeatures(toks, stopwords("english"), "remove")
 #' selectFeatures(toks, stopwords("english"), "keep")
 #' selectFeatures(toks, stopwords("english"), "remove", padding = TRUE)
 #' selectFeatures(toks, stopwords("english"), "keep", padding = TRUE)
-#' selectFeatures(tokenize(data_char_encodedtexts[1]), stopwords("english"), "remove", padding = TRUE)
+#' selectFeatures(tokenize(data_char_inaugural[2]), stopwords("english"), "remove", padding = TRUE)
 selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                            valuetype = c("glob", "regex", "fixed"),
                                            case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
@@ -471,6 +336,7 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
 #' @author Kenneth Benoit
 #' @seealso \link{stopwords}
 #' @examples
+#' \dontrun{
 #' ## for tokenized texts 
 #' txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to 
 #'                    execute the functions of its Chief Magistrate.",
@@ -490,6 +356,7 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
 #' (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
 #' removeFeatures(myCollocs, stopwords("english"))
 #' removeFeatures(myCollocs, stopwords("english"), pos = 2)
+#' }
 removeFeatures <- function(x, features, ...) {
     if ("selection" %in% names(list(...)))
         stop("cannot override selection argument in removeFeatures")

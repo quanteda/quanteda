@@ -33,7 +33,8 @@ regex2fixed3 <- function(regex, types, valuetype, case_insensitive = FALSE) {
                             tail=lapply(tree$tail, toLower))
     }else{
         types_search <- types
-        tree_search <- tree
+        tree_search <- list(head=tree$head, toLower,
+                            tail=tree$tail, toLower)
     }
     
     # Separate multi and single-entry patterns
@@ -44,8 +45,7 @@ regex2fixed3 <- function(regex, types, valuetype, case_insensitive = FALSE) {
     # Process multi-entry patterns
     for(pat_multi in pats_multi) {
         fixed_multi <- subset_types2(pat_multi, types, types_search, tree, tree_search, exact)
-        fixed_comb <- as.matrix(do.call(expand.grid, c(fixed_multi, stringsAsFactors = FALSE))) # create all possible combinations
-        fixed <- c(fixed, unname(split(fixed_comb, row(fixed_comb))))
+        fixed <- c(fixed, expand(fixed_multi))
     }
     
     # Process single-entry patterns
@@ -102,6 +102,25 @@ subset_types_startswith <- function(str, tree, tree_search){
 subset_types_endswith <- function(str, tree, tree_search){
     i <- toLower(stri_sub(str, -1, -1))
     tree$tail[[i]][stri_startswith_fixed(tree_search$tail[[i]], str)]
+}
+
+# This function is a simplyfied version of expand.grid() in base package
+expand <- function(elem){
+    k <- 1L
+    m <- prod(lengths(elem))
+    comb <- vector("list", m)
+    if(m == 0) return(comb)
+    for (i in 1:length(elem)) {
+        vec <- elem[[i]]
+        l <- length(vec)
+        m <- m / l
+        vec_rep <- vec[rep.int(rep.int(seq_len(l), rep.int(k, l)), m)]
+        k <- k * l
+        for (j in 1:length(vec_rep)){
+            comb[[j]] <- c(comb[[j]], vec_rep[j])
+        }
+    }
+    return(comb)
 }
 
 # This function checks if a string is regular expression

@@ -27,7 +27,7 @@
 #' @examples
 #' # create a dfm from inaugural addresses from Reagan onwards
 #' presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), stem = TRUE,
-#'                ignoredFeatures = stopwords("english"))
+#'                remove = stopwords("english"))
 #' 
 #' # compute some document similarities
 #' (tmp <- similarity(presDfm, margin = "documents"))
@@ -178,14 +178,13 @@ as.matrix.similMatrix <- function(x, ...) {
 
 
 
-#' @rdname similarity
-#' @param digits decimal places to display similarity values
-#' @export
+#' @noRd
 #' @method print similMatrix
-print.similMatrix <- function(x, digits = 4, ...) {
-    x <- lapply(x, round, digits)
+#' @export
+print.similMatrix <- function(x, ...) {
+    # x <- lapply(x, round, digits)
     cat("similarity Matrix:\n")
-    print(as.list(x))
+    print(unclass(x), ...)
 }
 
 

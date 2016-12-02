@@ -13,20 +13,20 @@ kwic(immigCorpus, "illegal immig*", window = 3)
 
 sort(lexdiv(dfm(immigCorpus, verbose=FALSE), "TTR"))
 
-mydfm <- dfm(immigCorpus, stem = TRUE, ignoredFeatures = stopwords("english"))
+mydfm <- dfm(immigCorpus, stem = TRUE, remove = stopwords("english"))
 docnames(mydfm)
 topfeatures(mydfm, 20)
 
 # open a nicer quartz device on a mac
 if (Sys.info()[1]=="Darwin") quartz("BNP 2010 word cloud", 7, 7)
 # this is necessary currently because no subset is yet implemented for dfm objects
-plot(mydfm["BNP",])
+textplot_wordcloud(mydfm["BNP",])
 
 # some examples of tokenization and string cleaning
 
-(toks <- tokenize(inaugCorpus[2], removePunct = TRUE))
-wordstem(toks)
-removeFeatures(toks, stopwords("english"))
+(toks <- tokens(inaugCorpus[2], removePunct = TRUE))
+tokens_wordstem(toks)
+tokens_remove(toks, stopwords("english"))
 
 
 ## more demonstrations
@@ -34,9 +34,9 @@ removeFeatures(toks, stopwords("english"))
 
 # extract a document-feature matrix
 immigDfm <- dfm(subset(immigCorpus, party=="BNP"))
-plot(immigDfm)
-immigDfm <- dfm(subset(immigCorpus, party=="BNP"), ignoredFeatures = stopwords("english"))
-plot(immigDfm, random.color = TRUE, rot.per = .25, colors = sample(colors()[2:128], 5))
+textplot_wordcloud(immigDfm)
+immigDfm <- dfm(subset(immigCorpus, party=="BNP"), remove = stopwords("english"))
+textplot_wordcloud(immigDfm, random.color = TRUE, rot.per = .25, colors = sample(colors()[2:128], 5))
 
 # change units to sentences
 immigCorpusSent <- changeunits(immigCorpus, to = "sentences")
@@ -104,7 +104,7 @@ print(p)
 
 
 ## Presidential Inaugural Address Corpus
-presDfm <- dfm(inaugCorpus, ignoredFeatures = stopwords("english"))
+presDfm <- dfm(inaugCorpus, remove = stopwords("english"))
 # compute some document similarities
 similarity(presDfm, "1985-Reagan", n=5, margin="documents")
 similarity(presDfm, c("2009-Obama" , "2013-Obama"), n=5, margin="documents", method = "cosine")

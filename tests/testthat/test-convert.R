@@ -3,7 +3,7 @@ context("test convert function and shortcuts")
 
 mytexts <- c(text1 = "The new law included a capital gains tax, and an inheritance tax.",
              text2 = "New York City has raised a taxes: an income tax and a sales tax.")
-d <- dfm(mytexts)
+d <- dfm(mytexts, removePunct = TRUE)
 
 test_that("test STM package converter", {
     skip_on_appveyor()
