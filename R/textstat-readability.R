@@ -1,9 +1,8 @@
-
-
 #' calculate readability
 #'
-#' Calculate the readability of text(s).
-#' @param x a \link{corpus} object or character vector
+#' Calculate the readability of text(s) using one of a variety of computed 
+#' indexes.
+#' @param x a character or \link{corpus} object containing the texts
 #' @param measure character vector defining the readability measure to calculate
 #' @param drop  if \code{TRUE}, the result is returned as a numeric vector if
 #'   only a single measure is requested; otherwise, a data.frame is returned
@@ -18,29 +17,63 @@
 #' @return a data.frame object consisting of the documents as rows, and the
 #'   readability statistics as columns
 #' @export
-readability <- function(x, ...) {
-    UseMethod("readability")
-}
-
-#' @rdname readability
-#' @export
-#' @examples
-#' readability(data_corpus_inaugural, measure = "Flesch.Kincaid")
-readability.corpus <- function(x, ...) {
-    readability(texts(x), ...)
-}
-
-
-#' @rdname readability
-#' @export
 #' @examples
 #' txt <- c("Readability zero one.  Ten, Eleven.", "The cat in a dilapidated tophat.")
-#' readability(txt, "Flesch.Kincaid")
-#' readability(txt, "Flesch.Kincaid", drop = FALSE)
-#' readability(txt, c("FOG", "FOG.PSK", "FOG.NRI"))
-#' inaugReadability <- readability(data_corpus_inaugural, "all")
+#' textstat_readability(txt, "Flesch.Kincaid")
+#' textstat_readability(txt, "Flesch.Kincaid", drop = FALSE)
+#' textstat_readability(txt, c("FOG", "FOG.PSK", "FOG.NRI"))
+#' inaugReadability <- textstat_readability(data_corpus_inaugural, "all")
 #' round(cor(inaugReadability), 2)
-readability.character <- function(x,
+#' 
+#' #' textstat_readability(data_corpus_inaugural, measure = "Flesch.Kincaid")
+#' inaugReadability <- textstat_readability(data_corpus_inaugural, "all")
+#' round(cor(inaugReadability), 2)
+textstat_readability <- function(x,
+                        measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
+                                    "Coleman", "Coleman.C2",
+                                    "Coleman.Liau", "Coleman.Liau.grade", "Coleman.Liau.short",
+                                    "Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK",
+                                    "Danielson.Bryan", "Danielson.Bryan.2",
+                                    "Dickes.Steiwer", "DRP", "ELF", "Farr.Jenkins.Paterson",
+                                    "Flesch", "Flesch.PSK", "Flesch.Kincaid",
+                                    "FOG", "FOG.PSK", "FOG.NRI", "FORCAST", "FORCAST.RGL",
+                                    "Fucks", "Linsear.Write", "LIW",
+                                    "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX", "Scrabble",
+                                    "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de",
+                                    "Spache", "Spache.old", "Strain",
+                                    "Traenkle.Bailer", "Traenkle.Bailer.2",
+                                    "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
+                        removeHyphens = TRUE,
+                        drop = TRUE, ...) {
+    UseMethod("textstat_readability")
+}
+
+#' @noRd
+#' @export
+textstat_readability.corpus <- function(x,
+                               measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
+                                           "Coleman", "Coleman.C2",
+                                           "Coleman.Liau", "Coleman.Liau.grade", "Coleman.Liau.short",
+                                           "Dale.Chall", "Dale.Chall.old", "Dale.Chall.PSK",
+                                           "Danielson.Bryan", "Danielson.Bryan.2",
+                                           "Dickes.Steiwer", "DRP", "ELF", "Farr.Jenkins.Paterson",
+                                           "Flesch", "Flesch.PSK", "Flesch.Kincaid",
+                                           "FOG", "FOG.PSK", "FOG.NRI", "FORCAST", "FORCAST.RGL",
+                                           "Fucks", "Linsear.Write", "LIW",
+                                           "nWS", "nWS.2", "nWS.3", "nWS.4", "RIX", "Scrabble",
+                                           "SMOG", "SMOG.C", "SMOG.simple", "SMOG.de",
+                                           "Spache", "Spache.old", "Strain",
+                                           "Traenkle.Bailer", "Traenkle.Bailer.2",
+                                           "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
+                               removeHyphens = TRUE,
+                               drop = TRUE, ...) {
+    textstat_readability(texts(x), ...)
+}
+
+
+#' @noRd
+#' @export
+textstat_readability.character <- function(x,
                                   measure = c("all", "ARI", "ARI.simple", "Bormuth", "Bormuth.GP",
                                                  "Coleman", "Coleman.C2",
                                                  "Coleman.Liau", "Coleman.Liau.grade", "Coleman.Liau.short",

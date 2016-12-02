@@ -11,7 +11,7 @@ kwic(immigCorpus, "deport", 3)
 kwic(immigCorpus, "deport", 3, valuetype = "regex")
 kwic(immigCorpus, "illegal immig*", window = 3)
 
-sort(lexdiv(dfm(immigCorpus, verbose=FALSE), "TTR"))
+sort(textstat_lexdiv(dfm(immigCorpus, verbose=FALSE), "TTR"))
 
 mydfm <- dfm(immigCorpus, stem = TRUE, remove = stopwords("english"))
 docnames(mydfm)
@@ -76,13 +76,13 @@ summary(iebudgetsCorpus, 10)
 ieFinMin <- subset(iebudgetsCorpus, number=="01" & debate == "BUDGET")
 summary(ieFinMin)
 dfmFM <- dfm(ieFinMin)
-plot(2008:2012, lexdiv(dfmFM, "C"), xlab="Year", ylab="Herndan's C", type="b",
+plot(2008:2012, textstat_lexdiv(dfmFM, "C"), xlab="Year", ylab="Herndan's C", type="b",
      main = "World's Crudest Lexical Diversity Plot")
 
 
 # plot some readability statistics
 data(SOTUCorpus, package = "quantedaData")
-fk <- readability(SOTUCorpus, "Flesch.Kincaid")
+fk <- textstat_readability(SOTUCorpus, "Flesch.Kincaid")
 year <- lubridate::year(docvars(SOTUCorpus, "Date"))
 require(ggplot2)
 partyColours <- c("blue", "blue", "black", "black", "red", "red")
