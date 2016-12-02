@@ -143,3 +143,4 @@ nsyllable.data.table <- function(x, syllable_dictionary = quanteda::data_int_syl
     syllcount
 }
 
+

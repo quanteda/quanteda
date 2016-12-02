@@ -99,6 +99,7 @@ Collate:
     'kwic.R'
     'nfunctions.R'
     'ngrams.R'
+    'nscrabble.R'
     'nsyllable.R'
     'phrases.R'
     'plots-deprecated.R'

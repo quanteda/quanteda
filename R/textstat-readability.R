@@ -350,7 +350,7 @@ textstat_readability.character <- function(x,
 
     Scrabble <- NULL
     if ("Scrabble" %in% measure)
-        textFeatures[, Scrabble := scrabble(x, mean)]
+        textFeatures[, Scrabble := nscrabble(x, mean)]
 
     # return a data.frame of the indexes
     tempIndex <- which(names(textFeatures) == "Wlt3Sy")
@@ -377,48 +377,6 @@ prepositions <- c("a", "abaft", "abeam", "aboard", "about", "above", "absent", "
                   "underneath", "unlike", "until", "unto", "up", "upon", "versus", "vs", "v", "via", "vis-a-vis", "with", "within",
                   "without", "worth")
 
-#' compute the Scrabble letter values of text
-#'
-#' Compute the Scrabble letter values of text given a user-supplied function,
-#' such as the sum (default) or mean of the character values.
-#' @param x a character vector
-#' @param FUN function to be applied to the character values in the text;
-#'   default is \code{sum}, but could also be \code{mean} or a user-supplied
-#'   function
-#' @author Kenneth Benoit
-#' @return a vector of Scabble letter values, computed using \code{FUN},
-#'   corresponding to the input text(s)
-#' @note Character values are only defined for non-accented Latin a-z, A-Z
-#'   letters.  Lower-casing is unnecessary.
-#' @examples
-#' scrabble(c("muzjiks", "excellency"))
-#' scrabble(data_char_inaugural[1:5], mean)
-#' @export
-scrabble <- function(x, FUN = sum) {
-    UseMethod("scrabble")
-}
-
-#' @rdname scrabble
-#' @export
-scrabble.character <- function(x, FUN = sum) {
-    FUN <- match.fun(FUN)
-    letter <- Char <- docIndex <- values <- V1 <- NULL
-
-    letterVals <- data.table(letter = c(letters, LETTERS),
-                             values = rep(c(1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10), 2))
-    setkey(letterVals, letter)
-
-    textChars <- tokenize(x, what = "character", removePunct = TRUE)
-    textDT <- data.table(docIndex = rep(1:length(textChars), lengths(textChars)),
-                         Char = unlist(textChars, use.names = FALSE))
-    setkey(textDT, Char)
-
-    textDT <- letterVals[textDT]
-    textDT <- textDT[order(docIndex), FUN(values, na.rm = TRUE), by = docIndex]
-    result <- textDT[, V1]
-    if (!is.null(names(x))) names(result) <- names(x)
-    result
-}
 
 #' @rdname data-internal
 #' @details 

@@ -64,6 +64,8 @@ new function | deprecated function | contructs:
 `textstat_lexdiv` | `lexdiv` | `data.frame`
 `featnames` | `features` | `character`
 `nsyllable` | `syllables` | (named) `integer`
+`nscrabble` | `scrabble` | (named) `integer`
+
 
 
 
