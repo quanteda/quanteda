@@ -1,6 +1,6 @@
 #' compute the Scrabble letter values of text
 #' 
-#' Compute the Scrabble letter values of text given a user-supplied function, 
+#' count the Scrabble letter values of text given a user-supplied function, 
 #' such as the sum (default) or mean of the character values.
 #' @param x a character vector
 #' @param FUN function to be applied to the character values in the text; 
