@@ -249,7 +249,7 @@ ldaformat2dtm <- function (documents, vocab, omit_empty = TRUE) {
 
 dfm2stmformat <- function(data, meta) {
     # sort features into alphabetical order
-    data <- data[, order(features(data))]
+    data <- data[, order(featnames(data))]
     data <- as(data, "dgTMatrix")
     
     # find out which documents are not empty

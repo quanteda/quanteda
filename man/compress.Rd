@@ -33,7 +33,7 @@ This function is deprecated: use \code{\link{dfm_compress}} instead.
 \dontrun{
 mat <- rbind(dfm(c("b A A", "C C a b B"), toLower = FALSE, verbose = FALSE),
              dfm("A C C C C C", toLower = FALSE, verbose = FALSE))
-colnames(mat) <- toLower(features(mat))
+colnames(mat) <- toLower(featnames(mat))
 mat
 compress(mat, margin = "documents")
 compress(mat, margin = "features")

@@ -87,7 +87,7 @@ setMethod("similarity",
                
                margin <- match.arg(margin)
                if (margin == "features") {
-                   items <- features(x)
+                   items <- featnames(x)
                } else {
                    items <- docnames(x)
                }
@@ -129,7 +129,7 @@ setMethod("similarity",
                
                # convert the matrix to a list of similarities
                result <- lapply(seq_len(ncol(similmatrix)), function(i) similmatrix[, i])
-               names(result) <- if (!is.null(xSelect)) items[selectIndex] else if (margin == "documents") docnames(x) else features(x)
+               names(result) <- if (!is.null(xSelect)) items[selectIndex] else if (margin == "documents") docnames(x) else featnames(x)
                
                # remove the element of each similarity vector equal to the item itself
                tempseq <- seq_along(result)

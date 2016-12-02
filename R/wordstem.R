@@ -101,11 +101,11 @@ dfm_wordstem <- function(x, language = "porter") {
     # add on a dummy document to make sure no zero-docfreq features get dropped
     x <- rbind(x,
                new("dfmSparse", sparseMatrix(i = rep(1, nfeature(x)), j = 1:nfeature(x), x = 1,
-                                             dimnames = list(docs = "_XXXXX_", features = features(x)))))
+                                             dimnames = list(docs = "_XXXXX_", features = featnames(x)))))
 
     j <- as(x, "TsparseMatrix")@j + 1
 
-    oldFeatures <- features(x)[j]
+    oldFeatures <- featnames(x)[j]
     if (identical(as.integer(x@ngrams), 1L)) 
         oldFeaturesStemmed <- char_wordstem(oldFeatures, language)
     else

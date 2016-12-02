@@ -25,7 +25,7 @@
 #' inaugReadability <- textstat_readability(data_corpus_inaugural, "all")
 #' round(cor(inaugReadability), 2)
 #' 
-#' #' textstat_readability(data_corpus_inaugural, measure = "Flesch.Kincaid")
+#' textstat_readability(data_corpus_inaugural, measure = "Flesch.Kincaid")
 #' inaugReadability <- textstat_readability(data_corpus_inaugural, "all")
 #' round(cor(inaugReadability), 2)
 textstat_readability <- function(x,
@@ -141,7 +141,7 @@ textstat_readability.character <- function(x,
     tokenizedWords <- tokenize(x, removePunct = TRUE, removeHyphens = removeHyphens)
 
     # number of syllables
-    tmpSyll <- syllables(tokenizedWords)
+    tmpSyll <- nsyllable(tokenizedWords)
     # lengths in characters of the words
     wordLengths <- lapply(tokenizedWords, stringi::stri_length)
 
@@ -224,7 +224,7 @@ textstat_readability.character <- function(x,
     }
 
     if (any(c("all", "Dickes.Steiwer") %in% measure)) {
-        TTR <- lexdiv(dfm(x, verbose = FALSE), measure = "TTR")
+        TTR <- textstat_lexdiv(dfm(x, verbose = FALSE), measure = "TTR")
         textFeatures[, Dickes.Steiwer := 235.95993 - (73.021 * C / W) - (12.56438 * W / St) - (50.03293 * TTR)]
     }
 

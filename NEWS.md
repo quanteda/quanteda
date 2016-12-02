@@ -61,7 +61,10 @@ new function | deprecated function | contructs:
 `textplot_wordcloud` | `plot.dfm` | (plot)
 `textplot_xray` | `plot.kwic`  | (plot)
 `textstat_readability` | `readability` | `data.frame` 
-`textstat_lexdiv` | `lexdiv` | `data.frame` 
+`textstat_lexdiv` | `lexdiv` | `data.frame`
+`featnames` | `features` | `character`
+`nsyllable` | `syllables` | (named) `integer`
+
 
 
 ## New functions

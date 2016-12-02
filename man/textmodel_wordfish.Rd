@@ -94,7 +94,7 @@ plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdi
 plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
      xlim = c(0, 1.0), ylim = c(0, 1.0), type = "n")
 underdispersedTerms <- sample(which(wfm2a@phi < 1.0), 5)
-which(features(ie2010dfm) \%in\% names(topfeatures(ie2010dfm, 20)))
+which(featnames(ie2010dfm) \%in\% names(topfeatures(ie2010dfm, 20)))
 text(wfm2a@phi, wfm2b@phi, wfm2a@features, 
      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "grey90")
 text(wfm2a@phi[underdispersedTerms], wfm2b@phi[underdispersedTerms], 

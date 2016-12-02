@@ -4,34 +4,42 @@
 ## Ken Benoit
 ####################################################################
 
-
-
-#' extract the feature labels from a dfm
-#'
-#' Extract the features from a document-feature matrix, which are stored as the column names
-#' of the \link{dfm} object.
-#' @param x the object (dfm) whose features will be extracted
-#' @return Character vector of the features
+#' get the feature labels from a dfm
+#' 
+#' Get the features from a document-feature matrix, which are stored as the
+#' column names of the \link{dfm} object.
+#' @param x the dfm whose features will be extracted
+#' @return character vector of the features
 #' @examples
 #' inaugDfm <- dfm(data_char_inaugural, verbose = FALSE)
 #' 
 #' # first 50 features (in original text order)
-#' head(features(inaugDfm), 50)
+#' head(featnames(inaugDfm), 50)
 #' 
 #' # first 50 features alphabetically
-#' head(sort(features(inaugDfm)), 50)
+#' head(sort(featnames(inaugDfm)), 50)
 #' 
 #' # contrast with descending total frequency order from topfeatures()
 #' names(topfeatures(inaugDfm, 50))
 #' @export
-features <- function(x) {
-    UseMethod("features")
+featnames <- function(x) {
+    UseMethod("featnames")
 }
 
 #' @export
-#' @rdname features
-features.dfm <- function(x) {
+#' @noRd
+featnames.dfm <- function(x) {
     colnames(x)
+}
+
+#' deprecated function name for featnames
+#' 
+#' Please use \code{\link{featnames}} instead.
+#' @keywords internal deprecated
+#' @export
+features <- function(x) {
+    .Deprecated("featnames")
+    featnames(x)
 }
 
 #' @noRd
@@ -75,7 +83,6 @@ as.dfm <- function(x) {
 #' 
 #' List the most (or least) frequently occuring features in a \link{dfm}.
 #' @name topfeatures
-#' @aliases topFeatures
 #' @param x the object whose features will be returned
 #' @param n how many top features should be returned
 #' @param decreasing If TRUE, return the \code{n} most frequent features, if 

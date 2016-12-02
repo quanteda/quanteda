@@ -302,6 +302,7 @@ docvars.corpus <- function(x, field = NULL) {
 #' @param x the object with docnames
 #' @export
 #' @return \code{docnames} returns a character vector of the document names
+#' @seealso \code{\link{featnames}}
 #' @examples
 #' # query the document names of a corpus
 #' docnames(data_corpus_irishbudget2010)

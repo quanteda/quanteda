@@ -47,7 +47,7 @@ textstat_readability(txt, c("FOG", "FOG.PSK", "FOG.NRI"))
 inaugReadability <- textstat_readability(data_corpus_inaugural, "all")
 round(cor(inaugReadability), 2)
 
-#' textstat_readability(data_corpus_inaugural, measure = "Flesch.Kincaid")
+textstat_readability(data_corpus_inaugural, measure = "Flesch.Kincaid")
 inaugReadability <- textstat_readability(data_corpus_inaugural, "all")
 round(cor(inaugReadability), 2)
 }

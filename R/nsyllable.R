@@ -6,6 +6,16 @@
 #' \code{http://www.speech.cs.cmu.edu/cgi-bin/cmudict}.
 "data_int_syllables"
 
+#' deprecated name for nsyllable
+#' 
+#' Deprecated function name; use \code{\link{nsyllable}} instead.
+#' @export
+#' @keywords internal deprecated
+syllables <- function(x, ...) {
+    .Deprecated("nsyllable")
+    nsyllable(x, ...)
+}
+
 #' count syllables in a text
 #' 
 #' @description Returns a count of the number of syllables in texts. For English
@@ -18,11 +28,11 @@
 #'   named numeric vector of syllable counts for the words used as names.  This 
 #'   is the default object used to count English syllables.  This object that 
 #'   can be accessed directly, but we strongly encourage you to access it only 
-#'   through the \code{syllables()} wrapper function.
+#'   through the \code{nsyllable()} wrapper function.
 #'   
 #' @param x character vector or \code{tokens} object  whose 
 #'   syllables will be counted
-#' @param syllableDict optional named integer vector of syllable counts where 
+#' @param syllable_dictionary optional named integer vector of syllable counts where 
 #'   the names are lower case tokens.  When set to \code{NULL} (default), then 
 #'   the function will use the quanteda data object \code{data_int_syllables}, an 
 #'   English pronunciation dictionary from CMU.
@@ -34,32 +44,32 @@
 #'   counts corresponding to the tokenized texts.
 #' @note All tokens are automatically converted to lowercase to perform the
 #'   matching with the syllable dictionary, so there is no need to perform this
-#'   step prior to calling \code{syllables()}.
-#' @name syllables
+#'   step prior to calling \code{nsyllable()}.
+#' @name nsyllable
 #' @export
 #' @examples
-#' syllables("This is an example sentence.")
-#' syllables(tokenize("This is an example sentence.", simplify=TRUE))
+#' nsyllable("This is an example sentence.")
+#' nsyllable(tokenize("This is an example sentence.", simplify=TRUE))
 #' myTexts <- c(text1 = "Text one.", 
 #'              text2 = "Superduper text number two.", 
 #'              text3 = "One more for the road.")
-#' syllables(myTexts)
-#' syllables(tokenize(myTexts, removePunct = TRUE))
-#' syllables("supercalifragilisticexpialidocious")
-syllables <- function(x, syllableDict = quanteda::data_int_syllables, ...) {
-    UseMethod("syllables")
+#' nsyllable(myTexts)
+#' nsyllable(tokenize(myTexts, removePunct = TRUE))
+#' nsyllable("supercalifragilisticexpialidocious")
+nsyllable <- function(x, syllable_dictionary = quanteda::data_int_syllables, ...) {
+    UseMethod("nsyllable")
 }
 
-#' @rdname syllables
+#' @rdname nsyllable
 #' @noRd
 #' @export
-syllables.character <- function(x, syllableDict = quanteda::data_int_syllables, ...) { 
+nsyllable.character <- function(x, syllable_dictionary = quanteda::data_int_syllables, ...) { 
     tokenizedwords <- tokenize(x, removePunct = TRUE, removeTwitter = TRUE, removeNumbers = TRUE, ...)
-    sapply(syllables(tokenizedwords, syllableDict), sum)
+    sapply(nsyllable(tokenizedwords, syllable_dictionary), sum)
 }
 
 
-#' @rdname syllables
+#' @rdname nsyllable
 #' @noRd
 #' @examples 
 #' \dontshow{
@@ -67,19 +77,19 @@ syllables.character <- function(x, syllableDict = quanteda::data_int_syllables, 
 #'                 two = "merrily all go aerodynamic")
 #' toks <- tokenize(txt)
 #' toksh <- tokens(txt)
-#' syllables(toks)
-#' syllables(toksh)
+#' nsyllable(toks)
+#' nsyllable(toksh)
 #' }
 #' @export
-syllables.tokens <- function(x, syllableDict = quanteda::data_int_syllables, ...) { 
-    vocab_sylls <- syllables(types(x))
+nsyllable.tokens <- function(x, syllable_dictionary = quanteda::data_int_syllables, ...) { 
+    vocab_sylls <- nsyllable(types(x))
     sapply(unclass(x), function(y) vocab_sylls[y])
 }
 
-#' @rdname syllables
+#' @rdname nsyllable
 #' @noRd
 #' @export
-syllables.tokenizedTexts <- function(x, syllableDict = quanteda::data_int_syllables, ...) { 
+nsyllable.tokenizedTexts <- function(x, syllable_dictionary = quanteda::data_int_syllables, ...) { 
     
     # make tokenized list into a data table
     syllablesDT <- data.table(docIndex = rep(1:length(x), lengths(x)),
@@ -87,7 +97,7 @@ syllables.tokenizedTexts <- function(x, syllableDict = quanteda::data_int_syllab
                               serial = 1:length(unlist(x)))
     
     # call the syllables data.table function
-    nSyllables <- syllables.data.table(syllablesDT, syllableDict)    
+    nSyllables <- nsyllable.data.table(syllablesDT, syllable_dictionary)    
     
     # restore names
     names(nSyllables) <- names(x)    
@@ -96,22 +106,22 @@ syllables.tokenizedTexts <- function(x, syllableDict = quanteda::data_int_syllab
 }
 
 
-syllables.data.table <- function(x, syllableDict = quanteda::data_int_syllables, ...) {
+nsyllable.data.table <- function(x, syllable_dictionary = quanteda::data_int_syllables, ...) {
     word <- serial <- NULL
     
     # retrieve or validate syllable list
     data_int_syllables <- NULL
-    if (is.null(syllableDict)) {
+    if (is.null(syllable_dictionary)) {
         #data(data_int_syllables, envir = environment())
-        #syllableDict <- data_int_syllables
+        #syllable_dictionary <- data_int_syllables
     } else {
-        if (!is.integer(syllableDict))
-            stop("user-supplied syllableDict must be named integer vector.")
+        if (!is.integer(syllable_dictionary))
+            stop("user-supplied syllable_dictionary must be named integer vector.")
     }
     
     # make syllable list into a data table
-    syllableDictDT <- data.table(word = names(syllableDict), syllables = syllableDict)
-    setkey(syllableDictDT, word)
+    syllable_dictionaryDT <- data.table(word = names(syllable_dictionary), syllables = syllable_dictionary)
+    setkey(syllable_dictionaryDT, word)
     
     # lowercase the tokenizedTexts object, needed for the matching in the next step
     x[, word := toLower(word)]
@@ -121,7 +131,7 @@ syllables.data.table <- function(x, syllableDict = quanteda::data_int_syllables,
     
     # merge words to get syllables
     # suppressWarnings so it won't complain about mixed encodings
-    suppressWarnings(syllDT <- syllableDictDT[x])
+    suppressWarnings(syllDT <- syllable_dictionaryDT[x])
     
     # look up vowel counts for those not in the syllables list
     syllDT[is.na(syllables), syllables := stringi::stri_count_regex(word, "[aeiouy]+")]

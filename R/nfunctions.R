@@ -1,16 +1,6 @@
-# nsentence
-
-# ntoken
-# ntype
-
 # head
 # tail
-# nfeature
 
-
-# featnames
-# docnames
-# 
 # kwic
 # 
 # char_tolower
@@ -71,8 +61,8 @@ ndoc.tokenizedTexts <- function(x) {
 #' @seealso \code{\link{ntoken}}
 #' @examples
 #' # number of features
-#' nfeature(dfm(corpus_subset(data_corpus_inaugural, Year > 1980)), removePunct = FALSE)
-#' nfeature(dfm(corpus_subset(data_corpus_inaugural, Year > 1980)), removePunct = TRUE)
+#' nfeature(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), removePunct = FALSE))
+#' nfeature(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), removePunct = TRUE))
 nfeature <- function(x) {
     UseMethod("nfeature")
 }
@@ -112,8 +102,8 @@ nfeature.dfm <- function(x) {
 #' ntype(toLower(txt), removePunct = TRUE)
 #' 
 #' # with some real texts
-#' ntoken(corpus_subset(data_corpus_inaugural, Year<1806, removePunct = TRUE))
-#' ntype(corpus_subset(data_corpus_inaugural, Year<1806, removePunct = TRUE))
+#' ntoken(corpus_subset(data_corpus_inaugural, Year<1806), removePunct = TRUE)
+#' ntype(corpus_subset(data_corpus_inaugural, Year<1806), removePunct = TRUE)
 #' ntoken(dfm(corpus_subset(data_corpus_inaugural, Year<1800)))
 #' ntype(dfm(corpus_subset(data_corpus_inaugural, Year<1800)))
 #' @export
@@ -173,7 +163,8 @@ ntype.corpus <- function(x, ...) {
 #' @noRd
 #' @export
 ntype.dfm <- function(x, ...) {
-    length(colSums(x > 0))
+    ## only returns total NON-ZERO COUNT types
+    sum(colSums(x) > 0)
 }
 
 #' @noRd
@@ -209,7 +200,8 @@ ntype.tokens <- function(x, ...) {
 #' @examples
 #' # simple example
 #' txt <- c(text1 = "This is a sentence: second part of first sentence.",
-#'          text2 = "A word. Repeated repeated.")
+#'          text2 = "A word. Repeated repeated.",
+#'          text3 = "Mr. Jones has a PhD from the LSE.  Second sentence.")
 #' nsentence(txt)
 #' @export
 nsentence <- function(x, ...) {

@@ -37,8 +37,8 @@ ndoc(tokens(data_corpus_inaugural))
 ndoc(dfm(corpus_subset(data_corpus_inaugural, Year > 1980)))
 
 # number of features
-nfeature(dfm(corpus_subset(data_corpus_inaugural, Year > 1980)), removePunct = FALSE)
-nfeature(dfm(corpus_subset(data_corpus_inaugural, Year > 1980)), removePunct = TRUE)
+nfeature(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), removePunct = FALSE))
+nfeature(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), removePunct = TRUE))
 }
 \seealso{
 \code{\link{ntoken}}

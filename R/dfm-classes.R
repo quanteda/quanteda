@@ -384,8 +384,8 @@ as.data.frame.dfm <- function(x, row.names = NULL, optional = FALSE , ...) {
 #' @keywords internal dfm
 #' @examples 
 #' # cbind() for dfm objects
-#' (dfm1 <- dfm("This is one sample text sample.", verbose = FALSE))
-#' (dfm2 <- dfm("More words here.", verbose = FALSE))
+#' (dfm1 <- dfm("This is one sample text sample"))
+#' (dfm2 <- dfm("More words here"))
 #' cbind(dfm1, dfm2)
 cbind.dfm <- function(...) {
     args <- list(...)
@@ -397,7 +397,7 @@ cbind.dfm <- function(...) {
         dnames <- matrix(dnames, ncol = length(dnames))
     if (!all(apply(dnames, 1, function(x) length(table(x)) == 1)))
         warning("cbinding dfms with different docnames", noBreaks. = TRUE)
-    if (length(Reduce(intersect, lapply(args, features))))
+    if (length(Reduce(intersect, lapply(args, featnames))))
         warning("cbinding dfms with overlapping features will result in duplicated features", noBreaks. = TRUE)
     
     result <- Matrix::cbind2(args[[1]], args[[2]])
@@ -452,8 +452,8 @@ rbind.dfm <- function(...) {
 }
 
 rbind2.dfm <- function(x, y) {
-    x_names <- features(x)
-    y_names <- features(y)
+    x_names <- featnames(x)
+    y_names <- featnames(y)
 
       if (identical(x_names, y_names)) {
           return(new("dfmSparse", Matrix::rbind2(x, y)))

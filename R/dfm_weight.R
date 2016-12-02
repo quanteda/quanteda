@@ -78,7 +78,7 @@ dfm_weight <- function(x,
     if (!is.null(weights)) {
         if (!missing(type))
             warning("type is ignored when numeric weights are supplied")
-        if (any(!(matchedWeights <- names(weights) %in% features(x)))) {
+        if (any(!(matchedWeights <- names(weights) %in% featnames(x)))) {
             warning("ignoring", names(weights)[matchedWeights], ", not a feature match")
             weights <- weights[matchedWeights]
         }
@@ -86,7 +86,7 @@ dfm_weight <- function(x,
         ## set weighting slot/attribute -- NEED TO ADD
         
         # use name matching for indexing, sorts too, returns NA where no match is found
-        weights <- weights[features(x)]
+        weights <- weights[featnames(x)]
         # reassign 1 to non-matched NAs
         weights[is.na(weights)] <- 1
         return(x * rep(weights, each = nrow(x)))
@@ -202,7 +202,7 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
     } else if (scheme == "count") {
         if (is(x, "dfmSparse")) {
             tx <- t(x)
-            featfactor <- factor(tx@i, 0:(nfeature(x)-1), labels = features(x))
+            featfactor <- factor(tx@i, 0:(nfeature(x)-1), labels = featnames(x))
             result <- as.integer(table(featfactor[tx@x > threshold]))
         } else {
             if (!any(x@x <= threshold)) 
@@ -224,7 +224,7 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax", "inverseprob
         result[is.infinite(result)] <- 0
     }
     
-    if (USE.NAMES) names(result) <- features(x)
+    if (USE.NAMES) names(result) <- featnames(x)
     result
 }
 
