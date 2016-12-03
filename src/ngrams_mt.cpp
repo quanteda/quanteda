@@ -120,33 +120,6 @@ Ngrams skipgram(Text tokens,
     return ngrams;
 }
 
-/*
- *  This function specializes in ngrams but there is no performance gain. 
- */
-Ngrams ngram(Text tokens,
-             std::vector<int> ns, 
-             tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> &map_ngram) {
-    
-    int pos_ngrams = 0; // Position in ngrams
-    
-    // Pre-allocate memory
-    int size_reserve = tokens.size();
-    Ngrams ngrams(size_reserve);
-    
-    // Generate ngrams
-    for (int k = 0; k < ns.size(); k++) {
-        int n = ns[k];
-        for(int start = 0; start < tokens.size() - (n - 1); start++){
-            Ngram ngram(tokens.begin() + start, tokens.begin() + start + n);
-            ngrams[pos_ngrams] = ngram_id(ngram, map_ngram);
-            //Rcout << "Add " << ngrams[pos_ngrams] << " at " << ngrams.size() << "\n";
-            pos_ngrams++;
-        }
-    }
-    ngrams.resize(pos_ngrams);
-    return ngrams;
-}
-
 struct skipgram_mt : public Worker{
     
     Texts &input;
@@ -209,7 +182,6 @@ List qatd_cpp_ngram_mt_list(List texts_,
     // Create character tokens from unordered_map
     std::vector<std::string> types_ngram(map_ngram.size());
     for (std::pair<Ngram, unsigned int> it : map_ngram){
-        //Rcout << "ID " << to_string(it.second) << ": ";
         std::string type_ngram = types[it.first[0] - 1];
         for(int i = 1; i < it.first.size(); i++){
             type_ngram += delim + types[it.first[i] - 1];
@@ -244,10 +216,6 @@ str(res)
 #res$text
 #res$id_unigram
 
-txt_jp <- "政治とは社会に対して全体的な影響を及ぼし、社会で生きるひとりひとりの人の人生にも様々な影響を及ぼす複雑な領域である。"
-tok_jp <- quanteda::tokens(txt_jp)
-ngm <- ngrams(tok_jp)
-Encoding(attr(ngm, 'types'))
 
 
 */
