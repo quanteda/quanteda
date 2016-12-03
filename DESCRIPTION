@@ -42,6 +42,8 @@ Imports:
     stringi,
     httr,
     fastmatch
+Remotes:
+    kbenoit/readtext
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo
 Suggests:
     knitr,
