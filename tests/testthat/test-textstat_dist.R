@@ -274,6 +274,7 @@ test_that("test textstat_simil method = \"faith\" against proxy::simil(): featur
 test_that("test textstat_dist method = \"Chi-squred\" against ExPosition::chi2Dist(): features", {
     skip_on_cran()
     skip_on_appveyor()
+    skip_on_travis()
     require(proxy)
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
@@ -292,6 +293,7 @@ test_that("test textstat_dist method = \"Chi-squred\" against ExPosition::chi2Di
 test_that("test textstat_dist method = \"Chi-squred\" against ExPosition::chi2Dist(): documents", {
     skip_on_cran()
     skip_on_appveyor()
+    skip_on_travis()
     require(proxy)
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
