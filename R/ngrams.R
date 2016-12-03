@@ -71,19 +71,17 @@ ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_", thread = 4, 
 
     if (any(n <= 0)) stop("ngram length has to be greater than zero")
     
-    types_org <- types(x)
+    #types_org <- types(x)
     names_org <- names(x)
     attrs_org <- attributes(x)
     
     # Generate ngrams
     RcppParallel::setThreadOptions(thread)
-    x <- qatd_cpp_ngram_mt_list(x, n, skip + 1)
+    x <- qatd_cpp_ngram_mt_list(x, types(x), concatenator, n, skip + 1)
     
-    types_int <- attr(x, 'ids')
+    types_ngm <- stringi::stri_encode(attr(x, 'types'), "", "UTF-8")
     attributes(x) <- attrs_org
-    
-    # Create types of ngrams
-    types(x) <- stri_c_list(qatd_cpp_unhash(types_int, types_org), concatenator)
+    types(x) <- types_ngm
     names(x) <- names_org
     attr(x, "ngrams") <- as.integer(n)
     attr(x, "skip") <- as.integer(skip)

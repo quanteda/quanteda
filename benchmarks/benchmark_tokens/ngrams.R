@@ -32,15 +32,3 @@ microbenchmark::microbenchmark(
 profvis::profvis(ngrams(tok, 2, thread=4))
 profvis::profvis(quanteda::ngrams(tokens(txt), n = 2, thread=4))
 
-
-# Make dfm
-
-sum(lengths(tok))
-length(attr(tok, 'types'))
-mx <- dfm(tok)
-
-#ngm <- as.tokens(tokenize_ngrams(txt, n = 2))
-ngm <- ngrams(tok, 2, thread=4)
-sum(lengths(ngm))
-length(attr(ngm, 'types'))
-mx_ngm <- dfm(ngm)

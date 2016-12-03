@@ -57,15 +57,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_ngram_mt_list
-List qatd_cpp_ngram_mt_list(List texts_, IntegerVector ns_, IntegerVector skips_);
-RcppExport SEXP quanteda_qatd_cpp_ngram_mt_list(SEXP texts_SEXP, SEXP ns_SEXP, SEXP skips_SEXP) {
+List qatd_cpp_ngram_mt_list(List texts_, CharacterVector types_, String delim_, IntegerVector ns_, IntegerVector skips_);
+RcppExport SEXP quanteda_qatd_cpp_ngram_mt_list(SEXP texts_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP ns_SEXP, SEXP skips_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type types_(types_SEXP);
+    Rcpp::traits::input_parameter< String >::type delim_(delim_SEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type ns_(ns_SEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type skips_(skips_SEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_ngram_mt_list(texts_, ns_, skips_));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_ngram_mt_list(texts_, types_, delim_, ns_, skips_));
     return rcpp_result_gen;
 END_RCPP
 }

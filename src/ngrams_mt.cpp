@@ -182,10 +182,14 @@ struct skipgram_mt : public Worker{
 
 // [[Rcpp::export]]
 List qatd_cpp_ngram_mt_list(List texts_,
+                            CharacterVector types_,
+                            String delim_,
                             IntegerVector ns_,
                             IntegerVector skips_) {
     
     Texts input = Rcpp::as< Texts >(texts_);
+    std::string delim = delim_;
+    std::vector<std::string> types = Rcpp::as< std::vector<std::string> >(types_);
     std::vector<int> ns = Rcpp::as< std::vector<int> >(ns_);
     std::vector<int> skips = Rcpp::as< std::vector<int> >(skips_);
     
@@ -201,20 +205,23 @@ List qatd_cpp_ngram_mt_list(List texts_,
     parallelFor(0, input.size(), skipgram_mt);
     dev::stop_timer("Ngram generation", timer);
     
-    dev::start_timer("ID extraction", timer);
-    // Separate key and values of unordered_map
-    std::vector< std::vector<unsigned int> > ids(map_ngram.size(), std::vector<unsigned int>(1, 0)); // set default value to aviode NULL
+    dev::start_timer("Token generation", timer);
+    // Create character tokens from unordered_map
+    std::vector<std::string> types_ngram(map_ngram.size());
     for (std::pair<Ngram, unsigned int> it : map_ngram){
         //Rcout << "ID " << to_string(it.second) << ": ";
-        //print_ngram_hashed(it.first);
-        ids[it.second - 1] = it.first;
+        std::string type_ngram = types[it.first[0] - 1];
+        for(int i = 1; i < it.first.size(); i++){
+            type_ngram += delim + types[it.first[i] - 1];
+        }
+        types_ngram[it.second - 1] = type_ngram;
     }
-    dev::stop_timer("ID extraction", timer);
+    dev::stop_timer("Token generation", timer);
     
     // Return IDs as attribute
     ListOf<IntegerVector> texts_ngram = Rcpp::wrap(output);
-    ListOf<IntegerVector> ids_unigram = Rcpp::wrap(ids);
-    texts_ngram.attr("ids") = ids_unigram;
+    texts_ngram.attr("types") = types_ngram;
+
     return texts_ngram;
 
 }
@@ -224,11 +231,11 @@ List qatd_cpp_ngram_mt_list(List texts_,
 
 #txt <- c('a b c d e', 'c d e f g')
 #txt <- readLines('~/Documents/Brexit/Analysis/all_bbc_2015.txt') # 80MB
-#tok <- tokens(txt)
+#tok <- quanteda::tokens(txt)
 
 RcppParallel::setThreadOptions(2)
-res <- qatd_cpp_ngram_mt_list(tok, 2, 1)
-#res
+res <- qatd_cpp_ngram_mt_list(tok, attr(tok, 'types'), "-", 2, 1)
+str(res)
 
 #RcppParallel::setThreadOptions(4)
 #toks = rep(list(1:1000, 1001:2000), 10)
@@ -237,6 +244,10 @@ res <- qatd_cpp_ngram_mt_list(tok, 2, 1)
 #res$text
 #res$id_unigram
 
+txt_jp <- "政治とは社会に対して全体的な影響を及ぼし、社会で生きるひとりひとりの人の人生にも様々な影響を及ぼす複雑な領域である。"
+tok_jp <- quanteda::tokens(txt_jp)
+ngm <- ngrams(tok_jp)
+Encoding(attr(ngm, 'types'))
 
 
 */
