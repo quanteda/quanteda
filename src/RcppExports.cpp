@@ -85,7 +85,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_unhash
-List qatd_cpp_unhash(ListOf<IntegerVector> tokens_int, CharacterVector types);
+ListOf<CharacterVector> qatd_cpp_unhash(ListOf<IntegerVector> tokens_int, CharacterVector types);
 RcppExport SEXP quanteda_qatd_cpp_unhash(SEXP tokens_intSEXP, SEXP typesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

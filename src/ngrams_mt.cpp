@@ -27,7 +27,7 @@ namespace ngrams {
             unsigned int seed = 0;
             for(int i = 0; i < vec.size(); i++){
                 //seed += vec[i] * std::pow(10, i) ;
-                seed += vec[i] << (i * 8);
+                seed += vec[i] << (i * 8); // shift elements 8 bit
             }
             return std::hash<unsigned int>()(seed);
         }
