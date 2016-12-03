@@ -22,7 +22,13 @@ namespace ngrams {
 
     struct hash_ngram {
         std::size_t operator() (const Ngram &vec) const {
-            unsigned int seed = std::accumulate(vec.begin(), vec.end(), 0);
+            //unsigned int seed = std::accumulate(vec.begin(), vec.end(), 0);
+            //return std::hash<unsigned int>()(seed);
+            unsigned int seed = 0;
+            for(int i = 0; i < vec.size(); i++){
+                //seed += vec[i] * std::pow(10, i) ;
+                seed += vec[i] << (i * 8);
+            }
             return std::hash<unsigned int>()(seed);
         }
     };
@@ -30,6 +36,7 @@ namespace ngrams {
     struct equal_ngram {
         bool operator() (const Ngram &vec1, const Ngram &vec2) const { 
             return (vec1 == vec2);
+            //return true;
         }
     };
 }
@@ -189,12 +196,12 @@ List qatd_cpp_ngram_mt_list(List texts_,
     skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram);
     
     // Apply skipgram_mt to blocked ranges
-    //dev::Timer timer;
-    //dev::start_timer("Ngram generation", timer);
+    dev::Timer timer;
+    dev::start_timer("Ngram generation", timer);
     parallelFor(0, input.size(), skipgram_mt);
-    //dev::stop_timer("Ngram generation", timer);
+    dev::stop_timer("Ngram generation", timer);
     
-    //dev::start_timer("ID extraction", timer);
+    dev::start_timer("ID extraction", timer);
     // Separate key and values of unordered_map
     std::vector< std::vector<unsigned int> > ids(map_ngram.size(), std::vector<unsigned int>(1, 0)); // set default value to aviode NULL
     for (std::pair<Ngram, unsigned int> it : map_ngram){
@@ -202,7 +209,7 @@ List qatd_cpp_ngram_mt_list(List texts_,
         //print_ngram_hashed(it.first);
         ids[it.second - 1] = it.first;
     }
-    //dev::stop_timer("ID extraction", timer);
+    dev::stop_timer("ID extraction", timer);
     
     // Return IDs as attribute
     ListOf<IntegerVector> texts_ngram = Rcpp::wrap(output);
@@ -217,10 +224,10 @@ List qatd_cpp_ngram_mt_list(List texts_,
 
 #txt <- c('a b c d e', 'c d e f g')
 #txt <- readLines('~/Documents/Brexit/Analysis/all_bbc_2015.txt') # 80MB
-#toks <- tokens(txt, what='fastestword')
+#tok <- tokens(txt)
 
-#RcppParallel::setThreadOptions(2)
-#res <- qatd_cpp_ngram_mt_list(toks, 2, 1)
+RcppParallel::setThreadOptions(2)
+res <- qatd_cpp_ngram_mt_list(tok, 2, 1)
 #res
 
 #RcppParallel::setThreadOptions(4)
