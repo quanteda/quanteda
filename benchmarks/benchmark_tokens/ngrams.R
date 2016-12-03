@@ -8,15 +8,15 @@ tok <- tokens(txt, removeSymbols = TRUE, removeNumbers = TRUE)
 
 microbenchmark::microbenchmark(
     tokenizers = tokenize_ngrams(txt, n = 2),
-    quanteda_t1 = tokens(txt, what='fastestword') %>% quanteda::ngrams(n = 2, thread=1),
-    quanteda_t4 = tokens(txt, what='fastestword') %>% quanteda::ngrams(n = 2, thread=4),
+    quanteda_t1 = tokens(txt) %>% quanteda::ngrams(n = 2, thread=1),
+    quanteda_t4 = tokens(txt) %>% quanteda::ngrams(n = 2, thread=2),
     unit='relative', times = 1
 )
 
 microbenchmark::microbenchmark(
     tokenizers = tokenize_skip_ngrams(txt, n = 2, k = 1),
-    quanteda_t1 = tokens(txt, what='fastestword') %>% quanteda::ngrams(n = 2, skip = 1, thread=1),
-    quanteda_t4 = tokens(txt, what='fastestword') %>% quanteda::ngrams(n = 2, skip = 1, thread=4),
+    quanteda_t1 = tokens(txt) %>% quanteda::ngrams(n = 2, skip = 1, thread=1),
+    quanteda_t4 = tokens(txt) %>% quanteda::ngrams(n = 2, skip = 1, thread=4),
     unit='relative', times = 1
 )
 
@@ -30,5 +30,5 @@ microbenchmark::microbenchmark(
 )
 
 
-profvis::profvis(ngrams(tok, 2, thread=1))
-profvis::profvis(quanteda::ngrams(tokens(txt, what='fastestword'), n = 2, thread=4))
+profvis::profvis(ngrams(tok, 2, thread=2))
+profvis::profvis(quanteda::ngrams(tokens(txt), n = 2, thread=4))
