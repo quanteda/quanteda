@@ -512,10 +512,10 @@ liwcdfm[, 1:10]
 ```{r fig.width = 6}
 presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year>1980), 
                remove = stopwords("english"),
-               stem = TRUE, verbose = FALSE, removePunct = TRUE)
-obamaSimil <- similarity(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL, 
-                            margin = "documents", method = "cosine", normalize = FALSE)
-dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
+               stem = TRUE, removePunct = TRUE)
+obamaSimil <- textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL, 
+                             margin = "documents", method = "cosine")
+dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")
 ```
 
 

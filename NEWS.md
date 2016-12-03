@@ -62,11 +62,11 @@ new function | deprecated function | contructs:
 `textplot_xray` | `plot.kwic`  | (plot)
 `textstat_readability` | `readability` | `data.frame` 
 `textstat_lexdiv` | `lexdiv` | `data.frame`
+`textstat_simil` | `similarity` | `dist`
+`textstat_dist` | `similarity` | `dist`
 `featnames` | `features` | `character`
 `nsyllable` | `syllables` | (named) `integer`
 `nscrabble` | `scrabble` | (named) `integer`
-
-
 
 
 ## New functions

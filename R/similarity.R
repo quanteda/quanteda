@@ -42,24 +42,7 @@
 #' 
 #' # compute some term similarities
 #' similarity(presDfm, c("fair", "health", "terror"), method="cosine", margin = "features", 20)
-#' 
-#' \dontrun{
-#' # compare to tm
-#' require(tm)
-#' data("crude")
-#' crude <- tm_map(crude, content_transformer(tolower))
-#' crude <- tm_map(crude, removePunctuation)
-#' crude <- tm_map(crude, removeNumbers)
-#' crude <- tm_map(crude, stemDocument)
-#' tdm <- TermDocumentMatrix(crude)
-#' findAssocs(tdm, c("oil", "opec", "xyz"), c(0.75, 0.82, 0.1))
-#' # in quanteda
-#' quantedaDfm <- new("dfmSparse", Matrix::Matrix(t(as.matrix(tdm))))
-#' similarity(quantedaDfm, c("oil", "opec", "xyz"), margin = "features", n = 14)
-#' corMat <- as.matrix(proxy::simil(as.matrix(quantedaDfm), by_rows = FALSE))
-#' round(head(sort(corMat[, "oil"], decreasing = TRUE), 14), 2)
-#' round(head(sort(corMat[, "opec"], decreasing = TRUE), 9), 2)
-#' }
+#' @keywords internal deprecated
 #' @export
 setGeneric("similarity", 
            signature = c("x", "selection", "n", "margin", "sorted", "normalize"),
@@ -186,58 +169,4 @@ print.similMatrix <- function(x, ...) {
     cat("similarity Matrix:\n")
     print(unclass(x), ...)
 }
-
-
-## code below based on assoc.R from the qlcMatrix package
-## used Matrix::crossprod and Matrix::tcrossprod for sparse Matrix handling
-
-# L2 norm
-norm2 <- function(x,s) { drop(Matrix::crossprod(x^2, s)) ^ 0.5 }
-# L1 norm
-norm1 <- function(x,s) { drop(Matrix::crossprod(abs(x),s)) }
-
-cosineSparse <- function(x, y = NULL, margin = 1, norm = norm2) {
-    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    if (margin == 1) x <- t(x)
-    S <- rep(1, nrow(x))			
-    N <- Matrix::Diagonal( x = norm(x, S)^-1 )
-    x <- x %*% N
-    if (!is.null(y)) {
-        if (margin == 1) y <- t(y)
-        N <- Matrix::Diagonal( x = match.fun(norm)(y, S)^-1 )
-        y <- y %*% N
-        return(as.matrix(Matrix::crossprod(x,y)))
-    } else
-        return(as.matrix(Matrix::crossprod(x)))
-}
-
-correlationSparse <- function(x, y = NULL, margin = 1) {
-    if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
-    cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
-    tcpFun <- if (margin == 2) Matrix::tcrossprod else Matrix::crossprod
-    marginSums <- if (margin == 2) colSums else rowSums
-    
-    n <- if (margin == 2) nrow(x) else ncol(x)
-    muX <- if (margin == 2) colMeans(x) else rowMeans(x)
-        
-    if (!is.null(y)) {
-        stopifnot(ifelse(margin == 2, nrow(x) == nrow(y), ncol(x) == ncol(y)))
-        muY <- if (margin == 2) colMeans(y) else rowMeans(y)
-        covmat <- (as.matrix(cpFun(x,y)) - n * tcrossprod(muX, muY)) / (n-1)
-        sdvecX <- sqrt((marginSums(x^2) - n * muX^2) / (n-1))
-        sdvecY <- sqrt((marginSums(y^2) - n * muY^2) / (n-1))
-        cormat <- covmat / tcrossprod(sdvecX, sdvecY)
-    } else {
-        covmat <- ( as.matrix(cpFun(x)) - drop(n * tcrossprod(muX)) ) / (n-1)
-        sdvec <- sqrt(diag(covmat))
-        cormat <- covmat / tcrossprod(sdvec)
-    }
-    cormat
-}
-
-## FOR DISTANCE:
-
-## NEED EUCLIDEAN SPARSE
-
-## JACCARD SPARSE:  See http://stackoverflow.com/questions/36220585/efficient-jaccard-similarity-documenttermmatrix
 

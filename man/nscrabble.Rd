@@ -18,7 +18,7 @@ a (named) integer vector of Scabble letter values, computed using
   \code{FUN}, corresponding to the input text(s)
 }
 \description{
-Compute the Scrabble letter values of text given a user-supplied function, 
+count the Scrabble letter values of text given a user-supplied function, 
 such as the sum (default) or mean of the character values.
 }
 \note{

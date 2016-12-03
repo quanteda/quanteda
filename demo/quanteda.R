@@ -106,13 +106,13 @@ print(p)
 ## Presidential Inaugural Address Corpus
 presDfm <- dfm(inaugCorpus, remove = stopwords("english"))
 # compute some document similarities
-similarity(presDfm, "1985-Reagan", n=5, margin="documents")
-similarity(presDfm, c("2009-Obama" , "2013-Obama"), n=5, margin="documents", method = "cosine")
-similarity(presDfm, c("2009-Obama" , "2013-Obama"), n=5, margin="documents", method = "Hellinger")
-similarity(presDfm, c("2009-Obama" , "2013-Obama"), n=5, margin="documents", method = "eJaccard")
+as.list(textstat_simil(presDfm, "1985-Reagan", n=5, margin="documents"))
+as.list(textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n=5, margin="documents", method = "cosine"))
+as.list(textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n=5, margin="documents", method = "Hellinger"))
+as.list(textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n=5, margin="documents", method = "eJaccard"))
 
 # compute some term similarities
-similarity(presDfm, c("fair", "health", "terror"), method="cosine")
+as.list(textstat_dist(presDfm, c("fair", "health", "terror"), margin = "features", method="cosine"))
 
 
 ## low-level NLP tasks
