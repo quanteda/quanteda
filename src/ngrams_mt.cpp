@@ -97,8 +97,8 @@ Ngrams skipgram(Text tokens,
                 std::vector<int> skips,
                 tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> &map_ngram) {
     
-    int pos_tokens = 0; // Position in tokens
-    int pos_ngrams = 0; // Position in ngrams
+    int pos_tokens = 0; // position in tokens
+    int pos_ngrams = 0; // position in ngrams
     
     // Pre-allocate memory
     int size_reserve = 0;
@@ -112,7 +112,7 @@ Ngrams skipgram(Text tokens,
         int n = ns[k];
         Ngram ngram(n);
         for (int start = 0; start < tokens.size() - (n - 1); start++) {
-            if(tokens[start] == 0) continue; // Skip padding
+            if(tokens[start] == 0) continue; // skip padding
             skip(tokens, start, n, skips, ngram, ngrams, map_ngram, pos_tokens, pos_ngrams); // Get ngrams as reference
         }
     }
