@@ -37,155 +37,175 @@ setClass("dist",
          #contains = "Matrix"
          )
 
+#' @rdname textstat_simil
+#' @param dist whether the distance matrix should be converted into an object of
+#'   class "dist".  The distance matrix created from some methods, such as
+#'   "kullback", is not symmetric.
+#' @export
+#' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
+#' \code{"euclidean"}, \code{"hamming"}, \code{"Chisquared"}, 
+#' \code{"Chisquared2"}, and \code{"kullback"}.
 #' @examples
 #' # create a dfm from inaugural addresses from Reagan onwards
-#' presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
-#'                stem = TRUE)
+#' presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), 
+#'                remove = stopwords("english"), stem = TRUE)
+#'                
+#' ## distance
 #' 
-#' # compute some document similarities
+#' # compute some document distances
 #' (tmp <- textstat_dist(presDfm, margin = "documents"))
-#' # output as a list
-#' #as.list(tmp)
+#' 
 #' # for specific comparisons
 #' textstat_dist(presDfm, "1985-Reagan", n = 5, margin = "documents")
 #' textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
 #' textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
 #' textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
-
-#' @rdname dist-class
-#' @export
-setGeneric(name = "textstat_dist",
-           signature = c("x", "selection", "n", "margin", "normalize"),
-           def = function(x, selection = character(0), n = NULL,
-                          margin = c("documents", "features"),
-                          method = "euclidean", 
-                          normalize = FALSE, tri = FALSE, diag = FALSE, dist = TRUE)
-               {
-                standardGeneric("textstat_dist")
-               })
-
-
-#' @rdname dist-class
-#' @export
-setMethod(f = "textstat_dist", 
-          signature = signature("dfm", "ANY"),
-          def = function(x, selection = character(0), n = NULL, 
+#' 
+textstat_dist <- function(x, selection = character(0), n = NULL, 
                          margin = c("documents", "features"),
                          method = "euclidean",
-                         normalize = FALSE, tri = TRUE, diag = FALSE, dist = TRUE) {
-              
-              # value <- match.arg(value)
-              
-              if (normalize) {
-                  warning("normalize is deprecated, not applied - use weight() instead")
-                  # x <- weight(x, "relFreq")  # normalize by term freq.
-              }
-              
-              margin <- match.arg(margin)
-              if (margin == "features") {
-                  items <- features(x)
-                  xsize <- dim(x)[2]
-              } else {
-                  items <- docnames(x)
-                  xsize <- dim(x)[1]
-              }
-              
-              if (is.null(n) || n >= xsize)
-                  n <- xsize # choose all features/docs if n is NULL
-              
-              if (length(selection) != 0L) {
-                  # retain only existing features or documents
-                  selectIndex <- which(items %in% selection)
-                  if (length(selectIndex)==0)
-                      stop("no such documents or feature labels exist.")
-                  
-                  if (margin=="features") {
-                      xSelect <- x[, selectIndex, drop=FALSE]
-                  } else {
-                      xSelect <- x[selectIndex, , drop=FALSE]
-                  }
-              } else xSelect <- NULL
-              
-              vecMethod <- c("euclidean", "hamming", "Chisquared","Chisquared2", "kullback")
-              vecMethod_simil <- c("jaccard", "binary", "eJaccard","simple matching")
-              
-              if (method %in% vecMethod){
-                  result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
-              } else if (method %in% vecMethod_simil) {
-                  if (method == "binary") method = "jaccardf"
-                  result <- 1 - get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
-              } else{
-                  # use proxy::dist() for all other methods
-                  stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
-                  #result <- as.matrix(proxy::dist(as.matrix(x), as.matrix(xSelect), method = method,
-                  #                                by_rows = ifelse(margin=="features", FALSE, TRUE)), diag = 1)
-              }
+                         tri = TRUE, diag = FALSE, dist = TRUE) {
 
-              # convert NaNs to NA
-              # similmatrix[is.nan(similmatrix)] <- NA
+    if (!is.dfm(x))
+        stop("x must be a dfm object")
+
+    # value <- match.arg(value)
               
-              # create a full square matrix if result is calculated only for selected features
-              if (length(selection) != 0L) {
-                  # adjust the order of the rows to put the selected features as the top rows
-                  rname <- rownames(result)
-                  cname <- colnames(result)
-                  rname <- c(cname, rname[!rname %in% cname])
-                  result <- result[rname,]
-                  
-                  # create a full square matrix 
-                  nn <- if(length(selection) == 1L) length(result) else nrow(result)
-                  rname <- if(length(selection) == 1L) names(result) else rownames(result)
-                  x <- matrix(data = NA,nrow = nn,ncol = nn, dimnames = list(rname, rname))
-                  if(length(selection) == 1L){
-                      x[, 1] <- result
-                  } else {
-                      x[, 1:ncol(result)] <- result
-                  }
-                  result <- x
-              }
-              
-              # truncate to n if n is not NULL
-              if (!is.null(n))
-                  result <- head(result, n)
-             
-              # discard the upper diagonal if tri == TRUE
-              if (tri)
-                  result[upper.tri(result, diag = !diag)]<-0
-            
-              if (dist){
-                  # create a new dist object
-                  p <- nrow(result)
-                  if(ncol(result) != p) warning("non-square matrix")
-              
-              
-                  # only retain lower triangular elements for the dist object
-                  distM <- result[row(result) > col(result)]
-                  
-                  # set the attributes of the dist object
-                  attributes(distM) <- NULL
-                  attr(distM, "Size") <- nrow(result)
-                  if (!is.null(rownames(result))) attr(distM, "Labels") <- rownames(result)
-                  attr(distM, "Diag") <- diag
-                  attr(distM, "Upper") <- !tri
-                  attr(distM, "method") <- method
-                  attr(distM, "call") <- match.call()
-                  attr(distM, "dimnames") <- NULL
-                  class(distM) <- "dist"
-                  
-                  # This will call Stats::print.dist() and Stats::as.matrix.dist()
-                  distM
-              } else {
-                  result
-              }
-        })
+    margin <- match.arg(margin)
+    if (margin == "features") {
+        items <- featnames(x)
+        xsize <- dim(x)[2]
+    } else {
+        items <- docnames(x)
+        xsize <- dim(x)[1]
+    }
+    
+    if (is.null(n) || n >= xsize)
+        n <- xsize # choose all features/docs if n is NULL
+    
+    if (length(selection) != 0L) {
+        # retain only existing features or documents
+        selectIndex <- which(items %in% selection)
+        if (length(selectIndex)==0)
+            stop("no such documents or feature labels exist.")
+        
+        if (margin=="features") {
+            xSelect <- x[, selectIndex, drop=FALSE]
+        } else {
+            xSelect <- x[selectIndex, , drop=FALSE]
+        }
+    } else xSelect <- NULL
+    
+    vecMethod <- c("euclidean", "hamming", "Chisquared","Chisquared2", "kullback")
+    vecMethod_simil <- c("jaccard", "binary", "eJaccard","simple matching")
+    
+    if (method %in% vecMethod){
+        result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
+    } else if (method %in% vecMethod_simil) {
+        if (method == "binary") method = "jaccardf"
+        result <- 1 - get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
+    } else{
+        # use proxy::dist() for all other methods
+        stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
+        #result <- as.matrix(proxy::dist(as.matrix(x), as.matrix(xSelect), method = method,
+        #                                by_rows = ifelse(margin=="features", FALSE, TRUE)), diag = 1)
+    }
+    
+    # convert NaNs to NA
+    # similmatrix[is.nan(similmatrix)] <- NA
+    
+    # create a full square matrix if result is calculated only for selected features
+    if (length(selection) != 0L) {
+        # adjust the order of the rows to put the selected features as the top rows
+        rname <- rownames(result)
+        cname <- colnames(result)
+        rname <- c(cname, rname[!rname %in% cname])
+        result <- result[rname,]
+        
+        # create a full square matrix 
+        nn <- if(length(selection) == 1L) length(result) else nrow(result)
+        rname <- if(length(selection) == 1L) names(result) else rownames(result)
+        x <- matrix(data = NA,nrow = nn,ncol = nn, dimnames = list(rname, rname))
+        if(length(selection) == 1L){
+            x[, 1] <- result
+        } else {
+            x[, 1:ncol(result)] <- result
+        }
+        result <- x
+    }
+    
+    # truncate to n if n is not NULL
+    if (!is.null(n))
+        result <- head(result, n)
+    
+    # discard the upper diagonal if tri == TRUE
+    if (tri)
+        result[upper.tri(result, diag = !diag)]<-0
+    
+    if (dist){
+        # create a new dist object
+        p <- nrow(result)
+        if(ncol(result) != p) warning("non-square matrix")
+        
+        
+        # only retain lower triangular elements for the dist object
+        distM <- result[row(result) > col(result)]
+        
+        # set the attributes of the dist object
+        attributes(distM) <- NULL
+        attr(distM, "Size") <- nrow(result)
+        if (!is.null(rownames(result))) attr(distM, "Labels") <- rownames(result)
+        attr(distM, "Diag") <- diag
+        attr(distM, "Upper") <- !tri
+        attr(distM, "method") <- method
+        attr(distM, "call") <- match.call()
+        attr(distM, "dimnames") <- NULL
+        class(distM) <- "dist"
+        
+        # This will call Stats::print.dist() and Stats::as.matrix.dist()
+        distM
+    } else {
+        result
+    }
+}
 
 # convert the dist class object to the sorted list used in tm::findAssocs()
+
+#' coerce a dist object into a list
+#' 
+#' Coerce a dist matrix into a list of selected terms and tarhet terms in
+#' descending order.  Can be used after calling \code{\link{textstat_simil}} or
+#' \code{\link{textstat_dist}}.
+#' @param x dist class object
 #' @param sorted sort results in descending order if \code{TRUE}
-#' @param n the top \code{n} most similar items will be returned, sorted in 
-#'   descending order.  If n is \code{NULL}, return all items.
-#' @rdname dist-class
+#' @param n the top \code{n} highest-ranking items will be returned.  If n is 
+#'   \code{NULL}, return all items.
 #' @param ... unused
+#' @method as.list dist
 #' @export
+#' @examples 
+#' \dontrun{
+#' ## compare to tm
+#' 
+#' # tm version
+#' require(tm)
+#' data("crude")
+#' crude <- tm_map(crude, content_transformer(tolower))
+#' crude <- tm_map(crude, removePunctuation)
+#' crude <- tm_map(crude, removeNumbers)
+#' crude <- tm_map(crude, stemDocument)
+#' tdm <- TermDocumentMatrix(crude)
+#' findAssocs(tdm, c("oil", "opec", "xyz"), c(0.75, 0.82, 0.1))
+#' 
+#' # in quanteda
+#' quantedaDfm <- new("dfmSparse", Matrix::Matrix(t(as.matrix(tdm))))
+#' as.list(textstat_simil(quantedaDfm, c("oil", "opec", "xyz"), margin = "features", n = 14))
+#' 
+#' # in base R
+#' corMat <- as.matrix(proxy::simil(as.matrix(quantedaDfm), by_rows = FALSE))
+#' round(head(sort(corMat[, "oil"], decreasing = TRUE), 14), 2)
+#' round(head(sort(corMat[, "opec"], decreasing = TRUE), 9), 2)
+#' } 
 as.list.dist <- function(x, sorted = TRUE, n = NULL, ...) {
     # convert the matrix to a list of similarities
     if (!is.null(attr(x, "Labels"))) xLabels <- attr(x, "Labels")

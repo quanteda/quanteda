@@ -1,158 +1,156 @@
-#' @title Similarity matrix between documents and/or features 
+# deprecated function to compute similarity
+# 
+# Deprecated; use \code{\link{textstat_simil}} instead.
+# @export
+# @keywords internal deprecated
+# similarity <- function(x, ...) {
+#     .Deprecated("textstat_simil")
+#     textstat_simil(x, ...)
+# }
+
+#' similarity or distance between dfm documents and/or features
 #' 
-#' @description These functions compute similarity matrix between documents and/or features from a 
-#' \code{\link{dfm}} and return a standard \code{\link[stats]{dist}} object. 
-#' @param x a \link{dfm} object 
+#' Compute a similarity or distance matrix between documents and/or features 
+#' from a \code{\link{dfm}} and return a standard \code{\link[stats]{dist}} 
+#' object.
+#' @param x a \link{dfm} object
 #' @param selection character or character vector of document names or feature 
 #'   labels from the dfm
-#' @param n the top \code{n} most similar items will be returned.  If n is \code{NULL}, return all items.
-#' @param margin identifies the margin of the dfm on which similarity will be 
-#'   computed:  \code{documents} for documents or \code{features} for word/term
-#'   features.
-#' @param method method the distance measure to be used, options are "cosine", "correlation", 
-#' "jaccard", "eJaccard", "dice", "eDice", "simple matching", "hamann", "faith", default "correlation". More options are avaible 
-#'  in \code{\link{textstat_dist}}
-#' @param normalize a deprecated argument retained (temporarily) for legacy 
-#'   reasons.  If you want to compute similarity on a "normalized" dfm objects 
-#'   (e.g. \code{x}), wrap it in \code{\link{weight}(x, "relFreq")}.
-#' @param tri whether the upper triangle of the symmetric \eqn{V \times V} matrix is recorded
-#' @param diag whether the diagonal of the distance matrix should be recorded    
+#' @param n the top \code{n} highest-ranking items will be returned.  If n is 
+#'   \code{NULL}, return all items.
+#' @param margin identifies the margin of the dfm on which similarity or 
+#'   difference will be computed:  \code{documents} for documents or 
+#'   \code{features} for word/term features.
+#' @param method method the distance measure to be used; see Details
+#' @param tri whether the upper triangle of the symmetric \eqn{V \times V} 
+#'   matrix is recorded
+#' @param diag whether the diagonal of the distance matrix should be recorded
+#' @details \code{textstat_simil} options are: \code{"correlation"} (default),
+#' \code{"cosine"}, \code{"correlation"}, \code{"jaccard"}, \code{"eJaccard"},
+#' \code{"dice"}, \code{"eDice"}, \code{"simple matching"}, \code{"hamann"}, and
+#' \code{"faith"}.
+#' @note If you want to compute similarity on a "normalized" dfm object 
+#'   (controlling for variable document lengths, for methods such as correlation
+#'   for which different document lengths matter), then wrap the input dfm in 
+#'   \code{\link{weight}(x, "relFreq")}.
 #' @export
+#' @seealso \code{\link{textstat_dist}}, \code{\link{as.list.dist}}
 #' @import methods
 #' @examples
-#' # create a dfm from inaugural addresses from Reagan onwards
-#' presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
-#'                stem = TRUE)
+#' ## similarities
 #' 
 #' # compute some document similarities
 #' (tmp <- textstat_simil(presDfm, margin = "documents"))
+#' 
 #' # output as a list
-#' #as.list(tmp)
+#' as.list(tmp)[1:2]
+#' 
 #' # for specific comparisons
 #' textstat_simil(presDfm, "1985-Reagan", n = 5, margin = "documents")
 #' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
 #' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
 #' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents", method = "cosine")
-
-#' # compute some term similarities
-#' textstat_simil(presDfm, c("fair", "health", "terror"), method="cosine", margin = "features", 20)
 #' 
-#' @rdname simil-class
-#' @export
-setGeneric(name = "textstat_simil",
-           signature = c("x", "selection", "n", "margin", "normalize"),
-           def = function(x, selection = character(0), n = NULL,
+#' # compute some term similarities
+#' textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", 
+#'                margin = "features", 20)
+#' 
+textstat_simil <- function(x, selection = character(0), n = NULL,
                           margin = c("documents", "features"),
                           method = "correlation", 
-                          normalize = FALSE, tri = FALSE, diag = FALSE)
-           {
-               standardGeneric("textstat_simil")
-           })
+                          tri = FALSE, diag = FALSE) {
+    if (!is.dfm(x))
+        stop("x must be a dfm object")
 
-
-#' @rdname simil-class
-#' @export
-setMethod(f = "textstat_simil", 
-          signature = signature("dfm", "ANY"),
-          def = function(x, selection = character(0), n = NULL, 
-                         margin = c("documents", "features"),
-                         method = "correlation",
-                         normalize = FALSE, tri = TRUE, diag = FALSE ) {
-              
-              # value <- match.arg(value)
-              
-              if (normalize) {
-                  warning("normalize is deprecated, not applied - use weight() instead")
-                  # x <- weight(x, "relFreq")  # normalize by term freq.
-              }
-              
-              margin <- match.arg(margin)
-              if (margin == "features") {
-                  items <- features(x)
-                  xsize <- dim(x)[2]
-              } else {
-                  items <- docnames(x)
-                  xsize <- dim(x)[1]
-              }
-              
-              if (is.null(n) || n >= xsize)
-                  n <- xsize # choose all features/docs if n is NULL
-              
-              if (length(selection) != 0L) {
-                  # retain only existing features or documents
-                  selectIndex <- which(items %in% selection)
-                  if (length(selectIndex)==0)
-                      stop("no such documents or feature labels exist.")
-                  
-                  if (margin=="features") {
-                      xSelect <- x[, selectIndex, drop=FALSE]
-                  } else {
-                      xSelect <- x[selectIndex, , drop=FALSE]
-                  }
-              } else xSelect <- NULL
-              
-              vecMethod <- c("cosine", "correlation", "jaccard", "eJaccard", "dice", "eDice", "simple matching", "hamann", "faith")
-              if (method %in% vecMethod){
-                  if (method == "simple matching") method <- "smc"
-                  result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
-              } else {
-                  stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
-                  #result <- as.matrix(proxy::dist(as.matrix(x), as.matrix(xSelect), method = method,
-                  #                                by_rows = ifelse(margin=="features", FALSE, TRUE)), diag = 1)
-              }
-              
-              # convert NaNs to NA
-              # similmatrix[is.nan(similmatrix)] <- NA
-              
-              # create a full square matrix if result is calculated only for selected features
-              if (length(selection) != 0L) {
-                  # adjust the order of the rows to put the selected features as the top rows
-                  rname <- rownames(result)
-                  cname <- colnames(result)
-                  rname <- c(cname, rname[!rname %in% cname])
-                  result <- result[rname,]
-                  
-                  # create a full square matrix 
-                  nn <- if(length(selection) == 1L) length(result) else nrow(result)
-                  rname <- if(length(selection) == 1L) names(result) else rownames(result)
-                  x <- matrix(data = NA,nrow = nn,ncol = nn, dimnames = list(rname, rname))
-                  if(length(selection) == 1L){
-                      x[, 1] <- result
-                  } else {
-                      x[, 1:ncol(result)] <- as.matrix(result[, 1:ncol(result)])  #some returned result is 'dgCMatrix'
-                  }
-                  result <- x
-              }
-              
-              # truncate to n if n is not NULL
-              if (!is.null(n))
-                  result <- head(result, n)
-              
-              # discard the upper diagonal if tri == TRUE
-              if (tri)
-                  result[upper.tri(result, diag = !diag)]<-0
-              
-              # create a new dist object
-              p <- nrow(result)
-              if(ncol(result) != p) warning("non-square matrix")
-              
-              # only retain lower triangular elements for the dist object
-              distM <- result[row(result) > col(result)]
-              
-              # set the attributes of the dist object
-              attributes(distM) <- NULL
-              attr(distM, "Size") <- nrow(result)
-              if (!is.null(rownames(result))) attr(distM, "Labels") <- rownames(result)
-              attr(distM, "Diag") <- diag
-              attr(distM, "Upper") <- !tri
-              attr(distM, "method") <- method
-              attr(distM, "call") <- match.call()
-              attr(distM, "dimnames") <- NULL
-              class(distM) <- "dist"
-              
-              # This will call Stats::print.dist() and Stats::as.matrix.dist()
-              distM
-          })
+    # value <- match.arg(value)
+    
+    margin <- match.arg(margin)
+    if (margin == "features") {
+        items <- featnames(x)
+        xsize <- dim(x)[2]
+    } else {
+        items <- docnames(x)
+        xsize <- dim(x)[1]
+    }
+    
+    if (is.null(n) || n >= xsize)
+        n <- xsize # choose all features/docs if n is NULL
+    
+    if (length(selection) != 0L) {
+        # retain only existing features or documents
+        selectIndex <- which(items %in% selection)
+        if (length(selectIndex)==0)
+            stop("no such documents or feature labels exist.")
+        
+        if (margin=="features") {
+            xSelect <- x[, selectIndex, drop=FALSE]
+        } else {
+            xSelect <- x[selectIndex, , drop=FALSE]
+        }
+    } else xSelect <- NULL
+    
+    vecMethod <- c("cosine", "correlation", "jaccard", "eJaccard", "dice", "eDice", "simple matching", "hamann", "faith")
+    if (method %in% vecMethod){
+        if (method == "simple matching") method <- "smc"
+        result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
+    } else {
+        stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
+        #result <- as.matrix(proxy::dist(as.matrix(x), as.matrix(xSelect), method = method,
+        #                                by_rows = ifelse(margin=="features", FALSE, TRUE)), diag = 1)
+    }
+    
+    # convert NaNs to NA
+    # similmatrix[is.nan(similmatrix)] <- NA
+    
+    # create a full square matrix if result is calculated only for selected features
+    if (length(selection) != 0L) {
+        # adjust the order of the rows to put the selected features as the top rows
+        rname <- rownames(result)
+        cname <- colnames(result)
+        rname <- c(cname, rname[!rname %in% cname])
+        result <- result[rname,]
+        
+        # create a full square matrix 
+        nn <- if(length(selection) == 1L) length(result) else nrow(result)
+        rname <- if(length(selection) == 1L) names(result) else rownames(result)
+        x <- matrix(data = NA,nrow = nn,ncol = nn, dimnames = list(rname, rname))
+        if(length(selection) == 1L){
+            x[, 1] <- result
+        } else {
+            x[, 1:ncol(result)] <- as.matrix(result[, 1:ncol(result)])  #some returned result is 'dgCMatrix'
+        }
+        result <- x
+    }
+    
+    # truncate to n if n is not NULL
+    if (!is.null(n))
+        result <- head(result, n)
+    
+    # discard the upper diagonal if tri == TRUE
+    if (tri)
+        result[upper.tri(result, diag = !diag)]<-0
+    
+    # create a new dist object
+    p <- nrow(result)
+    if(ncol(result) != p) warning("non-square matrix")
+    
+    # only retain lower triangular elements for the dist object
+    distM <- result[row(result) > col(result)]
+    
+    # set the attributes of the dist object
+    attributes(distM) <- NULL
+    attr(distM, "Size") <- nrow(result)
+    if (!is.null(rownames(result))) attr(distM, "Labels") <- rownames(result)
+    attr(distM, "Diag") <- diag
+    attr(distM, "Upper") <- !tri
+    attr(distM, "method") <- method
+    attr(distM, "call") <- match.call()
+    attr(distM, "dimnames") <- NULL
+    class(distM) <- "dist"
+    
+    # This will call Stats::print.dist() and Stats::as.matrix.dist()
+    distM
+}
 
 
 ## code below based on assoc.R from the qlcMatrix package

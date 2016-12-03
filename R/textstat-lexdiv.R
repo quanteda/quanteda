@@ -1,14 +1,7 @@
 #' calculate lexical diversity
 #' 
 #' Calculate the lexical diversity or complexity of text(s).
-#' @export
-lexdiv <- function(x, ...) {
-    UseMethod("lexdiv")
-}
-    
-    
-#' @rdname lexdiv
-#' @details \code{lexdiv} calculates a variety of proposed indices for lexical
+#' @details \code{textstat_lexdiv} calculates a variety of proposed indices for lexical
 #'   diversity. In the following formulae, \eqn{N} refers to the total number of
 #'   tokens, and \eqn{V} to the number of types: \describe{
 #'   
@@ -98,13 +91,21 @@ lexdiv <- function(x, ...) {
 #' @export
 #' @examples
 #' mydfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE)
-#' (results <- lexdiv(mydfm, c("CTTR", "TTR", "U")))
-#' cor(lexdiv(mydfm, "all"))
+#' (results <- textstat_lexdiv(mydfm, c("CTTR", "TTR", "U")))
+#' cor(textstat_lexdiv(mydfm, "all"))
 #' 
 #' # with different settings of drop
-#' lexdiv(mydfm, "TTR", drop = TRUE)
-#' lexdiv(mydfm, "TTR", drop = FALSE)
-lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "Maas"), 
+#' textstat_lexdiv(mydfm, "TTR", drop = TRUE)
+#' textstat_lexdiv(mydfm, "TTR", drop = FALSE)
+textstat_lexdiv <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "Maas"), 
+                   log.base = 10, drop = TRUE, ...) {
+    UseMethod("textstat_lexdiv")
+}
+    
+    
+#' @noRd
+#' @export
+textstat_lexdiv.dfm <- function(x, measure = c("all", "TTR", "C", "R", "CTTR", "U", "S", "Maas"), 
                            log.base = 10, drop = TRUE, ...) {
 
     addedArgs <- names(list(...))

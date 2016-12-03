@@ -1,7 +1,7 @@
 require(quanteda)
 require(testthat)
 require(proxy)
-require(ExPosition)
+#require(ExPosition)
 #require(qlcMatrix)
 
 # correlation
@@ -272,6 +272,8 @@ test_that("test textstat_simil method = \"faith\" against proxy::simil(): featur
 # Instead of comparing to Proxy package, ExPosition is compared to. Because Proxy::simil uses different formula
 # eucProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "Chi-squared", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
 test_that("test textstat_dist method = \"Chi-squred\" against ExPosition::chi2Dist(): features", {
+    skip_on_cran()
+    skip_on_appveyor()
     require(proxy)
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
@@ -288,6 +290,8 @@ test_that("test textstat_dist method = \"Chi-squred\" against ExPosition::chi2Di
 })
 
 test_that("test textstat_dist method = \"Chi-squred\" against ExPosition::chi2Dist(): documents", {
+    skip_on_cran()
+    skip_on_appveyor()
     require(proxy)
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)

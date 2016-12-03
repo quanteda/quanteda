@@ -55,7 +55,7 @@ textplot_wordcloud <- function(x, comparison = FALSE, ...) {
         if (ndoc(x) > 8) stop("Too many documents to plot comparison, use 8 or fewer documents.")
         wordcloud::comparison.cloud(t(as.matrix(x)), ...)
     } else {
-        wordcloud::wordcloud(features(x), colSums(x), ...)
+        wordcloud::wordcloud(featnames(x), colSums(x), ...)
     }
 }
 

@@ -58,8 +58,15 @@ new function | deprecated function | contructs:
 `dfm_sort`   | `sort.dfm` | `dfm` class object
 `dfm_trim`   | `trim.dfm` | `dfm` class object
 `dfm_weight` | `weight` | `dfm` class object
-`plot.dfm`   | `textplot_wordcloud` | (plot)
-`plot.kwic`   | `textplot_xray` | (plot)
+`textplot_wordcloud` | `plot.dfm` | (plot)
+`textplot_xray` | `plot.kwic`  | (plot)
+`textstat_readability` | `readability` | `data.frame` 
+`textstat_lexdiv` | `lexdiv` | `data.frame`
+`textstat_simil` | `similarity` | `dist`
+`textstat_dist` | `similarity` | `dist`
+`featnames` | `features` | `character`
+`nsyllable` | `syllables` | (named) `integer`
+`nscrabble` | `scrabble` | (named) `integer`
 
 
 ## New functions

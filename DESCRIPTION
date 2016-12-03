@@ -19,8 +19,8 @@ Author: Kenneth Benoit [aut, cre],
     Will Lowe [ctb],
     Pablo Barberá [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.8.9019
-Date: 2016-12-02
+Version: 0.9.8.9021
+Date: 2016-12-03
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -57,8 +57,7 @@ Suggests:
     RColorBrewer,
     ggplot2 (>= 2.2.0),
     grid,
-    text2vec,
-    ExPosition
+    text2vec
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
@@ -98,13 +97,14 @@ Collate:
     'findSequences.R'
     'joinTokens.R'
     'kwic.R'
-    'lexdiv.R'
+    'nfunctions.R'
     'ngrams.R'
+    'nscrabble.R'
+    'nsyllable.R'
     'phrases.R'
     'plots-deprecated.R'
     'plots.R'
     'quanteda.R'
-    'readability.R'
     'readtext-methods.R'
     'regex2fixed.R'
     'regex2fixed2.R'
@@ -116,12 +116,14 @@ Collate:
     'settings.R'
     'similarity.R'
     'stopwords.R'
-    'syllables.R'
     'textmodel-NB.R'
     'textmodel-ca.R'
     'textmodel-generics.R'
     'textmodel-wordfish.R'
     'textmodel-wordscores.R'
+    'textstat-deprecated.R'
+    'textstat-lexdiv.R'
+    'textstat-readability.R'
     'textstat_dist.R'
     'textstat_simil.R'
     'toLower.R'

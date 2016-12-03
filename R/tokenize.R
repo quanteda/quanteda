@@ -416,10 +416,5 @@ as.tokenizedTexts.list <- function(x, ...) {
     x
 }
 
-#' @export
-#' @rdname ndoc
-ndoc.tokenizedTexts <- function(x) {
-    length(x)
-}
 
 

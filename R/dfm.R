@@ -91,16 +91,16 @@
 #'              the newspaper from a boy named Seamus, in his mouth."
 #' testCorpus <- corpus(testText)
 #' # note: "also" is not in the default stopwords("english")
-#' features(dfm(testCorpus, select = stopwords("english")))
+#' featnames(dfm(testCorpus, select = stopwords("english")))
 #' # for ngrams
-#' features(dfm(testCorpus, ngrams = 2, select = stopwords("english"), removePunct = TRUE))
-#' features(dfm(testCorpus, ngrams = 1:2, select = stopwords("english"), removePunct = TRUE))
+#' featnames(dfm(testCorpus, ngrams = 2, select = stopwords("english"), removePunct = TRUE))
+#' featnames(dfm(testCorpus, ngrams = 1:2, select = stopwords("english"), removePunct = TRUE))
 #' 
 #' ## removing stopwords before constructing ngrams
 #' tokensAll <- tokenize(toLower(testText), removePunct = TRUE)
 #' tokensNoStopwords <- removeFeatures(tokensAll, stopwords("english"))
 #' tokensNgramsNoStopwords <- ngrams(tokensNoStopwords, 2)
-#' features(dfm(tokensNgramsNoStopwords, verbose = FALSE))
+#' featnames(dfm(tokensNgramsNoStopwords, verbose = FALSE))
 #' 
 #' # keep only certain words
 #' dfm(testCorpus, select = "*s", verbose = FALSE)  # keep only words ending in "s"
@@ -293,7 +293,7 @@ dfm.tokenizedTexts <- function(x,
             "seconds.\n")
     
     # remove any NA named columns
-    if (any(naFeatures <- is.na(features(dfmresult))))
+    if (any(naFeatures <- is.na(featnames(dfmresult))))
         dfmresult <- dfmresult[, -which(naFeatures), drop = FALSE]
     
     return(dfmresult)

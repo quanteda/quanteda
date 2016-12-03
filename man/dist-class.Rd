@@ -2,30 +2,8 @@
 % Please edit documentation in R/textstat_dist.R
 \docType{class}
 \name{dist-class}
-\alias{as.list.dist}
 \alias{dist-class}
-\alias{textstat_dist}
-\alias{textstat_dist,dfm-method}
 \title{Distance matrix between documents and/or features}
-\usage{
-textstat_dist(x, selection = character(0), n = NULL,
-  margin = c("documents", "features"), method = "euclidean",
-  normalize = FALSE, tri = FALSE, diag = FALSE, dist = TRUE)
-
-\S4method{textstat_dist}{dfm}(x, selection = character(0), n = NULL,
-  margin = c("documents", "features"), method = "euclidean",
-  normalize = FALSE, tri = TRUE, diag = FALSE, dist = TRUE)
-
-\method{as.list}{dist}(x, sorted = TRUE, n = NULL, ...)
-}
-\arguments{
-\item{n}{the top \code{n} most similar items will be returned, sorted in 
-descending order.  If n is \code{NULL}, return all items.}
-
-\item{sorted}{sort results in descending order if \code{TRUE}}
-
-\item{...}{unused}
-}
 \description{
 These functions compute distance matrix between documents and/or features from a 
 \code{\link{dfm}} and return a standard \code{\link[stats]{dist}} object.
@@ -59,21 +37,6 @@ reasons.  If you want to compute similarity on a "normalized" dfm objects
 \item{\code{dist}}{whether the distance matrix should be converted into an object of class "dist". Distance matrix 
 created from some methods, such as "kullback", is not symmetric.}
 }}
-\examples{
-# create a dfm from inaugural addresses from Reagan onwards
-presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
-               stem = TRUE)
-
-# compute some document similarities
-(tmp <- textstat_dist(presDfm, margin = "documents"))
-# output as a list
-#as.list(tmp)
-# for specific comparisons
-textstat_dist(presDfm, "1985-Reagan", n = 5, margin = "documents")
-textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
-textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
-textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
-}
 \seealso{
 \link{dfm}
 }
