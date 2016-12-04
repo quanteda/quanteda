@@ -31,7 +31,7 @@ tokens_tolower <- function(x, ...) {
 }
 
 
-#' @rdname dfm_tolower
+#' @rdname tokens_tolower
 #' @importFrom stringi stri_trans_toupper
 #' @export
 tokens_toupper <- function(x, ...) {
@@ -58,7 +58,7 @@ tokens_toupper <- function(x, ...) {
 #' \link[base]{tolower} and \link[base]{toupper} based on the \pkg{stringi} 
 #' package.
 #' @param x a \link{tokens} object
-#' @param if \code{TRUE}, do not lowercase any all-uppercase words.
+#' @param keep_acronyms if \code{TRUE}, do not lowercase any all-uppercase words.
 #'   Only applies to \code{char_tolower}.
 #' @param ... additional arguments passed to \pkg{stringi} functions, (e.g. 
 #'   \code{\link{stri_trans_tolower}}), such as \code{locale}

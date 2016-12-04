@@ -12,11 +12,11 @@ char_toupper(x, ...)
 \arguments{
 \item{x}{a \link{tokens} object}
 
+\item{keep_acronyms}{if \code{TRUE}, do not lowercase any all-uppercase words.
+Only applies to \code{char_tolower}.}
+
 \item{...}{additional arguments passed to \pkg{stringi} functions, (e.g. 
 \code{\link{stri_trans_tolower}}), such as \code{locale}}
-
-\item{if}{\code{TRUE}, do not lowercase any all-uppercase words.
-Only applies to \code{char_tolower}.}
 }
 \description{
 \code{char_tolower} and \code{char_toupper} are replacements for 
@@ -24,7 +24,7 @@ Only applies to \code{char_tolower}.}
 package.
 }
 \examples{
-txt <- c(txt1 = "b A A", txt2 = "C C a b B"))
+txt <- c(txt1 = "b A A", txt2 = "C C a b B")
 char_tolower(txt) 
 char_toupper(txt)
 
