@@ -65,7 +65,7 @@ tokens_toupper <- function(x, ...) {
 #' @import stringi
 #' @export
 #' @examples
-#' txt <- c(txt1 = "b A A", txt2 = "C C a b B"))
+#' txt <- c(txt1 = "b A A", txt2 = "C C a b B")
 #' char_tolower(txt) 
 #' char_toupper(txt)
 #' 
