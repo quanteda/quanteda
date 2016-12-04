@@ -102,6 +102,6 @@ McInnes, B T. 2004. "Extending the Log Likelihood Measure to
   Minnesota.
 }
 \seealso{
-\link{ngrams}
+\link{tokens_ngrams}
 }
 

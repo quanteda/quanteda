@@ -29,8 +29,8 @@ test_that("ngrams works as expected for tokens_hashed", {
              two = "A B C D E")
     toks <- tokenize(txt, removePunct = TRUE)
     toksh <- tokens(txt, removePunct = TRUE)
-    classic <- ngrams(toks, n = 2:3)
-    hashed <- ngrams(toksh, n = 2:3)
+    classic <- tokens_ngrams(toks, n = 2:3)
+    hashed <- tokens_ngrams(toksh, n = 2:3)
     expect_equivalent(classic, as.tokenizedTexts(hashed))
 })
 

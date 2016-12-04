@@ -45,10 +45,10 @@
 #'   to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for 
 #'   bigrams and unigrams, use \code{1:2}.  You can even include irregular 
 #'   sequences such as \code{2:3} for bigrams and trigrams only.  See 
-#'   \code{\link{ngrams}}.
+#'   \code{\link{tokens_ngrams}}.
 #' @param skip integer vector specifying the skips for skip-grams, default is 0 
 #'   for only immediately neighbouring words. Only applies if \code{ngrams} is 
-#'   different from the default of 1.  See \code{\link{skipgrams}}.
+#'   different from the default of 1.  See \code{\link{tokens_skipgrams}}.
 #' @param concatenator character to use in concatenating \emph{n}-grams, default
 #'   is "\code{_}", which is recommended since this is included in the regular 
 #'   expression and Unicode definitions of "word" characters
@@ -80,7 +80,7 @@
 #'   See the examples below.
 #' @return \pkg{quanteda} \code{tokens} class object, by default a hashed list 
 #'   of integers corresponding to a vector of types.
-#' @seealso \code{\link{ngrams}}, \code{\link{skipgrams}}
+#' @seealso \code{\link{tokens_ngrams}}, \code{\link{tokens_skipgrams}}
 #' @keywords tokens
 #' @examples
 #' txt <- c(doc1 = "This is a sample: of tokens.",
@@ -148,7 +148,7 @@
 #' ### tokens(txt, removePunct = TRUE, ngrams = 1:2)
 #' # removing features from ngram tokens
 #' ### removeFeatures(tokens(txt, removePunct = TRUE, ngrams = 1:2), stopwords("english"))
-tokens <-  function(x, what=c("word", "sentence", "character", "fastestword", "fasterword"),
+tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", "fasterword"),
                     removeNumbers = FALSE,
                     removePunct = FALSE,
                     removeSymbols = FALSE,
@@ -161,7 +161,7 @@ tokens <-  function(x, what=c("word", "sentence", "character", "fastestword", "f
                     concatenator = "_",
                     simplify = FALSE,
                     hash = TRUE,
-                    verbose = FALSE,  ## FOR TESTING
+                    verbose = FALSE,  
                     ...) {
     UseMethod("tokens")
 }
@@ -169,7 +169,20 @@ tokens <-  function(x, what=c("word", "sentence", "character", "fastestword", "f
 #' @rdname tokens
 #' @noRd
 #' @export
-tokens.character <- function(x, ...) {
+tokens.character <- function(x, what = c("word", "sentence", "character", "fastestword", "fasterword"),
+                             removeNumbers = FALSE,
+                             removePunct = FALSE,
+                             removeSymbols = FALSE,
+                             removeSeparators = TRUE,
+                             removeTwitter = FALSE,
+                             removeHyphens = FALSE,
+                             removeURL = FALSE,
+                             ngrams = 1L,
+                             skip = 0L,
+                             concatenator = "_",
+                             simplify = FALSE,
+                             hash = TRUE,
+                             verbose = FALSE, ...) {
     
     what <- match.arg(what)
     
@@ -322,7 +335,7 @@ tokens.character <- function(x, ...) {
             catm("  ...creating ngrams")
             startTimeClean <- proc.time()
         }
-        result <- ngrams(result, n = ngrams, skip = skip, concatenator = concatenator)
+        result <- tokens_ngrams(result, n = ngrams, skip = skip, concatenator = concatenator)
         # is the ngram set serial starting with 1? use single call if so (most efficient)
         # if (sum(1:length(ngrams)) == sum(ngrams)) {
         #     result <- lapply(result, ngram, n = length(ngrams), concatenator = concatenator, include.all = TRUE)
@@ -360,7 +373,20 @@ tokens.character <- function(x, ...) {
 #' @rdname tokens
 #' @export
 #' @noRd
-tokens.corpus <- function(x, ...) {
+tokens.corpus <- function(x, what = c("word", "sentence", "character", "fastestword", "fasterword"),
+                          removeNumbers = FALSE,
+                          removePunct = FALSE,
+                          removeSymbols = FALSE,
+                          removeSeparators = TRUE,
+                          removeTwitter = FALSE,
+                          removeHyphens = FALSE,
+                          removeURL = FALSE,
+                          ngrams = 1L,
+                          skip = 0L,
+                          concatenator = "_",
+                          simplify = FALSE,
+                          hash = TRUE,
+                          verbose = FALSE, ...) {
     tokens(texts(x), ...)
 }
 
@@ -393,12 +419,20 @@ as.tokens.tokenizedTexts <- function(x) {
 #' @return \code{as.list.tokens} returns a simple list of characters from a
 #'   \link{tokens} object
 #' @export
-as.list.tokens <- function(x, ...){
+as.list.tokens <- function(x, ...) {
     result <- as.tokenizedTexts(x)
     attributes(result) <- NULL
     names(result) <- names(x)
     result
 }
+
+#' @rdname as.tokens
+#' @return \code{as.character.tokens} returns a character vector from a
+#'   \link{tokens} object
+#' @export
+as.character.tokens <- function(x, ...) {
+    unlist(as.list(x), use.names = FALSE)
+} 
 
 #' @rdname as.tokens
 #' @export
@@ -503,6 +537,40 @@ print.tokens <- function(x, ...) {
 }
 
 
+#' @method "[" tokens
+#' @export
+#' @noRd
+#' @examples 
+#' toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
+#' str(toks)
+#' toks[c(1,3)]
+"[.tokens" <- function(x, i, ...) {
+    new_tokens <- unclass(x)[i]
+    new_tokens <- reassign_attributes(new_tokens, x)
+    tokens_hashed_recompile(new_tokens)
+}
+
+#' @method "[[" tokens
+#' @export
+#' @noRd
+#' @examples 
+#' toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
+#' str(toks)
+#' toks[[2]]
+"[[.tokens" <- function(x, i, ...) {
+    types(x)[unclass(x)[[i]]]
+}
+
+#' @method "$" tokens
+#' @export
+#' @noRd
+#' @examples 
+#' toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
+#' str(toks)
+#' toks$d3
+"$.tokens" <- function(x, i, ...) {
+    x[[i]]
+}
 
 
 

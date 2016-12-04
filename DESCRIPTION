@@ -42,8 +42,7 @@ Imports:
     stringi,
     httr,
     fastmatch
-Remotes:
-    kbenoit/readtext
+Remotes: kbenoit/readtext
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo
 Suggests:
     knitr,
@@ -100,7 +99,6 @@ Collate:
     'joinTokens.R'
     'kwic.R'
     'nfunctions.R'
-    'ngrams.R'
     'nscrabble.R'
     'nsyllable.R'
     'phrases.R'
@@ -132,7 +130,8 @@ Collate:
     'tokenize.R'
     'tokenize_outtakes.R'
     'tokens.R'
-    'util.R'
+    'tokens_ngrams.R'
+    'utils.R'
     'wordstem.R'
     'zzz.R'
 RcppModules: ngramMaker

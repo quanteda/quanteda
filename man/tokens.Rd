@@ -61,11 +61,11 @@ http(s) -- see section "Dealing with URLs".}
 to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for 
 bigrams and unigrams, use \code{1:2}.  You can even include irregular 
 sequences such as \code{2:3} for bigrams and trigrams only.  See 
-\code{\link{ngrams}}.}
+\code{\link{tokens_ngrams}}.}
 
 \item{skip}{integer vector specifying the skips for skip-grams, default is 0 
 for only immediately neighbouring words. Only applies if \code{ngrams} is 
-different from the default of 1.  See \code{\link{skipgrams}}.}
+different from the default of 1.  See \code{\link{tokens_skipgrams}}.}
 
 \item{concatenator}{character to use in concatenating \emph{n}-grams, default
 is "\code{_}", which is recommended since this is included in the regular 
@@ -179,7 +179,7 @@ tokens(txt, removePunct = TRUE)
 ### removeFeatures(tokens(txt, removePunct = TRUE, ngrams = 1:2), stopwords("english"))
 }
 \seealso{
-\code{\link{ngrams}}, \code{\link{skipgrams}}
+\code{\link{tokens_ngrams}}, \code{\link{tokens_skipgrams}}
 }
 \keyword{tokens}
 
