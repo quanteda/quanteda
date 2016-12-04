@@ -25,18 +25,18 @@
 #' seqs2 <- findSequences(tokens, types_lower, count_min=3)
 #' head(seqs2, 20)
 #' 
-#' @rdname findSequences
+#' @keywords internal collocations
 #' @export
 findSequences <- function(x, tokens, count_min, smooth=0.001, nested=TRUE){
-  
-  if(missing(count_min)) count_min <- max(2, length(unlist(tokens)) / 10 ^ 6) # alt least twice of one in million
-  
-  seqs <- find_sequence_cppl(x, tokens, count_min, smooth, nested)
-  seqs$z <- seqs$lambda / seqs$sigma
-  seqs$p <- 1 - stats::pnorm(seqs$z)
-  seqs$mue <- seqs$lambda - (3.29 * seqs$sigma) # mue should be greater than zero
-  class(seqs) <- "tokenSequences"
-  seqs
+    
+    if(missing(count_min)) count_min <- max(2, length(unlist(tokens)) / 10 ^ 6) # alt least twice of one in million
+    
+    seqs <- find_sequence_cppl(x, tokens, count_min, smooth, nested)
+    seqs$z <- seqs$lambda / seqs$sigma
+    seqs$p <- 1 - stats::pnorm(seqs$z)
+    seqs$mue <- seqs$lambda - (3.29 * seqs$sigma) # mue should be greater than zero
+    class(seqs) <- "tokenSequences"
+    seqs
 }
 
 # print a tokenSequences objects
@@ -67,7 +67,8 @@ print.tokenSequences <- function(x, ...) {
 #' @param ... further arguments passed to base print method
 #' @export
 #' @method head tokenSequences
-head.tokenSequences <- function(x, ...){
+#' @noRd
+head.tokenSequences <- function(x, ...) {
   
     df <- data.frame(sequence=sapply(x[['sequence']], paste, collapse = " "),
                      len=sapply(x[['sequence']], length),
@@ -86,7 +87,8 @@ head.tokenSequences <- function(x, ...){
 #' @param ... further arguments passed to base print method
 #' @export
 #' @method tail tokenSequences
-tail.tokenSequences <- function(x, ...){
+#' @noRd
+tail.tokenSequences <- function(x, ...) {
   
   df <- data.frame(sequence=sapply(x[['sequence']], paste, collapse = " "),
                    len=sapply(x[['sequence']], length),

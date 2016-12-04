@@ -188,5 +188,6 @@ selectFeatures(myCollocs, stopwords("english"), "remove")
 \seealso{
 \code{\link{removeFeatures}}, \code{\link{dfm_trim}}
 }
+\keyword{deprecated}
 \keyword{internal}
 

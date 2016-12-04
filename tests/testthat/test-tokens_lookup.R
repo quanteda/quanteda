@@ -1,4 +1,4 @@
-context('test applyDictionary2')
+context('test tokens_lookup')
 
 
 txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
@@ -16,7 +16,7 @@ test_that("multi-word dictionary keys are counted correctly", {
                                      Institutions = c("federal government", "Supreme Court"),
                                      team = c("Manchester United", "Arsenal")))
     tokens_case_asis <- 
-        applyDictionary2(toks, dict_mw_fixed, valuetype = "fixed", case_insensitive = FALSE)
+        tokens_lookup(toks, dict_mw_fixed, valuetype = "fixed", case_insensitive = FALSE)
     
     dfm_case_asis <- dfm(tokens_case_asis, tolower = FALSE)
     expect_equal(as.vector(dfm_case_asis[, "Countries"]), c(1, 1, 0, 1, 0, 0))
@@ -27,7 +27,7 @@ test_that("multi-word dictionary keys are counted correctly", {
     expect_equal(as.vector(dfm_case_asis["d3", "Countries"]), 0)
     
     tokens_case_ignore <- 
-        applyDictionary2(toks, dict_mw_fixed, valuetype = "fixed", case_insensitive = TRUE)
+        tokens_lookup(toks, dict_mw_fixed, valuetype = "fixed", case_insensitive = TRUE)
     dfm_case_ignore <- dfm(tokens_case_ignore, tolower = FALSE)
     expect_equal(as.vector(dfm_case_ignore[, "Countries"]), c(1, 1, 1, 1, 0, 1))
 
@@ -40,7 +40,7 @@ test_that("multi-word dictionary keys are counted correctly", {
                                     Institutions = c("federal gover*", "Supreme Court"),
                                     team = c("Manchester *", "Arsenal")))
     tokens_case_asis_glob <- 
-        applyDictionary2(toks, dict_mw_glob, valuetype = "glob", case_insensitive = FALSE)
+        tokens_lookup(toks, dict_mw_glob, valuetype = "glob", case_insensitive = FALSE)
     
     dfm_case_asis_glob <- dfm(tokens_case_asis_glob, tolower = FALSE)
     expect_equal(as.vector(dfm_case_asis_glob[, "Countries"]), c(1, 1, 0, 1, 0, 0))
@@ -57,7 +57,7 @@ test_that("entirely single-word dictionary keys are counted correctly", {
                                      team = c("Manchester", "Arsenal")))    
     
     tokens_case_asis <- 
-        applyDictionary2(toks, dict_sw_fixed, valuetype = "fixed", case_insensitive = FALSE)
+        tokens_lookup(toks, dict_sw_fixed, valuetype = "fixed", case_insensitive = FALSE)
     dfm_case_asis <- dfm(tokens_case_asis, tolower = FALSE)
     expect_equal(as.vector(dfm_case_asis[, "Countries"]), c(1, 1, 0, 1, 0, 0))
     expect_equal(as.vector(dfm_case_asis[, "team"]), c(0, 0, 2, 1, 0, 0))
@@ -67,7 +67,7 @@ test_that("entirely single-word dictionary keys are counted correctly", {
     expect_equal(as.vector(dfm_case_asis["d3", "Countries"]), 0)
     
     tokens_case_ignore <- 
-        applyDictionary2(toks, dict_sw_fixed, valuetype = "fixed", case_insensitive = TRUE)
+        tokens_lookup(toks, dict_sw_fixed, valuetype = "fixed", case_insensitive = TRUE)
     dfm_case_ignore <- dfm(tokens_case_ignore, tolower = FALSE)
     expect_equal(as.vector(dfm_case_ignore[, "Countries"]), c(1, 1, 1, 1, 0, 1))
     
@@ -87,8 +87,8 @@ test_that("multi-word dictionary behavior is not sensitive to the order of dicti
     dict2 <- dictionary(list(team = c("Arsenal", "Manchester United"),
                              Countries = c("United States")))
     expect_equal(
-        lapply(as.list(applyDictionary2(toks, dictionary = dict1, valuetype = "fixed")), sort),
-        lapply(as.list(applyDictionary2(toks, dictionary = dict2, valuetype = "fixed")), sort)
+        lapply(as.list(tokens_lookup(toks, dictionary = dict1, valuetype = "fixed")), sort),
+        lapply(as.list(tokens_lookup(toks, dictionary = dict2, valuetype = "fixed")), sort)
     )
     
 })
@@ -101,7 +101,7 @@ test_that("multi-word dictionary preserves the original orders of features", {
     dict <- dictionary(list(Countries = c("United States"),
                             team = c("Manchester United", "Arsenal")))
     expect_equal(
-        unname(as.list(applyDictionary2(toks, dictionary = dict, valuetype = "fixed"))),
+        unname(as.list(tokens_lookup(toks, dictionary = dict, valuetype = "fixed"))),
         list(c("Countries"), c("team", "team", "Countries"))
     )
     

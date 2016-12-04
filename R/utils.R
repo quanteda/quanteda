@@ -50,4 +50,14 @@ reassign_slots <- function(x_new, x_orig) {
     x_new
 }
 
+##
+## reassign the attributes to an S3 object
+## necessary when some operation defined for the base class obliterates them
+## Ken B
+reassign_attributes <- function(x_new, x_orig) {
+    snames <- attributes(x_orig)
+    snames$names <- attr(x_new, "names") 
+    attributes(x_new) <- snames
+    x_new
+}
 

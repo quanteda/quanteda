@@ -1,13 +1,13 @@
-#' compute the Scrabble letter values of text
+#' count the Scrabble letter values of text
 #' 
-#' count the Scrabble letter values of text given a user-supplied function, 
+#' Tally the Scrabble letter values of text given a user-supplied function, 
 #' such as the sum (default) or mean of the character values.
 #' @param x a character vector
 #' @param FUN function to be applied to the character values in the text; 
 #'   default is \code{sum}, but could also be \code{mean} or a user-supplied 
 #'   function
 #' @author Kenneth Benoit
-#' @return a (named) integer vector of Scabble letter values, computed using
+#' @return a (named) integer vector of Scabble letter values, computed using 
 #'   \code{FUN}, corresponding to the input text(s)
 #' @note Character values are only defined for non-accented Latin a-z, A-Z 
 #'   letters.  Lower-casing is unnecessary.

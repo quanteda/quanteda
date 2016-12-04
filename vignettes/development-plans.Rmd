@@ -240,7 +240,7 @@ The current processing options, their defaults, and the function their value is 
 ------------------------------------------------------------------------
  Option          default     other                          function
 -------         ---------   -------                        -------------
-keepAcronyms     FALSE       TRUE                           toLower
+keep_acronyms     FALSE       TRUE                           toLower
 
 what             word        sentence, character            tokenize
                              fastestword, fasterword

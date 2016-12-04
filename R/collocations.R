@@ -45,7 +45,7 @@ NULL
 #' @references McInnes, B T. 2004. "Extending the Log Likelihood Measure to 
 #'   Improve Collocation Identification."  M.Sc. Thesis, University of 
 #'   Minnesota.
-#' @seealso \link{ngrams}
+#' @seealso \link{tokens_ngrams}
 #' @author Kenneth Benoit
 #' @examples
 #' txt <- c("This is software testing: looking for (word) pairs!  
@@ -531,5 +531,15 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"),
     #df[, word2 := factor(word2, levels = 1:length(tlevels), labels = tlevels)]
     class(df) <- c("collocations", class(df))
     df[1:ifelse(is.null(n), nrow(df), n), ]
+}
+
+#' check if an object is collocations type
+#' 
+#' Return \code{TRUE} if an object was constructed by \link{collocations}.
+#' @param x any object
+#' @export
+#' @keywords collocations
+is.collocations <- function(x) {
+    class(x)[1] == "collocations" 
 }
 

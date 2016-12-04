@@ -35,6 +35,7 @@
 #'   
 #' @export
 #' @seealso \code{\link{removeFeatures}}, \code{\link{dfm_trim}}
+#' @keywords internal deprecated
 selectFeatures <- function(x, features, ...) {
     UseMethod("selectFeatures")
 }
