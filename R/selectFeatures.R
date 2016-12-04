@@ -336,6 +336,7 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
 #' @export
 #' @author Kenneth Benoit
 #' @seealso \link{stopwords}
+#' @keywords internal deprecated
 #' @examples
 #' \dontrun{
 #' ## for tokenized texts 
