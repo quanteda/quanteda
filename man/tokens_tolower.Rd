@@ -2,9 +2,12 @@
 % Please edit documentation in R/tolower-misc.R
 \name{tokens_tolower}
 \alias{tokens_tolower}
+\alias{tokens_toupper}
 \title{convert the case of tokens}
 \usage{
 tokens_tolower(x, ...)
+
+tokens_toupper(x, ...)
 }
 \arguments{
 \item{x}{a \link{tokens} object}
