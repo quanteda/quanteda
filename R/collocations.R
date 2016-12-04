@@ -533,3 +533,13 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"),
     df[1:ifelse(is.null(n), nrow(df), n), ]
 }
 
+#' check if an object is collocations type
+#' 
+#' Return \code{TRUE} if an object was constructed by \link{collocations}.
+#' @param x any object
+#' @export
+#' @keywords collocations
+is.collocations <- function(x) {
+    class(x)[1] == "collocations" 
+}
+

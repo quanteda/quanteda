@@ -38,4 +38,6 @@ seqs2 <- findSequences(tokens, types_lower, count_min=3)
 head(seqs2, 20)
 
 }
+\keyword{collocations}
+\keyword{internal}
 

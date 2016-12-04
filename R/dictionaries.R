@@ -427,7 +427,15 @@ readLexicoderDict <- function(path, toLower=TRUE) {
   return(dict)
 }
 
-
+#' check if an object is a dictionary
+#' 
+#' Return \code{TRUE} if an object is a \pkg{quanteda} \link{dictionary}.
+#' @param x any object
+#' @export
+is.dictionary <- function(x) {
+    is(x, "dictionary")
+}
+    
 
  
 

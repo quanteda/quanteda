@@ -94,6 +94,17 @@ tokens_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     skipgramcpp(x, n, skip + 1, concatenator)
 }
 
+#' @rdname tokens_ngrams
+#' @note \code{char_ngrams} is a convenience wrapper for a (non-list) 
+#'   vector of characters, so named to be consistent with \pkg{quanteda}'s naming
+#'   scheme.
+#' @export
+char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+    if (!is.character(x))
+        stop("x must be a character object")
+    tokens_ngrams(x, n, skip, concatenator)
+}
+    
 
 #' @rdname tokens_ngrams
 #' @noRd
