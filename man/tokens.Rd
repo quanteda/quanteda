@@ -2,32 +2,24 @@
 % Please edit documentation in R/tokens.R
 \name{tokens}
 \alias{tokens}
-\alias{tokens.character}
-\alias{tokens.corpus}
 \title{tokenize a set of texts}
 \usage{
-tokens(x, ...)
-
-\method{tokens}{character}(x, what = c("word", "sentence", "character",
-  "fastestword", "fasterword"), removeNumbers = FALSE, removePunct = FALSE,
+tokens(x, what = c("word", "sentence", "character", "fastestword",
+  "fasterword"), removeNumbers = FALSE, removePunct = FALSE,
   removeSymbols = FALSE, removeSeparators = TRUE, removeTwitter = FALSE,
   removeHyphens = FALSE, removeURL = FALSE, ngrams = 1L, skip = 0L,
   concatenator = "_", simplify = FALSE, hash = TRUE, verbose = FALSE,
   ...)
-
-\method{tokens}{corpus}(x, ...)
 }
 \arguments{
-\item{x}{objet to be tokenized}
-
-\item{...}{additional arguments not used}
+\item{x}{a character or \link{corpus} object to be tokenized}
 
 \item{what}{the unit for splitting the text, available alternatives are: 
 \describe{ \item{\code{"word"}}{(recommended default) smartest, but 
 slowest, word tokenization method; see 
 \link[stringi]{stringi-search-boundaries} for details.} 
-\item{\code{"fasterword"}}{dumber, but faster, word tokenizeation method, 
-uses {\link[stringi]{stri_split_charclass}(x, "\\\\p{WHITE_SPACE}")}} 
+\item{\code{"fasterword"}}{dumber, but faster, word tokenization method, 
+uses \code{{\link[stringi]{stri_split_charclass}(x, "\\\\p{WHITE_SPACE}")}}} 
 \item{\code{"fastestword"}}{dumbest, but fastest, word tokenization method,
 calls \code{\link[stringi]{stri_split_fixed}(x, " ")}} 
 \item{\code{"character"}}{tokenization into individual characters} 
@@ -88,6 +80,8 @@ phased out soon in coming versions.)}
 
 \item{verbose}{if \code{TRUE}, print timing messages to the console; off by 
 default}
+
+\item{...}{additional arguments not used}
 }
 \value{
 \pkg{quanteda} \code{tokens} class object, by default a hashed list 
@@ -105,15 +99,6 @@ The tokenizer is designed to be fast and flexible as well as to
   intervention. This means that punctuation is tokenized as well, and that 
   nothing is removed by default from the text being tokenized except 
   inter-word spacing and equivalent characters.
-}
-\note{
-For accessing the tokens themselves, use `get_tokens()`; to access the 
-  types, use `types()`, which also works with as an assignment operation
-  (\code{types(x) <- newtypes}).  Note as well that 
-  \code{\link{as.tokenizedTexts}} or \code{\link{as.list.tokens}} will do the
-  same things as `get_tokens()`.  The purpose of these extractor functions is
-  \emph{encapulation}, so that if the structure of the \code{tokens} object 
-  changes, code built on extracting these objects will still work.
 }
 \section{Dealing with URLs}{
  URLs are tricky to tokenize, because they contain

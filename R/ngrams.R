@@ -1,6 +1,28 @@
+#' deprecated function name for forming ngrams and skipgrams
+#' 
+#' Deprecated function names for forming ngrams and skipgrams; use \code{link{tokens_ngrams}}
+#' and \code{\link{tokens_skipgrams}} instead.
+#' instead.
+#' @keywords internal tokens deprecated
+#' @export
+ngrams <- function(x, ...) {
+    .Deprecated("tokens_ngrams")
+    tokens_ngrams(x, ...)
+}
+
+#' @rdname ngrams
+#' @keywords internal tokens deprecated
+#' @export
+skipgrams <- function(x, ...) {
+    .Deprecated("tokens_skipgrams")
+    tokens_skipgrams(x, ...)
+}
+
+
+
 #' Create ngrams and skipgrams
 #' 
-#' Create a set of ngrams (tokens in sequence) from character vectors or
+#' Create a set of ngrams (tokens in sequence) from character vectors or 
 #' tokenized text objects, with an optional skip argument to form skipgrams. 
 #' Both the ngram length and the skip lengths take vectors of arguments to form 
 #' multiple lengths or skips in one pass.  \code{ngrams()} is implemented in C++
@@ -9,17 +31,18 @@
 #' @return a tokenizedTexts object consisting a list of character vectors of 
 #'   ngrams, one list element per text, or a character vector if called on a 
 #'   simple character vector
-#' @param x a tokenizedText object or a character vector of tokens
+#' @param x a tokens object, or a character vector, or a list of characters
 #' @param n integer vector specifying the number of elements to be concatenated 
-#'   in each ngram
+#'   in each ngram.  Each element of this vector will define a $n$ in the
+#'   $n$-gram(s) that are produced.
 #' @param skip integer vector specifying the adjacency skip size for tokens 
 #'   forming the ngrams, default is 0 for only immediately neighbouring words. 
 #'   For \code{skipgrams}, \code{skip} can be a vector of integers, as the 
-#'   "classic" approach to forming skip-grams is to set skip = \eqn{k} where
-#'   \eqn{k} is the distance for which \eqn{k} or fewer skips are used to construct
-#'   the \eqn{n}-gram.  Thus a "4-skip-n-gram" defined as \code{skip = 0:4}
-#'   produces results that include 4 skips, 3 skips, 2 skips, 1 skip, and 0
-#'   skips (where 0 skips are typical n-grams formed from adjacent words).  See
+#'   "classic" approach to forming skip-grams is to set skip = \eqn{k} where 
+#'   \eqn{k} is the distance for which \eqn{k} or fewer skips are used to
+#'   construct the \eqn{n}-gram.  Thus a "4-skip-n-gram" defined as \code{skip =
+#'   0:4} produces results that include 4 skips, 3 skips, 2 skips, 1 skip, and 0
+#'   skips (where 0 skips are typical n-grams formed from adjacent words).  See 
 #'   Guthrie et al (2006).
 #' @param concatenator character for combining words, default is \code{_} 
 #'   (underscore) character

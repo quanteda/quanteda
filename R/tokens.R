@@ -3,21 +3,15 @@
 #'
 #' Tokenize the texts from a character vector or from a corpus.
 #' @rdname tokens
-#' @param x objet to be tokenized
-#' @param ... additional arguments not used
+#' @param x a character or \link{corpus} object to be tokenized
 #' @keywords tokens
 #' @export
-tokens <- function(x, ...) {
-    UseMethod("tokens")
-}
-
-#' @rdname tokens
 #' @param what the unit for splitting the text, available alternatives are: 
 #'   \describe{ \item{\code{"word"}}{(recommended default) smartest, but 
 #'   slowest, word tokenization method; see 
 #'   \link[stringi]{stringi-search-boundaries} for details.} 
-#'   \item{\code{"fasterword"}}{dumber, but faster, word tokenizeation method, 
-#'   uses {\link[stringi]{stri_split_charclass}(x, "\\\\p{WHITE_SPACE}")}} 
+#'   \item{\code{"fasterword"}}{dumber, but faster, word tokenization method, 
+#'   uses \code{{\link[stringi]{stri_split_charclass}(x, "\\\\p{WHITE_SPACE}")}}} 
 #'   \item{\code{"fastestword"}}{dumbest, but fastest, word tokenization method,
 #'   calls \code{\link[stringi]{stri_split_fixed}(x, " ")}} 
 #'   \item{\code{"character"}}{tokenization into individual characters} 
@@ -65,6 +59,7 @@ tokens <- function(x, ...) {
 #'   phased out soon in coming versions.)
 #' @param verbose if \code{TRUE}, print timing messages to the console; off by 
 #'   default
+#' @param ... additional arguments not used
 #' @import stringi
 #' @details The tokenizer is designed to be fast and flexible as well as to 
 #'   handle Unicode correctly. Most of the time, users will construct \link{dfm}
@@ -85,14 +80,6 @@ tokens <- function(x, ...) {
 #'   See the examples below.
 #' @return \pkg{quanteda} \code{tokens} class object, by default a hashed list 
 #'   of integers corresponding to a vector of types.
-#' @note For accessing the tokens themselves, use `get_tokens()`; to access the 
-#'   types, use `types()`, which also works with as an assignment operation
-#'   (\code{types(x) <- newtypes}).  Note as well that 
-#'   \code{\link{as.tokenizedTexts}} or \code{\link{as.list.tokens}} will do the
-#'   same things as `get_tokens()`.  The purpose of these extractor functions is
-#'   \emph{encapulation}, so that if the structure of the \code{tokens} object 
-#'   changes, code built on extracting these objects will still work.
-#' @export
 #' @seealso \code{\link{ngrams}}, \code{\link{skipgrams}}
 #' @keywords tokens
 #' @examples
@@ -161,21 +148,28 @@ tokens <- function(x, ...) {
 #' ### tokens(txt, removePunct = TRUE, ngrams = 1:2)
 #' # removing features from ngram tokens
 #' ### removeFeatures(tokens(txt, removePunct = TRUE, ngrams = 1:2), stopwords("english"))
-tokens.character <- function(x, what=c("word", "sentence", "character", "fastestword", "fasterword"),
-                               removeNumbers = FALSE,
-                               removePunct = FALSE,
-                               removeSymbols = FALSE,
-                               removeSeparators = TRUE,
-                               removeTwitter = FALSE,
-                               removeHyphens = FALSE,
-                               removeURL = FALSE,
-                               ngrams = 1L,
-                               skip = 0L,
-                               concatenator = "_",
-                               simplify = FALSE,
-                               hash = TRUE,
-                               verbose = FALSE,  ## FOR TESTING
-                               ...) {
+tokens <-  function(x, what=c("word", "sentence", "character", "fastestword", "fasterword"),
+                    removeNumbers = FALSE,
+                    removePunct = FALSE,
+                    removeSymbols = FALSE,
+                    removeSeparators = TRUE,
+                    removeTwitter = FALSE,
+                    removeHyphens = FALSE,
+                    removeURL = FALSE,
+                    ngrams = 1L,
+                    skip = 0L,
+                    concatenator = "_",
+                    simplify = FALSE,
+                    hash = TRUE,
+                    verbose = FALSE,  ## FOR TESTING
+                    ...) {
+    UseMethod("tokens")
+}
+
+#' @rdname tokens
+#' @noRd
+#' @export
+tokens.character <- function(x, ...) {
     
     what <- match.arg(what)
     
@@ -365,10 +359,8 @@ tokens.character <- function(x, what=c("word", "sentence", "character", "fastest
 
 #' @rdname tokens
 #' @export
+#' @noRd
 tokens.corpus <- function(x, ...) {
-    # get the settings for clean from the corpus and use those, 
-    # unless more specific arguments are passed -- ADD THE ABILITY TO PASS THESE
-    # need to include sep in this list too 
     tokens(texts(x), ...)
 }
 

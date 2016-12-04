@@ -22,3 +22,5 @@ __MACOSX
 ^benchmarks
 ^codecov\.yml$
 ^appveyor\.yml$
+^docs/
+
