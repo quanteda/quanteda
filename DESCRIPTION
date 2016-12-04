@@ -92,6 +92,7 @@ Collate:
     'dfm_select.R'
     'dfm_trim.R'
     'dfm_weight.R'
+    'dictionaries-deprecated.R'
     'dictionaries2.R'
     'fcm-methods.R'
     'fcm.R'
