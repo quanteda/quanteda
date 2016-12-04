@@ -3,12 +3,13 @@
 #' Creates a corpus object from available sources.  The currently available  
 #' sources are: 
 #' \itemize{ 
-#' \item a \code{character} vector, consisting of one document per element.
-#' \item a \code{data.frame}, whose default variable containing the document is 
+#' \item a \link{character} vector, consisting of one document per element; if 
+#'   the elements are named, these names will be used as document names.
+#' \item a \link{data.frame}, whose default variable containing the document is 
 #'   character vector named \code{text}, although this can be set to any other
 #'   variable name using the \code{text_field} argument.  Other variables are 
 #'   imported as document-level meta-data.
-#' \item a \code{kwic} object constructed by \code{\link{kwic}}.
+#' \item a \link{kwic} object constructed by \code{\link{kwic}}.
 #' \item a \pkg{tm} \link[tm]{VCorpus} class  object, with the fixed metadata 
 #'   fields imported as document-level metadata. Corpus-level metadata is not 
 #'   currently imported.
@@ -17,23 +18,28 @@
 #' @param docnames Names to be assigned to the texts, defaults to the names of 
 #'   the character vector (if any), otherwise assigns "text1", "text2", etc.
 #' @param docvars A data frame of attributes that is associated with each text.
-#' @param source A string specifying the source of the texts, used for 
-#'   referencing.
-#' @param citation Information on how to cite the corpus.
-#' @param notes A string containing notes about who created the text, warnings, 
-#'   To Dos, etc.
 #' @param text_field the character name or integer index of the source \code{data.frame}
 #'   indicating the variable to be read in as text, which must be a character vector.
 #'   All other variables in the data.frame will be imported as docvars.  This argument 
-#'   is only used for \code{data.frame} objects.
+#'   is only used for \code{data.frame} objects (including those created by \pkg{readtext}).
+#' @param metacorpus a named list containing additional (character) information to be added to the
+#' corpus as corpus-level metadata.  Special fields recognized in the \code{\link{summary.corpus}}
+#' are: 
+#' \itemize{
+#' \item{\code{source}}{a description of the source of the texts, used for 
+#'   referencing;}
+#' \item{\code{citation}}{information on how to cite the corpus; and}
+#' \item{\code{notes}}{any additional information about who created the text, warnings, 
+#'   to do lists, etc.}
+#' }
 #' @param ... not used directly
-#' @return A corpus class object containing the original texts, document-level 
+#' @return a corpus class object containing the original texts, document-level 
 #'   variables, document-level metadata, corpus-level metadata, and default 
 #'   settings for subsequent processing of the corpus.  
 #' @section A warning on accessing corpus elements:
 #'   A corpus currently 
-#'   consists of an S3 specially classed list of elements, but **you should not 
-#'   access these elements directly**. Use the extractor and replacement 
+#'   consists of an S3 specially classed list of elements, but \strong{you should not 
+#'   access these elements directly}. Use the extractor and replacement 
 #'   functions instead, or else your code is not only going to be uglier, but
 #'   also likely to break should the internal structure of a corpus object
 #'   change (as it inevitably will as we continue to develop the package,
@@ -61,8 +67,8 @@
 #' corpus(data_char_inaugural)
 #' 
 #' # create a corpus from texts and assign meta-data and document variables
-#' ukimmigCorpus <- corpus(data_char_ukimmig2010, 
-#'                         docvars = data.frame(party = names(data_char_ukimmig2010))) 
+#' summary(corpus(data_char_ukimmig2010, 
+#'                docvars = data.frame(party = names(data_char_ukimmig2010))), 5) 
 #'
 #' corpus(texts(data_corpus_irishbudget2010))
 #' 
@@ -87,19 +93,23 @@
 #'                   stringsAsFactors = FALSE,
 #'                   row.names = paste0("fromDf_", 1:6))
 #' mydf
-#' summary(corpus(mydf, text_field = "some_text", source = "From a data.frame called mydf."))
+#' summary(corpus(mydf, text_field = "some_text", 
+#'                metacorpus = list(source = "From a data.frame called mydf.")))
 #' 
 #' # construct a corpus from a kwic object
 #' mykwic <- kwic(data_corpus_inaugural, "southern")
 #' summary(corpus(mykwic))
-corpus <- function(x, ...) {
+corpus <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, ...) {
     UseMethod("corpus")
 }
 
 #' @rdname corpus
+#' @noRd
 #' @export
-corpus.character <- function(x, docnames = NULL, docvars = NULL,
-                             source = NULL, notes = NULL, citation = NULL, ...) {
+corpus.character <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, ...) {
+    if (!missing(text_field))
+        stop("text_field is not applicable for this class of input")
+    
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     
@@ -127,12 +137,11 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
     }
 
     # create document-meta-data
-    if (is.null(source)) {
-        source <- paste(getwd(), "/* ", "on ",  Sys.info()["machine"], " by ", Sys.info()["user"], sep="")
+    if (is.null(metacorpus$source)) {
+        metacorpus$source <- paste(getwd(), "/* ", "on ",  Sys.info()["machine"], " by ", Sys.info()["user"], sep="")
     }
-    created <- date()
-    metadata <- list(source=source, created=created, notes=notes, citation=citation)
-    
+    metacorpus$created <- date()
+
     # create the documents data frame starting with the texts
     documents <- data.frame(texts=x, row.names=names(x),
                             check.rows=TRUE, stringsAsFactors=FALSE)
@@ -147,7 +156,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
     
     # build and return the corpus object
     tempCorpus <- list(documents = documents, 
-                       metadata = metadata, 
+                       metadata = metacorpus, 
                        settings = settings(),
                        tokens = NULL)
     class(tempCorpus) <- list("corpus", class(tempCorpus))
@@ -155,13 +164,13 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
 }
 
 #' @rdname corpus
+#' @noRd
 #' @keywords corpus
 #' @export
-corpus.data.frame <- function(x, text_field = "text", 
-                              source = NULL, notes = NULL, citation = NULL, ...) {
+corpus.data.frame <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, ...) {
     
     args <- list(...)
-    if ("docvars" %in% names(args))
+    if (!missing(docvars))
         stop("docvars are assigned automatically for data.frames", )
     
     if (is.character(text_field)) {
@@ -176,51 +185,20 @@ corpus.data.frame <- function(x, text_field = "text",
     corpus(x[, text_fieldi], 
            docvars = x[, -text_fieldi, drop = FALSE],
            docnames = if (!identical(row.names(x), as.character(1:nrow(x)))) row.names(x) else NULL, #paste0("text", 1:nrow(x)),
-           source = source, notes = notes,
-           citation = citation, ...)
-}
-
-
-
-#' @noRd
-#' @export
-#' @keywords corpus
-#' @examples
-#' \dontrun{# the fifth column of this csv file is the text field
-#' require(readtext)
-#' mytexts <- readtext("http://www.kenbenoit.net/files/text_example.csv", textfield = 5)
-#' mycorp <- corpus(mytexts)
-#' mycorp2 <- corpus(readtext("http://www.kenbenoit.net/files/text_example.csv", 
-#'                   textfield = "Title"))
-#' identical(texts(mycorp), texts(mycorp2))
-#' identical(docvars(mycorp), docvars(mycorp2))
-#' }
-corpus.corpusSource <- function(x, ...) {
-    sources <- NULL
-    if (x@cachedfile == "") {
-        if (prod(dim(docvars(x))) == 0)
-            return(corpus(texts(x), ...))
-        else
-            return(corpus(texts(x), docvars = quanteda::docvars(x), ...))
-    } else {
-        # load from tempfile only into function environment
-        load(x@cachedfile, envir = environment())
-        if (prod(dim(sources$docv)) == 0)
-            return(corpus(sources$txts, ...))
-        else
-            return(corpus(sources$txts, docvars = sources$docv, ...))
-    }
+           metacorpus = metacorpus, ...)
 }
 
 
 #' @rdname corpus
+#' @noRd
 #' @keywords corpus
 #' @export
-corpus.kwic <- function(x, ...) {
+corpus.kwic <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, ...) {
     
-    args <- list(...)
-    if ("docvars" %in% names(args))
-        stop("docvars are assigned automatically for kwic objects", )
+    if (!missing(docvars))
+        stop("docvars are assigned automatically for kwic objects")
+    if (!missing(text_field))
+        stop("text_field is not applicable for this class of input")
     
     class(x) <- "data.frame"
     
@@ -241,9 +219,16 @@ corpus.kwic <- function(x, ...) {
 }
 
 #' @rdname corpus
+#' @noRd
 #' @keywords corpus
 #' @export
-corpus.VCorpus <- function(x, ...) {
+corpus.VCorpus <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, ...) {
+    
+    if (!missing(docvars))
+        stop("docvars are assigned automatically for tm::Corpus objects")
+    if (!missing(text_field))
+        stop("text_field is not applicable for this class of input")
+
     # extract the content (texts)
     texts <- sapply(x$content, "[[", "content")
     # paste together texts if they appear to be vectors
@@ -261,26 +246,12 @@ corpus.VCorpus <- function(x, ...) {
     # give them the underscore character required
     # names(metad) <- paste("_", names(metad), sep="")
     
+    metacorpus <- c(metacorpus, list(source = paste("Converted from tm VCorpus \'", deparse(substitute(x)), "\'", sep="")))
+    
     # using docvars inappropriately here but they show up as docmeta given 
     # the _ in the variable names
-    corpus(texts, docvars = metad,
-           source = paste("Converted from tm VCorpus \'", deparse(substitute(x)), "\'", sep=""), ...)
+    corpus(texts, docvars = metad, metacorpus = metacorpus, ...)
 }
 
-
-
-# #' @param i index for documents or rows of document variables
-# #' @param j index for column of document variables
-# #' @param drop if \code{TRUE} the result is coerced to the lowest possible dimension
-# #'   (see the examples). This only works for extracting elements, not for the
-# #'   replacement. See \code{\link{drop}} for further details.
-# #' @param ... vectors or empty (missing) or \code{NULL}, see \code{\link{`[`}}
-# #' @rdname corpus
-# setMethod("[", signature(x = "corpus", i = "index", j = "index", drop = "ANY"),
-#           function(x, i, j, ..., drop = FALSE) docvars(x)[i, j, ..., drop])
-# 
-# #' @rdname corpus
-# setMethod("[", signature(x = "corpus", i = "index", j = "MISSING", drop = "MISSING"),
-#           function(x, i, j, ..., drop = FALSE) texts(x)[i])
 
 setOldClass("corpus")

@@ -2,49 +2,39 @@
 % Please edit documentation in R/corpus.R
 \name{corpus}
 \alias{corpus}
-\alias{corpus.VCorpus}
-\alias{corpus.character}
-\alias{corpus.data.frame}
-\alias{corpus.kwic}
 \title{construct a corpus object}
 \usage{
-corpus(x, ...)
-
-\method{corpus}{character}(x, docnames = NULL, docvars = NULL,
-  source = NULL, notes = NULL, citation = NULL, ...)
-
-\method{corpus}{data.frame}(x, text_field = "text", source = NULL,
-  notes = NULL, citation = NULL, ...)
-
-\method{corpus}{kwic}(x, ...)
-
-\method{corpus}{VCorpus}(x, ...)
+corpus(x, docnames = NULL, docvars = NULL, text_field = "text",
+  metacorpus = NULL, ...)
 }
 \arguments{
 \item{x}{a valid corpus source object}
-
-\item{...}{not used directly}
 
 \item{docnames}{Names to be assigned to the texts, defaults to the names of 
 the character vector (if any), otherwise assigns "text1", "text2", etc.}
 
 \item{docvars}{A data frame of attributes that is associated with each text.}
 
-\item{source}{A string specifying the source of the texts, used for 
-referencing.}
-
-\item{notes}{A string containing notes about who created the text, warnings, 
-To Dos, etc.}
-
-\item{citation}{Information on how to cite the corpus.}
-
 \item{text_field}{the character name or integer index of the source \code{data.frame}
 indicating the variable to be read in as text, which must be a character vector.
 All other variables in the data.frame will be imported as docvars.  This argument 
-is only used for \code{data.frame} objects.}
+is only used for \code{data.frame} objects (including those created by \pkg{readtext}).}
+
+\item{metacorpus}{a named list containing additional (character) information to be added to the
+corpus as corpus-level metadata.  Special fields recognized in the \code{\link{summary.corpus}}
+are: 
+\itemize{
+\item{\code{source}}{a description of the source of the texts, used for 
+  referencing;}
+\item{\code{citation}}{information on how to cite the corpus; and}
+\item{\code{notes}}{any additional information about who created the text, warnings, 
+  to do lists, etc.}
+}}
+
+\item{...}{not used directly}
 }
 \value{
-A corpus class object containing the original texts, document-level 
+a corpus class object containing the original texts, document-level 
   variables, document-level metadata, corpus-level metadata, and default 
   settings for subsequent processing of the corpus.
 }
@@ -52,12 +42,13 @@ A corpus class object containing the original texts, document-level
 Creates a corpus object from available sources.  The currently available  
 sources are: 
 \itemize{ 
-\item a \code{character} vector, consisting of one document per element.
-\item a \code{data.frame}, whose default variable containing the document is 
+\item a \link{character} vector, consisting of one document per element; if 
+  the elements are named, these names will be used as document names.
+\item a \link{data.frame}, whose default variable containing the document is 
   character vector named \code{text}, although this can be set to any other
   variable name using the \code{text_field} argument.  Other variables are 
   imported as document-level meta-data.
-\item a \code{kwic} object constructed by \code{\link{kwic}}.
+\item a \link{kwic} object constructed by \code{\link{kwic}}.
 \item a \pkg{tm} \link[tm]{VCorpus} class  object, with the fixed metadata 
   fields imported as document-level metadata. Corpus-level metadata is not 
   currently imported.
@@ -81,8 +72,8 @@ The texts and document variables of corpus objects can also be
 \section{A warning on accessing corpus elements}{
 
   A corpus currently 
-  consists of an S3 specially classed list of elements, but **you should not 
-  access these elements directly**. Use the extractor and replacement 
+  consists of an S3 specially classed list of elements, but \strong{you should not 
+  access these elements directly}. Use the extractor and replacement 
   functions instead, or else your code is not only going to be uglier, but
   also likely to break should the internal structure of a corpus object
   change (as it inevitably will as we continue to develop the package,
@@ -93,8 +84,8 @@ The texts and document variables of corpus objects can also be
 corpus(data_char_inaugural)
 
 # create a corpus from texts and assign meta-data and document variables
-ukimmigCorpus <- corpus(data_char_ukimmig2010, 
-                        docvars = data.frame(party = names(data_char_ukimmig2010))) 
+summary(corpus(data_char_ukimmig2010, 
+               docvars = data.frame(party = names(data_char_ukimmig2010))), 5) 
 
 corpus(texts(data_corpus_irishbudget2010))
 
@@ -119,7 +110,8 @@ mydf <- data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
                   stringsAsFactors = FALSE,
                   row.names = paste0("fromDf_", 1:6))
 mydf
-summary(corpus(mydf, text_field = "some_text", source = "From a data.frame called mydf."))
+summary(corpus(mydf, text_field = "some_text", 
+               metacorpus = list(source = "From a data.frame called mydf.")))
 
 # construct a corpus from a kwic object
 mykwic <- kwic(data_corpus_inaugural, "southern")

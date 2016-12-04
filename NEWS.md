@@ -109,6 +109,7 @@ new name | reason
 
 ## Other new features
 
+*  Consolidated corpus-level metadata arguments in `corpus()` through the `metacorpus` list argument.  
 *  Added Greek stopwords.  (See #282).  
 *  Added index handling `[`, `[[`, and `$` for `tokens` objects.  
 *  Now using ggplot2.
