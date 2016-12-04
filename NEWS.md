@@ -68,6 +68,12 @@ new function | deprecated function | contructs:
 `nscrabble` | `scrabble` | (named) `integer`
 `tokens_ngrams` | `ngrams` | `tokens` class object
 `tokens_skipgrams` | `skipgrams` | `tokens` class object
+`tokens_toupper` | `toUpper.tokens`, `toUpper.tokenizedTexts` | `tokens`, `tokenizedTexts`
+`tokens_tolower` | `toLower.tokens`, `toLower.tokenizedTexts` | `tokens`, `tokenizedTexts`
+`char_toupper` | `toUpper.character`, `toUpper.character` | `character`
+`char_tolower` | `toLower.character`, `toLower.character` | `character`
+`tokens_compound` | `joinTokens`, `phrasetotoken` | `tokens` class object
+
 
 
 

@@ -133,6 +133,7 @@ Collate:
     'tokens.R'
     'tokens_compound.R'
     'tokens_ngrams.R'
+    'tolower-misc.R'
     'utils.R'
     'wordstem.R'
     'zzz.R'

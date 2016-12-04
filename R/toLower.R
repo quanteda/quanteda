@@ -2,7 +2,7 @@
 #' 
 #' Convert texts or tokens to lower (or upper) case
 #' @param x texts to be lower-cased (or upper-cased)
-#' @param keepAcronyms if \code{TRUE}, do not lowercase any all-uppercase words.
+#' @param keep_acronyms if \code{TRUE}, do not lowercase any all-uppercase words.
 #'   Only applies to \code{toLower}.
 #' @param ... additional arguments passed to \pkg{stringi} functions, (e.g. 
 #'   \code{\link{stri_trans_tolower}}), such as \code{locale}
@@ -11,35 +11,24 @@
 #'   \code{x} is a list of tokenized texts, then return a list of 
 #'   tokenized texts.
 #' @export
+#' @keywords internal deprecated
 #' @examples 
 #' test1 <- c(text1 = "England and France are members of NATO and UNESCO", 
 #'            text2 = "NASA sent a rocket into space.")
 #' toLower(test1)
-#' toLower(test1, keepAcronyms = TRUE)
+#' toLower(test1, keep_acronyms = TRUE)
 #' 
 #' test2 <- tokenize(test1, removePunct=TRUE)
 #' toLower(test2)
-#' toLower(test2, keepAcronyms = TRUE)
-toLower <- function(x, keepAcronyms = FALSE, ...) {
+#' toLower(test2, keep_acronyms = TRUE)
+toLower <- function(x, keep_acronyms = FALSE, ...) {
     UseMethod("toLower")
 }
 
 #' @rdname toLower
 #' @export
-toLower.character <- function(x, keepAcronyms = FALSE, ...) {
-    savedNames <- names(x)
-    if (keepAcronyms)
-        x <- stri_replace_all_regex(x, "\\b(\\p{Uppercase_Letter}{2,})\\b",  "_$1_", ...)
-    x <- stri_trans_tolower(x, ...)
-    if (keepAcronyms) {
-        m1 <- unique(unlist(stri_extract_all_regex(x, "\\b_\\p{Lowercase_Letter}+_\\b", omit_no_match = TRUE, ...)))
-        if (length(m1) > 0) {
-            m2 <- stri_replace_all_fixed(stri_trans_toupper(m1, ...), "_", "", ...)
-            x <- sapply(x, function(s) stri_replace_all_regex(s, m1,  m2, vectorize_all = FALSE, ...))
-        }
-    }
-    names(x) <- savedNames
-    return(x)
+toLower.character <- function(x, keep_acronyms = FALSE, ...) {
+    char_tolower(x, keep_acronyms = keep_acronyms, ...)
 }
 
 #' @rdname toLower
@@ -48,13 +37,13 @@ toLower.NULL <- function(x, ...) NULL
 
 #' @rdname toLower
 #' @export
-toLower.tokenizedTexts <- function(x, keepAcronyms = FALSE, ...) {
+toLower.tokenizedTexts <- function(x, keep_acronyms = FALSE, ...) {
     attributes_saved <- attributes(x)
     typeTest <- all(sapply(x, is.character))
     if (!typeTest) {
         stop("Each element of the list must be a character vector.")
     }
-    x <- lapply(x, toLower, keepAcronyms = keepAcronyms, ...)
+    x <- lapply(x, toLower, keep_acronyms = keep_acronyms, ...)
     class(x) <- c("tokenizedTexts", class(x))
     attributes(x) <- attributes_saved
     x
@@ -77,8 +66,8 @@ toUpper.tokens <- function(x, ...) {
 
 #' @rdname toLower
 #' @export
-toLower.corpus <- function(x, keepAcronyms=FALSE, ...) {
-    toLower(texts(x), keepAcronyms, ...)
+toLower.corpus <- function(x, keep_acronyms=FALSE, ...) {
+    toLower(texts(x), keep_acronyms, ...)
 }
 
 #' @rdname toLower
@@ -97,10 +86,7 @@ toUpper <- function(x, ...) {
 #' @rdname toLower
 #' @export
 toUpper.character <- function(x, ...) {
-    savedNames <- names(x)
-    x <- stri_trans_toupper(x, ...)
-    names(x) <- savedNames
-    return(x)
+    char_toupper(x, ...)
 }
 
 #' @rdname toLower

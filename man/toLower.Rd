@@ -15,19 +15,19 @@
 \alias{toUpper.tokens}
 \title{Convert texts to lower (or upper) case}
 \usage{
-toLower(x, keepAcronyms = FALSE, ...)
+toLower(x, keep_acronyms = FALSE, ...)
 
-\method{toLower}{character}(x, keepAcronyms = FALSE, ...)
+\method{toLower}{character}(x, keep_acronyms = FALSE, ...)
 
 \method{toLower}{NULL}(x, ...)
 
-\method{toLower}{tokenizedTexts}(x, keepAcronyms = FALSE, ...)
+\method{toLower}{tokenizedTexts}(x, keep_acronyms = FALSE, ...)
 
 \method{toLower}{tokens}(x, ...)
 
 \method{toUpper}{tokens}(x, ...)
 
-\method{toLower}{corpus}(x, keepAcronyms = FALSE, ...)
+\method{toLower}{corpus}(x, keep_acronyms = FALSE, ...)
 
 toUpper(x, ...)
 
@@ -42,7 +42,7 @@ toUpper(x, ...)
 \arguments{
 \item{x}{texts to be lower-cased (or upper-cased)}
 
-\item{keepAcronyms}{if \code{TRUE}, do not lowercase any all-uppercase words.
+\item{keep_acronyms}{if \code{TRUE}, do not lowercase any all-uppercase words.
 Only applies to \code{toLower}.}
 
 \item{...}{additional arguments passed to \pkg{stringi} functions, (e.g. 
@@ -61,11 +61,11 @@ Convert texts or tokens to lower (or upper) case
 test1 <- c(text1 = "England and France are members of NATO and UNESCO", 
            text2 = "NASA sent a rocket into space.")
 toLower(test1)
-toLower(test1, keepAcronyms = TRUE)
+toLower(test1, keep_acronyms = TRUE)
 
 test2 <- tokenize(test1, removePunct=TRUE)
 toLower(test2)
-toLower(test2, keepAcronyms = TRUE)
+toLower(test2, keep_acronyms = TRUE)
 test1 <- c(text1 = "England and France are members of NATO and UNESCO", 
            text2 = "NASA sent a rocket into space.")
 toUpper(test1)
@@ -73,4 +73,6 @@ toUpper(test1)
 test2 <- tokenize(test1, removePunct = TRUE)
 toUpper(test2)
 }
+\keyword{deprecated}
+\keyword{internal}
 
