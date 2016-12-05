@@ -67,7 +67,7 @@ textstat_readability.corpus <- function(x,
                                            "Wheeler.Smith", "meanSentenceLength", "meanWordSyllables"),
                                removeHyphens = TRUE,
                                drop = TRUE, ...) {
-    textstat_readability(texts(x), ...)
+    textstat_readability(texts(x), measure, removeHyphens, drop, ...)
 }
 
 
