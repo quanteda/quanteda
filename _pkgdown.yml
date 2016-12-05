@@ -1,9 +1,9 @@
 reference:
-- title: Package Level Documentation
+- title: Package-level
   contents:
     - quanteda
-    - quanteda-package
-- title: Data Objects
+- title: Data
+  desc: Built-in data objects.
   contents:
     - data_char_mobydick
     - data_char_sampletext
@@ -12,7 +12,8 @@ reference:
     - data_corpus_inaugural
     - data_corpus_irishbudget2010
     - data_dfm_LBGexample
-- title: Corpus
+- title: Corpus functions
+  desc: Functions for constructing and manipulating corpus class objects.
   contents:
     - corpus
     - corpus_reshape
@@ -20,36 +21,42 @@ reference:
     - corpus_segment
     - corpus_subset
     - metacorpus
-    - metacorpus<-
-- title: Tokens
+    - docvars
+    - metacorpus
+    - metadoc
+    - texts
+    - as.character.corpus
+- title: Tokens functions
+  desc: Functions for constructing and manipulating tokens class objects.
   contents:
     - tokens
-    - char_tolower
-    - char_toupper
-    - char_segment
-    - as.character.corpus
     - tokens_compound
     - tokens_lookup
-    - char_ngrams
     - tokens_ngrams
     - tokens_skipgrams
     - tokens_remove
     - tokens_select
     - tokens_tolower
     - tokens_toupper
-    - char_wordstem
     - tokens_wordstem
     - as.character.tokens
     - as.list.tokens
     - as.tokens
     - as.tokens.list
     - is.tokens
-- title: dfm and fcm
+    - as.tokens.list
+- title: Character functions
+  desc: Functions for constructing and manipulating character objects.
+  contents:
+    - char_tolower
+    - char_toupper
+    - char_segment
+    - char_ngrams
+    - char_wordstem
+- title: Text matrix functions
+  desc: Functions for constructing and manipulating a document-feature matrix (dfm) or feature co-occurrence matrix object.
   contents:
     - dfm
-    - fcm
-    - as.data.frame.dfm
-    - as.matrix.dfm
     - dfm_compress
     - dfm_lookup
     - dfm_sample
@@ -61,11 +68,14 @@ reference:
     - dfm_trim
     - dfm_smooth
     - dfm_weight
+    - dfm_wordstem
     - head.dfm
     - tail.dfm
     - as.dfm
     - is.dfm
-    - dfm_wordstem
+    - as.data.frame.dfm
+    - as.matrix.dfm
+    - fcm
     - fcm_compress
     - fcm_remove
     - fcm_select
@@ -73,32 +83,37 @@ reference:
     - fcm_toupper
     - fcm_sort
     - is.fcm
-- title: Text Stat Functions
+- title: Text Statistics
+  desc: Functions for computing statistics from texts and dfm objects.
+  contents:
+    - starts_with("textstat_")
+    - sparsity
+    - topfeatures
+- title: Dictionary functions
+  desc: Constructor and utility functions for working with dictionaries.
+  contents:
+    - dictionary
+    - is.dictionary
+- title: Phrase discovery functions
+  desc: Functions for exploring and detecting keywords and phrases.
   contents:
     - collocations
     - is.collocations
     - is.kwic
     - kwic
-    - sparsity
-    - textstat_lexdiv
-    - textstat_readability
-    - textstat_dist
-    - textstat_simil
-- title: Text Plot Functions
+- title: Text plot functions
+  desc: Plot functions for representing text and the analysis of texts.
   contents:
-    - textplot_scale1d
-    - textplot_wordcloud
-    - textplot_xray
+    - starts_with("textplot_")
 - title: Text Model Functions
+  desc: Plot functions for fitting analytic models from text matrixes.
   contents:
     - textmodel_ca
     - textmodel_NB
     - textmodel_wordfish
     - textmodel_wordscores
-    - textmodel
-    - textmodel,dfm,ANY,missing,character-method
-    - textmodel,formula,missing,dfm,character-method
-- title: R-like functions
+- title: Utility functions
+  desc: R-like functions to return counts and object information.
   contents:
     - ndoc
     - nfeature
@@ -107,20 +122,12 @@ reference:
     - nsyllable
     - ntoken
     - ntype
-- title: Miscellaneous
+    - docnames
+    - docnames<-
+    - featnames
+    - stopwords
+- title: Miscellaneous functions
   contents:
     - as.list.dist
     - convert
-    - dictionary
-    - docnames
-    - docnames<-
-    - docvars
-    - docvars<-
-    - featnames
-    - is.dictionary
-    - metadoc
-    - metadoc<-
-    - stopwords
-    - texts
-    - texts<-
-    - topfeatures
+

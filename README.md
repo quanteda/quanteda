@@ -18,10 +18,9 @@ An R package for managing and analyzing text, created by [Kenneth Benoit](kbenoi
 Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
 Features
-========
+--------
 
-Powerful text analytics
------------------------
+### Powerful text analytics
 
 **Generalized, flexible corpus management.**
 **quanteda** provides a comprehensive workflow and ecosystem for the management, processing, and analysis of texts. Documents and associated document- and collection-level metadata are easily loaded and stored as a *corpus* object, although most of **quanteda**'s operations work on simple character objects as well. A corpus is designed to efficiently store all of the texts in a collection, as well as meta-data for documents and for the collection as a whole. This makes it easy to perform natural language processing on the texts in a corpus simply and quickly, such as tokenizing, stemming, or forming ngrams. **quanteda**'s functions for tokenizing texts and forming multiple tokenized documents into a *document-feature matrix* are both extremely fast and extremely simple to use. **quanteda** can segment texts easily by words, paragraphs, sentences, or even user-supplied delimiters and tags.
@@ -65,7 +64,7 @@ In addition, **quanteda** a document-feature matrix is easily used with or conve
 -   *Object histories*, that will propogate through downstream objects, to enhance analytic reproducibility and transparency.
 
 How to Install
-==============
+--------------
 
 1.  From [CRAN](https://CRAN.R-project.org/package=quanteda): Use your GUI's R package installer, or execute:
 
@@ -101,12 +100,12 @@ How to Install
     -   [**spacyr**](https://github.com/kbenoit/spacyr): NLP using the [spaCy](http://spacy.io) library.
 
 Getting Started
-===============
+---------------
 
 See the [package website](http://kbenoit.github.io/quanteda), which includes the [Getting Started Vignette](https://kbenoit.github.io/quanteda/articles/quickstart.html).
 
 Demonstration
-=============
+-------------
 
 ``` r
 library(quanteda)
@@ -133,7 +132,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Mon Dec  5 17:40:37 2016
+## Created: Mon Dec  5 18:34:24 2016
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -169,7 +168,7 @@ textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
 ![](images/quanteda_example-1.png)
 
 Contributing
-============
+------------
 
 Contributions in the form of feedback, comments, code, and bug reports are most welcome. How to contribute:
 

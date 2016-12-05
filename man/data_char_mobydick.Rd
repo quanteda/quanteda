@@ -3,7 +3,7 @@
 \docType{data}
 \name{data_char_mobydick}
 \alias{data_char_mobydick}
-\title{text of Herman Melville's \emph{Moby Dick}}
+\title{text of Herman Melville's Moby Dick}
 \format{An object of class \code{character} of length 1.}
 \source{
 Project Gutenberg, \url{http://www.gutenberg.org}

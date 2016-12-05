@@ -56,11 +56,10 @@
 <p>An R package for managing and analyzing text, created by <a href="kbenoit@lse.ac.uk">Kenneth Benoit</a> in collaboration with a team of core <a href="https://github.com/kbenoit/quanteda/graphs/contributors">contributors</a>: <a href="https://github.com/pnulty">Paul Nulty</a>, <a href="https://github.com/adamobeng">Adam Obeng</a>, <a href="https://github.com/koheiw">Kohei Watanabe</a>, <a href="https://github.com/HaiyanLW">Haiyan Wang</a>, <a href="https://github.com/lauderdale">Ben Lauderdale</a>, and <a href="https://github.com/conjugateprior">Will Lowe</a>.<br>
 Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.</p>
 </div>
-</div>
-<div id="features" class="section level1">
-<h1 class="hasAnchor"><a href="#features" class="anchor"> </a>Features</h1>
-<div id="powerful-text-analytics" class="section level2">
-<h2 class="hasAnchor"><a href="#powerful-text-analytics" class="anchor"> </a>Powerful text analytics</h2>
+<div id="features" class="section level2">
+<h2 class="hasAnchor"><a href="#features" class="anchor"> </a>Features</h2>
+<div id="powerful-text-analytics" class="section level3">
+<h3 class="hasAnchor"><a href="#powerful-text-analytics" class="anchor"> </a>Powerful text analytics</h3>
 <p><strong>Generalized, flexible corpus management.</strong><br><strong>quanteda</strong> provides a comprehensive workflow and ecosystem for the management, processing, and analysis of texts. Documents and associated document- and collection-level metadata are easily loaded and stored as a <em>corpus</em> object, although most of <strong>quanteda</strong>&rsquo;s operations work on simple character objects as well. A corpus is designed to efficiently store all of the texts in a collection, as well as meta-data for documents and for the collection as a whole. This makes it easy to perform natural language processing on the texts in a corpus simply and quickly, such as tokenizing, stemming, or forming ngrams. <strong>quanteda</strong>&rsquo;s functions for tokenizing texts and forming multiple tokenized documents into a <em>document-feature matrix</em> are both extremely fast and extremely simple to use. <strong>quanteda</strong> can segment texts easily by words, paragraphs, sentences, or even user-supplied delimiters and tags.</p>
 <p><strong>Works nicely with UTF-8</strong>.<br>
 Built on the text processing functions in the <strong>stringi</strong> package, which is in turn built on C++ implementation of the <a href="http://www.icu-project.org/">ICU</a> libraries for Unicode text handling, <strong>quanteda</strong> pays special attention to fast and correct implementation of Unicode and the handling of text in any character set, following conversion internally to UTF-8.</p>
@@ -85,8 +84,8 @@ Once constructed, a <em>dfm</em> can be easily analyzed using either <strong>qua
 <li><p><em>Object histories</em>, that will propogate through downstream objects, to enhance analytic reproducibility and transparency.</p></li>
 </ul></div>
 </div>
-<div id="how-to-install" class="section level1">
-<h1 class="hasAnchor"><a href="#how-to-install" class="anchor"> </a>How to Install</h1>
+<div id="how-to-install" class="section level2">
+<h2 class="hasAnchor"><a href="#how-to-install" class="anchor"> </a>How to Install</h2>
 <ol style="list-style-type: decimal"><li><p>From <a href="https://CRAN.R-project.org/package=quanteda">CRAN</a>: Use your GUI&rsquo;s R package installer, or execute:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"quanteda"</span>) </code></pre></div></li>
 <li><p>From <a href="https://github.com/kbenoit/quanteda">GitHub</a>, using:</p>
@@ -102,12 +101,12 @@ devtools::<span class="kw">install_github</span>(<span class="st">"kbenoit/quant
 <li><p><a href="https://github.com/kbenoit/spacyr"><strong>spacyr</strong></a>: NLP using the <a href="http://spacy.io">spaCy</a> library.</p></li>
 </ul></li>
 </ol></div>
-<div id="getting-started" class="section level1">
-<h1 class="hasAnchor"><a href="#getting-started" class="anchor"> </a>Getting Started</h1>
+<div id="getting-started" class="section level2">
+<h2 class="hasAnchor"><a href="#getting-started" class="anchor"> </a>Getting Started</h2>
 <p>See the <a href="http://kbenoit.github.io/quanteda">package website</a>, which includes the <a href="https://kbenoit.github.io/quanteda/articles/quickstart.html">Getting Started Vignette</a>.</p>
 </div>
-<div id="demonstration" class="section level1">
-<h1 class="hasAnchor"><a href="#demonstration" class="anchor"> </a>Demonstration</h1>
+<div id="demonstration" class="section level2">
+<h2 class="hasAnchor"><a href="#demonstration" class="anchor"> </a>Demonstration</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)
 
 <span class="co"># create a corpus from the immigration texts from UK party platforms</span>
@@ -132,7 +131,7 @@ uk2010immigCorpus
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/* on x86_64 by kbenoit
-## Created: Mon Dec  5 17:40:38 2016
+## Created: Mon Dec  5 18:34:25 2016
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 <span class="co"># key words in context for "deport", 3 words of context</span>
@@ -165,14 +164,15 @@ mydfm
                    <span class="dt">colors =</span> RColorBrewer::<span class="kw">brewer.pal</span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
 <p><img src="images/quanteda_example-1.png" width="672"></p>
 </div>
-<div id="contributing" class="section level1">
-<h1 class="hasAnchor"><a href="#contributing" class="anchor"> </a>Contributing</h1>
+<div id="contributing" class="section level2">
+<h2 class="hasAnchor"><a href="#contributing" class="anchor"> </a>Contributing</h2>
 <p>Contributions in the form of feedback, comments, code, and bug reports are most welcome. How to contribute:</p>
 <ul><li><p>Fork the source code, modify, and issue a <a href="https://help.github.com/articles/creating-a-pull-request-from-a-fork/">pull request</a> through the <a href="https://github.com/kbenoit/quanteda">project GitHub page</a>. See our <a href="https://github.com/kbenoit/quanteda/blob/master/CONDUCT.md">Contributor Code of Conduct</a>.</p></li>
 <li><p>Issues, bug reports, and wish lists: <a href="https://github.com/kbenoit/quanteda/issues">File a GitHub issue</a>.</p></li>
 <li><p>Usage questions: Submit a question on the <a href="http://stackoverflow.com/questions/tagged/quanteda"><strong>quanteda</strong> channel on StackOverflow</a>.</p></li>
 <li><p>Contact <a href="kbenoit@lse.ac.uk">the maintainer</a> by email.</p></li>
 </ul></div>
+</div>
 </div>
   </div>
 
