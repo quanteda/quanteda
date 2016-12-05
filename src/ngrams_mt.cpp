@@ -185,7 +185,7 @@ List qatd_cpp_ngram_mt_list(List texts_,
     dev::start_timer("Token generation", timer);
     // Create character tokens from unordered_map
     std::vector<std::string> types_ngram(map_ngram.size());
-    /*
+    
     for (std::pair<Ngram, unsigned int> it : map_ngram){
         std::string type_ngram = types[it.first[0] - 1];
         for(int i = 1; i < it.first.size(); i++){
@@ -193,7 +193,7 @@ List qatd_cpp_ngram_mt_list(List texts_,
         }
         types_ngram[it.second - 1] = type_ngram;
     }
-     */
+    
     dev::stop_timer("Token generation", timer);
     
     // Return IDs as attribute
