@@ -73,7 +73,8 @@ void skip(Text &tokens,
     ngram[pos_ngram] = tokens[start];
     pos_ngram++;
     
-    Rcout << "Token " << tokens[start] << "\n";
+    //Rcout << "Size " << tokens.size() << "\n";
+    //Rcout << "Token " << tokens[start] << "\n";
     
     if(pos_ngram < n){
         for (int j = 0; j < skips.size(); j++){
@@ -84,9 +85,7 @@ void skip(Text &tokens,
             skip(tokens, next, n, skips, ngram, ngrams, map_ngram, pos_ngram, pos_ngrams);
         }
     }else{
-        //ngrams[pos_ngrams] = ngram_id(ngram, map_ngram);
-        //ngrams[pos_ngrams] = 1;
-        //ngrams.push_back(ngram_id(ngram, map_ngram));
+        ngrams[pos_ngrams] = ngram_id(ngram, map_ngram);
         
         //Rcout << "Add " << ngrams[pos_ngrams] << " at " << pos_ngrams << "/" << ngrams.size() << "\n";
         pos_ngram = 0;
@@ -100,6 +99,8 @@ Ngrams skipgram(Text tokens,
                 std::vector<int> skips,
                 tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> &map_ngram) {
     
+    if(tokens.size() == 0) return {}; // return empty vector for empty text
+    
     int pos_ngram = 0; // position in ngram
     int pos_ngrams = 0; // position in ngrams
     
@@ -109,9 +110,7 @@ Ngrams skipgram(Text tokens,
         size_reserve += std::pow(skips.size(), ns[k]) * tokens.size();
     }
     Ngrams ngrams(size_reserve);
-    //Ngrams ngrams;
-    //ngrams.reserve(size_reserve);
-    
+
     // Generate skipgrams recursively
     for (int k = 0; k < ns.size(); k++) {
         int n = ns[k];
