@@ -1,150 +1,114 @@
 ---
-title: "Design Principles and Development Plans"
-author: "Ken Benoit and Paul Nulty"
-date: "2015-11-02"
-output: rmarkdown::html_vignette
+title: "Quanteda Structure and Design"
+author: "Ken Benoit"
+date: "2016-12-06"
+output:
+  rmarkdown::html_document:
+    theme: null
+    css: mystyle.css
+    toc: yes
 vignette: >
-  %\VignetteIndexEntry{Design Principles and Development Plans}
+  %\VignetteIndexEntry{Structure and Design Principles}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
 
-# The Design of quanteda
+# Introduction
 
-## Basic Principles
+## Changes in v0.9.9
+
+In v0.9.9, we have made some major changes to the **quanteda**'s API.  While this "breaks" some of the commands used previously, it has the advantage going forward of making the function names much more consistent.  As a consequence, we hope that the new API will be easier to learn, as well as easier to extend.  The changes follow long discussions with the core contributors, reflections on user experiences following many training sessions, classes taught using the package, and  feedback received through various on-line forums.  This document explains the new, more consistent overall logic and grammar of the package.
+
+## Why did the API need changing?
+
+As of 0.9.8.5, **quanteda** started to get a bit haphazard in terms of names and functionality, defeating some of the purposes for which it was designed (to be simple to use and intuitive).  In addition, renaming and reorganizing makes it easier:
+
+1.  To comply more with [standards recommended by ROpenSci](https://github.com/ropensci/onboarding/blob/master/packaging_guide.md#funvar), the functions and their operation have been renamed.  
+2.  To interface more easily with other packages, such as **tokenizers**, to do some of the lower-level work without reinventing it.  
+3.  To make the package easier to extend, for instance by writing companion packages that depend on **quanteda**, such as **readtext**.
+
+# The new logic of **quanteda**'s design
+
+## Grammatical rules
+
+The new "grammar" of the package is split between three basic types of functions and data objects:
+
+*  _object_: a constructor function named `object()` that returns an object of class _object_.  Example:  `corpus()` constructs a `corpus` class object.  
+
+*  _object_`_`_verb_:  a function that inputs an object of class _object_, and returns a a modified _object_ class object.  There are no exceptions to this naming rule, so that even functions that operate on character objects following this convention, such as `char_tolower()`.  (Ok, so there is a slight exception: we abbreviated `character` to `char`!)
+
+*  `data_`_class_`_`_descriptor_:  data objects are named this way to clearly distinguish them and to make them easy to identify in the index.  The first part identifies them as data, the second names their object class, and the third component is a descriptor.  Example: `data_corpus_inaugural` is the **quanteda** `corpus` class object consisting of the US presidents' inaugural addresses.
+
+*  `text`_general_`_`_specific_:  functions that input a **quanteda** object and return the result of an analysis.  Only the underscored functions that begin with `text` break the previous rule about the first part of the name identifying the object class that is input and output.  Examples:  `textstat_readability()` takes a character or corpus as input, and returns a data.frame; `textplot_xray()` takes a `kwic` object as input, and generates a dispersion plot (named "x-ray" because of its similarity to the plot produced by Kindle).
+
+*  Extensions of R functions:  These are commonly used R functions, such as `head()`, that are also defined for **quanteda** objects.  Examples:  `head.dfm()`, coercion functions such as `as.list.tokens`, and Boolean class type checking functions such as `is.dfm()`.
+
+*  R-like functions.  These are functions for **quanteda** objects that follow naming conventions and functionality that should be very familiar to users of R.  Example: `ndoc()` returns the number of documents in a corpus, tokens, or dfm object, similar to `base::nrow()`.  Note that like `nrow()`, `ndoc()` is not plural.  Other examples include `docnames()` and `featnames()` -- similar to `rownames()` and `colnames()`.
+
+*  Grammatical exceptions:  Every language has these, usually due to path dependency from historical development, and **quanteda** is no exception.  The list, however, is short:
+
+    *  `convert`: converts from a dfm to foreign package formats  
+    *  `sparsity`: returns the sparsity (as a proportion) of a dfm  
+    *  `topfeatures`:  returns a named vector of the counts of the most frequently occurring features in a `dfm`.
+
+## Constructors for core data types
+
+The **quanteda** package consists of a few core data types, created by calling constructors with identical names.  These are all "nouns" in the sense of declaring what they construct.  This follows very similar R behaviour in many of the core R objects, such as `data.frame()`, `list()`, etc.  
+
+Core object types and their constructor functions:
+
+* `corpus`  
+* `tokens` (in <= 0.9.8.5, `tokenize` to produce a `tokenizedTexts` class object)
+* `dfm`  
+* `fcm`
+* `kwic`
+* `dictionary`  
+* `collocations`
+
+Note that a core object class in **quanteda** is also the `character` atomic type, for which there is no constructor function, and is abbreviated as `char` in the function nomenclature.
+
+## Functions for manipulating core data types
+
+### Naming convention
+
+All functions that begin with the name of a core object class will both _input_ and _output_ an object of this class, without exception.
+
+This replaces the approach in versions up to 0.9.8.5 where a general methods such as `selectFeatures()` was defined for each applicable class of core object.  This approach made the specific function behaviour unpredictable from the description of the general behaviour.  It also made it difficult to get an overview of the functionality available for each object class.  By renaming these functions following the convention of object class, followed by an underscore, followed by a verb (or verb-like statement), we could both separate the behaviours into specific functions, as well as clearly describe through the function name what action is taken on what type of object.  
+
+### Advantages
+
+In our view, the advantages of this clarity outweigh whatever advantages might be found from overloading a generic function.  The functions `corpus_sample`, `tokens_sample`, and `dfm_sample`, for instance, are clearer to understand and read from a package's function index, than the previously overloaded version of `sample()` that could be dispatched on a corpus, tokenized text, or dfm object.  Additionally, in the case of `sample()`, we avoid the namespace "conflict" caused by redefining the function as a generic, so that it could be overloaded.  Our new, more specific naming conventions therefore reduce the likelihood of namespace conflicts with other packages.
+
+### Why are some operations unavailable for specific object types?
+
+Because not every operation makes sense for every object type.  Take the example of a "feature co-occurrence matrix", or `fcm`.  Construction of a feature co-occurrence matrix is be slightly different from constructing a dfm.   Unlike the "Swiss-army" knife approach of `dfm()`, which can operate directly on texts, `fcm()` works only on tokens, since the definition of how the context of co-occurrence is defined is dependent on token sequences and therefore highly dependent on tokenization options.  In addition, `fcm()` is likely to be used a lot less frequently, and primarily by more expert users.
+
+Futhermore, many functions defined for `fcm` objects _should_ be unavailable, because they violate the principles of the object.  For instance, `fcm_wordstem` and `fcm_tolower` should not be applied to `fcm` objects, because collapsing these and treating them as equivalent (as for a dfm object) is incorrect for the context in which co-occurrence is defined, such as a +/- 5 token window.
+
+
+## Extensions of core R functions
+
+Many simple base R functions -- simpler at least than the example of `sample()` cited above -- are still extended to quanteda objects through overloading.  The logic of allowing is that these functions, e.g. `cbind()` for a dfm, are very simple and very common, and therefore are well-known to users.  Furthermore, they can operate in only one fashion on the object for which they are defined, such as `cbind()` combining two dfm objects by joining columns.  Similar functions extended in this way include `print`, `head`, `tail`, and `t()`.  Most of these functions are so natural that their documentation is not included in the package index.
+
+## Additions to core R(-like) functions
+
+Additional functions have been defined for **quanteda** objects that are [very similar to simple base R functions](#r-like-functions), but are not named using the `class_action` format because they do not return a modified object of the same class.  These follow as closely as possible the naming conventions found in the base R functions that are similar.  For instance, `docnames()` and `featnames()` return the document names of various **quanteda** objects, in the same way that `rownames()` does for matrix-like objects (a matrix, data.frame, data.table, etc.).  The abbreviation of `featnames()` is intentionally modeled on `colnames()`.  Likewise, `ndoc()` returns the number of documents, using the singular form similar to `nrow()` and `ncol()`.  
+
+
+# Workflow principles
+
+**quanteda** is designed both to facilitate and to enforce a "best-practice" workflow.  This includes the following basic principles.
 
 1. **Corpus texts should remain *unchanged* during subsequent analysis and processing.**  In other words, after *loading* and *encoding*, we should discourage users from modifying a corpus of texts as a form of processing, so that the corpus can act as a library and record of the original texts, prior to any downstream processing.  This not only aids in replication, but also means that a corpus presents the unmodified texts to which any processing, feature selection, transformations, or sampling may be applied or reapplied, without hard-coding any changes made as part of the process of analyzing the texts.  The only exception is to reshape the units of text in a corpus, but we will record the details of this reshaping to make it relatively easy to reverse unit changes.  Since the definition of a "document" is part of the process of loading texts into a corpus, however, rather than processing, we will take a less stringent line on this aspect of changing a corpus.
 
 2. **A corpus should be capable of holding additional objects that will be associated with the corpus, such as dictionaries, stopword, and phrase lists.**  These will be named objects, that can be invoked when using (for instance) `dfm()`.  This allows a corpus to contain all of the additional objects that would normally be associated with it, rather than requiring a set of separate, extra-corpus objects.
 
-3. **A tokenized text object, and a dfm object, should have settings that record the processing options applied to the texts or corpus from which they were created.**  These provide a record of what was done to the text, and where it came from.  Examples are `tolower`, `stem`, `removeTwitter`, etc.  They also include any objects used in feature selection, such as dictionaries or stopword lists.
+3. **Objects should record histories of the operations applied to them.** This is for purposes of analytic transparency.  A tokens object and a dfm object, for instance, should have settings that record the processing options applied to the texts or corpus from which they were created.  These provide a record of what was done to the text, and where it came from.  Examples are `tokens_tolower`, `dfm_wordstem`, and settings such as `removeTwitter`.  They also include any objects used in feature selection, such as dictionaries or stopword lists.
 
-4. **A dfm should consist mainly of a (sparse) matrix,** that can be used for any sort of quantitative analysis.  The basic structure will always be *documents* (or document groups) in rows by *features* in columns.
+4. **A dfm should always be a  *documents* (or document groups) in rows by *features* in columns.**  Period.
 
-5. **Encoding of texts** should be done in the corpus, and recorded as meta-data in the corpus.  We should be able to detect encodings and suggest (and perform) and conversion when storing texts in a corpus.  This encoding should be `UTF-8` by default.  We will use the tools available in the `stringi` package to detect and set character encodings, namely `stri_enc_detect()` and `stri_conv()`, with reports and suggestions made at the time of corpus creation.
+5. **Encoding of texts** should always be UTF-8.  Period.
 
-## Major categories of functions
-
-1.  **Corpus construction and management**.  These operate on a corpus, and return a corpus, or report on a corpus.
-
-    ```{r, eval=FALSE}
-    changeunits
-    corpus
-    docnames, <-
-    docvars, <-
-    encoding, <-
-    language, <-
-    metacorpus, metadoc, <-
-    ndoc
-    ntoken
-    segment      # also works on character vectors
-    settings, <-
-    subset
-    summary
-    textfile
-    texts
-    ```
-    
-    
-2.  **Text manipulation.**  These operate on character vectors, and return character vectors.
-
-    **NOTE: This is a bit out of date now -- we are working on a table by function of input and output objects.**
-
-    1.  Operations on character vectors or the character vector of texts from a corpus.
-    
-        Returns a list of character vectors:
-        ```{r, eval=FALSE}
-        tokenize
-        ```
-        
-        Returning a character vector:
-        ```{r, eval=FALSE}
-        phrasetotoken
-        ```
-    
-        Returns a `collocations` object, 
-        ```{r, eval=FALSE}
-        collocations
-        ```
-    
-        Returns a screen output and data/frame: 
-        ```{r, eval=FALSE}
-        kwic
-        ```
-    
-        Counts the number of tokens:
-        ```{r, eval=FALSE}
-        ntoken
-        ```
-    
-    2.  Operations on character vectors of *tokens only*, returning a character vector of tokens:
-        
-        ```{r, eval=FALSE}
-        syllables
-        wordstem
-        ```
-
-    4.  Operations on character vectors of *tokens*, but also dfm objects and collocations:
-        
-        ```{r, eval=FALSE}
-        removeFeatures
-        ```
-    3.  Operations that *previously* worked (currently work) on character vectors of any size, but that will now be folded into Workflow Step 2 functions (see below) as part of tokenize:
-    
-        ```{r, eval=FALSE}
-        ngrams
-        skipgrams
-        ```
-    
-3.  **`dfm` construction and manipulation.**
-
-    ```{r, eval=FALSE}
-    dfm         # also works directly on (the texts of) a corpus
-    convert
-    docfreq
-    docnames
-    features
-    lexdiv
-    ndoc
-    ntoken
-    plot
-    print, show
-    removeFeatures
-    similarity
-    sort
-    textmodel, textmodel_*
-    topfeatures
-    trim
-    weight
-    settings
-    ```
-
-4.  **Auxiliary functions**.
-
-    ```{r, eval=FALSE}
-    dictionary
-    stopwords
-    textfile
-    ```
-
-5.  **Example datasets and objects**.
-    
-    Example data objects:
-    ```{r, eval=FALSE}
-    data_char_sampletext # character, length 1
-    data_char_ukimmig2010  # character, length 14
-    data_char_inaugural           # character, length 57
-    data_corpus_irishbudget2010         # corpus
-    data_corpus_inaugural          # corpus
-    data_dfm_LBGexample  # dfm
-    ```
-    
-    and some built-in objects used by functions:
-    ```{r, eval=FALSE}
-    englishSyllables    # named character vector, length 133245
-    stopwords           # named list .stopwords, length 16
-    ```
-    
 
 # Basic text analysis workflow 
 
@@ -163,11 +127,11 @@ vignette: >
 1.  **Defining and delimiting textual features**
 
     This step involves defining and extracting the relevant features from each document, using
-    `tokenize`, the main function for this step, involves indentifying instances of defined features ("tokens") and extracting them as vectors.  Usually these will consist of words, but may also consist of:
-    *   `bigrams` or `ngrams`, adjacent sequences of words, not separated by punctuation marks or sentence boundaries; including
-    *   multi-word expressions, through `phrasetotoken`, for selected word ngrams as identified in selected lists rather than simply using all adjacent word pairs or n-sequences.
+    `tokens`, the main function for this step, involves indentifying instances of defined features ("tokens") and extracting them as vectors.  Usually these will consist of words, but may also consist of:
+    *   `ngrams`: adjacent sequences of words, not separated by punctuation marks or sentence boundaries; including
+    *   multi-word expressions, through `tokens_compound`, for selected word ngrams as identified in selected lists rather than simply using all adjacent word pairs or n-sequences.
     
-    `tokenize` returns a new object class of tokenized texts, which are essentially a list of character vectors, with each element in the list corresponding to a document, and each characte vector consisting of the tokens in that document. 
+    `tokens` returns a new object class of tokenized texts, a hashed list of index types, with each element in the list corresponding to a document, and each hash vector representing the tokens in that document. 
     
     By defining the broad class of tokens we wish to extract, in this step we also apply rules that will keep or ignore elements such as punctuation or digits, or special aggregations of word and other characters that make up URLS, Twitter tags, or currency-prefixed digits.  This will involve adding the following options to `tokenize`:
     *   `removeDigits`
@@ -176,14 +140,14 @@ vignette: >
     *   `removeTwitter`
     *   `removeURL`
 
-    **By default**, `tokenize()` extracts word tokens, and only `removeSeparators` is `TRUE`, meaning that `tokenize()` will return a list including punctuation as tokens.  This follows a philosophy of minimal intervention, and one requiring that additional decisions be made explicit by the user when invoking `tokenize()`.  Note that in the `dfm()` method described below, however, we do turn on all of these options except `removeTwitter`, which is by default `FALSE`.
+    **By default**, `tokens()` extracts word tokens, and only `removeSeparators` is `TRUE`, meaning that `tokens()` will return a list including punctuation as tokens.  This follows a philosophy of minimal intervention, and one requiring that additional decisions be made explicit by the user when invoking `tokenize()`.  Note that in the `dfm()` method described below, however, we do turn on all of these options except `removeTwitter`, which is by default `FALSE`.
 
-    For converting to lowercase, it is actually *faster* to perform this step *before* tokenization, but logically it falls under the next workflow step.  However for efficiency, `toLower()` works on 
-    *   a corpus, returning a lower-cased character vector
+    For converting to lowercase, it is actually *faster* to perform this step *before* tokenization, but logically it falls under the next workflow step.  However for efficiency, `*_tolower()` functions are defined for:
     *   a character vector
-    *   a list object of tokenized texts
+    *   a tokens object
+    *   a dfm object
     
-    Since the tokenizer we will use may not distinguish the puncutation characters used in constructs such as URLs, email addresses, Twitter handles, or digits prefixed by currency symbols, we will mostly need to use a substitution strategy to replace these with alternative characters prior to tokenization, and then replace the substitutions with the original characters.  This will slow down processing but will only be active by explicit user request for this type of handling to take place.  We could offer three possible options here, such as for URLs, consisting of `c("ignore", "keep", "remove", "ignore")`, to pretend they do not exist and tokenize come what may, to preserve remove URLs in their entirety as "tokens", or to remove them completely, respectively.
+    Since the tokenizer we will use may not distinguish the puncutation characters used in constructs such as URLs, email addresses, Twitter handles, or digits prefixed by currency symbols, we will mostly need to use a substitution strategy to replace these with alternative characters prior to tokenization, and then replace the substitutions with the original characters.  This will slow down processing but will only be active by explicit user request for this type of handling to take place. 
     
     Note that that defining and delimiting features may alao include their *parts of speech*, meaning we will need to add functionality for POS tagging and extraction in this step.
 
@@ -195,9 +159,9 @@ vignette: >
     *   *eliminated* through use of predefined lists or patterns of *stop words*, using `removeFeatures` or `ignoredFeatures` (`dfm` option)
     *   *kept* through through use of predefined lists or patterns of *stop words*, using `removeFeatures` or `keptFeatures` (`dfm` option)
     *   *collapsed* by:
-        *   considering morphological variations as equivalent to a stem or lemma, through the `stem` option in `dfm`
+        *   considering morphological variations as equivalent to a stem or lemma, through `stem` option in `dfm` (or `dfm_wordstem`)
         *   considering lists of features as equivalent to a *dictionary* key, either exclusively (`dfm` option `dictionary`) or as a supplement to uncollapsed features (`dfm` option `thesaurus`)
-        *   `toLower` to consider as equivalent the same word features despite having different cases, by converting all features to lower case
+        *   `tolower` to consider as equivalent the same word features despite having different cases, by converting all features to lower case
         
     It will be sometimes possible to perform these steps separately from the `dfm` creating stage, but in most cases these steps will be performed as options to the `dfm` function.
     
@@ -207,7 +171,7 @@ vignette: >
     
         These steps don't necessarily require the processing steps above.
         * `kwic`
-        * `lexdiv`
+        * `textstat_readability`
         * `summary`
         
     2.  From a dfm -- after `dfm` on the processed document and features.
@@ -215,15 +179,9 @@ vignette: >
     
 ## `dfm`, the Swiss Army knife
 
-### Overview
-
-1.  Most common use case
-
     In most cases, users will use the default settings to create a dfm straight from a corpus.  `dfm` will combine steps 3--4, even though basic functions will be available to perform these separately.  All options shown in steps 3--4 will be available in `dfm`.
 
-2.  If separate steps are desired
-
-    We will do our best to ensure that all functions allow piping using the `magrittr` package, e.g.
+    `dfm` objects can always be built up using constituent steps, through tokenizing and then selecting on the tokens.  **quanteda** works well with `%>%` pipes, if that is your thing:
 
     ```{r, eval=FALSE}
     mydfm <- texts(mycorpus, group = "party") %>% toLower %>% tokenize %>% wordstem %>%
@@ -231,156 +189,5 @@ vignette: >
     ```
 
     We recognize however that not all sequences will make sense, for instance `wordstem` will only work *after* tokenization, and will try to catch these errors and make the proper sequence clear to users.
-
-
-### Options for processing from corpus to dfm
-
-The current processing options, their defaults, and the function their value is finally passed to,  in in order of increasing generality:
-
-------------------------------------------------------------------------
- Option          default     other                          function
--------         ---------   -------                        -------------
-keep_acronyms     FALSE       TRUE                           toLower
-
-what             word        sentence, character            tokenize
-                             fastestword, fasterword
-                             
-cleanFirst       TRUE        FALSE                          tokenize
-
-verbose          FALSE       TRUE                           tokenize, dfm
-
-toLower          TRUE        FALSE                          tokenize, dfm
-
-removeNumbers    TRUE        FALSE                          tokenize, dfm
-
-removePunct      TRUE        FALSE                          tokenize, dfm
-
-removeSeparators TRUE        FALSE                          tokenize, dfm
-
-removeTwitter    TRUE        FALSE                          tokenize
-
-simplify         FALSE       TRUE                           tokenize
-
-cores            detect      numeric                        tokenize
-
-stem             FALSE       TRUE                           dfm
-
-ignoredFeatures  NULL        stopwords(), character         dfm
-
-keptFeatures     NULL        regex                          dfm
-
-matrixType       sparse      dense                          dfm
-
-language         english     character                      dfm
-
-fromCorpus       FALSE       TRUE                           dfm
-
-bigrams          FALSE       TRUE                           dfm
-
-include.unigrams TRUE        FALSE                          dfm
-
-thesaurus        NULL        list                           dfm
-
-dictionary       NULL        list                           dfm
-
-dictionary_regex FALSE       re                             dfm
-
-addto            NULL        dfm                            dfm
-
-------------------------------------------------------------------------
-
-#### dfm creation with ie2010 Corpus
-
-A `dfm` object can be created using piping, or in one step:
-
-```{r, eval=FALSE}
-mydfm <- texts(data_corpus_irishbudget2010, groups = "party") %>% toLower %>% tokenize %>% 
-             removeFeatures(stopwords("english")) %>% wordstem %>% dfm
-    
-# same as:
-mydfm2 <- dfm(data_corpus_irishbudget2010, groups = "party", ignoredFeatures = stopwords("english"), stem = TRUE)
-```
-
-# Development Guidance
-
-## Suggestions for using quanteda during development
-
-`quanteda` is in development and will remain so until we declare a 1.0 version, at which time we will only add new functions, not change the names of 
-existing ones.  In the meantime, we suggest:
-
--   use named formals in the function calls, rather than relying on the current ordering of formals,
-    for instance, use `tokenize(mytexts, what = "sentence")` instead of `tokenize(mytexts, "sentence")` -- since the order is not stable; and also using named formals rather than relying on current defaults, e.g. `tokenize(mytexts, removePunct = FALSE)` since the default values are not stable.
--   hope that we get to 1.0 quickly;
--   help that process by sending us feedback stating what you think of the syntax, formal names, etc. from a user's perspective.
-
-## Notes to the **quanteda** team
-
-1.  All **testing** should be in tests/testthat/test_<name>.R.  No more haphazard tests in other locations.
-
-2.  For **performance comprisons**, we write up the results and document them in the vignette `performance_comparisons.Rmd.`
-
-3.  Development and branches:  We add new features through `workingDev`.  Before merging this with `dev`, we make sure the build passes a full CRAN check.
-
-## For bug reports and feature requests
-
-Please use the issue page on the GitHub repository, or contact kbenoit@lse.ac.uk directly.
-
-We *always* welcome hearing about your experiences (and problems!) in using quanteda, as additional use cases and problems you may encounter help us to make the package more functional and robust.
-
-
-# Outstanding Tasks and Priorities
-
-## Completed
-
-*   **DONE** rewrite `encoding()` to detect encoding, and replace `iconv()` calls with `stringi::stri_encode()` in `corpus()`
-*   rewrite to make use of **stringi** (and the new `tokenize()` based on that package):
-    *   **DONE** `ntoken()`  
-    *   **DONE** `ntype()` and `nfeature()`
-    *   **DONE** `phrasetotoken()` 
-*   **DONE** encode `data_corpus_irishbudget2010` (and see if CRAN lets us get away with it)
-*   **DONE** removed `language()`
-*   add methods for `tokenizedTexts` objects:
-    *   **DONE** `dfm.tokenizedTexts`
-    *   **DONE** `removeFeatures.tokenizedTexts`
-    *   **DONE** `syllables.tokenizedTexts`
-*   **DONE** `removeFeatures` now much faster, based on fixed binary matches and `stringi` character classes
-*   **DONE** added readability statistics through `readability()`
-*   **DONE** added `nsentence()`
-*   **DONE** `ngrams` added as an option to `tokenize()`
-*   **DONE** `dfm` objects need a subset method for selection rows, not just columns
-*   **DONE** rewrite `segment()` to make use of new tokenizer that segments on sentences
-*   **DONE** make sure `corpus.VCorpus()` is fully working
-*   **DONE** rewrite `kwic` to use new tokenizer, and to allow searches for multi-word regular expressions
-
-
-## To Do Remaining
-
-*   fix `collocations()` behaviour, changed since new `tokenize()` (**IN PROGRESS**)
-*   `weight()` breaks for dfms with all zero count documents, for instance those that have been `trim()`med
-*   rewrite `lexdiv()` to make the API similar to `readability()` and to use data.table
-*   integrate `collocations` code for bigrams and trigrams and reduce the internal memory usage
-*   `dfm` documentation needs to group arguments into sections and describe how these correspond to the logical workflow
-*   need to figure out how to exclude specific signatures (especially S4 signatures) from the man (.Rd) pages.  For instance `?"dfm-class" has far more details on methods signatures than any user will find useful.
-*   Devise a scheme for `settings()` and figure out how to add additional objects to a corpus, namely one or more:
-    *   dictionary objects
-    *   collocation objects
-    *   stopword lists
-*   optimize `similarity()`
-*   consider adopting ISO language names for functions such as `wordstem()`, `stopwords()`, and `syllables()`
-*   `textmodel`: Devise and document a consistent, logical, and easy-to-use and remember scheme for textmodels.
-*   Move more functions to S4
-*   Documentation for `convert()` needs substantial work
-*   Vignettes:
-    *   Add a Performance analysis and comparison vignette
-    *   Replication vignette for Jockers, *Text Analysis with R for Students of Literature*
-*   stripplot for keywords occurrence across documents, serially
-*   Define full set of operators for dfmSparse and dfmDense.  Right now, only `+` is defined.
-*   `resample` functionality to enable resampling from different text units
-*   `index` (?) for pre-tokenizing and indexing a corpus
-*    specific textmodel types:
-    *   Improve wordfish and round out methods
-    *   Add CA scaling
-*   incorporate a word2vec-type model (see [wordvectors](https://github.com/bmschmidt/wordVectors))
-*   add POS tagging, through an interface to the Stanford NLP library, or through an existing R package that provides this functionality
 
 

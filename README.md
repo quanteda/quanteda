@@ -1,21 +1,23 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <img src="images/quanteda-smallest.png" width = "300">
 
-Quantitative Analysis of Textual Data
-=====================================
+[Quantitative Analysis of Textual Data](https://kbenoit.github.io/quanteda/)
+============================================================================
 
 [![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) ![Downloads](http://cranlogs.r-pkg.org/badges/quanteda) ![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
 
 **quanteda** v0.9.9 under development
 -------------------------------------
 
-See the new, upcoming [major API changes](API.md), to be incorporated into the next minor version 0.9.9 and for CRAN, in a "1.0" release. This upcoming release includes some major changes but also many major improvements.
+This version of the package is a pre-release for version 0.9.9, which will be a transitional version (with the old functions retained, but deprecated) prior to a "1.0" release. v0.9.9 includes some major changes but also many major improvements. See [Quanteda Structure and Design](https://kbenoit.github.io/quanteda/articles/development-plans.html) for details.
 
 About the package
 -----------------
 
 An R package for managing and analyzing text, created by [Kenneth Benoit](kbenoit@lse.ac.uk) in collaboration with a team of core [contributors](https://github.com/kbenoit/quanteda/graphs/contributors): [Paul Nulty](https://github.com/pnulty), [Adam Obeng](https://github.com/adamobeng), [Kohei Watanabe](https://github.com/koheiw), [Haiyan Wang](https://github.com/HaiyanLW), [Ben Lauderdale](https://github.com/lauderdale), and [Will Lowe](https://github.com/conjugateprior).
 Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
+
+For more details, see the [**package website**](https://kbenoit.github.io/quanteda/).
 
 Features
 --------
@@ -109,6 +111,12 @@ Demonstration
 
 ``` r
 library(quanteda)
+## quanteda version 0.9.8.9021
+## 
+## Attaching package: 'quanteda'
+## The following object is masked from 'package:base':
+## 
+##     sample
 
 # create a corpus from the immigration texts from UK party platforms
 uk2010immigCorpus <- 
@@ -132,7 +140,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Mon Dec  5 18:34:24 2016
+## Created: Mon Dec  5 22:42:45 2016
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context

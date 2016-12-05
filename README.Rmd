@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 <img src="images/quanteda-smallest.png" width = "300"> 
 
 
-# Quantitative Analysis of Textual Data
+# [Quantitative Analysis of Textual Data](https://kbenoit.github.io/quanteda/)
 
 [![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) 
 ![Downloads](http://cranlogs.r-pkg.org/badges/quanteda) 
@@ -31,9 +31,7 @@ knitr::opts_chunk$set(
 
 ## **quanteda** v0.9.9 under development
 
-See the new, upcoming [major API changes](API.md), to be incorporated into the 
-next minor version 0.9.9 and for CRAN, in a "1.0" release.  This upcoming release
-includes some major changes but also many major improvements.
+This version of the package is a pre-release for version 0.9.9, which will be a transitional version (with the old functions retained, but deprecated) prior to a "1.0" release.  v0.9.9 includes some major changes but also many major improvements.  See [Quanteda Structure and Design](https://kbenoit.github.io/quanteda/articles/development-plans.html) for details.
 
 
 ## About the package
@@ -47,6 +45,8 @@ collaboration with a team of core
 and [Will Lowe](https://github.com/conjugateprior).  
 Supported by the European Research Council grant ERC-2011-StG 
 283794-QUANTESS.
+
+For more details, see the [**package website**](https://kbenoit.github.io/quanteda/).
 
 ## Features
 
