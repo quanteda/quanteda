@@ -110,14 +110,6 @@ Demonstration
 
 ``` r
 library(quanteda)
-## 
-## This data.table install has not detected OpenMP support. It will work but slower in single threaded mode.
-## quanteda version 0.9.8.9022
-## 
-## Attaching package: 'quanteda'
-## The following object is masked from 'package:base':
-## 
-##     sample
 
 # create a corpus from the immigration texts from UK party platforms
 uk2010immigCorpus <- 
@@ -141,7 +133,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Mon Dec  5 13:53:22 2016
+## Created: Mon Dec  5 17:40:37 2016
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
