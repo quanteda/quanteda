@@ -84,33 +84,25 @@
     <p>Tokenize the texts from a character vector or from a corpus.</p>
     
 
-    <pre><span class='fu'>tokens</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for character</span>
-<span class='fu'>tokens</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"word"</span>, <span class='st'>"sentence"</span>, <span class='st'>"character"</span>,
-  <span class='st'>"fastestword"</span>, <span class='st'>"fasterword"</span>), <span class='kw'>removeNumbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+    <pre><span class='fu'>tokens</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"word"</span>, <span class='st'>"sentence"</span>, <span class='st'>"character"</span>, <span class='st'>"fastestword"</span>,
+  <span class='st'>"fasterword"</span>), <span class='kw'>removeNumbers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>removeSymbols</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>removeSeparators</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>removeTwitter</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>removeHyphens</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>removeURL</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0L</span>,
   <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"_"</span>, <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hash</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>)
-
-<span class='co'># S3 method for corpus</span>
-<span class='fu'>tokens</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+  <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>objet to be tokenized</dd>
-      <dt>...</dt>
-      <dd>additional arguments not used</dd>
+      <dd>a character or <a href='corpus.html'>corpus</a> object to be tokenized</dd>
       <dt>what</dt>
       <dd>the unit for splitting the text, available alternatives are: 
 <dl class='dl-horizontal'>
 <dt><code>&quot;word&quot;</code></dt><dd>(recommended default) smartest, but 
 slowest, word tokenization method; see 
 <a href='http://www.rdocumentation.org/packages/stringi/topics/stringi-search-boundaries'>stringi-search-boundaries</a> for details.</dd> 
-<dt><code>&quot;fasterword&quot;</code></dt><dd>dumber, but faster, word tokenizeation method, 
-uses <a href='http://www.rdocumentation.org/packages/stringi/topics/stri_split'>stri_split_charclass</a>(x, &quot;\\pWHITE_SPACE&quot;)</dd> 
+<dt><code>&quot;fasterword&quot;</code></dt><dd>dumber, but faster, word tokenization method, 
+uses <code>{<a href='http://www.rdocumentation.org/packages/stringi/topics/stri_split'>stri_split_charclass</a>(x, &quot;\\p{WHITE_SPACE}&quot;)}</code></dd> 
 <dt><code>&quot;fastestword&quot;</code></dt><dd>dumbest, but fastest, word tokenization method,
 calls <code><a href='http://www.rdocumentation.org/packages/stringi/topics/stri_split'>stri_split_fixed</a>(x, &quot; &quot;)</code></dd> 
 <dt><code>&quot;character&quot;</code></dt><dd>tokenization into individual characters</dd> 
@@ -153,11 +145,11 @@ http(s) -- see section &quot;Dealing with URLs&quot;.</dd>
 to <code>1</code> (unigrams). For bigrams, for instance, use <code>2</code>; for 
 bigrams and unigrams, use <code>1:2</code>.  You can even include irregular 
 sequences such as <code>2:3</code> for bigrams and trigrams only.  See 
-<code><a href='ngrams.html'>ngrams</a></code>.</dd>
+<code><a href='tokens_ngrams.html'>tokens_ngrams</a></code>.</dd>
       <dt>skip</dt>
       <dd>integer vector specifying the skips for skip-grams, default is 0 
 for only immediately neighbouring words. Only applies if <code>ngrams</code> is 
-different from the default of 1.  See <code><a href='ngrams.html'>skipgrams</a></code>.</dd>
+different from the default of 1.  See <code><a href='tokens_ngrams.html'>tokens_skipgrams</a></code>.</dd>
       <dt>concatenator</dt>
       <dd>character to use in concatenating <em>n</em>-grams, default
 is &quot;<code>_</code>&quot;, which is recommended since this is included in the regular 
@@ -172,6 +164,8 @@ phased out soon in coming versions.)</dd>
       <dt>verbose</dt>
       <dd>if <code>TRUE</code>, print timing messages to the console; off by 
 default</dd>
+      <dt>...</dt>
+      <dd>additional arguments not used</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -190,16 +184,6 @@ default</dd>
   nothing is removed by default from the text being tokenized except 
   inter-word spacing and equivalent characters.</p>
     
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>For accessing the tokens themselves, use `get_tokens()`; to access the 
-  types, use `types()`, which also works with as an assignment operation
-  (<code>types(x) &lt;- newtypes</code>).  Note as well that 
-  <code><a href='tokenize.html'>as.tokenizedTexts</a></code> or <code><a href='as.tokens.html'>as.list.tokens</a></code> will do the
-  same things as `get_tokens()`.  The purpose of these extractor functions is
-  <em>encapulation</em>, so that if the structure of the <code>tokens</code> object 
-  changes, code built on extracting these objects will still work.</p>
-    
     <h2 class="hasAnchor" id="dealing-with-urls"><a class="anchor" href="#dealing-with-urls"></a>Dealing with URLs</h2>
 
     <p>URLs are tricky to tokenize, because they contain
@@ -213,7 +197,7 @@ default</dd>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='ngrams.html'>ngrams</a></code>, <code><a href='ngrams.html'>skipgrams</a></code></p>
+    <p><code><a href='tokens_ngrams.html'>tokens_ngrams</a></code>, <code><a href='tokens_ngrams.html'>tokens_skipgrams</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -294,7 +278,7 @@ default</dd>
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>text1</span><span class='kw'>=</span><span class='st'>"This is $10 in 999 different ways,\n up and down; left and right!"</span>,
          <span class='kw'>text2</span><span class='kw'>=</span><span class='st'>"@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123."</span>)
 <span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Starting tokenization...</span></div><div class='output co'>#&gt; <span class='message'>  ...preserving Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed: 0 seconds.</span></div><div class='output co'>#&gt; <span class='message'>  ...tokenizing texts</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>  ...removing separators.</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.00100000000000477 seconds.</span></div><div class='output co'>#&gt; <span class='message'>  ...replacing Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed: 0.00100000000000477 seconds.</span></div><div class='output co'>#&gt; <span class='message'>...hashing tokens</span></div><div class='output co'>#&gt; <span class='message'>  ...replacing names</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.000999999999990564 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; <span class='message'>  ...removing separators.</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.000999999999976353 seconds.</span></div><div class='output co'>#&gt; <span class='message'>  ...replacing Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed: 0 seconds.</span></div><div class='output co'>#&gt; <span class='message'>...hashing tokens</span></div><div class='output co'>#&gt; <span class='message'>  ...replacing names</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] &quot;This&quot;      &quot;is&quot;        &quot;$&quot;         &quot;10&quot;        &quot;in&quot;        &quot;999&quot;      
 #&gt;  [7] &quot;different&quot; &quot;ways&quot;      &quot;,&quot;         &quot;up&quot;        &quot;and&quot;       &quot;down&quot;     
@@ -468,8 +452,6 @@ default</dd>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
-
-      <li><a href="#note">Note</a></li>
 
       <li><a href="#dealing-with-urls">Dealing with URLs</a></li>
 

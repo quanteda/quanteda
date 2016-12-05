@@ -116,18 +116,18 @@ row-wise (<code>rbind</code>) to the first</dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># cbind() for dfm objects</span>
-(<span class='no'>dfm1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='st'>"This is one sample text sample."</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 6 features (0% sparse).
-#&gt; 1 x 6 sparse Matrix of class &quot;dfmSparse&quot;
+(<span class='no'>dfm1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='st'>"This is one sample text sample"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 5 features (0% sparse).
+#&gt; 1 x 5 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
-#&gt; docs    this is one sample text .
-#&gt;   text1    1  1   1      2    1 1</div><div class='input'>(<span class='no'>dfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='st'>"More words here."</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 4 features (0% sparse).
-#&gt; 1 x 4 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt; docs    this is one sample text
+#&gt;   text1    1  1   1      2    1</div><div class='input'>(<span class='no'>dfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='st'>"More words here"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 3 features (0% sparse).
+#&gt; 1 x 3 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
-#&gt; docs    more words here .
-#&gt;   text1    1     1    1 1</div><div class='input'><span class='fu'>cbind</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cbinding dfms with overlapping features will result in duplicated features</span></div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 10 features (0% sparse).
-#&gt; 1 x 10 sparse Matrix of class &quot;dfmSparse&quot;
-#&gt;       this is one sample text . more words here .
-#&gt; text1    1  1   1      2    1 1    1     1    1 1</div><div class='input'>
+#&gt; docs    more words here
+#&gt;   text1    1     1    1</div><div class='input'><span class='fu'>cbind</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 8 features (0% sparse).
+#&gt; 1 x 8 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt;       this is one sample text more words here
+#&gt; text1    1  1   1      2    1    1     1    1</div><div class='input'>
 <span class='co'># rbind() for dfm objects</span>
 (<span class='no'>dfm1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"This is one sample text sample."</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 6 features (0% sparse).
 #&gt; 1 x 6 sparse Matrix of class &quot;dfmSparse&quot;

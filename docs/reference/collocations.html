@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Detect collocations from text — collocations • quanteda</title>
+<title>detect collocations from text — collocations • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,7 +77,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Detect collocations from text</h1>
+    <h1>detect collocations from text</h1>
     </div>
 
     
@@ -88,32 +88,14 @@ default (<code>spanPunct = FALSE</code>)  as adjacent and hence are not eligible
 be collocations.</p>
     
 
-    <pre><span class='fu'>collocations</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for corpus</span>
-<span class='fu'>collocations</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lr"</span>, <span class='st'>"chi2"</span>, <span class='st'>"pmi"</span>, <span class='st'>"dice"</span>,
-  <span class='st'>"all"</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>toLower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"dontspan"</span>, <span class='st'>"ignore"</span>, <span class='st'>"include"</span>), <span class='no'>...</span>)
-
-<span class='co'># S3 method for character</span>
-<span class='fu'>collocations</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lr"</span>, <span class='st'>"chi2"</span>, <span class='st'>"pmi"</span>, <span class='st'>"dice"</span>,
-  <span class='st'>"all"</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>toLower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"dontspan"</span>, <span class='st'>"ignore"</span>, <span class='st'>"include"</span>), <span class='no'>...</span>)
-
-<span class='co'># S3 method for tokens</span>
-<span class='fu'>collocations</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for tokenizedTexts</span>
-<span class='fu'>collocations</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lr"</span>, <span class='st'>"chi2"</span>, <span class='st'>"pmi"</span>,
-  <span class='st'>"dice"</span>, <span class='st'>"all"</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>toLower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"dontspan"</span>, <span class='st'>"ignore"</span>, <span class='st'>"include"</span>), <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>collocations</span>(<span class='no'>x</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lr"</span>, <span class='st'>"chi2"</span>, <span class='st'>"pmi"</span>, <span class='st'>"dice"</span>, <span class='st'>"all"</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>toLower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>punctuation</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"dontspan"</span>, <span class='st'>"ignore"</span>,
+  <span class='st'>"include"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>a text, a character vector of texts, or a corpus</dd>
-      <dt>...</dt>
-      <dd>additional parameters passed to <code><a href='tokenize.html'>tokenize</a></code></dd>
+      <dd>a character, <a href='corpus.html'>corpus</a>, <a href='tokens.html'>tokens</a> object</dd>
       <dt>method</dt>
       <dd>association measure for detecting collocations.  Let \(i\) 
 index documents, and \(j\) index features, \(n_{ij}\) refers to 
@@ -149,12 +131,14 @@ returned.</dd>
 punctuation characters as tokens</dd>
 </dl>
 </dd>
+      <dt>...</dt>
+      <dd>additional parameters passed to <code><a href='tokens.html'>tokens</a></code></dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data.table of collocations, their frequencies, and the computed 
-  association measure(s).</p>
+    <p>a collocations class object: a specially classed data.table consisting 
+  of collocations, their frequencies, and the computed association measure(s).</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -164,7 +148,7 @@ punctuation characters as tokens</dd>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><a href='ngrams.html'>ngrams</a></p>
+    <p><a href='tokens_ngrams.html'>tokens_ngrams</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

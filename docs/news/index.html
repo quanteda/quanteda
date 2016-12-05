@@ -120,7 +120,7 @@
 <td align="left">(used by <code>textcount_syllables()</code>)</td>
 </tr><tr class="even"><td align="left"><code>data_char_wordlists</code></td>
 <td align="left"><code>wordlists</code></td>
-<td align="left">(used by <code><a href="../reference/readability.html">readability()</a></code>)</td>
+<td align="left">(used by <code>readability()</code>)</td>
 </tr><tr class="odd"><td align="left"><code>data_char_stopwords</code></td>
 <td align="left"><code>.stopwords</code></td>
 <td align="left">(used by <code><a href="../reference/stopwords.html">stopwords()</a></code>
@@ -151,7 +151,7 @@
 <h2 class="hasAnchor">
 <a href="#deprecated-functions" class="anchor"> </a>Deprecated functions</h2>
 <p>The following functions will still work, but issue a deprecation warning:</p>
-<table><thead><tr class="header"><th align="left">new function</th>
+<table style="width:47%;"><colgroup><col width="13%"/><col width="20%"/><col width="12%"/></colgroup><thead><tr class="header"><th align="left">new function</th>
 <th align="left">deprecated function</th>
 <th align="left">contructs:</th>
 </tr></thead><tbody><tr class="odd"><td align="left"><code>tokens</code></td>
@@ -210,12 +210,73 @@
 <td align="left"><code>weight</code></td>
 <td align="left">
 <code>dfm</code> class object</td>
-</tr><tr class="odd"><td align="left"><code>plot.dfm</code></td>
-<td align="left"><code>textplot_wordcloud</code></td>
+</tr><tr class="odd"><td align="left"><code>textplot_wordcloud</code></td>
+<td align="left"><code>plot.dfm</code></td>
 <td align="left">(plot)</td>
-</tr><tr class="even"><td align="left"><code>plot.kwic</code></td>
-<td align="left"><code>textplot_xray</code></td>
+</tr><tr class="even"><td align="left"><code>textplot_xray</code></td>
+<td align="left"><code>plot.kwic</code></td>
 <td align="left">(plot)</td>
+</tr><tr class="odd"><td align="left"><code>textstat_readability</code></td>
+<td align="left"><code>readability</code></td>
+<td align="left"><code>data.frame</code></td>
+</tr><tr class="even"><td align="left"><code>textstat_lexdiv</code></td>
+<td align="left"><code>lexdiv</code></td>
+<td align="left"><code>data.frame</code></td>
+</tr><tr class="odd"><td align="left"><code>textstat_simil</code></td>
+<td align="left"><code>similarity</code></td>
+<td align="left"><code>dist</code></td>
+</tr><tr class="even"><td align="left"><code>textstat_dist</code></td>
+<td align="left"><code>similarity</code></td>
+<td align="left"><code>dist</code></td>
+</tr><tr class="odd"><td align="left"><code>featnames</code></td>
+<td align="left"><code>features</code></td>
+<td align="left"><code>character</code></td>
+</tr><tr class="even"><td align="left"><code>nsyllable</code></td>
+<td align="left"><code>syllables</code></td>
+<td align="left">(named) <code>integer</code>
+</td>
+</tr><tr class="odd"><td align="left"><code>nscrabble</code></td>
+<td align="left"><code>scrabble</code></td>
+<td align="left">(named) <code>integer</code>
+</td>
+</tr><tr class="even"><td align="left"><code>tokens_ngrams</code></td>
+<td align="left"><code>ngrams</code></td>
+<td align="left">
+<code>tokens</code> class object</td>
+</tr><tr class="odd"><td align="left"><code>tokens_skipgrams</code></td>
+<td align="left"><code>skipgrams</code></td>
+<td align="left">
+<code>tokens</code> class object</td>
+</tr><tr class="even"><td align="left"><code>tokens_toupper</code></td>
+<td align="left">
+<code>toUpper.tokens</code>, <code>toUpper.tokenizedTexts</code>
+</td>
+<td align="left">
+<code>tokens</code>, <code>tokenizedTexts</code>
+</td>
+</tr><tr class="odd"><td align="left"><code>tokens_tolower</code></td>
+<td align="left">
+<code>toLower.tokens</code>, <code>toLower.tokenizedTexts</code>
+</td>
+<td align="left">
+<code>tokens</code>, <code>tokenizedTexts</code>
+</td>
+</tr><tr class="even"><td align="left"><code>char_toupper</code></td>
+<td align="left">
+<code>toUpper.character</code>, <code>toUpper.character</code>
+</td>
+<td align="left"><code>character</code></td>
+</tr><tr class="odd"><td align="left"><code>char_tolower</code></td>
+<td align="left">
+<code>toLower.character</code>, <code>toLower.character</code>
+</td>
+<td align="left"><code>character</code></td>
+</tr><tr class="even"><td align="left"><code>tokens_compound</code></td>
+<td align="left">
+<code>joinTokens</code>, <code>phrasetotoken</code>
+</td>
+<td align="left">
+<code>tokens</code> class object</td>
 </tr></tbody></table></div>
 <div id="new-functions" class="section level2">
 <h2 class="hasAnchor">
@@ -275,7 +336,19 @@
 <div id="other-new-features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#other-new-features" class="anchor"> </a>Other new features</h2>
-<ul><li>Added Greek stopwords.</li>
+<ul><li>Consolidated corpus-level metadata arguments in <code><a href="../reference/corpus.html">corpus()</a></code> through the <code>metacorpus</code> list argument.<br/></li>
+<li>Added Greek stopwords. (See #282).<br/></li>
+<li>Added index handling <code>[</code>, <code>[[</code>, and <code>$</code> for <code>tokens</code> objects.<br/></li>
+<li>Now using ggplot2.</li>
+<li>Added tokens methods for <code><a href="../reference/collocations.html">collocations()</a></code> and <code><a href="../reference/kwic.html">kwic()</a></code>.</li>
+<li>Much improved performance for <code><a href="../reference/tokens_select.html">tokens_select()</a></code> (formerly <code><a href="../reference/selectFeatures.dfm.html">selectFeatures.tokens()</a></code>).</li>
+<li>Improved <code><a href="../reference/ngrams.html">ngrams()</a></code> and <code><a href="../reference/joinTokens.html">joinTokens()</a></code> performance for hashed <code>tokens</code> class objects.</li>
+<li>Improved <code>dfm.character()</code> by using new <code><a href="../reference/tokens.html">tokens()</a></code> constructor to create hashed tokenized texts by default when creating a dfm, resulting in performance gains when constructing a dfm. Creating a dfm from a hashed <code>tokens</code> object is now 4-5 times faster than the older <code>tokenizedTexts</code> object.</li>
+<li>Added new (hashed) <code>tokens</code> class object.</li>
+<li>Added plot method for fitted <code>textmodel_wordscores objects</code>.<br/></li>
+<li>Added fast <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> method (formerly <code><a href="../reference/applyDictionary.html">applyDictionary()</a></code>), that also works with dictionaries that have multi-word keys. Addresses but does not entirely yet solve #188.</li>
+<li>Added <code><a href="../reference/sparsity.html">sparsity()</a></code> function to compute the sparsity of a dfm.</li>
+<li>Added feature co-occurence matrix functions (<code>fcm</code>).</li>
 </ul></div>
 </div>
     <div id="quanteda-0-9-8" class="section level1">
@@ -284,19 +357,7 @@
 <div id="new-features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features" class="anchor"> </a>New Features</h2>
-<ul><li>Now using ggplot2 (0.9.8.12)</li>
-<li>Added tokens methods for <code><a href="../reference/collocations.html">collocations()</a></code> and <code><a href="../reference/kwic.html">kwic()</a></code> (0.9.8.11).</li>
-<li>Added fast <code><a href="../reference/selectFeatures.dfm.html">selectFeatures.tokens()</a></code> (0.9.8.11).</li>
-<li>Improved <code><a href="../reference/ngrams.html">ngrams()</a></code> and <code><a href="../reference/joinTokens.html">joinTokens()</a></code> performance for hashed <code>tokens</code> class objects (0.9.8.10).</li>
-<li>Improved <code>dfm.character()</code> by using new <code><a href="../reference/tokens.html">tokens()</a></code> constructor to create hashed tokenized texts by default when creating a dfm, resulting in performance gains when constructing a dfm. Creating a dfm from a hashed <code>tokens</code> object is now 4-5 times faster than the older <code>tokenizedTexts</code> object (0.9.8.9).</li>
-<li>Added new (hashed) <code>tokens</code> class object replacing the <code>tokenizedTextsHashed</code> class (0.9.8.9).</li>
-<li>Added plot method for fitted textmodel_wordscores objects (0.9.8.8).<br/></li>
-<li>Added fast <code><a href="../reference/applyDictionary.html">applyDictionary()</a></code> method for tokenizedTexts, that also works with dictionaries that have multi-word keys (0.9.8.8). Addresses but does not entirely yet solve #188.</li>
-<li>Added <code><a href="../reference/sparsity.html">sparsity()</a></code> function to compute the sparsity of a dfm (0.9.8.7).</li>
-<li>Added additional methods for tokenizedTextsHashed objects, including dfm, and more efficient wordstem, toLower, and toUpper (0.9.8.7).</li>
-<li>Added feature co-occurence matrix functions (<code>fcm</code>) (0.9.8.6).</li>
-<li>Added tokenizedTextsHashed methods (0.9.8.6).<br/></li>
-<li>Improved the performance of <code><a href="../reference/selectFeatures.dfm.html">selectFeatures.tokenizedTexts()</a></code>.<br/></li>
+<ul><li>Improved the performance of <code><a href="../reference/selectFeatures.dfm.html">selectFeatures.tokenizedTexts()</a></code>.<br/></li>
 <li>Improved the performance of <code><a href="../reference/cbind.dfm.html">rbind.dfm()</a></code>.<br/></li>
 <li>Added support for different docvars when importing multiple files using <code><a href="../reference/textfile.html">textfile()</a></code>. (#147)<br/></li>
 <li>Added support for comparison dispersion plots in <code><a href="../reference/plot-deprecated.html">plot.kwic()</a></code>. (#146)<br/></li>
@@ -355,7 +416,7 @@
 <li><p>corpus() now converts all hyphen-like characters to simple hyphen</p></li>
 <li><p>segment.corpus() now preserves all existing docvars.</p></li>
 <li><p>corpus documentation now removes the description of the corpus object’s structure since too many users were accessing these internal elements directly, which is strongly discouraged, as we are likely to change the corpus internals (soon and often). Repeat after me: “encapsulation”.</p></li>
-<li><p>Improve robustness of <code><a href="../reference/corpus.html">corpus.VCorpus()</a></code> for constructing a corpus from a tm Corpus object.</p></li>
+<li><p>Improve robustness of <code>corpus.VCorpus()</code> for constructing a corpus from a tm Corpus object.</p></li>
 <li><p>Add UTF-8 preservation to ngrams.cpp.</p></li>
 <li><p>Fix encoding issues for textfile(), improve functionality.</p></li>
 <li><p>Added two data objects: Moby Dick is now available as <code>mobydickText</code>, without needing to access a zipped text file; <code>encodedTextFiles.zip</code> is now a zipped archive of different encodings of (mainly) the UN Declaration of Human Rights, for testing conversions from 8-bit encodings in different (non-Roman) languages.</p></li>
@@ -479,7 +540,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li><p>kwic() has new formals and new functionality, including a completely flexible set of matching for phrases, as well as control over how the texts and matching keyword(s) are tokenized.</p></li>
 <li><p>segment(x, what = “sentence”), and changeunits(x, to = “sentences”) now uses tokenize(x, what = “sentence”). Annoying warning messages now gone.</p></li>
 <li><p>smoother() and weight() formal “smooth” now changed to “smoothing” to avoid clashes with stats::smooth().</p></li>
-<li><p>Updated <code><a href="../reference/corpus.html">corpus.VCorpus()</a></code> to work with recent updates to the <strong>tm</strong> package.</p></li>
+<li><p>Updated <code>corpus.VCorpus()</code> to work with recent updates to the <strong>tm</strong> package.</p></li>
 <li><p>added print method for tokenizedTexts</p></li>
 </ul><div id="bug-fixes-5" class="section level2">
 <h2 class="hasAnchor">
@@ -582,7 +643,7 @@ Code is also much simpler, based on using three new functions that are also avai
 <li><p>texts() and docvars() methods added for corpusSource objects.</p></li>
 <li><p>new methods for <code>tokenizedTexts</code> objects: <code><a href="../reference/dfm.html">dfm()</a></code>, <code><a href="../reference/removeFeatures.html">removeFeatures()</a></code>, and <code><a href="../reference/syllables.html">syllables()</a></code></p></li>
 <li><p><code><a href="../reference/syllables.html">syllables()</a></code> is now much faster, using matching through <code>stringi</code> and merging using <code>data.table</code>.</p></li>
-<li><p>added <code><a href="../reference/readability.html">readability()</a></code> to compute (fast!) readability indexes on a text or corpus</p></li>
+<li><p>added <code>readability()</code> to compute (fast!) readability indexes on a text or corpus</p></li>
 <li><p>tokenize() now creates ngrams of any length, with two new arguments: <code>ngrams =</code> <integer vector=""> and <code>concatenator = "_"</code>. The new arguments to <code><a href="../reference/tokenize.html">tokenize()</a></code> can be passed through from <code><a href="../reference/dfm.html">dfm()</a></code>.</integer></p></li>
 </ul></div>
 <div id="bug-fixes-8" class="section level2">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>print a tokenSequences objects — head.tokenSequences • quanteda</title>
+<title>Distance matrix between documents and/or features — dist-class • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,31 +77,52 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>print a tokenSequences objects</h1>
+    <h1>Distance matrix between documents and/or features</h1>
     </div>
 
     
-    <p>print method for a tokenSequences object</p>
+    <p>These functions compute distance matrix between documents and/or features from a 
+<code><a href='dfm.html'>dfm</a></code> and return a standard <code><a href='http://www.rdocumentation.org/packages/stats/topics/dist'>dist</a></code> object.</p>
     
 
-    <pre><span class='co'># S3 method for tokenSequences</span>
-<span class='fu'>head</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+        
+    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
+
+    <p></p>
+    <p><dl class='dl-horizontal'>
+<dt><code>selection</code></dt><dd>character or character vector of document names or feature 
+labels from the dfm</dd></p>
+    <p><dt><code>n</code></dt><dd>the top <code>n</code> most similar items will be returned.  If n is <code>NULL</code>, return all items.</dd></p>
+    <p><dt><code>margin</code></dt><dd>identifies the margin of the dfm on which similarity will be 
+computed:  <code>documents</code> for documents or <code>features</code> for word/term
+features.</dd></p>
+    <p><dt><code>method</code></dt><dd>the distance measure to be used, options are &quot;euclidean&quot;, &quot;hamming&quot;,
+&quot;Chisquared&quot;,&quot;Chisquared2&quot; and &quot;kullback&quot;, default &quot;euclidean&quot;. More options are avaible 
+in <code><a href='textstat_dist.html'>textstat_simil</a></code></dd></p>
+    <p><dt><code>normalize</code></dt><dd>a deprecated argument retained (temporarily) for legacy 
+reasons.  If you want to compute similarity on a &quot;normalized&quot; dfm objects 
+(e.g. <code>x</code>), wrap it in <code><a href='weight.html'>weight</a>(x, &quot;relFreq&quot;)</code>.</dd></p>
+    <p><dt><code>digits</code></dt><dd>decimal places to display similarity values</dd></p>
+    <p><dt><code>tri</code></dt><dd>whether the upper triangle of the symmetric \(V \times V\) matrix is recorded</dd></p>
+    <p><dt><code>diag</code></dt><dd>whether the diagonal of the distance matrix should be recorded</dd></p>
+    <p><dt><code>dist</code></dt><dd>whether the distance matrix should be converted into an object of class &quot;dist&quot;. Distance matrix 
+created from some methods, such as &quot;kullback&quot;, is not symmetric.</dd>
+</dl></p>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a tokenSequences object created by <a href='findSequences.html'>findSequences</a></dd>
-      <dt>...</dt>
-      <dd>further arguments passed to base print method</dd>
-    </dl>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><a href='dfm.html'>dfm</a></p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#slots">Slots</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+          </ul>
 
   </div>
 </div>

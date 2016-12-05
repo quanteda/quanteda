@@ -81,44 +81,39 @@
     </div>
 
     
-    <p>Return the count of sentences in a corpus or character.</p>
+    <p>Return the count of sentences in a corpus or character object.</p>
     
 
-    <pre><span class='fu'>nsentence</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for character</span>
-<span class='fu'>nsentence</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for corpus</span>
-<span class='fu'>nsentence</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>nsentence</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
       <dd>texts or corpus whose sentences will be counted</dd>
       <dt>...</dt>
-      <dd>additional arguments passed to <code><a href='tokenize.html'>tokenize</a></code></dd>
+      <dd>additional arguments passed to <code><a href='tokens.html'>tokens</a></code></dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>scalar count(s) of the total sentences per text</p>
+    <p>count(s) of the total sentences per text</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>`nsentence()` relies on the boundaries definitions in the <span class="pkg">stringi</span>
   package (see <a href='http://www.rdocumentation.org/packages/stringi/topics/stri_opts_brkiter'>stri_opts_brkiter</a>).  It does not count
   sentences correctly if the text has been transformed to lower case, and for
-  this reason `nsentence()` will stop with an error if it detects all
+  this reason <code>nsentence</code> will issue a warning if it detects all
   lower-cased text.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># simple example</span>
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>text1</span> <span class='kw'>=</span> <span class='st'>"This is a sentence: second part of first sentence."</span>,
-         <span class='kw'>text2</span> <span class='kw'>=</span> <span class='st'>"A word. Repeated repeated."</span>)
-<span class='fu'>nsentence</span>(<span class='no'>txt</span>)</div><div class='output co'>#&gt; text1 text2 
-#&gt;     1     2 </div></pre>
+         <span class='kw'>text2</span> <span class='kw'>=</span> <span class='st'>"A word. Repeated repeated."</span>,
+         <span class='kw'>text3</span> <span class='kw'>=</span> <span class='st'>"Mr. Jones has a PhD from the LSE.  Second sentence."</span>)
+<span class='fu'>nsentence</span>(<span class='no'>txt</span>)</div><div class='output co'>#&gt; text1 text2 text3 
+#&gt;     1     2     2 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>List key words in context from a text or a corpus of texts. — kwic • quanteda</title>
+<title>locate keywords-in-context — kwic • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,7 +77,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>List key words in context from a text or a corpus of texts.</h1>
+    <h1>locate keywords-in-context</h1>
     </div>
 
     
@@ -91,33 +91,18 @@ delimiters.)</p>
     <pre><span class='fu'>kwic</span>(<span class='no'>x</span>, <span class='no'>keywords</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
   <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
-<span class='co'># S3 method for character</span>
-<span class='fu'>kwic</span>(<span class='no'>x</span>, <span class='no'>keywords</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>,
-  <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for corpus</span>
-<span class='fu'>kwic</span>(<span class='no'>x</span>, <span class='no'>keywords</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>,
-  <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for tokens</span>
-<span class='fu'>kwic</span>(<span class='no'>x</span>, <span class='no'>keywords</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for tokenizedTexts</span>
-<span class='fu'>kwic</span>(<span class='no'>x</span>, <span class='no'>keywords</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>,
-  <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
-
 <span class='fu'>is.kwic</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>a text character, quanteda corpus, or tokenizedTexts object</dd>
+      <dd>a character, <a href='corpus.html'>corpus</a>, or <a href='tokens.html'>tokens</a> object</dd>
       <dt>keywords</dt>
-      <dd>A keyword pattern or phrase consisting of multiple keyword 
+      <dd>a keyword pattern or phrase consisting of multiple keyword 
 patterns, possibly including punctuation.  If a phrase, <code>keywords</code> 
 will be tokenized using the <code>...</code> options.</dd>
       <dt>window</dt>
-      <dd>The number of context words to be displayed around the keyword.</dd>
+      <dd>the number of context words to be displayed around the keyword.</dd>
       <dt>valuetype</dt>
       <dd>how to interpret keyword expressions: <code>&quot;glob&quot;</code> for 
 &quot;glob&quot;-style wildcard expressions; <code>&quot;regex&quot;</code> for regular expressions; 
@@ -127,8 +112,8 @@ be lowercased prior to matching.</dd>
       <dt>case_insensitive</dt>
       <dd>match without respect to case if <code>TRUE</code></dd>
       <dt>...</dt>
-      <dd>additional arguments passed to <a href='tokenize.html'>tokenize</a>, for applicable 
-methods</dd>
+      <dd>additional arguments passed to <a href='tokens.html'>tokens</a>, for applicable 
+object types</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -209,7 +194,8 @@ methods</dd>
 #&gt;  [1901-McKinley, 2299:2300] ] the United States. By                      
 #&gt;  [1901-McKinley, 2413:2414] ] us shall make it no                        
 #&gt; [1933-Roosevelt, 1851:1852] ] the emergency, as great                    
-#&gt;      [1977-Carter, 927:928] ] poverty, ignorance, and                    </div><div class='input'><span class='no'>mykwic</span> <span class='kw'>&lt;-</span> <span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"provident*"</span>)
+#&gt;      [1977-Carter, 927:928] ] poverty, ignorance, and                    </div><div class='input'>
+<span class='no'>mykwic</span> <span class='kw'>&lt;-</span> <span class='fu'>kwic</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"provident*"</span>)
 <span class='fu'>is.kwic</span>(<span class='no'>mykwic</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is.kwic</span>(<span class='st'>"Not a kwic"</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

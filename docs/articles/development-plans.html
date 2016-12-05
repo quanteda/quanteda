@@ -199,7 +199,7 @@ These steps don&rsquo;t necessarily require the processing steps above.
 <th align="center">default</th>
 <th align="center">other</th>
 <th align="center">function</th>
-</tr></thead><tbody><tr class="odd"><td align="right">keepAcronyms</td>
+</tr></thead><tbody><tr class="odd"><td align="right">keep_acronyms</td>
 <td align="center">FALSE</td>
 <td align="center">TRUE</td>
 <td align="center">toLower</td>
@@ -342,19 +342,19 @@ mydfm2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.
 <li><strong>DONE</strong> <code>syllables.tokenizedTexts</code></li>
 </ul></li>
 <li><strong>DONE</strong> <code>removeFeatures</code> now much faster, based on fixed binary matches and <code>stringi</code> character classes</li>
-<li><strong>DONE</strong> added readability statistics through <code><a href="../reference/readability.html">readability()</a></code></li>
+<li><strong>DONE</strong> added readability statistics through <code>readability()</code></li>
 <li><strong>DONE</strong> added <code><a href="../reference/nsentence.html">nsentence()</a></code></li>
 <li><strong>DONE</strong> <code>ngrams</code> added as an option to <code><a href="../reference/tokenize.html">tokenize()</a></code></li>
 <li><strong>DONE</strong> <code>dfm</code> objects need a subset method for selection rows, not just columns</li>
 <li><strong>DONE</strong> rewrite <code><a href="../reference/segment.html">segment()</a></code> to make use of new tokenizer that segments on sentences</li>
-<li><strong>DONE</strong> make sure <code><a href="../reference/corpus.html">corpus.VCorpus()</a></code> is fully working</li>
+<li><strong>DONE</strong> make sure <code>corpus.VCorpus()</code> is fully working</li>
 <li><strong>DONE</strong> rewrite <code>kwic</code> to use new tokenizer, and to allow searches for multi-word regular expressions</li>
 </ul></div>
 <div id="to-do-remaining" class="section level2">
 <h2 class="hasAnchor"><html><body><a href="#to-do-remaining" class="anchor"> </a></body></html>To Do Remaining</h2>
 <ul><li>fix <code><a href="../reference/collocations.html">collocations()</a></code> behaviour, changed since new <code><a href="../reference/tokenize.html">tokenize()</a></code> (<strong>IN PROGRESS</strong>)</li>
 <li><code><a href="../reference/weight.html">weight()</a></code> breaks for dfms with all zero count documents, for instance those that have been <code><a href="../reference/trim.html">trim()</a></code>med</li>
-<li>rewrite <code><a href="../reference/lexdiv.html">lexdiv()</a></code> to make the API similar to <code><a href="../reference/readability.html">readability()</a></code> and to use data.table</li>
+<li>rewrite <code><a href="../reference/deprecated-textstat.html">lexdiv()</a></code> to make the API similar to <code>readability()</code> and to use data.table</li>
 <li>integrate <code>collocations</code> code for bigrams and trigrams and reduce the internal memory usage</li>
 <li><code>dfm</code> documentation needs to group arguments into sections and describe how these correspond to the logical workflow</li>
 <li>need to figure out how to exclude specific signatures (especially S4 signatures) from the man (.Rd) pages. For instance `?&ldquo;dfm-class&rdquo; has far more details on methods signatures than any user will find useful.</li>

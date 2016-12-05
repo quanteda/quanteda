@@ -6,11 +6,6 @@ Quantitative Analysis of Textual Data
 
 [![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) ![Downloads](http://cranlogs.r-pkg.org/badges/quanteda) ![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
 
-Quantitative Analysis of Textual Data
-=====================================
-
-[![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) ![Downloads](http://cranlogs.r-pkg.org/badges/quanteda) ![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
-
 **quanteda** v0.9.9 under development
 -------------------------------------
 
@@ -104,14 +99,6 @@ Demonstration
 
 ``` r
 library(quanteda)
-## 
-## This data.table install has not detected OpenMP support. It will work but slower in single threaded mode.
-## quanteda version 0.9.8.9022
-## 
-## Attaching package: 'quanteda'
-## The following object is masked from 'package:base':
-## 
-##     sample
 
 # create a corpus from the immigration texts from UK party platforms
 uk2010immigCorpus <- 
@@ -134,8 +121,8 @@ summary(uk2010immigCorpus)
 ##           SNP    90    136         4          SNP
 ##          UKIP   346    739        27         UKIP
 ## 
-## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Mon Dec  5 10:57:51 2016
+## Source:  /Users/akitaka/Dropbox/KB_Projects/r_package_development/quanteda/* on x86_64 by akitaka
+## Created: Mon Dec  5 12:27:38 2016
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context

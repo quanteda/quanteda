@@ -84,15 +84,15 @@
     <p>Data sets used for mainly internal purposes by the <span class="pkg">quanteda</span> package.</p>
     
 
-    <pre><span class='no'>data_char_wordlists</span>
+    <pre><span class='no'>data_int_syllables</span>
 
 <span class='no'>data_char_stopwords</span>
 
-<span class='no'>data_int_syllables</span></pre>
+<span class='no'>data_char_wordlists</span></pre>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>An object of class <code>list</code> of length 2.</p>
+    <p>An object of class <code>integer</code> of length 133245.</p>
     
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
@@ -106,6 +106,16 @@ different languages (see <a href = 'http://snowballstem.org/projects.html'>http:
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p><code>data_int_syllables</code> provides an English-language syllables dictionary; it is
+an integer vector whose element names correspond to English words. Built from
+the freely available CMU pronunciation dictionary at 
+<code>http://www.speech.cs.cmu.edu/cgi-bin/cmudict</code>.</p>
+    <p><code>data_char_stopwords</code> provides stopword lists in multiple
+languages; it is a named list of characters with the lowercase language name
+(in English) as the name of each list element.</p>
+    <p>Supported languages are Arabic, Danish, Dutch, English, Finnish, French,
+German, Greek, Hungarian, Italian, Norwegian, Portuguese, Russian, Spanish,
+and Swedish.</p>
     <p><code>data_char_wordlists</code> provides word lists used in some readability indexes; 
 it is a named list of character vectors where each list element 
 corresponds to a different readability index.</p>
@@ -114,16 +124,6 @@ corresponds to a different readability index.</p>
 <dt><code>DaleChall</code></dt><dd>The long Dale-Chall list of 3,000 familiar (English) words needed to compute the Dale-Chall Readability Formula.</dd>
 <dt><code>Spache</code></dt><dd>The revised Spache word list (see Klare 1975, 73) needed to compute the Spache Revised Formula of readability (Spache 1974.</dd>
 </dl></p>
-    <p><code>data_char_stopwords</code> provides stopword lists in multiple
-languages; it is a named list of characters with the lowercase language name
-(in English) as the name of each list element.</p>
-    <p>Supported languages are Arabic, Danish, Dutch, English, Finnish, French,
-German, Greek, Hungarian, Italian, Norwegian, Portuguese, Russian, Spanish,
-and Swedish.</p>
-    <p><code>data_int_syllables</code> provides an English-language syllables dictionary; it is
-an integer vector whose element names correspond to English words. Built from
-the freely available CMU pronunciation dictionary at 
-<code>http://www.speech.cs.cmu.edu/cgi-bin/cmudict</code>.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
