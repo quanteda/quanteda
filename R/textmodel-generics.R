@@ -14,11 +14,10 @@
 #' matrix.
 #' 
 #' Available types currently include...
-#' @slot dfm a \link{dfm-class} document-feature matrix
 #' @slot x  the dfm on which the wordscores model was called
 #' @slot y  supervised labels (for supervised methods only)
 #' @slot call  the function call that fitted the model
-#' @slot method the type of textmodel, e.g. wordfish, wordscores, NB
+#' @slot method the type of textmodel, e.g. wordfish, wordscores, NB-
 #' @name textmodel_fitted-class
 #' @keywords internal textmodel
 #' @export
