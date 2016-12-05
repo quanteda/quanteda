@@ -11,8 +11,8 @@ textmodel_NB(x, y, smooth = 1, prior = c("uniform", "docfreq", "termfreq"),
 \item{x}{the dfm on which the model will be fit.  Does not need to contain 
 only the training documents.}
 
-\item{y}{vector of training labels associated with each document identified
-in \code{train}.  (These will be converted to factors if not already
+\item{y}{vector of training labels associated with each document identified 
+in \code{train}.  (These will be converted to factors if not already 
 factors.)}
 
 \item{smooth}{smoothing parameter for feature counts by class}
@@ -52,6 +52,10 @@ Currently working for vectors of texts -- not specially defined for a dfm.
 }
 \details{
 This naive Bayes model works on word counts, with smoothing.
+}
+\section{Predict Methods}{
+ A \code{predict} method is also available for a 
+  fitted Naive Bayes object, see \code{\link{predict.textmodel_NB_fitted}}.
 }
 \examples{
 ## Example from 13.1 of _An Introduction to Information Retrieval_

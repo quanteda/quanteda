@@ -1,4 +1,5 @@
-#' @rdname textmodel_fitted-class 
+#' @rdname textmodel-internal
+#' @keywords internal textmodel
 #' @export
 setClass("textmodel_wordfish_fitted",
          slots = c(priors = "numeric", 
@@ -17,7 +18,8 @@ setClass("textmodel_wordfish_fitted",
                    se.theta = "numeric"),
          contains = "textmodel_fitted")
 
-#' @rdname textmodel_fitted-class
+#' @rdname textmodel-internal
+#' @keywords internal
 #' @export
 setClass("textmodel_wordfish_predicted",
          slots = c(newdata = "dfm", level = "numeric",
@@ -173,7 +175,7 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
 }
 
 
-#' @rdname textmodel_wordfish
+#' @rdname textmodel-internal
 #' @param x for print method, the object to be printed
 #' @param n max rows of dfm to print
 #' @param ... additional arguments passed to \code{\link{print}}
@@ -201,12 +203,12 @@ print.textmodel_wordfish_fitted <- function(x, n=30L, ...) {
     }
 }
 
-#' @rdname textmodel_wordfish
+#' @rdname textmodel-internal
 #' @param object wordfish fitted or predicted object to be shown
 #' @export
 setMethod("show", signature(object = "textmodel_wordfish_fitted"), function(object) print(object))
 
-#' @rdname textmodel_wordfish
+#' @rdname textmodel-internal
 #' @export
 setMethod("show", signature(object = "textmodel_wordfish_predicted"), function(object) print(object))
 
