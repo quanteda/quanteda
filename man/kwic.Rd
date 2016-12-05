@@ -3,36 +3,21 @@
 \name{kwic}
 \alias{is.kwic}
 \alias{kwic}
-\alias{kwic.character}
-\alias{kwic.corpus}
-\alias{kwic.tokenizedTexts}
-\alias{kwic.tokens}
-\title{List key words in context from a text or a corpus of texts.}
+\title{locate keywords-in-context}
 \usage{
 kwic(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, ...)
 
-\method{kwic}{character}(x, keywords, window = 5, valuetype = c("glob",
-  "regex", "fixed"), case_insensitive = TRUE, ...)
-
-\method{kwic}{corpus}(x, keywords, window = 5, valuetype = c("glob",
-  "regex", "fixed"), case_insensitive = TRUE, ...)
-
-\method{kwic}{tokens}(x, keywords, ...)
-
-\method{kwic}{tokenizedTexts}(x, keywords, window = 5, valuetype = c("glob",
-  "regex", "fixed"), case_insensitive = TRUE, ...)
-
 is.kwic(x)
 }
 \arguments{
-\item{x}{a text character, quanteda corpus, or tokenizedTexts object}
+\item{x}{a character, \link{corpus}, or \link{tokens} object}
 
-\item{keywords}{A keyword pattern or phrase consisting of multiple keyword 
+\item{keywords}{a keyword pattern or phrase consisting of multiple keyword 
 patterns, possibly including punctuation.  If a phrase, \code{keywords} 
 will be tokenized using the \code{...} options.}
 
-\item{window}{The number of context words to be displayed around the keyword.}
+\item{window}{the number of context words to be displayed around the keyword.}
 
 \item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions; 
@@ -42,8 +27,8 @@ be lowercased prior to matching.}
 
 \item{case_insensitive}{match without respect to case if \code{TRUE}}
 
-\item{...}{additional arguments passed to \link{tokenize}, for applicable 
-methods}
+\item{...}{additional arguments passed to \link{tokens}, for applicable 
+object types}
 }
 \value{
 A kwic object classed data.frame, with the document name 
@@ -66,6 +51,7 @@ head(kwic(data_char_inaugural, "security", window = 3, valuetype = "fixed"))
 
 kwic(data_corpus_inaugural, "war against")
 kwic(data_corpus_inaugural, "war against", valuetype = "regex")
+
 mykwic <- kwic(data_corpus_inaugural, "provident*")
 is.kwic(mykwic)
 is.kwic("Not a kwic")

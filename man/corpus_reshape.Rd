@@ -30,7 +30,7 @@ collection of documents into a collection of sentences, for instance.
 mycorpus <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
                      textwo = "Premiere phrase.  Deuxieme phrase."), 
                    docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
-                   notes = "This is a simple example to show how corpus_reshape() works.")
+                   metacorpus = list(notes = "Example showing how corpus_reshape() works."))
 summary(mycorpus)
 summary(corpus_reshape(mycorpus, to = "sentences"), showmeta=TRUE)
 

@@ -3,7 +3,7 @@
 
 str(data_char_ukimmig2010)
 # create a corpus from immigration texts
-immigCorpus <- corpus(data_char_ukimmig2010, notes="Created as part of a demo.")
+immigCorpus <- corpus(data_char_ukimmig2010, metacorpus = list(notes = "Created as part of a demo."))
 docvars(immigCorpus) <- data.frame(party = docnames(immigCorpus), year = 2010)
 summary(immigCorpus)
 

@@ -2,32 +2,14 @@
 % Please edit documentation in R/collocations.R
 \name{collocations}
 \alias{collocations}
-\alias{collocations.character}
-\alias{collocations.corpus}
-\alias{collocations.tokenizedTexts}
-\alias{collocations.tokens}
-\title{Detect collocations from text}
+\title{detect collocations from text}
 \usage{
-collocations(x, ...)
-
-\method{collocations}{corpus}(x, method = c("lr", "chi2", "pmi", "dice",
-  "all"), size = 2, n = NULL, toLower = TRUE,
-  punctuation = c("dontspan", "ignore", "include"), ...)
-
-\method{collocations}{character}(x, method = c("lr", "chi2", "pmi", "dice",
-  "all"), size = 2, n = NULL, toLower = TRUE,
-  punctuation = c("dontspan", "ignore", "include"), ...)
-
-\method{collocations}{tokens}(x, ...)
-
-\method{collocations}{tokenizedTexts}(x, method = c("lr", "chi2", "pmi",
-  "dice", "all"), size = 2, n = NULL, toLower = FALSE,
-  punctuation = c("dontspan", "ignore", "include"), ...)
+collocations(x, method = c("lr", "chi2", "pmi", "dice", "all"), size = 2,
+  n = NULL, toLower = TRUE, punctuation = c("dontspan", "ignore",
+  "include"), ...)
 }
 \arguments{
-\item{x}{a text, a character vector of texts, or a corpus}
-
-\item{...}{additional parameters passed to \code{\link{tokenize}}}
+\item{x}{a character, \link{corpus}, \link{tokens} object}
 
 \item{method}{association measure for detecting collocations.  Let \eqn{i} 
 index documents, and \eqn{j} index features, \eqn{n_{ij}} refers to 
@@ -60,10 +42,12 @@ returned.}
 \item{\code{include}}{do not treat punctuation characters specially, meaning that collocations will include
 punctuation characters as tokens}
 }}
+
+\item{...}{additional parameters passed to \code{\link{tokens}}}
 }
 \value{
-A data.table of collocations, their frequencies, and the computed 
-  association measure(s).
+a collocations class object: a specially classed data.table consisting 
+  of collocations, their frequencies, and the computed association measure(s).
 }
 \description{
 Detects collocations from texts or a corpus, returning a data.frame of

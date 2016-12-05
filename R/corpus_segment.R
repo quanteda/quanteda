@@ -115,8 +115,8 @@ corpus_segment <- function(x, what = c("tokens", "sentences", "paragraphs", "tag
     names(segTxt) <- paste0(names(segTxt), ".")
     
     newCorpus <- corpus(unlist(segTxt),
-                        source = metacorpus(x, "source"),
-                        notes = paste0("corpus_segment(", match.call(), ")"))
+                        metacorpus = list(source = metacorpus(x, "source"),
+                                          notes = paste0("corpus_segment(", match.call(), ")")))
     
     if (what == "tags") {
         tagIndex <- gregexpr(delimiter, cattxt <- paste0(texts(x), collapse = ""), 

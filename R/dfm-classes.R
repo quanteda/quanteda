@@ -119,15 +119,15 @@ head.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
     return(invisible(x[1:min(ndoc(x), n), 1:min(nfeature(x), nfeature)]))
 }
 
-#' @export
-#' @rdname head.dfm
-setMethod("head", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) 
-    head.dfm(x, n = n, nfeature = nfeature, ...))
-
-#' @export
-#' @rdname head.dfm
-setMethod("tail", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) 
-    tail.dfm(x, n = n, nfeature = nfeature, ...))
+# #' @export
+# #' @rdname head.dfm
+# setMethod("head", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) 
+#     head.dfm(x, n = n, nfeature = nfeature, ...))
+# 
+# #' @export
+# #' @rdname head.dfm
+# setMethod("tail", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) 
+#     tail.dfm(x, n = n, nfeature = nfeature, ...))
 
 
 #' @export
