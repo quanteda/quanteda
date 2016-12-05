@@ -15,15 +15,13 @@ Available types currently include...
 \section{Slots}{
 
 \describe{
-\item{\code{dfm}}{a \link{dfm-class} document-feature matrix}
-
 \item{\code{x}}{the dfm on which the wordscores model was called}
 
 \item{\code{y}}{supervised labels (for supervised methods only)}
 
 \item{\code{call}}{the function call that fitted the model}
 
-\item{\code{method}}{the type of textmodel, e.g. wordfish, wordscores, NB}
+\item{\code{method}}{the type of textmodel, e.g. wordfish, wordscores, NB-}
 }}
 \keyword{internal}
 \keyword{textmodel}
