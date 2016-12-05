@@ -91,9 +91,10 @@ devtools::<span class="kw">install_github</span>(<span class="st">"kbenoit/quant
 <h2 class="hasAnchor"><a href="#example-usage" class="anchor"> </a>Example usage</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)
 <span class="co"># create a corpus from the immigration texts from UK party platforms</span>
-uk2010immigCorpus &lt;-<span class="st"> </span><span class="kw"><a href="reference/corpus.html">corpus</a></span>(data_char_ukimmig2010,
-                            <span class="dt">docvars =</span> <span class="kw">data.frame</span>(<span class="dt">party=</span><span class="kw">names</span>(data_char_ukimmig2010)),
-                            <span class="dt">notes =</span> <span class="st">"Immigration-related sections of 2010 UK party manifestos"</span>)
+uk2010immigCorpus &lt;-<span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="reference/corpus.html">corpus</a></span>(data_char_ukimmig2010,
+           <span class="dt">docvars =</span> <span class="kw">data.frame</span>(<span class="dt">party =</span> <span class="kw">names</span>(data_char_ukimmig2010)),
+           <span class="dt">metacorpus =</span> <span class="kw">list</span>(<span class="dt">notes =</span> <span class="st">"Immigration-related sections of 2010 UK party manifestos"</span>))
 uk2010immigCorpus
 <span class="co">#&gt; Corpus consisting of 9 documents and 1 docvar.</span>
 <span class="kw">summary</span>(uk2010immigCorpus)
@@ -110,8 +111,8 @@ uk2010immigCorpus
 <span class="co">#&gt;           SNP    90    136         4          SNP</span>
 <span class="co">#&gt;          UKIP   346    739        27         UKIP</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Source:  /Users/akitaka/Dropbox/KB_Projects/r_package_development/quanteda/docs/* on x86_64 by akitaka</span>
-<span class="co">#&gt; Created: Fri Dec  2 16:59:05 2016</span>
+<span class="co">#&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/* on x86_64 by kbenoit</span>
+<span class="co">#&gt; Created: Mon Dec  5 08:43:34 2016</span>
 <span class="co">#&gt; Notes:   Immigration-related sections of 2010 UK party manifestos</span>
 
 <span class="co"># key words in context for "deport", 3 words of context</span>
