@@ -1,7 +1,9 @@
 library(profvis) # for profiling
 library(tokenizers)
+library(quanteda)
 
 txt <- readLines('~/Documents/Brexit/Analysis/all_bbc_2015.txt') # 80MB
+txt <- readLines('~/Documents/LSS/Data/Ukracine crisis/ua_3agency.txt') # 660MB
 
 microbenchmark::microbenchmark(
     tokenizers = as.tokens(tokenize_ngrams(txt, n = 2)),
@@ -18,7 +20,6 @@ microbenchmark::microbenchmark(
 )
 
 tok <- tokens(txt, removeSymbols = TRUE, removeNumbers = TRUE)
-
 
 microbenchmark::microbenchmark(
     ngrams(tok, n=2, thread=1),
