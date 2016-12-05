@@ -67,26 +67,29 @@ void skip(Text &tokens,
           Ngram ngram,
           Ngrams &ngrams,
           tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> &map_ngram,
-          int pos_tokens, int &pos_ngrams) {
+          int pos_ngram, int &pos_ngrams) {
     
-    ngram[pos_tokens] = tokens[start];
-    pos_tokens++;
     
-    //Rcout << "Token " << tokens[start] << "\n";
-    if(pos_tokens < n){
+    ngram[pos_ngram] = tokens[start];
+    pos_ngram++;
+    
+    Rcout << "Token " << tokens[start] << "\n";
+    
+    if(pos_ngram < n){
         for (int j = 0; j < skips.size(); j++){
             int next = start + skips[j];
             if(next < 0 || tokens.size() - 1 < next) break;
             if(tokens[next] == 0) break; // Skip padding
-            //Rcout << "Join " << tokens[start] << " at " << pos_tokens << " " << next << "\n";
-            skip(tokens, next, n, skips, ngram, ngrams, map_ngram, pos_tokens, pos_ngrams);
+            //Rcout << "Join " << tokens[start] << " at " << start << " with " << next << "\n";
+            skip(tokens, next, n, skips, ngram, ngrams, map_ngram, pos_ngram, pos_ngrams);
         }
     }else{
-        
-        ngrams[pos_ngrams] = ngram_id(ngram, map_ngram);
+        //ngrams[pos_ngrams] = ngram_id(ngram, map_ngram);
+        //ngrams[pos_ngrams] = 1;
+        //ngrams.push_back(ngram_id(ngram, map_ngram));
         
         //Rcout << "Add " << ngrams[pos_ngrams] << " at " << pos_ngrams << "/" << ngrams.size() << "\n";
-        pos_tokens = 0;
+        pos_ngram = 0;
         pos_ngrams++;
     }
 }
@@ -97,7 +100,7 @@ Ngrams skipgram(Text tokens,
                 std::vector<int> skips,
                 tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> &map_ngram) {
     
-    int pos_tokens = 0; // position in tokens
+    int pos_ngram = 0; // position in ngram
     int pos_ngrams = 0; // position in ngrams
     
     // Pre-allocate memory
@@ -106,6 +109,8 @@ Ngrams skipgram(Text tokens,
         size_reserve += std::pow(skips.size(), ns[k]) * tokens.size();
     }
     Ngrams ngrams(size_reserve);
+    //Ngrams ngrams;
+    //ngrams.reserve(size_reserve);
     
     // Generate skipgrams recursively
     for (int k = 0; k < ns.size(); k++) {
@@ -113,7 +118,7 @@ Ngrams skipgram(Text tokens,
         Ngram ngram(n);
         for (int start = 0; start < tokens.size() - (n - 1); start++) {
             if(tokens[start] == 0) continue; // skip padding
-            skip(tokens, start, n, skips, ngram, ngrams, map_ngram, pos_tokens, pos_ngrams); // Get ngrams as reference
+            skip(tokens, start, n, skips, ngram, ngrams, map_ngram, pos_ngram, pos_ngrams); // Get ngrams as reference
         }
     }
     ngrams.resize(pos_ngrams);
@@ -181,6 +186,7 @@ List qatd_cpp_ngram_mt_list(List texts_,
     dev::start_timer("Token generation", timer);
     // Create character tokens from unordered_map
     std::vector<std::string> types_ngram(map_ngram.size());
+    /*
     for (std::pair<Ngram, unsigned int> it : map_ngram){
         std::string type_ngram = types[it.first[0] - 1];
         for(int i = 1; i < it.first.size(); i++){
@@ -188,6 +194,7 @@ List qatd_cpp_ngram_mt_list(List texts_,
         }
         types_ngram[it.second - 1] = type_ngram;
     }
+     */
     dev::stop_timer("Token generation", timer);
     
     // Return IDs as attribute
@@ -205,7 +212,7 @@ List qatd_cpp_ngram_mt_list(List texts_,
 #txt <- readLines('~/Documents/Brexit/Analysis/all_bbc_2015.txt') # 80MB
 #tok <- quanteda::tokens(txt)
 
-RcppParallel::setThreadOptions(2)
+RcppParallel::setThreadOptions(1)
 res <- qatd_cpp_ngram_mt_list(tok, attr(tok, 'types'), "-", 2, 1)
 str(res)
 
