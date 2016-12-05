@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>apply a dictionary to a tokens object — applyDictionary2 • quanteda</title>
+<title>apply a dictionary to a tokens object — tokens_lookup • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -81,17 +81,17 @@
     </div>
 
     
-    <p>Faster version of applyDictionary for hashed tokens objects created by
-<code><a href='tokens.html'>tokens</a></code>.</p>
+    <p>Convert tokens into equivalence classes defined by values of a dictionary 
+object.</p>
     
 
-    <pre><span class='fu'>applyDictionary2</span>(<span class='no'>x</span>, <span class='no'>dictionary</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
+    <pre><span class='fu'>tokens_lookup</span>(<span class='no'>x</span>, <span class='no'>dictionary</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
   <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>object to which dictionary or thesaurus will be supplied</dd>
+      <dd>tokens object to which dictionary or thesaurus will be supplied</dd>
       <dt>dictionary</dt>
       <dd>the <a href='dictionary.html'>dictionary</a>-class object that will be applied to 
 <code>x</code></dd>
@@ -111,43 +111,39 @@ uppercase to distinguish them from other features</dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>)
+    <pre class="examples"><div class='input'><span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])
 <span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"united states"</span>,
                    <span class='kw'>law</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>'law*'</span>, <span class='st'>'constitution'</span>),
                    <span class='kw'>freedom</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>'free*'</span>, <span class='st'>'libert*'</span>)))
-<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'>applyDictionary2</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='st'>'glob'</span>, <span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Searching words in &quot;country&quot;...</span></div><div class='output co'>#&gt; <span class='message'>Searching words in &quot;law&quot;...</span></div><div class='output co'>#&gt; <span class='message'>Searching words in &quot;freedom&quot;...</span></div><div class='input'><span class='fu'>head</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>toks2</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 3 features (15.2% sparse).
-#&gt; (showing first 6 documents and first 3 features)
+<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='st'>'glob'</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; <span class='message'>Searching words in &quot;country&quot;...</span></div><div class='output co'>#&gt; <span class='message'>Searching words in &quot;law&quot;...</span></div><div class='output co'>#&gt; <span class='message'>Searching words in &quot;freedom&quot;...</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 3 features (20% sparse).
+#&gt; 5 x 3 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;                  features
 #&gt; docs              country law freedom
 #&gt;   1789-Washington       2   1       6
 #&gt;   1793-Washington       0   1       0
 #&gt;   1797-Adams            3  10       6
 #&gt;   1801-Jefferson        0   6      11
-#&gt;   1805-Jefferson        1  13       6
-#&gt;   1809-Madison          2   2       5</div><div class='input'>
+#&gt;   1805-Jefferson        1  13       6</div><div class='input'>
 <span class='no'>dict_fix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"united states"</span>,
-                       <span class='kw'>law</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>'law'</span>, <span class='st'>'constitution'</span>),
-                       <span class='kw'>freedom</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>'freedom'</span>, <span class='st'>'liberty'</span>)))
-<span class='fu'>head</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='applyDictionary.html'>applyDictionary</a></span>(<span class='no'>toks</span>, <span class='no'>dict_fix</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'fixed'</span>, <span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 3 features (21.1% sparse).
-#&gt; (showing first 6 documents and first 3 features)
+                       <span class='kw'>law</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'law'</span>, <span class='st'>'constitution'</span>),
+                       <span class='kw'>freedom</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'freedom'</span>, <span class='st'>'liberty'</span>)))
+<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='applyDictionary.html'>applyDictionary</a></span>(<span class='no'>toks</span>, <span class='no'>dict_fix</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'fixed'</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 3 features (20% sparse).
+#&gt; 5 x 3 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;                  features
 #&gt; docs              country law freedom
 #&gt;   1789-Washington       2   1       1
 #&gt;   1793-Washington       0   1       0
 #&gt;   1797-Adams            3   8       3
 #&gt;   1801-Jefferson        0   6       7
-#&gt;   1805-Jefferson        1   9       5
-#&gt;   1809-Madison          2   2       3</div><div class='input'><span class='fu'>head</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>applyDictionary2</span>(<span class='no'>toks</span>, <span class='no'>dict_fix</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'fixed'</span>, <span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)))</div><div class='output co'>#&gt; <span class='message'>Searching words in &quot;country&quot;...</span></div><div class='output co'>#&gt; <span class='message'>Searching words in &quot;law&quot;...</span></div><div class='output co'>#&gt; <span class='message'>Searching words in &quot;freedom&quot;...</span></div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 3 features (21.1% sparse).
-#&gt; (showing first 6 documents and first 3 features)
+#&gt;   1805-Jefferson        1   9       5</div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict_fix</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'fixed'</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 3 features (20% sparse).
+#&gt; 5 x 3 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;                  features
 #&gt; docs              country law freedom
 #&gt;   1789-Washington       2   1       1
 #&gt;   1793-Washington       0   1       0
 #&gt;   1797-Adams            3   8       3
 #&gt;   1801-Jefferson        0   6       7
-#&gt;   1805-Jefferson        1   9       5
-#&gt;   1809-Madison          2   2       3</div></pre>
+#&gt;   1805-Jefferson        1   9       5</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

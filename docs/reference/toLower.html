@@ -84,16 +84,16 @@
     <p>Convert texts or tokens to lower (or upper) case</p>
     
 
-    <pre><span class='fu'>toLower</span>(<span class='no'>x</span>, <span class='kw'>keepAcronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+    <pre><span class='fu'>toLower</span>(<span class='no'>x</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for character</span>
-<span class='fu'>toLower</span>(<span class='no'>x</span>, <span class='kw'>keepAcronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='fu'>toLower</span>(<span class='no'>x</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for NULL</span>
 <span class='fu'>toLower</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for tokenizedTexts</span>
-<span class='fu'>toLower</span>(<span class='no'>x</span>, <span class='kw'>keepAcronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='fu'>toLower</span>(<span class='no'>x</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for tokens</span>
 <span class='fu'>toLower</span>(<span class='no'>x</span>, <span class='no'>...</span>)
@@ -102,7 +102,7 @@
 <span class='fu'>toUpper</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for corpus</span>
-<span class='fu'>toLower</span>(<span class='no'>x</span>, <span class='kw'>keepAcronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='fu'>toLower</span>(<span class='no'>x</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='fu'>toUpper</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
@@ -122,7 +122,7 @@
     <dl class="dl-horizontal">
       <dt>x</dt>
       <dd>texts to be lower-cased (or upper-cased)</dd>
-      <dt>keepAcronyms</dt>
+      <dt>keep_acronyms</dt>
       <dd>if <code>TRUE</code>, do not lowercase any all-uppercase words.
 Only applies to <code>toLower</code>.</dd>
       <dt>...</dt>
@@ -144,7 +144,7 @@ Only applies to <code>toLower</code>.</dd>
 <span class='fu'>toLower</span>(<span class='no'>test1</span>)</div><div class='output co'>#&gt;                                               text1 
 #&gt; &quot;england and france are members of nato and unesco&quot; 
 #&gt;                                               text2 
-#&gt;                    &quot;nasa sent a rocket into space.&quot; </div><div class='input'><span class='fu'>toLower</span>(<span class='no'>test1</span>, <span class='kw'>keepAcronyms</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;                                               text1 
+#&gt;                    &quot;nasa sent a rocket into space.&quot; </div><div class='input'><span class='fu'>toLower</span>(<span class='no'>test1</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;                                               text1 
 #&gt; &quot;england and france are members of NATO and UNESCO&quot; 
 #&gt;                                               text2 
 #&gt;                    &quot;NASA sent a rocket into space.&quot; </div><div class='input'>
@@ -156,7 +156,7 @@ Only applies to <code>toLower</code>.</dd>
 #&gt; 
 #&gt; text2 :
 #&gt; [1] &quot;nasa&quot;   &quot;sent&quot;   &quot;a&quot;      &quot;rocket&quot; &quot;into&quot;   &quot;space&quot; 
-#&gt; </div><div class='input'><span class='fu'>toLower</span>(<span class='no'>test2</span>, <span class='kw'>keepAcronyms</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokenizedTexts from 2 documents.
+#&gt; </div><div class='input'><span class='fu'>toLower</span>(<span class='no'>test2</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokenizedTexts from 2 documents.
 #&gt; text1 :
 #&gt; [1] &quot;england&quot; &quot;and&quot;     &quot;france&quot;  &quot;are&quot;     &quot;members&quot; &quot;of&quot;      &quot;NATO&quot;   
 #&gt; [8] &quot;and&quot;     &quot;UNESCO&quot; 

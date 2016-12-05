@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>get the number of documents or features — ndoc • quanteda</title>
+<title>count the number of documents or features — ndoc • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,53 +77,48 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>get the number of documents or features</h1>
+    <h1>count the number of documents or features</h1>
     </div>
 
     
-    <p><code>ndoc</code> returns the number of documents or features in a quanteda object, which can be 
-a corpus, dfm, or tokenized texts.</p>
-
-    <p><code>nfeature</code> is an alias for <code>ntype</code> when applied to dfm
-  objects.  For a corpus or set of texts, &quot;features&quot; are only defined through
-  tokenization, so you need to use <code><a href='ntoken.html'>ntoken</a></code> to count these.</p>
+    <p>Get the number of documents, tokens, types, or features in an object.</p>
     
 
     <pre><span class='fu'>ndoc</span>(<span class='no'>x</span>)
 
-<span class='co'># S3 method for corpus</span>
-<span class='fu'>ndoc</span>(<span class='no'>x</span>)
-
-<span class='co'># S3 method for dfm</span>
-<span class='fu'>ndoc</span>(<span class='no'>x</span>)
-
-<span class='fu'>nfeature</span>(<span class='no'>x</span>)
-
-<span class='co'># S3 method for corpus</span>
-<span class='fu'>nfeature</span>(<span class='no'>x</span>)
-
-<span class='co'># S3 method for dfm</span>
-<span class='fu'>nfeature</span>(<span class='no'>x</span>)
-
-<span class='co'># S3 method for tokenizedTexts</span>
-<span class='fu'>ndoc</span>(<span class='no'>x</span>)
-
-<span class='co'># S3 method for tokens</span>
-<span class='fu'>ndoc</span>(<span class='no'>x</span>)</pre>
+<span class='fu'>nfeature</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>a corpus or dfm object</dd>
+      <dd>a <span class="pkg">quanteda</span> object: a <a href='corpus.html'>corpus</a>, <a href='dfm.html'>dfm</a>, or <a href='tokens.html'>tokens</a>
+object, or a readtext object from the <span class="pkg">readtext</span> package.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an integer (count) of the number of documents or features in the corpus or dfm</p>
+    <p>an integer (count) of the number of documents or features in the 
+  corpus or dfm</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>ndoc</code> returns the number of documents or features in a 
+  quanteda object.</p>
+    <p><code>nfeature</code> returns the number of features from a dfm; it is an
+  alias for <code>ntype</code> when applied to dfm objects.  This function is only 
+  defined for <a href='dfm.html'>dfm</a> objects because only these have &quot;features&quot;.  (To count
+  tokens, see <code><a href='ntoken.html'>ntoken</a></code>)</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='ntoken.html'>ntoken</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>ndoc</span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span><span class='kw'>&gt;</span><span class='fl'>1980</span>))</div><div class='output co'>#&gt; [1] 9</div><div class='input'><span class='fu'>ndoc</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span><span class='kw'>&gt;</span><span class='fl'>1980</span>), <span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; [1] 9</div><div class='input'><span class='fu'>nfeature</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>))</div><div class='output co'>#&gt; [1] 9174</div><div class='input'><span class='fu'>nfeature</span>(<span class='fu'><a href='dfm_trim.html'>dfm_trim</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>), <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>))</div><div class='output co'>#&gt; <span class='message'>Removing features occurring fewer than 10 times: 7662</span></div><div class='output co'>#&gt; <span class='message'>Removing features occurring in fewer than 5 documents: 6786</span></div><div class='output co'>#&gt; [1] 1505</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># number of documents</span>
+<span class='fu'>ndoc</span>(<span class='no'>data_corpus_inaugural</span>)</div><div class='output co'>#&gt; [1] 57</div><div class='input'><span class='fu'>ndoc</span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>))</div><div class='output co'>#&gt; [1] 9</div><div class='input'><span class='fu'>ndoc</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>))</div><div class='output co'>#&gt; [1] 57</div><div class='input'><span class='fu'>ndoc</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>)))</div><div class='output co'>#&gt; [1] 9</div><div class='input'>
+<span class='co'># number of features</span>
+<span class='fu'>nfeature</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>), <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; [1] 3121</div><div class='input'><span class='fu'>nfeature</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>), <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; [1] 3129</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -131,6 +126,10 @@ a corpus, dfm, or tokenized texts.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

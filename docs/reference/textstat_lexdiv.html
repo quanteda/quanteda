@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>calculate lexical diversity — lexdiv • quanteda</title>
+<title>calculate lexical diversity — textstat_lexdiv • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -84,10 +84,7 @@
     <p>Calculate the lexical diversity or complexity of text(s).</p>
     
 
-    <pre><span class='fu'>lexdiv</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for dfm</span>
-<span class='fu'>lexdiv</span>(<span class='no'>x</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"all"</span>, <span class='st'>"TTR"</span>, <span class='st'>"C"</span>, <span class='st'>"R"</span>, <span class='st'>"CTTR"</span>, <span class='st'>"U"</span>, <span class='st'>"S"</span>,
+    <pre><span class='fu'>textstat_lexdiv</span>(<span class='no'>x</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"all"</span>, <span class='st'>"TTR"</span>, <span class='st'>"C"</span>, <span class='st'>"R"</span>, <span class='st'>"CTTR"</span>, <span class='st'>"U"</span>, <span class='st'>"S"</span>,
   <span class='st'>"Maas"</span>), <span class='kw'>log.base</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -95,8 +92,6 @@
       <dt>x</dt>
       <dd>an input object, such as a <a href='dfm.html'>document-feature matrix</a>
 object</dd>
-      <dt>...</dt>
-      <dd>not used</dd>
       <dt>measure</dt>
       <dd>a character vector defining the measure to calculate.</dd>
       <dt>log.base</dt>
@@ -106,6 +101,8 @@ measures using logs)</dd>
       <dd>if <code>TRUE</code>, the result is returned as a numeric vector if 
 only a single measure is requested; otherwise, a data.frame is returned 
 with each column consisting of a requested measure.</dd>
+      <dt>...</dt>
+      <dd>not used</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -115,7 +112,7 @@ with each column consisting of a requested measure.</dd>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>lexdiv</code> calculates a variety of proposed indices for lexical
+    <p><code>textstat_lexdiv</code> calculates a variety of proposed indices for lexical
   diversity. In the following formulae, \(N\) refers to the total number of
   tokens, and \(V\) to the number of types: <dl class='dl-horizontal'></p>
     <p><dt><code>&quot;TTR&quot;</code>:</dt><dd>The ordinary <em>Type-Token Ratio</em>: $$TTR =
@@ -181,49 +178,49 @@ with each column consisting of a requested measure.</dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-(<span class='no'>results</span> <span class='kw'>&lt;-</span> <span class='fu'>lexdiv</span>(<span class='no'>mydfm</span>, <span class='fu'>c</span>(<span class='st'>"CTTR"</span>, <span class='st'>"TTR"</span>, <span class='st'>"U"</span>)))</div><div class='output co'>#&gt;                   CTTR       TTR        U
-#&gt; 1981-Reagan  11.389397 0.3045032 23.00653
-#&gt; 1985-Reagan  11.433654 0.2984668 22.89890
-#&gt; 1989-Bush    10.320398 0.2817741 21.36968
-#&gt; 1993-Clinton  9.997768 0.3298857 22.12126
-#&gt; 1997-Clinton 10.369313 0.2962056 21.74016
-#&gt; 2001-Bush     9.855993 0.3276243 21.89836
-#&gt; 2005-Bush    10.763898 0.3156989 22.63270
-#&gt; 2009-Obama   12.195736 0.3301576 24.53073
-#&gt; 2013-Obama   11.501755 0.3366167 23.99284</div><div class='input'><span class='fu'>cor</span>(<span class='fu'>lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"all"</span>))</div><div class='output co'>#&gt;              TTR          C          R       CTTR          U          S
-#&gt; TTR    1.0000000  0.9073748  0.1710732  0.1710732  0.5782446  0.6742635
-#&gt; C      0.9073748  1.0000000  0.5686576  0.5686576  0.8664749  0.9220829
-#&gt; R      0.1710732  0.5686576  1.0000000  1.0000000  0.9021303  0.8421273
-#&gt; CTTR   0.1710732  0.5686576  1.0000000  1.0000000  0.9021303  0.8421273
-#&gt; U      0.5782446  0.8664749  0.9021303  0.9021303  1.0000000  0.9913834
-#&gt; S      0.6742635  0.9220829  0.8421273  0.8421273  0.9913834  1.0000000
-#&gt; Maas  -0.5805759 -0.8686424 -0.9009847 -0.9009847 -0.9995363 -0.9926105
-#&gt; lgV0   0.3749384  0.7290723  0.9771820  0.9771820  0.9730338  0.9368333
-#&gt; lgeV0  0.3749384  0.7290723  0.9771820  0.9771820  0.9730338  0.9368333
-#&gt;             Maas       lgV0      lgeV0
-#&gt; TTR   -0.5805759  0.3749384  0.3749384
-#&gt; C     -0.8686424  0.7290723  0.7290723
-#&gt; R     -0.9009847  0.9771820  0.9771820
-#&gt; CTTR  -0.9009847  0.9771820  0.9771820
-#&gt; U     -0.9995363  0.9730338  0.9730338
-#&gt; S     -0.9926105  0.9368333  0.9368333
-#&gt; Maas   1.0000000 -0.9723146 -0.9723146
-#&gt; lgV0  -0.9723146  1.0000000  1.0000000
-#&gt; lgeV0 -0.9723146  1.0000000  1.0000000</div><div class='input'>
+(<span class='no'>results</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='fu'>c</span>(<span class='st'>"CTTR"</span>, <span class='st'>"TTR"</span>, <span class='st'>"U"</span>)))</div><div class='output co'>#&gt;                  CTTR      TTR          U
+#&gt; 1981-Reagan  41.72102 1.115440 -250.40561
+#&gt; 1985-Reagan  40.73566 1.063373 -450.59049
+#&gt; 1989-Bush    42.60577 1.163250 -178.99932
+#&gt; 1993-Clinton 51.49015 1.698966  -46.28636
+#&gt; 1997-Clinton 44.57662 1.273358 -109.45782
+#&gt; 2001-Bush    51.87278 1.724309  -44.85118
+#&gt; 2005-Bush    45.76856 1.342366  -88.62698
+#&gt; 2009-Obama   42.24516 1.143642 -202.54028
+#&gt; 2013-Obama   45.67045 1.336617  -90.03759</div><div class='input'><span class='fu'>cor</span>(<span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"all"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt;             TTR         C         R      CTTR         U         S Maas lgV0
+#&gt; TTR   1.0000000 0.9988282 0.9994749 0.9994749 0.7700377 0.9990822   NA   NA
+#&gt; C     0.9988282 1.0000000 0.9998719 0.9998719 0.7960183 0.9999845   NA   NA
+#&gt; R     0.9994749 0.9998719 1.0000000 1.0000000 0.7875621 0.9999455   NA   NA
+#&gt; CTTR  0.9994749 0.9998719 1.0000000 1.0000000 0.7875621 0.9999455   NA   NA
+#&gt; U     0.7700377 0.7960183 0.7875621 0.7875621 1.0000000 0.7931152   NA   NA
+#&gt; S     0.9990822 0.9999845 0.9999455 0.9999455 0.7931152 1.0000000   NA   NA
+#&gt; Maas         NA        NA        NA        NA        NA        NA    1   NA
+#&gt; lgV0         NA        NA        NA        NA        NA        NA   NA    1
+#&gt; lgeV0        NA        NA        NA        NA        NA        NA   NA   NA
+#&gt;       lgeV0
+#&gt; TTR      NA
+#&gt; C        NA
+#&gt; R        NA
+#&gt; CTTR     NA
+#&gt; U        NA
+#&gt; S        NA
+#&gt; Maas     NA
+#&gt; lgV0     NA
+#&gt; lgeV0     1</div><div class='input'>
 <span class='co'># with different settings of drop</span>
-<span class='fu'>lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"TTR"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;  1981-Reagan  1985-Reagan    1989-Bush 1993-Clinton 1997-Clinton    2001-Bush 
-#&gt;    0.3045032    0.2984668    0.2817741    0.3298857    0.2962056    0.3276243 
+<span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"TTR"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;  1981-Reagan  1985-Reagan    1989-Bush 1993-Clinton 1997-Clinton    2001-Bush 
+#&gt;     1.115440     1.063373     1.163250     1.698966     1.273358     1.724309 
 #&gt;    2005-Bush   2009-Obama   2013-Obama 
-#&gt;    0.3156989    0.3301576    0.3366167 </div><div class='input'><span class='fu'>lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"TTR"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;                    TTR
-#&gt; 1981-Reagan  0.3045032
-#&gt; 1985-Reagan  0.2984668
-#&gt; 1989-Bush    0.2817741
-#&gt; 1993-Clinton 0.3298857
-#&gt; 1997-Clinton 0.2962056
-#&gt; 2001-Bush    0.3276243
-#&gt; 2005-Bush    0.3156989
-#&gt; 2009-Obama   0.3301576
-#&gt; 2013-Obama   0.3366167</div></pre>
+#&gt;     1.342366     1.143642     1.336617 </div><div class='input'><span class='fu'>textstat_lexdiv</span>(<span class='no'>mydfm</span>, <span class='st'>"TTR"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;                   TTR
+#&gt; 1981-Reagan  1.115440
+#&gt; 1985-Reagan  1.063373
+#&gt; 1989-Bush    1.163250
+#&gt; 1993-Clinton 1.698966
+#&gt; 1997-Clinton 1.273358
+#&gt; 2001-Bush    1.724309
+#&gt; 2005-Bush    1.342366
+#&gt; 2009-Obama   1.143642
+#&gt; 2013-Obama   1.336617</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

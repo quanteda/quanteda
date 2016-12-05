@@ -178,7 +178,8 @@ is; <code>&quot;regex&quot;</code> for regular expressions</dd>
 <span class='fu'>phrasetotoken</span>(<span class='no'>txt</span>, <span class='no'>myDict</span>)</div><div class='output co'>#&gt; [1] &quot;I liked this, when we can use bad words, in awful_text.&quot; 
 #&gt; [2] &quot;Some damn good_stuff, like the text, she likes that too.&quot;</div><div class='input'>
 <span class='co'># on simple text</span>
-<span class='fu'>phrasetotoken</span>(<span class='st'>"This is a simpler version of multi word expressions."</span>, <span class='st'>"multi word expression*"</span>)</div><div class='output co'>#&gt; [1] &quot;This is a simpler version of multi word expressions.&quot;</div><div class='input'><span class='co'># on simple text</span>
+<span class='fu'>phrasetotoken</span>(<span class='st'>"This is a simpler version of multi word expressions."</span>, <span class='st'>"multi word expression*"</span>)</div><div class='output co'>#&gt; [1] &quot;This is a simpler version of multi word expressions.&quot;</div><div class='input'>
+<span class='co'># on simple text</span>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='st'>"Simon sez the multi word expression plural is multi word expressions, Simon sez."</span>)
 <span class='no'>phrases</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"multi word expression*"</span>, <span class='st'>"Simon sez"</span>)
 <span class='fu'>phrasetotoken</span>(<span class='no'>toks</span>, <span class='no'>phrases</span>)</div><div class='output co'>#&gt; tokenizedTexts from 1 document.

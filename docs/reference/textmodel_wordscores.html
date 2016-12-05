@@ -82,33 +82,16 @@
 
     
     <p><code>textmodel_wordscores</code> implements Laver, Benoit and Garry&#39;s (2003) 
-wordscores method for scaling of a single dimension.  This can be called
-directly, but the recommended method is through <code><a href='textmodel.html'>textmodel</a></code>.</p>
+wordscores method for scaling of a single dimension.</p>
     
 
-    <pre><span class='fu'>textmodel_wordscores</span>(<span class='no'>data</span>, <span class='no'>scores</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"linear"</span>, <span class='st'>"logit"</span>), <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-
-<span class='co'># S3 method for textmodel_wordscores_fitted</span>
-<span class='fu'>predict</span>(<span class='no'>object</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"none"</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for textmodel_wordscores_fitted</span>
-<span class='fu'>print</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>30L</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for textmodel_wordscores_fitted</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)
-
-<span class='co'># S4 method for textmodel_wordscores_predicted</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)
-
-<span class='co'># S3 method for textmodel_wordscores_predicted</span>
-<span class='fu'>print</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>textmodel_wordscores</span>(<span class='no'>data</span>, <span class='no'>scores</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"linear"</span>, <span class='st'>"logit"</span>), <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>data</dt>
       <dd>the dfm on which the model will be fit.  Does not need to contain
-only the training documents, since the index of these will be matched
+only the training documents, since the index of these will be matched 
 automatically.</dd>
       <dt>scores</dt>
       <dd>vector of training scores associated with each document 
@@ -119,48 +102,19 @@ logit scale of log posterior differences</dd>
       <dt>smooth</dt>
       <dd>a smoothing parameter for word counts; defaults to zero for the
 to match the LBG (2003) method.</dd>
-      <dt>object</dt>
-      <dd>a fitted Wordscores textmodel</dd>
-      <dt>newdata</dt>
-      <dd>dfm on which prediction should be made</dd>
-      <dt>rescaling</dt>
-      <dd><code>none</code> for &quot;raw&quot; scores; <code>lbg</code> for LBG (2003) 
-rescaling; or <code>mv</code> for the rescaling proposed by Martin and Vanberg 
-(2007).  (Note to authors: Provide full details here in documentation.)</dd>
-      <dt>level</dt>
-      <dd>probability level for confidence interval width</dd>
-      <dt>verbose</dt>
-      <dd>If <code>TRUE</code>, output status messages</dd>
-      <dt>...</dt>
-      <dd>additional arguments passed to other functions</dd>
-      <dt>x</dt>
-      <dd>for print method, the object to be printed</dd>
-      <dt>n</dt>
-      <dd>max rows of dfm to print</dd>
-      <dt>digits</dt>
-      <dd>number of decimal places to print for print methods</dd>
     </dl>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>The <code>predict</code> method for a wordscores fitted object returns a 
-  data.frame whose rows are the documents fitted and whose columns contain 
-  the scored textvalues, with the number of columns depending on the options 
-  called (for instance, how many rescaled scores, and whether standard errors
-  were requested.)  (Note: We may very well change this soon so that it is a 
-  list similar to other existing fitted objects.)</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Fitting a <code>textmodel_wordscores</code> results in an object of class 
-<code>textmodel_wordscores_fitted</code> containing the
-following slots:</p>
+  <code>textmodel_wordscores_fitted</code> containing the following slots:</p>
     
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
     <p></p>
     <p><dl class='dl-horizontal'>
-<dt><code>scale</code></dt><dd><code>linear</code> or <code>logit</code>, according to the value of <code>scale</code></dd></p>
+<dt><code>scale</code></dt><dd><code>linear</code> or <code>logit</code>, according to the value of 
+<code>scale</code></dd></p>
     <p><dt><code>Sw</code></dt><dd>the scores computed for each word in the training set</dd></p>
     <p><dt><code>x</code></dt><dd>the dfm on which the wordscores model was called</dd></p>
     <p><dt><code>y</code></dt><dd>the reference scores</dd></p>
@@ -168,28 +122,32 @@ following slots:</p>
     <p><dt><code>method</code></dt><dd>takes a value of <code>wordscores</code> for this model</dd>
 </dl></p>
     
+    <h2 class="hasAnchor" id="predict-methods"><a class="anchor" href="#predict-methods"></a>Predict Methods</h2>
+
+    <p>A <code>predict</code> method is also available for a 
+  fitted wordscores object, see 
+  <code><a href='textmodel-internal.html'>predict.textmodel_wordscores_fitted</a></code>.</p>
+    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
-&quot;Extracting Policy Positions From Political Texts Using Words as Data.&quot; 
-American Political Science Review 97(02): 311-31</p>
-    <p>Beauchamp, N. 2012. &quot;Using Text to Scale Legislatures with Uninformative
-Voting.&quot; New York University Mimeo.</p>
-    <p>Martin, L W, and G Vanberg. 2007. &quot;A
-Robust Transformation Procedure for Interpreting Political Text.&quot; Political 
-Analysis 16(1): 93-100.</p>
-    <p>Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
-&quot;Extracting Policy Positions From Political Texts Using Words as Data.&quot; 
-<em>American Political Science Review</em> 97(02): 311-31.</p>
-    <p>Martin, L W, and G Vanberg. 2007. &quot;A Robust Transformation Procedure for
-Interpreting Political Text.&quot; <em>Political Analysis</em> 16(1): 93-100.</p>
+  &quot;Extracting Policy Positions From Political Texts Using Words as Data.&quot; 
+  American Political Science Review 97(02): 311-31</p>
+    <p>Beauchamp, N. 2012. &quot;Using Text to Scale Legislatures with Uninformative 
+  Voting.&quot; New York University Mimeo.</p>
+    <p>Martin, L W, and G Vanberg. 2007. &quot;A Robust Transformation Procedure for 
+  Interpreting Political Text.&quot; Political Analysis 16(1): 93-100.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='textmodel-internal.html'>predict.textmodel_wordscores_fitted</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='no'>ws</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel.html'>textmodel</a></span>(<span class='no'>data_dfm_LBGexample</span>, <span class='fu'>c</span>(<span class='fu'>seq</span>(-<span class='fl'>1.5</span>, <span class='fl'>1.5</span>, <span class='fl'>.75</span>), <span class='fl'>NA</span>),
-                 <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"wordscores"</span>))</div><div class='output co'>#&gt; Fitted wordscores model:
+    <pre class="examples"><div class='input'>(<span class='no'>ws</span> <span class='kw'>&lt;-</span> <span class='fu'>textmodel_wordscores</span>(<span class='no'>data_dfm_LBGexample</span>, <span class='fu'>c</span>(<span class='fu'>seq</span>(-<span class='fl'>1.5</span>, <span class='fl'>1.5</span>, <span class='fl'>.75</span>), <span class='fl'>NA</span>)))</div><div class='output co'>#&gt; Fitted wordscores model:
 #&gt; Call:
-#&gt; 	textmodel_wordscores(data = x, scores = y)
+#&gt; 	textmodel_wordscores(data = data_dfm_LBGexample, scores = c(seq(-1.5, 
+#&gt;     1.5, 0.75), NA))
 #&gt; 
 #&gt; Reference documents and reference scores:
 #&gt; 
@@ -208,7 +166,8 @@ Interpreting Political Text.&quot; <em>Political Analysis</em> 16(1): 93-100.</p
 #&gt;     N     O     P     Q     R     S     T     U     V     W     X     Y     Z 
 #&gt; -0.75 -0.62 -0.45 -0.30 -0.13  0.00  0.13  0.30  0.45  0.62  0.75  0.88  1.04 
 #&gt;    ZA    ZB    ZC    ZD 
-#&gt;  1.18  1.32  1.41  1.45 </div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>)</div><div class='output co'>#&gt; <span class='message'>37 of 37 features (100%) can be scored</span></div><div class='output co'>#&gt; Predicted textmodel of type: wordscores
+#&gt;  1.18  1.32  1.41  1.45 </div><div class='input'>
+<span class='fu'>predict</span>(<span class='no'>ws</span>)</div><div class='output co'>#&gt; <span class='message'>37 of 37 features (100%) can be scored</span></div><div class='output co'>#&gt; Predicted textmodel of type: wordscores
 #&gt; 
 #&gt;    textscore LBG se   ci lo   ci hi
 #&gt; R1   -1.3179 0.0067 -1.3311 -1.3048
@@ -217,7 +176,7 @@ Interpreting Political Text.&quot; <em>Political Analysis</em> 16(1): 93-100.</p
 #&gt; R4    0.7396 0.0114  0.7172  0.7620
 #&gt; R5    1.3179 0.0067  1.3048  1.3311
 #&gt; V1   -0.4481 0.0119 -0.4714 -0.4247
-#&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>, <span class='kw'>rescaling</span><span class='kw'>=</span><span class='st'>"mv"</span>)</div><div class='output co'>#&gt; <span class='message'>37 of 37 features (100%) can be scored</span></div><div class='output co'>#&gt; <span class='warning'>Warning: </span>
+#&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"mv"</span>)</div><div class='output co'>#&gt; <span class='message'>37 of 37 features (100%) can be scored</span></div><div class='output co'>#&gt; <span class='warning'>Warning: </span>
 #&gt; <span class='warning'>More than two reference scores found with MV rescaling; using only min, max values.</span></div><div class='output co'>#&gt; Predicted textmodel of type: wordscores
 #&gt; 
 #&gt;    textscore LBG se   ci lo   ci hi MV rescaled
@@ -227,7 +186,7 @@ Interpreting Political Text.&quot; <em>Political Analysis</em> 16(1): 93-100.</p
 #&gt; R4    0.7396 0.0114  0.7172  0.7620      0.8417
 #&gt; R5    1.3179 0.0067  1.3048  1.3311      1.5000
 #&gt; V1   -0.4481 0.0119 -0.4714 -0.4247     -0.5100
-#&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>, <span class='kw'>rescaling</span><span class='kw'>=</span><span class='st'>"lbg"</span>)</div><div class='output co'>#&gt; <span class='message'>37 of 37 features (100%) can be scored</span></div><div class='output co'>#&gt; Predicted textmodel of type: wordscores
+#&gt; </div><div class='input'><span class='fu'>predict</span>(<span class='no'>ws</span>, <span class='kw'>rescaling</span> <span class='kw'>=</span> <span class='st'>"lbg"</span>)</div><div class='output co'>#&gt; <span class='message'>37 of 37 features (100%) can be scored</span></div><div class='output co'>#&gt; Predicted textmodel of type: wordscores
 #&gt; 
 #&gt;    textscore LBG se   ci lo   ci hi LBG rescaled  LBG lo  LBG hi
 #&gt; R1   -1.3179 0.0067 -1.3311 -1.3048      -1.5897 -1.6057 -1.5737
@@ -276,13 +235,15 @@ Interpreting Political Text.&quot; <em>Political Analysis</em> 16(1): 93-100.</p
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
 
       <li><a href="#slots">Slots</a></li>
 
+      <li><a href="#predict-methods">Predict Methods</a></li>
+
       <li><a href="#references">References</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

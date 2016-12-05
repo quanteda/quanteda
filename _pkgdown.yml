@@ -1,0 +1,126 @@
+reference:
+- title: Package Level Documentation
+  contents:
+    - quanteda
+    - quanteda-package
+- title: Data Objects
+  contents:
+    - data_char_mobydick
+    - data_char_sampletext
+    - data_char_ukimmig2010
+    - data_char_inaugural
+    - data_corpus_inaugural
+    - data_corpus_irishbudget2010
+    - data_dfm_LBGexample
+- title: Corpus
+  contents:
+    - corpus
+    - corpus_reshape
+    - corpus_sample
+    - corpus_segment
+    - corpus_subset
+    - metacorpus
+    - metacorpus<-
+- title: Tokens
+  contents:
+    - tokens
+    - char_tolower
+    - char_toupper
+    - char_segment
+    - as.character.corpus
+    - tokens_compound
+    - tokens_lookup
+    - char_ngrams
+    - tokens_ngrams
+    - tokens_skipgrams
+    - tokens_remove
+    - tokens_select
+    - tokens_tolower
+    - tokens_toupper
+    - char_wordstem
+    - tokens_wordstem
+    - as.character.tokens
+    - as.list.tokens
+    - as.tokens
+    - as.tokens.list
+    - is.tokens
+- title: dfm and fcm
+  contents:
+    - dfm
+    - fcm
+    - as.data.frame.dfm
+    - as.matrix.dfm
+    - dfm_compress
+    - dfm_lookup
+    - dfm_sample
+    - dfm_remove
+    - dfm_select
+    - dfm_sort
+    - dfm_tolower
+    - dfm_toupper
+    - dfm_trim
+    - dfm_smooth
+    - dfm_weight
+    - head.dfm
+    - tail.dfm
+    - as.dfm
+    - is.dfm
+    - dfm_wordstem
+    - fcm_compress
+    - fcm_remove
+    - fcm_select
+    - fcm_tolower
+    - fcm_toupper
+    - fcm_sort
+    - is.fcm
+- title: Text Stat Functions
+  contents:
+    - collocations
+    - is.collocations
+    - is.kwic
+    - kwic
+    - sparsity
+    - textstat_lexdiv
+    - textstat_readability
+    - textstat_dist
+    - textstat_simil
+- title: Text Plot Functions
+  contents:
+    - textplot_scale1d
+    - textplot_wordcloud
+    - textplot_xray
+- title: Text Model Functions
+  contents:
+    - textmodel_ca
+    - textmodel_NB
+    - textmodel_wordfish
+    - textmodel_wordscores
+    - textmodel
+    - textmodel,dfm,ANY,missing,character-method
+    - textmodel,formula,missing,dfm,character-method
+- title: R-like functions
+  contents:
+    - ndoc
+    - nfeature
+    - nscrabble
+    - nsentence
+    - nsyllable
+    - ntoken
+    - ntype
+- title: Miscellaneous
+  contents:
+    - as.list.dist
+    - convert
+    - dictionary
+    - docnames
+    - docnames<-
+    - docvars
+    - docvars<-
+    - featnames
+    - is.dictionary
+    - metadoc
+    - metadoc<-
+    - stopwords
+    - texts
+    - texts<-
+    - topfeatures

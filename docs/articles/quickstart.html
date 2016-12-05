@@ -159,7 +159,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 <span class="co">#&gt;   1805-Jefferson   804   2381        45</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Source:  /Users/akitaka/Dropbox/KB_Projects/r_package_development/quanteda/docs/articles/* on x86_64 by akitaka</span>
-<span class="co">#&gt; Created: Fri Dec  2 17:00:47 2016</span>
+<span class="co">#&gt; Created: Mon Dec  5 12:28:58 2016</span>
 <span class="co">#&gt; Notes:</span></code></pre></div>
 <p>If we wanted, we could add some document-level variables &ndash; what quanteda calls <code>docvars</code> &ndash; to this corpus.</p>
 <p>We can do this using the R&rsquo;s <code>substring()</code> function to extract characters from a name &ndash; in this case, the name of the character vector <code>data_char_inaugural</code>. This works using our fixed starting and ending positions with <code>substring()</code> because these names are a very regular format of <code>YYYY-PresidentName</code>.</p>
@@ -176,7 +176,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 <span class="co">#&gt;   1805-Jefferson   804   2381        45  Jefferson 1805</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Source:  /Users/akitaka/Dropbox/KB_Projects/r_package_development/quanteda/docs/articles/* on x86_64 by akitaka</span>
-<span class="co">#&gt; Created: Fri Dec  2 17:00:47 2016</span>
+<span class="co">#&gt; Created: Mon Dec  5 12:28:58 2016</span>
 <span class="co">#&gt; Notes:</span></code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -198,7 +198,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 <span class="co">#&gt;  data_char_inaugural_5</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Source:  /Users/akitaka/Dropbox/KB_Projects/r_package_development/quanteda/docs/articles/* on x86_64 by akitaka</span>
-<span class="co">#&gt; Created: Fri Dec  2 17:00:47 2016</span>
+<span class="co">#&gt; Created: Mon Dec  5 12:28:58 2016</span>
 <span class="co">#&gt; Notes:</span></code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -369,7 +369,11 @@ tokenInfo[<span class="kw">which.max</span>(tokenInfo$Tokens),]
 <p>The <code>+</code> operator provides a simple method for concatenating two corpus objects. If they contain different sets of document-level variables, these will be stitched together in a fashion that guarantees that no information is lost. Corpus-level medata data is also concatenated.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)
 mycorpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_char_inaugural[<span class="dv">1</span>:<span class="dv">5</span>], <span class="dt">note =</span> <span class="st">"First five inaug speeches."</span>)
+<span class="co">#&gt; Warning in corpus.character(data_char_inaugural[1:5], note = "First five</span>
+<span class="co">#&gt; inaug speeches."): Argument note not used.</span>
 mycorpus2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_char_inaugural[<span class="dv">53</span>:<span class="dv">57</span>], <span class="dt">note =</span> <span class="st">"Last five inaug speeches."</span>)
+<span class="co">#&gt; Warning in corpus.character(data_char_inaugural[53:57], note = "Last five</span>
+<span class="co">#&gt; inaug speeches."): Argument note not used.</span>
 mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>mycorpus2
 <span class="kw">summary</span>(mycorpus3)
 <span class="co">#&gt; Corpus consisting of 10 documents.</span>
@@ -387,8 +391,8 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 <span class="co">#&gt;       2013-Obama   814   2335        88</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Source:  Combination of corpuses mycorpus1 and mycorpus2</span>
-<span class="co">#&gt; Created: Fri Dec  2 17:00:48 2016</span>
-<span class="co">#&gt; Notes:   First five inaug speeches. Last five inaug speeches.</span></code></pre></div>
+<span class="co">#&gt; Created: Mon Dec  5 12:28:58 2016</span>
+<span class="co">#&gt; Notes:</span></code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
 <h3 class="hasAnchor"><html><body><a href="#subsetting-corpus-objects" class="anchor"> </a></body></html>subsetting corpus objects</h3>
@@ -618,8 +622,7 @@ mydfm
 <p><img src="quickstart_files/figure-html/unnamed-chunk-22-1.png" width="768"></p>
 <p>The <code><a href="../reference/plot-deprecated.html">plot.dfm()</a></code> method passes arguments through to <code>wordcloud()</code> from the <strong>wordcloud</strong> package, and can prettify the plot using the same arguments:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if (<span class="kw">require</span>(RColorBrewer))
-    <span class="kw"><a href="../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">max.words =</span> <span class="dv">100</span>, <span class="dt">colors =</span> <span class="kw">brewer.pal</span>(<span class="dv">6</span>, <span class="st">"Dark2"</span>), <span class="dt">scale =</span> <span class="kw">c</span>(<span class="dv">8</span>, .<span class="dv">5</span>))
-<span class="co">#&gt; Loading required package: RColorBrewer</span></code></pre></div>
+    <span class="kw"><a href="../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">max.words =</span> <span class="dv">100</span>, <span class="dt">colors =</span> <span class="kw">brewer.pal</span>(<span class="dv">6</span>, <span class="st">"Dark2"</span>), <span class="dt">scale =</span> <span class="kw">c</span>(<span class="dv">8</span>, .<span class="dv">5</span>))</code></pre></div>
 <p><img src="quickstart_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
 </div>
 <div id="grouping-documents-by-document-variable" class="section level3">
@@ -675,10 +678,10 @@ liwcdfm[, <span class="dv">1</span>:<span class="dv">10</span>]</code></pre></di
 <h1 class="hasAnchor"><html><body><a href="#further-examples" class="anchor"> </a></body></html>Further Examples</h1>
 <div id="similarities-between-texts" class="section level2">
 <h2 class="hasAnchor"><html><body><a href="#similarities-between-texts" class="anchor"> </a></body></html>Similarities between texts</h2>
-<p><code>r presDfm &lt;- dfm(corpus_subset(data_corpus_inaugural, Year&gt;1980),                 remove = stopwords("english"),                stem = TRUE, verbose = FALSE, removePunct = TRUE) #&gt;</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../reference/similarity.html">similarity</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), <span class="dt">n =</span> <span class="ot">NULL</span>, 
-                            <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">normalize =</span> <span class="ot">FALSE</span>)
-<span class="kw">dotchart</span>(obamaSimil$<span class="st">`</span><span class="dt">2009-Obama</span><span class="st">`</span>, <span class="dt">xlab =</span> <span class="st">"Cosine similarity"</span>)</code></pre></div>
+<p><code>r presDfm &lt;- dfm(corpus_subset(data_corpus_inaugural, Year&gt;1980),                 remove = stopwords("english"),                stem = TRUE, removePunct = TRUE) #&gt;</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obamaSimil &lt;-<span class="st"> </span><span class="kw"><a href="../reference/textstat_dist.html">textstat_simil</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"2009-Obama"</span> , <span class="st">"2013-Obama"</span>), <span class="dt">n =</span> <span class="ot">NULL</span>, 
+                             <span class="dt">margin =</span> <span class="st">"documents"</span>, <span class="dt">method =</span> <span class="st">"cosine"</span>)
+<span class="kw">dotchart</span>(<span class="kw">as.list</span>(obamaSimil)$<span class="st">"2009-Obama"</span>, <span class="dt">xlab =</span> <span class="st">"Cosine similarity"</span>)</code></pre></div>
 <p><img src="quickstart_files/figure-html/unnamed-chunk-30-1.png" width="576"></p>
 <p>We can use these distances to plot a dendrogram, clustering presidents:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(SOTUCorpus, <span class="dt">package=</span><span class="st">"quantedaData"</span>)
@@ -736,8 +739,10 @@ if (<span class="kw">require</span>(topicmodels)) {
     <span class="kw">get_terms</span>(myLDAfit20, <span class="dv">5</span>)
     <span class="kw">topics</span>(myLDAfit20, <span class="dv">3</span>)
 }
-<span class="co">#&gt; Loading required package: topicmodels</span>
-<span class="co">#&gt; Warning in library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE, : there is no package called 'topicmodels'</span></code></pre></div>
+<span class="co">#&gt;      Lenihan FF Bruton FG Burton LAB Morgan SF Cowen FF Kenny FG ODonnell FG Gilmore LAB Higgins LAB Quinn LAB Gormley Green Ryan Green Cuffe Green OCaolain SF</span>
+<span class="co">#&gt; [1,]          9        20         17        12       15        2          11          14           8        18             6         18          16          10</span>
+<span class="co">#&gt; [2,]          3        16         19        19        7        4           5          16           5         5             5         16           5           1</span>
+<span class="co">#&gt; [3,]         13         6          3         3        1        6           6           8          16        19            13         20           6           8</span></code></pre></div>
 </div>
 </div>
 <div class="footnotes">

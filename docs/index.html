@@ -49,106 +49,118 @@
 <p><a href="https://CRAN.R-project.org/package=quanteda"><img src="http://www.r-pkg.org/badges/version/quanteda" alt="CRAN Version"></a> <img src="http://cranlogs.r-pkg.org/badges/quanteda" alt="Downloads"><img src="http://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange" alt="Total Downloads"><a href="https://travis-ci.org/kbenoit/quanteda"><img src="https://travis-ci.org/kbenoit/quanteda.svg?branch=master" alt="Travis-CI Build Status"></a> <a href="https://ci.appveyor.com/project/kbenoit/quanteda"><img src="https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249?svg=true" alt="Build status"></a> <a href="https://codecov.io/gh/kbenoit/quanteda/branch/master"><img src="https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master" alt="codecov.io"></a></p>
 <div id="quanteda-v0-9-9-under-development" class="section level2">
 <h2 class="hasAnchor"><a href="#quanteda-v0-9-9-under-development" class="anchor"> </a><strong>quanteda</strong> v0.9.9 under development</h2>
-<p>See the new, upcoming <a href="API.md">major API changes</a>, to be incorporated into the next minor version 0.9.9 and for CRAN, in a &ldquo;1.0&rdquo; release.</p>
+<p>See the new, upcoming <a href="API.md">major API changes</a>, to be incorporated into the next minor version 0.9.9 and for CRAN, in a &ldquo;1.0&rdquo; release. Thisupcoming release includes some major changes but also many major improvements.</p>
 </div>
 <div id="about-the-package" class="section level2">
 <h2 class="hasAnchor"><a href="#about-the-package" class="anchor"> </a>About the package</h2>
-<p>See the <a href="http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html">Getting Started Vignette</a>.</p>
 <p>An R package for managing and analyzing text, created by Ken Benoit with an amazing team of core <a href="https://github.com/kbenoit/quanteda/graphs/contributors">contributors</a> including Paul Nulty, Adam Obeng, Kohei Watanabe, Haiyan Wang, Ben Lauderdale, and Will Lowe. Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.</p>
-<p><strong>quanteda</strong> makes it easy to manage texts in the form of a corpus, defined as a collection of texts that includes document-level variables specific to each text, as well as meta-data for documents and for the collection as a whole. <strong>quanteda</strong> includes tools to make it easy and fast to manuipulate the texts in a corpus, by performing the most common natural language processing tasks simply and quickly, such as tokenizing, stemming, or forming ngrams. <strong>quanteda</strong>&rsquo;s functions for tokenizing texts and forming multiple tokenized documents into a <em>document-feature matrix</em> are both extremely fast and extremely simple to use. <strong>quanteda</strong> can segment texts easily by words, paragraphs, sentences, or even user-supplied delimiters and tags.</p>
-<p>Built on the text processing functions in the <strong>stringi</strong> package, which is in turn built on C++ implementation of the <a href="http://www.icu-project.org/">ICU</a> libraries for Unicode text handling, <strong>quanteda</strong> pays special attention to fast and correct implementation of Unicode and the handling of text in any character set, following conversion internally to UTF-8.</p>
-<p><strong>quanteda</strong> is built for efficiency and speed, through its design around three infrastructures: the <strong>stringi</strong> package for text processing, the <strong>data.table</strong> package for indexing large documents efficiently, and the <strong>Matrix</strong> package for sparse matrix objects. If you can fit it into memory, <strong>quanteda</strong> will handle it quickly. (And eventually, we will make it possible to process objects even larger than available memory.)</p>
-<p><strong>quanteda</strong> is principally designed to allow users a fast and convenient method to go from a corpus of texts to a selected matrix of documents by features, after defining and selecting the documents and features. The package makes it easy to redefine documents, for instance by splitting them into sentences or paragraphs, or by tags, as well as to group them into larger documents by document variables, or to subset them based on logical conditions or combinations of document variables. The package also implements common NLP feature selection functions, such as removing stopwords and stemming in numerous languages, selecting words found in dictionaries, treating words as equivalent based on a user-defined &ldquo;thesaurus&rdquo;, and trimming and weighting features based on document frequency, feature frequency, and related measures such as <em>tf-idf</em>.</p>
-<p>Once constructed, a <strong>quanteda</strong> &ldquo;dfm&rdquo;" can be easily analyzed using either quanteda&rsquo;s built-in tools for scaling document positions, or used with a number of other text analytic tools, such as:</p>
-<ul><li><p>topic models (including converters for direct use with the <strong>topicmodels</strong>, <strong>LDA</strong>, and <strong>stm</strong> packages)</p></li>
-<li><p>document scaling (using <strong>quanteda</strong>&rsquo;s own functions for the &ldquo;wordfish&rdquo; and &ldquo;Wordscores&rdquo; models, direct use with the <strong>ca</strong> package for correspondence analysis, or scaling with the <strong>austin</strong> package)</p></li>
+</div>
+</div>
+<div id="features" class="section level1">
+<h1 class="hasAnchor"><a href="#features" class="anchor"> </a>Features</h1>
+<div id="powerful-text-analytics" class="section level2">
+<h2 class="hasAnchor"><a href="#powerful-text-analytics" class="anchor"> </a>Powerful text analytics</h2>
+<p><strong>Generalized, flexible corpus management.</strong> <strong>quanteda</strong> provides a comprehensive workflow and ecosystem for the management, processing, and analysis of texts. Documents and associated document- and collection-level metadata are easily loaded and stored as a <em>corpus</em> object, although most of <strong>quanteda</strong>&rsquo;s operations work on simple character objects as well. A corpus is designed to efficiently store all of the texts in a collection, as well as meta-data for documents and for the collection as a whole. This makes it easy to perform natural language processing on the texts in a corpus simply and quickly, such as tokenizing, stemming, or forming ngrams. <strong>quanteda</strong>&rsquo;s functions for tokenizing texts and forming multiple tokenized documents into a <em>document-feature matrix</em> are both extremely fast and extremely simple to use. <strong>quanteda</strong> can segment texts easily by words, paragraphs, sentences, or even user-supplied delimiters and tags.</p>
+<p><strong>Works nicely with UTF-8</strong>. Built on the text processing functions in the <strong>stringi</strong> package, which is in turn built on C++ implementation of the <a href="http://www.icu-project.org/">ICU</a> libraries for Unicode text handling, <strong>quanteda</strong> pays special attention to fast and correct implementation of Unicode and the handling of text in any character set, following conversion internally to UTF-8.</p>
+<p><strong>Built for efficiency and speed</strong>. All of the functions in <strong>quanteda</strong> are built for maximum performance and scale while still being as R-based as possible. The package makes use of three efficient architectural elements:<br>
+the <strong>stringi</strong> package for text processing, the <strong>Matrix</strong> package for sparse matrix objects, and the <strong>data.table</strong> package for indexing large documents efficiently. If you can fit it into memory, <strong>quanteda</strong> will handle it quickly. (And eventually, we will make it possible to process objects even larger than available memory.)</p>
+<p><strong>Super-fast conversion of texts into a document-feature matrix</strong>. <strong>quanteda</strong> is principally designed to allow users a fast and convenient method to go from a corpus of texts to a selected matrix of documents by features, after defining and selecting the documents and features. The package makes it easy to redefine documents, for instance by splitting them into sentences or paragraphs, or by tags, as well as to group them into larger documents by document variables, or to subset them based on logical conditions or combinations of document variables. A special variation of the &ldquo;dfm&rdquo;, a <em>feature co-occurrence matrix</em>, is also implemented, for direct use with embedding and representational models such as <strong>text2vec</strong>.</p>
+<p><strong>Extensive feature selection capabilities</strong>. The package also implements common NLP feature selection functions, such as removing stopwords and stemming in numerous languages, selecting words found in dictionaries, treating words as equivalent based on a user-defined &ldquo;thesaurus&rdquo;, and trimming and weighting features based on document frequency, feature frequency, and related measures such as <em>tf-idf</em>.</p>
+<p><strong>Qualitative exploratory tools</strong>, such as <em>keywords in context</em>. Like all of <strong>quanteda</strong>&rsquo;s pattern matching functions, users have the option of simple &ldquo;glob&rdquo; expressions, regular expressions, or fixed pattern matches.</p>
+<p><strong>Dictionaries</strong>. <strong>quanteda</strong> allows fast and flexible implementation of dictionary methods, including the import and conversion of foreign dictionary formats such as those from Provalis&rsquo;s WordStat, the Linguistic Inquiry and Word Count (LIWC), Lexicoder, and Yoshioder.</p>
+<p><strong>Text analytic methods</strong>. Once constructed, a <em>dfm</em> can be easily analyzed using either <strong>quanteda</strong>&rsquo;s built-in tools for scaling document positions (for the &ldquo;wordfish&rdquo; and &ldquo;Wordscores&rdquo; models, direct use with the <strong>ca</strong> package for correspondence analysis), predictive models using Naive Bayes multinomial and Bernoulli classifiers, computing distance or similarity matrixes of features or documents, or computing readability or lexical diversity indexes. In addition, <strong>quanteda</strong> a document-feature matrix is easily used with or converted for a number of other text analytic tools, such as:</p>
+<ul><li><p><em>topic models</em> (including converters for direct use with the <strong>topicmodels</strong>, <strong>LDA</strong>, and <strong>stm</strong> packages);</p></li>
 <li><p>machine learning through a variety of other packages that take matrix or matrix-like inputs.</p></li>
-</ul><p><strong>Additional features</strong> of quanteda include:</p>
-<ul><li><p>the ability to explore texts using <em>key-words-in-context</em>;</p></li>
-<li><p>fast computation of a variety of readability indexes;</p></li>
-<li><p>fast computation of a variety of lexical diversity measures;</p></li>
-<li><p>quick computation of word or document association measures, for clustering or to compute similarity scores for other purposes; and</p></li>
-<li><p>a comprehensive suite of descriptive statistics on text such as the number of sentences, words, characters, or syllables per document.</p></li>
-</ul><p><strong>Planned features</strong> coming soon to <strong>quanteda</strong> are:</p>
-<ul><li><p>bootstrapping methods for texts that makes it easy to resample texts from pre-defined units, to facilitate computation of confidence intervals on textual statistics using techniques of non-parametric bootstrapping, but applied to the original texts as data.</p></li>
-<li><p>expansion of predictive and analytic methods called through the standard interface called <code><a href="reference/textmodel.html">textmodel()</a></code>. Current model types include correspondence analysis, &ldquo;Wordscores&rdquo;, &ldquo;Wordfish&rdquo;, and Naive Bayes.</p></li>
-<li><p>Addition of settings to corpus projects, that will propogate through downstream objects.</p></li>
-<li><p>Addition of a history that will propogate through downstream objects.</p></li>
+</ul><p><strong>Planned features.</strong> Coming soon to <strong>quanteda</strong> are:</p>
+<ul><li><p><em>Bootstrapping methods</em> for texts that makes it easy to resample texts from pre-defined units, to facilitate computation of confidence intervals on textual statistics using techniques of non-parametric bootstrapping, but applied to the original texts as data.</p></li>
+<li><p><em>Additional predictive and analytic methods</em> by expanding the <code>textstat_</code> and <code>textmodel_</code> functions. Current textmodel types include correspondence analysis, &ldquo;Wordscores&rdquo;, &ldquo;Wordfish&rdquo;, and Naive Bayes; current textstat statistics are readability, lexical diversity, similarity, and distance.</p></li>
+<li><p><em>Expanded settings</em> for all objects, that will propogate through downstream objects.</p></li>
+<li><p><em>Object histories</em>, that will propogate through downstream objects, to enhance analytic reproducibility and transparency.</p></li>
 </ul></div>
 </div>
 <div id="how-to-install" class="section level1">
 <h1 class="hasAnchor"><a href="#how-to-install" class="anchor"> </a>How to Install</h1>
-<p>As of version 0.8.0, the GitHub master repository will always contain the development version of quanteda, while the CRAN version will contain the latest &ldquo;stable&rdquo; version. You therefore have two options for installing the package:</p>
-<ol style="list-style-type: decimal"><li><p>From CRAN, using your R package installer, or simply</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"quanteda"</span>)</code></pre></div></li>
-<li><p>(For the development version) From GitHub, using</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># devtools packaged required to install quanteda from Github</span>
-devtools::<span class="kw">install_github</span>(<span class="st">"kbenoit/quanteda"</span>)</code></pre></div>
+<ol style="list-style-type: decimal"><li><p><strong>From CRAN</strong>: Use your GUI&rsquo;s R package installer, or execute:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"quanteda"</span>) </code></pre></div></li>
+<li><p><strong>From GitHub</strong>, using:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># devtools packaged required to install quanteda from Github </span>
+devtools::<span class="kw">install_github</span>(<span class="st">"kbenoit/quanteda"</span>) </code></pre></div>
 <p>Because this compiles some C++ source code, you will need a compiler installed. If you are using a Windows platform, this means you will need also to install the <a href="https://CRAN.R-project.org/bin/windows/Rtools/">Rtools</a> software available from CRAN. If you are using OS X, you will need to to install XCode, available for free from the App Store, or if you prefer a lighter footprint set of tools, <a href="http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/">just the Xcode command line tools</a>, using the command <code>xcode-select --install</code> from the Terminal.</p></li>
-<li><p>(Optional) You can install some additional corpus data from <strong>quantedaData</strong> using</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">install_github</span>(<span class="st">"kbenoit/quantedaData"</span>)</code></pre></div></li>
-</ol><div id="example-usage" class="section level2">
-<h2 class="hasAnchor"><a href="#example-usage" class="anchor"> </a>Example usage</h2>
+<li><p><strong>Additional recommended packages:</strong></p>
+<p>The following packages work well with <strong>quanteda</strong> and we recommend that you also install them:</p>
+<ul><li><p><strong>readtext</strong>: For reading text data into R.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">install_github</span>(<span class="st">"kbenoit/readtext"</span>)</code></pre></div></li>
+<li><p><strong>quantedaData</strong>: Additional textual data for use with quanteda.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r devtools::<span class="kw">install_github</span>(<span class="st">"kbenoit/quantedaData"</span>)</code></pre></div></li>
+<li><p><strong>spacyr</strong>: NLP using the <a href="http://spacy.io">spaCy</a> library.</p></li>
+</ul></li>
+</ol></div>
+<div id="getting-started" class="section level1">
+<h1 class="hasAnchor"><a href="#getting-started" class="anchor"> </a>Getting Started</h1>
+<p>See the <a href="http://kbenoit.github.io/quanteda">package website</a>, which includes the <a href="http://htmlpreview.github.com/?https://github.com/kbenoit/quanteda/blob/master/vignettes/quickstart.html">Getting Started Vignette</a>.</p>
+</div>
+<div id="demonstration" class="section level1">
+<h1 class="hasAnchor"><a href="#demonstration" class="anchor"> </a>Demonstration</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)
+
 <span class="co"># create a corpus from the immigration texts from UK party platforms</span>
 uk2010immigCorpus &lt;-<span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="reference/corpus.html">corpus</a></span>(data_char_ukimmig2010,
            <span class="dt">docvars =</span> <span class="kw">data.frame</span>(<span class="dt">party =</span> <span class="kw">names</span>(data_char_ukimmig2010)),
            <span class="dt">metacorpus =</span> <span class="kw">list</span>(<span class="dt">notes =</span> <span class="st">"Immigration-related sections of 2010 UK party manifestos"</span>))
 uk2010immigCorpus
-<span class="co">#&gt; Corpus consisting of 9 documents and 1 docvar.</span>
+## Corpus consisting of 9 documents and 1 docvar.
 <span class="kw">summary</span>(uk2010immigCorpus)
-<span class="co">#&gt; Corpus consisting of 9 documents.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;          Text Types Tokens Sentences        party</span>
-<span class="co">#&gt;           BNP  1126   3330        88          BNP</span>
-<span class="co">#&gt;     Coalition   144    268         4    Coalition</span>
-<span class="co">#&gt;  Conservative   252    503        15 Conservative</span>
-<span class="co">#&gt;        Greens   325    687        21       Greens</span>
-<span class="co">#&gt;        Labour   296    703        29       Labour</span>
-<span class="co">#&gt;        LibDem   257    499        14       LibDem</span>
-<span class="co">#&gt;            PC    80    118         5           PC</span>
-<span class="co">#&gt;           SNP    90    136         4          SNP</span>
-<span class="co">#&gt;          UKIP   346    739        27         UKIP</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/* on x86_64 by kbenoit</span>
-<span class="co">#&gt; Created: Mon Dec  5 08:43:34 2016</span>
-<span class="co">#&gt; Notes:   Immigration-related sections of 2010 UK party manifestos</span>
+## Corpus consisting of 9 documents.
+## 
+##          Text Types Tokens Sentences        party
+##           BNP  1126   3330        88          BNP
+##     Coalition   144    268         4    Coalition
+##  Conservative   252    503        15 Conservative
+##        Greens   325    687        21       Greens
+##        Labour   296    703        29       Labour
+##        LibDem   257    499        14       LibDem
+##            PC    80    118         5           PC
+##           SNP    90    136         4          SNP
+##          UKIP   346    739        27         UKIP
+## 
+## Source:  /Users/akitaka/Dropbox/KB_Projects/r_package_development/quanteda/docs/* on x86_64 by akitaka
+## Created: Mon Dec  5 12:27:40 2016
+## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 <span class="co"># key words in context for "deport", 3 words of context</span>
 <span class="kw"><a href="reference/kwic.html">kwic</a></span>(uk2010immigCorpus, <span class="st">"deport"</span>, <span class="dv">3</span>)
-<span class="co">#&gt;                        contextPre keyword                contextPost</span>
-<span class="co">#&gt;  [BNP, 159]        The BNP will [  deport ] all foreigners convicted</span>
-<span class="co">#&gt; [BNP, 1970]                . 2. [  Deport ] all illegal immigrants  </span>
-<span class="co">#&gt; [BNP, 1976] immigrants We shall [  deport ] all illegal immigrants  </span>
-<span class="co">#&gt; [BNP, 2621]  Criminals We shall [  deport ] all criminal entrants</span>
+##                        contextPre keyword                contextPost
+##  [BNP, 159]        The BNP will [  deport ] all foreigners convicted
+## [BNP, 1970]                . 2. [  Deport ] all illegal immigrants  
+## [BNP, 1976] immigrants We shall [  deport ] all illegal immigrants  
+## [BNP, 2621]  Criminals We shall [  deport ] all criminal entrants
 
 <span class="co"># create a dfm, removing stopwords</span>
 mydfm &lt;-<span class="st"> </span><span class="kw"><a href="reference/dfm.html">dfm</a></span>(uk2010immigCorpus, <span class="dt">remove =</span> <span class="kw">c</span>(<span class="st">"will"</span>, <span class="kw"><a href="reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>)),
              <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)
-<span class="kw">dim</span>(mydfm)              <span class="co"># basic dimensions of the dfm</span>
-<span class="co">#&gt; [1]    9 1547</span>
+mydfm
+## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).
+
 <span class="kw"><a href="reference/topfeatures.html">topfeatures</a></span>(mydfm, <span class="dv">20</span>)  <span class="co"># 20 top words</span>
-<span class="co">#&gt; immigration     british      people      asylum     britain          uk </span>
-<span class="co">#&gt;          66          37          35          29          28          27 </span>
-<span class="co">#&gt;      system  population     country         new  immigrants      ensure </span>
-<span class="co">#&gt;          27          21          20          19          17          17 </span>
-<span class="co">#&gt;       shall citizenship      social    national         bnp     illegal </span>
-<span class="co">#&gt;          17          16          14          14          13          13 </span>
-<span class="co">#&gt;        work     percent </span>
-<span class="co">#&gt;          13          12</span>
+## immigration     british      people      asylum     britain          uk 
+##          66          37          35          29          28          27 
+##      system  population     country         new  immigrants      ensure 
+##          27          21          20          19          17          17 
+##       shall citizenship      social    national         bnp     illegal 
+##          17          16          14          14          13          13 
+##        work     percent 
+##          13          12
+
+<span class="co"># plot a word cloud</span>
 <span class="kw"><a href="reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,
                    <span class="dt">rot.per =</span> .<span class="dv">25</span>, 
                    <span class="dt">colors =</span> RColorBrewer::<span class="kw">brewer.pal</span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
 <p><img src="images/quanteda_example-1.png" width="672"></p>
 </div>
-<div id="documentation" class="section level2">
-<h2 class="hasAnchor"><a href="#documentation" class="anchor"> </a>Documentation</h2>
-<p>In-depth tutorials in the form of a gitbook will be available here <a href="http://kbenoit.github.io/quanteda">here</a>.</p>
-<p>Examples for any function can also be seen using (for instance, for <code><a href="reference/corpus.html">corpus()</a></code>):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">example</span>(corpus)</code></pre></div>
-<p>There are also some demo functions that show off some of the package capabilities, such as <code>demo(quanteda)</code>.</p>
-</div>
+<div id="contributing" class="section level1">
+<h1 class="hasAnchor"><a href="#contributing" class="anchor"> </a>Contributing</h1>
+<p>Describe.</p>
 </div>
 </div>
   </div>
