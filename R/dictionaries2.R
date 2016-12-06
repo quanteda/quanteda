@@ -36,15 +36,7 @@ tokens_lookup <- function(x, dictionary,
         stop("x must be a tokens class object")
     
     valuetype <- match.arg(valuetype)
-    
-    # Case-insesitive 
-    #### this is inefficient, better to pass through case_insensitive = TRUE
-    #### to the regex match --KB
-    if (case_insensitive) {
-        x <- toLower(x)
-        dictionary <- lapply(dictionary, toLower)
-    }
-    
+
     # Initialize
     tokens <- qatd_cpp_structcopy_int_list(x) # create empty tokens object
     types <- types(x)
@@ -54,15 +46,10 @@ tokens_lookup <- function(x, dictionary,
         if(verbose) message('Searching words in "', names(dictionary[h]), '"...')
         keys <- stringi::stri_split_fixed(dictionary[[h]], concatenator)
         
-        # Convert to regular expressions, then to fixed
-        if (valuetype %in% c("glob"))
-            keys <- lapply(keys, glob2rx)
-        if (valuetype %in% c("glob", "regex")) {
-            # Generates all possible patterns of keys
-            keys_fixed <- regex2fixed4(keys, index)
-        } else {
-            keys_fixed <- keys
-        }
+        # Convert glob or regex to fixed
+        keys_fixed <- regex2fixed4(keys, index)
+        #print(keys_fixed)
+    
         if(length(keys_fixed) == 0) next
         keys_id <- lapply(keys_fixed, function(x) fmatch(x, types))
         #print(keys_id)
