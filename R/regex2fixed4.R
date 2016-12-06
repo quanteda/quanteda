@@ -22,6 +22,9 @@ regex2fixed4 <- function(regex, index) {
     # Make case-insensitive
     if(case_insensitive) regex <- lapply(regex, stri_trans_tolower)
     
+    # Convert glob to regex
+    if(valuetype == 'glob') regex <- lapply(regex, glob2rx)
+    
     # Separate multi and single-entry patterns
     len <- lengths(regex)
     pats_multi <- regex[len>1] 
@@ -129,7 +132,6 @@ index_ <- function(types, direction){
         }
     }
     idx <- split(pos, factor(key, ordered=FALSE, levels=unique(key)))
-    cat("make index", direction, "\n")
     return(list2env(idx))
 }
 
