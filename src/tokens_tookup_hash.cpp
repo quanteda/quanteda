@@ -18,9 +18,13 @@ template <>
 // Custom hash function for Keys objects
 struct hash<Key> {
     std::size_t operator()(const Key &vec) const {
-        unsigned int seed = std::accumulate(vec.begin(), vec.end(), 0);
+        unsigned int seed = 0;
+        for(int i = 0; i < vec.size(); i++){
+            seed += vec[i] << (i * 8); // shift elements 8 bit
+        }
         return std::hash<unsigned int>()(seed);
     }
+    
 };
 }
 
