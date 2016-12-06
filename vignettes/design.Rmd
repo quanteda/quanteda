@@ -1,5 +1,5 @@
 ---
-title: "Quanteda Structure and Design"
+title: "quanteda Structure and Design"
 author: "Ken Benoit"
 date: "2016-12-06"
 output:
