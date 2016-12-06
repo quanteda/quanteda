@@ -60,7 +60,7 @@ index <- function(types, valuetype, case_insensitive = FALSE){
     # Construct full-index of types
     if(valuetype == 'fixed'){
         exact <- TRUE
-        index <- list(index(types_search, 0))
+        index <- list(index_(types_search, 0))
     }else{
         exact <- FALSE
         index <- list(index_(types_search, 0),
