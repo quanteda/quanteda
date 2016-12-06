@@ -124,7 +124,7 @@ textstat_simil <- function(x, selection = character(0), n = NULL,
     
     # truncate to n if n is not NULL
     if (!is.null(n))
-        result <- head(result, n)
+        result <- head(as.matrix(result), n)  # result returned by some method is a sparse matrix
     
     # discard the upper diagonal if tri == TRUE
     if (tri)
@@ -132,7 +132,7 @@ textstat_simil <- function(x, selection = character(0), n = NULL,
     
     # create a new dist object
     p <- nrow(result)
-    if(ncol(result) != p) warning("non-square matrix")
+    #if(ncol(result) != p) warning("non-square matrix")
     
     # only retain lower triangular elements for the dist object
     distM <- result[row(result) > col(result)]
@@ -222,7 +222,7 @@ jaccardSparse <- function(x, y = NULL, margin = 1) {
         bn <- marginSums(y)
         colNm <- marginNames(y)
         # number of features
-        kk <- y@Dim[1]
+        kk <- y@Dim[margin]
     } else {
         A <- cpFun(x)
         bn <- an
@@ -263,7 +263,7 @@ eJaccardSparse <- function(x, y = NULL, margin = 1) {
         bn <- marginSums(y^2)
         colNm <- marginNames(y)
         # number of features
-        kk <- y@Dim[1]
+        kk <- y@Dim[margin]
     } else {
         A <- cpFun(x)
         bn <- an
