@@ -57,7 +57,7 @@ test_that("test textstat_dist method = \"euclidean\" against proxy dist() and st
     require(proxy)
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
-    eucQuanteda <- round(as.matrix(textstat_dist(presDfm, method = "euclidean", margin = "features"))[,"soviet"], 2)
+    eucQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet", method = "euclidean", margin = "features"))[,"soviet"], 2)
     eucQuanteda <- eucQuanteda[order(names(eucQuanteda))]
     eucQuanteda <- eucQuanteda[-which(names(eucQuanteda) == "soviet")]
     
@@ -87,7 +87,7 @@ test_that("test textstat_simil method = \"jaccard\" against proxy::simil(): docu
     jacQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "jaccard", margin = "documents", diag= FALSE, tri = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     jacQuanteda <- jacQuanteda[-which(names(jacQuanteda) == "1981-Reagan")]
     jacProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "jaccard", diag = FALSE, upper = FALSE, p = 2))[, "1981-Reagan"], 6), decreasing = FALSE)
-    jacProxy <- jacProxy[-which(names(jacProxy) == "1981-Reagan")]
+    if("1981-Reagan" %in% names(jacProxy)) jacProxy <- jacProxy[-which(names(jacProxy) == "1981-Reagan")]
     expect_equal(jacQuanteda, jacProxy)
 })
 
@@ -95,13 +95,13 @@ test_that("test textstat_simil method = \"jaccard\" against proxy::simil(): feat
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    jacQuanteda <- round(as.matrix(textstat_simil(presDfm, method = "jaccard", margin = "features"))[,"soviet"], 2)
+    jacQuanteda <- round(as.matrix(textstat_simil(presDfm, "soviet", method = "jaccard", margin = "features"))[,"soviet"], 2)
     jacQuanteda <- jacQuanteda[order(names(jacQuanteda))]
     jacQuanteda <- jacQuanteda[-which(names(jacQuanteda) == "soviet")]
     
     jacProxy <- round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), "jaccard", by_rows = FALSE)), 2)
     jacProxy <- jacProxy[order(names(jacProxy))]
-    jacProxy <- jacProxy[-which(names(jacProxy) == "soviet")]
+    if("soviet" %in% names(jacProxy)) jacProxy <- jacProxy[-which(names(jacProxy) == "soviet")]
     
     expect_equal(jacQuanteda, jacProxy)
 })
@@ -114,7 +114,7 @@ test_that("test textstat_simil method = \"ejaccard\" against proxy::simil(): doc
     ejacQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "eJaccard", margin = "documents", tri = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     ejacQuanteda <- ejacQuanteda[-which(names(ejacQuanteda) == "1981-Reagan")]
     ejacProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "ejaccard", diag = FALSE, upper = FALSE, p = 2))[, "1981-Reagan"], 6), decreasing = FALSE)
-    ejacProxy <- ejacProxy[-which(names(ejacProxy) == "1981-Reagan")]
+    if("1981-Reagan" %in% names(ejacProxy)) ejacProxy <- ejacProxy[-which(names(ejacProxy) == "1981-Reagan")]
     expect_equal(ejacQuanteda, ejacProxy)
 })
 
@@ -122,13 +122,13 @@ test_that("test textstat_simil method = \"ejaccard\" against proxy::simil(): fea
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    ejacQuanteda <- round(as.matrix(textstat_simil(presDfm, method = "eJaccard", margin = "features"))[,"soviet"], 2)
+    ejacQuanteda <- round(as.matrix(textstat_simil(presDfm, "soviet", method = "eJaccard", margin = "features"))[,"soviet"], 2)
     ejacQuanteda <- ejacQuanteda[order(names(ejacQuanteda))]
     ejacQuanteda <- ejacQuanteda[-which(names(ejacQuanteda) == "soviet")]
     
     ejacProxy <- round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), "ejaccard", by_rows = FALSE)), 2)
     ejacProxy <- ejacProxy[order(names(ejacProxy))]
-    ejacProxy <- ejacProxy[-which(names(ejacProxy) == "soviet")]
+    if("soviet" %in% names(ejacProxy)) ejacProxy <- ejacProxy[-which(names(ejacProxy) == "soviet")]
     
     expect_equal(ejacQuanteda, ejacProxy)
 })

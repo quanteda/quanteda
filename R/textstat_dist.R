@@ -136,7 +136,7 @@ textstat_dist <- function(x, selection = character(0), n = NULL,
     
     # truncate to n if n is not NULL
     if (!is.null(n))
-        result <- head(result, n)
+        result <- head(as.matrix(result), n)
     
     # discard the upper diagonal if tri == TRUE
     if (tri)
@@ -237,14 +237,14 @@ euclideanSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     marginSums <- if (margin == 2) colSums else rowSums
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod   
      n <- if (margin == 2) ncol(x) else nrow(x)
-    
+
     if (!is.null(y)) {
         stopifnot(ifelse(margin == 2, nrow(x) == nrow(y), ncol(x) == ncol(y)))
         an <- marginSums(x^2)
         bn <- marginSums(y^2)
         
         # number of features
-        kk <- y@Dim[1]
+        kk <- y@Dim[margin]
         tmp <- matrix(rep(an, kk), nrow = n) 
         tmp <-  tmp +  matrix(rep(bn, n), nrow = n, byrow=TRUE)
         eucmat <- sqrt( tmp - 2 * as.matrix(cpFun(x, y)) )
