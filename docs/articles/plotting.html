@@ -109,9 +109,8 @@ inaugDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/df
 <div id="modifying-lexical-dispersion-plots" class="section level2">
 <h2 class="hasAnchor"><html><body><a href="#modifying-lexical-dispersion-plots" class="anchor"> </a></body></html>Modifying lexical dispersion plots</h2>
 <p>The object returned is a ggplot object, which can be modified using ggplot:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre></div>
-<pre><code>## Warning: package 'ggplot2' was built under R version 3.3.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">theme_set</span>(<span class="kw">theme_bw</span>())
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">theme_set</span>(<span class="kw">theme_bw</span>())
 g &lt;-<span class="st"> </span><span class="kw">plot</span>(
      <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"american"</span>),
      <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"people"</span>),

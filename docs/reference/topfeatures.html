@@ -81,27 +81,19 @@
     </div>
 
     
-    <p>List the most frequently occuring features in a <a href='dfm.html'>dfm</a></p>
+    <p>List the most (or least) frequently occuring features in a <a href='dfm.html'>dfm</a>.</p>
     
 
-    <pre><span class='fu'>topfeatures</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for dfm</span>
-<span class='fu'>topfeatures</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for dgCMatrix</span>
-<span class='fu'>topfeatures</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>topfeatures</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
       <dd>the object whose features will be returned</dd>
-      <dt>...</dt>
-      <dd>additional arguments passed to other methods</dd>
       <dt>n</dt>
       <dd>how many top features should be returned</dd>
       <dt>decreasing</dt>
-      <dd>If TRUE, return the <code>n</code> most frequent features, if
+      <dd>If TRUE, return the <code>n</code> most frequent features, if 
 FALSE, return the <code>n</code> least frequent features</dd>
       <dt>ci</dt>
       <dd>confidence interval from 0-1.0 for use if dfm is resampled</dd>
@@ -109,14 +101,17 @@ FALSE, return the <code>n</code> least frequent features</dd>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A named numeric vector of feature counts, where the names are the feature labels.</p>
+    <p>A named numeric vector of feature counts, where the names are the
+  feature labels.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>topfeatures</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt;    ,  the    .  and   of   to  our   we    a   in 
+    <pre class="examples"><div class='input'><span class='co'># most frequent features</span>
+<span class='fu'>topfeatures</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt;    ,  the    .  and   of   to  our   we    a   in 
 #&gt; 1246 1029  986  850  713  548  518  493  411  323 </div><div class='input'><span class='fu'>topfeatures</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>),
             <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt;      ,      .   will      -     us      ;   must    new  world people 
-#&gt;   1246    986    193    183    163     96     96     87     81     80 </div><div class='input'><span class='co'># least frequent features</span>
+#&gt;   1246    986    193    183    163     96     96     87     81     80 </div><div class='input'>
+<span class='co'># least frequent features</span>
 <span class='fu'>topfeatures</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
             <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;   hatfield    mondale      baker     moomaw  momentous occurrence  routinely 
 #&gt;          1          1          1          1          1          1          1 

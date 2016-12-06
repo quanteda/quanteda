@@ -87,16 +87,7 @@ one-dimensional document positions using conditional maximum likelihood.</p>
 
     <pre><span class='fu'>textmodel_wordfish</span>(<span class='no'>data</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>priors</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>Inf</span>, <span class='fl'>Inf</span>, <span class='fl'>3</span>, <span class='fl'>1</span>),
   <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1e-06</span>, <span class='fl'>1e-08</span>), <span class='kw'>dispersion</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"poisson"</span>, <span class='st'>"quasipoisson"</span>),
-  <span class='kw'>dispersionLevel</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"feature"</span>, <span class='st'>"overall"</span>), <span class='kw'>dispersionFloor</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-
-<span class='co'># S3 method for textmodel_wordfish_fitted</span>
-<span class='fu'>print</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>30L</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for textmodel_wordfish_fitted</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)
-
-<span class='co'># S4 method for textmodel_wordfish_predicted</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)</pre>
+  <span class='kw'>dispersionLevel</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"feature"</span>, <span class='st'>"overall"</span>), <span class='kw'>dispersionFloor</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -129,14 +120,6 @@ in the quasi-Poisson model.  Used to minimize the distorting effect of
 terms with rare term or document frequencies that appear to be severely 
 underdispersed.  Default is 0, but this only applies if <code>dispersion = 
 &quot;quasipoisson&quot;</code>.</dd>
-      <dt>x</dt>
-      <dd>for print method, the object to be printed</dd>
-      <dt>n</dt>
-      <dd>max rows of dfm to print</dd>
-      <dt>...</dt>
-      <dd>additional arguments passed to <code>print</code></dd>
-      <dt>object</dt>
-      <dd>wordfish fitted or predicted object to be shown</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -202,7 +185,7 @@ underdispersed.  Default is 0, but this only applies if <code>dispersion =
 <span class='co'># plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",</span>
 <span class='co'>#      xlim = c(0, 1.0), ylim = c(0, 1.0), type = "n")</span>
 <span class='co'># underdispersedTerms &lt;- sample(which(wfm2a@phi &lt; 1.0), 5)</span>
-<span class='co'># which(features(ie2010dfm) %in% names(topfeatures(ie2010dfm, 20)))</span>
+<span class='co'># which(featnames(ie2010dfm) %in% names(topfeatures(ie2010dfm, 20)))</span>
 <span class='co'># text(wfm2a@phi, wfm2b@phi, wfm2a@features, </span>
 <span class='co'>#      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "grey90")</span>
 <span class='co'># text(wfm2a@phi[underdispersedTerms], wfm2b@phi[underdispersedTerms], </span>

@@ -115,7 +115,7 @@ the dfm.)  It could also be needed , after a <code><a href='cbind.dfm.html'>cbin
     <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
 <span class='co'># mat &lt;- rbind(dfm(c("b A A", "C C a b B"), toLower = FALSE, verbose = FALSE),</span>
 <span class='co'>#              dfm("A C C C C C", toLower = FALSE, verbose = FALSE))</span>
-<span class='co'># colnames(mat) &lt;- toLower(features(mat))</span>
+<span class='co'># colnames(mat) &lt;- toLower(featnames(mat))</span>
 <span class='co'># mat</span>
 <span class='co'># compress(mat, margin = "documents")</span>
 <span class='co'># compress(mat, margin = "features")</span>

@@ -7,7 +7,7 @@
 #' tokenize(data_char_sampletext, removePunct = TRUE)
 "data_char_sampletext"
 
-#' text of Herman Melville's \emph{Moby Dick}
+#' text of Herman Melville's Moby Dick
 #' 
 #' Named character object of the ASCII text of Herman Melville's
 #'  \emph{Moby Dick}, EBook no. 2701.

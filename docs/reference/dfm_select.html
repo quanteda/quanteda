@@ -222,7 +222,7 @@ removed</dd>
 #&gt; 2 x 11 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;       this is text one . , the second here : third
 #&gt; text1    0  0    0   0 1 0   0      0    1 0     0
-#&gt; text2    1  0    1   0 1 0   0      0    0 0     0</div><div class='input'><span class='fu'>setequal</span>(<span class='fu'><a href='features.html'>features</a></span>(<span class='no'>dfm1</span>), <span class='fu'><a href='features.html'>features</a></span>(<span class='no'>dfm2b</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+#&gt; text2    1  0    1   0 1 0   0      0    0 0     0</div><div class='input'><span class='fu'>setequal</span>(<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>dfm1</span>), <span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>dfm2b</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># more selection on a dfm</span>
 <span class='fu'>dfm_select</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2a</span>)</div><div class='output co'>#&gt; <span class='message'>found 4 features from 8 supplied types in a dfm,</span></div><div class='output co'>#&gt; <span class='message'> padding 0s for another 4 </span></div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 8 features (62.5% sparse).
 #&gt; 3 x 8 sparse Matrix of class &quot;dfmSparse&quot;
