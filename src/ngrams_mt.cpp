@@ -199,6 +199,7 @@ List qatd_cpp_ngram_mt_list(List texts_,
     // Return IDs as attribute
     ListOf<IntegerVector> texts_ngram = Rcpp::wrap(output);
     texts_ngram.attr("types") = types_ngram;
+    texts_ngram.attr("class") = "tokens";
 
     return texts_ngram;
 
@@ -207,9 +208,9 @@ List qatd_cpp_ngram_mt_list(List texts_,
 
 /*** R
 
-#txt <- c('a b c d e', 'c d e f g')
+txt <- c('a b c d e', 'c d e f g')
 #txt <- readLines('~/Documents/Brexit/Analysis/all_bbc_2015.txt') # 80MB
-#tok <- quanteda::tokens(txt)
+tok <- quanteda::tokens(txt)
 
 RcppParallel::setThreadOptions(1)
 res <- qatd_cpp_ngram_mt_list(tok, attr(tok, 'types'), "-", 2, 1)
