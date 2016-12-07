@@ -2,49 +2,16 @@
 #' 
 #' @description These functions compute distance matrix between documents and/or features from a 
 #' \code{\link{dfm}} and return a standard \code{\link[stats]{dist}} object.  
-#'     
-#' @slot selection character or character vector of document names or feature 
-#'   labels from the dfm
-#' @slot n the top \code{n} most similar items will be returned.  If n is \code{NULL}, return all items.
-#' @slot margin identifies the margin of the dfm on which similarity will be 
-#'   computed:  \code{documents} for documents or \code{features} for word/term
-#'   features.
-#' @slot method the distance measure to be used, options are "euclidean", "hamming",
-#'  "Chisquared","Chisquared2" and "kullback", default "euclidean". More options are avaible 
-#'  in \code{\link{textstat_simil}}
-#' @slot normalize a deprecated argument retained (temporarily) for legacy 
-#'   reasons.  If you want to compute similarity on a "normalized" dfm objects 
-#'   (e.g. \code{x}), wrap it in \code{\link{weight}(x, "relFreq")}.
-#' @slot digits decimal places to display similarity values
-#' @slot tri whether the upper triangle of the symmetric \eqn{V \times V} matrix is recorded
-#' @slot diag whether the diagonal of the distance matrix should be recorded
-#' @slot dist whether the distance matrix should be converted into an object of class "dist". Distance matrix 
-#'   created from some methods, such as "kullback", is not symmetric.  
-#' @seealso \link{dfm}
-#' @export
-#' @import methods
-#' @docType class
-#' @name dist-class
-#' @keywords internal
-setClass("dist",
-         slots = c(selection = "character", n = "integer", margin = "character", 
-                   method = "character", normalize = "logical", 
-                   digits = "integer", tri = "logical", diag = "logical", dist = "logical"),
-         prototype = list (selection = character(0), n = NULL,
-                           margin = c("documents", "features"),
-                           method = "euclidean",
-                           normalize = FALSE, tri = FALSE, diag = FALSE)
-         #contains = "Matrix"
-         )
-
 #' @rdname textstat_simil
-#' @param dist whether the distance matrix should be converted into an object of
-#'   class "dist".  The distance matrix created from some methods, such as
-#'   "kullback", is not symmetric.
+#' @param dist whether the distance matrix should be converted into an object of class "dist". 
+#' @seealso \link{dfm}
 #' @export
 #' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
 #' \code{"euclidean"}, \code{"hamming"}, \code{"Chisquared"}, 
 #' \code{"Chisquared2"}, and \code{"kullback"}.
+#' 
+#' Distance matrix created from some methods, such as "kullback", is not symmetric. 
+#' Hence the conversion to a dist object is not recommanded. 
 #' @examples
 #' # create a dfm from inaugural addresses from Reagan onwards
 #' presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), 
@@ -134,13 +101,12 @@ textstat_dist <- function(x, selection = character(0), n = NULL,
         result <- x
     }
     
-    # truncate to n if n is not NULL
     if (!is.null(n))
-        result <- head(as.matrix(result), n)
+        result <- result[1:n,]
     
     # discard the upper diagonal if tri == TRUE
     if (tri)
-        result[upper.tri(result, diag = !diag)]<-0
+        result <- Matrix::tril(result)
     
     if (dist){
         # create a new dist object

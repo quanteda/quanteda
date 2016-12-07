@@ -124,11 +124,12 @@ textstat_simil <- function(x, selection = character(0), n = NULL,
     
     # truncate to n if n is not NULL
     if (!is.null(n))
-        result <- head(as.matrix(result), n)  # result returned by some method is a sparse matrix
-    
+        result <- result[1:n,]
+        
     # discard the upper diagonal if tri == TRUE
     if (tri)
-        result[upper.tri(result, diag = !diag)]<-0
+        #result <- if(diag == TRUE) Matrix::tril(result) else Matrix::tril(result, -1)
+        result <- Matrix::tril(result)
     
     # create a new dist object
     p <- nrow(result)
@@ -166,11 +167,13 @@ cosineSparse <- function(x, y = NULL, margin = 1, norm = norm2) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     if (margin == 1) x <- t(x)
     S <- rep(1, nrow(x))			
-    N <- Matrix::Diagonal( x = norm(x, S)^-1 )
+    #N <- Matrix::Diagonal( x = match.fun(norm)(x, S)^-1 )
+    N <- Matrix::Diagonal( x = sqrt(colSums(x^2))^-1 )
     x <- x %*% N
     if (!is.null(y)) {
         if (margin == 1) y <- t(y)
-        N <- Matrix::Diagonal( x = match.fun(norm)(y, S)^-1 )
+        #N <- Matrix::Diagonal( x = match.fun(norm)(y, S)^-1 )
+        N <- Matrix::Diagonal( x = sqrt(colSums(y^2))^-1 )
         y <- y %*% N
         return(as.matrix(Matrix::crossprod(x,y)))
     } else

@@ -3,7 +3,7 @@
 \name{textstat_dist}
 \alias{textstat_dist}
 \alias{textstat_simil}
-\title{similarity or distance between dfm documents and/or features}
+\title{Distance matrix between documents and/or features}
 \usage{
 textstat_dist(x, selection = character(0), n = NULL,
   margin = c("documents", "features"), method = "euclidean", tri = TRUE,
@@ -33,11 +33,12 @@ matrix is recorded}
 
 \item{diag}{whether the diagonal of the distance matrix should be recorded}
 
-\item{dist}{whether the distance matrix should be converted into an object of
-class "dist".  The distance matrix created from some methods, such as
-"kullback", is not symmetric.}
+\item{dist}{whether the distance matrix should be converted into an object of class "dist".}
 }
 \description{
+These functions compute distance matrix between documents and/or features from a 
+\code{\link{dfm}} and return a standard \code{\link[stats]{dist}} object.
+
 Compute a similarity or distance matrix between documents and/or features 
 from a \code{\link{dfm}} and return a standard \code{\link[stats]{dist}} 
 object.
@@ -46,6 +47,9 @@ object.
 \code{textstat_dist} options are: \code{"euclidean"} (default), 
 \code{"euclidean"}, \code{"hamming"}, \code{"Chisquared"}, 
 \code{"Chisquared2"}, and \code{"kullback"}.
+
+Distance matrix created from some methods, such as "kullback", is not symmetric. 
+Hence the conversion to a dist object is not recommanded.
 
 \code{textstat_simil} options are: \code{"correlation"} (default),
 \code{"cosine"}, \code{"correlation"}, \code{"jaccard"}, \code{"eJaccard"},
@@ -94,6 +98,8 @@ textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine",
 
 }
 \seealso{
+\link{dfm}
+
 \code{\link{textstat_dist}}, \code{\link{as.list.dist}}
 }
 

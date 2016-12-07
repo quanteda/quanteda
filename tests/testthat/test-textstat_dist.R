@@ -141,7 +141,7 @@ test_that("test textstat_simil method = \"dice\" against proxy::simil(): documen
     diceQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "dice", margin = "documents", tri = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     diceQuanteda <- diceQuanteda[-which(names(diceQuanteda) == "1981-Reagan")]
     diceProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "dice", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
-    diceProxy <- diceProxy[-which(names(diceProxy) == "1981-Reagan")]
+    if("1981-Reagan" %in% names(diceProxy)) diceProxy <- diceProxy[-which(names(diceProxy) == "1981-Reagan")]
     expect_equal(diceQuanteda, diceProxy)
 })
 
@@ -168,7 +168,7 @@ test_that("test textstat_simil method = \"edice\" against proxy::simil(): docume
     ediceQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "eDice", margin = "documents", tri = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     ediceQuanteda <- ediceQuanteda[-which(names(ediceQuanteda) == "1981-Reagan")]
     ediceProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "edice", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
-    ediceProxy <- ediceProxy[-which(names(ediceProxy) == "1981-Reagan")]
+    if("1981-Reagan" %in% names(ediceProxy)) ediceProxy <- ediceProxy[-which(names(ediceProxy) == "1981-Reagan")]
     expect_equal(ediceQuanteda, ediceProxy)
 })
 
@@ -195,7 +195,7 @@ test_that("test textstat_simil method = \"simple matching\" against proxy::simil
     smcQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "simple matching", margin = "documents", tri = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     smcQuanteda <- smcQuanteda[-which(names(smcQuanteda) == "1981-Reagan")]
     smcProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "simple matching", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
-    smcProxy <- smcProxy[-which(names(smcProxy) == "1981-Reagan")]
+    if("1981-Reagan" %in% names(smcProxy)) smcProxy <- smcProxy[-which(names(smcProxy) == "1981-Reagan")]
     expect_equal(smcQuanteda, smcProxy)
 })
 
@@ -222,7 +222,7 @@ test_that("test textstat_simil method = \"hamann\" against proxy::simil(): docum
     hamnQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "hamann", margin = "documents", tri = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     hamnQuanteda <- hamnQuanteda[-which(names(hamnQuanteda) == "1981-Reagan")]
     hamnProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "hamman", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
-    hamnProxy <- hamnProxy[-which(names(hamnProxy) == "1981-Reagan")]
+    if("1981-Reagan" %in% names(hamnProxy)) hamnProxy <- hamnProxy[-which(names(hamnProxy) == "1981-Reagan")]
     expect_equal(hamnQuanteda, hamnProxy)
 })
 
@@ -249,7 +249,7 @@ test_that("test textstat_simil method = \"faith\" against proxy::simil(): docume
     faithQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "faith", margin = "documents", tri = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     faithQuanteda <- faithQuanteda[-which(names(faithQuanteda) == "1981-Reagan")]
     faithProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "faith", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
-    faithProxy <- faithProxy[-which(names(faithProxy) == "1981-Reagan")]
+    if("1981-Reagan" %in% names(faithProxy)) faithProxy <- faithProxy[-which(names(faithProxy) == "1981-Reagan")]
     expect_equal(faithQuanteda, faithProxy)
 })
 
@@ -313,3 +313,9 @@ test_that("test textstat_dist method = \"Euclidean\" against proxy dist() and st
     kullProxy <- round(as.matrix(proxy::dist(m, "kullback", diag = FALSE, upper = FALSE)), 2)
     expect_equal(kullQuanteda, kullProxy)
 })
+
+# rbenchmark::benchmark(
+#     old =similarity(presDfm, method = "cosine"),
+#     new = as.list(textstat_simil(presDfm, method = "cosine")),
+#     replications = 1
+# )
