@@ -30,6 +30,14 @@ microbenchmark::microbenchmark(
     times=1
 )
 
+microbenchmark::microbenchmark(
+    ngrams(tok, n=2, thread=4),
+    ngrams(tok, n=3, thread=4),
+    ngrams(tok, n=4, thread=4),
+    ngrams(tok, n=5, thread=4),
+    times=1
+)
+
 profvis::profvis(ngrams(tok, 2, thread=4))
 profvis::profvis(quanteda::ngrams(tokens(txt), n = 2, thread=4))
 
