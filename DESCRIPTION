@@ -19,8 +19,8 @@ Author: Kenneth Benoit [aut, cre],
     Will Lowe [ctb],
     Pablo Barberá [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.8.9022
-Date: 2016-12-05
+Version: 0.9.8.9023
+Date: 2016-12-06
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -35,12 +35,10 @@ Imports:
     SnowballC,
     wordcloud,
     proxy,
-    parallel,
     Rcpp,
     RcppParallel,
     ca,
     stringi,
-    httr,
     fastmatch
 Remotes: kbenoit/readtext
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo
@@ -49,16 +47,12 @@ Suggests:
     rmarkdown,
     lda,
     topicmodels,
-    jsonlite (>= 0.9.10),
-    streamR,
     tm (>= 0.6),
     slam,
     XML,
     testthat,
     RColorBrewer,
-    ggplot2 (>= 2.2.0),
-    grid,
-    text2vec
+    ggplot2 (>= 2.2.0)
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues

@@ -1,6 +1,5 @@
 require(quanteda)
 require(testthat)
-require(text2vec)
 context('Testing fcm*.R')
 
 test_that("compare the output feature co-occurrence matrix to that of the text2vec package", {
@@ -13,6 +12,10 @@ test_that("compare the output feature co-occurrence matrix to that of the text2v
     # text2vec considers txt$metadata, txt$setting as part of the document
     # text2vec doesn't remove '_' , but does remove '-'
     # text2vec treats newline character "\n" as part of the word
+    skip_on_cran()
+    skip_on_travis()
+    skip_on_appveyor()
+    require(text2vec)
     tokens <- txt %>% tolower %>% word_tokenizer
     it <- itoken(tokens)
     v <- create_vocabulary(it)
