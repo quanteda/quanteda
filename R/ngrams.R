@@ -67,7 +67,7 @@ ngrams.tokenizedTexts <- function(x, ...) {
 #' ngrams(toks, n = 2:3)
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
-ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_", thread = 4, ...) {
+ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_", thread, ...) {
 
     if (any(n <= 0)) stop("ngram length has to be greater than zero")
     
@@ -76,10 +76,10 @@ ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_", thread = 4, 
     attrs_org <- attributes(x)
     
     # Generate ngrams
-    RcppParallel::setThreadOptions(thread)
+    if(!missing(thread)) RcppParallel::setThreadOptions(thread)
     x <- qatd_cpp_ngram_mt_list(x, types(x), concatenator, n, skip + 1)
     
-    types_ngm <- stringi::stri_encode(attr(x, 'types'), "", "UTF-8")
+    types_ngm <- stringi::stri_encode(types(x), "", "UTF-8")
     attributes(x) <- attrs_org
     types(x) <- types_ngm
     names(x) <- names_org

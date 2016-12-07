@@ -17,8 +17,8 @@ ngrams(x, ...)
 
 \method{ngrams}{tokenizedTexts}(x, ...)
 
-\method{ngrams}{tokens}(x, n = 2L, skip = 0L, concatenator = "_",
-  thread = 4, ...)
+\method{ngrams}{tokens}(x, n = 2L, skip = 0L, concatenator = "_", thread,
+  ...)
 
 skipgrams(x, ...)
 
