@@ -84,7 +84,7 @@ test_that("test textstat_simil method = \"jaccard\" against proxy::simil(): docu
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    jacQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "jaccard", margin = "documents", diag= FALSE, tri = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    jacQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "jaccard", margin = "documents", diag= FALSE, upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     jacQuanteda <- jacQuanteda[-which(names(jacQuanteda) == "1981-Reagan")]
     jacProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "jaccard", diag = FALSE, upper = FALSE, p = 2))[, "1981-Reagan"], 6), decreasing = FALSE)
     if("1981-Reagan" %in% names(jacProxy)) jacProxy <- jacProxy[-which(names(jacProxy) == "1981-Reagan")]
@@ -111,7 +111,7 @@ test_that("test textstat_simil method = \"ejaccard\" against proxy::simil(): doc
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    ejacQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "eJaccard", margin = "documents", tri = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    ejacQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "eJaccard", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     ejacQuanteda <- ejacQuanteda[-which(names(ejacQuanteda) == "1981-Reagan")]
     ejacProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "ejaccard", diag = FALSE, upper = FALSE, p = 2))[, "1981-Reagan"], 6), decreasing = FALSE)
     if("1981-Reagan" %in% names(ejacProxy)) ejacProxy <- ejacProxy[-which(names(ejacProxy) == "1981-Reagan")]
@@ -138,7 +138,7 @@ test_that("test textstat_simil method = \"dice\" against proxy::simil(): documen
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    diceQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "dice", margin = "documents", tri = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    diceQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "dice", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     diceQuanteda <- diceQuanteda[-which(names(diceQuanteda) == "1981-Reagan")]
     diceProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "dice", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
     if("1981-Reagan" %in% names(diceProxy)) diceProxy <- diceProxy[-which(names(diceProxy) == "1981-Reagan")]
@@ -165,7 +165,7 @@ test_that("test textstat_simil method = \"edice\" against proxy::simil(): docume
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    ediceQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "eDice", margin = "documents", tri = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    ediceQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "eDice", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     ediceQuanteda <- ediceQuanteda[-which(names(ediceQuanteda) == "1981-Reagan")]
     ediceProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "edice", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
     if("1981-Reagan" %in% names(ediceProxy)) ediceProxy <- ediceProxy[-which(names(ediceProxy) == "1981-Reagan")]
@@ -192,7 +192,7 @@ test_that("test textstat_simil method = \"simple matching\" against proxy::simil
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    smcQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "simple matching", margin = "documents", tri = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    smcQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "simple matching", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     smcQuanteda <- smcQuanteda[-which(names(smcQuanteda) == "1981-Reagan")]
     smcProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "simple matching", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
     if("1981-Reagan" %in% names(smcProxy)) smcProxy <- smcProxy[-which(names(smcProxy) == "1981-Reagan")]
@@ -219,7 +219,7 @@ test_that("test textstat_simil method = \"hamann\" against proxy::simil(): docum
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    hamnQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "hamann", margin = "documents", tri = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    hamnQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "hamann", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     hamnQuanteda <- hamnQuanteda[-which(names(hamnQuanteda) == "1981-Reagan")]
     hamnProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "hamman", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
     if("1981-Reagan" %in% names(hamnProxy)) hamnProxy <- hamnProxy[-which(names(hamnProxy) == "1981-Reagan")]
@@ -246,7 +246,7 @@ test_that("test textstat_simil method = \"faith\" against proxy::simil(): docume
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    faithQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "faith", margin = "documents", tri = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    faithQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "1981-Reagan", method = "faith", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
     faithQuanteda <- faithQuanteda[-which(names(faithQuanteda) == "1981-Reagan")]
     faithProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "faith", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
     if("1981-Reagan" %in% names(faithProxy)) faithProxy <- faithProxy[-which(names(faithProxy) == "1981-Reagan")]
@@ -278,7 +278,7 @@ test_that("test textstat_dist method = \"Chi-squred\" against ExPosition::chi2Di
     require(proxy)
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
-    chiQuanteda <- round(as.matrix(textstat_dist(presDfm, method = "Chisquared", margin = "features"))[,"soviet"], 2)
+    chiQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet", method = "Chisquared", margin = "features"))[,"soviet"], 2)
     chiQuanteda <- chiQuanteda[order(names(chiQuanteda))]
     chiQuanteda <- chiQuanteda[-which(names(chiQuanteda) == "soviet")]
     
@@ -314,8 +314,3 @@ test_that("test textstat_dist method = \"Euclidean\" against proxy dist() and st
     expect_equal(kullQuanteda, kullProxy)
 })
 
-# rbenchmark::benchmark(
-#     old =similarity(presDfm, method = "cosine"),
-#     new = as.list(textstat_simil(presDfm, method = "cosine")),
-#     replications = 1
-# )

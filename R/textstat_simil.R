@@ -22,7 +22,7 @@
 #'   difference will be computed:  \code{documents} for documents or 
 #'   \code{features} for word/term features.
 #' @param method method the distance measure to be used; see Details
-#' @param tri whether the upper triangle of the symmetric \eqn{V \times V} 
+#' @param upper  whether the upper triangle of the symmetric \eqn{V \times V} 
 #'   matrix is recorded
 #' @param diag whether the diagonal of the distance matrix should be recorded
 #' @details \code{textstat_simil} options are: \code{"correlation"} (default),
@@ -58,7 +58,7 @@
 textstat_simil <- function(x, selection = character(0), n = NULL,
                           margin = c("documents", "features"),
                           method = "correlation", 
-                          tri = FALSE, diag = FALSE) {
+                          upper  = FALSE, diag = FALSE) {
     if (!is.dfm(x))
         stop("x must be a dfm object")
 
@@ -113,11 +113,11 @@ textstat_simil <- function(x, selection = character(0), n = NULL,
         # create a full square matrix 
         nn <- if(length(selection) == 1L) length(result) else nrow(result)
         rname <- if(length(selection) == 1L) names(result) else rownames(result)
-        x <- matrix(data = NA,nrow = nn,ncol = nn, dimnames = list(rname, rname))
+        x <- Matrix::Matrix(data = 0,nrow = nn,ncol = nn, dimnames = list(rname, rname))
         if(length(selection) == 1L){
             x[, 1] <- result
         } else {
-            x[, 1:ncol(result)] <- as.matrix(result[, 1:ncol(result)])  #some returned result is 'dgCMatrix'
+            x[, 1:ncol(result)] <- result
         }
         result <- x
     }
@@ -126,29 +126,35 @@ textstat_simil <- function(x, selection = character(0), n = NULL,
     if (!is.null(n))
         result <- result[1:n,]
         
-    # discard the upper diagonal if tri == TRUE
-    if (tri)
-        #result <- if(diag == TRUE) Matrix::tril(result) else Matrix::tril(result, -1)
-        result <- Matrix::tril(result)
+    # # discard the upper diagonal if upper  == FALSE
+    # if (!upper)
+    #     #result <- if(diag == TRUE) Matrix::tril(result) else Matrix::tril(result, -1)
+    #     result <- Matrix::tril(result)
+    
     
     # create a new dist object
-    p <- nrow(result)
-    #if(ncol(result) != p) warning("non-square matrix")
+    # p <- nrow(result)
+    # #if(ncol(result) != p) warning("non-square matrix")
+    # 
+    # # only retain lower triangular elements for the dist object
+    # distM <- result[row(result) > col(result)]
+    # 
+    # # set the attributes of the dist object
+    # attributes(distM) <- NULL
+    # attr(distM, "Size") <- nrow(result)
+    # if (!is.null(rownames(result))) 
+    #     attr(distM, "Labels") <- rownames(result)
+    # else if(!is.null(colnames(m)))
+    #     attr(ans,"Labels") <- colnames(result)
+    # attr(distM, "Diag") <- diag
+    # attr(distM, "Upper") <- upper
+    # attr(distM, "method") <- method
+    # attr(distM, "call") <- match.call()
+    # attr(distM, "dimnames") <- NULL
+    # class(distM) <- "dist"
     
-    # only retain lower triangular elements for the dist object
-    distM <- result[row(result) > col(result)]
-    
-    # set the attributes of the dist object
-    attributes(distM) <- NULL
-    attr(distM, "Size") <- nrow(result)
-    if (!is.null(rownames(result))) attr(distM, "Labels") <- rownames(result)
-    attr(distM, "Diag") <- diag
-    attr(distM, "Upper") <- !tri
-    attr(distM, "method") <- method
-    attr(distM, "call") <- match.call()
-    attr(distM, "dimnames") <- NULL
-    class(distM) <- "dist"
-    
+    # create a new dist object
+    distM <- stats::as.dist(result, diag = diag, upper = upper)
     # This will call Stats::print.dist() and Stats::as.matrix.dist()
     distM
 }

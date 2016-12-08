@@ -6,12 +6,12 @@
 \title{Distance matrix between documents and/or features}
 \usage{
 textstat_dist(x, selection = character(0), n = NULL,
-  margin = c("documents", "features"), method = "euclidean", tri = TRUE,
-  diag = FALSE, dist = TRUE)
+  margin = c("documents", "features"), method = "euclidean", upper = TRUE,
+  diag = FALSE)
 
 textstat_simil(x, selection = character(0), n = NULL,
   margin = c("documents", "features"), method = "correlation",
-  tri = FALSE, diag = FALSE)
+  upper = FALSE, diag = FALSE)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -28,12 +28,10 @@ difference will be computed:  \code{documents} for documents or
 
 \item{method}{method the distance measure to be used; see Details}
 
-\item{tri}{whether the upper triangle of the symmetric \eqn{V \times V} 
+\item{upper}{whether the upper triangle of the symmetric \eqn{V \times V} 
 matrix is recorded}
 
 \item{diag}{whether the diagonal of the distance matrix should be recorded}
-
-\item{dist}{whether the distance matrix should be converted into an object of class "dist".}
 }
 \description{
 These functions compute distance matrix between documents and/or features from a 
@@ -47,9 +45,6 @@ object.
 \code{textstat_dist} options are: \code{"euclidean"} (default), 
 \code{"euclidean"}, \code{"hamming"}, \code{"Chisquared"}, 
 \code{"Chisquared2"}, and \code{"kullback"}.
-
-Distance matrix created from some methods, such as "kullback", is not symmetric. 
-Hence the conversion to a dist object is not recommanded.
 
 \code{textstat_simil} options are: \code{"correlation"} (default),
 \code{"cosine"}, \code{"correlation"}, \code{"jaccard"}, \code{"eJaccard"},
