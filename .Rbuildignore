@@ -23,4 +23,6 @@ __MACOSX
 ^codecov\.yml$
 ^appveyor\.yml$
 ^docs/
+^_pkgdown\.yml$
+
 

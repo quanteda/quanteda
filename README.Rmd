@@ -14,10 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-
-
-[![quanteda](images/quanteda-light.png)](https://kbenoit.github.io/quanteda/)  
-
+# [![quanteda](images/quanteda-light.png)](https://kbenoit.github.io/quanteda/)  
 # [Quantitative Analysis of Textual Data](https://kbenoit.github.io/quanteda/)
 
 [![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
@@ -28,6 +25,7 @@ knitr::opts_chunk$set(
 [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)][1]
 
 [1]: https://codecov.io/gh/kbenoit/quanteda/branch/master
+
 
 ## **quanteda** v0.9.9 under development
 
