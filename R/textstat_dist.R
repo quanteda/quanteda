@@ -104,28 +104,10 @@ textstat_dist <- function(x, selection = character(0), n = NULL,
     # if (!upper)
     #     result <- Matrix::tril(result)
     
-    
-    # # create a new dist object
-    # p <- nrow(result)
-    # if(ncol(result) != p) warning("non-square matrix")
-    # 
-    # 
-    # # only retain lower triangular elements for the dist object
-    # distM <- result[row(result) > col(result)]
-    # 
-    # # set the attributes of the dist object
-    # attributes(distM) <- NULL
-    # attr(distM, "Size") <- nrow(result)
-    # if (!is.null(rownames(result))) attr(distM, "Labels") <- rownames(result)
-    # attr(distM, "Diag") <- diag
-    # attr(distM, "Upper") <- upper
-    # attr(distM, "method") <- method
-    # attr(distM, "call") <- match.call()
-    # attr(distM, "dimnames") <- NULL
-    # class(distM) <- "dist"
-    
     # create a new dist object
     distM <- stats::as.dist(result, diag = diag, upper = upper)
+    attr(distM, "method") <- method
+    attr(distM, "call") <- match.call()
     # This will call Stats::print.dist() and Stats::as.matrix.dist()
     distM
 }
