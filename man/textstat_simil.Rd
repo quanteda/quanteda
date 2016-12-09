@@ -3,15 +3,15 @@
 \name{textstat_dist}
 \alias{textstat_dist}
 \alias{textstat_simil}
-\title{similarity or distance between dfm documents and/or features}
+\title{Distance matrix between documents and/or features}
 \usage{
 textstat_dist(x, selection = character(0), n = NULL,
-  margin = c("documents", "features"), method = "euclidean", tri = TRUE,
-  diag = FALSE, dist = TRUE)
+  margin = c("documents", "features"), method = "euclidean", upper = TRUE,
+  diag = FALSE)
 
 textstat_simil(x, selection = character(0), n = NULL,
   margin = c("documents", "features"), method = "correlation",
-  tri = FALSE, diag = FALSE)
+  upper = FALSE, diag = FALSE)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -28,16 +28,15 @@ difference will be computed:  \code{documents} for documents or
 
 \item{method}{method the distance measure to be used; see Details}
 
-\item{tri}{whether the upper triangle of the symmetric \eqn{V \times V} 
+\item{upper}{whether the upper triangle of the symmetric \eqn{V \times V} 
 matrix is recorded}
 
 \item{diag}{whether the diagonal of the distance matrix should be recorded}
-
-\item{dist}{whether the distance matrix should be converted into an object of
-class "dist".  The distance matrix created from some methods, such as
-"kullback", is not symmetric.}
 }
 \description{
+These functions compute distance matrix between documents and/or features from a 
+\code{\link{dfm}} and return a standard \code{\link[stats]{dist}} object.
+
 Compute a similarity or distance matrix between documents and/or features 
 from a \code{\link{dfm}} and return a standard \code{\link[stats]{dist}} 
 object.
@@ -94,6 +93,8 @@ textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine",
 
 }
 \seealso{
+\link{dfm}
+
 \code{\link{textstat_dist}}, \code{\link{as.list.dist}}
 }
 

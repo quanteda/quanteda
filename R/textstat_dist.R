@@ -2,45 +2,8 @@
 #' 
 #' @description These functions compute distance matrix between documents and/or features from a 
 #' \code{\link{dfm}} and return a standard \code{\link[stats]{dist}} object.  
-#'     
-#' @slot selection character or character vector of document names or feature 
-#'   labels from the dfm
-#' @slot n the top \code{n} most similar items will be returned.  If n is \code{NULL}, return all items.
-#' @slot margin identifies the margin of the dfm on which similarity will be 
-#'   computed:  \code{documents} for documents or \code{features} for word/term
-#'   features.
-#' @slot method the distance measure to be used, options are "euclidean", "hamming",
-#'  "Chisquared","Chisquared2" and "kullback", default "euclidean". More options are avaible 
-#'  in \code{\link{textstat_simil}}
-#' @slot normalize a deprecated argument retained (temporarily) for legacy 
-#'   reasons.  If you want to compute similarity on a "normalized" dfm objects 
-#'   (e.g. \code{x}), wrap it in \code{\link{weight}(x, "relFreq")}.
-#' @slot digits decimal places to display similarity values
-#' @slot tri whether the upper triangle of the symmetric \eqn{V \times V} matrix is recorded
-#' @slot diag whether the diagonal of the distance matrix should be recorded
-#' @slot dist whether the distance matrix should be converted into an object of class "dist". Distance matrix 
-#'   created from some methods, such as "kullback", is not symmetric.  
-#' @seealso \link{dfm}
-#' @export
-#' @import methods
-#' @docType class
-#' @name dist-class
-#' @keywords internal
-setClass("dist",
-         slots = c(selection = "character", n = "integer", margin = "character", 
-                   method = "character", normalize = "logical", 
-                   digits = "integer", tri = "logical", diag = "logical", dist = "logical"),
-         prototype = list (selection = character(0), n = NULL,
-                           margin = c("documents", "features"),
-                           method = "euclidean",
-                           normalize = FALSE, tri = FALSE, diag = FALSE)
-         #contains = "Matrix"
-         )
-
 #' @rdname textstat_simil
-#' @param dist whether the distance matrix should be converted into an object of
-#'   class "dist".  The distance matrix created from some methods, such as
-#'   "kullback", is not symmetric.
+#' @seealso \link{dfm}
 #' @export
 #' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
 #' \code{"euclidean"}, \code{"hamming"}, \code{"Chisquared"}, 
@@ -64,7 +27,7 @@ setClass("dist",
 textstat_dist <- function(x, selection = character(0), n = NULL, 
                          margin = c("documents", "features"),
                          method = "euclidean",
-                         tri = TRUE, diag = FALSE, dist = TRUE) {
+                         upper = TRUE, diag = FALSE) {
 
     if (!is.dfm(x))
         stop("x must be a dfm object")
@@ -125,7 +88,7 @@ textstat_dist <- function(x, selection = character(0), n = NULL,
         # create a full square matrix 
         nn <- if(length(selection) == 1L) length(result) else nrow(result)
         rname <- if(length(selection) == 1L) names(result) else rownames(result)
-        x <- matrix(data = NA,nrow = nn,ncol = nn, dimnames = list(rname, rname))
+        x <- Matrix::Matrix(data = 0,nrow = nn,ncol = nn, dimnames = list(rname, rname))
         if(length(selection) == 1L){
             x[, 1] <- result
         } else {
@@ -134,39 +97,19 @@ textstat_dist <- function(x, selection = character(0), n = NULL,
         result <- x
     }
     
-    # truncate to n if n is not NULL
     if (!is.null(n))
-        result <- head(as.matrix(result), n)
+        result <- result[1:n,]
     
-    # discard the upper diagonal if tri == TRUE
-    if (tri)
-        result[upper.tri(result, diag = !diag)]<-0
+    # # discard the upper diagonal if upper == FALSE
+    # if (!upper)
+    #     result <- Matrix::tril(result)
     
-    if (dist){
-        # create a new dist object
-        p <- nrow(result)
-        if(ncol(result) != p) warning("non-square matrix")
-        
-        
-        # only retain lower triangular elements for the dist object
-        distM <- result[row(result) > col(result)]
-        
-        # set the attributes of the dist object
-        attributes(distM) <- NULL
-        attr(distM, "Size") <- nrow(result)
-        if (!is.null(rownames(result))) attr(distM, "Labels") <- rownames(result)
-        attr(distM, "Diag") <- diag
-        attr(distM, "Upper") <- !tri
-        attr(distM, "method") <- method
-        attr(distM, "call") <- match.call()
-        attr(distM, "dimnames") <- NULL
-        class(distM) <- "dist"
-        
-        # This will call Stats::print.dist() and Stats::as.matrix.dist()
-        distM
-    } else {
-        result
-    }
+    # create a new dist object
+    distM <- stats::as.dist(result, diag = diag, upper = upper)
+    attr(distM, "method") <- method
+    attr(distM, "call") <- match.call()
+    # This will call Stats::print.dist() and Stats::as.matrix.dist()
+    distM
 }
 
 # convert the dist class object to the sorted list used in tm::findAssocs()
@@ -324,14 +267,14 @@ ChisquaredSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
             # weighted by the average profiles
             y <- y %*% diag(1/aveProfile)
         } else {
-            y <- y %*% diag(1/marginSums(y))
+            y <- if (dim(y)[margin] > 1) y %*% diag(1/marginSums(y)) else y %*% (1/marginSums(y))
             y <- y / aveProfile
         }
         an <- marginSums(x^2)
         bn <- marginSums(y^2)
         
         # number of features
-        kk <- y@Dim[1]
+        kk <- y@Dim[margin]
         tmp <- matrix(rep(an, kk), nrow = n) 
         tmp <-  tmp +  matrix(rep(bn, n), nrow = n, byrow=TRUE)
         chimat <- tmp - 2 * as.matrix(cpFun(x, y))
@@ -400,7 +343,7 @@ kullbackSparse <- function(x, y = NULL, margin = 1) {
         logy <- log(y)
         logy[is.na(logy)] <- 0L
         logy[is.infinite(logy)] <- 0L
-        kullmat <- marginSums(x*logx - cpFun(x, logy))
+        kullmat <- marginSums(x*logx) - cpFun(x, logy)
         colNm <- marginNames(y)
     } else {
         kullmat <- marginSums(x*logx) - cpFun(x, logx)
