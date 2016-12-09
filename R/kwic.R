@@ -1,4 +1,4 @@
-#' List key words in context from a text or a corpus of texts.
+#' locate keywords-in-context
 #' 
 #' For a text or a collection of texts (in a quanteda corpus object), return a 
 #' list of a keyword supplied by the user in its immediate context, identifying 
@@ -6,19 +6,19 @@
 #' line number, since the text may or may not be segmented using end-of-line 
 #' delimiters.)
 #' 
-#' @param x a text character, quanteda corpus, or tokenizedTexts object
-#' @param keywords A keyword pattern or phrase consisting of multiple keyword 
+#' @param x a character, \link{corpus}, or \link{tokens} object
+#' @param keywords a keyword pattern or phrase consisting of multiple keyword 
 #'   patterns, possibly including punctuation.  If a phrase, \code{keywords} 
 #'   will be tokenized using the \code{...} options.
-#' @param window The number of context words to be displayed around the keyword.
+#' @param window the number of context words to be displayed around the keyword.
 #' @param valuetype how to interpret keyword expressions: \code{"glob"} for 
 #'   "glob"-style wildcard expressions; \code{"regex"} for regular expressions; 
 #'   or \code{"fixed"} for exact matching (entire words, for instance).  If 
 #'   \code{"fixed"} is used with \code{case_insensitive = TRUE}, the text will 
 #'   be lowercased prior to matching.
 #' @param case_insensitive match without respect to case if \code{TRUE}
-#' @param ... additional arguments passed to \link{tokenize}, for applicable 
-#'   methods
+#' @param ... additional arguments passed to \link{tokens}, for applicable 
+#'   object types
 #' @return A kwic object classed data.frame, with the document name 
 #'   (\code{docname}), the token index position (\code{position}), the context
 #'   before (\code{contextPre}), the keyword in its original format
@@ -33,33 +33,34 @@
 #' 
 #' kwic(data_corpus_inaugural, "war against")
 #' kwic(data_corpus_inaugural, "war against", valuetype = "regex")
+#' 
 kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
     UseMethod("kwic")
 }
 
 #' @rdname kwic
-#' @method kwic character
+#' @noRd
 #' @export
 kwic.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
     kwic(tokenize(x, ...), keywords, window, valuetype, case_insensitive)
 }
 
 #' @rdname kwic
-#' @method kwic corpus
+#' @noRd
 #' @export 
 kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
     kwic(texts(x), keywords, window, valuetype, case_insensitive, ...)
 }
 
 #' @rdname kwic
-#' @method kwic tokens
+#' @noRd
 #' @export 
-kwic.tokens <- function(x, keywords, ...) {
-    kwic(as.tokenizedTexts(x), keywords, ...)   
+kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+    kwic(as.tokenizedTexts(x), keywords, window, valuetype, case_insensitive, ...)   
 }
 
 #' @rdname kwic
-#' @method kwic tokenizedTexts
+#' @noRd
 #' @export 
 kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
     valuetype <- match.arg(valuetype)

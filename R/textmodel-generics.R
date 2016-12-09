@@ -14,8 +14,12 @@
 #' matrix.
 #' 
 #' Available types currently include...
-#' @slot dfm a \link{dfm-class} document-feature matrix
+#' @slot x  the dfm on which the wordscores model was called
+#' @slot y  supervised labels (for supervised methods only)
+#' @slot call  the function call that fitted the model
+#' @slot method the type of textmodel, e.g. wordfish, wordscores, NB-
 #' @name textmodel_fitted-class
+#' @keywords internal textmodel
 #' @export
 setClass("textmodel_fitted",
          slots = c(x = "dfm", y = "ANY", call = "call", method = "character"))
@@ -145,7 +149,7 @@ setMethod("textmodel", signature(x = "formula", y="missing", data="dfm", model =
                   y <- stats::model.response(mf)
                   # catm("HERE\n")
                   textmodel(data[which(docnames(data) %in% names(y)), 
-                                 which(features(data) %in% names(mf))], 
+                                 which(featnames(data) %in% names(mf))], 
                             y, model = model, ...)
               })
 

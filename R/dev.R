@@ -43,7 +43,8 @@ texts_random <- function(n_doc=10,
         dist_chars <- stats::rlnorm(length(chars))
         prob_chars <- sort(dist_chars / sum(dist_chars), decreasing = TRUE)
     }
-    if(n_type > length(chars) ^ len_word) error('n_type is too large')
+    if(n_type > length(chars) ^ len_word) 
+        stop('n_type is too large')
     
     # Generate unique types
     type <- c()

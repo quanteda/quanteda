@@ -105,7 +105,7 @@ textVec2 <- c("Here are new words.", "New words in this text.")
 (dfm1 <- dfm(textVec1, verbose = FALSE))
 (dfm2a <- dfm(textVec2, verbose = FALSE))
 (dfm2b <- selectFeatures(dfm2a, dfm1))
-setequal(features(dfm1), features(dfm2b))
+setequal(featnames(dfm1), featnames(dfm2b))
 
 # more selection on a dfm
 selectFeatures(dfm1, dfm2a)
@@ -188,5 +188,6 @@ selectFeatures(myCollocs, stopwords("english"), "remove")
 \seealso{
 \code{\link{removeFeatures}}, \code{\link{dfm_trim}}
 }
+\keyword{deprecated}
 \keyword{internal}
 

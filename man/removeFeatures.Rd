@@ -52,4 +52,6 @@ Kenneth Benoit
 \seealso{
 \link{stopwords}
 }
+\keyword{deprecated}
+\keyword{internal}
 

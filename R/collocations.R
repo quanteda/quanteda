@@ -2,14 +2,14 @@
 #' @include dictionaries.R
 NULL
 
-#' Detect collocations from text
+#' detect collocations from text
 #' 
 #' Detects collocations from texts or a corpus, returning a data.frame of
 #' collocations and their scores, sorted in descending order of the association
 #' measure.  Words separated by punctuation delimiters are not counted by
 #' default (\code{spanPunct = FALSE})  as adjacent and hence are not eligible to
 #' be collocations.
-#' @param x a text, a character vector of texts, or a corpus
+#' @param x a character, \link{corpus}, \link{tokens} object
 #' @param method association measure for detecting collocations.  Let \eqn{i} 
 #'   index documents, and \eqn{j} index features, \eqn{n_{ij}} refers to 
 #'   observed counts, and \eqn{m_{ij}} the expected counts in a collocations 
@@ -37,15 +37,15 @@ NULL
 #'   punctuation characters as tokens}
 #'   }
 #' @param toLower convert collocations to lower case if \code{TRUE} (default)
-#' @param ... additional parameters passed to \code{\link{tokenize}}
-#' @return A data.table of collocations, their frequencies, and the computed 
-#'   association measure(s).
+#' @param ... additional parameters passed to \code{\link{tokens}}
+#' @return a collocations class object: a specially classed data.table consisting 
+#'   of collocations, their frequencies, and the computed association measure(s).
 #' @export
 #' @import data.table
 #' @references McInnes, B T. 2004. "Extending the Log Likelihood Measure to 
 #'   Improve Collocation Identification."  M.Sc. Thesis, University of 
 #'   Minnesota.
-#' @seealso \link{ngrams}
+#' @seealso \link{tokens_ngrams}
 #' @author Kenneth Benoit
 #' @examples
 #' txt <- c("This is software testing: looking for (word) pairs!  
@@ -67,7 +67,9 @@ NULL
 #' collocations(data_char_inaugural[49:57], method = "all", n = 10)
 #' collocations(data_char_inaugural[49:57], method = "chi2", size = 3, n = 10)
 #' collocations(corpus_subset(data_corpus_inaugural, Year>1980), method = "pmi", size = 3, n = 10)
-collocations <- function(x, ...) {
+collocations <- function(x,  method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
+                         n = NULL, toLower = TRUE, 
+                         punctuation = c("dontspan", "ignore", "include"), ...) {
 #     addedArgs <- names(list(...))
 #     if (length(addedArgs) && any(!(addedArgs %in% names(formals(getS3method("tokenize", "character"))))))
 #         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), addedArgs, " not used.", sep = "", noBreaks. = TRUE)
@@ -84,6 +86,7 @@ wMIDDLEGREPpenn <- "([,:.]|''|``|-[lr]rb-)_.*"
 wLASTGREPpenn <- "-lrb-_.*"
 
 #' @rdname collocations
+#' @noRd
 #' @export
 collocations.corpus <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
                                 n = NULL, toLower = TRUE, 
@@ -92,22 +95,25 @@ collocations.corpus <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"
 }
 
 #' @rdname collocations
+#' @noRd
 #' @export    
 collocations.character <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
                                    n = NULL, toLower = TRUE, 
                                    punctuation = c("dontspan", "ignore", "include"), ...) {
     method <- match.arg(method)
-    x <- tokenize((if (toLower) toLower(x) else x), ...)
+    x <- tokens((if (toLower) toLower(x) else x), hash = FALSE, ...)
     collocations(x, method = method, size = size , n = n, punctuation = punctuation)
 }
 
 #' @rdname collocations
+#' @noRd
 #' @export    
 collocations.tokens <- function(x, ...) {
     collocations(as.tokenizedTexts(x), ...)
 } 
     
 #' @rdname collocations
+#' @noRd
 #' @export    
 collocations.tokenizedTexts <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
                                         n = NULL, toLower = FALSE,
@@ -531,5 +537,15 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"),
     #df[, word2 := factor(word2, levels = 1:length(tlevels), labels = tlevels)]
     class(df) <- c("collocations", class(df))
     df[1:ifelse(is.null(n), nrow(df), n), ]
+}
+
+#' check if an object is collocations type
+#' 
+#' Return \code{TRUE} if an object was constructed by \link{collocations}.
+#' @param x any object
+#' @export
+#' @keywords collocations
+is.collocations <- function(x) {
+    class(x)[1] == "collocations" 
 }
 

@@ -7,5 +7,5 @@ test_that("toLower works.", {
 })
 
 test_that("toLower keeps acronyms.", {
-    expect_equal(toLower("According to NATO", keepAcronyms = TRUE), "according to NATO")
+    expect_equal(toLower("According to NATO", keep_acronyms = TRUE), "according to NATO")
 })

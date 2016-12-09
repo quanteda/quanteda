@@ -24,7 +24,7 @@ compress <- function(x, ...)  {
 #' \dontrun{
 #' mat <- rbind(dfm(c("b A A", "C C a b B"), toLower = FALSE, verbose = FALSE),
 #'              dfm("A C C C C C", toLower = FALSE, verbose = FALSE))
-#' colnames(mat) <- toLower(features(mat))
+#' colnames(mat) <- toLower(featnames(mat))
 #' mat
 #' compress(mat, margin = "documents")
 #' compress(mat, margin = "features")
@@ -165,15 +165,5 @@ weight <- function(x, ...) {
 smoother <- function(x, ...) {
     .Deprecated("dfm_smooth")
     dfm_smooth(x, ...)
-}
-
-#' @rdname applyDictionary
-#' @details \code{applyDictionary.dfm} is the deprecated function name for
-#' \code{\link{dfm_lookup}}.
-#' @keywords internal deprecated
-#' @export
-applyDictionary.dfm <- function(x, ...) {
-    .Deprecated("dfm_lookup")
-    dfm_lookup(x, ...)
 }
 

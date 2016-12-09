@@ -35,6 +35,7 @@
 #'   
 #' @export
 #' @seealso \code{\link{removeFeatures}}, \code{\link{dfm_trim}}
+#' @keywords internal deprecated
 selectFeatures <- function(x, features, ...) {
     UseMethod("selectFeatures")
 }
@@ -335,6 +336,7 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
 #' @export
 #' @author Kenneth Benoit
 #' @seealso \link{stopwords}
+#' @keywords internal deprecated
 #' @examples
 #' \dontrun{
 #' ## for tokenized texts 

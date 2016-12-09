@@ -19,6 +19,7 @@
 #'   compound "words" joined by the concatenator
 #' @export
 #' @author Kenneth Benoit
+#' @keywords internal deprecated
 #' @examples
 #' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
 #'              "New York City has raised a taxes: an income tax and a sales tax.")
@@ -96,7 +97,9 @@ setMethod("phrasetotoken", signature = c("textORtokens", "collocations"),
 #' @export
 #' @examples 
 #' # on simple text
+#' \donttest{
 #' phrasetotoken("This is a simpler version of multi word expressions.", "multi word expression*")
+#' }
 setMethod("phrasetotoken", signature = c("character", "character"), 
           function(object, phrases, concatenator = "_", valuetype = c("glob", "regex", "fixed"), 
                    case_insensitive = TRUE, ...) {
@@ -123,11 +126,12 @@ setMethod("phrasetotoken", signature = c("character", "character"),
 #' @rdname phrasetotoken
 #' @export
 #' @examples 
+#' \donttest{
 #' # on simple text
 #' toks <- tokenize("Simon sez the multi word expression plural is multi word expressions, Simon sez.")
 #' phrases <- c("multi word expression*", "Simon sez")
 #' phrasetotoken(toks, phrases)
-#' 
+#' }
 setMethod("phrasetotoken", signature = c("tokenizedTexts", "character"), 
           function(object, phrases, concatenator = "_", valuetype = c("glob", "regex", "fixed"), 
                    case_insensitive = TRUE, ...) {
@@ -144,7 +148,8 @@ setMethod("phrasetotoken", signature = c("tokenizedTexts", "character"),
               attributes(phrasesTokFixed) <- attr.orig
               class(phrasesTokFixed) <- class.orig
               
-              joinTokens(object, phrasesTokFixed, valuetype = "fixed", case_insensitive = FALSE)
+              # joinTokens(object, phrasesTokFixed, valuetype = "fixed", case_insensitive = FALSE)
+              tokens_compound(object, phrasesTokFixed, valuetype = "fixed", case_insensitive = FALSE)
 })
 
 regexToFixed <- function(tokens, patterns, case_insensitive = FALSE, types = NULL) {

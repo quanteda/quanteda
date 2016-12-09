@@ -1,0 +1,31 @@
+---
+title: "textstat_dist/teststat_simil benchmarks"
+date: "02/12/2016"
+output: html_document
+---
+
+### Test "Euclidean" distance: quanteda::textstat_dist() v. proxy::dist() v. stats::dist()
+
+To test the performance of similarity calculation using vectorized method versus c loop methods.
+
+```{r}
+require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
+data(SOTUCorpus, package = "quantedaData")
+SOTUDfm <- dfm(SOTUCorpus, remove = stopwords("english"), stem = TRUE, verbose = FALSE)
+microbenchmark::microbenchmark(eucQuanteda = textstat_dist(SOTUDfm, method = "euclidean", margin = "documents"),  
+eucProxy = proxy::dist(as.matrix(SOTUDfm), "euclidean", diag = FALSE, upper = FALSE, p = 2), 
+eucStats = dist(as.matrix(SOTUDfm), method = "euclidean", diag = FALSE, upper = FALSE, p = 2),
+times = 20, unit = "relative")
+```
+
+### Test "Jaccard" similarity: quanteda v. proxy
+
+```{r}
+require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
+data(SOTUCorpus, package = "quantedaData")
+SOTUDfm <- dfm(SOTUCorpus, remove = stopwords("english"), stem = TRUE, verbose = FALSE)
+microbenchmark::microbenchmark(jacQuanteda = textstat_simil(SOTUDfm, method ="jaccard", margin = "documents", tri = TRUE),
+jacProxy = proxy::simil(as.matrix(SOTUDfm), "jaccard", diag = FALSE, upper = FALSE), 
+times = 10, unit = "relative")
+```
+

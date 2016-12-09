@@ -81,14 +81,19 @@ txt <- c("I liked this, when we can use bad words, in awful text.",
 phrasetotoken(txt, myDict)
 
 # on simple text
+\donttest{
 phrasetotoken("This is a simpler version of multi word expressions.", "multi word expression*")
+}
+\donttest{
 # on simple text
 toks <- tokenize("Simon sez the multi word expression plural is multi word expressions, Simon sez.")
 phrases <- c("multi word expression*", "Simon sez")
 phrasetotoken(toks, phrases)
-
+}
 }
 \author{
 Kenneth Benoit
 }
+\keyword{deprecated}
+\keyword{internal}
 

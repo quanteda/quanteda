@@ -60,8 +60,8 @@ methods.
   
   Additional features of \pkg{quanteda} include: \itemize{ 
   \item{the ability to explore texts using \link[=kwic]{key-words-in-context};}
-  \item{fast computation of a variety of \link[=readability]{readability indexes};}
-  \item{fast computation of a variety of \link[=lexdiv]{lexical diversity measures};}
+  \item{fast computation of a variety of \link[=textstat_readability]{readability indexes};}
+  \item{fast computation of a variety of \link[=textstat_lexdiv]{lexical diversity measures};}
   \item{quick computation of word or document \link[=similarity]{similarities}, for clustering or to compute distances for other purposes; and}
   \item{a comprehensive suite of \link[=summary.corpus]{descriptive statistics on text} such as the number of sentences, words, characters, or
   syllables per document.}

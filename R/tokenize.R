@@ -61,7 +61,7 @@ tokenize <- function(x, ...) {
 #'   to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for 
 #'   bigrams and unigrams, use \code{1:2}.  You can even include irregular 
 #'   sequences such as \code{2:3} for bigrams and trigrams only.  See 
-#'   \code{\link{ngrams}}.
+#'   \code{\link{tokens_ngrams}}.
 #' @param skip integer vector specifying the skips for skip-grams, default is 0 
 #'   for only immediately neighbouring words. Only applies if \code{ngrams} is 
 #'   different from the default of 1.  See \code{\link{skipgrams}}.
@@ -95,7 +95,7 @@ tokenize <- function(x, ...) {
 #' @return a \strong{tokenizedText} (S3) object, essentially a list of character
 #'   vectors. If \code{simplify = TRUE} then return a single character vector.
 #' @export
-#' @seealso \code{\link{ngrams}}
+#' @seealso \code{\link{tokens_ngrams}}
 #' @examples 
 #' # returned as a list
 #' head(tokenize(data_char_inaugural[57])[[1]], 10)
@@ -321,7 +321,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
             catm("  ...creating ngrams")
             startTimeClean <- proc.time()
         }
-        result <- ngrams(result, n = ngrams, skip = skip, concatenator = concatenator)
+        result <- tokens_ngrams(result, n = ngrams, skip = skip, concatenator = concatenator)
         # is the ngram set serial starting with 1? use single call if so (most efficient)
         # if (sum(1:length(ngrams)) == sum(ngrams)) {
         #     result <- lapply(result, ngram, n = length(ngrams), concatenator = concatenator, include.all = TRUE)
@@ -416,10 +416,5 @@ as.tokenizedTexts.list <- function(x, ...) {
     x
 }
 
-#' @export
-#' @rdname ndoc
-ndoc.tokenizedTexts <- function(x) {
-    length(x)
-}
 
 

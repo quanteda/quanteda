@@ -1,8 +1,8 @@
 #' apply a dictionary to a tokens object
 #' 
-#' Faster version of applyDictionary for hashed tokens objects created by
-#' \code{\link{tokens}}.
-#' @param x object to which dictionary or thesaurus will be supplied
+#' Convert tokens into equivalence classes defined by values of a dictionary 
+#' object.
+#' @param x tokens object to which dictionary or thesaurus will be supplied
 #' @param dictionary the \link{dictionary}-class object that will be applied to 
 #'   \code{x}
 #' @param valuetype how to interpret dictionary values: \code{"glob"} for 
@@ -14,29 +14,32 @@
 #'   uppercase to distinguish them from other features
 #' @param verbose print status messages if \code{TRUE}
 #' @examples
-#' 
-#' toks <- tokens(data_corpus_inaugural)
+#' toks <- tokens(data_corpus_inaugural[1:5])
 #' dict <- dictionary(list(country = "united states", 
 #'                    law=c('law*', 'constitution'), 
 #'                    freedom=c('free*', 'libert*')))
-#' toks2 <- applyDictionary2(toks, dict, 'glob', verbose=TRUE)
-#' head(dfm(toks2))
+#' dfm(tokens_lookup(toks, dict, 'glob', verbose = TRUE))
 #' 
 #' dict_fix <- dictionary(list(country = "united states", 
-#'                        law=c('law', 'constitution'), 
-#'                        freedom=c('freedom', 'liberty'))) 
-#' head(dfm(applyDictionary(toks, dict_fix, valuetype='fixed', verbose=TRUE)))
-#' head(dfm(applyDictionary2(toks, dict_fix, valuetype='fixed', verbose=TRUE)))
+#'                        law = c('law', 'constitution'), 
+#'                        freedom = c('freedom', 'liberty'))) 
+#' dfm(applyDictionary(toks, dict_fix, valuetype='fixed'))
+#' dfm(tokens_lookup(toks, dict_fix, valuetype='fixed'))
 #' @export
-applyDictionary2 <- function(x, dictionary,
-                             valuetype = c("glob", "regex", "fixed"), 
-                             case_insensitive = TRUE,
-                             concatenator = ' ', 
-                             verbose = FALSE) {
+tokens_lookup <- function(x, dictionary,
+                           valuetype = c("glob", "regex", "fixed"), 
+                           case_insensitive = TRUE,
+                           concatenator = " ", 
+                           verbose = FALSE) {
+    
+    if (!is.tokens(x))
+        stop("x must be a tokens class object")
     
     valuetype <- match.arg(valuetype)
     
-    # Case-insesitive
+    # Case-insesitive 
+    #### this is inefficient, better to pass through case_insensitive = TRUE
+    #### to the regex match --KB
     if (case_insensitive) {
         x <- toLower(x)
         dictionary <- lapply(dictionary, toLower)
@@ -46,7 +49,7 @@ applyDictionary2 <- function(x, dictionary,
     tokens <- qatd_cpp_structcopy_int_list(x) # create empty tokens object
     types <- types(x)
     index <- index(types, valuetype, case_insensitive)
-    for(h in 1:length(dictionary)){
+    for(h in 1:length(dictionary)) {
         
         if(verbose) message('Searching words in "', names(dictionary[h]), '"...')
         keys <- stringi::stri_split_fixed(dictionary[[h]], concatenator)

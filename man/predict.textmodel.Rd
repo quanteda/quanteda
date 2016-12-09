@@ -35,4 +35,6 @@ implements class predictions using trained Naive Bayes examples
 \author{
 Kenneth Benoit
 }
+\keyword{internal}
+\keyword{textmodel}
 

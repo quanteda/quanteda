@@ -4,6 +4,7 @@ warnings_are_errors: true
 sudo: true
 r_packages:
   - covr
+  - ExPosition
 r_binary_packages:
   - topicmodels
 env:

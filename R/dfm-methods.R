@@ -4,39 +4,42 @@
 ## Ken Benoit
 ####################################################################
 
-#' @export
-#' @rdname ndoc
-ndoc.dfm <- function(x) {
-    nrow(x)
-}
-
-
-#' extract the feature labels from a dfm
-#'
-#' Extract the features from a document-feature matrix, which are stored as the column names
-#' of the \link{dfm} object.
-#' @param x the object (dfm) whose features will be extracted
-#' @return Character vector of the features
+#' get the feature labels from a dfm
+#' 
+#' Get the features from a document-feature matrix, which are stored as the
+#' column names of the \link{dfm} object.
+#' @param x the dfm whose features will be extracted
+#' @return character vector of the features
 #' @examples
 #' inaugDfm <- dfm(data_char_inaugural, verbose = FALSE)
 #' 
 #' # first 50 features (in original text order)
-#' head(features(inaugDfm), 50)
+#' head(featnames(inaugDfm), 50)
 #' 
 #' # first 50 features alphabetically
-#' head(sort(features(inaugDfm)), 50)
+#' head(sort(featnames(inaugDfm)), 50)
 #' 
 #' # contrast with descending total frequency order from topfeatures()
 #' names(topfeatures(inaugDfm, 50))
 #' @export
-features <- function(x) {
-    UseMethod("features")
+featnames <- function(x) {
+    UseMethod("featnames")
 }
 
 #' @export
-#' @rdname features
-features.dfm <- function(x) {
+#' @noRd
+featnames.dfm <- function(x) {
     colnames(x)
+}
+
+#' deprecated function name for featnames
+#' 
+#' Please use \code{\link{featnames}} instead.
+#' @keywords internal deprecated
+#' @export
+features <- function(x) {
+    .Deprecated("featnames")
+    featnames(x)
 }
 
 #' @noRd
@@ -74,61 +77,37 @@ as.dfm <- function(x) {
     #     m
 }
 
-#' @rdname ndoc
-#' @export
-nfeature <- function(x) {
-    UseMethod("nfeature")
-}
-
-#' @rdname ndoc
-#' @export
-nfeature.corpus <- function(x) {
-    stop("nfeature not yet implemented for corpus objects.")
-}
-
-#' @rdname ndoc
-#' @description \code{nfeature} is an alias for \code{ntype} when applied to dfm
-#'   objects.  For a corpus or set of texts, "features" are only defined through
-#'   tokenization, so you need to use \code{\link{ntoken}} to count these.
-#' @export
-#' @examples
-#' nfeature(dfm(data_corpus_inaugural))
-#' nfeature(dfm_trim(dfm(data_corpus_inaugural), min_docfreq = 5, min_count = 10))
-nfeature.dfm <- function(x) {
-    ncol(x)
-}
 
 
 #' list the most frequent features
-#'
-#' List the most frequently occuring features in a \link{dfm}
+#' 
+#' List the most (or least) frequently occuring features in a \link{dfm}.
 #' @name topfeatures
-#' @aliases topFeatures
 #' @param x the object whose features will be returned
 #' @param n how many top features should be returned
-#' @param decreasing If TRUE, return the \code{n} most frequent features, if
+#' @param decreasing If TRUE, return the \code{n} most frequent features, if 
 #'   FALSE, return the \code{n} least frequent features
 #' @param ci confidence interval from 0-1.0 for use if dfm is resampled
-#' @param ... additional arguments passed to other methods
-#' @export
-topfeatures <- function(x, ...) {
-    UseMethod("topfeatures")
-}
-
-#' @return A named numeric vector of feature counts, where the names are the feature labels.
+#' @return A named numeric vector of feature counts, where the names are the
+#'   feature labels.
 #' @examples
+#' # most frequent features
 #' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE))
 #' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), 
 #'             remove = stopwords("english"), verbose = FALSE))
+#'             
 #' # least frequent features
 #' topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE), 
 #'             decreasing = FALSE)
 #' @export
-#' @rdname topfeatures
+topfeatures <- function(x, n = 10, decreasing = TRUE, ci = .95) {
+    UseMethod("topfeatures")
+}
+
+#' @export
+#' @noRd
 #' @importFrom stats quantile
-topfeatures.dfm <- function(x, n = 10, decreasing = TRUE, ci = .95, ...) {
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+topfeatures.dfm <- function(x, n = 10, decreasing = TRUE, ci = .95) {
     if (n > nfeature(x)) n <- nfeature(x)
     if (is.resampled(x)) {
         subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
@@ -144,8 +123,8 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE, ci = .95, ...) {
 }
 
 #' @export
-#' @rdname topfeatures
-topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ...) {
+#' @noRd
+topfeatures.dgCMatrix <- function(x, n = 10, decreasing = TRUE, ci = .95) {
     if (is.null(n)) n <- ncol(x)
     #     if (is.resampled(x)) {
     #         subdfm <- x[, order(colSums(x[,,1]), decreasing=decreasing), ]
@@ -164,12 +143,7 @@ topfeatures.dgCMatrix <- function(x, n=10, decreasing=TRUE, ...) {
 }
 
 
-# rnames <- colnames(x)
-# dnames <- rownames(x)
-# microbenchmark::microbenchmark(m1 = t(crossprod(x, Matrix(sapply(unique(dnames),"==", dnames)))),
-#                                m2 = t(t(x) %*% Matrix(sapply(unique(dnames),"==", dnames))), 
-#                                times = 100)
- 
+
 #' compute the sparsity of a document-feature matrix
 #'
 #' Return the proportion of sparseness of a document-feature matrix, equal

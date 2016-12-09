@@ -9,14 +9,14 @@
 ### but this could be easily solved by writing appropriate methods in S4.
 
 
-#' @rdname textmodel_fitted-class 
+#' @rdname textmodel-internal
 #' @export
 setClass("textmodel_wordscores_fitted",
          slots = c(scale = "character", Sw = "numeric"),
          prototype = list(scale = "linear"),
          contains = "textmodel_fitted")
 
-#' @rdname textmodel_fitted-class
+#' @rdname textmodel-internal
 #' @export
 setClass("textmodel_wordscores_predicted",
          slots = c(newdata = "dfm", rescaling = "character", level = "numeric",
@@ -28,11 +28,9 @@ setClass("textmodel_wordscores_predicted",
 #' Wordscores text model
 #' 
 #' \code{textmodel_wordscores} implements Laver, Benoit and Garry's (2003) 
-#' wordscores method for scaling of a single dimension.  This can be called
-#' directly, but the recommended method is through \code{\link{textmodel}}.
-#' 
+#' wordscores method for scaling of a single dimension.
 #' @param data the dfm on which the model will be fit.  Does not need to contain
-#'   only the training documents, since the index of these will be matched
+#'   only the training documents, since the index of these will be matched 
 #'   automatically.
 #' @param scores vector of training scores associated with each document 
 #'   identified in \code{refData}
@@ -40,37 +38,39 @@ setClass("textmodel_wordscores_predicted",
 #'   to match the LBG (2003) method.
 #' @param scale classic LBG linear posterior weighted word class differences, or
 #'   logit scale of log posterior differences
-#' @details
-#' Fitting a \code{textmodel_wordscores} results in an object of class 
-#' \code{textmodel_wordscores_fitted} containing the
-#' following slots:
-#' @slot scale \code{linear} or \code{logit}, according to the value of \code{scale}
+#' @details Fitting a \code{textmodel_wordscores} results in an object of class 
+#'   \code{textmodel_wordscores_fitted} containing the following slots:
+#' @slot scale \code{linear} or \code{logit}, according to the value of 
+#'   \code{scale}
 #' @slot Sw the scores computed for each word in the training set
 #' @slot x  the dfm on which the wordscores model was called
 #' @slot y  the reference scores
 #' @slot call  the function call that fitted the model
 #' @slot method takes a value of \code{wordscores} for this model
+#' @section Predict Methods: A \code{predict} method is also available for a 
+#'   fitted wordscores object, see 
+#'   \code{\link{predict.textmodel_wordscores_fitted}}.
 #' @author Kenneth Benoit
 #' @examples 
-#' (ws <- textmodel(data_dfm_LBGexample, c(seq(-1.5, 1.5, .75), NA), 
-#'                  model = "wordscores"))
+#' (ws <- textmodel_wordscores(data_dfm_LBGexample, c(seq(-1.5, 1.5, .75), NA)))
+#' 
 #' predict(ws)
-#' predict(ws, rescaling="mv")
-#' predict(ws, rescaling="lbg")
-#'
+#' predict(ws, rescaling = "mv")
+#' predict(ws, rescaling = "lbg")
+#' 
 #' # same as:
 #' (ws2 <- textmodel_wordscores(data_dfm_LBGexample, c(seq(-1.5, 1.5, .75), NA)))
 #' predict(ws2)
 #' @references Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
-#' "Extracting Policy Positions From Political Texts Using Words as Data." 
-#' American Political Science Review 97(02): 311-31
-#' 
-#' Beauchamp, N. 2012. "Using Text to Scale Legislatures with Uninformative
-#' Voting." New York University Mimeo.
-#' 
-#' Martin, L W, and G Vanberg. 2007. "A
-#' Robust Transformation Procedure for Interpreting Political Text." Political 
-#' Analysis 16(1): 93-100.
+#'   "Extracting Policy Positions From Political Texts Using Words as Data." 
+#'   American Political Science Review 97(02): 311-31
+#'   
+#'   Beauchamp, N. 2012. "Using Text to Scale Legislatures with Uninformative 
+#'   Voting." New York University Mimeo.
+#'   
+#'   Martin, L W, and G Vanberg. 2007. "A Robust Transformation Procedure for 
+#'   Interpreting Political Text." Political Analysis 16(1): 93-100.
+#' @seealso \code{\link{predict.textmodel_wordscores_fitted}}
 #' @export
 textmodel_wordscores <- function(data, scores,
                                  scale=c("linear", "logit"), smooth=0) {
@@ -118,7 +118,7 @@ textmodel_wordscores <- function(data, scores,
 }
 
 
-#' @rdname textmodel_wordscores
+#' @rdname textmodel-internal
 #' @param object a fitted Wordscores textmodel
 #' @param level probability level for confidence interval width
 #' @param rescaling \code{none} for "raw" scores; \code{lbg} for LBG (2003) 
@@ -139,6 +139,7 @@ textmodel_wordscores <- function(data, scores,
 #'   called (for instance, how many rescaled scores, and whether standard errors
 #'   were requested.)  (Note: We may very well change this soon so that it is a 
 #'   list similar to other existing fitted objects.)
+#' @keywords internal textmodel
 #' @export
 #' @importFrom stats qnorm median sd
 predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling = "none", 
@@ -154,10 +155,10 @@ predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling 
         newdata <- data
     }
     
-    featureIndex <- match(names(object@Sw), features(data))
+    featureIndex <- match(names(object@Sw), featnames(data))
     
     scorable <- which(colnames(data) %in% names(object@Sw))
-    Sw <- object@Sw[features(data)[scorable]]
+    Sw <- object@Sw[featnames(data)[scorable]]
     if (verbose)
         catm(paste(length(scorable), " of ", nfeature(data), " features (",
                   round(100*length(scorable)/nfeature(data), 2),
@@ -227,7 +228,7 @@ rescaler <- function(x, scale.min=-1, scale.max=1) {
 }
 
 
-#' @rdname textmodel_wordscores
+#' @rdname textmodel-internal
 #' @param x for print method, the object to be printed
 #' @param n max rows of dfm to print
 #' @param digits number of decimal places to print for print methods
@@ -252,16 +253,19 @@ print.textmodel_wordscores_fitted <- function(x, n=30L, digits=2, ...) {
     print(head(x@Sw, n), digits=digits)
 }
 
-#' @rdname textmodel_wordscores
+#' @rdname textmodel-internal
+#' @keywords internal
 #' @export
 setMethod("show", signature(object = "textmodel_wordscores_fitted"), function(object) print(object))
 
-#' @rdname textmodel_wordscores
+#' @rdname textmodel-internal
+#' @keywords internal
 #' @export
 setMethod("show", signature(object = "textmodel_wordscores_predicted"), function(object) print(object))
 
 
 #' @export
+#' @noRd
 #' @method summary textmodel_wordscores_fitted
 summary.textmodel_wordscores_fitted <- function(object, ...) {
     cat("Call:\n\t")
@@ -281,6 +285,7 @@ summary.textmodel_wordscores_fitted <- function(object, ...) {
 }
 
 #' @export
+#' @noRd
 #' @method summary textmodel_wordscores_predicted
 summary.textmodel_wordscores_predicted <- function(object, ...) {
     print(object)
@@ -288,6 +293,7 @@ summary.textmodel_wordscores_predicted <- function(object, ...) {
 
 
 #' @rdname textmodel_wordscores
+#' @noRd
 #' @export
 #' @method print textmodel_wordscores_predicted
 print.textmodel_wordscores_predicted <- function(x, ...) {
@@ -316,29 +322,4 @@ print.textmodel_wordscores_predicted <- function(x, ...) {
 }
 
 
-
-# #wordscores
-# require(quantedaData)
-# data(data_corpus_irishbudget2010)
-# ieDfm <- dfm(data_corpus_irishbudget2010)
-# refData <- ieDfm[5:8,] # Cowen and Kenny
-# refScores <- c(-1,1,NA,NA)
-# fitModel(ieDfm, refScores=c(-1,1), scale="logit")
-
-# mod <- fitModel(refScores ~ refData, method="wordscores", scale="logit")
-#
-#
-# # naive bayes
-# require(quantedaData)
-# data(data_corpus_irishbudget2010)
-# ieDfm <- dfm(data_corpus_irishbudget2010)
-# trainData <- ieDfm[5:6,] # Cowen and Kenny
-# trainLabels <- c(-1,1)
-# smooth<-1
-# labels <- levels(as.factor(trainLabels))
-# trainData <- trainData + smooth
-# PwGc <- rowNorm(trainData)
-# PcGw <- colNorm(PwGc * outer(1/length(trainLabels), rep(1, ncol(PwGc))))
-
-#
 

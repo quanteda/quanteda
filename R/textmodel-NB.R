@@ -1,12 +1,12 @@
-#' Naive Bayes classifier for texts 
+#' Naive Bayes classifier for texts
 #' 
 #' Currently working for vectors of texts -- not specially defined for a dfm.
 #' 
 #' This naive Bayes model works on word counts, with smoothing.
 #' @param x the dfm on which the model will be fit.  Does not need to contain 
 #'   only the training documents.
-#' @param y vector of training labels associated with each document identified
-#'   in \code{train}.  (These will be converted to factors if not already
+#' @param y vector of training labels associated with each document identified 
+#'   in \code{train}.  (These will be converted to factors if not already 
 #'   factors.)
 #' @param smooth smoothing parameter for feature counts by class
 #' @param prior prior distribution on texts, see details
@@ -25,6 +25,8 @@
 #' @return \item{distribution}{the distribution argument}
 #' @return \item{prior}{argument passed as a prior}
 #' @return \item{smooth}{smoothing parameter}
+#' @section Predict Methods: A \code{predict} method is also available for a 
+#'   fitted Naive Bayes object, see \code{\link{predict.textmodel_NB_fitted}}.
 #' @author Kenneth Benoit
 #' @examples
 #' ## Example from 13.1 of _An Introduction to Information Retrieval_
@@ -125,6 +127,7 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
 #' @examples 
 #' (nbfit <- textmodel_NB(data_dfm_LBGexample, c("A", "A", "B", "C", "C", NA)))
 #' (nbpred <- predict(nbfit))
+#' @keywords internal textmodel
 #' @export
 predict.textmodel_NB_fitted <- function(object, newdata = NULL, ...) {
     

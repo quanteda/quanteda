@@ -34,4 +34,7 @@ docnames(dfm(data_char_inaugural[1:5]))
 docnames(data_corpus_inaugural) <- paste("Speech", 1:ndoc(data_corpus_inaugural), sep="")
 
 }
+\seealso{
+\code{\link{featnames}}
+}
 

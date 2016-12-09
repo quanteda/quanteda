@@ -19,8 +19,8 @@ Author: Kenneth Benoit [aut, cre],
     Will Lowe [ctb],
     Pablo Barberá [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.8.9019
-Date: 2016-12-02
+Version: 0.9.8.9023
+Date: 2016-12-06
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -35,29 +35,24 @@ Imports:
     SnowballC,
     wordcloud,
     proxy,
-    parallel,
     Rcpp,
     RcppParallel,
     ca,
     stringi,
-    httr,
     fastmatch
+Remotes: kbenoit/readtext
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo
 Suggests:
     knitr,
     rmarkdown,
     lda,
     topicmodels,
-    jsonlite (>= 0.9.10),
-    streamR,
     tm (>= 0.6),
     slam,
     XML,
     testthat,
     RColorBrewer,
-    ggplot2 (>= 2.2.0),
-    grid,
-    text2vec
+    ggplot2 (>= 2.2.0)
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
@@ -91,19 +86,20 @@ Collate:
     'dfm_select.R'
     'dfm_trim.R'
     'dfm_weight.R'
+    'dictionaries-deprecated.R'
     'dictionaries2.R'
     'fcm-methods.R'
     'fcm.R'
     'findSequences.R'
-    'joinTokens.R'
+    'joinTokens-deprecated.R'
     'kwic.R'
-    'lexdiv.R'
-    'ngrams.R'
+    'nfunctions.R'
+    'nscrabble.R'
+    'nsyllable.R'
     'phrases.R'
     'plots-deprecated.R'
     'plots.R'
     'quanteda.R'
-    'readability.R'
     'readtext-methods.R'
     'regex2fixed.R'
     'regex2fixed2.R'
@@ -115,17 +111,26 @@ Collate:
     'settings.R'
     'similarity.R'
     'stopwords.R'
-    'syllables.R'
     'textmodel-NB.R'
     'textmodel-ca.R'
     'textmodel-generics.R'
+    'textmodel-internal.R'
     'textmodel-wordfish.R'
     'textmodel-wordscores.R'
+    'textstat-deprecated.R'
+    'textstat-lexdiv.R'
+    'textstat-readability.R'
+    'textstat_dist.R'
+    'textstat_simil.R'
     'toLower.R'
     'tokenize.R'
     'tokenize_outtakes.R'
     'tokens.R'
-    'util.R'
+    'tokens_compound.R'
+    'tokens_ngrams.R'
+    'tokens_select.R'
+    'tolower-misc.R'
+    'utils.R'
     'wordstem.R'
     'zzz.R'
 RcppModules: ngramMaker
