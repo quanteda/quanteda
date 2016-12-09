@@ -108,25 +108,34 @@ char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 
 #' @rdname tokens_ngrams
 #' @noRd
+#' @examples 
+#' txt <- c("a b c d e", "c d e f g")
+#' toks <- tokens(txt)
+#' tokens_ngrams(toks, n = 2:3)
+#' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
-    attrs_orig <- attributes(x)
-    if (any(n <= 0)) stop("ngram length has to be greater than zero")
-    # Generate ngrams
-    res <- qatd_cpp_ngram_hashed_list(x, n, skip + 1)
     
-    # Make character tokens of ngrams
-    #ngram_types <- qatd_cpp_ngram_unhash_type(res$id_unigram, types(x), concatenator)
-    ngram_types <- stri_c_list(lapply(res$id_unigram, function(x, y) y[x] , types(x)), concatenator)
-    ngramsResult <- res$text
-    names(ngramsResult) <- names(x)
-    attributes(ngramsResult) <- attrs_orig
-    types(ngramsResult) <- ngram_types
-    attr(ngramsResult, "ngrams") <- as.integer(n)
-    attr(ngramsResult, "skip") <- as.integer(skip)
-    attr(ngramsResult, "concatenator") <- concatenator
-    ngramsResult
+    if (any(n <= 0)) stop("ngram length has to be greater than zero")
+    
+    #types_org <- types(x)
+    names_org <- names(x)
+    attrs_org <- attributes(x)
+    
+    # Generate ngrams
+    # if(!missing(thread)) RcppParallel::setThreadOptions(thread)
+    x <- qatd_cpp_ngram_mt_list(x, types(x), concatenator, n, skip + 1)
+    
+    types_ngm <- stringi::stri_encode(types(x), "", "UTF-8")
+    attributes(x) <- attrs_org
+    types(x) <- types_ngm
+    names(x) <- names_org
+    attr(x, "ngrams") <- as.integer(n)
+    attr(x, "skip") <- as.integer(skip)
+    attr(x, "concatenator") <- concatenator
+    return(x)
 }
+
 
 #' @rdname tokens_ngrams
 #' @noRd

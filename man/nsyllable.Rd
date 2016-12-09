@@ -4,7 +4,8 @@
 \alias{nsyllable}
 \title{count syllables in a text}
 \usage{
-nsyllable(x, syllable_dictionary = quanteda::data_int_syllables, ...)
+nsyllable(x, syllable_dictionary = quanteda::data_int_syllables,
+  use.names = FALSE)
 }
 \arguments{
 \item{x}{character vector or \code{tokens} object  whose 
@@ -15,13 +16,14 @@ the names are lower case tokens.  When set to \code{NULL} (default), then
 the function will use the quanteda data object \code{data_int_syllables}, an 
 English pronunciation dictionary from CMU.}
 
-\item{...}{additional arguments passed to \code{\link{tokens}}}
+\item{use.names}{logical; if \code{TRUE}, assign the tokens as the names of 
+the syllable count vector}
 }
 \value{
 If \code{x} is a character vector, a named numeric vector of the 
-  counts of the syllables in each text, without tokenization.  If \code{x} 
-  consists of (a list of) tokenized texts, then return a list of syllable 
-  counts corresponding to the tokenized texts.
+  counts of the syllables in each element.  If \code{x} is a \link{tokens}
+  object, return a list of syllable counts where each list element corresponds
+  to the tokens in a document.
 }
 \description{
 Returns a count of the number of syllables in texts. For English
@@ -42,13 +44,15 @@ All tokens are automatically converted to lowercase to perform the
   step prior to calling \code{nsyllable()}.
 }
 \examples{
-nsyllable("This is an example sentence.")
-nsyllable(tokenize("This is an example sentence.", simplify=TRUE))
-myTexts <- c(text1 = "Text one.", 
-             text2 = "Superduper text number two.", 
-             text3 = "One more for the road.")
-nsyllable(myTexts)
-nsyllable(tokenize(myTexts, removePunct = TRUE))
-nsyllable("supercalifragilisticexpialidocious")
+# character
+nsyllable(c("cat", "syllable", "supercalifragilisticexpialidocious", 
+            "Brexit", "Administration"), use.names = TRUE)
+
+# tokens
+txt <- c(doc1 = "This is an example sentence.",
+         doc2 = "Another of two sample sentences.")
+nsyllable(tokens(txt, removePunct = TRUE))
+# punctuation is not counted
+nsyllable(tokens(txt), use.names = TRUE)
 }
 
