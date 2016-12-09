@@ -41,8 +41,10 @@ construct a compressed corpus object
 corpuszip(data_char_inaugural)
 
 # create a compressed corpus from texts and assign meta-data and document variables
-cop <- corpus(data_char_ukimmig2010, docvars = data.frame(party = names(data_char_ukimmig2010)))
-cop_zip <- corpuszip(data_char_ukimmig2010, docvars = data.frame(party = names(data_char_ukimmig2010)))
+cop <- corpus(data_char_ukimmig2010, 
+              docvars = data.frame(party = names(data_char_ukimmig2010)))
+cop_zip <- corpuszip(data_char_ukimmig2010, 
+                     docvars = data.frame(party = names(data_char_ukimmig2010)))
 object.size(cop)
 object.size(cop_zip)
 
