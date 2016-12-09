@@ -78,7 +78,7 @@ corpuszip.character <- function(x, docnames = NULL, docvars = NULL, text_field =
 }
 #' @noRd
 #' @export
-texts.corpuszip <- function(x){
+texts.corpuszip <- function(x, groups = NULL, ...){
     unlist(strsplit(memDecompress(x$documents, 'gzip', asChar = TRUE), "\n"), use.names = FALSE)
 }
 #' @noRd
