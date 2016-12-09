@@ -326,7 +326,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     # hash the tokens
     if (hash == TRUE) {
         if (verbose) 
-            catm("...hashing tokens\n")
+            catm("  ...hashing tokens\n")
         result <- tokens_hash(result)
     } 
     

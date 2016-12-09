@@ -1,0 +1,53 @@
+---
+title: "What is happening with `tokens`?"
+author: "Kenneth Benoit"
+date: "09/12/2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require(quanteda)
+```
+
+## Compare
+
+```{r}
+toks_old <- tokenize(toLower(data_char_inaugural[c(2, 40)]), removePunct = TRUE)
+toks_new <- tokens(toLower(data_char_inaugural[c(2, 40)]), removePunct = TRUE)
+```
+
+Hashed version is definitely smaller:
+```{r}
+object.size(toks_old)
+object.size(toks_new)
+```
+
+## So where is the hashing??
+
+but the tokens don't appear to be hashed, although it does have the `types` attribute:
+```{r}
+str(toks_old)
+str(toks_new)
+
+is.character(toks_new[[1]])
+```
+
+Or look at this:
+```{r}
+str(quanteda::tokens_hash(tokenize(c("this is a sample sentence to tokenize"))))
+```
+
+## But it all seems to work...
+
+All code using the hashed tokens appears to work still:
+```{r}
+txt <- c(doc1 = "The quick brown fox jumped over the lazy dog.",
+         doc2 = "The dog jumped and ate the fox.")
+toks_new <- tokens(toLower(txt), removePunct = TRUE)
+tokens_select(toks_new, "the")
+tokens_compound(toks_new, list(c("^jump", ".+")), valuetype = "regex")
+tokens_ngrams(toks_new, n = 1:2, skip = 0:1)
+```
+
+## Can you solve the mystery?
