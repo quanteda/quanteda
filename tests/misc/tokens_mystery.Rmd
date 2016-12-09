@@ -2,7 +2,9 @@
 title: "What is happening with `tokens`?"
 author: "Kenneth Benoit"
 date: "09/12/2016"
-output: html_document
+output:
+  md_document:
+    variant: markdown_github
 ---
 
 ```{r setup, include=FALSE}
