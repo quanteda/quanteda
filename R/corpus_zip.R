@@ -22,6 +22,29 @@ corpuszip <- function(x, docnames = NULL, docvars = NULL, text_field = "text", m
 
 #' @noRd
 #' @export
+corpuszip.data.frame <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, ...) {
+    
+    args <- list(...)
+    if (!missing(docvars))
+        stop("docvars are assigned automatically for data.frames")
+    
+    if (is.character(text_field)) {
+        text_fieldi <- which(names(x)==text_field)
+        if (length(text_fieldi)==0)
+            stop("column name ", text_field, " not found.")
+        text_field <- text_fieldi
+    }
+    if (!is.character(x[, text_fieldi]))
+        stop("text_field must refer to a character mode column")
+    
+    corpuszip(x[, text_fieldi], 
+           docvars = x[, -text_fieldi, drop = FALSE],
+           docnames = if (!identical(row.names(x), as.character(1:nrow(x)))) row.names(x) else NULL, #paste0("text", 1:nrow(x)),
+           metacorpus = metacorpus, ...)
+}
+
+#' @noRd
+#' @export
 corpuszip.character <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, ...) {
     if (!missing(text_field))
         stop("text_field is not applicable for this class of input")
