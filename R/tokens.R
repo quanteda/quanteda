@@ -380,24 +380,23 @@ tokens_hash <- function(x, types, ...) {
     # if (!is.tokenizedTexts(x)) 
     #     stop("Input must be tokenizedTexts")
     
-    types_found <- unique(unlist(x, use.names = FALSE))
-    # types_found <- sort(types_found)
-    types_found <- types_found[types_found != '']  # remove empty "tokens"
+    types_x <- unique(unlist(x, use.names = FALSE))
+    types_x <- types_x[types_x != '']  # remove empty "tokens"
     
     if (missing(types)) {
-        types <- types_found
+        types <- types_x
     } else {
-        types <- c(types, setdiff(types_found, types))
+        types <- c(types, setdiff(types_x, types))
     }
 
-    # "hash" tokens 
-    x_hashed <- lapply(x, fastmatch::fmatch, types)
+    # Serialize tokens 
+    x_int <- lapply(x, fastmatch::fmatch, types)
     
     # restore and add additional attributes
-    attributes(x_hashed) <- attr_input
-    attr(x_hashed, "types") <- as.vector(types)
-    class(x_hashed) <- c("tokens", class(x_hashed))
-    x_hashed
+    attributes(x_int) <- attr_input
+    attr(x_int, "types") <- as.vector(types)
+    class(x_int) <- c("tokens", class(x_int))
+    return(x_int)
 }
 
 
@@ -411,13 +410,13 @@ as.tokenizedTexts.tokens <- function(x, ...) {
     types <- types(x)
     attrs_orig <- attributes(x)
     class(x) <- "list"
-    x_unhashed <- lapply(x, function(y) types[y])
-    attributes(x_unhashed) <- attributes(x)
+    x_chr <- lapply(x, function(y) types[y])
+    attributes(x_chr) <- attributes(x)
     # remove types attribute
-    attr(x_unhashed, "types") <- NULL
+    attr(x_chr, "types") <- NULL
     # replace class tag
-    class(x_unhashed) <- c("tokenizedTexts", "list")
-    x_unhashed
+    class(x_chr) <- c("tokenizedTexts", "list")
+    return(x_chr)
 }
 
 #' print a tokens objects
