@@ -569,17 +569,27 @@ tokens_character <- function(txt, what, removeNumbers, removePunct, removeSymbol
     tok <- stringi::stri_split_boundaries(txt, type = "character")
     if (removePunct) {
         if (verbose) catm("...removing punctuation.\n")
-        tok <- lapply(tok, stringi::stri_replace_all_charclass, "[\\p{P}]", "")
-        tok <- lapply(tok, function(x) x <- x[which(x != "")])
+        tok <- lapply(tok, function(x){
+            x <- stringi::stri_replace_all_charclass(x, "[\\p{P}]", "")
+            x <- x[which(x != "")]
+            return(x)    
+        })
     } 
     if (removeSymbols) {
         if (verbose) catm("...removing symbols.\n")
-        tok <- lapply(tok, stringi::stri_replace_all_charclass, "[\\p{S}]", "")
-        tok <- lapply(tok, function(x) x <- x[which(x != "")])
+        tok <- lapply(tok, function(x){
+            x <- stringi::stri_replace_all_charclass(x, "[\\p{S}]", "")
+            x <- x[which(x != "")]
+            return(x)    
+        })
     } 
     if (removeSeparators) {
         if (verbose) catm("   ...removing separators.\n")
-        tok <- lapply(tok, function(x) x[!stringi::stri_detect_regex(x, "^\\p{Z}$")])
+        tok <- lapply(tok, function(x){
+            x <- stringi::stri_subset_regex(x, "^\\p{Z}$")
+            x <- x[which(x != "")]
+            return(x)    
+        })
     }
     return(tok)
     
