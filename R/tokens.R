@@ -207,7 +207,10 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     if (verbose) catm("  ...tokenizing texts")
     startTimeTok <- proc.time()
     
-    if (grepl("word$", what)) {
+    
+    
+    
+    if (what %in% c("word", "fastestword", "fasterword")) {
         return <- tokens_word(what, removeNumbers, removePunct, removeSymbols, removeSeparators, removeTwitter, removeHyphens, removeURL)
     } else if (what == "character") {
         return <- tokens_character(what, removeNumbers, removePunct, removeSymbols, removeSeparators, removeTwitter, removeHyphens, removeURL)
@@ -236,7 +239,9 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
         if (verbose) 
             catm("  ...hashing tokens\n")
         result <- tokens_hash(result)
-    } 
+    }
+    
+    
     
     if (!identical(ngrams, 1L)) {
         if (verbose) {
