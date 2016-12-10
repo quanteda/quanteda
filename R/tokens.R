@@ -208,103 +208,11 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     startTimeTok <- proc.time()
     
     if (grepl("word$", what)) {
-        
-        # to preserve intra-word hyphens, replace with _hy_
-        if (!removeHyphens & removePunct)
-            result <- stri_replace_all_regex(result, "(\\b)[\\p{Pd}](\\b)", "$1_hy_$2")
-        else if (removeHyphens)
-            result <- stri_replace_all_regex(result, "(\\b)[\\p{Pd}](\\b)", "$1 $2")
-        
-        if (removeURL) {
-            if (verbose & removeURL) catm(", removing URLs")
-            URLREGEX <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
-            result <- stri_replace_all_regex(result, URLREGEX, "")
-        }
-        
-        if (what == "fasterword" | what == "fastestword") {
-            
-            if (verbose & removeNumbers==TRUE) catm(", removing numbers")
-            if (verbose & removePunct==TRUE) catm(", removing punctuation")
-            if (verbose & removeSymbols==TRUE) catm(", removing symbols")
-            regexToEliminate <- paste(ifelse(removeNumbers, "\\b\\d+\\b", ""),
-                                      ifelse(removePunct, paste0("(?![", ifelse(removeTwitter, "_", "@#_"),  "])[\\p{P}]"), ""),
-                                      ifelse(removeSymbols, "[\\p{S}]", ""),
-                                      sep = "|")
-            # catm("\n..", regexToEliminate, "..\n", sep = "")
-            regexToEliminate <- gsub("^\\|+", "", regexToEliminate)
-            regexToEliminate <- gsub("\\|+$", "", regexToEliminate)
-            # catm("\n..", regexToEliminate, "..\n", sep = "")
-            if (gsub("|", "", regexToEliminate, fixed = TRUE) != "")
-                result <- stri_replace_all_regex(result, regexToEliminate, "")
-            
-            if (verbose & removePunct==TRUE) catm(", ", what, " tokenizing", sep="")
-            if (what=="fastestword")
-                result <- stringi::stri_split_fixed(result, " ")
-            else if (what=="fasterword")
-                result <- stringi::stri_split_charclass(result, "\\p{WHITE_SPACE}")
-            #result <- lapply(result, function(x) x <- x[which(x != "")]) # this is dealy slow
-            result <- qatd_cpp_remove_chr_list(result, "")
-            
-            # if (removeURL)
-            #     result <- lapply(result, function(x) x <- x[-which(substring(x, 1, 4) == "http")])
-            
-        } else {
-            result <- stringi::stri_split_boundaries(result, 
-                                                     type = "word", 
-                                                     skip_word_none = (removePunct | removeSymbols), # this is what obliterates currency symbols, Twitter tags, and URLs
-                                                     skip_word_number = removeNumbers) # but does not remove 4u, 2day, etc.
-            # remove separators if option is TRUE
-            if (removeSeparators & !removePunct) {
-                if (verbose) catm("\n  ...removing separators.")
-                result <- lapply(result, function(x) x[!stri_detect_regex(x, "^\\s$")])
-            }
-        }
-        
-        # put hyphens back the fast way
-        if (!removeHyphens & removePunct)
-            result <- lapply(result, stri_replace_all_fixed, "_hy_", "-")
-        
+        return <- tokens_word(what, removeNumbers, removePunct, removeSymbols, removeSeparators, removeTwitter, removeHyphens, removeURL)
     } else if (what == "character") {
-        
-        # note: does not implement removeNumbers
-        result <- stringi::stri_split_boundaries(result, type = "character")
-        if (removePunct) {
-            if (verbose) catm("   ...removing punctuation.\n")
-            result <- lapply(result, stringi::stri_replace_all_charclass, "[\\p{P}]", "")
-            result <- lapply(result, function(x) x <- x[which(x != "")])
-        } 
-        if (removeSymbols) {
-            if (verbose) catm("   ...removing symbols.\n")
-            result <- lapply(result, stringi::stri_replace_all_charclass, "[\\p{S}]", "")
-            result <- lapply(result, function(x) x <- x[which(x != "")])
-        } 
-        if (removeSeparators) {
-            if (verbose) catm("   ...removing separators.\n")
-            result <- lapply(result, function(x) x[!stringi::stri_detect_regex(x, "^\\p{Z}$")])
-        }
-        
+        return <- tokens_character(what, removeNumbers, removePunct, removeSymbols, removeSeparators, removeTwitter, removeHyphens, removeURL)
     } else if (what == "sentence") {
-        if (verbose) catm("\n   ...separating into sentences.")
-        
-        # replace . delimiter from common title abbreviations, with _pd_
-        exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM", "St", "etc")
-        findregex <- paste0("\\b(", exceptions, ")\\.")
-        result <- stri_replace_all_regex(result, findregex, "$1_pd_", vectorize_all = FALSE)
-        
-        ## remove newline chars 
-        result <- lapply(result, stringi::stri_replace_all_fixed, "\n", " ")
-        
-        ## perform the tokenization
-        result <- stringi::stri_split_boundaries(result, type = "sentence")
-        # remove any "sentences" that were completely blanked out
-        result <- lapply(result, function(x) x <- x[which(x != "")])
-        
-        # trim trailing spaces
-        result <- lapply(result, stringi::stri_trim_right)
-        
-        # replace the non-full-stop "." characters
-        result <- lapply(result, stri_replace_all_fixed, "_pd_", ".")
-        
+        return <- tokens_sentence(what, removeNumbers, removePunct, removeSymbols, removeSeparators, removeTwitter, removeHyphens, removeURL)
     } else {
         stop(what, " not implemented in tokens().")
     }
@@ -336,17 +244,6 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
             startTimeClean <- proc.time()
         }
         result <- tokens_ngrams(result, n = ngrams, skip = skip, concatenator = concatenator)
-        # is the ngram set serial starting with 1? use single call if so (most efficient)
-        # if (sum(1:length(ngrams)) == sum(ngrams)) {
-        #     result <- lapply(result, ngram, n = length(ngrams), concatenator = concatenator, include.all = TRUE)
-        # } else {
-        #             result <- lapply(result, function(x) {
-        #                 xnew <- c()
-        #                 for (n in ngrams) 
-        #                     xnew <- c(xnew, ngram(x, n, concatenator = concatenator, include.all = FALSE))
-        #                 xnew
-        #             })
-        # }
         if (verbose) catm("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
     
@@ -577,6 +474,116 @@ print.tokens <- function(x, ...) {
 ##
 ## ============== INTERNAL FUNCTIONS =======================================
 ##
+
+tokens_word <- function(what, removeNumbers, removePunct, removeSymbols, removeSeparators, removeTwitter, removeHyphens, removeURL){
+    
+    # to preserve intra-word hyphens, replace with _hy_
+    if (!removeHyphens & removePunct)
+        result <- stri_replace_all_regex(result, "(\\b)[\\p{Pd}](\\b)", "$1_hy_$2")
+    else if (removeHyphens)
+        result <- stri_replace_all_regex(result, "(\\b)[\\p{Pd}](\\b)", "$1 $2")
+    
+    if (removeURL) {
+        if (verbose & removeURL) catm(", removing URLs")
+        URLREGEX <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
+        result <- stri_replace_all_regex(result, URLREGEX, "")
+    }
+    
+    if (what == "fasterword" | what == "fastestword") {
+        
+        if (verbose & removeNumbers==TRUE) catm(", removing numbers")
+        if (verbose & removePunct==TRUE) catm(", removing punctuation")
+        if (verbose & removeSymbols==TRUE) catm(", removing symbols")
+        regexToEliminate <- paste(ifelse(removeNumbers, "\\b\\d+\\b", ""),
+                                  ifelse(removePunct, paste0("(?![", ifelse(removeTwitter, "_", "@#_"),  "])[\\p{P}]"), ""),
+                                  ifelse(removeSymbols, "[\\p{S}]", ""),
+                                  sep = "|")
+        # catm("\n..", regexToEliminate, "..\n", sep = "")
+        regexToEliminate <- gsub("^\\|+", "", regexToEliminate)
+        regexToEliminate <- gsub("\\|+$", "", regexToEliminate)
+        # catm("\n..", regexToEliminate, "..\n", sep = "")
+        if (gsub("|", "", regexToEliminate, fixed = TRUE) != "")
+            result <- stri_replace_all_regex(result, regexToEliminate, "")
+        
+        if (verbose & removePunct==TRUE) catm(", ", what, " tokenizing", sep="")
+        if (what=="fastestword")
+            result <- stringi::stri_split_fixed(result, " ")
+        else if (what=="fasterword")
+            result <- stringi::stri_split_charclass(result, "\\p{WHITE_SPACE}")
+        #result <- lapply(result, function(x) x <- x[which(x != "")]) # this is dealy slow
+        result <- qatd_cpp_remove_chr_list(result, "")
+        
+        # if (removeURL)
+        #     result <- lapply(result, function(x) x <- x[-which(substring(x, 1, 4) == "http")])
+        
+    } else {
+        result <- stringi::stri_split_boundaries(result, 
+                                                 type = "word", 
+                                                 skip_word_none = (removePunct | removeSymbols), # this is what obliterates currency symbols, Twitter tags, and URLs
+                                                 skip_word_number = removeNumbers) # but does not remove 4u, 2day, etc.
+        # remove separators if option is TRUE
+        if (removeSeparators & !removePunct) {
+            if (verbose) catm("\n  ...removing separators.")
+            result <- lapply(result, function(x) x[!stri_detect_regex(x, "^\\s$")])
+        }
+    }
+    
+    # put hyphens back the fast way
+    if (!removeHyphens & removePunct)
+        result <- lapply(result, stri_replace_all_fixed, "_hy_", "-")
+    
+    return(result)
+}
+
+tokens_sentence <- function(what, removeNumbers, removePunct, removeSymbols, removeSeparators, removeTwitter, removeHyphens, removeURL){
+    
+    if (verbose) catm("\n   ...separating into sentences.")
+    
+    # replace . delimiter from common title abbreviations, with _pd_
+    exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM", "St", "etc")
+    findregex <- paste0("\\b(", exceptions, ")\\.")
+    result <- stri_replace_all_regex(result, findregex, "$1_pd_", vectorize_all = FALSE)
+    
+    ## remove newline chars 
+    result <- lapply(result, stringi::stri_replace_all_fixed, "\n", " ")
+    
+    ## perform the tokenization
+    result <- stringi::stri_split_boundaries(result, type = "sentence")
+    # remove any "sentences" that were completely blanked out
+    result <- lapply(result, function(x) x <- x[which(x != "")])
+    
+    # trim trailing spaces
+    result <- lapply(result, stringi::stri_trim_right)
+    
+    # replace the non-full-stop "." characters
+    result <- lapply(result, stri_replace_all_fixed, "_pd_", ".")
+    
+    return(result)
+}
+
+tokens_character <- function(what, removeNumbers, removePunct, removeSymbols, removeSeparators, removeTwitter, removeHyphens, removeURL){
+    
+    # note: does not implement removeNumbers
+    result <- stringi::stri_split_boundaries(result, type = "character")
+    if (removePunct) {
+        if (verbose) catm("   ...removing punctuation.\n")
+        result <- lapply(result, stringi::stri_replace_all_charclass, "[\\p{P}]", "")
+        result <- lapply(result, function(x) x <- x[which(x != "")])
+    } 
+    if (removeSymbols) {
+        if (verbose) catm("   ...removing symbols.\n")
+        result <- lapply(result, stringi::stri_replace_all_charclass, "[\\p{S}]", "")
+        result <- lapply(result, function(x) x <- x[which(x != "")])
+    } 
+    if (removeSeparators) {
+        if (verbose) catm("   ...removing separators.\n")
+        result <- lapply(result, function(x) x[!stringi::stri_detect_regex(x, "^\\p{Z}$")])
+    }
+    return(result)
+    
+}
+
+
 
 # recompile a hashed tokens object
 # 
