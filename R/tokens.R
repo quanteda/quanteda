@@ -207,42 +207,54 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     if (verbose) catm("  ...tokenizing texts")
     startTimeTok <- proc.time()
     
+    # Split x into smaller blocks to reducre peak memory consumption
+    x_blocks <- split(x, ceiling(seq_along(x) / 1000))
+    result_blocks <- list()
+    for (i in 1:length(x_blocks)) {
+        
+        if (verbose) catm("...", i, "of" , length(x_blocks), "blocks\n")
     
-    
-    
-    if (what %in% c("word", "fastestword", "fasterword")) {
-        return <- tokens_word(what, removeNumbers, removePunct, removeSymbols, removeSeparators, removeTwitter, removeHyphens, removeURL)
-    } else if (what == "character") {
-        return <- tokens_character(what, removeNumbers, removePunct, removeSymbols, removeSeparators, removeTwitter, removeHyphens, removeURL)
-    } else if (what == "sentence") {
-        return <- tokens_sentence(what, removeNumbers, removePunct, removeSymbols, removeSeparators, removeTwitter, removeHyphens, removeURL)
-    } else {
-        stop(what, " not implemented in tokens().")
+        if (what %in% c("word", "fastestword", "fasterword")) {
+            result_temp <- tokens_word(what, removeNumbers, removePunct, removeSymbols, removeSeparators, removeTwitter, removeHyphens, removeURL)
+        } else if (what == "character") {
+            result_temp <- tokens_character(what, removeNumbers, removePunct, removeSymbols, removeSeparators, removeTwitter, removeHyphens, removeURL)
+        } else if (what == "sentence") {
+            result_temp <- tokens_sentence(what, removeNumbers, removePunct, removeSymbols, removeSeparators, removeTwitter, removeHyphens, removeURL)
+        } else {
+            stop(what, " not implemented in tokens().")
+        }
+        
+        if (removeTwitter == FALSE & !(what %in% c("fastword", "fastestword"))) {
+            if (verbose) catm("  ...replacing Twitter characters (#, @)")
+            startTimeClean <- proc.time()
+            result_temp <- lapply(result_temp, stringi::stri_replace_all_fixed, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
+            if (verbose) catm("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
+        }
+        
+        # Hash the tokens
+        if (hash == TRUE) {
+            if (verbose) 
+                catm("  ...hashing tokens\n")
+            if (i == 1) {
+                result_blocks[[i]] <- tokens_hash(result_temp)
+            }else{
+                result_blocks[[i]] <- tokens_hash(result_temp, types(result_blocks[i - 1]))
+            }
+        }else{
+            result_blocks[[i]] <- result_temp
+        }
     }
-    
     if (verbose) catm("...total elapsed: ", (proc.time() - startTimeTok)[3], "seconds.\n")
     
-    if (removeTwitter == FALSE & !(what %in% c("fastword", "fastestword"))) {
-        if (verbose) catm("  ...replacing Twitter characters (#, @)")
-        startTimeClean <- proc.time()
-        result <- lapply(result, stringi::stri_replace_all_fixed, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
-        if (verbose) catm("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
-    }
+    # Put all the blocked results togather
+    result <- unlist(result_blocks, recursive = FALSE)
     
-    # make this an S3 class item, if a list
-    #if (simplify == FALSE) {
-    class(result) <- c("tokenizedTexts", class(result))
-    #}
-    
-    # hash the tokens
-    if (hash == TRUE) {
-        if (verbose) 
-            catm("  ...hashing tokens\n")
-        result <- tokens_hash(result)
-    }
-    
-    
-    
+    if (hash == TRUE){
+        class(result) <- c("tokens", "tokenizedTexts")
+        types(result_blocks[[length(result_blocks)]]) # last block has all the types
+    }else{
+        class(result) <- "tokenizedTexts"
+    }  
     if (!identical(ngrams, 1L)) {
         if (verbose) {
             catm("  ...creating ngrams")
@@ -252,7 +264,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
         if (verbose) catm("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
     
-    
+
     # stri_* destroys names, so put them back
     startTimeClean <- proc.time()
     if (verbose) catm("  ...replacing names")
