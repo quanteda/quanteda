@@ -72,7 +72,7 @@ Collate:
     'corpus_sample.R'
     'corpus_segment.R'
     'corpus_subset.R'
-    'corpus_zip.R'
+    'corpuszip.R'
     'data-deprecated.R'
     'data-documentation.R'
     'dev.R'

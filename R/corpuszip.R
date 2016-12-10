@@ -1,5 +1,8 @@
+quanteda_document_delimiter <- "###END_DOCUMENT###"
+
 #' construct a compressed corpus object
-#' @rdname corpuszip
+#' 
+#' Construct a compressed version of a \link{corpus}.
 #' @inheritParams corpus
 #' @export
 #' @keywords corpuszip
@@ -15,7 +18,6 @@
 #' object.size(cop)
 #' object.size(cop_zip)
 #' 
-#
 corpuszip <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, ...) {
     UseMethod("corpuszip")
 }
@@ -66,13 +68,13 @@ corpuszip.character <- function(x, docnames = NULL, docvars = NULL, text_field =
 
     # name the texts vector
     if (!is.null(docnames)) {
-        stopifnot(length(docnames)==length(x))
-        names <- docnames
+        stopifnot(length(docnames) == length(x))
+        # names(x) <- docnames
     } else if (is.null(names_org)) {
-        names <- paste("text", 1:length(x), sep="")
+        docnames <- paste("text", 1:length(x), sep="")
     } else if (is.null(names(x))) {
         # if they previously existed, but got obliterated by a stringi function
-        names <- names_org
+        docnames <- names_org
     }
 
     # create document-meta-data
@@ -86,51 +88,81 @@ corpuszip.character <- function(x, docnames = NULL, docvars = NULL, text_field =
         if (nrow(docvars) > 0) {
             stopifnot(nrow(docvars)==length(x))
             docvars <- as.data.frame(docvars)
+            rownames(docvars) <- docnames
         } 
     }
     
+    # paste delimiters into object to be compressed
+    x[1 : (length(x)-1)] <- paste0(x[1 : (length(x)-1)], quanteda_document_delimiter)
+    
     # build and return the corpus object
-    tempCorpus <- list(documents = memCompress(x, 'gzip'),
-                       docvars = docvars,
-                       names = names,
+    tempCorpus <- list(texts = memCompress(x, 'gzip'),
+                       documents = docvars,
+                       docnames = docnames,
                        metadata = metacorpus, 
                        settings = settings(),
                        tokens = NULL)
     class(tempCorpus) <- list("corpuszip", "corpus", class(tempCorpus))
     return(tempCorpus)
 }
+
+
 #' @noRd
 #' @export
-texts.corpuszip <- function(x, groups = NULL, ...){
-    unlist(strsplit(memDecompress(x$documents, 'gzip', asChar = TRUE), "\n"), use.names = FALSE)
+texts.corpuszip <- function(x, groups = NULL, ...) {
+    result <- memDecompress(x$texts, 'gzip', asChar = TRUE)
+    result <- strsplit(result, paste0(quanteda_document_delimiter, "\n"))
+    result <- unlist(result, use.names = FALSE)
+    names(result) <- docnames(x)
+    result
 }
+
+#' @noRd
+#' @method as.character corpus
+#' @export
+as.character.corpuszip <- function(x, ...) {
+    texts(x)
+}
+
+
 #' @noRd
 #' @export
 "texts<-.corpuszip" <- function(x, value) { 
-    x$documents <- memCompress(txt, 'gzip')
+    temp_texts <- texts(x)
+    temp_texts <- value
+    x$texts <- memCompress(temp_texts, 'gzip')
+    # NOTE: this will not replace named elements in docnames
+    x
 }
 
-#' @noRd
+# #' @noRd
+# #' @export
+# docvars.corpuszip <- function(x, field = NULL) {
+#     if (is.null(field))
+#         return(x$docvars)
+#     if (!(field %in% names(x$docvars)))
+#         return(NULL)
+#     return(x$docvars[, field, drop=TRUE])
+# }
+# 
+# #' @noRd
+# #' @export
+# "docvars<-.corpuszip" <- function(x, field = NULL, value) {
+#     if ("texts" %in% field) stop("You should use texts() instead to replace the corpus texts.")
+#     if (is.null(field)) {
+#         field <- names(value)
+#         if (is.null(field))
+#             field <- paste("docvar", 1:ncol(as.data.frame(value)), sep="")
+#     }
+#     x$docvars[field] <- value
+#     return(x)
+# }
+
 #' @export
-docvars.corpuszip <- function(x, field = NULL) {
-    if (is.null(field))
-        return(x$docvars)
-    if (!(field %in% names(x$docvars)))
-        return(NULL)
-    return(x$docvars[, field, drop=TRUE])
+#' @noRd
+docnames.corpuszip <- function(x) {
+    x$docnames
 }
 
-#' @noRd
-#' @export
-"docvars<-.corpuszip" <- function(x, field = NULL, value) {
-    if ("texts" %in% field) stop("You should use texts() instead to replace the corpus texts.")
-    if (is.null(field)) {
-        field <- names(value)
-        if (is.null(field))
-            field <- paste("docvar", 1:ncol(as.data.frame(value)), sep="")
-    }
-    x$docvars[field] <- value
-    return(x)
-}
 
 setOldClass("corpuszip")
