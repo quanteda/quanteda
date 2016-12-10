@@ -186,7 +186,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     
     what <- match.arg(what)
     names_org <- names(x)
-    attr_org <- attributes(x)
+    attrs_org <- attributes(x)
     
     if (simplify)
         warning("simplify no longer available")
@@ -376,10 +376,7 @@ is.tokens <- function(x) {
 #' # wordstem
 tokens_hash <- function(x, types, ...) {
     
-    attr_input <- attributes(x)
-    # if (!is.tokenizedTexts(x)) 
-    #     stop("Input must be tokenizedTexts")
-    
+    attrs_org <- attributes(x)
     types_x <- unique(unlist(x, use.names = FALSE))
     types_x <- types_x[types_x != '']  # remove empty "tokens"
     
@@ -392,9 +389,9 @@ tokens_hash <- function(x, types, ...) {
     # Serialize tokens 
     x_int <- lapply(x, fastmatch::fmatch, types)
     
-    # restore and add additional attributes
-    attributes(x_int) <- attr_input
-    attr(x_int, "types") <- as.vector(types)
+    # Restore and add additional attributes
+    attributes(x_int) <- attrs_org
+    attr(x_int, "types") <- types
     class(x_int) <- c("tokens", class(x_int))
     return(x_int)
 }
@@ -407,14 +404,16 @@ tokens_hash <- function(x, types, ...) {
 #' @keywords internal tokens
 #' @export
 as.tokenizedTexts.tokens <- function(x, ...) {
+    
+    attrs_org <- attributes(x)
     types <- types(x)
-    attrs_orig <- attributes(x)
     class(x) <- "list"
+    
+    # Desrialize tokens
     x_chr <- lapply(x, function(y) types[y])
-    attributes(x_chr) <- attributes(x)
-    # remove types attribute
-    attr(x_chr, "types") <- NULL
-    # replace class tag
+    
+    attributes(x_chr) <- attrs_org
+    attr(x_chr, "types") <- NULL  # remove types attribute
     class(x_chr) <- c("tokenizedTexts", "list")
     return(x_chr)
 }
