@@ -185,6 +185,8 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
                              verbose = FALSE, ...) {
     
     what <- match.arg(what)
+    names_org <- names(x)
+    attr_org <- attributes(x)
     
     if (simplify)
         warning("simplify no longer available")
@@ -230,8 +232,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
         
         # Hash the tokens
         if (hash == TRUE) {
-            if (verbose) 
-                catm("...hashing tokens\n")
+            if (verbose) catm("...hashing tokens\n")
             if (i == 1) {
                 result_blocks[[i]] <- tokens_hash(result_temp)
             }else{
@@ -241,7 +242,6 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
             result_blocks[[i]] <- result_temp
         }
     }
-    
     
     # Put all the blocked results togather
     result <- unlist(result_blocks, recursive = FALSE)
@@ -253,21 +253,20 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
         class(result) <- "tokenizedTexts"
     }  
     if (!identical(ngrams, 1L)) {
-        if (verbose) {
-            catm("...creating ngrams\n")
-        }
+        if (verbose) catm("...creating ngrams\n")
         result <- tokens_ngrams(result, n = ngrams, skip = skip, concatenator = concatenator)
     }
-    if (verbose) catm("...total elapsed: ", (proc.time() - startTimeTok)[3], "seconds.\n")
+    if (verbose){
+        catm("...total elapsed: ", (proc.time() - startTimeTok)[3], "seconds.\n")
+        catm("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n")
+    }
 
-    names(result) <- names(x) # stri_* destroys names, so put them back
+    names(result) <- names_org # stri_* destroys names, so put them back
     attr(result, "what") <- what
     attr(result, "ngrams") <- ngrams
     attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
-    
-    if (verbose) catm("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n") 
-    
-    result
+
+    return(result)
 }
 
 #' @rdname tokens
@@ -513,22 +512,20 @@ tokens_word <- function(txt, what, removeNumbers, removePunct, removeSymbols, re
         else if (what=="fasterword")
             tok <- stringi::stri_split_charclass(txt, "\\p{WHITE_SPACE}")
         tok <- qatd_cpp_remove_chr_list(tok, "")
-        
-        # if (removeURL)
-        #     result <- lapply(result, function(x) x <- x[-which(substring(x, 1, 4) == "http")])
+    
         
     } else {
         tok <- stringi::stri_split_boundaries(txt, 
                                               type = "word", 
                                               skip_word_none = (removePunct | removeSymbols), # this is what obliterates currency symbols, Twitter tags, and URLs
                                               skip_word_number = removeNumbers) # but does not remove 4u, 2day, etc.
-        # remove separators if option is TRUE
+        # Remove separators if option is TRUE
         if (removeSeparators & !removePunct) {
             tok <- lapply(tok, function(x) x[!stri_detect_regex(x, "^\\s$")])
         }
     }
     
-    # put hyphens back the fast way
+    # Put hyphens back the fast way
     if (!removeHyphens & removePunct)
         tok <- lapply(tok, stri_replace_all_fixed, "_hy_", "-")
     
@@ -538,7 +535,7 @@ tokens_word <- function(txt, what, removeNumbers, removePunct, removeSymbols, re
 tokens_sentence <- function(txt, what, removeNumbers, removePunct, removeSymbols, removeSeparators, 
                             removeTwitter, removeHyphens, removeURL, verbose){
     
-    if (verbose) catm("\n   ...separating into sentences.")
+    if (verbose) catm("...separating into sentences.\n")
     
     # Replace . delimiter from common title abbreviations, with _pd_
     exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM", "St", "etc")
@@ -584,7 +581,7 @@ tokens_character <- function(txt, what, removeNumbers, removePunct, removeSymbol
         })
     } 
     if (removeSeparators) {
-        if (verbose) catm("   ...removing separators.\n")
+        if (verbose) catm("...removing separators.\n")
         tok <- lapply(tok, function(x){
             x <- stringi::stri_subset_regex(x, "^\\p{Z}$")
             x <- x[which(x != "")]
