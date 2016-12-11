@@ -16,6 +16,9 @@ print.corpus <- function(x, ...) {
     if (!is.null(docvars(x))) 
         cat(" and ", format(ncol(docvars(x)), big.mark=","), " docvar", 
             ifelse(ncol(docvars(x)) == 1, "", "s"), "", sep="")
+    if (is.corpuszip(x)) {
+        cat(" (compressed ", 100 - round(x$compression_rate, 1), "%)", sep = "")
+    }
     cat(".\n")
     
     #         ", ",
@@ -35,6 +38,12 @@ is.corpus <- function(x) {
     "corpus" %in% class(x)
 }
 
+#' @return \code{is.corpuszip} returns \code{TRUE} if the object is a compressed corpus
+#' @rdname corpus-class
+#' @export
+is.corpuszip <- function(x) {
+    "corpuszip" %in% class(x)
+}
 
 
 #' summarize a corpus or a vector of texts
@@ -71,7 +80,8 @@ summary.corpus <- function(object, n = 100, verbose = TRUE, showmeta = FALSE, to
     if (verbose) {
         cat("Corpus consisting of ", ndoc(object), " document",
             ifelse(ndoc(object)>1, "s", ""), 
-            ifelse(ndoc(object)<=n, "", 
+            ifelse(is.corpuszip(object), paste0(" (compressed ", 100 - round(object$compression_rate, 1), "%)"), ""),
+            ifelse(ndoc(object) <= n, "", 
                    paste(", showing ", n, " document", ifelse(n>1, "s", ""), sep="")),
             ".\n", sep="")
     }

@@ -4,6 +4,7 @@ quanteda_document_delimiter <- "###END_DOCUMENT###"
 #' 
 #' Construct a compressed version of a \link{corpus}.
 #' @inheritParams corpus
+#' @importFrom utils object.size
 #' @export
 #' @keywords corpuszip
 #' @examples
@@ -102,6 +103,8 @@ corpuszip.character <- function(x, docnames = NULL, docvars = NULL, text_field =
                        metadata = metacorpus, 
                        settings = settings(),
                        tokens = NULL)
+    # compute the compression %
+    tempCorpus$compression_rate <- utils::object.size(tempCorpus$texts) / utils::object.size(x) * 100
     class(tempCorpus) <- list("corpuszip", "corpus", class(tempCorpus))
     return(tempCorpus)
 }

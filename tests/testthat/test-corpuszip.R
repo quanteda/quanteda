@@ -8,6 +8,23 @@ dv <- data.frame(varnumeric = 10:13, varfactor = factor(c("A", "B", "A", "B")), 
 data_corpus_test <- corpus(txt, docvars = dv, metacorpus = list(source = "From test-corpuzip.R"))
 data_corpuszip_test <- corpuszip(txt, docvars = dv, metacorpus = list(source = "From test-corpuzip.R"))
 
+test_that("print method works for corpuszip", {
+    expect_output(print(data_corpus_test), regexp = "^Corpus consisting of 4 documents and 3 docvars\\.$")
+    expect_output(print(data_corpuszip_test), regexp = "^Corpus consisting of 4 documents and 3 docvars \\(compressed 61.5%\\)\\.$")
+})
+
+test_that("summary method works for corpuszip", {
+    expect_output(summary(data_corpus_test), regexp = "^Corpus consisting of 4 documents\\.")
+    expect_output(summary(data_corpuszip_test), regexp = "^Corpus consisting of 4 documents \\(compressed 61.5%\\)\\.")
+})
+
+test_that("is.corpus methods work", {
+    expect_true(is.corpuszip(data_corpuszip_test))
+    expect_true(is.corpus(data_corpuszip_test))
+    expect_true(!is.corpuszip(data_corpus_test))
+    expect_true(is.corpus(data_corpus_test))
+})
+
 test_that("old corpus texts() and docvars() are same as new: data_corpus_inaugural", {
     expect_equal(docnames(data_corpus_test), docnames(data_corpuszip_test))
     expect_equal(docvars(data_corpus_test), docvars(data_corpuszip_test))
@@ -32,6 +49,7 @@ test_that("texts<- works with corpuszip", {
     # expect_equivalent(texts(data_corpuszip_test)[2], "REPLACEMENT TEXT.")
     # expect_equivalent(texts(data_corpuszip_test)[1], "This is a sample text.\nIt has three lines.\nThe third line.")
 })
+
 
 
 test_that("old corpus texts() and docvars() are same as new: data_corpus_inaugural", {
