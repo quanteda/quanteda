@@ -14,10 +14,10 @@
 #'   uppercase to distinguish them from other features
 #' @param verbose print status messages if \code{TRUE}
 #' @examples
-#' toks <- tokens(data_corpus_inaugural[1:5])
+#' toks <- tokens(data_corpus_inaugural)
 #' dict <- dictionary(list(country = "united states", 
 #'                    law=c('law*', 'constitution'), 
-#'                    freedom=c('free*', 'libert*')))
+#'                    freedom=c('*', 'libert*')))
 #' dfm(tokens_lookup(toks, dict, 'glob', verbose = TRUE))
 #' 
 #' dict_fix <- dictionary(list(country = "united states", 
@@ -25,6 +25,7 @@
 #'                        freedom = c('freedom', 'liberty'))) 
 #' dfm(applyDictionary(toks, dict_fix, valuetype='fixed'))
 #' dfm(tokens_lookup(toks, dict_fix, valuetype='fixed'))
+#' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_lookup <- function(x, dictionary,
                            valuetype = c("glob", "regex", "fixed"), 
@@ -36,43 +37,26 @@ tokens_lookup <- function(x, dictionary,
         stop("x must be a tokens class object")
     
     valuetype <- match.arg(valuetype)
-    
-    # Case-insesitive 
-    #### this is inefficient, better to pass through case_insensitive = TRUE
-    #### to the regex match --KB
-    if (case_insensitive) {
-        x <- toLower(x)
-        dictionary <- lapply(dictionary, toLower)
-    }
-    
+
     # Initialize
-    tokens <- qatd_cpp_structcopy_int_list(x) # create empty tokens object
     types <- types(x)
     index <- index(types, valuetype, case_insensitive)
+    ngrams_id <- list()
+    keys_id <- c()
     for(h in 1:length(dictionary)) {
-        
         if(verbose) message('Searching words in "', names(dictionary[h]), '"...')
-        keys <- stringi::stri_split_fixed(dictionary[[h]], concatenator)
-        
-        # Convert to regular expressions, then to fixed
-        if (valuetype %in% c("glob"))
-            keys <- lapply(keys, glob2rx)
-        if (valuetype %in% c("glob", "regex")) {
-            # Generates all possible patterns of keys
-            keys_fixed <- regex2fixed4(keys, index)
-        } else {
-            keys_fixed <- keys
-        }
-        if(length(keys_fixed) == 0) next
-        keys_id <- lapply(keys_fixed, function(x) fmatch(x, types))
-        #print(keys_id)
-        tokens <- qatd_cpp_lookup_int_list(x, tokens, keys_id, h)
+        ngrams <- stringi::stri_split_fixed(dictionary[[h]], concatenator)
+        ngrams_fixed <- regex2fixed4(ngrams, index) # convert glob or regex to fixed
+        if(length(ngrams_fixed) == 0) next
+        ngrams_id <- c(ngrams_id, lapply(ngrams_fixed, function(x) fmatch(x, types)))
+        keys_id <- c(keys_id, rep(h, length(ngrams_fixed)))
     }
-    tokens <- qatd_cpp_remove_int_list(tokens, 0) # remove padding
-    attributes(tokens) <- attributes(x)
-    types(tokens) <- names(dictionary)
-    attr(tokens, "what") <- "dictionary"
-    attr(tokens, "dictionary") <- dictionary
+    x <- qatd_cpp_tokens_lookup(x, ngrams_id, keys_id)
     
-    return(tokens)
+    attributes(x) <- attributes(x)
+    attr(x, 'types') <- names(dictionary)
+    attr(x, "what") <- "dictionary"
+    attr(x, "dictionary") <- dictionary
+    
+    return(x)
 }

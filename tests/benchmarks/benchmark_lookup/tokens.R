@@ -8,34 +8,48 @@ dict_fix <- dictionary(list(country = "united states",
 
 microbenchmark::microbenchmark(
     r=applyDictionary(toks, dict_fix, valuetype='fixed', verbose=FALSE),
-    cpp=applyDictionary2(toks, dict_fix, valuetype='fixed', verbose=FALSE)
+    cpp=tokens_lookup(toks, dict_fix, valuetype='fixed', verbose=FALSE)
 )
 
 dict_liwc <- dictionary(file='/home/kohei/Documents/Dictonary/LIWC/LIWC2007_English.dic')
 microbenchmark::microbenchmark(
     r=applyDictionary(toks, dict_liwc, valuetype='fixed', verbose=FALSE),
-    cpp=applyDictionary2(toks, dict_liwc, valuetype='fixed', verbose=FALSE),
+    cpp=tokens_lookup(toks, dict_liwc, valuetype='fixed', verbose=FALSE),
     times=1
 )
 
 microbenchmark::microbenchmark(
-    fixed=applyDictionary2(toks, dict_liwc, valuetype='fixed', verbose=FALSE),
-    glob=applyDictionary2(toks, dict_liwc, valuetype='glob', verbose=FALSE),
+    fixed=tokens_lookup(toks, dict_liwc, valuetype='fixed', verbose=FALSE),
+    glob=tokens_lookup(toks, dict_liwc, valuetype='glob', verbose=FALSE),
     times=1
 )
 
 microbenchmark::microbenchmark(
     dfm=applyDictionary(dfm(toks), dict_liwc, valuetype='glob', verbose=FALSE),
-    tokens=applyDictionary2(toks, dict_liwc, valuetype='glob', verbose=FALSE),
+    tokens=tokens_lookup(toks, dict_liwc, valuetype='glob', verbose=FALSE),
     times=1
 )
 
 toks_short <- tokens(tokenize(inaugCorpus, what='sentence', simplify=TRUE))
 microbenchmark::microbenchmark(
     r=applyDictionary(toks_short, dict, valuetype='fixed', verbose=FALSE),
-    cpp=applyDictionary2(toks_short, dict, valuetype='fixed', verbose=FALSE),
+    cpp=tokens_lookup(toks_short, dict, valuetype='fixed', verbose=FALSE),
     times=1
 )
 
-profvis::profvis(applyDictionary2(toks, dict_liwc[1], valuetype='glob', verbose=FALSE))
+
+txt <- readLines('~/Documents/Brexit/Analysis/all_bbc_2015.txt') # 80MB
+txt <- readLines('~/Documents/LSS/Data/Ukracine crisis/ua_3agency.txt') # 660MB
+toks <- tokens(txt)
+
+microbenchmark::microbenchmark(
+    regex=tokens_lookup(toks, dict_liwc, valuetype='regex', verbose=TRUE),
+    fixed=tokens_lookup(toks, dict_liwc, valuetype='fixed', verbose=TRUE),
+    times=1
+)
+
+
+profvis::profvis(tokens_lookup(toks, dict_liwc[1], valuetype='glob', verbose=FALSE))
+
+
 

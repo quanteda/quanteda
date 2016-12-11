@@ -30,10 +30,10 @@ Convert tokens into equivalence classes defined by values of a dictionary
 object.
 }
 \examples{
-toks <- tokens(data_corpus_inaugural[1:5])
+toks <- tokens(data_corpus_inaugural)
 dict <- dictionary(list(country = "united states", 
                    law=c('law*', 'constitution'), 
-                   freedom=c('free*', 'libert*')))
+                   freedom=c('*', 'libert*')))
 dfm(tokens_lookup(toks, dict, 'glob', verbose = TRUE))
 
 dict_fix <- dictionary(list(country = "united states", 

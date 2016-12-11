@@ -50,24 +50,21 @@ microbenchmark::microbenchmark(
     regex2fixed(list(c('^not$', '^go')), types, 'regex', case_insensitive=TRUE),
     regex2fixed2(list(c('^not$', '^go')), types, 'regex', case_insensitive=TRUE),
     regex2fixed3(list(c('^not$', '^go')), types, 'regex', case_insensitive=TRUE),
-    regex2fixed4(list(c('^not$', '^go')), types, 'regex', case_insensitive=TRUE)
+    regex2fixed4(list(c('^not$', '^go')), index(types, 'regex', case_insensitive=TRUE))
 )
 
 microbenchmark::microbenchmark(
     regex2fixed(list(c('^not$', '^go')), types, 'regex', case_insensitive=FALSE),
     regex2fixed2(list(c('^not$', '^go')), types, 'regex', case_insensitive=FALSE),
     regex2fixed3(list(c('^not$', '^go')), types, 'regex', case_insensitive=FALSE),
-    regex2fixed4(list(c('^not$', '^go')), types, 'regex', case_insensitive=FALSE)
+    regex2fixed4(list(c('^not$', '^go')), index(types, 'regex', case_insensitive=FALSE))
 )
 
 microbenchmark::microbenchmark(
     regex2fixed(list(c('not', 'go')), types, 'fixed', case_insensitive=TRUE),
     regex2fixed2(list(c('not', 'go')), types, 'fixed', case_insensitive=TRUE),
     regex2fixed3(list(c('not', 'go')), types, 'fixed', case_insensitive=TRUE),
-    regex2fixed4(list(c('not', 'go')), types, 'fixed', case_insensitive=TRUE)
+    regex2fixed4(list(c('not', 'go')), index(types, 'fixed', case_insensitive=TRUE))
 )
 
-microbenchmark::microbenchmark(
-    regex2fixed3(list(c('^not$', '^go')), types, 'regex', case_insensitive=TRUE),
-    regex2fixed3(list(c('not', 'go')), types, 'fixed', case_insensitive=TRUE)
-)
+

@@ -101,15 +101,9 @@ tokens_compound.tokens <- function(x, sequences,
     seqs <- seqs[lengths(seqs) > 1] # drop single words
     types <- types(x)
     
-    # Convert to regular expressions, then to fixed
-    if (valuetype %in% c("glob"))
-        seqs <- lapply(seqs, glob2rx)
-    if (valuetype %in% c("glob", "regex")) {
-        # Generates all possible patterns of keys
-        seqs_fixed <- regex2fixed4(seqs, index(types, valuetype, case_insensitive))
-    } else {
-        seqs_fixed <- seqs
-    }
+    # Convert glob or regex to fixed
+    seqs_fixed <- regex2fixed4(seqs, index(types, valuetype, case_insensitive))
+    
     if (verbose) message(sprintf('Join %d pairs of tokens', length(seqs_fixed)))
     if (length(seqs_fixed) == 0) return(x) # do nothing
     

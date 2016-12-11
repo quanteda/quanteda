@@ -56,17 +56,15 @@ struct lookup_mt : public Worker{
 
 // [[Rcpp::export]]
 List qatd_cpp_tokens_lookup(List texts_, 
-                            List words_,
-                            IntegerVector keys_){
+                            List words,
+                            IntegerVector keys){
     
     Texts input = Rcpp::as<Texts>(texts_);
-    Ngrams words = Rcpp::as< Ngrams >(words_);
-    std::vector<int> keys = Rcpp::as< std::vector<int> >(keys_);
-    
+
     MapNgrams map_words;
     int span_max = 0;
     for(int g = 0; g < words.size(); g++){
-        //if(has_na(words[g])) continue;
+        if(has_na(words[g])) continue;
         Ngram word = words[g];
         map_words[word] = keys[g];
         if(span_max < word.size()) span_max = word.size();
