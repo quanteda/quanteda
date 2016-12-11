@@ -41,10 +41,10 @@ tokens_lookup <- function(x, dictionary,
     names_org <- names(x)
     attrs_org <- attributes(x)
     
+
+    # Generate all combinations of type IDs
     ngrams_id <- list()
     keys_id <- c()
-    
-    # Generate all combinations of type IDs
     types <- types(x)
     index <- index(types, valuetype, case_insensitive)
     for(h in 1:length(dictionary)) {
