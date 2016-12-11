@@ -213,8 +213,9 @@ c.corpus <- function(..., recursive = FALSE) {
 `[[.corpus` <- function(x, i, ...) {
     if (is.null(docvars(x)))
         stop("cannot index docvars this way because none exist")
-    x$documents <- x$documents[-1]  # remove texts
-    x$documents[[i, ...]]
+    #x$documents <- x$documents[-1]  # remove texts
+    #x$documents[[i, ...]]
+    docvars(x)[i, ...]
 }
 
 #' @export
