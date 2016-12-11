@@ -43,7 +43,7 @@ txt <- readLines('~/Documents/LSS/Data/Ukracine crisis/ua_3agency.txt') # 660MB
 toks <- tokens(txt)
 
 microbenchmark::microbenchmark(
-    regex=tokens_lookup(toks, dict_liwc, valuetype='regex', verbose=TRUE),
+    glob=tokens_lookup(toks, dict_liwc, valuetype='glob', verbose=TRUE),
     fixed=tokens_lookup(toks, dict_liwc, valuetype='fixed', verbose=TRUE),
     times=1
 )
