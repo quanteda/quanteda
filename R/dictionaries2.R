@@ -38,11 +38,15 @@ tokens_lookup <- function(x, dictionary,
     
     valuetype <- match.arg(valuetype)
 
-    # Initialize
-    types <- types(x)
-    index <- index(types, valuetype, case_insensitive)
+    names_org <- names(x)
+    attrs_org <- attributes(x)
+    
     ngrams_id <- list()
     keys_id <- c()
+    
+    # Generate all combinations of type IDs
+    types <- types(x)
+    index <- index(types, valuetype, case_insensitive)
     for(h in 1:length(dictionary)) {
         if(verbose) message('Searching words in "', names(dictionary[h]), '"...')
         ngrams <- stringi::stri_split_fixed(dictionary[[h]], concatenator)
@@ -53,8 +57,9 @@ tokens_lookup <- function(x, dictionary,
     }
     x <- qatd_cpp_tokens_lookup(x, ngrams_id, keys_id)
     
-    attributes(x) <- attributes(x)
-    attr(x, 'types') <- names(dictionary)
+    attributes(x) <- attrs_org
+    types(x) <- names(dictionary)
+    names(x) <- names_org
     attr(x, "what") <- "dictionary"
     attr(x, "dictionary") <- dictionary
     
