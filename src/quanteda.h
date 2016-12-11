@@ -1,4 +1,5 @@
 #include "tbb/concurrent_unordered_map.h"
+#include "tbb/concurrent_unordered_set.h"
 using namespace Rcpp;
 using namespace std;
 using namespace tbb;
@@ -63,6 +64,7 @@ namespace ngrams {
         }
     };
     typedef concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
+    typedef concurrent_unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
 }
 
 #endif

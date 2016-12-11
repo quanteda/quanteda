@@ -1,8 +1,6 @@
 #include <Rcpp.h>
-#include <numeric>
 #include "dev.h"
 #include "quanteda.h"
-#include "tbb/concurrent_unordered_map.h"
 
 // [[Rcpp::depends(RcppParallel)]]
 #include <RcppParallel.h>
@@ -10,41 +8,12 @@
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
 using namespace RcppParallel;
-using namespace std;
 using namespace quanteda;
-
-
-namespace ngrams {
-    typedef std::vector<unsigned int> Ngram;
-    typedef std::vector<unsigned int> Ngrams;
-    typedef std::vector<unsigned int> Text;
-    typedef std::vector< std::vector<unsigned int> > Texts;
-
-    struct hash_ngram {
-        std::size_t operator() (const Ngram &vec) const {
-            //unsigned int seed = std::accumulate(vec.begin(), vec.end(), 0);
-            //return std::hash<unsigned int>()(seed);
-            unsigned int seed = 0;
-            for(int i = 0; i < vec.size(); i++){
-                //seed += vec[i] * std::pow(10, i) ;
-                seed += vec[i] << (i * 8); // shift elements 8 bit
-            }
-            return std::hash<unsigned int>()(seed);
-        }
-    };
-    
-    struct equal_ngram {
-        bool operator() (const Ngram &vec1, const Ngram &vec2) const { 
-            return (vec1 == vec2);
-            //return true;
-        }
-    };
-}
 using namespace ngrams;
 
 
 int ngram_id(Ngram ngram,
-             tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> &map_ngram){
+             MapNgrams &map_ngram){
     
     // Add new ID without multiple access
     unsigned int &id_ngram = map_ngram[ngram];
@@ -66,7 +35,7 @@ void skip(Text &tokens,
           std::vector<int> skips,
           Ngram ngram,
           Ngrams &ngrams,
-          tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> &map_ngram,
+          MapNgrams &map_ngram,
           int pos_ngram, int &pos_ngrams) {
     
     
@@ -97,7 +66,7 @@ void skip(Text &tokens,
 Ngrams skipgram(Text tokens,
                 std::vector<int> ns, 
                 std::vector<int> skips,
-                tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> &map_ngram) {
+                MapNgrams &map_ngram) {
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -130,11 +99,11 @@ struct skipgram_mt : public Worker{
     Texts &output;
     const std::vector<int> ns;
     const std::vector<int> skips;
-    tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> &map_ngram;
+    MapNgrams &map_ngram;
     
     // Constructor
     skipgram_mt(Texts &input_, Texts &output_, std::vector<int> ns_, std::vector<int> skips_, 
-                tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> &map_ngram_):
+                MapNgrams &map_ngram_):
                 input(input_), output(output_), ns(ns_), skips(skips_), map_ngram(map_ngram_){}
     
     // parallelFor calles this function with size_t
@@ -171,7 +140,7 @@ List qatd_cpp_ngram_mt_list(List texts_,
     std::vector<int> skips = Rcpp::as< std::vector<int> >(skips_);
     
     // Register both ngram (key) and unigram (value) IDs in a hash table
-    tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> map_ngram;
+    MapNgrams map_ngram;
 
     Texts output(input.size());
     skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram);
