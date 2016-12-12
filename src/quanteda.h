@@ -8,7 +8,7 @@ using namespace std;
 #define RCPP_USING_CXX11
 namespace quanteda{
 
-    inline String join_character_vector(const CharacterVector &tokens, const String &delim){
+    inline String join(const CharacterVector &tokens, const String &delim){
         if(tokens.size() == 0) return "";
         String token = tokens[0];
         for (int i = 1; i < tokens.size(); i++) {
@@ -20,7 +20,7 @@ namespace quanteda{
         return token;
       }
     
-    inline std::string join_vector(std::vector< std::string > tokens, std::string delim){
+    inline std::string join(std::vector< std::string > tokens, std::string delim){
         if(tokens.size() == 0) return "";
         std::string token = tokens[0];
         for (int i = 1; i < tokens.size(); i++) {
@@ -35,13 +35,6 @@ namespace quanteda{
         }
       return false;
     }
-
-    // Tokens object
-    class Tokens {
-      public:
-      Tokens(List documents_, List vocaburary_): documents(documents_), vocaburary(vocaburary_){}
-      Rcpp::List documents, vocaburary;;
-    };
 }
 
 #endif

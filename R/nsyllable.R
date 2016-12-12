@@ -36,36 +36,49 @@ syllables <- function(x, ...) {
 #'   the names are lower case tokens.  When set to \code{NULL} (default), then 
 #'   the function will use the quanteda data object \code{data_int_syllables}, an 
 #'   English pronunciation dictionary from CMU.
-#' @param ... additional arguments passed to \code{\link{tokens}}
+#' @param use.names logical; if \code{TRUE}, assign the tokens as the names of 
+#' the syllable count vector
 #'   
 #' @return If \code{x} is a character vector, a named numeric vector of the 
-#'   counts of the syllables in each text, without tokenization.  If \code{x} 
-#'   consists of (a list of) tokenized texts, then return a list of syllable 
-#'   counts corresponding to the tokenized texts.
+#'   counts of the syllables in each element.  If \code{x} is a \link{tokens}
+#'   object, return a list of syllable counts where each list element corresponds
+#'   to the tokens in a document.
 #' @note All tokens are automatically converted to lowercase to perform the
 #'   matching with the syllable dictionary, so there is no need to perform this
 #'   step prior to calling \code{nsyllable()}.
 #' @name nsyllable
 #' @export
 #' @examples
-#' nsyllable("This is an example sentence.")
-#' nsyllable(tokenize("This is an example sentence.", simplify=TRUE))
-#' myTexts <- c(text1 = "Text one.", 
-#'              text2 = "Superduper text number two.", 
-#'              text3 = "One more for the road.")
-#' nsyllable(myTexts)
-#' nsyllable(tokenize(myTexts, removePunct = TRUE))
-#' nsyllable("supercalifragilisticexpialidocious")
-nsyllable <- function(x, syllable_dictionary = quanteda::data_int_syllables, ...) {
+#' # character
+#' nsyllable(c("cat", "syllable", "supercalifragilisticexpialidocious", 
+#'             "Brexit", "Administration"), use.names = TRUE)
+#' 
+#' # tokens
+#' txt <- c(doc1 = "This is an example sentence.",
+#'          doc2 = "Another of two sample sentences.")
+#' nsyllable(tokens(txt, removePunct = TRUE))
+#' # punctuation is not counted
+#' nsyllable(tokens(txt), use.names = TRUE)
+nsyllable <- function(x, syllable_dictionary = quanteda::data_int_syllables, use.names = FALSE) {
     UseMethod("nsyllable")
 }
 
 #' @rdname nsyllable
 #' @noRd
 #' @export
-nsyllable.character <- function(x, syllable_dictionary = quanteda::data_int_syllables, ...) { 
-    tokenizedwords <- tokenize(x, removePunct = TRUE, removeTwitter = TRUE, removeNumbers = TRUE, ...)
-    sapply(nsyllable(tokenizedwords, syllable_dictionary), sum)
+nsyllable.character <- function(x, syllable_dictionary = quanteda::data_int_syllables, use.names = FALSE) { 
+    # look up syllables
+    result <- syllable_dictionary[char_tolower(x)]
+    if (use.names) {
+        # replace NAs with original terms
+        names(result)[is.na(names(result))] <- x[is.na(names(result))]
+        # estimate syllables by counting vowels
+    } else {
+        result <- unname(result)
+    }
+    result[is.na(result)] <- stringi::stri_count_regex(x[is.na(result)], "[aeiouy]+")
+    result[which(result == 0)] <- NA
+    result
 }
 
 
@@ -74,22 +87,22 @@ nsyllable.character <- function(x, syllable_dictionary = quanteda::data_int_syll
 #' @examples 
 #' \dontshow{
 #' txt <- c(one = "super freakily yes",
-#'                 two = "merrily all go aerodynamic")
+#'          two = "merrily all go aerodynamic")
 #' toks <- tokenize(txt)
 #' toksh <- tokens(txt)
 #' nsyllable(toks)
 #' nsyllable(toksh)
 #' }
 #' @export
-nsyllable.tokens <- function(x, syllable_dictionary = quanteda::data_int_syllables, ...) { 
-    vocab_sylls <- nsyllable(types(x))
-    sapply(unclass(x), function(y) vocab_sylls[y])
+nsyllable.tokens <- function(x, syllable_dictionary = quanteda::data_int_syllables, use.names = FALSE) { 
+    vocab_sylls <- nsyllable(types(x), use.names = use.names)
+    lapply(unclass(x), function(y) vocab_sylls[y])
 }
 
 #' @rdname nsyllable
 #' @noRd
 #' @export
-nsyllable.tokenizedTexts <- function(x, syllable_dictionary = quanteda::data_int_syllables, ...) { 
+nsyllable.tokenizedTexts <- function(x, syllable_dictionary = quanteda::data_int_syllables, use.names = FALSE) { 
     
     # make tokenized list into a data table
     syllablesDT <- data.table(docIndex = rep(1:length(x), lengths(x)),

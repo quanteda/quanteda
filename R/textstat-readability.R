@@ -138,7 +138,7 @@ textstat_readability.character <- function(x,
 
     # get the word length and syllable info for use in computing quantities
     x <- toLower(x)
-    tokenizedWords <- tokenize(x, removePunct = TRUE, removeHyphens = removeHyphens)
+    tokenizedWords <- tokens(x, removePunct = TRUE, removeHyphens = removeHyphens)
 
     # number of syllables
     tmpSyll <- nsyllable(tokenizedWords)
