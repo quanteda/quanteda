@@ -6,7 +6,7 @@ quanteda_document_delimiter <- "###END_DOCUMENT###"
 #' @inheritParams corpus
 #' @importFrom utils object.size
 #' @export
-#' @keywords corpuszip
+#' @keywords corpuszip internal
 #' @examples
 #' # create a compressed corpus from texts
 #' corpuszip(data_char_inaugural)
@@ -99,10 +99,11 @@ corpuszip.character <- function(x, docnames = NULL, docvars = NULL, text_field =
     # build and return the corpus object
     tempCorpus <- list(texts = memCompress(x, 'gzip'),
                        documents = docvars,
-                       docnames = docnames,
                        metadata = metacorpus, 
                        settings = settings(),
                        tokens = NULL)
+    # add docnames
+    tempCorpus$docnames <- docnames
     # compute the compression %
     tempCorpus$compression_rate <- utils::object.size(tempCorpus$texts) / utils::object.size(x) * 100
     class(tempCorpus) <- list("corpuszip", "corpus", class(tempCorpus))

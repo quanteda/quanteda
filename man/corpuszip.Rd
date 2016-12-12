@@ -50,4 +50,5 @@ object.size(cop_zip)
 
 }
 \keyword{corpuszip}
+\keyword{internal}
 

@@ -7,6 +7,24 @@ txt <- c(doc1 = "This is a sample text.\nIt has three lines.\nThe third line.",
 dv <- data.frame(varnumeric = 10:13, varfactor = factor(c("A", "B", "A", "B")), varchar = letters[1:4])
 data_corpus_test <- corpus(txt, docvars = dv, metacorpus = list(source = "From test-corpuzip.R"))
 data_corpuszip_test <- corpuszip(txt, docvars = dv, metacorpus = list(source = "From test-corpuzip.R"))
+data_corpuszip_test <- corpus(txt, docvars = dv, compress = TRUE, metacorpus = list(source = "From test-corpuzip.R"))
+
+test_that("corpus(x, compress = TRUE) and corpuszip() work identically", {
+
+    # with docvars
+    sepfun <- corpuszip(txt, docvars = dv, 
+                        metacorpus = list(source = "From test-corpuzip.R",
+                                          created = "now"))
+    corefun <- corpus(txt, docvars = dv, 
+                      metacorpus = list(source = "From test-corpuzip.R",
+                                        created = "now"), compress = TRUE)
+    expect_equal(sepfun, corefun)
+    
+    # # without docvars
+    # sepfun <- corpuszip(txt, metacorpus = list(source = "From test-corpuzip.R"))
+    # corefun <- corpus(txt, metacorpus = list(source = "From test-corpuzip.R"), compress = TRUE)
+    # expect_equal(sepfun, corefun)
+})
 
 test_that("print method works for corpuszip", {
     expect_output(print(data_corpus_test), regexp = "^Corpus consisting of 4 documents and 3 docvars\\.$")
