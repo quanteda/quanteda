@@ -134,6 +134,8 @@ as.character.corpuszip <- function(x, ...) {
 "texts<-.corpuszip" <- function(x, value) { 
     temp_texts <- texts(x)
     temp_texts <- value
+    temp_texts[1 : (length(temp_texts)-1)] <- paste0(temp_texts[1 : (length(temp_texts)-1)], 
+                                                     quanteda_document_delimiter)
     x$texts <- memCompress(temp_texts, 'gzip')
     # NOTE: this will not replace named elements in docnames
     x

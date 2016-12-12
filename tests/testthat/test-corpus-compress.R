@@ -58,14 +58,14 @@ test_that("corpus_reshape works for corpus and corpuszip", {
     expect_equal(c1, c2)
 })
 
-### FAILS
 test_that("corpus_sample works for corpus and corpuszip", {
     set.seed(100)
     c1 <- corpus_sample(data_corpus_test)
     set.seed(100)
     c2 <- corpus_sample(data_corpuszip_test)
     metacorpus(c1, "created") <- metacorpus(c2, "created") <- NULL
-    # expect_equal(c1, c2)
+    expect_equal(texts(c1), texts(c2))
+    expect_equal(docvars(c1), docvars(c2))
 })
 
 ### FAILS
