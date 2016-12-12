@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>extract a subset of a corpus — corpus_subset • quanteda</title>
+<title>construct a compressed corpus object — corpuszip • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,79 +77,66 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>extract a subset of a corpus</h1>
+    <h1>construct a compressed corpus object</h1>
     </div>
 
     
-    <p>Returns subsets of a corpus that meet certain conditions, including direct 
-logical operations on docvars (document-level variables).  `corpus_subset` 
-functions identically to <code>subset.data.frame</code>, using non-standard
-evaluation to evaluate conditions based on the <a href='docvars.html'>docvars</a> in the corpus.</p>
+    <p>Construct a compressed version of a <a href='corpus.html'>corpus</a>.</p>
     
 
-    <pre><span class='fu'>corpus_subset</span>(<span class='no'>x</span>, <span class='no'>subset</span>, <span class='no'>select</span>, <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>corpuszip</span>(<span class='no'>x</span>, <span class='kw'>docnames</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>text_field</span> <span class='kw'>=</span> <span class='st'>"text"</span>,
+  <span class='kw'>metacorpus</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>corpus object to be subsetted</dd>
-      <dt>subset</dt>
-      <dd>logical expression indicating elements or rows to keep: missing
-values are taken as false</dd>
-      <dt>select</dt>
-      <dd>expression, indicating the attributes to select from the corpus</dd>
+      <dd>a valid corpus source object</dd>
+      <dt>docnames</dt>
+      <dd>Names to be assigned to the texts, defaults to the names of 
+the character vector (if any), otherwise assigns &quot;text1&quot;, &quot;text2&quot;, etc.</dd>
+      <dt>docvars</dt>
+      <dd>A data frame of attributes that is associated with each text.</dd>
+      <dt>text_field</dt>
+      <dd>the character name or integer index of the source <code>data.frame</code>
+indicating the variable to be read in as text, which must be a character vector.
+All other variables in the data.frame will be imported as docvars.  This argument 
+is only used for <code>data.frame</code> objects (including those created by <span class="pkg">readtext</span>).</dd>
+      <dt>metacorpus</dt>
+      <dd>a named list containing additional (character) information to be added to the
+corpus as corpus-level metadata.  Special fields recognized in the <code><a href='summary.character.html'>summary.corpus</a></code>
+are: 
+<ul>
+<li><code>source</code>a description of the source of the texts, used for 
+  referencing;
+</li>
+<li><code>citation</code>information on how to cite the corpus; and
+</li>
+<li><code>notes</code>any additional information about who created the text, warnings, 
+  to do lists, etc.
+</li>
+</ul>
+</dd>
       <dt>...</dt>
-      <dd>not used</dd>
+      <dd>not used directly</dd>
     </dl>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>corpus object, with a subset of documents (and docvars) selected according to arguments</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><code>subset.data.frame</code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>summary</span>(<span class='fu'>corpus_subset</span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span><span class='kw'>&gt;</span><span class='fl'>1980</span>))</div><div class='output co'>#&gt; Corpus consisting of 9 documents.
-#&gt; 
-#&gt;          Text Types Tokens Sentences Year President FirstName
-#&gt;   1981-Reagan   904   2798       128 1981    Reagan    Ronald
-#&gt;   1985-Reagan   925   2935       123 1985    Reagan    Ronald
-#&gt;     1989-Bush   795   2683       141 1989      Bush    George
-#&gt;  1993-Clinton   644   1837        81 1993   Clinton      Bill
-#&gt;  1997-Clinton   773   2451       111 1997   Clinton      Bill
-#&gt;     2001-Bush   622   1810        97 2001      Bush George W.
-#&gt;     2005-Bush   772   2325       100 2005      Bush George W.
-#&gt;    2009-Obama   939   2729       110 2009     Obama    Barack
-#&gt;    2013-Obama   814   2335        88 2013     Obama    Barack
-#&gt; 
-#&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
-#&gt; Created: Fri Sep 12 12:41:17 2014
-#&gt; Notes:   
-#&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>corpus_subset</span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span><span class='kw'>&gt;</span><span class='fl'>1930</span> <span class='kw'>&amp;</span> <span class='no'>President</span><span class='kw'>==</span><span class='st'>"Roosevelt"</span>, <span class='kw'>select</span><span class='kw'>=</span><span class='no'>Year</span>))</div><div class='output co'>#&gt; Corpus consisting of 4 documents.
-#&gt; 
-#&gt;            Text Types Tokens Sentences Year
-#&gt;  1933-Roosevelt   744   2064        85 1933
-#&gt;  1937-Roosevelt   729   2027        96 1937
-#&gt;  1941-Roosevelt   527   1552        68 1941
-#&gt;  1945-Roosevelt   276    651        26 1945
-#&gt; 
-#&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
-#&gt; Created: Fri Sep 12 12:41:17 2014
-#&gt; Notes:   
-#&gt; </div></pre>
+    <pre class="examples"><div class='input'><span class='co'># create a compressed corpus from texts</span>
+<span class='fu'>corpuszip</span>(<span class='no'>data_char_inaugural</span>)</div><div class='output co'>#&gt; Corpus consisting of 57 documents (compressed 65.8%).</div><div class='input'>
+<span class='co'># create a compressed corpus from texts and assign meta-data and document variables</span>
+<span class='no'>cop</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='no'>data_char_ukimmig2010</span>,
+              <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>party</span> <span class='kw'>=</span> <span class='fu'>names</span>(<span class='no'>data_char_ukimmig2010</span>)))
+<span class='no'>cop_zip</span> <span class='kw'>&lt;-</span> <span class='fu'>corpuszip</span>(<span class='no'>data_char_ukimmig2010</span>,
+                     <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>party</span> <span class='kw'>=</span> <span class='fu'>names</span>(<span class='no'>data_char_ukimmig2010</span>)))
+<span class='fu'>object.size</span>(<span class='no'>cop</span>)</div><div class='output co'>#&gt; 45136 bytes</div><div class='input'><span class='fu'>object.size</span>(<span class='no'>cop_zip</span>)</div><div class='output co'>#&gt; 21424 bytes</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
+            
       <li><a href="#examples">Examples</a></li>
     </ul>
 

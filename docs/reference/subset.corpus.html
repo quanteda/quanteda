@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>immigration-related sections of 2010 UK party manifestos — data_char_ukimmig2010 • quanteda</title>
+<title>deprecated name for corpus_subset — subset.corpus • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,52 +77,32 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>immigration-related sections of 2010 UK party manifestos</h1>
+    <h1>deprecated name for corpus_subset</h1>
     </div>
 
     
-    <p>Extracts from the election manifestos of 9 UK political parties from 2010, related
-to immigration or asylum-seekers.</p>
+    <p>The deprecated function name for what is now <code><a href='corpus_subset.html'>corpus_subset</a></code>. 
+Please use that instead.</p>
     
 
-    <pre><span class='no'>data_char_ukimmig2010</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>A named character vector of plain ASCII texts</p>
+    <pre><span class='co'># S3 method for corpus</span>
+<span class='fu'>subset</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <dl class="dl-horizontal">
+      <dt>x</dt>
+      <dd>corpus to be subset</dd>
+      <dt>...</dt>
+      <dd>subsetting arguments, see <code>subset.data.frame</code></dd>
+    </dl>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>data_corpus_ukimmig2010</span> <span class='kw'>&lt;-</span>
-    <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='no'>data_char_ukimmig2010</span>,
-           <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'>data.frame</span>(<span class='kw'>party</span> <span class='kw'>=</span> <span class='fu'>names</span>(<span class='no'>ukimmigTexts</span>)))
-<span class='fu'><a href='metadoc.html'>metadoc</a></span>(<span class='no'>data_corpus_ukimmig2010</span>, <span class='st'>"language"</span>) <span class='kw'>&lt;-</span> <span class='st'>"english"</span>
-<span class='fu'>summary</span>(<span class='no'>data_corpus_ukimmig2010</span>, <span class='kw'>showmeta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Corpus consisting of 9 documents.
-#&gt; 
-#&gt;          Text Types Tokens Sentences        party _language
-#&gt;           BNP  1126   3330        88          BNP   english
-#&gt;     Coalition   144    268         4    Coalition   english
-#&gt;  Conservative   252    503        15 Conservative   english
-#&gt;        Greens   325    687        21       Greens   english
-#&gt;        Labour   296    703        29       Labour   english
-#&gt;        LibDem   257    499        14       LibDem   english
-#&gt;            PC    80    118         5           PC   english
-#&gt;           SNP    90    136         4          SNP   english
-#&gt;          UKIP   346    739        27         UKIP   english
-#&gt; 
-#&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Mon Dec 12 19:32:57 2016
-#&gt; Notes:   
-#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#format">Format</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+                </ul>
 
   </div>
 </div>

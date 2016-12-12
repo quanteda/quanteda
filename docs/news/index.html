@@ -336,7 +336,8 @@
 <div id="other-new-features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#other-new-features" class="anchor"> </a>Other new features</h2>
-<ul><li>Consolidated corpus-level metadata arguments in <code><a href="../reference/corpus.html">corpus()</a></code> through the <code>metacorpus</code> list argument.<br/></li>
+<ul><li>Experimental support added for in-memory compressed corpus objects.</li>
+<li>Consolidated corpus-level metadata arguments in <code><a href="../reference/corpus.html">corpus()</a></code> through the <code>metacorpus</code> list argument.<br/></li>
 <li>Added Greek stopwords. (See #282).<br/></li>
 <li>Added index handling <code>[</code>, <code>[[</code>, and <code>$</code> for <code>tokens</code> objects.<br/></li>
 <li>Now using ggplot2.</li>
@@ -590,7 +591,7 @@ Code is also much simpler, based on using three new functions that are also avai
 <li>fixed problem in tokenize(x, “character”, removePunct = TRUE) that deleted texts that had no punctuation to begin with</li>
 <li>fixed problem in dictionary(, format = “LIWC”) causing import to fail for some LIWC dictionaries.</li>
 <li>fixed problem in tokenize(x, ngrams = N) where N &gt; length(x). Now returns NULL instead of an erroneously tokenized set of ngrams.</li>
-<li>Fixed a bug in <code>subset.corpus()</code> related to environments that sometimes caused the method to break if nested in function environments.</li>
+<li>Fixed a bug in <code><a href="../reference/subset.corpus.html">subset.corpus()</a></code> related to environments that sometimes caused the method to break if nested in function environments.</li>
 </ul></div>
 <div id="deletions" class="section level2">
 <h2 class="hasAnchor">

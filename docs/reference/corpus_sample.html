@@ -120,29 +120,29 @@ vector being sampled.</dd>
     <pre class="examples"><div class='input'><span class='co'># sampling from a corpus</span>
 <span class='fu'>summary</span>(<span class='fu'>corpus_sample</span>(<span class='no'>data_corpus_inaugural</span>, <span class='fl'>5</span>))</div><div class='output co'>#&gt; Corpus consisting of 5 documents.
 #&gt; 
-#&gt;            Text Types Tokens Sentences Year President FirstName
-#&gt;   1925-Coolidge  1221   4442       196 1925  Coolidge    Calvin
-#&gt;  1893-Cleveland   823   2135        58 1893 Cleveland    Grover
-#&gt;   1897-McKinley  1236   4383       130 1897  McKinley   William
-#&gt;   1857-Buchanan   945   3106        89 1857  Buchanan     James
-#&gt;  1801-Jefferson   716   1935        41 1801 Jefferson    Thomas
+#&gt;            Text Types Tokens Sentences Year President  FirstName
+#&gt;     1817-Monroe  1040   3696       121 1817    Monroe      James
+#&gt;       1845-Polk  1330   5211       153 1845      Polk James Knox
+#&gt;  1805-Jefferson   804   2381        45 1805 Jefferson     Thomas
+#&gt;     1917-Wilson   549   1656        59 1917    Wilson    Woodrow
+#&gt;    1997-Clinton   773   2451       111 1997   Clinton       Bill
 #&gt; 
 #&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
 #&gt; Created: Fri Sep 12 12:41:17 2014
 #&gt; Notes:   
 #&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>corpus_sample</span>(<span class='no'>data_corpus_inaugural</span>, <span class='fl'>10</span>, <span class='kw'>replace</span><span class='kw'>=</span><span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; Corpus consisting of 10 documents.
 #&gt; 
-#&gt;             Text Types Tokens Sentences Year  President  FirstName
-#&gt;     1961-Kennedy   566   1568        52 1961    Kennedy    John F.
-#&gt;   1805-Jefferson   804   2381        45 1805  Jefferson     Thomas
-#&gt;       2009-Obama   939   2729       110 2009      Obama     Barack
-#&gt;    1837-VanBuren  1315   4175        95 1837  Van Buren     Martin
-#&gt;     1829-Jackson   517   1210        25 1829    Jackson     Andrew
-#&gt;     1993-Clinton   644   1837        81 1993    Clinton       Bill
-#&gt;      1913-Wilson   661   1896        68 1913     Wilson    Woodrow
-#&gt;  1789-Washington   626   1540        23 1789 Washington     George
-#&gt;     1813-Madison   542   1304        33 1813    Madison      James
-#&gt;       1869-Grant   486   1243        40 1869      Grant Ulysses S.
+#&gt;            Text Types Tokens Sentences Year President FirstName
+#&gt;   1925-Coolidge  1221   4442       196 1925  Coolidge    Calvin
+#&gt;     1977-Carter   528   1380        52 1977    Carter     Jimmy
+#&gt;     1949-Truman   781   2531       116 1949    Truman  Harry S.
+#&gt;    1997-Clinton   773   2451       111 1997   Clinton      Bill
+#&gt;    1865-Lincoln   362    780        26 1865   Lincoln   Abraham
+#&gt;  1801-Jefferson   716   1935        41 1801 Jefferson    Thomas
+#&gt;   1901-McKinley   857   2449       100 1901  McKinley   William
+#&gt;      1797-Adams   826   2584        37 1797     Adams      John
+#&gt;   1837-VanBuren  1315   4175        95 1837 Van Buren    Martin
+#&gt;  1905-Roosevelt   404   1089        33 1905 Roosevelt  Theodore
 #&gt; 
 #&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
 #&gt; Created: Fri Sep 12 12:41:17 2014

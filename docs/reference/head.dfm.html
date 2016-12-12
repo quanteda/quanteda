@@ -113,8 +113,8 @@ will contain the first <code>ncol</code> features</dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>myDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>head</span>(<span class='no'>myDfm</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 63,079 features (96.8% sparse).
+    <pre class="examples"><div class='input'><span class='no'>myDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; &#39;Ngram generation&#39;   23.404 millsec
+#&gt; &#39;Token generation&#39;   9.57673 millsec</div><div class='input'><span class='fu'>head</span>(<span class='no'>myDfm</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 63,079 features (96.8% sparse).
 #&gt; (showing first 6 documents and first 6 features)
 #&gt;                  features
 #&gt; docs              fellow_- -_citizens citizens_of of_the the_senate senate_and

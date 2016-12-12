@@ -89,6 +89,8 @@ print(x, ...)
 
 is.corpus(x)
 
+is.corpuszip(x)
+
 # S3 method for corpus
 +(c1, c2)
 
@@ -129,6 +131,7 @@ variable; if <code>FALSE</code>, return it as a single-column data.frame.  See
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>is.corpus</code> returns <code>TRUE</code> if the object is a corpus</p>
+    <p><code>is.corpuszip</code> returns <code>TRUE</code> if the object is a compressed corpus</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -170,7 +173,7 @@ variable; if <code>FALSE</code>, return it as a single-column data.frame.  See
 #&gt;       2013-Obama   814   2335        88 2013     Obama    Barack
 #&gt; 
 #&gt; Source:  Concatenation by c.corpus()
-#&gt; Created: Tue Dec  6 22:22:57 2016
+#&gt; Created: Mon Dec 12 19:32:55 2016
 #&gt; Notes:   NULL NULL
 #&gt; </div><div class='input'>
 <span class='co'># ways to index corpus elements</span>
@@ -179,8 +182,21 @@ variable; if <code>FALSE</code>, return it as a single-column data.frame.  See
 #&gt; &quot;Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate. When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.\n\nPrevious to the execution of any official act of the President the Constitution requires an oath of office. This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.\n\n &quot; </div><div class='input'><span class='co'># access the docvars from data_corpus_irishbudget2010</span>
 <span class='no'>data_corpus_irishbudget2010</span>[, <span class='st'>"year"</span>]</div><div class='output co'>#&gt;  [1] &quot;2010&quot; &quot;2010&quot; &quot;2010&quot; &quot;2010&quot; &quot;2010&quot; &quot;2010&quot; &quot;2010&quot; &quot;2010&quot; &quot;2010&quot; &quot;2010&quot;
 #&gt; [11] &quot;2010&quot; &quot;2010&quot; &quot;2010&quot; &quot;2010&quot;</div><div class='input'><span class='co'># same</span>
-<span class='no'>data_corpus_irishbudget2010</span><span class='kw'>[[</span><span class='st'>"year"</span>]]</div><div class='output co'>#&gt;  [1] &quot;2010&quot; &quot;2010&quot; &quot;2010&quot; &quot;2010&quot; &quot;2010&quot; &quot;2010&quot; &quot;2010&quot; &quot;2010&quot; &quot;2010&quot; &quot;2010&quot;
-#&gt; [11] &quot;2010&quot; &quot;2010&quot; &quot;2010&quot; &quot;2010&quot;</div><div class='input'>
+<span class='no'>data_corpus_irishbudget2010</span><span class='kw'>[[</span><span class='st'>"year"</span>]]</div><div class='output co'>#&gt;                                       year
+#&gt; 2010_BUDGET_01_Brian_Lenihan_FF       2010
+#&gt; 2010_BUDGET_02_Richard_Bruton_FG      2010
+#&gt; 2010_BUDGET_03_Joan_Burton_LAB        2010
+#&gt; 2010_BUDGET_04_Arthur_Morgan_SF       2010
+#&gt; 2010_BUDGET_05_Brian_Cowen_FF         2010
+#&gt; 2010_BUDGET_06_Enda_Kenny_FG          2010
+#&gt; 2010_BUDGET_07_Kieran_ODonnell_FG     2010
+#&gt; 2010_BUDGET_08_Eamon_Gilmore_LAB      2010
+#&gt; 2010_BUDGET_09_Michael_Higgins_LAB    2010
+#&gt; 2010_BUDGET_10_Ruairi_Quinn_LAB       2010
+#&gt; 2010_BUDGET_11_John_Gormley_Green     2010
+#&gt; 2010_BUDGET_12_Eamon_Ryan_Green       2010
+#&gt; 2010_BUDGET_13_Ciaran_Cuffe_Green     2010
+#&gt; 2010_BUDGET_14_Caoimhghin_OCaolain_SF 2010</div><div class='input'>
 <span class='co'># create a new document variable</span>
 <span class='no'>data_corpus_irishbudget2010</span><span class='kw'>[[</span><span class='st'>"govtopp"</span>]] <span class='kw'>&lt;-</span>
     <span class='fu'>ifelse</span>(<span class='no'>data_corpus_irishbudget2010</span><span class='kw'>[[</span><span class='st'>"party"</span>]] <span class='kw'>%in%</span> <span class='fu'>c</span>(<span class='st'>"FF"</span>, <span class='st'>"Greens"</span>),
@@ -201,11 +217,11 @@ variable; if <code>FALSE</code>, return it as a single-column data.frame.  See
 #&gt; 2010_BUDGET_13_Ciaran_Cuffe_Green     2010 BUDGET     13     Ciaran    Cuffe
 #&gt; 2010_BUDGET_14_Caoimhghin_OCaolain_SF 2010 BUDGET     14 Caoimhghin OCaolain
 #&gt;                                       party    govtopp
-#&gt; 2010_BUDGET_01_Brian_Lenihan_FF          FF Government
+#&gt; 2010_BUDGET_01_Brian_Lenihan_FF          FF Opposition
 #&gt; 2010_BUDGET_02_Richard_Bruton_FG         FG Opposition
 #&gt; 2010_BUDGET_03_Joan_Burton_LAB          LAB Opposition
 #&gt; 2010_BUDGET_04_Arthur_Morgan_SF          SF Opposition
-#&gt; 2010_BUDGET_05_Brian_Cowen_FF            FF Government
+#&gt; 2010_BUDGET_05_Brian_Cowen_FF            FF Opposition
 #&gt; 2010_BUDGET_06_Enda_Kenny_FG             FG Opposition
 #&gt; 2010_BUDGET_07_Kieran_ODonnell_FG        FG Opposition
 #&gt; 2010_BUDGET_08_Eamon_Gilmore_LAB        LAB Opposition

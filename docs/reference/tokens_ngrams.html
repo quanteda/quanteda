@@ -150,7 +150,8 @@ Modelling.&quot;'>http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf<
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># ngrams</span>
-<span class='fu'>tokens_ngrams</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"a b c d e"</span>, <span class='st'>"c d e f g"</span>)), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens_ngrams</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='st'>"a b c d e"</span>, <span class='st'>"c d e f g"</span>)), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; &#39;Ngram generation&#39;   0.040626 millsec
+#&gt; &#39;Token generation&#39;   0.003614 millsec</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; Component 1 :
 #&gt; [1] &quot;a_b&quot;   &quot;b_c&quot;   &quot;c_d&quot;   &quot;d_e&quot;   &quot;a_b_c&quot; &quot;b_c_d&quot; &quot;c_d_e&quot;
 #&gt; 
@@ -158,7 +159,8 @@ Modelling.&quot;'>http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf<
 #&gt; [1] &quot;c_d&quot;   &quot;d_e&quot;   &quot;e_f&quot;   &quot;f_g&quot;   &quot;c_d_e&quot; &quot;d_e_f&quot; &quot;e_f_g&quot;
 #&gt; </div><div class='input'>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='kw'>text1</span> <span class='kw'>=</span> <span class='st'>"the quick brown fox jumped over the lazy dog"</span>))
-<span class='fu'>tokens_ngrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='fu'>tokens_ngrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; &#39;Ngram generation&#39;   0.02307 millsec
+#&gt; &#39;Token generation&#39;   0.004291 millsec</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
 #&gt;  [1] &quot;the&quot;              &quot;quick&quot;            &quot;brown&quot;            &quot;fox&quot;             
 #&gt;  [5] &quot;jumped&quot;           &quot;over&quot;             &quot;the&quot;              &quot;lazy&quot;            
@@ -166,14 +168,16 @@ Modelling.&quot;'>http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf<
 #&gt; [13] &quot;fox_jumped&quot;       &quot;jumped_over&quot;      &quot;over_the&quot;         &quot;the_lazy&quot;        
 #&gt; [17] &quot;lazy_dog&quot;         &quot;the_quick_brown&quot;  &quot;quick_brown_fox&quot;  &quot;brown_fox_jumped&quot;
 #&gt; [21] &quot;fox_jumped_over&quot;  &quot;jumped_over_the&quot;  &quot;over_the_lazy&quot;    &quot;the_lazy_dog&quot;    
-#&gt; </div><div class='input'><span class='fu'>tokens_ngrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>4</span>), <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens_ngrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>4</span>), <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; &#39;Ngram generation&#39;   0.017126 millsec
+#&gt; &#39;Token generation&#39;   0.003718 millsec</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
 #&gt;  [1] &quot;the quick&quot;              &quot;quick brown&quot;            &quot;brown fox&quot;             
 #&gt;  [4] &quot;fox jumped&quot;             &quot;jumped over&quot;            &quot;over the&quot;              
 #&gt;  [7] &quot;the lazy&quot;               &quot;lazy dog&quot;               &quot;the quick brown fox&quot;   
 #&gt; [10] &quot;quick brown fox jumped&quot; &quot;brown fox jumped over&quot;  &quot;fox jumped over the&quot;   
 #&gt; [13] &quot;jumped over the lazy&quot;   &quot;over the lazy dog&quot;     
-#&gt; </div><div class='input'><span class='fu'>tokens_ngrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>4</span>), <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens_ngrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>4</span>), <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; &#39;Ngram generation&#39;   0.016655 millsec
+#&gt; &#39;Token generation&#39;   0.003223 millsec</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; text1 :
 #&gt;  [1] &quot;the brown&quot;            &quot;quick fox&quot;            &quot;brown jumped&quot;        
 #&gt;  [4] &quot;fox over&quot;             &quot;jumped the&quot;           &quot;over lazy&quot;           
@@ -182,17 +186,20 @@ Modelling.&quot;'>http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf<
 #&gt; </div><div class='input'>
 <span class='co'># skipgrams</span>
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"insurgents killed in ongoing fighting"</span>)
-<span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>1</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+<span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>1</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; &#39;Ngram generation&#39;   0.010993 millsec
+#&gt; &#39;Token generation&#39;   0.00244 millsec</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
 #&gt; [1] &quot;insurgents killed&quot; &quot;insurgents in&quot;     &quot;killed in&quot;        
 #&gt; [4] &quot;killed ongoing&quot;    &quot;in ongoing&quot;        &quot;in fighting&quot;      
 #&gt; [7] &quot;ongoing fighting&quot; 
-#&gt; </div><div class='input'><span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; &#39;Ngram generation&#39;   0.010792 millsec
+#&gt; &#39;Token generation&#39;   0.002956 millsec</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
 #&gt; [1] &quot;insurgents killed&quot;  &quot;insurgents in&quot;      &quot;insurgents ongoing&quot;
 #&gt; [4] &quot;killed in&quot;          &quot;killed ongoing&quot;     &quot;killed fighting&quot;   
 #&gt; [7] &quot;in ongoing&quot;         &quot;in fighting&quot;        &quot;ongoing fighting&quot;  
-#&gt; </div><div class='input'><span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokens from 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens_skipgrams</span>(<span class='no'>toks</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; &#39;Ngram generation&#39;   0.012268 millsec
+#&gt; &#39;Token generation&#39;   0.00398 millsec</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
 #&gt;  [1] &quot;insurgents killed in&quot;        &quot;insurgents killed ongoing&quot;  
 #&gt;  [3] &quot;insurgents killed fighting&quot;  &quot;insurgents in ongoing&quot;      
