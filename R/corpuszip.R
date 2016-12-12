@@ -139,33 +139,25 @@ as.character.corpuszip <- function(x, ...) {
     x
 }
 
-# #' @noRd
-# #' @export
-# docvars.corpuszip <- function(x, field = NULL) {
-#     if (is.null(field))
-#         return(x$docvars)
-#     if (!(field %in% names(x$docvars)))
-#         return(NULL)
-#     return(x$docvars[, field, drop=TRUE])
-# }
-# 
-# #' @noRd
-# #' @export
-# "docvars<-.corpuszip" <- function(x, field = NULL, value) {
-#     if ("texts" %in% field) stop("You should use texts() instead to replace the corpus texts.")
-#     if (is.null(field)) {
-#         field <- names(value)
-#         if (is.null(field))
-#             field <- paste("docvar", 1:ncol(as.data.frame(value)), sep="")
-#     }
-#     x$docvars[field] <- value
-#     return(x)
-# }
-
 #' @export
 #' @noRd
 docnames.corpuszip <- function(x) {
     x$docnames
+}
+
+#' coerce a compressed corpus to a standard corpus
+#' 
+#' Recast a compressed corpus object into a standard (uncompressed) corpus object.
+#' @param x a compressed \link{corpus} object
+#' @export
+as.corpus <- function(x) {
+    UseMethod("as.corpus")
+}
+
+#' @rdname as.corpus
+#' @export
+as.corpus.corpuszip <- function(x) {
+    corpus(texts(x), docvars = docvars(x), metacorpus = metacorpus(x))
 }
 
 
