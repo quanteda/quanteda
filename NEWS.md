@@ -109,7 +109,8 @@ new name | reason
 
 ## Other new features
 
-*  Experimental support added for in-memory compressed corpus objects.
+*  Added support for batch hashing of tokens through `tokens()`, for more memory-efficient token hashing when dealing with very large numbers of documents.  
+*  Added support for in-memory compressed corpus objects.
 *  Consolidated corpus-level metadata arguments in `corpus()` through the `metacorpus` list argument.  
 *  Added Greek stopwords.  (See #282).  
 *  Added index handling `[`, `[[`, and `$` for `tokens` objects.  
