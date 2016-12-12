@@ -2,7 +2,7 @@ context('test compressed corpus.R')
 
 txt <- c(doc1 = "This is a sample text.\nIt has three lines.\nThe third line.",
          doc2 = "one\ntwo\tpart two\nthree\nfour.",
-         doc3 = "A single sentence with an 😊 emoji.",
+         doc3 = "A single sentence formerly with an moji.",
          doc4 = "A sentence with \"escaped quotes\".")
 dv <- data.frame(varnumeric = 10:13, varfactor = factor(c("A", "B", "A", "B")), varchar = letters[1:4])
 data_corpus_test <- corpus(txt, docvars = dv, metacorpus = list(source = "From test-corpuzip.R"))
@@ -28,12 +28,12 @@ test_that("corpus(x, compress = TRUE) and corpuszip() work identically", {
 
 test_that("print method works for corpuszip", {
     expect_output(print(data_corpus_test), regexp = "^Corpus consisting of 4 documents and 3 docvars\\.$")
-    expect_output(print(data_corpuszip_test), regexp = "^Corpus consisting of 4 documents and 3 docvars \\(compressed 61.5%\\)\\.$")
+    expect_output(print(data_corpuszip_test), regexp = "^Corpus consisting of 4 documents and 3 docvars \\(compressed")
 })
 
 test_that("summary method works for corpuszip", {
     expect_output(summary(data_corpus_test), regexp = "^Corpus consisting of 4 documents\\.")
-    expect_output(summary(data_corpuszip_test), regexp = "^Corpus consisting of 4 documents \\(compressed 61.5%\\)\\.")
+    expect_output(summary(data_corpuszip_test), regexp = "^Corpus consisting of 4 documents \\(compressed")
 })
 
 test_that("is.corpus methods work", {
@@ -74,10 +74,9 @@ test_that("texts<- works with corpuszip", {
     expect_equivalent(texts(data_corpus_test)[2], "REPLACEMENT TEXT.")
     expect_equivalent(texts(data_corpus_test)[1], "This is a sample text.\nIt has three lines.\nThe third line.")
 
-    #### FAILS
-    # texts(data_corpuszip_test)[c(2,4)] <- "REPLACEMENT TEXT."
-    # expect_equivalent(texts(data_corpuszip_test)[2], "REPLACEMENT TEXT.")
-    # expect_equivalent(texts(data_corpuszip_test)[1], "This is a sample text.\nIt has three lines.\nThe third line.")
+    texts(data_corpuszip_test)[c(2,4)] <- "REPLACEMENT TEXT."
+    expect_equivalent(texts(data_corpuszip_test)[2], "REPLACEMENT TEXT.")
+    expect_equivalent(texts(data_corpuszip_test)[1], "This is a sample text.\nIt has three lines.\nThe third line.")
 })
 
 

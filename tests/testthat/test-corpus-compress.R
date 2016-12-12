@@ -2,7 +2,7 @@ context('test compressed corpus option.R')
 
 txt <- c(doc1 = "This is a sample text.\nIt has three lines.\nThe third line.",
          doc2 = "one\ntwo\tpart two\nthree\nfour.",
-         doc3 = "A single sentence with an 😊 emoji.",
+         doc3 = "A single sentence formerly with anemoji.",
          doc4 = "A sentence with \"escaped quotes\".")
 dv <- data.frame(varnumeric = 10:13, varfactor = factor(c("A", "B", "A", "B")), varchar = letters[1:4])
 data_corpus_test    <- corpus(txt, docvars = dv, metacorpus = list(source = "From test-corpuzip.R"))
@@ -14,12 +14,12 @@ test_that("as.corpus.corpuszip works", {
 
 test_that("print method works for corpuszip", {
     expect_output(print(data_corpus_test), regexp = "^Corpus consisting of 4 documents and 3 docvars\\.$")
-    expect_output(print(data_corpuszip_test), regexp = "^Corpus consisting of 4 documents and 3 docvars \\(compressed 61.5%\\)\\.$")
+    expect_output(print(data_corpuszip_test), regexp = "^Corpus consisting of 4 documents and 3 docvars \\(compressed")
 })
 
 test_that("summary method works for corpuszip", {
     expect_output(summary(data_corpus_test), regexp = "^Corpus consisting of 4 documents\\.")
-    expect_output(summary(data_corpuszip_test), regexp = "^Corpus consisting of 4 documents \\(compressed 61.5%\\)\\.")
+    expect_output(summary(data_corpuszip_test), regexp = "^Corpus consisting of 4 documents \\(compressed")
 })
 
 test_that("is.corpus methods work", {
@@ -68,7 +68,7 @@ test_that("corpus_sample works for corpus and corpuszip", {
     expect_equal(docvars(c1), docvars(c2))
 })
 
-t# test_that("corpus_segment works for corpus and corpuszip", {
+# test_that("corpus_segment works for corpus and corpuszip", {
 #     c1 <- corpus_segment(data_corpus_test, "sentences")
 #     c2 <- corpus_segment(data_corpuszip_test, "sentences")
 #     metacorpus(c1, "created") <- metacorpus(c2, "created") <- NULL
