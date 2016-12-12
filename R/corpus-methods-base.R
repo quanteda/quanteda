@@ -140,7 +140,7 @@ summary.corpus <- function(object, n = 100, verbose = TRUE, showmeta = FALSE, to
     
     row.names <- c(rownames(c1$documents), rownames(c2$documents))
     c1$documents <- data.frame(
-        data.table::rbindlist(list(c1$documents, c2$documents), use.names=T, fill=T)
+        data.table::rbindlist(list(c1$documents, c2$documents), use.names = TRUE, fill = TRUE)
     )
     #  Put rownames back in because the hadleyverse discards them
     rownames(c1$documents) <- make.unique(row.names, sep='')
@@ -148,6 +148,14 @@ summary.corpus <- function(object, n = 100, verbose = TRUE, showmeta = FALSE, to
     # settings
     ### currently just use the c1 settings
     
+    # special handling for docnames if item is corpuszip
+    if (is.corpuszip(c1)) {
+        x <- c(texts(c1), texts(c2))
+        x[1 : (length(x)-1)] <- paste0(x[1 : (length(x)-1)], quanteda_document_delimiter)
+        c1$texts <- memCompress(x, 'gzip')
+        c1$docnames <- rownames(c1$documents)
+    }
+
     return(c1)
 }
 
@@ -213,9 +221,7 @@ c.corpus <- function(..., recursive = FALSE) {
 `[[.corpus` <- function(x, i, ...) {
     if (is.null(docvars(x)))
         stop("cannot index docvars this way because none exist")
-    #x$documents <- x$documents[-1]  # remove texts
-    #x$documents[[i, ...]]
-    docvars(x)[i, ...]
+    x$documents[i, ...]
 }
 
 #' @export
@@ -223,7 +229,7 @@ c.corpus <- function(..., recursive = FALSE) {
 #' @method [[<- corpus
 #' @rdname corpus-class
 `[[<-.corpus` <- function(x, i, value) {
-    x$documents[[i]] <- value
+    x$documents[i] <- value
     x
 }
 

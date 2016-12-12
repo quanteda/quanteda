@@ -38,6 +38,11 @@ corpus_subset <- function(x, subset, select, ...) {
         c(1, eval(substitute(select), nl, parent.frame()))
     }
     documents(x) <- documents(x)[r, vars, drop = FALSE]
+    
+    if (is.corpuszip(x)) {
+        texts(x) <- texts(x)[r]
+    }
+    
     x
 }
 
