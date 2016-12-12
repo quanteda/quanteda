@@ -93,6 +93,22 @@ corpus_segment <- function(x, what = c("tokens", "sentences", "paragraphs", "tag
                            perl=FALSE,
                            keepdocvars = TRUE, 
                            ...) {
+    UseMethod("corpus_segment")
+}
+
+#' @noRd
+#' @rdname corpus_segment
+#' @export    
+corpus_segment.corpus <- function(x, what = c("tokens", "sentences", "paragraphs", "tags", "other"), 
+                           delimiter = ifelse(what=="tokens", " ", 
+                                              ifelse(what=="sentences", "[.!?:;]", 
+                                                     ifelse(what=="paragraphs", "\\n{2}", 
+                                                            ifelse(what=="tags", "##\\w+\\b", 
+                                                                   NULL)))),
+                           valuetype = c("regex", "fixed", "glob"),
+                           perl=FALSE,
+                           keepdocvars = TRUE, 
+                           ...) {
     if (!is.corpus(x))
         stop("x must be a corpus object")
     

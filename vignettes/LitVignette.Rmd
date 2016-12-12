@@ -202,7 +202,7 @@ Splitting the text into chapters means that we will have a collection of documen
 
 ```{r}
 head(kwic(novel.v, 'chapter'))
-chaptersVec <-unlist(char_segment(novel.v, what = 'other', delimiter = "CHAPTER\\s\\d", perl = TRUE))
+chaptersVec <- unlist(char_segment(novel.v, what = 'other', delimiter = "CHAPTER\\s\\d", perl = TRUE))
 chaptersLowerVec <- toLower(chaptersVec)
 chaptersCorp <- corpus(chaptersVec)
 ```
