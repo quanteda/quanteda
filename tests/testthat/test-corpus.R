@@ -105,10 +105,10 @@ test_that("test corpus constructors works for data.frame", {
                        stringsAsFactors = FALSE,
                        row.names = paste0("fromDf_", 1:6))
     mycorp <- corpus(mydf, text_field = "some_text", 
-                     meatacorpus = list(source = "From a data.frame called mydf."))
+                     metacorpus = list(source = "From a data.frame called mydf."))
     expect_equal(docnames(mycorp), 
                  paste("fromDf", 1:6, sep = "_"))
-    expect_equal(mycorp[["letter_factor"]][3],
+    expect_equal(mycorp[["letter_factor"]][3,1],
                  factor("b", levels = c("a", "b", "c")))
     
     mydf2 <- mydf
@@ -135,4 +135,35 @@ if ("tm" %in% rownames(installed.packages())) {
     })
     
 }
+
+test_that("corpus_subset works", {
+    txt <- c(doc1 = "This is a sample text.\nIt has three lines.\nThe third line.",
+             doc2 = "one\ntwo\tpart two\nthree\nfour.",
+             doc3 = "A single sentence.",
+             doc4 = "A sentence with \"escaped quotes\".")
+    dv <- data.frame(varnumeric = 10:13, varfactor = factor(c("A", "B", "A", "B")), varchar = letters[1:4])
+
+    data_corpus_test    <- corpus(txt, docvars = dv, metacorpus = list(source = "From test-corpus.R"))
+    expect_equal(ndoc(corpus_subset(data_corpus_test, varfactor == "B")), 2)
+    expect_equal(docnames(corpus_subset(data_corpus_test, varfactor == "B")), c("doc2", "doc4"))
     
+    data_corpus_test_nodv  <- corpus(txt, metacorpus = list(source = "From test-corpus.R"))
+    expect_equal(ndoc(corpus_subset(data_corpus_test_nodv, LETTERS[1:4] == "B")), 1)
+    expect_equal(docnames(corpus_subset(data_corpus_test_nodv, LETTERS[1:4] == "B")), c("doc2"))
+
+})
+    
+test_that("corpus_segment works", {
+    txt <- c(doc1 = "This is a sample text.\nIt has three lines.\nThe third line.",
+             doc2 = "one\ntwo\tpart two\nthree\nfour.",
+             doc3 = "A single sentence.",
+             doc4 = "A sentence with \"escaped quotes\".")
+    dv <- data.frame(varnumeric = 10:13, varfactor = factor(c("A", "B", "A", "B")), varchar = letters[1:4])
+    
+    data_corpus_test_nodv  <- corpus(txt, metacorpus = list(source = "From test-corpus.R"))
+    expect_equal(ndoc(corpus_segment(data_corpus_test_nodv, "sentences")), 6)
+    
+    data_corpus_test <- corpus(txt, docvars = dv, metacorpus = list(source = "From test-corpus.R"))
+    expect_equal(ndoc(corpus_segment(data_corpus_test, "sentences")), 6)
+})
+

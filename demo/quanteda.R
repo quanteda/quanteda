@@ -1,5 +1,5 @@
 
-# a demonstration of the capabilities of quanteda
+# a demonstration of the capabilities of quanteda 
 
 str(data_char_ukimmig2010)
 # create a corpus from immigration texts
@@ -63,7 +63,7 @@ summary(inaugCorpus)
 presDfm <- dfm(inaugCorpus)
 presDfm
 docnames(presDfm)
-# concatenate by president name                 
+# concatenate by president name
 presDfm <- dfm(inaugCorpus, groups="President")
 presDfm
 docnames(presDfm)
@@ -97,7 +97,7 @@ p <- ggplot(data = docvars(SOTUCorpus), aes(x = year, y = fk)) + #, group = deli
     geom_point(aes(colour = party)) +
     scale_colour_manual(values = partyColours) +
     geom_line(aes(), alpha=0.3, size = 1) +
-    ggtitle("Text Complexity in State of the Union Addresses") + 
+    ggtitle("Text Complexity in State of the Union Addresses") +
     theme(plot.title = element_text(lineheight=.8, face="bold"))
 quartz(height=7, width=12)
 print(p)

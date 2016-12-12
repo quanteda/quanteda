@@ -5,7 +5,7 @@
 \title{construct a corpus object}
 \usage{
 corpus(x, docnames = NULL, docvars = NULL, text_field = "text",
-  metacorpus = NULL, ...)
+  metacorpus = NULL, compress = FALSE, ...)
 }
 \arguments{
 \item{x}{a valid corpus source object}
@@ -30,6 +30,10 @@ are:
 \item{\code{notes}}{any additional information about who created the text, warnings, 
   to do lists, etc.}
 }}
+
+\item{compress}{logical; if \code{TRUE}, compress the texts in memory using gzip compression.
+This significantly reduces the size of the corpus in memory, but will slow down operations that
+require the texts to be extracted.}
 
 \item{...}{not used directly}
 }

@@ -32,6 +32,9 @@
 #' \item{\code{notes}}{any additional information about who created the text, warnings, 
 #'   to do lists, etc.}
 #' }
+#' @param compress logical; if \code{TRUE}, compress the texts in memory using gzip compression.
+#' This significantly reduces the size of the corpus in memory, but will slow down operations that
+#' require the texts to be extracted.
 #' @param ... not used directly
 #' @return a corpus class object containing the original texts, document-level 
 #'   variables, document-level metadata, corpus-level metadata, and default 
@@ -99,14 +102,14 @@
 #' # construct a corpus from a kwic object
 #' mykwic <- kwic(data_corpus_inaugural, "southern")
 #' summary(corpus(mykwic))
-corpus <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, ...) {
+corpus <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, compress = FALSE, ...) {
     UseMethod("corpus")
 }
 
 #' @rdname corpus
 #' @noRd
 #' @export
-corpus.character <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, ...) {
+corpus.character <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, compress = FALSE, ...) {
     if (!missing(text_field))
         stop("text_field is not applicable for this class of input")
     
@@ -142,9 +145,11 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, text_field = "t
     }
     metacorpus$created <- date()
 
-    # create the documents data frame starting with the texts
-    documents <- data.frame(texts=x, row.names=names(x),
-                            check.rows=TRUE, stringsAsFactors=FALSE)
+    # create the documents data frame starting with the texts, using an empty field
+    # this saves space if it needs to be separated later
+    documents <- data.frame(texts = rep(NA, length(x)), 
+                            row.names = names(x),
+                            check.rows = TRUE, stringsAsFactors = FALSE)
 
     # user-supplied document-level variables (one kind of meta-data)
     if (!is.null(docvars)) {
@@ -152,14 +157,43 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, text_field = "t
             stopifnot(nrow(docvars)==length(x))
             documents <- cbind(documents, docvars)
         } 
+    } else {
     }
     
+    # initialize results corpus
+    tempCorpus <- list()
+    
+    ## compress and separate texts if compress == TRUE
+    # paste delimiters into object to be compressed
+    if (compress) {
+        x[1 : (length(x)-1)] <- paste0(x[1 : (length(x)-1)], quanteda_document_delimiter)
+        # compress texts
+        texts <- memCompress(x, 'gzip')
+        # remove texts from documents
+        documents$texts <- NULL
+        tempCorpus <- c(tempCorpus, list(texts = memCompress(x, "gzip")))
+    } else {
+        # otherwise replace NA placeholder with the actual text
+        documents$texts <- x
+    }
+
     # build and return the corpus object
-    tempCorpus <- list(documents = documents, 
-                       metadata = metacorpus, 
-                       settings = settings(),
-                       tokens = NULL)
-    class(tempCorpus) <- list("corpus", class(tempCorpus))
+    tempCorpus <- c(tempCorpus, list(documents = documents, 
+                                     metadata = metacorpus, 
+                                     settings = settings(),
+                                     tokens = NULL))
+                    
+    ## add some elements if compress
+    if (compress) {
+        tempCorpus$docnames <- names(x)
+        # compute the compression %
+        tempCorpus$compression_rate <- utils::object.size(tempCorpus$texts) / utils::object.size(unname(x)) * 100
+    }
+    
+    class(tempCorpus) <- c("corpus", class(tempCorpus))
+    if (compress) {
+        class(tempCorpus) <- c("corpuszip", class(tempCorpus))
+    }
     return(tempCorpus)
 }
 
@@ -167,7 +201,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, text_field = "t
 #' @noRd
 #' @keywords corpus
 #' @export
-corpus.data.frame <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, ...) {
+corpus.data.frame <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, compress = FALSE, ...) {
     
     args <- list(...)
     if (!missing(docvars))
@@ -185,7 +219,7 @@ corpus.data.frame <- function(x, docnames = NULL, docvars = NULL, text_field = "
     corpus(x[, text_fieldi], 
            docvars = x[, -text_fieldi, drop = FALSE],
            docnames = if (!identical(row.names(x), as.character(1:nrow(x)))) row.names(x) else NULL, #paste0("text", 1:nrow(x)),
-           metacorpus = metacorpus, ...)
+           metacorpus = metacorpus, compress = compress, ...)
 }
 
 
@@ -193,7 +227,10 @@ corpus.data.frame <- function(x, docnames = NULL, docvars = NULL, text_field = "
 #' @noRd
 #' @keywords corpus
 #' @export
-corpus.kwic <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, ...) {
+corpus.kwic <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, compress = FALSE, ...) {
+    
+    if (compress)
+        warning("compress not yet implemented for corpus.kwic")
     
     if (!missing(docvars))
         stop("docvars are assigned automatically for kwic objects")
@@ -222,7 +259,7 @@ corpus.kwic <- function(x, docnames = NULL, docvars = NULL, text_field = "text",
 #' @noRd
 #' @keywords corpus
 #' @export
-corpus.VCorpus <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, ...) {
+corpus.VCorpus <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, compress = FALSE, ...) {
     
     if (!missing(docvars))
         stop("docvars are assigned automatically for tm::Corpus objects")
@@ -250,7 +287,7 @@ corpus.VCorpus <- function(x, docnames = NULL, docvars = NULL, text_field = "tex
     
     # using docvars inappropriately here but they show up as docmeta given 
     # the _ in the variable names
-    corpus(texts, docvars = metad, metacorpus = metacorpus, ...)
+    corpus(texts, docvars = metad, metacorpus = metacorpus, compress = compress, ...)
 }
 
 
