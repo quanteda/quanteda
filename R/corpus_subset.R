@@ -44,10 +44,11 @@ corpus_subset.corpus <- function(x, subset, select, ...) {
         names(nl) <- names(documents(x))
         c(1, eval(substitute(select), nl, parent.frame()))
     }
-    documents(x) <- documents(x)[r, vars, drop = FALSE]
     
+    documents(x) <- documents(x)[r, vars, drop = FALSE]
     if (is.corpuszip(x)) {
         texts(x) <- texts(x)[r]
+        x$docnames <- rownames(documents(x))
     }
     
     x

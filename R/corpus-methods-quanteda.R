@@ -332,6 +332,12 @@ docnames.corpus <- function(x) {
 #' 
 #' @rdname docnames
 "docnames<-" <- function(x, value) {
+    UseMethod("docnames<-")
+}
+
+#' @noRd
+#' @export
+"docnames<-.corpus" <- function(x, value) {
     if (!is.corpus(x))
         stop("docnames<-  only valid for corpus objects.")
     rownames(x$documents) <- value

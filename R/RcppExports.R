@@ -9,20 +9,16 @@ fcm_hash_cpp <- function(texts, n_types, count, window, weights, ordered, tri, n
     .Call('quanteda_fcm_hash_cpp', PACKAGE = 'quanteda', texts, n_types, count, window, weights, ordered, tri, nvec)
 }
 
-skipgramcpp <- function(tokens, ns, ks, delim) {
-    .Call('quanteda_skipgramcpp', PACKAGE = 'quanteda', tokens, ns, ks, delim)
-}
-
 qatd_cpp_ngram_mt_list <- function(texts_, types_, delim_, ns_, skips_) {
     .Call('quanteda_qatd_cpp_ngram_mt_list', PACKAGE = 'quanteda', texts_, types_, delim_, ns_, skips_)
 }
 
-find_sequence_cppl <- function(texts, types, count_min, smooth, nested) {
-    .Call('quanteda_find_sequence_cppl', PACKAGE = 'quanteda', texts, types, count_min, smooth, nested)
+skipgramcpp <- function(tokens, ns, ks, delim) {
+    .Call('quanteda_skipgramcpp', PACKAGE = 'quanteda', tokens, ns, ks, delim)
 }
 
-qatd_cpp_unhash <- function(tokens_int, types) {
-    .Call('quanteda_qatd_cpp_unhash', PACKAGE = 'quanteda', tokens_int, types)
+find_sequence_cppl <- function(texts, types, count_min, smooth, nested) {
+    .Call('quanteda_find_sequence_cppl', PACKAGE = 'quanteda', texts, types, count_min, smooth, nested)
 }
 
 qatd_cpp_replace_int_list <- function(texts_, seqs, ids, id_start) {
@@ -35,6 +31,10 @@ select_tokens_cppl <- function(texts, flags, types, remove, spacer) {
 
 qatd_cpp_lookup_int_list <- function(texts_, texts_loc_, keys, id) {
     .Call('quanteda_qatd_cpp_lookup_int_list', PACKAGE = 'quanteda', texts_, texts_loc_, keys, id)
+}
+
+qatd_cpp_unhash <- function(tokens_int, types) {
+    .Call('quanteda_qatd_cpp_unhash', PACKAGE = 'quanteda', tokens_int, types)
 }
 
 qatd_cpp_deepcopy <- function(x_) {

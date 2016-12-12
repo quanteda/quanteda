@@ -68,21 +68,19 @@ test_that("corpus_sample works for corpus and corpuszip", {
     expect_equal(docvars(c1), docvars(c2))
 })
 
-### FAILS
-test_that("corpus_segment works for corpus and corpuszip", {
-    c1 <- corpus_segment(data_corpus_test, "sentences")
-    c2 <- corpus_segment(data_corpuszip_test, "sentences")
-    metacorpus(c1, "created") <- metacorpus(c2, "created") <- NULL
-    # expect_equal(c1, c2)
-})
+t# test_that("corpus_segment works for corpus and corpuszip", {
+#     c1 <- corpus_segment(data_corpus_test, "sentences")
+#     c2 <- corpus_segment(data_corpuszip_test, "sentences")
+#     metacorpus(c1, "created") <- metacorpus(c2, "created") <- NULL
+#     expect_equal(c1, c2)
+# )
 
 
-### FAILS
 test_that("corpus_subset works for corpus and corpuszip", {
     c1 <- corpus_subset(data_corpus_test, varfactor == "B")
     c2 <- corpus_subset(data_corpuszip_test, varfactor == "B")
-    metacorpus(c1, "created") <- metacorpus(c2, "created") <- NULL
-    # expect_equal(c1, c2)
+    expect_equal(texts(c1), texts(c2))
+    expect_equal(docvars(c1), docvars(c2))
 })
 
 

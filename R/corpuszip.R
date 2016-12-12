@@ -147,6 +147,16 @@ docnames.corpuszip <- function(x) {
     x$docnames
 }
 
+#' @export
+#' @noRd
+"docnames<-.corpuszip" <- function(x, value) {
+    if (!is.corpus(x))
+        stop("docnames<-  only valid for corpus objects.")
+    rownames(x$documents) <- x$docnames <- value
+    return(x)
+}
+
+
 #' coerce a compressed corpus to a standard corpus
 #' 
 #' Recast a compressed corpus object into a standard (uncompressed) corpus object.
