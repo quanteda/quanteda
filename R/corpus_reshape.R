@@ -29,6 +29,13 @@
 #' ## \n to mark the end of a paragraph.
 #' @export
 corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"), ...) {
+    UseMethod("corpus_reshape")
+}
+    
+#' @noRd
+#' @rdname corpus_reshape
+#' @export
+corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "documents"), ...) {
     
     if (as.character(match.call()[[1]]) == "changeunits")
         .Deprecated("corpus_reshape")
@@ -68,9 +75,13 @@ corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"), ..
 #' 
 #' The deprecated function name for what is now \code{\link{corpus_reshape}}. 
 #' Please use that instead.
-#' @keywords internal
+#' @param ... all arguments
+#' @keywords internal deprecated
 #' @export
-changeunits <- corpus_reshape
+changeunits <- function(...) {
+    .Deprecated("corpus_reshape")
+    UseMethod("corpus_reshape")
+}
 
 
 # helper function: rep method for a repeat a data.frame

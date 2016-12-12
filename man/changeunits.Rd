@@ -4,11 +4,15 @@
 \alias{changeunits}
 \title{deprecated name for corpus_reshape}
 \usage{
-changeunits(x, to = c("sentences", "paragraphs", "documents"), ...)
+changeunits(...)
+}
+\arguments{
+\item{...}{all arguments}
 }
 \description{
 The deprecated function name for what is now \code{\link{corpus_reshape}}. 
 Please use that instead.
 }
+\keyword{deprecated}
 \keyword{internal}
 
