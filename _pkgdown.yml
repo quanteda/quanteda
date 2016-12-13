@@ -26,6 +26,7 @@ reference:
     - metadoc
     - texts
     - as.character.corpus
+    - as.corpus.corpuszip
 - title: Tokens functions
   desc: Functions for constructing and manipulating tokens class objects.
   contents:

@@ -162,11 +162,16 @@ docnames.corpuszip <- function(x) {
 #' Recast a compressed corpus object into a standard (uncompressed) corpus object.
 #' @param x a compressed \link{corpus} object
 #' @export
+#' @keywords internal
 as.corpus <- function(x) {
     UseMethod("as.corpus")
 }
 
-#' @rdname as.corpus
+#' coerce a compressed corpus to a standard corpus
+#' 
+#' Recast a compressed corpus object into a standard (uncompressed) corpus object.
+#' @param x a compressed \link{corpus} object
+#' @method as.corpus corpuszip
 #' @export
 as.corpus.corpuszip <- function(x) {
     corpus(texts(x), docvars = docvars(x), metacorpus = metacorpus(x))
