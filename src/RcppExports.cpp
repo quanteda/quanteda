@@ -6,6 +6,56 @@
 
 using namespace Rcpp;
 
+// qatd_ManhattanPara_cpp
+NumericMatrix qatd_ManhattanPara_cpp(const arma::sp_mat& A, const int margin);
+RcppExport SEXP quanteda_qatd_ManhattanPara_cpp(SEXP ASEXP, SEXP marginSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type A(ASEXP);
+    Rcpp::traits::input_parameter< const int >::type margin(marginSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_ManhattanPara_cpp(A, margin));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_ManhattanPara_cpp2
+NumericMatrix qatd_ManhattanPara_cpp2(const arma::sp_mat& A, const arma::sp_mat& B, const int margin);
+RcppExport SEXP quanteda_qatd_ManhattanPara_cpp2(SEXP ASEXP, SEXP BSEXP, SEXP marginSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type A(ASEXP);
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type B(BSEXP);
+    Rcpp::traits::input_parameter< const int >::type margin(marginSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_ManhattanPara_cpp2(A, B, margin));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_MaximumPara_cpp
+NumericMatrix qatd_MaximumPara_cpp(const arma::sp_mat& A, const int margin);
+RcppExport SEXP quanteda_qatd_MaximumPara_cpp(SEXP ASEXP, SEXP marginSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type A(ASEXP);
+    Rcpp::traits::input_parameter< const int >::type margin(marginSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_MaximumPara_cpp(A, margin));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_MaximumPara_cpp2
+NumericMatrix qatd_MaximumPara_cpp2(const arma::sp_mat& A, const arma::sp_mat& B, const int margin);
+RcppExport SEXP quanteda_qatd_MaximumPara_cpp2(SEXP ASEXP, SEXP BSEXP, SEXP marginSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type A(ASEXP);
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type B(BSEXP);
+    Rcpp::traits::input_parameter< const int >::type margin(marginSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_MaximumPara_cpp2(A, B, margin));
+    return rcpp_result_gen;
+END_RCPP
+}
 // fcm_cpp
 arma::sp_mat fcm_cpp(Rcpp::List& texts, const CharacterVector& types, const String& count, const int& window, const NumericVector& weights, const bool& ordered, const bool& tri, const int& nvec);
 RcppExport SEXP quanteda_fcm_cpp(SEXP textsSEXP, SEXP typesSEXP, SEXP countSEXP, SEXP windowSEXP, SEXP weightsSEXP, SEXP orderedSEXP, SEXP triSEXP, SEXP nvecSEXP) {
@@ -39,31 +89,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const bool& >::type tri(triSEXP);
     Rcpp::traits::input_parameter< const int& >::type nvec(nvecSEXP);
     rcpp_result_gen = Rcpp::wrap(fcm_hash_cpp(texts, n_types, count, window, weights, ordered, tri, nvec));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qatd_ManhattanPara_cpp
-NumericMatrix qatd_ManhattanPara_cpp(const arma::sp_mat& A, const int margin);
-RcppExport SEXP quanteda_qatd_ManhattanPara_cpp(SEXP ASEXP, SEXP marginSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type A(ASEXP);
-    Rcpp::traits::input_parameter< const int >::type margin(marginSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_ManhattanPara_cpp(A, margin));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qatd_ManhattanPara_cpp2
-NumericMatrix qatd_ManhattanPara_cpp2(const arma::sp_mat& A, const arma::sp_mat& B, const int margin);
-RcppExport SEXP quanteda_qatd_ManhattanPara_cpp2(SEXP ASEXP, SEXP BSEXP, SEXP marginSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type A(ASEXP);
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type B(BSEXP);
-    Rcpp::traits::input_parameter< const int >::type margin(marginSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_ManhattanPara_cpp2(A, B, margin));
     return rcpp_result_gen;
 END_RCPP
 }

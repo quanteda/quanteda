@@ -324,7 +324,7 @@ test_that("test textstat_dist method = \"manhattan\" against proxy dist() : docu
     expect_equal(manQuanteda, manProxy)
 })
 
-test_that("test textstat_dist method = \"manhattan\" against proxy dist() : documents", {
+test_that("test textstat_dist method = \"manhattan\" against proxy dist() : features", {
     require(proxy)
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
@@ -336,4 +336,28 @@ test_that("test textstat_dist method = \"manhattan\" against proxy dist() : docu
     manProxy <- manProxy[order(names(manProxy))]
     manProxy <- manProxy[-which(names(manProxy) == "soviet")]
     expect_equal(manQuanteda, manProxy)
+})
+
+# Maximum/Supremum distance
+test_that("test textstat_dist method = \"Maximum\" against proxy dist() : documents", {
+    require(proxy)
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    maxQuanteda <- round(as.matrix(textstat_dist(presDfm, method = "maximum", margin = "documents")), 2)
+    maxProxy <- round(as.matrix(proxy::dist(as.matrix(presDfm), "maximum", diag = FALSE, upper = FALSE)), 2)
+    expect_equal(maxQuanteda, maxProxy)
+})
+
+test_that("test textstat_dist method = \"Maximum\" against proxy dist() : features", {
+    require(proxy)
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    maxQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet",  method = "maximum", margin = "features"))[,"soviet"], 2)
+    maxQuanteda <- maxQuanteda[order(names(maxQuanteda))]
+    maxQuanteda <- maxQuanteda[-which(names(maxQuanteda) == "soviet")]
+    
+    maxProxy <- round(drop(proxy::dist(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), "maximum", by_rows = FALSE)), 2)
+    maxProxy <- maxProxy[order(names(maxProxy))]
+    maxProxy <- maxProxy[-which(names(maxProxy) == "soviet")]
+    expect_equal(maxQuanteda, maxProxy)
 })

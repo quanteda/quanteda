@@ -8,6 +8,7 @@
 #' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
 #' \code{"euclidean"}, \code{"hamming"}, \code{"Chisquared"}, 
 #' \code{"Chisquared2"}, and \code{"kullback"}.
+#' @importFrom RcppParallel RcppParallelLibs
 #' @examples
 #' # create a dfm from inaugural addresses from Reagan onwards
 #' presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), 
@@ -59,8 +60,8 @@ textstat_dist <- function(x, selection = character(0), n = NULL,
         }
     } else xSelect <- NULL
     
-    vecMethod <- c("euclidean", "hamming", "Chisquared","Chisquared2", "kullback","manhattan")
-    vecMethod_simil <- c("jaccard", "binary", "eJaccard","simple matching")
+    vecMethod <- c("euclidean", "hamming", "Chisquared", "Chisquared2", "kullback", "manhattan", "maximum")
+    vecMethod_simil <- c("jaccard", "binary", "eJaccard", "simple matching")
     
     if (method %in% vecMethod){
         result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
@@ -353,7 +354,7 @@ kullbackSparse <- function(x, y = NULL, margin = 1) {
     dimnames(kullmat) <- list(rowNm,  colNm)
     kullmat
 }
-#'@importFrom RcppParallel RcppParallelLibs
+
 manhattanSparse <- function(x, y=NULL, margin = 1){
     marginNames <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
@@ -367,3 +368,15 @@ manhattanSparse <- function(x, y=NULL, margin = 1){
     manmat
 }
 
+maximumSparse <- function(x, y=NULL, margin = 1){
+    marginNames <- if (margin == 2) colnames else rownames
+    if (!is.null(y)) {
+        colNm <- marginNames(y)
+        maxmat <- qatd_MaximumPara_cpp2(x, y, margin)
+    } else {
+        colNm <- marginNames(x)
+        maxmat <- qatd_MaximumPara_cpp(x, margin)
+    }
+    dimnames(maxmat) <- list(marginNames(x),  colNm)
+    maxmat
+}
