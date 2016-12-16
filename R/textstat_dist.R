@@ -6,8 +6,8 @@
 #' @seealso \link{dfm}
 #' @export
 #' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
-#' \code{"euclidean"}, \code{"hamming"}, \code{"Chisquared"}, 
-#' \code{"Chisquared2"}, and \code{"kullback"}.
+#' \code{"canberra"}, \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"}, \code{"kullback"}. 
+#' \code{"manhattan"}, and \code{"maximum"}.
 #' @importFrom RcppParallel RcppParallelLibs
 #' @examples
 #' # create a dfm from inaugural addresses from Reagan onwards
@@ -60,7 +60,7 @@ textstat_dist <- function(x, selection = character(0), n = NULL,
         }
     } else xSelect <- NULL
     
-    vecMethod <- c("euclidean", "hamming", "Chisquared", "Chisquared2", "kullback", "manhattan", "maximum")
+    vecMethod <- c("euclidean", "hamming", "Chisquared", "Chisquared2", "kullback", "manhattan", "maximum", "canberra")
     vecMethod_simil <- c("jaccard", "binary", "eJaccard", "simple matching")
     
     if (method %in% vecMethod){
@@ -355,6 +355,7 @@ kullbackSparse <- function(x, y = NULL, margin = 1) {
     kullmat
 }
 
+# Manhattan distance: sum_i |x_i - y_i|
 manhattanSparse <- function(x, y=NULL, margin = 1){
     marginNames <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
@@ -368,6 +369,7 @@ manhattanSparse <- function(x, y=NULL, margin = 1){
     manmat
 }
 
+# Maximum/Supremum distance: max_i |x_i - y_i|
 maximumSparse <- function(x, y=NULL, margin = 1){
     marginNames <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
@@ -379,4 +381,19 @@ maximumSparse <- function(x, y=NULL, margin = 1){
     }
     dimnames(maxmat) <- list(marginNames(x),  colNm)
     maxmat
+}
+
+# Canberra distance: sum_i |x_i - y_i| / |x_i + y_i|
+# Weighted by num_nonzeros_elementsum/num_element
+canberraSparse <- function(x, y=NULL, margin = 1){
+    marginNames <- if (margin == 2) colnames else rownames
+    if (!is.null(y)) {
+        colNm <- marginNames(y)
+        canmat <- qatd_CanberraPara_cpp2(x, y, margin)
+    } else {
+        colNm <- marginNames(x)
+        canmat <- qatd_CanberraPara_cpp(x, margin)
+    }
+    dimnames(canmat) <- list(marginNames(x),  colNm)
+    canmat
 }

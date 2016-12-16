@@ -43,11 +43,11 @@ object.
 }
 \details{
 \code{textstat_dist} options are: \code{"euclidean"} (default), 
-\code{"euclidean"}, \code{"hamming"}, \code{"Chisquared"}, 
-\code{"Chisquared2"}, and \code{"kullback"}.
+\code{"canberra"}, \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"}, \code{"kullback"}. 
+\code{"manhattan"}, and \code{"maximum"}.
 
 \code{textstat_simil} options are: \code{"correlation"} (default),
-\code{"cosine"}, \code{"correlation"}, \code{"jaccard"}, \code{"eJaccard"},
+\code{"cosine"}, \code{"jaccard"}, \code{"eJaccard"},
 \code{"dice"}, \code{"eDice"}, \code{"simple matching"}, \code{"hamann"}, and
 \code{"faith"}.
 }

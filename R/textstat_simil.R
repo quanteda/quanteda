@@ -26,7 +26,7 @@
 #'   matrix is recorded
 #' @param diag whether the diagonal of the distance matrix should be recorded
 #' @details \code{textstat_simil} options are: \code{"correlation"} (default),
-#' \code{"cosine"}, \code{"correlation"}, \code{"jaccard"}, \code{"eJaccard"},
+#' \code{"cosine"}, \code{"jaccard"}, \code{"eJaccard"},
 #' \code{"dice"}, \code{"eDice"}, \code{"simple matching"}, \code{"hamann"}, and
 #' \code{"faith"}.
 #' @note If you want to compute similarity on a "normalized" dfm object 

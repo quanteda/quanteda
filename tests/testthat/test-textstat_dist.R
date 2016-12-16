@@ -361,3 +361,27 @@ test_that("test textstat_dist method = \"Maximum\" against proxy dist() : featur
     maxProxy <- maxProxy[-which(names(maxProxy) == "soviet")]
     expect_equal(maxQuanteda, maxProxy)
 })
+
+# Canberra distance
+test_that("test textstat_dist method = \"Canberra\" against proxy dist() : documents", {
+    require(proxy)
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    canQuanteda <- round(as.matrix(textstat_dist(presDfm, method = "canberra", margin = "documents")), 2)
+    canProxy <- round(as.matrix(proxy::dist(as.matrix(presDfm), "canberra", diag = FALSE, upper = FALSE)), 2)
+    expect_equal(canQuanteda, canProxy)
+})
+
+test_that("test textstat_dist method = \"Canberra\" against proxy dist() : features", {
+    require(proxy)
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    canQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet",  method = "canberra", margin = "features"))[,"soviet"], 2)
+    canQuanteda <- canQuanteda[order(names(canQuanteda))]
+    canQuanteda <- canQuanteda[-which(names(canQuanteda) == "soviet")]
+    
+    canProxy <- round(drop(proxy::dist(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), "canberra", by_rows = FALSE)), 2)
+    canProxy <- canProxy[order(names(canProxy))]
+    canProxy <- canProxy[-which(names(canProxy) == "soviet")]
+    expect_equal(canQuanteda, canProxy)
+})

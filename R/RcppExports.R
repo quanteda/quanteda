@@ -17,6 +17,14 @@ qatd_MaximumPara_cpp2 <- function(A, B, margin = 1L) {
     .Call('quanteda_qatd_MaximumPara_cpp2', PACKAGE = 'quanteda', A, B, margin)
 }
 
+qatd_CanberraPara_cpp <- function(A, margin = 1L) {
+    .Call('quanteda_qatd_CanberraPara_cpp', PACKAGE = 'quanteda', A, margin)
+}
+
+qatd_CanberraPara_cpp2 <- function(A, B, margin = 1L) {
+    .Call('quanteda_qatd_CanberraPara_cpp2', PACKAGE = 'quanteda', A, B, margin)
+}
+
 fcm_cpp <- function(texts, types, count, window, weights, ordered, tri, nvec) {
     .Call('quanteda_fcm_cpp', PACKAGE = 'quanteda', texts, types, count, window, weights, ordered, tri, nvec)
 }
@@ -51,6 +59,10 @@ select_tokens_cppl <- function(texts, flags, types, remove, spacer) {
 
 qatd_cpp_lookup_int_list <- function(texts_, texts_loc_, keys, id) {
     .Call('quanteda_qatd_cpp_lookup_int_list', PACKAGE = 'quanteda', texts_, texts_loc_, keys, id)
+}
+
+manha <- function(A) {
+    .Call('quanteda_manha', PACKAGE = 'quanteda', A)
 }
 
 qatd_cpp_deepcopy <- function(x_) {
