@@ -166,7 +166,7 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     names_org <- names(x)
     attrs_org <- attributes(x)
     
-    types <- types(x)
+    types <- attr(x, 'types')
     features <- as.list(features)
     features_fixed <- regex2fixed4(features, index(features, valuetype, case_insensitive)) # convert glob or regex to fixed
     features_id <- lapply(features_fixed, function(x) fmatch(x, types))

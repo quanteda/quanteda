@@ -13,9 +13,9 @@ using namespace ngrams;
 
 
 Text keep(Text tokens, 
-            int span_max,
-            SetNgrams &set_words,
-            bool padding){
+          int span_max,
+          SetNgrams &set_words,
+          bool padding){
     
     Text tokens_copy(tokens.size(), 0);
     for(int span = span_max; span >= 1; span--){ // substitution starts from the longest sequences
