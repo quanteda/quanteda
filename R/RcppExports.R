@@ -61,10 +61,6 @@ qatd_cpp_lookup_int_list <- function(texts_, texts_loc_, keys, id) {
     .Call('quanteda_qatd_cpp_lookup_int_list', PACKAGE = 'quanteda', texts_, texts_loc_, keys, id)
 }
 
-manha <- function(A) {
-    .Call('quanteda_manha', PACKAGE = 'quanteda', A)
-}
-
 qatd_cpp_deepcopy <- function(x_) {
     .Call('quanteda_qatd_cpp_deepcopy', PACKAGE = 'quanteda', x_)
 }

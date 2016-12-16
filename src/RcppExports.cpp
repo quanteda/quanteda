@@ -215,17 +215,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// manha
-NumericMatrix manha(arma::sp_mat A);
-RcppExport SEXP quanteda_manha(SEXP ASEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::sp_mat >::type A(ASEXP);
-    rcpp_result_gen = Rcpp::wrap(manha(A));
-    return rcpp_result_gen;
-END_RCPP
-}
 // qatd_cpp_deepcopy
 SEXP qatd_cpp_deepcopy(SEXP x_);
 RcppExport SEXP quanteda_qatd_cpp_deepcopy(SEXP x_SEXP) {
