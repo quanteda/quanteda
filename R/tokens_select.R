@@ -157,6 +157,19 @@ tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "rem
 #' tokens_select(toksh, feats, selection = "remove", padding = TRUE)
 #' tokens_select(toksh, feats, selection = "remove", case_insensitive = FALSE)
 #' tokens_select(toksh, feats, selection = "remove", padding = TRUE, case_insensitive = FALSE)
+#' 
+#' # With longer texts
+#' txts <- data_char_inaugural
+#' toks <- tokens(txts)
+#' tokens_select(toks, stopwords("english"), "remove")
+#' tokens_select(toks, stopwords("english"), "keep")
+#' tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
+#' tokens_select(toks, stopwords("english"), "keep", padding = TRUE)
+#' 
+#' # With multiple words
+#' tokens_select(toks, list(c('President', '*')), "keep")
+#' tokens_select(toks, list(c('*', 'crisis')), "keep")
+
 tokens_select.tokens <- function(x, features, selection = c("keep", "remove"), 
                                  valuetype = c("glob", "regex", "fixed"),
                                  case_insensitive = TRUE, padding = FALSE, ...) {
@@ -168,7 +181,9 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     
     types <- attr(x, 'types')
     features <- as.list(features)
-    features_fixed <- regex2fixed4(features, index(features, valuetype, case_insensitive)) # convert glob or regex to fixed
+    print(features)
+    features_fixed <- regex2fixed4(features, index(types, valuetype, case_insensitive)) # convert glob or regex to fixed
+    print(features_fixed)
     features_id <- lapply(features_fixed, function(x) fmatch(x, types))
     if(selection == 'keep'){
         x <- qatd_cpp_tokens_select(x, features_id, 1, padding)
