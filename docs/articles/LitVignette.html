@@ -251,7 +251,7 @@ mobyDfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="s
 ## [Moby_Dick, 11416] ] 4. The Counterpane.            
 ## [Moby_Dick, 13363] ] 5. Breakfast. I                
 ## [Moby_Dick, 14249] ] 6. The Street.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chaptersVec &lt;-<span class="kw">unlist</span>(<span class="kw"><a href="../reference/corpus_segment.html">char_segment</a></span>(novel.v, <span class="dt">what =</span> <span class="st">'other'</span>, <span class="dt">delimiter =</span> <span class="st">"CHAPTER</span><span class="ch">\\</span><span class="st">s</span><span class="ch">\\</span><span class="st">d"</span>, <span class="dt">perl =</span> <span class="ot">TRUE</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chaptersVec &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw"><a href="../reference/corpus_segment.html">char_segment</a></span>(novel.v, <span class="dt">what =</span> <span class="st">'other'</span>, <span class="dt">delimiter =</span> <span class="st">"CHAPTER</span><span class="ch">\\</span><span class="st">s</span><span class="ch">\\</span><span class="st">d"</span>, <span class="dt">perl =</span> <span class="ot">TRUE</span>))
 chaptersLowerVec &lt;-<span class="st"> </span><span class="kw"><a href="../reference/toLower.html">toLower</a></span>(chaptersVec)
 chaptersCorp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(chaptersVec)</code></pre></div>
 <p>With the corpus split into chapters, we can use the <code>dfm</code> command to create a matrix of counts of each word in each chapter &ndash; a document-frequency matrix.</p>

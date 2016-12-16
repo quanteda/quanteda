@@ -21,8 +21,20 @@
 #' summary(corpus_sample(data_corpus_inaugural, 5)) 
 #' summary(corpus_sample(data_corpus_inaugural, 10, replace=TRUE))
 corpus_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, ...) {
-    documents(x) <- documents(x)[base::sample(ndoc(x), size, replace, prob), , drop = FALSE]
-    x
+    UseMethod("corpus_sample")
 }
 
+
+#' @rdname corpus_sample
+#' @noRd
+#' @export
+corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, ...) {
+    sample_index <- base::sample(ndoc(x), size, replace, prob) 
+    documents(x) <- documents(x)[sample_index, , drop = FALSE]
+    if (is.corpuszip(x)) {
+        texts(x) <- texts(x)[sample_index]
+        x$docnames <- x$docnames[sample_index]
+    }
+    x
+}
 

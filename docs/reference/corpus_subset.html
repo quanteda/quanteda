@@ -83,8 +83,8 @@
     
     <p>Returns subsets of a corpus that meet certain conditions, including direct 
 logical operations on docvars (document-level variables).  `corpus_subset` 
-functions identically to <code>subset</code>, using non-standard evaluation 
-to evaluate conditions based on the <a href='docvars.html'>docvars</a> in the corpus.</p>
+functions identically to <code>subset.data.frame</code>, using non-standard
+evaluation to evaluate conditions based on the <a href='docvars.html'>docvars</a> in the corpus.</p>
     
 
     <pre><span class='fu'>corpus_subset</span>(<span class='no'>x</span>, <span class='no'>subset</span>, <span class='no'>select</span>, <span class='no'>...</span>)</pre>
@@ -104,11 +104,11 @@ values are taken as false</dd>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>corpus object</p>
+    <p>corpus object, with a subset of documents (and docvars) selected according to arguments</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code>subset</code></p>
+    <p><code>subset.data.frame</code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

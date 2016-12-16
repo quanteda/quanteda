@@ -8,12 +8,15 @@
 \alias{c.corpus}
 \alias{corpus-class}
 \alias{is.corpus}
+\alias{is.corpuszip}
 \alias{print.corpus}
 \title{base method extensions for corpus objects}
 \usage{
 \method{print}{corpus}(x, ...)
 
 is.corpus(x)
+
+is.corpuszip(x)
 
 \method{+}{corpus}(c1, c2)
 
@@ -46,6 +49,8 @@ variable; if \code{FALSE}, return it as a single-column data.frame.  See
 }
 \value{
 \code{is.corpus} returns \code{TRUE} if the object is a corpus
+
+\code{is.corpuszip} returns \code{TRUE} if the object is a compressed corpus
 }
 \description{
 Extensions of base R functions for corpus objects.

@@ -4,10 +4,12 @@
 ## ----eval=TRUE-----------------------------------------------------------
 require(quanteda)
 
-# read the text as a single file
-# alternative:
-# data_char_mobydick <- texts(textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
+## read the text as a single file
 summary(data_char_mobydick)
+
+## alternative method:
+# require(readtext)
+# data_char_mobydick <- texts(readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
 
 ## ------------------------------------------------------------------------
 substring(data_char_mobydick, 1, 75)
@@ -43,7 +45,7 @@ moby.word.v[c(4,5,6)]
 head(which(moby.word.v == "whale"))
 
 ## ------------------------------------------------------------------------
-moby.word.v <- tokenize(novel.lower.v, simplify = TRUE)
+moby.word.v <- tokens(novel.lower.v, simplify = TRUE)
 # count of the word 'whale'
 length(moby.word.v[which(moby.word.v == "whale")])
 
@@ -87,10 +89,10 @@ axis(1, 1:10, labels = names(topfeatures(mobyDfmPct)))
 
 ## ----eval=TRUE, fig.width=8, fig.height=1.5------------------------------
 # using words from tokenized corpus for dispersion
-plot(kwic(novel.v, "whale"))
+textplot_xray(kwic(novel.v, "whale"))
 
 ## ----eval=TRUE, fig.width=8, fig.height=2.5------------------------------
-plot(
+textplot_xray(
      kwic(novel.v, "whale"),
      kwic(novel.v, "Ahab"),
      kwic(novel.v, "Pequod")
@@ -102,7 +104,7 @@ plot(
 
 ## ------------------------------------------------------------------------
 head(kwic(novel.v, 'chapter'))
-chaptersVec <-unlist(char_segment(novel.v, what = 'other', delimiter = "CHAPTER\\s\\d", perl = TRUE))
+chaptersVec <- unlist(char_segment(novel.v, what = 'other', delimiter = "CHAPTER\\s\\d", perl = TRUE))
 chaptersLowerVec <- toLower(chaptersVec)
 chaptersCorp <- corpus(chaptersVec)
 

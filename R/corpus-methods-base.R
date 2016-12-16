@@ -16,6 +16,9 @@ print.corpus <- function(x, ...) {
     if (!is.null(docvars(x))) 
         cat(" and ", format(ncol(docvars(x)), big.mark=","), " docvar", 
             ifelse(ncol(docvars(x)) == 1, "", "s"), "", sep="")
+    if (is.corpuszip(x)) {
+        cat(" (compressed ", 100 - round(x$compression_rate, 1), "%)", sep = "")
+    }
     cat(".\n")
     
     #         ", ",
@@ -35,6 +38,12 @@ is.corpus <- function(x) {
     "corpus" %in% class(x)
 }
 
+#' @return \code{is.corpuszip} returns \code{TRUE} if the object is a compressed corpus
+#' @rdname corpus-class
+#' @export
+is.corpuszip <- function(x) {
+    "corpuszip" %in% class(x)
+}
 
 
 #' summarize a corpus or a vector of texts
@@ -71,7 +80,8 @@ summary.corpus <- function(object, n = 100, verbose = TRUE, showmeta = FALSE, to
     if (verbose) {
         cat("Corpus consisting of ", ndoc(object), " document",
             ifelse(ndoc(object)>1, "s", ""), 
-            ifelse(ndoc(object)<=n, "", 
+            ifelse(is.corpuszip(object), paste0(" (compressed ", 100 - round(object$compression_rate, 1), "%)"), ""),
+            ifelse(ndoc(object) <= n, "", 
                    paste(", showing ", n, " document", ifelse(n>1, "s", ""), sep="")),
             ".\n", sep="")
     }
@@ -130,7 +140,7 @@ summary.corpus <- function(object, n = 100, verbose = TRUE, showmeta = FALSE, to
     
     row.names <- c(rownames(c1$documents), rownames(c2$documents))
     c1$documents <- data.frame(
-        data.table::rbindlist(list(c1$documents, c2$documents), use.names=T, fill=T)
+        data.table::rbindlist(list(c1$documents, c2$documents), use.names = TRUE, fill = TRUE)
     )
     #  Put rownames back in because the hadleyverse discards them
     rownames(c1$documents) <- make.unique(row.names, sep='')
@@ -138,6 +148,14 @@ summary.corpus <- function(object, n = 100, verbose = TRUE, showmeta = FALSE, to
     # settings
     ### currently just use the c1 settings
     
+    # special handling for docnames if item is corpuszip
+    if (is.corpuszip(c1)) {
+        x <- c(texts(c1), texts(c2))
+        x[1 : (length(x)-1)] <- paste0(x[1 : (length(x)-1)], quanteda_document_delimiter)
+        c1$texts <- memCompress(x, 'gzip')
+        c1$docnames <- rownames(c1$documents)
+    }
+
     return(c1)
 }
 
@@ -203,8 +221,7 @@ c.corpus <- function(..., recursive = FALSE) {
 `[[.corpus` <- function(x, i, ...) {
     if (is.null(docvars(x)))
         stop("cannot index docvars this way because none exist")
-    x$documents <- x$documents[-1]  # remove texts
-    x$documents[[i, ...]]
+    x$documents[i, ...]
 }
 
 #' @export
@@ -212,7 +229,7 @@ c.corpus <- function(..., recursive = FALSE) {
 #' @method [[<- corpus
 #' @rdname corpus-class
 `[[<-.corpus` <- function(x, i, value) {
-    x$documents[[i]] <- value
+    x$documents[i] <- value
     x
 }
 

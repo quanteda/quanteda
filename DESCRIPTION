@@ -19,8 +19,8 @@ Author: Kenneth Benoit [aut, cre],
     Will Lowe [ctb],
     Pablo Barberá [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.8.9023
-Date: 2016-12-06
+Version: 0.9.8.9024
+Date: 2016-12-12
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -72,6 +72,7 @@ Collate:
     'corpus_sample.R'
     'corpus_segment.R'
     'corpus_subset.R'
+    'corpuszip.R'
     'data-deprecated.R'
     'data-documentation.R'
     'dev.R'

@@ -17,19 +17,19 @@ values are taken as false}
 \item{...}{not used}
 }
 \value{
-corpus object
+corpus object, with a subset of documents (and docvars) selected according to arguments
 }
 \description{
 Returns subsets of a corpus that meet certain conditions, including direct 
 logical operations on docvars (document-level variables).  `corpus_subset` 
-functions identically to \code{\link{subset}}, using non-standard evaluation 
-to evaluate conditions based on the \link{docvars} in the corpus.
+functions identically to \code{\link{subset.data.frame}}, using non-standard
+evaluation to evaluate conditions based on the \link{docvars} in the corpus.
 }
 \examples{
 summary(corpus_subset(data_corpus_inaugural, Year>1980))
 summary(corpus_subset(data_corpus_inaugural, Year>1930 & President=="Roosevelt", select=Year))
 }
 \seealso{
-\code{\link{subset}}
+\code{\link{subset.data.frame}}
 }
 
