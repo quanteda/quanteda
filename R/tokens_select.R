@@ -181,9 +181,7 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     
     types <- attr(x, 'types')
     features <- as.list(features)
-    print(features)
     features_fixed <- regex2fixed4(features, index(types, valuetype, case_insensitive)) # convert glob or regex to fixed
-    print(features_fixed)
     features_id <- lapply(features_fixed, function(x) fmatch(x, types))
     if(selection == 'keep'){
         x <- qatd_cpp_tokens_select(x, features_id, 1, padding)
