@@ -70,12 +70,16 @@ struct select_mt : public Worker{
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        for (int h = begin; h < end; h++){
-            if(mode == 1){
+        if(mode == 1){
+            for (int h = begin; h < end; h++){
                 output[h] = keep(input[h], span_max, set_words, padding);
-            }else if(mode == 2){
+            }
+        }else if(mode == 2){
+            for (int h = begin; h < end; h++){
                 output[h] = remove(input[h], span_max, set_words, padding);
-            }else{
+            }
+        }else{
+            for (int h = begin; h < end; h++){
                 output[h] = input[h];
             }
         }
