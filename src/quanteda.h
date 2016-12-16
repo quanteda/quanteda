@@ -44,10 +44,10 @@ namespace quanteda{
 namespace ngrams {
     typedef std::vector<unsigned int> Ngram;
     typedef std::vector< std::vector<unsigned int> > Ngrams;
-    //typedef std::vector<unsigned int> Text;
-    typedef std::vector<int> Text;
-    //typedef std::vector< std::vector<unsigned int> > Texts;
-    typedef std::vector< std::vector<int> > Texts;
+    typedef std::vector<unsigned int> Text;
+    //typedef std::vector<int> Text;
+    typedef std::vector< std::vector<unsigned int> > Texts;
+    //typedef std::vector< std::vector<int> > Texts;
     struct hash_ngram {
         std::size_t operator() (const Ngram &vec) const {
             //unsigned int seed = std::accumulate(vec.begin(), vec.end(), 0);
