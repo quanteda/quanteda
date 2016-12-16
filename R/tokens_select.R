@@ -142,6 +142,7 @@ tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "rem
 
 #' @rdname tokens_select
 #' @noRd
+#' @importFrom RcppParallel RcppParallelLibs
 #' @export
 #' @examples
 #' toksh <- tokens(c(doc1 = "This is a SAMPLE text", doc2 = "this sample text is better"))
@@ -162,45 +163,22 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     
-    # convert to regular expressions if not already valuetype = "regex"
-    if (valuetype == "glob" | valuetype == "fixed") 
-        features <- sapply(features, utils::glob2rx, USE.NAMES = FALSE)
+    names_org <- names(x)
+    attrs_org <- attributes(x)
     
-    # index the matching features from the types vector
-    features <- unique(unlist(features, use.names = FALSE))  # to convert any dictionaries
-    features_index <- 
-        which(stringi::stri_detect_regex(types(x), paste(features, collapse = "|"),
-                                         case_insensitive = case_insensitive))
+    types <- types(x)
+    features <- as.list(features)
+    features_fixed <- regex2fixed4(features, index(features, valuetype, case_insensitive)) # convert glob or regex to fixed
+    features_id <- lapply(features_fixed, function(x) fmatch(x, types))
+    if(selection == 'keep'){
+        x <- qatd_cpp_tokens_select(x, features_id, 1, padding)
+    }else{
+        x <- qatd_cpp_tokens_select(x, features_id, 2, padding)
+    }
     
-    # invert the match index to remove features
-    if (selection == "remove")
-        features_index <- setdiff(seq_along(types(x)), features_index)
-    
-    # save the attributes
-    attrs_pre <- attributes(x)
-    
-    # match the features
-    match_list <- lapply(unclass(x), fastmatch::fmatch, features_index)
-    # get the new word types
-    newfeats_types <- types(x)[features_index[!is.na(features_index)]]
-    
-    if (!padding) {
-        newfeats <- lapply(match_list, function(y) y[!is.na(y)])
-    } else {
-        newfeats_types <- c(newfeats_types, "")
-        newfeats <- lapply(match_list, function(y) { 
-            # add an empty type for non-matches
-            y[is.na(y)] <- length(newfeats_types)
-            y 
-        })
-    } 
-    
-    # replace the attributes
-    attributes(newfeats) <- attrs_pre
-    # but use the new types
-    types(newfeats) <- newfeats_types
-    
-    newfeats
+    names(x) <- names_org
+    attributes(x) <- attrs_org
+    return(x)
 }
 
 #' @rdname tokens_select
