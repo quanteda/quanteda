@@ -5,7 +5,8 @@
 \title{apply a dictionary to a tokens object}
 \usage{
 tokens_lookup(x, dictionary, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, concatenator = " ", verbose = FALSE)
+  case_insensitive = TRUE, capkeys = FALSE, concatenator = " ",
+  verbose = FALSE)
 }
 \arguments{
 \item{x}{tokens object to which dictionary or thesaurus will be supplied}
@@ -24,6 +25,9 @@ uppercase to distinguish them from other features}
 \item{concatenator}{a charactor that connect words in multi-words entries}
 
 \item{verbose}{print status messages if \code{TRUE}}
+
+\item{capkey}{if TRUE, convert dictionary keys to uppercase to distinguish 
+them from other features}
 }
 \description{
 Convert tokens into equivalence classes defined by values of a dictionary 
