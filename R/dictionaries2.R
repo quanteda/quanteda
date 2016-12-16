@@ -12,6 +12,8 @@
 #' @param concatenator a charactor that connect words in multi-words entries
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE} 
 #'   uppercase to distinguish them from other features
+#' @param capkey if TRUE, convert dictionary keys to uppercase to distinguish 
+#'   them from other features
 #' @param verbose print status messages if \code{TRUE}
 #' @examples
 #' toks <- tokens(data_corpus_inaugural)
@@ -30,6 +32,7 @@
 tokens_lookup <- function(x, dictionary,
                            valuetype = c("glob", "regex", "fixed"), 
                            case_insensitive = TRUE,
+                           capkeys = FALSE,
                            concatenator = " ", 
                            verbose = FALSE) {
     
@@ -58,7 +61,11 @@ tokens_lookup <- function(x, dictionary,
     x <- qatd_cpp_tokens_lookup(x, ngrams_id, keys_id)
     
     attributes(x) <- attrs_org
-    types(x) <- names(dictionary)
+    if(capkeys){
+        types(x) <- toUpper(names(dictionary))
+    }else{
+        types(x) <- names(dictionary)
+    }
     names(x) <- names_org
     attr(x, "what") <- "dictionary"
     attr(x, "dictionary") <- dictionary
