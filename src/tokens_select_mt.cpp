@@ -106,13 +106,12 @@ List qatd_cpp_tokens_select(List texts_,
                             List words_,
                             int mode_,
                             bool padding_){
-    List texts = texts_;
+    
+    Texts input = Rcpp::as<Texts>(texts);
     List words = words_;
     int mode = mode_;
     bool padding = padding_;
-    
-    Texts input = Rcpp::as<Texts>(texts);
-    
+
     dev::Timer timer;
     dev::start_timer("Make set", timer);
     SetNgrams set_words;
