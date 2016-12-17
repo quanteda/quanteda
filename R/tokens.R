@@ -428,7 +428,8 @@ as.tokenizedTexts.tokens <- function(x, ...) {
 print.tokens <- function(x, ...) {
     cat(class(x)[1], " from ", ndoc(x), " document", 
         ifelse(ndoc(x) > 1, "s", ""), ".\n", sep = "")
-    x <- lapply(unclass(x), function(y, z) z[y + 1], c("", types(x))) # shift index to show padding 
+    types <- c("", types(x))
+    x <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding 
     class(x) <- "listof"
     print(x, ...)
 }
