@@ -12,7 +12,7 @@
 #' @param concatenator a charactor that connect words in multi-words entries
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE} 
 #'   uppercase to distinguish them from other features
-#' @param capkey if TRUE, convert dictionary keys to uppercase to distinguish 
+#' @param capkeys if TRUE, convert dictionary keys to uppercase to distinguish 
 #'   them from other features
 #' @param verbose print status messages if \code{TRUE}
 #' @examples
@@ -46,19 +46,19 @@ tokens_lookup <- function(x, dictionary,
     
 
     # Generate all combinations of type IDs
-    ngrams_id <- list()
+    entries_id <- list()
     keys_id <- c()
     types <- types(x)
     index <- index(types, valuetype, case_insensitive)
     for(h in 1:length(dictionary)) {
         if(verbose) message('Searching words in "', names(dictionary[h]), '"...')
-        ngrams <- stringi::stri_split_fixed(dictionary[[h]], concatenator)
-        ngrams_fixed <- regex2fixed4(ngrams, index) # convert glob or regex to fixed
-        if(length(ngrams_fixed) == 0) next
-        ngrams_id <- c(ngrams_id, lapply(ngrams_fixed, function(x) fmatch(x, types)))
-        keys_id <- c(keys_id, rep(h, length(ngrams_fixed)))
+        entries <- stringi::stri_split_fixed(dictionary[[h]], concatenator)
+        entries_fixed <- regex2fixed4(entries, index) # convert glob or regex to fixed
+        if(length(entries_fixed) == 0) next
+        entries_id <- c(entries_id, lapply(entries_fixed, function(x) fmatch(x, types)))
+        keys_id <- c(keys_id, rep(h, length(entries_fixed)))
     }
-    x <- qatd_cpp_tokens_lookup(x, ngrams_id, keys_id)
+    x <- qatd_cpp_tokens_lookup(x, entries_id, keys_id)
     
     attributes(x) <- attrs_org
     if(capkeys){
