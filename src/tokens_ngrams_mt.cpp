@@ -116,7 +116,7 @@ struct skipgram_mt : public Worker{
 };
 
 /* 
- * This funciton constructs ngrams from tokens object with multiple threads. 
+ * This funciton constructs ngrams from tokens. 
  * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_ngrams()
  * @creator Kohei Watanabe
