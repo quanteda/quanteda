@@ -55,13 +55,25 @@ struct replace_mt : public Worker{
     }
 };
 
+/* 
+ * This funciton substitutes features in tokens object with new IDs. 
+ * The number of threads is set by RcppParallel::setThreadOptions()
+ * @used tokens_compound()
+ * @creator Kohei Watanabe
+ * @param texts_ tokens ojbect
+ * @param words_ list of features to substitute
+ * @param ids_ IDs to be placed after substitution
+ * 
+ */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_replace(List texts, 
-                             List words,
-                             IntegerVector ids){
+List qatd_cpp_tokens_replace(List texts_, 
+                             List words_,
+                             IntegerVector ids_){
     
-    Texts input = Rcpp::as<Texts>(texts);
+    Texts input = Rcpp::as<Texts>(texts_);
+    List words = words_;
+    IntegerVector ids = ids_;
 
     MapNgrams map_words;
     int span_max = 0;

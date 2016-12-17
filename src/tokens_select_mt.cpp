@@ -90,12 +90,26 @@ struct select_mt : public Worker{
     }
 };
 
+/* 
+ * This funciton select features in tokens object with multiple threads. 
+ * The number of threads is set by RcppParallel::setThreadOptions()
+ * @used tokens_select()
+ * @creator Kohei Watanabe
+ * @param texts_ tokens ojbect
+ * @param words_ list of features to remove or keep 
+ * @param padding_ fill places where features are removed with zero
+ * 
+ */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_select(List texts, 
-                            List words,
-                            int mode,
-                            bool padding){
+List qatd_cpp_tokens_select(List texts_, 
+                            List words_,
+                            int mode_,
+                            bool padding_){
+    List texts = texts_;
+    List words = words_;
+    int mode = mode_;
+    bool padding = padding_;
     
     Texts input = Rcpp::as<Texts>(texts);
     

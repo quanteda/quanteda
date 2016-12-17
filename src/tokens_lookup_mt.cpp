@@ -55,20 +55,34 @@ struct lookup_mt : public Worker{
     }
 };
 
+/* 
+ * This funciton finds features in tokens object. This is similar to tokens_replace, 
+ * but all overlapping or nested features are detected and recorded by IDs.
+ * The number of threads is set by RcppParallel::setThreadOptions()
+ * @used tokens_lookup()
+ * @creator Kohei Watanabe
+ * @param texts_ tokens ojbect
+ * @param words_ list of features to find
+ * @param ids_ IDs of features
+ * 
+ */
+
 
 // [[Rcpp::export]]
 List qatd_cpp_tokens_lookup(List texts_, 
-                            List words,
-                            IntegerVector keys){
+                            List words_,
+                            IntegerVector ids_){
     
     Texts input = Rcpp::as<Texts>(texts_);
+    List words = words_;
+    IntegerVector ids = ids_;
 
     MapNgrams map_words;
     int span_max = 0;
     for(int g = 0; g < words.size(); g++){
         if(has_na(words[g])) continue;
         Ngram word = words[g];
-        map_words[word] = keys[g];
+        map_words[word] = ids_[g];
         if(span_max < word.size()) span_max = word.size();
     }
     //Rcout << "Span max " << span_max << "\n";

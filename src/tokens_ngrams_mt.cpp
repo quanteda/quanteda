@@ -118,11 +118,13 @@ struct skipgram_mt : public Worker{
 /* 
  * This funciton constructs ngrams from tokens object with multiple threads. 
  * The number of threads is set by RcppParallel::setThreadOptions()
- * @used ngrams.tokens()
+ * @used tokens_ngrams()
  * @creator Kohei Watanabe
+ * @param types_ types of tokens
  * @param texts_ tokens ojbect
- * @n size of ngramss
- * @skips size of skip (this has to be 1 for ngrams)
+ * @param delim_ string to join words
+ * @param ns_ size of ngramss
+ * @param skips_ size of skip (this has to be 1 for ngrams)
  * 
  */
 
