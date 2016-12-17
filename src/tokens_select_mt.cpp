@@ -112,8 +112,8 @@ List qatd_cpp_tokens_select(List texts_,
     int mode = mode_;
     bool padding = padding_;
 
-    dev::Timer timer;
-    dev::start_timer("Make set", timer);
+
+
     SetNgrams set_words;
     int span_max = 0;
     for(int g = 0; g < words.size(); g++){
@@ -122,13 +122,12 @@ List qatd_cpp_tokens_select(List texts_,
         set_words.insert(word);
         if(span_max < word.size()) span_max = word.size();
     }
-    dev::stop_timer("Make set", timer);
     //Rcout << "Span max " << span_max << "\n";
     
     Texts output(input.size());
     select_mt select_mt(input, output, span_max, set_words, mode, padding);
     
-    
+    dev::Timer timer;
     dev::start_timer("Token select", timer);
     parallelFor(0, input.size(), select_mt);
     dev::stop_timer("Token select", timer);
