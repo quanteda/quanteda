@@ -598,38 +598,42 @@ tokens_character <- function(txt, what, removeNumbers, removePunct, removeSymbol
 # a way that makes some of its types identical, such as lowercasing when a lowercased 
 # version of the type already exists in the hash table.
 # @param x the \link[=tokens_hash]{tokenizedTexts} object to be recompiled
+# @noRd
 # @examples 
-# toksh <- tokens_hash(tokenize(c(one = "a b c d A B C D",
-#                                two = "A B C d")))
-# vocabulary(toksh) <- toLower(vocabulary(toksh))
+# @export
+# toksh <- tokens_hash(tokenize(c(one = "a b c d A B C D", two = "A B C d")))
+# unclass(toksh)
+# toksh <- tokens_remove(toksh, 'b', padding=TRUE)
+# unclass(toksh)
+# tokens_hashed_recompile(toksh)
+# 
+# attr(toksh, 'types') <- toLower(attr(toksh, 'types'))
 # tokens_hashed_recompile(toksh)
 tokens_hashed_recompile <- function(x) {
     
     attrs_input <- attributes(x)
-    v_unique_index <- unique(unlist(x, use.names = FALSE))
+    index_unique <- unique(unlist(x, use.names = FALSE))
+    index_unique <- index_unique[index_unique != 0] # exclude padding
     
-    # remove gaps in the type index, if any, remap index
-    if (any(is.na(match(seq_along(v_unique_index), v_unique_index)))) { 
-        v_unique_index <- unique(unlist(x, use.names = FALSE))
-        v_new <- types(x)[v_unique_index]
-        new_types <- seq_along(v_unique_index)
-        x_new <- lapply(unclass(x), function(y) new_types[match(y, v_unique_index)])
-        attributes(x_new) <- attrs_input
-        types(x_new) <- v_new
-        attrs_input <- attributes(x_new)
-        x <- x_new
+    # Remove gaps in the type index, if any, remap index
+    if (any(is.na(match(seq_along(index_unique), index_unique)))) { 
+        types_new <- types(x)[index_unique]
+        index_new <- seq_along(index_unique)
+        index_unique <- c(0, index_unique) # padding index is zero but not in types
+        x <- lapply(unclass(x), function(y) index_new[match(y, index_unique) - 1]) # shift index for padding
+        attributes(x) <- attrs_input
+        types(x) <- types_new
     }
         
-    # reindex duplicates, if any
+    # Reindex duplicates, if any
     if (any(duplicated(types(x)))) {
-        v <- types(x)
-        v_unique <- unique(v)
-        index_mapping <- match(v, v_unique)
-        x_new <- lapply(unclass(x), function(y) index_mapping[y])
-        attributes(x_new) <- attrs_input
-        types(x_new) <- v_unique
-        attrs_input <- attributes(x_new)
-        x <- x_new
+        types <- types(x)
+        types_unique <- unique(types)
+        index_mapping <- match(types, types_unique)
+        index_mapping <- c(0, index_mapping) # padding index is zero but not in types
+        x <- lapply(unclass(x), function(y) index_mapping[y + 1]) # shift index for padding
+        attributes(x) <- attrs_input
+        types(x) <- types_unique
     }
 
     return(x)
