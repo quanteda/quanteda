@@ -92,7 +92,7 @@ tokens_compound.tokens <- function(x, sequences,
     }
 
     # Make sure the list is all character
-    if (!all(sapply(sequences, is.character, USE.NAMES = FALSE))) 
+    if (!all(is.character(unlist(sequences, use.names = FALSE))))
         stop("sequences must be a list of character elements or a dictionary")
 
     
