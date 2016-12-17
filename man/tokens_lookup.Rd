@@ -22,12 +22,12 @@ formatted dictionary values); \code{"regex"} for regular expressions; or
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE} 
 uppercase to distinguish them from other features}
 
+\item{capkeys}{if TRUE, convert dictionary keys to uppercase to distinguish 
+them from other features}
+
 \item{concatenator}{a charactor that connect words in multi-words entries}
 
 \item{verbose}{print status messages if \code{TRUE}}
-
-\item{capkey}{if TRUE, convert dictionary keys to uppercase to distinguish 
-them from other features}
 }
 \description{
 Convert tokens into equivalence classes defined by values of a dictionary 
