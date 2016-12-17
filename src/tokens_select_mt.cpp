@@ -92,12 +92,12 @@ struct select_mt : public Worker{
 
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_select(List texts_, 
+List qatd_cpp_tokens_select(List texts, 
                             List words,
                             int mode,
                             bool padding){
     
-    Texts input = Rcpp::as<Texts>(texts_);
+    Texts input = Rcpp::as<Texts>(texts);
     
     dev::Timer timer;
     dev::start_timer("Make set", timer);

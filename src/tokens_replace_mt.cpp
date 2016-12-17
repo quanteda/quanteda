@@ -57,18 +57,18 @@ struct replace_mt : public Worker{
 
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_replace(List texts_, 
+List qatd_cpp_tokens_replace(List texts, 
                              List words,
                              IntegerVector ids){
     
-    Texts input = Rcpp::as<Texts>(texts_);
+    Texts input = Rcpp::as<Texts>(texts);
 
     MapNgrams map_words;
     int span_max = 0;
     for(int g = 0; g < words.size(); g++){
         if(has_na(words[g])) continue;
         Ngram word = words[g];
-        Rcout << "Add " << ids[g] << "\n";
+        //Rcout << "Add " << ids[g] << "\n";
         map_words[word] = ids[g];
         if(span_max < word.size()) span_max = word.size();
     }

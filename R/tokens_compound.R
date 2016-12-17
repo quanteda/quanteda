@@ -67,13 +67,14 @@ tokens_compound <- function(x, sequences,
 tokens_compound.tokens <- function(x, sequences,
                    concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                    case_insensitive = TRUE) {
-    verbose <- FALSE
-        
-    # check that sequences is a list
+    
+    valuetype <- match.arg(valuetype)
+    
+    # Check that sequences is a list
     if (!is.list(sequences))
         stop("sequences must be a list of character elements, dictionary, or collocations")
 
-    # convert collocations sequences into a simple list of characters
+    # Convert collocations sequences into a simple list of characters
     if (is.collocations(sequences)) {
         word1 <- word2 <- word3 <- NULL
         # sort by word3 so that trigrams will be processed before bigrams
@@ -85,44 +86,44 @@ tokens_compound.tokens <- function(x, sequences,
         sequences <- lapply(sequences, function(y) y[y != ""])
     }
     
-    # convert dictionaries into a list of phrase sequences 
+    # Convert dictionaries into a list of phrase sequences 
     if (is.dictionary(sequences)) {
-        sequences <- strsplit(unlist(sequences, use.names = FALSE), " ")
+        sequences <- stringi::stri_split_fixed(unlist(sequences, use.names = FALSE), " ")
     }
 
-    # make sure the list is all character
+    # Make sure the list is all character
     if (!all(sapply(sequences, is.character, USE.NAMES = FALSE))) 
         stop("sequences must be a list of character elements or a dictionary")
-    
-    valuetype <- match.arg(valuetype)
+
     
     # Initialize
     seqs <- as.list(sequences)
     seqs <- seqs[lengths(seqs) > 1] # drop single words
+    
+    names_org <- names(x)
+    attrs_org <- attributes(x)
     types <- types(x)
     
     # Convert glob or regex to fixed
     seqs_fixed <- regex2fixed4(seqs, index(types, valuetype, case_insensitive))
+    if(length(seqs_fixed) == 0) return(x) # do nothing
     
-    if (verbose) message(sprintf('Join %d pairs of tokens', length(seqs_fixed)))
-    if (length(seqs_fixed) == 0) return(x) # do nothing
-    
-    seqs_id <- lapply(seqs_fixed, fmatch, table=types)
+    # Make new types
+    seqs_id <- lapply(seqs_fixed, function(y) match(y, types))
     seqs_type <- sapply(seqs_fixed, paste0, collapse = concatenator)
-    ids <- fmatch(seqs_type, types)
-    res <- qatd_cpp_replace_int_list(x, seqs_id, ids, length(types) + 1)
     
-    # Select and types to add
-    ids_new <- res$id_new
-    names(ids_new) <- seqs_type
-    ids_new <- sort(ids_new)
-    types <- c(types, names(ids_new[length(types) < ids_new]))
+    # Assign IDs for new types
+    types_id <- match(seqs_type, types)
+    types_new <- seqs_type[is.na(types_id)]
+    types_id[is.na(types_id)] <- seq(length(types) + 1, by=1, length.out=length(types_new))
+
+    x <- qatd_cpp_tokens_replace(x, seqs_id, types_id)
     
-    tokens <- res$text
-    attributes(tokens) <- attributes(x)
-    types(tokens) <- types
+    names(x) <- names_org
+    attributes(x) <- attrs_org
+    types(x) <- c(types, types_new)
     
-    return(tokens)
+    return(x)
 }
 
 

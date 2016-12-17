@@ -29,12 +29,12 @@ qatd_cpp_tokens_ngrams <- function(texts_, types_, delim_, ns_, skips_) {
     .Call('quanteda_qatd_cpp_tokens_ngrams', PACKAGE = 'quanteda', texts_, types_, delim_, ns_, skips_)
 }
 
-qatd_cpp_tokens_replace <- function(texts_, words, ids) {
-    .Call('quanteda_qatd_cpp_tokens_replace', PACKAGE = 'quanteda', texts_, words, ids)
+qatd_cpp_tokens_replace <- function(texts, words, ids) {
+    .Call('quanteda_qatd_cpp_tokens_replace', PACKAGE = 'quanteda', texts, words, ids)
 }
 
-qatd_cpp_tokens_select <- function(texts_, words, mode, padding) {
-    .Call('quanteda_qatd_cpp_tokens_select', PACKAGE = 'quanteda', texts_, words, mode, padding)
+qatd_cpp_tokens_select <- function(texts, words, mode, padding) {
+    .Call('quanteda_qatd_cpp_tokens_select', PACKAGE = 'quanteda', texts, words, mode, padding)
 }
 
 qatd_cpp_deepcopy <- function(x_) {

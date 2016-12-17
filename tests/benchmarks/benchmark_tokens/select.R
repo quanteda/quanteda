@@ -25,3 +25,5 @@ microbenchmark::microbenchmark(
     dfm_remove(dfm(tok), stopwords(), valuetype='fixed'),
     times=1
 )
+
+system.time(dfm(tokens_remove(tok, stopwords(), valuetype='fixed')))
