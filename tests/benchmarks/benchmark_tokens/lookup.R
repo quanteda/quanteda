@@ -48,6 +48,9 @@ microbenchmark::microbenchmark(
     times=1
 )
 
+load("/home/kohei/Documents/Brexit/Analysis/data_corpus_guardian.RData")
+toks <- tokens(data_corpus_guardian)
+system.time(tokens_lookup(toks, dict_liwc, valuetype='glob', verbose=TRUE))
 
 profvis::profvis(tokens_lookup(toks, dict_liwc[1], valuetype='glob', verbose=FALSE))
 
