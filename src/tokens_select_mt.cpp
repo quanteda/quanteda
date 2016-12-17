@@ -17,6 +17,8 @@ Text keep(Text tokens,
           SetNgrams &set_words,
           bool padding){
     
+    if(tokens.size() == 0) return {}; // return empty vector for empty text
+    
     Text tokens_copy(tokens.size(), 0);
     for(int span = span_max; span >= 1; span--){ // substitution starts from the longest sequences
         for(int i = 0; i < tokens.size() - (span - 1); i++){
@@ -35,6 +37,8 @@ Text remove(Text tokens,
             int span_max,
             SetNgrams &set_words,
             bool padding){
+
+    if(tokens.size() == 0) return {}; // return empty vector for empty text
     
     Text tokens_copy(tokens.size(), 0);
     unsigned int filler = std::numeric_limits<unsigned int>::max(); // use upper limit as a filler
@@ -94,7 +98,9 @@ List qatd_cpp_tokens_select(List texts_,
                             bool padding){
     
     Texts input = Rcpp::as<Texts>(texts_);
-
+    
+    dev::Timer timer;
+    dev::start_timer("Make set", timer);
     SetNgrams set_words;
     int span_max = 0;
     for(int g = 0; g < words.size(); g++){
@@ -103,12 +109,13 @@ List qatd_cpp_tokens_select(List texts_,
         set_words.insert(word);
         if(span_max < word.size()) span_max = word.size();
     }
+    dev::stop_timer("Make set", timer);
     //Rcout << "Span max " << span_max << "\n";
     
     Texts output(input.size());
     select_mt select_mt(input, output, span_max, set_words, mode, padding);
     
-    dev::Timer timer;
+    
     dev::start_timer("Token select", timer);
     parallelFor(0, input.size(), select_mt);
     dev::stop_timer("Token select", timer);

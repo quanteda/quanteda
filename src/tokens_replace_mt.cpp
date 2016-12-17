@@ -16,6 +16,8 @@ Text replace(Text tokens,
              int span_max,
              MapNgrams &map_words){
     
+    if(tokens.size() == 0) return {}; // return empty vector for empty text
+    
     unsigned int filler = std::numeric_limits<unsigned int>::max(); // use largest limit as filler
     bool match = false;
     for(int span = span_max; span >= 1; span--){ // substitution starts from the longest sequences

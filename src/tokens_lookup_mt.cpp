@@ -16,6 +16,8 @@ Text lookup(Text tokens,
             int span_max,
             MapNgrams &map_keys){
     
+    if(tokens.size() == 0) return {}; // return empty vector for empty text
+    
     Text keys;
     keys.reserve(tokens.size());
     for(int span = 1; span <= span_max; span++){
