@@ -456,7 +456,8 @@ print.tokens <- function(x, ...) {
 #' str(toks)
 #' toks[[2]]
 "[[.tokens" <- function(x, i, ...) {
-    types(x)[unclass(x)[[i]]]
+    types <- c("", types(x))
+    types[unclass(x)[[i]] + 1] # shift index to show padding 
 }
 
 #' @method "$" tokens
