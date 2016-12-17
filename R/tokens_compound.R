@@ -62,7 +62,7 @@ tokens_compound <- function(x, sequences,
 
 #' @rdname tokens_compound
 #' @noRd
-#' @importFrom data.table setorder data.table
+#' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_compound.tokens <- function(x, sequences,
                    concatenator = "_", valuetype = c("glob", "regex", "fixed"),
