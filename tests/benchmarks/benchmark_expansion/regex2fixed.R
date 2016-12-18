@@ -18,6 +18,10 @@ microbenchmark::microbenchmark(
 setdiff(regex2fixed5(regex_liwc, types, 'regex', case_insensitive=FALSE),
         regex2fixed4(regex_liwc, index(types, 'regex', case_insensitive=FALSE)))
 
+
+profvis::profvis(regex2fixed4(regex_liwc, index(types, 'regex', case_insensitive=TRUE)))
+profvis::profvis(regex2fixed5(regex_liwc, types, 'regex', case_insensitive=TRUE))
+
 dict_lex <- dictionary(file='/home/kohei/Documents/Dictionary/Lexicoder/LSDaug2015/LSD2015_NEG.lc3')
 glob_lex <- tokens(unlist(dict_lex, use.names = FALSE), hash=FALSE, what='fastest')
 regex_lex <- lapply(glob_lex, glob2rx)

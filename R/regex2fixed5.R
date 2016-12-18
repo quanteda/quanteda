@@ -61,13 +61,13 @@ select_types <- function (regex, types, types_search, exact, index){
     subset <- lapply(regex, function(regex, types, types_search, exact, index){
         if(exact){
             #cat('Exact match', regex, '\n')
-            types[index[[regex]]]
+            types[search_index(regex, index)]
         }else{
             if(regex == ''){
                 NULL # return nothing for empty pattern
             }else if(regex == '^'){    
                 types # return all types when glob is *
-            }else if(length((ids <- index[[regex]]))){
+            }else if(length((ids <- search_index(regex, index)))){
                 #cat('Index search', regex, '\n')
                 types[ids]
             }else if(!is_indexed(regex)){
@@ -104,9 +104,13 @@ index_regex <- function(types, valuetype, case_insensitive){
             key <- c(key, stri_sub(types[k], 1, i), stri_sub(types[k], i * -1, -1))
         }
     }
-    index <- split(pos, factor(key, ordered=FALSE, levels=unique(key)))
-    #print(index)
-    return(list2env(index))
+    temp <- split(pos, factor(key, ordered=FALSE, levels=unique(key)))
+    index <- list(key=names(temp), value=unname(temp))
+    return(index)
+}
+
+search_index <- function(key, index){
+    index$value[[fmatch(key, index$key)]]
 }
 
 # This function is a simplyfied version of expand.grid() in base package
