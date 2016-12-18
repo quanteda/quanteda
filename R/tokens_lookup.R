@@ -52,7 +52,6 @@ tokens_lookup <- function(x, dictionary,
         if(verbose) message('Searching words in "', names(dictionary[h]), '"...')
         entries <- stringi::stri_split_fixed(dictionary[[h]], concatenator)
         entries_fixed <- regex2fixed5(entries, types, valuetype, case_insensitive, index) # convert glob or regex to fixed
-        print(entries_fixed)
         if(length(entries_fixed) == 0) next
         entries_id <- c(entries_id, lapply(entries_fixed, function(x) fmatch(x, types)))
         keys_id <- c(keys_id, rep(h, length(entries_fixed)))
