@@ -14,13 +14,17 @@
 regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, index = NULL) {
     
     # Make case insensitive
-    types_search <- ifelse(case_insensitive, stri_trans_tolower(types), types)
+    if(case_insensitive){
+        types_search <- stri_trans_tolower(types)
+    }else{
+        types_search <- types
+    }
     
     # Set if exact match of not
     exact <- ifelse(valuetype == 'fixed', TRUE, FALSE)
     
     # Construct index if not given
-    if(missing(index)) index <- index_regex(types_search, valuetype)
+    if(missing(index)) index <- index_regex(types_search, valuetype, case_insensitive)
     
     # Make case-insensitive
     if(case_insensitive) regex <- lapply(regex, stri_trans_tolower)
@@ -37,10 +41,6 @@ regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, inde
     fixed <- list()
     for(pat_multi in pats_multi) {
         fixed_multi <- select_types(pat_multi, types, types_search, exact, index)
-        # cat('pat_multi:\n')
-        # print(pat_multi)
-        # cat('fixed_multi:\n')
-        # print(fixed_multi)
         fixed <- c(fixed, expand(fixed_multi))
     }
     
@@ -56,41 +56,38 @@ regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, inde
 
 # This function subset types avoiding expensive full regular expression matching
 select_types <- function (regex, types, types_search, exact, index){
-    
+
     subset <- lapply(regex, function(regex, types, types_search, exact, index){
         if(exact){
             #cat('Exact match', regex, '\n')
             types[index[[regex]]]
         }else{
             if(regex == ''){
-                NULL # retun nothing for empty pattern
+                NULL # return nothing for empty pattern
             }else if(length((ids <- index[[regex]]))){
                 #cat('Index search', regex, '\n')
-                types[ids];
+                types[ids]
+            }else if(!is_indexed(regex)){
+                #cat('Sequential search', regex, '\n')
+                types[stri_detect_regex(types_search, regex)]
             }else{
-                if(is_regex(regex)){ # check if it is a complex regex pattern
-                    #cat('Sequential search', regex, '\n')
-                    types[stri_detect_regex(types_search, regex)]
-                }else{
-                    NULL
-                }
+                #cat('Not found', regex, '\n')
+                NULL
             }
         }
     }, types, types_search, exact, index)
     return(subset)
 }
 
-index_regex <- function(types, valuetype, case_insensitive = FALSE){
+index_regex <- function(types, valuetype, case_insensitive){
     
     if(case_insensitive) types <- stri_trans_tolower(types)
     exact <- ifelse(valuetype == 'fixed', TRUE, FALSE)
-    
     key <- c()
     pos <- c()
     types <- stri_c("^", types, "$")
     len <- stri_length(types)
     for(i in 2:max(len)){
-    
         # Exact
         j <- which(len == i)
         pos <- c(pos, j)
@@ -104,6 +101,7 @@ index_regex <- function(types, valuetype, case_insensitive = FALSE){
         }
     }
     idx <- split(pos, factor(key, ordered=FALSE, levels=unique(key)))
+    #print(idx)
     return(list2env(idx))
 }
 
@@ -130,7 +128,15 @@ expand <- function(elem){
 
 # This function checks if a string is regular expression
 is_regex <- function(x){
-    any(stri_detect_fixed(x, c(".", "(", ")", "{", "}", "+", "*", "?", "[", "]", "\\")))
+    any(stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
 }
 
+is_indexed <- function(x){
+    head <- stri_startswith_fixed(x, '^')
+    tail <- stri_endswith_fixed(x, '$')
+    if(head && tail && !is_regex(stri_sub(x, 2, -2))) return(TRUE)
+    if(head && !is_regex(stri_sub(x, 2, -1))) return(TRUE)
+    if(tail && !is_regex(stri_sub(x, 1, -2))) return(TRUE)
+    return(FALSE)
+}
 
