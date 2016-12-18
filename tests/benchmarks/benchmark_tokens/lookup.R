@@ -11,7 +11,7 @@ microbenchmark::microbenchmark(
     cpp=tokens_lookup(toks, dict_fix, valuetype='fixed', verbose=FALSE)
 )
 
-dict_liwc <- dictionary(file='/home/kohei/Documents/Dictonary/LIWC/LIWC2007_English.dic')
+dict_liwc <- dictionary(file='/home/kohei/Documents/Dictionary/LIWC/LIWC2007_English.dic')
 microbenchmark::microbenchmark(
     r=applyDictionary(toks, dict_liwc, valuetype='fixed', verbose=FALSE),
     cpp=tokens_lookup(toks, dict_liwc, valuetype='fixed', verbose=FALSE),
