@@ -29,8 +29,9 @@ regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, inde
     # Make case-insensitive
     if(case_insensitive) regex <- lapply(regex, stri_trans_tolower)
     
-    # Convert glob to regex
+    # Convert fixed or glob to regex
     if(valuetype == 'glob') regex <- lapply(regex, glob2rx)
+    if(valuetype == 'fixed') regex <- lapply(regex, function(x) stri_c("^", x, "$"))
     
     # Separate multi and single-entry patterns
     len <- lengths(regex)
@@ -64,6 +65,8 @@ select_types <- function (regex, types, types_search, exact, index){
         }else{
             if(regex == ''){
                 NULL # return nothing for empty pattern
+            }else if(regex == '^'){    
+                types # return all types when glob is *
             }else if(length((ids <- index[[regex]]))){
                 #cat('Index search', regex, '\n')
                 types[ids]
@@ -83,9 +86,10 @@ index_regex <- function(types, valuetype, case_insensitive){
     
     if(case_insensitive) types <- stri_trans_tolower(types)
     exact <- ifelse(valuetype == 'fixed', TRUE, FALSE)
+    types <- stri_c("^", types, "$")
+    
     key <- c()
     pos <- c()
-    types <- stri_c("^", types, "$")
     len <- stri_length(types)
     for(i in 2:max(len)){
         # Exact
@@ -100,9 +104,9 @@ index_regex <- function(types, valuetype, case_insensitive){
             key <- c(key, stri_sub(types[k], 1, i), stri_sub(types[k], i * -1, -1))
         }
     }
-    idx <- split(pos, factor(key, ordered=FALSE, levels=unique(key)))
-    #print(idx)
-    return(list2env(idx))
+    index <- split(pos, factor(key, ordered=FALSE, levels=unique(key)))
+    #print(index)
+    return(list2env(index))
 }
 
 # This function is a simplyfied version of expand.grid() in base package
