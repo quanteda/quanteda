@@ -8,24 +8,19 @@
 # regex <- list(c('^a$', '^b'), c('c'), c('d'))
 # types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
 # regex2fixed5(regex, types, 'regex', case_insensitive=TRUE)
+# index <- index_regex(types, 'regex', case_insensitive=TRUE)
+# regex2fixed5(regex, types, 'regex', case_insensitive=TRUE, index=index)
 
-regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE) {
+regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, index = NULL) {
     
     # Make case insensitive
-    if(case_insensitive){
-        types_search = stri_trans_tolower(types)
-    }else{
-        types_search = types
-    }
+    types_search <- ifelse(case_insensitive, stri_trans_tolower(types), types)
     
-    # Construct full-index of types
-    if(valuetype == 'fixed'){
-        exact <- TRUE
-        index <- index_regex(types_search, TRUE)
-    }else{
-        exact <- FALSE
-        index <- index_regex(types_search, FALSE)
-    }
+    # Set if exact match of not
+    exact <- ifelse(valuetype == 'fixed', TRUE, FALSE)
+    
+    # Construct index if not given
+    if(missing(index)) index <- index_regex(types_search, valuetype)
     
     # Make case-insensitive
     if(case_insensitive) regex <- lapply(regex, stri_trans_tolower)
@@ -85,7 +80,11 @@ select_types <- function (regex, types, types_search, exact, index){
     return(subset)
 }
 
-index_regex <- function(types, fixed){
+index_regex <- function(types, valuetype, case_insensitive = FALSE){
+    
+    if(case_insensitive) types <- stri_trans_tolower(types)
+    exact <- ifelse(valuetype == 'fixed', TRUE, FALSE)
+    
     key <- c()
     pos <- c()
     types <- stri_c("^", types, "$")
@@ -98,7 +97,7 @@ index_regex <- function(types, fixed){
         key <- c(key, types[j])
         
         # Starts or ends with
-        if(!fixed){
+        if(!exact){
             k <- which(len > i)
             pos <- c(pos, k, k)
             key <- c(key, stri_sub(types[k], 1, i), stri_sub(types[k], i * -1, -1))
