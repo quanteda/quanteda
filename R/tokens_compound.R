@@ -105,7 +105,7 @@ tokens_compound.tokens <- function(x, sequences,
     types <- types(x)
     
     # Convert glob or regex to fixed
-    seqs_fixed <- regex2fixed4(seqs, index(types, valuetype, case_insensitive))
+    seqs_fixed <- regex2fixed5(seqs, types, valuetype, case_insensitive)
     if(length(seqs_fixed) == 0) return(x) # do nothing
     
     # Make new types
