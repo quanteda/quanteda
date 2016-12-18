@@ -1,5 +1,8 @@
 source('R/regex2fixed4.R')
 source('R/regex2fixed5.R')
+library(stringi)
+library(fastmatch)
+
 
 load("/home/kohei/Documents/Brexit/Analysis/data_corpus_guardian.RData")
 toks <- tokens(data_corpus_guardian, removePunct = TRUE)
@@ -18,10 +21,6 @@ microbenchmark::microbenchmark(
 setdiff(regex2fixed5(regex_liwc, types, 'regex', case_insensitive=FALSE),
         regex2fixed4(regex_liwc, index(types, 'regex', case_insensitive=FALSE)))
 
-
-profvis::profvis(regex2fixed4(regex_liwc, index(types, 'regex', case_insensitive=TRUE)))
-profvis::profvis(regex2fixed5(regex_liwc, types, 'regex', case_insensitive=TRUE))
-
 dict_lex <- dictionary(file='/home/kohei/Documents/Dictionary/Lexicoder/LSDaug2015/LSD2015_NEG.lc3')
 glob_lex <- tokens(unlist(dict_lex, use.names = FALSE), hash=FALSE, what='fastest')
 regex_lex <- lapply(glob_lex, glob2rx)
@@ -32,4 +31,7 @@ microbenchmark::microbenchmark(
     times=1
 )
 
+profvis::profvis(regex2fixed4(regex_liw c, index(types, 'regex', case_insensitive=TRUE)))
+profvis::profvis(regex2fixed5(list(c('*')), types, 'glob', case_insensitive=TRUE))
+profvis::profvis(regex2fixed5(list(c('not', '*')), types, 'glob', case_insensitive=TRUE))
 
