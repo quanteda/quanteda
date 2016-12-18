@@ -104,13 +104,14 @@ index_regex <- function(types, valuetype, case_insensitive){
             key <- c(key, stri_sub(types[k], 1, i), stri_sub(types[k], i * -1, -1))
         }
     }
-    temp <- split(pos, factor(key, ordered=FALSE, levels=unique(key)))
-    index <- list(key=names(temp), value=unname(temp))
+    index <- split(pos, factor(key, ordered=FALSE, levels=unique(key)))
+    attr(index, 'key') <- names(index)
+    index <- unname(index)
     return(index)
 }
 
 search_index <- function(key, index){
-    index$value[[fmatch(key, index$key)]]
+    index[[fmatch(key, attr(index, 'key'))]]
 }
 
 # This function is a simplyfied version of expand.grid() in base package
