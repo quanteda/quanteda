@@ -1,16 +1,18 @@
 source('R/regex2fixed4.R')
 source('R/regex2fixed5.R')
 
-toks <- tokens(inaugCorpus, removePunct = TRUE)
-types <- attr(toks, 'types')
+load("/home/kohei/Documents/Brexit/Analysis/data_corpus_guardian.RData")
+toks <- tokens(data_corpus_guardian, removePunct = TRUE)
+#toks <- tokens(inaugCorpus, removePunct = TRUE)
 
+types <- attr(toks, 'types')
 dict_liwc <- dictionary(file='/home/kohei/Documents/Dictionary/LIWC/LIWC2007_English.dic')
 
 regex_liwc <- glob2rx(unlist(dict_liwc, use.names = FALSE))
 microbenchmark::microbenchmark(
     regex2fixed4(regex_liwc, index(types, 'regex', case_insensitive=TRUE)),
     regex2fixed5(regex_liwc, types, 'regex', case_insensitive=TRUE),
-    times=1
+    times=10
 )
 
 setdiff(regex2fixed5(regex_liwc, types, 'regex', case_insensitive=FALSE),
