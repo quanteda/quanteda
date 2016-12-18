@@ -101,7 +101,8 @@ index_regex <- function(types, valuetype, case_insensitive){
         if(!exact){
             k <- which(len > i)
             pos <- c(pos, k, k)
-            key <- c(key, stri_sub(types[k], 1, i), stri_sub(types[k], i * -1, -1))
+            types_longer <- types[k]
+            key <- c(key, stri_sub(types_longer, 1, i), stri_sub(types_longer, i * -1, -1))
         }
     }
     index <- split(pos, factor(key, ordered=FALSE, levels=unique(key)))

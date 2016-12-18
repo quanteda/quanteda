@@ -236,7 +236,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
             if (i == 1) {
                 result_blocks[[i]] <- tokens_hash(result_temp)
             }else{
-                result_blocks[[i]] <- tokens_hash(result_temp, attr(result_blocks[i - 1], 'types'))
+                result_blocks[[i]] <- tokens_hash(result_temp, attr(result_blocks[[i - 1]], 'types'))
             }
         }else{
             result_blocks[[i]] <- result_temp
@@ -272,20 +272,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
 #' @rdname tokens
 #' @export
 #' @noRd
-tokens.corpus <- function(x, what = c("word", "sentence", "character", "fastestword", "fasterword"),
-                          removeNumbers = FALSE,
-                          removePunct = FALSE,
-                          removeSymbols = FALSE,
-                          removeSeparators = TRUE,
-                          removeTwitter = FALSE,
-                          removeHyphens = FALSE,
-                          removeURL = FALSE,
-                          ngrams = 1L,
-                          skip = 0L,
-                          concatenator = "_",
-                          simplify = FALSE,
-                          hash = TRUE,
-                          verbose = FALSE, ...) {
+tokens.corpus <- function(x, ...) {
     tokens(texts(x), ...)
 }
 
@@ -377,23 +364,22 @@ is.tokens <- function(x) {
 tokens_hash <- function(x, types, ...) {
     
     attrs_org <- attributes(x)
-    types_x <- unique(unlist(x, use.names = FALSE))
-    types_x <- types_x[types_x != '']  # remove empty "tokens"
+    types_new <- unique(unlist(x, use.names = FALSE))
+    types_new <- types_new[types_new != '']  # remove empty "tokens"
     
     if (missing(types)) {
-        types <- types_x
+        types <- types_new
     } else {
-        types <- c(types, setdiff(types_x, types))
+        types <- c(types, setdiff(types_new, types))
     }
-
     # Serialize tokens 
-    x_int <- lapply(x, fastmatch::fmatch, types)
+    x <- lapply(x, fmatch, types)
     
     # Restore and add additional attributes
-    attributes(x_int) <- attrs_org
-    attr(x_int, "types") <- types
-    class(x_int) <- c("tokens", class(x_int))
-    return(x_int)
+    attributes(x) <- attrs_org
+    attr(x, "types") <- types
+    class(x) <- c("tokens", class(x))
+    return(x)
 }
 
 
@@ -410,12 +396,12 @@ as.tokenizedTexts.tokens <- function(x, ...) {
     class(x) <- "list"
     
     # Desrialize tokens
-    x_chr <- lapply(x, function(y) types[y])
+    x <- lapply(x, function(y) types[y])
     
-    attributes(x_chr) <- attrs_org
-    attr(x_chr, "types") <- NULL  # remove types attribute
-    class(x_chr) <- c("tokenizedTexts", "list")
-    return(x_chr)
+    attributes(x) <- attrs_org
+    attr(x, "types") <- NULL  # remove types attribute
+    class(x) <- c("tokenizedTexts", "list")
+    return(x)
 }
 
 #' print a tokens objects
