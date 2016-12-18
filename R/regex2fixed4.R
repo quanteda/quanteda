@@ -154,3 +154,8 @@ expand_ <- function(elem){
     return(comb)
 }
 
+# This function checks if a string is regular expression
+is_regex_ <- function(x){
+    any(stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
+}
+
