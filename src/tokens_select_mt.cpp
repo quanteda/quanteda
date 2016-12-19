@@ -97,6 +97,7 @@ struct select_mt : public Worker{
  * @creator Kohei Watanabe
  * @param texts_ tokens ojbect
  * @param words_ list of features to remove or keep 
+ * @param mode_ 1: keep; 2: remove
  * @param padding_ fill places where features are removed with zero
  * 
  */
