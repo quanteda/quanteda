@@ -23,15 +23,18 @@ regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, inde
     # Set if exact match of not
     exact <- ifelse(valuetype == 'fixed', TRUE, FALSE)
     
-    # Construct index if not given
-    if(missing(index)) index <- index_regex(types_search, valuetype, case_insensitive)
-    
     # Make case-insensitive
     if(case_insensitive) regex <- lapply(regex, stri_trans_tolower)
     
     # Convert fixed or glob to regex
     if(valuetype == 'glob') regex <- lapply(regex, glob2rx)
     if(valuetype == 'fixed') regex <- lapply(regex, function(x) stri_c("^", x, "$"))
+    
+    # Construct index if not given
+    if(missing(index)){
+        len_max <- max(stri_length(unlist(regex, use.names = FALSE)))
+        index <- index_regex(types_search, valuetype, case_insensitive, len_max)
+    }
     
     # Separate multi and single-entry patterns
     len <- lengths(regex)
@@ -82,27 +85,23 @@ select_types <- function (regex, types, types_search, exact, index){
     return(subset)
 }
 
-index_regex <- function(types, valuetype, case_insensitive){
+index_regex <- function(types, valuetype, case_insensitive, len_max = 10){
     
     if(case_insensitive) types <- stri_trans_tolower(types)
     exact <- ifelse(valuetype == 'fixed', TRUE, FALSE)
     types <- stri_c("^", types, "$")
-    
-    key <- c()
-    pos <- c()
-    len <- stri_length(types)
-    for(i in 2:max(len)){
-        # Exact
-        j <- which(len == i)
-        pos <- c(pos, j)
-        key <- c(key, types[j])
-        
-        # Starts or ends with
-        if(!exact){
+
+    # Exact match
+    pos <- 1:length(types)
+    key <- types
+
+    # Starts or ends with
+    if(!exact){
+        len <- stri_length(types)
+        for(i in 2:len_max){
             k <- which(len > i)
             pos <- c(pos, k, k)
-            types_longer <- types[k]
-            key <- c(key, stri_sub(types_longer, 1, i), stri_sub(types_longer, i * -1, -1))
+            key <- c(key, stri_sub(types[k], 1, i), stri_sub(types[k], i * -1, -1))
         }
     }
     index <- split(pos, factor(key, ordered=FALSE, levels=unique(key)))
