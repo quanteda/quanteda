@@ -13,9 +13,10 @@ dict_liwc <- dictionary(file='/home/kohei/Documents/Dictionary/LIWC/LIWC2007_Eng
 regex_liwc <- glob2rx(unlist(dict_liwc, use.names = FALSE))
 
 microbenchmark::microbenchmark(
-regex = unique(unlist(lapply(head(regex_liwc, 1000), function(x, y) stri_subset_regex(y, x, case_insensitive=TRUE), types))),
-fixed1 = unlist(regex2fixed5(head(regex_liwc, 1000), types, 'regex', case_insensitive=TRUE)),
-fixed2 = unlist(regex2fixed5(regex_liwc, types, 'regex', case_insensitive=TRUE)),
+stringi_sub = unique(unlist(lapply(head(regex_liwc, 1000), function(x, y) stri_subset_regex(y, x, case_insensitive=TRUE), types))),
+stringi = unique(unlist(lapply(regex_liwc, function(x, y) stri_subset_regex(y, x, case_insensitive=TRUE), types))),
+regex2fixed_sub = unlist(regex2fixed5(head(regex_liwc, 1000), types, 'regex', case_insensitive=TRUE)),
+regex2fixed = unlist(regex2fixed5(regex_liwc, types, 'regex', case_insensitive=TRUE)),
 times=1
 )
 

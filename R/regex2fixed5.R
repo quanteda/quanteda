@@ -31,8 +31,10 @@ regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, inde
     if(valuetype == 'fixed') regex <- lapply(regex, function(x) stri_c("^", x, "$"))
     
     # Construct index if not given
-    if(missing(index)) index <- index_regex(types_search, valuetype, case_insensitive)
-    
+    if(missing(index)){ 
+        len_max <- max(stri_length(unlist(regex, use.names = FALSE)))
+        index <- index_regex(types_search, valuetype, case_insensitive, len_max)
+    }
     
     # Separate multi and single-entry patterns
     len <- lengths(regex)
@@ -84,14 +86,14 @@ select_types <- function (regex, types, types_search, exact, index){
     return(subset)
 }
 
-index_regex <- function(types, valuetype, case_insensitive){
+index_regex <- function(types, valuetype, case_insensitive, len_max){
     
-    if(case_insensitive) types <- stri_trans_tolower(types)
     if(valuetype == 'fixed'){
         exact <- TRUE
     }else{
         exact <- FALSE
     }
+    if(case_insensitive) types <- stri_trans_tolower(types)
     types <- stri_c("^", types, "$") # create regex patterns
 
     # Exact match
@@ -101,7 +103,8 @@ index_regex <- function(types, valuetype, case_insensitive){
     # Starts or ends with
     if(!exact){
         len <- stri_length(types)
-        for(i in 2:max(len)){
+        if(missing(len_max)) len_max <- max(len)
+        for(i in 2:len_max){
             k <- which(len > i)
             pos_tmp <- c(pos_tmp, list(rep(k, 2)))
             key_tmp <- c(key_tmp, list(stri_sub(types[k], 1, i)))
