@@ -59,7 +59,7 @@ textstat_dist <- function(x, selection = character(0), n = NULL,
         }
     } else xSelect <- NULL
     
-    vecMethod <- c("euclidean", "hamming", "Chisquared","Chisquared2", "kullback")
+    vecMethod <- c("euclidean", "hamming", "Chisquared","Chisquared2", "kullback","manhattan")
     vecMethod_simil <- c("jaccard", "binary", "eJaccard","simple matching")
     
     if (method %in% vecMethod){
@@ -353,3 +353,17 @@ kullbackSparse <- function(x, y = NULL, margin = 1) {
     dimnames(kullmat) <- list(rowNm,  colNm)
     kullmat
 }
+#'@importFrom RcppParallel RcppParallelLibs
+manhattanSparse <- function(x, y=NULL, margin = 1){
+    marginNames <- if (margin == 2) colnames else rownames
+    if (!is.null(y)) {
+        colNm <- marginNames(y)
+        manmat <- qatd_ManhattanPara_cpp2(x, y, margin)
+    } else {
+        colNm <- marginNames(x)
+        manmat <- qatd_ManhattanPara_cpp(x, margin)
+    }
+    dimnames(manmat) <- list(marginNames(x),  colNm)
+    manmat
+}
+

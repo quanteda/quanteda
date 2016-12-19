@@ -306,7 +306,7 @@ test_that("test textstat_dist method = \"Chi-squred\" against ExPosition::chi2Di
 
 # Kullback-Leibler divergence
 # proxy::dist() will generate NA for matrix with zeros, hence a matrix only with non-zero entries is used here.
-test_that("test textstat_dist method = \"Euclidean\" against proxy dist() and stats dist(): documents", {
+test_that("test textstat_dist method = \"Kullback-Leibler\" against proxy dist(): documents", {
     require(proxy)
     m <- matrix(rexp(550, rate=.1), nrow = 5)
     kullQuanteda <- round(as.matrix(textstat_dist(as.dfm(m), method = "kullback", margin = "documents")), 2)
@@ -314,3 +314,26 @@ test_that("test textstat_dist method = \"Euclidean\" against proxy dist() and st
     expect_equal(kullQuanteda, kullProxy)
 })
 
+# Manhattan distance
+test_that("test textstat_dist method = \"manhattan\" against proxy dist() : documents", {
+    require(proxy)
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    manQuanteda <- round(as.matrix(textstat_dist(presDfm, method = "manhattan", margin = "documents")), 2)
+    manProxy <- round(as.matrix(proxy::dist(as.matrix(presDfm), "manhattan", diag = FALSE, upper = FALSE)), 2)
+    expect_equal(manQuanteda, manProxy)
+})
+
+test_that("test textstat_dist method = \"manhattan\" against proxy dist() : documents", {
+    require(proxy)
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    manQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet",  method = "manhattan", margin = "features"))[,"soviet"], 2)
+    manQuanteda <- manQuanteda[order(names(manQuanteda))]
+    manQuanteda <- manQuanteda[-which(names(manQuanteda) == "soviet")]
+    
+    manProxy <- round(drop(proxy::dist(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), "manhattan", by_rows = FALSE)), 2)
+    manProxy <- manProxy[order(names(manProxy))]
+    manProxy <- manProxy[-which(names(manProxy) == "soviet")]
+    expect_equal(manQuanteda, manProxy)
+})
