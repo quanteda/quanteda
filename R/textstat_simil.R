@@ -8,11 +8,6 @@
 #     textstat_simil(x, ...)
 # }
 
-#' similarity or distance between dfm documents and/or features
-#' 
-#' Compute a similarity or distance matrix between documents and/or features 
-#' from a \code{\link{dfm}} and return a standard \code{\link[stats]{dist}} 
-#' object.
 #' @param x a \link{dfm} object
 #' @param selection character or character vector of document names or feature 
 #'   labels from the dfm

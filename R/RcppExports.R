@@ -25,6 +25,14 @@ qatd_CanberraPara_cpp2 <- function(A, B, margin = 1L) {
     .Call('quanteda_qatd_CanberraPara_cpp2', PACKAGE = 'quanteda', A, B, margin)
 }
 
+qatd_MinkowskiPara_cpp <- function(A, margin = 1L, p = 2) {
+    .Call('quanteda_qatd_MinkowskiPara_cpp', PACKAGE = 'quanteda', A, margin, p)
+}
+
+qatd_MinkowskiPara_cpp2 <- function(A, B, margin = 1L, p = 2) {
+    .Call('quanteda_qatd_MinkowskiPara_cpp2', PACKAGE = 'quanteda', A, B, margin, p)
+}
+
 fcm_cpp <- function(texts, types, count, window, weights, ordered, tri, nvec) {
     .Call('quanteda_fcm_cpp', PACKAGE = 'quanteda', texts, types, count, window, weights, ordered, tri, nvec)
 }

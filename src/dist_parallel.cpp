@@ -28,7 +28,15 @@ struct ManhattanDistance : public Worker {
             for (std::size_t j = i+1; j < nrow; j++) {
                 arma::colvec bb = amat.col(j) - aa;
                 rmat(j,i) = sum(abs(bb));
-                //Rcpp::Rcout<<j<<std::endl;
+
+                // Using iterator is slower
+                // arma::sp_mat diff = abs(amat.col(j) - amat.col(i));
+                // double  dist = 0;
+                // for(arma::sp_mat::const_iterator it_i = diff.begin(); it_i != diff.end(); ++it_i){
+                //     dist += *it_i;
+                // }
+                // rmat(j,i) = dist;
+                
             }
         }
     }
@@ -314,5 +322,112 @@ NumericMatrix qatd_CanberraPara_cpp2(const arma::sp_mat& A, const arma::sp_mat& 
     
     // call it with parallelFor
     parallelFor(0, nrow_base, canberraDistance);
+    return rmat;
+}
+
+// Minkowski distance: (sum_i (x_i - y_i)^p)^(1/p)
+struct MinkowskiDistance : public Worker {
+    
+    // input matrix to read from
+    const arma::sp_mat& amat;
+    // output matrix to write to
+    RMatrix<double> rmat;
+    
+    arma::uword nrow, ncol;
+    double p;
+    
+    // initialize from Rcpp input and output matrixes 
+    MinkowskiDistance(const arma::sp_mat& amat, NumericMatrix& rmat, arma::uword nrow, arma::uword ncol, double p)
+        : amat(amat), rmat(rmat), nrow(nrow), ncol(ncol), p(p) {}
+    
+    // function call operator that work for the specified range (begin/end)
+    void operator()(std::size_t begin, std::size_t end) {
+        for (std::size_t i = begin; i < end; i++) {
+            //arma::colvec aa = amat.col(i) + arma::zeros<arma::colvec>(ncol);
+            for (std::size_t j = i+1; j < nrow; j++) {
+                //arma::colvec diff = pow(abs(amat.col(j) - aa), p);
+                //rmat(j,i) = pow(sum(diff), 1/p);
+                
+                
+                //use sp_mat iterator - it will skip the zero element
+                //This method is faster than converting to dense vector and conducting pow() operation.
+                arma::sp_mat diff = abs(amat.col(j) - amat.col(i));
+                double  dist = 0;
+                for(arma::sp_mat::const_iterator it_i = diff.begin(); it_i != diff.end(); ++it_i){
+                    dist += pow(*it_i, p);
+                }
+                rmat(j,i) = pow(dist, 1/p);
+            }
+        }
+    }
+};
+
+struct MinkowskiDistance2 : public Worker {
+    
+    // input matrix to read from
+    const arma::sp_mat& amat;
+    const arma::sp_mat& bmat;
+    // output matrix to write to
+    RMatrix<double> rmat;
+    
+    arma::uword nrow, ncol;
+    double p;
+    // initialize from Rcpp input and output matrixes 
+    MinkowskiDistance2(const arma::sp_mat& amat, const arma::sp_mat& bmat, NumericMatrix& rmat, arma::uword nrow, arma::uword ncol, double p)
+        : amat(amat), bmat(bmat), rmat(rmat), nrow(nrow), ncol(ncol), p(p) {}
+    
+    // function call operator that work for the specified range (begin/end)
+    void operator()(std::size_t begin, std::size_t end) {
+        for (std::size_t i = begin; i < end; i++) {
+            arma::colvec aa = amat.col(i) + arma::zeros<arma::colvec>(ncol);
+            for (std::size_t j = 0; j < nrow; j++) {
+                arma::sp_mat diff = abs(amat.col(i) - bmat.col(j));
+                double  dist = 0;
+                for(arma::sp_mat::const_iterator it_i = diff.begin(); it_i != diff.end(); ++it_i){
+                    dist += pow(*it_i, p);
+                }
+                rmat(i,j) = pow(dist, 1/p);
+                
+            }
+        }
+    }
+};
+
+// [[Rcpp::export]]
+NumericMatrix qatd_MinkowskiPara_cpp(const arma::sp_mat& A, const int margin = 1, const double p = 2) {
+    //Transpose the dfm so that the distance can be calculated between columns.
+    arma::sp_mat base_m = (margin == 1)? A.t() : A;
+    arma::uword nrow = (margin == 1)?A.n_rows : A.n_cols;
+    arma::uword ncol = (margin == 1)?A.n_cols : A.n_rows;
+    
+    // allocate the matrix we will return
+    NumericMatrix rmat(nrow, nrow);
+    
+    // create the worker
+    MinkowskiDistance minkowskiDistance(base_m, rmat, nrow, ncol, p);
+    
+    // call it with parallelFor
+    parallelFor(0, nrow-1, minkowskiDistance);
+    return rmat;
+}
+
+// [[Rcpp::export]]
+NumericMatrix qatd_MinkowskiPara_cpp2(const arma::sp_mat& A, const arma::sp_mat& B, const int margin = 1, const double p = 2) {
+    //Transpose the dfm so that the distance can be calculated between columns.
+    arma::sp_mat base_m = (margin == 1)? A.t() : A;
+    arma::sp_mat second_m = (margin == 1)? B.t() : B;
+    
+    arma::uword nrow_base = (margin == 1)?A.n_rows : A.n_cols;
+    arma::uword ncol = (margin == 1)?A.n_cols : A.n_rows;
+    arma::uword nrow_2nd = (margin == 1)?B.n_rows : B.n_cols;
+    
+    // allocate the matrix we will return
+    NumericMatrix rmat(nrow_base, nrow_2nd);
+    
+    // create the worker
+    MinkowskiDistance2 minkowskiDistance(base_m, second_m, rmat, nrow_2nd, ncol, p);
+    
+    // call it with parallelFor
+    parallelFor(0, nrow_base, minkowskiDistance);
     return rmat;
 }
