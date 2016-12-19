@@ -64,21 +64,21 @@ select_types <- function (regex, types, types_search, exact, index){
             #cat('Exact match', regex, '\n')
             types[search_index(regex, index)]
         }else{
-            types[stri_detect_regex(types_search, regex)]
-            # if(regex == ''){
-            #     NULL # return nothing for empty pattern
-            # }else if(regex == '^'){    
-            #     types # return all types when glob is *
-            # }else if(length((ids <- search_index(regex, index)))){
-            #     #cat('Index search', regex, '\n')
-            #     types[ids]
-            # }else if(!is_indexed(regex)){
-            #     #cat('Regex search', regex, '\n')
-            #     types[stri_detect_regex(types_search, regex)]
-            # }else{
-            #     #cat('Not found', regex, '\n')
-            #     NULL
-            # }
+            
+            if(regex == ''){
+                NULL # return nothing for empty pattern
+            }else if(regex == '^'){
+                types # return all types when glob is *
+            }else if(length((ids <- search_index(regex, index)))){
+                #cat('Index search', regex, '\n')
+                types[ids]
+            }else if(!is_indexed(regex)){
+                cat('Regex search', regex, '\n')
+                types[stri_detect_regex(types_search, regex)]
+            }else{
+                #cat("Not found\n")
+                NULL
+            }
         }
     }, types, types_search, exact, index)
     return(subset)
@@ -92,22 +92,25 @@ index_regex <- function(types, valuetype, case_insensitive){
     }else{
         exact <- FALSE
     }
-    flag_ignore <- has_punct(types) # ignore tokes with punctuation (URL or Twitter tags)
-    types <- stri_c("^", types, "$")
+    types <- stri_c("^", types, "$") # create regex patterns
 
     # Exact match
-    pos <- seq_along(types)[!flag_ignore]
-    key <- types[!flag_ignore]
+    pos_tmp <- seq_along(types)
+    key_tmp <- list(types)
 
     # Starts or ends with
-    # if(!exact){
-    #     len <- stri_length(types)
-    #     for(i in 2:max(len[!flag_ignore])){
-    #         k <- which(!flag_ignore & len > i)
-    #         pos <- c(pos, k, k)
-    #         key <- c(key, stri_sub(types[k], 1, i), stri_sub(types[k], i * -1, -1))
-    #     }
-    # }
+    if(!exact){
+        len <- stri_length(types)
+        for(i in 2:max(len)){
+            k <- which(len > i)
+            pos_tmp <- c(pos_tmp, list(rep(k, 2)))
+            key_tmp <- c(key_tmp, list(stri_sub(types[k], 1, i)))
+            key_tmp <- c(key_tmp, list(stri_sub(types[k], i * -1, -1)))
+        }
+    }
+    # Much faster to unlist in the end
+    key <- unlist(key_tmp, use.names = FALSE) 
+    pos <- unlist(pos_tmp, use.names = FALSE)
     index <- split(pos, factor(key, ordered=FALSE, levels=unique(key)))
     attr(index, 'key') <- names(index)
     index <- unname(index)
@@ -146,7 +149,7 @@ is_regex <- function(x){
 
 has_punct <- function(x){
     #stri_detect_charclass(x, "[\\p{P}]")
-    stri_detect_regex(x, "[.()^\\{\\}+$*\\[\\]\\\\#]")
+    stri_detect_regex(x, "[.()^\\{\\}+$*\\[\\]\\\\]")
 }
 
 is_indexed <- function(x){
