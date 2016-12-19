@@ -30,8 +30,8 @@ microbenchmark::microbenchmark(
     regex2fixed5(regex_lex, types, 'regex', case_insensitive=TRUE),
     times=1
 )
-
-profvis::profvis(regex2fixed4(regex_liw c, index(types, 'regex', case_insensitive=TRUE)))
+profvis::profvis(regex2fixed5(regex_liwc, types, 'regex', case_insensitive=TRUE))
+profvis::profvis(regex2fixed4(regex_liwc, index(types, 'regex', case_insensitive=TRUE)))
 profvis::profvis(regex2fixed5(list(c('*')), types, 'glob', case_insensitive=TRUE))
 profvis::profvis(regex2fixed5(list(c('not', '*')), types, 'glob', case_insensitive=TRUE))
 

@@ -11,15 +11,11 @@ dict_fix <- dictionary(list(country = "united states",
 
 microbenchmark::microbenchmark(
     r=applyDictionary(toks, dict_fix, valuetype='fixed', verbose=FALSE),
-    cpp=tokens_lookup(toks, dict_fix, valuetype='fixed', verbose=FALSE)
+    cpp=tokens_lookup(toks, dict_fix, valuetype='fixed', verbose=FALSE),
+    times=1
 )
 
 dict_liwc <- dictionary(file='/home/kohei/Documents/Dictionary/LIWC/LIWC2007_English.dic')
-microbenchmark::microbenchmark(
-    r=applyDictionary(toks, dict_liwc, valuetype='fixed', verbose=FALSE),
-    cpp=tokens_lookup(toks, dict_liwc, valuetype='fixed', verbose=FALSE),
-    times=1
-)
 
 microbenchmark::microbenchmark(
     fixed=tokens_lookup(toks, dict_liwc, valuetype='fixed', verbose=FALSE),
@@ -54,7 +50,7 @@ microbenchmark::microbenchmark(
 
 system.time(tokens_lookup(toks, dict_liwc, valuetype='glob', verbose=TRUE))
 
-profvis::profvis(tokens_lookup(toks, dict_liwc[1], valuetype='glob', verbose=FALSE))
+profvis::profvis(tokens_lookup(toks, dict_liwc, valuetype='glob', verbose=FALSE))
 
 
 

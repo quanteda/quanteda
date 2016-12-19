@@ -31,10 +31,8 @@ regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, inde
     if(valuetype == 'fixed') regex <- lapply(regex, function(x) stri_c("^", x, "$"))
     
     # Construct index if not given
-    if(missing(index)){
-        len_max <- max(stri_length(unlist(regex, use.names = FALSE)))
-        index <- index_regex(types_search, valuetype, case_insensitive, len_max)
-    }
+    if(missing(index)) index <- index_regex(types_search, valuetype, case_insensitive)
+    
     
     # Separate multi and single-entry patterns
     len <- lengths(regex)
@@ -66,44 +64,50 @@ select_types <- function (regex, types, types_search, exact, index){
             #cat('Exact match', regex, '\n')
             types[search_index(regex, index)]
         }else{
-            if(regex == ''){
-                NULL # return nothing for empty pattern
-            }else if(regex == '^'){    
-                types # return all types when glob is *
-            }else if(length((ids <- search_index(regex, index)))){
-                #cat('Index search', regex, '\n')
-                types[ids]
-            }else if(!is_indexed(regex)){
-                #cat('Sequential search', regex, '\n')
-                types[stri_detect_regex(types_search, regex)]
-            }else{
-                #cat('Not found', regex, '\n')
-                NULL
-            }
+            types[stri_detect_regex(types_search, regex)]
+            # if(regex == ''){
+            #     NULL # return nothing for empty pattern
+            # }else if(regex == '^'){    
+            #     types # return all types when glob is *
+            # }else if(length((ids <- search_index(regex, index)))){
+            #     #cat('Index search', regex, '\n')
+            #     types[ids]
+            # }else if(!is_indexed(regex)){
+            #     #cat('Regex search', regex, '\n')
+            #     types[stri_detect_regex(types_search, regex)]
+            # }else{
+            #     #cat('Not found', regex, '\n')
+            #     NULL
+            # }
         }
     }, types, types_search, exact, index)
     return(subset)
 }
 
-index_regex <- function(types, valuetype, case_insensitive, len_max = 10){
+index_regex <- function(types, valuetype, case_insensitive){
     
     if(case_insensitive) types <- stri_trans_tolower(types)
-    exact <- ifelse(valuetype == 'fixed', TRUE, FALSE)
+    if(valuetype == 'fixed'){
+        exact <- TRUE
+    }else{
+        exact <- FALSE
+    }
+    flag_ignore <- has_punct(types) # ignore tokes with punctuation (URL or Twitter tags)
     types <- stri_c("^", types, "$")
 
     # Exact match
-    pos <- 1:length(types)
-    key <- types
+    pos <- seq_along(types)[!flag_ignore]
+    key <- types[!flag_ignore]
 
     # Starts or ends with
-    if(!exact){
-        len <- stri_length(types)
-        for(i in 2:len_max){
-            k <- which(len > i)
-            pos <- c(pos, k, k)
-            key <- c(key, stri_sub(types[k], 1, i), stri_sub(types[k], i * -1, -1))
-        }
-    }
+    # if(!exact){
+    #     len <- stri_length(types)
+    #     for(i in 2:max(len[!flag_ignore])){
+    #         k <- which(!flag_ignore & len > i)
+    #         pos <- c(pos, k, k)
+    #         key <- c(key, stri_sub(types[k], 1, i), stri_sub(types[k], i * -1, -1))
+    #     }
+    # }
     index <- split(pos, factor(key, ordered=FALSE, levels=unique(key)))
     attr(index, 'key') <- names(index)
     index <- unname(index)
@@ -140,12 +144,17 @@ is_regex <- function(x){
     any(stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
 }
 
+has_punct <- function(x){
+    #stri_detect_charclass(x, "[\\p{P}]")
+    stri_detect_regex(x, "[.()^\\{\\}+$*\\[\\]\\\\#]")
+}
+
 is_indexed <- function(x){
     head <- stri_startswith_fixed(x, '^')
     tail <- stri_endswith_fixed(x, '$')
-    if(head && tail && !is_regex(stri_sub(x, 2, -2))) return(TRUE)
-    if(head && !is_regex(stri_sub(x, 2, -1))) return(TRUE)
-    if(tail && !is_regex(stri_sub(x, 1, -2))) return(TRUE)
+    if(head && tail && !has_punct(stri_sub(x, 2, -2))) return(TRUE)
+    if(head && !has_punct(stri_sub(x, 2, -1))) return(TRUE)
+    if(tail && !has_punct(stri_sub(x, 1, -2))) return(TRUE)
     return(FALSE)
 }
 
