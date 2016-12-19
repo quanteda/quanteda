@@ -604,11 +604,11 @@ tokens_hashed_recompile <- function(x) {
     index_unique <- index_unique[index_unique != 0] # exclude padding
     
     # Remove gaps in the type index, if any, remap index
-    if (any(is.na(match(seq_along(index_unique), index_unique)))) { 
+    if (any(is.na(fmatch(seq_along(index_unique), index_unique)))) { 
         types_new <- types(x)[index_unique]
         index_new <- seq_along(index_unique)
         index_unique <- c(0, index_unique) # padding index is zero but not in types
-        x <- lapply(unclass(x), function(y) index_new[match(y, index_unique) - 1]) # shift index for padding
+        x <- lapply(unclass(x), function(y) index_new[fmatch(y, index_unique) - 1]) # shift index for padding
         attributes(x) <- attrs_input
         types(x) <- types_new
     }
@@ -617,7 +617,7 @@ tokens_hashed_recompile <- function(x) {
     if (any(duplicated(types(x)))) {
         types <- types(x)
         types_unique <- unique(types)
-        index_mapping <- match(types, types_unique)
+        index_mapping <- fmatch(types, types_unique)
         index_mapping <- c(0, index_mapping) # padding index is zero but not in types
         x <- lapply(unclass(x), function(y) index_mapping[y + 1]) # shift index for padding
         attributes(x) <- attrs_input
