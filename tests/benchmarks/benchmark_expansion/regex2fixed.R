@@ -6,20 +6,30 @@ library(fastmatch)
 
 load("/home/kohei/Documents/Brexit/Analysis/data_corpus_guardian.RData")
 toks <- tokens(data_corpus_guardian, removePunct = TRUE)
-#toks <- tokens(inaugCorpus, removePunct = TRUE)
+toks <- tokens(inaugCorpus, removePunct = TRUE)
 
 types <- attr(toks, 'types')
 dict_liwc <- dictionary(file='/home/kohei/Documents/Dictionary/LIWC/LIWC2007_English.dic')
-
 regex_liwc <- glob2rx(unlist(dict_liwc, use.names = FALSE))
+
 microbenchmark::microbenchmark(
-    regex2fixed4(regex_liwc, index(types, 'regex', case_insensitive=TRUE)),
-    regex2fixed5(regex_liwc, types, 'regex', case_insensitive=TRUE),
-    times=10
+regex = unique(unlist(lapply(head(regex_liwc, 1000), function(x, y) stri_subset_regex(y, x, case_insensitive=TRUE), types))),
+fixed1 = unlist(regex2fixed5(head(regex_liwc, 1000), types, 'regex', case_insensitive=TRUE)),
+fixed2 = unlist(regex2fixed5(regex_liwc, types, 'regex', case_insensitive=TRUE)),
+times=1
 )
 
-setdiff(regex2fixed5(regex_liwc, types, 'regex', case_insensitive=FALSE),
-        regex2fixed4(regex_liwc, index(types, 'regex', case_insensitive=FALSE)))
+out1 = unique(unlist(lapply(head(regex_liwc, 1000), function(x, y) stri_subset_regex(y, x, case_insensitive=TRUE), types)))
+out2 = unlist(regex2fixed5(head(regex_liwc, 1000), types, 'regex', case_insensitive=TRUE))
+identical(out1, out2)
+setdiff(out1, out2)
+setdiff(out2, out1)
+
+microbenchmark::microbenchmark(
+    lapply(regex_liwc, function(x, y) stri_subset_regex(x, y, case_insensitive=TRUE), types),
+    regex2fixed5(regex_liwc, types, 'regex', case_insensitive=TRUE),
+    times=1
+)
 
 dict_lex <- dictionary(file='/home/kohei/Documents/Dictionary/Lexicoder/LSDaug2015/LSD2015_NEG.lc3')
 glob_lex <- tokens(unlist(dict_lex, use.names = FALSE), hash=FALSE, what='fastest')
