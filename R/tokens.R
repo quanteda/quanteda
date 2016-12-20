@@ -236,7 +236,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
             if (i == 1) {
                 result_blocks[[i]] <- tokens_hash(result_temp)
             }else{
-                result_blocks[[i]] <- tokens_hash(result_temp, attr(result_blocks[i - 1], 'types'))
+                result_blocks[[i]] <- tokens_hash(result_temp, attr(result_blocks[[i - 1]], 'types'))
             }
         }else{
             result_blocks[[i]] <- result_temp
