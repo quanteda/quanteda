@@ -21,15 +21,18 @@ regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, inde
     }
     
     # Set if exact match of not
-    exact <- ifelse(valuetype == 'fixed', TRUE, FALSE)
+    if(valuetype == 'fixed'){
+        exact <- TRUE
+    }else{
+        exact <- FALSE
+    }
     
     # Make case-insensitive
     if(case_insensitive) regex <- lapply(regex, stri_trans_tolower)
     
     # Convert fixed or glob to regex
     if(valuetype == 'glob') regex <- lapply(regex, glob2rx)
-    if(valuetype == 'fixed') regex <- lapply(regex, function(x) stri_c("^", x, "$"))
-    
+
     # Construct index if not given
     #if(length(regex) > 10 && is.null(index)){ # do not construct index for few patterns
     if(is.null(index)){
@@ -96,15 +99,17 @@ select_types <- function (regex, types, types_search, exact, index){
 # from the longest regex queries to limit the size of the index.
 index_regex <- function(types, valuetype, case_insensitive, len_max){
     
+    if(case_insensitive) types <- stri_trans_tolower(types)
     if(valuetype == 'fixed'){
         exact <- TRUE
     }else{
         exact <- FALSE
     }
-    if(case_insensitive) types <- stri_trans_tolower(types)
-    types <- escape_regex(types) # punctuations are not regular expressions
-    types <- stri_c("^", types, "$") # create regex patterns
-
+    # Create regex patterns from types
+    if(!exact){ 
+        types <- escape_regex(types) # punctuations are not regular expressions
+        types <- stri_c("^", types, "$")
+    }
     # Index for regex patterns of ^xxxx$ 
     pos_tmp <- seq_along(types)
     key_tmp <- list(types)
