@@ -75,7 +75,7 @@ select_types <- function (regex, types, types_search, exact, index){
                 #cat('Index search', regex, '\n')
                 types[ids]
             }else if(!is_indexed(regex)){
-                cat('Regex search', regex, '\n')
+                #cat('Regex search', regex, '\n')
                 types[stri_detect_regex(types_search, regex)]
             }else{
                 #cat("Not found\n")
@@ -150,17 +150,12 @@ is_regex <- function(x){
     any(stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
 }
 
-has_punct <- function(x){
-    #stri_detect_charclass(x, "[\\p{P}]")
-    stri_detect_regex(x, "[.()^\\{\\}+$*\\[\\]\\\\]")
-}
-
 is_indexed <- function(x){
     head <- stri_startswith_fixed(x, '^')
     tail <- stri_endswith_fixed(x, '$')
-    if(head && tail && !has_punct(stri_sub(x, 2, -2))) return(TRUE)
-    if(head && !has_punct(stri_sub(x, 2, -1))) return(TRUE)
-    if(tail && !has_punct(stri_sub(x, 1, -2))) return(TRUE)
+    if(head && tail && !is_regex(stri_sub(x, 2, -2))) return(TRUE)
+    if(head && !is_regex(stri_sub(x, 2, -1))) return(TRUE)
+    if(tail && !is_regex(stri_sub(x, 1, -2))) return(TRUE)
     return(FALSE)
 }
 
