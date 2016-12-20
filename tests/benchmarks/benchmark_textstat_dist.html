@@ -121,37 +121,56 @@ $(document).ready(function () {
 </div>
 
 
-<div id="test-euclidean-method-quantedatextstat_dist-v.-proxydist-v.-statsdist" class="section level3">
-<h3>Test “Euclidean” method: quanteda::textstat_dist() v. <a href="proxy::dist" class="uri">proxy::dist</a>() v. stats::dist()</h3>
-<p>To test the performance of dfm construction using tokens versus classic tokenized methods.</p>
+<div id="test-euclidean-distance-quantedatextstat_dist-v.-proxydist-v.-statsdist" class="section level3">
+<h3>Test “Euclidean” distance: quanteda::textstat_dist() v. <a href="proxy::dist" class="uri">proxy::dist</a>() v. stats::dist()</h3>
+<p>To test the performance of similarity calculation using vectorized method versus c loop method.</p>
 <pre class="r"><code>require(quanteda, quietly = TRUE, warn.conflicts = FALSE)</code></pre>
-<pre><code>## quanteda version 0.9.8.9017</code></pre>
+<pre><code>## quanteda version 0.9.8.9022</code></pre>
 <pre class="r"><code>data(SOTUCorpus, package = &quot;quantedaData&quot;)
 SOTUDfm &lt;- dfm(SOTUCorpus, remove = stopwords(&quot;english&quot;), stem = TRUE, verbose = FALSE)</code></pre>
 <p><code>##</code></p>
-<pre class="r"><code>microbenchmark::microbenchmark(eucQuanteda = textstat_dist(SOTUDfm, method = &quot;euclidean&quot;, margin = &quot;documents&quot;),  
+<pre class="r"><code>microbenchmark::microbenchmark(eucQuanteda = textstat_dist(SOTUDfm, method = &quot;euclidean&quot;, 
+                                                           margin = &quot;documents&quot;),  
 eucProxy = proxy::dist(as.matrix(SOTUDfm), &quot;euclidean&quot;, diag = FALSE, upper = FALSE, p = 2), 
 eucStats = dist(as.matrix(SOTUDfm), method = &quot;euclidean&quot;, diag = FALSE, upper = FALSE, p = 2),
 times = 20, unit = &quot;relative&quot;)</code></pre>
 <pre><code>## Unit: relative
 ##         expr      min       lq     mean   median       uq      max neval
 ##  eucQuanteda  1.00000  1.00000  1.00000  1.00000  1.00000  1.00000    20
-##     eucProxy 33.21184 33.58918 35.61736 33.93360 39.46944 37.61846    20
-##     eucStats 86.98638 86.04786 85.81770 85.33825 85.00070 86.35041    20</code></pre>
+##     eucProxy 40.86053 40.51040 40.92399 40.45209 41.58997 40.20591    20
+##     eucStats 96.82875 93.38192 93.47039 93.18980 93.33561 91.93441    20</code></pre>
 </div>
-<div id="test-jaccard-method-quanteda-v.-proxy" class="section level3">
-<h3>Test “jaccard” method: quanteda v. proxy</h3>
+<div id="test-jaccard-similarity-quanteda-v.-proxy" class="section level3">
+<h3>Test “Jaccard” similarity: quanteda v. proxy</h3>
+<p>To test the performance of similarity calculation using vectorized method versus c loop method.</p>
 <pre class="r"><code>require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
 data(SOTUCorpus, package = &quot;quantedaData&quot;)
 SOTUDfm &lt;- dfm(SOTUCorpus, remove = stopwords(&quot;english&quot;), stem = TRUE, verbose = FALSE)</code></pre>
 <p><code>##</code></p>
-<pre class="r"><code>microbenchmark::microbenchmark(jacQuanteda = textstat_simil(SOTUDfm, method =&quot;jaccard&quot;, margin = &quot;documents&quot;, tri = TRUE),
+<pre class="r"><code>microbenchmark::microbenchmark(jacQuanteda = textstat_simil(SOTUDfm, method =&quot;jaccard&quot;, 
+                                                            margin = &quot;documents&quot;, upper = TRUE),
 jacProxy = proxy::simil(as.matrix(SOTUDfm), &quot;jaccard&quot;, diag = FALSE, upper = FALSE), 
 times = 10, unit = &quot;relative&quot;)</code></pre>
 <pre><code>## Unit: relative
 ##         expr      min       lq     mean   median       uq      max neval
 ##  jacQuanteda  1.00000  1.00000  1.00000  1.00000  1.00000  1.00000    10
-##     jacProxy 31.82252 33.95736 31.27428 32.73589 29.54545 27.80295    10</code></pre>
+##     jacProxy 33.73061 33.93456 32.65849 33.46941 31.02999 31.47957    10</code></pre>
+</div>
+<div id="test-manhattan-similarity-quanteda-v.-proxy" class="section level3">
+<h3>Test “Manhattan” similarity: quanteda v. proxy</h3>
+<p>To test the performance of similarity calculation using parallel method versus serial method.</p>
+<pre class="r"><code>require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
+data(SOTUCorpus, package = &quot;quantedaData&quot;)
+SOTUDfm &lt;- dfm(SOTUCorpus, remove = stopwords(&quot;english&quot;), stem = TRUE, verbose = FALSE)</code></pre>
+<p><code>##</code></p>
+<pre class="r"><code>microbenchmark::microbenchmark(manhaQuanteda = textstat_dist(SOTUDfm, method =&quot;manhattan&quot;, 
+                                                             margin = &quot;documents&quot;, upper = FALSE),
+manhaProxy = proxy::dist(as.matrix(SOTUDfm), &quot;Manhattan&quot;, diag = FALSE, upper = FALSE), 
+times = 10, unit = &quot;relative&quot;)</code></pre>
+<pre><code>## Unit: relative
+##           expr    min       lq     mean   median       uq      max neval
+##  manhaQuanteda  1.000  1.00000  1.00000  1.00000  1.00000  1.00000    10
+##     manhaProxy 12.396 11.59611 11.56912 11.34059 11.64458 10.88462    10</code></pre>
 </div>
 
 
