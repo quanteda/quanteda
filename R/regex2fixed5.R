@@ -86,6 +86,9 @@ select_types <- function (regex, types, types_search, exact, index){
     return(subset)
 }
 
+# This function construct an index of regex patters of ^xxxx, xxxx$ and ^xxxx$ 
+# to avoide expensive sequential search by stri_detect_regex. len_max should be obtained 
+# from the longest regex queries to limit the size of the index.
 index_regex <- function(types, valuetype, case_insensitive, len_max){
     
     if(valuetype == 'fixed'){
@@ -94,16 +97,17 @@ index_regex <- function(types, valuetype, case_insensitive, len_max){
         exact <- FALSE
     }
     if(case_insensitive) types <- stri_trans_tolower(types)
+    types <- escape_regex(types) # punctuations are not regular expressions
     types <- stri_c("^", types, "$") # create regex patterns
 
-    # Exact match
+    # Index for regex patterns of ^xxxx$ 
     pos_tmp <- seq_along(types)
     key_tmp <- list(types)
 
-    # Starts or ends with
+    # Index for regex patterns of ^xxxx and xxxx$
     if(!exact){
         len <- stri_length(types)
-        if(missing(len_max)) len_max <- max(len)
+        if(missing(len_max)) len_max <- max(len) # index all the types if len_max is unknown
         for(i in 2:len_max){
             k <- which(len > i)
             pos_tmp <- c(pos_tmp, list(rep(k, 2)))
@@ -111,17 +115,17 @@ index_regex <- function(types, valuetype, case_insensitive, len_max){
             key_tmp <- c(key_tmp, list(stri_sub(types[k], i * -1, -1)))
         }
     }
-    # Much faster to unlist in the end
+    # Faster to join vectors in the end
     key <- unlist(key_tmp, use.names = FALSE) 
     pos <- unlist(pos_tmp, use.names = FALSE)
-    index <- split(pos, factor(key, ordered=FALSE, levels=unique(key)))
+    index <- split(pos, factor(key, ordered=FALSE, levels=unique(key))) # set factor for quick split
     attr(index, 'key') <- names(index)
     index <- unname(index)
     return(index)
 }
 
 search_index <- function(key, index){
-    index[[fmatch(key, attr(index, 'key'))]]
+    index[[fmatch(key, attr(index, 'key'))]] # use fmatch instead of names for quick access
 }
 
 # This function is a simplyfied version of expand.grid() in base package
@@ -148,6 +152,10 @@ expand <- function(elem){
 # This function checks if a string is regular expression
 is_regex <- function(x){
     any(stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
+}
+
+escape_regex <- function(x){
+    stri_replace_all_regex(x, "([.()^\\{\\}+$*\\[\\]\\\\])", "\\\\$1")
 }
 
 is_indexed <- function(x){
