@@ -31,7 +31,8 @@ regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, inde
     if(valuetype == 'fixed') regex <- lapply(regex, function(x) stri_c("^", x, "$"))
     
     # Construct index if not given
-    if(missing(index)){ 
+    #if(length(regex) > 10 && is.null(index)){ # do not construct index for few patterns
+    if(is.null(index)){
         len_max <- max(stri_length(unlist(regex, use.names = FALSE)))
         index <- index_regex(types_search, valuetype, case_insensitive, len_max)
     }
@@ -61,26 +62,30 @@ regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, inde
 # This function subset types avoiding expensive full regular expression matching
 select_types <- function (regex, types, types_search, exact, index){
 
+
     subset <- lapply(regex, function(regex, types, types_search, exact, index){
-        if(exact){
-            #cat('Exact match', regex, '\n')
-            types[search_index(regex, index)]
-        }else{
-            
-            if(regex == ''){
-                NULL # return nothing for empty pattern
-            }else if(regex == '^'){
-                types # return all types when glob is *
-            }else if(length((ids <- search_index(regex, index)))){
-                #cat('Index search', regex, '\n')
-                types[ids]
-            }else if(!is_indexed(regex)){
-                #cat('Regex search', regex, '\n')
-                types[stri_detect_regex(types_search, regex)]
+        if(length(index)){
+            if(exact){
+                #cat('Exact match', regex, '\n')
+                types[search_index(regex, index)]
             }else{
-                #cat("Not found\n")
-                NULL
+                if(regex == ''){
+                    NULL # return nothing for empty pattern
+                }else if(regex == '^'){
+                    types # return all types when glob is *
+                }else if(length((ids <- search_index(regex, index)))){
+                    #cat('Index search', regex, '\n')
+                    types[ids]
+                }else if(!is_indexed(regex)){
+                    #cat('Regex search', regex, '\n')
+                    types[stri_detect_regex(types_search, regex)]
+                }else{
+                    #cat("Not found\n")
+                    NULL
+                }
             }
+        }else{
+            types[stri_detect_regex(types_search, regex)]
         }
     }, types, types_search, exact, index)
     return(subset)
