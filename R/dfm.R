@@ -369,12 +369,12 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
              sep="")
     }
 
-    ## special handling for empty documents
+    ## Special handling for empty documents
     # find out which documents have zero feature counts
     types <- types(x)
     x <- unclass(x)
     emptyDocs <- which(lengths(x) == 0)
-    # add an arbitrary "feature" for empty docs
+    # Add an arbitrary "feature" for empty docs
     if (length(emptyDocs)) {
         x[emptyDocs] <- length(types) + 1
         types <- c(types, "__TEMPFEATURE__")
@@ -385,9 +385,9 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
                                         x = 1L, 
                                         dimnames = list(features = types, 
                                                         docs = names(x))))
-    # remove dummy feature if needed
+    # Remove dummy feature if needed
     if (length(emptyDocs)) dfmresult <- dfmresult[, -ncol(dfmresult), drop = FALSE]
-    
+    gc() # Release memory
     new("dfmSparse", dfmresult)
 }
 
