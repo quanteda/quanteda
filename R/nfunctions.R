@@ -176,7 +176,8 @@ ntype.tokenizedTexts <- function(x, ...) {
 #' @export
 #' @noRd
 ntoken.tokens <- function(x, ...) {
-    lengths(x)
+    #lengths(x)
+    lengths(unclass(x)) # this is 1000 times faster
 }
 
 #' @export
