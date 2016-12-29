@@ -62,6 +62,7 @@ setClass("textmodel_wordshoal_predicted",
 #' fitdf <- subset(fitdf,!duplicated(memberID))
 #' aggregate(theta ~ party.name, data = fitdf, mean)
 #' }
+#' @importFrom stats dgamma dnorm
 #' @export
 textmodel_wordshoal <- function(data, groupvar, authorvar, dir = c(1,2), tol = 1e-3) {
   

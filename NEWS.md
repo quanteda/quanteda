@@ -109,6 +109,7 @@ new name | reason
 
 ## Other new features
 
+*  Added `textmodel_wordshoal` fitting function.
 *  Added support for batch hashing of tokens through `tokens()`, for more memory-efficient token hashing when dealing with very large numbers of documents.  
 *  Added support for in-memory compressed corpus objects.
 *  Consolidated corpus-level metadata arguments in `corpus()` through the `metacorpus` list argument.  
