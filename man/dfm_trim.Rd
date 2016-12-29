@@ -2,17 +2,21 @@
 % Please edit documentation in R/dfm_trim.R
 \name{dfm_trim}
 \alias{dfm_trim}
-\title{trim a dfm using threshold-based or random feature selection}
+\title{trim a dfm using threshold-based feature selection}
 \usage{
-dfm_trim(x, min_count = 1, min_docfreq = 1, sparsity = NULL,
-  verbose = TRUE)
+dfm_trim(x, min_count = 1, min_docfreq = 1, max_count = NULL,
+  max_docfreq = NULL, sparsity = NULL, verbose = TRUE)
 }
 \arguments{
 \item{x}{document-feature matrix of \link{dfm-class}}
 
-\item{min_count}{minimum count or fraction of features in across all documents}
+\item{min_count}{minimum count or fraction of features across all documents, below which features will be removed}
 
-\item{min_docfreq}{minimum number or fraction of documents in which a feature appears}
+\item{min_docfreq}{minimum number or fraction of documents in which a feature appears, below which features will be removed}
+
+\item{max_count}{maximum count or fraction of features across all documents, above which features will be removed}
+
+\item{max_docfreq}{maximum number or fraction of documents in which a feature appears, above which features will be removed}
 
 \item{sparsity}{equivalent to 1 - min_docfreq, included for comparison with tm}
 
@@ -34,18 +38,23 @@ Trimming a \link{dfm-class} object is an operation based on the values
   list, use \link{dfm_select}.
 }
 \examples{
-(myDfm <- dfm(data_corpus_inaugural, verbose = FALSE))
+(myDfm <- dfm(data_corpus_inaugural))
 
-# only words occuring >=10 times and in >=2 docs
+# keep only words occuring >=10 times and in >=2 docs
 dfm_trim(myDfm, min_count = 10, min_docfreq = 2) 
 
-# only words occuring >=10 times and in at least 0.4 of the documents
+# keep only words occuring >=10 times and in at least 0.4 of the documents
 dfm_trim(myDfm, min_count = 10, min_docfreq = 0.4)
 
-# only words occuring at least 0.01 times and in >=2 documents
+# keep only words occuring <=10 times and in <=2 docs
+dfm_trim(myDfm, max_count = 10, max_docfreq = 2) 
+
+# keep only words occuring <=10 times and in at most 0.4 of the documents
+dfm_trim(myDfm, max_count = 10, max_docfreq = 0.4)
+# keep only words occuring at least 0.01 times and in >=2 documents
 dfm_trim(myDfm, min_count = .01, min_docfreq = 2)
 
-# only words occuring 5 times in 1000
+# keep only words occuring 5 times in 1000
 dfm_trim(myDfm, min_docfreq = 0.2, min_count = 0.005)
 
 \dontrun{
