@@ -1,0 +1,69 @@
+---
+title: "dfm benchmarks"
+author: "Kenneth Benoit"
+date: "06/11/2016"
+output: html_document
+---
+
+### Test classic tokens v. hashed tokens
+
+To test the performance of dfm construction using tokens versus classic tokenized methods.
+
+```{r}
+require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
+data(SOTUCorpus, package = "quantedaData")
+toks <- tokenize(SOTUCorpus)
+toksh <- tokens(SOTUCorpus)
+```
+
+When already tokenized:
+```{r}
+microbenchmark::microbenchmark(hashed = dfm(toksh, verbose = FALSE), 
+                               classic = dfm(toks, verbose = FALSE), 
+                               times = 20, unit = "relative")
+```
+
+Combining tokenization (as with `dfm()` on a character or corpus):
+```{r}
+microbenchmark::microbenchmark(hashed = dfm(tokens(SOTUCorpus), verbose = FALSE), 
+                               classic = dfm(tokenize(SOTUCorpus), verbose = FALSE), 
+                               times = 20, unit = "relative")
+```
+
+
+### Test `i, j, x` sparseMatrix v. `i, p, x`
+
+Not much difference - but the `ipx()` could be taking longer because of the transpose operation.
+
+```{r}
+ijx <- function(x) {
+    # index documents
+    nTokens <- lengths(x)
+    i <- rep(seq_along(nTokens), nTokens)
+    # index features
+    allFeatures <- unlist(x)
+    uniqueFeatures <- unique(allFeatures)
+    j <- match(allFeatures, uniqueFeatures)
+
+    new("dfmSparse", Matrix::sparseMatrix(i = i, j = j, x = 1L, 
+                                  dimnames = list(docs = names(x), 
+                                                  features = uniqueFeatures)))
+}
+
+ipx <- function(x) {  
+    # index documents
+    p <- cumsum(c(1, ntoken(x))) - 1
+    # index features
+    allFeatures <- unlist(x)
+    uniqueFeatures <- unique(allFeatures)
+    i <- match(allFeatures, uniqueFeatures)
+
+    new("dfmSparse", t(Matrix::sparseMatrix(i = i, p = p, x = 1L, 
+                                            dimnames = list(features = uniqueFeatures, 
+                                                            docs = names(x)))))
+}
+
+microbenchmark::microbenchmark(ijx(toks), ipx(toks), 
+                               times = 50, unit = "relative")
+```
+
