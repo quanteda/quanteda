@@ -73,20 +73,26 @@ expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0
 (tmp <- dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE))
 expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0, 0, 0))
 
-nfeature(dfm_trim(preDictDfm, min_count = 7))
-nfeature(dfm_trim(preDictDfm, min_count = 0.001))
-#
-# Trim function
-#
-expect_equal(nfeature(dfm_trim(preDictDfm, min_docfreq = 0.05)), 3077)
-expect_equal(nfeature(dfm_trim(preDictDfm, min_docfreq = 2)), 3077)
-expect_equal(nfeature(dfm_trim(preDictDfm, min_count = 0.001)), 1045)
-expect_equal(nfeature(dfm_trim(preDictDfm, min_count = 7)), 1045)
 
-expect_equal(nfeature(dfm_trim(preDictDfm, sparsity = 0.95)), 3077)
-expect_equal(nfeature(dfm_trim(preDictDfm, sparsity = 0.95)), nfeature(dfm_trim(preDictDfm, min_docfreq = 0.05)))
-expect_equal(nfeature(dfm_trim(preDictDfm, min_docfreq = 0.05)), 3077)
+test_that("dfm_trim", {
 
+    mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1900)
+    preDictDfm <- dfm(mycorpus, removePunct = TRUE, removeNumbers = TRUE)
+    
+    nfeature(dfm_trim(preDictDfm, min_count = 7))
+    nfeature(dfm_trim(preDictDfm, min_count = 0.001))
+
+    expect_equal(nfeature(dfm_trim(preDictDfm, min_count = 0.001)), 1045)
+    expect_equal(nfeature(dfm_trim(preDictDfm, min_count = 7)), 1045)
+
+    expect_equal(nfeature(dfm_trim(preDictDfm, min_docfreq = 0.05)), 3077)
+    expect_equal(nfeature(dfm_trim(preDictDfm, min_docfreq = 2)), 3077)
+    
+    expect_equal(nfeature(dfm_trim(preDictDfm, sparsity = 0.95)), 3077)
+    expect_equal(nfeature(dfm_trim(preDictDfm, sparsity = 0.95)), nfeature(dfm_trim(preDictDfm, min_docfreq = 0.05)))
+    expect_equal(nfeature(dfm_trim(preDictDfm, min_docfreq = 0.05)), 3077)
+    
+})
 
 test_that("test c.corpus",
     expect_that(

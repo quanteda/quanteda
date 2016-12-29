@@ -2,7 +2,7 @@
 % Please edit documentation in R/dfm_trim.R
 \name{dfm_trim}
 \alias{dfm_trim}
-\title{trim a dfm using threshold-based feature selection}
+\title{trim a dfm using frequency threshold-based feature selection}
 \usage{
 dfm_trim(x, min_count = 1, min_docfreq = 1, max_count = NULL,
   max_docfreq = NULL, sparsity = NULL, verbose = TRUE)
@@ -10,15 +10,20 @@ dfm_trim(x, min_count = 1, min_docfreq = 1, max_count = NULL,
 \arguments{
 \item{x}{document-feature matrix of \link{dfm-class}}
 
-\item{min_count}{minimum count or fraction of features across all documents, below which features will be removed}
+\item{min_count}{minimum count or fraction of features across all documents,
+below which features will be removed}
 
-\item{min_docfreq}{minimum number or fraction of documents in which a feature appears, below which features will be removed}
+\item{min_docfreq}{minimum number or fraction of documents in which a feature
+appears, below which features will be removed}
 
-\item{max_count}{maximum count or fraction of features across all documents, above which features will be removed}
+\item{max_count}{maximum count or fraction of features across all documents,
+above which features will be removed.  (Default is no upper limit.)}
 
-\item{max_docfreq}{maximum number or fraction of documents in which a feature appears, above which features will be removed}
+\item{max_docfreq}{maximum number or fraction of documents in which a feature
+appears, above which features will be removed.  (Default is no upper limit.)}
 
-\item{sparsity}{equivalent to 1 - min_docfreq, included for comparison with tm}
+\item{sparsity}{equivalent to 1 - min_docfreq, included for comparison with
+tm}
 
 \item{verbose}{print messages}
 }
@@ -28,7 +33,9 @@ A \link{dfm-class} object reduced in features (with the same number
 }
 \description{
 Returns a document by feature matrix reduced in size based on document and 
-term frequency, and/or subsampling.
+term frequency, usually in terms of a minimum frequencies, but may also be in
+terms of maximum frequencies.  Setting a combination of minimum and maximum 
+frequencies will select features based on a range.
 }
 \note{
 Trimming a \link{dfm-class} object is an operation based on the values 
@@ -38,7 +45,7 @@ Trimming a \link{dfm-class} object is an operation based on the values
   list, use \link{dfm_select}.
 }
 \examples{
-(myDfm <- dfm(data_corpus_inaugural))
+(myDfm <- dfm(data_corpus_inaugural[1:5]))
 
 # keep only words occuring >=10 times and in >=2 docs
 dfm_trim(myDfm, min_count = 10, min_docfreq = 2) 
@@ -49,13 +56,14 @@ dfm_trim(myDfm, min_count = 10, min_docfreq = 0.4)
 # keep only words occuring <=10 times and in <=2 docs
 dfm_trim(myDfm, max_count = 10, max_docfreq = 2) 
 
-# keep only words occuring <=10 times and in at most 0.4 of the documents
-dfm_trim(myDfm, max_count = 10, max_docfreq = 0.4)
+# keep only words occuring <=10 times and in at most 3/4 of the documents
+dfm_trim(myDfm, max_count = 10, max_docfreq = 0.75)
+
 # keep only words occuring at least 0.01 times and in >=2 documents
 dfm_trim(myDfm, min_count = .01, min_docfreq = 2)
 
-# keep only words occuring 5 times in 1000
-dfm_trim(myDfm, min_docfreq = 0.2, min_count = 0.005)
+# keep only words occuring 5 times in 1000, and in 2 of 5 of documents
+dfm_trim(myDfm, min_docfreq = 0.4, min_count = 0.005)
 
 \dontrun{
 # compare to removeSpareTerms from the tm package 
@@ -68,8 +76,8 @@ if (require(tm)) {
 }
 }
 \author{
-Paul Nulty and Ken Benoit, with some inspiration from Will Lowe's (see \code{trim} from the 
-  \code{austin} package)
+Ken Benoit and Paul Nulty, with some inspiration from Will Lowe's
+  (see \code{trim} from the \code{austin} package)
 }
 \seealso{
 \code{\link{dfm_select}}, \code{\link{dfm_sample}}
