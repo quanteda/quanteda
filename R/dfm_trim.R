@@ -1,12 +1,21 @@
 
-#' trim a dfm using threshold-based or random feature selection
+#' trim a dfm using frequency threshold-based feature selection
 #' 
 #' Returns a document by feature matrix reduced in size based on document and 
-#' term frequency, and/or subsampling.
+#' term frequency, usually in terms of a minimum frequencies, but may also be in
+#' terms of maximum frequencies.  Setting a combination of minimum and maximum 
+#' frequencies will select features based on a range.
 #' @param x document-feature matrix of \link{dfm-class}
-#' @param min_count minimum count or fraction of features in across all documents 
-#' @param min_docfreq minimum number or fraction of documents in which a feature appears
-#' @param sparsity equivalent to 1 - min_docfreq, included for comparison with tm
+#' @param min_count minimum count or fraction of features across all documents,
+#'   below which features will be removed
+#' @param min_docfreq minimum number or fraction of documents in which a feature
+#'   appears, below which features will be removed
+#' @param max_count maximum count or fraction of features across all documents,
+#'   above which features will be removed.  (Default is no upper limit.)
+#' @param max_docfreq maximum number or fraction of documents in which a feature
+#'   appears, above which features will be removed.  (Default is no upper limit.)
+#' @param sparsity equivalent to 1 - min_docfreq, included for comparison with
+#'   tm
 #' @param verbose print messages
 #' @return A \link{dfm-class} object reduced in features (with the same number 
 #'   of documents)
@@ -16,23 +25,29 @@
 #'   attributes of the features themselves -- such as selecting features 
 #'   matching a regular expression, or removing features matching a stopword 
 #'   list, use \link{dfm_select}.
-#' @author Paul Nulty and Ken Benoit, with some inspiration from Will Lowe's (see \code{trim} from the 
-#'   \code{austin} package)
+#' @author Ken Benoit and Paul Nulty, with some inspiration from Will Lowe's
+#'   (see \code{trim} from the \code{austin} package)
 #' @seealso \code{\link{dfm_select}}, \code{\link{dfm_sample}}
 #' @examples
-#' (myDfm <- dfm(data_corpus_inaugural, verbose = FALSE))
+#' (myDfm <- dfm(data_corpus_inaugural[1:5]))
 #' 
-#' # only words occuring >=10 times and in >=2 docs
+#' # keep only words occuring >=10 times and in >=2 docs
 #' dfm_trim(myDfm, min_count = 10, min_docfreq = 2) 
 #' 
-#' # only words occuring >=10 times and in at least 0.4 of the documents
+#' # keep only words occuring >=10 times and in at least 0.4 of the documents
 #' dfm_trim(myDfm, min_count = 10, min_docfreq = 0.4)
 #' 
-#' # only words occuring at least 0.01 times and in >=2 documents
+#' # keep only words occuring <=10 times and in <=2 docs
+#' dfm_trim(myDfm, max_count = 10, max_docfreq = 2) 
+#' 
+#' # keep only words occuring <=10 times and in at most 3/4 of the documents
+#' dfm_trim(myDfm, max_count = 10, max_docfreq = 0.75)
+#'
+#' # keep only words occuring at least 0.01 times and in >=2 documents
 #' dfm_trim(myDfm, min_count = .01, min_docfreq = 2)
 #' 
-#' # only words occuring 5 times in 1000
-#' dfm_trim(myDfm, min_docfreq = 0.2, min_count = 0.005)
+#' # keep only words occuring 5 times in 1000, and in 2 of 5 of documents
+#' dfm_trim(myDfm, min_docfreq = 0.4, min_count = 0.005)
 #' 
 #' \dontrun{
 #' # compare to removeSpareTerms from the tm package 
@@ -44,57 +59,121 @@
 #' }
 #' }
 #' @export
-dfm_trim <- function(x, min_count = 1, min_docfreq = 1, sparsity = NULL, verbose = TRUE) {
+dfm_trim <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, max_docfreq = NULL, sparsity = NULL, verbose = TRUE) {
+    UseMethod("dfm_trim")
+}
+ 
+#' @export
+#' @rdname dfm_trim
+#' @noRd
+dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, max_docfreq = NULL, sparsity = NULL, verbose = TRUE) {
 
-    if (!is.dfm(x)) stop("x must be a dfm class object")
-    stopifnot(min_count > 0, min_docfreq > 0)
-    messageSparsity <- messageMinCount <- messageMinDoc <- ""
-    
-    if (!is.null(sparsity)) {
-        if (min_docfreq != 1)
-            stop("min_docfreq and sparsity both refer to a document threshold, both should not be specified")
-        min_docfreq <- (1 - sparsity)
-        if (verbose) catm("Note: converting sparsity into min_docfreq = 1 -", sparsity, "=", min_docfreq, ".\n")
-    }             
-    
-    if (min_count < 1) {
-        messageMinCount <- paste0(min_count, " * ", nfeature(x), " = ")
-        min_count <- (nfeature(x) * min_count)
-    }
-    if (min_docfreq < 1) {
-        messageMinDoc <- paste0(min_docfreq, " * ", ndoc(x), " = ")
-        min_docfreq <- (ndoc(x) * min_docfreq)
-    }
-    featIndexAboveMinCount <- which(colSums(x) >= min_count, useNames = FALSE)
-    if (verbose & min_count != 1)
-        catm("Removing features occurring fewer than ", messageMinCount, min_count, " times: ", 
-             nfeature(x) - length(featIndexAboveMinCount), "\n", sep = "")
-    
-    featIndexAboveMinDoc <- which(docfreq(x) >= min_docfreq)
-    if (verbose & min_docfreq != 1)
-        catm("Removing features occurring in fewer than ", messageMinDoc, min_docfreq, " documents: ", 
-             nfeature(x) - length(featIndexAboveMinDoc), "\n", sep = "")
-    
-    if (min_count == 1 & min_docfreq == 1) {
+    if (missing(min_count) & missing(min_docfreq) & missing(max_count) & missing(max_docfreq) & missing(sparsity)) {
         catm("No features removed.", appendLF = TRUE)
         return(x)
     }
     
-    featureKeepIndex <- intersect(featIndexAboveMinCount, featIndexAboveMinDoc)
-    if (length(featureKeepIndex)==0)  stop("No features left after trimming.")
+    # initialize additional messages as empty strings
+    messageSparsity <- messageMinCount <- messageMinDoc <- messageMaxCount <- messageMaxDoc <- ""
+
+    if (!is.null(sparsity)) {
+        if ((!missing(min_docfreq) | !missing(max_docfreq)) & !is.null(sparsity))
+            stop("min/max_docfreq and sparsity both refer to a document threshold, both should not be specified")
+        min_docfreq <- (1 - sparsity)
+        if (verbose) catm("Note: converting sparsity into min_docfreq = 1 -", sparsity, "=", 
+                          format(min_docfreq, big.mark=","), ".\n")
+    }             
     
-    x <- x[, featureKeepIndex]
+    # default for max_count is the frequency count of the most frequent feature
+    max_count2 <- max_count
+    if (missing(max_count))
+        max_count2 <- max(colSums(x))
+    # default for max_docfreq is the highest document frequency of any feature
+    max_docfreq2 <- max_docfreq
+    if (missing(max_docfreq))
+        max_docfreq2 <- max(docfreq(x))
+
+    # convert fractions into counts
+    if (min_count < 1) {
+        messageMinCount <- paste0(format(min_count, big.mark=","), " * ", format(nfeature(x), big.mark=","), " = ")
+        min_count <- (nfeature(x) * min_count)
+    }
+    if (min_docfreq < 1) {
+        messageMinDoc <- paste0(format(min_docfreq, big.mark=","), " * ", format(ndoc(x), big.mark=","), " = ")
+        min_docfreq <- (ndoc(x) * min_docfreq)
+    }
+    if (!missing(max_count) & max_count2 < 1) {
+        messageMaxCount <- paste0(format(max_count2, big.mark=","), " * ", format(nfeature(x), big.mark=","), " = ")
+        max_count2 <- (nfeature(x) * max_count2)
+    }
+    if (!missing(max_docfreq) & max_docfreq2 < 1) {
+        messageMaxDoc <- paste0(format(max_docfreq2, big.mark=","), " * ", format(ndoc(x), big.mark=","), " = ")
+        max_docfreq2 <- (ndoc(x) * max_docfreq2)
+    }
+
+    # checks that min is less than max
+    if (max_count2 < min_count)
+        stop("max_count must be >= min_count")
+    if (max_docfreq2 < min_docfreq)
+        stop("max_docfreq must be >= min_docfreq")
+
+    featIndexMinCount <- which(colSums(x) < min_count, useNames = FALSE) 
+    featIndexMaxCount <- which(colSums(x) > max_count2, useNames = FALSE) 
+    featIndexMinDoc <- which(docfreq(x) < min_docfreq)
+    featIndexMaxDoc <- which(docfreq(x) > max_docfreq2)
     
-    # if (!is.null(nsample)) {
-    #     if (nsample > nfeature(x))
-    #         catm("Note: retained features smaller in number than sample size so resetting nsample to nfeature.\n")
-    #     nsample <- min(nfeature(x), nsample)
-    #     # x <- x[, sample(1:nsample)]
-    #     x <- sample(x, size = nsample, what = "features")
-    #     if (verbose) catm("Retaining a random sample of", nsample, "words\n")
-    # }
+    # in case no features were removed as a result of filtering conditions
+    if (!length(c(featIndexMinCount, featIndexMaxCount, featIndexMinDoc, featIndexMaxDoc))) {
+        catm("No features removed.", appendLF = TRUE)
+        return(x)
+    }
     
-    dfm_sort(x)
+    if (verbose)
+        catm("Removing features occurring: ", appendLF = TRUE)
+    
+    # print messages about frequency count removal
+    if (verbose & length(c(featIndexMinCount, featIndexMaxCount))) {
+        if (length(featIndexMinCount)) {
+            catm("  - fewer than ", messageMinCount, min_count, " time",
+                 ifelse(min_count != 1, "s", ""), ": ", 
+                 format(length(featIndexMinCount), big.mark = ","), 
+                 sep = "", appendLF = TRUE)
+        }
+        if (length(featIndexMaxCount)) {
+            catm("  - more than ", messageMaxCount, max_count2, " time",
+                 ifelse(max_count2 != 1, "s", ""), ": ", 
+                 format(length(featIndexMaxCount), big.mark = ","), 
+                 sep = "", appendLF = TRUE)
+        }
+    }
+        
+    # print messages about docfreq removal
+    if (verbose & length(c(featIndexMinDoc, featIndexMaxDoc))) {
+        if (length(featIndexMinDoc)) {
+            catm("  - in fewer than ", messageMinDoc, min_docfreq, " document", 
+                 ifelse(min_count != 1, "s", ""), ": ", 
+                 format(length(featIndexMinDoc), big.mark = ","), 
+                 sep = "", appendLF = TRUE)
+        }
+        if (length(featIndexMaxDoc)) {
+            catm("  - in more than ", messageMaxDoc, max_docfreq2, " document", 
+                 ifelse(max_docfreq2 != 1, "s", ""), ": ", 
+                 format(length(featIndexMaxDoc), big.mark = ","), 
+                 sep = "", appendLF = TRUE)
+        }
+    }
+    
+    featureRemoveIndex <- union(union(featIndexMinCount, featIndexMinDoc), 
+                                union(featIndexMaxCount, featIndexMaxDoc))
+    if (verbose) {
+        catm("  Total features removed: ", format(length(featureRemoveIndex), big.mark=","), 
+             " (", format(length(featureRemoveIndex) / nfeature(x) * 100, digits = 3, nsmall = 1), "%).", 
+             sep = "", appendLF = TRUE)
+    }
+    if ((nfeature(x) - length(featureRemoveIndex)) == 0)  
+        stop("No features left after trimming.")
+    
+    dfm_sort(x[, -featureRemoveIndex])
 }
 
 

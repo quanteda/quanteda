@@ -109,11 +109,12 @@ new name | reason
 
 ## Other new features
 
+*  Add `max_docfreq` and `min_docfreq` arguments, and better verbose output, to `dfm_trim` (#383).
 *  Added support for batch hashing of tokens through `tokens()`, for more memory-efficient token hashing when dealing with very large numbers of documents.  
 *  Added support for in-memory compressed corpus objects.
 *  Consolidated corpus-level metadata arguments in `corpus()` through the `metacorpus` list argument.  
 *  Added Greek stopwords.  (See #282).  
-*  Added index handling `[`, `[[`, and `$` for `tokens` objects.  
+*  Added index handling `[`, `[[`, and `$` for (hashed) `tokens` objects.  
 *  Now using ggplot2.
 *  Added tokens methods for `collocations()` and `kwic()`.
 *  Much improved performance for `tokens_select()` (formerly `selectFeatures.tokens()`).
