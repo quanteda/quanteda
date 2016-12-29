@@ -114,7 +114,7 @@ new name | reason
 *  Added support for in-memory compressed corpus objects.
 *  Consolidated corpus-level metadata arguments in `corpus()` through the `metacorpus` list argument.  
 *  Added Greek stopwords.  (See #282).  
-*  Added index handling `[`, `[[`, and `$` for `tokens` objects.  
+*  Added index handling `[`, `[[`, and `$` for (hashed) `tokens` objects.  
 *  Now using ggplot2.
 *  Added tokens methods for `collocations()` and `kwic()`.
 *  Much improved performance for `tokens_select()` (formerly `selectFeatures.tokens()`).
