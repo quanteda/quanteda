@@ -3,7 +3,6 @@
 \docType{methods}
 \name{similarity}
 \alias{as.matrix.similMatrix}
-\alias{print.similMatrix}
 \alias{similarity}
 \alias{similarity,dfm-method}
 \title{compute similarities between documents and/or features}
@@ -16,8 +15,6 @@ similarity(x, selection = NULL, n = NULL, margin = c("documents",
   sorted = TRUE, normalize = FALSE)
 
 \method{as.matrix}{similMatrix}(x, ...)
-
-\method{print}{similMatrix}(x, digits = 4, ...)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -42,8 +39,6 @@ reasons.  If you want to compute similarity on a "normalized" dfm objects
 (e.g. \code{x}), wrap it in \code{\link{weight}(x, "relFreq")}.}
 
 \item{...}{unused}
-
-\item{digits}{decimal places to display similarity values}
 }
 \value{
 a named list of the selection labels, with a sorted named vector of 
@@ -62,8 +57,8 @@ The method for computing feature similarities can be quite slow when
 }
 \examples{
 # create a dfm from inaugural addresses from Reagan onwards
-presDfm <- dfm(subset(inaugCorpus, Year > 1980), ignoredFeatures = stopwords("english"),
-               stem = TRUE)
+presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), stem = TRUE,
+               remove = stopwords("english"))
 
 # compute some document similarities
 (tmp <- similarity(presDfm, margin = "documents"))
@@ -78,23 +73,7 @@ similarity(presDfm, "2005-Bush", margin = "documents", method = "eJaccard", sort
 
 # compute some term similarities
 similarity(presDfm, c("fair", "health", "terror"), method="cosine", margin = "features", 20)
-
-\dontrun{
-# compare to tm
-require(tm)
-data("crude")
-crude <- tm_map(crude, content_transformer(tolower))
-crude <- tm_map(crude, removePunctuation)
-crude <- tm_map(crude, removeNumbers)
-crude <- tm_map(crude, stemDocument)
-tdm <- TermDocumentMatrix(crude)
-findAssocs(tdm, c("oil", "opec", "xyz"), c(0.75, 0.82, 0.1))
-# in quanteda
-quantedaDfm <- new("dfmSparse", Matrix::Matrix(t(as.matrix(tdm))))
-similarity(quantedaDfm, c("oil", "opec", "xyz"), margin = "features", n = 14)
-corMat <- as.matrix(proxy::simil(as.matrix(quantedaDfm), by_rows = FALSE))
-round(head(sort(corMat[, "oil"], decreasing = TRUE), 14), 2)
-round(head(sort(corMat[, "opec"], decreasing = TRUE), 9), 2)
 }
-}
+\keyword{deprecated}
+\keyword{internal}
 

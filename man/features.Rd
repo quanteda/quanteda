@@ -2,33 +2,13 @@
 % Please edit documentation in R/dfm-methods.R
 \name{features}
 \alias{features}
-\alias{features.dfm}
-\title{extract the feature labels from a dfm}
+\title{deprecated function name for featnames}
 \usage{
 features(x)
-
-\method{features}{dfm}(x)
-}
-\arguments{
-\item{x}{the object (dfm) whose features will be extracted}
-}
-\value{
-Character vector of the features
 }
 \description{
-Extract the features from a document-feature matrix, which are stored as the column names
-of the \link{dfm} object.
+Please use \code{\link{featnames}} instead.
 }
-\examples{
-inaugDfm <- dfm(inaugTexts, verbose = FALSE)
-
-# first 50 features (in original text order)
-head(features(inaugDfm), 50)
-
-# first 50 features alphabetically
-head(sort(features(inaugDfm)), 50)
-
-# contrast with descending total frequency order from topfeatures()
-names(topfeatures(inaugDfm, 50))
-}
+\keyword{deprecated}
+\keyword{internal}
 

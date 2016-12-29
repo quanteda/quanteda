@@ -35,14 +35,16 @@ Moby Dick: Descriptive analysis
 
 ## 2.1 Loading the first text file
 
-The code below scans and splits the text of Moby Dick from Project Gutenberg, as implemented in the text.  The command `textfile()` loads almost any file, including those found on the Internet (beginning with a URL, such as "http" or "https").
+The code below scans and splits the text of Moby Dick from Project Gutenberg, as implemented in the text.  
 ```{r eval=TRUE}
 require(quanteda)
 
-# read the text as a single file
-# alternative:
-# mobydickText <- texts(textfile("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
-summary(mobydickText)
+## read the text as a single file
+summary(data_char_mobydick)
+
+## alternative method:
+# require(readtext)
+# data_char_mobydick <- texts(readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
 ```
 
 The `textfile()` loads the text and places inside a structured, intermediate object known as a `corpusSource` object.  We see this by outputting it to the global environment, as above.
@@ -50,26 +52,26 @@ The `textfile()` loads the text and places inside a structured, intermediate obj
 We can access the text from a `corpusSource` object (and also, as we will see, a `corpus` class object), using the `texts()` method.  Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel.  We do this using the `substring()` function, which shows the 1st through the 75th characters of the texts of our new object `mobydicktf`.  Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.
 
 ```{r}
-substring(mobydickText, 1, 75)
+substring(data_char_mobydick, 1, 75)
 ```
 
 ## 2.2 Separate content from metadata
 The Gutenburg edition of the text contains some metadata before and after the text of the novel. The code below uses the `regexec` and `substring` functions to separate this from the text.
 ```{r}
 # extract the header information
-endMetadataIndex <- regexec("CHAPTER 1. Loomings.", mobydickText)[[1]]
-metadata.v <- substring(mobydickText, 1, endMetadataIndex - 1)
+endMetadataIndex <- regexec("CHAPTER 1. Loomings.", data_char_mobydick)[[1]]
+metadata.v <- substring(data_char_mobydick, 1, endMetadataIndex - 1)
 ```
 
 To trim the extra text at the end of the Gutenburg version of the text, we can use the keyword-in-context (`kwic`) function to view the contexts around the word 'orphan', which we know should occur at the end of the book.
 
 ```{r}
 # verify that "orphan" is the end of the novel
-kwic(mobydickText, "orphan")
+kwic(data_char_mobydick, "orphan")
 
 # extract the novel -- a better way
-novel.v <- substring(mobydickText, endMetadataIndex, 
-                     regexec("End of Project Gutenberg's Moby Dick.", mobydickText)[[1]]-1)
+novel.v <- substring(data_char_mobydick, endMetadataIndex, 
+                     regexec("End of Project Gutenberg's Moby Dick.", data_char_mobydick)[[1]]-1)
 ```
 
 
@@ -95,7 +97,7 @@ moby.word.v[99986]
 
 moby.word.v[c(4,5,6)]
 
-head(which(moby.word.v=="whale"))
+head(which(moby.word.v == "whale"))
 ```
 
 ## 2.4 Beginning the analysis
@@ -105,7 +107,7 @@ The code below uses the tokenized text to the occurrence of the word *whale*. To
 [^1] A *glob* is a simple wildcard matching pattern common on Unix systems -- asterisks match zero or more characters.
 
 ```{r}
-moby.word.v <- tokenize(novel.lower.v, simplify = TRUE)
+moby.word.v <- tokens(novel.lower.v, simplify = TRUE)
 # count of the word 'whale'
 length(moby.word.v[which(moby.word.v == "whale")])
 
@@ -172,10 +174,18 @@ axis(1, 1:10, labels = names(topfeatures(mobyDfmPct)))
 ## 4.1 Dispersion plots
 
 A dispersion plot allows us to visualize the occurrences of particular terms throughout the text. The object returned by the `kwic` function can be plotted to display a dispersion plot.
-```{r eval=TRUE, fig.width=8, fig.height=2}
+```{r eval=TRUE, fig.width=8, fig.height=1.5}
 # using words from tokenized corpus for dispersion
-plot(kwic(novel.v, "whale"))
-plot(kwic(novel.v, "Ahab"))
+textplot_xray(kwic(novel.v, "whale"))
+```
+
+You can also pass multiple kwic objects to `plot` to compare the dispersion of different terms:
+```{r eval=TRUE, fig.width=8, fig.height=2.5}
+textplot_xray(
+     kwic(novel.v, "whale"),
+     kwic(novel.v, "Ahab"),
+     kwic(novel.v, "Pequod")
+)
 ```
 
 ## 4.2 Searching with `grep`
@@ -188,11 +198,11 @@ plot(kwic(novel.v, "Ahab"))
 
 ## Identifying chapter breaks
 
-Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a `corpus` object to hold the texts. Initially, we make a single-document corpus, and then use the `segment` function to split this by the string which specifies the chapter breaks. 
+Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a `corpus` object to hold the texts. Initially, we make a single-document corpus, and then use the `char_segment` function to split this by the string which specifies the chapter breaks. 
 
 ```{r}
 head(kwic(novel.v, 'chapter'))
-chaptersVec <-unlist(segment(novel.v, what='other', delimiter="CHAPTER\\s\\d", perl=TRUE))
+chaptersVec <- unlist(char_segment(novel.v, what = 'other', delimiter = "CHAPTER\\s\\d", perl = TRUE))
 chaptersLowerVec <- toLower(chaptersVec)
 chaptersCorp <- corpus(chaptersVec)
 ```
@@ -211,7 +221,7 @@ The above plots are raw frequency plots. For relative frequency plots, (word cou
 
 ## Relative frequency barplots of whale and ahab
 ```{r eval=TRUE}
-relDfm <- weight(chapDfm, type='relFreq') * 100
+relDfm <- weight(chapDfm, type = 'relFreq') * 100
 head(relDfm)
 barplot(as.numeric(relDfm[, 'whale']))
 barplot(as.numeric(relDfm[, 'ahab']))
@@ -224,11 +234,11 @@ barplot(as.numeric(relDfm[, 'ahab']))
 The `dfm` function constructs a matrix which contains zeroes (rather than NAs) for words that do not occur in a chapter, so there's no need to manually convert NAs. We can compute the individual correlation or the correlation for a matrix of the two columns.
 
 ```{r}
-wf <- as.numeric(relDfm[,'whale'])
-af <- as.numeric(relDfm[,'ahab'])
+wf <- as.numeric(relDfm[, 'whale'])
+af <- as.numeric(relDfm[, 'ahab'])
 cor(wf, af)
 
-waDfm <- cbind(relDfm[,'whale'], relDfm[,'ahab'])
+waDfm <- cbind(relDfm[, 'whale'], relDfm[, 'ahab'])
 cor(as.matrix(waDfm))
 ```
 
@@ -238,15 +248,15 @@ With the ahab frequency and whale frequency vectors extracted from the dfm, it i
 ```{r}
 samples <- replicate(1000, cor(sample(af), sample(wf)))
 
-h <- hist(samples, breaks=100, col="grey",
-xlab="Correlation Coefficient",
-main="Histogram of Random Correlation Coefficients\n
+h <- hist(samples, breaks = 100, col = "grey",
+xlab = "Correlation Coefficient",
+main = "Histogram of Random Correlation Coefficients\n
 with Normal Curve",
 plot=T)
-xfit <- seq(min(samples),max(samples),length=1000)
-yfit <- dnorm(xfit,mean=mean(samples),sd=sd(samples))
-yfit <- yfit*diff(h$mids[1:2])*length(samples)
-lines(xfit, yfit, col="black", lwd=2)
+xfit <- seq(min(samples), max(samples), length=1000)
+yfit <- dnorm(xfit, mean = mean(samples), sd = sd(samples))
+yfit <- yfit * diff(h$mids[1:2]) * length(samples)
+lines(xfit, yfit, col = "black", lwd = 2)
 
 cor.test(wf, af)
 

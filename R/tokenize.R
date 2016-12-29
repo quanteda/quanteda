@@ -1,223 +1,19 @@
 
-# @rdname segment
-# @return \code{segmentSentence} returns a character vector of sentences that
-#   have been segmented
-# @export
-# @examples
-# # segment sentences of the UK 2010 immigration sections of manifestos
-# segmentSentence(ukimmigTexts[1])[1:5]   # 1st 5 sentences from first (BNP) text
-# str(segmentSentence(ukimmigTexts[1]))   # a 132-element char vector
-# str(segmentSentence(ukimmigTexts[1:2])) # a 144-element char vector (143+ 12)
-# 
-segmentSentence <- function(x, delimiter = NULL, perl = FALSE) {
-    result <- unlist(tokenize(x, what = "sentence"), use.names = FALSE)
-}
-
-# @rdname segment
-# @return \code{segmentParagraph} returns a character vector of paragraphs that
-#   have been segmented
-# @export
-# @examples
-# # segment paragraphs 
-# segmentParagraph(ukimmigTexts[3])[1:2]   # 1st 2 Paragraphs from 3rd (Con) text
-# str(segmentParagraph(ukimmigTexts[3]))   # a 12-element char vector
-# 
-# @export
-segmentParagraph <- function(x, delimiter="\\n{2}", perl = FALSE, fixed = FALSE) {
-    tmp <- unlist(strsplit(x, delimiter, fixed = fixed, perl = perl))
-    tmp[which(tmp != "")]
-}
-
-#' segment texts into component elements
-#' 
-#' Segment text(s) into tokens, sentences, paragraphs, or other sections. 
-#' \code{segment} works on a character vector or corpus object, and allows the 
-#' delimiters to be defined.  See details.
-#' @param x text or corpus object to be segmented
-#' @param ... provides additional arguments passed to \code{\link{tokenize}}, if
-#'   \code{what = "tokens"} is used
-#' @return A list of segmented texts, with each element of the list correponding
-#'   to one of the original texts.
-#' @details Tokens are delimited by Separators.  For sentences, the delimiter 
-#'   can be defined by the user.  The default for sentences includes \code{.}, 
-#'   \code{!}, \code{?}, plus \code{;} and \code{:}.
-#'   
-#'   For paragraphs, the default is two carriage returns, although this could be
-#'   changed to a single carriage return by changing the value of 
-#'   \code{delimiter} to \code{"\\\n{1}"} which is the R version of the 
-#'   \code{\link{regex}} for one newline character.  (You might need this if the
-#'   document was created in a word processor, for instance, and the lines were
-#'   wrapped in the window rather than being hard-wrapped with a newline
-#'   character.)
-#' @export
-segment <- function(x, ...) {
-    # warning("segment() is deprecated, use tokenize() instead.")
-    UseMethod("segment")
-}
-
-#' @rdname segment
-#' @param what unit of segmentation.  Current options are \code{"tokens"} 
-#'   (default), \code{"sentences"}, \code{"paragraphs"}, \code{"tags"}, and 
-#'   \code{"other"}.  Segmenting on \code{other} allows segmentation of a text 
-#'   on any user-defined value, and must be accompanied by the \code{delimiter} 
-#'   argument.  Segmenting on \code{tags} performs the same function but 
-#'   preserves the tags as a document variable in the segmented corpus.
-#' @param delimiter  delimiter defined as a \code{\link{regex}} for 
-#'   segmentation. Each type has its own default, except \code{other}, which 
-#'   requires a value to be specified.
-#' @param valuetype how to interpret the delimiter: \code{fixed} for exact
-#'   matching; \code{"regex"} for regular expressions; or \code{"glob"} for 
-#'   "glob"-style wildcard patterns
-#' @param perl logical. Should Perl-compatible regular expressions be used?
-#' @export
-#' @examples
-#' # same as tokenize()
-#' identical(tokenize(ukimmigTexts), segment(ukimmigTexts))
-#' 
-#' # segment into paragraphs
-#' segment(ukimmigTexts[3:4], "paragraphs")
-#' 
-#' # segment a text into sentences
-#' segmentedChar <- segment(ukimmigTexts, "sentences")
-#' segmentedChar[2]
-segment.character <- function(x, what=c("tokens", "sentences", "paragraphs", "tags", "other"), 
-                              delimiter = ifelse(what=="tokens", " ", 
-                                                 ifelse(what=="sentences", "[.!?:;]", 
-                                                        ifelse(what=="paragraphs", "\\n{2}", 
-                                                               ifelse(what=="tags", "##\\w+\\b", 
-                                                                      NULL)))),
-                              valuetype = c("regex", "fixed", "glob"),
-                              perl=FALSE,
-                              ...) {
-    what <- match.arg(what)
-    valuetype <- match.arg(valuetype)
-    if (valuetype == "glob") {
-        # treat as fixed if no glob characters detected
-        if (!sum(stringi::stri_detect_charclass(delimiter, c("[*?]"))))
-            valuetype <- "fixed"
-        else {
-            features <- sapply(delimiter, utils::glob2rx, USE.NAMES = FALSE)
-            valuetype <- "regex"
-        }
-    }
-    
-    if (what=="tokens") {
-        return(tokenize(x, ...)) 
-    } else if (what=="sentences") {
-        # warning("consider using tokenize(x, what = \"sentence\") instead.")
-        return(lapply(x, segmentSentence, delimiter, perl=perl)) 
-    } else if (what=="paragraphs") {
-        return(lapply(x, segmentParagraph, delimiter, perl = perl, fixed = (valuetype == "fixed"))) 
-    } else if (what=="tags") {
-        return(lapply(x, segmentParagraph, delimiter, perl = perl, fixed = (valuetype == "fixed")))         
-    } else if (what=="other") {
-        if (is.null(delimiter))
-            stop("For type other, you must supply a delimiter value.")
-        return(lapply(x, segmentParagraph, delimiter, perl = perl, fixed = (valuetype == "fixed"))) 
-    }
-}
-
-#' @rdname segment
-#' @param keepdocvars if \code{TRUE}, repeat the docvar values for each
-#'   segmented text; if \code{FALSE}, drop the docvars in the segmented corpus. 
-#'   Dropping the docvars might be useful in order to conserve space or if these 
-#'   are not desired for the segmented corpus.
-#' @export
-#' @note Does not currently record document segments if segmenting a multi-text
-#'   corpus into smaller units. For this, use \link{changeunits} instead.
-#' @examples
-#' testCorpus <- corpus(c("##INTRO This is the introduction. 
-#'                        ##DOC1 This is the first document.  
-#'                        Second sentence in Doc 1.  
-#'                        ##DOC3 Third document starts here.  
-#'                        End of third document.",
-#'                       "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
-#' # add a docvar
-#' testCorpus[["serialno"]] <- paste0("textSerial", 1:ndoc(testCorpus))
-#' testCorpusSeg <- segment(testCorpus, "tags")
-#' summary(testCorpusSeg)
-#' texts(testCorpusSeg)
-#' # segment a corpus into sentences
-#' segmentedCorpus <- segment(corpus(ukimmigTexts), "sentences")
-#' identical(ndoc(segmentedCorpus), length(unlist(segmentedChar)))
-segment.corpus <- function(x, what = c("tokens", "sentences", "paragraphs", "tags", "other"), 
-                           delimiter = ifelse(what=="tokens", " ", 
-                                              ifelse(what=="sentences", "[.!?:;]", 
-                                                     ifelse(what=="paragraphs", "\\n{2}", 
-                                                            ifelse(what=="tags", "##\\w+\\b", 
-                                                                   NULL)))),
-                           valuetype = c("regex", "fixed", "glob"),
-                           perl=FALSE,
-                           keepdocvars = TRUE, 
-                           ...) {
-    what <- match.arg(what)
-    valuetype <- match.arg(valuetype)
-    # automatically detect and override valuetype
-    if (gsub("[*?]|\\w|\\s", "", delimiter) != "" & valuetype != "regex") {
-        warning("delimiter looks like it contains a regex", noBreaks. = TRUE)
-    } else if (valuetype == "glob") {
-        # treat as fixed if no glob characters detected
-        if (!sum(stringi::stri_detect_charclass(delimiter, c("[*?]"))))
-            valuetype <- "fixed"
-        else {
-            features <- sapply(delimiter, utils::glob2rx, USE.NAMES = FALSE)
-            valuetype <- "regex"
-        }
-    }
-    
-    segTxt <- segment(texts(x), what, delimiter, perl = perl, valuetype = valuetype, ...)
-    names(segTxt) <- paste0(names(segTxt), ".")
-    
-    newCorpus <- corpus(unlist(segTxt),
-                        source = metacorpus(x, "source"),
-                        notes = paste0("segment.corpus(", match.call(), ")"))
-    
-    if (what == "tags") {
-        tagIndex <- gregexpr(delimiter, cattxt <- paste0(texts(x), collapse = ""), 
-                             perl = perl, fixed = (valuetype == "fixed"))[[1]]
-        tags <- character()
-        length(tags) <- ndoc(newCorpus)
-        for (i in 1:length(tagIndex))
-            tags[i] <- substr(cattxt, start = tagIndex[i],
-                              stop = tagIndex[i] + attr(tagIndex, "match.length")[i] - 1)
-        # remove white space at both ends
-        tags <- stringi::stri_trim_both(tags)
-        # add tag as a docvar
-        docvars(newCorpus, "tag") <- tags
-    }
-
-    # add repeated versions of remaining docvars
-    if (!is.null(docvars(x)) & keepdocvars)
-        docvars(newCorpus) <- cbind(docvars(newCorpus), lapply(docvars(x), rep, lengths(segTxt)))
-    
-    newCorpus
-}
-
-# segment(ukimmigTexts[1], removePunct=FALSE, simplify=TRUE)
-# segment(ukimmigTexts[1], what="sentences")
-# segment(ukimmigTexts[1], what="paragraphs")
-
-
-########
-########  These functions grab the settings and tokenise the corpus
-########  and store the results in a list called tokens
-########
-
-
 #' tokenize a set of texts
 #'
 #' Tokenize the texts from a character vector or from a corpus.
 #' @rdname tokenize
 #' @aliases tokenise
-#' @param x The text(s) or corpus to be tokenized
+#' @param x text(s) or corpus to be tokenized
 #' @param ... additional arguments not used
 #' @return A list of length \code{\link{ndoc}(x)} of the tokens found in each text.
 #' @author Ken Benoit and Paul Nulty
+#' @keywords internal deprecated
 #' @export
 #' @examples 
 #' # same for character vectors and for lists
-#' tokensFromChar <- tokenize(inaugTexts[1:3])
-#' tokensFromCorp <- tokenize(subset(inaugCorpus, Year<1798))
+#' tokensFromChar <- tokenize(data_char_inaugural[1:3])
+#' tokensFromCorp <- tokenize(corpus_subset(data_corpus_inaugural, Year<1798))
 #' identical(tokensFromChar, tokensFromCorp)
 #' str(tokensFromChar)
 #' @export
@@ -226,7 +22,6 @@ tokenize <- function(x, ...) {
 }
 
 #' @rdname tokenize
-#' @aliases clean
 #' @param what the unit for splitting the text, available alternatives are: 
 #'   \describe{ \item{\code{"word"}}{(recommended default) smartest, but 
 #'   slowest, word tokenization method; see 
@@ -266,7 +61,7 @@ tokenize <- function(x, ...) {
 #'   to \code{1} (unigrams). For bigrams, for instance, use \code{2}; for 
 #'   bigrams and unigrams, use \code{1:2}.  You can even include irregular 
 #'   sequences such as \code{2:3} for bigrams and trigrams only.  See 
-#'   \code{\link{ngrams}}.
+#'   \code{\link{tokens_ngrams}}.
 #' @param skip integer vector specifying the skips for skip-grams, default is 0 
 #'   for only immediately neighbouring words. Only applies if \code{ngrams} is 
 #'   different from the default of 1.  See \code{\link{skipgrams}}.
@@ -299,23 +94,18 @@ tokenize <- function(x, ...) {
 #'   See the examples below.
 #' @return a \strong{tokenizedText} (S3) object, essentially a list of character
 #'   vectors. If \code{simplify = TRUE} then return a single character vector.
-#' @note This replaces an older function named \code{clean()}, removed from 
-#'   \pkg{quanteda} in version 0.8.1.  "Cleaning" by removing certain parts of 
-#'   texts, such as punctuation or numbers, only only works on tokenized texts, 
-#'   although texts of any length can be converted to lower case using 
-#'   \code{\link{toLower}}.
 #' @export
-#' @seealso \code{\link{ngrams}}
+#' @seealso \code{\link{tokens_ngrams}}
 #' @examples 
 #' # returned as a list
-#' head(tokenize(inaugTexts[57])[[1]], 10)
+#' head(tokenize(data_char_inaugural[57])[[1]], 10)
 #' # returned as a character vector using simplify=TRUE
-#' head(tokenize(inaugTexts[57], simplify = TRUE), 10)
+#' head(tokenize(data_char_inaugural[57], simplify = TRUE), 10)
 #' 
 #' # removing punctuation marks and lowecasing texts
-#' head(tokenize(toLower(inaugTexts[57]), simplify = TRUE, removePunct = TRUE), 30)
+#' head(tokenize(toLower(data_char_inaugural[57]), simplify = TRUE, removePunct = TRUE), 30)
 #' # keeping case and punctuation
-#' head(tokenize(inaugTexts[57], simplify = TRUE), 30)
+#' head(tokenize(data_char_inaugural[57], simplify = TRUE), 30)
 #' # keeping versus removing hyphens
 #' tokenize("quanteda data objects are auto-loading.", removePunct = TRUE)
 #' tokenize("quanteda data objects are auto-loading.", removePunct = TRUE, removeHyphens = TRUE)
@@ -361,7 +151,7 @@ tokenize <- function(x, ...) {
 #'            "Today is Thursday in Canberra:  \nIt is yesterday in London.",
 #'            "To be?  Or\nnot to be?"), 
 #'           what = "sentence")
-#' tokenize(inaugTexts[c(2,40)], what = "sentence", simplify = TRUE)
+#' tokenize(data_char_inaugural[c(2,40)], what = "sentence", simplify = TRUE)
 #' 
 #' # removing features (stopwords) from tokenized texts
 #' txt <- toLower(c(mytext1 = "This is a short test sentence.",
@@ -398,17 +188,17 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
 
     if (!is.integer(ngrams)) ngrams <- as.integer(ngrams)
     
-    if (verbose) cat("Starting tokenization...\n")
+    if (verbose) catm("Starting tokenization...\n")
     result <- x
     
     if (removeTwitter == FALSE & !(what %in% c("fastword", "fastestword"))) {
-        if (verbose) cat("  ...preserving Twitter characters (#, @)")
+        if (verbose) catm("  ...preserving Twitter characters (#, @)")
         startTimeClean <- proc.time()
         result <- stringi::stri_replace_all_fixed(result, c("#", "@"), c("_ht_", "_as_"), vectorize_all = FALSE)
-        if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
+        if (verbose) catm("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
     
-    if (verbose) cat("  ...tokenizing texts")
+    if (verbose) catm("  ...tokenizing texts")
     startTimeTok <- proc.time()
     
     if (grepl("word$", what)) {
@@ -420,28 +210,28 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
             result <- stri_replace_all_regex(result, "(\\b)[\\p{Pd}](\\b)", "$1 $2")
         
         if (removeURL) {
-            if (verbose & removeURL) cat(", removing URLs")
+            if (verbose & removeURL) catm(", removing URLs")
             URLREGEX <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
             result <- stri_replace_all_regex(result, URLREGEX, "")
         }
 
         if (what == "fasterword" | what == "fastestword") {
         
-            if (verbose & removeNumbers==TRUE) cat(", removing numbers")
-            if (verbose & removePunct==TRUE) cat(", removing punctuation")
-            if (verbose & removeSymbols==TRUE) cat(", removing symbols")
+            if (verbose & removeNumbers==TRUE) catm(", removing numbers")
+            if (verbose & removePunct==TRUE) catm(", removing punctuation")
+            if (verbose & removeSymbols==TRUE) catm(", removing symbols")
             regexToEliminate <- paste(ifelse(removeNumbers, "\\b\\d+\\b", ""),
                                       ifelse(removePunct, paste0("(?![", ifelse(removeTwitter, "_", "@#_"),  "])[\\p{P}]"), ""),
                                       ifelse(removeSymbols, "[\\p{S}]", ""),
                                       sep = "|")
-            # cat("\n..", regexToEliminate, "..\n", sep = "")
+            # catm("\n..", regexToEliminate, "..\n", sep = "")
             regexToEliminate <- gsub("^\\|+", "", regexToEliminate)
             regexToEliminate <- gsub("\\|+$", "", regexToEliminate)
-            # cat("\n..", regexToEliminate, "..\n", sep = "")
+            # catm("\n..", regexToEliminate, "..\n", sep = "")
             if (gsub("|", "", regexToEliminate, fixed = TRUE) != "")
                 result <- stri_replace_all_regex(result, regexToEliminate, "")
             
-            if (verbose & removePunct==TRUE) cat(", ", what, " tokenizing", sep="")
+            if (verbose & removePunct==TRUE) catm(", ", what, " tokenizing", sep="")
             if (what=="fastestword")
                 result <- stringi::stri_split_fixed(result, " ")
             else if (what=="fasterword")
@@ -458,7 +248,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
                                                      skip_word_number = removeNumbers) # but does not remove 4u, 2day, etc.
             # remove separators if option is TRUE
             if (removeSeparators & !removePunct) {
-                if (verbose) cat("\n  ...removing separators.")
+                if (verbose) catm("\n  ...removing separators.")
                 result <- lapply(result, function(x) x[!stri_detect_regex(x, "^\\s$")])
             }
         }
@@ -472,25 +262,25 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         # note: does not implement removeNumbers
         result <- stringi::stri_split_boundaries(result, type = "character")
         if (removePunct) {
-            if (verbose) cat("   ...removing punctuation.\n")
+            if (verbose) catm("   ...removing punctuation.\n")
             result <- lapply(result, stringi::stri_replace_all_charclass, "[\\p{P}]", "")
             result <- lapply(result, function(x) x <- x[which(x != "")])
         } 
         if (removeSymbols) {
-            if (verbose) cat("   ...removing symbols.\n")
+            if (verbose) catm("   ...removing symbols.\n")
             result <- lapply(result, stringi::stri_replace_all_charclass, "[\\p{S}]", "")
             result <- lapply(result, function(x) x <- x[which(x != "")])
         } 
         if (removeSeparators) {
-            if (verbose) cat("   ...removing separators.\n")
+            if (verbose) catm("   ...removing separators.\n")
             result <- lapply(result, function(x) x[!stringi::stri_detect_regex(x, "^\\p{Z}$")])
         }
         
     } else if (what == "sentence") {
-        if (verbose) cat("\n   ...separating into sentences.")
+        if (verbose) catm("\n   ...separating into sentences.")
         
         # replace . delimiter from common title abbreviations, with _pd_
-        exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM")
+        exceptions <- c("Mr", "Mrs", "Ms", "Dr", "Jr", "Prof", "Ph.D", "M", "MM", "St", "etc")
         findregex <- paste0("\\b(", exceptions, ")\\.")
         result <- stri_replace_all_regex(result, findregex, "$1_pd_", vectorize_all = FALSE)
 
@@ -512,13 +302,13 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         stop(what, " not implemented in tokenize().")
     }
 
-    if (verbose) cat("...total elapsed: ", (proc.time() - startTimeTok)[3], "seconds.\n")
+    if (verbose) catm("...total elapsed: ", (proc.time() - startTimeTok)[3], "seconds.\n")
     
     if (removeTwitter == FALSE & !(what %in% c("fastword", "fastestword"))) {
-        if (verbose) cat("  ...replacing Twitter characters (#, @)")
+        if (verbose) catm("  ...replacing Twitter characters (#, @)")
         startTimeClean <- proc.time()
         result <- lapply(result, stringi::stri_replace_all_fixed, c("_ht_", "_as_"), c("#", "@"), vectorize_all = FALSE)
-        if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
+        if (verbose) catm("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
     
     # make this an S3 class item, if a list
@@ -528,10 +318,10 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
 
     if (!identical(ngrams, 1L)) {
         if (verbose) {
-            cat("  ...creating ngrams")
+            catm("  ...creating ngrams")
             startTimeClean <- proc.time()
         }
-        result <- ngrams(result, n = ngrams, skip = skip, concatenator = concatenator)
+        result <- tokens_ngrams(result, n = ngrams, skip = skip, concatenator = concatenator)
         # is the ngram set serial starting with 1? use single call if so (most efficient)
         # if (sum(1:length(ngrams)) == sum(ngrams)) {
         #     result <- lapply(result, ngram, n = length(ngrams), concatenator = concatenator, include.all = TRUE)
@@ -543,35 +333,34 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
 #                 xnew
 #             })
         # }
-        if (verbose) cat("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
+        if (verbose) catm("...total elapsed:", (proc.time() - startTimeClean)[3], "seconds.\n")
     }
 
+        
     if (simplify == FALSE) {
         # stri_* destroys names, so put them back
         startTimeClean <- proc.time()
-        if (verbose) cat("  ...replacing names")
+        if (verbose) catm("  ...replacing names")
         names(result) <- names(x)
-        if (verbose) cat("...total elapsed: ", (proc.time() - startTimeClean)[3], "seconds.\n")
+        if (verbose) catm("...total elapsed: ", (proc.time() - startTimeClean)[3], "seconds.\n")
+        # make this an S3 class item, if a list
+        if (!is.tokenizedTexts(result))
+            class(result) <- c("tokenizedTexts", class(result))
+        attr(result, "what") <- what
+        attr(result, "ngrams") <- ngrams
+        attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
     } else {
         # or just return the tokens as a single character vector
-        if (verbose) cat("  ...unlisting results.\n")
-        result <- unlist(result)
+        if (verbose) catm("  ...unlisting results.\n")
+        result <- unlist(result, use.names = FALSE)
+        # clear attributes
+        attributes(result) <- NULL
     }
-    
+
     if (verbose) 
-        cat("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n") 
-    #, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
-
-    # make this an S3 class item, if a list
-    if (simplify == FALSE & !is.tokenizedTexts(result)) {
-        class(result) <- c("tokenizedTexts", class(result))
-    }
-    
-    # add settings
-    attr(result, "what") <- what
-    attr(result, "ngrams") <- ngrams
-    attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
-
+        catm("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n") 
+        #, with a total of", format(length(unlist(result)), big.mark=","), "tokens.\n")
+        
     result
 }
 
@@ -599,15 +388,33 @@ is.tokenizedTexts <- function(x) {
 #' @param ... further arguments passed to base print method
 #' @export
 #' @method print tokenizedTexts
+#' @noRd
 print.tokenizedTexts <- function(x, ...) {
-    ndocuments <- ifelse(is.list(x), length(x), 1)
-    cat("tokenizedText object from ", ndocuments, " document", 
-        ifelse(ndocuments > 1, "s", ""), ".\n", sep = "")
-    if (is.list(x)) { 
-        class(x) <- "listof"
-        print(x, ...)
-    } else {
-        x <- as.character(x)
-        print(x, ...)
-    }
+    cat(class(x)[1], " from ", ndoc(x), " document", 
+        ifelse(ndoc(x) > 1, "s", ""), ".\n", sep = "")
+    class(x) <- "listof"
+    print(x, ...)
 }
+
+#' @rdname tokenize
+#' @details \code{as.tokenizedTexts} coerces a list of character tokens to a tokenizedText class object, 
+#' making the methods available for this object type available to this object.
+#' @export
+as.tokenizedTexts <- function(x, ...) {
+    UseMethod("as.tokenizedTexts")
+}
+
+#' @rdname tokenize
+#' @export
+as.tokenizedTexts.list <- function(x, ...) {
+    if (!is.list(x) || (!all(sapply(x, function(l) all(is.character(l))))))
+            stop("input must be a list of character types")
+    class(x) <- c("tokenizedTexts", class(x))
+    attr(x, "what") <- "user"
+    attr(x, "ngrams") <- 1L
+    attr(x, "concatenator") <- ""
+    x
+}
+
+
+

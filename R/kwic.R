@@ -1,4 +1,4 @@
-#' List key words in context from a text or a corpus of texts.
+#' locate keywords-in-context
 #' 
 #' For a text or a collection of texts (in a quanteda corpus object), return a 
 #' list of a keyword supplied by the user in its immediate context, identifying 
@@ -6,19 +6,19 @@
 #' line number, since the text may or may not be segmented using end-of-line 
 #' delimiters.)
 #' 
-#' @param x a text character, quanteda corpus, or tokenizedTexts object
-#' @param keywords A keyword pattern or phrase consisting of multiple keyword 
+#' @param x a character, \link{corpus}, or \link{tokens} object
+#' @param keywords a keyword pattern or phrase consisting of multiple keyword 
 #'   patterns, possibly including punctuation.  If a phrase, \code{keywords} 
 #'   will be tokenized using the \code{...} options.
-#' @param window The number of context words to be displayed around the keyword.
+#' @param window the number of context words to be displayed around the keyword.
 #' @param valuetype how to interpret keyword expressions: \code{"glob"} for 
 #'   "glob"-style wildcard expressions; \code{"regex"} for regular expressions; 
 #'   or \code{"fixed"} for exact matching (entire words, for instance).  If 
 #'   \code{"fixed"} is used with \code{case_insensitive = TRUE}, the text will 
 #'   be lowercased prior to matching.
 #' @param case_insensitive match without respect to case if \code{TRUE}
-#' @param ... additional arguments passed to \link{tokenize}, for applicable 
-#'   methods
+#' @param ... additional arguments passed to \link{tokens}, for applicable 
+#'   object types
 #' @return A kwic object classed data.frame, with the document name 
 #'   (\code{docname}), the token index position (\code{position}), the context
 #'   before (\code{contextPre}), the keyword in its original format
@@ -27,32 +27,40 @@
 #' @author Kenneth Benoit
 #' @export
 #' @examples
-#' head(kwic(inaugTexts, "secure*", window = 3, valuetype = "glob"))
-#' head(kwic(inaugTexts, "secur", window = 3, valuetype = "regex"))
-#' head(kwic(inaugTexts, "security", window = 3, valuetype = "fixed"))
+#' head(kwic(data_char_inaugural, "secure*", window = 3, valuetype = "glob"))
+#' head(kwic(data_char_inaugural, "secur", window = 3, valuetype = "regex"))
+#' head(kwic(data_char_inaugural, "security", window = 3, valuetype = "fixed"))
 #' 
-#' kwic(inaugCorpus, "war against")
-#' kwic(inaugCorpus, "war against", valuetype = "regex")
+#' kwic(data_corpus_inaugural, "war against")
+#' kwic(data_corpus_inaugural, "war against", valuetype = "regex")
+#' 
 kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
     UseMethod("kwic")
 }
 
 #' @rdname kwic
-#' @method kwic character
+#' @noRd
 #' @export
 kwic.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
     kwic(tokenize(x, ...), keywords, window, valuetype, case_insensitive)
 }
 
 #' @rdname kwic
-#' @method kwic corpus
+#' @noRd
 #' @export 
 kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
     kwic(texts(x), keywords, window, valuetype, case_insensitive, ...)
 }
 
 #' @rdname kwic
-#' @method kwic tokenizedTexts
+#' @noRd
+#' @export 
+kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+    kwic(as.tokenizedTexts(x), keywords, window, valuetype, case_insensitive, ...)   
+}
+
+#' @rdname kwic
+#' @noRd
 #' @export 
 kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
     valuetype <- match.arg(valuetype)
@@ -73,68 +81,64 @@ kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "
     contexts$contextPre <- format(contexts$contextPre, justify="right")
     contexts$contextPost <- stringi::stri_replace_all_regex(contexts$contextPost, "(\\w*) (\\W)", "$1$2")
     contexts$contextPost <- format(contexts$contextPost, justify="left")
-    contexts$keyword <- format(contexts$keyword, justify="centre")
+    # contexts$keyword <- format(contexts$keyword, justify="left")
+    contexts$keyword <- stringi::stri_trim_both(contexts$keyword)
     
     attr(contexts, "valuetype") <- valuetype
-    attr(contexts, "ntoken") <- ntoken(x)
+
+    
+    #  If these tokenized texts are not named, then their ntokens will not have names either
+    ntoken <- ntoken(x)
+    if (is.null(names(ntoken)))
+        names(ntoken) <- paste("text", 1:length(x), sep="")
+
+    attr(contexts, "ntoken")  <- ntoken
+
     attr(contexts, "keywords") <- keywords
     attr(contexts, "tokenize_opts") <- list(...)
     class(contexts) <- c("kwic", class(contexts))
     contexts
 }
 
-#' @rdname kwic
-#' @method print kwic
-#' @export
-print.kwic <- function(x, ...) {
-    contexts <- x
-    contexts$positionLabel <- paste0("[", contexts$docname, ", ", contexts$position, "]")
-    contexts$positionLabel <- format(contexts$positionLabel, justify="right")
-    rownames(contexts) <- contexts$positionLabel
-    contexts$positionLabel <- contexts$docname <- contexts$position <- NULL
-    contexts$contextPre <- paste(contexts$contextPre, "[")
-    contexts$contextPost <- paste("]", contexts$contextPost)
-    print(as.data.frame(contexts))
-}
-
-
 kwic.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE) {
     valuetype <- match.arg(valuetype)
     
     wordLength <- length(word)
     
-#     cat("valuetype = ", valuetype, "\n")
-#     cat("case_insensitive = ", case_insensitive, "\n")
+#     catm("valuetype = ", valuetype, "\n")
+#     catm("case_insensitive = ", case_insensitive, "\n")
     
     if (valuetype == "fixed") {
         if (case_insensitive)
-            matchIndex <- matchFixed(x, word, case_insensitive)
+            startMatchIndex <- matchFixed(x, word, case_insensitive)
         else
-            matchIndex <- match(x, word)
+            startMatchIndex <- match(x, word)
     } else if (valuetype == "glob") {
-        matchIndex <- matchRegex(x, utils::glob2rx(word), case_insensitive)
+        startMatchIndex <- matchRegex(x, utils::glob2rx(word), case_insensitive)
     } else {
-        matchIndex <- matchRegex(x, word, case_insensitive)
+        startMatchIndex <- matchRegex(x, word, case_insensitive)
     }
 
     # vectorized location of keyword position
-    matchIndex2 <- matchSequence(1:wordLength, matchIndex)
-    if (!length(matchIndex2)) return(NA)
+    endMatchIndex <- matchSequence(1:wordLength, startMatchIndex)
+    if (!length(endMatchIndex)) return(NA)
     
     if (wordLength > 1) {
-        indexKeyword <- cbind(matchIndex2, matchIndex2 + wordLength - 1)
-        position <- sapply(matchIndex2, function(y) paste(c(y, y + wordLength - 1), collapse = ":"))
+        indexKeyword <- cbind(endMatchIndex, endMatchIndex + wordLength - 1)
+        position <- sapply(endMatchIndex, function(y) paste(c(y, y + wordLength - 1), collapse = ":"))
     } else {
-        position <- matchIndex2
-        indexKeyword <- cbind(matchIndex2, matchIndex2)
+        position <- endMatchIndex
+        indexKeyword <- cbind(endMatchIndex, endMatchIndex)
     }
 
-    indexPre <- cbind(pmax(matchIndex2 - window, 0), pmax(matchIndex2 - 1, 0))
-    indexPost <- cbind(pmin(matchIndex2 + wordLength, length(x)+1), pmin(matchIndex2 + wordLength + window-1, length(x)))
-    # if the post runs past the end of the phrase
-    if (indexPost[1,1] > length(x)) indexPost <- cbind(0,0)
-    
+
+    indexPre <- cbind(pmax(endMatchIndex - window, 0), pmax(endMatchIndex - 1, 0))
+    indexPost <- cbind(
+       ifelse(endMatchIndex + wordLength < length(x), endMatchIndex + wordLength, NA),
+       pmin(endMatchIndex + wordLength + window-1, length(x))
+    )
     concatIndexes <- function(indexPair, textVector) {
+        if (any(is.na(indexPair))) return("")
         if (identical(indexPair, c(0,0))) return("")
         if (length(indexPair) == 1)
             textVector[indexPair]
@@ -155,23 +159,41 @@ kwic.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex
     
     # left-justify the post-word part
     result$contextPre <- format(result$contextPre, justify="left")
-    # centre the post-word part
-    result$keyword <- format(result$keyword, justify="centre")
+    # trim trailing spaces from keyword
+    result$keyword <- stringi::stri_trim_both(result$keyword)
     class(result) <- c("kwic", class(result))
     result
 }
 
-
-# return the first index position of a sequence seq in a vector of values vec
-matchSequenceOld <- function(seq, vec) {
-    vecTrimmed <- vec # vec[1 : (length(vec) - length(seq) + 1)]
-    matches <- seq[1] == vecTrimmed
-    if (length(seq) == 1) return(which(matches))
-    for (i in 2:length(seq)) {
-        matches <- cbind(matches, seq[i] == wrapVector(vecTrimmed, i - 1))
-    }
-    which(rowSums(matches) == i)
+#' @method print kwic
+#' @noRd
+#' @export
+print.kwic <- function(x, ...) {
+    contexts <- x
+    contexts$positionLabel <- paste0("[", contexts$docname, ", ", contexts$position, "]")
+    contexts$positionLabel <- format(contexts$positionLabel, justify="right")
+    contexts$keyword <- format(contexts$keyword, justify="centre")
+    rownames(contexts) <- contexts$positionLabel
+    contexts$positionLabel <- contexts$docname <- contexts$position <- NULL
+    contexts$contextPre <- paste(contexts$contextPre, "[")
+    contexts$contextPost <- paste("]", contexts$contextPost)
+    print(as.data.frame(contexts))
 }
+
+
+#' @rdname kwic
+#' @export
+#' @examples
+#' mykwic <- kwic(data_corpus_inaugural, "provident*")
+#' is.kwic(mykwic)
+#' is.kwic("Not a kwic")
+is.kwic <- function(x) {
+    if (class(x)[1] == "kwic")
+        TRUE
+    else
+        FALSE
+}
+
 
 ## solution from alexis_laz 
 ## http://stackoverflow.com/questions/33027611/how-to-index-a-vector-sequence-within-a-vector-sequence
@@ -218,43 +240,3 @@ matchFixed <- function(x, table, case_insensitive) {
 #     }
 #     result
 }
-
-
-kwicSingleText <- function(text, word, window = 5, wholeword=FALSE) {
-    # don't use tokenize since we want to preserve case and punctuation here
-    # grep needed to get words that end in punctuation mark or in quotes
-    tokens <- strsplit(text, " ")[[1]]
-    # interpret word as a regular expression if regex==TRUE
-    match.expression <- ifelse(wholeword, 
-                               paste("^", tolower(word), "$", sep=""),
-                               tolower(word))
-    matches <- grep(match.expression, tolower(tokens))
-    if (length(matches) == 0) return(NA)
-    result <- data.frame(source = matches, 
-                         preword = NA,
-                         word = tokens[matches],
-                         postword = NA)
-    for (m in 1:length(matches)) {
-        wordpos  <- matches[m]
-        startpos <- ifelse(((matches[m] - window) < 1), 1, matches[m] - window)
-        endpos   <- ifelse(((matches[m] + window) > length(tokens)), length(tokens), matches[m] + window)
-        result$preword[m]  <-  ifelse(wordpos==startpos, "", paste(tokens[startpos : (wordpos - 1)], collapse = " "))
-        result$postword[m] <-  ifelse(wordpos==endpos, "", paste(tokens[(wordpos + 1) : endpos], collapse = " "))
-    }
-    # left-justify the post-word part
-    result$postword <- format(result$postword, justify="left")
-    # centre the post-word part
-    result$word <- format(result$word, justify="centre")
-    class(result) <- c("kwic", class(result))
-    return(result)
-}
-
-
-# x <- tokenize(c("Fellow citizens of the world, unite", "I talk frequently to my fellow citizens"))[[2]]
-# word <- tokenize("fellow citizens", simplify = TRUE, what = "fastestword")
-# window = 5
-# case_insensitive = TRUE
-# kwic(c("Fellow citizens of my world, unite", "I talk frequently to my fellow citizens"), "fellow")
-# kwic(c("Fellow citizens of my world, unite", "I talk frequently to my fellow citizens"), "citizens")
-# kwic(c("Fellow citizens of my world, unite", "I talk frequently to my fellow citizens"), "fellow citizens")
-

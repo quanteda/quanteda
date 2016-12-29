@@ -32,9 +32,10 @@
 #' @import methods
 #' @docType class
 #' @name dfm-class
+#' @keywords internal dfm
 setClass("dfm",
          slots = c(settings = "list", weightTf = "list", weightDf = "list", smooth = "numeric",
-                   ngrams = "integer", concatenator = "character"),
+                   ngrams = "integer", skip = "integer", concatenator = "character"),
          prototype = list(settings = list(NULL),
                           Dim = integer(2), 
                           Dimnames = list(docs=NULL, features=NULL),
@@ -42,6 +43,7 @@ setClass("dfm",
                           weightDf = list(scheme = "unary", base = NULL, c = NULL, smoothing = NULL, threshold = NULL),
                           smooth = 0,
                           ngrams = 1L,
+                          skip = 0L,
                           concatenator = ""),
          contains = "Matrix")
 
@@ -83,6 +85,7 @@ setClass("dfmDense",
 #'
 #' print methods for document-feature matrices
 #' @name print.dfm
+#' @keywords internal dfm
 NULL
 
 #' Return the first or last part of a dfm
@@ -100,8 +103,9 @@ NULL
 #' @param ... additional arguments passed to other functions
 #' @return A \link{dfm-class} class object corresponding to the subset defined 
 #'   by \code{n} and \code{ncol}.
+#' @keywords dfm
 #' @examples
-#' myDfm <- dfm(inaugCorpus, ngrams = 2, verbose = FALSE)
+#' myDfm <- dfm(data_corpus_inaugural, ngrams = 2, verbose = FALSE)
 #' head(myDfm)
 #' tail(myDfm)
 #' tail(myDfm, nfeature = 4)
@@ -115,15 +119,15 @@ head.dfm <- function(x, n = 6L, nfeature = 6L, ...) {
     return(invisible(x[1:min(ndoc(x), n), 1:min(nfeature(x), nfeature)]))
 }
 
-#' @export
-#' @rdname head.dfm
-setMethod("head", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) 
-    head.dfm(x, n = n, nfeature = nfeature, ...))
-
-#' @export
-#' @rdname head.dfm
-setMethod("tail", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) 
-    tail.dfm(x, n = n, nfeature = nfeature, ...))
+# #' @export
+# #' @rdname head.dfm
+# setMethod("head", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) 
+#     head.dfm(x, n = n, nfeature = nfeature, ...))
+# 
+# #' @export
+# #' @rdname head.dfm
+# setMethod("tail", signature(x = "dfm"), function(x, n = 6L, nfeature = 6L, ...) 
+#     tail.dfm(x, n = n, nfeature = nfeature, ...))
 
 
 #' @export
@@ -170,6 +174,7 @@ setMethod("print", signature(x = "dfm"),
 #' @param ... further arguments passed to or from other methods
 #' @export
 #' @rdname print.dfm
+#' @keywords dfm
 setMethod("print", signature(x = "dfmSparse"), 
           function(x, show.values=FALSE, show.settings=FALSE, show.summary = TRUE, ndoc = 20L, nfeature = 20L, ...) {
               if (show.summary) {
@@ -179,7 +184,8 @@ setMethod("print", signature(x = "dfmSparse"),
                       format(nfeature(x), big.mark=","), " feature",
                       ifelse(nfeature(x)>1 | nfeature(x)==0, "s", ""),
                       ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
-                      ".\n", sep="")
+                      " (", format(sparsity(x)*100, digits = 3),
+                      "% sparse).\n", sep="")
               }
               if (show.settings) {
                   cat("Settings: TO BE IMPLEMENTED.")
@@ -200,7 +206,8 @@ setMethod("print", signature(x = "dfmDense"),
                       format(nfeature(x), big.mark=","), " feature",
                       ifelse(nfeature(x)>1 | nfeature(x)==0, "s", ""),
                       ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
-                      ".\n", sep="")
+                      " (", format(sparsity(x)*100, digits = 3),
+                      "% sparse).\n", sep="")
               }
               if (show.settings) {
                   cat("Settings: TO BE IMPLEMENTED.")
@@ -225,7 +232,9 @@ print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, show.summary = 
             ndoc(x), " document",
             ifelse(ndoc(x)>1, "s, ", ", "),
             dim(x)[2], " feature",
-            ifelse(dim(x)[2]>1, "s", ""), ".\n", sep="")
+            ifelse(dim(x)[2]>1, "s", ""), 
+            ", ", format(sparsity(x)*100, digits = 3),
+            "% sparse.\n", sep="")
     }
     cat(ndoc(x), "x", nfeature(x), "dense matrix of (S3) class \"dfm\"\n")
     #    ifelse(is.resampled(x), paste(", ", nresample(x), " resamples", sep=""), ""),
@@ -241,12 +250,6 @@ print.dfm <- function(x, show.values=FALSE, show.settings=FALSE, show.summary = 
     }
 }
 
-
-## S4 Method for the S4 class sparse dfm
-# @param x the sparse dfm
-# @rdname dfm-class
-# @method t dfmSparse
-#setMethod("t", signature(x = "dfmSparse"), getMethod("t", "dgCMatrix"))
 
 # S4 Method for the S4 class dense/weighted dfm
 #' @export
@@ -301,157 +304,6 @@ setMethod("rowMeans",
           signature = (x = "dfmSparse"),
           function(x, na.rm = FALSE, dims = 1L, ...) callNextMethod())
 
-
-
-# #' @param i index for documents
-# #' @param j index for features
-# #' @param drop always set to \code{FALSE}
-# #' @param ... additional arguments not used here
-# #' @export
-# #' @rdname dfm-class
-# setMethod("[", 
-#           signature = c(x = "dfmSparse", i = "ANY", j = "ANY", drop = "logical"),
-#           function(x, i, j, ..., drop = FALSE) {
-#               cat("XXXXXX\n")
-#               new("dfmSparse", getMethod("[", "dgCMatrix")(x, i, j, ..., drop = FALSE))
-#               })
-# 
-# #' @rdname dfm-class
-# #' @export
-# setMethod("[", 
-#           signature = (x = "dfmDense"),
-#           function(x, i, j, ..., drop = FALSE) {
-#               cat("OH YEAH\n")
-#               new("dfmDense", callNextMethod())
-#           })
-# 
-
-## S4 METHODS FOR INDEXING SPARSE dfm (dfmSparse) objects
-
-
-# FROM THE MATRIX PACKAGE - no need to duplicate here
-# setClassUnion("index", members =  c("numeric", "integer", "logical", "character"))
-
-wrapIndexOperation <- function(x, i=NULL, j=NULL, ..., drop=FALSE) {
-    if (is(x, "dfmSparse")) {
-        asType <- "sparseMatrix"
-        newType <- "dfmSparse"
-    } else {
-        asType <- "denseMatrix"
-        newType <- "dfmDense"
-    }
-    if (drop) warning("drop=TRUE not currently supported")
-    new(newType, "["(as(x, asType), i, j, ..., drop=FALSE))
-}
-
-#' @param i index for documents
-#' @param j index for features
-#' @param drop always set to \code{FALSE}
-#' @param ... additional arguments not used here
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmDense", i = "index", j = "index", drop = "missing"),
-          wrapIndexOperation)
-
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmDense", i = "index", j = "index", drop = "logical"),
-          wrapIndexOperation)
-
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmDense", i = "index", j = "missing", drop = "missing"),
-          function(x, i, j, ..., drop=FALSE)
-              new("dfmDense", "["(as(x, "denseMatrix"), i, , ..., drop=FALSE)))
-
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmDense", i = "logical", j = "missing", drop = "missing"),
-          function(x, i, j, ..., drop=FALSE)
-              new("dfmDense", "["(as(x, "denseMatrix"), which(i), , ..., drop=FALSE)))
-
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmDense", i = "index", j = "missing", drop = "logical"),
-          function(x, i, j, ..., drop=FALSE) {
-              if (drop) warning("drop=TRUE not currently supported")
-              new("dfmDense", "["(as(x, "denseMatrix"), i, , ..., drop=FALSE))
-          })
-
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmDense", i = "missing", j = "index", drop = "missing"),
-          function(x, i, j, ..., drop=FALSE) 
-              new("dfmDense", "["(as(x, "denseMatrix"), , j, ..., drop=FALSE)))
-
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmDense", i = "missing", j = "index", drop = "logical"),
-          function(x, i, j, ..., drop=FALSE) {
-              if (drop) warning("drop=TRUE not currently supported")
-              new("dfmDense", "["(as(x, "denseMatrix"), , j, ..., drop=FALSE))
-          })
-
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmDense", i = "missing", j = "missing", drop = "missing"),
-          function(x, i, j, ..., drop=FALSE) 
-              new("dfmDense", "["(as(x, "denseMatrix"), , , ..., drop=FALSE)))
-
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmDense", i = "missing", j = "missing", drop = "logical"),
-          function(x, i, j, ..., drop=FALSE) {
-              if (drop) warning("drop=TRUE not currently supported")
-              new("dfmDense", "["(as(x, "denseMatrix"), , , ..., drop=FALSE))
-          })
-
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmSparse", i = "index", j = "index", drop = "missing"),
-          wrapIndexOperation)
-
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmSparse", i = "index", j = "index", drop = "logical"),
-          wrapIndexOperation)
-
-
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmSparse", i = "logical", j = "missing", drop = "missing"),
-          function(x, i, j, ..., drop = FALSE) {
-              new("dfmSparse", "["(as(x, "sparseMatrix"), which(i), , ..., drop=FALSE))
-          })
-
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmSparse", i = "index", j = "missing", drop = "missing"),
-          function(x, i, j, ..., drop=FALSE) {
-              new("dfmSparse", "["(as(x, "sparseMatrix"), i, , ..., drop=FALSE))
-          })
-
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmSparse", i = "index", j = "missing", drop = "logical"),
-          function(x, i, j, ..., drop=FALSE) {
-              if (drop) warning("drop=TRUE not currently supported")
-              new("dfmSparse", "["(as(x, "sparseMatrix"), i, , ..., drop=FALSE))
-          })
-
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmSparse", i = "missing", j = "index", drop = "missing"),
-          function(x, i, j, ..., drop=FALSE) 
-              new("dfmSparse", "["(as(x, "sparseMatrix"), , j, ..., drop=FALSE)))
-
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmSparse", i = "missing", j = "index", drop = "logical"),
-          function(x, i, j, ..., drop=FALSE) {
-              if (drop) warning("drop=TRUE not currently supported")
-              new("dfmSparse", "["(as(x, "sparseMatrix"), , j, ..., drop=FALSE))
-          })
-
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmSparse", i = "missing", j = "missing", drop = "missing"),
-          function(x, i, j, ..., drop=FALSE) 
-              new("dfmSparse", "["(as(x, "sparseMatrix"), , , ..., drop=FALSE)))
-
-#' @rdname dfm-class
-setMethod("[", signature(x = "dfmSparse", i = "missing", j = "missing", drop = "logical"),
-          function(x, i, j, ..., drop=FALSE) {
-              if (drop) warning("drop=TRUE not currently supported")
-              new("dfmSparse", "["(as(x, "sparseMatrix"), , , ..., drop=FALSE))
-          })
-
-
-
-
 #' @param e1 first quantity in "+" operation for dfm
 #' @param e2 second quantity in "+" operation for dfm
 #' @rdname dfm-class
@@ -476,44 +328,42 @@ setMethod("+", signature(e1 = "numeric", e2 = "dfmDense"),
           })
 
 
-#' @rdname dfm-class
+#' coerce a dfm to a matrix or data.frame
+#' 
+#' Methods for coercing a \link{dfm-class} object to a matrix or data.frame object.
+#' @rdname as.matrix.dfm
+#' @param x dfm to be coerced
 #' @export
+#' @keywords dfm
+#' @method as.matrix dfm
 #' @examples
 #' # coercion to matrix
-#' dfmSparse <- dfm(inaugTexts, verbose = FALSE)
-#' str(as.matrix(dfmSparse))
-setMethod("as.matrix", signature(x="dfm"),
-          function(x) {
-              if (isS4(x)) {
-                  f <- getMethod("as.matrix", "Matrix")
-                  x <- f(x)
-                  names(dimnames(x)) <- c("docs", "features")
-              } else {
-                  x <- matrix(x, nrow=ndoc(x), dimnames = list(docs = docnames(x), features = features(x)))
-              }
-              x
-          })
-
-#' coerce a dfm to a data.frame
+#' mydfm <- dfm(data_char_inaugural)
+#' str(as.matrix(mydfm))
 #' 
-#' Method for coercing a \link{dfm-class} object to a data.frame
-#' @aliases as.data.frame.dfm
-#' @param x dfm to be coerced to a data.frame
+as.matrix.dfm <- function(x, ...) {
+    as(x, "matrix")
+}
+# setMethod("as.matrix", signature(x = "dfm"),
+#           function(x) as(x, "matrix"))
+
+#' @rdname as.matrix.dfm
 #' @param row.names if \code{FALSE}, do not set the row names of the data.frame
 #'   to the docnames of the dfm (default); or a vector of values to which the
 #'   row names will be set.
 #' @param optional not applicable to this method
-#' @param ... not used for this method
+#' @param ... not used 
+#' @method as.data.frame dfm
 #' @export
 #' @examples
-#' inaugDfm <- dfm(inaugTexts[1:5], verbose = FALSE)
+#' # coercion to a data.frame
+#' inaugDfm <- dfm(data_char_inaugural[1:5])
 #' as.data.frame(inaugDfm[, 1:10])
-#' str(as.data.frame(inaugDfm))
 #' as.data.frame(inaugDfm[, 1:10], row.names = FALSE)
-setMethod("as.data.frame", signature = "dfm", 
-          function(x, row.names = NULL, optional = FALSE , ...) {
-              as.data.frame(as.matrix(x), row.names = row.names, optional = optional, ...)
-})
+as.data.frame.dfm <- function(x, row.names = NULL, optional = FALSE , ...) {
+    as.data.frame(as.matrix(x), row.names = row.names, optional = optional, ...)
+}
+    
 
 
 #' Combine dfm objects by Rows or Columns
@@ -531,10 +381,11 @@ setMethod("as.data.frame", signature = "dfm",
 #'   result.  In both instances, warning messages will result.
 #' @export
 #' @method cbind dfm
+#' @keywords internal dfm
 #' @examples 
 #' # cbind() for dfm objects
-#' (dfm1 <- dfm("This is one sample text sample.", verbose = FALSE))
-#' (dfm2 <- dfm("More words here.", verbose = FALSE))
+#' (dfm1 <- dfm("This is one sample text sample"))
+#' (dfm2 <- dfm("More words here"))
 #' cbind(dfm1, dfm2)
 cbind.dfm <- function(...) {
     args <- list(...)
@@ -546,7 +397,7 @@ cbind.dfm <- function(...) {
         dnames <- matrix(dnames, ncol = length(dnames))
     if (!all(apply(dnames, 1, function(x) length(table(x)) == 1)))
         warning("cbinding dfms with different docnames", noBreaks. = TRUE)
-    if (length(Reduce(intersect, lapply(args, features))))
+    if (length(Reduce(intersect, lapply(args, featnames))))
         warning("cbinding dfms with overlapping features will result in duplicated features", noBreaks. = TRUE)
     
     result <- Matrix::cbind2(args[[1]], args[[2]])
@@ -566,11 +417,9 @@ cbind.dfm <- function(...) {
 #' @details  \code{rbind(x, y, ...)} combines dfm objects by rows, returning a dfm
 #'   object with combined features from input dfm objects.  Features are matched
 #'   between the two dfm objects, so that the order and names of the features
-#'   does not need to match.  The resulting row combined dfm will have its
-#'   features alphabetically sorted.  The matching is performed by 
-#'   \code{\link{rbind2}} defined for object classes in the \pkg{Matrix} 
-#'   package.  The attributes and settings of this new dfm are not currently 
-#'   preserved.
+#'   do not need to match.  The order of the features in the resulting dfm
+#'   is not guaranteed.  The attributes and settings of this new dfm are not
+#'   currently preserved.
 #' @export
 #' @method rbind dfm
 #' @examples 
@@ -585,36 +434,61 @@ rbind.dfm <- function(...) {
     args <- list(...)
     if (!all(sapply(args, is.dfm)))
         stop("all arguments must be dfm objects")
-    cat(names(args))
-    if (length(args) <= 2) {
-        return(combineDfms(args[[1]], args[[2]]))
+    catm(names(args))
+
+    if (length(args) == 1) {
+        warning('rbind.dfm called on single dfm')
+        return(args[[1]])
+    }
+    else if (length(args) == 2) {
+        return(rbind2.dfm(args[[1]], args[[2]]))
     } else {
-        result <- combineDfms(args[[1]], args[[2]])
+        # Recursive call
+        result <- rbind2.dfm(args[[1]], args[[2]])
         for (y in args[3:length(args)]) 
-            result <- combineDfms(result, y)
+            result <- rbind2.dfm(result, y)
         return(result)
     }
 }
 
+rbind2.dfm <- function(x, y) {
+    x_names <- featnames(x)
+    y_names <- featnames(y)
 
-combineDfms <- function(x, y) {
-    x.names <- features(x)
-    y.names <- features(y)
-    all.names <- union(x.names, y.names)
-    
-    toAddx <- setdiff(all.names, x.names)
-    toAddy <- setdiff(all.names, y.names)
-    
-    addedx <- new("dfmSparse", Matrix::cbind2(x, 
-                           sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x), length(toAddx)), 
-                                    dimnames = list(docnames(x), toAddx))))
-    addedy <- new("dfmSparse", Matrix::cbind2(y, 
-                           sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(y), length(toAddy)), 
-                                    dimnames = list(docnames(y), toAddy))))
+      if (identical(x_names, y_names)) {
+          return(new("dfmSparse", Matrix::rbind2(x, y)))
+      }
 
-    # sort in same feature order
-    addedx <- addedx[, order(features(addedx))]
-    addedy <- addedy[, order(features(addedy))]
-    
-    new("dfmSparse", Matrix::rbind2(addedx, addedy))
+    common_names <- intersect(x_names, y_names)
+
+    only_x_names <- setdiff(x_names, y_names)
+    only_y_names <- setdiff(y_names, x_names)
+
+    #  Evetually, we want to rbind together two rows with the same columns
+    #  we acheive this by re-ordering the columns in the original matrices, and adding
+    #  in some blank ones
+
+    #  Here's what we're constructing:
+    #  row x ... <columns in both x and y> ... <columns only in x> ... <blank columns>
+    #  row y ... <columns in both x and y> ... <blank columns>     ... <columns only in y>
+    xcols <- Matrix::cbind2(
+                x[, common_names],
+                x[, only_x_names]
+    )
+    empty_ycols <- Matrix::sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x), 
+                length(only_y_names)), dimnames = list(NULL, only_y_names))
+
+    empty_xcols <- Matrix::sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(y), 
+                    length(only_x_names)), dimnames = list(NULL, only_x_names))
+
+    y_with_xcols <- Matrix::cbind2(
+                y[, common_names],
+                empty_xcols
+            )
+
+    new_dfm <- new("dfmSparse", Matrix::rbind2(
+        Matrix::cbind2( xcols, empty_ycols),
+        Matrix::cbind2( y_with_xcols, y[, only_y_names])
+    ))
 }
+

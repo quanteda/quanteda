@@ -19,6 +19,7 @@
 #'   compound "words" joined by the concatenator
 #' @export
 #' @author Kenneth Benoit
+#' @keywords internal deprecated
 #' @examples
 #' mytexts <- c("The new law included a capital gains tax, and an inheritance tax.",
 #'              "New York City has raised a taxes: an income tax and a sales tax.")
@@ -42,10 +43,12 @@ setGeneric("phrasetotoken",
 #' @export
 setMethod("phrasetotoken", signature = c("corpus", "ANY"), 
           function(object, phrases, ...) {
-              texts(object) <- phrasetotoken(object, phrases, ...)
+              texts(object) <- phrasetotoken(texts(object), phrases, ...)
               object
           })
 
+setOldClass("tokenizedTexts")
+setClassUnion("textORtokens", members =  c("character", "tokenizedTexts"))
 
 #' @rdname phrasetotoken
 #' @export
@@ -57,7 +60,7 @@ setMethod("phrasetotoken", signature = c("corpus", "ANY"),
 #'          "Some damn good stuff, like the text, she likes that too.")
 #' phrasetotoken(txt, myDict)
 #'
-setMethod("phrasetotoken", signature = c("character", "dictionary"), 
+setMethod("phrasetotoken", signature = c("textORtokens", "dictionary"), 
           function(object, phrases, ...) {
               phraseConcatenator <- phrases@concatenator
               phrasesTmp <- unlist(phrases, use.names = FALSE)
@@ -68,25 +71,15 @@ setMethod("phrasetotoken", signature = c("character", "dictionary"),
           })
 
 
-          
-# object <- c("Kind of cool, yeah text is cool is kind.",
-#          "shit fire, Shitty fire.")
-# phrases <- dictionary(list(one = c("kind of"), two = c("shit* fire")), concatenator = " ")
-# valuetype <- "glob"
-# phrasetotoken(object, phrases)
-# 
-# stri_replace_all_regex(c("Fuck fire is kind of hot, yeah kind of cool is kind.", "fuck fire, Shit fuck fire."),
-#                     c("\\bis\\p{WHITE_SPACE}kind\\b", "\\bfuck\\p{WHITE_SPACE}fire\\b"), c("A_B", "C_D"),
-#                     vectorize_all = TRUE)
-# 
-
 setClass("collocations", contains = "data.table")
 
 #' @rdname phrasetotoken
 #' @export
-setMethod("phrasetotoken", signature = c("character", "collocations"), 
+setMethod("phrasetotoken", signature = c("textORtokens", "collocations"), 
           function(object, phrases, ...) {
               word1 <- word2 <- word3 <- NULL
+              # sort by word3 so that trigrams will be processed before bigrams
+              data.table::setorder(phrases, -word3, word1)
               # concatenate the words                               
               word123 <- phrases[, list(word1, word2, word3)]
               mwes <- apply(word123, 1, paste, collapse=" ")
@@ -104,15 +97,20 @@ setMethod("phrasetotoken", signature = c("character", "collocations"),
 #' @export
 #' @examples 
 #' # on simple text
+#' \donttest{
 #' phrasetotoken("This is a simpler version of multi word expressions.", "multi word expression*")
+#' }
 setMethod("phrasetotoken", signature = c("character", "character"), 
           function(object, phrases, concatenator = "_", valuetype = c("glob", "regex", "fixed"), 
                    case_insensitive = TRUE, ...) {
               valuetype <- match.arg(valuetype)
-              if (valuetype == "glob" | valuetype == "fixed")
+              if (valuetype == "glob" | valuetype == "fixed") {
                   compoundPhrases <- stringi::stri_replace_all_fixed(phrases, c("*", "?"), 
                                                                      c("[^\\s]*", "[^\\s]"), 
                                                                      vectorize_all = FALSE)
+                  # replace any + symbols that are tokens by escaped \\+ #239
+                  compoundPhrases <- stringi::stri_replace_all_regex(phrases, "(\\s{0,1})\\+(\\s{0,1})", "$1\\\\\\+$2")
+              }
               
               compoundPhrasesList <- strsplit(compoundPhrases, "\\s")
               
@@ -125,44 +123,49 @@ setMethod("phrasetotoken", signature = c("character", "character"),
           })
 
 
+#' @rdname phrasetotoken
+#' @export
+#' @examples 
+#' \donttest{
+#' # on simple text
+#' toks <- tokenize("Simon sez the multi word expression plural is multi word expressions, Simon sez.")
+#' phrases <- c("multi word expression*", "Simon sez")
+#' phrasetotoken(toks, phrases)
+#' }
+setMethod("phrasetotoken", signature = c("tokenizedTexts", "character"), 
+          function(object, phrases, concatenator = "_", valuetype = c("glob", "regex", "fixed"), 
+                   case_insensitive = TRUE, ...) {
+              valuetype <- match.arg(valuetype)
+              
+              # convert any patterns to fixed matches
+              phrasesTok <- tokenize(phrases, what = "fasterword")
+              attr.orig <- attributes(phrasesTok)
+              class.orig <- class(phrasesTok)
+              
+              if (valuetype %in% c("glob", "fixed"))
+                  phrasesTok <- lapply(phrasesTok, glob2rx)
+              phrasesTokFixed <- regexToFixed(object, phrasesTok, case_insensitive = case_insensitive)
+              attributes(phrasesTokFixed) <- attr.orig
+              class(phrasesTokFixed) <- class.orig
+              
+              # joinTokens(object, phrasesTokFixed, valuetype = "fixed", case_insensitive = FALSE)
+              tokens_compound(object, phrasesTokFixed, valuetype = "fixed", case_insensitive = FALSE)
+})
 
-# @rdname phrasetotoken
-# @export
-# phrasetotoken.character <- function(x, dictionary, concatenator="_") {
-#     # get the tokenized list of compound phrases from a dictionary (list)
-#     phrases <- unlist(dictionary, use.names=FALSE)
-#     compoundPhrases <- phrases[grep(" ", phrases)]
-#     compoundPhrasesList <- tokenize(compoundPhrases)
-#     
-#     # contenate the phrases in
-#     # gsub("(word1)\\s(word2)", "\\1_\\2", "word1 word2")
-#     ## [1] "word1_word2"
-#     for (l in compoundPhrasesList) {
-#         re.pattern <- paste("(", 
-#                             paste(l, collapse=")\\s("),
-#                             ")", sep="")
-#         re.replace <- paste("\\", 1:length(l), sep="", collapse=concatenator)
-#         x <- gsub(re.pattern, re.replace, x, perl=TRUE)
-#     }
-#     x    
-# }
+regexToFixed <- function(tokens, patterns, case_insensitive = FALSE, types = NULL) {
+    
+    # get unique token types
+    if (is.null(types)) types <- unique(unlist(tokens))
+    
+    seqs_token <- list()
+    for (seq_regex in patterns) {
+        match <- lapply(seq_regex, function(x, y) y[stringi::stri_detect_regex(y, x, case_insensitive = case_insensitive)], types)
+        if (length(unlist(seq_regex)) != length(match)) next
+        match_comb <- as.matrix(do.call(expand.grid, c(match, stringsAsFactors = FALSE))) # produce all possible combinations
+        seqs_token <- c(seqs_token, unname(split(match_comb, row(match_comb))))
+    }
+    seqs_token
+}
 
-# gapTokenize <- function(txt) {
-#     tokenVec <- tokenize(txt, removePunct=FALSE, simplify=TRUE)
-#     punctEndIndex <- grep("[])};:,.?!]", tokenVec) # don't pad if last token
-#     if (length(punctEndIndex) > 0) {
-#         for (i in 1:(length(punctEndIndex))) {
-#             if (punctEndIndex[i]+i-1 == length(tokenVec)) break
-#             tokenVec <- c(tokenVec[1:(i-1+punctEndIndex[i])], "", tokenVec[(i+punctEndIndex[i]):length(tokenVec)])
-#         }
-#     }
-#     punctBegIndex <- grep("[[({]", tokenVec)
-#     if (length(punctBegIndex) > 0) {
-#         for (i in 1:(length(punctBegIndex))) {
-#             if (punctBegIndex[i] == 1) continue  # don't pad if first token
-#             tokenVec <- c(tokenVec[1:(i-2+punctBegIndex[i])], "", tokenVec[(i-1+punctBegIndex[i]):length(tokenVec)])
-#         }
-#     }
-#     # now remove the rest of the stuff not yet cleaned
-#     clean(tokenVec, removeDigits = FALSE, toLower = FALSE, removeURL = FALSE)
-# }
+
+

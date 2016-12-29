@@ -2,14 +2,14 @@
 #' @include dictionaries.R
 NULL
 
-#' Detect collocations from text
+#' detect collocations from text
 #' 
 #' Detects collocations from texts or a corpus, returning a data.frame of
 #' collocations and their scores, sorted in descending order of the association
 #' measure.  Words separated by punctuation delimiters are not counted by
 #' default (\code{spanPunct = FALSE})  as adjacent and hence are not eligible to
 #' be collocations.
-#' @param x a text, a character vector of texts, or a corpus
+#' @param x a character, \link{corpus}, \link{tokens} object
 #' @param method association measure for detecting collocations.  Let \eqn{i} 
 #'   index documents, and \eqn{j} index features, \eqn{n_{ij}} refers to 
 #'   observed counts, and \eqn{m_{ij}} the expected counts in a collocations 
@@ -27,30 +27,34 @@ NULL
 #'   (or \code{2:3}) to return both bi- and tri-gram collocations.
 #' @param n the number of collocations to return, sorted in descending order of 
 #'   the requested statistic, or \eqn{G^2} if none is specified.
-#' @param spanPunct if \code{FALSE}, then collocations will not span punctuation
-#'   marks, so that for instance \emph{marks, so} is not a collocation of 
-#'   \code{marks so}.  If \code{TRUE}, do not handle punctuation specially.
-#' @param ... additional parameters passed to \code{\link{tokenize}}.  If wanted
-#'   to include collocations separated by punctuation, then you can use this to 
-#'   send \code{removePunct = TRUE} to \code{\link{tokenize}}.
-#' @return A data.table of collocations, their frequencies, and the computed 
-#'   association measure(s).
+#' @param punctuation how to handle tokens separated by punctuation characters.  Options are:
+#'   \describe{
+#'   \item{\code{dontspan}}{do not form collocations from tokens separated by punctuation characters (default)}
+#'   \item{\code{ignore}}{ignore punctuation characters when forming collocations, meaning that collocations will 
+#'   include those separated by punctuation characters in the text.  The punctuation characters themselves are not
+#'   returned.}
+#'   \item{\code{include}}{do not treat punctuation characters specially, meaning that collocations will include
+#'   punctuation characters as tokens}
+#'   }
+#' @param toLower convert collocations to lower case if \code{TRUE} (default)
+#' @param ... additional parameters passed to \code{\link{tokens}}
+#' @return a collocations class object: a specially classed data.table consisting 
+#'   of collocations, their frequencies, and the computed association measure(s).
 #' @export
 #' @import data.table
 #' @references McInnes, B T. 2004. "Extending the Log Likelihood Measure to 
 #'   Improve Collocation Identification."  M.Sc. Thesis, University of 
 #'   Minnesota.
-#' @seealso \link{ngrams}
+#' @seealso \link{tokens_ngrams}
 #' @author Kenneth Benoit
 #' @examples
 #' txt <- c("This is software testing: looking for (word) pairs!  
 #'          This [is] a software testing again. For.",
 #'          "Here: this is more Software Testing, looking again for word pairs.")
-#' collocations(txt)
-#' collocations(txt, spanPunct = FALSE, removePunct = FALSE)  # default
-#' collocations(txt, spanPunct = FALSE, removePunct = TRUE)   # includes "testing looking"
-#' collocations(txt, spanPunct = TRUE, removePunct = TRUE)    # same as previous 
-#' collocations(txt, spanPunct = TRUE, removePunct = FALSE)   # keep punctuation marks as "grams"
+#' collocations(txt, punctuation = "dontspan") # default
+#' collocations(txt, punctuation = "dontspan", removePunct = TRUE)  # includes "testing looking"
+#' collocations(txt, punctuation = "ignore", removePunct = TRUE)    # same as previous 
+#' collocations(txt, punctuation = "include", removePunct = FALSE)  # keep punctuation as tokens
 #'
 #' collocations(txt, size = 2:3)
 #' removeFeatures(collocations(txt, size = 2:3), stopwords("english"))
@@ -59,11 +63,13 @@ NULL
 #' collocations("@@textasdata We really, really love the #quanteda package - thanks!!",
 #'               removeTwitter = TRUE)
 #' 
-#' collocations(inaugTexts[49:57], n = 10)
-#' collocations(inaugTexts[49:57], method = "all", n = 10)
-#' collocations(inaugTexts[49:57], method = "chi2", size = 3, n = 10)
-#' collocations(subset(inaugCorpus, Year>1980), method = "pmi", size = 3, n = 10)
-collocations <- function(x, ...) {
+#' collocations(data_char_inaugural[49:57], n = 10)
+#' collocations(data_char_inaugural[49:57], method = "all", n = 10)
+#' collocations(data_char_inaugural[49:57], method = "chi2", size = 3, n = 10)
+#' collocations(corpus_subset(data_corpus_inaugural, Year>1980), method = "pmi", size = 3, n = 10)
+collocations <- function(x,  method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
+                         n = NULL, toLower = TRUE, 
+                         punctuation = c("dontspan", "ignore", "include"), ...) {
 #     addedArgs <- names(list(...))
 #     if (length(addedArgs) && any(!(addedArgs %in% names(formals(getS3method("tokenize", "character"))))))
 #         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), addedArgs, " not used.", sep = "", noBreaks. = TRUE)
@@ -80,20 +86,80 @@ wMIDDLEGREPpenn <- "([,:.]|''|``|-[lr]rb-)_.*"
 wLASTGREPpenn <- "-lrb-_.*"
 
 #' @rdname collocations
+#' @noRd
 #' @export
-collocations.corpus <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, spanPunct = FALSE, ...) {
-    collocations(texts(x), method, size, n, spanPunct, ...)
+collocations.corpus <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
+                                n = NULL, toLower = TRUE, 
+                                punctuation = c("dontspan", "ignore", "include"), ...) {
+    collocations(texts(x), method = method, size = size, n = n, punctuation = punctuation, ...)
+}
+
+#' @rdname collocations
+#' @noRd
+#' @export    
+collocations.character <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
+                                   n = NULL, toLower = TRUE, 
+                                   punctuation = c("dontspan", "ignore", "include"), ...) {
+    method <- match.arg(method)
+    x <- tokens((if (toLower) toLower(x) else x), hash = FALSE, ...)
+    collocations(x, method = method, size = size , n = n, punctuation = punctuation)
+}
+
+#' @rdname collocations
+#' @noRd
+#' @export    
+collocations.tokens <- function(x, ...) {
+    collocations(as.tokenizedTexts(x), ...)
+} 
+    
+#' @rdname collocations
+#' @noRd
+#' @export    
+collocations.tokenizedTexts <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"), size = 2, 
+                                        n = NULL, toLower = FALSE,
+                                        punctuation = c("dontspan", "ignore", "include"), ...) {
+
+    punctuation <- match.arg(punctuation)
+    
+    # add a dummy token denoting the end of the line
+    DUMMY_TOKEN <- "_END_OF_TEXT_"
+    x <- lapply(x, function(toks) c(toks, DUMMY_TOKEN))
+    x <- unlist(x, use.names = FALSE)
+    method <- match.arg(method)
+    if (any(!(size %in% 2:3)))
+        stop("Only bigram and trigram collocations implemented so far.")
+    
+    coll <- NULL
+    if (2 %in% size)
+        coll <- collocations2(x, method, 2, n, punctuation = punctuation)
+    if (3 %in% size) {
+        if (is.null(coll)) 
+            coll <- collocations3(x, method, 3, n, punctuation = punctuation, ...)
+        else {
+            coll <- rbind(coll, collocations3(x, method, 3, n, punctuation = punctuation, ...))
+            class(coll) <- c("collocations", class(coll))
+        }
+    }
+    # remove any "collocations" containing the dummy token, return
+    word1 <- word2 <- word3 <- NULL
+    coll[word1 != DUMMY_TOKEN & word2 != DUMMY_TOKEN & word3 != DUMMY_TOKEN]
 }
 
 
-collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=3, n=NULL, ...) {
+collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=3, n=NULL, 
+                          punctuation =  c("dontspan", "ignore", "include"), ...) {
     method <- match.arg(method)
     
     # to not issue the check warnings:
     w1 <- w2 <- w3 <- c123 <- c12 <- c13 <- c1 <- c23 <- c2 <- c3 <- X2 <- G2 <- count <- NULL
     
-    t <- tokenize(toLower(x), simplify=TRUE, ...)
+    t <- x
     
+    # remove punctuation if called for
+    if (punctuation == "ignore") {
+        t <- t[!stringi::stri_detect_regex(w1, "^\\p{P}$")]
+    }
+
     # create a data.table of all adjacent bigrams
     wordpairs <- data.table(w1 = t[1:(length(t)-2)], 
                             w2 = t[2:(length(t)-1)],
@@ -101,9 +167,11 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
                             count = 1)
     
     # eliminate non-adjacent words
-    wordpairs <- wordpairs[!(stri_detect_regex(w1, "^\\p{P}$") | 
-                             stri_detect_regex(w2, "^\\p{P}$") |
-                             stri_detect_regex(w3, "^\\p{P}$"))]
+    if (punctuation == "dontspan") {
+        wordpairs <- wordpairs[!(stringi::stri_detect_regex(w1, "^\\p{P}$") | 
+                                 stringi::stri_detect_regex(w2, "^\\p{P}$") |
+                                 stringi::stri_detect_regex(w3, "^\\p{P}$"))]
+    }
 
     # set the data.table sort key
     setkey(wordpairs, w1, w2, w3)
@@ -120,7 +188,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     # eliminate any duplicates in w1 - see note above in collocations2
     dups <- which(duplicated(w1Table[,w1]))
     if (length(dups)) {
-        cat("  ...NOTE: dropping duplicates in word1:", w1Table[dups, w1], "\n")
+        catm("  ...NOTE: dropping duplicates in word1:", w1Table[dups, w1], "\n")
         w1Table <- w1Table[-dups]
     }
     setkey(wordpairsTable, w1)
@@ -135,7 +203,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     # eliminate any duplicates in w2 - see note above in collocations2
     dups <- which(duplicated(w2Table[,w2]))
     if (length(dups)) {
-        cat("  ...NOTE: dropping duplicates in word2:", w2Table[dups, w2], "\n")
+        catm("  ...NOTE: dropping duplicates in word2:", w2Table[dups, w2], "\n")
         w2Table <- w2Table[-dups]
     }
     suppressWarnings(allTable2 <- allTable[w2Table])
@@ -150,7 +218,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     # eliminate any duplicates in w3 - see note above in collocations2
     dups <- which(duplicated(w3Table[,w3]))
     if (length(dups)) {
-        cat("  ...NOTE: dropping duplicates in word3:", w3Table[dups, w3], "\n")
+        catm("  ...NOTE: dropping duplicates in word3:", w3Table[dups, w3], "\n")
         w3Table <- w3Table[-dups]
     }
     suppressWarnings(allTable3 <- allTable2[w3Table])
@@ -165,7 +233,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
 #     # eliminate any duplicates in w3 - see note above in collocations2
 #     dups <- which(duplicated(w12Table[, w1, w2]))
 #     if (length(dups)) {
-#         cat("  ...NOTE: dropping duplicates in word1,2: ... \n", w12Table[dups, w1, w2], "\n")
+#         catm("  ...NOTE: dropping duplicates in word1,2: ... \n", w12Table[dups, w1, w2], "\n")
 #         w3Table <- w3Table[-dups]
 #     }
     suppressWarnings(allTable4 <- allTable3[w12Table])
@@ -313,46 +381,9 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
 
 
 
-
-#' @rdname collocations
-#' @export    
-collocations.character <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, 
-                                   n=NULL, spanPunct = FALSE, ...) {
-    method <- match.arg(method)
-    #  "Enough is enough! I have had it with these motherfucking snakes on this motherfucking plane!"
-    #x <- iconv(x, "UTF-8", "ASCII",  sub="") # opening some windows
-    # tagset <- match.arg(tagset)
-    x <- tokenize(toLower(x), ...)
-    collocations(x, method, size, n, spanPunct)
-}
-
-#' @rdname collocations
-#' @export    
-collocations.tokenizedTexts <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=2, n=NULL, spanPunct = FALSE, ...) 
-{
-    x <- unlist(x, use.names = FALSE)
-    method <- match.arg(method)
-    if (any(!(size %in% 2:3)))
-        stop("Only bigram and trigram collocations implemented so far.")
-    
-    coll <- NULL
-    if (2 %in% size)
-        coll <- collocations2(x, method, 2, n, spanPunct)
-    if (3 %in% size) {
-        if (is.null(coll)) 
-            coll <- collocations3(x, method, 3, n, ...)
-        else {
-            coll <- rbind(coll, collocations3(x, method, 3, n, ...))
-            class(coll) <- c("collocations", class(coll))
-        }
-    }
-    coll
-}
-
-
 collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), 
-                         size=2, n=NULL, spanPunct = FALSE, ...) 
-{
+                          size=2, n=NULL, 
+                          punctuation =  c("dontspan", "ignore", "include"), ...) {
     
     # to not issue the check warnings:
     w1 <- w2 <- count <- w1wn <- w1w2n <- chi2 <- pmi <- dice <- lrratio <- NULL
@@ -360,19 +391,21 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"),
     method <- match.arg(method)
 
     t <- x
-    #t <- factor(x)
-    #tlevels <- levels(t)
-    #t <- as.integer(t)
     
+    # remove punctuation if called for
+    if (punctuation == "ignore") {
+        t <- t[!stringi::stri_detect_regex(t, "^[\\p{P}\\p{S}]$")]
+    }
+
     # create a data.table of all adjacent bigrams
     wordpairs <- data.table(w1 = t[1:(length(t)-1)], 
                             w2 = t[2:length(t)],
                             count = 1)
     
     # eliminate non-adjacent words (where a blank is in a pair)
-    if (!spanPunct) {
+    if (punctuation == "dontspan") {
         wordpairs <- wordpairs[!(stringi::stri_detect_regex(w1, "^[\\p{P}\\p{S}]$") | 
-                                     stringi::stri_detect_regex(w2, "^[\\p{P}\\p{S}]$"))]
+                                 stringi::stri_detect_regex(w2, "^[\\p{P}\\p{S}]$"))]
     }
     
     # set the data.table sort key
@@ -393,7 +426,7 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"),
     # bug in data.table??  encoding problem on our end??
     dups <- which(duplicated(w1Table[,w1]))
     if (length(dups)) {
-        cat("  ...NOTE: dropping duplicates in word1:", w1Table[dups, w1], "\n")
+        catm("  ...NOTE: dropping duplicates in word1:", w1Table[dups, w1], "\n")
         w1Table <- w1Table[-dups]
     }
     
@@ -411,7 +444,7 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"),
     # eliminate any duplicates in w2 - although this ought not to happen!
     dups <- which(duplicated(w2Table[,w2]))
     if (length(dups)) {
-        cat("...NOTE: dropping duplicates found in word2:", w2Table[dups, w2], "\n")
+        catm("...NOTE: dropping duplicates found in word2:", w2Table[dups, w2], "\n")
         w2Table <- w2Table[-dups]
     }
     
@@ -504,5 +537,15 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"),
     #df[, word2 := factor(word2, levels = 1:length(tlevels), labels = tlevels)]
     class(df) <- c("collocations", class(df))
     df[1:ifelse(is.null(n), nrow(df), n), ]
+}
+
+#' check if an object is collocations type
+#' 
+#' Return \code{TRUE} if an object was constructed by \link{collocations}.
+#' @param x any object
+#' @export
+#' @keywords collocations
+is.collocations <- function(x) {
+    class(x)[1] == "collocations" 
 }
 

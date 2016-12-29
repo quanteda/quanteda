@@ -1,4 +1,5 @@
-#' @rdname textmodel_fitted-class 
+#' @rdname textmodel-internal
+#' @keywords internal textmodel
 #' @export
 setClass("textmodel_wordfish_fitted",
          slots = c(priors = "numeric", 
@@ -17,7 +18,8 @@ setClass("textmodel_wordfish_fitted",
                    se.theta = "numeric"),
          contains = "textmodel_fitted")
 
-#' @rdname textmodel_fitted-class
+#' @rdname textmodel-internal
+#' @keywords internal
 #' @export
 setClass("textmodel_wordfish_predicted",
          slots = c(newdata = "dfm", level = "numeric",
@@ -78,10 +80,10 @@ setClass("textmodel_wordfish_predicted",
 #'   21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
 #' @author Benjamin Lauderdale and Kenneth Benoit
 #' @examples
-#' textmodel_wordfish(LBGexample, dir = c(1,5))
+#' textmodel_wordfish(data_dfm_LBGexample, dir = c(1,5))
 #' 
 #' \dontrun{
-#' ie2010dfm <- dfm(ie2010Corpus, verbose = FALSE)
+#' ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
 #' (wfm1 <- textmodel_wordfish(ie2010dfm, dir = c(6,5)))
 #' (wfm2a <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
 #'                              dispersion = "quasipoisson", dispersionFloor = 0))
@@ -92,7 +94,7 @@ setClass("textmodel_wordfish_predicted",
 #' plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
 #'      xlim = c(0, 1.0), ylim = c(0, 1.0), type = "n")
 #' underdispersedTerms <- sample(which(wfm2a@phi < 1.0), 5)
-#' which(features(ie2010dfm) %in% names(topfeatures(ie2010dfm, 20)))
+#' which(featnames(ie2010dfm) %in% names(topfeatures(ie2010dfm, 20)))
 #' text(wfm2a@phi, wfm2b@phi, wfm2a@features, 
 #'      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "grey90")
 #' text(wfm2a@phi[underdispersedTerms], wfm2b@phi[underdispersedTerms], 
@@ -115,14 +117,14 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
     zeroLengthDocs <- which(ntoken(data) == 0)
     if (length(zeroLengthDocs)) {
         data <- data[-zeroLengthDocs, ]
-        cat("Note: removed the following zero-token documents:", docnames(data[zeroLengthDocs, ]), "\n")
+        catm("Note: removed the following zero-token documents:", docnames(data[zeroLengthDocs, ]), "\n")
     }
     zeroLengthFeatures <- which(docfreq(data) == 0)
     if (length(zeroLengthFeatures)) {
             data <- data[, -zeroLengthFeatures]
-        cat("Note: removed the following zero-count features:", features(data[, zeroLengthFeatures]), "\n")
+        catm("Note: removed the following zero-count features:", featnames(data[, zeroLengthFeatures]), "\n")
     }
-    if (length(zeroLengthDocs) | length(zeroLengthFeatures)) cat("\n")
+    if (length(zeroLengthDocs) | length(zeroLengthFeatures)) catm("\n")
 
     # some error checking
     if (length(priors) != 4)
@@ -151,7 +153,7 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
     } else
         stop("Illegal option combination.")
 
-    # cat("disp = ", disp, "\n")
+    # catm("disp = ", disp, "\n")
     
     wfresult <- wordfishcpp(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor)
     # NOTE: psi is a 1 x nfeature matrix, not a numeric vector
@@ -159,7 +161,7 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
     new("textmodel_wordfish_fitted", 
         x = data,
         docs = docnames(data), 
-        features = features(data),
+        features = featnames(data),
         dir = dir,
         dispersion = dispersion,
         priors = priors,
@@ -172,9 +174,8 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
         call = match.call())
 }
 
-###########################################
 
-#' @rdname textmodel_wordfish
+#' @rdname textmodel-internal
 #' @param x for print method, the object to be printed
 #' @param n max rows of dfm to print
 #' @param ... additional arguments passed to \code{\link{print}}
@@ -202,12 +203,12 @@ print.textmodel_wordfish_fitted <- function(x, n=30L, ...) {
     }
 }
 
-#' @rdname textmodel_wordfish
+#' @rdname textmodel-internal
 #' @param object wordfish fitted or predicted object to be shown
 #' @export
 setMethod("show", signature(object = "textmodel_wordfish_fitted"), function(object) print(object))
 
-#' @rdname textmodel_wordfish
+#' @rdname textmodel-internal
 #' @export
 setMethod("show", signature(object = "textmodel_wordfish_predicted"), function(object) print(object))
 

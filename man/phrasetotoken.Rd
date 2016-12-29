@@ -4,20 +4,25 @@
 \name{phrasetotoken}
 \alias{phrasetotoken}
 \alias{phrasetotoken,character,character-method}
-\alias{phrasetotoken,character,collocations-method}
-\alias{phrasetotoken,character,dictionary-method}
 \alias{phrasetotoken,corpus,ANY-method}
+\alias{phrasetotoken,textORtokens,collocations-method}
+\alias{phrasetotoken,textORtokens,dictionary-method}
+\alias{phrasetotoken,tokenizedTexts,character-method}
 \title{convert phrases into single tokens}
 \usage{
 phrasetotoken(object, phrases, ...)
 
 \S4method{phrasetotoken}{corpus,ANY}(object, phrases, ...)
 
-\S4method{phrasetotoken}{character,dictionary}(object, phrases, ...)
+\S4method{phrasetotoken}{textORtokens,dictionary}(object, phrases, ...)
 
-\S4method{phrasetotoken}{character,collocations}(object, phrases, ...)
+\S4method{phrasetotoken}{textORtokens,collocations}(object, phrases, ...)
 
 \S4method{phrasetotoken}{character,character}(object, phrases,
+  concatenator = "_", valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE, ...)
+
+\S4method{phrasetotoken}{tokenizedTexts,character}(object, phrases,
   concatenator = "_", valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, ...)
 }
@@ -76,9 +81,19 @@ txt <- c("I liked this, when we can use bad words, in awful text.",
 phrasetotoken(txt, myDict)
 
 # on simple text
+\donttest{
 phrasetotoken("This is a simpler version of multi word expressions.", "multi word expression*")
+}
+\donttest{
+# on simple text
+toks <- tokenize("Simon sez the multi word expression plural is multi word expressions, Simon sez.")
+phrases <- c("multi word expression*", "Simon sez")
+phrasetotoken(toks, phrases)
+}
 }
 \author{
 Kenneth Benoit
 }
+\keyword{deprecated}
+\keyword{internal}
 

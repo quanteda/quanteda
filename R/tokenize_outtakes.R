@@ -89,10 +89,10 @@ ngramSingle <- function(text, n=2, concatenator="_", include.all=FALSE, ...) {
 # @param concatenator character for combining words, default is \code{_}
 #   (underscore) character
 # @param include.unigrams if \code{TRUE}, return unigrams as well
-# @param ignoredFeatures a character vector of features to ignore
+# @param remove a character vector of features to ignore
 # @param skipGrams If \code{FALSE} (default), remove any bigram containing a
-#   feature listed in \code{ignoredFeatures}, otherwise, first remove the
-#   features in \code{ignoredFeatures}, and then create bigrams.  This means
+#   feature listed in \code{remove}, otherwise, first remove the
+#   features in \code{remove}, and then create bigrams.  This means
 #   that some "bigrams" will actually not occur as adjacent features in the
 #   original text.  See examples.
 # @param ... provides additional arguments passed to \link{tokenize}
@@ -104,17 +104,17 @@ ngramSingle <- function(text, n=2, concatenator="_", include.all=FALSE, ...) {
 # bigrams(c("The quick brown fox", "jumped over the lazy dog."), window=2)
 # bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"))
 # bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"), 
-#         ignoredFeatures=stopwords("english"))
+#         remove=stopwords("english"))
 # bigrams(c("I went to tea with her majesty Queen Victoria.", "Does tea have extra caffeine?"), 
-#         ignoredFeatures=stopwords("english"), skipGrams=TRUE)
+#         remove=stopwords("english"), skipGrams=TRUE)
 bigrams <- function(text, window = 1, concatenator="_", include.unigrams=FALSE, 
-                    ignoredFeatures=NULL, skipGrams=FALSE, ...) {
+                    remove=NULL, skipGrams=FALSE, ...) {
     
-    cat("note: bigrams() is being phased out, and replaced by tokenize(x, ngrams=2)\n")
+    catm("note: bigrams() is being phased out, and replaced by tokenize(x, ngrams=2)\n")
     
-    removeIgnoredFeatures <- function(bigramCharVector, ignoredFeatures) {
+    removeIgnoredFeatures <- function(bigramCharVector, remove) {
         ignoredfeatIndex <- 
-            grep(paste0("\\b", paste(ignoredFeatures, collapse="\\b|\\b"), "\\b"), 
+            grep(paste0("\\b", paste(remove, collapse="\\b|\\b"), "\\b"), 
                  gsub("_", " ", bigramCharVector))
         if (length(ignoredfeatIndex) > 0) 
             bigramCharVector <- bigramCharVector[-ignoredfeatIndex]
@@ -123,8 +123,8 @@ bigrams <- function(text, window = 1, concatenator="_", include.unigrams=FALSE,
     
     tokenizedList <- tokenize(text, ...)
     
-    if (!is.null(ignoredFeatures) & skipGrams==TRUE)
-        tokenizedList <- lapply(tokenize(text), removeIgnoredFeatures, ignoredFeatures)
+    if (!is.null(remove) & skipGrams==TRUE)
+        tokenizedList <- lapply(tokenize(text), removeIgnoredFeatures, remove)
     
     bigramSingle <- function(tokens, window, concatenator, include.unigrams) {
         bigrams <- c()  # initialize bigrams vector
@@ -143,10 +143,10 @@ bigrams <- function(text, window = 1, concatenator="_", include.unigrams=FALSE,
     
     # remove features if supplied and if skipGrams==FALSE, in other words
     # remove all bigrams that contain an ignored feature
-    if (!is.null(ignoredFeatures) & skipGrams==FALSE) {
-        if (!is.character(ignoredFeatures)) 
-            stop("ignoredFeatures must be a character vector")
-        result <- lapply(result, removeIgnoredFeatures, ignoredFeatures)
+    if (!is.null(remove) & skipGrams==FALSE) {
+        if (!is.character(remove)) 
+            stop("remove must be a character vector")
+        result <- lapply(result, removeIgnoredFeatures, remove)
     }
     
     result

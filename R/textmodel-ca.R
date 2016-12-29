@@ -7,7 +7,7 @@
 #' @param ... additional arguments passed to \link[ca]{ca.matrix}
 #' @author Kenneth Benoit
 #' @examples 
-#' ieDfm <- dfm(ie2010Corpus)
+#' ieDfm <- dfm(data_corpus_irishbudget2010)
 #' wca <- textmodel_ca(ieDfm)
 #' summary(wca) 
 #' @import ca

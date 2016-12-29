@@ -16,18 +16,20 @@ vignette: >
 -->
 
 ```{r echo = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+knitr::opts_chunk$set(collapse = TRUE, 
+                      comment = "#>")
 ```
 
 
 # Introduction
 
-An R package for managing and analyzing text, by Ken Benoit and Paul Nulty.[^thanks]
+An R package for managing and analyzing text.[^thanks]
 
-[^thanks]: This research was supported by the European
-    Research Council grant ERC-2011-StG 283794-QUANTESS.  Code
-    contributors to the project include Ben Lauderdale, Pablo Barberà, and 
-    Kohei Watanabe.
+[^thanks]: This research was supported by  European
+    Research Council grant ERC-2011-StG 283794-QUANTESS, Principal Investigator
+    Kenneth Benoit.  Core
+    contributors to the project include Paul Nulty, Adam Obeng,
+    Kohei Watanabe, Haiyan Wang, Ben Lauderdale, Will Lowe, and Pablo Barberà.
 
 **quanteda** makes it easy to manage texts in the form of a
 corpus, defined as a collection of texts that includes document-level
@@ -129,7 +131,7 @@ when features are abstracted from a corpus, `quanteda` provides:
 *  expansion of the document-feature matrix structure through a standard interface called `textmodel()`.  (As of version 0.8.0, textmodel works in a basic fashion only for the "Wordscores" and "wordfish" scaling models.)
 
 
-## Working with other text analysis packages
+## Working with other text analysis packages
 
 `quanteda` is hardly unique in providing facilities for working with
 text -- the excellent *tm* package already provides many of the
@@ -158,30 +160,7 @@ additional analysis of topic models or scaling, such as:
 
 # How to Install
 
-As of version 0.8.0, the GitHub master repository will always contain the development version of quanteda, while the CRAN version will contain the latest "stable" version.  You therefore have two options for installing the package:
-
-1.  From CRAN, using your R package installer, or simply
-
-    ```{r eval=FALSE}
-    install.packages("quanteda")
-    ```
-
-2.  (For the development version) From GitHub, using
-
-    ```{r eval=FALSE}
-    devtools::install_github("kbenoit/quanteda")
-    ```
-
-    Because this compiles some C++ source code, you will need a compiler installed.  If you are using a Windows platform, this means you will need also to install the [Rtools](http://cran.r-project.org/bin/windows/Rtools/) software available from CRAN.  If you are using OS X, you will probably need to install XCode, available for free from the App Store.
-
-3.  (Optional) You can install some additional corpus data from **quantedaData** using
-
-    ```{r eval=FALSE}
-    ## devtools required to install quanteda from Github
-    devtools::install_github("kbenoit/quantedaData")
-    ```
-
-
+Through a normal installation of the package from CRAN, or for the GitHub version, see the installation instructions at https://github.com/kbenoit/quanteda.
 
 # Creating and Working with a Corpus
 
@@ -192,9 +171,9 @@ require(quanteda)
 
 ## Currently available corpus sources
 
-quanteda has a simple and powerful tool for loading texts: `textfile()`.  This function takes a file or fileset from disk or a URL, and loads it as a special class of pre-corpus object, known as a `corpusSource` object, from which a corpus can be constructed using a second command, `corpus()`.
+**quanteda** has a simple and powerful companion package for loading texts: [**readtext**](https://github.com/kbenoit/readtext).  The main function in this package, `readtext()`,  takes a file or fileset from disk or a URL, and returns a type of data.frame that can be used directly with the `corpus()` constructor function, to create a **quanteda** corpus object.
 
-`textfile()` works on:
+`readtext()` works on:
 
 * text (`.txt`) files;
 * comma-separated-value (`.csv`) files;
@@ -206,30 +185,30 @@ quanteda has a simple and powerful tool for loading texts: `textfile()`.  This f
 The corpus constructor command `corpus()` works directly on:
 
 * a vector of character objects, for instance that you have already loaded into the workspace using other tools;
-* a `corpusSource` object created using `textfile()`; and
 * a `VCorpus` corpus object from the **tm** package.
+* a data.frame containing a text column and any other document-level metadata.
 
 ### Example: building a corpus from a character vector
 
 The simplest case is to create a corpus from a vector of texts already in memory in R.  This gives the advanced R user complete flexbility with his or her choice of text inputs, as there are almost endless
 ways to get a vector of texts into R.
 
-If we already have the texts in this form, we can call the corpus constructor function directly.  We can demonstrate this on the built-in character vector of 57 US president inaugural speeches called `inaugTexts`.
+If we already have the texts in this form, we can call the corpus constructor function directly.  We can demonstrate this on the built-in character vector of 57 US president inaugural speeches called `data_char_inaugural`.
 
 ```{r}
-str(inaugTexts)  # this gives us some information about the object
-myCorpus <- corpus(inaugTexts)  # build the corpus
+str(data_char_inaugural)  # this gives us some information about the object
+myCorpus <- corpus(data_char_inaugural)  # build the corpus
 summary(myCorpus, n = 5)
 ```
 
 If we wanted, we could add some document-level variables -- what quanteda calls `docvars` -- to this corpus.
 
 We can do this using the R's `substring()` function to extract characters from a name -- in this case, the 
-name of the character vector `inaugTexts`.  This works using our fixed starting and ending positions with
+name of the character vector `data_char_inaugural`.  This works using our fixed starting and ending positions with
 `substring()` because these names are a very regular format of `YYYY-PresidentName`.
 ```{r}
-docvars(myCorpus, "President") <- substring(names(inaugTexts), 6)
-docvars(myCorpus, "Year") <- as.integer(substring(names(inaugTexts), 1, 4))
+docvars(myCorpus, "President") <- substring(names(data_char_inaugural), 6)
+docvars(myCorpus, "Year") <- as.integer(substring(names(data_char_inaugural), 1, 4))
 summary(myCorpus, n=5)
 ```
 
@@ -237,7 +216,7 @@ If we wanted to tag each document with additional meta-data not considered a doc
 add those to our corpus.
 ```{r}
 metadoc(myCorpus, "language") <- "english"
-metadoc(myCorpus, "docsource")  <- paste("inaugTexts", 1:ndoc(myCorpus), sep = "_")
+metadoc(myCorpus, "docsource")  <- paste("data_char_inaugural", 1:ndoc(myCorpus), sep = "_")
 summary(myCorpus, n = 5, showmeta = TRUE)
 ```
 
@@ -246,64 +225,40 @@ a simple tag for our custom metadoc field `docsource`, we used the quanteda func
 the number of documents in our corpus.  This function is deliberately designed to work in a way similar to 
 functions you may already use in R, such as `nrow()` and `ncol()`.
 
-### Example: loading in files using `textfile()`
+### Example: loading in files using the **readtext** package
+
 
 ```{r, eval=FALSE}
+require(readtext)
+
 # Twitter json
-mytf1 <- textfile("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
+mytf1 <- readtext("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
 myCorpusTwitter <- corpus(mytf1)
 summary(myCorpusTwitter, 5)
 # generic json - needs a textField specifier
-mytf2 <- textfile("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
+mytf2 <- readtext("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
                   textField = "text")
 summary(corpus(mytf2), 5)
 # text file
-mytf3 <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
+mytf3 <- readtext("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
 summary(corpus(mytf3), 5)
 # multiple text files
-mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
+mytf4 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
 summary(corpus(mytf4), 5)
 # multiple text files with docvars from filenames
-mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", 
+mytf5 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", 
                   docvarsfrom="filenames", sep="-", docvarnames=c("Year", "President"))
 summary(corpus(mytf5), 5)
 # XML data
-mytf6 <- textfile("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml", 
+mytf6 <- readtext("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml", 
                   textField = "COMMON")
 summary(corpus(mytf6), 5)
 # csv file
-write.csv(data.frame(inaugSpeech = texts(inaugCorpus), docvars(inaugCorpus)), 
-          file = "/tmp/inaugTexts.csv", row.names = FALSE)
-mytf7 <- textfile("/tmp/inaugTexts.csv", textField = "inaugSpeech")
+write.csv(data.frame(inaugSpeech = texts(data_corpus_inaugural), docvars(data_corpus_inaugural)), 
+          file = "/tmp/inaug_texts.csv", row.names = FALSE)
+mytf7 <- readtext("/tmp/inaug_texts.csv", textField = "inaugSpeech")
 summary(corpus(mytf7), 5)
 ```
-
-### Creating a corpus from a Twitter search
-
-`quanteda` provides an interface to retrieve and store data from a twitter search as a corpus object. The REST API query uses the [twitteR package](https://github.com/geoffjentry/twitteR), and an API authorization from twitter is required. The process of obtaining this authorization is described in detail here: <https://openhatch.org/wiki/Community_Data_Science_Workshops/Twitter_authentication_setup>, correct as of October 2014. The twitter API is a commercial service, and rate limits and the data returned are determined by twitter.
-
-Four keys are required, to be passed to `quanteda`'s `getTweets` source function, in addition to the search query term and the number of results required. The maximum number of results that can be obtained is not exactly identified in the API documentation, but experimentation indicates an upper bound of around 1500 results from a single query, with a frequency limit of one query per minute.
-
-The code below performs authentication and runs a search for the string 'quantitative'. Many other functions for working with the API are available from the [twitteR package](https://github.com/geoffjentry/twitteR). An R interface to the streaming API is also available [link](link).
-
-```{r eval=FALSE}
-# These keys are examples and may not work! Get your own key at dev.twitter.com
-consumer_key="vRLy03ef6OFAZB7oCL4jA"
-consumer_secret="wWF35Lr1raBrPerVHSDyRftv8qB1H7ltV0T3Srb3s"
-access_token="1577780816-wVbOZEED8KZs70PwJ2q5ld2w9CcvcZ2kC6gPnAo"
-token_secret="IeC6iYlgUK9csWiP524Jb4UNM8RtQmHyetLi9NZrkJA"
-
-
-tw <- getTweets('quantitative', numResults=20, consumer_key, consumer_secret, access_token, token_secret)
-```
-
-The return value from the above query is a source object which can be passed to quanteda's corpus constructor, and the document variables are set to correspond with tweet metadata returned by the API.
-
-```{r eval=FALSE}
-twCorpus <- corpus(tw)
-names(docvars(twCorpus))
-```
-
 
 
 ## How a quanteda corpus works
@@ -317,19 +272,19 @@ A corpus is designed to be a more or less static container of texts with respect
 To extract texts from a a corpus, we use an extractor, called `texts()`.  
 
 ```{r}
-texts(inaugCorpus)[2]
+texts(data_corpus_inaugural)[2]
 ```
 
 To summarize the texts from a corpus, we can call a `summary()` method defined for a corpus.
 
 ```{r}
-summary(ie2010Corpus)
+summary(data_corpus_irishbudget2010)
 ```
 
 We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:
 
-```{r}
-tokenInfo <- summary(inaugCorpus)
+```{r, fig.width = 8}
+tokenInfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
     ggplot(data=tokenInfo, aes(x=Year, y=Tokens, group=1)) + geom_line() + geom_point() +
         scale_x_discrete(labels=c(seq(1789,2012,12)), breaks=seq(1789,2012,12) ) 
@@ -349,20 +304,20 @@ that no information is lost.  Corpus-level medata data is also concatenated.
 
 ```{r}
 library(quanteda)
-mycorpus1 <- corpus(inaugTexts[1:5], note = "First five inaug speeches.")
-mycorpus2 <- corpus(inaugTexts[53:57], note = "Last five inaug speeches.")
+mycorpus1 <- corpus(data_char_inaugural[1:5], note = "First five inaug speeches.")
+mycorpus2 <- corpus(data_char_inaugural[53:57], note = "Last five inaug speeches.")
 mycorpus3 <- mycorpus1 + mycorpus2
 summary(mycorpus3)
 ```
 
 ### subsetting corpus objects
 
-There is a method of the `subset()` function defined for corpus objects, where a new corpus can 
+There is a method of the `corpus_subset()` function defined for corpus objects, where a new corpus can 
 be extracted based on logical conditions applied to docvars:
 
 ```{r}
-summary(subset(inaugCorpus, Year > 1990))
-summary(subset(inaugCorpus, President == "Adams"))
+summary(corpus_subset(data_corpus_inaugural, Year > 1990))
+summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 ```
 
 
@@ -372,9 +327,9 @@ The `kwic` function (KeyWord In Context) performs a search for a word and allows
 
 ```{r}
 options(width = 200)
-kwic(inaugCorpus, "terror")
-kwic(inaugCorpus, "terror", valuetype = "regex")
-kwic(inaugCorpus, "communist*")
+kwic(data_corpus_inaugural, "terror")
+kwic(data_corpus_inaugural, "terror", valuetype = "regex")
+kwic(data_corpus_inaugural, "communist*")
 ```
 
 
@@ -382,10 +337,10 @@ In the above summary, `Year` and `President` are variables associated with each 
 
 ```{r}
 # inspect the document-level variables
-head(docvars(inaugCorpus))
+head(docvars(data_corpus_inaugural))
 
 # inspect the corpus-level metadata
-metacorpus(inaugCorpus)
+metacorpus(data_corpus_inaugural)
 ```
 
 More corpora are available from the [quantedaData](http://github.com/kbenoit/quantedaData) package.
@@ -449,7 +404,7 @@ the conservative approach taken by `tokenize()`, the `dfm()` function applies ce
 such as `toLower()` -- a separate function for lower-casing texts -- and removes punctuation.  All of the options to `tokenize()` can be passed to `dfm()`, however.
 
 ```{r}
-myCorpus <- subset(inaugCorpus, Year > 1990)
+myCorpus <- corpus_subset(data_corpus_inaugural, Year > 1990)
 
 # make a dfm
 myDfm <- dfm(myCorpus)
@@ -459,11 +414,11 @@ myDfm[, 1:5]
 Other options for a `dfm()` include removing stopwords, and stemming the tokens.
 ```{r}
 # make a dfm, removing stopwords and applying stemming
-myStemMat <- dfm(myCorpus, ignoredFeatures = stopwords("english"), stem = TRUE)
+myStemMat <- dfm(myCorpus, remove = stopwords("english"), stem = TRUE, removePunct = TRUE)
 myStemMat[, 1:5]
 ```
 
-The option `ignoredFeatures` provides a list of tokens to be ignored.  Most users will 
+The option `remove` provides a list of tokens to be ignored.  Most users will 
 supply a list of pre-defined "stop words", defined for numerous languages, accessed through 
 the `stopwords()` function:
 ```{r}
@@ -477,8 +432,9 @@ head(stopwords("arabic"), 10)
 ### Viewing the document-frequency matrix
 
 The dfm can be inspected in the Enviroment pane in RStudio, or by calling R's `View` function. Calling `plot` on a dfm will display a wordcloud using the [wordcloud package](link.)
-```{r warning=FALSE}
-mydfm <- dfm(ukimmigTexts, ignoredFeatures=c("will", stopwords("english")))
+```{r warning=FALSE, fig.width = 8, fig.height = 8}
+mydfm <- dfm(data_char_ukimmig2010, remove = c("will", stopwords("english")), 
+             removePunct = TRUE)
 mydfm
 ```
 
@@ -487,15 +443,15 @@ To access a list of the most frequently occurring features, we can use `topfeatu
 topfeatures(mydfm, 20)  # 20 top words
 ```
 
-Plotting a word cloud is very simple, since this is the default `plot()` method for a `dfm` class object:
-```{r warning=FALSE}
-plot(mydfm)
+Plotting a word cloud is done using `textplot_wordcloud()`, for a `dfm` class object:
+```{r warning = FALSE, fig.width = 8, fig.height = 8}
+textplot_wordcloud(mydfm)
 ```
 
 The `plot.dfm()` method passes arguments through to `wordcloud()` from the **wordcloud** package, and can prettify the plot using the same arguments:
-```{r warning=FALSE}
+```{r warning=FALSE, fig.width = 7, fig.height = 7}
 if (require(RColorBrewer))
-    plot(mydfm, max.words = 100, colors = brewer.pal(6, "Dark2"), scale = c(8, .5))
+    textplot_wordcloud(mydfm, max.words = 100, colors = brewer.pal(6, "Dark2"), scale = c(8, .5))
 ```
 
 ### Grouping documents by document variable 
@@ -503,7 +459,7 @@ if (require(RColorBrewer))
 Often, we are interested in analysing how texts differ according to substantive factors which may be encoded in the document variables, rather than simply by the boundaries of the document files. We can group documents which share the same value for a document variable when creating a dfm:
 
 ```{r}
-byPartyDfm <- dfm(ie2010Corpus, groups = "party", ignoredFeatures = stopwords("english"))
+byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", remove = stopwords("english"), removePunct = TRUE)
 ```
 
 We can sort this dfm, and inspect it:
@@ -522,7 +478,7 @@ For some applications we have prior knowledge of sets of words that are indicati
 For example, let's look at how words associated with terrorism and words associated with the economy vary by President in the inaugural speeches corpus. From the original corpus, we select Presidents since Clinton:
 
 ```{r}
-recentCorpus <- subset(inaugCorpus, Year > 1991)
+recentCorpus <- corpus_subset(data_corpus_inaugural, Year > 1991)
 ```
 
 Now we define a demonstration dictionary:
@@ -543,7 +499,7 @@ LIWC and Provalis Research's Wordstat format.  For instance, we can load the LIW
 ```{r, eval = FALSE}
 liwcdict <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
                        format = "LIWC")
-liwcdfm <- dfm(inaugTexts[52:57], dictionary = liwcdict, verbose = FALSE)
+liwcdfm <- dfm(data_char_inaugural[52:57], dictionary = liwcdict, verbose = FALSE)
 liwcdfm[, 1:10]
 ```
 
@@ -553,22 +509,22 @@ liwcdfm[, 1:10]
 
 ## Similarities between texts
 
-```{r}
-presDfm <- dfm(subset(inaugCorpus, Year>1980), 
-               ignoredFeatures = stopwords("english"),
-               stem=TRUE, verbose=FALSE)
-obamaSimil <- similarity(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL, 
-                            margin = "documents", method = "cosine", normalize = FALSE)
-dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
+```{r fig.width = 6}
+presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year>1980), 
+               remove = stopwords("english"),
+               stem = TRUE, removePunct = TRUE)
+obamaSimil <- textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL, 
+                             margin = "documents", method = "cosine")
+dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")
 ```
 
 
 We can use these distances to plot a dendrogram, clustering presidents:
-```{r, eval=FALSE}
+```{r, fig.width = 10, fig.height = 7, eval = FALSE}
 data(SOTUCorpus, package="quantedaData")
-presDfm <- dfm(subset(SOTUCorpus, year > 1960), verbose = FALSE, stem = TRUE,
-               ignoredFeatures = stopwords("english"))
-presDfm <- trim(presDfm, minCount=5, minDoc=3)
+presDfm <- dfm(corpus_subset(SOTUCorpus, Date > as.Date("1960-01-01")), verbose = FALSE, stem = TRUE,
+               remove = stopwords("english"), removePunct = TRUE)
+presDfm <- dfm_trim(presDfm, min_count=5, min_docfreq=3)
 # hierarchical clustering - get distances on normalized dfm
 presDistMat <- dist(as.matrix(weight(presDfm, "relFreq")))
 # hiarchical clustering the distance object
@@ -576,24 +532,25 @@ presCluster <- hclust(presDistMat)
 # label with document names
 presCluster$labels <- docnames(presDfm)
 # plot as a dendrogram
-plot(presCluster)
+plot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
 ```
-
+<img src="images/prescluster.png" alt="Presidential Cluster Dendrogram" style="width: 780px;"/>
 
 
 We can also look at term similarities:
 ```{r}
-similarity(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features", n = 20)
+sim <- similarity(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features", n = 10)
+print(sim, digits = 2)
 ```
 
 ## Scaling document positions
 
 We have a lot of development work to do on the `textmodel()` function, but here is a demonstration of unsupervised document scaling comparing the "wordfish" model to scaling from correspondence analysis:
-```{r}
+```{r fig.width = 6, fig.height = 6}
 # make prettier document names
-docnames(ie2010Corpus) <- 
-    paste(docvars(ie2010Corpus, "name"), docvars(ie2010Corpus, "party"))
-ieDfm <- dfm(ie2010Corpus, verbose = FALSE)
+docnames(data_corpus_irishbudget2010) <- 
+    paste(docvars(data_corpus_irishbudget2010, "name"), docvars(data_corpus_irishbudget2010, "party"))
+ieDfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
 wf <- textmodel(ieDfm, model = "wordfish", dir=c(2,1))
 wca <- textmodel(ieDfm, model = "ca")
 # plot the results
@@ -606,8 +563,8 @@ abline(lm(-1*wca$rowcoord[,1] ~ wf@theta), col="grey50", lty="dotted")
 ## Topic models
 
 ```{r}
-quantdfm <- dfm(ie2010Corpus, verbose = FALSE, 
-                ignoredFeatures = c("will", stopwords("english")))
+quantdfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE, 
+                remove = c("will", stopwords("english")))
 
 if (require(topicmodels)) {
     myLDAfit20 <- LDA(convert(quantdfm, to = "topicmodels"), k = 20)

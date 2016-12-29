@@ -58,12 +58,15 @@ Returns estimates of relative author positions across the full corpus of texts.
 }
 \examples{
 \dontrun{
-wordshoalfit <- textmodel_wordshoal(ie30corpus,groupvar="debateID",authorvar="member.name")
-fitdf <- merge(as.data.frame(summary(wordshoalfit)),docvars(ie30corpus),by.x="row.names",by.y="member.name")
+data(ie30corpus, package = "quantedaData")
+wordshoalfit <- 
+    textmodel_wordshoal(ie30corpus, groupvar = "debateID", authorvar = "member.name")
+fitdf <- merge(as.data.frame(summary(wordshoalfit)),
+               docvars(ie30corpus), 
+               by.x="row.names", by.y="member.name")
 fitdf <- subset(fitdf,!duplicated(memberID))
 print(aggregate(theta~party.name,data=fitdf,mean))
 }
-
 }
 \author{
 Benjamin Lauderdale and Kenneth Benoit

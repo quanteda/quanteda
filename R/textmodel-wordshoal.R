@@ -53,12 +53,15 @@ setClass("textmodel_wordshoal_predicted",
 #' @author Benjamin Lauderdale and Kenneth Benoit
 #' @examples
 #' \dontrun{
-#' wordshoalfit <- textmodel_wordshoal(ie30corpus,groupvar="debateID",authorvar="member.name")
-#' fitdf <- merge(as.data.frame(summary(wordshoalfit)),docvars(ie30corpus),by.x="row.names",by.y="member.name")
+#' data(ie30corpus, package = "quantedaData")
+#' wordshoalfit <- 
+#'     textmodel_wordshoal(ie30corpus, groupvar = "debateID", authorvar = "member.name")
+#' fitdf <- merge(as.data.frame(summary(wordshoalfit)),
+#'                docvars(ie30corpus), 
+#'                by.x="row.names", by.y="member.name")
 #' fitdf <- subset(fitdf,!duplicated(memberID))
-#' print(aggregate(theta~party.name,data=fitdf,mean))
+#' aggregate(theta ~ party.name, data = fitdf, mean)
 #' }
-#' 
 #' @export
 textmodel_wordshoal <- function(data, groupvar, authorvar, dir = c(1,2), tol = 1e-3) {
   

@@ -2,19 +2,25 @@ Package: quanteda
 Type: Package
 Title: Quantitative Analysis of Textual Data
 Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
-    c("aut", "cre")), person("Paul", "Nulty", email = "paul.nulty@gmail.com",
-    role = "aut"), person("Pablo", "Barberá", email = "pablo.barbera@nyu.edu",
-    role = "ctb"), person("Kohei", "Watanabe", email =
-    "watanabe.kohei@gmail.com", role = "ctb"), person("Benjamin", "Lauderdale",
-    email = "B.E.lauderdale@lse.ac.uk", role = "ctb"))
+    c("aut", "cre")), 
+    person("Paul", "Nulty", email = "paul.nulty@gmail.com", role = "ctb"), 
+    person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "ctb"),
+    person("Kohei", "Watanabe", email = "watanabe.kohei@gmail.com", role = "ctb"), 
+    person("Haiyan", "Wang", email = "h.wang52@lse.ac.uk", role = "ctb"),
+    person("Benjamin", "Lauderdale", email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
+    person("Will", "Lowe", email="wlowe@princeton.edu", role="ctb"),
+    person("Pablo", "Barberá", email = "pablo.barbera@nyu.edu", role = "ctb"))
 Author: Kenneth Benoit [aut, cre],
-    Paul Nulty [aut],
-    Pablo Barberá [ctb],
+    Paul Nulty [ctb],
+    Adam Obeng [ctb],
     Kohei Watanabe [ctb],
-    Benjamin Lauderdale [ctb]
+    Haiyan Wang [ctb],
+    Benjamin Lauderdale [ctb],
+    Will Lowe [ctb],
+    Pablo Barberá [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.5-23
-Date: 2016-04-25
+Version: 0.9.8.9027
+Date: 2016-12-28
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -29,23 +35,24 @@ Imports:
     SnowballC,
     wordcloud,
     proxy,
-    parallel,
     Rcpp,
+    RcppParallel,
     ca,
-    stringi
-LinkingTo: Rcpp, RcppArmadillo
+    stringi,
+    fastmatch
+Remotes: kbenoit/readtext
+LinkingTo: Rcpp, RcppParallel, RcppArmadillo
 Suggests:
     knitr,
+    rmarkdown,
     lda,
     topicmodels,
-    jsonlite (>= 0.9.10),
-    streamR,
     tm (>= 0.6),
     slam,
-    ggplot2,
     XML,
     testthat,
-    RColorBrewer
+    RColorBrewer,
+    ggplot2 (>= 2.2.0)
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
@@ -53,40 +60,81 @@ LazyData: TRUE
 VignetteBuilder: knitr
 Collate:
     'RcppExports.R'
+    'character-methods.R'
     'dictionaries.R'
     'corpus.R'
     'collocations.R'
-    'converters.R'
-    'dataDocs.R'
-    'describe-texts.R'
+    'convert.R'
+    'corpus-deprecated.R'
+    'corpus-methods-base.R'
+    'corpus-methods-quanteda.R'
+    'corpus_reshape.R'
+    'corpus_sample.R'
+    'corpus_segment.R'
+    'corpus_subset.R'
+    'corpuszip.R'
+    'data-deprecated.R'
+    'data-documentation.R'
+    'dev.R'
     'dfm-classes.R'
-    'dfm-main.R'
+    'dfm-deprecated.R'
     'dfm-methods.R'
-    'dfm-weighting.R'
-    'encoding.R'
+    'dfm-subsetting.R'
+    'dfm.R'
+    'dfm_compress.R'
+    'dfm_lookup.R'
+    'dfm_sample.R'
+    'dfm_select.R'
+    'dfm_trim.R'
+    'dfm_weight.R'
+    'dictionaries-deprecated.R'
+    'dictionaries2.R'
+    'fcm-methods.R'
+    'fcm.R'
+    'findSequences.R'
+    'joinTokens-deprecated.R'
     'kwic.R'
-    'lexdiv.R'
-    'ngrams.R'
+    'nfunctions.R'
+    'nscrabble.R'
+    'nsyllable.R'
     'phrases.R'
+    'plots-deprecated.R'
     'plots.R'
-    'quanteda-package.R'
-    'readability.R'
+    'quanteda.R'
+    'readtext-methods.R'
+    'regex2fixed.R'
+    'regex2fixed2.R'
+    'regex2fixed3.R'
+    'regex2fixed4.R'
     'resample.R'
+    'selectFeatures-old.R'
     'selectFeatures.R'
     'settings.R'
     'similarity.R'
     'stopwords.R'
-    'syllables.R'
-    'textfile.R'
     'textmodel-NB.R'
     'textmodel-ca.R'
     'textmodel-generics.R'
+    'textmodel-internal.R'
     'textmodel-wordfish.R'
     'textmodel-wordscores.R'
     'textmodel-wordshoal.R'   
+    'textstat-deprecated.R'
+    'textstat-lexdiv.R'
+    'textstat-readability.R'
+    'textstat_dist.R'
+    'textstat_simil.R'
     'toLower.R'
     'tokenize.R'
     'tokenize_outtakes.R'
+    'tokens.R'
+    'tokens_compound.R'
+    'tokens_ngrams.R'
+    'tokens_select.R'
+    'tolower-misc.R'
+    'utils.R'
     'wordstem.R'
     'zzz.R'
+RcppModules: ngramMaker
 RoxygenNote: 5.0.1
+SystemRequirements: C++11,GNU make

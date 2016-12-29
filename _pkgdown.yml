@@ -1,0 +1,134 @@
+reference:
+- title: Package-level
+  contents:
+    - quanteda
+- title: Data
+  desc: Built-in data objects.
+  contents:
+    - data_char_mobydick
+    - data_char_sampletext
+    - data_char_ukimmig2010
+    - data_char_inaugural
+    - data_corpus_inaugural
+    - data_corpus_irishbudget2010
+    - data_dfm_LBGexample
+- title: Corpus functions
+  desc: Functions for constructing and manipulating corpus class objects.
+  contents:
+    - corpus
+    - corpus_reshape
+    - corpus_sample
+    - corpus_segment
+    - corpus_subset
+    - metacorpus
+    - docvars
+    - metacorpus
+    - metadoc
+    - texts
+    - as.character.corpus
+    - as.corpus.corpuszip
+- title: Tokens functions
+  desc: Functions for constructing and manipulating tokens class objects.
+  contents:
+    - tokens
+    - tokens_compound
+    - tokens_lookup
+    - tokens_ngrams
+    - tokens_skipgrams
+    - tokens_remove
+    - tokens_select
+    - tokens_tolower
+    - tokens_toupper
+    - tokens_wordstem
+    - as.character.tokens
+    - as.list.tokens
+    - as.tokens
+    - as.tokens.list
+    - is.tokens
+    - as.tokens.list
+- title: Character functions
+  desc: Functions for constructing and manipulating character objects.
+  contents:
+    - char_tolower
+    - char_toupper
+    - char_segment
+    - char_ngrams
+    - char_wordstem
+- title: Text matrix functions
+  desc: Functions for constructing and manipulating a document-feature matrix (dfm) or feature co-occurrence matrix object.
+  contents:
+    - dfm
+    - dfm_compress
+    - dfm_lookup
+    - dfm_sample
+    - dfm_remove
+    - dfm_select
+    - dfm_sort
+    - dfm_tolower
+    - dfm_toupper
+    - dfm_trim
+    - dfm_smooth
+    - dfm_weight
+    - dfm_wordstem
+    - head.dfm
+    - tail.dfm
+    - as.dfm
+    - is.dfm
+    - as.data.frame.dfm
+    - as.matrix.dfm
+    - fcm
+    - fcm_compress
+    - fcm_remove
+    - fcm_select
+    - fcm_tolower
+    - fcm_toupper
+    - fcm_sort
+    - is.fcm
+- title: Text Statistics
+  desc: Functions for computing statistics from texts and dfm objects.
+  contents:
+    - starts_with("textstat_")
+    - sparsity
+    - topfeatures
+- title: Dictionary functions
+  desc: Constructor and utility functions for working with dictionaries.
+  contents:
+    - dictionary
+    - is.dictionary
+- title: Phrase discovery functions
+  desc: Functions for exploring and detecting keywords and phrases.
+  contents:
+    - collocations
+    - is.collocations
+    - is.kwic
+    - kwic
+- title: Text plot functions
+  desc: Plot functions for representing text and the analysis of texts.
+  contents:
+    - starts_with("textplot_")
+- title: Text Model Functions
+  desc: Plot functions for fitting analytic models from text matrixes.
+  contents:
+    - textmodel_ca
+    - textmodel_NB
+    - textmodel_wordfish
+    - textmodel_wordscores
+- title: Utility functions
+  desc: R-like functions to return counts and object information.
+  contents:
+    - ndoc
+    - nfeature
+    - nscrabble
+    - nsentence
+    - nsyllable
+    - ntoken
+    - ntype
+    - docnames
+    - docnames<-
+    - featnames
+    - stopwords
+- title: Miscellaneous functions
+  contents:
+    - as.list.dist
+    - convert
+
