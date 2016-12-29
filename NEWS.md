@@ -104,11 +104,9 @@ new name | reason
 `encodedTexts` | moved to package [**readtext**](http://github.com/kbenoit/readtext), as `data_char_encodedtexts`
 
 
-
-
-
 ## Other new features
 
+*  Added `textmodel_wordshoal` fitting function.
 *  Add `max_docfreq` and `min_docfreq` arguments, and better verbose output, to `dfm_trim` (#383).
 *  Added support for batch hashing of tokens through `tokens()`, for more memory-efficient token hashing when dealing with very large numbers of documents.  
 *  Added support for in-memory compressed corpus objects.

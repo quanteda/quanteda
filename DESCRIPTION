@@ -118,6 +118,7 @@ Collate:
     'textmodel-internal.R'
     'textmodel-wordfish.R'
     'textmodel-wordscores.R'
+    'textmodel-wordshoal.R'   
     'textstat-deprecated.R'
     'textstat-lexdiv.R'
     'textstat-readability.R'
