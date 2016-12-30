@@ -202,7 +202,9 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, text_field = "t
 #' @keywords corpus
 #' @export
 corpus.data.frame <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, compress = FALSE, ...) {
-    
+
+    x <- as.data.frame(x)
+        
     args <- list(...)
     if (!missing(docvars))
         stop("docvars are assigned automatically for data.frames", )

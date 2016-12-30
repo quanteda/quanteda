@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2016-02-12" />
+<meta name="date" content="2016-12-12" />
 
 <title>textstat_dist/teststat_simil benchmarks</title>
 
@@ -116,16 +116,16 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">textstat_dist/teststat_simil benchmarks</h1>
-<h4 class="date"><em>02/12/2016</em></h4>
+<h4 class="date"><em>15/12/2016</em></h4>
 
 </div>
 
 
 <div id="test-euclidean-distance-quantedatextstat_dist-v.-proxydist-v.-statsdist" class="section level3">
 <h3>Test “Euclidean” distance: quanteda::textstat_dist() v. <a href="proxy::dist" class="uri">proxy::dist</a>() v. stats::dist()</h3>
-<p>To test the performance of similarity calculation using vectorized method versus c loop method.</p>
+<p>To test the performance of similarity calculation using vectorized method versus c loop methods.</p>
 <pre class="r"><code>require(quanteda, quietly = TRUE, warn.conflicts = FALSE)</code></pre>
-<pre><code>## quanteda version 0.9.8.9022</code></pre>
+<pre><code>## quanteda version 0.9.8.9024</code></pre>
 <pre class="r"><code>data(SOTUCorpus, package = &quot;quantedaData&quot;)
 SOTUDfm &lt;- dfm(SOTUCorpus, remove = stopwords(&quot;english&quot;), stem = TRUE, verbose = FALSE)</code></pre>
 <p><code>##</code></p>
@@ -137,12 +137,11 @@ times = 20, unit = &quot;relative&quot;)</code></pre>
 <pre><code>## Unit: relative
 ##         expr      min       lq     mean   median       uq      max neval
 ##  eucQuanteda  1.00000  1.00000  1.00000  1.00000  1.00000  1.00000    20
-##     eucProxy 40.86053 40.51040 40.92399 40.45209 41.58997 40.20591    20
-##     eucStats 96.82875 93.38192 93.47039 93.18980 93.33561 91.93441    20</code></pre>
+##     eucProxy 41.88628 42.00283 41.19271 42.63788 41.55125 36.42565    20
+##     eucStats 97.81379 95.99923 90.97174 95.91534 91.84129 64.85205    20</code></pre>
 </div>
 <div id="test-jaccard-similarity-quanteda-v.-proxy" class="section level3">
 <h3>Test “Jaccard” similarity: quanteda v. proxy</h3>
-<p>To test the performance of similarity calculation using vectorized method versus c loop method.</p>
 <pre class="r"><code>require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
 data(SOTUCorpus, package = &quot;quantedaData&quot;)
 SOTUDfm &lt;- dfm(SOTUCorpus, remove = stopwords(&quot;english&quot;), stem = TRUE, verbose = FALSE)</code></pre>
@@ -152,9 +151,9 @@ SOTUDfm &lt;- dfm(SOTUCorpus, remove = stopwords(&quot;english&quot;), stem = TR
 jacProxy = proxy::simil(as.matrix(SOTUDfm), &quot;jaccard&quot;, diag = FALSE, upper = FALSE), 
 times = 10, unit = &quot;relative&quot;)</code></pre>
 <pre><code>## Unit: relative
-##         expr      min       lq     mean   median       uq      max neval
-##  jacQuanteda  1.00000  1.00000  1.00000  1.00000  1.00000  1.00000    10
-##     jacProxy 33.73061 33.93456 32.65849 33.46941 31.02999 31.47957    10</code></pre>
+##         expr     min       lq     mean   median       uq      max neval
+##  jacQuanteda  1.0000  1.00000  1.00000  1.00000  1.00000  1.00000    10
+##     jacProxy 33.1578 32.97427 32.20105 33.69403 34.10281 26.24232    10</code></pre>
 </div>
 <div id="test-manhattan-similarity-quanteda-v.-proxy" class="section level3">
 <h3>Test “Manhattan” similarity: quanteda v. proxy</h3>
@@ -168,9 +167,9 @@ SOTUDfm &lt;- dfm(SOTUCorpus, remove = stopwords(&quot;english&quot;), stem = TR
 manhaProxy = proxy::dist(as.matrix(SOTUDfm), &quot;Manhattan&quot;, diag = FALSE, upper = FALSE), 
 times = 10, unit = &quot;relative&quot;)</code></pre>
 <pre><code>## Unit: relative
-##           expr    min       lq     mean   median       uq      max neval
-##  manhaQuanteda  1.000  1.00000  1.00000  1.00000  1.00000  1.00000    10
-##     manhaProxy 12.396 11.59611 11.56912 11.34059 11.64458 10.88462    10</code></pre>
+##           expr      min       lq     mean  median       uq      max neval
+##  manhaQuanteda  1.00000  1.00000  1.00000  1.0000  1.00000  1.00000    10
+##     manhaProxy 13.70755 12.88241 12.66993 12.4481 12.49964 12.43336    10</code></pre>
 </div>
 
 

@@ -19,8 +19,8 @@ Author: Kenneth Benoit [aut, cre],
     Will Lowe [ctb],
     Pablo Barberá [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.8.9025
-Date: 2016-12-20
+Version: 0.9.8.9029
+Date: 2016-12-30
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -75,7 +75,6 @@ Collate:
     'corpuszip.R'
     'data-deprecated.R'
     'data-documentation.R'
-    'dev.R'
     'dfm-classes.R'
     'dfm-deprecated.R'
     'dfm-methods.R'
@@ -115,6 +114,7 @@ Collate:
     'textmodel-internal.R'
     'textmodel-wordfish.R'
     'textmodel-wordscores.R'
+    'textmodel-wordshoal.R'
     'textstat-deprecated.R'
     'textstat-lexdiv.R'
     'textstat-readability.R'

@@ -148,12 +148,12 @@ ListOf<IntegerVector> qatd_cpp_tokens_ngrams(List texts_,
     skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram);
     
     // Apply skipgram_mt to blocked ranges
-    dev::Timer timer;
-    dev::start_timer("Ngram generation", timer);
+    // dev::Timer timer;
+    // dev::start_timer("Ngram generation", timer);
     parallelFor(0, input.size(), skipgram_mt);
-    dev::stop_timer("Ngram generation", timer);
+    // dev::stop_timer("Ngram generation", timer);
     
-    dev::start_timer("Token generation", timer);
+    // dev::start_timer("Token generation", timer);
     // Create character tokens from unordered_map
     std::vector<std::string> types_ngram(map_ngram.size());
     
@@ -165,7 +165,7 @@ ListOf<IntegerVector> qatd_cpp_tokens_ngrams(List texts_,
         types_ngram[it.second - 1] = type_ngram;
     }
     
-    dev::stop_timer("Token generation", timer);
+    // dev::stop_timer("Token generation", timer);
     
     // Return IDs as attribute
     List texts_ngram = Rcpp::wrap(output);

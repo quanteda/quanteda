@@ -30,7 +30,7 @@ ndoc <- function(x) {
 #' @noRd
 #' @export
 ndoc.corpus <- function(x) {
-    length(texts(x))
+    nrow(documents(x))
 }
 
 #' @noRd

@@ -457,6 +457,13 @@ print.tokens <- function(x, ...) {
     x[[i]]
 }
 
+#' @method lengths tokens
+#' @noRd
+#' @export
+lengths.tokens <- function(x, use.names = TRUE) {
+    NextMethod()
+}
+
 
 
 ##

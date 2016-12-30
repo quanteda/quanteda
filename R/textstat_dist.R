@@ -1,13 +1,16 @@
-#' @title Distance matrix between documents and/or features 
+#' Distance matrix between documents and/or features 
 #' 
-#' @description These functions compute distance matrix between documents and/or features from a 
+#' These functions compute distance matrix between documents and/or features from a 
 #' \code{\link{dfm}} and return a standard \code{\link[stats]{dist}} object.  
 #' @rdname textstat_simil
 #' @seealso \link{dfm}
 #' @export
+#' @param p The power of the Minkowski distance.
 #' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
-#' \code{"euclidean"}, \code{"hamming"}, \code{"Chisquared"}, 
-#' \code{"Chisquared2"}, and \code{"kullback"}.
+#' \code{"canberra"}, \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"}, \code{"kullback"}. 
+#' \code{"manhattan"}, \code{"maximum"}, \code{"canberra"}, and \code{"minkowski"}.
+#' @importFrom RcppParallel RcppParallelLibs
+#' @author Haiyan Wang
 #' @examples
 #' # create a dfm from inaugural addresses from Reagan onwards
 #' presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), 
@@ -27,7 +30,7 @@
 textstat_dist <- function(x, selection = character(0), n = NULL, 
                          margin = c("documents", "features"),
                          method = "euclidean",
-                         upper = TRUE, diag = FALSE) {
+                         upper = TRUE, diag = FALSE, p = 2) {
 
     if (!is.dfm(x))
         stop("x must be a dfm object")
@@ -59,19 +62,23 @@ textstat_dist <- function(x, selection = character(0), n = NULL,
         }
     } else xSelect <- NULL
     
-    vecMethod <- c("euclidean", "hamming", "Chisquared","Chisquared2", "kullback","manhattan")
-    vecMethod_simil <- c("jaccard", "binary", "eJaccard","simple matching")
+    vecMethod <- c("euclidean", "hamming", "Chisquared", "Chisquared2", "kullback", "manhattan", "maximum", "canberra")
+    vecMethod_simil <- c("jaccard", "binary", "eJaccard", "simple matching")
     
-    if (method %in% vecMethod){
+    # # make all lower case
+    # method <- tolower(method)
+    # vecMethod <- tolower(vecMethod)
+    # vecMethod_simil <- tolower(vecMethod_simil)
+    
+    if (method %in% vecMethod) {
         result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
+    } else if (method == "minkowski"){
+        result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2), p)
     } else if (method %in% vecMethod_simil) {
         if (method == "binary") method = "jaccardf"
         result <- 1 - get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
-    } else{
-        # use proxy::dist() for all other methods
+    } else {
         stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
-        #result <- as.matrix(proxy::dist(as.matrix(x), as.matrix(xSelect), method = method,
-        #                                by_rows = ifelse(margin=="features", FALSE, TRUE)), diag = 1)
     }
     
     # convert NaNs to NA
@@ -89,7 +96,7 @@ textstat_dist <- function(x, selection = character(0), n = NULL,
         nn <- if(length(selection) == 1L) length(result) else nrow(result)
         rname <- if(length(selection) == 1L) names(result) else rownames(result)
         x <- Matrix::Matrix(data = 0,nrow = nn,ncol = nn, dimnames = list(rname, rname))
-        if(length(selection) == 1L){
+        if (length(selection) == 1L) {
             x[, 1] <- result
         } else {
             x[, 1:ncol(result)] <- result
@@ -99,10 +106,6 @@ textstat_dist <- function(x, selection = character(0), n = NULL,
     
     if (!is.null(n))
         result <- result[1:n,]
-    
-    # # discard the upper diagonal if upper == FALSE
-    # if (!upper)
-    #     result <- Matrix::tril(result)
     
     # create a new dist object
     distM <- stats::as.dist(result, diag = diag, upper = upper)
@@ -353,7 +356,8 @@ kullbackSparse <- function(x, y = NULL, margin = 1) {
     dimnames(kullmat) <- list(rowNm,  colNm)
     kullmat
 }
-#'@importFrom RcppParallel RcppParallelLibs
+
+# Manhattan distance: sum_i |x_i - y_i|
 manhattanSparse <- function(x, y=NULL, margin = 1){
     marginNames <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
@@ -367,3 +371,45 @@ manhattanSparse <- function(x, y=NULL, margin = 1){
     manmat
 }
 
+# Maximum/Supremum distance: max_i |x_i - y_i|
+maximumSparse <- function(x, y=NULL, margin = 1){
+    marginNames <- if (margin == 2) colnames else rownames
+    if (!is.null(y)) {
+        colNm <- marginNames(y)
+        maxmat <- qatd_MaximumPara_cpp2(x, y, margin)
+    } else {
+        colNm <- marginNames(x)
+        maxmat <- qatd_MaximumPara_cpp(x, margin)
+    }
+    dimnames(maxmat) <- list(marginNames(x),  colNm)
+    maxmat
+}
+
+# Canberra distance: sum_i |x_i - y_i| / |x_i + y_i|
+# Weighted by num_nonzeros_elementsum/num_element
+canberraSparse <- function(x, y=NULL, margin = 1){
+    marginNames <- if (margin == 2) colnames else rownames
+    if (!is.null(y)) {
+        colNm <- marginNames(y)
+        canmat <- qatd_CanberraPara_cpp2(x, y, margin)
+    } else {
+        colNm <- marginNames(x)
+        canmat <- qatd_CanberraPara_cpp(x, margin)
+    }
+    dimnames(canmat) <- list(marginNames(x),  colNm)
+    canmat
+}
+
+# Minkowski distance: (sum_i (x_i - y_i)^p)^(1/p)
+minkowskiSparse <- function(x, y=NULL, margin = 1, p = 2){
+    marginNames <- if (margin == 2) colnames else rownames
+    if (!is.null(y)) {
+        colNm <- marginNames(y)
+        minkmat <- qatd_MinkowskiPara_cpp2(x, y, margin, p)
+    } else {
+        colNm <- marginNames(x)
+        minkmat <- qatd_MinkowskiPara_cpp(x, margin, p)
+    }
+    dimnames(minkmat) <- list(marginNames(x),  colNm)
+    minkmat
+}

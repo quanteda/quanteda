@@ -7,7 +7,7 @@
 \usage{
 textstat_dist(x, selection = character(0), n = NULL,
   margin = c("documents", "features"), method = "euclidean", upper = TRUE,
-  diag = FALSE)
+  diag = FALSE, p = 2)
 
 textstat_simil(x, selection = character(0), n = NULL,
   margin = c("documents", "features"), method = "correlation",
@@ -32,22 +32,20 @@ difference will be computed:  \code{documents} for documents or
 matrix is recorded}
 
 \item{diag}{whether the diagonal of the distance matrix should be recorded}
+
+\item{p}{The power of the Minkowski distance.}
 }
 \description{
 These functions compute distance matrix between documents and/or features from a 
 \code{\link{dfm}} and return a standard \code{\link[stats]{dist}} object.
-
-Compute a similarity or distance matrix between documents and/or features 
-from a \code{\link{dfm}} and return a standard \code{\link[stats]{dist}} 
-object.
 }
 \details{
 \code{textstat_dist} options are: \code{"euclidean"} (default), 
-\code{"euclidean"}, \code{"hamming"}, \code{"Chisquared"}, 
-\code{"Chisquared2"}, and \code{"kullback"}.
+\code{"canberra"}, \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"}, \code{"kullback"}. 
+\code{"manhattan"}, \code{"maximum"}, \code{"canberra"}, and \code{"minkowski"}.
 
 \code{textstat_simil} options are: \code{"correlation"} (default),
-\code{"cosine"}, \code{"correlation"}, \code{"jaccard"}, \code{"eJaccard"},
+\code{"cosine"}, \code{"jaccard"}, \code{"eJaccard"},
 \code{"dice"}, \code{"eDice"}, \code{"simple matching"}, \code{"hamann"}, and
 \code{"faith"}.
 }
@@ -91,6 +89,9 @@ textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents", me
 textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", 
                margin = "features", 20)
 
+}
+\author{
+Haiyan Wang
 }
 \seealso{
 \link{dfm}

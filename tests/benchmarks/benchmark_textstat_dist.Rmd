@@ -1,6 +1,6 @@
 ---
 title: "textstat_dist/teststat_simil benchmarks"
-date: "02/12/2016"
+date: "15/12/2016"
 output: html_document
 ---
 
@@ -12,7 +12,8 @@ To test the performance of similarity calculation using vectorized method versus
 require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
 data(SOTUCorpus, package = "quantedaData")
 SOTUDfm <- dfm(SOTUCorpus, remove = stopwords("english"), stem = TRUE, verbose = FALSE)
-microbenchmark::microbenchmark(eucQuanteda = textstat_dist(SOTUDfm, method = "euclidean", margin = "documents"),  
+microbenchmark::microbenchmark(eucQuanteda = textstat_dist(SOTUDfm, method = "euclidean", 
+                                                           margin = "documents"),  
 eucProxy = proxy::dist(as.matrix(SOTUDfm), "euclidean", diag = FALSE, upper = FALSE, p = 2), 
 eucStats = dist(as.matrix(SOTUDfm), method = "euclidean", diag = FALSE, upper = FALSE, p = 2),
 times = 20, unit = "relative")
@@ -24,8 +25,21 @@ times = 20, unit = "relative")
 require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
 data(SOTUCorpus, package = "quantedaData")
 SOTUDfm <- dfm(SOTUCorpus, remove = stopwords("english"), stem = TRUE, verbose = FALSE)
-microbenchmark::microbenchmark(jacQuanteda = textstat_simil(SOTUDfm, method ="jaccard", margin = "documents", tri = TRUE),
+microbenchmark::microbenchmark(jacQuanteda = textstat_simil(SOTUDfm, method ="jaccard", 
+                                                            margin = "documents", upper = TRUE),
 jacProxy = proxy::simil(as.matrix(SOTUDfm), "jaccard", diag = FALSE, upper = FALSE), 
 times = 10, unit = "relative")
 ```
 
+### Test “Manhattan” similarity: quanteda v. proxy
+To test the performance of similarity calculation using parallel method versus serial method.
+
+```{r}
+require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
+data(SOTUCorpus, package = "quantedaData")
+SOTUDfm <- dfm(SOTUCorpus, remove = stopwords("english"), stem = TRUE, verbose = FALSE)
+microbenchmark::microbenchmark(manhaQuanteda = textstat_dist(SOTUDfm, method ="manhattan", 
+                                                             margin = "documents", upper = FALSE),
+manhaProxy = proxy::dist(as.matrix(SOTUDfm), "Manhattan", diag = FALSE, upper = FALSE), 
+times = 10, unit = "relative")
+```
