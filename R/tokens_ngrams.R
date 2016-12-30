@@ -81,17 +81,7 @@ tokens_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' @noRd
 #' @export
 tokens_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
-    # trap condition where a "text" is a single NA
-    if (is.na(x[1]) && length(x)==1) return(NULL)
-    if (any(stringi::stri_detect_charclass(x, "\\p{Z}")) & concatenator != " ")
-        warning("whitespace detected: you may need to run tokens() first")
-    if (length(x) < min(n)) return(NULL)
-    if (identical(as.integer(n), 1L)) {
-        if (!identical(as.integer(skip), 0L))
-            warning("skip argument ignored for n = 1")
-        return(x)
-    }
-    skipgramcpp(x, n, skip + 1, concatenator)
+    tokens_ngrams(tokens(x), n = n, skip = skip, concatenator = concatenator)
 }
 
 #' @rdname tokens_ngrams
