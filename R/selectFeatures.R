@@ -110,64 +110,7 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
                                            valuetype = c("glob", "regex", "fixed"),
                                            case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
                                            verbose = FALSE, ...) {
-    selection <- match.arg(selection)
-    valuetype <- match.arg(valuetype)
-    originalvaluetype <- valuetype
-    features <- unique(unlist(features, use.names=FALSE))  # to convert any dictionaries
-    y <- qatd_cpp_deepcopy(x) # copy x to y to prevent changes in x
-    n <- length(y)
-    
-    if(indexing){
-        if(verbose) catm("Indexing tokens...\n")
-        index <- dfm(y, verbose = FALSE)
-        index_binary <- as(index, 'nMatrix')
-        types <- colnames(index_binary)
-    }else{
-        types <- unique(unlist(y, use.names=FALSE))
-        flag <- rep(TRUE, n)
-    }
-    
-    # convert glob to fixed if no actual glob characters (since fixed is much faster)
-    if (valuetype == "glob") {
-        # treat as fixed if no glob characters detected
-        if (!sum(stringi::stri_detect_charclass(features, c("[*?]"))))
-            valuetype <- "fixed"
-        else {
-            features <- sapply(features, utils::glob2rx, USE.NAMES = FALSE)
-            valuetype <- "regex"
-        }
-    }
-    
-    if (valuetype == "fixed") {
-        
-        if (case_insensitive) {
-            #types <- unique(unlist(y, use.names=FALSE))
-            types_match <- types[toLower(types) %in% toLower(features)]
-        } else {
-            types_match <- features
-        }
-        if (indexing) flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
-        if (verbose) catm(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
-        if(selection == "remove"){
-            select_tokens_cppl(y, flag, types_match, TRUE, padding)
-        }else{ 
-            select_tokens_cppl(y, flag, types_match, FALSE, padding)
-        }
-    } else if (valuetype == "regex") {
-        if (verbose) catm("Converting regex to fixed...\n")
-        types_match <- unlist(regex2fixed(features, types, valuetype, case_insensitive), use.names = FALSE) # get all the unique types that match regex
-        if(indexing) flag <- Matrix::rowSums(index_binary[,types_match]) > 0 # identify texts where types match appear
-        if(verbose) catm(sprintf("Scanning %.2f%% of texts...\n", 100 * sum(flag) / n))
-        if (selection == "remove") {
-            select_tokens_cppl(y, flag, types_match, TRUE, padding)  # search as fixed
-        } else {
-            select_tokens_cppl(y, flag, types_match, FALSE, padding) # search as fixed
-        }
-    }
-    
-    class(y) <- c("tokenizedTexts", class(x))
-    attributes(y) <- attributes(x)
-    return(y)
+    as.tokenizedTexts(tokens_select(as.tokens(x), features, selection, valuetype, case_insensitive, padding))
 }
 
 #' @export
@@ -188,48 +131,7 @@ selectFeatures.tokenizedTexts <- function(x, features, selection = c("keep", "re
 selectFeatures.tokens <- function(x, features, selection = c("keep", "remove"), 
                                   valuetype = c("glob", "regex", "fixed"),
                                   case_insensitive = TRUE, padding = FALSE, ...) {
-    selection <- match.arg(selection)
-    valuetype <- match.arg(valuetype)
-
-    # convert to regular expressions if not already valuetype = "regex"
-    if (valuetype == "glob" | valuetype == "fixed") 
-        features <- sapply(features, utils::glob2rx, USE.NAMES = FALSE)
-
-    # index the matching features from the types vector
-    features <- unique(unlist(features, use.names = FALSE))  # to convert any dictionaries
-    features_index <- 
-        which(stringi::stri_detect_regex(types(x), paste(features, collapse = "|"),
-                                         case_insensitive = case_insensitive))
-    
-    # invert the match index to remove features
-    if (selection == "remove")
-        features_index <- setdiff(seq_along(types(x)), features_index)
-    
-    # save the attributes
-    attrs_pre <- attributes(x)
-    
-    # match the features
-    match_list <- lapply(unclass(x), fastmatch::fmatch, features_index)
-    # get the new word types
-    newfeats_types <- types(x)[features_index[!is.na(features_index)]]
-    
-    if (!padding) {
-        newfeats <- lapply(match_list, function(y) y[!is.na(y)])
-    } else {
-        newfeats_types <- c(newfeats_types, "")
-        newfeats <- lapply(match_list, function(y) { 
-            # add an empty type for non-matches
-            y[is.na(y)] <- length(newfeats_types)
-            y 
-        })
-    } 
-    
-    # replace the attributes
-    attributes(newfeats) <- attrs_pre
-    # but use the new types
-    types(newfeats) <- newfeats_types
-    
-    newfeats
+    tokens_select(x, features, selection, valuetype, case_insensitive, padding)
 }
 
 

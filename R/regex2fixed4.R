@@ -22,6 +22,9 @@ regex2fixed4 <- function(regex, index) {
     # Make case-insensitive
     if(case_insensitive) regex <- lapply(regex, stri_trans_tolower)
     
+    # Convert glob to regex
+    if(valuetype == 'glob') regex <- lapply(regex, glob2rx)
+    
     # Separate multi and single-entry patterns
     len <- lengths(regex)
     pats_multi <- regex[len>1] 
@@ -73,7 +76,6 @@ index <- function(types, valuetype, case_insensitive = FALSE){
     attr(index, 'case_insensitive') <- case_insensitive
     attr(index, 'types') <- types
     attr(index, 'types_search') <- types_search
-    
     return(index)
     
 }

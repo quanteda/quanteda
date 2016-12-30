@@ -124,9 +124,9 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     
     # Generate ngrams
     # if(!missing(thread)) RcppParallel::setThreadOptions(thread)
-    x <- qatd_cpp_ngram_mt_list(x, types(x), concatenator, n, skip + 1)
+    x <- qatd_cpp_tokens_ngrams(x, types(x), concatenator, n, skip + 1)
     
-    types_ngm <- stringi::stri_encode(types(x), "", "UTF-8")
+    types_ngm <- stringi::stri_encode(attr(x, 'types'), "", "UTF-8") # types() cannot be used
     attributes(x) <- attrs_org
     types(x) <- types_ngm
     names(x) <- names_org

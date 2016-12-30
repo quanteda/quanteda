@@ -1,13 +1,5 @@
 context('test regex2fixed4.R')
 
-test_that("expand is working correctly", {
-    expect_identical(setdiff(
-        expand(list(c("A", "a"), c("B", "BB", "b", "bb"))),
-        list(c("A", "B"), c("a", "B"), c("A", "BB"), c("a", "BB"), 
-             c("A", "b"), c("a", "b"), c("A", "bb"), c("a", "bb"))
-    ), list())
-})
-    
 test_that("regex2fixed converts regex patterns correctly", {
       
     regex <- list(c('^a$', '^b'), c('c'), c('d'), c('b$'))

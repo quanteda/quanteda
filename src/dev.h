@@ -34,7 +34,7 @@ namespace dev{
     
     /* ---- Debugging tools ------------------------- */
     
-    inline void print_ngram(std::vector<int> vec){
+    inline void print_ngram(std::vector<unsigned int> vec){
         for(auto elm : vec){
             Rcout << std::to_string(elm) << " ";
         }

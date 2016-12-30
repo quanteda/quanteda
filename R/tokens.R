@@ -211,7 +211,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     for (i in 1:length(x_blocks)) {
         
         if (verbose) catm("...tokenizing", i, "of" , length(x_blocks), "blocks...\n")
-    
+        
         if (what %in% c("word", "fastestword", "fasterword")) {
             result_temp <- tokens_word(x_blocks[[i]], what, removeNumbers, removePunct, removeSymbols, 
                                        removeSeparators, removeTwitter, removeHyphens, removeURL, verbose)
@@ -260,32 +260,19 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
         catm("...total elapsed: ", (proc.time() - startTimeTok)[3], "seconds.\n")
         catm("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n")
     }
-
+    
     names(result) <- names_org # stri_* destroys names, so put them back
     attr(result, "what") <- what
     attr(result, "ngrams") <- ngrams
     attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
-
+    
     return(result)
 }
 
 #' @rdname tokens
 #' @export
 #' @noRd
-tokens.corpus <- function(x, what = c("word", "sentence", "character", "fastestword", "fasterword"),
-                          removeNumbers = FALSE,
-                          removePunct = FALSE,
-                          removeSymbols = FALSE,
-                          removeSeparators = TRUE,
-                          removeTwitter = FALSE,
-                          removeHyphens = FALSE,
-                          removeURL = FALSE,
-                          ngrams = 1L,
-                          skip = 0L,
-                          concatenator = "_",
-                          simplify = FALSE,
-                          hash = TRUE,
-                          verbose = FALSE, ...) {
+tokens.corpus <- function(x, ...) {
     tokens(texts(x), ...)
 }
 
@@ -385,7 +372,7 @@ tokens_hash <- function(x, types, ...) {
     } else {
         types <- c(types, setdiff(types_x, types))
     }
-
+    
     # Serialize tokens 
     x_int <- lapply(x, fastmatch::fmatch, types)
     
@@ -517,7 +504,7 @@ tokens_word <- function(txt, what, removeNumbers, removePunct, removeSymbols, re
         else if (what=="fasterword")
             tok <- stringi::stri_split_charclass(txt, "\\p{WHITE_SPACE}")
         tok <- qatd_cpp_remove_chr_list(tok, "")
-    
+        
         
     } else {
         tok <- stringi::stri_split_boundaries(txt, 
@@ -626,7 +613,7 @@ tokens_hashed_recompile <- function(x) {
         attrs_input <- attributes(x_new)
         x <- x_new
     }
-        
+    
     # reindex duplicates, if any
     if (any(duplicated(types(x)))) {
         v <- types(x)
@@ -638,7 +625,7 @@ tokens_hashed_recompile <- function(x) {
         attrs_input <- attributes(x_new)
         x <- x_new
     }
-
+    
     return(x)
 }
 
