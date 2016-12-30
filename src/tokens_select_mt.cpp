@@ -128,10 +128,10 @@ List qatd_cpp_tokens_select(List texts_,
     Texts output(input.size());
     select_mt select_mt(input, output, span_max, set_words, mode, padding);
     
-    dev::Timer timer;
-    dev::start_timer("Token select", timer);
+    // dev::Timer timer;
+    // dev::start_timer("Token select", timer);
     parallelFor(0, input.size(), select_mt);
-    dev::stop_timer("Token select", timer);
+    // dev::stop_timer("Token select", timer);
     
     ListOf<IntegerVector> texts_key = Rcpp::wrap(output);
     

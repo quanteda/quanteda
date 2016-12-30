@@ -48,21 +48,23 @@ tokens_lookup <- function(x, dictionary,
     keys_id <- c()
     types <- types(x)
     index <- index_regex(types, valuetype, case_insensitive) # index types before the loop
-    if(verbose) message('Registering ', length(unlist(dictionary)), ' entiries in the dictionary...');
-    for(h in 1:length(dictionary)) {
+    if (verbose) 
+        message('Registering ', length(unlist(dictionary)), ' entiries in the dictionary...');
+    for (h in 1:length(dictionary)) {
         entries <- stringi::stri_split_fixed(dictionary[[h]], concatenator)
         entries_fixed <- regex2fixed5(entries, types, valuetype, case_insensitive, index) # convert glob or regex to fixed
-        if(length(entries_fixed) == 0) next
+        if (length(entries_fixed) == 0) next
         entries_id <- c(entries_id, lapply(entries_fixed, function(x) fmatch(x, types)))
         keys_id <- c(keys_id, rep(h, length(entries_fixed)))
     }
-    if(verbose) message('Searching ', length(entries_id), ' types of features...')
+    if (verbose) 
+        message('Searching ', length(entries_id), ' types of features...')
     x <- qatd_cpp_tokens_lookup(x, entries_id, keys_id)
     
     attributes(x) <- attrs_org
-    if(capkeys){
-        types(x) <- toUpper(names(dictionary))
-    }else{
+    if (capkeys) {
+        types(x) <- char_toupper(names(dictionary))
+    } else {
         types(x) <- names(dictionary)
     }
     names(x) <- names_org

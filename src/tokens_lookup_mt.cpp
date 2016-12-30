@@ -79,21 +79,21 @@ List qatd_cpp_tokens_lookup(List texts_,
 
     MapNgrams map_words;
     int span_max = 0;
-    for(int g = 0; g < words.size(); g++){
-        if(has_na(words[g])) continue;
+    for (int g = 0; g < words.size(); g++) {
+        if (has_na(words[g])) continue;
         Ngram word = words[g];
         map_words[word] = ids_[g];
-        if(span_max < word.size()) span_max = word.size();
+        if (span_max < word.size()) span_max = word.size();
     }
     //Rcout << "Span max " << span_max << "\n";
     
     Texts output(input.size());
     lookup_mt lookup_mt(input, output, span_max, map_words);
     
-    dev::Timer timer;
-    dev::start_timer("Dictionary lookup", timer);
+    // dev::Timer timer;
+    // dev::start_timer("Dictionary lookup", timer);
     parallelFor(0, input.size(), lookup_mt);
-    dev::stop_timer("Dictionary lookup", timer);
+    // dev::stop_timer("Dictionary lookup", timer);
     
     ListOf<IntegerVector> texts_key = Rcpp::wrap(output);
     
