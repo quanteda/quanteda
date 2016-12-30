@@ -83,6 +83,7 @@ Text skipgram(Text tokens,
     // Generate skipgrams recursively
     for (int k = 0; k < ns.size(); k++) {
         int n = ns[k];
+        if(tokens.size() < n) continue;
         Ngram ngram(n);
         for (int start = 0; start < tokens.size() - (n - 1); start++) {
             if(tokens[start] == 0) continue; // skip padding
@@ -129,7 +130,7 @@ struct skipgram_mt : public Worker{
  */
 
 // [[Rcpp::export]]
-ListOf<IntegerVector> qatd_cpp_tokens_ngrams(List texts_,
+List qatd_cpp_tokens_ngrams(List texts_,
                             CharacterVector types_,
                             String delim_,
                             IntegerVector ns_,
@@ -168,7 +169,7 @@ ListOf<IntegerVector> qatd_cpp_tokens_ngrams(List texts_,
     // dev::stop_timer("Token generation", timer);
     
     // Return IDs as attribute
-    List texts_ngram = Rcpp::wrap(output);
+    ListOf<IntegerVector> texts_ngram = Rcpp::wrap(output);
     texts_ngram.attr("types") = types_ngram;
 
     return texts_ngram;
