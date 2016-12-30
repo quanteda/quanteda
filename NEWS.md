@@ -106,6 +106,7 @@ new name | reason
 
 ## Other new features
 
+*  `textstat_dist` and `textstat_simil` add fast, sparse, and parallel computation of many new distance and similarity matrices.  
 *  Added `textmodel_wordshoal` fitting function.
 *  Add `max_docfreq` and `min_docfreq` arguments, and better verbose output, to `dfm_trim` (#383).
 *  Added support for batch hashing of tokens through `tokens()`, for more memory-efficient token hashing when dealing with very large numbers of documents.  

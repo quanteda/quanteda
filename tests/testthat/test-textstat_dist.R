@@ -324,7 +324,7 @@ test_that("test textstat_dist method = \"manhattan\" against proxy dist() : docu
     expect_equal(manQuanteda, manProxy)
 })
 
-test_that("test textstat_dist method = \"manhattan\" against proxy dist() : documents", {
+test_that("test textstat_dist method = \"manhattan\" against proxy dist() : features", {
     require(proxy)
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
@@ -336,4 +336,76 @@ test_that("test textstat_dist method = \"manhattan\" against proxy dist() : docu
     manProxy <- manProxy[order(names(manProxy))]
     manProxy <- manProxy[-which(names(manProxy) == "soviet")]
     expect_equal(manQuanteda, manProxy)
+})
+
+# Maximum/Supremum distance
+test_that("test textstat_dist method = \"Maximum\" against proxy dist() : documents", {
+    require(proxy)
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    maxQuanteda <- round(as.matrix(textstat_dist(presDfm, method = "maximum", margin = "documents")), 2)
+    maxProxy <- round(as.matrix(proxy::dist(as.matrix(presDfm), "maximum", diag = FALSE, upper = FALSE)), 2)
+    expect_equal(maxQuanteda, maxProxy)
+})
+
+test_that("test textstat_dist method = \"Maximum\" against proxy dist() : features", {
+    require(proxy)
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    maxQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet",  method = "maximum", margin = "features"))[,"soviet"], 2)
+    maxQuanteda <- maxQuanteda[order(names(maxQuanteda))]
+    maxQuanteda <- maxQuanteda[-which(names(maxQuanteda) == "soviet")]
+    
+    maxProxy <- round(drop(proxy::dist(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), "maximum", by_rows = FALSE)), 2)
+    maxProxy <- maxProxy[order(names(maxProxy))]
+    maxProxy <- maxProxy[-which(names(maxProxy) == "soviet")]
+    expect_equal(maxQuanteda, maxProxy)
+})
+
+# Canberra distance
+test_that("test textstat_dist method = \"Canberra\" against proxy dist() : documents", {
+    require(proxy)
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    canQuanteda <- round(as.matrix(textstat_dist(presDfm, method = "canberra", margin = "documents")), 2)
+    canProxy <- round(as.matrix(proxy::dist(as.matrix(presDfm), "canberra", diag = FALSE, upper = FALSE)), 2)
+    expect_equal(canQuanteda, canProxy)
+})
+
+test_that("test textstat_dist method = \"Canberra\" against proxy dist() : features", {
+    require(proxy)
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    canQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet",  method = "canberra", margin = "features"))[,"soviet"], 2)
+    canQuanteda <- canQuanteda[order(names(canQuanteda))]
+    canQuanteda <- canQuanteda[-which(names(canQuanteda) == "soviet")]
+    
+    canProxy <- round(drop(proxy::dist(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), "canberra", by_rows = FALSE)), 2)
+    canProxy <- canProxy[order(names(canProxy))]
+    canProxy <- canProxy[-which(names(canProxy) == "soviet")]
+    expect_equal(canQuanteda, canProxy)
+})
+
+# Minkowski distance
+test_that("test textstat_dist method = \"Minkowski\" against proxy dist() : documents", {
+    require(proxy)
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    minkQuanteda <- round(as.matrix(textstat_dist(presDfm, method = "minkowski", margin = "documents", p = 3)), 2)
+    minkProxy <- round(as.matrix(proxy::dist(as.matrix(presDfm), "minkowski", diag = FALSE, upper = FALSE, p=3)), 2)
+    expect_equal(minkQuanteda, minkProxy)
+})
+
+test_that("test textstat_dist method = \"Canberra\" against proxy dist() : features", {
+    require(proxy)
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    minkQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet",  method = "minkowski", margin = "features", p = 4))[,"soviet"], 2)
+    minkQuanteda <- minkQuanteda[order(names(minkQuanteda))]
+    minkQuanteda <- minkQuanteda[-which(names(minkQuanteda) == "soviet")]
+    
+    minkProxy <- round(drop(proxy::dist(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), "minkowski", by_rows = FALSE, p = 4)), 2)
+    minkProxy <- minkProxy[order(names(minkProxy))]
+    minkProxy <- minkProxy[-which(names(minkProxy) == "soviet")]
+    expect_equal(minkQuanteda, minkProxy)
 })

@@ -8,11 +8,6 @@
 #     textstat_simil(x, ...)
 # }
 
-#' similarity or distance between dfm documents and/or features
-#' 
-#' Compute a similarity or distance matrix between documents and/or features 
-#' from a \code{\link{dfm}} and return a standard \code{\link[stats]{dist}} 
-#' object.
 #' @param x a \link{dfm} object
 #' @param selection character or character vector of document names or feature 
 #'   labels from the dfm
@@ -26,7 +21,7 @@
 #'   matrix is recorded
 #' @param diag whether the diagonal of the distance matrix should be recorded
 #' @details \code{textstat_simil} options are: \code{"correlation"} (default),
-#' \code{"cosine"}, \code{"correlation"}, \code{"jaccard"}, \code{"eJaccard"},
+#' \code{"cosine"}, \code{"jaccard"}, \code{"eJaccard"},
 #' \code{"dice"}, \code{"eDice"}, \code{"simple matching"}, \code{"hamann"}, and
 #' \code{"faith"}.
 #' @note If you want to compute similarity on a "normalized" dfm object 
@@ -90,7 +85,7 @@ textstat_simil <- function(x, selection = character(0), n = NULL,
     } else xSelect <- NULL
     
     vecMethod <- c("cosine", "correlation", "jaccard", "eJaccard", "dice", "eDice", "simple matching", "hamann", "faith")
-    if (method %in% vecMethod){
+    if (method %in% vecMethod) {
         if (method == "simple matching") method <- "smc"
         result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
     } else {
@@ -126,11 +121,6 @@ textstat_simil <- function(x, selection = character(0), n = NULL,
     if (!is.null(n))
         result <- result[1:n,]
         
-    # # discard the upper diagonal if upper  == FALSE
-    # if (!upper)
-    #     #result <- if(diag == TRUE) Matrix::tril(result) else Matrix::tril(result, -1)
-    #     result <- Matrix::tril(result)
-
     # create a new dist object
     distM <- stats::as.dist(result, diag = diag, upper = upper)
     attr(distM, "method") <- method
@@ -364,9 +354,9 @@ smcSparse <- function(x, y = NULL, margin = 1) {
     smcmat
 }
 
-#Hamann similarity: This measure gives the probability that a characteristic has the same state in both items 
-#(present in both or absent from both) minus the probability that a characteristic has different states 
-#in the two items (present in one and absent from the other).
+# Hamann similarity: This measure gives the probability that a characteristic has the same state in both items 
+# (present in both or absent from both) minus the probability that a characteristic has different states 
+# in the two items (present in one and absent from the other).
 # formula: Hamman = ((a+d)-(b+c))/n
 # "Hamman" in proxy::dist
 hamannSparse <- function(x, y = NULL, margin = 1) {
@@ -399,8 +389,8 @@ hamannSparse <- function(x, y = NULL, margin = 1) {
 }
 
 # Faith similarity: This measure includes the
-#negative match but only gave the half credits while giving
-#the full credits for the positive matches.
+# negative match but only gave the half credits while giving
+# the full credits for the positive matches.
 # formula: Hamman = a+0.5d/n
 faithSparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
