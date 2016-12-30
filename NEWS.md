@@ -106,6 +106,7 @@ new name | reason
 
 ## Other new features
 
+*  `tokens_lookup`, `tokens_select`, and `tokens_remove` are faster and use parallelization (based on the TBB library).
 *  `textstat_dist` and `textstat_simil` add fast, sparse, and parallel computation of many new distance and similarity matrices.  
 *  Added `textmodel_wordshoal` fitting function.
 *  Add `max_docfreq` and `min_docfreq` arguments, and better verbose output, to `dfm_trim` (#383).
