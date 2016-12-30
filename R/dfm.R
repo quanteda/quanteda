@@ -219,21 +219,19 @@ dfm.tokenizedTexts <- function(x,
     if ("startTime" %in% names(dots)) startTime <- dots$startTime
     
     if (verbose & stri_startswith_fixed(sys.calls()[2], "dfm.token"))
-        catm("Creating a dfm from a", class(x)[1], "object ...")
-
-    if (tolower) {
-        if (verbose) catm("\n   ... lowercasing", sep="")
-        x <- toLower(x)
-    }
-
+        if (tolower) {
+            if (verbose) catm("\n   ... lowercasing", sep="")
+            x <- toLower(x)
+        }
+    
     # set document names if none
     if (is.null(names(x))) {
         names(x) <- paste("text", 1:length(x), sep="")
     } 
-
+    
     # compile the dfm
     dfmresult <- compile_dfm(x, verbose = verbose)
-        
+    
     # copy attributes
     dfmresult@ngrams <- as.integer(settings_ngrams)
     dfmresult@skip <- as.integer(settings_skip)
@@ -243,11 +241,11 @@ dfm.tokenizedTexts <- function(x,
         if (!is.null(thesaurus)) dictionary <- thesaurus
         if (verbose) catm("   ... ")
         dfmresult <- dfm_lookup(dfmresult, dictionary,
-                                     exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
-                                     valuetype = valuetype,
-                                     verbose = verbose)
+                                exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
+                                valuetype = valuetype,
+                                verbose = verbose)
     }
-
+    
     if (!is.null(remove)) {
         if (verbose) catm("   ... ")
         # if ngrams > 1 and remove or selct is specified, then convert these into a
@@ -280,7 +278,7 @@ dfm.tokenizedTexts <- function(x,
         if (verbose) 
             if (oldNfeature - nfeature(dfmresult) > 0) 
                 catm(", trimmed ", oldNfeature - nfeature(dfmresult), " feature variant",
-                    ifelse(oldNfeature - nfeature(dfmresult) != 1, "s", ""), "\n", sep = "")
+                     ifelse(oldNfeature - nfeature(dfmresult) != 1, "s", ""), "\n", sep = "")
         else
             catm("\n")
     }
@@ -288,9 +286,9 @@ dfm.tokenizedTexts <- function(x,
     if (verbose) 
         catm("   ... created a", paste(format(dim(dfmresult), big.mark=",", trim = TRUE), 
                                        collapse=" x "), 
-            "sparse dfm\n   ... complete. \nElapsed time:", 
-            format((proc.time() - startTime)[3], digits = 3),
-            "seconds.\n")
+             "sparse dfm\n   ... complete. \nElapsed time:", 
+             format((proc.time() - startTime)[3], digits = 3),
+             "seconds.\n")
     
     # remove any NA named columns
     if (any(naFeatures <- is.na(featnames(dfmresult))))

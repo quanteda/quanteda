@@ -211,7 +211,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     for (i in 1:length(x_blocks)) {
         
         if (verbose) catm("...tokenizing", i, "of" , length(x_blocks), "blocks...\n")
-    
+        
         if (what %in% c("word", "fastestword", "fasterword")) {
             result_temp <- tokens_word(x_blocks[[i]], what, removeNumbers, removePunct, removeSymbols, 
                                        removeSeparators, removeTwitter, removeHyphens, removeURL, verbose)
@@ -260,12 +260,12 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
         catm("...total elapsed: ", (proc.time() - startTimeTok)[3], "seconds.\n")
         catm("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n")
     }
-
+    
     names(result) <- names_org # stri_* destroys names, so put them back
     attr(result, "what") <- what
     attr(result, "ngrams") <- ngrams
     attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
-
+    
     return(result)
 }
 
@@ -364,22 +364,23 @@ is.tokens <- function(x) {
 tokens_hash <- function(x, types, ...) {
     
     attrs_org <- attributes(x)
-    types_new <- unique(unlist(x, use.names = FALSE))
-    types_new <- types_new[types_new != '']  # remove empty "tokens"
+    types_x <- unique(unlist(x, use.names = FALSE))
+    types_x <- types_x[types_x != '']  # remove empty "tokens"
     
     if (missing(types)) {
-        types <- types_new
+        types <- types_x
     } else {
-        types <- c(types, setdiff(types_new, types))
+        types <- c(types, setdiff(types_x, types))
     }
+    
     # Serialize tokens 
-    x <- lapply(x, fmatch, types)
+    x_int <- lapply(x, fastmatch::fmatch, types)
     
     # Restore and add additional attributes
-    attributes(x) <- attrs_org
-    attr(x, "types") <- types
-    class(x) <- c("tokens", class(x))
-    return(x)
+    attributes(x_int) <- attrs_org
+    attr(x_int, "types") <- types
+    class(x_int) <- c("tokens", class(x_int))
+    return(x_int)
 }
 
 
@@ -396,12 +397,12 @@ as.tokenizedTexts.tokens <- function(x, ...) {
     class(x) <- "list"
     
     # Desrialize tokens
-    x <- lapply(x, function(y) types[y])
+    x_chr <- lapply(x, function(y) types[y])
     
-    attributes(x) <- attrs_org
-    attr(x, "types") <- NULL  # remove types attribute
-    class(x) <- c("tokenizedTexts", "list")
-    return(x)
+    attributes(x_chr) <- attrs_org
+    attr(x_chr, "types") <- NULL  # remove types attribute
+    class(x_chr) <- c("tokenizedTexts", "list")
+    return(x_chr)
 }
 
 #' print a tokens objects
@@ -414,8 +415,7 @@ as.tokenizedTexts.tokens <- function(x, ...) {
 print.tokens <- function(x, ...) {
     cat(class(x)[1], " from ", ndoc(x), " document", 
         ifelse(ndoc(x) > 1, "s", ""), ".\n", sep = "")
-    types <- c("", types(x))
-    x <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding 
+    x <- lapply(unclass(x), function(y) types(x)[y])
     class(x) <- "listof"
     print(x, ...)
 }
@@ -442,8 +442,7 @@ print.tokens <- function(x, ...) {
 #' str(toks)
 #' toks[[2]]
 "[[.tokens" <- function(x, i, ...) {
-    types <- c("", types(x))
-    types[unclass(x)[[i]] + 1] # shift index to show padding 
+    types(x)[unclass(x)[[i]]]
 }
 
 #' @method "$" tokens
@@ -505,7 +504,7 @@ tokens_word <- function(txt, what, removeNumbers, removePunct, removeSymbols, re
         else if (what=="fasterword")
             tok <- stringi::stri_split_charclass(txt, "\\p{WHITE_SPACE}")
         tok <- qatd_cpp_remove_chr_list(tok, "")
-    
+        
         
     } else {
         tok <- stringi::stri_split_boundaries(txt, 
@@ -593,44 +592,40 @@ tokens_character <- function(txt, what, removeNumbers, removePunct, removeSymbol
 # a way that makes some of its types identical, such as lowercasing when a lowercased 
 # version of the type already exists in the hash table.
 # @param x the \link[=tokens_hash]{tokenizedTexts} object to be recompiled
-# @noRd
 # @examples 
-# @export
-# toksh <- tokens_hash(tokenize(c(one = "a b c d A B C D", two = "A B C d")))
-# unclass(toksh)
-# toksh <- tokens_remove(toksh, 'b', padding=TRUE)
-# unclass(toksh)
-# tokens_hashed_recompile(toksh)
-# 
-# attr(toksh, 'types') <- toLower(attr(toksh, 'types'))
+# toksh <- tokens_hash(tokenize(c(one = "a b c d A B C D",
+#                                two = "A B C d")))
+# vocabulary(toksh) <- toLower(vocabulary(toksh))
 # tokens_hashed_recompile(toksh)
 tokens_hashed_recompile <- function(x) {
     
     attrs_input <- attributes(x)
-    index_unique <- unique(unlist(x, use.names = FALSE))
-    index_unique <- index_unique[index_unique != 0] # exclude padding
+    v_unique_index <- unique(unlist(x, use.names = FALSE))
     
-    # Remove gaps in the type index, if any, remap index
-    if (any(is.na(fmatch(seq_along(index_unique), index_unique)))) { 
-        types_new <- types(x)[index_unique]
-        index_new <- seq_along(index_unique)
-        index_unique <- c(0, index_unique) # padding index is zero but not in types
-        x <- lapply(unclass(x), function(y) index_new[fmatch(y, index_unique) - 1]) # shift index for padding
-        attributes(x) <- attrs_input
-        types(x) <- types_new
+    # remove gaps in the type index, if any, remap index
+    if (any(is.na(match(seq_along(v_unique_index), v_unique_index)))) { 
+        v_unique_index <- unique(unlist(x, use.names = FALSE))
+        v_new <- types(x)[v_unique_index]
+        new_types <- seq_along(v_unique_index)
+        x_new <- lapply(unclass(x), function(y) new_types[match(y, v_unique_index)])
+        attributes(x_new) <- attrs_input
+        types(x_new) <- v_new
+        attrs_input <- attributes(x_new)
+        x <- x_new
     }
-        
-    # Reindex duplicates, if any
+    
+    # reindex duplicates, if any
     if (any(duplicated(types(x)))) {
-        types <- types(x)
-        types_unique <- unique(types)
-        index_mapping <- fmatch(types, types_unique)
-        index_mapping <- c(0, index_mapping) # padding index is zero but not in types
-        x <- lapply(unclass(x), function(y) index_mapping[y + 1]) # shift index for padding
-        attributes(x) <- attrs_input
-        types(x) <- types_unique
+        v <- types(x)
+        v_unique <- unique(v)
+        index_mapping <- match(v, v_unique)
+        x_new <- lapply(unclass(x), function(y) index_mapping[y])
+        attributes(x_new) <- attrs_input
+        types(x_new) <- v_unique
+        attrs_input <- attributes(x_new)
+        x <- x_new
     }
-
+    
     return(x)
 }
 
