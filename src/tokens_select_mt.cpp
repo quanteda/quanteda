@@ -123,7 +123,6 @@ List qatd_cpp_tokens_select(List texts_,
         set_words.insert(word);
         if(span_max < word.size()) span_max = word.size();
     }
-    //Rcout << "Span max " << span_max << "\n";
     
     Texts output(input.size());
     select_mt select_mt(input, output, span_max, set_words, mode, padding);

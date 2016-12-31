@@ -38,6 +38,18 @@ namespace quanteda{
         }
        return false;
     }
+
+    inline List as_list(std::vector< std::vector<unsigned int> > tokens){
+        List list(tokens.size());
+        for(int h = 0; h < tokens.size(); h++){
+            IntegerVector temp;
+            if(tokens[h].size() > 0){
+                temp = Rcpp::wrap(tokens[h]);
+            }
+            list[h] = temp;
+        }
+        return list;
+    }
     
 }
 
@@ -66,6 +78,7 @@ namespace ngrams {
             //return true;
         }
     };
+    typedef concurrent_unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
     typedef concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
     typedef concurrent_unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
 }

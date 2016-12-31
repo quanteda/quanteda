@@ -80,19 +80,17 @@ List qatd_cpp_tokens_replace(List texts_,
     for(int g = 0; g < words.size(); g++){
         if(has_na(words[g])) continue;
         Ngram word = words[g];
-        //Rcout << "Add " << ids[g] << "\n";
         map_words[word] = ids[g];
         if(span_max < word.size()) span_max = word.size();
     }
-    //Rcout << "Span max " << span_max << "\n";
     
     Texts output(input.size());
     replace_mt replace_mt(input, output, span_max, map_words);
     
-    dev::Timer timer;
-    dev::start_timer("Token replace", timer);
+    // dev::Timer timer;
+    // dev::start_timer("Token replace", timer);
     parallelFor(0, input.size(), replace_mt);
-    dev::stop_timer("Token replace", timer);
+    // dev::stop_timer("Token replace", timer);
     
     ListOf<IntegerVector> texts_key = Rcpp::wrap(output);
     
