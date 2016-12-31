@@ -49,6 +49,10 @@ find_sequence_cppl <- function(texts, types, count_min, smooth, nested) {
     .Call('quanteda_find_sequence_cppl', PACKAGE = 'quanteda', texts, types, count_min, smooth, nested)
 }
 
+qatd_cpp_unhash <- function(tokens_int, types) {
+    .Call('quanteda_qatd_cpp_unhash', PACKAGE = 'quanteda', tokens_int, types)
+}
+
 qatd_cpp_tokens_lookup <- function(texts_, words_, ids_) {
     .Call('quanteda_qatd_cpp_tokens_lookup', PACKAGE = 'quanteda', texts_, words_, ids_)
 }
@@ -63,10 +67,6 @@ qatd_cpp_tokens_replace <- function(texts_, words_, ids_) {
 
 qatd_cpp_tokens_select <- function(texts_, words_, mode_, padding_) {
     .Call('quanteda_qatd_cpp_tokens_select', PACKAGE = 'quanteda', texts_, words_, mode_, padding_)
-}
-
-qatd_cpp_unhash <- function(tokens_int, types) {
-    .Call('quanteda_qatd_cpp_unhash', PACKAGE = 'quanteda', tokens_int, types)
 }
 
 qatd_cpp_deepcopy <- function(x_) {
