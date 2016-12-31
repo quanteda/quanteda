@@ -38,6 +38,18 @@ namespace quanteda{
         }
        return false;
     }
+
+    inline List as_list(std::vector< std::vector<unsigned int> > tokens){
+        List list(tokens.size());
+        for(int h = 0; h < tokens.size(); h++){
+            IntegerVector temp;
+            if(tokens[h].size() > 0){
+                temp = Rcpp::wrap(tokens[h]);
+            }
+            list[h] = temp;
+        }
+        return list;
+    }
     
 }
 
