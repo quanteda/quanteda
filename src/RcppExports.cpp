@@ -144,20 +144,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// skipgramcpp
-StringVector skipgramcpp(std::vector < std::string > tokens, std::vector < int > ns, std::vector < int > ks, std::string delim);
-RcppExport SEXP quanteda_skipgramcpp(SEXP tokensSEXP, SEXP nsSEXP, SEXP ksSEXP, SEXP delimSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::vector < std::string > >::type tokens(tokensSEXP);
-    Rcpp::traits::input_parameter< std::vector < int > >::type ns(nsSEXP);
-    Rcpp::traits::input_parameter< std::vector < int > >::type ks(ksSEXP);
-    Rcpp::traits::input_parameter< std::string >::type delim(delimSEXP);
-    rcpp_result_gen = Rcpp::wrap(skipgramcpp(tokens, ns, ks, delim));
-    return rcpp_result_gen;
-END_RCPP
-}
 // find_sequence_cppl
 Rcpp::List find_sequence_cppl(List texts, const std::vector<std::string>& types, const int& count_min, const double& smooth, const bool& nested);
 RcppExport SEXP quanteda_find_sequence_cppl(SEXP textsSEXP, SEXP typesSEXP, SEXP count_minSEXP, SEXP smoothSEXP, SEXP nestedSEXP) {
@@ -199,7 +185,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_tokens_ngrams
-ListOf<IntegerVector> qatd_cpp_tokens_ngrams(List texts_, CharacterVector types_, String delim_, IntegerVector ns_, IntegerVector skips_);
+List qatd_cpp_tokens_ngrams(List texts_, CharacterVector types_, String delim_, IntegerVector ns_, IntegerVector skips_);
 RcppExport SEXP quanteda_qatd_cpp_tokens_ngrams(SEXP texts_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP ns_SEXP, SEXP skips_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
