@@ -40,24 +40,39 @@ catm <- function(..., sep = " ", appendLF = F) {
 ## reassign the slots to an S4 dfm-like object
 ## necessary when some operation from the Matrix class obliterates them
 ## Ken B
-reassign_slots <- function(x_new, x_orig) {
+reassign_slots <- function(x_new, x_orig, exceptions = NULL) {
     snames <- slotNames(x_orig)
     snames <- snames[!snames %in% 
-                         c("Dim", "Dimnames", "i", "p", "x", "factors")]
+                         c("Dim", "Dimnames", "i", "p", "x", "factors", exceptions)]
     for (s in snames) {
         slot(x_new, s) <- slot(x_orig, s)
     }
     x_new
 }
 
-##
-## reassign the attributes to an S3 object
-## necessary when some operation defined for the base class obliterates them
-## Ken B
-reassign_attributes <- function(x_new, x_orig) {
-    snames <- attributes(x_orig)
-    snames$names <- attr(x_new, "names") 
-    attributes(x_new) <- snames
+#' copy the attributes from one S3 object to another
+#' 
+#' Copy the attributes from one S3 object to another.  Necessary when some
+#' operation defined for the base class obliterates them.
+#' @param x_new the object to which the attributes will be copied
+#' @param x_orig the object from which the attributes will be copied, or a list
+#'   of attrbiutes if \code{attr_only = TRUE}
+#' @param exception a character vector of attribute names NOT to be copied
+#' @param attr_only logical; if \code{TRUE}, then \code{x_orig} is a list of
+#'   attributes rather than an object with attributes.
+#' @keywords internal
+#' @author Ken Benoit
+reassign_attributes <- function(x_new, x_orig, exceptions = NULL, attr_only = FALSE) {
+    if (!attr_only) { 
+        attrs_orig <- attributes(x_orig)
+    } else {
+        attrs_orig <- x_orig
+    }
+    for (a in names(attrs_orig)) {
+        if (!a %in% exceptions) {
+            attr(x_new, a) <- attrs_orig[[a]]
+        }
+    }
     x_new
 }
 

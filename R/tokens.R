@@ -642,7 +642,7 @@ types <- function(x) {
 }
 
 types.tokens <- function(x) {
-    as.character(attr(x, "types"))
+    stringi::stri_encode(attr(x, 'types'), "", "UTF-8")
 }
 
 "types<-" <- function(x, value) {
@@ -654,7 +654,7 @@ types.tokens <- function(x) {
     #     stop("replacement value must equal unique elements of tokens")
     if (!is.character(value))
         stop("replacement value must be character")
-    attr(x, "types") <- value
+    attr(x, "types") <- stringi::stri_encode(value, "", "UTF-8")
     x
 }
 

@@ -107,7 +107,7 @@ The code below uses the tokenized text to the occurrence of the word *whale*. To
 [^1] A *glob* is a simple wildcard matching pattern common on Unix systems -- asterisks match zero or more characters.
 
 ```{r}
-moby.word.v <- tokens(novel.lower.v, simplify = TRUE)
+moby.word.v <- as.character(tokens(novel.lower.v))
 # count of the word 'whale'
 length(moby.word.v[which(moby.word.v == "whale")])
 
