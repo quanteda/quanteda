@@ -93,3 +93,47 @@ test_that("multi-word dictionary behavior is not sensitive to the order of dicti
     
 })
 
+test_that("#388 issue about overlapping key values is resolved: fixed matches", {
+    txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
+             d2 = "The Supreme Court of the United States is seldom in a united state.")
+    toks <- tokens(txt)
+    dict_fixed <- dictionary(list(Countries = c("States"),
+                                  oceans = c("Atlantic", "Pacific"),
+                                  gameconsoles = c("Xbox", "Nintendo"),
+                                  swords = c("States")))
+    
+    expect_equal(as.list(tokens_lookup(toks, dict_fixed, valuetype = "fixed")),
+                 list(d1 = c("Countries", "swords", "oceans", "oceans"),
+                      d2 = c("Countries", "swords")))
+})
+
+test_that("#388 issue about overlapping key values is resolved: glob matches", {
+    txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
+             d2 = "The Supreme Court of the United States is seldom in a united state.")
+    toks <- tokens(txt)
+    dict_glob <- dictionary(list(Countries = c("Stat*"),
+                                 oceans = c("*ic"),
+                                 gameconsoles = c("?box", "Nintendo*"),
+                                 swords = "*s"))
+
+    #### FAILS ####
+    # expect_equal(as.list(tokens_lookup(toks, dict_glob, valuetype = "glob")),
+    #              list(d1 = c("Countries", "swords", "oceans", "oceans"),
+    #                   d2 = c("Countries", "swords")))
+})
+
+test_that("#388 issue about overlapping key values is resolved: regex matches", {
+    txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
+             d2 = "The Supreme Court of the United States is seldom in a united state.")
+    toks <- tokens(txt)
+    dict_regex <- dictionary(list(Countries = c("Stat.*$"),
+                                  oceans = c("[A-Z][a-z]+ic"),
+                                  gameconsoles = c("Xbox"),
+                                  swords = "s$"))
+
+    #### FAILS ####
+    # expect_equal(as.list(tokens_lookup(toks, dict_regex, valuetype = "regex")),
+    #              list(d1 = c("Countries", "swords", "oceans", "oceans"),
+    #                   d2 = c("Countries", "swords")))
+})
+
