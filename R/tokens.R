@@ -598,13 +598,25 @@ tokens_character <- function(txt, what, removeNumbers, removePunct, removeSymbol
 # vocabulary(toksh) <- toLower(vocabulary(toksh))
 # tokens_hashed_recompile(toksh)
 tokens_hashed_recompile <- function(x) {
-    
+
     attrs_input <- attributes(x)
     v_unique_index <- unique(unlist(x, use.names = FALSE))
     
+    # change any 0s in the index to non-zeros - this is the fix for
+    # the code that assigns "" padding to 0 (issue #394)
+    if (any(v_unique_index == 0)) {
+        # add a padding type
+        types(x) <- c(types(x), "")
+        # map the 0s to a new code
+        v_unique_index[v_unique_index == 0] <- length(types(x))
+        x_temp <- lapply(unclass(x), 
+                         function(y) { y[y==0] <- length(types(x)); y })
+        x <- reassign_attributes(x_temp, x)
+    }
+    
     # remove gaps in the type index, if any, remap index
     if (any(is.na(match(seq_along(v_unique_index), v_unique_index)))) { 
-        v_unique_index <- unique(unlist(x, use.names = FALSE))
+        # v_unique_index <- unique(unlist(x, use.names = FALSE))
         v_new <- types(x)[v_unique_index]
         new_types <- seq_along(v_unique_index)
         x_new <- lapply(unclass(x), function(y) new_types[match(y, v_unique_index)])

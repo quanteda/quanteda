@@ -128,14 +128,18 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     features <- as.list(features)
     features_fixed <- regex2fixed5(features, types, valuetype, case_insensitive) # convert glob or regex to fixed
     features_id <- lapply(features_fixed, function(x) fmatch(x, types))
-    if(selection == 'keep'){
+    if (selection == 'keep') {
         x <- qatd_cpp_tokens_select(x, features_id, 1, padding)
-    }else{
+    } else {
         x <- qatd_cpp_tokens_select(x, features_id, 2, padding)
     }
     
     names(x) <- names_org
     attributes(x) <- attrs_org
+    
+    # the fix for issue #394
+    if (padding) x <- tokens_hashed_recompile(x)
+    
     return(x)
 }
 
