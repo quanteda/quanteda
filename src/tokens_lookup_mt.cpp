@@ -14,7 +14,7 @@ using namespace ngrams;
 
 Text lookup(Text tokens, 
             int span_max,
-            MapNgrams &map_keys){
+            MultiMapNgrams &map_keys){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -24,10 +24,12 @@ Text lookup(Text tokens,
         //Rcout << "Span " << span << "\n";
         for(int i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
-            unsigned int &id_keys = map_keys[ngram];
-            if(id_keys){
-                //Rcout << "Found " << id_keys << "\n";
-                keys.push_back(id_keys);
+            pair<MultiMapNgrams::iterator, MultiMapNgrams::iterator> ii;
+            MultiMapNgrams::iterator it; // iterator to be used along with ii
+            ii = map_keys.equal_range(ngram); // get the first and last entry in ii;
+            for(it = ii.first; it != ii.second; ++it){
+                //Rcout << it->second << "\n";
+                keys.push_back(it->second);
             }
         }
     }
@@ -40,10 +42,10 @@ struct lookup_mt : public Worker{
     Texts &input;
     Texts &output;
     int span_max;
-    MapNgrams &map_keys;
+    MultiMapNgrams &map_keys;
     
     // Constructor
-    lookup_mt(Texts &input_, Texts &output_, int span_max_, MapNgrams &map_keys_):
+    lookup_mt(Texts &input_, Texts &output_, int span_max_, MultiMapNgrams &map_keys_):
               input(input_), output(output_), span_max(span_max_), map_keys(map_keys_){}
     
     // parallelFor calles this function with size_t
@@ -77,15 +79,15 @@ List qatd_cpp_tokens_lookup(List texts_,
     List words = words_;
     IntegerVector ids = ids_;
 
-    MapNgrams map_words;
+    MultiMapNgrams map_words;
     int span_max = 0;
     for (int g = 0; g < words.size(); g++) {
         if (has_na(words[g])) continue;
         Ngram word = words[g];
-        map_words[word] = ids_[g];
+        //map_words[word] = ids_[g];
+        map_words.insert(std::make_pair(word, ids_[g]));
         if (span_max < word.size()) span_max = word.size();
     }
-    //Rcout << "Span max " << span_max << "\n";
     
     Texts output(input.size());
     lookup_mt lookup_mt(input, output, span_max, map_words);
@@ -102,8 +104,10 @@ List qatd_cpp_tokens_lookup(List texts_,
 
 /***R
 
-toks <- list(rep(1:10, 10), rep(5:15, 10))
-dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
+#toks <- list(rep(1:10, 1), rep(5:15, 1))
+toks <- list(rep(1:10, 1))
+#dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
+dict <- list(1, 10, 1)
 key <- 1:length(dict)
 qatd_cpp_tokens_lookup(toks, dict, key)
 

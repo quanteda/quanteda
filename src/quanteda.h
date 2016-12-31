@@ -66,6 +66,7 @@ namespace ngrams {
             //return true;
         }
     };
+    typedef concurrent_unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
     typedef concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
     typedef concurrent_unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
 }
