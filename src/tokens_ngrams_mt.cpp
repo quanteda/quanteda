@@ -83,7 +83,7 @@ Text skipgram(Text tokens,
     // Generate skipgrams recursively
     for (int k = 0; k < ns.size(); k++) {
         int n = ns[k];
-        if(tokens.size() < n) continue;
+        if (tokens.size() < n) continue;
         Ngram ngram(n);
         for (int start = 0; start < tokens.size() - (n - 1); start++) {
             if(tokens[start] == 0) continue; // skip padding
