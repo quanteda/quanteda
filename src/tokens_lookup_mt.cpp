@@ -84,7 +84,6 @@ List qatd_cpp_tokens_lookup(List texts_,
     for (int g = 0; g < words.size(); g++) {
         if (has_na(words[g])) continue;
         Ngram word = words[g];
-        //map_words[word] = ids_[g];
         map_words.insert(std::make_pair(word, ids_[g]));
         if (span_max < word.size()) span_max = word.size();
     }
