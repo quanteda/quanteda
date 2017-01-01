@@ -82,13 +82,13 @@ test_that("tokens_lookup preserves case on keys", {
     toks <- tokens(data_corpus_inaugural[1:5])
     dict <- dictionary(list(Country = "united states",
                             HOR = c("House of Re*")))
-    expect_identical(featnames(dfm(tokens_lookup(toks, dict))),
+    expect_identical(featnames(dfm(tokens_lookup(toks, dict), tolower = FALSE)),
                                c("Country", "HOR"))
 })
 
 test_that("tokens_ngrams(x, n = ...) works when ntokens(x) < n", {
     ## issue #392
-    # expect_equivalent(tokens_ngrams(tokens("a", n = 2))[[1]],
-    #                  char_ngrams("a", n = 2))
+    expect_equivalent(unclass(tokens_ngrams(tokens("a"), n = 2))[[1]],
+                      char_ngrams("a", n = 2))
 })
 

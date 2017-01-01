@@ -97,7 +97,7 @@
 #' featnames(dfm(testCorpus, ngrams = 1:2, select = stopwords("english"), removePunct = TRUE))
 #' 
 #' ## removing stopwords before constructing ngrams
-#' tokensAll <- tokens(toLower(testText), removePunct = TRUE)
+#' tokensAll <- tokens(char_tolower(testText), removePunct = TRUE)
 #' tokensNoStopwords <- removeFeatures(tokensAll, stopwords("english"))
 #' tokensNgramsNoStopwords <- tokens_ngrams(tokensNoStopwords, 2)
 #' featnames(dfm(tokensNgramsNoStopwords, verbose = FALSE))
@@ -148,7 +148,7 @@ dfm.character <- function(x,
 
     if (tolower) {
         if (verbose) catm("\n   ... lowercasing", sep="")
-        x <- toLower(x)
+        x <- char_tolower(x)
     }
     
     if (verbose) catm("\n   ... tokenizing", sep = "")
@@ -219,10 +219,12 @@ dfm.tokenizedTexts <- function(x,
     if ("startTime" %in% names(dots)) startTime <- dots$startTime
     
     if (verbose & stri_startswith_fixed(sys.calls()[2], "dfm.token"))
-        if (tolower) {
-            if (verbose) catm("\n   ... lowercasing", sep="")
-            x <- toLower(x)
-        }
+        catm("Creating a dfm from a", class(x)[1], "object ...")
+    
+    if (tolower) {
+        if (verbose) catm("\n   ... lowercasing", sep="")
+        x <- tokens_tolower(x)
+    }
     
     # set document names if none
     if (is.null(names(x))) {
