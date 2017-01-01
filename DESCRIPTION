@@ -12,15 +12,15 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     person("Pablo", "Barberá", email = "pablo.barbera@nyu.edu", role = "ctb"))
 Author: Kenneth Benoit [aut, cre],
     Paul Nulty [ctb],
-    Adam Obeng [ctb],
     Kohei Watanabe [ctb],
+    Adam Obeng [ctb],
     Haiyan Wang [ctb],
     Benjamin Lauderdale [ctb],
     Will Lowe [ctb],
     Pablo Barberá [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.8.9032
-Date: 2016-12-31
+Version: 0.9.8.9033
+Date: 2017-01-01
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
