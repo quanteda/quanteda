@@ -92,9 +92,10 @@ List qatd_cpp_tokens_replace(List texts_,
     parallelFor(0, input.size(), replace_mt);
     // dev::stop_timer("Token replace", timer);
     
-    ListOf<IntegerVector> texts_key = Rcpp::wrap(output);
+    //ListOf<IntegerVector> texts_replaced = Rcpp::wrap(output);
+    List texts_replaced = as_list(output);
     
-    return texts_key;
+    return texts_replaced;
 }
 
 /***R

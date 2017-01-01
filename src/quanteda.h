@@ -11,7 +11,7 @@ using namespace tbb;
 #define RCPP_USING_CXX11
 namespace quanteda{
 
-    inline String join(const CharacterVector &tokens, const String &delim){
+    inline String join(CharacterVector &tokens, String &delim){
         if(tokens.size() == 0) return "";
         String token = tokens[0];
         for (int i = 1; i < tokens.size(); i++) {
@@ -23,7 +23,7 @@ namespace quanteda{
         return token;
       }
     
-    inline std::string join(std::vector< std::string > tokens, std::string delim){
+    inline std::string join(std::vector< std::string > &tokens, std::string &delim){
         if(tokens.size() == 0) return "";
         std::string token = tokens[0];
         for (int i = 1; i < tokens.size(); i++) {
@@ -39,14 +39,16 @@ namespace quanteda{
        return false;
     }
 
-    inline List as_list(std::vector< std::vector<unsigned int> > tokens){
+    inline List as_list(std::vector< std::vector<unsigned int> > &tokens){
         List list(tokens.size());
         for(int h = 0; h < tokens.size(); h++){
-            IntegerVector temp;
             if(tokens[h].size() > 0){
-                temp = Rcpp::wrap(tokens[h]);
+                IntegerVector temp = Rcpp::wrap(tokens[h]);
+                list[h] = temp;
+            }else{
+                list[h] = R_NilValue;
             }
-            list[h] = temp;
+            
         }
         return list;
     }
