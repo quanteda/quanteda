@@ -54,7 +54,7 @@ dfm_lookup <- function(x, dictionary, exclusive = TRUE, valuetype = c("glob", "r
     
     # cannot/should not apply dictionaries with multi-word keys to a dfm
     if (any(stringi::stri_detect_charclass(unlist(dictionary, use.names = FALSE), "\\p{Z}"))) {
-        warning("You will probably not get correct behaviour applying a dictionary with multi-word keys to a dfm.")
+        warning("You will probably not get correct behaviour applying a dictionary with multi-word values to a dfm.")
     }
     
     valuetype <- match.arg(valuetype)
