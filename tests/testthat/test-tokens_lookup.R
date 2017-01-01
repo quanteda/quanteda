@@ -116,10 +116,12 @@ test_that("#388 issue about overlapping key values is resolved: glob matches", {
                                  gameconsoles = c("?box", "Nintendo*"),
                                  swords = "*s"))
 
-    #### FAILS ####
-    # expect_equal(as.list(tokens_lookup(toks, dict_glob, valuetype = "glob")),
-    #              list(d1 = c("Countries", "swords", "oceans", "oceans"),
-    #                   d2 = c("Countries", "swords")))
+    expect_equal(as.list(tokens_lookup(toks, dict_glob, valuetype = "glob")),
+              list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
+                   d2 = c("Countries", "swords", "swords", "Countries")))
+    expect_equal(as.list(tokens_lookup(toks, dict_glob, valuetype = "glob", case_insensitive = FALSE)),
+                 list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
+                      d2 = c("Countries", "swords", "swords")))
 })
 
 test_that("#388 issue about overlapping key values is resolved: regex matches", {
@@ -131,9 +133,12 @@ test_that("#388 issue about overlapping key values is resolved: regex matches", 
                                   gameconsoles = c("Xbox"),
                                   swords = "s$"))
 
-    #### FAILS ####
-    # expect_equal(as.list(tokens_lookup(toks, dict_regex, valuetype = "regex")),
-    #              list(d1 = c("Countries", "swords", "oceans", "oceans"),
-    #                   d2 = c("Countries", "swords")))
+    expect_equal(as.list(tokens_lookup(toks, dict_regex, valuetype = "regex")),
+                 list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
+                      d2 = c("Countries", "swords", "swords", "Countries")))
+    expect_equal(as.list(tokens_lookup(toks, dict_regex, valuetype = "regex", case_insensitive = FALSE)),
+                 list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
+                      d2 = c("Countries", "swords", "swords")))
+    
 })
 
