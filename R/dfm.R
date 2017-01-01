@@ -219,10 +219,12 @@ dfm.tokenizedTexts <- function(x,
     if ("startTime" %in% names(dots)) startTime <- dots$startTime
     
     if (verbose & stri_startswith_fixed(sys.calls()[2], "dfm.token"))
-        if (tolower) {
-            if (verbose) catm("\n   ... lowercasing", sep="")
-            x <- toLower(x)
-        }
+        catm("Creating a dfm from a", class(x)[1], "object ...")
+    
+    if (tolower) {
+        if (verbose) catm("\n   ... lowercasing", sep="")
+        x <- toLower(x)
+    }
     
     # set document names if none
     if (is.null(names(x))) {
