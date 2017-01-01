@@ -1,8 +1,8 @@
 
 
 #' find sequences of tokens
-#'
-#' This function automatically identify sequences of tokens. This algorithm is   
+#' 
+#' This function automatically identify sequences of tokens. This algorithm is 
 #' based on Blaheta and Johnson's “Unsupervised Learning of Multi-Word Verbs”.
 #' @param x tokenizedTexts objects
 #' @param tokens types of token in sequuences
@@ -10,22 +10,26 @@
 #' @param smooth smoothing factor
 #' @param nested collect nested sub-sequence
 #' @examples 
-#' sents <- tokenize(data_corpus_inaugural, what = "sentence", simplify = TRUE)
-#' tokens <- tokenize(sents, removePunct = TRUE)
-#' tokens <- selectFeatures(tokens, stopwords(), 'remove', padding=TRUE)
-#' types <- unique(unlist(tokens))
+#' sents <- as.character(tokens(data_corpus_inaugural[1:10], what = "sentence"))
+#' tokens <- tokens(sents, removePunct = TRUE)
+#' tokens <- tokens_select(tokens, stopwords("english"), "remove", padding = TRUE)
+#' types <- unique(as.character(tokens))
 #' 
-#' # Extracting multi-part nouns
+#' # extracting multi-part nouns
 #' types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
-#' seqs <- findSequences(tokens, types_upper, count_min=2)
-#' head(seqs, 30)
+#' seqs <- findSequences(as.tokenizedTexts(tokens), types_upper, count_min = 2)
+#' head(seqs, 10)
 #' 
-#' # Types can be any words
+#' # types can be any words
 #' types_lower <- types[stringi::stri_detect_regex(types, "^([a-z]+)$") & !types %in%stopwords()]
-#' seqs2 <- findSequences(tokens, types_lower, count_min=3)
-#' head(seqs2, 20)
+#' seqs2 <- findSequences(as.tokenizedTexts(tokens), types_lower, count_min = 3)
+#' head(seqs2, 10)
 #' 
 #' @keywords internal collocations
+#' @author Kohei Watanabe
+#' @references Blaheta, D., & Johnson, M. (2001). Unsupervised learning of
+#'   multi-word verbs. Presented at the ACLEACL Workshop on the Computational
+#'   Extraction, Analysis and Exploitation of Collocations.
 #' @export
 findSequences <- function(x, tokens, count_min, smooth=0.001, nested=TRUE){
     
