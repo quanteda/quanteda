@@ -65,6 +65,33 @@ test_that("as.tokens list version works as expected", {
                       as.tokens(toks))
 })
 
+test_that("tokens indexing works as expected", {
+    toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
+
+    expect_equal(toks$d1, c("one", "two", "three"))
+    expect_equal(toks[[1]], c("one", "two", "three"))
+    
+    expect_equal(as.list(toks["d2"]), list(d2 = c("four", "five", "six")))
+    expect_equal(as.list(toks[2]), list(d2 = c("four", "five", "six")))
+    
+    # issue #370
+    expect_equal(attr((toks[1]), "types"), c("one", "two", "three"))
+    expect_equal(attr((toks[2]), "types"), c("four", "five", "six"))
+})
+
+test_that("tokens_hashed_recompile combine duplicates is working", {
+    toksh <- tokens(c(one = "a b c d A B C D", two = "A B C d"))
+    expect_equal(attr(toksh, "types"),
+                 c("a", "b", "c", "d", "A", "B", "C", "D"))
+    expect_equal(attr(tokens_tolower(toksh), "types"),
+                 c("a", "b", "c", "d"))
+    
+    attr(toksh, "types") <- char_tolower(attr(toksh, "types"))
+    expect_equal(attr(quanteda:::tokens_hashed_recompile(toksh), "types"),
+                 c("a", "b", "c", "d"))
+    
+})
+
 
 #' # coerce an object into a tokens class
 #' as.tokens(toks)

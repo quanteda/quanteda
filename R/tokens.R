@@ -430,7 +430,7 @@ print.tokens <- function(x, ...) {
 #' toks[c(1,3)]
 "[.tokens" <- function(x, i, ...) {
     new_tokens <- unclass(x)[i]
-    new_tokens <- reassign_attributes(new_tokens, x)
+    new_tokens <- reassign_attributes(new_tokens, x, exceptions = "names")
     tokens_hashed_recompile(new_tokens)
 }
 
@@ -615,7 +615,8 @@ tokens_hashed_recompile <- function(x) {
     }
     
     # remove gaps in the type index, if any, remap index
-    if (any(is.na(match(seq_along(v_unique_index), v_unique_index)))) { 
+    if (any(is.na(match(seq_len(length(types(x))), 
+                        v_unique_index)))) { 
         # v_unique_index <- unique(unlist(x, use.names = FALSE))
         v_new <- types(x)[v_unique_index]
         new_types <- seq_along(v_unique_index)
