@@ -68,8 +68,8 @@ reassign_attributes <- function(x_new, x_from, exceptions = NULL, attr_only = FA
     } else {
         attrs_from <- x_from
     }
-    # remove exceptions
-    attrs_from[[exceptions]] <- NULL
+    # remove exceptions, if any
+    if (!is.null(exceptions)) attrs_from[[exceptions]] <- NULL
     # copy the old attributes to the new object, keeping any new attributes not 
     # found in the old object
     attrs_new <- c(attributes(x_new)[setdiff(names(attributes(x_new)), names(attrs_from))],

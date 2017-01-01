@@ -4,12 +4,12 @@
 \alias{reassign_attributes}
 \title{copy the attributes from one S3 object to another}
 \usage{
-reassign_attributes(x_new, x_orig, exceptions = NULL, attr_only = FALSE)
+reassign_attributes(x_new, x_from, exceptions = NULL, attr_only = FALSE)
 }
 \arguments{
 \item{x_new}{the object to which the attributes will be copied}
 
-\item{x_orig}{the object from which the attributes will be copied, or a list
+\item{x_from}{the object from which the attributes will be copied, or a list
 of attrbiutes if \code{attr_only = TRUE}}
 
 \item{attr_only}{logical; if \code{TRUE}, then \code{x_orig} is a list of
