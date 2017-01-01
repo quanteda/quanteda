@@ -97,9 +97,7 @@ List qatd_cpp_tokens_lookup(List texts_,
     // dev::stop_timer("Dictionary lookup", timer);
     
     //ListOf<IntegerVector> texts_key = Rcpp::wrap(output);
-    List texts_key = as_list(output);
-    
-    return texts_key;
+    return as_list(output);
 }
 
 /***R
