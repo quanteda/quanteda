@@ -68,9 +68,9 @@ tokens_compound.tokens <- function(x, sequences,
     
     # Convert collocations sequences into a simple list of characters
     if (is.collocations(sequences)) {
-        sequences <- stri_trim_both(stri_c(sequences[, word1], 
-                                           sequences[, word2], 
-                                           sequences[, word3]), sep=' ')
+        sequences <- stri_trim_both(stri_c(sequences[[1]], 
+                                           sequences[[2]], 
+                                           sequences[[3]], sep=' '))
     }
     
     # Convert dictionaries into a list of phrase sequences 
