@@ -177,3 +177,13 @@ is_indexed <- function(x){
     return(FALSE)
 }
 
+
+char2ngram <- function(x){
+    if(typeof(x) == "list"){
+        return(x)
+    }else{
+        #message('Vector pattern is converted to list')
+        return(stri_split_fixed(x, ' '))
+    }
+}
+
