@@ -81,7 +81,7 @@
     </div>
 
     
-    <p>This function automatically identify sequences of tokens. This algorithm is   
+    <p>This function automatically identify sequences of tokens. This algorithm is 
 based on Blaheta and Johnson&#39;s “Unsupervised Learning of Multi-Word Verbs”.</p>
     
 
@@ -101,80 +101,59 @@ based on Blaheta and Johnson&#39;s “Unsupervised Learning of Multi-Word Verbs�
       <dd>collect nested sub-sequence</dd>
     </dl>
     
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Blaheta, D., &amp; Johnson, M. (2001). Unsupervised learning of
+  multi-word verbs. Presented at the ACLEACL Workshop on the Computational
+  Extraction, Analysis and Exploitation of Collocations.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>sents</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"sentence"</span>, <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>tokens</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='no'>sents</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>tokens</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='selectFeatures.dfm.html'>selectFeatures</a></span>(<span class='no'>tokens</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(), <span class='st'>'remove'</span>, <span class='kw'>padding</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='no'>types</span> <span class='kw'>&lt;-</span> <span class='fu'>unique</span>(<span class='fu'>unlist</span>(<span class='no'>tokens</span>))
+    <pre class="examples"><div class='input'><span class='no'>sents</span> <span class='kw'>&lt;-</span> <span class='fu'>as.character</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>10</span>], <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"sentence"</span>))
+<span class='no'>tokens</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>sents</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>tokens</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>tokens</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"remove"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>types</span> <span class='kw'>&lt;-</span> <span class='fu'>unique</span>(<span class='fu'>as.character</span>(<span class='no'>tokens</span>))
 
-<span class='co'># Extracting multi-part nouns</span>
+<span class='co'># extracting multi-part nouns</span>
 <span class='no'>types_upper</span> <span class='kw'>&lt;-</span> <span class='no'>types</span>[<span class='kw'>stringi</span><span class='kw'>::</span><span class='fu'>stri_detect_regex</span>(<span class='no'>types</span>, <span class='st'>"^([A-Z][a-z\\-]{2,})"</span>)]
-<span class='no'>seqs</span> <span class='kw'>&lt;-</span> <span class='fu'>findSequences</span>(<span class='no'>tokens</span>, <span class='no'>types_upper</span>, <span class='kw'>count_min</span><span class='kw'>=</span><span class='fl'>2</span>)
-<span class='fu'>head</span>(<span class='no'>seqs</span>, <span class='fl'>30</span>)</div><div class='output co'>#&gt;                   sequence len          z            p         mue
-#&gt; 15      Federal Government   2  6.2243846 2.417250e-10   0.5654980
-#&gt; 18      General Government   2  1.6244827 5.213642e-02  -0.3888163
-#&gt; 29     National Government   2 -0.1218873 5.485058e-01  -1.1178028
-#&gt; 2             Almighty God   2 -1.5265619 9.365650e-01  -1.4924686
-#&gt; 7            Chief Justice   2 -1.7526974 9.601730e-01  -2.0986000
-#&gt; 16           Federal Union   2 -2.0720423 9.808693e-01  -2.5882511
-#&gt; 30              New States   2 -2.1321386 9.835023e-01  -5.6883837
-#&gt; 14    Federal Constitution   2 -2.2005119 9.861147e-01  -2.9141523
-#&gt; 8         Chief Magistrate   2 -2.2212726 9.868337e-01  -2.0651569
-#&gt; 12     European Government   2 -2.3093183 9.895370e-01  -3.9023444
-#&gt; 21               Great War   2 -2.3093183 9.895370e-01  -3.9023444
-#&gt; 31               New World   2 -2.3093183 9.895370e-01  -3.9023444
-#&gt; 53           United States   2 -2.3195474 9.898173e-01  -5.6135670
-#&gt; 5          American States   2 -2.3207394 9.898495e-01  -5.9395313
-#&gt; 9                Civil War   2 -2.6671170 9.961747e-01  -4.3884150
-#&gt; 24   International Justice   2 -2.6671170 9.961747e-01  -4.3884150
-#&gt; 32                New York   2 -2.6671170 9.961747e-01  -4.3884150
-#&gt; 54  United States Congress   3 -2.7165970 9.967022e-01 -12.6768418
-#&gt; 46         Southern States   2 -2.7452444 9.969767e-01  -6.2012433
-#&gt; 6          Chief Executive   2 -2.7589574 9.971007e-01  -3.8214244
-#&gt; 28   National Constitution   2 -2.7589574 9.971007e-01  -3.8214244
-#&gt; 57               World War   2 -2.7664116 9.971662e-01  -3.4034983
-#&gt; 3           Almighty Ruler   2 -3.0338609 9.987928e-01  -5.1988174
-#&gt; 4           American Dream   2 -3.0338609 9.987928e-01  -5.1988174
-#&gt; 23 International Communism   2 -3.0338609 9.987928e-01  -5.1988174
-#&gt; 26                 May God   2 -3.0338609 9.987928e-01  -5.1988174
-#&gt; 37         Permanent Court   2 -3.0338609 9.987928e-01  -5.1988174
-#&gt; 40          President Bush   2 -3.0338609 9.987928e-01  -5.1988174
-#&gt; 41       President Clinton   2 -3.0338609 9.987928e-01  -5.1988174
-#&gt; 10             Dingley Act   2 -3.1166352 9.990854e-01  -7.4226954</div><div class='input'>
-<span class='co'># Types can be any words</span>
+<span class='no'>seqs</span> <span class='kw'>&lt;-</span> <span class='fu'>findSequences</span>(<span class='fu'><a href='tokenize.html'>as.tokenizedTexts</a></span>(<span class='no'>tokens</span>), <span class='no'>types_upper</span>, <span class='kw'>count_min</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='fu'>head</span>(<span class='no'>seqs</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;               sequence len         z         p       mue
+#&gt; 5  National Government   2 -1.088709 0.8618589 -5.225623
+#&gt; 6           New States   2 -1.088709 0.8618589 -5.225623
+#&gt; 3   General Government   2 -1.335725 0.9091805 -5.078044
+#&gt; 7        United States   2 -1.568850 0.9416585 -4.926392
+#&gt; 1     Chief Magistrate   2 -1.779789 0.9624448 -7.306344
+#&gt; 2 Federal Constitution   2 -1.779789 0.9624448 -7.306344
+#&gt; 4        Great Britain   2 -2.055167 0.9800685 -7.658025</div><div class='input'>
+<span class='co'># types can be any words</span>
 <span class='no'>types_lower</span> <span class='kw'>&lt;-</span> <span class='no'>types</span>[<span class='kw'>stringi</span><span class='kw'>::</span><span class='fu'>stri_detect_regex</span>(<span class='no'>types</span>, <span class='st'>"^([a-z]+)$"</span>) <span class='kw'>&amp;</span> !<span class='no'>types</span> <span class='kw'>%in%</span><span class='fu'><a href='stopwords.html'>stopwords</a></span>()]
-<span class='no'>seqs2</span> <span class='kw'>&lt;-</span> <span class='fu'>findSequences</span>(<span class='no'>tokens</span>, <span class='no'>types_lower</span>, <span class='kw'>count_min</span><span class='kw'>=</span><span class='fl'>3</span>)
-<span class='fu'>head</span>(<span class='no'>seqs2</span>, <span class='fl'>20</span>)</div><div class='output co'>#&gt;                sequence len         z            p       mue
-#&gt; 363             upon us   2 16.481085 0.000000e+00 1.3185274
-#&gt; 388       will continue   2 12.114226 0.000000e+00 1.1851769
-#&gt; 387           will come   2 10.108486 0.000000e+00 0.9724913
-#&gt; 236       national life   2  8.403657 0.000000e+00 0.6601164
-#&gt; 106     foreign nations   2  8.352402 0.000000e+00 0.6428057
-#&gt; 302         public debt   2  7.654629 9.658940e-15 0.6125151
-#&gt; 72        every citizen   2  7.497668 3.252953e-14 0.5542730
-#&gt; 382         will always   2  7.409380 6.339373e-14 0.6649657
-#&gt; 303 public expenditures   2  5.971855 1.172855e-09 0.4018963
-#&gt; 94      fellow citizens   2  5.559183 1.355198e-08 0.2610228
-#&gt; 116     free government   2  5.342886 4.573913e-08 0.3123917
-#&gt; 398           will make   2  5.037737 2.355346e-07 0.3300379
-#&gt; 3              among us   2  4.910047 4.552739e-07 0.2573173
-#&gt; 304        public money   2  4.910047 4.552739e-07 0.2573173
-#&gt; 411           years ago   2  4.907336 4.616096e-07 0.2062771
-#&gt; 264         one another   2  4.731703 1.113219e-06 0.2080700
-#&gt; 140           good will   2  4.677244 1.453784e-06 0.2148270
-#&gt; 390         will endure   2  4.568317 2.458284e-06 0.2433518
-#&gt; 396           will lead   2  4.568317 2.458284e-06 0.2433518
-#&gt; 407           will work   2  4.568317 2.458284e-06 0.2433518</div><div class='input'>
+<span class='no'>seqs2</span> <span class='kw'>&lt;-</span> <span class='fu'>findSequences</span>(<span class='fu'><a href='tokenize.html'>as.tokenizedTexts</a></span>(<span class='no'>tokens</span>), <span class='no'>types_lower</span>, <span class='kw'>count_min</span> <span class='kw'>=</span> <span class='fl'>3</span>)
+<span class='fu'>head</span>(<span class='no'>seqs2</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;             sequence len         z         p       mue
+#&gt; 9       good opinion   2 -2.010768 0.9778250 -5.707257
+#&gt; 22    public opinion   2 -2.010768 0.9778250 -5.707257
+#&gt; 7     foreign powers   2 -2.464523 0.9931402 -6.473839
+#&gt; 10        good sense   2 -2.464523 0.9931402 -6.473839
+#&gt; 13        human mind   2 -2.464523 0.9931402 -6.473839
+#&gt; 14      human nature   2 -2.464523 0.9931402 -6.473839
+#&gt; 21       public debt   2 -2.573772 0.9949702 -6.454851
+#&gt; 6    foreign nations   2 -2.774800 0.9972382 -6.409861
+#&gt; 1  ardent patriotism   2 -2.962134 0.9984724 -8.874784
+#&gt; 2       equal rights   2 -2.962134 0.9984724 -8.874784</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#references">References</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
+
+    <h2>Author</h2>
+    
+Kohei Watanabe
 
   </div>
 </div>

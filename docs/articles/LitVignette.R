@@ -45,7 +45,7 @@ moby.word.v[c(4,5,6)]
 head(which(moby.word.v == "whale"))
 
 ## ------------------------------------------------------------------------
-moby.word.v <- tokens(novel.lower.v, simplify = TRUE)
+moby.word.v <- as.character(tokens(novel.lower.v))
 # count of the word 'whale'
 length(moby.word.v[which(moby.word.v == "whale")])
 
