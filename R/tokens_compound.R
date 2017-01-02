@@ -66,37 +66,21 @@ tokens_compound.tokens <- function(x, sequences,
                    concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                    case_insensitive = TRUE) {
     
-    valuetype <- match.arg(valuetype)
-    
-    # Check that sequences is a list
-    if (!is.list(sequences))
-        stop("sequences must be a list of character elements, dictionary, or collocations")
-
     # Convert collocations sequences into a simple list of characters
     if (is.collocations(sequences)) {
-        word1 <- word2 <- word3 <- NULL
-        # sort by word3 so that trigrams will be processed before bigrams
-        data.table::setorder(sequences, -word3, word1)
-        # concatenate the words                               
-        word123 <- sequences[, list(word1, word2, word3)]
-        sequences <- unlist(apply(word123, 1, list), recursive = FALSE)
-        sequences <- lapply(sequences, unname)
-        sequences <- lapply(sequences, function(y) y[y != ""])
+        sequences <- stri_trim_both(stri_c(sequences[, word1], 
+                                           sequences[, word2], 
+                                           sequences[, word3]), sep=' ')
     }
     
     # Convert dictionaries into a list of phrase sequences 
     if (is.dictionary(sequences)) {
-        sequences <- stringi::stri_split_fixed(unlist(sequences, use.names = FALSE), " ")
+        sequences <- unlist(sequences, use.names = FALSE)
     }
 
-    # Make sure the list is all character
-    if (!all(is.character(unlist(sequences, use.names = FALSE))))
-        stop("sequences must be a list of character elements or a dictionary")
-
-    
-    # Initialize
-    seqs <- as.list(sequences)
+    seqs <- vector2list(sequences)
     seqs <- seqs[lengths(seqs) > 1] # drop single words
+    valuetype <- match.arg(valuetype)
     
     names_org <- names(x)
     attrs_org <- attributes(x)

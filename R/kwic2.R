@@ -65,6 +65,7 @@ kwic2.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex",
     
     if (!is.tokens(x)) stop("x must be a tokens class object")
     
+    keywords <- vector2list(keywords)
     valuetype <- match.arg(valuetype)
     
     names_org <- names(x)
@@ -74,8 +75,9 @@ kwic2.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex",
     entries_id <- list()
     types <- types(x)
     index <- index_regex(types, valuetype, case_insensitive) # index types before the loop
+    
     #if (verbose) 
-    #    message('Registering ', length(unlist(keywords)), ' entiries in the keywords...');
+    #    message('Registering ', length(keywords), ' keywords...');
     for (h in 1:length(keywords)) {
         entries <- keywords[h]
         entries_fixed <- regex2fixed5(entries, types, valuetype, case_insensitive, index) # convert glob or regex to fixed
