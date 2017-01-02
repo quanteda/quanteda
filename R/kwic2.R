@@ -100,9 +100,8 @@ kwic2.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex",
             df <- rbind(df, df_temp, stringsAsFactors=FALSE)
         }
     }
-    # Formating
-    df$before <- format(df$before, justify="right")
-    df$after <- format(df$after, justify="left")
+
+    class(df) <- c("kwic2", class(df))
     return(df)
 }
 
@@ -127,10 +126,7 @@ kwic_split <- function(char, mask, window){
     #pre <- char[pmax(0, start - window):pmax(0, start - 1)]
     #target <- char[start:end]
     #post <- char[pmin(len, end + 1):pmin(len, end + window)]
-    return(data.frame(before = pre,
-                      keyword = stri_c('[', target, ']', sep = ''), 
-                      after = post,
-                      stringsAsFactors = FALSE))
+    return(data.frame(before = pre, keyword = target, after = post, stringsAsFactors = FALSE))
     
 
     
@@ -143,4 +139,14 @@ kwic2.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", 
     kwic2(as.tokens(x), keywords, window, valuetype, case_insensitive, ...)
 }
 
+#' @method print kwic
+#' @noRd
+#' @export
+print.kwic2 <- function(x, ...) {
+ 
+    x$before <- format(x$before, justify="right")
+    x$keyword <- stri_c('[', x$keyword, ']', sep = '')
+    x$after <- format(x$after, justify="left")
+    print(as.data.frame(x))
+}
 
