@@ -20,3 +20,43 @@ test_that("can wordstem dfms with zero features and zero docs", {
     expect_equal(nfeature(dfm_wordstem(mydfm)), 5)
     
 })
+
+test_that("can wordstem tokens", {
+    txt <- c(d1 = "stemming plurals perfectly",
+             d2 = "one two three")
+    toks <- tokens(txt)
+    expect_equal(as.list(tokens_wordstem(toks, "english")),
+                 list(d1 = c("stem", "plural", "perfect"),
+                      d2 = c("one", "two", "three")))
+})
+
+test_that("can wordstem token ngrams", {
+    txt <- c(d1 = "stemming plurals perfectly",
+             d2 = "one two three")
+    toks <- tokens(txt, ngrams = 2)
+    expect_equal(as.list(tokens_wordstem(toks, "english")),
+                 list(d1 = c("stem_plural", "plural_perfect"),
+                      d2 = c("one_two", "two_three")))
+})
+
+test_that("can wordstem dfm with unigrams", {
+    txt <- c(d1 = "stemming stems plurals perfectly",
+             d2 = "one two three")
+    toks <- tokens(txt)
+    dfmtoks <- dfm(toks)
+    expect_equal(featnames(dfm_wordstem(dfmtoks)),
+                 c("stem", "plural", "perfectli", "on", "two", "three"))
+})
+
+test_that("can wordstem dfm with ngrams", {
+    txt <- c(d1 = "stemming stems stemmed plurals perfectly",
+             d2 = "one two three")
+    dfmtxt <- dfm(txt, ngrams = 2)
+    dfmtxt_stemmed <- dfm_wordstem(dfmtxt, language = "english")
+    expect_equal(featnames(dfmtxt_stemmed),
+                 c("stem_stem", "stem_plural", "plural_perfect", "one_two", "two_three"))
+    expect_equal(dfmtxt@ngrams, dfmtxt_stemmed@ngrams)
+    expect_equal(dfmtxt@concatenator, dfmtxt_stemmed@concatenator)
+})
+
+
