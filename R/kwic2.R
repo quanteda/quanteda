@@ -88,6 +88,7 @@ kwic2.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex",
     # Detect keywords
     detect <- qatd_cpp_tokens_detect(x, entries_id)
     index <- which(sapply(detect, sum, USE.NAMES=FALSE) > 0)
+    if(length(index) == 0) return(NULL) # nothing is found
     for(i in index){
         df_temp <- kwic_split(x[[i]], detect[[i]], window)
         rownames(df_temp) <- stri_c(names_org[i], rownames(df_temp), sep=':')
@@ -97,7 +98,6 @@ kwic2.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex",
             df <- rbind(df, df_temp, stringsAsFactors=FALSE)
         }
     }
-    
     # Formating
     df$before <- format(df$before, justify="right")
     df$after <- format(df$after, justify="left")
