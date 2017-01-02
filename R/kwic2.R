@@ -72,7 +72,6 @@ kwic2.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex",
     
     # Generate all combinations of type IDs
     entries_id <- list()
-    keys_id <- c()
     types <- types(x)
     index <- index_regex(types, valuetype, case_insensitive) # index types before the loop
     #if (verbose) 
@@ -85,10 +84,12 @@ kwic2.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex",
     }
     #if (verbose) 
     #    message('Searching ', length(entries_id), ' types of features...')
-    mask <- qatd_cpp_tokens_detect(x, entries_id)
-    match <- which(lapply(mask, sum) > 0)
-    for(i in 1:length(match)){
-        df_temp <- kwic_split(x[[i]], mask[[i]], window)
+    
+    # Detect keywords
+    detect <- qatd_cpp_tokens_detect(x, entries_id)
+    index <- which(sapply(detect, sum, USE.NAMES=FALSE) > 0)
+    for(i in index){
+        df_temp <- kwic_split(x[[i]], detect[[i]], window)
         rownames(df_temp) <- stri_c(names_org[i], rownames(df_temp), sep=':')
         if(i == 1){
             df <- df_temp
@@ -96,6 +97,10 @@ kwic2.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex",
             df <- rbind(df, df_temp, stringsAsFactors=FALSE)
         }
     }
+    
+    # Formating
+    df$before <- format(df$before, justify="right")
+    df$after <- format(df$after, justify="left")
     return(df)
 }
 
@@ -120,9 +125,9 @@ kwic_split <- function(char, mask, window){
     #pre <- char[pmax(0, start - window):pmax(0, start - 1)]
     #target <- char[start:end]
     #post <- char[pmin(len, end + 1):pmin(len, end + window)]
-    return(data.frame(before = format(pre, justify="right"),
+    return(data.frame(before = pre,
                       keyword = stri_c('[', target, ']', sep = ''), 
-                      after = format(post, justify="left"), 
+                      after = post,
                       stringsAsFactors = FALSE))
     
 
