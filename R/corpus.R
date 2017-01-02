@@ -217,7 +217,7 @@ corpus.data.frame <- function(x, docnames = NULL, docvars = NULL, text_field = "
     } 
     else if (is.numeric(text_field)) {
         text_fieldi <- text_field
-        if (length(text_fieldi != 1))
+        if (length(text_fieldi) != 1)
             stop("Only one text_field may be specified.")
     }
     if (!is.character(x[, text_fieldi]))
