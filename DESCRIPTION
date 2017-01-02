@@ -92,6 +92,7 @@ Collate:
     'findSequences.R'
     'joinTokens-deprecated.R'
     'kwic.R'
+    'kwic2.R'
     'nfunctions.R'
     'nscrabble.R'
     'nsyllable.R'
