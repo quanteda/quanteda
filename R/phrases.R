@@ -89,9 +89,7 @@ setMethod("phrasetotoken", signature = c("textORtokens", "collocations"),
           })
 
 #' @rdname phrasetotoken
-#' @param valuetype how to interpret word matching patterns: \code{"glob"} for 
-#'   "glob"-style wildcarding, \code{fixed} for words as 
-#'   is; \code{"regex"} for regular expressions
+#' @inheritParams valuetype
 #' @param case_insensitive if \code{TRUE}, ignore case when matching
 #' @param ... additional arguments passed through to core \code{"character,character"} method
 #' @export

@@ -37,9 +37,9 @@ For \link{dfm} objects, see details in the Value section below.}
 
 \item{selection}{whether to keep or remove the features}
 
-\item{valuetype}{how to interpret feature vector: \code{fixed} for words as 
-is; \code{"regex"} for regular expressions; or \code{"glob"} for 
-"glob"-style wildcard}
+\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
+or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 

@@ -17,9 +17,7 @@
 #'   recommended since it will not be removed during normal cleaning and 
 #'   tokenization (while nearly all other punctuation characters, at least those
 #'   in the Unicode punctuation class [P] will be removed.
-#' @param valuetype how to interpret word matching patterns: \code{"glob"} for 
-#'   "glob"-style wildcarding, \code{fixed} for words as 
-#'   is; \code{"regex"} for regular expressions
+#' @inheritParams valuetype
 #' @param case_insensitive logical; if \code{TRUE}, ignore case when matching
 #' @return a \link{tokens} object in which the token sequences matching the patterns 
 #' in \code{sequences} have been replaced by  compound "tokens" joined by the concatenator

@@ -130,6 +130,7 @@ Collate:
     'tokens_select.R'
     'tolower-misc.R'
     'utils.R'
+    'valuetype.R'
     'wordstem.R'
     'zzz.R'
 RcppModules: ngramMaker

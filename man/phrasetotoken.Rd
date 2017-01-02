@@ -42,9 +42,9 @@ recommended since it will not be removed during normal cleaning and
 tokenization (while nearly all other punctuation characters, at least those
 in the Unicode punctuation class [P] will be removed.}
 
-\item{valuetype}{how to interpret word matching patterns: \code{"glob"} for 
-"glob"-style wildcarding, \code{fixed} for words as 
-is; \code{"regex"} for regular expressions}
+\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
+or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{if \code{TRUE}, ignore case when matching}
 }

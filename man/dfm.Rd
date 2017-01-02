@@ -43,9 +43,9 @@ dfm.}
 \item{dictionary}{A list of character vector dictionary entries, including 
 regular expressions (see examples)}
 
-\item{valuetype}{\code{fixed} for words as is; \code{"regex"} for regular 
-expressions; or \code{"glob"} for "glob"-style wildcard; \code{"glob"}
-format is the default.  See \code{\link{dfm_select}}.}
+\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
+or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{groups}{character vector containing the names of document variables for
 aggregating documents; only applies when calling dfm on a corpus object}
@@ -130,6 +130,9 @@ testTweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday 
                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
 dfm(testTweets, select = "#*", removeTwitter = FALSE)  # keep only hashtags
 dfm(testTweets, select = "^#.*$", valuetype = "regex", removeTwitter = FALSE)
+}
+\seealso{
+\code{\link{dfm_select}}
 }
 \keyword{dfm}
 

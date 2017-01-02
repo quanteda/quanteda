@@ -33,9 +33,7 @@
 #'   of converting features into dictionary/thesaurus keys from pattern matches 
 #'   to values, you can use \code{\link{dfm_lookup}} after creating the 
 #'   dfm.
-#' @param valuetype \code{fixed} for words as is; \code{"regex"} for regular 
-#'   expressions; or \code{"glob"} for "glob"-style wildcard; \code{"glob"}
-#'   format is the default.  See \code{\link{dfm_select}}.
+#' @inheritParams valuetype
 #' @param groups character vector containing the names of document variables for
 #'   aggregating documents; only applies when calling dfm on a corpus object
 #' @param verbose display messages if \code{TRUE}
@@ -53,6 +51,7 @@
 #' @export
 #' @name dfm
 #' @keywords dfm
+#' @seealso  \code{\link{dfm_select}}
 #' @examples
 #' ## for a corpus
 #' 

@@ -21,9 +21,7 @@ joinTokens <- function(x, ...) {
 # #' @rdname joinTokens
 # #' @param sequences features to concatenate, a list of characters
 # #' @param concatenator character used for joining tokens
-# #' @param valuetype how to interpret sequences: \code{fixed} for words as
-# #'   is; \code{"regex"} for regular expressions; or \code{"glob"} for
-# #'   "glob"-style wildcard
+# #' @inheritParams valuetype
 # #' @param case_insensitive if \code{TRUE}, ignore case when matching
 # #' @param verbose display progress
 # #' @author Kohei Watanabe and Kenneth Benoit
