@@ -178,7 +178,7 @@ is_indexed <- function(x){
 }
 
 
-char2ngram <- function(x){
+vector2list <- function(x){
     if(typeof(x) == "list"){
         return(x)
     }else{
