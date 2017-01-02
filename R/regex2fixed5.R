@@ -180,7 +180,7 @@ is_indexed <- function(x){
 
 vector2list <- function(x){
     if(typeof(x) == "list"){
-        if (!all(is.character(unlist(sequences, use.names = FALSE)))){
+        if (!all(is.character(unlist(x, use.names = FALSE)))){
             stop("Patterns must be a list of character vector")
         }
         return(x)
