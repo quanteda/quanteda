@@ -91,7 +91,7 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     df_result <- data.frame()
     for (id in ids) {
         df_temp <- kwic_split(x[[id]], detect[[id]], window)
-        rownames(df_temp) <- stri_c(names(x)[id], rownames(df_temp), sep=':')
+        df_temp$docname <- rep(names(x)[id], nrow(df_temp))
         df_result <- rbind(df_result, df_temp, stringsAsFactors=FALSE)
     }
 
@@ -110,9 +110,9 @@ kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "
 #' split kwic results
 #'
 #' Helper function for kwic whose purpose KW will explain. 
-#' @param char Kohei to explain
-#' @param mask Kohei to explain
-#' @param window Kohei to explain
+#' @param char character vector
+#' @param mask numeric vector with the same length as char where 1 indicate appearance of keywords
+#' @param window size of the pre and post contexts
 #' @examples
 #' kwic_split(letters[1:5], c(0, 1, 1, 0, 1), window = 1)
 #' kwic_split(letters[1:5], c(1, 1, 1, 0, 1), window = 1)
@@ -123,6 +123,8 @@ kwic_split <- function(char, mask, window) {
     char <- c('', char, '')
     mask <- c(0, mask, 0)
     len <- length(char)
+    
+    # Detect starting and ending positions of keywords
     start <- which(diff(c(0, mask)) == 1)
     end <- which(diff(c(mask, 0)) == -1)
     
@@ -132,10 +134,8 @@ kwic_split <- function(char, mask, window) {
         target <- c(target, stringi::stri_c(char[start[i]:end[i]], collapse = ' '))
         post <- c(post, stringi::stri_c(char[min(len + 1, end[i] + 1):min(len, end[i] + window)], collapse = ' '))
     }
-    #pre <- char[pmax(0, start - window):pmax(0, start - 1)]
-    #target <- char[start:end]
-    #post <- char[pmin(len, end + 1):pmin(len, end + window)]
-    return(data.frame(before = pre, keyword = target, after = post, stringsAsFactors = FALSE))
+    return(data.frame(posiiton = stringi::stri_c(start - 1, end  - 1, sep = ':'), 
+                      contextPre = pre, keyword = target, contextPost = post, stringsAsFactors = FALSE))
 }
 
 #' @method print kwic

@@ -7,11 +7,11 @@
 kwic_split(char, mask, window)
 }
 \arguments{
-\item{char}{Kohei to explain}
+\item{char}{character vector}
 
-\item{mask}{Kohei to explain}
+\item{mask}{numeric vector with the same length as char where 1 indicate appearance of keywords}
 
-\item{window}{Kohei to explain}
+\item{window}{size of the pre and post contexts}
 }
 \description{
 Helper function for kwic whose purpose KW will explain.
