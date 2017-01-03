@@ -5,7 +5,6 @@
 #' the source text and the word index number within the source text.  (Not the 
 #' line number, since the text may or may not be segmented using end-of-line 
 #' delimiters.)
-#' 
 #' @param x a character, \link{corpus}, or \link{tokens} object
 #' @param keywords a keyword pattern or phrase consisting of multiple keyword 
 #'   patterns, possibly including punctuation.  If a phrase, \code{keywords} 
@@ -15,40 +14,43 @@
 #' @param case_insensitive match without respect to case if \code{TRUE}
 #' @param ... additional arguments passed to \link{tokens}, for applicable 
 #'   object types
+#' @param new logical; if \code{TRUE} use the newer \code{kwic}.  Once the full
+#' testing of the newer \link{kwic} method is complete and the transition
+#' declared successful, we will delete this option.
 #' @return A kwic object classed data.frame, with the document name 
 #'   (\code{docname}), the token index position (\code{position}), the context
 #'   before (\code{contextPre}), the keyword in its original format
 #'   (\code{keyword}, preserving case and attached punctuation), and the context
 #'   after (\code{contextPost}).
-#' @author Kenneth Benoit
+#' @author Kenneth Benoit and Kohei Watanabe
 #' @export
 #' @examples
-#' head(kwic(data_char_inaugural, "secure*", window = 3, valuetype = "glob"))
-#' head(kwic(data_char_inaugural, "secur", window = 3, valuetype = "regex"))
-#' head(kwic(data_char_inaugural, "security", window = 3, valuetype = "fixed"))
+#' head(kwic(data_char_inaugural, "secure*", window = 3, valuetype = "glob", new = TRUE))
+#' head(kwic(data_char_inaugural, "secur", window = 3, valuetype = "regex", new = TRUE))
+#' head(kwic(data_char_inaugural, "security", window = 3, valuetype = "fixed", new = TRUE))
 #' 
-#' kwic(data_corpus_inaugural, "war against")
-#' kwic(data_corpus_inaugural, "war against", valuetype = "regex")
+#' kwic(data_corpus_inaugural, "war against", new = TRUE)
+#' kwic(data_corpus_inaugural, "war against", valuetype = "regex", new = TRUE)
 #' 
-kwic2 <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
-    UseMethod("kwic2")
+kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = FALSE) {
+    if (!new) 
+        UseMethod("kwic_old")
+    else
+        UseMethod("kwic")
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export
-kwic2.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
-    if (is.null(names(x))) {
-        names(x) <- paste("text", 1:length(x), sep="")
-    }
-    kwic2(tokens(x, ...), keywords, window, valuetype, case_insensitive)
+kwic.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = FALSE) {
+    kwic(tokens(x, ...), keywords, window, valuetype, case_insensitive, new = TRUE)
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic2.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
-    kwic2(texts(x), keywords, window, valuetype, case_insensitive, ...)
+kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = FALSE) {
+    kwic(texts(x), keywords, window, valuetype, case_insensitive, ..., new = TRUE)
 }
 
 #' @rdname kwic
@@ -60,75 +62,129 @@ kwic2.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex",
 #'          "Is it a question?",
 #'          "Sometimes you don't know if this is it.",
 #'          "Is it a bird or a plane or is it a train?")
-#' kwic2(txt, c("is", "a"), valuetype = "fixed")
-#' kwic2(txt, list("is", "a", c("is", "it")), valuetype = "fixed")
+#' kwic(txt, c("is", "a"), valuetype = "fixed", new = TRUE)
+#' kwic(txt, list("is", "a", c("is", "it")), valuetype = "fixed", new = TRUE)
+#' 
+#' toks <- tokens(txt)
+#' kwic(toks, c("is", "a"), valuetype = "fixed", new = TRUE)
+#' kwic(toks, list("is", "a", c("is", "it")), valuetype = "fixed", new = TRUE)
 #' @export 
-kwic2.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = FALSE) {
     
-    if (!is.tokens(x)) stop("x must be a tokens class object")
-    
-    keywords <- vector2list(keywords)
     valuetype <- match.arg(valuetype)
+    keywords <- vector2list(keywords)
     
-    names_org <- names(x)
-    attrs_org <- attributes(x)
+    # add document names if none
+    if (is.null(names(x))) {
+        names(x) <- paste("text", 1:length(x), sep="")
+    }
     
     types <- types(x)
     keywords_fixed <- regex2fixed5(keywords, types, valuetype, case_insensitive) # convert glob or regex to fixed
-    keywords_id <- lapply(keywords_fixed, function(x) fmatch(x, types))
+    keywords_id <- lapply(keywords_fixed, function(x) fastmatch::fmatch(x, types))
 
     detect <- qatd_cpp_tokens_detect(x, keywords_id)
-    ids <- which(sapply(detect, sum, USE.NAMES=FALSE) > 0)
-    if(length(ids) == 0) return(NULL) # nothing is found
-    for(id in ids){
+    ids <- which(sapply(detect, sum, USE.NAMES = FALSE) > 0)
+    if (length(ids) == 0) return(NULL) # nothing is found
+    
+    # build up result
+    df_result <- data.frame()
+    for (id in ids) {
         df_temp <- kwic_split(x[[id]], detect[[id]], window)
-        rownames(df_temp) <- stri_c(names_org[id], rownames(df_temp), sep=':')
-        if(id == 1){
-            df <- df_temp
-        }else{
-            df <- rbind(df, df_temp, stringsAsFactors=FALSE)
-        }
+        rownames(df_temp) <- stri_c(names(x)[id], rownames(df_temp), sep=':')
+        df_result <- rbind(df_result, df_temp, stringsAsFactors=FALSE)
     }
 
-    class(df) <- c("kwic2", class(df))
-    return(df)
-}
-
-#kwic_split(letters[1:5], c(0, 1, 1, 0, 1), window=1)
-#kwic_split(letters[1:5], c(1, 1, 1, 0, 1), window=1)
-
-kwic_split <- function(char, mask, window){
-    
-    # Expand vector for matches at the top or end
-    char <- c('', char, '')
-    mask <- c(0, mask, 0)
-    len <- length(char)
-    start <- which(diff(c(0, mask))==1)
-    end <- which(diff(c(mask, 0))==-1)
-    
-    pre <- target <- post <- c()
-    for(i in 1:length(start)){
-        pre <- c(pre, stri_c(char[max(0, start[i] - window):max(0, start[i] - 1)], collapse = ' '))
-        target <- c(target, stri_c(char[start[i]:end[i]], collapse = ' '))
-        post <- c(post, stri_c(char[min(len + 1, end[i] + 1):min(len, end[i] + window)], collapse = ' '))
-    }
-    #pre <- char[pmax(0, start - window):pmax(0, start - 1)]
-    #target <- char[start:end]
-    #post <- char[pmin(len, end + 1):pmin(len, end + window)]
-    return(data.frame(before = pre, keyword = target, after = post, stringsAsFactors = FALSE))
-    
-
-    
+    class(df_result) <- c("kwic2", "kwic", class(df_result))
+    df_result
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic2.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
-    kwic2(as.tokens(x), keywords, window, valuetype, case_insensitive, ...)
+kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+    kwic(as.tokens(x), keywords, window, valuetype, case_insensitive, ..., new = TRUE)
+}
+
+
+#' split kwic results
+#'
+#' Helper function for kwic whose purpose KW will explain. 
+#' @param char Kohei to explain
+#' @param mask Kohei to explain
+#' @param window Kohei to explain
+#' @examples
+#' kwic_split(letters[1:5], c(0, 1, 1, 0, 1), window = 1)
+#' kwic_split(letters[1:5], c(1, 1, 1, 0, 1), window = 1)
+#' @keywords internal
+kwic_split <- function(char, mask, window) {
+    
+    # Expand vector for matches at the top or end
+    char <- c('', char, '')
+    mask <- c(0, mask, 0)
+    len <- length(char)
+    start <- which(diff(c(0, mask)) == 1)
+    end <- which(diff(c(mask, 0)) == -1)
+    
+    pre <- target <- post <- c()
+    for (i in 1:length(start)) {
+        pre <- c(pre, stringi::stri_c(char[max(0, start[i] - window):max(0, start[i] - 1)], collapse = ' '))
+        target <- c(target, stringi::stri_c(char[start[i]:end[i]], collapse = ' '))
+        post <- c(post, stringi::stri_c(char[min(len + 1, end[i] + 1):min(len, end[i] + window)], collapse = ' '))
+    }
+    #pre <- char[pmax(0, start - window):pmax(0, start - 1)]
+    #target <- char[start:end]
+    #post <- char[pmin(len, end + 1):pmin(len, end + window)]
+    return(data.frame(before = pre, keyword = target, after = post, stringsAsFactors = FALSE))
 }
 
 #' @method print kwic
+#' @noRd
+#' @export
+print.kwic <- function(x, ...) {
+    contexts <- x
+    contexts$positionLabel <- paste0("[", contexts$docname, ", ", contexts$position, "]")
+    contexts$positionLabel <- format(contexts$positionLabel, justify="right")
+    contexts$keyword <- format(contexts$keyword, justify="centre")
+    rownames(contexts) <- contexts$positionLabel
+    contexts$positionLabel <- contexts$docname <- contexts$position <- NULL
+    contexts$contextPre <- paste(contexts$contextPre, "[")
+    contexts$contextPost <- paste("]", contexts$contextPost)
+    print(as.data.frame(contexts))
+}
+
+
+#' @rdname kwic
+#' @export
+#' @examples
+#' mykwic <- kwic(data_corpus_inaugural, "provident*")
+#' is.kwic(mykwic)
+#' is.kwic("Not a kwic")
+is.kwic <- function(x) {
+    ifelse("kwic" %in% class(x), TRUE, FALSE)
+}
+
+#' @rdname kwic
+#' @details \code{as.kwic} is a temporary function to convert a "kwic2" to a standard 
+#' "kwic" object.
+#' @export
+#' @examples 
+#' # as.kwic examples
+#' (kwOld <- kwic(toks, "is it", new = FALSE))
+#' (kwNew <- kwic(toks, "is it", new = TRUE))
+#' \dontrun{
+#' # this breaks - need to harmonize print methods
+#' as.kwic(kwNew)
+#' }
+as.kwic <- function(x) {
+    # strip "kwic2" from class list
+    if (class(x)[1] == "kwic2" & is.kwic(x))
+        class(x) <- class(x)[-1]
+    x
+}
+
+
+#' @method print kwic2
 #' @noRd
 #' @export
 print.kwic2 <- function(x, ...) {
