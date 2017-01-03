@@ -15,7 +15,7 @@ the character vector (if any), otherwise assigns "text1", "text2", etc.}
 
 \item{docvars}{A data frame of attributes that is associated with each text.}
 
-\item{text_field}{the character name or integer index of the source \code{data.frame}
+\item{text_field}{the character name or numeric index of the source \code{data.frame}
 indicating the variable to be read in as text, which must be a character vector.
 All other variables in the data.frame will be imported as docvars.  This argument 
 is only used for \code{data.frame} objects (including those created by \pkg{readtext}).}
