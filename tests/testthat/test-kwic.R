@@ -121,7 +121,6 @@ test_that("test kwic on multiple texts", {
 })
 
 test_that("test kwic with multiple matches", {
-
     testcorpus <- corpus(c(
        paste(c(LETTERS, LETTERS), collapse=' ')
     ))

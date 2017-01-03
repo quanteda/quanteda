@@ -86,22 +86,21 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
 
     detect <- qatd_cpp_tokens_detect(x, keywords_id)
     ids <- which(sapply(detect, sum, USE.NAMES = FALSE) > 0)
-    if (length(ids) == 0) return(NULL) # nothing is found
     
-    # build up result
     df_result <- data.frame()
-    for (id in ids) {
-        df_temp <- kwic_split(x[[id]], detect[[id]], window)
-        df_temp$docname <- rep(names(x)[id], nrow(df_temp))
-        df_result <- rbind(df_result, df_temp, stringsAsFactors = FALSE)
+    if (length(ids)) {
+        # build up result
+        for (id in ids) {
+            df_temp <- kwic_split(x[[id]], detect[[id]], window)
+            df_temp$docname <- rep(names(x)[id], nrow(df_temp))
+            df_result <- rbind(df_result, df_temp, stringsAsFactors = FALSE)
+        }
+        # reorder variables to put docname first
+        docname_index <- which(names(df_result) == "docname")
+        df_result <- cbind(df_result[, docname_index, drop = FALSE], 
+                           df_result[, -docname_index])
     }
-    # reorder variables to put docname first
-    docname_index <- which(names(df_result) == "docname")
-    df_result <- cbind(df_result[, docname_index, drop = FALSE], 
-                       df_result[, -docname_index])
     
-    # 
-
     # add attributes for kwic object
     attr(df_result, "valuetype") <- valuetype
     attr(df_result, "ntoken")  <- ntoken(x)
@@ -158,10 +157,14 @@ kwic_split <- function(char, mask, window) {
 #' @noRd
 #' @export
 print.kwic_old <- function(x, ...) {
+    if (!length(x)) {
+        print(NULL)
+        return()
+    }
     contexts <- x
     contexts$positionLabel <- paste0("[", contexts$docname, ", ", contexts$position, "]")
-    contexts$positionLabel <- format(contexts$positionLabel, justify="right")
-    contexts$keyword <- format(contexts$keyword, justify="centre")
+    contexts$positionLabel <- format(contexts$positionLabel, justify = "right")
+    contexts$keyword <- format(contexts$keyword, justify = "centre")
     rownames(contexts) <- contexts$positionLabel
     contexts$positionLabel <- contexts$docname <- contexts$position <- NULL
     contexts$contextPre <- paste(contexts$contextPre, "[")
@@ -212,6 +215,10 @@ as.kwic <- function(x) {
 #' @noRd
 #' @export
 print.kwic <- function(x, ...) {
+    if (!length(x)) {
+        print(NULL)
+        return()
+    }
     df <- data.frame(
         before = format(stringi::stri_replace_all_regex(x$contextPre, "(\\w*) (\\W)", "$1$2"), justify="right"),
         s1 = rep('|', nrow(x)),
