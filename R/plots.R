@@ -96,6 +96,13 @@ textplot_wordcloud <- function(x, comparison = FALSE, ...) {
 #' @export
 #' @keywords plot
 textplot_xray <- function(..., scale = c("absolute", "relative"), sort = FALSE) {
+    UseMethod("textplot_xray")
+}
+    
+#' @rdname textplot_xray
+#' @noRd
+#' @export
+textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FALSE) {
     
     if (!requireNamespace("ggplot2", quietly = TRUE))
         stop("You must have ggplot2 installed to make a dispersion plot.")
@@ -120,7 +127,7 @@ textplot_xray <- function(..., scale = c("absolute", "relative"), sort = FALSE) 
 
     # pre-emptively convert keyword to factor before ggplot does it, so that we
     # can keep the order of the factor the same as the order of the kwic objects
-    x[, keyword:=factor(keyword, levels=unique(keyword))]
+    x[, keyword := factor(keyword, levels = unique(keyword))]
 
     multiple_documents <- length(unique(x$docname)) > 1
 
@@ -140,10 +147,14 @@ textplot_xray <- function(..., scale = c("absolute", "relative"), sort = FALSE) 
     }
 
     if (sort) 
-        x[,docname:=factor(docname, levels=levels(docname)[order(levels(docname))])]
+        x[, docname:=factor(docname, levels=levels(docname)[order(levels(docname))])]
+
+    # convert character positions to first integer value in range
+    if (is.character(x[, position]))
+        x[, position := as.integer(sapply(strsplit(position, ":"), "[", 1))]
 
     if (scale == 'relative')
-        x <- x[, position := position/ntokens]
+        x[, position := position/ntokens]
 
     plot <- ggplot2::ggplot(x, ggplot2::aes(x=position, y=1)) + ggplot2::geom_segment(ggplot2::aes(xend=position, yend=0)) + 
         ggplot2::theme(axis.line = ggplot2::element_blank(),

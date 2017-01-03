@@ -26,31 +26,31 @@
 #' @author Kenneth Benoit and Kohei Watanabe
 #' @export
 #' @examples
-#' head(kwic(data_char_inaugural, "secure*", window = 3, valuetype = "glob", new = TRUE))
-#' head(kwic(data_char_inaugural, "secur", window = 3, valuetype = "regex", new = TRUE))
-#' head(kwic(data_char_inaugural, "security", window = 3, valuetype = "fixed", new = TRUE))
+#' head(kwic(data_char_inaugural, "secure*", window = 3, valuetype = "glob"))
+#' head(kwic(data_char_inaugural, "secur", window = 3, valuetype = "regex"))
+#' head(kwic(data_char_inaugural, "security", window = 3, valuetype = "fixed"))
 #' 
-#' kwic(data_corpus_inaugural, "war against", new = TRUE)
-#' kwic(data_corpus_inaugural, "war against", valuetype = "regex", new = TRUE)
+#' kwic(data_corpus_inaugural, "war against")
+#' kwic(data_corpus_inaugural, "war against", valuetype = "regex")
 #' 
-kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = FALSE) {
-    if (!new) 
-        UseMethod("kwic_old")
-    else
+kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
+    if (new) 
         UseMethod("kwic")
+    else
+        UseMethod("kwic_old")
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export
-kwic.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = FALSE) {
+kwic.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
     kwic(tokens(x, ...), keywords, window, valuetype, case_insensitive, new = TRUE)
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = FALSE) {
+kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
     kwic(texts(x), keywords, window, valuetype, case_insensitive, ..., new = TRUE)
 }
 
@@ -63,14 +63,14 @@ kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
 #'          "Is it a question?",
 #'          "Sometimes you don't know if this is it.",
 #'          "Is it a bird or a plane or is it a train?")
-#' kwic(txt, c("is", "a"), valuetype = "fixed", new = TRUE)
-#' kwic(txt, list("is", "a", c("is", "it")), valuetype = "fixed", new = TRUE)
+#' kwic(txt, c("is", "a"), valuetype = "fixed")
+#' kwic(txt, list("is", "a", c("is", "it")), valuetype = "fixed")
 #' 
 #' toks <- tokens(txt)
-#' kwic(toks, c("is", "a"), valuetype = "fixed", new = TRUE)
-#' kwic(toks, list("is", "a", c("is", "it")), valuetype = "fixed", new = TRUE)
+#' kwic(toks, c("is", "a"), valuetype = "fixed")
+#' kwic(toks, list("is", "a", c("is", "it")), valuetype = "fixed")
 #' @export 
-kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = FALSE) {
+kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
     
     valuetype <- match.arg(valuetype)
     keywords <- vector2list(keywords)
@@ -93,27 +93,29 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     for (id in ids) {
         df_temp <- kwic_split(x[[id]], detect[[id]], window)
         df_temp$docname <- rep(names(x)[id], nrow(df_temp))
-        df_result <- rbind(df_result, df_temp, stringsAsFactors=FALSE)
+        df_result <- rbind(df_result, df_temp, stringsAsFactors = FALSE)
     }
     # reorder variables to put docname first
     docname_index <- which(names(df_result) == "docname")
     df_result <- cbind(df_result[, docname_index, drop = FALSE], 
                        df_result[, -docname_index])
+    
+    # 
 
     # add attributes for kwic object
     attr(df_result, "valuetype") <- valuetype
     attr(df_result, "ntoken")  <- ntoken(x)
-    attr(df_result, "keywords") <- keywords
+    attr(df_result, "keywords") <- sapply(keywords, paste, collapse = " ")
     attr(df_result, "tokenize_opts") <- list(...)
     # special class for new kwic
-    class(df_result) <- c("kwic2", "kwic", class(df_result))
+    class(df_result) <- c("kwic", class(df_result))
     df_result
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
     kwic(as.tokens(x), keywords, window, valuetype, case_insensitive, ..., new = TRUE)
 }
 
@@ -152,10 +154,10 @@ kwic_split <- function(char, mask, window) {
                       contextPre = pre, keyword = target, contextPost = post, stringsAsFactors = FALSE))
 }
 
-#' @method print kwic
+#' @method print kwic_old
 #' @noRd
 #' @export
-print.kwic <- function(x, ...) {
+print.kwic_old <- function(x, ...) {
     contexts <- x
     contexts$positionLabel <- paste0("[", contexts$docname, ", ", contexts$position, "]")
     contexts$positionLabel <- format(contexts$positionLabel, justify="right")
@@ -200,22 +202,16 @@ is.kwic <- function(x) {
 #' }
 as.kwic <- function(x) {
     # strip "kwic2" from class list
-    if (class(x)[1] == "kwic2" & is.kwic(x))
+    if (class(x)[1] == "kwic_old" & is.kwic(x))
         class(x) <- class(x)[-1]
     x
 }
 
 
-#' @method print kwic2
+#' @method print kwic
 #' @noRd
 #' @export
-print.kwic2 <- function(x, ...) {
-
-    # x$before <- format(x$before, justify="right")
-    # x$keyword <- stri_c('[', x$keyword, ']', sep = '')
-    # x$after <- format(x$after, justify="left")
-    # print(as.data.frame(x))
-
+print.kwic <- function(x, ...) {
     df <- data.frame(
         before = format(stringi::stri_replace_all_regex(x$contextPre, "(\\w*) (\\W)", "$1$2"), justify="right"),
         s1 = rep('|', nrow(x)),
@@ -223,9 +219,8 @@ print.kwic2 <- function(x, ...) {
         s2 = rep('|', nrow(x)),
         after = format(stringi::stri_replace_all_regex(x$contextPost, "(\\w*) (\\W)", "$1$2"), justify="left")
     )
-    #colnames(df) <- c('Before', '', '', '', 'After')
     colnames(df) <- NULL
-    rownames(df) <- stringi::stri_c("[", x$docname, " ", x$position, "]")
+    rownames(df) <- stringi::stri_c("[", x$docname, ", ", x$position, "]")
     print(df)
 }
 

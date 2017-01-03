@@ -7,7 +7,7 @@
 \title{locate keywords-in-context}
 \usage{
 kwic(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, ..., new = FALSE)
+  case_insensitive = TRUE, ..., new = TRUE)
 
 is.kwic(x)
 
@@ -55,12 +55,12 @@ delimiters.)
 "kwic" object.
 }
 \examples{
-head(kwic(data_char_inaugural, "secure*", window = 3, valuetype = "glob", new = TRUE))
-head(kwic(data_char_inaugural, "secur", window = 3, valuetype = "regex", new = TRUE))
-head(kwic(data_char_inaugural, "security", window = 3, valuetype = "fixed", new = TRUE))
+head(kwic(data_char_inaugural, "secure*", window = 3, valuetype = "glob"))
+head(kwic(data_char_inaugural, "secur", window = 3, valuetype = "regex"))
+head(kwic(data_char_inaugural, "security", window = 3, valuetype = "fixed"))
 
-kwic(data_corpus_inaugural, "war against", new = TRUE)
-kwic(data_corpus_inaugural, "war against", valuetype = "regex", new = TRUE)
+kwic(data_corpus_inaugural, "war against")
+kwic(data_corpus_inaugural, "war against", valuetype = "regex")
 
 mykwic <- kwic(data_corpus_inaugural, "provident*")
 is.kwic(mykwic)
