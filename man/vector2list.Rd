@@ -12,7 +12,6 @@ vector2list(x)
 \description{
 Utility function to convert a vector to a list, used by \code{link{kwic}}.
 }
-\examples{
-
-}
+\keyword{internal}
+\keyword{utilities}
 
