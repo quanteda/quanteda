@@ -134,7 +134,7 @@ kwic_split <- function(char, mask, window) {
         target <- c(target, stringi::stri_c(char[start[i]:end[i]], collapse = ' '))
         post <- c(post, stringi::stri_c(char[min(len + 1, end[i] + 1):min(len, end[i] + window)], collapse = ' '))
     }
-    return(data.frame(posiiton = stringi::stri_c(start - 1, end  - 1, sep = ':'), 
+    return(data.frame(position = stringi::stri_c(start - 1, end  - 1, sep = ':'), 
                       contextPre = pre, keyword = target, contextPost = post, stringsAsFactors = FALSE))
 }
 
@@ -188,22 +188,22 @@ as.kwic <- function(x) {
 #' @noRd
 #' @export
 print.kwic2 <- function(x, ...) {
-    
+
     # x$before <- format(x$before, justify="right")
     # x$keyword <- stri_c('[', x$keyword, ']', sep = '')
     # x$after <- format(x$after, justify="left")
     # print(as.data.frame(x))
-    
+
     df <- data.frame(
-        before = format(x$before, justify="right"),
+        before = format(x$contextPre, justify="right"),
         s1 = rep('|', nrow(x)),
         keyword = format(x$keyword, justify="centre"),
         s2 = rep('|', nrow(x)),
-        after = format(x$after, justify="left")
+        after = format(x$contextPost, justify="left")
     )
     #colnames(df) <- c('Before', '', '', '', 'After')
     colnames(df) <- NULL
-    rownames(df) <- rownames(x)
+    rownames(df) <- stringi::stri_c("[", x$docname, " ", x$position, "]")
     print(df)
 }
 
