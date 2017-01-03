@@ -146,6 +146,10 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
         }
     }
 
+    # make docname a factor if not already
+    if (!is.factor(x[, docname]))
+        x[, docname := factor(docname)]
+    
     if (sort) 
         x[, docname:=factor(docname, levels=levels(docname)[order(levels(docname))])]
 
