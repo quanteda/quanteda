@@ -28,3 +28,10 @@ test_that("Test quanteda:::mktemp function for test dirs",{
     
 })
 
+test_that("vector2list works as expected", {
+    expect_equal(vector2list(c("a b", "c")),
+                 list(c("a", "b"), "c"))
+    expect_error(vector2list(list(1:2, "a b c")),
+                 "Patterns must be a list of character type only")
+})
+

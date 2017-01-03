@@ -178,15 +178,20 @@ is_indexed <- function(x){
 }
 
 
-vector2list <- function(x){
-    if(typeof(x) == "list"){
-        if (!all(is.character(unlist(x, use.names = FALSE)))){
-            stop("Patterns must be a list of character vector")
-        }
+#' convert a vector to a list
+#' 
+#' Utility function to convert a vector to a list, used by \code{link{kwic}}.
+#' @param x character (vector)
+#' @examples 
+#' 
+vector2list <- function(x) {
+    if (is.list(x)) {
+        if (!all(sapply(x, is.character, USE.NAMES = FALSE)))
+            stop("Patterns must be a list of character type only")
         return(x)
-    }else{
-        #message('Vector pattern is converted to list')
-        return(stri_split_fixed(x, ' '))
+    } else {
+        # message('Vector pattern is converted to list')
+        return(stringi::stri_split_fixed(x, ' '))
     }
 }
 
