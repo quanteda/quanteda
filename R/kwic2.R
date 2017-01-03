@@ -38,6 +38,9 @@ kwic2 <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed
 #' @noRd
 #' @export
 kwic2.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+    if (is.null(names(x))) {
+        names(x) <- paste("text", 1:length(x), sep="")
+    }
     kwic2(tokens(x, ...), keywords, window, valuetype, case_insensitive)
 }
 
@@ -51,15 +54,14 @@ kwic2.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex",
 #' @rdname kwic
 #' @noRd
 #' @examples 
-#' mycorpus <- corpus(c("This is a test",
-#' "This is it.",
-#' "What is in a train?",
-#' "Is it a question?",
-#' "Sometimes you don't know if this is it.",
-#' "Is it a bird or a plane or is it a train?"))
-#' 
-#' kwic2(mycorpus, c("is", "a"), valuetype = "fixed")
-#' kwic2(mycorpus, list("is", "a", c("is", "it")), valuetype = "fixed")
+#' txt <- c("This is a test",
+#'          "This is it.",
+#'          "What is in a train?",
+#'          "Is it a question?",
+#'          "Sometimes you don't know if this is it.",
+#'          "Is it a bird or a plane or is it a train?")
+#' kwic2(txt, c("is", "a"), valuetype = "fixed")
+#' kwic2(txt, list("is", "a", c("is", "it")), valuetype = "fixed")
 #' @export 
 kwic2.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
     
