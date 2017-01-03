@@ -14,11 +14,16 @@ kwic_split(char, mask, window)
 \item{window}{size of the pre and post contexts}
 }
 \description{
-Helper function for kwic whose purpose KW will explain.
+Helper function for kwic designed to parse sequence matches into contexts and keywords.
 }
 \examples{
+\dontrun{
 kwic_split(letters[1:5], c(0, 1, 1, 0, 1), window = 1)
 kwic_split(letters[1:5], c(1, 1, 1, 0, 1), window = 1)
+}
+}
+\author{
+Kohei Watanabe
 }
 \keyword{internal}
 

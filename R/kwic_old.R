@@ -22,6 +22,7 @@
 #'   (\code{keyword}, preserving case and attached punctuation), and the context
 #'   after (\code{contextPost}).
 #' @author Kenneth Benoit
+#' @keywords deprecated internal
 #' @export
 #' @examples
 #' head(kwic_old(data_char_inaugural, "secure*", window = 3, valuetype = "glob"))

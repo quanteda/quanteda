@@ -31,9 +31,10 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 \item{...}{additional arguments passed to \link{tokens}, for applicable 
 object types}
 
-\item{new}{logical; if \code{TRUE} use the newer \code{kwic}.  Once the full
+\item{new}{logical; if \code{TRUE} use the newer \code{kwic}, if \code{FALSE}
+then call \code{\link{kwic_old}}.  Once the full
 testing of the newer \link{kwic} method is complete and the transition
-declared successful, we will delete this option.}
+declared successful, we will delete this option and delete \code{kwic_old}.}
 }
 \value{
 A kwic object classed data.frame, with the document name 
@@ -65,6 +66,14 @@ mykwic <- kwic(data_corpus_inaugural, "provident*")
 is.kwic(mykwic)
 is.kwic("Not a kwic")
 # as.kwic examples
+txt <- c("This is a test",
+         "This is it.",
+         "What is in a train?",
+         "Is it a question?",
+         "Sometimes you don't know if this is it.",
+         "Is it a bird or a plane or is it a train?")
+
+toks <- tokens(txt)
 (kwOld <- kwic(toks, "is it", new = FALSE))
 (kwNew <- kwic(toks, "is it", new = TRUE))
 \dontrun{

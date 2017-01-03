@@ -53,4 +53,6 @@ kwic_old(data_corpus_inaugural, "war against", valuetype = "regex")
 \author{
 Kenneth Benoit
 }
+\keyword{deprecated}
+\keyword{internal}
 

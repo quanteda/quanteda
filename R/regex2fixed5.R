@@ -182,8 +182,7 @@ is_indexed <- function(x){
 #' 
 #' Utility function to convert a vector to a list, used by \code{link{kwic}}.
 #' @param x character (vector)
-#' @examples 
-#' 
+#' @keywords internal utilities
 vector2list <- function(x) {
     if (is.list(x)) {
         if (!all(sapply(x, is.character, USE.NAMES = FALSE)))

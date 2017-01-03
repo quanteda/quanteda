@@ -14,9 +14,10 @@
 #' @param case_insensitive match without respect to case if \code{TRUE}
 #' @param ... additional arguments passed to \link{tokens}, for applicable 
 #'   object types
-#' @param new logical; if \code{TRUE} use the newer \code{kwic}.  Once the full
+#' @param new logical; if \code{TRUE} use the newer \code{kwic}, if \code{FALSE}
+#' then call \code{\link{kwic_old}}.  Once the full
 #' testing of the newer \link{kwic} method is complete and the transition
-#' declared successful, we will delete this option.
+#' declared successful, we will delete this option and delete \code{kwic_old}.
 #' @return A kwic object classed data.frame, with the document name 
 #'   (\code{docname}), the token index position (\code{position}), the context
 #'   before (\code{contextPre}), the keyword in its original format
@@ -109,13 +110,16 @@ kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "
 
 #' split kwic results
 #'
-#' Helper function for kwic whose purpose KW will explain. 
+#' Helper function for kwic designed to parse sequence matches into contexts and keywords.
 #' @param char character vector
 #' @param mask numeric vector with the same length as char where 1 indicate appearance of keywords
 #' @param window size of the pre and post contexts
+#' @author Kohei Watanabe
 #' @examples
+#' \dontrun{
 #' kwic_split(letters[1:5], c(0, 1, 1, 0, 1), window = 1)
 #' kwic_split(letters[1:5], c(1, 1, 1, 0, 1), window = 1)
+#' }
 #' @keywords internal
 kwic_split <- function(char, mask, window) {
     
