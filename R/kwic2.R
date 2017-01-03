@@ -76,12 +76,12 @@ kwic2.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex",
     keywords_id <- lapply(keywords_fixed, function(x) fmatch(x, types))
 
     detect <- qatd_cpp_tokens_detect(x, keywords_id)
-    doc_id <- which(sapply(detect, sum, USE.NAMES=FALSE) > 0)
-    if(length(doc_id) == 0) return(NULL) # nothing is found
-    for(i in doc_id){
-        df_temp <- kwic_split(x[[i]], detect[[i]], window)
-        rownames(df_temp) <- stri_c(names_org[i], rownames(df_temp), sep=':')
-        if(i == 1){
+    ids <- which(sapply(detect, sum, USE.NAMES=FALSE) > 0)
+    if(length(ids) == 0) return(NULL) # nothing is found
+    for(id in ids){
+        df_temp <- kwic_split(x[[id]], detect[[id]], window)
+        rownames(df_temp) <- stri_c(names_org[id], rownames(df_temp), sep=':')
+        if(id == 1){
             df <- df_temp
         }else{
             df <- rbind(df, df_temp, stringsAsFactors=FALSE)
