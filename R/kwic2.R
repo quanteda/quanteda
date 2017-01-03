@@ -71,27 +71,14 @@ kwic2.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex",
     names_org <- names(x)
     attrs_org <- attributes(x)
     
-    # Generate all combinations of type IDs
-    entries_id <- list()
     types <- types(x)
-    index <- index_regex(types, valuetype, case_insensitive) # index types before the loop
-    
-    #if (verbose) 
-    #    message('Registering ', length(keywords), ' keywords...');
-    for (h in 1:length(keywords)) {
-        entries <- keywords[h]
-        entries_fixed <- regex2fixed5(entries, types, valuetype, case_insensitive, index) # convert glob or regex to fixed
-        if (length(entries_fixed) == 0) next
-        entries_id <- c(entries_id, lapply(entries_fixed, function(x) fmatch(x, types)))
-    }
-    #if (verbose) 
-    #    message('Searching ', length(entries_id), ' types of features...')
-    
-    # Detect keywords
-    detect <- qatd_cpp_tokens_detect(x, entries_id)
-    index <- which(sapply(detect, sum, USE.NAMES=FALSE) > 0)
-    if(length(index) == 0) return(NULL) # nothing is found
-    for(i in index){
+    keywords_fixed <- regex2fixed5(keywords, types, valuetype, case_insensitive) # convert glob or regex to fixed
+    keywords_id <- lapply(keywords_fixed, function(x) fmatch(x, types))
+
+    detect <- qatd_cpp_tokens_detect(x, keywords_id)
+    doc_id <- which(sapply(detect, sum, USE.NAMES=FALSE) > 0)
+    if(length(doc_id) == 0) return(NULL) # nothing is found
+    for(i in doc_id){
         df_temp <- kwic_split(x[[i]], detect[[i]], window)
         rownames(df_temp) <- stri_c(names_org[i], rownames(df_temp), sep=':')
         if(i == 1){
