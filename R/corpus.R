@@ -18,7 +18,7 @@
 #' @param docnames Names to be assigned to the texts, defaults to the names of 
 #'   the character vector (if any), otherwise assigns "text1", "text2", etc.
 #' @param docvars A data frame of attributes that is associated with each text.
-#' @param text_field the character name or numeric integer index of the source \code{data.frame}
+#' @param text_field the character name or numeric index of the source \code{data.frame}
 #'   indicating the variable to be read in as text, which must be a character vector.
 #'   All other variables in the data.frame will be imported as docvars.  This argument 
 #'   is only used for \code{data.frame} objects (including those created by \pkg{readtext}).
@@ -207,19 +207,25 @@ corpus.data.frame <- function(x, docnames = NULL, docvars = NULL, text_field = "
         
     args <- list(...)
     if (!missing(docvars))
-        stop("docvars are assigned automatically for data.frames", )
+        stop("docvars are assigned automatically for data.frames")
     
     if (is.character(text_field)) {
-        text_fieldi <- which(names(x)==text_field)
+        text_fieldi <- which(names(x) %in% text_field)
         if (length(text_fieldi)==0)
-            stop("column name ", text_field, " not found.")
+            stop("column name ", text_field, " not found")
         text_field <- text_fieldi
-    } 
-    else if (is.numeric(text_field)) {
+    } else if (is.numeric(text_field)) {
         text_fieldi <- text_field
-        if (length(text_fieldi) != 1)
-            stop("Only one text_field may be specified.")
+    } else {
+        stop("text_field must be a character (variable name) or numeric index")
     }
+
+    if (length(text_fieldi) != 1)
+        stop("only one text_field may be specified")
+
+    if (text_fieldi > ncol(x) | text_fieldi <= 0 | (text_fieldi - as.integer(text_fieldi)))
+        stop("text_field index refers to an invalid column")
+    
     if (!is.character(x[, text_fieldi]))
         stop("text_field must refer to a character mode column")
     
