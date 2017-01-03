@@ -170,6 +170,14 @@ is.kwic <- function(x) {
 #' @export
 #' @examples 
 #' # as.kwic examples
+#' txt <- c("This is a test",
+#'          "This is it.",
+#'          "What is in a train?",
+#'          "Is it a question?",
+#'          "Sometimes you don't know if this is it.",
+#'          "Is it a bird or a plane or is it a train?")
+#' 
+#' toks <- tokens(txt)
 #' (kwOld <- kwic(toks, "is it", new = FALSE))
 #' (kwNew <- kwic(toks, "is it", new = TRUE))
 #' \dontrun{
