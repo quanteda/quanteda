@@ -95,7 +95,17 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
         df_temp$docname <- rep(names(x)[id], nrow(df_temp))
         df_result <- rbind(df_result, df_temp, stringsAsFactors=FALSE)
     }
+    # reorder variables to put docname first
+    docname_index <- which(names(df_result) == "docname")
+    df_result <- cbind(df_result[, docname_index, drop = FALSE], 
+                       df_result[, -docname_index])
 
+    # add attributes for kwic object
+    attr(df_result, "valuetype") <- valuetype
+    attr(df_result, "ntoken")  <- ntoken(x)
+    attr(df_result, "keywords") <- keywords
+    attr(df_result, "tokenize_opts") <- list(...)
+    # special class for new kwic
     class(df_result) <- c("kwic2", "kwic", class(df_result))
     df_result
 }
@@ -207,11 +217,11 @@ print.kwic2 <- function(x, ...) {
     # print(as.data.frame(x))
 
     df <- data.frame(
-        before = format(x$contextPre, justify="right"),
+        before = format(stringi::stri_replace_all_regex(x$contextPre, "(\\w*) (\\W)", "$1$2"), justify="right"),
         s1 = rep('|', nrow(x)),
         keyword = format(x$keyword, justify="centre"),
         s2 = rep('|', nrow(x)),
-        after = format(x$contextPost, justify="left")
+        after = format(stringi::stri_replace_all_regex(x$contextPost, "(\\w*) (\\W)", "$1$2"), justify="left")
     )
     #colnames(df) <- c('Before', '', '', '', 'After')
     colnames(df) <- NULL
