@@ -19,8 +19,8 @@ Author: Kenneth Benoit [aut, cre],
     Will Lowe [ctb],
     Pablo Barberá [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.8.9035
-Date: 2017-01-02
+Version: 0.9.8.9036
+Date: 2017-01-03
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
 License: GPL-3
@@ -91,7 +91,8 @@ Collate:
     'fcm.R'
     'findSequences.R'
     'joinTokens-deprecated.R'
-    'kwic.R'
+    'kwic2.R'
+    'kwic_old.R'
     'nfunctions.R'
     'nscrabble.R'
     'nsyllable.R'
