@@ -69,10 +69,20 @@ test_that("tokens_compound join tokens from  longer sequences", {
 test_that("tokens_compound always compounds the longer phrase first (#240)", {
     expect_equal(
         as.list(tokens_compound(tokens("The people of the United States of America."), 
-                                list(c("United States of America", "United States")))),
+                                c("United States of America", "United States"))),
         as.list(tokens_compound(tokens("The people of the United States of America."), 
-                                list(c("United States", "United States of America"))))
+                                c("United States", "United States of America")))
     )
 })
+
+test_that("tokens_compound preserved document names", {
+    expect_equal(
+        names(tokens_compound(tokens(c(d1 = "The people of the United States of America.",
+                                       d2 = "The United States is south of Canada.")),
+                              c("United States", "United States of America"))),
+        c("d1", "d2")
+    )
+})
+
 
 
