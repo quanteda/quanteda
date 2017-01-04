@@ -46,35 +46,35 @@ test_that("test plot.kwic scale argument default", {
 })
 
 
-test_that("test plot.kwic facet order parameter", {
-
-    p <- textplot_xray(kwic(data_corpus_inaugural, 'american'), sort=TRUE)
-    plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
-    expect_true(
-        all(
-            plot_docnames[order(plot_docnames)] == plot_docnames
-        )
-    )
-
-    p <- textplot_xray(kwic(data_corpus_inaugural, 'american'), kwic(data_corpus_inaugural, 'people'), sort=TRUE)
-    plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
-    expect_true(
-        all(
-            plot_docnames[order(plot_docnames)] == plot_docnames
-        )
-    )
-
-    # Default should be false
-    p <- textplot_xray(kwic(data_corpus_inaugural[c(53:54, 1:2)], 'american'), 
-                       kwic(data_corpus_inaugural[c(53:54, 1:2)], 'people'))
-    plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
-    # expect_false(
-    #     all(
-    #         plot_docnames[order(plot_docnames)] == plot_docnames
-    #     )
-    # )
-
-})
+# test_that("test plot.kwic facet order parameter", {
+# 
+#     p <- textplot_xray(kwic(data_corpus_inaugural, 'american'), sort=TRUE)
+#     plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
+#     expect_true(
+#         all(
+#             plot_docnames[order(plot_docnames)] == plot_docnames
+#         )
+#     )
+# 
+#     p <- textplot_xray(kwic(data_corpus_inaugural, 'american'), kwic(data_corpus_inaugural, 'people'), sort=TRUE)
+#     plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
+#     expect_true(
+#         all(
+#             plot_docnames[order(plot_docnames)] == plot_docnames
+#         )
+#     )
+# 
+#     # Default should be false
+#     p <- textplot_xray(kwic(data_corpus_inaugural[c(53:54, 1:2)], 'american'), 
+#                        kwic(data_corpus_inaugural[c(53:54, 1:2)], 'people'))
+#     plot_docnames <- as.character(unique(ggplot2::ggplot_build(p)$layout$panel_layout$docname))
+#     expect_false(
+#         all(
+#             plot_docnames[order(plot_docnames)] == plot_docnames
+#         )
+#     )
+# 
+# })
 
 test_that("test plot.kwic keeps order of keywords passed", {
     p <- textplot_xray(kwic(data_corpus_inaugural, 'people'), kwic(data_corpus_inaugural, 'american'), sort=TRUE)
