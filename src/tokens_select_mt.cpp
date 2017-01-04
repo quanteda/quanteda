@@ -64,12 +64,12 @@ struct select_mt : public Worker{
     Texts &output;
     int span_max;
     SetNgrams &set_words;
-    bool padding;
     int mode;
+    bool padding;
     
     // Constructor
-    select_mt(Texts &input_, Texts &output_, int span_max_, SetNgrams &set_words_, bool padding_, int mode_):
-              input(input_), output(output_), span_max(span_max_), set_words(set_words_), padding(padding_), mode(mode_) {}
+    select_mt(Texts &input_, Texts &output_, int span_max_, SetNgrams &set_words_, int mode_, bool padding_):
+              input(input_), output(output_), span_max(span_max_), set_words(set_words_), mode(mode_), padding(padding_) {}
     
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
