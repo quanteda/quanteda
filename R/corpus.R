@@ -265,7 +265,9 @@ corpus.kwic <- function(x, docnames = NULL, docvars = NULL, text_field = "text",
     docnames(tempCorp) <- paste0(docnames(tempCorp), ".post")
     
     result <- result + tempCorp
-    metacorpus(result, "source") <- paste0("Corpus created from kwic(x, keywords = \"", attr(x, "keywords"), "\")")
+    metacorpus(result, "source") <- paste0("Corpus created from kwic(x, keywords = \"", 
+                                           paste(attr(x, "keywords"), collapse = ", "),
+                                           "\")")
 
     result
 }

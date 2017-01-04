@@ -101,6 +101,14 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
                            df_result[, -docname_index])
     }
     
+    # factorize docname
+    df_result$docname <- factor(df_result$docname)
+    # make single indexes into integers, if possible
+    if (all(sapply(strsplit(df_result$position, ":"), function(y) y[1] == y[2]))) {
+        df_result$position <- sapply(strsplit(df_result$position, ":"),
+                                     function(y) as.integer(y[1]))
+    }
+    
     # add attributes for kwic object
     attr(df_result, "valuetype") <- valuetype
     attr(df_result, "ntoken")  <- ntoken(x)
