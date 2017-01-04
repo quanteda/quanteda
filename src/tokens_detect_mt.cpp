@@ -19,8 +19,8 @@ Text detect(Text tokens,
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
     Text tokens_pos(tokens.size(), 0);
-    for(int span = span_max; span >= 1; span--){ // substitution starts from the longest sequences
-        for(int i = 0; i < tokens.size() - (span - 1); i++){
+    for (size_t span = span_max; span >= 1; span--){ // substitution starts from the longest sequences
+        for (size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_words.find(ngram) != set_words.end();
             if(is_in){
@@ -46,7 +46,7 @@ struct detect_mt : public Worker{
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        for (int h = begin; h < end; h++){
+        for (size_t h = begin; h < end; h++){
             output[h] = detect(input[h], span_max, set_words);
         }
     }
@@ -73,7 +73,7 @@ List qatd_cpp_tokens_detect(List texts_,
 
     SetNgrams set_words;
     int span_max = 0;
-    for (int g = 0; g < words.size(); g++) {
+    for (size_t g = 0; g < words.size(); g++) {
         if (has_na(words[g])) continue;
         Ngram word = words[g];
         set_words.insert(word);
@@ -98,7 +98,5 @@ toks <- list(rep(1:10, 1), rep(5:15, 1))
 dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 
 qatd_cpp_tokens_detect(toks, dict)
-
-lapply(toks)
 
 */

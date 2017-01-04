@@ -13,7 +13,7 @@ void print_vector(const std::string label,
   
   if(tokens.size() == 0) return;
   std::string token_joined = tokens[0];
-  for(int i = 1; i < tokens.size(); ++i){
+  for(size_t i = 1; i < tokens.size(); ++i){
     token_joined = token_joined + " " + tokens[i];
   }
   Rcout << label << ": " << token_joined << "\n";
@@ -26,7 +26,7 @@ int match_bit(const std::vector<std::string> &tokens1,
   int len2 = tokens2.size();
   int len = std::min(len1, len2);
   int bit = 0;
-  for (int i = 0; i < len; i++){
+  for (size_t i = 0; i < len; i++){
     bit += tokens1[i] == tokens2[i];
   }
   bit += len1 >= len2; // add one point for trailing space 
@@ -66,7 +66,7 @@ Rcpp::List find_sequence_cppl(List texts,
   std::unordered_set<std::string> set_types (types.begin(), types.end());
   
   // Find all sequences of specified types
-  for (int h = 0; h < texts.size(); h++){
+  for (size_t h = 0; h < texts.size(); h++){
     
     //Rcout << "Text " << h << "\n";
     std::vector<std::string> text = texts[h];
@@ -75,8 +75,8 @@ Rcpp::List find_sequence_cppl(List texts,
     
     int len_text = text.size();
     //print_vector("Text", text);
-    for (int i = 0; i < len_text; i++){ // scan texts ignoring first words in texts
-      for (int j = i; j < len_text; j++){ // collect nested sequence starting from i
+    for (size_t i = 0; i < len_text; i++){ // scan texts ignoring first words in texts
+      for (size_t j = i; j < len_text; j++){ // collect nested sequence starting from i
         //Rcout << i << " " << j << "\n";
         Rcpp::String token = text[j];
         bool is_in;

@@ -20,8 +20,8 @@ Text replace(Text tokens,
     
     unsigned int filler = std::numeric_limits<unsigned int>::max(); // use largest limit as filler
     bool match = false;
-    for(int span = span_max; span >= 1; span--){ // substitution starts from the longest sequences
-        for(int i = 0; i < tokens.size() - (span - 1); i++){
+    for (size_t span = span_max; span >= 1; span--){ // substitution starts from the longest sequences
+        for (size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             unsigned int &id = map_words[ngram];
             if(id){
@@ -49,7 +49,7 @@ struct replace_mt : public Worker{
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        for (int h = begin; h < end; h++){
+        for (size_t h = begin; h < end; h++){
             output[h] = replace(input[h], span_max, map_words);
         }
     }
@@ -77,7 +77,7 @@ List qatd_cpp_tokens_replace(List texts_,
 
     MapNgrams map_words;
     int span_max = 0;
-    for(int g = 0; g < words.size(); g++){
+    for (size_t g = 0; g < words.size(); g++){
         if(has_na(words[g])) continue;
         Ngram word = words[g];
         map_words[word] = ids[g];

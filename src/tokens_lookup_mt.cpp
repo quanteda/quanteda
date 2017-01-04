@@ -20,9 +20,9 @@ Text lookup(Text tokens,
     
     Text keys;
     keys.reserve(tokens.size());
-    for(int span = 1; span <= span_max; span++){
+    for (size_t span = 1; span <= span_max; span++){
         //Rcout << "Span " << span << "\n";
-        for(int i = 0; i < tokens.size() - (span - 1); i++){
+        for (size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             pair<MultiMapNgrams::iterator, MultiMapNgrams::iterator> ii;
             MultiMapNgrams::iterator it; // iterator to be used along with ii
@@ -51,7 +51,7 @@ struct lookup_mt : public Worker{
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        for (int h = begin; h < end; h++){
+        for (size_t h = begin; h < end; h++){
             output[h] = lookup(input[h], span_max, map_keys);
         }
     }
@@ -81,7 +81,7 @@ List qatd_cpp_tokens_lookup(List texts_,
 
     MultiMapNgrams map_words;
     int span_max = 0;
-    for (int g = 0; g < words.size(); g++) {
+    for (size_t g = 0; g < words.size(); g++) {
         if (has_na(words[g])) continue;
         Ngram word = words[g];
         map_words.insert(std::make_pair(word, ids_[g]));
