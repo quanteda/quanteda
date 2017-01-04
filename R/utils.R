@@ -166,4 +166,43 @@ code <- function(texts){
     cat(paste0('         "', texts[len], '")\n'))
 }
 
+#' convert sequences to a simple list
+#' 
+#' Convert a sequence into a simple list, for input as a sequence in e.g. 
+#' \code{\link{tokens_compound}}.
+#' @param sequences the input sequence, one of: \itemize{ \item{character vector,
+#'   }{whose elements will be split on whitespace;} \item{list of characters,
+#'   }{consisting of a list of token patterns, separated by white space}; 
+#'   \item{\link{tokens} object;} \item{\link{dictionary} object}{;} 
+#'   \item{\link{collocations} object.}{} }
+#' @return an unnamed list of sequences, with each element of the list a
+#'   character vector with the split sequence.
+#' @keywords internal utilities
+sequence2list <- function(sequences) {
+    
+    # convert the input into a simple, unnamed list of split characters
+    if (is.dictionary(sequences)) {
+        sequences <- stringi::stri_split_fixed(unlist(sequences, use.names = FALSE), " ")
+    } else if (is.collocations(sequences)) {
+            word1 <- word2 <- word3 <- NULL
+            # sort by word3 so that trigrams will be processed before bigrams
+            data.table::setorder(sequences, -word3, word1)
+            # concatenate the words                               
+            word123 <- sequences[, list(word1, word2, word3)]
+            sequences <- unlist(apply(word123, 1, list), recursive = FALSE)
+            sequences <- lapply(sequences, unname)
+            sequences <- lapply(sequences, function(y) y[y != ""])
+    } else if (is.list(sequences) | is.character(sequences)) {
+        sequences <- lapply(sequences, function(y) as.character(tokens(y, what = "fastestword")))
+    } else {
+        stop("sequences must be a character vector, a list of character elements, a dictionary, or collocations")
+    }
+    
+    # make sure the resulting list is all character
+    if (!all(is.character(unlist(sequences, use.names = FALSE))))
+        stop("sequences must be a list of character elements or a dictionary")
+
+    sequences
+}
+   
 

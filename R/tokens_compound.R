@@ -6,12 +6,7 @@
 #' to form a single "token".  This ensures that the sequences will be processed
 #' subsequently as single tokens, for instance in constructing a \link{dfm}.
 #' @param x an input \link{tokens} object
-#' @param sequences a set of pattern matches to identify token sequences, one of a:
-#' \itemize{
-#'   \item{list of characters}{consisting of a list of token patterns, separated by white space};
-#'   \item{\link{dictionary} object}{;}
-#'   \item{\link{collocations} object.}{}
-#' }
+#' @inheritParams sequence2list
 #' @param concatenator the concatenation character that will connect the words 
 #'   making up the multi-word sequences.  The default \code{_} is highly 
 #'   recommended since it will not be removed during normal cleaning and 
@@ -42,7 +37,7 @@
 #' 
 #' # dictionaries w/glob matches
 #' myDict <- dictionary(list(negative = c("bad* word*", "negative", "awful text"),
-#'                           postiive = c("good stuff", "like? th??")))
+#'                           positive = c("good stuff", "like? th??")))
 #' toks <- tokens(c(txt1 = "I liked this, when we can use bad words, in awful text.",
 #'                  txt2 = "Some damn good stuff, like the text, she likes that too."))
 #' tokens_compound(toks, myDict)
@@ -66,19 +61,11 @@ tokens_compound.tokens <- function(x, sequences,
                    concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                    case_insensitive = TRUE) {
     
-    # Convert collocations sequences into a simple list of characters
-    if (is.collocations(sequences)) {
-        sequences <- stri_trim_both(stri_c(sequences[[1]], 
-                                           sequences[[2]], 
-                                           sequences[[3]], sep=' '))
-    }
+    valuetype <- match.arg(valuetype)
+    sequences <- sequence2list(sequences)
     
-    # Convert dictionaries into a list of phrase sequences 
-    if (is.dictionary(sequences)) {
-        sequences <- unlist(sequences, use.names = FALSE)
-    }
-
-    seqs <- vector2list(sequences)
+    # Initialize
+    seqs <- as.list(sequences)
     seqs <- seqs[lengths(seqs) > 1] # drop single words
     valuetype <- match.arg(valuetype)
     
