@@ -13,7 +13,7 @@ List qatd_cpp_structcopy_int_list(List list_){
     // Generate empty List
     List list = list_;
     List list_struct;
-    for(int g=0; g < list.size(); g++){
+    for (size_t g = 0; g < list.size(); g++){
         IntegerVector elems = list[g];
         list_struct.push_back(IntegerVector(elems.size()));
     }
@@ -23,17 +23,17 @@ List qatd_cpp_structcopy_int_list(List list_){
 // [[Rcpp::export]]
 List qatd_cpp_remove_chr_list(List list_, String elem_remove){
     List list = clone(list_);
-    for(int h=0; h < list.size(); h++){
+    for (size_t h = 0; h < list.size(); h++){
         CharacterVector elems = list[h];
         CharacterVector elems_new(elems.size());
-        int j = 0;
-        for(int i=0; i < elems.size(); i++){
+        size_t j = 0;
+        for (size_t i = 0; i < elems.size(); i++){
             if(elems[i] != elem_remove){
                 elems_new[j] = elems[i];
                 j++;
             }
         }
-        if(j > 0){
+        if (j > 0){
             list[h] = elems_new[seq(0, j - 1)];
         }else{
             list[h] = CharacterVector(0);
@@ -45,17 +45,17 @@ List qatd_cpp_remove_chr_list(List list_, String elem_remove){
 // [[Rcpp::export]]
 List qatd_cpp_remove_int_list(List list_, int elem_remove){
     List list = clone(list_);
-    for(int h=0; h < list.size(); h++){
+    for (size_t h = 0; h < list.size(); h++){
         IntegerVector elems = list[h];
         IntegerVector elems_new(elems.size());
-        int j = 0;
-        for(int i=0; i < elems.size(); i++){
+        size_t j = 0;
+        for (size_t i = 0; i < elems.size(); i++){
             if(elems[i] != elem_remove){
                 elems_new[j] = elems[i];
                 j++;
             }
         }
-        if(j > 0){
+        if (j > 0){
             list[h] = elems_new[seq(0, j - 1)];
         }else{
             list[h] = IntegerVector(0);

@@ -13,7 +13,7 @@ using namespace ngrams;
 
 
 Text lookup(Text tokens, 
-            int span_max,
+            size_t span_max,
             MultiMapNgrams &map_keys){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
@@ -41,11 +41,11 @@ struct lookup_mt : public Worker{
     
     Texts &input;
     Texts &output;
-    int span_max;
+    size_t span_max;
     MultiMapNgrams &map_keys;
     
     // Constructor
-    lookup_mt(Texts &input_, Texts &output_, int span_max_, MultiMapNgrams &map_keys_):
+    lookup_mt(Texts &input_, Texts &output_, size_t span_max_, MultiMapNgrams &map_keys_):
               input(input_), output(output_), span_max(span_max_), map_keys(map_keys_){}
     
     // parallelFor calles this function with size_t
@@ -80,7 +80,7 @@ List qatd_cpp_tokens_lookup(List texts_,
     IntegerVector ids = ids_;
 
     MultiMapNgrams map_words;
-    int span_max = 0;
+    size_t span_max = 0;
     for (size_t g = 0; g < words.size(); g++) {
         if (has_na(words[g])) continue;
         Ngram word = words[g];

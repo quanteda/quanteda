@@ -13,7 +13,7 @@ using namespace ngrams;
 
 
 Text detect(Text tokens, 
-            int span_max,
+            size_t span_max,
             SetNgrams &set_words){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
@@ -36,11 +36,11 @@ struct detect_mt : public Worker{
     
     Texts &input;
     Texts &output;
-    int span_max;
+    size_t span_max;
     SetNgrams &set_words;
     
     // Constructor
-    detect_mt(Texts &input_, Texts &output_, int span_max_, SetNgrams &set_words_):
+    detect_mt(Texts &input_, Texts &output_, size_t span_max_, SetNgrams &set_words_):
               input(input_), output(output_), span_max(span_max_), set_words(set_words_){}
     
     // parallelFor calles this function with size_t
@@ -56,7 +56,7 @@ struct detect_mt : public Worker{
  * This funciton finds features in tokens object. This is similar to tokens_tookup, 
  * but returns a tokens object filled with zero or one.
  * The number of threads is set by RcppParallel::setThreadOptions()
- * @used tokens_detect()
+ * @used kwic()
  * @creator Kohei Watanabe
  * @param texts_ tokens ojbect
  * @param words_ list of features to find
@@ -72,7 +72,7 @@ List qatd_cpp_tokens_detect(List texts_,
     List words = words_;
 
     SetNgrams set_words;
-    int span_max = 0;
+    size_t span_max = 0;
     for (size_t g = 0; g < words.size(); g++) {
         if (has_na(words[g])) continue;
         Ngram word = words[g];

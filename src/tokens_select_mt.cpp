@@ -13,7 +13,7 @@ using namespace ngrams;
 
 
 Text keep(Text tokens, 
-          int span_max,
+          size_t span_max,
           SetNgrams &set_words,
           bool padding){
     
@@ -34,7 +34,7 @@ Text keep(Text tokens,
 }
 
 Text remove(Text tokens, 
-            int span_max,
+            size_t span_max,
             SetNgrams &set_words,
             bool padding){
 
@@ -62,13 +62,13 @@ struct select_mt : public Worker{
     
     Texts &input;
     Texts &output;
-    int span_max;
+    size_t span_max;
     SetNgrams &set_words;
     int mode;
     bool padding;
     
     // Constructor
-    select_mt(Texts &input_, Texts &output_, int span_max_, SetNgrams &set_words_, int mode_, bool padding_):
+    select_mt(Texts &input_, Texts &output_, size_t span_max_, SetNgrams &set_words_, int mode_, bool padding_):
               input(input_), output(output_), span_max(span_max_), set_words(set_words_), mode(mode_), padding(padding_) {}
     
     // parallelFor calles this function with size_t
@@ -116,7 +116,7 @@ List qatd_cpp_tokens_select(List texts_,
 
 
     SetNgrams set_words;
-    int span_max = 0;
+    size_t span_max = 0;
     for (size_t g = 0; g < words.size(); g++){
         if(has_na(words[g])) continue;
         Ngram word = words[g];
