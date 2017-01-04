@@ -3,11 +3,12 @@
 \name{deprecated-textstat}
 \alias{deprecated-textstat}
 \alias{lexdiv}
+\alias{readability}
 \title{deprecated textstat names}
 \usage{
 lexdiv(x, ...)
 
-lexdiv(x, ...)
+readability(x, ...)
 }
 \description{
 Deprecated `textstat_` function names.

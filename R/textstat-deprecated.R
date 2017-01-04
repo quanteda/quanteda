@@ -14,7 +14,7 @@ lexdiv <- function(x, ...) {
 
 #' @rdname deprecated-textstat
 #' @details \code{readability} is the deprecated; use \code{\link{textstat_readability}} instead.
-lexdiv <- function(x, ...) {
+readability <- function(x, ...) {
     .Deprecated("textstat_readability")
     textstat_readability(x, ...)
 }
