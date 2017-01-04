@@ -159,6 +159,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qatd_cpp_unhash
+ListOf<CharacterVector> qatd_cpp_unhash(ListOf<IntegerVector> tokens_int, CharacterVector types);
+RcppExport SEXP quanteda_qatd_cpp_unhash(SEXP tokens_intSEXP, SEXP typesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< ListOf<IntegerVector> >::type tokens_int(tokens_intSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type types(typesSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_unhash(tokens_int, types));
+    return rcpp_result_gen;
+END_RCPP
+}
 // qatd_cpp_tokens_detect
 List qatd_cpp_tokens_detect(List texts_, List words_);
 RcppExport SEXP quanteda_qatd_cpp_tokens_detect(SEXP texts_SEXP, SEXP words_SEXP) {
@@ -223,18 +235,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type mode_(mode_SEXP);
     Rcpp::traits::input_parameter< bool >::type padding_(padding_SEXP);
     rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_select(texts_, words_, mode_, padding_));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qatd_cpp_unhash
-ListOf<CharacterVector> qatd_cpp_unhash(ListOf<IntegerVector> tokens_int, CharacterVector types);
-RcppExport SEXP quanteda_qatd_cpp_unhash(SEXP tokens_intSEXP, SEXP typesSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< ListOf<IntegerVector> >::type tokens_int(tokens_intSEXP);
-    Rcpp::traits::input_parameter< CharacterVector >::type types(typesSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_unhash(tokens_int, types));
     return rcpp_result_gen;
 END_RCPP
 }
