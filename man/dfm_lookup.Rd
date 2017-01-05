@@ -36,6 +36,12 @@ the dictionary key, converted to capitals if \code{capkeys = TRUE} (so that
 the replacements are easily distinguished from features that were terms
 found originally in the document).
 }
+\note{
+\code{dfm_lookup} should not be used with dictionaries containing
+multi-word values, because dfm features will already have been fixed using
+a specific ngram value which may not match the multi-word structure of the
+dictionary.
+}
 \examples{
 myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                           opposition = c("Opposition", "reject", "notincorpus"),
