@@ -123,7 +123,7 @@ struct estimate_mt : public Worker{
             std::vector<long> counts_bit(len + 1, 1); // add one smoothing
             for(size_t j = 0; j < len; j++){
                 if(i == j) continue; // do not compare with itself
-                //if(ns[j] < count_min) continue; // this is differet from old vesion
+                //if(ns[j] < count_min) continue; // this is different from the old vesion
                 int bit = match_bit(seqs[i], seqs[j]);
                 counts_bit[bit] += ns[i];
             }
@@ -132,6 +132,18 @@ struct estimate_mt : public Worker{
         }
     }
 };
+
+/* 
+ * This funciton estimate the strength of association between specified words 
+ * that appear in sequences. Estimates are slightly different from the old version,
+ *  because this faster version does not ignore infrequent sequences.
+ * @used sequences()
+ * @creator Kohei Watanabe
+ * @param texts_ tokens ojbect
+ * @param count_min sequences appear less than this are ignores
+ * @param nested if true, subsequences are also collected
+ * 
+ */
 
 // [[Rcpp::export]]
 List qutd_cpp_sequences(List texts_,

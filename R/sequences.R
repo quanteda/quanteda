@@ -2,8 +2,8 @@
 
 #' find sequences of tokens
 #' 
-#' This function automatically identify sequences of tokens. This algorithm is 
-#' based on Blaheta and Johnson's “Unsupervised Learning of Multi-Word Verbs”.
+#' This function automatically identify sequences of words (contiguous collocations). 
+#' This algorithm is based on Blaheta and Johnson's “Unsupervised Learning of Multi-Word Verbs”.
 #' @param x tokenizedTexts objects
 #' @param tokens types of token in sequuences
 #' @param count_min minimum frequency of sequences
