@@ -6,6 +6,8 @@
 #' This algorithm is based on Blaheta and Johnson's “Unsupervised Learning of Multi-Word Verbs”.
 #' @param x tokens objects
 #' @param features features in sequences
+#' @inheritParams valuetype
+#' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param count_min minimum frequency of sequences
 #' @param nested collect nested sequences
 #' @examples 
