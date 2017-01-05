@@ -106,6 +106,7 @@ new name | reason
 
 ## Other new features
 
+*  `kwic` is completely rewritten, now uses fast hashed index matching in C++ and fully implements vectorized matches (#306) and all `valuetype`s (#307).
 *  `tokens_lookup`, `tokens_select`, and `tokens_remove` are faster and use parallelization (based on the TBB library).
 *  `textstat_dist` and `textstat_simil` add fast, sparse, and parallel computation of many new distance and similarity matrices.  
 *  Added `textmodel_wordshoal` fitting function.

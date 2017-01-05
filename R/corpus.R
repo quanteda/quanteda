@@ -244,13 +244,15 @@ corpus.kwic <- function(x, docnames = NULL, docvars = NULL, text_field = "text",
     
     if (compress)
         warning("compress not yet implemented for corpus.kwic")
-    
     if (!missing(docvars))
         stop("docvars are assigned automatically for kwic objects")
     if (!missing(text_field))
         stop("text_field is not applicable for this class of input")
     
     class(x) <- "data.frame"
+    
+    # convert docnames to a factor, as in original kwic
+    x$docname <- factor(x$docname)
     
     result <- corpus(x, text_field = "contextPre", ...)
     result[["contextPost"]] <- NULL
@@ -263,7 +265,9 @@ corpus.kwic <- function(x, docnames = NULL, docvars = NULL, text_field = "text",
     docnames(tempCorp) <- paste0(docnames(tempCorp), ".post")
     
     result <- result + tempCorp
-    metacorpus(result, "source") <- paste0("Corpus created from kwic(x, keywords = \"", attr(x, "keywords"), "\")")
+    metacorpus(result, "source") <- paste0("Corpus created from kwic(x, keywords = \"", 
+                                           paste(attr(x, "keywords"), collapse = ", "),
+                                           "\")")
 
     result
 }

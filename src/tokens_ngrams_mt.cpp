@@ -46,7 +46,7 @@ void skip(Text &tokens,
     //Rcout << "Token " << tokens[start] << "\n";
     
     if(pos_ngram < n){
-        for (int j = 0; j < skips.size(); j++){
+        for (size_t j = 0; j < skips.size(); j++){
             int next = start + skips[j];
             if(next < 0 || tokens.size() - 1 < next) break;
             if(tokens[next] == 0) break; // Skip padding
@@ -75,17 +75,17 @@ Text skipgram(Text tokens,
     
     // Pre-allocate memory
     int size_reserve = 0;
-    for (int k = 0; k < ns.size(); k++) {
+    for (size_t k = 0; k < ns.size(); k++) {
         size_reserve += std::pow(skips.size(), ns[k]) * tokens.size();
     }
     Text tokens_ng(size_reserve);
 
     // Generate skipgrams recursively
-    for (int k = 0; k < ns.size(); k++) {
+    for (size_t k = 0; k < ns.size(); k++) {
         int n = ns[k];
         if (tokens.size() < n) continue;
         Ngram ngram(n);
-        for (int start = 0; start < tokens.size() - (n - 1); start++) {
+        for (size_t start = 0; start < tokens.size() - (n - 1); start++) {
             if(tokens[start] == 0) continue; // skip padding
             skip(tokens, tokens_ng, start, n, skips, ngram, map_ngram, pos_ngram, pos_ngrams); // Get ngrams as reference
         }
@@ -110,7 +110,7 @@ struct skipgram_mt : public Worker{
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        for (int h = begin; h < end; h++){
+        for (size_t h = begin; h < end; h++){
             output[h] = skipgram(input[h], ns, skips, map_ngram);
         }
     }
@@ -160,7 +160,7 @@ List qatd_cpp_tokens_ngrams(List texts_,
     
     for (std::pair<Ngram, unsigned int> it : map_ngram){
         std::string type_ngram = types[it.first[0] - 1];
-        for(int i = 1; i < it.first.size(); i++){
+        for (size_t i = 1; i < it.first.size(); i++){
             type_ngram += delim + types[it.first[i] - 1];
         }
         types_ngram[it.second - 1] = type_ngram;

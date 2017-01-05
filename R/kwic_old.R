@@ -1,4 +1,4 @@
-#' locate keywords-in-context
+#' locate keywords-in-context (older)
 #' 
 #' For a text or a collection of texts (in a quanteda corpus object), return a 
 #' list of a keyword supplied by the user in its immediate context, identifying 
@@ -15,53 +15,55 @@
 #' @param case_insensitive match without respect to case if \code{TRUE}
 #' @param ... additional arguments passed to \link{tokens}, for applicable 
 #'   object types
+#' @param new always \code{FALSE} for this function
 #' @return A kwic object classed data.frame, with the document name 
 #'   (\code{docname}), the token index position (\code{position}), the context
 #'   before (\code{contextPre}), the keyword in its original format
 #'   (\code{keyword}, preserving case and attached punctuation), and the context
 #'   after (\code{contextPost}).
 #' @author Kenneth Benoit
+#' @keywords deprecated internal
 #' @export
 #' @examples
-#' head(kwic(data_char_inaugural, "secure*", window = 3, valuetype = "glob"))
-#' head(kwic(data_char_inaugural, "secur", window = 3, valuetype = "regex"))
-#' head(kwic(data_char_inaugural, "security", window = 3, valuetype = "fixed"))
+#' head(kwic_old(data_char_inaugural, "secure*", window = 3, valuetype = "glob"))
+#' head(kwic_old(data_char_inaugural, "secur", window = 3, valuetype = "regex"))
+#' head(kwic_old(data_char_inaugural, "security", window = 3, valuetype = "fixed"))
 #' 
-#' kwic(data_corpus_inaugural, "war against")
-#' kwic(data_corpus_inaugural, "war against", valuetype = "regex")
+#' kwic_old(data_corpus_inaugural, "war against")
+#' kwic_old(data_corpus_inaugural, "war against", valuetype = "regex")
 #' 
-kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
-    UseMethod("kwic")
+kwic_old <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = FALSE) {
+    UseMethod("kwic_old")
 }
 
-#' @rdname kwic
+#' @rdname kwic_old
 #' @noRd
 #' @export
-kwic.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
-    kwic(tokenize(x, ...), keywords, window, valuetype, case_insensitive)
+kwic_old.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = FALSE) {
+    kwic_old(tokenize(x, ...), keywords, window, valuetype, case_insensitive, new = FALSE)
 }
 
-#' @rdname kwic
+#' @rdname kwic_old
 #' @noRd
 #' @export 
-kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
-    kwic(texts(x), keywords, window, valuetype, case_insensitive, ...)
+kwic_old.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = FALSE) {
+    kwic_old(texts(x), keywords, window, valuetype, case_insensitive, ..., new = FALSE)
 }
 
-#' @rdname kwic
+#' @rdname kwic_old
 #' @noRd
 #' @export 
-kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
-    kwic(as.tokenizedTexts(x), keywords, window, valuetype, case_insensitive, ...)   
+kwic_old.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = FALSE) {
+    kwic_old(as.tokenizedTexts(x), keywords, window, valuetype, case_insensitive, ..., new = FALSE)   
 }
 
-#' @rdname kwic
+#' @rdname kwic_old
 #' @noRd
 #' @export 
-kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+kwic_old.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = FALSE) {
     valuetype <- match.arg(valuetype)
     keywordsTokenized <- tokenize(keywords, simplify = TRUE, what = "fastestword", ...)
-    contexts <- lapply(x, kwic.tokenizedText, keywordsTokenized, window, valuetype, case_insensitive)
+    contexts <- lapply(x, kwic_old.tokenizedText, keywordsTokenized, window, valuetype, case_insensitive, new = FALSE)
     if (sum(is.na(contexts)) == length(contexts)) return(NA) # means no search term found
     # name the text vector
     if (!is.null(names(x))) {
@@ -82,7 +84,6 @@ kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "
     
     attr(contexts, "valuetype") <- valuetype
 
-    
     #  If these tokenized texts are not named, then their ntokens will not have names either
     ntoken <- ntoken(x)
     if (is.null(names(ntoken)))
@@ -92,11 +93,11 @@ kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "
 
     attr(contexts, "keywords") <- keywords
     attr(contexts, "tokenize_opts") <- list(...)
-    class(contexts) <- c("kwic", class(contexts))
+    class(contexts) <- c("kwic_old", "kwic", class(contexts))
     contexts
 }
 
-kwic.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE) {
+kwic_old.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, new = FALSE) {
     valuetype <- match.arg(valuetype)
     
     wordLength <- length(word)
@@ -160,36 +161,6 @@ kwic.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "regex
     class(result) <- c("kwic", class(result))
     result
 }
-
-#' @method print kwic
-#' @noRd
-#' @export
-print.kwic <- function(x, ...) {
-    contexts <- x
-    contexts$positionLabel <- paste0("[", contexts$docname, ", ", contexts$position, "]")
-    contexts$positionLabel <- format(contexts$positionLabel, justify="right")
-    contexts$keyword <- format(contexts$keyword, justify="centre")
-    rownames(contexts) <- contexts$positionLabel
-    contexts$positionLabel <- contexts$docname <- contexts$position <- NULL
-    contexts$contextPre <- paste(contexts$contextPre, "[")
-    contexts$contextPost <- paste("]", contexts$contextPost)
-    print(as.data.frame(contexts))
-}
-
-
-#' @rdname kwic
-#' @export
-#' @examples
-#' mykwic <- kwic(data_corpus_inaugural, "provident*")
-#' is.kwic(mykwic)
-#' is.kwic("Not a kwic")
-is.kwic <- function(x) {
-    if (class(x)[1] == "kwic")
-        TRUE
-    else
-        FALSE
-}
-
 
 ## solution from alexis_laz 
 ## http://stackoverflow.com/questions/33027611/how-to-index-a-vector-sequence-within-a-vector-sequence

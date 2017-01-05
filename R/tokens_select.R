@@ -116,6 +116,8 @@ tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "rem
 tokens_select.tokens <- function(x, features, selection = c("keep", "remove"), 
                                  valuetype = c("glob", "regex", "fixed"),
                                  case_insensitive = TRUE, padding = FALSE, ...) {
+    
+    features <- vector2list(features)
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     
@@ -123,7 +125,6 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     attrs_org <- attributes(x)
     
     types <- attr(x, 'types')
-    features <- as.list(features)
     features_fixed <- regex2fixed5(features, types, valuetype, case_insensitive) # convert glob or regex to fixed
     features_id <- lapply(features_fixed, function(x) fmatch(x, types))
     if (selection == 'keep') {

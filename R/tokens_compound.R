@@ -67,6 +67,7 @@ tokens_compound.tokens <- function(x, sequences,
     # Initialize
     seqs <- as.list(sequences)
     seqs <- seqs[lengths(seqs) > 1] # drop single words
+    valuetype <- match.arg(valuetype)
     
     names_org <- names(x)
     attrs_org <- attributes(x)
