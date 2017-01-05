@@ -182,16 +182,15 @@ List qutd_cpp_sequences(List texts_,
     
     dev::start_timer("Convert", timer);
     // Convert to Rcpp objects
-    Rcpp::List sequences;
-    NumericVector lambdas;
-    NumericVector sigmas;
-    NumericVector counts;
+    Rcpp::List sequences(len);
+    NumericVector lambdas(len);
+    NumericVector sigmas(len);
+    NumericVector counts(len);
     for(size_t k = 0; k < len; k++){
-        if(ns[k] < count_min) continue;
-        sequences.push_back(seqs[k]);
-        lambdas.push_back(ls[k]);
-        sigmas.push_back(ss[k]);
-        counts.push_back(ns[k]);
+        sequences[k] = seqs[k];
+        lambdas[k] = ls[k];
+        sigmas[k] = ss[k];
+        counts[k] = ns[k];
     }
     dev::stop_timer("Convert", timer);
     return Rcpp::List::create(Rcpp::Named("sequence") = sequences,

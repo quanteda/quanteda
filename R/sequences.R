@@ -43,12 +43,14 @@ sequences <- function(x, features, valuetype = c("glob", "regex", "fixed"),
     features_id <- sapply(features_fixed, function(x) fastmatch::fmatch(x, types))
     
     seqs <- qutd_cpp_sequences(x, features_id, count_min, nested)
-    seqs$z <- seqs$lambda / seqs$sigma
-    seqs$p <- 1 - stats::pnorm(seqs$z)
     seqs$length <- lengths(seqs$sequence)
     seqs$sequence <- sapply(seqs$sequence, function(x) stringi::stri_c(types[x], collapse = ' '))
+    
     df <- as.data.frame(seqs)
-    df <- df[order(df$p),]
+    df <- df[df$count >= count_min,]
+    df$z <- df$lambda / df$sigma
+    df$p <- 1 - stats::pnorm(df$z)
+    df <- df[order(df$z, decreasing = TRUE),]
     class(df) <- c("sequences", class(df))
     
     return(df)
