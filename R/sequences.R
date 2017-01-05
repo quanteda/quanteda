@@ -51,3 +51,4 @@ sequences <- function(x, features, valuetype = c("glob", "regex", "fixed"),
     
     return(df)
 }
+

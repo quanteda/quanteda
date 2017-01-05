@@ -107,11 +107,11 @@ tokens_compound.tokens <- function(x, sequences,
     if(length(seqs_fixed) == 0) return(x) # do nothing
     
     # Make new types
-    seqs_id <- lapply(seqs_fixed, function(y) fmatch(y, types))
+    seqs_id <- lapply(seqs_fixed, function(y) fastmatch::fmatch(y, types))
     seqs_type <- sapply(seqs_fixed, paste0, collapse = concatenator)
     
     # Assign IDs to new types
-    types_id <- fmatch(seqs_type, types)
+    types_id <- match(seqs_type, types)
     types_new <- seqs_type[is.na(types_id)]
     types_id[is.na(types_id)] <- seq(length(types) + 1, by=1, length.out=length(types_new))
 
