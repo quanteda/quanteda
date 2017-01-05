@@ -59,8 +59,6 @@ struct count_mt : public Worker{
     count_mt(Texts texts_, SetTypes &set_types_, MapNgrams &counts_seq_, bool nested_):
              texts(texts_), set_types(set_types_), counts_seq(counts_seq_), nested(nested_) {}
     
-    //Rcout << "Text " << h << ": ";
-    //dev::print_ngram(text);
     void operator()(std::size_t begin, std::size_t end){
 
         for (int h = begin; h < end; h++){
@@ -69,13 +67,14 @@ struct count_mt : public Worker{
             text.push_back(0); // add padding to include last words
             Ngram tokens_seq;
             
+            // Collect sequence of specified types
             size_t len_text = text.size();
-            for (size_t i = 0; i < len_text; i++){ // scan texts ignoring first words in texts
-                for (size_t j = i; j < len_text; j++){ // collect nested sequence starting from i
+            for (size_t i = 0; i < len_text; i++){
+                for (size_t j = i; j < len_text; j++){
                     //Rcout << i << " " << j << "\n";
                     unsigned int token = text[j];
                     bool is_in;
-                    if(token == 0){
+                    if (token == 0){
                         is_in = false;
                     }else{
                         is_in = set_types.find(token) != set_types.end();
@@ -87,8 +86,6 @@ struct count_mt : public Worker{
                         //Rcout << "Not match: " <<  token << "\n";
                         if(tokens_seq.size() > 1){
                             counts_seq[tokens_seq]++;
-                            //Rcout << "Sequence: ";
-                            //dev::print_ngram(tokens_seq);
                         }
                         tokens_seq.clear();
                         if (!nested) i = j; // jump if nested is false

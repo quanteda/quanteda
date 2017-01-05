@@ -17,8 +17,8 @@ sequences(x, features, valuetype = c("glob", "regex", "fixed"),
 \item{tokens}{types of token in sequuences}
 }
 \description{
-This function automatically identify sequences of tokens. This algorithm is 
-based on Blaheta and Johnson's “Unsupervised Learning of Multi-Word Verbs”.
+This function automatically identify sequences of words (contiguous collocations). 
+This algorithm is based on Blaheta and Johnson's “Unsupervised Learning of Multi-Word Verbs”.
 }
 \examples{
 
@@ -43,5 +43,4 @@ Blaheta, D., & Johnson, M. (2001). Unsupervised learning of
   Extraction, Analysis and Exploitation of Collocations.
 }
 \keyword{collocations}
-\keyword{internal}
 
