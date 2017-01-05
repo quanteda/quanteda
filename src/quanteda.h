@@ -1,5 +1,6 @@
 #include "tbb/concurrent_unordered_map.h"
 #include "tbb/concurrent_unordered_set.h"
+#include "tbb/concurrent_vector.h"
 using namespace Rcpp;
 using namespace std;
 using namespace tbb;
