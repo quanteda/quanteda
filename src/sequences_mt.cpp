@@ -17,11 +17,10 @@ typedef tbb::concurrent_unordered_set<unsigned int> SetTypes;
 int match_bit(const std::vector<unsigned int> &tokens1, 
               const std::vector<unsigned int> &tokens2){
   
-    int len1 = tokens1.size();
-    int len2 = tokens2.size();
-    int len = std::min(len1, len2);
+    size_t len1 = tokens1.size();
+    size_t len2 = tokens2.size();
     long bit = 0; // for Solaris
-    for (int i = 0; i < len; i++){
+    for (int i = 0; i < len1 && i < len2; i++){
         bit += tokens1[i] == tokens2[i];
     }
     bit += len1 >= len2; // add one point for trailing space 
@@ -31,7 +30,7 @@ int match_bit(const std::vector<unsigned int> &tokens1,
 double sigma(std::vector<long> &counts, int n){
   
     double s = 0;
-    for (int b = 1; b <= n; b++){
+    for (size_t b = 1; b <= n; b++){
         s += 1.0 / counts[b];
     }
     double base = n - 1; // for Solaris
@@ -42,7 +41,7 @@ double sigma(std::vector<long> &counts, int n){
 double lambda(std::vector<long> counts, int n){
   
     double l = std::log(counts[n]);
-    for (int b = 1; b < n; b++){
+    for (size_t b = 1; b < n; b++){
         l -= std::log(counts[b]);
     }
     l += (n - 1) * std::log(counts[0]);
@@ -156,10 +155,10 @@ List qutd_cpp_sequences(List texts_,
     MapNgrams counts_seq;
     count_mt count_mt(texts, set_types, counts_seq, nested);
     
-    // dev::Timer timer;
-    // dev::start_timer("Count", timer);
+    dev::Timer timer;
+    dev::start_timer("Count", timer);
     parallelFor(0, texts.size(), count_mt);
-    // dev::stop_timer("Count", timer);
+    dev::stop_timer("Count", timer);
     
     // Separate map keys and values
     size_t len = counts_seq.size();
@@ -177,10 +176,11 @@ List qutd_cpp_sequences(List texts_,
     tbb::concurrent_vector<double> ls(len);
     estimate_mt estimate_mt(seqs, ns, ss, ls, count_min);
     
-    // dev::start_timer("Estimate", timer);
+    dev::start_timer("Estimate", timer);
     parallelFor(0, seqs.size(), estimate_mt);
-    // dev::stop_timer("Estimate", timer);
+    dev::stop_timer("Estimate", timer);
     
+    dev::start_timer("Convert", timer);
     // Convert to Rcpp objects
     Rcpp::List sequences;
     NumericVector lambdas;
@@ -193,7 +193,7 @@ List qutd_cpp_sequences(List texts_,
         sigmas.push_back(ss[k]);
         counts.push_back(ns[k]);
     }
-        
+    dev::stop_timer("Convert", timer);
     return Rcpp::List::create(Rcpp::Named("sequence") = sequences,
                               Rcpp::Named("lambda") = lambdas,
                               Rcpp::Named("sigma") = sigmas,
