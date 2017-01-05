@@ -79,7 +79,7 @@ setMethod("show", "dictionary",
 #'                           taxing = "taxing",
 #'                           taxation = "taxation",
 #'                           taxregex = "tax*",
-#'                           country = "united states"))
+#'                           country = "america"))
 #' head(dfm(mycorpus, dictionary = mydict))
 #' 
 #' \dontrun{
