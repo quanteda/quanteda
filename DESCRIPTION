@@ -105,6 +105,7 @@ Collate:
     'resample.R'
     'selectFeatures-old.R'
     'selectFeatures.R'
+    'sequences.R'
     'settings.R'
     'similarity.R'
     'stopwords.R'

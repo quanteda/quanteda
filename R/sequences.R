@@ -21,7 +21,7 @@
 #' seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, count_min = 10)
 #' head(seqs2, 10)
 #' 
-#' @keywords internal collocations
+#' @keywords collocations
 #' @author Kohei Watanabe
 #' @references Blaheta, D., & Johnson, M. (2001). Unsupervised learning of
 #'   multi-word verbs. Presented at the ACLEACL Workshop on the Computational

@@ -26,11 +26,11 @@ toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"), removeP
 toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 
 # extracting multi-part nouns
-seqs <- sequences(toks, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", count_min = 2)
+seqs <- sequences(toks, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", case_insensitive = FALSE)
 head(seqs, 10)
 
 # types can be any words
-seqs2 <- sequences(tokens, "^([a-z]+)$", count_min = 3)
+seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, count_min = 10)
 head(seqs2, 10)
 
 }
