@@ -74,7 +74,7 @@
 #'                taxing = "taxing",
 #'                taxation = "taxation",
 #'                taxregex = "tax*",
-#'                country = "united states"))
+#'                country = "states"))
 #' dfm(corpus_post1900inaug, dictionary = mydict)
 #' 
 #' # with the thesaurus feature
