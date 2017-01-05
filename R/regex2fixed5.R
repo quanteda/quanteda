@@ -16,9 +16,13 @@ regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, inde
     # Make case insensitive
     if(case_insensitive){
         types_search <- stri_trans_tolower(types)
+        regex <- lapply(regex, stri_trans_tolower)
     }else{
         types_search <- types
     }
+    
+    # Convert fixed or glob to regex
+    if(valuetype == 'glob') regex <- lapply(regex, glob2rx)
     
     # Set if exact match of not
     if(valuetype == 'fixed'){
@@ -26,12 +30,6 @@ regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, inde
     }else{
         exact <- FALSE
     }
-    
-    # Make case-insensitive
-    if(case_insensitive) regex <- lapply(regex, stri_trans_tolower)
-    
-    # Convert fixed or glob to regex
-    if(valuetype == 'glob') regex <- lapply(regex, glob2rx)
     
     if(is.logical(index)){
         if(index){
