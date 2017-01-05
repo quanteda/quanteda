@@ -159,11 +159,9 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
 #' removeFeatures(myCollocs, stopwords("english"), pos = 2)
 #' }
 tokens_remove <- function(x, features, valuetype = c("glob", "regex", "fixed"),
-                          case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
-                          verbose = FALSE) {
+                          case_insensitive = TRUE, padding = FALSE, verbose = FALSE) {
     tokens_select(x, features, selection = "remove", valuetype = valuetype, 
-                  case_insensitive = case_insensitive,
-                  padding = padding, indexing = indexing, verbose = verbose)
+                  case_insensitive = case_insensitive, padding = padding, verbose = verbose)
 }
 
 
