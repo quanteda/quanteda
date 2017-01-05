@@ -133,7 +133,6 @@ struct estimate_mt : public Worker{
 };
 
 // [[Rcpp::export]]
-
 List qutd_cpp_sequences(List texts_,
                         NumericVector words_,
                         int count_min,
@@ -141,17 +140,16 @@ List qutd_cpp_sequences(List texts_,
     
     Texts texts = Rcpp::as<Texts>(texts_);
     std::vector<unsigned int> words = Rcpp::as< std::vector<unsigned int> >(words_);
-    
-    // Hash tables
-    MapNgrams counts_seq;
     SetTypes set_types (words.begin(), words.end());
     
+    // Collect all sequences of specified words
+    MapNgrams counts_seq;
     count_mt count_mt(texts, set_types, counts_seq, nested);
     
-    dev::Timer timer;
-    dev::start_timer("Count", timer);
+    // dev::Timer timer;
+    // dev::start_timer("Count", timer);
     parallelFor(0, texts.size(), count_mt);
-    dev::stop_timer("Count", timer);
+    // dev::stop_timer("Count", timer);
     
     // Separate map keys and values
     size_t len = counts_seq.size();
@@ -169,9 +167,9 @@ List qutd_cpp_sequences(List texts_,
     tbb::concurrent_vector<double> ls(len);
     estimate_mt estimate_mt(seqs, ns, ss, ls, count_min);
     
-    dev::start_timer("Estimate", timer);
+    // dev::start_timer("Estimate", timer);
     parallelFor(0, seqs.size(), estimate_mt);
-    dev::stop_timer("Estimate", timer);
+    // dev::stop_timer("Estimate", timer);
     
     // Convert to Rcpp objects
     Rcpp::List sequences;
@@ -214,4 +212,12 @@ out2$p <- 1 - stats::pnorm(out2$z)
 
 df <- merge(as.data.frame(out), as.data.frame(out2),  by='str')
 df[order(df$p.y),]
+
+microbenchmark::microbenchmark(
+    qutd_cpp_sequences(toks, match(types_upper, types), 1, TRUE),
+    find_sequence_cppl(as.tokenizedTexts(toks), types_upper, 1, 0.001, TRUE), times=10
+)
+
+
+
 */
