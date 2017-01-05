@@ -19,9 +19,6 @@
 #'   an empty string where the removed tokens previously existed.  This is
 #'   useful if a positional match is needed between the pre- and post-selected
 #'   features, for instance if a window of adjacency needs to be computed.
-#' @param ... supplementary arguments passed to the underlying functions in 
-#'   \code{\link[stringi]{stri_detect_regex}}.  (This is how 
-#'   \code{case_insensitive} is passed, but you may wish to pass others.)
 #' @return a tokens object with features removed
 #' @export
 tokens_select <- function(x, features, selection = c("keep", "remove"), 

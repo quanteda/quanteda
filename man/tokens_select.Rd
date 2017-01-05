@@ -32,14 +32,8 @@ an empty string where the removed tokens previously existed.  This is
 useful if a positional match is needed between the pre- and post-selected
 features, for instance if a window of adjacency needs to be computed.}
 
-\item{indexing}{use dfm-based index to efficiently process large tokens object}
-
 \item{verbose}{if \code{TRUE} print messages about how many features were 
 removed}
-
-\item{...}{supplementary arguments passed to the underlying functions in 
-\code{\link[stringi]{stri_detect_regex}}.  (This is how 
-\code{case_insensitive} is passed, but you may wish to pass others.)}
 }
 \value{
 a tokens object with features removed

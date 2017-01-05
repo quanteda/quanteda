@@ -5,12 +5,18 @@
 \title{find sequences of tokens}
 \usage{
 sequences(x, features, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, count_min = 2, nested = TRUE, ...)
+  case_insensitive = TRUE, count_min = 2, nested = TRUE)
 }
 \arguments{
 \item{x}{tokens objects}
 
 \item{features}{features in sequences}
+
+\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
+or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+
+\item{case_insensitive}{ignore case when matching, if \code{TRUE}}
 
 \item{count_min}{minimum frequency of sequences}
 

@@ -30,7 +30,7 @@
 #'   Extraction, Analysis and Exploitation of Collocations.
 #' @export
 sequences <- function(x, features, valuetype = c("glob", "regex", "fixed"),
-                      case_insensitive = TRUE, count_min = 2, nested=TRUE, ...) {
+                      case_insensitive = TRUE, count_min = 2, nested=TRUE) {
     
     valuetype <- match.arg(valuetype)
     
