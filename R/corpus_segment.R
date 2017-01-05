@@ -42,9 +42,7 @@ segment.corpus <- function(x, ...) {
 #' @param delimiter  delimiter defined as a \code{\link{regex}} for 
 #'   segmentation. Each type has its own default, except \code{other}, which 
 #'   requires a value to be specified.
-#' @param valuetype how to interpret the delimiter: \code{fixed} for exact 
-#'   matching; \code{"regex"} for regular expressions; or \code{"glob"} for 
-#'   "glob"-style wildcard patterns
+#' @inheritParams valuetype
 #' @param perl logical. Should Perl-compatible regular expressions be used?
 #' @param keepdocvars (for corpus objects) if \code{TRUE}, repeat the docvar values for each 
 #'   segmented text; if \code{FALSE}, drop the docvars in the segmented corpus. 

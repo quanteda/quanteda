@@ -312,8 +312,8 @@ making the methods available for this object type available to this object.</p>
 
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>text1</span><span class='kw'>=</span><span class='st'>"This is $10 in 999 different ways,\n up and down; left and right!"</span>,
          <span class='kw'>text2</span><span class='kw'>=</span><span class='st'>"@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123."</span>)
-<span class='fu'>tokenize</span>(<span class='no'>txt</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Starting tokenization...</span></div><div class='output co'>#&gt; <span class='message'>  ...preserving Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed: 0.000999999999976353 seconds.</span></div><div class='output co'>#&gt; <span class='message'>  ...tokenizing texts</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>  ...removing separators.</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.00100000000009004 seconds.</span></div><div class='output co'>#&gt; <span class='message'>  ...replacing Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed: 0 seconds.</span></div><div class='output co'>#&gt; <span class='message'>  ...replacing names</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.000999999999976353 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokenizedTexts from 2 documents.
+<span class='fu'>tokenize</span>(<span class='no'>txt</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Starting tokenization...</span></div><div class='output co'>#&gt; <span class='message'>  ...preserving Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed: 0 seconds.</span></div><div class='output co'>#&gt; <span class='message'>  ...tokenizing texts</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>  ...removing separators.</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.000999999999976353 seconds.</span></div><div class='output co'>#&gt; <span class='message'>  ...replacing Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed: 0 seconds.</span></div><div class='output co'>#&gt; <span class='message'>  ...replacing names</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokenizedTexts from 2 documents.
 #&gt; text1 :
 #&gt;  [1] &quot;This&quot;      &quot;is&quot;        &quot;$&quot;         &quot;10&quot;        &quot;in&quot;        &quot;999&quot;      
 #&gt;  [7] &quot;different&quot; &quot;ways&quot;      &quot;,&quot;         &quot;up&quot;        &quot;and&quot;       &quot;down&quot;     
@@ -476,8 +476,7 @@ making the methods available for this object type available to this object.</p>
 #&gt; [1] &quot;short&quot;    &quot;shorter&quot;  &quot;shortest&quot;
 #&gt; </div><div class='input'>
 <span class='co'># ngram tokenization</span>
-<span class='fu'>tokenize</span>(<span class='no'>txt</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; &#39;Ngram generation&#39;   0.044 millsec
-#&gt; &#39;Token generation&#39;   0.005 millsec</div><div class='output co'>#&gt; tokenizedTexts from 3 documents.
+<span class='fu'>tokenize</span>(<span class='no'>txt</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; tokenizedTexts from 3 documents.
 #&gt; mytext1 :
 #&gt; [1] &quot;this_is&quot;       &quot;is_a&quot;          &quot;a_short&quot;       &quot;short_test&quot;   
 #&gt; [5] &quot;test_sentence&quot;
@@ -487,8 +486,7 @@ making the methods available for this object type available to this object.</p>
 #&gt; 
 #&gt; mytext3 :
 #&gt; [1] &quot;short_shorter&quot; &quot;shorter_and&quot;   &quot;and_shortest&quot; 
-#&gt; </div><div class='input'><span class='fu'>tokenize</span>(<span class='no'>txt</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; &#39;Ngram generation&#39;   0.031 millsec
-#&gt; &#39;Token generation&#39;   0.004 millsec</div><div class='output co'>#&gt; tokenizedTexts from 3 documents.
+#&gt; </div><div class='input'><span class='fu'>tokenize</span>(<span class='no'>txt</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>)</div><div class='output co'>#&gt; tokenizedTexts from 3 documents.
 #&gt; mytext1 :
 #&gt; [1] &quot;this a&quot;         &quot;is short&quot;       &quot;a test&quot;         &quot;short sentence&quot;
 #&gt; 
@@ -497,8 +495,7 @@ making the methods available for this object type available to this object.</p>
 #&gt; 
 #&gt; mytext3 :
 #&gt; [1] &quot;short and&quot;        &quot;shorter shortest&quot;
-#&gt; </div><div class='input'><span class='fu'>tokenize</span>(<span class='no'>txt</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>)</div><div class='output co'>#&gt; &#39;Ngram generation&#39;   0.073 millsec
-#&gt; &#39;Token generation&#39;   0.006 millsec</div><div class='output co'>#&gt; tokenizedTexts from 3 documents.
+#&gt; </div><div class='input'><span class='fu'>tokenize</span>(<span class='no'>txt</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>)</div><div class='output co'>#&gt; tokenizedTexts from 3 documents.
 #&gt; mytext1 :
 #&gt;  [1] &quot;this&quot;          &quot;is&quot;            &quot;a&quot;             &quot;short&quot;        
 #&gt;  [5] &quot;test&quot;          &quot;sentence&quot;      &quot;this_is&quot;       &quot;is_a&quot;         
@@ -511,8 +508,7 @@ making the methods available for this object type available to this object.</p>
 #&gt; [1] &quot;short&quot;         &quot;shorter&quot;       &quot;and&quot;           &quot;shortest&quot;     
 #&gt; [5] &quot;short_shorter&quot; &quot;shorter_and&quot;   &quot;and_shortest&quot; 
 #&gt; </div><div class='input'><span class='co'># removing features from ngram tokens</span>
-<span class='fu'><a href='removeFeatures.html'>removeFeatures</a></span>(<span class='fu'>tokenize</span>(<span class='no'>txt</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>), <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; &#39;Ngram generation&#39;   0.056 millsec
-#&gt; &#39;Token generation&#39;   0.006 millsec</div><div class='output co'>#&gt; tokenizedTexts from 3 documents.
+<span class='fu'><a href='removeFeatures.html'>removeFeatures</a></span>(<span class='fu'>tokenize</span>(<span class='no'>txt</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>), <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; tokenizedTexts from 3 documents.
 #&gt; mytext1 :
 #&gt; [1] &quot;short&quot;         &quot;test&quot;          &quot;sentence&quot;      &quot;this_is&quot;      
 #&gt; [5] &quot;is_a&quot;          &quot;a_short&quot;       &quot;short_test&quot;    &quot;test_sentence&quot;

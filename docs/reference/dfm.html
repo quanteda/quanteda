@@ -126,9 +126,9 @@ dfm.</dd>
       <dd>A list of character vector dictionary entries, including 
 regular expressions (see examples)</dd>
       <dt>valuetype</dt>
-      <dd><code>fixed</code> for words as is; <code>&quot;regex&quot;</code> for regular 
-expressions; or <code>&quot;glob&quot;</code> for &quot;glob&quot;-style wildcard; <code>&quot;glob&quot;</code>
-format is the default.  See <code><a href='dfm_select.html'>dfm_select</a></code>.</dd>
+      <dd>how to interpret keyword expressions: <code>&quot;glob&quot;</code> for 
+&quot;glob&quot;-style wildcard expressions; <code>&quot;regex&quot;</code> for regular expressions;
+or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</dd>
       <dt>groups</dt>
       <dd>character vector containing the names of document variables for
 aggregating documents; only applies when calling dfm on a corpus object</dd>
@@ -153,6 +153,10 @@ corpus</dd>
   construct the dfm using this modified tokenization object.  See the code 
   examples for an illustration.</p>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='dfm_select.html'>dfm_select</a></code></p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## for a corpus</span>
@@ -166,20 +170,19 @@ corpus</dd>
 #&gt; <span class='message'>   ... tokenizing</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>   ... found 4 documents, 3,121 features</span></div><div class='output co'>#&gt; <span class='message'>   ... created a 4 x 3,121 sparse dfm</span>
 #&gt; <span class='message'>   ... complete. </span>
-#&gt; <span class='message'>Elapsed time: 0.035 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 4 documents, 3,121 features (57.7% sparse).</div><div class='input'>
+#&gt; <span class='message'>Elapsed time: 0.156 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 4 documents, 3,121 features (57.7% sparse).</div><div class='input'>
 <span class='co'># with English stopwords and stemming</span>
 <span class='fu'>dfm</span>(<span class='no'>corpus_post80inaug</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Creating a dfm from a corpus ...</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>   ... lowercasing</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>   ... tokenizing</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>   ... found 9 documents, 3,121 features</span></div><div class='output co'>#&gt; <span class='message'>   ... </span></div><div class='output co'>#&gt; <span class='message'>removed 128 features, from 174 supplied (glob) feature types</span></div><div class='output co'>#&gt; <span class='message'>   ... stemming features (English)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>, trimmed 786 feature variants</span></div><div class='output co'>#&gt; <span class='message'>   ... created a 9 x 2,207 sparse dfm</span>
+#&gt; <span class='message'>   ... found 9 documents, 3,121 features</span></div><div class='output co'>#&gt; <span class='message'>   ... </span></div><div class='output co'>#&gt; <span class='message'>removed 128 features, from 174 supplied (glob) feature types</span></div><div class='output co'>#&gt; <span class='message'>   ... stemming features (English)</span></div><div class='output co'>#&gt; <span class='message'>, trimmed 786 feature variants</span></div><div class='output co'>#&gt; <span class='message'>   ... created a 9 x 2,207 sparse dfm</span>
 #&gt; <span class='message'>   ... complete. </span>
-#&gt; <span class='message'>Elapsed time: 0.099 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 9 documents, 2,207 features (73.2% sparse).</div><div class='input'><span class='co'># works for both words in ngrams too</span>
-<span class='fu'>dfm</span>(<span class='st'>"Banking industry"</span>, <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; &#39;Ngram generation&#39;   0.849 millsec
-#&gt; &#39;Token generation&#39;   0.004 millsec</div><div class='output co'>#&gt; </div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 1 feature (0% sparse).
+#&gt; <span class='message'>Elapsed time: 0.176 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 9 documents, 2,207 features (73.2% sparse).</div><div class='input'><span class='co'># works for both words in ngrams too</span>
+<span class='fu'>dfm</span>(<span class='st'>"Banking industry"</span>, <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 1 feature (0% sparse).
 #&gt; 1 x 1 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
-#&gt; docs    banking_industri
-#&gt;   text1                1</div><div class='input'>
+#&gt; docs    bank_industri
+#&gt;   text1             1</div><div class='input'>
 <span class='co'># with dictionaries</span>
 <span class='no'>corpus_post1900inaug</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span><span class='kw'>&gt;</span><span class='fl'>1900</span>)
 <span class='no'>mydict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>christmas</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Christmas"</span>, <span class='st'>"Santa"</span>, <span class='st'>"holiday"</span>),
@@ -209,21 +212,19 @@ corpus</dd>
 <span class='no'>testCorpus</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='no'>testText</span>)
 <span class='co'># note: "also" is not in the default stopwords("english")</span>
 <span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='fu'>dfm</span>(<span class='no'>testCorpus</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>)))</div><div class='output co'>#&gt; [1] &quot;the&quot;  &quot;over&quot; &quot;with&quot; &quot;from&quot; &quot;a&quot;    &quot;in&quot;   &quot;his&quot; </div><div class='input'><span class='co'># for ngrams</span>
-<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='fu'>dfm</span>(<span class='no'>testCorpus</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; &#39;Ngram generation&#39;   0.071 millsec
-#&gt; &#39;Token generation&#39;   0.007 millsec</div><div class='output co'>#&gt;  [1] &quot;the_quick&quot;      &quot;jumps_over&quot;     &quot;over_the&quot;       &quot;the_lazy&quot;      
+<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='fu'>dfm</span>(<span class='no'>testCorpus</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt;  [1] &quot;the_quick&quot;      &quot;jumps_over&quot;     &quot;over_the&quot;       &quot;the_lazy&quot;      
 #&gt;  [5] &quot;seamus_with&quot;    &quot;with_the&quot;       &quot;the_newspaper&quot;  &quot;newspaper_from&quot;
 #&gt;  [9] &quot;from_a&quot;         &quot;a_boy&quot;          &quot;seamus_in&quot;      &quot;in_his&quot;        
-#&gt; [13] &quot;his_mouth&quot;     </div><div class='input'><span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='fu'>dfm</span>(<span class='no'>testCorpus</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; &#39;Ngram generation&#39;   0.083 millsec
-#&gt; &#39;Token generation&#39;   0.014 millsec</div><div class='output co'>#&gt;  [1] &quot;the&quot;            &quot;over&quot;           &quot;with&quot;           &quot;from&quot;          
+#&gt; [13] &quot;his_mouth&quot;     </div><div class='input'><span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='fu'>dfm</span>(<span class='no'>testCorpus</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt;  [1] &quot;the&quot;            &quot;over&quot;           &quot;with&quot;           &quot;from&quot;          
 #&gt;  [5] &quot;a&quot;              &quot;in&quot;             &quot;his&quot;            &quot;the_quick&quot;     
 #&gt;  [9] &quot;jumps_over&quot;     &quot;over_the&quot;       &quot;the_lazy&quot;       &quot;seamus_with&quot;   
 #&gt; [13] &quot;with_the&quot;       &quot;the_newspaper&quot;  &quot;newspaper_from&quot; &quot;from_a&quot;        
 #&gt; [17] &quot;a_boy&quot;          &quot;seamus_in&quot;      &quot;in_his&quot;         &quot;his_mouth&quot;     </div><div class='input'>
 <span class='co'>## removing stopwords before constructing ngrams</span>
-<span class='no'>tokensAll</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='toLower.html'>toLower</a></span>(<span class='no'>testText</span>), <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>tokensAll</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='no'>testText</span>), <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>tokensNoStopwords</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='removeFeatures.html'>removeFeatures</a></span>(<span class='no'>tokensAll</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))
-<span class='no'>tokensNgramsNoStopwords</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_ngrams.html'>tokens_ngrams</a></span>(<span class='no'>tokensNoStopwords</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt; &#39;Ngram generation&#39;   0.042 millsec
-#&gt; &#39;Token generation&#39;   0.008 millsec</div><div class='input'><span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='fu'>dfm</span>(<span class='no'>tokensNgramsNoStopwords</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt;  [1] &quot;quick_brown&quot;      &quot;brown_fox&quot;        &quot;fox_named&quot;        &quot;named_seamus&quot;    
+<span class='no'>tokensNgramsNoStopwords</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_ngrams.html'>tokens_ngrams</a></span>(<span class='no'>tokensNoStopwords</span>, <span class='fl'>2</span>)
+<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='fu'>dfm</span>(<span class='no'>tokensNgramsNoStopwords</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt;  [1] &quot;quick_brown&quot;      &quot;brown_fox&quot;        &quot;fox_named&quot;        &quot;named_seamus&quot;    
 #&gt;  [5] &quot;seamus_jumps&quot;     &quot;jumps_lazy&quot;       &quot;lazy_dog&quot;         &quot;dog_also&quot;        
 #&gt;  [9] &quot;also_named&quot;       &quot;seamus_newspaper&quot; &quot;newspaper_boy&quot;    &quot;boy_named&quot;       
 #&gt; [13] &quot;seamus_mouth&quot;    </div><div class='input'>
@@ -273,6 +274,8 @@ corpus</dd>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

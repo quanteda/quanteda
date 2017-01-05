@@ -20,10 +20,8 @@ will be tokenized using the \code{...} options.}
 \item{window}{the number of context words to be displayed around the keyword.}
 
 \item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions; 
-or \code{"fixed"} for exact matching (entire words, for instance).  If 
-\code{"fixed"} is used with \code{case_insensitive = TRUE}, the text will 
-be lowercased prior to matching.}
+"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
+or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{match without respect to case if \code{TRUE}}
 

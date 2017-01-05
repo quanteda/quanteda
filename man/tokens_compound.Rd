@@ -10,12 +10,11 @@ tokens_compound(x, sequences, concatenator = "_", valuetype = c("glob",
 \arguments{
 \item{x}{an input \link{tokens} object}
 
-\item{sequences}{a set of pattern matches to identify token sequences, one of a:
-\itemize{
-  \item{list of characters}{consisting of a list of token patterns, separated by white space};
-  \item{\link{dictionary} object}{;}
-  \item{\link{collocations} object.}{}
-}}
+\item{sequences}{the input sequence, one of: \itemize{ \item{character vector,
+}{whose elements will be split on whitespace;} \item{list of characters,
+}{consisting of a list of token patterns, separated by white space}; 
+\item{\link{tokens} object;} \item{\link{dictionary} object}{;} 
+\item{\link{collocations} object.}{} }}
 
 \item{concatenator}{the concatenation character that will connect the words 
 making up the multi-word sequences.  The default \code{_} is highly 
@@ -23,9 +22,9 @@ recommended since it will not be removed during normal cleaning and
 tokenization (while nearly all other punctuation characters, at least those
 in the Unicode punctuation class [P] will be removed.}
 
-\item{valuetype}{how to interpret word matching patterns: \code{"glob"} for 
-"glob"-style wildcarding, \code{fixed} for words as 
-is; \code{"regex"} for regular expressions}
+\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
+or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching}
 }
@@ -59,7 +58,7 @@ mydict <- dictionary(list(tax=c("tax", "income tax", "capital gains tax", "inher
 
 # dictionaries w/glob matches
 myDict <- dictionary(list(negative = c("bad* word*", "negative", "awful text"),
-                          postiive = c("good stuff", "like? th??")))
+                          positive = c("good stuff", "like? th??")))
 toks <- tokens(c(txt1 = "I liked this, when we can use bad words, in awful text.",
                  txt2 = "Some damn good stuff, like the text, she likes that too."))
 tokens_compound(toks, myDict)

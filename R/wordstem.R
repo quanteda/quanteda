@@ -36,10 +36,12 @@ tokens_wordstem <- function(x, language = "porter") {
     if (!is.tokens(x))
         stop("x must be a tokens object")
     
-    if (all.equal(attributes(x)$ngrams, 1))
+    if (identical(as.integer(attributes(x)$ngrams), 1L))
         types(x) <- char_wordstem(types(x), language = language)
     else 
-        types(x) <- wordstem_Ngrams(types(x), language = language)
+        types(x) <- wordstem_Ngrams(types(x), 
+                                    concatenator = attributes(x)$concatenator, 
+                                    language = language)
     
     tokens_hashed_recompile(x)
 }
@@ -93,32 +95,11 @@ char_wordstem <- function(x, language = "porter") {
 dfm_wordstem <- function(x, language = "porter") {
     if (!is.dfm(x))
         stop("x must be a dfm object")
-
-    # add on a dummy column to make sure no zero-feature documents get dropped
-    x <- cbind(x, 
-               new("dfmSparse", sparseMatrix(i = 1:ndoc(x), j = rep(1, ndoc(x)), x = 1,
-                                             dimnames = list(docs = docnames(x), features = "_YYYYY_"))))
-    # add on a dummy document to make sure no zero-docfreq features get dropped
-    x <- rbind(x,
-               new("dfmSparse", sparseMatrix(i = rep(1, nfeature(x)), j = 1:nfeature(x), x = 1,
-                                             dimnames = list(docs = "_XXXXX_", features = featnames(x)))))
-
-    j <- as(x, "TsparseMatrix")@j + 1
-
-    oldFeatures <- featnames(x)[j]
     if (identical(as.integer(x@ngrams), 1L)) 
-        oldFeaturesStemmed <- char_wordstem(oldFeatures, language)
+        colnames(x) <- char_wordstem(featnames(x), language = language)
     else
-        oldFeaturesStemmed <- wordstem_Ngrams(oldFeatures, x@concatenator, language)
-    newFeatures <- unique(oldFeaturesStemmed)
-    newFeatureIndex <- match(oldFeaturesStemmed, newFeatures)
-
-    result <- sparseMatrix(i = x@i + 1, 
-                           j = newFeatureIndex,
-                           x = x@x, 
-                           dimnames = list(docs = docnames(x), 
-                                           features = newFeatures))
-    new("dfmSparse", result)[-nrow(result), -ncol(result)]
+        colnames(x) <- wordstem_Ngrams(featnames(x), x@concatenator, language)
+    dfm_compress(x, margin = "features")
 }
 
 

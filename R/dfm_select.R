@@ -10,9 +10,7 @@
 #'   object whose values (not keys) will provide the features to be selected. 
 #'   For \link{dfm} objects, see details in the Value section below.
 #' @param selection whether to \code{keep} or \code{remove} the features
-#' @param valuetype how to interpret feature vector: \code{fixed} for words as 
-#'   is; \code{"regex"} for regular expressions; or \code{"glob"} for 
-#'   "glob"-style wildcard
+#' @inheritParams valuetype
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
 #' @param verbose if \code{TRUE} print message about how many features were 
 #'   removed

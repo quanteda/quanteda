@@ -102,6 +102,7 @@ test_that("test corpus constructors works for data.frame", {
     mydf <- data.frame(letter_factor = factor(rep(letters[1:3], each = 2)),
                        some_ints = 1L:6L,
                        some_text = paste0("This is text number ", 1:6, "."),
+                       some_logical = rep(c(TRUE, FALSE), 3),
                        stringsAsFactors = FALSE,
                        row.names = paste0("fromDf_", 1:6))
     mycorp <- corpus(mydf, text_field = "some_text", 
@@ -115,6 +116,24 @@ test_that("test corpus constructors works for data.frame", {
     names(mydf2)[3] <- "text"
     expect_equal(corpus(mydf, text_field = "some_text"),
                  corpus(mydf2))
+    
+    expect_equal(corpus(mydf, text_field = "some_text"),
+                 corpus(mydf, text_field = 3))
+    
+    expect_error(corpus(mydf, text_field = "some_ints"),
+                 "text_field must refer to a character mode column")
+    expect_error(corpus(mydf, text_field = c(1,3)),
+                 "only one text_field may be specified")
+    expect_error(corpus(mydf, text_field = c("some_text", "letter_factor")),
+                 "only one text_field may be specified")
+    expect_error(corpus(mydf, text_field = 3.1),
+                 "text_field index refers to an invalid column")
+    expect_error(corpus(mydf, text_field = 0),
+                 "text_field index refers to an invalid column")
+    expect_error(corpus(mydf, text_field = -1),
+                 "text_field index refers to an invalid column")
+    expect_error(corpus(mydf, text_field = "notfound"),
+                 "column name notfound not found")
 
 })
 

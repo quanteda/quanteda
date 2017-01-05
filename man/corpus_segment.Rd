@@ -31,9 +31,9 @@ preserves the tags as a document variable in the segmented corpus.}
 segmentation. Each type has its own default, except \code{other}, which 
 requires a value to be specified.}
 
-\item{valuetype}{how to interpret the delimiter: \code{fixed} for exact 
-matching; \code{"regex"} for regular expressions; or \code{"glob"} for 
-"glob"-style wildcard patterns}
+\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
+or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{perl}{logical. Should Perl-compatible regular expressions be used?}
 

@@ -21,9 +21,9 @@ object whose values (not keys) will provide the features to be selected.}
 
 \item{selection}{whether to \code{"keep"} or \code{"remove"} the features}
 
-\item{valuetype}{how to interpret \code{features}: \code{fixed} for words as 
-is; \code{"regex"} for regular expressions; or \code{"glob"} for 
-"glob"-style wildcard}
+\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
+or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore case when matching, if \code{TRUE}}
 

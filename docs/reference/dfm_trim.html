@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>trim a dfm using threshold-based or random feature selection — dfm_trim • quanteda</title>
+<title>trim a dfm using frequency threshold-based feature selection — dfm_trim • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,27 +77,38 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>trim a dfm using threshold-based or random feature selection</h1>
+    <h1>trim a dfm using frequency threshold-based feature selection</h1>
     </div>
 
     
     <p>Returns a document by feature matrix reduced in size based on document and 
-term frequency, and/or subsampling.</p>
+term frequency, usually in terms of a minimum frequencies, but may also be in
+terms of maximum frequencies.  Setting a combination of minimum and maximum 
+frequencies will select features based on a range.</p>
     
 
-    <pre><span class='fu'>dfm_trim</span>(<span class='no'>x</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>sparsity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre><span class='fu'>dfm_trim</span>(<span class='no'>x</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_count</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sparsity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
       <dd>document-feature matrix of <a href='dfm-class.html'>dfm-class</a></dd>
       <dt>min_count</dt>
-      <dd>minimum count or fraction of features in across all documents</dd>
+      <dd>minimum count or fraction of features across all documents,
+below which features will be removed</dd>
       <dt>min_docfreq</dt>
-      <dd>minimum number or fraction of documents in which a feature appears</dd>
+      <dd>minimum number or fraction of documents in which a feature
+appears, below which features will be removed</dd>
+      <dt>max_count</dt>
+      <dd>maximum count or fraction of features across all documents,
+above which features will be removed.  (Default is no upper limit.)</dd>
+      <dt>max_docfreq</dt>
+      <dd>maximum number or fraction of documents in which a feature
+appears, above which features will be removed.  (Default is no upper limit.)</dd>
       <dt>sparsity</dt>
-      <dd>equivalent to 1 - min_docfreq, included for comparison with tm</dd>
+      <dd>equivalent to 1 - min_docfreq, included for comparison with
+tm</dd>
       <dt>verbose</dt>
       <dd>print messages</dd>
     </dl>
@@ -121,15 +132,19 @@ term frequency, and/or subsampling.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='no'>myDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 9,174 features (91.6% sparse).</div><div class='input'>
-<span class='co'># only words occuring &gt;=10 times and in &gt;=2 docs</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>Removing features occurring fewer than 10 times: 7662</span></div><div class='output co'>#&gt; <span class='message'>Removing features occurring in fewer than 2 documents: 4003</span></div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 1,511 features (68.1% sparse).</div><div class='input'>
-<span class='co'># only words occuring &gt;=10 times and in at least 0.4 of the documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)</div><div class='output co'>#&gt; <span class='message'>Removing features occurring fewer than 10 times: 7662</span></div><div class='output co'>#&gt; <span class='message'>Removing features occurring in fewer than 0.4 * 57 = 22.8 documents: 8806</span></div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 368 features (35.5% sparse).</div><div class='input'>
-<span class='co'># only words occuring at least 0.01 times and in &gt;=2 documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>.01</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>Removing features occurring fewer than 0.01 * 9174 = 91.74 times: 9013</span></div><div class='output co'>#&gt; <span class='message'>Removing features occurring in fewer than 2 documents: 4003</span></div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 161 features (18.6% sparse).</div><div class='input'>
-<span class='co'># only words occuring 5 times in 1000</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='output co'>#&gt; <span class='message'>Removing features occurring fewer than 0.005 * 9174 = 45.87 times: 8844</span></div><div class='output co'>#&gt; <span class='message'>Removing features occurring in fewer than 0.2 * 57 = 11.4 documents: 8257</span></div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 330 features (33.6% sparse).</div><div class='input'>
+    <pre class="examples"><div class='input'>(<span class='no'>myDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>]))</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,947 features (69.5% sparse).</div><div class='input'>
+<span class='co'># keep only words occuring &gt;=10 times and in &gt;=2 docs</span>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>Removing features occurring: </span></div><div class='output co'>#&gt; <span class='message'>  - fewer than 10 times: 1,840</span></div><div class='output co'>#&gt; <span class='message'>  - in fewer than 2 documents: 1,379</span></div><div class='output co'>#&gt; <span class='message'>  Total features removed: 1,840 (94.5%).</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 107 features (16.1% sparse).</div><div class='input'>
+<span class='co'># keep only words occuring &gt;=10 times and in at least 0.4 of the documents</span>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)</div><div class='output co'>#&gt; <span class='message'>Removing features occurring: </span></div><div class='output co'>#&gt; <span class='message'>  - fewer than 10 times: 1,840</span></div><div class='output co'>#&gt; <span class='message'>  - in fewer than 0.4 * 5 = 2 documents: 1,379</span></div><div class='output co'>#&gt; <span class='message'>  Total features removed: 1,840 (94.5%).</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 107 features (16.1% sparse).</div><div class='input'>
+<span class='co'># keep only words occuring &lt;=10 times and in &lt;=2 docs</span>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>max_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>Removing features occurring: </span></div><div class='output co'>#&gt; <span class='message'>  - more than 10 times: 93</span></div><div class='output co'>#&gt; <span class='message'>  - in more than 2 documents: 271</span></div><div class='output co'>#&gt; <span class='message'>  Total features removed: 272 (14.0%).</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,675 features (76.5% sparse).</div><div class='input'>
+<span class='co'># keep only words occuring &lt;=10 times and in at most 3/4 of the documents</span>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>max_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.75</span>)</div><div class='output co'>#&gt; <span class='message'>Removing features occurring: </span></div><div class='output co'>#&gt; <span class='message'>  - more than 10 times: 93</span></div><div class='output co'>#&gt; <span class='message'>  - in more than 0.75 * 5 = 3.75 documents: 139</span></div><div class='output co'>#&gt; <span class='message'>  Total features removed: 149 (7.65%).</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,798 features (74% sparse).</div><div class='input'>
+<span class='co'># keep only words occuring at least 0.01 times and in &gt;=2 documents</span>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>.01</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>Removing features occurring: </span></div><div class='output co'>#&gt; <span class='message'>  - fewer than 0.01 * 1,947 = 19.47 times: 1,889</span></div><div class='output co'>#&gt; <span class='message'>  - in fewer than 2 documents: 1,379</span></div><div class='output co'>#&gt; <span class='message'>  Total features removed: 1,889 (97.0%).</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 58 features (8.28% sparse).</div><div class='input'>
+<span class='co'># keep only words occuring 5 times in 1000, and in 2 of 5 of documents</span>
+<span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='output co'>#&gt; <span class='message'>Removing features occurring: </span></div><div class='output co'>#&gt; <span class='message'>  - fewer than 0.005 * 1,947 = 9.735 times: 1,840</span></div><div class='output co'>#&gt; <span class='message'>  - in fewer than 0.4 * 5 = 2 documents: 1,379</span></div><div class='output co'>#&gt; <span class='message'>  Total features removed: 1,840 (94.5%).</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 107 features (16.1% sparse).</div><div class='input'>
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'># # compare to removeSpareTerms from the tm package </span>
 <span class='co'># if (require(tm)) {</span>
@@ -156,8 +171,8 @@ term frequency, and/or subsampling.</p>
 
     <h2>Author</h2>
     
-Paul Nulty and Ken Benoit, with some inspiration from Will Lowe&#39;s (see <code>trim</code> from the 
-  <code>austin</code> package)
+Ken Benoit and Paul Nulty, with some inspiration from Will Lowe&#39;s
+  (see <code>trim</code> from the <code>austin</code> package)
 
   </div>
 </div>

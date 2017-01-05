@@ -31,10 +31,9 @@ applyDictionary(x, dictionary, ...)
 otherwise, replace values in dictionary with keys while leaving other 
 features unaffected}
 
-\item{valuetype}{how to interpret dictionary values: \code{"glob"} for 
-"glob"-style wildcard expressions (the format used in Wordstat and LIWC
-formatted dictionary values); \code{"regex"} for regular expressions; or
-\code{"fixed"} for exact matching (entire words, for instance)}
+\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
+or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 

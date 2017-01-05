@@ -5,10 +5,7 @@
 #' @param x tokens object to which dictionary or thesaurus will be supplied
 #' @param dictionary the \link{dictionary}-class object that will be applied to 
 #'   \code{x}
-#' @param valuetype how to interpret dictionary values: \code{"glob"} for 
-#'   "glob"-style wildcard expressions (the format used in Wordstat and LIWC 
-#'   formatted dictionary values); \code{"regex"} for regular expressions; or 
-#'   \code{"fixed"} for exact matching (entire words, for instance)
+#' @inheritParams valuetype
 #' @param concatenator a charactor that connect words in multi-words entries
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE} 
 #'   uppercase to distinguish them from other features

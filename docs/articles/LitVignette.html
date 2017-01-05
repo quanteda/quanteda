@@ -122,15 +122,13 @@ moby.word.v &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <h2 class="hasAnchor"><html><body><a href="#beginning-the-analysis" class="anchor"> </a></body></html>2.4 Beginning the analysis</h2>
 <p>The code below uses the tokenized text to the occurrence of the word <em>whale</em>. To include the possessive form <em>whale&rsquo;s</em>, we may sum the counts of both forms, count the keyword-in-context matches by regular expression or glob[^1]. <code>quanteda</code>&rsquo;s tokenize function separates punctuation into tokens by default. To match the counts in the book, we can choose to remove the punctuation.</p>
 <p>[^1] A <em>glob</em> is a simple wildcard matching pattern common on Unix systems &ndash; asterisks match zero or more characters.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby.word.v &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tokens.html">tokens</a></span>(novel.lower.v, <span class="dt">simplify =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## Warning in tokens.character(novel.lower.v, simplify = TRUE): simplify no
-## longer available</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># count of the word 'whale'</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moby.word.v &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="kw"><a href="../reference/tokens.html">tokens</a></span>(novel.lower.v))
+<span class="co"># count of the word 'whale'</span>
 <span class="kw">length</span>(moby.word.v[<span class="kw">which</span>(moby.word.v ==<span class="st"> "whale"</span>)])</code></pre></div>
-<pre><code>## [1] 0</code></pre>
+<pre><code>## [1] 1030</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># total occurrences of 'whale' including possessive</span>
 <span class="kw">length</span>(moby.word.v[<span class="kw">which</span>(moby.word.v ==<span class="st"> "whale"</span>)]) +<span class="st"> </span><span class="kw">length</span>(moby.word.v[<span class="kw">which</span>(moby.word.v ==<span class="st"> "whale's"</span>)])</code></pre></div>
-<pre><code>## [1] 0</code></pre>
+<pre><code>## [1] 1150</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># same thing using kwic()</span>
 <span class="kw">nrow</span>(<span class="kw"><a href="../reference/kwic.html">kwic</a></span>(novel.lower.v, <span class="st">"whale"</span>))</code></pre></div>
 <pre><code>## [1] 1030</code></pre>
@@ -145,7 +143,7 @@ moby.word.v &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <p>Calculating the size of the vocabulary &ndash; includes possessive forms.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># total unique words</span>
 <span class="kw">length</span>(<span class="kw">unique</span>(moby.word.v))</code></pre></div>
-<pre><code>## [1] 1</code></pre>
+<pre><code>## [1] 17299</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/ntoken.html">ntype</a></span>(<span class="kw"><a href="../reference/toLower.html">toLower</a></span>(novel.v), <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Moby_Dick 
 ##     18525</code></pre>

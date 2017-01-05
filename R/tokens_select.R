@@ -11,9 +11,7 @@
 #' @param features one of: a character vector of features to be selected, a \link{dictionary} class
 #'   object whose values (not keys) will provide the features to be selected. 
 #' @param selection whether to \code{"keep"} or \code{"remove"} the features
-#' @param valuetype how to interpret \code{features}: \code{fixed} for words as 
-#'   is; \code{"regex"} for regular expressions; or \code{"glob"} for 
-#'   "glob"-style wildcard
+#' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param verbose if \code{TRUE} print messages about how many features were 
 #'   removed

@@ -336,11 +336,17 @@
 <div id="other-new-features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#other-new-features" class="anchor"> </a>Other new features</h2>
-<ul><li>Added support for batch hashing of tokens through <code><a href="../reference/tokens.html">tokens()</a></code>, for more memory-efficient token hashing when dealing with very large numbers of documents.<br/></li>
+<ul><li>
+<code>tokens_lookup</code>, <code>tokens_select</code>, and <code>tokens_remove</code> are faster and use parallelization (based on the TBB library).</li>
+<li>
+<code>textstat_dist</code> and <code>textstat_simil</code> add fast, sparse, and parallel computation of many new distance and similarity matrices.<br/></li>
+<li>Added <code>textmodel_wordshoal</code> fitting function.</li>
+<li>Add <code>max_docfreq</code> and <code>min_docfreq</code> arguments, and better verbose output, to <code>dfm_trim</code> (#383).</li>
+<li>Added support for batch hashing of tokens through <code><a href="../reference/tokens.html">tokens()</a></code>, for more memory-efficient token hashing when dealing with very large numbers of documents.<br/></li>
 <li>Added support for in-memory compressed corpus objects.</li>
 <li>Consolidated corpus-level metadata arguments in <code><a href="../reference/corpus.html">corpus()</a></code> through the <code>metacorpus</code> list argument.<br/></li>
 <li>Added Greek stopwords. (See #282).<br/></li>
-<li>Added index handling <code>[</code>, <code>[[</code>, and <code>$</code> for <code>tokens</code> objects.<br/></li>
+<li>Added index handling <code>[</code>, <code>[[</code>, and <code>$</code> for (hashed) <code>tokens</code> objects.<br/></li>
 <li>Now using ggplot2.</li>
 <li>Added tokens methods for <code><a href="../reference/collocations.html">collocations()</a></code> and <code><a href="../reference/kwic.html">kwic()</a></code>.</li>
 <li>Much improved performance for <code><a href="../reference/tokens_select.html">tokens_select()</a></code> (formerly <code><a href="../reference/selectFeatures.dfm.html">selectFeatures.tokens()</a></code>).</li>

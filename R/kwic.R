@@ -11,11 +11,7 @@
 #'   patterns, possibly including punctuation.  If a phrase, \code{keywords} 
 #'   will be tokenized using the \code{...} options.
 #' @param window the number of context words to be displayed around the keyword.
-#' @param valuetype how to interpret keyword expressions: \code{"glob"} for 
-#'   "glob"-style wildcard expressions; \code{"regex"} for regular expressions; 
-#'   or \code{"fixed"} for exact matching (entire words, for instance).  If 
-#'   \code{"fixed"} is used with \code{case_insensitive = TRUE}, the text will 
-#'   be lowercased prior to matching.
+#' @inheritParams valuetype
 #' @param case_insensitive match without respect to case if \code{TRUE}
 #' @param ... additional arguments passed to \link{tokens}, for applicable 
 #'   object types

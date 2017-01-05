@@ -137,11 +137,14 @@ textstat_readability.character <- function(x,
     St <- nsentence(x)
 
     # get the word length and syllable info for use in computing quantities
-    x <- toLower(x)
+    x <- char_tolower(x)
     tokenizedWords <- tokens(x, removePunct = TRUE, removeHyphens = removeHyphens)
 
     # number of syllables
     tmpSyll <- nsyllable(tokenizedWords)
+    # replace any NAs with a single count (most of these will be numbers)
+    tmpSyll <- lapply(tmpSyll, function(y) { y[is.na(y)] <- 1; y })
+    
     # lengths in characters of the words
     wordLengths <- lapply(tokenizedWords, stringi::stri_length)
 

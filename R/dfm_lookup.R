@@ -12,10 +12,7 @@
 #' @param exclusive if \code{TRUE}, remove all features not in dictionary, 
 #'   otherwise, replace values in dictionary with keys while leaving other 
 #'   features unaffected
-#' @param valuetype how to interpret dictionary values: \code{"glob"} for 
-#'   "glob"-style wildcard expressions (the format used in Wordstat and LIWC
-#'   formatted dictionary values); \code{"regex"} for regular expressions; or
-#'   \code{"fixed"} for exact matching (entire words, for instance)
+#' @inheritParams valuetype
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
 #' @param capkeys if \code{TRUE}, convert dictionary keys to
 #'   uppercase to distinguish them from other features

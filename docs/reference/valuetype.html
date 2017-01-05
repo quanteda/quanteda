@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>compute the sparsity of a document-feature matrix — sparsity • quanteda</title>
+<title>pattern matching using valuetype — valuetype • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,34 +77,66 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>compute the sparsity of a document-feature matrix</h1>
+    <h1>pattern matching using valuetype</h1>
     </div>
 
     
-    <p>Return the proportion of sparseness of a document-feature matrix, equal
-to the proportion of cells that have zero counts.</p>
+    <p>Pattern matching in <span class="pkg">quanteda</span> using the <code>valuetype</code> argument.</p>
     
 
-    <pre><span class='fu'>sparsity</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>the document-feature matrix</dd>
+      <dt>valuetype</dt>
+      <dd>how to interpret keyword expressions: <code>&quot;glob&quot;</code> for 
+&quot;glob&quot;-style wildcard expressions; <code>&quot;regex&quot;</code> for regular expressions;
+or <code>&quot;fixed&quot;</code> for exact matching. See valuetype for details.</dd>
     </dl>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>inaug_dfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>sparsity</span>(<span class='no'>inaug_dfm</span>)</div><div class='output co'>#&gt; [1] 0.9155164</div><div class='input'><span class='fu'>sparsity</span>(<span class='fu'><a href='dfm_trim.html'>dfm_trim</a></span>(<span class='no'>inaug_dfm</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>5</span>))</div><div class='output co'>#&gt; <span class='message'>Removing features occurring: </span></div><div class='output co'>#&gt; <span class='message'>  - fewer than 5 times: 6,469</span></div><div class='output co'>#&gt; <span class='message'>  Total features removed: 6,469 (70.5%).</span></div><div class='output co'>#&gt; [1] 0.7802899</div></pre>
+    <p>Pattern matching in in <span class="pkg">quanteda</span> uses &quot;glob&quot;-style pattern
+  matching as the default, because this is simpler than regular expression
+  matching while addressing most users&#39; needs.  It is also has the advantage
+  of being identical to fixed pattern matching when the wildcard characters
+  (`*` and `?`) are not used. Finally, most <a href='dictionary.html'>dictionary</a> formats use
+  glob matching.</p>
+    <p><dl class='dl-horizontal'>
+  <dt><code>&quot;glob&quot;</code></dt><dd>&quot;glob&quot;-style wildcard expressions, the quanteda default.  
+    The implementation used in <span class="pkg">quanteda</span> uses `*` to match any number of any 
+    characters including none, and `?` to match any single character.  See also 
+  <code><a href='http://www.rdocumentation.org/packages/utils/topics/glob2rx'>glob2rx</a></code> and References below.</dd>
+  <dt><code>&quot;regex&quot;</code></dt><dd>Regular expression matching.</dd>
+  <dt><code>&quot;fixed&quot;</code></dt><dd>Fixed (literal) pattern matching.</dd>
+  </dl></p>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>If &quot;fixed&quot; is used with <code>case_insensitive = TRUE</code>, the text will 
+  typically be lowercased internally prior to matching.  Also, glob matches
+  are converted to regular expressions (using <a href='http://www.rdocumentation.org/packages/utils/topics/glob2rx'>glob2rx</a>) when
+  they contain wild card characters, and to fixed pattern matches when they
+  do not.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='http://www.rdocumentation.org/packages/utils/topics/glob2rx'>glob2rx</a></code>, 
+<a href = 'glob pattern matching (Wikipedia)'>https://en.wikipedia.org/wiki/Glob_(programming)</a>, 
+regex</p>
+    
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+      
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#note">Note</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+          </ul>
 
   </div>
 </div>

@@ -55,24 +55,27 @@ reassign_slots <- function(x_new, x_orig, exceptions = NULL) {
 #' Copy the attributes from one S3 object to another.  Necessary when some
 #' operation defined for the base class obliterates them.
 #' @param x_new the object to which the attributes will be copied
-#' @param x_orig the object from which the attributes will be copied, or a list
+#' @param x_from the object from which the attributes will be copied, or a list
 #'   of attrbiutes if \code{attr_only = TRUE}
 #' @param exception a character vector of attribute names NOT to be copied
 #' @param attr_only logical; if \code{TRUE}, then \code{x_orig} is a list of
 #'   attributes rather than an object with attributes.
 #' @keywords internal
 #' @author Ken Benoit
-reassign_attributes <- function(x_new, x_orig, exceptions = NULL, attr_only = FALSE) {
+reassign_attributes <- function(x_new, x_from, exceptions = NULL, attr_only = FALSE) {
     if (!attr_only) { 
-        attrs_orig <- attributes(x_orig)
+        attrs_from <- attributes(x_from)
     } else {
-        attrs_orig <- x_orig
+        attrs_from <- x_from
     }
-    for (a in names(attrs_orig)) {
-        if (!a %in% exceptions) {
-            attr(x_new, a) <- attrs_orig[[a]]
-        }
-    }
+    # remove exceptions, if any
+    if (!is.null(exceptions)) attrs_from[[exceptions]] <- NULL
+    # copy the old attributes to the new object, keeping any new attributes not 
+    # found in the old object
+    attrs_new <- c(attributes(x_new)[setdiff(names(attributes(x_new)), names(attrs_from))],
+                   attrs_from)
+    # assign the attributes
+    attributes(x_new) <- attrs_new
     x_new
 }
 
@@ -163,4 +166,43 @@ code <- function(texts){
     cat(paste0('         "', texts[len], '")\n'))
 }
 
+#' convert sequences to a simple list
+#' 
+#' Convert a sequence into a simple list, for input as a sequence in e.g. 
+#' \code{\link{tokens_compound}}.
+#' @param sequences the input sequence, one of: \itemize{ \item{character vector,
+#'   }{whose elements will be split on whitespace;} \item{list of characters,
+#'   }{consisting of a list of token patterns, separated by white space}; 
+#'   \item{\link{tokens} object;} \item{\link{dictionary} object}{;} 
+#'   \item{\link{collocations} object.}{} }
+#' @return an unnamed list of sequences, with each element of the list a
+#'   character vector with the split sequence.
+#' @keywords internal utilities
+sequence2list <- function(sequences) {
+    
+    # convert the input into a simple, unnamed list of split characters
+    if (is.dictionary(sequences)) {
+        sequences <- stringi::stri_split_fixed(unlist(sequences, use.names = FALSE), " ")
+    } else if (is.collocations(sequences)) {
+            word1 <- word2 <- word3 <- NULL
+            # sort by word3 so that trigrams will be processed before bigrams
+            data.table::setorder(sequences, -word3, word1)
+            # concatenate the words                               
+            word123 <- sequences[, list(word1, word2, word3)]
+            sequences <- unlist(apply(word123, 1, list), recursive = FALSE)
+            sequences <- lapply(sequences, unname)
+            sequences <- lapply(sequences, function(y) y[y != ""])
+    } else if (is.list(sequences) | is.character(sequences)) {
+        sequences <- lapply(sequences, function(y) as.character(tokens(y, what = "fastestword")))
+    } else {
+        stop("sequences must be a character vector, a list of character elements, a dictionary, or collocations")
+    }
+    
+    # make sure the resulting list is all character
+    if (!all(is.character(unlist(sequences, use.names = FALSE))))
+        stop("sequences must be a list of character elements or a dictionary")
+
+    sequences
+}
+   
 
