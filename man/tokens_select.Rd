@@ -7,7 +7,7 @@
 \usage{
 tokens_select(x, features, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  padding = FALSE, indexing = FALSE, verbose = FALSE)
+  padding = FALSE, verbose = FALSE)
 
 tokens_remove(x, features, valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, padding = FALSE, indexing = FALSE,

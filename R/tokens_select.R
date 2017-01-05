@@ -23,8 +23,7 @@
 #' @export
 tokens_select <- function(x, features, selection = c("keep", "remove"), 
                           valuetype = c("glob", "regex", "fixed"),
-                          case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
-                          verbose = FALSE) {
+                          case_insensitive = TRUE, padding = FALSE, verbose = FALSE) {
     UseMethod("tokens_select")
 }
 
@@ -72,8 +71,7 @@ tokens_select <- function(x, features, selection = c("keep", "remove"),
 #' }
 tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                          valuetype = c("glob", "regex", "fixed"),
-                                         case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
-                                         verbose = FALSE) {
+                                         case_insensitive = TRUE, padding = FALSE, verbose = FALSE) {
     x <- tokens_select(as.tokens(x), features, selection, valuetype, case_insensitive = TRUE)
     x <- as.tokenizedTexts(x)
     return(x)
