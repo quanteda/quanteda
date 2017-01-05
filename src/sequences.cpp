@@ -147,7 +147,7 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 types <- unique(as.character(toks))
 types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
 
-out <- find_sequence_cppl(as.tokenizedTexts(toks), types_upper, 4, 0.001, TRUE)
+out <- find_sequence_cppl(as.tokenizedTexts(toks), types_upper, 1, 0.001, TRUE)
 out$str <- stringi::stri_c_list(out$sequence, '_')
 out$sequence <- NULL
 
