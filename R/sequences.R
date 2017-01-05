@@ -9,19 +9,16 @@
 #' @param count_min minimum frequency of sequences
 #' @param nested collect nested sub-sequence
 #' @examples 
-#' sents <- as.character(tokens(data_corpus_inaugural[1:10], what = "sentence"))
-#' tokens <- tokens(sents, removePunct = TRUE)
-#' tokens <- tokens_select(tokens, stopwords("english"), "remove", padding = TRUE)
-#' types <- unique(as.character(tokens))
+#' 
+#' toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"), removePunct = TRUE)
+#' toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 #' 
 #' # extracting multi-part nouns
-#' types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
-#' seqs <- sequences(tokens, types_upper, count_min = 2)
+#' seqs <- sequences(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE)
 #' head(seqs, 10)
 #' 
 #' # types can be any words
-#' types_lower <- types[stringi::stri_detect_regex(types, "^([a-z]+)$") & !types %in%stopwords()]
-#' seqs2 <- sequences(tokens, types_lower, count_min = 3)
+#' seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, count_min = 10)
 #' head(seqs2, 10)
 #' 
 #' @keywords internal collocations
@@ -30,7 +27,7 @@
 #'   multi-word verbs. Presented at the ACLEACL Workshop on the Computational
 #'   Extraction, Analysis and Exploitation of Collocations.
 #' @export
-sequences <- function(x, tokens, features, valuetype = c("glob", "regex", "fixed"),
+sequences <- function(x, features, valuetype = c("glob", "regex", "fixed"),
                       case_insensitive = TRUE, count_min = 2, nested=TRUE, ...) {
     
     valuetype <- match.arg(valuetype)
@@ -38,18 +35,19 @@ sequences <- function(x, tokens, features, valuetype = c("glob", "regex", "fixed
     names_org <- names(x)
     attrs_org <- attributes(x)
     
-    types <- attr(x, 'types')
-    features <- unlist(features, use.names = FALSE)
+    types <- types(x)
+    features <- as.list(unlist(features, use.names = FALSE)) # does not accpet sequences
     features_fixed <- regex2fixed5(features, types, valuetype, case_insensitive, FALSE) # convert glob or regex to fixed
-    features_id <- lapply(features_fixed, function(x) fmatch(x, types))
+    features_id <- sapply(features_fixed, function(x) fastmatch::fmatch(x, types))
     
-    seqs <- qutd_cpp_sequences(toks, features_id, count_min, nested)
+    seqs <- qutd_cpp_sequences(x, features_id, count_min, nested)
     seqs$z <- seqs$lambda / seqs$sigma
     seqs$p <- 1 - stats::pnorm(seqs$z)
-    seqs$seqences <- stringi::stri_c_list(out2$sequence, ' ')
-    
+    seqs$length <- lengths(seqs$sequence)
+    seqs$sequence <- sapply(seqs$sequence, function(x) stringi::stri_c(types[x], collapse = ' '))
     df <- as.data.frame(seqs)
-    class(df) <- "sequences"
+    df <- df[order(df$p),]
+    class(df) <- c("sequences", class(df))
     
     return(df)
 }

@@ -65,6 +65,7 @@ struct count_mt : public Worker{
 
         for (int h = begin; h < end; h++){
             Text text = texts[h];
+            if(text.size() == 0) continue; // skip empty text
             text.push_back(0); // add padding to include last words
             Ngram tokens_seq;
             
@@ -210,13 +211,13 @@ out2
 out2$z <- out2$lambda / out2$sigma
 out2$p <- 1 - stats::pnorm(out2$z)
 
-df <- merge(as.data.frame(out), as.data.frame(out2),  by='str')
-df[order(df$p.y),]
-
-microbenchmark::microbenchmark(
-    qutd_cpp_sequences(toks, match(types_upper, types), 1, TRUE),
-    find_sequence_cppl(as.tokenizedTexts(toks), types_upper, 1, 0.001, TRUE), times=10
-)
+# df <- merge(as.data.frame(out), as.data.frame(out2),  by='str')
+# df[order(df$p.y),]
+# 
+# microbenchmark::microbenchmark(
+#     qutd_cpp_sequences(toks, match(types_upper, types), 1, TRUE),
+#     find_sequence_cppl(as.tokenizedTexts(toks), types_upper, 1, 0.001, TRUE), times=10
+# )
 
 
 
