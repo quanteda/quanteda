@@ -10,8 +10,7 @@ tokens_select(x, features, selection = c("keep", "remove"),
   padding = FALSE, verbose = FALSE)
 
 tokens_remove(x, features, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
-  verbose = FALSE)
+  case_insensitive = TRUE, padding = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be selected}
