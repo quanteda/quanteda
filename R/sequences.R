@@ -12,7 +12,7 @@
 #' @param nested collect nested sequences
 #' @examples 
 #' 
-#' toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"), removePunct = TRUE)
+#' toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
 #' toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 #' 
 #' # extracting multi-part nouns
