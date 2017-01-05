@@ -55,7 +55,7 @@ double lambda(std::vector<int> &counts, const int &n){
 }
 
 // [[Rcpp::export]]
-Rcpp::List find_sequence_cppl(List texts,
+Rcpp::List qutd_cpp_sequences(List texts,
                               const std::vector<std::string> &types,
                               const int &count_min,
                               const double &smooth,
@@ -140,6 +140,7 @@ Rcpp::List find_sequence_cppl(List texts,
   );
 }
 
+
 /***R
 
 toks <- tokens(data_corpus_inaugural)
@@ -147,7 +148,7 @@ toks <- tokens_select(tokens, stopwords("english"), "remove", padding = TRUE)
 types <- unique(as.character(tokens))
 types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
 
-find_sequence_cppl(as.tokenizedTexts(tokens), types_upper, 2, 0.001, TRUE)
+qutd_cpp_sequences(as.tokenizedTexts(tokens), types_upper, 2, 0.001, TRUE)
 
 
 */
