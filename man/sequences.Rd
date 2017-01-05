@@ -8,13 +8,13 @@ sequences(x, features, valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, count_min = 2, nested = TRUE, ...)
 }
 \arguments{
-\item{x}{tokenizedTexts objects}
+\item{x}{tokens objects}
+
+\item{features}{features in sequences}
 
 \item{count_min}{minimum frequency of sequences}
 
-\item{nested}{collect nested sub-sequence}
-
-\item{tokens}{types of token in sequuences}
+\item{nested}{collect nested sequences}
 }
 \description{
 This function automatically identify sequences of words (contiguous collocations). 

@@ -4,10 +4,10 @@
 #' 
 #' This function automatically identify sequences of words (contiguous collocations). 
 #' This algorithm is based on Blaheta and Johnson's “Unsupervised Learning of Multi-Word Verbs”.
-#' @param x tokenizedTexts objects
-#' @param tokens types of token in sequuences
+#' @param x tokens objects
+#' @param features features in sequences
 #' @param count_min minimum frequency of sequences
-#' @param nested collect nested sub-sequence
+#' @param nested collect nested sequences
 #' @examples 
 #' 
 #' toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"), removePunct = TRUE)
