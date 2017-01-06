@@ -6,7 +6,7 @@
 \usage{
 tokens_lookup(x, dictionary, valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, capkeys = FALSE, concatenator = " ",
-  verbose = FALSE)
+  exclusive = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{x}{tokens object to which dictionary or thesaurus will be supplied}
@@ -25,6 +25,10 @@ uppercase to distinguish them from other features}
 them from other features}
 
 \item{concatenator}{a charactor that connect words in multi-words entries}
+
+\item{exclusive}{if \code{TRUE}, remove all features not in dictionary, 
+otherwise, replace values in dictionary with keys while leaving other 
+features unaffected}
 
 \item{verbose}{print status messages if \code{TRUE}}
 }
