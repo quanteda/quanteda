@@ -12,8 +12,6 @@ using namespace quanteda;
 using namespace ngrams;
 
 
-typedef tbb::concurrent_unordered_set<unsigned int> SetTypes;
-    
 int match_bit(const std::vector<unsigned int> &tokens1, 
               const std::vector<unsigned int> &tokens2){
   
@@ -49,7 +47,7 @@ double lambda(std::vector<long> counts, int n){
 }
 
 void count(Text text, 
-           SetTypes &set_types, 
+           SetUnigrams &set_words, 
            MapNgrams &counts_seq, 
            bool nested){
     
@@ -67,7 +65,7 @@ void count(Text text,
             if (token == 0){
                 is_in = false;
             }else{
-                is_in = set_types.find(token) != set_types.end();
+                is_in = set_words.find(token) != set_words.end();
             }
             if (is_in){
                 //Rcout << "Match: " << token << "\n";
@@ -88,30 +86,30 @@ void count(Text text,
 struct count_mt : public Worker{
     
     Texts texts;
-    SetTypes &set_types;
+    SetUnigrams &set_words;
     MapNgrams &counts_seq;
     bool nested;
         
-    count_mt(Texts texts_, SetTypes &set_types_, MapNgrams &counts_seq_, bool nested_):
-             texts(texts_), set_types(set_types_), counts_seq(counts_seq_), nested(nested_) {}
+    count_mt(Texts texts_, SetUnigrams &set_words_, MapNgrams &counts_seq_, bool nested_):
+             texts(texts_), set_words(set_words_), counts_seq(counts_seq_), nested(nested_) {}
     
     void operator()(std::size_t begin, std::size_t end){
         for (int h = begin; h < end; h++){
-            count(texts[h], set_types, counts_seq, nested);
+            count(texts[h], set_words, counts_seq, nested);
         }
     }
 };
 
 struct estimate_mt : public Worker{
     
-    tbb::concurrent_vector<Ngram> &seqs;
+    VecNgrams &seqs;
     tbb::concurrent_vector<int> &ns;
     tbb::concurrent_vector<double> &ss;
     tbb::concurrent_vector<double> &ls;
     int count_min;
     
     // Constructor
-    estimate_mt(tbb::concurrent_vector<Ngram> &seqs_, tbb::concurrent_vector<int> &ns_, 
+    estimate_mt(VecNgrams &seqs_, tbb::concurrent_vector<int> &ns_, 
                 tbb::concurrent_vector<double> &ss_, tbb::concurrent_vector<double> &ls_, int count_min_):
                 seqs(seqs_), ns(ns_), ss(ss_), ls(ls_), count_min(count_min_) {}
     
@@ -142,6 +140,7 @@ struct estimate_mt : public Worker{
  * @used sequences()
  * @creator Kohei Watanabe
  * @param texts_ tokens ojbect
+ * @param words_ types of tokens in sequences
  * @param count_min sequences appear less than this are ignores
  * @param nested if true, subsequences are also collected
  * 
@@ -155,11 +154,11 @@ List qutd_cpp_sequences(List texts_,
     
     Texts texts = Rcpp::as<Texts>(texts_);
     std::vector<unsigned int> words = Rcpp::as< std::vector<unsigned int> >(words_);
-    SetTypes set_types (words.begin(), words.end());
+    SetUnigrams set_words (words.begin(), words.end());
     
     // Collect all sequences of specified words
     MapNgrams counts_seq;
-    count_mt count_mt(texts, set_types, counts_seq, nested);
+    count_mt count_mt(texts, set_words, counts_seq, nested);
     
     //dev::Timer timer;
     //dev::start_timer("Count", timer);
@@ -168,7 +167,7 @@ List qutd_cpp_sequences(List texts_,
     
     // Separate map keys and values
     size_t len = counts_seq.size();
-    tbb::concurrent_vector<Ngram> seqs;
+    VecNgrams seqs;
     tbb::concurrent_vector<int> ns;
     seqs.reserve(len);
     ns.reserve(len);
