@@ -5,7 +5,7 @@
 [Quantitative Analysis of Textual Data](https://kbenoit.github.io/quanteda/)
 ============================================================================
 
-[![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Downloads](http://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
+[![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Downloads](http://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda/branch/master) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
 
 **quanteda** v0.9.9 under development
 -------------------------------------
@@ -112,6 +112,12 @@ Demonstration
 
 ``` r
 library(quanteda)
+## quanteda version 0.9.8.9038
+## 
+## Attaching package: 'quanteda'
+## The following object is masked from 'package:base':
+## 
+##     sample
 
 # create a corpus from the immigration texts from UK party platforms
 uk2010immigCorpus <- 
@@ -135,16 +141,16 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Mon Jan  2 09:28:37 2017
+## Created: Fri Jan  6 13:55:35 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
 kwic(uk2010immigCorpus, "deport", 3)
-##                        contextPre keyword                contextPost
-##  [BNP, 159]        The BNP will [  deport ] all foreigners convicted
-## [BNP, 1970]                . 2. [  Deport ] all illegal immigrants  
-## [BNP, 1976] immigrants We shall [  deport ] all illegal immigrants  
-## [BNP, 2621]  Criminals We shall [  deport ] all criminal entrants
+##                                                                    
+## [BNP, 159]         The BNP will | deport | all foreigners convicted
+## [BNP, 1970]                . 2. | Deport | all illegal immigrants  
+## [BNP, 1976] immigrants We shall | deport | all illegal immigrants  
+## [BNP, 2621]  Criminals We shall | deport | all criminal entrants
 
 # create a dfm, removing stopwords
 mydfm <- dfm(uk2010immigCorpus, remove = c("will", stopwords("english")),

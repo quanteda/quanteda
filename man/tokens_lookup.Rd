@@ -6,7 +6,7 @@
 \usage{
 tokens_lookup(x, dictionary, valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, capkeys = FALSE, concatenator = " ",
-  verbose = FALSE)
+  exclusive = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{x}{tokens object to which dictionary or thesaurus will be supplied}
@@ -26,6 +26,10 @@ them from other features}
 
 \item{concatenator}{a charactor that connect words in multi-words entries}
 
+\item{exclusive}{if \code{TRUE}, remove all features not in dictionary, 
+otherwise, replace values in dictionary with keys while leaving other 
+features unaffected}
+
 \item{verbose}{print status messages if \code{TRUE}}
 }
 \description{
@@ -36,7 +40,7 @@ object.
 toks <- tokens(data_corpus_inaugural)
 dict <- dictionary(list(country = "united states", 
                    law=c('law*', 'constitution'), 
-                   freedom=c('*', 'libert*')))
+                   freedom=c('free*', 'libert*')))
 dfm(tokens_lookup(toks, dict, 'glob', verbose = TRUE))
 
 dict_fix <- dictionary(list(country = "united states", 

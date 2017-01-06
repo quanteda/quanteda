@@ -19,16 +19,11 @@
 #'   an empty string where the removed tokens previously existed.  This is
 #'   useful if a positional match is needed between the pre- and post-selected
 #'   features, for instance if a window of adjacency needs to be computed.
-#' @param indexing use dfm-based index to efficiently process large tokens object
-#' @param ... supplementary arguments passed to the underlying functions in 
-#'   \code{\link[stringi]{stri_detect_regex}}.  (This is how 
-#'   \code{case_insensitive} is passed, but you may wish to pass others.)
 #' @return a tokens object with features removed
 #' @export
 tokens_select <- function(x, features, selection = c("keep", "remove"), 
                           valuetype = c("glob", "regex", "fixed"),
-                          case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
-                          verbose = FALSE) {
+                          case_insensitive = TRUE, padding = FALSE, verbose = FALSE) {
     UseMethod("tokens_select")
 }
 
@@ -76,8 +71,7 @@ tokens_select <- function(x, features, selection = c("keep", "remove"),
 #' }
 tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                          valuetype = c("glob", "regex", "fixed"),
-                                         case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
-                                         verbose = FALSE) {
+                                         case_insensitive = TRUE, padding = FALSE, verbose = FALSE) {
     x <- tokens_select(as.tokens(x), features, selection, valuetype, case_insensitive = TRUE)
     x <- as.tokenizedTexts(x)
     return(x)
@@ -124,9 +118,11 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     names_org <- names(x)
     attrs_org <- attributes(x)
     
-    types <- attr(x, 'types')
+    types <- types(x)
+    features <- as.list(features)
     features_fixed <- regex2fixed5(features, types, valuetype, case_insensitive) # convert glob or regex to fixed
-    features_id <- lapply(features_fixed, function(x) fmatch(x, types))
+    features_id <- lapply(features_fixed, function(x) fastmatch::fmatch(x, types))
+    
     if (selection == 'keep') {
         x <- qatd_cpp_tokens_select(x, features_id, 1, padding)
     } else {
@@ -137,9 +133,9 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     attributes(x) <- attrs_org
     
     # the fix for issue #394
-    if (padding) x <- tokens_hashed_recompile(x)
+    # if (padding) x <- tokens_hashed_recompile(x)
     
-    return(x)
+    tokens_hashed_recompile(x)
 }
 
 #' @rdname tokens_select
@@ -166,11 +162,9 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
 #' removeFeatures(myCollocs, stopwords("english"), pos = 2)
 #' }
 tokens_remove <- function(x, features, valuetype = c("glob", "regex", "fixed"),
-                          case_insensitive = TRUE, padding = FALSE, indexing = FALSE,
-                          verbose = FALSE) {
+                          case_insensitive = TRUE, padding = FALSE, verbose = FALSE) {
     tokens_select(x, features, selection = "remove", valuetype = valuetype, 
-                  case_insensitive = case_insensitive,
-                  padding = padding, indexing = indexing, verbose = verbose)
+                  case_insensitive = case_insensitive, padding = padding, verbose = verbose)
 }
 
 
