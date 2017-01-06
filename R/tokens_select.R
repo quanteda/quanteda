@@ -133,9 +133,9 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     attributes(x) <- attrs_org
     
     # the fix for issue #394
-    if (padding) x <- tokens_hashed_recompile(x)
+    # if (padding) x <- tokens_hashed_recompile(x)
     
-    return(x)
+    tokens_hashed_recompile(x)
 }
 
 #' @rdname tokens_select

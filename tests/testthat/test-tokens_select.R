@@ -78,3 +78,15 @@ test_that("tokens_select with padding = TRUE is working", {
     expect_equal(toks_list$txt1[1:3], c("", "", ""))
     expect_equal(toks_list$txt2[1:3], c("", "", ""))
 })
+
+test_that("tokens_select reduces the types appropriately", {
+    ## see issue/PR #416
+    toks <- tokens(c(doc1 = "This is a SAMPLE text", doc2 = "this sample text is better"))
+    feats <- c("this", "sample", "is")
+    expect_equal(attributes(tokens_select(toks, feats, selection = "keep"))$types,
+                 c("This", "is", "SAMPLE", "this", "sample"))
+    expect_equal(attributes(tokens_select(toks, feats, selection = "keep", case_insensitive = FALSE))$types,
+                 c("is", "this", "sample"))
+})
+
+
