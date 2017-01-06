@@ -159,7 +159,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-<<<<<<< HEAD
 // qutd_cpp_sequences
 List qutd_cpp_sequences(List texts_, NumericVector words_, int count_min, bool nested);
 RcppExport SEXP quanteda_qutd_cpp_sequences(SEXP texts_SEXP, SEXP words_SEXP, SEXP count_minSEXP, SEXP nestedSEXP) {
@@ -174,8 +173,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-=======
->>>>>>> master
 // qatd_cpp_unhash
 ListOf<CharacterVector> qatd_cpp_unhash(ListOf<IntegerVector> tokens_int, CharacterVector types);
 RcppExport SEXP quanteda_qatd_cpp_unhash(SEXP tokens_intSEXP, SEXP typesSEXP) {
@@ -188,8 +185,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-<<<<<<< HEAD
-=======
 // qatd_cpp_tokens_detect
 List qatd_cpp_tokens_detect(List texts_, List words_);
 RcppExport SEXP quanteda_qatd_cpp_tokens_detect(SEXP texts_SEXP, SEXP words_SEXP) {
@@ -202,7 +197,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
->>>>>>> master
 // qatd_cpp_tokens_lookup
 List qatd_cpp_tokens_lookup(List texts_, List words_, IntegerVector ids_);
 RcppExport SEXP quanteda_qatd_cpp_tokens_lookup(SEXP texts_SEXP, SEXP words_SEXP, SEXP ids_SEXP) {
