@@ -46,7 +46,7 @@ sequences <- function(x, features, valuetype = c("glob", "regex", "fixed"),
     seqs$length <- lengths(seqs$sequence)
     seqs$sequence <- sapply(seqs$sequence, function(x) stringi::stri_c(types[x], collapse = ' '))
     
-    df <- as.data.frame(seqs)
+    df <- as.data.frame(seqs, stringsAsFactors = FALSE)
     df <- df[df$count >= count_min,]
     df$z <- df$lambda / df$sigma
     df$p <- 1 - stats::pnorm(df$z)
