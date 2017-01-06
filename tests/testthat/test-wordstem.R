@@ -53,8 +53,8 @@ test_that("can wordstem dfm with ngrams", {
              d2 = "one two three")
     dfmtxt <- dfm(txt, ngrams = 2)
     dfmtxt_stemmed <- dfm_wordstem(dfmtxt, language = "english")
-    expect_equal(featnames(dfmtxt_stemmed),
-                 c("stem_stem", "stem_plural", "plural_perfect", "one_two", "two_three"))
+    expect_equal(sort(featnames(dfmtxt_stemmed)),
+                 c("one_two", "plural_perfect", "stem_plural", "stem_stem","two_three"))
     expect_equal(dfmtxt@ngrams, dfmtxt_stemmed@ngrams)
     expect_equal(dfmtxt@concatenator, dfmtxt_stemmed@concatenator)
 })

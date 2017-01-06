@@ -1,8 +1,3 @@
-require(quanteda)
-require(testthat)
-require(proxy)
-#require(qlcMatrix)
-
 
 test_that("test similarity method = \"correlation\" against base cor()", {
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
@@ -13,7 +8,7 @@ test_that("test similarity method = \"correlation\" against base cor()", {
 })
 
 test_that("test similarity method = \"cosine\" against proxy simil()", {
-    require(proxy)
+    skip_if_not_installed("proxy")
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
@@ -29,7 +24,7 @@ test_that("test similarity method = \"cosine\" against proxy simil()", {
 
 
 test_that("test similarity method = \"cosine\" against proxy simil(): documents", {
-    require(proxy)
+    skip_if_not_installed("proxy")
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
@@ -46,7 +41,7 @@ test_that("test similarity method = \"cosine\" against proxy simil(): documents"
 })
 
 test_that("test similarity method = \"correlation\" against proxy simil(): documents", {
-    require(proxy)
+    skip_if_not_installed("proxy")
     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
@@ -58,6 +53,7 @@ test_that("test similarity method = \"correlation\" against proxy simil(): docum
 
 
 test_that("simple similarity comparisons method = \"cosine\" against proxy simil()", {
+    skip_if_not_installed("proxy")
     testText <- c("The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with the newspaper from a boy named quick Seamus, in his mouth.", 
                   "the quick brown Seamus named dog jumped.", 
                   "My lazy dog who looks like a quick fox was in the newspaper.")
