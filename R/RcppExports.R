@@ -45,14 +45,24 @@ find_sequence_cppl <- function(texts, types, count_min, smooth, nested) {
     .Call('quanteda_find_sequence_cppl', PACKAGE = 'quanteda', texts, types, count_min, smooth, nested)
 }
 
+<<<<<<< HEAD
 qutd_cpp_sequences <- function(texts_, words_, count_min, nested) {
     .Call('quanteda_qutd_cpp_sequences', PACKAGE = 'quanteda', texts_, words_, count_min, nested)
 }
 
+=======
+>>>>>>> master
 qatd_cpp_unhash <- function(tokens_int, types) {
     .Call('quanteda_qatd_cpp_unhash', PACKAGE = 'quanteda', tokens_int, types)
 }
 
+<<<<<<< HEAD
+=======
+qatd_cpp_tokens_detect <- function(texts_, words_) {
+    .Call('quanteda_qatd_cpp_tokens_detect', PACKAGE = 'quanteda', texts_, words_)
+}
+
+>>>>>>> master
 qatd_cpp_tokens_lookup <- function(texts_, words_, ids_) {
     .Call('quanteda_qatd_cpp_tokens_lookup', PACKAGE = 'quanteda', texts_, words_, ids_)
 }

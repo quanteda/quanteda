@@ -18,6 +18,10 @@
 #'   uppercase to distinguish them from other features
 #' @param verbose print status messages if \code{TRUE}
 #' @export
+#' @note \code{dfm_lookup} should not be used with dictionaries containing
+#' multi-word values, because dfm features will already have been fixed using
+#' a specific ngram value which may not match the multi-word structure of the
+#' dictionary.
 #' @keywords dfm
 #' @examples
 #' myDict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
@@ -50,8 +54,9 @@ dfm_lookup <- function(x, dictionary, exclusive = TRUE, valuetype = c("glob", "r
         stop("x must be a dfm object")
     
     # cannot/should not apply dictionaries with multi-word keys to a dfm
-    if (any(stringi::stri_detect_charclass(unlist(dictionary, use.names = FALSE), "\\p{Z}"))) {
-        warning("You will probably not get correct behaviour applying a dictionary with multi-word keys to a dfm.")
+    if (any(stringi::stri_detect_charclass(unlist(dictionary, use.names = FALSE), "\\p{Z}")) &&
+        x@ngrams == 1) {
+        stop("dfm_lookup not currently implemented for ngrams > 1 and multi-word dictionary values")
     }
     
     valuetype <- match.arg(valuetype)

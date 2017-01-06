@@ -13,16 +13,16 @@ using namespace ngrams;
 
 
 Text lookup(Text tokens, 
-            int span_max,
+            size_t span_max,
             MultiMapNgrams &map_keys){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
     Text keys;
     keys.reserve(tokens.size());
-    for(int span = 1; span <= span_max; span++){
+    for (size_t span = 1; span <= span_max; span++){
         //Rcout << "Span " << span << "\n";
-        for(int i = 0; i < tokens.size() - (span - 1); i++){
+        for (size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             pair<MultiMapNgrams::iterator, MultiMapNgrams::iterator> ii;
             MultiMapNgrams::iterator it; // iterator to be used along with ii
@@ -41,17 +41,17 @@ struct lookup_mt : public Worker{
     
     Texts &input;
     Texts &output;
-    int span_max;
+    size_t span_max;
     MultiMapNgrams &map_keys;
     
     // Constructor
-    lookup_mt(Texts &input_, Texts &output_, int span_max_, MultiMapNgrams &map_keys_):
+    lookup_mt(Texts &input_, Texts &output_, size_t span_max_, MultiMapNgrams &map_keys_):
               input(input_), output(output_), span_max(span_max_), map_keys(map_keys_){}
     
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        for (int h = begin; h < end; h++){
+        for (size_t h = begin; h < end; h++){
             output[h] = lookup(input[h], span_max, map_keys);
         }
     }
@@ -80,8 +80,8 @@ List qatd_cpp_tokens_lookup(List texts_,
     IntegerVector ids = ids_;
 
     MultiMapNgrams map_words;
-    int span_max = 0;
-    for (int g = 0; g < words.size(); g++) {
+    size_t span_max = 0;
+    for (size_t g = 0; g < words.size(); g++) {
         if (has_na(words[g])) continue;
         Ngram word = words[g];
         map_words.insert(std::make_pair(word, ids_[g]));

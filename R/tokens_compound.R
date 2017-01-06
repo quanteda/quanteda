@@ -6,12 +6,7 @@
 #' to form a single "token".  This ensures that the sequences will be processed
 #' subsequently as single tokens, for instance in constructing a \link{dfm}.
 #' @param x an input \link{tokens} object
-#' @param sequences a set of pattern matches to identify token sequences, one of a:
-#' \itemize{
-#'   \item{list of characters}{consisting of a list of token patterns, separated by white space};
-#'   \item{\link{dictionary} object}{;}
-#'   \item{\link{collocations} object.}{}
-#' }
+#' @inheritParams sequence2list
 #' @param concatenator the concatenation character that will connect the words 
 #'   making up the multi-word sequences.  The default \code{_} is highly 
 #'   recommended since it will not be removed during normal cleaning and 
@@ -42,7 +37,7 @@
 #' 
 #' # dictionaries w/glob matches
 #' myDict <- dictionary(list(negative = c("bad* word*", "negative", "awful text"),
-#'                           postiive = c("good stuff", "like? th??")))
+#'                           positive = c("good stuff", "like? th??")))
 #' toks <- tokens(c(txt1 = "I liked this, when we can use bad words, in awful text.",
 #'                  txt2 = "Some damn good stuff, like the text, she likes that too."))
 #' tokens_compound(toks, myDict)
@@ -67,36 +62,12 @@ tokens_compound.tokens <- function(x, sequences,
                    case_insensitive = TRUE) {
     
     valuetype <- match.arg(valuetype)
-    
-    # Check that sequences is a list
-    if (!is.list(sequences))
-        stop("sequences must be a list of character elements, dictionary, or collocations")
-
-    # Convert collocations sequences into a simple list of characters
-    if (is.collocations(sequences)) {
-        word1 <- word2 <- word3 <- NULL
-        # sort by word3 so that trigrams will be processed before bigrams
-        data.table::setorder(sequences, -word3, word1)
-        # concatenate the words                               
-        word123 <- sequences[, list(word1, word2, word3)]
-        sequences <- unlist(apply(word123, 1, list), recursive = FALSE)
-        sequences <- lapply(sequences, unname)
-        sequences <- lapply(sequences, function(y) y[y != ""])
-    }
-    
-    # Convert dictionaries into a list of phrase sequences 
-    if (is.dictionary(sequences)) {
-        sequences <- stringi::stri_split_fixed(unlist(sequences, use.names = FALSE), " ")
-    }
-
-    # Make sure the list is all character
-    if (!all(is.character(unlist(sequences, use.names = FALSE))))
-        stop("sequences must be a list of character elements or a dictionary")
-
+    sequences <- sequence2list(sequences)
     
     # Initialize
     seqs <- as.list(sequences)
     seqs <- seqs[lengths(seqs) > 1] # drop single words
+    valuetype <- match.arg(valuetype)
     
     names_org <- names(x)
     attrs_org <- attributes(x)

@@ -51,7 +51,7 @@ mydict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                           taxing = "taxing",
                           taxation = "taxation",
                           taxregex = "tax*",
-                          country = "united states"))
+                          country = "america"))
 head(dfm(mycorpus, dictionary = mydict))
 
 \dontrun{

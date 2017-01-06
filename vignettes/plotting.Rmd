@@ -23,7 +23,7 @@ Plotting a `dfm` object will create a wordcloud using the `wordcloud` pacakge.
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
 # Create a dfm from a somewhat smaller corpus
-inaugDfm <- dfm(data_corpus_inaugural[0:10], remove = stopwords('english'))
+inaugDfm <- dfm(data_corpus_inaugural[0:10], remove = stopwords('english'), removePunct = TRUE)
 # Some words will not fit on a plot this size, so suppress those warings
 textplot_wordcloud(dfm_trim(inaugDfm, min_count = 10, verbose = FALSE))
 ```
@@ -32,7 +32,7 @@ You can also plot a "comparison cloud", but this can only be done with fewer tha
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
 compDfm <- dfm(corpus_subset(data_corpus_inaugural, President %in% c("Washington", "Jefferson", "Madison")),
-               groups = "President", remove = stopwords("english"))
+               groups = "President", remove = stopwords("english"), removePunct = TRUE)
 textplot_wordcloud(dfm_trim(compDfm, min_count = 5, verbose = FALSE), comparison = TRUE)
 ```
 
@@ -44,40 +44,39 @@ textplot_wordcloud(inaugDfm, min.freq = 10,
 
 # 2. Lexical dispersion plot
 
-Plotting a `kwic` object produces a lexical dispersion plot which allows us to visualize the occurrences of particular terms throughout the text.
+Plotting a `kwic` object produces a lexical dispersion plot which allows us to visualize the occurrences of particular terms throughout the text.  We call these "x-ray" plots due to their similarity to the data produced by [Amazon's "x-ray" feature for Kindle books](https://en.wikipedia.org/wiki/X-Ray_(Amazon_Kindle)).
 
-```{r eval=TRUE, fig.width=8, fig.height=12}
-plot(kwic(data_corpus_inaugural, "american"))
+```{r eval=TRUE, fig.width=8, fig.height=3}
+textplot_xray(kwic(data_corpus_inaugural[50:57], "american"))
 ```
 
 You can also pass multiple kwic objects to `plot` to compare the dispersion of different terms:
-```{r eval=TRUE, fig.width=8, fig.height=12}
-plot(
-     kwic(data_corpus_inaugural, "american"),
-     kwic(data_corpus_inaugural, "people"),
-     kwic(data_corpus_inaugural, "communist")
+```{r eval=TRUE, fig.width=8, fig.height=4}
+textplot_xray(
+     kwic(data_corpus_inaugural[50:57], "american"),
+     kwic(data_corpus_inaugural[50:57], "people"),
+     kwic(data_corpus_inaugural[50:57], "communist")
 )
 ```
 
 If you're only plotting a single document, but with multiple keywords, then the keywords are displayed one below the other rather than side-by-side.
 
 ```{r eval=TRUE, fig.width=8, fig.height=1.5}
-  mobydickCorpus <- corpus(data_char_mobydick)
+mobydickCorpus <- corpus(data_char_mobydick)
 
-  plot(
-       kwic(mobydickCorpus, "whale"),
-       kwic(mobydickCorpus, "ahab")
-  )
-
+textplot_xray(
+    kwic(data_char_mobydick, "whale"),
+    kwic(data_char_mobydick, "ahab")
+)
 ```
 
 You might also have noticed that the x-axis scale is the absolute token index for single texts and relative token index when multiple texts are being compared. If you prefer, you can specify that you want an absolute scale:
 
-```{r eval=TRUE, fig.width=8, fig.height=12}
-plot(
-     kwic(data_corpus_inaugural, "american"),
-     kwic(data_corpus_inaugural, "people"),
-     kwic(data_corpus_inaugural, "communist"),
+```{r eval=TRUE, fig.width=8, fig.height=4}
+textplot_xray(
+     kwic(data_corpus_inaugural[50:57], "american"),
+     kwic(data_corpus_inaugural[50:57], "people"),
+     kwic(data_corpus_inaugural[50:57], "communist"),
      scale = 'absolute'
 )
 ```
@@ -88,13 +87,13 @@ In this case, the texts may not have the same length, so the tokens that don't e
 
 The object returned is a ggplot object, which can be modified using ggplot:
 
-```{r eval=TRUE, fig.width=8, fig.height=12}
+```{r eval=TRUE, fig.width=8, fig.height=4}
 library(ggplot2)
 theme_set(theme_bw())
-g <- plot(
-     kwic(data_corpus_inaugural, "american"),
-     kwic(data_corpus_inaugural, "people"),
-     kwic(data_corpus_inaugural, "communist")
+g <- textplot_xray(
+     kwic(data_corpus_inaugural[50:57], "american"),
+     kwic(data_corpus_inaugural[50:57], "people"),
+     kwic(data_corpus_inaugural[50:57], "communist")
 )
 g + aes(color = keyword) + scale_color_manual(values = c('blue', 'red', 'green'))
 
@@ -134,7 +133,7 @@ americanFreq <- data.frame(list(
 ))
 
 ggplot(americanFreq) + geom_point(aes(x=document,y=frequency)) +
-    theme(axis.text.x=element_text(angle=90, hjust=1))
+    theme(axis.text.x = element_text(angle=90, hjust=1))
 
 ```
 
@@ -150,5 +149,5 @@ relFreq <- data.frame(list(
 ))
 
 ggplot(relFreq) + geom_point(aes(x=document,y=frequency)) +
-    theme(axis.text.x=element_text(angle=90, hjust=1))
+    theme(axis.text.x = element_text(angle=90, hjust=1))
 ```

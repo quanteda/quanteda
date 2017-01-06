@@ -3,53 +3,52 @@ library(quanteda)
 
 ## ----eval=TRUE, fig.width=8, fig.height=8--------------------------------
 # Create a dfm from a somewhat smaller corpus
-inaugDfm <- dfm(data_corpus_inaugural[0:10], ignoredFeatures = stopwords('english'))
+inaugDfm <- dfm(data_corpus_inaugural[0:10], remove = stopwords('english'), removePunct = TRUE)
 # Some words will not fit on a plot this size, so suppress those warings
-plot(trim(inaugDfm, minCount = 10, verbose = FALSE))
+textplot_wordcloud(dfm_trim(inaugDfm, min_count = 10, verbose = FALSE))
 
 ## ----eval=TRUE, fig.width=8, fig.height=8--------------------------------
 compDfm <- dfm(corpus_subset(data_corpus_inaugural, President %in% c("Washington", "Jefferson", "Madison")),
-               groups = "President", ignoredFeatures = stopwords("english"))
-plot(trim(compDfm, minCount = 5, verbose = FALSE), comparison = TRUE)
+               groups = "President", remove = stopwords("english"), removePunct = TRUE)
+textplot_wordcloud(dfm_trim(compDfm, min_count = 5, verbose = FALSE), comparison = TRUE)
 
 ## ----eval=TRUE, fig.width=8, fig.height=8--------------------------------
-plot(inaugDfm, min.freq = 10,
+textplot_wordcloud(inaugDfm, min.freq = 10,
      colors = c('red', 'pink', 'green', 'purple', 'orange', 'blue'))
 
-## ----eval=TRUE, fig.width=8, fig.height=12-------------------------------
-plot(kwic(data_corpus_inaugural, "american"))
+## ----eval=TRUE, fig.width=8, fig.height=3--------------------------------
+textplot_xray(kwic(data_corpus_inaugural[50:57], "american"))
 
-## ----eval=TRUE, fig.width=8, fig.height=12-------------------------------
-plot(
-     kwic(data_corpus_inaugural, "american"),
-     kwic(data_corpus_inaugural, "people"),
-     kwic(data_corpus_inaugural, "communist")
+## ----eval=TRUE, fig.width=8, fig.height=4--------------------------------
+textplot_xray(
+     kwic(data_corpus_inaugural[50:57], "american"),
+     kwic(data_corpus_inaugural[50:57], "people"),
+     kwic(data_corpus_inaugural[50:57], "communist")
 )
 
 ## ----eval=TRUE, fig.width=8, fig.height=1.5------------------------------
-  mobydickCorpus <- corpus(data_char_mobydick)
+mobydickCorpus <- corpus(data_char_mobydick)
 
-  plot(
-       kwic(mobydickCorpus, "whale"),
-       kwic(mobydickCorpus, "ahab")
-  )
+textplot_xray(
+    kwic(data_char_mobydick, "whale"),
+    kwic(data_char_mobydick, "ahab")
+)
 
-
-## ----eval=TRUE, fig.width=8, fig.height=12-------------------------------
-plot(
-     kwic(data_corpus_inaugural, "american"),
-     kwic(data_corpus_inaugural, "people"),
-     kwic(data_corpus_inaugural, "communist"),
+## ----eval=TRUE, fig.width=8, fig.height=4--------------------------------
+textplot_xray(
+     kwic(data_corpus_inaugural[50:57], "american"),
+     kwic(data_corpus_inaugural[50:57], "people"),
+     kwic(data_corpus_inaugural[50:57], "communist"),
      scale = 'absolute'
 )
 
-## ----eval=TRUE, fig.width=8, fig.height=12-------------------------------
+## ----eval=TRUE, fig.width=8, fig.height=4--------------------------------
 library(ggplot2)
 theme_set(theme_bw())
-g <- plot(
-     kwic(data_corpus_inaugural, "american"),
-     kwic(data_corpus_inaugural, "people"),
-     kwic(data_corpus_inaugural, "communist")
+g <- textplot_xray(
+     kwic(data_corpus_inaugural[50:57], "american"),
+     kwic(data_corpus_inaugural[50:57], "people"),
+     kwic(data_corpus_inaugural[50:57], "communist")
 )
 g + aes(color = keyword) + scale_color_manual(values = c('blue', 'red', 'green'))
 
@@ -79,7 +78,7 @@ americanFreq <- data.frame(list(
 ))
 
 ggplot(americanFreq) + geom_point(aes(x=document,y=frequency)) +
-    theme(axis.text.x=element_text(angle=90, hjust=1))
+    theme(axis.text.x = element_text(angle=90, hjust=1))
 
 
 ## ----eval=TRUE-----------------------------------------------------------
@@ -92,5 +91,5 @@ relFreq <- data.frame(list(
 ))
 
 ggplot(relFreq) + geom_point(aes(x=document,y=frequency)) +
-    theme(axis.text.x=element_text(angle=90, hjust=1))
+    theme(axis.text.x = element_text(angle=90, hjust=1))
 

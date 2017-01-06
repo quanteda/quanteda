@@ -25,7 +25,7 @@ ListOf<CharacterVector> qatd_cpp_unhash(ListOf<IntegerVector> tokens_int,
     
     types.push_front(""); // offset types to match index in R
     List tokens_chr(tokens_int.size());
-    for(int i=0; i < tokens_int.size(); i++){
+    for (size_t i = 0; i < tokens_int.size(); i++){
         tokens_chr[i] = types[tokens_int[i]];
     }
     return tokens_chr;
