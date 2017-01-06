@@ -11,6 +11,9 @@
 #'   uppercase to distinguish them from other features
 #' @param capkeys if TRUE, convert dictionary keys to uppercase to distinguish 
 #'   them from other features
+#' @param exclusive if \code{TRUE}, remove all features not in dictionary, 
+#'   otherwise, replace values in dictionary with keys while leaving other 
+#'   features unaffected
 #' @param verbose print status messages if \code{TRUE}
 #' @examples
 #' toks <- tokens(data_corpus_inaugural)
@@ -27,11 +30,12 @@
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_lookup <- function(x, dictionary,
-                           valuetype = c("glob", "regex", "fixed"), 
-                           case_insensitive = TRUE,
-                           capkeys = FALSE,
-                           concatenator = " ", 
-                           verbose = FALSE) {
+                          valuetype = c("glob", "regex", "fixed"), 
+                          case_insensitive = TRUE,
+                          capkeys = FALSE,
+                          concatenator = " ",
+                          exclusive = TRUE,
+                          verbose = FALSE) {
     
     if (!is.tokens(x)) stop("x must be a tokens class object")
     
@@ -44,6 +48,7 @@ tokens_lookup <- function(x, dictionary,
     entries_id <- list()
     keys_id <- c()
     types <- types(x)
+    
     index <- index_regex(types, valuetype, case_insensitive) # index types before the loop
     if (verbose) 
         message('Registering ', length(unlist(dictionary)), ' entiries in the dictionary...');
@@ -56,14 +61,27 @@ tokens_lookup <- function(x, dictionary,
     }
     if (verbose) 
         message('Searching ', length(entries_id), ' types of features...')
-    x <- qatd_cpp_tokens_lookup(x, entries_id, keys_id)
     
-    attributes(x) <- attrs_org
-    if (capkeys) {
-        types(x) <- char_toupper(names(dictionary))
-    } else {
-        types(x) <- names(dictionary)
+    if(exclusive){
+        x <- qatd_cpp_tokens_lookup(x, entries_id, keys_id)
+    }else{
+        x <- qatd_cpp_tokens_replace(x, entries_id, keys_id + length(types))
     }
+    attributes(x) <- attrs_org
+    if(exclusive){
+        if (capkeys) {
+            types(x) <- char_toupper(names(dictionary))
+        } else {
+            types(x) <- names(dictionary)
+        }
+    }else{
+        if (capkeys) {
+            types(x) <- c(types, char_toupper(names(dictionary)))
+        } else {
+            types(x) <- c(types, names(dictionary))
+        }
+    }
+    
     names(x) <- names_org
     attr(x, "what") <- "dictionary"
     attr(x, "dictionary") <- dictionary
