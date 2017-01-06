@@ -2,8 +2,6 @@
 ## tokenizer tests
 ##
 
-require(quanteda)
-
 test_that("tokenizer counts tokens as expected", {
     txt <- "Sentence: with punctation, Capital letters not capital."
     expect_equal(length(tokenize(txt, simplify=TRUE)), 10)
