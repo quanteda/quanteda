@@ -48,6 +48,43 @@ double lambda(std::vector<long> counts, int n){
     return l;
 }
 
+void count(Text text, 
+           SetTypes &set_types, 
+           MapNgrams &counts_seq, 
+           bool nested){
+    
+    if(text.size() == 0) return; // do nothing with empty text
+    text.push_back(0); // add padding to include last words
+    Ngram tokens_seq;
+    
+    // Collect sequence of specified types
+    size_t len_text = text.size();
+    for (size_t i = 0; i < len_text; i++){
+        for (size_t j = i; j < len_text; j++){
+            //Rcout << i << " " << j << "\n";
+            unsigned int token = text[j];
+            bool is_in;
+            if (token == 0){
+                is_in = false;
+            }else{
+                is_in = set_types.find(token) != set_types.end();
+            }
+            if (is_in){
+                //Rcout << "Match: " << token << "\n";
+                tokens_seq.push_back(token);
+            }else{
+                //Rcout << "Not match: " <<  token << "\n";
+                if(tokens_seq.size() > 1){
+                    counts_seq[tokens_seq]++;
+                }
+                tokens_seq.clear();
+                if (!nested) i = j; // jump if nested is false
+                break;
+            }
+        }
+    }
+}
+
 struct count_mt : public Worker{
     
     Texts texts;
@@ -59,39 +96,8 @@ struct count_mt : public Worker{
              texts(texts_), set_types(set_types_), counts_seq(counts_seq_), nested(nested_) {}
     
     void operator()(std::size_t begin, std::size_t end){
-
         for (int h = begin; h < end; h++){
-            Text text = texts[h];
-            if(text.size() == 0) continue; // skip empty text
-            text.push_back(0); // add padding to include last words
-            Ngram tokens_seq;
-            
-            // Collect sequence of specified types
-            size_t len_text = text.size();
-            for (size_t i = 0; i < len_text; i++){
-                for (size_t j = i; j < len_text; j++){
-                    //Rcout << i << " " << j << "\n";
-                    unsigned int token = text[j];
-                    bool is_in;
-                    if (token == 0){
-                        is_in = false;
-                    }else{
-                        is_in = set_types.find(token) != set_types.end();
-                    }
-                    if (is_in){
-                        //Rcout << "Match: " << token << "\n";
-                        tokens_seq.push_back(token);
-                    }else{
-                        //Rcout << "Not match: " <<  token << "\n";
-                        if(tokens_seq.size() > 1){
-                            counts_seq[tokens_seq]++;
-                        }
-                        tokens_seq.clear();
-                        if (!nested) i = j; // jump if nested is false
-                        break;
-                    }
-                }
-            }
+            count(texts[h], set_types, counts_seq, nested);
         }
     }
 };
