@@ -110,7 +110,7 @@ Momtazi, S., Khudanpur, S., & Klakow, D. (2010).
    comparative study of word co-occurrence for term clustering in language 
   model-based sentence retrieval.}" \emph{Human Language Technologies: The 
   2010 Annual Conference of the North American Chapter of the ACL}, Los 
-  Angeles, California, June 2010, pp. 325<U+9225><U+FFFD>328.
+  Angeles, California, June 2010, pp. 325-328.
   
   Daniel Jurafsky & James H. Martin. (2015) \emph{Speech and Language 
   Processing}.  Draft of April 11, 2016. 
@@ -120,6 +120,6 @@ Momtazi, S., Khudanpur, S., & Klakow, D. (2010).
   Chruch, K.W. & Hanks, P. (1990) 
   "\href{http://dl.acm.org/citation.fcm?id=89095}{Word association norms,
   mutual information, and lexicography}" \emph{Computational Linguistics},
-  16(1):22<U+9225><U+FFFD>29.
+  16(1):22–29.
 }
 

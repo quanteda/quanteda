@@ -52,10 +52,7 @@ Suggests:
     XML,
     testthat,
     RColorBrewer,
-    ggplot2 (>= 2.2.0),
-    text2vec,
-    ExPosition,
-    stm
+    ggplot2 (>= 2.2.0)
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues

@@ -6,9 +6,8 @@ mytexts <- c(text1 = "The new law included a capital gains tax, and an inheritan
 d <- dfm(mytexts, removePunct = TRUE)
 
 test_that("test STM package converter", {
-    skip_on_appveyor()
-    skip_on_travis()
-    skip_on_cran()
+    skip_if_not_installed("stm")
+    
     dSTM <- convert(d, to = "stm")
     tP <- stm::textProcessor(mytexts, removestopwords = FALSE, 
                              stem = FALSE, wordLengths = c(1, Inf))

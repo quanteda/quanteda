@@ -40,7 +40,7 @@ object.
 toks <- tokens(data_corpus_inaugural)
 dict <- dictionary(list(country = "united states", 
                    law=c('law*', 'constitution'), 
-                   freedom=c('*', 'libert*')))
+                   freedom=c('free*', 'libert*')))
 dfm(tokens_lookup(toks, dict, 'glob', verbose = TRUE))
 
 dict_fix <- dictionary(list(country = "united states", 
