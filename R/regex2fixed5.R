@@ -11,14 +11,18 @@
 # index <- index_regex(types, 'regex', case_insensitive=TRUE)
 # regex2fixed5(regex, types, 'regex', case_insensitive=TRUE, index=index)
 
-regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, index = NULL) {
+regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, index = TRUE) {
     
     # Make case insensitive
     if(case_insensitive){
         types_search <- stri_trans_tolower(types)
+        regex <- lapply(regex, stri_trans_tolower)
     }else{
         types_search <- types
     }
+    
+    # Convert fixed or glob to regex
+    if(valuetype == 'glob') regex <- lapply(regex, glob2rx)
     
     # Set if exact match of not
     if(valuetype == 'fixed'){
@@ -27,17 +31,15 @@ regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, inde
         exact <- FALSE
     }
     
-    # Make case-insensitive
-    if(case_insensitive) regex <- lapply(regex, stri_trans_tolower)
-    
-    # Convert fixed or glob to regex
-    if(valuetype == 'glob') regex <- lapply(regex, glob2rx)
-
-    # Construct index if not given
-    #if(length(regex) > 10 && is.null(index)){ # do not construct index for few patterns
-    if(is.null(index)){
-        len_max <- max(stri_length(unlist(regex, use.names = FALSE)))
-        index <- index_regex(types_search, valuetype, case_insensitive, len_max)
+    if(is.logical(index)){
+        if(index){
+            # Construct index if not given
+            len_max <- max(stri_length(unlist(regex, use.names = FALSE)))
+            index <- index_regex(types_search, valuetype, case_insensitive, len_max)
+        }else{
+            # Use stri_detect when index is null
+            index <- NULL
+        }
     }
     
     # Separate multi and single-entry patterns
@@ -88,11 +90,17 @@ select_types <- function (regex, types, types_search, exact, index){
                 }
             }
         }else{
-            types[stri_detect_regex(types_search, regex)]
+            if(exact){
+                types[types_search %in% regex]
+            }else{
+                types[stri_detect_regex(types_search, regex)]
+            }
         }
     }, types, types_search, exact, index)
     return(subset)
 }
+
+
 
 # This function construct an index of regex patters of ^xxxx, xxxx$ and ^xxxx$ 
 # to avoide expensive sequential search by stri_detect_regex. len_max should be obtained 
@@ -135,7 +143,7 @@ index_regex <- function(types, valuetype, case_insensitive, len_max){
 }
 
 search_index <- function(key, index){
-    index[[fmatch(key, attr(index, 'key'))]] # use fmatch instead of names for quick access
+    index[[fastmatch::fmatch(key, attr(index, 'key'))]] # use fmatch instead of names for quick access
 }
 
 # This function is a simplyfied version of expand.grid() in base package

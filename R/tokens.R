@@ -620,7 +620,7 @@ tokens_hashed_recompile <- function(x) {
         # v_unique_index <- unique(unlist(x, use.names = FALSE))
         v_new <- types(x)[v_unique_index]
         new_types <- seq_along(v_unique_index)
-        x_new <- lapply(unclass(x), function(y) new_types[match(y, v_unique_index)])
+        x_new <- lapply(unclass(x), function(y) new_types[fastmatch::fmatch(y, v_unique_index)])
         attributes(x_new) <- attrs_input
         types(x_new) <- v_new
         attrs_input <- attributes(x_new)
