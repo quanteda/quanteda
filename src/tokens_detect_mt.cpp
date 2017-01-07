@@ -78,9 +78,9 @@ List qatd_cpp_tokens_detect(List texts_,
     }
     
     // dev::Timer timer;
+    Texts output(input.size());
     // dev::start_timer("Dictionary detect", timer);
     #if RCPP_PARALLEL_USE_TBB
-    Texts output(input.size());
     detect_mt detect_mt(input, output, span_max, set_words);
     parallelFor(0, input.size(), detect_mt);
     #else

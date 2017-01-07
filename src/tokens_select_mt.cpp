@@ -119,9 +119,9 @@ List qatd_cpp_tokens_select(List texts_,
         if(span_max < word.size()) span_max = word.size();
     }
     // dev::Timer timer;
-    // dev::start_timer("Token select", timer);   
-    #if RCPP_PARALLEL_USE_TBB
     Texts output(input.size());
+    // dev::start_timer("Token select", timer);
+    #if RCPP_PARALLEL_USE_TBB
     select_mt select_mt(input, output, span_max, set_words, mode, padding);
     parallelFor(0, input.size(), select_mt);
     #else

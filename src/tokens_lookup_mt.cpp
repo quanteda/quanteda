@@ -86,9 +86,9 @@ List qatd_cpp_tokens_lookup(List texts_,
     }
     
     // dev::Timer timer;
+    Texts output(input.size());
     // dev::start_timer("Dictionary lookup", timer);
     #if RCPP_PARALLEL_USE_TBB
-    Texts output(input.size());
     lookup_mt lookup_mt(input, output, span_max, map_keys);
     parallelFor(0, input.size(), lookup_mt);
     #else

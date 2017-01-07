@@ -144,8 +144,8 @@ List qatd_cpp_tokens_ngrams(List texts_,
     
     // dev::Timer timer;
     // dev::start_timer("Ngram generation", timer);
-    #if RCPP_PARALLEL_USE_TBB
     Texts output(input.size());
+    #if RCPP_PARALLEL_USE_TBB
     skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram);
     parallelFor(0, input.size(), skipgram_mt);
     #else
