@@ -101,14 +101,14 @@ List qatd_cpp_tokens_lookup(List texts_,
     #endif
     // dev::stop_timer("Dictionary lookup", timer);
     
-    return as_list(output);
+    return as_list(output, true);
 }
 
 /***R
 
 #toks <- list(rep(1:10, 1), rep(5:15, 1))
 toks <- list(rep(1:10, 1))
-dict <- list(c(1, 2), 2, 1)
+dict <- list(2, 1, c(1, 2))
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 #dict <- list(1, 10, 20)
 key <- 1:length(dict)

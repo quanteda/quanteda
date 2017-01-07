@@ -9,7 +9,19 @@ using namespace tbb;
 
 #define RCPP_USING_CXX11
 namespace quanteda{
-
+    
+    typedef std::vector<unsigned int> Text;
+    typedef std::vector<Text> Texts;
+    #if RCPP_PARALLEL_USE_TBB
+    typedef tbb::concurrent_vector<int> IntParams;
+    typedef tbb::concurrent_vector<long> LongParams;
+    typedef tbb::concurrent_vector<double> DoubleParams;
+    #else
+    typedef std::vector<int> IntParams;
+    typedef std::vector<long> LongParams;
+    typedef std::vector<double> DoubleParams;
+    #endif    
+    
     inline String join(CharacterVector &tokens, String &delim){
         if (tokens.size() == 0) return "";
         String token = tokens[0];
@@ -38,11 +50,15 @@ namespace quanteda{
        return false;
     }
 
-    inline List as_list(std::vector< std::vector<unsigned int> > &tokens){
-        List list(tokens.size());
-        for (size_t h = 0; h < tokens.size(); h++) {
-            if (tokens[h].size() > 0) {
-                IntegerVector temp = Rcpp::wrap(tokens[h]);
+    inline List as_list(Texts &texts, bool sort = false){
+        List list(texts.size());
+        for (size_t h = 0; h < texts.size(); h++) {
+            if (texts[h].size() > 0) {
+                Text text = texts[h];
+                if(sort){
+                    std::sort(text.begin(), text.end());
+                }
+                IntegerVector temp = Rcpp::wrap(text);
                 list[h] = temp;
             } else {
                 list[h] = R_NilValue;
@@ -57,8 +73,7 @@ namespace quanteda{
 namespace ngrams {
     typedef std::vector<unsigned int> Ngram;
     typedef std::vector<Ngram> Ngrams;
-    typedef std::vector<unsigned int> Text;
-    typedef std::vector<Text> Texts;
+
     struct hash_ngram {
         std::size_t operator() (const Ngram &vec) const {
             unsigned int seed = 0;
@@ -81,18 +96,12 @@ namespace ngrams {
     typedef tbb::concurrent_unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
     typedef tbb::concurrent_vector<Ngram> VecNgrams;
     typedef tbb::concurrent_unordered_set<unsigned int> SetUnigrams;
-    typedef tbb::concurrent_vector<int> IntParams;
-    typedef tbb::concurrent_vector<long> LongParams;
-    typedef tbb::concurrent_vector<double> DoubleParams;
     #else
     typedef std::unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
     typedef std::unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
     typedef std::unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
     typedef std::vector<Ngram> VecNgrams;
     typedef std::unordered_set<unsigned int> SetUnigrams;
-    typedef std::vector<int> IntParams;
-    typedef std::vector<long> LongParams;
-    typedef std::vector<double> DoubleParams;
     #endif    
 }
 
