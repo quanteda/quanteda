@@ -12,20 +12,20 @@ using namespace ngrams;
 int match_bit(const std::vector<unsigned int> &tokens1, 
               const std::vector<unsigned int> &tokens2){
   
-    size_t len1 = tokens1.size();
-    size_t len2 = tokens2.size();
+    std::size_t len1 = tokens1.size();
+    std::size_t len2 = tokens2.size();
     long bit = 0;
-    for (int i = 0; i < len1 && i < len2; i++){
+    for (std::size_t i = 0; i < len1 && i < len2; i++){
         bit += tokens1[i] == tokens2[i];
     }
     bit += len1 >= len2; // add one point for trailing space 
     return bit;
 }
 
-double sigma(std::vector<long> &counts, int n){
+double sigma(std::vector<long> &counts, unsigned int n){
   
     double s = 0;
-    for (size_t b = 1; b <= n; b++){
+    for (std::size_t b = 1; b <= n; b++){
         s += 1.0 / counts[b];
     }
     double base = n - 1;
@@ -33,10 +33,10 @@ double sigma(std::vector<long> &counts, int n){
     return std::sqrt(s);
 }
 
-double lambda(std::vector<long> counts, int n){
+double lambda(std::vector<long> counts, unsigned int n){
   
     double l = std::log(counts[n]);
-    for (size_t b = 1; b < n; b++){
+    for (std::size_t b = 1; b < n; b++){
         l -= std::log(counts[b]);
     }
     l += (n - 1) * std::log(counts[0]);
@@ -53,9 +53,9 @@ void count(Text text,
     Ngram tokens_seq;
     
     // Collect sequence of specified types
-    size_t len_text = text.size();
-    for (size_t i = 0; i < len_text; i++){
-        for (size_t j = i; j < len_text; j++){
+    std::size_t len_text = text.size();
+    for (std::size_t i = 0; i < len_text; i++){
+        for (std::size_t j = i; j < len_text; j++){
             //Rcout << i << " " << j << "\n";
             unsigned int token = text[j];
             bool is_in;
@@ -91,24 +91,24 @@ struct count_mt : public Worker{
              texts(texts_), set_words(set_words_), counts_seq(counts_seq_), nested(nested_) {}
     
     void operator()(std::size_t begin, std::size_t end){
-        for (size_t h = begin; h < end; h++){
+        for (std::size_t h = begin; h < end; h++){
             count(texts[h], set_words, counts_seq, nested);
         }
     }
 };
 
-void estimate(int i,
+void estimate(std::size_t i,
               VecNgrams &seqs,
               IntParams &cs, 
               DoubleParams &ss, 
               DoubleParams &ls, 
               int count_min){
     
-    size_t n = seqs[i].size();
+    std::size_t n = seqs[i].size();
     if(n == 1) return; // ignore single words
     if(cs[i] < count_min) return;
     std::vector<long> counts_bit(n + 1, 1); // add one smoothing
-    for(size_t j = 0; j < seqs.size(); j++){
+    for(std::size_t j = 0; j < seqs.size(); j++){
         if(i == j) continue; // do not compare with itself
         //if(ns[j] < count_min) continue; // this is different from the old vesion
         int bit = match_bit(seqs[i], seqs[j]);
@@ -130,9 +130,8 @@ struct estimate_mt : public Worker{
     estimate_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, int count_min_):
                 seqs(seqs_), cs(cs_), ss(ss_), ls(ls_), count_min(count_min_) {}
     
-    // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
-        for (size_t i = begin; i < end; i++){
+        for (std::size_t i = begin; i < end; i++){
             estimate(i, seqs, cs, ss, ls, count_min);
         }
     }
@@ -169,14 +168,14 @@ List qutd_cpp_sequences(List texts_,
     count_mt count_mt(texts, set_words, counts_seq, nested);
     parallelFor(0, texts.size(), count_mt);
     #else
-    for (size_t h = 0; h < texts.size(); h++){
+    for (std::size_t h = 0; h < texts.size(); h++){
         count(texts[h], set_words, counts_seq, nested);
     }
     #endif
     //dev::stop_timer("Count", timer);
     
     // Separate map keys and values
-    size_t len = counts_seq.size();
+    std::size_t len = counts_seq.size();
     VecNgrams seqs;
     IntParams cs;
     seqs.reserve(len);
@@ -194,7 +193,7 @@ List qutd_cpp_sequences(List texts_,
     estimate_mt estimate_mt(seqs, cs, ss, ls, count_min);
     parallelFor(0, seqs.size(), estimate_mt);
     #else
-    for (size_t i = 0; i < seqs.size(); i++){
+    for (std::size_t i = 0; i < seqs.size(); i++){
         estimate(i, seqs, cs, ss, ls, count_min);
     }
     #endif
@@ -206,7 +205,7 @@ List qutd_cpp_sequences(List texts_,
     NumericVector lambdas(len);
     NumericVector sigmas(len);
     NumericVector counts(len);
-    for(size_t k = 0; k < len; k++){
+    for(std::size_t k = 0; k < len; k++){
         sequences[k] = seqs[k];
         lambdas[k] = ls[k];
         sigmas[k] = ss[k];

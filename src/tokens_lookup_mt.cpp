@@ -10,16 +10,16 @@ using namespace ngrams;
 
 
 Text lookup(Text tokens, 
-            size_t span_max,
+            std::size_t span_max,
             MultiMapNgrams &map_keys){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
     Text keys;
     keys.reserve(tokens.size());
-    for (size_t span = span_max; span > 0; span--){
+    for (std::size_t span = span_max; span > 0; span--){
         //Rcout << "Span " << span << "\n";
-        for (size_t i = 0; i < tokens.size() - (span - 1); i++){
+        for (std::size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             pair<MultiMapNgrams::iterator, MultiMapNgrams::iterator> ii;
             MultiMapNgrams::iterator it; // iterator to be used along with ii
@@ -38,17 +38,17 @@ struct lookup_mt : public Worker{
     
     Texts &input;
     Texts &output;
-    size_t span_max;
+    std::size_t span_max;
     MultiMapNgrams &map_keys;
     
     // Constructor
-    lookup_mt(Texts &input_, Texts &output_, size_t span_max_, MultiMapNgrams &map_keys_):
+    lookup_mt(Texts &input_, Texts &output_, std::size_t span_max_, MultiMapNgrams &map_keys_):
               input(input_), output(output_), span_max(span_max_), map_keys(map_keys_){}
     
-    // parallelFor calles this function with size_t
+    // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        for (size_t h = begin; h < end; h++){
+        for (std::size_t h = begin; h < end; h++){
             output[h] = lookup(input[h], span_max, map_keys);
         }
     }
@@ -77,8 +77,8 @@ List qatd_cpp_tokens_lookup(List texts_,
     IntegerVector ids = ids_;
 
     MultiMapNgrams map_keys;
-    size_t span_max = 0;
-    for (size_t g = 0; g < keys.size(); g++) {
+    std::size_t span_max = 0;
+    for (unsigned int g = 0; g < keys.size(); g++) {
         if (has_na(keys[g])) continue;
         Ngram word = keys[g];
         map_keys.insert(std::make_pair(word, ids_[g]));
@@ -92,7 +92,7 @@ List qatd_cpp_tokens_lookup(List texts_,
     lookup_mt lookup_mt(input, output, span_max, map_keys);
     parallelFor(0, input.size(), lookup_mt);
     #else
-    for (size_t h = 0; h < input.size(); h++){
+    for (std::size_t h = 0; h < input.size(); h++){
         output[h] = lookup(input[h], span_max, map_keys);
     }
     #endif

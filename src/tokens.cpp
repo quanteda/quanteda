@@ -20,15 +20,15 @@ using namespace tokens;
  */
 
 // [[Rcpp::export]]
-ListOf<CharacterVector> qatd_cpp_unhash(ListOf<IntegerVector> tokens_int, 
+ListOf<CharacterVector> qatd_cpp_unhash(ListOf<IntegerVector> list_int, 
                                         CharacterVector types){
     
     types.push_front(""); // offset types to match index in R
-    List tokens_chr(tokens_int.size());
-    for (size_t i = 0; i < tokens_int.size(); i++){
-        tokens_chr[i] = types[tokens_int[i]];
+    List list_chr(list_int.size());
+    for (unsigned int i = 0; i < list_int.size(); i++){
+      list_chr[i] = types[list_int[i]];
     }
-    return tokens_chr;
+    return list_chr;
 }
 
 

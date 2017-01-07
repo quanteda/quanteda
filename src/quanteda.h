@@ -26,7 +26,7 @@ namespace quanteda{
     inline String join(CharacterVector &tokens, String &delim){
         if (tokens.size() == 0) return "";
         String token = tokens[0];
-        for (size_t i = 1; i < tokens.size(); i++) {
+        for (unsigned int i = 1; i < tokens.size(); i++) {
           token += delim;
           token += tokens[i];
         }
@@ -37,14 +37,14 @@ namespace quanteda{
     inline std::string join(std::vector< std::string > &tokens, std::string &delim){
         if (tokens.size() == 0) return "";
         std::string token = tokens[0];
-        for (size_t i = 1; i < tokens.size(); i++) {
+        for (unsigned int i = 1; i < tokens.size(); i++) {
           token += delim + tokens[i];
         }
         return token;
     }
 
     inline bool has_na(IntegerVector vec) {
-        for (size_t i = 0; i < vec.size(); ++i) {
+        for (unsigned int i = 0; i < vec.size(); ++i) {
             if (vec[i] == NA_INTEGER) return true;
         }
        return false;
@@ -52,7 +52,7 @@ namespace quanteda{
 
     inline List as_list(Texts &texts, bool sort = false){
         List list(texts.size());
-        for (size_t h = 0; h < texts.size(); h++) {
+        for (std::size_t h = 0; h < texts.size(); h++) {
             if (texts[h].size() > 0) {
                 Text text = texts[h];
                 if(sort){
@@ -73,9 +73,9 @@ namespace ngrams {
     typedef std::vector<Ngram> Ngrams;
 
     struct hash_ngram {
-        std::size_t operator() (const Ngram &vec) const {
+            std::size_t operator() (const Ngram &vec) const {
             unsigned int seed = 0;
-            for (size_t i = 0; i < vec.size(); i++) {
+            for (std::size_t i = 0; i < vec.size(); i++) {
                 seed += vec[i] << (i * 8); // shift elements 8 bit
             }
             return std::hash<unsigned int>()(seed);

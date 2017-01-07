@@ -16,7 +16,7 @@ Text detect(Text tokens,
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
     Text tokens_pos(tokens.size(), 0);
-    for (size_t span = span_max; span > 0; span--){ // substitution starts from the longest sequences
+    for (std::size_t span = span_max; span > 0; span--){ // substitution starts from the longest sequences
         for (size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_words.find(ngram) != set_words.end();
@@ -69,8 +69,8 @@ List qatd_cpp_tokens_detect(List texts_,
     List words = words_;
 
     SetNgrams set_words;
-    size_t span_max = 0;
-    for (size_t g = 0; g < words.size(); g++) {
+    std::size_t span_max = 0;
+    for (unsigned int g = 0; g < words.size(); g++) {
         if (has_na(words[g])) continue;
         Ngram word = words[g];
         set_words.insert(word);
