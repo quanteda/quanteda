@@ -28,7 +28,6 @@ namespace quanteda{
         for (size_t i = 1; i < tokens.size(); i++) {
           token += delim;
           token += tokens[i];
-          //Rcout << "Joined " << token.get_cstring()  << "\n";
         }
         token.set_encoding(CE_UTF8);
         return token;
@@ -63,11 +62,9 @@ namespace quanteda{
             } else {
                 list[h] = R_NilValue;
             }
-            
         }
         return list;
     }
-    
 }
 
 namespace ngrams {

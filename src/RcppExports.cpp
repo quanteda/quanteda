@@ -160,13 +160,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // qutd_cpp_sequences
-List qutd_cpp_sequences(List texts_, NumericVector words_, int count_min, bool nested);
+List qutd_cpp_sequences(List texts_, IntegerVector words_, int count_min, bool nested);
 RcppExport SEXP quanteda_qutd_cpp_sequences(SEXP texts_SEXP, SEXP words_SEXP, SEXP count_minSEXP, SEXP nestedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type texts_(texts_SEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type words_(words_SEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type words_(words_SEXP);
     Rcpp::traits::input_parameter< int >::type count_min(count_minSEXP);
     Rcpp::traits::input_parameter< bool >::type nested(nestedSEXP);
     rcpp_result_gen = Rcpp::wrap(qutd_cpp_sequences(texts_, words_, count_min, nested));

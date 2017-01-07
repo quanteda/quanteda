@@ -156,7 +156,7 @@ struct estimate_mt : public Worker{
 
 // [[Rcpp::export]]
 List qutd_cpp_sequences(List texts_,
-                        NumericVector words_,
+                        IntegerVector words_,
                         int count_min,
                         bool nested){
     
