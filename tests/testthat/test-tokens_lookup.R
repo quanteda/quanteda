@@ -157,3 +157,12 @@ test_that("non-exclusive lookup is working",{
                       d2=c("Let", "FREEDOM", "ring", "in", "the", "COUNTRY")))
 })
 
+test_that("tokens_lookup preserves case on keys", {
+    ## issue #393
+    toks <- tokens(data_corpus_inaugural[1:5])
+    dict <- dictionary(list(Country = "united states",
+                            HOR = c("House of Re*")))
+    expect_identical(featnames(dfm(tokens_lookup(toks, dict), tolower = FALSE)),
+                     c("Country", "HOR"))
+})
+
