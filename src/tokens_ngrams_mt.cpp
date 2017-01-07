@@ -2,9 +2,6 @@
 #include "dev.h"
 #include "quanteda.h"
 
-// [[Rcpp::depends(RcppParallel)]]
-#include <RcppParallel.h>
-
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
 using namespace RcppParallel;
@@ -188,9 +185,12 @@ txt <- c('a b c d e', 'c d e f g')
 #txt <- readLines('~/Documents/Brexit/Analysis/all_bbc_2015.txt') # 80MB
 tok <- quanteda::tokens(txt)
 
-RcppParallel::setThreadOptions(1)
+RcppParallel::setThreadOptions(4)
 res <- qatd_cpp_tokens_ngrams(tok, attr(tok, 'types'), "-", 2, 1)
 str(res)
+
+tok <- quanteda::tokens(data_corpus_inaugural)
+out <- qatd_cpp_tokens_ngrams(unclass(tok), attr(tok, 'types'), "_", 2, 1)
 
 #RcppParallel::setThreadOptions(4)
 #toks = rep(list(1:1000, 1001:2000), 10)

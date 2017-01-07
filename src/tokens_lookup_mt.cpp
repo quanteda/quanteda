@@ -2,9 +2,6 @@
 #include "dev.h"
 #include "quanteda.h"
 
-// [[Rcpp::depends(RcppParallel)]]
-#include <RcppParallel.h>
-
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
 using namespace RcppParallel;

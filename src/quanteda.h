@@ -1,7 +1,8 @@
-#include "tbb/tbb.h"
 using namespace Rcpp;
 using namespace std;
-using namespace tbb;
+
+// [[Rcpp::depends(RcppParallel)]]
+#include <RcppParallel.h>
 
 #ifndef __QUANTEDA__
 #define __QUANTEDA__
@@ -88,6 +89,7 @@ namespace ngrams {
     };
 
     #if RCPP_PARALLEL_USE_TBB
+    /* <tbb/tbb.h> is loaded automatically by RcppParallel */
     typedef tbb::concurrent_unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
     typedef tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
     typedef tbb::concurrent_unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
