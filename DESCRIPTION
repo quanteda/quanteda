@@ -89,7 +89,6 @@ Collate:
     'dictionaries-deprecated.R'
     'fcm-methods.R'
     'fcm.R'
-    'findSequences.R'
     'joinTokens-deprecated.R'
     'kwic2.R'
     'kwic_old.R'
