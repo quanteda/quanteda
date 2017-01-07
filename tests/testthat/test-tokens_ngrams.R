@@ -21,31 +21,31 @@ test_that("test that ngrams produces the results from Guthrie 2006", {
           'in_ongoing_fighting')
       
       expect_equivalent(setdiff(
-          as.list(ngrams(toks, n=2, skip=0))[[1]],
+          as.list(tokens_ngrams(toks, n=2, skip=0))[[1]],
           bi_grams
           ), character(0)
       )
       
       expect_equivalent(setdiff(
-          as.list(ngrams(toks, n=2, skip=0:2))[[1]],
+          as.list(tokens_ngrams(toks, n=2, skip=0:2))[[1]],
           two_skip_bi_grams
           ), character(0)
       )
       
       expect_equivalent(setdiff(
-          as.list(ngrams(toks, n=3, skip=0))[[1]],
+          as.list(tokens_ngrams(toks, n=3, skip=0))[[1]],
           tri_grams
           ), character(0)
       )
       
       expect_equivalent(setdiff(
-          as.list(ngrams(toks, n=3, skip=0:2))[[1]],
+          as.list(tokens_ngrams(toks, n=3, skip=0:2))[[1]],
           two_skip_tri_grams
           ), character(0)
       )
       
       expect_equivalent(setdiff(
-        as.list(ngrams(toks, n = 2:3))[[1]],
+        as.list(tokens_ngrams(toks, n = 2:3))[[1]],
         c(bi_grams, tri_grams)
         ), character(0)
       )
@@ -54,7 +54,7 @@ test_that("test that ngrams produces the results from Guthrie 2006", {
 
 test_that("test `ngrams` on tokenized texts", {
       toks <- tokens(c('insurgents killed in ongoing fighting', 'insurgents killed in ongoing fighting'))
-      ngms <- ngrams(toks, 2, 0)
+      ngms <- tokens_ngrams(toks, 2, 0)
       ngms_true <- list(
           c('insurgents_killed', 'killed_in', 'in_ongoing', 'ongoing_fighting'),
           c('insurgents_killed', 'killed_in', 'in_ongoing', 'ongoing_fighting')
@@ -70,20 +70,6 @@ test_that("test `ngrams` on tokenized texts", {
           ngms_true
       )
 
-      expect_equivalent(
-          skipgrams(toks, 2, 0),
-          ngms
-      )
-
-})
-
-test_that("tokens_lookup preserves case on keys", {
-    ## issue #393
-    toks <- tokens(data_corpus_inaugural[1:5])
-    dict <- dictionary(list(Country = "united states",
-                            HOR = c("House of Re*")))
-    expect_identical(featnames(dfm(tokens_lookup(toks, dict), tolower = FALSE)),
-                               c("Country", "HOR"))
 })
 
 test_that("tokens_ngrams(x, n = ...) works when ntokens(x) < n", {
