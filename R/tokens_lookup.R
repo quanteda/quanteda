@@ -64,6 +64,7 @@ tokens_lookup <- function(x, dictionary,
     
     if(exclusive){
         x <- qatd_cpp_tokens_lookup(x, entries_id, keys_id)
+        x <- lapply(x, sort)
     }else{
         x <- qatd_cpp_tokens_replace(x, entries_id, keys_id + length(types))
     }
