@@ -149,7 +149,7 @@ List qatd_cpp_tokens_ngrams(List texts_,
     skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram);
     parallelFor(0, input.size(), skipgram_mt);
     #else
-    for (size_t h = begin; h < end; h++){
+    for (size_t h = 0; h < input.size(); h++){
         output[h] = skipgram(input[h], ns, skips, map_ngram);
     }
     #endif

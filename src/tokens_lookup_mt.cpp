@@ -17,7 +17,7 @@ Text lookup(Text tokens,
     
     Text keys;
     keys.reserve(tokens.size());
-    for (size_t span = span_max; span >= 1; span--){
+    for (size_t span = span_max; span > 0; span--){
         //Rcout << "Span " << span << "\n";
         for (size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
@@ -92,7 +92,7 @@ List qatd_cpp_tokens_lookup(List texts_,
     lookup_mt lookup_mt(input, output, span_max, map_keys);
     parallelFor(0, input.size(), lookup_mt);
     #else
-    for (size_t h = begin; h < end; h++){
+    for (size_t h = 0; h < input.size(); h++){
         output[h] = lookup(input[h], span_max, map_keys);
     }
     #endif

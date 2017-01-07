@@ -89,7 +89,7 @@ namespace ngrams {
     };
 
     #if RCPP_PARALLEL_USE_TBB
-    /* <tbb/tbb.h> is loaded automatically by RcppParallel */
+    // TBB header is loaded automatically by the macro
     typedef tbb::concurrent_unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
     typedef tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
     typedef tbb::concurrent_unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;

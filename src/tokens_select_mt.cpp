@@ -40,7 +40,7 @@ Text remove(Text tokens,
     Text tokens_copy(tokens.size(), 0);
     unsigned int filler = std::numeric_limits<unsigned int>::max(); // use upper limit as a filler
     bool match = false;
-    for (size_t span = span_max; span >= 1; span--){ // substitution starts from the longest sequences
+    for (size_t span = span_max; span > 0; span--){ // substitution starts from the longest sequences
         for (size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_words.find(ngram) != set_words.end();
@@ -126,15 +126,15 @@ List qatd_cpp_tokens_select(List texts_,
     parallelFor(0, input.size(), select_mt);
     #else
     if(mode == 1){
-        for (size_t h = begin; h < end; h++){
+        for (size_t h = 0; h < input.size(); h++){
             output[h] = keep(input[h], span_max, set_words, padding);
         }
     }else if(mode == 2){
-        for (size_t h = begin; h < end; h++){
+        for (size_t h = 0; h < input.size(); h++){
             output[h] = remove(input[h], span_max, set_words, padding);
         }
     }else{
-        for (size_t h = begin; h < end; h++){
+        for (size_t h = 0; h < input.size(); h++){
             output[h] = input[h];
         }
     }
