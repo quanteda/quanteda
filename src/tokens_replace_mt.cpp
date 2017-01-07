@@ -84,15 +84,19 @@ List qatd_cpp_tokens_replace(List texts_,
         if(span_max < word.size()) span_max = word.size();
     }
     
-    Texts output(input.size());
-    replace_mt replace_mt(input, output, span_max, map_words);
-    
     // dev::Timer timer;
     // dev::start_timer("Token replace", timer);
+    #if RCPP_PARALLEL_USE_TBB
+    Texts output(input.size());
+    replace_mt replace_mt(input, output, span_max, map_words);
     parallelFor(0, input.size(), replace_mt);
+    #else
+    for (size_t h = begin; h < end; h++){
+        output[h] = replace(input[h], span_max, map_words);
+    }
+    #endif
     // dev::stop_timer("Token replace", timer);
     
-    //ListOf<IntegerVector> texts_replaced = Rcpp::wrap(output);
     return as_list(output);
 }
 

@@ -20,7 +20,7 @@ Text lookup(Text tokens,
     
     Text keys;
     keys.reserve(tokens.size());
-    for (size_t span = 1; span <= span_max; span++){
+    for (size_t span = span_max; span >= 1; span--){
         //Rcout << "Span " << span << "\n";
         for (size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
@@ -72,31 +72,35 @@ struct lookup_mt : public Worker{
 
 // [[Rcpp::export]]
 List qatd_cpp_tokens_lookup(List texts_, 
-                            List words_,
+                            List keys_,
                             IntegerVector ids_){
     
     Texts input = Rcpp::as<Texts>(texts_);
-    List words = words_;
+    List keys = keys_;
     IntegerVector ids = ids_;
 
-    MultiMapNgrams map_words;
+    MultiMapNgrams map_keys;
     size_t span_max = 0;
-    for (size_t g = 0; g < words.size(); g++) {
-        if (has_na(words[g])) continue;
-        Ngram word = words[g];
-        map_words.insert(std::make_pair(word, ids_[g]));
+    for (size_t g = 0; g < keys.size(); g++) {
+        if (has_na(keys[g])) continue;
+        Ngram word = keys[g];
+        map_keys.insert(std::make_pair(word, ids_[g]));
         if (span_max < word.size()) span_max = word.size();
     }
     
-    Texts output(input.size());
-    lookup_mt lookup_mt(input, output, span_max, map_words);
-    
     // dev::Timer timer;
     // dev::start_timer("Dictionary lookup", timer);
+    #if RCPP_PARALLEL_USE_TBB
+    Texts output(input.size());
+    lookup_mt lookup_mt(input, output, span_max, map_keys);
     parallelFor(0, input.size(), lookup_mt);
+    #else
+    for (size_t h = begin; h < end; h++){
+        output[h] = lookup(input[h], span_max, map_keys);
+    }
+    #endif
     // dev::stop_timer("Dictionary lookup", timer);
     
-    //ListOf<IntegerVector> texts_key = Rcpp::wrap(output);
     return as_list(output);
 }
 
@@ -104,8 +108,9 @@ List qatd_cpp_tokens_lookup(List texts_,
 
 #toks <- list(rep(1:10, 1), rep(5:15, 1))
 toks <- list(rep(1:10, 1))
+dict <- list(c(1, 2), 2, 1)
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-dict <- list(1, 10, 1)
+#dict <- list(1, 10, 20)
 key <- 1:length(dict)
 qatd_cpp_tokens_lookup(toks, dict, key)
 

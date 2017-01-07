@@ -113,8 +113,6 @@ List qatd_cpp_tokens_select(List texts_,
     int mode = mode_;
     bool padding = padding_;
 
-
-
     SetNgrams set_words;
     size_t span_max = 0;
     for (size_t g = 0; g < words.size(); g++){
@@ -123,16 +121,29 @@ List qatd_cpp_tokens_select(List texts_,
         set_words.insert(word);
         if(span_max < word.size()) span_max = word.size();
     }
-    
+    // dev::Timer timer;
+    // dev::start_timer("Token select", timer);   
+    #if RCPP_PARALLEL_USE_TBB
     Texts output(input.size());
     select_mt select_mt(input, output, span_max, set_words, mode, padding);
-    
-    // dev::Timer timer;
-    // dev::start_timer("Token select", timer);
     parallelFor(0, input.size(), select_mt);
+    #else
+    if(mode == 1){
+        for (size_t h = begin; h < end; h++){
+            output[h] = keep(input[h], span_max, set_words, padding);
+        }
+    }else if(mode == 2){
+        for (size_t h = begin; h < end; h++){
+            output[h] = remove(input[h], span_max, set_words, padding);
+        }
+    }else{
+        for (size_t h = begin; h < end; h++){
+            output[h] = input[h];
+        }
+    }
+    #endif
     // dev::stop_timer("Token select", timer);
     
-    //ListOf<IntegerVector> texts_selected = Rcpp::wrap(output);
     return as_list(output);
 }
 

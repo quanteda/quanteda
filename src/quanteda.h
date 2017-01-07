@@ -1,6 +1,4 @@
-#include "tbb/concurrent_unordered_map.h"
-#include "tbb/concurrent_unordered_set.h"
-#include "tbb/concurrent_vector.h"
+#include "tbb/tbb.h"
 using namespace Rcpp;
 using namespace std;
 using namespace tbb;
@@ -22,7 +20,7 @@ namespace quanteda{
         }
         token.set_encoding(CE_UTF8);
         return token;
-      }
+    }
     
     inline std::string join(std::vector< std::string > &tokens, std::string &delim){
         if (tokens.size() == 0) return "";
@@ -76,11 +74,26 @@ namespace ngrams {
             return (vec1 == vec2);
         }
     };
-    typedef concurrent_unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
-    typedef concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
-    typedef concurrent_unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
-    typedef concurrent_vector<Ngram> VecNgrams;
-    typedef concurrent_unordered_set<unsigned int> SetUnigrams;
+
+    #if RCPP_PARALLEL_USE_TBB
+    typedef tbb::concurrent_unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
+    typedef tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
+    typedef tbb::concurrent_unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
+    typedef tbb::concurrent_vector<Ngram> VecNgrams;
+    typedef tbb::concurrent_unordered_set<unsigned int> SetUnigrams;
+    typedef tbb::concurrent_vector<int> IntParams;
+    typedef tbb::concurrent_vector<long> LongParams;
+    typedef tbb::concurrent_vector<double> DoubleParams;
+    #else
+    typedef std::unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
+    typedef std::unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
+    typedef std::unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
+    typedef std::vector<Ngram> VecNgrams;
+    typedef std::unordered_set<unsigned int> SetUnigrams;
+    typedef std::vector<int> IntParams;
+    typedef std::vector<long> LongParams;
+    typedef std::vector<double> DoubleParams;
+    #endif    
 }
 
 #endif

@@ -144,14 +144,18 @@ List qatd_cpp_tokens_ngrams(List texts_,
     
     // Register both ngram (key) and unigram (value) IDs in a hash table
     MapNgrams map_ngram;
-
-    Texts output(input.size());
-    skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram);
     
-    // Apply skipgram_mt to blocked ranges
     // dev::Timer timer;
     // dev::start_timer("Ngram generation", timer);
+    #if RCPP_PARALLEL_USE_TBB
+    Texts output(input.size());
+    skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram);
     parallelFor(0, input.size(), skipgram_mt);
+    #else
+    for (size_t h = begin; h < end; h++){
+        output[h] = skipgram(input[h], ns, skips, map_ngram);
+    }
+    #endif
     // dev::stop_timer("Ngram generation", timer);
     
     // dev::start_timer("Token generation", timer);

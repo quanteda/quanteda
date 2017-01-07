@@ -80,15 +80,19 @@ List qatd_cpp_tokens_detect(List texts_,
         if (span_max < word.size()) span_max = word.size();
     }
     
-    Texts output(input.size());
-    detect_mt detect_mt(input, output, span_max, set_words);
-    
     // dev::Timer timer;
     // dev::start_timer("Dictionary detect", timer);
+    #if RCPP_PARALLEL_USE_TBB
+    Texts output(input.size());
+    detect_mt detect_mt(input, output, span_max, set_words);
     parallelFor(0, input.size(), detect_mt);
+    #else
+    for (size_t h = begin; h < end; h++){
+        output[h] = detect(input[h], span_max, set_words);
+    }
+    #endif
     // dev::stop_timer("Dictionary detect", timer);
     
-    //ListOf<IntegerVector> texts_key = Rcpp::wrap(output);
     return as_list(output);
 }
 
