@@ -52,7 +52,9 @@ Suggests:
     XML,
     testthat,
     RColorBrewer,
-    ggplot2 (>= 2.2.0)
+    ggplot2 (>= 2.2.0),
+    xtable,
+    DT
 URL: http://github.com/kbenoit/quanteda
 Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
@@ -60,6 +62,7 @@ LazyData: TRUE
 VignetteBuilder: knitr
 Collate:
     'RcppExports.R'
+    'View.R'
     'character-methods.R'
     'dictionaries.R'
     'corpus.R'
