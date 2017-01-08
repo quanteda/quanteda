@@ -4,8 +4,8 @@
 \alias{convert}
 \title{convert a dfm to a non-quanteda format}
 \usage{
-convert(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "matrix",
-  "data.frame"), docvars = NULL, ...)
+convert(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa",
+  "matrix", "data.frame"), docvars = NULL, ...)
 }
 \arguments{
 \item{x}{dfm to be converted}
@@ -18,7 +18,9 @@ into whose document-term matrix representation the dfm will be converted:
 the \pkg{tm} package} \item{\code{"stm"}}{the  format for the \pkg{stm} 
 package} \item{\code{"austin"}}{the \code{wfm} format from the 
 \strong{austin} package} \item{\code{"topicmodels"}}{the "dtm" format as 
-used by the \pkg{topicmodels} package} }}
+used by the \pkg{topicmodels} package} 
+\item{\code{"lsa"}}{the "textmatrix" format as 
+used by the \pkg{lsa} package} }}
 
 \item{docvars}{optional data.frame of document variables used as the 
 \code{meta} information in conversion to the STM package format.  This aids

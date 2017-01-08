@@ -15,7 +15,9 @@
 #'   the \pkg{tm} package} \item{\code{"stm"}}{the  format for the \pkg{stm} 
 #'   package} \item{\code{"austin"}}{the \code{wfm} format from the 
 #'   \strong{austin} package} \item{\code{"topicmodels"}}{the "dtm" format as 
-#'   used by the \pkg{topicmodels} package} }
+#'   used by the \pkg{topicmodels} package} 
+#'   \item{\code{"lsa"}}{the "textmatrix" format as 
+#'   used by the \pkg{lsa} package} }
 #' @param docvars optional data.frame of document variables used as the 
 #'   \code{meta} information in conversion to the STM package format.  This aids
 #'   in selecting the document variables only corresponding to the documents 
@@ -55,14 +57,14 @@
 #' # lda package format
 #' ldadfm <- convert(quantdfm, to = "lda")
 #' str(ldadfm)
-convert <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
+convert <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa",
                          "matrix", "data.frame"), docvars = NULL, ...) {
     UseMethod("convert")
 }
 
 #' @noRd
 #' @export
-convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
+convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa",
                                   "matrix", "data.frame"), docvars = NULL, ...) {
     to <- match.arg(to)
     if (length(addedArgs <- list(...)))
@@ -85,6 +87,8 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
         return(dfm2austinformat(x))
     else if (to == "topicmodels")
         return(quantedaformat2dtm(x))
+    else if (to == "lsa")
+        return(dfm2lsa(x))
     else if (to == "data.frame")
         return(as.data.frame(x))
     else if (to == "matrix")
@@ -277,4 +281,21 @@ ijv.to.doc <- function(i, j, v) {
     mapply(rbind, index, count)
 }
 
+#' convert a dfm to an lsa "textmatrix"
+#' 
+#' Converts a dfm to a textmatrix for use with the lsa package.
+#' @param x dfm to be converted
+#' @examples
+#' \dontrun{
+#' (mydfm <- dfm(c(d1 = "this is a first matrix", d2 = "this is second matrix as example")))
+#' lsa::lsa(convert(mydfm, to = "lsa"))
+#' }
+#' @keywords internal
+dfm2lsa <- function(x) {
+    x <- as.matrix(x)
+    class(x) = "textmatrix"
+    names(dimnames(x)) <- c("terms", "docs") 
+    t(x)
+}
+    
 
