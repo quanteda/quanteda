@@ -37,10 +37,7 @@ tokens_lookup <- function(x, dictionary,
                           exclusive = TRUE,
                           verbose = FALSE) {
     
-    if (!is.tokens(x)) stop("x must be a tokens class object")
-    
     valuetype <- match.arg(valuetype)
-
     names_org <- names(x)
     attrs_org <- attributes(x)
     

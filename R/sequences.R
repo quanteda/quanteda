@@ -33,7 +33,6 @@ sequences <- function(x, features, valuetype = c("glob", "regex", "fixed"),
                       case_insensitive = TRUE, count_min = 2, nested=TRUE) {
     
     valuetype <- match.arg(valuetype)
-    
     names_org <- names(x)
     attrs_org <- attributes(x)
     
@@ -43,7 +42,7 @@ sequences <- function(x, features, valuetype = c("glob", "regex", "fixed"),
 
     seqs <- qutd_cpp_sequences(x, features_id, count_min, nested)
     seqs$length <- lengths(seqs$sequence)
-    seqs$sequence <- sapply(seqs$sequence, function(x) stringi::stri_c(types[x], collapse = ' '))
+    seqs$sequence <- sapply(seqs$sequence, function(y) stringi::stri_c(types[y], collapse = ' '))
     
     df <- as.data.frame(seqs, stringsAsFactors = FALSE)
     df <- df[df$count >= count_min,]
