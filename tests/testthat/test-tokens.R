@@ -30,8 +30,10 @@ test_that("ngrams works as expected for tokens_hashed", {
     toks <- tokenize(txt, removePunct = TRUE)
     toksh <- tokens(txt, removePunct = TRUE)
     classic <- tokens_ngrams(toks, n = 2:3)
-    hashed <- tokens_ngrams(toksh, n = 2:3)
-    expect_equivalent(classic, as.tokenizedTexts(hashed))
+    hashed <- as.tokenizedTexts(tokens_ngrams(toksh, n = 2:3))
+    classic <- list(sort(unlist(classic$one)), sort(unlist(classic$two)))
+    hashed <- list(sort(unlist(hashed$one)), sort(unlist(hashed$two)))
+    expect_equivalent(classic, hashed)
 })
 
 test_that("skipgrams works as expected for tokens_hashed", {
