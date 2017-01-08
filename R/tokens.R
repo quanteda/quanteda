@@ -313,11 +313,13 @@ as.list.tokens <- function(x, ...) {
 }
 
 #' @rdname as.tokens
-#' @return \code{as.character.tokens} returns a character vector from a
+#' @param use.names logical; preserve names if \code{TRUE}.  For
+#'   \code{as.character.tokens} only.
+#' @return \code{as.character.tokens} returns a character vector from a 
 #'   \link{tokens} object
 #' @export
-as.character.tokens <- function(x, ...) {
-    unlist(as.list(x), use.names = FALSE)
+as.character.tokens <- function(x, use.names = FALSE, ...) {
+    unlist(as.list(x), use.names = use.names)
 } 
 
 #' @rdname as.tokens

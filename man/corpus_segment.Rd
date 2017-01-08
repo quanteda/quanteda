@@ -5,17 +5,15 @@
 \alias{corpus_segment}
 \title{segment texts into component elements}
 \usage{
-corpus_segment(x, what = c("tokens", "sentences", "paragraphs", "tags",
-  "other"), delimiter = ifelse(what == "tokens", " ", ifelse(what ==
-  "sentences", "[.!?:;]", ifelse(what == "paragraphs", "\\\\n{2}", ifelse(what
-  == "tags", "##\\\\w+\\\\b", NULL)))), valuetype = c("regex", "fixed",
-  "glob"), perl = FALSE, keepdocvars = TRUE, ...)
+corpus_segment(x, what = c("sentences", "paragraphs", "tokens", "tags",
+  "other"), delimiter = switch(what, paragraphs = "\\\\n{2}", tags =
+  "##\\\\w+\\\\b", NULL), valuetype = c("regex", "fixed", "glob"),
+  keepdocvars = TRUE, ...)
 
-char_segment(x, what = c("tokens", "sentences", "paragraphs", "tags",
-  "other"), delimiter = ifelse(what == "tokens", " ", ifelse(what ==
-  "sentences", "[.!?:;]", ifelse(what == "paragraphs", "\\\\n{2}", ifelse(what
-  == "tags", "##\\\\w+\\\\b", NULL)))), valuetype = c("regex", "fixed",
-  "glob"), perl = FALSE, ...)
+char_segment(x, what = c("sentences", "paragraphs", "tokens", "tags",
+  "other"), delimiter = switch(what, paragraphs = "\\\\n{2}", tags =
+  "##\\\\w+\\\\b", NULL), valuetype = c("regex", "fixed", "glob"),
+  keepdocvars = TRUE, ...)
 }
 \arguments{
 \item{x}{corpus object whose texts will be segmented}
@@ -28,19 +26,19 @@ argument.  Segmenting on \code{tags} performs the same function but
 preserves the tags as a document variable in the segmented corpus.}
 
 \item{delimiter}{delimiter defined as a \code{\link{regex}} for 
-segmentation. Each type has its own default, except \code{other}, which 
-requires a value to be specified.}
+segmentation; only relevant for \code{what = "paragraphs"} (where the
+default is two newlines) and \code{what = "tags"} (where the default is a
+tag preceded by two pound or "hash" signs \code{##}).  Delimiter has no
+effect for segmentation into tokens or sentences}
 
 \item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
-\item{perl}{logical. Should Perl-compatible regular expressions be used?}
-
-\item{keepdocvars}{(for corpus objects) if \code{TRUE}, repeat the docvar values for each 
-segmented text; if \code{FALSE}, drop the docvars in the segmented corpus. 
-Dropping the docvars might be useful in order to conserve space or if these
-are not desired for the segmented corpus.}
+\item{keepdocvars}{(for corpus objects) if \code{TRUE}, repeat the docvar
+values for each segmented text; if \code{FALSE}, drop the docvars in the
+segmented corpus. Dropping the docvars might be useful in order to conserve
+space or if these are not desired for the segmented corpus.}
 
 \item{...}{provides additional arguments passed to \code{\link{tokens}}, if 
 \code{what = "tokens"} is used}
@@ -49,9 +47,9 @@ are not desired for the segmented corpus.}
 A corpus of segmented texts.
 }
 \description{
-Segment corpus text(s) or a character vector into tokens, sentences,
-paragraphs, or other sections. \code{segment} works on a character vector or
-corpus object, and allows the delimiters to be user-defined.  This is useful
+Segment corpus text(s) or a character vector into tokens, sentences, 
+paragraphs, or other sections. \code{segment} works on a character vector or 
+corpus object, and allows the delimiters to be user-defined.  This is useful 
 for breaking the texts of a corpus into smaller documents based on sentences,
 or based on a user defined "tag" pattern.  See details.
 }
@@ -73,12 +71,10 @@ Does not currently record document segments if segmenting a multi-text
   corpus into smaller units. For this, use \link{changeunits} instead.
 }
 \examples{
-testCorpus <- corpus(c("##INTRO This is the introduction. 
-                       ##DOC1 This is the first document.  
-                       Second sentence in Doc 1.  
-                       ##DOC3 Third document starts here.  
-                       End of third document.",
-                      "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
+testCorpus <- corpus(c("##INTRO This is the introduction.
+                        ##DOC1 This is the first document.  Second sentence in Doc 1.
+                        ##DOC3 Third document starts here.  End of third document.",
+                       "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
 # add a docvar
 testCorpus[["serialno"]] <- paste0("textSerial", 1:ndoc(testCorpus))
 testCorpusSeg <- corpus_segment(testCorpus, "tags")
@@ -89,13 +85,14 @@ segmentedCorpus <- corpus_segment(corpus(data_char_ukimmig2010), "sentences")
 summary(segmentedCorpus)
 
 # same as tokenize()
-identical(tokenize(data_char_ukimmig2010), char_segment(data_char_ukimmig2010))
+identical(as.character(tokens(data_char_ukimmig2010)), 
+          as.character(char_segment(data_char_ukimmig2010, what = "tokens")))
 
 # segment into paragraphs
 char_segment(data_char_ukimmig2010[3:4], "paragraphs")
 
 # segment a text into sentences
 segmentedChar <- char_segment(data_char_ukimmig2010, "sentences")
-segmentedChar[2]
+segmentedChar[3]
 }
 
