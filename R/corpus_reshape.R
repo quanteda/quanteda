@@ -47,7 +47,7 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     
     # make the new corpus
-    segmentedTexts <- char_segment(texts(x), to)
+    segmentedTexts <- lapply(texts(x), char_segment, what = to)
     lengthSegments <- sapply(segmentedTexts, length)
     newcorpus <- corpus(unlist(segmentedTexts))
     # repeat the docvars and existing document metadata
