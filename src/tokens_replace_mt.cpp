@@ -1,9 +1,6 @@
 #include <Rcpp.h>
-#include "dev.h"
+//#include "dev.h"
 #include "quanteda.h"
-
-// [[Rcpp::depends(RcppParallel)]]
-#include <RcppParallel.h>
 
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
@@ -13,15 +10,15 @@ using namespace ngrams;
 
 
 Text replace(Text tokens, 
-             size_t span_max,
+             std::size_t span_max,
              MapNgrams &map_words){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
     unsigned int filler = std::numeric_limits<unsigned int>::max(); // use largest limit as filler
     bool match = false;
-    for (size_t span = span_max; span >= 1; span--){ // substitution starts from the longest sequences
-        for (size_t i = 0; i < tokens.size() - (span - 1); i++){
+    for (std::size_t span = span_max; span > 0; span--){ // substitution starts from the longest sequences
+        for (std::size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             unsigned int &id = map_words[ngram];
             if(id){
@@ -39,17 +36,17 @@ struct replace_mt : public Worker{
     
     Texts &input;
     Texts &output;
-    size_t span_max;
+    std::size_t span_max;
     MapNgrams &map_words;
     
     // Constructor
-    replace_mt(Texts &input_, Texts &output_, size_t span_max_, MapNgrams &map_words_):
+    replace_mt(Texts &input_, Texts &output_, std::size_t span_max_, MapNgrams &map_words_):
               input(input_), output(output_), span_max(span_max_), map_words(map_words_) {}
     
-    // parallelFor calles this function with size_t
+    // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        for (size_t h = begin; h < end; h++){
+        for (std::size_t h = begin; h < end; h++){
             output[h] = replace(input[h], span_max, map_words);
         }
     }
@@ -76,24 +73,28 @@ List qatd_cpp_tokens_replace(List texts_,
     IntegerVector ids = ids_;
 
     MapNgrams map_words;
-    size_t span_max = 0;
-    for (size_t g = 0; g < words.size(); g++){
+    std::size_t span_max = 0;
+    for (unsigned int g = 0; g < words.size(); g++){
         if(has_na(words[g])) continue;
         Ngram word = words[g];
         map_words[word] = ids[g];
         if(span_max < word.size()) span_max = word.size();
     }
     
-    Texts output(input.size());
-    replace_mt replace_mt(input, output, span_max, map_words);
-    
     // dev::Timer timer;
+    Texts output(input.size());
     // dev::start_timer("Token replace", timer);
+    #if RCPP_PARALLEL_USE_TBB
+    replace_mt replace_mt(input, output, span_max, map_words);
     parallelFor(0, input.size(), replace_mt);
+    #else
+    for (std::size_t h = 0; h < input.size(); h++){
+        output[h] = replace(input[h], span_max, map_words);
+    }
+    #endif
     // dev::stop_timer("Token replace", timer);
-    
-    //ListOf<IntegerVector> texts_replaced = Rcpp::wrap(output);
-    return as_list(output);
+    ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
+    return texts_list;
 }
 
 /***R

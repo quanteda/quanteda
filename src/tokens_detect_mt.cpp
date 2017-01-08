@@ -1,9 +1,6 @@
 #include <Rcpp.h>
-#include "dev.h"
+//#include "dev.h"
 #include "quanteda.h"
-
-// [[Rcpp::depends(RcppParallel)]]
-#include <RcppParallel.h>
 
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
@@ -19,7 +16,7 @@ Text detect(Text tokens,
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
     Text tokens_pos(tokens.size(), 0);
-    for (size_t span = span_max; span >= 1; span--){ // substitution starts from the longest sequences
+    for (std::size_t span = span_max; span > 0; span--){ // substitution starts from the longest sequences
         for (size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_words.find(ngram) != set_words.end();
@@ -46,7 +43,7 @@ struct detect_mt : public Worker{
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        for (size_t h = begin; h < end; h++){
+        for (std::size_t h = begin; h < end; h++){
             output[h] = detect(input[h], span_max, set_words);
         }
     }
@@ -72,31 +69,37 @@ List qatd_cpp_tokens_detect(List texts_,
     List words = words_;
 
     SetNgrams set_words;
-    size_t span_max = 0;
-    for (size_t g = 0; g < words.size(); g++) {
+    std::size_t span_max = 0;
+    for (unsigned int g = 0; g < words.size(); g++) {
         if (has_na(words[g])) continue;
         Ngram word = words[g];
         set_words.insert(word);
         if (span_max < word.size()) span_max = word.size();
     }
     
-    Texts output(input.size());
-    detect_mt detect_mt(input, output, span_max, set_words);
-    
     // dev::Timer timer;
+    Texts output(input.size());
     // dev::start_timer("Dictionary detect", timer);
+    #if RCPP_PARALLEL_USE_TBB
+    detect_mt detect_mt(input, output, span_max, set_words);
     parallelFor(0, input.size(), detect_mt);
+    #else
+    for (std::size_t h = 0; h < input.size(); h++){
+        output[h] = detect(input[h], span_max, set_words);
+    }
+    #endif
     // dev::stop_timer("Dictionary detect", timer);
-    
-    //ListOf<IntegerVector> texts_key = Rcpp::wrap(output);
-    return as_list(output);
+    ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
+    return texts_list;
 }
 
 /***R
 
-toks <- list(rep(1:10, 1), rep(5:15, 1))
+toks <- rep(list(rep(1:10, 10), rep(5:15, 10)), 1000)
 dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 
-qatd_cpp_tokens_detect(toks, dict)
-
+microbenchmark::microbenchmark(
+out=qatd_cpp_tokens_detect(toks, dict),
+times=1000
+)
 */

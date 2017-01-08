@@ -1,9 +1,6 @@
 #include <Rcpp.h>
-#include "dev.h"
+//#include "dev.h"
 #include "quanteda.h"
-
-// [[Rcpp::depends(RcppParallel)]]
-#include <RcppParallel.h>
 
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
@@ -15,31 +12,31 @@ using namespace ngrams;
 int match_bit(const std::vector<unsigned int> &tokens1, 
               const std::vector<unsigned int> &tokens2){
   
-    size_t len1 = tokens1.size();
-    size_t len2 = tokens2.size();
-    long bit = 0; // for Solaris
-    for (int i = 0; i < len1 && i < len2; i++){
+    std::size_t len1 = tokens1.size();
+    std::size_t len2 = tokens2.size();
+    long bit = 0;
+    for (std::size_t i = 0; i < len1 && i < len2; i++){
         bit += tokens1[i] == tokens2[i];
     }
     bit += len1 >= len2; // add one point for trailing space 
     return bit;
 }
 
-double sigma(std::vector<long> &counts, int n){
+double sigma(std::vector<long> &counts, unsigned int n){
   
     double s = 0;
-    for (size_t b = 1; b <= n; b++){
+    for (std::size_t b = 1; b <= n; b++){
         s += 1.0 / counts[b];
     }
-    double base = n - 1; // for Solaris
+    double base = n - 1;
     s += std::pow(base, 2) / counts[0];
     return std::sqrt(s);
 }
 
-double lambda(std::vector<long> counts, int n){
+double lambda(std::vector<long> counts, unsigned int n){
   
     double l = std::log(counts[n]);
-    for (size_t b = 1; b < n; b++){
+    for (std::size_t b = 1; b < n; b++){
         l -= std::log(counts[b]);
     }
     l += (n - 1) * std::log(counts[0]);
@@ -56,9 +53,9 @@ void count(Text text,
     Ngram tokens_seq;
     
     // Collect sequence of specified types
-    size_t len_text = text.size();
-    for (size_t i = 0; i < len_text; i++){
-        for (size_t j = i; j < len_text; j++){
+    std::size_t len_text = text.size();
+    for (std::size_t i = 0; i < len_text; i++){
+        for (std::size_t j = i; j < len_text; j++){
             //Rcout << i << " " << j << "\n";
             unsigned int token = text[j];
             bool is_in;
@@ -94,41 +91,48 @@ struct count_mt : public Worker{
              texts(texts_), set_words(set_words_), counts_seq(counts_seq_), nested(nested_) {}
     
     void operator()(std::size_t begin, std::size_t end){
-        for (int h = begin; h < end; h++){
+        for (std::size_t h = begin; h < end; h++){
             count(texts[h], set_words, counts_seq, nested);
         }
     }
 };
 
+void estimate(std::size_t i,
+              VecNgrams &seqs,
+              IntParams &cs, 
+              DoubleParams &ss, 
+              DoubleParams &ls, 
+              int count_min){
+    
+    std::size_t n = seqs[i].size();
+    if(n == 1) return; // ignore single words
+    if(cs[i] < count_min) return;
+    std::vector<long> counts_bit(n + 1, 1); // add one smoothing
+    for(std::size_t j = 0; j < seqs.size(); j++){
+        if(i == j) continue; // do not compare with itself
+        //if(ns[j] < count_min) continue; // this is different from the old vesion
+        int bit = match_bit(seqs[i], seqs[j]);
+        counts_bit[bit] += cs[i];
+    }
+    ss[i] = sigma(counts_bit, n);
+    ls[i] = lambda(counts_bit, n);
+}
+
 struct estimate_mt : public Worker{
     
     VecNgrams &seqs;
-    tbb::concurrent_vector<int> &ns;
-    tbb::concurrent_vector<double> &ss;
-    tbb::concurrent_vector<double> &ls;
+    IntParams &cs;
+    DoubleParams &ss;
+    DoubleParams &ls;
     int count_min;
     
     // Constructor
-    estimate_mt(VecNgrams &seqs_, tbb::concurrent_vector<int> &ns_, 
-                tbb::concurrent_vector<double> &ss_, tbb::concurrent_vector<double> &ls_, int count_min_):
-                seqs(seqs_), ns(ns_), ss(ss_), ls(ls_), count_min(count_min_) {}
+    estimate_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, int count_min_):
+                seqs(seqs_), cs(cs_), ss(ss_), ls(ls_), count_min(count_min_) {}
     
-    // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
-        size_t len = seqs.size();
-        for (int i = begin; i < end; i++){
-            size_t n = seqs[i].size();
-            if(n == 1) continue; // ignore single words
-            if(ns[i] < count_min) continue;
-            std::vector<long> counts_bit(len + 1, 1); // add one smoothing
-            for(size_t j = 0; j < len; j++){
-                if(i == j) continue; // do not compare with itself
-                //if(ns[j] < count_min) continue; // this is different from the old vesion
-                int bit = match_bit(seqs[i], seqs[j]);
-                counts_bit[bit] += ns[i];
-            }
-            ss[i] = sigma(counts_bit, n);
-            ls[i] = lambda(counts_bit, n);
+        for (std::size_t i = begin; i < end; i++){
+            estimate(i, seqs, cs, ss, ls, count_min);
         }
     }
 };
@@ -148,7 +152,7 @@ struct estimate_mt : public Worker{
 
 // [[Rcpp::export]]
 List qutd_cpp_sequences(List texts_,
-                        NumericVector words_,
+                        IntegerVector words_,
                         int count_min,
                         bool nested){
     
@@ -158,31 +162,41 @@ List qutd_cpp_sequences(List texts_,
     
     // Collect all sequences of specified words
     MapNgrams counts_seq;
-    count_mt count_mt(texts, set_words, counts_seq, nested);
-    
     //dev::Timer timer;
     //dev::start_timer("Count", timer);
+    #if RCPP_PARALLEL_USE_TBB
+    count_mt count_mt(texts, set_words, counts_seq, nested);
     parallelFor(0, texts.size(), count_mt);
+    #else
+    for (std::size_t h = 0; h < texts.size(); h++){
+        count(texts[h], set_words, counts_seq, nested);
+    }
+    #endif
     //dev::stop_timer("Count", timer);
     
     // Separate map keys and values
-    size_t len = counts_seq.size();
+    std::size_t len = counts_seq.size();
     VecNgrams seqs;
-    tbb::concurrent_vector<int> ns;
+    IntParams cs;
     seqs.reserve(len);
-    ns.reserve(len);
+    cs.reserve(len);
     for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it){
         seqs.push_back(it->first);
-        ns.push_back(it->second);
+        cs.push_back(it->second);
     }
     
     // Estimate significance of the sequences
-    tbb::concurrent_vector<double> ss(len);
-    tbb::concurrent_vector<double> ls(len);
-    estimate_mt estimate_mt(seqs, ns, ss, ls, count_min);
-    
+    DoubleParams ss(len);
+    DoubleParams ls(len);
     //dev::start_timer("Estimate", timer);
+    #if RCPP_PARALLEL_USE_TBB
+    estimate_mt estimate_mt(seqs, cs, ss, ls, count_min);
     parallelFor(0, seqs.size(), estimate_mt);
+    #else
+    for (std::size_t i = 0; i < seqs.size(); i++){
+        estimate(i, seqs, cs, ss, ls, count_min);
+    }
+    #endif
     //dev::stop_timer("Estimate", timer);
     
     //dev::start_timer("Convert", timer);
@@ -191,11 +205,11 @@ List qutd_cpp_sequences(List texts_,
     NumericVector lambdas(len);
     NumericVector sigmas(len);
     NumericVector counts(len);
-    for(size_t k = 0; k < len; k++){
+    for(std::size_t k = 0; k < len; k++){
         sequences[k] = seqs[k];
         lambdas[k] = ls[k];
         sigmas[k] = ss[k];
-        counts[k] = ns[k];
+        counts[k] = cs[k];
     }
     //dev::stop_timer("Convert", timer);
     return Rcpp::List::create(Rcpp::Named("sequence") = sequences,

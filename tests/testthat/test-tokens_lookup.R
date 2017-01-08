@@ -103,7 +103,7 @@ test_that("#388 issue about overlapping key values is resolved: fixed matches", 
                                   swords = c("States")))
     
     expect_equal(as.list(tokens_lookup(toks, dict_fixed, valuetype = "fixed")),
-                 list(d1 = c("Countries", "swords", "oceans", "oceans"),
+                 list(d1 = c("Countries", "oceans", "oceans", "swords"),
                       d2 = c("Countries", "swords")))
 })
 
@@ -117,10 +117,10 @@ test_that("#388 issue about overlapping key values is resolved: glob matches", {
                                  swords = "*s"))
 
     expect_equal(as.list(tokens_lookup(toks, dict_glob, valuetype = "glob")),
-              list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
-                   d2 = c("Countries", "swords", "swords", "Countries")))
+              list(d1 = c("Countries", "oceans", "oceans", "swords", "swords"),
+                   d2 = c("Countries", "Countries", "swords", "swords")))
     expect_equal(as.list(tokens_lookup(toks, dict_glob, valuetype = "glob", case_insensitive = FALSE)),
-                 list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
+                 list(d1 = c("Countries", "oceans", "oceans", "swords", "swords"),
                       d2 = c("Countries", "swords", "swords")))
 })
 
@@ -134,10 +134,10 @@ test_that("#388 issue about overlapping key values is resolved: regex matches", 
                                   swords = "s$"))
 
     expect_equal(as.list(tokens_lookup(toks, dict_regex, valuetype = "regex")),
-                 list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
-                      d2 = c("Countries", "swords", "swords", "Countries")))
+                 list(d1 = c("Countries", "oceans", "oceans", "swords", "swords"),
+                      d2 = c("Countries", "Countries", "swords", "swords")))
     expect_equal(as.list(tokens_lookup(toks, dict_regex, valuetype = "regex", case_insensitive = FALSE)),
-                 list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
+                 list(d1 = c("Countries", "oceans", "oceans", "swords", "swords"),
                       d2 = c("Countries", "swords", "swords")))
     
 })
@@ -155,5 +155,14 @@ test_that("non-exclusive lookup is working",{
     expect_equal(as.list(tokens_lookup(toks, dict, exclusive = FALSE, capkeys = TRUE)),
                  list(d1=c("COUNTRY", "signed", "a", "new", "FREEDOM", "LAW WORDS", "with", "COUNTRY"),
                       d2=c("Let", "FREEDOM", "ring", "in", "the", "COUNTRY")))
+})
+
+test_that("tokens_lookup preserves case on keys", {
+    ## issue #393
+    toks <- tokens(data_corpus_inaugural[1:5])
+    dict <- dictionary(list(Country = "united states",
+                            HOR = c("House of Re*")))
+    expect_identical(featnames(dfm(tokens_lookup(toks, dict), tolower = FALSE)),
+                     c("Country", "HOR"))
 })
 
