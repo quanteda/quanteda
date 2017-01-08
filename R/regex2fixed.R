@@ -84,9 +84,9 @@ select_types <- function (regex, types_search, exact, index){
                     return(NULL) # return nothing for empty pattern
                 }else if(regex == '^'){
                     return(seq_along(types_search)) # return all types when glob is *
-                }else if(length((types_id <- search_index(regex, index)))){
+                }else if(length((pos <- search_index(regex, index)))){
                     #cat('Index search', regex, '\n')
-                    return(types_id)
+                    return(pos)
                 }else if(!is_indexed(regex)){
                     #cat('Regex search', regex, '\n')
                     return(which(stringi::stri_detect_regex(types_search, regex)))
