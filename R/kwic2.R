@@ -81,17 +81,18 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     }
     
     types <- types(x)
-    keywords_fixed <- regex2fixed5(keywords, types, valuetype, case_insensitive) # convert glob or regex to fixed
+    keywords_fixed <- regex2fixed5(keywords, types, valuetype, case_insensitive, FALSE) # convert glob or regex to fixed
     keywords_id <- lapply(keywords_fixed, function(x) fastmatch::fmatch(x, types))
-
-    detect <- qatd_cpp_tokens_detect(x, keywords_id)
-    ids <- which(sapply(detect, sum, USE.NAMES = FALSE) > 0)
+    
+    context <- as.list(x)
+    target <- qatd_cpp_tokens_detect(x, keywords_id)
+    ids <- which(sapply(target, sum, USE.NAMES = FALSE) > 0)
     
     df_result <- data.frame()
     if (length(ids)) {
         # build up result
         for (id in ids) {
-            df_temp <- kwic_split(x[[id]], detect[[id]], window)
+            df_temp <- kwic_split(context[[id]], target[[id]], window)
             df_temp$docname <- rep(names(x)[id], nrow(df_temp))
             df_result <- rbind(df_result, df_temp, stringsAsFactors = FALSE)
         }
