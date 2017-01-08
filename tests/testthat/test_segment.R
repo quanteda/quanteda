@@ -50,7 +50,7 @@ test_that("char_segment works for sentences", {
              d2 = "Only sentence of doc2?  No there is another.")
     cseg <- char_segment(txt, "sentences")
     expect_equal(cseg[4], c(d2.1 = "Only sentence of doc2?"))
-    expect_equal(unname(char_segment(txt, "sentences")[4], "Only sentence of doc2?"))
+    expect_equal(unname(char_segment(txt, "sentences"))[4], "Only sentence of doc2?")
 })
 
 test_that("corpus_segment works for paragraphs", {
