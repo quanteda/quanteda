@@ -657,7 +657,7 @@ types <- function(x) {
 }
 
 types.tokens <- function(x) {
-    stringi::stri_encode(attr(x, 'types'), "", "UTF-8")
+    attr(x, "types")
 }
 
 "types<-" <- function(x, value) {

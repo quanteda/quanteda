@@ -130,8 +130,8 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     # trap if types is zero-length
     if (!length(attr(x, "types"))){
         attr(x, "types") <- NULL
-    }else{
-        attr(x, "types") <- stringi::stri_encode(attr(x, 'types'), "", "UTF-8")
+    } else {
+        Encoding(attr(x, "types")) <- "UTF-8"
     }
     # reassign attributes, except types
     x <- reassign_attributes(x, attrs_org, exceptions = "types", attr_only = TRUE)
