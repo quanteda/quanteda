@@ -51,13 +51,13 @@
 <h1 class="hasAnchor"><html><body><a href="#wordcloud" class="anchor"> </a></body></html>1. Wordcloud</h1>
 <p>Plotting a <code>dfm</code> object will create a wordcloud using the <code>wordcloud</code> pacakge.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a dfm from a somewhat smaller corpus</span>
-inaugDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(data_corpus_inaugural[<span class="dv">0</span>:<span class="dv">10</span>], <span class="dt">remove =</span> <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">'english'</span>))
+inaugDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(data_corpus_inaugural[<span class="dv">0</span>:<span class="dv">10</span>], <span class="dt">remove =</span> <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">'english'</span>), <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)
 <span class="co"># Some words will not fit on a plot this size, so suppress those warings</span>
 <span class="kw"><a href="../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(<span class="kw"><a href="../reference/dfm_trim.html">dfm_trim</a></span>(inaugDfm, <span class="dt">min_count =</span> <span class="dv">10</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>))</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-2-1.png" width="768"></p>
 <p>You can also plot a &ldquo;comparison cloud&rdquo;, but this can only be done with fewer than eight documents:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">compDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(<span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, President %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">"Washington"</span>, <span class="st">"Jefferson"</span>, <span class="st">"Madison"</span>)),
-               <span class="dt">groups =</span> <span class="st">"President"</span>, <span class="dt">remove =</span> <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
+               <span class="dt">groups =</span> <span class="st">"President"</span>, <span class="dt">remove =</span> <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)
 <span class="kw"><a href="../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(<span class="kw"><a href="../reference/dfm_trim.html">dfm_trim</a></span>(compDfm, <span class="dt">min_count =</span> <span class="dv">5</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>), <span class="dt">comparison =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-3-1.png" width="768"></p>
 <p>Plot will pass through additional arguments to the underlying call to <code>wordcloud</code>.</p>
@@ -67,61 +67,44 @@ inaugDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/df
 </div>
 <div id="lexical-dispersion-plot" class="section level1">
 <h1 class="hasAnchor"><html><body><a href="#lexical-dispersion-plot" class="anchor"> </a></body></html>2. Lexical dispersion plot</h1>
-<p>Plotting a <code>kwic</code> object produces a lexical dispersion plot which allows us to visualize the occurrences of particular terms throughout the text.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"american"</span>))</code></pre></div>
-<pre><code>## Warning: 'plot.kwic' is deprecated.
-## Use 'textplot_xray' instead.
-## See help("Deprecated")</code></pre>
+<p>Plotting a <code>kwic</code> object produces a lexical dispersion plot which allows us to visualize the occurrences of particular terms throughout the text. We call these &ldquo;x-ray&rdquo; plots due to their similarity to the data produced by <a href="https://en.wikipedia.org/wiki/X-Ray_(Amazon_Kindle)">Amazon&rsquo;s &ldquo;x-ray&rdquo; feature for Kindle books</a>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/textplot_xray.html">textplot_xray</a></span>(<span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"american"</span>))</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-5-1.png" width="768"></p>
 <p>You can also pass multiple kwic objects to <code>plot</code> to compare the dispersion of different terms:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"american"</span>),
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"people"</span>),
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"communist"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/textplot_xray.html">textplot_xray</a></span>(
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"american"</span>),
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"people"</span>),
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"communist"</span>)
 )</code></pre></div>
-<pre><code>## Warning: 'plot.kwic' is deprecated.
-## Use 'textplot_xray' instead.
-## See help("Deprecated")</code></pre>
 <p><img src="plotting_files/figure-html/unnamed-chunk-6-1.png" width="768"></p>
 <p>If you&rsquo;re only plotting a single document, but with multiple keywords, then the keywords are displayed one below the other rather than side-by-side.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  mobydickCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_char_mobydick)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mobydickCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_char_mobydick)
 
-  <span class="kw">plot</span>(
-       <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(mobydickCorpus, <span class="st">"whale"</span>),
-       <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(mobydickCorpus, <span class="st">"ahab"</span>)
-  )</code></pre></div>
-<pre><code>## Warning: 'plot.kwic' is deprecated.
-## Use 'textplot_xray' instead.
-## See help("Deprecated")</code></pre>
+<span class="kw"><a href="../reference/textplot_xray.html">textplot_xray</a></span>(
+    <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"whale"</span>),
+    <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"ahab"</span>)
+)</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
 <p>You might also have noticed that the x-axis scale is the absolute token index for single texts and relative token index when multiple texts are being compared. If you prefer, you can specify that you want an absolute scale:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"american"</span>),
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"people"</span>),
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"communist"</span>),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/textplot_xray.html">textplot_xray</a></span>(
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"american"</span>),
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"people"</span>),
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"communist"</span>),
      <span class="dt">scale =</span> <span class="st">'absolute'</span>
 )</code></pre></div>
-<pre><code>## Warning: 'plot.kwic' is deprecated.
-## Use 'textplot_xray' instead.
-## See help("Deprecated")</code></pre>
 <p><img src="plotting_files/figure-html/unnamed-chunk-8-1.png" width="768"></p>
 <p>In this case, the texts may not have the same length, so the tokens that don&rsquo;t exist in a particular text are shaded in grey.</p>
 <div id="modifying-lexical-dispersion-plots" class="section level2">
 <h2 class="hasAnchor"><html><body><a href="#modifying-lexical-dispersion-plots" class="anchor"> </a></body></html>Modifying lexical dispersion plots</h2>
 <p>The object returned is a ggplot object, which can be modified using ggplot:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre></div>
-<pre><code>## Want to understand how all the pieces fit together? Buy the
-## ggplot2 book: http://ggplot2.org/book/</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">theme_set</span>(<span class="kw">theme_bw</span>())
-g &lt;-<span class="st"> </span><span class="kw">plot</span>(
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"american"</span>),
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"people"</span>),
-     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"communist"</span>)
-)</code></pre></div>
-<pre><code>## Warning: 'plot.kwic' is deprecated.
-## Use 'textplot_xray' instead.
-## See help("Deprecated")</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g +<span class="st"> </span><span class="kw">aes</span>(<span class="dt">color =</span> keyword) +<span class="st"> </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">'blue'</span>, <span class="st">'red'</span>, <span class="st">'green'</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">theme_set</span>(<span class="kw">theme_bw</span>())
+g &lt;-<span class="st"> </span><span class="kw"><a href="../reference/textplot_xray.html">textplot_xray</a></span>(
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"american"</span>),
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"people"</span>),
+     <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural[<span class="dv">50</span>:<span class="dv">57</span>], <span class="st">"communist"</span>)
+)
+g +<span class="st"> </span><span class="kw">aes</span>(<span class="dt">color =</span> keyword) +<span class="st"> </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">'blue'</span>, <span class="st">'red'</span>, <span class="st">'green'</span>))</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-9-1.png" width="768"></p>
 </div>
 </div>
@@ -151,7 +134,7 @@ topDf$term &lt;-<span class="st"> </span><span class="kw">with</span>(topDf, <sp
 ))
 
 <span class="kw">ggplot</span>(americanFreq) +<span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x=</span>document,<span class="dt">y=</span>frequency)) +
-<span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.text.x=</span><span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">90</span>, <span class="dt">hjust=</span><span class="dv">1</span>))</code></pre></div>
+<span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">90</span>, <span class="dt">hjust=</span><span class="dv">1</span>))</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-11-1.png" width="768"></p>
 <p>The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we can weight the document-frequency matrix. To obtain expected word frequency per 100 words, we multiply by 100.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">relDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/weight.html">weight</a></span>(inaugDfm, <span class="dt">type=</span><span class="st">'relFreq'</span>) *<span class="st"> </span><span class="dv">100</span></code></pre></div>
@@ -159,31 +142,31 @@ topDf$term &lt;-<span class="st"> </span><span class="kw">with</span>(topDf, <sp
 ## Use 'dfm_weight' instead.
 ## See help("Deprecated")</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(relDfm)</code></pre></div>
-<pre><code>## Document-feature matrix of: 10 documents, 3,243 features (80.4% sparse).
+<pre><code>## Document-feature matrix of: 10 documents, 3,240 features (80.6% sparse).
 ## (showing first 6 documents and first 6 features)
 ##                  features
-## docs                 fellow         -  citizens     senate     house
-##   1789-Washington 0.3886010 0.3886010 0.6476684 0.12953368 0.2590674
-##   1793-Washington 1.3513514 0.0000000 1.3513514 0.00000000 0.0000000
-##   1797-Adams      0.2242152 0.3736921 0.3736921 0.07473842 0.0000000
-##   1801-Jefferson  0.6769826 1.1605416 0.6769826 0.00000000 0.0000000
-##   1805-Jefferson  0.6456820 0.1614205 0.8071025 0.00000000 0.0000000
-##   1809-Madison    0.1602564 0.9615385 0.1602564 0.00000000 0.0000000
+## docs              fellow-citizens     senate     house representatives
+##   1789-Washington       0.1510574 0.15105740 0.3021148       0.3021148
+##   1793-Washington       0.0000000 0.00000000 0.0000000       0.0000000
+##   1797-Adams            0.2798507 0.09328358 0.0000000       0.1865672
+##   1801-Jefferson        0.2424242 0.00000000 0.0000000       0.0000000
+##   1805-Jefferson        0.0000000 0.00000000 0.0000000       0.0000000
+##   1809-Madison          0.1879699 0.00000000 0.0000000       0.0000000
 ##                  features
-## docs              representatives
-##   1789-Washington       0.2590674
-##   1793-Washington       0.0000000
-##   1797-Adams            0.1494768
-##   1801-Jefferson        0.0000000
-##   1805-Jefferson        0.0000000
-##   1809-Madison          0.0000000</code></pre>
+## docs                  among vicissitudes
+##   1789-Washington 0.1510574    0.1510574
+##   1793-Washington 0.0000000    0.0000000
+##   1797-Adams      0.3731343    0.0000000
+##   1801-Jefferson  0.1212121    0.0000000
+##   1805-Jefferson  0.6835938    0.0000000
+##   1809-Madison    0.0000000    0.0000000</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">relFreq &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">list</span>(
     <span class="dt">document =</span> <span class="kw">rownames</span>(inaugDfm[, <span class="st">'american'</span>]),
     <span class="dt">frequency =</span> <span class="kw">unname</span>(<span class="kw">as.matrix</span>(relDfm[, <span class="st">'american'</span>]))
 ))
 
 <span class="kw">ggplot</span>(relFreq) +<span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x=</span>document,<span class="dt">y=</span>frequency)) +
-<span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.text.x=</span><span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">90</span>, <span class="dt">hjust=</span><span class="dv">1</span>))</code></pre></div>
+<span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">90</span>, <span class="dt">hjust=</span><span class="dv">1</span>))</code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
 </div>
 </div>

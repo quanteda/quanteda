@@ -92,11 +92,10 @@ expressions, including a dictionary.</p>
 
     <pre><span class='fu'>tokens_select</span>(<span class='no'>x</span>, <span class='no'>features</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"remove"</span>),
   <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>indexing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>tokens_remove</span>(<span class='no'>x</span>, <span class='no'>features</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
-  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>indexing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -118,15 +117,9 @@ or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.htm
 an empty string where the removed tokens previously existed.  This is
 useful if a positional match is needed between the pre- and post-selected
 features, for instance if a window of adjacency needs to be computed.</dd>
-      <dt>indexing</dt>
-      <dd>use dfm-based index to efficiently process large tokens object</dd>
       <dt>verbose</dt>
       <dd>if <code>TRUE</code> print messages about how many features were 
 removed</dd>
-      <dt>...</dt>
-      <dd>supplementary arguments passed to the underlying functions in 
-<code><a href='http://www.rdocumentation.org/packages/stringi/topics/stri_detect'>stri_detect_regex</a></code>.  (This is how 
-<code>case_insensitive</code> is passed, but you may wish to pass others.)</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>

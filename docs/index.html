@@ -134,16 +134,16 @@ uk2010immigCorpus
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/* on x86_64 by kbenoit
-## Created: Mon Jan  2 09:28:39 2017
+## Created: Sun Jan  8 19:36:33 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 <span class="co"># key words in context for "deport", 3 words of context</span>
 <span class="kw"><a href="reference/kwic.html">kwic</a></span>(uk2010immigCorpus, <span class="st">"deport"</span>, <span class="dv">3</span>)
-##                        contextPre keyword                contextPost
-##  [BNP, 159]        The BNP will [  deport ] all foreigners convicted
-## [BNP, 1970]                . 2. [  Deport ] all illegal immigrants  
-## [BNP, 1976] immigrants We shall [  deport ] all illegal immigrants  
-## [BNP, 2621]  Criminals We shall [  deport ] all criminal entrants
+##                                                                    
+## [BNP, 159]         The BNP will | deport | all foreigners convicted
+## [BNP, 1970]                . 2. | Deport | all illegal immigrants  
+## [BNP, 1976] immigrants We shall | deport | all illegal immigrants  
+## [BNP, 2621]  Criminals We shall | deport | all criminal entrants
 
 <span class="co"># create a dfm, removing stopwords</span>
 mydfm &lt;-<span class="st"> </span><span class="kw"><a href="reference/dfm.html">dfm</a></span>(uk2010immigCorpus, <span class="dt">remove =</span> <span class="kw">c</span>(<span class="st">"will"</span>, <span class="kw"><a href="reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>)),
@@ -195,8 +195,8 @@ mydfm
   <img src="http://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange" alt="Total Downloads"></a></li>
 <li><a href="https://travis-ci.org/kbenoit/quanteda">
   <img src="https://travis-ci.org/kbenoit/quanteda.svg?branch=master" alt="Travis-CI Build Status"></a></li>
-<li><a href="https://ci.appveyor.com/project/kbenoit/quanteda">
-  <img src="https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249?svg=true" alt="Build status"></a></li>
+<li><a href="https://ci.appveyor.com/project/kbenoit/quanteda/branch/master">
+  <img src="https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true" alt="Build status"></a></li>
 <li><a href="https://codecov.io/gh/kbenoit/quanteda/branch/master">
   <img src="https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master" alt="codecov.io"></a></li>
 </ul></body></html></div>

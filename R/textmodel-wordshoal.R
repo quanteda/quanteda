@@ -209,7 +209,7 @@ textmodel_wordshoal <- function(data, groupvar, authorvar, dir = c(1,2), tol = 1
 
 ###########################################
 
-#' @rdname textmodel_wordshoal
+#' @rdname textmodel-internal
 #' @param x for print method, the object to be printed
 #' @param ... additional arguments passed to \code{\link{print}}
 #' @export
@@ -227,12 +227,13 @@ print.textmodel_wordshoal_fitted <- function(x, ...) {
     print(results,...)
 }
 
-#' @rdname textmodel_wordshoal
-#' @param object wordshoal fitted or predicted object to be shown
+#' @rdname textmodel-internal
+#' @keywords internal
 #' @export
 setMethod("show", signature(object = "textmodel_wordshoal_fitted"), function(object) print(object))
 
-#' @rdname textmodel_wordshoal
+#' @rdname textmodel-internal
+#' @keywords internal
 #' @export
 setMethod("show", signature(object = "textmodel_wordshoal_predicted"), function(object) print(object))
 

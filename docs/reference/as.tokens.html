@@ -94,7 +94,7 @@ an object is a <a href='tokens.html'>tokens</a> object.</p>
 <span class='fu'>as.list</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for tokens</span>
-<span class='fu'>as.character</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>as.character</span>(<span class='no'>x</span>, <span class='kw'>use.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='fu'>is.tokens</span>(<span class='no'>x</span>)</pre>
     
@@ -104,6 +104,9 @@ an object is a <a href='tokens.html'>tokens</a> object.</p>
       <dd>list of character elements</dd>
       <dt>...</dt>
       <dd>unused</dd>
+      <dt>use.names</dt>
+      <dd>logical; preserve names if <code>TRUE</code>.  For
+<code>as.character.tokens</code> only.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -111,7 +114,7 @@ an object is a <a href='tokens.html'>tokens</a> object.</p>
     <p><code>as.tokens</code> returns a quanteda <a href='tokens.html'>tokens</a> object</p>
     <p><code>as.list.tokens</code> returns a simple list of characters from a
   <a href='tokens.html'>tokens</a> object</p>
-    <p><code>as.character.tokens</code> returns a character vector from a
+    <p><code>as.character.tokens</code> returns a character vector from a 
   <a href='tokens.html'>tokens</a> object</p>
     <p><code>is.tokens</code> returns <code>TRUE</code> if the object is of class
   tokens, <code>FALSE</code> otherwise.</p>

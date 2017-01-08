@@ -120,7 +120,7 @@
 <td align="left">(used by <code>textcount_syllables()</code>)</td>
 </tr><tr class="even"><td align="left"><code>data_char_wordlists</code></td>
 <td align="left"><code>wordlists</code></td>
-<td align="left">(used by <code>readability()</code>)</td>
+<td align="left">(used by <code><a href="../reference/deprecated-textstat.html">readability()</a></code>)</td>
 </tr><tr class="odd"><td align="left"><code>data_char_stopwords</code></td>
 <td align="left"><code>.stopwords</code></td>
 <td align="left">(used by <code><a href="../reference/stopwords.html">stopwords()</a></code>
@@ -315,6 +315,9 @@
 </tr><tr class="odd"><td align="left"><code>dfm_toupper</code></td>
 <td align="left">uppercases the features of a <code>dfm</code> and compacts</td>
 <td align="left"><code>dfm</code></td>
+</tr><tr class="even"><td align="left"><code>sequences</code></td>
+<td align="left">experimental collocation detection</td>
+<td align="left"><code>sequences</code></td>
 </tr></tbody></table></div>
 <div id="deleted-functions-and-data-objects" class="section level2">
 <h2 class="hasAnchor">
@@ -332,11 +335,20 @@
 </tr><tr class="even"><td align="left"><code>encodedTexts</code></td>
 <td align="left">moved to package <a href="http://github.com/kbenoit/readtext"><strong>readtext</strong></a>, as <code>data_char_encodedtexts</code>
 </td>
+</tr><tr class="odd"><td align="left"><code>findSequences</code></td>
+<td align="left">replaced by <code>sequences</code>
+</td>
 </tr></tbody></table></div>
 <div id="other-new-features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#other-new-features" class="anchor"> </a>Other new features</h2>
 <ul><li>
+<code>to = "lsa"</code> functionality added to <code><a href="../reference/convert.html">convert()</a></code> (#414)<br/></li>
+<li>Much faster pattern matching in general, through an overhaul of how <code>valuetype</code> matches work for many functions.<br/></li>
+<li>Added experimental <code>View</code> methods for <code>kwic</code> objects, based on Javascript Datatables.<br/></li>
+<li>
+<code>kwic</code> is completely rewritten, now uses fast hashed index matching in C++ and fully implements vectorized matches (#306) and all <code>valuetype</code>s (#307).</li>
+<li>
 <code>tokens_lookup</code>, <code>tokens_select</code>, and <code>tokens_remove</code> are faster and use parallelization (based on the TBB library).</li>
 <li>
 <code>textstat_dist</code> and <code>textstat_simil</code> add fast, sparse, and parallel computation of many new distance and similarity matrices.<br/></li>
@@ -651,7 +663,7 @@ Code is also much simpler, based on using three new functions that are also avai
 <li><p>texts() and docvars() methods added for corpusSource objects.</p></li>
 <li><p>new methods for <code>tokenizedTexts</code> objects: <code><a href="../reference/dfm.html">dfm()</a></code>, <code><a href="../reference/removeFeatures.html">removeFeatures()</a></code>, and <code><a href="../reference/syllables.html">syllables()</a></code></p></li>
 <li><p><code><a href="../reference/syllables.html">syllables()</a></code> is now much faster, using matching through <code>stringi</code> and merging using <code>data.table</code>.</p></li>
-<li><p>added <code>readability()</code> to compute (fast!) readability indexes on a text or corpus</p></li>
+<li><p>added <code><a href="../reference/deprecated-textstat.html">readability()</a></code> to compute (fast!) readability indexes on a text or corpus</p></li>
 <li><p>tokenize() now creates ngrams of any length, with two new arguments: <code>ngrams =</code> <integer vector=""> and <code>concatenator = "_"</code>. The new arguments to <code><a href="../reference/tokenize.html">tokenize()</a></code> can be passed through from <code><a href="../reference/dfm.html">dfm()</a></code>.</integer></p></li>
 </ul></div>
 <div id="bug-fixes-8" class="section level2">

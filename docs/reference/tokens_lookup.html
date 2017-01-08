@@ -87,7 +87,7 @@ object.</p>
 
     <pre><span class='fu'>tokens_lookup</span>(<span class='no'>x</span>, <span class='no'>dictionary</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
   <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>capkeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -108,6 +108,10 @@ uppercase to distinguish them from other features</dd>
 them from other features</dd>
       <dt>concatenator</dt>
       <dd>a charactor that connect words in multi-words entries</dd>
+      <dt>exclusive</dt>
+      <dd>if <code>TRUE</code>, remove all features not in dictionary, 
+otherwise, replace values in dictionary with keys while leaving other 
+features unaffected</dd>
       <dt>verbose</dt>
       <dd>print status messages if <code>TRUE</code></dd>
     </dl>
@@ -117,8 +121,8 @@ them from other features</dd>
     <pre class="examples"><div class='input'><span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>)
 <span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"united states"</span>,
                    <span class='kw'>law</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>'law*'</span>, <span class='st'>'constitution'</span>),
-                   <span class='kw'>freedom</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>'*'</span>, <span class='st'>'libert*'</span>)))
-<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='st'>'glob'</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; <span class='message'>Registering 5 entiries in the dictionary...</span></div><div class='output co'>#&gt; <span class='message'>Searching 9882 types of features...</span></div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 3 features (13.5% sparse).</div><div class='input'>
+                   <span class='kw'>freedom</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>'free*'</span>, <span class='st'>'libert*'</span>)))
+<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='st'>'glob'</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; <span class='message'>Registering 5 entiries in the dictionary...</span></div><div class='output co'>#&gt; <span class='message'>Searching 33 types of features...</span></div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 3 features (15.2% sparse).</div><div class='input'>
 <span class='no'>dict_fix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"united states"</span>,
                        <span class='kw'>law</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'law'</span>, <span class='st'>'constitution'</span>),
                        <span class='kw'>freedom</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'freedom'</span>, <span class='st'>'liberty'</span>)))

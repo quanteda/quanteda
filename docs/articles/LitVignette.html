@@ -87,10 +87,10 @@ metadata.v &lt;-<span class="st"> </span><span class="kw">substring</span>(data_
 <p>To trim the extra text at the end of the Gutenburg version of the text, we can use the keyword-in-context (<code>kwic</code>) function to view the contexts around the word &lsquo;orphan&rsquo;, which we know should occur at the end of the book.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># verify that "orphan" is the end of the novel</span>
 <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_char_mobydick, <span class="st">"orphan"</span>)</code></pre></div>
-<pre><code>##                                         contextPre keyword
-## [Moby_Dick, 260460] children, only found another [  orphan
-##                                        contextPost
-## [Moby_Dick, 260460] ] . End of Project Gutenberg's</code></pre>
+<pre><code>##                                                            
+## [Moby_Dick, 260460] children, only found another | orphan |
+##                                                 
+## [Moby_Dick, 260460] . End of Project Gutenberg's</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># extract the novel -- a better way</span>
 novel.v &lt;-<span class="st"> </span><span class="kw">substring</span>(data_char_mobydick, endMetadataIndex, 
                      <span class="kw">regexec</span>(<span class="st">"End of Project Gutenberg's Moby Dick."</span>, data_char_mobydick)[[<span class="dv">1</span>]]-<span class="dv">1</span>)</code></pre></div>
@@ -133,7 +133,7 @@ moby.word.v &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <span class="kw">nrow</span>(<span class="kw"><a href="../reference/kwic.html">kwic</a></span>(novel.lower.v, <span class="st">"whale"</span>))</code></pre></div>
 <pre><code>## [1] 1030</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(<span class="kw"><a href="../reference/kwic.html">kwic</a></span>(novel.lower.v, <span class="st">"whale*"</span>)) <span class="co"># includes words like 'whalemen'</span></code></pre></div>
-<pre><code>## [1] 1572</code></pre>
+<pre><code>## [1] 1569</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(total.whale.hits &lt;-<span class="st"> </span><span class="kw">nrow</span>(<span class="kw"><a href="../reference/kwic.html">kwic</a></span>(novel.lower.v, <span class="st">"^whale('s){0,1}$"</span>, <span class="dt">valuetype =</span> <span class="st">'regex'</span>)))</code></pre></div>
 <pre><code>## [1] 1150</code></pre>
 <p>What fraction of the total words in the novel are &lsquo;whale&rsquo;?</p>
@@ -235,20 +235,13 @@ mobyDfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="s
 <h2 class="hasAnchor"><html><body><a href="#identifying-chapter-breaks" class="anchor"> </a></body></html>Identifying chapter breaks</h2>
 <p>Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a <code>corpus</code> object to hold the texts. Initially, we make a single-document corpus, and then use the <code>char_segment</code> function to split this by the string which specifies the chapter breaks.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../reference/kwic.html">kwic</a></span>(novel.v, <span class="st">'chapter'</span>))</code></pre></div>
-<pre><code>##                                                  contextPre keyword
-##     [Moby_Dick, 1]                                        [ CHAPTER
-##  [Moby_Dick, 2621]                       hill in the air. [ CHAPTER
-##  [Moby_Dick, 4355]                       Spouter" may be. [ CHAPTER
-## [Moby_Dick, 11416]                     better in my life. [ CHAPTER
-## [Moby_Dick, 13363]                like a marshal's baton. [ CHAPTER
-## [Moby_Dick, 14249]                      out for a stroll. [ CHAPTER
-##                                          contextPost
-##     [Moby_Dick, 1] ] 1. Loomings. Call              
-##  [Moby_Dick, 2621] ] 2. The Carpet-                 
-##  [Moby_Dick, 4355] ] 3. The Spouter-                
-## [Moby_Dick, 11416] ] 4. The Counterpane.            
-## [Moby_Dick, 13363] ] 5. Breakfast. I                
-## [Moby_Dick, 14249] ] 6. The Street.</code></pre>
+<pre><code>##                                                                           
+## [Moby_Dick, 1]                             | CHAPTER | 1. Loomings. Call  
+## [Moby_Dick, 2621]         hill in the air. | CHAPTER | 2. The Carpet-     
+## [Moby_Dick, 4355]         Spouter" may be. | CHAPTER | 3. The Spouter-    
+## [Moby_Dick, 11416]      better in my life. | CHAPTER | 4. The Counterpane.
+## [Moby_Dick, 13363] like a marshal's baton. | CHAPTER | 5. Breakfast. I    
+## [Moby_Dick, 14249]       out for a stroll. | CHAPTER | 6. The Street.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chaptersVec &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw"><a href="../reference/corpus_segment.html">char_segment</a></span>(novel.v, <span class="dt">what =</span> <span class="st">'other'</span>, <span class="dt">delimiter =</span> <span class="st">"CHAPTER</span><span class="ch">\\</span><span class="st">s</span><span class="ch">\\</span><span class="st">d"</span>, <span class="dt">perl =</span> <span class="ot">TRUE</span>))
 chaptersLowerVec &lt;-<span class="st"> </span><span class="kw"><a href="../reference/toLower.html">toLower</a></span>(chaptersVec)
 chaptersCorp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(chaptersVec)</code></pre></div>
@@ -272,14 +265,22 @@ chaptersCorp &lt;-<span class="st"> </span><span class="kw"><a href="../referenc
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(relDfm)</code></pre></div>
 <pre><code>## Document-feature matrix of: 136 documents, 17,211 features (96.4% sparse).
 ## (showing first 6 documents and first 6 features)
-##             features
-## docs                .  loomings       call        me    ishmael       some
-##   Moby_Dick1 3.132162 0.0381971 0.03819710 0.9549274 0.07639419 0.42016807
-##   Moby_Dick2 2.713626 0.0000000 0.00000000 0.3464203 0.23094688 0.05773672
-##   Moby_Dick3 3.244086 0.0000000 0.01416631 0.6516504 0.00000000 0.24082731
-##   Moby_Dick4 2.724936 0.0000000 0.00000000 0.9768638 0.00000000 0.05141388
-##   Moby_Dick5 3.167421 0.0000000 0.00000000 0.1131222 0.00000000 0.22624434
-##   Moby_Dick6 4.166667 0.0000000 0.00000000 0.1016260 0.00000000 0.10162602</code></pre>
+##              features
+## docs                 .  loomings       call        me    ishmael
+##   Moby_Dick.1 3.132162 0.0381971 0.03819710 0.9549274 0.07639419
+##   Moby_Dick.2 2.713626 0.0000000 0.00000000 0.3464203 0.23094688
+##   Moby_Dick.3 3.244086 0.0000000 0.01416631 0.6516504 0.00000000
+##   Moby_Dick.4 2.724936 0.0000000 0.00000000 0.9768638 0.00000000
+##   Moby_Dick.5 3.167421 0.0000000 0.00000000 0.1131222 0.00000000
+##   Moby_Dick.6 4.166667 0.0000000 0.00000000 0.1016260 0.00000000
+##              features
+## docs                some
+##   Moby_Dick.1 0.42016807
+##   Moby_Dick.2 0.05773672
+##   Moby_Dick.3 0.24082731
+##   Moby_Dick.4 0.05141388
+##   Moby_Dick.5 0.22624434
+##   Moby_Dick.6 0.10162602</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">barplot</span>(<span class="kw">as.numeric</span>(relDfm[, <span class="st">'whale'</span>]))</code></pre></div>
 <p><img src="LitVignette_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">barplot</span>(<span class="kw">as.numeric</span>(relDfm[, <span class="st">'ahab'</span>]))</code></pre></div>
@@ -340,8 +341,8 @@ numWords &lt;-<span class="st"> </span><span class="kw">length</span>(firstChap[
 <span class="kw">sum</span>(chapDfm[<span class="dv">1</span>,])/numWords</code></pre></div>
 <pre><code>## [1] 3.02659</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(chapDfm[<span class="dv">1</span>,])/<span class="kw"><a href="../reference/ntoken.html">ntype</a></span>(chaptersCorp[<span class="dv">1</span>], <span class="dt">removePunct=</span><span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## Moby_Dick1 
-##    2.88326</code></pre>
+<pre><code>## Moby_Dick.1 
+##     2.88326</code></pre>
 </div>
 <div id="extracting-word-usage-means" class="section level2">
 <h2 class="hasAnchor"><html><body><a href="#extracting-word-usage-means" class="anchor"> </a></body></html>6.3 Extracting Word Usage Means</h2>

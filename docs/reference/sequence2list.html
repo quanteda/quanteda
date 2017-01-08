@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • quanteda</title>
+<title>convert sequences to a simple list — sequence2list • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -34,7 +34,7 @@
   </head>
 
   <body>
-    <div class="container template-vignette-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -74,23 +74,51 @@
       
       </header>
 
-      <div class="page-header">
-  <h1>Vignette reference <small>version&nbsp;0.9.8.9040</small></h1>
-</div>
-
-<div class="row">
-  <div class="col-md-9">
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
-
-      <ul>
-        <li><a href="design.html">quanteda Structure and Design</a></li>
-        <li><a href="LitVignette.html">Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*</a></li>
-        <li><a href="plotting.html">Plotting with quanteda</a></li>
-        <li><a href="quickstart.html">Getting Started with quanteda</a></li>
-      </ul>
+      <div class="row">
+  <div class="col-md-9 contents">
+    <div class="page-header">
+    <h1>convert sequences to a simple list</h1>
     </div>
+
+    
+    <p>Convert a sequence into a simple list, for input as a sequence in e.g. 
+<code><a href='tokens_compound.html'>tokens_compound</a></code>.</p>
+    
+
+    <pre><span class='fu'>sequence2list</span>(<span class='no'>sequences</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <dl class="dl-horizontal">
+      <dt>sequences</dt>
+      <dd>the input sequence, one of: <ul>
+<li>character vector,
+whose elements will be split on whitespace; </li>
+<li>list of characters,
+consisting of a list of token patterns, separated by white space; 
+</li>
+<li><a href='tokens.html'>tokens</a> object; </li>
+<li><a href='dictionary.html'>dictionary</a> object; 
+</li>
+<li><a href='collocations.html'>collocations</a> object. </li>
+</ul>
+</dd>
+    </dl>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>an unnamed list of sequences, with each element of the list a
+  character vector with the split sequence.</p>
+    
+
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
+
   </div>
 </div>
 

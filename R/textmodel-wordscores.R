@@ -232,7 +232,6 @@ rescaler <- function(x, scale.min=-1, scale.max=1) {
 #' @param x for print method, the object to be printed
 #' @param n max rows of dfm to print
 #' @param digits number of decimal places to print for print methods
-# @param ... not used in \code{print.textmodel_wordscores_fitted}
 #' @export
 #' @method print textmodel_wordscores_fitted
 print.textmodel_wordscores_fitted <- function(x, n=30L, digits=2, ...) {

@@ -88,16 +88,7 @@ positions, and then the positions from a particular author are scaled across gro
 using a second-level linear factor model, using conditional maximum likelihood.</p>
     
 
-    <pre><span class='fu'>textmodel_wordshoal</span>(<span class='no'>data</span>, <span class='no'>groupvar</span>, <span class='no'>authorvar</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fl'>0.001</span>)
-
-<span class='co'># S3 method for textmodel_wordshoal_fitted</span>
-<span class='fu'>print</span>(<span class='no'>x</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for textmodel_wordshoal_fitted</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)
-
-<span class='co'># S4 method for textmodel_wordshoal_predicted</span>
-<span class='fu'>show</span>(<span class='no'>object</span>)</pre>
+    <pre><span class='fu'>textmodel_wordshoal</span>(<span class='no'>data</span>, <span class='no'>groupvar</span>, <span class='no'>authorvar</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fl'>0.001</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -113,12 +104,6 @@ authors such that \(\hat{\theta}_{dir[1]} &lt; \hat{\theta}_{dir[2]}\).</dd>
       <dt>tol</dt>
       <dd>tolerance for convergence.  A convergence 
 threshold for the log-posterior of the model.</dd>
-      <dt>x</dt>
-      <dd>for print method, the object to be printed</dd>
-      <dt>...</dt>
-      <dd>additional arguments passed to <code>print</code></dd>
-      <dt>object</dt>
-      <dd>wordshoal fitted or predicted object to be shown</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>

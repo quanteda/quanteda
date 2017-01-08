@@ -88,8 +88,8 @@ text analysis packages for which conversions are defined.    See also
 <a href='convert-wrappers.html'>convert-wrappers</a> for convenience functions for specific package converters.</p>
     
 
-    <pre><span class='fu'>convert</span>(<span class='no'>x</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lda"</span>, <span class='st'>"tm"</span>, <span class='st'>"stm"</span>, <span class='st'>"austin"</span>, <span class='st'>"topicmodels"</span>, <span class='st'>"matrix"</span>,
-  <span class='st'>"data.frame"</span>), <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>convert</span>(<span class='no'>x</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"lda"</span>, <span class='st'>"tm"</span>, <span class='st'>"stm"</span>, <span class='st'>"austin"</span>, <span class='st'>"topicmodels"</span>, <span class='st'>"lsa"</span>,
+  <span class='st'>"matrix"</span>, <span class='st'>"data.frame"</span>), <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -105,7 +105,9 @@ into whose document-term matrix representation the dfm will be converted:
 the <span class="pkg">tm</span> package</dd> <dt><code>&quot;stm&quot;</code></dt><dd>the  format for the <span class="pkg">stm</span> 
 package</dd> <dt><code>&quot;austin&quot;</code></dt><dd>the <code>wfm</code> format from the 
 <strong>austin</strong> package</dd> <dt><code>&quot;topicmodels&quot;</code></dt><dd>the &quot;dtm&quot; format as 
-used by the <span class="pkg">topicmodels</span> package</dd> </dl>
+used by the <span class="pkg">topicmodels</span> package</dd> 
+<dt><code>&quot;lsa&quot;</code></dt><dd>the &quot;textmatrix&quot; format as 
+used by the <span class="pkg">lsa</span> package</dd> </dl>
 </dd>
       <dt>docvars</dt>
       <dd>optional data.frame of document variables used as the 

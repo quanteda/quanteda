@@ -149,17 +149,17 @@ dictionaries. This uses the iconv labels for encoding.  See the
                           <span class='kw'>taxing</span> <span class='kw'>=</span> <span class='st'>"taxing"</span>,
                           <span class='kw'>taxation</span> <span class='kw'>=</span> <span class='st'>"taxation"</span>,
                           <span class='kw'>taxregex</span> <span class='kw'>=</span> <span class='st'>"tax*"</span>,
-                          <span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"united states"</span>))
-<span class='fu'>head</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mycorpus</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>mydict</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: You will probably not get correct behaviour applying a dictionary with multi-word keys to a dfm.</span></div><div class='output co'>#&gt; Document-feature matrix of: 29 documents, 6 features (0% sparse).
+                          <span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"america"</span>))
+<span class='fu'>head</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mycorpus</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>mydict</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 29 documents, 6 features (0% sparse).
 #&gt; (showing first 6 documents and first 6 features)
 #&gt;                 features
 #&gt; docs             christmas opposition taxing taxation taxregex country
 #&gt;   1901-McKinley          0          2      0        1        1       0
 #&gt;   1905-Roosevelt         0          0      0        0        0       0
-#&gt;   1909-Taft              0          1      0        4        6       0
+#&gt;   1909-Taft              0          1      0        4        6       4
 #&gt;   1913-Wilson            0          0      0        1        1       0
-#&gt;   1917-Wilson            0          0      0        0        0       0
-#&gt;   1921-Harding           0          0      0        1        2       0</div><div class='input'>
+#&gt;   1917-Wilson            0          0      0        0        0       2
+#&gt;   1921-Harding           0          0      0        1        2      15</div><div class='input'>
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'># # import the Laver-Garry dictionary from http://bit.ly/1FH2nvf</span>
 <span class='co'># lgdict &lt;- dictionary(file = "http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat",</span>

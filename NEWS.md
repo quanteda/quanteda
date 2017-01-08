@@ -92,7 +92,7 @@ new function | description | ouput class
 `fcm_toupper` | uppercases the features of an `fcm` and compacts | `fcm`
 `dfm_tolower` | lowercases the features of a `dfm` and compacts | `dfm`
 `dfm_toupper` | uppercases the features of a `dfm` and compacts | `dfm`
-
+`sequences`   | experimental collocation detection | `sequences`
 
 ## Deleted functions and data objects
 
@@ -102,10 +102,14 @@ new name | reason
 `describeTexts` | deprecated several versions ago for `summary.character`
 `textfile` | moved to package [**readtext**](http://github.com/kbenoit/readtext)
 `encodedTexts` | moved to package [**readtext**](http://github.com/kbenoit/readtext), as `data_char_encodedtexts`
+`findSequences` | replaced by `sequences`
 
 
 ## Other new features
 
+*  `to = "lsa"` functionality added to `convert()` (#414)  
+*  Much faster pattern matching in general, through an overhaul of how `valuetype` matches work for many functions.  
+*  Added experimental `View` methods for `kwic` objects, based on Javascript Datatables.  
 *  `kwic` is completely rewritten, now uses fast hashed index matching in C++ and fully implements vectorized matches (#306) and all `valuetype`s (#307).
 *  `tokens_lookup`, `tokens_select`, and `tokens_remove` are faster and use parallelization (based on the TBB library).
 *  `textstat_dist` and `textstat_simil` add fast, sparse, and parallel computation of many new distance and similarity matrices.  

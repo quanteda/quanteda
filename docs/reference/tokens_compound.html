@@ -96,14 +96,16 @@ subsequently as single tokens, for instance in constructing a <a href='dfm.html'
       <dt>x</dt>
       <dd>an input <a href='tokens.html'>tokens</a> object</dd>
       <dt>sequences</dt>
-      <dd>a set of pattern matches to identify token sequences, one of a:
-<ul>
-<li>list of charactersconsisting of a list of token patterns, separated by white space;
-  </li>
-<li><a href='dictionary.html'>dictionary</a> object;
-  </li>
-<li><a href='collocations.html'>collocations</a> object.
+      <dd>the input sequence, one of: <ul>
+<li>character vector,
+whose elements will be split on whitespace; </li>
+<li>list of characters,
+consisting of a list of token patterns, separated by white space; 
 </li>
+<li><a href='tokens.html'>tokens</a> object; </li>
+<li><a href='dictionary.html'>dictionary</a> object; 
+</li>
+<li><a href='collocations.html'>collocations</a> object. </li>
 </ul>
 </dd>
       <dt>concatenator</dt>
@@ -181,7 +183,7 @@ in <code>sequences</code> have been replaced by  compound &quot;tokens&quot; joi
 #&gt; </div><div class='input'>
 <span class='co'># dictionaries w/glob matches</span>
 <span class='no'>myDict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>negative</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"bad* word*"</span>, <span class='st'>"negative"</span>, <span class='st'>"awful text"</span>),
-                          <span class='kw'>postiive</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"good stuff"</span>, <span class='st'>"like? th??"</span>)))
+                          <span class='kw'>positive</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"good stuff"</span>, <span class='st'>"like? th??"</span>)))
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'>c</span>(<span class='kw'>txt1</span> <span class='kw'>=</span> <span class='st'>"I liked this, when we can use bad words, in awful text."</span>,
                  <span class='kw'>txt2</span> <span class='kw'>=</span> <span class='st'>"Some damn good stuff, like the text, she likes that too."</span>))
 <span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='no'>myDict</span>)</div><div class='output co'>#&gt; tokens from 2 documents.

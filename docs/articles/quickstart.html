@@ -159,7 +159,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 <span class="co">#&gt;   1805-Jefferson   804   2381        45</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit</span>
-<span class="co">#&gt; Created: Mon Jan  2 09:29:52 2017</span>
+<span class="co">#&gt; Created: Sun Jan  8 19:38:01 2017</span>
 <span class="co">#&gt; Notes:</span></code></pre></div>
 <p>If we wanted, we could add some document-level variables &ndash; what quanteda calls <code>docvars</code> &ndash; to this corpus.</p>
 <p>We can do this using the R&rsquo;s <code>substring()</code> function to extract characters from a name &ndash; in this case, the name of the character vector <code>data_char_inaugural</code>. This works using our fixed starting and ending positions with <code>substring()</code> because these names are a very regular format of <code>YYYY-PresidentName</code>.</p>
@@ -176,7 +176,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 <span class="co">#&gt;   1805-Jefferson   804   2381        45  Jefferson 1805</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit</span>
-<span class="co">#&gt; Created: Mon Jan  2 09:29:52 2017</span>
+<span class="co">#&gt; Created: Sun Jan  8 19:38:01 2017</span>
 <span class="co">#&gt; Notes:</span></code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -198,7 +198,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 <span class="co">#&gt;  data_char_inaugural_5</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit</span>
-<span class="co">#&gt; Created: Mon Jan  2 09:29:52 2017</span>
+<span class="co">#&gt; Created: Sun Jan  8 19:38:01 2017</span>
 <span class="co">#&gt; Notes:</span></code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -391,7 +391,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 <span class="co">#&gt;       2013-Obama   814   2335        88</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Source:  Combination of corpuses mycorpus1 and mycorpus2</span>
-<span class="co">#&gt; Created: Mon Jan  2 09:29:53 2017</span>
+<span class="co">#&gt; Created: Sun Jan  8 19:38:01 2017</span>
 <span class="co">#&gt; Notes:</span></code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -428,31 +428,31 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 <p>The <code>kwic</code> function (KeyWord In Context) performs a search for a word and allows us to view the contexts in which it occurs:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">options</span>(<span class="dt">width =</span> <span class="dv">200</span>)
 <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>)
-<span class="co">#&gt;                                                 contextPre keyword                         contextPost</span>
-<span class="co">#&gt;    [1797-Adams, 1327]              fraud or violence, by [  terror ] , intrigue, or venality          </span>
-<span class="co">#&gt; [1933-Roosevelt, 112] nameless, unreasoning, unjustified [  terror ] which paralyzes needed efforts to</span>
-<span class="co">#&gt; [1941-Roosevelt, 289]      seemed frozen by a fatalistic [  terror ] , we proved that this            </span>
-<span class="co">#&gt;   [1961-Kennedy, 868]    alter that uncertain balance of [  terror ] that stays the hand of           </span>
-<span class="co">#&gt;    [1981-Reagan, 821]     freeing all Americans from the [  terror ] of runaway living costs.         </span>
-<span class="co">#&gt;  [1997-Clinton, 1055]        They fuel the fanaticism of [  terror ] . And they torment the           </span>
-<span class="co">#&gt;  [1997-Clinton, 1655]  maintain a strong defense against [  terror ] and destruction. Our children    </span>
-<span class="co">#&gt;    [2009-Obama, 1646]     advance their aims by inducing [  terror ] and slaughtering innocents, we</span>
+<span class="co">#&gt;                                                                                                      </span>
+<span class="co">#&gt; [1797-Adams, 1327]                 fraud or violence, by | terror | , intrigue, or venality          </span>
+<span class="co">#&gt; [1933-Roosevelt, 112] nameless, unreasoning, unjustified | terror | which paralyzes needed efforts to</span>
+<span class="co">#&gt; [1941-Roosevelt, 289]      seemed frozen by a fatalistic | terror | , we proved that this            </span>
+<span class="co">#&gt; [1961-Kennedy, 868]      alter that uncertain balance of | terror | that stays the hand of           </span>
+<span class="co">#&gt; [1981-Reagan, 821]        freeing all Americans from the | terror | of runaway living costs.         </span>
+<span class="co">#&gt; [1997-Clinton, 1055]         They fuel the fanaticism of | terror | . And they torment the           </span>
+<span class="co">#&gt; [1997-Clinton, 1655]   maintain a strong defense against | terror | and destruction. Our children    </span>
+<span class="co">#&gt; [2009-Obama, 1646]        advance their aims by inducing | terror | and slaughtering innocents, we</span>
 <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>)
-<span class="co">#&gt;                                                 contextPre   keyword                         contextPost</span>
-<span class="co">#&gt;    [1797-Adams, 1327]              fraud or violence, by [  terror   ] , intrigue, or venality          </span>
-<span class="co">#&gt; [1933-Roosevelt, 112] nameless, unreasoning, unjustified [  terror   ] which paralyzes needed efforts to</span>
-<span class="co">#&gt; [1941-Roosevelt, 289]      seemed frozen by a fatalistic [  terror   ] , we proved that this            </span>
-<span class="co">#&gt;   [1961-Kennedy, 868]    alter that uncertain balance of [  terror   ] that stays the hand of           </span>
-<span class="co">#&gt;   [1961-Kennedy, 992]          of science instead of its [  terrors  ] . Together let us explore        </span>
-<span class="co">#&gt;    [1981-Reagan, 821]     freeing all Americans from the [  terror   ] of runaway living costs.         </span>
-<span class="co">#&gt;   [1981-Reagan, 2204]   understood by those who practice [ terrorism ] and prey upon their neighbors    </span>
-<span class="co">#&gt;  [1997-Clinton, 1055]        They fuel the fanaticism of [  terror   ] . And they torment the           </span>
-<span class="co">#&gt;  [1997-Clinton, 1655]  maintain a strong defense against [  terror   ] and destruction. Our children    </span>
-<span class="co">#&gt;    [2009-Obama, 1646]     advance their aims by inducing [  terror   ] and slaughtering innocents, we</span>
+<span class="co">#&gt;                                                                                                         </span>
+<span class="co">#&gt; [1797-Adams, 1327]                 fraud or violence, by |  terror   | , intrigue, or venality          </span>
+<span class="co">#&gt; [1933-Roosevelt, 112] nameless, unreasoning, unjustified |  terror   | which paralyzes needed efforts to</span>
+<span class="co">#&gt; [1941-Roosevelt, 289]      seemed frozen by a fatalistic |  terror   | , we proved that this            </span>
+<span class="co">#&gt; [1961-Kennedy, 868]      alter that uncertain balance of |  terror   | that stays the hand of           </span>
+<span class="co">#&gt; [1961-Kennedy, 992]            of science instead of its |  terrors  | . Together let us explore        </span>
+<span class="co">#&gt; [1981-Reagan, 821]        freeing all Americans from the |  terror   | of runaway living costs.         </span>
+<span class="co">#&gt; [1981-Reagan, 2204]     understood by those who practice | terrorism | and prey upon their neighbors    </span>
+<span class="co">#&gt; [1997-Clinton, 1055]         They fuel the fanaticism of |  terror   | . And they torment the           </span>
+<span class="co">#&gt; [1997-Clinton, 1655]   maintain a strong defense against |  terror   | and destruction. Our children    </span>
+<span class="co">#&gt; [2009-Obama, 1646]        advance their aims by inducing |  terror   | and slaughtering innocents, we</span>
 <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"communist*"</span>)
-<span class="co">#&gt;                                           contextPre    keyword                  contextPost</span>
-<span class="co">#&gt;  [1949-Truman, 838] the actions resulting from the [ Communist  ] philosophy are a threat to</span>
-<span class="co">#&gt; [1961-Kennedy, 519]             -- not because the [ Communists ] may be doing it,</span></code></pre></div>
+<span class="co">#&gt;                                                                                             </span>
+<span class="co">#&gt; [1949-Truman, 838]  the actions resulting from the | Communist  | philosophy are a threat to</span>
+<span class="co">#&gt; [1961-Kennedy, 519]             -- not because the | Communists | may be doing it,</span></code></pre></div>
 <p>In the above summary, <code>Year</code> and <code>President</code> are variables associated with each document. We can access such variables with the <code><a href="../reference/docvars.html">docvars()</a></code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># inspect the document-level variables</span>
 <span class="kw">head</span>(<span class="kw"><a href="../reference/docvars.html">docvars</a></span>(data_corpus_inaugural))
@@ -745,9 +745,9 @@ if (<span class="kw">require</span>(topicmodels)) {
 }
 <span class="co">#&gt; Loading required package: topicmodels</span>
 <span class="co">#&gt;      Lenihan FF Bruton FG Burton LAB Morgan SF Cowen FF Kenny FG ODonnell FG Gilmore LAB Higgins LAB Quinn LAB Gormley Green Ryan Green Cuffe Green OCaolain SF</span>
-<span class="co">#&gt; [1,]         11        13         10        16       19       15           5           7           3         2            20         14          18          17</span>
-<span class="co">#&gt; [2,]          4         3          9        12        2        6          20           3           8         6             4         20           8           3</span>
-<span class="co">#&gt; [3,]          1        20         18         6       15        2           2           2           6        16             1         18           6          20</span></code></pre></div>
+<span class="co">#&gt; [1,]         15        10          2         8        3       19          16           6          20        12            17         13           7          18</span>
+<span class="co">#&gt; [2,]         16         9         11        16        5       12           4           1          14         1             4          7          14          12</span>
+<span class="co">#&gt; [3,]         20        17         20        12       16        4          17          12          11         4            15         17          17          20</span></code></pre></div>
 </div>
 </div>
 <div class="footnotes">
