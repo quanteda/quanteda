@@ -33,18 +33,16 @@ sequences <- function(x, features, valuetype = c("glob", "regex", "fixed"),
                       case_insensitive = TRUE, count_min = 2, nested=TRUE) {
     
     valuetype <- match.arg(valuetype)
-    
     names_org <- names(x)
     attrs_org <- attributes(x)
     
     types <- types(x)
-    features <- as.list(unlist(features, use.names = FALSE)) # does not accpet sequences
-    features_fixed <- regex2fixed5(features, types, valuetype, case_insensitive, FALSE) # convert glob or regex to fixed
-    features_id <- sapply(features_fixed, function(x) fastmatch::fmatch(x, types))
-    
+    features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
+    features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
+
     seqs <- qutd_cpp_sequences(x, features_id, count_min, nested)
     seqs$length <- lengths(seqs$sequence)
-    seqs$sequence <- sapply(seqs$sequence, function(x) stringi::stri_c(types[x], collapse = ' '))
+    seqs$sequence <- sapply(seqs$sequence, function(y) stringi::stri_c(types[y], collapse = ' '))
     
     df <- as.data.frame(seqs, stringsAsFactors = FALSE)
     df <- df[df$count >= count_min,]
