@@ -14,7 +14,7 @@ as.tokens(x)
 
 \method{as.list}{tokens}(x, ...)
 
-\method{as.character}{tokens}(x, ...)
+\method{as.character}{tokens}(x, use.names = FALSE, ...)
 
 is.tokens(x)
 }
@@ -22,6 +22,9 @@ is.tokens(x)
 \item{x}{list of character elements}
 
 \item{...}{unused}
+
+\item{use.names}{logical; preserve names if \code{TRUE}.  For
+\code{as.character.tokens} only.}
 }
 \value{
 \code{as.tokens} returns a quanteda \link{tokens} object
@@ -29,7 +32,7 @@ is.tokens(x)
 \code{as.list.tokens} returns a simple list of characters from a
   \link{tokens} object
 
-\code{as.character.tokens} returns a character vector from a
+\code{as.character.tokens} returns a character vector from a 
   \link{tokens} object
 
 \code{is.tokens} returns \code{TRUE} if the object is of class
