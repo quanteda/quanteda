@@ -7,11 +7,17 @@
 #
 # regex <- list(c('^a$', '^b'), c('c'), c('d'))
 # types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
-# regex2fixed5(regex, types, 'regex', case_insensitive=TRUE)
+# regex2fixed(regex, types, 'regex', case_insensitive=TRUE)
 # index <- index_regex(types, 'regex', case_insensitive=TRUE)
-# regex2fixed5(regex, types, 'regex', case_insensitive=TRUE, index=index)
+# regex2fixed(regex, types, 'regex', case_insensitive=TRUE, index=index)
 
-regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, index = TRUE) {
+regex2fixed <- function(regex, types, valuetype, case_insensitive = FALSE, index = TRUE){
+    id <- regex2id(regex, types, valuetype, case_insensitive, index)
+    fixed <- lapply(id, function(x) types[x])
+    return(fixed)
+}
+
+regex2id <- function(regex, types, valuetype, case_insensitive = FALSE, index = TRUE) {
     
     # Make case insensitive
     if(case_insensitive){
@@ -48,55 +54,55 @@ regex2fixed5 <- function(regex, types, valuetype, case_insensitive = FALSE, inde
     pats_single <- regex[len==1]
     
     # Process multi-entry patterns
-    fixed <- list()
+    id <- list()
     for(pat_multi in pats_multi) {
-        fixed_multi <- select_types(pat_multi, types, types_search, exact, index)
-        fixed <- c(fixed, expand(fixed_multi))
+        id_multi <- select_types(pat_multi, types_search, exact, index)
+        id <- c(id, expand(id_multi))
     }
     
     # Process single-entry patterns
     if(length(pats_single) > 0){
         pats_single <- unlist(pats_single, use.names = FALSE)
-        fixed_single <- unlist(select_types(pats_single, types, types_search, exact, index), use.names = FALSE)
-        fixed <- c(fixed, fixed_single)
+        id_single <- unlist(select_types(pats_single, types_search, exact, index), use.names = FALSE)
+        id <- c(id, id_single)
     }
-    return(unique(fixed))
+    return(unique(id))
 }
 
 
 # This function subset types avoiding expensive full regular expression matching
-select_types <- function (regex, types, types_search, exact, index){
+select_types <- function (regex, types_search, exact, index){
 
 
-    subset <- lapply(regex, function(regex, types, types_search, exact, index){
+    subset <- lapply(regex, function(regex, types_search, exact, index){
         if(length(index)){
             if(exact){
                 #cat('Exact match', regex, '\n')
-                types[search_index(regex, index)]
+                return(search_index(regex, index))
             }else{
                 if(regex == ''){
-                    NULL # return nothing for empty pattern
+                    return(NULL) # return nothing for empty pattern
                 }else if(regex == '^'){
-                    types # return all types when glob is *
-                }else if(length((ids <- search_index(regex, index)))){
+                    return(seq_along(types_search)) # return all types when glob is *
+                }else if(length((types_id <- search_index(regex, index)))){
                     #cat('Index search', regex, '\n')
-                    types[ids]
+                    return(types_id)
                 }else if(!is_indexed(regex)){
                     #cat('Regex search', regex, '\n')
-                    types[stri_detect_regex(types_search, regex)]
+                    return(which(stri_detect_regex(types_search, regex)))
                 }else{
                     #cat("Not found\n")
-                    NULL
+                    return(NULL)
                 }
             }
         }else{
             if(exact){
-                types[types_search %in% regex]
+                return(which(types_search %in% regex))
             }else{
-                types[stri_detect_regex(types_search, regex)]
+                return(which(stri_detect_regex(types_search, regex)))
             }
         }
-    }, types, types_search, exact, index)
+    }, types_search, exact, index)
     return(subset)
 }
 
