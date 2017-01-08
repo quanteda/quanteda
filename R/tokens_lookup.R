@@ -54,10 +54,9 @@ tokens_lookup <- function(x, dictionary,
         message('Registering ', length(unlist(dictionary)), ' entiries in the dictionary...');
     for (h in 1:length(dictionary)) {
         entries <- stringi::stri_split_fixed(dictionary[[h]], concatenator)
-        entries_fixed <- regex2fixed5(entries, types, valuetype, case_insensitive, index) # convert glob or regex to fixed
-        if (length(entries_fixed) == 0) next
-        entries_id <- c(entries_id, lapply(entries_fixed, function(x) fastmatch::fmatch(x, types)))
-        keys_id <- c(keys_id, rep(h, length(entries_fixed)))
+        entries_id <- regex2id(entries, types, valuetype, case_insensitive, index)
+        if (length(entries_id) == 0) next
+        keys_id <- c(keys_id, rep(h, length(entries_id)))
     }
     if (verbose) 
         message('Searching ', length(entries_id), ' types of features...')

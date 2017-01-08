@@ -74,12 +74,11 @@ tokens_compound.tokens <- function(x, sequences,
     types <- types(x)
     
     # Convert glob or regex to fixed
-    seqs_fixed <- regex2fixed5(seqs, types, valuetype, case_insensitive)
-    if(length(seqs_fixed) == 0) return(x) # do nothing
+    seqs_id <- regex2id(seqs, types, valuetype, case_insensitive)
+    if(length(seqs_id) == 0) return(x) # do nothing
     
     # Make new types
-    seqs_id <- lapply(seqs_fixed, function(y) fastmatch::fmatch(y, types))
-    seqs_type <- sapply(seqs_fixed, paste0, collapse = concatenator)
+    seqs_type <- sapply(seqs_id, function(y) paste0(types[y], collapse = concatenator))
     
     # Assign IDs to new types
     types_id <- match(seqs_type, types)
