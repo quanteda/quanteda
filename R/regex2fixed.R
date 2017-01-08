@@ -21,8 +21,8 @@ regex2id <- function(regex, types, valuetype, case_insensitive = FALSE, index = 
     
     # Make case insensitive
     if(case_insensitive){
-        types_search <- stri_trans_tolower(types)
-        regex <- lapply(regex, stri_trans_tolower)
+        types_search <- stringi::stri_trans_tolower(types)
+        regex <- lapply(regex, stringi::stri_trans_tolower)
     }else{
         types_search <- types
     }
@@ -40,7 +40,7 @@ regex2id <- function(regex, types, valuetype, case_insensitive = FALSE, index = 
     if(is.logical(index)){
         if(index){
             # Construct index if not given
-            len_max <- max(stri_length(unlist(regex, use.names = FALSE)))
+            len_max <- max(stringi::stri_length(unlist(regex, use.names = FALSE)))
             index <- index_regex(types_search, valuetype, case_insensitive, len_max)
         }else{
             # Use stri_detect when index is null
@@ -89,7 +89,7 @@ select_types <- function (regex, types_search, exact, index){
                     return(types_id)
                 }else if(!is_indexed(regex)){
                     #cat('Regex search', regex, '\n')
-                    return(which(stri_detect_regex(types_search, regex)))
+                    return(which(stringi::stri_detect_regex(types_search, regex)))
                 }else{
                     #cat("Not found\n")
                     return(NULL)
@@ -99,7 +99,7 @@ select_types <- function (regex, types_search, exact, index){
             if(exact){
                 return(which(types_search %in% regex))
             }else{
-                return(which(stri_detect_regex(types_search, regex)))
+                return(which(stringi::stri_detect_regex(types_search, regex)))
             }
         }
     }, types_search, exact, index)
@@ -113,7 +113,7 @@ select_types <- function (regex, types_search, exact, index){
 # from the longest regex queries to limit the size of the index.
 index_regex <- function(types, valuetype, case_insensitive, len_max){
     
-    if(case_insensitive) types <- stri_trans_tolower(types)
+    if(case_insensitive) types <- stringi::stri_trans_tolower(types)
     if(valuetype == 'fixed'){
         exact <- TRUE
     }else{
@@ -122,7 +122,7 @@ index_regex <- function(types, valuetype, case_insensitive, len_max){
     # Create regex patterns from types
     if(!exact){ 
         types <- escape_regex(types) # punctuations are not regular expressions
-        types <- stri_c("^", types, "$")
+        types <- stringi::stri_c("^", types, "$")
     }
     # Index for regex patterns of ^xxxx$ 
     pos_tmp <- seq_along(types)
@@ -130,13 +130,13 @@ index_regex <- function(types, valuetype, case_insensitive, len_max){
 
     # Index for regex patterns of ^xxxx and xxxx$
     if(!exact){
-        len <- stri_length(types)
+        len <- stringi::stri_length(types)
         if(missing(len_max)) len_max <- max(len) # index all the types if len_max is unknown
         for(i in 2:len_max){
             k <- which(len > i)
             pos_tmp <- c(pos_tmp, list(rep(k, 2)))
-            key_tmp <- c(key_tmp, list(stri_sub(types[k], 1, i)))
-            key_tmp <- c(key_tmp, list(stri_sub(types[k], i * -1, -1)))
+            key_tmp <- c(key_tmp, list(stringi::stri_sub(types[k], 1, i)))
+            key_tmp <- c(key_tmp, list(stringi::stri_sub(types[k], i * -1, -1)))
         }
     }
     # Faster to join vectors in the end
@@ -175,19 +175,19 @@ expand <- function(elem){
 
 # This function checks if a string is regular expression
 is_regex <- function(x){
-    any(stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
+    any(stringi::stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
 }
 
 escape_regex <- function(x){
-    stri_replace_all_regex(x, "([.()^\\{\\}+$*\\[\\]\\\\])", "\\\\$1")
+    stringi::stri_replace_all_regex(x, "([.()^\\{\\}+$*\\[\\]\\\\])", "\\\\$1")
 }
 
 is_indexed <- function(x){
-    head <- stri_startswith_fixed(x, '^')
-    tail <- stri_endswith_fixed(x, '$')
-    if(head && tail && !is_regex(stri_sub(x, 2, -2))) return(TRUE)
-    if(head && !is_regex(stri_sub(x, 2, -1))) return(TRUE)
-    if(tail && !is_regex(stri_sub(x, 1, -2))) return(TRUE)
+    head <- stringi::stri_startswith_fixed(x, '^')
+    tail <- stringi::stri_endswith_fixed(x, '$')
+    if(head && tail && !is_regex(stringi::stri_sub(x, 2, -2))) return(TRUE)
+    if(head && !is_regex(stringi::stri_sub(x, 2, -1))) return(TRUE)
+    if(tail && !is_regex(stringi::stri_sub(x, 1, -2))) return(TRUE)
     return(FALSE)
 }
 
