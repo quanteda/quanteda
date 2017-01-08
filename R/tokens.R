@@ -602,17 +602,18 @@ tokens_character <- function(txt, what, removeNumbers, removePunct, removeSymbol
 tokens_hashed_recompile <- function(x) {
 
     attrs_input <- attributes(x)
-    v_unique_index <- unique(unlist(x, use.names = FALSE))
+    v_unique_index <- sort(unique(unlist(x, use.names = FALSE)))
     
-    # change any 0s in the index to non-zeros - this is the fix for
+    # change any 0s in the index to 1s - this is the fix for
     # the code that assigns "" padding to 0 (issue #394)
+    # it can easily be sent back to C++ by removing the first type and subtracting
+    # 1 from every hash index value
     if (any(v_unique_index == 0)) {
         # add a padding type
-        types(x) <- c(types(x), "")
-        # map the 0s to a new code
-        v_unique_index[v_unique_index == 0] <- length(types(x))
-        x_temp <- lapply(unclass(x), 
-                         function(y) { y[y==0] <- length(types(x)); y })
+        types(x) <- c("", types(x))
+        # map the 0 to 1
+        v_unique_index <- v_unique_index + 1
+        x_temp <- lapply(unclass(x), function(y) y + 1 )
         x <- reassign_attributes(x_temp, x)
     }
     
@@ -657,7 +658,7 @@ types <- function(x) {
 }
 
 types.tokens <- function(x) {
-    stringi::stri_encode(attr(x, 'types'), "", "UTF-8")
+    attr(x, "types")
 }
 
 "types<-" <- function(x, value) {

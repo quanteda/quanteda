@@ -1,21 +1,21 @@
-
-
-#' find sequences of tokens
+#' find variable-length collocations with filtering
 #' 
-#' This function automatically identify sequences of words (contiguous collocations). 
-#' This algorithm is based on Blaheta and Johnson's “Unsupervised Learning of Multi-Word Verbs”.
-#' @param x tokens objects
-#' @param features features in sequences
+#' This function automatically identifies contiguous collocations consisting of
+#' variable-length term sequences whose frequency is unlikey to have occurred by
+#' chance.  The algorithm is based on Blaheta and Johnson's "Unsupervised 
+#' Learning of Multi-Word Verbs".
+#' @param x a \link{tokens} object
+#' @param features a regular expression for filtering the features to be located
+#'   in sequences
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param count_min minimum frequency of sequences
 #' @param nested collect nested sequences
 #' @examples 
-#' 
 #' toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
 #' toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 #' 
-#' # extracting multi-part nouns
+#' # extracting multi-part proper nouns (capitalized terms)
 #' seqs <- sequences(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE)
 #' head(seqs, 10)
 #' 
@@ -25,11 +25,20 @@
 #' 
 #' @keywords collocations
 #' @author Kohei Watanabe
-#' @references Blaheta, D., & Johnson, M. (2001). Unsupervised learning of
-#'   multi-word verbs. Presented at the ACLEACL Workshop on the Computational
-#'   Extraction, Analysis and Exploitation of Collocations.
+#' @references Blaheta, D., & Johnson, M. (2001). 
+#'   \href{http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf}{Unsupervised
+#'    learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
+#'   Computational Extraction, Analysis and Exploitation of Collocations.
 #' @export
 sequences <- function(x, features, valuetype = c("glob", "regex", "fixed"),
+                      case_insensitive = TRUE, count_min = 2, nested=TRUE) {
+    UseMethod("sequences")
+}
+
+#' @rdname sequences
+#' @noRd
+#' @export
+sequences.tokens <- function(x, features, valuetype = c("glob", "regex", "fixed"),
                       case_insensitive = TRUE, count_min = 2, nested=TRUE) {
     
     valuetype <- match.arg(valuetype)
@@ -50,7 +59,7 @@ sequences <- function(x, features, valuetype = c("glob", "regex", "fixed"),
     df$p <- 1 - stats::pnorm(df$z)
     df <- df[order(df$z, decreasing = TRUE),]
     class(df) <- c("sequences", class(df))
-    
+    rownames(df) <- NULL
     return(df)
 }
 

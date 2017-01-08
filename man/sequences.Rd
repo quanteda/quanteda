@@ -2,15 +2,16 @@
 % Please edit documentation in R/sequences.R
 \name{sequences}
 \alias{sequences}
-\title{find sequences of tokens}
+\title{find variable-length collocations with filtering}
 \usage{
 sequences(x, features, valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, count_min = 2, nested = TRUE)
 }
 \arguments{
-\item{x}{tokens objects}
+\item{x}{a \link{tokens} object}
 
-\item{features}{features in sequences}
+\item{features}{a regular expression for filtering the features to be located
+in sequences}
 
 \item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
@@ -23,15 +24,16 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 \item{nested}{collect nested sequences}
 }
 \description{
-This function automatically identify sequences of words (contiguous collocations). 
-This algorithm is based on Blaheta and Johnson's “Unsupervised Learning of Multi-Word Verbs”.
+This function automatically identifies contiguous collocations consisting of
+variable-length term sequences whose frequency is unlikey to have occurred by
+chance.  The algorithm is based on Blaheta and Johnson's "Unsupervised 
+Learning of Multi-Word Verbs".
 }
 \examples{
-
 toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
 toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 
-# extracting multi-part nouns
+# extracting multi-part proper nouns (capitalized terms)
 seqs <- sequences(toks, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", case_insensitive = FALSE)
 head(seqs, 10)
 
@@ -44,9 +46,10 @@ head(seqs2, 10)
 Kohei Watanabe
 }
 \references{
-Blaheta, D., & Johnson, M. (2001). Unsupervised learning of
-  multi-word verbs. Presented at the ACLEACL Workshop on the Computational
-  Extraction, Analysis and Exploitation of Collocations.
+Blaheta, D., & Johnson, M. (2001). 
+  \href{http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf}{Unsupervised
+   learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
+  Computational Extraction, Analysis and Exploitation of Collocations.
 }
 \keyword{collocations}
 
