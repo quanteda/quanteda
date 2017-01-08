@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>find sequences of tokens — sequences • quanteda</title>
+<title>find variable-length collocations with filtering — sequences • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,12 +77,14 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>find sequences of tokens</h1>
+    <h1>find variable-length collocations with filtering</h1>
     </div>
 
     
-    <p>This function automatically identify sequences of words (contiguous collocations). 
-This algorithm is based on Blaheta and Johnson&#39;s “Unsupervised Learning of Multi-Word Verbs”.</p>
+    <p>This function automatically identifies contiguous collocations consisting of
+variable-length term sequences whose frequency is unlikey to have occurred by
+chance.  The algorithm is based on Blaheta and Johnson&#39;s &quot;Unsupervised 
+Learning of Multi-Word Verbs&quot;.</p>
     
 
     <pre><span class='fu'>sequences</span>(<span class='no'>x</span>, <span class='no'>features</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
@@ -91,9 +93,10 @@ This algorithm is based on Blaheta and Johnson&#39;s “Unsupervised Learning of
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>tokens objects</dd>
+      <dd>a <a href='tokens.html'>tokens</a> object</dd>
       <dt>features</dt>
-      <dd>features in sequences</dd>
+      <dd>a regular expression for filtering the features to be located
+in sequences</dd>
       <dt>valuetype</dt>
       <dd>how to interpret keyword expressions: <code>&quot;glob&quot;</code> for 
 &quot;glob&quot;-style wildcard expressions; <code>&quot;regex&quot;</code> for regular expressions;
@@ -108,20 +111,20 @@ or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.htm
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Blaheta, D., &amp; Johnson, M. (2001). Unsupervised learning of
-  multi-word verbs. Presented at the ACLEACL Workshop on the Computational
-  Extraction, Analysis and Exploitation of Collocations.</p>
+    <p>Blaheta, D., &amp; Johnson, M. (2001). 
+  <a href = 'Unsupervised
+   learning of multi-word verbs'>http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf</a>. Presented at the ACLEACL Workshop on the 
+  Computational Extraction, Analysis and Exploitation of Collocations.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='corpus_segment.html'>corpus_segment</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"sentence"</span>))
+    <pre class="examples"><div class='input'><span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='corpus_segment.html'>corpus_segment</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"sentence"</span>))
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>toks</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"remove"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='co'># extracting multi-part nouns</span>
+<span class='co'># extracting multi-part proper nouns (capitalized terms)</span>
 <span class='no'>seqs</span> <span class='kw'>&lt;-</span> <span class='fu'>sequences</span>(<span class='no'>toks</span>, <span class='st'>"^([A-Z][a-z\\-]{2,})"</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>head</span>(<span class='no'>seqs</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;                sequence   lambda      sigma count length          z
-#&gt; 38        United States 4.918799 0.03386005   153      2 145.268492
+#&gt; 38        United States 4.912248 0.03397118   152      2 144.600475
 #&gt; 100  Federal Government 3.455271 0.07315512    32      2  47.232120
 #&gt; 170  General Government 2.460985 0.11068747    24      2  22.233638
 #&gt; 78  National Government 2.397005 0.12440066    11      2  19.268430
@@ -145,7 +148,7 @@ or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.htm
 <span class='co'># types can be any words</span>
 <span class='no'>seqs2</span> <span class='kw'>&lt;-</span> <span class='fu'>sequences</span>(<span class='no'>toks</span>, <span class='st'>"^([a-z]+)$"</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>count_min</span> <span class='kw'>=</span> <span class='fl'>10</span>)
 <span class='fu'>head</span>(<span class='no'>seqs2</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;              sequence   lambda      sigma count length        z p
-#&gt; 631           upon us 6.757748 0.01919282    20      2 352.0978 0
+#&gt; 631           upon us 6.806521 0.01873042    21      2 363.3939 0
 #&gt; 12556       good will 6.530191 0.02150380    14      2 303.6762 0
 #&gt; 7224    will continue 6.428101 0.02287065    10      2 281.0633 0
 #&gt; 13910 fellow citizens 6.300411 0.02396993    55      2 262.8464 0

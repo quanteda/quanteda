@@ -100,6 +100,7 @@ reference:
   contents:
     - collocations
     - is.collocations
+    - sequences
     - is.kwic
     - kwic
 - title: Text plot functions
@@ -113,6 +114,7 @@ reference:
     - textmodel_NB
     - textmodel_wordfish
     - textmodel_wordscores
+    - textmodel_wordshoal
 - title: Utility functions
   desc: R-like functions to return counts and object information.
   contents:
