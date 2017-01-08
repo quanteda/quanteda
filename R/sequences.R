@@ -38,8 +38,8 @@ sequences <- function(x, features, valuetype = c("glob", "regex", "fixed"),
     attrs_org <- attributes(x)
     
     types <- types(x)
-    features <- as.list(unlist(features, use.names = FALSE)) # does not accpet sequences
-    features_id <- regex2id(features, types, valuetype, case_insensitive, FALSE)
+    features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
+    features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
 
     seqs <- qutd_cpp_sequences(x, features_id, count_min, nested)
     seqs$length <- lengths(seqs$sequence)
