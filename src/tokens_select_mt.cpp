@@ -140,8 +140,8 @@ List qatd_cpp_tokens_select(List texts_,
     }
     #endif
     // dev::stop_timer("Token select", timer);
-    
-    return as_list(output);
+    ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
+    return texts_list;
 }
 
 /***R

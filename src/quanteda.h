@@ -49,7 +49,7 @@ namespace quanteda{
         }
        return false;
     }
-
+    /*
     inline List as_list(Texts &texts, bool sort = false){
         List list(texts.size());
         for (std::size_t h = 0; h < texts.size(); h++) {
@@ -66,6 +66,7 @@ namespace quanteda{
         }
         return list;
     }
+    */
 }
 
 namespace ngrams {

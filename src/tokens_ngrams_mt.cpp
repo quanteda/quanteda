@@ -171,10 +171,9 @@ List qatd_cpp_tokens_ngrams(List texts_,
     
     // Return IDs as attribute
     //ListOf<IntegerVector> texts_ngram = Rcpp::wrap(output);
-    List texts_ngram = as_list(output);
-    texts_ngram.attr("types") = types_ngram;
-
-    return texts_ngram;
+    ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
+    texts_list.attr("types") = types_ngram;
+    return texts_list;
 
 }
 

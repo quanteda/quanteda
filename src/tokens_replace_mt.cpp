@@ -93,8 +93,8 @@ List qatd_cpp_tokens_replace(List texts_,
     }
     #endif
     // dev::stop_timer("Token replace", timer);
-    
-    return as_list(output);
+    ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
+    return texts_list;
 }
 
 /***R

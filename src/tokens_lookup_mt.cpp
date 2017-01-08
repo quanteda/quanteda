@@ -30,6 +30,7 @@ Text lookup(Text tokens,
             }
         }
     }
+    std::sort(keys.begin(), keys.end()); // sort keys as order is system dependent
     return keys;
 }
 
@@ -97,8 +98,8 @@ List qatd_cpp_tokens_lookup(List texts_,
     }
     #endif
     // dev::stop_timer("Dictionary lookup", timer);
-    
-    return as_list(output, true);
+    ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
+    return texts_list;
 }
 
 /***R

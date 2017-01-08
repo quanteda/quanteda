@@ -89,15 +89,17 @@ List qatd_cpp_tokens_detect(List texts_,
     }
     #endif
     // dev::stop_timer("Dictionary detect", timer);
-    
-    return as_list(output);
+    ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
+    return texts_list;
 }
 
 /***R
 
-toks <- list(rep(1:10, 1), rep(5:15, 1))
+toks <- rep(list(rep(1:10, 10), rep(5:15, 10)), 1000)
 dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 
-qatd_cpp_tokens_detect(toks, dict)
-
+microbenchmark::microbenchmark(
+out=qatd_cpp_tokens_detect(toks, dict),
+times=1000
+)
 */
