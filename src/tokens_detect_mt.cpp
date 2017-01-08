@@ -43,7 +43,7 @@ struct detect_mt : public Worker{
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        for (size_t h = begin; h < end; h++){
+        for (std::size_t h = begin; h < end; h++){
             output[h] = detect(input[h], span_max, set_words);
         }
     }
@@ -84,7 +84,7 @@ List qatd_cpp_tokens_detect(List texts_,
     detect_mt detect_mt(input, output, span_max, set_words);
     parallelFor(0, input.size(), detect_mt);
     #else
-    for (size_t h = 0; h < input.size(); h++){
+    for (std::size_t h = 0; h < input.size(); h++){
         output[h] = detect(input[h], span_max, set_words);
     }
     #endif
