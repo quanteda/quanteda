@@ -37,10 +37,7 @@ tokens_lookup <- function(x, dictionary,
                           exclusive = TRUE,
                           verbose = FALSE) {
     
-    if (!is.tokens(x)) stop("x must be a tokens class object")
-    
     valuetype <- match.arg(valuetype)
-
     names_org <- names(x)
     attrs_org <- attributes(x)
     
@@ -54,10 +51,9 @@ tokens_lookup <- function(x, dictionary,
         message('Registering ', length(unlist(dictionary)), ' entiries in the dictionary...');
     for (h in 1:length(dictionary)) {
         entries <- stringi::stri_split_fixed(dictionary[[h]], concatenator)
-        entries_fixed <- regex2fixed5(entries, types, valuetype, case_insensitive, index) # convert glob or regex to fixed
-        if (length(entries_fixed) == 0) next
-        entries_id <- c(entries_id, lapply(entries_fixed, function(x) fastmatch::fmatch(x, types)))
-        keys_id <- c(keys_id, rep(h, length(entries_fixed)))
+        entries_temp <- regex2id(entries, types, valuetype, case_insensitive, index)
+        entries_id <- c(entries_id, entries_temp)
+        keys_id <- c(keys_id, rep(h, length(entries_temp)))
     }
     if (verbose) 
         message('Searching ', length(entries_id), ' types of features...')

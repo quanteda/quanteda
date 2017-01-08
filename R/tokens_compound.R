@@ -63,8 +63,6 @@ tokens_compound.tokens <- function(x, sequences,
     
     valuetype <- match.arg(valuetype)
     sequences <- sequence2list(sequences)
-    
-    # Initialize
     seqs <- as.list(sequences)
     seqs <- seqs[lengths(seqs) > 1] # drop single words
     valuetype <- match.arg(valuetype)
@@ -74,18 +72,16 @@ tokens_compound.tokens <- function(x, sequences,
     types <- types(x)
     
     # Convert glob or regex to fixed
-    seqs_fixed <- regex2fixed5(seqs, types, valuetype, case_insensitive)
-    if(length(seqs_fixed) == 0) return(x) # do nothing
+    seqs_id <- regex2id(seqs, types, valuetype, case_insensitive)
+    if(length(seqs_id) == 0) return(x) # do nothing
     
     # Make new types
-    seqs_id <- lapply(seqs_fixed, function(y) fastmatch::fmatch(y, types))
-    seqs_type <- sapply(seqs_fixed, paste0, collapse = concatenator)
+    seqs_type <- sapply(seqs_id, function(y) stringi::stri_c(types[y], collapse = concatenator))
     
     # Assign IDs to new types
     types_id <- match(seqs_type, types)
     types_new <- seqs_type[is.na(types_id)]
     types_id[is.na(types_id)] <- seq(length(types) + 1, by=1, length.out=length(types_new))
-
     x <- qatd_cpp_tokens_replace(x, seqs_id, types_id)
     
     names(x) <- names_org
