@@ -1,9 +1,8 @@
-# This function converts regex to fixed patterns. This is one of the coner strones of 
-# the new artchitecture, but not yet really fast. Performance improvement is needed.
-
-# @param regex regular expression
+# @param regex a list of regular expression
 # @param types unique types of tokens
 # @param case_insensitive case sensitivity
+# @param If TRUE, index is constructed automatically. It also accept index constructed 
+#        by index_regex(). 
 #
 # regex <- list(c('^a$', '^b'), c('c'), c('d'))
 # types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
@@ -16,6 +15,13 @@ regex2fixed <- function(regex, types, valuetype, case_insensitive = FALSE, index
     fixed <- lapply(id, function(x) types[x])
     return(fixed)
 }
+
+# This function converts regex to type IDs. This is one of the coner strones of 
+# the new artchitecture, but not yet really fast. Performance improvement is needed.
+# @params the same as regex2fixed()
+# regex <- list(c('^a$', '^b'), c('c'), c('d'))
+# types <- c('A', 'AA', 'B', 'BB', 'BBB', 'C', 'CC')
+# regex2id(regex, types, 'regex', case_insensitive=TRUE)
 
 regex2id <- function(regex, types, valuetype, case_insensitive = FALSE, index = TRUE) {
     
@@ -69,8 +75,12 @@ regex2id <- function(regex, types, valuetype, case_insensitive = FALSE, index = 
     return(unique(id))
 }
 
-
-# This function subset types avoiding expensive full regular expression matching
+# This is an internal function for regex2id().
+# This function subset types avoiding expensive full regular expression matching.
+# @param regex a list of regular expression
+# @param types_search lowercase types when case_insensitive=TRUE
+# @param exact TRUE, if valuetype=fixed
+# @param index index is used to find types without sequential search
 select_types <- function (regex, types_search, exact, index){
 
 
@@ -107,7 +117,7 @@ select_types <- function (regex, types_search, exact, index){
 }
 
 
-
+# This is an internal function for regex2id().
 # This function construct an index of regex patters of ^xxxx, xxxx$ and ^xxxx$ 
 # to avoide expensive sequential search by stri_detect_regex. len_max should be obtained 
 # from the longest regex queries to limit the size of the index.
@@ -148,6 +158,7 @@ index_regex <- function(types, valuetype, case_insensitive, len_max){
     return(index)
 }
 
+# This is an internal function for select_types().
 search_index <- function(key, index){
     index[[fastmatch::fmatch(key, attr(index, 'key'))]] # use fmatch instead of names for quick access
 }
@@ -172,16 +183,18 @@ expand <- function(elem){
     return(comb)
 }
 
-
+# This is an internal function for select_types(). 
 # This function checks if a string is regular expression
 is_regex <- function(x){
     any(stringi::stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
 }
 
+# This is an internal function for select_types().
 escape_regex <- function(x){
     stringi::stri_replace_all_regex(x, "([.()^\\{\\}+$*\\[\\]\\\\])", "\\\\$1")
 }
 
+# This is an internal function for select_types().
 is_indexed <- function(x){
     head <- stringi::stri_startswith_fixed(x, '^')
     tail <- stringi::stri_endswith_fixed(x, '$')
