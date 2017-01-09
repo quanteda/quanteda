@@ -24,7 +24,7 @@
 #'   \code{\link{dfm_trim}}.
 #' @return A dfm or fcm after the feature selection has been applied.
 #'   
-#'   When \code{features} is a \link{dfm-class} object, then the returned object
+#'   When \code{features} is a \link{dfm} object, then the returned object
 #'   will be identical in its feature set to the dfm supplied as the 
 #'   \code{features} argument.  This means that any features in \code{x} not in 
 #'   \code{features} will be discarded, and that any features in found in the 

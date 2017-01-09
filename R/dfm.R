@@ -51,7 +51,7 @@
 #' @export
 #' @name dfm
 #' @keywords dfm
-#' @seealso  \code{\link{dfm_select}}
+#' @seealso  \code{\link{dfm_select}}, \link{dfm-class}
 #' @examples
 #' ## for a corpus
 #' 
