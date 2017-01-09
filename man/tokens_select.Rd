@@ -2,15 +2,12 @@
 % Please edit documentation in R/tokens_select.R
 \name{tokens_select}
 \alias{tokens_remove}
-\alias{tokens_remove_padding}
 \alias{tokens_select}
 \title{select or remove tokens from a tokens object}
 \usage{
 tokens_select(x, features, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
   padding = FALSE, verbose = FALSE)
-
-tokens_remove_padding(x)
 
 tokens_remove(x, features, valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, padding = FALSE, verbose = FALSE)
@@ -48,8 +45,6 @@ usage for \code{tokens_remove} will be to eliminate stop words from a
 text or text-based object, while the most common use of \code{tokens_select} will
 be to select only positive features from a list of regular 
 expressions, including a dictionary.
-
-remove padding from a tokens object
 }
 \examples{
 ## for tokenized texts 
