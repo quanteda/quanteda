@@ -123,18 +123,24 @@ test_that("test `ngrams` with padding = TRUE: #428", {
 
 test_that("test dfm with padded tokens, padding = FALSE", {
     toks <- tokens(c(doc1 = 'a b c d e f g',
-                     doc2 = 'a b c g'))
+                     doc2 = 'a b c g',
+                     doc3 = ''))
     toks3 <- tokens_remove(toks, c('b', 'e'), padding = FALSE)
     expect_equivalent(as.matrix(dfm(toks3)),
-                      matrix(c(1, 1, 1, 1, 1, 0, 1, 0, 1, 1), nrow = 2))
+                      matrix(c(1, 1, 1, 1, 1, 
+                               1, 1, 0, 0, 1,
+                               0, 0, 0, 0, 0), nrow = 3, byrow = TRUE))
 })
 
 test_that("test dfm with padded tokens, padding = TRUE", {
     toks <- tokens(c(doc1 = 'a b c d e f g',
-                     doc2 = 'a b c g'))
+                     doc2 = 'a b c g',
+                     doc3 = ''))
     toks3 <- tokens_remove(toks, c('b', 'e'), padding = TRUE)
     expect_equivalent(as.matrix(dfm(toks3)),
-                      matrix(c(2, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1), nrow = 2))
+                      matrix(c(2, 1, 1, 1, 1, 1, 
+                               1, 1, 1, 0, 0, 1, 
+                               0, 0, 0, 0, 0, 0), nrow = 3, byrow = TRUE))
 })
 
 test_that("test verious functions with padded tokens, padding = FALSE", {
