@@ -139,6 +139,20 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
 }
 
 #' @rdname tokens_select
+#' @noRd
+#' @importFrom RcppParallel RcppParallelLibs
+#' @export
+tokens_remove_padding <- function(x){
+    names_org <- names(x)
+    attrs_org <- attributes(x)
+    x <- qatd_cpp_tokens_select(x, 0, 2, FALSE)
+    names(x) <- names_org
+    attributes(x) <- attrs_org
+    attr(x, 'padding') <- FALSE
+    tokens_hashed_recompile(x)
+}
+
+#' @rdname tokens_select
 #' @export
 #' @examples
 #' ## for tokenized texts 
