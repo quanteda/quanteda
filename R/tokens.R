@@ -423,12 +423,8 @@ print.tokens <- function(x, ...) {
 #' toks[c(1,3)]
 "[.tokens" <- function(x, i, ...) {
     tokens <- unclass(x)[i]
+    if(length(tokens) == 1 && is.null(tokens[[1]])) return(tokens)
     tokens <- reassign_attributes(tokens, x, exceptions = 'names')
-    if(is.character(i)){
-        names(tokens) <- i # subsetting by name
-    }else{
-        names(tokens) <- names(x)[i] # subsetting by index
-    }
     tokens_hashed_recompile(tokens)
 }
 
