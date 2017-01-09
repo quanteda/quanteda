@@ -103,7 +103,7 @@ test_that("test `ngrams` with padding = FALSE: #428", {
     expect_equal(as.list(tokens_ngrams(toks2, n = 3)),
                  list(doc1 = c("a_c_d", "c_d_f", "d_f_g")))
     expect_equal(as.list(tokens_ngrams(toks2, n = 2, skip = 2)),
-                 list(doc1 = c("a_d", "b_e", "c_f", "d_g")))
+                 list(doc1 = c("a_f", "c_g")))
 })
 
 test_that("test `ngrams` with padding = TRUE: #428", {
@@ -116,6 +116,23 @@ test_that("test `ngrams` with padding = TRUE: #428", {
                  list(doc1 = character(0)))
     expect_equal(as.list(tokens_ngrams(toks3, n = 2, skip = 2)),
                  list(doc1 = c("a_d", "c_f", "d_g")))
+})
+
+test_that("test dfm with padded tokens, padding = FALSE", {
+    toks <- tokens(c(doc1 = 'a b c d e f g',
+                     doc2 = 'a b c g'))
+    toks3 <- tokens_remove(toks, c('b', 'e'), padding = FALSE)
+    expect_equivalent(as.matrix(dfm(toks3)),
+                      matrix(c(1, 1, 1, 1, 1, 0, 1, 0, 1, 1), nrow = 2))
+})
+
+test_that("test dfm with padded tokens, padding = TRUE", {
+    toks <- tokens(c(doc1 = 'a b c d e f g',
+                     doc2 = 'a b c g'))
+    toks3 <- tokens_remove(toks, c('b', 'e'), padding = TRUE)
+    expect_equivalent(as.matrix(dfm(toks3)),
+                      matrix(c(1, 1, 1, 1, 1, 0, 1, 0, 1, 1), nrow = 2))
+    ## and there should be a feature called "" with counts = 2, 1
 })
 
 
