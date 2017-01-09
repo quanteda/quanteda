@@ -121,13 +121,12 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     types <- types(x)
     features <- as.list(features)
     features_id <- regex2id(features, types, valuetype, case_insensitive)
+    
+    if ("" %in% features) features_id <- c(features_id, list(0)) # append padding index
 
     if (selection == 'keep') {
         x <- qatd_cpp_tokens_select(x, features_id, 1, padding)
     } else {
-        # special handling to remove "" if that is in features
-        if (attr(x, "padding") && "" %in% features) 
-            x <- tokens_remove_padding(x)
         x <- qatd_cpp_tokens_select(x, features_id, 2, padding)
     }
     
@@ -135,20 +134,6 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     attributes(x) <- attrs_org
     attr(x, 'padding') <- (padding && (0 %in% unlist(x, use.names = FALSE)))
     
-    tokens_hashed_recompile(x)
-}
-
-
-#' remove padding from a tokens object
-#' 
-#' Remove the 0s from a tokens object, if they exist.
-#' @keywords internal tokens
-#' @importFrom RcppParallel RcppParallelLibs
-tokens_remove_padding <- function(x) {
-    attrs_org <- attributes(x)
-    x <- qatd_cpp_tokens_select(x, 0, 2, FALSE)
-    attributes(x) <- attrs_org
-    attr(x, 'padding') <- FALSE
     tokens_hashed_recompile(x)
 }
 
