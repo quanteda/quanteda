@@ -77,8 +77,8 @@ test_that("tokens indexing works as expected", {
     expect_equal(as.list(toks[2]), list(d2 = c("four", "five", "six")))
     
     # issue #370
-    expect_equal(attr((toks[1]), "types"), c("one", "two", "three"))
-    expect_equal(attr((toks[2]), "types"), c("four", "five", "six"))
+    expect_equal(attr(toks[1], "types"), c("one", "two", "three"))
+    expect_equal(attr(toks[2], "types"), c("four", "five", "six"))
 })
 
 test_that("tokens_hashed_recompile combine duplicates is working", {

@@ -394,17 +394,11 @@ tokens_hash <- function(x, types, ...) {
 #' @export
 as.tokenizedTexts.tokens <- function(x, ...) {
     
-    attrs_org <- attributes(x)
-    types <- types(x)
-    class(x) <- "list"
-    
-    # Desrialize tokens
-    x_chr <- lapply(x, function(y) types[y])
-    
-    attributes(x_chr) <- attrs_org
-    attr(x_chr, "types") <- NULL  # remove types attribute
-    class(x_chr) <- c("tokenizedTexts", "list")
-    return(x_chr)
+    types <- c("", types(x))
+    tokens <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding 
+    tokens <- reassign_attributes(tokens, x, exceptions = 'class')
+    class(tokens) <- c("tokenizedTexts", "list")
+    return(tokens)
 }
 
 #' print a tokens objects
@@ -417,7 +411,8 @@ as.tokenizedTexts.tokens <- function(x, ...) {
 print.tokens <- function(x, ...) {
     cat(class(x)[1], " from ", ndoc(x), " document", 
         ifelse(ndoc(x) > 1, "s", ""), ".\n", sep = "")
-    x <- lapply(unclass(x), function(y) types(x)[y])
+    types <- c("", types(x))
+    x <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding 
     class(x) <- "listof"
     print(x, ...)
 }
@@ -431,9 +426,14 @@ print.tokens <- function(x, ...) {
 #' str(toks)
 #' toks[c(1,3)]
 "[.tokens" <- function(x, i, ...) {
-    new_tokens <- unclass(x)[i]
-    new_tokens <- reassign_attributes(new_tokens, x, exceptions = "names")
-    tokens_hashed_recompile(new_tokens)
+    tokens <- unclass(x)[i]
+    tokens <- reassign_attributes(tokens, x, exceptions = 'names')
+    if(is.character(i)){
+        names(tokens) <- i # subsetting by name
+    }else{
+        names(tokens) <- names(x)[i] # subsetting by index
+    }
+    tokens_hashed_recompile(tokens)
 }
 
 #' @method "[[" tokens
@@ -444,7 +444,8 @@ print.tokens <- function(x, ...) {
 #' str(toks)
 #' toks[[2]]
 "[[.tokens" <- function(x, i, ...) {
-    types(x)[unclass(x)[[i]]]
+    types <- c("", types(x))
+    types[unclass(x)[[i]] + 1] # shift index to show padding 
 }
 
 #' @method "$" tokens
@@ -595,53 +596,35 @@ tokens_character <- function(txt, what, removeNumbers, removePunct, removeSymbol
 # version of the type already exists in the hash table.
 # @param x the \link[=tokens_hash]{tokenizedTexts} object to be recompiled
 # @examples 
-# toksh <- tokens_hash(tokenize(c(one = "a b c d A B C D",
+# toks <- tokens_hash(tokenize(c(one = "a b c d A B C D",
 #                                two = "A B C d")))
-# vocabulary(toksh) <- toLower(vocabulary(toksh))
-# tokens_hashed_recompile(toksh)
+# tokens_hashed_recompile(toks)
 tokens_hashed_recompile <- function(x) {
-
+    
     attrs_input <- attributes(x)
-    v_unique_index <- sort(unique(unlist(x, use.names = FALSE)))
+    index_unique <- unique(unlist(x, use.names = FALSE))
+    index_unique <- index_unique[index_unique != 0] # exclude padding
     
-    # change any 0s in the index to 1s - this is the fix for
-    # the code that assigns "" padding to 0 (issue #394)
-    # it can easily be sent back to C++ by removing the first type and subtracting
-    # 1 from every hash index value
-    if (any(v_unique_index == 0)) {
-        # add a padding type
-        types(x) <- c("", types(x))
-        # map the 0 to 1
-        v_unique_index <- v_unique_index + 1
-        x_temp <- lapply(unclass(x), function(y) y + 1 )
-        x <- reassign_attributes(x_temp, x)
+    # Remove gaps in the type index, if any, remap index
+    if (any(is.na(match(seq_len(length(types(x))), index_unique)))) { 
+        types_new <- types(x)[index_unique]
+        index_new <- c(0, seq_along(index_unique)) # padding index is zero but not in types
+        index_unique <- c(0, index_unique) # padding index is zero but not in types
+        x <- lapply(unclass(x), function(y) index_new[fastmatch::fmatch(y, index_unique)]) # shift index for padding
+        attributes(x) <- attrs_input
+        types(x) <- types_new
     }
     
-    # remove gaps in the type index, if any, remap index
-    if (any(is.na(match(seq_len(length(types(x))), 
-                        v_unique_index)))) { 
-        # v_unique_index <- unique(unlist(x, use.names = FALSE))
-        v_new <- types(x)[v_unique_index]
-        new_types <- seq_along(v_unique_index)
-        x_new <- lapply(unclass(x), function(y) new_types[fastmatch::fmatch(y, v_unique_index)])
-        attributes(x_new) <- attrs_input
-        types(x_new) <- v_new
-        attrs_input <- attributes(x_new)
-        x <- x_new
-    }
-    
-    # reindex duplicates, if any
+    # Reindex duplicates, if any
     if (any(duplicated(types(x)))) {
-        v <- types(x)
-        v_unique <- unique(v)
-        index_mapping <- match(v, v_unique)
-        x_new <- lapply(unclass(x), function(y) index_mapping[y])
-        attributes(x_new) <- attrs_input
-        types(x_new) <- v_unique
-        attrs_input <- attributes(x_new)
-        x <- x_new
+        types <- types(x)
+        types_unique <- unique(types)
+        index_mapping <- match(types, types_unique)
+        index_mapping <- c(0, index_mapping) # padding index is zero but not in types
+        x <- lapply(unclass(x), function(y) index_mapping[y + 1]) # shift index for padding
+        attributes(x) <- attrs_input
+        types(x) <- types_unique
     }
-    
     return(x)
 }
 
@@ -666,12 +649,10 @@ types.tokens <- function(x) {
 }
 
 "types<-.tokens" <- function(x, value) {
-    # if (length(unique(unlist(get_tokens(x)))) != length(value))
-    #     stop("replacement value must equal unique elements of tokens")
     if (!is.character(value))
         stop("replacement value must be character")
     attr(x, "types") <- stringi::stri_encode(value, "", "UTF-8")
-    x
+    return(x)
 }
 
 
