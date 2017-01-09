@@ -144,7 +144,7 @@ test_that("test verious functions with padded tokens, padding = FALSE", {
                       c("A", "c", "d", "f", "g", "a", "c", "g"))
 })
 
-test_that("test verious functions  with padded tokens, padding = TRUE", {
+test_that("test verious functions with padded tokens, padding = TRUE", {
     toks <- tokens(c(doc1 = 'A b c d E f g',
                      doc2 = 'a b c g'))
     toks3 <- tokens_remove(toks, c('b', 'e'), padding = TRUE)
