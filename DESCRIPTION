@@ -39,7 +39,8 @@ Imports:
     RcppParallel,
     ca,
     stringi,
-    fastmatch
+    fastmatch,
+    ggplot2 (>= 2.2.0)
 Remotes: kbenoit/readtext
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo
 Suggests:
@@ -52,7 +53,6 @@ Suggests:
     XML,
     testthat,
     RColorBrewer,
-    ggplot2 (>= 2.2.0),
     xtable,
     DT
 URL: http://github.com/kbenoit/quanteda
