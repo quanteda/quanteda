@@ -89,4 +89,27 @@ test_that("tokens_select reduces the types appropriately", {
                  c("is", "this", "sample"))
 })
 
+test_that("tokens_remove works on \"\" with tokens containing padding", {
+    toks <- tokens(c(doc1 = 'a b c d e f g'))
+    toks <- tokens_remove(toks, c('b', 'e'), padding = TRUE)
+    expect_equal(as.character(tokens_remove(toks, c("a", "g"))),
+                 c("", "c", "d", "", "f"))
+    expect_equal(as.character(tokens_remove(toks, "")),
+                 c("a", "c", "d", "f", "g"))
+})
+
+test_that("tokens_select works on \"\" with tokens containing padding", {
+    toks <- tokens(c(doc1 = 'a b c d e f g'))
+    toks <- tokens_remove(toks, c('b', 'e'), padding = TRUE)
+    expect_equal(as.character(tokens_select(toks, c("a", "b", ""))),
+                 c("a", "", ""))
+})
+
+test_that("fcm works on tokens containing padding", {
+    toks <- tokens(c(doc1 = 'a b c d e f g',
+                     doc2 = "f a c c f g b"))
+    toks <- tokens_remove(toks, c('b', 'e'), padding = TRUE)
+    expect_equal(featnames(fcm(toks)), c("", "a", "c", "d", "f", "g"))
+})
+
 

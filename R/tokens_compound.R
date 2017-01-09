@@ -88,7 +88,7 @@ tokens_compound.tokens <- function(x, sequences,
     attributes(x) <- attrs_org
     types(x) <- c(types, types_new)
     
-    return(x)
+    tokens_hashed_recompile(x)
 }
 
 
