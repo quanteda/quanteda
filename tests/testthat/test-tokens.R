@@ -133,6 +133,28 @@ test_that("test dfm with padded tokens, padding = TRUE", {
                       matrix(c(2, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1), nrow = 2))
 })
 
+test_that("test verious functions with padded tokens, padding = FALSE", {
+    toks <- tokens(c(doc1 = 'A b c d E f g',
+                     doc2 = 'a b c g'))
+    toks3 <- tokens_remove(toks, c('b', 'e'), padding = FALSE)
+    expect_equivalent(nfeature(toks3), 6)
+    expect_equivalent(nfeature(toLower(toks3)), 5)
+    expect_equivalent(nfeature(toUpper(toks3)), 5)
+    expect_equivalent(as.character(toks3),
+                      c("A", "c", "d", "f", "g", "a", "c", "g"))
+})
+
+test_that("test verious functions  with padded tokens, padding = TRUE", {
+    toks <- tokens(c(doc1 = 'A b c d E f g',
+                     doc2 = 'a b c g'))
+    toks3 <- tokens_remove(toks, c('b', 'e'), padding = TRUE)
+    expect_equivalent(nfeature(toks3), 7)
+    expect_equivalent(nfeature(toLower(toks3)), 6)
+    expect_equivalent(nfeature(toUpper(toks3)), 6)
+    expect_equivalent(as.character(toks3),
+                      c("A", "", "c", "d", "", "f", "g", "a", "", "c", "g"))
+})
+
 
 #' # coerce an object into a tokens class
 #' as.tokens(toks)
