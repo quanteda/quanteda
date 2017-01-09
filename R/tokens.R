@@ -596,7 +596,9 @@ tokens_hashed_recompile <- function(x) {
     
     attrs_input <- attributes(x)
     index_unique <- unique(unlist(x, use.names = FALSE))
-    index_unique <- index_unique[index_unique != 0] # exclude padding
+    padding <- (index_unique == 0)
+    attrs_input$padding <- any(padding) # add padding flag
+    index_unique <- index_unique[!padding] # exclude padding
     
     # Remove gaps in the type index, if any, remap index
     if (any(is.na(match(seq_len(length(types(x))), index_unique)))) { 
@@ -618,9 +620,6 @@ tokens_hashed_recompile <- function(x) {
         attributes(x) <- attrs_input
         types(x) <- types_unique
     }
-    
-    # Give padding flag
-    attr(x, 'padding') <- (0 %in% index_unique)
     
     return(x)
 }
