@@ -54,9 +54,8 @@ segment.corpus <- function(x, ...) {
 #' @return A corpus of segmented texts.
 #' @note Does not currently record document segments if segmenting a multi-text 
 #'   corpus into smaller units. For this, use \link{changeunits} instead.
-#' @details Tokens are delimited by separators.  For sentences, the delimiter 
-#'   can be defined by the user.  The default for sentences includes \code{.}, 
-#'   \code{!}, \code{?}, plus \code{;} and \code{:}.
+#' @details Tokens are delimited by separators.  For tokens and sentences, these
+#' are determined by the tokenizer behaviour in \code{\link{tokens}}.
 #'   
 #'   For paragraphs, the default is two carriage returns, although this could be
 #'   changed to a single carriage return by changing the value of 
