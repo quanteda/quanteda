@@ -36,6 +36,8 @@ features, for instance if a window of adjacency needs to be computed.}
 
 \item{verbose}{if \code{TRUE} print messages about how many features were 
 removed}
+
+\item{x}{\link{tokens} object whose token elements will be selected}
 }
 \value{
 a tokens object with features removed
