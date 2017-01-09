@@ -78,7 +78,7 @@ nfeature.dfm <- function(x) {
 nfeature.tokens <- function(x) {
     if (0 %in% unlist(x, use.names = FALSE)) {
         length(types(x)) + 1
-    }else{
+    } else {
         length(types(x))
     }
 }
