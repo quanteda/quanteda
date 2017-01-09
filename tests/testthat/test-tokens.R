@@ -94,6 +94,30 @@ test_that("tokens_hashed_recompile combine duplicates is working", {
     
 })
 
+test_that("test `ngrams` with padding = FALSE: #428", {
+    toks <- tokens(c(doc1 = 'a b c d e f g'))
+    toks2 <- tokens_remove(toks, c('b', 'e'), padding = FALSE)
+    
+    expect_equal(as.list(tokens_ngrams(toks2, n = 2)),
+                 list(doc1 = c("a_c", "c_d", "d_f", "f_g")))
+    expect_equal(as.list(tokens_ngrams(toks2, n = 3)),
+                 list(doc1 = c("a_c_d", "c_d_f", "d_f_g")))
+    expect_equal(as.list(tokens_ngrams(toks2, n = 2, skip = 2)),
+                 list(doc1 = c("a_d", "b_e", "c_f", "d_g")))
+})
+
+test_that("test `ngrams` with padding = TRUE: #428", {
+    toks <- tokens(c(doc1 = 'a b c d e f g'))
+    toks3 <- tokens_remove(toks, c('b', 'e'), padding = TRUE)
+    
+    expect_equal(as.list(tokens_ngrams(toks3, n = 2)),
+                 list(doc1 = c("c_d", "f_g")))
+    expect_equal(as.list(tokens_ngrams(toks3, n = 3)),
+                 list(doc1 = character(0)))
+    expect_equal(as.list(tokens_ngrams(toks3, n = 2, skip = 2)),
+                 list(doc1 = c("a_d", "c_f", "d_g")))
+})
+
 
 #' # coerce an object into a tokens class
 #' as.tokens(toks)
