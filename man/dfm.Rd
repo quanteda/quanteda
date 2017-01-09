@@ -132,7 +132,7 @@ dfm(testTweets, select = "#*", removeTwitter = FALSE)  # keep only hashtags
 dfm(testTweets, select = "^#.*$", valuetype = "regex", removeTwitter = FALSE)
 }
 \seealso{
-\code{\link{dfm_select}}
+\code{\link{dfm_select}}, \link{dfm-class}
 }
 \keyword{dfm}
 

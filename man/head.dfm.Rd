@@ -22,11 +22,11 @@ will contain the first \code{ncol} features}
 \item{...}{additional arguments passed to other functions}
 }
 \value{
-A \link{dfm-class} class object corresponding to the subset defined 
+A \link{dfm} class object corresponding to the subset defined 
   by \code{n} and \code{ncol}.
 }
 \description{
-For a \link{dfm-class} object, returns the first or last \code{n} documents 
+For a \link{dfm} object, returns the first or last \code{n} documents 
 and first \code{ncol} features for inspection.
 }
 \examples{

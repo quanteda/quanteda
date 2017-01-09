@@ -231,6 +231,7 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
 #' @author Adam Obeng
 #' @importFrom graphics plot segments axis points par text
 #' @importFrom grDevices rgb
+#' @keywords plot
 #' @examples 
 #' postwar <- dfm_trim(dfm(data_corpus_inaugural[41:57]), min_count = 5, min_docfreq = 2)
 #' mod <- textmodel(postwar, model = "wordfish")

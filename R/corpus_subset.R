@@ -13,6 +13,7 @@
 #' @return corpus object, with a subset of documents (and docvars) selected according to arguments
 #' @export
 #' @seealso \code{\link{subset.data.frame}}
+#' @keywords corpus
 #' @examples
 #' summary(corpus_subset(data_corpus_inaugural, Year>1980))
 #' summary(corpus_subset(data_corpus_inaugural, Year>1930 & President=="Roosevelt", select=Year))

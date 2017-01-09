@@ -8,7 +8,7 @@ dfm_trim(x, min_count = 1, min_docfreq = 1, max_count = NULL,
   max_docfreq = NULL, sparsity = NULL, verbose = TRUE)
 }
 \arguments{
-\item{x}{document-feature matrix of \link{dfm-class}}
+\item{x}{a \link{dfm} object}
 
 \item{min_count}{minimum count or fraction of features across all documents,
 below which features will be removed}
@@ -28,7 +28,7 @@ tm}
 \item{verbose}{print messages}
 }
 \value{
-A \link{dfm-class} object reduced in features (with the same number 
+A \link{dfm} reduced in features (with the same number 
   of documents)
 }
 \description{
@@ -38,7 +38,7 @@ terms of maximum frequencies.  Setting a combination of minimum and maximum
 frequencies will select features based on a range.
 }
 \note{
-Trimming a \link{dfm-class} object is an operation based on the values 
+Trimming a \link{dfm} object is an operation based on the values 
   in the document-feature \emph{matrix}.  To select subsets of a dfm based on
   attributes of the features themselves -- such as selecting features 
   matching a regular expression, or removing features matching a stopword 

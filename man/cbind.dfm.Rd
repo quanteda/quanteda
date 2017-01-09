@@ -14,7 +14,7 @@
 row-wise (\code{rbind}) to the first}
 }
 \description{
-Take a sequence of \link{dfm-class} objects and combine by columns or
+Take a sequence of \link{dfm} objects and combine by columns or
 rows, returning a dfm with the combined documents or features, respectively.
 }
 \details{

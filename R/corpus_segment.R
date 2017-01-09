@@ -64,6 +64,7 @@ segment.corpus <- function(x, ...) {
 #'   document was created in a word processor, for instance, and the lines were 
 #'   wrapped in the window rather than being hard-wrapped with a newline 
 #'   character.)
+#' @keywords corpus
 #' @examples
 #' testCorpus <- corpus(c("##INTRO This is the introduction.
 #'                         ##DOC1 This is the first document.  Second sentence in Doc 1.
@@ -153,6 +154,7 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
 #' # segment a text into sentences
 #' segmentedChar <- char_segment(data_char_ukimmig2010, "sentences")
 #' segmentedChar[3]
+#' @keywords character
 char_segment <- function(x, what = c("sentences", "paragraphs", "tokens", "tags", "other"), 
                          delimiter = switch(what, paragraphs = "\\n{2}", tags = "##\\w+\\b", NULL),
                          valuetype = c("regex", "fixed", "glob"),

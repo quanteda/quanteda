@@ -57,4 +57,5 @@ Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model
   for Estimating Time-Series Party Positions from Texts." \emph{American 
   Journal of Political Science} 52(3):705-772.
 }
+\keyword{plot}
 

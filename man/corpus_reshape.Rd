@@ -25,6 +25,9 @@ collection of documents into a collection of sentences, for instance.
 (Because the corpus object records its current "units" status, there is no 
 \code{from} option, only \code{to}.)
 }
+\details{
+Note: Only recasting down currently works, but upward recasting is planned.
+}
 \examples{
 # simple example
 mycorpus <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
@@ -42,4 +45,5 @@ summary(paragCorpus, 100, showmeta=TRUE)
 ## Note that Bush 2005 is recorded as a single paragraph because that text used a single
 ## \\n to mark the end of a paragraph.
 }
+\keyword{corpus}
 

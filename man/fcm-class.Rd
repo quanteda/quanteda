@@ -5,7 +5,7 @@
 \alias{fcm-class}
 \title{Virtual class "fcm" for a feature co-occurrence matrix}
 \description{
-The fcm class of object is a special type of \link{dfm-class}
+The fcm class of object is a special type of \link{dfm}
   object with additional slots, described below.
 }
 \section{Slots}{

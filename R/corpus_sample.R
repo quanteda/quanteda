@@ -16,6 +16,7 @@
 #'   the documents selected.
 #' @export
 #' @seealso \code{\link{sample}}
+#' @keywords corpus
 #' @examples
 #' # sampling from a corpus
 #' summary(corpus_sample(data_corpus_inaugural, 5)) 
