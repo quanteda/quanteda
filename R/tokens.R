@@ -359,30 +359,26 @@ is.tokens <- function(x) {
 #' as.tokenizedTexts(toksHashed)
 #' 
 #' # change case
-#' toksh <- tokens_hash(tokenize(c(one = "a b c d A B C D",
+#' toks <- tokens_hash(tokenize(c(one = "a b c d A B C D",
 #'                                 two = "A B C d")))
 #' 
-#' # wordstem
-tokens_hash <- function(x, types, ...) {
+tokens_hash <- function(x, types_reserved, ...) {
     
-    attrs_org <- attributes(x)
-    types_x <- unique(unlist(x, use.names = FALSE))
-    types_x <- types_x[types_x != '']  # remove empty "tokens"
+    types <- unique(unlist(x, use.names = FALSE))
+    types <- types[types != '']  # remove empty tokens
     
-    if (missing(types)) {
-        types <- types_x
+    if (missing(types_reserved)) {
+        types <- types
     } else {
-        types <- c(types, setdiff(types_x, types))
+        types <- c(types, setdiff(types, types_reserved))
     }
-    
-    # Serialize tokens 
-    x_int <- lapply(x, fastmatch::fmatch, types)
+    tokens <- lapply(x, fastmatch::fmatch, types) # serialize tokens 
     
     # Restore and add additional attributes
-    attributes(x_int) <- attrs_org
-    attr(x_int, "types") <- types
-    class(x_int) <- c("tokens", class(x_int))
-    return(x_int)
+    attributes(tokens) <- attributes(x)
+    attr(tokens, "types") <- types
+    class(tokens) <- c("tokens", class(x))
+    return(tokens)
 }
 
 
