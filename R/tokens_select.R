@@ -138,8 +138,10 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     tokens_hashed_recompile(x)
 }
 
+
+#' remove padding from a tokens object
 #' @rdname tokens_select
-#' @noRd
+#' @param x \link{tokens} object whose token elements will be selected
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_remove_padding <- function(x){
