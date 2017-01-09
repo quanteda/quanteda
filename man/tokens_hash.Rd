@@ -4,14 +4,14 @@
 \alias{tokens_hash}
 \title{Function to hash list-of-character tokens}
 \usage{
-tokens_hash(x, types, ...)
+tokens_hash(x, types_reserved, ...)
 }
 \arguments{
 \item{x}{a source of tokenizedText}
 
-\item{types}{optional pre-existing types for mapping of tokens}
-
 \item{...}{additional arguments}
+
+\item{types}{optional pre-existing types for mapping of tokens}
 }
 \value{
 a list the hashed tokens found in each text
@@ -39,10 +39,9 @@ as.list(toksHashed)
 as.tokenizedTexts(toksHashed)
 
 # change case
-toksh <- tokens_hash(tokenize(c(one = "a b c d A B C D",
+toks <- tokens_hash(tokenize(c(one = "a b c d A B C D",
                                 two = "A B C d")))
 
-# wordstem
 }
 \seealso{
 \code{\link{tokenize}}

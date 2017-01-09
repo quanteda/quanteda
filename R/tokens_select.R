@@ -121,6 +121,8 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     types <- types(x)
     features <- as.list(features)
     features_id <- regex2id(features, types, valuetype, case_insensitive)
+    
+    if ("" %in% features) features_id <- c(features_id, list(0)) # append padding index
 
     if (selection == 'keep') {
         x <- qatd_cpp_tokens_select(x, features_id, 1, padding)
@@ -130,9 +132,7 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     
     names(x) <- names_org
     attributes(x) <- attrs_org
-    
-    # the fix for issue #394
-    # if (padding) x <- tokens_hashed_recompile(x)
+    attr(x, 'padding') <- (padding && (0 %in% unlist(x, use.names = FALSE)))
     
     tokens_hashed_recompile(x)
 }

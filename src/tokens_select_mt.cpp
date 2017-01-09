@@ -16,8 +16,12 @@ Text keep(Text tokens,
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
-    Text tokens_copy(tokens.size(), 0);
-    for (std::size_t span = span_max; span >= 1; span--){ // substitution starts from the longest sequences
+    unsigned int filler = std::numeric_limits<unsigned int>::max(); // use upper limit as a filler
+    Text tokens_copy(tokens.size(), filler);
+    if (padding) {
+        std::fill(tokens_copy.begin(), tokens_copy.end(), 0);
+    }
+    for (std::size_t span = span_max; span >= 1; span--) { // substitution starts from the longest sequences
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_words.find(ngram) != set_words.end();
@@ -26,7 +30,7 @@ Text keep(Text tokens,
             }
         }
     }
-    if(!padding) tokens_copy.erase(std::remove(tokens_copy.begin(), tokens_copy.end(), 0), tokens_copy.end());
+    if (!padding) tokens_copy.erase(std::remove(tokens_copy.begin(), tokens_copy.end(), filler), tokens_copy.end());
     return tokens_copy;
 }
 
@@ -37,16 +41,16 @@ Text remove(Text tokens,
 
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
-    Text tokens_copy(tokens.size(), 0);
     unsigned int filler = std::numeric_limits<unsigned int>::max(); // use upper limit as a filler
+    Text tokens_copy(tokens.size(), 0);
     bool match = false;
-    for (std::size_t span = span_max; span > 0; span--){ // substitution starts from the longest sequences
+    for (std::size_t span = span_max; span > 0; span--) { // substitution starts from the longest sequences
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_words.find(ngram) != set_words.end();
             if(is_in){
                 match = true;
-                std::fill(tokens.begin() + i, tokens.begin() + i + span, filler); // fill subsequent containers
+                std::fill(tokens.begin() + i, tokens.begin() + i + span, filler);
                 if(padding) tokens[i] = 0;
             }
         }

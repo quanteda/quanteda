@@ -59,4 +59,12 @@ test_that("can wordstem dfm with ngrams", {
     expect_equal(dfmtxt@concatenator, dfmtxt_stemmed@concatenator)
 })
 
+test_that("wordstem works with tokens with padding = TRUE", {
+    txt <- c(d1 = "stemming plurals perfectly",
+             d2 = "one two three")
+    toks <- tokens_remove(tokens(txt), c("one", "three"), padding = TRUE)
+    expect_equal(as.list(tokens_wordstem(toks, "english")),
+                 list(d1 = c("stem", "plural", "perfect"),
+                      d2 = c("", "two", "")))
+})
 

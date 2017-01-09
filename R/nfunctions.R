@@ -73,6 +73,17 @@ nfeature.dfm <- function(x) {
     ncol(x)
 }
 
+#' @noRd
+#' @export
+nfeature.tokens <- function(x) {
+    if (attr(x, 'padding')) {
+        length(types(x)) + 1
+    } else {
+        length(types(x))
+    }
+}
+
+
 
 #' count the number of tokens or types
 #' 

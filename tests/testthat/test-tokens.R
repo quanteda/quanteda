@@ -2,14 +2,18 @@
 ## tokens_hashed tests
 ##
 
-test_that("nsyllable works as expected for tokens_hashed", {
+test_that("nsyllable works as expected", {
     txt <- c(one = "super freakily yes",
              two = "merrily all go aerodynamic")
-    toks <- tokenize(txt)
-    toksh <- tokens(txt)
-    classic <- nsyllable(toks)
-    hashed <- nsyllable(toksh)
-    expect_equal(classic, hashed)
+    toks <- tokens(txt)
+    expect_equivalent(nsyllable(toks), list(c(2, 3, 1), c(3, 1, 1, 5)))
+})
+
+test_that("nsyllable works as expected with padding = TRUE", {
+    txt <- c(one = "super freakily yes",
+             two = "merrily all go aerodynamic")
+    toks <- tokens_remove(tokens(txt), c("yes", "merrily"), padding = TRUE)
+    expect_equivalent(nsyllable(toks), list(c(2, 3, NA), c(NA, 1, 1, 5)))
 })
 
 
@@ -77,21 +81,88 @@ test_that("tokens indexing works as expected", {
     expect_equal(as.list(toks[2]), list(d2 = c("four", "five", "six")))
     
     # issue #370
-    expect_equal(attr((toks[1]), "types"), c("one", "two", "three"))
-    expect_equal(attr((toks[2]), "types"), c("four", "five", "six"))
+    expect_equal(attr(toks[1], "types"), c("one", "two", "three"))
+    expect_equal(attr(toks[2], "types"), c("four", "five", "six"))
 })
 
 test_that("tokens_hashed_recompile combine duplicates is working", {
     toksh <- tokens(c(one = "a b c d A B C D", two = "A B C d"))
-    expect_equal(attr(toksh, "types"),
-                 c("a", "b", "c", "d", "A", "B", "C", "D"))
-    expect_equal(attr(tokens_tolower(toksh), "types"),
-                 c("a", "b", "c", "d"))
-    
+    expect_equivalent(attr(toksh, "types"),
+                    c("a", "b", "c", "d", "A", "B", "C", "D"))
+    expect_equivalent(attr(tokens_tolower(toksh), "types"),
+                    c("a", "b", "c", "d"))
     attr(toksh, "types") <- char_tolower(attr(toksh, "types"))
-    expect_equal(attr(quanteda:::tokens_hashed_recompile(toksh), "types"),
-                 c("a", "b", "c", "d"))
+    expect_equivalent(attr(quanteda:::tokens_hashed_recompile(toksh), "types"),
+                    c("a", "b", "c", "d"))
     
+})
+
+test_that("test `ngrams` with padding = FALSE: #428", {
+    toks <- tokens(c(doc1 = 'a b c d e f g'))
+    toks2 <- tokens_remove(toks, c('b', 'e'), padding = FALSE)
+    
+    expect_equal(as.list(tokens_ngrams(toks2, n = 2)),
+                 list(doc1 = c("a_c", "c_d", "d_f", "f_g")))
+    expect_equal(as.list(tokens_ngrams(toks2, n = 3)),
+                 list(doc1 = c("a_c_d", "c_d_f", "d_f_g")))
+    expect_equal(as.list(tokens_ngrams(toks2, n = 2, skip = 2)),
+                 list(doc1 = c("a_f", "c_g")))
+})
+
+test_that("test `ngrams` with padding = TRUE: #428", {
+    toks <- tokens(c(doc1 = 'a b c d e f g'))
+    toks3 <- tokens_remove(toks, c('b', 'e'), padding = TRUE)
+    
+    expect_equal(as.list(tokens_ngrams(toks3, n = 2)),
+                 list(doc1 = c("c_d", "f_g")))
+    expect_equal(as.list(tokens_ngrams(toks3, n = 3)),
+                 list(doc1 = character(0)))
+    expect_equal(as.list(tokens_ngrams(toks3, n = 2, skip = 2)),
+                 list(doc1 = c("a_d", "c_f", "d_g")))
+})
+
+test_that("test dfm with padded tokens, padding = FALSE", {
+    toks <- tokens(c(doc1 = 'a b c d e f g',
+                     doc2 = 'a b c g',
+                     doc3 = ''))
+    toks3 <- tokens_remove(toks, c('b', 'e'), padding = FALSE)
+    expect_equivalent(as.matrix(dfm(toks3)),
+                      matrix(c(1, 1, 1, 1, 1, 
+                               1, 1, 0, 0, 1,
+                               0, 0, 0, 0, 0), nrow = 3, byrow = TRUE))
+})
+
+test_that("test dfm with padded tokens, padding = TRUE", {
+    toks <- tokens(c(doc1 = 'a b c d e f g',
+                     doc2 = 'a b c g',
+                     doc3 = ''))
+    toks3 <- tokens_remove(toks, c('b', 'e'), padding = TRUE)
+    expect_equivalent(as.matrix(dfm(toks3)),
+                      matrix(c(2, 1, 1, 1, 1, 1, 
+                               1, 1, 1, 0, 0, 1, 
+                               0, 0, 0, 0, 0, 0), nrow = 3, byrow = TRUE))
+})
+
+test_that("test verious functions with padded tokens, padding = FALSE", {
+    toks <- tokens(c(doc1 = 'A b c d E f g',
+                     doc2 = 'a b c g'))
+    toks3 <- tokens_remove(toks, c('b', 'e'), padding = FALSE)
+    expect_equivalent(nfeature(toks3), 6)
+    expect_equivalent(nfeature(toLower(toks3)), 5)
+    expect_equivalent(nfeature(toUpper(toks3)), 5)
+    expect_equivalent(as.character(toks3),
+                      c("A", "c", "d", "f", "g", "a", "c", "g"))
+})
+
+test_that("test verious functions with padded tokens, padding = TRUE", {
+    toks <- tokens(c(doc1 = 'A b c d E f g',
+                     doc2 = 'a b c g'))
+    toks3 <- tokens_remove(toks, c('b', 'e'), padding = TRUE)
+    expect_equivalent(nfeature(toks3), 7)
+    expect_equivalent(nfeature(toLower(toks3)), 6)
+    expect_equivalent(nfeature(toUpper(toks3)), 6)
+    expect_equivalent(as.character(toks3),
+                      c("A", "", "c", "d", "", "f", "g", "a", "", "c", "g"))
 })
 
 

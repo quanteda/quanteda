@@ -166,3 +166,24 @@ test_that("tokens_lookup preserves case on keys", {
                      c("Country", "HOR"))
 })
 
+
+
+test_that("multi-word dictionary behavior is not affected by padding", {
+    
+    toks <- tokens(c(d1 = "Mexico signed a new libertarian law with Canada.",
+                     d2 = "Let freedom ring in the United States!"),
+                   removePunct = TRUE)
+    toks <- tokens(txt, removePunct = TRUE)
+    toks2 <- tokens_remove(toks, stopwords('english'), padding = TRUE)
+    dict <- dictionary(list(country = c("united states", "mexico", "canada"), 
+                            "law words" = c('law*', 'constitution'), 
+                            freedom = c('free', "freedom", 'libertarian'),
+                            overlap = "United"))
+    expect_equal(
+        as.list(tokens_lookup(toks, dictionary = dict, valuetype = "fixed")),
+        as.list(tokens_lookup(toks2, dictionary = dict, valuetype = "fixed"))
+    )
+    
+})
+
+
