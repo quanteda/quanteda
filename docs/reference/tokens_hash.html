@@ -84,16 +84,16 @@
     <p>Creates a hashed object of tokens, called by <code><a href='tokens.html'>tokens</a></code>.</p>
     
 
-    <pre><span class='fu'>tokens_hash</span>(<span class='no'>x</span>, <span class='no'>types</span>, <span class='no'>...</span>)</pre>
+    <pre><span class='fu'>tokens_hash</span>(<span class='no'>x</span>, <span class='no'>types_reserved</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
       <dd>a source of tokenizedText</dd>
-      <dt>types</dt>
-      <dd>optional pre-existing types for mapping of tokens</dd>
       <dt>...</dt>
       <dd>additional arguments</dd>
+      <dt>types</dt>
+      <dd>optional pre-existing types for mapping of tokens</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -144,10 +144,8 @@
 #&gt; [1] &quot;the&quot;    &quot;dog&quot;    &quot;jumped&quot; &quot;and&quot;    &quot;ate&quot;    &quot;the&quot;    &quot;fox&quot;   
 #&gt; </div><div class='input'>
 <span class='co'># change case</span>
-<span class='no'>toksh</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_hash</span>(<span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='fu'>c</span>(<span class='kw'>one</span> <span class='kw'>=</span> <span class='st'>"a b c d A B C D"</span>,
-                                <span class='kw'>two</span> <span class='kw'>=</span> <span class='st'>"A B C d"</span>)))
-
-<span class='co'># wordstem</span></div></pre>
+<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_hash</span>(<span class='fu'><a href='tokenize.html'>tokenize</a></span>(<span class='fu'>c</span>(<span class='kw'>one</span> <span class='kw'>=</span> <span class='st'>"a b c d A B C D"</span>,
+                                <span class='kw'>two</span> <span class='kw'>=</span> <span class='st'>"A B C d"</span>)))</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -155,7 +155,7 @@ corpus</dd>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='dfm_select.html'>dfm_select</a></code></p>
+    <p><code><a href='dfm_select.html'>dfm_select</a></code>, <a href='dfm-class.html'>dfm-class</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -170,14 +170,14 @@ corpus</dd>
 #&gt; <span class='message'>   ... tokenizing</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>   ... found 4 documents, 3,121 features</span></div><div class='output co'>#&gt; <span class='message'>   ... created a 4 x 3,121 sparse dfm</span>
 #&gt; <span class='message'>   ... complete. </span>
-#&gt; <span class='message'>Elapsed time: 0.157 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 4 documents, 3,121 features (57.7% sparse).</div><div class='input'>
+#&gt; <span class='message'>Elapsed time: 0.135 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 4 documents, 3,121 features (57.7% sparse).</div><div class='input'>
 <span class='co'># with English stopwords and stemming</span>
 <span class='fu'>dfm</span>(<span class='no'>corpus_post80inaug</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Creating a dfm from a corpus ...</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>   ... lowercasing</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>   ... tokenizing</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>   ... found 9 documents, 3,121 features</span></div><div class='output co'>#&gt; <span class='message'>   ... </span></div><div class='output co'>#&gt; <span class='message'>removed 128 features, from 174 supplied (glob) feature types</span></div><div class='output co'>#&gt; <span class='message'>   ... stemming features (English)</span></div><div class='output co'>#&gt; <span class='message'>, trimmed 786 feature variants</span></div><div class='output co'>#&gt; <span class='message'>   ... created a 9 x 2,207 sparse dfm</span>
 #&gt; <span class='message'>   ... complete. </span>
-#&gt; <span class='message'>Elapsed time: 0.173 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 9 documents, 2,207 features (73.2% sparse).</div><div class='input'><span class='co'># works for both words in ngrams too</span>
+#&gt; <span class='message'>Elapsed time: 0.148 seconds.</span></div><div class='output co'>#&gt; Document-feature matrix of: 9 documents, 2,207 features (73.2% sparse).</div><div class='input'><span class='co'># works for both words in ngrams too</span>
 <span class='fu'>dfm</span>(<span class='st'>"Banking industry"</span>, <span class='kw'>stem</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 1 feature (0% sparse).
 #&gt; 1 x 1 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
