@@ -9,7 +9,7 @@ docfreq(x, scheme = c("count", "inverse", "inversemax", "inverseprob",
   USE.NAMES = TRUE)
 }
 \arguments{
-\item{x}{a \link{dfm-class} document-feature matrix}
+\item{x}{a \link{dfm}}
 
 \item{scheme}{type of document frequency weighting}
 
@@ -36,7 +36,7 @@ the resulting numeric vector}
 a numeric vector of document frequencies for each feature
 }
 \description{
-For a \link{dfm-class} object, returns a (weighted) document frequency for 
+For a \link{dfm} object, returns a (weighted) document frequency for 
 each term.  The default is a simple count of the number of documents in which
 a feature occurs more than a given frequency threshold.  (The default 
 threshold is  zero, meaning that any feature occuring at least once in a 

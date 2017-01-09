@@ -40,4 +40,5 @@ head(data_corpus_inaugural[, "Year"])
 data_corpus_inaugural[["President2"]] <- paste("prezTwo", 1:ndoc(data_corpus_inaugural), sep="")
 head(docvars(data_corpus_inaugural))
 }
+\keyword{corpus}
 

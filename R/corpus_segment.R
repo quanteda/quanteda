@@ -54,9 +54,8 @@ segment.corpus <- function(x, ...) {
 #' @return A corpus of segmented texts.
 #' @note Does not currently record document segments if segmenting a multi-text 
 #'   corpus into smaller units. For this, use \link{changeunits} instead.
-#' @details Tokens are delimited by separators.  For sentences, the delimiter 
-#'   can be defined by the user.  The default for sentences includes \code{.}, 
-#'   \code{!}, \code{?}, plus \code{;} and \code{:}.
+#' @details Tokens are delimited by separators.  For tokens and sentences, these
+#' are determined by the tokenizer behaviour in \code{\link{tokens}}.
 #'   
 #'   For paragraphs, the default is two carriage returns, although this could be
 #'   changed to a single carriage return by changing the value of 
@@ -65,6 +64,7 @@ segment.corpus <- function(x, ...) {
 #'   document was created in a word processor, for instance, and the lines were 
 #'   wrapped in the window rather than being hard-wrapped with a newline 
 #'   character.)
+#' @keywords corpus
 #' @examples
 #' testCorpus <- corpus(c("##INTRO This is the introduction.
 #'                         ##DOC1 This is the first document.  Second sentence in Doc 1.
@@ -154,6 +154,7 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
 #' # segment a text into sentences
 #' segmentedChar <- char_segment(data_char_ukimmig2010, "sentences")
 #' segmentedChar[3]
+#' @keywords character
 char_segment <- function(x, what = c("sentences", "paragraphs", "tokens", "tags", "other"), 
                          delimiter = switch(what, paragraphs = "\\n{2}", tags = "##\\w+\\b", NULL),
                          valuetype = c("regex", "fixed", "glob"),

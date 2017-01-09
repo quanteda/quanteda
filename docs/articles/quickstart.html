@@ -159,7 +159,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 <span class="co">#&gt;   1805-Jefferson   804   2381        45</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit</span>
-<span class="co">#&gt; Created: Sun Jan  8 19:38:01 2017</span>
+<span class="co">#&gt; Created: Mon Jan  9 19:20:40 2017</span>
 <span class="co">#&gt; Notes:</span></code></pre></div>
 <p>If we wanted, we could add some document-level variables &ndash; what quanteda calls <code>docvars</code> &ndash; to this corpus.</p>
 <p>We can do this using the R&rsquo;s <code>substring()</code> function to extract characters from a name &ndash; in this case, the name of the character vector <code>data_char_inaugural</code>. This works using our fixed starting and ending positions with <code>substring()</code> because these names are a very regular format of <code>YYYY-PresidentName</code>.</p>
@@ -176,7 +176,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 <span class="co">#&gt;   1805-Jefferson   804   2381        45  Jefferson 1805</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit</span>
-<span class="co">#&gt; Created: Sun Jan  8 19:38:01 2017</span>
+<span class="co">#&gt; Created: Mon Jan  9 19:20:40 2017</span>
 <span class="co">#&gt; Notes:</span></code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -198,7 +198,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 <span class="co">#&gt;  data_char_inaugural_5</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit</span>
-<span class="co">#&gt; Created: Sun Jan  8 19:38:01 2017</span>
+<span class="co">#&gt; Created: Mon Jan  9 19:20:40 2017</span>
 <span class="co">#&gt; Notes:</span></code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -391,7 +391,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 <span class="co">#&gt;       2013-Obama   814   2335        88</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Source:  Combination of corpuses mycorpus1 and mycorpus2</span>
-<span class="co">#&gt; Created: Sun Jan  8 19:38:01 2017</span>
+<span class="co">#&gt; Created: Mon Jan  9 19:20:40 2017</span>
 <span class="co">#&gt; Notes:</span></code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -623,8 +623,7 @@ mydfm
 <p><img src="quickstart_files/figure-html/unnamed-chunk-22-1.png" width="768"></p>
 <p>The <code><a href="../reference/plot-deprecated.html">plot.dfm()</a></code> method passes arguments through to <code>wordcloud()</code> from the <strong>wordcloud</strong> package, and can prettify the plot using the same arguments:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if (<span class="kw">require</span>(RColorBrewer))
-    <span class="kw"><a href="../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">max.words =</span> <span class="dv">100</span>, <span class="dt">colors =</span> <span class="kw">brewer.pal</span>(<span class="dv">6</span>, <span class="st">"Dark2"</span>), <span class="dt">scale =</span> <span class="kw">c</span>(<span class="dv">8</span>, .<span class="dv">5</span>))
-<span class="co">#&gt; Loading required package: RColorBrewer</span></code></pre></div>
+    <span class="kw"><a href="../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">max.words =</span> <span class="dv">100</span>, <span class="dt">colors =</span> <span class="kw">brewer.pal</span>(<span class="dv">6</span>, <span class="st">"Dark2"</span>), <span class="dt">scale =</span> <span class="kw">c</span>(<span class="dv">8</span>, .<span class="dv">5</span>))</code></pre></div>
 <p><img src="quickstart_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
 </div>
 <div id="grouping-documents-by-document-variable" class="section level3">
@@ -743,11 +742,10 @@ if (<span class="kw">require</span>(topicmodels)) {
     <span class="kw">get_terms</span>(myLDAfit20, <span class="dv">5</span>)
     <span class="kw">topics</span>(myLDAfit20, <span class="dv">3</span>)
 }
-<span class="co">#&gt; Loading required package: topicmodels</span>
 <span class="co">#&gt;      Lenihan FF Bruton FG Burton LAB Morgan SF Cowen FF Kenny FG ODonnell FG Gilmore LAB Higgins LAB Quinn LAB Gormley Green Ryan Green Cuffe Green OCaolain SF</span>
-<span class="co">#&gt; [1,]         15        10          2         8        3       19          16           6          20        12            17         13           7          18</span>
-<span class="co">#&gt; [2,]         16         9         11        16        5       12           4           1          14         1             4          7          14          12</span>
-<span class="co">#&gt; [3,]         20        17         20        12       16        4          17          12          11         4            15         17          17          20</span></code></pre></div>
+<span class="co">#&gt; [1,]          7        13         16         8        3       11           6          14          18        12             1         19          19           9</span>
+<span class="co">#&gt; [2,]         17         1          2        20       15        4           1          12          15         5             7         13           1          18</span>
+<span class="co">#&gt; [3,]          5        18          3        12       10        5          18          18          17        15            17          1          13           5</span></code></pre></div>
 </div>
 </div>
 <div class="footnotes">

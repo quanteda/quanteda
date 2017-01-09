@@ -33,4 +33,5 @@ metacorpus(data_corpus_inaugural, "source")
 metacorpus(data_corpus_inaugural, "citation") <- "Presidential Speeches Online Project (2014)."
 metacorpus(data_corpus_inaugural, "citation")
 }
+\keyword{corpus}
 

@@ -90,7 +90,7 @@ NULL
 
 #' Return the first or last part of a dfm
 #' 
-#' For a \link{dfm-class} object, returns the first or last \code{n} documents 
+#' For a \link{dfm} object, returns the first or last \code{n} documents 
 #' and first \code{ncol} features for inspection.
 #' @export
 #' @method head dfm
@@ -101,7 +101,7 @@ NULL
 #' @param nfeature the number of features to return, where the resulting object 
 #'   will contain the first \code{ncol} features
 #' @param ... additional arguments passed to other functions
-#' @return A \link{dfm-class} class object corresponding to the subset defined 
+#' @return A \link{dfm} class object corresponding to the subset defined 
 #'   by \code{n} and \code{ncol}.
 #' @keywords dfm
 #' @examples
@@ -330,7 +330,7 @@ setMethod("+", signature(e1 = "numeric", e2 = "dfmDense"),
 
 #' coerce a dfm to a matrix or data.frame
 #' 
-#' Methods for coercing a \link{dfm-class} object to a matrix or data.frame object.
+#' Methods for coercing a \link{dfm} object to a matrix or data.frame object.
 #' @rdname as.matrix.dfm
 #' @param x dfm to be coerced
 #' @export
@@ -368,7 +368,7 @@ as.data.frame.dfm <- function(x, row.names = NULL, optional = FALSE , ...) {
 
 #' Combine dfm objects by Rows or Columns
 #' 
-#' Take a sequence of \link{dfm-class} objects and combine by columns or
+#' Take a sequence of \link{dfm} objects and combine by columns or
 #' rows, returning a dfm with the combined documents or features, respectively.
 #' 
 #' @param ... \link{dfm} objects to be joined column-wise (\code{cbind}) or

@@ -54,9 +54,8 @@ for breaking the texts of a corpus into smaller documents based on sentences,
 or based on a user defined "tag" pattern.  See details.
 }
 \details{
-Tokens are delimited by separators.  For sentences, the delimiter 
-  can be defined by the user.  The default for sentences includes \code{.}, 
-  \code{!}, \code{?}, plus \code{;} and \code{:}.
+Tokens are delimited by separators.  For tokens and sentences, these
+are determined by the tokenizer behaviour in \code{\link{tokens}}.
   
   For paragraphs, the default is two carriage returns, although this could be
   changed to a single carriage return by changing the value of 
@@ -95,4 +94,6 @@ char_segment(data_char_ukimmig2010[3:4], "paragraphs")
 segmentedChar <- char_segment(data_char_ukimmig2010, "sentences")
 segmentedChar[3]
 }
+\keyword{character}
+\keyword{corpus}
 

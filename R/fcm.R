@@ -2,7 +2,7 @@
 
 #' @title Virtual class "fcm" for a feature co-occurrence matrix
 #' 
-#' @description The fcm class of object is a special type of \link{dfm-class}
+#' @description The fcm class of object is a special type of \link{dfm}
 #'   object with additional slots, described below.  
 #'     
 #' @slot context the context definition

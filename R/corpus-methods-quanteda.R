@@ -11,6 +11,7 @@
 #'   
 #'   For \code{metacorpus <-}, the corpus with the updated metadata.
 #' @export
+#' @keywords corpus
 #' @examples
 #' metacorpus(data_corpus_inaugural)
 #' metacorpus(data_corpus_inaugural, "source")
@@ -73,6 +74,7 @@ documents <- function(corp) {
 #'   
 #'   For \code{texts <-}, the corpus with the updated texts.
 #' @export
+#' @keywords corpus
 #' @examples
 #' nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806)))
 #' 
@@ -193,6 +195,7 @@ as.character.corpus <- function(x, ...) {
 #' metadoc(mycorp, "language") <- "english"
 #' summary(mycorp, showmeta = TRUE)
 #' @export
+#' @keywords corpus
 metadoc <- function(x, field = NULL) 
     UseMethod("metadoc")
 
@@ -245,6 +248,7 @@ metadoc.corpus <- function(x, field = NULL) {
 #' @return \code{docvars} returns a data.frame of the document-level variables
 #' @examples head(docvars(data_corpus_inaugural))
 #' @export
+#' @keywords corpus
 docvars <- function(x, field = NULL) {
     UseMethod("docvars")
 }
@@ -310,6 +314,7 @@ docvars.corpus <- function(x, field = NULL) {
 #' # query the document names of a dfm
 #' docnames(dfm(data_char_inaugural[1:5]))
 #' 
+#' @keywords corpus dfm
 docnames <- function(x) {
     UseMethod("docnames")
 }

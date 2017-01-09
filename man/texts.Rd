@@ -70,4 +70,5 @@ texts(BritCorpus)
 texts(BritCorpus)[2] <- "New text number 2."
 texts(BritCorpus)
 }
+\keyword{corpus}
 

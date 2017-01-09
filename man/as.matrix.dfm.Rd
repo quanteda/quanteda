@@ -21,7 +21,7 @@ row names will be set.}
 \item{optional}{not applicable to this method}
 }
 \description{
-Methods for coercing a \link{dfm-class} object to a matrix or data.frame object.
+Methods for coercing a \link{dfm} object to a matrix or data.frame object.
 }
 \examples{
 # coercion to matrix

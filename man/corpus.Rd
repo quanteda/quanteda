@@ -24,10 +24,10 @@ is only used for \code{data.frame} objects (including those created by \pkg{read
 corpus as corpus-level metadata.  Special fields recognized in the \code{\link{summary.corpus}}
 are: 
 \itemize{
-\item{\code{source}}{a description of the source of the texts, used for 
+\item{\code{source }}{a description of the source of the texts, used for 
   referencing;}
-\item{\code{citation}}{information on how to cite the corpus; and}
-\item{\code{notes}}{any additional information about who created the text, warnings, 
+\item{\code{citation }}{information on how to cite the corpus; and}
+\item{\code{notes }}{any additional information about who created the text, warnings, 
   to do lists, etc.}
 }}
 

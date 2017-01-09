@@ -5,7 +5,7 @@
 #' term frequency, usually in terms of a minimum frequencies, but may also be in
 #' terms of maximum frequencies.  Setting a combination of minimum and maximum 
 #' frequencies will select features based on a range.
-#' @param x document-feature matrix of \link{dfm-class}
+#' @param x a \link{dfm} object
 #' @param min_count minimum count or fraction of features across all documents,
 #'   below which features will be removed
 #' @param min_docfreq minimum number or fraction of documents in which a feature
@@ -17,10 +17,10 @@
 #' @param sparsity equivalent to 1 - min_docfreq, included for comparison with
 #'   tm
 #' @param verbose print messages
-#' @return A \link{dfm-class} object reduced in features (with the same number 
+#' @return A \link{dfm} reduced in features (with the same number 
 #'   of documents)
 #' @export
-#' @note Trimming a \link{dfm-class} object is an operation based on the values 
+#' @note Trimming a \link{dfm} object is an operation based on the values 
 #'   in the document-feature \emph{matrix}.  To select subsets of a dfm based on
 #'   attributes of the features themselves -- such as selecting features 
 #'   matching a regular expression, or removing features matching a stopword 

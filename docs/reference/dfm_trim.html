@@ -93,7 +93,7 @@ frequencies will select features based on a range.</p>
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>document-feature matrix of <a href='dfm-class.html'>dfm-class</a></dd>
+      <dd>a <a href='dfm.html'>dfm</a> object</dd>
       <dt>min_count</dt>
       <dd>minimum count or fraction of features across all documents,
 below which features will be removed</dd>
@@ -115,12 +115,12 @@ tm</dd>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <a href='dfm-class.html'>dfm-class</a> object reduced in features (with the same number 
+    <p>A <a href='dfm.html'>dfm</a> reduced in features (with the same number 
   of documents)</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>Trimming a <a href='dfm-class.html'>dfm-class</a> object is an operation based on the values 
+    <p>Trimming a <a href='dfm.html'>dfm</a> object is an operation based on the values 
   in the document-feature <em>matrix</em>.  To select subsets of a dfm based on
   attributes of the features themselves -- such as selecting features 
   matching a regular expression, or removing features matching a stopword 

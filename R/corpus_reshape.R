@@ -6,6 +6,8 @@
 #' collection of documents into a collection of sentences, for instance.
 #' (Because the corpus object records its current "units" status, there is no 
 #' \code{from} option, only \code{to}.)
+#' 
+#' Note: Only recasting down currently works, but upward recasting is planned.
 #' @param x corpus whose document units will be reshaped
 #' @param to new documents units for the corpus to be recast in
 #' @param ... not used
@@ -28,6 +30,7 @@
 #' ## Note that Bush 2005 is recorded as a single paragraph because that text used a single
 #' ## \n to mark the end of a paragraph.
 #' @export
+#' @keywords corpus
 corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"), ...) {
     UseMethod("corpus_reshape")
 }

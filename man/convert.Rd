@@ -35,7 +35,7 @@ A converted object determined by the value of \code{to} (see above).
   of the return formats.
 }
 \description{
-Convert a quanteda \link{dfm-class} object to a format useable by other text 
+Convert a quanteda \link{dfm} object to a format useable by other text 
 analysis packages.  The general function \code{convert} provides easy 
 conversion from a dfm to the document-term representations used in all other 
 text analysis packages for which conversions are defined.    See also 
