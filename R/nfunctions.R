@@ -76,7 +76,7 @@ nfeature.dfm <- function(x) {
 #' @noRd
 #' @export
 nfeature.tokens <- function(x) {
-    if (0 %in% unlist(x, use.names = FALSE)) {
+    if (attr(x, 'padding')) {
         length(types(x)) + 1
     } else {
         length(types(x))

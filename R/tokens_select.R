@@ -130,10 +130,7 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     
     names(x) <- names_org
     attributes(x) <- attrs_org
-    attr(x, 'padding') <- padding
-    
-    # the fix for issue #394
-    # if (padding) x <- tokens_hashed_recompile(x)
+    attr(x, 'padding') <- (padding && (0 %in% unlist(x, use.names = FALSE)))
     
     tokens_hashed_recompile(x)
 }

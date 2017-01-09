@@ -96,7 +96,7 @@ nsyllable.character <- function(x, syllable_dictionary = quanteda::data_int_syll
 #' @export
 nsyllable.tokens <- function(x, syllable_dictionary = quanteda::data_int_syllables, use.names = FALSE) { 
     types <- types(x)
-    if (0 %in% unlist(x, use.names = FALSE)) {
+    if (attr(x, 'padding')) {
         vocab_sylls <- nsyllable(c("", types), use.names = use.names)
         lapply(unclass(x), function(y) vocab_sylls[y + 1]) 
     } else {

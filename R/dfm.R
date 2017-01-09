@@ -381,7 +381,7 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
     
     # Shift index for padding, if any
     index <- unlist(x, use.names = FALSE)
-    if (0 %in% index) {
+    if (attr(x, 'padding')) {
         types <- c("", types)
         index <- index + 1
     }

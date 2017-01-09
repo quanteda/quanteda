@@ -265,6 +265,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     attr(result, "what") <- what
     attr(result, "ngrams") <- ngrams
     attr(result, "concatenator") <- ifelse(all.equal(ngrams, 1L)==TRUE, "", concatenator)
+    attr(result, 'padding') <- FALSE
     
     return(result)
 }
