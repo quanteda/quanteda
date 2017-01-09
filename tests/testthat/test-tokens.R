@@ -2,14 +2,18 @@
 ## tokens_hashed tests
 ##
 
-test_that("nsyllable works as expected for tokens_hashed", {
+test_that("nsyllable works as expected", {
     txt <- c(one = "super freakily yes",
              two = "merrily all go aerodynamic")
-    toks <- tokenize(txt)
-    toksh <- tokens(txt)
-    classic <- nsyllable(toks)
-    hashed <- nsyllable(toksh)
-    expect_equal(classic, hashed)
+    toks <- tokens(txt)
+    expect_equivalent(nsyllable(toks), list(c(2, 3, 1), c(3, 1, 1, 5)))
+})
+
+test_that("nsyllable works as expected with padding = TRUE", {
+    txt <- c(one = "super freakily yes",
+             two = "merrily all go aerodynamic")
+    toks <- tokens_remove(tokens(txt), c("yes", "merrily"), padding = TRUE)
+    expect_equivalent(nsyllable(toks), list(c(2, 3, NA), c(NA, 1, 1, 5)))
 })
 
 
