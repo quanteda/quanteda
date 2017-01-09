@@ -210,7 +210,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     result_blocks <- list()
     for (i in 1:length(x_blocks)) {
         
-        if (verbose) catm("...tokenizing", i, "of" , length(x_blocks), "blocks...\n")
+        if (verbose) catm("...tokenizing", i, "of" , length(x_blocks), "blocks\n")
         
         if (what %in% c("word", "fastestword", "fasterword")) {
             result_temp <- tokens_word(x_blocks[[i]], what, removeNumbers, removePunct, removeSymbols, 
@@ -232,13 +232,14 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
         
         # Hash the tokens
         if (hash == TRUE) {
-            if (verbose) catm("...hashing tokens\n")
+            if (verbose) catm("...serializing tokens ")
             if (i == 1) {
                 result_blocks[[i]] <- tokens_hash(result_temp)
-            }else{
+            } else {
                 result_blocks[[i]] <- tokens_hash(result_temp, attr(result_blocks[[i - 1]], 'types'))
             }
-        }else{
+            if (verbose) catm(length(attr(result_blocks[[i]], 'types')), 'unique types\n')
+        } else {
             result_blocks[[i]] <- result_temp
         }
     }
@@ -249,7 +250,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     if (hash == TRUE){
         class(result) <- c("tokens", "tokenizedTexts")
         types(result) <- attr(result_blocks[[length(result_blocks)]], 'types') # last block has all the types
-    }else{
+    } else {
         class(result) <- "tokenizedTexts"
     }  
     if (!identical(ngrams, 1L)) {
@@ -371,7 +372,7 @@ tokens_hash <- function(x, types_reserved, ...) {
     if (missing(types_reserved)) {
         types <- types
     } else {
-        types <- c(types, setdiff(types, types_reserved))
+        types <- c(types, setdiff(types_reserved, types))
     }
     tokens <- lapply(x, fastmatch::fmatch, types) # serialize tokens 
     
