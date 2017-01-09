@@ -84,5 +84,12 @@ test_that("tokens_compound preserved document names", {
     )
 })
 
+test_that("tokens_compound works with padded tokens", {
+    toks <- tokens(c(doc1 = 'a b c d e f g'))
+    toks <- tokens_remove(toks, c('b', 'e'), padding = TRUE)
+    toks <- tokens_compound(toks, "c d")
+    expect_equal(sort(attr(toks, "types")),
+                 sort(c("a", "c_d", "f", "g")))
+})
 
 
