@@ -367,27 +367,34 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
              "\n",
              sep="")
     }
-
-    ## Special handling for empty documents
-    # find out which documents have zero feature counts
+    
     types <- types(x)
     x <- unclass(x)
-    emptyDocs <- which(lengths(x) == 0)
-    # Add an arbitrary "feature" for empty docs
-    if (length(emptyDocs)) {
-        x[emptyDocs] <- length(types) + 1
-        types <- c(types, "__TEMPFEATURE__")
+    
+    # Special handling for empty documents
+    empty <- which(lengths(x) == 0)
+    if (length(empty)) {
+        # Add an arbitrary "feature" for empty docs
+        x[empty] <- length(types) + 1
+        types <- c(types, "__TEMPFEATURE__") 
     }
-
-    dfmresult <- t(Matrix::sparseMatrix(i = unlist(x, use.names = FALSE), 
-                                        p = cumsum(c(1, lengths(x))) - 1, 
-                                        x = 1L, 
-                                        dimnames = list(features = types, 
-                                                        docs = names(x))))
+    
+    # Shift index for padding, if any
+    index <- unlist(x, use.names = FALSE)
+    if (0 %in% index) {
+        types <- c("", types)
+        index <- index + 1
+    }
+    
+    result <- t(Matrix::sparseMatrix(i = index, 
+                                     p = cumsum(c(1, lengths(x))) - 1, 
+                                     x = 1L, 
+                                     dimnames = list(features = types, 
+                                                     docs = names(x))))
     # Remove dummy feature if needed
-    if (length(emptyDocs)) dfmresult <- dfmresult[, -ncol(dfmresult), drop = FALSE]
+    if (length(empty)) result <- result[, -ncol(result), drop = FALSE]
     gc() # Release memory
-    new("dfmSparse", dfmresult)
+    new("dfmSparse", result)
 }
 
 
