@@ -131,8 +131,7 @@ test_that("test dfm with padded tokens, padding = TRUE", {
                      doc2 = 'a b c g'))
     toks3 <- tokens_remove(toks, c('b', 'e'), padding = TRUE)
     expect_equivalent(as.matrix(dfm(toks3)),
-                      matrix(c(1, 1, 1, 1, 1, 0, 1, 0, 1, 1), nrow = 2))
-    ## and there should be a feature called "" with counts = 2, 1
+                      matrix(c(2, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1), nrow = 2))
 })
 
 
