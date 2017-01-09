@@ -618,6 +618,10 @@ tokens_hashed_recompile <- function(x) {
         attributes(x) <- attrs_input
         types(x) <- types_unique
     }
+    
+    # Give padding flag
+    attr(x, 'padding') <- (0 %in% index_unique)
+    
     return(x)
 }
 
