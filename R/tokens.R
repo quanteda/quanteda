@@ -372,7 +372,7 @@ tokens_hash <- function(x, types_reserved, ...) {
     if (missing(types_reserved)) {
         types <- types
     } else {
-        types <- c(types, setdiff(types_reserved, types))
+        types <- c(types_reserved, setdiff(types, types_reserved))
     }
     tokens <- lapply(x, fastmatch::fmatch, types) # serialize tokens 
     
