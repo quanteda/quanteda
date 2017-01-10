@@ -1,14 +1,13 @@
 ---
 title: "Digital Humanities Use Case: Replication of analyses from *Text Analysis with R for Students of Literature*"
-output:
-  rmarkdown::html_document:
-    theme: null
+output: 
+  rmarkdown::html_vignette:
     css: mystyle.css
     toc: yes
 vignette: >
-  %\VignetteIndexEntry{Literature}
+  %\VignetteIndexEntry{Text Analysis for Literature}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
 ---
 
 <!--

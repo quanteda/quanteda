@@ -1,14 +1,13 @@
 ---
 title: "Plotting with quanteda"
-output:
-  rmarkdown::html_document:
-    theme: null
+output: 
+  rmarkdown::html_vignette:
     css: mystyle.css
     toc: yes
 vignette: >
   %\VignetteIndexEntry{Plotting}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r eval=TRUE}

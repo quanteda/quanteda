@@ -1,23 +1,19 @@
 ---
 title: "Getting Started with quanteda"
-output:
+output: 
   rmarkdown::html_vignette:
     css: mystyle.css
     toc: yes
 vignette: >
   %\VignetteIndexEntry{Getting Started Guide}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
 ---
 
-<!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Quickstart}
--->
 
 ```{r echo = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, 
-                      comment = "#>")
+                      comment = "##")
 ```
 
 

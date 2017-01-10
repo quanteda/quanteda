@@ -98,8 +98,8 @@ setClass("fcm",
 #'   \href{https://web.stanford.edu/~jurafsky/slp3/16.pdf}{Chapter 16, Semantics
 #'   with Dense Vectors.}
 #'   
-#'   Chruch, K.W. & Hanks, P. (1990) 
-#'   "\href{http://dl.acm.org/citation.fcm?id=89095}{Word association norms,
+#'   Church, K.W. & Hanks, P. (1990) 
+#'   "\href{http://dl.acm.org/citation.cfm?id=89095}{Word association norms,
 #'   mutual information, and lexicography}" \emph{Computational Linguistics},
 #'   16(1):22–29.
 #' @examples
@@ -116,15 +116,12 @@ setClass("fcm",
 #' fcm(txts, context = "document", count = "boolean")
 #' fcm(txts, context = "window", count = "boolean", window = 2)
 #' 
+#' # from tokens
 #' txt <- c("The quick brown fox jumped over the lazy dog.",
 #'          "The dog jumped and ate the fox.")
-#' toks <- tokenize(toLower(txt), removePunct = TRUE)
+#' toks <- tokens(char_tolower(txt), removePunct = TRUE)
 #' fcm(toks, context = "document")
-#' 
-#' # with hashed tokens
-#' toksHashed <- tokens(toLower(txt), removePunct = TRUE)
 #' fcm(toks, context = "window", window = 3)
-#' fcm(toksHashed, context = "window", window = 3)
 fcm <- function(x, context = c("document", "window"), 
                 count = c("frequency", "boolean", "weighted"),
                 window = 5L,
