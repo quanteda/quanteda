@@ -51,7 +51,7 @@ sequences.tokens <- function(x, features, valuetype = c("glob", "regex", "fixed"
 
     seqs <- qutd_cpp_sequences(x, features_id, count_min, nested)
     seqs$length <- lengths(seqs$sequence)
-    seqs$sequence <- sapply(seqs$sequence, function(y) stringi::stri_c(types[y], collapse = ' '))
+    seqs$sequence <- stringi::stri_c_list(lapply(seqs$sequence, function(y) types[y]), sep=' ')
     
     df <- as.data.frame(seqs, stringsAsFactors = FALSE)
     df <- df[df$count >= count_min,]
