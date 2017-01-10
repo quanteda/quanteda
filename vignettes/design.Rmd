@@ -3,14 +3,13 @@ title: "quanteda Structure and Design"
 author: "Ken Benoit"
 date: "2016-12-06"
 output:
-  rmarkdown::html_document:
-    theme: null
+  rmarkdown::html_vignette:
     css: mystyle.css
     toc: yes
 vignette: >
   %\VignetteIndexEntry{Structure and Design Principles}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
 ---
 
 # Introduction

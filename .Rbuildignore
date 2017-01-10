@@ -16,7 +16,6 @@ __MACOSX
 \.Rproj\.user
 ^quanteda\.pdf$
 ^images
-^tests/data/encoding/.*$
 ^CONDUCT\.md$
 ^API\.md$
 ^benchmarks
@@ -24,5 +23,5 @@ __MACOSX
 ^appveyor\.yml$
 ^docs/
 ^_pkgdown\.yml$
-
-
+^tests/benchmarks/
+^tests/misc/

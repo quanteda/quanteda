@@ -8,18 +8,16 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "ctb"),
     person("Haiyan", "Wang", email = "h.wang52@lse.ac.uk", role = "ctb"),
     person("Benjamin", "Lauderdale", email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
-    person("Will", "Lowe", email="wlowe@princeton.edu", role="ctb"),
-    person("Pablo", "Barberá", email = "pablo.barbera@nyu.edu", role = "ctb"))
+    person("Will", "Lowe", email="wlowe@princeton.edu", role="ctb") )
 Author: Kenneth Benoit [aut, cre],
     Paul Nulty [ctb],
     Kohei Watanabe [ctb],
     Adam Obeng [ctb],
     Haiyan Wang [ctb],
     Benjamin Lauderdale [ctb],
-    Will Lowe [ctb],
-    Pablo Barberá [ctb]
+    Will Lowe [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.9-1
+Version: 0.9.9-3
 Date: 2017-01-09
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
@@ -41,7 +39,6 @@ Imports:
     stringi,
     fastmatch,
     ggplot2 (>= 2.2.0)
-Remotes: kbenoit/readtext
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo
 Suggests:
     knitr,
