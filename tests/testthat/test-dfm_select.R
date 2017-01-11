@@ -105,3 +105,21 @@ test_that("featnames.NULL, docnames.NULL works as expected", {
     expect_equal(docnames(NULL), NULL)
 })
 
+test_that("selection that is out of bounds", {
+    expect_equal(dfm_select(testdfm), testdfm)
+    
+    expect_equal(
+        featnames(dfm_select(testdfm, selection = "keep", min_nchar = 5)),
+        NULL
+    )             
+
+    expect_equal(
+        featnames(dfm_select(testdfm, selection = "remove", min_nchar = 5)),
+        featnames(testdfm)
+    )
+})
+    
+    
+    expect_equal(docnames(NULL), NULL)
+})
+

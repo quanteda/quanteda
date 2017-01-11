@@ -35,7 +35,7 @@ featnames.NULL <- function(x) {
 #' @export
 #' @noRd
 featnames.dfm <- function(x) {
-    as.character(colnames(x))
+    colnames(x)
 }
 
 #' deprecated function name for featnames
