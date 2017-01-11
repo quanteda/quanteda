@@ -4,7 +4,8 @@
 
 ### Bug fixes
 
-* Removed a bug causing `dfm` to break on > 10,000 documents.
+* Fixed a bug causing `dfm` to break on > 10,000 documents. (#438)
+* Fixed a bug in `corpus.VCorpus` if the VCorpus contains a single document. (#445)
 
 ### New features
 
