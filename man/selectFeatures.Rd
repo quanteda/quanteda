@@ -10,7 +10,9 @@
 \usage{
 selectFeatures(x, features, ...)
 
-selectFeatures.dfm(x, features, ...)
+\method{selectFeatures}{dfm}(x, features, selection = c("keep", "remove"),
+  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
+  verbose = FALSE, ...)
 
 \method{selectFeatures}{tokenizedTexts}(x, features, selection = c("keep",
   "remove"), valuetype = c("glob", "regex", "fixed"),
@@ -45,15 +47,15 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 
+\item{verbose}{if \code{TRUE} print message about how many features were 
+removed}
+
 \item{padding}{(only for \code{tokenizedTexts} objects) if \code{TRUE}, leave
 an empty string where the removed tokens previously existed.  This is
 useful if a positional match is needed between the pre- and post-selected
 features, for instance if a window of adjacency needs to be computed.}
 
 \item{indexing}{use dfm-based index to efficiently process large tokenizedTexts object}
-
-\item{verbose}{if \code{TRUE} print message about how many features were 
-removed}
 
 \item{pos}{indexes of word position if called on collocations: remove if word
 \code{pos} is a stopword}

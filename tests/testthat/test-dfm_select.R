@@ -117,9 +117,12 @@ test_that("selection that is out of bounds", {
         featnames(dfm_select(testdfm, selection = "remove", min_nchar = 5)),
         featnames(testdfm)
     )
-})
-    
-    
-    expect_equal(docnames(NULL), NULL)
-})
 
+    # some tests for docnames and featnames
+    expect_equal(docnames(NULL), NULL)
+    expect_equal(featnames(NULL), NULL)
+})
+    
+    
+
+    
