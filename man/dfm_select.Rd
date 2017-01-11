@@ -7,11 +7,11 @@
 \alias{fcm_select}
 \title{select features from a dfm or fcm}
 \usage{
-dfm_select(x, features, selection = c("keep", "remove"),
+dfm_select(x, features = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  verbose = TRUE, ...)
+  min_nchar = 1, max_nchar = 63, verbose = TRUE, ...)
 
-dfm_remove(x, features, ...)
+dfm_remove(x, features = NULL, ...)
 
 fcm_select(x, features, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
@@ -35,24 +35,29 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 
+\item{min_nchar, max_nchar}{numerics specifying the minimum and maximum length
+in characters for features to be removed or kept; defaults are 1 and 
+\href{https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft}{79}.
+ (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are
+applied after (and hence, in addition to) any selection based on pattern
+matches.}
+
 \item{verbose}{if \code{TRUE} print message about how many features were 
 removed}
 
 \item{...}{supplementary arguments passed to the underlying functions in 
-\code{\link[stringi]{stri_detect_regex}}.  (This is how 
-\code{case_insensitive} is passed, but you may wish to pass others.)}
+\code{\link[stringi]{stri_detect_regex}}}
 }
 \value{
 A dfm or fcm after the feature selection has been applied.
   
-  When \code{features} is a \link{dfm} object, then the returned object
-  will be identical in its feature set to the dfm supplied as the 
-  \code{features} argument.  This means that any features in \code{x} not in 
-  \code{features} will be discarded, and that any features in found in the 
-  dfm supplied as \code{features} but not found in \code{x} will be added 
-  with all zero counts.  This is useful when you have trained a model on one 
-  dfm, and need to project this onto a test set whose features must be 
-  identical.
+  When \code{features} is a \link{dfm} object, then the returned object will 
+  be identical in its feature set to the dfm supplied as the \code{features} 
+  argument.  This means that any features in \code{x} not in \code{features} 
+  will be discarded, and that any features in found in the dfm supplied as 
+  \code{features} but not found in \code{x} will be added with all zero 
+  counts.  This is useful when you have trained a model on one dfm, and need 
+  to project this onto a test set whose features must be identical.
 }
 \description{
 This function selects or discards features from a dfm or fcm, based on a 
@@ -61,8 +66,9 @@ eliminate features from a dfm already constructed, such as stopwords, or to
 select only terms of interest from a dictionary.
 }
 \details{
-`dfm_remove` and `fcm_remove` are simply a convenience wrappers to
-  calling `dfm_select` and `fcm_select` with `selection = "remove"`.
+\code{dfm_remove} and \code{fcm_remove} are simply a convenience
+  wrappers to calling \code{dfm_select} and \code{fcm_select} with
+  \code{selection = "remove"}.
 }
 \note{
 This function selects features based on their labels.  To select 
@@ -83,6 +89,9 @@ dfm_select(myDfm, c("s$", ".y"), "keep", valuetype = "regex")
 dfm_select(myDfm, c("s$", ".y"), "remove", valuetype = "regex")
 dfm_select(myDfm, stopwords("english"), "keep", valuetype = "fixed")
 dfm_select(myDfm, stopwords("english"), "remove", valuetype = "fixed")
+
+# select based on character length
+dfm_select(myDfm, min_nchar = 5)
 
 # selecting on a dfm
 textVec1 <- c("This is text one.", "This, the second text.", "Here: the third text.")

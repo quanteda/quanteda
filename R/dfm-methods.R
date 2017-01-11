@@ -28,8 +28,14 @@ featnames <- function(x) {
 
 #' @export
 #' @noRd
+featnames.NULL <- function(x) {
+    NULL
+}
+
+#' @export
+#' @noRd
 featnames.dfm <- function(x) {
-    colnames(x)
+    as.character(colnames(x))
 }
 
 #' deprecated function name for featnames
@@ -46,6 +52,12 @@ features <- function(x) {
 #' @export
 docnames.dfm <- function(x) {
     rownames(x)
+}
+
+#' @noRd
+#' @export
+docnames.NULL <- function(x) {
+    NULL
 }
 
 #' coercion and checking functions for dfm objects

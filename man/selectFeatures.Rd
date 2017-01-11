@@ -8,8 +8,9 @@
 \alias{selectFeatures.tokens}
 \title{select features from an object}
 \usage{
-\method{selectFeatures}{dfm}(x, features, selection = c("keep", "remove"),
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
+\method{selectFeatures}{dfm}(x, features = NULL, selection = c("keep",
+  "remove"), valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE, min_nchar = 1L, max_nchar = 63L,
   verbose = TRUE, ...)
 
 selectFeatures(x, features, ...)
