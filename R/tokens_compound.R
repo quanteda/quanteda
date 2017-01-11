@@ -76,7 +76,8 @@ tokens_compound.tokens <- function(x, sequences,
     if(length(seqs_id) == 0) return(x) # do nothing
     
     # Make new types
-    seqs_type <- sapply(seqs_id, function(y) stringi::stri_c(types[y], collapse = concatenator))
+    seqs_type <- stringi::stri_c_list(lapply(seqs_id, function(y) types[y]), sep=concatenator)
+    
     
     # Assign IDs to new types
     types_id <- match(seqs_type, types)
