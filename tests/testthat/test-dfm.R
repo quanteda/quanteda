@@ -225,10 +225,18 @@ test_that("dfm_weight works", {
                       matrix(c(5, 5, 1, 1, 3, 6, 0, 0.5), nrow = 2))
 })
 
-test_that("dfm keeps all types with > 10,000 documents (#438)", {
+test_that("dfm keeps all types with > 10,000 documents (#438) (a)", {
     generate_testdfm <- function(n) {
         dfm(paste('X', 1:n, sep=''))
     }
     expect_equal(nfeature(generate_testdfm(10000)), 10000)
     expect_equal(nfeature(generate_testdfm(20000)), 20000)
+})
+
+test_that("dfm keeps all types with > 10,000 documents (#438) (b)", {
+    generate_testdfm <- function(n) {
+        dfm(paste(sample(letters, n, replace = TRUE), 1:n))
+    }
+    expect_equal(nfeature(generate_testdfm(10000)), 10026)
+    expect_equal(nfeature(generate_testdfm(10001)), 10027)
 })
