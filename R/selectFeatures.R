@@ -38,6 +38,13 @@ selectFeatures <- function(x, features, ...) {
     UseMethod("selectFeatures")
 }
 
+#' @rdname selectFeatures
+#' @keywords internal deprecated
+#' @export
+selectFeatures.dfm <- function(x, features, ...) {
+    .Deprecated("dfm_select")
+    UseMethod("dfm_select")
+}
 
 
 #' @rdname selectFeatures

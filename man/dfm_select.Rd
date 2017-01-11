@@ -117,4 +117,5 @@ tmpfcm <- fcm(toks)
 tmpfcm
 fcm_remove(tmpfcm, stopwords("english"))
 }
+\keyword{dfm}
 

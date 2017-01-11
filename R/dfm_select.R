@@ -38,6 +38,7 @@
 #'   counts.  This is useful when you have trained a model on one dfm, and need 
 #'   to project this onto a test set whose features must be identical.
 #' @export
+#' @keywords dfm
 #' @examples 
 #' myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
 #'                "Does the United_States or Sweden have more progressive taxation?"),
@@ -73,76 +74,29 @@ dfm_select <- function(x, features = NULL, selection = c("keep", "remove"),
                        case_insensitive = TRUE,
                        min_nchar = 1, max_nchar = 63,
                        verbose = TRUE, ...) {
-    if (!is.dfm(x))
-        stop("dfm_select requires x to be a dfm object")
-    UseMethod("selectFeatures")
+    UseMethod("dfm_select")
 }
 
 #' @rdname dfm_select
+#' @noRd
 #' @export
-#' @examples 
-#' tmpdfm <- dfm(c("This is a document with lots of stopwords.",
-#'                 "No if, and, or but about it: lots of stopwords."),
-#'               verbose = FALSE)
-#' tmpdfm
-#' dfm_remove(tmpdfm, stopwords("english"))
-dfm_remove <- function(x, features = NULL, ...) {
-    dfm_select(x, features, selection = "remove", ...)
-}
-
-
-#' @rdname selectFeatures
-#' @keywords internal
-#' @export
-#' @examples 
-#' \dontrun{
-#' myDfm <- dfm(c("My Christmas was ruined by your opposition tax plan.", 
-#'                "Does the United_States or Sweden have more progressive taxation?"),
-#'              tolower = FALSE, verbose = FALSE)
-#' mydict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
-#'                           wordsEndingInY = c("by", "my"),
-#'                           notintext = "blahblah"))
-#' selectFeatures(myDfm, mydict)
-#' selectFeatures(myDfm, mydict, case_insensitive = FALSE)
-#' selectFeatures(myDfm, c("s$", ".y"), "keep")
-#' selectFeatures(myDfm, c("s$", ".y"), "keep", valuetype = "regex")
-#' selectFeatures(myDfm, c("s$", ".y"), "remove", valuetype = "regex")
-#' selectFeatures(myDfm, stopwords("english"), "keep", valuetype = "fixed")
-#' selectFeatures(myDfm, stopwords("english"), "remove", valuetype = "fixed")
-#' 
-#' # selecting on a dfm
-#' textVec1 <- c("This is text one.", "This, the second text.", "Here: the third text.")
-#' textVec2 <- c("Here are new words.", "New words in this text.")
-#' (dfm1 <- dfm(textVec1, verbose = FALSE))
-#' (dfm2a <- dfm(textVec2, verbose = FALSE))
-#' (dfm2b <- selectFeatures(dfm2a, dfm1))
-#' setequal(featnames(dfm1), featnames(dfm2b))
-#' 
-#' # more selection on a dfm
-#' selectFeatures(dfm1, dfm2a)
-#' selectFeatures(dfm1, dfm2a, selection = "remove")
-#' }
-selectFeatures.dfm <- function(x, features = NULL, selection = c("keep", "remove"), 
-                               valuetype = c("glob", "regex", "fixed"),
-                               case_insensitive = TRUE,
-                               min_nchar = 1L, max_nchar = 63L,
-                               verbose = TRUE, ...) {
-    
-    if (!grepl("dfm_select", sys.calls()[length(sys.calls())-1])) 
-        .Deprecated("dfm_select")
-    
+dfm_select.dfm <-  function(x, features = NULL, selection = c("keep", "remove"), 
+                            valuetype = c("glob", "regex", "fixed"),
+                            case_insensitive = TRUE,
+                            min_nchar = 1, max_nchar = 63,
+                            verbose = TRUE, ...) {
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     features_from_dfm <- FALSE
-
+    
     # select features based on character length
     featIndex <- 1:nfeature(x)
     featIndex <- intersect(featIndex, 
                            which(stringi::stri_length(featnames(x)) >= min_nchar & stringi::stri_length(featnames(x)) <= max_nchar))
-
+    
     # select features based on "features" pattern
     if (!is.null(features)) {
-
+        
         if (!(is.character(features) | is.dfm(features) | is(features, "dictionary")))
             stop("features must be of type character, dictionary, or dfm")
         
@@ -158,7 +112,7 @@ selectFeatures.dfm <- function(x, features = NULL, selection = c("keep", "remove
         
         # to convert any dictionaries
         features <- unique(unlist(features))  
-    
+        
         # convert glob to fixed if no actual glob characters (since fixed is much faster)
         originalvaluetype <- valuetype
         if (valuetype == "glob") {
@@ -236,7 +190,7 @@ selectFeatures.dfm <- function(x, features = NULL, selection = c("keep", "remove
             # x <- x2 #[, features_dfm]
         }
     }        
-
+    
     ##
     ## MIGHT NEED TO ADD BACK ORIGINAL ATTRIBUTES HERE
     ##
@@ -253,5 +207,21 @@ selectFeatures.dfm <- function(x, features = NULL, selection = c("keep", "remove
             return(x[, -featIndex])
     }
 }
+
+
+#' @rdname dfm_select
+#' @export
+#' @examples 
+#' tmpdfm <- dfm(c("This is a document with lots of stopwords.",
+#'                 "No if, and, or but about it: lots of stopwords."),
+#'               verbose = FALSE)
+#' tmpdfm
+#' dfm_remove(tmpdfm, stopwords("english"))
+dfm_remove <- function(x, features = NULL, ...) {
+    dfm_select(x, features, selection = "remove", ...)
+}
+
+
+
 
                        
