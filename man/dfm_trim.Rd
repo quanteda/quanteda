@@ -10,20 +10,14 @@ dfm_trim(x, min_count = 1, min_docfreq = 1, max_count = NULL,
 \arguments{
 \item{x}{a \link{dfm} object}
 
-\item{min_count}{minimum count or fraction of features across all documents,
-below which features will be removed}
+\item{min_count, max_count}{minimum/maximum count or fraction of features across all documents,
+below/above which features will be removed}
 
-\item{min_docfreq}{minimum number or fraction of documents in which a feature
-appears, below which features will be removed}
-
-\item{max_count}{maximum count or fraction of features across all documents,
-above which features will be removed.  (Default is no upper limit.)}
-
-\item{max_docfreq}{maximum number or fraction of documents in which a feature
-appears, above which features will be removed.  (Default is no upper limit.)}
+\item{min_docfreq, max_docfreq}{minimum/maximum number or fraction of documents in which a feature
+appears, below/above which features will be removed}
 
 \item{sparsity}{equivalent to 1 - min_docfreq, included for comparison with
-tm}
+\pkg{tm}}
 
 \item{verbose}{print messages}
 }
@@ -42,7 +36,7 @@ Trimming a \link{dfm} object is an operation based on the values
   in the document-feature \emph{matrix}.  To select subsets of a dfm based on
   attributes of the features themselves -- such as selecting features 
   matching a regular expression, or removing features matching a stopword 
-  list, use \link{dfm_select}.
+  list, use \code{\link{dfm_select}}.
 }
 \examples{
 (myDfm <- dfm(data_corpus_inaugural[1:5]))
