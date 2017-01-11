@@ -137,22 +137,25 @@ test_that("test corpus constructors works for data.frame", {
 })
 
 
-if ("tm" %in% rownames(installed.packages())) {
+test_that("test corpus constructor works for tm objects", {
+    skip_if_not_installed("tm")
+    data(crude, package = "tm")    # load in a tm example VCorpus
+    mytmCorpus <- corpus(crude)
     
-    test_that("test corpus constructor works for tm objects", {
-        
-        data(crude, package = "tm")    # load in a tm example VCorpus
-        mytmCorpus <- corpus(crude)
-        
-        expect_equal(substring(texts(mytmCorpus)[1], 1, 21),
-                     c("reut-00001.xml"  = "Diamond Shamrock Corp"))
-        
-        data(acq, package = "tm")
-        mytmCorpus2 <- corpus(acq)
-        expect_equal(dim(docvars(mytmCorpus2)), c(50,15))
-    })
+    expect_equal(substring(texts(mytmCorpus)[1], 1, 21),
+                 c("reut-00001.xml"  = "Diamond Shamrock Corp"))
     
-}
+    data(acq, package = "tm")
+    mytmCorpus2 <- corpus(acq)
+    expect_equal(dim(docvars(mytmCorpus2)), c(50,15))
+})
+
+test_that("test corpus constructor works for VCorpus with one document (#445)", {
+    skip_if_not_installed("tm")
+    tmCorpus_length1 <- tm::VCorpus(tm::VectorSource(data_char_inaugural[1]))
+    expect_silent(qcorpus <- corpus(tmCorpus_length1))
+    expect_equal(texts(qcorpus)[1], data_char_inaugural[1])
+})
 
 test_that("corpus_subset works", {
     txt <- c(doc1 = "This is a sample text.\nIt has three lines.\nThe third line.",
