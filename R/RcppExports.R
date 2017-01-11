@@ -41,8 +41,13 @@ fcm_hash_cpp <- function(texts, n_types, count, window, weights, ordered, tri, n
     .Call('quanteda_fcm_hash_cpp', PACKAGE = 'quanteda', texts, n_types, count, window, weights, ordered, tri, nvec)
 }
 
+<<<<<<< e3c2c9e1ffd054055e9e11e76adfb8567de88ebf
 qutd_cpp_sequences <- function(texts_, words_, count_min, len_max, nested, ordered = FALSE) {
     .Call('quanteda_qutd_cpp_sequences', PACKAGE = 'quanteda', texts_, words_, count_min, len_max, nested, ordered)
+=======
+qatd_cpp_sequences <- function(texts_, words_, count_min, nested) {
+    .Call('quanteda_qatd_cpp_sequences', PACKAGE = 'quanteda', texts_, words_, count_min, nested)
+>>>>>>> Correct typo
 }
 
 qatd_cpp_tokens_detect <- function(texts_, words_) {
@@ -65,20 +70,8 @@ qatd_cpp_tokens_select <- function(texts_, words_, mode_, padding_) {
     .Call('quanteda_qatd_cpp_tokens_select', PACKAGE = 'quanteda', texts_, words_, mode_, padding_)
 }
 
-qatd_cpp_deepcopy <- function(x_) {
-    .Call('quanteda_qatd_cpp_deepcopy', PACKAGE = 'quanteda', x_)
-}
-
-qatd_cpp_structcopy_int_list <- function(list_) {
-    .Call('quanteda_qatd_cpp_structcopy_int_list', PACKAGE = 'quanteda', list_)
-}
-
 qatd_cpp_remove_chr_list <- function(list_, elem_remove) {
     .Call('quanteda_qatd_cpp_remove_chr_list', PACKAGE = 'quanteda', list_, elem_remove)
-}
-
-qatd_cpp_remove_int_list <- function(list_, elem_remove) {
-    .Call('quanteda_qatd_cpp_remove_int_list', PACKAGE = 'quanteda', list_, elem_remove)
 }
 
 wordfishcpp <- function(wfm, dir, priors, tol, disp, dispfloor) {

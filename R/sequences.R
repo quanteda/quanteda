@@ -55,7 +55,7 @@ sequences.tokens <- function(x, features, valuetype = c("glob", "regex", "fixed"
     features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
     features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
 
-    seqs <- qutd_cpp_sequences(x, features_id, min_count, max_length, nested, ordered)
+    seqs <- qatd_cpp_sequences(x, features_id, min_count, max_length, nested, ordered)
     seqs$length <- lengths(seqs$sequence)
     seqs$sequence <- stringi::stri_c_list(lapply(seqs$sequence, function(y) types[y]), sep=' ')
     

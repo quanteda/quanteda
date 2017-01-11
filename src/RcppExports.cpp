@@ -144,9 +144,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+<<<<<<< e3c2c9e1ffd054055e9e11e76adfb8567de88ebf
 // qutd_cpp_sequences
 List qutd_cpp_sequences(List texts_, IntegerVector words_, unsigned int count_min, unsigned int len_max, bool nested, bool ordered);
 RcppExport SEXP quanteda_qutd_cpp_sequences(SEXP texts_SEXP, SEXP words_SEXP, SEXP count_minSEXP, SEXP len_maxSEXP, SEXP nestedSEXP, SEXP orderedSEXP) {
+=======
+// qatd_cpp_sequences
+List qatd_cpp_sequences(List texts_, IntegerVector words_, int count_min, bool nested);
+RcppExport SEXP quanteda_qatd_cpp_sequences(SEXP texts_SEXP, SEXP words_SEXP, SEXP count_minSEXP, SEXP nestedSEXP) {
+>>>>>>> Correct typo
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -155,8 +161,12 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< unsigned int >::type count_min(count_minSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type len_max(len_maxSEXP);
     Rcpp::traits::input_parameter< bool >::type nested(nestedSEXP);
+<<<<<<< e3c2c9e1ffd054055e9e11e76adfb8567de88ebf
     Rcpp::traits::input_parameter< bool >::type ordered(orderedSEXP);
     rcpp_result_gen = Rcpp::wrap(qutd_cpp_sequences(texts_, words_, count_min, len_max, nested, ordered));
+=======
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_sequences(texts_, words_, count_min, nested));
+>>>>>>> Correct typo
     return rcpp_result_gen;
 END_RCPP
 }
@@ -227,28 +237,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_deepcopy
-SEXP qatd_cpp_deepcopy(SEXP x_);
-RcppExport SEXP quanteda_qatd_cpp_deepcopy(SEXP x_SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type x_(x_SEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_deepcopy(x_));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qatd_cpp_structcopy_int_list
-List qatd_cpp_structcopy_int_list(List list_);
-RcppExport SEXP quanteda_qatd_cpp_structcopy_int_list(SEXP list_SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type list_(list_SEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_structcopy_int_list(list_));
-    return rcpp_result_gen;
-END_RCPP
-}
 // qatd_cpp_remove_chr_list
 List qatd_cpp_remove_chr_list(List list_, String elem_remove);
 RcppExport SEXP quanteda_qatd_cpp_remove_chr_list(SEXP list_SEXP, SEXP elem_removeSEXP) {
@@ -258,18 +246,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< List >::type list_(list_SEXP);
     Rcpp::traits::input_parameter< String >::type elem_remove(elem_removeSEXP);
     rcpp_result_gen = Rcpp::wrap(qatd_cpp_remove_chr_list(list_, elem_remove));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qatd_cpp_remove_int_list
-List qatd_cpp_remove_int_list(List list_, int elem_remove);
-RcppExport SEXP quanteda_qatd_cpp_remove_int_list(SEXP list_SEXP, SEXP elem_removeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type list_(list_SEXP);
-    Rcpp::traits::input_parameter< int >::type elem_remove(elem_removeSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_remove_int_list(list_, elem_remove));
     return rcpp_result_gen;
 END_RCPP
 }
