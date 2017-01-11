@@ -241,3 +241,16 @@ test_that("dfm keeps all types with > 10,000 documents (#438) (b)", {
     expect_equal(nfeature(generate_testdfm(10000)), 10026)
     expect_equal(nfeature(generate_testdfm(10001)), 10027)
 })
+
+test_that("dfm print works as expected", {
+    testdfm <- dfm(data_corpus_irishbudget2010)
+    expect_output(print(testdfm),
+                  "^Document-feature matrix of: 14 documents, 5,058 features \\(80.9% sparse\\)")
+    expect_output(print(testdfm[1:5, 1:5]),
+                  "^Document-feature matrix of: 5 documents, 5 features \\(28% sparse\\).*")
+    expect_output(head(testdfm, 1),
+                  "Document-feature matrix of: 14 documents, 5,058 features.*showing first document and first 6 features.*")
+    expect_output(tail(testdfm, 1),
+                  "Document-feature matrix of: 14 documents, 5,058 features.*showing last document and last 6 features.*")
+})
+

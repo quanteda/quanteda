@@ -78,6 +78,7 @@ Collate:
     'dfm-classes.R'
     'dfm-deprecated.R'
     'dfm-methods.R'
+    'dfm-print.R'
     'dfm-subsetting.R'
     'dfm.R'
     'dfm_compress.R'
