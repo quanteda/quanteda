@@ -302,7 +302,7 @@ docvars.corpus <- function(x, field = NULL) {
 
 #' get or set document names
 #' 
-#' Get or set the document names of a \link{corpus} or a \link{dfm}.
+#' Get or set the document names of a \link{corpus}, \link{tokens}, or \link{dfm} object.
 #' @param x the object with docnames
 #' @export
 #' @return \code{docnames} returns a character vector of the document names
@@ -310,6 +310,9 @@ docvars.corpus <- function(x, field = NULL) {
 #' @examples
 #' # query the document names of a corpus
 #' docnames(data_corpus_irishbudget2010)
+#' 
+#' # query the document names of a tokens object
+#' docnames(tokens(data_char_ukimmig2010))
 #' 
 #' # query the document names of a dfm
 #' docnames(dfm(data_char_inaugural[1:5]))

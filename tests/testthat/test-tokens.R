@@ -165,6 +165,11 @@ test_that("test verious functions with padded tokens, padding = TRUE", {
                       c("A", "", "c", "d", "", "f", "g", "a", "", "c", "g"))
 })
 
+test_that("docnames works for tokens", {
+    expect_equal(names(data_char_ukimmig2010),
+                 docnames(tokens(data_char_ukimmig2010)))
+})
+
 
 #' # coerce an object into a tokens class
 #' as.tokens(toks)

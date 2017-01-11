@@ -21,11 +21,14 @@ docnames(x) <- value
 for dfm objects, whose document names are fixed.)
 }
 \description{
-Get or set the document names of a \link{corpus} or a \link{dfm}.
+Get or set the document names of a \link{corpus}, \link{tokens}, or \link{dfm} object.
 }
 \examples{
 # query the document names of a corpus
 docnames(data_corpus_irishbudget2010)
+
+# query the document names of a tokens object
+docnames(tokens(data_char_ukimmig2010))
 
 # query the document names of a dfm
 docnames(dfm(data_char_inaugural[1:5]))

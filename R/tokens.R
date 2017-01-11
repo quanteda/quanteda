@@ -460,6 +460,11 @@ lengths.tokens <- function(x, use.names = TRUE) {
     NextMethod()
 }
 
+#' @noRd
+#' @export
+docnames.tokens <- function(x) {
+    names(x)
+}
 
 
 ##
