@@ -6,16 +6,12 @@
 #' terms of maximum frequencies.  Setting a combination of minimum and maximum 
 #' frequencies will select features based on a range.
 #' @param x a \link{dfm} object
-#' @param min_count minimum count or fraction of features across all documents,
-#'   below which features will be removed
-#' @param min_docfreq minimum number or fraction of documents in which a feature
-#'   appears, below which features will be removed
-#' @param max_count maximum count or fraction of features across all documents,
-#'   above which features will be removed.  (Default is no upper limit.)
-#' @param max_docfreq maximum number or fraction of documents in which a feature
-#'   appears, above which features will be removed.  (Default is no upper limit.)
+#' @param min_count,max_count minimum/maximum count or fraction of features across all documents,
+#'   below/above which features will be removed
+#' @param min_docfreq,max_docfreq minimum/maximum number or fraction of documents in which a feature
+#'   appears, below/above which features will be removed
 #' @param sparsity equivalent to 1 - min_docfreq, included for comparison with
-#'   tm
+#'   \pkg{tm}
 #' @param verbose print messages
 #' @return A \link{dfm} reduced in features (with the same number 
 #'   of documents)
@@ -24,7 +20,7 @@
 #'   in the document-feature \emph{matrix}.  To select subsets of a dfm based on
 #'   attributes of the features themselves -- such as selecting features 
 #'   matching a regular expression, or removing features matching a stopword 
-#'   list, use \link{dfm_select}.
+#'   list, use \code{\link{dfm_select}}.
 #' @author Ken Benoit and Paul Nulty, with some inspiration from Will Lowe's
 #'   (see \code{trim} from the \code{austin} package)
 #' @seealso \code{\link{dfm_select}}, \code{\link{dfm_sample}}
