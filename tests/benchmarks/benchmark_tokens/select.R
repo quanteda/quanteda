@@ -1,7 +1,7 @@
 library(quanteda)
 
 load("/home/kohei/Documents/Brexit/Analysis/data_corpus_guardian.RData")
-docvars(data_corpus_guardian, 'year') <- format(docvars(data_corpus_guardian, 'date'), '%Y')
+docvars(toks, 'year') <- format(docvars(data_corpus_guardian, 'date'), '%Y')
 
 toks <- tokens(data_corpus_guardian, verbose=TRUE)
 #toks <- tokens(corpus_subset(data_corpus_guardian, year == 2012))
@@ -12,9 +12,6 @@ toks2[[1]]
 
 toks3 <- tokens_select(toks, stopwords(), valuetype='fixed', padding = TRUE)
 toks3[[1]]
-
-toks4 <- tokens_remove(toks, stopwords(), valuetype='fixed', padding = TRUE)
-toks4[[1]]
 
 system.time(tokens_select(toks, '*'))
 system.time(tokens_select(toks, list(c('President', '*'))))
