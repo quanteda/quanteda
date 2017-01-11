@@ -1,5 +1,9 @@
 # quanteda 0.9.9
 
+## Bug fixes >= v0.9.9-4
+
+* Removed a bug causing `dfm` to break on > 10,000 documents.
+
 This release has some major changes to the API, as described in this document (LINK).
 
 ## Data objects
