@@ -234,6 +234,7 @@ test_that("dfm keeps all types with > 10,000 documents (#438) (a)", {
 })
 
 test_that("dfm keeps all types with > 10,000 documents (#438) (b)", {
+    set.seed(10)
     generate_testdfm <- function(n) {
         dfm(paste(sample(letters, n, replace = TRUE), 1:n))
     }
