@@ -24,12 +24,12 @@ Text replace(Text tokens,
             unsigned int id = map_words[ngram];
             if(id){
                 match = true;
-                //std::fill(tokens.begin() + i + 1, tokens.begin() + i + span, filler); // fill subsequent tokens
+                std::fill(tokens.begin() + i + 1, tokens.begin() + i + span, filler); // fill subsequent tokens
                 tokens[i] = id;
             }
         }
     }
-    //if(match) tokens.erase(std::remove(tokens.begin(), tokens.end(), filler), tokens.end());
+    if(match) tokens.erase(std::remove(tokens.begin(), tokens.end(), filler), tokens.end());
     return tokens;
 }
 
