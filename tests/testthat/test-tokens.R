@@ -171,11 +171,14 @@ test_that("docnames works for tokens", {
 })
 
 test_that("longer features longer than documents do not crash (#447)", {
-    
-    toks <- tokens(c('a b', 'a b c d e'))
+    toks <- tokens(c(d1 = 'a b', d2 = 'a b c d e'))
     feat <- 'b c d e'
-    replicate(10, tokens_select(toks, feat)) # bugs in C++ needs repeated tests
-    
+    # bugs in C++ needs repeated tests
+    expect_silent(replicate(10, tokens_select(toks, feat)))
+    expect_equal(
+        as.list(tokens_select(toks, feat)),
+        list(d1 = character(0), d2 = c("b", "c", "d", "e"))
+    )
 })
 
 
