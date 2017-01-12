@@ -17,7 +17,7 @@ Author: Kenneth Benoit [aut, cre],
     Benjamin Lauderdale [ctb],
     Will Lowe [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.9-4
+Version: 0.9.9-5
 Date: 2017-01-11
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
@@ -78,6 +78,7 @@ Collate:
     'dfm-classes.R'
     'dfm-deprecated.R'
     'dfm-methods.R'
+    'dfm-print.R'
     'dfm-subsetting.R'
     'dfm.R'
     'dfm_compress.R'

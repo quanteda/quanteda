@@ -38,6 +38,19 @@ selectFeatures <- function(x, features, ...) {
     UseMethod("selectFeatures")
 }
 
+#' @rdname selectFeatures
+#' @keywords internal deprecated
+#' @export
+selectFeatures.dfm <- function(x, features, selection = c("keep", "remove"), 
+                               valuetype = c("glob", "regex", "fixed"),
+                               case_insensitive = TRUE, 
+                               verbose = FALSE, ...) {
+    .Deprecated("dfm_select")
+    dfm_select(x, features, selection = c("keep", "remove"), 
+               valuetype = c("glob", "regex", "fixed"),
+               case_insensitive = case_insensitive, 
+               verbose = verbose, ...)
+}
 
 
 #' @rdname selectFeatures

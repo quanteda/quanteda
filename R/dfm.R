@@ -389,7 +389,7 @@ compile_dfm.tokens <- function(x, verbose = TRUE) {
     result <- t(Matrix::sparseMatrix(i = index, 
                                      p = cumsum(c(1, lengths(x))) - 1, 
                                      x = 1L, 
-                                     dimnames = list(features = types, 
+                                     dimnames = list(features = as.character(types), 
                                                      docs = names(x))))
     # Remove dummy feature if needed
     if (length(empty)) result <- result[, -ncol(result), drop = FALSE]

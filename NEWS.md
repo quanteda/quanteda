@@ -1,10 +1,18 @@
 # quanteda 0.9.9
 
-## Bug fixes >= v0.9.9-4
+## Changes since latest CRAN version (>= v0.9.9-4()
 
-* Removed a bug causing `dfm` to break on > 10,000 documents.
+### Bug fixes
 
-This release has some major changes to the API, as described in this document (LINK).
+* Fixed a bug causing `dfm` to break on > 10,000 documents. (#438)
+* Fixed a bug in `corpus.VCorpus` if the VCorpus contains a single document. (#445)
+
+### New features
+
+* Added `min_nchar` and `max_nchar` arguments to `dfm_select`.  
+
+
+This release has some **major changes to the API**, described below.
 
 ## Data objects
 
@@ -77,8 +85,6 @@ new function | deprecated function | contructs:
 `char_toupper` | `toUpper.character`, `toUpper.character` | `character`
 `char_tolower` | `toLower.character`, `toLower.character` | `character`
 `tokens_compound` | `joinTokens`, `phrasetotoken` | `tokens` class object
-
-
 
 
 ## New functions

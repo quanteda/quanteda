@@ -279,7 +279,7 @@ corpus.kwic <- function(x, docnames = NULL, docvars = NULL, text_field = "text",
 corpus.VCorpus <- function(x, docnames = NULL, docvars = NULL, text_field = "text", metacorpus = NULL, compress = FALSE, ...) {
     
     if (!missing(docvars))
-        stop("docvars are assigned automatically for tm::Corpus objects")
+        stop("docvars are assigned automatically for tm::VCorpus objects")
     if (!missing(text_field))
         stop("text_field is not applicable for this class of input")
 
@@ -291,7 +291,7 @@ corpus.VCorpus <- function(x, docnames = NULL, docvars = NULL, text_field = "tex
     
     # special handling for VCorpus meta-data
     metad <- as.data.frame(do.call(rbind, (lapply(x$content, "[[", "meta"))),
-                           stringsAsFactors = FALSE, row.names = FALSE)
+                           stringsAsFactors = FALSE, row.names = NULL)
     makechar <- function(x) gsub("character\\(0\\)", NA, as.character(x))
     datetimestampIndex <- which(names(metad) == "datetimestamp")
     metad[, -datetimestampIndex] <- apply(metad[, -datetimestampIndex], 2, makechar)

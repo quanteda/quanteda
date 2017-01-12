@@ -17,6 +17,7 @@ test_that("test STM package converter", {
 })
 
 test_that("test tm package converter", {
+    skip_if_not_installed("tm")
     dtmq <- convert(d[, order(featnames(d))], to = "tm")
     dtmtm <- tm::DocumentTermMatrix(tm::VCorpus(tm::VectorSource(toLower(mytexts))),
                                     control = list(removePunctuation = TRUE,
