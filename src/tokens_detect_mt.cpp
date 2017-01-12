@@ -17,6 +17,7 @@ Text detect(Text tokens,
     
     Text tokens_pos(tokens.size(), 0);
     for (std::size_t span = span_max; span > 0; span--){ // substitution starts from the longest sequences
+        if (tokens.size() < span) continue;
         for (size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_words.find(ngram) != set_words.end();

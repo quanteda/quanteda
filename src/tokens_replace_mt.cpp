@@ -18,6 +18,7 @@ Text replace(Text tokens,
     unsigned int filler = std::numeric_limits<unsigned int>::max(); // use largest limit as filler
     bool match = false;
     for (std::size_t span = span_max; span > 0; span--){ // substitution starts from the longest sequences
+        if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             unsigned int &id = map_words[ngram];

@@ -22,6 +22,7 @@ Text keep(Text tokens,
         std::fill(tokens_copy.begin(), tokens_copy.end(), 0);
     }
     for (std::size_t span = span_max; span >= 1; span--) { // substitution starts from the longest sequences
+        if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_words.find(ngram) != set_words.end();
@@ -45,6 +46,7 @@ Text remove(Text tokens,
     Text tokens_copy(tokens.size(), 0);
     bool match = false;
     for (std::size_t span = span_max; span > 0; span--) { // substitution starts from the longest sequences
+        if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_words.find(ngram) != set_words.end();
