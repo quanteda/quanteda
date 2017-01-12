@@ -170,6 +170,14 @@ test_that("docnames works for tokens", {
                  docnames(tokens(data_char_ukimmig2010)))
 })
 
+test_that("longer features longer than documents do not crash (#447)", {
+    
+    toks <- tokens(c('a b', 'a b c d e'))
+    feat <- 'b c d e'
+    replicate(10, tokens_select(toks, feat)) # bugs in C++ needs repeated tests
+    
+})
+
 
 #' # coerce an object into a tokens class
 #' as.tokens(toks)
