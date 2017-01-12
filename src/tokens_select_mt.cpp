@@ -11,7 +11,7 @@ using namespace ngrams;
 
 Text keep(Text tokens, 
           std::size_t span_max,
-          SetNgrams &set_words,
+          SetNgrams set_words,
           bool padding){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text

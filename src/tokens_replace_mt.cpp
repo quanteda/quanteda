@@ -11,7 +11,7 @@ using namespace ngrams;
 
 Text replace(Text tokens, 
              std::size_t span_max,
-             MapNgrams &map_words){
+             MapNgrams map_words){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -21,15 +21,15 @@ Text replace(Text tokens,
         if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
-            unsigned int &id = map_words[ngram];
+            unsigned int id = map_words[ngram];
             if(id){
                 match = true;
-                std::fill(tokens.begin() + i + 1, tokens.begin() + i + span, filler); // fill subsequent tokens
+                //std::fill(tokens.begin() + i + 1, tokens.begin() + i + span, filler); // fill subsequent tokens
                 tokens[i] = id;
             }
         }
     }
-    if(match) tokens.erase(std::remove(tokens.begin(), tokens.end(), filler), tokens.end());
+    //if(match) tokens.erase(std::remove(tokens.begin(), tokens.end(), filler), tokens.end());
     return tokens;
 }
 
@@ -82,7 +82,7 @@ List qatd_cpp_tokens_replace(List texts_,
         if(span_max < word.size()) span_max = word.size();
     }
     
-    // dev::Timer timer;
+    // // dev::Timer timer;
     Texts output(input.size());
     // dev::start_timer("Token replace", timer);
     #if RCPP_PARALLEL_USE_TBB

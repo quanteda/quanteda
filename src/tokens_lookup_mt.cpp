@@ -11,7 +11,7 @@ using namespace ngrams;
 
 Text lookup(Text tokens, 
             std::size_t span_max,
-            MultiMapNgrams &map_keys){
+            MultiMapNgrams map_keys){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     

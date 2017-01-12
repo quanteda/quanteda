@@ -9,8 +9,8 @@ using namespace quanteda;
 using namespace ngrams;
 
 
-int match_bit(const std::vector<unsigned int> &tokens1, 
-              const std::vector<unsigned int> &tokens2){
+int match_bit(const std::vector<unsigned int> tokens1, 
+              const std::vector<unsigned int> tokens2){
   
     std::size_t len1 = tokens1.size();
     std::size_t len2 = tokens2.size();
@@ -22,7 +22,7 @@ int match_bit(const std::vector<unsigned int> &tokens1,
     return bit;
 }
 
-double sigma(std::vector<long> &counts, unsigned int n){
+double sigma(std::vector<long> counts, unsigned int n){
   
     double s = 0;
     for (std::size_t b = 1; b <= n; b++){
@@ -44,7 +44,7 @@ double lambda(std::vector<long> counts, unsigned int n){
 }
 
 void count(Text text, 
-           SetUnigrams &set_words, 
+           SetUnigrams set_words, 
            MapNgrams &counts_seq, 
            bool nested){
     
@@ -105,11 +105,11 @@ void estimate(std::size_t i,
               int count_min){
     
     std::size_t n = seqs[i].size();
-    if(n == 1) return; // ignore single words
-    if(cs[i] < count_min) return;
+    if (n == 1) return; // ignore single words
+    if (cs[i] < count_min) return;
     std::vector<long> counts_bit(n + 1, 1); // add one smoothing
-    for(std::size_t j = 0; j < seqs.size(); j++){
-        if(i == j) continue; // do not compare with itself
+    for (std::size_t j = 0; j < seqs.size(); j++) {
+        if (i == j) continue; // do not compare with itself
         //if(ns[j] < count_min) continue; // this is different from the old vesion
         int bit = match_bit(seqs[i], seqs[j]);
         counts_bit[bit] += cs[i];
@@ -131,7 +131,7 @@ struct estimate_mt : public Worker{
                 seqs(seqs_), cs(cs_), ss(ss_), ls(ls_), count_min(count_min_) {}
     
     void operator()(std::size_t begin, std::size_t end){
-        for (std::size_t i = begin; i < end; i++){
+        for (std::size_t i = begin; i < end; i++) {
             estimate(i, seqs, cs, ss, ls, count_min);
         }
     }
@@ -180,7 +180,7 @@ List qutd_cpp_sequences(List texts_,
     IntParams cs;
     seqs.reserve(len);
     cs.reserve(len);
-    for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it){
+    for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
         seqs.push_back(it->first);
         cs.push_back(it->second);
     }
@@ -205,7 +205,7 @@ List qutd_cpp_sequences(List texts_,
     NumericVector lambdas(len);
     NumericVector sigmas(len);
     NumericVector counts(len);
-    for(std::size_t k = 0; k < len; k++){
+    for (std::size_t k = 0; k < len; k++) {
         sequences[k] = seqs[k];
         lambdas[k] = ls[k];
         sigmas[k] = ss[k];
