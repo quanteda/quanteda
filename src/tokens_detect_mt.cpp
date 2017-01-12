@@ -10,8 +10,8 @@ using namespace ngrams;
 
 
 Text detect(Text tokens, 
-            size_t span_max,
-            SetNgrams set_words){
+            const size_t &span_max,
+            const SetNgrams &set_words){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -34,11 +34,11 @@ struct detect_mt : public Worker{
     
     Texts &input;
     Texts &output;
-    size_t span_max;
-    SetNgrams &set_words;
+    const size_t &span_max;
+    const SetNgrams &set_words;
     
     // Constructor
-    detect_mt(Texts &input_, Texts &output_, size_t span_max_, SetNgrams &set_words_):
+    detect_mt(Texts &input_, Texts &output_, size_t &span_max_, SetNgrams &set_words_):
               input(input_), output(output_), span_max(span_max_), set_words(set_words_){}
     
     // parallelFor calles this function with size_t

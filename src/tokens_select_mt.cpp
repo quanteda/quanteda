@@ -10,9 +10,9 @@ using namespace ngrams;
 
 
 Text keep(Text tokens, 
-          std::size_t span_max,
-          SetNgrams set_words,
-          bool padding){
+          const std::size_t &span_max,
+          const SetNgrams &set_words,
+          const bool &padding){
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -36,14 +36,13 @@ Text keep(Text tokens,
 }
 
 Text remove(Text tokens, 
-            std::size_t span_max,
-            SetNgrams &set_words,
-            bool padding){
+            const std::size_t &span_max,
+            const SetNgrams &set_words,
+            const bool &padding){
 
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
     unsigned int filler = std::numeric_limits<unsigned int>::max(); // use upper limit as a filler
-    Text tokens_copy(tokens.size(), 0);
     bool match = false;
     for (std::size_t span = span_max; span > 0; span--) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
@@ -65,13 +64,13 @@ struct select_mt : public Worker{
     
     Texts &input;
     Texts &output;
-    std::size_t span_max;
-    SetNgrams &set_words;
-    int mode;
-    bool padding;
+    const std::size_t &span_max;
+    const SetNgrams &set_words;
+    const int &mode;
+    const bool &padding;
     
     // Constructor
-    select_mt(Texts &input_, Texts &output_, std::size_t span_max_, SetNgrams &set_words_, int mode_, bool padding_):
+    select_mt(Texts &input_, Texts &output_, std::size_t &span_max_, SetNgrams &set_words_, int &mode_, bool &padding_):
               input(input_), output(output_), span_max(span_max_), set_words(set_words_), mode(mode_), padding(padding_) {}
     
     // parallelFor calles this function with std::size_t
@@ -152,11 +151,15 @@ List qatd_cpp_tokens_select(List texts_,
 
 /***R
 
-toks <- list(rep(1:10, 10), rep(5:15, 10))
-dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-qatd_cpp_tokens_select(toks, dict, TRUE, 1)
-qatd_cpp_tokens_select(toks, dict, FALSE, 1)
+toks <- list(rep(1:10, 10000), rep(5:15, 10000))
+dict <- as.list(1:100000)
+#dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
+#qatd_cpp_tokens_select(toks, dict, 1, TRUE)
 
+microbenchmark::microbenchmark(
+qatd_cpp_tokens_select(toks, dict, 1, FALSE),
+qatd_cpp_tokens_select(toks, dict, 1, TRUE)
+)
 
 
 */

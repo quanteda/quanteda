@@ -9,8 +9,8 @@ using namespace quanteda;
 using namespace ngrams;
 
 
-int match_bit(const std::vector<unsigned int> tokens1, 
-              const std::vector<unsigned int> tokens2){
+int match_bit(const std::vector<unsigned int> &tokens1, 
+              const std::vector<unsigned int> &tokens2){
   
     std::size_t len1 = tokens1.size();
     std::size_t len2 = tokens2.size();
@@ -22,7 +22,8 @@ int match_bit(const std::vector<unsigned int> tokens1,
     return bit;
 }
 
-double sigma(std::vector<long> counts, unsigned int n){
+double sigma(const std::vector<long> &counts, 
+             const unsigned int &n){
   
     double s = 0;
     for (std::size_t b = 1; b <= n; b++) {
@@ -33,7 +34,8 @@ double sigma(std::vector<long> counts, unsigned int n){
     return std::sqrt(s);
 }
 
-double lambda(std::vector<long> counts, unsigned int n){
+double lambda(const std::vector<long> &counts, 
+              const unsigned int &n){
   
     double l = std::log(counts[n]);
     for (std::size_t b = 1; b < n; b++){
@@ -44,9 +46,9 @@ double lambda(std::vector<long> counts, unsigned int n){
 }
 
 void count(Text text, 
-           SetUnigrams set_words, 
+           const SetUnigrams &set_words, 
            MapNgrams &counts_seq, 
-           bool nested){
+           const bool &nested){
     
     if(text.size() == 0) return; // do nothing with empty text
     text.push_back(0); // add padding to include last words
@@ -83,11 +85,11 @@ void count(Text text,
 struct count_mt : public Worker{
     
     Texts texts;
-    SetUnigrams &set_words;
+    const SetUnigrams &set_words;
     MapNgrams &counts_seq;
-    bool nested;
+    const bool &nested;
         
-    count_mt(Texts texts_, SetUnigrams &set_words_, MapNgrams &counts_seq_, bool nested_):
+    count_mt(Texts texts_, SetUnigrams &set_words_, MapNgrams &counts_seq_, bool &nested_):
              texts(texts_), set_words(set_words_), counts_seq(counts_seq_), nested(nested_) {}
     
     void operator()(std::size_t begin, std::size_t end){
@@ -102,7 +104,7 @@ void estimate(std::size_t i,
               IntParams &cs, 
               DoubleParams &ss, 
               DoubleParams &ls, 
-              int count_min){
+              const int &count_min){
     
     std::size_t n = seqs[i].size();
     if (n == 1) return; // ignore single words
@@ -124,10 +126,10 @@ struct estimate_mt : public Worker{
     IntParams &cs;
     DoubleParams &ss;
     DoubleParams &ls;
-    int count_min;
+    const int &count_min;
     
     // Constructor
-    estimate_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, int count_min_):
+    estimate_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, int &count_min_):
                 seqs(seqs_), cs(cs_), ss(ss_), ls(ls_), count_min(count_min_) {}
     
     void operator()(std::size_t begin, std::size_t end){

@@ -10,8 +10,8 @@ using namespace ngrams;
 
 
 Text lookup(Text tokens, 
-            std::size_t span_max,
-            MultiMapNgrams map_keys){
+            const std::size_t &span_max,
+            const MultiMapNgrams &map_keys){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -38,11 +38,11 @@ struct lookup_mt : public Worker{
     
     Texts &input;
     Texts &output;
-    std::size_t span_max;
-    MultiMapNgrams &map_keys;
+    const std::size_t &span_max;
+    const MultiMapNgrams &map_keys;
     
     // Constructor
-    lookup_mt(Texts &input_, Texts &output_, std::size_t span_max_, MultiMapNgrams &map_keys_):
+    lookup_mt(Texts &input_, Texts &output_, std::size_t &span_max_, MultiMapNgrams &map_keys_):
               input(input_), output(output_), span_max(span_max_), map_keys(map_keys_){}
     
     // parallelFor calles this function with std::size_t

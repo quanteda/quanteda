@@ -10,8 +10,8 @@ using namespace ngrams;
 
 
 Text replace(Text tokens, 
-             std::size_t span_max,
-             MapNgrams map_words){
+             const std::size_t &span_max,
+             const MapNgrams &map_words){
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -21,11 +21,13 @@ Text replace(Text tokens,
         if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
-            unsigned int id = map_words[ngram];
-            if (id) {
+            auto it = map_words.find(ngram);
+            if (it != map_words.end()) {
+            //unsigned int id = map_words[ngram];
+            //if (id) {
                 match = true;
                 std::fill(tokens.begin() + i + 1, tokens.begin() + i + span, filler); // fill subsequent tokens
-                tokens[i] = id;
+                tokens[i] = it->second;
             }
         }
     }
@@ -37,11 +39,11 @@ struct replace_mt : public Worker{
     
     Texts &input;
     Texts &output;
-    std::size_t span_max;
-    MapNgrams &map_words;
+    const std::size_t &span_max;
+    const MapNgrams &map_words;
     
     // Constructor
-    replace_mt(Texts &input_, Texts &output_, std::size_t span_max_, MapNgrams &map_words_):
+    replace_mt(Texts &input_, Texts &output_, std::size_t &span_max_, MapNgrams &map_words_):
               input(input_), output(output_), span_max(span_max_), map_words(map_words_) {}
     
     // parallelFor calles this function with std::size_t
