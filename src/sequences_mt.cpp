@@ -9,8 +9,8 @@ using namespace quanteda;
 using namespace ngrams;
 
 
-int match_bit(const std::vector<unsigned int> tokens1, 
-              const std::vector<unsigned int> tokens2){
+int match_bit(const std::vector<unsigned int> &tokens1, 
+              const std::vector<unsigned int> &tokens2){
   
     std::size_t len1 = tokens1.size();
     std::size_t len2 = tokens2.size();
@@ -22,7 +22,8 @@ int match_bit(const std::vector<unsigned int> tokens1,
     return bit;
 }
 
-double sigma(std::vector<long> counts, unsigned int n){
+double sigma(const std::vector<long> &counts, 
+             const unsigned int &n){
   
     double s = 0;
     for (std::size_t b = 1; b <= n; b++) {
@@ -33,7 +34,8 @@ double sigma(std::vector<long> counts, unsigned int n){
     return std::sqrt(s);
 }
 
-double lambda(std::vector<long> counts, unsigned int n){
+double lambda(const std::vector<long> &counts, 
+              const unsigned int &n){
   
     double l = std::log(counts[n]);
     for (std::size_t b = 1; b < n; b++){
