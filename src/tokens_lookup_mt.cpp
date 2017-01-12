@@ -17,9 +17,9 @@ Text lookup(Text tokens,
     
     Text keys;
     keys.reserve(tokens.size());
-    for (std::size_t span = span_max; span > 0; span--){
+    for (std::size_t span = span_max; span > 0; span--) {
         if (tokens.size() < span) continue;
-        for (std::size_t i = 0; i < tokens.size() - (span - 1); i++){
+        for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto range = map_keys.equal_range(ngram);
             for (auto it = range.first; it != range.second; ++it){
@@ -48,7 +48,7 @@ struct lookup_mt : public Worker{
     // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        for (std::size_t h = begin; h < end; h++){
+        for (std::size_t h = begin; h < end; h++) {
             output[h] = lookup(input[h], span_max, map_keys);
         }
     }

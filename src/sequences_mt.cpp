@@ -15,7 +15,7 @@ int match_bit(const std::vector<unsigned int> tokens1,
     std::size_t len1 = tokens1.size();
     std::size_t len2 = tokens2.size();
     long bit = 0;
-    for (std::size_t i = 0; i < len1 && i < len2; i++){
+    for (std::size_t i = 0; i < len1 && i < len2; i++) {
         bit += tokens1[i] == tokens2[i];
     }
     bit += len1 >= len2; // add one point for trailing space 
@@ -25,7 +25,7 @@ int match_bit(const std::vector<unsigned int> tokens1,
 double sigma(std::vector<long> counts, unsigned int n){
   
     double s = 0;
-    for (std::size_t b = 1; b <= n; b++){
+    for (std::size_t b = 1; b <= n; b++) {
         s += 1.0 / counts[b];
     }
     double base = n - 1;
@@ -54,14 +54,14 @@ void count(Text text,
     
     // Collect sequence of specified types
     std::size_t len_text = text.size();
-    for (std::size_t i = 0; i < len_text; i++){
-        for (std::size_t j = i; j < len_text; j++){
+    for (std::size_t i = 0; i < len_text; i++) {
+        for (std::size_t j = i; j < len_text; j++) {
             //Rcout << i << " " << j << "\n";
             unsigned int token = text[j];
             bool is_in;
-            if (token == 0){
+            if (token == 0) {
                 is_in = false;
-            }else{
+            } else {
                 is_in = set_words.find(token) != set_words.end();
             }
             if (is_in){
@@ -168,7 +168,7 @@ List qutd_cpp_sequences(List texts_,
     count_mt count_mt(texts, set_words, counts_seq, nested);
     parallelFor(0, texts.size(), count_mt);
     #else
-    for (std::size_t h = 0; h < texts.size(); h++){
+    for (std::size_t h = 0; h < texts.size(); h++) {
         count(texts[h], set_words, counts_seq, nested);
     }
     #endif
@@ -193,7 +193,7 @@ List qutd_cpp_sequences(List texts_,
     estimate_mt estimate_mt(seqs, cs, ss, ls, count_min);
     parallelFor(0, seqs.size(), estimate_mt);
     #else
-    for (std::size_t i = 0; i < seqs.size(); i++){
+    for (std::size_t i = 0; i < seqs.size(); i++) {
         estimate(i, seqs, cs, ss, ls, count_min);
     }
     #endif

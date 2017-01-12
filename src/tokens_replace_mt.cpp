@@ -13,7 +13,7 @@ Text replace(Text tokens,
              std::size_t span_max,
              MapNgrams map_words){
     
-    if(tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.size() == 0) return {}; // return empty vector for empty text
     
     unsigned int filler = std::numeric_limits<unsigned int>::max(); // use largest limit as filler
     bool match = false;
@@ -22,14 +22,14 @@ Text replace(Text tokens,
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             unsigned int id = map_words[ngram];
-            if(id){
+            if (id) {
                 match = true;
                 std::fill(tokens.begin() + i + 1, tokens.begin() + i + span, filler); // fill subsequent tokens
                 tokens[i] = id;
             }
         }
     }
-    if(match) tokens.erase(std::remove(tokens.begin(), tokens.end(), filler), tokens.end());
+    if (match) tokens.erase(std::remove(tokens.begin(), tokens.end(), filler), tokens.end());
     return tokens;
 }
 
@@ -47,7 +47,7 @@ struct replace_mt : public Worker{
     // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        for (std::size_t h = begin; h < end; h++){
+        for (std::size_t h = begin; h < end; h++) {
             output[h] = replace(input[h], span_max, map_words);
         }
     }
@@ -75,21 +75,21 @@ List qatd_cpp_tokens_replace(List texts_,
 
     MapNgrams map_words;
     std::size_t span_max = 0;
-    for (unsigned int g = 0; g < words.size(); g++){
-        if(has_na(words[g])) continue;
+    for (unsigned int g = 0; g < words.size(); g++) {
+        if (has_na(words[g])) continue;
         Ngram word = words[g];
         map_words[word] = ids[g];
-        if(span_max < word.size()) span_max = word.size();
+        if (span_max < word.size()) span_max = word.size();
     }
     
-    // // dev::Timer timer;
+    // dev::Timer timer;
     Texts output(input.size());
     // dev::start_timer("Token replace", timer);
     #if RCPP_PARALLEL_USE_TBB
     replace_mt replace_mt(input, output, span_max, map_words);
     parallelFor(0, input.size(), replace_mt);
     #else
-    for (std::size_t h = 0; h < input.size(); h++){
+    for (std::size_t h = 0; h < input.size(); h++) {
         output[h] = replace(input[h], span_max, map_words);
     }
     #endif
