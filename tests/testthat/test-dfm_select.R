@@ -122,6 +122,19 @@ test_that("selection that is out of bounds", {
     expect_equal(docnames(NULL), NULL)
     expect_equal(featnames(NULL), NULL)
 })
+
+test_that("longer selection than longer than features that exist (related to #447)", {
+    dfmtest <- dfm(tokens(c(d1 = 'a b', d2 = 'a b c d e')))
+    feat <- c('b', 'c', 'd', 'e', 'f', 'g')
+    # bugs in C++ needs repeated tests
+    expect_message(dfm_select(dfmtest, feat),
+                   "kept 4 features, from 6 supplied.*")
+    expect_equivalent(
+        as.matrix(dfm_select(dfmtest, feat)),
+        matrix(c(1, 1, 0, 1, 0, 1, 0, 1), nrow = 2)
+    )
+})
+
     
     
 

@@ -10,25 +10,28 @@ using namespace ngrams;
 
 
 Text replace(Text tokens, 
-             std::size_t span_max,
-             MapNgrams &map_words){
+             const std::size_t &span_max,
+             const MapNgrams &map_words){
     
-    if(tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.size() == 0) return {}; // return empty vector for empty text
     
     unsigned int filler = std::numeric_limits<unsigned int>::max(); // use largest limit as filler
     bool match = false;
     for (std::size_t span = span_max; span > 0; span--){ // substitution starts from the longest sequences
+        if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
-            unsigned int &id = map_words[ngram];
-            if(id){
+            auto it = map_words.find(ngram);
+            if (it != map_words.end()) {
+            //unsigned int id = map_words[ngram];
+            //if (id) {
                 match = true;
                 std::fill(tokens.begin() + i + 1, tokens.begin() + i + span, filler); // fill subsequent tokens
-                tokens[i] = id;
+                tokens[i] = it->second;
             }
         }
     }
-    if(match) tokens.erase(std::remove(tokens.begin(), tokens.end(), filler), tokens.end());
+    if (match) tokens.erase(std::remove(tokens.begin(), tokens.end(), filler), tokens.end());
     return tokens;
 }
 
@@ -36,17 +39,17 @@ struct replace_mt : public Worker{
     
     Texts &input;
     Texts &output;
-    std::size_t span_max;
-    MapNgrams &map_words;
+    const std::size_t &span_max;
+    const MapNgrams &map_words;
     
     // Constructor
-    replace_mt(Texts &input_, Texts &output_, std::size_t span_max_, MapNgrams &map_words_):
+    replace_mt(Texts &input_, Texts &output_, std::size_t &span_max_, MapNgrams &map_words_):
               input(input_), output(output_), span_max(span_max_), map_words(map_words_) {}
     
     // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        for (std::size_t h = begin; h < end; h++){
+        for (std::size_t h = begin; h < end; h++) {
             output[h] = replace(input[h], span_max, map_words);
         }
     }
@@ -74,11 +77,11 @@ List qatd_cpp_tokens_replace(List texts_,
 
     MapNgrams map_words;
     std::size_t span_max = 0;
-    for (unsigned int g = 0; g < words.size(); g++){
-        if(has_na(words[g])) continue;
+    for (unsigned int g = 0; g < words.size(); g++) {
+        if (has_na(words[g])) continue;
         Ngram word = words[g];
         map_words[word] = ids[g];
-        if(span_max < word.size()) span_max = word.size();
+        if (span_max < word.size()) span_max = word.size();
     }
     
     // dev::Timer timer;
@@ -88,7 +91,7 @@ List qatd_cpp_tokens_replace(List texts_,
     replace_mt replace_mt(input, output, span_max, map_words);
     parallelFor(0, input.size(), replace_mt);
     #else
-    for (std::size_t h = 0; h < input.size(); h++){
+    for (std::size_t h = 0; h < input.size(); h++) {
         output[h] = replace(input[h], span_max, map_words);
     }
     #endif

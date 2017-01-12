@@ -159,9 +159,9 @@ List qatd_cpp_tokens_ngrams(List texts_,
     // Create character tokens from unordered_map
     std::vector<std::string> types_ngram(map_ngram.size());
     
-    for (std::pair<Ngram, unsigned int> it : map_ngram){
+    for (std::pair<Ngram, unsigned int> it : map_ngram) {
         std::string type_ngram = types[it.first[0] - 1];
-        for (std::size_t i = 1; i < it.first.size(); i++){
+        for (std::size_t i = 1; i < it.first.size(); i++) {
             type_ngram += delim + types[it.first[i] - 1];
         }
         types_ngram[it.second - 1] = type_ngram;

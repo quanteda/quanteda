@@ -10,11 +10,11 @@ using namespace ngrams;
 
 
 Text keep(Text tokens, 
-          std::size_t span_max,
-          SetNgrams &set_words,
-          bool padding){
+          const std::size_t &span_max,
+          const SetNgrams &set_words,
+          const bool &padding){
     
-    if(tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.size() == 0) return {}; // return empty vector for empty text
     
     unsigned int filler = std::numeric_limits<unsigned int>::max(); // use upper limit as a filler
     Text tokens_copy(tokens.size(), filler);
@@ -22,10 +22,11 @@ Text keep(Text tokens,
         std::fill(tokens_copy.begin(), tokens_copy.end(), 0);
     }
     for (std::size_t span = span_max; span >= 1; span--) { // substitution starts from the longest sequences
+        if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_words.find(ngram) != set_words.end();
-            if(is_in){
+            if (is_in) {
                 std::copy(ngram.begin(), ngram.end(), tokens_copy.begin() + i);
             }
         }
@@ -35,27 +36,27 @@ Text keep(Text tokens,
 }
 
 Text remove(Text tokens, 
-            std::size_t span_max,
-            SetNgrams &set_words,
-            bool padding){
+            const std::size_t &span_max,
+            const SetNgrams &set_words,
+            const bool &padding){
 
-    if(tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.size() == 0) return {}; // return empty vector for empty text
     
     unsigned int filler = std::numeric_limits<unsigned int>::max(); // use upper limit as a filler
-    Text tokens_copy(tokens.size(), 0);
     bool match = false;
     for (std::size_t span = span_max; span > 0; span--) { // substitution starts from the longest sequences
+        if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++){
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_words.find(ngram) != set_words.end();
-            if(is_in){
+            if (is_in) {
                 match = true;
                 std::fill(tokens.begin() + i, tokens.begin() + i + span, filler);
-                if(padding) tokens[i] = 0;
+                if (padding) tokens[i] = 0;
             }
         }
     }
-    if(match) tokens.erase(std::remove(tokens.begin(), tokens.end(), filler), tokens.end());
+    if (match) tokens.erase(std::remove(tokens.begin(), tokens.end(), filler), tokens.end());
     return tokens;
 }
 
@@ -63,28 +64,28 @@ struct select_mt : public Worker{
     
     Texts &input;
     Texts &output;
-    std::size_t span_max;
-    SetNgrams &set_words;
-    int mode;
-    bool padding;
+    const std::size_t &span_max;
+    const SetNgrams &set_words;
+    const int &mode;
+    const bool &padding;
     
     // Constructor
-    select_mt(Texts &input_, Texts &output_, std::size_t span_max_, SetNgrams &set_words_, int mode_, bool padding_):
+    select_mt(Texts &input_, Texts &output_, std::size_t &span_max_, SetNgrams &set_words_, int &mode_, bool &padding_):
               input(input_), output(output_), span_max(span_max_), set_words(set_words_), mode(mode_), padding(padding_) {}
     
     // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        if(mode == 1){
-            for (std::size_t h = begin; h < end; h++){
+        if (mode == 1) {
+            for (std::size_t h = begin; h < end; h++) {
                 output[h] = keep(input[h], span_max, set_words, padding);
             }
-        }else if(mode == 2){
-            for (std::size_t h = begin; h < end; h++){
+        } else if(mode == 2) {
+            for (std::size_t h = begin; h < end; h++) {
                 output[h] = remove(input[h], span_max, set_words, padding);
             }
-        }else{
-            for (std::size_t h = begin; h < end; h++){
+        } else {
+            for (std::size_t h = begin; h < end; h++) {
                 output[h] = input[h];
             }
         }
@@ -116,11 +117,11 @@ List qatd_cpp_tokens_select(List texts_,
 
     SetNgrams set_words;
     std::size_t span_max = 0;
-    for (unsigned int g = 0; g < words.size(); g++){
-        if(has_na(words[g])) continue;
+    for (unsigned int g = 0; g < words.size(); g++) {
+        if (has_na(words[g])) continue;
         Ngram word = words[g];
         set_words.insert(word);
-        if(span_max < word.size()) span_max = word.size();
+        if (span_max < word.size()) span_max = word.size();
     }
     // dev::Timer timer;
     Texts output(input.size());
@@ -129,15 +130,15 @@ List qatd_cpp_tokens_select(List texts_,
     select_mt select_mt(input, output, span_max, set_words, mode, padding);
     parallelFor(0, input.size(), select_mt);
     #else
-    if(mode == 1){
-        for (std::size_t h = 0; h < input.size(); h++){
+    if (mode == 1) {
+        for (std::size_t h = 0; h < input.size(); h++) {
             output[h] = keep(input[h], span_max, set_words, padding);
         }
-    }else if(mode == 2){
-        for (std::size_t h = 0; h < input.size(); h++){
+    } else if(mode == 2) {
+        for (std::size_t h = 0; h < input.size(); h++) {
             output[h] = remove(input[h], span_max, set_words, padding);
         }
-    }else{
+    } else {
         for (std::size_t h = 0; h < input.size(); h++){
             output[h] = input[h];
         }
@@ -150,11 +151,15 @@ List qatd_cpp_tokens_select(List texts_,
 
 /***R
 
-toks <- list(rep(1:10, 10), rep(5:15, 10))
-dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-qatd_cpp_tokens_select(toks, dict, TRUE, 1)
-qatd_cpp_tokens_select(toks, dict, FALSE, 1)
+toks <- list(rep(1:10, 10000), rep(5:15, 10000))
+dict <- as.list(1:100000)
+#dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
+#qatd_cpp_tokens_select(toks, dict, 1, TRUE)
 
+microbenchmark::microbenchmark(
+qatd_cpp_tokens_select(toks, dict, 1, FALSE),
+qatd_cpp_tokens_select(toks, dict, 1, TRUE)
+)
 
 
 */

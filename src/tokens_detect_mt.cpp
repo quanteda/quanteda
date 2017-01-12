@@ -10,17 +10,18 @@ using namespace ngrams;
 
 
 Text detect(Text tokens, 
-            size_t span_max,
-            SetNgrams &set_words){
+            const size_t &span_max,
+            const SetNgrams &set_words){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
     Text tokens_pos(tokens.size(), 0);
     for (std::size_t span = span_max; span > 0; span--){ // substitution starts from the longest sequences
-        for (size_t i = 0; i < tokens.size() - (span - 1); i++){
+        if (tokens.size() < span) continue;
+        for (size_t i = 0; i < tokens.size() - (span - 1); i++) {
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_words.find(ngram) != set_words.end();
-            if(is_in){
+            if (is_in) {
                 std::fill(tokens_pos.begin() + i, tokens_pos.begin() + i + span, 1);
             }
         }
@@ -33,11 +34,11 @@ struct detect_mt : public Worker{
     
     Texts &input;
     Texts &output;
-    size_t span_max;
-    SetNgrams &set_words;
+    const size_t &span_max;
+    const SetNgrams &set_words;
     
     // Constructor
-    detect_mt(Texts &input_, Texts &output_, size_t span_max_, SetNgrams &set_words_):
+    detect_mt(Texts &input_, Texts &output_, size_t &span_max_, SetNgrams &set_words_):
               input(input_), output(output_), span_max(span_max_), set_words(set_words_){}
     
     // parallelFor calles this function with size_t
@@ -84,7 +85,7 @@ List qatd_cpp_tokens_detect(List texts_,
     detect_mt detect_mt(input, output, span_max, set_words);
     parallelFor(0, input.size(), detect_mt);
     #else
-    for (std::size_t h = 0; h < input.size(); h++){
+    for (std::size_t h = 0; h < input.size(); h++) {
         output[h] = detect(input[h], span_max, set_words);
     }
     #endif

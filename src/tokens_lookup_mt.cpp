@@ -10,27 +10,26 @@ using namespace ngrams;
 
 
 Text lookup(Text tokens, 
-            std::size_t span_max,
-            MultiMapNgrams &map_keys){
+            const std::size_t &span_max,
+            const MultiMapNgrams &map_keys){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
     Text keys;
     keys.reserve(tokens.size());
-    for (std::size_t span = span_max; span > 0; span--){
-        //Rcout << "Span " << span << "\n";
-        for (std::size_t i = 0; i < tokens.size() - (span - 1); i++){
+    for (std::size_t span = span_max; span > 0; span--) {
+        if (tokens.size() < span) continue;
+        for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
-            pair<MultiMapNgrams::iterator, MultiMapNgrams::iterator> ii;
-            MultiMapNgrams::iterator it; // iterator to be used along with ii
-            ii = map_keys.equal_range(ngram); // get the first and last entry in ii;
-            for(it = ii.first; it != ii.second; ++it){
+            auto range = map_keys.equal_range(ngram);
+            for (auto it = range.first; it != range.second; ++it){
                 //Rcout << it->second << "\n";
                 keys.push_back(it->second);
             }
+            
         }
     }
-    std::sort(keys.begin(), keys.end()); // sort keys as order is system dependent
+    std::sort(keys.begin(), keys.end()); // solve system dependency
     return keys;
 }
 
@@ -39,17 +38,17 @@ struct lookup_mt : public Worker{
     
     Texts &input;
     Texts &output;
-    std::size_t span_max;
-    MultiMapNgrams &map_keys;
+    const std::size_t &span_max;
+    const MultiMapNgrams &map_keys;
     
     // Constructor
-    lookup_mt(Texts &input_, Texts &output_, std::size_t span_max_, MultiMapNgrams &map_keys_):
+    lookup_mt(Texts &input_, Texts &output_, std::size_t &span_max_, MultiMapNgrams &map_keys_):
               input(input_), output(output_), span_max(span_max_), map_keys(map_keys_){}
     
     // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
-        for (std::size_t h = begin; h < end; h++){
+        for (std::size_t h = begin; h < end; h++) {
             output[h] = lookup(input[h], span_max, map_keys);
         }
     }
@@ -105,8 +104,8 @@ List qatd_cpp_tokens_lookup(List texts_,
 /***R
 
 #toks <- list(rep(1:10, 1), rep(5:15, 1))
-toks <- list(rep(1:10, 1))
-dict <- list(2, 1, c(1, 2))
+toks <- list(c(10000000L, 20000000L, 30000000L), 10000000L)
+dict <- list(10000000L, c(20000000L, 30000000L))
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 #dict <- list(1, 10, 20)
 key <- 1:length(dict)

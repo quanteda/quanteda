@@ -15,17 +15,18 @@ int match_bit(const std::vector<unsigned int> &tokens1,
     std::size_t len1 = tokens1.size();
     std::size_t len2 = tokens2.size();
     long bit = 0;
-    for (std::size_t i = 0; i < len1 && i < len2; i++){
+    for (std::size_t i = 0; i < len1 && i < len2; i++) {
         bit += tokens1[i] == tokens2[i];
     }
     bit += len1 >= len2; // add one point for trailing space 
     return bit;
 }
 
-double sigma(std::vector<long> &counts, unsigned int n){
+double sigma(const std::vector<long> &counts, 
+             const unsigned int &n){
   
     double s = 0;
-    for (std::size_t b = 1; b <= n; b++){
+    for (std::size_t b = 1; b <= n; b++) {
         s += 1.0 / counts[b];
     }
     double base = n - 1;
@@ -33,7 +34,8 @@ double sigma(std::vector<long> &counts, unsigned int n){
     return std::sqrt(s);
 }
 
-double lambda(std::vector<long> counts, unsigned int n){
+double lambda(const std::vector<long> &counts, 
+              const unsigned int &n){
   
     double l = std::log(counts[n]);
     for (std::size_t b = 1; b < n; b++){
@@ -44,9 +46,9 @@ double lambda(std::vector<long> counts, unsigned int n){
 }
 
 void count(Text text, 
-           SetUnigrams &set_words, 
+           const SetUnigrams &set_words, 
            MapNgrams &counts_seq, 
-           bool nested){
+           const bool &nested){
     
     if(text.size() == 0) return; // do nothing with empty text
     text.push_back(0); // add padding to include last words
@@ -54,14 +56,14 @@ void count(Text text,
     
     // Collect sequence of specified types
     std::size_t len_text = text.size();
-    for (std::size_t i = 0; i < len_text; i++){
-        for (std::size_t j = i; j < len_text; j++){
+    for (std::size_t i = 0; i < len_text; i++) {
+        for (std::size_t j = i; j < len_text; j++) {
             //Rcout << i << " " << j << "\n";
             unsigned int token = text[j];
             bool is_in;
-            if (token == 0){
+            if (token == 0) {
                 is_in = false;
-            }else{
+            } else {
                 is_in = set_words.find(token) != set_words.end();
             }
             if (is_in){
@@ -83,11 +85,11 @@ void count(Text text,
 struct count_mt : public Worker{
     
     Texts texts;
-    SetUnigrams &set_words;
+    const SetUnigrams &set_words;
     MapNgrams &counts_seq;
-    bool nested;
+    const bool &nested;
         
-    count_mt(Texts texts_, SetUnigrams &set_words_, MapNgrams &counts_seq_, bool nested_):
+    count_mt(Texts texts_, SetUnigrams &set_words_, MapNgrams &counts_seq_, bool &nested_):
              texts(texts_), set_words(set_words_), counts_seq(counts_seq_), nested(nested_) {}
     
     void operator()(std::size_t begin, std::size_t end){
@@ -102,14 +104,14 @@ void estimate(std::size_t i,
               IntParams &cs, 
               DoubleParams &ss, 
               DoubleParams &ls, 
-              int count_min){
+              const int &count_min){
     
     std::size_t n = seqs[i].size();
-    if(n == 1) return; // ignore single words
-    if(cs[i] < count_min) return;
+    if (n == 1) return; // ignore single words
+    if (cs[i] < count_min) return;
     std::vector<long> counts_bit(n + 1, 1); // add one smoothing
-    for(std::size_t j = 0; j < seqs.size(); j++){
-        if(i == j) continue; // do not compare with itself
+    for (std::size_t j = 0; j < seqs.size(); j++) {
+        if (i == j) continue; // do not compare with itself
         //if(ns[j] < count_min) continue; // this is different from the old vesion
         int bit = match_bit(seqs[i], seqs[j]);
         counts_bit[bit] += cs[i];
@@ -124,14 +126,14 @@ struct estimate_mt : public Worker{
     IntParams &cs;
     DoubleParams &ss;
     DoubleParams &ls;
-    int count_min;
+    const int &count_min;
     
     // Constructor
-    estimate_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, int count_min_):
+    estimate_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, int &count_min_):
                 seqs(seqs_), cs(cs_), ss(ss_), ls(ls_), count_min(count_min_) {}
     
     void operator()(std::size_t begin, std::size_t end){
-        for (std::size_t i = begin; i < end; i++){
+        for (std::size_t i = begin; i < end; i++) {
             estimate(i, seqs, cs, ss, ls, count_min);
         }
     }
@@ -168,7 +170,7 @@ List qutd_cpp_sequences(List texts_,
     count_mt count_mt(texts, set_words, counts_seq, nested);
     parallelFor(0, texts.size(), count_mt);
     #else
-    for (std::size_t h = 0; h < texts.size(); h++){
+    for (std::size_t h = 0; h < texts.size(); h++) {
         count(texts[h], set_words, counts_seq, nested);
     }
     #endif
@@ -180,7 +182,7 @@ List qutd_cpp_sequences(List texts_,
     IntParams cs;
     seqs.reserve(len);
     cs.reserve(len);
-    for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it){
+    for (auto it = counts_seq.begin(); it != counts_seq.end(); ++it) {
         seqs.push_back(it->first);
         cs.push_back(it->second);
     }
@@ -193,7 +195,7 @@ List qutd_cpp_sequences(List texts_,
     estimate_mt estimate_mt(seqs, cs, ss, ls, count_min);
     parallelFor(0, seqs.size(), estimate_mt);
     #else
-    for (std::size_t i = 0; i < seqs.size(); i++){
+    for (std::size_t i = 0; i < seqs.size(); i++) {
         estimate(i, seqs, cs, ss, ls, count_min);
     }
     #endif
@@ -205,7 +207,7 @@ List qutd_cpp_sequences(List texts_,
     NumericVector lambdas(len);
     NumericVector sigmas(len);
     NumericVector counts(len);
-    for(std::size_t k = 0; k < len; k++){
+    for (std::size_t k = 0; k < len; k++) {
         sequences[k] = seqs[k];
         lambdas[k] = ls[k];
         sigmas[k] = ss[k];
