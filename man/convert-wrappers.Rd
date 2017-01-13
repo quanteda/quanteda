@@ -70,15 +70,21 @@ quantdfm <- dfm(mycorpus, verbose = FALSE)
 # shortcut conversion to austin package's wfm format
 identical(as.wfm(quantdfm), convert(quantdfm, to = "austin"))
 
+\dontrun{
 # shortcut conversion to tm package's DocumentTermMatrix format
 identical(as.DocumentTermMatrix(quantdfm), convert(quantdfm, to = "tm"))
+}
 
+\dontrun{
 # shortcut conversion to lda package list format
 identical(dfm2ldaformat(quantdfm), convert(quantdfm, to = "lda")) 
+}
 
 # shortcut conversion to topicmodels package format
+\dontrun{
 identical(quantedaformat2dtm(quantdfm), 
           convert(quantdfm, to = "topicmodels")) 
+}
 
 }
 \keyword{internal}
