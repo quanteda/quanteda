@@ -38,10 +38,6 @@
 #' # austin's wfm format
 #' identical(dim(quantdfm), dim(convert(quantdfm, to = "austin")))
 #' 
-#' # tm's DocumentTermMatrix format
-#' tmdfm <- convert(quantdfm, to = "tm")
-#' str(tmdfm)
-#' 
 #' # stm package format
 #' stmdfm <- convert(quantdfm, to = "stm")
 #' str(stmdfm)
@@ -51,12 +47,18 @@
 #' stmdfm2 <- convert(quantdfm2, to = "stm", docvars = docvars(mycorpus))
 #' str(stmdfm2)
 #'  
+#' \dontrun{
+#' #' # tm's DocumentTermMatrix format
+#' tmdfm <- convert(quantdfm, to = "tm")
+#' str(tmdfm)
+#' 
 #' # topicmodels package format
 #' str(convert(quantdfm, to = "topicmodels"))
 #' 
 #' # lda package format
 #' ldadfm <- convert(quantdfm, to = "lda")
 #' str(ldadfm)
+#' }
 convert <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels", "lsa",
                          "matrix", "data.frame"), docvars = NULL, ...) {
     UseMethod("convert")
@@ -169,8 +171,10 @@ dfm2tmformat <- function(x, weighting = tm::weightTf) {
 #'   weighting functions from the \pkg{tm} package, see 
 #'   \code{\link[tm]{TermDocumentMatrix}}.
 #' @examples
+#' \dontrun{
 #' # shortcut conversion to tm package's DocumentTermMatrix format
 #' identical(as.DocumentTermMatrix(quantdfm), convert(quantdfm, to = "tm"))
+#' }
 #' 
 as.DocumentTermMatrix <- function(x, ...) {
     if (!is.dfm(x))
@@ -186,8 +190,10 @@ as.DocumentTermMatrix <- function(x, ...) {
 #'   \code{\link[lda]{lda.collapsed.gibbs.sampler}}).
 #' @export
 #' @examples
+#' \dontrun{
 #' # shortcut conversion to lda package list format
 #' identical(dfm2ldaformat(quantdfm), convert(quantdfm, to = "lda")) 
+#' }
 #' 
 dfm2ldaformat <- function(x) {
     if (!is.dfm(x))
@@ -224,8 +230,10 @@ dtm2ldaformat <- function (x, omit_empty = TRUE) {
 #' \pkg{topicmodels} package.
 #' @examples 
 #' # shortcut conversion to topicmodels package format
+#' \dontrun{
 #' identical(quantedaformat2dtm(quantdfm), 
 #'           convert(quantdfm, to = "topicmodels")) 
+#' }
 #' 
 quantedaformat2dtm <- function(x) {
     if (!is.dfm(x))

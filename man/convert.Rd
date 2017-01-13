@@ -53,10 +53,6 @@ quantdfm <- dfm(mycorpus, verbose = FALSE)
 # austin's wfm format
 identical(dim(quantdfm), dim(convert(quantdfm, to = "austin")))
 
-# tm's DocumentTermMatrix format
-tmdfm <- convert(quantdfm, to = "tm")
-str(tmdfm)
-
 # stm package format
 stmdfm <- convert(quantdfm, to = "stm")
 str(stmdfm)
@@ -66,11 +62,17 @@ rowSums(quantdfm2)
 stmdfm2 <- convert(quantdfm2, to = "stm", docvars = docvars(mycorpus))
 str(stmdfm2)
  
+\dontrun{
+#' # tm's DocumentTermMatrix format
+tmdfm <- convert(quantdfm, to = "tm")
+str(tmdfm)
+
 # topicmodels package format
 str(convert(quantdfm, to = "topicmodels"))
 
 # lda package format
 ldadfm <- convert(quantdfm, to = "lda")
 str(ldadfm)
+}
 }
 
