@@ -10,13 +10,13 @@ using namespace ngrams;
 
 
 Text detect(Text tokens, 
-            const size_t &span_max,
+            const std::vector<std::size_t> &spans,
             const SetNgrams &set_words){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
     Text tokens_pos(tokens.size(), 0);
-    for (std::size_t span = span_max; span > 0; span--){ // substitution starts from the longest sequences
+    for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         for (size_t i = 0; i < tokens.size() - (span - 1); i++) {
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
@@ -34,18 +34,18 @@ struct detect_mt : public Worker{
     
     Texts &input;
     Texts &output;
-    const size_t &span_max;
+    const std::vector<std::size_t> &spans;
     const SetNgrams &set_words;
     
     // Constructor
-    detect_mt(Texts &input_, Texts &output_, size_t &span_max_, SetNgrams &set_words_):
-              input(input_), output(output_), span_max(span_max_), set_words(set_words_){}
+    detect_mt(Texts &input_, Texts &output_, std::vector<std::size_t> &spans_, SetNgrams &set_words_):
+              input(input_), output(output_), spans(spans_), set_words(set_words_){}
     
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++){
-            output[h] = detect(input[h], span_max, set_words);
+            output[h] = detect(input[h], spans, set_words);
         }
     }
 };
@@ -70,23 +70,26 @@ List qatd_cpp_tokens_detect(List texts_,
     List words = words_;
 
     SetNgrams set_words;
-    std::size_t span_max = 0;
+    std::vector<std::size_t> spans(words.size());
     for (unsigned int g = 0; g < words.size(); g++) {
         if (has_na(words[g])) continue;
         Ngram word = words[g];
         set_words.insert(word);
-        if (span_max < word.size()) span_max = word.size();
+        spans[g] = word.size();
     }
+    sort(spans.begin(), spans.end());
+    spans.erase(unique(spans.begin(), spans.end()), spans.end());
+    std::reverse(std::begin(spans), std::end(spans));
     
     // dev::Timer timer;
     Texts output(input.size());
     // dev::start_timer("Dictionary detect", timer);
     #if RCPP_PARALLEL_USE_TBB
-    detect_mt detect_mt(input, output, span_max, set_words);
+    detect_mt detect_mt(input, output, spans, set_words);
     parallelFor(0, input.size(), detect_mt);
     #else
     for (std::size_t h = 0; h < input.size(); h++) {
-        output[h] = detect(input[h], span_max, set_words);
+        output[h] = detect(input[h], spans, set_words);
     }
     #endif
     // dev::stop_timer("Dictionary detect", timer);
