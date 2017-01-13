@@ -114,8 +114,8 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     # add attributes for kwic object
     attr(df_result, "valuetype") <- valuetype
     attr(df_result, "ntoken")  <- ntoken(x)
-    attr(df_result, "keywords") <- sapply(keywords, paste, collapse = " ")
-    attr(df_result, "tokenize_opts") <- list(...)
+    #attr(df_result, "keywords") <- sapply(keywords, paste, collapse = " ")
+    #attr(df_result, "tokenize_opts") <- list(...)
     # special class for new kwic
     class(df_result) <- c("kwic", class(df_result))
     df_result
