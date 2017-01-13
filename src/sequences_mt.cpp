@@ -69,9 +69,9 @@ void count(Text text,
             if (is_in){
                 //Rcout << "Match: " << token << "\n";
                 tokens_seq.push_back(token);
-            }else{
+            } else {
                 //Rcout << "Not match: " <<  token << "\n";
-                if(tokens_seq.size() > 1){
+                if (tokens_seq.size() > 1) {
                     counts_seq[tokens_seq]++;
                 }
                 tokens_seq.clear();
@@ -92,8 +92,8 @@ struct count_mt : public Worker{
     count_mt(Texts texts_, SetUnigrams &set_words_, MapNgrams &counts_seq_, bool &nested_):
              texts(texts_), set_words(set_words_), counts_seq(counts_seq_), nested(nested_) {}
     
-    void operator()(std::size_t begin, std::size_t end){
-        for (std::size_t h = begin; h < end; h++){
+    void operator()(std::size_t begin, std::size_t end) {
+        for (std::size_t h = begin; h < end; h++) {
             count(texts[h], set_words, counts_seq, nested);
         }
     }
