@@ -1,6 +1,6 @@
 # quanteda 0.9.9
 
-## Changes since latest CRAN version (>= v0.9.9-4()
+## Changes since latest CRAN version (>= v0.9.9-4)
 
 ### Bug fixes
 
