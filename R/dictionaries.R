@@ -415,7 +415,7 @@ readYKdict <- function(path){
 #  dictionary_flatten(hdict, 2)
 #  dictionary_flatten(hdict, 1:2)
 
-dictionary_flatten <- function(dict, levels = 1:100, level = 1, key = '', dict = list()) {
+dictionary_flatten <- function(dict, levels = 1:100, level = 1, key = '', dict_flat = list()) {
     #cat("-------------------\n")
     #cat("level:", level, "\n")
     for (name in names(dict)) {
@@ -434,14 +434,14 @@ dictionary_flatten <- function(dict, levels = 1:100, level = 1, key = '', dict =
         if (is.list(entry)) {
             #cat("List:\n")
             #print(entry)
-            dict <- dictionary_flatten(entry, levels, level + 1, key_entry, dict)
+            dict_flat <- dictionary_flatten(entry, levels, level + 1, key_entry, dict)
         } else {
             #cat("Vector:\n")
             #print(entry)
-            dict[[key_entry]] <- c(dict[[key_entry]], entry)
+            dict_flat[[key_entry]] <- c(dict[[key_entry]], entry)
         }
     }
-    return(dict)
+    return(dict_flat)
 }
 
 
