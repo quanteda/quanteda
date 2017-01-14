@@ -20,6 +20,10 @@ Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
 For more details, see the [**package website**](https://kbenoit.github.io/quanteda/).
 
+### Leave feedback
+
+If you like **quanteda**, please consider leaving [feedback or a testimonial here](https://github.com/kbenoit/quanteda/issues/461).
+
 Features
 --------
 
@@ -112,7 +116,7 @@ Demonstration
 
 ``` r
 library(quanteda)
-## quanteda version 0.9.9.6
+## quanteda version 0.9.9.7
 ## 
 ## Attaching package: 'quanteda'
 ## The following object is masked from 'package:utils':
@@ -144,7 +148,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Fri Jan 13 16:26:56 2017
+## Created: Sat Jan 14 11:45:38 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
