@@ -15,17 +15,34 @@ setClass("dictionary", contains = c("list"),
          slots = c(concatenator = "character", format = "charNULL", file = "charNULL"),
          prototype = prototype(concatenator = " ", format = NULL, file = NULL))
 
-setValidity ("dictionary", function(object) {
+setValidity("dictionary", function(object) {
     # does every element have a name? simply needs to pass
-    dummy <- dictionary_flatten(object)
-    # is every element a character?
-    if (all(is.character(unlist(object, use.names = FALSE)))) {
-        return(TRUE)
-    } else {
-        retmsg <- paste0(retmsg, "\n  non-character entries found")
-        return(retmsg)
-    }
+    validate_dictionary(object)
 })
+
+
+# Internal function to chekc if dictionary eintries are all chracters
+validate_dictionary <- function(tree){
+    
+    if (is.null(names(tree))) {
+        stop("dictionary elements must be named")
+    }
+    if (any(names(tree) == "")) {
+        unnamed <- tree[which(names(tree) == "")]
+        stop("unnamed dictionary entry: ", unnamed)
+    }
+    
+    for (i in 1:length(tree)) {
+        branch <- tree[[i]]
+        if (is.list(branch)) {
+            validate_dictionary(branch)
+        } else {
+            if (!all(is.character(branch))) {
+                stop("dictionary elements must be characters")
+            }
+        }   
+    }
+}
 
 #' print a dictionary object
 #' 
@@ -35,14 +52,9 @@ setValidity ("dictionary", function(object) {
 #' @export
 setMethod("show", "dictionary", 
           function(object) {
-              cat("Dictionary object with", length(object), "key entries.\n")
+              cat("Dictionary object with", length(unlist(object)), "key entries.\n")
               keys <- names(object)
-              lapply(seq_along(object), 
-                     function(i, object, keys)
-                         cat(" - ", keys[i], ": ", paste(object[[i]], collapse = ", "), "\n", sep = ""),
-                     object = object, keys = names(object))
-              
-              # print(setClass("list", object))
+              print(setClass("list", object))
           })
 
 #' create a dictionary
@@ -221,6 +233,7 @@ readWStatDict <- function(path, enc="", toLower=TRUE) {
     flatDict <- lapply(flatDict, function(x) gsub("\\s", "", x, perl=TRUE))
     return(flatDict)
 }
+
 
 
 # Import a LIWC-formatted dictionary
@@ -404,14 +417,6 @@ readYKdict <- function(path){
 dictionary_flatten <- function(tree, levels = 1:100, level = 1, key_tree = '', dict = list()) {
     #cat("-------------------\n")
     #cat("level:", level, "\n")
-    
-    if (is.null(names(tree))) {
-        stop("dictionary elements must be named")
-    }
-    if (any(names(tree) == "")) {
-        unnamed <- tree[which(names(tree) == "")]
-        stop("unnamed dictionary entry: ", unnamed)
-    }
     for (name in names(tree)) {
         branch <- tree[[name]]
         if (level %in% levels) {    
