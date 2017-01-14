@@ -184,7 +184,7 @@ dictionary <- function(..., file = NULL, format = NULL,
 # lgdict <- readWStatDict(path)
 # }
 readWStatDict <- function(path, enc="", toLower=TRUE) {
-    d <- utils::read.delim(path, header=FALSE, fileEncoding=enc)
+    d <- utils::read.delim(path, header=FALSE, fileEncoding=enc, na.string = "__________")
     d <- data.frame(lapply(d, as.character), stringsAsFactors=FALSE)
     thismajorcat <- d[1,1]
     # this loop fills in blank cells in the category|term dataframe
@@ -212,9 +212,9 @@ readWStatDict <- function(path, enc="", toLower=TRUE) {
 
     # this loop collapses the category cells together and
     # makes the list of named lists compatible with dfm
-    for (i in 1:nrow(d)){
-        if (d[i,ncol(d)]=='') next
-        categ <- unlist(paste(d[i,(1:(ncol(d)-1))], collapse="."))
+    for (i in 1:nrow(d)) {
+        if (d[i, ncol(d)] ==  "") next
+        categ <- unlist(paste(d[i,(1:(ncol(d)-1))], collapse = "."))
         w <- d[i, ncol(d)]
         w <- unlist(strsplit(w, '\\('))[[1]]
         if (toLower) w <- toLower(w)

@@ -49,3 +49,11 @@ test_that("dictionary constructor works with Lexicoder format", {
                                  "Another category" = c("had", "mary")))
 })
 
+test_that("read a dictionary with NA as a key", {
+    testdict <- dictionary(file = "../data/dictionaries/issue-459.cat")
+    # this is not really the best test, since the name of entry 3 is ".NA",
+    # when it should be SOUTH.NA.  This seems to be a limitation of 
+    # readWStatDict() in dictionaries.R
+    expect_true(grepl("NA", names(testdict)[3]))
+})
+
