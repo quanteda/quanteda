@@ -65,7 +65,7 @@ setMethod("show", "dictionary",
 #'   Provalis Research's Wordstat software} \item{\code{"LIWC"}}{format used by 
 #'   the Linguistic Inquiry and Word Count software} \item{\code{"yoshikoder"}}{
 #'   format used by Yoshikoder software} \item{\code{"lexicoder"}}{format used
-#'   by Lexicoder}} \item{\code{"YAML"}}{the standard YAML format}}
+#'   by Lexicoder} \item{\code{"YAML"}}{the standard YAML format}}
 #' @param concatenator the character in between multi-word dictionary values. 
 #'   This defaults to \code{"_"} except LIWC-formatted files, which defaults to 
 #'   a single space \code{" "}.

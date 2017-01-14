@@ -15,6 +15,15 @@ This argument may be omitted if the dictionary is read from \code{file}.}
 
 \item{file}{file identifier for a foreign dictionary}
 
+\item{format}{character identifier for the format of the foreign dictionary. 
+If not supplied, the format is guessed from the dictionary file's
+extension.
+Available options are: \describe{ \item{\code{"wordstat"}}{format used by 
+Provalis Research's Wordstat software} \item{\code{"LIWC"}}{format used by 
+the Linguistic Inquiry and Word Count software} \item{\code{"yoshikoder"}}{
+format used by Yoshikoder software} \item{\code{"lexicoder"}}{format used
+by Lexicoder} \item{\code{"YAML"}}{the standard YAML format}}}
+
 \item{concatenator}{the character in between multi-word dictionary values. 
 This defaults to \code{"_"} except LIWC-formatted files, which defaults to 
 a single space \code{" "}.}
