@@ -187,7 +187,7 @@ test_that("multi-word dictionary behavior is not affected by padding", {
 })
 
 
-test_that("#459 apply only certain levels in a hierarchical dictionary", {
+test_that("#459 apply a hierarchical dictionary", {
     
     txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
              d2 = "The Supreme Court of the United States is seldom in a united state.")
