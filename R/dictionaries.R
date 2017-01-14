@@ -45,6 +45,21 @@ validate_dictionary <- function(dict){
     }
 }
 
+# Internal function to print dictionary
+print_dictionary <- function(dict, level = 1){
+    
+    for (i in 1:length(dict)) {
+        entry <- dict[[i]]
+        if (is.list(entry)) {
+            cat(rep('  ', level - 1), names(dict[i]), ':\n', sep = "")
+            print_dictionary(entry, level + 1)
+        } else {
+            cat(rep('  ', level - 1), names(dict[i]) , ": ", paste(entry, collapse = ", "), "\n", sep = "")
+        }   
+    }
+}
+
+
 #' print a dictionary object
 #' 
 #' Print/show method for dictionary objects.
@@ -54,8 +69,7 @@ validate_dictionary <- function(dict){
 setMethod("show", "dictionary", 
           function(object) {
               cat("Dictionary object with", length(unlist(object)), "key entries.\n")
-              keys <- names(object)
-              print(setClass("list", object))
+              print_dictionary(object)
           })
 
 #' create a dictionary
@@ -434,7 +448,7 @@ dictionary_flatten <- function(dict, levels = 1:100, level = 1, key = '', dict_f
         if (is.list(entry)) {
             #cat("List:\n")
             #print(entry)
-            dict_flat <- dictionary_flatten(entry, levels, level + 1, key_entry, dict)
+            dict_flat <- dictionary_flatten(entry, levels, level + 1, key_entry, dict_flat)
         } else {
             #cat("Vector:\n")
             #print(entry)
