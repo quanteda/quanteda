@@ -22,23 +22,24 @@ setValidity("dictionary", function(object) {
 
 
 # Internal function to chekc if dictionary eintries are all chracters
-validate_dictionary <- function(tree){
+validate_dictionary <- function(dict){
     
-    if (is.null(names(tree))) {
+    if (is.null(names(dict))) {
         stop("dictionary elements must be named")
     }
-    if (any(names(tree) == "")) {
-        unnamed <- tree[which(names(tree) == "")]
+    if (any(names(dict) == "")) {
+        unnamed <- dict[which(names(dict) == "")]
         stop("unnamed dictionary entry: ", unnamed)
     }
     
-    for (i in 1:length(tree)) {
-        branch <- tree[[i]]
-        if (is.list(branch)) {
-            validate_dictionary(branch)
+    for (i in 1:length(dict)) {
+        entry <- dict[[i]]
+        if (is.list(entry)) {
+            validate_dictionary(entry)
         } else {
-            if (!all(is.character(branch))) {
-                stop("dictionary elements must be characters")
+            if (any(!is.character(entry))) {
+                nonchar <- entry[!is.character(entry)]
+                stop("non-character entries found: ", nonchar)
             }
         }   
     }
@@ -414,30 +415,30 @@ readYKdict <- function(path){
 #  dictionary_flatten(hdict, 2)
 #  dictionary_flatten(hdict, 1:2)
 
-dictionary_flatten <- function(tree, levels = 1:100, level = 1, key_tree = '', dict = list()) {
+dictionary_flatten <- function(dict, levels = 1:100, level = 1, key = '', dict = list()) {
     #cat("-------------------\n")
     #cat("level:", level, "\n")
-    for (name in names(tree)) {
-        branch <- tree[[name]]
+    for (name in names(dict)) {
+        entry <- dict[[name]]
         if (level %in% levels) {    
-            if (key_tree != '') {
-                key <- paste(key_tree, name, sep = '.')
+            if (key != '') {
+                key_entry <- paste(key, name, sep = '.')
             } else {
-                key <- name
+                key_entry <- name
             }
         } else {
-            key <- key_tree
+            key_entry <- key
         }
         #cat("key:", key, "\n")
-        #cat("key_tree:", key_tree, "\n")
-        if (is.list(branch)) {
+        #cat("key_entry:", key_entry, "\n")
+        if (is.list(entry)) {
             #cat("List:\n")
-            #print(branch)
-            dict <- dictionary_flatten(branch, levels, level + 1, key, dict)
+            #print(entry)
+            dict <- dictionary_flatten(entry, levels, level + 1, key_entry, dict)
         } else {
             #cat("Vector:\n")
-            #print(branch)
-            dict[[key]] <- c(dict[[key]], branch)
+            #print(entry)
+            dict[[key_entry]] <- c(dict[[key_entry]], entry)
         }
     }
     return(dict)
