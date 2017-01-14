@@ -4,8 +4,8 @@
 \alias{tokens_lookup}
 \title{apply a dictionary to a tokens object}
 \usage{
-tokens_lookup(x, dictionary, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, capkeys = FALSE, concatenator = " ",
+tokens_lookup(x, dictionary, levels = 1:5, valuetype = c("glob", "regex",
+  "fixed"), case_insensitive = TRUE, capkeys = FALSE, concatenator = " ",
   exclusive = TRUE, verbose = FALSE)
 }
 \arguments{
@@ -13,6 +13,9 @@ tokens_lookup(x, dictionary, valuetype = c("glob", "regex", "fixed"),
 
 \item{dictionary}{the \link{dictionary}-class object that will be applied to 
 \code{x}}
+
+\item{levels}{levels of entries in a hierachical dictionary that will be 
+applied}
 
 \item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
@@ -41,7 +44,7 @@ toks <- tokens(data_corpus_inaugural)
 dict <- dictionary(list(country = "united states", 
                    law=c('law*', 'constitution'), 
                    freedom=c('free*', 'libert*')))
-dfm(tokens_lookup(toks, dict, 'glob', verbose = TRUE))
+dfm(tokens_lookup(toks, dict, valuetype='glob', verbose = TRUE))
 
 dict_fix <- dictionary(list(country = "united states", 
                        law = c('law', 'constitution'), 

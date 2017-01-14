@@ -15,19 +15,14 @@ setClass("dictionary", contains = c("list"),
          slots = c(concatenator = "character", format = "charNULL", file = "charNULL"),
          prototype = prototype(concatenator = " ", format = NULL, file = NULL))
 
-setValidity("dictionary", function(object) {
+setValidity ("dictionary", function(object) {
     # does every element have a name? simply needs to pass
     dummy <- dictionary_flatten(object)
     # is every element a character?
-    if (all(charvals <- sapply(object, is.character))) {
+    if (all(is.character(unlist(object, use.names = FALSE)))) {
         return(TRUE)
     } else {
-        retmsg <-character()
-        for (i in which(!charvals)) {
-            retmsg <- paste0(retmsg, "\n  non-character entries found: ",
-                             names(object)[i], " : ",
-                             paste(object[[i]], collapse = " "))
-        }
+        retmsg <- paste0(retmsg, "\n  non-character entries found")
         return(retmsg)
     }
 })
@@ -70,7 +65,7 @@ setMethod("show", "dictionary",
 #'   Provalis Research's Wordstat software} \item{\code{"LIWC"}}{format used by 
 #'   the Linguistic Inquiry and Word Count software} \item{\code{"yoshikoder"}}{
 #'   format used by Yoshikoder software} \item{\code{"lexicoder"}}{format used
-#'   by Lexicoder}}
+#'   by Lexicoder}} \item{\code{"YAML"}}{the standard YAML format}}
 #' @param concatenator the character in between multi-word dictionary values. 
 #'   This defaults to \code{"_"} except LIWC-formatted files, which defaults to 
 #'   a single space \code{" "}.
@@ -134,35 +129,36 @@ dictionary <- function(..., file = NULL, format = NULL,
   # if (!is.null(x) & !is.list(x))
   #   stop("Dictionaries must be named lists or lists of named lists.")
 
-  dict_format_mapping <- c(cat="wordstat", dic="LIWC", ykd="yoshikoder", lcd="yoshikoder", lc3="lexicoder")
+  dict_format_mapping <- c(cat="wordstat", dic="LIWC", ykd="yoshikoder", lcd="yoshikoder", 
+                           lc3="lexicoder", yml="YAML")
   if (!is.null(file)) {
 
-    if (is.null(format)) {
-      ext <- file_ext(file)
-      if (ext %in% names(dict_format_mapping)) {
-        format <- dict_format_mapping[[ext]]
+      if (is.null(format)) {
+          ext <- file_ext(file)
+          if (ext %in% names(dict_format_mapping)) {
+              format <- dict_format_mapping[[ext]]
+          }
+          else {
+              stop(paste("Unknown dictionary file extension", ext))
+          }
       }
       else {
-        stop(paste("Unknown dictionary file extension", ext))
+          format <- match.arg(format, dict_format_mapping)
       }
-    }
-    else {
-      format <- match.arg(format, dict_format_mapping)
-    }
-    format <- unname(format)
-
-    if (format=="wordstat") 
-      x <- readWStatDict(file, enc = encoding, toLower = toLower)
-    else if (format=="LIWC")
-      x <- readLIWCdict(file, toLower = toLower, encoding = encoding)
-    else if (format=="yoshikoder")
-      x <- readYKdict(file)
-    else if (format=="lexicoder")
-      x <- readLexicoderDict(file)
-
+      format <- unname(format)
+      
+      if (format=="wordstat") {
+          x <- readWStatDict(file, enc = encoding, toLower = toLower)
+      } else if (format=="LIWC") {
+          x <- readLIWCdict(file, toLower = toLower, encoding = encoding)
+      } else if (format=="yoshikoder") {
+          x <- readYKdict(file)
+      } else if (format=="lexicoder") {
+          x <- readLexicoderDict(file)
+      } else if (format=="YAML") {
+          x <- yaml::yaml.load_file(file, as.named.list = TRUE)  
+      }    
   }
-  
-  x <- dictionary_flatten(x)
   new("dictionary", x, format = format, file = file, concatenator = concatenator)
 }
 

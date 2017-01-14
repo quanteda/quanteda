@@ -187,3 +187,27 @@ test_that("multi-word dictionary behavior is not affected by padding", {
 })
 
 
+test_that("#459 apply only certain levels in a hierarchical dictionary", {
+    
+    txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
+             d2 = "The Supreme Court of the United States is seldom in a united state.")
+    toks <- tokens(txt)
+    dict <- dictionary(list('geo'=list(
+                              Countries = c("States"),
+                              oceans = c("Atlantic", "Pacific")),
+                            'other'=list(
+                              gameconsoles = c("Xbox", "Nintendo"),
+                              swords = c("States"))))
+    
+    expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "fixed", levels=1)),
+                 list(d1 = c("geo", "geo", "geo", "other"),
+                      d2 = c("geo", "other")))
+    
+    expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "fixed", levels=1:2)),
+                 list(d1 = c("geo.Countries", "geo.oceans", "geo.oceans", "other.swords"),
+                      d2 = c("geo.Countries", "other.swords")))
+    
+    expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "fixed", levels=2)),
+                 list(d1 = c("Countries", "oceans", "oceans", "swords"),
+                      d2 = c("Countries", "swords")))
+})

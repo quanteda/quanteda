@@ -5,6 +5,8 @@
 #' @param x tokens object to which dictionary or thesaurus will be supplied
 #' @param dictionary the \link{dictionary}-class object that will be applied to 
 #'   \code{x}
+#' @param levels levels of entries in a hierachical dictionary that will be 
+#'   applied
 #' @inheritParams valuetype
 #' @param concatenator a charactor that connect words in multi-words entries
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE} 
@@ -20,7 +22,7 @@
 #' dict <- dictionary(list(country = "united states", 
 #'                    law=c('law*', 'constitution'), 
 #'                    freedom=c('free*', 'libert*')))
-#' dfm(tokens_lookup(toks, dict, 'glob', verbose = TRUE))
+#' dfm(tokens_lookup(toks, dict, valuetype='glob', verbose = TRUE))
 #' 
 #' dict_fix <- dictionary(list(country = "united states", 
 #'                        law = c('law', 'constitution'), 
@@ -29,7 +31,7 @@
 #' dfm(tokens_lookup(toks, dict_fix, valuetype='fixed'))
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
-tokens_lookup <- function(x, dictionary,
+tokens_lookup <- function(x, dictionary, levels = 1:5,
                           valuetype = c("glob", "regex", "fixed"), 
                           case_insensitive = TRUE,
                           capkeys = FALSE,
@@ -37,9 +39,10 @@ tokens_lookup <- function(x, dictionary,
                           exclusive = TRUE,
                           verbose = FALSE) {
     
-    valuetype <- match.arg(valuetype)
     names_org <- names(x)
     attrs_org <- attributes(x)
+    dictionary <- dictionary_flatten(dictionary, levels)
+    valuetype <- match.arg(valuetype)
     
     # Generate all combinations of type IDs
     entries_id <- list()

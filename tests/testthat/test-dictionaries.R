@@ -37,6 +37,11 @@ test_that("dictionary constructor works with Yoshikoder format", {
                       marydict)
 })
 
+test_that("dictionary constructor works with YAML format", {
+    expect_equivalent(dictionary(file = "../data/dictionaries/mary.yml"),
+                      marydict)
+})
+
 test_that("dictionary constructor works with LIWC format", {
     expect_equivalent(dictionary(file = "../data/dictionaries/mary.dic"),
                       dictionary("A_CATEGORY" = c("lamb", "little", "more"),
