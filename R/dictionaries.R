@@ -452,7 +452,7 @@ dictionary_flatten <- function(dict, levels = 1:100, level = 1, key = '', dict_f
         } else {
             #cat("Vector:\n")
             #print(entry)
-            dict_flat[[key_entry]] <- c(dict[[key_entry]], entry)
+            dict_flat[[key_entry]] <- c(dict_flat[[key_entry]], entry)
         }
     }
     return(dict_flat)
