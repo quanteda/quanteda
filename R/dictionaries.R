@@ -378,10 +378,12 @@ readYKdict <- function(path){
 #  \code{unlist(dictionary, recursive=TRUE)} except that the recursion does not go to the
 #  bottom level.  Called by \code{\link{dfm}}.
 # 
-#  @param elms list to be flattened
-#  @param parent parent list name, gets built up through recursion in the same way that \code{unlist(dictionary, recursive=TRUE)} works
-#  @param dict the bottom list of dictionary entries ("synonyms") passed up from recursive calls
-#  @return A dictionary flattened down one level further than the one passed
+#  @param tree list to be flattened
+#  @param levels integer vector indicating levels in the dictionary
+#  @param level internal argument to pass current levels
+#  @param key_tree internal argument to pass for parent keys
+#  @param dict internal argument to pass flattend dicitonary
+#  @return A dictionary flattened to variable levels
 #  @keywords internal
 #  @author Kohei Watanabe
 #  @export
@@ -400,31 +402,41 @@ readYKdict <- function(path){
 #                level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
 #                               level1c1b = list(level1c1b1 = c("lowestalone"))))
 #  dictionary_flatten(hdict)
-dictionary_flatten <- function(elms, parent = '', dict = list()) {
-    # are all elements unnamed?
-    if (is.null(names(elms))) {
+#  dictionary_flatten(hdict, 2)
+#  dictionary_flatten(hdict, 1:2)
+
+dictionary_flatten <- function(tree, levels = 1:100, level = 1, key_tree = '', dict = list()) {
+    #cat("-------------------\n")
+    #cat("level:", level, "\n")
+    
+    if (is.null(names(tree))) {
         stop("dictionary elements must be named")
     }
-    # are any elements unnamed?
-    if (any(names(elms) == "")) {
-        unnamed <- elms[which(names(elms) == "")]
+    if (any(names(tree) == "")) {
+        unnamed <- tree[which(names(tree) == "")]
         stop("unnamed dictionary entry: ", unnamed)
     }
-    for (self in names(elms)) {
-        elm <- elms[[self]]
-        if (parent != '') {
-            self <- paste(parent, self, sep='.')
-        }
-        # print("-------------------")
-        # print (paste("Name", self))
-        if (is.list(elm)) {
-            # print("List:")
-            # print(names(elm))
-            dict <- dictionary_flatten(elm, self, dict)
+    for (name in names(tree)) {
+        branch <- tree[[name]]
+        if (level %in% levels) {    
+            if (key_tree != '') {
+                key <- paste(key_tree, name, sep = '.')
+            } else {
+                key <- name
+            }
         } else {
-            # print("Words:")
-            dict[[self]] <- elm
-            # print(dict)
+            key <- key_tree
+        }
+        #cat("key:", key, "\n")
+        #cat("key_tree:", key_tree, "\n")
+        if (is.list(branch)) {
+            #cat("List:\n")
+            #print(branch)
+            dict <- dictionary_flatten(branch, levels, level + 1, key, dict)
+        } else {
+            #cat("Vector:\n")
+            #print(branch)
+            dict[[key]] <- c(dict[[key]], branch)
         }
     }
     return(dict)
