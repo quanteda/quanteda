@@ -11,6 +11,7 @@
 
 * Added `min_nchar` and `max_nchar` arguments to `dfm_select`.  
 * `dictionary()` can now be called on the argument of a `list()` without explicitly wrapping it in `list()`.  
+* `fcm` now works directly on a dfm object when `context = "documents"`.  
 
 
 This release has some **major changes to the API**, described below.

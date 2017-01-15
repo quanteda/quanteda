@@ -138,6 +138,62 @@ fcm.character <- function(x, ...) {
 }
 
 #' @noRd
+#' @import Matrix
+#' @export
+fcm.dfm <- function(x, context = c("document", "window"), 
+                               count = c("frequency", "boolean", "weighted"),
+                               window = 5L,
+                               weights = 1L,
+                               ordered = FALSE,
+                               span_sentence = TRUE, tri = TRUE, ...) {
+
+    context <- match.arg(context)
+    count <- match.arg(count)
+    window <- as.integer(window)
+    if (!span_sentence) 
+        warning("spanSentence = FALSE not yet implemented")
+    if (context != "document") 
+        stop("fcm.dfm only works on context = \"document\"")
+
+    if (count == "boolean") {
+        x <- tf(x, "boolean") 
+        tokenCo <- x > 1
+    } else if (count == "frequency") {
+        tokenCo <- x
+        tokenCo@x <- choose(tokenCo@x, 2)
+    } else {
+        stop("Cannot have weighted counts with context = \"document\"")
+    }
+
+    result <- Matrix::crossprod(x) 
+    
+    # compute co_occurrence of the diagonal elements
+    tokenCoSum <- colSums(tokenCo) # apply(tokenCo, MARGIN = 2, sum)
+    ft <- tokenCoSum >= 1
+    diagIndex <- which(ft)
+    lengthToken <- length(ft)
+    diagCount <- Matrix::sparseMatrix(i = diagIndex,
+                                      j = diagIndex,
+                                      x = tokenCoSum[ft],
+                                      dims = c(lengthToken , lengthToken))
+    diag(result) <- 0
+    result <- result + diagCount
+    result <- result[rownames(result), colnames(result)]
+    
+    # discard the lower diagonal if tri == TRUE
+    if (tri) 
+        result <- Matrix::triu(result)
+    
+    # create a new feature context matrix
+    result <- new("fcm", as(result, "dgCMatrix"), count = count,
+                  context = context, window = window, weights = weights, tri = tri)
+    # set the names 
+    names(result@Dimnames) <- c("features", "features")
+    result
+}
+
+    
+#' @noRd
 #' @import data.table
 #' @import Matrix
 #' @export
@@ -157,33 +213,8 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
         warning("spanSentence = FALSE not yet implemented")
     
     if (context == "document") {
-        tokenCount <- dfm(x, tolower = FALSE, verbose = FALSE)
-        
-        if (count == "boolean") {
-            x <- tf(tokenCount, "boolean") 
-            result <- Matrix::crossprod(x) 
-            tokenCo <- tokenCount > 1
-        } else if (count == "frequency") {
-            result <- Matrix::crossprod(tokenCount)
-            # tokenCo <- apply(tokenCount, MARGIN=c(1,2), function(x) choose(x,2))
-            tokenCo <- tokenCount
-            tokenCo@x <- choose(tokenCo@x, 2)  ## same result but much faster and more robust -KB
-        } else {
-            stop("Cannot have weighted counts with context = \"document\"")
-        }
-        
-        # compute co_occurrence of the diagonal elements
-        tokenCoSum <- colSums(tokenCo) # apply(tokenCo, MARGIN = 2, sum)
-        ft <- tokenCoSum >= 1
-        diagIndex <- which(ft)
-        lengthToken <- length(ft)
-        diagCount <- Matrix::sparseMatrix(i = diagIndex,
-                                          j = diagIndex,
-                                          x = tokenCoSum[ft],
-                                          dims = c(lengthToken , lengthToken))
-        diag(result) <- 0
-        result <- result + diagCount
-        result <- result[rownames(result), colnames(result)]
+        result <- fcm(dfm(x, tolower = FALSE, verbose = FALSE),
+                      count = count, tri = tri)
     }
         
     if (context == "window") { 
