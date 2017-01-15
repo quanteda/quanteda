@@ -30,12 +30,13 @@ setClass("fcm",
 #' features within a user-defined context. The context can be defined as a
 #' document or a window within a collection of documents, with an optional
 #' vector of weights applied to the co-occurrence counts.
-#' @param x character vector, corpus, or tokens object from which to generate 
+#' @param x character, \link{corpus}, \link{tokens}, or \link{dfm} object from which to generate 
 #'   the feature co-occurrence matrix
 #' @param context the context in which to consider term co-occurrence: 
 #'   \code{"document"} for co-occurrence counts within document; \code{"window"}
 #'   for co-occurrence within a defined window of words, which requires a 
-#'   postive integer value for \code{window}
+#'   postive integer value for \code{window}.  Note: if \code{x} is a dfm object, then
+#'   \code{context} can only be \code{"windows"}.
 #' @param window positive integer value for the size of a window on either side 
 #'   of the target feature, default is 5, meaning 5 words before and after the 
 #'   target feature
@@ -134,9 +135,65 @@ fcm <- function(x, context = c("document", "window"),
 #' @noRd
 #' @export
 fcm.character <- function(x, ...) {
-    fcm(tokenize(x), ...)
+    fcm(tokens(x), ...)
 }
 
+#' @noRd
+#' @import Matrix
+#' @export
+fcm.dfm <- function(x, context = c("document", "window"), 
+                               count = c("frequency", "boolean", "weighted"),
+                               window = 5L,
+                               weights = 1L,
+                               ordered = FALSE,
+                               span_sentence = TRUE, tri = TRUE, ...) {
+
+    context <- match.arg(context)
+    count <- match.arg(count)
+    window <- as.integer(window)
+    if (!span_sentence) 
+        warning("spanSentence = FALSE not yet implemented")
+    if (context != "document") 
+        stop("fcm.dfm only works on context = \"document\"")
+
+    if (count == "boolean") {
+        tokenCo <- x > 1
+        x <- tf(x, "boolean") 
+    } else if (count == "frequency") {
+        tokenCo <- x
+        tokenCo@x <- choose(tokenCo@x, 2)
+    } else {
+        stop("Cannot have weighted counts with context = \"document\"")
+    }
+
+    result <- Matrix::crossprod(x) 
+    
+    # compute co_occurrence of the diagonal elements
+    tokenCoSum <- colSums(tokenCo) # apply(tokenCo, MARGIN = 2, sum)
+    ft <- tokenCoSum >= 1
+    diagIndex <- which(ft)
+    lengthToken <- length(ft)
+    diagCount <- Matrix::sparseMatrix(i = diagIndex,
+                                      j = diagIndex,
+                                      x = tokenCoSum[ft],
+                                      dims = c(lengthToken , lengthToken))
+    diag(result) <- 0
+    result <- result + diagCount
+    result <- result[rownames(result), colnames(result)]
+    
+    # discard the lower diagonal if tri == TRUE
+    if (tri) 
+        result <- Matrix::triu(result)
+    
+    # create a new feature context matrix
+    result <- new("fcm", as(result, "dgCMatrix"), count = count,
+                  context = context, window = window, weights = weights, tri = tri)
+    # set the names 
+    names(result@Dimnames) <- c("features", "features")
+    result
+}
+
+    
 #' @noRd
 #' @import data.table
 #' @import Matrix
@@ -157,31 +214,8 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
         warning("spanSentence = FALSE not yet implemented")
     
     if (context == "document") {
-        tokenCount <- dfm(x, tolower = FALSE, verbose = FALSE)
-        
-        if (count == "boolean") {
-            x <- tf(tokenCount, "boolean") 
-            result <- Matrix::crossprod(x) 
-            tokenCo <- tokenCount > 1
-        } else if (count == "frequency") {
-            result <- Matrix::crossprod(tokenCount)
-            tokenCo <- apply(tokenCount, MARGIN=c(1,2), function(x) choose(x,2))
-        } else {
-            stop("Cannot have weighted counts with context = \"document\"")
-        }
-        
-        # compute co_occurrence of the diagonal elements
-        tokenCoSum <- colSums(tokenCo) # apply(tokenCo, MARGIN = 2, sum)
-        ft <- tokenCoSum >= 1
-        diagIndex <- which(ft)
-        lengthToken <- length(ft)
-        diagCount <- Matrix::sparseMatrix(i = diagIndex,
-                                          j = diagIndex,
-                                          x = tokenCoSum[ft],
-                                          dims = c(lengthToken , lengthToken))
-        diag(result) <- 0
-        result <- result + diagCount
-        result <- result[rownames(result), colnames(result)]
+        result <- fcm(dfm(x, tolower = FALSE, verbose = FALSE),
+                      count = count, tri = tri)
     }
         
     if (context == "window") { 
@@ -228,7 +262,7 @@ setMethod("print", signature(x = "fcm"),
               ndoc <- nfeature
               if (show.summary) {
                   cat("Feature co-occurrence matrix of: ",
-                      format(ndoc(x), , big.mark = ","), " by ",
+                      format(ndoc(x), big.mark = ","), " by ",
                       # ifelse(ndoc(x) > 1 | ndoc(x) == 0, "s, ", ", "),
                       format(nfeature(x), big.mark = ","), " feature",
                       ifelse(nfeature(x) > 1 | nfeature(x) == 0, "s", ""),
