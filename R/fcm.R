@@ -165,7 +165,9 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
             tokenCo <- tokenCount > 1
         } else if (count == "frequency") {
             result <- Matrix::crossprod(tokenCount)
-            tokenCo <- apply(tokenCount, MARGIN=c(1,2), function(x) choose(x,2))
+            # tokenCo <- apply(tokenCount, MARGIN=c(1,2), function(x) choose(x,2))
+            tokenCo <- tokenCount
+            tokenCo@x <- choose(tokenCo@x, 2)  ## same result but much faster and more robust -KB
         } else {
             stop("Cannot have weighted counts with context = \"document\"")
         }
@@ -228,7 +230,7 @@ setMethod("print", signature(x = "fcm"),
               ndoc <- nfeature
               if (show.summary) {
                   cat("Feature co-occurrence matrix of: ",
-                      format(ndoc(x), , big.mark = ","), " by ",
+                      format(ndoc(x), big.mark = ","), " by ",
                       # ifelse(ndoc(x) > 1 | ndoc(x) == 0, "s, ", ", "),
                       format(nfeature(x), big.mark = ","), " feature",
                       ifelse(nfeature(x) > 1 | nfeature(x) == 0, "s", ""),
