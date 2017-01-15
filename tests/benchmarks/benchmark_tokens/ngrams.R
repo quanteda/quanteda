@@ -1,35 +1,34 @@
-library(profvis) # for profiling
-library(tokenizers)
 library(quanteda)
 
-txt <- readLines('~/Documents/Brexit/Analysis/all_bbc_2015.txt') # 80MB
-txt <- readLines('~/Documents/LSS/Data/Ukracine crisis/ua_3agency.txt') # 660MB
-
-data(SOTUCorpus, package = "quantedaData")
-txt <- texts(SOTUCorpus)
+load("/home/kohei/Documents/Brexit/Analysis/data_corpus_guardian.RData")
+docvars(data_corpus_guardian, 'year') <- format(docvars(data_corpus_guardian, 'date'), '%Y')
+txts <- texts(corpus_subset(data_corpus_guardian, year == 2015))
 
 microbenchmark::microbenchmark(
-    tokenizers = as.tokens(tokenize_ngrams(txt, n = 2)),
-    quanteda_t1 = quanteda::tokens_ngrams(as.tokens(tokenize_words(txt)), n = 2),
-    unit='relative', times = 1
+    tokenizers = tokenizers::tokenize_ngrams(txts, n = 2),
+    quanteda = tokens_ngrams(as.tokens(tokenize_words(txts)), n = 2),
+    unit='relative', times = 10
 )
 
+object.size(tokenizers::tokenize_ngrams(txts, n = 2), 'MB')
+object.size(tokens_ngrams(as.tokens(tokenize_words(txts)), n = 2), 'MB')
+
 microbenchmark::microbenchmark(
-    tokenizers = as.tokens(tokenize_skip_ngrams(txt, n = 2, k = 1)),
-    quanteda_t1 = quanteda::ngrams(as.tokens(tokenize_words(txt)), n = 2, skip = 1),
-    unit='relative', times = 1
+    tokenizers = tokenizers::tokenize_skip_ngrams(txts, n = 2, k = 1),
+    quanteda = tokens_ngrams(as.tokens(tokenize_words(txts)), n = 2, skip = 1),
+    unit='relative', times = 10
 )
 
-tok <- tokens(txt, removeSymbols = TRUE, removeNumbers = TRUE)
+toks <- tokens(txts, removeSymbols = TRUE, removeNumbers = TRUE)
 
 microbenchmark::microbenchmark(
-    tokens_ngrams(tok, n=2),
-    tokens_ngrams(tok, n=3),
-    tokens_ngrams(tok, n=4),
-    tokens_ngrams(tok, n=5),
+    tokens_ngrams(toks, n=2),
+    tokens_ngrams(toks, n=3),
+    tokens_ngrams(toks, n=4),
+    tokens_ngrams(toks, n=5),
     times=1
 )
 
-profvis::profvis(tokens_ngrams(tok, 2))
-profvis::profvis(quanteda::tokens_ngrams(tokens(txt), n = 2))
+profvis::profvis(tokens_ngrams(toks, 2))
+profvis::profvis(quanteda::tokens_ngrams(tokens(txts), n = 2))
 

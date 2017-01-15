@@ -72,7 +72,9 @@ namespace quanteda{
 namespace ngrams {
     typedef std::vector<unsigned int> Ngram;
     typedef std::vector<Ngram> Ngrams;
-
+    typedef std::string Type;
+    typedef std::vector<Type> Types;
+    
     struct hash_ngram {
             std::size_t operator() (const Ngram &vec) const {
             unsigned int seed = 0;
