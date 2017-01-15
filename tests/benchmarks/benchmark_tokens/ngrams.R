@@ -10,13 +10,13 @@ txt <- texts(SOTUCorpus)
 
 microbenchmark::microbenchmark(
     tokenizers = as.tokens(tokenize_ngrams(txt, n = 2)),
-    quanteda_t1 = quanteda::tokens_ngrams(as.tokens(tokenize_words(txt)), n = 2),
-    unit='relative', times = 1
+    quanteda = quanteda::tokens_ngrams(as.tokens(tokenize_words(txt)), n = 2),
+    unit='relative', times = 10
 )
 
 microbenchmark::microbenchmark(
     tokenizers = as.tokens(tokenize_skip_ngrams(txt, n = 2, k = 1)),
-    quanteda_t1 = quanteda::ngrams(as.tokens(tokenize_words(txt)), n = 2, skip = 1),
+    quanteda = quanteda::tokens_ngrams(as.tokens(tokenize_words(txt)), n = 2, skip = 1),
     unit='relative', times = 1
 )
 
