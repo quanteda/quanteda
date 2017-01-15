@@ -135,7 +135,7 @@ fcm <- function(x, context = c("document", "window"),
 #' @noRd
 #' @export
 fcm.character <- function(x, ...) {
-    fcm(tokenize(x), ...)
+    fcm(tokens(x), ...)
 }
 
 #' @noRd
@@ -157,8 +157,8 @@ fcm.dfm <- function(x, context = c("document", "window"),
         stop("fcm.dfm only works on context = \"document\"")
 
     if (count == "boolean") {
-        x <- tf(x, "boolean") 
         tokenCo <- x > 1
+        x <- tf(x, "boolean") 
     } else if (count == "frequency") {
         tokenCo <- x
         tokenCo@x <- choose(tokenCo@x, 2)
