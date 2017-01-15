@@ -17,7 +17,7 @@ microbenchmark::microbenchmark(
 microbenchmark::microbenchmark(
     tokenizers = as.tokens(tokenize_skip_ngrams(txt, n = 2, k = 1)),
     quanteda = quanteda::tokens_ngrams(as.tokens(tokenize_words(txt)), n = 2, skip = 1),
-    unit='relative', times = 1
+    unit='relative', times = 10
 )
 
 tok <- tokens(txt, removeSymbols = TRUE, removeNumbers = TRUE)

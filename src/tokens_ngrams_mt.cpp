@@ -9,12 +9,12 @@ using namespace quanteda;
 using namespace ngrams;
 
 
-int ngram_id(Ngram ngram,
+int ngram_id(const Ngram &ngram,
              MapNgrams &map_ngram){
     
     // Add new ID without multiple access
     unsigned int &id_ngram = map_ngram[ngram];
-
+    
     if(id_ngram){
         //Rcout << "Old " << id_ngram << ": ";
         //dev::print_ngram_hashed(ngram);
@@ -26,69 +26,61 @@ int ngram_id(Ngram ngram,
     return id_ngram;
 }
 
-void skip(Text &tokens,
+void skip(const Text &tokens,
           Text &tokens_ng,
-          unsigned int start,
-          unsigned int n, 
-          std::vector<unsigned int> skips,
+          const unsigned int &start,
+          const unsigned int &n, 
+          const std::vector<unsigned int> &skips,
           Ngram ngram,
-          MapNgrams &map_ngram,
-          unsigned int pos_ngram, 
-          unsigned int &pos_ngrams) {
+          MapNgrams &map_ngram) {
     
     
-    ngram[pos_ngram] = tokens[start];
-    pos_ngram++;
+    ngram.push_back(tokens[start]);
     
     //Rcout << "Size " << tokens.size() << "\n";
     //Rcout << "Token " << tokens[start] << "\n";
     
-    if(pos_ngram < n){
+    if(ngram.size() < n){
         for (std::size_t j = 0; j < skips.size(); j++){
             unsigned int next = start + skips[j];
             if(tokens.size() - 1 < next) break;
             if(tokens[next] == 0) break; // Skip padding
             //Rcout << "Join " << tokens[start] << " at " << start << " with " << next << "\n";
-            skip(tokens, tokens_ng, next, n, skips, ngram, map_ngram, pos_ngram, pos_ngrams);
+            skip(tokens, tokens_ng, next, n, skips, ngram, map_ngram);
         }
     }else{
-        tokens_ng[pos_ngrams] = ngram_id(ngram, map_ngram);
-        
-        //Rcout << "Add " << tokens_ng[pos_ngrams] << " at " << pos_ngrams << "/" << tokens_ng.size() << "\n";
-        pos_ngram = 0;
-        pos_ngrams++;
+        tokens_ng.push_back(ngram_id(ngram, map_ngram));
     }
 }
 
 
-Text skipgram(Text tokens,
-              std::vector<unsigned int> ns, 
-              std::vector<unsigned int> skips,
+Text skipgram(const Text &tokens,
+              const std::vector<unsigned int> &ns, 
+              const std::vector<unsigned int> &skips,
               MapNgrams &map_ngram) {
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
-    unsigned int pos_ngram = 0; // position in ngram
-    unsigned int pos_ngrams = 0; // position in ngrams
     
     // Pre-allocate memory
     int size_reserve = 0;
     for (std::size_t k = 0; k < ns.size(); k++) {
         size_reserve += std::pow(skips.size(), ns[k]) * tokens.size();
     }
-    Text tokens_ng(size_reserve);
-
+    Text tokens_ng;
+    tokens_ng.reserve(size_reserve);
+    
     // Generate skipgrams recursively
     for (std::size_t k = 0; k < ns.size(); k++) {
         unsigned int n = ns[k];
         if (tokens.size() < n) continue;
-        Ngram ngram(n);
+        Ngram ngram;
+        ngram.reserve(n);
         for (std::size_t start = 0; start < tokens.size() - (n - 1); start++) {
             if(tokens[start] == 0) continue; // skip padding
-            skip(tokens, tokens_ng, start, n, skips, ngram, map_ngram, pos_ngram, pos_ngrams); // Get ngrams as reference
+            skip(tokens, tokens_ng, start, n, skips, ngram, map_ngram); // Get ngrams as reference
         }
     }
-    tokens_ng.resize(pos_ngrams);
     return tokens_ng;
 }
 
@@ -96,13 +88,13 @@ struct skipgram_mt : public Worker{
     
     Texts &input;
     Texts &output;
-    const std::vector<unsigned int> ns;
-    const std::vector<unsigned int> skips;
+    const std::vector<unsigned int> &ns;
+    const std::vector<unsigned int> &skips;
     MapNgrams &map_ngram;
     
-    skipgram_mt(Texts &input_, Texts &output_, std::vector<unsigned int> ns_, std::vector<unsigned int> skips_, 
+    skipgram_mt(Texts &input_, Texts &output_, std::vector<unsigned int> &ns_, std::vector<unsigned int> &skips_, 
                 MapNgrams &map_ngram_):
-                input(input_), output(output_), ns(ns_), skips(skips_), map_ngram(map_ngram_){}
+        input(input_), output(output_), ns(ns_), skips(skips_), map_ngram(map_ngram_){}
     
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
@@ -150,17 +142,17 @@ struct type_mt : public Worker{
 
 
 /* 
- * This funciton generates ngrams/skipgrams from tokens object. 
- * The number of threads is set by RcppParallel::setThreadOptions()
- * @used tokens_ngrams()
- * @creator Kohei Watanabe
- * @param types_ types of tokens
- * @param texts_ tokens ojbect
- * @param delim_ string to join words
- * @param ns_ size of ngramss
- * @param skips_ size of skip (this has to be 1 for ngrams)
- * 
- */
+* This funciton generates ngrams/skipgrams from tokens object. 
+* The number of threads is set by RcppParallel::setThreadOptions()
+* @used tokens_ngrams()
+* @creator Kohei Watanabe
+* @param types_ types of tokens
+* @param texts_ tokens ojbect
+* @param delim_ string to join words
+* @param ns_ size of ngramss
+* @param skips_ size of skip (this has to be 1 for ngrams)
+* 
+*/
 
 // [[Rcpp::export]]
 List qatd_cpp_tokens_ngrams(List texts_,
@@ -181,14 +173,14 @@ List qatd_cpp_tokens_ngrams(List texts_,
     // dev::Timer timer;
     // dev::start_timer("Ngram generation", timer);
     Texts output(input.size());
-    #if RCPP_PARALLEL_USE_TBB
+#if RCPP_PARALLEL_USE_TBB
     skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram);
     parallelFor(0, input.size(), skipgram_mt);
-    #else
+#else
     for (std::size_t h = 0; h < input.size(); h++){
         output[h] = skipgram(input[h], ns, skips, map_ngram);
     }
-    #endif
+#endif
     // dev::stop_timer("Ngram generation", timer);
     
     // Extract only keys
@@ -201,21 +193,21 @@ List qatd_cpp_tokens_ngrams(List texts_,
     // dev::start_timer("Token generation", timer);
     // Create ngram types
     Types types_ngram(map_ngram.size());
-    #if RCPP_PARALLEL_USE_TBB
+#if RCPP_PARALLEL_USE_TBB
     type_mt type_mt(types_ngram, keys_ngram, map_ngram, delim, types);
     parallelFor(0, keys_ngram.size(), type_mt);
-    #else
+#else
     for (std::size_t i = 0; i < keys_ngram.size(); i++) {
         type(i, types_ngram, keys_ngram, map_ngram, delim, types);
     }
-    #endif
+#endif
     // dev::stop_timer("Token generation", timer);
     
     // Return IDs as attribute
     ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
     texts_list.attr("types") = types_ngram;
     return texts_list;
-
+    
 }
 
 
