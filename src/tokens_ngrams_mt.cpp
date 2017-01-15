@@ -8,6 +8,7 @@ using namespace RcppParallel;
 using namespace quanteda;
 using namespace ngrams;
 
+
 //tthread::recursive_mutex mutex_id;
 tthread::mutex mutex_id;
 
@@ -15,13 +16,17 @@ tthread::mutex mutex_id;
 //                       MapNgrams &map_ngram,
 //                       unsigned int &id_last){
 // 
-//     unsigned int &id_ngram = map_ngram[ngram];
-//     if(id_ngram){
-//         return id_ngram;
-//     }
-//     tthread::lock_guard<tthread::mutex> lock(mutex_id);
-//     id_ngram = id_last + 1; // also increment value in map_ngram
-//     return id_ngram;
+// 
+//     //unsigned int &id_ngram = map_ngram[ngram];
+//     //if (id_ngram) {
+//         //return id_ngram;
+//     //    return 222;
+//     //}
+//     //tthread::lock_guard<tthread::mutex> lock(mutex_id);
+//     //mutex_id.lock();
+//     //id_ngram = id_last = id_last + 1; // also increment value in map_ngram
+//     //mutex_id.unlock();
+//     return 111;
 // }
 
 
@@ -33,10 +38,14 @@ unsigned int ngram_id(const Ngram &ngram,
     if(it != map_ngram.end()){
         return it->second;
     }
-    tthread::lock_guard<tthread::mutex> lock(mutex_id);
-    id_last = id_last + 1; // increment operator crashes
-    map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_last));
-    return id_last;
+    
+    tthread::lock_guard<tthread::mutex> guard(mutex_id);
+    unsigned int id = id_last = id_last + 1; // increment operator crashes
+    map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id));
+    return id;
+    
+    
+    //return 111;
 }
 
     
@@ -64,7 +73,10 @@ void skip(const Text &tokens,
             skip(tokens, tokens_ng, next, n, skips, ngram, map_ngram, id_last);
         }
     }else{
+        //mutex_id.lock();
         tokens_ng.push_back(ngram_id(ngram, map_ngram, id_last));
+        //tokens_ng.push_back(1);
+        //mutex_id.lock();
     }
 }
 
@@ -243,15 +255,8 @@ out <- qatd_cpp_tokens_ngrams(tok, attr(tok, 'types'), "-", 2, 1)
 str(out)
 
 tok2 <- quanteda::tokens(data_corpus_inaugural)
-# out2 <- qatd_cpp_tokens_ngrams(unclass(tok2), attr(tok, 'types'), "_", 2, 1)
-# out2
+out2 <- qatd_cpp_tokens_ngrams(unclass(tok2), attr(tok2, 'types'), "_", 2, 1)
 
-#RcppParallel::setThreadOptions(4)
-#toks = rep(list(1:1000, 1001:2000), 10)
-#toks = rep(list(1:10000, 10001:20000), 10000)
-#res <- qatd_cpp_tokens_ngrams(toks, 2, 1)
-#res$text
-#res$id_unigram
 
 
 

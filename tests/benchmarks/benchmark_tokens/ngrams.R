@@ -9,7 +9,7 @@ txts <- texts(corpus_subset(data_corpus_guardian, year == 2015))
 microbenchmark::microbenchmark(
     tokenizers = tokenizers::tokenize_ngrams(txts, n = 2),
     quanteda = tokens_ngrams(as.tokens(tokenizers::tokenize_words(txts)), n = 2),
-    unit='relative', times = 10
+    unit='relative', times = 1
 )
 
 object.size(tokenizers::tokenize_ngrams(txts, n = 2), 'MB')
@@ -18,7 +18,7 @@ object.size(tokens_ngrams(as.tokens(tokenizers::tokenize_words(txts)), n = 2), '
 microbenchmark::microbenchmark(
     tokenizers = tokenizers::tokenize_skip_ngrams(txts, n = 2, k = 1),
     quanteda = tokens_ngrams(as.tokens(tokenize_words(txts)), n = 2, skip = 1),
-    unit='relative', times = 10
+    unit='relative', times = 1
 )
 
 toks <- tokens(txts, removeSymbols = TRUE, removeNumbers = TRUE)
