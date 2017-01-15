@@ -92,9 +92,9 @@ struct skipgram_mt : public Worker{
     const std::vector<unsigned int> &skips;
     MapNgrams &map_ngram;
     
-    skipgram_mt(Texts &input_, Texts &output_, std::vector<unsigned int> &ns_, std::vector<unsigned int> &skips_, 
-                MapNgrams &map_ngram_):
-        input(input_), output(output_), ns(ns_), skips(skips_), map_ngram(map_ngram_){}
+    skipgram_mt(Texts &input_, Texts &output_, std::vector<unsigned int> &ns_, 
+                std::vector<unsigned int> &skips_, MapNgrams &map_ngram_):
+                input(input_), output(output_), ns(ns_), skips(skips_), map_ngram(map_ngram_){}
     
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
@@ -129,8 +129,10 @@ struct type_mt : public Worker{
     const std::string &delim;
     const Types &types;
     
-    type_mt(Types &types_ngram_, VecNgrams &keys_ngram_, MapNgrams &map_ngram_, std::string &delim_, Types &types_):
-        types_ngram(types_ngram_), keys_ngram(keys_ngram_), map_ngram(map_ngram_), delim(delim_), types(types_) {}
+    type_mt(Types &types_ngram_, VecNgrams &keys_ngram_, MapNgrams &map_ngram_, 
+            std::string &delim_, Types &types_):
+            types_ngram(types_ngram_), keys_ngram(keys_ngram_), map_ngram(map_ngram_), 
+            delim(delim_), types(types_) {}
     
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
