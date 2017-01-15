@@ -30,12 +30,13 @@ setClass("fcm",
 #' features within a user-defined context. The context can be defined as a
 #' document or a window within a collection of documents, with an optional
 #' vector of weights applied to the co-occurrence counts.
-#' @param x character vector, corpus, or tokens object from which to generate 
+#' @param x character, \link{corpus}, \link{tokens}, or \link{dfm} object from which to generate 
 #'   the feature co-occurrence matrix
 #' @param context the context in which to consider term co-occurrence: 
 #'   \code{"document"} for co-occurrence counts within document; \code{"window"}
 #'   for co-occurrence within a defined window of words, which requires a 
-#'   postive integer value for \code{window}
+#'   postive integer value for \code{window}.  Note: if \code{x} is a dfm object, then
+#'   \code{context} can only be \code{"windows"}.
 #' @param window positive integer value for the size of a window on either side 
 #'   of the target feature, default is 5, meaning 5 words before and after the 
 #'   target feature
