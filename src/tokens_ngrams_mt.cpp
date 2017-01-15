@@ -1,5 +1,5 @@
 #include <Rcpp.h>
-//#include "dev.h"
+#include "dev.h"
 #include "quanteda.h"
 
 // [[Rcpp::plugins(cpp11)]]
@@ -8,31 +8,46 @@ using namespace RcppParallel;
 using namespace quanteda;
 using namespace ngrams;
 
+//tthread::recursive_mutex mutex_id;
+tthread::mutex mutex_id;
 
-int ngram_id(const Ngram &ngram,
-             MapNgrams &map_ngram){
-    
-    // Add new ID without multiple access
-    unsigned int &id_ngram = map_ngram[ngram];
-    
-    if(id_ngram){
-        //Rcout << "Old " << id_ngram << ": ";
-        //dev::print_ngram_hashed(ngram);
-        return id_ngram;
+// unsigned int ngram_id(const Ngram &ngram,
+//                       MapNgrams &map_ngram,
+//                       unsigned int &id_last){
+// 
+//     unsigned int &id_ngram = map_ngram[ngram];
+//     if(id_ngram){
+//         return id_ngram;
+//     }
+//     tthread::lock_guard<tthread::mutex> lock(mutex_id);
+//     id_ngram = id_last + 1; // also increment value in map_ngram
+//     return id_ngram;
+// }
+
+
+unsigned int ngram_id(const Ngram &ngram,
+                      MapNgrams &map_ngram,
+                      unsigned int &id_last){
+
+    auto it = map_ngram.find(ngram);
+    if(it != map_ngram.end()){
+        return it->second;
     }
-    id_ngram = map_ngram.size();
-    //Rcout << "New " << id_ngram << ": ";
-    //dev::print_ngram_hashed(ngram);
-    return id_ngram;
+    tthread::lock_guard<tthread::mutex> lock(mutex_id);
+    id_last = id_last + 1; // increment operator crashes
+    map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_last));
+    return id_last;
 }
 
+    
 void skip(const Text &tokens,
           Text &tokens_ng,
           const unsigned int &start,
           const unsigned int &n, 
           const std::vector<unsigned int> &skips,
           Ngram ngram,
-          MapNgrams &map_ngram) {
+          MapNgrams &map_ngram,
+          unsigned int &id_last) {
     
     
     ngram.push_back(tokens[start]);
@@ -46,10 +61,10 @@ void skip(const Text &tokens,
             if(tokens.size() - 1 < next) break;
             if(tokens[next] == 0) break; // Skip padding
             //Rcout << "Join " << tokens[start] << " at " << start << " with " << next << "\n";
-            skip(tokens, tokens_ng, next, n, skips, ngram, map_ngram);
+            skip(tokens, tokens_ng, next, n, skips, ngram, map_ngram, id_last);
         }
     }else{
-        tokens_ng.push_back(ngram_id(ngram, map_ngram));
+        tokens_ng.push_back(ngram_id(ngram, map_ngram, id_last));
     }
 }
 
@@ -57,7 +72,8 @@ void skip(const Text &tokens,
 Text skipgram(const Text &tokens,
               const std::vector<unsigned int> &ns, 
               const std::vector<unsigned int> &skips,
-              MapNgrams &map_ngram) {
+              MapNgrams &map_ngram,
+              unsigned int &id_last) {
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -78,7 +94,7 @@ Text skipgram(const Text &tokens,
         ngram.reserve(n);
         for (std::size_t start = 0; start < tokens.size() - (n - 1); start++) {
             if(tokens[start] == 0) continue; // skip padding
-            skip(tokens, tokens_ng, start, n, skips, ngram, map_ngram); // Get ngrams as reference
+            skip(tokens, tokens_ng, start, n, skips, ngram, map_ngram, id_last); // Get ngrams as reference
         }
     }
     return tokens_ng;
@@ -91,15 +107,16 @@ struct skipgram_mt : public Worker{
     const std::vector<unsigned int> &ns;
     const std::vector<unsigned int> &skips;
     MapNgrams &map_ngram;
+    unsigned int &id_last;
     
     skipgram_mt(Texts &input_, Texts &output_, std::vector<unsigned int> &ns_, 
-                std::vector<unsigned int> &skips_, MapNgrams &map_ngram_):
-                input(input_), output(output_), ns(ns_), skips(skips_), map_ngram(map_ngram_){}
+                std::vector<unsigned int> &skips_, MapNgrams &map_ngram_, unsigned int &id_last_):
+                input(input_), output(output_), ns(ns_), skips(skips_), map_ngram(map_ngram_), id_last(id_last_){}
     
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++) {
-            output[h] = skipgram(input[h], ns, skips, map_ngram);
+            output[h] = skipgram(input[h], ns, skips, map_ngram, id_last);
         }
     }
 };
@@ -175,12 +192,13 @@ List qatd_cpp_tokens_ngrams(List texts_,
     // dev::Timer timer;
     // dev::start_timer("Ngram generation", timer);
     Texts output(input.size());
+    unsigned int id_last = 0;
 #if RCPP_PARALLEL_USE_TBB
-    skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram);
+    skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram, id_last);
     parallelFor(0, input.size(), skipgram_mt);
 #else
     for (std::size_t h = 0; h < input.size(); h++){
-        output[h] = skipgram(input[h], ns, skips, map_ngram);
+        output[h] = skipgram(input[h], ns, skips, map_ngram, id_last);
     }
 #endif
     // dev::stop_timer("Ngram generation", timer);
@@ -196,8 +214,8 @@ List qatd_cpp_tokens_ngrams(List texts_,
     // Create ngram types
     Types types_ngram(map_ngram.size());
 #if RCPP_PARALLEL_USE_TBB
-    type_mt type_mt(types_ngram, keys_ngram, map_ngram, delim, types);
-    parallelFor(0, keys_ngram.size(), type_mt);
+     type_mt type_mt(types_ngram, keys_ngram, map_ngram, delim, types);
+     parallelFor(0, keys_ngram.size(), type_mt);
 #else
     for (std::size_t i = 0; i < keys_ngram.size(); i++) {
         type(i, types_ngram, keys_ngram, map_ngram, delim, types);
@@ -215,16 +233,18 @@ List qatd_cpp_tokens_ngrams(List texts_,
 
 /*** R
 
+library(quanteda)
+#txt <- c('a b c d e')
 txt <- c('a b c d e', 'c d e f g')
 #txt <- readLines('~/Documents/Brexit/Analysis/all_bbc_2015.txt') # 80MB
 tok <- quanteda::tokens(txt)
 
-RcppParallel::setThreadOptions(4)
-res <- qatd_cpp_tokens_ngrams(tok, attr(tok, 'types'), "-", 2, 1)
-str(res)
+out <- qatd_cpp_tokens_ngrams(tok, attr(tok, 'types'), "-", 2, 1)
+str(out)
 
-tok <- quanteda::tokens(data_corpus_inaugural)
-out <- qatd_cpp_tokens_ngrams(unclass(tok), attr(tok, 'types'), "_", 2, 1)
+tok2 <- quanteda::tokens(data_corpus_inaugural)
+# out2 <- qatd_cpp_tokens_ngrams(unclass(tok2), attr(tok, 'types'), "_", 2, 1)
+# out2
 
 #RcppParallel::setThreadOptions(4)
 #toks = rep(list(1:1000, 1001:2000), 10)
