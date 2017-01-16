@@ -32,8 +32,8 @@ constructing the dfm.)  It could also be needed after a
 context.
 }
 \examples{
-mat <- rbind(dfm(c("b A A", "C C a b B"), toLower = FALSE, verbose = FALSE),
-             dfm("A C C C C C", toLower = FALSE, verbose = FALSE))
+mat <- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE, verbose = FALSE),
+             dfm("A C C C C C", tolower = FALSE, verbose = FALSE))
 colnames(mat) <- toLower(featnames(mat))
 mat
 dfm_compress(mat, margin = "documents")
