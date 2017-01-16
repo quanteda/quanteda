@@ -44,6 +44,7 @@ dfm_compress <- function(x, margin = c("both", "documents", "features")) {
     new_j <- as(x, "dgTMatrix")@j + 1
     
     allZeroFeatures <- match(names(which(colSums(x)==0)), uniquefnames)
+    allZeroDocs <- match(names(which(rowSums(x)==0)), uniquednames)
     
     # combine documents
     if (margin %in% c("both", "documents") & length(uniquednames) < nrow(x))
@@ -62,8 +63,13 @@ dfm_compress <- function(x, margin = c("both", "documents", "features")) {
         new_j <- c(new_j, allZeroFeatures)
     }
     
+    if (nd <- length(allZeroDocs)) {
+        new_i <- c(new_i, allZeroDocs)
+        new_j <- c(new_j, rep(1, nd))
+    }
+
     new("dfmSparse", sparseMatrix(i = new_i, j = new_j, 
-                                  x = c(x@x, rep(0, length(allZeroFeatures))),
+                                  x = c(x@x, rep(0, length(allZeroFeatures)), rep(0, length(allZeroDocs))),
                                   dimnames = list(docs = uniquednames, features = uniquefnames)),
         settings = x@settings,
         weightTf = x@weightTf,
