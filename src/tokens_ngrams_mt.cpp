@@ -17,7 +17,7 @@ unsigned int ngram_id(const Ngram &ngram,
                       unsigned int &id_next){
 
     auto itf = map_ngram.find(ngram);
-    if(itf != map_ngram.end()){
+    if (itf != map_ngram.end()) {
         return itf->second;
     }
     
@@ -50,14 +50,14 @@ void skip(const Text &tokens,
     //Rcout << "Token " << tokens[start] << "\n";
     
     if(ngram.size() < n){
-        for (std::size_t j = 0; j < skips.size(); j++){
+        for (std::size_t j = 0; j < skips.size(); j++) {
             unsigned int next = start + skips[j];
             if(tokens.size() - 1 < next) break;
             if(tokens[next] == 0) break; // Skip padding
             //Rcout << "Join " << tokens[start] << " at " << start << " with " << next << "\n";
             skip(tokens, tokens_ng, next, n, skips, ngram, map_ngram, id_next);
         }
-    }else{
+    } else {
         tokens_ng.push_back(ngram_id(ngram, map_ngram, id_next));
     }
 }
@@ -69,7 +69,7 @@ Text skipgram(const Text &tokens,
               MapNgrams &map_ngram,
               unsigned int &id_next) {
     
-    if(tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.size() == 0) return {}; // return empty vector for empty text
     
     // Pre-allocate memory
     int size_reserve = 0;
@@ -181,16 +181,16 @@ List qatd_cpp_tokens_ngrams(List texts_,
     
     // Register both ngram (key) and unigram (value) IDs in a hash table
     MapNgrams map_ngram;
+    unsigned int id_next = 1;
     
     // dev::Timer timer;
     // dev::start_timer("Ngram generation", timer);
     Texts output(input.size());
-    unsigned int id_next = 1;
 #if RCPP_PARALLEL_USE_TBB
     skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram, id_next);
     parallelFor(0, input.size(), skipgram_mt);
 #else
-    for (std::size_t h = 0; h < input.size(); h++){
+    for (std::size_t h = 0; h < input.size(); h++) {
         output[h] = skipgram(input[h], ns, skips, map_ngram, id_next);
     }
 #endif
