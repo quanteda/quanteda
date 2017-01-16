@@ -10,36 +10,42 @@ using namespace ngrams;
 
 
 int match_bit(const std::vector<unsigned int> &tokens1, 
-              const std::vector<unsigned int> &tokens2){
+              const std::vector<unsigned int> &tokens2,
+              bool order = false){
   
     std::size_t len1 = tokens1.size();
     std::size_t len2 = tokens2.size();
     long bit = 0;
-    for (std::size_t i = 0; i < len1 && i < len2; i++) {
-        bit += tokens1[i] == tokens2[i];
+    if (order) { 
+        for (std::size_t i = 0; i < len1 && i < len2; i++) {
+            bit += (tokens1[i] == tokens2[i]) * std::pow(2, i);
+        }
+        bit += (len1 >= len2) * std::pow(2, len1 + 1); // for trailing space 
+    } else {
+        for (std::size_t i = 0; i < len1 && i < len2; i++) {
+            bit += tokens1[i] == tokens2[i];
+        }
+        bit += len1 >= len2; // for trailing space 
     }
-    bit += len1 >= len2; // add one point for trailing space 
     return bit;
 }
 
-double sigma(const std::vector<long> &counts, 
-             const unsigned int &n){
-  
+double sigma(const std::vector<long> &counts){
+    
     double s = 0;
-    for (std::size_t b = 1; b <= n; b++) {
+    for (std::size_t b = 0; b < counts.size(); b++) {
         s += 1.0 / counts[b];
     }
     //double base = n - 1;
     //s += std::pow(base, 2) / counts[0];
-    s += 1.0 / counts[0];
+    //s += 1.0 / counts[0];
     return std::sqrt(s);
 }
 
-double lambda(const std::vector<long> &counts, 
-              const unsigned int &n){
+double lambda(const std::vector<long> &counts){
   
-    double l = std::log(counts[n]);
-    for (std::size_t b = 1; b < n; b++){
+    double l = std::log(counts[counts.size() - 1]);
+    for (std::size_t b = 1; b < counts.size() - 1; b++){
         l -= std::log(counts[b]);
     }
     //l += (n - 1) * std::log(counts[0]);
@@ -106,20 +112,31 @@ void estimate(std::size_t i,
               IntParams &cs, 
               DoubleParams &ss, 
               DoubleParams &ls, 
-              const int &count_min){
+              const int &count_min,
+              const bool &order = false){
     
     std::size_t n = seqs[i].size();
     if (n == 1) return; // ignore single words
     if (cs[i] < count_min) return;
-    std::vector<long> counts_bit(n + 1, 1); // add one smoothing
+    std::vector<long> counts_bit;
+    if (order) {
+        counts_bit.resize(std::pow(2, n + 1), 1); // add one smoothing
+    } else {
+        counts_bit.resize(n + 1, 1); // add one smoothing
+    }
     for (std::size_t j = 0; j < seqs.size(); j++) {
         if (i == j) continue; // do not compare with itself
         //if(ns[j] < count_min) continue; // this is different from the old vesion
         int bit = match_bit(seqs[i], seqs[j]);
         counts_bit[bit] += cs[i];
     }
-    ss[i] = sigma(counts_bit, n);
-    ls[i] = lambda(counts_bit, n);
+    if (order) {
+        ss[i] = sigma(counts_bit);
+        ls[i] = lambda(counts_bit);
+    } else {
+        ss[i] = sigma(counts_bit);
+        ls[i] = lambda(counts_bit);
+    }
 }
 
 struct estimate_mt : public Worker{
