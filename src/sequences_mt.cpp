@@ -44,37 +44,38 @@ int match_bit_ordered(const std::vector<unsigned int> &tokens1,
 
 double sigma(const std::vector<long> &counts){
     
-    const std::size_t n = counts.size() - 1;
+    const std::size_t n = counts.size();
     const double base = n - 1;
     
     double s = 0.0;
     s += std::pow(base, 2) / counts[0];
-    for (std::size_t b = 1; b < n; b++) {
+    for (std::size_t b = 1; b < n - 1; b++) {
         s += 1.0 / counts[b];
     }
-    s += 1.0 / counts[n];
+    s += 1.0 / counts[n - 1];
     return std::sqrt(s);
 }
 
 double lambda(const std::vector<long> &counts){
     
-    const std::size_t n = counts.size() - 1;
+    const std::size_t n = counts.size();
     
     double l = 0.0;
-    l += (n - 1) * std::log(counts[0]);
-    for (std::size_t b = 1; b < n; b++) {
+    l += std::log(counts[0]) * n - 1;
+    for (std::size_t b = 1; b < n - 1; b++) {
         l -= std::log(counts[b]);
     }
-    l += std::log(counts[n]);
+    l += std::log(counts[n - 1]);
     return l;
 }
 
 void count(Text text, 
            const SetUnigrams &set_words, 
-           MapNgrams &counts_seq, 
+           MapNgrams &counts_seq,
+           unsigned int &len_max,
            const bool &nested){
     
-    if(text.size() == 0) return; // do nothing with empty text
+    if (text.size() == 0) return; // do nothing with empty text
     text.push_back(0); // add padding to include last words
     Ngram tokens_seq;
     
@@ -85,7 +86,7 @@ void count(Text text,
             //Rcout << i << " " << j << "\n";
             unsigned int token = text[j];
             bool is_in;
-            if (token == 0) {
+            if (token == 0 || j - i >= len_max) {
                 is_in = false;
             } else {
                 is_in = set_words.find(token) != set_words.end();
@@ -111,14 +112,16 @@ struct count_mt : public Worker{
     Texts texts;
     const SetUnigrams &set_words;
     MapNgrams &counts_seq;
+    unsigned int &len_max;
     const bool &nested;
+    
         
-    count_mt(Texts texts_, SetUnigrams &set_words_, MapNgrams &counts_seq_, bool &nested_):
-             texts(texts_), set_words(set_words_), counts_seq(counts_seq_), nested(nested_) {}
+    count_mt(Texts texts_, SetUnigrams &set_words_, MapNgrams &counts_seq_, unsigned int &len_max_, bool &nested_):
+             texts(texts_), set_words(set_words_), counts_seq(counts_seq_), len_max(len_max_), nested(nested_) {}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t h = begin; h < end; h++){
-            count(texts[h], set_words, counts_seq, nested);
+            count(texts[h], set_words, counts_seq, len_max, nested);
         }
     }
 };
@@ -143,6 +146,7 @@ void estimate(std::size_t i,
     for (std::size_t j = 0; j < seqs.size(); j++) {
         if (i == j) continue; // do not compare with itself
         //if(ns[j] < count_min) continue; // this is different from the old vesion
+        
         int bit;
         if (ordered) {
             bit = match_bit_ordered(seqs[i], seqs[j]);
@@ -161,13 +165,14 @@ struct estimate_mt : public Worker{
     IntParams &cs;
     DoubleParams &ss;
     DoubleParams &ls;
-    const int &count_min;
+    const unsigned int &count_min;
     const bool &ordered;
     
     // Constructor
-    estimate_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, 
-                int &count_min_, bool &ordered_):
-                seqs(seqs_), cs(cs_), ss(ss_), ls(ls_), count_min(count_min_), ordered(ordered_) {}
+    estimate_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, unsigned int &count_min_, 
+                bool &ordered_):
+                seqs(seqs_), cs(cs_), ss(ss_), ls(ls_), count_min(count_min_), 
+                ordered(ordered_) {}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
@@ -192,7 +197,8 @@ struct estimate_mt : public Worker{
 // [[Rcpp::export]]
 List qutd_cpp_sequences(List texts_,
                         IntegerVector words_,
-                        int count_min,
+                        unsigned int count_min,
+                        unsigned int len_max,
                         bool nested,
                         bool ordered = false){
     
@@ -205,11 +211,11 @@ List qutd_cpp_sequences(List texts_,
     //dev::Timer timer;
     //dev::start_timer("Count", timer);
 #if RCPP_PARALLEL_USE_TBB
-    count_mt count_mt(texts, set_words, counts_seq, nested);
+    count_mt count_mt(texts, set_words, counts_seq, len_max, nested);
     parallelFor(0, texts.size(), count_mt);
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
-        count(texts[h], set_words, counts_seq, nested);
+        count(texts[h], set_words, counts_seq, len_max, nested);
     }
 #endif
     //dev::stop_timer("Count", timer);
@@ -270,7 +276,7 @@ types <- unique(as.character(toks))
 types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
 
 #out2 <- qutd_cpp_sequences(toks, match(types_upper, types), 1, TRUE)
-out2 <- qutd_cpp_sequences(toks, match(types_upper, types), 1, TRUE, TRUE)
+out2 <- qutd_cpp_sequences(toks, match(types_upper, types), 1, 2, TRUE, TRUE)
 out2$sequence <- lapply(out2$sequence, function(x) types[x])
 out2$str <- stringi::stri_c_list(out2$sequence, '_')
 out2$sequence <- NULL

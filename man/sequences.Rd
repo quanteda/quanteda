@@ -5,7 +5,7 @@
 \title{find variable-length collocations with filtering}
 \usage{
 sequences(x, features, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, count_min = 2, nested = TRUE,
+  case_insensitive = TRUE, count_min = 2, len_max = 5, nested = TRUE,
   ordered = FALSE)
 }
 \arguments{
@@ -21,6 +21,8 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 \item{case_insensitive}{ignore case when matching, if \code{TRUE}}
 
 \item{count_min}{minimum frequency of sequences}
+
+\item{len_max}{maxium length of sequences}
 
 \item{nested}{if true, collect nested sequences}
 
