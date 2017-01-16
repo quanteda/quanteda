@@ -94,21 +94,15 @@ frequencies will select features based on a range.</p>
     <dl class="dl-horizontal">
       <dt>x</dt>
       <dd>a <a href='dfm.html'>dfm</a> object</dd>
-      <dt>min_count</dt>
-      <dd>minimum count or fraction of features across all documents,
-below which features will be removed</dd>
-      <dt>min_docfreq</dt>
-      <dd>minimum number or fraction of documents in which a feature
-appears, below which features will be removed</dd>
-      <dt>max_count</dt>
-      <dd>maximum count or fraction of features across all documents,
-above which features will be removed.  (Default is no upper limit.)</dd>
-      <dt>max_docfreq</dt>
-      <dd>maximum number or fraction of documents in which a feature
-appears, above which features will be removed.  (Default is no upper limit.)</dd>
+      <dt>min_count, max_count</dt>
+      <dd>minimum/maximum count or fraction of features across all documents,
+below/above which features will be removed</dd>
+      <dt>min_docfreq, max_docfreq</dt>
+      <dd>minimum/maximum number or fraction of documents in which a feature
+appears, below/above which features will be removed</dd>
       <dt>sparsity</dt>
       <dd>equivalent to 1 - min_docfreq, included for comparison with
-tm</dd>
+<span class="pkg">tm</span></dd>
       <dt>verbose</dt>
       <dd>print messages</dd>
     </dl>
@@ -124,7 +118,7 @@ tm</dd>
   in the document-feature <em>matrix</em>.  To select subsets of a dfm based on
   attributes of the features themselves -- such as selecting features 
   matching a regular expression, or removing features matching a stopword 
-  list, use <a href='dfm_select.html'>dfm_select</a>.</p>
+  list, use <code><a href='dfm_select.html'>dfm_select</a></code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

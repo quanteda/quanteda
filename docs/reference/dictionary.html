@@ -89,14 +89,16 @@ all currently available dictionary files supplied as part of the LIWC 2001,
 2007, and 2015 software (see References).</p>
     
 
-    <pre><span class='fu'>dictionary</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>,
+    <pre><span class='fu'>dictionary</span>(<span class='no'>...</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>,
   <span class='kw'>toLower</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a list of character vector dictionary entries, including regular 
-expressions (see examples)</dd>
+      <dt>...</dt>
+      <dd>a named list of character vector dictionary entries, including <a href='valuetype.html'>valuetype</a> pattern
+matches, and including multi-word expressions separated by <code>concatenator</code>.  The argument 
+may be an explicit list or named set of elements that can be turned into a list.  See examples.
+This argument may be omitted if the dictionary is read from <code>file</code>.</dd>
       <dt>file</dt>
       <dd>file identifier for a foreign dictionary</dd>
       <dt>format</dt>
@@ -160,6 +162,10 @@ dictionaries. This uses the iconv labels for encoding.  See the
 #&gt;   1913-Wilson            0          0      0        1        1       0
 #&gt;   1917-Wilson            0          0      0        0        0       2
 #&gt;   1921-Harding           0          0      0        1        2      15</div><div class='input'>
+<span class='co'># also works</span>
+<span class='no'>mydict2</span> <span class='kw'>&lt;-</span> <span class='fu'>dictionary</span>(<span class='kw'>christmas</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Christmas"</span>, <span class='st'>"Santa"</span>, <span class='st'>"holiday"</span>),
+                      <span class='kw'>opposition</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Opposition"</span>, <span class='st'>"reject"</span>, <span class='st'>"notincorpus"</span>))
+<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mycorpus</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>mydict2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 29 documents, 2 features (0% sparse).</div><div class='input'>
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'># # import the Laver-Garry dictionary from http://bit.ly/1FH2nvf</span>
 <span class='co'># lgdict &lt;- dictionary(file = "http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat",</span>

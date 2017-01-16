@@ -146,14 +146,21 @@ sparse simple triplet matrix representation of terms in documents used by the
 
 <span class='co'># shortcut conversion to austin package's wfm format</span>
 <span class='fu'>identical</span>(<span class='fu'>as.wfm</span>(<span class='no'>quantdfm</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"austin"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='co'># shortcut conversion to tm package's DocumentTermMatrix format</span>
-<span class='fu'>identical</span>(<span class='fu'>as.DocumentTermMatrix</span>(<span class='no'>quantdfm</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='co'># shortcut conversion to lda package list format</span>
-<span class='fu'>identical</span>(<span class='fu'>dfm2ldaformat</span>(<span class='no'>quantdfm</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='co'>## Not run: ------------------------------------</span>
+<span class='co'># # shortcut conversion to tm package's DocumentTermMatrix format</span>
+<span class='co'># identical(as.DocumentTermMatrix(quantdfm), convert(quantdfm, to = "tm"))</span>
+<span class='co'>## ---------------------------------------------</span>
+
+<span class='co'>## Not run: ------------------------------------</span>
+<span class='co'># # shortcut conversion to lda package list format</span>
+<span class='co'># identical(dfm2ldaformat(quantdfm), convert(quantdfm, to = "lda")) </span>
+<span class='co'>## ---------------------------------------------</span>
+
 <span class='co'># shortcut conversion to topicmodels package format</span>
-<span class='fu'>identical</span>(<span class='fu'>quantedaformat2dtm</span>(<span class='no'>quantdfm</span>),
-          <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>quantdfm</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"topicmodels"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-</div></pre>
+<span class='co'>## Not run: ------------------------------------</span>
+<span class='co'># identical(quantedaformat2dtm(quantdfm), </span>
+<span class='co'>#           convert(quantdfm, to = "topicmodels")) </span>
+<span class='co'>## ---------------------------------------------</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
