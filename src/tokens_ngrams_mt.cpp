@@ -14,7 +14,7 @@ tbb::spin_mutex mutex_id;
 
 unsigned int ngram_id(const Ngram &ngram,
                       MapNgrams &map_ngram,
-                      IntParam &id_next){
+                      unsigned int &id_next){
 
     auto it = map_ngram.find(ngram);
     if(it != map_ngram.end()){
@@ -30,7 +30,7 @@ unsigned int ngram_id(const Ngram &ngram,
     auto it2 = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_next));
     id_next = it2.first->second + 1;
 #endif
-    return it2.first->second;
+    return (unsigned int)it2.first->second;
 }
 
     
@@ -41,7 +41,7 @@ void skip(const Text &tokens,
           const std::vector<unsigned int> &skips,
           Ngram ngram,
           MapNgrams &map_ngram,
-          IntParam &id_next) {
+          unsigned int &id_next) {
     
     
     ngram.push_back(tokens[start]);
@@ -70,7 +70,7 @@ Text skipgram(const Text &tokens,
               const std::vector<unsigned int> &ns, 
               const std::vector<unsigned int> &skips,
               MapNgrams &map_ngram,
-              IntParam &id_next) {
+              unsigned int &id_next) {
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -104,10 +104,10 @@ struct skipgram_mt : public Worker{
     const std::vector<unsigned int> &ns;
     const std::vector<unsigned int> &skips;
     MapNgrams &map_ngram;
-    IntParam &id_next;
+    unsigned int &id_next;
     
     skipgram_mt(Texts &input_, Texts &output_, std::vector<unsigned int> &ns_, 
-                std::vector<unsigned int> &skips_, MapNgrams &map_ngram_, IntParam &id_next_):
+                std::vector<unsigned int> &skips_, MapNgrams &map_ngram_, unsigned int &id_next_):
                 input(input_), output(output_), ns(ns_), skips(skips_), map_ngram(map_ngram_), id_next(id_next_){}
     
     void operator()(std::size_t begin, std::size_t end){
@@ -194,7 +194,7 @@ List qatd_cpp_tokens_ngrams(List texts_,
     // dev::Timer timer;
     // dev::start_timer("Ngram generation", timer);
     Texts output(input.size());
-    IntParam id_next = 1;
+    unsigned int id_next = 1;
 #if RCPP_PARALLEL_USE_TBB
     skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram, id_next);
     parallelFor(0, input.size(), skipgram_mt);
