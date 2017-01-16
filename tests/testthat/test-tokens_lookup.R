@@ -193,11 +193,11 @@ test_that("#459 apply a hierarchical dictionary", {
              d2 = "The Supreme Court of the United States is seldom in a united state.")
     toks <- tokens(txt)
     dict <- dictionary(list('geo'=list(
-                              Countries = c("States"),
-                              oceans = c("Atlantic", "Pacific")),
-                            'other'=list(
-                              gameconsoles = c("Xbox", "Nintendo"),
-                              swords = c("States"))))
+        Countries = c("States"),
+        oceans = c("Atlantic", "Pacific")),
+        'other'=list(
+            gameconsoles = c("Xbox", "Nintendo"),
+            swords = c("States"))))
     
     expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "fixed", levels=1)),
                  list(d1 = c("geo", "geo", "geo", "other"),
@@ -210,4 +210,24 @@ test_that("#459 apply a hierarchical dictionary", {
     expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "fixed", levels=2)),
                  list(d1 = c("Countries", "oceans", "oceans", "swords"),
                       d2 = c("Countries", "swords")))
+})
+
+test_that("#459 extract the second level of a dictionary", {
+    txt <- c(d1 = "The United States has the Atlantic Ocean and the Pacific Ocean.",
+             d2 = "Britain and Ireland have the Irish Sea and the English Channel.")
+    toks <- tokens(txt)
+    dict <- dictionary(list('US'=list(
+        Countries = c("States"),
+        oceans = c("Atlantic", "Pacific")),
+        'Europe'=list(
+            Countries = c("Britain", "Ireland"),
+            oceans = list(west = "Irish Sea", east = "English Channel"))))
+    tokens_lookup(toks, dict, levels = 1)
+    tokens_lookup(toks, dict, levels = 2)
+    tokens_lookup(toks, dict, levels = 1:2)
+    tokens_lookup(toks, dict, levels = 3)
+    tokens_lookup(toks, dict, levels = c(1,3))
+    tokens_lookup(toks, dict, levels = c(2,3))
+    tokens_lookup(toks, dict, levels = c(1,4))
+    tokens_lookup(toks, dict, levels = 4)
 })
