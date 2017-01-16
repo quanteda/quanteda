@@ -29,8 +29,9 @@ double sigma(const std::vector<long> &counts,
     for (std::size_t b = 1; b <= n; b++) {
         s += 1.0 / counts[b];
     }
-    double base = n - 1;
-    s += std::pow(base, 2) / counts[0];
+    //double base = n - 1;
+    //s += std::pow(base, 2) / counts[0];
+    s += 1.0 / counts[0];
     return std::sqrt(s);
 }
 
@@ -41,7 +42,8 @@ double lambda(const std::vector<long> &counts,
     for (std::size_t b = 1; b < n; b++){
         l -= std::log(counts[b]);
     }
-    l += (n - 1) * std::log(counts[0]);
+    //l += (n - 1) * std::log(counts[0]);
+    l += std::log(counts[0]);
     return l;
 }
 
