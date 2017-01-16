@@ -8,25 +8,37 @@ using namespace RcppParallel;
 using namespace quanteda;
 using namespace ngrams;
 
-
+/* 
+ * This funciton is a orignal function by Watanabe, K (2016).
+ * The distribution of the match bit is more dense, tending to promote frequent sequences.
+ */
 int match_bit(const std::vector<unsigned int> &tokens1, 
-              const std::vector<unsigned int> &tokens2,
-              bool order = false){
-  
+              const std::vector<unsigned int> &tokens2){
+    
     std::size_t len1 = tokens1.size();
     std::size_t len2 = tokens2.size();
     long bit = 0;
-    if (order) { 
-        for (std::size_t i = 0; i < len1 && i < len2; i++) {
-            bit += (tokens1[i] == tokens2[i]) * std::pow(2, i);
-        }
-        bit += (len1 >= len2) * std::pow(2, len1 + 1); // for trailing space 
-    } else {
-        for (std::size_t i = 0; i < len1 && i < len2; i++) {
-            bit += tokens1[i] == tokens2[i];
-        }
-        bit += len1 >= len2; // for trailing space 
+    for (std::size_t i = 0; i < len1 && i < len2; i++) {
+        bit += int(tokens1[i] == tokens2[i]); // value in bit does not depend on positions
     }
+    bit += (int)(len1 >= len2); // for trailing space 
+    return bit;
+}
+
+/* 
+ * This funciton is from Blaheta, D., & Johnson, M. (2001). 
+ * The distribution of the match bit is more sparse than in match_bit(), tending to promote rare sequences.
+ */
+int match_bit_ordered(const std::vector<unsigned int> &tokens1, 
+                      const std::vector<unsigned int> &tokens2){
+    
+    std::size_t len1 = tokens1.size();
+    std::size_t len2 = tokens2.size();
+    long bit = 0;
+    for (std::size_t i = 0; i < len1 && i < len2; i++) {
+        bit += (int)(tokens1[i] == tokens2[i]) * std::pow(2, i); // value in bit depends on positions
+    }
+    bit += (int)(len1 >= len2) * std::pow(2, len1); // for trailing space 
     return bit;
 }
 
@@ -36,19 +48,15 @@ double sigma(const std::vector<long> &counts){
     for (std::size_t b = 0; b < counts.size(); b++) {
         s += 1.0 / counts[b];
     }
-    //double base = n - 1;
-    //s += std::pow(base, 2) / counts[0];
-    //s += 1.0 / counts[0];
     return std::sqrt(s);
 }
 
 double lambda(const std::vector<long> &counts){
   
     double l = std::log(counts[counts.size() - 1]);
-    for (std::size_t b = 1; b < counts.size() - 1; b++){
+    for (std::size_t b = 1; b < counts.size() - 1; b++) {
         l -= std::log(counts[b]);
     }
-    //l += (n - 1) * std::log(counts[0]);
     l += std::log(counts[0]);
     return l;
 }
@@ -74,10 +82,10 @@ void count(Text text,
             } else {
                 is_in = set_words.find(token) != set_words.end();
             }
-            if (is_in){
+            if (is_in) {
                 //Rcout << "Match: " << token << "\n";
                 tokens_seq.push_back(token);
-            }else{
+            } else {
                 //Rcout << "Not match: " <<  token << "\n";
                 if(tokens_seq.size() > 1){
                     counts_seq[tokens_seq]++;
@@ -113,13 +121,13 @@ void estimate(std::size_t i,
               DoubleParams &ss, 
               DoubleParams &ls, 
               const int &count_min,
-              const bool &order = false){
+              const bool &ordered){
     
     std::size_t n = seqs[i].size();
     if (n == 1) return; // ignore single words
     if (cs[i] < count_min) return;
     std::vector<long> counts_bit;
-    if (order) {
+    if (ordered) {
         counts_bit.resize(std::pow(2, n + 1), 1); // add one smoothing
     } else {
         counts_bit.resize(n + 1, 1); // add one smoothing
@@ -127,16 +135,16 @@ void estimate(std::size_t i,
     for (std::size_t j = 0; j < seqs.size(); j++) {
         if (i == j) continue; // do not compare with itself
         //if(ns[j] < count_min) continue; // this is different from the old vesion
-        int bit = match_bit(seqs[i], seqs[j]);
+        int bit;
+        if (ordered) {
+            bit = match_bit_ordered(seqs[i], seqs[j]);
+        } else {
+            bit = match_bit(seqs[i], seqs[j]);
+        }
         counts_bit[bit] += cs[i];
     }
-    if (order) {
-        ss[i] = sigma(counts_bit);
-        ls[i] = lambda(counts_bit);
-    } else {
-        ss[i] = sigma(counts_bit);
-        ls[i] = lambda(counts_bit);
-    }
+    ss[i] = sigma(counts_bit);
+    ls[i] = lambda(counts_bit);
 }
 
 struct estimate_mt : public Worker{
@@ -146,14 +154,16 @@ struct estimate_mt : public Worker{
     DoubleParams &ss;
     DoubleParams &ls;
     const int &count_min;
+    const bool &ordered;
     
     // Constructor
-    estimate_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, int &count_min_):
-                seqs(seqs_), cs(cs_), ss(ss_), ls(ls_), count_min(count_min_) {}
+    estimate_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, 
+                int &count_min_, bool &ordered_):
+                seqs(seqs_), cs(cs_), ss(ss_), ls(ls_), count_min(count_min_), ordered(ordered_) {}
     
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
-            estimate(i, seqs, cs, ss, ls, count_min);
+            estimate(i, seqs, cs, ss, ls, count_min, ordered);
         }
     }
 };
@@ -168,14 +178,15 @@ struct estimate_mt : public Worker{
  * @param words_ types of tokens in sequences
  * @param count_min sequences appear less than this are ignores
  * @param nested if true, subsequences are also collected
- * 
+ * @param ordered if true, use the Blaheta-Johnson method
  */
 
 // [[Rcpp::export]]
 List qutd_cpp_sequences(List texts_,
                         IntegerVector words_,
                         int count_min,
-                        bool nested){
+                        bool nested,
+                        bool ordered = false){
     
     Texts texts = Rcpp::as<Texts>(texts_);
     std::vector<unsigned int> words = Rcpp::as< std::vector<unsigned int> >(words_);
@@ -185,14 +196,14 @@ List qutd_cpp_sequences(List texts_,
     MapNgrams counts_seq;
     //dev::Timer timer;
     //dev::start_timer("Count", timer);
-    #if RCPP_PARALLEL_USE_TBB
+#if RCPP_PARALLEL_USE_TBB
     count_mt count_mt(texts, set_words, counts_seq, nested);
     parallelFor(0, texts.size(), count_mt);
-    #else
+#else
     for (std::size_t h = 0; h < texts.size(); h++) {
         count(texts[h], set_words, counts_seq, nested);
     }
-    #endif
+#endif
     //dev::stop_timer("Count", timer);
     
     // Separate map keys and values
@@ -210,14 +221,14 @@ List qutd_cpp_sequences(List texts_,
     DoubleParams ss(len);
     DoubleParams ls(len);
     //dev::start_timer("Estimate", timer);
-    #if RCPP_PARALLEL_USE_TBB
-    estimate_mt estimate_mt(seqs, cs, ss, ls, count_min);
+#if RCPP_PARALLEL_USE_TBB
+    estimate_mt estimate_mt(seqs, cs, ss, ls, count_min, ordered);
     parallelFor(0, seqs.size(), estimate_mt);
-    #else
+#else
     for (std::size_t i = 0; i < seqs.size(); i++) {
-        estimate(i, seqs, cs, ss, ls, count_min);
+        estimate(i, seqs, cs, ss, ls, count_min, ordered);
     }
-    #endif
+#endif
     //dev::stop_timer("Estimate", timer);
     
     //dev::start_timer("Convert", timer);
@@ -250,7 +261,8 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 types <- unique(as.character(toks))
 types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
 
-out2 <- qutd_cpp_sequences(toks, match(types_upper, types), 1, TRUE)
+#out2 <- qutd_cpp_sequences(toks, match(types_upper, types), 1, TRUE)
+out2 <- qutd_cpp_sequences(toks, match(types_upper, types), 1, TRUE, TRUE)
 out2$sequence <- lapply(out2$sequence, function(x) types[x])
 out2$str <- stringi::stri_c_list(out2$sequence, '_')
 out2$sequence <- NULL

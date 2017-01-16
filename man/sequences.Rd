@@ -5,7 +5,8 @@
 \title{find variable-length collocations with filtering}
 \usage{
 sequences(x, features, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, count_min = 2, nested = TRUE)
+  case_insensitive = TRUE, count_min = 2, nested = TRUE,
+  ordered = FALSE)
 }
 \arguments{
 \item{x}{a \link{tokens} object}
@@ -21,7 +22,10 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{count_min}{minimum frequency of sequences}
 
-\item{nested}{collect nested sequences}
+\item{nested}{if true, collect nested sequences}
+
+\item{ordered}{if true, use the Blaheta-Johnson method that distinguishs between 
+the order of tokens, and promotes rare sequences.}
 }
 \description{
 This function automatically identifies contiguous collocations consisting of
@@ -38,7 +42,7 @@ seqs <- sequences(toks, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", case_insens
 head(seqs, 10)
 
 # types can be any words
-seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, count_min = 10)
+seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, count_min = 5, ordered = TRUE)
 head(seqs2, 10)
 
 }

@@ -10,7 +10,9 @@
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
 #' @param count_min minimum frequency of sequences
-#' @param nested collect nested sequences
+#' @param nested if true, collect nested sequences
+#' @param ordered if true, use the Blaheta-Johnson method that distinguishs between 
+#'   the order of tokens, and promotes rare sequences. 
 #' @examples 
 #' toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
 #' toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
@@ -20,7 +22,7 @@
 #' head(seqs, 10)
 #' 
 #' # types can be any words
-#' seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, count_min = 10)
+#' seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, count_min = 5, ordered = TRUE)
 #' head(seqs2, 10)
 #' 
 #' @keywords collocations
@@ -31,7 +33,7 @@
 #'   Computational Extraction, Analysis and Exploitation of Collocations.
 #' @export
 sequences <- function(x, features, valuetype = c("glob", "regex", "fixed"),
-                      case_insensitive = TRUE, count_min = 2, nested=TRUE) {
+                      case_insensitive = TRUE, count_min = 2, nested=TRUE, ordered=FALSE) {
     UseMethod("sequences")
 }
 
@@ -39,7 +41,7 @@ sequences <- function(x, features, valuetype = c("glob", "regex", "fixed"),
 #' @noRd
 #' @export
 sequences.tokens <- function(x, features, valuetype = c("glob", "regex", "fixed"),
-                      case_insensitive = TRUE, count_min = 2, nested=TRUE) {
+                      case_insensitive = TRUE, count_min = 2, nested=TRUE, ordered=FALSE) {
     
     valuetype <- match.arg(valuetype)
     names_org <- names(x)
@@ -49,7 +51,7 @@ sequences.tokens <- function(x, features, valuetype = c("glob", "regex", "fixed"
     features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
     features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
 
-    seqs <- qutd_cpp_sequences(x, features_id, count_min, nested)
+    seqs <- qutd_cpp_sequences(x, features_id, count_min, nested, ordered)
     seqs$length <- lengths(seqs$sequence)
     seqs$sequence <- stringi::stri_c_list(lapply(seqs$sequence, function(y) types[y]), sep=' ')
     
