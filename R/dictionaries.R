@@ -51,10 +51,10 @@ print_dictionary <- function(dict, level = 1){
     for (i in 1:length(dict)) {
         entry <- dict[[i]]
         if (is.list(entry)) {
-            cat(rep('  ', level - 1), names(dict[i]), ':\n', sep = "")
+            cat(rep('  ', level - 1), "- ", names(dict[i]), ':\n', sep = "")
             print_dictionary(entry, level + 1)
         } else {
-            cat(rep('  ', level - 1), names(dict[i]) , ": ", paste(entry, collapse = ", "), "\n", sep = "")
+            cat(rep('  ', level - 1), "- ", names(dict[i]) , ": ", paste(entry, collapse = ", "), "\n", sep = "")
         }   
     }
 }
