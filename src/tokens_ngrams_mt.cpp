@@ -30,7 +30,7 @@ unsigned int ngram_id(const Ngram &ngram,
     auto it2 = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_next));
     id_next = it2.first->second + 1;
 #endif
-    return (unsigned int)it2.first->second;
+    return it2.first->second;
 }
 
     
@@ -131,10 +131,6 @@ void type(std::size_t i,
     for (std::size_t j = 1; j < key.size(); j++) {
         type_ngram += delim + types[key[j] - 1];
     }
-    //if(type_ngram == ""){
-    //    dev::print_ngram(key);
-    //}
-    
     auto it = map_ngram.find(key);
     types_ngram[it->second - 1] = type_ngram;
     //Rcout << it->second << ": " << type_ngram << "\n";
