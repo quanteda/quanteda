@@ -5,8 +5,12 @@
 #' @param x tokens object to which dictionary or thesaurus will be supplied
 #' @param dictionary the \link{dictionary}-class object that will be applied to 
 #'   \code{x}
-#' @param levels levels of entries in a hierachical dictionary that will be 
-#'   applied
+#' @param levels integers specifying the levels of entries in a hierarchical
+#'   dictionary that will be applied.  The top level is 1, and subsequent levels
+#'   describe lower nesting levels.  Values may be combined, even if these
+#'   levels are not contiguous, e.g. `levels = c(1:3)` will collapse the second
+#'   level into the first, but record the third level (if present) collapsed below
+#'   the first.  (See examples.)
 #' @inheritParams valuetype
 #' @param concatenator a charactor that connect words in multi-words entries
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE} 
@@ -29,6 +33,22 @@
 #'                        freedom = c('freedom', 'liberty'))) 
 #' dfm(applyDictionary(toks, dict_fix, valuetype='fixed'))
 #' dfm(tokens_lookup(toks, dict_fix, valuetype='fixed'))
+#' 
+#' # hierarchical dictionary example
+#' txt <- c(d1 = "The United States has the Atlantic Ocean and the Pacific Ocean.",
+#'          d2 = "Britain and Ireland have the Irish Sea and the English Channel.")
+#' toks <- tokens(txt)
+#' dict <- dictionary(list(US = list(Countries = c("States"), 
+#'                                   oceans = c("Atlantic", "Pacific")),
+#'                         Europe = list(Countries = c("Britain", "Ireland"),
+#'                                       oceans = list(west = "Irish Sea", 
+#'                                                     east = "English Channel"))))
+#' tokens_lookup(toks, dict, levels = 1)
+#' tokens_lookup(toks, dict, levels = 2)
+#' tokens_lookup(toks, dict, levels = 1:2)
+#' tokens_lookup(toks, dict, levels = 3)
+#' tokens_lookup(toks, dict, levels = c(1,3))
+#' tokens_lookup(toks, dict, levels = c(2,3))
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_lookup <- function(x, dictionary, levels = 1:5,

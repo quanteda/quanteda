@@ -14,8 +14,12 @@ tokens_lookup(x, dictionary, levels = 1:5, valuetype = c("glob", "regex",
 \item{dictionary}{the \link{dictionary}-class object that will be applied to 
 \code{x}}
 
-\item{levels}{levels of entries in a hierachical dictionary that will be 
-applied}
+\item{levels}{integers specifying the levels of entries in a hierarchical
+dictionary that will be applied.  The top level is 1, and subsequent levels
+describe lower nesting levels.  Values may be combined, even if these
+levels are not contiguous, e.g. `levels = c(1:3)` will collapse the second
+level into the first, but record the third level (if present) collapsed below
+the first.  (See examples.)}
 
 \item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
@@ -51,5 +55,21 @@ dict_fix <- dictionary(list(country = "united states",
                        freedom = c('freedom', 'liberty'))) 
 dfm(applyDictionary(toks, dict_fix, valuetype='fixed'))
 dfm(tokens_lookup(toks, dict_fix, valuetype='fixed'))
+
+# hierarchical dictionary example
+txt <- c(d1 = "The United States has the Atlantic Ocean and the Pacific Ocean.",
+         d2 = "Britain and Ireland have the Irish Sea and the English Channel.")
+toks <- tokens(txt)
+dict <- dictionary(list(US = list(Countries = c("States"), 
+                                  oceans = c("Atlantic", "Pacific")),
+                        Europe = list(Countries = c("Britain", "Ireland"),
+                                      oceans = list(west = "Irish Sea", 
+                                                    east = "English Channel"))))
+tokens_lookup(toks, dict, levels = 1)
+tokens_lookup(toks, dict, levels = 2)
+tokens_lookup(toks, dict, levels = 1:2)
+tokens_lookup(toks, dict, levels = 3)
+tokens_lookup(toks, dict, levels = c(1,3))
+tokens_lookup(toks, dict, levels = c(2,3))
 }
 
