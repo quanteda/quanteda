@@ -212,7 +212,7 @@ test_that("#459 apply a hierarchical dictionary", {
                       d2 = c("Countries", "swords")))
 })
 
-test_that("#459 extract the second level of a dictionary", {
+test_that("#459 extract the lower levels of a dictionary using tokens_lookup", {
     txt <- c(d1 = "The United States has the Atlantic Ocean and the Pacific Ocean.",
              d2 = "Britain and Ireland have the Irish Sea and the English Channel.")
     toks <- tokens(txt)
