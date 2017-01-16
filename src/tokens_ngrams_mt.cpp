@@ -15,22 +15,43 @@ tbb::spin_mutex mutex_id;
 unsigned int ngram_id(const Ngram &ngram,
                       MapNgrams &map_ngram,
                       unsigned int &id_next){
-
-    auto itf = map_ngram.find(ngram);
-    if (itf != map_ngram.end()) {
-        return itf->second;
-    }
     
-#if RCPP_PARALLEL_USE_TBB
+    //map_ngram[ngram] = map_ngram.size();
     mutex_id.lock();
-    auto iti = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_next));
-    id_next = iti.first->second + 1;
+    //std:;size_t id = map_ngram.size();
+    auto iti = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, 0));
+    if (iti.second) {
+        //mutex_id.lock();
+        iti.first->second = map_ngram.size();
+        //mutex_id.unlock();
+    }
     mutex_id.unlock();
-#else
-    auto iti = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_next));
-    id_next = iti.first->second + 1;
-#endif
     return iti.first->second;
+    
+    
+    
+    
+    // auto itf = map_ngram.find(ngram);
+    // if (itf != map_ngram.end()) {
+    //     return itf->second;
+    // }
+    // unsigned int &id_ngram = map_ngram[ngram];
+    // if (id_ngram) {
+    //     return id_ngram;
+    // }
+    //return itf->second;
+//#if RCPP_PARALLEL_USE_TBB
+    // mutex_id.lock();
+    // auto iti = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_next));
+    // mutex_id.unlock();
+    // if (iti.second) {
+    //     id_next = iti.first->second + 1;
+    // }
+//#else
+//    auto iti = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_next));
+//    id_next = iti.first->second + 1;
+//#endif
+//    return iti.first->second;
 }
 
     
@@ -234,9 +255,12 @@ tok <- quanteda::tokens(txt)
 
 out <- qatd_cpp_tokens_ngrams(tok, attr(tok, 'types'), "-", 2, 1)
 str(out)
+out
 
-#tok2 <- quanteda::tokens(data_corpus_inaugural)
-#out2 <- qatd_cpp_tokens_ngrams(unclass(tok2), attr(tok2, 'types'), "_", 2, 1)
+
+tok2 <- quanteda::tokens(data_corpus_inaugural)
+out2 <- qatd_cpp_tokens_ngrams(unclass(tok2), attr(tok2, 'types'), "_", 2, 1)
+
 
 
 
