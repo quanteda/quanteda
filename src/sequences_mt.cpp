@@ -19,9 +19,9 @@ int match_bit(const std::vector<unsigned int> &tokens1,
     std::size_t len2 = tokens2.size();
     long bit = 0;
     for (std::size_t i = 0; i < len1 && i < len2; i++) {
-        bit += int(tokens1[i] == tokens2[i]); // value in bit does not depend on positions
+        bit += (long)(tokens1[i] == tokens2[i]); // value in bit does not depend on positions
     }
-    bit += (int)(len1 >= len2); // for trailing space 
+    bit += (long)(len1 >= len2); // for trailing space 
     return bit;
 }
 
@@ -36,28 +36,36 @@ int match_bit_ordered(const std::vector<unsigned int> &tokens1,
     std::size_t len2 = tokens2.size();
     long bit = 0;
     for (std::size_t i = 0; i < len1 && i < len2; i++) {
-        bit += (int)(tokens1[i] == tokens2[i]) * std::pow(2, i); // value in bit depends on positions
+        bit += (long)(tokens1[i] == tokens2[i]) * std::pow(2, i); // value in bit depends on positions
     }
-    bit += (int)(len1 >= len2) * std::pow(2, len1); // for trailing space 
+    bit += (long)(len1 >= len2) * std::pow(2, len1); // for trailing space 
     return bit;
 }
 
 double sigma(const std::vector<long> &counts){
     
-    double s = 0;
-    for (std::size_t b = 0; b < counts.size(); b++) {
+    const std::size_t n = counts.size() - 1;
+    const double base = n - 1;
+    
+    double s = 0.0;
+    s += std::pow(base, 2) / counts[0];
+    for (std::size_t b = 1; b < n; b++) {
         s += 1.0 / counts[b];
     }
+    s += 1.0 / counts[n];
     return std::sqrt(s);
 }
 
 double lambda(const std::vector<long> &counts){
-  
-    double l = std::log(counts[counts.size() - 1]);
-    for (std::size_t b = 1; b < counts.size() - 1; b++) {
+    
+    const std::size_t n = counts.size() - 1;
+    
+    double l = 0.0;
+    l += (n - 1) * std::log(counts[0]);
+    for (std::size_t b = 1; b < n; b++) {
         l -= std::log(counts[b]);
     }
-    l += std::log(counts[0]);
+    l += std::log(counts[n]);
     return l;
 }
 
