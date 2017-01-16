@@ -31,6 +31,10 @@ microbenchmark::microbenchmark(
     times=1
 )
 
+microbenchmark::microbenchmark(
+    tokens_ngrams(toks, n=2), times=10
+)
+
 profvis::profvis(tokens_ngrams(toks, 2))
 profvis::profvis(quanteda::tokens_ngrams(tokens(txts), n = 2))
 

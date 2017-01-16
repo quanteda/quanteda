@@ -16,21 +16,21 @@ unsigned int ngram_id(const Ngram &ngram,
                       MapNgrams &map_ngram,
                       unsigned int &id_next){
 
-    auto it = map_ngram.find(ngram);
-    if(it != map_ngram.end()){
-        return it->second;
+    auto itf = map_ngram.find(ngram);
+    if(itf != map_ngram.end()){
+        return itf->second;
     }
     
 #if RCPP_PARALLEL_USE_TBB
     mutex_id.lock();
-    auto it2 = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_next));
-    id_next = it2.first->second + 1;
+    auto iti = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_next));
+    id_next = iti.first->second + 1;
     mutex_id.unlock();
 #else
-    auto it2 = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_next));
-    id_next = it2.first->second + 1;
+    auto iti = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_next));
+    id_next = iti.first->second + 1;
 #endif
-    return it2.first->second;
+    return iti.first->second;
 }
 
     
@@ -58,10 +58,7 @@ void skip(const Text &tokens,
             skip(tokens, tokens_ng, next, n, skips, ngram, map_ngram, id_next);
         }
     }else{
-        //mutex_id.lock();
         tokens_ng.push_back(ngram_id(ngram, map_ngram, id_next));
-        //tokens_ng.push_back(1);
-        //mutex_id.lock();
     }
 }
 
@@ -73,7 +70,6 @@ Text skipgram(const Text &tokens,
               unsigned int &id_next) {
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
-    
     
     // Pre-allocate memory
     int size_reserve = 0;
@@ -133,7 +129,6 @@ void type(std::size_t i,
     }
     auto it = map_ngram.find(key);
     types_ngram[it->second - 1] = type_ngram;
-    //Rcout << it->second << ": " << type_ngram << "\n";
 }
 
 struct type_mt : public Worker{

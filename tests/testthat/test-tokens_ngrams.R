@@ -77,7 +77,7 @@ test_that("test there is not competition between the thread", {
              two = "A B C D E")
     toks <- tokens(txt, removePunct = TRUE)
     
-    for(k in 1:10000) {
+    for(k in 1:1000) {
         out <- tokens_ngrams(toks, n = 2:3)
         expect_equivalent(as.list(out),
                           list(c("insurgents_killed", "killed_in", "in_ongoing", "ongoing_fighting", 
