@@ -8,10 +8,6 @@ using namespace RcppParallel;
 using namespace quanteda;
 using namespace ngrams;
 
-#if RCPP_PARALLEL_USE_TBB
-tbb::spin_mutex mutex_id;
-#endif
-
 unsigned int ngram_id(const Ngram &ngram,
                       MapNgrams &map_ngram,
                       IntParam &id_ngram){
@@ -172,7 +168,7 @@ List qatd_cpp_tokens_ngrams(List texts_,
     
     // Register both ngram (key) and unigram (value) IDs in a hash table
     MapNgrams map_ngram;
-    IntParam id_ngram = 1;
+    IntParam id_ngram(1);
     
     // dev::Timer timer;
     // dev::start_timer("Ngram generation", timer);
