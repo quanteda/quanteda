@@ -270,30 +270,23 @@ List qutd_cpp_sequences(List texts_,
 
 
 /***R
-library(quanteda)
-toks <- tokens(data_corpus_inaugural)
-toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-types <- unique(as.character(toks))
-types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
 
-#out2 <- qutd_cpp_sequences(toks, match(types_upper, types), 1, TRUE)
-out2 <- qutd_cpp_sequences(toks, match(types_upper, types), 1, 2, TRUE, TRUE)
-out2$sequence <- lapply(out2$sequence, function(x) types[x])
-out2$str <- stringi::stri_c_list(out2$sequence, '_')
-out2$sequence <- NULL
-out2
-
-out2$z <- out2$lambda / out2$sigma
-out2$p <- 1 - stats::pnorm(out2$z)
-
-
-# df <- merge(as.data.frame(out), as.data.frame(out2),  by='str')
-# df[order(df$p.y),]
+# toks <- tokens(data_corpus_inaugural)
+# toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
+# types <- unique(as.character(toks))
+# types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
 # 
-# microbenchmark::microbenchmark(
-#     qutd_cpp_sequences(toks, match(types_upper, types), 1, TRUE),
-#     find_sequence_cppl(as.tokenizedTexts(toks), types_upper, 1, 0.001, TRUE), times=10
-# )
+# #out2 <- qutd_cpp_sequences(toks, match(types_upper, types), 1, TRUE)
+# out2 <- qutd_cpp_sequences(toks, match(types_upper, types), 1, 2, TRUE, TRUE)
+# out2$sequence <- lapply(out2$sequence, function(x) types[x])
+# out2$str <- stringi::stri_c_list(out2$sequence, '_')
+# out2$sequence <- NULL
+# out2
+# 
+# out2$z <- out2$lambda / out2$sigma
+# out2$p <- 1 - stats::pnorm(out2$z)
+
+
 
 
 

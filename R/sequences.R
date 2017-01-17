@@ -9,11 +9,13 @@
 #'   in sequences
 #' @inheritParams valuetype
 #' @param case_insensitive ignore case when matching, if \code{TRUE}
-#' @param count_min minimum frequency of sequences
-#' @param len_max maxium length of sequences
-#' @param nested if true, collect nested sequences
+#' @param min_count minimum frequency of sequences for which parameters are estimated
+#' @param max_length maxium length of sequences which are collected
+#' @param nested if true, collect all the subsequences of a longer sequence as separate entities.
+#'   e.g. in a sequence of capitalized words "United States Congress", "States Congress" is considered 
+#'   as a subsequence. But "United States" is not a subsequence because it is followed by "Congress".
 #' @param ordered if true, use the Blaheta-Johnson method that distinguishs between 
-#'   the order of tokens, and promotes rare sequences. 
+#'   the order of words, and tends to promote rare sequences. 
 #' @examples 
 #' toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
 #' toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
@@ -24,7 +26,7 @@
 #' 
 #' # types can be any words
 #' seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, 
-#'                    count_min = 2, ordered = TRUE)
+#'                    min_count = 2, ordered = TRUE)
 #' head(seqs2, 10)
 #' 
 #' @keywords collocations
@@ -35,7 +37,7 @@
 #'   Computational Extraction, Analysis and Exploitation of Collocations.
 #' @export
 sequences <- function(x, features, valuetype = c("glob", "regex", "fixed"),
-                      case_insensitive = TRUE, count_min = 2, len_max= 5, nested=TRUE, ordered=FALSE) {
+                      case_insensitive = TRUE, min_count = 2, max_length= 5, nested=TRUE, ordered=FALSE) {
     UseMethod("sequences")
 }
 
@@ -43,7 +45,7 @@ sequences <- function(x, features, valuetype = c("glob", "regex", "fixed"),
 #' @noRd
 #' @export
 sequences.tokens <- function(x, features, valuetype = c("glob", "regex", "fixed"),
-                      case_insensitive = TRUE, count_min = 2, len_max= 5, nested=TRUE, ordered=FALSE) {
+                      case_insensitive = TRUE, min_count = 2, max_length= 5, nested=TRUE, ordered=FALSE) {
     
     valuetype <- match.arg(valuetype)
     names_org <- names(x)
@@ -53,12 +55,12 @@ sequences.tokens <- function(x, features, valuetype = c("glob", "regex", "fixed"
     features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
     features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
 
-    seqs <- qutd_cpp_sequences(x, features_id, count_min, len_max, nested, ordered)
+    seqs <- qutd_cpp_sequences(x, features_id, min_count, max_length, nested, ordered)
     seqs$length <- lengths(seqs$sequence)
     seqs$sequence <- stringi::stri_c_list(lapply(seqs$sequence, function(y) types[y]), sep=' ')
     
     df <- as.data.frame(seqs, stringsAsFactors = FALSE)
-    df <- df[df$count >= count_min,]
+    df <- df[df$count >= min_count,]
     df$z <- df$lambda / df$sigma
     df$p <- 1 - stats::pnorm(df$z)
     df <- df[order(df$z, decreasing = TRUE),]
