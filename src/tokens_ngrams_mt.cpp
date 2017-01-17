@@ -22,7 +22,8 @@ unsigned int ngram_id(const Ngram &ngram,
     if (id) {
         return id;
     } else {
-        id = id_ngram.fetch_and_add(1);
+        //id = id_ngram.fetch_and_add(1);
+        id = 1;
         return id;
     }
 }
