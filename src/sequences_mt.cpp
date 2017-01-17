@@ -78,6 +78,7 @@ void count(Text text,
     if (text.size() == 0) return; // do nothing with empty text
     text.push_back(0); // add padding to include last words
     Ngram tokens_seq;
+    tokens_seq.reserve(text.size());
     
     // Collect sequence of specified types
     std::size_t len_text = text.size();
@@ -96,7 +97,7 @@ void count(Text text,
                 tokens_seq.push_back(token);
             } else {
                 //Rcout << "Not match: " <<  token << "\n";
-                if(tokens_seq.size() > 1){
+                if (tokens_seq.size() > 1) {
                     counts_seq[tokens_seq]++;
                 }
                 tokens_seq.clear();
@@ -284,6 +285,7 @@ out2
 
 out2$z <- out2$lambda / out2$sigma
 out2$p <- 1 - stats::pnorm(out2$z)
+
 
 # df <- merge(as.data.frame(out), as.data.frame(out2),  by='str')
 # df[order(df$p.y),]

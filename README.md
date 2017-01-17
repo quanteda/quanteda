@@ -10,7 +10,7 @@
 **quanteda** v0.9.9 under development
 -------------------------------------
 
-This version of the package is a pre-release for version 0.9.9, which will be a transitional version (with the old functions retained, but deprecated) prior to a "1.0" release. v0.9.9 includes some major changes but also many major improvements. See [Quanteda Structure and Design](https://kbenoit.github.io/quanteda/articles/development-plans.html) for details.
+This version of the package is a transitional release prior to v1.0. It includes some major API changes (see below), but with the most of the older functions retained and deprecated. v0.9.9 also implements many enhancements and performance improvements. See [Quanteda Structure and Design](https://kbenoit.github.io/quanteda/articles/development-plans.html) for details.
 
 About the package
 -----------------
@@ -19,6 +19,10 @@ An R package for managing and analyzing text, created by [Kenneth Benoit](kbenoi
 Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
 For more details, see the [**package website**](https://kbenoit.github.io/quanteda/).
+
+### Leave feedback
+
+If you like **quanteda**, please consider leaving [feedback or a testimonial here](https://github.com/kbenoit/quanteda/issues/461).
 
 Features
 --------
@@ -135,7 +139,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Mon Jan  9 19:19:48 2017
+## Created: Mon Jan 16 17:41:16 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context

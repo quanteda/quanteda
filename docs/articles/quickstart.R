@@ -1,6 +1,6 @@
 ## ----echo = FALSE--------------------------------------------------------
 knitr::opts_chunk$set(collapse = TRUE, 
-                      comment = "#>")
+                      comment = "##")
 
 ## ----show=FALSE----------------------------------------------------------
 require(quanteda)
@@ -21,32 +21,34 @@ metadoc(myCorpus, "docsource")  <- paste("data_char_inaugural", 1:ndoc(myCorpus)
 summary(myCorpus, n = 5, showmeta = TRUE)
 
 ## ---- eval=FALSE---------------------------------------------------------
+#  require(readtext)
+#  
 #  # Twitter json
-#  mytf1 <- textfile("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
+#  mytf1 <- readtext("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
 #  myCorpusTwitter <- corpus(mytf1)
 #  summary(myCorpusTwitter, 5)
 #  # generic json - needs a textField specifier
-#  mytf2 <- textfile("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
+#  mytf2 <- readtext("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
 #                    textField = "text")
 #  summary(corpus(mytf2), 5)
 #  # text file
-#  mytf3 <- textfile("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
+#  mytf3 <- readtext("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
 #  summary(corpus(mytf3), 5)
 #  # multiple text files
-#  mytf4 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
+#  mytf4 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt", cache = FALSE)
 #  summary(corpus(mytf4), 5)
 #  # multiple text files with docvars from filenames
-#  mytf5 <- textfile("~/Dropbox/QUANTESS/corpora/inaugural/*.txt",
+#  mytf5 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt",
 #                    docvarsfrom="filenames", sep="-", docvarnames=c("Year", "President"))
 #  summary(corpus(mytf5), 5)
 #  # XML data
-#  mytf6 <- textfile("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml",
+#  mytf6 <- readtext("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml",
 #                    textField = "COMMON")
 #  summary(corpus(mytf6), 5)
 #  # csv file
 #  write.csv(data.frame(inaugSpeech = texts(data_corpus_inaugural), docvars(data_corpus_inaugural)),
 #            file = "/tmp/inaug_texts.csv", row.names = FALSE)
-#  mytf7 <- textfile("/tmp/inaug_texts.csv", textField = "inaugSpeech")
+#  mytf7 <- readtext("/tmp/inaug_texts.csv", textField = "inaugSpeech")
 #  summary(corpus(mytf7), 5)
 
 ## ------------------------------------------------------------------------
@@ -119,7 +121,7 @@ myDfm[, 1:5]
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # make a dfm, removing stopwords and applying stemming
-myStemMat <- dfm(myCorpus, ignoredFeatures = stopwords("english"), stem = TRUE)
+myStemMat <- dfm(myCorpus, remove = stopwords("english"), stem = TRUE, removePunct = TRUE)
 myStemMat[, 1:5]
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -128,21 +130,22 @@ head(stopwords("russian"), 10)
 head(stopwords("arabic"), 10)
 
 ## ----warning=FALSE, fig.width = 8, fig.height = 8-----------------------------------------------------------------------------------------------------------------------------------------------------
-mydfm <- dfm(data_char_ukimmig2010, ignoredFeatures = c("will", stopwords("english")))
+mydfm <- dfm(data_char_ukimmig2010, remove = c("will", stopwords("english")), 
+             removePunct = TRUE)
 mydfm
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 topfeatures(mydfm, 20)  # 20 top words
 
 ## ----warning = FALSE, fig.width = 8, fig.height = 8---------------------------------------------------------------------------------------------------------------------------------------------------
-plot(mydfm)
+textplot_wordcloud(mydfm)
 
 ## ----warning=FALSE, fig.width = 7, fig.height = 7-----------------------------------------------------------------------------------------------------------------------------------------------------
 if (require(RColorBrewer))
-    plot(mydfm, max.words = 100, colors = brewer.pal(6, "Dark2"), scale = c(8, .5))
+    textplot_wordcloud(mydfm, max.words = 100, colors = brewer.pal(6, "Dark2"), scale = c(8, .5))
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", ignoredFeatures = stopwords("english"))
+byPartyDfm <- dfm(data_corpus_irishbudget2010, groups = "party", remove = stopwords("english"), removePunct = TRUE)
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 sort(byPartyDfm)[, 1:10]
@@ -166,17 +169,17 @@ byPresMat
 
 ## ----fig.width = 6------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year>1980), 
-               ignoredFeatures = stopwords("english"),
-               stem=TRUE, verbose=FALSE)
-obamaSimil <- similarity(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL, 
-                            margin = "documents", method = "cosine", normalize = FALSE)
-dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
+               remove = stopwords("english"),
+               stem = TRUE, removePunct = TRUE)
+obamaSimil <- textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n = NULL, 
+                             margin = "documents", method = "cosine")
+dotchart(as.list(obamaSimil)$"2009-Obama", xlab = "Cosine similarity")
 
 ## ---- fig.width = 10, fig.height = 7, eval = FALSE----------------------------------------------------------------------------------------------------------------------------------------------------
 #  data(SOTUCorpus, package="quantedaData")
 #  presDfm <- dfm(corpus_subset(SOTUCorpus, Date > as.Date("1960-01-01")), verbose = FALSE, stem = TRUE,
-#                 ignoredFeatures = stopwords("english"))
-#  presDfm <- trim(presDfm, minCount=5, minDoc=3)
+#                 remove = stopwords("english"), removePunct = TRUE)
+#  presDfm <- dfm_trim(presDfm, min_count=5, min_docfreq=3)
 #  # hierarchical clustering - get distances on normalized dfm
 #  presDistMat <- dist(as.matrix(weight(presDfm, "relFreq")))
 #  # hiarchical clustering the distance object
@@ -187,7 +190,8 @@ dotchart(obamaSimil$`2009-Obama`, xlab = "Cosine similarity")
 #  plot(presCluster, xlab = "", sub = "", main = "Euclidean Distance on Normalized Token Frequency")
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-similarity(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features", n = 20)
+sim <- similarity(presDfm, c("fair", "health", "terror"), method = "cosine", margin = "features", n = 10)
+print(sim, digits = 2)
 
 ## ----fig.width = 6, fig.height = 6--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # make prettier document names
@@ -204,7 +208,7 @@ abline(lm(-1*wca$rowcoord[,1] ~ wf@theta), col="grey50", lty="dotted")
 
 ## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 quantdfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE, 
-                ignoredFeatures = c("will", stopwords("english")))
+                remove = c("will", stopwords("english")))
 
 if (require(topicmodels)) {
     myLDAfit20 <- LDA(convert(quantdfm, to = "topicmodels"), k = 20)

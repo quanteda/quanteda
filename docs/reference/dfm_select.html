@@ -87,11 +87,11 @@ eliminate features from a dfm already constructed, such as stopwords, or to
 select only terms of interest from a dictionary.</p>
     
 
-    <pre><span class='fu'>dfm_select</span>(<span class='no'>x</span>, <span class='no'>features</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"remove"</span>),
+    <pre><span class='fu'>dfm_select</span>(<span class='no'>x</span>, <span class='kw'>features</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"remove"</span>),
   <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+  <span class='kw'>min_nchar</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_nchar</span> <span class='kw'>=</span> <span class='fl'>63</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
-<span class='fu'>dfm_remove</span>(<span class='no'>x</span>, <span class='no'>features</span>, <span class='no'>...</span>)
+<span class='fu'>dfm_remove</span>(<span class='no'>x</span>, <span class='kw'>features</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='fu'>fcm_select</span>(<span class='no'>x</span>, <span class='no'>features</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"remove"</span>),
   <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
@@ -116,31 +116,37 @@ For <a href='dfm.html'>dfm</a> objects, see details in the Value section below.<
 or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</dd>
       <dt>case_insensitive</dt>
       <dd>ignore the case of dictionary values if <code>TRUE</code></dd>
+      <dt>min_nchar, max_nchar</dt>
+      <dd>numerics specifying the minimum and maximum length
+in characters for features to be removed or kept; defaults are 1 and 
+<a href = '79'>https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft</a>.
+ (Set <code>max_nchar</code> to <code>NULL</code> for no upper limit.) These are
+applied after (and hence, in addition to) any selection based on pattern
+matches.</dd>
       <dt>verbose</dt>
       <dd>if <code>TRUE</code> print message about how many features were 
 removed</dd>
       <dt>...</dt>
       <dd>supplementary arguments passed to the underlying functions in 
-<code><a href='http://www.rdocumentation.org/packages/stringi/topics/stri_detect'>stri_detect_regex</a></code>.  (This is how 
-<code>case_insensitive</code> is passed, but you may wish to pass others.)</dd>
+<code><a href='http://www.rdocumentation.org/packages/stringi/topics/stri_detect'>stri_detect_regex</a></code></dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A dfm or fcm after the feature selection has been applied.</p>
-    <p>When <code>features</code> is a <a href='dfm.html'>dfm</a> object, then the returned object
-  will be identical in its feature set to the dfm supplied as the 
-  <code>features</code> argument.  This means that any features in <code>x</code> not in 
-  <code>features</code> will be discarded, and that any features in found in the 
-  dfm supplied as <code>features</code> but not found in <code>x</code> will be added 
-  with all zero counts.  This is useful when you have trained a model on one 
-  dfm, and need to project this onto a test set whose features must be 
-  identical.</p>
+    <p>When <code>features</code> is a <a href='dfm.html'>dfm</a> object, then the returned object will 
+  be identical in its feature set to the dfm supplied as the <code>features</code> 
+  argument.  This means that any features in <code>x</code> not in <code>features</code> 
+  will be discarded, and that any features in found in the dfm supplied as 
+  <code>features</code> but not found in <code>x</code> will be added with all zero 
+  counts.  This is useful when you have trained a model on one dfm, and need 
+  to project this onto a test set whose features must be identical.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>`dfm_remove` and `fcm_remove` are simply a convenience wrappers to
-  calling `dfm_select` and `fcm_select` with `selection = &quot;remove&quot;`.</p>
+    <p><code>dfm_remove</code> and <code>fcm_remove</code> are simply a convenience
+  wrappers to calling <code>dfm_select</code> and <code>fcm_select</code> with
+  <code>selection = &quot;remove&quot;</code>.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
@@ -166,16 +172,7 @@ removed</dd>
 #&gt;        features
 #&gt; docs    by United_States Sweden
 #&gt;   text1  1             0      0
-#&gt;   text2  0             1      1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'>c</span>(<span class='st'>"s$"</span>, <span class='st'>".y"</span>), <span class='st'>"keep"</span>)</div><div class='output co'>#&gt; <span class='message'>kept 0 features, from 2 supplied (glob) feature types</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 20 features (50% sparse).
-#&gt; 2 x 20 sparse Matrix of class &quot;dfmSparse&quot;
-#&gt;        features
-#&gt; docs    My Christmas was ruined by your opposition tax plan . Does the
-#&gt;   text1  1         1   1      1  1    1          1   1    1 1    0   0
-#&gt;   text2  0         0   0      0  0    0          0   0    0 0    1   1
-#&gt;        features
-#&gt; docs    United_States or Sweden have more progressive taxation ?
-#&gt;   text1             0  0      0    0    0           0        0 0
-#&gt;   text2             1  1      1    1    1           1        1 1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'>c</span>(<span class='st'>"s$"</span>, <span class='st'>".y"</span>), <span class='st'>"keep"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>)</div><div class='output co'>#&gt; <span class='message'>kept 6 features, from 2 supplied (regex) feature types</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (50% sparse).
+#&gt;   text2  0             1      1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'>c</span>(<span class='st'>"s$"</span>, <span class='st'>".y"</span>), <span class='st'>"keep"</span>)</div><div class='output co'>#&gt; <span class='message'>kept 0 features, from 2 supplied (glob) feature types</span></div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'>c</span>(<span class='st'>"s$"</span>, <span class='st'>".y"</span>), <span class='st'>"keep"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>)</div><div class='output co'>#&gt; <span class='message'>kept 6 features, from 2 supplied (regex) feature types</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (50% sparse).
 #&gt; 2 x 6 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    My Christmas was by Does United_States
@@ -204,6 +201,13 @@ removed</dd>
 #&gt; docs    taxation ?
 #&gt;   text1        0 0
 #&gt;   text2        1 1</div><div class='input'>
+<span class='co'># select based on character length</span>
+<span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='kw'>min_nchar</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (50% sparse).
+#&gt; 2 x 7 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt;        features
+#&gt; docs    Christmas ruined opposition United_States Sweden progressive taxation
+#&gt;   text1         1      1          1             0      0           0        0
+#&gt;   text2         0      0          0             1      1           1        1</div><div class='input'>
 <span class='co'># selecting on a dfm</span>
 <span class='no'>textVec1</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"This is text one."</span>, <span class='st'>"This, the second text."</span>, <span class='st'>"Here: the third text."</span>)
 <span class='no'>textVec2</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"Here are new words."</span>, <span class='st'>"New words in this text."</span>)

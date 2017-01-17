@@ -10,14 +10,14 @@ using namespace ngrams;
 
 
 Text lookup(Text tokens, 
-            const std::size_t &span_max,
+            const std::vector<std::size_t> &spans,
             const MultiMapNgrams &map_keys){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
     Text keys;
     keys.reserve(tokens.size());
-    for (std::size_t span = span_max; span > 0; span--) {
+    for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
@@ -38,18 +38,18 @@ struct lookup_mt : public Worker{
     
     Texts &input;
     Texts &output;
-    const std::size_t &span_max;
+    const std::vector<std::size_t> &spans;
     const MultiMapNgrams &map_keys;
     
     // Constructor
-    lookup_mt(Texts &input_, Texts &output_, std::size_t &span_max_, MultiMapNgrams &map_keys_):
-              input(input_), output(output_), span_max(span_max_), map_keys(map_keys_){}
+    lookup_mt(Texts &input_, Texts &output_, std::vector<std::size_t> &spans_, MultiMapNgrams &map_keys_):
+              input(input_), output(output_), spans(spans_), map_keys(map_keys_){}
     
     // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++) {
-            output[h] = lookup(input[h], span_max, map_keys);
+            output[h] = lookup(input[h], spans, map_keys);
         }
     }
 };
@@ -77,23 +77,26 @@ List qatd_cpp_tokens_lookup(List texts_,
     IntegerVector ids = ids_;
 
     MultiMapNgrams map_keys;
-    std::size_t span_max = 0;
+    std::vector<std::size_t> spans(keys.size());
     for (unsigned int g = 0; g < keys.size(); g++) {
         if (has_na(keys[g])) continue;
         Ngram word = keys[g];
         map_keys.insert(std::make_pair(word, ids_[g]));
-        if (span_max < word.size()) span_max = word.size();
+        spans[g] = word.size();
     }
+    sort(spans.begin(), spans.end());
+    spans.erase(unique(spans.begin(), spans.end()), spans.end());
+    std::reverse(std::begin(spans), std::end(spans));
     
     // dev::Timer timer;
     Texts output(input.size());
     // dev::start_timer("Dictionary lookup", timer);
     #if RCPP_PARALLEL_USE_TBB
-    lookup_mt lookup_mt(input, output, span_max, map_keys);
+    lookup_mt lookup_mt(input, output, spans, map_keys);
     parallelFor(0, input.size(), lookup_mt);
     #else
     for (std::size_t h = 0; h < input.size(); h++){
-        output[h] = lookup(input[h], span_max, map_keys);
+        output[h] = lookup(input[h], spans, map_keys);
     }
     #endif
     // dev::stop_timer("Dictionary lookup", timer);
@@ -103,10 +106,8 @@ List qatd_cpp_tokens_lookup(List texts_,
 
 /***R
 
-#toks <- list(rep(1:10, 1), rep(5:15, 1))
-toks <- list(c(10000000L, 20000000L, 30000000L), 10000000L)
-dict <- list(10000000L, c(20000000L, 30000000L))
-#dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
+toks <- list(rep(1:10, 1), rep(5:15, 1))
+dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 #dict <- list(1, 10, 20)
 key <- 1:length(dict)
 qatd_cpp_tokens_lookup(toks, dict, key)
