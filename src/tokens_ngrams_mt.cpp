@@ -33,8 +33,8 @@ unsigned int ngram_id(const Ngram &ngram,
     return iti.first->second
     */
     
-    auto iti = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram.fetch_and_increment()));
-    return iti.first->second;
+    auto it = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram.fetch_and_increment()));
+    return it.first->second;
 }
     
 void skip(const Text &tokens,
