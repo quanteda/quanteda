@@ -81,7 +81,7 @@
     </div>
 
     
-    <p>Get or set the document names of a <a href='corpus.html'>corpus</a> or a <a href='dfm.html'>dfm</a>.</p>
+    <p>Get or set the document names of a <a href='corpus.html'>corpus</a>, <a href='tokens.html'>tokens</a>, or <a href='dfm.html'>dfm</a> object.</p>
     
 
     <pre><span class='fu'>docnames</span>(<span class='no'>x</span>)
@@ -123,6 +123,9 @@ for dfm objects, whose document names are fixed.)</p>
 #&gt; [12] &quot;2010_BUDGET_12_Eamon_Ryan_Green&quot;      
 #&gt; [13] &quot;2010_BUDGET_13_Ciaran_Cuffe_Green&quot;    
 #&gt; [14] &quot;2010_BUDGET_14_Caoimhghin_OCaolain_SF&quot;</div><div class='input'>
+<span class='co'># query the document names of a tokens object</span>
+<span class='fu'>docnames</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_char_ukimmig2010</span>))</div><div class='output co'>#&gt; [1] &quot;BNP&quot;          &quot;Coalition&quot;    &quot;Conservative&quot; &quot;Greens&quot;       &quot;Labour&quot;      
+#&gt; [6] &quot;LibDem&quot;       &quot;PC&quot;           &quot;SNP&quot;          &quot;UKIP&quot;        </div><div class='input'>
 <span class='co'># query the document names of a dfm</span>
 <span class='fu'>docnames</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_char_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>]))</div><div class='output co'>#&gt; [1] &quot;1789-Washington&quot; &quot;1793-Washington&quot; &quot;1797-Adams&quot;      &quot;1801-Jefferson&quot; 
 #&gt; [5] &quot;1805-Jefferson&quot; </div><div class='input'>
