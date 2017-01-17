@@ -17,20 +17,48 @@ setClass("dictionary", contains = c("list"),
 
 setValidity("dictionary", function(object) {
     # does every element have a name? simply needs to pass
-    dummy <- dictionary_flatten(object)
-    # is every element a character?
-    if (all(charvals <- sapply(object, is.character))) {
-        return(TRUE)
-    } else {
-        retmsg <-character()
-        for (i in which(!charvals)) {
-            retmsg <- paste0(retmsg, "\n  non-character entries found: ",
-                             names(object)[i], " : ",
-                             paste(object[[i]], collapse = " "))
-        }
-        return(retmsg)
-    }
+    validate_dictionary(object)
 })
+
+
+# Internal function to chekc if dictionary eintries are all chracters
+validate_dictionary <- function(dict){
+    
+    if (is.null(names(dict))) {
+        stop("dictionary elements must be named")
+    }
+    if (any(names(dict) == "")) {
+        unnamed <- dict[which(names(dict) == "")]
+        stop("unnamed dictionary entry: ", unnamed)
+    }
+    
+    for (i in 1:length(dict)) {
+        entry <- dict[[i]]
+        if (is.list(entry)) {
+            validate_dictionary(entry)
+        } else {
+            if (any(!is.character(entry))) {
+                nonchar <- entry[!is.character(entry)]
+                stop("non-character entries found: ", nonchar)
+            }
+        }   
+    }
+}
+
+# Internal function to print dictionary
+print_dictionary <- function(dict, level = 1){
+    
+    for (i in 1:length(dict)) {
+        entry <- dict[[i]]
+        if (is.list(entry)) {
+            cat(rep('  ', level - 1), "- ", names(dict[i]), ':\n', sep = "")
+            print_dictionary(entry, level + 1)
+        } else {
+            cat(rep('  ', level - 1), "- ", names(dict[i]) , ": ", paste(entry, collapse = ", "), "\n", sep = "")
+        }   
+    }
+}
+
 
 #' print a dictionary object
 #' 
@@ -40,14 +68,8 @@ setValidity("dictionary", function(object) {
 #' @export
 setMethod("show", "dictionary", 
           function(object) {
-              cat("Dictionary object with", length(object), "key entries.\n")
-              keys <- names(object)
-              lapply(seq_along(object), 
-                     function(i, object, keys)
-                         cat(" - ", keys[i], ": ", paste(object[[i]], collapse = ", "), "\n", sep = ""),
-                     object = object, keys = names(object))
-              
-              # print(setClass("list", object))
+              cat("Dictionary object with", length(unlist(object)), "key entries.\n")
+              print_dictionary(object)
           })
 
 #' create a dictionary
@@ -70,7 +92,7 @@ setMethod("show", "dictionary",
 #'   Provalis Research's Wordstat software} \item{\code{"LIWC"}}{format used by 
 #'   the Linguistic Inquiry and Word Count software} \item{\code{"yoshikoder"}}{
 #'   format used by Yoshikoder software} \item{\code{"lexicoder"}}{format used
-#'   by Lexicoder}}
+#'   by Lexicoder} \item{\code{"YAML"}}{the standard YAML format}}
 #' @param concatenator the character in between multi-word dictionary values. 
 #'   This defaults to \code{"_"} except LIWC-formatted files, which defaults to 
 #'   a single space \code{" "}.
@@ -134,35 +156,36 @@ dictionary <- function(..., file = NULL, format = NULL,
   # if (!is.null(x) & !is.list(x))
   #   stop("Dictionaries must be named lists or lists of named lists.")
 
-  dict_format_mapping <- c(cat="wordstat", dic="LIWC", ykd="yoshikoder", lcd="yoshikoder", lc3="lexicoder")
+  dict_format_mapping <- c(cat="wordstat", dic="LIWC", ykd="yoshikoder", lcd="yoshikoder", 
+                           lc3="lexicoder", yml="YAML")
   if (!is.null(file)) {
 
-    if (is.null(format)) {
-      ext <- file_ext(file)
-      if (ext %in% names(dict_format_mapping)) {
-        format <- dict_format_mapping[[ext]]
+      if (is.null(format)) {
+          ext <- file_ext(file)
+          if (ext %in% names(dict_format_mapping)) {
+              format <- dict_format_mapping[[ext]]
+          }
+          else {
+              stop(paste("Unknown dictionary file extension", ext))
+          }
       }
       else {
-        stop(paste("Unknown dictionary file extension", ext))
+          format <- match.arg(format, dict_format_mapping)
       }
-    }
-    else {
-      format <- match.arg(format, dict_format_mapping)
-    }
-    format <- unname(format)
-
-    if (format=="wordstat") 
-      x <- readWStatDict(file, enc = encoding, toLower = toLower)
-    else if (format=="LIWC")
-      x <- readLIWCdict(file, toLower = toLower, encoding = encoding)
-    else if (format=="yoshikoder")
-      x <- readYKdict(file)
-    else if (format=="lexicoder")
-      x <- readLexicoderDict(file)
-
+      format <- unname(format)
+      
+      if (format=="wordstat") {
+          x <- readWStatDict(file, enc = encoding, toLower = toLower)
+      } else if (format=="LIWC") {
+          x <- readLIWCdict(file, toLower = toLower, encoding = encoding)
+      } else if (format=="yoshikoder") {
+          x <- readYKdict(file)
+      } else if (format=="lexicoder") {
+          x <- readLexicoderDict(file)
+      } else if (format=="YAML") {
+          x <- yaml::yaml.load_file(file, as.named.list = TRUE)  
+      }    
   }
-  
-  x <- dictionary_flatten(x)
   new("dictionary", x, format = format, file = file, concatenator = concatenator)
 }
 
@@ -225,6 +248,7 @@ readWStatDict <- function(path, enc="", toLower=TRUE) {
     flatDict <- lapply(flatDict, function(x) gsub("\\s", "", x, perl=TRUE))
     return(flatDict)
 }
+
 
 
 # Import a LIWC-formatted dictionary
@@ -378,10 +402,12 @@ readYKdict <- function(path){
 #  \code{unlist(dictionary, recursive=TRUE)} except that the recursion does not go to the
 #  bottom level.  Called by \code{\link{dfm}}.
 # 
-#  @param elms list to be flattened
-#  @param parent parent list name, gets built up through recursion in the same way that \code{unlist(dictionary, recursive=TRUE)} works
-#  @param dict the bottom list of dictionary entries ("synonyms") passed up from recursive calls
-#  @return A dictionary flattened down one level further than the one passed
+#  @param tree list to be flattened
+#  @param levels integer vector indicating levels in the dictionary
+#  @param level internal argument to pass current levels
+#  @param key_tree internal argument to pass for parent keys
+#  @param dict internal argument to pass flattend dicitonary
+#  @return A dictionary flattened to variable levels
 #  @keywords internal
 #  @author Kohei Watanabe
 #  @export
@@ -400,34 +426,36 @@ readYKdict <- function(path){
 #                level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
 #                               level1c1b = list(level1c1b1 = c("lowestalone"))))
 #  dictionary_flatten(hdict)
-dictionary_flatten <- function(elms, parent = '', dict = list()) {
-    # are all elements unnamed?
-    if (is.null(names(elms))) {
-        stop("dictionary elements must be named")
-    }
-    # are any elements unnamed?
-    if (any(names(elms) == "")) {
-        unnamed <- elms[which(names(elms) == "")]
-        stop("unnamed dictionary entry: ", unnamed)
-    }
-    for (self in names(elms)) {
-        elm <- elms[[self]]
-        if (parent != '') {
-            self <- paste(parent, self, sep='.')
-        }
-        # print("-------------------")
-        # print (paste("Name", self))
-        if (is.list(elm)) {
-            # print("List:")
-            # print(names(elm))
-            dict <- dictionary_flatten(elm, self, dict)
+#  dictionary_flatten(hdict, 2)
+#  dictionary_flatten(hdict, 1:2)
+
+dictionary_flatten <- function(dict, levels = 1:100, level = 1, key = '', dict_flat = list()) {
+    #cat("-------------------\n")
+    #cat("level:", level, "\n")
+    for (name in names(dict)) {
+        entry <- dict[[name]]
+        if (level %in% levels) {    
+            if (key != '') {
+                key_entry <- paste(key, name, sep = '.')
+            } else {
+                key_entry <- name
+            }
         } else {
-            # print("Words:")
-            dict[[self]] <- elm
-            # print(dict)
+            key_entry <- key
+        }
+        #cat("key:", key, "\n")
+        #cat("key_entry:", key_entry, "\n")
+        if (is.list(entry)) {
+            #cat("List:\n")
+            #print(entry)
+            dict_flat <- dictionary_flatten(entry, levels, level + 1, key_entry, dict_flat)
+        } else {
+            #cat("Vector:\n")
+            #print(entry)
+            dict_flat[[key_entry]] <- c(dict_flat[[key_entry]], entry)
         }
     }
-    return(dict)
+    return(dict_flat)
 }
 
 
