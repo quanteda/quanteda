@@ -4,13 +4,17 @@
 \alias{dfm_lookup}
 \title{apply a dictionary to a dfm}
 \usage{
-dfm_lookup(x, dictionary, exclusive = TRUE, valuetype = c("glob", "regex",
-  "fixed"), case_insensitive = TRUE, capkeys = !exclusive, verbose = TRUE)
+dfm_lookup(x, dictionary, levels = 1:5, exclusive = TRUE,
+  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
+  capkeys = !exclusive, verbose = TRUE)
 }
 \arguments{
 \item{x}{the dfm to which the dictionary will be applied}
 
 \item{dictionary}{a \link{dictionary} class object}
+
+\item{levels}{levels of entries in a hierachical dictionary that will be 
+applied}
 
 \item{exclusive}{if \code{TRUE}, remove all features not in dictionary, 
 otherwise, replace values in dictionary with keys while leaving other 

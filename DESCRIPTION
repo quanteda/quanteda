@@ -38,7 +38,8 @@ Imports:
     ca,
     stringi,
     fastmatch,
-    ggplot2 (>= 2.2.0)
+    ggplot2 (>= 2.2.0),
+    yaml
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo
 Suggests:
     knitr,
