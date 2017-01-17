@@ -55,24 +55,6 @@ namespace quanteda{
         }
        return false;
     }
-    /*
-    inline List as_list(Texts &texts, bool sort = false){
-        List list(texts.size());
-        for (std::size_t h = 0; h < texts.size(); h++) {
-            if (texts[h].size() > 0) {
-                Text text = texts[h];
-                if(sort){
-                    std::sort(text.begin(), text.end());
-                }
-                IntegerVector temp = Rcpp::wrap(text);
-                list[h] = temp;
-            } else {
-                list[h] = R_NilValue;
-            }
-        }
-        return list;
-    }
-    */
 }
 
 namespace ngrams {
