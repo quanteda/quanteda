@@ -45,10 +45,6 @@
     
     
 <div class="contents">
-<!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Quickstart}
--->
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor"><html><body><a href="#introduction" class="anchor"> </a></body></html>Introduction</h1>
 <p>An R package for managing and analyzing text.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
@@ -145,61 +141,61 @@
 <p>The simplest case is to create a corpus from a vector of texts already in memory in R. This gives the advanced R user complete flexbility with his or her choice of text inputs, as there are almost endless ways to get a vector of texts into R.</p>
 <p>If we already have the texts in this form, we can call the corpus constructor function directly. We can demonstrate this on the built-in character vector of 57 US president inaugural speeches called <code>data_char_inaugural</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(data_char_inaugural)  <span class="co"># this gives us some information about the object</span>
-<span class="co">#&gt;  Named chr [1:57] "Fellow-Citizens of the Senate and of the House of Representatives:\n\nAmong the vicissitudes incident to life no event could ha"| __truncated__ ...</span>
-<span class="co">#&gt;  - attr(*, "names")= chr [1:57] "1789-Washington" "1793-Washington" "1797-Adams" "1801-Jefferson" ...</span>
+##  Named chr [1:57] "Fellow-Citizens of the Senate and of the House of Representatives:\n\nAmong the vicissitudes incident to life no event could ha"| __truncated__ ...
+##  - attr(*, "names")= chr [1:57] "1789-Washington" "1793-Washington" "1797-Adams" "1801-Jefferson" ...
 myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_char_inaugural)  <span class="co"># build the corpus</span>
 <span class="kw">summary</span>(myCorpus, <span class="dt">n =</span> <span class="dv">5</span>)
-<span class="co">#&gt; Corpus consisting of 57 documents, showing 5 documents.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;             Text Types Tokens Sentences</span>
-<span class="co">#&gt;  1789-Washington   626   1540        23</span>
-<span class="co">#&gt;  1793-Washington    96    147         4</span>
-<span class="co">#&gt;       1797-Adams   826   2584        37</span>
-<span class="co">#&gt;   1801-Jefferson   716   1935        41</span>
-<span class="co">#&gt;   1805-Jefferson   804   2381        45</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit</span>
-<span class="co">#&gt; Created: Mon Jan  9 19:20:40 2017</span>
-<span class="co">#&gt; Notes:</span></code></pre></div>
+## Corpus consisting of 57 documents, showing 5 documents.
+## 
+##             Text Types Tokens Sentences
+##  1789-Washington   626   1540        23
+##  1793-Washington    96    147         4
+##       1797-Adams   826   2584        37
+##   1801-Jefferson   716   1935        41
+##   1805-Jefferson   804   2381        45
+## 
+## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
+## Created: Mon Jan 16 17:42:08 2017
+## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables &ndash; what quanteda calls <code>docvars</code> &ndash; to this corpus.</p>
 <p>We can do this using the R&rsquo;s <code>substring()</code> function to extract characters from a name &ndash; in this case, the name of the character vector <code>data_char_inaugural</code>. This works using our fixed starting and ending positions with <code>substring()</code> because these names are a very regular format of <code>YYYY-PresidentName</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"President"</span>) &lt;-<span class="st"> </span><span class="kw">substring</span>(<span class="kw">names</span>(data_char_inaugural), <span class="dv">6</span>)
 <span class="kw"><a href="../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Year"</span>) &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">substring</span>(<span class="kw">names</span>(data_char_inaugural), <span class="dv">1</span>, <span class="dv">4</span>))
 <span class="kw">summary</span>(myCorpus, <span class="dt">n=</span><span class="dv">5</span>)
-<span class="co">#&gt; Corpus consisting of 57 documents, showing 5 documents.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;             Text Types Tokens Sentences  President Year</span>
-<span class="co">#&gt;  1789-Washington   626   1540        23 Washington 1789</span>
-<span class="co">#&gt;  1793-Washington    96    147         4 Washington 1793</span>
-<span class="co">#&gt;       1797-Adams   826   2584        37      Adams 1797</span>
-<span class="co">#&gt;   1801-Jefferson   716   1935        41  Jefferson 1801</span>
-<span class="co">#&gt;   1805-Jefferson   804   2381        45  Jefferson 1805</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit</span>
-<span class="co">#&gt; Created: Mon Jan  9 19:20:40 2017</span>
-<span class="co">#&gt; Notes:</span></code></pre></div>
+## Corpus consisting of 57 documents, showing 5 documents.
+## 
+##             Text Types Tokens Sentences  President Year
+##  1789-Washington   626   1540        23 Washington 1789
+##  1793-Washington    96    147         4 Washington 1793
+##       1797-Adams   826   2584        37      Adams 1797
+##   1801-Jefferson   716   1935        41  Jefferson 1801
+##   1805-Jefferson   804   2381        45  Jefferson 1805
+## 
+## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
+## Created: Mon Jan 16 17:42:08 2017
+## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
 <span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"docsource"</span>)  &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">"data_char_inaugural"</span>, <span class="dv">1</span>:<span class="kw"><a href="../reference/ndoc.html">ndoc</a></span>(myCorpus), <span class="dt">sep =</span> <span class="st">"_"</span>)
 <span class="kw">summary</span>(myCorpus, <span class="dt">n =</span> <span class="dv">5</span>, <span class="dt">showmeta =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; Corpus consisting of 57 documents, showing 5 documents.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;             Text Types Tokens Sentences  President Year _language</span>
-<span class="co">#&gt;  1789-Washington   626   1540        23 Washington 1789   english</span>
-<span class="co">#&gt;  1793-Washington    96    147         4 Washington 1793   english</span>
-<span class="co">#&gt;       1797-Adams   826   2584        37      Adams 1797   english</span>
-<span class="co">#&gt;   1801-Jefferson   716   1935        41  Jefferson 1801   english</span>
-<span class="co">#&gt;   1805-Jefferson   804   2381        45  Jefferson 1805   english</span>
-<span class="co">#&gt;             _docsource</span>
-<span class="co">#&gt;  data_char_inaugural_1</span>
-<span class="co">#&gt;  data_char_inaugural_2</span>
-<span class="co">#&gt;  data_char_inaugural_3</span>
-<span class="co">#&gt;  data_char_inaugural_4</span>
-<span class="co">#&gt;  data_char_inaugural_5</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit</span>
-<span class="co">#&gt; Created: Mon Jan  9 19:20:40 2017</span>
-<span class="co">#&gt; Notes:</span></code></pre></div>
+## Corpus consisting of 57 documents, showing 5 documents.
+## 
+##             Text Types Tokens Sentences  President Year _language
+##  1789-Washington   626   1540        23 Washington 1789   english
+##  1793-Washington    96    147         4 Washington 1793   english
+##       1797-Adams   826   2584        37      Adams 1797   english
+##   1801-Jefferson   716   1935        41  Jefferson 1801   english
+##   1805-Jefferson   804   2381        45  Jefferson 1805   english
+##             _docsource
+##  data_char_inaugural_1
+##  data_char_inaugural_2
+##  data_char_inaugural_3
+##  data_char_inaugural_4
+##  data_char_inaugural_5
+## 
+## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
+## Created: Mon Jan 16 17:42:08 2017
+## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
 <div id="example-loading-in-files-using-the-readtext-package" class="section level3">
@@ -243,112 +239,112 @@ mytf7 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class
 <p>A corpus is designed to be a more or less static container of texts with respect to processing and analysis. This means that the texts in corpus are not designed to be changed internally through (for example) cleaning or pre-processing steps, such as stemming or removing punctuation. Rather, texts can be extracted from the corpus as part of processing, and assigned to new objects, but the idea is that the corpus will remain as an original reference copy so that other analyses &ndash; for instance those in which stems and punctuation were required, such as analyzing a reading ease index &ndash; can be performed on the same corpus.</p>
 <p>To extract texts from a a corpus, we use an extractor, called <code><a href="../reference/texts.html">texts()</a></code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/texts.html">texts</a></span>(data_corpus_inaugural)[<span class="dv">2</span>]
-<span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              1793-Washington </span>
-<span class="co">#&gt; "Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate. When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.\n\nPrevious to the execution of any official act of the President the Constitution requires an oath of office. This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.\n\n "</span></code></pre></div>
+##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              1793-Washington 
+## "Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate. When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.\n\nPrevious to the execution of any official act of the President the Constitution requires an oath of office. This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.\n\n "</code></pre></div>
 <p>To summarize the texts from a corpus, we can call a <code>summary()</code> method defined for a corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(data_corpus_irishbudget2010)
-<span class="co">#&gt; Corpus consisting of 14 documents.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;                                   Text Types Tokens Sentences year debate</span>
-<span class="co">#&gt;        2010_BUDGET_01_Brian_Lenihan_FF  1949   8733       374 2010 BUDGET</span>
-<span class="co">#&gt;       2010_BUDGET_02_Richard_Bruton_FG  1042   4478       217 2010 BUDGET</span>
-<span class="co">#&gt;         2010_BUDGET_03_Joan_Burton_LAB  1621   6429       307 2010 BUDGET</span>
-<span class="co">#&gt;        2010_BUDGET_04_Arthur_Morgan_SF  1589   7185       343 2010 BUDGET</span>
-<span class="co">#&gt;          2010_BUDGET_05_Brian_Cowen_FF  1618   6697       250 2010 BUDGET</span>
-<span class="co">#&gt;           2010_BUDGET_06_Enda_Kenny_FG  1151   4254       153 2010 BUDGET</span>
-<span class="co">#&gt;      2010_BUDGET_07_Kieran_ODonnell_FG   681   2309       133 2010 BUDGET</span>
-<span class="co">#&gt;       2010_BUDGET_08_Eamon_Gilmore_LAB  1183   4217       201 2010 BUDGET</span>
-<span class="co">#&gt;     2010_BUDGET_09_Michael_Higgins_LAB   490   1288        44 2010 BUDGET</span>
-<span class="co">#&gt;        2010_BUDGET_10_Ruairi_Quinn_LAB   442   1290        59 2010 BUDGET</span>
-<span class="co">#&gt;      2010_BUDGET_11_John_Gormley_Green   404   1036        49 2010 BUDGET</span>
-<span class="co">#&gt;        2010_BUDGET_12_Eamon_Ryan_Green   512   1651        90 2010 BUDGET</span>
-<span class="co">#&gt;      2010_BUDGET_13_Ciaran_Cuffe_Green   444   1248        45 2010 BUDGET</span>
-<span class="co">#&gt;  2010_BUDGET_14_Caoimhghin_OCaolain_SF  1188   4094       176 2010 BUDGET</span>
-<span class="co">#&gt;  number      foren     name party</span>
-<span class="co">#&gt;      01      Brian  Lenihan    FF</span>
-<span class="co">#&gt;      02    Richard   Bruton    FG</span>
-<span class="co">#&gt;      03       Joan   Burton   LAB</span>
-<span class="co">#&gt;      04     Arthur   Morgan    SF</span>
-<span class="co">#&gt;      05      Brian    Cowen    FF</span>
-<span class="co">#&gt;      06       Enda    Kenny    FG</span>
-<span class="co">#&gt;      07     Kieran ODonnell    FG</span>
-<span class="co">#&gt;      08      Eamon  Gilmore   LAB</span>
-<span class="co">#&gt;      09    Michael  Higgins   LAB</span>
-<span class="co">#&gt;      10     Ruairi    Quinn   LAB</span>
-<span class="co">#&gt;      11       John  Gormley Green</span>
-<span class="co">#&gt;      12      Eamon     Ryan Green</span>
-<span class="co">#&gt;      13     Ciaran    Cuffe Green</span>
-<span class="co">#&gt;      14 Caoimhghin OCaolain    SF</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Source:  /home/paul/Dropbox/code/quantedaData/* on x86_64 by paul</span>
-<span class="co">#&gt; Created: Tue Sep 16 15:58:21 2014</span>
-<span class="co">#&gt; Notes:</span></code></pre></div>
+## Corpus consisting of 14 documents.
+## 
+##                                   Text Types Tokens Sentences year debate
+##        2010_BUDGET_01_Brian_Lenihan_FF  1949   8733       374 2010 BUDGET
+##       2010_BUDGET_02_Richard_Bruton_FG  1042   4478       217 2010 BUDGET
+##         2010_BUDGET_03_Joan_Burton_LAB  1621   6429       307 2010 BUDGET
+##        2010_BUDGET_04_Arthur_Morgan_SF  1589   7185       343 2010 BUDGET
+##          2010_BUDGET_05_Brian_Cowen_FF  1618   6697       250 2010 BUDGET
+##           2010_BUDGET_06_Enda_Kenny_FG  1151   4254       153 2010 BUDGET
+##      2010_BUDGET_07_Kieran_ODonnell_FG   681   2309       133 2010 BUDGET
+##       2010_BUDGET_08_Eamon_Gilmore_LAB  1183   4217       201 2010 BUDGET
+##     2010_BUDGET_09_Michael_Higgins_LAB   490   1288        44 2010 BUDGET
+##        2010_BUDGET_10_Ruairi_Quinn_LAB   442   1290        59 2010 BUDGET
+##      2010_BUDGET_11_John_Gormley_Green   404   1036        49 2010 BUDGET
+##        2010_BUDGET_12_Eamon_Ryan_Green   512   1651        90 2010 BUDGET
+##      2010_BUDGET_13_Ciaran_Cuffe_Green   444   1248        45 2010 BUDGET
+##  2010_BUDGET_14_Caoimhghin_OCaolain_SF  1188   4094       176 2010 BUDGET
+##  number      foren     name party
+##      01      Brian  Lenihan    FF
+##      02    Richard   Bruton    FG
+##      03       Joan   Burton   LAB
+##      04     Arthur   Morgan    SF
+##      05      Brian    Cowen    FF
+##      06       Enda    Kenny    FG
+##      07     Kieran ODonnell    FG
+##      08      Eamon  Gilmore   LAB
+##      09    Michael  Higgins   LAB
+##      10     Ruairi    Quinn   LAB
+##      11       John  Gormley Green
+##      12      Eamon     Ryan Green
+##      13     Ciaran    Cuffe Green
+##      14 Caoimhghin OCaolain    SF
+## 
+## Source:  /home/paul/Dropbox/code/quantedaData/* on x86_64 by paul
+## Created: Tue Sep 16 15:58:21 2014
+## Notes:</code></pre></div>
 <p>We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tokenInfo &lt;-<span class="st"> </span><span class="kw">summary</span>(data_corpus_inaugural)
-<span class="co">#&gt; Corpus consisting of 57 documents.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;             Text Types Tokens Sentences Year  President       FirstName</span>
-<span class="co">#&gt;  1789-Washington   626   1540        23 1789 Washington          George</span>
-<span class="co">#&gt;  1793-Washington    96    147         4 1793 Washington          George</span>
-<span class="co">#&gt;       1797-Adams   826   2584        37 1797      Adams            John</span>
-<span class="co">#&gt;   1801-Jefferson   716   1935        41 1801  Jefferson          Thomas</span>
-<span class="co">#&gt;   1805-Jefferson   804   2381        45 1805  Jefferson          Thomas</span>
-<span class="co">#&gt;     1809-Madison   536   1267        21 1809    Madison           James</span>
-<span class="co">#&gt;     1813-Madison   542   1304        33 1813    Madison           James</span>
-<span class="co">#&gt;      1817-Monroe  1040   3696       121 1817     Monroe           James</span>
-<span class="co">#&gt;      1821-Monroe  1262   4898       129 1821     Monroe           James</span>
-<span class="co">#&gt;       1825-Adams  1004   3154        74 1825      Adams     John Quincy</span>
-<span class="co">#&gt;     1829-Jackson   517   1210        25 1829    Jackson          Andrew</span>
-<span class="co">#&gt;     1833-Jackson   499   1271        29 1833    Jackson          Andrew</span>
-<span class="co">#&gt;    1837-VanBuren  1315   4175        95 1837  Van Buren          Martin</span>
-<span class="co">#&gt;    1841-Harrison  1893   9178       210 1841   Harrison   William Henry</span>
-<span class="co">#&gt;        1845-Polk  1330   5211       153 1845       Polk      James Knox</span>
-<span class="co">#&gt;      1849-Taylor   497   1185        22 1849     Taylor         Zachary</span>
-<span class="co">#&gt;      1853-Pierce  1166   3657       104 1853     Pierce        Franklin</span>
-<span class="co">#&gt;    1857-Buchanan   945   3106        89 1857   Buchanan           James</span>
-<span class="co">#&gt;     1861-Lincoln  1075   4016       135 1861    Lincoln         Abraham</span>
-<span class="co">#&gt;     1865-Lincoln   362    780        26 1865    Lincoln         Abraham</span>
-<span class="co">#&gt;       1869-Grant   486   1243        40 1869      Grant      Ulysses S.</span>
-<span class="co">#&gt;       1873-Grant   552   1479        43 1873      Grant      Ulysses S.</span>
-<span class="co">#&gt;       1877-Hayes   829   2730        59 1877      Hayes   Rutherford B.</span>
-<span class="co">#&gt;    1881-Garfield  1018   3240       111 1881   Garfield        James A.</span>
-<span class="co">#&gt;   1885-Cleveland   674   1828        44 1885  Cleveland          Grover</span>
-<span class="co">#&gt;    1889-Harrison  1355   4744       157 1889   Harrison        Benjamin</span>
-<span class="co">#&gt;   1893-Cleveland   823   2135        58 1893  Cleveland          Grover</span>
-<span class="co">#&gt;    1897-McKinley  1236   4383       130 1897   McKinley         William</span>
-<span class="co">#&gt;    1901-McKinley   857   2449       100 1901   McKinley         William</span>
-<span class="co">#&gt;   1905-Roosevelt   404   1089        33 1905  Roosevelt        Theodore</span>
-<span class="co">#&gt;        1909-Taft  1436   5844       159 1909       Taft  William Howard</span>
-<span class="co">#&gt;      1913-Wilson   661   1896        68 1913     Wilson         Woodrow</span>
-<span class="co">#&gt;      1917-Wilson   549   1656        59 1917     Wilson         Woodrow</span>
-<span class="co">#&gt;     1921-Harding  1172   3743       148 1921    Harding       Warren G.</span>
-<span class="co">#&gt;    1925-Coolidge  1221   4442       196 1925   Coolidge          Calvin</span>
-<span class="co">#&gt;      1929-Hoover  1086   3895       158 1929     Hoover         Herbert</span>
-<span class="co">#&gt;   1933-Roosevelt   744   2064        85 1933  Roosevelt     Franklin D.</span>
-<span class="co">#&gt;   1937-Roosevelt   729   2027        96 1937  Roosevelt     Franklin D.</span>
-<span class="co">#&gt;   1941-Roosevelt   527   1552        68 1941  Roosevelt     Franklin D.</span>
-<span class="co">#&gt;   1945-Roosevelt   276    651        26 1945  Roosevelt     Franklin D.</span>
-<span class="co">#&gt;      1949-Truman   781   2531       116 1949     Truman        Harry S.</span>
-<span class="co">#&gt;  1953-Eisenhower   903   2765       119 1953 Eisenhower       Dwight D.</span>
-<span class="co">#&gt;  1957-Eisenhower   621   1933        92 1957 Eisenhower       Dwight D.</span>
-<span class="co">#&gt;     1961-Kennedy   566   1568        52 1961    Kennedy         John F.</span>
-<span class="co">#&gt;     1965-Johnson   569   1725        93 1965    Johnson   Lyndon Baines</span>
-<span class="co">#&gt;       1969-Nixon   743   2437       103 1969      Nixon Richard Milhous</span>
-<span class="co">#&gt;       1973-Nixon   545   2018        68 1973      Nixon Richard Milhous</span>
-<span class="co">#&gt;      1977-Carter   528   1380        52 1977     Carter           Jimmy</span>
-<span class="co">#&gt;      1981-Reagan   904   2798       128 1981     Reagan          Ronald</span>
-<span class="co">#&gt;      1985-Reagan   925   2935       123 1985     Reagan          Ronald</span>
-<span class="co">#&gt;        1989-Bush   795   2683       141 1989       Bush          George</span>
-<span class="co">#&gt;     1993-Clinton   644   1837        81 1993    Clinton            Bill</span>
-<span class="co">#&gt;     1997-Clinton   773   2451       111 1997    Clinton            Bill</span>
-<span class="co">#&gt;        2001-Bush   622   1810        97 2001       Bush       George W.</span>
-<span class="co">#&gt;        2005-Bush   772   2325       100 2005       Bush       George W.</span>
-<span class="co">#&gt;       2009-Obama   939   2729       110 2009      Obama          Barack</span>
-<span class="co">#&gt;       2013-Obama   814   2335        88 2013      Obama          Barack</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul</span>
-<span class="co">#&gt; Created: Fri Sep 12 12:41:17 2014</span>
-<span class="co">#&gt; Notes:</span>
+## Corpus consisting of 57 documents.
+## 
+##             Text Types Tokens Sentences Year  President       FirstName
+##  1789-Washington   626   1540        23 1789 Washington          George
+##  1793-Washington    96    147         4 1793 Washington          George
+##       1797-Adams   826   2584        37 1797      Adams            John
+##   1801-Jefferson   716   1935        41 1801  Jefferson          Thomas
+##   1805-Jefferson   804   2381        45 1805  Jefferson          Thomas
+##     1809-Madison   536   1267        21 1809    Madison           James
+##     1813-Madison   542   1304        33 1813    Madison           James
+##      1817-Monroe  1040   3696       121 1817     Monroe           James
+##      1821-Monroe  1262   4898       129 1821     Monroe           James
+##       1825-Adams  1004   3154        74 1825      Adams     John Quincy
+##     1829-Jackson   517   1210        25 1829    Jackson          Andrew
+##     1833-Jackson   499   1271        29 1833    Jackson          Andrew
+##    1837-VanBuren  1315   4175        95 1837  Van Buren          Martin
+##    1841-Harrison  1893   9178       210 1841   Harrison   William Henry
+##        1845-Polk  1330   5211       153 1845       Polk      James Knox
+##      1849-Taylor   497   1185        22 1849     Taylor         Zachary
+##      1853-Pierce  1166   3657       104 1853     Pierce        Franklin
+##    1857-Buchanan   945   3106        89 1857   Buchanan           James
+##     1861-Lincoln  1075   4016       135 1861    Lincoln         Abraham
+##     1865-Lincoln   362    780        26 1865    Lincoln         Abraham
+##       1869-Grant   486   1243        40 1869      Grant      Ulysses S.
+##       1873-Grant   552   1479        43 1873      Grant      Ulysses S.
+##       1877-Hayes   829   2730        59 1877      Hayes   Rutherford B.
+##    1881-Garfield  1018   3240       111 1881   Garfield        James A.
+##   1885-Cleveland   674   1828        44 1885  Cleveland          Grover
+##    1889-Harrison  1355   4744       157 1889   Harrison        Benjamin
+##   1893-Cleveland   823   2135        58 1893  Cleveland          Grover
+##    1897-McKinley  1236   4383       130 1897   McKinley         William
+##    1901-McKinley   857   2449       100 1901   McKinley         William
+##   1905-Roosevelt   404   1089        33 1905  Roosevelt        Theodore
+##        1909-Taft  1436   5844       159 1909       Taft  William Howard
+##      1913-Wilson   661   1896        68 1913     Wilson         Woodrow
+##      1917-Wilson   549   1656        59 1917     Wilson         Woodrow
+##     1921-Harding  1172   3743       148 1921    Harding       Warren G.
+##    1925-Coolidge  1221   4442       196 1925   Coolidge          Calvin
+##      1929-Hoover  1086   3895       158 1929     Hoover         Herbert
+##   1933-Roosevelt   744   2064        85 1933  Roosevelt     Franklin D.
+##   1937-Roosevelt   729   2027        96 1937  Roosevelt     Franklin D.
+##   1941-Roosevelt   527   1552        68 1941  Roosevelt     Franklin D.
+##   1945-Roosevelt   276    651        26 1945  Roosevelt     Franklin D.
+##      1949-Truman   781   2531       116 1949     Truman        Harry S.
+##  1953-Eisenhower   903   2765       119 1953 Eisenhower       Dwight D.
+##  1957-Eisenhower   621   1933        92 1957 Eisenhower       Dwight D.
+##     1961-Kennedy   566   1568        52 1961    Kennedy         John F.
+##     1965-Johnson   569   1725        93 1965    Johnson   Lyndon Baines
+##       1969-Nixon   743   2437       103 1969      Nixon Richard Milhous
+##       1973-Nixon   545   2018        68 1973      Nixon Richard Milhous
+##      1977-Carter   528   1380        52 1977     Carter           Jimmy
+##      1981-Reagan   904   2798       128 1981     Reagan          Ronald
+##      1985-Reagan   925   2935       123 1985     Reagan          Ronald
+##        1989-Bush   795   2683       141 1989       Bush          George
+##     1993-Clinton   644   1837        81 1993    Clinton            Bill
+##     1997-Clinton   773   2451       111 1997    Clinton            Bill
+##        2001-Bush   622   1810        97 2001       Bush       George W.
+##        2005-Bush   772   2325       100 2005       Bush       George W.
+##       2009-Obama   939   2729       110 2009      Obama          Barack
+##       2013-Obama   814   2335        88 2013      Obama          Barack
+## 
+## Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
+## Created: Fri Sep 12 12:41:17 2014
+## Notes:
 if (<span class="kw">require</span>(ggplot2))
     <span class="kw">ggplot</span>(<span class="dt">data=</span>tokenInfo, <span class="kw">aes</span>(<span class="dt">x=</span>Year, <span class="dt">y=</span>Tokens, <span class="dt">group=</span><span class="dv">1</span>)) +<span class="st"> </span><span class="kw">geom_line</span>() +<span class="st"> </span><span class="kw">geom_point</span>() +
 <span class="st">        </span><span class="kw">scale_x_discrete</span>(<span class="dt">labels=</span><span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">1789</span>,<span class="dv">2012</span>,<span class="dv">12</span>)), <span class="dt">breaks=</span><span class="kw">seq</span>(<span class="dv">1789</span>,<span class="dv">2012</span>,<span class="dv">12</span>) ) </code></pre></div>
@@ -356,10 +352,10 @@ if (<span class="kw">require</span>(ggplot2))
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 <span class="co"># Longest inaugural address: William Henry Harrison</span>
 tokenInfo[<span class="kw">which.max</span>(tokenInfo$Tokens),] 
-<span class="co">#&gt;                        Text Types Tokens Sentences Year President</span>
-<span class="co">#&gt; 1841-Harrison 1841-Harrison  1893   9178       210 1841  Harrison</span>
-<span class="co">#&gt;                   FirstName</span>
-<span class="co">#&gt; 1841-Harrison William Henry</span></code></pre></div>
+##                        Text Types Tokens Sentences Year President
+## 1841-Harrison 1841-Harrison  1893   9178       210 1841  Harrison
+##                   FirstName
+## 1841-Harrison William Henry</code></pre></div>
 </div>
 </div>
 <div id="tools-for-handling-corpus-objects" class="section level2">
@@ -369,58 +365,58 @@ tokenInfo[<span class="kw">which.max</span>(tokenInfo$Tokens),]
 <p>The <code>+</code> operator provides a simple method for concatenating two corpus objects. If they contain different sets of document-level variables, these will be stitched together in a fashion that guarantees that no information is lost. Corpus-level medata data is also concatenated.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)
 mycorpus1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_char_inaugural[<span class="dv">1</span>:<span class="dv">5</span>], <span class="dt">note =</span> <span class="st">"First five inaug speeches."</span>)
-<span class="co">#&gt; Warning in corpus.character(data_char_inaugural[1:5], note = "First five</span>
-<span class="co">#&gt; inaug speeches."): Argument note not used.</span>
+## Warning in corpus.character(data_char_inaugural[1:5], note = "First five
+## inaug speeches."): Argument note not used.
 mycorpus2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_char_inaugural[<span class="dv">53</span>:<span class="dv">57</span>], <span class="dt">note =</span> <span class="st">"Last five inaug speeches."</span>)
-<span class="co">#&gt; Warning in corpus.character(data_char_inaugural[53:57], note = "Last five</span>
-<span class="co">#&gt; inaug speeches."): Argument note not used.</span>
+## Warning in corpus.character(data_char_inaugural[53:57], note = "Last five
+## inaug speeches."): Argument note not used.
 mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>mycorpus2
 <span class="kw">summary</span>(mycorpus3)
-<span class="co">#&gt; Corpus consisting of 10 documents.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;             Text Types Tokens Sentences</span>
-<span class="co">#&gt;  1789-Washington   626   1540        23</span>
-<span class="co">#&gt;  1793-Washington    96    147         4</span>
-<span class="co">#&gt;       1797-Adams   826   2584        37</span>
-<span class="co">#&gt;   1801-Jefferson   716   1935        41</span>
-<span class="co">#&gt;   1805-Jefferson   804   2381        45</span>
-<span class="co">#&gt;     1997-Clinton   773   2451       111</span>
-<span class="co">#&gt;        2001-Bush   622   1810        97</span>
-<span class="co">#&gt;        2005-Bush   772   2325       100</span>
-<span class="co">#&gt;       2009-Obama   939   2729       110</span>
-<span class="co">#&gt;       2013-Obama   814   2335        88</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Source:  Combination of corpuses mycorpus1 and mycorpus2</span>
-<span class="co">#&gt; Created: Mon Jan  9 19:20:40 2017</span>
-<span class="co">#&gt; Notes:</span></code></pre></div>
+## Corpus consisting of 10 documents.
+## 
+##             Text Types Tokens Sentences
+##  1789-Washington   626   1540        23
+##  1793-Washington    96    147         4
+##       1797-Adams   826   2584        37
+##   1801-Jefferson   716   1935        41
+##   1805-Jefferson   804   2381        45
+##     1997-Clinton   773   2451       111
+##        2001-Bush   622   1810        97
+##        2005-Bush   772   2325       100
+##       2009-Obama   939   2729       110
+##       2013-Obama   814   2335        88
+## 
+## Source:  Combination of corpuses mycorpus1 and mycorpus2
+## Created: Mon Jan 16 17:42:08 2017
+## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
 <h3 class="hasAnchor"><html><body><a href="#subsetting-corpus-objects" class="anchor"> </a></body></html>subsetting corpus objects</h3>
 <p>There is a method of the <code><a href="../reference/corpus_subset.html">corpus_subset()</a></code> function defined for corpus objects, where a new corpus can be extracted based on logical conditions applied to docvars:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year &gt;<span class="st"> </span><span class="dv">1990</span>))
-<span class="co">#&gt; Corpus consisting of 6 documents.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;          Text Types Tokens Sentences Year President FirstName</span>
-<span class="co">#&gt;  1993-Clinton   644   1837        81 1993   Clinton      Bill</span>
-<span class="co">#&gt;  1997-Clinton   773   2451       111 1997   Clinton      Bill</span>
-<span class="co">#&gt;     2001-Bush   622   1810        97 2001      Bush George W.</span>
-<span class="co">#&gt;     2005-Bush   772   2325       100 2005      Bush George W.</span>
-<span class="co">#&gt;    2009-Obama   939   2729       110 2009     Obama    Barack</span>
-<span class="co">#&gt;    2013-Obama   814   2335        88 2013     Obama    Barack</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul</span>
-<span class="co">#&gt; Created: Fri Sep 12 12:41:17 2014</span>
-<span class="co">#&gt; Notes:</span>
+## Corpus consisting of 6 documents.
+## 
+##          Text Types Tokens Sentences Year President FirstName
+##  1993-Clinton   644   1837        81 1993   Clinton      Bill
+##  1997-Clinton   773   2451       111 1997   Clinton      Bill
+##     2001-Bush   622   1810        97 2001      Bush George W.
+##     2005-Bush   772   2325       100 2005      Bush George W.
+##    2009-Obama   939   2729       110 2009     Obama    Barack
+##    2013-Obama   814   2335        88 2013     Obama    Barack
+## 
+## Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
+## Created: Fri Sep 12 12:41:17 2014
+## Notes:
 <span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, President ==<span class="st"> "Adams"</span>))
-<span class="co">#&gt; Corpus consisting of 2 documents.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;        Text Types Tokens Sentences Year President   FirstName</span>
-<span class="co">#&gt;  1797-Adams   826   2584        37 1797     Adams        John</span>
-<span class="co">#&gt;  1825-Adams  1004   3154        74 1825     Adams John Quincy</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul</span>
-<span class="co">#&gt; Created: Fri Sep 12 12:41:17 2014</span>
-<span class="co">#&gt; Notes:</span></code></pre></div>
+## Corpus consisting of 2 documents.
+## 
+##        Text Types Tokens Sentences Year President   FirstName
+##  1797-Adams   826   2584        37 1797     Adams        John
+##  1825-Adams  1004   3154        74 1825     Adams John Quincy
+## 
+## Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
+## Created: Fri Sep 12 12:41:17 2014
+## Notes:</code></pre></div>
 </div>
 </div>
 <div id="exploring-corpus-texts" class="section level2">
@@ -428,55 +424,55 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 <p>The <code>kwic</code> function (KeyWord In Context) performs a search for a word and allows us to view the contexts in which it occurs:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">options</span>(<span class="dt">width =</span> <span class="dv">200</span>)
 <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>)
-<span class="co">#&gt;                                                                                                      </span>
-<span class="co">#&gt; [1797-Adams, 1327]                 fraud or violence, by | terror | , intrigue, or venality          </span>
-<span class="co">#&gt; [1933-Roosevelt, 112] nameless, unreasoning, unjustified | terror | which paralyzes needed efforts to</span>
-<span class="co">#&gt; [1941-Roosevelt, 289]      seemed frozen by a fatalistic | terror | , we proved that this            </span>
-<span class="co">#&gt; [1961-Kennedy, 868]      alter that uncertain balance of | terror | that stays the hand of           </span>
-<span class="co">#&gt; [1981-Reagan, 821]        freeing all Americans from the | terror | of runaway living costs.         </span>
-<span class="co">#&gt; [1997-Clinton, 1055]         They fuel the fanaticism of | terror | . And they torment the           </span>
-<span class="co">#&gt; [1997-Clinton, 1655]   maintain a strong defense against | terror | and destruction. Our children    </span>
-<span class="co">#&gt; [2009-Obama, 1646]        advance their aims by inducing | terror | and slaughtering innocents, we</span>
+##                                                                                                      
+## [1797-Adams, 1327]                 fraud or violence, by | terror | , intrigue, or venality          
+## [1933-Roosevelt, 112] nameless, unreasoning, unjustified | terror | which paralyzes needed efforts to
+## [1941-Roosevelt, 289]      seemed frozen by a fatalistic | terror | , we proved that this            
+## [1961-Kennedy, 868]      alter that uncertain balance of | terror | that stays the hand of           
+## [1981-Reagan, 821]        freeing all Americans from the | terror | of runaway living costs.         
+## [1997-Clinton, 1055]         They fuel the fanaticism of | terror | . And they torment the           
+## [1997-Clinton, 1655]   maintain a strong defense against | terror | and destruction. Our children    
+## [2009-Obama, 1646]        advance their aims by inducing | terror | and slaughtering innocents, we
 <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>)
-<span class="co">#&gt;                                                                                                         </span>
-<span class="co">#&gt; [1797-Adams, 1327]                 fraud or violence, by |  terror   | , intrigue, or venality          </span>
-<span class="co">#&gt; [1933-Roosevelt, 112] nameless, unreasoning, unjustified |  terror   | which paralyzes needed efforts to</span>
-<span class="co">#&gt; [1941-Roosevelt, 289]      seemed frozen by a fatalistic |  terror   | , we proved that this            </span>
-<span class="co">#&gt; [1961-Kennedy, 868]      alter that uncertain balance of |  terror   | that stays the hand of           </span>
-<span class="co">#&gt; [1961-Kennedy, 992]            of science instead of its |  terrors  | . Together let us explore        </span>
-<span class="co">#&gt; [1981-Reagan, 821]        freeing all Americans from the |  terror   | of runaway living costs.         </span>
-<span class="co">#&gt; [1981-Reagan, 2204]     understood by those who practice | terrorism | and prey upon their neighbors    </span>
-<span class="co">#&gt; [1997-Clinton, 1055]         They fuel the fanaticism of |  terror   | . And they torment the           </span>
-<span class="co">#&gt; [1997-Clinton, 1655]   maintain a strong defense against |  terror   | and destruction. Our children    </span>
-<span class="co">#&gt; [2009-Obama, 1646]        advance their aims by inducing |  terror   | and slaughtering innocents, we</span>
+##                                                                                                         
+## [1797-Adams, 1327]                 fraud or violence, by |  terror   | , intrigue, or venality          
+## [1933-Roosevelt, 112] nameless, unreasoning, unjustified |  terror   | which paralyzes needed efforts to
+## [1941-Roosevelt, 289]      seemed frozen by a fatalistic |  terror   | , we proved that this            
+## [1961-Kennedy, 868]      alter that uncertain balance of |  terror   | that stays the hand of           
+## [1961-Kennedy, 992]            of science instead of its |  terrors  | . Together let us explore        
+## [1981-Reagan, 821]        freeing all Americans from the |  terror   | of runaway living costs.         
+## [1981-Reagan, 2204]     understood by those who practice | terrorism | and prey upon their neighbors    
+## [1997-Clinton, 1055]         They fuel the fanaticism of |  terror   | . And they torment the           
+## [1997-Clinton, 1655]   maintain a strong defense against |  terror   | and destruction. Our children    
+## [2009-Obama, 1646]        advance their aims by inducing |  terror   | and slaughtering innocents, we
 <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"communist*"</span>)
-<span class="co">#&gt;                                                                                             </span>
-<span class="co">#&gt; [1949-Truman, 838]  the actions resulting from the | Communist  | philosophy are a threat to</span>
-<span class="co">#&gt; [1961-Kennedy, 519]             -- not because the | Communists | may be doing it,</span></code></pre></div>
+##                                                                                             
+## [1949-Truman, 838]  the actions resulting from the | Communist  | philosophy are a threat to
+## [1961-Kennedy, 519]             -- not because the | Communists | may be doing it,</code></pre></div>
 <p>In the above summary, <code>Year</code> and <code>President</code> are variables associated with each document. We can access such variables with the <code><a href="../reference/docvars.html">docvars()</a></code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># inspect the document-level variables</span>
 <span class="kw">head</span>(<span class="kw"><a href="../reference/docvars.html">docvars</a></span>(data_corpus_inaugural))
-<span class="co">#&gt;                 Year  President FirstName</span>
-<span class="co">#&gt; 1789-Washington 1789 Washington    George</span>
-<span class="co">#&gt; 1793-Washington 1793 Washington    George</span>
-<span class="co">#&gt; 1797-Adams      1797      Adams      John</span>
-<span class="co">#&gt; 1801-Jefferson  1801  Jefferson    Thomas</span>
-<span class="co">#&gt; 1805-Jefferson  1805  Jefferson    Thomas</span>
-<span class="co">#&gt; 1809-Madison    1809    Madison     James</span>
+##                 Year  President FirstName
+## 1789-Washington 1789 Washington    George
+## 1793-Washington 1793 Washington    George
+## 1797-Adams      1797      Adams      John
+## 1801-Jefferson  1801  Jefferson    Thomas
+## 1805-Jefferson  1805  Jefferson    Thomas
+## 1809-Madison    1809    Madison     James
 
 <span class="co"># inspect the corpus-level metadata</span>
 <span class="kw"><a href="../reference/metacorpus.html">metacorpus</a></span>(data_corpus_inaugural)
-<span class="co">#&gt; $source</span>
-<span class="co">#&gt; [1] "/home/paul/Dropbox/code/quanteda/* on x86_64 by paul"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $created</span>
-<span class="co">#&gt; [1] "Fri Sep 12 12:41:17 2014"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $notes</span>
-<span class="co">#&gt; NULL</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $citation</span>
-<span class="co">#&gt; NULL</span></code></pre></div>
+## $source
+## [1] "/home/paul/Dropbox/code/quanteda/* on x86_64 by paul"
+## 
+## $created
+## [1] "Fri Sep 12 12:41:17 2014"
+## 
+## $notes
+## NULL
+## 
+## $citation
+## NULL</code></pre></div>
 <p>More corpora are available from the <a href="http://github.com/kbenoit/quantedaData">quantedaData</a> package.</p>
 </div>
 </div>
@@ -490,80 +486,80 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">txt &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">text1 =</span> <span class="st">"This is $10 in 999 different ways,</span><span class="ch">\n</span><span class="st"> up and down; left and right!"</span>, 
          <span class="dt">text2 =</span> <span class="st">"@kenbenoit working: on #quanteda 2day</span><span class="ch">\t</span><span class="st">4ever, http://textasdata.com?page=123."</span>)
 <span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(txt)
-<span class="co">#&gt; tokenizedTexts from 2 documents.</span>
-<span class="co">#&gt; text1 :</span>
-<span class="co">#&gt;  [1] "This"      "is"        "$"         "10"        "in"        "999"       "different" "ways"      ","         "up"        "and"       "down"      ";"         "left"      "and"       "right"    </span>
-<span class="co">#&gt; [17] "!"        </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; text2 :</span>
-<span class="co">#&gt;  [1] "@kenbenoit"     "working"        ":"              "on"             "#quanteda"      "2day"           "4ever"          ","              "http"           ":"              "/"             </span>
-<span class="co">#&gt; [12] "/"              "textasdata.com" "?"              "page"           "="              "123"            "."</span>
+## tokenizedTexts from 2 documents.
+## text1 :
+##  [1] "This"      "is"        "$"         "10"        "in"        "999"       "different" "ways"      ","         "up"        "and"       "down"      ";"         "left"      "and"       "right"    
+## [17] "!"        
+## 
+## text2 :
+##  [1] "@kenbenoit"     "working"        ":"              "on"             "#quanteda"      "2day"           "4ever"          ","              "http"           ":"              "/"             
+## [12] "/"              "textasdata.com" "?"              "page"           "="              "123"            "."
 <span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(txt, <span class="dt">removeNumbers =</span> <span class="ot">TRUE</span>, <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; tokenizedTexts from 2 documents.</span>
-<span class="co">#&gt; text1 :</span>
-<span class="co">#&gt;  [1] "This"      "is"        "in"        "different" "ways"      "up"        "and"       "down"      "left"      "and"       "right"    </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; text2 :</span>
-<span class="co">#&gt; [1] "@kenbenoit"     "working"        "on"             "#quanteda"      "2day"           "4ever"          "http"           "textasdata.com" "page"</span>
+## tokenizedTexts from 2 documents.
+## text1 :
+##  [1] "This"      "is"        "in"        "different" "ways"      "up"        "and"       "down"      "left"      "and"       "right"    
+## 
+## text2 :
+## [1] "@kenbenoit"     "working"        "on"             "#quanteda"      "2day"           "4ever"          "http"           "textasdata.com" "page"
 <span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(txt, <span class="dt">removeNumbers =</span> <span class="ot">FALSE</span>, <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; tokenizedTexts from 2 documents.</span>
-<span class="co">#&gt; text1 :</span>
-<span class="co">#&gt;  [1] "This"      "is"        "10"        "in"        "999"       "different" "ways"      "up"        "and"       "down"      "left"      "and"       "right"    </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; text2 :</span>
-<span class="co">#&gt;  [1] "@kenbenoit"     "working"        "on"             "#quanteda"      "2day"           "4ever"          "http"           "textasdata.com" "page"           "123"</span>
+## tokenizedTexts from 2 documents.
+## text1 :
+##  [1] "This"      "is"        "10"        "in"        "999"       "different" "ways"      "up"        "and"       "down"      "left"      "and"       "right"    
+## 
+## text2 :
+##  [1] "@kenbenoit"     "working"        "on"             "#quanteda"      "2day"           "4ever"          "http"           "textasdata.com" "page"           "123"
 <span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(txt, <span class="dt">removeNumbers =</span> <span class="ot">TRUE</span>, <span class="dt">removePunct =</span> <span class="ot">FALSE</span>)
-<span class="co">#&gt; tokenizedTexts from 2 documents.</span>
-<span class="co">#&gt; text1 :</span>
-<span class="co">#&gt;  [1] "This"      "is"        "$"         "in"        "different" "ways"      ","         "up"        "and"       "down"      ";"         "left"      "and"       "right"     "!"        </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; text2 :</span>
-<span class="co">#&gt;  [1] "@kenbenoit"     "working"        ":"              "on"             "#quanteda"      "2day"           "4ever"          ","              "http"           ":"              "/"             </span>
-<span class="co">#&gt; [12] "/"              "textasdata.com" "?"              "page"           "="              "."</span>
+## tokenizedTexts from 2 documents.
+## text1 :
+##  [1] "This"      "is"        "$"         "in"        "different" "ways"      ","         "up"        "and"       "down"      ";"         "left"      "and"       "right"     "!"        
+## 
+## text2 :
+##  [1] "@kenbenoit"     "working"        ":"              "on"             "#quanteda"      "2day"           "4ever"          ","              "http"           ":"              "/"             
+## [12] "/"              "textasdata.com" "?"              "page"           "="              "."
 <span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(txt, <span class="dt">removeNumbers =</span> <span class="ot">FALSE</span>, <span class="dt">removePunct =</span> <span class="ot">FALSE</span>)
-<span class="co">#&gt; tokenizedTexts from 2 documents.</span>
-<span class="co">#&gt; text1 :</span>
-<span class="co">#&gt;  [1] "This"      "is"        "$"         "10"        "in"        "999"       "different" "ways"      ","         "up"        "and"       "down"      ";"         "left"      "and"       "right"    </span>
-<span class="co">#&gt; [17] "!"        </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; text2 :</span>
-<span class="co">#&gt;  [1] "@kenbenoit"     "working"        ":"              "on"             "#quanteda"      "2day"           "4ever"          ","              "http"           ":"              "/"             </span>
-<span class="co">#&gt; [12] "/"              "textasdata.com" "?"              "page"           "="              "123"            "."</span>
+## tokenizedTexts from 2 documents.
+## text1 :
+##  [1] "This"      "is"        "$"         "10"        "in"        "999"       "different" "ways"      ","         "up"        "and"       "down"      ";"         "left"      "and"       "right"    
+## [17] "!"        
+## 
+## text2 :
+##  [1] "@kenbenoit"     "working"        ":"              "on"             "#quanteda"      "2day"           "4ever"          ","              "http"           ":"              "/"             
+## [12] "/"              "textasdata.com" "?"              "page"           "="              "123"            "."
 <span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(txt, <span class="dt">removeNumbers =</span> <span class="ot">FALSE</span>, <span class="dt">removePunct =</span> <span class="ot">FALSE</span>, <span class="dt">removeSeparators =</span> <span class="ot">FALSE</span>)
-<span class="co">#&gt; tokenizedTexts from 2 documents.</span>
-<span class="co">#&gt; text1 :</span>
-<span class="co">#&gt;  [1] "This"      " "         "is"        " "         "$"         "10"        " "         "in"        " "         "999"       " "         "different" " "         "ways"      ","         "\n"       </span>
-<span class="co">#&gt; [17] " "         "up"        " "         "and"       " "         "down"      ";"         " "         "left"      " "         "and"       " "         "right"     "!"        </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; text2 :</span>
-<span class="co">#&gt;  [1] "@kenbenoit"     " "              "working"        ":"              " "              "on"             " "              "#quanteda"      " "              "2day"           "\t"            </span>
-<span class="co">#&gt; [12] "4ever"          ","              " "              "http"           ":"              "/"              "/"              "textasdata.com" "?"              "page"           "="             </span>
-<span class="co">#&gt; [23] "123"            "."</span></code></pre></div>
+## tokenizedTexts from 2 documents.
+## text1 :
+##  [1] "This"      " "         "is"        " "         "$"         "10"        " "         "in"        " "         "999"       " "         "different" " "         "ways"      ","         "\n"       
+## [17] " "         "up"        " "         "and"       " "         "down"      ";"         " "         "left"      " "         "and"       " "         "right"     "!"        
+## 
+## text2 :
+##  [1] "@kenbenoit"     " "              "working"        ":"              " "              "on"             " "              "#quanteda"      " "              "2day"           "\t"            
+## [12] "4ever"          ","              " "              "http"           ":"              "/"              "/"              "textasdata.com" "?"              "page"           "="             
+## [23] "123"            "."</code></pre></div>
 <p>We also have the option to tokenize characters:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(<span class="st">"Great website: http://textasdata.com?page=123."</span>, <span class="dt">what =</span> <span class="st">"character"</span>)
-<span class="co">#&gt; tokenizedTexts from 1 document.</span>
-<span class="co">#&gt; Component 1 :</span>
-<span class="co">#&gt;  [1] "G" "r" "e" "a" "t" "w" "e" "b" "s" "i" "t" "e" ":" "h" "t" "t" "p" ":" "/" "/" "t" "e" "x" "t" "a" "s" "d" "a" "t" "a" "." "c" "o" "m" "?" "p" "a" "g" "e" "=" "1" "2" "3" "."</span>
+## tokenizedTexts from 1 document.
+## Component 1 :
+##  [1] "G" "r" "e" "a" "t" "w" "e" "b" "s" "i" "t" "e" ":" "h" "t" "t" "p" ":" "/" "/" "t" "e" "x" "t" "a" "s" "d" "a" "t" "a" "." "c" "o" "m" "?" "p" "a" "g" "e" "=" "1" "2" "3" "."
 <span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(<span class="st">"Great website: http://textasdata.com?page=123."</span>, <span class="dt">what =</span> <span class="st">"character"</span>, 
          <span class="dt">removeSeparators =</span> <span class="ot">FALSE</span>)
-<span class="co">#&gt; tokenizedTexts from 1 document.</span>
-<span class="co">#&gt; Component 1 :</span>
-<span class="co">#&gt;  [1] "G" "r" "e" "a" "t" " " "w" "e" "b" "s" "i" "t" "e" ":" " " "h" "t" "t" "p" ":" "/" "/" "t" "e" "x" "t" "a" "s" "d" "a" "t" "a" "." "c" "o" "m" "?" "p" "a" "g" "e" "=" "1" "2" "3" "."</span></code></pre></div>
+## tokenizedTexts from 1 document.
+## Component 1 :
+##  [1] "G" "r" "e" "a" "t" " " "w" "e" "b" "s" "i" "t" "e" ":" " " "h" "t" "t" "p" ":" "/" "/" "t" "e" "x" "t" "a" "s" "d" "a" "t" "a" "." "c" "o" "m" "?" "p" "a" "g" "e" "=" "1" "2" "3" "."</code></pre></div>
 <p>and sentences:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># sentence level         </span>
 <span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(<span class="kw">c</span>(<span class="st">"Kurt Vongeut said; only assholes use semi-colons."</span>, 
            <span class="st">"Today is Thursday in Canberra:  It is yesterday in London."</span>, 
            <span class="st">"En el caso de que no puedas ir con ellos, &iquest;quieres ir con nosotros?"</span>), 
           <span class="dt">what =</span> <span class="st">"sentence"</span>)
-<span class="co">#&gt; tokenizedTexts from 3 documents.</span>
-<span class="co">#&gt; Component 1 :</span>
-<span class="co">#&gt; [1] "Kurt Vongeut said; only assholes use semi-colons."</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Component 2 :</span>
-<span class="co">#&gt; [1] "Today is Thursday in Canberra:  It is yesterday in London."</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Component 3 :</span>
-<span class="co">#&gt; [1] "En el caso de que no puedas ir con ellos, &iquest;quieres ir con nosotros?"</span></code></pre></div>
+## tokenizedTexts from 3 documents.
+## Component 1 :
+## [1] "Kurt Vongeut said; only assholes use semi-colons."
+## 
+## Component 2 :
+## [1] "Today is Thursday in Canberra:  It is yesterday in London."
+## 
+## Component 3 :
+## [1] "En el caso de que no puedas ir con ellos, &iquest;quieres ir con nosotros?"</code></pre></div>
 </div>
 <div id="constructing-a-document-frequency-matrix" class="section level2">
 <h2 class="hasAnchor"><html><body><a href="#constructing-a-document-frequency-matrix" class="anchor"> </a></body></html>Constructing a document-frequency matrix</h2>
@@ -573,57 +569,58 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 <span class="co"># make a dfm</span>
 myDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(myCorpus)
 myDfm[, <span class="dv">1</span>:<span class="dv">5</span>]
-<span class="co">#&gt; Document-feature matrix of: 6 documents, 5 features (0% sparse).</span>
-<span class="co">#&gt; 6 x 5 sparse Matrix of class "dfmSparse"</span>
-<span class="co">#&gt;               features</span>
-<span class="co">#&gt; docs           my fellow citizens   , today</span>
-<span class="co">#&gt;   1993-Clinton  7      5        2 139    10</span>
-<span class="co">#&gt;   1997-Clinton  6      7        7 131     5</span>
-<span class="co">#&gt;   2001-Bush     3      1        9 110     2</span>
-<span class="co">#&gt;   2005-Bush     2      3        6 120     3</span>
-<span class="co">#&gt;   2009-Obama    2      1        1 130     6</span>
-<span class="co">#&gt;   2013-Obama    3      3        6  99     4</span></code></pre></div>
+## Document-feature matrix of: 6 documents, 5 features (0% sparse).
+## 6 x 5 sparse Matrix of class "dfmSparse"
+##               features
+## docs           my fellow citizens   , today
+##   1993-Clinton  7      5        2 139    10
+##   1997-Clinton  6      7        7 131     5
+##   2001-Bush     3      1        9 110     2
+##   2005-Bush     2      3        6 120     3
+##   2009-Obama    2      1        1 130     6
+##   2013-Obama    3      3        6  99     4</code></pre></div>
 <p>Other options for a <code><a href="../reference/dfm.html">dfm()</a></code> include removing stopwords, and stemming the tokens.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make a dfm, removing stopwords and applying stemming</span>
 myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)
 myStemMat[, <span class="dv">1</span>:<span class="dv">5</span>]
-<span class="co">#&gt; Document-feature matrix of: 6 documents, 5 features (20% sparse).</span>
-<span class="co">#&gt; 6 x 5 sparse Matrix of class "dfmSparse"</span>
-<span class="co">#&gt;               features</span>
-<span class="co">#&gt; docs           fellow citizen today celebr mysteri</span>
-<span class="co">#&gt;   1993-Clinton      5       2    10      4       1</span>
-<span class="co">#&gt;   1997-Clinton      7       8     6      1       0</span>
-<span class="co">#&gt;   2001-Bush         1      10     2      0       0</span>
-<span class="co">#&gt;   2005-Bush         3       7     3      2       0</span>
-<span class="co">#&gt;   2009-Obama        1       1     6      2       0</span>
-<span class="co">#&gt;   2013-Obama        3       8     6      1       0</span></code></pre></div>
+## Document-feature matrix of: 6 documents, 5 features (20% sparse).
+## 6 x 5 sparse Matrix of class "dfmSparse"
+##               features
+## docs           fellow citizen today celebr mysteri
+##   1993-Clinton      5       2    10      4       1
+##   1997-Clinton      7       8     6      1       0
+##   2001-Bush         1      10     2      0       0
+##   2005-Bush         3       7     3      2       0
+##   2009-Obama        1       1     6      2       0
+##   2013-Obama        3       8     6      1       0</code></pre></div>
 <p>The option <code>remove</code> provides a list of tokens to be ignored. Most users will supply a list of pre-defined &ldquo;stop words&rdquo;, defined for numerous languages, accessed through the <code><a href="../reference/stopwords.html">stopwords()</a></code> function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dv">20</span>)
-<span class="co">#&gt;  [1] "i"          "me"         "my"         "myself"     "we"         "our"        "ours"       "ourselves"  "you"        "your"       "yours"      "yourself"   "yourselves" "he"         "him"       </span>
-<span class="co">#&gt; [16] "his"        "himself"    "she"        "her"        "hers"</span>
+##  [1] "i"          "me"         "my"         "myself"     "we"         "our"        "ours"       "ourselves"  "you"        "your"       "yours"      "yourself"   "yourselves" "he"         "him"       
+## [16] "his"        "himself"    "she"        "her"        "hers"
 <span class="kw">head</span>(<span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"russian"</span>), <span class="dv">10</span>)
-<span class="co">#&gt;  [1] "&#1080;"   "&#1074;"   "&#1074;&#1086;"  "&#1085;&#1077;"  "&#1095;&#1090;&#1086;" "&#1086;&#1085;"  "&#1085;&#1072;"  "&#1103;"   "&#1089;"   "&#1089;&#1086;"</span>
+##  [1] "&#1080;"   "&#1074;"   "&#1074;&#1086;"  "&#1085;&#1077;"  "&#1095;&#1090;&#1086;" "&#1086;&#1085;"  "&#1085;&#1072;"  "&#1103;"   "&#1089;"   "&#1089;&#1086;"
 <span class="kw">head</span>(<span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"arabic"</span>), <span class="dv">10</span>)
-<span class="co">#&gt;  [1] "&#1601;&#1609;"  "&#1601;&#1610;"  "&#1603;&#1604;"  "&#1604;&#1605;"  "&#1604;&#1606;"  "&#1604;&#1607;"  "&#1605;&#1606;"  "&#1607;&#1608;"  "&#1607;&#1610;"  "&#1602;&#1608;&#1577;"</span></code></pre></div>
+##  [1] "&#1601;&#1609;"  "&#1601;&#1610;"  "&#1603;&#1604;"  "&#1604;&#1605;"  "&#1604;&#1606;"  "&#1604;&#1607;"  "&#1605;&#1606;"  "&#1607;&#1608;"  "&#1607;&#1610;"  "&#1602;&#1608;&#1577;"</code></pre></div>
 <div id="viewing-the-document-frequency-matrix" class="section level3">
 <h3 class="hasAnchor"><html><body><a href="#viewing-the-document-frequency-matrix" class="anchor"> </a></body></html>Viewing the document-frequency matrix</h3>
 <p>The dfm can be inspected in the Enviroment pane in RStudio, or by calling R&rsquo;s <code>View</code> function. Calling <code>plot</code> on a dfm will display a wordcloud using the <a href="link.">wordcloud package</a></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mydfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(data_char_ukimmig2010, <span class="dt">remove =</span> <span class="kw">c</span>(<span class="st">"will"</span>, <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>)), 
              <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)
 mydfm
-<span class="co">#&gt; Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).</span></code></pre></div>
+## Document-feature matrix of: 9 documents, 1,547 features (83.8% sparse).</code></pre></div>
 <p>To access a list of the most frequently occurring features, we can use <code><a href="../reference/topfeatures.html">topfeatures()</a></code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/topfeatures.html">topfeatures</a></span>(mydfm, <span class="dv">20</span>)  <span class="co"># 20 top words</span>
-<span class="co">#&gt; immigration     british      people      asylum     britain          uk      system  population     country         new  immigrants      ensure       shall citizenship      social    national </span>
-<span class="co">#&gt;          66          37          35          29          28          27          27          21          20          19          17          17          17          16          14          14 </span>
-<span class="co">#&gt;         bnp     illegal        work     percent </span>
-<span class="co">#&gt;          13          13          13          12</span></code></pre></div>
+## immigration     british      people      asylum     britain          uk      system  population     country         new  immigrants      ensure       shall citizenship      social    national 
+##          66          37          35          29          28          27          27          21          20          19          17          17          17          16          14          14 
+##         bnp     illegal        work     percent 
+##          13          13          13          12</code></pre></div>
 <p>Plotting a word cloud is done using <code><a href="../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code>, for a <code>dfm</code> class object:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm)</code></pre></div>
 <p><img src="quickstart_files/figure-html/unnamed-chunk-22-1.png" width="768"></p>
 <p>The <code><a href="../reference/plot-deprecated.html">plot.dfm()</a></code> method passes arguments through to <code>wordcloud()</code> from the <strong>wordcloud</strong> package, and can prettify the plot using the same arguments:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if (<span class="kw">require</span>(RColorBrewer))
-    <span class="kw"><a href="../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">max.words =</span> <span class="dv">100</span>, <span class="dt">colors =</span> <span class="kw">brewer.pal</span>(<span class="dv">6</span>, <span class="st">"Dark2"</span>), <span class="dt">scale =</span> <span class="kw">c</span>(<span class="dv">8</span>, .<span class="dv">5</span>))</code></pre></div>
+    <span class="kw"><a href="../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">max.words =</span> <span class="dv">100</span>, <span class="dt">colors =</span> <span class="kw">brewer.pal</span>(<span class="dv">6</span>, <span class="st">"Dark2"</span>), <span class="dt">scale =</span> <span class="kw">c</span>(<span class="dv">8</span>, .<span class="dv">5</span>))
+## Loading required package: RColorBrewer</code></pre></div>
 <p><img src="quickstart_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
 </div>
 <div id="grouping-documents-by-document-variable" class="section level3">
@@ -632,18 +629,18 @@ mydfm
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPartyDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(data_corpus_irishbudget2010, <span class="dt">groups =</span> <span class="st">"party"</span>, <span class="dt">remove =</span> <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>We can sort this dfm, and inspect it:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sort</span>(byPartyDfm)[, <span class="dv">1</span>:<span class="dv">10</span>]
-<span class="co">#&gt; Warning: 'sort.dfm' is deprecated.</span>
-<span class="co">#&gt; Use 'dfm_sort' instead.</span>
-<span class="co">#&gt; See help("Deprecated")</span>
-<span class="co">#&gt; Document-feature matrix of: 5 documents, 10 features (0% sparse).</span>
-<span class="co">#&gt; 5 x 10 sparse Matrix of class "dfmSparse"</span>
-<span class="co">#&gt;        features</span>
-<span class="co">#&gt; docs    will people budget government public minister tax economy pay jobs</span>
-<span class="co">#&gt;   FF     212     23     44         47     65       11  60      37  41   41</span>
-<span class="co">#&gt;   FG      93     78     71         61     47       62  11      20  29   17</span>
-<span class="co">#&gt;   Green   59     15     26         19      4        4  11      16   4   15</span>
-<span class="co">#&gt;   LAB     89     69     66         36     32       54  47      37  24   20</span>
-<span class="co">#&gt;   SF     104     81     53         73     31       39  34      50  24   27</span></code></pre></div>
+## Warning: 'sort.dfm' is deprecated.
+## Use 'dfm_sort' instead.
+## See help("Deprecated")
+## Document-feature matrix of: 5 documents, 10 features (0% sparse).
+## 5 x 10 sparse Matrix of class "dfmSparse"
+##        features
+## docs    will people budget government public minister tax economy pay jobs
+##   FF     212     23     44         47     65       11  60      37  41   41
+##   FG      93     78     71         61     47       62  11      20  29   17
+##   Green   59     15     26         19      4        4  11      16   4   15
+##   LAB     89     69     66         36     32       54  47      37  24   20
+##   SF     104     81     53         73     31       39  34      50  24   27</code></pre></div>
 <p>Note that the most frequently occurring feature is &ldquo;will&rdquo;, a word usually on English stop lists, but one that is not included in quanteda&rsquo;s built-in English stopword list.</p>
 </div>
 <div id="grouping-words-by-dictionary-or-equivalence-class" class="section level3">
@@ -657,16 +654,16 @@ mydfm
 <p>We can use the dictionary when making the dfm:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPresMat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(recentCorpus, <span class="dt">dictionary =</span> myDict)
 byPresMat
-<span class="co">#&gt; Document-feature matrix of: 6 documents, 2 features (0% sparse).</span>
-<span class="co">#&gt; 6 x 2 sparse Matrix of class "dfmSparse"</span>
-<span class="co">#&gt;               features</span>
-<span class="co">#&gt; docs           terror economy</span>
-<span class="co">#&gt;   1993-Clinton      0       8</span>
-<span class="co">#&gt;   1997-Clinton      1       8</span>
-<span class="co">#&gt;   2001-Bush         0       4</span>
-<span class="co">#&gt;   2005-Bush         1       6</span>
-<span class="co">#&gt;   2009-Obama        1      10</span>
-<span class="co">#&gt;   2013-Obama        1       6</span></code></pre></div>
+## Document-feature matrix of: 6 documents, 2 features (0% sparse).
+## 6 x 2 sparse Matrix of class "dfmSparse"
+##               features
+## docs           terror economy
+##   1993-Clinton      0       8
+##   1997-Clinton      1       8
+##   2001-Bush         0       4
+##   2005-Bush         1       6
+##   2009-Obama        1      10
+##   2013-Obama        1       6</code></pre></div>
 <p>The constructor function <code><a href="../reference/dictionary.html">dictionary()</a></code> also works with two common &ldquo;foreign&rdquo; dictionary formats: the LIWC and Provalis Research&rsquo;s Wordstat format. For instance, we can load the LIWC and apply this to the Presidential inaugural speech corpus:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">liwcdict &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dictionary.html">dictionary</a></span>(<span class="dt">file =</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,
                        <span class="dt">format =</span> <span class="st">"LIWC"</span>)
@@ -703,18 +700,18 @@ presCluster$labels &lt;-<span class="st"> </span><span class="kw"><a href="../re
 <p>We can also look at term similarities:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sim &lt;-<span class="st"> </span><span class="kw"><a href="../reference/similarity.html">similarity</a></span>(presDfm, <span class="kw">c</span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>), <span class="dt">method =</span> <span class="st">"cosine"</span>, <span class="dt">margin =</span> <span class="st">"features"</span>, <span class="dt">n =</span> <span class="dv">10</span>)
 <span class="kw">print</span>(sim, <span class="dt">digits =</span> <span class="dv">2</span>)
-<span class="co">#&gt; similarity Matrix:</span>
-<span class="co">#&gt; $fair</span>
-<span class="co">#&gt;   economi     begin      mani jefferson    author     howev     faith       god   struggl      call </span>
-<span class="co">#&gt;      0.91      0.91      0.90      0.90      0.89      0.89      0.89      0.87      0.87      0.86 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $terror</span>
-<span class="co">#&gt;    factori  adversari commonplac     miracl     racial     bounti     martin   guarante       solv    potenti </span>
-<span class="co">#&gt;       0.95       0.95       0.94       0.94       0.94       0.94       0.94       0.89       0.89       0.89 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $health</span>
-<span class="co">#&gt; knowledg    shape  generat    wrong    defin   common    child     fear   demand   planet </span>
-<span class="co">#&gt;     0.94     0.90     0.90     0.89     0.89     0.89     0.89     0.89     0.88     0.88</span></code></pre></div>
+## similarity Matrix:
+## $fair
+##   economi     begin      mani jefferson    author     howev     faith       god   struggl      call 
+##      0.91      0.91      0.90      0.90      0.89      0.89      0.89      0.87      0.87      0.86 
+## 
+## $terror
+##    factori  adversari commonplac     miracl     racial     bounti     martin   guarante       solv    potenti 
+##       0.95       0.95       0.94       0.94       0.94       0.94       0.94       0.89       0.89       0.89 
+## 
+## $health
+## knowledg    shape  generat    wrong    defin   common    child     fear   demand   planet 
+##     0.94     0.90     0.90     0.89     0.89     0.89     0.89     0.89     0.88     0.88</code></pre></div>
 </div>
 <div id="scaling-document-positions" class="section level2">
 <h2 class="hasAnchor"><html><body><a href="#scaling-document-positions" class="anchor"> </a></body></html>Scaling document positions</h2>
@@ -742,10 +739,11 @@ if (<span class="kw">require</span>(topicmodels)) {
     <span class="kw">get_terms</span>(myLDAfit20, <span class="dv">5</span>)
     <span class="kw">topics</span>(myLDAfit20, <span class="dv">3</span>)
 }
-<span class="co">#&gt;      Lenihan FF Bruton FG Burton LAB Morgan SF Cowen FF Kenny FG ODonnell FG Gilmore LAB Higgins LAB Quinn LAB Gormley Green Ryan Green Cuffe Green OCaolain SF</span>
-<span class="co">#&gt; [1,]          7        13         16         8        3       11           6          14          18        12             1         19          19           9</span>
-<span class="co">#&gt; [2,]         17         1          2        20       15        4           1          12          15         5             7         13           1          18</span>
-<span class="co">#&gt; [3,]          5        18          3        12       10        5          18          18          17        15            17          1          13           5</span></code></pre></div>
+## Loading required package: topicmodels
+##      Lenihan FF Bruton FG Burton LAB Morgan SF Cowen FF Kenny FG ODonnell FG Gilmore LAB Higgins LAB Quinn LAB Gormley Green Ryan Green Cuffe Green OCaolain SF
+## [1,]          1         5          9         3       15       10          13          12          20        14             7         16           6           4
+## [2,]         19         8          8        18       11        7           7          14          18        18             2         18          18          17
+## [3,]          2         7          7        14       14       14           6          20           6         8             1          7          16           6</code></pre></div>
 </div>
 </div>
 <div class="footnotes">

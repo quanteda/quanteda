@@ -85,7 +85,26 @@
     <div id="quanteda-0-9-9" class="section level1">
 <h1 class="hasAnchor">
 <a href="#quanteda-0-9-9" class="anchor"> </a>quanteda 0.9.9</h1>
-<p>This release has some major changes to the API, as described in this document (LINK).</p>
+<div id="changes-since-latest-cran-version-v0-9-9-4" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-since-latest-cran-version-v0-9-9-4" class="anchor"> </a>Changes since latest CRAN version (&gt;= v0.9.9-4)</h2>
+<div id="bug-fixes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"> </a>Bug fixes</h3>
+<ul><li>Fixed a bug causing <code>dfm</code> to break on &gt; 10,000 documents. (#438)</li>
+<li>Fixed a bug in <code>corpus.VCorpus</code> if the VCorpus contains a single document. (#445)</li>
+</ul></div>
+<div id="new-features" class="section level3">
+<h3 class="hasAnchor">
+<a href="#new-features" class="anchor"> </a>New features</h3>
+<ul><li>Added <code>min_nchar</code> and <code>max_nchar</code> arguments to <code>dfm_select</code>.<br/></li>
+<li>
+<code><a href="../reference/dictionary.html">dictionary()</a></code> can now be called on the argument of a <code>list()</code> without explicitly wrapping it in <code>list()</code>.<br/></li>
+<li>
+<code>fcm</code> now works directly on a dfm object when <code>context = "documents"</code>.</li>
+</ul><p>This release has some <strong>major changes to the API</strong>, described below.</p>
+</div>
+</div>
 <div id="data-objects" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-objects" class="anchor"> </a>Data objects</h2>
@@ -361,7 +380,7 @@
 <li>Added index handling <code>[</code>, <code>[[</code>, and <code>$</code> for (hashed) <code>tokens</code> objects.<br/></li>
 <li>Now using ggplot2.</li>
 <li>Added tokens methods for <code><a href="../reference/collocations.html">collocations()</a></code> and <code><a href="../reference/kwic.html">kwic()</a></code>.</li>
-<li>Much improved performance for <code><a href="../reference/tokens_select.html">tokens_select()</a></code> (formerly <code><a href="../reference/selectFeatures.dfm.html">selectFeatures.tokens()</a></code>).</li>
+<li>Much improved performance for <code><a href="../reference/tokens_select.html">tokens_select()</a></code> (formerly <code><a href="../reference/selectFeatures.html">selectFeatures.tokens()</a></code>).</li>
 <li>Improved <code><a href="../reference/ngrams.html">ngrams()</a></code> and <code><a href="../reference/joinTokens.html">joinTokens()</a></code> performance for hashed <code>tokens</code> class objects.</li>
 <li>Improved <code>dfm.character()</code> by using new <code><a href="../reference/tokens.html">tokens()</a></code> constructor to create hashed tokenized texts by default when creating a dfm, resulting in performance gains when constructing a dfm. Creating a dfm from a hashed <code>tokens</code> object is now 4-5 times faster than the older <code>tokenizedTexts</code> object.</li>
 <li>Added new (hashed) <code>tokens</code> class object.</li>
@@ -374,10 +393,10 @@
     <div id="quanteda-0-9-8" class="section level1">
 <h1 class="hasAnchor">
 <a href="#quanteda-0-9-8" class="anchor"> </a>quanteda 0.9.8</h1>
-<div id="new-features" class="section level2">
+<div id="new-features-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features" class="anchor"> </a>New Features</h2>
-<ul><li>Improved the performance of <code><a href="../reference/selectFeatures.dfm.html">selectFeatures.tokenizedTexts()</a></code>.<br/></li>
+<a href="#new-features-1" class="anchor"> </a>New Features</h2>
+<ul><li>Improved the performance of <code><a href="../reference/selectFeatures.html">selectFeatures.tokenizedTexts()</a></code>.<br/></li>
 <li>Improved the performance of <code><a href="../reference/cbind.dfm.html">rbind.dfm()</a></code>.<br/></li>
 <li>Added support for different docvars when importing multiple files using <code><a href="../reference/textfile.html">textfile()</a></code>. (#147)<br/></li>
 <li>Added support for comparison dispersion plots in <code><a href="../reference/plot-deprecated.html">plot.kwic()</a></code>. (#146)<br/></li>
@@ -395,14 +414,14 @@
 <li>Reorganise sections in README file<br/></li>
 <li>Added new <code>punctuation</code> argument to <code><a href="../reference/collocations.html">collocations()</a></code> to provide new options for handling collocations separated by punctuation characters (#220).</li>
 </ul></div>
-<div id="bug-fixes" class="section level2">
+<div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"> </a>Bug fixes</h2>
+<a href="#bug-fixes-1" class="anchor"> </a>Bug fixes</h2>
 <ul><li>(0.9.8.7) Solved #267 in which <code><a href="../reference/fcm.html">fcm(x, tri = TRUE)</a></code> temporarily created a dense logical matrix.</li>
 <li>(0.9.8.7) Added feature co-occurence matrix functions (<code>fcm</code>).</li>
 <li>(0.9.8.5) Fixed an incompatibility in sequences.cpp with Solaris x86 (#257)</li>
 <li>(0.9.8.4) Fix bug in verbose output of dfm that causes misreporting of number of features (#250)</li>
-<li>(0.9.8.4) Fix a bug in <code><a href="../reference/selectFeatures.dfm.html">selectFeatures.dfm()</a></code> that ignored <code>case_insensitive = TRUE</code> settings (#251) correct the documentation for this function.</li>
+<li>(0.9.8.4) Fix a bug in <code><a href="../reference/selectFeatures.html">selectFeatures.dfm()</a></code> that ignored <code>case_insensitive = TRUE</code> settings (#251) correct the documentation for this function.</li>
 <li>(0.9.8.3) Fix a bug in <code><a href="../reference/tf.html">tf(x, scheme = "propmax")</a></code> that returned a wrong computation; correct the documentation for this function.</li>
 <li>(0.9.8.2) Fixed a bug in textfile() causing all texts to have the same name, for types using the “textField” argument (a single file containing multiple documents).<br/></li>
 <li>Fixed bug in <code><a href="../reference/phrasetotoken.html">phrasetotoken()</a></code> where if pattern included a <code>+</code> for <code>valuetype = c("glob", "fixed")</code> it threw a regex error. #239<br/></li>
@@ -465,9 +484,9 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li><p>Fixed bug that caused dfm() to break if no features or only one feature was found.</p></li>
 <li><p>Fixed bug in predict.fitted_textmodel_NB() that caused a failure with k &gt; 2 classes (#129)</p></li>
 </ul></div>
-<div id="bug-fixes-1" class="section level2">
+<div id="bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"> </a>Bug fixes</h2>
+<a href="#bug-fixes-2" class="anchor"> </a>Bug fixes</h2>
 <ul><li><p>Fixed a false-alarm warning message in textmodel_wordfish()</p></li>
 <li><p>Argument defaults for readability.corpus() now same as readability.character(). Fixes #107.</p></li>
 <li><p>Fixed a bug causing LIWC format dictionary imports to fail if extra characters followed the closing % in the file header.</p></li>
@@ -491,9 +510,9 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li><p>Defined <code>rowMeans()</code> and <code>colMeans()</code> methods for dfm objects.</p></li>
 <li><p>Enhancements to summary.character() and summary.corpus(): Added n = to summary.character(); added pass-through options to tokenize() in summary.corpus() and summary.character() methods; added toLower as an argument to both.</p></li>
 <li><p>Enhancements to corpus object indexing, including [[ and [[&lt;-.</p></li>
-</ul><div id="bug-fixes-2" class="section level2">
+</ul><div id="bug-fixes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-2" class="anchor"> </a>Bug fixes</h2>
+<a href="#bug-fixes-3" class="anchor"> </a>Bug fixes</h2>
 <ul><li><p>Fixed a bug preventing <code><a href="../reference/weight.html">smoother()</a></code> from working.</p></li>
 <li><p>Fixed a bug in segment.corpus(x, what = “tag”) that was failing to recover the tag values after the first text.</p></li>
 <li><p>Fix bug in <code><a href="../reference/plot-deprecated.html">plot.dfm(x, comparison = TRUE)</a></code> method causing warning about rowMeans() failing.</p></li>
@@ -520,9 +539,9 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li><p>textfile() now takes a vector of filenames, if you wish to construct these yourself. See ?textfile examples.</p></li>
 <li><p>removeFeatures() and selectFeatures.collocations() now all use a consistent interface and same underlying code, with removeFeatures() acting as a wrapper to selectFeatures().</p></li>
 <li><p>convert(x, to = “stm”) now about 3-4x faster because it uses index positions from the dgCMatrix to convert to the sparse matrix format expected by stm.</p></li>
-</ul><div id="bug-fixes-3" class="section level2">
+</ul><div id="bug-fixes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-3" class="anchor"> </a>Bug fixes</h2>
+<a href="#bug-fixes-4" class="anchor"> </a>Bug fixes</h2>
 <ul><li><p>Fixed a bug in textfile() preventing encodingFrom and encodingTo from working properly.</p></li>
 <li><p>Fixed a nasty bug problem in <code><a href="../reference/convert.html">convert(x, to = "stm")</a></code> that mixed up the word indexes. Thanks Felix Haass for spotting this!</p></li>
 <li><p>Fixed a problem where wordstem was not working on ngram=1 tokenied objects</p></li>
@@ -544,9 +563,9 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li><p>Lots more error checking of arguments passed to … (and potentially misspecified or misspelled). Addresses Issue #62.</p></li>
 <li><p>Almost all methods are now methods defined for objects, from a generic.</p></li>
 <li><p>texts(x, groups = ) now allows groups to be factors, not just document variable labels. There is a new method for texts.character(x, groups = ) which is useful for supplying a factor to concatenate character objects by group.</p></li>
-</ul><div id="bug-fixes-4" class="section level2">
+</ul><div id="bug-fixes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-4" class="anchor"> </a>Bug Fixes</h2>
+<a href="#bug-fixes-5" class="anchor"> </a>Bug Fixes</h2>
 <ul><li><p>corrected inaccurate printing of valuetype in verbose note of selectFeatures.dfm(). (Did not affect functionality.)</p></li>
 <li><p>fixed broken quanteda.R demo, expanded demonstration code.</p></li>
 </ul></div>
@@ -562,9 +581,9 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li><p>smoother() and weight() formal “smooth” now changed to “smoothing” to avoid clashes with stats::smooth().</p></li>
 <li><p>Updated <code>corpus.VCorpus()</code> to work with recent updates to the <strong>tm</strong> package.</p></li>
 <li><p>added print method for tokenizedTexts</p></li>
-</ul><div id="bug-fixes-5" class="section level2">
+</ul><div id="bug-fixes-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-5" class="anchor"> </a>Bug fixes</h2>
+<a href="#bug-fixes-6" class="anchor"> </a>Bug fixes</h2>
 <ul><li><p>fixed signature error message caused by <code><a href="../reference/weight.html">weight(x, "relFreq")</a></code> and <code><a href="../reference/weight.html">weight(x, "tfidf")</a></code>. Both now correctly produce objects of class dfmSparse.</p></li>
 <li><p>fixed bug in dfm(, keptFeatures = “whatever”) that passed it through as a glob rather than a regex to selectFeatures(). Now takes a regex, as per the manual description.</p></li>
 <li><p>fixed textfeatures() for type json, where now it can call jsonlite::fromJSON() on a file directly.</p></li>
@@ -579,9 +598,9 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li><p>wordstem.dfm() both faster and more robust when working with large objects.</p></li>
 <li><p>toLower.NULL() now allows toLower() to work on texts with no words (returns NULL for NULL input)</p></li>
 <li><p>textfile() now works on zip archives of *.txt files, although this may not be entirely portable.</p></li>
-</ul><div id="bug-fixes-6" class="section level2">
+</ul><div id="bug-fixes-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-6" class="anchor"> </a>Bug fixes</h2>
+<a href="#bug-fixes-7" class="anchor"> </a>Bug fixes</h2>
 <ul><li><p>fixed bug in selectFeatures() / removeFeatures() that returned zero features if no features were found matching removal pattern</p></li>
 <li><p>corpus() previously removed document names, now fixed</p></li>
 <li><p>non-portable \donttest{} examples now removed completely from all documentation</p></li>
@@ -603,9 +622,9 @@ Code is also much simpler, based on using three new functions that are also avai
 <li>new “dfm” method: selectFeatures() that is now how features can be added or removed from a dfm, based on vectors of regular expressions, globs, or fixed matching<br/></li>
 <li>new “dfm” method: applyDictionary() that can replace features through matching with values in key-value lists from a dictionary class objects, based on vectors of regular expressions, globs, or fixed matching for dictionary values. All functionality for applying dictionaries now takes place through applyDictionary().</li>
 </ul></li>
-</ul><div id="bug-fixes-7" class="section level2">
+</ul><div id="bug-fixes-8" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-7" class="anchor"> </a>Bug Fixes</h2>
+<a href="#bug-fixes-8" class="anchor"> </a>Bug Fixes</h2>
 <ul><li>fixed the problem that document names were getting erased in corpus() because stringi functions were removing them</li>
 <li>fixed problem in tokenize(x, “character”, removePunct = TRUE) that deleted texts that had no punctuation to begin with</li>
 <li>fixed problem in dictionary(, format = “LIWC”) causing import to fail for some LIWC dictionaries.</li>
@@ -666,9 +685,9 @@ Code is also much simpler, based on using three new functions that are also avai
 <li><p>added <code><a href="../reference/deprecated-textstat.html">readability()</a></code> to compute (fast!) readability indexes on a text or corpus</p></li>
 <li><p>tokenize() now creates ngrams of any length, with two new arguments: <code>ngrams =</code> <integer vector=""> and <code>concatenator = "_"</code>. The new arguments to <code><a href="../reference/tokenize.html">tokenize()</a></code> can be passed through from <code><a href="../reference/dfm.html">dfm()</a></code>.</integer></p></li>
 </ul></div>
-<div id="bug-fixes-8" class="section level2">
+<div id="bug-fixes-9" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-8" class="anchor"> </a>Bug fixes</h2>
+<a href="#bug-fixes-9" class="anchor"> </a>Bug fixes</h2>
 <ul><li><p>fixed a problem in <code><a href="../reference/textfile.html">textfile()</a></code> causing it to fail on Windows machines when loading <code>*.txt</code></p></li>
 <li><p>nsentence() was not counting sentences correctly if the text was lower-cased - now issues an error if no upper-case characters are detected. This was also causing readability() to fail.</p></li>
 </ul></div>

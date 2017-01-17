@@ -53,3 +53,24 @@ test_that("#459 apply a hierarchical dictionary to a dfm", {
 
 })
 
+test_that("#459 extract the lower levels of a dictionary using a dfm", {
+    txt <- c(d1 = "The United States has the Atlantic Ocean and the Pacific Ocean.",
+             d2 = "Britain and Ireland have the Irish Sea and the English Channel.")
+    dict <- dictionary(list('US'=list(
+        Countries = c("States"),
+        oceans = c("Atlantic", "Pacific")),
+        'Europe'=list(
+            Countries = c("Britain", "Ireland"),
+            oceans = list(west = "Sea", east = "Channel"))))
+    testdfm <- dfm(txt)
+    dfm_lookup(testdfm, dict, levels = 1)
+    dfm_lookup(testdfm, dict, levels = 2)
+    dfm_lookup(testdfm, dict, levels = 1:2)
+    dfm_lookup(testdfm, dict, levels = 3)
+    dfm_lookup(testdfm, dict, levels = c(1,3))
+    dfm_lookup(testdfm, dict, levels = c(2,3))
+    dfm_lookup(testdfm, dict, levels = c(1,4))
+    dfm_lookup(testdfm, dict, levels = 4)
+})
+
+
