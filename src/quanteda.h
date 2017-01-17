@@ -81,7 +81,7 @@ namespace ngrams {
 
 #if RCPP_PARALLEL_USE_TBB
     // TBB header is loaded automatically by the macro
-    typedef tbb::atomic<int> IdNgram; // tbb::atomic does not suppport unsigined int
+    typedef tbb::atomic<unsigned int> IdNgram; // tbb::atomic does not suppport unsigined int
     typedef tbb::concurrent_unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
     typedef tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
     typedef tbb::concurrent_unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
