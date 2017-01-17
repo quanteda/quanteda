@@ -10,6 +10,9 @@
 
 ### New features
 
+* Added new arguments to `sequences()`: `ordered` and `max_length`, the latter to prevent memory leaks from extremely long sequences.  
+* `dictionary()` now accepts YAML as an input file format.
+* `dfm_lookup` and `tokens_lookup` now accept a `levels` argument to determine which level of a hierarchical dictionary should be applied. 
 * Added `min_nchar` and `max_nchar` arguments to `dfm_select`.  
 * `dictionary()` can now be called on the argument of a `list()` without explicitly wrapping it in `list()`.  
 * `fcm` now works directly on a dfm object when `context = "documents"`.  
