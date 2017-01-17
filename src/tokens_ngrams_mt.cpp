@@ -138,8 +138,8 @@ void type(std::size_t i,
 
 struct type_mt : public Worker{
     
-    Types &types_ngram;
     const VecNgrams &keys_ngram;
+    Types &types_ngram;
     const MapNgrams &map_ngram;
     const std::string &delim;
     const Types &types;
@@ -186,7 +186,7 @@ List qatd_cpp_tokens_ngrams(List texts_,
     
     // Register both ngram (key) and unigram (value) IDs in a hash table
     MapNgrams map_ngram;
-    IdNgram id_ngram(1);
+    IdNgram id_ngram = 1;
     
     //dev::Timer timer;
     //dev::start_timer("Ngram generation", timer);
