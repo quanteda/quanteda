@@ -8,9 +8,15 @@ using namespace RcppParallel;
 using namespace quanteda;
 using namespace ngrams;
 
+#if RCPP_PARALLEL_USE_TBB
+typedef tbb::atomic<int> IdNgram;
+#else
+int IdNgram;
+#endif
+
 unsigned int ngram_id(const Ngram &ngram,
                       MapNgrams &map_ngram,
-                      IntParam &id_ngram){
+                      IdNgram &id_ngram){
     
     unsigned int &id = map_ngram[ngram];
     if (id) {
@@ -28,8 +34,7 @@ void skip(const Text &tokens,
           const std::vector<unsigned int> &skips,
           Ngram ngram,
           MapNgrams &map_ngram,
-          IntParam &id_ngram) {
-    
+          IdNgram &id_ngram) {
     
     ngram.push_back(tokens[start]);
     
@@ -54,7 +59,7 @@ Text skipgram(const Text &tokens,
               const std::vector<unsigned int> &ns, 
               const std::vector<unsigned int> &skips,
               MapNgrams &map_ngram,
-              IntParam &id_ngram) {
+              IdNgram &id_ngram) {
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -87,10 +92,10 @@ struct skipgram_mt : public Worker{
     const std::vector<unsigned int> &ns;
     const std::vector<unsigned int> &skips;
     MapNgrams &map_ngram;
-    IntParam &id_ngram;
+    IdNgram &id_ngram;
     
     skipgram_mt(Texts &input_, Texts &output_, std::vector<unsigned int> &ns_, 
-                std::vector<unsigned int> &skips_, MapNgrams &map_ngram_, IntParam &id_ngram_):
+                std::vector<unsigned int> &skips_, MapNgrams &map_ngram_, IdNgram &id_ngram_):
                 input(input_), output(output_), ns(ns_), skips(skips_), map_ngram(map_ngram_), id_ngram(id_ngram_){}
     
     void operator()(std::size_t begin, std::size_t end){
@@ -168,8 +173,8 @@ List qatd_cpp_tokens_ngrams(List texts_,
     
     // Register both ngram (key) and unigram (value) IDs in a hash table
     MapNgrams map_ngram;
-    int id_init = 1;
-    IntParam id_ngram(id_init);
+    int id_init(1);
+    IdNgram id_ngram(id_init);
     
     // dev::Timer timer;
     // dev::start_timer("Ngram generation", timer);
