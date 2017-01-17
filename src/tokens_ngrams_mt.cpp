@@ -8,12 +8,6 @@ using namespace RcppParallel;
 using namespace quanteda;
 using namespace ngrams;
 
-#if RCPP_PARALLEL_USE_TBB
-typedef tbb::atomic<int> IdNgram;
-#else
-int IdNgram;
-#endif
-
 unsigned int ngram_id(const Ngram &ngram,
                       MapNgrams &map_ngram,
                       IdNgram &id_ngram){
@@ -22,10 +16,20 @@ unsigned int ngram_id(const Ngram &ngram,
     if (id) {
         return id;
     } else {
-        //id = id_ngram.fetch_and_add(1);
-        id = 1;
+        id = id_ngram.fetch_and_add(1);
         return id;
     }
+    
+    /*
+    auto it = map_ngram.find(ngram);
+    if (it != map_ngram.end()) {
+        return it->second;
+    }
+    //unsigned int id = id_ngram.fetch_and_add(1);
+    //auto iti = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram.fetch_and_add(1)));
+    auto iti = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, map_ngram.size() + 1));
+    return iti.first->second
+    */
 }
     
 void skip(const Text &tokens,
@@ -109,19 +113,22 @@ struct skipgram_mt : public Worker{
 
 
 void type(std::size_t i,
-          Types &types_ngram,
           const VecNgrams &keys_ngram,
+          Types &types_ngram,
           const MapNgrams &map_ngram,
           const std::string &delim,
           const Types &types){
     
     Ngram key = keys_ngram[i];
-    std::string type_ngram = types[key[0] - 1];
-    for (std::size_t j = 1; j < key.size(); j++) {
-        type_ngram += delim + types[key[j] - 1];
+    if (key.size() == 0) {
+        types_ngram[i] = "";
+    } else {
+        std::string type_ngram = types[key[0] - 1];
+        for (std::size_t j = 1; j < key.size(); j++) {
+            type_ngram += delim + types[key[j] - 1];
+        }
+        types_ngram[i] = type_ngram;
     }
-    auto it = map_ngram.find(key);
-    types_ngram[it->second - 1] = type_ngram;
 }
 
 struct type_mt : public Worker{
@@ -132,15 +139,15 @@ struct type_mt : public Worker{
     const std::string &delim;
     const Types &types;
     
-    type_mt(Types &types_ngram_, VecNgrams &keys_ngram_, MapNgrams &map_ngram_, 
+    type_mt(VecNgrams &keys_ngram_, Types &types_ngram_, MapNgrams &map_ngram_, 
             std::string &delim_, Types &types_):
-            types_ngram(types_ngram_), keys_ngram(keys_ngram_), map_ngram(map_ngram_), 
+            keys_ngram(keys_ngram_), types_ngram(types_ngram_), map_ngram(map_ngram_), 
             delim(delim_), types(types_) {}
     
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t i = begin; i < end; i++) {
-            type(i, types_ngram, keys_ngram, map_ngram, delim, types);
+            type(i, keys_ngram, types_ngram, map_ngram, delim, types);
         }
     }
 };
@@ -174,11 +181,10 @@ List qatd_cpp_tokens_ngrams(List texts_,
     
     // Register both ngram (key) and unigram (value) IDs in a hash table
     MapNgrams map_ngram;
-    int id_init(1);
-    IdNgram id_ngram(id_init);
+    IdNgram id_ngram(1);
     
-    // dev::Timer timer;
-    // dev::start_timer("Ngram generation", timer);
+    //dev::Timer timer;
+    //dev::start_timer("Ngram generation", timer);
     Texts output(input.size());
 #if RCPP_PARALLEL_USE_TBB
     skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram, id_ngram);
@@ -188,28 +194,26 @@ List qatd_cpp_tokens_ngrams(List texts_,
         output[h] = skipgram(input[h], ns, skips, map_ngram, id_ngram);
     }
 #endif
-    // dev::stop_timer("Ngram generation", timer);
+     //dev::stop_timer("Ngram generation", timer);
     
-    // Extract only keys
-    VecNgrams keys_ngram;
-    keys_ngram.reserve(map_ngram.size());
+    // Extract only keys in order of the id
+    VecNgrams keys_ngram(id_ngram - 1);
     for (std::pair<Ngram, unsigned int> it : map_ngram) {
-        //dev::print_ngram(it.first);
-        keys_ngram.push_back(it.first);
+        keys_ngram[it.second - 1] = it.first;
     }
     
-    // dev::start_timer("Token generation", timer);
+    //dev::start_timer("Token generation", timer);
     // Create ngram types
-    Types types_ngram(map_ngram.size());
+     Types types_ngram(keys_ngram.size());
 #if RCPP_PARALLEL_USE_TBB
-        type_mt type_mt(types_ngram, keys_ngram, map_ngram, delim, types);
-        parallelFor(0, keys_ngram.size(), type_mt);
+        type_mt type_mt(keys_ngram, types_ngram, map_ngram, delim, types);
+        parallelFor(0, types_ngram.size(), type_mt);
 #else
-    for (std::size_t i = 0; i < keys_ngram.size(); i++) {
-        type(i, types_ngram, keys_ngram, map_ngram, delim, types);
+    for (std::size_t i = 0; i < types_ngram.size(); i++) {
+        type(i, keys_ngram, types_ngram, map_ngram, delim, types);
     }
 #endif
-    // dev::stop_timer("Token generation", timer);
+    //dev::stop_timer("Token generation", timer);
     
     // Return IDs as attribute
     ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
@@ -232,8 +236,11 @@ out
 
 
 tok2 <- quanteda::tokens(data_corpus_inaugural)
-out2 <- qatd_cpp_tokens_ngrams(unclass(tok2), attr(tok2, 'types'), "_", 2, 1)
 
+for(i in 1:100) {
+    cat(i, "\n")
+    out2 <- qatd_cpp_tokens_ngrams(unclass(tok2), attr(tok2, 'types'), "_", 2, 1)
+}
 
 
 
