@@ -8,8 +8,7 @@ using namespace RcppParallel;
 using namespace quanteda;
 using namespace ngrams;
 
-
-int ngram_id(Ngram ngram,
+unsigned int ngram_id(const Ngram &ngram,
              MapNgrams &map_ngram){
     
     // Add new ID without multiple access
@@ -127,11 +126,11 @@ struct skipgram_mt : public Worker{
 */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_ngrams(List texts_,
-                            CharacterVector types_,
-                            String delim_,
-                            IntegerVector ns_,
-                            IntegerVector skips_) {
+List qatd_cpp_tokens_ngrams(const List texts_,
+                            const CharacterVector types_,
+                            const String delim_,
+                            const IntegerVector ns_,
+                            const IntegerVector skips_) {
     
     Texts input = Rcpp::as< Texts >(texts_);
     std::string delim = delim_;

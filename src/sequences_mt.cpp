@@ -170,11 +170,11 @@ struct estimate_mt : public Worker{
     const bool &ordered;
     
     // Constructor
-    estimate_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, unsigned int &count_min_, 
+    estimate_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, const unsigned int &count_min_, 
                 bool &ordered_):
                 seqs(seqs_), cs(cs_), ss(ss_), ls(ls_), count_min(count_min_), 
                 ordered(ordered_) {}
-    
+
     void operator()(std::size_t begin, std::size_t end){
         for (std::size_t i = begin; i < end; i++) {
             estimate(i, seqs, cs, ss, ls, count_min, ordered);
@@ -196,13 +196,13 @@ struct estimate_mt : public Worker{
  */
 
 // [[Rcpp::export]]
-List qatd_cpp_sequences(List texts_,
-                        IntegerVector words_,
-                        unsigned int count_min,
+List qatd_cpp_sequences(const List &texts_,
+                        const IntegerVector &words_,
+                        const unsigned int count_min,
                         unsigned int len_max,
                         bool nested,
                         bool ordered = false){
-    
+
     Texts texts = Rcpp::as<Texts>(texts_);
     std::vector<unsigned int> words = Rcpp::as< std::vector<unsigned int> >(words_);
     SetUnigrams set_words (words.begin(), words.end());

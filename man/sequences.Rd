@@ -26,10 +26,10 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{nested}{if true, collect all the subsequences of a longer sequence as separate entities.
 e.g. in a sequence of capitalized words "United States Congress", "States Congress" is considered 
-as a subsequence. But "United States" is not a subsequence not because it is followed by "Congress".}
+as a subsequence. But "United States" is not a subsequence because it is followed by "Congress".}
 
 \item{ordered}{if true, use the Blaheta-Johnson method that distinguishs between 
-the order of tokens, and promotes rare sequences.}
+the order of words, and tends to promote rare sequences.}
 }
 \description{
 This function automatically identifies contiguous collocations consisting of

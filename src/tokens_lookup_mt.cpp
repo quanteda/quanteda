@@ -68,20 +68,20 @@ struct lookup_mt : public Worker{
 
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_lookup(List texts_, 
-                            List keys_,
-                            IntegerVector ids_){
+List qatd_cpp_tokens_lookup(const List &texts_, 
+                            const List &keys_,
+                            const IntegerVector &ids_){
     
     Texts input = Rcpp::as<Texts>(texts_);
-    List keys = keys_;
-    IntegerVector ids = ids_;
+    const List keys = keys_;
+    const IntegerVector ids = ids_;
 
     MultiMapNgrams map_keys;
     std::vector<std::size_t> spans(keys.size());
     for (unsigned int g = 0; g < keys.size(); g++) {
         if (has_na(keys[g])) continue;
         Ngram word = keys[g];
-        map_keys.insert(std::make_pair(word, ids_[g]));
+        map_keys.insert(std::make_pair(word, ids[g]));
         spans[g] = word.size();
     }
     sort(spans.begin(), spans.end());

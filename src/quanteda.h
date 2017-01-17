@@ -85,7 +85,7 @@ namespace ngrams {
             std::size_t operator() (const Ngram &vec) const {
             unsigned int seed = 0;
             for (std::size_t i = 0; i < vec.size(); i++) {
-                seed += vec[i] << (i * 8); // shift elements 8 bit
+                seed += (vec[i] << (i * 8)); // shift elements 8 bit
             }
             return std::hash<unsigned int>()(seed);
         }
