@@ -186,7 +186,7 @@ List qatd_cpp_tokens_ngrams(List texts_,
     
     // Register both ngram (key) and unigram (value) IDs in a hash table
     MapNgrams map_ngram;
-    IdNgram id_ngram = 1;
+    IdNgram id_ngram = tbb::atomic<int>(1);
     
     //dev::Timer timer;
     //dev::start_timer("Ngram generation", timer);

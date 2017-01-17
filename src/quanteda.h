@@ -14,16 +14,16 @@ namespace quanteda{
     typedef std::vector<unsigned int> Text;
     typedef std::vector<Text> Texts;
 #if RCPP_PARALLEL_USE_TBB
-    // typedef tbb::atomic<int> IntParam;
-    // typedef tbb::atomic<long> LongParam;
-    // typedef tbb::atomic<double> DoubleParam;
+    typedef tbb::atomic<int> IntParam;
+    typedef tbb::atomic<long> LongParam;
+    typedef tbb::atomic<double> DoubleParam;
     typedef tbb::concurrent_vector<int> IntParams;
     typedef tbb::concurrent_vector<long> LongParams;
     typedef tbb::concurrent_vector<double> DoubleParams;
 #else
-    // typedef int IntParam;
-    // typedef long LongParam;
-    // typedef double DoubleParam;
+    typedef int IntParam;
+    typedef long LongParam;
+    typedef double DoubleParam;
     typedef std::vector<int> IntParams;
     typedef std::vector<long> LongParams;
     typedef std::vector<double> DoubleParams;
