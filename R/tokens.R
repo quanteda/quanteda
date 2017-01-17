@@ -608,7 +608,6 @@ tokens_hashed_recompile <- function(x) {
     
     # Remove gaps in the type index, if any, remap index
     if (any(is.na(match(seq_len(length(types(x))), index_unique)))) { 
-        cat("Reindex\n");
         types_new <- types(x)[index_unique]
         index_new <- c(0, seq_along(index_unique)) # padding index is zero but not in types
         index_unique <- c(0, index_unique) # padding index is zero but not in types

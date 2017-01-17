@@ -11,14 +11,16 @@ using namespace ngrams;
 unsigned int ngram_id(const Ngram &ngram,
                       MapNgrams &map_ngram,
                       IdNgram &id_ngram){
-    
+    /*
     unsigned int &id = map_ngram[ngram];
     if (id) {
         return id;
     } else {
-        id = id_ngram.fetch_and_add(1);
+        id = id_ngram.fetch_and_increment();
+        //id_ngram.fetch_and_store(id);
         return id;
     }
+    */
     
     /*
     auto it = map_ngram.find(ngram);
@@ -30,6 +32,9 @@ unsigned int ngram_id(const Ngram &ngram,
     auto iti = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, map_ngram.size() + 1));
     return iti.first->second
     */
+    
+    auto iti = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram.fetch_and_increment()));
+    return iti.first->second;
 }
     
 void skip(const Text &tokens,
