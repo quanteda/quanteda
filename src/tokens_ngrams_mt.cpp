@@ -33,7 +33,8 @@ unsigned int ngram_id(const Ngram &ngram,
     return iti.first->second
     */
     
-    auto it = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram.fetch_and_increment()));
+    //auto it = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram.fetch_and_increment()));
+    auto it = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, ++id_ngram));
     return it.first->second;
 }
     
@@ -186,7 +187,7 @@ List qatd_cpp_tokens_ngrams(List texts_,
     
     // Register both ngram (key) and unigram (value) IDs in a hash table
     MapNgrams map_ngram;
-    IdNgram id_ngram(1);
+    IdNgram id_ngram = tbb::atomic<unsigned int>(0);
     
     //dev::Timer timer;
     //dev::start_timer("Ngram generation", timer);
