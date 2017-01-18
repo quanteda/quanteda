@@ -118,6 +118,6 @@ Momtazi, S., Khudanpur, S., & Klakow, D. (2010).
   Church, K.W. & Hanks, P. (1990) 
   "\href{http://dl.acm.org/citation.cfm?id=89095}{Word association norms,
   mutual information, and lexicography}" \emph{Computational Linguistics},
-  16(1):22<U+9225><U+FFFD>29.
+  16(1):22–29.
 }
 
