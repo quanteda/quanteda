@@ -12,7 +12,7 @@ env:
     - R_CHECK_ARGS="--no-build-vignettes"
 
 before_install:
-  - sudo apt-get install libgsl0-dev libtbb-dev
+  - sudo apt-get install libgsl0-dev libtbb-dev r-cran-rcpp
   - Rscript -e 'install.packages(c("devtools", "topicmodels", "tm"))'
   
 after_success:
