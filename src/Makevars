@@ -3,7 +3,8 @@ PKG_CPPFLAGS = -I.
 #PKG_CXXFLAGS = -std=c++11
 CXX_STD = CXX11
 PKG_LIBS += $(shell ${R_HOME}/bin/Rscript -e "RcppParallel::RcppParallelLibs()")
-CC=ccache gcc
-CXX=ccache g++
+#CC=ccache gcc
+#CXX=ccache g++
 #CXX=ccache g++-4.8.1
-CXX1X=g++-4.8
+CXX=g++-4.8.1
+#CXX1X=g++-4.8
