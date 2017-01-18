@@ -13,7 +13,7 @@ env:
     - R_CHECK_ARGS="--no-build-vignettes"
 before_install:
   - sudo apt-get install libgsl0-dev
-  - Rscript -e 'install.packages(c("devtools", "topicmodels", "tm"))'
+  - Rscript -e 'install.packages(c("devtools", "topicmodels", "tm", "knitr"))'
 
 after_success:
   - Rscript -e 'library(covr);codecov()'
