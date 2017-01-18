@@ -2,6 +2,7 @@ language: r
 cache: packages
 warnings_are_errors: true
 sudo: true
+dist: trusty
 r_packages:
   - covr
   - ExPosition
