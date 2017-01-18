@@ -122,6 +122,7 @@ Collate:
     'textstat-readability.R'
     'textstat_dist.R'
     'textstat_simil.R'
+    'textstat_keyness.R'
     'toLower.R'
     'tokenize.R'
     'tokenize_outtakes.R'
