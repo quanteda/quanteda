@@ -105,13 +105,13 @@ struct select_mt : public Worker{
  */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_select(List texts_, 
-                            List words_,
+List qatd_cpp_tokens_select(const List &texts_, 
+                            const List &words_,
                             int mode_,
                             bool padding_){
     
     Texts input = Rcpp::as<Texts>(texts_);
-    List words = words_;
+    const List words = words_;
     int mode = mode_;
     bool padding = padding_;
 

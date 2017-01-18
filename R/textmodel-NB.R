@@ -70,11 +70,15 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
             stop("Distribution can only be multinomial or Bernoulli.")
     
     ## prior
-    if (prior=="uniform")
+    if (prior=="uniform") {
         Pc <- rep(1/length(levs), length(levs))
-    else if (prior=="docfreq")
+        names(Pc) <- levs
+    } else if (prior=="docfreq") {
         Pc <- prop.table(table(y.trclass))
-    else if (prior=="termfreq") {
+        Pc_names <- names(Pc)
+        attributes(Pc) <- NULL
+        names(Pc) <- Pc_names
+    } else if (prior=="termfreq") {
         # weighted means the priors are by total words in each class
         # (the probability that any given word is in a particular class)
         temp <- x.trset
@@ -82,7 +86,9 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
         colnames(temp) <- rep("all_same", nfeature(temp))
         temp <- dfm_compress(temp)
         Pc <- prop.table(as.matrix(temp))
+        Pc_names <- rownames(Pc)
         attributes(Pc) <- NULL
+        names(Pc) <- Pc_names
     } else stop("Prior must be either docfreq (default), wordfreq, or uniform")
     
     ## multinomial ikelihood: class x words, rows sum to 1
@@ -92,8 +98,7 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
     d <- dfm_compress(x.trset, margin = "both")
 
     PwGc <- rowNorm(d + smooth)
-    names(Pc) <- rownames(d)
-    
+
     ## posterior: class x words, cols sum to 1
     PcGw <- colNorm(PwGc * base::outer(Pc, rep(1, ncol(PwGc))))  
     

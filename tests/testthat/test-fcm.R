@@ -158,3 +158,14 @@ test_that("fcm.dfm only works for context = \"document\"", {
                  "fcm.dfm only works on context = \"document\"")
 })
 
+test_that("fcm works as expected for tokens_hashed", {
+    
+    txt <- c("The quick brown fox jumped over the lazy dog.",
+             "The dog jumped and ate the fox.")
+    toks <- tokenize(toLower(txt), removePunct = TRUE)
+    toksh <- tokens(toLower(txt), removePunct = TRUE)
+    classic <- fcm(toks, context = "window", window = 3)
+    hashed <- fcm(toksh, context = "window", window = 3)
+    expect_equivalent(classic, hashed)
+})
+

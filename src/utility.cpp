@@ -2,24 +2,7 @@
 #include <vector>
 
 using namespace Rcpp;
-
-
-// [[Rcpp::export]]
-SEXP qatd_cpp_deepcopy(SEXP x_){
-    return clone(x_);
-}
-// [[Rcpp::export]]
-List qatd_cpp_structcopy_int_list(List list_){
-    // Generate empty List
-    List list = list_;
-    List list_struct;
-    for (unsigned int g = 0; g < list.size(); g++){
-        IntegerVector elems = list[g];
-        list_struct.push_back(IntegerVector(elems.size()));
-    }
-    return list_struct;
-}
-
+// to remove a character from the list
 // [[Rcpp::export]]
 List qatd_cpp_remove_chr_list(List list_, String elem_remove){
     List list = clone(list_);
@@ -41,30 +24,6 @@ List qatd_cpp_remove_chr_list(List list_, String elem_remove){
     }
     return list;
 }
-
-// [[Rcpp::export]]
-List qatd_cpp_remove_int_list(List list_, int elem_remove){
-    List list = clone(list_);
-    for (unsigned int h = 0; h < list.size(); h++){
-        IntegerVector elems = list[h];
-        IntegerVector elems_new(elems.size());
-        size_t j = 0;
-        for (unsigned int i = 0; i < elems.size(); i++){
-            if(elems[i] != elem_remove){
-                elems_new[j] = elems[i];
-                j++;
-            }
-        }
-        if (j > 0){
-            list[h] = elems_new[seq(0, j - 1)];
-        }else{
-            list[h] = IntegerVector(0);
-        }
-    }
-    return list;
-}
-
-
 
 // You can include R code blocks in C++ files processed with sourceCpp
 // (useful for testing and development). The R code will be automatically

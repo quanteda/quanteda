@@ -9,6 +9,7 @@ using namespace quanteda;
 using namespace ngrams;
 
 unsigned int ngram_id(const Ngram &ngram,
+
                       MapNgrams &map_ngram,
                       IdNgram &id_ngram){
     /*
@@ -176,11 +177,11 @@ struct type_mt : public Worker{
 */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_ngrams(List texts_,
-                            CharacterVector types_,
-                            String delim_,
-                            IntegerVector ns_,
-                            IntegerVector skips_) {
+List qatd_cpp_tokens_ngrams(const List texts_,
+                            const CharacterVector types_,
+                            const String delim_,
+                            const IntegerVector ns_,
+                            const IntegerVector skips_) {
     
     Texts input = Rcpp::as< Texts >(texts_);
     Types types = Rcpp::as< Types >(types_);

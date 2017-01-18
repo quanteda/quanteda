@@ -28,7 +28,7 @@ struct ManhattanDistance : public Worker {
             for (std::size_t j = i+1; j < nrow; j++) {
                 arma::colvec bb = amat.col(j) - aa;
                 rmat(j,i) = sum(abs(bb));
-
+                
                 // Using iterator is slower
                 // arma::sp_mat diff = abs(amat.col(j) - amat.col(i));
                 // double  dist = 0;
@@ -51,7 +51,7 @@ struct ManhattanDistance2 : public Worker {
     RMatrix<double> rmat;
     
     arma::uword nrow, ncol;
-
+    
     // initialize from Rcpp input and output matrixes 
     ManhattanDistance2(const arma::sp_mat& amat, const arma::sp_mat& bmat, NumericMatrix& rmat, arma::uword nrow, arma::uword ncol)
         : amat(amat), bmat(bmat), rmat(rmat), nrow(nrow), ncol(ncol) {}

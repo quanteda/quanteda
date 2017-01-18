@@ -10,16 +10,16 @@ using namespace Rcpp ;
 arma::sp_mat fcm_cpp(Rcpp::List &texts,
                     const CharacterVector &types,
                     const String &count,
-                    const int &window,
+                    const unsigned int &window,
                     const NumericVector &weights,
                     const bool &ordered,
                     const bool &tri,
-                    const int &nvec) {
-    int n_types = types.size();
-    arma::umat index_mat(2,nvec);
+                    const unsigned int &nvec) {
+    unsigned int n_types = types.size();
+    arma::umat index_mat(2, nvec);
     arma::vec w_values(nvec);
     std::unordered_map<String, int> id;
-    for (int g = 0; g < types.size(); g++) {
+    for (unsigned int g = 0; g < types.size(); g++) {
         id[types[g]] = g ;                      
     }
     
@@ -27,15 +27,15 @@ arma::sp_mat fcm_cpp(Rcpp::List &texts,
         // Currently, support for arma::sp_mat is preliminary, 
         // for exmaple Mat.find(Mat > 1) is not supported, so "booleanize" in matrix level is not applicable
         arma::sp_mat bFcm(n_types, n_types);
-        for (int h = 0; h < texts.size(); h++) {
+        for (unsigned int h = 0; h < texts.size(); h++) {
             StringVector text = texts[h];
-            int len = text.size();
+            unsigned int len = text.size();
             arma::sp_mat aFcm(n_types,n_types);
-            for (int i = 0; i < text.size(); i++) {
+            for (unsigned int i = 0; i < text.size(); i++) {
                 int id_i = id[text[i]];
                 int j_int = i+1;
-                int j_lim = std::min(i + window + 1, len);
-                for(int j = j_int; j < j_lim; j++) {
+                unsigned int j_lim = std::min(i + window + 1, len);
+                for(unsigned int j = j_int; j < j_lim; j++) {
                     int id_j = id[text[j]];
                     if (ordered){
                         aFcm(id_i,id_j) = 1;
@@ -59,7 +59,7 @@ arma::sp_mat fcm_cpp(Rcpp::List &texts,
         }else if(count == "weighted"){ 
             if (weights.size() == 1){
                 window_weights = NumericVector(window);
-                for (int i=1; i<=window; i++){
+                for (unsigned int i = 1; i < window + 1; i++){
                     window_weights(i-1) = 1.0/i;
                 }
             }else{
@@ -69,19 +69,19 @@ arma::sp_mat fcm_cpp(Rcpp::List &texts,
         
         int vFrom = 0;
         int vTo = 0;
-        for (int h = 0; h < texts.size(); h++) {
+        for (unsigned int h = 0; h < texts.size(); h++) {
             StringVector text = texts[h];
-            int len = text.size();
+            const unsigned int len = text.size();
             
             // numeric vector to represent the text
             arma::urowvec text_vec(len);
-            for (int i = 0; i < len; i++) {
+            for (unsigned int i = 0; i < len; i++) {
                 text_vec(i) = id[text[i]];
             }
             
             //pair up the numeric vector to locate the pair co_occurred.
             //for instance: text_vec[0:end-1] - text_vec[1:end] denotes all the pairs with the offset = 1;  
-            for (int i = 0; i < window; i++){
+            for (unsigned int i = 0; i < window; i++){
                 int length = len - i -1;
                 vTo = vFrom + length -1;
                 index_mat.row(0).subvec(vFrom, vTo) = text_vec.head(length);
@@ -103,41 +103,41 @@ arma::sp_mat fcm_cpp(Rcpp::List &texts,
 arma::sp_mat fcm_hash_cpp(Rcpp::List &texts,
                           const int &n_types,
                           const String &count,
-                          const int &window,
+                          const unsigned int &window,
                           const NumericVector &weights,
                           const bool &ordered,
                           const bool &tri,
-                          const int &nvec) {
+                          const unsigned int &nvec) {
 
     // triplets are constructed according to tri & ordered settings to be efficient
     if (count == "boolean"){
         // Currently, support for arma::sp_mat is preliminary, 
         // for exmaple Mat.find(Mat > 1) is not supported, so "booleanize" in matrix level is not applicable
         arma::sp_mat bFcm(n_types, n_types);
-        for (int h = 0; h < texts.size(); h++) {
+        for (unsigned int h = 0; h < texts.size(); h++) {
             NumericVector text = texts[h];
-            int len = text.size();
+            const unsigned int len = text.size();
             arma::sp_mat aFcm(n_types,n_types);
-            for (int i = 0; i < text.size(); i++) {
+            for (unsigned int i = 0; i < text.size(); i++) {
                 int id_i = text[i] -1 ;
                 int j_int = i+1;
-                int j_lim = std::min(i + window + 1, len);
-                for(int j = j_int; j < j_lim; j++) {
+                unsigned int j_lim = std::min(i + window + 1, len);
+                for(unsigned int j = j_int; j < j_lim; j++) {
                     int id_j = text[j]-1;
                     if (ordered){
                         // only include upper triangular element (diagonal inclusive) if tri = TRUE
                         if (tri){
                             if (id_i <= id_j) aFcm(id_i,id_j) = 1;
                         }else{
-                            aFcm(id_i,id_j) = 1;
+                            aFcm(id_i, id_j) = 1;
                         }
                     }else{
                         if (id_i <= id_j){
-                            aFcm(id_i,id_j) = 1;
+                            aFcm(id_i, id_j) = 1;
                             if (!tri) aFcm(id_j,id_i) = 1;
                         }else{
-                            aFcm(id_j,id_i) = 1;
-                            if (!tri) aFcm(id_i,id_j) = 1;
+                            aFcm(id_j, id_i) = 1;
+                            if (!tri) aFcm(id_i, id_j) = 1;
                         }
                     }
                 }
@@ -146,7 +146,7 @@ arma::sp_mat fcm_hash_cpp(Rcpp::List &texts,
         }
         return bFcm;
     }else{
-        arma::umat index_mat(2,nvec);
+        arma::umat index_mat(2, nvec);
         arma::vec w_values(nvec);
         // define weights 
         NumericVector window_weights;
@@ -155,7 +155,7 @@ arma::sp_mat fcm_hash_cpp(Rcpp::List &texts,
         }else if(count == "weighted"){ 
             if (weights.size() == 1){
                 window_weights = NumericVector(window);
-                for (int i=1; i<=window; i++){
+                for (unsigned int i = 1; i < window + 1 ; i++){
                     window_weights(i-1) = 1.0/i;
                 }
             }else{
@@ -165,16 +165,16 @@ arma::sp_mat fcm_hash_cpp(Rcpp::List &texts,
         
         int vFrom = 0;
         int vTo = 0; 
-        for (int h = 0; h < texts.size(); h++) {
+        for (unsigned int h = 0; h < texts.size(); h++) {
             arma::urowvec text = texts[h];
-            text = text -1;
-            int len = text.size();
+            text = text - 1;
+            const unsigned int len = text.size();
             
             //pair up the numeric vector to locate the pair co_occurred.
             //for instance: text_vec[0:end-1] - text_vec[1:end] denotes all the pairs with the offset = 1;  
-            for (int i = 0; i < window; i++) {
+            for (unsigned int i = 0; i < window; i++) {
                 if (!tri) {
-                    int length = len - i -1;
+                    unsigned int length = len - i -1;
                     vTo = vFrom + length -1;
                     //Rcout<<"vTo="<<vTo<<" length="<<length<<"\n";
                     index_mat.row(0).subvec(vFrom, vTo) = text.head(length); 
@@ -189,9 +189,9 @@ arma::sp_mat fcm_hash_cpp(Rcpp::List &texts,
                         w_values.subvec(vFrom, vTo).fill(window_weights[i]);
                     }
                 } else {
-                    int length = len - i -1;
+                    unsigned int length = len - i -1;
                     arma::uvec upper = find (text.tail(length) >= text.head(length));
-                    int upperLength = upper.size();
+                    unsigned int upperLength = upper.size();
                     vTo = vFrom + upperLength -1; 
                     //Rcout<<"vTo="<<vTo<<" length="<<length<<"\n";
                     

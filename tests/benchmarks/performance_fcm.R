@@ -11,7 +11,7 @@
 #' microbenchmark::microbenchmark(
 #'                              text2vecPfm(tokens,vectorizer),
 #'                              fcm(toks,context="window",window = 5L, tri = FALSE), 
-#'                              fcm(toksHashed, context="window",window = 5L,tri = TRUE),
+#'                              fcm(toksh, context="window",window = 5L,tri = TRUE),
 #'                              times = 1,
 #'                              unit = 'relative')   
 #'                              
@@ -24,7 +24,7 @@ v <- create_vocabulary(it)
 vectorizer <- vocab_vectorizer(v, grow_dtm = FALSE, skip_grams_window = 5L)
 
 toks <- tokenize(toLower(txt), removePunct = TRUE)
-toksHashed <- hashTokens(toks)
+toksh <- tokens(toLower(txt), removePunct = TRUE)
 
 
 text2vecPfm <- function(tokens,vectorizer ){
@@ -48,3 +48,12 @@ fcmPfmB <- function(txt){
     fcm <- fcm(toks, context = "window", count = "boolean", window = 3)
     return(fcm)
 }
+# |=====================================================================================| 100%Unit: relative
+# expr      min       lq     mean   median
+# text2vecPfm(tokens, vectorizer) 1.000000 1.000000 1.000000 1.000000
+# fcm(toks, context = "window", window = 5L, tri = FALSE) 1.732574 1.732574 1.732574 1.732574
+# fcm(toksh, context = "window", window = 5L, tri = TRUE) 1.070455 1.070455 1.070455 1.070455
+# uq      max neval
+# 1.000000 1.000000     1
+# 1.732574 1.732574     1
+# 1.070455 1.070455     1

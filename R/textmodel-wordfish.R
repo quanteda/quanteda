@@ -102,7 +102,7 @@ setClass("textmodel_wordfish_predicted",
 #'      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "black")
 #' if (require(austin)) {
 #'     wfmodelAustin <- austin::wordfish(quanteda::as.wfm(ie2010dfm), dir = c(6,5))
-#'     cor(wfm1@@theta, wfm1Austin$theta)
+#'     cor(wfm1@theta, wfmodelAustin$theta)
 #' }}
 #' @export
 textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8), 

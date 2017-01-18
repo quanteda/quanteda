@@ -5,7 +5,8 @@
 \title{find variable-length collocations with filtering}
 \usage{
 sequences(x, features, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, count_min = 2, nested = TRUE)
+  case_insensitive = TRUE, min_count = 2, max_length = 5, nested = TRUE,
+  ordered = FALSE)
 }
 \arguments{
 \item{x}{a \link{tokens} object}
@@ -19,9 +20,16 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore case when matching, if \code{TRUE}}
 
-\item{count_min}{minimum frequency of sequences}
+\item{min_count}{minimum frequency of sequences for which parameters are estimated}
 
-\item{nested}{collect nested sequences}
+\item{max_length}{maxium length of sequences which are collected}
+
+\item{nested}{if true, collect all the subsequences of a longer sequence as separate entities.
+e.g. in a sequence of capitalized words "United States Congress", "States Congress" is considered 
+as a subsequence. But "United States" is not a subsequence because it is followed by "Congress".}
+
+\item{ordered}{if true, use the Blaheta-Johnson method that distinguishs between 
+the order of words, and tends to promote rare sequences.}
 }
 \description{
 This function automatically identifies contiguous collocations consisting of
@@ -38,7 +46,8 @@ seqs <- sequences(toks, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", case_insens
 head(seqs, 10)
 
 # types can be any words
-seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, count_min = 10)
+seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, 
+                   min_count = 2, ordered = TRUE)
 head(seqs2, 10)
 
 }

@@ -84,7 +84,7 @@ text(wfm2a@phi[underdispersedTerms], wfm2b@phi[underdispersedTerms],
      cex = .8, xlim = c(0, 1.0), ylim = c(0, 1.0), col = "black")
 if (require(austin)) {
     wfmodelAustin <- austin::wordfish(quanteda::as.wfm(ie2010dfm), dir = c(6,5))
-    cor(wfm1@theta, wfm1Austin$theta)
+    cor(wfm1@theta, wfmodelAustin$theta)
 }}
 }
 \author{
