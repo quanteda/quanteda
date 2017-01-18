@@ -55,6 +55,19 @@ namespace quanteda{
         }
        return false;
     }
+    
+    /* 
+     * This function is faster than Rcpp::wrap() but the stability need to be evaluated.
+     */
+    inline List as_list(Texts &texts, bool sort = false){
+        List list(texts.size());
+        for (std::size_t h = 0; h < texts.size(); h++) {
+            Text text = texts[h];
+            IntegerVector temp = Rcpp::wrap(text);
+            list[h] = temp;
+        }
+        return list;
+    }
 }
 
 namespace ngrams {
