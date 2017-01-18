@@ -1,6 +1,7 @@
 #' calculate keyness statistics
 #' 
 #' @param x a dfm in which the first row is the target and the second is the reference document.
+#' @param ... not used
 #' @references Bondi, Marina, and Mike Scott, eds. Keyness in Texts. Amsterdam, 
 #'   Philadelphia: John Benjamins, 2010.
 #'   Stubbs, Michael. ‘Three Concepts of Keywords’. In Keyness in Texts, edited 

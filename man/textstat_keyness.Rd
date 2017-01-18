@@ -8,6 +8,8 @@ textstat_keyness(x, ...)
 }
 \arguments{
 \item{x}{a dfm in which the first row is the target and the second is the reference document.}
+
+\item{...}{not used}
 }
 \value{
 a named vector of keyness scores
