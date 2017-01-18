@@ -12,7 +12,9 @@ env:
     - R_CHECK_ARGS="--no-build-vignettes"
 
 before_install:
-  - sudo apt-get install libgsl0-dev libtbb-dev r-cran-rcpp
+  - sudo apt-get install -qq g++-4.8
+  - export CXX="g++-4.8"
+  - sudo apt-get install libgsl0-dev
   - Rscript -e 'install.packages(c("devtools", "topicmodels", "tm"))'
   
 after_success:
