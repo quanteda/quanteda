@@ -7,7 +7,7 @@
 * Fixed a bug causing `dfm` to break on > 10,000 documents. (#438)
 * Fixed a bug in `corpus.VCorpus` if the VCorpus contains a single document. (#445)
 * Fixed a bug in `dfm_compress` in which the function failed on documents that contained zero feature counts. (#467)
-* Fixed a bug in `textmodel_NB` that caused the class priors `Pc` to be refactored alphabetically instead of in the order of assignment (#471)
+* Fixed a bug in `textmodel_NB` that caused the class priors `Pc` to be refactored alphabetically instead of in the order of assignment (#471), also affecting predicted classes (#476).
 
 ### New features
 
