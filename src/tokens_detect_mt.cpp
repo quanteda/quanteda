@@ -63,11 +63,11 @@ struct detect_mt : public Worker{
 
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_detect(List texts_, 
-                            List words_){
+List qatd_cpp_tokens_detect(const List &texts_, 
+                            const List &words_){
     
     Texts input = Rcpp::as<Texts>(texts_);
-    List words = words_;
+    const List words = words_;
 
     SetNgrams set_words;
     std::vector<std::size_t> spans(words.size());
