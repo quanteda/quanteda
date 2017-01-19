@@ -4,14 +4,16 @@
 \alias{textmodel_wordshoal}
 \title{wordshoal text model}
 \usage{
-textmodel_wordshoal(data, groupvar, authorvar, dir = c(1, 2), tol = 0.001)
+textmodel_wordshoal(x, groups, authors, dir = c(1, 2), tol = 0.001)
 }
 \arguments{
-\item{data}{the corpus on which the model will be fit}
+\item{x}{the \link{dfm} from which the model will be fit}
 
-\item{groupvar}{the name of a variable in the document variables for data giving the document group for each document}
+\item{groups}{the name of a variable in the document variables for data giving the 
+document group for each document}
 
-\item{authorvar}{the name of a variable in the document variables for data giving the author of each document}
+\item{authors}{the name of a variable in the document variables for data giving the 
+author of each document}
 
 \item{dir}{set global identification by specifying the indexes for a pair of 
 authors such that \eqn{\hat{\theta}_{dir[1]} < \hat{\theta}_{dir[2]}}.}
@@ -43,8 +45,11 @@ Returns estimates of relative author positions across the full corpus of texts.
 \examples{
 \dontrun{
 data(ie30corpus, package = "quantedaData")
+iedfm <- dfm(ie30corpus, removePunct = TRUE)
 wordshoalfit <- 
-    textmodel_wordshoal(ie30corpus, groupvar = "debateID", authorvar = "member.name")
+    textmodel_wordshoal(iedfm, dir = c(7,1),
+                        groups = docvars(ie30corpus, "debateID"), 
+                        authors = docvars(ie30corpus, "member.name"))
 fitdf <- merge(as.data.frame(summary(wordshoalfit)),
                docvars(ie30corpus), 
                by.x="row.names", by.y="member.name")
@@ -59,4 +64,6 @@ Benjamin Lauderdale and Kenneth Benoit
 Benjamin E Lauderdale and Alexander Herzog.  2016. "A Scaling Model 
   for Estimating Time-Series Party Positions from Texts." \emph{Political Analysis}.
 }
+\keyword{experimental}
+\keyword{textmodel}
 
