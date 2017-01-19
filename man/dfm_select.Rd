@@ -9,7 +9,7 @@
 \usage{
 dfm_select(x, features = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  min_nchar = 1, max_nchar = 63, verbose = TRUE, ...)
+  min_nchar = 1, max_nchar = 63, verbose = FALSE, ...)
 
 dfm_remove(x, features = NULL, ...)
 
