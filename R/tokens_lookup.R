@@ -104,6 +104,5 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
     names(x) <- names_org
     attr(x, "what") <- "dictionary"
     attr(x, "dictionary") <- dictionary
-    
-    return(x)
+    tokens_hashed_recompile(x)
 }

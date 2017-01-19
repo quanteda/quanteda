@@ -231,3 +231,12 @@ test_that("#459 extract the lower levels of a dictionary using tokens_lookup", {
     tokens_lookup(toks, dict, levels = c(1,4))
     tokens_lookup(toks, dict, levels = 4)
 })
+
+test_that("#480 reset padding flag", {
+    
+    toks <- tokens(data_corpus_inaugural[1:5])
+    toks <- tokens_remove(toks, stopwords('english'), padding = TRUE)
+    dict <- dictionary(list(Country = "united states",
+                            HOR = c("House of Re*")))
+    expect_false('' %in% featnames(dfm(tokens_lookup(toks, dict, exclusive = TRUE), tolower = FALSE)))
+})
