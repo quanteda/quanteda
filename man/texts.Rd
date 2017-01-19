@@ -15,10 +15,10 @@ texts(x) <- value
 \arguments{
 \item{x}{a quanteda \link{corpus} or character object}
 
-\item{groups}{character vector containing the names of document variables in 
-a corpus, or a factor equal in length to the number of documents, used for 
-aggregating the texts through concatenation.  If \code{x} is of type
-character, then \code{groups} must be a factor.}
+\item{groups}{either: a character vector containing the names of document
+variables to be used for grouping; or a factor (or object that can be
+coerced into a factor) equal in length to the number of documents, used for
+aggregating the texts through concatenation}
 
 \item{...}{unused}
 
@@ -30,6 +30,8 @@ For \code{texts}, a character vector of the texts in the corpus.
   For \code{texts <-}, the corpus with the updated texts.
 
 for \code{texts <-}, a corpus with the texts replaced by \code{value}
+
+\code{as.character(x)} is equivalent to \code{texts(x)}
 }
 \description{
 Get or replace the texts in a \link{corpus} object, with grouping options. 
