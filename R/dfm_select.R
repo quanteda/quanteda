@@ -73,7 +73,7 @@ dfm_select <- function(x, features = NULL, selection = c("keep", "remove"),
                        valuetype = c("glob", "regex", "fixed"),
                        case_insensitive = TRUE,
                        min_nchar = 1, max_nchar = 63,
-                       verbose = TRUE, ...) {
+                       verbose = FALSE, ...) {
     UseMethod("dfm_select")
 }
 
@@ -84,7 +84,7 @@ dfm_select.dfm <-  function(x, features = NULL, selection = c("keep", "remove"),
                             valuetype = c("glob", "regex", "fixed"),
                             case_insensitive = TRUE,
                             min_nchar = 1, max_nchar = 63,
-                            verbose = TRUE, ...) {
+                            verbose = FALSE, ...) {
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     features_from_dfm <- FALSE
