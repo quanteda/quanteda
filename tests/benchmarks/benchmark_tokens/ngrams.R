@@ -17,7 +17,7 @@ object.size(tokens_ngrams(as.tokens(tokenizers::tokenize_words(txts)), n = 2), '
 
 microbenchmark::microbenchmark(
     tokenizers = tokenizers::tokenize_skip_ngrams(txts, n = 2, k = 1),
-    quanteda = tokens_ngrams(as.tokens(tokenize_words(txts)), n = 2, skip = 1),
+    quanteda = tokens_ngrams(as.tokens(tokenizers::tokenize_words(txts)), n = 2, skip = 1),
     unit='relative', times = 1
 )
 

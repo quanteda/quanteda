@@ -60,8 +60,8 @@ applyDictionary.tokens <- function(x, dictionary, exclusive = TRUE,
     
     # handle case through conversion for fixed
     if (valuetype == "fixed" & case_insensitive) {
-        dictionary <- dictionary(lapply(dictionary, toLower))
-        x <- toLower(x)
+        dictionary <- dictionary(lapply(dictionary, char_tolower))
+        x <- tokens_tolower(x)
     }
     
     # convert (individual) patterns to regex if glob
@@ -167,7 +167,7 @@ applyDictionary.tokenizedTexts <- function(x, dictionary, exclusive = TRUE,
     
     # handle case through conversion for fixed
     if (valuetype == "fixed" & case_insensitive) {
-        dictionary <- dictionary(lapply(dictionary, toLower))
+        dictionary <- dictionary(lapply(dictionary, char_tolower))
         x <- toLower(x)
     }
     

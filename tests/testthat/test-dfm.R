@@ -15,8 +15,8 @@ thesDfm[1:10, (nfeature(thesDfm)-8) : nfeature(thesDfm)]
 preDictDfm <- dfm(mycorpus, removePunct = TRUE, removeNumbers = TRUE)
 dfm_lookup(preDictDfm, mydict)
 
-txt <- tokenize(toLower(c("My Christmas was ruined by your opposition tax plan.", 
-                          "The United_States has progressive taxation.")),
+txt <- tokenize(char_tolower(c("My Christmas was ruined by your opposition tax plan.", 
+                               "The United_States has progressive taxation.")),
                 removePunct = TRUE)
 
 
@@ -30,7 +30,7 @@ dfm_lookup(txtDfm, mydict, valuetype = "glob")
 dfm_lookup(txtDfm, mydict, exclusive = FALSE, valuetype = "glob", verbose = FALSE) 
 
 
-inaugTextsTokenized <- tokenize(toLower(inaugTexts[1:10]), removePunct = TRUE)
+inaugTextsTokenized <- tokenize(char_tolower(inaugTexts[1:10]), removePunct = TRUE)
 # microbenchmark::microbenchmark(
 #     dfm(inaugTextsTokenized, verbose = FALSE),
 #     dfm(inaugTextsTokenized, verbose = FALSE, codeType = "old"),
@@ -252,5 +252,16 @@ test_that("dfm print works as expected", {
                   "Document-feature matrix of: 14 documents, 5,058 features.*showing first document and first 6 features.*")
     expect_output(tail(testdfm, 1),
                   "Document-feature matrix of: 14 documents, 5,058 features.*showing last document and last 6 features.*")
+})
+
+test_that("dfm.dfm words as expected", {
+    testdfm <- dfm(data_corpus_irishbudget2010, tolower = TRUE)
+    expect_identical(testdfm, dfm(testdfm, tolower = FALSE))
+    expect_identical(testdfm, dfm(testdfm, tolower = TRUE))
+    groupeddfm <- dfm(testdfm, 
+                      groups =  ifelse(docvars(data_corpus_irishbudget2010, "party") %in% c("FF", "Green"), "Govt", "Opposition"),
+                      tolower = FALSE)
+    expect_identical(colSums(groupeddfm), colSums(groupeddfm))
+    expect_identical(docnames(groupeddfm), c("Govt", "Opposition"))
 })
 

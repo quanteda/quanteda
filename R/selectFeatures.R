@@ -164,7 +164,7 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     features <- unique(unlist(features))  # to convert any dictionaries
-    if (case_insensitive) features <- toLower(features)
+    if (case_insensitive) features <- char_tolower(features)
     
     if (valuetype == "regex")
         stop("regex not currently supported for selectFeatures.collocations")
@@ -194,7 +194,7 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
     x$order <- 1:nrow(x)
     
     if (case_insensitive)
-        x[, c("word1", "word2", "word3") := list(toLower(word1), toLower(word2), toLower(word3))]
+        x[, c("word1", "word2", "word3") := list(char_tolower(word1), char_tolower(word2), char_tolower(word3))]
     
     if (3 %in% pos) {
         setnames(stopwordTable, 1, "word3")
@@ -317,7 +317,7 @@ selectFeatures_collocations <- function(x, features, selection = c("keep", "remo
     if (valuetype == "fixed") {
         
         if (case_insensitive) {
-            features <- toLower(features)
+            features <- char_tolower(features)
             x[, paste0("word", pos) := lapply(x[, pos, with = FALSE], tolower)]
         }            
         x[, paste0("i", pos) := lapply(x[, pos, with = FALSE], function(y) {

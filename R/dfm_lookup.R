@@ -83,7 +83,7 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
         # ind <- grep(paste(x, collapse = "|"), uniqueFeatures, ignore.case = case_insensitive)
         if (valuetype == "fixed") {
             if (case_insensitive)  
-                ind <- which(toLower(uniqueFeatures) %in% (toLower(x)))
+                ind <- which(char_tolower(uniqueFeatures) %in% (char_tolower(x)))
             else ind <- which(uniqueFeatures %in% x)
         }
         else ind <- which(stringi::stri_detect_regex(uniqueFeatures, paste(x, collapse = "|"), case_insensitive = case_insensitive))

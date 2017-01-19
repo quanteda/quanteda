@@ -9,7 +9,7 @@ dfm(x, tolower = TRUE, stem = FALSE, select = NULL, remove = NULL,
   "fixed"), groups = NULL, verbose = FALSE, ...)
 }
 \arguments{
-\item{x}{character, corpus, or tokens object}
+\item{x}{character, \link{corpus}, \link{tokens}, or \link{dfm} object}
 
 \item{tolower}{convert all tokens to lowercase}
 
@@ -48,7 +48,10 @@ regular expressions (see examples)}
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{groups}{character vector containing the names of document variables for
-aggregating documents; only applies when calling dfm on a corpus object}
+aggregating documents; only applies when calling dfm on a corpus object. 
+When \code{x} is a \link{dfm} object, \code{groups} provides a convenient
+and fast method of combining and refactoring the documents of the dfm
+according to the groups.}
 
 \item{verbose}{display messages if \code{TRUE}}
 
@@ -130,6 +133,14 @@ testTweets <- c("My homie @justinbieber #justinbieber shopping in #LA yesterday 
                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
 dfm(testTweets, select = "#*", removeTwitter = FALSE)  # keep only hashtags
 dfm(testTweets, select = "^#.*$", valuetype = "regex", removeTwitter = FALSE)
+
+# for a dfm
+dfm1 <- dfm(data_corpus_irishbudget2010)
+dfm2 <- dfm(dfm1, 
+            groups = ifelse(docvars(data_corpus_irishbudget2010, "party") \%in\% c("FF", "Green"),
+                            "Govt", "Opposition"), 
+            tolower = FALSE, verbose = TRUE)
+
 }
 \seealso{
 \code{\link{dfm_select}}, \link{dfm-class}

@@ -58,6 +58,7 @@ Texts tranformed into their lower- (or upper-)cased versions.  If \code{x} is a
 Convert texts or tokens to lower (or upper) case
 }
 \examples{
+\donttest{
 test1 <- c(text1 = "England and France are members of NATO and UNESCO", 
            text2 = "NASA sent a rocket into space.")
 toLower(test1)
@@ -66,12 +67,15 @@ toLower(test1, keep_acronyms = TRUE)
 test2 <- tokenize(test1, removePunct=TRUE)
 toLower(test2)
 toLower(test2, keep_acronyms = TRUE)
+}
+\donttest{
 test1 <- c(text1 = "England and France are members of NATO and UNESCO", 
            text2 = "NASA sent a rocket into space.")
 toUpper(test1)
 
 test2 <- tokenize(test1, removePunct = TRUE)
 toUpper(test2)
+}
 }
 \keyword{deprecated}
 \keyword{internal}

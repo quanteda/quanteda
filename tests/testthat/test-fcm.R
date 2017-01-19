@@ -21,7 +21,7 @@ test_that("compare the output feature co-occurrence matrix to that of the text2v
     tcm <- tcm[order(rownames(tcm)), order(colnames(tcm))]
     tcm[lower.tri(tcm,diag = FALSE)] <- 0
     
-    toks <- tokenize(toLower(txt), removePunct = TRUE)
+    toks <- tokenize(char_tolower(txt), removePunct = TRUE)
     fcm <- fcm(toks, context = "window", count = "weighted", window = 3)
     fcm <- fcm_sort(fcm)
     diag(fcm) <- 0
@@ -72,7 +72,7 @@ test_that("customized weighting function",{
 })
 
 test_that("not weighted - for classic toks",{
-    toks <- tokenize(toLower(txt), removePunct = TRUE)
+    toks <- tokenize(char_tolower(txt), removePunct = TRUE)
     fcm <- fcm(toks, context = "window", window = 3)           
     aMat <- matrix(c(2, 1, 4, 4, 5, 2,
                      0, 0, 1, 1, 2, 1,
@@ -86,7 +86,7 @@ test_that("not weighted - for classic toks",{
 })
 
 test_that("weighted by default - for classic toks",{
-    toks <- tokenize(toLower(txt), removePunct = TRUE)
+    toks <- tokenize(char_tolower(txt), removePunct = TRUE)
     fcm <- fcm(toks, context = "window", count = "weighted", window = 3)           
     fcm <- fcm_sort(fcm)
     aMat <- matrix(c(0.83, 1, 2.83, 3.33, 2.83, 0.83,
@@ -156,7 +156,7 @@ test_that("counting the co-occurrences in 'boolean' way",{
 
 test_that("counting the co-occurrences in 'boolean' way - for toks", {
     txts <- c("a a a b b c", "a a c e", "a c e f g")
-    toks <- tokenize(toLower(txts), removePunct = TRUE)
+    toks <- tokenize(char_tolower(txts), removePunct = TRUE)
     classic <- fcm(toks, context = "window", count = "boolean", window = 2)
     classic <- fcm_sort(classic)
     aMat <- matrix(c(2, 1, 2, 2, 0, 0,
@@ -218,8 +218,8 @@ test_that("fcm works as expected for tokens_hashed", {
     
     txt <- c("The quick brown fox jumped over the lazy dog.",
              "The dog jumped and ate the fox.")
-    toks <- tokenize(toLower(txt), removePunct = TRUE)
-    toksh <- tokens(toLower(txt), removePunct = TRUE)
+    toks <- tokenize(char_tolower(txt), removePunct = TRUE)
+    toksh <- tokens(char_tolower(txt), removePunct = TRUE)
     classic <- fcm(toks, context = "window", window = 3)
     hashed <- fcm(toksh, context = "window", window = 3)
     expect_equivalent(classic, hashed)

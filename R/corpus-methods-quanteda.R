@@ -65,10 +65,10 @@ documents <- function(corp) {
 #' Get or replace the texts in a \link{corpus} object, with grouping options. 
 #' Works for plain character vectors too, if \code{groups} is a factor.
 #' @param x a quanteda \link{corpus} or character object
-#' @param groups character vector containing the names of document variables in 
-#'   a corpus, or a factor equal in length to the number of documents, used for 
-#'   aggregating the texts through concatenation.  If \code{x} is of type
-#'   character, then \code{groups} must be a factor.
+#' @param groups either: a character vector containing the names of document
+#'   variables to be used for grouping; or a factor (or object that can be
+#'   coerced into a factor) equal in length to the number of documents, used for
+#'   aggregating the texts through concatenation
 #' @param ... unused
 #' @return For \code{texts}, a character vector of the texts in the corpus.
 #'   
@@ -103,22 +103,14 @@ texts.corpus <- function(x, groups = NULL, ...) {
         return(txts)
     }
     
-    # with groups as a factor
-    if (any(!groups %in% names(docvars(x)))) {
-        stop("Check your docvar names.", 
-             ifelse(length(groups) == ndoc(x), "  Try groups = as.factor()...", ""))
-    }
-    if (is.factor(groups)) {
-        group.split <- groups
-    } else {
-        #        if (length(groups) > 1) {
-        #            # if more than one grouping variable
+    if (is.character(groups) & all(groups %in% names(docvars(x)))) {
         group.split <- as.factor(interaction(documents(x)[, groups], drop = TRUE))
-        #        } else {
-        #            # if only one grouping variable
-        #            group.split <- as.factor(documents(x)[, groups])
-        #        }
+    } else {
+        if (length(groups) != ndoc(x))
+            stop("groups must name docvars or provide data matching the documents in x")
+        group.split <- as.factor(groups)
     }
+    
     texts(txts, groups = group.split)
 }
 
@@ -126,8 +118,8 @@ texts.corpus <- function(x, groups = NULL, ...) {
 #' @export
 texts.character <- function(x, groups = NULL, ...) {
     if (is.null(groups)) return(x)
-    if (!is.factor(groups)) stop("groups must be a factor")
-    x <- split(x, groups)
+    # if (!is.factor(groups)) stop("groups must be a factor")
+    x <- split(x, as.factor(groups))
     sapply(x, paste, collapse = " ")
 }
 
@@ -169,6 +161,7 @@ texts.character <- function(x, groups = NULL, ...) {
 #' @details \code{as.character(x)} where \code{x} is a corpus is equivalent to
 #' calling \code{texts(x)}
 #' @method as.character corpus
+#' @return \code{as.character(x)} is equivalent to \code{texts(x)}
 #' @export
 as.character.corpus <- function(x, ...) {
     texts(x)

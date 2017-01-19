@@ -128,6 +128,9 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     # generate ngrams
     x <- qatd_cpp_tokens_ngrams(x, types(x), concatenator, n, skip + 1)
     # trap if types is zero-length
+    #types <- attr(x, "types")
+    #attr(x, "types") <- ifelse(types == "", NA, types)
+    
     if (!length(attr(x, "types"))){
         attr(x, "types") <- NULL
     } else {
@@ -139,7 +142,7 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     attr(x, "ngrams") <- as.integer(n)
     attr(x, "skip") <- as.integer(skip)
     attr(x, "concatenator") <- concatenator
-    return(x)
+    tokens_hashed_recompile(x)
 }
 
 

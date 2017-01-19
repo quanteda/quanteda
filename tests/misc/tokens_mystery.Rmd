@@ -15,8 +15,8 @@ require(quanteda)
 ## Compare
 
 ```{r}
-toks_old <- tokenize(toLower(data_char_inaugural[c(2, 40)]), removePunct = TRUE)
-toks_new <- tokens(toLower(data_char_inaugural[c(2, 40)]), removePunct = TRUE)
+toks_old <- tokenize(char_tolower(data_char_inaugural[c(2, 40)]), removePunct = TRUE)
+toks_new <- tokens(char_tolower(data_char_inaugural[c(2, 40)]), removePunct = TRUE)
 ```
 
 Hashed version is definitely smaller:
@@ -46,7 +46,7 @@ All code using the hashed tokens appears to work still:
 ```{r}
 txt <- c(doc1 = "The quick brown fox jumped over the lazy dog.",
          doc2 = "The dog jumped and ate the fox.")
-toks_new <- tokens(toLower(txt), removePunct = TRUE)
+toks_new <- tokens(char_tolower(txt), removePunct = TRUE)
 tokens_select(toks_new, "the")
 tokens_compound(toks_new, list(c("^jump", ".+")), valuetype = "regex")
 tokens_ngrams(toks_new, n = 1:2, skip = 0:1)

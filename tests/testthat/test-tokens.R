@@ -21,15 +21,15 @@ test_that("tokens_wordstem works as expected for tokens_hashed", {
 
     txt <- c(one = "Eating eater eaters eats ate.",
              two = "Taxing taxes taxed my tax return.")
-    toks <- tokenize(toLower(txt), removePunct = TRUE)
-    toksh <- tokens(toLower(txt), removePunct = TRUE)
+    toks <- tokenize(char_tolower(txt), removePunct = TRUE)
+    toksh <- tokens(char_tolower(txt), removePunct = TRUE)
     classic <- tokens_wordstem(toks)
     hashed <- tokens_wordstem(toksh)
     expect_equivalent(classic, as.tokenizedTexts(hashed))
 })
 
 test_that("ngrams works as expected for tokens_hashed", {
-    txt <- c(one = toLower("Insurgents killed in ongoing fighting."),
+    txt <- c(one = char_tolower("Insurgents killed in ongoing fighting."),
              two = "A B C D E")
     toks <- tokenize(txt, removePunct = TRUE)
     toksh <- tokens(txt, removePunct = TRUE)
@@ -151,8 +151,8 @@ test_that("test verious functions with padded tokens, padding = FALSE", {
                      doc2 = 'a b c g'))
     toks3 <- tokens_remove(toks, c('b', 'e'), padding = FALSE)
     expect_equivalent(nfeature(toks3), 6)
-    expect_equivalent(nfeature(toLower(toks3)), 5)
-    expect_equivalent(nfeature(toUpper(toks3)), 5)
+    expect_equivalent(nfeature(tokens_tolower(toks3)), 5)
+    expect_equivalent(nfeature(tokens_toupper(toks3)), 5)
     expect_equivalent(as.character(toks3),
                       c("A", "c", "d", "f", "g", "a", "c", "g"))
 })
@@ -162,8 +162,8 @@ test_that("test verious functions with padded tokens, padding = TRUE", {
                      doc2 = 'a b c g'))
     toks3 <- tokens_remove(toks, c('b', 'e'), padding = TRUE)
     expect_equivalent(nfeature(toks3), 7)
-    expect_equivalent(nfeature(toLower(toks3)), 6)
-    expect_equivalent(nfeature(toUpper(toks3)), 6)
+    expect_equivalent(nfeature(tokens_tolower(toks3)), 6)
+    expect_equivalent(nfeature(tokens_toupper(toks3)), 6)
     expect_equivalent(as.character(toks3),
                       c("A", "", "c", "d", "", "f", "g", "a", "", "c", "g"))
 })

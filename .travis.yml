@@ -2,6 +2,7 @@ language: r
 cache: packages
 warnings_are_errors: true
 sudo: true
+dist: trusty
 r_packages:
   - covr
   - ExPosition
@@ -10,13 +11,13 @@ r_binary_packages:
 env:
   global:
     - R_CHECK_ARGS="--no-build-vignettes"
-
 before_install:
   - sudo apt-get install libgsl0-dev
-  - Rscript -e 'install.packages(c("devtools", "topicmodels", "tm"))'
-  
+  - Rscript -e 'install.packages(c("devtools", "topicmodels", "tm", "knitr"))'
+
 after_success:
   - Rscript -e 'library(covr);codecov()'
 
 notifications:
     slack: quanteda:W4x9WmNKqE7kVtkKZDWld7IP
+    

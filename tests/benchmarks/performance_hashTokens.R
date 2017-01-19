@@ -18,7 +18,7 @@
 library(fastmatch)
 library(parallel)
 library(microbenchmark)
-toks <- tokenize(toLower(txt), removePunct = TRUE)
+toks <- tokenize(char_tolower(txt), removePunct = TRUE)
 types <- unique(unlist(toks, use.names = FALSE))
 
 library(hash)
