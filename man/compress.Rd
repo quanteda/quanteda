@@ -31,9 +31,9 @@ This function is deprecated: use \code{\link{dfm_compress}} instead.
 }
 \examples{
 \dontrun{
-mat <- rbind(dfm(c("b A A", "C C a b B"), toLower = FALSE, verbose = FALSE),
-             dfm("A C C C C C", toLower = FALSE, verbose = FALSE))
-colnames(mat) <- toLower(featnames(mat))
+mat <- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE, verbose = FALSE),
+             dfm("A C C C C C", tolower = FALSE, verbose = FALSE))
+colnames(mat) <- char_tolower(featnames(mat))
 mat
 compress(mat, margin = "documents")
 compress(mat, margin = "features")

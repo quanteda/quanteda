@@ -98,6 +98,9 @@ textmodel_NB <- function(x, y, smooth = 1, prior = c("uniform", "docfreq", "term
     d <- dfm_compress(x.trset, margin = "both")
 
     PwGc <- rowNorm(d + smooth)
+    
+    # order Pc so that these are the same order as rows of PwGc
+    Pc <- Pc[rownames(PwGc)]
 
     ## posterior: class x words, cols sum to 1
     PcGw <- colNorm(PwGc * base::outer(Pc, rep(1, ncol(PwGc))))  

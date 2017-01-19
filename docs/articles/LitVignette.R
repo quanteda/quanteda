@@ -29,7 +29,7 @@ novel.v <- substring(data_char_mobydick, endMetadataIndex,
 
 ## ------------------------------------------------------------------------
 # lowercase
-novel.lower.v <- toLower(novel.v)
+novel.lower.v <- char_tolower(novel.v)
 
 ## ------------------------------------------------------------------------
 # tokenize
@@ -62,7 +62,7 @@ total.whale.hits / ntoken(novel.lower.v, removePunct=TRUE)
 ## ------------------------------------------------------------------------
 # total unique words
 length(unique(moby.word.v))
-ntype(toLower(novel.v), removePunct = TRUE)
+ntype(char_tolower(novel.v), removePunct = TRUE)
 
 ## ----eval=TRUE-----------------------------------------------------------
 # ten most frequent words
@@ -105,7 +105,7 @@ textplot_xray(
 ## ------------------------------------------------------------------------
 head(kwic(novel.v, 'chapter'))
 chaptersVec <- unlist(char_segment(novel.v, what = 'other', delimiter = "CHAPTER\\s\\d", perl = TRUE))
-chaptersLowerVec <- toLower(chaptersVec)
+chaptersLowerVec <- char_tolower(chaptersVec)
 chaptersCorp <- corpus(chaptersVec)
 
 ## ----eval=TRUE-----------------------------------------------------------

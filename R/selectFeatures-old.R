@@ -38,9 +38,9 @@ selectFeaturesOLD.tokenizedTexts <- function(x, features, selection = c("keep", 
 
         if (case_insensitive) {
             if (selection == "remove") {
-                result <- lapply(x, function(x) x[which(!(toLower(x) %in% toLower(features)))])
+                result <- lapply(x, function(x) x[which(!(char_tolower(x) %in% char_tolower(features)))])
             } else {
-                result <- lapply(x, function(x) x[which((toLower(x) %in% toLower(features)))])
+                result <- lapply(x, function(x) x[which((char_tolower(x) %in% char_tolower(features)))])
             }
         } else {
             if (selection == "remove") {

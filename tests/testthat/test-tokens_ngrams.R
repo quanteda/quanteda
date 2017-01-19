@@ -74,7 +74,7 @@ test_that("test `ngrams` on tokenized texts", {
 
 # FAILLING (issue #469)
 # test_that("test there is not competition between the thread", {
-#     txt <- c(one = toLower("Insurgents killed in ongoing fighting."),
+#     txt <- c(one = char_tolower("Insurgents killed in ongoing fighting."),
 #              two = "A B C D E")
 #     toks <- tokens(txt, removePunct = TRUE)
 #     

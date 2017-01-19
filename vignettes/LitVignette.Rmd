@@ -76,18 +76,18 @@ novel.v <- substring(data_char_mobydick, endMetadataIndex,
 
 ## 2.3 Reprocessing the content
 
-We begin processing the text by converting to lower case. `quanteda`'s `toLower` function works like the built-in `tolower`, with an extra option to preserve upper-case acronyms when detected.
+We begin processing the text by converting to lower case. `quanteda`'s `tolower` functions work like the built-in `tolower`, with an extra option to preserve upper-case acronyms when detected.  For `character` objects, we use `char_tolower`:
 
 ```{r}
 # lowercase
-novel.lower.v <- toLower(novel.v)
+novel.lower.v <- char_tolower(novel.v)
 ```
 
-`quanteda`'s `tokenize` function splits the text into words, with many options available for which characters should be preserved, and which should be used to define word boundaries. The default behaviour works similarly to splitting on the regular expression for word boundary (`\W`), but does not treat apostrophes as word boundaries. This means that *'s* and *'t* are not treated as whole words from possessive forms and contractions. 
+**quanteda**'s `tokens` function splits the text into words, with many options available for which characters should be preserved, and which should be used to define word boundaries. The default behaviour works similarly to splitting on the regular expression for word boundary (`\W`), but does not treat apostrophes as word boundaries. This means that *'s* and *'t* are not treated as whole words from possessive forms and contractions. 
 
 ```{r}
 # tokenize
-moby.word.v <- tokenize(novel.lower.v, removePunct = TRUE, simplify = TRUE)
+moby.word.v <- as.character(tokens(novel.lower.v, removePunct = TRUE))
 length(moby.word.v)
 total.length <- length(moby.word.v)
 str(moby.word.v)
@@ -128,7 +128,7 @@ Calculating the size of the vocabulary -- includes possessive forms.
 ```{r}
 # total unique words
 length(unique(moby.word.v))
-ntype(toLower(novel.v), removePunct = TRUE)
+ntype(char_tolower(novel.v), removePunct = TRUE)
 ```
 
 
@@ -202,7 +202,7 @@ Splitting the text into chapters means that we will have a collection of documen
 ```{r}
 head(kwic(novel.v, 'chapter'))
 chaptersVec <- unlist(char_segment(novel.v, what = 'other', delimiter = "CHAPTER\\s\\d", perl = TRUE))
-chaptersLowerVec <- toLower(chaptersVec)
+chaptersLowerVec <- char_tolower(chaptersVec)
 chaptersCorp <- corpus(chaptersVec)
 ```
 

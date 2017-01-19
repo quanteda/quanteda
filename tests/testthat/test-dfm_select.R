@@ -127,7 +127,7 @@ test_that("longer selection than longer than features that exist (related to #44
     dfmtest <- dfm(tokens(c(d1 = 'a b', d2 = 'a b c d e')))
     feat <- c('b', 'c', 'd', 'e', 'f', 'g')
     # bugs in C++ needs repeated tests
-    expect_message(dfm_select(dfmtest, feat),
+    expect_message(dfm_select(dfmtest, feat, verbose = TRUE),
                    "kept 4 features, from 6 supplied.*")
     expect_equivalent(
         as.matrix(dfm_select(dfmtest, feat)),

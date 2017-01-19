@@ -34,7 +34,7 @@ context.
 \examples{
 mat <- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE, verbose = FALSE),
              dfm("A C C C C C", tolower = FALSE, verbose = FALSE))
-colnames(mat) <- toLower(featnames(mat))
+colnames(mat) <- char_tolower(featnames(mat))
 mat
 dfm_compress(mat, margin = "documents")
 dfm_compress(mat, margin = "features")

@@ -3,7 +3,7 @@ context("test dfm_compress")
 test_that("dfm_compress: simple test", {
     mat <- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE, verbose = FALSE),
                  dfm("A C C C C C", tolower = FALSE, verbose = FALSE))
-    colnames(mat) <- toLower(featnames(mat))
+    colnames(mat) <- char_tolower(featnames(mat))
     expect_equal(as.matrix(dfm_compress(mat, margin = "documents")),
                  matrix(c(3,0,5,2,1,1,0,1,0,1), nrow = 2,
                         dimnames = list(docs = c("text1", "text2"), features = featnames(mat))))

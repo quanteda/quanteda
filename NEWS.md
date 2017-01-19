@@ -7,10 +7,12 @@
 * Fixed a bug causing `dfm` to break on > 10,000 documents. (#438)
 * Fixed a bug in `corpus.VCorpus` if the VCorpus contains a single document. (#445)
 * Fixed a bug in `dfm_compress` in which the function failed on documents that contained zero feature counts. (#467)
-* Fixed a bug in `textmodel_NB` that caused the class priors `Pc` to be refactored alphabetically instead of in the order of assignment (#471)
+* Fixed a bug in `textmodel_NB` that caused the class priors `Pc` to be refactored alphabetically instead of in the order of assignment (#471), also affecting predicted classes (#476).
 
 ### New features
 
+* Improved the `groups` argument in `texts()` (and in `dfm()` that uses this function), which will now coerce to a factor rather than requiring one.
+* Added a dfm constructor from dfm objects, with the option of collapsing by groups.
 * Added new arguments to `sequences()`: `ordered` and `max_length`, the latter to prevent memory leaks from extremely long sequences.  
 * `dictionary()` now accepts YAML as an input file format.
 * `dfm_lookup` and `tokens_lookup` now accept a `levels` argument to determine which level of a hierarchical dictionary should be applied. 

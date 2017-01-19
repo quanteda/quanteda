@@ -240,7 +240,7 @@ readWStatDict <- function(path, enc="", toLower=TRUE) {
         categ <- unlist(paste(d[i,(1:(ncol(d)-1))], collapse = "."))
         w <- d[i, ncol(d)]
         w <- unlist(strsplit(w, '\\('))[[1]]
-        if (toLower) w <- toLower(w)
+        if (toLower) w <- char_tolower(w)
         # w <- gsub(" ", "", w)
         flatDict[[categ]] <- append(flatDict[[categ]], c(w))
     }
@@ -291,11 +291,8 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     guide <- d[2:(guideRowEnd-1)]
     
     guide <- data.frame(do.call(rbind, tokenize(guide)), stringsAsFactors = FALSE)
-    #guide
-    #guide <- data.frame(do.call(rbind, strsplit(guide, "\t")), stringsAsFactors = FALSE)
     colnames(guide) <- c('catNum', 'catName' )
     guide$catNum <- as.integer(guide$catNum)
-    # if (toLower) guide$catName <- toLower(guide$catName)
 
     # initialize the dictionary as list of NAs
     dictionary <- list()
@@ -327,11 +324,10 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
         catlist <- catlist[-blanklines]
 
     catlist <- strsplit(catlist, "\t")
-    # catlist <- tokenize(catlist, what = "fasterword", removeNumbers = FALSE)
     catlist <- as.data.frame(do.call(rbind, lapply(catlist, '[', 1:max(sapply(catlist, length)))), stringsAsFactors = FALSE)
     catlist[, 2:ncol(catlist)] <- sapply(catlist[, 2:ncol(catlist)], as.integer)
     names(catlist)[1] <- "category"
-    if (toLower) catlist$category <- toLower(catlist$category)
+    if (toLower) catlist$category <- char_tolower(catlist$category)
     # remove any blank rows
     blankRowIndex <- which(is.na(catlist$category))
     if (length(blankRowIndex)) 

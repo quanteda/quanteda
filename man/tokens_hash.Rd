@@ -30,7 +30,7 @@ This will be internal only soon.
 \examples{
 txt <- c(doc1 = "The quick brown fox jumped over the lazy dog.",
          doc2 = "The dog jumped and ate the fox.")
-toks <- tokenize(toLower(txt), removePunct = TRUE)
+toks <- tokenize(char_tolower(txt), removePunct = TRUE)
 toksHashed <- tokens_hash(toks)
 toksHashed
 # returned as a list

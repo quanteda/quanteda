@@ -150,7 +150,7 @@ head(tokenize(data_char_inaugural[57])[[1]], 10)
 head(tokenize(data_char_inaugural[57], simplify = TRUE), 10)
 
 # removing punctuation marks and lowecasing texts
-head(tokenize(toLower(data_char_inaugural[57]), simplify = TRUE, removePunct = TRUE), 30)
+head(tokenize(char_tolower(data_char_inaugural[57]), simplify = TRUE, removePunct = TRUE), 30)
 # keeping case and punctuation
 head(tokenize(data_char_inaugural[57], simplify = TRUE), 30)
 # keeping versus removing hyphens
@@ -201,9 +201,9 @@ tokenize(c("Kurt Vongeut said; only assholes use semi-colons.",
 tokenize(data_char_inaugural[c(2,40)], what = "sentence", simplify = TRUE)
 
 # removing features (stopwords) from tokenized texts
-txt <- toLower(c(mytext1 = "This is a short test sentence.",
-                 mytext2 = "Short.",
-                 mytext3 = "Short, shorter, and shortest."))
+txt <- char_tolower(c(mytext1 = "This is a short test sentence.",
+                      mytext2 = "Short.",
+                      mytext3 = "Short, shorter, and shortest."))
 tokenize(txt, removePunct = TRUE)
 removeFeatures(tokenize(txt, removePunct = TRUE), stopwords("english"))
 
