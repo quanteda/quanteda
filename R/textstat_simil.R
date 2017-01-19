@@ -259,7 +259,7 @@ eJaccardSparse <- function(x, y = NULL, margin = 1) {
 }
 
 # Dice similarity coefficient, binary
-# formula: eDice = 2|AB|/(|A| + |B|)
+# formula: dice = 2|AB|/(|A| + |B|)
 diceSparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
@@ -269,20 +269,26 @@ diceSparse <- function(x, y = NULL, margin = 1) {
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     marginSums <- if (margin == 2) colSums else rowSums
     marginNames <- if (margin == 2) colnames else rownames
+    n <- if (margin == 2) ncol(x) else nrow(x)
     # union 
     an <- marginSums(x)
     if (!is.null(y)) {
         y <- tf(y, "boolean")
         A <- cpFun(x, y)
         bn <- marginSums(y)
+        kk <- y@Dim[margin]
         colNm <- marginNames(y)
     } else {
         A <- cpFun(x)
         bn <- an
+        kk <- n
         colNm <- marginNames(x)
     }
     rowNm <- marginNames(x)
-    dicemat <- (2 * A)/(an + bn)
+    tmp <- matrix(rep(an, kk), nrow = n)
+    tmp <-  tmp +  matrix(rep(bn, n), nrow = n, byrow=TRUE)
+    dicemat <- (2 * A)/tmp
+    #dicemat <- (2 * A)/(an + bn)
     dimnames(dicemat) <- list(rowNm,  colNm)
     dicemat
 }
@@ -295,15 +301,18 @@ eDiceSparse <- function(x, y = NULL, margin = 1) {
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     marginSums <- if (margin == 2) colSums else rowSums
     marginNames <- if (margin == 2) colnames else rownames
+    n <- if (margin == 2) ncol(x) else nrow(x)
     # union 
     an <- marginSums(x^2)
     if (!is.null(y)) {
         A <- cpFun(x, y)
         bn <- marginSums(y^2)
         colNm <- marginNames(y)
+        kk <- y@Dim[margin]
     } else {
         A <- cpFun(x)
         bn <- an
+        kk <- n
         colNm <- marginNames(x)
     }
     rowNm <- marginNames(x)
@@ -317,7 +326,9 @@ eDiceSparse <- function(x, y = NULL, margin = 1) {
     #                         x = (2 * Aim) / (an[im[,1]] + bn[im[,2]]),
     #                         dims = dim(A)
     #)
-    eDicemat <- (2 * A)/(an + bn)
+    tmp <- matrix(rep(an, kk), nrow = n)
+    tmp <-  tmp +  matrix(rep(bn, n), nrow = n, byrow=TRUE)
+    eDicemat <- (2 * A)/tmp
     dimnames(eDicemat) <- list(rowNm,  colNm)
     eDicemat
 }
