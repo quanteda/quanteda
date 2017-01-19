@@ -127,8 +127,8 @@ dfm_select.dfm <-  function(x, features = NULL, selection = c("keep", "remove"),
         
         features_x <- featnames(x)
         if (case_insensitive & valuetype == "fixed") {
-            features_x <- toLower(features_x)
-            features <- toLower(features)
+            features_x <- char_tolower(features_x)
+            features <- char_tolower(features)
         }
         
         # split features on concatenator if exists
@@ -179,7 +179,7 @@ dfm_select.dfm <-  function(x, features = NULL, selection = c("keep", "remove"),
             # remove features in x that are not in features (from supplied dfm)
             x2 <- x[, featIndex]
             # now add zero-valued features to x that are not in x but are in features
-            origDfmFeatureIndex <- which(!(toLower(features) %in% toLower(featnames(x2))))
+            origDfmFeatureIndex <- which(!(char_tolower(features) %in% char_tolower(featnames(x2))))
             xOriginalFeatureLength <- nfeature(x2)
             xOriginalFeatures <- featnames(x2)
             if (verbose) catm(" padding 0s for another", length(origDfmFeatureIndex), "\n")

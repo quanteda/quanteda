@@ -15,8 +15,8 @@ thesDfm[1:10, (nfeature(thesDfm)-8) : nfeature(thesDfm)]
 preDictDfm <- dfm(mycorpus, removePunct = TRUE, removeNumbers = TRUE)
 dfm_lookup(preDictDfm, mydict)
 
-txt <- tokenize(toLower(c("My Christmas was ruined by your opposition tax plan.", 
-                          "The United_States has progressive taxation.")),
+txt <- tokenize(char_tolower(c("My Christmas was ruined by your opposition tax plan.", 
+                               "The United_States has progressive taxation.")),
                 removePunct = TRUE)
 
 
@@ -30,7 +30,7 @@ dfm_lookup(txtDfm, mydict, valuetype = "glob")
 dfm_lookup(txtDfm, mydict, exclusive = FALSE, valuetype = "glob", verbose = FALSE) 
 
 
-inaugTextsTokenized <- tokenize(toLower(inaugTexts[1:10]), removePunct = TRUE)
+inaugTextsTokenized <- tokenize(char_tolower(inaugTexts[1:10]), removePunct = TRUE)
 # microbenchmark::microbenchmark(
 #     dfm(inaugTextsTokenized, verbose = FALSE),
 #     dfm(inaugTextsTokenized, verbose = FALSE, codeType = "old"),

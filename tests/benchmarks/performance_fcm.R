@@ -23,8 +23,8 @@ it <- itoken(tokens)
 v <- create_vocabulary(it)
 vectorizer <- vocab_vectorizer(v, grow_dtm = FALSE, skip_grams_window = 5L)
 
-toks <- tokenize(toLower(txt), removePunct = TRUE)
-toksh <- tokens(toLower(txt), removePunct = TRUE)
+toks <- tokenize(char_tolower(txt), removePunct = TRUE)
+toksh <- tokens(char_tolower(txt), removePunct = TRUE)
 
 
 text2vecPfm <- function(tokens,vectorizer ){
@@ -37,7 +37,7 @@ text2vecPfm <- function(tokens,vectorizer ){
 }
 
 fcmPfm <- function(txt){
-    #toks <- tokenize(toLower(txt), removePunct = TRUE)
+    #toks <- tokenize(char_tolower(txt), removePunct = TRUE)
   #toks_index <- lapply(toks, function(x, y) match(x, y), types)
     fcm <- fcm(toks, context = "window", count = "weighted", window = 3)
     return(fcm)

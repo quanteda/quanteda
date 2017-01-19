@@ -47,7 +47,7 @@ summary(immigCorpusSent, 20)
 txt <- "#TextAnalysis is MY <3 4U @myhandle gr8 #stuff :-)"
 tokens(txt, removePunct=TRUE)
 tokens(txt, removePunct=TRUE, removeTwitter=TRUE)
-(toks <- tokens(toLower(txt), removePunct=TRUE, removeTwitter=TRUE))
+(toks <- tokens(char_tolower(txt), removePunct=TRUE, removeTwitter=TRUE))
 str(toks)
 
 # tokenize sentences
@@ -119,15 +119,15 @@ as.list(textstat_dist(presDfm, c("fair", "health", "terror"), margin = "features
 
 # form ngrams
 txt <- "Hey @kenbenoit #textasdata: The quick, brown fox jumped over the lazy dog!"
-tokens(toLower(txt), removePunct = TRUE, ngrams = 2)
-tokens(toLower(txt), removePunct = TRUE, ngrams = c(1,3))
+tokens(char_tolower(txt), removePunct = TRUE, ngrams = 2)
+tokens(char_tolower(txt), removePunct = TRUE, ngrams = c(1,3))
 
 # low-level options exist too
-(toks1 <- tokens(toLower(txt), removePunct = TRUE))
+(toks1 <- tokens(char_tolower(txt), removePunct = TRUE))
 tokens_ngrams(toks1, n = c(1, 3, 5))
 
 # form "skip-grams"
-toks2 <- tokens(toLower("Insurgents killed in ongoing fighting"))
+toks2 <- tokens(char_tolower("Insurgents killed in ongoing fighting"))
 tokens_ngrams(toks2, n = 2, skip = 1, concatenator = " ")
 tokens_ngrams(toks2, n = 3, skip = 0:1, concatenator = " ")
 

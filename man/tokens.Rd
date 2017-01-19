@@ -116,7 +116,7 @@ txt <- c(doc1 = "This is a sample: of tokens.",
          doc2 = "Another sentence, to demonstrate how tokens works.")
 tokens(txt)
 # removing punctuation marks and lowecasing texts
-tokens(toLower(txt), removePunct = TRUE)
+tokens(char_tolower(txt), removePunct = TRUE)
 # keeping versus removing hyphens
 tokens("quanteda data objects are auto-loading.", removePunct = TRUE)
 tokens("quanteda data objects are auto-loading.", removePunct = TRUE, removeHyphens = TRUE)
@@ -165,9 +165,9 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
 tokens(data_char_inaugural[c(2,40)], what = "sentence")
 
 # removing features (stopwords) from tokenized texts
-txt <- toLower(c(mytext1 = "This is a short test sentence.",
-                 mytext2 = "Short.",
-                 mytext3 = "Short, shorter, and shortest."))
+txt <- char_tolower(c(mytext1 = "This is a short test sentence.",
+                      mytext2 = "Short.",
+                      mytext3 = "Short, shorter, and shortest."))
 tokens(txt, removePunct = TRUE)
 ### removeFeatures(tokens(txt, removePunct = TRUE), stopwords("english"))
 

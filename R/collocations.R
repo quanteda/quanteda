@@ -101,7 +101,7 @@ collocations.character <- function(x, method = c("lr", "chi2", "pmi", "dice", "a
                                    n = NULL, toLower = TRUE, 
                                    punctuation = c("dontspan", "ignore", "include"), ...) {
     method <- match.arg(method)
-    x <- tokens((if (toLower) toLower(x) else x), hash = FALSE, ...)
+    x <- tokens((if (toLower) char_tolower(x) else x), hash = FALSE, ...)
     collocations(x, method = method, size = size , n = n, punctuation = punctuation)
 }
 

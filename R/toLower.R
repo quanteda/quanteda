@@ -13,6 +13,7 @@
 #' @export
 #' @keywords internal deprecated
 #' @examples 
+#' \donttest{
 #' test1 <- c(text1 = "England and France are members of NATO and UNESCO", 
 #'            text2 = "NASA sent a rocket into space.")
 #' toLower(test1)
@@ -21,6 +22,7 @@
 #' test2 <- tokenize(test1, removePunct=TRUE)
 #' toLower(test2)
 #' toLower(test2, keep_acronyms = TRUE)
+#' }
 toLower <- function(x, keep_acronyms = FALSE, ...) {
     UseMethod("toLower")
 }
@@ -28,6 +30,7 @@ toLower <- function(x, keep_acronyms = FALSE, ...) {
 #' @rdname toLower
 #' @export
 toLower.character <- function(x, keep_acronyms = FALSE, ...) {
+    .Deprecated("char_tolower")
     char_tolower(x, keep_acronyms = keep_acronyms, ...)
 }
 
@@ -43,7 +46,7 @@ toLower.tokenizedTexts <- function(x, keep_acronyms = FALSE, ...) {
     if (!typeTest) {
         stop("Each element of the list must be a character vector.")
     }
-    x <- lapply(x, toLower, keep_acronyms = keep_acronyms, ...)
+    x <- lapply(x, char_tolower, keep_acronyms = keep_acronyms, ...)
     class(x) <- c("tokenizedTexts", class(x))
     attributes(x) <- attributes_saved
     x
@@ -52,33 +55,34 @@ toLower.tokenizedTexts <- function(x, keep_acronyms = FALSE, ...) {
 #' @rdname toLower
 #' @export
 toLower.tokens <- function(x, ...) {
-    types(x) <- toLower(types(x), ...)
-    tokens_hashed_recompile(x)
+    .Deprecated("tokens_tolower")
+    tokens_tolower(x, ...)
 }
 
 #' @rdname toLower
 #' @export
 toUpper.tokens <- function(x, ...) {
-    types(x) <- toUpper(types(x), ...)
-    tokens_hashed_recompile(x)
+    .Deprecated("char_toupper")
+    tokens_toupper(x, ...)
 }
 
 
 #' @rdname toLower
-#' @export
 toLower.corpus <- function(x, keep_acronyms=FALSE, ...) {
-    toLower(texts(x), keep_acronyms, ...)
+    char_tolower(texts(x), keep_acronyms, ...)
 }
 
 #' @rdname toLower
 #' @export
 #' @examples 
+#' \donttest{
 #' test1 <- c(text1 = "England and France are members of NATO and UNESCO", 
 #'            text2 = "NASA sent a rocket into space.")
 #' toUpper(test1)
 #' 
 #' test2 <- tokenize(test1, removePunct = TRUE)
 #' toUpper(test2)
+#' }
 toUpper <- function(x, ...) {
     UseMethod("toUpper")
 }
@@ -86,6 +90,7 @@ toUpper <- function(x, ...) {
 #' @rdname toLower
 #' @export
 toUpper.character <- function(x, ...) {
+    .Deprecated("char_toupper")
     char_toupper(x, ...)
 }
 

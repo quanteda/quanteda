@@ -17,7 +17,7 @@ summary.character <- function(object, n = 100, verbose = TRUE, toLower = FALSE, 
     if (is.null(names(object))) 
         names(object) <- paste("text", 1:length(object), sep="")
     nsents  <- nsentence(object, ...)
-    if (toLower) object <- toLower(object)
+    if (toLower) object <- char_tolower(object)
     toks <- tokenize(object, ...)
     ntokens <- ntoken(toks)
     ntypes <- ntype(toks)

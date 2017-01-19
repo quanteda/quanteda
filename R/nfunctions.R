@@ -107,10 +107,10 @@ nfeature.tokens <- function(x) {
 #' txt <- c(text1 = "This is a sentence, this.", text2 = "A word. Repeated repeated.")
 #' ntoken(txt)
 #' ntype(txt)
-#' ntoken(toLower(txt))  # same
-#' ntype(toLower(txt))   # fewer types
-#' ntoken(toLower(txt), removePunct = TRUE)
-#' ntype(toLower(txt), removePunct = TRUE)
+#' ntoken(char_tolower(txt))  # same
+#' ntype(char_tolower(txt))   # fewer types
+#' ntoken(char_tolower(txt), removePunct = TRUE)
+#' ntype(char_tolower(txt), removePunct = TRUE)
 #' 
 #' # with some real texts
 #' ntoken(corpus_subset(data_corpus_inaugural, Year<1806), removePunct = TRUE)
