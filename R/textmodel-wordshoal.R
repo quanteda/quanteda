@@ -87,9 +87,9 @@ textmodel_wordshoal.dfm <- function(x, groups, authors, dir = c(1,2), tol = 1e-3
     if (length(not_enough_rows <- which(lengths(split(docnames(x), groups)) < 2)))
         stop("only a single case for the following groups: \n", 
              paste(levels(groups)[not_enough_rows], collapse = "\n"))
-    if (length(not_enough_rows <- which(lengths(split(docnames(x), authors)) < 2)))
-        stop("only a single case for the following authors: \n", 
-             paste(levels(authors)[not_enough_rows], collapse = "\n"))
+    # if (length(not_enough_rows <- which(lengths(split(docnames(x), authors)) < 2)))
+    #     stop("only a single case for the following authors: \n", 
+    #          paste(levels(authors)[not_enough_rows], collapse = "\n"))
 
     S <- ndoc(x)
     psi <- rep(NA, S)
@@ -106,21 +106,21 @@ textmodel_wordshoal.dfm <- function(x, groups, authors, dir = c(1,2), tol = 1e-3
         # Extract dfm rows for current document group
         groupdfm <- x[groups == levels(groups)[j], ]
         
-        # Remove features that do not appear in XXat leastXX MORE THAN one document
+        # Remove features that do not appear XX_in at leastone document_XX at least twice 
         groupdfm <- groupdfm[, colSums(groupdfm) > 1]
         
         # Run wordfish on document group
         # wfresult <- wordfishcpp(as.matrix(groupdfm), c(1, 2), c(0, 0, 1/9, 1), c(1e-2, 1e-4), 1L, 0L)
-        wfresult <- textmodel_wordfish(groupdfm, dir = dir, tol = c(tol, 1e-8))
+        wfresult <- textmodel_wordfish(groupdfm, tol = c(tol, 1e-8))
         
         # Save the results
         # psi[groups == levels(groups)[j]] <- wfresult$theta
         psi[groups == levels(groups)[j]] <- wfresult@theta
         
-#        if (j %% 20 == 0) 
+        if (j %% 20 == 0) 
             cat(j, " ", sep="") 
-            #else cat(".")
-        
+        else 
+            cat(".")
     }
     
     ## SECOND-LEVEL SCALING ##
