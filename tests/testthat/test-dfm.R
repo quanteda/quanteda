@@ -254,7 +254,7 @@ test_that("dfm print works as expected", {
                   "Document-feature matrix of: 14 documents, 5,058 features.*showing last document and last 6 features.*")
 })
 
-test_that("dfm.dfm words as expected", {
+test_that("dfm.dfm works as expected", {
     testdfm <- dfm(data_corpus_irishbudget2010, tolower = TRUE)
     expect_identical(testdfm, dfm(testdfm, tolower = FALSE))
     expect_identical(testdfm, dfm(testdfm, tolower = TRUE))
@@ -277,3 +277,9 @@ test_that("dfm.dfm words as expected", {
     )
 })
 
+test_that("dfm-methods works as expected", {
+    mydfm <- dfm(c("This is a test", "This is also a test", "This is an odd test"))
+    expect_equivalent(as.matrix(topfeatures(mydfm)),
+                      matrix(c(3,3,3,2,1,1,1)))
+    
+})
