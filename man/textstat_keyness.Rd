@@ -17,6 +17,14 @@ a named vector of keyness scores
 \description{
 calculate keyness statistics
 }
+\examples{
+period <- as.factor(ifelse(docvars(data_corpus_inaugural)$Year < 1945, 'post-war', 'pre-war'))
+mydfm <- dfm(data_corpus_inaugural, groups = period)
+mydfm <- dfm_select(mydfm, min_count = 2)
+mydfm <- dfm_smooth(mydfm, smoothing = 1)
+rownames(mydfm) # make sure 'post-war' is in the first row
+textstat_keyness(mydfm)
+}
 \references{
 Bondi, Marina, and Mike Scott, eds. Keyness in Texts. Amsterdam, 
   Philadelphia: John Benjamins, 2010.
