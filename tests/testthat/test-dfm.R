@@ -283,3 +283,13 @@ test_that("dfm-methods works as expected", {
                       matrix(c(3,3,3,2,1,1,1)))
     
 })
+
+test_that("dfm_sample works as expected",{
+    myDfm <- dfm(data_char_inaugural[1:10], verbose = FALSE)
+    expect_error(dfm_sample(myDfm, what="documents", size = 20),
+                  "size cannot exceed the number of documents \\(10\\)")
+    expect_error(dfm_sample(myDfm, what="features", size = 3500),
+                 "size cannot exceed the number of features \\(3358\\)")
+    expect_error(dfm_sample(data_char_inaugural[1:10]),
+                 "x must be a dfm object")
+})
