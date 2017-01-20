@@ -89,7 +89,7 @@ textmodel_wordshoal.dfm <- function(x, groups, authors, dir = c(1,2), tol = 1e-3
              paste(levels(groups)[not_enough_rows], collapse = "\n"))
     if (length(not_enough_rows <- which(lengths(split(docnames(x), authors)) < 2)))
         stop("only a single case for the following authors: \n", 
-             paste(levels(groups)[not_enough_rows], collapse = "\n"))
+             paste(levels(authors)[not_enough_rows], collapse = "\n"))
 
     S <- ndoc(x)
     psi <- rep(NA, S)
