@@ -263,5 +263,17 @@ test_that("dfm.dfm words as expected", {
                       tolower = FALSE)
     expect_identical(colSums(groupeddfm), colSums(groupeddfm))
     expect_identical(docnames(groupeddfm), c("Govt", "Opposition"))
+    expect_identical(testdfm, dfm(testdfm))
+
+    dict <- dictionary(articles = c("the", "a", "an"),
+                       preps = c("of", "for", "in"))
+    expect_identical(
+        dfm(data_corpus_irishbudget2010, dictionary = dict),
+            dfm(testdfm, dictionary = dict)
+    )
+    expect_identical(
+        dfm(data_corpus_irishbudget2010, stem = TRUE),
+        dfm(testdfm, stem = TRUE)
+    )
 })
 
