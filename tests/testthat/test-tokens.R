@@ -184,7 +184,6 @@ test_that("longer features longer than documents do not crash (#447)", {
     )
 })
 
-
 #' # coerce an object into a tokens class
 #' as.tokens(toks)
 

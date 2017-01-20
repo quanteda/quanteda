@@ -83,6 +83,14 @@ textmodel_wordshoal.dfm <- function(x, groups, authors, dir = c(1,2), tol = 1e-3
     groups <- as.factor(groups)
     authors <- as.factor(authors)
     
+    # check that no groups or author partitions are a single row
+    if (length(not_enough_rows <- which(lengths(split(docnames(x), groups)) < 2)))
+        stop("only a single case for the following groups: \n", 
+             paste(levels(groups)[not_enough_rows], collapse = "\n"))
+    if (length(not_enough_rows <- which(lengths(split(docnames(x), authors)) < 2)))
+        stop("only a single case for the following authors: \n", 
+             paste(levels(groups)[not_enough_rows], collapse = "\n"))
+
     S <- ndoc(x)
     psi <- rep(NA, S)
     
@@ -109,7 +117,9 @@ textmodel_wordshoal.dfm <- function(x, groups, authors, dir = c(1,2), tol = 1e-3
         # psi[groups == levels(groups)[j]] <- wfresult$theta
         psi[groups == levels(groups)[j]] <- wfresult@theta
         
-        if (j %% 20 == 0) cat(j, sep="") else cat(".")
+#        if (j %% 20 == 0) 
+            cat(j, " ", sep="") 
+            #else cat(".")
         
     }
     
