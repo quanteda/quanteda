@@ -184,14 +184,6 @@ test_that("longer features longer than documents do not crash (#447)", {
     )
 })
 
-test_that("#480 featnames adds null token if tokens has padding", {
-    toks <- tokens(data_corpus_inaugural[1:5])
-    expect_false('' %in% featnames(toks))
-    toks_pad <- tokens_remove(toks, stopwords('english'), padding = TRUE)
-    expect_true('' %in% featnames(toks_pad))
-})
-
-
 #' # coerce an object into a tokens class
 #' as.tokens(toks)
 
