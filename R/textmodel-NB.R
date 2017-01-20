@@ -153,7 +153,17 @@ predict.textmodel_NB_fitted <- function(object, newdata = NULL, ...) {
         object$data$x <- object$data$x[,-notinref]
         newdata <- newdata[,-notinref] 
     }
-    
+
+    # make sure feature set is ordered the same in test and training set (#490)
+    if (ncol(object$PcGw) != ncol(newdata))
+        stop("feature set in newdata different from that in training set")
+    if (!identical(colnames(object$PcGw), colnames(newdata)) | setequal(colnames(object$PcGw), colnames(newdata))) {
+        # if feature names are the same but diff order, reorder
+        newdata <- newdata[, colnames(object$PcGw)]
+    } else {
+        stop("feature set in newdata different from that in training set")
+    }
+
     # log P(d|c) class conditional document likelihoods
     log.lik <- newdata %*% t(log(object$PwGc))
     # weight by class priors
