@@ -38,3 +38,17 @@ test_that("regex2fixed converts complex regex patterns correctly", {
         list('axxxb', 'cxxxd', 'exxxf', 'gyyyh', 'azzzb', 'a999b')
     ), list())
 })
+
+test_that("regex2fixed converts emoji correctly", {
+    
+    regex <- ':)'
+    types <- c(';)', ':(', ':)', ':/', '(;')
+    expect_identical(
+        unlist(regex2fixed(regex, types, 'glob', case_insensitive=TRUE)),
+        ':)'
+    )
+    expect_identical(
+        unlist(regex2fixed(regex, types, 'fixed', case_insensitive=TRUE)),
+        ':)'
+    )
+})
