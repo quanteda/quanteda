@@ -38,16 +38,6 @@ featnames.dfm <- function(x) {
     colnames(x)
 }
 
-#' @noRd
-#' @export
-featnames.tokens <- function(x) {
-    if (attr(x, 'padding')) {
-        c('', attr(x, 'types'))
-    } else {
-        attr(x, 'types')
-    }
-}
-
 #' deprecated function name for featnames
 #' 
 #' Please use \code{\link{featnames}} instead.
