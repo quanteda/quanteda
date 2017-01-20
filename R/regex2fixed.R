@@ -26,16 +26,27 @@ regex2fixed <- function(regex, types, valuetype, case_insensitive = FALSE, index
 regex2id <- function(regex, types, valuetype, case_insensitive = FALSE, index = TRUE) {
     
     # Make case insensitive
-    if(case_insensitive){
+    if (case_insensitive) {
         types_search <- stringi::stri_trans_tolower(types)
         regex <- lapply(regex, stringi::stri_trans_tolower)
-    }else{
+    } else {
         types_search <- types
     }
     
-    # Convert fixed or glob to regex
-    if(valuetype == 'glob') regex <- lapply(regex, glob2rx)
+    # Only when index is not constructed externally
+    if (is.logical(index)) {
+        # Glob is treated as fixed if neither * or ? is found
+        regex_unlist <- unlist(regex, use.names = FALSE)
+        if (valuetype == 'glob' && 
+           !any(stringi::stri_detect_fixed(regex_unlist, '*')) &&
+           !any(stringi::stri_detect_fixed(regex_unlist, '?'))) {
+            valuetype <- 'fixed'
+        } 
+    }
     
+    # Convert fixed or glob to regex
+    if (valuetype == 'glob') regex <- lapply(regex, function(x) utils::glob2rx(escape_regex(x)))
+
     # Set if exact match of not
     if (valuetype == 'fixed'){
         exact <- TRUE
@@ -92,15 +103,15 @@ select_types <- function (regex, types_search, exact, index){
             } else {
                 if (regex == '') {
                     return(NULL) # return nothing for empty pattern
-                } else if(regex == '^') {
+                } else if (regex == '^') {
                     return(seq_along(types_search)) # return all types when glob is *
-                } else if(length((pos <- search_index(regex, index)))) {
+                } else if (length((pos <- search_index(regex, index)))) {
                     #cat('Index search', regex, '\n')
                     return(pos)
-                }else if(!is_indexed(regex)) {
+                } else if (!is_indexed(regex)) {
                     #cat('Regex search', regex, '\n')
                     return(which(stringi::stri_detect_regex(types_search, regex)))
-                }else{
+                } else {
                     #cat("Not found\n")
                     return(NULL)
                 }
@@ -131,7 +142,6 @@ index_regex <- function(types, valuetype, case_insensitive, len_max){
     }
     # Create regex patterns from types
     if (!exact) { 
-        types <- escape_regex(types) # punctuations are not regular expressions
         types <- stringi::stri_c("^", types, "$")
     }
     # Index for regex patterns of ^xxxx$ 
@@ -189,9 +199,11 @@ is_regex <- function(x){
     any(stringi::stri_detect_fixed(x, c(".", "(", ")", "^", "{", "}", "+", "$", "*", "?", "[", "]", "\\")))
 }
 
-# This is an internal function for select_types().
+# This is an internal function for select_types(). This function escapes glob patterns before
+# utils:glob2rx(), therefore allow * and ? are allowed
 escape_regex <- function(x){
-    stringi::stri_replace_all_regex(x, "([.()^\\{\\}+$*\\[\\]\\\\])", "\\\\$1")
+    #stringi::stri_replace_all_regex(x, "([.()^\\{\\}+$*\\[\\]\\\\])", "\\\\$1") # escape any
+    stringi::stri_replace_all_regex(x, "([.()^\\{\\}+$\\[\\]\\\\])", "\\\\$1") # allow glob
 }
 
 # This is an internal function for select_types().
@@ -203,7 +215,6 @@ is_indexed <- function(x){
     if (tail && !is_regex(stringi::stri_sub(x, 1, -2))) return(TRUE)
     return(FALSE)
 }
-
 
 #' convert a vector to a list
 #' 

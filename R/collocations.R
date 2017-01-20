@@ -157,7 +157,7 @@ collocations3 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"), size=
     
     # remove punctuation if called for
     if (punctuation == "ignore") {
-        t <- t[!stringi::stri_detect_regex(w1, "^\\p{P}$")]
+        t <- t[!stringi::stri_detect_regex(t, "^\\p{P}$")]
     }
 
     # create a data.table of all adjacent bigrams

@@ -116,13 +116,13 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
     # check that no rows or columns are all zero
     zeroLengthDocs <- which(ntoken(data) == 0)
     if (length(zeroLengthDocs)) {
+        catm("Note: removed the following zero-token documents:", docnames(data)[zeroLengthDocs], "\n")
         data <- data[-zeroLengthDocs, ]
-        catm("Note: removed the following zero-token documents:", docnames(data[zeroLengthDocs, ]), "\n")
     }
     zeroLengthFeatures <- which(docfreq(data) == 0)
     if (length(zeroLengthFeatures)) {
-            data <- data[, -zeroLengthFeatures]
-        catm("Note: removed the following zero-count features:", featnames(data[, zeroLengthFeatures]), "\n")
+        catm("Note: removed the following zero-count features:", featnames(data)[zeroLengthFeatures], "\n")
+        data <- data[, -zeroLengthFeatures]
     }
     if (length(zeroLengthDocs) | length(zeroLengthFeatures)) catm("\n")
 
