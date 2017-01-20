@@ -33,7 +33,7 @@ regex2id <- function(regex, types, valuetype, case_insensitive = FALSE, index = 
         types_search <- types
     }
     
-    # Only when index is not construced externally
+    # Only when index is not constructed externally
     if (is.logical(index)) {
         # Glob is treated as fixed if neither * or ? is found
         regex_unlist <- unlist(regex, use.names = FALSE)
