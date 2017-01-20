@@ -20,10 +20,11 @@ calculate keyness statistics
 \examples{
 period <- as.factor(ifelse(docvars(data_corpus_inaugural)$Year < 1945, 'post-war', 'pre-war'))
 mydfm <- dfm(data_corpus_inaugural, groups = period)
-mydfm <- dfm_select(mydfm, min_count = 2)
+mydfm <- dfm_remove(mydfm, stopwords('english'))
+mydfm <- dfm_select(mydfm, min_count = 2, min_nchar = 2)
 mydfm <- dfm_smooth(mydfm, smoothing = 1)
 rownames(mydfm) # make sure 'post-war' is in the first row
-textstat_keyness(mydfm)
+head(textstat_keyness(mydfm), 20)
 }
 \references{
 Bondi, Marina, and Mike Scott, eds. Keyness in Texts. Amsterdam, 
