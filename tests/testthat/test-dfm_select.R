@@ -135,7 +135,16 @@ test_that("longer selection than longer than features that exist (related to #44
     )
 })
 
-    
+test_that("test dfm_select with features from a dfm,  fixed", {
+    expect_equal(
+        featnames(dfm_select(testdfm, dfm(c("a", "b", "c")), selection = "keep", valuetype = "fixed", verbose = FALSE)),
+        c("a", "B", "c")
+    )
+    expect_equal(
+        featnames(dfm_select(testdfm, dfm(c("a", "b", "c")), selection = "remove", valuetype = "fixed", verbose = FALSE)),
+        setdiff(featnames(testdfm), c("a", "B", "c"))
+    )
+})
     
 
     
