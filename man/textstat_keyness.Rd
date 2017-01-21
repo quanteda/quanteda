@@ -4,23 +4,28 @@
 \alias{textstat_keyness}
 \title{calculate keyness statistics}
 \usage{
-textstat_keyness(x, target = 1L, measure = "chi2", sort = TRUE)
+textstat_keyness(x, target = 1L, measure = c("chi2", "exact"),
+  sort = TRUE)
 }
 \arguments{
 \item{x}{a \link{dfm} containing the features to be examined for keyness}
 
 \item{target}{the document index (numeric or character) identifying the 
-document forming the "target" for computing keyness; all other documents'
+document forming the "target" for computing keyness; all other documents' 
 feature frequencies will be combined for use as a reference}
 
-\item{measure}{(signed) association measure to be used for computing keyness. 
-Currenly available: \code{"chi2"} (chi-squared with Yates correction).}
+\item{measure}{(signed) association measure to be used for computing keyness.
+Currenly available: \code{"chi2"} (chi-squared with Yates correction); 
+\code{"exact"} (Fisher's exact test).}
 
 \item{sort}{logical; if \code{TRUE} sort features scored in descending order 
 of the measure, otherwise leave in original feature order}
 }
 \value{
-a named numeric vector of keyness scores, named with the features
+a named numeric vector of keyness scores, named with the features. 
+  For \code{measure = "chi2"} this is the chi-squared value, signed
+  positively if the observed value in the target exceeds its expected value;
+  for \code{measure = "exact"} this is the estimate of the odds ratio.
 }
 \description{
 calculate keyness statistics
@@ -36,16 +41,18 @@ tail(result, 10)
 # compare Trump 2017 to other post-war preseidents
 pwdfm <- dfm(corpus_subset(data_corpus_inaugural, period == "post-war"))
 head(textstat_keyness(pwdfm, target = "2017-Trump"), 10)
+# using the exact method
+head(textstat_keyness(dfm_smooth(pwdfm), measure = "exact", target = "2017-Trump"), 10)
 }
 \references{
-Bondi, Marina, and Mike Scott, eds. 2010.  \emph{Keyness in
+Bondi, Marina, and Mike Scott, eds. 2010.  \emph{Keyness in 
   Texts}. Amsterdam, Philadelphia: John Benjamins, 2010.
   
-  Stubbs, Michael. 2010.  "Three Concepts of Keywords". In \emph{Keyness in
+  Stubbs, Michael. 2010.  "Three Concepts of Keywords". In \emph{Keyness in 
   Texts}, Marina Bondi and Mike Scott, eds. pp21–42. Amsterdam, Philadelphia:
   John Benjamins.
   
-  Scott, M. & Tribble, C. 2006.  \emph{Textual Patterns: keyword and corpus
+  Scott, M. & Tribble, C. 2006.  \emph{Textual Patterns: keyword and corpus 
   analysis in language education}.  Amsterdam: Benjamins, p. 55.
 }
 \keyword{experimental}

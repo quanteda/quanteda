@@ -2,22 +2,26 @@
 #' 
 #' @param x a \link{dfm} containing the features to be examined for keyness
 #' @param target the document index (numeric or character) identifying the 
-#'   document forming the "target" for computing keyness; all other documents'
+#'   document forming the "target" for computing keyness; all other documents' 
 #'   feature frequencies will be combined for use as a reference
-#' @param measure (signed) association measure to be used for computing keyness. 
-#'   Currenly available: \code{"chi2"} (chi-squared with Yates correction).
+#' @param measure (signed) association measure to be used for computing keyness.
+#'   Currenly available: \code{"chi2"} (chi-squared with Yates correction); 
+#'   \code{"exact"} (Fisher's exact test).
 #' @param sort logical; if \code{TRUE} sort features scored in descending order 
 #'   of the measure, otherwise leave in original feature order
-#' @references Bondi, Marina, and Mike Scott, eds. 2010.  \emph{Keyness in
+#' @references Bondi, Marina, and Mike Scott, eds. 2010.  \emph{Keyness in 
 #'   Texts}. Amsterdam, Philadelphia: John Benjamins, 2010.
 #'   
-#'   Stubbs, Michael. 2010.  "Three Concepts of Keywords". In \emph{Keyness in
+#'   Stubbs, Michael. 2010.  "Three Concepts of Keywords". In \emph{Keyness in 
 #'   Texts}, Marina Bondi and Mike Scott, eds. pp21–42. Amsterdam, Philadelphia:
 #'   John Benjamins.
 #'   
-#'   Scott, M. & Tribble, C. 2006.  \emph{Textual Patterns: keyword and corpus
+#'   Scott, M. & Tribble, C. 2006.  \emph{Textual Patterns: keyword and corpus 
 #'   analysis in language education}.  Amsterdam: Benjamins, p. 55.
-#' @return a named numeric vector of keyness scores, named with the features
+#' @return a named numeric vector of keyness scores, named with the features. 
+#'   For \code{measure = "chi2"} this is the chi-squared value, signed
+#'   positively if the observed value in the target exceeds its expected value;
+#'   for \code{measure = "exact"} this is the estimate of the odds ratio.
 #' @export
 #' @keywords textstat experimental
 #' @importFrom stats chisq.test
@@ -32,13 +36,15 @@
 #' # compare Trump 2017 to other post-war preseidents
 #' pwdfm <- dfm(corpus_subset(data_corpus_inaugural, period == "post-war"))
 #' head(textstat_keyness(pwdfm, target = "2017-Trump"), 10)
-textstat_keyness <- function(x, target = 1L, measure = "chi2", sort = TRUE) {
+#' # using the exact method
+#' head(textstat_keyness(dfm_smooth(pwdfm), measure = "exact", target = "2017-Trump"), 10)
+textstat_keyness <- function(x, target = 1L, measure = c("chi2", "exact"), sort = TRUE) {
     UseMethod("textstat_keyness")
 }
 
 #' @noRd
 #' @export
-textstat_keyness.dfm <- function(x, target = 1L, measure = "chi2", sort = TRUE) {
+textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact"), sort = TRUE) {
     
     # error checking
     measure <- match.arg(measure)
@@ -58,6 +64,8 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = "chi2", sort = TRUE) 
 
     if (measure == "chi2") {
         keywords <- keyness_chi2_dt(x)
+    } else if (measure == "exact") {
+        keywords <- keyness_exact(x)
     } else {
         stop(measure, " not yet implemented for textstat_keyness")
     }
@@ -69,11 +77,11 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = "chi2", sort = TRUE) 
 }
 
 
-#' compute keyness using chi2 statistic
+#' compute keyness (internal functions)
 #' 
 #' Internal function used in textstat_keyness.  Computes Chi^2 with Yates'
 #' continuity correction for 2x2 tables.
-#' @name keyness_chi2
+#' @name keyness
 #' @details \code{keyness_chi2_dt} uses vectorized computation from data.table
 #' objects.
 #' 
@@ -107,7 +115,8 @@ keyness_chi2_dt <- function(x) {
     result
 }
     
-#' @rdname keyness_chi2
+#' @rdname keyness
+#' @importFrom stats chisq.test
 #' @examples 
 #' quanteda:::keyness_chi2_stats(mydfm)
 keyness_chi2_stats <- function(x) {
@@ -125,5 +134,19 @@ keyness_chi2_stats <- function(x) {
     apply(x, 2, function(y) keyness(as.numeric(y[1]), 
                                     as.numeric(y[2]), 
                                     sums[1], sums[2]))
+}
+
+
+#' @rdname keyness
+#' @details 
+#' \code{keyness_exact} computes Fisher's exact test
+#' @importFrom stats fisher.test
+#' @examples
+#' quanteda:::keyness_exact(mydfm)
+keyness_exact <- function(x) {
+    sums <- rowSums(x)
+    apply(x, 2, function(y) stats::fisher.test( 
+            matrix(c(as.numeric(y), as.numeric(sums - y)), nrow = 2)
+        )$estimate)
 }
 

@@ -85,3 +85,22 @@ test_that("textstat_keyness errors", {
 })
 
 
+
+test_that("keyness_textstat exact computation is correct", {
+    mydfm <- dfm(c(d1 = "b b b b b b b a a a",
+                   d2 = "a a a a a a a b b"))
+    result <- stats::fisher.test(as.matrix(mydfm))
+    expect_equivalent(
+        result$estimate,
+        textstat_keyness(mydfm, measure = "exact", sort = FALSE)[1]
+    )
+})
+
+test_that("basic textstat_keyness exact works on two rows", {
+    mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
+                   d2 = "a a b c c d d d d e f h"))
+    expect_equal(names(textstat_keyness(mydfm, measure = "exact")),
+                 c("g", "c", "b", "h", "a", "e", "f", "d"))
+    expect_equal(names(textstat_keyness(mydfm, target = 2, measure = "exact")),
+                 c("d", "e", "f", "a", "b", "h", "c", "g"))
+})
