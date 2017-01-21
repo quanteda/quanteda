@@ -11,6 +11,7 @@
 
 ### New features
 
+* Added 2017-Trump to the inaugural corpus datasets (`data_corpus_inaugual` and `data_char_inaugural`).  
 * Improved the `groups` argument in `texts()` (and in `dfm()` that uses this function), which will now coerce to a factor rather than requiring one.
 * Added a dfm constructor from dfm objects, with the option of collapsing by groups.
 * Added new arguments to `sequences()`: `ordered` and `max_length`, the latter to prevent memory leaks from extremely long sequences.  

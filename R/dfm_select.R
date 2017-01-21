@@ -186,7 +186,11 @@ dfm_select.dfm <-  function(x, features = NULL, selection = c("keep", "remove"),
             x <- new("dfmSparse", Matrix::cbind2(x2,
                                                  sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x2), length(origDfmFeatureIndex)), 
                                                               dimnames = list(docnames(x2), features[origDfmFeatureIndex]))))
-            featIndex <- match(features_dfm, featnames(x))
+            if (case_insensitive & valuetype == "fixed") {
+                features_x_ori <- char_tolower(featnames(x))
+                features_dfm <- char_tolower(features_dfm)
+            }
+            featIndex <- match(features_dfm, features_x_ori)
             # x <- x2 #[, features_dfm]
         }
     }        
