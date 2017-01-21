@@ -41,3 +41,25 @@ test_that("dfm_compress: empty documents are preserved", {
     expect_equal(rowSums(dfm_compress(testdfm))[3], c(d3 = 0))
 })
 
+test_that("dfm_compress dfmDense: simple test", {
+    mat <- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE, verbose = FALSE),
+                 dfm("A C C C C C", tolower = FALSE, verbose = FALSE))
+    # make into a dense object
+    mat <- dfm_smooth(mat)
+    colnames(mat) <- char_tolower(featnames(mat))
+    expect_equal(as.matrix(dfm_compress(mat, margin = "documents")),
+                 matrix(c(5,1,7,3,3,2,2,2,2,2), nrow = 2,
+                        dimnames = list(docs = c("text1", "text2"), features = featnames(mat))))
+    expect_equal(
+        as.matrix(dfm_compress(mat, margin = "features")),
+        matrix(c(4,3,3,1,3,6,3,4,2), nrow = 3,
+               dimnames = list(docs = docnames(mat), features = c("a", "c", "b")))
+    )
+    expect_equal(
+        as.matrix(dfm_compress(mat, margin = "both")),
+        matrix(c(7,3,7,3,5,4), nrow = 2,
+               dimnames = list(docs = c("text1", "text2"), features = c("a", "c", "b")))
+    )
+})
+
+
