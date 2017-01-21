@@ -42,7 +42,7 @@ test_that("test similarity method = \"cosine\" against proxy simil(): documents"
 
 test_that("test similarity method = \"correlation\" against proxy simil(): documents", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980 & Year < 2017), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     corQuanteda <- round(similarity(presDfm, method = "correlation", margin = "documents")[["1981-Reagan"]], 6)

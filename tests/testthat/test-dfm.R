@@ -76,7 +76,7 @@ expect_equal(as.vector(tmp[, c("taxglob", "taxregex", "country")]), c(0, 0, 0, 0
 
 test_that("dfm_trim", {
 
-    mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1900)
+    mycorpus <- corpus_subset(data_corpus_inaugural, Year > 1900 & Year < 2017)
     preDictDfm <- dfm(mycorpus, removePunct = TRUE, removeNumbers = TRUE)
     
     nfeature(dfm_trim(preDictDfm, min_count = 7))

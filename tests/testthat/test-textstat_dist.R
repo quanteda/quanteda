@@ -377,7 +377,7 @@ test_that("test textstat_dist method = \"Canberra\" against proxy dist() : docum
 
 test_that("test textstat_dist method = \"Canberra\" against proxy dist() : features", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980 & Year < 2017), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     canQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet",  method = "canberra", margin = "features"))[,"soviet"], 2)
     canQuanteda <- canQuanteda[order(names(canQuanteda))]
