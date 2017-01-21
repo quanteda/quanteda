@@ -17,7 +17,7 @@ Author: Kenneth Benoit [aut, cre],
     Benjamin Lauderdale [ctb],
     Will Lowe [ctb]
 Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
-Version: 0.9.9-14
+Version: 0.9.9-15
 Date: 2017-01-21
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
@@ -121,6 +121,7 @@ Collate:
     'textstat-lexdiv.R'
     'textstat-readability.R'
     'textstat_dist.R'
+    'textstat_keyness.R'
     'textstat_simil.R'
     'toLower.R'
     'tokenize.R'
