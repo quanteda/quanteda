@@ -4,7 +4,7 @@
 \alias{textstat_keyness}
 \title{calculate keyness statistics}
 \usage{
-textstat_keyness(x, target = 1L, measure = c("chi2", "exact"),
+textstat_keyness(x, target = 1L, measure = c("chi2", "exact", "lr"),
   sort = TRUE)
 }
 \arguments{
@@ -15,17 +15,19 @@ document forming the "target" for computing keyness; all other documents'
 feature frequencies will be combined for use as a reference}
 
 \item{measure}{(signed) association measure to be used for computing keyness.
-Currenly available: \code{"chi2"} (chi-squared with Yates correction); 
-\code{"exact"} (Fisher's exact test).}
+Currenly available: \code{"chi2"} (\eqn{chi^2} with Yates correction); 
+\code{"exact"} (Fisher's exact test); \code{"lr"} for the likelihood ratio
+\eqn{G^2} statistic with Yates correction.}
 
 \item{sort}{logical; if \code{TRUE} sort features scored in descending order 
 of the measure, otherwise leave in original feature order}
 }
 \value{
 a named numeric vector of keyness scores, named with the features. 
-  For \code{measure = "chi2"} this is the chi-squared value, signed
-  positively if the observed value in the target exceeds its expected value;
-  for \code{measure = "exact"} this is the estimate of the odds ratio.
+  For \code{measure = "chi2"} this is the chi-squared value, signed 
+  positively if the observed value in the target exceeds its expected value; 
+  for \code{measure = "exact"} this is the estimate of the odds ratio; for 
+  \code{measure = "lr"} this is the likelihood ratio $G^2$ statistic.
 }
 \description{
 calculate keyness statistics
@@ -54,7 +56,9 @@ Bondi, Marina, and Mike Scott, eds. 2010.  \emph{Keyness in
   
   Scott, M. & Tribble, C. 2006.  \emph{Textual Patterns: keyword and corpus 
   analysis in language education}.  Amsterdam: Benjamins, p. 55.
+  
+  Dunning, Ted. 1993. "Accurate Methods for the Statistics of Surprise and Coincidence", 
+  \emph{Computational Linguistics}, Vol 19, No. 1, pp. 61-74.
 }
-\keyword{experimental}
 \keyword{textstat}
 
