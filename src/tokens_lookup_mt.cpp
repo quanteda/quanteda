@@ -15,7 +15,7 @@ Text lookup(Text tokens,
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
-    std::size_t n;
+    std::size_t n = 0;
     std::vector< std::vector<unsigned int> > keys(tokens.size()); 
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
@@ -33,7 +33,8 @@ Text lookup(Text tokens,
     // Flatten the vector of vector
     Text keys_flat;
     keys_flat.reserve(n);
-    for (const auto &key_sub: keys) {
+    for (auto &key_sub: keys) {
+        std::sort(key_sub.begin(), key_sub.end()); // sort in order of keys
         keys_flat.insert(keys_flat.end(), key_sub.begin(), key_sub.end());                                                                                         
     }
     return keys_flat;
@@ -118,7 +119,6 @@ dict <- list(5, c(5, 6) , 4)
 #dict <- list(1, 10, 20)
 keys <- 1:length(dict)
 qatd_cpp_tokens_lookup(toks, dict, keys)
-
 
 
 */
