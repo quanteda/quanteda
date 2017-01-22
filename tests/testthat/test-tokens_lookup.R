@@ -200,15 +200,15 @@ test_that("#459 apply a hierarchical dictionary", {
             swords = c("States"))))
     
     expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "fixed", levels=1)),
-                 list(d1 = c("geo", "geo", "geo", "other"),
+                 list(d1 = c("geo", "other", "geo", "geo"),
                       d2 = c("geo", "other")))
     
     expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "fixed", levels=1:2)),
-                 list(d1 = c("geo.Countries", "geo.oceans", "geo.oceans", "other.swords"),
+                 list(d1 = c("geo.Countries", "other.swords", "geo.oceans", "geo.oceans"),
                       d2 = c("geo.Countries", "other.swords")))
     
     expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "fixed", levels=2)),
-                 list(d1 = c("Countries", "oceans", "oceans", "swords"),
+                 list(d1 = c("Countries", "swords", "oceans", "oceans"),
                       d2 = c("Countries", "swords")))
 })
 
