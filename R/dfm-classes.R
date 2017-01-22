@@ -229,6 +229,7 @@ cbind.dfm <- function(...) {
         for (y in args[3:length(args)]) 
             result <- Matrix::cbind2(result, y)
     }
+    names(dimnames(result)) <- c("docs", "features")
     new("dfmSparse", result)
 }
 
@@ -262,17 +263,18 @@ rbind.dfm <- function(...) {
 
     if (length(args) == 1) {
         warning('rbind.dfm called on single dfm')
-        return(args[[1]])
+        result <- args[[1]]
     }
     else if (length(args) == 2) {
-        return(rbind2.dfm(args[[1]], args[[2]]))
+        result <- rbind2.dfm(args[[1]], args[[2]])
     } else {
         # Recursive call
         result <- rbind2.dfm(args[[1]], args[[2]])
         for (y in args[3:length(args)]) 
             result <- rbind2.dfm(result, y)
-        return(result)
     }
+    names(dimnames(result)) <- c("docs", "features")
+    result
 }
 
 rbind2.dfm <- function(x, y) {

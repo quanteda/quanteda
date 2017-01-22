@@ -293,3 +293,26 @@ test_that("dfm_sample works as expected",{
     expect_error(dfm_sample(data_char_inaugural[1:10]),
                  "x must be a dfm object")
 })
+
+
+test_that("cbind.dfm works as expected",{
+    dfm1 <- dfm("This is one sample text sample")
+    dfm2 <- dfm("More words here")
+    dfm12 <- cbind(dfm1, dfm2)
+
+    expect_equal(nfeature(dfm12), 8)
+    expect_equal(names(dimnames(dfm12)),
+                 c("docs", "features"))
+})
+
+test_that("rbind.dfm works as expected",{
+    dfm1 <- dfm("This is one sample text sample")
+    dfm2 <- dfm("More words here")
+    dfm12 <- rbind(dfm1, dfm2)
+    
+    expect_equal(nfeature(dfm12), 8)
+    expect_equal(ndoc(dfm12), 2)
+    expect_equal(names(dimnames(dfm12)),
+                 c("docs", "features"))
+})
+
