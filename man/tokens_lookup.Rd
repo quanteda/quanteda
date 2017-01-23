@@ -5,8 +5,8 @@
 \title{apply a dictionary to a tokens object}
 \usage{
 tokens_lookup(x, dictionary, levels = 1:5, valuetype = c("glob", "regex",
-  "fixed"), case_insensitive = TRUE, capkeys = FALSE, concatenator = " ",
-  exclusive = TRUE, verbose = FALSE)
+  "fixed"), concatenator = " ", case_insensitive = TRUE, capkeys = FALSE,
+  exclusive = TRUE, multiword = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{x}{tokens object to which dictionary or thesaurus will be supplied}
@@ -25,17 +25,20 @@ the first.  (See examples.)}
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
+\item{concatenator}{a charactor that connect words in multi-words entries in \code{x}}
+
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE} 
 uppercase to distinguish them from other features}
 
 \item{capkeys}{if TRUE, convert dictionary keys to uppercase to distinguish 
 them from other features}
 
-\item{concatenator}{a charactor that connect words in multi-words entries}
-
 \item{exclusive}{if \code{TRUE}, remove all features not in dictionary, 
 otherwise, replace values in dictionary with keys while leaving other 
 features unaffected}
+
+\item{multiword}{if \code{FALSE}, multi-word entries in dictionary are treated
+as single tokens}
 
 \item{verbose}{print status messages if \code{TRUE}}
 }
