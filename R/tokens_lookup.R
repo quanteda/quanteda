@@ -12,7 +12,7 @@
 #'   level into the first, but record the third level (if present) collapsed below
 #'   the first.  (See examples.)
 #' @inheritParams valuetype
-#' @param concatenator a charactor that connect words in multi-words entries
+#' @param concatenator a charactor that connect words in multi-words entries in \code{x}
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE} 
 #'   uppercase to distinguish them from other features
 #' @param capkeys if TRUE, convert dictionary keys to uppercase to distinguish 
@@ -20,6 +20,8 @@
 #' @param exclusive if \code{TRUE}, remove all features not in dictionary, 
 #'   otherwise, replace values in dictionary with keys while leaving other 
 #'   features unaffected
+#' @param multiword if \code{FALSE}, multi-word entries in dictionary are treated
+#'   as single tokens
 #' @param verbose print status messages if \code{TRUE}
 #' @examples
 #' toks <- tokens(data_corpus_inaugural)
@@ -53,14 +55,16 @@
 #' @export
 tokens_lookup <- function(x, dictionary, levels = 1:5,
                           valuetype = c("glob", "regex", "fixed"), 
+                          concatenator = ' ',
                           case_insensitive = TRUE,
                           capkeys = FALSE,
-                          concatenator = " ",
                           exclusive = TRUE,
+                          multiword = TRUE,
                           verbose = FALSE) {
     
     names_org <- names(x)
     attrs_org <- attributes(x)
+    concatenator_dict <- attr(dictionary, 'concatenator')
     dictionary <- dictionary_flatten(dictionary, levels)
     valuetype <- match.arg(valuetype)
     
@@ -71,9 +75,21 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
     
     index <- index_regex(types, valuetype, case_insensitive) # index types before the loop
     if (verbose) 
-        message('Registering ', length(unlist(dictionary)), ' entiries in the dictionary...');
+        message('Registering ', length(unlist(dictionary)), ' entries in the dictionary...');
     for (h in 1:length(dictionary)) {
-        entries <- stringi::stri_split_fixed(dictionary[[h]], concatenator)
+        entries <- dictionary[[h]]
+        
+        # Substitute dictionary's concatenator with tokens' concatenator 
+        if (concatenator != concatenator_dict)
+            entries <- stringi::stri_replace_all_fixed(entries, concatenator_dict, concatenator)
+        
+        # Separate entries by concatenator
+        if (multiword) {
+            entries <- stringi::stri_split_fixed(entries, concatenator)
+        } else {
+            entries <- as.list(entries)
+        } 
+
         entries_temp <- regex2id(entries, types, valuetype, case_insensitive, index)
         entries_id <- c(entries_id, entries_temp)
         keys_id <- c(keys_id, rep(h, length(entries_temp)))

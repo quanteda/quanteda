@@ -166,8 +166,6 @@ test_that("tokens_lookup preserves case on keys", {
                      c("Country", "HOR"))
 })
 
-
-
 test_that("multi-word dictionary behavior is not affected by padding", {
     
     toks <- tokens(c(d1 = "Mexico signed a new libertarian law with Canada.",
@@ -240,3 +238,37 @@ test_that("#480 reset padding flag", {
                             HOR = c("House of Re*")))
     expect_false('' %in% featnames(dfm(tokens_lookup(toks, dict, exclusive = TRUE), tolower = FALSE)))
 })
+
+
+test_that("#500 tokens_lookup separates entry words by concatenator", {
+    
+    toks <- tokens(data_corpus_inaugural[1:5])
+    dict <- dictionary(list(Country = "united_states",
+                            HOR = c("House_of_Re*")), concatenator = '_')
+    expect_identical(featnames(dfm(tokens_lookup(toks, dict), tolower = FALSE)),
+                     c("Country", "HOR"))
+})
+
+
+test_that("#500 tokens_lookup do not separate words when multiword = FALSE", {
+    toks <- as.tokens(list(d1 = c('United States', 'Atlantic Ocean', 'Pacific Ocean'),
+                           d2 = c('Supreme Court', 'United States')))
+    dict <- dictionary(list(Countries = c("United States"),
+                            oceans = c("Atlantic *", "Pacific *")))
+    
+    expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "glob", multiword = FALSE)),
+                 list(d1 = c("Countries", "oceans", "oceans"),
+                      d2 = c("Countries")))
+})
+
+test_that("#500 tokens_lookup substitute concatenator", {
+    toks <- as.tokens(list(d1 = c('United-States', 'Atlantic-Ocean', 'Pacific-Ocean'),
+                           d2 = c('Supreme-Court', 'United-States')))
+    dict <- dictionary(list(Countries = c("United_States"),
+                            oceans = c("Atlantic_*", "Pacific_*")), concatenator = '_')
+    
+    expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "glob", concatenator = '-', multiword = FALSE)),
+                 list(d1 = c("Countries", "oceans", "oceans"),
+                      d2 = c("Countries")))
+})
+
