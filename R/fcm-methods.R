@@ -239,10 +239,17 @@ fcm_select <- function(x, features = NULL, selection = c("keep", "remove"),
             xOriginalFeatureLength <- nfeature(x2)
             xOriginalFeatures <- featnames(x2)
             if (verbose) catm(" padding 0s for another", length(origDfmFeatureIndex), "\n")
-            x <- new("fcm", Matrix::cbind2(x2, sparseMatrix(i = NULL, j = NULL, 
-                                                            dims = c(length(origDfmFeatureIndex), length(origDfmFeatureIndex)), 
-                                                            dimnames = list(features[origDfmFeatureIndex], features[origDfmFeatureIndex]))))
-            featIndex <- match(features_dfm, featnames(x))
+#             x <- new("fcm", Matrix::cbind2(x2, sparseMatrix(i = NULL, j = NULL, 
+#                                                             dims = c(length(origDfmFeatureIndex), length(origDfmFeatureIndex)), 
+#                                                             dimnames = list(features[origDfmFeatureIndex], features[origDfmFeatureIndex]))))
+            x <- new("dfmSparse", Matrix::cbind2(x2,
+                                                 sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x2), length(origDfmFeatureIndex)), 
+                                                              dimnames = list(docnames(x2), features[origDfmFeatureIndex]))))
+            if (case_insensitive & valuetype == "fixed") {
+                features_x_ori <- char_tolower(featnames(x))
+                features_dfm <- char_tolower(features_dfm)
+            }
+            featIndex <- match(features_dfm, features_x_ori)
             # x <- x2 #[, features_dfm]
         }
     }
