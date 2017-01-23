@@ -61,6 +61,9 @@ tokens_compound.tokens <- function(x, sequences,
                    concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                    case_insensitive = TRUE) {
     
+    if (!is.tokens(x))
+        stop("x must be a tokens object")
+    
     valuetype <- match.arg(valuetype)
     sequences <- sequence2list(sequences)
     seqs <- as.list(sequences)

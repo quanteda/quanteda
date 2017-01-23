@@ -56,6 +56,9 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
     if (!is.dfm(x))
         stop("x must be a dfm object")
     
+    if (!is.dictionary(dictionary))
+        stop("dictionary must be a dictionary object")
+    
     # cannot/should not apply dictionaries with multi-word keys to a dfm
     if (any(stringi::stri_detect_charclass(unlist(dictionary, use.names = FALSE), "\\p{Z}")) &&
         x@ngrams == 1) {

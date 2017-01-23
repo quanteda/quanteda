@@ -64,6 +64,12 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           overlap = FALSE,
                           verbose = FALSE) {
     
+    if (!is.tokens(x))
+        stop("x must be a tokens object")
+    
+    if (!is.dictionary(dictionary))
+        stop("dictionary must be a dictionary object")
+    
     names_org <- names(x)
     attrs_org <- attributes(x)
     concatenator_dict <- attr(dictionary, 'concatenator')
