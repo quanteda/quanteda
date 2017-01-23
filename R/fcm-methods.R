@@ -20,7 +20,7 @@
 #' fcm_compress(myfcm)
 fcm_compress <- function(x) {
     if (!is.fcm(x))
-        stop("compress_fcm only works on a dfm object")
+        stop("compress_fcm only works on a fcm object")
     if (x@context != "document")
         stop("compress_fcm invalid if fcm was created with a window context")
     
@@ -245,14 +245,17 @@ fcm_select <- function(x, features, selection = c("keep", "remove"),
     ##
     ## MIGHT NEED TO ADD BACK ORIGINAL ATTRIBUTES HERE
     ##
-    
-    if (!length(featIndex)) 
-        return(x)
-    
-    if (selection == "keep")
-        return(x[featIndex, featIndex])
-    else 
-        return(x[-featIndex, -featIndex])
+    if (!length(featIndex)) {
+        if (selection == "keep")
+            return(NULL)
+        else 
+            return(x)
+    } else {
+        if (selection == "keep")
+            return(x[featIndex, featIndex])
+        else 
+            return(x[-featIndex, -featIndex])
+    }
 }
     
 
