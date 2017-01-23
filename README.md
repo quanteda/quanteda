@@ -1,9 +1,6 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![quanteda](images/quanteda-light.png)](https://kbenoit.github.io/quanteda/)
-=============================================================================
-
-[Quantitative Analysis of Textual Data](https://kbenoit.github.io/quanteda/)
-============================================================================
+[![quanteda Quantitative Analysis of Textual Data|2x](images/quanteda_logo.svg)|small](https://kbenoit.github.io/quanteda/)
+===========================================================================================================================
 
 [![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Downloads](http://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda/branch/master) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
 
@@ -116,6 +113,15 @@ Demonstration
 
 ``` r
 library(quanteda)
+## quanteda version 0.9.9.15
+## 
+## Attaching package: 'quanteda'
+## The following object is masked from 'package:utils':
+## 
+##     View
+## The following object is masked from 'package:base':
+## 
+##     sample
 
 # create a corpus from the immigration texts from UK party platforms
 uk2010immigCorpus <- 
@@ -138,8 +144,8 @@ summary(uk2010immigCorpus)
 ##           SNP    90    136         4          SNP
 ##          UKIP   346    739        27         UKIP
 ## 
-## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Sat Jan 21 18:27:34 2017
+## Source:  /home/kohei/packages/quanteda/* on x86_64 by kohei
+## Created: Mon Jan 23 17:51:22 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
