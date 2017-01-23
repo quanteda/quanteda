@@ -22,6 +22,7 @@
 #'   features unaffected
 #' @param multiword if \code{FALSE}, multi-word entries in dictionary are treated
 #'   as single tokens
+#' @param overlap if \code{TRUE}, overlapped matches for the same key is counted
 #' @param verbose print status messages if \code{TRUE}
 #' @examples
 #' toks <- tokens(data_corpus_inaugural)
@@ -60,6 +61,7 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           capkeys = FALSE,
                           exclusive = TRUE,
                           multiword = TRUE,
+                          overlap = FALSE,
                           verbose = FALSE) {
     
     names_org <- names(x)
@@ -98,7 +100,7 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
         message('Searching ', length(entries_id), ' types of features...')
     
     if(exclusive){
-        x <- qatd_cpp_tokens_lookup(x, entries_id, keys_id)
+        x <- qatd_cpp_tokens_lookup(x, entries_id, keys_id, overlap)
     }else{
         x <- qatd_cpp_tokens_replace(x, entries_id, keys_id + length(types))
     }

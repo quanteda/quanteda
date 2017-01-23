@@ -272,3 +272,21 @@ test_that("#500 tokens_lookup substitute concatenator", {
                       d2 = c("Countries")))
 })
 
+
+test_that("#502 tokens_lookup does not count overlapped maches for the same key", {
+    
+    txt <- c(d1 = "The United States of America is bordered by the Atlantic Ocean and the Pacific Ocean.",
+             d2 = "The Supreme Court of the United States is seldom in a united state.")
+    toks <- tokens(txt)
+    dict <- dictionary(list(Countries = c("United States", "United States of America"),
+                            oceans = c("Ocean")))
+    expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "glob", overlap = TRUE)),
+                 list(d1 = c("Countries", "Countries", "oceans", "oceans"),
+                      d2 = c("Countries")))
+    
+    expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "glob", overlap = FALSE)),
+                 list(d1 = c("Countries", "oceans", "oceans"),
+                      d2 = c("Countries")))
+
+})
+
