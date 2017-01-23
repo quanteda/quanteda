@@ -87,8 +87,8 @@ test_that("multi-word dictionary behavior is not sensitive to the order of dicti
     dict2 <- dictionary(list(team = c("Arsenal", "Manchester United"),
                              Countries = c("United States")))
     expect_equal(
-        lapply(as.list(tokens_lookup(toks, dictionary = dict1, valuetype = "fixed")), sort),
-        lapply(as.list(tokens_lookup(toks, dictionary = dict2, valuetype = "fixed")), sort)
+        as.list(tokens_lookup(toks, dictionary = dict1, valuetype = "fixed")),
+        as.list(tokens_lookup(toks, dictionary = dict2, valuetype = "fixed"))
     )
     
 })
@@ -103,7 +103,7 @@ test_that("#388 issue about overlapping key values is resolved: fixed matches", 
                                   swords = c("States")))
     
     expect_equal(as.list(tokens_lookup(toks, dict_fixed, valuetype = "fixed")),
-                 list(d1 = c("Countries", "oceans", "oceans", "swords"),
+                 list(d1 = c("Countries", "swords", "oceans", "oceans"),
                       d2 = c("Countries", "swords")))
 })
 
@@ -117,10 +117,10 @@ test_that("#388 issue about overlapping key values is resolved: glob matches", {
                                  swords = "*s"))
 
     expect_equal(as.list(tokens_lookup(toks, dict_glob, valuetype = "glob")),
-              list(d1 = c("Countries", "oceans", "oceans", "swords", "swords"),
-                   d2 = c("Countries", "Countries", "swords", "swords")))
+              list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
+                   d2 = c("Countries", "swords", "swords", "Countries")))
     expect_equal(as.list(tokens_lookup(toks, dict_glob, valuetype = "glob", case_insensitive = FALSE)),
-                 list(d1 = c("Countries", "oceans", "oceans", "swords", "swords"),
+                 list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
                       d2 = c("Countries", "swords", "swords")))
 })
 
@@ -134,10 +134,10 @@ test_that("#388 issue about overlapping key values is resolved: regex matches", 
                                   swords = "s$"))
 
     expect_equal(as.list(tokens_lookup(toks, dict_regex, valuetype = "regex")),
-                 list(d1 = c("Countries", "oceans", "oceans", "swords", "swords"),
-                      d2 = c("Countries", "Countries", "swords", "swords")))
+                 list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
+                      d2 = c("Countries", "swords", "swords", "Countries")))
     expect_equal(as.list(tokens_lookup(toks, dict_regex, valuetype = "regex", case_insensitive = FALSE)),
-                 list(d1 = c("Countries", "oceans", "oceans", "swords", "swords"),
+                 list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
                       d2 = c("Countries", "swords", "swords")))
     
 })
@@ -198,15 +198,15 @@ test_that("#459 apply a hierarchical dictionary", {
             swords = c("States"))))
     
     expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "fixed", levels=1)),
-                 list(d1 = c("geo", "geo", "geo", "other"),
+                 list(d1 = c("geo", "other", "geo", "geo"),
                       d2 = c("geo", "other")))
     
     expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "fixed", levels=1:2)),
-                 list(d1 = c("geo.Countries", "geo.oceans", "geo.oceans", "other.swords"),
+                 list(d1 = c("geo.Countries", "other.swords", "geo.oceans", "geo.oceans"),
                       d2 = c("geo.Countries", "other.swords")))
     
     expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "fixed", levels=2)),
-                 list(d1 = c("Countries", "oceans", "oceans", "swords"),
+                 list(d1 = c("Countries", "swords", "oceans", "oceans"),
                       d2 = c("Countries", "swords")))
 })
 

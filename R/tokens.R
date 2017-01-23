@@ -577,7 +577,7 @@ tokens_character <- function(txt, what, removeNumbers, removePunct, removeSymbol
     if (removeSeparators) {
         if (verbose) catm("...removing separators.\n")
         tok <- lapply(tok, function(x){
-            x <- stringi::stri_subset_regex(x, "^\\p{Z}$")
+            x <- stringi::stri_subset_regex(x, "^\\p{Z}$", negate = TRUE)
             x <- x[which(x != "")]
             return(x)    
         })
