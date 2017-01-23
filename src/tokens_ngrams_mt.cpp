@@ -9,7 +9,6 @@ using namespace quanteda;
 using namespace ngrams;
 
 unsigned int ngram_id(const Ngram &ngram,
-
                       MapNgrams &map_ngram,
                       IdNgram &id_ngram){
     /*
@@ -109,8 +108,8 @@ struct skipgram_mt : public Worker{
     MapNgrams &map_ngram;
     IdNgram &id_ngram;
     
-    skipgram_mt(Texts &input_, Texts &output_, std::vector<unsigned int> &ns_, 
-                std::vector<unsigned int> &skips_, MapNgrams &map_ngram_, IdNgram &id_ngram_):
+    skipgram_mt(Texts &input_, Texts &output_, const std::vector<unsigned int> &ns_, const std::vector<unsigned int> &skips_, 
+                MapNgrams &map_ngram_, IdNgram &id_ngram_):
                 input(input_), output(output_), ns(ns_), skips(skips_), map_ngram(map_ngram_), id_ngram(id_ngram_){}
     
     void operator()(std::size_t begin, std::size_t end){
