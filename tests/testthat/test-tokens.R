@@ -11,9 +11,9 @@ test_that("nsyllable works as expected", {
 
 test_that("nsyllable works as expected with padding = TRUE", {
     txt <- c(one = "super freakily yes",
-             two = "merrily all go aerodynamic")
+             two = "merrily, all go aerodynamic")
     toks <- tokens_remove(tokens(txt), c("yes", "merrily"), padding = TRUE)
-    expect_equivalent(nsyllable(toks), list(c(2, 3, NA), c(NA, 1, 1, 5)))
+    expect_equivalent(nsyllable(toks), list(c(2, 3, NA), c(NA, NA, 1, 1, 5)))
 })
 
 
@@ -181,6 +181,21 @@ test_that("longer features longer than documents do not crash (#447)", {
     expect_equal(
         as.list(tokens_select(toks, feat)),
         list(d1 = character(0), d2 = c("b", "c", "d", "e"))
+    )
+})
+
+test_that("tokens works as expected for what = \"character\"", {
+    expect_equal(
+        as.character(tokens("one, two three.", what = "character", removeSeparators = TRUE)),
+        c("o", "n", "e", ",", "t", "w", "o", "t", "h", "r", "e", "e", ".")
+    )
+    expect_equal(
+        as.character(tokens("one, two three.", what = "character", removeSeparators = FALSE)),
+        c("o", "n", "e", ",", " ", "t", "w", "o", " ", "t", "h", "r", "e", "e", ".")
+    )
+    expect_equal(
+        as.character(tokens("one, two three.", what = "character", removePunct = TRUE)),
+        c("o", "n", "e", "t", "w", "o", "t", "h", "r", "e", "e")
     )
 })
 

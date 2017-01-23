@@ -4,6 +4,7 @@
 
 ### Bug fixes
 
+* Fixed a bug in `tokens(x, what = "character", removeSeparators = TRUE)` that returned an empty string.  
 * Fixed a bug causing `dfm` to break on > 10,000 documents. (#438)
 * Fixed a bug in `corpus.VCorpus` if the VCorpus contains a single document. (#445)
 * Fixed a bug in `dfm_compress` in which the function failed on documents that contained zero feature counts. (#467)
