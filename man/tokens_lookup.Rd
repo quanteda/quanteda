@@ -6,7 +6,7 @@
 \usage{
 tokens_lookup(x, dictionary, levels = 1:5, valuetype = c("glob", "regex",
   "fixed"), concatenator = " ", case_insensitive = TRUE, capkeys = FALSE,
-  exclusive = TRUE, multiword = TRUE, verbose = FALSE)
+  exclusive = TRUE, multiword = TRUE, overlap = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{x}{tokens object to which dictionary or thesaurus will be supplied}
@@ -39,6 +39,8 @@ features unaffected}
 
 \item{multiword}{if \code{FALSE}, multi-word entries in dictionary are treated
 as single tokens}
+
+\item{overlap}{if \code{TRUE}, overlapped matches for the same key is counted}
 
 \item{verbose}{print status messages if \code{TRUE}}
 }
