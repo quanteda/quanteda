@@ -442,3 +442,11 @@ test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distan
     expect_equal(hammingQuanteda, hammingE1071)
 })
 
+test_that("as.list.dist works as expected",{
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    ddist <- textstat_dist(presDfm, method = "hamming")
+    ddist_list <- as.list(ddist)
+    expect_equal(names(ddist_list$`1981-Reagan`)[1:3], c("2009-Obama", "2013-Obama", "1997-Clinton"))
+    expect_equivalent(ddist_list$`1981-Reagan`[1:3], c(851, 804, 785))
+})
