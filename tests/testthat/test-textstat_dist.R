@@ -412,3 +412,33 @@ test_that("test textstat_dist method = \"Canberra\" against proxy dist() : featu
     minkProxy <- minkProxy[-which(names(minkProxy) == "soviet")]
     expect_equal(minkQuanteda, minkProxy)
 })
+
+# Hamming distance
+test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distance: documents", {
+    skip_if_not_installed("e1071")
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    
+    hammingQuanteda <- sort(as.matrix(textstat_dist(presDfm, "1981-Reagan", method = "hamming", margin = "documents", upper = TRUE))[,"1981-Reagan"], decreasing = FALSE)
+    hammingQuanteda <- hammingQuanteda[-which(names(hammingQuanteda) == "1981-Reagan")]
+    hammingE1071 <- sort(e1071::hamming.distance(as.matrix(tf(presDfm, "boolean")))[, "1981-Reagan"], decreasing = FALSE)
+    if("1981-Reagan" %in% names(hammingE1071)) hammingE1071 <- hammingE1071[-which(names(hammingE1071) == "1981-Reagan")]
+    expect_equal(hammingQuanteda, hammingE1071)
+})
+
+test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distance: features", {
+    skip_if_not_installed("e1071")
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    
+    hammingQuanteda <- as.matrix(textstat_dist(presDfm, "soviet", method = "hamming", margin = "features"))[,"soviet"]
+    hammingQuanteda <- hammingQuanteda[order(names(hammingQuanteda))]
+    hammingQuanteda <- hammingQuanteda[-which(names(hammingQuanteda) == "soviet")]
+    
+    presM <- t(as.matrix(tf(presDfm, "boolean")))
+    hammingE1071 <- e1071::hamming.distance(presM)[, "soviet"]
+    hammingE1071 <- hammingE1071[order(names(hammingE1071))]
+    if("soviet" %in% names(hammingE1071)) hammingE1071 <- hammingE1071[-which(names(hammingE1071) == "soviet")]
+    expect_equal(hammingQuanteda, hammingE1071)
+})
+
