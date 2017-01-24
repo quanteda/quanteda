@@ -64,10 +64,13 @@ tokens_compound.tokens <- function(x, sequences,
     if (!is.tokens(x))
         stop("x must be a tokens object")
     
-    valuetype <- match.arg(valuetype)
     sequences <- sequence2list(sequences)
     seqs <- as.list(sequences)
     seqs <- seqs[lengths(seqs) > 1] # drop single words
+    if (!length(seqs))
+        stop("No sequences is provided")
+    
+    valuetype <- match.arg(valuetype)
     valuetype <- match.arg(valuetype)
     
     names_org <- names(x)
