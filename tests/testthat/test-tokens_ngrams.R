@@ -52,7 +52,7 @@ test_that("test that ngrams produces the results from Guthrie 2006", {
 
 })
 
-test_that("test `ngrams` on tokenized texts", {
+test_that("test `tokens_ngrams` on tokenized texts", {
       toks <- tokens(c('insurgents killed in ongoing fighting', 'insurgents killed in ongoing fighting'))
       ngms <- tokens_ngrams(toks, 2, 0)
       ngms_true <- list(
@@ -72,6 +72,18 @@ test_that("test `ngrams` on tokenized texts", {
 
 })
 
+test_that("test `tokens_ngrams` on characters", {
+    ngms <- tokens_ngrams(c('insurgents','killed', 'in', 'ongoing', 'fighting'))
+    charNgms <- char_ngrams(c('insurgents','killed', 'in', 'ongoing', 'fighting'))
+    expect_equivalent(
+        ngms,
+        charNgms,
+        c('insurgents_killed', 'killed_in', 'in_ongoing', 'ongoing_fighting')
+    )
+    
+    expect_warning(tokens_ngrams(c('insurgents killed', 'in', 'ongoing', 'fighting')), 
+                   "whitespace detected: you may need to run tokens\\(\\) first")
+})
 # FAILLING (issue #469)
 # test_that("test there is not competition between the thread", {
 #     txt <- c(one = char_tolower("Insurgents killed in ongoing fighting."),
