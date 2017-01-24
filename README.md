@@ -145,7 +145,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /home/kohei/packages/quanteda/* on x86_64 by kohei
-## Created: Mon Jan 23 17:55:18 2017
+## Created: Tue Jan 24 17:04:27 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
