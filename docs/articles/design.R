@@ -1,4 +1,4 @@
 ## ---- eval=FALSE---------------------------------------------------------
-#  mydfm <- texts(mycorpus, group = "party") %>% toLower %>% tokenize %>% wordstem %>%
-#                                  removeFeatures(stopwords("english")) %>% dfm
+#  mydfm <- texts(mycorpus, group = "party") %>% char_tolower %>% tokens %>% wordstem %>%
+#                                  tokens_remove(stopwords("english")) %>% dfm
 

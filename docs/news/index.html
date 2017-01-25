@@ -91,13 +91,25 @@
 <div id="bug-fixes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#bug-fixes" class="anchor"> </a>Bug fixes</h3>
-<ul><li>Fixed a bug causing <code>dfm</code> to break on &gt; 10,000 documents. (#438)</li>
+<ul><li>Fixed a bug in <code><a href="../reference/tokens.html">tokens(x, what = "character", removeSeparators = TRUE)</a></code> that returned an empty string.<br/></li>
+<li>Fixed a bug causing <code>dfm</code> to break on &gt; 10,000 documents. (#438)</li>
 <li>Fixed a bug in <code>corpus.VCorpus</code> if the VCorpus contains a single document. (#445)</li>
+<li>Fixed a bug in <code>dfm_compress</code> in which the function failed on documents that contained zero feature counts. (#467)</li>
+<li>Fixed a bug in <code>textmodel_NB</code> that caused the class priors <code>Pc</code> to be refactored alphabetically instead of in the order of assignment (#471), also affecting predicted classes (#476).</li>
 </ul></div>
 <div id="new-features" class="section level3">
 <h3 class="hasAnchor">
 <a href="#new-features" class="anchor"> </a>New features</h3>
-<ul><li>Added <code>min_nchar</code> and <code>max_nchar</code> arguments to <code>dfm_select</code>.<br/></li>
+<ul><li>New textstat function <code><a href="../reference/textstat_keyness.html">textstat_keyness()</a></code> discovers words that occur at differential rates between partitions of a dfm (using chi-squared, Fisher’s exact test, and the G^2 likelihood ratio test to measure the strength of associations).<br/></li>
+<li>Added 2017-Trump to the inaugural corpus datasets (<code>data_corpus_inaugual</code> and <code>data_char_inaugural</code>).<br/></li>
+<li>Improved the <code>groups</code> argument in <code><a href="../reference/texts.html">texts()</a></code> (and in <code><a href="../reference/dfm.html">dfm()</a></code> that uses this function), which will now coerce to a factor rather than requiring one.</li>
+<li>Added a dfm constructor from dfm objects, with the option of collapsing by groups.</li>
+<li>Added new arguments to <code><a href="../reference/sequences.html">sequences()</a></code>: <code>ordered</code> and <code>max_length</code>, the latter to prevent memory leaks from extremely long sequences.<br/></li>
+<li>
+<code><a href="../reference/dictionary.html">dictionary()</a></code> now accepts YAML as an input file format.</li>
+<li>
+<code>dfm_lookup</code> and <code>tokens_lookup</code> now accept a <code>levels</code> argument to determine which level of a hierarchical dictionary should be applied.</li>
+<li>Added <code>min_nchar</code> and <code>max_nchar</code> arguments to <code>dfm_select</code>.<br/></li>
 <li>
 <code><a href="../reference/dictionary.html">dictionary()</a></code> can now be called on the argument of a <code>list()</code> without explicitly wrapping it in <code>list()</code>.<br/></li>
 <li>

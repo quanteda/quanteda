@@ -159,16 +159,18 @@ matrix is recorded</dd>
 #&gt; 2005-Bush       93.33274    96.51943  92.98387     70.39886     79.44810
 #&gt; 2009-Obama      81.83520    80.75890  80.61017     84.88816     67.29042
 #&gt; 2013-Obama     103.88455   104.52272 104.20653     70.46276     71.86793
-#&gt;              2001-Bush 2005-Bush 2009-Obama 2013-Obama
-#&gt; 1981-Reagan   95.72356  93.33274   81.83520  103.88455
-#&gt; 1985-Reagan  101.74478  96.51943   80.75890  104.52272
-#&gt; 1989-Bush     93.68031  92.98387   80.61017  104.20653
-#&gt; 1993-Clinton  64.32729  70.39886   84.88816   70.46276
-#&gt; 1997-Clinton  72.31874  79.44810   67.29042   71.86793
-#&gt; 2001-Bush               56.23166   78.24321   54.69004
-#&gt; 2005-Bush     56.23166             85.39321   66.68583
-#&gt; 2009-Obama    78.24321  85.39321              72.10409
-#&gt; 2013-Obama    54.69004  66.68583   72.10409           </div><div class='input'>
+#&gt; 2017-Trump     109.20165   114.82160 108.19427     76.40681     79.92496
+#&gt;              2001-Bush 2005-Bush 2009-Obama 2013-Obama 2017-Trump
+#&gt; 1981-Reagan   95.72356  93.33274   81.83520  103.88455  109.20165
+#&gt; 1985-Reagan  101.74478  96.51943   80.75890  104.52272  114.82160
+#&gt; 1989-Bush     93.68031  92.98387   80.61017  104.20653  108.19427
+#&gt; 1993-Clinton  64.32729  70.39886   84.88816   70.46276   76.40681
+#&gt; 1997-Clinton  72.31874  79.44810   67.29042   71.86793   79.92496
+#&gt; 2001-Bush               56.23166   78.24321   54.69004   54.86347
+#&gt; 2005-Bush     56.23166             85.39321   66.68583   67.33498
+#&gt; 2009-Obama    78.24321  85.39321              72.10409   86.01163
+#&gt; 2013-Obama    54.69004  66.68583   72.10409              60.22458
+#&gt; 2017-Trump    54.86347  67.33498   86.01163   60.22458           </div><div class='input'>
 <span class='co'># for specific comparisons</span>
 <span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='st'>"1985-Reagan"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: non-square matrix</span></div><div class='output co'>#&gt;              1985-Reagan 1981-Reagan 1989-Bush 1993-Clinton 1997-Clinton
 #&gt; 1985-Reagan                 57.68015  69.94283     89.92219     79.58643
@@ -190,16 +192,18 @@ matrix is recorded</dd>
 #&gt; 1997-Clinton   67.29042   71.86793     0.00000     0.00000   0.00000
 #&gt; 2001-Bush      78.24321   54.69004     0.00000     0.00000   0.00000
 #&gt; 2005-Bush      85.39321   66.68583     0.00000     0.00000   0.00000
-#&gt;              1993-Clinton 1997-Clinton 2001-Bush 2005-Bush
-#&gt; 2009-Obama       84.88816     67.29042  78.24321  85.39321
-#&gt; 2013-Obama       70.46276     71.86793  54.69004  66.68583
-#&gt; 1981-Reagan       0.00000      0.00000   0.00000   0.00000
-#&gt; 1985-Reagan       0.00000      0.00000   0.00000   0.00000
-#&gt; 1989-Bush         0.00000      0.00000   0.00000   0.00000
-#&gt; 1993-Clinton                   0.00000   0.00000   0.00000
-#&gt; 1997-Clinton      0.00000                0.00000   0.00000
-#&gt; 2001-Bush         0.00000      0.00000             0.00000
-#&gt; 2005-Bush         0.00000      0.00000   0.00000          </div><div class='input'><span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='st'>"2005-Bush"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"eJaccard"</span>)</div><div class='output co'>#&gt;              2005-Bush 1981-Reagan 1985-Reagan 1989-Bush 1993-Clinton
+#&gt; 2017-Trump     86.01163   60.22458     0.00000     0.00000   0.00000
+#&gt;              1993-Clinton 1997-Clinton 2001-Bush 2005-Bush 2017-Trump
+#&gt; 2009-Obama       84.88816     67.29042  78.24321  85.39321   86.01163
+#&gt; 2013-Obama       70.46276     71.86793  54.69004  66.68583   60.22458
+#&gt; 1981-Reagan       0.00000      0.00000   0.00000   0.00000    0.00000
+#&gt; 1985-Reagan       0.00000      0.00000   0.00000   0.00000    0.00000
+#&gt; 1989-Bush         0.00000      0.00000   0.00000   0.00000    0.00000
+#&gt; 1993-Clinton                   0.00000   0.00000   0.00000    0.00000
+#&gt; 1997-Clinton      0.00000                0.00000   0.00000    0.00000
+#&gt; 2001-Bush         0.00000      0.00000             0.00000    0.00000
+#&gt; 2005-Bush         0.00000      0.00000   0.00000              0.00000
+#&gt; 2017-Trump        0.00000      0.00000   0.00000   0.00000           </div><div class='input'><span class='fu'>textstat_dist</span>(<span class='no'>presDfm</span>, <span class='st'>"2005-Bush"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"eJaccard"</span>)</div><div class='output co'>#&gt;              2005-Bush 1981-Reagan 1985-Reagan 1989-Bush 1993-Clinton
 #&gt; 2005-Bush                0.1905877   0.2007802 0.1897176    0.1558785
 #&gt; 1981-Reagan  0.1905877               0.0000000 0.0000000    0.0000000
 #&gt; 1985-Reagan  0.2007802   0.0000000             0.0000000    0.0000000
@@ -209,77 +213,83 @@ matrix is recorded</dd>
 #&gt; 2001-Bush    0.1112871   0.0000000   0.0000000 0.0000000    0.0000000
 #&gt; 2009-Obama   0.1948222   0.0000000   0.0000000 0.0000000    0.0000000
 #&gt; 2013-Obama   0.1583972   0.0000000   0.0000000 0.0000000    0.0000000
-#&gt;              1997-Clinton 2001-Bush 2009-Obama 2013-Obama
-#&gt; 2005-Bush       0.1747363 0.1112871  0.1948222  0.1583972
-#&gt; 1981-Reagan     0.0000000 0.0000000  0.0000000  0.0000000
-#&gt; 1985-Reagan     0.0000000 0.0000000  0.0000000  0.0000000
-#&gt; 1989-Bush       0.0000000 0.0000000  0.0000000  0.0000000
-#&gt; 1993-Clinton    0.0000000 0.0000000  0.0000000  0.0000000
-#&gt; 1997-Clinton              0.0000000  0.0000000  0.0000000
-#&gt; 2001-Bush       0.0000000            0.0000000  0.0000000
-#&gt; 2009-Obama      0.0000000 0.0000000             0.0000000
-#&gt; 2013-Obama      0.0000000 0.0000000  0.0000000           </div><div class='input'>
+#&gt; 2017-Trump   0.1643945   0.0000000   0.0000000 0.0000000    0.0000000
+#&gt;              1997-Clinton 2001-Bush 2009-Obama 2013-Obama 2017-Trump
+#&gt; 2005-Bush       0.1747363 0.1112871  0.1948222  0.1583972  0.1643945
+#&gt; 1981-Reagan     0.0000000 0.0000000  0.0000000  0.0000000  0.0000000
+#&gt; 1985-Reagan     0.0000000 0.0000000  0.0000000  0.0000000  0.0000000
+#&gt; 1989-Bush       0.0000000 0.0000000  0.0000000  0.0000000  0.0000000
+#&gt; 1993-Clinton    0.0000000 0.0000000  0.0000000  0.0000000  0.0000000
+#&gt; 1997-Clinton              0.0000000  0.0000000  0.0000000  0.0000000
+#&gt; 2001-Bush       0.0000000            0.0000000  0.0000000  0.0000000
+#&gt; 2009-Obama      0.0000000 0.0000000             0.0000000  0.0000000
+#&gt; 2013-Obama      0.0000000 0.0000000  0.0000000             0.0000000
+#&gt; 2017-Trump      0.0000000 0.0000000  0.0000000  0.0000000           </div><div class='input'>
 <span class='co'>## similarities</span>
 
 <span class='co'># compute some document similarities</span>
 (<span class='no'>tmp</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt;              1981-Reagan 1985-Reagan 1989-Bush 1993-Clinton 1997-Clinton
-#&gt; 1985-Reagan    0.9685409                                                
-#&gt; 1989-Bush      0.9599217   0.9537449                                    
-#&gt; 1993-Clinton   0.9391137   0.9452609 0.9358174                          
-#&gt; 1997-Clinton   0.9386791   0.9468983 0.9381904    0.9241745             
-#&gt; 2001-Bush      0.9498797   0.9371453 0.9543776    0.9258829    0.9321614
-#&gt; 2005-Bush      0.9346990   0.9297108 0.9349331    0.9142198    0.9077993
-#&gt; 2009-Obama     0.9387730   0.9422163 0.9407657    0.9000505    0.9382904
-#&gt; 2013-Obama     0.9389438   0.9409353 0.9370933    0.9118394    0.9387808
-#&gt;              2001-Bush 2005-Bush 2009-Obama
-#&gt; 1985-Reagan                                
-#&gt; 1989-Bush                                  
-#&gt; 1993-Clinton                               
-#&gt; 1997-Clinton                               
-#&gt; 2001-Bush                                  
-#&gt; 2005-Bush    0.9437295                     
-#&gt; 2009-Obama   0.9240388 0.8976144           
-#&gt; 2013-Obama   0.9363852 0.9195065  0.9458185</div><div class='input'>
+#&gt; 1985-Reagan    0.9685603                                                
+#&gt; 1989-Bush      0.9599456   0.9537706                                    
+#&gt; 1993-Clinton   0.9391462   0.9452855 0.9358521                          
+#&gt; 1997-Clinton   0.9387178   0.9469393 0.9382240    0.9242089             
+#&gt; 2001-Bush      0.9499111   0.9371852 0.9544049    0.9259232    0.9322032
+#&gt; 2005-Bush      0.9347397   0.9297655 0.9349675    0.9142590    0.9078760
+#&gt; 2009-Obama     0.9388097   0.9422610 0.9407946    0.9000981    0.9383421
+#&gt; 2013-Obama     0.9389675   0.9409749 0.9371089    0.9118611    0.9388301
+#&gt; 2017-Trump     0.9290244   0.9149626 0.9311455    0.8945840    0.9211435
+#&gt;              2001-Bush 2005-Bush 2009-Obama 2013-Obama
+#&gt; 1985-Reagan                                           
+#&gt; 1989-Bush                                             
+#&gt; 1993-Clinton                                          
+#&gt; 1997-Clinton                                          
+#&gt; 2001-Bush                                             
+#&gt; 2005-Bush    0.9437618                                
+#&gt; 2009-Obama   0.9240847 0.8977024                      
+#&gt; 2013-Obama   0.9364082 0.9195773  0.9458660           
+#&gt; 2017-Trump   0.9352192 0.9198008  0.9119907  0.9164345</div><div class='input'>
 <span class='co'># output as a list</span>
 <span class='fu'>as.list</span>(<span class='no'>tmp</span>)[<span class='fl'>1</span>:<span class='fl'>2</span>]</div><div class='output co'>#&gt; $`1981-Reagan`
 #&gt;  1985-Reagan    1989-Bush    2001-Bush 1993-Clinton   2013-Obama   2009-Obama 
-#&gt;    0.9685409    0.9599217    0.9498797    0.9391137    0.9389438    0.9387730 
-#&gt; 1997-Clinton    2005-Bush 
-#&gt;    0.9386791    0.9346990 
+#&gt;    0.9685603    0.9599456    0.9499111    0.9391462    0.9389675    0.9388097 
+#&gt; 1997-Clinton    2005-Bush   2017-Trump 
+#&gt;    0.9387178    0.9347397    0.9290244 
 #&gt; 
 #&gt; $`1985-Reagan`
 #&gt;  1981-Reagan    1989-Bush 1997-Clinton 1993-Clinton   2009-Obama   2013-Obama 
-#&gt;    0.9685409    0.9537449    0.9468983    0.9452609    0.9422163    0.9409353 
-#&gt;    2001-Bush    2005-Bush 
-#&gt;    0.9371453    0.9297108 
+#&gt;    0.9685603    0.9537706    0.9469393    0.9452855    0.9422610    0.9409749 
+#&gt;    2001-Bush    2005-Bush   2017-Trump 
+#&gt;    0.9371852    0.9297655    0.9149626 
 #&gt; </div><div class='input'>
 <span class='co'># for specific comparisons</span>
 <span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='st'>"1985-Reagan"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: non-square matrix</span></div><div class='output co'>#&gt;              1985-Reagan 1981-Reagan 1989-Bush 1993-Clinton
-#&gt; 1981-Reagan    0.9685409                                   
-#&gt; 1989-Bush      0.9537449   0.0000000                       
-#&gt; 1993-Clinton   0.9452609   0.0000000 0.0000000             
-#&gt; 1997-Clinton   0.9468983   0.0000000 0.0000000    0.0000000</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: non-square matrix</span></div><div class='output co'>#&gt;             2009-Obama 2013-Obama 1981-Reagan 1985-Reagan
-#&gt; 2013-Obama   0.9458185                                   
-#&gt; 1981-Reagan  0.9387730  0.9389438                        
-#&gt; 1985-Reagan  0.9422163  0.9409353   0.0000000            
-#&gt; 1989-Bush    0.9407657  0.9370933   0.0000000   0.0000000</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;              2009-Obama 2013-Obama 1981-Reagan 1985-Reagan 1989-Bush
-#&gt; 2013-Obama    0.9458185                                             
-#&gt; 1981-Reagan   0.9387730  0.9389438                                  
-#&gt; 1985-Reagan   0.9422163  0.9409353   0.0000000                      
-#&gt; 1989-Bush     0.9407657  0.9370933   0.0000000   0.0000000          
-#&gt; 1993-Clinton  0.9000505  0.9118394   0.0000000   0.0000000 0.0000000
-#&gt; 1997-Clinton  0.9382904  0.9387808   0.0000000   0.0000000 0.0000000
-#&gt; 2001-Bush     0.9240388  0.9363852   0.0000000   0.0000000 0.0000000
-#&gt; 2005-Bush     0.8976144  0.9195065   0.0000000   0.0000000 0.0000000
-#&gt;              1993-Clinton 1997-Clinton 2001-Bush
-#&gt; 2013-Obama                                      
-#&gt; 1981-Reagan                                     
-#&gt; 1985-Reagan                                     
-#&gt; 1989-Bush                                       
-#&gt; 1993-Clinton                                    
-#&gt; 1997-Clinton    0.0000000                       
-#&gt; 2001-Bush       0.0000000    0.0000000          
-#&gt; 2005-Bush       0.0000000    0.0000000 0.0000000</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>)</div><div class='output co'>#&gt;              2009-Obama 2013-Obama 1981-Reagan 1985-Reagan 1989-Bush
+#&gt; 1981-Reagan    0.9685603                                   
+#&gt; 1989-Bush      0.9537706   0.0000000                       
+#&gt; 1993-Clinton   0.9452855   0.0000000 0.0000000             
+#&gt; 1997-Clinton   0.9469393   0.0000000 0.0000000    0.0000000</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: non-square matrix</span></div><div class='output co'>#&gt;             2009-Obama 2013-Obama 1981-Reagan 1985-Reagan
+#&gt; 2013-Obama   0.9458660                                   
+#&gt; 1981-Reagan  0.9388097  0.9389675                        
+#&gt; 1985-Reagan  0.9422610  0.9409749   0.0000000            
+#&gt; 1989-Bush    0.9407946  0.9371089   0.0000000   0.0000000</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt;              2009-Obama 2013-Obama 1981-Reagan 1985-Reagan 1989-Bush
+#&gt; 2013-Obama    0.9458660                                             
+#&gt; 1981-Reagan   0.9388097  0.9389675                                  
+#&gt; 1985-Reagan   0.9422610  0.9409749   0.0000000                      
+#&gt; 1989-Bush     0.9407946  0.9371089   0.0000000   0.0000000          
+#&gt; 1993-Clinton  0.9000981  0.9118611   0.0000000   0.0000000 0.0000000
+#&gt; 1997-Clinton  0.9383421  0.9388301   0.0000000   0.0000000 0.0000000
+#&gt; 2001-Bush     0.9240847  0.9364082   0.0000000   0.0000000 0.0000000
+#&gt; 2005-Bush     0.8977024  0.9195773   0.0000000   0.0000000 0.0000000
+#&gt; 2017-Trump    0.9119907  0.9164345   0.0000000   0.0000000 0.0000000
+#&gt;              1993-Clinton 1997-Clinton 2001-Bush 2005-Bush
+#&gt; 2013-Obama                                                
+#&gt; 1981-Reagan                                               
+#&gt; 1985-Reagan                                               
+#&gt; 1989-Bush                                                 
+#&gt; 1993-Clinton                                              
+#&gt; 1997-Clinton    0.0000000                                 
+#&gt; 2001-Bush       0.0000000    0.0000000                    
+#&gt; 2005-Bush       0.0000000    0.0000000 0.0000000          
+#&gt; 2017-Trump      0.0000000    0.0000000 0.0000000 0.0000000</div><div class='input'><span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>)</div><div class='output co'>#&gt;              2009-Obama 2013-Obama 1981-Reagan 1985-Reagan 1989-Bush
 #&gt; 2013-Obama    0.9473229                                             
 #&gt; 1981-Reagan   0.9399460  0.9397146                                  
 #&gt; 1985-Reagan   0.9436339  0.9422001   0.0000000                      
@@ -288,37 +298,39 @@ matrix is recorded</dd>
 #&gt; 1997-Clinton  0.9399306  0.9403480   0.0000000   0.0000000 0.0000000
 #&gt; 2001-Bush     0.9255036  0.9371368   0.0000000   0.0000000 0.0000000
 #&gt; 2005-Bush     0.9004034  0.9217499   0.0000000   0.0000000 0.0000000
-#&gt;              1993-Clinton 1997-Clinton 2001-Bush
-#&gt; 2013-Obama                                      
-#&gt; 1981-Reagan                                     
-#&gt; 1985-Reagan                                     
-#&gt; 1989-Bush                                       
-#&gt; 1993-Clinton                                    
-#&gt; 1997-Clinton    0.0000000                       
-#&gt; 2001-Bush       0.0000000    0.0000000          
-#&gt; 2005-Bush       0.0000000    0.0000000 0.0000000</div><div class='input'>
+#&gt; 2017-Trump    0.9137103  0.9177145   0.0000000   0.0000000 0.0000000
+#&gt;              1993-Clinton 1997-Clinton 2001-Bush 2005-Bush
+#&gt; 2013-Obama                                                
+#&gt; 1981-Reagan                                               
+#&gt; 1985-Reagan                                               
+#&gt; 1989-Bush                                                 
+#&gt; 1993-Clinton                                              
+#&gt; 1997-Clinton    0.0000000                                 
+#&gt; 2001-Bush       0.0000000    0.0000000                    
+#&gt; 2005-Bush       0.0000000    0.0000000 0.0000000          
+#&gt; 2017-Trump      0.0000000    0.0000000 0.0000000 0.0000000</div><div class='input'>
 <span class='co'># compute some term similarities</span>
 <span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"fair"</span>, <span class='st'>"health"</span>, <span class='st'>"terror"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>,
                <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>, <span class='fl'>20</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: non-square matrix</span></div><div class='output co'>#&gt;                fair     terror     health      senat   hatfield          ,
-#&gt; terror   0.43033148                                                       
-#&gt; health   0.51639778 0.44444444                                            
-#&gt; senat    0.57535596 0.24759378 0.00000000                                 
-#&gt; hatfield 0.51639778 0.66666667 0.00000000 0.00000000                      
-#&gt; ,        0.78760215 0.58327489 0.67707179 0.00000000 0.00000000           
-#&gt; mr       0.26363525 0.29172998 0.09724333 0.00000000 0.00000000 0.00000000
-#&gt; .        0.76454880 0.59341577 0.70730365 0.00000000 0.00000000 0.00000000
-#&gt; chief    0.57735027 0.29814240 0.29814240 0.00000000 0.00000000 0.00000000
-#&gt; justic   0.41403934 0.17817416 0.53452248 0.00000000 0.00000000 0.00000000
-#&gt; presid   0.66914961 0.43193421 0.43193421 0.00000000 0.00000000 0.00000000
-#&gt; vice     0.77459667 0.44444444 0.33333333 0.00000000 0.00000000 0.00000000
-#&gt; bush     0.69282032 0.44721360 0.59628479 0.00000000 0.00000000 0.00000000
-#&gt; mondal   0.51639778 0.66666667 0.00000000 0.00000000 0.00000000 0.00000000
-#&gt; baker    0.51639778 0.66666667 0.00000000 0.00000000 0.00000000 0.00000000
-#&gt; speaker  0.31139958 0.20100756 0.00000000 0.00000000 0.00000000 0.00000000
-#&gt; o&#39;neil   0.73029674 0.47140452 0.00000000 0.00000000 0.00000000 0.00000000
-#&gt; reverend 0.59628479 0.38490018 0.19245009 0.00000000 0.00000000 0.00000000
-#&gt; moomaw   0.51639778 0.66666667 0.00000000 0.00000000 0.00000000 0.00000000
-#&gt; fellow   0.55138280 0.64993368 0.64993368 0.00000000 0.00000000 0.00000000
+#&gt; terror   0.40824829                                                       
+#&gt; health   0.51639778 0.42163702                                            
+#&gt; senat    0.57535596 0.23488809 0.00000000                                 
+#&gt; hatfield 0.51639778 0.63245553 0.00000000 0.00000000                      
+#&gt; ,        0.76806127 0.60961839 0.66027324 0.00000000 0.00000000           
+#&gt; mr       0.26363525 0.27675936 0.09724333 0.00000000 0.00000000 0.00000000
+#&gt; .        0.73926959 0.62499408 0.68391721 0.00000000 0.00000000 0.00000000
+#&gt; chief    0.52704628 0.38729833 0.27216553 0.00000000 0.00000000 0.00000000
+#&gt; justic   0.41039134 0.20942695 0.52981294 0.00000000 0.00000000 0.00000000
+#&gt; presid   0.61429512 0.50156986 0.39652579 0.00000000 0.00000000 0.00000000
+#&gt; vice     0.77459667 0.42163702 0.33333333 0.00000000 0.00000000 0.00000000
+#&gt; bush     0.63245553 0.51639778 0.54433105 0.00000000 0.00000000 0.00000000
+#&gt; mondal   0.51639778 0.63245553 0.00000000 0.00000000 0.00000000 0.00000000
+#&gt; baker    0.51639778 0.63245553 0.00000000 0.00000000 0.00000000 0.00000000
+#&gt; speaker  0.31139958 0.19069252 0.00000000 0.00000000 0.00000000 0.00000000
+#&gt; o&#39;neil   0.73029674 0.44721360 0.00000000 0.00000000 0.00000000 0.00000000
+#&gt; reverend 0.59628479 0.36514837 0.19245009 0.00000000 0.00000000 0.00000000
+#&gt; moomaw   0.51639778 0.63245553 0.00000000 0.00000000 0.00000000 0.00000000
+#&gt; fellow   0.54902140 0.64317588 0.64715023 0.00000000 0.00000000 0.00000000
 #&gt;                  mr          .      chief     justic     presid       vice
 #&gt; terror                                                                    
 #&gt; health                                                                    

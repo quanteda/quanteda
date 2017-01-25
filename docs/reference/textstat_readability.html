@@ -130,33 +130,33 @@ with each column consisting of a requested measure.</dd>
 #&gt; text1 17.000000 4.608659   -1.30
 #&gt; text2  9.066667 3.254382   -1.11</div><div class='input'><span class='no'>inaugReadability</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_readability</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"all"</span>)
 <span class='fu'>round</span>(<span class='fu'>cor</span>(<span class='no'>inaugReadability</span>), <span class='fl'>2</span>)</div><div class='output co'>#&gt;                         ARI ARI.simple Bormuth Bormuth.GP Coleman Coleman.C2
-#&gt; ARI                    1.00       1.00   -0.99       0.90   -0.59      -0.77
-#&gt; ARI.simple             1.00       1.00   -0.99       0.90   -0.59      -0.77
-#&gt; Bormuth               -0.99      -0.99    1.00      -0.93    0.49       0.69
-#&gt; Bormuth.GP             0.90       0.90   -0.93       1.00   -0.35      -0.51
-#&gt; Coleman               -0.59      -0.59    0.49      -0.35    1.00       0.96
-#&gt; Coleman.C2            -0.77      -0.77    0.69      -0.51    0.96       1.00
-#&gt; Coleman.Liau          -0.81      -0.80    0.73      -0.56    0.91       0.97
-#&gt; Coleman.Liau.grade     0.81       0.80   -0.73       0.56   -0.91      -0.97
-#&gt; Coleman.Liau.short     0.81       0.80   -0.73       0.56   -0.91      -0.97
-#&gt; Dale.Chall            -0.99      -0.99    1.00      -0.93    0.48       0.68
-#&gt; Dale.Chall.old         0.99       0.99   -1.00       0.93   -0.48      -0.68
-#&gt; Dale.Chall.PSK         0.99       0.99   -1.00       0.93   -0.48      -0.68
-#&gt; Danielson.Bryan        1.00       1.00   -0.98       0.88   -0.64      -0.81
-#&gt; Danielson.Bryan.2     -0.32      -0.32    0.20      -0.04    0.89       0.80
+#&gt; ARI                    1.00       1.00   -0.99       0.90   -0.58      -0.77
+#&gt; ARI.simple             1.00       1.00   -0.99       0.90   -0.57      -0.76
+#&gt; Bormuth               -0.99      -0.99    1.00      -0.93    0.48       0.69
+#&gt; Bormuth.GP             0.90       0.90   -0.93       1.00   -0.34      -0.52
+#&gt; Coleman               -0.58      -0.57    0.48      -0.34    1.00       0.96
+#&gt; Coleman.C2            -0.77      -0.76    0.69      -0.52    0.96       1.00
+#&gt; Coleman.Liau          -0.81      -0.80    0.73      -0.56    0.90       0.97
+#&gt; Coleman.Liau.grade     0.81       0.80   -0.73       0.56   -0.90      -0.97
+#&gt; Coleman.Liau.short     0.81       0.80   -0.73       0.56   -0.90      -0.97
+#&gt; Dale.Chall            -0.99      -0.99    1.00      -0.93    0.47       0.68
+#&gt; Dale.Chall.old         0.99       0.99   -1.00       0.93   -0.47      -0.68
+#&gt; Dale.Chall.PSK         0.99       0.99   -1.00       0.93   -0.47      -0.68
+#&gt; Danielson.Bryan        1.00       1.00   -0.98       0.88   -0.63      -0.81
+#&gt; Danielson.Bryan.2     -0.31      -0.31    0.19      -0.04    0.89       0.79
 #&gt; Dickes.Steiwer        -0.39      -0.39    0.41      -0.34    0.14       0.25
-#&gt; DRP                    0.99       0.99   -1.00       0.93   -0.49      -0.69
-#&gt; ELF                    1.00       1.00   -0.99       0.90   -0.62      -0.79
-#&gt; Farr.Jenkins.Paterson -0.99      -0.99    1.00      -0.93    0.49       0.69
-#&gt; Flesch                -0.97      -0.97    0.93      -0.82    0.76       0.89
-#&gt; Flesch.PSK             0.99       0.98   -0.96       0.86   -0.71      -0.86
-#&gt; Flesch.Kincaid         1.00       1.00   -0.99       0.90   -0.62      -0.79
+#&gt; DRP                    0.99       0.99   -1.00       0.93   -0.48      -0.69
+#&gt; ELF                    1.00       1.00   -0.99       0.90   -0.61      -0.79
+#&gt; Farr.Jenkins.Paterson -0.99      -0.99    1.00      -0.93    0.48       0.69
+#&gt; Flesch                -0.97      -0.97    0.93      -0.82    0.75       0.89
+#&gt; Flesch.PSK             0.99       0.98   -0.96       0.86   -0.70      -0.86
+#&gt; Flesch.Kincaid         1.00       1.00   -0.99       0.90   -0.61      -0.79
 #&gt;                       Coleman.Liau Coleman.Liau.grade Coleman.Liau.short
 #&gt; ARI                          -0.81               0.81               0.81
 #&gt; ARI.simple                   -0.80               0.80               0.80
 #&gt; Bormuth                       0.73              -0.73              -0.73
 #&gt; Bormuth.GP                   -0.56               0.56               0.56
-#&gt; Coleman                       0.91              -0.91              -0.91
+#&gt; Coleman                       0.90              -0.90              -0.90
 #&gt; Coleman.C2                    0.97              -0.97              -0.97
 #&gt; Coleman.Liau                  1.00              -1.00              -1.00
 #&gt; Coleman.Liau.grade           -1.00               1.00               1.00
@@ -166,19 +166,19 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK               -0.72               0.72               0.72
 #&gt; Danielson.Bryan              -0.85               0.85               0.85
 #&gt; Danielson.Bryan.2             0.81              -0.81              -0.81
-#&gt; Dickes.Steiwer                0.23              -0.23              -0.23
+#&gt; Dickes.Steiwer                0.24              -0.24              -0.24
 #&gt; DRP                          -0.73               0.73               0.73
 #&gt; ELF                          -0.81               0.81               0.81
-#&gt; Farr.Jenkins.Paterson         0.72              -0.72              -0.72
+#&gt; Farr.Jenkins.Paterson         0.73              -0.73              -0.73
 #&gt; Flesch                        0.91              -0.91              -0.91
 #&gt; Flesch.PSK                   -0.88               0.88               0.88
-#&gt; Flesch.Kincaid               -0.82               0.82               0.82
+#&gt; Flesch.Kincaid               -0.83               0.83               0.83
 #&gt;                       Dale.Chall Dale.Chall.old Dale.Chall.PSK Danielson.Bryan
 #&gt; ARI                        -0.99           0.99           0.99            1.00
 #&gt; ARI.simple                 -0.99           0.99           0.99            1.00
 #&gt; Bormuth                     1.00          -1.00          -1.00           -0.98
 #&gt; Bormuth.GP                 -0.93           0.93           0.93            0.88
-#&gt; Coleman                     0.48          -0.48          -0.48           -0.64
+#&gt; Coleman                     0.47          -0.47          -0.47           -0.63
 #&gt; Coleman.C2                  0.68          -0.68          -0.68           -0.81
 #&gt; Coleman.Liau                0.72          -0.72          -0.72           -0.85
 #&gt; Coleman.Liau.grade         -0.72           0.72           0.72            0.85
@@ -187,7 +187,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.old             -1.00           1.00           1.00            0.98
 #&gt; Dale.Chall.PSK             -1.00           1.00           1.00            0.98
 #&gt; Danielson.Bryan            -0.98           0.98           0.98            1.00
-#&gt; Danielson.Bryan.2           0.19          -0.19          -0.19           -0.39
+#&gt; Danielson.Bryan.2           0.18          -0.18          -0.18           -0.38
 #&gt; Dickes.Steiwer              0.41          -0.41          -0.41           -0.38
 #&gt; DRP                        -1.00           1.00           1.00            0.98
 #&gt; ELF                        -0.98           0.98           0.98            1.00
@@ -196,42 +196,42 @@ with each column consisting of a requested measure.</dd>
 #&gt; Flesch.PSK                 -0.96           0.96           0.96            0.99
 #&gt; Flesch.Kincaid             -0.98           0.98           0.98            1.00
 #&gt;                       Danielson.Bryan.2 Dickes.Steiwer   DRP   ELF
-#&gt; ARI                               -0.32          -0.39  0.99  1.00
-#&gt; ARI.simple                        -0.32          -0.39  0.99  1.00
-#&gt; Bormuth                            0.20           0.41 -1.00 -0.99
+#&gt; ARI                               -0.31          -0.39  0.99  1.00
+#&gt; ARI.simple                        -0.31          -0.39  0.99  1.00
+#&gt; Bormuth                            0.19           0.41 -1.00 -0.99
 #&gt; Bormuth.GP                        -0.04          -0.34  0.93  0.90
-#&gt; Coleman                            0.89           0.14 -0.49 -0.62
-#&gt; Coleman.C2                         0.80           0.25 -0.69 -0.79
-#&gt; Coleman.Liau                       0.81           0.23 -0.73 -0.81
-#&gt; Coleman.Liau.grade                -0.81          -0.23  0.73  0.81
-#&gt; Coleman.Liau.short                -0.81          -0.23  0.73  0.81
-#&gt; Dale.Chall                         0.19           0.41 -1.00 -0.98
-#&gt; Dale.Chall.old                    -0.19          -0.41  1.00  0.98
-#&gt; Dale.Chall.PSK                    -0.19          -0.41  1.00  0.98
-#&gt; Danielson.Bryan                   -0.39          -0.38  0.98  1.00
-#&gt; Danielson.Bryan.2                  1.00           0.00 -0.20 -0.34
+#&gt; Coleman                            0.89           0.14 -0.48 -0.61
+#&gt; Coleman.C2                         0.79           0.25 -0.69 -0.79
+#&gt; Coleman.Liau                       0.81           0.24 -0.73 -0.81
+#&gt; Coleman.Liau.grade                -0.81          -0.24  0.73  0.81
+#&gt; Coleman.Liau.short                -0.81          -0.24  0.73  0.81
+#&gt; Dale.Chall                         0.18           0.41 -1.00 -0.98
+#&gt; Dale.Chall.old                    -0.18          -0.41  1.00  0.98
+#&gt; Dale.Chall.PSK                    -0.18          -0.41  1.00  0.98
+#&gt; Danielson.Bryan                   -0.38          -0.38  0.98  1.00
+#&gt; Danielson.Bryan.2                  1.00           0.00 -0.19 -0.33
 #&gt; Dickes.Steiwer                     0.00           1.00 -0.41 -0.39
-#&gt; DRP                               -0.20          -0.41  1.00  0.99
-#&gt; ELF                               -0.34          -0.39  0.99  1.00
-#&gt; Farr.Jenkins.Paterson              0.19           0.41 -1.00 -0.99
-#&gt; Flesch                             0.53           0.37 -0.93 -0.97
-#&gt; Flesch.PSK                        -0.46          -0.38  0.96  0.99
-#&gt; Flesch.Kincaid                    -0.35          -0.40  0.99  1.00
+#&gt; DRP                               -0.19          -0.41  1.00  0.99
+#&gt; ELF                               -0.33          -0.39  0.99  1.00
+#&gt; Farr.Jenkins.Paterson              0.18           0.41 -1.00 -0.99
+#&gt; Flesch                             0.52           0.37 -0.93 -0.97
+#&gt; Flesch.PSK                        -0.45          -0.38  0.96  0.99
+#&gt; Flesch.Kincaid                    -0.34          -0.40  0.99  1.00
 #&gt;                       Farr.Jenkins.Paterson Flesch Flesch.PSK Flesch.Kincaid
 #&gt; ARI                                   -0.99  -0.97       0.99           1.00
 #&gt; ARI.simple                            -0.99  -0.97       0.98           1.00
 #&gt; Bormuth                                1.00   0.93      -0.96          -0.99
 #&gt; Bormuth.GP                            -0.93  -0.82       0.86           0.90
-#&gt; Coleman                                0.49   0.76      -0.71          -0.62
+#&gt; Coleman                                0.48   0.75      -0.70          -0.61
 #&gt; Coleman.C2                             0.69   0.89      -0.86          -0.79
-#&gt; Coleman.Liau                           0.72   0.91      -0.88          -0.82
-#&gt; Coleman.Liau.grade                    -0.72  -0.91       0.88           0.82
-#&gt; Coleman.Liau.short                    -0.72  -0.91       0.88           0.82
+#&gt; Coleman.Liau                           0.73   0.91      -0.88          -0.83
+#&gt; Coleman.Liau.grade                    -0.73  -0.91       0.88           0.83
+#&gt; Coleman.Liau.short                    -0.73  -0.91       0.88           0.83
 #&gt; Dale.Chall                             1.00   0.93      -0.96          -0.98
 #&gt; Dale.Chall.old                        -1.00  -0.93       0.96           0.98
 #&gt; Dale.Chall.PSK                        -1.00  -0.93       0.96           0.98
 #&gt; Danielson.Bryan                       -0.98  -0.98       0.99           1.00
-#&gt; Danielson.Bryan.2                      0.19   0.53      -0.46          -0.35
+#&gt; Danielson.Bryan.2                      0.18   0.52      -0.45          -0.34
 #&gt; Dickes.Steiwer                         0.41   0.37      -0.38          -0.40
 #&gt; DRP                                   -1.00  -0.93       0.96           0.99
 #&gt; ELF                                   -0.99  -0.97       0.99           1.00
@@ -240,108 +240,108 @@ with each column consisting of a requested measure.</dd>
 #&gt; Flesch.PSK                            -0.96  -1.00       1.00           0.99
 #&gt; Flesch.Kincaid                        -0.99  -0.98       0.99           1.00
 #&gt;                         FOG FOG.PSK FOG.NRI FORCAST FORCAST.RGL Fucks
-#&gt; ARI                    1.00    1.00    0.49    0.59        0.59  1.00
-#&gt; ARI.simple             0.99    1.00    0.49    0.59        0.59  1.00
-#&gt; Bormuth               -0.98   -1.00   -0.46   -0.49       -0.49 -1.00
-#&gt; Bormuth.GP             0.88    0.91    0.34    0.35        0.35  0.92
-#&gt; Coleman               -0.64   -0.55   -0.49   -1.00       -1.00 -0.54
+#&gt; ARI                    1.00    1.00    0.50    0.58        0.58  1.00
+#&gt; ARI.simple             1.00    1.00    0.50    0.57        0.57  1.00
+#&gt; Bormuth               -0.98   -1.00   -0.46   -0.48       -0.48 -1.00
+#&gt; Bormuth.GP             0.88    0.91    0.34    0.34        0.34  0.92
+#&gt; Coleman               -0.63   -0.54   -0.49   -1.00       -1.00 -0.53
 #&gt; Coleman.C2            -0.81   -0.74   -0.55   -0.96       -0.96 -0.73
-#&gt; Coleman.Liau          -0.84   -0.77   -0.55   -0.91       -0.91 -0.77
-#&gt; Coleman.Liau.grade     0.84    0.77    0.55    0.91        0.91  0.77
-#&gt; Coleman.Liau.short     0.84    0.77    0.55    0.91        0.91  0.77
-#&gt; Dale.Chall            -0.98   -1.00   -0.45   -0.48       -0.48 -1.00
-#&gt; Dale.Chall.old         0.98    1.00    0.45    0.48        0.48  1.00
-#&gt; Dale.Chall.PSK         0.98    1.00    0.45    0.48        0.48  1.00
-#&gt; Danielson.Bryan        1.00    0.99    0.51    0.64        0.64  0.99
-#&gt; Danielson.Bryan.2     -0.38   -0.27   -0.39   -0.89       -0.89 -0.26
-#&gt; Dickes.Steiwer        -0.42   -0.41    0.13   -0.14       -0.14 -0.39
-#&gt; DRP                    0.98    1.00    0.46    0.49        0.49  1.00
-#&gt; ELF                    0.99    0.99    0.50    0.62        0.62  0.99
-#&gt; Farr.Jenkins.Paterson -0.98   -1.00   -0.45   -0.49       -0.49 -1.00
-#&gt; Flesch                -0.98   -0.96   -0.54   -0.76       -0.76 -0.95
-#&gt; Flesch.PSK             0.99    0.98    0.53    0.71        0.71  0.97
-#&gt; Flesch.Kincaid         1.00    1.00    0.50    0.62        0.62  0.99
+#&gt; Coleman.Liau          -0.84   -0.77   -0.56   -0.90       -0.90 -0.77
+#&gt; Coleman.Liau.grade     0.84    0.77    0.56    0.90        0.90  0.77
+#&gt; Coleman.Liau.short     0.84    0.78    0.56    0.90        0.90  0.77
+#&gt; Dale.Chall            -0.98   -1.00   -0.46   -0.47       -0.47 -1.00
+#&gt; Dale.Chall.old         0.98    1.00    0.46    0.47        0.47  1.00
+#&gt; Dale.Chall.PSK         0.98    1.00    0.46    0.47        0.47  1.00
+#&gt; Danielson.Bryan        1.00    0.99    0.51    0.63        0.63  0.99
+#&gt; Danielson.Bryan.2     -0.37   -0.26   -0.38   -0.89       -0.89 -0.25
+#&gt; Dickes.Steiwer        -0.42   -0.41    0.12   -0.14       -0.14 -0.40
+#&gt; DRP                    0.98    1.00    0.46    0.48        0.48  1.00
+#&gt; ELF                    0.99    0.99    0.51    0.61        0.61  0.99
+#&gt; Farr.Jenkins.Paterson -0.98   -1.00   -0.46   -0.48       -0.48 -1.00
+#&gt; Flesch                -0.98   -0.96   -0.54   -0.75       -0.75 -0.95
+#&gt; Flesch.PSK             0.99    0.98    0.53    0.70        0.70  0.97
+#&gt; Flesch.Kincaid         1.00    1.00    0.51    0.61        0.61  0.99
 #&gt;                       Linsear.Write   LIW   nWS nWS.2 nWS.3 nWS.4   RIX
-#&gt; ARI                            0.88  1.00  0.97  0.98  0.98  0.99  0.99
+#&gt; ARI                            0.88  1.00  0.97  0.98  0.99  0.99  0.99
 #&gt; ARI.simple                     0.87  0.99  0.97  0.97  0.98  0.99  0.99
 #&gt; Bormuth                       -0.84 -0.98 -0.94 -0.94 -0.96 -0.98 -0.98
 #&gt; Bormuth.GP                     0.76  0.88  0.82  0.83  0.85  0.88  0.89
-#&gt; Coleman                       -0.69 -0.65 -0.75 -0.74 -0.69 -0.64 -0.64
-#&gt; Coleman.C2                    -0.80 -0.82 -0.89 -0.88 -0.85 -0.81 -0.80
+#&gt; Coleman                       -0.68 -0.64 -0.74 -0.73 -0.68 -0.63 -0.63
+#&gt; Coleman.C2                    -0.80 -0.81 -0.89 -0.88 -0.84 -0.81 -0.80
 #&gt; Coleman.Liau                  -0.83 -0.85 -0.91 -0.90 -0.88 -0.84 -0.83
 #&gt; Coleman.Liau.grade             0.83  0.85  0.91  0.90  0.88  0.84  0.83
 #&gt; Coleman.Liau.short             0.83  0.85  0.91  0.90  0.88  0.84  0.83
 #&gt; Dale.Chall                    -0.84 -0.98 -0.93 -0.94 -0.96 -0.98 -0.98
 #&gt; Dale.Chall.old                 0.84  0.98  0.93  0.94  0.96  0.98  0.98
 #&gt; Dale.Chall.PSK                 0.84  0.98  0.93  0.94  0.96  0.98  0.98
-#&gt; Danielson.Bryan                0.89  1.00  0.98  0.99  0.99  1.00  0.99
-#&gt; Danielson.Bryan.2             -0.50 -0.39 -0.52 -0.50 -0.45 -0.38 -0.37
+#&gt; Danielson.Bryan                0.89  1.00  0.98  0.99  0.99  1.00  1.00
+#&gt; Danielson.Bryan.2             -0.49 -0.38 -0.51 -0.49 -0.44 -0.37 -0.36
 #&gt; Dickes.Steiwer                -0.53 -0.40 -0.39 -0.40 -0.42 -0.42 -0.40
 #&gt; DRP                            0.84  0.98  0.94  0.94  0.96  0.98  0.98
 #&gt; ELF                            0.88  1.00  0.98  0.98  0.99  0.99  1.00
-#&gt; Farr.Jenkins.Paterson         -0.84 -0.98 -0.93 -0.94 -0.96 -0.98 -0.98
+#&gt; Farr.Jenkins.Paterson         -0.84 -0.98 -0.94 -0.94 -0.96 -0.98 -0.98
 #&gt; Flesch                        -0.92 -0.98 -1.00 -1.00 -0.99 -0.98 -0.98
 #&gt; Flesch.PSK                     0.91  0.99  1.00  1.00  1.00  0.99  0.99
 #&gt; Flesch.Kincaid                 0.89  1.00  0.98  0.98  0.99  1.00  0.99
 #&gt;                       Scrabble  SMOG SMOG.C SMOG.simple SMOG.de Spache
-#&gt; ARI                      -0.03  0.97   0.97        0.97    0.97   0.99
-#&gt; ARI.simple               -0.03  0.97   0.97        0.97    0.97   0.99
-#&gt; Bormuth                  -0.01 -0.94  -0.94       -0.94   -0.94  -1.00
-#&gt; Bormuth.GP               -0.03  0.82   0.82        0.82    0.82   0.93
-#&gt; Coleman                   0.35 -0.72  -0.72       -0.72   -0.72  -0.48
-#&gt; Coleman.C2                0.26 -0.87  -0.87       -0.87   -0.87  -0.68
-#&gt; Coleman.Liau              0.21 -0.90  -0.89       -0.90   -0.90  -0.72
-#&gt; Coleman.Liau.grade       -0.21  0.90   0.89        0.90    0.90   0.72
-#&gt; Coleman.Liau.short       -0.21  0.90   0.89        0.90    0.90   0.72
-#&gt; Dale.Chall               -0.02 -0.94  -0.94       -0.94   -0.94  -1.00
-#&gt; Dale.Chall.old            0.02  0.94   0.94        0.94    0.94   1.00
-#&gt; Dale.Chall.PSK            0.02  0.94   0.94        0.94    0.94   1.00
-#&gt; Danielson.Bryan          -0.06  0.98   0.98        0.98    0.98   0.98
-#&gt; Danielson.Bryan.2         0.32 -0.49  -0.48       -0.49   -0.49  -0.19
+#&gt; ARI                      -0.01  0.97   0.97        0.97    0.97   0.99
+#&gt; ARI.simple               -0.01  0.97   0.97        0.97    0.97   0.99
+#&gt; Bormuth                  -0.03 -0.94  -0.94       -0.94   -0.94  -1.00
+#&gt; Bormuth.GP               -0.02  0.82   0.82        0.82    0.82   0.93
+#&gt; Coleman                   0.35 -0.71  -0.71       -0.71   -0.71  -0.47
+#&gt; Coleman.C2                0.25 -0.87  -0.87       -0.87   -0.87  -0.68
+#&gt; Coleman.Liau              0.19 -0.90  -0.89       -0.90   -0.90  -0.72
+#&gt; Coleman.Liau.grade       -0.19  0.90   0.89        0.90    0.90   0.72
+#&gt; Coleman.Liau.short       -0.19  0.90   0.89        0.90    0.90   0.72
+#&gt; Dale.Chall               -0.04 -0.94  -0.94       -0.94   -0.94  -1.00
+#&gt; Dale.Chall.old            0.04  0.94   0.94        0.94    0.94   1.00
+#&gt; Dale.Chall.PSK            0.04  0.94   0.94        0.94    0.94   1.00
+#&gt; Danielson.Bryan          -0.04  0.98   0.99        0.98    0.98   0.98
+#&gt; Danielson.Bryan.2         0.32 -0.48  -0.47       -0.48   -0.48  -0.18
 #&gt; Dickes.Steiwer           -0.46 -0.42  -0.42       -0.42   -0.42  -0.41
-#&gt; DRP                       0.01  0.94   0.94        0.94    0.94   1.00
-#&gt; ELF                      -0.06  0.98   0.98        0.98    0.98   0.98
-#&gt; Farr.Jenkins.Paterson    -0.01 -0.94  -0.94       -0.94   -0.94  -1.00
-#&gt; Flesch                    0.12 -0.99  -0.99       -0.99   -0.99  -0.93
-#&gt; Flesch.PSK               -0.09  0.99   0.99        0.99    0.99   0.96
-#&gt; Flesch.Kincaid           -0.05  0.98   0.98        0.98    0.98   0.98
+#&gt; DRP                       0.03  0.94   0.94        0.94    0.94   1.00
+#&gt; ELF                      -0.04  0.98   0.98        0.98    0.98   0.98
+#&gt; Farr.Jenkins.Paterson    -0.03 -0.94  -0.94       -0.94   -0.94  -1.00
+#&gt; Flesch                    0.11 -0.99  -0.99       -0.99   -0.99  -0.93
+#&gt; Flesch.PSK               -0.08  0.99   1.00        0.99    0.99   0.96
+#&gt; Flesch.Kincaid           -0.03  0.98   0.98        0.98    0.98   0.98
 #&gt;                       Spache.old Strain Traenkle.Bailer Traenkle.Bailer.2
 #&gt; ARI                         0.99   1.00           -1.00             -0.75
 #&gt; ARI.simple                  0.99   1.00           -1.00             -0.75
-#&gt; Bormuth                    -1.00  -1.00            1.00              0.66
+#&gt; Bormuth                    -1.00  -1.00            1.00              0.67
 #&gt; Bormuth.GP                  0.93   0.92           -0.91             -0.51
-#&gt; Coleman                    -0.48  -0.56            0.56              0.93
+#&gt; Coleman                    -0.47  -0.55            0.55              0.92
 #&gt; Coleman.C2                 -0.68  -0.74            0.75              0.96
-#&gt; Coleman.Liau               -0.72  -0.77            0.78              0.99
-#&gt; Coleman.Liau.grade          0.72   0.77           -0.78             -0.99
-#&gt; Coleman.Liau.short          0.72   0.77           -0.78             -0.99
+#&gt; Coleman.Liau               -0.72  -0.77            0.79              0.99
+#&gt; Coleman.Liau.grade          0.72   0.77           -0.79             -0.99
+#&gt; Coleman.Liau.short          0.72   0.77           -0.79             -0.99
 #&gt; Dale.Chall                 -1.00  -1.00            1.00              0.66
 #&gt; Dale.Chall.old              1.00   1.00           -1.00             -0.66
 #&gt; Dale.Chall.PSK              1.00   1.00           -1.00             -0.66
 #&gt; Danielson.Bryan             0.98   0.99           -0.99             -0.80
-#&gt; Danielson.Bryan.2          -0.19  -0.27            0.28              0.86
-#&gt; Dickes.Steiwer             -0.41  -0.40            0.39              0.18
-#&gt; DRP                         1.00   1.00           -1.00             -0.66
+#&gt; Danielson.Bryan.2          -0.18  -0.26            0.27              0.85
+#&gt; Dickes.Steiwer             -0.41  -0.40            0.40              0.18
+#&gt; DRP                         1.00   1.00           -1.00             -0.67
 #&gt; ELF                         0.98   1.00           -0.99             -0.76
 #&gt; Farr.Jenkins.Paterson      -1.00  -1.00            1.00              0.66
 #&gt; Flesch                     -0.93  -0.96            0.96              0.88
 #&gt; Flesch.PSK                  0.96   0.98           -0.98             -0.84
-#&gt; Flesch.Kincaid              0.98   1.00           -1.00             -0.77
+#&gt; Flesch.Kincaid              0.98   1.00           -1.00             -0.78
 #&gt;                       Wheeler.Smith meanSentenceLength meanWordSyllables
 #&gt; ARI                            1.00               0.99              0.68
 #&gt; ARI.simple                     1.00               0.99              0.67
 #&gt; Bormuth                       -0.99              -1.00             -0.58
 #&gt; Bormuth.GP                     0.90               0.93              0.45
-#&gt; Coleman                       -0.62              -0.48             -0.97
+#&gt; Coleman                       -0.61              -0.47             -0.96
 #&gt; Coleman.C2                    -0.79              -0.68             -0.96
-#&gt; Coleman.Liau                  -0.81              -0.72             -0.96
-#&gt; Coleman.Liau.grade             0.81               0.72              0.96
-#&gt; Coleman.Liau.short             0.81               0.72              0.96
+#&gt; Coleman.Liau                  -0.81              -0.72             -0.95
+#&gt; Coleman.Liau.grade             0.81               0.72              0.95
+#&gt; Coleman.Liau.short             0.81               0.72              0.95
 #&gt; Dale.Chall                    -0.98              -1.00             -0.58
 #&gt; Dale.Chall.old                 0.98               1.00              0.58
 #&gt; Dale.Chall.PSK                 0.98               1.00              0.58
 #&gt; Danielson.Bryan                1.00               0.98              0.73
-#&gt; Danielson.Bryan.2             -0.34              -0.19             -0.88
+#&gt; Danielson.Bryan.2             -0.33              -0.18             -0.88
 #&gt; Dickes.Steiwer                -0.39              -0.41             -0.22
 #&gt; DRP                            0.99               1.00              0.58
 #&gt; ELF                            1.00               0.98              0.70
@@ -372,36 +372,36 @@ with each column consisting of a requested measure.</dd>
 #&gt;        9.235663       12.288965       11.670742        9.798608       10.420294 
 #&gt;       1989-Bush    1993-Clinton    1997-Clinton       2001-Bush       2005-Bush 
 #&gt;        7.147029       10.374204        9.828863        8.918201       10.954613 
-#&gt;      2009-Obama      2013-Obama 
-#&gt;       10.229426       11.734767 </div><div class='input'><span class='no'>inaugReadability</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_readability</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"all"</span>)
+#&gt;      2009-Obama      2013-Obama      2017-Trump 
+#&gt;       10.229426       11.734767        9.163084 </div><div class='input'><span class='no'>inaugReadability</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_readability</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"all"</span>)
 <span class='fu'>round</span>(<span class='fu'>cor</span>(<span class='no'>inaugReadability</span>), <span class='fl'>2</span>)</div><div class='output co'>#&gt;                         ARI ARI.simple Bormuth Bormuth.GP Coleman Coleman.C2
-#&gt; ARI                    1.00       1.00   -0.99       0.90   -0.59      -0.77
-#&gt; ARI.simple             1.00       1.00   -0.99       0.90   -0.59      -0.77
-#&gt; Bormuth               -0.99      -0.99    1.00      -0.93    0.49       0.69
-#&gt; Bormuth.GP             0.90       0.90   -0.93       1.00   -0.35      -0.51
-#&gt; Coleman               -0.59      -0.59    0.49      -0.35    1.00       0.96
-#&gt; Coleman.C2            -0.77      -0.77    0.69      -0.51    0.96       1.00
-#&gt; Coleman.Liau          -0.81      -0.80    0.73      -0.56    0.91       0.97
-#&gt; Coleman.Liau.grade     0.81       0.80   -0.73       0.56   -0.91      -0.97
-#&gt; Coleman.Liau.short     0.81       0.80   -0.73       0.56   -0.91      -0.97
-#&gt; Dale.Chall            -0.99      -0.99    1.00      -0.93    0.48       0.68
-#&gt; Dale.Chall.old         0.99       0.99   -1.00       0.93   -0.48      -0.68
-#&gt; Dale.Chall.PSK         0.99       0.99   -1.00       0.93   -0.48      -0.68
-#&gt; Danielson.Bryan        1.00       1.00   -0.98       0.88   -0.64      -0.81
-#&gt; Danielson.Bryan.2     -0.32      -0.32    0.20      -0.04    0.89       0.80
+#&gt; ARI                    1.00       1.00   -0.99       0.90   -0.58      -0.77
+#&gt; ARI.simple             1.00       1.00   -0.99       0.90   -0.57      -0.76
+#&gt; Bormuth               -0.99      -0.99    1.00      -0.93    0.48       0.69
+#&gt; Bormuth.GP             0.90       0.90   -0.93       1.00   -0.34      -0.52
+#&gt; Coleman               -0.58      -0.57    0.48      -0.34    1.00       0.96
+#&gt; Coleman.C2            -0.77      -0.76    0.69      -0.52    0.96       1.00
+#&gt; Coleman.Liau          -0.81      -0.80    0.73      -0.56    0.90       0.97
+#&gt; Coleman.Liau.grade     0.81       0.80   -0.73       0.56   -0.90      -0.97
+#&gt; Coleman.Liau.short     0.81       0.80   -0.73       0.56   -0.90      -0.97
+#&gt; Dale.Chall            -0.99      -0.99    1.00      -0.93    0.47       0.68
+#&gt; Dale.Chall.old         0.99       0.99   -1.00       0.93   -0.47      -0.68
+#&gt; Dale.Chall.PSK         0.99       0.99   -1.00       0.93   -0.47      -0.68
+#&gt; Danielson.Bryan        1.00       1.00   -0.98       0.88   -0.63      -0.81
+#&gt; Danielson.Bryan.2     -0.31      -0.31    0.19      -0.04    0.89       0.79
 #&gt; Dickes.Steiwer        -0.39      -0.39    0.41      -0.34    0.14       0.25
-#&gt; DRP                    0.99       0.99   -1.00       0.93   -0.49      -0.69
-#&gt; ELF                    1.00       1.00   -0.99       0.90   -0.62      -0.79
-#&gt; Farr.Jenkins.Paterson -0.99      -0.99    1.00      -0.93    0.49       0.69
-#&gt; Flesch                -0.97      -0.97    0.93      -0.82    0.76       0.89
-#&gt; Flesch.PSK             0.99       0.98   -0.96       0.86   -0.71      -0.86
-#&gt; Flesch.Kincaid         1.00       1.00   -0.99       0.90   -0.62      -0.79
+#&gt; DRP                    0.99       0.99   -1.00       0.93   -0.48      -0.69
+#&gt; ELF                    1.00       1.00   -0.99       0.90   -0.61      -0.79
+#&gt; Farr.Jenkins.Paterson -0.99      -0.99    1.00      -0.93    0.48       0.69
+#&gt; Flesch                -0.97      -0.97    0.93      -0.82    0.75       0.89
+#&gt; Flesch.PSK             0.99       0.98   -0.96       0.86   -0.70      -0.86
+#&gt; Flesch.Kincaid         1.00       1.00   -0.99       0.90   -0.61      -0.79
 #&gt;                       Coleman.Liau Coleman.Liau.grade Coleman.Liau.short
 #&gt; ARI                          -0.81               0.81               0.81
 #&gt; ARI.simple                   -0.80               0.80               0.80
 #&gt; Bormuth                       0.73              -0.73              -0.73
 #&gt; Bormuth.GP                   -0.56               0.56               0.56
-#&gt; Coleman                       0.91              -0.91              -0.91
+#&gt; Coleman                       0.90              -0.90              -0.90
 #&gt; Coleman.C2                    0.97              -0.97              -0.97
 #&gt; Coleman.Liau                  1.00              -1.00              -1.00
 #&gt; Coleman.Liau.grade           -1.00               1.00               1.00
@@ -411,19 +411,19 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.PSK               -0.72               0.72               0.72
 #&gt; Danielson.Bryan              -0.85               0.85               0.85
 #&gt; Danielson.Bryan.2             0.81              -0.81              -0.81
-#&gt; Dickes.Steiwer                0.23              -0.23              -0.23
+#&gt; Dickes.Steiwer                0.24              -0.24              -0.24
 #&gt; DRP                          -0.73               0.73               0.73
 #&gt; ELF                          -0.81               0.81               0.81
-#&gt; Farr.Jenkins.Paterson         0.72              -0.72              -0.72
+#&gt; Farr.Jenkins.Paterson         0.73              -0.73              -0.73
 #&gt; Flesch                        0.91              -0.91              -0.91
 #&gt; Flesch.PSK                   -0.88               0.88               0.88
-#&gt; Flesch.Kincaid               -0.82               0.82               0.82
+#&gt; Flesch.Kincaid               -0.83               0.83               0.83
 #&gt;                       Dale.Chall Dale.Chall.old Dale.Chall.PSK Danielson.Bryan
 #&gt; ARI                        -0.99           0.99           0.99            1.00
 #&gt; ARI.simple                 -0.99           0.99           0.99            1.00
 #&gt; Bormuth                     1.00          -1.00          -1.00           -0.98
 #&gt; Bormuth.GP                 -0.93           0.93           0.93            0.88
-#&gt; Coleman                     0.48          -0.48          -0.48           -0.64
+#&gt; Coleman                     0.47          -0.47          -0.47           -0.63
 #&gt; Coleman.C2                  0.68          -0.68          -0.68           -0.81
 #&gt; Coleman.Liau                0.72          -0.72          -0.72           -0.85
 #&gt; Coleman.Liau.grade         -0.72           0.72           0.72            0.85
@@ -432,7 +432,7 @@ with each column consisting of a requested measure.</dd>
 #&gt; Dale.Chall.old             -1.00           1.00           1.00            0.98
 #&gt; Dale.Chall.PSK             -1.00           1.00           1.00            0.98
 #&gt; Danielson.Bryan            -0.98           0.98           0.98            1.00
-#&gt; Danielson.Bryan.2           0.19          -0.19          -0.19           -0.39
+#&gt; Danielson.Bryan.2           0.18          -0.18          -0.18           -0.38
 #&gt; Dickes.Steiwer              0.41          -0.41          -0.41           -0.38
 #&gt; DRP                        -1.00           1.00           1.00            0.98
 #&gt; ELF                        -0.98           0.98           0.98            1.00
@@ -441,42 +441,42 @@ with each column consisting of a requested measure.</dd>
 #&gt; Flesch.PSK                 -0.96           0.96           0.96            0.99
 #&gt; Flesch.Kincaid             -0.98           0.98           0.98            1.00
 #&gt;                       Danielson.Bryan.2 Dickes.Steiwer   DRP   ELF
-#&gt; ARI                               -0.32          -0.39  0.99  1.00
-#&gt; ARI.simple                        -0.32          -0.39  0.99  1.00
-#&gt; Bormuth                            0.20           0.41 -1.00 -0.99
+#&gt; ARI                               -0.31          -0.39  0.99  1.00
+#&gt; ARI.simple                        -0.31          -0.39  0.99  1.00
+#&gt; Bormuth                            0.19           0.41 -1.00 -0.99
 #&gt; Bormuth.GP                        -0.04          -0.34  0.93  0.90
-#&gt; Coleman                            0.89           0.14 -0.49 -0.62
-#&gt; Coleman.C2                         0.80           0.25 -0.69 -0.79
-#&gt; Coleman.Liau                       0.81           0.23 -0.73 -0.81
-#&gt; Coleman.Liau.grade                -0.81          -0.23  0.73  0.81
-#&gt; Coleman.Liau.short                -0.81          -0.23  0.73  0.81
-#&gt; Dale.Chall                         0.19           0.41 -1.00 -0.98
-#&gt; Dale.Chall.old                    -0.19          -0.41  1.00  0.98
-#&gt; Dale.Chall.PSK                    -0.19          -0.41  1.00  0.98
-#&gt; Danielson.Bryan                   -0.39          -0.38  0.98  1.00
-#&gt; Danielson.Bryan.2                  1.00           0.00 -0.20 -0.34
+#&gt; Coleman                            0.89           0.14 -0.48 -0.61
+#&gt; Coleman.C2                         0.79           0.25 -0.69 -0.79
+#&gt; Coleman.Liau                       0.81           0.24 -0.73 -0.81
+#&gt; Coleman.Liau.grade                -0.81          -0.24  0.73  0.81
+#&gt; Coleman.Liau.short                -0.81          -0.24  0.73  0.81
+#&gt; Dale.Chall                         0.18           0.41 -1.00 -0.98
+#&gt; Dale.Chall.old                    -0.18          -0.41  1.00  0.98
+#&gt; Dale.Chall.PSK                    -0.18          -0.41  1.00  0.98
+#&gt; Danielson.Bryan                   -0.38          -0.38  0.98  1.00
+#&gt; Danielson.Bryan.2                  1.00           0.00 -0.19 -0.33
 #&gt; Dickes.Steiwer                     0.00           1.00 -0.41 -0.39
-#&gt; DRP                               -0.20          -0.41  1.00  0.99
-#&gt; ELF                               -0.34          -0.39  0.99  1.00
-#&gt; Farr.Jenkins.Paterson              0.19           0.41 -1.00 -0.99
-#&gt; Flesch                             0.53           0.37 -0.93 -0.97
-#&gt; Flesch.PSK                        -0.46          -0.38  0.96  0.99
-#&gt; Flesch.Kincaid                    -0.35          -0.40  0.99  1.00
+#&gt; DRP                               -0.19          -0.41  1.00  0.99
+#&gt; ELF                               -0.33          -0.39  0.99  1.00
+#&gt; Farr.Jenkins.Paterson              0.18           0.41 -1.00 -0.99
+#&gt; Flesch                             0.52           0.37 -0.93 -0.97
+#&gt; Flesch.PSK                        -0.45          -0.38  0.96  0.99
+#&gt; Flesch.Kincaid                    -0.34          -0.40  0.99  1.00
 #&gt;                       Farr.Jenkins.Paterson Flesch Flesch.PSK Flesch.Kincaid
 #&gt; ARI                                   -0.99  -0.97       0.99           1.00
 #&gt; ARI.simple                            -0.99  -0.97       0.98           1.00
 #&gt; Bormuth                                1.00   0.93      -0.96          -0.99
 #&gt; Bormuth.GP                            -0.93  -0.82       0.86           0.90
-#&gt; Coleman                                0.49   0.76      -0.71          -0.62
+#&gt; Coleman                                0.48   0.75      -0.70          -0.61
 #&gt; Coleman.C2                             0.69   0.89      -0.86          -0.79
-#&gt; Coleman.Liau                           0.72   0.91      -0.88          -0.82
-#&gt; Coleman.Liau.grade                    -0.72  -0.91       0.88           0.82
-#&gt; Coleman.Liau.short                    -0.72  -0.91       0.88           0.82
+#&gt; Coleman.Liau                           0.73   0.91      -0.88          -0.83
+#&gt; Coleman.Liau.grade                    -0.73  -0.91       0.88           0.83
+#&gt; Coleman.Liau.short                    -0.73  -0.91       0.88           0.83
 #&gt; Dale.Chall                             1.00   0.93      -0.96          -0.98
 #&gt; Dale.Chall.old                        -1.00  -0.93       0.96           0.98
 #&gt; Dale.Chall.PSK                        -1.00  -0.93       0.96           0.98
 #&gt; Danielson.Bryan                       -0.98  -0.98       0.99           1.00
-#&gt; Danielson.Bryan.2                      0.19   0.53      -0.46          -0.35
+#&gt; Danielson.Bryan.2                      0.18   0.52      -0.45          -0.34
 #&gt; Dickes.Steiwer                         0.41   0.37      -0.38          -0.40
 #&gt; DRP                                   -1.00  -0.93       0.96           0.99
 #&gt; ELF                                   -0.99  -0.97       0.99           1.00
@@ -485,108 +485,108 @@ with each column consisting of a requested measure.</dd>
 #&gt; Flesch.PSK                            -0.96  -1.00       1.00           0.99
 #&gt; Flesch.Kincaid                        -0.99  -0.98       0.99           1.00
 #&gt;                         FOG FOG.PSK FOG.NRI FORCAST FORCAST.RGL Fucks
-#&gt; ARI                    1.00    1.00    0.49    0.59        0.59  1.00
-#&gt; ARI.simple             0.99    1.00    0.49    0.59        0.59  1.00
-#&gt; Bormuth               -0.98   -1.00   -0.46   -0.49       -0.49 -1.00
-#&gt; Bormuth.GP             0.88    0.91    0.34    0.35        0.35  0.92
-#&gt; Coleman               -0.64   -0.55   -0.49   -1.00       -1.00 -0.54
+#&gt; ARI                    1.00    1.00    0.50    0.58        0.58  1.00
+#&gt; ARI.simple             1.00    1.00    0.50    0.57        0.57  1.00
+#&gt; Bormuth               -0.98   -1.00   -0.46   -0.48       -0.48 -1.00
+#&gt; Bormuth.GP             0.88    0.91    0.34    0.34        0.34  0.92
+#&gt; Coleman               -0.63   -0.54   -0.49   -1.00       -1.00 -0.53
 #&gt; Coleman.C2            -0.81   -0.74   -0.55   -0.96       -0.96 -0.73
-#&gt; Coleman.Liau          -0.84   -0.77   -0.55   -0.91       -0.91 -0.77
-#&gt; Coleman.Liau.grade     0.84    0.77    0.55    0.91        0.91  0.77
-#&gt; Coleman.Liau.short     0.84    0.77    0.55    0.91        0.91  0.77
-#&gt; Dale.Chall            -0.98   -1.00   -0.45   -0.48       -0.48 -1.00
-#&gt; Dale.Chall.old         0.98    1.00    0.45    0.48        0.48  1.00
-#&gt; Dale.Chall.PSK         0.98    1.00    0.45    0.48        0.48  1.00
-#&gt; Danielson.Bryan        1.00    0.99    0.51    0.64        0.64  0.99
-#&gt; Danielson.Bryan.2     -0.38   -0.27   -0.39   -0.89       -0.89 -0.26
-#&gt; Dickes.Steiwer        -0.42   -0.41    0.13   -0.14       -0.14 -0.39
-#&gt; DRP                    0.98    1.00    0.46    0.49        0.49  1.00
-#&gt; ELF                    0.99    0.99    0.50    0.62        0.62  0.99
-#&gt; Farr.Jenkins.Paterson -0.98   -1.00   -0.45   -0.49       -0.49 -1.00
-#&gt; Flesch                -0.98   -0.96   -0.54   -0.76       -0.76 -0.95
-#&gt; Flesch.PSK             0.99    0.98    0.53    0.71        0.71  0.97
-#&gt; Flesch.Kincaid         1.00    1.00    0.50    0.62        0.62  0.99
+#&gt; Coleman.Liau          -0.84   -0.77   -0.56   -0.90       -0.90 -0.77
+#&gt; Coleman.Liau.grade     0.84    0.77    0.56    0.90        0.90  0.77
+#&gt; Coleman.Liau.short     0.84    0.78    0.56    0.90        0.90  0.77
+#&gt; Dale.Chall            -0.98   -1.00   -0.46   -0.47       -0.47 -1.00
+#&gt; Dale.Chall.old         0.98    1.00    0.46    0.47        0.47  1.00
+#&gt; Dale.Chall.PSK         0.98    1.00    0.46    0.47        0.47  1.00
+#&gt; Danielson.Bryan        1.00    0.99    0.51    0.63        0.63  0.99
+#&gt; Danielson.Bryan.2     -0.37   -0.26   -0.38   -0.89       -0.89 -0.25
+#&gt; Dickes.Steiwer        -0.42   -0.41    0.12   -0.14       -0.14 -0.40
+#&gt; DRP                    0.98    1.00    0.46    0.48        0.48  1.00
+#&gt; ELF                    0.99    0.99    0.51    0.61        0.61  0.99
+#&gt; Farr.Jenkins.Paterson -0.98   -1.00   -0.46   -0.48       -0.48 -1.00
+#&gt; Flesch                -0.98   -0.96   -0.54   -0.75       -0.75 -0.95
+#&gt; Flesch.PSK             0.99    0.98    0.53    0.70        0.70  0.97
+#&gt; Flesch.Kincaid         1.00    1.00    0.51    0.61        0.61  0.99
 #&gt;                       Linsear.Write   LIW   nWS nWS.2 nWS.3 nWS.4   RIX
-#&gt; ARI                            0.88  1.00  0.97  0.98  0.98  0.99  0.99
+#&gt; ARI                            0.88  1.00  0.97  0.98  0.99  0.99  0.99
 #&gt; ARI.simple                     0.87  0.99  0.97  0.97  0.98  0.99  0.99
 #&gt; Bormuth                       -0.84 -0.98 -0.94 -0.94 -0.96 -0.98 -0.98
 #&gt; Bormuth.GP                     0.76  0.88  0.82  0.83  0.85  0.88  0.89
-#&gt; Coleman                       -0.69 -0.65 -0.75 -0.74 -0.69 -0.64 -0.64
-#&gt; Coleman.C2                    -0.80 -0.82 -0.89 -0.88 -0.85 -0.81 -0.80
+#&gt; Coleman                       -0.68 -0.64 -0.74 -0.73 -0.68 -0.63 -0.63
+#&gt; Coleman.C2                    -0.80 -0.81 -0.89 -0.88 -0.84 -0.81 -0.80
 #&gt; Coleman.Liau                  -0.83 -0.85 -0.91 -0.90 -0.88 -0.84 -0.83
 #&gt; Coleman.Liau.grade             0.83  0.85  0.91  0.90  0.88  0.84  0.83
 #&gt; Coleman.Liau.short             0.83  0.85  0.91  0.90  0.88  0.84  0.83
 #&gt; Dale.Chall                    -0.84 -0.98 -0.93 -0.94 -0.96 -0.98 -0.98
 #&gt; Dale.Chall.old                 0.84  0.98  0.93  0.94  0.96  0.98  0.98
 #&gt; Dale.Chall.PSK                 0.84  0.98  0.93  0.94  0.96  0.98  0.98
-#&gt; Danielson.Bryan                0.89  1.00  0.98  0.99  0.99  1.00  0.99
-#&gt; Danielson.Bryan.2             -0.50 -0.39 -0.52 -0.50 -0.45 -0.38 -0.37
+#&gt; Danielson.Bryan                0.89  1.00  0.98  0.99  0.99  1.00  1.00
+#&gt; Danielson.Bryan.2             -0.49 -0.38 -0.51 -0.49 -0.44 -0.37 -0.36
 #&gt; Dickes.Steiwer                -0.53 -0.40 -0.39 -0.40 -0.42 -0.42 -0.40
 #&gt; DRP                            0.84  0.98  0.94  0.94  0.96  0.98  0.98
 #&gt; ELF                            0.88  1.00  0.98  0.98  0.99  0.99  1.00
-#&gt; Farr.Jenkins.Paterson         -0.84 -0.98 -0.93 -0.94 -0.96 -0.98 -0.98
+#&gt; Farr.Jenkins.Paterson         -0.84 -0.98 -0.94 -0.94 -0.96 -0.98 -0.98
 #&gt; Flesch                        -0.92 -0.98 -1.00 -1.00 -0.99 -0.98 -0.98
 #&gt; Flesch.PSK                     0.91  0.99  1.00  1.00  1.00  0.99  0.99
 #&gt; Flesch.Kincaid                 0.89  1.00  0.98  0.98  0.99  1.00  0.99
 #&gt;                       Scrabble  SMOG SMOG.C SMOG.simple SMOG.de Spache
-#&gt; ARI                      -0.03  0.97   0.97        0.97    0.97   0.99
-#&gt; ARI.simple               -0.03  0.97   0.97        0.97    0.97   0.99
-#&gt; Bormuth                  -0.01 -0.94  -0.94       -0.94   -0.94  -1.00
-#&gt; Bormuth.GP               -0.03  0.82   0.82        0.82    0.82   0.93
-#&gt; Coleman                   0.35 -0.72  -0.72       -0.72   -0.72  -0.48
-#&gt; Coleman.C2                0.26 -0.87  -0.87       -0.87   -0.87  -0.68
-#&gt; Coleman.Liau              0.21 -0.90  -0.89       -0.90   -0.90  -0.72
-#&gt; Coleman.Liau.grade       -0.21  0.90   0.89        0.90    0.90   0.72
-#&gt; Coleman.Liau.short       -0.21  0.90   0.89        0.90    0.90   0.72
-#&gt; Dale.Chall               -0.02 -0.94  -0.94       -0.94   -0.94  -1.00
-#&gt; Dale.Chall.old            0.02  0.94   0.94        0.94    0.94   1.00
-#&gt; Dale.Chall.PSK            0.02  0.94   0.94        0.94    0.94   1.00
-#&gt; Danielson.Bryan          -0.06  0.98   0.98        0.98    0.98   0.98
-#&gt; Danielson.Bryan.2         0.32 -0.49  -0.48       -0.49   -0.49  -0.19
+#&gt; ARI                      -0.01  0.97   0.97        0.97    0.97   0.99
+#&gt; ARI.simple               -0.01  0.97   0.97        0.97    0.97   0.99
+#&gt; Bormuth                  -0.03 -0.94  -0.94       -0.94   -0.94  -1.00
+#&gt; Bormuth.GP               -0.02  0.82   0.82        0.82    0.82   0.93
+#&gt; Coleman                   0.35 -0.71  -0.71       -0.71   -0.71  -0.47
+#&gt; Coleman.C2                0.25 -0.87  -0.87       -0.87   -0.87  -0.68
+#&gt; Coleman.Liau              0.19 -0.90  -0.89       -0.90   -0.90  -0.72
+#&gt; Coleman.Liau.grade       -0.19  0.90   0.89        0.90    0.90   0.72
+#&gt; Coleman.Liau.short       -0.19  0.90   0.89        0.90    0.90   0.72
+#&gt; Dale.Chall               -0.04 -0.94  -0.94       -0.94   -0.94  -1.00
+#&gt; Dale.Chall.old            0.04  0.94   0.94        0.94    0.94   1.00
+#&gt; Dale.Chall.PSK            0.04  0.94   0.94        0.94    0.94   1.00
+#&gt; Danielson.Bryan          -0.04  0.98   0.99        0.98    0.98   0.98
+#&gt; Danielson.Bryan.2         0.32 -0.48  -0.47       -0.48   -0.48  -0.18
 #&gt; Dickes.Steiwer           -0.46 -0.42  -0.42       -0.42   -0.42  -0.41
-#&gt; DRP                       0.01  0.94   0.94        0.94    0.94   1.00
-#&gt; ELF                      -0.06  0.98   0.98        0.98    0.98   0.98
-#&gt; Farr.Jenkins.Paterson    -0.01 -0.94  -0.94       -0.94   -0.94  -1.00
-#&gt; Flesch                    0.12 -0.99  -0.99       -0.99   -0.99  -0.93
-#&gt; Flesch.PSK               -0.09  0.99   0.99        0.99    0.99   0.96
-#&gt; Flesch.Kincaid           -0.05  0.98   0.98        0.98    0.98   0.98
+#&gt; DRP                       0.03  0.94   0.94        0.94    0.94   1.00
+#&gt; ELF                      -0.04  0.98   0.98        0.98    0.98   0.98
+#&gt; Farr.Jenkins.Paterson    -0.03 -0.94  -0.94       -0.94   -0.94  -1.00
+#&gt; Flesch                    0.11 -0.99  -0.99       -0.99   -0.99  -0.93
+#&gt; Flesch.PSK               -0.08  0.99   1.00        0.99    0.99   0.96
+#&gt; Flesch.Kincaid           -0.03  0.98   0.98        0.98    0.98   0.98
 #&gt;                       Spache.old Strain Traenkle.Bailer Traenkle.Bailer.2
 #&gt; ARI                         0.99   1.00           -1.00             -0.75
 #&gt; ARI.simple                  0.99   1.00           -1.00             -0.75
-#&gt; Bormuth                    -1.00  -1.00            1.00              0.66
+#&gt; Bormuth                    -1.00  -1.00            1.00              0.67
 #&gt; Bormuth.GP                  0.93   0.92           -0.91             -0.51
-#&gt; Coleman                    -0.48  -0.56            0.56              0.93
+#&gt; Coleman                    -0.47  -0.55            0.55              0.92
 #&gt; Coleman.C2                 -0.68  -0.74            0.75              0.96
-#&gt; Coleman.Liau               -0.72  -0.77            0.78              0.99
-#&gt; Coleman.Liau.grade          0.72   0.77           -0.78             -0.99
-#&gt; Coleman.Liau.short          0.72   0.77           -0.78             -0.99
+#&gt; Coleman.Liau               -0.72  -0.77            0.79              0.99
+#&gt; Coleman.Liau.grade          0.72   0.77           -0.79             -0.99
+#&gt; Coleman.Liau.short          0.72   0.77           -0.79             -0.99
 #&gt; Dale.Chall                 -1.00  -1.00            1.00              0.66
 #&gt; Dale.Chall.old              1.00   1.00           -1.00             -0.66
 #&gt; Dale.Chall.PSK              1.00   1.00           -1.00             -0.66
 #&gt; Danielson.Bryan             0.98   0.99           -0.99             -0.80
-#&gt; Danielson.Bryan.2          -0.19  -0.27            0.28              0.86
-#&gt; Dickes.Steiwer             -0.41  -0.40            0.39              0.18
-#&gt; DRP                         1.00   1.00           -1.00             -0.66
+#&gt; Danielson.Bryan.2          -0.18  -0.26            0.27              0.85
+#&gt; Dickes.Steiwer             -0.41  -0.40            0.40              0.18
+#&gt; DRP                         1.00   1.00           -1.00             -0.67
 #&gt; ELF                         0.98   1.00           -0.99             -0.76
 #&gt; Farr.Jenkins.Paterson      -1.00  -1.00            1.00              0.66
 #&gt; Flesch                     -0.93  -0.96            0.96              0.88
 #&gt; Flesch.PSK                  0.96   0.98           -0.98             -0.84
-#&gt; Flesch.Kincaid              0.98   1.00           -1.00             -0.77
+#&gt; Flesch.Kincaid              0.98   1.00           -1.00             -0.78
 #&gt;                       Wheeler.Smith meanSentenceLength meanWordSyllables
 #&gt; ARI                            1.00               0.99              0.68
 #&gt; ARI.simple                     1.00               0.99              0.67
 #&gt; Bormuth                       -0.99              -1.00             -0.58
 #&gt; Bormuth.GP                     0.90               0.93              0.45
-#&gt; Coleman                       -0.62              -0.48             -0.97
+#&gt; Coleman                       -0.61              -0.47             -0.96
 #&gt; Coleman.C2                    -0.79              -0.68             -0.96
-#&gt; Coleman.Liau                  -0.81              -0.72             -0.96
-#&gt; Coleman.Liau.grade             0.81               0.72              0.96
-#&gt; Coleman.Liau.short             0.81               0.72              0.96
+#&gt; Coleman.Liau                  -0.81              -0.72             -0.95
+#&gt; Coleman.Liau.grade             0.81               0.72              0.95
+#&gt; Coleman.Liau.short             0.81               0.72              0.95
 #&gt; Dale.Chall                    -0.98              -1.00             -0.58
 #&gt; Dale.Chall.old                 0.98               1.00              0.58
 #&gt; Dale.Chall.PSK                 0.98               1.00              0.58
 #&gt; Danielson.Bryan                1.00               0.98              0.73
-#&gt; Danielson.Bryan.2             -0.34              -0.19             -0.88
+#&gt; Danielson.Bryan.2             -0.33              -0.18             -0.88
 #&gt; Dickes.Steiwer                -0.39              -0.41             -0.22
 #&gt; DRP                            0.99               1.00              0.58
 #&gt; ELF                            1.00               0.98              0.70

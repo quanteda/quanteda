@@ -85,9 +85,9 @@
 object.</p>
     
 
-    <pre><span class='fu'>tokens_lookup</span>(<span class='no'>x</span>, <span class='no'>dictionary</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
-  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>capkeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>,
-  <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre><span class='fu'>tokens_lookup</span>(<span class='no'>x</span>, <span class='no'>dictionary</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>,
+  <span class='st'>"fixed"</span>), <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>" "</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>capkeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>multiword</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -96,22 +96,32 @@ object.</p>
       <dt>dictionary</dt>
       <dd>the <a href='dictionary.html'>dictionary</a>-class object that will be applied to 
 <code>x</code></dd>
+      <dt>levels</dt>
+      <dd>integers specifying the levels of entries in a hierarchical
+dictionary that will be applied.  The top level is 1, and subsequent levels
+describe lower nesting levels.  Values may be combined, even if these
+levels are not contiguous, e.g. `levels = c(1:3)` will collapse the second
+level into the first, but record the third level (if present) collapsed below
+the first.  (See examples.)</dd>
       <dt>valuetype</dt>
       <dd>how to interpret keyword expressions: <code>&quot;glob&quot;</code> for 
 &quot;glob&quot;-style wildcard expressions; <code>&quot;regex&quot;</code> for regular expressions;
 or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</dd>
+      <dt>concatenator</dt>
+      <dd>a charactor that connect words in multi-words entries in <code>x</code></dd>
       <dt>case_insensitive</dt>
       <dd>ignore the case of dictionary values if <code>TRUE</code> 
 uppercase to distinguish them from other features</dd>
       <dt>capkeys</dt>
       <dd>if TRUE, convert dictionary keys to uppercase to distinguish 
 them from other features</dd>
-      <dt>concatenator</dt>
-      <dd>a charactor that connect words in multi-words entries</dd>
       <dt>exclusive</dt>
       <dd>if <code>TRUE</code>, remove all features not in dictionary, 
 otherwise, replace values in dictionary with keys while leaving other 
 features unaffected</dd>
+      <dt>multiword</dt>
+      <dd>if <code>FALSE</code>, multi-word entries in dictionary are treated
+as single tokens</dd>
       <dt>verbose</dt>
       <dd>print status messages if <code>TRUE</code></dd>
     </dl>
@@ -122,11 +132,57 @@ features unaffected</dd>
 <span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"united states"</span>,
                    <span class='kw'>law</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>'law*'</span>, <span class='st'>'constitution'</span>),
                    <span class='kw'>freedom</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>'free*'</span>, <span class='st'>'libert*'</span>)))
-<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='st'>'glob'</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; <span class='message'>Registering 5 entiries in the dictionary...</span></div><div class='output co'>#&gt; <span class='message'>Searching 33 types of features...</span></div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 3 features (15.2% sparse).</div><div class='input'>
+<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'glob'</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; <span class='message'>Registering 5 entries in the dictionary...</span></div><div class='output co'>#&gt; <span class='message'>Searching 33 types of features...</span></div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 3 features (14.9% sparse).</div><div class='input'>
 <span class='no'>dict_fix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"united states"</span>,
                        <span class='kw'>law</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'law'</span>, <span class='st'>'constitution'</span>),
                        <span class='kw'>freedom</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'freedom'</span>, <span class='st'>'liberty'</span>)))
-<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='applyDictionary.html'>applyDictionary</a></span>(<span class='no'>toks</span>, <span class='no'>dict_fix</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'fixed'</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 3 features (21.1% sparse).</div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict_fix</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'fixed'</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 3 features (21.1% sparse).</div></pre>
+<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='applyDictionary.html'>applyDictionary</a></span>(<span class='no'>toks</span>, <span class='no'>dict_fix</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'fixed'</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 3 features (21.3% sparse).</div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict_fix</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>'fixed'</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 3 features (21.3% sparse).</div><div class='input'>
+<span class='co'># hierarchical dictionary example</span>
+<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"The United States has the Atlantic Ocean and the Pacific Ocean."</span>,
+         <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"Britain and Ireland have the Irish Sea and the English Channel."</span>)
+<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>)
+<span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>US</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>Countries</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"States"</span>),
+                                  <span class='kw'>oceans</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Atlantic"</span>, <span class='st'>"Pacific"</span>)),
+                        <span class='kw'>Europe</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>Countries</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Britain"</span>, <span class='st'>"Ireland"</span>),
+                                      <span class='kw'>oceans</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>west</span> <span class='kw'>=</span> <span class='st'>"Irish Sea"</span>,
+                                                    <span class='kw'>east</span> <span class='kw'>=</span> <span class='st'>"English Channel"</span>))))
+<span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; d1 :
+#&gt; [1] &quot;US&quot; &quot;US&quot; &quot;US&quot;
+#&gt; 
+#&gt; d2 :
+#&gt; [1] &quot;Europe&quot; &quot;Europe&quot; &quot;Europe&quot; &quot;Europe&quot;
+#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; d1 :
+#&gt; [1] &quot;Countries&quot; &quot;oceans&quot;    &quot;oceans&quot;   
+#&gt; 
+#&gt; d2 :
+#&gt; [1] &quot;Countries&quot; &quot;Countries&quot; &quot;oceans&quot;    &quot;oceans&quot;   
+#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; d1 :
+#&gt; [1] &quot;US.Countries&quot; &quot;US.oceans&quot;    &quot;US.oceans&quot;   
+#&gt; 
+#&gt; d2 :
+#&gt; [1] &quot;Europe.Countries&quot; &quot;Europe.Countries&quot; &quot;Europe.oceans&quot;    &quot;Europe.oceans&quot;   
+#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; d1 :
+#&gt; [1] &quot;&quot; &quot;&quot; &quot;&quot;
+#&gt; 
+#&gt; d2 :
+#&gt; [1] &quot;&quot;     &quot;&quot;     &quot;west&quot; &quot;east&quot;
+#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>3</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; d1 :
+#&gt; [1] &quot;US&quot; &quot;US&quot; &quot;US&quot;
+#&gt; 
+#&gt; d2 :
+#&gt; [1] &quot;Europe&quot;      &quot;Europe&quot;      &quot;Europe.west&quot; &quot;Europe.east&quot;
+#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span>(<span class='no'>toks</span>, <span class='no'>dict</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>3</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
+#&gt; d1 :
+#&gt; [1] &quot;Countries&quot; &quot;oceans&quot;    &quot;oceans&quot;   
+#&gt; 
+#&gt; d2 :
+#&gt; [1] &quot;Countries&quot;   &quot;Countries&quot;   &quot;oceans.west&quot; &quot;oceans.east&quot;
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

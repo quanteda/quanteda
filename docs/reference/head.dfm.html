@@ -114,7 +114,7 @@ will contain the first <code>ncol</code> features</dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>myDfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>ngrams</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>head</span>(<span class='no'>myDfm</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 63,079 features (96.8% sparse).
+<span class='fu'>head</span>(<span class='no'>myDfm</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 63,634 features (96.9% sparse).
 #&gt; (showing first 6 documents and first 6 features)
 #&gt;                  features
 #&gt; docs              fellow_- -_citizens citizens_of of_the the_senate senate_and
@@ -123,25 +123,25 @@ will contain the first <code>ncol</code> features</dd>
 #&gt;   1797-Adams             3          3           0     29          0          0
 #&gt;   1801-Jefferson         2          2           0     28          0          0
 #&gt;   1805-Jefferson         0          0           0     17          0          0
-#&gt;   1809-Madison           1          1           0     20          0          0</div><div class='input'><span class='fu'>tail</span>(<span class='no'>myDfm</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 63,079 features (96.8% sparse).
+#&gt;   1809-Madison           1          1           0     20          0          0</div><div class='input'><span class='fu'>tail</span>(<span class='no'>myDfm</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 63,634 features (96.9% sparse).
 #&gt; (showing last 6 documents and last 6 features)
 #&gt;               features
 #&gt; docs           fellow_- -_citizens citizens_of of_the the_senate senate_and
-#&gt;   1993-Clinton        0          0           1      5          0          0
 #&gt;   1997-Clinton        0          0           0     11          0          0
 #&gt;   2001-Bush           0          0           0      2          0          0
 #&gt;   2005-Bush           0          0           0     14          0          0
 #&gt;   2009-Obama          0          0           0      4          0          0
-#&gt;   2013-Obama          0          0           0      2          0          0</div><div class='input'><span class='fu'>tail</span>(<span class='no'>myDfm</span>, <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 57 documents, 63,079 features (96.8% sparse).
+#&gt;   2013-Obama          0          0           0      2          0          0
+#&gt;   2017-Trump          0          0           2      3          0          0</div><div class='input'><span class='fu'>tail</span>(<span class='no'>myDfm</span>, <span class='kw'>nfeature</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 63,634 features (96.9% sparse).
 #&gt; (showing last 6 documents and last 4 features)
 #&gt;               features
 #&gt; docs           fellow_- -_citizens citizens_of of_the
-#&gt;   1993-Clinton        0          0           1      5
 #&gt;   1997-Clinton        0          0           0     11
 #&gt;   2001-Bush           0          0           0      2
 #&gt;   2005-Bush           0          0           0     14
 #&gt;   2009-Obama          0          0           0      4
-#&gt;   2013-Obama          0          0           0      2</div></pre>
+#&gt;   2013-Obama          0          0           0      2
+#&gt;   2017-Trump          0          0           2      3</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
