@@ -13,7 +13,7 @@ dfm_select(x, features = NULL, selection = c("keep", "remove"),
 
 dfm_remove(x, features = NULL, ...)
 
-fcm_select(x, features, selection = c("keep", "remove"),
+fcm_select(x, features = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
   verbose = TRUE, ...)
 
