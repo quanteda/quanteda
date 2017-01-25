@@ -60,7 +60,7 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
         stop("dictionary must be a dictionary object")
     
     # cannot/should not apply dictionaries with multi-word keys to a dfm
-    if (any(stringi::stri_detect_charclass(unlist(dictionary, use.names = FALSE), "\\p{Z}")) &&
+    if (any(stringi::stri_detect_fixed(unlist(dictionary, use.names = FALSE), attr(dictionary, 'concatenator'))) &&
         x@ngrams == 1) {
         stop("dfm_lookup not currently implemented for ngrams > 1 and multi-word dictionary values")
     }
