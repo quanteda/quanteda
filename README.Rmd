@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   fig.path = "images/"
 )
 ```
-###[![quanteda: quantitative analysis of textual data](images/quanteda_logo.png)](https://kbenoit.github.io/quanteda/) 
+###[![quanteda: quantitative analysis of textual data](images/quanteda_logo.svg)](https://kbenoit.github.io/quanteda/) 
 [![CRAN Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
 [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda)
 [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda)
