@@ -5,11 +5,10 @@ output:
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, echo = FALSE}
-htmltools::includeCSS("css/base.css")
-htmltools::includeHTML("images/quanteda_logo.svg")
+```{r results="asis", echo = FALSE}
+cat('<img src="images/quanteda_logo.png" style="width: 300px; display: block;" />')
 ```
+
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
