@@ -43,30 +43,28 @@
     
 <div class="contents">
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<div id="quanteda" class="section level1">
-<div class="page-header"><h1 class="hasAnchor"><a href="#quanteda" class="anchor"> </a><a href="https://kbenoit.github.io/quanteda/"><img src="images/quanteda-light.png" alt="quanteda"></a></h1></div>
+<div id="quanteda-quantitative-analysis-of-textual-data" class="section level3">
+<h3 class="hasAnchor"><html><body><a href="#quanteda-quantitative-analysis-of-textual-data" class="anchor"> </a></body></html><a href="https://kbenoit.github.io/quanteda/"><img src="images/quanteda_logo.svg" alt="quanteda: quantitative analysis of textual data"></a></h3>
+<p><a href="https://CRAN.R-project.org/package=quanteda"><img src="https://www.r-pkg.org/badges/version/quanteda" alt="CRAN Version"></a> <a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/quanteda" alt="Downloads"></a> <a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange" alt="Total Downloads"></a> <a href="https://travis-ci.org/kbenoit/quanteda"><img src="https://travis-ci.org/kbenoit/quanteda.svg?branch=master" alt="Travis-CI Build Status"></a> <a href="https://ci.appveyor.com/project/kbenoit/quanteda/branch/master"><img src="https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true" alt="Build status"></a> <a href="https://codecov.io/gh/kbenoit/quanteda/branch/master"><img src="https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master" alt="codecov.io"></a></p>
 </div>
-<div id="quantitative-analysis-of-textual-data" class="section level1">
-<h1 class="hasAnchor"><a href="#quantitative-analysis-of-textual-data" class="anchor"> </a><a href="https://kbenoit.github.io/quanteda/">Quantitative Analysis of Textual Data</a></h1>
-
 <div id="quanteda-v0-9-9-under-development" class="section level2">
-<h2 class="hasAnchor"><a href="#quanteda-v0-9-9-under-development" class="anchor"> </a><strong>quanteda</strong> v0.9.9 under development</h2>
+<h2 class="hasAnchor"><html><body><a href="#quanteda-v0-9-9-under-development" class="anchor"> </a></body></html><strong>quanteda</strong> v0.9.9 under development</h2>
 <p>This version of the package is a transitional release prior to v1.0. It includes some major API changes (see below), but with the most of the older functions retained and deprecated. v0.9.9 also implements many enhancements and performance improvements. See <a href="https://kbenoit.github.io/quanteda/articles/development-plans.html">Quanteda Structure and Design</a> for details.</p>
 </div>
 <div id="about-the-package" class="section level2">
-<h2 class="hasAnchor"><a href="#about-the-package" class="anchor"> </a>About the package</h2>
+<h2 class="hasAnchor"><html><body><a href="#about-the-package" class="anchor"> </a></body></html>About the package</h2>
 <p>An R package for managing and analyzing text, created by <a href="kbenoit@lse.ac.uk">Kenneth Benoit</a> in collaboration with a team of core <a href="https://github.com/kbenoit/quanteda/graphs/contributors">contributors</a>: <a href="https://github.com/pnulty">Paul Nulty</a>, <a href="https://github.com/adamobeng">Adam Obeng</a>, <a href="https://github.com/koheiw">Kohei Watanabe</a>, <a href="https://github.com/HaiyanLW">Haiyan Wang</a>, <a href="https://github.com/lauderdale">Ben Lauderdale</a>, and <a href="https://github.com/conjugateprior">Will Lowe</a>.<br>
 Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.</p>
 <p>For more details, see the <a href="https://kbenoit.github.io/quanteda/"><strong>package website</strong></a>.</p>
 <div id="leave-feedback" class="section level3">
-<h3 class="hasAnchor"><a href="#leave-feedback" class="anchor"> </a>Leave feedback</h3>
+<h3 class="hasAnchor"><html><body><a href="#leave-feedback" class="anchor"> </a></body></html>Leave feedback</h3>
 <p>If you like <strong>quanteda</strong>, please consider leaving <a href="https://github.com/kbenoit/quanteda/issues/461">feedback or a testimonial here</a>.</p>
 </div>
 </div>
 <div id="features" class="section level2">
-<h2 class="hasAnchor"><a href="#features" class="anchor"> </a>Features</h2>
+<h2 class="hasAnchor"><html><body><a href="#features" class="anchor"> </a></body></html>Features</h2>
 <div id="powerful-text-analytics" class="section level3">
-<h3 class="hasAnchor"><a href="#powerful-text-analytics" class="anchor"> </a>Powerful text analytics</h3>
+<h3 class="hasAnchor"><html><body><a href="#powerful-text-analytics" class="anchor"> </a></body></html>Powerful text analytics</h3>
 <p><strong>Generalized, flexible corpus management.</strong><br><strong>quanteda</strong> provides a comprehensive workflow and ecosystem for the management, processing, and analysis of texts. Documents and associated document- and collection-level metadata are easily loaded and stored as a <em>corpus</em> object, although most of <strong>quanteda</strong>&rsquo;s operations work on simple character objects as well. A corpus is designed to efficiently store all of the texts in a collection, as well as meta-data for documents and for the collection as a whole. This makes it easy to perform natural language processing on the texts in a corpus simply and quickly, such as tokenizing, stemming, or forming ngrams. <strong>quanteda</strong>&rsquo;s functions for tokenizing texts and forming multiple tokenized documents into a <em>document-feature matrix</em> are both extremely fast and extremely simple to use. <strong>quanteda</strong> can segment texts easily by words, paragraphs, sentences, or even user-supplied delimiters and tags.</p>
 <p><strong>Works nicely with UTF-8</strong>.<br>
 Built on the text processing functions in the <strong>stringi</strong> package, which is in turn built on C++ implementation of the <a href="http://www.icu-project.org/">ICU</a> libraries for Unicode text handling, <strong>quanteda</strong> pays special attention to fast and correct implementation of Unicode and the handling of text in any character set, following conversion internally to UTF-8.</p>
@@ -92,7 +90,7 @@ Once constructed, a <em>dfm</em> can be easily analyzed using either <strong>qua
 </ul></div>
 </div>
 <div id="how-to-install" class="section level2">
-<h2 class="hasAnchor"><a href="#how-to-install" class="anchor"> </a>How to Install</h2>
+<h2 class="hasAnchor"><html><body><a href="#how-to-install" class="anchor"> </a></body></html>How to Install</h2>
 <ol style="list-style-type: decimal"><li><p>From <a href="https://CRAN.R-project.org/package=quanteda">CRAN</a>: Use your GUI&rsquo;s R package installer, or execute:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"quanteda"</span>) </code></pre></div></li>
 <li><p>From <a href="https://github.com/kbenoit/quanteda">GitHub</a>, using:</p>
@@ -109,11 +107,11 @@ devtools::<span class="kw">install_github</span>(<span class="st">"kbenoit/quant
 </ul></li>
 </ol></div>
 <div id="getting-started" class="section level2">
-<h2 class="hasAnchor"><a href="#getting-started" class="anchor"> </a>Getting Started</h2>
+<h2 class="hasAnchor"><html><body><a href="#getting-started" class="anchor"> </a></body></html>Getting Started</h2>
 <p>See the <a href="http://kbenoit.github.io/quanteda">package website</a>, which includes the <a href="https://kbenoit.github.io/quanteda/articles/quickstart.html">Getting Started Vignette</a>.</p>
 </div>
 <div id="demonstration" class="section level2">
-<h2 class="hasAnchor"><a href="#demonstration" class="anchor"> </a>Demonstration</h2>
+<h2 class="hasAnchor"><html><body><a href="#demonstration" class="anchor"> </a></body></html>Demonstration</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)
 
 <span class="co"># create a corpus from the immigration texts from UK party platforms</span>
@@ -138,7 +136,7 @@ uk2010immigCorpus
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/* on x86_64 by kbenoit
-## Created: Wed Jan 25 17:23:19 2017
+## Created: Wed Jan 25 17:50:28 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 <span class="co"># key words in context for "deport", 3 words of context</span>
@@ -172,14 +170,13 @@ mydfm
 <p><img src="images/quanteda_example-1.png" width="672"></p>
 </div>
 <div id="contributing" class="section level2">
-<h2 class="hasAnchor"><a href="#contributing" class="anchor"> </a>Contributing</h2>
+<h2 class="hasAnchor"><html><body><a href="#contributing" class="anchor"> </a></body></html>Contributing</h2>
 <p>Contributions in the form of feedback, comments, code, and bug reports are most welcome. How to contribute:</p>
 <ul><li><p>Fork the source code, modify, and issue a <a href="https://help.github.com/articles/creating-a-pull-request-from-a-fork/">pull request</a> through the <a href="https://github.com/kbenoit/quanteda">project GitHub page</a>. See our <a href="https://github.com/kbenoit/quanteda/blob/master/CONDUCT.md">Contributor Code of Conduct</a>.</p></li>
 <li><p>Issues, bug reports, and wish lists: <a href="https://github.com/kbenoit/quanteda/issues">File a GitHub issue</a>.</p></li>
 <li><p>Usage questions: Submit a question on the <a href="http://stackoverflow.com/questions/tagged/quanteda"><strong>quanteda</strong> channel on StackOverflow</a>.</p></li>
 <li><p>Contact <a href="kbenoit@lse.ac.uk">the maintainer</a> by email.</p></li>
 </ul></div>
-</div>
 </div>
   </div>
 
@@ -191,19 +188,7 @@ mydfm
 <p><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></p>
 <h2>Developers</h2><ul class="list-unstyled"><li>Kenneth Benoit <br><small class="roles"> Author, maintainer </small> </li>
 <li><a href="authors.html">All authors...</a></li>
-</ul><html><body><h2>Dev status</h2><ul class="list-unstyled"><li><a href="https://CRAN.R-project.org/package=quanteda">
-  <img src="http://www.r-pkg.org/badges/version/quanteda" alt="CRAN Version"></a></li>
-<li><a href="https://CRAN.R-project.org/package=quanteda">
-  <img src="http://cranlogs.r-pkg.org/badges/quanteda" alt="Downloads"></a></li>
-<li><a href="https://CRAN.R-project.org/package=quanteda">
-  <img src="http://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange" alt="Total Downloads"></a></li>
-<li><a href="https://travis-ci.org/kbenoit/quanteda">
-  <img src="https://travis-ci.org/kbenoit/quanteda.svg?branch=master" alt="Travis-CI Build Status"></a></li>
-<li><a href="https://ci.appveyor.com/project/kbenoit/quanteda/branch/master">
-  <img src="https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true" alt="Build status"></a></li>
-<li><a href="https://codecov.io/gh/kbenoit/quanteda/branch/master">
-  <img src="https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master" alt="codecov.io"></a></li>
-</ul></body></html></div>
+</ul></div>
 
 </div>
 
