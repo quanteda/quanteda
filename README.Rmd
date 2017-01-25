@@ -7,18 +7,19 @@ output:
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, echo = FALSE}
+htmltools::includeCSS("css/base.css")
+htmltools::includeHTML("images/quanteda_logo.svg")
+```
+```{r, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "##",
   fig.path = "images/"
 )
 ```
-
-# [![quanteda Quantitative Analysis of Textual Data](images/quanteda_logo.svg)](https://kbenoit.github.io/quanteda/)
-
-[![CRAN Version](http://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
-[![Downloads](http://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda)
-[![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda)
+[![CRAN Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
+[![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda)
+[![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda)
 [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) 
 [![Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda/branch/master)
 [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)][1]
