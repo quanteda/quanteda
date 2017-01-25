@@ -18,7 +18,7 @@ dfm_smooth(x, smoothing = 1)
  \item{\code{"frequency"}}{integer feature count (default when a dfm is created)}
  \item{\code{"relFreq"}}{the proportion of the feature counts of total feature counts (aka relative frequency)}
  \item{\code{"relMaxFreq"}}{the proportion of the feature counts of the highest feature count in a document}
- \item{\code{"logFreq"}}{natural logarithm of the feature count}
+ \item{\code{"logFreq"}}{take the logarithm of 1 + the feature count, for base 10}
  \item{\code{"tfidf"}}{Term-frequency * inverse document frequency. For a
   full explanation, see, for example, 
   \url{http://nlp.stanford.edu/IR-book/html/htmledition/term-frequency-and-weighting-1.html}.
