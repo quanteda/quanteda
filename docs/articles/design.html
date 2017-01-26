@@ -181,8 +181,8 @@ These steps don&rsquo;t necessarily require the processing steps above.
 
 
 ```r
-mydfm &lt;- texts(mycorpus, group = "party") %&gt;% toLower %&gt;% tokenize %&gt;% wordstem %&gt;%
-                                removeFeatures(stopwords("english")) %&gt;% dfm
+mydfm &lt;- texts(mycorpus, group = "party") %&gt;% char_tolower %&gt;% tokens %&gt;% wordstem %&gt;%
+                                tokens_remove(stopwords("english")) %&gt;% dfm
 ```
 
 We recognize however that not all sequences will make sense, for instance `wordstem` will only work *after* tokenization, and will try to catch these errors and make the proper sequence clear to users.</code></pre>

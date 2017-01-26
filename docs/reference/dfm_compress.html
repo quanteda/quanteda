@@ -114,13 +114,14 @@ context.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>mat</span> <span class='kw'>&lt;-</span> <span class='fu'>rbind</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='st'>"b A A"</span>, <span class='st'>"C C a b B"</span>), <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
-             <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='st'>"A C C C C C"</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; </div><div class='input'><span class='fu'>colnames</span>(<span class='no'>mat</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='toLower.html'>toLower</a></span>(<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>mat</span>))
+             <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='st'>"A C C C C C"</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; </div><div class='input'><span class='fu'>colnames</span>(<span class='no'>mat</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>mat</span>))
 <span class='no'>mat</span></div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 5 features (46.7% sparse).
 #&gt; 3 x 5 sparse Matrix of class &quot;dfmSparse&quot;
-#&gt;       a c b a b
-#&gt; text1 2 0 1 0 0
-#&gt; text2 0 2 1 1 1
-#&gt; text1 1 5 0 0 0</div><div class='input'><span class='fu'>dfm_compress</span>(<span class='no'>mat</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (30% sparse).
+#&gt;        features
+#&gt; docs    a c b a b
+#&gt;   text1 2 0 1 0 0
+#&gt;   text2 0 2 1 1 1
+#&gt;   text1 1 5 0 0 0</div><div class='input'><span class='fu'>dfm_compress</span>(<span class='no'>mat</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (30% sparse).
 #&gt; 2 x 5 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    a c b a b

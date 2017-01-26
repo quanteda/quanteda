@@ -97,12 +97,12 @@ novel.v &lt;-<span class="st"> </span><span class="kw">substring</span>(data_cha
 </div>
 <div id="reprocessing-the-content" class="section level2">
 <h2 class="hasAnchor"><html><body><a href="#reprocessing-the-content" class="anchor"> </a></body></html>2.3 Reprocessing the content</h2>
-<p>We begin processing the text by converting to lower case. <code>quanteda</code>&rsquo;s <code>toLower</code> function works like the built-in <code>tolower</code>, with an extra option to preserve upper-case acronyms when detected.</p>
+<p>We begin processing the text by converting to lower case. <code>quanteda</code>&rsquo;s <code>tolower</code> functions work like the built-in <code>tolower</code>, with an extra option to preserve upper-case acronyms when detected. For <code>character</code> objects, we use <code>char_tolower</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># lowercase</span>
-novel.lower.v &lt;-<span class="st"> </span><span class="kw"><a href="../reference/toLower.html">toLower</a></span>(novel.v)</code></pre></div>
-<p><code>quanteda</code>&rsquo;s <code>tokenize</code> function splits the text into words, with many options available for which characters should be preserved, and which should be used to define word boundaries. The default behaviour works similarly to splitting on the regular expression for word boundary (<code>\W</code>), but does not treat apostrophes as word boundaries. This means that <em>&rsquo;s</em> and <em>&rsquo;t</em> are not treated as whole words from possessive forms and contractions.</p>
+novel.lower.v &lt;-<span class="st"> </span><span class="kw"><a href="../reference/char_tolower.html">char_tolower</a></span>(novel.v)</code></pre></div>
+<p><strong>quanteda</strong>&rsquo;s <code>tokens</code> function splits the text into words, with many options available for which characters should be preserved, and which should be used to define word boundaries. The default behaviour works similarly to splitting on the regular expression for word boundary (<code>\W</code>), but does not treat apostrophes as word boundaries. This means that <em>&rsquo;s</em> and <em>&rsquo;t</em> are not treated as whole words from possessive forms and contractions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># tokenize</span>
-moby.word.v &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tokenize.html">tokenize</a></span>(novel.lower.v, <span class="dt">removePunct =</span> <span class="ot">TRUE</span>, <span class="dt">simplify =</span> <span class="ot">TRUE</span>)
+moby.word.v &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="kw"><a href="../reference/tokens.html">tokens</a></span>(novel.lower.v, <span class="dt">removePunct =</span> <span class="ot">TRUE</span>))
 <span class="kw">length</span>(moby.word.v)</code></pre></div>
 <pre><code>## [1] 210000</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">total.length &lt;-<span class="st"> </span><span class="kw">length</span>(moby.word.v)
@@ -144,7 +144,7 @@ moby.word.v &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># total unique words</span>
 <span class="kw">length</span>(<span class="kw">unique</span>(moby.word.v))</code></pre></div>
 <pre><code>## [1] 17299</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/ntoken.html">ntype</a></span>(<span class="kw"><a href="../reference/toLower.html">toLower</a></span>(novel.v), <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/ntoken.html">ntype</a></span>(<span class="kw"><a href="../reference/char_tolower.html">char_tolower</a></span>(novel.v), <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Moby_Dick 
 ##     18525</code></pre>
 <p>To quickly sort the word types by their frequency, we can use the <code>dfm</code> command to create a matrix of counts of each word type &ndash; a document-frequency matrix. In this case there is only one document, the entire book.</p>
@@ -243,7 +243,7 @@ mobyDfm[, <span class="kw">c</span>(<span class="st">"he"</span>, <span class="s
 ## [Moby_Dick, 13363] like a marshal's baton. | CHAPTER | 5. Breakfast. I    
 ## [Moby_Dick, 14249]       out for a stroll. | CHAPTER | 6. The Street.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chaptersVec &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw"><a href="../reference/corpus_segment.html">char_segment</a></span>(novel.v, <span class="dt">what =</span> <span class="st">'other'</span>, <span class="dt">delimiter =</span> <span class="st">"CHAPTER</span><span class="ch">\\</span><span class="st">s</span><span class="ch">\\</span><span class="st">d"</span>, <span class="dt">perl =</span> <span class="ot">TRUE</span>))
-chaptersLowerVec &lt;-<span class="st"> </span><span class="kw"><a href="../reference/toLower.html">toLower</a></span>(chaptersVec)
+chaptersLowerVec &lt;-<span class="st"> </span><span class="kw"><a href="../reference/char_tolower.html">char_tolower</a></span>(chaptersVec)
 chaptersCorp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(chaptersVec)</code></pre></div>
 <p>With the corpus split into chapters, we can use the <code>dfm</code> command to create a matrix of counts of each word in each chapter &ndash; a document-frequency matrix.</p>
 </div>

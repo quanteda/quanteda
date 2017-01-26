@@ -90,8 +90,9 @@ the replacements are easily distinguished from features that were terms
 found originally in the document).</p>
     
 
-    <pre><span class='fu'>dfm_lookup</span>(<span class='no'>x</span>, <span class='no'>dictionary</span>, <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>,
-  <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>capkeys</span> <span class='kw'>=</span> !<span class='no'>exclusive</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre><span class='fu'>dfm_lookup</span>(<span class='no'>x</span>, <span class='no'>dictionary</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>, <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>capkeys</span> <span class='kw'>=</span> !<span class='no'>exclusive</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -99,6 +100,9 @@ found originally in the document).</p>
       <dd>the dfm to which the dictionary will be applied</dd>
       <dt>dictionary</dt>
       <dd>a <a href='dictionary.html'>dictionary</a> class object</dd>
+      <dt>levels</dt>
+      <dd>levels of entries in a hierachical dictionary that will be 
+applied</dd>
       <dt>exclusive</dt>
       <dd>if <code>TRUE</code>, remove all features not in dictionary, 
 otherwise, replace values in dictionary with keys while leaving other 

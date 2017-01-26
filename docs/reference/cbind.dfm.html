@@ -126,8 +126,9 @@ row-wise (<code>rbind</code>) to the first</dd>
 #&gt; docs    more words here
 #&gt;   text1    1     1    1</div><div class='input'><span class='fu'>cbind</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 8 features (0% sparse).
 #&gt; 1 x 8 sparse Matrix of class &quot;dfmSparse&quot;
-#&gt;       this is one sample text more words here
-#&gt; text1    1  1   1      2    1    1     1    1</div><div class='input'>
+#&gt;        features
+#&gt; docs    this is one sample text more words here
+#&gt;   text1    1  1   1      2    1    1     1    1</div><div class='input'>
 <span class='co'># rbind() for dfm objects</span>
 (<span class='no'>dfm1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"This is one sample text sample."</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 6 features (0% sparse).
 #&gt; 1 x 6 sparse Matrix of class &quot;dfmSparse&quot;
@@ -143,14 +144,16 @@ row-wise (<code>rbind</code>) to the first</dd>
 #&gt; docs   this is the fourth sample text .
 #&gt;   doc3    1  1   1      1      1    1 1</div><div class='input'><span class='fu'>rbind</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2</span>)</div><div class='output co'>#&gt; </div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 8 features (31.2% sparse).
 #&gt; 2 x 8 sparse Matrix of class &quot;dfmSparse&quot;
-#&gt;      one text . this is sample two three
-#&gt; doc1   1    1 1    1  1      2   0     0
-#&gt; doc2   1    2 1    0  0      0   1     1</div><div class='input'><span class='fu'>rbind</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2</span>, <span class='no'>dfm3</span>)</div><div class='output co'>#&gt; </div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 10 features (40% sparse).
+#&gt;       features
+#&gt; docs   one text . this is sample two three
+#&gt;   doc1   1    1 1    1  1      2   0     0
+#&gt;   doc2   1    2 1    0  0      0   1     1</div><div class='input'><span class='fu'>rbind</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2</span>, <span class='no'>dfm3</span>)</div><div class='output co'>#&gt; </div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 10 features (40% sparse).
 #&gt; 3 x 10 sparse Matrix of class &quot;dfmSparse&quot;
-#&gt;      text . this is sample one two three the fourth
-#&gt; doc1    1 1    1  1      2   1   0     0   0      0
-#&gt; doc2    2 1    0  0      0   1   1     1   0      0
-#&gt; doc3    1 1    1  1      1   0   0     0   1      1</div></pre>
+#&gt;       features
+#&gt; docs   text . this is sample one two three the fourth
+#&gt;   doc1    1 1    1  1      2   1   0     0   0      0
+#&gt;   doc2    2 1    0  0      0   1   1     1   0      0
+#&gt;   doc3    1 1    1  1      1   0   0     0   1      1</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
