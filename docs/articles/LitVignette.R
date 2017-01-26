@@ -33,7 +33,7 @@ novel.lower.v <- char_tolower(novel.v)
 
 ## ------------------------------------------------------------------------
 # tokenize
-moby.word.v <- tokenize(novel.lower.v, removePunct = TRUE, simplify = TRUE)
+moby.word.v <- as.character(tokens(novel.lower.v, removePunct = TRUE))
 length(moby.word.v)
 total.length <- length(moby.word.v)
 str(moby.word.v)

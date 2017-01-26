@@ -89,11 +89,11 @@ select only terms of interest from a dictionary.</p>
 
     <pre><span class='fu'>dfm_select</span>(<span class='no'>x</span>, <span class='kw'>features</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"remove"</span>),
   <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>min_nchar</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_nchar</span> <span class='kw'>=</span> <span class='fl'>63</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+  <span class='kw'>min_nchar</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_nchar</span> <span class='kw'>=</span> <span class='fl'>63</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='fu'>dfm_remove</span>(<span class='no'>x</span>, <span class='kw'>features</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
-<span class='fu'>fcm_select</span>(<span class='no'>x</span>, <span class='no'>features</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"remove"</span>),
+<span class='fu'>fcm_select</span>(<span class='no'>x</span>, <span class='kw'>features</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"keep"</span>, <span class='st'>"remove"</span>),
   <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
@@ -162,22 +162,22 @@ removed</dd>
 <span class='no'>mydict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>countries</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"United_States"</span>, <span class='st'>"Sweden"</span>, <span class='st'>"France"</span>),
                           <span class='kw'>wordsEndingInY</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"by"</span>, <span class='st'>"my"</span>),
                           <span class='kw'>notintext</span> <span class='kw'>=</span> <span class='st'>"blahblah"</span>))
-<span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='no'>mydict</span>)</div><div class='output co'>#&gt; <span class='message'>kept 4 features, from 6 supplied (glob) feature types</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (50% sparse).
+<span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='no'>mydict</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (50% sparse).
 #&gt; 2 x 4 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    My by United_States Sweden
 #&gt;   text1  1  1             0      0
-#&gt;   text2  0  0             1      1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='no'>mydict</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>kept 3 features, from 6 supplied (glob) feature types</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (50% sparse).
+#&gt;   text2  0  0             1      1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='no'>mydict</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (50% sparse).
 #&gt; 2 x 3 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    by United_States Sweden
 #&gt;   text1  1             0      0
-#&gt;   text2  0             1      1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'>c</span>(<span class='st'>"s$"</span>, <span class='st'>".y"</span>), <span class='st'>"keep"</span>)</div><div class='output co'>#&gt; <span class='message'>kept 0 features, from 2 supplied (glob) feature types</span></div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'>c</span>(<span class='st'>"s$"</span>, <span class='st'>".y"</span>), <span class='st'>"keep"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>)</div><div class='output co'>#&gt; <span class='message'>kept 6 features, from 2 supplied (regex) feature types</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (50% sparse).
+#&gt;   text2  0             1      1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'>c</span>(<span class='st'>"s$"</span>, <span class='st'>".y"</span>), <span class='st'>"keep"</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'>c</span>(<span class='st'>"s$"</span>, <span class='st'>".y"</span>), <span class='st'>"keep"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (50% sparse).
 #&gt; 2 x 6 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    My Christmas was by Does United_States
 #&gt;   text1  1         1   1  1    0             0
-#&gt;   text2  0         0   0  0    1             1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'>c</span>(<span class='st'>"s$"</span>, <span class='st'>".y"</span>), <span class='st'>"remove"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>)</div><div class='output co'>#&gt; <span class='message'>removed 6 features, from 2 supplied (regex) feature types</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 14 features (50% sparse).
+#&gt;   text2  0         0   0  0    1             1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'>c</span>(<span class='st'>"s$"</span>, <span class='st'>".y"</span>), <span class='st'>"remove"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 14 features (50% sparse).
 #&gt; 2 x 14 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    ruined your opposition tax plan . the or Sweden have more progressive
@@ -186,12 +186,12 @@ removed</dd>
 #&gt;        features
 #&gt; docs    taxation ?
 #&gt;   text1        0 0
-#&gt;   text2        1 1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"keep"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; <span class='message'>kept 9 features, from 174 supplied (fixed) feature types</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 9 features (50% sparse).
+#&gt;   text2        1 1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"keep"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 9 features (50% sparse).
 #&gt; 2 x 9 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    My was by your Does the or have more
 #&gt;   text1  1   1  1    1    0   0  0    0    0
-#&gt;   text2  0   0  0    0    1   1  1    1    1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"remove"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; <span class='message'>removed 9 features, from 174 supplied (fixed) feature types</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 11 features (50% sparse).
+#&gt;   text2  0   0  0    0    1   1  1    1    1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>myDfm</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='st'>"remove"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 11 features (50% sparse).
 #&gt; 2 x 11 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    Christmas ruined opposition tax plan . United_States Sweden progressive
@@ -222,18 +222,18 @@ removed</dd>
 #&gt;        features
 #&gt; docs    here are new words . in this text
 #&gt;   text1    1   1   1     1 1  0    0    0
-#&gt;   text2    0   0   1     1 1  1    1    1</div><div class='input'>(<span class='no'>dfm2b</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_select</span>(<span class='no'>dfm2a</span>, <span class='no'>dfm1</span>))</div><div class='output co'>#&gt; <span class='message'>found 4 features from 11 supplied types in a dfm,</span></div><div class='output co'>#&gt; <span class='message'> padding 0s for another 7 </span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 11 features (77.3% sparse).
+#&gt;   text2    0   0   1     1 1  1    1    1</div><div class='input'>(<span class='no'>dfm2b</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_select</span>(<span class='no'>dfm2a</span>, <span class='no'>dfm1</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 11 features (77.3% sparse).
 #&gt; 2 x 11 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;       this is text one . , the second here : third
 #&gt; text1    0  0    0   0 1 0   0      0    1 0     0
 #&gt; text2    1  0    1   0 1 0   0      0    0 0     0</div><div class='input'><span class='fu'>setequal</span>(<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>dfm1</span>), <span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>dfm2b</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># more selection on a dfm</span>
-<span class='fu'>dfm_select</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2a</span>)</div><div class='output co'>#&gt; <span class='message'>found 4 features from 8 supplied types in a dfm,</span></div><div class='output co'>#&gt; <span class='message'> padding 0s for another 4 </span></div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 8 features (62.5% sparse).
+<span class='fu'>dfm_select</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2a</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 8 features (62.5% sparse).
 #&gt; 3 x 8 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;       here are new words . in this text
 #&gt; text1    0   0   0     0 1  0    1    1
 #&gt; text2    0   0   0     0 1  0    1    1
-#&gt; text3    1   0   0     0 1  0    0    1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2a</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>)</div><div class='output co'>#&gt; <span class='message'>removed 4 features, from 8 supplied (glob) feature types</span></div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 7 features (61.9% sparse).
+#&gt; text3    1   0   0     0 1  0    0    1</div><div class='input'><span class='fu'>dfm_select</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2a</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 7 features (61.9% sparse).
 #&gt; 3 x 7 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    is one , the second : third
@@ -252,7 +252,7 @@ removed</dd>
 #&gt;        features
 #&gt; docs    :
 #&gt;   text1 0
-#&gt;   text2 1</div><div class='input'><span class='fu'>dfm_remove</span>(<span class='no'>tmpdfm</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; <span class='message'>removed 12 features, from 174 supplied (glob) feature types</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (25% sparse).
+#&gt;   text2 1</div><div class='input'><span class='fu'>dfm_remove</span>(<span class='no'>tmpdfm</span>, <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (25% sparse).
 #&gt; 2 x 6 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    document lots stopwords . , :

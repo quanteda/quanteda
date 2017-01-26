@@ -211,7 +211,7 @@ default</dd>
 #&gt; [1] &quot;Another&quot;     &quot;sentence&quot;    &quot;,&quot;           &quot;to&quot;          &quot;demonstrate&quot;
 #&gt; [6] &quot;how&quot;         &quot;tokens&quot;      &quot;works&quot;       &quot;.&quot;          
 #&gt; </div><div class='input'><span class='co'># removing punctuation marks and lowecasing texts</span>
-<span class='fu'>tokens</span>(<span class='fu'><a href='toLower.html'>toLower</a></span>(<span class='no'>txt</span>), <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens</span>(<span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='no'>txt</span>), <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; doc1 :
 #&gt; [1] &quot;this&quot;   &quot;is&quot;     &quot;a&quot;      &quot;sample&quot; &quot;of&quot;     &quot;tokens&quot;
 #&gt; 
@@ -277,7 +277,7 @@ default</dd>
 
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='kw'>text1</span><span class='kw'>=</span><span class='st'>"This is $10 in 999 different ways,\n up and down; left and right!"</span>,
          <span class='kw'>text2</span><span class='kw'>=</span><span class='st'>"@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123."</span>)
-<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Starting tokenization...</span></div><div class='output co'>#&gt; <span class='message'>...preserving Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...tokenizing 1 of 1 blocks</span></div><div class='output co'>#&gt; <span class='message'>...replacing Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...serializing tokens </span></div><div class='output co'>#&gt; <span class='message'>31 unique types</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.00100000000000477 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokens from 2 documents.
+<span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Starting tokenization...</span></div><div class='output co'>#&gt; <span class='message'>...preserving Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...tokenizing 1 of 1 blocks</span></div><div class='output co'>#&gt; <span class='message'>...replacing Twitter characters (#, @)</span></div><div class='output co'>#&gt; <span class='message'>...serializing tokens </span></div><div class='output co'>#&gt; <span class='message'>31 unique types</span></div><div class='output co'>#&gt; <span class='message'>...total elapsed:  0.000999999999997669 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished tokenizing and cleaning 2 texts.</span></div><div class='output co'>#&gt; tokens from 2 documents.
 #&gt; text1 :
 #&gt;  [1] &quot;This&quot;      &quot;is&quot;        &quot;$&quot;         &quot;10&quot;        &quot;in&quot;        &quot;999&quot;      
 #&gt;  [7] &quot;different&quot; &quot;ways&quot;      &quot;,&quot;         &quot;up&quot;        &quot;and&quot;       &quot;down&quot;     
@@ -359,7 +359,9 @@ default</dd>
 <span class='co'># character level</span>
 <span class='fu'>tokens</span>(<span class='st'>"Great website: http://textasdata.com?page=123."</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"character"</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt; [1] &quot; &quot; &quot; &quot;
+#&gt;  [1] &quot;G&quot; &quot;r&quot; &quot;e&quot; &quot;a&quot; &quot;t&quot; &quot;w&quot; &quot;e&quot; &quot;b&quot; &quot;s&quot; &quot;i&quot; &quot;t&quot; &quot;e&quot; &quot;:&quot; &quot;h&quot; &quot;t&quot; &quot;t&quot; &quot;p&quot; &quot;:&quot; &quot;/&quot;
+#&gt; [20] &quot;/&quot; &quot;t&quot; &quot;e&quot; &quot;x&quot; &quot;t&quot; &quot;a&quot; &quot;s&quot; &quot;d&quot; &quot;a&quot; &quot;t&quot; &quot;a&quot; &quot;.&quot; &quot;c&quot; &quot;o&quot; &quot;m&quot; &quot;?&quot; &quot;p&quot; &quot;a&quot; &quot;g&quot;
+#&gt; [39] &quot;e&quot; &quot;=&quot; &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;.&quot;
 #&gt; </div><div class='input'><span class='fu'>tokens</span>(<span class='st'>"Great website: http://textasdata.com?page=123."</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"character"</span>,
          <span class='kw'>removeSeparators</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
@@ -420,9 +422,9 @@ default</dd>
 #&gt; [26] &quot;So we pray to Him now for the vision to see our way clearly -- to see the way that leads to a better life for ourselves and for all our fellow men -- to the achievement of His will to peace on earth.&quot;
 #&gt; </div><div class='input'>
 <span class='co'># removing features (stopwords) from tokenized texts</span>
-<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='toLower.html'>toLower</a></span>(<span class='fu'>c</span>(<span class='kw'>mytext1</span> <span class='kw'>=</span> <span class='st'>"This is a short test sentence."</span>,
-                 <span class='kw'>mytext2</span> <span class='kw'>=</span> <span class='st'>"Short."</span>,
-                 <span class='kw'>mytext3</span> <span class='kw'>=</span> <span class='st'>"Short, shorter, and shortest."</span>))
+<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'>c</span>(<span class='kw'>mytext1</span> <span class='kw'>=</span> <span class='st'>"This is a short test sentence."</span>,
+                      <span class='kw'>mytext2</span> <span class='kw'>=</span> <span class='st'>"Short."</span>,
+                      <span class='kw'>mytext3</span> <span class='kw'>=</span> <span class='st'>"Short, shorter, and shortest."</span>))
 <span class='fu'>tokens</span>(<span class='no'>txt</span>, <span class='kw'>removePunct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; tokens from 3 documents.
 #&gt; mytext1 :
 #&gt; [1] &quot;this&quot;     &quot;is&quot;       &quot;a&quot;        &quot;short&quot;    &quot;test&quot;     &quot;sentence&quot;
