@@ -107,13 +107,11 @@ struct select_mt : public Worker{
 // [[Rcpp::export]]
 List qatd_cpp_tokens_select(const List &texts_, 
                             const List &words_,
-                            int mode_,
-                            bool padding_){
+                            int mode,
+                            bool padding){
     
     Texts input = Rcpp::as<Texts>(texts_);
     const List words = words_;
-    int mode = mode_;
-    bool padding = padding_;
 
     SetNgrams set_words;
     std::vector<std::size_t> spans(words.size());
