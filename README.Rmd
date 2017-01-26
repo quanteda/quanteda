@@ -12,7 +12,8 @@ knitr::opts_chunk$set(
   fig.path = "images/"
 )
 ```
-###[![quanteda: quantitative analysis of textual data](images/quanteda_logo.svg)](https://kbenoit.github.io/quanteda/) 
+<!-- SVG images need to be linked through cdn.rawgit.com for the correct content type header -->
+###[![quanteda: quantitative analysis of textual data](https://cdn.rawgit.com/kbenoit/quanteda/issue-502/images/quanteda_logo.svg)](https://kbenoit.github.io/quanteda/) 
 [![CRAN Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
 [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda)
 [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda)
