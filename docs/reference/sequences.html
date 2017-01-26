@@ -88,7 +88,8 @@ Learning of Multi-Word Verbs&quot;.</p>
     
 
     <pre><span class='fu'>sequences</span>(<span class='no'>x</span>, <span class='no'>features</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
-  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>count_min</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>nested</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_length</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>nested</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -103,10 +104,17 @@ in sequences</dd>
 or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</dd>
       <dt>case_insensitive</dt>
       <dd>ignore case when matching, if <code>TRUE</code></dd>
-      <dt>count_min</dt>
-      <dd>minimum frequency of sequences</dd>
+      <dt>min_count</dt>
+      <dd>minimum frequency of sequences for which parameters are estimated</dd>
+      <dt>max_length</dt>
+      <dd>maxium length of sequences which are collected</dd>
       <dt>nested</dt>
-      <dd>collect nested sequences</dd>
+      <dd>if true, collect all the subsequences of a longer sequence as separate entities.
+e.g. in a sequence of capitalized words &quot;United States Congress&quot;, &quot;States Congress&quot; is considered 
+as a subsequence. But &quot;United States&quot; is not a subsequence because it is followed by &quot;Congress&quot;.</dd>
+      <dt>ordered</dt>
+      <dd>if true, use the Blaheta-Johnson method that distinguishs between 
+the order of words, and tends to promote rare sequences.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -123,30 +131,31 @@ or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.htm
 
 <span class='co'># extracting multi-part proper nouns (capitalized terms)</span>
 <span class='no'>seqs</span> <span class='kw'>&lt;-</span> <span class='fu'>sequences</span>(<span class='no'>toks</span>, <span class='st'>"^([A-Z][a-z\\-]{2,})"</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>head</span>(<span class='no'>seqs</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;               sequence   lambda      sigma count length          z            p
-#&gt; 1        United States 4.918799 0.03386005   153      2 145.268492 0.000000e+00
-#&gt; 2   Federal Government 3.455271 0.07315512    32      2  47.232120 0.000000e+00
-#&gt; 3   General Government 2.460985 0.11068747    24      2  22.233638 0.000000e+00
-#&gt; 4  National Government 2.397005 0.12440066    11      2  19.268430 0.000000e+00
-#&gt; 5       President Bush 2.348624 0.14723627     5      2  15.951398 0.000000e+00
-#&gt; 6         Almighty God 1.998062 0.13963675    15      2  14.308997 0.000000e+00
-#&gt; 7        Chief Justice 1.647330 0.16313666    11      2  10.097851 0.000000e+00
-#&gt; 8    President Clinton 1.850778 0.18943641     3      2   9.769916 0.000000e+00
-#&gt; 9        Federal Union 1.490737 0.19251392     5      2   7.743529 4.884981e-15
-#&gt; 10    Chief Magistrate 1.270018 0.19257293    10      2   6.594995 2.126355e-11</div><div class='input'>
+<span class='fu'>head</span>(<span class='no'>seqs</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;               sequence   lambda      sigma count length         z p
+#&gt; 1        United States 20.56459 0.04324223   155      2 475.56728 0
+#&gt; 2   Federal Government 16.07807 0.09312539    32      2 172.64966 0
+#&gt; 3   General Government 14.50954 0.12914263    24      2 112.35286 0
+#&gt; 4  National Government 12.88826 0.15847837    11      2  81.32504 0
+#&gt; 5         Almighty God 13.10835 0.16301521    15      2  80.41181 0
+#&gt; 6        Chief Justice 12.17009 0.18109481    11      2  67.20288 0
+#&gt; 7       President Bush 11.87632 0.18741675     6      2  63.36850 0
+#&gt; 8     Chief Magistrate 11.37940 0.22063436    10      2  51.57583 0
+#&gt; 9    President Clinton 10.67352 0.22913765     4      2  46.58124 0
+#&gt; 10      United Nations 10.72087 0.24598156     8      2  43.58402 0</div><div class='input'>
 <span class='co'># types can be any words</span>
-<span class='no'>seqs2</span> <span class='kw'>&lt;-</span> <span class='fu'>sequences</span>(<span class='no'>toks</span>, <span class='st'>"^([a-z]+)$"</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>count_min</span> <span class='kw'>=</span> <span class='fl'>10</span>)
-<span class='fu'>head</span>(<span class='no'>seqs2</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;           sequence   lambda      sigma count length        z p
-#&gt; 1          upon us 6.806521 0.01873042    21      2 363.3939 0
-#&gt; 2        good will 6.530191 0.02150380    14      2 303.6762 0
-#&gt; 3    will continue 6.428101 0.02287065    10      2 281.0633 0
-#&gt; 4  fellow citizens 6.300411 0.02396993    55      2 262.8464 0
-#&gt; 5    every citizen 6.217178 0.02527487    13      2 245.9825 0
-#&gt; 6    national life 5.992374 0.02836887    13      2 211.2306 0
-#&gt; 7      public debt 5.660241 0.03333407    10      2 169.8035 0
-#&gt; 8  foreign nations 5.648590 0.03341090    15      2 169.0643 0
-#&gt; 9      one another 5.571175 0.03458396    14      2 161.0913 0
-#&gt; 10      first time 5.417941 0.03753724    11      2 144.3351 0</div><div class='input'>
+<span class='no'>seqs2</span> <span class='kw'>&lt;-</span> <span class='fu'>sequences</span>(<span class='no'>toks</span>, <span class='st'>"^([a-z]+)$"</span>, <span class='kw'>valuetype</span><span class='kw'>=</span><span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+                   <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>head</span>(<span class='no'>seqs2</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;                sequence   lambda    sigma count length        z p
+#&gt; 1       fellow citizens 55.46514 1.015421    55      2 54.62278 0
+#&gt; 2             years ago 55.27680 1.035780    24      2 53.36732 0
+#&gt; 3            four years 52.49221 1.045142    17      2 50.22496 0
+#&gt; 4           one another 51.30887 1.074872    14      2 47.73487 0
+#&gt; 5            go forward 50.82484 1.090404     6      2 46.61100 0
+#&gt; 6         every citizen 47.42716 1.033517    13      2 45.88908 0
+#&gt; 7  executive department 52.43918 1.147450     6      2 45.70060 0
+#&gt; 8            good faith 48.93755 1.078625     7      2 45.37030 0
+#&gt; 9     religious liberty 50.67227 1.123021     6      2 45.12140 0
+#&gt; 10         public money 47.22302 1.049822     8      2 44.98191 0</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

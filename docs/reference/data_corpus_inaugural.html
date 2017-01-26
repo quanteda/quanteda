@@ -108,7 +108,7 @@ from 1789 to present.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># some operations on the inaugural corpus</span>
-<span class='fu'>summary</span>(<span class='no'>data_corpus_inaugural</span>)</div><div class='output co'>#&gt; Corpus consisting of 57 documents.
+<span class='fu'>summary</span>(<span class='no'>data_corpus_inaugural</span>)</div><div class='output co'>#&gt; Corpus consisting of 58 documents.
 #&gt; 
 #&gt;             Text Types Tokens Sentences Year  President       FirstName
 #&gt;  1789-Washington   626   1540        23 1789 Washington          George
@@ -168,6 +168,7 @@ from 1789 to present.</p>
 #&gt;        2005-Bush   772   2325       100 2005       Bush       George W.
 #&gt;       2009-Obama   939   2729       110 2009      Obama          Barack
 #&gt;       2013-Obama   814   2335        88 2013      Obama          Barack
+#&gt;       2017-Trump   582   1662        88 2017      Trump       Donald J.
 #&gt; 
 #&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
 #&gt; Created: Fri Sep 12 12:41:17 2014
@@ -183,8 +184,8 @@ from 1789 to present.</p>
 #&gt; 1817-Monroe     1817     Monroe       James
 #&gt; 1821-Monroe     1821     Monroe       James
 #&gt; 1825-Adams      1825      Adams John Quincy</div><div class='input'><span class='co'># working with the character vector only</span>
-<span class='fu'>str</span>(<span class='no'>data_char_inaugural</span>)</div><div class='output co'>#&gt;  Named chr [1:57] &quot;Fellow-Citizens of the Senate and of the House of Representatives:\n\nAmong the vicissitudes incident to life no event could ha&quot;| __truncated__ ...
-#&gt;  - attr(*, &quot;names&quot;)= chr [1:57] &quot;1789-Washington&quot; &quot;1793-Washington&quot; &quot;1797-Adams&quot; &quot;1801-Jefferson&quot; ...</div><div class='input'><span class='fu'>head</span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;                 Year  President   FirstName
+<span class='fu'>str</span>(<span class='no'>data_char_inaugural</span>)</div><div class='output co'>#&gt;  Named chr [1:58] &quot;Fellow-Citizens of the Senate and of the House of Representatives:\n\nAmong the vicissitudes incident to life no event could ha&quot;| __truncated__ ...
+#&gt;  - attr(*, &quot;names&quot;)= chr [1:58] &quot;1789-Washington&quot; &quot;1793-Washington&quot; &quot;1797-Adams&quot; &quot;1801-Jefferson&quot; ...</div><div class='input'><span class='fu'>head</span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;                 Year  President   FirstName
 #&gt; 1789-Washington 1789 Washington      George
 #&gt; 1793-Washington 1793 Washington      George
 #&gt; 1797-Adams      1797      Adams        John
