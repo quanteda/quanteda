@@ -94,6 +94,12 @@ test_that("dfm_trim", {
     
 })
 
+test_that("dfm_trim works without trimming arguments #509", {
+    mydfm <- dfm(c("This is a sentence.", "This is a second sentence.", "Third sentence."))
+    expect_equal(dim(mydfm[-2, ]), c(2, 7))
+    expect_equal(dim(dfm_trim(mydfm[-2, ], verbose = FALSE)), c(2, 6))
+})
+
 test_that("test c.corpus",
     expect_that(
         matrix(dfm(corpus(c('What does the fox say?', 'What does the fox say?', '')), removePunct = TRUE)),
