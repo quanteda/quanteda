@@ -79,7 +79,6 @@ tokens_compound.tokens <- function(x, sequences,
     # Make new types
     seqs_type <- stringi::stri_c_list(lapply(seqs_id, function(y) types[y]), sep=concatenator)
     
-    
     # Assign IDs to new types
     types_id <- match(seqs_type, types)
     types_new <- seqs_type[is.na(types_id)]
@@ -99,10 +98,10 @@ tokens_compound.tokens <- function(x, sequences,
 #' @export
 tokens_compound.tokenizedTexts <- function(x, sequences, 
                                            concatenator = "_", valuetype = c("glob", "regex", "fixed"),
-                                           case_insensitive = TRUE) {
+                                           case_insensitive = TRUE, overlap = FALSE) {
     as.tokenizedTexts(tokens_compound(as.tokens(x), sequences = sequences, 
                                       concatenator = concatenator, valuetype = valuetype,
-                                      case_insensitive = TRUE))
+                                      case_insensitive = TRUE, overlap = overlap))
 }
 
 

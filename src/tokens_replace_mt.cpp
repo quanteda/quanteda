@@ -50,6 +50,7 @@ Text replace(Text tokens,
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
+            if (!overlap & flags_match[i]) continue; // ignore matched tokens 
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto it = map_words.find(ngram);
             if (it != map_words.end()) {
@@ -61,15 +62,15 @@ Text replace(Text tokens,
         }
     }
     
-    // Add original tokens not mactched
+    if (count_match == 0) return tokens; // return original tokens if no match
+    
+    // Add original tokens that did not matched
     for (std::size_t i = 0; i < tokens.size(); i++) {
         if (!flags_match[i]) {
             tokens_multi[i].push_back(tokens[i]); 
             count_match++;
         }
     }
-    
-    if (count_match == 0) return tokens; // return original tokens if no match
     
     // Flatten the vector of vector
     Text tokens_flat;
