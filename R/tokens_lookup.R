@@ -100,7 +100,7 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
     if(exclusive){
         x <- qatd_cpp_tokens_lookup(x, entries_id, keys_id)
     }else{
-        x <- qatd_cpp_tokens_replace(x, entries_id, keys_id + length(types))
+        x <- qatd_cpp_tokens_replace(x, entries_id, keys_id + length(types), FALSE)
     }
     attributes(x) <- attrs_org
     if(exclusive){
