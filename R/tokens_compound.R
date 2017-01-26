@@ -67,8 +67,10 @@ tokens_compound.tokens <- function(x, sequences,
     sequences <- sequence2list(sequences)
     seqs <- as.list(sequences)
     seqs <- seqs[lengths(seqs) > 1] # drop single words
+    
+    # Do nothing if no sequence is given
     if (!length(seqs))
-        stop("No sequence is provided")
+        return(x)
     
     valuetype <- match.arg(valuetype)
     valuetype <- match.arg(valuetype)
