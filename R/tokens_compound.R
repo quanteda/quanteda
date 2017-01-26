@@ -14,6 +14,7 @@
 #'   in the Unicode punctuation class [P] will be removed.
 #' @inheritParams valuetype
 #' @param case_insensitive logical; if \code{TRUE}, ignore case when matching
+#' @param overlap logical; if \code{TRUE}, detect overlapped compounds
 #' @return a \link{tokens} object in which the token sequences matching the patterns 
 #' in \code{sequences} have been replaced by  compound "tokens" joined by the concatenator
 #' @export
@@ -48,6 +49,7 @@
 #' tokens_compound(toks, collocs)
 tokens_compound <- function(x, sequences,
                     concatenator = "_", valuetype = c("glob", "regex", "fixed"),
+                    overlap = FALSE,
                     case_insensitive = TRUE) {
     UseMethod("tokens_compound")
 }
@@ -83,7 +85,7 @@ tokens_compound.tokens <- function(x, sequences,
     types_id <- match(seqs_type, types)
     types_new <- seqs_type[is.na(types_id)]
     types_id[is.na(types_id)] <- seq(length(types) + 1, by=1, length.out=length(types_new))
-    x <- qatd_cpp_tokens_replace(x, seqs_id, types_id)
+    x <- qatd_cpp_tokens_replace(x, seqs_id, types_id, overlap)
     
     names(x) <- names_org
     attributes(x) <- attrs_org
