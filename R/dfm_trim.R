@@ -62,12 +62,12 @@ dfm_trim <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, max_do
 #' @export
 #' @rdname dfm_trim
 #' @noRd
-dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, max_docfreq = NULL, sparsity = NULL, verbose = TRUE) {
+dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, max_docfreq = NULL, sparsity = NULL, verbose = FALSE) {
 
-    if (missing(min_count) & missing(min_docfreq) & missing(max_count) & missing(max_docfreq) & missing(sparsity)) {
-        catm("No features removed.", appendLF = TRUE)
-        return(x)
-    }
+    # if (missing(min_count) & missing(min_docfreq) & missing(max_count) & missing(max_docfreq) & missing(sparsity)) {
+    #     catm("No features removed.", appendLF = TRUE)
+    #     return(x)
+    # }
     
     # initialize additional messages as empty strings
     messageSparsity <- messageMinCount <- messageMinDoc <- messageMaxCount <- messageMaxDoc <- ""
@@ -171,8 +171,4 @@ dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, ma
     
     dfm_sort(x[, -featureRemoveIndex])
 }
-
-
-
-
 
