@@ -49,8 +49,7 @@
 #' tokens_compound(toks, collocs)
 tokens_compound <- function(x, sequences,
                     concatenator = "_", valuetype = c("glob", "regex", "fixed"),
-                    overlap = FALSE,
-                    case_insensitive = TRUE) {
+                    case_insensitive = TRUE, overlap = FALSE) {
     UseMethod("tokens_compound")
 }
 
@@ -61,7 +60,7 @@ tokens_compound <- function(x, sequences,
 #' @export
 tokens_compound.tokens <- function(x, sequences,
                    concatenator = "_", valuetype = c("glob", "regex", "fixed"),
-                   case_insensitive = TRUE) {
+                   case_insensitive = TRUE, overlap = FALSE) {
     
     valuetype <- match.arg(valuetype)
     sequences <- sequence2list(sequences)

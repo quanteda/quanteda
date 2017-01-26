@@ -92,4 +92,11 @@ test_that("tokens_compound works with padded tokens", {
                  sort(c("a", "c_d", "f", "g")))
 })
 
+test_that("tokens_compound detect overlapped sequences", {
+    
+    txts <- 'we like high quality sound'
+    seqs <- c('high quality', 'quality sound', "high quality sound")
+    expect_equivalent(as.list(tokens_compound(tokens(txts), seqs, overlap = TRUE)),
+                      list(c("we", "like", "high_quality_sound", "high_quality", "quality_sound")))
 
+})

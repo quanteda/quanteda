@@ -43,14 +43,9 @@ Text replace(Text tokens,
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
-    std::size_t match = 0;
     std::vector< std::vector<unsigned int> > tokens_multi(tokens.size()); 
-    
-    // Save original tokens
-    for (std::size_t i = 0; i < tokens.size(); i++) {
-        tokens_multi[i].push_back(tokens[i]); 
-        match++;
-    }
+    std::vector< bool > flags_match(tokens.size(), false);
+    std::size_t count_match = 0;
     
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
@@ -59,22 +54,33 @@ Text replace(Text tokens,
             auto it = map_words.find(ngram);
             if (it != map_words.end()) {
                 //Rcout << it->second << "\n";
+                std::fill(flags_match.begin() + i, flags_match.begin() + i + span, true); // mark tokens matched
                 tokens_multi[i].push_back(it->second); // keep multiple keys in the same position
-                match++;
+                count_match++;
             }
         }
     }
     
-    if (match == 0) return {}; // return empty vector if no match
+    // Add original tokens not mactched
+    for (std::size_t i = 0; i < tokens.size(); i++) {
+        if (!flags_match[i]) {
+            tokens_multi[i].push_back(tokens[i]); 
+            count_match++;
+        }
+    }
+    
+    if (count_match == 0) return tokens; // return original tokens if no match
     
     // Flatten the vector of vector
     Text tokens_flat;
-    tokens_flat.reserve(match);
+    tokens_flat.reserve(count_match);
     for (auto &tokens_sub: tokens_multi) {
         if (overlap) {
-            tokens_flat.insert(tokens_flat.end(), tokens_sub.begin(), tokens_sub.end());                                                                                         
+            tokens_flat.insert(tokens_flat.end(), tokens_sub.begin(), tokens_sub.end());
         } else {
-            tokens_flat.insert(tokens_flat.end(), tokens_sub.end() - 1, tokens_sub.end());
+            if (tokens_sub.size() > 0) {
+                tokens_flat.insert(tokens_flat.end(), tokens_sub.begin(), tokens_sub.begin() + 1);
+            }
         }
     }
     return tokens_flat;

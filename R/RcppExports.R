@@ -57,12 +57,12 @@ qatd_cpp_tokens_ngrams <- function(texts_, types_, delim_, ns_, skips_) {
     .Call('quanteda_qatd_cpp_tokens_ngrams', PACKAGE = 'quanteda', texts_, types_, delim_, ns_, skips_)
 }
 
-qatd_cpp_tokens_replace <- function(texts_, words_, ids_) {
-    .Call('quanteda_qatd_cpp_tokens_replace', PACKAGE = 'quanteda', texts_, words_, ids_)
+qatd_cpp_tokens_replace <- function(texts_, words_, ids_, overlap) {
+    .Call('quanteda_qatd_cpp_tokens_replace', PACKAGE = 'quanteda', texts_, words_, ids_, overlap)
 }
 
-qatd_cpp_tokens_select <- function(texts_, words_, mode_, padding_) {
-    .Call('quanteda_qatd_cpp_tokens_select', PACKAGE = 'quanteda', texts_, words_, mode_, padding_)
+qatd_cpp_tokens_select <- function(texts_, words_, mode, padding) {
+    .Call('quanteda_qatd_cpp_tokens_select', PACKAGE = 'quanteda', texts_, words_, mode, padding)
 }
 
 qatd_cpp_remove_chr_list <- function(list_, elem_remove) {

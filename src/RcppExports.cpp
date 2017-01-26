@@ -201,29 +201,30 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_tokens_replace
-List qatd_cpp_tokens_replace(const List& texts_, const List& words_, const IntegerVector& ids_);
-RcppExport SEXP quanteda_qatd_cpp_tokens_replace(SEXP texts_SEXP, SEXP words_SEXP, SEXP ids_SEXP) {
+List qatd_cpp_tokens_replace(const List& texts_, const List& words_, const IntegerVector& ids_, const bool& overlap);
+RcppExport SEXP quanteda_qatd_cpp_tokens_replace(SEXP texts_SEXP, SEXP words_SEXP, SEXP ids_SEXP, SEXP overlapSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
     Rcpp::traits::input_parameter< const List& >::type words_(words_SEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type ids_(ids_SEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_replace(texts_, words_, ids_));
+    Rcpp::traits::input_parameter< const bool& >::type overlap(overlapSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_replace(texts_, words_, ids_, overlap));
     return rcpp_result_gen;
 END_RCPP
 }
 // qatd_cpp_tokens_select
-List qatd_cpp_tokens_select(const List& texts_, const List& words_, int mode_, bool padding_);
-RcppExport SEXP quanteda_qatd_cpp_tokens_select(SEXP texts_SEXP, SEXP words_SEXP, SEXP mode_SEXP, SEXP padding_SEXP) {
+List qatd_cpp_tokens_select(const List& texts_, const List& words_, int mode, bool padding);
+RcppExport SEXP quanteda_qatd_cpp_tokens_select(SEXP texts_SEXP, SEXP words_SEXP, SEXP modeSEXP, SEXP paddingSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
     Rcpp::traits::input_parameter< const List& >::type words_(words_SEXP);
-    Rcpp::traits::input_parameter< int >::type mode_(mode_SEXP);
-    Rcpp::traits::input_parameter< bool >::type padding_(padding_SEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_select(texts_, words_, mode_, padding_));
+    Rcpp::traits::input_parameter< int >::type mode(modeSEXP);
+    Rcpp::traits::input_parameter< bool >::type padding(paddingSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_select(texts_, words_, mode, padding));
     return rcpp_result_gen;
 END_RCPP
 }
