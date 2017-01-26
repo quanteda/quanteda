@@ -11,7 +11,7 @@ using namespace ngrams;
 
 Text lookup(Text tokens, 
             const std::vector<std::size_t> &spans,
-            const bool &overlap,
+            const bool &distinct,
             const MultiMapNgrams &map_keys){
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
@@ -39,7 +39,7 @@ Text lookup(Text tokens,
     for (auto &key_sub: keys) {
         if (key_sub.size() > 1) {
             std::sort(key_sub.begin(), key_sub.end()); // sort in order of keys
-            if (!overlap) {
+            if (distinct) {
                 key_sub.erase(unique(key_sub.begin(), key_sub.end()), key_sub.end());
             }
         }
@@ -87,7 +87,7 @@ struct lookup_mt : public Worker{
 List qatd_cpp_tokens_lookup(const List &texts_, 
                             const List &keys_,
                             const IntegerVector &ids_,
-                            const bool overlap){
+                            const bool distinct){
     
     Texts input = Rcpp::as<Texts>(texts_);
     const List keys = keys_;
@@ -109,11 +109,11 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     Texts output(input.size());
     // dev::start_timer("Dictionary lookup", timer);
     #if RCPP_PARALLEL_USE_TBB
-    lookup_mt lookup_mt(input, output, spans, overlap, map_keys);
+    lookup_mt lookup_mt(input, output, spans, distinct, map_keys);
     parallelFor(0, input.size(), lookup_mt);
     #else
     for (std::size_t h = 0; h < input.size(); h++) {
-        output[h] = lookup(input[h], spans, overlap, map_keys);
+        output[h] = lookup(input[h], spans, distinct, map_keys);
     }
     #endif
     // dev::stop_timer("Dictionary lookup", timer);

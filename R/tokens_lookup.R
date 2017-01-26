@@ -20,9 +20,9 @@
 #' @param exclusive if \code{TRUE}, remove all features not in dictionary, 
 #'   otherwise, replace values in dictionary with keys while leaving other 
 #'   features unaffected
+#' @param distinctive if \code{TRUE}, only matches for different keys are counted
 #' @param multiword if \code{FALSE}, multi-word entries in dictionary are treated
 #'   as single tokens
-#' @param overlap if \code{TRUE}, overlapped matches for the same key is counted
 #' @param verbose print status messages if \code{TRUE}
 #' @examples
 #' toks <- tokens(data_corpus_inaugural)
@@ -60,8 +60,8 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           case_insensitive = TRUE,
                           capkeys = FALSE,
                           exclusive = TRUE,
+                          distinctive = TRUE,
                           multiword = TRUE,
-                          overlap = FALSE,
                           verbose = FALSE) {
     
     if (!is.tokens(x))
@@ -106,7 +106,7 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
         message('Searching ', length(entries_id), ' types of features...')
     
     if(exclusive){
-        x <- qatd_cpp_tokens_lookup(x, entries_id, keys_id, overlap)
+        x <- qatd_cpp_tokens_lookup(x, entries_id, keys_id, distinctive)
     }else{
         x <- qatd_cpp_tokens_replace(x, entries_id, keys_id + length(types))
     }
