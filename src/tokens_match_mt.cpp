@@ -36,7 +36,7 @@ Text match(Text tokens,
     
     if (count_match == 0) return tokens; // return original tokens if no match
     
-    // Add original tokens that did not matched
+    // Add original tokens that did not match
     for (std::size_t i = 0; i < tokens.size(); i++) {
         if (!flags_match[i]) {
             tokens_multi[i].push_back(tokens[i]); 

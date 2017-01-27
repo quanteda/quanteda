@@ -185,6 +185,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qatd_cpp_tokens_match
+List qatd_cpp_tokens_match(const List& texts_, const List& words_, const IntegerVector& ids_, const bool& overlap);
+RcppExport SEXP quanteda_qatd_cpp_tokens_match(SEXP texts_SEXP, SEXP words_SEXP, SEXP ids_SEXP, SEXP overlapSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< const List& >::type words_(words_SEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type ids_(ids_SEXP);
+    Rcpp::traits::input_parameter< const bool& >::type overlap(overlapSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_match(texts_, words_, ids_, overlap));
+    return rcpp_result_gen;
+END_RCPP
+}
 // qatd_cpp_tokens_ngrams
 List qatd_cpp_tokens_ngrams(const List texts_, const CharacterVector types_, const String delim_, const IntegerVector ns_, const IntegerVector skips_);
 RcppExport SEXP quanteda_qatd_cpp_tokens_ngrams(SEXP texts_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP ns_SEXP, SEXP skips_SEXP) {
@@ -201,16 +215,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_tokens_replace
-List qatd_cpp_tokens_replace(const List& texts_, const List& words_, const IntegerVector& ids_, const bool& overlap);
-RcppExport SEXP quanteda_qatd_cpp_tokens_replace(SEXP texts_SEXP, SEXP words_SEXP, SEXP ids_SEXP, SEXP overlapSEXP) {
+List qatd_cpp_tokens_replace(const List& texts_, const List& words_, const IntegerVector& ids_);
+RcppExport SEXP quanteda_qatd_cpp_tokens_replace(SEXP texts_SEXP, SEXP words_SEXP, SEXP ids_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
     Rcpp::traits::input_parameter< const List& >::type words_(words_SEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type ids_(ids_SEXP);
-    Rcpp::traits::input_parameter< const bool& >::type overlap(overlapSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_replace(texts_, words_, ids_, overlap));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_replace(texts_, words_, ids_));
     return rcpp_result_gen;
 END_RCPP
 }
