@@ -83,7 +83,7 @@ tokens_compound.tokens <- function(x, sequences,
     types_id <- match(seqs_type, types)
     types_new <- seqs_type[is.na(types_id)]
     types_id[is.na(types_id)] <- seq(length(types) + 1, by=1, length.out=length(types_new))
-    x <- qatd_cpp_tokens_replace(x, seqs_id, types_id, overlap)
+    x <- qatd_cpp_tokens_match(x, seqs_id, types_id, overlap)
     
     names(x) <- names_org
     attributes(x) <- attrs_org
