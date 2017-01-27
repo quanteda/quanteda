@@ -8,35 +8,7 @@ using namespace RcppParallel;
 using namespace quanteda;
 using namespace ngrams;
 
-/*
-Text replace(Text tokens, 
-             const std::vector<std::size_t> &spans,
-             const MapNgrams &map_words){
-    
-    if (tokens.size() == 0) return {}; // return empty vector for empty text
-    
-    unsigned int filler = std::numeric_limits<unsigned int>::max(); // use largest limit as filler
-    bool match = false;
-    for (std::size_t span : spans) { // substitution starts from the longest sequences
-        if (tokens.size() < span) continue;
-        for (std::size_t i = 0; i < tokens.size() - (span - 1); i++){
-            Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
-            auto it = map_words.find(ngram);
-            if (it != map_words.end()) {
-            //unsigned int id = map_words[ngram];
-            //if (id) {
-                match = true;
-                std::fill(tokens.begin() + i + 1, tokens.begin() + i + span, filler); // fill subsequent tokens
-                tokens[i] = it->second;
-            }
-        }
-    }
-    if (match) tokens.erase(std::remove(tokens.begin(), tokens.end(), filler), tokens.end());
-    return tokens;
-}
-*/
-
-Text replace(Text tokens, 
+Text match(Text tokens, 
              const std::vector<std::size_t> &spans,
              const bool &overlap,
              const MapNgrams &map_words){
@@ -87,7 +59,7 @@ Text replace(Text tokens,
     return tokens_flat;
 }
 
-struct replace_mt : public Worker{
+struct match_mt : public Worker{
     
     Texts &input;
     Texts &output;
@@ -96,7 +68,7 @@ struct replace_mt : public Worker{
     const MapNgrams &map_words;
     
     // Constructor
-    replace_mt(Texts &input_, Texts &output_, const std::vector<std::size_t> &spans_, 
+    match_mt(Texts &input_, Texts &output_, const std::vector<std::size_t> &spans_, 
                const bool &overlap_, MapNgrams &map_words_):
               input(input_), output(output_), spans(spans_), overlap(overlap_), map_words(map_words_) {}
     
@@ -104,7 +76,7 @@ struct replace_mt : public Worker{
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++) {
-            output[h] = replace(input[h], spans, overlap, map_words);
+            output[h] = match(input[h], spans, overlap, map_words);
         }
     }
 };
@@ -121,7 +93,7 @@ struct replace_mt : public Worker{
  */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_replace(const List &texts_, 
+List qatd_cpp_tokens_match(const List &texts_, 
                              const List &words_,
                              const IntegerVector &ids_,
                              const bool &overlap){
@@ -144,16 +116,16 @@ List qatd_cpp_tokens_replace(const List &texts_,
     
     // dev::Timer timer;
     Texts output(input.size());
-    // dev::start_timer("Token replace", timer);
+    // dev::start_timer("Token match", timer);
     #if RCPP_PARALLEL_USE_TBB
-    replace_mt replace_mt(input, output, spans, overlap, map_words);
-    parallelFor(0, input.size(), replace_mt);
+    match_mt match_mt(input, output, spans, overlap, map_words);
+    parallelFor(0, input.size(), match_mt);
     #else
     for (std::size_t h = 0; h < input.size(); h++) {
-        output[h] = replace(input[h], spans, overlap, map_words);
+        output[h] = match(input[h], spans, overlap, map_words);
     }
     #endif
-    // dev::stop_timer("Token replace", timer);
+    // dev::stop_timer("Token match", timer);
     ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
     return texts_list;
 }
@@ -164,8 +136,8 @@ toks <- list(rep(1:10, 1), rep(5:15, 1))
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 dict <- list(c(1, 2), c(1, 2, 3))
 id <- rep(1, length(dict)) * 100
-qatd_cpp_tokens_replace(toks, dict, id, FALSE)
-qatd_cpp_tokens_replace(toks, dict, id, TRUE)
+qatd_cpp_tokens_match(toks, dict, id, FALSE)
+qatd_cpp_tokens_match(toks, dict, id, TRUE)
 
 
 
