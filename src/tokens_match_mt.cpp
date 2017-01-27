@@ -89,6 +89,7 @@ struct match_mt : public Worker{
  * @param texts_ tokens ojbect
  * @param words_ list of features to substitute
  * @param ids_ IDs to be placed after substitution
+ * @param overlap overlapped features are detected
  * 
  */
 
