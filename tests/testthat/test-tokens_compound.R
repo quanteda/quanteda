@@ -98,5 +98,7 @@ test_that("tokens_compound detect overlapped sequences", {
     seqs <- c('high quality', 'quality sound', "high quality sound")
     expect_equivalent(as.list(tokens_compound(tokens(txts), seqs, overlap = TRUE)),
                       list(c("we", "like", "high_quality_sound", "high_quality", "quality_sound")))
-
+    expect_equivalent(as.list(tokens_compound(tokenize(txts), seqs, overlap = TRUE)),
+                      list(c("we", "like", "high_quality_sound", "high_quality", "quality_sound")))
+    
 })
