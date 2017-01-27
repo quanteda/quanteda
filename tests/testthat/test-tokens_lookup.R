@@ -288,5 +288,20 @@ test_that("#502 tokens_lookup count only distinctive keys when distinctive = TRU
                  list(d1 = c("Countries", "oceans", "oceans"),
                       d2 = c("Countries")))
 
+    expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "fixed", distinctive = FALSE)),
+                 list(d1 = c("Countries", "Countries", "oceans", "oceans"),
+                      d2 = c("Countries")))
+    expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "fixed", distinctive = TRUE)),
+                 list(d1 = c("Countries", "oceans", "oceans"),
+                      d2 = c("Countries")))
+
+    dict <- dictionary(list(Countries = c("United States", "Unit Stat of America"),
+                            oceans = c("Ocean.*")))
+    expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "regex", distinctive = FALSE)),
+                 list(d1 = c("Countries", "Countries", "oceans", "oceans"),
+                      d2 = c("Countries")))
+    expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "regex", distinctive = TRUE)),
+                 list(d1 = c("Countries", "oceans", "oceans"),
+                      d2 = c("Countries")))
 })
 
