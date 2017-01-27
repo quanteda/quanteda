@@ -303,5 +303,16 @@ test_that("#502 tokens_lookup count only distinctive keys when distinctive = TRU
     expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "regex", distinctive = TRUE)),
                  list(d1 = c("Countries", "oceans", "oceans"),
                       d2 = c("Countries")))
+    
+    expect_equal(
+        as.character(tokens_lookup(tokens("A B C"), dictionary(list(key = c("A B", "A B C"))), distinctive = TRUE)),
+        c("key")
+    )
+    
+    expect_equal(
+        as.character(tokens_lookup(tokens("A B C"), dictionary(list(key = c("B C", "A B C"))), distinctive = TRUE)),
+        c("key")
+    )
 })
+
 
