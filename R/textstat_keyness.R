@@ -7,7 +7,7 @@
 #' @param measure (signed) association measure to be used for computing keyness.
 #'   Currenly available: \code{"chi2"} (\eqn{chi^2} with Yates correction); 
 #'   \code{"exact"} (Fisher's exact test); \code{"lr"} for the likelihood ratio
-#'   \eqn{G^2} statistic with Yates correction.
+#'   \eqn{G} statistic with Yates correction.
 #' @param sort logical; if \code{TRUE} sort features scored in descending order 
 #'   of the measure, otherwise leave in original feature order
 #' @references Bondi, Marina, and Mike Scott, eds. 2010.  \emph{Keyness in 
@@ -27,7 +27,7 @@
 #'   For \code{measure = "chi2"} this is the chi-squared value, signed 
 #'   positively if the observed value in the target exceeds its expected value; 
 #'   for \code{measure = "exact"} this is the estimate of the odds ratio; for 
-#'   \code{measure = "lr"} this is the likelihood ratio $G$ statistic.
+#'   \code{measure = "lr"} this is the likelihood ratio \eqn{G} statistic.
 #' @export
 #' @keywords textstat
 #' @importFrom stats chisq.test
@@ -186,7 +186,7 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
     
     correction <- match.arg(correction)
     
-    a <- b <- c <- d <- N <- E11 <- lr <- NULL 
+    a <- b <- c <- d <- N <- E11 <- G <- p <- NULL 
     if (ndoc(x) > 2)
         stop("x can only have 2 rows")
     dt <- data.table(feature = featnames(x),

@@ -17,7 +17,7 @@ feature frequencies will be combined for use as a reference}
 \item{measure}{(signed) association measure to be used for computing keyness.
 Currenly available: \code{"chi2"} (\eqn{chi^2} with Yates correction); 
 \code{"exact"} (Fisher's exact test); \code{"lr"} for the likelihood ratio
-\eqn{G^2} statistic with Yates correction.}
+\eqn{G} statistic with Yates correction.}
 
 \item{sort}{logical; if \code{TRUE} sort features scored in descending order 
 of the measure, otherwise leave in original feature order}
@@ -28,7 +28,7 @@ scored name each row.
   For \code{measure = "chi2"} this is the chi-squared value, signed 
   positively if the observed value in the target exceeds its expected value; 
   for \code{measure = "exact"} this is the estimate of the odds ratio; for 
-  \code{measure = "lr"} this is the likelihood ratio $G^2$ statistic.
+  \code{measure = "lr"} this is the likelihood ratio \eqn{G} statistic.
 }
 \description{
 calculate keyness statistics
@@ -44,8 +44,8 @@ tail(result, 10)
 # compare Trump 2017 to other post-war preseidents
 pwdfm <- dfm(corpus_subset(data_corpus_inaugural, period == "post-war"))
 head(textstat_keyness(pwdfm, target = "2017-Trump"), 10)
-# using the exact method
-head(textstat_keyness(dfm_smooth(pwdfm), measure = "exact", target = "2017-Trump"), 10)
+# using the likelihood ratio method
+head(textstat_keyness(dfm_smooth(pwdfm), measure = "lr", target = "2017-Trump"), 10)
 }
 \references{
 Bondi, Marina, and Mike Scott, eds. 2010.  \emph{Keyness in 
