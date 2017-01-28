@@ -1,5 +1,12 @@
 # quanteda 0.9.9
 
+## Changes since v0.9.9-17
+
+### New features
+
+* `textstat_keyness()` now returns a data.frame with p-values as well as the test statistic, and rownames containing the feature.  This is more consistent with the other textstat functions.
+
+
 ## Changes since v0.9.9-3
 
 ### Bug fixes
