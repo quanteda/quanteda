@@ -23,7 +23,8 @@ Currenly available: \code{"chi2"} (\eqn{chi^2} with Yates correction);
 of the measure, otherwise leave in original feature order}
 }
 \value{
-a named numeric vector of keyness scores, named with the features. 
+a data.frame of computed statistics and associated p-values, where the features 
+scored name each row.  
   For \code{measure = "chi2"} this is the chi-squared value, signed 
   positively if the observed value in the target exceeds its expected value; 
   for \code{measure = "exact"} this is the estimate of the odds ratio; for 
