@@ -68,13 +68,13 @@ test_that("corpus_sample works for corpus and corpuszip", {
     expect_equal(docvars(c1), docvars(c2))
 })
 
-# test_that("corpus_segment works for corpus and corpuszip", {
-#     c1 <- corpus_segment(data_corpus_test, "sentences")
-#     c2 <- corpus_segment(data_corpuszip_test, "sentences")
-#     metacorpus(c1, "created") <- metacorpus(c2, "created") <- NULL
-#     expect_equal(c1, c2)
-# )
-
+test_that("corpus_segment works for corpus and corpuszip", {
+    c1 <- corpus_segment(data_corpus_test, "sentences")
+    c2 <- corpus_segment(data_corpuszip_test, "sentences")
+    metacorpus(c1, "created") <- metacorpus(c2, "created") <- NULL
+    metacorpus(c1, "notes") <- metacorpus(c2, "notes")
+    expect_equal(c1, c2)
+})
 
 test_that("corpus_subset works for corpus and corpuszip", {
     c1 <- corpus_subset(data_corpus_test, varfactor == "B")
@@ -101,25 +101,20 @@ test_that("corpuszip: texts and as.character are the same", {
                  texts(as.character(data_corpus_test)))
 })
 
+test_that("old corpus texts() and docvars() are same as new: data_corpus_inaugural", {
+    expect_equal(docnames(data_corpus_test), docnames(data_corpuszip_test))
+    expect_equal(texts(data_corpus_test), texts(data_corpuszip_test))
+    expect_equal(docvars(data_corpus_test), docvars(data_corpuszip_test))
+})
+
 test_that("texts<- works with corpuszip", {
     texts(data_corpus_test)[c(2,4)] <- "REPLACEMENT TEXT."
     expect_equivalent(texts(data_corpus_test)[2], "REPLACEMENT TEXT.")
     expect_equivalent(texts(data_corpus_test)[1], "This is a sample text.\nIt has three lines.\nThe third line.")
 
-    #### FAILS
-    # texts(data_corpuszip_test)[c(2,4)] <- "REPLACEMENT TEXT."
-    # expect_equivalent(texts(data_corpuszip_test)[2], "REPLACEMENT TEXT.")
-    # expect_equivalent(texts(data_corpuszip_test)[1], "This is a sample text.\nIt has three lines.\nThe third line.")
-})
-
-
-test_that("old corpus texts() and docvars() are same as new: data_corpus_inaugural", {
-    data_corpuszip_inaugural <- corpuszip(texts(data_corpus_inaugural),
-                                          docvars = docvars(data_corpus_inaugural))
-
-    expect_equal(docnames(data_corpus_inaugural), docnames(data_corpuszip_inaugural))
-    expect_equal(texts(data_corpus_inaugural), texts(data_corpuszip_inaugural))
-    expect_equal(docvars(data_corpus_inaugural), docvars(data_corpuszip_inaugural))
+    texts(data_corpuszip_test)[c(2,4)] <- "REPLACEMENT TEXT."
+    expect_equivalent(texts(data_corpuszip_test)[2], "REPLACEMENT TEXT.")
+    expect_equivalent(texts(data_corpuszip_test)[1], "This is a sample text.\nIt has three lines.\nThe third line.")
 })
 
 test_that("[[ and [ methods are the same for corpus and corpuszip", {
@@ -141,9 +136,10 @@ test_that("textstat_readability same for corpus and corpuszip", {
                  textstat_readability(data_corpuszip_test))
 })
 
-test_that("tn* methods aresthe ame for corpus and corpuszip", {
+test_that("n* methods are the same for corpus and corpuszip", {
     expect_equal(ndoc(data_corpus_test), ndoc(data_corpuszip_test))
     expect_equal(nsentence(data_corpus_test), nsentence(data_corpuszip_test))
     expect_equal(ntoken(data_corpus_test), ntoken(data_corpuszip_test))
     expect_equal(ntype(data_corpus_test), ntype(data_corpuszip_test))
 })
+
