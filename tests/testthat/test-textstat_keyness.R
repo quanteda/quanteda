@@ -185,6 +185,13 @@ test_that("keyness_textstat lr computation is correct", {
     )
 })
 
-
+test_that("basic textstat_keyness lr works on two rows", {
+    mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
+                   d2 = "a a b c c d d d d e f h"))
+    expect_equal(rownames(textstat_keyness(mydfm, measure = "lr")),
+                 c("c", "b", "h", "a", "e", "f", "d", "g"))
+    expect_equal(rownames(textstat_keyness(mydfm, target = 2, measure = "lr")),
+                 c("d", "e", "f", "a", "b", "h", "c", "g"))
+})
 
 
