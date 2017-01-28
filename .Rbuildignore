@@ -25,3 +25,5 @@ __MACOSX
 ^_pkgdown\.yml$
 ^tests/benchmarks/
 ^tests/misc/
+^css/
+
