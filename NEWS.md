@@ -6,6 +6,10 @@
 
 * `textstat_keyness()` now returns a data.frame with p-values as well as the test statistic, and rownames containing the feature.  This is more consistent with the other textstat functions.
 
+### Bug fixes
+
+* Fixed a bug in `convert(x, to = "lsa")` that transposed row and column names (#526)
+
 
 ## Changes since v0.9.9-3
 

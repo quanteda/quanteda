@@ -293,13 +293,19 @@ as.tokens <- function(x) {
 #' @rdname as.tokens
 #' @export
 as.tokens.list <- function(x) {
-    tokens_hash(x)
+    result <- tokens_hash(x)
+    attr(result, "what") <- "word"
+    attr(result, "ngrams") <- 1L
+    attr(result, "concatenator") <- ""
+    attr(result, 'padding') <- FALSE
+    class(result)[2] <- "tokenizedTexts"
+    result
 }
 
 #' @export
 #' @noRd
 as.tokens.tokenizedTexts <- function(x) {
-    tokens_hash(x)
+    NextMethod("as.tokens")
 }
 
 #' @rdname as.tokens
