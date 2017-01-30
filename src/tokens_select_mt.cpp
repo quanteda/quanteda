@@ -141,7 +141,7 @@ List qatd_cpp_tokens_select(const List &texts_,
         }
     } else if(mode == 2) {
         for (std::size_t h = 0; h < input.size(); h++) {
-            output[h] = remove(input[h], span_max, set_words, padding);
+            output[h] = remove(input[h], spans, set_words, padding);
         }
     } else {
         for (std::size_t h = 0; h < input.size(); h++){
