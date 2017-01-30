@@ -60,6 +60,12 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
         stop("target not found in docnames(x)")
     if (is.numeric(target) && (target < 1 | target > ndoc(x)))
         stop("target index outside range of documents")
+    if ('lgCMatrix' %in% class(target))
+        target <- as.logical(target)
+    if (is.logical(target) && length(target) != ndoc(x))
+        stop("target must be the same length as the number of documents")
+    if (is.logical(target))
+        target <- which(target)
     
     # get the target and reference documents by concatenating all non-target docs
     grouping <- rep(2, ndoc(x))
