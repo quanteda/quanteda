@@ -146,146 +146,154 @@ reasons.  If you want to compute similarity on a &quot;normalized&quot; dfm obje
 (<span class='no'>tmp</span> <span class='kw'>&lt;-</span> <span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt; similarity Matrix:
 #&gt; $`1981-Reagan`
 #&gt;  1985-Reagan    1989-Bush    2001-Bush 1993-Clinton   2013-Obama   2009-Obama 
-#&gt;    0.9685409    0.9599217    0.9498797    0.9391137    0.9389438    0.9387730 
-#&gt; 1997-Clinton    2005-Bush 
-#&gt;    0.9386791    0.9346990 
+#&gt;    0.9685603    0.9599456    0.9499111    0.9391462    0.9389675    0.9388097 
+#&gt; 1997-Clinton    2005-Bush   2017-Trump 
+#&gt;    0.9387178    0.9347397    0.9290244 
 #&gt; 
 #&gt; $`1985-Reagan`
 #&gt;  1981-Reagan    1989-Bush 1997-Clinton 1993-Clinton   2009-Obama   2013-Obama 
-#&gt;    0.9685409    0.9537449    0.9468983    0.9452609    0.9422163    0.9409353 
-#&gt;    2001-Bush    2005-Bush 
-#&gt;    0.9371453    0.9297108 
+#&gt;    0.9685603    0.9537706    0.9469393    0.9452855    0.9422610    0.9409749 
+#&gt;    2001-Bush    2005-Bush   2017-Trump 
+#&gt;    0.9371852    0.9297655    0.9149626 
 #&gt; 
 #&gt; $`1989-Bush`
 #&gt;  1981-Reagan    2001-Bush  1985-Reagan   2009-Obama 1997-Clinton   2013-Obama 
-#&gt;    0.9599217    0.9543776    0.9537449    0.9407657    0.9381904    0.9370933 
-#&gt; 1993-Clinton    2005-Bush 
-#&gt;    0.9358174    0.9349331 
+#&gt;    0.9599456    0.9544049    0.9537706    0.9407946    0.9382240    0.9371089 
+#&gt; 1993-Clinton    2005-Bush   2017-Trump 
+#&gt;    0.9358521    0.9349675    0.9311455 
 #&gt; 
 #&gt; $`1993-Clinton`
 #&gt;  1985-Reagan  1981-Reagan    1989-Bush    2001-Bush 1997-Clinton    2005-Bush 
-#&gt;    0.9452609    0.9391137    0.9358174    0.9258829    0.9241745    0.9142198 
-#&gt;   2013-Obama   2009-Obama 
-#&gt;    0.9118394    0.9000505 
+#&gt;    0.9452855    0.9391462    0.9358521    0.9259232    0.9242089    0.9142590 
+#&gt;   2013-Obama   2009-Obama   2017-Trump 
+#&gt;    0.9118611    0.9000981    0.8945840 
 #&gt; 
 #&gt; $`1997-Clinton`
 #&gt;  1985-Reagan   2013-Obama  1981-Reagan   2009-Obama    1989-Bush    2001-Bush 
-#&gt;    0.9468983    0.9387808    0.9386791    0.9382904    0.9381904    0.9321614 
-#&gt; 1993-Clinton    2005-Bush 
-#&gt;    0.9241745    0.9077993 
+#&gt;    0.9469393    0.9388301    0.9387178    0.9383421    0.9382240    0.9322032 
+#&gt; 1993-Clinton   2017-Trump    2005-Bush 
+#&gt;    0.9242089    0.9211435    0.9078760 
 #&gt; 
 #&gt; $`2001-Bush`
-#&gt;    1989-Bush  1981-Reagan    2005-Bush  1985-Reagan   2013-Obama 1997-Clinton 
-#&gt;    0.9543776    0.9498797    0.9437295    0.9371453    0.9363852    0.9321614 
-#&gt; 1993-Clinton   2009-Obama 
-#&gt;    0.9258829    0.9240388 
+#&gt;    1989-Bush  1981-Reagan    2005-Bush  1985-Reagan   2013-Obama   2017-Trump 
+#&gt;    0.9544049    0.9499111    0.9437618    0.9371852    0.9364082    0.9352192 
+#&gt; 1997-Clinton 1993-Clinton   2009-Obama 
+#&gt;    0.9322032    0.9259232    0.9240847 
 #&gt; 
 #&gt; $`2005-Bush`
-#&gt;    2001-Bush    1989-Bush  1981-Reagan  1985-Reagan   2013-Obama 1993-Clinton 
-#&gt;    0.9437295    0.9349331    0.9346990    0.9297108    0.9195065    0.9142198 
-#&gt; 1997-Clinton   2009-Obama 
-#&gt;    0.9077993    0.8976144 
+#&gt;    2001-Bush    1989-Bush  1981-Reagan  1985-Reagan   2017-Trump   2013-Obama 
+#&gt;    0.9437618    0.9349675    0.9347397    0.9297655    0.9198008    0.9195773 
+#&gt; 1993-Clinton 1997-Clinton   2009-Obama 
+#&gt;    0.9142590    0.9078760    0.8977024 
 #&gt; 
 #&gt; $`2009-Obama`
 #&gt;   2013-Obama  1985-Reagan    1989-Bush  1981-Reagan 1997-Clinton    2001-Bush 
-#&gt;    0.9458185    0.9422163    0.9407657    0.9387730    0.9382904    0.9240388 
-#&gt; 1993-Clinton    2005-Bush 
-#&gt;    0.9000505    0.8976144 
+#&gt;    0.9458660    0.9422610    0.9407946    0.9388097    0.9383421    0.9240847 
+#&gt;   2017-Trump 1993-Clinton    2005-Bush 
+#&gt;    0.9119907    0.9000981    0.8977024 
 #&gt; 
 #&gt; $`2013-Obama`
 #&gt;   2009-Obama  1985-Reagan  1981-Reagan 1997-Clinton    1989-Bush    2001-Bush 
-#&gt;    0.9458185    0.9409353    0.9389438    0.9387808    0.9370933    0.9363852 
-#&gt;    2005-Bush 1993-Clinton 
-#&gt;    0.9195065    0.9118394 
+#&gt;    0.9458660    0.9409749    0.9389675    0.9388301    0.9371089    0.9364082 
+#&gt;    2005-Bush   2017-Trump 1993-Clinton 
+#&gt;    0.9195773    0.9164345    0.9118611 
+#&gt; 
+#&gt; $`2017-Trump`
+#&gt;    2001-Bush    1989-Bush  1981-Reagan 1997-Clinton    2005-Bush   2013-Obama 
+#&gt;    0.9352192    0.9311455    0.9290244    0.9211435    0.9198008    0.9164345 
+#&gt;  1985-Reagan   2009-Obama 1993-Clinton 
+#&gt;    0.9149626    0.9119907    0.8945840 
 #&gt; </div><div class='input'><span class='co'># output as a matrix</span>
 <span class='fu'>as.matrix</span>(<span class='no'>tmp</span>)</div><div class='output co'>#&gt;              1981-Reagan 1985-Reagan 1989-Bush 1993-Clinton 1997-Clinton
-#&gt; 1981-Reagan    1.0000000   0.9685409 0.9599217    0.9391137    0.9386791
-#&gt; 1985-Reagan    0.9685409   1.0000000 0.9537449    0.9452609    0.9468983
-#&gt; 1989-Bush      0.9599217   0.9537449 1.0000000    0.9358174    0.9381904
-#&gt; 2001-Bush      0.9498797   0.9371453 0.9543776    0.9258829    0.9321614
-#&gt; 1993-Clinton   0.9391137   0.9452609 0.9358174    1.0000000    0.9241745
-#&gt; 2013-Obama     0.9389438   0.9409353 0.9370933    0.9118394    0.9387808
-#&gt; 2009-Obama     0.9387730   0.9422163 0.9407657    0.9000505    0.9382904
-#&gt; 1997-Clinton   0.9386791   0.9468983 0.9381904    0.9241745    1.0000000
-#&gt; 2005-Bush      0.9346990   0.9297108 0.9349331    0.9142198    0.9077993
-#&gt;              2001-Bush 2005-Bush 2009-Obama 2013-Obama
-#&gt; 1981-Reagan  0.9498797 0.9346990  0.9387730  0.9389438
-#&gt; 1985-Reagan  0.9371453 0.9297108  0.9422163  0.9409353
-#&gt; 1989-Bush    0.9543776 0.9349331  0.9407657  0.9370933
-#&gt; 2001-Bush    1.0000000 0.9437295  0.9240388  0.9363852
-#&gt; 1993-Clinton 0.9258829 0.9142198  0.9000505  0.9118394
-#&gt; 2013-Obama   0.9363852 0.9195065  0.9458185  1.0000000
-#&gt; 2009-Obama   0.9240388 0.8976144  1.0000000  0.9458185
-#&gt; 1997-Clinton 0.9321614 0.9077993  0.9382904  0.9387808
-#&gt; 2005-Bush    0.9437295 1.0000000  0.8976144  0.9195065</div><div class='input'><span class='co'># for specific comparisons</span>
+#&gt; 1981-Reagan    1.0000000   0.9685603 0.9599456    0.9391462    0.9387178
+#&gt; 1985-Reagan    0.9685603   1.0000000 0.9537706    0.9452855    0.9469393
+#&gt; 1989-Bush      0.9599456   0.9537706 1.0000000    0.9358521    0.9382240
+#&gt; 2001-Bush      0.9499111   0.9371852 0.9544049    0.9259232    0.9322032
+#&gt; 1993-Clinton   0.9391462   0.9452855 0.9358521    1.0000000    0.9242089
+#&gt; 2013-Obama     0.9389675   0.9409749 0.9371089    0.9118611    0.9388301
+#&gt; 2009-Obama     0.9388097   0.9422610 0.9407946    0.9000981    0.9383421
+#&gt; 1997-Clinton   0.9387178   0.9469393 0.9382240    0.9242089    1.0000000
+#&gt; 2005-Bush      0.9347397   0.9297655 0.9349675    0.9142590    0.9078760
+#&gt; 2017-Trump     0.9290244   0.9149626 0.9311455    0.8945840    0.9211435
+#&gt;              2001-Bush 2005-Bush 2009-Obama 2013-Obama 2017-Trump
+#&gt; 1981-Reagan  0.9499111 0.9347397  0.9388097  0.9389675  0.9290244
+#&gt; 1985-Reagan  0.9371852 0.9297655  0.9422610  0.9409749  0.9149626
+#&gt; 1989-Bush    0.9544049 0.9349675  0.9407946  0.9371089  0.9311455
+#&gt; 2001-Bush    1.0000000 0.9437618  0.9240847  0.9364082  0.9352192
+#&gt; 1993-Clinton 0.9259232 0.9142590  0.9000981  0.9118611  0.8945840
+#&gt; 2013-Obama   0.9364082 0.9195773  0.9458660  1.0000000  0.9164345
+#&gt; 2009-Obama   0.9240847 0.8977024  1.0000000  0.9458660  0.9119907
+#&gt; 1997-Clinton 0.9322032 0.9078760  0.9383421  0.9388301  0.9211435
+#&gt; 2005-Bush    0.9437618 1.0000000  0.8977024  0.9195773  0.9198008
+#&gt; 2017-Trump   0.9352192 0.9198008  0.9119907  0.9164345  1.0000000</div><div class='input'><span class='co'># for specific comparisons</span>
 <span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='st'>"1985-Reagan"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; similarity Matrix:
 #&gt; $`1985-Reagan`
 #&gt;  1981-Reagan    1989-Bush 1997-Clinton 1993-Clinton   2009-Obama 
-#&gt;    0.9685409    0.9537449    0.9468983    0.9452609    0.9422163 
+#&gt;    0.9685603    0.9537706    0.9469393    0.9452855    0.9422610 
 #&gt; </div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; similarity Matrix:
 #&gt; $`2009-Obama`
 #&gt;   2013-Obama  1985-Reagan    1989-Bush  1981-Reagan 1997-Clinton 
-#&gt;    0.9458185    0.9422163    0.9407657    0.9387730    0.9382904 
+#&gt;    0.9458660    0.9422610    0.9407946    0.9388097    0.9383421 
 #&gt; 
 #&gt; $`2013-Obama`
 #&gt;   2009-Obama  1985-Reagan  1981-Reagan 1997-Clinton    1989-Bush 
-#&gt;    0.9458185    0.9409353    0.9389438    0.9387808    0.9370933 
+#&gt;    0.9458660    0.9409749    0.9389675    0.9388301    0.9371089 
 #&gt; </div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; similarity Matrix:
 #&gt; $`2009-Obama`
 #&gt;   2013-Obama  1985-Reagan    1989-Bush  1981-Reagan 1997-Clinton    2001-Bush 
-#&gt;    0.9458185    0.9422163    0.9407657    0.9387730    0.9382904    0.9240388 
-#&gt; 1993-Clinton    2005-Bush 
-#&gt;    0.9000505    0.8976144 
+#&gt;    0.9458660    0.9422610    0.9407946    0.9388097    0.9383421    0.9240847 
+#&gt;   2017-Trump 1993-Clinton    2005-Bush 
+#&gt;    0.9119907    0.9000981    0.8977024 
 #&gt; 
 #&gt; $`2013-Obama`
 #&gt;   2009-Obama  1985-Reagan  1981-Reagan 1997-Clinton    1989-Bush    2001-Bush 
-#&gt;    0.9458185    0.9409353    0.9389438    0.9387808    0.9370933    0.9363852 
-#&gt;    2005-Bush 1993-Clinton 
-#&gt;    0.9195065    0.9118394 
+#&gt;    0.9458660    0.9409749    0.9389675    0.9388301    0.9371089    0.9364082 
+#&gt;    2005-Bush   2017-Trump 1993-Clinton 
+#&gt;    0.9195773    0.9164345    0.9118611 
 #&gt; </div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>)</div><div class='output co'>#&gt; similarity Matrix:
 #&gt; $`2009-Obama`
 #&gt;   2013-Obama  1985-Reagan    1989-Bush  1981-Reagan 1997-Clinton    2001-Bush 
 #&gt;    0.9473229    0.9436339    0.9416945    0.9399460    0.9399306    0.9255036 
-#&gt; 1993-Clinton    2005-Bush 
-#&gt;    0.9015783    0.9004034 
+#&gt;   2017-Trump 1993-Clinton    2005-Bush 
+#&gt;    0.9137103    0.9015783    0.9004034 
 #&gt; 
 #&gt; $`2013-Obama`
 #&gt;   2009-Obama  1985-Reagan 1997-Clinton  1981-Reagan    1989-Bush    2001-Bush 
 #&gt;    0.9473229    0.9422001    0.9403480    0.9397146    0.9376157    0.9371368 
-#&gt;    2005-Bush 1993-Clinton 
-#&gt;    0.9217499    0.9125611 
+#&gt;    2005-Bush   2017-Trump 1993-Clinton 
+#&gt;    0.9217499    0.9177145    0.9125611 
 #&gt; </div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='st'>"2005-Bush"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"eJaccard"</span>, <span class='kw'>sorted</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; similarity Matrix:
 #&gt; $`2005-Bush`
 #&gt;  1981-Reagan  1985-Reagan    1989-Bush 1993-Clinton 1997-Clinton    2001-Bush 
 #&gt;    0.8094123    0.7992198    0.8102824    0.8441215    0.8252637    0.8887129 
-#&gt;   2009-Obama   2013-Obama 
-#&gt;    0.8051778    0.8416028 
+#&gt;   2009-Obama   2013-Obama   2017-Trump 
+#&gt;    0.8051778    0.8416028    0.8356055 
 #&gt; </div><div class='input'>
 <span class='co'># compute some term similarities</span>
 <span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"fair"</span>, <span class='st'>"health"</span>, <span class='st'>"terror"</span>), <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>, <span class='fl'>20</span>)</div><div class='output co'>#&gt; similarity Matrix:
 #&gt; $fair
-#&gt;   economi     begin      mani jefferson    author     howev     faith      call 
-#&gt; 0.9080252 0.9075951 0.9038769 0.8981462 0.8944272 0.8944272 0.8866586 0.8736360 
-#&gt;       god   struggl     order     never    courag      best     creat    believ 
-#&gt; 0.8687784 0.8660254 0.8606630 0.8516884 0.8391464 0.8366600 0.8347300 0.8322504 
-#&gt;      much      well     pledg   compass 
-#&gt; 0.8315668 0.8315668 0.8292884 0.8280787 
+#&gt;   economi     begin jefferson    author     faith      call   struggl      best 
+#&gt; 0.9080252 0.9075951 0.8981462 0.8944272 0.8866586 0.8736360 0.8451543 0.8366600 
+#&gt;     creat    courag    believ      well       god     pledg   compass      much 
+#&gt; 0.8347300 0.8326664 0.8322504 0.8315668 0.8307804 0.8292884 0.8280787 0.8235321 
+#&gt;    social      alli     order    danger 
+#&gt; 0.8215838 0.8215838 0.8164966 0.8164966 
 #&gt; 
 #&gt; $terror
-#&gt;    factori  adversari commonplac     miracl     racial     bounti     martin 
-#&gt;  0.9525793  0.9525793  0.9428090  0.9428090  0.9428090  0.9428090  0.9428090 
-#&gt;   guarante       solv    potenti      solut      whose     cultur   maintain 
-#&gt;  0.8944272  0.8944272  0.8944272  0.8888889  0.8845380  0.8819171  0.8728716 
-#&gt;       upon      dream       told      polit   industri       open 
-#&gt;  0.8699502  0.8677218  0.8660254  0.8540168  0.8432740  0.8432740 
+#&gt;    potenti  adversari commonplac     miracl     racial     bounti     martin 
+#&gt;  0.9036961  0.9036961  0.8944272  0.8944272  0.8944272  0.8944272  0.8944272 
+#&gt;      dream      polit   guarante       solv      grate       open      solut 
+#&gt;  0.8624394  0.8500000  0.8485281  0.8485281  0.8485281  0.8451543  0.8432740 
+#&gt;      whose     cultur   maintain       upon       educ       told 
+#&gt;  0.8391464  0.8366600  0.8280787  0.8253073  0.8215838  0.8215838 
 #&gt; 
 #&gt; $health
-#&gt;  knowledg     shape   generat     wrong     defin    common     child      fear 
-#&gt; 0.9428090 0.9045340 0.8971180 0.8944272 0.8892973 0.8888889 0.8888889 0.8888889 
-#&gt;    demand    planet     power      task     everi       eye      forc      even 
-#&gt; 0.8845380 0.8819171 0.8796317 0.8728716 0.8682693 0.8660254 0.8641586 0.8606630 
-#&gt;      long      born    danger     choos 
-#&gt; 0.8571594 0.8432740 0.8432740 0.8432740 
+#&gt;     shape   generat     wrong    common  knowledg    planet      task    demand 
+#&gt; 0.9045340 0.8971180 0.8944272 0.8888889 0.8888889 0.8819171 0.8728716 0.8666667 
+#&gt;       eye     defin      forc    danger     child     choos      fear    extend 
+#&gt; 0.8660254 0.8642416 0.8641586 0.8432740 0.8432740 0.8432740 0.8432740 0.8432740 
+#&gt;      true   without      long    advanc 
+#&gt; 0.8432740 0.8432740 0.8365019 0.8340577 
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

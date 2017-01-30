@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>wordshoal text model — textmodel_wordshoal • quanteda</title>
+<title>compute keyness (internal functions) — keyness • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,66 +77,66 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>wordshoal text model</h1>
+    <h1>compute keyness (internal functions)</h1>
     </div>
 
     
-    <p>Estimate Lauderdale and Herzog&#39;s (2016) model for one-dimensional document author (eg speakers)
-positions based on multiple groups of texts (eg debates).  Each group of texts is scaled using
-Slapin and Proksch&#39;s (2008) &quot;wordfish&quot; Poisson scaling model of one-dimensional document
-positions, and then the positions from a particular author are scaled across groups
-using a second-level linear factor model, using conditional maximum likelihood.</p>
+    <p>Internal function used in textstat_keyness.  Computes \(chi^2\) with Yates&#39;
+continuity correction for 2x2 tables.</p>
     
 
-    <pre><span class='fu'>textmodel_wordshoal</span>(<span class='no'>x</span>, <span class='no'>groups</span>, <span class='no'>authors</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fl'>0.001</span>)</pre>
+    <pre><span class='fu'>keyness_chi2_dt</span>(<span class='no'>x</span>)
+
+<span class='fu'>keyness_chi2_stats</span>(<span class='no'>x</span>)
+
+<span class='fu'>keyness_exact</span>(<span class='no'>x</span>)
+
+<span class='fu'>keyness_lr</span>(<span class='no'>x</span>, <span class='kw'>correction</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"none"</span>, <span class='st'>"Yates"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>the <a href='dfm.html'>dfm</a> from which the model will be fit</dd>
-      <dt>groups</dt>
-      <dd>the name of a variable in the document variables for data giving the 
-document group for each document</dd>
-      <dt>authors</dt>
-      <dd>the name of a variable in the document variables for data giving the 
-author of each document</dd>
-      <dt>dir</dt>
-      <dd>set global identification by specifying the indexes for a pair of 
-authors such that \(\hat{\theta}_{dir[1]} &lt; \hat{\theta}_{dir[2]}\).</dd>
-      <dt>tol</dt>
-      <dd>tolerance for convergence.  A convergence 
-threshold for the log-posterior of the model.</dd>
+      <dd>a <a href='dfm.html'>dfm</a> object</dd>
+      <dt>correction</dt>
+      <dd>if <code>&quot;Yates&quot;</code> implement the Yates correction for 2x2 
+tables, no correction if <code>&quot;none&quot;</code></dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class textmodel_fitted_wordshoal.  This is a list 
-  containing:</p>
+    <p>named numeric vector containing the chi2 value for each feature</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Returns estimates of relative author positions across the full corpus of texts.</p>
+    <p><code>keyness_chi2_dt</code> uses vectorized computation from data.table
+objects.</p>
+    <p><code>keyness_chi2_stats</code> uses element-by-element application of
+<a href='http://www.rdocumentation.org/packages/stats/topics/chisq.test'>chisq.test</a>.</p>
+    <p><code>keyness_exact</code> computes Fisher&#39;s exact using element-by-element 
+application of <a href='http://www.rdocumentation.org/packages/stats/topics/fisher.test'>fisher.test</a>.</p>
+    <p><code>keyness_lr</code> computes the \(G^2\) likelihood ratio statistic
+  using vectorized computation</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Benjamin E Lauderdale and Alexander Herzog.  2016. &quot;A Scaling Model 
-  for Estimating Time-Series Party Positions from Texts.&quot; <em>Political Analysis</em>.</p>
+    <p><a href = 'https://en.wikipedia.org/wiki/Yates&#39;s_correction_for_continuity'>https://en.wikipedia.org/wiki/Yates&#39;s_correction_for_continuity</a></p>
+    <p><a href = 'http://influentialpoints.com/Training/g-likelihood_ratio_test.htm'>http://influentialpoints.com/Training/g-likelihood_ratio_test.htm</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># data(ie30corpus, package = "quantedaData")</span>
-<span class='co'># iedfm &lt;- dfm(ie30corpus, removePunct = TRUE)</span>
-<span class='co'># wordshoalfit &lt;- </span>
-<span class='co'>#     textmodel_wordshoal(iedfm, dir = c(7,1),</span>
-<span class='co'>#                         groups = docvars(ie30corpus, "debateID"), </span>
-<span class='co'>#                         authors = docvars(ie30corpus, "member.name"))</span>
-<span class='co'># fitdf &lt;- merge(as.data.frame(summary(wordshoalfit)),</span>
-<span class='co'>#                docvars(ie30corpus), </span>
-<span class='co'>#                by.x="row.names", by.y="member.name")</span>
-<span class='co'># fitdf &lt;- subset(fitdf,!duplicated(memberID))</span>
-<span class='co'># aggregate(theta ~ party.name, data = fitdf, mean)</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+    <pre class="examples"><div class='input'><span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a a a b b c c c c c c d e f g h h"</span>,
+               <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a a b c c d d d d e f h"</span>))
+<span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_chi2_dt</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;           a           b           c           d           e           f 
+#&gt;  0.18510008  0.10251697  0.46729838 -2.04024714 -0.23758624 -0.23758624 
+#&gt;           g           h 
+#&gt;  0.03173144  0.10251697 </div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_chi2_stats</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;             a             b             c             d             e 
+#&gt;  1.626059e-31  6.775245e-32  4.672984e-01 -2.040247e+00 -2.242191e-32 
+#&gt;             f             g             h 
+#&gt; -2.242191e-32  2.207170e-31  6.775245e-32 </div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_exact</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;         a         b         c         d         e         f         g         h 
+#&gt; 1.0689130 1.4480473 2.6375984 0.1347360 0.6966446 0.6966446       Inf 1.4480473 </div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_lr</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;            a            b            c            d            e            f 
+#&gt;  0.004751409  0.091241894  1.274238010 -3.779440533 -0.064900473 -0.064900473 
+#&gt;            g            h 
+#&gt;          NaN  0.091241894 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -151,10 +151,6 @@ threshold for the log-posterior of the model.</dd>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
-
-    <h2>Author</h2>
-    
-Benjamin Lauderdale and Kenneth Benoit
 
   </div>
 </div>

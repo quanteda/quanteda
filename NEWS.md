@@ -1,11 +1,20 @@
 # quanteda 0.9.9
 
-## Changes since latest CRAN version (>= v0.9.9-4)
+## Changes since v0.9.9-17
+
+### New features
 
 ### Bug fixes
 
+* Fixed a bug in `convert(x, to = "lsa")` that transposed row and column names (#526)
+ 
+ 
+## Changes since v0.9.9-3
+
+### Bug fixes
+
+* Fixed a bug causing `dfm` and `tokens` to break on > 10,000 documents. (#438)
 * Fixed a bug in `tokens(x, what = "character", removeSeparators = TRUE)` that returned an empty string.  
-* Fixed a bug causing `dfm` to break on > 10,000 documents. (#438)
 * Fixed a bug in `corpus.VCorpus` if the VCorpus contains a single document. (#445)
 * Fixed a bug in `dfm_compress` in which the function failed on documents that contained zero feature counts. (#467)
 * Fixed a bug in `textmodel_NB` that caused the class priors `Pc` to be refactored alphabetically instead of in the order of assignment (#471), also affecting predicted classes (#476).

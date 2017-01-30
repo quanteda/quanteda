@@ -5,8 +5,9 @@
 test_that("nsyllable works as expected", {
     txt <- c(one = "super freakily yes",
              two = "merrily all go aerodynamic")
-    toks <- tokens(txt)
-    expect_equivalent(nsyllable(toks), list(c(2, 3, 1), c(3, 1, 1, 5)))
+    toksh <- tokens(txt)
+    toks <- tokenize(txt)
+    expect_equivalent(nsyllable(toks), nsyllable(toksh), list(c(2, 3, 1), c(3, 1, 1, 5)))
 })
 
 test_that("nsyllable works as expected with padding = TRUE", {
@@ -73,6 +74,16 @@ test_that("as.tokens list version works as expected", {
     expect_equivalent(toksh, 
                       as.tokens(toks))
 })
+
+test_that("as.tokens list version works as expected", {
+    txt <- c(doc1 = "The first sentence is longer than the second.",
+             doc2 = "Told you so.")
+    tokslist <- as.list(tokens(txt))
+    toks <- tokens(txt)
+    expect_equal(as.tokens(tokslist), 
+                      toks)
+})
+
 
 test_that("tokens indexing works as expected", {
     toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))

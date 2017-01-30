@@ -94,6 +94,12 @@ test_that("dfm_trim", {
     
 })
 
+test_that("dfm_trim works without trimming arguments #509", {
+    mydfm <- dfm(c("This is a sentence.", "This is a second sentence.", "Third sentence."))
+    expect_equal(dim(mydfm[-2, ]), c(2, 7))
+    expect_equal(dim(dfm_trim(mydfm[-2, ], verbose = FALSE)), c(2, 6))
+})
+
 test_that("test c.corpus",
     expect_that(
         matrix(dfm(corpus(c('What does the fox say?', 'What does the fox say?', '')), removePunct = TRUE)),
@@ -223,6 +229,25 @@ test_that("dfm_weight works", {
     mydfm <- dfm(str, remove = stopwords("english"))
     expect_equivalent(as.matrix(dfm_weight(mydfm, weights = w)),
                       matrix(c(5, 5, 1, 1, 3, 6, 0, 0.5), nrow = 2))
+    
+    expect_equivalent(round(as.matrix(dfm_weight(mydfm, type = "frequency")), 2),
+                      matrix(c(1, 1, 1, 1, 1, 2, 0, 1), nrow = 2))
+    
+    expect_equivalent(round(as.matrix(dfm_weight(mydfm, type = "relFreq")), 2),
+                      matrix(c(0.33, 0.2, 0.33, 0.2, 0.33, 0.4, 0, 0.2), nrow = 2))
+    
+    expect_equivalent(round(as.matrix(dfm_weight(mydfm, type = "relMaxFreq")), 2),
+                      matrix(c(1, 0.5, 1, 0.5, 1, 1, 0, 0.5), nrow = 2))
+    
+    expect_equivalent(round(as.matrix(dfm_weight(mydfm, type = "logFreq")), 2),
+                      matrix(c(1, 1, 1, 1, 1, 1.30, 0, 1), nrow = 2))
+    
+    # replication of worked example from
+    # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
+    str <- c("this is a  a sample", "this is another example another example example")
+    wikiDfm <- dfm(str)
+    expect_equivalent(round(as.matrix(tfidf(wikiDfm, normalize = TRUE)), 2),
+                      matrix(c(0, 0, 0, 0, 0.12, 0, 0.06, 0, 0, 0.09, 0, 0.13), nrow = 2))
 })
 
 test_that("dfm keeps all types with > 10,000 documents (#438) (a)", {

@@ -97,10 +97,10 @@ Works for plain character vectors too, if <code>groups</code> is a factor.</p>
       <dt>x</dt>
       <dd>a quanteda <a href='corpus.html'>corpus</a> or character object</dd>
       <dt>groups</dt>
-      <dd>character vector containing the names of document variables in 
-a corpus, or a factor equal in length to the number of documents, used for 
-aggregating the texts through concatenation.  If <code>x</code> is of type
-character, then <code>groups</code> must be a factor.</dd>
+      <dd>either: a character vector containing the names of document
+variables to be used for grouping; or a factor (or object that can be
+coerced into a factor) equal in length to the number of documents, used for
+aggregating the texts through concatenation</dd>
       <dt>...</dt>
       <dd>unused</dd>
       <dt>value</dt>
@@ -112,6 +112,7 @@ character, then <code>groups</code> must be a factor.</dd>
     <p>For <code>texts</code>, a character vector of the texts in the corpus.</p>
     <p>For <code>texts &lt;-</code>, the corpus with the updated texts.</p>
     <p>for <code>texts &lt;-</code>, a corpus with the texts replaced by <code>value</code></p>
+    <p><code>as.character(x)</code> is equivalent to <code>texts(x)</code></p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 

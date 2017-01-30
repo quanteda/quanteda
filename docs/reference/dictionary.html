@@ -110,7 +110,7 @@ Available options are: <dl class='dl-horizontal'>
 Provalis Research&#39;s Wordstat software</dd> <dt><code>&quot;LIWC&quot;</code></dt><dd>format used by 
 the Linguistic Inquiry and Word Count software</dd> <dt><code>&quot;yoshikoder&quot;</code></dt><dd>
 format used by Yoshikoder software</dd> <dt><code>&quot;lexicoder&quot;</code></dt><dd>format used
-by Lexicoder</dd></dl>
+by Lexicoder</dd> <dt><code>&quot;YAML&quot;</code></dt><dd>the standard YAML format</dd></dl>
 </dd>
       <dt>concatenator</dt>
       <dd>the character in between multi-word dictionary values. 
@@ -152,7 +152,7 @@ dictionaries. This uses the iconv labels for encoding.  See the
                           <span class='kw'>taxation</span> <span class='kw'>=</span> <span class='st'>"taxation"</span>,
                           <span class='kw'>taxregex</span> <span class='kw'>=</span> <span class='st'>"tax*"</span>,
                           <span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"america"</span>))
-<span class='fu'>head</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mycorpus</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>mydict</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 29 documents, 6 features (0% sparse).
+<span class='fu'>head</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mycorpus</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>mydict</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 30 documents, 6 features (0% sparse).
 #&gt; (showing first 6 documents and first 6 features)
 #&gt;                 features
 #&gt; docs             christmas opposition taxing taxation taxregex country
@@ -165,7 +165,7 @@ dictionaries. This uses the iconv labels for encoding.  See the
 <span class='co'># also works</span>
 <span class='no'>mydict2</span> <span class='kw'>&lt;-</span> <span class='fu'>dictionary</span>(<span class='kw'>christmas</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Christmas"</span>, <span class='st'>"Santa"</span>, <span class='st'>"holiday"</span>),
                       <span class='kw'>opposition</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Opposition"</span>, <span class='st'>"reject"</span>, <span class='st'>"notincorpus"</span>))
-<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mycorpus</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>mydict2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 29 documents, 2 features (0% sparse).</div><div class='input'>
+<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>mycorpus</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>mydict2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 30 documents, 2 features (0% sparse).</div><div class='input'>
 <span class='co'>## Not run: ------------------------------------</span>
 <span class='co'># # import the Laver-Garry dictionary from http://bit.ly/1FH2nvf</span>
 <span class='co'># lgdict &lt;- dictionary(file = "http://www.kenbenoit.net/courses/essex2014qta/LaverGarry.cat",</span>

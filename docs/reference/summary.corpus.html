@@ -136,7 +136,7 @@ meta-data</dd>
 #&gt; 4       Greens   325    687        21
 #&gt; 5       Labour   296    703        29
 #&gt; 6       LibDem   257    499        14</div><div class='input'><span class='co'># summarize corpus information</span>
-<span class='fu'>summary</span>(<span class='no'>data_corpus_inaugural</span>)</div><div class='output co'>#&gt; Corpus consisting of 57 documents.
+<span class='fu'>summary</span>(<span class='no'>data_corpus_inaugural</span>)</div><div class='output co'>#&gt; Corpus consisting of 58 documents.
 #&gt; 
 #&gt;             Text Types Tokens Sentences Year  President       FirstName
 #&gt;  1789-Washington   626   1540        23 1789 Washington          George
@@ -196,11 +196,12 @@ meta-data</dd>
 #&gt;        2005-Bush   772   2325       100 2005       Bush       George W.
 #&gt;       2009-Obama   939   2729       110 2009      Obama          Barack
 #&gt;       2013-Obama   814   2335        88 2013      Obama          Barack
+#&gt;       2017-Trump   582   1662        88 2017      Trump       Donald J.
 #&gt; 
 #&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
 #&gt; Created: Fri Sep 12 12:41:17 2014
 #&gt; Notes:   
-#&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>n</span><span class='kw'>=</span><span class='fl'>10</span>)</div><div class='output co'>#&gt; Corpus consisting of 57 documents, showing 10 documents.
+#&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>n</span><span class='kw'>=</span><span class='fl'>10</span>)</div><div class='output co'>#&gt; Corpus consisting of 58 documents, showing 10 documents.
 #&gt; 
 #&gt;             Text Types Tokens Sentences Year  President   FirstName
 #&gt;  1789-Washington   626   1540        23 1789 Washington      George
@@ -233,7 +234,7 @@ meta-data</dd>
 #&gt;          UKIP   346    739        27         UKIP
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Mon Jan 16 17:41:38 2017
+#&gt; Created: Wed Jan 25 17:23:34 2017
 #&gt; Notes:   
 #&gt; </div><div class='input'><span class='no'>mysummary</span> <span class='kw'>&lt;-</span> <span class='fu'>summary</span>(<span class='no'>mycorpus</span>, <span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>FALSE</span>)  <span class='co'># (quietly) assign the results</span>
 <span class='no'>mysummary</span>$<span class='no'>Types</span> / <span class='no'>mysummary</span>$<span class='no'>Tokens</span>             <span class='co'># crude type-token ratio</span></div><div class='output co'>#&gt; [1] 0.3381381 0.5373134 0.5009940 0.4730713 0.4210526 0.5150301 0.6779661

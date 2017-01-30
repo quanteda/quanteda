@@ -141,11 +141,11 @@
 <p>The simplest case is to create a corpus from a vector of texts already in memory in R. This gives the advanced R user complete flexbility with his or her choice of text inputs, as there are almost endless ways to get a vector of texts into R.</p>
 <p>If we already have the texts in this form, we can call the corpus constructor function directly. We can demonstrate this on the built-in character vector of 57 US president inaugural speeches called <code>data_char_inaugural</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(data_char_inaugural)  <span class="co"># this gives us some information about the object</span>
-##  Named chr [1:57] "Fellow-Citizens of the Senate and of the House of Representatives:\n\nAmong the vicissitudes incident to life no event could ha"| __truncated__ ...
-##  - attr(*, "names")= chr [1:57] "1789-Washington" "1793-Washington" "1797-Adams" "1801-Jefferson" ...
+##  Named chr [1:58] "Fellow-Citizens of the Senate and of the House of Representatives:\n\nAmong the vicissitudes incident to life no event could ha"| __truncated__ ...
+##  - attr(*, "names")= chr [1:58] "1789-Washington" "1793-Washington" "1797-Adams" "1801-Jefferson" ...
 myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(data_char_inaugural)  <span class="co"># build the corpus</span>
 <span class="kw">summary</span>(myCorpus, <span class="dt">n =</span> <span class="dv">5</span>)
-## Corpus consisting of 57 documents, showing 5 documents.
+## Corpus consisting of 58 documents, showing 5 documents.
 ## 
 ##             Text Types Tokens Sentences
 ##  1789-Washington   626   1540        23
@@ -155,14 +155,14 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 ##   1805-Jefferson   804   2381        45
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Mon Jan 16 17:42:08 2017
+## Created: Wed Jan 25 17:24:02 2017
 ## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables &ndash; what quanteda calls <code>docvars</code> &ndash; to this corpus.</p>
 <p>We can do this using the R&rsquo;s <code>substring()</code> function to extract characters from a name &ndash; in this case, the name of the character vector <code>data_char_inaugural</code>. This works using our fixed starting and ending positions with <code>substring()</code> because these names are a very regular format of <code>YYYY-PresidentName</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"President"</span>) &lt;-<span class="st"> </span><span class="kw">substring</span>(<span class="kw">names</span>(data_char_inaugural), <span class="dv">6</span>)
 <span class="kw"><a href="../reference/docvars.html">docvars</a></span>(myCorpus, <span class="st">"Year"</span>) &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">substring</span>(<span class="kw">names</span>(data_char_inaugural), <span class="dv">1</span>, <span class="dv">4</span>))
 <span class="kw">summary</span>(myCorpus, <span class="dt">n=</span><span class="dv">5</span>)
-## Corpus consisting of 57 documents, showing 5 documents.
+## Corpus consisting of 58 documents, showing 5 documents.
 ## 
 ##             Text Types Tokens Sentences  President Year
 ##  1789-Washington   626   1540        23 Washington 1789
@@ -172,13 +172,13 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 ##   1805-Jefferson   804   2381        45  Jefferson 1805
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Mon Jan 16 17:42:08 2017
+## Created: Wed Jan 25 17:24:02 2017
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
 <span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"docsource"</span>)  &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">"data_char_inaugural"</span>, <span class="dv">1</span>:<span class="kw"><a href="../reference/ndoc.html">ndoc</a></span>(myCorpus), <span class="dt">sep =</span> <span class="st">"_"</span>)
 <span class="kw">summary</span>(myCorpus, <span class="dt">n =</span> <span class="dv">5</span>, <span class="dt">showmeta =</span> <span class="ot">TRUE</span>)
-## Corpus consisting of 57 documents, showing 5 documents.
+## Corpus consisting of 58 documents, showing 5 documents.
 ## 
 ##             Text Types Tokens Sentences  President Year _language
 ##  1789-Washington   626   1540        23 Washington 1789   english
@@ -194,7 +194,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 ##  data_char_inaugural_5
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Mon Jan 16 17:42:08 2017
+## Created: Wed Jan 25 17:24:02 2017
 ## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -281,7 +281,7 @@ mytf7 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class
 ## Notes:</code></pre></div>
 <p>We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tokenInfo &lt;-<span class="st"> </span><span class="kw">summary</span>(data_corpus_inaugural)
-## Corpus consisting of 57 documents.
+## Corpus consisting of 58 documents.
 ## 
 ##             Text Types Tokens Sentences Year  President       FirstName
 ##  1789-Washington   626   1540        23 1789 Washington          George
@@ -341,6 +341,7 @@ mytf7 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class
 ##        2005-Bush   772   2325       100 2005       Bush       George W.
 ##       2009-Obama   939   2729       110 2009      Obama          Barack
 ##       2013-Obama   814   2335        88 2013      Obama          Barack
+##       2017-Trump   582   1662        88 2017      Trump       Donald J.
 ## 
 ## Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
 ## Created: Fri Sep 12 12:41:17 2014
@@ -387,14 +388,14 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ##       2013-Obama   814   2335        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Mon Jan 16 17:42:08 2017
+## Created: Wed Jan 25 17:24:02 2017
 ## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
 <h3 class="hasAnchor"><html><body><a href="#subsetting-corpus-objects" class="anchor"> </a></body></html>subsetting corpus objects</h3>
 <p>There is a method of the <code><a href="../reference/corpus_subset.html">corpus_subset()</a></code> function defined for corpus objects, where a new corpus can be extracted based on logical conditions applied to docvars:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus_subset.html">corpus_subset</a></span>(data_corpus_inaugural, Year &gt;<span class="st"> </span><span class="dv">1990</span>))
-## Corpus consisting of 6 documents.
+## Corpus consisting of 7 documents.
 ## 
 ##          Text Types Tokens Sentences Year President FirstName
 ##  1993-Clinton   644   1837        81 1993   Clinton      Bill
@@ -403,6 +404,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ##     2005-Bush   772   2325       100 2005      Bush George W.
 ##    2009-Obama   939   2729       110 2009     Obama    Barack
 ##    2013-Obama   814   2335        88 2013     Obama    Barack
+##    2017-Trump   582   1662        88 2017     Trump Donald J.
 ## 
 ## Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
 ## Created: Fri Sep 12 12:41:17 2014
@@ -434,17 +436,18 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ## [1997-Clinton, 1655]   maintain a strong defense against | terror | and destruction. Our children    
 ## [2009-Obama, 1646]        advance their aims by inducing | terror | and slaughtering innocents, we
 <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"terror"</span>, <span class="dt">valuetype =</span> <span class="st">"regex"</span>)
-##                                                                                                         
-## [1797-Adams, 1327]                 fraud or violence, by |  terror   | , intrigue, or venality          
-## [1933-Roosevelt, 112] nameless, unreasoning, unjustified |  terror   | which paralyzes needed efforts to
-## [1941-Roosevelt, 289]      seemed frozen by a fatalistic |  terror   | , we proved that this            
-## [1961-Kennedy, 868]      alter that uncertain balance of |  terror   | that stays the hand of           
-## [1961-Kennedy, 992]            of science instead of its |  terrors  | . Together let us explore        
-## [1981-Reagan, 821]        freeing all Americans from the |  terror   | of runaway living costs.         
-## [1981-Reagan, 2204]     understood by those who practice | terrorism | and prey upon their neighbors    
-## [1997-Clinton, 1055]         They fuel the fanaticism of |  terror   | . And they torment the           
-## [1997-Clinton, 1655]   maintain a strong defense against |  terror   | and destruction. Our children    
-## [2009-Obama, 1646]        advance their aims by inducing |  terror   | and slaughtering innocents, we
+##                                                                                                              
+## [1797-Adams, 1327]                      fraud or violence, by |  terror   | , intrigue, or venality          
+## [1933-Roosevelt, 112]      nameless, unreasoning, unjustified |  terror   | which paralyzes needed efforts to
+## [1941-Roosevelt, 289]           seemed frozen by a fatalistic |  terror   | , we proved that this            
+## [1961-Kennedy, 868]           alter that uncertain balance of |  terror   | that stays the hand of           
+## [1961-Kennedy, 992]                 of science instead of its |  terrors  | . Together let us explore        
+## [1981-Reagan, 821]             freeing all Americans from the |  terror   | of runaway living costs.         
+## [1981-Reagan, 2204]          understood by those who practice | terrorism | and prey upon their neighbors    
+## [1997-Clinton, 1055]              They fuel the fanaticism of |  terror   | . And they torment the           
+## [1997-Clinton, 1655]        maintain a strong defense against |  terror   | and destruction. Our children    
+## [2009-Obama, 1646]             advance their aims by inducing |  terror   | and slaughtering innocents, we   
+## [2017-Trump, 1119]    civilized world against radical Islamic | terrorism | , which we will eradicate
 <span class="kw"><a href="../reference/kwic.html">kwic</a></span>(data_corpus_inaugural, <span class="st">"communist*"</span>)
 ##                                                                                             
 ## [1949-Truman, 838]  the actions resulting from the | Communist  | philosophy are a threat to
@@ -569,8 +572,8 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 <span class="co"># make a dfm</span>
 myDfm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(myCorpus)
 myDfm[, <span class="dv">1</span>:<span class="dv">5</span>]
-## Document-feature matrix of: 6 documents, 5 features (0% sparse).
-## 6 x 5 sparse Matrix of class "dfmSparse"
+## Document-feature matrix of: 7 documents, 5 features (0% sparse).
+## 7 x 5 sparse Matrix of class "dfmSparse"
 ##               features
 ## docs           my fellow citizens   , today
 ##   1993-Clinton  7      5        2 139    10
@@ -578,13 +581,14 @@ myDfm[, <span class="dv">1</span>:<span class="dv">5</span>]
 ##   2001-Bush     3      1        9 110     2
 ##   2005-Bush     2      3        6 120     3
 ##   2009-Obama    2      1        1 130     6
-##   2013-Obama    3      3        6  99     4</code></pre></div>
+##   2013-Obama    3      3        6  99     4
+##   2017-Trump    1      1        4  96     4</code></pre></div>
 <p>Other options for a <code><a href="../reference/dfm.html">dfm()</a></code> include removing stopwords, and stemming the tokens.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make a dfm, removing stopwords and applying stemming</span>
 myStemMat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(myCorpus, <span class="dt">remove =</span> <span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dt">stem =</span> <span class="ot">TRUE</span>, <span class="dt">removePunct =</span> <span class="ot">TRUE</span>)
 myStemMat[, <span class="dv">1</span>:<span class="dv">5</span>]
-## Document-feature matrix of: 6 documents, 5 features (20% sparse).
-## 6 x 5 sparse Matrix of class "dfmSparse"
+## Document-feature matrix of: 7 documents, 5 features (17.1% sparse).
+## 7 x 5 sparse Matrix of class "dfmSparse"
 ##               features
 ## docs           fellow citizen today celebr mysteri
 ##   1993-Clinton      5       2    10      4       1
@@ -592,7 +596,8 @@ myStemMat[, <span class="dv">1</span>:<span class="dv">5</span>]
 ##   2001-Bush         1      10     2      0       0
 ##   2005-Bush         3       7     3      2       0
 ##   2009-Obama        1       1     6      2       0
-##   2013-Obama        3       8     6      1       0</code></pre></div>
+##   2013-Obama        3       8     6      1       0
+##   2017-Trump        1       4     5      3       1</code></pre></div>
 <p>The option <code>remove</code> provides a list of tokens to be ignored. Most users will supply a list of pre-defined &ldquo;stop words&rdquo;, defined for numerous languages, accessed through the <code><a href="../reference/stopwords.html">stopwords()</a></code> function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw"><a href="../reference/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="dv">20</span>)
 ##  [1] "i"          "me"         "my"         "myself"     "we"         "our"        "ours"       "ourselves"  "you"        "your"       "yours"      "yourself"   "yourselves" "he"         "him"       
@@ -619,8 +624,7 @@ mydfm
 <p><img src="quickstart_files/figure-html/unnamed-chunk-22-1.png" width="768"></p>
 <p>The <code><a href="../reference/plot-deprecated.html">plot.dfm()</a></code> method passes arguments through to <code>wordcloud()</code> from the <strong>wordcloud</strong> package, and can prettify the plot using the same arguments:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if (<span class="kw">require</span>(RColorBrewer))
-    <span class="kw"><a href="../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">max.words =</span> <span class="dv">100</span>, <span class="dt">colors =</span> <span class="kw">brewer.pal</span>(<span class="dv">6</span>, <span class="st">"Dark2"</span>), <span class="dt">scale =</span> <span class="kw">c</span>(<span class="dv">8</span>, .<span class="dv">5</span>))
-## Loading required package: RColorBrewer</code></pre></div>
+    <span class="kw"><a href="../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">max.words =</span> <span class="dv">100</span>, <span class="dt">colors =</span> <span class="kw">brewer.pal</span>(<span class="dv">6</span>, <span class="st">"Dark2"</span>), <span class="dt">scale =</span> <span class="kw">c</span>(<span class="dv">8</span>, .<span class="dv">5</span>))</code></pre></div>
 <p><img src="quickstart_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
 </div>
 <div id="grouping-documents-by-document-variable" class="section level3">
@@ -654,8 +658,8 @@ mydfm
 <p>We can use the dictionary when making the dfm:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">byPresMat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dfm.html">dfm</a></span>(recentCorpus, <span class="dt">dictionary =</span> myDict)
 byPresMat
-## Document-feature matrix of: 6 documents, 2 features (0% sparse).
-## 6 x 2 sparse Matrix of class "dfmSparse"
+## Document-feature matrix of: 7 documents, 2 features (0% sparse).
+## 7 x 2 sparse Matrix of class "dfmSparse"
 ##               features
 ## docs           terror economy
 ##   1993-Clinton      0       8
@@ -663,7 +667,8 @@ byPresMat
 ##   2001-Bush         0       4
 ##   2005-Bush         1       6
 ##   2009-Obama        1      10
-##   2013-Obama        1       6</code></pre></div>
+##   2013-Obama        1       6
+##   2017-Trump        1       5</code></pre></div>
 <p>The constructor function <code><a href="../reference/dictionary.html">dictionary()</a></code> also works with two common &ldquo;foreign&rdquo; dictionary formats: the LIWC and Provalis Research&rsquo;s Wordstat format. For instance, we can load the LIWC and apply this to the Presidential inaugural speech corpus:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">liwcdict &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dictionary.html">dictionary</a></span>(<span class="dt">file =</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,
                        <span class="dt">format =</span> <span class="st">"LIWC"</span>)
@@ -702,16 +707,16 @@ presCluster$labels &lt;-<span class="st"> </span><span class="kw"><a href="../re
 <span class="kw">print</span>(sim, <span class="dt">digits =</span> <span class="dv">2</span>)
 ## similarity Matrix:
 ## $fair
-##   economi     begin      mani jefferson    author     howev     faith       god   struggl      call 
-##      0.91      0.91      0.90      0.90      0.89      0.89      0.89      0.87      0.87      0.86 
+##   economi     begin jefferson    author     faith      call   struggl      best     creat    courag 
+##      0.91      0.91      0.90      0.89      0.89      0.86      0.85      0.84      0.83      0.83 
 ## 
 ## $terror
-##    factori  adversari commonplac     miracl     racial     bounti     martin   guarante       solv    potenti 
-##       0.95       0.95       0.94       0.94       0.94       0.94       0.94       0.89       0.89       0.89 
+##    potenti  adversari commonplac     miracl     racial     bounti     martin      dream      polit   guarante 
+##       0.90       0.90       0.89       0.89       0.89       0.89       0.89       0.86       0.85       0.85 
 ## 
 ## $health
-## knowledg    shape  generat    wrong    defin   common    child     fear   demand   planet 
-##     0.94     0.90     0.90     0.89     0.89     0.89     0.89     0.89     0.88     0.88</code></pre></div>
+##    shape  generat    wrong   common knowledg   planet     task   demand      eye    defin 
+##     0.90     0.90     0.89     0.89     0.89     0.88     0.87     0.87     0.87     0.86</code></pre></div>
 </div>
 <div id="scaling-document-positions" class="section level2">
 <h2 class="hasAnchor"><html><body><a href="#scaling-document-positions" class="anchor"> </a></body></html>Scaling document positions</h2>
@@ -739,11 +744,10 @@ if (<span class="kw">require</span>(topicmodels)) {
     <span class="kw">get_terms</span>(myLDAfit20, <span class="dv">5</span>)
     <span class="kw">topics</span>(myLDAfit20, <span class="dv">3</span>)
 }
-## Loading required package: topicmodels
 ##      Lenihan FF Bruton FG Burton LAB Morgan SF Cowen FF Kenny FG ODonnell FG Gilmore LAB Higgins LAB Quinn LAB Gormley Green Ryan Green Cuffe Green OCaolain SF
-## [1,]          1         5          9         3       15       10          13          12          20        14             7         16           6           4
-## [2,]         19         8          8        18       11        7           7          14          18        18             2         18          18          17
-## [3,]          2         7          7        14       14       14           6          20           6         8             1          7          16           6</code></pre></div>
+## [1,]         18        12          1         4       13        6           8           2          16         9             7         20          16           5
+## [2,]         15         7         14        17       19       10           7          11          17        17            13          7           7           9
+## [3,]          9         8         17         9        3        9           9          20          14        13            17         17          20           7</code></pre></div>
 </div>
 </div>
 <div class="footnotes">
