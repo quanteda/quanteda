@@ -10,7 +10,7 @@ textstat_keyness(x, target = 1L, measure = c("chi2", "exact", "lr"),
 \arguments{
 \item{x}{a \link{dfm} containing the features to be examined for keyness}
 
-\item{target}{the document index (numeric or character) identifying the 
+\item{target}{the document index (numeric, character or logical) identifying the 
 document forming the "target" for computing keyness; all other documents' 
 feature frequencies will be combined for use as a reference}
 

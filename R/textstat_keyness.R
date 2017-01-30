@@ -1,7 +1,7 @@
 #' calculate keyness statistics
 #' 
 #' @param x a \link{dfm} containing the features to be examined for keyness
-#' @param target the document index (numeric or character) identifying the 
+#' @param target the document index (numeric, character or logical) identifying the 
 #'   document forming the "target" for computing keyness; all other documents' 
 #'   feature frequencies will be combined for use as a reference
 #' @param measure (signed) association measure to be used for computing keyness.
