@@ -94,6 +94,10 @@ test_that("keyness_textstat exact computation is correct", {
         result$estimate,
         textstat_keyness(mydfm, measure = "exact", sort = FALSE)[1, 1]
     )
+    expect_equivalent(
+        result$p.value,
+        textstat_keyness(mydfm, measure = "exact", sort = FALSE)[1, 2]
+    )
 })
 
 test_that("basic textstat_keyness exact works on two rows", {
@@ -183,6 +187,10 @@ test_that("keyness_textstat lr computation is correct", {
         result$statistic,
         textstat_keyness(mydfm, measure = "lr", sort = FALSE)[1, 1]
     )
+    expect_equivalent(
+        result$p.value,
+        textstat_keyness(mydfm, measure = "lr", sort = FALSE)[1, 2]
+    )
 })
 
 test_that("basic textstat_keyness lr works on two rows", {
@@ -192,6 +200,8 @@ test_that("basic textstat_keyness lr works on two rows", {
                  c("c", "b", "h", "a", "e", "f", "d", "g"))
     expect_equal(rownames(textstat_keyness(mydfm, target = 2, measure = "lr")),
                  c("d", "e", "f", "a", "b", "h", "c", "g"))
+    expect_equal(rownames(textstat_keyness(mydfm, measure = "lr", sort = FALSE)),
+                 letters[1:8])
 })
 
 
