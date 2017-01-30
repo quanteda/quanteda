@@ -49,11 +49,13 @@ test_that("textstat_keyness works with different targets", {
     mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
                    d2 = "a a b c c d d d d e f h"))
     expect_equal(textstat_keyness(mydfm),
-                 textstat_keyness(mydfm, target = 1))    
+                 textstat_keyness(mydfm, target = 1))
     expect_equal(textstat_keyness(mydfm, target = "d1"),
-                 textstat_keyness(mydfm, target = 1))    
+                 textstat_keyness(mydfm, target = 1))
     expect_equal(textstat_keyness(mydfm, target = "d2"),
-                 textstat_keyness(mydfm, target = 2))    
+                 textstat_keyness(mydfm, target = 2))
+    expect_equal(textstat_keyness(mydfm, target = "d2"),
+                 textstat_keyness(mydfm, target = c(FALSE, TRUE)))
 })
 
 test_that("textstat_keyness works with different targets", {
