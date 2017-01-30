@@ -9,6 +9,7 @@ data_corpus_test    <- corpus(txt, docvars = dv, metacorpus = list(source = "Fro
 data_corpuszip_test <- corpus(txt, docvars = dv, metacorpus = list(source = "From test-corpuzip.R"), compress = TRUE)
 
 test_that("as.corpus.corpuszip works", {
+    skip_on_cran()
     expect_equal(data_corpus_test, as.corpus(data_corpuszip_test))
 })
 
