@@ -1,13 +1,13 @@
 #' calculate keyness statistics
 #' 
 #' @param x a \link{dfm} containing the features to be examined for keyness
-#' @param target the document index (numeric or character) identifying the 
+#' @param target the document index (numeric, character or logical) identifying the 
 #'   document forming the "target" for computing keyness; all other documents' 
 #'   feature frequencies will be combined for use as a reference
 #' @param measure (signed) association measure to be used for computing keyness.
 #'   Currenly available: \code{"chi2"} (\eqn{chi^2} with Yates correction); 
 #'   \code{"exact"} (Fisher's exact test); \code{"lr"} for the likelihood ratio
-#'   \eqn{G^2} statistic with Yates correction.
+#'   \eqn{G} statistic with Yates correction.
 #' @param sort logical; if \code{TRUE} sort features scored in descending order 
 #'   of the measure, otherwise leave in original feature order
 #' @references Bondi, Marina, and Mike Scott, eds. 2010.  \emph{Keyness in 
@@ -22,11 +22,12 @@
 #'   
 #'   Dunning, Ted. 1993. "Accurate Methods for the Statistics of Surprise and Coincidence", 
 #'   \emph{Computational Linguistics}, Vol 19, No. 1, pp. 61-74.
-#' @return a named numeric vector of keyness scores, named with the features. 
+#' @return a data.frame of computed statistics and associated p-values, where the features 
+#' scored name each row.  
 #'   For \code{measure = "chi2"} this is the chi-squared value, signed 
 #'   positively if the observed value in the target exceeds its expected value; 
 #'   for \code{measure = "exact"} this is the estimate of the odds ratio; for 
-#'   \code{measure = "lr"} this is the likelihood ratio $G^2$ statistic.
+#'   \code{measure = "lr"} this is the likelihood ratio \eqn{G} statistic.
 #' @export
 #' @keywords textstat
 #' @importFrom stats chisq.test
@@ -38,11 +39,15 @@
 #' head(result <- textstat_keyness(mydfm), 10)
 #' tail(result, 10)
 #' 
+#' # compare pre- v. post-war terms using logical vector
+#' mydfm2 <- dfm(data_corpus_inaugural)
+#' textstat_keyness(mydfm2, docvars(data_corpus_inaugural, "Year") >= 1945)
+#' 
 #' # compare Trump 2017 to other post-war preseidents
 #' pwdfm <- dfm(corpus_subset(data_corpus_inaugural, period == "post-war"))
 #' head(textstat_keyness(pwdfm, target = "2017-Trump"), 10)
-#' # using the exact method
-#' head(textstat_keyness(dfm_smooth(pwdfm), measure = "exact", target = "2017-Trump"), 10)
+#' # using the likelihood ratio method
+#' head(textstat_keyness(dfm_smooth(pwdfm), measure = "lr", target = "2017-Trump"), 10)
 textstat_keyness <- function(x, target = 1L, measure = c("chi2", "exact", "lr"), sort = TRUE) {
     UseMethod("textstat_keyness")
 }
@@ -59,6 +64,12 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
         stop("target not found in docnames(x)")
     if (is.numeric(target) && (target < 1 | target > ndoc(x)))
         stop("target index outside range of documents")
+    if ('lgCMatrix' %in% class(target))
+        target <- as.logical(target)
+    if (is.logical(target) && length(target) != ndoc(x))
+        stop("target must be the same length as the number of documents")
+    if (is.logical(target))
+        target <- which(target)
     
     # get the target and reference documents by concatenating all non-target docs
     grouping <- rep(2, ndoc(x))
@@ -78,7 +89,7 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
     }
 
     if (sort)
-        keywords <- sort(keywords, decreasing = TRUE)
+        keywords <- keywords[order(keywords[, 1], decreasing = TRUE), ]
     
     return(keywords)
 }
@@ -92,13 +103,14 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
 #' @param x a \link{dfm} object
 #' @details \code{keyness_chi2_dt} uses vectorized computation from data.table
 #' objects.
-#' @return named numeric vector containing the chi2 value for each feature
+#' @return a data.frame of chi2 and p-values with rows named for each feature
 #' @examples
 #' mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
 #'                d2 = "a a b c c d d d d e f h"))
 #' quanteda:::keyness_chi2_dt(mydfm)
 #' @keywords textstat internal
 #' @import data.table
+#' @importFrom stats dchisq
 #' @references
 #'   \url{https://en.wikipedia.org/wiki/Yates's_correction_for_continuity}
 #'   
@@ -116,9 +128,11 @@ keyness_chi2_dt <- function(x) {
     # compute using the direct formula - see link above (adds sign)
     dt[, chi2 := (N * (abs(a*d - b*c) - N/2)^2) / ((a+b)*(c+d)*(a+c)*(b+d)) * 
                  ifelse(a > E, 1, -1)]
+    # compute p-values
+    dt[, p := 1 - stats::pchisq(abs(chi2), 1)]
 
-    result <- dt$chi2
-    names(result) <- dt$feature
+    result <- as.data.frame(dt[, list(chi2, p)])
+    rownames(result) <- dt$feature
     result
 }
     
@@ -138,27 +152,34 @@ keyness_chi2_stats <- function(x) {
         tb <- as.table(rbind(c(t, f), c(sum_t - t, sum_f - f)))
         suppressWarnings(chi <- stats::chisq.test(tb))
         t_exp <- chi$expected[1,1]
-        unname(chi$statistic) * ifelse(t > t_exp, 1, -1)
+        list(chi2 = unname(chi$statistic) * ifelse(t > t_exp, 1, -1),
+             p = unname(chi$p.value))
     }
     sums <- rowSums(x)
-    apply(x, 2, function(y) keyness(as.numeric(y[1]), 
-                                    as.numeric(y[2]), 
-                                    sums[1], sums[2]))
+    as.data.frame(
+        do.call(rbind, apply(x, 2, function(y) keyness(as.numeric(y[1]), 
+                                                       as.numeric(y[2]), 
+                                                       sums[1], sums[2])))
+    )
 }
 
 
 #' @rdname keyness
 #' @details 
 #' \code{keyness_exact} computes Fisher's exact using element-by-element 
-#' application of \link[stats]{fisher.test}.
+#' application of \link[stats]{fisher.test}, returning the odds ratio.
 #' @importFrom stats fisher.test
 #' @examples
 #' quanteda:::keyness_exact(mydfm)
 keyness_exact <- function(x) {
     sums <- rowSums(x)
-    apply(x, 2, function(y) stats::fisher.test( 
-            matrix(c(as.numeric(y), as.numeric(sums - y)), nrow = 2)
-        )$estimate)
+    as.data.frame(
+        do.call(rbind, 
+                apply(x, 2, function(y) { 
+                      et <- stats::fisher.test(matrix(c(as.numeric(y), as.numeric(sums - y)), nrow = 2))
+                      data.frame(or = as.numeric(et$estimate), p = et$p.value)
+                }))
+    )
 }
 
 
@@ -175,7 +196,7 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
     
     correction <- match.arg(correction)
     
-    a <- b <- c <- d <- N <- E11 <- lr <- NULL 
+    a <- b <- c <- d <- N <- E11 <- G <- p <- NULL 
     if (ndoc(x) > 2)
         stop("x can only have 2 rows")
     dt <- data.table(feature = featnames(x),
@@ -198,14 +219,17 @@ keyness_lr <- function(x, correction = c("none", "Yates")) {
     ## the other possible correction to implement is the Williams correction, 
     ## see http://influentialpoints.com/Training/g-likelihood_ratio_test.htm
     
-    dt[, lr := (2 * (a * log(a / E11) + 
+    dt[, G := (2 * (a * log(a / E11) + 
                      b * log(b / ((a+b)*(b+d) / N)) +
                      c * log(c / ((a+c)*(c+d) / N)) +
                      d * log(d / ((b+d)*(c+d) / N)))) *
                ifelse(a > E11, 1, -1)]
     
-    result <- dt$lr
-    names(result) <- dt$feature
+    # compute p-values
+    dt[, p := 1 - stats::pchisq(abs(G), 1)]
+    
+    result <- as.data.frame(dt[, list(G, p)])
+    rownames(result) <- dt$feature
     result
 }
 

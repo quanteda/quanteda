@@ -7,7 +7,7 @@ test_that("keyness_textstat chi2 computation is correct", {
     )
     expect_equivalent(
         result$statistic,
-        textstat_keyness(mydfm, sort = FALSE)[1]
+        textstat_keyness(mydfm, sort = FALSE)[1, 1]
     )
 })
 
@@ -39,9 +39,9 @@ test_that("keyness_chi2 internal methods are equivalent", {
 test_that("basic textstat_keyness works on two rows", {
     mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
                    d2 = "a a b c c d d d d e f h"))
-    expect_equal(names(textstat_keyness(mydfm)),
+    expect_equal(rownames(textstat_keyness(mydfm)),
                  c("c", "a", "b", "h", "g", "e", "f", "d"))
-    expect_equal(names(textstat_keyness(mydfm, target = 2)),
+    expect_equal(rownames(textstat_keyness(mydfm, target = 2)),
                  c("d", "e", "f", "g", "b", "h", "a", "c"))
 })
 
@@ -49,11 +49,13 @@ test_that("textstat_keyness works with different targets", {
     mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
                    d2 = "a a b c c d d d d e f h"))
     expect_equal(textstat_keyness(mydfm),
-                 textstat_keyness(mydfm, target = 1))    
+                 textstat_keyness(mydfm, target = 1))
     expect_equal(textstat_keyness(mydfm, target = "d1"),
-                 textstat_keyness(mydfm, target = 1))    
+                 textstat_keyness(mydfm, target = 1))
     expect_equal(textstat_keyness(mydfm, target = "d2"),
-                 textstat_keyness(mydfm, target = 2))    
+                 textstat_keyness(mydfm, target = 2))
+    expect_equal(textstat_keyness(mydfm, target = "d2"),
+                 textstat_keyness(mydfm, target = c(FALSE, TRUE)))
 })
 
 test_that("textstat_keyness works with different targets", {
@@ -92,16 +94,20 @@ test_that("keyness_textstat exact computation is correct", {
     result <- stats::fisher.test(as.matrix(mydfm))
     expect_equivalent(
         result$estimate,
-        textstat_keyness(mydfm, measure = "exact", sort = FALSE)[1]
+        textstat_keyness(mydfm, measure = "exact", sort = FALSE)[1, 1]
+    )
+    expect_equivalent(
+        result$p.value,
+        textstat_keyness(mydfm, measure = "exact", sort = FALSE)[1, 2]
     )
 })
 
 test_that("basic textstat_keyness exact works on two rows", {
     mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
                    d2 = "a a b c c d d d d e f h"))
-    expect_equal(names(textstat_keyness(mydfm, measure = "exact")),
+    expect_equal(rownames(textstat_keyness(mydfm, measure = "exact")),
                  c("g", "c", "b", "h", "a", "e", "f", "d"))
-    expect_equal(names(textstat_keyness(mydfm, target = 2, measure = "exact")),
+    expect_equal(rownames(textstat_keyness(mydfm, target = 2, measure = "exact")),
                  c("d", "e", "f", "a", "b", "h", "c", "g"))
 })
 
@@ -181,17 +187,23 @@ test_that("keyness_textstat lr computation is correct", {
     result <- likelihood.test(as.matrix(mydfm))
     expect_equivalent(
         result$statistic,
-        textstat_keyness(mydfm, measure = "lr", sort = FALSE)[1]
+        textstat_keyness(mydfm, measure = "lr", sort = FALSE)[1, 1]
+    )
+    expect_equivalent(
+        result$p.value,
+        textstat_keyness(mydfm, measure = "lr", sort = FALSE)[1, 2]
     )
 })
 
 test_that("basic textstat_keyness lr works on two rows", {
     mydfm <- dfm(c(d1 = "a a a b b c c c c c c d e f g h h",
                    d2 = "a a b c c d d d d e f h"))
-    expect_equal(names(textstat_keyness(mydfm, measure = "lr")),
-                 c("c", "b", "h", "a", "e", "f", "d"))
-    expect_equal(names(textstat_keyness(mydfm, target = 2, measure = "lr")),
-                 c("d", "e", "f", "a", "b", "h", "c"))
+    expect_equal(rownames(textstat_keyness(mydfm, measure = "lr")),
+                 c("c", "b", "h", "a", "e", "f", "d", "g"))
+    expect_equal(rownames(textstat_keyness(mydfm, target = 2, measure = "lr")),
+                 c("d", "e", "f", "a", "b", "h", "c", "g"))
+    expect_equal(rownames(textstat_keyness(mydfm, measure = "lr", sort = FALSE)),
+                 letters[1:8])
 })
 
 
