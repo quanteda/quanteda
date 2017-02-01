@@ -115,7 +115,8 @@ setClass("fcm",
 #' txts <- c("a a a b b c", "a a c e", "a c e f g")
 #' fcm(txts, context = "document", count = "frequency")
 #' fcm(txts, context = "document", count = "boolean")
-#' fcm(txts, context = "window", count = "boolean", window = 2)
+#' fcm(txts, context = "window", window = 2)
+#' 
 #' 
 #' # from tokens
 #' txt <- c("The quick brown fox jumped over the lazy dog.",
@@ -233,17 +234,18 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
                 weights <- 1
             }
         }
-        
-        if (is.tokens(x)) {
+        if (!is.tokens(x)) x <- as.tokens(x)
+        #if (is.tokens(x)) {
             n <- sum(lengths(unlist(x))) * window * 2
-            result <- fcm_hash_cpp(x, length(unique(unlist(x))), count, window, weights, ordered, tri, n)
+            RcppParallel::setThreadOptions(1)
+            result <- fcm_hash_mt(x, length(unique(unlist(x))), count, window, weights, ordered, tri, n)
             # set the dimnames of result
             types <- types(x)
-        } else {
-            types <- unique(unlist(x, use.names = FALSE))
-            n <- sum(lengths(x)) * (window + 1)
-            result <- fcm_cpp(x, types, count, window, weights, ordered, tri, n)
-        }
+        #} else {
+        #    types <- unique(unlist(x, use.names = FALSE))
+        #    n <- sum(lengths(x)) * (window + 1)
+        #    result <- fcm_hash_mt(x, types, count, window, weights, ordered, tri, n)
+        #}
         # set the dimnames of result
         dimnames(result) <- list(features = types, features = types)
     }

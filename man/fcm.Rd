@@ -90,7 +90,8 @@ fcm(txt, context = "window", count = "weighted", window = 3,
 txts <- c("a a a b b c", "a a c e", "a c e f g")
 fcm(txts, context = "document", count = "frequency")
 fcm(txts, context = "document", count = "boolean")
-fcm(txts, context = "window", count = "boolean", window = 2)
+fcm(txts, context = "window", window = 2)
+
 
 # from tokens
 txt <- c("The quick brown fox jumped over the lazy dog.",
