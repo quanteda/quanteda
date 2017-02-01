@@ -190,16 +190,16 @@ List qatd_cpp_tokens_ngrams(const List texts_,
     
     // Register both ngram (key) and unigram (value) IDs in a hash table
     MapNgrams map_ngram;
-    //IdNgram id_ngram = tbb::atomic<unsigned int>(0);
-    IdNgram id_ngram(1);
-    
+
     //dev::Timer timer;
     //dev::start_timer("Ngram generation", timer);
     Texts output(input.size());
-#if RCPP_PARALLEL_USE_TBB
+#if RCPP_PARALLEL_USE_TBB && GCC_VERSION >= 40801 // gcc 4.8.1
+    IdNgram id_ngram(1);
     skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram, id_ngram);
     parallelFor(0, input.size(), skipgram_mt);
 #else
+    IdNgram id_ngram = 1;
     for (std::size_t h = 0; h < input.size(); h++) {
         output[h] = skipgram(input[h], ns, skips, map_ngram, id_ngram);
     }
@@ -215,7 +215,7 @@ List qatd_cpp_tokens_ngrams(const List texts_,
     //dev::start_timer("Token generation", timer);
     // Create ngram types
      Types types_ngram(keys_ngram.size());
-#if RCPP_PARALLEL_USE_TBB
+#if RCPP_PARALLEL_USE_TBB && GCC_VERSION >= 40801 // gcc 4.8.1
         type_mt type_mt(keys_ngram, types_ngram, map_ngram, delim, types);
         parallelFor(0, types_ngram.size(), type_mt);
 #else

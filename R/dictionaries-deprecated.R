@@ -120,6 +120,7 @@ applyDictionary.tokens <- function(x, dictionary, exclusive = TRUE,
     attributes(newtokens) <- attr_orig
     attr(newtokens, "types") <- NULL  # get rid of types, so we can recompile
     class(newtokens) <- class(newtokens)[-1]  # remove tokens class tag
+    class(newtokens) <- c(class(newtokens), "list") # add list tag
     # reverse the NA
     if (length(emptydocs))
         newtokens[emptydocs] <- list(rep(character(0), length(emptydocs)))

@@ -301,8 +301,10 @@ ijv.to.doc <- function(i, j, v) {
 #' @keywords internal
 dfm2lsa <- function(x) {
     x <- as.matrix(x)
+    # convert to integer
+    x <- apply(x, c(1,2), as.integer)
     class(x) = "textmatrix"
-    names(dimnames(x)) <- c("terms", "docs") 
+    names(dimnames(x)) <- c("docs", "terms") 
     t(x)
 }
     

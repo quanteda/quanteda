@@ -43,3 +43,26 @@ test_that("test topicmodels package converter", {
 test_that("test austin package converter", {
     expect_identical(convert(d, to = "austin"), quanteda::as.wfm(d))
 })
+
+test_that("test lsa converter", {
+    skip_if_not_installed("lsa")
+    require(lsa)
+    # create some files
+    td <- tempfile()
+    dir.create(td)
+    write( c("cat", "dog", "mouse"), file = paste(td, "D1", sep="/") )
+    write( c("hamster", "mouse", "sushi"), file = paste(td, "D2", sep="/") )
+    write( c("dog", "monster", "monster"), file = paste(td, "D3", sep="/") )
+    # read them, create a document-term matrix
+    lsamat <- lsa::textmatrix(td)
+    
+    lsamat2 <- convert(dfm(tokens(c(D1 = c("cat dog mouse"),
+                                    D2 = c("hamster mouse sushi"), 
+                                    D3 = c("dog monster monster")))),
+                       to = "lsa")
+    expect_equivalent(lsamat, lsamat2)    
+    
+})
+
+
+
