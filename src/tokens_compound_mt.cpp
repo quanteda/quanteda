@@ -42,22 +42,25 @@ Text join_comp(Text tokens,
     tokens_seq.reserve(tokens.size());
     
     // Find sequence of matches
-    std::size_t len = tokens.size();
-    for (std::size_t i = 0; i < len; i++) {
+    flags_match.push_back(false); // add padding to include last words
+    std::size_t len = flags_match.size();
+    for (std::size_t i = 0; i < len - 1; i++) {
         if (flags_match[i]) {
             for (std::size_t j = i; j < len; j++) {
                 if (flags_match[j]) {
                     tokens_seq.push_back(tokens[j]);
                 } else {
-                    id_mutex.lock();
-                    unsigned int &id = map_comps[tokens_seq];
-                    if (!id) id = ++id_comp; // assign new ID if not exisits
-                    //Rcout << "Compund " << id << ": ";
-                    //dev::print_ngram(tokens_seq);
-                    tokens_flat.push_back(id);
-                    id_mutex.unlock();
+                    if (tokens_seq.size() > 1) {
+                        id_mutex.lock();
+                        unsigned int &id = map_comps[tokens_seq];
+                        if (!id) id = ++id_comp; // assign new ID if not exisits
+                        //Rcout << "Compund " << id << ": ";
+                        //dev::print_ngram(tokens_seq);
+                        tokens_flat.push_back(id);
+                        id_mutex.unlock();
+                    }
                     tokens_seq.clear();
-                    i = j + 1;
+                    i = j - 1;
                     break;
                 }
             }
@@ -236,15 +239,15 @@ List qatd_cpp_tokens_compound(const List &texts_,
 
 /***R
 
-toks <- list(rep(1:10, 1), rep(5:15, 1))
-#dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-dict <- list(c(1, 2), c(2, 3))
+#toks <- list(rep(1:10, 1), rep(5:15, 1))
+toks <- list(1:4)
+dict <- list(c(1, 2), c(2, 3), c(3, 4))
 #dict <- list(c(1, 2), c(1, 2, 3))
 types <- letters[1:length(unique(unlist(toks)))]
-id <- rep(1, length(dict)) * 100
-qatd_cpp_tokens_compound(toks, dict, types, "_", FALSE)
+#qatd_cpp_tokens_compound(toks, dict, types, "_", FALSE)
 qatd_cpp_tokens_compound(toks, dict, types, "_", TRUE)
 
 
 
 */
+

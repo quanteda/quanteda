@@ -5,7 +5,7 @@
 \title{convert token sequences into compound tokens}
 \usage{
 tokens_compound(x, sequences, concatenator = "_", valuetype = c("glob",
-  "regex", "fixed"), case_insensitive = TRUE, overlap = FALSE)
+  "regex", "fixed"), case_insensitive = TRUE, join = FALSE)
 }
 \arguments{
 \item{x}{an input \link{tokens} object}

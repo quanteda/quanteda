@@ -49,7 +49,7 @@
 #' tokens_compound(toks, collocs)
 tokens_compound <- function(x, sequences,
                     concatenator = "_", valuetype = c("glob", "regex", "fixed"),
-                    case_insensitive = TRUE, overlap = FALSE) {
+                    case_insensitive = TRUE, join = FALSE) {
     UseMethod("tokens_compound")
 }
 
@@ -75,8 +75,8 @@ tokens_compound.tokens <- function(x, sequences,
     # Convert glob or regex to fixed
     seqs_id <- regex2id(seqs, types, valuetype, case_insensitive)
     if(length(seqs_id) == 0) return(x) # do nothing
+
     x <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join)
-    
     if (!length(attr(x, "types"))){
         attr(x, "types") <- NULL
     } else {
@@ -84,9 +84,6 @@ tokens_compound.tokens <- function(x, sequences,
     }
     # Reassign attributes, except types
     x <- reassign_attributes(x, attrs_org, exceptions = "types", attr_only = TRUE)
-    
-    names(x) <- names_org
-    attributes(x) <- attrs_org
     attr(x, "concatenator") <- concatenator
     
     tokens_hashed_recompile(x)
@@ -98,10 +95,10 @@ tokens_compound.tokens <- function(x, sequences,
 #' @export
 tokens_compound.tokenizedTexts <- function(x, sequences, 
                                            concatenator = "_", valuetype = c("glob", "regex", "fixed"),
-                                           case_insensitive = TRUE, overlap = FALSE) {
+                                           case_insensitive = TRUE, join = FALSE) {
     as.tokenizedTexts(tokens_compound(as.tokens(x), sequences = sequences, 
                                       concatenator = concatenator, valuetype = valuetype,
-                                      case_insensitive = TRUE, overlap = overlap))
+                                      case_insensitive = TRUE, join = join))
 }
 
 
