@@ -45,6 +45,10 @@ qatd_cpp_sequences <- function(texts_, words_, count_min, len_max, nested, order
     .Call('quanteda_qatd_cpp_sequences', PACKAGE = 'quanteda', texts_, words_, count_min, len_max, nested, ordered)
 }
 
+qatd_cpp_tokens_compound <- function(texts_, comps_, types_, delim_, join) {
+    .Call('quanteda_qatd_cpp_tokens_compound', PACKAGE = 'quanteda', texts_, comps_, types_, delim_, join)
+}
+
 qatd_cpp_tokens_detect <- function(texts_, words_) {
     .Call('quanteda_qatd_cpp_tokens_detect', PACKAGE = 'quanteda', texts_, words_)
 }

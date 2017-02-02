@@ -9,7 +9,7 @@ using namespace quanteda;
 using namespace ngrams;
 
 
-Text keep(Text tokens, 
+Text keep_token(Text tokens, 
           const std::vector<std::size_t> &spans,
           const SetNgrams &set_words,
           const bool &padding){
@@ -35,7 +35,7 @@ Text keep(Text tokens,
     return tokens_copy;
 }
 
-Text remove(Text tokens, 
+Text remove_token(Text tokens, 
             const std::vector<std::size_t> &spans,
             const SetNgrams &set_words,
             const bool &padding){
@@ -78,11 +78,11 @@ struct select_mt : public Worker{
         //Rcout << "Range " << begin << " " << end << "\n";
         if (mode == 1) {
             for (std::size_t h = begin; h < end; h++) {
-                output[h] = keep(input[h], spans, set_words, padding);
+                output[h] = keep_token(input[h], spans, set_words, padding);
             }
         } else if(mode == 2) {
             for (std::size_t h = begin; h < end; h++) {
-                output[h] = remove(input[h], spans, set_words, padding);
+                output[h] = remove_token(input[h], spans, set_words, padding);
             }
         } else {
             for (std::size_t h = begin; h < end; h++) {
@@ -135,11 +135,11 @@ List qatd_cpp_tokens_select(const List &texts_,
     #else
     if (mode == 1) {
         for (std::size_t h = 0; h < input.size(); h++) {
-            output[h] = keep(input[h], spans, set_words, padding);
+            output[h] = keep_token(input[h], spans, set_words, padding);
         }
     } else if(mode == 2) {
         for (std::size_t h = 0; h < input.size(); h++) {
-            output[h] = remove(input[h], spans, set_words, padding);
+            output[h] = remove_token(input[h], spans, set_words, padding);
         }
     } else {
         for (std::size_t h = 0; h < input.size(); h++){

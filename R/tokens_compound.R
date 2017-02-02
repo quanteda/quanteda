@@ -14,7 +14,7 @@
 #'   in the Unicode punctuation class [P] will be removed.
 #' @inheritParams valuetype
 #' @param case_insensitive logical; if \code{TRUE}, ignore case when matching
-#' @param overlap logical; if \code{TRUE}, detect overlapped compounds
+#' @param join logical; if \code{TRUE}, join overlapped compounds
 #' @return a \link{tokens} object in which the token sequences matching the patterns 
 #' in \code{sequences} have been replaced by  compound "tokens" joined by the concatenator
 #' @export
@@ -60,7 +60,7 @@ tokens_compound <- function(x, sequences,
 #' @export
 tokens_compound.tokens <- function(x, sequences,
                    concatenator = "_", valuetype = c("glob", "regex", "fixed"),
-                   case_insensitive = TRUE, overlap = FALSE) {
+                   case_insensitive = TRUE, join = FALSE) {
     
     valuetype <- match.arg(valuetype)
     sequences <- sequence2list(sequences)
@@ -75,19 +75,19 @@ tokens_compound.tokens <- function(x, sequences,
     # Convert glob or regex to fixed
     seqs_id <- regex2id(seqs, types, valuetype, case_insensitive)
     if(length(seqs_id) == 0) return(x) # do nothing
+    x <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join)
     
-    # Make new types
-    seqs_type <- stringi::stri_c_list(lapply(seqs_id, function(y) types[y]), sep=concatenator)
-    
-    # Assign IDs to new types
-    types_id <- match(seqs_type, types)
-    types_new <- seqs_type[is.na(types_id)]
-    types_id[is.na(types_id)] <- seq(length(types) + 1, by=1, length.out=length(types_new))
-    x <- qatd_cpp_tokens_match(x, seqs_id, types_id, overlap)
+    if (!length(attr(x, "types"))){
+        attr(x, "types") <- NULL
+    } else {
+        Encoding(attr(x, "types")) <- "UTF-8"
+    }
+    # Reassign attributes, except types
+    x <- reassign_attributes(x, attrs_org, exceptions = "types", attr_only = TRUE)
     
     names(x) <- names_org
     attributes(x) <- attrs_org
-    types(x) <- c(types, types_new)
+    attr(x, "concatenator") <- concatenator
     
     tokens_hashed_recompile(x)
 }

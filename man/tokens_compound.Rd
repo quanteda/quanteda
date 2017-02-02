@@ -28,7 +28,7 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching}
 
-\item{overlap}{logical; if \code{TRUE}, detect overlapped compounds}
+\item{join}{logical; if \code{TRUE}, join overlapped compounds}
 }
 \value{
 a \link{tokens} object in which the token sequences matching the patterns 
