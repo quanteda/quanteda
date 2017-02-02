@@ -23,7 +23,7 @@ keyness_lr(x, correction = c("none", "Yates"))
 tables, no correction if \code{"none"}}
 }
 \value{
-named numeric vector containing the chi2 value for each feature
+a data.frame of chi2 and p-values with rows named for each feature
 }
 \description{
 Internal function used in textstat_keyness.  Computes \eqn{chi^2} with Yates'
@@ -37,7 +37,7 @@ objects.
 \link[stats]{chisq.test}.
 
 \code{keyness_exact} computes Fisher's exact using element-by-element 
-application of \link[stats]{fisher.test}.
+application of \link[stats]{fisher.test}, returning the odds ratio.
 
 \code{keyness_lr} computes the \eqn{G^2} likelihood ratio statistic
   using vectorized computation

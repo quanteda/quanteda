@@ -75,6 +75,16 @@ test_that("as.tokens list version works as expected", {
                       as.tokens(toks))
 })
 
+test_that("as.tokens list version works as expected", {
+    txt <- c(doc1 = "The first sentence is longer than the second.",
+             doc2 = "Told you so.")
+    tokslist <- as.list(tokens(txt))
+    toks <- tokens(txt)
+    expect_equal(as.tokens(tokslist), 
+                      toks)
+})
+
+
 test_that("tokens indexing works as expected", {
     toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
 
