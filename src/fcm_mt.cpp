@@ -10,71 +10,71 @@ using namespace Rcpp;
 using namespace tbb;
 using namespace quanteda;
 
+#if RCPP_PARALLEL_USE_TBB
+    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
+    typedef tbb::concurrent_vector<Triplet> Triplets;
+#else
+    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
+    typedef std::vector<Triplet> Triplets;
+#endif   
+
 //count the co-occurance when count is set to "frequency" or "weighted"
-void fre_count(Text text,
-               std::vector<double> &window_weights,    
-               const unsigned int window,
-               const bool tri,
-               const bool ordered,
-               // output vector to write to, each tuple contains i, j, x for the sparse matrix fcm.
-               tupleVec &fcm_tri){
+void fre_count(const Text &text,
+               const std::vector<double> &window_weights,    
+               const unsigned int &window,
+               const bool &tri,
+               const bool &ordered,
+               Triplets &fcm_tri){
     
-    // cpp vector starts from 0 instead of 1 in R
-    for (unsigned int i = 0; i < text.size(); i++)
-        text[i]--;
     const unsigned int len = text.size();
     
     for (unsigned int i = 0; i < text.size(); i++) {
-        unsigned int j_ini = i+1;
+        unsigned int j_ini = i + 1;
         unsigned int j_lim = std::min(i + window + 1, len);
         
         for(unsigned int j = j_ini; j < j_lim; j++) {
             if (ordered){
                 if (!tri || ((text[i] <= text[j])&& tri) ){// only include upper triangular element (diagonal inclusive) if tri = TRUE
-                    
-                    std::tuple<unsigned int, unsigned int, double> mat_triplet = std::make_tuple(text[i], text[j], window_weights[j-i-1]);
+                    Triplet mat_triplet = std::make_tuple(text[i] - 1, text[j] - 1, window_weights[j - i - 1]);
                     fcm_tri.push_back(mat_triplet);
                 }
             }else{
                 if (text[i] <= text[j]){
-                    std::tuple<unsigned int, unsigned int, double> mat_triplet = std::make_tuple(text[i], text[j], window_weights[j-i-1]);
+                    Triplet mat_triplet = std::make_tuple(text[i] - 1, text[j] - 1, window_weights[j - i - 1]);
                     fcm_tri.push_back(mat_triplet);
                     
                     if (!tri & (text[i] != text[j]) ) { // add symmetric elements
-                        std::tuple<unsigned int, unsigned int, double> mat_triplet = std::make_tuple(text[j], text[i], window_weights[j-i-1]);
+                        Triplet mat_triplet = std::make_tuple(text[j] - 1, text[i] - 1, window_weights[j - i - 1]);
                         fcm_tri.push_back(mat_triplet);
                     }
                 }else{
                     // because it is not ordered, for locations (x,y)(x>y) counts for location (y,x)
-                    std::tuple<unsigned int, unsigned int, double> mat_triplet = std::make_tuple(text[j], text[i], window_weights[j-i-1]);
+                    Triplet mat_triplet = std::make_tuple(text[j], text[i], window_weights[j - i - 1]);
                     fcm_tri.push_back(mat_triplet);
                     if (!tri & (text[i] != text[j]) ) {
-                        std::tuple<unsigned int, unsigned int, double> mat_triplet = std::make_tuple(text[i], text[j], window_weights[j-i-1]);
+                        Triplet mat_triplet = std::make_tuple(text[i], text[j], window_weights[j - i - 1]);
                         fcm_tri.push_back(mat_triplet);
                     }
                 }
             } // end of if-ordered
-            
         } // end of j-loop
     }// end of i-loop
 }
 
 struct Fcmat_mt : public Worker{
     // input list to read from
-    Texts &texts;
-    std::vector<double> &window_weights;    
+    const Texts &texts;
+    const std::vector<double> &window_weights;    
     const unsigned int window;
     const bool tri;
     const bool ordered;
-
-    // output vector to write to, each tuple contains i, j, x for the sparse matrix fcm.
-    tupleVec fcm_tri;
+    Triplets &fcm_tri; // output vector to write to, each Triplet contains i, j, x for the sparse matrix fcm.
 
     //initialization
-    Fcmat_mt(Texts texts, std::vector<double> &window_weights, unsigned int window, 
-             const bool tri, const bool ordered, tupleVec& fcm_tri): 
-            texts(texts),  window_weights(window_weights),
-             window(window), tri(tri), ordered(ordered), fcm_tri(fcm_tri) {}
+    Fcmat_mt(const Texts &texts_, const std::vector<double> &window_weights_, const unsigned int window_, 
+             const bool tri_, const bool ordered_, Triplets &fcm_tri_): 
+             texts(texts_),  window_weights(window_weights_),
+             window(window_), tri(tri_), ordered(ordered_), fcm_tri(fcm_tri_) {}
 
     // function call operator that work for the specified range (begin/end)
     void operator()(std::size_t begin, std::size_t end) {
@@ -143,11 +143,11 @@ arma::sp_mat fcm_hash_cpp_mt(const Rcpp::List &texts_,
                     window_weights[i-1] = 1.0/i;
                 }
             }else{
-                window_weights = Rcpp::as<std::vector<double> >(weights);
+                window_weights = Rcpp::as< std::vector<double> >(weights);
             }
         }
         // declare the vector we will return
-        tupleVec fcm_tri;
+        Triplets fcm_tri;
         fcm_tri.reserve(nvec);
         
         // create the worker
@@ -311,26 +311,13 @@ arma::sp_mat fcm_hash_mt(Rcpp::List &texts,
                          const NumericVector &weights,
                          const bool ordered,
                          const bool tri,
-                         const unsigned int nvec){        
-#if RCPP_PARALLEL_USE_TBB
-    return fcm_hash_cpp_mt(texts,
-                           n_types,
-                           count,
-                           window,
-                           weights,
-                           ordered,
-                           tri,
-                           nvec);
-#else
-    return fcm_hash_cpp(texts,
-                        n_types,
-                        count,
-                        window,
-                        weights,
-                        ordered,
-                        tri,
-                        nvec);
-#endif    
+                         const unsigned int nvec){
+    
+    #if RCPP_PARALLEL_USE_TBB
+    return fcm_hash_cpp_mt(texts, n_types, count, window, weights, ordered, tri, nvec);
+    #else
+    return fcm_hash_cpp(texts, n_types, count, window, weights, ordered, tri, nvec);
+    #endif    
 }
 
 /***R

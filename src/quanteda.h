@@ -21,7 +21,6 @@ namespace quanteda{
     typedef tbb::concurrent_vector<int> IntParams;
     typedef tbb::concurrent_vector<long> LongParams;
     typedef tbb::concurrent_vector<double> DoubleParams;
-    typedef tbb::concurrent_vector<std::tuple<unsigned int, unsigned int, double> > tupleVec;
 #else
     typedef int IntParam;
     typedef long LongParam;
@@ -29,8 +28,6 @@ namespace quanteda{
     typedef std::vector<int> IntParams;
     typedef std::vector<long> LongParams;
     typedef std::vector<double> DoubleParams;
-    typedef std::vector<std::tuple<unsigned int, unsigned int, double> > tupleVec;
-    
 #endif    
     
     inline String join(CharacterVector &tokens, String &delim){
