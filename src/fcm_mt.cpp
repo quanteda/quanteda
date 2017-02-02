@@ -49,10 +49,10 @@ void fre_count(const Text &text,
                     }
                 }else{
                     // because it is not ordered, for locations (x,y)(x>y) counts for location (y,x)
-                    Triplet mat_triplet = std::make_tuple(text[j], text[i], window_weights[j - i - 1]);
+                    Triplet mat_triplet = std::make_tuple(text[j] - 1, text[i] - 1, window_weights[j - i - 1]);
                     fcm_tri.push_back(mat_triplet);
                     if (!tri & (text[i] != text[j]) ) {
-                        Triplet mat_triplet = std::make_tuple(text[i], text[j], window_weights[j - i - 1]);
+                        Triplet mat_triplet = std::make_tuple(text[i] - 1, text[j] - 1, window_weights[j - i - 1]);
                         fcm_tri.push_back(mat_triplet);
                     }
                 }
