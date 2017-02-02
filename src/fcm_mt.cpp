@@ -154,6 +154,7 @@ arma::sp_mat fcm_hash_cpp_mt(const Rcpp::List &texts_,
         Fcmat_mt fcmat_mt(texts, window_weights, window, tri, ordered, fcm_tri);
         
         // call it with parallelFor
+        Rcout << "Using parallelFor\n";
         parallelFor(0, texts.size(), fcmat_mt);
         
         //***********
@@ -324,7 +325,7 @@ arma::sp_mat fcm_hash_mt(Rcpp::List &texts,
 
 toks <- list(rep(1:10, 10), rep(5:15, 10))
 types <- unique(unlist(toks))
-fcm_hash_mt(toks, length(types), 'boolean', 3, c(1, 1, 1), TRUE, TRUE, 2)
+fcm_hash_mt(toks, length(types), 'weighted', 3, c(1, 0.5, 0.1), TRUE, TRUE, 2)
 
 
 
