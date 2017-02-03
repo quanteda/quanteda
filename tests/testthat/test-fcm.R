@@ -234,3 +234,11 @@ test_that("fcm print works as expected", {
     expect_output(print(testfcm[1:5, 1:5]),
                   "^Feature co-occurrence matrix of: 5 by 5 features.")
 })
+
+test_that("fcm works the same for different object types", {
+    txts <- c("a a a b b c", "a a c e", "a c e f g")
+    expect_identical(fcm(txts), fcm(corpus(txts)))
+    expect_identical(fcm(tokens(txts)), fcm(corpus(txts)))
+    expect_identical(fcm(txts), fcm(tokens(txts)))
+})
+
