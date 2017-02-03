@@ -6,7 +6,7 @@
 \usage{
 tokens_lookup(x, dictionary, levels = 1:5, valuetype = c("glob", "regex",
   "fixed"), concatenator = " ", case_insensitive = TRUE, capkeys = FALSE,
-  exclusive = TRUE, overlap = TRUE, multiword = TRUE, verbose = FALSE)
+  exclusive = TRUE, multiword = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{x}{tokens object to which dictionary or thesaurus will be supplied}
@@ -41,8 +41,6 @@ features unaffected}
 as single tokens}
 
 \item{verbose}{print status messages if \code{TRUE}}
-
-\item{distinctive}{if \code{TRUE}, detect all the overlaped entries}
 }
 \description{
 Convert tokens into equivalence classes defined by values of a dictionary 

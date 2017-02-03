@@ -20,7 +20,6 @@
 #' @param exclusive if \code{TRUE}, remove all features not in dictionary, 
 #'   otherwise, replace values in dictionary with keys while leaving other 
 #'   features unaffected
-#' @param distinctive if \code{TRUE}, detect all the overlaped entries
 #' @param multiword if \code{FALSE}, multi-word entries in dictionary are treated
 #'   as single tokens
 #' @param verbose print status messages if \code{TRUE}
@@ -60,9 +59,25 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           case_insensitive = TRUE,
                           capkeys = FALSE,
                           exclusive = TRUE,
-                          overlap = TRUE,
+#                          overlap = FALSE,
                           multiword = TRUE,
                           verbose = FALSE) {
+    UseMethod("tokens_lookup")    
+}
+
+#' @noRd
+#' @export
+tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
+                          valuetype = c("glob", "regex", "fixed"), 
+                          concatenator = ' ',
+                          case_insensitive = TRUE,
+                          capkeys = FALSE,
+                          exclusive = TRUE,
+#                          overlap = FALSE,
+                          multiword = TRUE,
+                          verbose = FALSE) {
+ 
+    overlap <- FALSE
     
     if (!is.tokens(x))
         stop("x must be a tokens object")
