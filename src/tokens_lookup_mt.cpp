@@ -99,7 +99,7 @@ struct lookup_mt : public Worker{
  * @param texts_ tokens ojbect
  * @param words_ list of features to find
  * @param ids_ IDs of features
- * 
+ * @param overlap if count overlapped words if true
  */
 
 
