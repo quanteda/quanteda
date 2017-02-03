@@ -1,8 +1,9 @@
 #include <RcppArmadillo.h>
 #include <RcppParallel.h>
-#include "tbb/tbb.h"
+//#include "tbb/tbb.h"
 #include "quanteda.h"
-#include "tbb/concurrent_vector.h"
+//#include <boost/functional/hash.hpp>
+//#include "tbb/concurrent_vector.h"
 
 // [[Rcpp::plugins(cpp11)]]
 using namespace RcppParallel;
@@ -13,11 +14,35 @@ using namespace quanteda;
 #if RCPP_PARALLEL_USE_TBB
     typedef std::tuple<unsigned int, unsigned int, double> Triplet;
     typedef tbb::concurrent_vector<Triplet> Triplets;
+    typedef tbb::concurrent_unordered_multimap<std::pair<unsigned int, unsigned int>, unsigned int, std::hash<pair<unsigned int, unsigned int>>> docMaps;
 #else
     typedef std::tuple<unsigned int, unsigned int, double> Triplet;
     typedef std::vector<Triplet> Triplets;
+    typedef std::unordered_multimap<std::pair<unsigned int, unsigned int>, unsigned int, std::hash<pair<unsigned int, unsigned int>>> docMaps;
+    
 #endif   
 
+// hash function for pair<>
+template <class T>
+inline void hash_combine(std::size_t & seed, const T & v)
+{
+    std::hash<T> hasher;
+    seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+}
+
+namespace std
+{
+    template<typename S, typename T> struct hash<pair<S, T>>
+    {
+        inline size_t operator()(const pair<S, T> & v) const
+        {
+            size_t seed = 0;
+            ::hash_combine(seed, v.first);
+            ::hash_combine(seed, v.second);
+            return seed;
+        }
+    };
+}
 //count the co-occurance when count is set to "frequency" or "weighted"
 void fre_count(const Text &text,
                const std::vector<double> &window_weights,    
@@ -43,7 +68,7 @@ void fre_count(const Text &text,
                     Triplet mat_triplet = std::make_tuple(text[i] - 1, text[j] - 1, window_weights[j - i - 1]);
                     fcm_tri.push_back(mat_triplet);
                     
-                    if (!tri & (text[i] != text[j]) ) { // add symmetric elements
+                    if (!tri && (text[i] != text[j]) ) { // add symmetric elements
                         Triplet mat_triplet = std::make_tuple(text[j] - 1, text[i] - 1, window_weights[j - i - 1]);
                         fcm_tri.push_back(mat_triplet);
                     }
@@ -51,7 +76,7 @@ void fre_count(const Text &text,
                     // because it is not ordered, for locations (x,y)(x>y) counts for location (y,x)
                     Triplet mat_triplet = std::make_tuple(text[j] - 1, text[i] - 1, window_weights[j - i - 1]);
                     fcm_tri.push_back(mat_triplet);
-                    if (!tri & (text[i] != text[j]) ) {
+                    if (!tri && (text[i] != text[j]) ) {
                         Triplet mat_triplet = std::make_tuple(text[i] - 1, text[j] - 1, window_weights[j - i - 1]);
                         fcm_tri.push_back(mat_triplet);
                     }
@@ -84,6 +109,90 @@ struct Fcmat_mt : public Worker{
     }
 };
 
+// find out if a pair of token exists in a document
+bool ifexist(const std::pair<unsigned int, unsigned int> &index_pair,
+             docMaps &fcm_tri,
+             const unsigned int &doc_index){
+    auto range = fcm_tri.equal_range(index_pair);
+    bool index_exist = false;
+    for (auto it = range.first; it != range.second; ++it){
+        if (it->second == doc_index) index_exist = true;
+    }
+    return index_exist;
+}
+
+//count the co-occurance when count = "boolean"
+void boolean_count(const Text &text,
+                   const unsigned int &window,
+                   const bool &tri,
+                   const bool &ordered,
+                   docMaps &fcm_tri,
+                   const unsigned int &doc_index){
+    
+    const unsigned int len = text.size();
+    
+    for (unsigned int i = 0; i < text.size(); i++) {
+        unsigned int j_ini = i + 1;
+        unsigned int j_lim = std::min(i + window + 1, len);
+        
+        for(unsigned int j = j_ini; j < j_lim; j++) {
+            std::pair<unsigned int, unsigned int> ij_pair = std::make_pair(text[i] - 1, text[j] - 1);
+            bool ij_exist = ifexist(ij_pair, fcm_tri, doc_index);
+            
+            std::pair<unsigned int, unsigned int> ji_pair = std::make_pair(text[j] - 1, text[i] - 1);
+            bool ji_exist = ifexist(ji_pair, fcm_tri, doc_index);
+            if (ordered && !ij_exist){
+                if (!tri || ((text[i] <= text[j])&& tri) ){// only include upper triangular element (diagonal inclusive) if tri = TRUE
+                    std::pair<unsigned int, unsigned int> index_pair = std::make_pair(text[i] - 1, text[j] - 1);
+                    fcm_tri.insert(std::make_pair(index_pair, doc_index));
+                }
+            }else{
+                if (text[i] <= text[j]){
+                    if (!ij_exist){
+                        std::pair<unsigned int, unsigned int> index_pair = std::make_pair(text[i] - 1, text[j] - 1);
+                        fcm_tri.insert(std::make_pair(index_pair, doc_index));
+                    }
+                    
+                    if (!ji_exist && !tri && (text[i] != text[j]) ) { // add symmetric elements
+                        std::pair<unsigned int, unsigned int> index_pair = std::make_pair(text[j] - 1, text[i] - 1);
+                        fcm_tri.insert(std::make_pair(index_pair, doc_index));
+                    }
+                }else{
+                    // because it is not ordered, for locations (x,y)(x>y) counts for location (y,x)
+                    if (!ji_exist){
+                        std::pair<unsigned int, unsigned int> index_pair = std::make_pair(text[j] - 1, text[i] - 1);
+                        fcm_tri.insert(std::make_pair(index_pair, doc_index));
+                    }
+                    if (!ij_exist && !tri && (text[i] != text[j]) ) {
+                        std::pair<unsigned int, unsigned int> index_pair = std::make_pair(text[i] - 1, text[j] - 1);
+                        fcm_tri.insert(std::make_pair(index_pair, doc_index));
+                    }
+                }
+            } // end of if-ordered
+        } // end of j-loop
+    }// end of i-loop    
+}
+
+struct Boolmat_mt : public Worker{
+    // input list to read from
+    const Texts &texts;
+    const unsigned int window;
+    const bool tri;
+    const bool ordered;
+    docMaps &fcm_tri; // output vector to write to, each Triplet contains i, j, x for the sparse matrix fcm.
+    
+    //initialization
+    Boolmat_mt(const Texts &texts_, const unsigned int window_, 
+             const bool tri_, const bool ordered_, docMaps &fcm_tri_): 
+        texts(texts_), window(window_), tri(tri_), ordered(ordered_), fcm_tri(fcm_tri_) {}
+    
+    // function call operator that work for the specified range (begin/end)
+    void operator()(std::size_t begin, std::size_t end) {
+        for (std::size_t h = begin; h < end; h++) {
+            boolean_count(texts[h], window, tri, ordered, fcm_tri, h);
+        }
+    }
+};
 //Implement by calling TBB APIs
 arma::sp_mat fcm_hash_cpp_mt(const Rcpp::List &texts_,
                              const int n_types,
@@ -96,40 +205,38 @@ arma::sp_mat fcm_hash_cpp_mt(const Rcpp::List &texts_,
     
     // triplets are constructed according to tri & ordered settings to be efficient
     if (count == "boolean"){
-        // Currently, support for arma::sp_mat is preliminary, 
-        // for exmaple Mat.find(Mat > 1) is not supported, so "booleanize" in matrix level is not applicable
-        arma::sp_mat bFcm(n_types, n_types);
-        for (int h = 0; h < texts_.size(); h++) {
-            NumericVector text = texts_[h];
-            unsigned int len = text.size();
-            arma::sp_mat aFcm(n_types,n_types);
-            for (unsigned int i = 0; i < text.size(); i++) {
-                unsigned int id_i = text[i] -1 ;
-                unsigned int j_int = i+1;
-                unsigned int j_lim = std::min(i + window + 1, len);
-                for(unsigned int j = j_int; j < j_lim; j++) {
-                    unsigned int id_j = text[j]-1;
-                    if (ordered){
-                        // only include upper triangular element (diagonal inclusive) if tri = TRUE
-                        if (tri){
-                            if (id_i <= id_j) aFcm(id_i,id_j) = 1;
-                        }else{
-                            aFcm(id_i,id_j) = 1;
-                        }
-                    }else{
-                        if (id_i <= id_j){
-                            aFcm(id_i,id_j) = 1;
-                            if (!tri) aFcm(id_j,id_i) = 1;
-                        }else{
-                            aFcm(id_j,id_i) = 1;
-                            if (!tri) aFcm(id_i,id_j) = 1;
-                        }
-                    }
-                }
-            }
-            bFcm += aFcm;
+        Texts texts = Rcpp::as<Texts>(texts_);
+        
+        // declare the map returned by parallelized procedure
+        docMaps fcm_tri;
+
+        // create the worker
+        Boolmat_mt boolmat_mt(texts, window, tri, ordered, fcm_tri);
+        
+        // call it with parallelFor
+        // Rcout << "Using parallelFor\n";
+        parallelFor(0, texts.size(), boolmat_mt);
+        // for (std::size_t h = 0; h < texts.size(); h++) {
+        //     boolean_count(texts[h], window, tri, ordered, fcm_tri, h);
+        // }
+        
+        // Convert to Rcpp objects
+        std::size_t mat_size = fcm_tri.size();
+        arma::umat index_mat(2, mat_size, arma::fill::zeros);
+        arma::vec w_values(mat_size, arma::fill::zeros);
+        unsigned int k = 0;
+        std::pair<unsigned int, unsigned int> index_pair;
+        for (auto it = fcm_tri.begin(); it != fcm_tri.end(); ++it ) {
+            index_pair = it->first;
+            index_mat(0,k) = index_pair.first;
+            index_mat(1,k) = index_pair.second;
+            w_values(k) = 1;
+            k++;
         }
-        return bFcm;
+        
+        // constract the sparse matrix
+        arma::sp_mat a_fcm(TRUE, index_mat, w_values, n_types, n_types);
+        return a_fcm;
     }else{
         Texts texts = Rcpp::as<Texts>(texts_);
         // define weights 
@@ -146,7 +253,7 @@ arma::sp_mat fcm_hash_cpp_mt(const Rcpp::List &texts_,
                 window_weights = Rcpp::as< std::vector<double> >(weights);
             }
         }
-        // declare the vector we will return
+        // declare the vector returned by parallelized procedure
         Triplets fcm_tri;
         fcm_tri.reserve(nvec);
         
@@ -154,7 +261,7 @@ arma::sp_mat fcm_hash_cpp_mt(const Rcpp::List &texts_,
         Fcmat_mt fcmat_mt(texts, window_weights, window, tri, ordered, fcm_tri);
         
         // call it with parallelFor
-        Rcout << "Using parallelFor\n";
+        // Rcout << "Using parallelFor\n";
         parallelFor(0, texts.size(), fcmat_mt);
         
         //***********
@@ -325,8 +432,8 @@ arma::sp_mat fcm_hash_mt(Rcpp::List &texts,
 
 toks <- list(rep(1:10, 10), rep(5:15, 10))
 types <- unique(unlist(toks))
-fcm_hash_mt(toks, length(types), 'weighted', 3, c(1, 0.5, 0.1), TRUE, TRUE, 2)
+fcm_hash_mt(toks, length(types), 'weighted', 2, c(1, 0.5, 0.1), TRUE, TRUE, 840)
 
-
+fcm_hash_mt(toks, length(types), 'boolean', 2, 1, TRUE, TRUE, 840)
 
 */
