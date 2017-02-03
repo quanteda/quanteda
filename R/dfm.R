@@ -292,7 +292,7 @@ dfm.dfm <- function(x,
     }
     
     if (!is.null(dictionary) | !is.null(thesaurus)) {
-        if (!is.null(thesaurus)) dictionary <- thesaurus
+        if (!is.null(thesaurus)) dictionary <- dictionary(thesaurus)
         if (verbose) catm("   ... ")
         x <- dfm_lookup(x, dictionary,
                         exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),

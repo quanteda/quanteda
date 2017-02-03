@@ -72,7 +72,7 @@ double lambda(const std::vector<long> &counts){
 void count(Text text, 
            const SetUnigrams &set_words, 
            MapNgrams &counts_seq,
-           unsigned int &len_max,
+           const unsigned int &len_max,
            const bool &nested){
     
     if (text.size() == 0) return; // do nothing with empty text
@@ -113,11 +113,12 @@ struct count_mt : public Worker{
     Texts texts;
     const SetUnigrams &set_words;
     MapNgrams &counts_seq;
-    unsigned int &len_max;
+    const unsigned int &len_max;
     const bool &nested;
     
         
-    count_mt(Texts texts_, SetUnigrams &set_words_, MapNgrams &counts_seq_, unsigned int &len_max_, bool &nested_):
+    count_mt(Texts texts_, SetUnigrams &set_words_, MapNgrams &counts_seq_, 
+             const unsigned int &len_max_, const bool &nested_):
              texts(texts_), set_words(set_words_), counts_seq(counts_seq_), len_max(len_max_), nested(nested_) {}
     
     void operator()(std::size_t begin, std::size_t end){
@@ -170,8 +171,8 @@ struct estimate_mt : public Worker{
     const bool &ordered;
     
     // Constructor
-    estimate_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, const unsigned int &count_min_, 
-                bool &ordered_):
+    estimate_mt(VecNgrams &seqs_, IntParams &cs_, DoubleParams &ss_, DoubleParams &ls_, 
+                const unsigned int &count_min_, const bool &ordered_):
                 seqs(seqs_), cs(cs_), ss(ss_), ls(ls_), count_min(count_min_), 
                 ordered(ordered_) {}
 

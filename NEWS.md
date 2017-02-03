@@ -9,6 +9,7 @@
 ### Bug fixes
 
 * Fixed a bug in `convert(x, to = "lsa")` that transposed row and column names (#526)
+* Added missing fcm method for corpus objects (#538)
 
 
 ## Changes since v0.9.9-3
