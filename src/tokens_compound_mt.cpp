@@ -17,7 +17,7 @@ Text join_comp(Text tokens,
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
-    std::vector< bool > flags_match(tokens.size(), false);
+    std::vector< bool > flags_link(tokens.size() - 1, false); // flag correspond to the bourndaries
     std::size_t count_match = 0;
     
     for (std::size_t span : spans) { // substitution starts from the longest sequences
@@ -27,7 +27,7 @@ Text join_comp(Text tokens,
             auto it = map_comps.find(ngram);
             if (it != map_comps.end()) {
                 //Rcout << it->second << "\n";
-                std::fill(flags_match.begin() + i, flags_match.begin() + i + span, true); // mark tokens matched
+                std::fill(flags_link.begin() + i, flags_link.begin() + i + span - 1, true); // mark tokens linked
                 count_match++;
             }
         }
@@ -42,30 +42,26 @@ Text join_comp(Text tokens,
     tokens_seq.reserve(tokens.size());
     
     // Find sequence of matches
-    flags_match.push_back(false); // add padding to include last words
-    std::size_t len = flags_match.size();
-    for (std::size_t i = 0; i < len - 1; i++) {
-        if (flags_match[i]) {
-            for (std::size_t j = i; j < len; j++) {
-                if (flags_match[j]) {
-                    tokens_seq.push_back(tokens[j]);
-                } else {
-                    if (tokens_seq.size() > 1) {
-                        id_mutex.lock();
-                        unsigned int &id = map_comps[tokens_seq];
-                        if (!id) id = ++id_comp; // assign new ID if not exisits
-                        //Rcout << "Compund " << id << ": ";
-                        //dev::print_ngram(tokens_seq);
-                        tokens_flat.push_back(id);
-                        id_mutex.unlock();
-                    }
-                    tokens_seq.clear();
-                    i = j - 1;
-                    break;
-                }
-            }
+    flags_link.push_back(false); // add boundary to include last words
+    std::size_t len = flags_link.size();
+    for (std::size_t i = 0; i < len; i++) {
+        //Rcout << "Flag "<< i << ":" << flags_link[i] << "\n";
+        if (flags_link[i]) {
+                tokens_seq.push_back(tokens[i]);
         } else {
-            tokens_flat.push_back(tokens[i]);
+            if (tokens_seq.size() > 0) {
+                tokens_seq.push_back(tokens[i]);
+                id_mutex.lock();
+                unsigned int &id = map_comps[tokens_seq];
+                if (!id) id = ++id_comp; // assign new ID if not exisits
+                //Rcout << "Compund "<< id << ": ";
+                //dev::print_ngram(tokens_seq);
+                tokens_flat.push_back(id);
+                id_mutex.unlock();
+                tokens_seq.clear();
+            } else {
+                tokens_flat.push_back(tokens[i]);
+            }
         }
     }
     
@@ -240,9 +236,10 @@ List qatd_cpp_tokens_compound(const List &texts_,
 /***R
 
 #toks <- list(rep(1:10, 1), rep(5:15, 1))
-toks <- list(1:4)
-dict <- list(c(1, 2), c(2, 3), c(3, 4))
-#dict <- list(c(1, 2), c(1, 2, 3))
+toks <- list(1:5)
+#dict <- list(c(1, 2), c(3, 4))
+dict <- list(c(1, 2), c(1, 2, 3))
+#dict <- list(c(1, 2), c(2, 3), c(4, 5))
 types <- letters[1:length(unique(unlist(toks)))]
 #qatd_cpp_tokens_compound(toks, dict, types, "_", FALSE)
 qatd_cpp_tokens_compound(toks, dict, types, "_", TRUE)
