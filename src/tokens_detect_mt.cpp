@@ -38,7 +38,7 @@ struct detect_mt : public Worker{
     const SetNgrams &set_words;
     
     // Constructor
-    detect_mt(Texts &input_, Texts &output_, std::vector<std::size_t> &spans_, SetNgrams &set_words_):
+    detect_mt(Texts &input_, Texts &output_, const std::vector<std::size_t> &spans_, const SetNgrams &set_words_):
               input(input_), output(output_), spans(spans_), set_words(set_words_){}
     
     // parallelFor calles this function with size_t

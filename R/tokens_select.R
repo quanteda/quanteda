@@ -111,6 +111,9 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
                                  valuetype = c("glob", "regex", "fixed"),
                                  case_insensitive = TRUE, padding = FALSE, ...) {
     
+    if (!is.tokens(x))
+        stop("x must be a tokens object")
+    
     features <- vector2list(features)
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)

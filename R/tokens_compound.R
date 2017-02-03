@@ -61,10 +61,18 @@ tokens_compound.tokens <- function(x, sequences,
                    concatenator = "_", valuetype = c("glob", "regex", "fixed"),
                    case_insensitive = TRUE) {
     
-    valuetype <- match.arg(valuetype)
+    if (!is.tokens(x))
+        stop("x must be a tokens object")
+    
     sequences <- sequence2list(sequences)
     seqs <- as.list(sequences)
     seqs <- seqs[lengths(seqs) > 1] # drop single words
+    
+    # Do nothing if no sequence is given
+    if (!length(seqs))
+        return(x)
+    
+    valuetype <- match.arg(valuetype)
     valuetype <- match.arg(valuetype)
     
     names_org <- names(x)

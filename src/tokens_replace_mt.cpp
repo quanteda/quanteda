@@ -43,7 +43,7 @@ struct replace_mt : public Worker{
     const MapNgrams &map_words;
     
     // Constructor
-    replace_mt(Texts &input_, Texts &output_, const std::vector<std::size_t> &spans_, MapNgrams &map_words_):
+    replace_mt(Texts &input_, Texts &output_, const std::vector<std::size_t> &spans_, const MapNgrams &map_words_):
               input(input_), output(output_), spans(spans_), map_words(map_words_) {}
     
     // parallelFor calles this function with std::size_t

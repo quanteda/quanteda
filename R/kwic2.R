@@ -72,6 +72,9 @@ kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
 #' @export 
 kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
     
+    if (!is.tokens(x))
+        stop("x must be a tokens object")
+    
     valuetype <- match.arg(valuetype)
     keywords <- vector2list(keywords)
     
