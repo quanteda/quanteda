@@ -1,6 +1,5 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<!-- SVG images need to be linked through cdn.rawgit.com for the correct content type header -->
-### [![quanteda: quantitative analysis of textual data](https://cdn.rawgit.com/kbenoit/quanteda/issue-502/images/quanteda_logo.svg)](https://kbenoit.github.io/quanteda/)
+### [![quanteda: quantitative analysis of textual data](https://rawgit.com/kbenoit/quanteda/master/images/quanteda_logo.svg)](https://kbenoit.github.io/quanteda/)
 
 [![CRAN Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda/branch/master) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
 
@@ -113,7 +112,7 @@ Demonstration
 
 ``` r
 library(quanteda)
-## quanteda version 0.9.9.16
+## quanteda version 0.9.9.18
 ## 
 ## Attaching package: 'quanteda'
 ## The following object is masked from 'package:utils':
@@ -144,8 +143,8 @@ summary(uk2010immigCorpus)
 ##           SNP    90    136         4          SNP
 ##          UKIP   346    739        27         UKIP
 ## 
-## Source:  /home/kohei/packages/quanteda/* on x86_64 by kohei
-## Created: Thu Jan 26 06:17:53 2017
+## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
+## Created: Sat Feb  4 16:32:01 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
