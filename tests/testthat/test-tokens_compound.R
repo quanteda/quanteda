@@ -64,9 +64,16 @@ test_that("tokens_compound join a sequences of sequences", {
              c("A_B", "B_C_D", "E_F", "F_G"))
     )
     
+    txts <- 'we like high quality sound'
+    seqs <- c('high quality', 'quality sound')
+    expect_equivalent(as.list(tokens_compound(tokens(txts), seqs, join = TRUE)),
+                      list(c("we", "like", "high_quality_sound")))
+    expect_equivalent(as.list(tokens_compound(tokenize(txts), seqs, join = FALSE)),
+                      list(c("we", "like", "high_quality", "quality_sound")))
+    
 })
 
-test_that("tokens_compound always compounds the longer phrase first (#240)", {
+test_that("tokens_compound is not affected by the order of compounds", {
     expect_equal(
         as.list(tokens_compound(tokens("The people of the United States of America."), 
                                 c("United States of America", "United States"))),
@@ -90,26 +97,4 @@ test_that("tokens_compound works with padded tokens", {
     toks <- tokens_compound(toks, "c d")
     expect_equal(sort(attr(toks, "types")),
                  sort(c("a", "c_d", "f", "g")))
-})
-
-test_that("tokens_compound detect overlapped sequences", {
-    
-    txts <- 'we like high quality sound'
-    seqs <- c('high quality', 'quality sound', "high quality sound")
-    expect_equivalent(as.list(tokens_compound(tokens(txts), seqs, overlap = TRUE)),
-                      list(c("we", "like", "high_quality_sound", "high_quality", "quality_sound")))
-    expect_equivalent(as.list(tokens_compound(tokenize(txts), seqs, overlap = TRUE)),
-                      list(c("we", "like", "high_quality_sound", "high_quality", "quality_sound")))
-    
-})
-
-
-test_that("tokens_compound detect overlapped sequences", {
-    
-    toks <- tokenize("A B C D")
-    expect_equivalent(as.list(tokens_compound(toks, c("A B", "B C"), overlap = TRUE)),
-                      list(c("we", "like", "high_quality_sound", "high_quality", "quality_sound")))
-    expect_equivalent(as.list(tokens_compound(tokenize(txts), seqs, overlap = TRUE)),
-                      list(c("we", "like", "high_quality_sound", "high_quality", "quality_sound")))
-    
 })

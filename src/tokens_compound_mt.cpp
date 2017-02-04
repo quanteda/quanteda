@@ -17,7 +17,7 @@ Text join_comp(Text tokens,
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
-    std::vector< bool > flags_link(tokens.size() - 1, false); // flag correspond to the bourndaries
+    std::vector< bool > flags_link(tokens.size(), false); // flag correspond to the bourndaries
     std::size_t count_match = 0;
     
     for (std::size_t span : spans) { // substitution starts from the longest sequences
@@ -42,7 +42,6 @@ Text join_comp(Text tokens,
     tokens_seq.reserve(tokens.size());
     
     // Find sequence of matches
-    flags_link.push_back(false); // add boundary to include last words
     std::size_t len = flags_link.size();
     for (std::size_t i = 0; i < len; i++) {
         //Rcout << "Flag "<< i << ":" << flags_link[i] << "\n";
