@@ -79,7 +79,7 @@ struct lookup_mt : public Worker{
     // Constructor
     lookup_mt(Texts &input_, Texts &output_, const std::vector<std::size_t> &spans_, const unsigned int &id_max_,
               const bool &overlap_, const MultiMapNgrams &map_keys_):
-              input(input_), output(output_), spans(spans_), id_max(id_max_), overlap(overlap_), map_keys(map_keys_){}
+        input(input_), output(output_), spans(spans_), id_max(id_max_), overlap(overlap_), map_keys(map_keys_){}
     
     // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
@@ -91,16 +91,16 @@ struct lookup_mt : public Worker{
 };
 
 /* 
- * This funciton finds features in tokens object. This is similar to tokens_replace, 
- * but all overlapping or nested features are detected and recorded by IDs.
- * The number of threads is set by RcppParallel::setThreadOptions()
- * @used tokens_lookup()
- * @creator Kohei Watanabe
- * @param texts_ tokens ojbect
- * @param words_ list of features to find
- * @param ids_ IDs of features
- * @param overlap if count overlapped words if true
- */
+* This funciton finds features in tokens object. This is similar to tokens_replace, 
+* but all overlapping or nested features are detected and recorded by IDs.
+* The number of threads is set by RcppParallel::setThreadOptions()
+* @used tokens_lookup()
+* @creator Kohei Watanabe
+* @param texts_ tokens ojbect
+* @param words_ list of features to find
+* @param ids_ IDs of features
+* @param overlap if count overlapped words if true
+*/
 
 
 // [[Rcpp::export]]
@@ -127,14 +127,14 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     // dev::Timer timer;
     Texts output(input.size());
     // dev::start_timer("Dictionary lookup", timer);
-    #if RCPP_PARALLEL_USE_TBB
+#if RCPP_PARALLEL_USE_TBB
     lookup_mt lookup_mt(input, output, spans, id_max, overlap, map_keys);
     parallelFor(0, input.size(), lookup_mt);
-    #else
+#else
     for (std::size_t h = 0; h < input.size(); h++) {
         output[h] = lookup(input[h], spans, id_max, overlap, map_keys);
     }
-    #endif
+#endif
     // dev::stop_timer("Dictionary lookup", timer);
     ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
     return texts_list;

@@ -45,12 +45,20 @@ qatd_cpp_sequences <- function(texts_, words_, count_min, len_max, nested, order
     .Call('quanteda_qatd_cpp_sequences', PACKAGE = 'quanteda', texts_, words_, count_min, len_max, nested, ordered)
 }
 
+qatd_cpp_tokens_compound <- function(texts_, comps_, types_, delim_, join) {
+    .Call('quanteda_qatd_cpp_tokens_compound', PACKAGE = 'quanteda', texts_, comps_, types_, delim_, join)
+}
+
 qatd_cpp_tokens_detect <- function(texts_, words_) {
     .Call('quanteda_qatd_cpp_tokens_detect', PACKAGE = 'quanteda', texts_, words_)
 }
 
 qatd_cpp_tokens_lookup <- function(texts_, keys_, ids_, overlap) {
     .Call('quanteda_qatd_cpp_tokens_lookup', PACKAGE = 'quanteda', texts_, keys_, ids_, overlap)
+}
+
+qatd_cpp_tokens_match <- function(texts_, words_, ids_, overlap) {
+    .Call('quanteda_qatd_cpp_tokens_match', PACKAGE = 'quanteda', texts_, words_, ids_, overlap)
 }
 
 qatd_cpp_tokens_ngrams <- function(texts_, types_, delim_, ns_, skips_) {
@@ -61,8 +69,8 @@ qatd_cpp_tokens_replace <- function(texts_, words_, ids_) {
     .Call('quanteda_qatd_cpp_tokens_replace', PACKAGE = 'quanteda', texts_, words_, ids_)
 }
 
-qatd_cpp_tokens_select <- function(texts_, words_, mode_, padding_) {
-    .Call('quanteda_qatd_cpp_tokens_select', PACKAGE = 'quanteda', texts_, words_, mode_, padding_)
+qatd_cpp_tokens_select <- function(texts_, words_, mode, padding) {
+    .Call('quanteda_qatd_cpp_tokens_select', PACKAGE = 'quanteda', texts_, words_, mode, padding)
 }
 
 qatd_cpp_remove_chr_list <- function(list_, elem_remove) {

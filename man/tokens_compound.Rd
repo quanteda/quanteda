@@ -5,7 +5,7 @@
 \title{convert token sequences into compound tokens}
 \usage{
 tokens_compound(x, sequences, concatenator = "_", valuetype = c("glob",
-  "regex", "fixed"), case_insensitive = TRUE)
+  "regex", "fixed"), case_insensitive = TRUE, join = FALSE)
 }
 \arguments{
 \item{x}{an input \link{tokens} object}
@@ -27,6 +27,8 @@ in the Unicode punctuation class [P] will be removed.}
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching}
+
+\item{join}{logical; if \code{TRUE}, join overlapped compounds}
 }
 \value{
 a \link{tokens} object in which the token sequences matching the patterns 

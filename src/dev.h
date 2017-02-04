@@ -41,6 +41,13 @@ namespace dev{
         Rcout << "\n";
     }
     
+    inline void print_ngram(std::vector<bool> vec){
+        for(auto elm : vec){
+            Rcout << (int)elm << "";
+        }
+        Rcout << "\n";
+    }
+    
     inline void print_ngram(std::vector<std::string> vec){
         for(auto elm : vec){
             Rcout << elm << " ";

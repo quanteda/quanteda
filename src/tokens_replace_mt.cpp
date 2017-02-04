@@ -23,8 +23,8 @@ Text replace(Text tokens,
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto it = map_words.find(ngram);
             if (it != map_words.end()) {
-            //unsigned int id = map_words[ngram];
-            //if (id) {
+                //unsigned int id = map_words[ngram];
+                //if (id) {
                 match = true;
                 std::fill(tokens.begin() + i + 1, tokens.begin() + i + span, filler); // fill subsequent tokens
                 tokens[i] = it->second;
@@ -56,15 +56,15 @@ struct replace_mt : public Worker{
 };
 
 /* 
- * This funciton substitutes features in tokens object with new IDs. 
- * The number of threads is set by RcppParallel::setThreadOptions()
- * @used tokens_compound()
- * @creator Kohei Watanabe
- * @param texts_ tokens ojbect
- * @param words_ list of features to substitute
- * @param ids_ IDs to be placed after substitution
- * 
- */
+* This funciton substitutes features in tokens object with new IDs. 
+* The number of threads is set by RcppParallel::setThreadOptions()
+* @used tokens_compound()
+* @creator Kohei Watanabe
+* @param texts_ tokens ojbect
+* @param words_ list of features to substitute
+* @param ids_ IDs to be placed after substitution
+* 
+*/
 
 // [[Rcpp::export]]
 List qatd_cpp_tokens_replace(const List &texts_, 
@@ -74,7 +74,7 @@ List qatd_cpp_tokens_replace(const List &texts_,
     Texts input = Rcpp::as<Texts>(texts_);
     const List words = words_;
     const IntegerVector ids = ids_;
-
+    
     MapNgrams map_words;
     std::vector<std::size_t> spans(words.size());
     for (unsigned int g = 0; g < words.size(); g++) {
@@ -90,14 +90,14 @@ List qatd_cpp_tokens_replace(const List &texts_,
     // dev::Timer timer;
     Texts output(input.size());
     // dev::start_timer("Token replace", timer);
-    #if RCPP_PARALLEL_USE_TBB
+#if RCPP_PARALLEL_USE_TBB
     replace_mt replace_mt(input, output, spans, map_words);
     parallelFor(0, input.size(), replace_mt);
-    #else
+#else
     for (std::size_t h = 0; h < input.size(); h++) {
         output[h] = replace(input[h], spans, map_words);
     }
-    #endif
+#endif
     // dev::stop_timer("Token replace", timer);
     ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
     return texts_list;

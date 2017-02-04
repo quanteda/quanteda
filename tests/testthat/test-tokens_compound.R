@@ -46,27 +46,34 @@ test_that("tokens_compound join tokens correctly", {
     )
 })
 
-test_that("tokens_compound join tokens from  longer sequences", {
+test_that("tokens_compound join a sequences of sequences", {
     
     txt <- c("a b c d e f g", "A B C D E F G") 
     toks <- tokens(txt)
-    seqs <- tokens(c("a b", "a b c d", "E F G", "F G"), 
+    seqs <- tokens(c("a b", "b c d", "E F", "F G"), 
                    hash = FALSE, what = "fastestword")
     expect_equivalent(
-        as.list(tokens_compound(toks, seqs, valuetype = "glob", case_insensitive = TRUE)),
+        as.list(tokens_compound(toks, seqs, valuetype = "glob", case_insensitive = TRUE, join = TRUE)),
         list(c("a_b_c_d", "e_f_g"),
              c("A_B_C_D", "E_F_G"))
     )
     
     expect_equivalent(
-        as.list(tokens_compound(toks, seqs, valuetype = "glob", case_insensitive = FALSE)),
-        list(c("a_b_c_d", "e", "f", "g"),
-             c("A", "B", "C", "D", "E_F_G"))
+        as.list(tokens_compound(toks, seqs, valuetype = "glob", case_insensitive = TRUE, join = FALSE)),
+        list(c("a_b", "b_c_d", "e_f", "f_g"),
+             c("A_B", "B_C_D", "E_F", "F_G"))
     )
+    
+    txts <- 'we like high quality sound'
+    seqs <- c('high quality', 'quality sound')
+    expect_equivalent(as.list(tokens_compound(tokens(txts), seqs, join = TRUE)),
+                      list(c("we", "like", "high_quality_sound")))
+    expect_equivalent(as.list(tokens_compound(tokenize(txts), seqs, join = FALSE)),
+                      list(c("we", "like", "high_quality", "quality_sound")))
     
 })
 
-test_that("tokens_compound always compounds the longer phrase first (#240)", {
+test_that("tokens_compound is not affected by the order of compounds", {
     expect_equal(
         as.list(tokens_compound(tokens("The people of the United States of America."), 
                                 c("United States of America", "United States"))),
@@ -91,5 +98,3 @@ test_that("tokens_compound works with padded tokens", {
     expect_equal(sort(attr(toks, "types")),
                  sort(c("a", "c_d", "f", "g")))
 })
-
-
