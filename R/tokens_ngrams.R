@@ -121,6 +121,10 @@ char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+    
+    if (!is.tokens(x))
+        stop("x must be a tokens object")
+    
     if (any(n <= 0)) 
         stop("ngram length has to be greater than zero")
     # record original attributes

@@ -272,3 +272,36 @@ test_that("#500 tokens_lookup substitute concatenator", {
                       d2 = c("Countries")))
 })
 
+
+test_that("#502 tokens_lookup count overlapped words", {
+    
+    txt <- c(d1 = "The United States of America is bordered by the Atlantic Ocean and the Pacific Ocean.",
+             d2 = "The Supreme Court of the United States is seldom in a united state.")
+    toks <- tokens(txt)
+    dict <- dictionary(list(Countries = c("United States", "United States of America"),
+                            oceans = c("Ocean")))
+    expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "glob")),
+                 list(d1 = c("Countries", "oceans", "oceans"),
+                      d2 = c("Countries")))
+    expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "fixed")),
+                 list(d1 = c("Countries", "oceans", "oceans"),
+                      d2 = c("Countries")))
+
+    dict <- dictionary(list(Countries = c("United States", "Unit Stat of America"),
+                            oceans = c("Ocean.*")))
+    expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "regex")),
+                 list(d1 = c("Countries", "oceans", "oceans"),
+                      d2 = c("Countries")))
+    
+    expect_equal(
+        as.character(tokens_lookup(tokens("A B C"), dictionary(list(key = c("A B", "A B C"))))),
+        c("key")
+    )
+    
+    expect_equal(
+        as.character(tokens_lookup(tokens("A B C"), dictionary(list(key = c("B C", "A B C"))))),
+        c("key")
+    )
+})
+
+

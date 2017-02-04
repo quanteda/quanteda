@@ -1,0 +1,65 @@
+---
+title: "Test indexing in **Matrix** package"
+author: "Kenneth Benoit"
+date: "28/10/2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Set up the problem
+
+```{r}
+set.seed(94253)
+K <- 100
+V <- 100000
+
+library(Matrix)
+
+sparseCmat <-  Matrix(runif(K*V), nrow = K, ncol = V)
+densemat <- as.matrix(sparseCmat)
+sparseTmat <- as(sparseCmat, "TsparseMatrix")
+```
+
+## Replicate, extend Brandon's result
+
+```{r}
+microbenchmark::microbenchmark(sparseC = sparseCmat[3, 2], 
+                               sparseT = sparseTmat[3, 2],
+                               brandon = sparseCmat@x[(2-1)*K + 3], 
+                               densem = densemat[3,2],
+                               unit = "relative", times = 200)
+```
+
+
+
+## Try it with some real data, realistic sparsity
+
+```{r}
+require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
+myDfm <- as(dfm(inaugCorpus, verbose = FALSE), "CsparseMatrix")
+
+myDfm[56, "month"] <- 99999
+idx <- which(myDfm@x == 99999) # get index of this inserted value
+myDfmTriplet <- as(myDfm, "TsparseMatrix")
+myDfmDense <- as.matrix(myDfm)
+colidx <- which(colnames(myDfm) == "month")
+
+microbenchmark::microbenchmark(sparseCname = myDfm[56, "month"], 
+                               sparseTname = myDfmTriplet[56, "month"],
+                               densemname = myDfmDense[56, "month"],
+                               sparseCnum = myDfm[56, colidx], 
+                               sparseTnum = myDfmTriplet[56, colidx],
+                               densemnum = myDfmDense[56, colidx],
+                               direct = myDfm@x[idx], 
+                               unit = "relative", times = 500)
+```
+
+## Conclusion
+
+If your data is dense, then indexing using the sparse matrix method for `"["` is much less efficient than it is for dense matrix objects.  But for sparse objects, the differences are negligable.
+
+Yes the direct way of indexing the cell is always going to be faster, but its location has to be computed in some way before the position of the `x` slot can be known.  In the **Matrix** source this is line 309 of `sparseMatrix.R`, and it first detects the type of sparse Matrix, then coerces the sparse column matrix to a triplet sparse matrix, then invokes a lower-level index method.  But I must have something slightly wrong here, since the `"["` for the sparse triplet format is actually slower!
+

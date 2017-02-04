@@ -139,6 +139,12 @@ fcm.character <- function(x, ...) {
 }
 
 #' @noRd
+#' @export
+fcm.corpus <- function(x, ...) {
+    fcm(tokens(x), ...)
+}
+
+#' @noRd
 #' @import Matrix
 #' @export
 fcm.dfm <- function(x, context = c("document", "window"), 

@@ -59,8 +59,31 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           case_insensitive = TRUE,
                           capkeys = FALSE,
                           exclusive = TRUE,
+#                          overlap = FALSE,
                           multiword = TRUE,
                           verbose = FALSE) {
+    UseMethod("tokens_lookup")    
+}
+
+#' @noRd
+#' @export
+tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
+                          valuetype = c("glob", "regex", "fixed"), 
+                          concatenator = ' ',
+                          case_insensitive = TRUE,
+                          capkeys = FALSE,
+                          exclusive = TRUE,
+#                          overlap = FALSE,
+                          multiword = TRUE,
+                          verbose = FALSE) {
+ 
+    overlap <- FALSE
+    
+    if (!is.tokens(x))
+        stop("x must be a tokens object")
+    
+    if (!is.dictionary(dictionary))
+        stop("dictionary must be a dictionary object")
     
     names_org <- names(x)
     attrs_org <- attributes(x)
@@ -98,7 +121,7 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
         message('Searching ', length(entries_id), ' types of features...')
     
     if(exclusive){
-        x <- qatd_cpp_tokens_lookup(x, entries_id, keys_id)
+        x <- qatd_cpp_tokens_lookup(x, entries_id, keys_id, overlap)
     }else{
         x <- qatd_cpp_tokens_match(x, entries_id, keys_id + length(types), FALSE)
     }

@@ -70,7 +70,8 @@ struct select_mt : public Worker{
     const bool &padding;
     
     // Constructor
-    select_mt(Texts &input_, Texts &output_, std::vector<std::size_t> &spans_, SetNgrams &set_words_, int &mode_, bool &padding_):
+    select_mt(Texts &input_, Texts &output_, const std::vector<std::size_t> &spans_, 
+              const SetNgrams &set_words_, const int &mode_, const bool &padding_):
               input(input_), output(output_), spans(spans_), set_words(set_words_), mode(mode_), padding(padding_) {}
     
     // parallelFor calles this function with std::size_t

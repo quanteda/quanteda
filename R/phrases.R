@@ -28,10 +28,10 @@
 #' dfm(cw, verbose=FALSE)
 #' 
 #' # when used as a dictionary for dfm creation
-#' mydfm2 <- dfm(cw, dictionary = lapply(mydict, function(x) gsub(" ", "_", x)))
+#' mydfm2 <- dfm(cw, dictionary = dictionary(lapply(mydict, function(x) gsub(" ", "_", x))))
 #' mydfm2
 #' # to pick up "taxes" in the second text, set valuetype = "regex"
-#' mydfm3 <- dfm(cw, dictionary = lapply(mydict, phrasetotoken, mydict),
+#' mydfm3 <- dfm(cw, dictionary = dictionary(lapply(mydict, phrasetotoken, mydict)),
 #'               valuetype = "regex")
 #' mydfm3
 #' ## one more token counted for "tax" than before
