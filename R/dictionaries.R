@@ -482,7 +482,7 @@ readLexicoderDict <- function(path, toLower=TRUE) {
             current_terms <- c(current_terms, l)
         }
     }
-    dict[[current_key]] <- current_terms
+    dict[[current_key]] <- stringi::stri_trim_both(current_terms)
     return(dict)
 }
 
