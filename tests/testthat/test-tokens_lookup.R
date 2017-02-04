@@ -30,7 +30,7 @@ test_that("multi-word dictionary keys are counted correctly", {
         tokens_lookup(toks, dict_mw_fixed, valuetype = "fixed", case_insensitive = TRUE)
     dfm_case_ignore <- dfm(tokens_case_ignore, tolower = FALSE)
     expect_equal(as.vector(dfm_case_ignore[, "Countries"]), c(1, 1, 1, 1, 0, 1))
-
+    
     expect_equal(as.vector(dfm_case_ignore["d3", "team"]), 2)
     # note the overlap of Manchester United states in d3
     expect_equal(as.vector(dfm_case_ignore["d3", "Countries"]), 1)
@@ -78,7 +78,7 @@ test_that("entirely single-word dictionary keys are counted correctly", {
 
 
 test_that("multi-word dictionary behavior is not sensitive to the order of dictionary entries", {
-
+    
     txt <- c(d1 = "The United States is a country.", 
              d2 = "Arsenal v Manchester United, states the announcer.")
     toks <- tokens(txt, removePunct = TRUE)
@@ -115,10 +115,10 @@ test_that("#388 issue about overlapping key values is resolved: glob matches", {
                                  oceans = c("*ic"),
                                  gameconsoles = c("?box", "Nintendo*"),
                                  swords = "*s"))
-
+    
     expect_equal(as.list(tokens_lookup(toks, dict_glob, valuetype = "glob")),
-              list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
-                   d2 = c("Countries", "swords", "swords", "Countries")))
+                 list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
+                      d2 = c("Countries", "swords", "swords", "Countries")))
     expect_equal(as.list(tokens_lookup(toks, dict_glob, valuetype = "glob", case_insensitive = FALSE)),
                  list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
                       d2 = c("Countries", "swords", "swords")))
@@ -132,7 +132,7 @@ test_that("#388 issue about overlapping key values is resolved: regex matches", 
                                   oceans = c("[A-Z][a-z]+ic"),
                                   gameconsoles = c("Xbox"),
                                   swords = "s$"))
-
+    
     expect_equal(as.list(tokens_lookup(toks, dict_regex, valuetype = "regex")),
                  list(d1 = c("Countries", "swords", "swords", "oceans", "oceans"),
                       d2 = c("Countries", "swords", "swords", "Countries")))
@@ -286,7 +286,7 @@ test_that("#502 tokens_lookup count overlapped words", {
     expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "fixed")),
                  list(d1 = c("Countries", "oceans", "oceans"),
                       d2 = c("Countries")))
-
+    
     dict <- dictionary(list(Countries = c("United States", "Unit Stat of America"),
                             oceans = c("Ocean.*")))
     expect_equal(as.list(tokens_lookup(toks, dict, valuetype = "regex")),
