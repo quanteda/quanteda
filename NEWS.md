@@ -12,6 +12,7 @@
 
 * Fixed a bug in `convert(x, to = "lsa")` that transposed row and column names (#526)
 * Added missing `fcm()` method for corpus objects (#538)
+* Fixed C++ incompatibilities on older platforms due to compiler incompatibilities with the reuqired TBB libraries (for multi-threading).  (#531, #532, #535)
 
 
 ## Changes since v0.9.9-3
