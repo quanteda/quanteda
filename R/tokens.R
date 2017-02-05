@@ -604,9 +604,16 @@ tokens_character <- function(txt, what, removeNumbers, removePunct, removeSymbol
 # toks <- tokens_hash(tokenize(c(one = "a b c d A B C D",
 #                                two = "A B C d")))
 # tokens_hashed_recompile(toks)
-tokens_hashed_recompile <- function(x) {
+tokens_hashed_recompile <- function(x, new = FALSE) {
     
     attrs_input <- attributes(x)
+    
+    if (new) {
+        x <- qatd_cpp_tokens_recompile(x, types(x))
+        x <- reassign_attributes(x, attrs_input, exceptions = "types", attr_only = TRUE)
+        return(x)
+    }
+    
     index_unique <- unique(unlist(x, use.names = FALSE))
     padding <- (index_unique == 0)
     attrs_input$padding <- any(padding) # add padding flag
