@@ -610,7 +610,7 @@ tokens_hashed_recompile <- function(x, new = FALSE) {
     
     if (new) {
         x <- qatd_cpp_tokens_recompile(x, types(x))
-        x <- reassign_attributes(x, attrs_input, exceptions = "types", attr_only = TRUE)
+        x <- reassign_attributes(x, attrs_input, exceptions = c("types", "padding"), attr_only = TRUE)
         return(x)
     }
     
