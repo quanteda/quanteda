@@ -183,10 +183,116 @@ dictionary <- function(..., file = NULL, format = NULL,
       } else if (format=="lexicoder") {
           x <- readLexicoderDict(file)
       } else if (format=="YAML") {
-          x <- yaml::yaml.load_file(file, as.named.list = TRUE)  
+          x <- yaml::yaml.load_file(file, as.named.list = TRUE)
       }    
   }
   new("dictionary", x, format = format, file = file, concatenator = concatenator)
+}
+
+
+
+#  Flatten a hierarchical dictionary into a list of character vectors
+# 
+#  Converts a hierarchical dictionary (a named list of named lists, ending in character
+#  vectors at the lowest level) into a flat list of character vectors.  Works like
+#  \code{unlist(dictionary, recursive=TRUE)} except that the recursion does not go to the
+#  bottom level.  Called by \code{\link{dfm}}.
+# 
+#  @param tree list to be flattened
+#  @param levels integer vector indicating levels in the dictionary
+#  @param level internal argument to pass current levels
+#  @param key_tree internal argument to pass for parent keys
+#  @param dict internal argument to pass flattend dicitonary
+#  @return A dictionary flattened to variable levels
+#  @keywords internal
+#  @author Kohei Watanabe
+#  @export
+#  @examples
+#  dictPopulismEN <- 
+#      dictionary(list(populism=c("elit*", "consensus*", "undemocratic*", "referend*",
+#                                 "corrupt*", "propagand", "politici*", "*deceit*",
+#                                 "*deceiv*", "*betray*", "shame*", "scandal*", "truth*",
+#                                 "dishonest*", "establishm*", "ruling*")))
+#  flatten_dictionary(dictPopulismEN)
+# 
+#  hdict <- list(level1a = list(level1a1 = c("l1a11", "l1a12"),
+#                              level1a2 = c("l1a21", "l1a22")),
+#                level1b = list(level1b1 = c("l1b11", "l1b12"),
+#                               level1b2 = c("l1b21", "l1b22", "l1b23")),
+#                level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
+#                               level1c1b = list(level1c1b1 = c("lowestalone"))))
+#  flatten_dictionary(hdict)
+#  flatten_dictionary(hdict, 2)
+#  flatten_dictionary(hdict, 1:2)
+
+flatten_dictionary <- function(dict, levels = 1:100, level = 1, key = '', dict_flat = list()) {
+    #cat("-------------------\n")
+    #cat("level:", level, "\n")
+    for (name in names(dict)) {
+        entry <- dict[[name]]
+        if (level %in% levels) {    
+            if (key != '') {
+                key_entry <- paste(key, name, sep = '.')
+            } else {
+                key_entry <- name
+            }
+        } else {
+            key_entry <- key
+        }
+        #cat("key:", key, "\n")
+        #cat("key_entry:", key_entry, "\n")
+        if (is.list(entry)) {
+            #cat("List:\n")
+            #print(entry)
+            dict_flat <- flatten_dictionary(entry, levels, level + 1, key_entry, dict_flat)
+        } else {
+            #cat("Vector:\n")
+            #print(entry)
+            dict_flat[[key_entry]] <- c(dict_flat[[key_entry]], entry)
+        }
+    }
+    return(dict_flat)
+}
+
+#' check if an object is a dictionary
+#' 
+#' Return \code{TRUE} if an object is a \pkg{quanteda} \link{dictionary}.
+#' @param x any object
+#' @export
+is.dictionary <- function(x) {
+    is(x, "dictionary")
+}
+
+
+
+# Import a Lexicoder dictionary
+# 
+# @param path full pathname of the lexicoder dictionary file (usually ending in .lcd)
+# @param toLower if \code{TRUE} (default), convert the dictionary entries to lower case
+# @return a named list, where each the name of element is a category/key and each element is a list of
+#   the dictionary terms corresponding to that level.
+# @author Adam Obeng
+# @export
+readLexicoderDict <- function(path, toLower=TRUE) {
+    current_key <- NULL
+    current_terms <- c()
+    dict <- list() 
+    #  Lexicoder 3.0 files are always UTF-8
+    for (l in readLines(con <- file(path, encoding = 'utf-8'))) {
+        if (toLower) l <- tolower(l)
+        if (substr(l, 1, 1) == '+') {
+            if (length(current_terms) > 0) {
+                dict[[current_key]] <- current_terms
+            }
+            current_key <- substr(l, 2, nchar(l))
+            current_terms <- c()
+        }
+        else {
+            current_terms <- c(current_terms, l)
+        }
+    }
+    dict[[current_key]] <- stringi::stri_trim_both(current_terms)
+    return(dict)
 }
 
 # Import a Wordstat dictionary
@@ -232,7 +338,7 @@ readWStatDict <- function(path, enc="", toLower=TRUE) {
     }
     flatDict <- list()
     categ <- list()
-
+    
     # this loop collapses the category cells together and
     # makes the list of named lists compatible with dfm
     for (i in 1:nrow(d)) {
@@ -272,13 +378,13 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     if (encoding == "") encoding <- getOption("encoding")
     d <- readLines(con <- file(path, encoding = encoding), warn = FALSE)
     close(con)
-
+    
     # remove any lines with <of>
     oflines <- grep("<of>", d)
     if (length(oflines)) {
         catm("note: ", length(oflines), " term",
-            ifelse(length(oflines)>1, "s", ""), 
-            " ignored because contains unsupported <of> tag\n", sep = "")
+             ifelse(length(oflines)>1, "s", ""), 
+             " ignored because contains unsupported <of> tag\n", sep = "")
         d <- d[-oflines]
     }
     
@@ -293,7 +399,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     guide <- data.frame(do.call(rbind, tokenize(guide)), stringsAsFactors = FALSE)
     colnames(guide) <- c('catNum', 'catName' )
     guide$catNum <- as.integer(guide$catNum)
-
+    
     # initialize the dictionary as list of NAs
     dictionary <- list()
     length(dictionary) <- nrow(guide)
@@ -311,7 +417,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
             catm("  [line ", foundParens + guideRowEnd, ":] ", catlist[i], "\n", sep = "")
         catlist <- gsub("\\(.+\\)", "", catlist)
     }
-        
+    
     ## clean up irregular dictionary files
     # remove any repeated \t
     catlist <- gsub("\t\t+", "\t", catlist)
@@ -322,7 +428,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     # remove any \t only lines or empty lines
     if (length(blanklines <- grep("^\\s*$", catlist))) 
         catlist <- catlist[-blanklines]
-
+    
     catlist <- strsplit(catlist, "\t")
     catlist <- as.data.frame(do.call(rbind, lapply(catlist, '[', 1:max(sapply(catlist, length)))), stringsAsFactors = FALSE)
     catlist[, 2:ncol(catlist)] <- sapply(catlist[, 2:ncol(catlist)], as.integer)
@@ -342,7 +448,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     catnames <- names(catlist)
     catlist <- as.data.frame(do.call(rbind, lapply(catlist, '[', 1:max(sapply(catlist, length)))), stringsAsFactors = FALSE)
     rownames(catlist) <- catnames
- 
+    
     terms <- as.list(rep(NA, nrow(catlist)))
     names(terms) <- rownames(catlist)
     for (i in 1:nrow(catlist)) {
@@ -391,109 +497,7 @@ readYKdict <- function(path){
     stats::setNames(lapply(cats, get_patterns_in_subtree), catnames)
 }
 
-#  Flatten a hierarchical dictionary into a list of character vectors
-# 
-#  Converts a hierarchical dictionary (a named list of named lists, ending in character
-#  vectors at the lowest level) into a flat list of character vectors.  Works like
-#  \code{unlist(dictionary, recursive=TRUE)} except that the recursion does not go to the
-#  bottom level.  Called by \code{\link{dfm}}.
-# 
-#  @param tree list to be flattened
-#  @param levels integer vector indicating levels in the dictionary
-#  @param level internal argument to pass current levels
-#  @param key_tree internal argument to pass for parent keys
-#  @param dict internal argument to pass flattend dicitonary
-#  @return A dictionary flattened to variable levels
-#  @keywords internal
-#  @author Kohei Watanabe
-#  @export
-#  @examples
-#  dictPopulismEN <- 
-#      dictionary(list(populism=c("elit*", "consensus*", "undemocratic*", "referend*",
-#                                 "corrupt*", "propagand", "politici*", "*deceit*",
-#                                 "*deceiv*", "*betray*", "shame*", "scandal*", "truth*",
-#                                 "dishonest*", "establishm*", "ruling*")))
-#  dictionary_flatten(dictPopulismEN)
-# 
-#  hdict <- list(level1a = list(level1a1 = c("l1a11", "l1a12"),
-#                              level1a2 = c("l1a21", "l1a22")),
-#                level1b = list(level1b1 = c("l1b11", "l1b12"),
-#                               level1b2 = c("l1b21", "l1b22", "l1b23")),
-#                level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
-#                               level1c1b = list(level1c1b1 = c("lowestalone"))))
-#  dictionary_flatten(hdict)
-#  dictionary_flatten(hdict, 2)
-#  dictionary_flatten(hdict, 1:2)
 
-dictionary_flatten <- function(dict, levels = 1:100, level = 1, key = '', dict_flat = list()) {
-    #cat("-------------------\n")
-    #cat("level:", level, "\n")
-    for (name in names(dict)) {
-        entry <- dict[[name]]
-        if (level %in% levels) {    
-            if (key != '') {
-                key_entry <- paste(key, name, sep = '.')
-            } else {
-                key_entry <- name
-            }
-        } else {
-            key_entry <- key
-        }
-        #cat("key:", key, "\n")
-        #cat("key_entry:", key_entry, "\n")
-        if (is.list(entry)) {
-            #cat("List:\n")
-            #print(entry)
-            dict_flat <- dictionary_flatten(entry, levels, level + 1, key_entry, dict_flat)
-        } else {
-            #cat("Vector:\n")
-            #print(entry)
-            dict_flat[[key_entry]] <- c(dict_flat[[key_entry]], entry)
-        }
-    }
-    return(dict_flat)
-}
-
-
-
-# Import a Lexicoder dictionary
-# 
-# @param path full pathname of the lexicoder dictionary file (usually ending in .lcd)
-# @param toLower if \code{TRUE} (default), convert the dictionary entries to lower case
-# @return a named list, where each the name of element is a category/key and each element is a list of
-#   the dictionary terms corresponding to that level.
-# @author Adam Obeng
-# @export
-readLexicoderDict <- function(path, toLower=TRUE) {
-    current_key <- NULL
-    current_terms <- c()
-    dict <- list() 
-    #  Lexicoder 3.0 files are always UTF-8
-    for (l in readLines(con <- file(path, encoding = 'utf-8'))) {
-        if (toLower) l <- tolower(l)
-        if (substr(l, 1, 1) == '+') {
-            if (length(current_terms) > 0) {
-                dict[[current_key]] <- current_terms
-            }
-            current_key <- substr(l, 2, nchar(l))
-            current_terms <- c()
-        }
-        else {
-            current_terms <- c(current_terms, l)
-        }
-    }
-    dict[[current_key]] <- current_terms
-    return(dict)
-}
-
-#' check if an object is a dictionary
-#' 
-#' Return \code{TRUE} if an object is a \pkg{quanteda} \link{dictionary}.
-#' @param x any object
-#' @export
-is.dictionary <- function(x) {
-    is(x, "dictionary")
-}
     
 
  

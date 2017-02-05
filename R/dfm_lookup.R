@@ -65,7 +65,7 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
         stop("dfm_lookup not currently implemented for ngrams > 1 and multi-word dictionary values")
     }
     
-    dictionary <- dictionary_flatten(dictionary, levels)
+    dictionary <- flatten_dictionary(dictionary, levels)
     valuetype <- match.arg(valuetype)
 
     if (verbose) catm("applying a dictionary consisting of ", length(dictionary), " key", 

@@ -88,7 +88,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     names_org <- names(x)
     attrs_org <- attributes(x)
     concatenator_dict <- attr(dictionary, 'concatenator')
-    dictionary <- dictionary_flatten(dictionary, levels)
+    dictionary <- flatten_dictionary(dictionary, levels)
     valuetype <- match.arg(valuetype)
     
     # Generate all combinations of type IDs
