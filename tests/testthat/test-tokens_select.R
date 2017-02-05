@@ -105,6 +105,7 @@ test_that("tokens_select works on \"\" with tokens containing padding", {
                  c("a", "", ""))
 })
 
+
 test_that("fcm works on tokens containing padding", {
     toks <- tokens(c(doc1 = 'a b c d e f g',
                      doc2 = "f a c c f g b"))

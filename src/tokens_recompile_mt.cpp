@@ -48,12 +48,13 @@ List qatd_cpp_tokens_recompile(const List &texts_,
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as<Types>(types_);
     
-    VecIds ids_new(types.size());
+    VecIds ids_new(types.size() + 1);
     ids_new[0] = 0; // reserved for padding
-    unsigned int id_new = 0;
+    unsigned int id_new = 1;
+    //Rcout << setw(10) << "" << ": " << 0 << " -> " << ids_new[0] << "\n";
     
     // Check if IDs have gaps
-    std::vector<bool> flags_used(types.size(), false);
+    std::vector<bool> flags_used(ids_new.size(), false);
     bool padding = false; // record use of padding
     for (std::size_t h = 0; h < texts.size(); h++) {
         for (std::size_t i = 0; i < texts[h].size(); i++) {
@@ -62,16 +63,16 @@ List qatd_cpp_tokens_recompile(const List &texts_,
                 padding = true;
                 continue;
             }
-            flags_used[id - 1] = true;
+            flags_used[id] = true;
         }
     }
     bool all_used = std::all_of(flags_used.begin(), flags_used.end(), [](bool v) { return v; });
     
     // Check if types are duplicated
-    std::vector<bool> flags_unique(types.size(), false);
+    std::vector<bool> flags_unique(ids_new.size(), false);
     std::unordered_map<std::string, unsigned int> types_unique;
-    for (std::size_t g = 0; g < types.size(); g++) {
-        auto it = types_unique.insert(std::pair<std::string, unsigned int>(types[g], id_new));
+    for (std::size_t g = 1; g < ids_new.size(); g++) {
+        auto it = types_unique.insert(std::pair<std::string, unsigned int>(types[g - 1], id_new));
         ids_new[g] = it.first->second;
         if (it.second) {
             flags_unique[g] = true;
@@ -79,30 +80,35 @@ List qatd_cpp_tokens_recompile(const List &texts_,
                 id_new++; // increment iff there is no gap
             }
         }
-        //Rcout << types[g] << ": " << g << " -> " << ids_new[g] << "\n";
+        // if (flags_used[g]) {
+        //     Rcout << setw(10) << types[g - 1] << ": " << g << " -> " << ids_new[g] << "\n";
+        // } else {
+        //     Rcout << setw(10) << types[g - 1] << ": " << g << " ->\n";
+        // }
     }
     bool all_unique = std::all_of(flags_unique.begin(), flags_unique.end(), [](bool v) { return v; });
-    
+     
     // Do nothing if no gap or duplicate
     if (all_used && all_unique) return texts_;
     
     // Convert old IDs to new IDs
-#if RCPP_PARALLEL_USE_TBB
-    compile_mt compile_mt(texts, ids_new);
-    parallelFor(0, texts.size(), compile_mt);
-#else
+// #if RCPP_PARALLEL_USE_TBB
+//     compile_mt compile_mt(texts, ids_new);
+//     parallelFor(0, texts.size(), compile_mt);
+// #else
     for (std::size_t h = 0; h < texts.size(); h++) {
         for (std::size_t i = 0; i < texts[h].size(); i++) {
             texts[h][i] = ids_new[texts[h][i]];
+            //Rcout << texts[h][i] << " -> " << ids_new[texts[h][i]] << "\n";
         }
     }
-#endif
-    
+//#endif
+
     std::vector<std::string> types_new;
-    types_new.reserve(types.size());
-    for (std::size_t j = 0; j < ids_new.size(); j++) {
-        if (flags_used[j] && flags_unique[j]) {
-            types_new.push_back(types[ids_new[j]]);
+    types_new.reserve(ids_new.size());
+    for (std::size_t j = 0; j < ids_new.size() - 1; j++) {
+        if (flags_used[j + 1] && flags_unique[j + 1]) {
+            types_new.push_back(types[j]);
         }
     }
     
@@ -117,8 +123,8 @@ List qatd_cpp_tokens_recompile(const List &texts_,
 /***R
 
 toks3 <- list(rep(0:5, 1), rep(10:15, 1))
-qatd_cpp_recompile(toks3, letters)
-qatd_cpp_recompile(toks3, rep(c('a', 'b', 'c'), 6))
+qatd_cpp_tokens_recompile(toks3, letters)
+qatd_cpp_tokens_recompile(toks3, rep(c('a', 'b', 'c'), 7))
 
 
 

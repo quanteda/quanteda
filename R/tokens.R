@@ -604,13 +604,15 @@ tokens_character <- function(txt, what, removeNumbers, removePunct, removeSymbol
 # toks <- tokens_hash(tokenize(c(one = "a b c d A B C D",
 #                                two = "A B C d")))
 # tokens_hashed_recompile(toks)
-tokens_hashed_recompile <- function(x, new = FALSE) {
+tokens_hashed_recompile <- function(x, new = TRUE) {
     
     attrs_input <- attributes(x)
     
     if (new) {
         x <- qatd_cpp_tokens_recompile(x, types(x))
-        x <- reassign_attributes(x, attrs_input, exceptions = c("types", "padding"), attr_only = TRUE)
+        attrs_input[['types']] <- attr(x, 'types')
+        attrs_input[['padding']] <- attr(x, 'padding')
+        attributes(x) <- attrs_input
         return(x)
     }
     
