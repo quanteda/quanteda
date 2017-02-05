@@ -230,6 +230,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qatd_cpp_tokens_recompile
+List qatd_cpp_tokens_recompile(const List& texts_, const CharacterVector types_);
+RcppExport SEXP quanteda_qatd_cpp_tokens_recompile(SEXP texts_SEXP, SEXP types_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_recompile(texts_, types_));
+    return rcpp_result_gen;
+END_RCPP
+}
 // qatd_cpp_tokens_replace
 List qatd_cpp_tokens_replace(const List& texts_, const List& words_, const IntegerVector& ids_);
 RcppExport SEXP quanteda_qatd_cpp_tokens_replace(SEXP texts_SEXP, SEXP words_SEXP, SEXP ids_SEXP) {
