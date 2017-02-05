@@ -116,7 +116,7 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
 #'   
 #'   
 keyness_chi2_dt <- function(x) {
-    a <- b <- c <- d <- N <- E <- chi2 <- NULL 
+    a <- b <- c <- d <- N <- E <- chi2 <- p <- NULL 
     if (ndoc(x) > 2)
         stop("x can only have 2 rows")
     dt <- data.table(feature = featnames(x),
