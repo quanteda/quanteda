@@ -3,15 +3,15 @@
 
 [![CRAN Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda/branch/master) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
 
-**quanteda** v0.9.9 under development
--------------------------------------
+**quanteda** v0.9.9: Important Changes
+--------------------------------------
 
 This version of the package is a transitional release prior to v1.0. It includes some major API changes (see below), but with the most of the older functions retained and deprecated. v0.9.9 also implements many enhancements and performance improvements. See [Quanteda Structure and Design](https://kbenoit.github.io/quanteda/articles/development-plans.html) for details.
 
 About the package
 -----------------
 
-An R package for managing and analyzing text, created by [Kenneth Benoit](kbenoit@lse.ac.uk) in collaboration with a team of core [contributors](https://github.com/kbenoit/quanteda/graphs/contributors): [Paul Nulty](https://github.com/pnulty), [Adam Obeng](https://github.com/adamobeng), [Kohei Watanabe](https://github.com/koheiw), [Haiyan Wang](https://github.com/HaiyanLW), [Ben Lauderdale](https://github.com/lauderdale), and [Will Lowe](https://github.com/conjugateprior).
+An R package for managing and analyzing text, created by [Kenneth Benoit](kbenoit@lse.ac.uk) in collaboration with a team of core [contributors](https://github.com/kbenoit/quanteda/graphs/contributors): [Kohei Watanabe](https://github.com/koheiw), [Paul Nulty](https://github.com/pnulty), [Adam Obeng](https://github.com/adamobeng), [Haiyan Wang](https://github.com/HaiyanLW), [Ben Lauderdale](https://github.com/lauderdale), and [Will Lowe](https://github.com/conjugateprior).
 Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
 For more details, see the [**package website**](https://kbenoit.github.io/quanteda/).
@@ -45,7 +45,7 @@ The package also implements common NLP feature selection functions, such as remo
 Easily search and save *keywords in context*, for instance, or identify keywords. Like all of **quanteda**'s pattern matching functions, users have the option of simple "[glob](https://en.wikipedia.org/wiki/Glob_(programming))" expressions, regular expressions, or fixed pattern matches.
 
 **Dictionary-based analysis**.
-**quanteda** allows fast and flexible implementation of dictionary methods, including the import and conversion of foreign dictionary formats such as those from Provalis's WordStat, the Linguistic Inquiry and Word Count (LIWC), Lexicoder, and Yoshioder.
+**quanteda** allows fast and flexible implementation of dictionary methods, including the import and conversion of foreign dictionary formats such as those from Provalis's WordStat, the Linguistic Inquiry and Word Count (LIWC), Lexicoder, Yoshioder, and YAML.
 
 **Text analytic methods**.
 Once constructed, a *dfm* can be easily analyzed using either **quanteda**'s built-in tools for scaling document positions (for the "wordfish" and "Wordscores" models, direct use with the [**ca**](https://CRAN.R-project.org/package=ca) package for correspondence analysis), predictive models using Naive Bayes multinomial and Bernoulli classifiers, computing distance or similarity matrixes of features or documents, or computing readability or lexical diversity indexes.
@@ -112,7 +112,7 @@ Demonstration
 
 ``` r
 library(quanteda)
-## quanteda version 0.9.9.18
+## quanteda version 0.9.9.20
 ## 
 ## Attaching package: 'quanteda'
 ## The following object is masked from 'package:utils':
@@ -144,7 +144,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Sat Feb  4 16:32:01 2017
+## Created: Sun Feb  5 08:35:20 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -172,6 +172,7 @@ topfeatures(mydfm, 20)  # 20 top words
 ##          13          12
 
 # plot a word cloud
+set.seed(100)
 textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
                    rot.per = .25, 
                    colors = RColorBrewer::brewer.pal(8,"Dark2"))
@@ -184,7 +185,7 @@ Contributing
 
 Contributions in the form of feedback, comments, code, and bug reports are most welcome. How to contribute:
 
--   Fork the source code, modify, and issue a [pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/) through the [project GitHub page](https://github.com/kbenoit/quanteda). See our [Contributor Code of Conduct](https://github.com/kbenoit/quanteda/blob/master/CONDUCT.md).
+-   Fork the source code, modify, and issue a [pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/) through the [project GitHub page](https://github.com/kbenoit/quanteda). See our [Contributor Code of Conduct](https://github.com/kbenoit/quanteda/blob/master/CONDUCT.md) and the all-important **quanteda** [Style Guide](https://github.com/kbenoit/quanteda/wiki/Style-guide).
 
 -   Issues, bug reports, and wish lists: [File a GitHub issue](https://github.com/kbenoit/quanteda/issues).
 
