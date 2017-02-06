@@ -21,7 +21,7 @@ Text lookup(Text tokens,
     std::vector< std::vector< bool > > flags_match(id_max);
     if (!overlap) {
         std::vector< bool > flags_init(tokens.size(), false);
-        for (int h = 0; h < id_max; h++) {
+        for (unsigned int h = 0; h < id_max; h++) {
             flags_match[h] = flags_init;
         }
     }

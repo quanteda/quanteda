@@ -127,22 +127,10 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     
     if (any(n <= 0)) 
         stop("ngram length has to be greater than zero")
-    # record original attributes
-    attrs_org <- attributes(x)
-    # generate ngrams
-    x <- qatd_cpp_tokens_ngrams(x, types(x), concatenator, n, skip + 1)
-    # trap if types is zero-length
-    #types <- attr(x, "types")
-    #attr(x, "types") <- ifelse(types == "", NA, types)
     
-    if (!length(attr(x, "types"))){
-        attr(x, "types") <- NULL
-    } else {
-        Encoding(attr(x, "types")) <- "UTF-8"
-    }
-    # reassign attributes, except types
+    attrs_org <- attributes(x)
+    x <- qatd_cpp_tokens_ngrams(x, types(x), concatenator, n, skip + 1)
     x <- reassign_attributes(x, attrs_org, exceptions = "types", attr_only = TRUE)
-    # set attributes for the ngrams as appropriate
     attr(x, "ngrams") <- as.integer(n)
     attr(x, "skip") <- as.integer(skip)
     attr(x, "concatenator") <- concatenator
