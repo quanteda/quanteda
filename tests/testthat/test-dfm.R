@@ -362,13 +362,12 @@ test_that("dfm(x, dictionary = mwvdict) works with multi-word values", {
     dfm2 <- dfm(txt, thesaurus = mwvdict, verbose = TRUE)
     expect_identical(
         as.matrix(dfm2), 
-        matrix(c(1, 0, 0, 0, 1, 0, 1, 0, 2, 1, 0, 0),
+        matrix(c(0, 1, 0, 0,  1, 1, 0, 0,  1, 0, 0, 1,  1, 0, 0, 1,  0, 1, 0, 0, 1, 1, 0, 0, 
+                 1, 0, 0, 0, 1, 0, 1, 0, 2, 1, 0, 0),
                nrow = 4,
                dimnames = list(docs = paste0("d", 1:4), 
-                               features = c("sequence1", "sequence2", "notseq")))
-        
+                               features = c("a", "c", "f", "g", "x", "z", 
+                                            "SEQUENCE1", "SEQUENCE2", "NOTSEQ")))
     )
-    
-    
 })
 
