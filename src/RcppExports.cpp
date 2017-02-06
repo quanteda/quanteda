@@ -108,6 +108,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// fcm_hash_cpp
+arma::sp_mat fcm_hash_cpp(Rcpp::List& texts, const int& n_types, const String& count, unsigned int& window, const NumericVector& weights, const bool& ordered, const bool& tri, const unsigned int& nvec);
+RcppExport SEXP quanteda_fcm_hash_cpp(SEXP textsSEXP, SEXP n_typesSEXP, SEXP countSEXP, SEXP windowSEXP, SEXP weightsSEXP, SEXP orderedSEXP, SEXP triSEXP, SEXP nvecSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type texts(textsSEXP);
+    Rcpp::traits::input_parameter< const int& >::type n_types(n_typesSEXP);
+    Rcpp::traits::input_parameter< const String& >::type count(countSEXP);
+    Rcpp::traits::input_parameter< unsigned int& >::type window(windowSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type ordered(orderedSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type tri(triSEXP);
+    Rcpp::traits::input_parameter< const unsigned int& >::type nvec(nvecSEXP);
+    rcpp_result_gen = Rcpp::wrap(fcm_hash_cpp(texts, n_types, count, window, weights, ordered, tri, nvec));
+    return rcpp_result_gen;
+END_RCPP
+}
 // fcm_hash_mt
 arma::sp_mat fcm_hash_mt(Rcpp::List& texts, const int n_types, const String& count, unsigned int window, const NumericVector& weights, const bool ordered, const bool tri, const unsigned int nvec);
 RcppExport SEXP quanteda_fcm_hash_mt(SEXP textsSEXP, SEXP n_typesSEXP, SEXP countSEXP, SEXP windowSEXP, SEXP weightsSEXP, SEXP orderedSEXP, SEXP triSEXP, SEXP nvecSEXP) {
