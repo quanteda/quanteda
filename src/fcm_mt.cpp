@@ -287,6 +287,7 @@ arma::sp_mat fcm_hash_cpp_mt(const Rcpp::List &texts_,
 }
 
 // implement serially
+// [[Rcpp::export]]
 arma::sp_mat fcm_hash_cpp(Rcpp::List &texts,
                           const int &n_types,
                           const String &count,
