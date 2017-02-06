@@ -89,7 +89,12 @@ List qatd_cpp_tokens_recompile(const List &texts_,
     bool all_unique = std::all_of(flags_unique.begin(), flags_unique.end(), [](bool v) { return v; });
      
     // Do nothing if no gap or duplicate
-    if (all_used && all_unique) return texts_;
+    if (all_used && all_unique) {
+        ListOf<IntegerVector> texts_list = Rcpp::wrap(texts);
+        texts_list.attr("padding") = padding;
+        texts_list.attr("types") = types;
+        return texts_list;
+    }
     
     // Convert old IDs to new IDs
     #if RCPP_PARALLEL_USE_TBB
