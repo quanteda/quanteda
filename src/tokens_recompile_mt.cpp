@@ -53,7 +53,7 @@ List qatd_cpp_tokens_recompile(const List &texts_,
     unsigned int id_new = 1;
     //Rcout << setw(10) << "" << ": " << 0 << " -> " << ids_new[0] << "\n";
     
-    // Check if IDs have gaps
+    // Check if IDs are all used
     std::vector<bool> flags_used(ids_new.size(), false);
     bool padding = false; // record use of padding
     for (std::size_t h = 0; h < texts.size(); h++) {
