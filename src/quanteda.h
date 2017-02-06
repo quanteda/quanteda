@@ -13,6 +13,7 @@ namespace quanteda{
     
     typedef std::vector<unsigned int> Text;
     typedef std::vector<Text> Texts;
+    
 #if RCPP_PARALLEL_USE_TBB
     typedef tbb::atomic<int> IntParam;
     typedef tbb::atomic<long> LongParam;

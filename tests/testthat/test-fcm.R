@@ -33,7 +33,14 @@ test_that("compare the output feature co-occurrence matrix to that of the text2v
 txt <- "A D A C E A D F E B A C E D"
 
 test_that("not weighted",{
-    fcm <- fcm(txt, context = "window", window = 3)           
+    fcm <- fcm(txt, context = "window", window = 3) 
+    
+    # serial implementation of cpp function
+    toks <- tokens(txt)
+    n <- sum(lengths(unlist(toks))) * 3 * 2
+    fcm_s <- quanteda:::fcm_hash_cpp(toks, length(unique(unlist(toks))), 'frequency', 3, 1, FALSE, TRUE, n)
+    expect_equivalent(fcm,fcm_s)
+    
     aMat <- matrix(c(2, 1, 4, 4, 5, 2,
                      0, 0, 1, 1, 2, 1,
                      0, 0, 0, 3, 3, 0,
@@ -47,11 +54,17 @@ test_that("not weighted",{
 
 test_that("weighted by default",{
     fcm <- fcm(txt, context = "window", count = "weighted", window = 3)           
-    fcm <- fcm_sort(fcm)
+    
+    # serial implementation of cpp function
+    toks <- tokens(txt)
+    n <- sum(lengths(unlist(toks))) * 3 * 2
+    fcm_s <- quanteda:::fcm_hash_cpp(toks, length(unique(unlist(toks))), 'weighted', 3, 1, FALSE, TRUE, n)
+    expect_equivalent(fcm,fcm_s)
     
     # tokenizedTexts
     toks <- tokenize(txt)
     fcmTexts <- fcm(toks, context = "window", count = "weighted", window = 3) 
+    expect_equivalent(round(as.matrix(fcm), 2), round(as.matrix(fcmTexts), 2))
     
     aMat <- matrix(c(0.83, 1, 2.83, 3.33, 2.83, 0.83,
                      0, 0, 0.5, 0.33, 1.33, 0.50,
@@ -60,17 +73,23 @@ test_that("weighted by default",{
                      0, 0, 0, 0, 0, 1.33,
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
-    expect_equivalent(aMat, round(as.matrix(fcm), 2), round(as.matrix(fcmTexts), 2))
+    fcm <- fcm_sort(fcm)
+    expect_equivalent(aMat, round(as.matrix(fcm), 2))
 })
 
 test_that("customized weighting function",{
     fcm <- fcm(txt, context = "window", count = "weighted", weights = c(3,2,1), window = 3)           
-    fcm <- fcm_sort(fcm)
+    
+    # serial implementation of cpp function
+    toks <- tokens(txt)
+    n <- sum(lengths(unlist(toks))) * 3 * 2
+    fcm_s <- quanteda:::fcm_hash_cpp(toks, length(unique(unlist(toks))), 'weighted', 3, c(3,2,1), FALSE, TRUE, n)
+    expect_equivalent(fcm,fcm_s)
     
     # tokenizedTexts
     toks <- tokenize(txt)
-    fcmTexts <- fcm(toks, context = "window", count = "weighted", window = 3) 
-    fcmTexts <- fcm_sort(fcmTexts)
+    fcmTexts <- fcm(toks, context = "window", count = "weighted",  weights = c(3,2,1), window = 3) 
+    expect_equivalent(round(as.matrix(fcm), 2), round(as.matrix(fcmTexts), 2))
     
     aMat <- matrix(c(3, 3, 9, 10, 10, 3,
                      0, 0, 2, 1, 4, 2,
@@ -79,15 +98,22 @@ test_that("customized weighting function",{
                      0, 0, 0, 0, 0, 4,
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
-    expect_equivalent(aMat, round(as.matrix(fcm), 2), round(as.matrix(fcmTexts), 2))
+    fcm <- fcm_sort(fcm)
+    expect_equivalent(aMat, round(as.matrix(fcm), 2))
 })
 
 # Testing 'ordered' 
 txt <- "A D A C E A D F E B A C E D"
 test_that("ordered setting: window",{
     fcm <- fcm(txt, context = "window", window = 3, ordered = TRUE, tri = FALSE)           
-    fcm <- fcm_sort(fcm)
     
+    # serial implementation of cpp function
+    toks <- tokens(txt)
+    n <- sum(lengths(unlist(toks))) * 3 * 2
+    fcm_s <- quanteda:::fcm_hash_cpp(toks, length(unique(unlist(toks))), 'weighted', 3, 1, TRUE, FALSE, n)
+    expect_equivalent(fcm,fcm_s)
+    
+    fcm <- fcm_sort(fcm)
     aMat <- matrix(c( 2, 0, 3, 3, 3, 1,
                       1, 0, 1, 0, 1, 0,
                       1, 0, 0, 2, 2, 0,
@@ -100,7 +126,7 @@ test_that("ordered setting: window",{
     # Not ordered
     fcm_nOrd <- fcm(txt, context = "window", window = 3, ordered = FALSE, tri = FALSE) 
     fcm_nOrd <- fcm_sort(fcm_nOrd)
-    aMat <- matrix(c(4, 1, 4, 4, 5, 2,
+    aMat <- matrix(c(2, 1, 4, 4, 5, 2,
                      1, 0, 1, 1, 2, 1,
                      4, 1, 0, 3, 3, 0,
                      4, 1, 3, 0, 4, 1,
@@ -113,8 +139,15 @@ test_that("ordered setting: window",{
 test_that("ordered setting: boolean",{
     txts <- c("b a b c", "a a c b e", "a c e f g")
     fcm <- fcm(txts, context = "window", count = "boolean", window = 2, ordered = TRUE, tri = TRUE)           
-    fcm <- fcm_sort(fcm)
     
+    # serial implementation of cpp function
+    toks <- tokens(txts)
+    n <- sum(lengths(unlist(toks))) * 3 * 2
+    fcm_s <- quanteda:::fcm_hash_cpp(toks, length(unique(unlist(toks))), 'boolean', 2, 1, TRUE, TRUE, n)
+    expect_equivalent(fcm,fcm_s)
+    
+    # parallel version
+    fcm <- fcm_sort(fcm)
     aMat <- matrix(c(1, 1, 3, 1, 0, 0,
                      0, 1, 1, 1, 0, 0,
                      0, 0, 0, 2, 1, 0,
@@ -124,10 +157,15 @@ test_that("ordered setting: boolean",{
                    nrow = 6, ncol = 6, byrow = TRUE)
     expect_equivalent(aMat, as.matrix(fcm))
     
-    # not ordered
+    #**** not ordered********************
     fcm <- fcm(txts, context = "window", count = "boolean", window = 2, ordered = FALSE, tri = TRUE)           
-    fcm <- fcm_sort(fcm)
     
+    # serial version
+    fcm_s <- quanteda:::fcm_hash_cpp(toks, length(unique(unlist(toks))), 'boolean', 2, 1, FALSE, TRUE, n)
+    expect_equivalent(fcm,fcm_s)
+    
+    # parallal version
+    fcm <- fcm_sort(fcm)
     aMat <- matrix(c(1, 2, 3, 1, 0, 0,
                      0, 1, 2, 1, 0, 0,
                      0, 0, 0, 2, 1, 0,
@@ -137,6 +175,7 @@ test_that("ordered setting: boolean",{
                    nrow = 6, ncol = 6, byrow = TRUE)
     expect_equivalent(aMat, as.matrix(fcm))
 })
+
 # Testing "count" with multiple documents
 txts <- c("a a a b b c", "a a c e", "a c e f g")
 test_that("counting the frequency of the co-occurrences",{
@@ -170,11 +209,11 @@ test_that("counting the co-occurrences in 'boolean' way",{
 txts <- c("a a a b b c", "a a c e", "a c e f g")
 test_that("window = 2",{
     fcm <- fcm(txts, context = "window", count = "boolean", window = 2)           
-    fcm <- fcm_sort(fcm)
-    
+
     # tokenizedTexts
     toks <- tokenize(txts)
     fcmTexts <- fcm(toks, context = "window", count = "boolean", window = 2) 
+    expect_equivalent(as.matrix(fcm), as.matrix(fcmTexts))
     
     aMat <- matrix(c(2, 1, 2, 2, 0, 0,
                      0, 1, 1, 0, 0, 0,
@@ -183,7 +222,8 @@ test_that("window = 2",{
                      0, 0, 0, 0, 0, 1,
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
-    expect_equivalent(aMat, as.matrix(fcm), as.matrix(fcmTexts))
+    fcm <- fcm_sort(fcm)
+    expect_equivalent(aMat, as.matrix(fcm))
 })
 
 test_that("window = 3",{

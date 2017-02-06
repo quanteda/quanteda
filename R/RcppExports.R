@@ -33,12 +33,12 @@ qatd_MinkowskiPara_cpp2 <- function(A, B, margin = 1L, p = 2) {
     .Call('quanteda_qatd_MinkowskiPara_cpp2', PACKAGE = 'quanteda', A, B, margin, p)
 }
 
-fcm_cpp <- function(texts, types, count, window, weights, ordered, tri, nvec) {
-    .Call('quanteda_fcm_cpp', PACKAGE = 'quanteda', texts, types, count, window, weights, ordered, tri, nvec)
-}
-
 fcm_hash_cpp <- function(texts, n_types, count, window, weights, ordered, tri, nvec) {
     .Call('quanteda_fcm_hash_cpp', PACKAGE = 'quanteda', texts, n_types, count, window, weights, ordered, tri, nvec)
+}
+
+fcm_hash_mt <- function(texts, n_types, count, window, weights, ordered, tri, nvec) {
+    .Call('quanteda_fcm_hash_mt', PACKAGE = 'quanteda', texts, n_types, count, window, weights, ordered, tri, nvec)
 }
 
 qatd_cpp_sequences <- function(texts_, words_, count_min, len_max, nested, ordered = FALSE) {
