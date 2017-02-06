@@ -137,7 +137,15 @@ test_that("tokens_hashed_recompile: selecting all tokens to produce and empty do
 test_that("tokens_hashed_recompile: corrupt tokens object does not crash R", {
     
     toks <- list(1:10)
+<<<<<<< HEAD
     attr(toks, 'types') <- c('a', 'b', 'c') # Shorter than 10
+=======
+<<<<<<< HEAD
+    attr(toks, 'types') <- c('a', 'b', 'c') # Shorter than 10
+=======
+    attr(toks, 'types') <- c('a', 'b', 'c') # Shorter than 15
+>>>>>>> 277de2bac469c548fce230eb05333a8bd2e24c01
+>>>>>>> a05a5351bc43180208432b893871df453e50e461
     attr(toks, 'class') <- 'tokens'
     expect_error(quanteda:::tokens_hashed_recompile(toks, 'C++'))
     
@@ -145,8 +153,18 @@ test_that("tokens_hashed_recompile: corrupt tokens object does not crash R", {
 
 test_that("tokens_hashed_recompile: flag use of padding even when it does not reindex tokens", {
     
+<<<<<<< HEAD
     toks <- list(0:26) # has padding, but no gap
     attr(toks, 'types') <- letters # no duplication
+=======
+<<<<<<< HEAD
+    toks <- list(0:26) # has padding, but no gap
+    attr(toks, 'types') <- letters # no duplication
+=======
+    toks <- list(0:26)
+    attr(toks, 'types') <- letters
+>>>>>>> 277de2bac469c548fce230eb05333a8bd2e24c01
+>>>>>>> a05a5351bc43180208432b893871df453e50e461
     attr(toks, 'class') <- 'tokens'
     expect_true(attr(quanteda:::tokens_hashed_recompile(toks, 'C++'), 'padding'))
     
