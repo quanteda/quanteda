@@ -594,19 +594,63 @@ tokens_character <- function(txt, what, removeNumbers, removePunct, removeSymbol
 
 
 
-# recompile a hashed tokens object
-# 
-# This function recompiles a hashed tokens object when the vocabulary has been changed in 
-# a way that makes some of its types identical, such as lowercasing when a lowercased 
-# version of the type already exists in the hash table.
-# @param x the \link[=tokens_hash]{tokenizedTexts} object to be recompiled
-# @examples 
-# toks <- tokens_hash(tokenize(c(one = "a b c d A B C D",
-#                                two = "A B C d")))
-# tokens_hashed_recompile(toks)
-tokens_hashed_recompile <- function(x) {
+#' recompile a hashed tokens object
+#' 
+#' This function recompiles a hashed tokens object when the vocabulary has been
+#' changed in a way that makes some of its types identical, such as lowercasing
+#' when a lowercased version of the type already exists in the hash table, or
+#' introduces gaps in the integer map of the types.  It also reindexes the types
+#' atttribute to account for types that may have become duplicates, through a
+#' procedure such as stemming or lowercasing; or the addition of new tokens
+#' through compounding.
+#' @param x the \link{tokens} object to be recompiled
+#' @param method \code{"C++"} for C++ implementation or \code{"R"} for an older
+#'   R-based method
+#' @examples 
+#' # lowercasing
+#' toks1 <- tokens(c(one = "a b c d A B C D",
+#'                  two = "A B C d"))
+#' attr(toks1, "types") <- char_tolower(attr(toks1, "types"))
+#' unclass(toks1)
+#' unclass(quanteda:::tokens_hashed_recompile(toks1))
+#' 
+#' # stemming
+#' toks2 <- tokens("Stemming stemmed many word stems.")
+#' unclass(toks2)
+#' unclass(quanteda:::tokens_hashed_recompile(tokens_wordstem(toks2)))
+#' 
+#' # compounding
+#' toks3 <- tokens("One two three four.")
+#' unclass(toks3)
+#' unclass(tokens_compound(toks3, "two three"))
+#' 
+#' # lookup
+#' dict <- dictionary(list(test = c("one", "three")))
+#' unclass(tokens_lookup(toks3, dict))
+#'
+#' # empty pads
+#' unclass(tokens_select(toks3, dict))
+#' unclass(tokens_select(toks3, dict, pad = TRUE))
+#' 
+#' # ngrams
+#' unclass(tokens_ngrams(toks3, n = 2:3))
+#' 
+#' @keywords internal tokens
+#' @author Kenneth Benoit and Kohei Watanabe
+tokens_hashed_recompile <- function(x, method = c("C++", "R")) {
     
+    method <- match.arg(method)
     attrs_input <- attributes(x)
+    
+    if (method == "C++") {
+        x <- qatd_cpp_tokens_recompile(x, types(x))
+        attrs_input[['types']] <- attr(x, 'types')
+        attrs_input[['padding']] <- attr(x, 'padding')
+        attributes(x) <- attrs_input
+        Encoding(types(x)) <- "UTF-8"
+        return(x)
+    }
+    
     index_unique <- unique(unlist(x, use.names = FALSE))
     padding <- (index_unique == 0)
     attrs_input$padding <- any(padding) # add padding flag
@@ -632,7 +676,7 @@ tokens_hashed_recompile <- function(x) {
         attributes(x) <- attrs_input
         types(x) <- types_unique
     }
-    
+    Encoding(types(x)) <- "UTF-8"
     return(x)
 }
 

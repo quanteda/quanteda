@@ -57,7 +57,7 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           valuetype = c("glob", "regex", "fixed"), 
                           concatenator = ' ',
                           case_insensitive = TRUE,
-                          capkeys = FALSE,
+                          capkeys = !exclusive,
                           exclusive = TRUE,
 #                          overlap = FALSE,
                           multiword = TRUE,
@@ -71,7 +71,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
                           valuetype = c("glob", "regex", "fixed"), 
                           concatenator = ' ',
                           case_insensitive = TRUE,
-                          capkeys = FALSE,
+                          capkeys = !exclusive,
                           exclusive = TRUE,
 #                          overlap = FALSE,
                           multiword = TRUE,
@@ -98,7 +98,9 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     
     index <- index_regex(types, valuetype, case_insensitive) # index types before the loop
     if (verbose) 
-        message('Registering ', length(unlist(dictionary)), ' entries in the dictionary...');
+        catm("applying a dictionary consisting of ", length(dictionary), " key", 
+             ifelse(length(dictionary) > 1, "s", ""), "\n", sep="")
+    
     for (h in 1:length(dictionary)) {
         entries <- dictionary[[h]]
         
@@ -117,22 +119,22 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
         entries_id <- c(entries_id, entries_temp)
         keys_id <- c(keys_id, rep(h, length(entries_temp)))
     }
-    if (verbose) 
-        message('Searching ', length(entries_id), ' types of features...')
+    # if (verbose) 
+    #     message('Searching ', length(entries_id), ' types of features...')
     
-    if(exclusive){
+    if (exclusive) {
         x <- qatd_cpp_tokens_lookup(x, entries_id, keys_id, overlap)
-    }else{
+    } else {
         x <- qatd_cpp_tokens_match(x, entries_id, keys_id + length(types), FALSE)
     }
     attributes(x) <- attrs_org
-    if(exclusive){
+    if (exclusive) {
         if (capkeys) {
             types(x) <- char_toupper(names(dictionary))
         } else {
             types(x) <- names(dictionary)
         }
-    }else{
+    } else {
         if (capkeys) {
             types(x) <- c(types, char_toupper(names(dictionary)))
         } else {

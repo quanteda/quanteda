@@ -80,17 +80,9 @@ tokens_compound.tokens <- function(x, sequences,
     attrs_org <- attributes(x)
     types <- types(x)
     
-    # Convert glob or regex to fixed
     seqs_id <- regex2id(seqs, types, valuetype, case_insensitive)
     if(length(seqs_id) == 0) return(x) # do nothing
-
     x <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join)
-    if (!length(attr(x, "types"))){
-        attr(x, "types") <- NULL
-    } else {
-        Encoding(attr(x, "types")) <- "UTF-8"
-    }
-    # Reassign attributes, except types
     x <- reassign_attributes(x, attrs_org, exceptions = "types", attr_only = TRUE)
     attr(x, "concatenator") <- concatenator
     

@@ -341,3 +341,33 @@ test_that("rbind.dfm works as expected",{
                  c("docs", "features"))
 })
 
+test_that("dfm(x, dictionary = mwvdict) works with multi-word values", {
+    mwvdict <- dictionary(list(sequence1 = "a b", sequence2 = "x y", notseq = c("d", "e")))
+    txt <- c(d1 = "a b c d e f g x y z",
+             d2 = "a c d x z",
+             d3 = "x y",
+             d4 = "f g")
+
+    # as dictionary
+    dfm1 <- dfm(txt, dictionary = mwvdict, verbose = TRUE)
+    expect_identical(
+        as.matrix(dfm1), 
+        matrix(c(1, 0, 0, 0, 1, 0, 1, 0, 2, 1, 0, 0),
+               nrow = 4,
+               dimnames = list(docs = paste0("d", 1:4), 
+                               features = c("sequence1", "sequence2", "notseq")))
+    )
+    
+    # as thesaurus
+    dfm2 <- dfm(txt, thesaurus = mwvdict, verbose = TRUE)
+    expect_identical(
+        as.matrix(dfm2), 
+        matrix(c(0, 1, 0, 0,  1, 1, 0, 0,  1, 0, 0, 1,  1, 0, 0, 1,  0, 1, 0, 0, 1, 1, 0, 0, 
+                 1, 0, 0, 0, 1, 0, 1, 0, 2, 1, 0, 0),
+               nrow = 4,
+               dimnames = list(docs = paste0("d", 1:4), 
+                               features = c("a", "c", "f", "g", "x", "z", 
+                                            "SEQUENCE1", "SEQUENCE2", "NOTSEQ")))
+    )
+})
+
