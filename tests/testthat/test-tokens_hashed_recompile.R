@@ -2,7 +2,7 @@ context("testing tokens_hashed_recompile")
 
 test_that("tokens_hashed_recompile: tokens_tolower", {
     toks1 <- tokens(c(one = "a b c d A B C D",
-                     two = "A B C d"))
+                      two = "A B C d"))
     attr(toks1, "types") <- char_tolower(attr(toks1, "types"))
     expect_equal(
         attr(quanteda:::tokens_hashed_recompile(toks1), "types"),
@@ -59,7 +59,10 @@ test_that("tokens_hashed_recompile: tokens_select w/gaps", {
 
 
 test_that("tokens_hashed_recompile: preserves encoding", {
-    toks <- tokens(c(French = "Pêcheur pêcheur Français"))
+    skip_on_appveyor()  
+    txt <- c(French = "Pêcheur pêcheur Français")
+    Encoding(txt) <- "UTF-8"
+    toks <- tokens(txt)
     attr(toks, "types") <- char_tolower(attr(toks, "types"))
     
     expect_equal(

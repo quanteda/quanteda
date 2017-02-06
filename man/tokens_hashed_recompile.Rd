@@ -51,6 +51,9 @@ unclass(tokens_select(toks3, dict, pad = TRUE))
 unclass(tokens_ngrams(toks3, n = 2:3))
 
 }
+\author{
+Kenneth Benoit and Kohei Watanabe
+}
 \keyword{internal}
 \keyword{tokens}
 
