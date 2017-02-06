@@ -636,6 +636,7 @@ tokens_character <- function(txt, what, removeNumbers, removePunct, removeSymbol
 #' unclass(tokens_ngrams(toks3, n = 2:3))
 #' 
 #' @keywords internal tokens
+#' @author Kenneth Benoit and Kohei Watanabe
 tokens_hashed_recompile <- function(x, method = c("C++", "R")) {
     
     method <- match.arg(method)

@@ -7,6 +7,7 @@
 * `textstat_keyness()` now returns a data.frame with p-values as well as the test statistic, and rownames containing the feature.  This is more consistent with the other textstat functions.
 * `tokens_lookup()` implements new rules for nested and linked sequences in dictionary values.  See #502.
 * `tokens_compound()` has a new `join` argument for better handling of nested and linked sequences.  See #517.
+* Internal operations on `tokens` are now significantly faster due to a reimplementation of the hash table functions in C++. (#510)
 
 ### Bug fixes
 
