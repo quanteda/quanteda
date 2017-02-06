@@ -54,20 +54,15 @@ List qatd_cpp_tokens_recompile(const List &texts_,
     //Rcout << setw(10) << "" << ": " << 0 << " -> " << ids_new[0] << "\n";
     
     // Check if IDs are all used
-    unsigned int id_limit = ids_new.size() - 1;
+    unsigned int id_limit = ids_new.size();
     std::vector<bool> flags_used(ids_new.size(), false);
-    bool padding = false; // record use of padding
     for (std::size_t h = 0; h < texts.size(); h++) {
         for (std::size_t i = 0; i < texts[h].size(); i++) {
             unsigned int id = texts[h][i];
-            if (id == 0) {
-                padding = true;
-                continue;
-            } else if (id > id_limit) {
+            if (id > id_limit) {
                 throw std::range_error("Invalid tokens object");    
-            } else {
-                flags_used[id] = true;
             }
+            flags_used[id] = true;
         }
     }
     bool all_used = std::all_of(flags_used.begin(), flags_used.end(), [](bool v) { return v; });
@@ -75,6 +70,7 @@ List qatd_cpp_tokens_recompile(const List &texts_,
     // Check if types are duplicated
     std::vector<bool> flags_unique(ids_new.size(), false);
     std::unordered_map<std::string, unsigned int> types_unique;
+    flags_unique[0] = true; // padding is always unique
     for (std::size_t g = 1; g < ids_new.size(); g++) {
         auto it = types_unique.insert(std::pair<std::string, unsigned int>(types[g - 1], id_new));
         ids_new[g] = it.first->second;
@@ -92,10 +88,11 @@ List qatd_cpp_tokens_recompile(const List &texts_,
     }
     bool all_unique = std::all_of(flags_unique.begin(), flags_unique.end(), [](bool v) { return v; });
      
-    // Do nothing if no gap or duplicate
+    // Do nothing if all used and unique
+    //Rcout << all_used << " " << all_unique << "\n";
     if (all_used && all_unique) {
         ListOf<IntegerVector> texts_list = Rcpp::wrap(texts);
-        texts_list.attr("padding") = padding;
+        texts_list.attr("padding") = (bool)flags_used[0];
         texts_list.attr("types") = types;
         return texts_list;
     }
@@ -123,7 +120,7 @@ List qatd_cpp_tokens_recompile(const List &texts_,
     
     // dev::stop_timer("Dictionary lookup", timer);
     ListOf<IntegerVector> texts_list = Rcpp::wrap(texts);
-    texts_list.attr("padding") = padding;
+    texts_list.attr("padding") = (bool)flags_used[0];
     texts_list.attr("types") = types_new;
     return texts_list;
     
@@ -131,9 +128,10 @@ List qatd_cpp_tokens_recompile(const List &texts_,
 
 /***R
 
-toks3 <- list(rep(0:5, 1), rep(10:15, 1))
+#toks3 <- list(rep(0:5, 1), rep(10:15, 1))
+toks3 <- list(0:26)
 qatd_cpp_tokens_recompile(toks3, letters)
-qatd_cpp_tokens_recompile(toks3, rep(c('a', 'b', 'c'), 7))
+#qatd_cpp_tokens_recompile(toks3, rep(c('a', 'b', 'c'), 7))
 
 
 
