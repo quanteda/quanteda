@@ -8,6 +8,7 @@
 * `tokens_lookup()` implements new rules for nested and linked sequences in dictionary values.  See #502.
 * `tokens_compound()` has a new `join` argument for better handling of nested and linked sequences.  See #517.
 * Internal operations on `tokens` are now significantly faster due to a reimplementation of the hash table functions in C++. (#510)
+* `dfm()` now works with multi-word dictionaries and thesauruses, which previously worked only with `tokens_lookup()`.
 
 ### Bug fixes
 
