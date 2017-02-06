@@ -615,7 +615,7 @@ tokens_character <- function(txt, what, removeNumbers, removePunct, removeSymbol
 #' unclass(quanteda:::tokens_hashed_recompile(toks1))
 #' 
 #' # stemming
-#' tok2s <- tokens("Stemming stemmed many word stems.")
+#' toks2 <- tokens("Stemming stemmed many word stems.")
 #' unclass(toks2)
 #' unclass(quanteda:::tokens_hashed_recompile(tokens_wordstem(toks2)))
 #' 
