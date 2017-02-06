@@ -54,6 +54,7 @@ List qatd_cpp_tokens_recompile(const List &texts_,
     //Rcout << setw(10) << "" << ": " << 0 << " -> " << ids_new[0] << "\n";
     
     // Check if IDs are all used
+    unsigned int id_limit = ids_new.size() - 1;
     std::vector<bool> flags_used(ids_new.size(), false);
     bool padding = false; // record use of padding
     for (std::size_t h = 0; h < texts.size(); h++) {
@@ -62,8 +63,11 @@ List qatd_cpp_tokens_recompile(const List &texts_,
             if (id == 0) {
                 padding = true;
                 continue;
+            } else if (id > id_limit) {
+                throw std::range_error("Invalid tokens object");    
+            } else {
+                flags_used[id] = true;
             }
-            flags_used[id] = true;
         }
     }
     bool all_used = std::all_of(flags_used.begin(), flags_used.end(), [](bool v) { return v; });
