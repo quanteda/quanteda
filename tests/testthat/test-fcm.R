@@ -38,7 +38,7 @@ test_that("not weighted",{
     # serial implementation of cpp function
     toks <- tokens(txt)
     n <- sum(lengths(unlist(toks))) * 3 * 2
-    fcm_s <- quanteda:::fcm_hash_mt(toks, length(unique(unlist(toks))), 'frequency', 3, 1, FALSE, TRUE, n)
+    fcm_s <- quanteda:::fcm_hash_cpp(toks, length(unique(unlist(toks))), 'frequency', 3, 1, FALSE, TRUE, n)
     expect_equivalent(fcm,fcm_s)
     
     aMat <- matrix(c(2, 1, 4, 4, 5, 2,
@@ -58,7 +58,7 @@ test_that("weighted by default",{
     # serial implementation of cpp function
     toks <- tokens(txt)
     n <- sum(lengths(unlist(toks))) * 3 * 2
-    fcm_s <- quanteda:::fcm_hash_mt(toks, length(unique(unlist(toks))), 'weighted', 3, 1, FALSE, TRUE, n)
+    fcm_s <- quanteda:::fcm_hash_cpp(toks, length(unique(unlist(toks))), 'weighted', 3, 1, FALSE, TRUE, n)
     expect_equivalent(fcm,fcm_s)
     
     # tokenizedTexts
@@ -83,7 +83,7 @@ test_that("customized weighting function",{
     # serial implementation of cpp function
     toks <- tokens(txt)
     n <- sum(lengths(unlist(toks))) * 3 * 2
-    fcm_s <- quanteda:::fcm_hash_mt(toks, length(unique(unlist(toks))), 'weighted', 3, c(3,2,1), FALSE, TRUE, n)
+    fcm_s <- quanteda:::fcm_hash_cpp(toks, length(unique(unlist(toks))), 'weighted', 3, c(3,2,1), FALSE, TRUE, n)
     expect_equivalent(fcm,fcm_s)
     
     # tokenizedTexts
@@ -110,7 +110,7 @@ test_that("ordered setting: window",{
     # serial implementation of cpp function
     toks <- tokens(txt)
     n <- sum(lengths(unlist(toks))) * 3 * 2
-    fcm_s <- quanteda:::fcm_hash_mt(toks, length(unique(unlist(toks))), 'weighted', 3, 1, TRUE, FALSE, n)
+    fcm_s <- quanteda:::fcm_hash_cpp(toks, length(unique(unlist(toks))), 'weighted', 3, 1, TRUE, FALSE, n)
     expect_equivalent(fcm,fcm_s)
     
     fcm <- fcm_sort(fcm)
@@ -143,7 +143,7 @@ test_that("ordered setting: boolean",{
     # serial implementation of cpp function
     toks <- tokens(txts)
     n <- sum(lengths(unlist(toks))) * 3 * 2
-    fcm_s <- quanteda:::fcm_hash_mt(toks, length(unique(unlist(toks))), 'boolean', 2, 1, TRUE, TRUE, n)
+    fcm_s <- quanteda:::fcm_hash_cpp(toks, length(unique(unlist(toks))), 'boolean', 2, 1, TRUE, TRUE, n)
     expect_equivalent(fcm,fcm_s)
     
     # parallel version
@@ -161,7 +161,7 @@ test_that("ordered setting: boolean",{
     fcm <- fcm(txts, context = "window", count = "boolean", window = 2, ordered = FALSE, tri = TRUE)           
     
     # serial version
-    fcm_s <- quanteda:::fcm_hash_mt(toks, length(unique(unlist(toks))), 'boolean', 2, 1, FALSE, TRUE, n)
+    fcm_s <- quanteda:::fcm_hash_cpp(toks, length(unique(unlist(toks))), 'boolean', 2, 1, FALSE, TRUE, n)
     expect_equivalent(fcm,fcm_s)
     
     # parallal version
