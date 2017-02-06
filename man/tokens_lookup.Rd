@@ -5,8 +5,9 @@
 \title{apply a dictionary to a tokens object}
 \usage{
 tokens_lookup(x, dictionary, levels = 1:5, valuetype = c("glob", "regex",
-  "fixed"), concatenator = " ", case_insensitive = TRUE, capkeys = FALSE,
-  exclusive = TRUE, multiword = TRUE, verbose = FALSE)
+  "fixed"), concatenator = " ", case_insensitive = TRUE,
+  capkeys = !exclusive, exclusive = TRUE, multiword = TRUE,
+  verbose = FALSE)
 }
 \arguments{
 \item{x}{tokens object to which dictionary or thesaurus will be supplied}

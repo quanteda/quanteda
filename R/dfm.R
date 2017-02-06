@@ -239,6 +239,20 @@ dfm.tokenizedTexts <- function(x,
         names(x) <- paste("text", 1:length(x), sep="")
     } 
     
+    # use tokens_lookup for dictionaries with multi-word values otherwise do this later
+    if (!is.null(dictionary) | !is.null(thesaurus)) {
+        if (!is.null(thesaurus)) dictionary <- dictionary(thesaurus)
+        if (any(stringi::stri_detect_fixed(unlist(dictionary, use.names = FALSE), 
+                                           attr(dictionary, 'concatenator')))) {
+            if (verbose) catm("   ... ")
+            x <- tokens_lookup(x, dictionary,
+                               exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
+                               valuetype = valuetype,
+                               verbose = verbose)
+            dictionary <- thesaurus <- NULL
+        }
+    }
+        
     # compile the dfm
     dfmresult <- compile_dfm(x, verbose = verbose)
     
