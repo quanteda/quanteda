@@ -80,6 +80,16 @@ test_that("tokens_hashed_recompile: ngrams", {
         list(one = c("a_b", "b_c", "a_b_c"))
     )
 
+    expect_equal(
+        attributes(tokens_ngrams(toks, 2:3, concatenator = " "))$concatenator,
+        " "
+    )
+
+    expect_equal(
+        attributes(tokens_ngrams(toks, 2:3, concatenator = " "))$ngrams,
+        2L:3L
+    )
+
     attr(toks, "types") <- char_ngrams(attr(toks, "types"), 2:3)
     expect_equal(
         quanteda:::tokens_hashed_recompile(toks, method = "R"),
@@ -101,5 +111,24 @@ test_that("tokens_hashed_recompile: [ works for tokens", {
     )
 })
 
+test_that("tokens_hashed_recompile: selecting all tokens to produce and empty document", {
+    toks <- tokens(c(one = "a b c d",
+                     two = "x y z"))
+    toks <- tokens_select(toks, letters[1:4])
+
+    expect_equal(
+        attr(toks, "types"), 
+        letters[1:4]
+    )
+    expect_equal(
+        unclass(toks)[2], 
+        list(two = integer(0))
+    )
+    expect_equal(
+        as.list(toks[2]), 
+        list(two = character(0))
+    )
+    
+})
 
 
