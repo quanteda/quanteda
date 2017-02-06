@@ -613,6 +613,7 @@ tokens_hashed_recompile <- function(x, new = TRUE) {
         attrs_input[['types']] <- attr(x, 'types')
         attrs_input[['padding']] <- attr(x, 'padding')
         attributes(x) <- attrs_input
+        Encoding(types(x)) <- "UTF-8"
         return(x)
     }
     
@@ -641,7 +642,7 @@ tokens_hashed_recompile <- function(x, new = TRUE) {
         attributes(x) <- attrs_input
         types(x) <- types_unique
     }
-    
+    Encoding(types(x)) <- "UTF-8"
     return(x)
 }
 
