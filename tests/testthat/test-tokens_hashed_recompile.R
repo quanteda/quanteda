@@ -134,4 +134,22 @@ test_that("tokens_hashed_recompile: selecting all tokens to produce and empty do
     
 })
 
+test_that("tokens_hashed_recompile: corrupt tokens object does not crash R", {
+    
+    toks <- list(1:10)
+    attr(toks, 'types') <- c('a', 'b', 'c') # Shorter than 10
+    attr(toks, 'class') <- 'tokens'
+    expect_error(quanteda:::tokens_hashed_recompile(toks, 'C++'))
+    
+})
+
+test_that("tokens_hashed_recompile: flag use of padding even when it does not reindex tokens", {
+    
+    toks <- list(0:26) # has padding, but no gap
+    attr(toks, 'types') <- letters # no duplication
+    attr(toks, 'class') <- 'tokens'
+    expect_true(attr(quanteda:::tokens_hashed_recompile(toks, 'C++'), 'padding'))
+    
+})
+
 
