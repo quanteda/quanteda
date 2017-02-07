@@ -1,14 +1,6 @@
 #include <RcppArmadillo.h>
 #include <RcppParallel.h>
-//#include "tbb/tbb.h"
 #include "quanteda.h"
-//#include <boost/functional/hash.hpp>
-//#include "tbb/concurrent_vector.h"
-
-// [[Rcpp::plugins(cpp11)]]
-using namespace RcppParallel;
-using namespace Rcpp;
-using namespace tbb;
 using namespace quanteda;
 
 #if QUANTEDA_USE_TBB

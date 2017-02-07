@@ -1,12 +1,6 @@
-#include <Rcpp.h>
 //#include "dev.h"
 #include "quanteda.h"
-
-// [[Rcpp::plugins(cpp11)]]
-using namespace Rcpp;
-using namespace RcppParallel;
 using namespace quanteda;
-using namespace ngrams;
 
 /* 
  * This funciton is a orignal function by Watanabe, K (2016).

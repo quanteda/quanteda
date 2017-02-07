@@ -1,15 +1,22 @@
+#include <Rcpp.h>
 #include <RcppParallel.h>
-#include <limits.h>
+#include <unordered_map>
+#include <unordered_set>
+#include <limits>
+
+// [[Rcpp::plugins(cpp11)]]
+using namespace Rcpp;
+using namespace RcppParallel;
 
 // [[Rcpp::depends(RcppParallel)]]
 using namespace Rcpp;
 using namespace std;
 
-#ifndef QUANTEDA
+#ifndef QUANTEDA // prevent multiple redefinition
 #define QUANTEDA
 
-#if RCPP_PARALLEL_USE_TBB && GCC_VERSION >= 40801 // gcc 4.8.1
-#define QUANTEDA_USE_TBB true // TBB header is loaded automatically
+#if RCPP_PARALLEL_USE_TBB && GCC_VERSION >= 40801 // newer than gcc 4.8.1
+#define QUANTEDA_USE_TBB true // tbb.h is loaded automatically by RcppParallel.h
 #else
 #define QUANTEDA_USE_TBB false
 #endif
@@ -76,9 +83,9 @@ namespace quanteda{
         }
         return list;
     }
-}
 
-namespace ngrams {
+    // Ngram functions and objects -------------------------------------------------------
+    
     typedef std::vector<unsigned int> Ngram;
     typedef std::vector<Ngram> Ngrams;
     typedef std::string Type;

@@ -1,13 +1,6 @@
-#include <Rcpp.h>
 //#include "dev.h"
 #include "quanteda.h"
-
-// [[Rcpp::plugins(cpp11)]]
-using namespace Rcpp;
-using namespace RcppParallel;
 using namespace quanteda;
-using namespace ngrams;
-
 
 Text keep_token(Text tokens, 
           const std::vector<std::size_t> &spans,
