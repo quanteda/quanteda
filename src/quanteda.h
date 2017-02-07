@@ -6,10 +6,8 @@
 
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
-using namespace RcppParallel;
-
 // [[Rcpp::depends(RcppParallel)]]
-using namespace Rcpp;
+using namespace RcppParallel;
 using namespace std;
 
 #ifndef QUANTEDA // prevent multiple redefinition
