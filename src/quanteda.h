@@ -51,7 +51,7 @@ namespace quanteda{
     inline std::string join(std::vector< std::string > &tokens, std::string &delim){
         if (tokens.size() == 0) return "";
         std::string token = tokens[0];
-        for (unsigned int i = 1; i < tokens.size(); i++) {
+        for (std::size_t i = 1; i < tokens.size(); i++) {
           token += delim + tokens[i];
         }
         return token;
