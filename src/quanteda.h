@@ -1,7 +1,7 @@
-// [[Rcpp::depends(RcppParallel)]]
 #include <RcppParallel.h>
 #include <limits.h>
 
+// [[Rcpp::depends(RcppParallel)]]
 using namespace Rcpp;
 using namespace std;
 
@@ -81,14 +81,16 @@ namespace ngrams {
     struct hash_ngram {
             std::size_t operator() (const Ngram &vec) const {
             unsigned int seed = 0;
-            unsigned int shift = 0;
             for (std::size_t i = 0; i < vec.size(); i++) {
-            #if __WORDSIZE == 64 // defined in limit.h
-                shift = i < 8 ? i : 6; // shift up to 32 bit
-            #else
-                shift = i < 4 ? i : 2; // shift up to 16 bit
-            #endif
-                seed += (vec[i] << (8 * shift)); 
+                if(i < 6) {
+                    #if __WORDSIZE == 64 // change size of bit shift in 64 bit systems
+                    seed += (vec[i] << (8 * i));
+                    #else
+                    seed += (vec[i] << (4 * i));
+                    #endif
+                } else {
+                    seed += vec[i];
+                }
             }
             return std::hash<unsigned int>()(seed);
         }
