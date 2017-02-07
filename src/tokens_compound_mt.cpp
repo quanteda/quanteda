@@ -1,5 +1,5 @@
 #include <Rcpp.h>
-#include "dev.h"
+//#include "dev.h"
 #include "quanteda.h"
 
 // [[Rcpp::plugins(cpp11)]]
