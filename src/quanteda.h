@@ -1,8 +1,9 @@
-using namespace Rcpp;
-using namespace std;
+#include <RcppParallel.h>
+#include <limits.h>
 
 // [[Rcpp::depends(RcppParallel)]]
-#include <RcppParallel.h>
+using namespace Rcpp;
+using namespace std;
 
 #ifndef __QUANTEDA__
 #define __QUANTEDA__
@@ -79,9 +80,15 @@ namespace ngrams {
     
     struct hash_ngram {
             std::size_t operator() (const Ngram &vec) const {
+            unsigned int add = 0;
             unsigned int seed = 0;
             for (std::size_t i = 0; i < vec.size(); i++) {
-                seed += (vec[i] << (i * 8)); // shift elements 8 bit
+                add = vec[i] << (8 * i);
+                if (seed <= UINT_MAX - add) { // check if addition will overflow seed
+                    seed += add;
+                } else {
+                    return std::hash<unsigned int>()(seed);
+                }
             }
             return std::hash<unsigned int>()(seed);
         }

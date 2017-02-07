@@ -81,7 +81,7 @@ Text match_comp(Text tokens,
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
-            if (!overlap & flags_match[i]) continue; // ignore matched tokens 
+            if (!overlap && flags_match[i]) continue; // ignore matched tokens 
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto it = map_comps.find(ngram);
             if (it != map_comps.end()) {

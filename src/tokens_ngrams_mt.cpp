@@ -245,12 +245,12 @@ str(out)
 out
 
 
-tok2 <- quanteda::tokens(data_corpus_inaugural)
-
-for(i in 1:100) {
-    cat(i, "\n")
-    out2 <- qatd_cpp_tokens_ngrams(unclass(tok2), attr(tok2, 'types'), "_", 2, 1)
-}
+# tok2 <- quanteda::tokens(data_corpus_inaugural)
+# 
+# for(i in 1:100) {
+#     cat(i, "\n")
+#     out2 <- qatd_cpp_tokens_ngrams(unclass(tok2), attr(tok2, 'types'), "_", 2, 1)
+# }
 
 
 
