@@ -11,7 +11,7 @@ using namespace Rcpp;
 using namespace tbb;
 using namespace quanteda;
 
-#if RCPP_PARALLEL_USE_TBB
+#if QUANTEDA_USE_TBB
     typedef std::tuple<unsigned int, unsigned int, double> Triplet;
     typedef tbb::concurrent_vector<Triplet> Triplets;
     typedef tbb::concurrent_unordered_multimap<std::pair<unsigned int, unsigned int>, unsigned int, std::hash<pair<unsigned int, unsigned int>>> docMaps;
@@ -422,11 +422,11 @@ arma::sp_mat fcm_hash_mt(Rcpp::List &texts,
                          const bool tri,
                          const unsigned int nvec){
     
-    #if RCPP_PARALLEL_USE_TBB
+#if QUANTEDA_USE_TBB
     return fcm_hash_cpp_mt(texts, n_types, count, window, weights, ordered, tri, nvec);
-    #else
+#else
     return fcm_hash_cpp(texts, n_types, count, window, weights, ordered, tri, nvec);
-    #endif    
+#endif    
 }
 
 /***R

@@ -8,7 +8,7 @@ using namespace RcppParallel;
 using namespace quanteda;
 using namespace ngrams;
 
-#if RCPP_PARALLEL_USE_TBB
+#if QUANTEDA_USE_TBB
 typedef tbb::concurrent_vector<unsigned int> VecIds;
 #else
 typedef std::vector<unsigned int> VecIds;
@@ -99,17 +99,17 @@ List qatd_cpp_tokens_recompile(const List &texts_,
     }
     
     // Convert old IDs to new IDs
-    #if RCPP_PARALLEL_USE_TBB
+#if QUANTEDA_USE_TBB
     compile_mt compile_mt(texts, ids_new);
     parallelFor(0, texts.size(), compile_mt);
-    #else
+#else
     for (std::size_t h = 0; h < texts.size(); h++) {
         for (std::size_t i = 0; i < texts[h].size(); i++) {
             texts[h][i] = ids_new[texts[h][i]];
             //Rcout << texts[h][i] << " -> " << ids_new[texts[h][i]] << "\n";
         }
     }
-    #endif
+#endif
 
     std::vector<std::string> types_new;
     types_new.reserve(ids_new.size());

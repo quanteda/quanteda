@@ -90,7 +90,7 @@ List qatd_cpp_tokens_replace(const List &texts_,
     // dev::Timer timer;
     Texts output(input.size());
     // dev::start_timer("Token replace", timer);
-#if RCPP_PARALLEL_USE_TBB
+#if QUANTEDA_USE_TBB
     replace_mt replace_mt(input, output, spans, map_words);
     parallelFor(0, input.size(), replace_mt);
 #else

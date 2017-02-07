@@ -130,10 +130,10 @@ List qatd_cpp_tokens_select(const List &texts_,
     // dev::Timer timer;
     Texts output(input.size());
     // dev::start_timer("Token select", timer);
-    #if RCPP_PARALLEL_USE_TBB
+#if QUANTEDA_USE_TBB
     select_mt select_mt(input, output, spans, set_words, mode, padding);
     parallelFor(0, input.size(), select_mt);
-    #else
+#else
     if (mode == 1) {
         for (std::size_t h = 0; h < input.size(); h++) {
             output[h] = keep_token(input[h], spans, set_words, padding);
@@ -147,7 +147,7 @@ List qatd_cpp_tokens_select(const List &texts_,
             output[h] = input[h];
         }
     }
-    #endif
+#endif
     // dev::stop_timer("Token select", timer);
     ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
     return texts_list;

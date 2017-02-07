@@ -84,14 +84,14 @@ List qatd_cpp_tokens_detect(const List &texts_,
     // dev::Timer timer;
     Texts output(input.size());
     // dev::start_timer("Dictionary detect", timer);
-    #if RCPP_PARALLEL_USE_TBB
+#if QUANTEDA_USE_TBB
     detect_mt detect_mt(input, output, spans, set_words);
     parallelFor(0, input.size(), detect_mt);
-    #else
+#else
     for (std::size_t h = 0; h < input.size(); h++) {
         output[h] = detect(input[h], spans, set_words);
     }
-    #endif
+#endif
     // dev::stop_timer("Dictionary detect", timer);
     ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
     return texts_list;

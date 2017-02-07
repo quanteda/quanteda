@@ -170,7 +170,7 @@ List qatd_cpp_tokens_compound(const List &texts_,
     const List comps = comps_;
     
     unsigned int id_last = types.size();
-    #if RCPP_PARALLEL_USE_TBB && GCC_VERSION >= 40801 // gcc 4.8.1
+    #if QUANTEDA_USE_TBB
     IdNgram id_comp(id_last);
     #else
     IdNgram id_comp = id_last;
@@ -178,7 +178,7 @@ List qatd_cpp_tokens_compound(const List &texts_,
 
     MapNgrams map_comps;
     std::vector<std::size_t> spans(comps.size());
-    for (unsigned int g = 0; g < comps.size(); g++) {
+    for (std::size_t g = 0; g < comps.size(); g++) {
         if (has_na(comps[g])) continue;
         Ngram comp = comps[g];
         map_comps[comp] = ++id_comp;
@@ -191,7 +191,7 @@ List qatd_cpp_tokens_compound(const List &texts_,
     // dev::Timer timer;
     Texts output(input.size());
     // dev::start_timer("Token compound", timer);
-    #if RCPP_PARALLEL_USE_TBB && GCC_VERSION >= 40801 // gcc 4.8.1
+    #if QUANTEDA_USE_TBB
     compound_mt compound_mt(input, output, spans, join, map_comps, id_comp);
     parallelFor(0, input.size(), compound_mt);
     #else

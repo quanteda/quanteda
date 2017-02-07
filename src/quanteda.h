@@ -5,17 +5,23 @@
 using namespace Rcpp;
 using namespace std;
 
-#ifndef __QUANTEDA__
-#define __QUANTEDA__
+#ifndef QUANTEDA
+#define QUANTEDA
 
+#if RCPP_PARALLEL_USE_TBB && GCC_VERSION >= 40801 // gcc 4.8.1
+#define QUANTEDA_USE_TBB true // TBB header is loaded automatically
+#else
+#define QUANTEDA_USE_TBB false
+#endif
 
 #define RCPP_USING_CXX11
+
 namespace quanteda{
     
     typedef std::vector<unsigned int> Text;
     typedef std::vector<Text> Texts;
     
-#if RCPP_PARALLEL_USE_TBB
+#if QUANTEDA_USE_TBB
     typedef tbb::atomic<int> IntParam;
     typedef tbb::atomic<long> LongParam;
     typedef tbb::atomic<double> DoubleParam;
@@ -100,8 +106,7 @@ namespace ngrams {
         }
     };
 
-#if RCPP_PARALLEL_USE_TBB
-    // TBB header is loaded automatically by the macro
+#if QUANTEDA_USE_TBB
     typedef tbb::atomic<unsigned int> IdNgram;
     typedef tbb::concurrent_unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
     typedef tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
