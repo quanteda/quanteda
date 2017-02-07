@@ -72,6 +72,7 @@ List qatd_cpp_tokens_recompile(const List &texts_,
     std::unordered_map<std::string, unsigned int> types_unique;
     flags_unique[0] = true; // padding is always unique
     for (std::size_t g = 1; g < ids_new.size(); g++) {
+        if (types[g - 1] == "") continue; // ignore null types
         auto it = types_unique.insert(std::pair<std::string, unsigned int>(types[g - 1], id_new));
         ids_new[g] = it.first->second;
         if (it.second) {
