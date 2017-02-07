@@ -16,7 +16,7 @@ Text keep_token(Text tokens,
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
-    unsigned int filler = std::numeric_limits<unsigned int>::max(); // use upper limit as a filler
+    unsigned int filler = UINT_MAX; // use upper limit as a filler
     Text tokens_copy(tokens.size(), filler);
     if (padding) {
         std::fill(tokens_copy.begin(), tokens_copy.end(), 0);

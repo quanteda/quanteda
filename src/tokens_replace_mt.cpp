@@ -15,7 +15,7 @@ Text replace(Text tokens,
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
-    unsigned int filler = std::numeric_limits<unsigned int>::max(); // use largest limit as filler
+    unsigned int filler = UINT_MAX; // use largest limit as filler
     bool match = false;
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
