@@ -236,9 +236,9 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
         }
         if (!is.tokens(x)) x <- as.tokens(x)
         #if (is.tokens(x)) {
-        n <- sum(lengths(unlist(x))) * window * 2
+        n <- sum(lengths(unlist(x, use.names = FALSE))) * window * 2
             #RcppParallel::setThreadOptions(1)
-        result <- fcm_hash_mt(x, length(unique(unlist(x))), count, window, weights, ordered, tri, n)
+        result <- fcm_hash_mt(x, length(unique(unlist(x, use.names = FALSE))), count, window, weights, ordered, tri, n)
             # set the dimnames of result
         types <- types(x)
         #} else {
