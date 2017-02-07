@@ -84,7 +84,7 @@ namespace ngrams {
             unsigned int seed = 0;
             for (std::size_t i = 0; i < vec.size(); i++) {
                 add = vec[i] << (8 * i);
-                if (seed < UINT_MAX - add) { // check if addition will overflow seed
+                if (seed <= UINT_MAX - add) { // check if addition will overflow seed
                     seed += add;
                 } else {
                     return std::hash<unsigned int>()(seed);
