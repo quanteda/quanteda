@@ -5,6 +5,7 @@ using namespace quanteda;
 
 struct hash_pair {
   size_t operator()(const pair<unsigned int, unsigned int> &p) const {
+    // Old potentially broken
     // unsigned int hash = 0;
     // hash ^= std::hash<unsigned int>()(p.first) + 0x9e3779b9;
     // hash ^= std::hash<unsigned int>()(p.second) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
