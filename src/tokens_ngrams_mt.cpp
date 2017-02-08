@@ -1,12 +1,6 @@
-#include <Rcpp.h>
 //#include "dev.h"
 #include "quanteda.h"
-
-// [[Rcpp::plugins(cpp11)]]
-using namespace Rcpp;
-using namespace RcppParallel;
 using namespace quanteda;
-using namespace ngrams;
 
 unsigned int ngram_id(const Ngram &ngram,
                       MapNgrams &map_ngram,
@@ -33,7 +27,7 @@ unsigned int ngram_id(const Ngram &ngram,
     return iti.first->second
     */
     
-#if RCPP_PARALLEL_USE_TBB    
+#if QUANTEDA_USE_TBB    
     auto it = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram.fetch_and_increment()));
 #else
     auto it = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram++));
@@ -194,7 +188,7 @@ List qatd_cpp_tokens_ngrams(const List texts_,
     //dev::Timer timer;
     //dev::start_timer("Ngram generation", timer);
     Texts output(input.size());
-#if RCPP_PARALLEL_USE_TBB && GCC_VERSION >= 40801 // gcc 4.8.1
+#if QUANTEDA_USE_TBB
     IdNgram id_ngram(1);
     skipgram_mt skipgram_mt(input, output, ns, skips, map_ngram, id_ngram);
     parallelFor(0, input.size(), skipgram_mt);
@@ -215,7 +209,7 @@ List qatd_cpp_tokens_ngrams(const List texts_,
     //dev::start_timer("Token generation", timer);
     // Create ngram types
      Types types_ngram(keys_ngram.size());
-#if RCPP_PARALLEL_USE_TBB && GCC_VERSION >= 40801 // gcc 4.8.1
+#if QUANTEDA_USE_TBB
         type_mt type_mt(keys_ngram, types_ngram, map_ngram, delim, types);
         parallelFor(0, types_ngram.size(), type_mt);
 #else
@@ -239,18 +233,13 @@ library(quanteda)
 #txt <- c('a b c d e')
 txt <- c('a b c d e', 'c d e f g')
 tok <- quanteda::tokens(txt)
-
 out <- qatd_cpp_tokens_ngrams(tok, attr(tok, 'types'), "-", 2, 1)
 str(out)
-out
 
-
-# tok2 <- quanteda::tokens(data_corpus_inaugural)
-# 
-# for(i in 1:100) {
-#     cat(i, "\n")
-#     out2 <- qatd_cpp_tokens_ngrams(unclass(tok2), attr(tok2, 'types'), "_", 2, 1)
-# }
+tok2 <- quanteda::tokens(data_corpus_inaugural)
+microbenchmark::microbenchmark(
+    qatd_cpp_tokens_ngrams(tok2, attr(tok2, 'types'), "-", 2, 1)
+)
 
 
 

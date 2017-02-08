@@ -1,12 +1,6 @@
-#include <Rcpp.h>
 //#include "dev.h"
 #include "quanteda.h"
-
-// [[Rcpp::plugins(cpp11)]]
-using namespace Rcpp;
-using namespace RcppParallel;
 using namespace quanteda;
-using namespace ngrams;
 
 Text match(Text tokens, 
            const std::vector<std::size_t> &spans,
@@ -118,7 +112,7 @@ List qatd_cpp_tokens_match(const List &texts_,
     // dev::Timer timer;
     Texts output(input.size());
     // dev::start_timer("Token match", timer);
-#if RCPP_PARALLEL_USE_TBB
+#if QUANTEDA_USE_TBB
     match_mt match_mt(input, output, spans, overlap, map_words);
     parallelFor(0, input.size(), match_mt);
 #else

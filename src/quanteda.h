@@ -1,21 +1,32 @@
+#include <Rcpp.h>
 #include <RcppParallel.h>
-#include <limits.h>
+#include <unordered_map>
+#include <unordered_set>
+#include <limits>
 
-// [[Rcpp::depends(RcppParallel)]]
+// [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
+// [[Rcpp::depends(RcppParallel)]]
+using namespace RcppParallel;
 using namespace std;
 
-#ifndef __QUANTEDA__
-#define __QUANTEDA__
+#ifndef QUANTEDA // prevent multiple redefinition
+#define QUANTEDA
 
+#if RCPP_PARALLEL_USE_TBB && GCC_VERSION >= 40801 // newer than gcc 4.8.1
+#define QUANTEDA_USE_TBB true // tbb.h is loaded automatically by RcppParallel.h
+#else
+#define QUANTEDA_USE_TBB false
+#endif
 
 #define RCPP_USING_CXX11
+
 namespace quanteda{
     
     typedef std::vector<unsigned int> Text;
     typedef std::vector<Text> Texts;
     
-#if RCPP_PARALLEL_USE_TBB
+#if QUANTEDA_USE_TBB
     typedef tbb::atomic<int> IntParam;
     typedef tbb::atomic<long> LongParam;
     typedef tbb::atomic<double> DoubleParam;
@@ -45,7 +56,7 @@ namespace quanteda{
     inline std::string join(std::vector< std::string > &tokens, std::string &delim){
         if (tokens.size() == 0) return "";
         std::string token = tokens[0];
-        for (unsigned int i = 1; i < tokens.size(); i++) {
+        for (std::size_t i = 1; i < tokens.size(); i++) {
           token += delim + tokens[i];
         }
         return token;
@@ -70,9 +81,9 @@ namespace quanteda{
         }
         return list;
     }
-}
 
-namespace ngrams {
+    // Ngram functions and objects -------------------------------------------------------
+    
     typedef std::vector<unsigned int> Ngram;
     typedef std::vector<Ngram> Ngrams;
     typedef std::string Type;
@@ -94,14 +105,25 @@ namespace ngrams {
         }
     };
     
+    /*
+    struct hash_ngram {
+        std::size_t operator() (const Ngram &vec) const {
+            unsigned int hash = 0;
+            hash ^= std::hash<unsigned int>()(vec[1]) + 0x9e3779b9;
+            for (std::size_t i = 1; i < vec.size(); i++) {
+                hash ^= std::hash<unsigned int>()(vec[i]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+            }
+            return hash;
+        }
+    };
+    */
     struct equal_ngram {
         bool operator() (const Ngram &vec1, const Ngram &vec2) const { 
             return (vec1 == vec2);
         }
     };
 
-#if RCPP_PARALLEL_USE_TBB
-    // TBB header is loaded automatically by the macro
+#if QUANTEDA_USE_TBB
     typedef tbb::atomic<unsigned int> IdNgram;
     typedef tbb::concurrent_unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
     typedef tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;

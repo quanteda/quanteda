@@ -124,6 +124,11 @@ setClass("fcm",
 #' toks <- tokens(char_tolower(txt), removePunct = TRUE)
 #' fcm(toks, context = "document")
 #' fcm(toks, context = "window", window = 3)
+#' 
+#' toks <- tokens(data_corpus_inaugural)
+#' fcm(toks, context = "document")
+#' fcm(toks, context = "window", window = 3)
+#' fcm(toks, context = "window", window = 3, count = "boolean")
 fcm <- function(x, context = c("document", "window"), 
                 count = c("frequency", "boolean", "weighted"),
                 window = 5L,
@@ -235,17 +240,9 @@ fcm.tokenizedTexts <- function(x, context = c("document", "window"),
             }
         }
         if (!is.tokens(x)) x <- as.tokens(x)
-        #if (is.tokens(x)) {
-        n <- sum(lengths(unlist(x))) * window * 2
-            #RcppParallel::setThreadOptions(1)
-        result <- fcm_hash_mt(x, length(unique(unlist(x))), count, window, weights, ordered, tri, n)
-            # set the dimnames of result
         types <- types(x)
-        #} else {
-        #    types <- unique(unlist(x, use.names = FALSE))
-        #    n <- sum(lengths(x)) * (window + 1)
-        #    result <- fcm_hash_mt(x, types, count, window, weights, ordered, tri, n)
-        #}
+        n <- sum(lengths(x)) * window * 2
+        result <- qatd_cpp_fcm(x, nfeature(x), count, window, weights, ordered, tri, n)
         # set the dimnames of result
         dimnames(result) <- list(features = types, features = types)
     }

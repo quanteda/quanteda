@@ -1,11 +1,7 @@
-
-// [[Rcpp::depends(RcppArmadillo,RcppParallel)]]
-
 #include <RcppArmadillo.h>
 #include <RcppParallel.h>
-// [[Rcpp::plugins(cpp11)]]
-using namespace RcppParallel;
-using namespace Rcpp;
+#include "quanteda.h"
+using namespace quanteda;
 
 // Manhattan distance: sum_i |x_i - y_i|
 struct ManhattanDistance : public Worker {

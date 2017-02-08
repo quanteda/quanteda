@@ -1,12 +1,6 @@
-#include <Rcpp.h>
 //#include "dev.h"
 #include "quanteda.h"
-
-// [[Rcpp::plugins(cpp11)]]
-using namespace Rcpp;
-using namespace RcppParallel;
 using namespace quanteda;
-using namespace ngrams;
 
 /* 
  * This funciton is a orignal function by Watanabe, K (2016).
@@ -212,7 +206,7 @@ List qatd_cpp_sequences(const List &texts_,
     MapNgrams counts_seq;
     //dev::Timer timer;
     //dev::start_timer("Count", timer);
-#if RCPP_PARALLEL_USE_TBB
+#if QUANTEDA_USE_TBB
     count_mt count_mt(texts, set_words, counts_seq, len_max, nested);
     parallelFor(0, texts.size(), count_mt);
 #else
@@ -237,7 +231,7 @@ List qatd_cpp_sequences(const List &texts_,
     DoubleParams ss(len);
     DoubleParams ls(len);
     //dev::start_timer("Estimate", timer);
-#if RCPP_PARALLEL_USE_TBB
+#if QUANTEDA_USE_TBB
     estimate_mt estimate_mt(seqs, cs, ss, ls, count_min, ordered);
     parallelFor(0, seqs.size(), estimate_mt);
 #else

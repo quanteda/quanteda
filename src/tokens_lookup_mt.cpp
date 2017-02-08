@@ -1,13 +1,6 @@
-#include <Rcpp.h>
 //#include "dev.h"
 #include "quanteda.h"
-
-// [[Rcpp::plugins(cpp11)]]
-using namespace Rcpp;
-using namespace RcppParallel;
 using namespace quanteda;
-using namespace ngrams;
-
 
 Text lookup(Text tokens, 
             const std::vector<std::size_t> &spans,
@@ -127,7 +120,7 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     // dev::Timer timer;
     Texts output(input.size());
     // dev::start_timer("Dictionary lookup", timer);
-#if RCPP_PARALLEL_USE_TBB
+#if QUANTEDA_USE_TBB
     lookup_mt lookup_mt(input, output, spans, id_max, overlap, map_keys);
     parallelFor(0, input.size(), lookup_mt);
 #else
