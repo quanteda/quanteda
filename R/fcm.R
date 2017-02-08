@@ -124,11 +124,6 @@ setClass("fcm",
 #' toks <- tokens(char_tolower(txt), removePunct = TRUE)
 #' fcm(toks, context = "document")
 #' fcm(toks, context = "window", window = 3)
-#' 
-#' toks <- tokens(data_corpus_inaugural)
-#' fcm(toks, context = "document")
-#' fcm(toks, context = "window", window = 3)
-#' fcm(toks, context = "window", window = 3, count = "boolean")
 fcm <- function(x, context = c("document", "window"), 
                 count = c("frequency", "boolean", "weighted"),
                 window = 5L,
