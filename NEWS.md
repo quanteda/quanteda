@@ -13,9 +13,9 @@
 
 ### Bug fixes
 
+* Fixed C++ incompatibilities on older platforms due to compiler incompatibilities with the required TBB libraries (for multi-threading) (#531, #532, #535), in addition to safeguarding against other compiler warnings across a variety of new tested undefined behaviours.  
 * Fixed a bug in `convert(x, to = "lsa")` that transposed row and column names (#526)
 * Added missing `fcm()` method for corpus objects (#538)
-* Fixed C++ incompatibilities on older platforms due to compiler incompatibilities with the reuqired TBB libraries (for multi-threading).  (#531, #532, #535)
 * Fixed some minor issues with reading in Lexicoder format dictionaries (Improvements to Lexicoder dictionary handling 
 
 
