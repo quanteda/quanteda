@@ -11,6 +11,7 @@ r_binary_packages:
 env:
   global:
     - R_CHECK_ARGS="--no-build-vignettes"
+    - RVERSION=devel _R_SAN_=TRUE _R_CHECK_FULL_=TRUE 
 before_install:
   - sudo apt-get install libgsl0-dev texlive
   - Rscript -e 'install.packages(c("devtools", "topicmodels", "tm", "knitr"))'
