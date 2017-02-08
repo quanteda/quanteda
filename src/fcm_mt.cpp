@@ -139,14 +139,10 @@ arma::sp_mat qatd_cpp_fcm(const Rcpp::List &texts_,
     // triplets are constructed according to tri & ordered settings to be efficient
     Texts texts = Rcpp::as<Texts>(texts_);
     // define weights 
-    std::vector<double> window_weights;
-    window_weights.reserve(window);
+    std::vector<double> window_weights(window, 1.0);
     bool boolean = false;
     if (count == "boolean") {
-        window_weights.assign(window, 1.0);
         boolean = true;
-    }else if (count == "frequency") {
-        window_weights.assign(window, 1.0);
     }else if(count == "weighted"){ 
         if (weights.size() == 1) {
             for (unsigned int i = 1; i <= window; i++){
