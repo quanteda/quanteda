@@ -5,10 +5,15 @@ using namespace quanteda;
 
 struct hash_pair {
   size_t operator()(const pair<unsigned int, unsigned int> &p) const {
-    unsigned int hash = 0;
-    hash ^= std::hash<unsigned int>()(p.first) + 0x9e3779b9;
-    hash ^= std::hash<unsigned int>()(p.second) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
-    return hash;
+    // unsigned int hash = 0;
+    // hash ^= std::hash<unsigned int>()(p.first) + 0x9e3779b9;
+    // hash ^= std::hash<unsigned int>()(p.second) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+    // return hash;
+    
+    unsigned int seed = 0;
+    seed = p.first;
+    seed += p.second << 16;
+    return std::hash<unsigned int>()(seed);
   }
 };
 
@@ -445,7 +450,9 @@ arma::sp_mat fcm_hash_mt(Rcpp::List &texts,
 
 toks <- list(rep(1:10, 10), rep(5:15, 10))
 types <- unique(unlist(toks))
-fcm_hash_mt(toks, length(types), 'weighted', 2, c(1, 0.5, 0.1), TRUE, TRUE, 840)
+window <- 2
+n <- length(unlist(toks)) * window * 2
+fcm_hash_mt(toks, length(types), 'weighted', window, c(1, 0.5, 0.1), TRUE, TRUE, n)
 
 fcm_hash_mt(toks, length(types), 'boolean', 2, 1, TRUE, TRUE, 840)
 microbenchmark::microbenchmark(

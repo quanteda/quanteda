@@ -233,18 +233,13 @@ library(quanteda)
 #txt <- c('a b c d e')
 txt <- c('a b c d e', 'c d e f g')
 tok <- quanteda::tokens(txt)
-
 out <- qatd_cpp_tokens_ngrams(tok, attr(tok, 'types'), "-", 2, 1)
 str(out)
-out
 
-
-# tok2 <- quanteda::tokens(data_corpus_inaugural)
-# 
-# for(i in 1:100) {
-#     cat(i, "\n")
-#     out2 <- qatd_cpp_tokens_ngrams(unclass(tok2), attr(tok2, 'types'), "_", 2, 1)
-# }
+tok2 <- quanteda::tokens(data_corpus_inaugural)
+microbenchmark::microbenchmark(
+    qatd_cpp_tokens_ngrams(tok2, attr(tok2, 'types'), "-", 2, 1)
+)
 
 
 
