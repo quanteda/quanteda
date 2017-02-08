@@ -5,6 +5,7 @@ using namespace quanteda;
 
 struct hash_pair {
   size_t operator()(const pair<unsigned int, unsigned int> &p) const {
+    
     // Old potentially broken
     // unsigned int hash = 0;
     // hash ^= std::hash<unsigned int>()(p.first) + 0x9e3779b9;
@@ -211,8 +212,9 @@ struct Boolmat_mt : public Worker{
         }
     }
 };
-//Implement by calling TBB APIs
-arma::sp_mat fcm_hash_cpp_mt(const Rcpp::List &texts_,
+
+// [[Rcpp::export]]
+arma::sp_mat qatd_cpp_fcm(const Rcpp::List &texts_,
                              const int n_types,
                              const String &count,
                              const unsigned int window,
@@ -227,17 +229,14 @@ arma::sp_mat fcm_hash_cpp_mt(const Rcpp::List &texts_,
         
         // declare the map returned by parallelized procedure
         docMaps fcm_tri;
-
-        // create the worker
+#if QUANTEDA_USE_TBB
         Boolmat_mt boolmat_mt(texts, window, tri, ordered, fcm_tri);
-        
-        // call it with parallelFor
-        // Rcout << "Using parallelFor\n";
         parallelFor(0, texts.size(), boolmat_mt);
-        // for (std::size_t h = 0; h < texts.size(); h++) {
-        //     boolean_count(texts[h], window, tri, ordered, fcm_tri, h);
-        // }
-        
+#else        
+        for (std::size_t h = 0; h < texts.size(); h++) {
+            boolean_count(texts[h], window, tri, ordered, fcm_tri, h);
+        }
+#endif        
         // Convert to Rcpp objects
         std::size_t mat_size = fcm_tri.size();
         arma::umat index_mat(2, mat_size, arma::fill::zeros);
@@ -275,18 +274,14 @@ arma::sp_mat fcm_hash_cpp_mt(const Rcpp::List &texts_,
         Triplets fcm_tri;
         fcm_tri.reserve(nvec);
         
-        // create the worker
+#if QUANTEDA_USE_TBB
         Fcmat_mt fcmat_mt(texts, window_weights, window, tri, ordered, fcm_tri);
-        
-        // call it with parallelFor
-        // Rcout << "Using parallelFor\n";
         parallelFor(0, texts.size(), fcmat_mt);
-        
-        //***********
-        //for (std::size_t h = 0; h < texts.size(); h++) {
-        //    fre_count(texts[h],window_weights, window, tri, ordered, fcm_tri);
-        //}
-        //*******
+#else        
+        for (std::size_t h = 0; h < texts.size(); h++) {
+            fre_count(texts[h],window_weights, window, tri, ordered, fcm_tri);
+        }
+#endif
   
         // Convert to Rcpp objects
         std::size_t mat_size = fcm_tri.size();
@@ -304,6 +299,7 @@ arma::sp_mat fcm_hash_cpp_mt(const Rcpp::List &texts_,
     }
 }
 
+/*
 // implement serially
 // [[Rcpp::export]]
 arma::sp_mat fcm_hash_cpp(Rcpp::List &texts,
@@ -429,23 +425,8 @@ arma::sp_mat fcm_hash_cpp(Rcpp::List &texts,
         return a_fcm;
     }
 }
+*/
 
-// [[Rcpp::export]]
-arma::sp_mat fcm_hash_mt(Rcpp::List &texts,
-                         const int n_types,
-                         const String &count,
-                         unsigned int window,
-                         const NumericVector &weights,
-                         const bool ordered,
-                         const bool tri,
-                         const unsigned int nvec){
-    
-#if QUANTEDA_USE_TBB
-    return fcm_hash_cpp_mt(texts, n_types, count, window, weights, ordered, tri, nvec);
-#else
-    return fcm_hash_cpp(texts, n_types, count, window, weights, ordered, tri, nvec);
-#endif    
-}
 
 /***R
 
@@ -453,12 +434,12 @@ toks <- list(rep(1:10, 10), rep(5:15, 10))
 types <- unique(unlist(toks))
 window <- 2
 n <- length(unlist(toks)) * window * 2
-fcm_hash_mt(toks, length(types), 'weighted', window, c(1, 0.5, 0.1), TRUE, TRUE, n)
+qatd_cpp_fcm(toks, length(types), 'weighted', window, c(1, 0.5, 0.1), TRUE, TRUE, n)
 
-fcm_hash_mt(toks, length(types), 'boolean', 2, 1, TRUE, TRUE, 840)
+qatd_cpp_fcm(toks, length(types), 'boolean', 2, 1, TRUE, TRUE, 840)
 microbenchmark::microbenchmark(
-  boolean=fcm_hash_mt(toks, length(types), 'boolean', 2, 1, TRUE, TRUE, 840),
-  weighted=fcm_hash_mt(toks, length(types), 'weighted', 2, c(1, 0.5, 0.1), TRUE, TRUE, 840)
+  boolean=qatd_cpp_fcm(toks, length(types), 'boolean', 2, 1, TRUE, TRUE, 840),
+  weighted=qatd_cpp_fcm(toks, length(types), 'weighted', 2, c(1, 0.5, 0.1), TRUE, TRUE, 840)
 )
 
 */
