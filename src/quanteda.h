@@ -88,7 +88,7 @@ namespace quanteda{
     typedef std::vector<Ngram> Ngrams;
     typedef std::string Type;
     typedef std::vector<Type> Types;
-    
+    /*
     struct hash_ngram {
             std::size_t operator() (const Ngram &vec) const {
             unsigned int add = 0;
@@ -103,6 +103,19 @@ namespace quanteda{
             }
             return std::hash<unsigned int>()(seed);
         }
+    };*/
+    
+    struct hash_ngram {
+      
+      
+      std::size_t operator() (const Ngram &vec) const {
+        
+        unsigned int hash = 0;
+        hash ^= std::hash<unsigned int>()(vec[1]) + 0x9e3779b9;
+        for (std::size_t i = 1; i < vec.size(); i++) {
+          hash ^= std::hash<unsigned int>()(vec[i]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+        return hash;
+      }
     };
     
     struct equal_ngram {

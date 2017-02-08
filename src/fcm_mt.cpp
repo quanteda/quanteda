@@ -3,20 +3,37 @@
 #include "quanteda.h"
 using namespace quanteda;
 
+struct hash_pair {
+  size_t operator()(const pair<unsigned int, unsigned int> &p) const {
+    unsigned int hash = 0;
+    hash ^= std::hash<unsigned int>()(p.first) + 0x9e3779b9;
+    hash ^= std::hash<unsigned int>()(p.second) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+    return hash;
+  }
+};
+
+struct equal_pair {
+  bool operator() (const pair<unsigned int, unsigned int> &p1, 
+                   const pair<unsigned int, unsigned int> &p2) const { 
+    return (p1.first == p2.first && p1.second == p2.second);
+  }
+};
+
 #if QUANTEDA_USE_TBB
     typedef std::tuple<unsigned int, unsigned int, double> Triplet;
     typedef tbb::concurrent_vector<Triplet> Triplets;
-    typedef tbb::concurrent_unordered_multimap<std::pair<unsigned int, unsigned int>, unsigned int, std::hash<pair<unsigned int, unsigned int>>> docMaps;
+    typedef tbb::concurrent_unordered_multimap<std::pair<unsigned int, unsigned int>, unsigned int, hash_pair, equal_pair> docMaps;
 #else
     typedef std::tuple<unsigned int, unsigned int, double> Triplet;
     typedef std::vector<Triplet> Triplets;
-    typedef std::unordered_multimap<std::pair<unsigned int, unsigned int>, unsigned int, std::hash<pair<unsigned int, unsigned int>>> docMaps;
+    typedef std::unordered_multimap<std::pair<unsigned int, unsigned int>, unsigned int, hash_pair, equal_pair> docMaps;
     
 #endif   
 
+/*
 // hash function for pair<>
 template <class T>
-inline void hash_combine(std::size_t & seed, const T & v)
+inline void hash_combine(unsigned int&seed, const T & v)
 {
     std::hash<T> hasher;
     seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
@@ -35,6 +52,9 @@ namespace std
         }
     };
 }
+*/
+
+
 //count the co-occurance when count is set to "frequency" or "weighted"
 void fre_count(const Text &text,
                const std::vector<double> &window_weights,    
@@ -428,5 +448,9 @@ types <- unique(unlist(toks))
 fcm_hash_mt(toks, length(types), 'weighted', 2, c(1, 0.5, 0.1), TRUE, TRUE, 840)
 
 fcm_hash_mt(toks, length(types), 'boolean', 2, 1, TRUE, TRUE, 840)
+microbenchmark::microbenchmark(
+  boolean=fcm_hash_mt(toks, length(types), 'boolean', 2, 1, TRUE, TRUE, 840),
+  weighted=fcm_hash_mt(toks, length(types), 'weighted', 2, c(1, 0.5, 0.1), TRUE, TRUE, 840)
+)
 
 */
