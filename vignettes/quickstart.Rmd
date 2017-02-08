@@ -441,7 +441,10 @@ topfeatures(mydfm, 20)  # 20 top words
 
 Plotting a word cloud is done using `textplot_wordcloud()`, for a `dfm` class object:
 ```{r warning = FALSE, fig.width = 8, fig.height = 8}
-textplot_wordcloud(mydfm)
+set.seed(100)
+textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
+                   rot.per = .25, 
+                   colors = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
 The `plot.dfm()` method passes arguments through to `wordcloud()` from the **wordcloud** package, and can prettify the plot using the same arguments:
