@@ -90,12 +90,11 @@ textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine",
                margin = "features", 20)
 
 }
-\author{
-Haiyan Wang
-}
 \seealso{
 \link{dfm}
 
 \code{\link{textstat_dist}}, \code{\link{as.list.dist}}
 }
-
+\author{
+Haiyan Wang
+}

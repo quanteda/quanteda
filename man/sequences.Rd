@@ -51,14 +51,13 @@ seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FAL
 head(seqs2, 10)
 
 }
-\author{
-Kohei Watanabe
-}
 \references{
 Blaheta, D., & Johnson, M. (2001). 
   \href{http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf}{Unsupervised
    learning of multi-word verbs}. Presented at the ACLEACL Workshop on the 
   Computational Extraction, Analysis and Exploitation of Collocations.
 }
+\author{
+Kohei Watanabe
+}
 \keyword{collocations}
-

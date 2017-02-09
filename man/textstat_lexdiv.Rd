@@ -94,10 +94,6 @@ cor(textstat_lexdiv(mydfm, "all"))
 textstat_lexdiv(mydfm, "TTR", drop = TRUE)
 textstat_lexdiv(mydfm, "TTR", drop = FALSE)
 }
-\author{
-Kenneth Benoit, adapted from the S4 class implementation written by 
-  Meik Michalke in the \pkg{koRpus} package.
-}
 \references{
 Covington, M.A. & McFall, J.D. (2010). Cutting the Gordian Knot: 
   The Moving-Average Type-Token Ratio (MATTR). \emph{Journal of Quantitative 
@@ -121,4 +117,7 @@ Covington, M.A. & McFall, J.D. (2010). Cutting the Gordian Knot:
   Measures of Lexical Richness in Perspective. \emph{Computers and the 
   Humanities}, 32(5), 323--352.
 }
-
+\author{
+Kenneth Benoit, adapted from the S4 class implementation written by 
+  Meik Michalke in the \pkg{koRpus} package.
+}

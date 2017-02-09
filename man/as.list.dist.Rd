@@ -45,4 +45,3 @@ round(head(sort(corMat[, "oil"], decreasing = TRUE), 14), 2)
 round(head(sort(corMat[, "opec"], decreasing = TRUE), 9), 2)
 } 
 }
-

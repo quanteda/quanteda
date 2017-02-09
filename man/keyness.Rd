@@ -57,4 +57,3 @@ quanteda:::keyness_lr(mydfm)
 }
 \keyword{internal}
 \keyword{textstat}
-

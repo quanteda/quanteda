@@ -28,6 +28,6 @@ values}
 
 \item{\code{file}}{file from which a dictionary was read (if imported)}
 }}
+
 \keyword{dictionary}
 \keyword{internal}
-

@@ -99,14 +99,6 @@ txt <- c("The quick brown fox jumped over the lazy dog.",
 toks <- tokens(char_tolower(txt), removePunct = TRUE)
 fcm(toks, context = "document")
 fcm(toks, context = "window", window = 3)
-
-toks <- tokens(data_corpus_inaugural)
-fcm(toks, context = "document")
-fcm(toks, context = "window", window = 3)
-fcm(toks, context = "window", window = 3, count = "boolean")
-}
-\author{
-Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)
 }
 \references{
 Momtazi, S., Khudanpur, S., & Klakow, D. (2010). 
@@ -126,4 +118,6 @@ Momtazi, S., Khudanpur, S., & Klakow, D. (2010).
   mutual information, and lexicography}" \emph{Computational Linguistics},
   16(1):22–29.
 }
-
+\author{
+Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)
+}

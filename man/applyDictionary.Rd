@@ -2,9 +2,9 @@
 % Please edit documentation in R/dictionaries-deprecated.R
 \name{applyDictionary}
 \alias{applyDictionary}
-\alias{applyDictionary.dfm}
-\alias{applyDictionary.tokenizedTexts}
 \alias{applyDictionary.tokens}
+\alias{applyDictionary.tokenizedTexts}
+\alias{applyDictionary.dfm}
 \title{apply a dictionary or thesaurus to an object}
 \usage{
 applyDictionary(x, dictionary, ...)
@@ -71,4 +71,3 @@ toks2
 }
 \keyword{deprecated}
 \keyword{internal}
-

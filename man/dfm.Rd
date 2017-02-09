@@ -146,4 +146,3 @@ dfm2 <- dfm(dfm1,
 \code{\link{dfm_select}}, \link{dfm-class}
 }
 \keyword{dfm}
-

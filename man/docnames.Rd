@@ -42,4 +42,3 @@ docnames(data_corpus_inaugural) <- paste("Speech", 1:ndoc(data_corpus_inaugural)
 }
 \keyword{corpus}
 \keyword{dfm}
-

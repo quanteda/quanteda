@@ -37,4 +37,3 @@ Kenneth Benoit
 }
 \keyword{internal}
 \keyword{textmodel}
-

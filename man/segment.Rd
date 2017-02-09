@@ -22,4 +22,3 @@ See \code{\link{corpus_segment}}
 }
 \keyword{deprecated}
 \keyword{internal}
-

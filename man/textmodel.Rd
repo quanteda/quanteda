@@ -72,6 +72,7 @@ will depend on which model was called (see \code{model} types below).
   that governs dispatch for the predict, print, summary methods, since this 
   is not terribly obvious. (Blame it on the S3 system.)
 }
+
 \examples{
 ieDfm <- dfm(data_corpus_irishbudget2010, verbose=FALSE)
 refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
@@ -93,4 +94,3 @@ wf}
 \seealso{
 \code{\link{textmodel}}, \code{\link{textmodel_wordscores}}
 }
-

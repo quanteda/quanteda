@@ -2,10 +2,10 @@
 % Please edit documentation in R/dfm-print.R, R/fcm.R
 \docType{methods}
 \name{print.dfm}
-\alias{print,dfm-method}
-\alias{print,fcm-method}
 \alias{print.dfm}
+\alias{print,dfm-method}
 \alias{show,dfm-method}
+\alias{print,fcm-method}
 \alias{show,fcm-method}
 \title{print a dfm object}
 \usage{
@@ -42,4 +42,3 @@ print methods for document-feature matrices
 }
 \keyword{dfm}
 \keyword{internal}
-

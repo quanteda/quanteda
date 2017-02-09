@@ -60,4 +60,3 @@ colnames(myfcm)[5] <- rownames(myfcm)[5] <- "fox"
 myfcm
 fcm_compress(myfcm)
 }
-
