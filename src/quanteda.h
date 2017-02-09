@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <limits>
+#include <mutex>
 
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;

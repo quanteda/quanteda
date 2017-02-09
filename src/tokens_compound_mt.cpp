@@ -2,7 +2,11 @@
 #include "quanteda.h"
 using namespace quanteda;
 
+#if QUANTEDA_USE_TBB
 tbb::spin_mutex id_mutex;
+#else
+std::mutex id_mutex;
+#endif
 
 Text join_comp(Text tokens, 
                const std::vector<std::size_t> &spans,
@@ -185,10 +189,10 @@ List qatd_cpp_tokens_compound(const List &texts_,
     // dev::Timer timer;
     Texts output(input.size());
     // dev::start_timer("Token compound", timer);
-    #if QUANTEDA_USE_TBB
+#if QUANTEDA_USE_TBB
     compound_mt compound_mt(input, output, spans, join, map_comps, id_comp);
     parallelFor(0, input.size(), compound_mt);
-    #else
+#else
     for (std::size_t h = 0; h < input.size(); h++) {
         if (join) {
             output[h] = join_comp(input[h], spans, map_comps, id_comp);
@@ -196,7 +200,7 @@ List qatd_cpp_tokens_compound(const List &texts_,
             output[h] = match_comp(input[h], spans, true, map_comps);
         }
     }
-    #endif
+#endif
     
     // Extract only keys in order of the ID
     VecNgrams ids_comp(id_comp - id_last);
