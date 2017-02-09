@@ -25,3 +25,4 @@ summary(wca)
 \author{
 Kenneth Benoit
 }
+

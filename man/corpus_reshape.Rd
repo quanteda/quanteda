@@ -46,3 +46,4 @@ summary(paragCorpus, 100, showmeta=TRUE)
 ## \\n to mark the end of a paragraph.
 }
 \keyword{corpus}
+

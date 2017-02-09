@@ -20,3 +20,4 @@ Deprecated `textstat_` function names.
 }
 \keyword{deprecated}
 \keyword{internal}
+

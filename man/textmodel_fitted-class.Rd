@@ -25,6 +25,6 @@ Available types currently include...
 
 \item{\code{method}}{the type of textmodel, e.g. wordfish, wordscores, NB-}
 }}
-
 \keyword{internal}
 \keyword{textmodel}
+

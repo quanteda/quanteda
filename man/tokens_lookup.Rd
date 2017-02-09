@@ -76,3 +76,4 @@ tokens_lookup(toks, dict, levels = 3)
 tokens_lookup(toks, dict, levels = c(1,3))
 tokens_lookup(toks, dict, levels = c(2,3))
 }
+

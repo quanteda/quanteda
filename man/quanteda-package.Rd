@@ -73,25 +73,3 @@ methods.
 \url{http://github.com/kbenoit/quanteda}
 }
 
-\seealso{
-Useful links:
-\itemize{
-  \item \url{http://github.com/kbenoit/quanteda}
-  \item Report bugs at \url{https://github.com/kbenoit/quanteda/issues}
-}
-
-}
-\author{
-\strong{Maintainer}: Kenneth Benoit \email{kbenoit@lse.ac.uk}
-
-Other contributors:
-\itemize{
-  \item Kohei Watanabe \email{watanabe.kohei@gmail.com} [contributor]
-  \item Paul Nulty \email{paul.nulty@gmail.com} [contributor]
-  \item Adam Obeng \email{quanteda@binaryeagle.com} [contributor]
-  \item Haiyan Wang \email{h.wang52@lse.ac.uk} [contributor]
-  \item Benjamin Lauderdale \email{B.E.lauderdale@lse.ac.uk} [contributor]
-  \item Will Lowe \email{wlowe@princeton.edu} [contributor]
-}
-
-}

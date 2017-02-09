@@ -41,3 +41,4 @@ If "fixed" is used with \code{case_insensitive = TRUE}, the text will
 \link{regex}
 }
 \keyword{internal}
+

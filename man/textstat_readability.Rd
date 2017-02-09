@@ -55,3 +55,4 @@ round(cor(inaugReadability), 2)
 Kenneth Benoit, re-engineered from the function of the same name by
   Meik Michalke in the \pkg{koRpus} package.
 }
+

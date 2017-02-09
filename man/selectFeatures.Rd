@@ -2,10 +2,10 @@
 % Please edit documentation in R/selectFeatures.R
 \name{selectFeatures}
 \alias{selectFeatures}
+\alias{selectFeatures.collocations}
 \alias{selectFeatures.dfm}
 \alias{selectFeatures.tokenizedTexts}
 \alias{selectFeatures.tokens}
-\alias{selectFeatures.collocations}
 \title{select features from an object}
 \usage{
 selectFeatures(x, features, ...)
@@ -163,3 +163,4 @@ selectFeatures(myCollocs, stopwords("english"), "remove")
 }
 \keyword{deprecated}
 \keyword{internal}
+

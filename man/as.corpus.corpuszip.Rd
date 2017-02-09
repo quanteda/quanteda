@@ -12,3 +12,4 @@
 \description{
 Recast a compressed corpus object into a standard (uncompressed) corpus object.
 }
+

@@ -44,15 +44,16 @@ Apply varieties of term frequency weightings to a \link{dfm}.
 \details{
 \code{tf(x, scheme = "prop")} is equivalent to \code{\link{weight}(x, "relFreq")}).
 }
+\author{
+Kenneth Benoit and Paul Nulty
+}
 \references{
 Manning, C. D., Raghavan, P., & Schutze, H. (2008). 
   \emph{Introduction to Information Retrieval}. Cambridge University Press.
   
   \url{https://en.wikipedia.org/wiki/Tf-idf#Term_frequency_2}
 }
-\author{
-Kenneth Benoit and Paul Nulty
-}
 \keyword{dfm}
 \keyword{internal}
 \keyword{weighting}
+

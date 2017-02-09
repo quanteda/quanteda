@@ -22,3 +22,4 @@ Deprecated function names for forming ngrams and skipgrams; use
 \keyword{deprecated}
 \keyword{internal}
 \keyword{tokens}
+

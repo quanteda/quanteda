@@ -23,3 +23,4 @@ Convert a sequence into a simple list, for input as a sequence in e.g.
 }
 \keyword{internal}
 \keyword{utilities}
+

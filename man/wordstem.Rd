@@ -2,10 +2,10 @@
 % Please edit documentation in R/wordstem.R
 \name{wordstem}
 \alias{wordstem}
-\alias{wordstem.dfm}
-\alias{wordstem.tokens}
-\alias{wordstem.tokenizedTexts}
 \alias{wordstem.character}
+\alias{wordstem.dfm}
+\alias{wordstem.tokenizedTexts}
+\alias{wordstem.tokens}
 \title{stem words}
 \usage{
 wordstem(x, language = "porter")
@@ -24,3 +24,4 @@ Deprecated function names to stem words.  See \code{\link{char_wordstem}},
 }
 \keyword{deprecated}
 \keyword{internal}
+

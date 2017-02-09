@@ -25,3 +25,4 @@ Laver, Michael, Kenneth Benoit, and John Garry.  2003.
   Political Science Review} 97(2): 311-331.
 }
 \keyword{data}
+

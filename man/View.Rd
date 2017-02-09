@@ -3,8 +3,8 @@
 \name{View}
 \alias{View}
 \alias{View.default}
-\alias{View.kwic}
 \alias{View.dfmSparse}
+\alias{View.kwic}
 \title{View methods for quanteda}
 \usage{
 View(x, title)
@@ -38,3 +38,4 @@ View(dfm(data_char_ukimmig2010))
 }
 \keyword{View}
 \keyword{internal}
+

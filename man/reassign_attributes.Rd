@@ -25,3 +25,4 @@ operation defined for the base class obliterates them.
 Ken Benoit
 }
 \keyword{internal}
+

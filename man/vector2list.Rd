@@ -14,3 +14,4 @@ Utility function to convert a vector to a list, used by \code{link{kwic}}.
 }
 \keyword{internal}
 \keyword{utilities}
+
