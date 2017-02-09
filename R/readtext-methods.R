@@ -6,13 +6,13 @@
 #' old function to read texts from files
 #' 
 #' This function was removed from \pkg{quanteda} in v.0.9.9 and moved to a 
-#' separate package, \pkg{readtext}.  Please use \code{readtext} instead
-#' of \code{textfile}.
+#' separate package, \pkg{readtext}.  Please use \code{readtext} from the 
+#' \pkg{readtext} package instead.
 #' @param ... any collection of objects
 #' @keywords internal deprecated
 #' @export
 textfile <- function(...) {
-    .Defunct("textfile", package = "readtext")
+    .Defunct(msg = "textfile is defunct; replaced by readtext::readtext.\n See http://github.com/kbenoit/readtext.")
 }
 
 #' @noRd

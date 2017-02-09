@@ -11,8 +11,8 @@ textfile(...)
 }
 \description{
 This function was removed from \pkg{quanteda} in v.0.9.9 and moved to a 
-separate package, \pkg{readtext}.  Please use \code{readtext} instead
-of \code{textfile}.
+separate package, \pkg{readtext}.  Please use \code{readtext} from the 
+\pkg{readtext} package instead.
 }
 \keyword{deprecated}
 \keyword{internal}
