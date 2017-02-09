@@ -2,6 +2,10 @@
 #include <RcppParallel.h>
 #include "quanteda.h"
 using namespace quanteda;
+using std::pow;
+using std::exp;
+using std::sqrt;
+using std::log;
 
 // Manhattan distance: sum_i |x_i - y_i|
 struct ManhattanDistance : public Worker {
@@ -221,32 +225,7 @@ struct CanberraDistance : public Worker {
                 arma::colvec bb = abs(amat.col(j) - aa)/denom;
                 bb.replace(arma::datum::nan, 0);
                 arma::vec non_zeros = nonzeros(denom);
-                rmat(j,i) = sum(bb) * ncol/non_zeros.n_elem;
-                
-                // cannot use sp_mat iterator - it will skip the sparse element
-                // arma::sp_mat::const_iterator it_j = amat.begin_col(j);
-                // double count = 0, dist = 0;
-                // for(arma::sp_mat::const_iterator it_i = amat.begin_col(i); it_i != amat.end_col(i); ++it_i){
-                //     double elem_sum = abs(*it_i + *it_j);
-                //     if (elem_sum > 0) {
-                //         double elem_diff = abs(*it_i - *it_j);
-                //         count ++;
-                //         dist += elem_diff / elem_sum;
-                //     }
-                //     it_j++;
-                // }
-                
-                // very slow.
-                // double count = 0, dist = 0;
-                // for(arma::uword k = 0; k<ncol; k++){
-                //     double elem_sum = fabs(amat.at(k,i) + amat.at(k,j));
-                //     if (elem_sum > 0){
-                //         double elem_diff = fabs(amat.at(k,i) - amat.at(k,j));
-                //         count ++;
-                //         dist += elem_diff / elem_sum;
-                //     }
-                // }
-                // rmat(j,i) = dist/((double)count/ncol);
+                rmat(j,i) = (double)sum(bb) * (double)ncol/(double)non_zeros.n_elem;
             }
         }
     }
@@ -275,7 +254,7 @@ struct CanberraDistance2 : public Worker {
                 arma::colvec bb = abs(bmat.col(j) - aa)/denom;
                 bb.replace(arma::datum::nan, 0);
                 arma::vec non_zeros = nonzeros(denom);
-                rmat(i,j) = (sum(bb) * ncol)/non_zeros.n_elem;
+                rmat(i,j) = (double)(sum(bb) * ncol)/(double)non_zeros.n_elem;
                 //Rcpp::Rcout<<j<<std::endl;
             }
         }
