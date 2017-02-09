@@ -99,11 +99,6 @@ txt <- c("The quick brown fox jumped over the lazy dog.",
 toks <- tokens(char_tolower(txt), removePunct = TRUE)
 fcm(toks, context = "document")
 fcm(toks, context = "window", window = 3)
-
-toks <- tokens(data_corpus_inaugural)
-fcm(toks, context = "document")
-fcm(toks, context = "window", window = 3)
-fcm(toks, context = "window", window = 3, count = "boolean")
 }
 \author{
 Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)

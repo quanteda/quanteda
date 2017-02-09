@@ -138,7 +138,10 @@ mydfm
 topfeatures(mydfm, 20)  # 20 top words
 
 ## ----warning = FALSE, fig.width = 8, fig.height = 8---------------------------------------------------------------------------------------------------------------------------------------------------
-textplot_wordcloud(mydfm)
+set.seed(100)
+textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
+                   rot.per = .25, 
+                   colors = RColorBrewer::brewer.pal(8,"Dark2"))
 
 ## ----warning=FALSE, fig.width = 7, fig.height = 7-----------------------------------------------------------------------------------------------------------------------------------------------------
 if (require(RColorBrewer))
