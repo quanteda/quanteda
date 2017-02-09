@@ -2,11 +2,7 @@
 #include "quanteda.h"
 using namespace quanteda;
 
-#if QUANTEDA_USE_TBB
-tbb::spin_mutex id_mutex;
-#else
-std::mutex id_mutex;
-#endif
+Mutex id_mutex;
 
 Text join_comp(Text tokens, 
                const std::vector<std::size_t> &spans,
