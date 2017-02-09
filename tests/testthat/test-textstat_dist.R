@@ -370,8 +370,8 @@ test_that("test textstat_dist method = \"Canberra\" against proxy dist() : docum
     skip_if_not_installed("proxy")
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
-    canQuanteda <- round(as.matrix(textstat_dist(presDfm, method = "canberra", margin = "documents")), 2)
-    canProxy <- round(as.matrix(proxy::dist(as.matrix(presDfm), "canberra", diag = FALSE, upper = FALSE)), 2)
+    canQuanteda <- round(as.matrix(textstat_dist(presDfm, method = "canberra", margin = "documents")), 1)
+    canProxy <- round(as.matrix(proxy::dist(as.matrix(presDfm), "canberra", diag = FALSE, upper = FALSE)), 1)
     expect_equal(canQuanteda, canProxy)
 })
 
@@ -379,11 +379,11 @@ test_that("test textstat_dist method = \"Canberra\" against proxy dist() : featu
     skip_if_not_installed("proxy")
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980 & Year < 2017), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
-    canQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet",  method = "canberra", margin = "features"))[,"soviet"], 2)
+    canQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet",  method = "canberra", margin = "features"))[,"soviet"], 1)
     canQuanteda <- canQuanteda[order(names(canQuanteda))]
     canQuanteda <- canQuanteda[-which(names(canQuanteda) == "soviet")]
     
-    canProxy <- round(drop(proxy::dist(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), "canberra", by_rows = FALSE)), 2)
+    canProxy <- round(drop(proxy::dist(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), "canberra", by_rows = FALSE)), 1)
     canProxy <- canProxy[order(names(canProxy))]
     canProxy <- canProxy[-which(names(canProxy) == "soviet")]
     expect_equal(canQuanteda, canProxy)
