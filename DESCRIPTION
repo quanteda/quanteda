@@ -1,7 +1,7 @@
 Package: quanteda
 Type: Package
 Title: Quantitative Analysis of Textual Data
-Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
+Authors@R: c( person("Kenneth", "Benoit", email = "watanabe.kohei@gmail.com", role =
     c("aut", "cre")), 
     person("Kohei", "Watanabe", email = "watanabe.kohei@gmail.com", role = "ctb"), 
     person("Paul", "Nulty", email = "paul.nulty@gmail.com", role = "ctb"), 

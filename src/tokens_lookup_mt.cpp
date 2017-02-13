@@ -107,7 +107,7 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     
     MultiMapNgrams map_keys;
     std::vector<std::size_t> spans(keys_.size());
-    for (unsigned int g = 0; g < keys_.size(); g++) {
+    for (unsigned int g = 0; g < (unsigned int)keys_.size(); g++) {
         if (has_na(keys_[g])) continue;
         Ngram word = keys_[g];
         map_keys.insert(std::make_pair(word, ids_[g]));
@@ -129,8 +129,8 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     }
 #endif
     // dev::stop_timer("Dictionary lookup", timer);
-    ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
-    return texts_list;
+    ListOf<IntegerVector> output_ = Rcpp::wrap(output);
+    return output_;
 }
 
 /***R

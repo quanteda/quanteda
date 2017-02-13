@@ -60,13 +60,12 @@ List qatd_cpp_tokens_detect(const List &texts_,
                             const List &words_){
     
     Texts input = Rcpp::as<Texts>(texts_);
-    const List words = words_;
 
     SetNgrams set_words;
-    std::vector<std::size_t> spans(words.size());
-    for (unsigned int g = 0; g < words.size(); g++) {
-        if (has_na(words[g])) continue;
-        Ngram word = words[g];
+    std::vector<std::size_t> spans(words_.size());
+    for (unsigned int g = 0; g < (unsigned int)words_.size(); g++) {
+        if (has_na(words_[g])) continue;
+        Ngram word = words_[g];
         set_words.insert(word);
         spans[g] = word.size();
     }
@@ -86,8 +85,8 @@ List qatd_cpp_tokens_detect(const List &texts_,
     }
 #endif
     // dev::stop_timer("Dictionary detect", timer);
-    ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
-    return texts_list;
+    ListOf<IntegerVector> output_ = Rcpp::wrap(output);
+    return output_;
 }
 
 /***R

@@ -220,9 +220,9 @@ List qatd_cpp_tokens_ngrams(const List texts_,
     //dev::stop_timer("Token generation", timer);
     
     // Return IDs as attribute
-    ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
-    texts_list.attr("types") = types_ngram;
-    return texts_list;
+    ListOf<IntegerVector> output_ = Rcpp::wrap(output);
+    output_.attr("types") = types_ngram;
+    return output_;
     
 }
 
