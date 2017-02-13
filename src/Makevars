@@ -1,5 +1,5 @@
 PKG_LIBS = $(BLAS_LIBS) $(LAPACK_LIBS) # $(FLIBS)
-PKG_CPPFLAGS = -I.
+PKG_CPPFLAGS = -I. -Wsign-compare
 CXX_STD = CXX11
 PKG_LIBS += $(shell ${R_HOME}/bin/Rscript -e "RcppParallel::RcppParallelLibs()")
 CC=ccache gcc
