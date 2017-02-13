@@ -251,15 +251,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_remove_chr_list
-List qatd_cpp_remove_chr_list(List list_, String elem_remove);
-RcppExport SEXP quanteda_qatd_cpp_remove_chr_list(SEXP list_SEXP, SEXP elem_removeSEXP) {
+// qatd_cpp_chars_remove
+List qatd_cpp_chars_remove(List input_, String char_remove);
+RcppExport SEXP quanteda_qatd_cpp_chars_remove(SEXP input_SEXP, SEXP char_removeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type list_(list_SEXP);
-    Rcpp::traits::input_parameter< String >::type elem_remove(elem_removeSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_remove_chr_list(list_, elem_remove));
+    Rcpp::traits::input_parameter< List >::type input_(input_SEXP);
+    Rcpp::traits::input_parameter< String >::type char_remove(char_removeSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_chars_remove(input_, char_remove));
     return rcpp_result_gen;
 END_RCPP
 }
