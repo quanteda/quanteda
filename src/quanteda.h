@@ -42,7 +42,7 @@ namespace quanteda{
     typedef std::vector<int> IntParams;
     typedef std::vector<long> LongParams;
     typedef std::vector<double> DoubleParams;
-    typedef std::mutex Mutex;
+    typedef tthread::mutex Mutex;
 #endif    
     
     inline String join(CharacterVector &tokens, String &delim){
