@@ -3,7 +3,6 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <limits>
-#include <mutex>
 
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
@@ -42,7 +41,6 @@ namespace quanteda{
     typedef std::vector<int> IntParams;
     typedef std::vector<long> LongParams;
     typedef std::vector<double> DoubleParams;
-    typedef tthread::mutex Mutex;
 #endif    
     
     inline String join(CharacterVector &tokens_, String &delim_){

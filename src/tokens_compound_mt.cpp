@@ -2,7 +2,9 @@
 #include "quanteda.h"
 using namespace quanteda;
 
+#if QUANTEDA_USE_TBB
 Mutex id_mutex;
+#endif
 
 Text join_comp(Text tokens, 
                const std::vector<std::size_t> &spans,
@@ -44,13 +46,17 @@ Text join_comp(Text tokens,
         } else {
             if (tokens_seq.size() > 0) {
                 tokens_seq.push_back(tokens[i]);
+#if QUANTEDA_USE_TBB
                 id_mutex.lock();
+#endif
                 unsigned int &id = map_comps[tokens_seq];
                 if (!id) id = ++id_comp; // assign new ID if not exisits
                 //Rcout << "Compund "<< id << ": ";
                 //dev::print_ngram(tokens_seq);
                 tokens_flat.push_back(id);
+#if QUANTEDA_USE_TBB
                 id_mutex.unlock();
+#endif
                 tokens_seq.clear();
             } else {
                 tokens_flat.push_back(tokens[i]);
