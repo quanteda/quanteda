@@ -1,6 +1,8 @@
 Package: quanteda
 Type: Package
 Title: Quantitative Analysis of Textual Data
+Description: A fast, flexible toolset for for the management, processing, and
+    quantitative analysis of textual data in R.
 Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     c("aut", "cre", "cph")), 
     person("Kohei", "Watanabe", email = "watanabe.kohei@gmail.com", role = "ctb"), 
@@ -8,12 +10,11 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "ctb"),
     person("Haiyan", "Wang", email = "h.wang52@lse.ac.uk", role = "ctb"),
     person("Benjamin", "Lauderdale", email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
-    person("Will", "Lowe", email="wlowe@princeton.edu", role="ctb"),
-    person(family = "European Research Council", role = "fnd") )
+    person("Will", "Lowe", email = "wlowe@princeton.edu", role = "ctb"),
+    person(family = "European Research Council", role = "fnd", comment = "ERC-2011-StG 283794-QUANTESS") )
+Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
 Version: 0.9.9-24
 Date: 2017-02-13
-Description: A fast, flexible toolset for for the management, processing, and
-    quantitative analysis of textual data in R.
 License: GPL-3
 Depends:
     R (>= 3.2.2)
