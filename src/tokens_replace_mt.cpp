@@ -65,15 +65,13 @@ List qatd_cpp_tokens_replace(const List &texts_,
                              const IntegerVector &ids_){
     
     Texts input = Rcpp::as<Texts>(texts_);
-    const List words = words_;
-    const IntegerVector ids = ids_;
-    
+
     MapNgrams map_words;
-    std::vector<std::size_t> spans(words.size());
-    for (unsigned int g = 0; g < words.size(); g++) {
-        if (has_na(words[g])) continue;
-        Ngram word = words[g];
-        map_words[word] = ids[g];
+    std::vector<std::size_t> spans(words_.size());
+    for (unsigned int g = 0; g < (unsigned int)words_.size(); g++) {
+        if (has_na(words_[g])) continue;
+        Ngram word = words_[g];
+        map_words[word] = ids_[g];
         spans[g] = word.size();
     }
     sort(spans.begin(), spans.end());

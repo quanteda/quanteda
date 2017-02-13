@@ -73,8 +73,8 @@ qatd_cpp_tokens_select <- function(texts_, words_, mode, padding) {
     .Call('quanteda_qatd_cpp_tokens_select', PACKAGE = 'quanteda', texts_, words_, mode, padding)
 }
 
-qatd_cpp_remove_chr_list <- function(list_, elem_remove) {
-    .Call('quanteda_qatd_cpp_remove_chr_list', PACKAGE = 'quanteda', list_, elem_remove)
+qatd_cpp_chars_remove <- function(input_, char_remove) {
+    .Call('quanteda_qatd_cpp_chars_remove', PACKAGE = 'quanteda', input_, char_remove)
 }
 
 wordfishcpp <- function(wfm, dir, priors, tol, disp, dispfloor) {

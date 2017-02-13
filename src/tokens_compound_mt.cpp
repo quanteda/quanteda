@@ -2,7 +2,9 @@
 #include "quanteda.h"
 using namespace quanteda;
 
+#if QUANTEDA_USE_TBB
 Mutex id_mutex;
+#endif
 
 Text join_comp(Text tokens, 
                const std::vector<std::size_t> &spans,
@@ -44,13 +46,17 @@ Text join_comp(Text tokens,
         } else {
             if (tokens_seq.size() > 0) {
                 tokens_seq.push_back(tokens[i]);
+#if QUANTEDA_USE_TBB
                 id_mutex.lock();
+#endif
                 unsigned int &id = map_comps[tokens_seq];
                 if (!id) id = ++id_comp; // assign new ID if not exisits
                 //Rcout << "Compund "<< id << ": ";
                 //dev::print_ngram(tokens_seq);
                 tokens_flat.push_back(id);
+#if QUANTEDA_USE_TBB
                 id_mutex.unlock();
+#endif
                 tokens_seq.clear();
             } else {
                 tokens_flat.push_back(tokens[i]);
@@ -161,8 +167,7 @@ List qatd_cpp_tokens_compound(const List &texts_,
     Texts input = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as< Types >(types_);
     std::string delim = delim_;
-    const List comps = comps_;
-    
+
     unsigned int id_last = types.size();
     #if QUANTEDA_USE_TBB
     IdNgram id_comp(id_last);
@@ -171,10 +176,10 @@ List qatd_cpp_tokens_compound(const List &texts_,
     #endif
 
     MapNgrams map_comps;
-    std::vector<std::size_t> spans(comps.size());
-    for (std::size_t g = 0; g < comps.size(); g++) {
-        if (has_na(comps[g])) continue;
-        Ngram comp = comps[g];
+    std::vector<std::size_t> spans(comps_.size());
+    for (unsigned int g = 0; g < (unsigned int)comps_.size(); g++) {
+        if (has_na(comps_[g])) continue;
+        Ngram comp = comps_[g];
         map_comps[comp] = ++id_comp;
         spans[g] = comp.size();
     }
@@ -221,9 +226,9 @@ List qatd_cpp_tokens_compound(const List &texts_,
     types.insert(types.end(), types_comp.begin(), types_comp.end());
     
     // dev::stop_timer("Token compound", timer);
-    ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
-    texts_list.attr("types") = types;
-    return texts_list;
+    ListOf<IntegerVector> output_ = Rcpp::wrap(output);
+    output_.attr("types") = types;
+    return output_;
 }
 
 /***R

@@ -19,13 +19,7 @@ knitr::opts_chunk$set(collapse = TRUE,
 
 # Introduction
 
-An R package for managing and analyzing text.[^thanks]
-
-[^thanks]: This research was supported by  European
-    Research Council grant ERC-2011-StG 283794-QUANTESS, Principal Investigator
-    Kenneth Benoit.  Core
-    contributors to the project include Paul Nulty, Adam Obeng,
-    Kohei Watanabe, Haiyan Wang, Ben Lauderdale, Will Lowe, and Pablo Barberà.
+An R package for managing and analyzing text.
 
 **quanteda** makes it easy to manage texts in the form of a
 corpus, defined as a collection of texts that includes document-level
@@ -440,17 +434,17 @@ topfeatures(mydfm, 20)  # 20 top words
 ```
 
 Plotting a word cloud is done using `textplot_wordcloud()`, for a `dfm` class object:
-```{r warning = FALSE, fig.width = 8, fig.height = 8}
-set.seed(100)
-textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
-                   rot.per = .25, 
-                   colors = RColorBrewer::brewer.pal(8,"Dark2"))
+```{r warning = FALSE, fig.width = 7, fig.height = 7}
+set.seed(20)
+textplot_wordcloud(dfm_trim(mydfm, min_count = 6))
 ```
 
 The `plot.dfm()` method passes arguments through to `wordcloud()` from the **wordcloud** package, and can prettify the plot using the same arguments:
 ```{r warning=FALSE, fig.width = 7, fig.height = 7}
-if (require(RColorBrewer))
-    textplot_wordcloud(mydfm, max.words = 100, colors = brewer.pal(6, "Dark2"), scale = c(8, .5))
+set.seed(100)
+textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
+                   rot.per = .25, 
+                   colors = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
 ### Grouping documents by document variable 

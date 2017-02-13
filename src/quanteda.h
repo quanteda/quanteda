@@ -3,7 +3,6 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <limits>
-#include <mutex>
 
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
@@ -42,15 +41,14 @@ namespace quanteda{
     typedef std::vector<int> IntParams;
     typedef std::vector<long> LongParams;
     typedef std::vector<double> DoubleParams;
-    typedef std::mutex Mutex;
 #endif    
     
-    inline String join(CharacterVector &tokens, String &delim){
-        if (tokens.size() == 0) return "";
-        String token = tokens[0];
-        for (unsigned int i = 1; i < tokens.size(); i++) {
-          token += delim;
-          token += tokens[i];
+    inline String join(CharacterVector &tokens_, String &delim_){
+        if (tokens_.size() == 0) return "";
+        String token = tokens_[0];
+        for (unsigned int i = 1; i < (unsigned int)tokens_.size(); i++) {
+          token += delim_;
+          token += tokens_[i];
         }
         token.set_encoding(CE_UTF8);
         return token;
@@ -65,9 +63,9 @@ namespace quanteda{
         return token;
     }
 
-    inline bool has_na(IntegerVector vec) {
-        for (unsigned int i = 0; i < vec.size(); ++i) {
-            if (vec[i] == NA_INTEGER) return true;
+    inline bool has_na(IntegerVector vec_) {
+        for (unsigned int i = 0; i < (unsigned int)vec_.size(); ++i) {
+            if (vec_[i] == NA_INTEGER) return true;
         }
        return false;
     }

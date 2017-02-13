@@ -511,7 +511,7 @@ tokens_word <- function(txt, what, removeNumbers, removePunct, removeSymbols, re
             tok <- stringi::stri_split_fixed(txt, " ")
         else if (what=="fasterword")
             tok <- stringi::stri_split_charclass(txt, "\\p{WHITE_SPACE}")
-        tok <- qatd_cpp_remove_chr_list(tok, "")
+        tok <- qatd_cpp_chars_remove(tok, "")
         
         
     } else {
