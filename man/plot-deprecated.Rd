@@ -35,4 +35,3 @@ plot from a \link{kwic} object; use \code{\link{textplot_xray}} instead.
 \keyword{deprecated}
 \keyword{internal}
 \keyword{plot}
-

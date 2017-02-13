@@ -39,4 +39,3 @@ summary(corpus_sample(data_corpus_inaugural, 10, replace=TRUE))
 \code{\link{sample}}
 }
 \keyword{corpus}
-

@@ -19,4 +19,3 @@ Named character object of the ASCII text of Herman Melville's
 summary(data_char_mobydick)
 }
 \keyword{data}
-

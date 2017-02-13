@@ -16,4 +16,3 @@ separate package, \pkg{readtext}.  Please use \code{readtext} from the
 }
 \keyword{deprecated}
 \keyword{internal}
-

@@ -87,9 +87,6 @@ if (require(austin)) {
     cor(wfm1@theta, wfmodelAustin$theta)
 }}
 }
-\author{
-Benjamin Lauderdale and Kenneth Benoit
-}
 \references{
 Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
   for Estimating Time-Series Party Positions from Texts." \emph{American 
@@ -99,4 +96,6 @@ Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model
   from Textual Data Using Human Judgment as a Benchmark." \emph{Political Analysis}
   21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
 }
-
+\author{
+Benjamin Lauderdale and Kenneth Benoit
+}

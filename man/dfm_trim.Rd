@@ -69,11 +69,10 @@ if (require(tm)) {
 }
 }
 }
+\seealso{
+\code{\link{dfm_select}}, \code{\link{dfm_sample}}
+}
 \author{
 Ken Benoit and Paul Nulty, with some inspiration from Will Lowe's
   (see \code{trim} from the \code{austin} package)
 }
-\seealso{
-\code{\link{dfm_select}}, \code{\link{dfm_sample}}
-}
-

@@ -32,4 +32,3 @@ nscrabble(data_char_inaugural[1:5], mean)
 \author{
 Kenneth Benoit
 }
-

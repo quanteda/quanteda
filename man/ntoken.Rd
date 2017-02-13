@@ -53,4 +53,3 @@ ntype(corpus_subset(data_corpus_inaugural, Year<1806), removePunct = TRUE)
 ntoken(dfm(corpus_subset(data_corpus_inaugural, Year<1800)))
 ntype(dfm(corpus_subset(data_corpus_inaugural, Year<1800)))
 }
-

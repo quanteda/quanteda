@@ -50,4 +50,3 @@ mysummary$Types / mysummary$Tokens             # crude type-token ratio
 }
 \keyword{corpus}
 \keyword{internal}
-

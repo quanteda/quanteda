@@ -34,4 +34,3 @@ metacorpus(data_corpus_inaugural, "citation") <- "Presidential Speeches Online P
 metacorpus(data_corpus_inaugural, "citation")
 }
 \keyword{corpus}
-

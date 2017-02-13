@@ -43,6 +43,7 @@ case sensitive.
   because of its multiple meanings, but you might want to include this word 
   for your own application.
 }
+
 \examples{
 head(stopwords("english"))
 head(stopwords("italian"))
@@ -53,4 +54,3 @@ head(stopwords("SMART"))
 toks <- tokenize("The judge will sentence Mr. Adams to nine years in prison", removePunct = TRUE)
 removeFeatures(toks, c(stopwords("english"), "will", "mr", "nine"))
 }
-

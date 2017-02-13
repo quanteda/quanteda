@@ -34,4 +34,3 @@ dfm_sort
 }
 \keyword{deprecated}
 \keyword{internal}
-

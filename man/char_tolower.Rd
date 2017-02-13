@@ -35,4 +35,3 @@ char_tolower(txt2)
 char_tolower(txt2, keep_acronyms = TRUE)
 char_toupper(txt2)
 }
-

@@ -24,8 +24,8 @@ The fcm class of object is a special type of \link{dfm}
 \item{\code{ordered}}{whether a term appears before or after the target feature 
 are counted seperately}
 }}
+
 \seealso{
 \link{fcm}
 }
 \keyword{internal}
-

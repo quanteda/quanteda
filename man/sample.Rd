@@ -2,8 +2,8 @@
 % Please edit documentation in R/corpus-deprecated.R, R/dfm-deprecated.R
 \name{sample}
 \alias{sample}
-\alias{sample.corpus}
 \alias{sample.default}
+\alias{sample.corpus}
 \alias{sample.dfm}
 \title{randomly sample documents or features}
 \usage{
@@ -36,4 +36,3 @@ Deprecated function framework for randomly sampling from a corpus or dfm object.
 }
 \keyword{deprecated}
 \keyword{internal}
-

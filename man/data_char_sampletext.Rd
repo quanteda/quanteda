@@ -15,4 +15,3 @@ This is a long paragraph (2,914 characters) of text taken from an Irish budget s
 tokenize(data_char_sampletext, removePunct = TRUE)
 }
 \keyword{data}
-

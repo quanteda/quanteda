@@ -33,4 +33,3 @@ summary(corpus_subset(data_corpus_inaugural, Year>1930 & President=="Roosevelt",
 \code{\link{subset.data.frame}}
 }
 \keyword{corpus}
-

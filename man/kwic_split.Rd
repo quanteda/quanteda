@@ -26,4 +26,3 @@ kwic_split(letters[1:5], c(1, 1, 1, 0, 1), window = 1)
 Kohei Watanabe
 }
 \keyword{internal}
-

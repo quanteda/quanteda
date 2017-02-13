@@ -28,4 +28,3 @@ tokens_toupper(toks)
 \seealso{
 \code{\link{char_tolower}}, \code{\link{char_toupper}}
 }
-
