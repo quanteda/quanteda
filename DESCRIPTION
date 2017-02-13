@@ -10,9 +10,7 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "ctb"),
     person("Haiyan", "Wang", email = "h.wang52@lse.ac.uk", role = "ctb"),
     person("Benjamin", "Lauderdale", email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
-    person("Will", "Lowe", email = "wlowe@princeton.edu", role = "ctb"),
-    person(family = "European Research Council", role = "fnd", comment = "ERC-2011-StG 283794-QUANTESS") )
-Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
+    person("Will", "Lowe", email = "wlowe@princeton.edu", role = "ctb") )
 Version: 0.9.9-24
 Date: 2017-02-13
 License: GPL-3
