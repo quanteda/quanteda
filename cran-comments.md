@@ -6,7 +6,8 @@ Thhis is a resubmission to fix errors on the Solaris tests in v0.9.9-22.  These 
 
 * local OS X install, R 3.3.2
 * ubuntu Ubuntu 14.04.5 LTS (on travis-ci), R 3.3.2
-* locally on Windows 10/R 3.3.2
+* Windows Server 2012 R2 x64 (build 9600), R 3.3.2 (on Appveyor)
+* local Windows 10, R 3.3.2
 * win-builder (devel and release)
 
 ## R CMD check results
@@ -37,3 +38,7 @@ Possibly mis-spelled words in DESCRIPTION:
 * checking for GNU extensions in Makefiles ... NOTE
 GNU make is a SystemRequirements.
 
+
+## Downstream dependencies
+
+No changes in this release affect the (few) downstream packages that Import **quanteda**.
