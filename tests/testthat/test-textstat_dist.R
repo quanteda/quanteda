@@ -367,7 +367,9 @@ test_that("test textstat_dist method = \"Maximum\" against proxy dist() : featur
 
 # Canberra distance
 test_that("test textstat_dist method = \"Canberra\" against proxy dist() : documents", {
-    skip_if_not_installed("proxy")
+    
+  skip_if_not_installed("proxy")
+  skip_on_os("solaris")
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     canQuanteda <- round(as.matrix(textstat_dist(presDfm, method = "canberra", margin = "documents")), 2)
