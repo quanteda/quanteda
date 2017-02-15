@@ -6,33 +6,26 @@ using namespace Rcpp;
 using namespace arma;
 # define RESIDUALS_LIM 0.5
 # define NUMSVD 2
+# define OUTERITER 100
+# define INNERITER 10
+# define LASTLP -2000000000000.0
 
 #if !defined(ARMA_64BIT_WORD)
 #define ARMA_64BIT_WORD
 #endif
 
-
-
 // [[Rcpp::export]]
 
-Rcpp::List wordfish_cpp(arma::sp_mat &wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEXP dispfloor){
+Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin){
     
     // DEFINE INPUTS
-    
-    //Rcpp::NumericMatrix Y(wfm); 
-    Rcpp::NumericVector priorvec(priors);
-    Rcpp::NumericVector tolvec(tol); 
-    Rcpp::IntegerVector dirvec(dir);  
-    Rcpp::IntegerVector disptype(disp);
-    Rcpp::NumericVector dispmin(dispfloor);
-    
     double priorprecalpha = priorvec(0);
     double priorprecpsi = priorvec(1);
     double priorprecbeta = priorvec(2);
     double priorprectheta = priorvec(3);		
     
-    int N = wfm.n_rows;
-    int K = wfm.n_cols;
+    unsigned int N = wfm.n_rows;
+    unsigned int K = wfm.n_cols;
     
     // SET INITIAL VALUES
     
@@ -49,8 +42,8 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, SEXP dir, SEXP priors, SEXP tol, SEXP
     arma::colvec rsum(sum(C,1));
     arma::rowvec csum(sum(C,0));
     double asum = accu(C);		
-    for (int i=0; i < N; i++){
-        for (int k=0; k < K; k++){
+    for (unsigned int i=0; i < N; i++){
+        for (unsigned int k=0; k < K; k++){
             double residual = (wfm(i,k) - rsum(i) * csum(k) / asum) / sqrt(rsum(i) * csum(k) / asum);	
             //Rprintf("%d: %f2\\n",k,residual);
             if (fabs(residual) > RESIDUALS_LIM) C(i,k) = residual;
@@ -65,7 +58,7 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, SEXP dir, SEXP priors, SEXP tol, SEXP
     arma::svds(U,s,V,C, svdk);
     
     // Load initial values
-    for (int i=0; i < N; i++) theta(i) = pow(rsum(i)/asum, -0.5) * U(i, 0);
+    for (unsigned int i=0; i < N; i++) theta(i) = pow(rsum(i)/asum, -0.5) * U(i, 0);
     //for (int k=0; k < K; k++) beta(k) = 0; // pow(csum(k)/asum,-0.5) * V(k,0);
     beta.fill(0.0);
     alpha = log(rsum);
@@ -89,26 +82,26 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, SEXP dir, SEXP priors, SEXP tol, SEXP
     int inneriter = 0;
     int outeriter = 0;
     
-    double lastlp = -2000000000000.0;
+    double lastlp = LASTLP;
     double lp = -1.0*(accu(0.5 * ((alpha % alpha) * priorprecalpha)) + accu(0.5 * ((psi  % psi) * priorprecpsi)) 
                           + accu(0.5 * ((beta  % beta) * priorprecbeta)) + accu(0.5 * ((theta % theta) * priorprectheta)));
-    for (int i=0; i < N; i++){
-        for (int k=0; k < K; k++){
+    for (unsigned int i=0; i < N; i++){
+        for (unsigned int k=0; k < K; k++){
             loglambdaik = alpha(i) + psi(k) + beta(k)*theta(i);
             lp = lp + loglambdaik * wfm(i,k)-exp(loglambdaik);
         }
     }
     
     // BEGIN WHILE LOOP
-    while(((lp - lastlp) > tolvec(0)) && outeriter < 100){	
+    while(((lp - lastlp) > tolvec(0)) && outeriter < OUTERITER){	
         outeriter++;
         
         // UPDATE WORD PARAMETERS
-        for (int k=0; k < K; k++){
+        for (unsigned int k=0; k < K; k++){
             cc = 1;
             inneriter = 0;
             if (outeriter == 1) stepsize = 0.5;
-            while ((cc > tolvec(1)) && inneriter < 10){
+            while ((cc > tolvec(1)) && inneriter < INNERITER){
                 inneriter++;
                 lambdak = exp(alpha + psi(k) + beta(k) * theta);
                 arma::vec col_k(wfm.col(k));
@@ -131,11 +124,11 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, SEXP dir, SEXP priors, SEXP tol, SEXP
         
         
         // UPDATE DOCUMENT PARAMETERS
-        for (int i=0; i < N; i++){
+        for (unsigned int i=0; i < N; i++){
             cc = 1;
             inneriter = 0;
             if (outeriter == 1) stepsize = 0.5;
-            while ((cc > tolvec(1)) && inneriter < 10){
+            while ((cc > tolvec(1)) && inneriter < INNERITER){
                 inneriter++;
                 lambdai = exp(alpha(i) + psi + beta * theta(i));
                 arma::rowvec row_i(wfm.row(i));
@@ -160,20 +153,20 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, SEXP dir, SEXP priors, SEXP tol, SEXP
         
         if (disptype(0) == 2) { // single dispersion parameter for all words
             phitmp = 0.0;
-            for (int k=0; k < K; k++){
-                for (int i=0; i < N; i++){
+            for (unsigned int k=0; k < K; k++){
+                for (unsigned int i=0; i < N; i++){
                     mutmp = exp(alpha(i) + psi(k) + beta(k)*theta(i));
                     phitmp = phitmp + (wfm(i,k) - mutmp) * (wfm(i,k) - mutmp)/mutmp;
                 }   
             }	    
             phitmp = phitmp/(N*K - 2*N - 2*K);
-            for (int k=0; k < K; k++) phi(k) = phitmp;
+            for (unsigned int k=0; k < K; k++) phi(k) = phitmp;
         }
         
         if (disptype(0) >= 3) { // individual dispersion parameter for each word
-            for (int k=0; k < K; k++){
+            for (unsigned int k=0; k < K; k++){
                 phitmp = 0.0;
-                for (int i=0; i < N; i++){
+                for (unsigned int i=0; i < N; i++){
                     mutmp = exp(alpha(i) + psi(k) + beta(k) * theta(i));
                     phitmp = phitmp + (wfm(i,k) - mutmp) * (wfm(i,k) - mutmp)/mutmp;	        
                 }   
@@ -191,8 +184,8 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, SEXP dir, SEXP priors, SEXP tol, SEXP
         lastlp = lp;
         lp = -1.0*(accu(0.5 * ((alpha % alpha) * priorprecalpha)) + accu(0.5 * ((psi % psi) * priorprecpsi)) 
                        + accu(0.5 * ((beta % beta) * priorprecbeta)) + accu(0.5 * ((theta % theta) * priorprectheta)));
-        for (int i=0; i < N; i++){
-            for (int k=0; k < K; k++){
+        for (unsigned int i=0; i < N; i++){
+            for (unsigned int k=0; k < K; k++){
                 loglambdaik = alpha(i) + psi(k) + beta(k) * theta(i);
                 lp = lp + loglambdaik * wfm(i,k) - exp(loglambdaik);
             }
@@ -212,7 +205,7 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, SEXP dir, SEXP priors, SEXP tol, SEXP
     }
     
     // COMPUTE DOCUMENT STANDARD ERRORS
-    for (int i=0; i < N; i++) {
+    for (unsigned int i=0; i < N; i++) {
         lambdai = exp(alpha(i) + psi + beta * theta(i));
         H(0,0) = -accu(lambdai / phi) - priorprecalpha;
         H(1,0) = -accu((beta % lambdai) / phi);
