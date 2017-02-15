@@ -1,5 +1,5 @@
+PKG_CPPFLAGS = -I../inst/include -DARMA_64BIT_WORD
 PKG_LIBS = $(BLAS_LIBS) $(LAPACK_LIBS) # $(FLIBS)
-PKG_CPPFLAGS = -I.
 CXX_STD = CXX11
 PKG_LIBS += $(shell ${R_HOME}/bin/Rscript -e "RcppParallel::RcppParallelLibs()")
 CC=ccache gcc
