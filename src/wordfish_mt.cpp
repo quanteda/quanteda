@@ -6,7 +6,7 @@
 using namespace RcppParallel;
 using namespace Rcpp;
 using namespace arma;
-# define RESIDUALS_LIM 0//0.5
+# define RESIDUALS_LIM 0.5
 # define NUMSVD 2
 # define OUTERITER 100
 # define INNERITER 10
@@ -236,6 +236,39 @@ struct DispPar2 : public Worker {
         }
     }
 };
+
+// Calculate Document Standard Errors
+struct DocErr : public Worker {
+    const arma::colvec& alpha; 
+    const arma::rowvec& psi;
+    const arma::rowvec& beta;
+    const arma::colvec& theta;
+    const arma::rowvec& phi;
+    const double& priorprecalpha;
+    const double& priorprectheta;
+    // output vector
+    RVector<double> thetaSE;
+    
+    // constructors
+    DocErr(const arma::colvec& alpha, const arma::rowvec& psi, const arma::rowvec& beta, 
+             const arma::colvec& theta, const arma::rowvec& phi, 
+             const double& priorprecalpha, const double& priorprectheta, NumericVector& thetaSE) 
+        : alpha(alpha), psi(psi), beta(beta), theta(theta), phi(phi), 
+          priorprecalpha(priorprecalpha), priorprectheta(priorprectheta), thetaSE(thetaSE){}
+    
+    void operator() (std::size_t begin, std::size_t end) {
+        arma::rowvec lambdai(alpha.size());
+        for (std::size_t i = begin; i < end; i++) {
+            lambdai = exp(alpha(i) + psi + beta * theta(i));
+            arma::mat H(2,2);
+            H(0,0) = -accu(lambdai / phi) - priorprecalpha;
+            H(1,0) = -accu((beta % lambdai) / phi);
+            H(0,1) = H(1,0);
+            H(1,1) = -accu(((beta % beta) % lambdai) / phi) - priorprectheta;
+            thetaSE[i] = sqrt(-1.0 * H(0,0) / (H(0,0) * H(1,1) - H(1,0) * H(0,1)));
+        }
+    }
+};
 // [[Rcpp::export]]
 
 Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin){
@@ -295,14 +328,9 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
     arma::mat newpars(2,1);		
     arma::mat G(2,1);
     arma::mat H(2,2);
-    //double loglambdaik;
-    double mutmp;		
-    double phitmp;
     arma::rowvec lambdai(K);
     arma::colvec lambdak(N);
     double stepsize = 1.0;
-    //double cc = 0.0;
-    //int inneriter = 0;
     int outeriter = 0;
 
     //Initialize LOG-POSTERIOR 
@@ -329,12 +357,7 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
         
         psi = as<arma::rowvec>(psi_N);
         beta = as<arma::rowvec>(beta_N);
-        for(unsigned int i=0; i<N; i++){
-            if (std::isnan(alpha(i)) || std::isnan(theta(i))) Rcout<<outeriter<<"alpha or theta is nan"<<i<<std::endl;
-        }
-        for(unsigned int i=0; i<K; i++){
-            if (std::isnan(beta(i)) || std::isnan(psi(i))) Rcout<<outeriter<<"beta or psi is nan"<<i<<std::endl;
-        }
+
         // UPDATE DOCUMENT PARAMETERS
         NumericVector alpha_N(alpha.begin(), alpha.end());
         NumericVector theta_N(theta.begin(), theta.end());
@@ -378,7 +401,6 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
         // END WHILE LOOP		
     } 
     
-    
     // Fix Global Polarity  
     
     // added the -1 because C counts from ZERO...  -- KB
@@ -388,14 +410,10 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
     }
     
     // COMPUTE DOCUMENT STANDARD ERRORS
-    for (std::size_t i=0; i < N; i++) {
-        lambdai = exp(alpha(i) + psi + beta * theta(i));
-        H(0,0) = -accu(lambdai / phi) - priorprecalpha;
-        H(1,0) = -accu((beta % lambdai) / phi);
-        H(0,1) = H(1,0);
-        H(1,1) = -sum(((beta % beta) % lambdai) / phi) - priorprectheta;
-        thetaSE(i) = sqrt(-1.0 * H(0,0) / (H(0,0) * H(1,1)-H(1,0) * H(0,1)));
-    }  
+    NumericVector thetaSE_N(thetaSE.begin(), thetaSE.end());
+    DocErr docErr(alpha, psi, beta, theta, phi, priorprecalpha, priorprectheta, thetaSE_N);
+    parallelFor(0, N, docErr);
+    thetaSE = as<arma::colvec>(thetaSE_N);
     
     // DEFINE OUTPUT	
     return Rcpp::List::create(Rcpp::Named("theta") = theta,
