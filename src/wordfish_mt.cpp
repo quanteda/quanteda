@@ -226,8 +226,8 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
     arma::rowvec lambdai(K);
     arma::colvec lambdak(N);
     double stepsize = 1.0;
-    double cc = 0.0;
-    int inneriter = 0;
+    //double cc = 0.0;
+    //int inneriter = 0;
     int outeriter = 0;
 
     //Initialize LOG-POSTERIOR 
@@ -246,8 +246,8 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
         outeriter++;
         
         // UPDATE WORD PARAMETERS
-        NumericVector psi_N(psi.begin(),psi.end());
-        NumericVector beta_N(beta.begin(),beta.end());
+        NumericVector psi_N(psi.begin(), psi.end());
+        NumericVector beta_N(beta.begin(), beta.end());
         WordPar wordPar(alpha, psi_N, beta_N, theta, phi, wfm, tolvec,
                         outeriter, priorprecpsi, priorprecbeta, stepsize);
         parallelFor(0, K, wordPar);
@@ -261,30 +261,14 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
             if (std::isnan(beta(i)) || std::isnan(psi(i))) Rcout<<outeriter<<"beta or psi is nan"<<i<<std::endl;
         }
         // UPDATE DOCUMENT PARAMETERS
-        for (std::size_t i=0; i < N; i++){
-            cc = 1;
-            inneriter = 0;
-            if (outeriter == 1) stepsize = 0.5;
-            while ((cc > tolvec(1)) && inneriter < INNERITER){
-                inneriter++;
-                lambdai = exp(alpha(i) + psi + beta * theta(i));
-                arma::rowvec row_i(wfm.row(i));
-                G(0,0) = accu((row_i - lambdai) / phi) - alpha(i) * priorprecalpha;
-                G(1,0) = accu((beta % (row_i - lambdai)) / phi) - theta(i) * priorprectheta;		
-                H(0,0) = -accu(lambdai / phi) - priorprecalpha;
-                H(1,0) = -accu((beta % lambdai) / phi);
-                H(0,1) = H(1,0);
-                H(1,1) = -accu(((beta % beta) % lambdai) / phi) - priorprectheta;
-                pars(0,0) = alpha(i);
-                pars(1,0) = theta(i);
-                newpars(0,0) = pars(0,0) - stepsize*(H(1,1)*G(0,0) - H(0,1)*G(1,0))/(H(0,0)*H(1,1) - H(0,1)*H(1,0));
-                newpars(1,0) = pars(1,0) - stepsize*(H(0,0)*G(1,0) - H(1,0)*G(0,0))/(H(0,0)*H(1,1) - H(0,1)*H(1,0));
-                alpha(i) = newpars(0,0);
-                theta(i) = newpars(1,0);
-                cc = abs(newpars - pars).max();	
-                stepsize = 1.0;
-            }	
-        }
+        NumericVector alpha_N(alpha.begin(), alpha.end());
+        NumericVector theta_N(theta.begin(), theta.end());
+        DocPar docPar(alpha_N, psi, beta, theta_N, phi, wfm, tolvec,
+                        outeriter, priorprecalpha, priorprectheta, stepsize);
+        parallelFor(0, N, docPar);
+        
+        alpha = as<arma::colvec>(alpha_N);
+        theta = as<arma::colvec>(theta_N);
         
         // UPDATE DISPERSION PARAMETERS	  
         
@@ -321,13 +305,6 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
         lastlp = lp;
         lp = -1.0*(accu(0.5 * ((alpha % alpha) * priorprecalpha)) + accu(0.5 * ((psi % psi) * priorprecpsi)) 
                        + accu(0.5 * ((beta % beta) * priorprecbeta)) + accu(0.5 * ((theta % theta) * priorprectheta)));
-        // for (std::size_t i=0; i < N; i++){
-        //     for (std::size_t k=0; k < K; k++){
-        //         loglambdaik = alpha(i) + psi(k) + beta(k) * theta(i);
-        //         lp = lp + loglambdaik * wfm(i,k) - exp(loglambdaik);
-        //     }
-        // }
-        
         LogPos logPos2(alpha, psi, beta, theta, wfm, K);
         parallelReduce(0, N, logPos2);
         lp = logPos2.lp;
