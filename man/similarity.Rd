@@ -2,9 +2,9 @@
 % Please edit documentation in R/similarity.R
 \docType{methods}
 \name{similarity}
+\alias{as.matrix.similMatrix}
 \alias{similarity}
 \alias{similarity,dfm-method}
-\alias{as.matrix.similMatrix}
 \title{compute similarities between documents and/or features}
 \usage{
 similarity(x, selection = NULL, n = NULL, margin = c("documents",
@@ -78,3 +78,4 @@ similarity(presDfm, c("fair", "health", "terror"), method="cosine", margin = "fe
 }
 \keyword{deprecated}
 \keyword{internal}
+

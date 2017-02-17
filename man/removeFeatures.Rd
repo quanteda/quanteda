@@ -46,11 +46,12 @@ removeFeatures(myCollocs, stopwords("english"))
 removeFeatures(myCollocs, stopwords("english"), pos = 2)
 }
 }
-\seealso{
-\link{stopwords}
-}
 \author{
 Kenneth Benoit
 }
+\seealso{
+\link{stopwords}
+}
 \keyword{deprecated}
 \keyword{internal}
+

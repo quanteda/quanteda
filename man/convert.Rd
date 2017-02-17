@@ -75,3 +75,4 @@ ldadfm <- convert(quantdfm, to = "lda")
 str(ldadfm)
 }
 }
+

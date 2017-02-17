@@ -43,3 +43,4 @@ nfeature(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), removePunct = TR
 \seealso{
 \code{\link{ntoken}}
 }
+

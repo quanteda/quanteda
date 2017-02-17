@@ -2,27 +2,27 @@
 % Please edit documentation in R/dfm-classes.R, R/dfm-subsetting.R
 \docType{class}
 \name{dfm-class}
+\alias{+,dfmDense,numeric-method}
+\alias{+,dfmSparse,numeric-method}
+\alias{+,numeric,dfmDense-method}
+\alias{+,numeric,dfmSparse-method}
+\alias{[,dfm,index,index,logical-method}
+\alias{[,dfm,index,index,missing-method}
+\alias{[,dfm,index,missing,logical-method}
+\alias{[,dfm,index,missing,missing-method}
+\alias{[,dfm,missing,index,logical-method}
+\alias{[,dfm,missing,index,missing-method}
+\alias{[,dfm,missing,missing,logical-method}
+\alias{[,dfm,missing,missing,missing-method}
+\alias{colMeans,dfmSparse-method}
+\alias{colSums,dfmSparse-method}
 \alias{dfm-class}
-\alias{dfmSparse-class}
 \alias{dfmDense-class}
+\alias{dfmSparse-class}
+\alias{rowMeans,dfmSparse-method}
+\alias{rowSums,dfmSparse-method}
 \alias{t,dfmDense-method}
 \alias{t,dfmSparse-method}
-\alias{colSums,dfmSparse-method}
-\alias{rowSums,dfmSparse-method}
-\alias{colMeans,dfmSparse-method}
-\alias{rowMeans,dfmSparse-method}
-\alias{+,dfmSparse,numeric-method}
-\alias{+,numeric,dfmSparse-method}
-\alias{+,dfmDense,numeric-method}
-\alias{+,numeric,dfmDense-method}
-\alias{[,dfm,index,index,missing-method}
-\alias{[,dfm,index,index,logical-method}
-\alias{[,dfm,missing,missing,missing-method}
-\alias{[,dfm,missing,missing,logical-method}
-\alias{[,dfm,index,missing,missing-method}
-\alias{[,dfm,index,missing,logical-method}
-\alias{[,dfm,missing,index,missing-method}
-\alias{[,dfm,missing,index,logical-method}
 \title{Virtual class "dfm" for a document-feature matrix}
 \usage{
 \S4method{t}{dfmDense}(x)
@@ -130,7 +130,6 @@ either the \code{\link{smooth}} or the \code{\link{weight}} methods.}
 \item{\code{Dimnames}}{These are inherited from \link[Matrix]{Matrix-class} but are 
 named \code{docs} and \code{features} respectively.}
 }}
-
 \examples{
 # dfm subsetting
 x <- dfm(tokens(c("this contains lots of stopwords",
@@ -152,3 +151,4 @@ y[4:5, 1:5]
 }
 \keyword{dfm}
 \keyword{internal}
+

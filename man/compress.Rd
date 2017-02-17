@@ -45,3 +45,4 @@ compress(dfm(data_char_inaugural, verbose = FALSE))
 }
 \keyword{deprecated}
 \keyword{internal}
+

@@ -2,17 +2,17 @@
 % Please edit documentation in R/toLower.R
 \name{toLower}
 \alias{toLower}
-\alias{toLower.character}
 \alias{toLower.NULL}
+\alias{toLower.character}
+\alias{toLower.corpus}
 \alias{toLower.tokenizedTexts}
 \alias{toLower.tokens}
-\alias{toUpper.tokens}
-\alias{toLower.corpus}
 \alias{toUpper}
-\alias{toUpper.character}
 \alias{toUpper.NULL}
-\alias{toUpper.tokenizedTexts}
+\alias{toUpper.character}
 \alias{toUpper.corpus}
+\alias{toUpper.tokenizedTexts}
+\alias{toUpper.tokens}
 \title{Convert texts to lower (or upper) case}
 \usage{
 toLower(x, keep_acronyms = FALSE, ...)
@@ -79,3 +79,4 @@ toUpper(test2)
 }
 \keyword{deprecated}
 \keyword{internal}
+

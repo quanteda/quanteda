@@ -36,3 +36,4 @@ dfm_sample(myDfm, what = "features")[1:10, ]
 \seealso{
 \link{sample}
 }
+

@@ -55,3 +55,4 @@ nsyllable(tokens(txt, removePunct = TRUE))
 # punctuation is not counted
 nsyllable(tokens(txt), use.names = TRUE)
 }
+

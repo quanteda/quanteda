@@ -23,3 +23,4 @@ of 2010.
 summary(data_corpus_irishbudget2010)
 }
 \keyword{data}
+

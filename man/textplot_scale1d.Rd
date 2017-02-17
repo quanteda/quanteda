@@ -49,12 +49,13 @@ textplot_scale1d(mod, margin = "features",
                  highlighted = c("government", "countries", "children", 
                              "the", "nuclear", "federal"))
 }
+\author{
+Adam Obeng
+}
 \references{
 Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
   for Estimating Time-Series Party Positions from Texts." \emph{American 
   Journal of Political Science} 52(3):705-772.
 }
-\author{
-Adam Obeng
-}
 \keyword{plot}
+
