@@ -283,3 +283,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// wordfish_cpp
+Rcpp::List wordfish_cpp(arma::sp_mat& wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin);
+RcppExport SEXP quanteda_wordfish_cpp(SEXP wfmSEXP, SEXP dirvecSEXP, SEXP priorvecSEXP, SEXP tolvecSEXP, SEXP disptypeSEXP, SEXP dispminSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type wfm(wfmSEXP);
+    Rcpp::traits::input_parameter< IntegerVector& >::type dirvec(dirvecSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type priorvec(priorvecSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type tolvec(tolvecSEXP);
+    Rcpp::traits::input_parameter< IntegerVector& >::type disptype(disptypeSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type dispmin(dispminSEXP);
+    rcpp_result_gen = Rcpp::wrap(wordfish_cpp(wfm, dirvec, priorvec, tolvec, disptype, dispmin));
+    return rcpp_result_gen;
+END_RCPP
+}

@@ -6,7 +6,8 @@
 \usage{
 textmodel_wordfish(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
   tol = c(1e-06, 1e-08), dispersion = c("poisson", "quasipoisson"),
-  dispersionLevel = c("feature", "overall"), dispersionFloor = 0)
+  dispersionLevel = c("feature", "overall"), dispersionFloor = 0,
+  version = 0)
 }
 \arguments{
 \item{data}{the dfm on which the model will be fit}

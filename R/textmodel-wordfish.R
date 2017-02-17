@@ -108,7 +108,8 @@ setClass("textmodel_wordfish_predicted",
 textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), tol = c(1e-6, 1e-8), 
                                dispersion = c("poisson", "quasipoisson"), 
                                dispersionLevel = c("feature", "overall"),
-                               dispersionFloor = 0) {
+                               dispersionFloor = 0,
+                               version = 0) {
     
     dispersion <- match.arg(dispersion)
     dispersionLevel <- match.arg(dispersionLevel)
@@ -154,8 +155,11 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
         stop("Illegal option combination.")
 
     # catm("disp = ", disp, "\n")
-    
+    if (version == 0)
     wfresult <- wordfishcpp(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor)
+    else
+        wfresult <- wordfish_cpp(data, as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor)
+    
     # NOTE: psi is a 1 x nfeature matrix, not a numeric vector
     #       alpha is a ndoc x 1 matrix, not a numeric vector
     new("textmodel_wordfish_fitted", 
@@ -165,12 +169,12 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
         dir = dir,
         dispersion = dispersion,
         priors = priors,
-        theta = wfresult$theta,
-        beta = wfresult$beta,
+        theta = as.numeric(wfresult$theta),
+        beta = as.numeric(wfresult$beta),
         psi = as.numeric(wfresult$psi),
         alpha = as.numeric(wfresult$alpha),
         phi = as.numeric(wfresult$phi),
-        se.theta = wfresult$thetaSE ,
+        se.theta = as.numeric(wfresult$thetaSE),
         call = match.call())
 }
 
