@@ -212,8 +212,8 @@ test_that("tokens works as expected for what = \"character\"", {
 
 test_that("tokens works with unusual hiragana #554", {
     txts <- c("づいﾞ", "゛んﾞ", "たーﾟ")
-    expect_equal(as.list(tokens(txts)),
-                 list(c('づ', 'いﾞ'), c('゛', 'んﾞ'), c('た', 'ーﾟ')))
+    expect_equivalent(as.list(tokens(txts)),
+                      list(c('づ', 'いﾞ'), c('゛', 'んﾞ'), c('た', 'ーﾟ')))
     
 })
 
