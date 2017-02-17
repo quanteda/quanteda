@@ -13,3 +13,4 @@ is.collocations(x)
 Return \code{TRUE} if an object was constructed by \link{collocations}.
 }
 \keyword{collocations}
+

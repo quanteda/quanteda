@@ -11,3 +11,4 @@ Use \code{\link{nscrabble}} instead.
 }
 \keyword{deprecated}
 \keyword{internal}
+

@@ -20,3 +20,4 @@ metadoc(data_corpus_ukimmig2010, "language") <- "english"
 summary(data_corpus_ukimmig2010, showmeta = TRUE)
 }
 \keyword{data}
+

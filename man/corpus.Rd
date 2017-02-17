@@ -83,7 +83,6 @@ The texts and document variables of corpus objects can also be
   change (as it inevitably will as we continue to develop the package,
   including moving corpus objects to the S4 class system).
 }
-
 \examples{
 # create a corpus from texts
 corpus(data_char_inaugural)
@@ -122,11 +121,12 @@ summary(corpus(mydf, text_field = "some_text",
 mykwic <- kwic(data_corpus_inaugural, "southern")
 summary(corpus(mykwic))
 }
+\author{
+Kenneth Benoit and Paul Nulty
+}
 \seealso{
 \link{corpus-class}, \link{docvars}, \link{metadoc}, \link{metacorpus}, 
   \link{settings}, \link{texts}, \link{ndoc}, \link{docnames}
 }
-\author{
-Kenneth Benoit and Paul Nulty
-}
 \keyword{corpus}
+

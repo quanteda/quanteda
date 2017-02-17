@@ -11,3 +11,4 @@ Deprecated function name; use \code{\link{nsyllable}} instead.
 }
 \keyword{deprecated}
 \keyword{internal}
+

@@ -57,7 +57,6 @@ This naive Bayes model works on word counts, with smoothing.
  A \code{predict} method is also available for a 
   fitted Naive Bayes object, see \code{\link{predict.textmodel_NB_fitted}}.
 }
-
 \examples{
 ## Example from 13.1 of _An Introduction to Information Retrieval_
 trainingset <- as.dfm(matrix(c(1, 2, 0, 0, 0, 0,
@@ -82,3 +81,4 @@ predict(textmodel_NB(trainingset, trainingclass, prior = "termfreq"))
 \author{
 Kenneth Benoit
 }
+

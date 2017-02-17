@@ -36,3 +36,4 @@ tail(myDfm)
 tail(myDfm, nfeature = 4)
 }
 \keyword{dfm}
+

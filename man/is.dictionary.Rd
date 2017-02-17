@@ -12,3 +12,4 @@ is.dictionary(x)
 \description{
 Return \code{TRUE} if an object is a \pkg{quanteda} \link{dictionary}.
 }
+

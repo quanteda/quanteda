@@ -70,3 +70,4 @@ dfm_lookup(myDfm, myDict, valuetype = "fixed")
 dfm_lookup(myDfm, myDict, valuetype = "fixed", case_insensitive = FALSE)
 }
 \keyword{dfm}
+

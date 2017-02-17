@@ -55,3 +55,4 @@ Kenneth Benoit
 }
 \keyword{deprecated}
 \keyword{internal}
+

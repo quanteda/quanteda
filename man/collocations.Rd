@@ -77,6 +77,9 @@ collocations(data_char_inaugural[49:57], method = "all", n = 10)
 collocations(data_char_inaugural[49:57], method = "chi2", size = 3, n = 10)
 collocations(corpus_subset(data_corpus_inaugural, Year>1980), method = "pmi", size = 3, n = 10)
 }
+\author{
+Kenneth Benoit
+}
 \references{
 McInnes, B T. 2004. "Extending the Log Likelihood Measure to 
   Improve Collocation Identification."  M.Sc. Thesis, University of 
@@ -85,6 +88,4 @@ McInnes, B T. 2004. "Extending the Log Likelihood Measure to
 \seealso{
 \link{tokens_ngrams}
 }
-\author{
-Kenneth Benoit
-}
+

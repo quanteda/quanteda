@@ -13,3 +13,4 @@ as.corpus(x)
 Recast a compressed corpus object into a standard (uncompressed) corpus object.
 }
 \keyword{internal}
+

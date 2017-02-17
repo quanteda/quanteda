@@ -100,6 +100,9 @@ toks <- tokens(char_tolower(txt), removePunct = TRUE)
 fcm(toks, context = "document")
 fcm(toks, context = "window", window = 3)
 }
+\author{
+Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)
+}
 \references{
 Momtazi, S., Khudanpur, S., & Klakow, D. (2010). 
   "\href{https://www.lsv.uni-saarland.de/fileadmin/publications/SaeedehMomtazi-HLT_NAACL10.pdf}{A
@@ -118,6 +121,4 @@ Momtazi, S., Khudanpur, S., & Klakow, D. (2010).
   mutual information, and lexicography}" \emph{Computational Linguistics},
   16(1):22–29.
 }
-\author{
-Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)
-}
+

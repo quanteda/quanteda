@@ -28,3 +28,4 @@ head(sort(featnames(inaugDfm)), 50)
 # contrast with descending total frequency order from topfeatures()
 names(topfeatures(inaugDfm, 50))
 }
+

@@ -3,10 +3,10 @@
 \docType{methods}
 \name{phrasetotoken}
 \alias{phrasetotoken}
-\alias{phrasetotoken,corpus,ANY-method}
-\alias{phrasetotoken,textORtokens,dictionary-method}
-\alias{phrasetotoken,textORtokens,collocations-method}
 \alias{phrasetotoken,character,character-method}
+\alias{phrasetotoken,corpus,ANY-method}
+\alias{phrasetotoken,textORtokens,collocations-method}
+\alias{phrasetotoken,textORtokens,dictionary-method}
 \alias{phrasetotoken,tokenizedTexts,character-method}
 \title{convert phrases into single tokens}
 \usage{
@@ -96,3 +96,4 @@ Kenneth Benoit
 }
 \keyword{deprecated}
 \keyword{internal}
+
