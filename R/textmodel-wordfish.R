@@ -56,6 +56,7 @@ setClass("textmodel_wordfish_predicted",
 #'   terms with rare term or document frequencies that appear to be severely 
 #'   underdispersed.  Default is 0, but this only applies if \code{dispersion = 
 #'   "quasipoisson"}.
+#' @version sets for "Serial" and "Parallel". 
 #' @return An object of class textmodel_fitted_wordfish.  This is a list 
 #'   containing: \item{dir}{global identification of the dimension} 
 #'   \item{theta}{estimated document positions} \item{alpha}{estimated document 
@@ -109,10 +110,11 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
                                dispersion = c("poisson", "quasipoisson"), 
                                dispersionLevel = c("feature", "overall"),
                                dispersionFloor = 0,
-                               version = 0) {
+                               version = c("Serial", "Parallel")) {
     
     dispersion <- match.arg(dispersion)
     dispersionLevel <- match.arg(dispersionLevel)
+    version <- match.arg(version)
     
     # check that no rows or columns are all zero
     zeroLengthDocs <- which(ntoken(data) == 0)
@@ -155,8 +157,8 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
         stop("Illegal option combination.")
 
     # catm("disp = ", disp, "\n")
-    if (version == 0)
-    wfresult <- wordfishcpp(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor)
+    if (version == "Serial")
+        wfresult <- wordfishcpp(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor)
     else
         wfresult <- wordfish_cpp(data, as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor)
     
