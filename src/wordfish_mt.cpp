@@ -6,7 +6,7 @@
 using namespace RcppParallel;
 using namespace Rcpp;
 using namespace arma;
-# define RESIDUALS_LIM 0.5
+# define RESIDUALS_LIM 0//0.5
 # define NUMSVD 2
 # define OUTERITER 100
 # define INNERITER 10
@@ -161,6 +161,44 @@ struct DocPar : public Worker {
         }
     } //End of operator
 };
+
+// Update dispersion parameters -- single dispersion parameter for all words
+struct DispPar : public Worker {
+    const arma::colvec& alpha; 
+    const arma::rowvec& psi;
+    const arma::rowvec& beta;
+    const arma::colvec& theta;
+    const arma::sp_mat& wfm;
+    const std::size_t& N;
+    
+    // accumulated value
+    double phitmp;
+    
+    // constructors
+    DispPar(const arma::colvec& alpha, const arma::rowvec& psi, const arma::rowvec& beta, 
+           const arma::colvec& theta, const arma::sp_mat& wfm, const std::size_t& N) 
+        : alpha(alpha), psi(psi), beta(beta), theta(theta), wfm(wfm), N(N), phitmp(0) {}
+    DispPar(const DispPar& sum, Split) : alpha(sum.alpha), psi(sum.psi), beta(sum.beta),
+    theta(sum.theta), wfm(sum.wfm), N(sum.N), phitmp(0) {}
+    
+    
+    void operator() (std::size_t begin, std::size_t end) {
+        for (std::size_t k = begin; k < end; k++) {
+            float temp = phitmp;
+            for (std::size_t i = 0; i < N; i++){
+                double mutmp = exp(alpha(i) + psi(k) + beta(k) * theta(i));
+                temp += (wfm(i,k) - mutmp) * (wfm(i,k) - mutmp) / mutmp;
+            }
+            phitmp = temp;
+        }
+    }
+    
+    // join phitmp with that of another DispPar
+    void join(const DispPar& rhs) { 
+        phitmp += rhs.phitmp; 
+    }
+};
+
 // [[Rcpp::export]]
 
 Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin){
@@ -238,7 +276,7 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
     // compute LOG posterior
     LogPos logPos(alpha, psi, beta, theta, wfm, K);
     parallelReduce(0, N, logPos);
-    lp = logPos.lp;
+    lp += logPos.lp;
     
     
     // BEGIN WHILE LOOP
@@ -273,15 +311,11 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
         // UPDATE DISPERSION PARAMETERS	  
         
         if (disptype(0) == 2) { // single dispersion parameter for all words
-            phitmp = 0.0;
-            for (std::size_t k=0; k < K; k++){
-                for (std::size_t i=0; i < N; i++){
-                    mutmp = exp(alpha(i) + psi(k) + beta(k)*theta(i));
-                    phitmp = phitmp + (wfm(i,k) - mutmp) * (wfm(i,k) - mutmp)/mutmp;
-                }   
-            }	    
-            phitmp = phitmp/(N*K - 2*N - 2*K);
-            for (std::size_t k=0; k < K; k++) phi(k) = phitmp;
+            DispPar dispPar(alpha, psi, beta, theta, wfm, N);
+            parallelReduce(0, K, dispPar);
+            double phitmp = dispPar.phitmp;
+            phitmp /= N*K - 2*N - 2*K;
+            phi.fill(phitmp);
         }
         
         if (disptype(0) >= 3) { // individual dispersion parameter for each word
@@ -305,9 +339,10 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
         lastlp = lp;
         lp = -1.0*(accu(0.5 * ((alpha % alpha) * priorprecalpha)) + accu(0.5 * ((psi % psi) * priorprecpsi)) 
                        + accu(0.5 * ((beta % beta) * priorprecbeta)) + accu(0.5 * ((theta % theta) * priorprectheta)));
+        
         LogPos logPos2(alpha, psi, beta, theta, wfm, K);
         parallelReduce(0, N, logPos2);
-        lp = logPos2.lp;
+        lp += logPos2.lp;
         // Rprintf("%d: %f2\\n",outeriter,lp);
         
         // END WHILE LOOP		
