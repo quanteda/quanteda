@@ -199,6 +199,43 @@ struct DispPar : public Worker {
     }
 };
 
+// Update dispersion parameters -- individual dispersion parameter for each word
+struct DispPar2 : public Worker {
+    const arma::colvec& alpha; 
+    const arma::rowvec& psi;
+    const arma::rowvec& beta;
+    const arma::colvec& theta;
+    const arma::sp_mat& wfm;
+    const IntegerVector& disptype;
+    const NumericVector& dispmin;
+    const std::size_t& N;
+    const std::size_t& K;
+    // output vector
+    RVector<double> phi;
+    
+    // constructors
+    DispPar2(const arma::colvec& alpha, const arma::rowvec& psi, const arma::rowvec& beta, 
+            const arma::colvec& theta, const arma::sp_mat& wfm, const IntegerVector& disptype,
+            const NumericVector& dispmin, const std::size_t& N, const std::size_t& K, NumericVector& phi) 
+        : alpha(alpha), psi(psi), beta(beta), theta(theta), wfm(wfm), disptype(disptype), 
+          dispmin(dispmin), N(N), K(K), phi(phi){}
+    
+    void operator() (std::size_t begin, std::size_t end) {
+        for (std::size_t k = begin; k < end; k++) {
+            double phitmp = 0.0;
+            for (std::size_t i = 0; i < N; i++){
+                double mutmp = exp(alpha(i) + psi(k) + beta(k) * theta(i));
+                phitmp += (wfm(i,k) - mutmp) * (wfm(i,k) - mutmp) / mutmp;
+            }
+            phitmp = ((K)*phitmp)/(N*K - 2*N - 2*K);
+            if (disptype(0) == 4) {
+                phi[k] = fmax(dispmin(0), phitmp);
+            }else{
+                phi[k] = phitmp;
+            }
+        }
+    }
+};
 // [[Rcpp::export]]
 
 Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin){
@@ -319,17 +356,10 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
         }
         
         if (disptype(0) >= 3) { // individual dispersion parameter for each word
-            for (std::size_t k=0; k < K; k++){
-                phitmp = 0.0;
-                for (std::size_t i=0; i < N; i++){
-                    mutmp = exp(alpha(i) + psi(k) + beta(k) * theta(i));
-                    phitmp = phitmp + (wfm(i,k) - mutmp) * (wfm(i,k) - mutmp)/mutmp;	        
-                }   
-                phitmp = ((K) * phitmp)/(N * K - 2 * N - 2 * K);
-                phi(k) = phitmp;
-                // set ceiling on underdispersion
-                if (disptype(0) == 4) phi(k) = fmax(dispmin(0), phi(k));
-            }
+            NumericVector phi_N(phi.begin(), phi.end());
+            DispPar2 dispPar2(alpha, psi, beta, theta, wfm, disptype, dispmin, N, K, phi_N);
+            parallelFor(0, K, dispPar2);
+            phi = as<arma::rowvec>(phi_N);
         }	  			
         
         alpha = alpha - mean(alpha);
