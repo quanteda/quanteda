@@ -210,7 +210,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     result_blocks <- list()
     for (i in 1:length(blocks)) {
         
-        if (verbose) catm("...tokenizing", i, "of" , length(x_blocks), "blocks\n")
+        if (verbose) catm("...tokenizing", i, "of" , length(blocks), "blocks\n")
         
         if (what %in% c("word", "fastestword", "fasterword")) {
             result_temp <- tokens_word(blocks[[i]], what, removeNumbers, removePunct, removeSymbols, 
