@@ -86,7 +86,7 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEX
             lp = lp + loglambdaik*Y(i,k)-exp(loglambdaik);
         }
     }
-    
+    //Rcout<<lp<<std::endl;
     // BEGIN WHILE LOOP
     while(((lp - lastlp) > tolvec(0)) && outeriter < 100){	
         outeriter++;
@@ -116,7 +116,7 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEX
             }	
         }	
         
-        
+        //Rcout<<psi(1)<<" beta="<<beta(1)<<std::endl;
         // UPDATE DOCUMENT PARAMETERS
         for (int i=0; i < N; i++){
             cc = 1;
@@ -141,7 +141,7 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEX
                 stepsize = 1.0;
             }	
         }
-        
+        //Rcout<<alpha(1)<<" beta="<<theta(1)<<std::endl;
         // UPDATE DISPERSION PARAMETERS	  
         
         if (disptype(0) == 2) { // single dispersion parameter for all words
@@ -182,7 +182,7 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEX
                 lp = lp + loglambdaik*Y(i,k)-exp(loglambdaik);
             }
         }
-        // Rprintf("%d: %f2\\n",outeriter,lp);
+         //Rprintf("%d: %f2\\n",outeriter,lp);
         
         // END WHILE LOOP		
     } 
