@@ -38,6 +38,8 @@ in the quasi-Poisson model.  Used to minimize the distorting effect of
 terms with rare term or document frequencies that appear to be severely 
 underdispersed.  Default is 0, but this only applies if \code{dispersion = 
 "quasipoisson"}.}
+
+\item{version}{sets "Serial" or "Parallel".}
 }
 \value{
 An object of class textmodel_fitted_wordfish.  This is a list 

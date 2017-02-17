@@ -56,7 +56,7 @@ setClass("textmodel_wordfish_predicted",
 #'   terms with rare term or document frequencies that appear to be severely 
 #'   underdispersed.  Default is 0, but this only applies if \code{dispersion = 
 #'   "quasipoisson"}.
-#' @version sets for "Serial" and "Parallel". 
+#' @param version sets "Serial" or "Parallel". 
 #' @return An object of class textmodel_fitted_wordfish.  This is a list 
 #'   containing: \item{dir}{global identification of the dimension} 
 #'   \item{theta}{estimated document positions} \item{alpha}{estimated document 
