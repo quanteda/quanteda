@@ -44,8 +44,8 @@ Returns estimates of relative author positions across the full corpus of texts.
 }
 \examples{
 \dontrun{
-data(ie30corpus, package = "quantedaData")
-iedfm <- dfm(ie30corpus, removePunct = TRUE)
+data(data_corpus_irish30, package = "quantedaData")
+iedfm <- dfm(data_corpus_irish30, removePunct = TRUE)
 wordshoalfit <- 
     textmodel_wordshoal(iedfm, dir = c(7,1),
                         groups = docvars(ie30corpus, "debateID"), 

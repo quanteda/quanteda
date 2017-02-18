@@ -56,8 +56,8 @@ setClass("textmodel_wordshoal_predicted",
 #' @keywords textmodel experimental
 #' @examples
 #' \dontrun{
-#' data(ie30corpus, package = "quantedaData")
-#' iedfm <- dfm(ie30corpus, removePunct = TRUE)
+#' data(data_corpus_irish30, package = "quantedaData")
+#' iedfm <- dfm(data_corpus_irish30, removePunct = TRUE)
 #' wordshoalfit <- 
 #'     textmodel_wordshoal(iedfm, dir = c(7,1),
 #'                         groups = docvars(ie30corpus, "debateID"), 
