@@ -206,20 +206,20 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     startTimeTok <- proc.time()
     
     # Split x into smaller blocks to reducre peak memory consumption
-    x_blocks <- split(x, ceiling(seq_along(x) / 10000))
+    blocks <- split(x, ceiling(seq_along(x) / 10000))
     result_blocks <- list()
-    for (i in 1:length(x_blocks)) {
+    for (i in 1:length(blocks)) {
         
-        if (verbose) catm("...tokenizing", i, "of" , length(x_blocks), "blocks\n")
+        if (verbose) catm("...tokenizing", i, "of" , length(blocks), "blocks\n")
         
         if (what %in% c("word", "fastestword", "fasterword")) {
-            result_temp <- tokens_word(x_blocks[[i]], what, removeNumbers, removePunct, removeSymbols, 
+            result_temp <- tokens_word(blocks[[i]], what, removeNumbers, removePunct, removeSymbols, 
                                        removeSeparators, removeTwitter, removeHyphens, removeURL, verbose)
         } else if (what == "character") {
-            result_temp <- tokens_character(x_blocks[[i]], what, removeNumbers, removePunct, removeSymbols, 
+            result_temp <- tokens_character(blocks[[i]], what, removeNumbers, removePunct, removeSymbols, 
                                             removeSeparators, removeTwitter, removeHyphens, removeURL, verbose)
         } else if (what == "sentence") {
-            result_temp <- tokens_sentence(x_blocks[[i]], what, removeNumbers, removePunct, removeSymbols, 
+            result_temp <- tokens_sentence(blocks[[i]], what, removeNumbers, removePunct, removeSymbols, 
                                            removeSeparators, removeTwitter, removeHyphens, removeURL, verbose)
         } else {
             stop(what, " not implemented in tokens().")
@@ -511,9 +511,7 @@ tokens_word <- function(txt, what, removeNumbers, removePunct, removeSymbols, re
             tok <- stringi::stri_split_fixed(txt, " ")
         else if (what=="fasterword")
             tok <- stringi::stri_split_charclass(txt, "\\p{WHITE_SPACE}")
-        tok <- qatd_cpp_chars_remove(tok, "")
-        
-        
+
     } else {
         tok <- stringi::stri_split_boundaries(txt, 
                                               type = "word", 
@@ -529,6 +527,7 @@ tokens_word <- function(txt, what, removeNumbers, removePunct, removeSymbols, re
     if (!removeHyphens & removePunct)
         tok <- lapply(tok, stri_replace_all_fixed, "_hy_", "-")
     
+    tok <- qatd_cpp_chars_remove(tok, "")
     return(tok)
 }
 

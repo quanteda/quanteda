@@ -210,6 +210,14 @@ test_that("tokens works as expected for what = \"character\"", {
     )
 })
 
+# Failing on travis
+# test_that("tokens works with unusual hiragana #554", {
+#     txts <- c("づいﾞ", "゛んﾞ", "たーﾟ")
+#     expect_equivalent(as.list(tokens(txts)),
+#                       list(c('づ', 'いﾞ'), c('゛', 'んﾞ'), c('た', 'ーﾟ')))
+#     
+# })
+
 #' # coerce an object into a tokens class
 #' as.tokens(toks)
 

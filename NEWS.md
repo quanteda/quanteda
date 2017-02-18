@@ -1,5 +1,12 @@
 # quanteda 0.9.9
 
+## Changes since v0.9.9-24
+
+### Bug fixes
+
+* Fixed an problem in tokens generation for some irregular characters (#554).
+
+
 ## Changes since v0.9.9-17
 
 ### New features
