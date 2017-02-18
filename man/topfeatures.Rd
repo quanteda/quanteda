@@ -33,4 +33,3 @@ topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980),
 topfeatures(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), verbose = FALSE), 
             decreasing = FALSE)
 }
-

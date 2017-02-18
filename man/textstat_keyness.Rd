@@ -66,4 +66,3 @@ Bondi, Marina, and Mike Scott, eds. 2010.  \emph{Keyness in
   \emph{Computational Linguistics}, Vol 19, No. 1, pp. 61-74.
 }
 \keyword{textstat}
-

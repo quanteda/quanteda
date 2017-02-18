@@ -25,4 +25,3 @@ Deprecated; use \code{\link{dfm_trim}} instead.
 }
 \keyword{deprecated}
 \keyword{internal}
-

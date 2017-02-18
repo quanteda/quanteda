@@ -11,8 +11,8 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     person("Haiyan", "Wang", email = "h.wang52@lse.ac.uk", role = "ctb"),
     person("Benjamin", "Lauderdale", email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
     person("Will", "Lowe", email = "wlowe@princeton.edu", role = "ctb") )
-Version: 0.9.9-25
-Date: 2017-02-14
+Version: 0.9.9-26
+Date: 2017-02-18
 License: GPL-3
 Depends:
     R (>= 3.2.2)
@@ -129,5 +129,5 @@ Collate:
     'wordstem.R'
     'zzz.R'
 RcppModules: ngramMaker
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 SystemRequirements: C++11,GNU make

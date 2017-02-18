@@ -44,11 +44,13 @@ Fitting a \code{textmodel_wordscores} results in an object of class
 
 \item{\code{method}}{takes a value of \code{wordscores} for this model}
 }}
+
 \section{Predict Methods}{
  A \code{predict} method is also available for a 
   fitted wordscores object, see 
   \code{\link{predict.textmodel_wordscores_fitted}}.
 }
+
 \examples{
 (ws <- textmodel_wordscores(data_dfm_LBGexample, c(seq(-1.5, 1.5, .75), NA)))
 
@@ -59,9 +61,6 @@ predict(ws, rescaling = "lbg")
 # same as:
 (ws2 <- textmodel_wordscores(data_dfm_LBGexample, c(seq(-1.5, 1.5, .75), NA)))
 predict(ws2)
-}
-\author{
-Kenneth Benoit
 }
 \references{
 Laver, Michael, Kenneth R Benoit, and John Garry. 2003. 
@@ -77,4 +76,6 @@ Laver, Michael, Kenneth R Benoit, and John Garry. 2003.
 \seealso{
 \code{\link{predict.textmodel_wordscores_fitted}}
 }
-
+\author{
+Kenneth Benoit
+}

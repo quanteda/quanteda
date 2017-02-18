@@ -47,4 +47,3 @@ g + aes(color = keyword) + scale_color_manual(values = c('red', 'blue'))
 Adam Obeng
 }
 \keyword{plot}
-

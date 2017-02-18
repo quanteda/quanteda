@@ -2,13 +2,13 @@
 % Please edit documentation in R/data-deprecated.R
 \docType{data}
 \name{data-deprecated}
-\alias{LBGexample}
 \alias{data-deprecated}
-\alias{exampleString}
-\alias{ie2010Corpus}
-\alias{inaugCorpus}
-\alias{inaugTexts}
 \alias{ukimmigTexts}
+\alias{ie2010Corpus}
+\alias{inaugTexts}
+\alias{inaugCorpus}
+\alias{LBGexample}
+\alias{exampleString}
 \title{datasets with deprecated or defunct names}
 \format{See the specific object documentation for the renamed objects.}
 \usage{
@@ -48,4 +48,3 @@ These are datasets that have been renamed but that have been
 \keyword{datasets}
 \keyword{deprecated}
 \keyword{internal}
-

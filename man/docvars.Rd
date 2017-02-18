@@ -41,4 +41,3 @@ data_corpus_inaugural[["President2"]] <- paste("prezTwo", 1:ndoc(data_corpus_ina
 head(docvars(data_corpus_inaugural))
 }
 \keyword{corpus}
-
