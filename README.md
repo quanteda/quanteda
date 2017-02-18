@@ -11,7 +11,7 @@ This version of the package is a transitional release prior to v1.0. It includes
 Note on problems with CRAN binary mac build on OS X
 ---------------------------------------------------
 
-`dfm()` fails when using the binary build from CRAN for v0.9.9-24 on Mac platforms with OS X El Capitain, Yosemite, or Mavericks. (See [Issue \#519](https://github.com/kbenoit/quanteda/issues/519).)
+`dfm()` fails when using the binary build from CRAN for v0.9.9-24 on Mac platforms with OS X El Capitain, Yosemite, or Mavericks. (See [Issue \#519](https://github.com/kbenoit/quanteda/issues/519).) This problem does not affect macOS (Sierra) platforms.
 
 Solution: Install from source. You will need the build tools from XCode to do this.
 
@@ -166,7 +166,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Sat Feb 18 10:20:21 2017
+## Created: Sat Feb 18 10:22:31 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
