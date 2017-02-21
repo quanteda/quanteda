@@ -7,16 +7,18 @@ test_that("test textstat_simil method = \"correlation\" against proxy simil(): d
     
     corQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, method = "correlation", margin = "documents"))[,"1981-Reagan"], 6), decreasing = TRUE)
     corProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), by_rows = TRUE, diag = TRUE))[, "1981-Reagan"], 6), decreasing = TRUE)
-    corCor <- sort(cor(as.matrix(t(presDfm)))[, "1981-Reagan"], decreasing = TRUE)
-    expect_equal(corQuanteda[-9], corProxy[-9], corCor[-1])
+    corCor <- sort(round(cor(as.matrix(t(presDfm)))[, "1981-Reagan"], 6), decreasing = TRUE)
+    expect_equal(corQuanteda, corProxy)
+    expect_equal(corProxy, corCor)
 })
 
 test_that("test textstat_simil method = \"correlation\" against base cor(): features (allow selection)", {
+    skip_if_not_installed("proxy")
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     corQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, "union", method = "correlation", margin = "features"))[,"union"], 6), decreasing = TRUE)
     corStats <- sort(round(cor(as.matrix(presDfm))[, "union"], 6), decreasing = TRUE)
-    expect_equal(corQuanteda[1:10], corStats[2:11])
+    expect_equal(corQuanteda[1:10], corStats[1:10])
 })
 
 # cosine
@@ -71,7 +73,8 @@ test_that("test textstat_dist method = \"Euclidean\" against proxy dist() and st
     eucQuanteda <- sort(round(as.matrix(textstat_dist(presDfm, method = "euclidean", margin = "documents"))[,"1981-Reagan"], 6), decreasing = FALSE)
     eucProxy <- sort(round(as.matrix(proxy::dist(as.matrix(presDfm), "euclidean", diag = FALSE, upper = FALSE, p = 2))[, "1981-Reagan"], 6), decreasing = FALSE)
     eucStats <- sort(round(as.matrix(stats::dist(as.matrix(presDfm), method = "euclidean", diag = FALSE, upper = FALSE, p = 2))[,"1981-Reagan"], 6),  decreasing = FALSE)
-    expect_equal(eucQuanteda, eucProxy, eucStats)
+    expect_equal(eucQuanteda, eucStats)
+    expect_equal(eucQuanteda, eucStats)
 })
 
 # jaccard - binary
@@ -368,8 +371,8 @@ test_that("test textstat_dist method = \"Maximum\" against proxy dist() : featur
 # Canberra distance
 test_that("test textstat_dist method = \"Canberra\" against proxy dist() : documents", {
     
-  skip_if_not_installed("proxy")
-  skip_on_os("solaris")
+    skip_if_not_installed("proxy")
+    skip_on_os("solaris")
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     canQuanteda <- round(as.matrix(textstat_dist(presDfm, method = "canberra", margin = "documents")), 2)
