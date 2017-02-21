@@ -452,3 +452,14 @@ test_that("as.list.dist works as expected",{
     expect_equal(names(ddist_list$`1981-Reagan`)[1:3], c("2009-Obama", "2013-Obama", "1997-Clinton"))
     expect_equivalent(ddist_list$`1981-Reagan`[1:3], c(851, 804, 785))
 })
+
+test_that("as.matrix.simil works as expected",{
+    documents = c('Bacon ipsum dolor amet tenderloin hamburger bacon t-bone, ', 
+                  'Tenderloin turducken corned beef bacon. ', 
+                  ' Burgdoggen venison tail, hamburger filet mignon capicola meatloaf pig pork belly. ')
+    dtm = dfm(tokens(documents))
+    
+    sim <- as.matrix(textstat_simil(dtm))
+    aMat <- c(1,1,1)
+    expect_equivalent(diag(sim), aMat)
+})
