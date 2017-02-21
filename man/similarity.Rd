@@ -56,6 +56,7 @@ The method for computing feature similarities can be quite slow when
   hopefully speed this up.
 }
 \examples{
+\donttest{
 # create a dfm from inaugural addresses from Reagan onwards
 presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), stem = TRUE,
                remove = stopwords("english"))
@@ -73,6 +74,7 @@ similarity(presDfm, "2005-Bush", margin = "documents", method = "eJaccard", sort
 
 # compute some term similarities
 similarity(presDfm, c("fair", "health", "terror"), method="cosine", margin = "features", 20)
+}
 }
 \keyword{deprecated}
 \keyword{internal}

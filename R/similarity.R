@@ -25,6 +25,7 @@
 #'   there are large numbers of feature types.  Future implementations will 
 #'   hopefully speed this up.
 #' @examples
+#' \donttest{
 #' # create a dfm from inaugural addresses from Reagan onwards
 #' presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), stem = TRUE,
 #'                remove = stopwords("english"))
@@ -42,6 +43,7 @@
 #' 
 #' # compute some term similarities
 #' similarity(presDfm, c("fair", "health", "terror"), method="cosine", margin = "features", 20)
+#' }
 #' @keywords internal deprecated
 #' @export
 setGeneric("similarity", 
@@ -61,6 +63,8 @@ setMethod("similarity",
                           method = "correlation",
                           sorted = TRUE, normalize = FALSE) {
 
+               .Deprecated("textstat_simil")
+               
                # value <- match.arg(value)
 
                if (normalize) {
