@@ -3,6 +3,7 @@
 \name{textstat_dist}
 \alias{textstat_dist}
 \alias{textstat_simil}
+\alias{as.matrix.simil}
 \title{Distance matrix between documents and/or features}
 \usage{
 textstat_dist(x, selection = character(0), n = NULL,
@@ -12,6 +13,8 @@ textstat_dist(x, selection = character(0), n = NULL,
 textstat_simil(x, selection = character(0), n = NULL,
   margin = c("documents", "features"), method = "correlation",
   upper = FALSE, diag = FALSE)
+
+\method{as.matrix}{simil}(x, Diag = 1L, ...)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -34,6 +37,10 @@ matrix is recorded}
 \item{diag}{whether the diagonal of the distance matrix should be recorded}
 
 \item{p}{The power of the Minkowski distance.}
+
+\item{Diag}{sets the value for matrix diagonal}
+
+\item{...}{unused}
 }
 \description{
 These functions compute distance matrix between documents and/or features from a 
@@ -79,6 +86,9 @@ textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
 # output as a list
 as.list(tmp)[1:2]
 
+# output as a matrix
+as.matrix(tmp)
+
 # for specific comparisons
 textstat_simil(presDfm, "1985-Reagan", n = 5, margin = "documents")
 textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
@@ -96,5 +106,5 @@ textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine",
 \code{\link{textstat_dist}}, \code{\link{as.list.dist}}
 }
 \author{
-Haiyan Wang
+Kenneth Benoit, Haiyan Wang
 }

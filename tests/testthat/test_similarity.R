@@ -48,7 +48,7 @@ test_that("test similarity method = \"correlation\" against proxy simil(): docum
     corQuanteda <- round(similarity(presDfm, method = "correlation", margin = "documents")[["1981-Reagan"]], 6)
     corProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "correlation", by_rows = TRUE))[, "1981-Reagan"], 6), decreasing = TRUE)
     corCor <- sort(cor(as.matrix(t(presDfm)))[, "1981-Reagan"], decreasing = TRUE)
-    expect_equal(corQuanteda, corProxy[-9], corCor[-1])
+    expect_equal(corQuanteda, corProxy[-1], corCor[-1])
 })
 
 
