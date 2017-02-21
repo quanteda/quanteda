@@ -5,6 +5,8 @@
 ### Bug fixes
 
 * Fixed an problem in tokens generation for some irregular characters (#554).
+* Fixed a problem in setting the parallel thread size on single-core machines (#556).
+
 
 
 ## Changes since v0.9.9-17
