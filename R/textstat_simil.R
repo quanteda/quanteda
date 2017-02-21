@@ -40,6 +40,9 @@
 #' # output as a list
 #' as.list(tmp)[1:2]
 #' 
+#' # output as a matrix
+#' as.matrix(tmp)
+#' 
 #' # for specific comparisons
 #' textstat_simil(presDfm, "1985-Reagan", n = 5, margin = "documents")
 #' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
@@ -122,8 +125,8 @@ textstat_simil <- function(x, selection = character(0), n = NULL,
         result <- result[1:n,]
         
     # create a new dist object
-    distM <- structure(stats::as.dist(result, diag = diag, upper = upper), class = c("simil", "dist"))
-    
+    distM <- stats::as.dist(result, diag = diag, upper = upper)
+    class(distM) <- c("simil", class(distM))
     attr(distM, "method") <- method
     attr(distM, "call") <- match.call()
     # This will call Stats::print.dist() and Stats::as.matrix.dist()
@@ -431,4 +434,22 @@ faithSparse <- function(x, y = NULL, margin = 1) {
     faithmat <- (A + 0.5 * A0)/ an
     dimnames(faithmat) <- list(rowNm,  colNm)
     faithmat
+}
+
+#' @rdname textstat_simil
+#' @param Diag sets the value for matrix diagonal
+#' @param ... unused
+#' @export
+#' @method as.matrix simil
+as.matrix.simil <- function(x, Diag = 1L, ...) {
+    size <- attr(x, "Size")
+    df <- matrix(0, size, size)
+    df[row(df) > col(df)] <- x
+    df <- df + t(df)
+    labels <- attr(x, "Labels")
+    dimnames(df) <- if (is.null(labels))
+        list(seq_len(size), seq_len(size))
+    else list(labels, labels)
+    diag(df) <- Diag
+    df
 }
