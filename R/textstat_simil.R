@@ -122,7 +122,8 @@ textstat_simil <- function(x, selection = character(0), n = NULL,
         result <- result[1:n,]
         
     # create a new dist object
-    distM <- stats::as.dist(result, diag = diag, upper = upper)
+    distM <- structure(stats::as.dist(result, diag = diag, upper = upper), class = c("simil", "dist"))
+    
     attr(distM, "method") <- method
     attr(distM, "call") <- match.call()
     # This will call Stats::print.dist() and Stats::as.matrix.dist()

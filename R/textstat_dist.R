@@ -10,7 +10,7 @@
 #' \code{"canberra"}, \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"}, \code{"kullback"}. 
 #' \code{"manhattan"}, \code{"maximum"}, \code{"canberra"}, and \code{"minkowski"}.
 #' @importFrom RcppParallel RcppParallelLibs
-#' @author Haiyan Wang
+#' @author Kenneth Benoit, Haiyan Wang
 #' @examples
 #' # create a dfm from inaugural addresses from Reagan onwards
 #' presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), 
