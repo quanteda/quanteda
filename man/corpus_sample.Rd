@@ -51,4 +51,3 @@ texts(corpus_sample(sentcorpus, replace = TRUE, by = "document"))
 \code{\link{sample}}
 }
 \keyword{corpus}
-

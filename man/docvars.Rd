@@ -55,4 +55,3 @@ head(docvars(data_corpus_inaugural))
 
 }
 \keyword{corpus}
-

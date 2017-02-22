@@ -32,4 +32,3 @@ dfm_sort(dtm, decreasing = FALSE, "both")[1:10, 1:5]
 \author{
 Ken Benoit
 }
-

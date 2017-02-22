@@ -25,6 +25,10 @@ For \link{dfm} objects, see details in the Value section below.}
 
 \item{selection}{whether to keep or remove the features}
 
+\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
+or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 
 \item{verbose}{if \code{TRUE} print message about how many features were 
@@ -42,4 +46,3 @@ selectFeaturesOLD(toks, "ex", "keep", valuetype = "regex")
 }
 \keyword{deprecated}
 \keyword{internal}
-

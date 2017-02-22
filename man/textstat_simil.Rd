@@ -100,18 +100,13 @@ textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine",
                margin = "features", 20)
 
 }
-\author{
-Haiyan Wang
-}
 \seealso{
 \link{dfm}
 
 \code{\link{textstat_dist}}, \code{\link{as.list.dist}}
 }
-<<<<<<< c05c365a560b78e3fd6fa72861d7391cfd6ca705
+
 \author{
 Kenneth Benoit, Haiyan Wang
 }
-=======
 
->>>>>>> Merged master

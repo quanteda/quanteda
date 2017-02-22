@@ -2,10 +2,10 @@
 % Please edit documentation in R/settings.R
 \name{settings}
 \alias{settings}
-\alias{settings.corpus}
 \alias{settings.default}
-\alias{settings.dfm}
+\alias{settings.corpus}
 \alias{settings<-}
+\alias{settings.dfm}
 \title{Get or set the corpus settings}
 \usage{
 settings(x, ...)
@@ -52,4 +52,3 @@ settings(tempdfm)
 }
 \keyword{internal}
 \keyword{settings}
-

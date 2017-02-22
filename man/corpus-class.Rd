@@ -108,4 +108,3 @@ docvars(data_corpus_irishbudget2010)
 }
 \keyword{corpus}
 \keyword{internal}
-

@@ -48,4 +48,3 @@ toks <- tokens_hash(tokenize(c(one = "a b c d A B C D",
 }
 \keyword{internal}
 \keyword{tokens}
-

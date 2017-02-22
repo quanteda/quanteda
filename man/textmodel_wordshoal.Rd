@@ -57,13 +57,12 @@ fitdf <- subset(fitdf,!duplicated(memberID))
 aggregate(theta ~ party.name, data = fitdf, mean)
 }
 }
-\author{
-Benjamin Lauderdale and Kenneth Benoit
-}
 \references{
 Benjamin E Lauderdale and Alexander Herzog.  2016. "A Scaling Model 
   for Estimating Time-Series Party Positions from Texts." \emph{Political Analysis}.
 }
+\author{
+Benjamin Lauderdale and Kenneth Benoit
+}
 \keyword{experimental}
 \keyword{textmodel}
-

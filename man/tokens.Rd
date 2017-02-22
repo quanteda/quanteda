@@ -114,6 +114,7 @@ The tokenizer is designed to be fast and flexible as well as to
   
   See the examples below.
 }
+
 \examples{
 txt <- c(doc1 = "This is a sample: of tokens.",
          doc2 = "Another sentence, to demonstrate how tokens works.")
@@ -185,4 +186,3 @@ tokens(txt, removePunct = TRUE)
 \code{\link{tokens_ngrams}}, \code{\link{tokens_skipgrams}}
 }
 \keyword{tokens}
-

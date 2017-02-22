@@ -39,4 +39,3 @@ metadoc(mycorp, "language") <- "english"
 summary(mycorp, showmeta = TRUE)
 }
 \keyword{corpus}
-

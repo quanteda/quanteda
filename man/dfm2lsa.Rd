@@ -19,4 +19,3 @@ lsa::lsa(convert(mydfm, to = "lsa"))
 }
 }
 \keyword{internal}
-

@@ -2,8 +2,8 @@
 % Please edit documentation in R/data-documentation.R
 \docType{data}
 \name{data_corpus_inaugural}
-\alias{data_char_inaugural}
 \alias{data_corpus_inaugural}
+\alias{data_char_inaugural}
 \title{US presidential inaugural address texts}
 \format{An object of class \code{corpus} (inherits from \code{list}) of length 4.}
 \usage{
@@ -36,4 +36,3 @@ mycorpus <- corpus(data_char_inaugural)
   \url{http://www.presidency.ucsb.edu/inaugurals.php}.
 }
 \keyword{data}
-
