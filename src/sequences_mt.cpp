@@ -198,7 +198,7 @@ DataFrame qatd_cpp_sequences(const List &texts_,
                              bool nested,
                              bool ordered = false){
 
-    Texts texts = Rcpp::as<Texts>(texts_);
+    Texts texts = as<Texts>(texts_);
     std::vector<unsigned int> words = Rcpp::as< std::vector<unsigned int> >(words_);
     SetUnigrams set_words (words.begin(), words.end());
     
@@ -241,23 +241,10 @@ DataFrame qatd_cpp_sequences(const List &texts_,
 #endif
     //dev::stop_timer("Estimate", timer);
     
-    //dev::start_timer("Convert", timer);
-    // Convert to Rcpp objects
-    Rcpp::List sequences(len);
-    NumericVector lambdas(len);
-    NumericVector sigmas(len);
-    IntegerVector counts(len);
-    for (std::size_t k = 0; k < len; k++) {
-        sequences[k] = seqs[k];
-        lambdas[k] = ls[k];
-        sigmas[k] = ss[k];
-        counts[k] = cs[k];
-    }
-    //dev::stop_timer("Convert", timer);
-    DataFrame output_ = Rcpp::DataFrame::create(Rcpp::Named("lambda") = lambdas,
-                                                Rcpp::Named("sigma") = sigmas,
-                                                Rcpp::Named("count") = counts);
-    output_.attr("ids") = sequences;
+    DataFrame output_ = DataFrame::create(Named("lambda") = as<NumericVector>(wrap(ls)),
+                                          Named("sigma") = as<NumericVector>(wrap(ss)),
+                                          Named("count") = as<IntegerVector>(wrap(cs)));
+    output_.attr("ids") = as< ListOf<IntegerVector> >(wrap(seqs));
     return output_;
 }
 
