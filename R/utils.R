@@ -202,7 +202,7 @@ sequence2list <- function(sequences) {
     if (!all(is.character(unlist(sequences, use.names = FALSE))))
         stop("sequences must be a list of character elements or a dictionary")
 
-    sequences
+    return(as.list(sequences))
 }
    
 
