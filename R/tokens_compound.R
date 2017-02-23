@@ -65,10 +65,6 @@ tokens_compound.tokens <- function(x, sequences,
     if (!is.tokens(x))
         stop("x must be a tokens object")
     
-    # Do nothing if no sequence is given
-    if (!length(seqs))
-        return(x)
-    
     valuetype <- match.arg(valuetype)
     names_org <- names(x)
     attrs_org <- attributes(x)
