@@ -82,4 +82,13 @@ sequences.tokens <- function(x, features, valuetype = c("glob", "regex", "fixed"
     return(x)
 }
 
+#' @method "[" collocation_new
+#' @export
+#' @noRd
+as.tokens.collocation_new <- function(x) {
+    toks <- attr(x, 'ids')
+    attr(toks, 'types') <- attr(x, 'types')
+    class(toks) <- c("tokens", "tokenizedTexts")
+    return(toks)
+}
 
