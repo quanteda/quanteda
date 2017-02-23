@@ -56,6 +56,9 @@ setClass("textmodel_wordfish_predicted",
 #'   terms with rare term or document frequencies that appear to be severely 
 #'   underdispersed.  Default is 0, but this only applies if \code{dispersion = 
 #'   "quasipoisson"}.
+#' @param residual_floor defines the minimal value of the residuals, which are used to 
+#'   construct the starting parameters from an iterative restarted Lanczos routine. 
+#'   Raising the valuse will save the memory space. Only applies to \code{version = "parallel"}.
 #' @param version sets \code{"serial"} or \code{"parallel"} (for parallel computation)
 #' @return An object of class textmodel_fitted_wordfish.  This is a list 
 #'   containing: \item{dir}{global identification of the dimension} 
@@ -110,6 +113,7 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
                                dispersion = c("poisson", "quasipoisson"), 
                                dispersion_level = c("feature", "overall"),
                                dispersion_floor = 0,
+                               residual_floor = 0,
                                version = c("serial", "parallel")) {
     
     dispersion <- match.arg(dispersion)
@@ -160,7 +164,7 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
     if (version == "serial")
         wfresult <- wordfishcpp(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor)
     else
-        wfresult <- wordfish_cpp(data, as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor)
+        wfresult <- wordfish_cpp(data, as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, residual_floor)
     
     # NOTE: psi is a 1 x nfeature matrix, not a numeric vector
     #       alpha is a ndoc x 1 matrix, not a numeric vector

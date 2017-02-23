@@ -6,7 +6,7 @@
 using namespace RcppParallel;
 using namespace Rcpp;
 using namespace arma;
-# define RESIDUALS_LIM 0.5
+//# define RESIDUALS_LIM 0.5
 # define NUMSVD 2
 # define OUTERITER 100
 # define INNERITER 10
@@ -271,7 +271,7 @@ struct DocErr : public Worker {
 };
 // [[Rcpp::export]]
 
-Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin){
+Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, double residual_floor){
     
     // DEFINE INPUTS
     double priorprecalpha = priorvec(0);
@@ -301,7 +301,7 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
         for (std::size_t k=0; k < K; k++){
             double residual = (wfm(i,k) - rsum(i) * csum(k) / asum) / sqrt(rsum(i) * csum(k) / asum);	
             //Rprintf("%d: %f2\\n",k,residual);
-            if (fabs(residual) > RESIDUALS_LIM) C(i,k) = residual;
+            if (fabs(residual) > residual_floor) C(i,k) = residual;
         }
     }
     

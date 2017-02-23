@@ -7,7 +7,7 @@
 textmodel_wordfish(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
   tol = c(1e-06, 1e-08), dispersion = c("poisson", "quasipoisson"),
   dispersion_level = c("feature", "overall"), dispersion_floor = 0,
-  version = c("serial", "parallel"))
+  residual_floor = 0, version = c("serial", "parallel"))
 }
 \arguments{
 \item{data}{the dfm on which the model will be fit}
@@ -38,6 +38,10 @@ in the quasi-Poisson model.  Used to minimize the distorting effect of
 terms with rare term or document frequencies that appear to be severely 
 underdispersed.  Default is 0, but this only applies if \code{dispersion = 
 "quasipoisson"}.}
+
+\item{residual_floor}{defines the minimal value of the residuals, which are used to 
+construct the starting parameters from an iterative restarted Lanczos routine. 
+Raising the valuse will save the memory space. Only applies to \code{version = "parallel"}.}
 
 \item{version}{sets \code{"serial"} or \code{"parallel"} (for parallel computation)}
 }

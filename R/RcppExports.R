@@ -81,7 +81,7 @@ wordfishcpp <- function(wfm, dir, priors, tol, disp, dispfloor) {
     .Call('quanteda_wordfishcpp', PACKAGE = 'quanteda', wfm, dir, priors, tol, disp, dispfloor)
 }
 
-wordfish_cpp <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin) {
-    .Call('quanteda_wordfish_cpp', PACKAGE = 'quanteda', wfm, dirvec, priorvec, tolvec, disptype, dispmin)
+wordfish_cpp <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, residual_floor) {
+    .Call('quanteda_wordfish_cpp', PACKAGE = 'quanteda', wfm, dirvec, priorvec, tolvec, disptype, dispmin, residual_floor)
 }
 
