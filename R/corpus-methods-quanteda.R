@@ -69,7 +69,8 @@ documents <- function(corp) {
 #'   variables to be used for grouping; or a factor (or object that can be
 #'   coerced into a factor) equal in length to the number of documents, used for
 #'   aggregating the texts through concatenation
-#' @param ... unused
+#' @param spacer when concatenating texts by using \code{groups}, this will be the 
+#'   spacing added between texts.  (Default is two spaces.)
 #' @return For \code{texts}, a character vector of the texts in the corpus.
 #'   
 #'   For \code{texts <-}, the corpus with the updated texts.
@@ -86,15 +87,13 @@ documents <- function(corp) {
 #' nchar(texts(data_char_inaugural[1:5], 
 #'             groups = as.factor(data_corpus_inaugural[1:5, "President"])))
 #' 
-texts <- function(x, groups = NULL, ...) {
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+texts <- function(x, groups = NULL, spacer = "  ") {
     UseMethod("texts")
 }
 
 #' @noRd
 #' @export
-texts.corpus <- function(x, groups = NULL, ...) {
+texts.corpus <- function(x, groups = NULL, spacer = "  ") {
     txts <- documents(x)$texts
     
     # without groups
@@ -111,16 +110,16 @@ texts.corpus <- function(x, groups = NULL, ...) {
         group.split <- as.factor(groups)
     }
     
-    texts(txts, groups = group.split)
+    texts(txts, groups = group.split, spacer = spacer)
 }
 
 #' @noRd
 #' @export
-texts.character <- function(x, groups = NULL, ...) {
+texts.character <- function(x, groups = NULL, spacer = "  ") {
     if (is.null(groups)) return(x)
     # if (!is.factor(groups)) stop("groups must be a factor")
     x <- split(x, as.factor(groups))
-    sapply(x, paste, collapse = " ")
+    sapply(x, paste, collapse = spacer)
 }
 
 

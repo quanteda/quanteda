@@ -6,7 +6,7 @@
 \alias{as.character.corpus}
 \title{get or assign corpus texts}
 \usage{
-texts(x, groups = NULL, ...)
+texts(x, groups = NULL, spacer = "  ")
 
 texts(x) <- value
 
@@ -20,7 +20,8 @@ variables to be used for grouping; or a factor (or object that can be
 coerced into a factor) equal in length to the number of documents, used for
 aggregating the texts through concatenation}
 
-\item{...}{unused}
+\item{spacer}{when concatenating texts by using \code{groups}, this will be the 
+spacing added between texts.  (Default is two spaces.)}
 
 \item{value}{character vector of the new texts}
 }
