@@ -2,6 +2,7 @@
 
 S3method("$",tokens)
 S3method("+",corpus)
+S3method("[",collocation_new)
 S3method("[",corpus)
 S3method("[",tokens)
 S3method("[[",corpus)

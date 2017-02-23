@@ -127,7 +127,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_sequences
-List qatd_cpp_sequences(const List& texts_, const IntegerVector& words_, const unsigned int count_min, unsigned int len_max, bool nested, bool ordered);
+DataFrame qatd_cpp_sequences(const List& texts_, const IntegerVector& words_, const unsigned int count_min, unsigned int len_max, bool nested, bool ordered);
 RcppExport SEXP quanteda_qatd_cpp_sequences(SEXP texts_SEXP, SEXP words_SEXP, SEXP count_minSEXP, SEXP len_maxSEXP, SEXP nestedSEXP, SEXP orderedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

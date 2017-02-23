@@ -59,18 +59,27 @@ sequences.tokens <- function(x, features, valuetype = c("glob", "regex", "fixed"
     features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
     features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
     
-    seqs <- qatd_cpp_sequences(x, features_id, min_count, max_length, nested, ordered)
-    names <- unlist(stringi::stri_c_list(lapply(seqs$sequence, function(y) types[y]), sep=' '), use.names = FALSE)
-    cols <- data.frame(lambda=seqs$lambda, sigma=seqs$sigma, count=seqs$count, 
-                       lentgh=lengths(seqs$sequence), row.names = names)
+    cols <- qatd_cpp_sequences(x, features_id, min_count, max_length, nested, ordered)
+    rownames(cols) <- unlist(stringi::stri_c_list(lapply(attr(cols, 'ids'), function(y) types[y]), sep=' '), use.names = FALSE)
+    class(cols) <- c("collocation_new", 'data.frame')
+    
     cols <- cols[cols$count >= min_count,]
     cols$z <- cols$lambda / cols$sigma
     cols$p <- 1 - stats::pnorm(cols$z)
     cols <- cols[order(cols$z, decreasing = TRUE),]
-    class(cols) <- c("collocation_new", class(cols))
     attr(cols, 'types') <- types
-    attr(cols, 'ids') <- seqs$sequence
     
     return(cols)
 }
+
+#' @method "[" collocation_new
+#' @export
+#' @noRd
+"[.collocation_new" <- function(x, i, ...) {
+    x <- as.data.frame(x)[i,]
+    attr(x, 'ids') <- attr(x, 'ids')[i]
+    class(x) <- c("collocation_new", 'data.frame')
+    return(x)
+}
+
 

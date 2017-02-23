@@ -191,12 +191,12 @@ struct estimate_mt : public Worker{
  */
 
 // [[Rcpp::export]]
-List qatd_cpp_sequences(const List &texts_,
-                        const IntegerVector &words_,
-                        const unsigned int count_min,
-                        unsigned int len_max,
-                        bool nested,
-                        bool ordered = false){
+DataFrame qatd_cpp_sequences(const List &texts_,
+                             const IntegerVector &words_,
+                             const unsigned int count_min,
+                             unsigned int len_max,
+                             bool nested,
+                             bool ordered = false){
 
     Texts texts = Rcpp::as<Texts>(texts_);
     std::vector<unsigned int> words = Rcpp::as< std::vector<unsigned int> >(words_);
@@ -246,7 +246,7 @@ List qatd_cpp_sequences(const List &texts_,
     Rcpp::List sequences(len);
     NumericVector lambdas(len);
     NumericVector sigmas(len);
-    NumericVector counts(len);
+    IntegerVector counts(len);
     for (std::size_t k = 0; k < len; k++) {
         sequences[k] = seqs[k];
         lambdas[k] = ls[k];
@@ -254,25 +254,22 @@ List qatd_cpp_sequences(const List &texts_,
         counts[k] = cs[k];
     }
     //dev::stop_timer("Convert", timer);
-    return Rcpp::List::create(Rcpp::Named("sequence") = sequences,
-                              Rcpp::Named("lambda") = lambdas,
-                              Rcpp::Named("sigma") = sigmas,
-                              Rcpp::Named("count") = counts
-    );
-
-  
+    DataFrame output_ = Rcpp::DataFrame::create(Rcpp::Named("lambda") = lambdas,
+                                                Rcpp::Named("sigma") = sigmas,
+                                                Rcpp::Named("count") = counts);
+    output_.attr("ids") = sequences;
+    return output_;
 }
 
 
 /***R
 
-# toks <- tokens(data_corpus_inaugural)
-# toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-# types <- unique(as.character(toks))
-# types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
-# 
-# #out2 <- qutd_cpp_sequences(toks, match(types_upper, types), 1, TRUE)
-# out2 <- qutd_cpp_sequences(toks, match(types_upper, types), 1, 2, TRUE, TRUE)
+toks <- tokens(data_corpus_inaugural)
+toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
+types <- unique(as.character(toks))
+types_upper <- types[stringi::stri_detect_regex(types, "^([A-Z][a-z\\-]{2,})")]
+ 
+out2 <- qatd_cpp_sequences(toks, match(types_upper, types), 1, 2, TRUE, TRUE)
 # out2$sequence <- lapply(out2$sequence, function(x) types[x])
 # out2$str <- stringi::stri_c_list(out2$sequence, '_')
 # out2$sequence <- NULL
