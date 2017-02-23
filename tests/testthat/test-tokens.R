@@ -219,6 +219,12 @@ test_that("tokens works with unusual hiragana #554", {
                       list(c('づ', 'いﾞ'), c('゛', 'んﾞ'), c('た', 'ーﾟ')))
 })
 
+test_that("types attaribute is a character vector", {
+    toks <- tokens("one two three")
+    expect_true(is.character(attr(toks, 'types')))
+    expect_equal(length(attributes(attr(toks, 'types'))), 0)
+})
+
 #' # coerce an object into a tokens class
 #' as.tokens(toks)
 
