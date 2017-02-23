@@ -44,7 +44,26 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         .Deprecated("corpus_reshape")
     
     to <- match.arg(to)
-    if (to == "documents") stop("documents not yet implemented.")
+    
+    if (to == "documents") {
+        if (settings(x, "unitsoriginal") != "documents" & settings(x, "units") != "sentences")
+            stop("reshape to documents only goes from sentences to documents")
+        
+        # reshape into original documents, replace the original text
+        docvars(x, "docname") <- metadoc(x, "_document")[, 1]
+        texts(x) <- texts(temp_sentences, groups = "docname")
+        x$documents$"_document" <- x$documents$docname <- NULL
+
+        # make the text "empty" if it contains only spaces
+        texts(x)[stri_detect_regex(texts(x), "^\\s+$")] <- ""
+        
+        # modify settings flag for corpus_reshape info
+        settings(newcorpus, "unitsoriginal") <- settings(newcorpus, "units")
+        settings(newcorpus, "units") <- to
+        
+        return(x)
+    }
+    
     
     if (length(addedArgs <- names(list(...))))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")

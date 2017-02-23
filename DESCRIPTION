@@ -50,9 +50,10 @@ Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
-Collate:
+Collate: 
     'RcppExports.R'
     'View.R'
+    'bootstrap_dfm.R'
     'character-methods.R'
     'dictionaries.R'
     'corpus.R'
