@@ -37,6 +37,7 @@ corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"), ..
     
 #' @noRd
 #' @rdname corpus_reshape
+#' @importFrom data.table data.table setnames
 #' @export
 corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "documents"), ...) {
     
@@ -45,46 +46,58 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
     
     to <- match.arg(to)
     
-    if (to == "documents") {
-        if (settings(x, "unitsoriginal") != "documents" & settings(x, "units") != "sentences")
-            stop("reshape to documents only goes from sentences to documents")
-        
-        # reshape into original documents, replace the original text
-        docvars(x, "docname") <- metadoc(x, "_document")[, 1]
-        texts(x) <- texts(temp_sentences, groups = "docname")
-        x$documents$"_document" <- x$documents$docname <- NULL
-
-        # make the text "empty" if it contains only spaces
-        texts(x)[stri_detect_regex(texts(x), "^\\s+$")] <- ""
-        
-        # modify settings flag for corpus_reshape info
-        settings(newcorpus, "unitsoriginal") <- settings(newcorpus, "units")
-        settings(newcorpus, "units") <- to
-        
-        return(x)
-    }
-    
-    
     if (length(addedArgs <- names(list(...))))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
     
-    # make the new corpus
-    segmentedTexts <- lapply(texts(x), char_segment, what = to)
-    lengthSegments <- sapply(segmentedTexts, length)
-    newcorpus <- corpus(unlist(segmentedTexts))
-    # repeat the docvars and existing document metadata
-    docvars(newcorpus, names(docvars(x))) <- as.data.frame(lapply(docvars(x), rep, lengthSegments))
-    docvars(newcorpus, names(metadoc(x))) <- as.data.frame(lapply(metadoc(x), rep, lengthSegments))
-    # add original document name as metadata
-    metadoc(newcorpus, "document") <- rep(names(segmentedTexts), lengthSegments)
-    # give a serial number (within document) to each sentence
-    sentenceid <- lapply(lengthSegments, function(n) seq(from=1, to=n))
-    metadoc(newcorpus, "serialno") <- unlist(sentenceid, use.names=FALSE)
+    if (to == "documents") {
+        if (settings(x, "unitsoriginal") != "documents" & !(settings(x, "units") %in% c("sentences")))
+            stop("reshape to documents only goes from sentences to documents")
+        
+        if (settings(x, "units") == "paragraphs") {
+            spacer <- "\n\n"
+        } else {
+            spacer <- "  "
+        }
+        
+        # reshape into original documents, replace the original text
+        docs <- data.table(x$documents)
+        setnames(docs, "_document", "document")
+        # take just first value of every (repeated) docvar
+        docs <- docs[, lapply(.SD, function(x) x[1]), by = document]
+        # concatenate texts
+        docs[, texts := texts(x, groups = metadoc(x, "document")[, 1], spacer = spacer)]
+        
+        # make the text "empty" if it contains only spaces
+        docs[stringi::stri_detect_regex(texts, "^\\s+$"), texts := ""]
+        
+        # remove reshape fields
+        docs[, "_serialno" := NULL]
+        
+        newcorpus <- x
+        newcorpus$documents <- as.data.frame(docs[, -which(names(docs) == "document"), with = FALSE])
+        rownames(newcorpus$documents) <- docs$document
+    
+    } else {
+        
+        # make the new corpus
+        segmentedTexts <- lapply(texts(x), char_segment, what = to)
+        lengthSegments <- sapply(segmentedTexts, length)
+        newcorpus <- corpus(unlist(segmentedTexts))
+        # repeat the docvars and existing document metadata
+        docvars(newcorpus, names(docvars(x))) <- as.data.frame(lapply(docvars(x), rep, lengthSegments))
+        docvars(newcorpus, names(metadoc(x))) <- as.data.frame(lapply(metadoc(x), rep, lengthSegments))
+        # add original document name as metadata
+        metadoc(newcorpus, "document") <- rep(names(segmentedTexts), lengthSegments)
+        # give a serial number (within document) to each sentence
+        sentenceid <- lapply(lengthSegments, function(n) seq(from=1, to=n))
+        metadoc(newcorpus, "serialno") <- unlist(sentenceid, use.names=FALSE)
+    
+    }
     
     # copy settings and corpus metadata
     newcorpus$settings <- x$settings
     newcorpus$metadata <- x$metadata
-    
+
     # modify settings flag for corpus_reshape info
     settings(newcorpus, "unitsoriginal") <- settings(newcorpus, "units")
     settings(newcorpus, "units") <- to
