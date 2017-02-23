@@ -6,8 +6,8 @@
 \usage{
 textmodel_wordfish(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
   tol = c(1e-06, 1e-08), dispersion = c("poisson", "quasipoisson"),
-  dispersionLevel = c("feature", "overall"), dispersionFloor = 0,
-  version = c("Serial", "Parallel"))
+  dispersion_level = c("feature", "overall"), dispersion_floor = 0,
+  version = c("serial", "parallel"))
 }
 \arguments{
 \item{data}{the dfm on which the model will be fit}
@@ -29,17 +29,17 @@ document-level, then feature-level parameters).}
 used based on a single dispersion parameter (\code{"poisson"}), or 
 quasi-Poisson (\code{"quasipoisson"})}
 
-\item{dispersionLevel}{sets the unit level for the dispersion parameter, 
+\item{dispersion_level}{sets the unit level for the dispersion parameter, 
 options are \code{"feature"} for term-level variances, or \code{"overall"} 
 for a single dispersion parameter}
 
-\item{dispersionFloor}{constraint for the minimal underdispersion multiplier 
+\item{dispersion_floor}{constraint for the minimal underdispersion multiplier 
 in the quasi-Poisson model.  Used to minimize the distorting effect of 
 terms with rare term or document frequencies that appear to be severely 
 underdispersed.  Default is 0, but this only applies if \code{dispersion = 
 "quasipoisson"}.}
 
-\item{version}{sets "Serial" or "Parallel".}
+\item{version}{sets \code{"serial"} or \code{"parallel"} (for parallel computation)}
 }
 \value{
 An object of class textmodel_fitted_wordfish.  This is a list 
@@ -71,9 +71,9 @@ textmodel_wordfish(data_dfm_LBGexample, dir = c(1,5))
 ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
 (wfm1 <- textmodel_wordfish(ie2010dfm, dir = c(6,5)))
 (wfm2a <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
-                             dispersion = "quasipoisson", dispersionFloor = 0))
+                             dispersion = "quasipoisson", dispersion_floor = 0))
 (wfm2b <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
-                             dispersion = "quasipoisson", dispersionFloor = .5))
+                             dispersion = "quasipoisson", dispersion_floor = .5))
 plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
      xlim = c(0, 1.0), ylim = c(0, 1.0))
 plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",

@@ -105,8 +105,6 @@ textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine",
 
 \code{\link{textstat_dist}}, \code{\link{as.list.dist}}
 }
-
 \author{
 Kenneth Benoit, Haiyan Wang
 }
-
