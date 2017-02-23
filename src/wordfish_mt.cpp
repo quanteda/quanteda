@@ -57,9 +57,9 @@ struct LogPos : public Worker {
 // UPDATE WORD PARAMETERS
 struct WordPar : public Worker {
     const arma::colvec& alpha; 
-    const arma::colvec& theta; 
     RVector<double> psi; 
     RVector<double> beta; 
+    const arma::colvec& theta; 
     const arma::rowvec& phi;
     const arma::sp_mat& wfm;
     const NumericVector& tolvec;
@@ -111,9 +111,9 @@ struct WordPar : public Worker {
 // UPDATE DOCUMENT PARAMETERS
 struct DocPar : public Worker {
     RVector<double> alpha; 
-    RVector<double> theta; 
     const arma::rowvec& psi;
     const arma::rowvec& beta; 
+    RVector<double> theta; 
     const arma::rowvec& phi;
     const arma::sp_mat& wfm;
     const NumericVector& tolvec;
