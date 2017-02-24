@@ -233,8 +233,12 @@ test_that("docvars is working with tokens", {
     toks <- tokens(corp)
     expect_equal(docvars(toks), docvars(corp))
     expect_equal(docvars(toks, 'President'), docvars(corp, 'President'))
+    
     toks2 <- toks[docvars(toks, 'Year') > 2000]
     expect_equal(ndoc(toks2), nrow(docvars(toks2)))
+    
+    docvars(toks2, 'Type') <- 'Speach'
+    expect_equal(docvars(toks2, 'Type'), rep('Speach', 5))
     
 }) 
 
