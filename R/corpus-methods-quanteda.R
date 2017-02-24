@@ -69,7 +69,8 @@ documents <- function(corp) {
 #'   variables to be used for grouping; or a factor (or object that can be
 #'   coerced into a factor) equal in length to the number of documents, used for
 #'   aggregating the texts through concatenation
-#' @param ... unused
+#' @param spacer when concatenating texts by using \code{groups}, this will be the 
+#'   spacing added between texts.  (Default is two spaces.)
 #' @return For \code{texts}, a character vector of the texts in the corpus.
 #'   
 #'   For \code{texts <-}, the corpus with the updated texts.
@@ -86,15 +87,13 @@ documents <- function(corp) {
 #' nchar(texts(data_char_inaugural[1:5], 
 #'             groups = as.factor(data_corpus_inaugural[1:5, "President"])))
 #' 
-texts <- function(x, groups = NULL, ...) {
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+texts <- function(x, groups = NULL, spacer = "  ") {
     UseMethod("texts")
 }
 
 #' @noRd
 #' @export
-texts.corpus <- function(x, groups = NULL, ...) {
+texts.corpus <- function(x, groups = NULL, spacer = "  ") {
     txts <- documents(x)$texts
     
     # without groups
@@ -103,7 +102,7 @@ texts.corpus <- function(x, groups = NULL, ...) {
         return(txts)
     }
     
-    if (is.character(groups) & all(groups %in% names(docvars(x)))) {
+    if (is.character(groups) & all(groups %in% names(documents(x)))) {
         group.split <- as.factor(interaction(documents(x)[, groups], drop = TRUE))
     } else {
         if (length(groups) != ndoc(x))
@@ -111,16 +110,16 @@ texts.corpus <- function(x, groups = NULL, ...) {
         group.split <- as.factor(groups)
     }
     
-    texts(txts, groups = group.split)
+    texts(txts, groups = group.split, spacer = spacer)
 }
 
 #' @noRd
 #' @export
-texts.character <- function(x, groups = NULL, ...) {
+texts.character <- function(x, groups = NULL, spacer = "  ") {
     if (is.null(groups)) return(x)
     # if (!is.factor(groups)) stop("groups must be a factor")
     x <- split(x, as.factor(groups))
-    sapply(x, paste, collapse = " ")
+    sapply(x, paste, collapse = spacer)
 }
 
 
@@ -160,6 +159,7 @@ texts.character <- function(x, groups = NULL, ...) {
 #' @rdname texts
 #' @details \code{as.character(x)} where \code{x} is a corpus is equivalent to
 #' calling \code{texts(x)}
+#' @param ... unused
 #' @method as.character corpus
 #' @return \code{as.character(x)} is equivalent to \code{texts(x)}
 #' @export
@@ -200,13 +200,13 @@ metadoc.corpus <- function(x, field = NULL) {
     if (length(field) > 1)
         stop("cannot assign multiple fields.")
     if (is.null(field)) {
-        documents(x)[, grep("^\\_", names(documents(x))), drop=FALSE]
+        documents(x)[, grep("^\\_", names(documents(x))), drop = FALSE]
     } else {
         ## error if field not defined in data
         fieldname <- ifelse(substr(field, 1, 1)=="_", 
                             field, 
                             paste("_", field, sep=""))
-        documents(x)[, fieldname, drop=FALSE]
+        documents(x)[, fieldname, drop = TRUE]
     }
 }
 
@@ -249,13 +249,17 @@ docvars <- function(x, field = NULL) {
 #' @noRd
 #' @export
 docvars.corpus <- function(x, field = NULL) {
-    docvarsIndex <- intersect(which(substr(names(documents(x)), 1, 1) != "_"),
-                              which(names(documents(x)) != "texts"))
-    if (length(docvarsIndex)==0)
+    # allow metadoc _variables to be returned, if named
+    docvarsIndex <- 
+        union(which(names(documents(x)) == field[substr(field, 1, 1) == "_"]),
+              intersect(which(substr(names(documents(x)), 1, 1) != "_"),
+                        which(names(documents(x)) != "texts")))
+    
+    if (length(docvarsIndex) == 0)
         return(NULL)
     if (is.null(field))
-        return(documents(x)[, docvarsIndex, drop=FALSE])
-    return(documents(x)[, field, drop=TRUE])
+        return(documents(x)[, docvarsIndex, drop = FALSE])
+    return(documents(x)[, field, drop = TRUE])
 }
 
 #' @rdname docvars

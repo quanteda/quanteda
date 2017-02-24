@@ -44,6 +44,7 @@ test_that("docvars of corpus is a data.frame", {
     )
 })
 
+
 test_that("test c.corpus", {
     concat.corpus <- c(data_corpus_inaugural, data_corpus_inaugural, data_corpus_inaugural)
 
@@ -186,5 +187,38 @@ test_that("corpus_segment works", {
     
     data_corpus_test <- corpus(txt, docvars = dv, metacorpus = list(source = "From test-corpus.R"))
     expect_equal(ndoc(corpus_segment(data_corpus_test, "sentences")), 6)
+})
+
+
+test_that("docvars works for metadoc fields", {
+    mycorpus <- corpus(c(textone = "This is a paragraph.\n\nAnother paragraph.\n\nYet paragraph.", 
+                         texttwo = "Premiere phrase.\n\nDeuxieme phrase."), 
+                       docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
+                       metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+    metadoc(mycorpus, "test") <- c("A", "B")
+    
+    expect_identical(
+        docvars(mycorpus, "_test"),
+        c("A", "B")
+    )
+})
+
+test_that("metadoc drops dimension for single column", {
+    mycorpus <- corpus(c(textone = "This is a paragraph.\n\nAnother paragraph.\n\nYet paragraph.", 
+                         texttwo = "Premiere phrase.\n\nDeuxieme phrase."), 
+                       docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
+                       metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+    metadoc(mycorpus, "test") <- c("A", "B")
+    expect_identical(
+        metadoc(mycorpus, "test"),
+        c("A", "B")
+    )
+    
+    df <- data.frame("_test" = c("A", "B"), row.names = c("textone", "texttwo"), stringsAsFactors = FALSE)
+    names(df)[1] <- "_test"
+    expect_identical(
+        metadoc(mycorpus),
+        df
+    )
 })
 

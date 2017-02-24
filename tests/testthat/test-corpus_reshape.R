@@ -23,3 +23,29 @@ No there is another."),
     expect_equal(as.character(mycorpus_reshaped)[4],
                  c(d22 = "No there is another."))
 })
+
+test_that("corpus_reshape works to sentences and back", {
+    mycorpus <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
+                         texttwo = "Premiere phrase.  Deuxieme phrase."), 
+                       docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
+                       metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+    mycorpus_reshaped <- corpus_reshape(mycorpus, to = "sentences")
+    mycorpus_unshaped <- corpus_reshape(mycorpus_reshaped, to = "documents")
+    expect_equal(texts(mycorpus),
+                 texts(mycorpus_unshaped))
+    expect_equal(docvars(mycorpus),
+                 docvars(mycorpus_unshaped))
+})
+
+test_that("corpus_reshape works to paragraphs and back", {
+    mycorpus <- corpus(c(textone = "This is a paragraph.\n\nAnother paragraph.\n\nYet paragraph.", 
+                         texttwo = "Premiere phrase.\n\nDeuxieme phrase."), 
+                       docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
+                       metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+    mycorpus_reshaped <- corpus_reshape(mycorpus, to = "paragraphs")
+    mycorpus_unshaped <- corpus_reshape(mycorpus_reshaped, to = "documents")
+    expect_equal(texts(mycorpus),
+                 texts(mycorpus_unshaped))
+    expect_equal(docvars(mycorpus),
+                 docvars(mycorpus_unshaped))
+})
