@@ -199,13 +199,13 @@ metadoc.corpus <- function(x, field = NULL) {
     if (length(field) > 1)
         stop("cannot assign multiple fields.")
     if (is.null(field)) {
-        documents(x)[, grep("^\\_", names(documents(x))), drop=FALSE]
+        documents(x)[, grep("^\\_", names(documents(x))), drop = FALSE]
     } else {
         ## error if field not defined in data
         fieldname <- ifelse(substr(field, 1, 1)=="_", 
                             field, 
                             paste("_", field, sep=""))
-        documents(x)[, fieldname, drop=FALSE]
+        documents(x)[, fieldname, drop = TRUE]
     }
 }
 
@@ -248,13 +248,17 @@ docvars <- function(x, field = NULL) {
 #' @noRd
 #' @export
 docvars.corpus <- function(x, field = NULL) {
-    docvarsIndex <- intersect(which(substr(names(documents(x)), 1, 1) != "_"),
-                              which(names(documents(x)) != "texts"))
-    if (length(docvarsIndex)==0)
+    # allow metadoc _variables to be returned, if named
+    docvarsIndex <- 
+        union(which(names(documents(x)) == field[substr(field, 1, 1) == "_"]),
+              intersect(which(substr(names(documents(x)), 1, 1) != "_"),
+                        which(names(documents(x)) != "texts")))
+    
+    if (length(docvarsIndex) == 0)
         return(NULL)
     if (is.null(field))
-        return(documents(x)[, docvarsIndex, drop=FALSE])
-    return(documents(x)[, field, drop=TRUE])
+        return(documents(x)[, docvarsIndex, drop = FALSE])
+    return(documents(x)[, field, drop = TRUE])
 }
 
 #' @rdname docvars
