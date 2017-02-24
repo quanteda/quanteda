@@ -275,7 +275,9 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
 #' @export
 #' @noRd
 tokens.corpus <- function(x, ...) {
-    tokens(texts(x), ...)
+    result <- tokens(texts(x), ...)
+    docvars(result) <- docvars(x)
+    return(result)
 }
 
 
@@ -431,8 +433,11 @@ print.tokens <- function(x, ...) {
 #' toks[c(1,3)]
 "[.tokens" <- function(x, i, ...) {
     tokens <- unclass(x)[i]
+    if (is.data.frame(attr(x, 'docvars'))) {
+        attr(tokens, 'docvars') <- attr(tokens, 'docvars')[i]
+    }
     if (length(tokens) == 1 && is.null(tokens[[1]])) return(tokens)
-    tokens <- reassign_attributes(tokens, x, exceptions = 'names')
+    attributes(tokens) <- attributes(x)[!(names(attributes(x)) %in% c('names'))]
     tokens_hashed_recompile(tokens)
 }
 
@@ -470,22 +475,31 @@ lengths.tokens <- function(x, use.names = TRUE) {
 #' @noRd
 #' @export
 "docvars<-.tokens" <- function(x, field = NULL, value) {
-    if (!is.data.frame(attr(x, 'docvars'))) {
-        df <- data.frame(value)
-        colnames(df) <- field
-        attr(x, 'docvars') <- df
+    
+    if (is.null(field) && is.data.frame(value)) {
+        attr(x, 'meta') <- value
     } else {
-        attr(x, 'docvars')[[field]] <- value
+        if (!is.data.frame(attr(x, 'meta'))) {
+            df <- data.frame(value)
+            colnames(df) <- field
+            attr(x, 'meta') <- df
+        } else {
+            attr(x, 'meta')[[field]] <- value
+        }
     }
     return(x)
 }
 
 #' @noRd
 #' @export
-docvars.tokens <- function(x, field) {
-    if (is.data.frame(attr(x, 'docvars'))) {
-        if (field %in% colnames(attr(x, 'docvars'))) {
-            return(attr(x, 'docvars')[[field]])
+docvars.tokens <- function(x, field = NULL) {
+    if (is.null(field) && is.data.frame(attr(x, 'meta'))) {
+        return(attr(x, 'meta'))
+    } else {
+        if (is.data.frame(attr(x, 'meta'))) {
+            if (field %in% colnames(attr(x, 'meta'))) {
+                return(attr(x, 'meta')[[field]])
+            }
         }
     }
     return(NULL)
