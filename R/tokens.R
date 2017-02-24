@@ -482,7 +482,7 @@ docnames.tokens <- function(x) {
 #' @export
 "docvars<-.tokens" <- function(x, field = NULL, value) {
     
-    if (is.null(field) && is.data.frame(value)) {
+    if (is.null(field) && (is.data.frame(value) || is.null(value))) {
         attr(x, 'meta') <- value
     } else {
         if (!is.data.frame(attr(x, 'meta'))) {
