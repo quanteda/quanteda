@@ -433,8 +433,8 @@ print.tokens <- function(x, ...) {
 #' toks[c(1,3)]
 "[.tokens" <- function(x, i, ...) {
     tokens <- unclass(x)[i]
-    if (is.data.frame(attr(x, 'docvars'))) {
-        attr(tokens, 'docvars') <- attr(tokens, 'docvars')[i]
+    if (is.data.frame(attr(x, 'meta'))) {
+        attr(tokens, 'meta') <- attr(tokens, 'meta')[i]
     }
     if (length(tokens) == 1 && is.null(tokens[[1]])) return(tokens)
     attributes(tokens, FALSE) <- attributes(x)
