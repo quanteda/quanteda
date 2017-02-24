@@ -226,6 +226,18 @@ test_that("types attaribute is a character vector", {
     expect_equal(length(attributes(attr(toks, 'types'))), 0)
 })
 
+
+test_that("docvars is working with tokens", {
+    
+    corp <- data_corpus_inaugural
+    toks <- tokens(corp)
+    expect_equal(docvars(toks), docvars(corp))
+    expect_equal(docvars(toks, 'President'), docvars(corp, 'President'))
+    expect_equal(length(toks[docvars(toks, 'Year') > 2000]), 
+                 sum(docvars(toks, 'Year') > 2000))
+    
+}) 
+
 #' # coerce an object into a tokens class
 #' as.tokens(toks)
 
