@@ -159,6 +159,7 @@ texts.character <- function(x, groups = NULL, spacer = "  ") {
 #' @rdname texts
 #' @details \code{as.character(x)} where \code{x} is a corpus is equivalent to
 #' calling \code{texts(x)}
+#' @param ... unused
 #' @method as.character corpus
 #' @return \code{as.character(x)} is equivalent to \code{texts(x)}
 #' @export

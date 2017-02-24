@@ -41,6 +41,8 @@ corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"), ..
 #' @export
 corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "documents"), ...) {
     
+    document <- NULL
+    
     if (as.character(match.call()[[1]]) == "changeunits")
         .Deprecated("corpus_reshape")
     
