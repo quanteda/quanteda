@@ -466,12 +466,30 @@ lengths.tokens <- function(x, use.names = TRUE) {
     NextMethod()
 }
 
+
 #' @noRd
 #' @export
-docnames.tokens <- function(x) {
-    names(x)
+"docvars<-.tokens" <- function(x, field = NULL, value) {
+    if (!is.data.frame(attr(x, 'docvars'))) {
+        df <- data.frame(value)
+        colnames(df) <- field
+        attr(x, 'docvars') <- df
+    } else {
+        attr(x, 'docvars')[[field]] <- value
+    }
+    return(x)
 }
 
+#' @noRd
+#' @export
+docvars.tokens <- function(x, field) {
+    if (is.data.frame(attr(x, 'docvars'))) {
+        if (field %in% colnames(attr(x, 'docvars'))) {
+            return(attr(x, 'docvars')[[field]])
+        }
+    }
+    return(NULL)
+}
 
 ##
 ## ============== INTERNAL FUNCTIONS =======================================
