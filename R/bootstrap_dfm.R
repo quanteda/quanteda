@@ -45,6 +45,7 @@ bootstrap_dfm.corpus <- function(x, n = 10, ..., verbose = TRUE) {
     }
     if (verbose) message("") # adds LF
     
+    class(result) <- c("dfm_bootstrap", class(result))
     result
 }
 
