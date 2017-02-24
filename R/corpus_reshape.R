@@ -65,7 +65,7 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         # take just first value of every (repeated) docvar
         docs <- docs[, lapply(.SD, function(x) x[1]), by = document]
         # concatenate texts
-        docs[, texts := texts(x, groups = metadoc(x, "document")[, 1], spacer = spacer)]
+        docs[, texts := texts(x, groups = metadoc(x, "document"), spacer = spacer)]
         
         # make the text "empty" if it contains only spaces
         docs[stringi::stri_detect_regex(texts, "^\\s+$"), texts := ""]
