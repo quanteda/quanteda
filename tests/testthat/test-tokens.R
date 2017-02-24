@@ -233,8 +233,8 @@ test_that("docvars is working with tokens", {
     toks <- tokens(corp)
     expect_equal(docvars(toks), docvars(corp))
     expect_equal(docvars(toks, 'President'), docvars(corp, 'President'))
-    expect_equal(length(toks[docvars(toks, 'Year') > 2000]), 
-                 sum(docvars(toks, 'Year') > 2000))
+    toks2 <- toks[docvars(toks, 'Year') > 2000]
+    expect_equal(ndoc(toks2), nrow(docvars(toks2)))
     
 }) 
 
