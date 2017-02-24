@@ -2,6 +2,17 @@
 
 ## Changes since v0.9.9-24
 
+### New features
+
+* `corpus_reshape()` can now go from sentences and paragraph units back to documents
+* Added an experimental method `bootstrap_dfm()` to generate a list of dimensionally-equivalent dfm objects based on sentence-level resampling of the original documents.
+
+
+### Behaviour changes 
+
+* `docvars()` now permits direct access to "metadoc" fields (starting with `_`, e.g. `_document`)
+* `metadoc()` now returns a vector instead of a data.frame for a single variable, similar to `docvars()`
+
 ### Bug fixes
 
 * Fixed an problem in tokens generation for some irregular characters (#554).
