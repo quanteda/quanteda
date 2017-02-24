@@ -437,7 +437,7 @@ print.tokens <- function(x, ...) {
         attr(tokens, 'docvars') <- attr(tokens, 'docvars')[i]
     }
     if (length(tokens) == 1 && is.null(tokens[[1]])) return(tokens)
-    attributes(tokens) <- attributes(x)[!(names(attributes(x)) %in% c('names'))]
+    attributes(tokens, FALSE) <- attributes(x)
     tokens_hashed_recompile(tokens)
 }
 
