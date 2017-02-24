@@ -51,15 +51,21 @@ setClass("textmodel_wordfish_predicted",
 #' @param dispersion_level sets the unit level for the dispersion parameter, 
 #'   options are \code{"feature"} for term-level variances, or \code{"overall"} 
 #'   for a single dispersion parameter
-#' @param dispersion_floor constraint for the minimal underdispersion multiplier 
+#' @param dispersion_floor constraint for the minimal underdispersion multiplier
 #'   in the quasi-Poisson model.  Used to minimize the distorting effect of 
 #'   terms with rare term or document frequencies that appear to be severely 
 #'   underdispersed.  Default is 0, but this only applies if \code{dispersion = 
 #'   "quasipoisson"}.
-#' @param residual_floor defines the minimal value of the residuals, which are used to 
-#'   construct the starting parameters from an iterative restarted Lanczos routine. 
-#'   Raising the valuse will save the memory space. Only applies to \code{version = "parallel"}.
-#' @param version sets \code{"serial"} or \code{"parallel"} (for parallel computation)
+#' @param residual_floor defines the minimal value of the residuals, which are
+#'   used to construct the starting parameters from an iterative restarted
+#'   Lanczos routine. Raising the values will save the memory space. Only
+#'   applies to \code{version = "parallel"}.
+#' @param version sets \code{"serial"} or \code{"parallel"} (for parallel
+#'   computation).  Serial is the default and recommended in most cases,
+#'   although parallel computation may be required when the input \link{dfm} is
+#'   very large.  Parallel computation does not result in particular efficiency
+#'   gains for this function, but it will allow very large dfm objects to be 
+#'   processed relative to the serial version.
 #' @return An object of class textmodel_fitted_wordfish.  This is a list 
 #'   containing: \item{dir}{global identification of the dimension} 
 #'   \item{theta}{estimated document positions} \item{alpha}{estimated document 
@@ -80,9 +86,9 @@ setClass("textmodel_wordfish_predicted",
 #'   Journal of Political Science} 52(3):705-772.
 #'   
 #'   Lowe, Will and Kenneth Benoit. 2013. "Validating Estimates of Latent Traits
-#'   from Textual Data Using Human Judgment as a Benchmark." \emph{Political Analysis}
-#'   21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
-#' @author Benjamin Lauderdale and Kenneth Benoit
+#'   from Textual Data Using Human Judgment as a Benchmark." \emph{Political
+#'   Analysis} 21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
+#' @author Benjamin Lauderdale, Haiyan Wang, and Kenneth Benoit
 #' @examples
 #' textmodel_wordfish(data_dfm_LBGexample, dir = c(1,5))
 #' 
