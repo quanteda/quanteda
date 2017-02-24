@@ -486,9 +486,9 @@ docnames.tokens <- function(x) {
         attr(x, 'meta') <- value
     } else {
         if (!is.data.frame(attr(x, 'meta'))) {
-            df <- data.frame(value)
-            colnames(df) <- field
-            attr(x, 'meta') <- df
+            meta <- data.frame(value, stringsAsFactors = FALSE)
+            colnames(meta) <- field
+            attr(x, 'meta') <- meta
         } else {
             attr(x, 'meta')[[field]] <- value
         }
