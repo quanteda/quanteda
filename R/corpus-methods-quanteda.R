@@ -102,7 +102,7 @@ texts.corpus <- function(x, groups = NULL, spacer = "  ") {
         return(txts)
     }
     
-    if (is.character(groups) & all(groups %in% names(docvars(x)))) {
+    if (is.character(groups) & all(groups %in% names(documents(x)))) {
         group.split <- as.factor(interaction(documents(x)[, groups], drop = TRUE))
     } else {
         if (length(groups) != ndoc(x))

@@ -1,13 +1,24 @@
 #' bootstrap a dfm
 #'
 #' Create an array of resampled dfms.
-#' @param x the dfm
+#' @param x a character or \link{corpus} object
 #' @param n number of resamples
-#' @param ... additional arguments passed to \link{\code{dfm}}
+#' @param ... additional arguments passed to \code{\link{dfm}}
 #' @param verbose if \code{TRUE} print status messages
+#' @details 
+#' This code loops the creation of a dfm from a corpus, keeping a constant set of features based
+#' on the original dfm.  Resampling of the corpus is done at the sentence level, within document.
+#' @return 
+#' A named list of \link{dfm} objects, where the first, \code{dfm_0}, is the dfm from the original
+#' texts, and subsequent elements are the sentence-resampled dfms.
+#' @author Kenneth Benoit
 #' @export
+#' @examples 
+#' txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
+#'          texttwo = "Premiere phrase.  Deuxieme phrase.")
+#' bootstrap_dfm(txt, n = 3)         
 bootstrap_dfm <- function(x, n = 10, ..., verbose = TRUE) {
-    UseMethod("dfm_bootstrap")
+    UseMethod("bootstrap_dfm")
 }
 
 #' @noRd
@@ -28,9 +39,9 @@ bootstrap_dfm.corpus <- function(x, n = 10, ..., verbose = TRUE) {
     # could be parallelized
     for (i in 1:n) {
         if (verbose) message(", ", i, appendLF = FALSE)
-        result <- c(result, 
-                    as.list(setNames(dfm(corpus_resample(corp_sentences, replace = TRUE), groups = "_document", ...)), 
-                            paste0("dfm_", i)))
+        thisdfm <- dfm(corpus_sample(corp_sentences, replace = TRUE), groups = "_document", ...)
+        thisdfm <- dfm_select(thisdfm, result[[1]])
+        result <- c(result, setNames(list(thisdfm), paste0("dfm_", i)))
     }
     if (verbose) message("") # adds LF
     
@@ -40,7 +51,7 @@ bootstrap_dfm.corpus <- function(x, n = 10, ..., verbose = TRUE) {
 #' @noRd
 #' @export
 bootstrap_dfm.character <- function(x, n = 10, ..., verbose = TRUE) {
-    dfm_bootstrap(corpus(x), ..., verbose = verbose)
+    bootstrap_dfm(corpus(x), ..., verbose = verbose)
 }
 
 

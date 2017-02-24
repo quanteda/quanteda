@@ -4,15 +4,33 @@
 \alias{bootstrap_dfm}
 \title{bootstrap a dfm}
 \usage{
-bootstrap_dfm(x, n = 10, ...)
+bootstrap_dfm(x, n = 10, ..., verbose = TRUE)
 }
 \arguments{
-\item{x}{the dfm}
+\item{x}{a character or \link{corpus} object}
 
 \item{n}{number of resamples}
 
-\item{...}{additional arguments passed to \link{\code{dfm}}}
+\item{...}{additional arguments passed to \code{\link{dfm}}}
+
+\item{verbose}{if \code{TRUE} print status messages}
+}
+\value{
+A named list of \link{dfm} objects, where the first, \code{dfm_0}, is the dfm from the original
+texts, and subsequent elements are the sentence-resampled dfms.
 }
 \description{
 Create an array of resampled dfms.
+}
+\details{
+This code loops the creation of a dfm from a corpus, keeping a constant set of features based
+on the original dfm.  Resampling of the corpus is done at the sentence level, within document.
+}
+\examples{
+txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
+         texttwo = "Premiere phrase.  Deuxieme phrase.")
+bootstrap_dfm(txt, n = 3)         
+}
+\author{
+Kenneth Benoit
 }
