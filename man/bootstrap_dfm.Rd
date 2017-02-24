@@ -34,3 +34,6 @@ bootstrap_dfm(txt, n = 3)
 \author{
 Kenneth Benoit
 }
+\keyword{bootstrap}
+\keyword{dfm}
+\keyword{experimental}

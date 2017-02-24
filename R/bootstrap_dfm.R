@@ -13,6 +13,7 @@
 #' texts, and subsequent elements are the sentence-resampled dfms.
 #' @author Kenneth Benoit
 #' @export
+#' @keywords dfm experimental bootstrap
 #' @examples 
 #' txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
 #'          texttwo = "Premiere phrase.  Deuxieme phrase.")
