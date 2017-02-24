@@ -24,6 +24,8 @@ aggregating the texts through concatenation}
 spacing added between texts.  (Default is two spaces.)}
 
 \item{value}{character vector of the new texts}
+
+\item{...}{unused}
 }
 \value{
 For \code{texts}, a character vector of the texts in the corpus.
