@@ -402,7 +402,7 @@ as.tokenizedTexts.tokens <- function(x, ...) {
     
     types <- c("", types(x))
     tokens <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding 
-    tokens <- reassign_attributes(tokens, x, exceptions = 'class')
+    attributes(tokens) <- attributes(x)
     class(tokens) <- c("tokenizedTexts", "list")
     return(tokens)
 }
@@ -469,6 +469,12 @@ print.tokens <- function(x, ...) {
 #' @export
 lengths.tokens <- function(x, use.names = TRUE) {
     NextMethod()
+}
+
+#' @noRd
+#' @export
+docnames.tokens <- function(x) {
+    names(x)
 }
 
 
