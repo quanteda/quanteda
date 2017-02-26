@@ -85,8 +85,8 @@ tokens_compound.tokens <- function(x, sequences,
     x <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join)
     x <- reassign_attributes(x, attrs_org, exceptions = "types", attr_only = TRUE)
     attr(x, "concatenator") <- concatenator
-    
-    tokens_hashed_recompile(x)
+    Encoding(types(x)) <- "UTF-8"
+    return(x)
 }
 
 
