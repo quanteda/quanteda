@@ -1,5 +1,6 @@
 //#include "dev.h"
 #include "quanteda.h"
+#include "recompile.h"
 using namespace quanteda;
 
 Text replace(Text tokens, 
@@ -60,11 +61,13 @@ struct replace_mt : public Worker{
 */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_replace(const List &texts_, 
+List qatd_cpp_tokens_replace(const List &texts_,
+                             const CharacterVector types_,
                              const List &words_,
                              const IntegerVector &ids_){
     
     Texts input = Rcpp::as<Texts>(texts_);
+    Types types = Rcpp::as<Types>(types_);
 
     MapNgrams map_words;
     std::vector<std::size_t> spans(words_.size());
@@ -90,8 +93,7 @@ List qatd_cpp_tokens_replace(const List &texts_,
     }
 #endif
     // dev::stop_timer("Token replace", timer);
-    ListOf<IntegerVector> texts_list = Rcpp::wrap(output);
-    return texts_list;
+    return recompile(output, types);
 }
 
 /***R

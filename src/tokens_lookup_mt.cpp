@@ -1,5 +1,6 @@
 //#include "dev.h"
 #include "quanteda.h"
+#include "recompile.h"
 using namespace quanteda;
 
 Text lookup(Text tokens, 
@@ -97,12 +98,14 @@ struct lookup_mt : public Worker{
 
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_lookup(const List &texts_, 
+List qatd_cpp_tokens_lookup(const List &texts_,
+                            const CharacterVector types_,
                             const List &keys_,
                             const IntegerVector &ids_,
                             const bool overlap){
     
     Texts input = Rcpp::as<Texts>(texts_);
+    Types types = Rcpp::as<Types>(types_);
     const unsigned int id_max = Rcpp::max(ids_);
     
     MultiMapNgrams map_keys;
@@ -129,8 +132,7 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     }
 #endif
     // dev::stop_timer("Dictionary lookup", timer);
-    ListOf<IntegerVector> output_ = Rcpp::wrap(output);
-    return output_;
+    return recompile(output, types);
 }
 
 /***R
@@ -141,8 +143,8 @@ dict <- list(5, c(5, 6) , 4)
 #dict <- list(1, 10, 20)
 #keys <- 1:length(dict)
 keys <- rep(1, length(dict))
-qatd_cpp_tokens_lookup(toks, dict, keys, FALSE)
-qatd_cpp_tokens_lookup(toks, dict, keys, TRUE)
+qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE)
+qatd_cpp_tokens_lookup(toks, letters, dict, keys, TRUE)
 
 
 */
