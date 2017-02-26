@@ -251,6 +251,7 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key = '', dict_f
             dict_flat[[key_entry]] <- c(dict_flat[[key_entry]], entry)
         }
     }
+    attributes(dict_flat, FALSE) <- attributes(dict)
     return(dict_flat)
 }
 
