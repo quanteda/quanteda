@@ -126,9 +126,9 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     if ("" %in% features) features_id <- c(features_id, list(0)) # append padding index
 
     if (selection == 'keep') {
-        x <- qatd_cpp_tokens_select(x, features_id, 1, padding)
+        x <- qatd_cpp_tokens_select(x, types, features_id, 1, padding)
     } else {
-        x <- qatd_cpp_tokens_select(x, features_id, 2, padding)
+        x <- qatd_cpp_tokens_select(x, types, features_id, 2, padding)
     }
     attributes(x, FALSE) <- attrs
     Encoding(types(x)) <- "UTF-8"
