@@ -74,16 +74,13 @@ tokens_compound.tokens <- function(x, sequences,
         return(x)
     
     valuetype <- match.arg(valuetype)
-    valuetype <- match.arg(valuetype)
-    
-    names_org <- names(x)
-    attrs_org <- attributes(x)
+    attrs <- attributes(x)
     types <- types(x)
     
     seqs_id <- regex2id(seqs, types, valuetype, case_insensitive)
     if(length(seqs_id) == 0) return(x) # do nothing
     x <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join)
-    x <- reassign_attributes(x, attrs_org, exceptions = "types", attr_only = TRUE)
+    attributes(x, FALSE) <- attrs
     attr(x, "concatenator") <- concatenator
     Encoding(types(x)) <- "UTF-8"
     return(x)

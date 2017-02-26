@@ -117,9 +117,7 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     features <- vector2list(features)
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
-    
-    names_org <- names(x)
-    attrs_org <- attributes(x)
+    attrs <- attributes(x)
     
     types <- types(x)
     features <- as.list(features)
@@ -132,11 +130,9 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
     } else {
         x <- qatd_cpp_tokens_select(x, features_id, 2, padding)
     }
-    
-    names(x) <- names_org
-    attributes(x) <- attrs_org
-
-    tokens_hashed_recompile(x)
+    attributes(x, FALSE) <- attrs
+    Encoding(types(x)) <- "UTF-8"
+    return(x)
 }
 
 #' @rdname tokens_select
