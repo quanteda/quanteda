@@ -40,7 +40,7 @@ bootstrap_dfm.corpus <- function(x, n = 10, ..., verbose = TRUE) {
     # could be parallelized
     for (i in 1:n) {
         if (verbose) message(", ", i, appendLF = FALSE)
-        thisdfm <- dfm(corpus_sample(corp_sentences, replace = TRUE), groups = "_document", ...)
+        thisdfm <- dfm(corpus_sample(corp_sentences, replace = TRUE, by = "_document"), groups = "_document", ...)
         thisdfm <- dfm_select(thisdfm, result[[1]])
         result <- c(result, setNames(list(thisdfm), paste0("dfm_", i)))
     }

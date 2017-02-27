@@ -4,7 +4,8 @@
 
 ### New features
 
-* `corpus_reshape()` can now go from sentences and paragraph units back to documents
+* `corpus_reshape()` can now go from sentences and paragraph units back to documents.
+* Added a `by = ` argument to `corpus_sample()`, for use in bootstrap resampling of sub-document units.
 * Added an experimental method `bootstrap_dfm()` to generate a list of dimensionally-equivalent dfm objects based on sentence-level resampling of the original documents.
 
 
