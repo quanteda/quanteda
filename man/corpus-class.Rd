@@ -10,6 +10,7 @@
 \alias{[.corpus}
 \alias{[[.corpus}
 \alias{[[<-.corpus}
+\alias{str.corpus}
 \title{base method extensions for corpus objects}
 \usage{
 \method{print}{corpus}(x, ...)
@@ -27,9 +28,13 @@ is.corpuszip(x)
 \method{[[}{corpus}(x, i, ...)
 
 \method{[[}{corpus}(x, i) <- value
+
+\method{str}{corpus}(x, i, value)
 }
 \arguments{
 \item{x}{a corpus object}
+
+\item{...}{}
 
 \item{c1}{corpus one to be added}
 
@@ -46,6 +51,8 @@ variable; if \code{FALSE}, return it as a single-column data.frame.  See
 \code{\link{drop}} for further details.}
 
 \item{value}{a vector that will form a new docvar}
+
+\item{object}{}
 }
 \value{
 \code{is.corpus} returns \code{TRUE} if the object is a corpus

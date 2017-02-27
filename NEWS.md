@@ -17,7 +17,7 @@
 
 * Fixed an problem in tokens generation for some irregular characters (#554).
 * Fixed a problem in setting the parallel thread size on single-core machines (#556).
-
+* Fixed problems for `str()` on a corpus with no docvars (#571).
 
 
 ## Changes since v0.9.9-17
