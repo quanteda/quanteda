@@ -235,11 +235,12 @@ c.corpus <- function(..., recursive = FALSE) {
 
 #' @export
 #' @param object 
-#' @param ... 
+#' @param ... not used
 #' @method str corpus
+#' @importFrom utils str
 #' @rdname corpus-class
-str.corpus <- function(x, i, value) {
+str.corpus <- function(object, ...) {
     message("OK, but note: accessing corpus internals directly voids your warranty.")
-    str(unclass(x))
+    str(unclass(object))
 }
 

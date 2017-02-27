@@ -29,12 +29,12 @@ is.corpuszip(x)
 
 \method{[[}{corpus}(x, i) <- value
 
-\method{str}{corpus}(x, i, value)
+\method{str}{corpus}(object, ...)
 }
 \arguments{
 \item{x}{a corpus object}
 
-\item{...}{}
+\item{...}{not used}
 
 \item{c1}{corpus one to be added}
 
