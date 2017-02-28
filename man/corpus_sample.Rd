@@ -4,7 +4,8 @@
 \alias{corpus_sample}
 \title{randomly sample documents from a corpus}
 \usage{
-corpus_sample(x, size = ndoc(x), replace = FALSE, prob = NULL, ...)
+corpus_sample(x, size = ndoc(x), replace = FALSE, prob = NULL,
+  by = NULL, ...)
 }
 \arguments{
 \item{x}{a corpus object whose documents will be sampled}
@@ -15,6 +16,10 @@ corpus_sample(x, size = ndoc(x), replace = FALSE, prob = NULL, ...)
 
 \item{prob}{A vector of probability weights for obtaining the elements of the
 vector being sampled.}
+
+\item{by}{a grouping variable for sampling.  Useful for resampling
+sub-document units such as sentences, for instance by specifying \code{by =
+"document"}}
 
 \item{...}{unused}
 }
@@ -27,13 +32,20 @@ A corpus object with number of documents equal to \code{size}, drawn
 \description{
 Takes a random sample or documents or features of the specified size from a 
 corpus or document-feature matrix, with or without replacement.  Works just 
-as \code{\link{sample}} works for the documents and their associated
+as \code{\link{sample}} works for the documents and their associated 
 document-level variables.
 }
 \examples{
 # sampling from a corpus
 summary(corpus_sample(data_corpus_inaugural, 5)) 
 summary(corpus_sample(data_corpus_inaugural, 10, replace=TRUE))
+
+# sampling sentences within document
+doccorpus <- corpus(c(one = "Sentence one.  Sentence two.  Third sentence.",
+                      two = "First sentence, doc2.  Second sentence, doc2."))
+sentcorpus <- corpus_reshape(doccorpus, to = "sentences")
+texts(sentcorpus)
+texts(corpus_sample(sentcorpus, replace = TRUE, by = "document"))
 }
 \seealso{
 \code{\link{sample}}

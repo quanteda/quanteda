@@ -4,7 +4,8 @@
 
 ### New features
 
-* `corpus_reshape()` can now go from sentences and paragraph units back to documents
+* `corpus_reshape()` can now go from sentences and paragraph units back to documents.
+* Added a `by = ` argument to `corpus_sample()`, for use in bootstrap resampling of sub-document units.
 * Added an experimental method `bootstrap_dfm()` to generate a list of dimensionally-equivalent dfm objects based on sentence-level resampling of the original documents.
 * Added option to `tokens()` for passing docvars through to to tokens objects, and added `docvars()` and `metadoc()` methods for tokens class objects.  Overall, the code for docvars and metadoc is now more robust and consistent.
 
@@ -18,7 +19,7 @@
 
 * Fixed an problem in tokens generation for some irregular characters (#554).
 * Fixed a problem in setting the parallel thread size on single-core machines (#556).
-
+* Fixed problems for `str()` on a corpus with no docvars (#571).
 
 
 ## Changes since v0.9.9-17
