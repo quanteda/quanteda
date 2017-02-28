@@ -11,8 +11,8 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     person("Haiyan", "Wang", email = "h.wang52@lse.ac.uk", role = "ctb"),
     person("Benjamin", "Lauderdale", email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
     person("Will", "Lowe", email = "wlowe@princeton.edu", role = "ctb") )
-Version: 0.9.9-28
-Date: 2017-02-24
+Version: 0.9.9-29
+Date: 2017-02-28
 License: GPL-3
 Depends:
     R (>= 3.2.2)
@@ -82,6 +82,7 @@ Collate:
     'dfm_trim.R'
     'dfm_weight.R'
     'dictionaries-deprecated.R'
+    'docvars.R'
     'fcm-methods.R'
     'fcm.R'
     'joinTokens-deprecated.R'
