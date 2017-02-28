@@ -59,6 +59,8 @@
 #'   phased out soon in coming versions.)
 #' @param verbose if \code{TRUE}, print timing messages to the console; off by 
 #'   default
+#' @param include_docvars if \code{TRUE}, pass docvars and metadoc fields through to 
+#'   the tokens object.  Only applies when tokenizing \link{corpus} objects.
 #' @param ... additional arguments not used
 #' @import stringi
 #' @details The tokenizer is designed to be fast and flexible as well as to 
@@ -161,7 +163,8 @@ tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", 
                     concatenator = "_",
                     simplify = FALSE,
                     hash = TRUE,
-                    verbose = FALSE,  
+                    verbose = FALSE,
+                    include_docvars = TRUE,
                     ...) {
     UseMethod("tokens")
 }
@@ -182,7 +185,8 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
                              concatenator = "_",
                              simplify = FALSE,
                              hash = TRUE,
-                             verbose = FALSE, ...) {
+                             verbose = FALSE, ..., 
+                             include_docvars = TRUE) {
     
     what <- match.arg(what)
     names_org <- names(x)
@@ -274,9 +278,10 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
 #' @rdname tokens
 #' @export
 #' @noRd
-tokens.corpus <- function(x, ...) {
+tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     result <- tokens(texts(x), ...)
-    docvars(result) <- docvars(x)
+    if (include_docvars)
+        docvars(result) <- docvars(x, names(documents(x))[-which(names(documents(x)) == "texts")])
     return(result)
 }
 
@@ -433,8 +438,8 @@ print.tokens <- function(x, ...) {
 #' toks[c(1,3)]
 "[.tokens" <- function(x, i, ...) {
     tokens <- unclass(x)[i]
-    if (is.data.frame(attr(x, 'meta'))) {
-        attr(tokens, 'meta') <- attr(x, 'meta')[i,]
+    if (is.data.frame(attr(x, "docvars"))) {
+        attr(tokens, "docvars") <- attr(x, "docvars")[i,]
     }
     if (length(tokens) == 1 && is.null(tokens[[1]])) return(tokens)
     attributes(tokens, FALSE) <- attributes(x)
@@ -478,38 +483,6 @@ docnames.tokens <- function(x) {
 }
 
 
-#' @noRd
-#' @export
-"docvars<-.tokens" <- function(x, field = NULL, value) {
-    
-    if (is.null(field) && (is.data.frame(value) || is.null(value))) {
-        attr(x, 'meta') <- value
-    } else {
-        if (!is.data.frame(attr(x, 'meta'))) {
-            meta <- data.frame(value, stringsAsFactors = FALSE)
-            colnames(meta) <- field
-            attr(x, 'meta') <- meta
-        } else {
-            attr(x, 'meta')[[field]] <- value
-        }
-    }
-    return(x)
-}
-
-#' @noRd
-#' @export
-docvars.tokens <- function(x, field = NULL) {
-    if (is.null(field) && is.data.frame(attr(x, 'meta'))) {
-        return(attr(x, 'meta'))
-    } else {
-        if (is.data.frame(attr(x, 'meta'))) {
-            if (field %in% colnames(attr(x, 'meta'))) {
-                return(attr(x, 'meta')[[field]])
-            }
-        }
-    }
-    return(NULL)
-}
 
 ##
 ## ============== INTERNAL FUNCTIONS =======================================

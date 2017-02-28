@@ -220,36 +220,12 @@ test_that("tokens works with unusual hiragana #554", {
                       list(c('づ', 'いﾞ'), c('゛', 'んﾞ'), c('た', 'ーﾟ')))
 })
 
-test_that("types attaribute is a character vector", {
+test_that("types attribute is a character vector", {
     toks <- tokens("one two three")
     expect_true(is.character(attr(toks, 'types')))
     expect_equal(length(attributes(attr(toks, 'types'))), 0)
 })
 
-
-test_that("docvars is working with tokens", {
-    
-    corp <- data_corpus_inaugural
-    toks <- tokens(corp)
-    expect_equal(docvars(toks), docvars(corp))
-    expect_equal(docvars(toks, 'President'), docvars(corp, 'President'))
-    
-    # Subset
-    toks2 <- toks[docvars(toks, 'Year') > 2000]
-    expect_equal(ndoc(toks2), nrow(docvars(toks2)))
-    
-    # Add field to meta-data
-    docvars(toks2, 'Type') <- 'Speach'
-    expect_equal(docvars(toks2, 'Type'), rep('Speach', 5))
-    
-    # Remove meta-data
-    docvars(toks) <- NULL
-    expect_equal(docvars(toks), NULL)
-    
-    # Add fresh meta-data
-    docvars(toks, 'ID') <- 1:58
-    expect_equal(docvars(toks, 'ID'), 1:58)
-}) 
 
 #' # coerce an object into a tokens class
 #' as.tokens(toks)
