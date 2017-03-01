@@ -46,7 +46,8 @@ corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL
     if (!is.null(by)) {
         if (by == "document") by <- "_document"
         dt <- data.table(index = 1:ndoc(x), docID = docvars(x, by))
-        dt[, sample_index := sample(index, replace = TRUE), by = docID]
+        dt[, temp := sample(1:.N, replace = TRUE), by = docID]
+        dt[, sample_index := index[temp], by = docID]
         sample_index <- dt[, sample_index]
     } else {
         sample_index <- base::sample(ndoc(x), size, replace, prob) 

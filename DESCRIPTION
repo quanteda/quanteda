@@ -11,8 +11,8 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     person("Haiyan", "Wang", email = "h.wang52@lse.ac.uk", role = "ctb"),
     person("Benjamin", "Lauderdale", email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
     person("Will", "Lowe", email = "wlowe@princeton.edu", role = "ctb") )
-Version: 0.9.9-29
-Date: 2017-02-27
+Version: 0.9.9-30
+Date: 2017-03-01
 License: GPL-3
 Depends:
     R (>= 3.2.2)
