@@ -41,7 +41,7 @@ corpus_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = 
 #' @import data.table data.table
 #' @export
 corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL, ...) {
-    index <- docID <- NULL
+    index <- docID <- temp <- NULL
     
     if (!is.null(by)) {
         if (by == "document") by <- "_document"
