@@ -9,7 +9,7 @@ tokens(x, what = c("word", "sentence", "character", "fastestword",
   removeSymbols = FALSE, removeSeparators = TRUE, removeTwitter = FALSE,
   removeHyphens = FALSE, removeURL = FALSE, ngrams = 1L, skip = 0L,
   concatenator = "_", simplify = FALSE, hash = TRUE, verbose = FALSE,
-  ...)
+  include_docvars = TRUE, ...)
 }
 \arguments{
 \item{x}{a character or \link{corpus} object to be tokenized}
@@ -80,6 +80,9 @@ phased out soon in coming versions.)}
 
 \item{verbose}{if \code{TRUE}, print timing messages to the console; off by 
 default}
+
+\item{include_docvars}{if \code{TRUE}, pass docvars and metadoc fields through to 
+the tokens object.  Only applies when tokenizing \link{corpus} objects.}
 
 \item{...}{additional arguments not used}
 }

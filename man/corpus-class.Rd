@@ -52,7 +52,7 @@ variable; if \code{FALSE}, return it as a single-column data.frame.  See
 
 \item{value}{a vector that will form a new docvar}
 
-\item{object}{}
+\item{object}{the corpus about which you want structural information}
 }
 \value{
 \code{is.corpus} returns \code{TRUE} if the object is a corpus
