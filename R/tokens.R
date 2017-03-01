@@ -59,6 +59,8 @@
 #'   phased out soon in coming versions.)
 #' @param verbose if \code{TRUE}, print timing messages to the console; off by 
 #'   default
+#' @param include_docvars if \code{TRUE}, pass docvars and metadoc fields through to 
+#'   the tokens object.  Only applies when tokenizing \link{corpus} objects.
 #' @param ... additional arguments not used
 #' @import stringi
 #' @details The tokenizer is designed to be fast and flexible as well as to 
@@ -161,7 +163,8 @@ tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", 
                     concatenator = "_",
                     simplify = FALSE,
                     hash = TRUE,
-                    verbose = FALSE,  
+                    verbose = FALSE,
+                    include_docvars = TRUE,
                     ...) {
     UseMethod("tokens")
 }
@@ -182,7 +185,8 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
                              concatenator = "_",
                              simplify = FALSE,
                              hash = TRUE,
-                             verbose = FALSE, ...) {
+                             verbose = FALSE, ..., 
+                             include_docvars = TRUE) {
     
     what <- match.arg(what)
     names_org <- names(x)
@@ -274,8 +278,11 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
 #' @rdname tokens
 #' @export
 #' @noRd
-tokens.corpus <- function(x, ...) {
-    tokens(texts(x), ...)
+tokens.corpus <- function(x, ..., include_docvars = TRUE) {
+    result <- tokens(texts(x), ...)
+    if (include_docvars)
+        docvars(result) <- docvars(x, names(documents(x))[-which(names(documents(x)) == "texts")])
+    return(result)
 }
 
 
@@ -400,7 +407,7 @@ as.tokenizedTexts.tokens <- function(x, ...) {
     
     types <- c("", types(x))
     tokens <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding 
-    tokens <- reassign_attributes(tokens, x, exceptions = 'class')
+    attributes(tokens) <- attributes(x)
     class(tokens) <- c("tokenizedTexts", "list")
     return(tokens)
 }
@@ -431,8 +438,11 @@ print.tokens <- function(x, ...) {
 #' toks[c(1,3)]
 "[.tokens" <- function(x, i, ...) {
     tokens <- unclass(x)[i]
+    if (is.data.frame(attr(x, "docvars"))) {
+        attr(tokens, "docvars") <- attr(x, "docvars")[i,]
+    }
     if (length(tokens) == 1 && is.null(tokens[[1]])) return(tokens)
-    tokens <- reassign_attributes(tokens, x, exceptions = 'names')
+    attributes(tokens, FALSE) <- attributes(x)
     tokens_hashed_recompile(tokens)
 }
 
@@ -471,6 +481,7 @@ lengths.tokens <- function(x, use.names = TRUE) {
 docnames.tokens <- function(x) {
     names(x)
 }
+
 
 
 ##

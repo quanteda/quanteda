@@ -1,0 +1,125 @@
+context("test docvars")
+
+test_that("docvars of corpus is a data.frame", {
+    expect_that(
+        docvars(data_corpus_inaugural),
+        is_a('data.frame')
+    )
+})
+
+test_that("docvars works for metadoc fields", {
+    mycorpus <- corpus(c(textone = "This is a paragraph.\n\nAnother paragraph.\n\nYet paragraph.", 
+                         texttwo = "Premiere phrase.\n\nDeuxieme phrase."), 
+                       docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
+                       metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+    metadoc(mycorpus, "test") <- c("A", "B")
+    
+    expect_identical(
+        docvars(mycorpus, "_test"),
+        c("A", "B")
+    )
+})
+
+test_that("metadoc drops dimension for single column", {
+    mycorpus <- corpus(c(textone = "This is a paragraph.\n\nAnother paragraph.\n\nYet paragraph.", 
+                         texttwo = "Premiere phrase.\n\nDeuxieme phrase."), 
+                       docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
+                       metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+    metadoc(mycorpus, "test") <- c("A", "B")
+    expect_identical(
+        metadoc(mycorpus, "test"),
+        c("A", "B")
+    )
+    
+    df <- data.frame("_test" = c("A", "B"), row.names = c("textone", "texttwo"), stringsAsFactors = FALSE)
+    names(df)[1] <- "_test"
+    expect_identical(
+        metadoc(mycorpus),
+        df
+    )
+})
+
+test_that("docvars with non-existent field names generate correct error messages", {
+    expect_error(
+        docvars(data_corpus_inaugural, c("President", "nonexistent")),
+        "field\\(s\\) nonexistent not found"
+    )
+
+    metadoc(data_corpus_inaugural, "language") <- "english"
+    expect_silent(metadoc(data_corpus_inaugural, "language"))
+    expect_error(
+        metadoc(data_corpus_inaugural, "notametadocname"),
+        "field\\(s\\) _notametadocname not found"
+    )
+
+    toks <- tokens(data_corpus_inaugural, include_docvars = TRUE)
+    expect_error(
+        docvars(toks, c("President", "nonexistent")),
+        "field\\(s\\) nonexistent not found"
+    )
+})
+
+
+test_that("docvars is working with tokens", {
+    corp <- data_corpus_inaugural
+    toks <- tokens(corp, include_docvars = TRUE)
+    expect_equal(docvars(toks), docvars(corp))
+    expect_equal(docvars(toks, 'President'), docvars(corp, 'President'))
+    
+    # Subset
+    toks2 <- toks[docvars(toks, 'Year') > 2000]
+    expect_equal(ndoc(toks2), nrow(docvars(toks2)))
+    
+    # # Add field to meta-data
+    # expect_equal(
+    #     docvars(quanteda:::"docvars<-"(toks2, 'Type', 'Speech'), "Type"), 
+    #     rep('Speech', 5)
+    # )
+    # 
+    # # Remove meta-data
+    # expect_equal(
+    #     docvars(quanteda:::"docvars<-"(toks, field = NULL, NULL)), 
+    #     NULL
+    # )
+    # 
+    # # Add fresh meta-data
+    # expect_equal(
+    #     docvars(quanteda:::"docvars<-"(toks, field = "ID", 1:58), "ID"), 
+    #     1:58
+    # )
+}) 
+
+test_that("metadoc for tokens works", {
+    
+    corp <- data_corpus_irishbudget2010
+    metadoc(corp, "language") <- "english"
+    toks <- tokens(corp, include_docvars = TRUE)
+    
+    expect_equal(docvars(toks), docvars(corp))
+    expect_equal(metadoc(toks), metadoc(corp))
+    
+    expect_equal(docvars(toks, 'name'), docvars(corp, 'name'))
+    
+    # Subset
+    toks2 <- toks[metadoc(toks, 'language') == "english"]
+    expect_equal(ndoc(toks2), nrow(docvars(toks2)))
+}) 
+
+test_that("metadoc works with selection", {
+    mycorpus <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
+                         texttwo = "Premiere phrase.  Deuxieme phrase."), 
+                       docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
+                       metacorpus = list(notes = "Example showing how corpus_reshape() works."))
+    mycorpus_reshaped <- corpus_reshape(mycorpus, to = "sentences")
+    expect_equal(metadoc(mycorpus_reshaped, "document"),
+                 c("textone", "textone", "textone", "texttwo", "texttwo"))
+    expect_equal(
+        metadoc(mycorpus_reshaped, c("document", "serialno")),
+        data.frame("_document" = c("textone", "textone", "textone", "texttwo", "texttwo"),
+                   "_serialno" = c(1, 2, 3, 1, 2),
+                   check.names = FALSE, stringsAsFactors = FALSE,
+                   row.names = c(paste0("textone", 1:3), paste0("texttwo", 1:2)))
+    )
+}) 
+
+

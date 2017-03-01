@@ -79,6 +79,21 @@ reassign_attributes <- function(x_new, x_from, exceptions = NULL, attr_only = FA
     x_new
 }
 
+#' R-like alternative to reassign_attributes()
+#' @keywords internal
+#' @param x an object
+#' @param overwrite if \code{TRUE}, overwrite old attributes
+#' @param value new attributes
+#' @author Kohei Watanabe
+"attributes<-" <- function(x, overwrite = TRUE, value) {
+    if (overwrite) {
+        base::attributes(x) <- value
+    } else {
+        base::attributes(x) <- c(base::attributes(x), value[!(names(value) %in% names(base::attributes(x)))])
+    }
+    return(x)
+}
+
 # This function generates random texts from English alphabets or any other characters.
 
 # @param n_doc the number of documents generated
