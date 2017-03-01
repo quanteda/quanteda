@@ -234,7 +234,7 @@ c.corpus <- function(..., recursive = FALSE) {
 }
 
 #' @export
-#' @param object 
+#' @param object the corpus about which you want structural information
 #' @param ... not used
 #' @method str corpus
 #' @importFrom utils str
