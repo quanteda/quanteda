@@ -1,5 +1,6 @@
 //#include "dev.h"
 #include "quanteda.h"
+#include "recompile.h"
 using namespace quanteda;
 
 unsigned int ngram_id(const Ngram &ngram,
@@ -218,12 +219,7 @@ List qatd_cpp_tokens_ngrams(const List texts_,
     }
 #endif
     //dev::stop_timer("Token generation", timer);
-    
-    // Return IDs as attribute
-    ListOf<IntegerVector> output_ = Rcpp::wrap(output);
-    output_.attr("types") = types_ngram;
-    return output_;
-    
+    return recompile(output, types_ngram);
 }
 
 
