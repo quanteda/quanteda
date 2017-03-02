@@ -63,7 +63,7 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEX
     for (std::size_t i=0; i < N; i++) {
         
         theta(i) = pow(rsum(i)/asum, -0.5) * U(i, 0);
-        Rcout<<theta(i)<<std::endl;
+        //Rcout<<theta(i)<<std::endl;
     }
     for (int k=0; k < K; k++) beta(k) = 0; // pow(csum(k)/asum,-0.5) * V(k,0);
     for (int i=0; i < N; i++) alpha = log(rsum);
@@ -193,11 +193,11 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEX
             }
         }
          //Rprintf("%d: %f2\\n",outeriter,lp);
-        Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
+        //Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
         
         // END WHILE LOOP		
     } 
-    Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
+    //Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
     // Fix Global Polarity  
     
     // added the -1 because C counts from ZERO...  -- KB
