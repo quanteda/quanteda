@@ -268,8 +268,27 @@ BEGIN_RCPP
 END_RCPP
 }
 // wordfishcpp
-Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEXP dispfloor);
-RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP, SEXP dispSEXP, SEXP dispfloorSEXP) {
+Rcpp::List wordfishcpp(arma::sp_mat& wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, bool ABS, bool svd_on, double residual_floor);
+RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirvecSEXP, SEXP priorvecSEXP, SEXP tolvecSEXP, SEXP disptypeSEXP, SEXP dispminSEXP, SEXP ABSSEXP, SEXP svd_onSEXP, SEXP residual_floorSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type wfm(wfmSEXP);
+    Rcpp::traits::input_parameter< IntegerVector& >::type dirvec(dirvecSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type priorvec(priorvecSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type tolvec(tolvecSEXP);
+    Rcpp::traits::input_parameter< IntegerVector& >::type disptype(disptypeSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type dispmin(dispminSEXP);
+    Rcpp::traits::input_parameter< bool >::type ABS(ABSSEXP);
+    Rcpp::traits::input_parameter< bool >::type svd_on(svd_onSEXP);
+    Rcpp::traits::input_parameter< double >::type residual_floor(residual_floorSEXP);
+    rcpp_result_gen = Rcpp::wrap(wordfishcpp(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor));
+    return rcpp_result_gen;
+END_RCPP
+}
+// wordfishcpp_dense
+Rcpp::List wordfishcpp_dense(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEXP dispfloor, bool abs_err);
+RcppExport SEXP quanteda_wordfishcpp_dense(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP, SEXP dispSEXP, SEXP dispfloorSEXP, SEXP abs_errSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -279,7 +298,42 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< SEXP >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< SEXP >::type disp(dispSEXP);
     Rcpp::traits::input_parameter< SEXP >::type dispfloor(dispfloorSEXP);
-    rcpp_result_gen = Rcpp::wrap(wordfishcpp(wfm, dir, priors, tol, disp, dispfloor));
+    Rcpp::traits::input_parameter< bool >::type abs_err(abs_errSEXP);
+    rcpp_result_gen = Rcpp::wrap(wordfishcpp_dense(wfm, dir, priors, tol, disp, dispfloor, abs_err));
+    return rcpp_result_gen;
+END_RCPP
+}
+// wordfish_cpp2
+Rcpp::List wordfish_cpp2(arma::sp_mat& wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, double residual_floor);
+RcppExport SEXP quanteda_wordfish_cpp2(SEXP wfmSEXP, SEXP dirvecSEXP, SEXP priorvecSEXP, SEXP tolvecSEXP, SEXP disptypeSEXP, SEXP dispminSEXP, SEXP residual_floorSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type wfm(wfmSEXP);
+    Rcpp::traits::input_parameter< IntegerVector& >::type dirvec(dirvecSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type priorvec(priorvecSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type tolvec(tolvecSEXP);
+    Rcpp::traits::input_parameter< IntegerVector& >::type disptype(disptypeSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type dispmin(dispminSEXP);
+    Rcpp::traits::input_parameter< double >::type residual_floor(residual_floorSEXP);
+    rcpp_result_gen = Rcpp::wrap(wordfish_cpp2(wfm, dirvec, priorvec, tolvec, disptype, dispmin, residual_floor));
+    return rcpp_result_gen;
+END_RCPP
+}
+// wordfish_cpp
+Rcpp::List wordfish_cpp(arma::sp_mat& wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, double residual_floor);
+RcppExport SEXP quanteda_wordfish_cpp(SEXP wfmSEXP, SEXP dirvecSEXP, SEXP priorvecSEXP, SEXP tolvecSEXP, SEXP disptypeSEXP, SEXP dispminSEXP, SEXP residual_floorSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type wfm(wfmSEXP);
+    Rcpp::traits::input_parameter< IntegerVector& >::type dirvec(dirvecSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type priorvec(priorvecSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type tolvec(tolvecSEXP);
+    Rcpp::traits::input_parameter< IntegerVector& >::type disptype(disptypeSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type dispmin(dispminSEXP);
+    Rcpp::traits::input_parameter< double >::type residual_floor(residual_floorSEXP);
+    rcpp_result_gen = Rcpp::wrap(wordfish_cpp(wfm, dirvec, priorvec, tolvec, disptype, dispmin, residual_floor));
     return rcpp_result_gen;
 END_RCPP
 }
