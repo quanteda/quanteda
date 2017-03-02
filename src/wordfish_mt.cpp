@@ -7,7 +7,7 @@ using namespace RcppParallel;
 using namespace Rcpp;
 using namespace arma;
 //# define RESIDUALS_LIM 0.5
-# define NUMSVD 2
+# define NUMSVD 1
 # define OUTERITER 100
 # define INNERITER 10
 # define LASTLP -2000000000000.0
@@ -271,7 +271,7 @@ struct DocErr : public Worker {
 };
 // [[Rcpp::export]]
 
-Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, double residual_floor){
+Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, bool svd_sparse, double residual_floor){
     
     // DEFINE INPUTS
     double priorprecalpha = priorvec(0);
@@ -297,27 +297,30 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
      arma::colvec rsum(sum(wfm,1));
      arma::rowvec csum(sum(wfm,0));
      double asum = accu(wfm);
-    //std::clock_t begin = clock();
-    // for (std::size_t i=0; i < N; i++){
-    //     for (std::size_t k=0; k < K; k++){
-    //         double residual = (wfm(i,k) - rsum(i) * csum(k) / asum) / sqrt(rsum(i) * csum(k) / asum);
-    //         //Rprintf("%d: %f2\\n",k,residual);
-    //         if (fabs(residual) > residual_floor) C(i,k) = residual;
-    //     }
-    // }
-    // //std::clock_t end = clock();
-    // //double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
-    // //Rcout<<"parallel elapsed_secs = "<<elapsed_secs<<std::endl;
-    // // Singular Value Decomposition of Chi-Sq Residuals
-    // const int svdk = NUMSVD;
-    // arma::mat U(N, svdk);
-    // arma::vec s(svdk);
-    // arma::mat V(K, svdk);
-    // arma::svds(U,s,V,C, svdk);
-    // Rcout<<"svd done"<<endl;
-
-    // Load initial values
-    for (std::size_t i=0; i < N; i++) theta(i) = pow(rsum(i)/asum, -0.5) ;//* U(i, 0);
+    if (svd_sparse == true){
+        //std::clock_t begin = clock();
+        for (std::size_t i=0; i < N; i++){
+            for (std::size_t k=0; k < K; k++){
+                double residual = (wfm(i,k) - rsum(i) * csum(k) / asum) / sqrt(rsum(i) * csum(k) / asum);
+                //Rprintf("%d: %f2\\n",k,residual);
+                if (fabs(residual) > residual_floor) C(i,k) = residual;
+            }
+        }
+        //std::clock_t end = clock();
+        //double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+        //Rcout<<"parallel elapsed_secs = "<<elapsed_secs<<std::endl;
+        // Singular Value Decomposition of Chi-Sq Residuals
+        const int svdk = NUMSVD;
+        arma::mat U(N, svdk);
+        arma::vec s(svdk);
+        arma::mat V(K, svdk);
+        arma::svds(U,s,V,C, svdk);
+        for (std::size_t i=0; i < N; i++) theta(i) = pow(rsum(i)/asum, -0.5) * U(i, 0);
+        Rcout<<"svd done"<<endl;
+    } else {
+        // Load initial values
+        for (std::size_t i=0; i < N; i++) theta(i) = pow(rsum(i)/asum, -0.5) ;//* U(i, 0);
+    }
     //for (int k=0; k < K; k++) beta(k) = 0; // pow(csum(k)/asum,-0.5) * V(k,0);
     beta.fill(0.0);
     alpha = log(rsum);
@@ -400,12 +403,12 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
         LogPos logPos2(alpha, psi, beta, theta, wfm, K);
         parallelReduce(0, N, logPos2);
         lp += logPos2.lp;
-         Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
+        // Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
         // END WHILE LOOP		
     } 
     
     // Fix Global Polarity  
-    Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
+    //Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
     // added the -1 because C counts from ZERO...  -- KB
     if (theta(dirvec(0)-1) > theta(dirvec(1)-1)) {
         beta = -beta;
