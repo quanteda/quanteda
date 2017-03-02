@@ -85,11 +85,3 @@ wordfishcpp_dense <- function(wfm, dir, priors, tol, disp, dispfloor, abs_err) {
     .Call('quanteda_wordfishcpp_dense', PACKAGE = 'quanteda', wfm, dir, priors, tol, disp, dispfloor, abs_err)
 }
 
-wordfish_cpp2 <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, residual_floor) {
-    .Call('quanteda_wordfish_cpp2', PACKAGE = 'quanteda', wfm, dirvec, priorvec, tolvec, disptype, dispmin, residual_floor)
-}
-
-wordfish_cpp <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, residual_floor) {
-    .Call('quanteda_wordfish_cpp', PACKAGE = 'quanteda', wfm, dirvec, priorvec, tolvec, disptype, dispmin, residual_floor)
-}
-
