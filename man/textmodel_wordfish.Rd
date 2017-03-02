@@ -110,5 +110,5 @@ Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model
   Analysis} 21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
 }
 \author{
-Benjamin Lauderdale and Kenneth Benoit
+Benjamin Lauderdale, Haiyan Wang, and Kenneth Benoit
 }

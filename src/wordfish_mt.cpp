@@ -2,7 +2,7 @@
 // includes from the plugin
 #include <RcppArmadillo.h>
 #include <RcppParallel.h>
-
+//#include <ctime>
 using namespace RcppParallel;
 using namespace Rcpp;
 using namespace arma;
@@ -39,7 +39,7 @@ struct LogPos : public Worker {
     
     void operator() (std::size_t begin, std::size_t end) {
         for (std::size_t i = begin; i < end; i++) {
-            float temp = lp;
+            double temp = lp;
             for (std::size_t k = 0; k < K; k++){
                 double loglambdaik = alpha(i) + psi(k) + beta(k) * theta(i);
                 temp += loglambdaik * wfm(i,k) - exp(loglambdaik);
@@ -293,28 +293,31 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
     phi.fill(1.0);
  
     // Construct Chi-Sq Residuals	
-    arma::sp_mat C(wfm); 
-    arma::colvec rsum(sum(C,1));
-    arma::rowvec csum(sum(C,0));
-    double asum = accu(C);		
-    for (std::size_t i=0; i < N; i++){
-        for (std::size_t k=0; k < K; k++){
-            double residual = (wfm(i,k) - rsum(i) * csum(k) / asum) / sqrt(rsum(i) * csum(k) / asum);	
-            //Rprintf("%d: %f2\\n",k,residual);
-            if (fabs(residual) > residual_floor) C(i,k) = residual;
-        }
-    }
-    
-    // Singular Value Decomposition of Chi-Sq Residuals
-    const int svdk = NUMSVD;
-    arma::mat U(N, svdk);
-    arma::vec s(svdk);
-    arma::mat V(K, svdk);
-    arma::svds(U,s,V,C, svdk);
-    Rcout<<"svd done"<<endl;
-    
+     arma::sp_mat C(N, K); 
+     arma::colvec rsum(sum(wfm,1));
+     arma::rowvec csum(sum(wfm,0));
+     double asum = accu(wfm);
+    //std::clock_t begin = clock();
+    // for (std::size_t i=0; i < N; i++){
+    //     for (std::size_t k=0; k < K; k++){
+    //         double residual = (wfm(i,k) - rsum(i) * csum(k) / asum) / sqrt(rsum(i) * csum(k) / asum);
+    //         //Rprintf("%d: %f2\\n",k,residual);
+    //         if (fabs(residual) > residual_floor) C(i,k) = residual;
+    //     }
+    // }
+    // //std::clock_t end = clock();
+    // //double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+    // //Rcout<<"parallel elapsed_secs = "<<elapsed_secs<<std::endl;
+    // // Singular Value Decomposition of Chi-Sq Residuals
+    // const int svdk = NUMSVD;
+    // arma::mat U(N, svdk);
+    // arma::vec s(svdk);
+    // arma::mat V(K, svdk);
+    // arma::svds(U,s,V,C, svdk);
+    // Rcout<<"svd done"<<endl;
+
     // Load initial values
-    for (std::size_t i=0; i < N; i++) theta(i) = pow(rsum(i)/asum, -0.5) * U(i, 0);
+    for (std::size_t i=0; i < N; i++) theta(i) = pow(rsum(i)/asum, -0.5) ;//* U(i, 0);
     //for (int k=0; k < K; k++) beta(k) = 0; // pow(csum(k)/asum,-0.5) * V(k,0);
     beta.fill(0.0);
     alpha = log(rsum);
@@ -357,7 +360,7 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
         
         psi = as<arma::rowvec>(psi_N);
         beta = as<arma::rowvec>(beta_N);
-
+        
         // UPDATE DOCUMENT PARAMETERS
         NumericVector alpha_N(alpha.begin(), alpha.end());
         NumericVector theta_N(theta.begin(), theta.end());
@@ -367,6 +370,7 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
         
         alpha = as<arma::colvec>(alpha_N);
         theta = as<arma::colvec>(theta_N);
+        
         
         // UPDATE DISPERSION PARAMETERS	  
         
@@ -390,19 +394,18 @@ Rcpp::List wordfish_cpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector&
         
         // CHECK LOG-POSTERIOR FOR CONVERGENCE
         lastlp = lp;
-        lp = -1.0*(accu(0.5 * ((alpha % alpha) * priorprecalpha)) + accu(0.5 * ((psi % psi) * priorprecpsi)) 
+        lp = -1.0*(accu(0.5 * ((alpha % alpha) * priorprecalpha)) + accu(0.5 * ((psi % psi) * priorprecpsi))
                        + accu(0.5 * ((beta % beta) * priorprecbeta)) + accu(0.5 * ((theta % theta) * priorprectheta)));
-        
+
         LogPos logPos2(alpha, psi, beta, theta, wfm, K);
         parallelReduce(0, N, logPos2);
         lp += logPos2.lp;
-        // Rprintf("%d: %f2\\n",outeriter,lp);
-        
+         Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
         // END WHILE LOOP		
     } 
     
     // Fix Global Polarity  
-    
+    Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
     // added the -1 because C counts from ZERO...  -- KB
     if (theta(dirvec(0)-1) > theta(dirvec(1)-1)) {
         beta = -beta;
