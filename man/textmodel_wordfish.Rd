@@ -7,7 +7,8 @@
 textmodel_wordfish(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
   tol = c(1e-06, 1e-08), dispersion = c("poisson", "quasipoisson"),
   dispersion_level = c("feature", "overall"), dispersion_floor = 0,
-  residual_floor = 0, version = c("serial", "parallel"))
+  svd_sparse = FALSE, residual_floor = 0, version = c("serial",
+  "parallel"))
 }
 \arguments{
 \item{data}{the dfm on which the model will be fit}
@@ -38,6 +39,8 @@ in the quasi-Poisson model.  Used to minimize the distorting effect of
 terms with rare term or document frequencies that appear to be severely 
 underdispersed.  Default is 0, but this only applies if \code{dispersion = 
 "quasipoisson"}.}
+
+\item{svd_sparse}{enables the using of svd() for setting the starting value of theta.}
 
 \item{residual_floor}{defines the minimal value of the residuals, which are
 used to construct the starting parameters from an iterative restarted

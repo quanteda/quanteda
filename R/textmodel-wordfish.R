@@ -56,6 +56,7 @@ setClass("textmodel_wordfish_predicted",
 #'   terms with rare term or document frequencies that appear to be severely 
 #'   underdispersed.  Default is 0, but this only applies if \code{dispersion = 
 #'   "quasipoisson"}.
+#' @param svd_sparse enables the using of svd() for setting the starting value of theta.
 #' @param residual_floor defines the minimal value of the residuals, which are
 #'   used to construct the starting parameters from an iterative restarted
 #'   Lanczos routine. Raising the values will save the memory space. Only
@@ -119,6 +120,7 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
                                dispersion = c("poisson", "quasipoisson"), 
                                dispersion_level = c("feature", "overall"),
                                dispersion_floor = 0,
+                               svd_sparse = FALSE,
                                residual_floor = 0,
                                version = c("serial", "parallel")) {
     
@@ -170,7 +172,7 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
     if (version == "serial")
         wfresult <- wordfishcpp(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor)
     else
-        wfresult <- wordfish_cpp(data, as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, residual_floor)
+        wfresult <- wordfish_cpp(data, as.integer(dir), 1/(priors^2), tol, disp, dispersion_floor, svd_sparse, residual_floor)
     
     # NOTE: psi is a 1 x nfeature matrix, not a numeric vector
     #       alpha is a ndoc x 1 matrix, not a numeric vector
