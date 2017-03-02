@@ -107,7 +107,7 @@ How to Install
 
 3.  Additional recommended packages:
 
-    The following packages work well with **quanteda** and we recommend that you also install them:
+    The following packages work well with or extend **quanteda** and we recommend that you also install them:
 
     -   [**readtext**](https://github.com/kbenoit/readtext): For reading text data into R.
 
@@ -123,6 +123,8 @@ How to Install
 
     -   [**spacyr**](https://github.com/kbenoit/spacyr): NLP using the [spaCy](http://spacy.io) library.
 
+    -   [**LIWCalike**](https://github.com/kbenoit/LIWCalike): An R implementation of the [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) approach to text analysis.
+
 Getting Started
 ---------------
 
@@ -133,7 +135,7 @@ Demonstration
 
 ``` r
 library(quanteda)
-## quanteda version 0.9.9.25
+## quanteda version 0.9.9.29
 ## Using 7 of 8 cores for parallel computing
 ## 
 ## Attaching package: 'quanteda'
@@ -166,7 +168,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Sat Feb 18 10:33:40 2017
+## Created: Thu Mar  2 16:54:10 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
