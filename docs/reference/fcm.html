@@ -225,16 +225,17 @@ sentences</dd>
 #&gt;        c . . 0 2 1 1
 #&gt;        e . . . 0 1 1
 #&gt;        f . . . . 0 1
-#&gt;        g . . . . . 0</div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txts</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"boolean"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
+#&gt;        g . . . . . 0</div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txts</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt; 6 x 6 sparse Matrix of class &quot;fcm&quot;
 #&gt;         features
 #&gt; features a b c e f g
-#&gt;        a 2 1 2 2 . .
-#&gt;        b . 1 1 . . .
+#&gt;        a 4 3 3 2 . .
+#&gt;        b . 1 2 . . .
 #&gt;        c . . . 2 1 .
 #&gt;        e . . . . 1 1
 #&gt;        f . . . . . 1
 #&gt;        g . . . . . .</div><div class='input'>
+
 <span class='co'># from tokens</span>
 <span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"The quick brown fox jumped over the lazy dog."</span>,
          <span class='st'>"The dog jumped and ate the fox."</span>)

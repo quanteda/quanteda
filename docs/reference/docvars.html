@@ -81,7 +81,8 @@
     </div>
 
     
-    <p>Get or set variables for the documents in a corpus</p>
+    <p>Get or set variables associated with a document in a <a href='corpus.html'>corpus</a>, or get these
+variables from a <a href='tokens.html'>tokens</a> object.</p>
     
 
     <pre><span class='fu'>docvars</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
@@ -91,7 +92,7 @@
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>corpus whose document-level variables will be read or set</dd>
+      <dd><a href='corpus.html'>corpus</a> or <a href='tokens.html'>tokens</a> whose document-level variables will be read or set</dd>
       <dt>field</dt>
       <dd>string containing the document-level variable name</dd>
       <dt>value</dt>
@@ -100,25 +101,36 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>docvars</code> returns a data.frame of the document-level variables</p>
+    <p><code>docvars</code> returns a data.frame of the document-level variables, dropping the second
+dimension to form a vector if a single docvar is returned.</p>
     <p><code>docvars&lt;-</code> assigns <code>value</code> to the named <code>field</code></p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>Another way to access and set docvars is through indexing of the corpus <code>j</code> element, 
-such as <code>data_corpus_irishbudget2010[, c(&quot;foren&quot;, &quot;name&quot;]</code> or for a single docvar, <code>data_corpus_irishbudget2010[[&quot;name&quot;]]</code>.  The latter
-also permits assignment, including the easy creation of new document varibles, e.g. <code>data_corpus_irishbudget2010[[&quot;newvar&quot;]] &lt;- 1:ndoc(data_corpus_irishbudget2010)</code>.
-See <code><a href='corpus-class.html'>[.corpus</a></code> for details.</p>
+    <p>Another way to access and set docvars is through indexing of the corpus
+  <code>j</code> element, such as <code>data_corpus_irishbudget2010[, c(&quot;foren&quot;, 
+  &quot;name&quot;]</code> or for a single docvar, 
+  <code>data_corpus_irishbudget2010[[&quot;name&quot;]]</code>.  The latter also permits 
+  assignment, including the easy creation of new document varibles, e.g. 
+  <code>data_corpus_irishbudget2010[[&quot;newvar&quot;]] &lt;- 
+  1:ndoc(data_corpus_irishbudget2010)</code>. See <code><a href='corpus-class.html'>[.corpus</a></code> for 
+  details.</p>
+    <p>Assigning docvars to a <a href='tokens.html'>tokens</a> object is not supported.  (You should
+  only be manipulating these variables at the corpus level.)</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>head</span>(<span class='fu'>docvars</span>(<span class='no'>data_corpus_inaugural</span>))</div><div class='output co'>#&gt;                 Year  President FirstName
+    <pre class="examples"><div class='input'><span class='co'># retrieving docvars from a corpus</span>
+<span class='fu'>head</span>(<span class='fu'>docvars</span>(<span class='no'>data_corpus_inaugural</span>))</div><div class='output co'>#&gt;                 Year  President FirstName
 #&gt; 1789-Washington 1789 Washington    George
 #&gt; 1793-Washington 1793 Washington    George
 #&gt; 1797-Adams      1797      Adams      John
 #&gt; 1801-Jefferson  1801  Jefferson    Thomas
 #&gt; 1805-Jefferson  1805  Jefferson    Thomas
-#&gt; 1809-Madison    1809    Madison     James</div><div class='input'><span class='fu'>docvars</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"President"</span>) <span class='kw'>&lt;-</span> <span class='fu'>paste</span>(<span class='st'>"prez"</span>, <span class='fl'>1</span>:<span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='no'>data_corpus_inaugural</span>), <span class='kw'>sep</span><span class='kw'>=</span><span class='st'>""</span>)
+#&gt; 1809-Madison    1809    Madison     James</div><div class='input'><span class='fu'>tail</span>(<span class='fu'>docvars</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"President"</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;  [1] &quot;Reagan&quot;  &quot;Reagan&quot;  &quot;Bush&quot;    &quot;Clinton&quot; &quot;Clinton&quot; &quot;Bush&quot;    &quot;Bush&quot;   
+#&gt;  [8] &quot;Obama&quot;   &quot;Obama&quot;   &quot;Trump&quot;  </div><div class='input'>
+<span class='co'># assigning document variables to a corpus</span>
+<span class='fu'>docvars</span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"President"</span>) <span class='kw'>&lt;-</span> <span class='fu'>paste</span>(<span class='st'>"prez"</span>, <span class='fl'>1</span>:<span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='no'>data_corpus_inaugural</span>), <span class='kw'>sep</span><span class='kw'>=</span><span class='st'>""</span>)
 <span class='fu'>head</span>(<span class='fu'>docvars</span>(<span class='no'>data_corpus_inaugural</span>))</div><div class='output co'>#&gt;                 Year President FirstName
 #&gt; 1789-Washington 1789     prez1    George
 #&gt; 1793-Washington 1793     prez2    George
@@ -134,7 +146,8 @@ See <code><a href='corpus-class.html'>[.corpus</a></code> for details.</p>
 #&gt; 1797-Adams      1797     prez3      John   prezTwo3
 #&gt; 1801-Jefferson  1801     prez4    Thomas   prezTwo4
 #&gt; 1805-Jefferson  1805     prez5    Thomas   prezTwo5
-#&gt; 1809-Madison    1809     prez6     James   prezTwo6</div></pre>
+#&gt; 1809-Madison    1809     prez6     James   prezTwo6</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -1,5 +1,5 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-### [![quanteda: quantitative analysis of textual data](https://rawgit.com/kbenoit/quanteda/master/images/quanteda_logo.svg)](https://kbenoit.github.io/quanteda/)
+### [![quanteda: quantitative analysis of textual data](https://rawgit.com/kbenoit/quanteda/master/images/quanteda_logo.svg)](http://quanteda.io)
 
 [![CRAN Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda) [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda) [![Travis-CI Build Status](https://travis-ci.org/kbenoit/quanteda.svg?branch=master)](https://travis-ci.org/kbenoit/quanteda) [![Build status](https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true)](https://ci.appveyor.com/project/kbenoit/quanteda/branch/master) [![codecov.io](https://codecov.io/github/kbenoit/quanteda/coverage.svg?branch=master)](https://codecov.io/gh/kbenoit/quanteda/branch/master)
 
@@ -35,7 +35,7 @@ About the package
 An R package for managing and analyzing text, created by [Kenneth Benoit](kbenoit@lse.ac.uk) in collaboration with a team of core [contributors](https://github.com/kbenoit/quanteda/graphs/contributors): [Kohei Watanabe](https://github.com/koheiw), [Paul Nulty](https://github.com/pnulty), [Adam Obeng](https://github.com/adamobeng), [Haiyan Wang](https://github.com/HaiyanLW), [Ben Lauderdale](https://github.com/lauderdale), and [Will Lowe](https://github.com/conjugateprior).
 Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
-For more details, see the [**package website**](https://kbenoit.github.io/quanteda/).
+For more details, see the [**package website**](http://quanteda.io).
 
 ### Leave feedback
 
@@ -107,7 +107,7 @@ How to Install
 
 3.  Additional recommended packages:
 
-    The following packages work well with **quanteda** and we recommend that you also install them:
+    The following packages work well with or extend **quanteda** and we recommend that you also install them:
 
     -   [**readtext**](https://github.com/kbenoit/readtext): For reading text data into R.
 
@@ -123,17 +123,19 @@ How to Install
 
     -   [**spacyr**](https://github.com/kbenoit/spacyr): NLP using the [spaCy](http://spacy.io) library.
 
+    -   [**LIWCalike**](https://github.com/kbenoit/LIWCalike): An R implementation of the [Linguistic Inquiry and Word Count](http://liwc.wpengine.com) approach to text analysis.
+
 Getting Started
 ---------------
 
-See the [package website](http://kbenoit.github.io/quanteda), which includes the [Getting Started Vignette](https://kbenoit.github.io/quanteda/articles/quickstart.html).
+See the [package website](http://quanteda.io), which includes the [Getting Started Vignette](http://quanteda.io/articles/quickstart.html).
 
 Demonstration
 -------------
 
 ``` r
 library(quanteda)
-## quanteda version 0.9.9.25
+## quanteda version 0.9.9.29
 ## Using 7 of 8 cores for parallel computing
 ## 
 ## Attaching package: 'quanteda'
@@ -166,7 +168,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Sat Feb 18 10:33:40 2017
+## Created: Fri Mar  3 14:34:51 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context

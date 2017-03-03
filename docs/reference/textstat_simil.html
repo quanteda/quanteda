@@ -91,7 +91,10 @@
 
 <span class='fu'>textstat_simil</span>(<span class='no'>x</span>, <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'>character</span>(<span class='fl'>0</span>), <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"documents"</span>, <span class='st'>"features"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"correlation"</span>,
-  <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diag</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>diag</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='co'># S3 method for simil</span>
+<span class='fu'>as.matrix</span>(<span class='no'>x</span>, <span class='kw'>Diag</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -116,6 +119,10 @@ matrix is recorded</dd>
       <dd>whether the diagonal of the distance matrix should be recorded</dd>
       <dt>p</dt>
       <dd>The power of the Minkowski distance.</dd>
+      <dt>Diag</dt>
+      <dd>sets the value for matrix diagonal</dd>
+      <dt>...</dt>
+      <dd>unused</dd>
     </dl>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -261,6 +268,29 @@ matrix is recorded</dd>
 #&gt;    2001-Bush    2005-Bush   2017-Trump 
 #&gt;    0.9371852    0.9297655    0.9149626 
 #&gt; </div><div class='input'>
+<span class='co'># output as a matrix</span>
+<span class='fu'>as.matrix</span>(<span class='no'>tmp</span>)</div><div class='output co'>#&gt;              1981-Reagan 1985-Reagan 1989-Bush 1993-Clinton 1997-Clinton
+#&gt; 1981-Reagan    1.0000000   0.9685603 0.9599456    0.9391462    0.9387178
+#&gt; 1985-Reagan    0.9685603   1.0000000 0.9537706    0.9452855    0.9469393
+#&gt; 1989-Bush      0.9599456   0.9537706 1.0000000    0.9358521    0.9382240
+#&gt; 1993-Clinton   0.9391462   0.9452855 0.9358521    1.0000000    0.9242089
+#&gt; 1997-Clinton   0.9387178   0.9469393 0.9382240    0.9242089    1.0000000
+#&gt; 2001-Bush      0.9499111   0.9371852 0.9544049    0.9259232    0.9322032
+#&gt; 2005-Bush      0.9347397   0.9297655 0.9349675    0.9142590    0.9078760
+#&gt; 2009-Obama     0.9388097   0.9422610 0.9407946    0.9000981    0.9383421
+#&gt; 2013-Obama     0.9389675   0.9409749 0.9371089    0.9118611    0.9388301
+#&gt; 2017-Trump     0.9290244   0.9149626 0.9311455    0.8945840    0.9211435
+#&gt;              2001-Bush 2005-Bush 2009-Obama 2013-Obama 2017-Trump
+#&gt; 1981-Reagan  0.9499111 0.9347397  0.9388097  0.9389675  0.9290244
+#&gt; 1985-Reagan  0.9371852 0.9297655  0.9422610  0.9409749  0.9149626
+#&gt; 1989-Bush    0.9544049 0.9349675  0.9407946  0.9371089  0.9311455
+#&gt; 1993-Clinton 0.9259232 0.9142590  0.9000981  0.9118611  0.8945840
+#&gt; 1997-Clinton 0.9322032 0.9078760  0.9383421  0.9388301  0.9211435
+#&gt; 2001-Bush    1.0000000 0.9437618  0.9240847  0.9364082  0.9352192
+#&gt; 2005-Bush    0.9437618 1.0000000  0.8977024  0.9195773  0.9198008
+#&gt; 2009-Obama   0.9240847 0.8977024  1.0000000  0.9458660  0.9119907
+#&gt; 2013-Obama   0.9364082 0.9195773  0.9458660  1.0000000  0.9164345
+#&gt; 2017-Trump   0.9352192 0.9198008  0.9119907  0.9164345  1.0000000</div><div class='input'>
 <span class='co'># for specific comparisons</span>
 <span class='fu'>textstat_simil</span>(<span class='no'>presDfm</span>, <span class='st'>"1985-Reagan"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: non-square matrix</span></div><div class='output co'>#&gt;              1985-Reagan 1981-Reagan 1989-Bush 1993-Clinton
 #&gt; 1981-Reagan    0.9685603                                   
@@ -409,7 +439,7 @@ matrix is recorded</dd>
 
     <h2>Author</h2>
     
-Haiyan Wang
+Kenneth Benoit, Haiyan Wang
 
   </div>
 </div>

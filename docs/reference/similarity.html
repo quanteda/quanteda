@@ -143,7 +143,9 @@ reasons.  If you want to compute similarity on a &quot;normalized&quot; dfm obje
                <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))
 
 <span class='co'># compute some document similarities</span>
-(<span class='no'>tmp</span> <span class='kw'>&lt;-</span> <span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt; similarity Matrix:
+(<span class='no'>tmp</span> <span class='kw'>&lt;-</span> <span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: &#39;similarity&#39; is deprecated.</span>
+#&gt; <span class='warning'>Use &#39;textstat_simil&#39; instead.</span>
+#&gt; <span class='warning'>See help(&quot;Deprecated&quot;)</span></div><div class='output co'>#&gt; similarity Matrix:
 #&gt; $`1981-Reagan`
 #&gt;  1985-Reagan    1989-Bush    2001-Bush 1993-Clinton   2013-Obama   2009-Obama 
 #&gt;    0.9685603    0.9599456    0.9499111    0.9391462    0.9389675    0.9388097 
@@ -226,11 +228,15 @@ reasons.  If you want to compute similarity on a &quot;normalized&quot; dfm obje
 #&gt; 1997-Clinton 0.9322032 0.9078760  0.9383421  0.9388301  0.9211435
 #&gt; 2005-Bush    0.9437618 1.0000000  0.8977024  0.9195773  0.9198008
 #&gt; 2017-Trump   0.9352192 0.9198008  0.9119907  0.9164345  1.0000000</div><div class='input'><span class='co'># for specific comparisons</span>
-<span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='st'>"1985-Reagan"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; similarity Matrix:
+<span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='st'>"1985-Reagan"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: &#39;similarity&#39; is deprecated.</span>
+#&gt; <span class='warning'>Use &#39;textstat_simil&#39; instead.</span>
+#&gt; <span class='warning'>See help(&quot;Deprecated&quot;)</span></div><div class='output co'>#&gt; similarity Matrix:
 #&gt; $`1985-Reagan`
 #&gt;  1981-Reagan    1989-Bush 1997-Clinton 1993-Clinton   2009-Obama 
 #&gt;    0.9685603    0.9537706    0.9469393    0.9452855    0.9422610 
-#&gt; </div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; similarity Matrix:
+#&gt; </div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: &#39;similarity&#39; is deprecated.</span>
+#&gt; <span class='warning'>Use &#39;textstat_simil&#39; instead.</span>
+#&gt; <span class='warning'>See help(&quot;Deprecated&quot;)</span></div><div class='output co'>#&gt; similarity Matrix:
 #&gt; $`2009-Obama`
 #&gt;   2013-Obama  1985-Reagan    1989-Bush  1981-Reagan 1997-Clinton 
 #&gt;    0.9458660    0.9422610    0.9407946    0.9388097    0.9383421 
@@ -238,7 +244,9 @@ reasons.  If you want to compute similarity on a &quot;normalized&quot; dfm obje
 #&gt; $`2013-Obama`
 #&gt;   2009-Obama  1985-Reagan  1981-Reagan 1997-Clinton    1989-Bush 
 #&gt;    0.9458660    0.9409749    0.9389675    0.9388301    0.9371089 
-#&gt; </div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; similarity Matrix:
+#&gt; </div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: &#39;similarity&#39; is deprecated.</span>
+#&gt; <span class='warning'>Use &#39;textstat_simil&#39; instead.</span>
+#&gt; <span class='warning'>See help(&quot;Deprecated&quot;)</span></div><div class='output co'>#&gt; similarity Matrix:
 #&gt; $`2009-Obama`
 #&gt;   2013-Obama  1985-Reagan    1989-Bush  1981-Reagan 1997-Clinton    2001-Bush 
 #&gt;    0.9458660    0.9422610    0.9407946    0.9388097    0.9383421    0.9240847 
@@ -250,7 +258,9 @@ reasons.  If you want to compute similarity on a &quot;normalized&quot; dfm obje
 #&gt;    0.9458660    0.9409749    0.9389675    0.9388301    0.9371089    0.9364082 
 #&gt;    2005-Bush   2017-Trump 1993-Clinton 
 #&gt;    0.9195773    0.9164345    0.9118611 
-#&gt; </div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>)</div><div class='output co'>#&gt; similarity Matrix:
+#&gt; </div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"2009-Obama"</span> , <span class='st'>"2013-Obama"</span>), <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: &#39;similarity&#39; is deprecated.</span>
+#&gt; <span class='warning'>Use &#39;textstat_simil&#39; instead.</span>
+#&gt; <span class='warning'>See help(&quot;Deprecated&quot;)</span></div><div class='output co'>#&gt; similarity Matrix:
 #&gt; $`2009-Obama`
 #&gt;   2013-Obama  1985-Reagan    1989-Bush  1981-Reagan 1997-Clinton    2001-Bush 
 #&gt;    0.9473229    0.9436339    0.9416945    0.9399460    0.9399306    0.9255036 
@@ -262,7 +272,9 @@ reasons.  If you want to compute similarity on a &quot;normalized&quot; dfm obje
 #&gt;    0.9473229    0.9422001    0.9403480    0.9397146    0.9376157    0.9371368 
 #&gt;    2005-Bush   2017-Trump 1993-Clinton 
 #&gt;    0.9217499    0.9177145    0.9125611 
-#&gt; </div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='st'>"2005-Bush"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"eJaccard"</span>, <span class='kw'>sorted</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; similarity Matrix:
+#&gt; </div><div class='input'><span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='st'>"2005-Bush"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"documents"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"eJaccard"</span>, <span class='kw'>sorted</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: &#39;similarity&#39; is deprecated.</span>
+#&gt; <span class='warning'>Use &#39;textstat_simil&#39; instead.</span>
+#&gt; <span class='warning'>See help(&quot;Deprecated&quot;)</span></div><div class='output co'>#&gt; similarity Matrix:
 #&gt; $`2005-Bush`
 #&gt;  1981-Reagan  1985-Reagan    1989-Bush 1993-Clinton 1997-Clinton    2001-Bush 
 #&gt;    0.8094123    0.7992198    0.8102824    0.8441215    0.8252637    0.8887129 
@@ -270,7 +282,9 @@ reasons.  If you want to compute similarity on a &quot;normalized&quot; dfm obje
 #&gt;    0.8051778    0.8416028    0.8356055 
 #&gt; </div><div class='input'>
 <span class='co'># compute some term similarities</span>
-<span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"fair"</span>, <span class='st'>"health"</span>, <span class='st'>"terror"</span>), <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>, <span class='fl'>20</span>)</div><div class='output co'>#&gt; similarity Matrix:
+<span class='fu'>similarity</span>(<span class='no'>presDfm</span>, <span class='fu'>c</span>(<span class='st'>"fair"</span>, <span class='st'>"health"</span>, <span class='st'>"terror"</span>), <span class='kw'>method</span><span class='kw'>=</span><span class='st'>"cosine"</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>, <span class='fl'>20</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: &#39;similarity&#39; is deprecated.</span>
+#&gt; <span class='warning'>Use &#39;textstat_simil&#39; instead.</span>
+#&gt; <span class='warning'>See help(&quot;Deprecated&quot;)</span></div><div class='output co'>#&gt; similarity Matrix:
 #&gt; $fair
 #&gt;   economi     begin jefferson    author     faith      call   struggl      best 
 #&gt; 0.9080252 0.9075951 0.8981462 0.8944272 0.8866586 0.8736360 0.8451543 0.8366600 
@@ -294,7 +308,8 @@ reasons.  If you want to compute similarity on a &quot;normalized&quot; dfm obje
 #&gt; 0.8660254 0.8642416 0.8641586 0.8432740 0.8432740 0.8432740 0.8432740 0.8432740 
 #&gt;      true   without      long    advanc 
 #&gt; 0.8432740 0.8432740 0.8365019 0.8340577 
-#&gt; </div></pre>
+#&gt; </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
