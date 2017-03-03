@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   fig.path = "images/"
 )
 ```
-###[![quanteda: quantitative analysis of textual data](https://rawgit.com/kbenoit/quanteda/master/images/quanteda_logo.svg)](https://kbenoit.github.io/quanteda/)
+###[![quanteda: quantitative analysis of textual data](https://rawgit.com/kbenoit/quanteda/master/images/quanteda_logo.svg)](http://quanteda.io)
 
 [![CRAN Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
 [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda)
@@ -63,7 +63,7 @@ and [Will Lowe](https://github.com/conjugateprior).
 Supported by the European Research Council grant ERC-2011-StG 
 283794-QUANTESS.
 
-For more details, see the [**package website**](https://kbenoit.github.io/quanteda/).
+For more details, see the [**package website**](http://quanteda.io).
 
 ### Leave feedback
 
@@ -210,8 +210,8 @@ downstream objects.
         
 ## Getting Started
 
-See the [package website](http://kbenoit.github.io/quanteda), which includes the [Getting Started 
-Vignette](https://kbenoit.github.io/quanteda/articles/quickstart.html).
+See the [package website](http://quanteda.io), which includes the [Getting Started 
+Vignette](http://quanteda.io/articles/quickstart.html).
 
 
 ## Demonstration

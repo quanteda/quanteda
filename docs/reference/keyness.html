@@ -104,7 +104,7 @@ tables, no correction if <code>&quot;none&quot;</code></dd>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>named numeric vector containing the chi2 value for each feature</p>
+    <p>a data.frame of chi2 and p-values with rows named for each feature</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -113,7 +113,7 @@ objects.</p>
     <p><code>keyness_chi2_stats</code> uses element-by-element application of
 <a href='http://www.rdocumentation.org/packages/stats/topics/chisq.test'>chisq.test</a>.</p>
     <p><code>keyness_exact</code> computes Fisher&#39;s exact using element-by-element 
-application of <a href='http://www.rdocumentation.org/packages/stats/topics/fisher.test'>fisher.test</a>.</p>
+application of <a href='http://www.rdocumentation.org/packages/stats/topics/fisher.test'>fisher.test</a>, returning the odds ratio.</p>
     <p><code>keyness_lr</code> computes the \(G^2\) likelihood ratio statistic
   using vectorized computation</p>
     
@@ -126,17 +126,39 @@ application of <a href='http://www.rdocumentation.org/packages/stats/topics/fish
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>mydfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"a a a b b c c c c c c d e f g h h"</span>,
                <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"a a b c c d d d d e f h"</span>))
-<span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_chi2_dt</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;           a           b           c           d           e           f 
-#&gt;  0.18510008  0.10251697  0.46729838 -2.04024714 -0.23758624 -0.23758624 
-#&gt;           g           h 
-#&gt;  0.03173144  0.10251697 </div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_chi2_stats</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;             a             b             c             d             e 
-#&gt;  1.626059e-31  6.775245e-32  4.672984e-01 -2.040247e+00 -2.242191e-32 
-#&gt;             f             g             h 
-#&gt; -2.242191e-32  2.207170e-31  6.775245e-32 </div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_exact</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;         a         b         c         d         e         f         g         h 
-#&gt; 1.0689130 1.4480473 2.6375984 0.1347360 0.6966446 0.6966446       Inf 1.4480473 </div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_lr</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;            a            b            c            d            e            f 
-#&gt;  0.004751409  0.091241894  1.274238010 -3.779440533 -0.064900473 -0.064900473 
-#&gt;            g            h 
-#&gt;          NaN  0.091241894 </div></pre>
+<span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_chi2_dt</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;          chi2         p
+#&gt; a  0.18510008 0.6670265
+#&gt; b  0.10251697 0.7488298
+#&gt; c  0.46729838 0.4942327
+#&gt; d -2.04024714 0.1531848
+#&gt; e -0.23758624 0.6259549
+#&gt; f -0.23758624 0.6259549
+#&gt; g  0.03173144 0.8586184
+#&gt; h  0.10251697 0.7488298</div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_chi2_stats</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;            chi2         p
+#&gt; a  1.626059e-31         1
+#&gt; b  6.775245e-32         1
+#&gt; c     0.4672984 0.4942327
+#&gt; d     -2.040247 0.1531848
+#&gt; e -2.242191e-32         1
+#&gt; f -2.242191e-32         1
+#&gt; g   2.20717e-31         1
+#&gt; h  6.775245e-32         1</div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_exact</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;          or         p
+#&gt; a 1.0689130 1.0000000
+#&gt; b 1.4480473 1.0000000
+#&gt; c 2.6375984 0.4083471
+#&gt; d 0.1347360 0.1296366
+#&gt; e 0.6966446 1.0000000
+#&gt; f 0.6966446 1.0000000
+#&gt; g       Inf 1.0000000
+#&gt; h 1.4480473 1.0000000</div><div class='input'><span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>keyness_lr</span>(<span class='no'>mydfm</span>)</div><div class='output co'>#&gt;              G          p
+#&gt; a  0.004751409 0.94504497
+#&gt; b  0.091241894 0.76260424
+#&gt; c  1.274238010 0.25897314
+#&gt; d -3.779440533 0.05188601
+#&gt; e -0.064900473 0.79891178
+#&gt; f -0.064900473 0.79891178
+#&gt; g          NaN        NaN
+#&gt; h  0.091241894 0.76260424</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -104,12 +104,17 @@ c(..., recursive = FALSE)
 [[(x, i, ...)
 
 # S3 method for corpus
-[[(x, i) <- value</pre>
+[[(x, i) <- value
+
+# S3 method for corpus
+str(object, ...)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
       <dd>a corpus object</dd>
+      <dt>...</dt>
+      <dd>not used</dd>
       <dt>c1</dt>
       <dd>corpus one to be added</dd>
       <dt>c2</dt>
@@ -126,6 +131,8 @@ variable; if <code>FALSE</code>, return it as a single-column data.frame.  See
 <code>drop</code> for further details.</dd>
       <dt>value</dt>
       <dd>a vector that will form a new docvar</dd>
+      <dt>object</dt>
+      <dd>the corpus about which you want structural information</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -173,7 +180,7 @@ variable; if <code>FALSE</code>, return it as a single-column data.frame.  See
 #&gt;       2013-Obama   814   2335        88 2013     Obama    Barack
 #&gt; 
 #&gt; Source:  Concatenation by c.corpus()
-#&gt; Created: Wed Jan 25 17:23:22 2017
+#&gt; Created: Fri Mar  3 14:34:57 2017
 #&gt; Notes:   NULL NULL
 #&gt; </div><div class='input'>
 <span class='co'># ways to index corpus elements</span>
