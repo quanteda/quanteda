@@ -10,17 +10,17 @@
 #' @param tolower convert all tokens to lowercase
 #' @param stem if \code{TRUE}, stem words
 #' @param remove a character vector of user-supplied features to ignore, such as
-#'   "stop words".  To access one possible list (from any list you wish), use
-#'   \code{\link{stopwords}()}.  The pattern matching type will be set by
-#'   \code{valuetype}.  For behaviour of \code{remove} with \code{ngrams > 1},
+#'   "stop words".  To access one possible list (from any list you wish), use 
+#'   \code{\link{stopwords}()}.  The pattern matching type will be set by 
+#'   \code{valuetype}.  For behaviour of \code{remove} with \code{ngrams > 1}, 
 #'   see Details.
-#' @param select a user supplied regular expression defining which features to
+#' @param select a user supplied regular expression defining which features to 
 #'   keep, while excluding all others.  This can be used in lieu of a dictionary
-#'   if there are only specific features that a user wishes to keep. To extract
-#'   only Twitter usernames, for example, set \code{select = "@@*"} and make
-#'   sure that \code{removeTwitter = FALSE} as an additional argument passed to
+#'   if there are only specific features that a user wishes to keep. To extract 
+#'   only Twitter usernames, for example, set \code{select = "@@*"} and make 
+#'   sure that \code{removeTwitter = FALSE} as an additional argument passed to 
 #'   \link{tokenize}.  Note: \code{select = "^@@\\\w+\\\b"} would be the regular
-#'   expression version of this matching pattern.  The pattern matching type
+#'   expression version of this matching pattern.  The pattern matching type 
 #'   will be set by \code{valuetype}.
 #' @param dictionary A list of character vector dictionary entries, including 
 #'   regular expressions (see examples)
@@ -31,20 +31,19 @@
 #'   that this was not a type found in the text, but rather the label of a 
 #'   thesaurus key.  For more fine-grained control over this and other aspects 
 #'   of converting features into dictionary/thesaurus keys from pattern matches 
-#'   to values, you can use \code{\link{dfm_lookup}} after creating the 
-#'   dfm.
+#'   to values, you can use \code{\link{dfm_lookup}} after creating the dfm.
 #' @inheritParams valuetype
 #' @param groups character vector containing the names of document variables for
 #'   aggregating documents; only applies when calling dfm on a corpus object. 
-#'   When \code{x} is a \link{dfm} object, \code{groups} provides a convenient
-#'   and fast method of combining and refactoring the documents of the dfm
+#'   When \code{x} is a \link{dfm} object, \code{groups} provides a convenient 
+#'   and fast method of combining and refactoring the documents of the dfm 
 #'   according to the groups.
 #' @param verbose display messages if \code{TRUE}
-#' @param ... additional arguments passed to \link{tokens}, for character and
+#' @param ... additional arguments passed to \link{tokens}, for character and 
 #'   corpus
-#' @details The default behavior for \code{remove}/\code{select} when
-#'   constructing ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to
-#'   remove/select any ngram constructed from a matching feature.  If you wish
+#' @details The default behavior for \code{remove}/\code{select} when 
+#'   constructing ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to 
+#'   remove/select any ngram constructed from a matching feature.  If you wish 
 #'   to remove these before constructing ngrams, you will need to first tokenize
 #'   the texts with ngrams, then remove the features to be ignored, and then 
 #'   construct the dfm using this modified tokenization object.  See the code 
@@ -131,7 +130,8 @@ dfm <- function(x,
                 dictionary = NULL,
                 valuetype = c("glob", "regex", "fixed"), 
                 groups = NULL, 
-                verbose = FALSE, ...) {
+                verbose = FALSE, 
+                ...) {
 
     UseMethod("dfm")
 }
@@ -149,7 +149,8 @@ dfm.character <- function(x,
                 dictionary = NULL,
                 valuetype = c("glob", "regex", "fixed"), 
                 groups = NULL, 
-                verbose = FALSE, ...) {
+                verbose = FALSE, 
+                ...) {
     startTime <- proc.time()
     valuetype <- match.arg(valuetype)
     
@@ -182,16 +183,23 @@ dfm.corpus <- function(x, tolower = TRUE,
                        valuetype = c("glob", "regex", "fixed"), 
                        groups = NULL, 
                        verbose = FALSE, ...) {
-    if (verbose) {
+    if (verbose)
         catm("Creating a dfm from a corpus ...\n")
-        if (!is.null(groups)) {
-            groupsLab <- ifelse(is.factor(groups), deparse(substitute(groups)), groups)
-            catm("   ... grouping texts by variable", 
-                 ifelse(length(groupsLab) == 1, "", "s"), ": ", 
-                 paste(groupsLab, collapse=", "), "\n", sep="")
-        }
+    
+    if (!is.null(groups)) {
+        groupsLab <- ifelse(is.factor(groups), deparse(substitute(groups)), groups)
+        catm("   ... grouping texts by variable", 
+             ifelse(length(groupsLab) == 1, "", "s"), ": ", 
+             paste(groupsLab, collapse=", "), "\n", sep="")
+        if (verbose) catm("   ... tokenizing grouped texts\n")
+        tokenizedTexts <- tokens(texts(x, groups = groups), ...)
+    } else {
+        if (verbose) catm("   ... tokenizing texts\n")
+        tokenizedTexts <- tokens(x, ...)
     }
-    dfm(texts(x, groups = groups),  tolower = tolower,
+    
+    dfm(tokenizedTexts, 
+        tolower = tolower,
         stem = stem,
         select = select,
         remove = remove,
@@ -214,9 +222,9 @@ dfm.tokenizedTexts <- function(x,
                                dictionary = NULL,
                                valuetype = c("glob", "regex", "fixed"), 
                                groups = NULL, 
-                               verbose = FALSE, ...) {
-    
-    
+                               verbose = FALSE, 
+                               ...) {
+
     valuetype <- match.arg(valuetype)
     dots <- list(...)
     if (length(dots) && any(!(names(dots)) %in% c("startTime", "codeType")))
@@ -260,6 +268,7 @@ dfm.tokenizedTexts <- function(x,
     dfmresult@ngrams <- as.integer(attr(x, "ngrams"))
     dfmresult@skip <- as.integer(attr(x, "skip"))
     dfmresult@concatenator <- attr(x, "concatenator")
+    dfmresult@docvars <- attr(x, "docvars")
     
     dfm(dfmresult, tolower = FALSE, stem = stem, select = select, remove = remove, thesaurus = thesaurus,
         dictionary = dictionary, valuetype = valuetype, groups = groups, verbose = verbose, ...)
@@ -278,7 +287,8 @@ dfm.dfm <- function(x,
                     dictionary = NULL,
                     valuetype = c("glob", "regex", "fixed"), 
                     groups = NULL, 
-                    verbose = FALSE, ...) {
+                    verbose = FALSE, 
+                    ...) {
 
     valuetype <- match.arg(valuetype)
     dots <- list(...)
