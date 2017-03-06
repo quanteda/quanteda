@@ -83,7 +83,21 @@ test_that("test `tokens_ngrams` on characters", {
     
     expect_warning(tokens_ngrams(c('insurgents killed', 'in', 'ongoing', 'fighting')), 
                    "whitespace detected: you may need to run tokens\\(\\) first")
+    
+    expect_warning(tokens_ngrams(c('insurgents killed', 'in', 'ongoing', 'fighting'), n = 1, skip = 1), 
+                   "skip argument ignored for n = 1")
 })
+
+test_that("test `tokens_ngrams` on skipgrams", {
+    toks <- tokenize("insurgents killed in ongoing fighting")
+    ngms <- tokens_skipgrams(toks, n = 2, skip = 0:1, concatenator = " ") 
+    expect_equivalent(
+        as.list(ngms)[[1]],
+        c('insurgents killed', "insurgents in",     "killed in" ,        "killed ongoing" , 
+          "in ongoing",        "in fighting",       "ongoing fighting")
+    )
+})
+
 # FAILLING (issue #469)
 # test_that("test there is not competition between the thread", {
 #     txt <- c(one = char_tolower("Insurgents killed in ongoing fighting."),
