@@ -4,6 +4,7 @@
 ## Ken Benoit
 ####################################################################
 
+setClassUnion("dframe", members = c("data.frame", "NULL"))
 
 #' Virtual class "dfm" for a document-feature matrix
 #' 
@@ -35,7 +36,8 @@
 #' @keywords internal dfm
 setClass("dfm",
          slots = c(settings = "list", weightTf = "list", weightDf = "list", smooth = "numeric",
-                   ngrams = "integer", skip = "integer", concatenator = "character"),
+                   ngrams = "integer", skip = "integer", concatenator = "character", 
+                   docvars = "dframe"),
          prototype = list(settings = list(NULL),
                           Dim = integer(2), 
                           Dimnames = list(docs=NULL, features=NULL),
@@ -44,7 +46,8 @@ setClass("dfm",
                           smooth = 0,
                           ngrams = 1L,
                           skip = 0L,
-                          concatenator = ""),
+                          concatenator = "",
+                          docvars = NULL),
          contains = "Matrix")
 
 #' @rdname dfm-class
