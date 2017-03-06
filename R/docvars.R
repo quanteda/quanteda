@@ -1,11 +1,13 @@
 #' get or set for document-level variables
 #' 
-#' Get or set variables associated with a document in a \link{corpus}, or get these
-#' variables from a \link{tokens} object.
-#' @param x \link{corpus} or \link{tokens} whose document-level variables will be read or set
+#' Get or set variables associated with a document in a \link{corpus}, or get
+#' these variables from a \link{tokens} or \link{dfm} object.
+#' @param x \link{corpus}, \link{tokens}, or \link{dfm} object whose
+#'   document-level variables will be read or set
 #' @param field string containing the document-level variable name
-#' @return \code{docvars} returns a data.frame of the document-level variables, dropping the second
-#' dimension to form a vector if a single docvar is returned.
+#' @return \code{docvars} returns a data.frame of the document-level variables,
+#'   dropping the second dimension to form a vector if a single docvar is
+#'   returned.
 #' @examples 
 #' # retrieving docvars from a corpus
 #' head(docvars(data_corpus_inaugural))
@@ -45,7 +47,15 @@ get_docvars <- function(dvars, field = NULL) {
         return(dvars[, field, drop = TRUE])
 }
 
-
+#' @noRd
+#' @export
+docvars.dfm <- function(x, field = NULL) {
+    check_fields(x, field)
+    dvars <- x@docvars[, , drop = FALSE]
+    if (is.null(field))
+        dvars <- dvars[, which(substring(names(dvars), 1, 1) != "_"), drop = FALSE]
+    get_docvars(dvars, field)    
+}
 
 
 #' @rdname docvars
@@ -108,6 +118,22 @@ get_docvars <- function(dvars, field = NULL) {
     return(x)
 }
 
+## internal only
+"docvars<-.dfm" <- function(x, field = NULL, value) {
+    
+    if (is.null(field) && (is.data.frame(value) || is.null(value))) {
+        x@docvars <- value
+    } else {
+        if (!is.data.frame(x@docvars)) {
+            meta <- data.frame(value, stringsAsFactors = FALSE)
+            colnames(meta) <- field
+            x@docvars <- meta
+        } else {
+            x@docvars[[field]] <- value
+        }
+    }
+    return(x)
+}
 
 #' get or set document-level meta-data
 #' 
@@ -156,6 +182,16 @@ metadoc.tokens <- function(x, field = NULL) {
     get_docvars(dvars, field)
 }
 
+#' @noRd
+#' @export
+metadoc.dfm <- function(x, field = NULL) {
+    if (!is.null(field)) {
+        field <- paste0("_", field)
+        check_fields(x, field)
+    }
+    dvars <- x@docvars[, which(substring(names(x@docvars), 1, 1) == "_"), drop = FALSE]
+    get_docvars(dvars, field)
+}
 
 #' @rdname metadoc
 #' @param value the new value of the new meta-data field
