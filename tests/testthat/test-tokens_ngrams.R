@@ -50,6 +50,11 @@ test_that("test that ngrams produces the results from Guthrie 2006", {
         ), character(0)
       )
 
+      expect_equivalent(setdiff(
+          as.list(ngrams(toks, n = 2:3))[[1]],
+          c(bi_grams, tri_grams)
+      ), character(0)
+      )
 })
 
 test_that("test `tokens_ngrams` on tokenized texts", {
