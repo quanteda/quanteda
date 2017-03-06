@@ -77,6 +77,10 @@ test_that("test `tokens_ngrams` on characters", {
     charNgms <- char_ngrams(c('insurgents','killed', 'in', 'ongoing', 'fighting'))
     expect_equivalent(
         ngms,
+        c('insurgents_killed', 'killed_in', 'in_ongoing', 'ongoing_fighting')
+    )
+    
+    expect_equivalent(
         charNgms,
         c('insurgents_killed', 'killed_in', 'in_ongoing', 'ongoing_fighting')
     )
