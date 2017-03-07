@@ -160,3 +160,13 @@ test_that("metadoc for dfm works", {
     
 }) 
 
+test_that("creating tokens and dfms with empty docvars", {
+    expect_true(
+        is.null(docvars(tokens(data_corpus_irishbudget2010, include_docvars = FALSE)))
+    )
+    expect_true(
+        is.null(docvars(dfm(data_corpus_irishbudget2010, include_docvars = FALSE)))
+    )
+    
+})
+
