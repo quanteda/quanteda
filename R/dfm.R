@@ -188,9 +188,10 @@ dfm.corpus <- function(x, tolower = TRUE,
     
     if (!is.null(groups)) {
         groupsLab <- ifelse(is.factor(groups), deparse(substitute(groups)), groups)
-        catm("   ... grouping texts by variable", 
-             ifelse(length(groupsLab) == 1, "", "s"), ": ", 
-             paste(groupsLab, collapse=", "), "\n", sep="")
+        if (verbose) 
+            catm("   ... grouping texts by variable", 
+                 ifelse(length(groupsLab) == 1, "", "s"), ": ", 
+                 paste(groupsLab, collapse=", "), "\n", sep="")
         if (verbose) catm("   ... tokenizing grouped texts\n")
         tokenizedTexts <- tokens(texts(x, groups = groups), ...)
     } else {

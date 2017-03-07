@@ -6,7 +6,7 @@
 \usage{
 dfm(x, tolower = TRUE, stem = FALSE, select = NULL, remove = NULL,
   thesaurus = NULL, dictionary = NULL, valuetype = c("glob", "regex",
-  "fixed"), groups = NULL, verbose = FALSE, include_docvars = TRUE, ...)
+  "fixed"), groups = NULL, verbose = FALSE, ...)
 }
 \arguments{
 \item{x}{character, \link{corpus}, \link{tokens}, or \link{dfm} object}
@@ -53,9 +53,6 @@ and fast method of combining and refactoring the documents of the dfm
 according to the groups.}
 
 \item{verbose}{display messages if \code{TRUE}}
-
-\item{include_docvars}{if TRUE, pass docvars and metadoc fields through to
-the dfm object. Only applies when creating a dfm from tokens or corpus objects.}
 
 \item{...}{additional arguments passed to \link{tokens}, for character and 
 corpus}
