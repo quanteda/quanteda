@@ -281,7 +281,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
 tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     result <- tokens(texts(x), ...)
     if (include_docvars)
-        docvars(result) <- docvars(x, names(documents(x))[-which(names(documents(x)) == "texts")])
+        docvars(result) <- docvars(x, names(documents(x))[which(names(documents(x)) != "texts")])
     return(result)
 }
 
