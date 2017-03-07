@@ -131,7 +131,6 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
         x <- qatd_cpp_tokens_select(x, types, features_id, 2, padding)
     }
     attributes(x, FALSE) <- attrs
-    Encoding(types(x)) <- "UTF-8"
     return(x)
 }
 

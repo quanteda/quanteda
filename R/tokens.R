@@ -657,7 +657,6 @@ tokens_hashed_recompile <- function(x, method = c("C++", "R")) {
         attrs_input[['types']] <- attr(x, 'types')
         attrs_input[['padding']] <- attr(x, 'padding')
         attributes(x) <- attrs_input
-        Encoding(types(x)) <- "UTF-8"
         return(x)
     }
     
