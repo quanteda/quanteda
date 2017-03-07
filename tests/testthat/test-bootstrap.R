@@ -2,7 +2,7 @@ context("test bootstrapping functions")
 
 test_that("bootstrap_dfm works as planned", {
     txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.", 
-             texttwo = "Premiere phrase.  Deuxieme phrase.")
+             texttwo = "Premiere phrase.  Deuxieme phrase.")q
     mycorpus <- corpus(txt, 
                        docvars = data.frame(country=c("UK", "USA"), year=c(1990, 2000)),
                        metacorpus = list(notes = "Example showing how corpus_reshape() works."))
@@ -13,6 +13,6 @@ test_that("bootstrap_dfm works as planned", {
     
     dfmresamp <- bootstrap_dfm(txt, n = 3, verbose = FALSE)
     expect_identical(dfmresamp[[1]], 
-                     dfm(mycorpus))
+                     dfm(mycorpus, include_docvars = FALSE))
 
 })
