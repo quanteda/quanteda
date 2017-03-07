@@ -270,6 +270,10 @@ dfm.tokenizedTexts <- function(x,
     dfmresult@skip <- as.integer(attr(x, "skip"))
     dfmresult@concatenator <- attr(x, "concatenator")
     dfmresult@docvars <- attr(x, "docvars")
+    if (is.null(dfmresult@docvars)) {
+        dfmresult@docvars <- data.frame(matrix(nrow = ndoc(dfmresult), ncol = 1)[, -1, drop = FALSE],
+                                        row.names = docnames(dfmresult))
+    }
     
     dfm(dfmresult, tolower = FALSE, stem = stem, select = select, remove = remove, thesaurus = thesaurus,
         dictionary = dictionary, valuetype = valuetype, groups = groups, verbose = verbose, ...)

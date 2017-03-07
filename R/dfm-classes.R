@@ -46,8 +46,7 @@ setClass("dfm",
                           smooth = 0,
                           ngrams = 1L,
                           skip = 0L,
-                          concatenator = "",
-                          docvars = NULL),
+                          concatenator = ""),
          contains = "Matrix")
 
 #' @rdname dfm-class

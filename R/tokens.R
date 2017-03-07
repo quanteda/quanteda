@@ -280,8 +280,12 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
 #' @noRd
 tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     result <- tokens(texts(x), ...)
-    if (include_docvars)
+    if (include_docvars) {
         docvars(result) <- docvars(x, names(documents(x))[which(names(documents(x)) != "texts")])
+    } else {
+        docvars(result) <- data.frame(matrix(nrow = ndoc(result), ncol = 1)[, -1, drop = FALSE],
+                                      row.names = docnames(result))
+    }
     return(result)
 }
 
