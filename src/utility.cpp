@@ -1,8 +1,14 @@
-#include <Rcpp.h>
-#include <vector>
+#include "quanteda.h"
+using namespace quanteda;
 
-using namespace Rcpp;
-// to remove a character from the list
+/* 
+ * This funciton removes a string from of a list of string vectors.
+ * @used tokens()
+ * @creator Kohei Watanabe
+ * @param input_ list of string vectors
+ * @param char_remove a string to remove
+ */
+
 // [[Rcpp::export]]
 List qatd_cpp_chars_remove(List input_, String char_remove){
     List output_ = clone(input_);
