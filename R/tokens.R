@@ -280,8 +280,12 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
 #' @noRd
 tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     result <- tokens(texts(x), ...)
-    if (include_docvars)
-        docvars(result) <- docvars(x, names(documents(x))[-which(names(documents(x)) == "texts")])
+    if (include_docvars) {
+        docvars(result) <- docvars(x, names(documents(x))[which(names(documents(x)) != "texts")])
+    } else {
+        docvars(result) <- data.frame(matrix(nrow = ndoc(result), ncol = 1)[, -1, drop = FALSE],
+                                      row.names = docnames(result))
+    }
     return(result)
 }
 
@@ -654,10 +658,7 @@ tokens_hashed_recompile <- function(x, method = c("C++", "R")) {
     
     if (method == "C++") {
         x <- qatd_cpp_tokens_recompile(x, types(x))
-        attrs_input[['types']] <- attr(x, 'types')
-        attrs_input[['padding']] <- attr(x, 'padding')
-        attributes(x) <- attrs_input
-        Encoding(types(x)) <- "UTF-8"
+        attributes(x, FALSE) <- attrs_input
         return(x)
     }
     

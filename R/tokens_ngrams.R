@@ -134,7 +134,6 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     attr(x, "ngrams") <- as.integer(n)
     attr(x, "skip") <- as.integer(skip)
     attr(x, "concatenator") <- concatenator
-    Encoding(types(x)) <- "UTF-8"
     return(x)
 }
 

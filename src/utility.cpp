@@ -1,8 +1,14 @@
-#include <Rcpp.h>
-#include <vector>
+#include "quanteda.h"
+using namespace quanteda;
 
-using namespace Rcpp;
-// to remove a character from the list
+/* 
+ * This funciton removes a string from of a list of string vectors.
+ * @used tokens()
+ * @creator Kohei Watanabe
+ * @param input_ list of string vectors
+ * @param char_remove a string to remove
+ */
+
 // [[Rcpp::export]]
 List qatd_cpp_chars_remove(List input_, String char_remove){
     List output_ = clone(input_);
@@ -25,15 +31,7 @@ List qatd_cpp_chars_remove(List input_, String char_remove){
     return output_;
 }
 
-// You can include R code blocks in C++ files processed with sourceCpp
-// (useful for testing and development). The R code will be automatically
-// run after the compilation.
-//
 
 /*** R
-list <- list(c(1:10), c(1:20))
-qatd_cpp_structcopy_int_list(list)
 
-# df <- expand.grid(LETTERS[1:3], LETTERS[4:5], LETTERS[6], stringsAsFactors=FALSE)
-# qatd_cpp_split_df(df)
 */
