@@ -55,7 +55,7 @@
 #' }
 #' }
 #' @export
-dfm_trim <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, max_docfreq = NULL, sparsity = NULL, verbose = TRUE) {
+dfm_trim <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, max_docfreq = NULL, sparsity = NULL, verbose = FALSE) {
     UseMethod("dfm_trim")
 }
  
