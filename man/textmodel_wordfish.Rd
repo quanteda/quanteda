@@ -6,7 +6,9 @@
 \usage{
 textmodel_wordfish(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
   tol = c(1e-06, 1e-08), dispersion = c("poisson", "quasipoisson"),
-  dispersionLevel = c("feature", "overall"), dispersionFloor = 0)
+  dispersion_level = c("feature", "overall"), dispersion_floor = 0,
+  svd_sparse = FALSE, residual_floor = 0, version = c("serial",
+  "parallel"))
 }
 \arguments{
 \item{data}{the dfm on which the model will be fit}
@@ -28,15 +30,29 @@ document-level, then feature-level parameters).}
 used based on a single dispersion parameter (\code{"poisson"}), or 
 quasi-Poisson (\code{"quasipoisson"})}
 
-\item{dispersionLevel}{sets the unit level for the dispersion parameter, 
+\item{dispersion_level}{sets the unit level for the dispersion parameter, 
 options are \code{"feature"} for term-level variances, or \code{"overall"} 
 for a single dispersion parameter}
 
-\item{dispersionFloor}{constraint for the minimal underdispersion multiplier 
+\item{dispersion_floor}{constraint for the minimal underdispersion multiplier
 in the quasi-Poisson model.  Used to minimize the distorting effect of 
 terms with rare term or document frequencies that appear to be severely 
 underdispersed.  Default is 0, but this only applies if \code{dispersion = 
 "quasipoisson"}.}
+
+\item{svd_sparse}{enables the using of svd() for setting the starting value of theta.}
+
+\item{residual_floor}{defines the minimal value of the residuals, which are
+used to construct the starting parameters from an iterative restarted
+Lanczos routine. Raising the values will save the memory space. Only
+applies to \code{version = "parallel"}.}
+
+\item{version}{sets \code{"serial"} or \code{"parallel"} (for parallel
+computation).  Serial is the default and recommended in most cases,
+although parallel computation may be required when the input \link{dfm} is
+very large.  Parallel computation does not result in particular efficiency
+gains for this function, but it will allow very large dfm objects to be 
+processed relative to the serial version.}
 }
 \value{
 An object of class textmodel_fitted_wordfish.  This is a list 
@@ -68,9 +84,9 @@ textmodel_wordfish(data_dfm_LBGexample, dir = c(1,5))
 ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
 (wfm1 <- textmodel_wordfish(ie2010dfm, dir = c(6,5)))
 (wfm2a <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
-                             dispersion = "quasipoisson", dispersionFloor = 0))
+                             dispersion = "quasipoisson", dispersion_floor = 0))
 (wfm2b <- textmodel_wordfish(ie2010dfm, dir = c(6,5), 
-                             dispersion = "quasipoisson", dispersionFloor = .5))
+                             dispersion = "quasipoisson", dispersion_floor = .5))
 plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
      xlim = c(0, 1.0), ylim = c(0, 1.0))
 plot(wfm2a@phi, wfm2b@phi, xlab = "Min underdispersion = 0", ylab = "Min underdispersion = .5",
@@ -93,9 +109,9 @@ Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model
   Journal of Political Science} 52(3):705-772.
   
   Lowe, Will and Kenneth Benoit. 2013. "Validating Estimates of Latent Traits
-  from Textual Data Using Human Judgment as a Benchmark." \emph{Political Analysis}
-  21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
+  from Textual Data Using Human Judgment as a Benchmark." \emph{Political
+  Analysis} 21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
 }
 \author{
-Benjamin Lauderdale and Kenneth Benoit
+Benjamin Lauderdale, Haiyan Wang, and Kenneth Benoit
 }

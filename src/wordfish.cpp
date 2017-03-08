@@ -1,7 +1,7 @@
 
 // includes from the plugin
 #include <RcppArmadillo.h>
-
+#include <ctime>
 using namespace Rcpp;
 
 // [[Rcpp::depends(RcppArmadillo)]]
@@ -42,12 +42,16 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEX
     arma::colvec rsum = sum(C,1);
     arma::rowvec csum = sum(C,0);
     double asum = sum(rsum);		
+    //std::clock_t begin = clock();
+    
     for (int i=0; i < N; i++){
         for (int k=0; k < K; k++){
             C(i,k) = (Y(i,k) - rsum(i)*csum(k)/asum)/sqrt(rsum(i)*csum(k)/asum);	
         }
     }
-    
+    // std::clock_t end = clock();
+    // double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+    // Rcout<<"serial elapsed_secs = "<<elapsed_secs<<std::endl;
     // Singular Value Decomposition of Chi-Sq Residuals
     arma::mat U(N,N);
     arma::vec s(N);
@@ -55,7 +59,12 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEX
     svd(U,s,V,C);
     
     // Load initial values
-    for (int i=0; i < N; i++) theta(i) = pow(rsum(i)/asum,-0.5) * U(i,0);
+    //for (int i=0; i < N; i++) theta(i) = pow(rsum(i)/asum,-0.5) * U(i,0);
+    for (std::size_t i=0; i < N; i++) {
+        
+        theta(i) = pow(rsum(i)/asum, -0.5) * U(i, 0);
+        //Rcout<<theta(i)<<std::endl;
+    }
     for (int k=0; k < K; k++) beta(k) = 0; // pow(csum(k)/asum,-0.5) * V(k,0);
     for (int i=0; i < N; i++) alpha = log(rsum);
     psi = log(csum/N);
@@ -80,13 +89,14 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEX
     
     double lastlp = -2000000000000.0;
     double lp = -1.0*(sum(0.5 * ((alpha*alpha)*(priorprecalpha))) + sum(0.5 * ((psi*psi)*(priorprecpsi))) + sum(0.5 * ((beta*beta)*(priorprecbeta))) + sum(0.5 * ((theta*theta)*(priorprectheta))));
+    
     for (int i=0; i < N; i++){
         for (int k=0; k < K; k++){
             loglambdaik = alpha(i) + psi(k) + beta(k)*theta(i);
             lp = lp + loglambdaik*Y(i,k)-exp(loglambdaik);
         }
     }
-    
+    //Rcout<<lp<<std::endl;
     // BEGIN WHILE LOOP
     while(((lp - lastlp) > tolvec(0)) && outeriter < 100){	
         outeriter++;
@@ -116,7 +126,6 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEX
             }	
         }	
         
-        
         // UPDATE DOCUMENT PARAMETERS
         for (int i=0; i < N; i++){
             cc = 1;
@@ -139,9 +148,10 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEX
                 theta(i) = newpars(1,0);
                 cc = max(abs(newpars - pars));	
                 stepsize = 1.0;
+                //Rcout<<"inneriter="<<inneriter<<"  error= "<<cc<<std::endl;
+                
             }	
         }
-        
         // UPDATE DISPERSION PARAMETERS	  
         
         if (disptype(0) == 2) { // single dispersion parameter for all words
@@ -182,12 +192,12 @@ Rcpp::List wordfishcpp(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEX
                 lp = lp + loglambdaik*Y(i,k)-exp(loglambdaik);
             }
         }
-        // Rprintf("%d: %f2\\n",outeriter,lp);
+         //Rprintf("%d: %f2\\n",outeriter,lp);
+        //Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
         
         // END WHILE LOOP		
     } 
-    
-    
+    //Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
     // Fix Global Polarity  
     
     // added the -1 because C counts from ZERO...  -- KB
