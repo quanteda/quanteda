@@ -66,17 +66,17 @@ Rcpp::List wordfishcpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& 
         arma::vec s(svdk);
         arma::mat V(K, svdk);
         arma::svds(U,s,V,C, svdk);
-        Rcout<<"svd done"<<endl;
+        //Rcout<<"svd done"<<endl;
         
         for (std::size_t i=0; i < N; i++) {
             theta(i) = pow(rsum(i)/asum,-0.5) * U(i,0);
-            Rcout<<"theta starting values:"<<theta(i)<<std::endl;
+            //Rcout<<"theta starting values:"<<theta(i)<<std::endl;
         }
     } else {
         // Load initial values
         for (std::size_t i=0; i < N; i++) {
             theta(i) = pow(rsum(i)/asum,-0.5);// * U(i,0);
-            Rcout<<"theta starting values:"<<theta(i)<<std::endl;
+            //Rcout<<"theta starting values:"<<theta(i)<<std::endl;
         }
     }
     for (std::size_t k=0; k < K; k++) beta(k) = 0; // pow(csum(k)/asum,-0.5) * V(k,0);
@@ -218,7 +218,7 @@ Rcpp::List wordfishcpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& 
                 lp = lp + loglambdaik*wfm(i,k)-exp(loglambdaik);
             }
         }
-        Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
+        //Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
         err = (ABS == true)?fabs(lp - lastlp) : (lp - lastlp);
         // END WHILE LOOP		
     } 

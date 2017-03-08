@@ -57,7 +57,7 @@ Rcpp::List wordfishcpp_dense(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP dis
     // Load initial values
     for (int i=0; i < N; i++) {
         theta(i) = pow(rsum(i)/asum,-0.5) * U(i,0);
-        Rcout<<"theta starting values:"<<theta(i)<<std::endl;
+        //Rcout<<"theta starting values:"<<theta(i)<<std::endl;
     }
     for (int k=0; k < K; k++) beta(k) = 0; // pow(csum(k)/asum,-0.5) * V(k,0);
     for (int i=0; i < N; i++) alpha = log(rsum);
@@ -187,7 +187,7 @@ Rcpp::List wordfishcpp_dense(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP dis
             }
         }
         // Rprintf("%d: %f2\\n",outeriter,lp);
-        Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
+        //Rcout<<"outeriter="<<outeriter<<"  lp - lastlp= "<<lp - lastlp<<std::endl;
         err = (abs_err == true)?fabs(lp - lastlp) : (lp - lastlp);
         // END WHILE LOOP		
     } 
