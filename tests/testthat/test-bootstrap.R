@@ -13,6 +13,6 @@ test_that("bootstrap_dfm works as planned", {
     
     dfmresamp <- bootstrap_dfm(txt, n = 3, verbose = FALSE)
     expect_identical(dfmresamp[[1]], 
-                     dfm(txt))
+                     dfm(mycorpus, include_docvars = FALSE))
 
 })
