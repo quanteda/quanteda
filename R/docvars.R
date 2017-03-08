@@ -39,14 +39,6 @@ docvars.tokens <- function(x, field = NULL) {
     get_docvars(dvars, field)    
 }
 
-## internal function to return the docvars for all docvars functions
-get_docvars <- function(dvars, field = NULL) {
-    if (is.null(field))
-        return(dvars)
-    else
-        return(dvars[, field, drop = TRUE])
-}
-
 #' @noRd
 #' @export
 docvars.dfm <- function(x, field = NULL) {
@@ -55,6 +47,18 @@ docvars.dfm <- function(x, field = NULL) {
     if (is.null(field))
         dvars <- dvars[, which(substring(names(dvars), 1, 1) != "_"), drop = FALSE]
     get_docvars(dvars, field)    
+}
+
+## internal function to return the docvars for all docvars functions
+get_docvars <- function(dvars, field = NULL) {
+    if (is.null(field)) {
+        if (length(dvars) == 0)
+            return(data.frame())
+        else
+            return(dvars)
+    } else {
+        return(dvars[, field, drop = TRUE])
+    }
 }
 
 
