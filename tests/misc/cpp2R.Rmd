@@ -1,23 +1,29 @@
-| .cpp functions               | c++ File              | R File                                      | R Functions                             |
-|------------------------------|-----------------------|---------------------------------------------|-----------------------------------------|
-| qatd_ManhattanPara_cpp       | dist_parallel.cpp     | textstat_dist.R                             | textstat_dist                           |
-| qatd_ManhattanPara_cpp2      | dist_parallel.cpp     | textstat_dist.R                             | textstat_dist                           |
-| qatd_MaximumPara_cpp         | dist_parallel.cpp     | textstat_dist.R                             | textstat_dist                           |
-| qatd_MaximumPara_cpp2        | dist_parallel.cpp     | textstat_dist.R                             | textstat_dist                           |
-| qatd_CanberraPara_cpp        | dist_parallel.cpp     | textstat_dist.R                             | textstat_dist                           |
-| qatd_CanberraPara_cpp2       | dist_parallel.cpp     | textstat_dist.R                             | textstat_dist                           |
-| qatd_MinkowskiPara_cpp       | dist_parallel.cpp     | textstat_dist.R                             | textstat_dist                           |
-| qatd_MinkowskiPara_cpp2      | dist_parallel.cpp     | textstat_dist.R                             | textstat_dist                           |
-| fcm_cpp                      | fcm.cpp               | fcm.R                                       | fcm                                     |
-| fcm_hash_cpp                 | fcm.cpp               | fcm.R                                       | fcm                                     |
-| qutd_cpp_sequences           | sequences_mt.cpp      | sequences.R                                 | sequences.tokens                        |
-| qatd_cpp_tokens_detect       | tokens_detect_mt.cpp  | kwic2.R                                     | kwic.tokens                             |
-| qatd_cpp_tokens_lookup       | tokens_lookup_mt.cpp  | tokens_lookup.R                             | tokens_lookup                           |
-| qatd_cpp_tokens_ngrams       | tokens_ngrams_mt.cpp  | tokens_ngrams.R                             | tokens_ngrams.tokens                    |
-| qatd_cpp_tokens_replace      | tokens_replace_mt.cpp | tokens_compound.R, tokens_lookup.R          | tokens_compound.tokens, tokens_lookup   |
-| qatd_cpp_tokens_select       | tokens_select_mt.cpp  | tokens_select.R                             | tokens_select.tokens                    |
-| qatd_cpp_deepcopy            | utility.cpp           | x                                           | x                                         |
-| qatd_cpp_structcopy_int_list | utility.cpp           | x                                           | x                                         |
-| qatd_cpp_remove_chr_list     | utility.cpp           | tokens.R                                    | tokens_word                             |
-| qatd_cpp_remove_int_list     | utility.cpp           | x                                           | x                                         |
-| wordfishcpp                  | wordfish.cpp          | textmodel-wordfish.R, textmodel-wordshoal.R | textmodel_wordfish, textmodel_wordshoal |
+[//]:#library(gdata)
+[//]:#install.packages("gdata")
+[//]:#cpp_r <- read.xls("~/cpp_R.xlsx")
+
+[//]:#library(knitr)
+[//]:# (kable(cpp_r, format = "markdown"))
+
+|.cpp Function             |c File                |R File                                      |R Functions                             |
+|:-------------------------|:-----------------------|:-------------------------------------------|:---------------------------------------|
+|qatd_ManhattanPara_cpp    |dist_parallel.cpp       |textstat_dist.R                             |textstat_dist                           |
+|qatd_ManhattanPara_cpp2   |dist_parallel.cpp       |textstat_dist.R                             |textstat_dist                           |
+|qatd_MaximumPara_cpp      |dist_parallel.cpp       |textstat_dist.R                             |textstat_dist                           |
+|qatd_MaximumPara_cpp2     |dist_parallel.cpp       |textstat_dist.R                             |textstat_dist                           |
+|qatd_CanberraPara_cpp     |dist_parallel.cpp       |textstat_dist.R                             |textstat_dist                           |
+|qatd_CanberraPara_cpp2    |dist_parallel.cpp       |textstat_dist.R                             |textstat_dist                           |
+|qatd_MinkowskiPara_cpp    |dist_parallel.cpp       |textstat_dist.R                             |textstat_dist                           |
+|qatd_MinkowskiPara_cpp2   |dist_parallel.cpp       |textstat_dist.R                             |textstat_dist                           |
+|qatd_fcm_cpp              |fcm.cpp                 |fcm.R                                       |fcm                                     |
+|qatd_cpp_sequences        |sequences_mt.cpp        |sequences.R                                 |sequences.tokens                        |
+|qatd_cpp_tokens_compound  |tokens_coumpound_mt.cpp |tokens_compound..R                          |tokens_compound                         |
+|qatd_cpp_tokens_detect    |tokens_detect_mt.cpp    |kwic2.R                                     |kwic.tokens                             |
+|qatd_cpp_tokens_lookup    |tokens_lookup_mt.cpp    |tokens_lookup.R                             |tokens_lookup                           |
+|qatd_cpp_tokens_match     |tokens_match_mt.cpp     |tokens_lookup.R                             |tokens_lookup                           |
+|qatd_cpp_tokens_ngrams    |tokens_ngrams_mt.cpp    |tokens_ngrams.R                             |tokens_ngrams.tokens                    |
+|qatd_cpp_tokens_recompile |tokens_recompile_mt.cpp |tokens.R                                    |tokens_hashed_recompile                 |
+|qatd_cpp_tokens_replace   |tokens_replace_mt.cpp   |tokens_compound.R, tokens_lookup.R          |tokens_compound.tokens, tokens_lookup   |
+|qatd_cpp_tokens_select    |tokens_select_mt.cpp    |tokens_select.R                             |tokens_select.tokens                    |
+|qatd_cpp_chars_remove     |utility.cpp             |tokens.R                                    |tokens_word                             |
+|wordfishcpp               |wordfish.cpp            |textmodel-wordfish.R, textmodel-wordshoal.R |textmodel_wordfish, textmodel_wordshoal |
