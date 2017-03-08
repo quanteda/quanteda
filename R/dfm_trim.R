@@ -98,14 +98,15 @@ dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, ma
         messageMinDoc <- paste0(format(min_docfreq, big.mark=","), " * ", format(ndoc(x), big.mark=","), " = ")
         min_docfreq <- (ndoc(x) * min_docfreq)
     }
-    if (!missing(max_count) & max_count2 < 1) {
-        messageMaxCount <- paste0(format(max_count2, big.mark=","), " * ", format(nfeature(x), big.mark=","), " = ")
-        max_count2 <- (nfeature(x) * max_count2)
-    }
-    if (!missing(max_docfreq) & max_docfreq2 < 1) {
-        messageMaxDoc <- paste0(format(max_docfreq2, big.mark=","), " * ", format(ndoc(x), big.mark=","), " = ")
-        max_docfreq2 <- (ndoc(x) * max_docfreq2)
-    }
+    # Seems the situation doesn't exist 
+#     if (!missing(max_count) & max_count2 < 1) {
+#         messageMaxCount <- paste0(format(max_count2, big.mark=","), " * ", format(nfeature(x), big.mark=","), " = ")
+#         max_count2 <- (nfeature(x) * max_count2)
+#     }
+#     if (!missing(max_docfreq) & max_docfreq2 < 1) {
+#         messageMaxDoc <- paste0(format(max_docfreq2, big.mark=","), " * ", format(ndoc(x), big.mark=","), " = ")
+#         max_docfreq2 <- (ndoc(x) * max_docfreq2)
+#     }
 
     # checks that min is less than max
     if (max_count2 < min_count)
