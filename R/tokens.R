@@ -321,7 +321,7 @@ as.tokens.tokenizedTexts <- function(x) {
 
 #' @rdname as.tokens
 #' @param ... unused
-#' @return \code{as.list.tokens} returns a simple list of characters from a
+#' @return \code{as.list} returns a simple list of characters from a
 #'   \link{tokens} object
 #' @export
 as.list.tokens <- function(x, ...) {
@@ -333,8 +333,8 @@ as.list.tokens <- function(x, ...) {
 
 #' @rdname as.tokens
 #' @param use.names logical; preserve names if \code{TRUE}.  For
-#'   \code{as.character.tokens} only.
-#' @return \code{as.character.tokens} returns a character vector from a 
+#'   \code{as.character} only.
+#' @return \code{as.character} returns a character vector from a 
 #'   \link{tokens} object
 #' @export
 as.character.tokens <- function(x, use.names = FALSE, ...) {
