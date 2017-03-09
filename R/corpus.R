@@ -5,6 +5,8 @@
 #' \itemize{ 
 #' \item a \link{character} vector, consisting of one document per element; if 
 #'   the elements are named, these names will be used as document names.
+#' \item a \link[readtext]{readtext} object, from the \pkg{readtext} package 
+#'   (which is a specially constructed data.frame)
 #' \item a \link{data.frame}, whose default variable containing the document is 
 #'   character vector named \code{text}, although this can be set to any other
 #'   variable name using the \code{text_field} argument.  Other variables are 
@@ -36,7 +38,7 @@
 #' This significantly reduces the size of the corpus in memory, but will slow down operations that
 #' require the texts to be extracted.
 #' @param ... not used directly
-#' @return a corpus class object containing the original texts, document-level 
+#' @return A \link{corpus-class} class object containing the original texts, document-level 
 #'   variables, document-level metadata, corpus-level metadata, and default 
 #'   settings for subsequent processing of the corpus.  
 #' @section A warning on accessing corpus elements:
@@ -47,8 +49,10 @@
 #'   also likely to break should the internal structure of a corpus object
 #'   change (as it inevitably will as we continue to develop the package,
 #'   including moving corpus objects to the S4 class system).
-#' @seealso \link{corpus-class}, \link{docvars}, \link{metadoc}, \link{metacorpus}, 
-#'   \link{settings}, \link{texts}, \link{ndoc}, \link{docnames}
+#' @seealso \link{corpus-class}, \code{\link{docvars}), \code{\link{metadoc}}, 
+#'   \code{\link{metacorpus}}, 
+#'   \code{\link{settings}}, \code{\link{texts}}, \code{\link{ndoc}}, 
+#'   \code{\link{docnames}}
 #' @details The texts and document variables of corpus objects can also be 
 #'   accessed using index notation. Indexing a corpus object as a vector will 
 #'   return its text, equivalent to \code{texts(x)}.  Note that this is not the 
@@ -58,7 +62,9 @@
 #'   Indexing a corpus using two indexes (integers or column names) will return 
 #'   the document variables, equivalent to \code{docvars(x)}.  Because a corpus 
 #'   is also a list, it is also possible to access, create, or replace docvars 
-#'   using list notation, e.g. \code{myCorpus[["newSerialDocvar"]] <- 
+#'   using list notation, e.g. 
+#'   
+#'   \code{myCorpus[["newSerialDocvar"]] <- 
 #'   paste0("tag", 1:ndoc(myCorpus))}.
 #'   
 #'   For details, see \link{corpus-class}.
