@@ -1,15 +1,12 @@
-#' change the document units of a corpus
+#' recast the document units of a corpus
 #' 
-#' For a corpus, recast the documents down or up a level of aggregation.  "Down"
-#' would mean going from documents to sentences, for instance.  "Up" means from 
-#' sentences back to documents.  This makes it easy to reshape a corpus from a 
-#' collection of documents into a collection of sentences, for instance.
-#' (Because the corpus object records its current "units" status, there is no 
-#' \code{from} option, only \code{to}.)
-#' 
-#' Note: Only recasting down currently works, but upward recasting is planned.
+#' For a corpus, reshape (or recast) the documents to a different level of aggregation.  
+#' Units of aggregation can be defined as documents, paragraphs, or sentences.
+#' Because the corpus object records its current "units" status, it is possible
+#' to move from recast units back to original units, for example from documents,
+#' to sentences, and then back to documents (possibly after modifying the sentences).
 #' @param x corpus whose document units will be reshaped
-#' @param to new documents units for the corpus to be recast in
+#' @param to new document units in which the corpus will be recast
 #' @param ... not used
 #' @return A corpus object with the documents defined as the new units,
 #'   including document-level meta-data identifying the original documents.

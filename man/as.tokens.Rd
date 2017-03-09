@@ -24,15 +24,15 @@ is.tokens(x)
 \item{...}{unused}
 
 \item{use.names}{logical; preserve names if \code{TRUE}.  For
-\code{as.character.tokens} only.}
+\code{as.character} only.}
 }
 \value{
 \code{as.tokens} returns a quanteda \link{tokens} object
 
-\code{as.list.tokens} returns a simple list of characters from a
+\code{as.list} returns a simple list of characters from a
   \link{tokens} object
 
-\code{as.character.tokens} returns a character vector from a 
+\code{as.character} returns a character vector from a 
   \link{tokens} object
 
 \code{is.tokens} returns \code{TRUE} if the object is of class

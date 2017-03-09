@@ -128,6 +128,5 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     attributes(x, FALSE) <- attrs
     attr(x, "what") <- "dictionary"
     attr(x, "dictionary") <- dictionary
-    Encoding(types(x)) <- "UTF-8"
     return(x)
 }

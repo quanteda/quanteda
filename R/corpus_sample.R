@@ -18,7 +18,6 @@
 #'   the meta-data of the original corpus, and the same document variables for 
 #'   the documents selected.
 #' @export
-#' @seealso \code{\link{sample}}
 #' @keywords corpus
 #' @examples
 #' # sampling from a corpus

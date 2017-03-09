@@ -123,3 +123,50 @@ test_that("metadoc works with selection", {
 }) 
 
 
+test_that("docvars is working with dfm", {
+    corp <- data_corpus_irishbudget2010
+    toks <- tokens(corp, include_docvars = TRUE)
+    thedfm <- dfm(toks)
+    
+    expect_equal(docvars(toks), docvars(thedfm))
+    expect_equal(docvars(toks, 'party'), docvars(corp, 'party'))
+    
+    thedfm2 <- dfm(corp)
+    expect_equal(docvars(corp), docvars(thedfm2))
+    expect_equal(docvars(corp, 'party'), docvars(thedfm2, 'party'))
+
+    corp2 <- corpus_subset(corp, party == "LAB")
+    thedfm3 <- dfm(corp2)    
+    expect_equal(docvars(corp2), docvars(thedfm3))
+}) 
+
+test_that("metadoc for dfm works", {
+    
+    corp <- data_corpus_irishbudget2010
+    metadoc(corp, "language") <- "english"
+    toks <- tokens(corp, include_docvars = TRUE)
+    thedfm <- dfm(corp, include_docvars = TRUE)
+    
+    expect_equal(metadoc(corp), metadoc(thedfm))
+    expect_equal(metadoc(corp, 'language'), metadoc(thedfm, 'language'))
+    
+    thedfm2 <- dfm(corp)
+    expect_equal(docvars(corp), docvars(thedfm2))
+    expect_equal(docvars(corp, 'party'), docvars(thedfm2, 'party'))
+    
+    corp2 <- corpus_subset(corp, party == "LAB")
+    thedfm3 <- dfm(corp2)    
+    expect_equal(docvars(corp2), docvars(thedfm3))
+    
+}) 
+
+test_that("creating tokens and dfms with empty docvars", {
+    expect_true(
+        length(docvars(tokens(data_corpus_irishbudget2010, include_docvars = FALSE))) == 0
+    )
+    expect_true(
+        length(docvars(dfm(data_corpus_irishbudget2010, include_docvars = FALSE))) == 0
+    )
+    
+})
+
