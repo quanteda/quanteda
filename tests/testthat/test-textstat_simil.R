@@ -76,6 +76,12 @@ test_that("test textstat_simil method = \"jaccard\" against proxy::simil(): feat
     if("soviet" %in% names(jacProxy)) jacProxy <- jacProxy[-which(names(jacProxy) == "soviet")]
     
     expect_equal(jacQuanteda, jacProxy)
+    
+    # slow way -- y is null
+    jacQuanteda <- round(as.matrix(textstat_simil(presDfm, method = "jaccard", margin = "features"))[,"soviet"], 2)
+    jacQuanteda <- jacQuanteda[order(names(jacQuanteda))]
+    jacQuanteda <- jacQuanteda[-which(names(jacQuanteda) == "soviet")]
+    expect_equal(jacQuanteda, jacProxy)
 })
 
 # ejaccard - real-valued data
@@ -105,6 +111,12 @@ test_that("test textstat_simil method = \"ejaccard\" against proxy::simil(): fea
     if("soviet" %in% names(ejacProxy)) ejacProxy <- ejacProxy[-which(names(ejacProxy) == "soviet")]
     
     expect_equal(ejacQuanteda, ejacProxy)
+    
+    # slow way -- y is null
+    ejacQuanteda <- round(as.matrix(textstat_simil(presDfm, method = "eJaccard", margin = "features"))[,"soviet"], 2)
+    ejacQuanteda <- ejacQuanteda[order(names(ejacQuanteda))]
+    ejacQuanteda <- ejacQuanteda[-which(names(ejacQuanteda) == "soviet")]
+    expect_equal(ejacQuanteda, ejacProxy)
 })
 
 # dice -binary
@@ -117,6 +129,11 @@ test_that("test textstat_simil method = \"dice\" against proxy::simil(): documen
     diceQuanteda <- diceQuanteda[-which(names(diceQuanteda) == "1981-Reagan")]
     diceProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "dice", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
     if("1981-Reagan" %in% names(diceProxy)) diceProxy <- diceProxy[-which(names(diceProxy) == "1981-Reagan")]
+    expect_equal(diceQuanteda, diceProxy)
+    
+    # slow way -- y is null
+    diceQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, method = "dice", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    diceQuanteda <- diceQuanteda[-which(names(diceQuanteda) == "1981-Reagan")]
     expect_equal(diceQuanteda, diceProxy)
 })
 
@@ -147,6 +164,11 @@ test_that("test textstat_simil method = \"edice\" against proxy::simil(): docume
     ediceProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "edice", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
     if("1981-Reagan" %in% names(ediceProxy)) ediceProxy <- ediceProxy[-which(names(ediceProxy) == "1981-Reagan")]
     expect_equal(ediceQuanteda, ediceProxy)
+    
+    # y is null
+    ediceQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, method = "eDice", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    ediceQuanteda <- ediceQuanteda[-which(names(ediceQuanteda) == "1981-Reagan")]
+    expect_equal(ediceQuanteda, ediceProxy)
 })
 
 test_that("test textstat_simil method = \"edice\" against proxy::simil(): features", {
@@ -176,6 +198,11 @@ test_that("test textstat_simil method = \"simple matching\" against proxy::simil
     smcProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "simple matching", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
     if("1981-Reagan" %in% names(smcProxy)) smcProxy <- smcProxy[-which(names(smcProxy) == "1981-Reagan")]
     expect_equal(smcQuanteda, smcProxy)
+    
+    #slow way: y is null
+    smcQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, method = "simple matching", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    smcQuanteda <- smcQuanteda[-which(names(smcQuanteda) == "1981-Reagan")]
+    expect_equal(smcQuanteda, smcProxy)
 })
 
 test_that("test textstat_simil method = \"simple matching\" against proxy::simil(): features", {
@@ -204,6 +231,11 @@ test_that("test textstat_simil method = \"hamann\" against proxy::simil(): docum
     hamnQuanteda <- hamnQuanteda[-which(names(hamnQuanteda) == "1981-Reagan")]
     hamnProxy <- sort(round(as.matrix(proxy::simil(as.matrix(presDfm), "hamman", diag = FALSE, upper = FALSE))[, "1981-Reagan"], 6), decreasing = FALSE)
     if("1981-Reagan" %in% names(hamnProxy)) hamnProxy <- hamnProxy[-which(names(hamnProxy) == "1981-Reagan")]
+    expect_equal(hamnQuanteda, hamnProxy)
+    
+    # y is null
+    hamnQuanteda <- sort(round(as.matrix(textstat_simil(presDfm, method = "hamann", margin = "documents", upper = TRUE))[,"1981-Reagan"], 6), decreasing = FALSE)
+    hamnQuanteda <- hamnQuanteda[-which(names(hamnQuanteda) == "1981-Reagan")]
     expect_equal(hamnQuanteda, hamnProxy)
 })
 
@@ -250,6 +282,13 @@ test_that("test textstat_simil method = \"faith\" against proxy::simil(): featur
     faithProxy <- faithProxy[-which(names(faithProxy) == "soviet")]
     
     expect_equal(faithQuanteda, faithProxy)
+    
+    # y is null
+    faithQuanteda <- round(as.matrix(textstat_simil(presDfm, method = "faith", margin = "features"))[,"soviet"], 2)
+    faithQuanteda <- faithQuanteda[order(names(faithQuanteda))]
+    faithQuanteda <- faithQuanteda[-which(names(faithQuanteda) == "soviet")]
+    expect_equal(faithQuanteda, faithProxy)
+    
 })
 
 test_that("as.matrix.simil works as expected",{
