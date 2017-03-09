@@ -48,7 +48,7 @@ sources are:
 \itemize{ 
 \item a \link{character} vector, consisting of one document per element; if 
   the elements are named, these names will be used as document names.
-\item a \link[readtext]{readtext} object, from the \pkg{readtext} package 
+\item a readtext object, from the \pkg{readtext} package 
   (which is a specially constructed data.frame)
 \item a \link{data.frame}, whose default variable containing the document is 
   character vector named \code{text}, although this can be set to any other
