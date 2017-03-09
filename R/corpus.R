@@ -49,7 +49,7 @@
 #'   also likely to break should the internal structure of a corpus object
 #'   change (as it inevitably will as we continue to develop the package,
 #'   including moving corpus objects to the S4 class system).
-#' @seealso \link{corpus-class}, \code{\link{docvars}), \code{\link{metadoc}}, 
+#' @seealso \link{corpus-class}, \code{\link{docvars}}, \code{\link{metadoc}}, 
 #'   \code{\link{metacorpus}}, 
 #'   \code{\link{settings}}, \code{\link{texts}}, \code{\link{ndoc}}, 
 #'   \code{\link{docnames}}

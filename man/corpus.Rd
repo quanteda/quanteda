@@ -126,6 +126,12 @@ summary(corpus(mydf, text_field = "some_text",
 mykwic <- kwic(data_corpus_inaugural, "southern")
 summary(corpus(mykwic))
 }
+\seealso{
+\link{corpus-class}, \code{\link{docvars}}, \code{\link{metadoc}}, 
+  \code{\link{metacorpus}}, 
+  \code{\link{settings}}, \code{\link{texts}}, \code{\link{ndoc}}, 
+  \code{\link{docnames}}
+}
 \author{
 Kenneth Benoit and Paul Nulty
 }
