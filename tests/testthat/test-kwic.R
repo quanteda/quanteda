@@ -30,17 +30,25 @@ test_that("test attr(kwic, 'ntoken') text names", {
     
 test_that("test kwic general", {
     testkwic <- kwic(paste(LETTERS, collapse=' '), 'D')
+    
+    dtf <- data.frame(
+        docname = factor('text1'),
+        # position = "4:4",
+        position = 4,
+        contextPre = ' A B C',
+        keyword = 'D',
+        contextPost = 'E F G H I',
+        stringsAsFactors = FALSE)
+    
     expect_equal(
         data.frame(testkwic),
-        data.frame(
-            docname = factor('text1'),
-            # position = "4:4",
-            position = 4,
-            contextPre = ' A B C',
-            keyword = 'D',
-            contextPost = 'E F G H I',
-            stringsAsFactors = FALSE)
-        )
+        dtf)
+    
+    #tokenizedTexts
+    testkwic <- kwic(tokenize(paste(LETTERS, collapse=' ')), 'D')
+    expect_equal(
+        data.frame(testkwic),
+        dtf)   
 })
 
 
@@ -222,4 +230,35 @@ test_that("textplot_xray works with new kwic, two token phrase", {
     expect_silent(textplot_xray(knew))
 })
 
+test_that("textplot_xray works with new kwic, two token phrase", {
+    data_corpus_inauguralPost70 <- corpus_subset(data_corpus_inaugural, Year > 1970)
+    knew <- kwic(data_corpus_inauguralPost70, "american people", new = TRUE)
+    kold <- kwic(data_corpus_inauguralPost70, "american people", new = FALSE)
+    expect_silent(textplot_xray(kold))
+    expect_silent(textplot_xray(knew))
+})
 
+test_that("as.kwic works as expected", {
+    kold <- kwic(data_corpus_inaugural, "provident*", new = FALSE)
+    expect_true(setequal(class(as.kwic(kold)), c("kwic", "data.frame")))
+    
+})
+
+test_that("print method works as expected", {
+    testkwic <- kwic('what does the fox say fox', 'fox')
+    expect_output(print(testkwic), "*\\| fox \\|*")
+    expect_output(print(testkwic), "\\[text1, 4\\]*")
+    
+    testkwic <- kwic('what does the fox say fox', 'foox')
+    expect_null(print(testkwic))
+})
+
+test_that("print method (kwic_old) works as expected", {
+    testkwic <- kwic('what does the fox say fox', 'fox', new = FALSE)
+    expect_output(print(testkwic), "*\\[*fox*\\]*")
+    expect_output(print(testkwic), "\\[text1, 4\\]*")
+    expect_output(print(testkwic), "*contextPre keyword contextPost*")
+    
+    testkwic <- kwic('what does the fox say fox', 'foox', new = FALSE)
+    expect_null(print(testkwic))
+})
