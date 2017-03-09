@@ -295,9 +295,24 @@ test_that("as.matrix.simil works as expected",{
     documents = c('Bacon ipsum dolor amet tenderloin hamburger bacon t-bone, ', 
                   'Tenderloin turducken corned beef bacon. ', 
                   ' Burgdoggen venison tail, hamburger filet mignon capicola meatloaf pig pork belly. ')
-    dtm = dfm(tokens(documents))
+    dtm <- dfm(tokens(documents))
     
     sim <- as.matrix(textstat_simil(dtm))
     aMat <- c(1,1,1)
     expect_equivalent(diag(sim), aMat)
+})
+
+test_that("textstat_simil works as expected for selections",{
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    sim <- suppressWarnings(textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents"))
+    
+    expect_equal(round(as.matrix(sim)["1981-Reagan","1985-Reagan"],2), 0.0)
+})
+
+test_that("textstat_simil stops as expected for methods not supported",{
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    expect_error(textstat_simil(presDfm, method = "Yule"), 
+                 "The metric is not currently supported by quanteda, please use other packages such as proxy::dist\\(\\)\\/simil\\(\\).")
 })
