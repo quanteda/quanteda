@@ -48,7 +48,20 @@ test_that("test kwic general", {
     testkwic <- kwic(tokenize(paste(LETTERS, collapse=' ')), 'D')
     expect_equal(
         data.frame(testkwic),
-        dtf)   
+        dtf) 
+    
+    dtf_old <- data.frame(
+        docname = factor('text1'),
+        # position = "4:4",
+        position = 4,
+        contextPre = 'A B C',
+        keyword = 'D',
+        contextPost = 'E F G H I',
+        stringsAsFactors = FALSE)
+    testkwic_old <- kwic_old(tokens(paste(LETTERS, collapse=' ')), 'D', new = FALSE)
+    expect_equal(
+        data.frame(testkwic_old),
+        dtf_old) 
 })
 
 
