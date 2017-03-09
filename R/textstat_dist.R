@@ -7,7 +7,7 @@
 #' @export
 #' @param p The power of the Minkowski distance.
 #' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
-#' \code{"canberra"}, \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"}, \code{"kullback"}. 
+#' \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"}, \code{"kullback"}. 
 #' \code{"manhattan"}, \code{"maximum"}, \code{"canberra"}, and \code{"minkowski"}.
 #' @importFrom RcppParallel RcppParallelLibs
 #' @author Kenneth Benoit, Haiyan Wang
