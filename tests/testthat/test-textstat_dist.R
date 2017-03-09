@@ -24,8 +24,12 @@ test_that("test textstat_dist method = \"Euclidean\" against proxy dist() and st
     eucQuanteda <- sort(round(as.matrix(textstat_dist(presDfm, method = "euclidean", margin = "documents"))[,"1981-Reagan"], 6), decreasing = FALSE)
     eucProxy <- sort(round(as.matrix(proxy::dist(as.matrix(presDfm), "euclidean", diag = FALSE, upper = FALSE, p = 2))[, "1981-Reagan"], 6), decreasing = FALSE)
     eucStats <- sort(round(as.matrix(stats::dist(as.matrix(presDfm), method = "euclidean", diag = FALSE, upper = FALSE, p = 2))[,"1981-Reagan"], 6),  decreasing = FALSE)
+    expect_equal(eucQuanteda, eucProxy)
     expect_equal(eucQuanteda, eucStats)
-    expect_equal(eucQuanteda, eucStats)
+    
+    # Only calculate distance on the selections
+    eucQuanteda <- sort(round(as.matrix(textstat_dist(presDfm, "1981-Reagan", method = "euclidean", margin = "documents"))[,"1981-Reagan"], 6), decreasing = FALSE)
+    expect_equal(eucQuanteda, eucProxy)
 })
 
 # Chi-squared distance 
@@ -195,6 +199,30 @@ test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distan
     expect_equal(hammingQuanteda, hammingE1071)
 })
 
+test_that("test textstat_dist method = \"binary\" against proxy::simil(): features", {
+    skip_if_not_installed("proxy")
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    
+    jacQuanteda <- round(as.matrix(textstat_dist(presDfm, "soviet", method = "binary", margin = "features"))[,"soviet"], 2)
+    jacQuanteda <- jacQuanteda[order(names(jacQuanteda))]
+    jacQuanteda <- jacQuanteda[-which(names(jacQuanteda) == "soviet")]
+    
+    jacProxy <- round(drop(proxy::simil(as.matrix(presDfm), as.matrix(presDfm[, "soviet"]), "binary", by_rows = FALSE)), 2)
+    jacProxy <- jacProxy[order(names(jacProxy))]
+    if("soviet" %in% names(jacProxy)) jacProxy <- jacProxy[-which(names(jacProxy) == "soviet")]
+    
+    expect_equal(jacQuanteda, jacProxy)
+})
+
+test_that("textstat_dist works as expected for selections",{
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    sim <- suppressWarnings(textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents"))
+    
+    expect_equal(round(as.matrix(sim)["1981-Reagan","1985-Reagan"],2), 0.0)
+})
+
 test_that("as.list.dist works as expected",{
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
@@ -204,3 +232,9 @@ test_that("as.list.dist works as expected",{
     expect_equivalent(ddist_list$`1981-Reagan`[1:3], c(851, 804, 785))
 })
 
+test_that("textstat_dist stops as expected for methods not supported",{
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    expect_error(textstat_dist(presDfm, method = "Yule"), 
+                 "The metric is not currently supported by quanteda, please use other packages such as proxy::dist\\(\\)\\/simil\\(\\).")
+})

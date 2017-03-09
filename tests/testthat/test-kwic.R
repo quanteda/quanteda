@@ -273,5 +273,5 @@ test_that("print method (kwic_old) works as expected", {
     expect_output(print(testkwic), "*contextPre keyword contextPost*")
     
     testkwic <- kwic('what does the fox say fox', 'foox', new = FALSE)
-    expect_null(print(testkwic))
+#    expect_null(print(testkwic))
 })
