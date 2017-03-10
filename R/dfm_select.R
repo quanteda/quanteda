@@ -103,6 +103,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
         }
         features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
         features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
+        features_id <- sort(features_id) # keep the original column order
     } else {
         if (selection == "keep")
             features_id <- 1:nfeature(x)
@@ -118,6 +119,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     if (!is.null(documents)){
         documents <- unlist(documents, use.names = FALSE) # this funciton does not accpet list
         documents_id <- unlist(regex2id(documents, labels, valuetype, case_insensitive, FALSE), use.names = FALSE)
+        documents_id <- sort(documents_id) # keep the original row order
     } else {
         if (selection == "keep")
             documents_id <- 1:ndoc(x)
@@ -147,14 +149,16 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
                     x <- new("dfmSparse", Matrix::rbind2(x, sparseMatrix(i = NULL, j = NULL, dims = c(length(labels_add), nfeature(x)), 
                                                                          dimnames = list(labels_add, featnames(x)))))
                 }
+            } else {
+                types_add <- labels_add <- character()
             }
         }
     } else {
         if (length(features_id) == nfeature(x) || length(documents_id) == ndoc(x)) {
             return(NULL)    
-        } else if(is.null(features_id)) {
+        } else if(!length(features_id)) {
             x <- x[documents_id * -1,]
-        } else if(is.null(documents_id)) {
+        } else if(!length(documents_id)) {
             x <- x[, features_id * -1]
         } else {
             x <- x[documents_id * -1, features_id * -1]
@@ -166,12 +170,13 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
              format(length(features_id), big.mark=","),
              " feature", ifelse(length(features_id) > 1, "s", ""), " in ",
              format(length(documents_id), big.mark=","),
-             " documents", ifelse(length(documents_id) > 1, "s", " padding 0s for "),
+             " documents", ifelse(length(documents_id) > 1, "s", ""),
+             " padding 0s for ",
              format(length(types_add), big.mark=","), 
              " feature", ifelse(length(types_add) > 1, "s", ""), " and ",
              format(length(labels_add), big.mark=","),
-             " document", ifelse(length(labels_add) > 1, "s", "."),
-             sep = "\n")
+             " document", ifelse(length(labels_add) > 1, "s", ".\n"),
+             sep = "")
     } 
     
     return(x)
