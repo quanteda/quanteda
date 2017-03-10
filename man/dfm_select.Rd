@@ -12,7 +12,7 @@ dfm_select(x, features = NULL, documents = NULL, selection = c("keep",
   case_insensitive = TRUE, min_nchar = 1, max_nchar = 63,
   padding = FALSE, verbose = FALSE, ...)
 
-dfm_remove(x, features = NULL, ...)
+dfm_remove(x, features = NULL, documents = NULL, ...)
 
 fcm_select(x, features = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
@@ -59,13 +59,14 @@ removed}
 \value{
 A \link{dfm} or \link{fcm} object, after the feature selection has been applied.
   
-  When \code{features} is a \link{dfm} object, then the returned object will 
-  be identical in its feature set to the dfm supplied as the \code{features} 
-  argument.  This means that any features in \code{x} not in \code{features} 
-  will be discarded, and that any features in found in the dfm supplied as 
-  \code{features} but not found in \code{x} will be added with all zero 
-  counts.  This is useful when you have trained a model on one dfm, and need 
-  to project this onto a test set whose features must be identical.  See examples.
+  When \code{features} is a \link{dfm} object and \code{padding} is \code{TRUE} , 
+  then the returned object will be identical in its feature set to the dfm 
+  supplied as the \code{features} argument. This means that any features in 
+  \code{x} not in \code{features} will be discarded, and that any features in 
+  found in the dfm supplied as \code{features} but not found in \code{x} will 
+  be added with all zero counts.  This is useful when you have trained a model 
+  on one dfm, and need to project this onto a test set whose features must be 
+  identical.  See examples.
 }
 \description{
 This function selects or discards features from a \link{dfm} or \link{fcm}, based on a 
