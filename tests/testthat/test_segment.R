@@ -22,6 +22,19 @@ No there is another.")
     expect_equal(as.character(cseg)[2], c(d1.2 = "Second paragraph is this one!  Here is the third sentence."))
 })
 
+test_that("corpus_segment works when the delimiter is of glob pattern", {
+    txt <- c(d1 = 
+                 "Paragraph one.  
+
+Second paragraph is this one!  Here is the third sentence.",
+             d2 = "Only paragraph of doc2?  
+
+No there is another.")
+    mycorp <- corpus(txt, docvars = data.frame(title = c("doc1", "doc2")))
+    cseg <- corpus_segment(mycorp, "paragraphs", delimiter = "paragraph*")
+    expect_equal(as.character(cseg)[2], c(d1.2 = "is this one!  Here is the third sentence."))
+})
+
 test_that("corpus_segment works for tags", {
     testCorpus <- corpus(c("##INTRO This is the introduction. 
                        ##DOC1 This is the first document.  
@@ -85,6 +98,17 @@ test_that("char_segment works for tags", {
     # old segment.character
     testCharSeg <- suppressWarnings(segment(txt, "tags"))
     expect_equal(testCharSeg[5], "Two starts before")
+})
+
+test_that("char_segment works for glob customized tags", {
+    txt <- c("##INTRO This is the introduction. 
+                           ##DOC1 This is the first document.  
+                           Second sentence in Doc 1.  
+                           ##DOC3 Third document starts here.  
+                           End of third document.",
+             "##INTRO Document ##NUMBER Two starts before ##NUMBER Three.")
+    testCharSeg <- char_segment(txt, "tags", delimiter = "document*", valuetype = "glob")
+    expect_equal(testCharSeg[4], ".")
 })
 
 test_that("char_segment tokens works", {
