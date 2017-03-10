@@ -135,16 +135,6 @@ Demonstration
 
 ``` r
 library(quanteda)
-## quanteda version 0.9.9.29
-## Using 7 of 8 cores for parallel computing
-## 
-## Attaching package: 'quanteda'
-## The following object is masked from 'package:utils':
-## 
-##     View
-## The following object is masked from 'package:base':
-## 
-##     sample
 
 # create a corpus from the immigration texts from UK party platforms
 uk2010immigCorpus <- 
@@ -168,7 +158,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Fri Mar  3 14:34:51 2017
+## Created: Fri Mar 10 18:56:55 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context

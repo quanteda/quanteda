@@ -39,7 +39,7 @@ A dictionary class object, essentially a specially classed named list
   of characters.
 }
 \description{
-Create a quanteda dictionary, either from a list or by importing from a 
+Create a \pkg{quanteda} dictionary class object, either from a list or by importing from a 
 foreign format.  Currently supported input file formats are the Wordstat,
 LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import using the 
 LIWC format works with 
@@ -81,6 +81,8 @@ Wordstat dictionaries page, from Provalis Research
   
   Yoshikoder page, from Will Lowe 
   \url{http://conjugateprior.org/software/yoshikoder/}.
+  
+  Lexicoder format, \url{http://www.lexicoder.com}
 }
 \seealso{
 \link{dfm}

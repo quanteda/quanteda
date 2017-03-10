@@ -91,17 +91,17 @@ or based on a user defined &quot;tag&quot; pattern.  See details.</p>
     <pre><span class='fu'>corpus_segment</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"tokens"</span>, <span class='st'>"tags"</span>,
   <span class='st'>"other"</span>), <span class='kw'>delimiter</span> <span class='kw'>=</span> <span class='fu'>switch</span>(<span class='no'>what</span>, <span class='kw'>paragraphs</span> <span class='kw'>=</span> <span class='st'>"\\n{2}"</span>, <span class='kw'>tags</span> <span class='kw'>=</span>
   <span class='st'>"##\\w+\\b"</span>, <span class='kw'>NULL</span>), <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"regex"</span>, <span class='st'>"fixed"</span>, <span class='st'>"glob"</span>),
-  <span class='kw'>keepdocvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+  <span class='kw'>use_docvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
 
 <span class='fu'>char_segment</span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sentences"</span>, <span class='st'>"paragraphs"</span>, <span class='st'>"tokens"</span>, <span class='st'>"tags"</span>,
   <span class='st'>"other"</span>), <span class='kw'>delimiter</span> <span class='kw'>=</span> <span class='fu'>switch</span>(<span class='no'>what</span>, <span class='kw'>paragraphs</span> <span class='kw'>=</span> <span class='st'>"\\n{2}"</span>, <span class='kw'>tags</span> <span class='kw'>=</span>
   <span class='st'>"##\\w+\\b"</span>, <span class='kw'>NULL</span>), <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"regex"</span>, <span class='st'>"fixed"</span>, <span class='st'>"glob"</span>),
-  <span class='kw'>keepdocvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>use_docvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>corpus object whose texts will be segmented</dd>
+      <dd>character or <a href='corpus.html'>corpus</a> object whose texts will be segmented</dd>
       <dt>what</dt>
       <dd>unit of segmentation.  Current options are <code>&quot;tokens&quot;</code> 
 (default), <code>&quot;sentences&quot;</code>, <code>&quot;paragraphs&quot;</code>, <code>&quot;tags&quot;</code>, and 
@@ -119,7 +119,7 @@ effect for segmentation into tokens or sentences</dd>
       <dd>how to interpret keyword expressions: <code>&quot;glob&quot;</code> for 
 &quot;glob&quot;-style wildcard expressions; <code>&quot;regex&quot;</code> for regular expressions;
 or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</dd>
-      <dt>keepdocvars</dt>
+      <dt>use_docvars</dt>
       <dd>(for corpus objects) if <code>TRUE</code>, repeat the docvar
 values for each segmented text; if <code>FALSE</code>, drop the docvars in the
 segmented corpus. Dropping the docvars might be useful in order to conserve
@@ -148,7 +148,7 @@ are determined by the tokenizer behaviour in <code><a href='tokens.html'>tokens<
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Does not currently record document segments if segmenting a multi-text 
-  corpus into smaller units. For this, use <a href='changeunits.html'>changeunits</a> instead.</p>
+  corpus into smaller units. For this, use <a href='corpus_reshape.html'>corpus_reshape</a> instead.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -170,7 +170,7 @@ are determined by the tokenizer behaviour in <code><a href='tokens.html'>tokens<
 #&gt;  text2.3     2      2         1 ##NUMBER textSerial2
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Fri Mar  3 14:34:57 2017
+#&gt; Created: Fri Mar 10 18:57:01 2017
 #&gt; Notes:   corpus_segment(corpus_segment.corpus)corpus_segment(testCorpus)corpus_segment(tags)
 #&gt; </div><div class='input'><span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>testCorpusSeg</span>)</div><div class='output co'>#&gt;                                                  text1.1 
 #&gt;                              &quot;This is the introduction.&quot; 
@@ -290,7 +290,7 @@ are determined by the tokenizer behaviour in <code><a href='tokens.html'>tokens<
 #&gt;  Conservative.8    16     16         1
 #&gt; 
 #&gt; Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/reference/* on x86_64 by kbenoit
-#&gt; Created: Fri Mar  3 14:34:57 2017
+#&gt; Created: Fri Mar 10 18:57:01 2017
 #&gt; Notes:   corpus_segment(corpus_segment.corpus)corpus_segment(corpus(data_char_ukimmig2010))corpus_segment(sentences)
 #&gt; </div><div class='input'>
 <span class='co'># same as tokenize()</span>

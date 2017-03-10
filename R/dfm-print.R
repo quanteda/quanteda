@@ -60,7 +60,7 @@ setMethod("show", signature(object = "dfm"), function(object) print(object))
 #'   will contain the first \code{ncol} features
 #' @param ... additional arguments passed to other functions
 #' @return A \link{dfm} class object corresponding to the subset defined 
-#'   by \code{n} and \code{ncol}.
+#'   by \code{n} and \code{nfeature}.
 #' @export
 #' @name head.dfm
 #' @method head dfm

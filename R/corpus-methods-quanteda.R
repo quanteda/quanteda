@@ -1,10 +1,9 @@
 #' get or set corpus metadata
 #' 
-#' Get or set the corpus-level metadata in a quanteda corpus object.
-#' 
-#' @param x A quanteda corpus object
-#' @param field Metadata field name(s).  If \code{NULL} (default), return all
-#'   metadata names.
+#' Get or set the corpus-level metadata in a \link{corpus} object.
+#' @param x a \link{corpus} object
+#' @param field metadata field name(s);  if \code{NULL} (default), return all
+#'   metadata names
 #' @return For \code{metacorpus}, a list of the metadata fields in the corpus. 
 #'   If a list is not what you wanted, you can wrap the results in \link{unlist}, 
 #'   but this will remove any metadata field that is set to \code{NULL}.

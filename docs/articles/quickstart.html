@@ -205,7 +205,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 ##   1805-Jefferson   804   2381        45
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Fri Mar  3 14:35:56 2017
+## Created: Fri Mar 10 18:57:57 2017
 ## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>substring()</code> function to extract characters from a name – in this case, the name of the character vector <code>data_char_inaugural</code>. This works using our fixed starting and ending positions with <code>substring()</code> because these names are a very regular format of <code>YYYY-PresidentName</code>.</p>
@@ -222,7 +222,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 ##   1805-Jefferson   804   2381        45  Jefferson 1805
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Fri Mar  3 14:35:56 2017
+## Created: Fri Mar 10 18:57:57 2017
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -244,7 +244,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 ##  data_char_inaugural_5
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Fri Mar  3 14:35:56 2017
+## Created: Fri Mar 10 18:57:57 2017
 ## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -443,7 +443,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ##       2013-Obama   814   2335        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Fri Mar  3 14:35:56 2017
+## Created: Fri Mar 10 18:57:58 2017
 ## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -819,9 +819,9 @@ if (<span class="kw">require</span>(topicmodels)) {
 }
 ## Loading required package: topicmodels
 ##      Lenihan FF Bruton FG Burton LAB Morgan SF Cowen FF Kenny FG ODonnell FG Gilmore LAB Higgins LAB Quinn LAB Gormley Green Ryan Green Cuffe Green OCaolain SF
-## [1,]          9        18         14         2        4       12           6           1          16        15             7          8           7           3
-## [2,]         13         8         10        19        5       15          17          13          11        11             9         11          11          16
-## [3,]         15        16         20        15       15        6          15          11          10        10             5          7           5          15</code></pre></div>
+## [1,]          3        18          7        14        6       20          11           5           1         2            12          8           9           4
+## [2,]          2        12         16        17       19       15          12           2          10        10             3         19          10          10
+## [3,]          7         1          6        13        2       11           9           1          19        19             6          9          19           1</code></pre></div>
 </div>
 </div>
 </div>

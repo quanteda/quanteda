@@ -62,7 +62,7 @@ a \link{dfm-class} object
 }
 \description{
 Construct a sparse document-feature matrix, from a character, \link{corpus}, 
-or \link{tokens} object.
+\link{tokens}, or even other \link{dfm} object.
 }
 \details{
 The default behavior for \code{remove}/\code{select} when 
@@ -75,7 +75,6 @@ The default behavior for \code{remove}/\code{select} when
 }
 \examples{
 ## for a corpus
-
 corpus_post80inaug <- corpus_subset(data_corpus_inaugural, Year > 1980)
 dfm(corpus_post80inaug)
 dfm(corpus_post80inaug, tolower = FALSE)
@@ -116,7 +115,7 @@ featnames(dfm(testCorpus, select = stopwords("english")))
 featnames(dfm(testCorpus, ngrams = 2, select = stopwords("english"), removePunct = TRUE))
 featnames(dfm(testCorpus, ngrams = 1:2, select = stopwords("english"), removePunct = TRUE))
 
-## removing stopwords before constructing ngrams
+# removing stopwords before constructing ngrams
 tokensAll <- tokens(char_tolower(testText), removePunct = TRUE)
 tokensNoStopwords <- removeFeatures(tokensAll, stopwords("english"))
 tokensNgramsNoStopwords <- tokens_ngrams(tokensNoStopwords, 2)

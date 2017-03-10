@@ -23,7 +23,7 @@ will contain the first \code{ncol} features}
 }
 \value{
 A \link{dfm} class object corresponding to the subset defined 
-  by \code{n} and \code{ncol}.
+  by \code{n} and \code{nfeature}.
 }
 \description{
 For a \link{dfm} object, returns the first or last \code{n} documents 

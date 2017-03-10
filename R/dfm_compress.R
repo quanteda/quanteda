@@ -1,17 +1,17 @@
 #' compress a dfm or fcm by combining identical dimension elements
 #' 
-#' "Compresses" a dfm (or fcm) whose dimension names are the same, for either
-#' documents or features.  This may happen, for instance, if features are made
-#' equivalent through application of a thesaurus.  It may also occur after
-#' lower-casing or stemming the features of a dfm, but this should only be done
-#' in very rare cases (approaching never: it's better to do this \emph{before}
-#' constructing the dfm.)  It could also be needed after a
+#' "Compresses" a \link{dfm} or \link{fcm} whose dimension names are the same,
+#' for either documents or features.  This may happen, for instance, if features
+#' are made equivalent through application of a thesaurus.  It may also occur
+#' after lower-casing or stemming the features of a dfm, but this should only be
+#' done in very rare cases (approaching never: it's better to do this
+#' \emph{before} constructing the dfm.)  It could also be needed after a 
 #' \code{\link{cbind.dfm}} or \code{\link{rbind.dfm}} operation.
 #' 
 #' @param x input object, a \link{dfm} or \link{fcm}
 #' @param margin character indicating on which margin to compress a dfm, either 
 #'   \code{"documents"}, \code{"features"}, or \code{"both"} (default).  For fcm
-#'   objects, \code{"documents"} has an effect.
+#'   objects, \code{"documents"} has no effect.
 #' @param ... additional arguments passed from generic to specific methods
 #' @export
 #' @examples 
