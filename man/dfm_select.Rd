@@ -7,9 +7,10 @@
 \alias{fcm_remove}
 \title{select features from a dfm or fcm}
 \usage{
-dfm_select(x, features = NULL, selection = c("keep", "remove"),
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  min_nchar = 1, max_nchar = 63, verbose = FALSE, ...)
+dfm_select(x, features = NULL, documents = NULL, selection = c("keep",
+  "remove"), valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE, min_nchar = 1, max_nchar = 63,
+  padding = FALSE, verbose = FALSE, ...)
 
 dfm_remove(x, features = NULL, ...)
 
@@ -27,6 +28,9 @@ fcm_remove(x, features, ...)
 object whose values (not keys) will provide the features to be selected. 
 For \link{dfm} objects, see details in the Value section below.}
 
+\item{documents}{select documents based on their document names. Works exactly 
+the same as features.}
+
 \item{selection}{whether to \code{keep} or \code{remove} the features}
 
 \item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
@@ -41,6 +45,10 @@ in characters for features to be removed or kept; defaults are 1 and
  (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are
 applied after (and hence, in addition to) any selection based on pattern
 matches.}
+
+\item{padding}{if \code{TRUE} features or documents not existing in x is 
+added to \link{dfm}. This option is available only when selection is 
+\code{keep} and valuetype is \code{fixed}.}
 
 \item{verbose}{if \code{TRUE} print message about how many features were 
 removed}

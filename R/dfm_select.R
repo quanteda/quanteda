@@ -9,6 +9,8 @@
 #'   \link{dfm} whose features will be used for selection, or a dictionary class
 #'   object whose values (not keys) will provide the features to be selected. 
 #'   For \link{dfm} objects, see details in the Value section below.
+#' @param documents select documents based on their document names. Works exactly 
+#'   the same as features. 
 #' @param selection whether to \code{keep} or \code{remove} the features
 #' @inheritParams valuetype
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
@@ -18,6 +20,9 @@
 #'    (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are
 #'   applied after (and hence, in addition to) any selection based on pattern
 #'   matches.
+#' @param padding if \code{TRUE} features or documents not existing in x is 
+#'   added to \link{dfm}. This option is available only when selection is 
+#'   \code{keep} and valuetype is \code{fixed}. 
 #' @param verbose if \code{TRUE} print message about how many features were 
 #'   removed
 #' @param ... supplementary arguments passed to the underlying functions in 
@@ -69,10 +74,12 @@
 #' dfm_select(dfm1, dfm2a)
 #' dfm_select(dfm1, dfm2a, selection = "remove")
 #' 
-dfm_select <- function(x, features = NULL, selection = c("keep", "remove"), 
+dfm_select <- function(x, features = NULL, documents = NULL, 
+                       selection = c("keep", "remove"), 
                        valuetype = c("glob", "regex", "fixed"),
                        case_insensitive = TRUE,
                        min_nchar = 1, max_nchar = 63,
+                       padding = FALSE,
                        verbose = FALSE, ...) {
     UseMethod("dfm_select")
 }
@@ -114,7 +121,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     # select features based on character length
     features_id <- intersect(features_id, which(stringi::stri_length(types) >= min_nchar & 
                                                 stringi::stri_length(types) <= max_nchar))
-    
+
     # select documents based on "documents" pattern
     if (!is.null(documents)){
         documents <- unlist(documents, use.names = FALSE) # this funciton does not accpet list
@@ -126,10 +133,12 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
         else
             documents_id <- NULL
     }
-
+    
+    types_add <- labels_add <- character() # avoid error in verbose message
+    
     if (selection == "keep") {
         if (!length(features_id) || !length(documents_id)) {
-            return(NULL)
+            x <- NULL
         } else {
             x <- x[documents_id, features_id]
             if (valuetype == 'fixed' & padding) {
@@ -149,13 +158,11 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
                     x <- new("dfmSparse", Matrix::rbind2(x, sparseMatrix(i = NULL, j = NULL, dims = c(length(labels_add), nfeature(x)), 
                                                                          dimnames = list(labels_add, featnames(x)))))
                 }
-            } else {
-                types_add <- labels_add <- character()
             }
         }
     } else {
         if (length(features_id) == nfeature(x) || length(documents_id) == ndoc(x)) {
-            return(NULL)    
+            x <- NULL    
         } else if(!length(features_id)) {
             x <- x[documents_id * -1,]
         } else if(!length(documents_id)) {
