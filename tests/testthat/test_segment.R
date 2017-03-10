@@ -42,6 +42,13 @@ test_that("corpus_segment works for tags", {
         as.character(testCorpusSeg)[5],
         c(text2.2 = "Two starts before")
     )
+    
+    # old segment.corpus
+    testCorpusSeg <- suppressWarnings(segment(testCorpus, "tags"))
+    expect_equal(
+        as.character(testCorpusSeg)[5],
+        c(text2.2 = "Two starts before")
+    )
 })
 
 test_that("char_segment works for sentences", {
@@ -73,6 +80,10 @@ test_that("char_segment works for tags", {
                            End of third document.",
                            "##INTRO Document ##NUMBER Two starts before ##NUMBER Three.")
     testCharSeg <- char_segment(txt, "tags")
+    expect_equal(testCharSeg[5], "Two starts before")
+    
+    # old segment.character
+    testCharSeg <- suppressWarnings(segment(txt, "tags"))
     expect_equal(testCharSeg[5], "Two starts before")
 })
 
