@@ -24,11 +24,11 @@ test_that("test dfm_select, fixed", {
     )
     expect_equal(
         featnames(dfm_select(testdfm, c("aaaa", "bbb", "cc"), selection = "keep", valuetype = "fixed", min_nchar = 3, verbose = FALSE)),
-        c("BBB", "Aaaa")
+        c("Aaaa", "BBB")
     )
     expect_equal(
         featnames(dfm_select(testdfm, c("aaaa", "bbb", "cc"), selection = "remove", valuetype = "fixed", min_nchar = 3, verbose = FALSE)),
-        setdiff(featnames(testdfm), c("BBB", "Aaaa"))
+        setdiff(featnames(testdfm), c("Aaaa", "BBB"))
     )
     expect_equal(
         featnames(dfm_select(testdfm, c("aaaa", "bbb", "cc"), selection = "keep", valuetype = "fixed", min_nchar = 3, max_nchar = 3, verbose = FALSE)),
@@ -60,11 +60,11 @@ test_that("test dfm_select, glob", {
     )
     expect_equal(
         featnames(dfm_select(testdfm, feats, selection = "keep", valuetype = "glob", min_nchar = 3, verbose = FALSE)),
-        c("BBB", "Aaaa")
+        c("Aaaa", "BBB")
     )
     expect_equal(
         featnames(dfm_select(testdfm, feats, selection = "remove", valuetype = "glob", min_nchar = 3, verbose = FALSE)),
-        setdiff(featnames(testdfm), c("BBB", "Aaaa"))
+        setdiff(featnames(testdfm), c("Aaaa", "BBB"))
     )
 })
 
@@ -76,7 +76,7 @@ test_that("test dfm_select, regex", {
     )
     expect_equal(
         featnames(dfm_select(testdfm, feats, selection = "remove", valuetype = "regex", verbose = FALSE)),
-        character(0)
+        NULL
     )
     expect_equal(
         featnames(dfm_select(testdfm, feats, selection = "keep", valuetype = "regex", case_insensitive = FALSE, verbose = FALSE)),
@@ -137,8 +137,14 @@ test_that("longer selection than longer than features that exist (related to #44
 
 test_that("test dfm_select with features from a dfm,  fixed", {
     expect_equal(
-        featnames(dfm_select(testdfm, dfm(c("a", "b", "c")), selection = "keep", valuetype = "fixed", verbose = FALSE)),
-        c("a", "B", "c")
+        featnames(dfm_select(testdfm, dfm(c("a", "b", "c")), selection = "keep", 
+                             valuetype = "fixed", verbose = FALSE, case_insensitive = TRUE)),
+        c("a", "b", "c")
+    )
+    expect_equal(
+        featnames(dfm_select(testdfm, dfm(c("a", "b", "c")), selection = "keep", 
+                             valuetype = "fixed", verbose = FALSE, case_insensitive = FALSE)),
+        c("a", "b", "c")
     )
     expect_equal(
         featnames(dfm_select(testdfm, dfm(c("a", "b", "c")), selection = "remove", valuetype = "fixed", verbose = FALSE)),
