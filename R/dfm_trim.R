@@ -46,7 +46,7 @@
 #' dfm_trim(myDfm, min_docfreq = 0.4, min_count = 0.005)
 #' 
 #' \dontrun{
-#' # compare to removeSpareTerms from the tm package 
+#' # compare to removeSparseTerms from the tm package 
 #' if (require(tm)) {
 #'     (tmdtm <- convert(myDfm, "tm"))
 #'     removeSparseTerms(tmdtm, 0.7)
