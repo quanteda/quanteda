@@ -138,12 +138,12 @@ textstat_simil <- function(x, selection = character(0), n = NULL,
 ## used Matrix::crossprod and Matrix::tcrossprod for sparse Matrix handling
 
 # L2 norm
-norm2 <- function(x,s) { drop(Matrix::crossprod(x^2, s)) ^ 0.5 }
+#norm2 <- function(x,s) { drop(Matrix::crossprod(x^2, s)) ^ 0.5 }
 # L1 norm
-norm1 <- function(x,s) { drop(Matrix::crossprod(abs(x),s)) }
+##norm1 <- function(x,s) { drop(Matrix::crossprod(abs(x),s)) }
 
 #cosine similarity: xy / sqrt(xx * yy)
-cosineSparse <- function(x, y = NULL, margin = 1, norm = norm2) {
+cosineSparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     if (margin == 1) x <- t(x)
     S <- rep(1, nrow(x))			

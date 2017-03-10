@@ -1,3 +1,5 @@
+context("testing tokens")
+
 ##
 ## tokens_hashed tests
 ##
@@ -296,4 +298,22 @@ test_that("types attribute is a character vector", {
 #' # "a b c" "a b d" "a c d" "a c e" "b c d" "b c e" "b d e" "c d e"
 #' 
 #'}
+
+
+test_that("removeURL works as expected", {
+    txt <- c("The URL was http://t.co/something.",
+             "The URL was http://quanteda.io",
+             "https://github.com/kbenoit/quanteda/issue/1 is another URL")
+    toks <- tokens(txt, removeURL = TRUE)
+    expect_equal(
+        as.list(toks),
+        list(c("The", "URL", "was"), c("The", "URL", "was"), c("is", "another", "URL"))
+    )
+
+    toks2 <- tokenize(txt, removeURL = TRUE)
+    expect_equivalent(
+        as.list(toks2),
+        list(c("The", "URL", "was"), c("The", "URL", "was"), c("is", "another", "URL"))
+    )
+})
 

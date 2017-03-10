@@ -8,15 +8,15 @@
 corpus_segment(x, what = c("sentences", "paragraphs", "tokens", "tags",
   "other"), delimiter = switch(what, paragraphs = "\\\\n{2}", tags =
   "##\\\\w+\\\\b", NULL), valuetype = c("regex", "fixed", "glob"),
-  keepdocvars = TRUE, ...)
+  use_docvars = TRUE, ...)
 
 char_segment(x, what = c("sentences", "paragraphs", "tokens", "tags",
   "other"), delimiter = switch(what, paragraphs = "\\\\n{2}", tags =
   "##\\\\w+\\\\b", NULL), valuetype = c("regex", "fixed", "glob"),
-  keepdocvars = TRUE, ...)
+  use_docvars = TRUE, ...)
 }
 \arguments{
-\item{x}{corpus object whose texts will be segmented}
+\item{x}{character or \link{corpus} object whose texts will be segmented}
 
 \item{what}{unit of segmentation.  Current options are \code{"tokens"} 
 (default), \code{"sentences"}, \code{"paragraphs"}, \code{"tags"}, and 
@@ -35,7 +35,7 @@ effect for segmentation into tokens or sentences}
 "glob"-style wildcard expressions; \code{"regex"} for regular expressions;
 or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
-\item{keepdocvars}{(for corpus objects) if \code{TRUE}, repeat the docvar
+\item{use_docvars}{(for corpus objects) if \code{TRUE}, repeat the docvar
 values for each segmented text; if \code{FALSE}, drop the docvars in the
 segmented corpus. Dropping the docvars might be useful in order to conserve
 space or if these are not desired for the segmented corpus.}
@@ -67,7 +67,7 @@ are determined by the tokenizer behaviour in \code{\link{tokens}}.
 }
 \note{
 Does not currently record document segments if segmenting a multi-text 
-  corpus into smaller units. For this, use \link{changeunits} instead.
+  corpus into smaller units. For this, use \link{corpus_reshape} instead.
 }
 \examples{
 testCorpus <- corpus(c("##INTRO This is the introduction.

@@ -50,11 +50,17 @@ test_that("test that ngrams produces the results from Guthrie 2006", {
         ), character(0)
       )
 
+      expect_equivalent(setdiff(
+          as.list(suppressWarnings(ngrams(toks, n = 2:3)))[[1]],
+          c(bi_grams, tri_grams)
+      ), character(0)
+      )
 })
 
 test_that("test `tokens_ngrams` on tokenized texts", {
-      toks <- tokens(c('insurgents killed in ongoing fighting', 'insurgents killed in ongoing fighting'))
+      toks <- tokenize(c('insurgents killed in ongoing fighting', 'insurgents killed in ongoing fighting'))
       ngms <- tokens_ngrams(toks, 2, 0)
+      suppressWarnings(ngms_old <- ngrams(toks, 2, 0))
       ngms_true <- list(
           c('insurgents_killed', 'killed_in', 'in_ongoing', 'ongoing_fighting'),
           c('insurgents_killed', 'killed_in', 'in_ongoing', 'ongoing_fighting')
@@ -69,6 +75,11 @@ test_that("test `tokens_ngrams` on tokenized texts", {
           as.list(ngms),
           ngms_true
       )
+      
+      expect_equivalent(
+          as.list(ngms_old),
+          ngms_true
+      )
 
 })
 
@@ -77,13 +88,31 @@ test_that("test `tokens_ngrams` on characters", {
     charNgms <- char_ngrams(c('insurgents','killed', 'in', 'ongoing', 'fighting'))
     expect_equivalent(
         ngms,
+        c('insurgents_killed', 'killed_in', 'in_ongoing', 'ongoing_fighting')
+    )
+    
+    expect_equivalent(
         charNgms,
         c('insurgents_killed', 'killed_in', 'in_ongoing', 'ongoing_fighting')
     )
     
     expect_warning(tokens_ngrams(c('insurgents killed', 'in', 'ongoing', 'fighting')), 
                    "whitespace detected: you may need to run tokens\\(\\) first")
+    
+    expect_warning(tokens_ngrams(c('insurgents killed', 'in', 'ongoing', 'fighting'), n = 1, skip = 1), 
+                   "skip argument ignored for n = 1")
 })
+
+test_that("test `tokens_ngrams` on skipgrams", {
+    toks <- tokens("insurgents killed in ongoing fighting")
+    ngms <- tokens_skipgrams(toks, n = 2, skip = 0:1, concatenator = " ") 
+    expect_equivalent(
+        as.list(ngms)[[1]],
+        c('insurgents killed', "insurgents in",     "killed in" ,        "killed ongoing" , 
+          "in ongoing",        "in fighting",       "ongoing fighting")
+    )
+})
+
 # FAILLING (issue #469)
 # test_that("test there is not competition between the thread", {
 #     txt <- c(one = char_tolower("Insurgents killed in ongoing fighting."),

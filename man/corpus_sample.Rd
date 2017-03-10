@@ -47,7 +47,4 @@ sentcorpus <- corpus_reshape(doccorpus, to = "sentences")
 texts(sentcorpus)
 texts(corpus_sample(sentcorpus, replace = TRUE, by = "document"))
 }
-\seealso{
-\code{\link{sample}}
-}
 \keyword{corpus}

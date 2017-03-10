@@ -27,7 +27,7 @@ toLower(x, keep_acronyms = FALSE, ...)
 
 \method{toUpper}{tokens}(x, ...)
 
-\method{toLower}{corpus}(x, keep_acronyms = FALSE, ...)
+\method{toLower}{corpus}(x, ...)
 
 toUpper(x, ...)
 

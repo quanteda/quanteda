@@ -94,6 +94,29 @@ test_that("dfm_trim", {
     
 })
 
+test_that("dfm_trim works as expected", {
+    mydfm <- dfm(c("This is a sentence.", "This is a second sentence.", "Third sentence.", "Fouth sentence.", "Fifth sentence."))
+    expect_message(dfm_trim(mydfm, min_count =2, min_docfreq=2, verbose=T),
+                   regexp = "Removing features occurring:")
+    expect_message(dfm_trim(mydfm, min_count =2, min_docfreq=2, verbose=T),
+                   regexp = "fewer than 2 times: 4")
+    expect_message(dfm_trim(mydfm, min_count =2, min_docfreq=2, verbose=T),
+                   regexp = "in fewer than 2 documents: 4")
+    expect_message(dfm_trim(mydfm, min_count =2, min_docfreq=2, verbose=T),
+                   regexp = "  Total features removed: 4 \\(44.4%\\).")
+})
+
+test_that("dfm_trim works as expected", {
+    mydfm <- dfm(c("This is a sentence.", "This is a second sentence.", "Third sentence.", "Fouth sentence.", "Fifth sentence."))
+    expect_message(dfm_trim(mydfm, max_count =2, max_docfreq=2, verbose=T),
+                   regexp = "more than 2 times: 2")
+    expect_message(dfm_trim(mydfm, max_count =2, max_docfreq=2, verbose=T),
+                   regexp = "in more than 2 documents: 2")
+    
+    expect_message(dfm_trim(mydfm, max_count =5, max_docfreq=5, verbose=T),
+                   regexp = "No features removed.")
+})
+
 test_that("dfm_trim works without trimming arguments #509", {
     mydfm <- dfm(c("This is a sentence.", "This is a second sentence.", "Third sentence."))
     expect_equal(dim(mydfm[-2, ]), c(2, 7))
