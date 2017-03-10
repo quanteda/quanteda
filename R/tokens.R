@@ -280,8 +280,12 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
 #' @noRd
 tokens.corpus <- function(x, ..., include_docvars = TRUE) {
     result <- tokens(texts(x), ...)
-    if (include_docvars)
-        docvars(result) <- docvars(x, names(documents(x))[-which(names(documents(x)) == "texts")])
+    if (include_docvars) {
+        docvars(result) <- docvars(x, names(documents(x))[which(names(documents(x)) != "texts")])
+    } else {
+        docvars(result) <- data.frame(matrix(nrow = ndoc(result), ncol = 1)[, -1, drop = FALSE],
+                                      row.names = docnames(result))
+    }
     return(result)
 }
 
@@ -317,7 +321,7 @@ as.tokens.tokenizedTexts <- function(x) {
 
 #' @rdname as.tokens
 #' @param ... unused
-#' @return \code{as.list.tokens} returns a simple list of characters from a
+#' @return \code{as.list} returns a simple list of characters from a
 #'   \link{tokens} object
 #' @export
 as.list.tokens <- function(x, ...) {
@@ -329,8 +333,8 @@ as.list.tokens <- function(x, ...) {
 
 #' @rdname as.tokens
 #' @param use.names logical; preserve names if \code{TRUE}.  For
-#'   \code{as.character.tokens} only.
-#' @return \code{as.character.tokens} returns a character vector from a 
+#'   \code{as.character} only.
+#' @return \code{as.character} returns a character vector from a 
 #'   \link{tokens} object
 #' @export
 as.character.tokens <- function(x, use.names = FALSE, ...) {
@@ -499,7 +503,7 @@ tokens_word <- function(txt, what, removeNumbers, removePunct, removeSymbols, re
     
     if (removeURL) {
         if (verbose & removeURL) catm(", removing URLs")
-        URLREGEX <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
+        URLREGEX <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
         txt <- stri_replace_all_regex(txt, URLREGEX, "")
     }
     
@@ -654,10 +658,7 @@ tokens_hashed_recompile <- function(x, method = c("C++", "R")) {
     
     if (method == "C++") {
         x <- qatd_cpp_tokens_recompile(x, types(x))
-        attrs_input[['types']] <- attr(x, 'types')
-        attrs_input[['padding']] <- attr(x, 'padding')
-        attributes(x) <- attrs_input
-        Encoding(types(x)) <- "UTF-8"
+        attributes(x, FALSE) <- attrs_input
         return(x)
     }
     

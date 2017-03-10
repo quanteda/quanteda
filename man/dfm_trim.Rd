@@ -5,7 +5,7 @@
 \title{trim a dfm using frequency threshold-based feature selection}
 \usage{
 dfm_trim(x, min_count = 1, min_docfreq = 1, max_count = NULL,
-  max_docfreq = NULL, sparsity = NULL, verbose = TRUE)
+  max_docfreq = NULL, sparsity = NULL, verbose = FALSE)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
@@ -60,7 +60,7 @@ dfm_trim(myDfm, min_count = .01, min_docfreq = 2)
 dfm_trim(myDfm, min_docfreq = 0.4, min_count = 0.005)
 
 \dontrun{
-# compare to removeSpareTerms from the tm package 
+# compare to removeSparseTerms from the tm package 
 if (require(tm)) {
     (tmdtm <- convert(myDfm, "tm"))
     removeSparseTerms(tmdtm, 0.7)

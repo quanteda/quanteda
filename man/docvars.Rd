@@ -10,21 +10,23 @@ docvars(x, field = NULL)
 docvars(x, field = NULL) <- value
 }
 \arguments{
-\item{x}{\link{corpus} or \link{tokens} whose document-level variables will be read or set}
+\item{x}{\link{corpus}, \link{tokens}, or \link{dfm} object whose
+document-level variables will be read or set}
 
 \item{field}{string containing the document-level variable name}
 
 \item{value}{the new values of the document-level variable}
 }
 \value{
-\code{docvars} returns a data.frame of the document-level variables, dropping the second
-dimension to form a vector if a single docvar is returned.
+\code{docvars} returns a data.frame of the document-level variables,
+  dropping the second dimension to form a vector if a single docvar is
+  returned.
 
 \code{docvars<-} assigns \code{value} to the named \code{field}
 }
 \description{
-Get or set variables associated with a document in a \link{corpus}, or get these
-variables from a \link{tokens} object.
+Get or set variables associated with a document in a \link{corpus}, or get
+these variables from a \link{tokens} or \link{dfm} object.
 }
 \note{
 Another way to access and set docvars is through indexing of the corpus
@@ -45,12 +47,12 @@ head(docvars(data_corpus_inaugural))
 tail(docvars(data_corpus_inaugural, "President"), 10)
 
 # assigning document variables to a corpus
-docvars(data_corpus_inaugural, "President") <- paste("prez", 1:ndoc(data_corpus_inaugural), sep="")
+docvars(data_corpus_inaugural, "President") <- paste("prez", 1:ndoc(data_corpus_inaugural), sep = "")
 head(docvars(data_corpus_inaugural))
 
 # alternative using indexing
 head(data_corpus_inaugural[, "Year"])
-data_corpus_inaugural[["President2"]] <- paste("prezTwo", 1:ndoc(data_corpus_inaugural), sep="")
+data_corpus_inaugural[["President2"]] <- paste("prezTwo", 1:ndoc(data_corpus_inaugural), sep = "")
 head(docvars(data_corpus_inaugural))
 
 }

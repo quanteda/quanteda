@@ -21,10 +21,10 @@ postive integer value for \code{window}.  Note: if \code{x} is a dfm object, the
 
 \item{count}{how to count co-occurrences:
 \describe{
-\item{\code{frequency}}{count the number of co-occurrences within the context}
-\item{\code{boolean}}{count only the co-occurrence or not within the context, 
+\item{\code{"frequency"}}{count the number of co-occurrences within the context}
+\item{\code{"boolean"}}{count only the co-occurrence or not within the context, 
  irrespective of how many times it occurs.}
-\item{\code{weighted}}{count a weighted function of counts, typically as a 
+\item{\code{"weighted"}}{count a weighted function of counts, typically as a 
 function of distance from the target feature.  Only makes sense for \code{context = "window"}.}
 }}
 
@@ -62,7 +62,7 @@ The function \code{\link{fcm}} provides a very general
   \emph{window}.  When the context is a window, a weighting function is
   typically applied that is a function of distance from the target word (see
   Jurafsky and Martin 2015, Ch. 16) and ordered co-occurrence of the two
-  features is considered (see Chruch, K.W. & Hanks, P. (1990)).
+  features is considered (see Church & Hanks 1990).
   
   \link{fcm} provides all of this functionality, returning a \eqn{V * V}
   matrix (where \eqn{V} is the vocabulary size, returned by
@@ -84,7 +84,7 @@ txt <- "A D A C E A D F E B A C E D"
 fcm(txt, context = "window", window = 2)
 fcm(txt, context = "window", count = "weighted", window = 3)
 fcm(txt, context = "window", count = "weighted", window = 3, 
-             weights = c(3,2,1), ordered = TRUE, tri = FALSE)
+             weights = c(3, 2, 1), ordered = TRUE, tri = FALSE)
 
 # with multiple documents
 txts <- c("a a a b b c", "a a c e", "a c e f g")
@@ -113,7 +113,7 @@ Momtazi, S., Khudanpur, S., & Klakow, D. (2010).
   \href{https://web.stanford.edu/~jurafsky/slp3/16.pdf}{Chapter 16, Semantics
   with Dense Vectors.}
   
-  Church, K.W. & Hanks, P. (1990) 
+  Church, K. W. & P. Hanks (1990) 
   "\href{http://dl.acm.org/citation.cfm?id=89095}{Word association norms,
   mutual information, and lexicography}" \emph{Computational Linguistics},
   16(1):22–29.

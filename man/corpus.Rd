@@ -38,7 +38,7 @@ require the texts to be extracted.}
 \item{...}{not used directly}
 }
 \value{
-a corpus class object containing the original texts, document-level 
+A \link{corpus-class} class object containing the original texts, document-level 
   variables, document-level metadata, corpus-level metadata, and default 
   settings for subsequent processing of the corpus.
 }
@@ -48,6 +48,8 @@ sources are:
 \itemize{ 
 \item a \link{character} vector, consisting of one document per element; if 
   the elements are named, these names will be used as document names.
+\item a readtext object, from the \pkg{readtext} package 
+  (which is a specially constructed data.frame)
 \item a \link{data.frame}, whose default variable containing the document is 
   character vector named \code{text}, although this can be set to any other
   variable name using the \code{text_field} argument.  Other variables are 
@@ -68,7 +70,9 @@ The texts and document variables of corpus objects can also be
   Indexing a corpus using two indexes (integers or column names) will return 
   the document variables, equivalent to \code{docvars(x)}.  Because a corpus 
   is also a list, it is also possible to access, create, or replace docvars 
-  using list notation, e.g. \code{myCorpus[["newSerialDocvar"]] <- 
+  using list notation, e.g. 
+  
+  \code{myCorpus[["newSerialDocvar"]] <- 
   paste0("tag", 1:ndoc(myCorpus))}.
   
   For details, see \link{corpus-class}.
@@ -123,8 +127,10 @@ mykwic <- kwic(data_corpus_inaugural, "southern")
 summary(corpus(mykwic))
 }
 \seealso{
-\link{corpus-class}, \link{docvars}, \link{metadoc}, \link{metacorpus}, 
-  \link{settings}, \link{texts}, \link{ndoc}, \link{docnames}
+\link{corpus-class}, \code{\link{docvars}}, \code{\link{metadoc}}, 
+  \code{\link{metacorpus}}, 
+  \code{\link{settings}}, \code{\link{texts}}, \code{\link{ndoc}}, 
+  \code{\link{docnames}}
 }
 \author{
 Kenneth Benoit and Paul Nulty

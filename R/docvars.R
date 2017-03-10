@@ -1,11 +1,13 @@
 #' get or set for document-level variables
 #' 
-#' Get or set variables associated with a document in a \link{corpus}, or get these
-#' variables from a \link{tokens} object.
-#' @param x \link{corpus} or \link{tokens} whose document-level variables will be read or set
+#' Get or set variables associated with a document in a \link{corpus}, or get
+#' these variables from a \link{tokens} or \link{dfm} object.
+#' @param x \link{corpus}, \link{tokens}, or \link{dfm} object whose
+#'   document-level variables will be read or set
 #' @param field string containing the document-level variable name
-#' @return \code{docvars} returns a data.frame of the document-level variables, dropping the second
-#' dimension to form a vector if a single docvar is returned.
+#' @return \code{docvars} returns a data.frame of the document-level variables,
+#'   dropping the second dimension to form a vector if a single docvar is
+#'   returned.
 #' @examples 
 #' # retrieving docvars from a corpus
 #' head(docvars(data_corpus_inaugural))
@@ -37,15 +39,27 @@ docvars.tokens <- function(x, field = NULL) {
     get_docvars(dvars, field)    
 }
 
-## internal function to return the docvars for all docvars functions
-get_docvars <- function(dvars, field = NULL) {
+#' @noRd
+#' @export
+docvars.dfm <- function(x, field = NULL) {
+    check_fields(x, field)
+    dvars <- x@docvars[, , drop = FALSE]
     if (is.null(field))
-        return(dvars)
-    else
-        return(dvars[, field, drop = TRUE])
+        dvars <- dvars[, which(substring(names(dvars), 1, 1) != "_"), drop = FALSE]
+    get_docvars(dvars, field)    
 }
 
-
+## internal function to return the docvars for all docvars functions
+get_docvars <- function(dvars, field = NULL) {
+    if (is.null(field)) {
+        if (length(dvars) == 0)
+            return(data.frame())
+        else
+            return(dvars)
+    } else {
+        return(dvars[, field, drop = TRUE])
+    }
+}
 
 
 #' @rdname docvars
@@ -64,12 +78,12 @@ get_docvars <- function(dvars, field = NULL) {
 #' @return \code{docvars<-} assigns \code{value} to the named \code{field}
 #' @examples 
 #' # assigning document variables to a corpus
-#' docvars(data_corpus_inaugural, "President") <- paste("prez", 1:ndoc(data_corpus_inaugural), sep="")
+#' docvars(data_corpus_inaugural, "President") <- paste("prez", 1:ndoc(data_corpus_inaugural), sep = "")
 #' head(docvars(data_corpus_inaugural))
 #' 
 #' # alternative using indexing
 #' head(data_corpus_inaugural[, "Year"])
-#' data_corpus_inaugural[["President2"]] <- paste("prezTwo", 1:ndoc(data_corpus_inaugural), sep="")
+#' data_corpus_inaugural[["President2"]] <- paste("prezTwo", 1:ndoc(data_corpus_inaugural), sep = "")
 #' head(docvars(data_corpus_inaugural))
 #' 
 #' @export
@@ -108,12 +122,27 @@ get_docvars <- function(dvars, field = NULL) {
     return(x)
 }
 
+## internal only
+"docvars<-.dfm" <- function(x, field = NULL, value) {
+    
+    if (is.null(field) && (is.data.frame(value) || is.null(value))) {
+        x@docvars <- value
+    } else {
+        if (!is.data.frame(x@docvars)) {
+            meta <- data.frame(value, stringsAsFactors = FALSE)
+            colnames(meta) <- field
+            x@docvars <- meta
+        } else {
+            x@docvars[[field]] <- value
+        }
+    }
+    return(x)
+}
 
 #' get or set document-level meta-data
 #' 
-#' Get or set the document-level meta-data, including reserved fields for 
-#' language and corpus.
-#' @param x A quanteda corpus object
+#' Get or set the document-level meta-data.
+#' @param x a \link{corpus} object
 #' @param field character, the name of the metadata field(s) to be queried or set
 #' @return For \code{texts}, a character vector of the texts in the corpus.
 #'   
@@ -122,7 +151,7 @@ get_docvars <- function(dvars, field = NULL) {
 #'   such as \code{_language}, but when named in in the \code{field} argument,
 #'   do \emph{not} need the underscore character.
 #' @examples 
-#' mycorp <- corpus_subset(data_corpus_inaugural, Year>1990)
+#' mycorp <- corpus_subset(data_corpus_inaugural, Year > 1990)
 #' summary(mycorp, showmeta = TRUE)
 #' metadoc(mycorp, "encoding") <- "UTF-8"
 #' metadoc(mycorp)
@@ -156,6 +185,16 @@ metadoc.tokens <- function(x, field = NULL) {
     get_docvars(dvars, field)
 }
 
+#' @noRd
+#' @export
+metadoc.dfm <- function(x, field = NULL) {
+    if (!is.null(field)) {
+        field <- paste0("_", field)
+        check_fields(x, field)
+    }
+    dvars <- x@docvars[, which(substring(names(x@docvars), 1, 1) == "_"), drop = FALSE]
+    get_docvars(dvars, field)
+}
 
 #' @rdname metadoc
 #' @param value the new value of the new meta-data field
@@ -171,7 +210,7 @@ metadoc.tokens <- function(x, field = NULL) {
     if (is.null(field)) {
         field <- paste("_", names(value), sep="")
         if (is.null(field))
-            field <- paste("_metadoc", 1:ncol(as.data.frame(value)), sep="")
+            field <- paste("_metadoc", 1:ncol(as.data.frame(value)), sep = "")
     } else {
         field <- paste("_", field, sep="")
     }

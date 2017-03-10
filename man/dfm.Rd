@@ -15,19 +15,19 @@ dfm(x, tolower = TRUE, stem = FALSE, select = NULL, remove = NULL,
 
 \item{stem}{if \code{TRUE}, stem words}
 
-\item{select}{a user supplied regular expression defining which features to
+\item{select}{a user supplied regular expression defining which features to 
 keep, while excluding all others.  This can be used in lieu of a dictionary
-if there are only specific features that a user wishes to keep. To extract
-only Twitter usernames, for example, set \code{select = "@*"} and make
-sure that \code{removeTwitter = FALSE} as an additional argument passed to
+if there are only specific features that a user wishes to keep. To extract 
+only Twitter usernames, for example, set \code{select = "@*"} and make 
+sure that \code{removeTwitter = FALSE} as an additional argument passed to 
 \link{tokenize}.  Note: \code{select = "^@\\\w+\\\b"} would be the regular
-expression version of this matching pattern.  The pattern matching type
+expression version of this matching pattern.  The pattern matching type 
 will be set by \code{valuetype}.}
 
 \item{remove}{a character vector of user-supplied features to ignore, such as
-"stop words".  To access one possible list (from any list you wish), use
-\code{\link{stopwords}()}.  The pattern matching type will be set by
-\code{valuetype}.  For behaviour of \code{remove} with \code{ngrams > 1},
+"stop words".  To access one possible list (from any list you wish), use 
+\code{\link{stopwords}()}.  The pattern matching type will be set by 
+\code{valuetype}.  For behaviour of \code{remove} with \code{ngrams > 1}, 
 see Details.}
 
 \item{thesaurus}{A list of character vector "thesaurus" entries, in a 
@@ -37,8 +37,7 @@ converted to upper case to create a feature label in the dfm, as a reminder
 that this was not a type found in the text, but rather the label of a 
 thesaurus key.  For more fine-grained control over this and other aspects 
 of converting features into dictionary/thesaurus keys from pattern matches 
-to values, you can use \code{\link{dfm_lookup}} after creating the 
-dfm.}
+to values, you can use \code{\link{dfm_lookup}} after creating the dfm.}
 
 \item{dictionary}{A list of character vector dictionary entries, including 
 regular expressions (see examples)}
@@ -49,13 +48,13 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{groups}{character vector containing the names of document variables for
 aggregating documents; only applies when calling dfm on a corpus object. 
-When \code{x} is a \link{dfm} object, \code{groups} provides a convenient
-and fast method of combining and refactoring the documents of the dfm
+When \code{x} is a \link{dfm} object, \code{groups} provides a convenient 
+and fast method of combining and refactoring the documents of the dfm 
 according to the groups.}
 
 \item{verbose}{display messages if \code{TRUE}}
 
-\item{...}{additional arguments passed to \link{tokens}, for character and
+\item{...}{additional arguments passed to \link{tokens}, for character and 
 corpus}
 }
 \value{
@@ -63,12 +62,12 @@ a \link{dfm-class} object
 }
 \description{
 Construct a sparse document-feature matrix, from a character, \link{corpus}, 
-or \link{tokens} object.
+\link{tokens}, or even other \link{dfm} object.
 }
 \details{
-The default behavior for \code{remove}/\code{select} when
-  constructing ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to
-  remove/select any ngram constructed from a matching feature.  If you wish
+The default behavior for \code{remove}/\code{select} when 
+  constructing ngrams using \code{dfm(x, } \emph{ngrams > 1}\code{)} is to 
+  remove/select any ngram constructed from a matching feature.  If you wish 
   to remove these before constructing ngrams, you will need to first tokenize
   the texts with ngrams, then remove the features to be ignored, and then 
   construct the dfm using this modified tokenization object.  See the code 
@@ -76,7 +75,6 @@ The default behavior for \code{remove}/\code{select} when
 }
 \examples{
 ## for a corpus
-
 corpus_post80inaug <- corpus_subset(data_corpus_inaugural, Year > 1980)
 dfm(corpus_post80inaug)
 dfm(corpus_post80inaug, tolower = FALSE)
@@ -117,7 +115,7 @@ featnames(dfm(testCorpus, select = stopwords("english")))
 featnames(dfm(testCorpus, ngrams = 2, select = stopwords("english"), removePunct = TRUE))
 featnames(dfm(testCorpus, ngrams = 1:2, select = stopwords("english"), removePunct = TRUE))
 
-## removing stopwords before constructing ngrams
+# removing stopwords before constructing ngrams
 tokensAll <- tokens(char_tolower(testText), removePunct = TRUE)
 tokensNoStopwords <- removeFeatures(tokensAll, stopwords("english"))
 tokensNgramsNoStopwords <- tokens_ngrams(tokensNoStopwords, 2)

@@ -62,14 +62,14 @@ toLower.tokens <- function(x, ...) {
 #' @rdname toLower
 #' @export
 toUpper.tokens <- function(x, ...) {
-    .Deprecated("char_toupper")
+    .Deprecated("tokens_toupper")
     tokens_toupper(x, ...)
 }
 
 
 #' @rdname toLower
-toLower.corpus <- function(x, keep_acronyms=FALSE, ...) {
-    char_tolower(texts(x), keep_acronyms, ...)
+toLower.corpus <- function(x, ...) {
+    tolower(texts(x), ...)
 }
 
 #' @rdname toLower

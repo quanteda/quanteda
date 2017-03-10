@@ -7,6 +7,16 @@ typedef tbb::concurrent_vector<unsigned int> VecIds;
 typedef std::vector<unsigned int> VecIds;
 #endif
 
+inline CharacterVector encode(Types types){
+    CharacterVector types_(types.size());
+    for (std::size_t i = 0; i < types.size(); i++) {
+        String type_ = types[i];
+        type_.set_encoding(CE_UTF8);
+        types_[i] = type_;
+    }
+    return(types_);
+}
+
 struct recompile_mt : public Worker{
     
     Texts &texts;
@@ -101,7 +111,7 @@ inline List recompile(Texts texts, Types types){
     // dev::stop_timer("Dictionary lookup", timer);
     ListOf<IntegerVector> texts_list = Rcpp::wrap(texts);
     texts_list.attr("padding") = (bool)flags_used[0];
-    texts_list.attr("types") = types_new;
+    texts_list.attr("types") = encode(types_new);
     return texts_list;
     
 }

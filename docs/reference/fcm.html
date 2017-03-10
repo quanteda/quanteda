@@ -105,10 +105,10 @@ postive integer value for <code>window</code>.  Note: if <code>x</code> is a dfm
       <dt>count</dt>
       <dd>how to count co-occurrences:
 <dl class='dl-horizontal'>
-<dt><code>frequency</code></dt><dd>count the number of co-occurrences within the context</dd>
-<dt><code>boolean</code></dt><dd>count only the co-occurrence or not within the context, 
+<dt><code>&quot;frequency&quot;</code></dt><dd>count the number of co-occurrences within the context</dd>
+<dt><code>&quot;boolean&quot;</code></dt><dd>count only the co-occurrence or not within the context, 
  irrespective of how many times it occurs.</dd>
-<dt><code>weighted</code></dt><dd>count a weighted function of counts, typically as a 
+<dt><code>&quot;weighted&quot;</code></dt><dd>count a weighted function of counts, typically as a 
 function of distance from the target feature.  Only makes sense for <code>context = &quot;window&quot;</code>.</dd>
 </dl>
 </dd>
@@ -143,7 +143,7 @@ sentences</dd>
   <em>window</em>.  When the context is a window, a weighting function is
   typically applied that is a function of distance from the target word (see
   Jurafsky and Martin 2015, Ch. 16) and ordered co-occurrence of the two
-  features is considered (see Chruch, K.W. &amp; Hanks, P. (1990)).</p>
+  features is considered (see Church &amp; Hanks 1990).</p>
     <p>fcm provides all of this functionality, returning a \(V * V\)
   matrix (where \(V\) is the vocabulary size, returned by
   <code><a href='ntoken.html'>ntype</a></code>). The <code>tri = TRUE</code> option will only return the
@@ -167,7 +167,7 @@ sentences</dd>
   Processing</em>.  Draft of April 11, 2016. 
   <a href = 'Chapter 16, Semantics
   with Dense Vectors.'>https://web.stanford.edu/~jurafsky/slp3/16.pdf</a></p>
-    <p>Church, K.W. &amp; Hanks, P. (1990) 
+    <p>Church, K. W. &amp; P. Hanks (1990) 
   &quot;<a href = 'Word association norms,
   mutual information, and lexicography'>http://dl.acm.org/citation.cfm?id=89095</a>&quot; <em>Computational Linguistics</em>,
   16(1):22–29.</p>
@@ -195,7 +195,7 @@ sentences</dd>
 #&gt;        E .         .        .        .        1.3333333 1.3333333
 #&gt;        F .         .        .        .        .         0.5000000
 #&gt;        B .         .        .        .        .         .        </div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txt</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"weighted"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-             <span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>2</span>,<span class='fl'>1</span>), <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>tri</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
+             <span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>2</span>, <span class='fl'>1</span>), <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>tri</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt; 6 x 6 sparse Matrix of class &quot;fcm&quot;
 #&gt;         features
 #&gt; features A D C E F B

@@ -10,10 +10,10 @@ metacorpus(x, field = NULL)
 metacorpus(x, field) <- value
 }
 \arguments{
-\item{x}{A quanteda corpus object}
+\item{x}{a \link{corpus} object}
 
-\item{field}{Metadata field name(s).  If \code{NULL} (default), return all
-metadata names.}
+\item{field}{metadata field name(s);  if \code{NULL} (default), return all
+metadata names}
 
 \item{value}{new value of the corpus metadata field}
 }
@@ -25,7 +25,7 @@ For \code{metacorpus}, a list of the metadata fields in the corpus.
   For \code{metacorpus <-}, the corpus with the updated metadata.
 }
 \description{
-Get or set the corpus-level metadata in a quanteda corpus object.
+Get or set the corpus-level metadata in a \link{corpus} object.
 }
 \examples{
 metacorpus(data_corpus_inaugural)

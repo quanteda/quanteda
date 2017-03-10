@@ -10,19 +10,21 @@ ndoc(x)
 nfeature(x)
 }
 \arguments{
-\item{x}{a \pkg{quanteda} object: a \link{corpus}, \link{dfm}, or \link{tokens}
-object, or a readtext object from the \pkg{readtext} package.}
+\item{x}{a \pkg{quanteda} object: a \link{corpus}, \link{dfm}, or
+\link{tokens} object, or a readtext object from the \pkg{readtext} package.}
 }
 \value{
-an integer (count) of the number of documents or features in the 
-  corpus or dfm
+an integer (count) of the number of documents or features
 }
 \description{
-Get the number of documents, tokens, types, or features in an object.
+Get the number of documents or features in an object.
 }
 \details{
-\code{ndoc} returns the number of documents or features in a 
-  quanteda object.
+\code{ndoc} returns the number of documents in a  \link{corpus},
+  \link{dfm}, or \link{tokens} object, or a readtext object from the
+  \pkg{readtext} package
+  
+  \code{nfeature} returns the number of features in a \link{dfm}
 
 \code{nfeature} returns the number of features from a dfm; it is an
   alias for \code{ntype} when applied to dfm objects.  This function is only 

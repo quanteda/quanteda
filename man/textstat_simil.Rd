@@ -48,7 +48,7 @@ These functions compute distance matrix between documents and/or features from a
 }
 \details{
 \code{textstat_dist} options are: \code{"euclidean"} (default), 
-\code{"canberra"}, \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"}, \code{"kullback"}. 
+\code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"}, \code{"kullback"}. 
 \code{"manhattan"}, \code{"maximum"}, \code{"canberra"}, and \code{"minkowski"}.
 
 \code{textstat_simil} options are: \code{"correlation"} (default),
