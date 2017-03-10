@@ -141,9 +141,8 @@ get_docvars <- function(dvars, field = NULL) {
 
 #' get or set document-level meta-data
 #' 
-#' Get or set the document-level meta-data, including reserved fields for 
-#' language and corpus.
-#' @param x A quanteda corpus object
+#' Get or set the document-level meta-data.
+#' @param x a \link{corpus} object
 #' @param field character, the name of the metadata field(s) to be queried or set
 #' @return For \code{texts}, a character vector of the texts in the corpus.
 #'   
