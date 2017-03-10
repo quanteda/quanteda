@@ -70,6 +70,13 @@ test_that("test textstat_dist method = \"Kullback-Leibler\" against proxy dist()
     kullQuanteda <- round(as.matrix(textstat_dist(as.dfm(m), method = "kullback", margin = "documents")), 2)
     kullProxy <- round(as.matrix(proxy::dist(m, "kullback", diag = FALSE, upper = FALSE)), 2)
     expect_equal(kullQuanteda, kullProxy)
+    
+    rownames(m) <- c("a", "b", "c", "d", "e")
+    mydfm <- new("dfmSparse", Matrix::Matrix(as.matrix(m), sparse=TRUE, dimnames = list(docs = rownames(m), features=colnames(m))))
+    kullQuanteda <- round(as.matrix(textstat_dist(mydfm, "a", method = "kullback", margin = "documents"))["a",], 2)
+    kullProxy <- round(drop(proxy::dist(as.matrix(mydfm), as.matrix(mydfm[1, ]), "kullback", diag = FALSE, upper = FALSE)), 2)
+    kullProxy <- kullProxy[order(names(kullProxy))]
+    expect_equivalent(kullQuanteda, kullProxy)
 })
 
 # Manhattan distance
@@ -178,9 +185,14 @@ test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distan
     
     hammingQuanteda <- sort(as.matrix(textstat_dist(presDfm, "1981-Reagan", method = "hamming", margin = "documents", upper = TRUE))[,"1981-Reagan"], decreasing = FALSE)
     hammingQuanteda <- hammingQuanteda[-which(names(hammingQuanteda) == "1981-Reagan")]
-    hammingE1071 <- sort(e1071::hamming.distance(as.matrix(tf(presDfm, "boolean")))[, "1981-Reagan"], decreasing = FALSE)
-    if("1981-Reagan" %in% names(hammingE1071)) hammingE1071 <- hammingE1071[-which(names(hammingE1071) == "1981-Reagan")]
-    expect_equal(hammingQuanteda, hammingE1071)
+    
+    if (requireNamespace("e1071", quietly = TRUE)){
+        hammingE1071 <- sort(e1071::hamming.distance(as.matrix(tf(presDfm, "boolean")))[, "1981-Reagan"], decreasing = FALSE)
+        if("1981-Reagan" %in% names(hammingE1071)) hammingE1071 <- hammingE1071[-which(names(hammingE1071) == "1981-Reagan")]
+    } else {
+        hammingE1071 <- c(711, 724, 745, 766, 766, 778, 785, 804, 851)
+    }
+    expect_equivalent(hammingQuanteda, hammingE1071)
 })
 
 test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distance: features", {
