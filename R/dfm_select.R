@@ -35,13 +35,14 @@
 #'   \code{\link{dfm_trim}}.
 #' @return A \link{dfm} or \link{fcm} object, after the feature selection has been applied.
 #'   
-#'   When \code{features} is a \link{dfm} object, then the returned object will 
-#'   be identical in its feature set to the dfm supplied as the \code{features} 
-#'   argument.  This means that any features in \code{x} not in \code{features} 
-#'   will be discarded, and that any features in found in the dfm supplied as 
-#'   \code{features} but not found in \code{x} will be added with all zero 
-#'   counts.  This is useful when you have trained a model on one dfm, and need 
-#'   to project this onto a test set whose features must be identical.  See examples.
+#'   When \code{features} is a \link{dfm} object and \code{padding} is \code{TRUE} , 
+#'   then the returned object will be identical in its feature set to the dfm 
+#'   supplied as the \code{features} argument. This means that any features in 
+#'   \code{x} not in \code{features} will be discarded, and that any features in 
+#'   found in the dfm supplied as \code{features} but not found in \code{x} will 
+#'   be added with all zero counts.  This is useful when you have trained a model 
+#'   on one dfm, and need to project this onto a test set whose features must be 
+#'   identical.  See examples.
 #' @export
 #' @keywords dfm
 #' @examples 
@@ -141,7 +142,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
             x <- NULL
         } else {
             x <- x[documents_id, features_id]
-            if (valuetype == 'fixed' & padding) {
+            if (valuetype == 'fixed' && padding) {
                 
                 # padding for features
                 types_add <- setdiff(features, types)
@@ -198,7 +199,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
 #'               verbose = FALSE)
 #' tmpdfm
 #' dfm_remove(tmpdfm, stopwords("english"))
-dfm_remove <- function(x, features = NULL, ...) {
+dfm_remove <- function(x, features = NULL, documents = NULL, ...) {
     dfm_select(x, features, selection = "remove", ...)
 }
 
