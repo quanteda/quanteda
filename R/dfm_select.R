@@ -9,6 +9,8 @@
 #'   \link{dfm} whose features will be used for selection, or a dictionary class
 #'   object whose values (not keys) will provide the features to be selected. 
 #'   For \link{dfm} objects, see details in the Value section below.
+#' @param documents select documents based on their document names. Works exactly 
+#'   the same as features. 
 #' @param selection whether to \code{keep} or \code{remove} the features
 #' @inheritParams valuetype
 #' @param case_insensitive ignore the case of dictionary values if \code{TRUE}
@@ -18,6 +20,9 @@
 #'    (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are
 #'   applied after (and hence, in addition to) any selection based on pattern
 #'   matches.
+#' @param padding if \code{TRUE} features or documents not existing in x is 
+#'   added to \link{dfm}. This option is available only when selection is 
+#'   \code{keep} and valuetype is \code{fixed}. 
 #' @param verbose if \code{TRUE} print message about how many features were 
 #'   removed
 #' @param ... supplementary arguments passed to the underlying functions in 
@@ -30,13 +35,14 @@
 #'   \code{\link{dfm_trim}}.
 #' @return A \link{dfm} or \link{fcm} object, after the feature selection has been applied.
 #'   
-#'   When \code{features} is a \link{dfm} object, then the returned object will 
-#'   be identical in its feature set to the dfm supplied as the \code{features} 
-#'   argument.  This means that any features in \code{x} not in \code{features} 
-#'   will be discarded, and that any features in found in the dfm supplied as 
-#'   \code{features} but not found in \code{x} will be added with all zero 
-#'   counts.  This is useful when you have trained a model on one dfm, and need 
-#'   to project this onto a test set whose features must be identical.  See examples.
+#'   When \code{features} is a \link{dfm} object and \code{padding} is \code{TRUE} , 
+#'   then the returned object will be identical in its feature set to the dfm 
+#'   supplied as the \code{features} argument. This means that any features in 
+#'   \code{x} not in \code{features} will be discarded, and that any features in 
+#'   found in the dfm supplied as \code{features} but not found in \code{x} will 
+#'   be added with all zero counts.  This is useful when you have trained a model 
+#'   on one dfm, and need to project this onto a test set whose features must be 
+#'   identical.  See examples.
 #' @export
 #' @keywords dfm
 #' @examples 
@@ -48,31 +54,27 @@
 #'                           notintext = "blahblah"))
 #' dfm_select(myDfm, mydict)
 #' dfm_select(myDfm, mydict, case_insensitive = FALSE)
-#' dfm_select(myDfm, c("s$", ".y"), "keep")
-#' dfm_select(myDfm, c("s$", ".y"), "keep", valuetype = "regex")
-#' dfm_select(myDfm, c("s$", ".y"), "remove", valuetype = "regex")
-#' dfm_select(myDfm, stopwords("english"), "keep", valuetype = "fixed")
-#' dfm_select(myDfm, stopwords("english"), "remove", valuetype = "fixed")
+#' dfm_select(myDfm, c("s$", ".y"), selection = "keep", valuetype = "regex")
+#' dfm_select(myDfm, c("s$", ".y"), selection = "remove", valuetype = "regex")
+#' dfm_select(myDfm, stopwords("english"), selection = "keep", valuetype = "fixed")
+#' dfm_select(myDfm, stopwords("english"), selection = "remove", valuetype = "fixed")
 #' 
 #' # select based on character length
 #' dfm_select(myDfm, min_nchar = 5)
 #' 
 #' # selecting on a dfm
-#' textVec1 <- c("This is text one.", "This, the second text.", "Here: the third text.")
-#' textVec2 <- c("Here are new words.", "New words in this text.")
-#' (dfm1 <- dfm(textVec1, verbose = FALSE))
-#' (dfm2a <- dfm(textVec2, verbose = FALSE))
-#' (dfm2b <- dfm_select(dfm2a, dfm1))
-#' setequal(featnames(dfm1), featnames(dfm2b))
+#' txts <- c("This is text one", "This is text two", "This is text three")
+#' (dfm1 <- dfm(txts[1:2], verbose = FALSE))
+#' (dfm2 <- dfm(txts[2:3], verbose = FALSE))
+#' (dfm3 <- dfm_select(dfm1, dfm2, valuetype = "fixed", padding = TRUE, verbose = TRUE))
+#' setequal(featnames(dfm2), featnames(dfm3))
 #' 
-#' # more selection on a dfm
-#' dfm_select(dfm1, dfm2a)
-#' dfm_select(dfm1, dfm2a, selection = "remove")
-#' 
-dfm_select <- function(x, features = NULL, selection = c("keep", "remove"), 
+dfm_select <- function(x, features = NULL, documents = NULL, 
+                       selection = c("keep", "remove"), 
                        valuetype = c("glob", "regex", "fixed"),
                        case_insensitive = TRUE,
                        min_nchar = 1, max_nchar = 63,
+                       padding = FALSE,
                        verbose = FALSE, ...) {
     UseMethod("dfm_select")
 }
@@ -80,136 +82,106 @@ dfm_select <- function(x, features = NULL, selection = c("keep", "remove"),
 #' @rdname dfm_select
 #' @noRd
 #' @export
-dfm_select.dfm <-  function(x, features = NULL, selection = c("keep", "remove"), 
+dfm_select.dfm <-  function(x, features = NULL, documents = NULL, 
+                            selection = c("keep", "remove"), 
                             valuetype = c("glob", "regex", "fixed"),
                             case_insensitive = TRUE,
                             min_nchar = 1, max_nchar = 63,
+                            padding = FALSE,
                             verbose = FALSE, ...) {
+    
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
-    features_from_dfm <- FALSE
-    
-    # select features based on character length
-    featIndex <- 1:nfeature(x)
-    featIndex <- intersect(featIndex, 
-                           which(stringi::stri_length(featnames(x)) >= min_nchar & stringi::stri_length(featnames(x)) <= max_nchar))
+    attrs_org <- attributes(x)
+    types <- featnames(x)
+    labels <- docnames(x)
     
     # select features based on "features" pattern
     if (!is.null(features)) {
-        
-        if (!(is.character(features) | is.dfm(features) | is(features, "dictionary")))
-            stop("features must be of type character, dictionary, or dfm")
-        
         # special handling if features is a dfm
         if (is.dfm(features)) {
-            if (selection == "keep") {
-                features_dfm <- features <- featnames(features)
-                features_from_dfm <- TRUE
-            } else {
-                features <- featnames(features)
-            }
+            features <- featnames(features)
+            valuetype <- 'fixed'
         }
-        
-        # to convert any dictionaries
-        features <- unique(unlist(features))  
-        
-        # convert glob to fixed if no actual glob characters (since fixed is much faster)
-        originalvaluetype <- valuetype
-        if (valuetype == "glob") {
-            # treat as fixed if no glob characters detected
-            if (!sum(stringi::stri_detect_charclass(features, c("[*?]"))))
-                valuetype <- "fixed"
-            else {
-                features <- sapply(features, utils::glob2rx, USE.NAMES = FALSE)
-                valuetype <- "regex"
-            }
-        }
-        
-        features_x <- featnames(x)
-        if (case_insensitive & valuetype == "fixed") {
-            features_x <- char_tolower(features_x)
-            features <- char_tolower(features)
-        }
-        
-        # split features on concatenator if exists
-        if (x@concatenator != "")
-            features_x <- strsplit(features_x, x@concatenator)
-        
-        if (valuetype == "regex") {
-            if (all.equal(x@ngrams, 1L)==TRUE) {
-                featIndex <- intersect(featIndex, 
-                                       which(stringi::stri_detect_regex(features_x, paste0(features, collapse = "|"), 
-                                                                        case_insensitive = case_insensitive, ...)))
-            } else {
-                ####
-                ####
-                matchPattern <- paste0(features, collapse = "|")
-                featIndex <- intersect(featIndex,
-                                       which(sapply(features_x, 
-                                                    function(x) any(stringi::stri_detect_regex(x, matchPattern, 
-                                                                                               case_insensitive = case_insensitive, ...)))))
-            }
-        } else {
-            if (all.equal(x@ngrams, 1L)==TRUE)
-                featIndex <- intersect(featIndex, 
-                                       which(features_x %in% features))  # unigrams
-            else
-                featIndex <- intersect(featIndex, 
-                                       which(sapply(features_x, function(f) any(f %in% features), USE.NAMES = FALSE))) # ngrams
-        }
-        
-        if (verbose & !features_from_dfm) 
-            catm(ifelse(selection=="keep", "kept", "removed"), " ", 
-                 format(length(featIndex), big.mark=","),
-                 " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
-                 ", from ", length(features), " supplied (", originalvaluetype, ") feature type",
-                 ifelse(length(features) > 0 | length(featIndex)==0, "s", ""),
-                 "\n", sep = "")
-        
-        # pad the zeros if features was a dfm, return in same feature order as original dfm
-        # for selection = "keep" only
-        if (features_from_dfm) {
-            if (verbose)
-                catm(ifelse(selection=="keep", "found", "zeroed"), " ", 
-                     format(length(featIndex), big.mark=","),
-                     " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
-                     " from ", length(features), " supplied type",
-                     ifelse(length(features) > 0 | length(featIndex)==0, "s", ""),
-                     " in a dfm,", sep = "")
-            # remove features in x that are not in features (from supplied dfm)
-            x2 <- x[, featIndex]
-            # now add zero-valued features to x that are not in x but are in features
-            origDfmFeatureIndex <- which(!(char_tolower(features) %in% char_tolower(featnames(x2))))
-            xOriginalFeatureLength <- nfeature(x2)
-            xOriginalFeatures <- featnames(x2)
-            if (verbose) catm(" padding 0s for another", length(origDfmFeatureIndex), "\n")
-            x <- new("dfmSparse", Matrix::cbind2(x2,
-                                                 sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x2), length(origDfmFeatureIndex)), 
-                                                              dimnames = list(docnames(x2), features[origDfmFeatureIndex]))))
-            if (case_insensitive & valuetype == "fixed") {
-                features_x_ori <- char_tolower(featnames(x))
-                features_dfm <- char_tolower(features_dfm)
-            }
-            featIndex <- match(features_dfm, features_x_ori)
-            # x <- x2 #[, features_dfm]
-        }
-    }        
-    
-    ##
-    ## MIGHT NEED TO ADD BACK ORIGINAL ATTRIBUTES HERE
-    ##
-    
-    if (!length(featIndex)) {
-        if (selection == "keep")
-            return(NULL)
-        else 
-            return(x)
+        features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
+        features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
+        features_id <- sort(features_id) # keep the original column order
     } else {
         if (selection == "keep")
-            return(x[, featIndex])
-        else 
-            return(x[, -featIndex])
+            features_id <- 1:nfeature(x)
+        else
+            features_id <- NULL
     }
+    
+    # select features based on character length
+    features_id <- intersect(features_id, which(stringi::stri_length(types) >= min_nchar & 
+                                                stringi::stri_length(types) <= max_nchar))
+
+    # select documents based on "documents" pattern
+    if (!is.null(documents)){
+        documents <- unlist(documents, use.names = FALSE) # this funciton does not accpet list
+        documents_id <- unlist(regex2id(documents, labels, valuetype, case_insensitive, FALSE), use.names = FALSE)
+        documents_id <- sort(documents_id) # keep the original row order
+    } else {
+        if (selection == "keep")
+            documents_id <- 1:ndoc(x)
+        else
+            documents_id <- NULL
+    }
+    
+    types_add <- labels_add <- character() # avoid error in verbose message
+    
+    if (selection == "keep") {
+        if (!length(features_id) || !length(documents_id)) {
+            x <- NULL
+        } else {
+            x <- x[documents_id, features_id]
+            if (valuetype == 'fixed' && padding) {
+                
+                # padding for features
+                types_add <- setdiff(features, types)
+                if (length(types_add)) {
+                    x <- new("dfmSparse", Matrix::cbind2(x, sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x), length(types_add)), 
+                                                                         dimnames = list(docnames(x), types_add))))
+                }
+                if (case_insensitive)
+                    x <- dfm_tolower(x)
+                
+                # padding for documents
+                labels_add <- setdiff(documents, labels)
+                if (length(labels_add)) {
+                    x <- new("dfmSparse", Matrix::rbind2(x, sparseMatrix(i = NULL, j = NULL, dims = c(length(labels_add), nfeature(x)), 
+                                                                         dimnames = list(labels_add, featnames(x)))))
+                }
+            }
+        }
+    } else {
+        if (length(features_id) == nfeature(x) || length(documents_id) == ndoc(x)) {
+            x <- NULL    
+        } else if(!length(features_id)) {
+            x <- x[documents_id * -1,]
+        } else if(!length(documents_id)) {
+            x <- x[, features_id * -1]
+        } else {
+            x <- x[documents_id * -1, features_id * -1]
+        }
+    }
+   
+    if (verbose) {
+        catm("dfm_select ", ifelse(selection=="keep", "kept", "removed"), " ", 
+             format(length(features_id), big.mark=","),
+             " feature", ifelse(length(features_id) > 1, "s", ""), " in ",
+             format(length(documents_id), big.mark=","),
+             " documents", ifelse(length(documents_id) > 1, "s", ""),
+             " padding 0s for ",
+             format(length(types_add), big.mark=","), 
+             " feature", ifelse(length(types_add) > 1, "s", ""), " and ",
+             format(length(labels_add), big.mark=","),
+             " document", ifelse(length(labels_add) > 1, "s", ".\n"),
+             sep = "")
+    } 
+    
+    return(x)
 }
 
 
@@ -221,7 +193,7 @@ dfm_select.dfm <-  function(x, features = NULL, selection = c("keep", "remove"),
 #'               verbose = FALSE)
 #' tmpdfm
 #' dfm_remove(tmpdfm, stopwords("english"))
-dfm_remove <- function(x, features = NULL, ...) {
+dfm_remove <- function(x, features = NULL, documents = NULL, ...) {
     dfm_select(x, features, selection = "remove", ...)
 }
 
