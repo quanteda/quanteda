@@ -78,12 +78,12 @@ get_docvars <- function(dvars, field = NULL) {
 #' @return \code{docvars<-} assigns \code{value} to the named \code{field}
 #' @examples 
 #' # assigning document variables to a corpus
-#' docvars(data_corpus_inaugural, "President") <- paste("prez", 1:ndoc(data_corpus_inaugural), sep="")
+#' docvars(data_corpus_inaugural, "President") <- paste("prez", 1:ndoc(data_corpus_inaugural), sep = "")
 #' head(docvars(data_corpus_inaugural))
 #' 
 #' # alternative using indexing
 #' head(data_corpus_inaugural[, "Year"])
-#' data_corpus_inaugural[["President2"]] <- paste("prezTwo", 1:ndoc(data_corpus_inaugural), sep="")
+#' data_corpus_inaugural[["President2"]] <- paste("prezTwo", 1:ndoc(data_corpus_inaugural), sep = "")
 #' head(docvars(data_corpus_inaugural))
 #' 
 #' @export
@@ -141,9 +141,8 @@ get_docvars <- function(dvars, field = NULL) {
 
 #' get or set document-level meta-data
 #' 
-#' Get or set the document-level meta-data, including reserved fields for 
-#' language and corpus.
-#' @param x A quanteda corpus object
+#' Get or set the document-level meta-data.
+#' @param x a \link{corpus} object
 #' @param field character, the name of the metadata field(s) to be queried or set
 #' @return For \code{texts}, a character vector of the texts in the corpus.
 #'   
@@ -152,7 +151,7 @@ get_docvars <- function(dvars, field = NULL) {
 #'   such as \code{_language}, but when named in in the \code{field} argument,
 #'   do \emph{not} need the underscore character.
 #' @examples 
-#' mycorp <- corpus_subset(data_corpus_inaugural, Year>1990)
+#' mycorp <- corpus_subset(data_corpus_inaugural, Year > 1990)
 #' summary(mycorp, showmeta = TRUE)
 #' metadoc(mycorp, "encoding") <- "UTF-8"
 #' metadoc(mycorp)
@@ -211,7 +210,7 @@ metadoc.dfm <- function(x, field = NULL) {
     if (is.null(field)) {
         field <- paste("_", names(value), sep="")
         if (is.null(field))
-            field <- paste("_metadoc", 1:ncol(as.data.frame(value)), sep="")
+            field <- paste("_metadoc", 1:ncol(as.data.frame(value)), sep = "")
     } else {
         field <- paste("_", field, sep="")
     }

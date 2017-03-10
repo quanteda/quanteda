@@ -81,7 +81,7 @@
     </div>
 
     
-    <p>This function selects or discards features from a dfm or fcm, based on a 
+    <p>This function selects or discards features from a <a href='dfm.html'>dfm</a> or <a href='fcm.html'>fcm</a>, based on a 
 pattern match with the feature names.   The most common usages are to 
 eliminate features from a dfm already constructed, such as stopwords, or to 
 select only terms of interest from a dictionary.</p>
@@ -133,14 +133,14 @@ removed</dd>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dfm or fcm after the feature selection has been applied.</p>
+    <p>A <a href='dfm.html'>dfm</a> or <a href='fcm.html'>fcm</a> object, after the feature selection has been applied.</p>
     <p>When <code>features</code> is a <a href='dfm.html'>dfm</a> object, then the returned object will 
   be identical in its feature set to the dfm supplied as the <code>features</code> 
   argument.  This means that any features in <code>x</code> not in <code>features</code> 
   will be discarded, and that any features in found in the dfm supplied as 
   <code>features</code> but not found in <code>x</code> will be added with all zero 
   counts.  This is useful when you have trained a model on one dfm, and need 
-  to project this onto a test set whose features must be identical.</p>
+  to project this onto a test set whose features must be identical.  See examples.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 

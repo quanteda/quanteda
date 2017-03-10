@@ -21,13 +21,14 @@ corpus object, with a subset of documents (and docvars) selected according to ar
 }
 \description{
 Returns subsets of a corpus that meet certain conditions, including direct 
-logical operations on docvars (document-level variables).  `corpus_subset` 
+logical operations on docvars (document-level variables).  \code{corpus_subset}
 functions identically to \code{\link{subset.data.frame}}, using non-standard
 evaluation to evaluate conditions based on the \link{docvars} in the corpus.
 }
 \examples{
-summary(corpus_subset(data_corpus_inaugural, Year>1980))
-summary(corpus_subset(data_corpus_inaugural, Year>1930 & President=="Roosevelt", select=Year))
+summary(corpus_subset(data_corpus_inaugural, Year > 1980))
+summary(corpus_subset(data_corpus_inaugural, Year > 1930 & President == "Roosevelt", 
+                      select = Year))
 }
 \seealso{
 \code{\link{subset.data.frame}}

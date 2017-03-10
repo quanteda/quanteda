@@ -1,6 +1,6 @@
 #' select features from a dfm or fcm
 #' 
-#' This function selects or discards features from a dfm or fcm, based on a 
+#' This function selects or discards features from a \link{dfm} or \link{fcm}, based on a 
 #' pattern match with the feature names.   The most common usages are to 
 #' eliminate features from a dfm already constructed, such as stopwords, or to 
 #' select only terms of interest from a dictionary.
@@ -28,7 +28,7 @@
 #' @note This function selects features based on their labels.  To select 
 #'   features based on the values of a the document-feature matrix, use 
 #'   \code{\link{dfm_trim}}.
-#' @return A dfm or fcm after the feature selection has been applied.
+#' @return A \link{dfm} or \link{fcm} object, after the feature selection has been applied.
 #'   
 #'   When \code{features} is a \link{dfm} object, then the returned object will 
 #'   be identical in its feature set to the dfm supplied as the \code{features} 
@@ -36,7 +36,7 @@
 #'   will be discarded, and that any features in found in the dfm supplied as 
 #'   \code{features} but not found in \code{x} will be added with all zero 
 #'   counts.  This is useful when you have trained a model on one dfm, and need 
-#'   to project this onto a test set whose features must be identical.
+#'   to project this onto a test set whose features must be identical.  See examples.
 #' @export
 #' @keywords dfm
 #' @examples 

@@ -7,7 +7,7 @@
 nsentence(x, ...)
 }
 \arguments{
-\item{x}{texts or corpus whose sentences will be counted}
+\item{x}{texts or \link{corpus} whose sentences will be counted}
 
 \item{...}{additional arguments passed to \code{\link{tokens}}}
 }
@@ -18,11 +18,11 @@ count(s) of the total sentences per text
 Return the count of sentences in a corpus or character object.
 }
 \note{
-`nsentence()` relies on the boundaries definitions in the \pkg{stringi}
-  package (see \link[stringi]{stri_opts_brkiter}).  It does not count
-  sentences correctly if the text has been transformed to lower case, and for
-  this reason \code{nsentence} will issue a warning if it detects all
-  lower-cased text.
+\code{nsentence()} relies on the boundaries definitions in the
+  \pkg{stringi} package (see \link[stringi]{stri_opts_brkiter}).  It does not
+  count sentences correctly if the text has been transformed to lower case,
+  and for this reason \code{nsentence()} will issue a warning if it detects
+  all lower-cased text.
 }
 \examples{
 # simple example

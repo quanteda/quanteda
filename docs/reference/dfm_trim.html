@@ -140,7 +140,7 @@ appears, below/above which features will be removed</dd>
 <span class='co'># keep only words occuring 5 times in 1000, and in 2 of 5 of documents</span>
 <span class='fu'>dfm_trim</span>(<span class='no'>myDfm</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 107 features (16.1% sparse).</div><div class='input'>
 <span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># # compare to removeSpareTerms from the tm package </span>
+<span class='co'># # compare to removeSparseTerms from the tm package </span>
 <span class='co'># if (require(tm)) {</span>
 <span class='co'>#     (tmdtm &lt;- convert(myDfm, "tm"))</span>
 <span class='co'>#     removeSparseTerms(tmdtm, 0.7)</span>

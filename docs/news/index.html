@@ -96,7 +96,10 @@
 <code><a href="../reference/corpus_reshape.html">corpus_reshape()</a></code> can now go from sentences and paragraph units back to documents.</li>
 <li>Added a <code>by =</code> argument to <code><a href="../reference/corpus_sample.html">corpus_sample()</a></code>, for use in bootstrap resampling of sub-document units.</li>
 <li>Added an experimental method <code><a href="../reference/bootstrap_dfm.html">bootstrap_dfm()</a></code> to generate a list of dimensionally-equivalent dfm objects based on sentence-level resampling of the original documents.</li>
-<li>Added option to <code><a href="../reference/tokens.html">tokens()</a></code> for passing docvars through to to tokens objects, and added <code><a href="../reference/docvars.html">docvars()</a></code> and <code><a href="../reference/metadoc.html">metadoc()</a></code> methods for tokens class objects. Overall, the code for docvars and metadoc is now more robust and consistent.</li>
+<li>Added option to <code><a href="../reference/tokens.html">tokens()</a></code> and <code><a href="../reference/dfm.html">dfm()</a></code> for passing docvars through to to tokens and dfm objects, and added <code><a href="../reference/docvars.html">docvars()</a></code> and <code><a href="../reference/metadoc.html">metadoc()</a></code> methods for tokens and dfm class objects. Overall, the code for docvars and metadoc is now more robust and consistent.<br>
+</li>
+<li>
+<code><a href="../reference/docvars.html">docvars()</a></code> on eligible objects that contain no docvars now returns an empty 0 x 0 data.frame (in the spirit of #242).</li>
 </ul>
 </div>
 <div id="behaviour-changes" class="section level3">
@@ -117,6 +120,8 @@
 <li>Fixed an problem in tokens generation for some irregular characters (#554).</li>
 <li>Fixed a problem in setting the parallel thread size on single-core machines (#556).</li>
 <li>Fixed problems for <code>str()</code> on a corpus with no docvars (#571).</li>
+<li>
+<code>removeURL</code> in <code><a href="../reference/tokens.html">tokens()</a></code> now removes URLs where the first part of the URL is a single letter (#587).</li>
 </ul>
 </div>
 </div>

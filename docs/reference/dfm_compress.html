@@ -81,12 +81,12 @@
     </div>
 
     
-    <p>&quot;Compresses&quot; a dfm (or fcm) whose dimension names are the same, for either
-documents or features.  This may happen, for instance, if features are made
-equivalent through application of a thesaurus.  It may also occur after
-lower-casing or stemming the features of a dfm, but this should only be done
-in very rare cases (approaching never: it&#39;s better to do this <em>before</em>
-constructing the dfm.)  It could also be needed after a
+    <p>&quot;Compresses&quot; a <a href='dfm.html'>dfm</a> or <a href='fcm.html'>fcm</a> whose dimension names are the same,
+for either documents or features.  This may happen, for instance, if features
+are made equivalent through application of a thesaurus.  It may also occur
+after lower-casing or stemming the features of a dfm, but this should only be
+done in very rare cases (approaching never: it&#39;s better to do this
+<em>before</em> constructing the dfm.)  It could also be needed after a 
 <code><a href='cbind.dfm.html'>cbind.dfm</a></code> or <code><a href='cbind.dfm.html'>rbind.dfm</a></code> operation.</p>
     
 
@@ -101,7 +101,7 @@ constructing the dfm.)  It could also be needed after a
       <dt>margin</dt>
       <dd>character indicating on which margin to compress a dfm, either 
 <code>&quot;documents&quot;</code>, <code>&quot;features&quot;</code>, or <code>&quot;both&quot;</code> (default).  For fcm
-objects, <code>&quot;documents&quot;</code> has an effect.</dd>
+objects, <code>&quot;documents&quot;</code> has no effect.</dd>
       <dt>...</dt>
       <dd>additional arguments passed from generic to specific methods</dd>
     </dl>

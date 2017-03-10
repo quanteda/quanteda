@@ -10,7 +10,7 @@ metadoc(x, field = NULL)
 metadoc(x, field = NULL) <- value
 }
 \arguments{
-\item{x}{A quanteda corpus object}
+\item{x}{a \link{corpus} object}
 
 \item{field}{character, the name of the metadata field(s) to be queried or set}
 
@@ -22,8 +22,7 @@ For \code{texts}, a character vector of the texts in the corpus.
   For \code{texts <-}, the corpus with the updated texts.
 }
 \description{
-Get or set the document-level meta-data, including reserved fields for 
-language and corpus.
+Get or set the document-level meta-data.
 }
 \note{
 Document-level meta-data names are preceded by an underscore character,
@@ -31,7 +30,7 @@ Document-level meta-data names are preceded by an underscore character,
   do \emph{not} need the underscore character.
 }
 \examples{
-mycorp <- corpus_subset(data_corpus_inaugural, Year>1990)
+mycorp <- corpus_subset(data_corpus_inaugural, Year > 1990)
 summary(mycorp, showmeta = TRUE)
 metadoc(mycorp, "encoding") <- "UTF-8"
 metadoc(mycorp)
