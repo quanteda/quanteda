@@ -119,19 +119,20 @@ vector being sampled.</dd>
 #&gt; 10 x 10 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;                  features
 #&gt; docs              fellow  - citizens  of the senate and house representatives :
+#&gt;   1789-Washington      3  3        5  71 116      1  48     2               2 1
 #&gt;   1793-Washington      1  0        1  11  13      0   2     0               0 1
 #&gt;   1801-Jefferson       7 12        7 104 130      0  81     0               0 1
-#&gt;   1821-Monroe         10  6       15 197 360      0 141     0               0 0
+#&gt;   1817-Monroe          6 14        9 164 275      0 122     0               1 0
 #&gt;   1797-Adams           3  5        5 140 163      1 130     0               2 0
 #&gt;   1825-Adams           3 11        2 245 304      0 116     0               1 0
-#&gt;   1809-Madison         1  6        1  69 104      0  43     0               0 0
-#&gt;   1789-Washington      3  3        5  71 116      1  48     2               2 1
-#&gt;   1817-Monroe          6 14        9 164 275      0 122     0               1 0
 #&gt;   1805-Jefferson       8  2       10 101 143      0  93     0               0 0
-#&gt;   1813-Madison         1  1        4  65 100      0  44     0               0 0</div><div class='input'><span class='fu'>dfm_sample</span>(<span class='no'>myDfm</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)[, <span class='fl'>1</span>:<span class='fl'>10</span>]</div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 10 features (32% sparse).
+#&gt;   1813-Madison         1  1        4  65 100      0  44     0               0 0
+#&gt;   1809-Madison         1  6        1  69 104      0  43     0               0 0
+#&gt;   1821-Monroe         10  6       15 197 360      0 141     0               0 0</div><div class='input'><span class='fu'>dfm_sample</span>(<span class='no'>myDfm</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)[, <span class='fl'>1</span>:<span class='fl'>10</span>]</div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 10 features (28% sparse).
 #&gt; 10 x 10 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;                  features
 #&gt; docs              fellow  - citizens  of the senate and house representatives :
+#&gt;   1789-Washington      3  3        5  71 116      1  48     2               2 1
 #&gt;   1825-Adams           3 11        2 245 304      0 116     0               1 0
 #&gt;   1797-Adams           3  5        5 140 163      1 130     0               2 0
 #&gt;   1797-Adams           3  5        5 140 163      1 130     0               2 0
@@ -140,33 +141,32 @@ vector being sampled.</dd>
 #&gt;   1801-Jefferson       7 12        7 104 130      0  81     0               0 1
 #&gt;   1793-Washington      1  0        1  11  13      0   2     0               0 1
 #&gt;   1797-Adams           3  5        5 140 163      1 130     0               2 0
-#&gt;   1805-Jefferson       8  2       10 101 143      0  93     0               0 0
-#&gt;   1809-Madison         1  6        1  69 104      0  43     0               0 0</div><div class='input'><span class='fu'>dfm_sample</span>(<span class='no'>myDfm</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"features"</span>)[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 10 features (85% sparse).
+#&gt;   1805-Jefferson       8  2       10 101 143      0  93     0               0 0</div><div class='input'><span class='fu'>dfm_sample</span>(<span class='no'>myDfm</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"features"</span>)[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 10 features (85% sparse).
 #&gt; 10 x 10 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;                  features
-#&gt; docs              attempts societies defamatory defects abandon immense
-#&gt;   1789-Washington        0         0          0       0       0       0
-#&gt;   1793-Washington        0         0          0       0       0       0
-#&gt;   1797-Adams             0         0          0       0       0       0
-#&gt;   1801-Jefferson         0         0          0       0       1       0
-#&gt;   1805-Jefferson         0         1          1       0       0       0
-#&gt;   1809-Madison           0         0          0       0       0       0
-#&gt;   1813-Madison           1         0          0       0       0       0
-#&gt;   1817-Monroe            0         0          0       1       0       0
-#&gt;   1821-Monroe            0         0          0       2       2       1
-#&gt;   1825-Adams             0         0          0       0       0       0
+#&gt; docs              offer conquering several intended remedy abandon patriotic
+#&gt;   1789-Washington     0          0       0        0      0       0         0
+#&gt;   1793-Washington     0          0       0        0      0       0         0
+#&gt;   1797-Adams          0          0       0        0      0       0         0
+#&gt;   1801-Jefferson      0          0       0        0      0       1         0
+#&gt;   1805-Jefferson      1          0       2        1      0       0         0
+#&gt;   1809-Madison        0          0       0        0      0       0         0
+#&gt;   1813-Madison        0          1       0        0      0       0         0
+#&gt;   1817-Monroe         0          0       2        0      2       0         0
+#&gt;   1821-Monroe         0          0       4        1      0       2         1
+#&gt;   1825-Adams          0          0       1        0      0       0         0
 #&gt;                  features
-#&gt; docs              literary invade intended private
-#&gt;   1789-Washington        0      0        0       2
-#&gt;   1793-Washington        0      0        0       0
-#&gt;   1797-Adams             1      0        0       2
-#&gt;   1801-Jefferson         0      0        0       0
-#&gt;   1805-Jefferson         0      0        1       0
-#&gt;   1809-Madison           0      1        0       1
-#&gt;   1813-Madison           0      0        0       0
-#&gt;   1817-Monroe            0      0        0       0
-#&gt;   1821-Monroe            0      0        1       0
-#&gt;   1825-Adams             0      0        0       0</div></pre>
+#&gt; docs              literary foster watchman
+#&gt;   1789-Washington        0      0        0
+#&gt;   1793-Washington        0      0        0
+#&gt;   1797-Adams             1      0        0
+#&gt;   1801-Jefferson         0      0        0
+#&gt;   1805-Jefferson         0      0        0
+#&gt;   1809-Madison           0      1        0
+#&gt;   1813-Madison           0      0        0
+#&gt;   1817-Monroe            0      0        0
+#&gt;   1821-Monroe            0      0        0
+#&gt;   1825-Adams             0      0        1</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
