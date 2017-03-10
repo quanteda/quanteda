@@ -80,136 +80,101 @@ dfm_select <- function(x, features = NULL, selection = c("keep", "remove"),
 #' @rdname dfm_select
 #' @noRd
 #' @export
-dfm_select.dfm <-  function(x, features = NULL, selection = c("keep", "remove"), 
+dfm_select.dfm <-  function(x, features = NULL, documents = NULL, 
+                            selection = c("keep", "remove"), 
                             valuetype = c("glob", "regex", "fixed"),
                             case_insensitive = TRUE,
                             min_nchar = 1, max_nchar = 63,
+                            padding = FALSE,
                             verbose = FALSE, ...) {
+    
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
-    features_from_dfm <- FALSE
-    
-    # select features based on character length
-    featIndex <- 1:nfeature(x)
-    featIndex <- intersect(featIndex, 
-                           which(stringi::stri_length(featnames(x)) >= min_nchar & stringi::stri_length(featnames(x)) <= max_nchar))
+    attrs_org <- attributes(x)
+    types <- featnames(x)
+    labels <- docnames(x)
     
     # select features based on "features" pattern
     if (!is.null(features)) {
-        
-        if (!(is.character(features) | is.dfm(features) | is(features, "dictionary")))
-            stop("features must be of type character, dictionary, or dfm")
-        
         # special handling if features is a dfm
         if (is.dfm(features)) {
-            if (selection == "keep") {
-                features_dfm <- features <- featnames(features)
-                features_from_dfm <- TRUE
-            } else {
-                features <- featnames(features)
-            }
+            features <- featnames(features)
+            valuetype <- 'fixed'
         }
-        
-        # to convert any dictionaries
-        features <- unique(unlist(features))  
-        
-        # convert glob to fixed if no actual glob characters (since fixed is much faster)
-        originalvaluetype <- valuetype
-        if (valuetype == "glob") {
-            # treat as fixed if no glob characters detected
-            if (!sum(stringi::stri_detect_charclass(features, c("[*?]"))))
-                valuetype <- "fixed"
-            else {
-                features <- sapply(features, utils::glob2rx, USE.NAMES = FALSE)
-                valuetype <- "regex"
-            }
-        }
-        
-        features_x <- featnames(x)
-        if (case_insensitive & valuetype == "fixed") {
-            features_x <- char_tolower(features_x)
-            features <- char_tolower(features)
-        }
-        
-        # split features on concatenator if exists
-        if (x@concatenator != "")
-            features_x <- strsplit(features_x, x@concatenator)
-        
-        if (valuetype == "regex") {
-            if (all.equal(x@ngrams, 1L)==TRUE) {
-                featIndex <- intersect(featIndex, 
-                                       which(stringi::stri_detect_regex(features_x, paste0(features, collapse = "|"), 
-                                                                        case_insensitive = case_insensitive, ...)))
-            } else {
-                ####
-                ####
-                matchPattern <- paste0(features, collapse = "|")
-                featIndex <- intersect(featIndex,
-                                       which(sapply(features_x, 
-                                                    function(x) any(stringi::stri_detect_regex(x, matchPattern, 
-                                                                                               case_insensitive = case_insensitive, ...)))))
-            }
-        } else {
-            if (all.equal(x@ngrams, 1L)==TRUE)
-                featIndex <- intersect(featIndex, 
-                                       which(features_x %in% features))  # unigrams
-            else
-                featIndex <- intersect(featIndex, 
-                                       which(sapply(features_x, function(f) any(f %in% features), USE.NAMES = FALSE))) # ngrams
-        }
-        
-        if (verbose & !features_from_dfm) 
-            catm(ifelse(selection=="keep", "kept", "removed"), " ", 
-                 format(length(featIndex), big.mark=","),
-                 " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
-                 ", from ", length(features), " supplied (", originalvaluetype, ") feature type",
-                 ifelse(length(features) > 0 | length(featIndex)==0, "s", ""),
-                 "\n", sep = "")
-        
-        # pad the zeros if features was a dfm, return in same feature order as original dfm
-        # for selection = "keep" only
-        if (features_from_dfm) {
-            if (verbose)
-                catm(ifelse(selection=="keep", "found", "zeroed"), " ", 
-                     format(length(featIndex), big.mark=","),
-                     " feature", ifelse(length(featIndex) > 1 | length(featIndex)==0, "s", ""), 
-                     " from ", length(features), " supplied type",
-                     ifelse(length(features) > 0 | length(featIndex)==0, "s", ""),
-                     " in a dfm,", sep = "")
-            # remove features in x that are not in features (from supplied dfm)
-            x2 <- x[, featIndex]
-            # now add zero-valued features to x that are not in x but are in features
-            origDfmFeatureIndex <- which(!(char_tolower(features) %in% char_tolower(featnames(x2))))
-            xOriginalFeatureLength <- nfeature(x2)
-            xOriginalFeatures <- featnames(x2)
-            if (verbose) catm(" padding 0s for another", length(origDfmFeatureIndex), "\n")
-            x <- new("dfmSparse", Matrix::cbind2(x2,
-                                                 sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x2), length(origDfmFeatureIndex)), 
-                                                              dimnames = list(docnames(x2), features[origDfmFeatureIndex]))))
-            if (case_insensitive & valuetype == "fixed") {
-                features_x_ori <- char_tolower(featnames(x))
-                features_dfm <- char_tolower(features_dfm)
-            }
-            featIndex <- match(features_dfm, features_x_ori)
-            # x <- x2 #[, features_dfm]
-        }
-    }        
-    
-    ##
-    ## MIGHT NEED TO ADD BACK ORIGINAL ATTRIBUTES HERE
-    ##
-    
-    if (!length(featIndex)) {
-        if (selection == "keep")
-            return(NULL)
-        else 
-            return(x)
+        features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
+        features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
     } else {
         if (selection == "keep")
-            return(x[, featIndex])
-        else 
-            return(x[, -featIndex])
+            features_id <- 1:nfeature(x)
+        else
+            features_id <- NULL
     }
+    
+    # select features based on character length
+    features_id <- intersect(features_id, which(stringi::stri_length(types) >= min_nchar & 
+                                                stringi::stri_length(types) <= max_nchar))
+    
+    # select documents based on "documents" pattern
+    if (!is.null(documents)){
+        documents <- unlist(documents, use.names = FALSE) # this funciton does not accpet list
+        documents_id <- unlist(regex2id(documents, labels, valuetype, case_insensitive, FALSE), use.names = FALSE)
+    } else {
+        if (selection == "keep")
+            documents_id <- 1:ndoc(x)
+        else
+            documents_id <- NULL
+    }
+
+    if (selection == "keep") {
+        if (!length(features_id) || !length(documents_id)) {
+            return(NULL)
+        } else {
+            x <- x[documents_id, features_id]
+            if (valuetype == 'fixed' & padding) {
+                
+                # padding for features
+                types_add <- setdiff(features, types)
+                if (length(types_add)) {
+                    x <- new("dfmSparse", Matrix::cbind2(x, sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x), length(types_add)), 
+                                                                         dimnames = list(docnames(x), types_add))))
+                }
+                if (case_insensitive)
+                    x <- dfm_tolower(x)
+                
+                # padding for documents
+                labels_add <- setdiff(documents, labels)
+                if (length(labels_add)) {
+                    x <- new("dfmSparse", Matrix::rbind2(x, sparseMatrix(i = NULL, j = NULL, dims = c(length(labels_add), nfeature(x)), 
+                                                                         dimnames = list(labels_add, featnames(x)))))
+                }
+            }
+        }
+    } else {
+        if (length(features_id) == nfeature(x) || length(documents_id) == ndoc(x)) {
+            return(NULL)    
+        } else if(is.null(features_id)) {
+            x <- x[documents_id * -1,]
+        } else if(is.null(documents_id)) {
+            x <- x[, features_id * -1]
+        } else {
+            x <- x[documents_id * -1, features_id * -1]
+        }
+    }
+   
+    if (verbose) {
+        catm("dfm_select ", ifelse(selection=="keep", "kept", "removed"), " ", 
+             format(length(features_id), big.mark=","),
+             " feature", ifelse(length(features_id) > 1, "s", ""), " in ",
+             format(length(documents_id), big.mark=","),
+             " documents", ifelse(length(documents_id) > 1, "s", " padding 0s for "),
+             format(length(types_add), big.mark=","), 
+             " feature", ifelse(length(types_add) > 1, "s", ""), " and ",
+             format(length(labels_add), big.mark=","),
+             " document", ifelse(length(labels_add) > 1, "s", "."),
+             sep = "\n")
+    } 
+    
+    return(x)
 }
 
 
