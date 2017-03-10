@@ -47,13 +47,14 @@ head(docvars(data_corpus_inaugural))
 tail(docvars(data_corpus_inaugural, "President"), 10)
 
 # assigning document variables to a corpus
-docvars(data_corpus_inaugural, "President") <- paste("prez", 1:ndoc(data_corpus_inaugural), sep = "")
-head(docvars(data_corpus_inaugural))
+corp <- data_corpus_inaugural
+docvars(corp, "President") <- paste("prez", 1:ndoc(corp), sep = "")
+head(docvars(corp))
 
 # alternative using indexing
-head(data_corpus_inaugural[, "Year"])
-data_corpus_inaugural[["President2"]] <- paste("prezTwo", 1:ndoc(data_corpus_inaugural), sep = "")
-head(docvars(data_corpus_inaugural))
+head(corp[, "Year"])
+corp[["President2"]] <- paste("prezTwo", 1:ndoc(corp), sep = "")
+head(docvars(corp))
 
 }
 \keyword{corpus}
