@@ -22,6 +22,7 @@
 * Fixed a problem in setting the parallel thread size on single-core machines (#556).
 * Fixed problems for `str()` on a corpus with no docvars (#571).
 * `removeURL` in `tokens()` now removes URLs where the first part of the URL is a single letter (#587).
+* `dfm_select` now works correctly for ngram features (#589).
 
 
 ## Changes since v0.9.9-17
