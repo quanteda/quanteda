@@ -61,9 +61,9 @@ documents <- function(corp) {
 
 #' get or assign corpus texts
 #' 
-#' Get or replace the texts in a \link{corpus} object, with grouping options. 
+#' Get or replace the texts in a \link{corpus}, with grouping options. 
 #' Works for plain character vectors too, if \code{groups} is a factor.
-#' @param x a quanteda \link{corpus} or character object
+#' @param x a \link{corpus} or character object
 #' @param groups either: a character vector containing the names of document
 #'   variables to be used for grouping; or a factor (or object that can be
 #'   coerced into a factor) equal in length to the number of documents, used for
@@ -131,8 +131,9 @@ texts.character <- function(x, groups = NULL, spacer = "  ") {
 #'   Rather, this sort of processing is better performed through downstream 
 #'   operations.  For instance, do not lowercase the texts in a corpus, or you 
 #'   will never be able to recover the original case.  Rather, apply 
-#'   \code{\link{toLower}} to the corpus and use the result as an input, e.g. to
-#'   \code{\link{tokenize}}.
+#'   \code{\link{tokens_tolower}} after applying 
+#'   \code{\link{tokens}} to a corpus, or use the option \code{tolower = TRUE} in 
+#'   \code{\link{dfm}}..
 #' @examples
 #' BritCorpus <- corpus(c("We must prioritise honour in our neighbourhood.", 
 #'                        "Aluminium is a valourous metal."))
