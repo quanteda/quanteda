@@ -7,11 +7,12 @@
 \alias{fcm_remove}
 \title{select features from a dfm or fcm}
 \usage{
-dfm_select(x, features = NULL, selection = c("keep", "remove"),
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  min_nchar = 1, max_nchar = 63, verbose = FALSE, ...)
+dfm_select(x, features = NULL, documents = NULL, selection = c("keep",
+  "remove"), valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE, min_nchar = 1, max_nchar = 63,
+  padding = FALSE, verbose = FALSE, ...)
 
-dfm_remove(x, features = NULL, ...)
+dfm_remove(x, features = NULL, documents = NULL, ...)
 
 fcm_select(x, features = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
@@ -26,6 +27,9 @@ fcm_remove(x, features, ...)
 \link{dfm} whose features will be used for selection, or a dictionary class
 object whose values (not keys) will provide the features to be selected. 
 For \link{dfm} objects, see details in the Value section below.}
+
+\item{documents}{select documents based on their document names. Works exactly 
+the same as features.}
 
 \item{selection}{whether to \code{keep} or \code{remove} the features}
 
@@ -42,6 +46,10 @@ in characters for features to be removed or kept; defaults are 1 and
 applied after (and hence, in addition to) any selection based on pattern
 matches.}
 
+\item{padding}{if \code{TRUE} features or documents not existing in x is 
+added to \link{dfm}. This option is available only when selection is 
+\code{keep} and valuetype is \code{fixed}.}
+
 \item{verbose}{if \code{TRUE} print message about how many features were 
 removed}
 
@@ -51,13 +59,14 @@ removed}
 \value{
 A \link{dfm} or \link{fcm} object, after the feature selection has been applied.
   
-  When \code{features} is a \link{dfm} object, then the returned object will 
-  be identical in its feature set to the dfm supplied as the \code{features} 
-  argument.  This means that any features in \code{x} not in \code{features} 
-  will be discarded, and that any features in found in the dfm supplied as 
-  \code{features} but not found in \code{x} will be added with all zero 
-  counts.  This is useful when you have trained a model on one dfm, and need 
-  to project this onto a test set whose features must be identical.  See examples.
+  When \code{features} is a \link{dfm} object and \code{padding} is \code{TRUE} , 
+  then the returned object will be identical in its feature set to the dfm 
+  supplied as the \code{features} argument. This means that any features in 
+  \code{x} not in \code{features} will be discarded, and that any features in 
+  found in the dfm supplied as \code{features} but not found in \code{x} will 
+  be added with all zero counts.  This is useful when you have trained a model 
+  on one dfm, and need to project this onto a test set whose features must be 
+  identical.  See examples.
 }
 \description{
 This function selects or discards features from a \link{dfm} or \link{fcm}, based on a 

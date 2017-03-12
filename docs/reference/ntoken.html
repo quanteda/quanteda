@@ -81,8 +81,7 @@
     </div>
 
     
-    <p>Get the count of tokens (total features) or types (unique tokens)
-in a text, corpus, or dfm.</p>
+    <p>Get the count of tokens (total features) or types (unique tokens).</p>
     
 
     <pre><span class='fu'>ntoken</span>(<span class='no'>x</span>, <span class='no'>...</span>)
@@ -92,8 +91,8 @@ in a text, corpus, or dfm.</p>
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>a <span class="pkg">quanteda</span> object: a character, <a href='corpus.html'>corpus</a>, or
-<a href='tokens.html'>tokens</a> object</dd>
+      <dd>a <span class="pkg">quanteda</span> object: a character, <a href='corpus.html'>corpus</a>, 
+<a href='tokens.html'>tokens</a>, or <a href='dfm.html'>dfm</a> object</dd>
       <dt>...</dt>
       <dd>additional arguments passed to <code><a href='tokens.html'>tokens</a></code></dd>
     </dl>
@@ -116,7 +115,7 @@ that occur more than zero times in the dfm.</p>
   defined for a <a href='dfm.html'>dfm</a>, the counts be different for dfm objects and the 
   texts from which the dfm was generated.  Because the method tokenizes the 
   text in order to count the tokens, your results will depend on the options 
-  passed through to <code><a href='tokenize.html'>tokenize</a></code></p>
+  passed through to <code><a href='tokens.html'>tokens</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
