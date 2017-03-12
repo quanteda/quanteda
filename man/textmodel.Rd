@@ -94,3 +94,5 @@ wf}
 \seealso{
 \code{\link{textmodel}}, \code{\link{textmodel_wordscores}}
 }
+\keyword{internal}
+\keyword{textmodel}
