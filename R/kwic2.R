@@ -91,6 +91,9 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
         context <- kwic_split(x, attr(x, 'target_start'), attr(x, 'target_end'))
         context$document <- factor(names(x))
         context$position <- attr(x, 'position')
+        context <- context[, c('document', 'position', 'pre', 'keyword', 'post')]
+    } else {
+        return(NULL)
     }
     
     # add attributes for kwic object
