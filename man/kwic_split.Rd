@@ -4,22 +4,21 @@
 \alias{kwic_split}
 \title{split kwic results}
 \usage{
-kwic_split(char, mask, window)
+kwic_split(x, start, end)
 }
 \arguments{
+\item{start}{numeric vector for starting positions of keywords}
+
 \item{char}{character vector}
 
-\item{mask}{numeric vector with the same length as char where 1 indicate appearance of keywords}
-
-\item{window}{size of the pre and post contexts}
+\item{start}{numeric vector for ending positions of keywords}
 }
 \description{
 Helper function for kwic designed to parse sequence matches into contexts and keywords.
 }
 \examples{
 \dontrun{
-kwic_split(letters[1:5], c(0, 1, 1, 0, 1), window = 1)
-kwic_split(letters[1:5], c(1, 1, 1, 0, 1), window = 1)
+kwic_split(rep(list(letters[1:5]), 3), c(2, 3, 4), c(2, 4, 5))
 }
 }
 \author{

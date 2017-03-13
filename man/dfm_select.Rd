@@ -93,26 +93,20 @@ mydict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
                           notintext = "blahblah"))
 dfm_select(myDfm, mydict)
 dfm_select(myDfm, mydict, case_insensitive = FALSE)
-dfm_select(myDfm, c("s$", ".y"), "keep")
-dfm_select(myDfm, c("s$", ".y"), "keep", valuetype = "regex")
-dfm_select(myDfm, c("s$", ".y"), "remove", valuetype = "regex")
-dfm_select(myDfm, stopwords("english"), "keep", valuetype = "fixed")
-dfm_select(myDfm, stopwords("english"), "remove", valuetype = "fixed")
+dfm_select(myDfm, c("s$", ".y"), selection = "keep", valuetype = "regex")
+dfm_select(myDfm, c("s$", ".y"), selection = "remove", valuetype = "regex")
+dfm_select(myDfm, stopwords("english"), selection = "keep", valuetype = "fixed")
+dfm_select(myDfm, stopwords("english"), selection = "remove", valuetype = "fixed")
 
 # select based on character length
 dfm_select(myDfm, min_nchar = 5)
 
 # selecting on a dfm
-textVec1 <- c("This is text one.", "This, the second text.", "Here: the third text.")
-textVec2 <- c("Here are new words.", "New words in this text.")
-(dfm1 <- dfm(textVec1, verbose = FALSE))
-(dfm2a <- dfm(textVec2, verbose = FALSE))
-(dfm2b <- dfm_select(dfm2a, dfm1))
-setequal(featnames(dfm1), featnames(dfm2b))
-
-# more selection on a dfm
-dfm_select(dfm1, dfm2a)
-dfm_select(dfm1, dfm2a, selection = "remove")
+txts <- c("This is text one", "This is text two", "This is text three")
+(dfm1 <- dfm(txts[1:2], verbose = FALSE))
+(dfm2 <- dfm(txts[2:3], verbose = FALSE))
+(dfm3 <- dfm_select(dfm1, dfm2, valuetype = "fixed", padding = TRUE, verbose = TRUE))
+setequal(featnames(dfm2), featnames(dfm3))
 
 tmpdfm <- dfm(c("This is a document with lots of stopwords.",
                 "No if, and, or but about it: lots of stopwords."),

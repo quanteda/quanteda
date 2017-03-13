@@ -66,13 +66,15 @@ struct range_mt : public Worker{
 
 
 /* 
- * This funciton finds features in tokens object. This is similar to tokens_tookup, 
- * but returns a tokens object filled with zero or one.
+ * This funciton finds features extract contexts of features. 
  * The number of threads is set by RcppParallel::setThreadOptions()
  * @used kwic()
  * @creator Kohei Watanabe
  * @param texts_ tokens ojbect
- * @param words_ list of features to find
+ * @param types_ types
+ * @param words_ list of target features
+ * @param window windowsize
+ * @param target if true, target features are included in the results
  * 
  */
 
@@ -81,7 +83,8 @@ struct range_mt : public Worker{
 List qatd_cpp_tokens_contexts(const List &texts_,
                               const CharacterVector types_,
                               const List &words_,
-                              unsigned int window){
+                              unsigned int window,
+                              bool target){
     
     Texts input = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as< Types >(types_);
@@ -116,35 +119,56 @@ List qatd_cpp_tokens_contexts(const List &texts_,
     Texts output;
     std::vector<std::string> names;
     names.reserve(input.size());
-    std::vector<int> positions;
-    positions.reserve(input.size());
+    std::vector<int> starts, ends, positions;
+    positions.reserve(input.size()); // global position
+    starts.reserve(input.size()); // local position
+    ends.reserve(input.size()); // local position
     
     for (std::size_t h = 0; h < temp.size(); h++) {
         string name = Rcpp::as<string>(names_[h]);
         Text tokens = input[h];
         Targets targets = temp[h];
-        int last = (int)tokens.size();
+        int last = (int)tokens.size() - 1;
         for (size_t l = 0; l < targets.size(); l++) {
             int from = targets[l].first - window;
             int to = targets[l].second + window;
             
-            //Rcout << targets[l].first << ":" << targets[l].second << "\n";
-            //Rcout << from << ":" << to << "\n";
-            
+            // subset contexts fron the whole text
             Text context(tokens.begin() + std::max(0, from), 
                          tokens.begin() + std::min(to, last));
+            
+            // calcualte positions of target in context
+            int start = from > 0 ? window : targets[l].first;
+            int end = start + (targets[l].second - targets[l].first);
+            
+            if (!target) {
+                std::fill(context.begin() + start, context.begin() + end + 1, 0);
+            }
             output.push_back(context);
             names.push_back(name + ":" + std::to_string(l + 1));
-            positions.push_back(targets[l].first + 1); // for kwic
+            
+            if (target) {
+                // save positions for kwic
+                positions.push_back(targets[l].first + 1);
+                starts.push_back(start + 1);
+                ends.push_back(end + 1);
+            }
         }
     }
     
     // dev::stop_timer("Dictionary detect", timer);
     List output_ = recompile(output, types);
     output_.attr("names") = names;
-    output_.attr("positions") = positions;
+    output_.attr("class") = "tokens";
+    if (target) {
+        output_.attr("position") = positions;
+        output_.attr("target_start") = starts;
+        output_.attr("target_end") = ends;
+    }
     return output_;
 }
+
+
 
 /***R
 
@@ -152,6 +176,7 @@ toks <- list(text1=1:10, text2=5:15)
 #toks <- rep(list(rep(1:10, 1), rep(5:15, 1)), 1)
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 #qatd_cpp_tokens_contexts(toks, dict, 2)
-qatd_cpp_tokens_contexts(toks, letters, list(c(3, 4), 7), 3)
+qatd_cpp_tokens_contexts(toks, letters, list(c(3, 4), 7), 3, TRUE)
+qatd_cpp_tokens_contexts(toks, letters, list(c(3, 4), 7), 3, FALSE)
 
 */
