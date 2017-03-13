@@ -32,7 +32,7 @@ segment.corpus <- function(x, ...) {
 #' corpus object, and allows the delimiters to be user-defined.  This is useful 
 #' for breaking the texts of a corpus into smaller documents based on sentences,
 #' or based on a user defined "tag" pattern.  See details.
-#' @param x corpus object whose texts will be segmented
+#' @param x character or \link{corpus} object whose texts will be segmented
 #' @param what unit of segmentation.  Current options are \code{"tokens"} 
 #'   (default), \code{"sentences"}, \code{"paragraphs"}, \code{"tags"}, and 
 #'   \code{"other"}.  Segmenting on \code{other} allows segmentation of a text 
@@ -45,7 +45,7 @@ segment.corpus <- function(x, ...) {
 #'   tag preceded by two pound or "hash" signs \code{##}).  Delimiter has no
 #'   effect for segmentation into tokens or sentences
 #' @inheritParams valuetype
-#' @param keepdocvars (for corpus objects) if \code{TRUE}, repeat the docvar
+#' @param use_docvars (for corpus objects) if \code{TRUE}, repeat the docvar
 #'   values for each segmented text; if \code{FALSE}, drop the docvars in the
 #'   segmented corpus. Dropping the docvars might be useful in order to conserve
 #'   space or if these are not desired for the segmented corpus.
@@ -53,7 +53,7 @@ segment.corpus <- function(x, ...) {
 #'   \code{what = "tokens"} is used
 #' @return A corpus of segmented texts.
 #' @note Does not currently record document segments if segmenting a multi-text 
-#'   corpus into smaller units. For this, use \link{changeunits} instead.
+#'   corpus into smaller units. For this, use \link{corpus_reshape} instead.
 #' @details Tokens are delimited by separators.  For tokens and sentences, these
 #' are determined by the tokenizer behaviour in \code{\link{tokens}}.
 #'   
@@ -83,7 +83,7 @@ segment.corpus <- function(x, ...) {
 corpus_segment <- function(x, what = c("sentences", "paragraphs", "tokens", "tags", "other"), 
                            delimiter = switch(what, paragraphs = "\\n{2}", tags = "##\\w+\\b", NULL),
                            valuetype = c("regex", "fixed", "glob"),
-                           keepdocvars = TRUE, 
+                           use_docvars = TRUE, 
                            ...) {
     UseMethod("corpus_segment")
 }
@@ -94,7 +94,7 @@ corpus_segment <- function(x, what = c("sentences", "paragraphs", "tokens", "tag
 corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens", "tags", "other"), 
                                   delimiter = switch(what, paragraphs = "\\n{2}", tags = "##\\w+\\b", NULL),
                                   valuetype = c("regex", "fixed", "glob"),
-                                  keepdocvars = TRUE, 
+                                  use_docvars = TRUE, 
                            ...) {
     what <- match.arg(what)
     valuetype <- match.arg(valuetype)
@@ -133,7 +133,7 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
     }
     
     # add repeated versions of remaining docvars
-    if (!is.null(docvars(x)) & keepdocvars) {
+    if (!is.null(docvars(x)) & use_docvars) {
         newCorpus[[names(docvars(x))]] <- lapply(docvars(x), rep, lengths(segTxt))
     }
 
@@ -158,7 +158,7 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
 char_segment <- function(x, what = c("sentences", "paragraphs", "tokens", "tags", "other"), 
                          delimiter = switch(what, paragraphs = "\\n{2}", tags = "##\\w+\\b", NULL),
                          valuetype = c("regex", "fixed", "glob"),
-                         keepdocvars = TRUE, 
+                         use_docvars = TRUE, 
                          ...) {
    
     if (!all(is.character(x)))

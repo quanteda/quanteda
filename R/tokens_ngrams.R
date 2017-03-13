@@ -128,13 +128,13 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     if (any(n <= 0)) 
         stop("ngram length has to be greater than zero")
     
-    attrs_org <- attributes(x)
+    attrs <- attributes(x)
     x <- qatd_cpp_tokens_ngrams(x, types(x), concatenator, n, skip + 1)
-    x <- reassign_attributes(x, attrs_org, exceptions = "types", attr_only = TRUE)
+    attributes(x, FALSE) <- attrs
     attr(x, "ngrams") <- as.integer(n)
     attr(x, "skip") <- as.integer(skip)
     attr(x, "concatenator") <- concatenator
-    tokens_hashed_recompile(x)
+    return(x)
 }
 
 

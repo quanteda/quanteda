@@ -10,13 +10,11 @@
 #' @param ... unused
 #' @seealso \code{\link{corpus_sample}}, \code{\link{dfm_sample}}
 #' @keywords internal deprecated
-#' @export
 sample <- function(x, size, replace = FALSE, prob = NULL, ...) {
     UseMethod("sample")
 }
 
 #' @rdname sample
-#' @export
 sample.default <- function(x, size, replace = FALSE, prob = NULL, ...) {
     if (length(addedArgs <- list(...)))
         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
@@ -24,7 +22,6 @@ sample.default <- function(x, size, replace = FALSE, prob = NULL, ...) {
 }
 
 #' @rdname sample
-#' @export
 sample.corpus <- function(x, ...) {
     .Deprecated("corpus_sample")
     corpus_sample(x, ...)

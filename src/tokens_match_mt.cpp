@@ -1,5 +1,6 @@
 //#include "dev.h"
 #include "quanteda.h"
+#include "recompile.h"
 using namespace quanteda;
 
 Text match(Text tokens, 
@@ -88,12 +89,14 @@ struct match_mt : public Worker{
 */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_match(const List &texts_, 
+List qatd_cpp_tokens_match(const List &texts_,
+                           const CharacterVector types_,
                            const List &words_,
                            const IntegerVector &ids_,
                            const bool &overlap){
     
     Texts input = Rcpp::as<Texts>(texts_);
+    Types types = Rcpp::as<Types>(types_);
     const IntegerVector ids = ids_;
     
     MapNgrams map_words;
@@ -120,8 +123,7 @@ List qatd_cpp_tokens_match(const List &texts_,
     }
 #endif
     // dev::stop_timer("Token match", timer);
-    ListOf<IntegerVector> output_ = Rcpp::wrap(output);
-    return output_;
+    return recompile(output, types);
 }
 
 /***R

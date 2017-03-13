@@ -74,7 +74,7 @@ setMethod("show", "dictionary",
 
 #' create a dictionary
 #' 
-#' Create a quanteda dictionary, either from a list or by importing from a 
+#' Create a \pkg{quanteda} dictionary class object, either from a list or by importing from a 
 #' foreign format.  Currently supported input file formats are the Wordstat,
 #' LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import using the 
 #' LIWC format works with 
@@ -111,6 +111,8 @@ setMethod("show", "dictionary",
 #'   
 #'   Yoshikoder page, from Will Lowe 
 #'   \url{http://conjugateprior.org/software/yoshikoder/}.
+#'   
+#'   Lexicoder format, \url{http://www.lexicoder.com}
 #'   
 #' @seealso \link{dfm}
 #' @examples
@@ -251,6 +253,7 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1, key = '', dict_f
             dict_flat[[key_entry]] <- c(dict_flat[[key_entry]], entry)
         }
     }
+    attributes(dict_flat, FALSE) <- attributes(dict)
     return(dict_flat)
 }
 

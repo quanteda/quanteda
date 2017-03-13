@@ -233,3 +233,14 @@ c.corpus <- function(..., recursive = FALSE) {
     x
 }
 
+#' @export
+#' @param object the corpus about which you want structural information
+#' @param ... not used
+#' @method str corpus
+#' @importFrom utils str
+#' @rdname corpus-class
+str.corpus <- function(object, ...) {
+    # message("OK, but note: accessing corpus internals directly voids your warranty.")
+    str(unclass(object))
+}
+

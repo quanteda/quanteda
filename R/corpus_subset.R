@@ -1,7 +1,7 @@
 #' extract a subset of a corpus
 #' 
 #' Returns subsets of a corpus that meet certain conditions, including direct 
-#' logical operations on docvars (document-level variables).  `corpus_subset` 
+#' logical operations on docvars (document-level variables).  \code{corpus_subset}
 #' functions identically to \code{\link{subset.data.frame}}, using non-standard
 #' evaluation to evaluate conditions based on the \link{docvars} in the corpus.
 #' 
@@ -15,8 +15,9 @@
 #' @seealso \code{\link{subset.data.frame}}
 #' @keywords corpus
 #' @examples
-#' summary(corpus_subset(data_corpus_inaugural, Year>1980))
-#' summary(corpus_subset(data_corpus_inaugural, Year>1930 & President=="Roosevelt", select=Year))
+#' summary(corpus_subset(data_corpus_inaugural, Year > 1980))
+#' summary(corpus_subset(data_corpus_inaugural, Year > 1930 & President == "Roosevelt", 
+#'                       select = Year))
 corpus_subset <- function(x, subset, select, ...) {
     UseMethod("corpus_subset")
 }

@@ -1,5 +1,6 @@
 //#include "dev.h"
 #include "quanteda.h"
+#include "recompile.h"
 using namespace quanteda;
 
 Text keep_token(Text tokens, 
@@ -99,13 +100,15 @@ struct select_mt : public Worker{
  */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_select(const List &texts_, 
+List qatd_cpp_tokens_select(const List &texts_,
+                            const CharacterVector types_,
                             const List &words_,
                             int mode,
                             bool padding){
     
     Texts input = Rcpp::as<Texts>(texts_);
-
+    Types types = Rcpp::as<Types>(types_);
+    
     SetNgrams set_words;
     std::vector<std::size_t> spans(words_.size());
     for (unsigned int g = 0; g < (unsigned int)words_.size(); g++) {
@@ -141,8 +144,7 @@ List qatd_cpp_tokens_select(const List &texts_,
     }
 #endif
     // dev::stop_timer("Token select", timer);
-    ListOf<IntegerVector> output_ = Rcpp::wrap(output);
-    return output_;
+    return recompile(output, types);
 }
 
 /***R

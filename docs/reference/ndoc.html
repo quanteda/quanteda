@@ -81,7 +81,7 @@
     </div>
 
     
-    <p>Get the number of documents, tokens, types, or features in an object.</p>
+    <p>Get the number of documents or features in an object.</p>
     
 
     <pre><span class='fu'>ndoc</span>(<span class='no'>x</span>)
@@ -91,19 +91,20 @@
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>a <span class="pkg">quanteda</span> object: a <a href='corpus.html'>corpus</a>, <a href='dfm.html'>dfm</a>, or <a href='tokens.html'>tokens</a>
-object, or a readtext object from the <span class="pkg">readtext</span> package.</dd>
+      <dd>a <span class="pkg">quanteda</span> object: a <a href='corpus.html'>corpus</a>, <a href='dfm.html'>dfm</a>, or
+<a href='tokens.html'>tokens</a> object, or a readtext object from the <span class="pkg">readtext</span> package.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>an integer (count) of the number of documents or features in the 
-  corpus or dfm</p>
+    <p>an integer (count) of the number of documents or features</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>ndoc</code> returns the number of documents or features in a 
-  quanteda object.</p>
+    <p><code>ndoc</code> returns the number of documents in a  <a href='corpus.html'>corpus</a>,
+  <a href='dfm.html'>dfm</a>, or <a href='tokens.html'>tokens</a> object, or a readtext object from the
+  <span class="pkg">readtext</span> package</p>
+    <p><code>nfeature</code> returns the number of features in a <a href='dfm.html'>dfm</a></p>
     <p><code>nfeature</code> returns the number of features from a dfm; it is an
   alias for <code>ntype</code> when applied to dfm objects.  This function is only 
   defined for <a href='dfm.html'>dfm</a> objects because only these have &quot;features&quot;.  (To count

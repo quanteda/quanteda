@@ -11,8 +11,8 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     person("Haiyan", "Wang", email = "h.wang52@lse.ac.uk", role = "ctb"),
     person("Benjamin", "Lauderdale", email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
     person("Will", "Lowe", email = "wlowe@princeton.edu", role = "ctb") )
-Version: 0.9.9-27
-Date: 2017-02-21
+Version: 0.9.9-34
+Date: 2017-03-10
 License: GPL-3
 Depends:
     R (>= 3.2.2)
@@ -26,6 +26,7 @@ Imports:
     wordcloud,
     Rcpp,
     RcppParallel,
+    RcppArmadillo(>= 0.7.600.1.0),
     ca,
     stringi,
     fastmatch,
@@ -50,9 +51,10 @@ Encoding: UTF-8
 BugReports: https://github.com/kbenoit/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
-Collate:
+Collate: 
     'RcppExports.R'
     'View.R'
+    'bootstrap_dfm.R'
     'character-methods.R'
     'dictionaries.R'
     'corpus.R'
@@ -81,6 +83,7 @@ Collate:
     'dfm_trim.R'
     'dfm_weight.R'
     'dictionaries-deprecated.R'
+    'docvars.R'
     'fcm-methods.R'
     'fcm.R'
     'joinTokens-deprecated.R'

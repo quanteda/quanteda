@@ -89,7 +89,7 @@
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>texts or corpus whose sentences will be counted</dd>
+      <dd>texts or <a href='corpus.html'>corpus</a> whose sentences will be counted</dd>
       <dt>...</dt>
       <dd>additional arguments passed to <code><a href='tokens.html'>tokens</a></code></dd>
     </dl>
@@ -100,11 +100,11 @@
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>`nsentence()` relies on the boundaries definitions in the <span class="pkg">stringi</span>
-  package (see <a href='http://www.rdocumentation.org/packages/stringi/topics/stri_opts_brkiter'>stri_opts_brkiter</a>).  It does not count
-  sentences correctly if the text has been transformed to lower case, and for
-  this reason <code>nsentence</code> will issue a warning if it detects all
-  lower-cased text.</p>
+    <p><code>nsentence()</code> relies on the boundaries definitions in the
+  <span class="pkg">stringi</span> package (see <a href='http://www.rdocumentation.org/packages/stringi/topics/stri_opts_brkiter'>stri_opts_brkiter</a>).  It does not
+  count sentences correctly if the text has been transformed to lower case,
+  and for this reason <code>nsentence()</code> will issue a warning if it detects
+  all lower-cased text.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

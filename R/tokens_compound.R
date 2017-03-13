@@ -66,6 +66,7 @@ tokens_compound.tokens <- function(x, sequences,
         stop("x must be a tokens object")
     
     valuetype <- match.arg(valuetype)
+
     names_org <- names(x)
     attrs_org <- attributes(x)
     types <- types(x)
@@ -87,10 +88,9 @@ tokens_compound.tokens <- function(x, sequences,
     }
     if(length(seqs_ids) == 0) return(x) # do nothing
     x <- qatd_cpp_tokens_compound(x, seqs_ids, types, concatenator, join)
-    x <- reassign_attributes(x, attrs_org, exceptions = "types", attr_only = TRUE)
+    attributes(x, FALSE) <- attrs_org
     attr(x, "concatenator") <- concatenator
-    
-    tokens_hashed_recompile(x)
+    return(x)
 }
 
 

@@ -59,6 +59,8 @@
 #'   phased out soon in coming versions.)
 #' @param verbose if \code{TRUE}, print timing messages to the console; off by 
 #'   default
+#' @param include_docvars if \code{TRUE}, pass docvars and metadoc fields through to 
+#'   the tokens object.  Only applies when tokenizing \link{corpus} objects.
 #' @param ... additional arguments not used
 #' @import stringi
 #' @details The tokenizer is designed to be fast and flexible as well as to 
@@ -161,7 +163,8 @@ tokens <-  function(x, what = c("word", "sentence", "character", "fastestword", 
                     concatenator = "_",
                     simplify = FALSE,
                     hash = TRUE,
-                    verbose = FALSE,  
+                    verbose = FALSE,
+                    include_docvars = TRUE,
                     ...) {
     UseMethod("tokens")
 }
@@ -182,7 +185,8 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
                              concatenator = "_",
                              simplify = FALSE,
                              hash = TRUE,
-                             verbose = FALSE, ...) {
+                             verbose = FALSE, ..., 
+                             include_docvars = TRUE) {
     
     what <- match.arg(what)
     names_org <- names(x)
@@ -274,8 +278,15 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
 #' @rdname tokens
 #' @export
 #' @noRd
-tokens.corpus <- function(x, ...) {
-    tokens(texts(x), ...)
+tokens.corpus <- function(x, ..., include_docvars = TRUE) {
+    result <- tokens(texts(x), ...)
+    if (include_docvars) {
+        docvars(result) <- docvars(x, names(documents(x))[which(names(documents(x)) != "texts")])
+    } else {
+        docvars(result) <- data.frame(matrix(nrow = ndoc(result), ncol = 1)[, -1, drop = FALSE],
+                                      row.names = docnames(result))
+    }
+    return(result)
 }
 
 
@@ -310,7 +321,7 @@ as.tokens.tokenizedTexts <- function(x) {
 
 #' @rdname as.tokens
 #' @param ... unused
-#' @return \code{as.list.tokens} returns a simple list of characters from a
+#' @return \code{as.list} returns a simple list of characters from a
 #'   \link{tokens} object
 #' @export
 as.list.tokens <- function(x, ...) {
@@ -322,8 +333,8 @@ as.list.tokens <- function(x, ...) {
 
 #' @rdname as.tokens
 #' @param use.names logical; preserve names if \code{TRUE}.  For
-#'   \code{as.character.tokens} only.
-#' @return \code{as.character.tokens} returns a character vector from a 
+#'   \code{as.character} only.
+#' @return \code{as.character} returns a character vector from a 
 #'   \link{tokens} object
 #' @export
 as.character.tokens <- function(x, use.names = FALSE, ...) {
@@ -384,7 +395,7 @@ tokens_hash <- function(x, types_reserved, ...) {
     
     # Restore and add additional attributes
     attributes(tokens) <- attributes(x)
-    attr(tokens, "types") <- types
+    attr(tokens, "types") <- as.character(types) # drop fmatch's attributes
     class(tokens) <- c("tokens", class(x))
     return(tokens)
 }
@@ -400,7 +411,7 @@ as.tokenizedTexts.tokens <- function(x, ...) {
     
     types <- c("", types(x))
     tokens <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding 
-    tokens <- reassign_attributes(tokens, x, exceptions = 'class')
+    attributes(tokens) <- attributes(x)
     class(tokens) <- c("tokenizedTexts", "list")
     return(tokens)
 }
@@ -431,8 +442,11 @@ print.tokens <- function(x, ...) {
 #' toks[c(1,3)]
 "[.tokens" <- function(x, i, ...) {
     tokens <- unclass(x)[i]
+    if (is.data.frame(attr(x, "docvars"))) {
+        attr(tokens, "docvars") <- attr(x, "docvars")[i,]
+    }
     if (length(tokens) == 1 && is.null(tokens[[1]])) return(tokens)
-    tokens <- reassign_attributes(tokens, x, exceptions = 'names')
+    attributes(tokens, FALSE) <- attributes(x)
     tokens_hashed_recompile(tokens)
 }
 
@@ -473,6 +487,7 @@ docnames.tokens <- function(x) {
 }
 
 
+
 ##
 ## ============== INTERNAL FUNCTIONS =======================================
 ##
@@ -488,7 +503,7 @@ tokens_word <- function(txt, what, removeNumbers, removePunct, removeSymbols, re
     
     if (removeURL) {
         if (verbose & removeURL) catm(", removing URLs")
-        URLREGEX <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
+        URLREGEX <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
         txt <- stri_replace_all_regex(txt, URLREGEX, "")
     }
     
@@ -643,10 +658,7 @@ tokens_hashed_recompile <- function(x, method = c("C++", "R")) {
     
     if (method == "C++") {
         x <- qatd_cpp_tokens_recompile(x, types(x))
-        attrs_input[['types']] <- attr(x, 'types')
-        attrs_input[['padding']] <- attr(x, 'padding')
-        attributes(x) <- attrs_input
-        Encoding(types(x)) <- "UTF-8"
+        attributes(x, FALSE) <- attrs_input
         return(x)
     }
     

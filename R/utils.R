@@ -6,9 +6,9 @@ mktemp <- function(prefix='tmp.', base_path=NULL, directory=F) {
     #  https://www.mktemp.org/manual.html
     if (is.null(base_path))
         base_path <- tempdir()
-
+    
     alphanumeric <- c(0:9, LETTERS, letters)
-
+    
     filename <- paste0(sample(alphanumeric, 10, replace=T), collapse='')
     filename <- paste0(prefix, filename)
     filename <- file.path(base_path, filename)
@@ -17,14 +17,14 @@ mktemp <- function(prefix='tmp.', base_path=NULL, directory=F) {
         filename <- paste0(prefix, filename)
         filename <- file.path(base_path, filename)
     }
-
+    
     if (directory) {
         dir.create(filename)
     }
     else {
         file.create(filename)
     }
-
+    
     return(filename)
 }
 
@@ -77,6 +77,21 @@ reassign_attributes <- function(x_new, x_from, exceptions = NULL, attr_only = FA
     # assign the attributes
     attributes(x_new) <- attrs_new
     x_new
+}
+
+#' R-like alternative to reassign_attributes()
+#' @keywords internal
+#' @param x an object
+#' @param overwrite if \code{TRUE}, overwrite old attributes
+#' @param value new attributes
+#' @author Kohei Watanabe
+"attributes<-" <- function(x, overwrite = TRUE, value) {
+    if (overwrite) {
+        base::attributes(x) <- value
+    } else {
+        base::attributes(x) <- c(base::attributes(x), value[!(names(value) %in% names(base::attributes(x)))])
+    }
+    return(x)
 }
 
 # This function generates random texts from English alphabets or any other characters.
@@ -184,14 +199,14 @@ sequence2list <- function(sequences) {
     if (is.dictionary(sequences)) {
         sequences <- stringi::stri_split_fixed(unlist(sequences, use.names = FALSE), " ")
     } else if (is.collocations(sequences)) {
-            word1 <- word2 <- word3 <- NULL
-            # sort by word3 so that trigrams will be processed before bigrams
-            data.table::setorder(sequences, -word3, word1)
-            # concatenate the words                               
-            word123 <- sequences[, list(word1, word2, word3)]
-            sequences <- unlist(apply(word123, 1, list), recursive = FALSE)
-            sequences <- lapply(sequences, unname)
-            sequences <- lapply(sequences, function(y) y[y != ""])
+        word1 <- word2 <- word3 <- NULL
+        # sort by word3 so that trigrams will be processed before bigrams
+        data.table::setorder(sequences, -word3, word1)
+        # concatenate the words                               
+        word123 <- sequences[, list(word1, word2, word3)]
+        sequences <- unlist(apply(word123, 1, list), recursive = FALSE)
+        sequences <- lapply(sequences, unname)
+        sequences <- lapply(sequences, function(y) y[y != ""])
     } else if (is.list(sequences) | is.character(sequences)) {
         sequences <- lapply(sequences, function(y) as.character(tokens(y, what = "fastestword")))
     } else {
@@ -201,8 +216,7 @@ sequence2list <- function(sequences) {
     # make sure the resulting list is all character
     if (!all(is.character(unlist(sequences, use.names = FALSE))))
         stop("sequences must be a list of character elements or a dictionary")
-
     return(as.list(sequences))
 }
-   
+
 

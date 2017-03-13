@@ -211,7 +211,7 @@ tokenize.character <- function(x, what=c("word", "sentence", "character", "faste
         
         if (removeURL) {
             if (verbose & removeURL) catm(", removing URLs")
-            URLREGEX <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
+            URLREGEX <- "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
             result <- stri_replace_all_regex(result, URLREGEX, "")
         }
 

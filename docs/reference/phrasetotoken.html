@@ -155,14 +155,14 @@ or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.htm
 #&gt;   text1    0    0   0      0     0 0          0     0   0
 #&gt;   text2    1    1   1      1     1 1          1     1   1</div><div class='input'>
 <span class='co'># when used as a dictionary for dfm creation</span>
-<span class='no'>mydfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>cw</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='fu'>lapply</span>(<span class='no'>mydict</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>gsub</span>(<span class='st'>" "</span>, <span class='st'>"_"</span>, <span class='no'>x</span>)))
+<span class='no'>mydfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>cw</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>lapply</span>(<span class='no'>mydict</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>gsub</span>(<span class='st'>" "</span>, <span class='st'>"_"</span>, <span class='no'>x</span>))))
 <span class='no'>mydfm2</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 1 feature (0% sparse).
 #&gt; 2 x 1 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    tax
 #&gt;   text1   2
 #&gt;   text2   2</div><div class='input'><span class='co'># to pick up "taxes" in the second text, set valuetype = "regex"</span>
-<span class='no'>mydfm3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>cw</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='fu'>lapply</span>(<span class='no'>mydict</span>, <span class='no'>phrasetotoken</span>, <span class='no'>mydict</span>),
+<span class='no'>mydfm3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>cw</span>, <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>lapply</span>(<span class='no'>mydict</span>, <span class='no'>phrasetotoken</span>, <span class='no'>mydict</span>)),
               <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>)
 <span class='no'>mydfm3</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 1 feature (0% sparse).
 #&gt; 2 x 1 sparse Matrix of class &quot;dfmSparse&quot;

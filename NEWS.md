@@ -2,11 +2,27 @@
 
 ## Changes since v0.9.9-24
 
+### New features
+
+* `corpus_reshape()` can now go from sentences and paragraph units back to documents.
+* Added a `by = ` argument to `corpus_sample()`, for use in bootstrap resampling of sub-document units.
+* Added an experimental method `bootstrap_dfm()` to generate a list of dimensionally-equivalent dfm objects based on sentence-level resampling of the original documents.
+* Added option to `tokens()` and `dfm()` for passing docvars through to to tokens and dfm objects, and added `docvars()` and `metadoc()` methods for tokens and dfm class objects.  Overall, the code for docvars and metadoc is now more robust and consistent.  
+* `docvars()` on eligible objects that contain no docvars now returns an empty 0 x 0 data.frame (in the spirit of #242).
+
+
+### Behaviour changes 
+
+* `docvars()` now permits direct access to "metadoc" fields (starting with `_`, e.g. `_document`)
+* `metadoc()` now returns a vector instead of a data.frame for a single variable, similar to `docvars()`
+
 ### Bug fixes
 
 * Fixed an problem in tokens generation for some irregular characters (#554).
 * Fixed a problem in setting the parallel thread size on single-core machines (#556).
-
+* Fixed problems for `str()` on a corpus with no docvars (#571).
+* `removeURL` in `tokens()` now removes URLs where the first part of the URL is a single letter (#587).
+* `dfm_select` now works correctly for ngram features (#589).
 
 
 ## Changes since v0.9.9-17

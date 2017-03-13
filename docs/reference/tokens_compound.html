@@ -89,7 +89,7 @@ subsequently as single tokens, for instance in constructing a <a href='dfm.html'
     
 
     <pre><span class='fu'>tokens_compound</span>(<span class='no'>x</span>, <span class='no'>sequences</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"_"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>,
-  <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -120,6 +120,8 @@ in the Unicode punctuation class [P] will be removed.</dd>
 or <code>&quot;fixed&quot;</code> for exact matching. See <a href='valuetype.html'>valuetype</a> for details.</dd>
       <dt>case_insensitive</dt>
       <dd>logical; if <code>TRUE</code>, ignore case when matching</dd>
+      <dt>join</dt>
+      <dd>logical; if <code>TRUE</code>, join overlapped compounds</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -148,13 +150,13 @@ in <code>sequences</code> have been replaced by  compound &quot;tokens&quot; joi
 #&gt; </div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>cw</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 16 features (40.6% sparse).
 #&gt; 2 x 16 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
-#&gt; docs    the new law included a capital_gains_tax and an inheritance_tax york
-#&gt;   text1   1   1   1        1 1                 1   1  1               1    0
-#&gt;   text2   0   1   0        0 0                 0   1  1               0    1
+#&gt; docs    the new law included a and an inheritance york city has raised taxes
+#&gt;   text1   1   1   1        1 1   1  1           0    0    0   0      0     0
+#&gt;   text2   0   1   0        0 0   1  1           1    1    1   1      1     2
 #&gt;        features
-#&gt; docs    city has raised taxes income_tax inheritance
-#&gt;   text1    0   0      0     0          0           0
-#&gt;   text2    1   1      1     2          1           1</div><div class='input'>
+#&gt; docs    income_tax capital_gains_tax inheritance_tax
+#&gt;   text1          0                 1               1
+#&gt;   text2          1                 0               0</div><div class='input'>
 <span class='co'># when used as a dictionary for dfm creation</span>
 <span class='no'>mydict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>tax</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>"tax"</span>, <span class='st'>"income tax"</span>, <span class='st'>"capital gains tax"</span>, <span class='st'>"inheritance tax"</span>)))
 (<span class='no'>cw2</span> <span class='kw'>&lt;-</span> <span class='fu'>tokens_compound</span>(<span class='no'>mytoks</span>, <span class='no'>mydict</span>))</div><div class='output co'>#&gt; tokens from 2 documents.
@@ -202,9 +204,10 @@ in <code>sequences</code> have been replaced by  compound &quot;tokens&quot; joi
 <span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"The new law included capital gains taxes and inheritance taxes."</span>)
 <span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='no'>collocs</span>)</div><div class='output co'>#&gt; tokens from 1 document.
 #&gt; Component 1 :
-#&gt; [1] &quot;The&quot;                 &quot;new&quot;                 &quot;law&quot;                
-#&gt; [4] &quot;included&quot;            &quot;capital_gains_taxes&quot; &quot;and&quot;                
-#&gt; [7] &quot;inheritance_taxes&quot;   &quot;.&quot;                  
+#&gt;  [1] &quot;The&quot;                 &quot;new&quot;                 &quot;law&quot;                
+#&gt;  [4] &quot;included&quot;            &quot;capital_gains_taxes&quot; &quot;capital_gains&quot;      
+#&gt;  [7] &quot;gains_taxes&quot;         &quot;and&quot;                 &quot;inheritance_taxes&quot;  
+#&gt; [10] &quot;.&quot;                  
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

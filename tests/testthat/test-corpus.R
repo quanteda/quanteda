@@ -37,12 +37,6 @@ test_that("test show.corpus", {
 
 })
 
-test_that("docvars of corpus is a data.frame", {
-    expect_that(
-        docvars(data_corpus_inaugural),
-        is_a('data.frame')
-    )
-})
 
 test_that("test c.corpus", {
     concat.corpus <- c(data_corpus_inaugural, data_corpus_inaugural, data_corpus_inaugural)
@@ -187,4 +181,5 @@ test_that("corpus_segment works", {
     data_corpus_test <- corpus(txt, docvars = dv, metacorpus = list(source = "From test-corpus.R"))
     expect_equal(ndoc(corpus_segment(data_corpus_test, "sentences")), 6)
 })
+
 

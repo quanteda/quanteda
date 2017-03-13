@@ -255,6 +255,14 @@ test_that("fcm.dfm only works for context = \"document\"", {
                  "fcm.dfm only works on context = \"document\"")
 })
 
+test_that("fcm.dfm does works for context = \"document\" with weighed counts", {
+    txt <- c("The quick brown fox jumped over the lazy dog.",
+             "The dog jumped and ate the fox.")
+    toks <- tokens(char_tolower(txt), removePunct = TRUE)
+    expect_error(fcm(dfm(toks), context = "document", count = "weighted"),
+                 "Cannot have weighted counts with context = \"document\"")
+})
+
 test_that("fcm works as expected for tokens_hashed", {
     
     txt <- c("The quick brown fox jumped over the lazy dog.",
@@ -273,6 +281,10 @@ test_that("fcm print works as expected", {
                   "^Feature co-occurrence matrix of: 6 by 6 features.")
     expect_output(print(testfcm[1:5, 1:5]),
                   "^Feature co-occurrence matrix of: 5 by 5 features.")
+    expect_output(print(testfcm, show.settings=T),
+                  "Settings: TO BE IMPLEMENTED")
+    expect_output(show(testfcm),
+                  "^Feature co-occurrence matrix of: 6 by 6 features.")
 })
 
 test_that("fcm works the same for different object types", {
@@ -282,3 +294,8 @@ test_that("fcm works the same for different object types", {
     expect_identical(fcm(txts), fcm(tokens(txts)))
 })
 
+test_that("fcm expects warning for a wrong weights length", {
+    xts <- c("a a a b b c", "a a c e", "a c e f g")
+    expect_warning(fcm(tokens(xts), context = "window", window = 2, count = "weighted", weights = c(1,2,3)),
+                 "weights length is not equal to the window size, weights are assigned by default!")
+})

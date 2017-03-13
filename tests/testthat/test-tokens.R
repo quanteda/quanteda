@@ -1,3 +1,5 @@
+context("testing tokens")
+
 ##
 ## tokens_hashed tests
 ##
@@ -214,10 +216,18 @@ test_that("tokens works with unusual hiragana #554", {
     skip_on_travis()
     skip_on_cran()
     skip_on_appveyor()
+    skip_on_os("windows")
     txts <- c("づいﾞ", "゛んﾞ", "たーﾟ")
     expect_equivalent(as.list(tokens(txts)),
                       list(c('づ', 'いﾞ'), c('゛', 'んﾞ'), c('た', 'ーﾟ')))
 })
+
+test_that("types attribute is a character vector", {
+    toks <- tokens("one two three")
+    expect_true(is.character(attr(toks, 'types')))
+    expect_equal(length(attributes(attr(toks, 'types'))), 0)
+})
+
 
 #' # coerce an object into a tokens class
 #' as.tokens(toks)
@@ -288,4 +298,22 @@ test_that("tokens works with unusual hiragana #554", {
 #' # "a b c" "a b d" "a c d" "a c e" "b c d" "b c e" "b d e" "c d e"
 #' 
 #'}
+
+
+test_that("removeURL works as expected", {
+    txt <- c("The URL was http://t.co/something.",
+             "The URL was http://quanteda.io",
+             "https://github.com/kbenoit/quanteda/issue/1 is another URL")
+    toks <- tokens(txt, removeURL = TRUE)
+    expect_equal(
+        as.list(toks),
+        list(c("The", "URL", "was"), c("The", "URL", "was"), c("is", "another", "URL"))
+    )
+
+    toks2 <- tokenize(txt, removeURL = TRUE)
+    expect_equivalent(
+        as.list(toks2),
+        list(c("The", "URL", "was"), c("The", "URL", "was"), c("is", "another", "URL"))
+    )
+})
 

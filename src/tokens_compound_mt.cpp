@@ -1,5 +1,6 @@
 //#include "dev.h"
 #include "quanteda.h"
+#include "recompile.h"
 using namespace quanteda;
 
 #if QUANTEDA_USE_TBB
@@ -165,7 +166,7 @@ List qatd_cpp_tokens_compound(const List &texts_,
                               const bool &join){
     
     Texts input = Rcpp::as<Texts>(texts_);
-    Types types = Rcpp::as< Types >(types_);
+    Types types = Rcpp::as<Types>(types_);
     std::string delim = delim_;
 
     unsigned int id_last = types.size();
@@ -226,15 +227,12 @@ List qatd_cpp_tokens_compound(const List &texts_,
     types.insert(types.end(), types_comp.begin(), types_comp.end());
     
     // dev::stop_timer("Token compound", timer);
-    ListOf<IntegerVector> output_ = Rcpp::wrap(output);
-    output_.attr("types") = types;
-    return output_;
+    return recompile(output, types);
 }
 
 /***R
 
-#toks <- list(rep(1:10, 1), rep(5:15, 1))
-toks <- list(1:5)
+toks <- list(rep(1:10, 1), rep(5:15, 1))
 #dict <- list(c(1, 2), c(3, 4))
 dict <- list(c(1, 2), c(1, 2, 3))
 #dict <- list(c(1, 2), c(2, 3), c(4, 5))

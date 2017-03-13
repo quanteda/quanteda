@@ -6,23 +6,26 @@
 \alias{as.character.corpus}
 \title{get or assign corpus texts}
 \usage{
-texts(x, groups = NULL, ...)
+texts(x, groups = NULL, spacer = "  ")
 
 texts(x) <- value
 
 \method{as.character}{corpus}(x, ...)
 }
 \arguments{
-\item{x}{a quanteda \link{corpus} or character object}
+\item{x}{a \link{corpus} or character object}
 
 \item{groups}{either: a character vector containing the names of document
 variables to be used for grouping; or a factor (or object that can be
 coerced into a factor) equal in length to the number of documents, used for
 aggregating the texts through concatenation}
 
-\item{...}{unused}
+\item{spacer}{when concatenating texts by using \code{groups}, this will be the 
+spacing added between texts.  (Default is two spaces.)}
 
 \item{value}{character vector of the new texts}
+
+\item{...}{unused}
 }
 \value{
 For \code{texts}, a character vector of the texts in the corpus.
@@ -34,7 +37,7 @@ for \code{texts <-}, a corpus with the texts replaced by \code{value}
 \code{as.character(x)} is equivalent to \code{texts(x)}
 }
 \description{
-Get or replace the texts in a \link{corpus} object, with grouping options. 
+Get or replace the texts in a \link{corpus}, with grouping options. 
 Works for plain character vectors too, if \code{groups} is a factor.
 }
 \details{
@@ -47,8 +50,9 @@ You are strongly encouraged as a good practice of text analysis
   Rather, this sort of processing is better performed through downstream 
   operations.  For instance, do not lowercase the texts in a corpus, or you 
   will never be able to recover the original case.  Rather, apply 
-  \code{\link{toLower}} to the corpus and use the result as an input, e.g. to
-  \code{\link{tokenize}}.
+  \code{\link{tokens_tolower}} after applying 
+  \code{\link{tokens}} to a corpus, or use the option \code{tolower = TRUE} in 
+  \code{\link{dfm}}..
 }
 \examples{
 nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806)))
