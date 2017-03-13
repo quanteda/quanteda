@@ -1,6 +1,6 @@
 #include "quanteda.h"
 #include "recompile.h"
-#include "dev.h"
+//#include "dev.h"
 using namespace quanteda;
 
 typedef pair<size_t, size_t> Target;
