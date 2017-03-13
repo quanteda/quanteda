@@ -159,7 +159,6 @@ List qatd_cpp_tokens_contexts(const List &texts_,
     // dev::stop_timer("Dictionary detect", timer);
     List output_ = recompile(output, types);
     output_.attr("names") = names;
-    output_.attr("class") = "tokens";
     if (target) {
         output_.attr("position") = positions;
         output_.attr("target_start") = starts;
