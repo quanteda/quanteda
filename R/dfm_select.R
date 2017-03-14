@@ -102,6 +102,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
         if (is.dfm(features)) {
             features <- featnames(features)
             valuetype <- 'fixed'
+            case_insensitive <- FALSE
         }
         features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
         features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
@@ -115,8 +116,8 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     
     if (!padding) {
         # select features based on character length
-        features_id <- intersect(features_id, which((stringi::stri_length(types) >= min_nchar & 
-                                                     stringi::stri_length(types) <= max_nchar) | types == ""))
+        features_id <- intersect(features_id, which(stringi::stri_length(types) >= min_nchar & 
+                                                    stringi::stri_length(types) <= max_nchar))
     }
     
     # select documents based on "documents" pattern
@@ -143,7 +144,8 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
                 # padding for features
                 types_add <- setdiff(features, types)
                 if (length(types_add)) {
-                    x <- new("dfmSparse", Matrix::cbind2(x, sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x), length(types_add)), 
+                    x <- new("dfmSparse", Matrix::cbind2(x, sparseMatrix(i = NULL, j = NULL, 
+                                                                         dims = c(ndoc(x), length(types_add)), 
                                                                          dimnames = list(docnames(x), types_add))))
                 }
                 if (case_insensitive)
@@ -152,7 +154,8 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
                 # padding for documents
                 labels_add <- setdiff(documents, labels)
                 if (length(labels_add)) {
-                    x <- new("dfmSparse", Matrix::rbind2(x, sparseMatrix(i = NULL, j = NULL, dims = c(length(labels_add), nfeature(x)), 
+                    x <- new("dfmSparse", Matrix::rbind2(x, sparseMatrix(i = NULL, j = NULL, 
+                                                                         dims = c(length(labels_add), nfeature(x)), 
                                                                          dimnames = list(labels_add, featnames(x)))))
                 }
             }
