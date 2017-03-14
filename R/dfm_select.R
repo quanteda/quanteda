@@ -105,8 +105,6 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
         }
         features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
         features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
-        #if ("" %in% features) features_id <- c(features_id, 0) # append padding index
-        print(features_id)
         features_id <- sort(features_id) # keep the original column order
     } else {
         if (selection == "keep")
