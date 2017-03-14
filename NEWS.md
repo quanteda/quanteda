@@ -15,6 +15,7 @@
 
 * `docvars()` now permits direct access to "metadoc" fields (starting with `_`, e.g. `_document`)
 * `metadoc()` now returns a vector instead of a data.frame for a single variable, similar to `docvars()`
+* Most `verbose` options now take the default from `getOption("verbose")` rather than fixing the value in the function signatures. (#577)
 
 ### Bug fixes
 

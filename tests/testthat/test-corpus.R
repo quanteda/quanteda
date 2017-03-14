@@ -182,4 +182,7 @@ test_that("corpus_segment works", {
     expect_equal(ndoc(corpus_segment(data_corpus_test, "sentences")), 6)
 })
 
+test_that("summary method works for corpus", {
+    expect_output(summary(data_corpus_irishbudget2010, verbose = TRUE), regexp = "^Corpus consisting of 14 documents\\.")
+})
 

@@ -10,7 +10,7 @@
 dfm_select(x, features = NULL, documents = NULL, selection = c("keep",
   "remove"), valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE, min_nchar = 1, max_nchar = 63,
-  padding = FALSE, verbose = FALSE, ...)
+  padding = FALSE, verbose = getOption("verbose"), ...)
 
 dfm_remove(x, features = NULL, documents = NULL, ...)
 
