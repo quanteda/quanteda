@@ -140,6 +140,33 @@ namespace quanteda{
     typedef std::unordered_set<unsigned int> SetUnigrams;
 #endif    
 
+    inline std::vector<std::size_t> register_ngrams(List words_, SetNgrams &set_words) {
+        std::vector<std::size_t> spans(words_.size());
+        for (unsigned int g = 0; g < (unsigned int)words_.size(); g++) {
+            if (has_na(words_[g])) continue;
+            Ngram word = words_[g];
+            set_words.insert(word);
+            spans[g] = word.size();
+        }
+        sort(spans.begin(), spans.end());
+        spans.erase(unique(spans.begin(), spans.end()), spans.end());
+        std::reverse(std::begin(spans), std::end(spans));
+        return spans;
+    }
+
+    inline std::vector<std::size_t> register_ngrams(List words_, IntegerVector ids_, MapNgrams &map_words) {
+        std::vector<std::size_t> spans(words_.size());
+        for (unsigned int g = 0; g < (unsigned int)words_.size(); g++) {
+            if (has_na(words_[g])) continue;
+            Ngram word = words_[g];
+            map_words[word] = ids_[g];
+            spans[g] = word.size();
+        }
+        sort(spans.begin(), spans.end());
+        spans.erase(unique(spans.begin(), spans.end()), spans.end());
+        std::reverse(std::begin(spans), std::end(spans));
+        return spans;
+    }
 }
 
 #endif

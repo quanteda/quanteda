@@ -91,16 +91,7 @@ List qatd_cpp_tokens_contexts(const List &texts_,
     CharacterVector names_ = texts_.attr("names");
 
     SetNgrams set_words;
-    std::vector<std::size_t> spans(words_.size());
-    for (unsigned int g = 0; g < (unsigned int)words_.size(); g++) {
-        if (has_na(words_[g])) continue;
-        Ngram word = words_[g];
-        set_words.insert(word);
-        spans[g] = word.size();
-    }
-    sort(spans.begin(), spans.end());
-    spans.erase(unique(spans.begin(), spans.end()), spans.end());
-    std::reverse(std::begin(spans), std::end(spans));
+    std::vector<std::size_t> spans = register_ngrams(words_, set_words);
     
     // dev::Timer timer;
     std::vector<Targets> temp(input.size());
