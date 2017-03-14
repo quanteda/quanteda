@@ -4,7 +4,7 @@
 #' @examples 
 #' toks <- tokens(data_char_inaugural)
 #' toks <- tokens_remove(toks, stopwords())
-#' coxs <- contexts(toks, "clinton", window = 10, valuetype = "glob")
+#' (coxs <- contexts(toks, "economy", window = 10, valuetype = "glob"))
 #' 
 #' @export 
 contexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {

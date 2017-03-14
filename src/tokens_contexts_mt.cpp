@@ -68,19 +68,20 @@ List qatd_cpp_tokens_contexts(const List &texts_,
         // extract contexts joining overlapped ones
         int k = 1;
         for (size_t i = 0; i < targets.size(); i++) {
-            string name_new = name + ":" + std::to_string(k++);
-            for (size_t j = 0; j < targets.size(); j++) {
+            for (size_t j = i; j < targets.size(); j++) {
                 if (targets[j].second + window < targets[j + 1].first - window || j + 1 >= targets.size()) {
-                
+                    
                     int from = targets[i].first - window;
                     int to = targets[j].second + window;
-                    //Rcout << "@" << h << " " << from << ":" << to << "\n";
+                    //Rcout << k << " in " << h << " " << from << ":" << to << "\n";
                     
                     Text context(tokens.begin() + std::max(0, from), tokens.begin() + std::min(to, last) + 1);
                     output.push_back(context);
-                    names_new.push_back(name_new);
-                    i = j; // jump
+                    names_new.push_back(name + ":" + std::to_string(k++));
+                    i = j;
+                    break;
                 }
+                
             }
         }
     }
@@ -100,7 +101,7 @@ toks <- list(text1=1:10, text2=5:15, text3=100:110)
 #toks <- rep(list(rep(1:10, 1), rep(5:15, 1)), 1)
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 #qatd_cpp_tokens_contexts(toks, dict, 2)
-qatd_cpp_tokens_contexts(toks, letters, list(c(3, 4), 7), 3)
+qatd_cpp_tokens_contexts(toks, letters, list(c(3, 4), 7), 1)
 
 
 */
