@@ -6,7 +6,7 @@
 \usage{
 dfm(x, tolower = TRUE, stem = FALSE, select = NULL, remove = NULL,
   thesaurus = NULL, dictionary = NULL, valuetype = c("glob", "regex",
-  "fixed"), groups = NULL, verbose = FALSE, ...)
+  "fixed"), groups = NULL, verbose = getOption("verbose"), ...)
 }
 \arguments{
 \item{x}{character, \link{corpus}, \link{tokens}, or \link{dfm} object}

@@ -143,7 +143,7 @@ textmodel_wordscores <- function(data, scores,
 #' @export
 #' @importFrom stats qnorm median sd
 predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling = "none", 
-                               level=0.95, verbose=TRUE, ...) {    
+                               level=0.95, verbose = getOption("verbose"), ...) {    
     if (length(list(...))>0) 
         stop("Arguments:", names(list(...)), "not supported.\n")
     rescaling <- match.arg(rescaling, c("none", "lbg", "mv"), several.ok=TRUE)
