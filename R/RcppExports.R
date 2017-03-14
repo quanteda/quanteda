@@ -45,12 +45,16 @@ qatd_cpp_tokens_compound <- function(texts_, comps_, types_, delim_, join) {
     .Call('quanteda_qatd_cpp_tokens_compound', PACKAGE = 'quanteda', texts_, comps_, types_, delim_, join)
 }
 
-qatd_cpp_tokens_contexts <- function(texts_, types_, words_, window, target) {
-    .Call('quanteda_qatd_cpp_tokens_contexts', PACKAGE = 'quanteda', texts_, types_, words_, window, target)
+qatd_cpp_tokens_contexts <- function(texts_, types_, words_, window, split) {
+    .Call('quanteda_qatd_cpp_tokens_contexts', PACKAGE = 'quanteda', texts_, types_, words_, window, split)
 }
 
 qatd_cpp_tokens_detect <- function(texts_, words_) {
     .Call('quanteda_qatd_cpp_tokens_detect', PACKAGE = 'quanteda', texts_, words_)
+}
+
+qatd_cpp_kwic <- function(texts_, types_, words_, window) {
+    .Call('quanteda_qatd_cpp_kwic', PACKAGE = 'quanteda', texts_, types_, words_, window)
 }
 
 qatd_cpp_tokens_lookup <- function(texts_, types_, keys_, ids_, overlap) {

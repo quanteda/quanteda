@@ -60,7 +60,7 @@ DataFrame qatd_cpp_kwic(const List &texts_,
             
             //Rcout << j << " " << from << ":" << to << "\n";
             
-            // subset contexts fron the whole text
+            // extract contexts
             Text cox_pre(tokens.begin() + std::max(0, from), tokens.begin() + targets[i].first + 1);
             Text cox_target(tokens.begin() + targets[i].first, tokens.begin() + targets[i].second + 1);
             Text cox_post(tokens.begin() + targets[i].second + 1, tokens.begin() + std::min(to, last) + 1);
