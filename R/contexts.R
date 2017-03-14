@@ -2,9 +2,15 @@
 #' @rdname kwic
 #' @noRd
 #' @examples 
+#' 
 #' toks <- tokens(data_char_inaugural)
-#' toks <- tokens_remove(toks, stopwords())
-#' (coxs <- contexts(toks, "economy", window = 10, valuetype = "glob"))
+#' coxs <- contexts(toks, "economy", window = 5, case_insensitive = FALSE, valuetype = "fixed")
+#'
+#' # compare with fcm 
+#' fcm <- fcm(toks, 'window', window = 5, tri = FALSE)
+#' v1 <- colSums(fcm['economy',])
+#' v2 <- colSums(dfm(coxs))
+#' merge(v1, v2, by='row.names')
 #' 
 #' @export 
 contexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
