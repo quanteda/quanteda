@@ -21,6 +21,7 @@
 #' 
 #' fcm <- fcm(toks, tri = FALSE)
 #' pmi <- textstat_collocations(fcm, dfm(toks), "pmi3")
+#' pmi[grepl("econom", pmi$collocation),]
 #' head(pmi, 20)
 #' 
 textstat_collocations <- function(x, y, ...) {
@@ -63,8 +64,10 @@ textstat_collocations.fcm <- function(x, y, measure = c("pmi", "pmi3"), top = 10
 #' @export
 textstat_collocations.dfm <- function(x, y, ...) {
     
-    z <- dfm_select(x, y, case_insensitive = FALSE, padding = TRUE)
-    textstat_keyness(new("dfmSparse", Matrix::rbind2(z, y)), target = 1:nrow(x), ...)
+    y <- dfm_select(y, featnames(x), valuetype = 'fixed', case_insensitive = FALSE, padding = TRUE)
+    z <- rbind(Matrix::colSums(x), Matrix::colSums(y))
+    z[2,] <- z[2,] - z[1,]
+    textstat_keyness(as.dfm(z), target = 1L, ...)
 }
 
 #' @noRd
