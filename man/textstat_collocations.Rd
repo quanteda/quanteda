@@ -25,9 +25,14 @@ of the measure, otherwise leave in original feature order}
 calculate collocation statistics
 }
 \examples{
-toks <- tokens(data_char_inaugural)
-toks <- tokens_remove(toks, stopwords())
-coxs <- contexts(toks, "clinton", window = 10, valuetype = "glob")
-textstat_collocations(coxs, toks)
+toks <- tokens(data_char_inaugural, removePunct = TRUE)
+toks <- tokens_remove(toks, stopwords(), padding = TRUE)
+coxs <- contexts(toks, "econom*", window = 10, valuetype = "glob")
+head(textstat_collocations(coxs, toks), 10)
+
+fcm <- fcm(toks)
+pmi <- textstat_collocations(fcm, dfm(toks), "pmi")
+head(pmi, 20)
+
 }
 \keyword{textstat}

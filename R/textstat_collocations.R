@@ -14,19 +14,56 @@
 #' @export
 #' @keywords textstat
 #' @examples
-#' toks <- tokens(data_char_inaugural)
-#' toks <- tokens_remove(toks, stopwords())
-#' coxs <- contexts(toks, "clinton", window = 10, valuetype = "glob")
-#' textstat_collocations(coxs, toks)
+#' toks <- tokens(data_char_inaugural, removePunct = TRUE)
+#' toks <- tokens_remove(toks, stopwords(), padding = TRUE)
+#' coxs <- contexts(toks, "econom*", window = 10, valuetype = "glob")
+#' head(textstat_collocations(coxs, toks), 10)
+#' 
+#' fcm <- fcm(toks)
+#' pmi <- textstat_collocations(fcm, dfm(toks), "pmi3")
+#' head(pmi, 20)
+#' 
 textstat_collocations <- function(x, y, ...) {
     UseMethod("textstat_collocations")
 }
 
 #' @noRd
 #' @export
+textstat_collocations.fcm <- function(x, y, measure = c("pmi", "pmi3"), top = 1000, sort = TRUE) {
+    
+    features <- featnames(x)
+    features <- features[features != ""]
+    x <- x[features, features] # remove padding
+    y <- dfm_select(y, features, valuetype = 'fixed', case_insensitive = FALSE, padding = TRUE)
+    
+    n <- x
+    m <- Matrix::colSums(y, sparseResult = TRUE)
+    m <- m + 1 # soomthing
+    
+    mm <- m %*% t(m)
+    if (measure == 'pmi3') {
+        mi <- log(((n ^ 3) / mm))
+    } else {
+        mi <- log((n / mm))
+    }
+    
+    index <- which(mi@x > sort(mi@x, decreasing = TRUE)[top])
+    col1 <- rep(mi@Dimnames[[1]], times = mi@Dim[1])
+    col2 <- rep(mi@Dimnames[[1]], each = mi@Dim[2])
+    
+    result <- data.frame(collocation = paste(col1[index], col2[index]),
+                         pmi = mi@x[index], count = n@x[index], stringsAsFactors = FALSE) 
+    if (sort)
+        result <- result[order(result$pmi, decreasing = TRUE),]
+    
+    return(result)
+}
+
+#' @noRd
+#' @export
 textstat_collocations.dfm <- function(x, y, ...) {
     
-    z <- dfm_select(x, y, padding = TRUE)
+    z <- dfm_select(x, y, case_insensitive = FALSE, padding = TRUE)
     textstat_keyness(new("dfmSparse", Matrix::rbind2(z, y)), target = 1:nrow(x), ...)
 }
 
