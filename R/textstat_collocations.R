@@ -14,15 +14,19 @@
 #' @export
 #' @keywords textstat
 #' @examples
+#' 
 #' toks <- tokens(data_char_inaugural, removePunct = TRUE)
 #' toks <- tokens_remove(toks, stopwords(), padding = TRUE)
+#' 
+#' # use contexts and tokens for target collocation
 #' coxs <- contexts(toks, "econom*", window = 10, valuetype = "glob")
 #' head(textstat_collocations(coxs, toks), 10)
 #' 
+#' # use fcm and dfm for all-all collocation 
 #' fcm <- fcm(toks, tri = FALSE)
-#' pmi <- textstat_collocations(fcm, dfm(toks), "pmi3")
-#' pmi[grepl("econom", pmi$collocation),]
-#' head(pmi, 20)
+#' col_pmi <- textstat_collocations(fcm, dfm(toks), measure = "pmi", top = 5000)
+#' col_pmi[grepl("econom", col_pmi$collocation),]
+#' head(col_pmi, 20)
 #' 
 textstat_collocations <- function(x, y, ...) {
     UseMethod("textstat_collocations")
