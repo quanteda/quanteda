@@ -69,7 +69,7 @@ test_that("test textstat_dist method = \"Kullback-Leibler\" against proxy dist()
     m <- matrix(rexp(550, rate=.1), nrow = 5)
     kullQuanteda <- round(as.matrix(textstat_dist(as.dfm(m), method = "kullback", margin = "documents")), 2)
     kullProxy <- round(as.matrix(proxy::dist(m, "kullback", diag = FALSE, upper = FALSE)), 2)
-    expect_equal(kullQuanteda, kullProxy)
+    expect_equivalent(kullQuanteda, kullProxy)
     
     rownames(m) <- c("a", "b", "c", "d", "e")
     mydfm <- new("dfmSparse", Matrix::Matrix(as.matrix(m), sparse=TRUE, dimnames = list(docs = rownames(m), features=colnames(m))))

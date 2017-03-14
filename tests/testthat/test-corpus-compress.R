@@ -19,8 +19,8 @@ test_that("print method works for corpuszip", {
 })
 
 test_that("summary method works for corpuszip", {
-    expect_output(summary(data_corpus_test), regexp = "^Corpus consisting of 4 documents\\.")
-    expect_output(summary(data_corpuszip_test), regexp = "^Corpus consisting of 4 documents \\(compressed")
+    expect_output(summary(data_corpus_test, verbose = TRUE), regexp = "^Corpus consisting of 4 documents\\.")
+    expect_output(summary(data_corpuszip_test, verbose = TRUE), regexp = "^Corpus consisting of 4 documents \\(compressed")
 })
 
 test_that("is.corpus methods work", {

@@ -5,7 +5,7 @@
 \title{trim a dfm using frequency threshold-based feature selection}
 \usage{
 dfm_trim(x, min_count = 1, min_docfreq = 1, max_count = NULL,
-  max_docfreq = NULL, sparsity = NULL, verbose = FALSE)
+  max_docfreq = NULL, sparsity = NULL, verbose = getOption("verbose"))
 }
 \arguments{
 \item{x}{a \link{dfm} object}

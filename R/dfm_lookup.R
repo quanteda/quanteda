@@ -51,7 +51,7 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
                        exclusive = TRUE, valuetype = c("glob", "regex", "fixed"), 
                        case_insensitive = TRUE,
                        capkeys = !exclusive,
-                       verbose = TRUE) {
+                       verbose = getOption("verbose")) {
     
     if (!is.dfm(x))
         stop("x must be a dfm object")
