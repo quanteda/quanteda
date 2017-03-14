@@ -19,7 +19,7 @@
 #' coxs <- contexts(toks, "econom*", window = 10, valuetype = "glob")
 #' head(textstat_collocations(coxs, toks), 10)
 #' 
-#' fcm <- fcm(toks)
+#' fcm <- fcm(toks, tri = FALSE)
 #' pmi <- textstat_collocations(fcm, dfm(toks), "pmi3")
 #' head(pmi, 20)
 #' 
@@ -48,10 +48,10 @@ textstat_collocations.fcm <- function(x, y, measure = c("pmi", "pmi3"), top = 10
     }
     
     index <- which(mi@x > sort(mi@x, decreasing = TRUE)[top])
-    col1 <- rep(mi@Dimnames[[1]], times = mi@Dim[1])
-    col2 <- rep(mi@Dimnames[[1]], each = mi@Dim[2])
-    
-    result <- data.frame(collocation = paste(col1[index], col2[index]),
+    dimnames <- mi@Dimnames[[1]]
+    dims <- mi@Dim
+        
+    result <- data.frame(collocation = paste(dimnames[index %/% dims[1]], dimnames[index %% dims[1]]),
                          pmi = mi@x[index], count = n@x[index], stringsAsFactors = FALSE) 
     if (sort)
         result <- result[order(result$pmi, decreasing = TRUE),]

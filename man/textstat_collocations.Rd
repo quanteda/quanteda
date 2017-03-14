@@ -30,8 +30,8 @@ toks <- tokens_remove(toks, stopwords(), padding = TRUE)
 coxs <- contexts(toks, "econom*", window = 10, valuetype = "glob")
 head(textstat_collocations(coxs, toks), 10)
 
-fcm <- fcm(toks)
-pmi <- textstat_collocations(fcm, dfm(toks), "pmi")
+fcm <- fcm(toks, tri = FALSE)
+pmi <- textstat_collocations(fcm, dfm(toks), "pmi3")
 head(pmi, 20)
 
 }
