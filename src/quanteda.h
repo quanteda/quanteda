@@ -23,6 +23,7 @@ using namespace std;
 
 namespace quanteda{
     
+    typedef ListOf<IntegerVector> Tokens;
     typedef std::vector<unsigned int> Text;
     typedef std::vector<Text> Texts;
     
@@ -45,13 +46,13 @@ namespace quanteda{
     
     inline String join(CharacterVector &tokens_, String &delim_){
         if (tokens_.size() == 0) return "";
-        String token = tokens_[0];
+        String token_ = tokens_[0];
         for (unsigned int i = 1; i < (unsigned int)tokens_.size(); i++) {
-          token += delim_;
-          token += tokens_[i];
+          token_ += delim_;
+          token_ += tokens_[i];
         }
-        token.set_encoding(CE_UTF8);
-        return token;
+        token_.set_encoding(CE_UTF8);
+        return token_;
     }
     
     inline std::string join(std::vector< std::string > &tokens, std::string &delim){
@@ -62,6 +63,23 @@ namespace quanteda{
         }
         return token;
     }
+    
+    inline String get_text(Text &tokens, const CharacterVector types_) {
+        
+        if (tokens.size() == 0) {
+            return "";
+        } else {
+            String text_ = types_[tokens[0] - 1];
+            for (std::size_t j = 1; j < tokens.size(); j++) {
+                if (tokens[j] == 0) continue;
+                text_ += " ";
+                text_ += types_[tokens[j] - 1];
+            }
+            text_.set_encoding(CE_UTF8);
+            return text_;
+        }
+    } 
+    
 
     inline bool has_na(IntegerVector vec_) {
         for (unsigned int i = 0; i < (unsigned int)vec_.size(); ++i) {

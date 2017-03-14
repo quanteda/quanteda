@@ -241,10 +241,10 @@ DataFrame qatd_cpp_sequences(const List &texts_,
 #endif
     //dev::stop_timer("Estimate", timer);
     
-    DataFrame output_ = DataFrame::create(Named("lambda") = as<NumericVector>(wrap(ls)),
-                                          Named("sigma") = as<NumericVector>(wrap(ss)),
-                                          Named("count") = as<IntegerVector>(wrap(cs)));
-    output_.attr("ids") = as< ListOf<IntegerVector> >(wrap(seqs));
+    DataFrame output_ = DataFrame::create(_["lambda"] = as<NumericVector>(wrap(ls)),
+                                          _["sigma"] = as<NumericVector>(wrap(ss)),
+                                          _["count"] = as<IntegerVector>(wrap(cs)));
+    output_.attr("ids") = as<Tokens>(wrap(seqs));
     return output_;
 }
 
