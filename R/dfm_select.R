@@ -19,7 +19,7 @@
 #'   \href{https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft}{79}.
 #'    (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are
 #'   applied after (and hence, in addition to) any selection based on pattern
-#'   matches.
+#'   matches. These arguments are Ignored when padding is \code{TRUE}.
 #' @param padding if \code{TRUE} features or documents not existing in x is 
 #'   added to \link{dfm}. This option is available only when selection is 
 #'   \code{keep} and valuetype is \code{fixed}. 
@@ -105,6 +105,8 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
         }
         features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
         features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
+        #if ("" %in% features) features_id <- c(features_id, 0) # append padding index
+        print(features_id)
         features_id <- sort(features_id) # keep the original column order
     } else {
         if (selection == "keep")
@@ -113,10 +115,12 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
             features_id <- NULL
     }
     
-    # select features based on character length
-    features_id <- intersect(features_id, which(stringi::stri_length(types) >= min_nchar & 
-                                                stringi::stri_length(types) <= max_nchar))
-
+    if (!padding) {
+        # select features based on character length
+        features_id <- intersect(features_id, which((stringi::stri_length(types) >= min_nchar & 
+                                                     stringi::stri_length(types) <= max_nchar) | types == ""))
+    }
+    
     # select documents based on "documents" pattern
     if (!is.null(documents)){
         documents <- unlist(documents, use.names = FALSE) # this funciton does not accpet list

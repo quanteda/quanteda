@@ -44,7 +44,7 @@ in characters for features to be removed or kept; defaults are 1 and
 \href{https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft}{79}.
  (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are
 applied after (and hence, in addition to) any selection based on pattern
-matches.}
+matches. These arguments are Ignored when padding is \code{TRUE}.}
 
 \item{padding}{if \code{TRUE} features or documents not existing in x is 
 added to \link{dfm}. This option is available only when selection is 
