@@ -30,8 +30,8 @@ contexts.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "rege
     
     types <- types(x)
     keywords_id <- regex2id(keywords, types, valuetype, case_insensitive, FALSE)
-    x <- qatd_cpp_tokens_contexts(x, types, keywords_id, window)
-    attributes(x, FALSE) <- attr_org
+    result <- qatd_cpp_tokens_contexts(x, types, keywords_id, window)
+    attributes(result, FALSE) <- attr_org
     
-    return(x)
+    return(result)
 }

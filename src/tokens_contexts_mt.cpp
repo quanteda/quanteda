@@ -89,7 +89,6 @@ List qatd_cpp_tokens_contexts(const List &texts_,
     // dev::stop_timer("Dictionary detect", timer);
     List output_ = recompile(output, types);
     output_.attr("names") = encode(names_new);
-    output_.attr("class") = "tokens";
     return output_;
 }
 
