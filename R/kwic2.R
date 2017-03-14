@@ -77,8 +77,7 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     
     valuetype <- match.arg(valuetype)
     keywords <- vector2list(keywords)
-    attr_org <- attributes(x)
-    
+
     # add document names if none
     if (is.null(names(x))) {
         names(x) <- paste("text", 1:length(x), sep="")
@@ -86,49 +85,17 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     
     types <- types(x)
     keywords_id <- regex2id(keywords, types, valuetype, case_insensitive, FALSE)
-    x <- qatd_cpp_tokens_contexts(x, types, keywords_id, window, TRUE)
-    attr(x, 'class') <- c('tokens', 'tokenizedTexts')
+    result <- qatd_cpp_kwic(x, types, keywords_id, window)
+    result$document <- as.factor(result$document)
     
-    if (length(x)) {
-        context <- kwic_split(x, attr(x, 'target_start'), attr(x, 'target_end'))
-        context$document <- factor(names(x))
-        context$position <- attr(x, 'position')
-        context <- context[, c('document', 'position', 'pre', 'keyword', 'post')]
-    } else {
+    if (!nrow(result)) 
         return(NULL)
-    }
     
     # add attributes for kwic object
-    attr(context, "valuetype") <- valuetype
-    attr(context, "keywords") <- sapply(keywords, paste, collapse = " ")
-    class(context) <- c("kwic", "data.frame")
-    return(context)
-}
-
-#' split kwic results
-#'
-#' Helper function for kwic designed to parse sequence matches into contexts and keywords.
-#' @param char character vector
-#' @param start numeric vector for starting positions of keywords
-#' @param start numeric vector for ending positions of keywords
-#' @author Kohei Watanabe
-#' @examples
-#' \dontrun{
-#' kwic_split(rep(list(letters[1:5]), 3), c(2, 3, 4), c(2, 4, 5))
-#' }
-#' @keywords internal
-kwic_split <- function(x, start, end) {
-    
-    x <- unclass(as.list(x))
-    pre <- target <- post <- c()
-    for (i in 1:length(x)) {
-        context <- x[[i]]
-        len <- length(context)
-        pre <- c(pre, ifelse(start[i] > 1, stringi::stri_c(context[1:(start[i] - 1)], collapse = ' '), ''))
-        target <- c(target, stringi::stri_c(context[start[i]:end[i]], collapse = ' '))
-        post <- c(post, ifelse(end[i] < len, stringi::stri_c(context[(end[i] + 1):len], collapse = ' '), ''))
-    }
-    return(data.frame(pre = pre, keyword = target, post = post, stringsAsFactors = FALSE))
+    attr(result, "valuetype") <- valuetype
+    attr(result, "keywords") <- sapply(keywords, paste, collapse = " ")
+    class(result) <- c("kwic", "data.frame")
+    return(result)
 }
 
 #' @rdname kwic
@@ -149,34 +116,6 @@ is.kwic <- function(x) {
     ifelse("kwic" %in% class(x), TRUE, FALSE)
 }
 
-#' @rdname kwic
-#' @details \code{as.kwic} is a temporary function to convert a "kwic2" to a standard 
-#' "kwic" object.
-#' @export
-#' @examples 
-#' # as.kwic examples
-#' txt <- c("This is a test",
-#'          "This is it.",
-#'          "What is in a train?",
-#'          "Is it a question?",
-#'          "Sometimes you don't know if this is it.",
-#'          "Is it a bird or a plane or is it a train?")
-#' 
-#' toks <- tokens(txt)
-#' (kwOld <- kwic(toks, "is it", new = FALSE))
-#' (kwNew <- kwic(toks, "is it", new = TRUE))
-#' \dontrun{
-#' # this breaks - need to harmonize print methods
-#' as.kwic(kwNew)
-#' }
-as.kwic <- function(x) {
-    # strip "kwic2" from class list
-    if (class(x)[1] == "kwic_old" & is.kwic(x))
-        class(x) <- class(x)[-1]
-    x
-}
-
-
 #' @method print kwic
 #' @noRd
 #' @export
@@ -188,7 +127,7 @@ print.kwic <- function(x, ...) {
     kwic <- data.frame(
         pre = format(stringi::stri_replace_all_regex(x$pre, "(\\w*) (\\W)", "$1$2"), justify="right"),
         s1 = rep('|', nrow(x)),
-        keyword = format(x$keyword, justify="centre"),
+        keyword = format(x$target, justify="centre"),
         s2 = rep('|', nrow(x)),
         post = format(stringi::stri_replace_all_regex(x$post, "(\\w*) (\\W)", "$1$2"), justify="left")
     )
