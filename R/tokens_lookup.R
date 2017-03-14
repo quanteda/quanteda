@@ -61,7 +61,7 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           exclusive = TRUE,
 #                          overlap = FALSE,
                           multiword = TRUE,
-                          verbose = FALSE) {
+                          verbose = getOption("verbose")) {
     UseMethod("tokens_lookup")    
 }
 
@@ -74,7 +74,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
                           capkeys = !exclusive,
                           exclusive = TRUE,
                           multiword = TRUE,
-                          verbose = FALSE) {
+                          verbose = getOption("verbose")) {
 
     if (!is.tokens(x))
         stop("x must be a tokens object")

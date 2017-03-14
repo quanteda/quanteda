@@ -27,7 +27,7 @@
 \S4method{show}{textmodel_wordfish_predicted}(object)
 
 \method{predict}{textmodel_wordscores_fitted}(object, newdata = NULL,
-  rescaling = "none", level = 0.95, verbose = TRUE, ...)
+  rescaling = "none", level = 0.95, verbose = getOption("verbose"), ...)
 
 \method{print}{textmodel_wordscores_fitted}(x, n = 30L, digits = 2, ...)
 
