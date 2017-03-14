@@ -4,12 +4,7 @@
 #' @examples 
 #' toks <- tokens(data_char_inaugural)
 #' toks <- tokens_remove(toks, stopwords())
-#' cont <- contexts(toks, "clinton", window = 10, valuetype = "glob")
-#' 
-#' x <- dfm(cont)
-#' y <- dfm(toks)
-#' z <- dfm_select(x, y, padding = TRUE)
-#' head(textstat_keyness(new("dfmSparse", Matrix::rbind2(z, y)), target = 1:nrow(x)), 20)
+#' coxs <- contexts(toks, "clinton", window = 10, valuetype = "glob")
 #' 
 #' @export 
 contexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
@@ -35,7 +30,7 @@ contexts.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "rege
     
     types <- types(x)
     keywords_id <- regex2id(keywords, types, valuetype, case_insensitive, FALSE)
-    x <- qatd_cpp_tokens_contexts(x, types, keywords_id, window, FALSE)
+    x <- qatd_cpp_tokens_contexts(x, types, keywords_id, window)
     attributes(x, FALSE) <- attr_org
     
     return(x)

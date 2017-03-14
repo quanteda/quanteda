@@ -51,8 +51,9 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     
     std::size_t j = 0;
     for (std::size_t h = 0; h < output.size(); h++) {
-        Text tokens = input[h];
         Targets targets = output[h];
+        if (targets.size() == 0) continue;
+        Text tokens = input[h];
         int last = (int)tokens.size() - 1;
         for (size_t i = 0; i < targets.size(); i++) {
             int from = targets[i].first - window;
