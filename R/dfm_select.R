@@ -148,9 +148,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
                                                                          dims = c(ndoc(x), length(types_add)), 
                                                                          dimnames = list(docnames(x), types_add))))
                 }
-                if (case_insensitive)
-                    x <- dfm_tolower(x)
-                
+
                 # padding for documents
                 labels_add <- setdiff(documents, labels)
                 if (length(labels_add)) {

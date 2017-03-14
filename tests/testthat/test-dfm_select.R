@@ -137,16 +137,13 @@ test_that("longer selection than longer than features that exist (related to #44
 
 test_that("test dfm_select with features from a dfm,  fixed", {
 
+
     expect_equal(colSums(dfm_select(testdfm, dfm(c("a", "b", "c")), selection = "keep", valuetype = "fixed", 
-                                    padding = TRUE, verbose = FALSE, case_insensitive = TRUE)),
-                 c(a=2, b=1, c=2))
-    
-    expect_equal(colSums(dfm_select(testdfm, dfm(c("a", "b", "c")), selection = "keep", valuetype = "fixed", 
-                                    padding = TRUE, verbose = FALSE, case_insensitive = FALSE)),
+                                    padding = TRUE, verbose = FALSE)),
                  c(a=2, c=2, b=0))
     
     expect_equal(colSums(dfm_select(testdfm, dfm(c("a", "b", "c")), selection = "keep", valuetype = "fixed", 
-                                    padding = FALSE, verbose = FALSE, case_insensitive = FALSE)),
+                                    padding = FALSE, verbose = FALSE)),
                  c(a=2, c=2))
     
 })
