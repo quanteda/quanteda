@@ -9,7 +9,7 @@ output:
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "##",
-  fig.path = "images/"
+  fig.path = "man/images"
 )
 ```
 ###[![quanteda: quantitative analysis of textual data](https://rawgit.com/kbenoit/quanteda/master/images/quanteda_logo.svg)](http://quanteda.io)
