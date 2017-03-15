@@ -75,7 +75,7 @@ textstat_collocations.fcm <- function(x, y, measure = c("pmi", "pmi3", "chi2"), 
     index <- which(v@x > sort(v@x, decreasing = TRUE)[top])
     dimnames <- v@Dimnames[[1]]
     dims <- v@Dim
-    print(index)
+
     result <- data.frame(collocation = paste(dimnames[index %/% dims[1]], dimnames[index %% dims[1]]),
                          value = v@x[index], count = n@x[index], stringsAsFactors = FALSE) 
     if (sort)
