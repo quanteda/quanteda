@@ -395,7 +395,7 @@ tokens_hash <- function(x, types_reserved, ...) {
     
     # Restore and add additional attributes
     attributes(tokens) <- attributes(x)
-    attr(tokens, "types") <- as.character(types) # drop fmatch's attributes
+    attr(tokens, "types") <- stringi::stri_trans_nfc(types) # unicode normalization
     class(tokens) <- c("tokens", class(x))
     return(tokens)
 }
