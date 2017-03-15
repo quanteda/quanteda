@@ -66,10 +66,12 @@ textstat_collocations.fcm <- function(x, y, measure = c("pmi", "pmi3", "chi2"), 
         v = (s * (abs(a * d - b * c) - s / 2) ^ 2) / 
             ((a + b) * (c + d) * (a + c) * (b + d)) * 
             ((a < e) * -1)
+        
+        print(a)
+        print(m)
+        print(b)
     }
-    print(a)
-    print(m)
-    print(b)
+
     index <- which(v@x > sort(v@x, decreasing = TRUE)[top])
     dimnames <- v@Dimnames[[1]]
     dims <- v@Dim
@@ -92,7 +94,8 @@ textstat_collocations.dfm <- function(x, y, ...) {
     y <- dfm_select(y, features, valuetype = 'fixed', case_insensitive = FALSE, padding = TRUE)
     z <- rbind(Matrix::colSums(x), Matrix::colSums(y))
     z[2,] <- z[2,] - z[1,]
-    textstat_keyness(as.dfm(z), target = 1L, ...)
+    result <- textstat_keyness(as.dfm(z), target = 1L, ...)
+    return(result)
 }
 
 #' @noRd
