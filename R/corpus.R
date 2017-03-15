@@ -145,6 +145,10 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, text_field = "t
         names(x) <- x_names
     }
 
+    # ensure that docnames are unique
+    if (any(duplicated(names(x))))
+        names(x) <- make.unique(names(x))
+
     # create document-meta-data
     if (is.null(metacorpus$source)) {
         metacorpus$source <- paste(getwd(), "/* ", "on ",  Sys.info()["machine"], " by ", Sys.info()["user"], sep="")
@@ -296,8 +300,8 @@ corpus.VCorpus <- function(x, docnames = NULL, docvars = NULL, text_field = "tex
         texts <- sapply(texts, paste, collapse = " ")
     
     # special handling for VCorpus meta-data
-    metad <- as.data.frame(do.call(rbind, (lapply(x$content, "[[", "meta"))),
-                           stringsAsFactors = FALSE, row.names = NULL)
+    metad <- data.frame(do.call(rbind, (lapply(x$content, "[[", "meta"))),
+                        stringsAsFactors = FALSE, row.names = NULL)
     makechar <- function(x) gsub("character\\(0\\)", NA, as.character(x))
     datetimestampIndex <- which(names(metad) == "datetimestamp")
     metad[, -datetimestampIndex] <- apply(metad[, -datetimestampIndex], 2, makechar)
