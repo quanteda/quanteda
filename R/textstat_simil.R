@@ -115,7 +115,7 @@ textstat_simil <- function(x, selection = character(0), n = NULL,
         if(length(selection) == 1L){
             x[, 1] <- result
         } else {
-            x[, 1:ncol(result)] <- result
+            x[, seq_len(ncol(result))] <- result
         }
         result <- x
     }
