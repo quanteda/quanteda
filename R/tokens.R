@@ -202,7 +202,6 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     
     if (verbose) catm("Starting tokenization...\n")
     
-    x <- stringi::stri_trans_nfc(x) # unicode normalization
     if (removeTwitter == FALSE & !(what %in% c("fastword", "fastestword"))) {
         if (verbose) catm("...preserving Twitter characters (#, @)\n")
         x <- stringi::stri_replace_all_fixed(x, c("#", "@"), c("_ht_", "_as_"), vectorize_all = FALSE)
@@ -396,7 +395,7 @@ tokens_hash <- function(x, types_reserved, ...) {
     
     # Restore and add additional attributes
     attributes(tokens) <- attributes(x)
-    attr(tokens, "types") <- as.character(types) # unicode normalization
+    attr(tokens, "types") <- stringi::stri_trans_nfc(types) # unicode normalization
     class(tokens) <- c("tokens", class(x))
     return(tokens)
 }

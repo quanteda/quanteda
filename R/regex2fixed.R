@@ -25,6 +25,10 @@ regex2fixed <- function(regex, types, valuetype, case_insensitive = FALSE, index
 
 regex2id <- function(regex, types, valuetype, case_insensitive = FALSE, index = TRUE) {
     
+    # Normalize
+    regex <- stringi::stri_trans_nfc(regex)
+    types <- stringi::stri_trans_nfc(types)
+    
     # Make case insensitive
     if (case_insensitive) {
         types_search <- stringi::stri_trans_tolower(types)
@@ -133,6 +137,9 @@ select_types <- function (regex, types_search, exact, index){
 # to avoide expensive sequential search by stri_detect_regex. len_max should be obtained 
 # from the longest regex queries to limit the size of the index.
 index_regex <- function(types, valuetype, case_insensitive, len_max){
+    
+    # Normalize
+    types <- stringi::stri_trans_nfc(types)
     
     if (case_insensitive) types <- stringi::stri_trans_tolower(types)
     if (valuetype == 'fixed') {
