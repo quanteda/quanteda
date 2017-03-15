@@ -135,27 +135,45 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     types_add <- labels_add <- character() # avoid error in verbose message
     
     if (selection == "keep") {
-        if (!length(features_id) || !length(documents_id)) {
-            x <- NULL
-        } else {
+        if (length(features_id) && length(documents_id)) {
             x <- x[documents_id, features_id]
             if (valuetype == 'fixed' && padding) {
                 
                 # padding for features
-                types_add <- setdiff(features, types)
-                if (length(types_add)) {
+                features_add <- setdiff(features, types)
+                if (length(features_add)) {
                     x <- new("dfmSparse", Matrix::cbind2(x, sparseMatrix(i = NULL, j = NULL, 
-                                                                         dims = c(ndoc(x), length(types_add)), 
-                                                                         dimnames = list(docnames(x), types_add))))
+                                                                         dims = c(ndoc(x), length(features_add)), 
+                                                                         dimnames = list(docnames(x), features_add))))
                 }
-
+    
                 # padding for documents
-                labels_add <- setdiff(documents, labels)
-                if (length(labels_add)) {
+                documents_add <- setdiff(documents, labels)
+                if (length(documents_add)) {
                     x <- new("dfmSparse", Matrix::rbind2(x, sparseMatrix(i = NULL, j = NULL, 
-                                                                         dims = c(length(labels_add), nfeature(x)), 
-                                                                         dimnames = list(labels_add, featnames(x)))))
+                                                                         dims = c(length(documents_add), nfeature(x)), 
+                                                                         dimnames = list(documents_add, featnames(x)))))
                 }
+            }
+        } else {
+            if (valuetype == 'fixed' && padding) {
+
+                # create empty dfm
+                if (length(features) && length(documents)) {
+                    x <- new("dfmSparse", as(sparseMatrix(i = NULL, j = NULL,
+                                                       dims = c(length(documents), length(features)),
+                                                       dimnames = list(documents, features)), 'dgCMatrix'))
+                } else if (length(features)) {
+                    x <- new("dfmSparse", as(sparseMatrix(i = NULL, j = NULL,
+                                                       dims = c(ndoc(x), length(features)),
+                                                       dimnames = list(docnames(x), features)), 'dgCMatrix'))
+                } else if (length(documents)) {
+                    x <- new("dfmSparse", as(sparseMatrix(i = NULL, j = NULL,
+                                                       dims = c(length(documents), nfeature(x)),
+                                                       dimnames = list(documents, featnames(x))), 'dgCMatrix'))
+                }
+            } else {
+                x <- NULL
             }
         }
     } else {
