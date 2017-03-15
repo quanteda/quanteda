@@ -223,7 +223,7 @@ is_indexed <- function(x){
 #' @keywords internal utilities
 vector2list <- function(x) {
     if (is.list(x)) {
-        if (!all(sapply(x, is.character, USE.NAMES = FALSE)))
+        if (!all(vapply(x, is.character, logical(1), USE.NAMES = FALSE)))
             stop("Patterns must be a list of character type only")
         return(x)
     } else {
