@@ -28,13 +28,19 @@
 #' col_pmi[grepl("econom", col_pmi$collocation),]
 #' head(col_pmi, 20)
 #' 
+#' toks <- tokens("A D A C E A D F E B A C E D")
+#' col_chi2 <- textstat_collocations(fcm(toks, 'window', window = 2, tri = FALSE), 
+#'                                   dfm(toks, tolower = FALSE), measure = "chi2", top = 3)
+#' 
+#' 
+#' 
 textstat_collocations <- function(x, y, ...) {
     UseMethod("textstat_collocations")
 }
 
 #' @noRd
 #' @export
-textstat_collocations.fcm <- function(x, y, measure = c("pmi", "pmi3"), top = 1000, sort = TRUE) {
+textstat_collocations.fcm <- function(x, y, measure = c("pmi", "pmi3", "chi2"), top = 1000, sort = TRUE) {
     
     features <- featnames(x)
     features <- features[features != ""]
@@ -46,20 +52,32 @@ textstat_collocations.fcm <- function(x, y, measure = c("pmi", "pmi3"), top = 10
     m <- m + 1 # soomthing
     
     mm <- m %*% t(m)
-    if (measure == 'pmi3') {
-        mi <- log(((n ^ 3) / mm))
+    if (measure == 'pmi') {
+        v <- log((n / mm))
+    } else if(measure == 'pmi3') {
+        v <- log(((n ^ 3) / mm))
     } else {
-        mi <- log((n / mm))
+        s <- sum(m) # grand sum
+        a <- n
+        b <- m - n
+        c <- m - t(n)
+        d <- s - (a + b + c)
+        e <- (a + b) * (a + c) / s # expected count
+        v = (s * (abs(a * d - b * c) - s / 2) ^ 2) / 
+            ((a + b) * (c + d) * (a + c) * (b + d)) * 
+            ((a < e) * -1)
     }
-    
-    index <- which(mi@x > sort(mi@x, decreasing = TRUE)[top])
-    dimnames <- mi@Dimnames[[1]]
-    dims <- mi@Dim
-        
+    print(a)
+    print(m)
+    print(b)
+    index <- which(v@x > sort(v@x, decreasing = TRUE)[top])
+    dimnames <- v@Dimnames[[1]]
+    dims <- v@Dim
+    print(index)
     result <- data.frame(collocation = paste(dimnames[index %/% dims[1]], dimnames[index %% dims[1]]),
-                         pmi = mi@x[index], count = n@x[index], stringsAsFactors = FALSE) 
+                         value = v@x[index], count = n@x[index], stringsAsFactors = FALSE) 
     if (sort)
-        result <- result[order(result$pmi, decreasing = TRUE),]
+        result <- result[order(result$value, decreasing = TRUE),]
     
     return(result)
 }
