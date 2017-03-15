@@ -293,7 +293,7 @@ corpus.VCorpus <- function(x, docnames = NULL, docvars = NULL, text_field = "tex
     texts <- sapply(x$content, "[[", "content")
     # paste together texts if they appear to be vectors
     if (any(lengths(texts) > 1))
-        texts <- sapply(texts, paste, collapse = " ")
+        texts <- vapply(texts, paste, character(1), collapse = " ")
     
     # special handling for VCorpus meta-data
     metad <- as.data.frame(do.call(rbind, (lapply(x$content, "[[", "meta"))),

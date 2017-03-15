@@ -112,7 +112,7 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
     position <- keyword <- docname <- ntokens <- NULL    
     
     kwics <- list(...)
-    if (!all(sapply(kwics, is.kwic)))
+    if (!all(vapply(kwics, is.kwic, logical(1))))
         stop("objects to plot must be kwic objects")
 
     # create a data.table from the kwic arguments
@@ -123,7 +123,7 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
     x[, ntokens := ntokensByDoc[as.character(x[, docname])]]
     
     # replace "found" keyword with patterned keyword
-    x[, keyword := unlist(sapply(kwics, function(l) rep(attr(l, "keyword"), nrow(l))))]
+    x[, keyword := unlist(vapply(kwics, function(l) rep(attr(l, "keyword"), nrow(l))), character(1))]
 
     # pre-emptively convert keyword to factor before ggplot does it, so that we
     # can keep the order of the factor the same as the order of the kwic objects
@@ -155,7 +155,7 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
 
     # convert character positions to first integer value in range
     if (is.character(x[, position]))
-        x[, position := as.integer(sapply(strsplit(position, ":"), "[", 1))]
+        x[, position := as.integer(vapply(strsplit(position, ":"), "[", 1))]
 
     if (scale == 'relative')
         x[, position := position/ntokens]
