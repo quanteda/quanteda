@@ -107,9 +107,10 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
         features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
         features_id <- unlist(regex2id(features, types, valuetype, case_insensitive), use.names = FALSE)
         features_id <- sort(features_id) # keep the original column order
+        print(features_id)
     } else {
         if (selection == "keep")
-            features_id <- 1:nfeature(x)
+            features_id <- seq_along(nfeature(x))
         else
             features_id <- NULL
     }
@@ -123,11 +124,11 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     # select documents based on "documents" pattern
     if (!is.null(documents)){
         documents <- unlist(documents, use.names = FALSE) # this funciton does not accpet list
-        documents_id <- unlist(regex2id(documents, labels, valuetype, case_insensitive, FALSE), use.names = FALSE)
+        documents_id <- unlist(regex2id(documents, labels, valuetype, case_insensitive), use.names = FALSE)
         documents_id <- sort(documents_id) # keep the original row order
     } else {
         if (selection == "keep")
-            documents_id <- 1:ndoc(x)
+            documents_id <- seq_along(ndoc(x))
         else
             documents_id <- NULL
     }
@@ -136,9 +137,10 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     
     if (selection == "keep") {
         if (length(features_id) && length(documents_id)) {
+            
             x <- x[documents_id, features_id]
             if (valuetype == 'fixed' && padding) {
-                
+                cat("here!!!!!!!!!!!!!!!!!!!!!\n")
                 # padding for features
                 features_add <- setdiff(features, types)
                 if (length(features_add)) {
