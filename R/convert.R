@@ -303,7 +303,7 @@ dfm2lsa <- function(x) {
     x <- as.matrix(x)
     # convert to integer
     x <- apply(x, c(1,2), as.integer)
-    class(x) = "textmatrix"
+    class(x) <- "textmatrix"
     names(dimnames(x)) <- c("docs", "terms") 
     t(x)
 }
