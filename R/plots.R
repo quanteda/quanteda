@@ -155,7 +155,7 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
 
     # convert character positions to first integer value in range
     if (is.character(x[, position]))
-        x[, position := as.integer(vapply(strsplit(position, ":"), "[", 1))]
+        x[, position := as.integer(sapply(strsplit(position, ":"), "[", 1))]
 
     if (scale == 'relative')
         x[, position := position/ntokens]
