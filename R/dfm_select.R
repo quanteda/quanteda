@@ -105,7 +105,7 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
             case_insensitive <- FALSE
         }
         features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
-        features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
+        features_id <- unlist(regex2id(features, types, valuetype, case_insensitive), use.names = FALSE)
         features_id <- sort(features_id) # keep the original column order
     } else {
         if (selection == "keep")
