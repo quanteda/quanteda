@@ -86,7 +86,10 @@ textstat_collocations.fcm <- function(x, y, measure = c("pmi", "pmi3", "chi2"), 
 #' @export
 textstat_collocations.dfm <- function(x, y, ...) {
     
-    y <- dfm_select(y, featnames(x), valuetype = 'fixed', case_insensitive = FALSE, padding = TRUE)
+    features <- featnames(x)
+    features <- features[features != ""]
+    x <- dfm_select(x, features, valuetype = 'fixed', case_insensitive = FALSE)
+    y <- dfm_select(y, features, valuetype = 'fixed', case_insensitive = FALSE, padding = TRUE)
     z <- rbind(Matrix::colSums(x), Matrix::colSums(y))
     z[2,] <- z[2,] - z[1,]
     textstat_keyness(as.dfm(z), target = 1L, ...)
