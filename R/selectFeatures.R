@@ -191,7 +191,7 @@ selectFeatures.collocations <- function(x, features, selection = c("keep", "remo
     nstart <- nrow(x)
     stopwordTable <- data.table(word = features, remove = 1L)
     setkey(stopwordTable, word)
-    x$order <- 1:nrow(x)
+    x$order <- seq_len(nrow(x))
     
     if (case_insensitive)
         x[, c("word1", "word2", "word3") := list(char_tolower(word1), char_tolower(word2), char_tolower(word3))]

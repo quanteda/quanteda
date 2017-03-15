@@ -320,7 +320,7 @@ readWStatDict <- function(path, enc="", toLower=TRUE) {
     d <- data.frame(lapply(d, as.character), stringsAsFactors=FALSE)
     thismajorcat <- d[1,1]
     # this loop fills in blank cells in the category|term dataframe
-    for (i in 1:nrow(d)) {
+    for (i in seq_len(nrow(d))) {
         if (d[i,1] == "") {
             d[i,1] <- thismajorcat
         } else {
@@ -344,7 +344,7 @@ readWStatDict <- function(path, enc="", toLower=TRUE) {
     
     # this loop collapses the category cells together and
     # makes the list of named lists compatible with dfm
-    for (i in 1:nrow(d)) {
+    for (i in seq_len(nrow(d))) {
         if (d[i, ncol(d)] ==  "") next
         categ <- unlist(paste(d[i,(1:(ncol(d)-1))], collapse = "."))
         w <- d[i, ncol(d)]
@@ -454,7 +454,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     
     terms <- as.list(rep(NA, nrow(catlist)))
     names(terms) <- rownames(catlist)
-    for (i in 1:nrow(catlist)) {
+    for (i in seq_len(nrow(catlist))) {
         terms[[i]] <- as.numeric(catlist[i, !is.na(catlist[i,])])
     }
     
