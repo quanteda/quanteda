@@ -79,7 +79,7 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
     } # else if (valuetype == "fixed")
     # dictionary <- lapply(dictionary, function(x) paste0("^", x, "$"))
     
-    newDocIndex <- rep(1:nrow(x), length(dictionary))
+    newDocIndex <- rep(seq_len(nrow(x)), length(dictionary))
     newFeatures <- names(dictionary)
     uniqueFeatures <- featnames(x)
     newFeatureIndexList <- lapply(dictionary, function(x) {

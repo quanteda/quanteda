@@ -123,7 +123,7 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
                              fixed = (valuetype == "fixed"))[[1]]
         tags <- character()
         length(tags) <- ndoc(newCorpus)
-        for (i in 1:length(tagIndex))
+        for (i in seq_along(tagIndex))
             tags[i] <- substr(cattxt, start = tagIndex[i],
                               stop = tagIndex[i] + attr(tagIndex, "match.length")[i] - 1)
         # remove white space at both ends
