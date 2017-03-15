@@ -69,7 +69,7 @@ kwic_old.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob
     if (!is.null(names(x))) {
         names(contexts) <- names(x)
     } else {
-        names(contexts) <- paste("text", 1:length(x), sep="")
+        names(contexts) <- paste("text", seq_along(x), sep="")
     }
     contexts <- contexts[!is.na(contexts)]
     contexts <- cbind(docname = rep(names(contexts), sapply(contexts, nrow)), do.call(rbind, contexts))
@@ -87,7 +87,7 @@ kwic_old.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob
     #  If these tokenized texts are not named, then their ntokens will not have names either
     ntoken <- ntoken(x)
     if (is.null(names(ntoken)))
-        names(ntoken) <- paste("text", 1:length(x), sep="")
+        names(ntoken) <- paste("text", seq_along(x), sep="")
 
     attr(contexts, "ntoken")  <- ntoken
 
@@ -186,7 +186,7 @@ wrapVector <- function(x, n) {
 # works like match but for regular expressions
 matchRegex <- function(x, table, case_insensitive) {
     result <- rep(NA, length(x))
-    for (i in 1:length(table)) {
+    for (i in seq_along(table)) {
         # logMatch <- grepl(table[i], x)
         logMatch <- !is.na(stringi::stri_locate_first_regex(x, table[i], opts_regex = list(case_insensitive = case_insensitive))[, 1])
         result[which(logMatch)] <- i
@@ -200,7 +200,7 @@ matchFixed <- function(x, table, case_insensitive) {
     matchRegex(x, table, case_insensitive)
     
 #     result <- rep(NA, length(x))
-#     for (i in 1:length(table)) {
+#     for (i in seq_along(table)) {
 #         # logMatch <- grepl(table[i], x)
 #         logMatch <- !is.na(stringi::stri_locate_first_fixed(x, table[i], opts_fixed = list(case_insensitive = case_insensitive))[, 1])
 #         result[which(logMatch)] <- i

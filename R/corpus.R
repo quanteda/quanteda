@@ -237,7 +237,7 @@ corpus.data.frame <- function(x, docnames = NULL, docvars = NULL, text_field = "
     
     corpus(x[, text_fieldi], 
            docvars = x[, -text_fieldi, drop = FALSE],
-           docnames = if (!identical(row.names(x), as.character(seq_len(nrow(x)))) row.names(x) else NULL, 
+           docnames = if (!identical(row.names(x), as.character(seq_len(nrow(x))))) row.names(x) else NULL, 
            metacorpus = metacorpus, compress = compress, ...)
 }
 

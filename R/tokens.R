@@ -212,7 +212,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     # Split x into smaller blocks to reducre peak memory consumption
     blocks <- split(x, ceiling(seq_along(x) / 10000))
     result_blocks <- list()
-    for (i in 1:length(blocks)) {
+    for (i in seq_along(blocks)) {
         
         if (verbose) catm("...tokenizing", i, "of" , length(blocks), "blocks\n")
         

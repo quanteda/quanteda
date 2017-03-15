@@ -180,13 +180,13 @@ expand <- function(elem){
     comb <- vector("list", m)
     if(m == 0) return(comb)
     k <- 1L
-    for (i in 1:length(elem)) {
+    for (i in seq_along(elem)) {
         vec <- elem[[i]]
         l <- length(vec)
         m <- m / l
         vec_rep <- vec[rep.int(rep.int(seq_len(l), rep.int(k, l)), m)]
         k <- k * l
-        for (j in 1:length(vec_rep)) {
+        for (j in seq_along(vec_rep)) {
             comb[[j]] <- c(comb[[j]], vec_rep[j])
         }
     }

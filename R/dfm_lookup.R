@@ -104,7 +104,7 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
                                            rep(0, nrow(x))
                                    })
     dfmresult2 <- new("dfmSparse", sparseMatrix(i = newDocIndex,
-                                                j = rep(1:length(dictionary), each = ndoc(x)),
+                                                j = rep(seq_along(dictionary), each = ndoc(x)),
                                                 x = unlist(newFeatureCountsList),
                                                 dimnames=list(docs = docnames(x), 
                                                               features = newFeatures)))

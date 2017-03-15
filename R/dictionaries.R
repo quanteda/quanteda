@@ -32,7 +32,7 @@ validate_dictionary <- function(dict){
         stop("unnamed dictionary entry: ", unnamed)
     }
     
-    for (i in 1:length(dict)) {
+    for (i in seq_along(dict)) {
         entry <- dict[[i]]
         if (is.list(entry)) {
             validate_dictionary(entry)
@@ -48,7 +48,7 @@ validate_dictionary <- function(dict){
 # Internal function to print dictionary
 print_dictionary <- function(dict, level = 1){
     
-    for (i in 1:length(dict)) {
+    for (i in seq_along(dict)) {
         entry <- dict[[i]]
         if (is.list(entry)) {
             cat(rep('  ', level - 1), "- ", names(dict[i]), ':\n', sep = "")
@@ -458,7 +458,7 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
         terms[[i]] <- as.numeric(catlist[i, !is.na(catlist[i,])])
     }
     
-    for (ind in 1:length(terms)) {
+    for (ind in seq_along(terms)) {
         for(num in as.numeric(terms[[ind]])){
             thisCat <- guide$catName[which(guide$catNum==num)]
             thisTerm <- names(terms[ind])

@@ -26,7 +26,7 @@ print.corpus <- function(x, ...) {
     #         "indexed.\n", sep="")
     #     cat("Settings:")
     #      tempSettings <- unlist(settings(corp))
-    #      for (i in 1:length(tempSettings)) {
+    #      for (i in seq_along(tempSettings)) {
     #          print(tempSettings[i])
     #      }
 }
