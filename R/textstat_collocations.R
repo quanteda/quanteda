@@ -96,6 +96,6 @@ textstat_collocations.dfm <- function(x, y, ...) {
 #' @export
 textstat_collocations.tokens <- function(x, y, ...) {
     
-    textstat_collocations(dfm(x), dfm(y), ...)
+    textstat_collocations(dfm(x, tolower=FALSE), dfm(y, tolower=FALSE), ...)
 }
 

@@ -40,7 +40,7 @@ col_pmi[grepl("econom", col_pmi$collocation),]
 head(col_pmi, 20)
 
 toks <- tokens("A D A C E A D F E B A C E D")
-col_chi2 <- textstat_collocations(fcm(toks, tri = FALSE), 
+col_chi2 <- textstat_collocations(fcm(toks, 'window', window = 2, tri = FALSE), 
                                   dfm(toks, tolower = FALSE), measure = "chi2", top = 3)
 
 
