@@ -248,10 +248,9 @@ ldaformat2dtm <- function (documents, vocab, omit_empty = TRUE) {
     if (!("slam" %in% installed.packages()[, "Package"]))
         stop("You must install the slam package installed for this conversion.")
     
-    stm <- slam::simple_triplet_matrix(i = rep(seq_along(documents), 
-                                               sapply(documents, ncol)), j = as.integer(unlist(lapply(documents, 
-                                                                                                      "[", 1, )) + 1L), v = as.integer(unlist(lapply(documents, 
-                                                                                                                                                     "[", 2, ))), nrow = length(documents), ncol = length(vocab), 
+    stm <- slam::simple_triplet_matrix(i = rep(seq_along(documents), vapply(documents, ncol, integer(1))), 
+                                       j = as.integer(unlist(lapply(documents, "[", 1, )) + 1L),
+                                       v = as.integer(unlist(lapply(documents, "[", 2, ))), nrow = length(documents), ncol = length(vocab),
                                        dimnames = list(names(documents), vocab))
     dtm <- tm::as.DocumentTermMatrix(stm, tm::weightTf)
     if (omit_empty) 

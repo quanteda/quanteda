@@ -407,7 +407,7 @@ as.tokenizedTexts <- function(x, ...) {
 #' @rdname tokenize
 #' @export
 as.tokenizedTexts.list <- function(x, ...) {
-    if (!is.list(x) || (!all(sapply(x, function(l) all(is.character(l))))))
+    if (!is.list(x) || (!all(vapply(x, function(l) all(is.character(l)), logical(1)))))
             stop("input must be a list of character types")
     class(x) <- c("tokenizedTexts", class(x))
     attr(x, "what") <- "user"

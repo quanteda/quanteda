@@ -106,7 +106,7 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
         if (!sum(stringi::stri_detect_charclass(delimiter, c("[*?]"))))
             valuetype <- "fixed"
         else {
-            features <- sapply(delimiter, utils::glob2rx, USE.NAMES = FALSE)
+            features <- vapply(delimiter, utils::glob2rx, character(1), USE.NAMES = FALSE)
             valuetype <- "regex"
         }
     }
@@ -174,7 +174,7 @@ char_segment <- function(x, what = c("sentences", "paragraphs", "tokens", "tags"
         if (!sum(stringi::stri_detect_charclass(delimiter, c("[*?]"))))
             valuetype <- "fixed"
         else {
-            features <- sapply(delimiter, utils::glob2rx, USE.NAMES = FALSE)
+            features <- vapply(delimiter, utils::glob2rx, character(1), USE.NAMES = FALSE)
             valuetype <- "regex"
         }
     }
