@@ -75,12 +75,20 @@ textstat_dist <- function(x, selection, n,
     if (!missing(n)) {
         temp <- temp[order(rowSums(temp), decreasing = TRUE),,drop = FALSE]
         if (n < nrow(temp)) {
-            temp <- temp[seq_len(n),]
+            temp <- temp[seq_len(n),,drop = FALSE]
         }
     }
     
+    temp2 <- sparseMatrix(i = rep(seq_len(nrow(temp)), each = ncol(temp)), 
+                          j = rep(seq_len(nrow(temp)), times = ncol(temp)), 
+                          x = as.vector(temp),
+                          dims = c(nrow(temp), nrow(temp)), 
+                          dimnames = list(rownames(temp), rownames(temp)))
+    
+    return(temp2)
+    
     # create a new dist object
-    result <- stats::as.dist(temp, diag = diag, upper = upper)
+    result <- stats::as.dist(temp2, diag = diag, upper = upper)
     attr(result, "method") <- method
     attr(result, "call") <- match.call()
     return(result)
