@@ -50,12 +50,12 @@ textstat_dist <- function(x, selection, n,
             y <- x[selection,]
         }
     } else {
-        if (margin == "features") {
-            selection <- featnames(x)
-        } else {
-            selection <- docnames(x)
-        }
-        y <- x
+        # if (margin == "features") {
+        #     selection <- featnames(x)
+        # } else {
+        #     selection <- docnames(x)
+        # }
+        y <- NULL
     }
     
     methods1 <- c("euclidean", "hamming", "Chisquared", "Chisquared2", "kullback", "manhattan", "maximum", "canberra")

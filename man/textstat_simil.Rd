@@ -6,9 +6,8 @@
 \alias{as.matrix.simil}
 \title{Distance matrix between documents and/or features}
 \usage{
-textstat_dist(x, selection = character(0), n = NULL,
-  margin = c("documents", "features"), method = "euclidean", upper = TRUE,
-  diag = FALSE, p = 2)
+textstat_dist(x, selection, n, margin = c("documents", "features"),
+  method = "euclidean", upper = TRUE, diag = FALSE, p = 2)
 
 textstat_simil(x, selection = character(0), n = NULL,
   margin = c("documents", "features"), method = "correlation",
