@@ -26,9 +26,13 @@
 #'           textstat_dist_old(presDfm, "1985-Reagan", n = 5, margin = "documents"))
 #' 
 #' 
-#' textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
-#' textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
+#' textstat_dist_old(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
+#' textstat_dist_old(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
+
+#' textstat_dist_old(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
 #' textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
+#' 
+#' textstat_dist(presDfm, "soviet", method = "euclidean", margin = "features")
 #' 
 textstat_dist_old <- function(x, selection = character(0), n = NULL, 
                           margin = c("documents", "features"),
@@ -72,7 +76,7 @@ textstat_dist_old <- function(x, selection = character(0), n = NULL,
     # method <- tolower(method)
     # vecMethod <- tolower(vecMethod)
     # vecMethod_simil <- tolower(vecMethod_simil)
-    
+
     if (method %in% vecMethod) {
         result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
     } else if (method == "minkowski"){
@@ -83,7 +87,7 @@ textstat_dist_old <- function(x, selection = character(0), n = NULL,
     } else {
         stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
     }
-    
+    #print(result)
     # convert NaNs to NA
     # similmatrix[is.nan(similmatrix)] <- NA
     
@@ -106,9 +110,7 @@ textstat_dist_old <- function(x, selection = character(0), n = NULL,
         }
         result <- x
     }
-    
-    return(result)
-    
+    #print(result)
     if (!is.null(n))
         result <- result[1:n,]
     

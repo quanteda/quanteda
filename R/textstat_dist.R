@@ -27,6 +27,13 @@
 #' textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
 #' textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
 #' 
+#' old <- textstat_dist_old(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
+#' new <- textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
+#' 
+#' identical(
+#' old, new
+#' )
+#' 
 textstat_dist <- function(x, selection, n, 
                           margin = c("documents", "features"),
                           method = "euclidean",
@@ -42,50 +49,50 @@ textstat_dist <- function(x, selection, n,
             selection <- intersect(selection, featnames(x))
             if (!length(selection))
                 stop("no such features exist.")
-            y <- x[,selection]
+            y <- x[,selection, drop = FALSE]
         } else {
             selection <- intersect(selection, docnames(x))
             if (!length(selection))
                 stop("no such documents exist.")
-            y <- x[selection,]
+            y <- x[selection,, drop = FALSE]
         }
     } else {
-        # if (margin == "features") {
-        #     selection <- featnames(x)
-        # } else {
-        #     selection <- docnames(x)
-        # }
         y <- NULL
     }
-    
+    if (margin == "features") {
+        m <- 2
+    } else {
+        m <- 1
+    }
     methods1 <- c("euclidean", "hamming", "Chisquared", "Chisquared2", "kullback", "manhattan", "maximum", "canberra")
     methods2 <- c("jaccard", "binary", "eJaccard", "simple matching")
     
     if (method %in% methods1) {
-        temp <- get(paste(method, "Sparse", sep = ""))(x, y, margin = ifelse(margin == "documents", 1, 2))
-    } else if (method == "minkowski"){
-        temp <- get(paste(method, "Sparse", sep = ""))(x, y, margin = ifelse(margin == "documents", 1, 2), p)
+        temp <- get(paste0(method, "_sparse"))(x, y, margin = m)
+    } else if (method == "minkowski") {
+        temp <- get(paste0(method, "_sparse"))(x, y, margin = m, p = p)
     } else if (method %in% methods2) {
         if (method == "binary") method = "jaccard"
-        temp <- get(paste(method, "Sparse", sep = ""))(x, y, margin = ifelse(margin == "documents", 1, 2))
+        temp <- get(paste0(method, "_sparse"))(x, y, margin = m)
     } else {
         stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
     }
-    
     if (!missing(n)) {
         temp <- temp[order(rowSums(temp), decreasing = TRUE),,drop = FALSE]
-        if (n < nrow(temp)) {
-            temp <- temp[seq_len(n),,drop = FALSE]
-        }
+        n <- min(n, nrow(nrow(temp)))
+        temp <- temp[seq_len(n),,drop = FALSE]
     }
-    
-    temp2 <- sparseMatrix(i = rep(seq_len(nrow(temp)), each = ncol(temp)), 
-                          j = rep(seq_len(nrow(temp)), times = ncol(temp)), 
-                          x = as.vector(temp),
-                          dims = c(nrow(temp), nrow(temp)), 
-                          dimnames = list(rownames(temp), rownames(temp)))
-    
-    return(temp2)
+    #print(temp)
+    if (missing(selection)) {
+        temp2 <- as(temp, "sparseMatrix") 
+    } else {
+        names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
+        temp <- temp[names,,drop = FALSE] # sort for as.dist()
+        temp2 <- sparseMatrix(i = rep(seq_len(nrow(temp)), times = ncol(temp)),
+                              j = rep(seq_len(ncol(temp)), each = nrow(temp)),
+                              x = as.vector(temp), dims = c(length(names), length(names)),
+                              dimnames = list(names, names))
+    }
     
     # create a new dist object
     result <- stats::as.dist(temp2, diag = diag, upper = upper)
@@ -157,12 +164,12 @@ as.list.dist <- function(x, sorted = TRUE, n = NULL, ...) {
 }
 
 ## used Matrix::crossprod and Matrix::tcrossprod for sparse Matrix handling
-euclideanSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
+euclidean_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     marginSums <- if (margin == 2) colSums else rowSums
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod   
     n <- if (margin == 2) ncol(x) else nrow(x)
-    
+
     if (!is.null(y)) {
         stopifnot(ifelse(margin == 2, nrow(x) == nrow(y), ncol(x) == ncol(y)))
         an <- marginSums(x^2)
@@ -184,7 +191,7 @@ euclideanSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
 
 # Hamming distance
 # formula: hamming = sum(x .!= y)
-hammingSparse <- function(x, y = NULL, margin = 1) {
+hamming_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
@@ -218,7 +225,7 @@ hammingSparse <- function(x, y = NULL, margin = 1) {
 #http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&_Gallagher.pdf
 # https://www.pcord.com/book.htm
 #formula: Chi = sum((x/rowsum(x_i) - y/rowsum(y_i))^2/(colsum(i)/total))
-ChisquaredSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
+Chisquared_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     marginSums <- if (margin == 2) colSums else rowSums
     marginNames <- if (margin == 2) colnames else rownames
@@ -274,7 +281,7 @@ ChisquaredSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
 
 ## This chi-squared method is used for histogram: sum((x-y)^2/((x+y)))/2
 ##http://www.ariel.ac.il/sites/ofirpele/publications/ECCV2010.pdf
-Chisquared2Sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
+Chisquared2_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     marginSums <- if (margin == 2) colSums else rowSums
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod   
@@ -309,7 +316,7 @@ Chisquared2Sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
 # assumption: p(x_i) = 0 implies p(y_i)=0 and in case both p(x_i) and p(y_i) equals to zero, 
 # p(x_i)*log(p(x_i)/p(y_i)) is assumed to be zero as the limit value.
 # formula: sum(p(x)*log(p(x)/p(y)))
-kullbackSparse <- function(x, y = NULL, margin = 1) {
+kullback_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     marginSums <- if (margin == 2) colSums else rowSums
@@ -337,7 +344,7 @@ kullbackSparse <- function(x, y = NULL, margin = 1) {
 }
 
 # Manhattan distance: sum_i |x_i - y_i|
-manhattanSparse <- function(x, y=NULL, margin = 1){
+manhattan_sparse <- function(x, y=NULL, margin = 1){
     marginNames <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
         colNm <- marginNames(y)
@@ -351,7 +358,7 @@ manhattanSparse <- function(x, y=NULL, margin = 1){
 }
 
 # Maximum/Supremum distance: max_i |x_i - y_i|
-maximumSparse <- function(x, y=NULL, margin = 1){
+maximum_sparse <- function(x, y=NULL, margin = 1){
     marginNames <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
         colNm <- marginNames(y)
@@ -366,7 +373,7 @@ maximumSparse <- function(x, y=NULL, margin = 1){
 
 # Canberra distance: sum_i |x_i - y_i| / |x_i + y_i|
 # Weighted by num_nonzeros_elementsum/num_element
-canberraSparse <- function(x, y=NULL, margin = 1){
+canberra_sparse <- function(x, y=NULL, margin = 1){
     marginNames <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
         colNm <- marginNames(y)
@@ -380,7 +387,7 @@ canberraSparse <- function(x, y=NULL, margin = 1){
 }
 
 # Minkowski distance: (sum_i (x_i - y_i)^p)^(1/p)
-minkowskiSparse <- function(x, y=NULL, margin = 1, p = 2){
+minkowski_sparse <- function(x, y=NULL, margin = 1, p = 2){
     marginNames <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
         colNm <- marginNames(y)
