@@ -27,92 +27,63 @@
 #' textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
 #' textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
 #' 
-textstat_dist <- function(x, selection = character(0), n = NULL, 
-                         margin = c("documents", "features"),
-                         method = "euclidean",
-                         upper = TRUE, diag = FALSE, p = 2) {
-
+textstat_dist <- function(x, selection, n, 
+                          margin = c("documents", "features"),
+                          method = "euclidean",
+                          upper = TRUE, diag = FALSE, p = 2) {
+    
     if (!is.dfm(x))
         stop("x must be a dfm object")
-
-    # value <- match.arg(value)
-              
+    
     margin <- match.arg(margin)
-    if (margin == "features") {
-        items <- featnames(x)
-        xsize <- dim(x)[2]
+    
+    if (!missing(selection)) {
+        if (margin == "features") {
+            selection <- intersect(selection, featnames(x))
+            if (!length(selection))
+                stop("no such features exist.")
+            y <- x[,selection]
+        } else {
+            selection <- intersect(selection, docnames(x))
+            if (!length(selection))
+                stop("no such documents exist.")
+            y <- x[selection,]
+        }
     } else {
-        items <- docnames(x)
-        xsize <- dim(x)[1]
+        if (margin == "features") {
+            selection <- featnames(x)
+        } else {
+            selection <- docnames(x)
+        }
+        y <- x
     }
     
-    if (is.null(n) || n >= xsize)
-        n <- xsize # choose all features/docs if n is NULL
+    methods1 <- c("euclidean", "hamming", "Chisquared", "Chisquared2", "kullback", "manhattan", "maximum", "canberra")
+    methods2 <- c("jaccard", "binary", "eJaccard", "simple matching")
     
-    if (length(selection) != 0L) {
-        # retain only existing features or documents
-        selectIndex <- which(items %in% selection)
-        if (length(selectIndex)==0)
-            stop("no such documents or feature labels exist.")
-        
-        if (margin=="features") {
-            xSelect <- x[, selectIndex, drop=FALSE]
-        } else {
-            xSelect <- x[selectIndex, , drop=FALSE]
-        }
-    } else xSelect <- NULL
-    
-    vecMethod <- c("euclidean", "hamming", "Chisquared", "Chisquared2", "kullback", "manhattan", "maximum", "canberra")
-    vecMethod_simil <- c("jaccard", "binary", "eJaccard", "simple matching")
-    
-    # # make all lower case
-    # method <- tolower(method)
-    # vecMethod <- tolower(vecMethod)
-    # vecMethod_simil <- tolower(vecMethod_simil)
-    
-    if (method %in% vecMethod) {
-        result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
+    if (method %in% methods1) {
+        temp <- get(paste(method, "Sparse", sep = ""))(x, y, margin = ifelse(margin == "documents", 1, 2))
     } else if (method == "minkowski"){
-        result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2), p)
-    } else if (method %in% vecMethod_simil) {
+        temp <- get(paste(method, "Sparse", sep = ""))(x, y, margin = ifelse(margin == "documents", 1, 2), p)
+    } else if (method %in% methods2) {
         if (method == "binary") method = "jaccard"
-        result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
+        temp <- get(paste(method, "Sparse", sep = ""))(x, y, margin = ifelse(margin == "documents", 1, 2))
     } else {
         stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
     }
     
-    # convert NaNs to NA
-    # similmatrix[is.nan(similmatrix)] <- NA
-    
-    # create a full square matrix if result is calculated only for selected features
-    if (length(selection) != 0L) {
-        # adjust the order of the rows to put the selected features as the top rows
-        rname <- rownames(result)
-        cname <- colnames(result)
-        rname <- c(cname, rname[!rname %in% cname])
-        result <- result[rname,]
-        
-        # create a full square matrix 
-        nn <- if(length(selection) == 1L) length(result) else nrow(result)
-        rname <- if(length(selection) == 1L) names(result) else rownames(result)
-        x <- Matrix::Matrix(data = 0,nrow = nn,ncol = nn, dimnames = list(rname, rname))
-        if (length(selection) == 1L) {
-            x[, 1] <- result
-        } else {
-            x[, 1:ncol(result)] <- result
+    if (!missing(n)) {
+        temp <- temp[order(rowSums(temp), decreasing = TRUE),,drop = FALSE]
+        if (n < nrow(temp)) {
+            temp <- temp[seq_len(n),]
         }
-        result <- x
     }
     
-    if (!is.null(n))
-        result <- result[1:n,]
-    
     # create a new dist object
-    distM <- stats::as.dist(result, diag = diag, upper = upper)
-    attr(distM, "method") <- method
-    attr(distM, "call") <- match.call()
-    # This will call Stats::print.dist() and Stats::as.matrix.dist()
-    distM
+    result <- stats::as.dist(temp, diag = diag, upper = upper)
+    attr(result, "method") <- method
+    attr(result, "call") <- match.call()
+    return(result)
 }
 
 # convert the dist class object to the sorted list used in tm::findAssocs()
@@ -182,8 +153,8 @@ euclideanSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     marginSums <- if (margin == 2) colSums else rowSums
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod   
-     n <- if (margin == 2) ncol(x) else nrow(x)
-
+    n <- if (margin == 2) ncol(x) else nrow(x)
+    
     if (!is.null(y)) {
         stopifnot(ifelse(margin == 2, nrow(x) == nrow(y), ncol(x) == ncol(y)))
         an <- marginSums(x^2)
@@ -251,7 +222,7 @@ ChisquaredSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (margin == 1 ) {
         # convert into profiles
         x <- x/marginSums(x)
-    
+        
         # weighted by the average profiles
         x <- x %*% diag(1/aveProfile)
     } else {
