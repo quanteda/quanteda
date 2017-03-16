@@ -195,8 +195,8 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
     if (simplify)
         warning("simplify no longer available")
     
-    if (length(addedArgs <- list(...)))
-        warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), names(addedArgs), " not used.", sep = "")
+    if (length(added_args <- list(...)))
+        warning("Argument", ifelse(length(added_args) > 1, "s ", " "), names(added_args), " not used.", sep = "")
     
     if (!is.integer(ngrams)) ngrams <- as.integer(ngrams)
     
@@ -207,12 +207,12 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
         x <- stringi::stri_replace_all_fixed(x, c("#", "@"), c("_ht_", "_as_"), vectorize_all = FALSE)
     }
     
-    startTimeTok <- proc.time()
+    time_start <- proc.time()
     
     # Split x into smaller blocks to reducre peak memory consumption
     blocks <- split(x, ceiling(seq_along(x) / 10000))
     result_blocks <- list()
-    for (i in 1:length(blocks)) {
+    for (i in seq_along(blocks)) {
         
         if (verbose) catm("...tokenizing", i, "of" , length(blocks), "blocks\n")
         
@@ -262,7 +262,7 @@ tokens.character <- function(x, what = c("word", "sentence", "character", "faste
         result <- tokens_ngrams(result, n = ngrams, skip = skip, concatenator = concatenator)
     }
     if (verbose){
-        catm("...total elapsed: ", (proc.time() - startTimeTok)[3], "seconds.\n")
+        catm("...total elapsed: ", (proc.time() - time_start)[3], "seconds.\n")
         catm("Finished tokenizing and cleaning", format(length(result), big.mark=","), "texts.\n")
     }
     
@@ -395,7 +395,7 @@ tokens_hash <- function(x, types_reserved, ...) {
     
     # Restore and add additional attributes
     attributes(tokens) <- attributes(x)
-    attr(tokens, "types") <- as.character(types) # drop fmatch's attributes
+    attr(tokens, "types") <- stringi::stri_trans_nfc(types) # unicode normalization
     class(tokens) <- c("tokens", class(x))
     return(tokens)
 }
