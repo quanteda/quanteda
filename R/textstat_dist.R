@@ -64,6 +64,7 @@ textstat_dist <- function(x, selection, n,
     } else {
         m <- 1
     }
+    
     methods1 <- c("euclidean", "hamming", "Chisquared", "Chisquared2", "kullback", "manhattan", "maximum", "canberra")
     methods2 <- c("jaccard", "binary", "eJaccard", "simple matching")
     
@@ -77,12 +78,7 @@ textstat_dist <- function(x, selection, n,
     } else {
         stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
     }
-    if (!missing(n)) {
-        temp <- temp[order(rowSums(temp), decreasing = TRUE),,drop = FALSE]
-        n <- min(n, nrow(nrow(temp)))
-        temp <- temp[seq_len(n),,drop = FALSE]
-    }
-    #print(temp)
+    
     if (missing(selection)) {
         temp2 <- as(temp, "sparseMatrix") 
     } else {
@@ -92,6 +88,11 @@ textstat_dist <- function(x, selection, n,
                               j = rep(seq_len(ncol(temp)), each = nrow(temp)),
                               x = as.vector(temp), dims = c(length(names), length(names)),
                               dimnames = list(names, names))
+    }
+    
+    if (!missing(n)) {
+        n <- min(n, nrow(nrow(temp2)))
+        temp2 <- temp2[seq_len(n), seq_len(n), drop = FALSE]
     }
     
     # create a new dist object

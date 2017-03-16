@@ -26,13 +26,6 @@
 #'           textstat_dist_old(presDfm, "1985-Reagan", n = 5, margin = "documents"))
 #' 
 #' 
-#' textstat_dist_old(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
-#' textstat_dist_old(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
-
-#' textstat_dist_old(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
-#' textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
-#' 
-#' textstat_dist(presDfm, "soviet", method = "euclidean", margin = "features")
 #' 
 textstat_dist_old <- function(x, selection = character(0), n = NULL, 
                           margin = c("documents", "features"),
@@ -78,12 +71,12 @@ textstat_dist_old <- function(x, selection = character(0), n = NULL,
     # vecMethod_simil <- tolower(vecMethod_simil)
 
     if (method %in% vecMethod) {
-        result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
+        result <- get(paste(method,"_sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
     } else if (method == "minkowski"){
-        result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2), p)
+        result <- get(paste(method,"_sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2), p)
     } else if (method %in% vecMethod_simil) {
         if (method == "binary") method = "jaccard"
-        result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
+        result <- get(paste(method,"_sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
     } else {
         stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
     }

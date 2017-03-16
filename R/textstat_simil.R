@@ -90,7 +90,7 @@ textstat_simil <- function(x, selection = character(0), n = NULL,
     vecMethod <- c("cosine", "correlation", "jaccard", "eJaccard", "dice", "eDice", "simple matching", "hamann", "faith")
     if (method %in% vecMethod) {
         if (method == "simple matching") method <- "smc"
-        result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
+        result <- get(paste0(method,"_sparse"))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
     } else {
         stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
         #result <- as.matrix(proxy::dist(as.matrix(x), as.matrix(xSelect), method = method,
@@ -143,7 +143,7 @@ textstat_simil <- function(x, selection = character(0), n = NULL,
 ##norm1 <- function(x,s) { drop(Matrix::crossprod(abs(x),s)) }
 
 #cosine similarity: xy / sqrt(xx * yy)
-cosineSparse <- function(x, y = NULL, margin = 1) {
+cosine_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     if (margin == 1) x <- t(x)
     S <- rep(1, nrow(x))			
@@ -161,7 +161,7 @@ cosineSparse <- function(x, y = NULL, margin = 1) {
 }
 
 # Pearson correlation
-correlationSparse <- function(x, y = NULL, margin = 1) {
+correlation_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     tcpFun <- if (margin == 2) Matrix::tcrossprod else Matrix::crossprod
@@ -187,7 +187,7 @@ correlationSparse <- function(x, y = NULL, margin = 1) {
 
 # Jaccard similarity (binary), See http://stackoverflow.com/questions/36220585/efficient-jaccard-similarity-documenttermmatrix
 # formula: J = |AB|/(|A| + |B| - |AB|)
-jaccardSparse <- function(x, y = NULL, margin = 1) {
+jaccard_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
@@ -232,7 +232,7 @@ jaccardSparse <- function(x, y = NULL, margin = 1) {
 
 # eJaccard similarity (real-valued data)
 # formula: eJ = |AB|/(|A|^2 + |B|^2 - |AB|)
-eJaccardSparse <- function(x, y = NULL, margin = 1) {
+eJaccard_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
 
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
@@ -264,7 +264,7 @@ eJaccardSparse <- function(x, y = NULL, margin = 1) {
 
 # Dice similarity coefficient, binary
 # formula: dice = 2|AB|/(|A| + |B|)
-diceSparse <- function(x, y = NULL, margin = 1) {
+dice_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
@@ -299,7 +299,7 @@ diceSparse <- function(x, y = NULL, margin = 1) {
 
 # eDice similarity coefficient, extend from binary Dice to real-valued data 
 # formula: eDice = 2|AB|/(|A|^2 + |B|^2)
-eDiceSparse <- function(x, y = NULL, margin = 1) {
+eDice_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
@@ -339,7 +339,7 @@ eDiceSparse <- function(x, y = NULL, margin = 1) {
 
 # simple matching coefficient(SMC) 
 # formula: SMC = (M00+M11)/(M00+M11+M01+M10)
-smcSparse <- function(x, y = NULL, margin = 1) {
+smc_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
@@ -374,7 +374,7 @@ smcSparse <- function(x, y = NULL, margin = 1) {
 # in the two items (present in one and absent from the other).
 # formula: Hamman = ((a+d)-(b+c))/n
 # "Hamman" in proxy::dist
-hamannSparse <- function(x, y = NULL, margin = 1) {
+hamann_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
@@ -407,7 +407,7 @@ hamannSparse <- function(x, y = NULL, margin = 1) {
 # negative match but only gave the half credits while giving
 # the full credits for the positive matches.
 # formula: Hamman = a+0.5d/n
-faithSparse <- function(x, y = NULL, margin = 1) {
+faith_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix

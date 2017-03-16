@@ -92,6 +92,13 @@ textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "document
 textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
 textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
 
+old <- textstat_dist_old(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
+new <- textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
+
+identical(
+old, new
+)
+
 # create a dfm from inaugural addresses from Reagan onwards
 presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), 
                remove = stopwords("english"), stem = TRUE)
@@ -106,9 +113,6 @@ identical(textstat_dist(presDfm, "1985-Reagan", n = 5, margin = "documents"),
           textstat_dist_old(presDfm, "1985-Reagan", n = 5, margin = "documents"))
 
 
-textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
-textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
-textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
 
 ## similarities
 
