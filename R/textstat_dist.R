@@ -27,12 +27,6 @@
 #' textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
 #' textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
 #' 
-#' old <- textstat_dist_old(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
-#' new <- textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
-#' 
-#' identical(
-#' old, new
-#' )
 #' 
 textstat_dist <- function(x, selection, n, 
                           margin = c("documents", "features"),

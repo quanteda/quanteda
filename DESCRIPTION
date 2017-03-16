@@ -116,7 +116,6 @@ Collate:
     'textstat-lexdiv.R'
     'textstat-readability.R'
     'textstat_dist.R'
-    'textstat_dist_old.R'
     'textstat_keyness.R'
     'textstat_simil.R'
     'toLower.R'
