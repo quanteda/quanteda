@@ -88,7 +88,7 @@ textstat_dist <- function(x, selection, n,
     
     # if (!missing(n)) {
     #     n <- min(n, nrow(nrow(temp2)))
-    #     temp2 <- temp2[seq_len(n), seq_len(n), drop = FALSE]
+    #     temp2 <- temp2[seq_len(n),, drop = FALSE]
     # }
     # 
     # # create a new dist object
