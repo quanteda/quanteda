@@ -92,7 +92,9 @@ textstat_dist <- function(x, selection, n,
     # }
     # 
     # # create a new dist object
+    # suppressWarnings(
     # result <- stats::as.dist(temp2, diag = diag, upper = upper)
+    # )
     # attr(result, "method") <- method
     # attr(result, "call") <- match.call()
     # return(result)
