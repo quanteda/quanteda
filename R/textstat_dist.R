@@ -28,7 +28,7 @@
 #' textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
 #' as.dist(textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard"))
 #' 
-textstat_dist <- function(x, selection, n, 
+textstat_dist <- function(x, selection = NULL, n = NULL, 
                           margin = c("documents", "features"),
                           method = "euclidean",
                           upper = TRUE, diag = FALSE, p = 2) {
@@ -38,16 +38,18 @@ textstat_dist <- function(x, selection, n,
     
     margin <- match.arg(margin)
     
-    if (!missing(selection)) {
+    if (!is.null(selection)) {
+        if (!is.character(selection)) 
+            stop("selection is not character or character vector of document names or feature labels .")
         if (margin == "features") {
             selection <- intersect(selection, featnames(x))
             if (!length(selection))
-                stop("no such features exist.")
+                stop("The features specified by 'selection' do not exist.")
             y <- x[, selection, drop = FALSE]
         } else {
             selection <- intersect(selection, docnames(x))
             if (!length(selection))
-                stop("no such documents exist.")
+                stop("The documents specified by 'selection' do not exist.")
             y <- x[selection, , drop = FALSE]
         }
     } else {
@@ -70,7 +72,7 @@ textstat_dist <- function(x, selection, n,
         stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
     }
     
-    if (missing(selection)) {
+    if (is.null(selection)) {
         temp2 <- as(temp, "sparseMatrix") 
     } else {
         names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
@@ -82,7 +84,7 @@ textstat_dist <- function(x, selection, n,
     }
     
     
-    if (!missing(n)) {
+    if (!is.null(n)) {
         n <- min(n, nrow(nrow(temp2)))
         temp2 <- temp2[seq_len(n), , drop = FALSE]
     }
