@@ -59,78 +59,62 @@ textstat_simil <- function(x, selection = character(0), n = NULL,
                           upper  = FALSE, diag = FALSE) {
     if (!is.dfm(x))
         stop("x must be a dfm object")
-
-    # value <- match.arg(value)
     
     margin <- match.arg(margin)
-    if (margin == "features") {
-        items <- featnames(x)
-        xsize <- dim(x)[2]
+   
+    if (!is.null(selection)) {
+        if (!is.character(selection)) 
+            stop("'selection' should be character or character vector of document names or feature labels.")
+        if (margin == "features") {
+            selection <- intersect(selection, featnames(x))
+            if (!length(selection))
+                stop("The features specified by 'selection' do not exist.")
+            y <- x[, selection, drop = FALSE]
+        } else {
+            selection <- intersect(selection, docnames(x))
+            if (!length(selection))
+                stop("The documents specified by 'selection' do not exist.")
+            y <- x[selection, , drop = FALSE]
+        }
     } else {
-        items <- docnames(x)
-        xsize <- dim(x)[1]
+        y <- NULL
     }
     
-    if (is.null(n) || n >= xsize)
-        n <- xsize # choose all features/docs if n is NULL
-    
-    if (length(selection) != 0L) {
-        # retain only existing features or documents
-        selectIndex <- which(items %in% selection)
-        if (length(selectIndex)==0)
-            stop("no such documents or feature labels exist.")
-        
-        if (margin=="features") {
-            xSelect <- x[, selectIndex, drop=FALSE]
-        } else {
-            xSelect <- x[selectIndex, , drop=FALSE]
-        }
-    } else xSelect <- NULL
-    
     vecMethod <- c("cosine", "correlation", "jaccard", "eJaccard", "dice", "eDice", "simple matching", "hamann", "faith")
+    
     if (method %in% vecMethod) {
         if (method == "simple matching") method <- "smc"
-        result <- get(paste0(method,"_sparse"))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
+        temp <- get(paste0(method, "_sparse"))(x, y, margin = ifelse(margin == "documents", 1, 2))
     } else {
         stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
-        #result <- as.matrix(proxy::dist(as.matrix(x), as.matrix(xSelect), method = method,
-        #                                by_rows = ifelse(margin=="features", FALSE, TRUE)), diag = 1)
     }
     
     # convert NaNs to NA
     # similmatrix[is.nan(similmatrix)] <- NA
     
-    # create a full square matrix if result is calculated only for selected features
-    if (length(selection) != 0L) {
-        # adjust the order of the rows to put the selected features as the top rows
-        rname <- rownames(result)
-        cname <- colnames(result)
-        rname <- c(cname, rname[!rname %in% cname])
-        result <- result[rname,]
-        
-        # create a full square matrix 
-        nn <- if(length(selection) == 1L) length(result) else nrow(result)
-        rname <- if(length(selection) == 1L) names(result) else rownames(result)
-        x <- Matrix::Matrix(data = 0,nrow = nn,ncol = nn, dimnames = list(rname, rname))
-        if(length(selection) == 1L){
-            x[, 1] <- result
-        } else {
-            x[, 1:ncol(result)] <- result
-        }
-        result <- x
+    if (is.null(selection)) {
+        temp2 <- as(temp, "sparseMatrix") 
+    } else {
+        names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
+        temp <- temp[names, , drop = FALSE] # sort for as.dist()
+        temp2 <- sparseMatrix(i = rep(seq_len(nrow(temp)), times = ncol(temp)),
+                              j = rep(seq_len(ncol(temp)), each = nrow(temp)),
+                              x = as.vector(temp), dims = c(length(names), length(names)),
+                              dimnames = list(names, names))
     }
     
-    # truncate to n if n is not NULL
-    if (!is.null(n))
-        result <- result[1:n,]
-        
+    if (!is.null(n)) {
+        n <- min(n, nrow(nrow(temp2)))
+        temp2 <- temp2[seq_len(n), , drop = FALSE]
+    }
+    
     # create a new dist object
-    distM <- stats::as.dist(result, diag = diag, upper = upper)
-    class(distM) <- c("simil", class(distM))
-    attr(distM, "method") <- method
-    attr(distM, "call") <- match.call()
+    result <- stats::as.dist(temp2, diag = diag, upper = upper)
+    class(result) <- c("simil", class(result))
+    attr(result, "method") <- method
+    attr(result, "call") <- match.call()
     # This will call Stats::print.dist() and Stats::as.matrix.dist()
-    distM
+    result
 }
 
 
