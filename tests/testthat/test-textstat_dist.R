@@ -249,3 +249,16 @@ test_that("textstat_dist stops as expected for methods not supported",{
     expect_error(textstat_dist(presDfm, method = "Yule"), 
                  "The metric is not currently supported by quanteda, please use other packages such as proxy::dist\\(\\)\\/simil\\(\\).")
 })
+
+test_that("textstat_dist stops as expected for wrong selections",{
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    expect_error(textstat_dist(presDfm, 5), 
+                 "'selection' should be character or character vector of document names or feature labels.")
+    
+    expect_error(textstat_dist(presDfm, margin = "documents", "2009-Obamaa"), 
+                 "The documents specified by 'selection' do not exist.")
+    expect_error(textstat_dist(presDfm, margin = "features", "Obamaa"), 
+                 "The features specified by 'selection' do not exist.")
+    
+})
