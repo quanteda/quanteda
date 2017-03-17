@@ -84,16 +84,18 @@ textstat_dist <- function(x, selection, n,
                               dimnames = list(names, names))
     }
     
-    if (!missing(n)) {
-        n <- min(n, nrow(nrow(temp2)))
-        temp2 <- temp2[seq_len(n), seq_len(n), drop = FALSE]
-    }
+    return(temp2)
     
-    # create a new dist object
-    result <- stats::as.dist(temp2, diag = diag, upper = upper)
-    attr(result, "method") <- method
-    attr(result, "call") <- match.call()
-    return(result)
+    # if (!missing(n)) {
+    #     n <- min(n, nrow(nrow(temp2)))
+    #     temp2 <- temp2[seq_len(n), seq_len(n), drop = FALSE]
+    # }
+    # 
+    # # create a new dist object
+    # result <- stats::as.dist(temp2, diag = diag, upper = upper)
+    # attr(result, "method") <- method
+    # attr(result, "call") <- match.call()
+    # return(result)
 }
 
 # convert the dist class object to the sorted list used in tm::findAssocs()
