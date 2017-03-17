@@ -116,7 +116,6 @@ Collate:
     'textstat-deprecated.R'
     'textstat-lexdiv.R'
     'textstat-readability.R'
-    'textstat_collocations.R'
     'textstat_dist.R'
     'textstat_keyness.R'
     'textstat_simil.R'
