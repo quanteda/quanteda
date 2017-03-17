@@ -40,7 +40,7 @@ textstat_dist <- function(x, selection = NULL, n = NULL,
     
     if (!is.null(selection)) {
         if (!is.character(selection)) 
-            stop("selection is not character or character vector of document names or feature labels .")
+            stop("'selection' should be character or character vector of document names or feature labels.")
         if (margin == "features") {
             selection <- intersect(selection, featnames(x))
             if (!length(selection))
@@ -88,9 +88,9 @@ textstat_dist <- function(x, selection = NULL, n = NULL,
         n <- min(n, nrow(nrow(temp2)))
         temp2 <- temp2[seq_len(n), , drop = FALSE]
     }
-
+    
     # create a new dist object
-    suppressWarnings(result <- stats::as.dist(temp2, diag = diag, upper = upper))
+    result <- stats::as.dist(temp2, diag = diag, upper = upper)
     attr(result, "method") <- method
     attr(result, "call") <- match.call()
     return(result)
@@ -164,7 +164,7 @@ euclidean_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     marginSums <- if (margin == 2) colSums else rowSums
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod   
     n <- if (margin == 2) ncol(x) else nrow(x)
-
+    
     if (!is.null(y)) {
         stopifnot(ifelse(margin == 2, nrow(x) == nrow(y), ncol(x) == ncol(y)))
         an <- marginSums(x^2)
