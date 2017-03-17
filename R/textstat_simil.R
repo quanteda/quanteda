@@ -53,7 +53,7 @@
 #' textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", 
 #'                margin = "features", 20)
 #' 
-textstat_simil <- function(x, selection = character(0), n = NULL,
+textstat_simil <- function(x, selection = NULL, n = NULL,
                           margin = c("documents", "features"),
                           method = "correlation", 
                           upper  = FALSE, diag = FALSE) {

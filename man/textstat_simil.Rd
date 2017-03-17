@@ -9,9 +9,8 @@
 textstat_dist(x, selection = NULL, n = NULL, margin = c("documents",
   "features"), method = "euclidean", upper = TRUE, diag = FALSE, p = 2)
 
-textstat_simil(x, selection = character(0), n = NULL,
-  margin = c("documents", "features"), method = "correlation",
-  upper = FALSE, diag = FALSE)
+textstat_simil(x, selection = NULL, n = NULL, margin = c("documents",
+  "features"), method = "correlation", upper = FALSE, diag = FALSE)
 
 \method{as.matrix}{simil}(x, Diag = 1L, ...)
 }
