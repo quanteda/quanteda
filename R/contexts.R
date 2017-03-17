@@ -4,8 +4,11 @@
 #' @examples 
 #' 
 #' toks <- tokens(data_char_inaugural)
-#' coxs <- contexts(toks, "economy", window = 5, case_insensitive = FALSE, valuetype = "fixed")
-#'
+#' coxs <- contexts(toks, "economy", window = 5, case_insensitive = FALSE,
+#'                  valuetype = "fixed")
+#' coxs <- contexts(toks, "economy", window = 5, case_insensitive = FALSE, 
+#'                  valuetype = "fixed", remove_keywords = TRUE)
+#' 
 #' # compare with fcm 
 #' fcm <- fcm(toks, 'window', window = 5, tri = FALSE)
 #' v1 <- colSums(fcm['economy',])
@@ -13,14 +16,16 @@
 #' merge(v1, v2, by='row.names')
 #' 
 #' @export 
-contexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+contexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), 
+                     case_insensitive = TRUE, remove_keywords = FALSE, ...) {
     UseMethod("contexts")
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export 
-contexts.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+contexts.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), 
+                            case_insensitive = TRUE, remove_keywords = FALSE, ...) {
     
     if (!is.tokens(x))
         stop("x must be a tokens object")
@@ -36,7 +41,7 @@ contexts.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "rege
     
     types <- types(x)
     keywords_id <- regex2id(keywords, types, valuetype, case_insensitive, FALSE)
-    result <- qatd_cpp_tokens_contexts(x, types, keywords_id, window)
+    result <- qatd_cpp_tokens_contexts(x, types, keywords_id, window, remove_keywords)
     attributes(result, FALSE) <- attr_org
     
     return(result)

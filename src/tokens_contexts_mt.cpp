@@ -20,7 +20,8 @@ using namespace quanteda;
 List qatd_cpp_tokens_contexts(const List &texts_,
                               const CharacterVector types_,
                               const List &words_,
-                              unsigned int window){
+                              unsigned int window,
+                              bool remove){
     
     Texts input = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as< Types >(types_);
@@ -62,8 +63,10 @@ List qatd_cpp_tokens_contexts(const List &texts_,
         int last = (int)tokens.size() - 1;
         
         // fill target with padding
-        for (size_t i = 0; i < targets.size(); i++) {
-            std::fill(tokens.begin() + targets[i].first, tokens.begin() + targets[i].second + 1, 0);
+        if (remove) {
+            for (size_t i = 0; i < targets.size(); i++) {
+                std::fill(tokens.begin() + targets[i].first, tokens.begin() + targets[i].second + 1, 0);
+            }
         }
         // extract contexts joining overlapped ones
         int k = 1;
