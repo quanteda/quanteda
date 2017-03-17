@@ -158,8 +158,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_tokens_contexts
-List qatd_cpp_tokens_contexts(const List& texts_, const CharacterVector types_, const List& words_, unsigned int window, bool remove);
-RcppExport SEXP quanteda_qatd_cpp_tokens_contexts(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP, SEXP windowSEXP, SEXP removeSEXP) {
+List qatd_cpp_tokens_contexts(const List& texts_, const CharacterVector types_, const List& words_, unsigned int window, bool remove, bool overlap);
+RcppExport SEXP quanteda_qatd_cpp_tokens_contexts(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP, SEXP windowSEXP, SEXP removeSEXP, SEXP overlapSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -168,7 +168,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const List& >::type words_(words_SEXP);
     Rcpp::traits::input_parameter< unsigned int >::type window(windowSEXP);
     Rcpp::traits::input_parameter< bool >::type remove(removeSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_contexts(texts_, types_, words_, window, remove));
+    Rcpp::traits::input_parameter< bool >::type overlap(overlapSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_contexts(texts_, types_, words_, window, remove, overlap));
     return rcpp_result_gen;
 END_RCPP
 }

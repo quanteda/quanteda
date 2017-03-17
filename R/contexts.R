@@ -8,6 +8,8 @@
 #'                  valuetype = "fixed")
 #' coxs <- contexts(toks, "economy", window = 5, case_insensitive = FALSE, 
 #'                  valuetype = "fixed", remove_keywords = TRUE)
+#' length(contexts(toks, "the", window = 5, overlap = TRUE))
+#' length(contexts(toks, "the", window = 5, overlap = FALSE))
 #' 
 #' # compare with fcm 
 #' fcm <- fcm(toks, 'window', window = 5, tri = FALSE)
@@ -17,7 +19,7 @@
 #' 
 #' @export 
 contexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), 
-                     case_insensitive = TRUE, remove_keywords = FALSE, ...) {
+                     case_insensitive = TRUE, remove_keywords = FALSE, overlap = FALSE, ...) {
     UseMethod("contexts")
 }
 
@@ -25,7 +27,7 @@ contexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fi
 #' @noRd
 #' @export 
 contexts.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), 
-                            case_insensitive = TRUE, remove_keywords = FALSE, ...) {
+                            case_insensitive = TRUE, remove_keywords = FALSE, overlap = FALSE, ...) {
     
     if (!is.tokens(x))
         stop("x must be a tokens object")
@@ -41,7 +43,7 @@ contexts.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "rege
     
     types <- types(x)
     keywords_id <- regex2id(keywords, types, valuetype, case_insensitive, FALSE)
-    result <- qatd_cpp_tokens_contexts(x, types, keywords_id, window, remove_keywords)
+    result <- qatd_cpp_tokens_contexts(x, types, keywords_id, window, remove_keywords, overlap)
     attributes(result, FALSE) <- attr_org
     
     return(result)

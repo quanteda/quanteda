@@ -21,7 +21,8 @@ List qatd_cpp_tokens_contexts(const List &texts_,
                               const CharacterVector types_,
                               const List &words_,
                               unsigned int window,
-                              bool remove){
+                              bool remove,
+                              bool overlap){
     
     Texts input = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as< Types >(types_);
@@ -70,21 +71,29 @@ List qatd_cpp_tokens_contexts(const List &texts_,
         }
         // extract contexts joining overlapped ones
         int k = 1;
-        for (size_t i = 0; i < targets.size(); i++) {
-            for (size_t j = i; j < targets.size(); j++) {
-                if (targets[j].second + window < targets[j + 1].first - window || j + 1 >= targets.size()) {
-                    
-                    int from = targets[i].first - window;
-                    int to = targets[j].second + window;
-                    //Rcout << k << " in " << h << " " << from << ":" << to << "\n";
-                    
-                    Text context(tokens.begin() + std::max(0, from), tokens.begin() + std::min(to, last) + 1);
-                    output.push_back(context);
-                    names_new.push_back(name + ":" + std::to_string(k++));
-                    i = j;
-                    break;
+        if (overlap) {
+            for (size_t i = 0; i < targets.size(); i++) {
+                int from = targets[i].first - window;
+                int to = targets[i].second + window;
+                //Rcout << k << " in " << h << " " << from << ":" << to << "\n";
+                Text context(tokens.begin() + std::max(0, from), tokens.begin() + std::min(to, last) + 1);
+                output.push_back(context);
+                names_new.push_back(name + ":" + std::to_string(k++));
+            }
+        } else {
+            for (size_t i = 0; i < targets.size(); i++) {
+                for (size_t j = i; j < targets.size(); j++) {
+                    if (targets[j].second + window < targets[j + 1].first - window || j + 1 >= targets.size()) {
+                        int from = targets[i].first - window;
+                        int to = targets[j].second + window;
+                        //Rcout << k << " in " << h << " " << from << ":" << to << "\n";
+                        Text context(tokens.begin() + std::max(0, from), tokens.begin() + std::min(to, last) + 1);
+                        output.push_back(context);
+                        names_new.push_back(name + ":" + std::to_string(k++));
+                        i = j;
+                        break;
+                    }
                 }
-                
             }
         }
     }
@@ -100,10 +109,10 @@ List qatd_cpp_tokens_contexts(const List &texts_,
 /***R
 
 toks <- list(text1=1:10, text2=5:15, text3=100:110)
-#toks <- rep(list(rep(1:10, 1), rep(5:15, 1)), 1)
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-#qatd_cpp_tokens_contexts(toks, dict, 2)
-qatd_cpp_tokens_contexts(toks, letters, list(c(3, 4), 7), 1)
+qatd_cpp_tokens_contexts(toks, letters, list(5, 7), 2, TRUE, TRUE)
+#qatd_cpp_tokens_contexts(toks, letters, list(5, 7), 2, TRUE, FALSE)
+#qatd_cpp_tokens_contexts(toks, letters, list(c(3, 4), 7), 1, TRUE, TRUE)
 
 
 */
