@@ -59,7 +59,6 @@ Collate:
     'dictionaries.R'
     'corpus.R'
     'collocations.R'
-    'contexts.R'
     'convert.R'
     'corpus-deprecated.R'
     'corpus-methods-base.R'
