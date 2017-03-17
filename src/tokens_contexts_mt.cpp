@@ -12,7 +12,9 @@ using namespace quanteda;
  * @param texts_ tokens ojbect
  * @param types_ types
  * @param words_ list of target features
- * 
+ * @param window number of words from target features
+ * @param remove if TRUE, remove pad targets
+ * @param overlap if TRUE, split overlapping contexts
  */
 
 
@@ -69,9 +71,10 @@ List qatd_cpp_tokens_contexts(const List &texts_,
                 std::fill(tokens.begin() + targets[i].first, tokens.begin() + targets[i].second + 1, 0);
             }
         }
-        // extract contexts joining overlapped ones
+        
         int k = 1;
         if (overlap) {
+            // extract contexts spliting overlaping
             for (size_t i = 0; i < targets.size(); i++) {
                 int from = targets[i].first - window;
                 int to = targets[i].second + window;
@@ -81,6 +84,7 @@ List qatd_cpp_tokens_contexts(const List &texts_,
                 names_new.push_back(name + ":" + std::to_string(k++));
             }
         } else {
+            // extract contexts joining overlaping
             for (size_t i = 0; i < targets.size(); i++) {
                 for (size_t j = i; j < targets.size(); j++) {
                     if (targets[j].second + window < targets[j + 1].first - window || j + 1 >= targets.size()) {
