@@ -76,7 +76,7 @@ textstat_dist(presDfm, "1985-Reagan", n = 5, margin = "documents")
 textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
 textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
 textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
-
+as.dist(textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard"))
 
 ## similarities
 

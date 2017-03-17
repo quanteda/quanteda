@@ -43,21 +43,18 @@ textstat_dist <- function(x, selection, n,
             selection <- intersect(selection, featnames(x))
             if (!length(selection))
                 stop("no such features exist.")
-            y <- x[,selection, drop = FALSE]
+            y <- x[, selection, drop = FALSE]
         } else {
             selection <- intersect(selection, docnames(x))
             if (!length(selection))
                 stop("no such documents exist.")
-            y <- x[selection,, drop = FALSE]
+            y <- x[selection, , drop = FALSE]
         }
     } else {
         y <- NULL
     }
-    if (margin == "features") {
-        m <- 2
-    } else {
-        m <- 1
-    }
+    
+    m <- ifelse(margin == "documents", 1, 2)
     
     methods1 <- c("euclidean", "hamming", "Chisquared", "Chisquared2", "kullback", "manhattan", "maximum", "canberra")
     methods2 <- c("jaccard", "binary", "eJaccard", "simple matching")
@@ -77,7 +74,7 @@ textstat_dist <- function(x, selection, n,
         temp2 <- as(temp, "sparseMatrix") 
     } else {
         names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
-        temp <- temp[names,,drop = FALSE] # sort for as.dist()
+        temp <- temp[names, , drop = FALSE] # sort for as.dist()
         temp2 <- sparseMatrix(i = rep(seq_len(nrow(temp)), times = ncol(temp)),
                               j = rep(seq_len(ncol(temp)), each = nrow(temp)),
                               x = as.vector(temp), dims = c(length(names), length(names)),
@@ -87,13 +84,11 @@ textstat_dist <- function(x, selection, n,
     
     if (!missing(n)) {
         n <- min(n, nrow(nrow(temp2)))
-        temp2 <- temp2[seq_len(n),, drop = FALSE]
+        temp2 <- temp2[seq_len(n), , drop = FALSE]
     }
 
     # create a new dist object
-    suppressWarnings(
-    result <- stats::as.dist(temp2, diag = diag, upper = upper)
-    )
+    suppressWarnings(result <- stats::as.dist(temp2, diag = diag, upper = upper))
     attr(result, "method") <- method
     attr(result, "call") <- match.call()
     return(result)
