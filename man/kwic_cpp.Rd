@@ -51,8 +51,8 @@ head(kwic(data_char_inaugural, "security", window = 3, valuetype = "fixed"))
 \dontrun{
 toks <- tokens(data_char_inaugural)
 microbenchmark::microbenchmark(
-   kwic(toks, "security", window = 3, valuetype = "fixed"),
-   kwic_cpp(toks, "security", window = 3, valuetype = "fixed"))
+   kwic(toks, "the", window = 3, valuetype = "fixed"),
+   kwic_cpp(toks, "the", window = 3, valuetype = "fixed"))
 }
 kwic(data_corpus_inaugural, "war against")
 kwic(data_corpus_inaugural, "war against", valuetype = "regex")

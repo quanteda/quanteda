@@ -56,6 +56,8 @@ List qatd_cpp_tokens_contexts(const List &texts_,
     output.reserve(len);
     std::vector<string> names_new;
     names_new.reserve(len);
+    std::vector<int> index_org;
+    index_org.reserve(len);
     
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
@@ -82,6 +84,7 @@ List qatd_cpp_tokens_contexts(const List &texts_,
                 Text context(tokens.begin() + std::max(0, from), tokens.begin() + std::min(to, last) + 1);
                 output.push_back(context);
                 names_new.push_back(name + ":" + std::to_string(k++));
+                index_org.push_back((int)h + 1);
             }
         } else {
             // extract contexts joining overlaping
@@ -94,6 +97,7 @@ List qatd_cpp_tokens_contexts(const List &texts_,
                         Text context(tokens.begin() + std::max(0, from), tokens.begin() + std::min(to, last) + 1);
                         output.push_back(context);
                         names_new.push_back(name + ":" + std::to_string(k++));
+                        index_org.push_back((int)h + 1);
                         i = j;
                         break;
                     }
@@ -105,6 +109,7 @@ List qatd_cpp_tokens_contexts(const List &texts_,
     // dev::stop_timer("Dictionary detect", timer);
     List output_ = recompile(output, types);
     output_.attr("names") = encode(names_new);
+    output_.attr("index") = index_org;
     return output_;
 }
 
