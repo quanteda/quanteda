@@ -331,3 +331,15 @@ test_that("test textstat_simil works as expected for 'n' is not NULL", {
     cosProxy <- round(as.matrix(proxy::simil(as.matrix(presDfm), "cosine", by_rows = TRUE, diag = TRUE))[, "1981-Reagan"], 6)
     expect_equal(cosQuanteda, cosProxy[1:5])
 })
+
+# test_that("as.dist on a dist returns a dist", {
+#     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), remove = stopwords("english"),
+#                    stem = TRUE, verbose = FALSE)
+#     similmat <- textstat_simil(presDfm)
+#     expect_equivalent(as.simil(similmat), similmat) 
+#     expect_equivalent(textstat_simil(presDfm, upper = TRUE), 
+#                       as.dist(distmat, upper = TRUE)) 
+#     expect_equivalent(textstat_dist(presDfm, upper = TRUE, diag = TRUE), 
+#                       as.dist(distmat, upper = TRUE, diag = TRUE)) 
+# })
+

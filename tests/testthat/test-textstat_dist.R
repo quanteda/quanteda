@@ -269,10 +269,21 @@ test_that("textstat_dist stops as expected for wrong selections",{
 
 test_that("test textstat_dist works as expected for 'n' is not NULL", {
     skip_if_not_installed("proxy")
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
     cosQuanteda <- round(as.matrix(suppressWarnings(textstat_dist(presDfm, method = "euclidean", n=5, margin = "documents")))[,"1981-Reagan"], 6)
     cosProxy <- round(as.matrix(proxy::dist(as.matrix(presDfm), "euclidean", by_rows = TRUE, diag = TRUE))[, "1981-Reagan"], 6)
     expect_equal(cosQuanteda, cosProxy[1:5])
+})
+
+test_that("as.dist on a dist returns a dist", {
+    presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    distmat <- textstat_dist(presDfm)
+    expect_equivalent(as.dist(distmat), distmat) 
+    expect_equivalent(textstat_dist(presDfm, upper = TRUE), 
+                      as.dist(distmat, upper = TRUE)) 
+    expect_equivalent(textstat_dist(presDfm, upper = TRUE, diag = TRUE), 
+                      as.dist(distmat, upper = TRUE, diag = TRUE)) 
 })
