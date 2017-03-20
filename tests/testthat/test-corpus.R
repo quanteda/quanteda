@@ -186,3 +186,8 @@ test_that("summary method works for corpus", {
     expect_output(summary(data_corpus_irishbudget2010, verbose = TRUE), regexp = "^Corpus consisting of 14 documents\\.")
 })
 
+test_that("corpus works for texts with duplicate filenames", {
+    txt <- c(one = "Text one.", two = "text two", one = "second first text")
+    cor <- corpus(txt)
+    expect_equal(docnames(cor), c("one", "two", "one.1"))
+})
