@@ -72,7 +72,7 @@ presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990),
 (tmp <- textstat_dist(presDfm, margin = "documents"))
 
 # for specific comparisons
-textstat_dist(presDfm, "1985-Reagan", n = 5, margin = "documents")
+textstat_dist(presDfm, "2017-Trump", n = 5, margin = "documents")
 textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
 textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
 textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
@@ -90,7 +90,7 @@ as.list(tmp)[1:2]
 as.matrix(tmp)
 
 # for specific comparisons
-textstat_simil(presDfm, "1985-Reagan", n = 5, margin = "documents")
+textstat_simil(presDfm, "2017-Trump", n = 5, margin = "documents")
 textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
 textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
 textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents", method = "cosine")
