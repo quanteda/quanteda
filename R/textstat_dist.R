@@ -72,28 +72,39 @@ textstat_dist <- function(x, selection = NULL, n = NULL,
         stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
     }
     
-    if (is.null(selection)) {
-        temp2 <- as(temp, "sparseMatrix") 
-    } else {
+    if (!is.null(selection)) {
         names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
         temp <- temp[names, , drop = FALSE] # sort for as.dist()
-        temp2 <- sparseMatrix(i = rep(seq_len(nrow(temp)), times = ncol(temp)),
-                              j = rep(seq_len(ncol(temp)), each = nrow(temp)),
-                              x = as.vector(temp), dims = c(length(names), length(names)),
-                              dimnames = list(names, names))
+        #temp2 <- sparseMatrix(i = rep(seq_len(nrow(temp)), times = ncol(temp)),
+        #                      j = rep(seq_len(ncol(temp)), each = nrow(temp)),
+        #                      x = as.vector(temp), dims = c(length(names), length(names)),
+        #                      dimnames = list(names, names))
     }
     
     
     if (!is.null(n)) {
-        n <- min(n, nrow(nrow(temp2)))
-        temp2 <- temp2[seq_len(n), , drop = FALSE]
+        n <- min(n, nrow(nrow(temp)))
+        temp <- temp[seq_len(n), , drop = FALSE]
     }
     
     # create a new dist object
-    result <- stats::as.dist(temp2, diag = diag, upper = upper)
-    attr(result, "method") <- method
-    attr(result, "call") <- match.call()
-    return(result)
+    if (is.null(selection)) {
+        result <- stats::as.dist(temp, diag = diag, upper = upper)
+        attr(result, "method") <- method
+        attr(result, "call") <- match.call()
+        return(result)
+    } else {
+        result <- temp
+        if(!is.null(rownames(result)))
+            attr(result,"Labels") <- rownames(result)
+        else if(!is.null(colnames(result)))
+            attr(result,"Labels") <- colnames(result)
+        attr(result, "Size") <- nrow(result)
+        attr(result, "method") <- method
+        attr(result, "call") <- match.call()
+        class(result) <- "dist.selection"
+        return(result)
+    }
 }
 
 # convert the dist class object to the sorted list used in tm::findAssocs()
