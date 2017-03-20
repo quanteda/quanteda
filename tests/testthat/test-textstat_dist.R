@@ -239,6 +239,14 @@ test_that("as.list.dist works as expected",{
     expect_equivalent(ddist_list$`1981-Reagan`[1:3], c(851, 804, 785))
 })
 
+test_that("as.list.dist.selection works as expected",{
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    ddist_list <- as.list(textstat_dist(presDfm, c("2017-Trump", "2013-Obama"), margin = "documents"))
+    expect_null(aa$'1985-Reagan')
+    expect_equal(names(ddist_list$`2017-Trump`)[1:3], c("1985-Reagan", "1981-Reagan", "1989-Bush"))
+})
+
 test_that("textstat_dist stops as expected for methods not supported",{
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
