@@ -1,32 +1,26 @@
-#' Distance matrix between documents and/or features 
-#' 
-#' These functions compute distance matrix between documents and/or features from a 
-#' \code{\link{dfm}} and return a standard \code{\link[stats]{dist}} object.  
 #' @rdname textstat_simil
-#' @seealso \link{dfm}
 #' @export
 #' @param p The power of the Minkowski distance.
 #' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
-#' \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"}, \code{"kullback"}. 
-#' \code{"manhattan"}, \code{"maximum"}, \code{"canberra"}, and \code{"minkowski"}.
+#'   \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"},
+#'   \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
+#'   and \code{"minkowski"}.
 #' @importFrom RcppParallel RcppParallelLibs
 #' @author Kenneth Benoit, Haiyan Wang
 #' @examples
 #' # create a dfm from inaugural addresses from Reagan onwards
 #' presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), 
-#'                remove = stopwords("english"), stem = TRUE)
+#'                remove = stopwords("english"), stem = TRUE, removePunct = TRUE)
 #'                
-#' ## distance
+#' # distances for documents 
+#' (d1 <- textstat_dist(presDfm, margin = "documents"))
+#' as.matrix(d1)
 #' 
-#' # compute some document distances
-#' (tmp <- textstat_dist(presDfm, margin = "documents"))
-#' 
-#' # for specific comparisons
-#' textstat_dist(presDfm, "2017-Trump", n = 5, margin = "documents")
-#' textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
-#' textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
+#' # distances for specific documents
+#' textstat_dist(presDfm, "2017-Trump", margin = "documents")
 #' textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
-#' as.dist(textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard"))
+#' (d2 <- textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents"))
+#' as.list(d1)
 #' 
 textstat_dist <- function(x, selection = NULL, n = NULL, 
                           margin = c("documents", "features"),
@@ -107,12 +101,11 @@ textstat_dist.dfm <- function(x, selection = NULL, n = NULL,
         attr(result, "Size") <- ifelse(margin == "documents", nrow(result), ncol(result))
         attr(result, "method") <- method
         attr(result, "call") <- match.call()
-        class(result) <- c("dist.selection")
+        class(result) <- c("dist_selection")
         return(result)
     }
 }
 
-# convert the dist class object to the sorted list used in tm::findAssocs()
 
 #' coerce a dist object into a list
 #' 
@@ -174,19 +167,32 @@ as.list.dist <- function(x, sorted = TRUE, n = NULL, ...) {
     
 }
 
-#' coerce a dist.selection object into a list
+#' coerce a dist into a dist
 #' 
-#' Coerce a dist.selection matrix into a list of selected terms and tarhet terms in
+#' Internal function to guarantee that a dist remains a dist, if for some reason
+#' a user wants to coerce a dist into a dist.
+#' @keywords textstat internal
+#' @method as.dist dist
+#' @export
+as.dist.dist <- function(m, diag = FALSE, upper = FALSE) {
+    as.dist(as.matrix(m), diag = diag, upper = upper)
+}
+
+
+#' coerce a dist_selection object into a list
+#' 
+#' Coerce a dist_selection matrix into a list of selected terms and tarhet terms in
 #' descending order.  Can be used after calling \code{\link{textstat_simil}} or
 #' \code{\link{textstat_dist}} when selection is not NULL
-#' @param x dist.selection class object
+#' @param x dist_selection class object
 #' @param sorted sort results in descending order if \code{TRUE}
 #' @param n the top \code{n} highest-ranking items will be returned.  If n is 
 #'   \code{NULL}, return all items.
 #' @param ... unused
-#' @method as.list dist.selection
+#' @method as.list dist_selection
+#' @keywords textstat internal
 #' @export
-as.list.dist.selection <- function(x, sorted = TRUE, n = NULL, ...) {
+as.list.dist_selection <- function(x, sorted = TRUE, n = NULL, ...) {
     # convert the matrix to a list of similarities
     if (!is.null(attr(x, "Labels"))) xLabels <- attr(x, "Labels")
     result <- lapply(seq_len(ncol(as.matrix(x))), function(i) as.matrix(x)[, i])
@@ -208,8 +214,32 @@ as.list.dist.selection <- function(x, sorted = TRUE, n = NULL, ...) {
         result <- lapply(result, "[", 1:n)
     
     result
-    
 }
+
+#' print a dist_selection object
+#' 
+#' Print method for a dist_selection object, to make it appear as a data.frame.
+#' @export
+#' @method print dist_selection
+#' @keywords textstat internal
+print.dist_selection <- function(x, ...) {
+    print(as.matrix(x))
+}
+
+#' coerce a dist_selection object to a matrix
+#' 
+#' Coerce a dist_selection object to a plain matrix.
+#' @export
+#' @method as.matrix dist_selection
+#' @keywords textstat internal
+as.matrix.dist_selection <- function(x, ...) {
+    attributes(x)[setdiff(names(attributes(x)), 
+                          c("dimnames", "dim"))] <- NULL
+    class(x) <- "matrix"
+    x
+}
+
+
 ## used Matrix::crossprod and Matrix::tcrossprod for sparse Matrix handling
 euclidean_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")

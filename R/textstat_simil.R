@@ -8,51 +8,55 @@
 #     textstat_simil(x, ...)
 # }
 
+
+#' Similarity and distance computation between documents or features
+#' 
+#' These functions compute matrixes of distances and similarities between 
+#' documents or features from a \code{\link{dfm}} and return a 
+#' \code{\link[stats]{dist}} object (or a matrix if specific targets are
+#' selected).
 #' @param x a \link{dfm} object
-#' @param selection character or character vector of document names or feature 
-#'   labels from the dfm. A \code{"dist"} object is returned if selection is \code{NULL}, 
-#'   otherwise, a \code{"dist.selection"} matrix is returned. 
+#' @param selection character vector of document names or feature labels from
+#'   \code{x}.  A \code{"dist"} object is returned if selection is \code{NULL}, 
+#'   otherwise, a matrix is returned.
 #' @param n the top \code{n} highest-ranking items will be returned.  If n is 
-#'   \code{NULL}, return all items.
+#'   \code{NULL}, return all items.  Useful if the output object will be coerced
+#'   into a list, for instance if the top \code{n} most similar features to a
+#'   target feature is desired.  (See examples.)
 #' @param margin identifies the margin of the dfm on which similarity or 
 #'   difference will be computed:  \code{documents} for documents or 
 #'   \code{features} for word/term features.
-#' @param method method the distance measure to be used; see Details
+#' @param method method the similarity or distance measure to be used; see
+#'   Details
 #' @param upper  whether the upper triangle of the symmetric \eqn{V \times V} 
 #'   matrix is recorded
 #' @param diag whether the diagonal of the distance matrix should be recorded
-#' @details \code{textstat_simil} options are: \code{"correlation"} (default),
-#' \code{"cosine"}, \code{"jaccard"}, \code{"eJaccard"},
-#' \code{"dice"}, \code{"eDice"}, \code{"simple matching"}, \code{"hamann"}, and
-#' \code{"faith"}.
+#' @details \code{textstat_simil} options are: \code{"correlation"} (default), 
+#'   \code{"cosine"}, \code{"jaccard"}, \code{"eJaccard"}, \code{"dice"},
+#'   \code{"eDice"}, \code{"simple matching"}, \code{"hamann"}, and 
+#'   \code{"faith"}.
 #' @note If you want to compute similarity on a "normalized" dfm object 
 #'   (controlling for variable document lengths, for methods such as correlation
 #'   for which different document lengths matter), then wrap the input dfm in 
 #'   \code{\link{weight}(x, "relFreq")}.
 #' @export
-#' @seealso \code{\link{textstat_dist}}, \code{\link{as.list.dist}}
-#' @import methods
+#' @seealso \code{\link{textstat_dist}}, \code{\link{as.list.dist}},
+#'   \code{\link[base]{dist}}
 #' @examples
-#' ## similarities
+#' # similarities for documents
+#' (s1 <- textstat_simil(presDfm, method = "cosine", margin = "documents"))
+#' as.matrix(s1)
+#' as.list(s1)
 #' 
-#' # compute some document similarities
-#' (tmp <- textstat_simil(presDfm, method = "cosine", margin = "documents"))
-#' 
-#' # output as a list
-#' as.list(tmp)[1:2]
-#' 
-#' # output as a matrix
-#' as.matrix(tmp)
-#' 
-#' # for specific comparisons
-#' textstat_simil(presDfm, "2017-Trump", n = 5, margin = "documents")
-#' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
+#' # similarities for for specific documents
+#' textstat_simil(presDfm, "2017-Trump", margin = "documents")
+#' textstat_simil(presDfm, "2017-Trump", method = "cosine", margin = "documents")
 #' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
-#' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents", method = "cosine")
 #' 
 #' # compute some term similarities
-#' textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", 
-#'                margin = "features", 20)
+#' (s2 <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", 
+#'                       margin = "features", n = 8))
+#' as.list(s2)
 #' 
 textstat_simil <- function(x, selection = NULL, n = NULL,
                            margin = c("documents", "features"),
@@ -125,7 +129,7 @@ textstat_simil.dfm <- function(x, selection = NULL, n = NULL,
         attr(result, "Size") <- ifelse(margin == "documents", nrow(result), ncol(result))
         attr(result, "method") <- method
         attr(result, "call") <- match.call()
-        class(result) <- c("dist.selection")
+        class(result) <- c("dist_selection")
         return(result)
     }
 }
@@ -433,11 +437,15 @@ faith_sparse <- function(x, y = NULL, margin = 1) {
     faithmat
 }
 
-#' @rdname textstat_simil
+#' Coerce a simil object into a matrix
+#' 
+#' Coerces a simil object, which is a specially classed dist object, into a matrix.
+#' @param x a simil object from \code{\link{textstat_simil}}
 #' @param Diag sets the value for matrix diagonal
 #' @param ... unused
 #' @export
 #' @method as.matrix simil
+#' @keywords textstat internal
 as.matrix.simil <- function(x, Diag = 1L, ...) {
     size <- attr(x, "Size")
     df <- matrix(0, size, size)
@@ -450,3 +458,4 @@ as.matrix.simil <- function(x, Diag = 1L, ...) {
     diag(df) <- Diag
     df
 }
+
