@@ -10,7 +10,8 @@
 
 #' @param x a \link{dfm} object
 #' @param selection character or character vector of document names or feature 
-#'   labels from the dfm
+#'   labels from the dfm. A \code{"dist"} object is returned if selection is \code{NULL}, 
+#'   otherwise, a \code{"dist.selection"} matrix is returned. 
 #' @param n the top \code{n} highest-ranking items will be returned.  If n is 
 #'   \code{NULL}, return all items.
 #' @param margin identifies the margin of the dfm on which similarity or 
