@@ -73,7 +73,7 @@ test_that("test textstat_dist method = \"Kullback-Leibler\" against proxy dist()
     
     rownames(m) <- c("a", "b", "c", "d", "e")
     mydfm <- new("dfmSparse", Matrix::Matrix(as.matrix(m), sparse=TRUE, dimnames = list(docs = rownames(m), features=colnames(m))))
-    kullQuanteda <- round(as.matrix(textstat_dist(mydfm, "a", method = "kullback", margin = "documents"))["a",], 2)
+    kullQuanteda <- round(textstat_dist(mydfm, "a", method = "kullback", margin = "documents")[, "a"], 2)
     kullProxy <- round(drop(proxy::dist(as.matrix(mydfm), as.matrix(mydfm[1, ]), "kullback", diag = FALSE, upper = FALSE)), 2)
     kullProxy <- kullProxy[order(names(kullProxy))]
     expect_equivalent(kullQuanteda, kullProxy)
@@ -200,7 +200,7 @@ test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distan
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
-    hammingQuanteda <- as.matrix(textstat_dist(presDfm, "soviet", method = "hamming", margin = "features"))[,"soviet"]
+    hammingQuanteda <- textstat_dist(presDfm, "soviet", method = "hamming", margin = "features")[,"soviet"]
     hammingQuanteda <- hammingQuanteda[order(names(hammingQuanteda))]
     hammingQuanteda <- hammingQuanteda[-which(names(hammingQuanteda) == "soviet")]
     
@@ -225,13 +225,6 @@ test_that("test textstat_dist method = \"binary\" against proxy::simil(): featur
     if("soviet" %in% names(jacProxy)) jacProxy <- jacProxy[-which(names(jacProxy) == "soviet")]
     
     expect_equal(jacQuanteda, jacProxy)
-})
-
-test_that("textstat_dist works as expected for selections",{
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
-                   stem = TRUE, verbose = FALSE)
-    sim <- suppressWarnings(textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents"))
-    expect_equal(round(as.matrix(sim)["1981-Reagan","1985-Reagan"],2), 0.0)
 })
 
 test_that("as.list.dist works as expected",{
