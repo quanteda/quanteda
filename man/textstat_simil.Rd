@@ -3,32 +3,32 @@
 \name{textstat_dist}
 \alias{textstat_dist}
 \alias{textstat_simil}
-\alias{as.matrix.simil}
-\title{Distance matrix between documents and/or features}
+\title{Similarity and distance computation between documents or features}
 \usage{
 textstat_dist(x, selection = NULL, n = NULL, margin = c("documents",
   "features"), method = "euclidean", upper = FALSE, diag = FALSE, p = 2)
 
 textstat_simil(x, selection = NULL, n = NULL, margin = c("documents",
   "features"), method = "correlation", upper = FALSE, diag = FALSE)
-
-\method{as.matrix}{simil}(x, Diag = 1L, ...)
 }
 \arguments{
 \item{x}{a \link{dfm} object}
 
-\item{selection}{character or character vector of document names or feature 
-labels from the dfm. A \code{"dist"} object is returned if selection is \code{NULL}, 
-otherwise, a \code{"dist.selection"} matrix is returned.}
+\item{selection}{character vector of document names or feature labels from
+\code{x}.  A \code{"dist"} object is returned if selection is \code{NULL}, 
+otherwise, a matrix is returned.}
 
 \item{n}{the top \code{n} highest-ranking items will be returned.  If n is 
-\code{NULL}, return all items.}
+\code{NULL}, return all items.  Useful if the output object will be coerced
+into a list, for instance if the top \code{n} most similar features to a
+target feature is desired.  (See examples.)}
 
 \item{margin}{identifies the margin of the dfm on which similarity or 
 difference will be computed:  \code{documents} for documents or 
 \code{features} for word/term features.}
 
-\item{method}{method the distance measure to be used; see Details}
+\item{method}{method the similarity or distance measure to be used; see
+Details}
 
 \item{upper}{whether the upper triangle of the symmetric \eqn{V \times V} 
 matrix is recorded}
@@ -36,24 +36,23 @@ matrix is recorded}
 \item{diag}{whether the diagonal of the distance matrix should be recorded}
 
 \item{p}{The power of the Minkowski distance.}
-
-\item{Diag}{sets the value for matrix diagonal}
-
-\item{...}{unused}
 }
 \description{
-These functions compute distance matrix between documents and/or features from a 
-\code{\link{dfm}} and return a standard \code{\link[stats]{dist}} object.
+These functions compute matrixes of distances and similarities between 
+documents or features from a \code{\link{dfm}} and return a 
+\code{\link[stats]{dist}} object (or a matrix if specific targets are
+selected).
 }
 \details{
 \code{textstat_dist} options are: \code{"euclidean"} (default), 
-\code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"}, \code{"kullback"}. 
-\code{"manhattan"}, \code{"maximum"}, \code{"canberra"}, and \code{"minkowski"}.
+  \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"},
+  \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
+  and \code{"minkowski"}.
 
-\code{textstat_simil} options are: \code{"correlation"} (default),
-\code{"cosine"}, \code{"jaccard"}, \code{"eJaccard"},
-\code{"dice"}, \code{"eDice"}, \code{"simple matching"}, \code{"hamann"}, and
-\code{"faith"}.
+\code{textstat_simil} options are: \code{"correlation"} (default), 
+  \code{"cosine"}, \code{"jaccard"}, \code{"eJaccard"}, \code{"dice"},
+  \code{"eDice"}, \code{"simple matching"}, \code{"hamann"}, and 
+  \code{"faith"}.
 }
 \note{
 If you want to compute similarity on a "normalized" dfm object 
@@ -64,46 +63,37 @@ If you want to compute similarity on a "normalized" dfm object
 \examples{
 # create a dfm from inaugural addresses from Reagan onwards
 presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), 
-               remove = stopwords("english"), stem = TRUE)
+               remove = stopwords("english"), stem = TRUE, removePunct = TRUE)
                
-## distance
+# distances for documents 
+(d1 <- textstat_dist(presDfm, margin = "documents"))
+as.matrix(d1)
 
-# compute some document distances
-(tmp <- textstat_dist(presDfm, margin = "documents"))
-
-# for specific comparisons
-textstat_dist(presDfm, "2017-Trump", n = 5, margin = "documents")
-textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
-textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
+# distances for specific documents
+textstat_dist(presDfm, "2017-Trump", margin = "documents")
 textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
-as.dist(textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard"))
+(d2 <- textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents"))
+as.list(d1)
 
-## similarities
+# similarities for documents
+(s1 <- textstat_simil(presDfm, method = "cosine", margin = "documents"))
+as.matrix(s1)
+as.list(s1)
 
-# compute some document similarities
-(tmp <- textstat_simil(presDfm, method = "cosine", margin = "documents"))
-
-# output as a list
-as.list(tmp)[1:2]
-
-# output as a matrix
-as.matrix(tmp)
-
-# for specific comparisons
-textstat_simil(presDfm, "2017-Trump", n = 5, margin = "documents")
-textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
+# similarities for for specific documents
+textstat_simil(presDfm, "2017-Trump", margin = "documents")
+textstat_simil(presDfm, "2017-Trump", method = "cosine", margin = "documents")
 textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
-textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents", method = "cosine")
 
 # compute some term similarities
-textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", 
-               margin = "features", 20)
+(s2 <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", 
+                      margin = "features", n = 8))
+as.list(s2)
 
 }
 \seealso{
-\link{dfm}
-
-\code{\link{textstat_dist}}, \code{\link{as.list.dist}}
+\code{\link{textstat_dist}}, \code{\link{as.list.dist}},
+  \code{\link[base]{dist}}
 }
 \author{
 Kenneth Benoit, Haiyan Wang
