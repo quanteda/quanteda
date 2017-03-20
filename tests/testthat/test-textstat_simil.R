@@ -302,14 +302,6 @@ test_that("as.matrix.simil works as expected",{
     expect_equivalent(diag(sim), aMat)
 })
 
-test_that("textstat_simil works as expected for selections",{
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
-                   stem = TRUE, verbose = FALSE)
-    sim <- suppressWarnings(textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents"))
-    
-    expect_equal(round(as.matrix(sim)["1981-Reagan","1985-Reagan"],2), 0.0)
-})
-
 test_that("textstat_simil stops as expected for methods not supported",{
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
