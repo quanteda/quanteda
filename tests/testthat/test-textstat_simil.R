@@ -321,3 +321,13 @@ test_that("textstat_simil stops as expected for wrong selections",{
                  "The features specified by 'selection' do not exist.")
     
 })
+
+test_that("test textstat_simil works as expected for 'n' is not NULL", {
+    skip_if_not_installed("proxy")
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    
+    cosQuanteda <- round(as.matrix(suppressWarnings(textstat_simil(presDfm, method = "cosine", n=5, margin = "documents")))[,"1981-Reagan"], 6)
+    cosProxy <- round(as.matrix(proxy::simil(as.matrix(presDfm), "cosine", by_rows = TRUE, diag = TRUE))[, "1981-Reagan"], 6)
+    expect_equal(cosQuanteda, cosProxy[1:5])
+})
