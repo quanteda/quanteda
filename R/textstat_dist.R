@@ -169,6 +169,31 @@ as.list.dist <- function(x, sorted = TRUE, n = NULL, ...) {
     
 }
 
+#' @export
+as.list.dist.selection <- function(x, sorted = TRUE, n = NULL, ...) {
+    # convert the matrix to a list of similarities
+    if (!is.null(attr(x, "Labels"))) xLabels <- attr(x, "Labels")
+    result <- lapply(seq_len(ncol(as.matrix(x))), function(i) as.matrix(x)[, i])
+    #attributes(x) <- NULL
+    names(result) <- if (!is.null(xLabels)) xLabels[1:ncol(as.matrix(x))]
+    
+    # remove the element of each similarity vector equal to the item itself
+    tempseq <- seq_along(result)
+    names(tempseq) <- names(result)
+    result <- lapply( tempseq, function(i)
+        result[[i]] <- result[[i]][-which(names(result[[i]]) == names(result)[i])] )
+    
+    # sort each element of the list and return only first n results if n not NULL
+    if (sorted == TRUE)
+        result <- lapply(result, sort, decreasing=TRUE, na.last = TRUE)
+    
+    # truncate to n if n is not NULL
+    if (!is.null(n))
+        result <- lapply(result, "[", 1:n)
+    
+    result
+    
+}
 ## used Matrix::crossprod and Matrix::tcrossprod for sparse Matrix handling
 euclidean_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
