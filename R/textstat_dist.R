@@ -102,7 +102,7 @@ textstat_dist <- function(x, selection = NULL, n = NULL,
         attr(result, "Size") <- nrow(result)
         attr(result, "method") <- method
         attr(result, "call") <- match.call()
-        class(result) <- "dist.selection"
+        class(result) <- c("dist.selection", "matrix")
         return(result)
     }
 }
