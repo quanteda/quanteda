@@ -44,7 +44,7 @@
 #' as.matrix(tmp)
 #' 
 #' # for specific comparisons
-#' textstat_simil(presDfm, "1985-Reagan", n = 5, margin = "documents")
+#' textstat_simil(presDfm, "2017-Trump", n = 5, margin = "documents")
 #' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
 #' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
 #' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents", method = "cosine")
@@ -54,12 +54,18 @@
 #'                margin = "features", 20)
 #' 
 textstat_simil <- function(x, selection = NULL, n = NULL,
+                           margin = c("documents", "features"),
+                           method = "correlation", 
+                           upper  = FALSE, diag = FALSE) {
+    UseMethod("textstat_simil")
+}
+    
+#' @noRd
+#' @export    
+textstat_simil.dfm <- function(x, selection = NULL, n = NULL,
                           margin = c("documents", "features"),
                           method = "correlation", 
                           upper  = FALSE, diag = FALSE) {
-    if (!is.dfm(x))
-        stop("x must be a dfm object")
-    
     margin <- match.arg(margin)
    
     if (!is.null(selection)) {
