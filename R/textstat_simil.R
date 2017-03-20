@@ -93,16 +93,14 @@ textstat_simil <- function(x, selection = NULL, n = NULL,
     # convert NaNs to NA
     # similmatrix[is.nan(similmatrix)] <- NA
     
-    if (is.null(selection)) {
-        temp2 <- as(temp, "sparseMatrix") 
-    } else {
+    if (!is.null(selection)) {
         names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
         temp <- temp[names, , drop = FALSE] # sort for as.dist()
     }
     
     if (!is.null(n)) {
-        n <- min(n, nrow(nrow(temp2)))
-        temp2 <- temp2[seq_len(n), , drop = FALSE]
+        n <- min(n, nrow(nrow(temp)))
+        temp <- temp[seq_len(n), , drop = FALSE]
     }
     
     # create a new dist object
