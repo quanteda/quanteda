@@ -169,6 +169,17 @@ as.list.dist <- function(x, sorted = TRUE, n = NULL, ...) {
     
 }
 
+#' coerce a dist.selection object into a list
+#' 
+#' Coerce a dist.selection matrix into a list of selected terms and tarhet terms in
+#' descending order.  Can be used after calling \code{\link{textstat_simil}} or
+#' \code{\link{textstat_dist}} when selection is not NULL
+#' @param x dist.selection class object
+#' @param sorted sort results in descending order if \code{TRUE}
+#' @param n the top \code{n} highest-ranking items will be returned.  If n is 
+#'   \code{NULL}, return all items.
+#' @param ... unused
+#' @method as.list dist.selection
 #' @export
 as.list.dist.selection <- function(x, sorted = TRUE, n = NULL, ...) {
     # convert the matrix to a list of similarities
