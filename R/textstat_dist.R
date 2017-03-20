@@ -172,6 +172,7 @@ as.list.dist <- function(x, sorted = TRUE, n = NULL, ...) {
 #' Internal function to guarantee that a dist remains a dist, if for some reason
 #' a user wants to coerce a dist into a dist.
 #' @keywords textstat internal
+#' @importFrom stats as.dist
 #' @method as.dist dist
 #' @export
 as.dist.dist <- function(m, diag = FALSE, upper = FALSE) {

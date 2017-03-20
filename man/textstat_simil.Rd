@@ -93,7 +93,7 @@ as.list(s2)
 }
 \seealso{
 \code{\link{textstat_dist}}, \code{\link{as.list.dist}},
-  \code{\link[base]{dist}}
+  \code{\link{dist}}
 }
 \author{
 Kenneth Benoit, Haiyan Wang

@@ -41,7 +41,7 @@
 #'   \code{\link{weight}(x, "relFreq")}.
 #' @export
 #' @seealso \code{\link{textstat_dist}}, \code{\link{as.list.dist}},
-#'   \code{\link[base]{dist}}
+#'   \code{\link{dist}}
 #' @examples
 #' # similarities for documents
 #' (s1 <- textstat_simil(presDfm, method = "cosine", margin = "documents"))
