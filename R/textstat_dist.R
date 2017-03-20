@@ -94,15 +94,15 @@ textstat_dist <- function(x, selection = NULL, n = NULL,
         attr(result, "call") <- match.call()
         return(result)
     } else {
-        result <- temp
+        result <- as.matrix(temp)
         if(!is.null(rownames(result)))
             attr(result,"Labels") <- rownames(result)
         else if(!is.null(colnames(result)))
             attr(result,"Labels") <- colnames(result)
-        attr(result, "Size") <- nrow(result)
+        attr(result, "Size") <- ifelse(margin == "documents", nrow(result), ncol(result))
         attr(result, "method") <- method
         attr(result, "call") <- match.call()
-        class(result) <- c("dist.selection", "matrix")
+        class(result) <- c("dist.selection")
         return(result)
     }
 }
