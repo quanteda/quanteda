@@ -60,6 +60,10 @@ test_that("test textstat_dist method = \"Chi-squred\" against ExPosition::chi2Di
     chiExp <- ExPosition::chi2Dist(as.matrix(presDfm))
     chiExp <- sort(round(as.matrix(chiExp$D)[, "1981-Reagan"], 6), decreasing = FALSE)
     expect_equal(chiQuanteda, chiExp)
+    
+    # use selection
+    chiQuanteda <- sort(round(as.matrix(textstat_dist(presDfm, "1981-Reagan", method = "Chisquared", margin = "documents"))[,"1981-Reagan"], 6), decreasing = FALSE)
+    expect_equal(chiQuanteda, chiExp)
 })
 
 # Kullback-Leibler divergence
