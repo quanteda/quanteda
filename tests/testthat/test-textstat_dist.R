@@ -179,7 +179,6 @@ test_that("test textstat_dist method = \"Canberra\" against proxy dist() : featu
 
 # Hamming distance
 test_that("test textstat_dist method = \"hamming\" against e1071::hamming.distance: documents", {
-    skip_if_not_installed("e1071")
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     
