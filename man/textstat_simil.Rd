@@ -7,7 +7,7 @@
 \title{Distance matrix between documents and/or features}
 \usage{
 textstat_dist(x, selection = NULL, n = NULL, margin = c("documents",
-  "features"), method = "euclidean", upper = TRUE, diag = FALSE, p = 2)
+  "features"), method = "euclidean", upper = FALSE, diag = FALSE, p = 2)
 
 textstat_simil(x, selection = NULL, n = NULL, margin = c("documents",
   "features"), method = "correlation", upper = FALSE, diag = FALSE)
@@ -62,7 +62,7 @@ If you want to compute similarity on a "normalized" dfm object
 }
 \examples{
 # create a dfm from inaugural addresses from Reagan onwards
-presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), 
+presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), 
                remove = stopwords("english"), stem = TRUE)
                
 ## distance
@@ -80,7 +80,7 @@ as.dist(textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJac
 ## similarities
 
 # compute some document similarities
-(tmp <- textstat_simil(presDfm, margin = "documents"))
+(tmp <- textstat_simil(presDfm, method = "cosine", margin = "documents"))
 
 # output as a list
 as.list(tmp)[1:2]

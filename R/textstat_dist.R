@@ -13,7 +13,7 @@
 #' @author Kenneth Benoit, Haiyan Wang
 #' @examples
 #' # create a dfm from inaugural addresses from Reagan onwards
-#' presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), 
+#' presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), 
 #'                remove = stopwords("english"), stem = TRUE)
 #'                
 #' ## distance
@@ -31,7 +31,7 @@
 textstat_dist <- function(x, selection = NULL, n = NULL, 
                           margin = c("documents", "features"),
                           method = "euclidean",
-                          upper = TRUE, diag = FALSE, p = 2) {
+                          upper = FALSE, diag = FALSE, p = 2) {
     
     if (!is.dfm(x))
         stop("x must be a dfm object")

@@ -35,7 +35,7 @@
 #' ## similarities
 #' 
 #' # compute some document similarities
-#' (tmp <- textstat_simil(presDfm, margin = "documents"))
+#' (tmp <- textstat_simil(presDfm, method = "cosine", margin = "documents"))
 #' 
 #' # output as a list
 #' as.list(tmp)[1:2]
