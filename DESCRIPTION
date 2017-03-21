@@ -26,7 +26,7 @@ Imports:
     wordcloud,
     Rcpp,
     RcppParallel,
-    RcppArmadillo(>= 0.7.600.1.0),
+    RcppArmadillo (>= 0.7.600.1.0),
     ca,
     stringi,
     fastmatch,
