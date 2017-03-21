@@ -180,7 +180,7 @@ downstream objects.
     *  [**quantedaData**](https://github.com/kbenoit/quantedaData): Additional textual data for use with **quanteda**.
 
         ```{r eval = FALSE}
-        r devtools::install_github("kbenoit/quantedaData")
+        devtools::install_github("kbenoit/quantedaData")
         ```
         
     *  [**spacyr**](https://github.com/kbenoit/spacyr): NLP using the [spaCy](http://spacy.io) library.

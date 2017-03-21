@@ -97,7 +97,7 @@ How to Install
     -   [**quantedaData**](https://github.com/kbenoit/quantedaData): Additional textual data for use with **quanteda**.
 
         ``` r
-        r devtools::install_github("kbenoit/quantedaData")
+        devtools::install_github("kbenoit/quantedaData")
         ```
 
     -   [**spacyr**](https://github.com/kbenoit/spacyr): NLP using the [spaCy](http://spacy.io) library.
@@ -114,6 +114,13 @@ Demonstration
 
 ``` r
 library(quanteda)
+## quanteda version 0.9.9.37
+## Using 7 of 8 cores for parallel computing
+## 
+## Attaching package: 'quanteda'
+## The following object is masked from 'package:utils':
+## 
+##     View
 
 # create a corpus from the immigration texts from UK party platforms
 uk2010immigCorpus <- 
@@ -137,7 +144,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Tue Mar 21 01:22:44 2017
+## Created: Tue Mar 21 01:32:08 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
