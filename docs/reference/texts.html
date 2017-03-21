@@ -81,7 +81,7 @@
     </div>
 
     
-    <p>Get or replace the texts in a <a href='corpus.html'>corpus</a> object, with grouping options. 
+    <p>Get or replace the texts in a <a href='corpus.html'>corpus</a>, with grouping options. 
 Works for plain character vectors too, if <code>groups</code> is a factor.</p>
     
 
@@ -95,7 +95,7 @@ Works for plain character vectors too, if <code>groups</code> is a factor.</p>
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>a quanteda <a href='corpus.html'>corpus</a> or character object</dd>
+      <dd>a <a href='corpus.html'>corpus</a> or character object</dd>
       <dt>groups</dt>
       <dd>either: a character vector containing the names of document
 variables to be used for grouping; or a factor (or object that can be
@@ -129,8 +129,9 @@ calling <code>texts(x)</code></p>
   Rather, this sort of processing is better performed through downstream 
   operations.  For instance, do not lowercase the texts in a corpus, or you 
   will never be able to recover the original case.  Rather, apply 
-  <code><a href='toLower.html'>toLower</a></code> to the corpus and use the result as an input, e.g. to
-  <code><a href='tokenize.html'>tokenize</a></code>.</p>
+  <code><a href='tokens_tolower.html'>tokens_tolower</a></code> after applying 
+  <code><a href='tokens.html'>tokens</a></code> to a corpus, or use the option <code>tolower = TRUE</code> in 
+  <code><a href='dfm.html'>dfm</a></code>..</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

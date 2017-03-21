@@ -16,6 +16,7 @@
 * `docvars()` now permits direct access to "metadoc" fields (starting with `_`, e.g. `_document`)
 * `metadoc()` now returns a vector instead of a data.frame for a single variable, similar to `docvars()`
 * Most `verbose` options now take the default from `getOption("verbose")` rather than fixing the value in the function signatures. (#577)
+* `textstat_dist()` and `textstat_simil()` now return a matrix if a `selection` argument is supplied, and coercion to a list produces a list of distances or similarities only for that selection. 
 
 ### Bug fixes
 
@@ -24,6 +25,7 @@
 * Fixed problems for `str()` on a corpus with no docvars (#571).
 * `removeURL` in `tokens()` now removes URLs where the first part of the URL is a single letter (#587).
 * `dfm_select` now works correctly for ngram features (#589).
+* Fixed a bug crashing corpus constructors for character vectors with duplicated names (the cause of #580).
 
 
 ## Changes since v0.9.9-17

@@ -8,98 +8,102 @@
 #     textstat_simil(x, ...)
 # }
 
+
+#' Similarity and distance computation between documents or features
+#' 
+#' These functions compute matrixes of distances and similarities between 
+#' documents or features from a \code{\link{dfm}} and return a 
+#' \code{\link[stats]{dist}} object (or a matrix if specific targets are
+#' selected).
 #' @param x a \link{dfm} object
-#' @param selection character or character vector of document names or feature 
-#'   labels from the dfm
+#' @param selection character vector of document names or feature labels from
+#'   \code{x}.  A \code{"dist"} object is returned if selection is \code{NULL}, 
+#'   otherwise, a matrix is returned.
 #' @param n the top \code{n} highest-ranking items will be returned.  If n is 
-#'   \code{NULL}, return all items.
+#'   \code{NULL}, return all items.  Useful if the output object will be coerced
+#'   into a list, for instance if the top \code{n} most similar features to a
+#'   target feature is desired.  (See examples.)
 #' @param margin identifies the margin of the dfm on which similarity or 
 #'   difference will be computed:  \code{documents} for documents or 
 #'   \code{features} for word/term features.
-#' @param method method the distance measure to be used; see Details
+#' @param method method the similarity or distance measure to be used; see
+#'   Details
 #' @param upper  whether the upper triangle of the symmetric \eqn{V \times V} 
 #'   matrix is recorded
 #' @param diag whether the diagonal of the distance matrix should be recorded
-#' @details \code{textstat_simil} options are: \code{"correlation"} (default),
-#' \code{"cosine"}, \code{"jaccard"}, \code{"eJaccard"},
-#' \code{"dice"}, \code{"eDice"}, \code{"simple matching"}, \code{"hamann"}, and
-#' \code{"faith"}.
+#' @details \code{textstat_simil} options are: \code{"correlation"} (default), 
+#'   \code{"cosine"}, \code{"jaccard"}, \code{"eJaccard"}, \code{"dice"},
+#'   \code{"eDice"}, \code{"simple matching"}, \code{"hamann"}, and 
+#'   \code{"faith"}.
 #' @note If you want to compute similarity on a "normalized" dfm object 
 #'   (controlling for variable document lengths, for methods such as correlation
 #'   for which different document lengths matter), then wrap the input dfm in 
 #'   \code{\link{weight}(x, "relFreq")}.
 #' @export
-#' @seealso \code{\link{textstat_dist}}, \code{\link{as.list.dist}}
-#' @import methods
+#' @seealso \code{\link{textstat_dist}}, \code{\link{as.list.dist}},
+#'   \code{\link{dist}}
 #' @examples
-#' ## similarities
+#' # similarities for documents
+#' (s1 <- textstat_simil(presDfm, method = "cosine", margin = "documents"))
+#' as.matrix(s1)
+#' as.list(s1)
 #' 
-#' # compute some document similarities
-#' (tmp <- textstat_simil(presDfm, margin = "documents"))
-#' 
-#' # output as a list
-#' as.list(tmp)[1:2]
-#' 
-#' # output as a matrix
-#' as.matrix(tmp)
-#' 
-#' # for specific comparisons
-#' textstat_simil(presDfm, "1985-Reagan", n = 5, margin = "documents")
-#' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
+#' # similarities for for specific documents
+#' textstat_simil(presDfm, "2017-Trump", margin = "documents")
+#' textstat_simil(presDfm, "2017-Trump", method = "cosine", margin = "documents")
 #' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
-#' textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents", method = "cosine")
 #' 
 #' # compute some term similarities
-#' textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", 
-#'                margin = "features", 20)
+#' (s2 <- textstat_simil(presDfm, c("fair", "health", "terror"), method = "cosine", 
+#'                       margin = "features", n = 8))
+#' as.list(s2)
 #' 
-textstat_simil <- function(x, selection = character(0), n = NULL,
+textstat_simil <- function(x, selection = NULL, n = NULL,
+                           margin = c("documents", "features"),
+                           method = "correlation", 
+                           upper  = FALSE, diag = FALSE) {
+    UseMethod("textstat_simil")
+}
+    
+#' @noRd
+#' @export    
+textstat_simil.dfm <- function(x, selection = NULL, n = NULL,
                           margin = c("documents", "features"),
                           method = "correlation", 
                           upper  = FALSE, diag = FALSE) {
-    if (!is.dfm(x))
-        stop("x must be a dfm object")
-
-    # value <- match.arg(value)
-    
     margin <- match.arg(margin)
-    if (margin == "features") {
-        items <- featnames(x)
-        xsize <- dim(x)[2]
+   
+    if (!is.null(selection)) {
+        if (!is.character(selection)) 
+            stop("'selection' should be character or character vector of document names or feature labels.")
+        if (margin == "features") {
+            selection <- intersect(selection, featnames(x))
+            if (!length(selection))
+                stop("The features specified by 'selection' do not exist.")
+            y <- x[, selection, drop = FALSE]
+        } else {
+            selection <- intersect(selection, docnames(x))
+            if (!length(selection))
+                stop("The documents specified by 'selection' do not exist.")
+            y <- x[selection, , drop = FALSE]
+        }
     } else {
-        items <- docnames(x)
-        xsize <- dim(x)[1]
+        y <- NULL
     }
     
-    if (is.null(n) || n >= xsize)
-        n <- xsize # choose all features/docs if n is NULL
-    
-    if (length(selection) != 0L) {
-        # retain only existing features or documents
-        selectIndex <- which(items %in% selection)
-        if (length(selectIndex)==0)
-            stop("no such documents or feature labels exist.")
-        
-        if (margin=="features") {
-            xSelect <- x[, selectIndex, drop=FALSE]
-        } else {
-            xSelect <- x[selectIndex, , drop=FALSE]
-        }
-    } else xSelect <- NULL
-    
     vecMethod <- c("cosine", "correlation", "jaccard", "eJaccard", "dice", "eDice", "simple matching", "hamann", "faith")
+    
     if (method %in% vecMethod) {
         if (method == "simple matching") method <- "smc"
-        result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
+        temp <- get(paste0(method, "_sparse"))(x, y, margin = ifelse(margin == "documents", 1, 2))
     } else {
         stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
-        #result <- as.matrix(proxy::dist(as.matrix(x), as.matrix(xSelect), method = method,
-        #                                by_rows = ifelse(margin=="features", FALSE, TRUE)), diag = 1)
     }
     
     # convert NaNs to NA
     # similmatrix[is.nan(similmatrix)] <- NA
     
+<<<<<<< HEAD
     # create a full square matrix if result is calculated only for selected features
     if (length(selection) != 0L) {
         # adjust the order of the rows to put the selected features as the top rows
@@ -118,19 +122,37 @@ textstat_simil <- function(x, selection = character(0), n = NULL,
             x[, seq_len(ncol(result))] <- result
         }
         result <- x
+=======
+    if (!is.null(selection)) {
+        names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
+        temp <- temp[names, , drop = FALSE] # sort for as.dist()
     }
     
-    # truncate to n if n is not NULL
-    if (!is.null(n))
-        result <- result[1:n,]
-        
+    if (!is.null(n)) {
+        n <- min(n, nrow(nrow(temp)))
+        temp <- temp[seq_len(n), , drop = FALSE]
+>>>>>>> master
+    }
+    
     # create a new dist object
-    distM <- stats::as.dist(result, diag = diag, upper = upper)
-    class(distM) <- c("simil", class(distM))
-    attr(distM, "method") <- method
-    attr(distM, "call") <- match.call()
-    # This will call Stats::print.dist() and Stats::as.matrix.dist()
-    distM
+    if (is.null(selection)) {
+        result <- stats::as.dist(temp, diag = diag, upper = upper)
+        class(result) <- c("simil", class(result))
+        attr(result, "method") <- method
+        attr(result, "call") <- match.call()
+        return(result)
+    } else {
+        result <- as.matrix(temp)
+        if(!is.null(rownames(result)))
+            attr(result,"Labels") <- rownames(result)
+        else if(!is.null(colnames(result)))
+            attr(result,"Labels") <- colnames(result)
+        attr(result, "Size") <- ifelse(margin == "documents", nrow(result), ncol(result))
+        attr(result, "method") <- method
+        attr(result, "call") <- match.call()
+        class(result) <- c("dist_selection")
+        return(result)
+    }
 }
 
 
@@ -143,7 +165,7 @@ textstat_simil <- function(x, selection = character(0), n = NULL,
 ##norm1 <- function(x,s) { drop(Matrix::crossprod(abs(x),s)) }
 
 #cosine similarity: xy / sqrt(xx * yy)
-cosineSparse <- function(x, y = NULL, margin = 1) {
+cosine_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     if (margin == 1) x <- t(x)
     S <- rep(1, nrow(x))			
@@ -161,7 +183,7 @@ cosineSparse <- function(x, y = NULL, margin = 1) {
 }
 
 # Pearson correlation
-correlationSparse <- function(x, y = NULL, margin = 1) {
+correlation_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     tcpFun <- if (margin == 2) Matrix::tcrossprod else Matrix::crossprod
@@ -187,7 +209,7 @@ correlationSparse <- function(x, y = NULL, margin = 1) {
 
 # Jaccard similarity (binary), See http://stackoverflow.com/questions/36220585/efficient-jaccard-similarity-documenttermmatrix
 # formula: J = |AB|/(|A| + |B| - |AB|)
-jaccardSparse <- function(x, y = NULL, margin = 1) {
+jaccard_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
@@ -232,7 +254,7 @@ jaccardSparse <- function(x, y = NULL, margin = 1) {
 
 # eJaccard similarity (real-valued data)
 # formula: eJ = |AB|/(|A|^2 + |B|^2 - |AB|)
-eJaccardSparse <- function(x, y = NULL, margin = 1) {
+eJaccard_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
 
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
@@ -264,7 +286,7 @@ eJaccardSparse <- function(x, y = NULL, margin = 1) {
 
 # Dice similarity coefficient, binary
 # formula: dice = 2|AB|/(|A| + |B|)
-diceSparse <- function(x, y = NULL, margin = 1) {
+dice_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
@@ -299,7 +321,7 @@ diceSparse <- function(x, y = NULL, margin = 1) {
 
 # eDice similarity coefficient, extend from binary Dice to real-valued data 
 # formula: eDice = 2|AB|/(|A|^2 + |B|^2)
-eDiceSparse <- function(x, y = NULL, margin = 1) {
+eDice_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
@@ -339,7 +361,7 @@ eDiceSparse <- function(x, y = NULL, margin = 1) {
 
 # simple matching coefficient(SMC) 
 # formula: SMC = (M00+M11)/(M00+M11+M01+M10)
-smcSparse <- function(x, y = NULL, margin = 1) {
+smc_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
@@ -374,7 +396,7 @@ smcSparse <- function(x, y = NULL, margin = 1) {
 # in the two items (present in one and absent from the other).
 # formula: Hamman = ((a+d)-(b+c))/n
 # "Hamman" in proxy::dist
-hamannSparse <- function(x, y = NULL, margin = 1) {
+hamann_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
@@ -407,7 +429,7 @@ hamannSparse <- function(x, y = NULL, margin = 1) {
 # negative match but only gave the half credits while giving
 # the full credits for the positive matches.
 # formula: Hamman = a+0.5d/n
-faithSparse <- function(x, y = NULL, margin = 1) {
+faith_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
@@ -436,11 +458,15 @@ faithSparse <- function(x, y = NULL, margin = 1) {
     faithmat
 }
 
-#' @rdname textstat_simil
+#' Coerce a simil object into a matrix
+#' 
+#' Coerces a simil object, which is a specially classed dist object, into a matrix.
+#' @param x a simil object from \code{\link{textstat_simil}}
 #' @param Diag sets the value for matrix diagonal
 #' @param ... unused
 #' @export
 #' @method as.matrix simil
+#' @keywords textstat internal
 as.matrix.simil <- function(x, Diag = 1L, ...) {
     size <- attr(x, "Size")
     df <- matrix(0, size, size)
@@ -453,3 +479,4 @@ as.matrix.simil <- function(x, Diag = 1L, ...) {
     diag(df) <- Diag
     df
 }
+

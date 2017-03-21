@@ -1,121 +1,111 @@
-#' Distance matrix between documents and/or features 
-#' 
-#' These functions compute distance matrix between documents and/or features from a 
-#' \code{\link{dfm}} and return a standard \code{\link[stats]{dist}} object.  
 #' @rdname textstat_simil
-#' @seealso \link{dfm}
 #' @export
 #' @param p The power of the Minkowski distance.
 #' @details \code{textstat_dist} options are: \code{"euclidean"} (default), 
-#' \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"}, \code{"kullback"}. 
-#' \code{"manhattan"}, \code{"maximum"}, \code{"canberra"}, and \code{"minkowski"}.
+#'   \code{"Chisquared"}, \code{"Chisquared2"}, \code{"hamming"},
+#'   \code{"kullback"}. \code{"manhattan"}, \code{"maximum"}, \code{"canberra"},
+#'   and \code{"minkowski"}.
 #' @importFrom RcppParallel RcppParallelLibs
 #' @author Kenneth Benoit, Haiyan Wang
 #' @examples
 #' # create a dfm from inaugural addresses from Reagan onwards
-#' presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), 
-#'                remove = stopwords("english"), stem = TRUE)
+#' presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), 
+#'                remove = stopwords("english"), stem = TRUE, removePunct = TRUE)
 #'                
-#' ## distance
+#' # distances for documents 
+#' (d1 <- textstat_dist(presDfm, margin = "documents"))
+#' as.matrix(d1)
 #' 
-#' # compute some document distances
-#' (tmp <- textstat_dist(presDfm, margin = "documents"))
-#' 
-#' # for specific comparisons
-#' textstat_dist(presDfm, "1985-Reagan", n = 5, margin = "documents")
-#' textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents")
-#' textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents")
+#' # distances for specific documents
+#' textstat_dist(presDfm, "2017-Trump", margin = "documents")
 #' textstat_dist(presDfm, "2005-Bush", margin = "documents", method = "eJaccard")
+#' (d2 <- textstat_dist(presDfm, c("2009-Obama" , "2013-Obama"), margin = "documents"))
+#' as.list(d1)
 #' 
-textstat_dist <- function(x, selection = character(0), n = NULL, 
-                         margin = c("documents", "features"),
-                         method = "euclidean",
-                         upper = TRUE, diag = FALSE, p = 2) {
-
-    if (!is.dfm(x))
-        stop("x must be a dfm object")
-
-    # value <- match.arg(value)
-              
+textstat_dist <- function(x, selection = NULL, n = NULL, 
+                          margin = c("documents", "features"),
+                          method = "euclidean",
+                          upper = FALSE, diag = FALSE, p = 2) {
+    UseMethod("textstat_dist")
+}
+    
+#' @noRd
+#' @export
+textstat_dist.dfm <- function(x, selection = NULL, n = NULL, 
+                          margin = c("documents", "features"),
+                          method = "euclidean",
+                          upper = FALSE, diag = FALSE, p = 2) {
     margin <- match.arg(margin)
-    if (margin == "features") {
-        items <- featnames(x)
-        xsize <- dim(x)[2]
+    
+    if (!is.null(selection)) {
+        if (!is.character(selection)) 
+            stop("'selection' should be character or character vector of document names or feature labels.")
+        if (margin == "features") {
+            selection <- intersect(selection, featnames(x))
+            if (!length(selection))
+                stop("The features specified by 'selection' do not exist.")
+            y <- x[, selection, drop = FALSE]
+        } else {
+            selection <- intersect(selection, docnames(x))
+            if (!length(selection))
+                stop("The documents specified by 'selection' do not exist.")
+            y <- x[selection, , drop = FALSE]
+        }
     } else {
-        items <- docnames(x)
-        xsize <- dim(x)[1]
+        y <- NULL
     }
     
-    if (is.null(n) || n >= xsize)
-        n <- xsize # choose all features/docs if n is NULL
+    m <- ifelse(margin == "documents", 1, 2)
     
-    if (length(selection) != 0L) {
-        # retain only existing features or documents
-        selectIndex <- which(items %in% selection)
-        if (length(selectIndex)==0)
-            stop("no such documents or feature labels exist.")
-        
-        if (margin=="features") {
-            xSelect <- x[, selectIndex, drop=FALSE]
-        } else {
-            xSelect <- x[selectIndex, , drop=FALSE]
-        }
-    } else xSelect <- NULL
+    methods1 <- c("euclidean", "hamming", "Chisquared", "Chisquared2", "kullback", "manhattan", "maximum", "canberra")
+    methods2 <- c("jaccard", "binary", "eJaccard", "simple matching")
     
-    vecMethod <- c("euclidean", "hamming", "Chisquared", "Chisquared2", "kullback", "manhattan", "maximum", "canberra")
-    vecMethod_simil <- c("jaccard", "binary", "eJaccard", "simple matching")
-    
-    # # make all lower case
-    # method <- tolower(method)
-    # vecMethod <- tolower(vecMethod)
-    # vecMethod_simil <- tolower(vecMethod_simil)
-    
-    if (method %in% vecMethod) {
-        result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
-    } else if (method == "minkowski"){
-        result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2), p)
-    } else if (method %in% vecMethod_simil) {
+    if (method %in% methods1) {
+        temp <- get(paste0(method, "_sparse"))(x, y, margin = m)
+    } else if (method == "minkowski") {
+        temp <- get(paste0(method, "_sparse"))(x, y, margin = m, p = p)
+    } else if (method %in% methods2) {
         if (method == "binary") method = "jaccard"
-        result <- get(paste(method,"Sparse", sep = ""))(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
+        temp <- get(paste0(method, "_sparse"))(x, y, margin = m)
     } else {
         stop("The metric is not currently supported by quanteda, please use other packages such as proxy::dist()/simil().")
     }
     
-    # convert NaNs to NA
-    # similmatrix[is.nan(similmatrix)] <- NA
-    
-    # create a full square matrix if result is calculated only for selected features
-    if (length(selection) != 0L) {
-        # adjust the order of the rows to put the selected features as the top rows
-        rname <- rownames(result)
-        cname <- colnames(result)
-        rname <- c(cname, rname[!rname %in% cname])
-        result <- result[rname,]
-        
-        # create a full square matrix 
-        nn <- if(length(selection) == 1L) length(result) else nrow(result)
-        rname <- if(length(selection) == 1L) names(result) else rownames(result)
-        x <- Matrix::Matrix(data = 0,nrow = nn,ncol = nn, dimnames = list(rname, rname))
-        if (length(selection) == 1L) {
-            x[, 1] <- result
-        } else {
-            x[, seq_len(ncol(result))] <- result
-        }
-        result <- x
+    if (!is.null(selection)) {
+        names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
+        temp <- temp[names, , drop = FALSE] # sort for as.dist()
+        #temp2 <- sparseMatrix(i = rep(seq_len(nrow(temp)), times = ncol(temp)),
+        #                      j = rep(seq_len(ncol(temp)), each = nrow(temp)),
+        #                      x = as.vector(temp), dims = c(length(names), length(names)),
+        #                      dimnames = list(names, names))
     }
     
-    if (!is.null(n))
-        result <- result[1:n,]
+    
+    if (!is.null(n)) {
+        n <- min(n, nrow(nrow(temp)))
+        temp <- temp[seq_len(n), , drop = FALSE]
+    }
     
     # create a new dist object
-    distM <- stats::as.dist(result, diag = diag, upper = upper)
-    attr(distM, "method") <- method
-    attr(distM, "call") <- match.call()
-    # This will call Stats::print.dist() and Stats::as.matrix.dist()
-    distM
+    if (is.null(selection)) {
+        result <- stats::as.dist(temp, diag = diag, upper = upper)
+        attr(result, "method") <- method
+        attr(result, "call") <- match.call()
+        return(result)
+    } else {
+        result <- as.matrix(temp)
+        if(!is.null(rownames(result)))
+            attr(result,"Labels") <- rownames(result)
+        else if(!is.null(colnames(result)))
+            attr(result,"Labels") <- colnames(result)
+        attr(result, "Size") <- ifelse(margin == "documents", nrow(result), ncol(result))
+        attr(result, "method") <- method
+        attr(result, "call") <- match.call()
+        class(result) <- c("dist_selection")
+        return(result)
+    }
 }
 
-# convert the dist class object to the sorted list used in tm::findAssocs()
 
 #' coerce a dist object into a list
 #' 
@@ -177,13 +167,87 @@ as.list.dist <- function(x, sorted = TRUE, n = NULL, ...) {
     
 }
 
+#' coerce a dist into a dist
+#' 
+#' Internal function to guarantee that a dist remains a dist, if for some reason
+#' a user wants to coerce a dist into a dist.
+#' @keywords textstat internal
+#' @importFrom stats as.dist
+#' @method as.dist dist
+#' @export
+as.dist.dist <- function(m, diag = FALSE, upper = FALSE) {
+    as.dist(as.matrix(m), diag = diag, upper = upper)
+}
+
+
+#' coerce a dist_selection object into a list
+#' 
+#' Coerce a dist_selection matrix into a list of selected terms and tarhet terms in
+#' descending order.  Can be used after calling \code{\link{textstat_simil}} or
+#' \code{\link{textstat_dist}} when selection is not NULL
+#' @param x dist_selection class object
+#' @param sorted sort results in descending order if \code{TRUE}
+#' @param n the top \code{n} highest-ranking items will be returned.  If n is 
+#'   \code{NULL}, return all items.
+#' @param ... unused
+#' @method as.list dist_selection
+#' @keywords textstat internal
+#' @export
+as.list.dist_selection <- function(x, sorted = TRUE, n = NULL, ...) {
+    # convert the matrix to a list of similarities
+    if (!is.null(attr(x, "Labels"))) xLabels <- attr(x, "Labels")
+    result <- lapply(seq_len(ncol(as.matrix(x))), function(i) as.matrix(x)[, i])
+    #attributes(x) <- NULL
+    names(result) <- if (!is.null(xLabels)) xLabels[1:ncol(as.matrix(x))]
+    
+    # remove the element of each similarity vector equal to the item itself
+    tempseq <- seq_along(result)
+    names(tempseq) <- names(result)
+    result <- lapply( tempseq, function(i)
+        result[[i]] <- result[[i]][-which(names(result[[i]]) == names(result)[i])] )
+    
+    # sort each element of the list and return only first n results if n not NULL
+    if (sorted == TRUE)
+        result <- lapply(result, sort, decreasing=TRUE, na.last = TRUE)
+    
+    # truncate to n if n is not NULL
+    if (!is.null(n))
+        result <- lapply(result, "[", 1:n)
+    
+    result
+}
+
+#' print a dist_selection object
+#' 
+#' Print method for a dist_selection object, to make it appear as a data.frame.
+#' @export
+#' @method print dist_selection
+#' @keywords textstat internal
+print.dist_selection <- function(x, ...) {
+    print(as.matrix(x))
+}
+
+#' coerce a dist_selection object to a matrix
+#' 
+#' Coerce a dist_selection object to a plain matrix.
+#' @export
+#' @method as.matrix dist_selection
+#' @keywords textstat internal
+as.matrix.dist_selection <- function(x, ...) {
+    attributes(x)[setdiff(names(attributes(x)), 
+                          c("dimnames", "dim"))] <- NULL
+    class(x) <- "matrix"
+    x
+}
+
+
 ## used Matrix::crossprod and Matrix::tcrossprod for sparse Matrix handling
-euclideanSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
+euclidean_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     marginSums <- if (margin == 2) colSums else rowSums
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod   
-     n <- if (margin == 2) ncol(x) else nrow(x)
-
+    n <- if (margin == 2) ncol(x) else nrow(x)
+    
     if (!is.null(y)) {
         stopifnot(ifelse(margin == 2, nrow(x) == nrow(y), ncol(x) == ncol(y)))
         an <- marginSums(x^2)
@@ -205,7 +269,7 @@ euclideanSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
 
 # Hamming distance
 # formula: hamming = sum(x .!= y)
-hammingSparse <- function(x, y = NULL, margin = 1) {
+hamming_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     
     # convert to binary matrix
@@ -239,7 +303,7 @@ hammingSparse <- function(x, y = NULL, margin = 1) {
 #http://adn.biol.umontreal.ca/~numericalecology/Reprints/Legendre_&_Gallagher.pdf
 # https://www.pcord.com/book.htm
 #formula: Chi = sum((x/rowsum(x_i) - y/rowsum(y_i))^2/(colsum(i)/total))
-ChisquaredSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
+Chisquared_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     marginSums <- if (margin == 2) colSums else rowSums
     marginNames <- if (margin == 2) colnames else rownames
@@ -251,7 +315,7 @@ ChisquaredSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (margin == 1 ) {
         # convert into profiles
         x <- x/marginSums(x)
-    
+        
         # weighted by the average profiles
         x <- x %*% diag(1/aveProfile)
     } else {
@@ -295,7 +359,7 @@ ChisquaredSparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
 
 ## This chi-squared method is used for histogram: sum((x-y)^2/((x+y)))/2
 ##http://www.ariel.ac.il/sites/ofirpele/publications/ECCV2010.pdf
-Chisquared2Sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
+Chisquared2_sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     marginSums <- if (margin == 2) colSums else rowSums
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod   
@@ -330,7 +394,7 @@ Chisquared2Sparse <- function(x, y = NULL, sIndex = NULL, margin = 1){
 # assumption: p(x_i) = 0 implies p(y_i)=0 and in case both p(x_i) and p(y_i) equals to zero, 
 # p(x_i)*log(p(x_i)/p(y_i)) is assumed to be zero as the limit value.
 # formula: sum(p(x)*log(p(x)/p(y)))
-kullbackSparse <- function(x, y = NULL, margin = 1) {
+kullback_sparse <- function(x, y = NULL, margin = 1) {
     if (!(margin %in% 1:2)) stop("margin can only be 1 (rows) or 2 (columns)")
     cpFun <- if (margin == 2) Matrix::crossprod else Matrix::tcrossprod
     marginSums <- if (margin == 2) colSums else rowSums
@@ -358,7 +422,7 @@ kullbackSparse <- function(x, y = NULL, margin = 1) {
 }
 
 # Manhattan distance: sum_i |x_i - y_i|
-manhattanSparse <- function(x, y=NULL, margin = 1){
+manhattan_sparse <- function(x, y=NULL, margin = 1){
     marginNames <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
         colNm <- marginNames(y)
@@ -372,7 +436,7 @@ manhattanSparse <- function(x, y=NULL, margin = 1){
 }
 
 # Maximum/Supremum distance: max_i |x_i - y_i|
-maximumSparse <- function(x, y=NULL, margin = 1){
+maximum_sparse <- function(x, y=NULL, margin = 1){
     marginNames <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
         colNm <- marginNames(y)
@@ -387,7 +451,7 @@ maximumSparse <- function(x, y=NULL, margin = 1){
 
 # Canberra distance: sum_i |x_i - y_i| / |x_i + y_i|
 # Weighted by num_nonzeros_elementsum/num_element
-canberraSparse <- function(x, y=NULL, margin = 1){
+canberra_sparse <- function(x, y=NULL, margin = 1){
     marginNames <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
         colNm <- marginNames(y)
@@ -401,7 +465,7 @@ canberraSparse <- function(x, y=NULL, margin = 1){
 }
 
 # Minkowski distance: (sum_i (x_i - y_i)^p)^(1/p)
-minkowskiSparse <- function(x, y=NULL, margin = 1, p = 2){
+minkowski_sparse <- function(x, y=NULL, margin = 1, p = 2){
     marginNames <- if (margin == 2) colnames else rownames
     if (!is.null(y)) {
         colNm <- marginNames(y)

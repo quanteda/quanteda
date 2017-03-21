@@ -27,9 +27,9 @@ summary(myCorpus, n = 5, showmeta = TRUE)
 #  mytf1 <- readtext("~/Dropbox/QUANTESS/social media/zombies/tweets.json")
 #  myCorpusTwitter <- corpus(mytf1)
 #  summary(myCorpusTwitter, 5)
-#  # generic json - needs a textField specifier
+#  # generic json - needs a textfield specifier
 #  mytf2 <- readtext("~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json",
-#                    textField = "text")
+#                    textfield = "text")
 #  summary(corpus(mytf2), 5)
 #  # text file
 #  mytf3 <- readtext("~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt", cache = FALSE)
@@ -39,16 +39,17 @@ summary(myCorpus, n = 5, showmeta = TRUE)
 #  summary(corpus(mytf4), 5)
 #  # multiple text files with docvars from filenames
 #  mytf5 <- readtext("~/Dropbox/QUANTESS/corpora/inaugural/*.txt",
-#                    docvarsfrom="filenames", sep="-", docvarnames=c("Year", "President"))
+#                    docvarsfrom = "filenames", sep = "-", docvarnames = c("Year", "President"))
 #  summary(corpus(mytf5), 5)
 #  # XML data
 #  mytf6 <- readtext("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml",
-#                    textField = "COMMON")
+#                    textfield = "COMMON")
 #  summary(corpus(mytf6), 5)
 #  # csv file
-#  write.csv(data.frame(inaugSpeech = texts(data_corpus_inaugural), docvars(data_corpus_inaugural)),
-#            file = "/tmp/inaug_texts.csv", row.names = FALSE)
-#  mytf7 <- readtext("/tmp/inaug_texts.csv", textField = "inaugSpeech")
+#  write.csv(data.frame(inaugSpeech = texts(data_corpus_inaugural),
+#                       docvars(data_corpus_inaugural)),
+#            file = "/tmp/inaug_texts.csv", row.names = FALSE)b
+#  mytf7 <- readtext("/tmp/inaug_texts.csv", textfield = "inaugSpeech")
 #  summary(corpus(mytf7), 5)
 
 ## ------------------------------------------------------------------------

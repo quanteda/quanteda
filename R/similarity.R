@@ -96,9 +96,9 @@ setMethod("similarity",
                } else xSelect <- NULL
 
                if (method == "cosine") {
-                   similmatrix <- cosineSparse(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
+                   similmatrix <- cosine_sparse(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
                } else if (method == "correlation") {
-                   similmatrix <- correlationSparse(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
+                   similmatrix <- correlation_sparse(x, xSelect, margin = ifelse(margin == "documents", 1, 2))
                } else {
                    # use proxy::simil() for all other methods
                    similmatrix <- as.matrix(proxy::simil(as.matrix(x), as.matrix(xSelect), method = method, 
