@@ -26,14 +26,14 @@ Targets range(Text tokens,
     }
     
     Targets targets;
-    size_t len = tokens_pos.size();
+    size_t last = tokens_pos.size();
     size_t start, end;
-    for (size_t k = 0; k < tokens_pos.size(); k++) {
+    for (size_t k = 0; k <= tokens_pos.size(); k++) {
         if ((k == 0 || tokens_pos[k - 1] == 0) && tokens_pos[k] == 1) {
             start = k;
             //Rcout << "starts " << start << "\n";
         }
-        if (tokens_pos[k - 1] == 1 && (k == len - 1 || tokens_pos[k] == 0)) {
+        if (tokens_pos[k - 1] == 1 && (k == last || tokens_pos[k] == 0)) {
             end = k - 1;
             //Rcout << "ends " << end << "\n";
             targets.push_back(make_pair(start, end));
@@ -107,7 +107,7 @@ DataFrame qatd_cpp_kwic(const List &texts_,
         len += output[h].size();
     }
     
-    std::vector<int> pos(len);
+    std::vector<int> pos_from(len), pos_to(len);
     CharacterVector coxs_name_(len), coxs_pre_(len), coxs_target_(len), coxs_post_(len);
     Texts contexts(len);
     std::vector<int>  documents(len);
@@ -121,7 +121,7 @@ DataFrame qatd_cpp_kwic(const List &texts_,
         for (size_t i = 0; i < targets.size(); i++) {
             int from = targets[i].first - window;
             int to = targets[i].second + window;
-            //Rcout << j << " " << from << ":" << to << "\n";
+            //Rcout << j << " " << targets[i].first << ":" << targets[i].second << "\n";
             
             // Save as intergers
             Text context(tokens.begin() + std::max(0, from), tokens.begin() + std::min(to, last) + 1);
@@ -129,11 +129,12 @@ DataFrame qatd_cpp_kwic(const List &texts_,
             documents[j] = (int)h + 1;
             
             // Save as strings
-            Text cox_pre(tokens.begin() + std::max(0, from), tokens.begin() + targets[i].first + 1);
-            Text cox_target(tokens.begin() + targets[i].first + 1, tokens.begin() + targets[i].second + 1);
+            Text cox_pre(tokens.begin() + std::max(0, from), tokens.begin() + targets[i].first);
+            Text cox_target(tokens.begin() + targets[i].first, tokens.begin() + targets[i].second + 1);
             Text cox_post(tokens.begin() + targets[i].second + 1, tokens.begin() + std::min(to, last) + 1);
             
-            pos[j] = targets[i].first;
+            pos_from[j] = targets[i].first + 1;
+            pos_to[j] = targets[i].second + 1;
             coxs_pre_[j] = get_text(cox_pre, types_);
             coxs_target_[j] = get_text(cox_target, types_);
             coxs_post_[j] = get_text(cox_post, types_);
@@ -142,10 +143,11 @@ DataFrame qatd_cpp_kwic(const List &texts_,
         }
     }
     
-    DataFrame output_ = DataFrame::create(_["document"] = coxs_name_,
-                                          _["position"] = pos,
+    DataFrame output_ = DataFrame::create(_["docname"] = coxs_name_,
+                                          _["from"] = pos_from,
+                                          _["to"] = pos_to,
                                           _["pre"]      = coxs_pre_,
-                                          _["target"]   = coxs_target_,
+                                          _["keyword"]   = coxs_target_,
                                           _["post"]     = coxs_post_,
                                           _["stringsAsFactors"] = false);
     output_.attr("docs") = documents;
@@ -163,7 +165,7 @@ toks <- list(text1=1:10, text2=5:15)
 #toks <- rep(list(rep(1:10, 1), rep(5:15, 1)), 1)
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 #qatd_cpp_tokens_contexts(toks, dict, 2)
-qatd_cpp_kwic(toks, letters, list(c(3, 4), 7), 3)
-qatd_cpp_kwic(toks, letters, list(c(3, 4), 7), 3)
+qatd_cpp_kwic(toks, letters, list(10), 3)
+qatd_cpp_kwic(toks, letters, list(c(3, 4), 7), 2)
 
 */

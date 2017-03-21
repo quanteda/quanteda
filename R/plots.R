@@ -114,9 +114,11 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
     kwics <- list(...)
     if (!all(vapply(kwics, is.kwic, logical(1))))
         stop("objects to plot must be kwic objects")
-
+    
     # create a data.table from the kwic arguments
     x <- data.table(do.call(rbind, kwics))
+    # use old variable name
+    x[, position := from]
     # get the vector of ntokens
     ntokensByDoc <- unlist(lapply(kwics, attr, "ntoken"))
     # add ntokens to data.table as an indexed "merge"
@@ -154,8 +156,8 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
         x[, docname:=factor(docname, levels=levels(docname)[order(levels(docname))])]
 
     # convert character positions to first integer value in range
-    if (is.character(x[, position]))
-        x[, position := as.integer(sapply(strsplit(position, ":"), "[", 1))]
+    # if (is.character(x[, position]))
+    #    x[, position := as.integer(sapply(strsplit(position, ":"), "[", 1))]
 
     if (scale == 'relative')
         x[, position := position/ntokens]

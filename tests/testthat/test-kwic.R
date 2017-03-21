@@ -33,11 +33,11 @@ test_that("test kwic general", {
     
     dtf <- data.frame(
         docname = factor('text1'),
-        # position = "4:4",
-        position = 4,
-        contextPre = ' A B C',
+        from = 4L,
+        to = 4L,
+        pre = 'A B C',
         keyword = 'D',
-        contextPost = 'E F G H I',
+        post = 'E F G H I',
         stringsAsFactors = FALSE)
     
     expect_equal(
@@ -49,19 +49,6 @@ test_that("test kwic general", {
     expect_equal(
         data.frame(testkwic),
         dtf) 
-    
-    dtf_old <- data.frame(
-        docname = factor('text1'),
-        # position = "4:4",
-        position = 4,
-        contextPre = 'A B C',
-        keyword = 'D',
-        contextPost = 'E F G H I',
-        stringsAsFactors = FALSE)
-    testkwic_old <- kwic_old(tokens(paste(LETTERS, collapse=' ')), 'D', new = FALSE)
-    expect_equal(
-        data.frame(testkwic_old),
-        dtf_old) 
 })
 
 
@@ -71,11 +58,11 @@ test_that("test kwic on first token", {
         data.frame(testkwic),
         equals(data.frame(
             docname = factor('text1'),
-            # position = "1:1",
-            position = 1,
-            contextPre = '',
+            from = 1L,
+            to = 1L,
+            pre = '',
             keyword = 'A',
-            contextPost = 'B C D E F',
+            post = 'B C D E F',
             stringsAsFactors = FALSE
         ))
     )
@@ -88,11 +75,11 @@ test_that("test kwic on last token", {
         data.frame(testkwic),
         equals(data.frame(
             docname = factor('text1'),
-            # position = "26:26",
-            position = 26,
-            contextPre = 'U V W X Y',
+            from = 26L,
+            to = 26L,
+            pre = 'U V W X Y',
             keyword = 'Z',
-            contextPost = '',
+            post = '',
             stringsAsFactors = FALSE
         ))
     )
@@ -105,10 +92,11 @@ test_that("test kwic on two tokens", {
         data.frame(testkwic),
         equals(data.frame(
             docname = factor('text1'),
-            position = '4:5',
-            contextPre = ' A B C',
+            from = 4L,
+            to = 5L,
+            pre = 'A B C',
             keyword = 'D E',
-            contextPost = 'F G H I J',
+            post = 'F G H I J',
             stringsAsFactors = FALSE
         ))
     )
@@ -116,7 +104,7 @@ test_that("test kwic on two tokens", {
 
 test_that("test kwic on non-existant token", {
     testkwic <- kwic(paste(LETTERS, collapse=' '), 'É')
-    expect_true( is.data.frame(testkwic) )
+    expect_true(is.null(testkwic) )
 })
 
 test_that("test kwic on multiple texts", {
@@ -129,12 +117,12 @@ test_that("test kwic on multiple texts", {
         data.frame(testkwic),
         equals(data.frame(
             docname = factor('text2'),
-            # position = "1:1",
-            position = 1,
-            contextPre='',
-            keyword='A',
-            contextPost='B C D E F',
-            stringsAsFactors=FALSE
+            from = 1L,
+            to = 1L,
+            pre = '',
+            keyword = 'A',
+            post = 'B C D E F',
+            stringsAsFactors = FALSE
         ))
     )
 })
@@ -148,12 +136,12 @@ test_that("test kwic with multiple matches", {
         data.frame(testkwic),
         equals(data.frame(
             docname = factor(c('text1', 'text1')),
-            # position = c("1:1", "27:27"),
-            position = c(1, 27),
-            contextPre = c('', 'V W X Y Z'),
-            keyword=c('A', 'A'),
-            contextPost=c('B C D E F', 'B C D E F'),
-            stringsAsFactors=F
+            from = c(1L, 27L),
+            to = c(1L, 27L),
+            pre = c('', 'V W X Y Z'),
+            keyword = c('A', 'A'),
+            post = c('B C D E F', 'B C D E F'),
+            stringsAsFactors = F
         ))
     )
 })
@@ -164,12 +152,12 @@ test_that("test kwic with multiple matches, where one is the last (fixed bug)", 
         data.frame(testkwic),
         equals(data.frame(
             docname = factor(c('text1', 'text1')),
-            # position = c("4:4", "6:6"),
-            position = c(4, 6),
-            contextPre=c(' what does the', 'what does the fox say'),
-            keyword=c('fox', 'fox'),
-            contextPost=c('say fox ', ''),
-            stringsAsFactors=F
+            from = c(4L, 6L),
+            to = c(4L, 6L),
+            pre = c('what does the', 'what does the fox say'),
+            keyword = c('fox', 'fox'),
+            post = c('say fox', ''),
+            stringsAsFactors = F
         ))
     )
 })
@@ -229,32 +217,20 @@ test_that("is.kwic works as expected", {
 
 test_that("textplot_xray works with new kwic, one token phrase", {
     data_corpus_inauguralPost70 <- corpus_subset(data_corpus_inaugural, Year > 1970)
-    knew <- kwic(data_corpus_inauguralPost70, "american", new = TRUE)
-    kold <- kwic(data_corpus_inauguralPost70, "american", new = FALSE)
-    expect_silent(textplot_xray(kold))
+    knew <- kwic(data_corpus_inauguralPost70, "american")
     expect_silent(textplot_xray(knew))
 })
 
 test_that("textplot_xray works with new kwic, two token phrase", {
     data_corpus_inauguralPost70 <- corpus_subset(data_corpus_inaugural, Year > 1970)
     knew <- kwic(data_corpus_inauguralPost70, "american people", new = TRUE)
-    kold <- kwic(data_corpus_inauguralPost70, "american people", new = FALSE)
-    expect_silent(textplot_xray(kold))
     expect_silent(textplot_xray(knew))
 })
 
 test_that("textplot_xray works with new kwic, two token phrase", {
     data_corpus_inauguralPost70 <- corpus_subset(data_corpus_inaugural, Year > 1970)
     knew <- kwic(data_corpus_inauguralPost70, "american people", new = TRUE)
-    kold <- kwic(data_corpus_inauguralPost70, "american people", new = FALSE)
-    expect_silent(textplot_xray(kold))
     expect_silent(textplot_xray(knew))
-})
-
-test_that("as.kwic works as expected", {
-    kold <- kwic(data_corpus_inaugural, "provident*", new = FALSE)
-    expect_true(setequal(class(as.kwic(kold)), c("kwic", "data.frame")))
-    
 })
 
 test_that("print method works as expected", {
@@ -267,11 +243,7 @@ test_that("print method works as expected", {
 })
 
 test_that("print method (kwic_old) works as expected", {
-    testkwic <- kwic('what does the fox say fox', 'fox', new = FALSE)
+    testkwic <- kwic('what does the fox say fox', 'fox')
     expect_output(print(testkwic), "*\\[*fox*\\]*")
     expect_output(print(testkwic), "\\[text1, 4\\]*")
-    expect_output(print(testkwic), "*contextPre keyword contextPost*")
-    
-    testkwic <- kwic('what does the fox say fox', 'foox', new = FALSE)
-    expect_true(setequal(testkwic, NA))
 })

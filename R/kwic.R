@@ -88,12 +88,13 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     types <- types(x)
     keywords_id <- regex2id(keywords, types, valuetype, case_insensitive, FALSE)
     result <- qatd_cpp_kwic(x, types, keywords_id, window)
-    result$document <- as.factor(result$document)
+    result$docname <- as.factor(result$docname)
     
     if (!nrow(result)) 
         return(NULL)
     
     # add attributes for kwic object
+    attr(result, "ntoken")  <- ntoken(x)
     attr(result, "valuetype") <- valuetype
     attr(result, "keywords") <- sapply(keywords, paste, collapse = " ")
     class(result) <- c("kwic", "data.frame")
@@ -128,12 +129,12 @@ print.kwic <- function(x, ...) {
     kwic <- data.frame(
         pre = format(stringi::stri_replace_all_regex(x$pre, "(\\w*) (\\W)", "$1$2"), justify="right"),
         s1 = rep('|', nrow(x)),
-        keyword = format(x$target, justify="centre"),
+        keyword = format(x$keyword, justify="centre"),
         s2 = rep('|', nrow(x)),
         post = format(stringi::stri_replace_all_regex(x$post, "(\\w*) (\\W)", "$1$2"), justify="left")
     )
     colnames(kwic) <- NULL
-    rownames(kwic) <- stringi::stri_c("[", x$document, ", ", x$position, "]")
+    rownames(kwic) <- stringi::stri_c("[", x$docname, ", ", x$from, ':', x$to, "]")
     print(kwic)
 }
 
@@ -142,7 +143,7 @@ print.kwic <- function(x, ...) {
 #' @method as.tokens kwic
 as.tokens.kwic <- function(x) {
     toks <- attr(x, 'ids')
-    names(toks) <- x$document
+    names(toks) <- x$docname
     attr(toks, 'types') <- attr(x, 'types')
     attr(toks, 'docs') <- attr(x, 'docs') # we might not need this if names are original document names
     class(toks) <- c("tokens", "tokenizedTexts")
