@@ -7,11 +7,12 @@
 \alias{fcm_remove}
 \title{select features from a dfm or fcm}
 \usage{
-dfm_select(x, features = NULL, selection = c("keep", "remove"),
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  min_nchar = 1, max_nchar = 63, verbose = FALSE, ...)
+dfm_select(x, features = NULL, documents = NULL, selection = c("keep",
+  "remove"), valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE, min_nchar = 1, max_nchar = 63,
+  padding = FALSE, verbose = getOption("verbose"), ...)
 
-dfm_remove(x, features = NULL, ...)
+dfm_remove(x, features = NULL, documents = NULL, ...)
 
 fcm_select(x, features = NULL, selection = c("keep", "remove"),
   valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
@@ -26,6 +27,9 @@ fcm_remove(x, features, ...)
 \link{dfm} whose features will be used for selection, or a dictionary class
 object whose values (not keys) will provide the features to be selected. 
 For \link{dfm} objects, see details in the Value section below.}
+
+\item{documents}{select documents based on their document names. Works exactly 
+the same as features.}
 
 \item{selection}{whether to \code{keep} or \code{remove} the features}
 
@@ -42,6 +46,10 @@ in characters for features to be removed or kept; defaults are 1 and
 applied after (and hence, in addition to) any selection based on pattern
 matches.}
 
+\item{padding}{if \code{TRUE} features or documents not existing in x is 
+added to \link{dfm}. This option is available only when selection is 
+\code{keep} and valuetype is \code{fixed}.}
+
 \item{verbose}{if \code{TRUE} print message about how many features were 
 removed}
 
@@ -49,18 +57,19 @@ removed}
 \code{\link[stringi]{stri_detect_regex}}}
 }
 \value{
-A dfm or fcm after the feature selection has been applied.
+A \link{dfm} or \link{fcm} object, after the feature selection has been applied.
   
-  When \code{features} is a \link{dfm} object, then the returned object will 
-  be identical in its feature set to the dfm supplied as the \code{features} 
-  argument.  This means that any features in \code{x} not in \code{features} 
-  will be discarded, and that any features in found in the dfm supplied as 
-  \code{features} but not found in \code{x} will be added with all zero 
-  counts.  This is useful when you have trained a model on one dfm, and need 
-  to project this onto a test set whose features must be identical.
+  When \code{features} is a \link{dfm} object and \code{padding} is \code{TRUE} , 
+  then the returned object will be identical in its feature set to the dfm 
+  supplied as the \code{features} argument. This means that any features in 
+  \code{x} not in \code{features} will be discarded, and that any features in 
+  found in the dfm supplied as \code{features} but not found in \code{x} will 
+  be added with all zero counts.  This is useful when you have trained a model 
+  on one dfm, and need to project this onto a test set whose features must be 
+  identical.  See examples.
 }
 \description{
-This function selects or discards features from a dfm or fcm, based on a 
+This function selects or discards features from a \link{dfm} or \link{fcm}, based on a 
 pattern match with the feature names.   The most common usages are to 
 eliminate features from a dfm already constructed, such as stopwords, or to 
 select only terms of interest from a dictionary.
@@ -84,26 +93,20 @@ mydict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
                           notintext = "blahblah"))
 dfm_select(myDfm, mydict)
 dfm_select(myDfm, mydict, case_insensitive = FALSE)
-dfm_select(myDfm, c("s$", ".y"), "keep")
-dfm_select(myDfm, c("s$", ".y"), "keep", valuetype = "regex")
-dfm_select(myDfm, c("s$", ".y"), "remove", valuetype = "regex")
-dfm_select(myDfm, stopwords("english"), "keep", valuetype = "fixed")
-dfm_select(myDfm, stopwords("english"), "remove", valuetype = "fixed")
+dfm_select(myDfm, c("s$", ".y"), selection = "keep", valuetype = "regex")
+dfm_select(myDfm, c("s$", ".y"), selection = "remove", valuetype = "regex")
+dfm_select(myDfm, stopwords("english"), selection = "keep", valuetype = "fixed")
+dfm_select(myDfm, stopwords("english"), selection = "remove", valuetype = "fixed")
 
 # select based on character length
 dfm_select(myDfm, min_nchar = 5)
 
 # selecting on a dfm
-textVec1 <- c("This is text one.", "This, the second text.", "Here: the third text.")
-textVec2 <- c("Here are new words.", "New words in this text.")
-(dfm1 <- dfm(textVec1, verbose = FALSE))
-(dfm2a <- dfm(textVec2, verbose = FALSE))
-(dfm2b <- dfm_select(dfm2a, dfm1))
-setequal(featnames(dfm1), featnames(dfm2b))
-
-# more selection on a dfm
-dfm_select(dfm1, dfm2a)
-dfm_select(dfm1, dfm2a, selection = "remove")
+txts <- c("This is text one", "This is text two", "This is text three")
+(dfm1 <- dfm(txts[1:2], verbose = FALSE))
+(dfm2 <- dfm(txts[2:3], verbose = FALSE))
+(dfm3 <- dfm_select(dfm1, dfm2, valuetype = "fixed", padding = TRUE, verbose = TRUE))
+setequal(featnames(dfm2), featnames(dfm3))
 
 tmpdfm <- dfm(c("This is a document with lots of stopwords.",
                 "No if, and, or but about it: lots of stopwords."),

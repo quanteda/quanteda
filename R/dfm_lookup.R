@@ -51,7 +51,7 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
                        exclusive = TRUE, valuetype = c("glob", "regex", "fixed"), 
                        case_insensitive = TRUE,
                        capkeys = !exclusive,
-                       verbose = TRUE) {
+                       verbose = getOption("verbose")) {
     
     if (!is.dfm(x))
         stop("x must be a dfm object")
@@ -79,7 +79,7 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
     } # else if (valuetype == "fixed")
     # dictionary <- lapply(dictionary, function(x) paste0("^", x, "$"))
     
-    newDocIndex <- rep(1:nrow(x), length(dictionary))
+    newDocIndex <- rep(seq_len(nrow(x)), length(dictionary))
     newFeatures <- names(dictionary)
     uniqueFeatures <- featnames(x)
     newFeatureIndexList <- lapply(dictionary, function(x) {
@@ -104,7 +104,7 @@ dfm_lookup <- function(x, dictionary, levels = 1:5,
                                            rep(0, nrow(x))
                                    })
     dfmresult2 <- new("dfmSparse", sparseMatrix(i = newDocIndex,
-                                                j = rep(1:length(dictionary), each = ndoc(x)),
+                                                j = rep(seq_along(dictionary), each = ndoc(x)),
                                                 x = unlist(newFeatureCountsList),
                                                 dimnames=list(docs = docnames(x), 
                                                               features = newFeatures)))

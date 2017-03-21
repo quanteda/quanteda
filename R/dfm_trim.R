@@ -46,7 +46,7 @@
 #' dfm_trim(myDfm, min_docfreq = 0.4, min_count = 0.005)
 #' 
 #' \dontrun{
-#' # compare to removeSpareTerms from the tm package 
+#' # compare to removeSparseTerms from the tm package 
 #' if (require(tm)) {
 #'     (tmdtm <- convert(myDfm, "tm"))
 #'     removeSparseTerms(tmdtm, 0.7)
@@ -55,14 +55,14 @@
 #' }
 #' }
 #' @export
-dfm_trim <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, max_docfreq = NULL, sparsity = NULL, verbose = FALSE) {
+dfm_trim <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, max_docfreq = NULL, sparsity = NULL, verbose = getOption("verbose")) {
     UseMethod("dfm_trim")
 }
  
 #' @export
 #' @rdname dfm_trim
 #' @noRd
-dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, max_docfreq = NULL, sparsity = NULL, verbose = FALSE) {
+dfm_trim.dfm <- function(x, min_count = 1, min_docfreq = 1, max_count = NULL, max_docfreq = NULL, sparsity = NULL, verbose = getOption("verbose")) {
 
     # if (missing(min_count) & missing(min_docfreq) & missing(max_count) & missing(max_docfreq) & missing(sparsity)) {
     #     catm("No features removed.", appendLF = TRUE)

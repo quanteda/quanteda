@@ -106,7 +106,7 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
         if (!sum(stringi::stri_detect_charclass(delimiter, c("[*?]"))))
             valuetype <- "fixed"
         else {
-            features <- sapply(delimiter, utils::glob2rx, USE.NAMES = FALSE)
+            features <- vapply(delimiter, utils::glob2rx, character(1), USE.NAMES = FALSE)
             valuetype <- "regex"
         }
     }
@@ -123,7 +123,7 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
                              fixed = (valuetype == "fixed"))[[1]]
         tags <- character()
         length(tags) <- ndoc(newCorpus)
-        for (i in 1:length(tagIndex))
+        for (i in seq_along(tagIndex))
             tags[i] <- substr(cattxt, start = tagIndex[i],
                               stop = tagIndex[i] + attr(tagIndex, "match.length")[i] - 1)
         # remove white space at both ends
@@ -174,7 +174,7 @@ char_segment <- function(x, what = c("sentences", "paragraphs", "tokens", "tags"
         if (!sum(stringi::stri_detect_charclass(delimiter, c("[*?]"))))
             valuetype <- "fixed"
         else {
-            features <- sapply(delimiter, utils::glob2rx, USE.NAMES = FALSE)
+            features <- vapply(delimiter, utils::glob2rx, character(1), USE.NAMES = FALSE)
             valuetype <- "regex"
         }
     }

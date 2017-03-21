@@ -11,7 +11,7 @@ compareSizes <- function(texts, ...) {
     toks <- tokenize(texts, ...)
     toksUnlisted <- unlist(toks, use.names = TRUE)
     toksUnlisted.unnamed <- unlist(toks, use.names = FALSE)
-    toksDT <- data.table(docIndex = rep(1:length(toks), times = lengths(toks)), token = toksUnlisted)
+    toksDT <- data.table(docIndex = rep(seq_along(toks), times = lengths(toks)), token = toksUnlisted)
     tokSize <- object.size(toks)
     unlistedtokSize <- object.size(toksUnlisted)
     unlistedtokSize.unnamed <- object.size(toksUnlisted.unnamed)

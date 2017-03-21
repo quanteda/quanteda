@@ -139,11 +139,15 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL, text_field = "t
         stopifnot(length(docnames)==length(x))
         names(x) <- docnames
     } else if (is.null(x_names)) {
-        names(x) <- paste("text", 1:length(x), sep="")
+        names(x) <- paste("text", seq_along(x), sep="")
     } else if (is.null(names(x))) {
         # if they previously existed, but got obliterated by a stringi function
         names(x) <- x_names
     }
+
+    # ensure that docnames are unique
+    if (any(duplicated(names(x))))
+        names(x) <- make.unique(names(x))
 
     # create document-meta-data
     if (is.null(metacorpus$source)) {
@@ -237,7 +241,7 @@ corpus.data.frame <- function(x, docnames = NULL, docvars = NULL, text_field = "
     
     corpus(x[, text_fieldi], 
            docvars = x[, -text_fieldi, drop = FALSE],
-           docnames = if (!identical(row.names(x), as.character(1:nrow(x)))) row.names(x) else NULL, #paste0("text", 1:nrow(x)),
+           docnames = if (!identical(row.names(x), as.character(seq_len(nrow(x))))) row.names(x) else NULL, 
            metacorpus = metacorpus, compress = compress, ...)
 }
 
@@ -293,11 +297,11 @@ corpus.VCorpus <- function(x, docnames = NULL, docvars = NULL, text_field = "tex
     texts <- sapply(x$content, "[[", "content")
     # paste together texts if they appear to be vectors
     if (any(lengths(texts) > 1))
-        texts <- sapply(texts, paste, collapse = " ")
+        texts <- vapply(texts, paste, character(1), collapse = " ")
     
     # special handling for VCorpus meta-data
-    metad <- as.data.frame(do.call(rbind, (lapply(x$content, "[[", "meta"))),
-                           stringsAsFactors = FALSE, row.names = NULL)
+    metad <- data.frame(do.call(rbind, (lapply(x$content, "[[", "meta"))),
+                        stringsAsFactors = FALSE, row.names = NULL)
     makechar <- function(x) gsub("character\\(0\\)", NA, as.character(x))
     datetimestampIndex <- which(names(metad) == "datetimestamp")
     metad[, -datetimestampIndex] <- apply(metad[, -datetimestampIndex], 2, makechar)

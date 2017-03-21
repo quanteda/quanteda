@@ -128,6 +128,8 @@ R-based method</dd>
 #&gt; $two
 #&gt; [1] 1 2 3 4
 #&gt; 
+#&gt; attr(,&quot;padding&quot;)
+#&gt; [1] FALSE
 #&gt; attr(,&quot;types&quot;)
 #&gt; [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot;
 #&gt; attr(,&quot;what&quot;)
@@ -135,9 +137,7 @@ R-based method</dd>
 #&gt; attr(,&quot;ngrams&quot;)
 #&gt; [1] 1
 #&gt; attr(,&quot;concatenator&quot;)
-#&gt; [1] &quot;&quot;
-#&gt; attr(,&quot;padding&quot;)
-#&gt; [1] FALSE</div><div class='input'>
+#&gt; [1] &quot;&quot;</div><div class='input'>
 <span class='co'># stemming</span>
 <span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"Stemming stemmed many word stems."</span>)
 <span class='fu'>unclass</span>(<span class='no'>toks2</span>)</div><div class='output co'>#&gt; [[1]]
@@ -155,6 +155,8 @@ R-based method</dd>
 #&gt; [1] FALSE</div><div class='input'><span class='fu'>unclass</span>(<span class='kw'>quanteda</span><span class='kw'>:::</span><span class='fu'>tokens_hashed_recompile</span>(<span class='fu'><a href='tokens_wordstem.html'>tokens_wordstem</a></span>(<span class='no'>toks2</span>)))</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1 2 3 4 2 5
 #&gt; 
+#&gt; attr(,&quot;padding&quot;)
+#&gt; [1] FALSE
 #&gt; attr(,&quot;types&quot;)
 #&gt; [1] &quot;Stem&quot; &quot;stem&quot; &quot;mani&quot; &quot;word&quot; &quot;.&quot;   
 #&gt; attr(,&quot;what&quot;)
@@ -162,9 +164,7 @@ R-based method</dd>
 #&gt; attr(,&quot;ngrams&quot;)
 #&gt; [1] 1
 #&gt; attr(,&quot;concatenator&quot;)
-#&gt; [1] &quot;&quot;
-#&gt; attr(,&quot;padding&quot;)
-#&gt; [1] FALSE</div><div class='input'>
+#&gt; [1] &quot;&quot;</div><div class='input'>
 <span class='co'># compounding</span>
 <span class='no'>toks3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"One two three four."</span>)
 <span class='fu'>unclass</span>(<span class='no'>toks3</span>)</div><div class='output co'>#&gt; [[1]]
@@ -182,6 +182,8 @@ R-based method</dd>
 #&gt; [1] FALSE</div><div class='input'><span class='fu'>unclass</span>(<span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='no'>toks3</span>, <span class='st'>"two three"</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1 4 2 3
 #&gt; 
+#&gt; attr(,&quot;padding&quot;)
+#&gt; [1] FALSE
 #&gt; attr(,&quot;types&quot;)
 #&gt; [1] &quot;One&quot;       &quot;four&quot;      &quot;.&quot;         &quot;two_three&quot;
 #&gt; attr(,&quot;what&quot;)
@@ -189,14 +191,14 @@ R-based method</dd>
 #&gt; attr(,&quot;ngrams&quot;)
 #&gt; [1] 1
 #&gt; attr(,&quot;concatenator&quot;)
-#&gt; [1] &quot;_&quot;
-#&gt; attr(,&quot;padding&quot;)
-#&gt; [1] FALSE</div><div class='input'>
+#&gt; [1] &quot;_&quot;</div><div class='input'>
 <span class='co'># lookup</span>
 <span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'>list</span>(<span class='kw'>test</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"one"</span>, <span class='st'>"three"</span>)))
 <span class='fu'>unclass</span>(<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='no'>toks3</span>, <span class='no'>dict</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1 1
 #&gt; 
+#&gt; attr(,&quot;padding&quot;)
+#&gt; [1] FALSE
 #&gt; attr(,&quot;types&quot;)
 #&gt; [1] &quot;test&quot;
 #&gt; attr(,&quot;what&quot;)
@@ -205,16 +207,26 @@ R-based method</dd>
 #&gt; [1] 1
 #&gt; attr(,&quot;concatenator&quot;)
 #&gt; [1] &quot;&quot;
-#&gt; attr(,&quot;padding&quot;)
-#&gt; [1] FALSE
 #&gt; attr(,&quot;dictionary&quot;)
-#&gt; attr(,&quot;dictionary&quot;)$test
+#&gt; $test
 #&gt; [1] &quot;one&quot;   &quot;three&quot;
-#&gt; </div><div class='input'>
+#&gt; 
+#&gt; attr(,&quot;concatenator&quot;)
+#&gt; [1] &quot; &quot;
+#&gt; attr(,&quot;format&quot;)
+#&gt; `\001NULL\001`
+#&gt; attr(,&quot;file&quot;)
+#&gt; `\001NULL\001`
+#&gt; attr(,&quot;class&quot;)
+#&gt; [1] &quot;dictionary&quot;
+#&gt; attr(,&quot;class&quot;)attr(,&quot;package&quot;)
+#&gt; [1] &quot;quanteda&quot;</div><div class='input'>
 <span class='co'># empty pads</span>
 <span class='fu'>unclass</span>(<span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>toks3</span>, <span class='no'>dict</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; integer(0)
 #&gt; 
+#&gt; attr(,&quot;padding&quot;)
+#&gt; [1] FALSE
 #&gt; attr(,&quot;types&quot;)
 #&gt; character(0)
 #&gt; attr(,&quot;what&quot;)
@@ -222,11 +234,11 @@ R-based method</dd>
 #&gt; attr(,&quot;ngrams&quot;)
 #&gt; [1] 1
 #&gt; attr(,&quot;concatenator&quot;)
-#&gt; [1] &quot;&quot;
-#&gt; attr(,&quot;padding&quot;)
-#&gt; [1] FALSE</div><div class='input'><span class='fu'>unclass</span>(<span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>toks3</span>, <span class='no'>dict</span>, <span class='kw'>pad</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] &quot;&quot;</div><div class='input'><span class='fu'>unclass</span>(<span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='no'>toks3</span>, <span class='no'>dict</span>, <span class='kw'>pad</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 0 0 0 0 0
 #&gt; 
+#&gt; attr(,&quot;padding&quot;)
+#&gt; [1] TRUE
 #&gt; attr(,&quot;types&quot;)
 #&gt; character(0)
 #&gt; attr(,&quot;what&quot;)
@@ -234,13 +246,13 @@ R-based method</dd>
 #&gt; attr(,&quot;ngrams&quot;)
 #&gt; [1] 1
 #&gt; attr(,&quot;concatenator&quot;)
-#&gt; [1] &quot;&quot;
-#&gt; attr(,&quot;padding&quot;)
-#&gt; [1] TRUE</div><div class='input'>
+#&gt; [1] &quot;&quot;</div><div class='input'>
 <span class='co'># ngrams</span>
 <span class='fu'>unclass</span>(<span class='fu'><a href='tokens_ngrams.html'>tokens_ngrams</a></span>(<span class='no'>toks3</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>3</span>))</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1 2 3 4 5 6 7
 #&gt; 
+#&gt; attr(,&quot;padding&quot;)
+#&gt; [1] FALSE
 #&gt; attr(,&quot;types&quot;)
 #&gt; [1] &quot;One_two&quot;        &quot;two_three&quot;      &quot;three_four&quot;     &quot;four_.&quot;        
 #&gt; [5] &quot;One_two_three&quot;  &quot;two_three_four&quot; &quot;three_four_.&quot;  
@@ -250,8 +262,6 @@ R-based method</dd>
 #&gt; [1] 2 3
 #&gt; attr(,&quot;concatenator&quot;)
 #&gt; [1] &quot;_&quot;
-#&gt; attr(,&quot;padding&quot;)
-#&gt; [1] FALSE
 #&gt; attr(,&quot;skip&quot;)
 #&gt; [1] 0</div><div class='input'>
 </div></pre>

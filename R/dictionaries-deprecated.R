@@ -92,7 +92,7 @@ applyDictionary.tokens <- function(x, dictionary, exclusive = TRUE,
     
     # loop through keys and construct matches 
     #  works only for fixed for now
-    for (key_int in 1:length(dict_tokenized)) {
+    for (key_int in seq_along(dict_tokenized)) {
         # find all matches
         this_key_match_index <- unlist(sapply(dict_tokenized[[key_int]], matchSequence, x))
         # add matches to running total
@@ -111,7 +111,7 @@ applyDictionary.tokens <- function(x, dictionary, exclusive = TRUE,
     keys_matched <- names_keys[j]
     
     # pad any document not included yet, for complete split
-    if (length(emptydocs <- which(!(1:length(names_docs) %in% i)))) {
+    if (length(emptydocs <- which(!(seq_along(names_docs) %in% i)))) {
         i <- c(i, emptydocs)
         keys_matched <- c(keys_matched, rep(NA, length(emptydocs)))
     }
@@ -201,7 +201,7 @@ applyDictionary.tokenizedTexts <- function(x, dictionary, exclusive = TRUE,
     
     # loop through keys and construct matches 
     #  works only for fixed for now
-    for (key_int in 1:length(dict_tokenized)) {
+    for (key_int in seq_along(dict_tokenized)) {
         # find all matches
         this_key_match_index <- unlist(sapply(dict_tokenized[[key_int]], matchSequence, x))
         # add matches to running total
@@ -220,7 +220,7 @@ applyDictionary.tokenizedTexts <- function(x, dictionary, exclusive = TRUE,
     keys_matched <- names_keys[j]
     
     # pad any document not included yet, for complete split
-    if (length(emptydocs <- which(!(1:length(names_docs) %in% i)))) {
+    if (length(emptydocs <- which(!(seq_along(names_docs) %in% i)))) {
         i <- c(i, emptydocs)
         keys_matched <- c(keys_matched, rep(NA, length(emptydocs)))
     }

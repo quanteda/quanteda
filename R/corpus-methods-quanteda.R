@@ -1,10 +1,9 @@
 #' get or set corpus metadata
 #' 
-#' Get or set the corpus-level metadata in a quanteda corpus object.
-#' 
-#' @param x A quanteda corpus object
-#' @param field Metadata field name(s).  If \code{NULL} (default), return all
-#'   metadata names.
+#' Get or set the corpus-level metadata in a \link{corpus} object.
+#' @param x a \link{corpus} object
+#' @param field metadata field name(s);  if \code{NULL} (default), return all
+#'   metadata names
 #' @return For \code{metacorpus}, a list of the metadata fields in the corpus. 
 #'   If a list is not what you wanted, you can wrap the results in \link{unlist}, 
 #'   but this will remove any metadata field that is set to \code{NULL}.
@@ -62,9 +61,9 @@ documents <- function(corp) {
 
 #' get or assign corpus texts
 #' 
-#' Get or replace the texts in a \link{corpus} object, with grouping options. 
+#' Get or replace the texts in a \link{corpus}, with grouping options. 
 #' Works for plain character vectors too, if \code{groups} is a factor.
-#' @param x a quanteda \link{corpus} or character object
+#' @param x a \link{corpus} or character object
 #' @param groups either: a character vector containing the names of document
 #'   variables to be used for grouping; or a factor (or object that can be
 #'   coerced into a factor) equal in length to the number of documents, used for
@@ -119,7 +118,7 @@ texts.character <- function(x, groups = NULL, spacer = "  ") {
     if (is.null(groups)) return(x)
     # if (!is.factor(groups)) stop("groups must be a factor")
     x <- split(x, as.factor(groups))
-    sapply(x, paste, collapse = spacer)
+    vapply(x, paste, character(1), collapse = spacer)
 }
 
 
@@ -132,8 +131,9 @@ texts.character <- function(x, groups = NULL, spacer = "  ") {
 #'   Rather, this sort of processing is better performed through downstream 
 #'   operations.  For instance, do not lowercase the texts in a corpus, or you 
 #'   will never be able to recover the original case.  Rather, apply 
-#'   \code{\link{toLower}} to the corpus and use the result as an input, e.g. to
-#'   \code{\link{tokenize}}.
+#'   \code{\link{tokens_tolower}} after applying 
+#'   \code{\link{tokens}} to a corpus, or use the option \code{tolower = TRUE} in 
+#'   \code{\link{dfm}}..
 #' @examples
 #' BritCorpus <- corpus(c("We must prioritise honour in our neighbourhood.", 
 #'                        "Aluminium is a valourous metal."))

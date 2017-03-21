@@ -5,7 +5,7 @@
 #' create a document-feature matrix
 #' 
 #' Construct a sparse document-feature matrix, from a character, \link{corpus}, 
-#' or \link{tokens} object.
+#' \link{tokens}, or even other \link{dfm} object.
 #' @param x character, \link{corpus}, \link{tokens}, or \link{dfm} object
 #' @param tolower convert all tokens to lowercase
 #' @param stem if \code{TRUE}, stem words
@@ -56,7 +56,6 @@
 #' @seealso  \code{\link{dfm_select}}, \link{dfm-class}
 #' @examples
 #' ## for a corpus
-#' 
 #' corpus_post80inaug <- corpus_subset(data_corpus_inaugural, Year > 1980)
 #' dfm(corpus_post80inaug)
 #' dfm(corpus_post80inaug, tolower = FALSE)
@@ -97,7 +96,7 @@
 #' featnames(dfm(testCorpus, ngrams = 2, select = stopwords("english"), removePunct = TRUE))
 #' featnames(dfm(testCorpus, ngrams = 1:2, select = stopwords("english"), removePunct = TRUE))
 #' 
-#' ## removing stopwords before constructing ngrams
+#' # removing stopwords before constructing ngrams
 #' tokensAll <- tokens(char_tolower(testText), removePunct = TRUE)
 #' tokensNoStopwords <- removeFeatures(tokensAll, stopwords("english"))
 #' tokensNgramsNoStopwords <- tokens_ngrams(tokensNoStopwords, 2)
@@ -130,7 +129,7 @@ dfm <- function(x,
                 dictionary = NULL,
                 valuetype = c("glob", "regex", "fixed"), 
                 groups = NULL, 
-                verbose = FALSE, 
+                verbose = getOption("verbose"), 
                 ...) {
 
     UseMethod("dfm")
@@ -149,7 +148,7 @@ dfm.character <- function(x,
                 dictionary = NULL,
                 valuetype = c("glob", "regex", "fixed"), 
                 groups = NULL, 
-                verbose = FALSE, 
+                verbose = getOption("verbose"), 
                 ...) {
     startTime <- proc.time()
     valuetype <- match.arg(valuetype)
@@ -182,7 +181,7 @@ dfm.corpus <- function(x, tolower = TRUE,
                        dictionary = NULL,
                        valuetype = c("glob", "regex", "fixed"), 
                        groups = NULL, 
-                       verbose = FALSE, ...) {
+                       verbose = getOption("verbose"), ...) {
     if (verbose)
         catm("Creating a dfm from a corpus ...\n")
     
@@ -223,7 +222,7 @@ dfm.tokenizedTexts <- function(x,
                                dictionary = NULL,
                                valuetype = c("glob", "regex", "fixed"), 
                                groups = NULL, 
-                               verbose = FALSE, 
+                               verbose = getOption("verbose"), 
                                ...) {
 
     valuetype <- match.arg(valuetype)
@@ -245,7 +244,7 @@ dfm.tokenizedTexts <- function(x,
     
     # set document names if none
     if (is.null(names(x))) {
-        names(x) <- paste("text", 1:length(x), sep="")
+        names(x) <- paste("text", seq_along(x), sep="")
     } 
     
     # use tokens_lookup for dictionaries with multi-word values otherwise do this later
@@ -292,7 +291,7 @@ dfm.dfm <- function(x,
                     dictionary = NULL,
                     valuetype = c("glob", "regex", "fixed"), 
                     groups = NULL, 
-                    verbose = FALSE, 
+                    verbose = getOption("verbose"), 
                     ...) {
 
     valuetype <- match.arg(valuetype)

@@ -1,7 +1,7 @@
 #' weight the feature frequencies in a dfm
 #' 
 #' Returns a document by feature matrix with the feature frequencies weighted 
-#' according to one of several common methods.  Some shortcuts that offer finer-grained control are:
+#' according to one of several common methods.  Some shortcut functions that offer finer-grained control are:
 #' \itemize{
 #' \item{\code{\link{tf}}}{  compute term frequency weights}
 #' \item{\code{\link{tfidf}}}{  compute term frequency-inverse document frequency weights}
@@ -27,8 +27,7 @@
 #'   the weights will be applied as multipliers to the existing feature counts 
 #'   for the corresponding named fatures.  Any features not named will be 
 #'   assigned a weight of 1.0 (meaning they will be unchanged).
-#' @note For finer grained control, consider calling \code{\link{tf}} or 
-#'   \code{\link{tfidf}} directly.
+#' @note For finer grained control, consider calling the convenience functions directly.
 #' @return The dfm with weighted values.
 #' @export
 #' @seealso \code{\link{tf}},  \code{\link{tfidf}}, \code{\link{docfreq}}

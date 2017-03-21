@@ -8,13 +8,15 @@
 
 #' count the number of documents or features
 #' 
-#' Get the number of documents, tokens, types, or features in an object.
-#' @details \code{ndoc} returns the number of documents or features in a 
-#'   quanteda object.
-#' @param x a \pkg{quanteda} object: a \link{corpus}, \link{dfm}, or \link{tokens}
-#'   object, or a readtext object from the \pkg{readtext} package.
-#' @return an integer (count) of the number of documents or features in the 
-#'   corpus or dfm
+#' Get the number of documents or features in an object.
+#' @details \code{ndoc} returns the number of documents in a  \link{corpus},
+#'   \link{dfm}, or \link{tokens} object, or a readtext object from the
+#'   \pkg{readtext} package
+#'   
+#'   \code{nfeature} returns the number of features in a \link{dfm}
+#' @param x a \pkg{quanteda} object: a \link{corpus}, \link{dfm}, or
+#'   \link{tokens} object, or a readtext object from the \pkg{readtext} package.
+#' @return an integer (count) of the number of documents or features
 #' @export
 #' @examples 
 #' # number of documents
@@ -87,16 +89,15 @@ nfeature.tokens <- function(x) {
 
 #' count the number of tokens or types
 #' 
-#' Get the count of tokens (total features) or types (unique tokens)
-#' in a text, corpus, or dfm.
-#' @param x a \pkg{quanteda} object: a character, \link{corpus}, or
-#'   \link{tokens} object
+#' Get the count of tokens (total features) or types (unique tokens).
+#' @param x a \pkg{quanteda} object: a character, \link{corpus}, 
+#'   \link{tokens}, or \link{dfm} object
 #' @param ... additional arguments passed to \code{\link{tokens}}
 #' @note Due to differences between raw text tokens and features that have been 
 #'   defined for a \link{dfm}, the counts be different for dfm objects and the 
 #'   texts from which the dfm was generated.  Because the method tokenizes the 
 #'   text in order to count the tokens, your results will depend on the options 
-#'   passed through to \code{\link{tokenize}}
+#'   passed through to \code{\link{tokens}}
 #' @return count of the total tokens or types
 #' @details
 #' The precise definition of "tokens" for objects not yet tokenized (e.g.
@@ -181,7 +182,7 @@ ntype.dfm <- function(x, ...) {
 #' @noRd
 #' @export
 ntype.tokenizedTexts <- function(x, ...) {
-    sapply(lapply(x, unique), length)
+    vapply(lapply(x, unique), length, integer(1))
 }
 
 #' @export
@@ -200,13 +201,13 @@ ntype.tokens <- function(x, ...) {
 #' count the number of sentences
 #' 
 #' Return the count of sentences in a corpus or character object.
-#' @param x texts or corpus whose sentences will be counted
+#' @param x texts or \link{corpus} whose sentences will be counted
 #' @param ... additional arguments passed to \code{\link{tokens}}
-#' @note `nsentence()` relies on the boundaries definitions in the \pkg{stringi}
-#'   package (see \link[stringi]{stri_opts_brkiter}).  It does not count
-#'   sentences correctly if the text has been transformed to lower case, and for
-#'   this reason \code{nsentence} will issue a warning if it detects all
-#'   lower-cased text.
+#' @note \code{nsentence()} relies on the boundaries definitions in the
+#'   \pkg{stringi} package (see \link[stringi]{stri_opts_brkiter}).  It does not
+#'   count sentences correctly if the text has been transformed to lower case,
+#'   and for this reason \code{nsentence()} will issue a warning if it detects
+#'   all lower-cased text.
 #' @return count(s) of the total sentences per text
 #' @examples
 #' # simple example

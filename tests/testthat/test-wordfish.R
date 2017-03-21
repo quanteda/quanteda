@@ -48,3 +48,21 @@ test_that("textmodel-wordfish (sparse) works as expected on another dataset", {
     cc<-cor(wfm_d@theta, wfm_s@theta)
     expect_gt(cc, 0.99)
 })
+
+test_that("print/show/summary method works as expected", {
+    ie2010dfm <- dfm(data_corpus_irishbudget2010, verbose = FALSE)
+    wfm <- textmodel_wordfish(ie2010dfm, dir = c(6,5))
+    expect_output(print(wfm), "[ ]*Documents[ ]*theta[ ]*SE[ ]*lower")
+    expect_output(print(wfm), "^Fitted wordfish model:")
+    expect_output(print(wfm), "Estimated feature scores:")
+    
+    # show method
+    expect_output(show(wfm), "[ ]*Documents[ ]*theta[ ]*SE[ ]*lower")
+    expect_output(show(wfm), "^Fitted wordfish model:")
+    expect_output(show(wfm), "Estimated feature scores:")
+    
+    # summary method
+    expect_output(summary(wfm), "[ ]*theta[ ]*SE[ ]*lower")
+    expect_output(summary(wfm), "Call:\n\ttextmodel_wordfish\\(data = ie2010dfm, dir = c\\(6, 5\\)\\)")
+    expect_output(summary(wfm), "Estimated document positions:")
+})

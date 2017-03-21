@@ -7,7 +7,7 @@
 tokens_lookup(x, dictionary, levels = 1:5, valuetype = c("glob", "regex",
   "fixed"), concatenator = " ", case_insensitive = TRUE,
   capkeys = !exclusive, exclusive = TRUE, multiword = TRUE,
-  verbose = FALSE)
+  verbose = getOption("verbose"))
 }
 \arguments{
 \item{x}{tokens object to which dictionary or thesaurus will be supplied}

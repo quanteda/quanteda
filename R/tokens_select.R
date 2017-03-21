@@ -23,7 +23,7 @@
 #' @export
 tokens_select <- function(x, features, selection = c("keep", "remove"), 
                           valuetype = c("glob", "regex", "fixed"),
-                          case_insensitive = TRUE, padding = FALSE, verbose = FALSE) {
+                          case_insensitive = TRUE, padding = FALSE, verbose = getOption("verbose")) {
     UseMethod("tokens_select")
 }
 
@@ -71,7 +71,7 @@ tokens_select <- function(x, features, selection = c("keep", "remove"),
 #' }
 tokens_select.tokenizedTexts <- function(x, features, selection = c("keep", "remove"), 
                                          valuetype = c("glob", "regex", "fixed"),
-                                         case_insensitive = TRUE, padding = FALSE, verbose = FALSE) {
+                                         case_insensitive = TRUE, padding = FALSE, verbose = getOption("verbose")) {
     x <- tokens_select(as.tokens(x), features, selection, valuetype, case_insensitive = TRUE)
     x <- as.tokenizedTexts(x)
     return(x)
@@ -158,7 +158,14 @@ tokens_select.tokens <- function(x, features, selection = c("keep", "remove"),
 #' removeFeatures(myCollocs, stopwords("english"), pos = 2)
 #' }
 tokens_remove <- function(x, features, valuetype = c("glob", "regex", "fixed"),
-                          case_insensitive = TRUE, padding = FALSE, verbose = FALSE) {
+                          case_insensitive = TRUE, padding = FALSE, verbose = getOption("verbose")) {
+    UseMethod("tokens_remove")
+}
+
+#' @noRd
+#' @export
+tokens_remove.tokenizedTexts <- function(x, features, valuetype = c("glob", "regex", "fixed"),
+                          case_insensitive = TRUE, padding = FALSE, verbose = getOption("verbose")) {
     tokens_select(x, features, selection = "remove", valuetype = valuetype, 
                   case_insensitive = case_insensitive, padding = padding, verbose = verbose)
 }

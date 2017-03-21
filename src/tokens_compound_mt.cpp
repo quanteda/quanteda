@@ -236,7 +236,7 @@ toks <- list(rep(1:10, 1), rep(5:15, 1))
 #dict <- list(c(1, 2), c(3, 4))
 dict <- list(c(1, 2), c(1, 2, 3))
 #dict <- list(c(1, 2), c(2, 3), c(4, 5))
-types <- letters[1:length(unique(unlist(toks)))]
+types <- letters[seq_along(unique(unlist(toks)))]
 #qatd_cpp_tokens_compound(toks, dict, types, "_", FALSE)
 qatd_cpp_tokens_compound(toks, dict, types, "_", TRUE)
 

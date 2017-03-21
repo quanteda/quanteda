@@ -43,4 +43,3 @@ test_that("as.character.corpus same as texts.corpus", {
     expect_identical(texts(data_corpus_inaugural), 
                      as.character(data_corpus_inaugural))
 })
-  

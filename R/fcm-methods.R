@@ -68,7 +68,7 @@ fcm_compress <- function(x) {
 #' @details \code{fcm_tolower} and \code{fcm_toupper} convert both dimensions of
 #'   the \link{fcm} to lower and upper case, respectively, and then recombine
 #'   the counts. This works only on fcm objects created with \code{context = 
-#'   "window"}.
+#'   "document"}.
 #' @export
 #' @examples
 #' # for a feature co-occurrence matrix

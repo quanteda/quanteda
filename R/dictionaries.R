@@ -32,7 +32,7 @@ validate_dictionary <- function(dict){
         stop("unnamed dictionary entry: ", unnamed)
     }
     
-    for (i in 1:length(dict)) {
+    for (i in seq_along(dict)) {
         entry <- dict[[i]]
         if (is.list(entry)) {
             validate_dictionary(entry)
@@ -48,7 +48,7 @@ validate_dictionary <- function(dict){
 # Internal function to print dictionary
 print_dictionary <- function(dict, level = 1){
     
-    for (i in 1:length(dict)) {
+    for (i in seq_along(dict)) {
         entry <- dict[[i]]
         if (is.list(entry)) {
             cat(rep('  ', level - 1), "- ", names(dict[i]), ':\n', sep = "")
@@ -74,7 +74,7 @@ setMethod("show", "dictionary",
 
 #' create a dictionary
 #' 
-#' Create a quanteda dictionary, either from a list or by importing from a 
+#' Create a \pkg{quanteda} dictionary class object, either from a list or by importing from a 
 #' foreign format.  Currently supported input file formats are the Wordstat,
 #' LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import using the 
 #' LIWC format works with 
@@ -111,6 +111,8 @@ setMethod("show", "dictionary",
 #'   
 #'   Yoshikoder page, from Will Lowe 
 #'   \url{http://conjugateprior.org/software/yoshikoder/}.
+#'   
+#'   Lexicoder format, \url{http://www.lexicoder.com}
 #'   
 #' @seealso \link{dfm}
 #' @examples
@@ -318,7 +320,7 @@ readWStatDict <- function(path, enc="", toLower=TRUE) {
     d <- data.frame(lapply(d, as.character), stringsAsFactors=FALSE)
     thismajorcat <- d[1,1]
     # this loop fills in blank cells in the category|term dataframe
-    for (i in 1:nrow(d)) {
+    for (i in seq_len(nrow(d))) {
         if (d[i,1] == "") {
             d[i,1] <- thismajorcat
         } else {
@@ -342,7 +344,7 @@ readWStatDict <- function(path, enc="", toLower=TRUE) {
     
     # this loop collapses the category cells together and
     # makes the list of named lists compatible with dfm
-    for (i in 1:nrow(d)) {
+    for (i in seq_len(nrow(d))) {
         if (d[i, ncol(d)] ==  "") next
         categ <- unlist(paste(d[i,(1:(ncol(d)-1))], collapse = "."))
         w <- d[i, ncol(d)]
@@ -452,11 +454,11 @@ readLIWCdict <- function(path, toLower = TRUE, encoding = getOption("encoding"))
     
     terms <- as.list(rep(NA, nrow(catlist)))
     names(terms) <- rownames(catlist)
-    for (i in 1:nrow(catlist)) {
+    for (i in seq_len(nrow(catlist))) {
         terms[[i]] <- as.numeric(catlist[i, !is.na(catlist[i,])])
     }
     
-    for (ind in 1:length(terms)) {
+    for (ind in seq_along(terms)) {
         for(num in as.numeric(terms[[ind]])){
             thisCat <- guide$catName[which(guide$catNum==num)]
             thisTerm <- names(terms[ind])

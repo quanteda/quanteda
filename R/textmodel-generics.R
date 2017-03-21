@@ -86,6 +86,7 @@ setClass("textmodel_fitted",
 #' \dontrun{wf <- textmodel(ieDfm, model="wordfish", dir = c(6,5))
 #' wf}
 #' @export
+#' @keywords internal textmodel
 setGeneric("textmodel", 
     function(x, y=NULL, data=NULL, model=c("wordscores", "NB", "wordfish", "ca"), ...)
              standardGeneric("textmodel"))

@@ -64,7 +64,7 @@
 
 # data(data_corpus_irishbudget2010, package="quantedaData")
 # txts <- texts(data_corpus_irishbudget2010)
-# for (i in 1:length(txts)) {
+# for (i in seq_along(txts)) {
 #     temptxt <- system2("native2ascii", input = txts[i], stdout = TRUE)
 #     temptxt[temptxt==""] <- "\n"
 #     temptxt <- paste(temptxt, collapse="")
@@ -85,18 +85,20 @@ NULL
 
 #' US presidential inaugural address texts
 #' 
-#' US presidential inaugural address texts, and metadata (for the corpus), 
-#' from 1789 to present.
-#' @details \code{data_corpus_inaugural} is the \link{quanteda-package} corpus
+#' US presidential inaugural address texts, and metadata (for the corpus), from
+#' 1789 to present.
+#' @details \code{data_corpus_inaugural} is the \link{quanteda-package} corpus 
 #'   object of US presidents' inaugural addresses since 1789. Document variables
 #'   contain the year of the address and the last name of the president.
+#' @format a \link{corpus} object with docvars including year, and the last and
+#'   first names of the presidents delivering the inaugural address
 #' @examples
 #' # some operations on the inaugural corpus
 #' summary(data_corpus_inaugural)
 #' head(docvars(data_corpus_inaugural), 10)
-#' @references
-#'   \url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and 
-#'   \url{http://www.presidency.ucsb.edu/inaugurals.php}.
+#' @references 
+#' \url{https://archive.org/details/Inaugural-Address-Corpus-1789-2009} and 
+#' \url{http://www.presidency.ucsb.edu/inaugurals.php}.
 #' @keywords data
 "data_corpus_inaugural"
 
