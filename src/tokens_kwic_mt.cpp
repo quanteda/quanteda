@@ -144,11 +144,11 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     }
     
     DataFrame output_ = DataFrame::create(_["docname"] = coxs_name_,
-                                          _["from"] = pos_from,
-                                          _["to"] = pos_to,
-                                          _["pre"]      = coxs_pre_,
-                                          _["keyword"]   = coxs_target_,
-                                          _["post"]     = coxs_post_,
+                                          _["from"]    = pos_from,
+                                          _["to"]      = pos_to,
+                                          _["pre"]     = coxs_pre_,
+                                          _["keyword"] = coxs_target_,
+                                          _["post"]    = coxs_post_,
                                           _["stringsAsFactors"] = false);
     output_.attr("docs") = documents;
     output_.attr("ids") = as<Tokens>(wrap(contexts));
