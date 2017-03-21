@@ -12,7 +12,7 @@ Targets range(Text tokens,
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
-    // this part is the same as tokens_detect 
+    // This part is the same as tokens_detect 
     Text tokens_pos(tokens.size(), 0);
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
@@ -101,13 +101,16 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     }
 #endif
     
-    // get total number including of sub-elements
+    // Get total number including of sub-elements
     std::size_t len = 0;
     for (std::size_t h = 0; h < output.size(); h++) {
         len += output[h].size();
     }
+    
     std::vector<int> pos(len);
     CharacterVector coxs_name_(len), coxs_pre_(len), coxs_target_(len), coxs_post_(len);
+    Texts contexts(len);
+    std::vector<int>  documents(len);
     
     std::size_t j = 0;
     for (std::size_t h = 0; h < output.size(); h++) {
@@ -118,10 +121,14 @@ DataFrame qatd_cpp_kwic(const List &texts_,
         for (size_t i = 0; i < targets.size(); i++) {
             int from = targets[i].first - window;
             int to = targets[i].second + window;
-            
             //Rcout << j << " " << from << ":" << to << "\n";
             
-            // extract contexts
+            // Save as intergers
+            Text context(tokens.begin() + std::max(0, from), tokens.begin() + std::min(to, last) + 1);
+            contexts[j] = context;
+            documents[j] = (int)h + 1;
+            
+            // Save as strings
             Text cox_pre(tokens.begin() + std::max(0, from), tokens.begin() + targets[i].first + 1);
             Text cox_target(tokens.begin() + targets[i].first + 1, tokens.begin() + targets[i].second + 1);
             Text cox_post(tokens.begin() + targets[i].second + 1, tokens.begin() + std::min(to, last) + 1);
@@ -141,6 +148,9 @@ DataFrame qatd_cpp_kwic(const List &texts_,
                                           _["target"]   = coxs_target_,
                                           _["post"]     = coxs_post_,
                                           _["stringsAsFactors"] = false);
+    output_.attr("docs") = documents;
+    output_.attr("ids") = as<Tokens>(wrap(contexts));
+    output_.attr("types") = types_;
     return output_;
 }
 

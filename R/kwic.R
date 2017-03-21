@@ -137,3 +137,15 @@ print.kwic <- function(x, ...) {
     rownames(kwic) <- stringi::stri_c("[", x$document, ", ", x$position, "]")
     print(kwic)
 }
+
+#' @rdname kwic
+#' @export
+#' @method as.tokens kwic
+as.tokens.kwic <- function(x) {
+    toks <- attr(x, 'ids')
+    names(toks) <- x$document
+    attr(toks, 'types') <- attr(x, 'types')
+    attr(toks, 'docs') <- attr(x, 'docs')
+    class(toks) <- c("tokens", "tokenizedTexts")
+    return(toks)
+}
