@@ -8,7 +8,7 @@ mydict <- dictionary(list(christmas=c("Christmas", "Santa", "holiday"),
                           taxregex="tax*",
                           country="united_states"))
 dictDfm <- dfm(mycorpus, dictionary = mydict, valuetype = "glob")
-dictDfm[1:10,]
+dictDfm[1:10, ]
 thesDfm <- dfm(mycorpus, thesaurus = mydict, valuetype = "glob")
 thesDfm[1:10, (nfeature(thesDfm)-8) : nfeature(thesDfm)]
 
