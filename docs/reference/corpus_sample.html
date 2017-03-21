@@ -121,29 +121,29 @@ sub-document units such as sentences, for instance by specifying <code>by =
     <pre class="examples"><div class='input'><span class='co'># sampling from a corpus</span>
 <span class='fu'>summary</span>(<span class='fu'>corpus_sample</span>(<span class='no'>data_corpus_inaugural</span>, <span class='fl'>5</span>))</div><div class='output co'>#&gt; Corpus consisting of 5 documents.
 #&gt; 
-#&gt;          Text Types Tokens Sentences Year President     FirstName
-#&gt;     2005-Bush   772   2325       100 2005      Bush     George W.
-#&gt;  1829-Jackson   517   1210        25 1829   Jackson        Andrew
-#&gt;   1985-Reagan   925   2935       123 1985    Reagan        Ronald
-#&gt;    2013-Obama   814   2335        88 2013     Obama        Barack
-#&gt;    1877-Hayes   829   2730        59 1877     Hayes Rutherford B.
+#&gt;             Text Types Tokens Sentences Year  President FirstName
+#&gt;     1921-Harding  1172   3743       148 1921    Harding Warren G.
+#&gt;      1821-Monroe  1262   4898       129 1821     Monroe     James
+#&gt;  1793-Washington    96    147         4 1793 Washington    George
+#&gt;  1953-Eisenhower   903   2765       119 1953 Eisenhower Dwight D.
+#&gt;        2001-Bush   622   1810        97 2001       Bush George W.
 #&gt; 
 #&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
 #&gt; Created: Fri Sep 12 12:41:17 2014
 #&gt; Notes:   
 #&gt; </div><div class='input'><span class='fu'>summary</span>(<span class='fu'>corpus_sample</span>(<span class='no'>data_corpus_inaugural</span>, <span class='fl'>10</span>, <span class='kw'>replace</span><span class='kw'>=</span><span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; Corpus consisting of 10 documents.
 #&gt; 
-#&gt;            Text Types Tokens Sentences Year President  FirstName
-#&gt;   1857-Buchanan   945   3106        89 1857  Buchanan      James
-#&gt;     1817-Monroe  1040   3696       121 1817    Monroe      James
-#&gt;   1925-Coolidge  1221   4442       196 1925  Coolidge     Calvin
-#&gt;    1865-Lincoln   362    780        26 1865   Lincoln    Abraham
-#&gt;   1881-Garfield  1018   3240       111 1881  Garfield   James A.
-#&gt;       2001-Bush   622   1810        97 2001      Bush  George W.
-#&gt;       2005-Bush   772   2325       100 2005      Bush  George W.
-#&gt;  1905-Roosevelt   404   1089        33 1905 Roosevelt   Theodore
-#&gt;    1813-Madison   542   1304        33 1813   Madison      James
-#&gt;       1845-Polk  1330   5211       153 1845      Polk James Knox
+#&gt;              Text Types Tokens Sentences Year President       FirstName
+#&gt;     1889-Harrison  1355   4744       157 1889  Harrison        Benjamin
+#&gt;        1969-Nixon   743   2437       103 1969     Nixon Richard Milhous
+#&gt;      1829-Jackson   517   1210        25 1829   Jackson          Andrew
+#&gt;     1901-McKinley   857   2449       100 1901  McKinley         William
+#&gt;    1945-Roosevelt   276    651        26 1945 Roosevelt     Franklin D.
+#&gt;    1829-Jackson.1   517   1210        25 1829   Jackson          Andrew
+#&gt;     1837-VanBuren  1315   4175        95 1837 Van Buren          Martin
+#&gt;  1945-Roosevelt.1   276    651        26 1945 Roosevelt     Franklin D.
+#&gt;     1881-Garfield  1018   3240       111 1881  Garfield        James A.
+#&gt;        2009-Obama   939   2729       110 2009     Obama          Barack
 #&gt; 
 #&gt; Source:  /home/paul/Dropbox/code/quanteda/* on x86_64 by paul
 #&gt; Created: Fri Sep 12 12:41:17 2014
@@ -156,10 +156,10 @@ sub-document units such as sentences, for instance by specifying <code>by =
 <span class='fu'><a href='texts.html'>texts</a></span>(<span class='no'>sentcorpus</span>)</div><div class='output co'>#&gt;                     one1                     one2                     one3 
 #&gt;          &quot;Sentence one.&quot;          &quot;Sentence two.&quot;        &quot;Third sentence.&quot; 
 #&gt;                     two1                     two2 
-#&gt;  &quot;First sentence, doc2.&quot; &quot;Second sentence, doc2.&quot; </div><div class='input'><span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus_sample</span>(<span class='no'>sentcorpus</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='st'>"document"</span>))</div><div class='output co'>#&gt;                    one3                    one1                    one2 
-#&gt;       &quot;Third sentence.&quot;         &quot;Sentence one.&quot;         &quot;Sentence two.&quot; 
-#&gt;                    two1                  two1.1 
-#&gt; &quot;First sentence, doc2.&quot; &quot;First sentence, doc2.&quot; </div></pre>
+#&gt;  &quot;First sentence, doc2.&quot; &quot;Second sentence, doc2.&quot; </div><div class='input'><span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus_sample</span>(<span class='no'>sentcorpus</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='st'>"document"</span>))</div><div class='output co'>#&gt;                     one2                     one3                     one1 
+#&gt;          &quot;Sentence two.&quot;        &quot;Third sentence.&quot;          &quot;Sentence one.&quot; 
+#&gt;                     two2                     two1 
+#&gt; &quot;Second sentence, doc2.&quot;  &quot;First sentence, doc2.&quot; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
