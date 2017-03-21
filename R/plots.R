@@ -239,51 +239,45 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
 #' textplot_scale1d(mod, sort = TRUE)
 #' textplot_scale1d(mod, margin = "features", 
 #'                  highlighted = c("government", "countries", "children", 
-#'                              "the", "nuclear", "federal"))
-textplot_scale1d <- function(x, margin = c("documents", "features"), doclabels = NULL,
-                                         sort = TRUE, mar_left = 8, highlighted = NULL, alpha = 0.5, ...) {
-    if (!is(x, "textmodel_wordfish_fitted"))
-        stop("x must be a fitted textmodel_wordfish object")
+#'                              "the", "nuclear", "federal"),)
+textplot_scale1d <- function (x, margin = c("documents", "features"), doclabels = NULL, 
+                                      sort = TRUE, highlighted = NULL, alpha = 0.7, 
+                              highlighted_colour = "black",
+                                      ...) 
+{
+  if (!is(x, "textmodel_wordfish_fitted")) 
+    stop("x must be a fitted textmodel_wordfish object")
+  margin <- match.arg(margin)
+  if (margin == "documents") {
+    n <- length(x@theta)
+    if (is.null(doclabels)) 
+      doclabels <- docnames(x@x)
+    stopifnot(length(doclabels) == n)
+    results <- data.frame(doclabels = doclabels, theta = x@theta, 
+                          lower = x@theta - 1.96 * x@se.theta, upper = x@theta + 
+                            1.96 * x@se.theta)
     
-    margin <- match.arg(margin)
-    if (margin == "documents") {
-        n <- length(x@theta)
-        
-        if (is.null(doclabels)) 
-            doclabels <- docnames(x@x)
-        stopifnot(length(doclabels)==n)
-        
-        results <- data.frame(doclabels = doclabels,
-                              theta = x@theta,
-                              lower = x@theta - 1.96*x@se.theta,
-                              upper = x@theta + 1.96*x@se.theta)
-        sorting <- 1:n
-        if (length(sort) > 1){
-            stopifnot(length(sort) == n)
-            sorting <- order(sort)
-        } else if (sort)
-            sorting <- order(results$theta)
-        
-        with(results[sorting,], {
-            oldmar <- par("mar") ## adjust the left plot margin
-            par(mar=c(oldmar[1], mar_left, oldmar[3], oldmar[4]))
-            
-            plot(theta, 1:n, ylab = "", xlab = "Theta", xlim = c(min(lower), max(upper)), 
-                 type = 'n', yaxt = "n", ...)
-            segments(x0 = lower, x1 = upper, y0 = 1:n, y1 = 1:n, col = 'grey', lwd = 2)
-            points(theta, 1:n, pch = 20)
-            
-            axis(2, at = 1:n, labels = doclabels, las = 1)
-            par(mar = oldmar) ## put it back again
-        })
-        
-    } else {
-        plot(x@beta, x@psi, type = 'n', xlab = "Beta", ylab = "Psi", ...)
-        text(x@beta, x@psi, labels = x@features, col = grDevices::rgb(0.7, 0.7, 0.7, alpha))
-        
-        if (!is.null(highlighted)){
-            wch <- x@features %in% highlighted ## will quietly drop highlighteds that do not appear in model
-            text(x@beta[wch], x@psi[wch], labels = x@features[wch], col = "black")
-        }
-    }
+    ggplot2::ggplot(data = results, aes(x = doclabels, y = theta)) +
+    {if(sort==TRUE)geom_point(aes(x = reorder(doclabels, theta), y = theta))} + 
+      geom_pointrange(aes(ymin = lower, ymax = upper)) + 
+      coord_flip() + 
+      ylab("Theta") + 
+      xlab(NULL) +
+      theme_bw() 
+  }
+  else {
+    results_wordfish <- data.frame(feature = x@features, 
+                     psi = x@psi,
+                     beta = x@beta)
+
+    ggplot2::ggplot(data = results_wordfish, aes(x = beta, y = psi, label = feature)) + 
+      geom_text(colour = "grey70") +
+      geom_text(aes(beta, psi, label = feature), 
+                data = results_wordfish[results_wordfish$feature %in% highlighted,],
+                color = highlighted_colour) +
+      xlab("Beta") +
+      ylab("Psi") + 
+      theme_bw() +
+      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+  }
 }
