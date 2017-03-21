@@ -103,26 +103,6 @@ textstat_simil.dfm <- function(x, selection = NULL, n = NULL,
     # convert NaNs to NA
     # similmatrix[is.nan(similmatrix)] <- NA
     
-<<<<<<< HEAD
-    # create a full square matrix if result is calculated only for selected features
-    if (length(selection) != 0L) {
-        # adjust the order of the rows to put the selected features as the top rows
-        rname <- rownames(result)
-        cname <- colnames(result)
-        rname <- c(cname, rname[!rname %in% cname])
-        result <- result[rname,]
-        
-        # create a full square matrix 
-        nn <- if(length(selection) == 1L) length(result) else nrow(result)
-        rname <- if(length(selection) == 1L) names(result) else rownames(result)
-        x <- Matrix::Matrix(data = 0,nrow = nn,ncol = nn, dimnames = list(rname, rname))
-        if(length(selection) == 1L){
-            x[, 1] <- result
-        } else {
-            x[, seq_len(ncol(result))] <- result
-        }
-        result <- x
-=======
     if (!is.null(selection)) {
         names <- c(colnames(temp), setdiff(rownames(temp), colnames(temp)))
         temp <- temp[names, , drop = FALSE] # sort for as.dist()
@@ -131,7 +111,6 @@ textstat_simil.dfm <- function(x, selection = NULL, n = NULL,
     if (!is.null(n)) {
         n <- min(n, nrow(nrow(temp)))
         temp <- temp[seq_len(n), , drop = FALSE]
->>>>>>> master
     }
     
     # create a new dist object
