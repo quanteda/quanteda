@@ -133,4 +133,5 @@ reference:
   contents:
     - as.list.dist
     - convert
+    - bootstrap_dfm
 
