@@ -33,27 +33,27 @@
 #' toks <- tokens(data_char_inaugural)
 #' microbenchmark::microbenchmark(
 #'    kwic(toks, "the", window = 3, valuetype = "fixed"),
-#'    kwic_cpp(toks, "the", window = 3, valuetype = "fixed"))
+#'    kwic(toks, "the", window = 3, valuetype = "fixed"))
 #' }
 #' kwic(data_corpus_inaugural, "war against")
 #' kwic(data_corpus_inaugural, "war against", valuetype = "regex")
 #' 
-kwic_cpp <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
-        UseMethod("kwic_cpp")
+kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
+        UseMethod("kwic")
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export
-kwic_cpp.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
-    kwic_cpp(tokens(x, ...), keywords, window, valuetype, case_insensitive, new = TRUE)
+kwic.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
+    kwic(tokens(x, ...), keywords, window, valuetype, case_insensitive, new = TRUE)
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic_cpp.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
-    kwic_cpp(texts(x), keywords, window, valuetype, case_insensitive, ..., new = TRUE)
+kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
+    kwic(texts(x), keywords, window, valuetype, case_insensitive, ..., new = TRUE)
 }
 
 #' @rdname kwic
@@ -72,7 +72,7 @@ kwic_cpp.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "rege
 #' kwic(toks, c("is", "a"), valuetype = "fixed")
 #' kwic(toks, list("is", "a", c("is", "it")), valuetype = "fixed")
 #' @export 
-kwic_cpp.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
+kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
     
     if (!is.tokens(x))
         stop("x must be a tokens object")
@@ -96,15 +96,15 @@ kwic_cpp.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "rege
     # add attributes for kwic object
     attr(result, "valuetype") <- valuetype
     attr(result, "keywords") <- sapply(keywords, paste, collapse = " ")
-    class(result) <- c("kwic_cpp", "data.frame")
+    class(result) <- c("kwic", "data.frame")
     return(result)
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic_cpp.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
-    kwic_cpp(as.tokens(x), keywords, window, valuetype, case_insensitive, ..., new = TRUE)
+kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
+    kwic(as.tokens(x), keywords, window, valuetype, case_insensitive, ..., new = TRUE)
 }
 
 
@@ -114,14 +114,14 @@ kwic_cpp.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob
 #' mykwic <- kwic(data_corpus_inaugural, "provident*")
 #' is.kwic(mykwic)
 #' is.kwic("Not a kwic")
-is.kwic_cpp <- function(x) {
-    ifelse("kwic_cpp" %in% class(x), TRUE, FALSE)
+is.kwic <- function(x) {
+    ifelse("kwic" %in% class(x), TRUE, FALSE)
 }
 
-#' @method print kwic_cpp
+#' @method print kwic
 #' @noRd
 #' @export
-print.kwic_cpp <- function(x, ...) {
+print.kwic <- function(x, ...) {
     if (!length(x)) {
         print(NULL)
         return()
