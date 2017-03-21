@@ -302,17 +302,44 @@ test_that("as.matrix.simil works as expected",{
     expect_equivalent(diag(sim), aMat)
 })
 
-test_that("textstat_simil works as expected for selections",{
-    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
-                   stem = TRUE, verbose = FALSE)
-    sim <- suppressWarnings(textstat_simil(presDfm, c("2009-Obama" , "2013-Obama"), n = 5, margin = "documents"))
-    
-    expect_equal(round(as.matrix(sim)["1981-Reagan","1985-Reagan"],2), 0.0)
-})
-
 test_that("textstat_simil stops as expected for methods not supported",{
     presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
                    stem = TRUE, verbose = FALSE)
     expect_error(textstat_simil(presDfm, method = "Yule"), 
                  "The metric is not currently supported by quanteda, please use other packages such as proxy::dist\\(\\)\\/simil\\(\\).")
 })
+
+test_that("textstat_simil stops as expected for wrong selections",{
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    expect_error(textstat_simil(presDfm, 5), 
+                 "'selection' should be character or character vector of document names or feature labels.")
+    
+    expect_error(textstat_simil(presDfm, margin = "documents", "2009-Obamaa"), 
+                 "The documents specified by 'selection' do not exist.")
+    expect_error(textstat_simil(presDfm, margin = "features", "Obamaa"), 
+                 "The features specified by 'selection' do not exist.")
+    
+})
+
+test_that("test textstat_simil works as expected for 'n' is not NULL", {
+    skip_if_not_installed("proxy")
+    presDfm <- dfm(corpus_subset(inaugCorpus, Year > 1980), remove = stopwords("english"),
+                   stem = TRUE, verbose = FALSE)
+    
+    cosQuanteda <- round(as.matrix(suppressWarnings(textstat_simil(presDfm, method = "cosine", n=5, margin = "documents")))[,"1981-Reagan"], 6)
+    cosProxy <- round(as.matrix(proxy::simil(as.matrix(presDfm), "cosine", by_rows = TRUE, diag = TRUE))[, "1981-Reagan"], 6)
+    expect_equal(cosQuanteda, cosProxy[1:5])
+})
+
+# test_that("as.dist on a dist returns a dist", {
+#     presDfm <- dfm(corpus_subset(data_corpus_inaugural, Year > 1990), remove = stopwords("english"),
+#                    stem = TRUE, verbose = FALSE)
+#     similmat <- textstat_simil(presDfm)
+#     expect_equivalent(as.simil(similmat), similmat) 
+#     expect_equivalent(textstat_simil(presDfm, upper = TRUE), 
+#                       as.dist(distmat, upper = TRUE)) 
+#     expect_equivalent(textstat_dist(presDfm, upper = TRUE, diag = TRUE), 
+#                       as.dist(distmat, upper = TRUE, diag = TRUE)) 
+# })
+

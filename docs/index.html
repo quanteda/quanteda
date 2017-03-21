@@ -75,23 +75,6 @@
 <strong>quanteda</strong> v0.9.9: Important Changes</h2>
 <p>This version of the package is a transitional release prior to v1.0. It includes some major API changes (see below), but with the most of the older functions retained and deprecated. v0.9.9 also implements many enhancements and performance improvements. See <a href="https://kbenoit.github.io/quanteda/articles/development-plans.html">Quanteda Structure and Design</a> for details.</p>
 </div>
-<div id="note-on-problems-with-cran-binary-mac-build-on-os-x" class="section level2">
-<h2 class="hasAnchor">
-<a href="#note-on-problems-with-cran-binary-mac-build-on-os-x" class="anchor"> </a>Note on problems with CRAN binary mac build on OS X</h2>
-<p><code><a href="reference/dfm.html">dfm()</a></code> fails when using the binary build from CRAN for v0.9.9-24 on Mac platforms with OS X El Capitan, Yosemite, or Mavericks. (See <a href="https://github.com/kbenoit/quanteda/issues/519">Issue #519</a>.) This problem does not affect macOS (Sierra) platforms.</p>
-<p>Solution: Install from source. You will need the build tools from XCode to do this.</p>
-<ol style="list-style-type: decimal">
-<li>
-<p>If you do not have XCode installed, install the minimum tools. From Terminal:</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">xcode-select</span> --install</code></pre></div>
-</li>
-<li>
-<p>Install and build from source. From R:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"quanteda"</span>, <span class="dt">type =</span> <span class="st">"source"</span>)</code></pre></div>
-</li>
-</ol>
-<p>Note that installing from GitHub, which will also compile the C++ code on your system, will avoid this problem.</p>
-</div>
 <div id="about-the-package" class="section level2">
 <h2 class="hasAnchor">
 <a href="#about-the-package" class="anchor"> </a>About the package</h2>
@@ -202,7 +185,7 @@ uk2010immigCorpus
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/* on x86_64 by kbenoit
-## Created: Fri Mar 10 19:11:42 2017
+## Created: Tue Mar 21 01:22:45 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 <span class="co"># key words in context for "deport", 3 words of context</span>
@@ -234,7 +217,7 @@ mydfm
 <span class="kw"><a href="reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(mydfm, <span class="dt">min.freq =</span> <span class="dv">6</span>, <span class="dt">random.order =</span> <span class="ot">FALSE</span>,
                    <span class="dt">rot.per =</span> .<span class="dv">25</span>, 
                    <span class="dt">colors =</span> RColorBrewer::<span class="kw">brewer.pal</span>(<span class="dv">8</span>,<span class="st">"Dark2"</span>))</code></pre></div>
-<p><img src="images/quanteda_example-1.png" width="672"></p>
+<p><img src="man/imagesquanteda_example-1.png" width="672"></p>
 </div>
 <div id="contributing" class="section level2">
 <h2 class="hasAnchor">

@@ -112,7 +112,7 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
     position <- keyword <- docname <- ntokens <- NULL    
     
     kwics <- list(...)
-    if (!all(sapply(kwics, is.kwic)))
+    if (!all(vapply(kwics, is.kwic, logical(1))))
         stop("objects to plot must be kwic objects")
 
     # create a data.table from the kwic arguments

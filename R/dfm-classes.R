@@ -215,7 +215,7 @@ as.data.frame.dfm <- function(x, row.names = NULL, optional = FALSE , ...) {
 #' cbind(dfm1, dfm2)
 cbind.dfm <- function(...) {
     args <- list(...)
-    if (!all(sapply(args, is.dfm)))
+    if (!all(vapply(args, is.dfm, logical(1))))
         stop("all arguments must be dfm objects")
     dnames <- sapply(args, docnames)
     # make into a matrix-like object for apply to work below, even if just one document per input
@@ -259,7 +259,7 @@ cbind.dfm <- function(...) {
 #' rbind(dfm1, dfm2, dfm3)
 rbind.dfm <- function(...) {
     args <- list(...)
-    if (!all(sapply(args, is.dfm)))
+    if (!all(vapply(args, is.dfm, logical(1))))
         stop("all arguments must be dfm objects")
     catm(names(args))
 

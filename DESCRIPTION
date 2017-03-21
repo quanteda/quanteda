@@ -1,5 +1,5 @@
 Package: quanteda
-Type: Package
+Version: 0.9.9-38
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
@@ -11,8 +11,6 @@ Authors@R: c( person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role =
     person("Haiyan", "Wang", email = "h.wang52@lse.ac.uk", role = "ctb"),
     person("Benjamin", "Lauderdale", email = "B.E.lauderdale@lse.ac.uk", role = "ctb"),
     person("Will", "Lowe", email = "wlowe@princeton.edu", role = "ctb") )
-Version: 0.9.9-36
-Date: 2017-03-15
 License: GPL-3
 Depends:
     R (>= 3.2.2)
@@ -26,7 +24,7 @@ Imports:
     wordcloud,
     Rcpp,
     RcppParallel,
-    RcppArmadillo(>= 0.7.600.1.0),
+    RcppArmadillo (>= 0.7.600.1.0),
     ca,
     stringi,
     fastmatch,

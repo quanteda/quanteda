@@ -111,6 +111,9 @@
 <li>
 <code><a href="../reference/metadoc.html">metadoc()</a></code> now returns a vector instead of a data.frame for a single variable, similar to <code><a href="../reference/docvars.html">docvars()</a></code>
 </li>
+<li>Most <code>verbose</code> options now take the default from <code>getOption("verbose")</code> rather than fixing the value in the function signatures. (#577)</li>
+<li>
+<code><a href="../reference/textstat_dist.html">textstat_dist()</a></code> and <code><a href="../reference/textstat_dist.html">textstat_simil()</a></code> now return a matrix if a <code>selection</code> argument is supplied, and coercion to a list produces a list of distances or similarities only for that selection.</li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level3">
@@ -122,6 +125,9 @@
 <li>Fixed problems for <code>str()</code> on a corpus with no docvars (#571).</li>
 <li>
 <code>removeURL</code> in <code><a href="../reference/tokens.html">tokens()</a></code> now removes URLs where the first part of the URL is a single letter (#587).</li>
+<li>
+<code>dfm_select</code> now works correctly for ngram features (#589).</li>
+<li>Fixed a bug crashing corpus constructors for character vectors with duplicated names (the cause of #580).</li>
 </ul>
 </div>
 </div>

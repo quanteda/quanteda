@@ -114,7 +114,7 @@ setMethod("phrasetotoken", signature = c("character", "character"),
               
               for (l in compoundPhrasesList) {
                   re.search <- paste("(\\b", paste(l, collapse = paste0(")\\p{WHITE_SPACE}+(")), "\\b)", sep = "")
-                  re.replace <- paste("$", 1:length(l), sep = "", collapse = concatenator)
+                  re.replace <- paste("$", seq_along(l), sep = "", collapse = concatenator)
                   object <- stringi::stri_replace_all_regex(object, re.search, re.replace, case_insensitive = case_insensitive)
               }
               object

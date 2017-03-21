@@ -152,9 +152,9 @@ textmodel_wordshoal.dfm <- function(x, groups, authors, dir = c(1,2), tol = 1e-3
     lp <- lp + sum(dnorm(beta,0,priorbeta,log=TRUE))
     lp <- lp + sum(dnorm(theta,0,priortheta,log=TRUE))
     lp <- lp + sum(dgamma(tau,1,1,log=TRUE))
-    for (s in 1:S){
-        lps = alpha[jVec[s]] + beta[jVec[s]]*theta[iVec[s]];
-        lp = lp + dnorm(psi[s],lps,(tau[iVec[s]])^(-1/2),log=TRUE);
+    for (s in 1:S) {
+        lps = alpha[jVec[s]] + beta[jVec[s]] * theta[iVec[s]]
+        lp = lp + dnorm(psi[s], lps, (tau[iVec[s]])^(-1/2), log=TRUE)
     }
     
     # Until log-posterior stops changing...
@@ -186,19 +186,20 @@ textmodel_wordshoal.dfm <- function(x, groups, authors, dir = c(1,2), tol = 1e-3
             coeftmp <- solve(t(Xtmp) %*% Xtmp + priortheta^(-2)) %*% t(Xtmp) %*% Ytmp
             theta[i] <- coeftmp[1,1]
             mutmp <- solve(t(Xtmp) %*% Xtmp + priortheta^(-2)) %*% t(Xtmp) %*% Xtmp %*% coeftmp
-            tau[i] <- (priortau + 0.5*length(Ytmp))/(priortau+0.5*(sum(Ytmp^2) - mutmp*(priortheta^(-2))*mutmp))
+            tau[i] <- (priortau + 0.5 * length(Ytmp)) / 
+                (priortau + 0.5 * (sum(Ytmp^2) - mutmp*(priortheta^(-2)) * mutmp))
         }
         
         # Recalculate log-posterior
         
         lastlp <- lp
-        lp <- sum(dnorm(alpha,0,prioralpha,log=TRUE))
-        lp <- lp + sum(dnorm(beta,0,priorbeta,log=TRUE))
-        lp <- lp + sum(dnorm(theta,0,priortheta,log=TRUE))
-        lp <- lp + sum(dgamma(tau,priortau,priortau,log=TRUE))
+        lp <- sum(dnorm(alpha,0,prioralpha, log = TRUE))
+        lp <- lp + sum(dnorm(beta, 0, priorbeta, log = TRUE))
+        lp <- lp + sum(dnorm(theta, 0, priortheta, log = TRUE))
+        lp <- lp + sum(dgamma(tau, priortau, priortau, log = TRUE))
         for (s in 1:S){
-            lps = alpha[jVec[s]] + beta[jVec[s]]*theta[iVec[s]];
-            lp = lp + dnorm(psi[s],lps,(tau[iVec[s]])^(-1/2),log=TRUE);
+            lps = alpha[jVec[s]] + beta[jVec[s]] * theta[iVec[s]]
+            lp = lp + dnorm(psi[s], lps, (tau[iVec[s]])^(-1/2), log = TRUE)
         }  
         
     } # end while  
@@ -228,7 +229,7 @@ textmodel_wordshoal.dfm <- function(x, groups, authors, dir = c(1,2), tol = 1e-3
         call = match.call())
 }
 
-###########################################
+
 
 #' @rdname textmodel-internal
 #' @param x for print method, the object to be printed
@@ -251,12 +252,14 @@ print.textmodel_wordshoal_fitted <- function(x, ...) {
 #' @rdname textmodel-internal
 #' @keywords internal
 #' @export
-setMethod("show", signature(object = "textmodel_wordshoal_fitted"), function(object) print(object))
+setMethod("show", signature(object = "textmodel_wordshoal_fitted"), 
+          function(object) print(object))
 
 #' @rdname textmodel-internal
 #' @keywords internal
 #' @export
-setMethod("show", signature(object = "textmodel_wordshoal_predicted"), function(object) print(object))
+setMethod("show", signature(object = "textmodel_wordshoal_predicted"), 
+          function(object) print(object))
 
 
 #' @export

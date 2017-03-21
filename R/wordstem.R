@@ -111,7 +111,7 @@ dfm_wordstem <- function(x, language = "porter") {
 wordstem_Ngrams <- function(x, concatenator, language) {
     result <- lapply(x, strsplit, concatenator, fixed = TRUE)
     result <- lapply(result, function(y) lapply(y, SnowballC::wordStem, language = language))
-    result <- lapply(result, function(y) sapply(y, paste, collapse = concatenator))
+    result <- lapply(result, function(y) vapply(y, paste, character(1), collapse = concatenator))
     # simple way to return a character vector if supplied a character vector
     if (!is.list(x)) result <- unlist(result)
     result

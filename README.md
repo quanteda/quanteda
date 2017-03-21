@@ -8,27 +8,6 @@
 
 This version of the package is a transitional release prior to v1.0. It includes some major API changes (see below), but with the most of the older functions retained and deprecated. v0.9.9 also implements many enhancements and performance improvements. See [Quanteda Structure and Design](https://kbenoit.github.io/quanteda/articles/development-plans.html) for details.
 
-Note on problems with CRAN binary mac build on OS X
----------------------------------------------------
-
-`dfm()` fails when using the binary build from CRAN for v0.9.9-24 on Mac platforms with OS X El Capitan, Yosemite, or Mavericks. (See [Issue \#519](https://github.com/kbenoit/quanteda/issues/519).) This problem does not affect macOS (Sierra) platforms.
-
-Solution: Install from source. You will need the build tools from XCode to do this.
-
-1.  If you do not have XCode installed, install the minimum tools. From Terminal:
-
-    ``` bash
-    xcode-select --install
-    ```
-
-2.  Install and build from source. From R:
-
-    ``` r
-    install.packages("quanteda", type = "source")
-    ```
-
-Note that installing from GitHub, which will also compile the C++ code on your system, will avoid this problem.
-
 About the package
 -----------------
 
@@ -118,7 +97,7 @@ How to Install
     -   [**quantedaData**](https://github.com/kbenoit/quantedaData): Additional textual data for use with **quanteda**.
 
         ``` r
-        r devtools::install_github("kbenoit/quantedaData")
+        devtools::install_github("kbenoit/quantedaData")
         ```
 
     -   [**spacyr**](https://github.com/kbenoit/spacyr): NLP using the [spaCy](http://spacy.io) library.
@@ -135,7 +114,7 @@ Demonstration
 
 ``` r
 library(quanteda)
-## quanteda version 0.9.9.34
+## quanteda version 0.9.9.37
 ## Using 7 of 8 cores for parallel computing
 ## 
 ## Attaching package: 'quanteda'
@@ -165,7 +144,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Tue Mar 14 11:18:42 2017
+## Created: Tue Mar 21 01:32:08 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context

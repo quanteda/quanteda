@@ -64,7 +64,7 @@
 
 # data(data_corpus_irishbudget2010, package="quantedaData")
 # txts <- texts(data_corpus_irishbudget2010)
-# for (i in 1:length(txts)) {
+# for (i in seq_along(txts)) {
 #     temptxt <- system2("native2ascii", input = txts[i], stdout = TRUE)
 #     temptxt[temptxt==""] <- "\n"
 #     temptxt <- paste(temptxt, collapse="")

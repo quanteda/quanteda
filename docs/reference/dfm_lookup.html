@@ -92,7 +92,7 @@ found originally in the document).</p>
 
     <pre><span class='fu'>dfm_lookup</span>(<span class='no'>x</span>, <span class='no'>dictionary</span>, <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>, <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>), <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>capkeys</span> <span class='kw'>=</span> !<span class='no'>exclusive</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>capkeys</span> <span class='kw'>=</span> !<span class='no'>exclusive</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"verbose"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -148,36 +148,36 @@ dictionary.</p>
 #&gt;   text1        0 0
 #&gt;   text2        1 1</div><div class='input'>
 <span class='co'># glob format</span>
-<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 5 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (0% sparse).
+<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (0% sparse).
 #&gt; 2 x 5 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    christmas opposition taxglob taxregex country
 #&gt;   text1         1          1       1        0       0
-#&gt;   text2         0          0       1        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 5 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (0% sparse).
+#&gt;   text2         0          0       1        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (0% sparse).
 #&gt; 2 x 5 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    christmas opposition taxglob taxregex country
 #&gt;   text1         0          0       1        0       0
 #&gt;   text2         0          0       1        0       0</div><div class='input'>
 <span class='co'># regex v. glob format: note that "united_states" is a regex match for "tax*"</span>
-<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 5 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (0% sparse).
+<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (0% sparse).
 #&gt; 2 x 5 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    christmas opposition taxglob taxregex country
 #&gt;   text1         1          1       1        0       0
-#&gt;   text2         0          0       1        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 5 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (0% sparse).
+#&gt;   text2         0          0       1        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (0% sparse).
 #&gt; 2 x 5 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    christmas opposition taxglob taxregex country
 #&gt;   text1         1          1       1        0       0
 #&gt;   text2         0          0       2        1       2</div><div class='input'>
 <span class='co'># fixed format: no pattern matching</span>
-<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 5 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (0% sparse).
+<span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (0% sparse).
 #&gt; 2 x 5 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    christmas opposition taxglob taxregex country
 #&gt;   text1         1          1       0        0       0
-#&gt;   text2         0          0       0        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 5 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (0% sparse).
+#&gt;   text2         0          0       0        0       2</div><div class='input'><span class='fu'>dfm_lookup</span>(<span class='no'>myDfm</span>, <span class='no'>myDict</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (0% sparse).
 #&gt; 2 x 5 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
 #&gt; docs    christmas opposition taxglob taxregex country

@@ -205,7 +205,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 ##   1805-Jefferson   804   2381        45
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Fri Mar 10 19:12:44 2017
+## Created: Tue Mar 21 01:23:42 2017
 ## Notes:</code></pre></div>
 <p>If we wanted, we could add some document-level variables – what quanteda calls <code>docvars</code> – to this corpus.</p>
 <p>We can do this using the R’s <code>substring()</code> function to extract characters from a name – in this case, the name of the character vector <code>data_char_inaugural</code>. This works using our fixed starting and ending positions with <code>substring()</code> because these names are a very regular format of <code>YYYY-PresidentName</code>.</p>
@@ -222,7 +222,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 ##   1805-Jefferson   804   2381        45  Jefferson 1805
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Fri Mar 10 19:12:44 2017
+## Created: Tue Mar 21 01:23:42 2017
 ## Notes:</code></pre></div>
 <p>If we wanted to tag each document with additional meta-data not considered a document variable of interest for analysis, but rather something that we need to know as an attribute of the document, we could also add those to our corpus.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/metadoc.html">metadoc</a></span>(myCorpus, <span class="st">"language"</span>) &lt;-<span class="st"> "english"</span>
@@ -244,7 +244,7 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 ##  data_char_inaugural_5
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/docs/articles/* on x86_64 by kbenoit
-## Created: Fri Mar 10 19:12:44 2017
+## Created: Tue Mar 21 01:23:42 2017
 ## Notes:</code></pre></div>
 <p>The last command, <code>metadoc</code>, allows you to define your own document meta-data fields. Note that in assiging just the single value of <code>"english"</code>, R has recycled the value until it matches the number of documents in the corpus. In creating a simple tag for our custom metadoc field <code>docsource</code>, we used the quanteda function <code><a href="../reference/ndoc.html">ndoc()</a></code> to retrieve the number of documents in our corpus. This function is deliberately designed to work in a way similar to functions you may already use in R, such as <code>nrow()</code> and <code>ncol()</code>.</p>
 </div>
@@ -257,9 +257,9 @@ myCorpus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/co
 mytf1 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class="st">"~/Dropbox/QUANTESS/social media/zombies/tweets.json"</span>)
 myCorpusTwitter &lt;-<span class="st"> </span><span class="kw"><a href="../reference/corpus.html">corpus</a></span>(mytf1)
 <span class="kw">summary</span>(myCorpusTwitter, <span class="dv">5</span>)
-<span class="co"># generic json - needs a textField specifier</span>
+<span class="co"># generic json - needs a textfield specifier</span>
 mytf2 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class="st">"~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json"</span>,
-                  <span class="dt">textField =</span> <span class="st">"text"</span>)
+                  <span class="dt">textfield =</span> <span class="st">"text"</span>)
 <span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus.html">corpus</a></span>(mytf2), <span class="dv">5</span>)
 <span class="co"># text file</span>
 mytf3 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class="st">"~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt"</span>, <span class="dt">cache =</span> <span class="ot">FALSE</span>)
@@ -269,16 +269,17 @@ mytf4 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class
 <span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus.html">corpus</a></span>(mytf4), <span class="dv">5</span>)
 <span class="co"># multiple text files with docvars from filenames</span>
 mytf5 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, 
-                  <span class="dt">docvarsfrom=</span><span class="st">"filenames"</span>, <span class="dt">sep=</span><span class="st">"-"</span>, <span class="dt">docvarnames=</span><span class="kw">c</span>(<span class="st">"Year"</span>, <span class="st">"President"</span>))
+                  <span class="dt">docvarsfrom =</span> <span class="st">"filenames"</span>, <span class="dt">sep =</span> <span class="st">"-"</span>, <span class="dt">docvarnames =</span> <span class="kw">c</span>(<span class="st">"Year"</span>, <span class="st">"President"</span>))
 <span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus.html">corpus</a></span>(mytf5), <span class="dv">5</span>)
 <span class="co"># XML data</span>
 mytf6 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class="st">"~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml"</span>, 
-                  <span class="dt">textField =</span> <span class="st">"COMMON"</span>)
+                  <span class="dt">textfield =</span> <span class="st">"COMMON"</span>)
 <span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus.html">corpus</a></span>(mytf6), <span class="dv">5</span>)
 <span class="co"># csv file</span>
-<span class="kw">write.csv</span>(<span class="kw">data.frame</span>(<span class="dt">inaugSpeech =</span> <span class="kw"><a href="../reference/texts.html">texts</a></span>(data_corpus_inaugural), <span class="kw"><a href="../reference/docvars.html">docvars</a></span>(data_corpus_inaugural)), 
-          <span class="dt">file =</span> <span class="st">"/tmp/inaug_texts.csv"</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)
-mytf7 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class="st">"/tmp/inaug_texts.csv"</span>, <span class="dt">textField =</span> <span class="st">"inaugSpeech"</span>)
+<span class="kw">write.csv</span>(<span class="kw">data.frame</span>(<span class="dt">inaugSpeech =</span> <span class="kw"><a href="../reference/texts.html">texts</a></span>(data_corpus_inaugural), 
+                     <span class="kw"><a href="../reference/docvars.html">docvars</a></span>(data_corpus_inaugural)),
+          <span class="dt">file =</span> <span class="st">"/tmp/inaug_texts.csv"</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)b
+mytf7 &lt;-<span class="st"> </span><span class="kw">readtext</span>(<span class="st">"/tmp/inaug_texts.csv"</span>, <span class="dt">textfield =</span> <span class="st">"inaugSpeech"</span>)
 <span class="kw">summary</span>(<span class="kw"><a href="../reference/corpus.html">corpus</a></span>(mytf7), <span class="dv">5</span>)</code></pre></div>
 </div>
 </div>
@@ -443,7 +444,7 @@ mycorpus3 &lt;-<span class="st"> </span>mycorpus1 +<span class="st"> </span>myco
 ##       2013-Obama   814   2335        88
 ## 
 ## Source:  Combination of corpuses mycorpus1 and mycorpus2
-## Created: Fri Mar 10 19:12:44 2017
+## Created: Tue Mar 21 01:23:43 2017
 ## Notes:</code></pre></div>
 </div>
 <div id="subsetting-corpus-objects" class="section level3">
@@ -818,9 +819,9 @@ if (<span class="kw">require</span>(topicmodels)) {
     <span class="kw">topics</span>(myLDAfit20, <span class="dv">3</span>)
 }
 ##      Lenihan FF Bruton FG Burton LAB Morgan SF Cowen FF Kenny FG ODonnell FG Gilmore LAB Higgins LAB Quinn LAB Gormley Green Ryan Green Cuffe Green OCaolain SF
-## [1,]         14         6          2         5       13       11          10          17           8        10             7         12          19           4
-## [2,]         18         7         15        16        8        3           7          19          15         3             9          7           3           1
-## [3,]         20         8         19        19       15        7          12          12           3        20            14          3           9           7</code></pre></div>
+## [1,]         12        15         20         2       17        4          18           7          11         3            13         14           8          16
+## [2,]          5        13          6         1       19       10          13           9           9         9             9          8           9          11
+## [3,]          3        14          4         3        9        3           8           3          10        19             1         13          13          13</code></pre></div>
 </div>
 </div>
 </div>

@@ -100,7 +100,7 @@ get_docvars <- function(dvars, field = NULL) {
     if (is.null(field)) {
         field <- names(value)
         if (is.null(field))
-            field <- paste("docvar", 1:ncol(as.data.frame(value)), sep="")
+            field <- paste("docvar", seq_len(ncol(as.data.frame(value))), sep="")
     }
     documents(x)[field] <- value
     x
@@ -211,7 +211,7 @@ metadoc.dfm <- function(x, field = NULL) {
     if (is.null(field)) {
         field <- paste("_", names(value), sep="")
         if (is.null(field))
-            field <- paste("_metadoc", 1:ncol(as.data.frame(value)), sep = "")
+            field <- paste("_metadoc", seq_len(ncol(as.data.frame(value))), sep = "")
     } else {
         field <- paste("_", field, sep="")
     }

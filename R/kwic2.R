@@ -80,7 +80,7 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     
     # add document names if none
     if (is.null(names(x))) {
-        names(x) <- paste("text", 1:length(x), sep="")
+        names(x) <- paste("text", seq_along(x), sep="")
     }
     
     types <- types(x)
@@ -157,7 +157,7 @@ kwic_split <- function(char, mask, window) {
     end <- which(diff(c(mask, 0)) == -1)
     
     pre <- target <- post <- c()
-    for (i in 1:length(start)) {
+    for (i in seq_along(start)) {
         pre <- c(pre, stringi::stri_c(char[max(0, start[i] - window):max(0, start[i] - 1)], collapse = ' '))
         target <- c(target, stringi::stri_c(char[start[i]:end[i]], collapse = ' '))
         post <- c(post, stringi::stri_c(char[min(len + 1, end[i] + 1):min(len, end[i] + window)], collapse = ' '))
