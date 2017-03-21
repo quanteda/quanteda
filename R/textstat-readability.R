@@ -131,7 +131,7 @@ textstat_readability.character <- function(x,
         Coleman.Liau <- meanSentenceLength <- meanWordSyllables <- NULL
 
     if (is.null(names(x)))
-        names(x) <- paste0("text", 1:length(x))
+        names(x) <- paste0("text", seq_along(x))
 
     # get sentence lengths - BEFORE lower-casing
     St <- nsentence(x)

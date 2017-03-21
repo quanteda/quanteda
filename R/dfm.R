@@ -244,7 +244,7 @@ dfm.tokenizedTexts <- function(x,
     
     # set document names if none
     if (is.null(names(x))) {
-        names(x) <- paste("text", 1:length(x), sep="")
+        names(x) <- paste("text", seq_along(x), sep="")
     } 
     
     # use tokens_lookup for dictionaries with multi-word values otherwise do this later

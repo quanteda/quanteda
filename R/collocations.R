@@ -533,8 +533,8 @@ collocations2 <- function(x, method=c("lr", "chi2", "pmi", "dice", "all"),
         df$dice <- allTable2$dice
     }
     
-    #df[, word1 := factor(word1, levels = 1:length(tlevels), labels = tlevels)]
-    #df[, word2 := factor(word2, levels = 1:length(tlevels), labels = tlevels)]
+    #df[, word1 := factor(word1, levels = seq_along(tlevels), labels = tlevels)]
+    #df[, word2 := factor(word2, levels = seq_along(tlevels), labels = tlevels)]
     class(df) <- c("collocations", class(df))
     df[1:ifelse(is.null(n), nrow(df), n), ]
 }

@@ -80,7 +80,7 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
         
         # make the new corpus
         segmentedTexts <- lapply(texts(x), char_segment, what = to)
-        lengthSegments <- sapply(segmentedTexts, length)
+        lengthSegments <- vapply(segmentedTexts, length, integer(1))
         newcorpus <- corpus(unlist(segmentedTexts))
         # repeat the docvars and existing document metadata
         docvars(newcorpus, names(docvars(x))) <- as.data.frame(lapply(docvars(x), rep, lengthSegments))

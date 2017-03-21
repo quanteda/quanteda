@@ -182,7 +182,7 @@ ntype.dfm <- function(x, ...) {
 #' @noRd
 #' @export
 ntype.tokenizedTexts <- function(x, ...) {
-    sapply(lapply(x, unique), length)
+    vapply(lapply(x, unique), length, integer(1))
 }
 
 #' @export

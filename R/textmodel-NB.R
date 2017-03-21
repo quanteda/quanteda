@@ -179,7 +179,7 @@ predict.textmodel_NB_fitted <- function(object, newdata = NULL, ...) {
                              dimnames = dimnames(log.posterior.lik))
 
     # compute posterior probabilities
-    for (j in 1:ncol(log.posterior.lik)) {
+    for (j in seq_len(ncol(log.posterior.lik))) {
         base.lpl <- log.posterior.lik[, j]
         posterior.prob[, j] <- 1 / (1 + rowSums(exp(log.posterior.lik[, -j, drop = FALSE] - base.lpl)))
     }

@@ -173,7 +173,7 @@ predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling 
     
     textscore_raw_se <- rep(NA, length(textscore_raw))
     Fwv <- tf(scorable.newd, "prop")
-    for (i in 1:length(textscore_raw_se))
+    for (i in seq_along(textscore_raw_se))
         textscore_raw_se[i] <- sqrt(sum(Fwv[i, , drop=FALSE] * (textscore_raw[i] - Sw)^2)) / sqrt(rowSums(scorable.newd)[i])
     
     z <- stats::qnorm(1 - (1-level)/2)

@@ -107,7 +107,6 @@ kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "
     kwic(as.tokens(x), keywords, window, valuetype, case_insensitive, ..., new = TRUE)
 }
 
-
 #' @rdname kwic
 #' @export
 #' @examples
