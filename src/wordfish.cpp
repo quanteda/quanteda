@@ -75,7 +75,7 @@ Rcpp::List wordfishcpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& 
     } else {
         // Load initial values
         for (std::size_t i=0; i < N; i++) {
-            theta(i) = pow(rsum(i)/asum,-0.5);// * U(i,0);
+            theta(i) = pow(rsum(i)/asum,-0.5) - rand() % 2;// * U(i,0);
             //Rcout<<"theta starting values:"<<theta(i)<<std::endl;
         }
     }
