@@ -58,8 +58,10 @@ setClass("textmodel_wordfish_predicted",
 #'   "quasipoisson"}.
 #' @param sparse specifies whether the \code{"dfm"} is coerced to dense
 #' @param abs_err specifies how the convergence is considered
-#' @param svd_sparse uses svd to initialize the starting values of theta, only applies to sparse version
-#' @param residual_floor specifies the threshold for residual matrix when calculating the svds, only applies to sparse version
+#' @param svd_sparse uses svd to initialize the starting values of theta, 
+#'   only applies when \code{sparse = TRUE}
+#' @param residual_floor specifies the threshold for residual matrix when 
+#'   calculating the svds, only applies when \code{sparse = TRUE}
 #' @return An object of class textmodel_fitted_wordfish.  This is a list 
 #'   containing: \item{dir}{global identification of the dimension} 
 #'   \item{theta}{estimated document positions} \item{alpha}{estimated document 
@@ -82,7 +84,7 @@ setClass("textmodel_wordfish_predicted",
 #'   Lowe, Will and Kenneth Benoit. 2013. "Validating Estimates of Latent Traits
 #'   from Textual Data Using Human Judgment as a Benchmark." \emph{Political Analysis}
 #'   21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
-#' @author Benjamin Lauderdale and Kenneth Benoit
+#' @author Benjamin Lauderdale, Haiyan Wang, and Kenneth Benoit
 #' @examples
 #' textmodel_wordfish(data_dfm_LBGexample, dir = c(1,5))
 #' 
