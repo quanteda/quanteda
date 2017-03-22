@@ -26,14 +26,14 @@ Targets range(Text tokens,
     }
     
     Targets targets;
-    size_t last = tokens_pos.size();
+    size_t last = tokens_pos.size() - 1;
     size_t start, end;
     for (size_t k = 0; k <= tokens_pos.size(); k++) {
         if ((k == 0 || tokens_pos[k - 1] == 0) && tokens_pos[k] == 1) {
             start = k;
             //Rcout << "starts " << start << "\n";
         }
-        if (tokens_pos[k - 1] == 1 && (k == last || tokens_pos[k] == 0)) {
+        if (tokens_pos[k - 1] == 1 && (k > last || tokens_pos[k] == 0)) {
             end = k - 1;
             //Rcout << "ends " << end << "\n";
             targets.push_back(make_pair(start, end));
