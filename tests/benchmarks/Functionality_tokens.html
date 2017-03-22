@@ -124,7 +124,7 @@ $(document).ready(function () {
 
 <p>To demonstrate the functionality of <code>tokens()</code> that removes or keeps some special characters/symbols. Test on:</p>
 <pre class="r"><code>require(quanteda, quietly = TRUE, warn.conflicts = FALSE)</code></pre>
-<pre><code>## quanteda version 0.9.9.38</code></pre>
+<pre><code>## quanteda version 0.9.9.39</code></pre>
 <pre><code>## Using 7 of 8 cores for parallel computing</code></pre>
 <pre class="r"><code>require(tokenizers, quietly = TRUE, warn.conflicts = FALSE)
 poetry &lt;- paste0(&quot;I wandered lonely as a cloud,\n&quot;,
@@ -225,6 +225,30 @@ poetry &lt;- paste0(&quot;I wandered lonely as a cloud,\n&quot;,
 ## [5] &quot;Prof.&quot;                                                                            
 ## [6] &quot;Plum kills Mrs.&quot;                                                                  
 ## [7] &quot;Peacock.  4u @ http://www.github.com&quot;</code></pre>
+</div>
+<div id="performance-benchmark" class="section level3">
+<h3>Performance benchmark</h3>
+<pre class="r"><code>microbenchmark::microbenchmark(q_tokens = tokens(poetry, what = &quot;word&quot;, hash = FALSE, removeSeparators = FALSE),
+                               tokenizers = tokenize_words(poetry), 
+                               times = 20, unit = &quot;relative&quot;)</code></pre>
+<pre><code>## Unit: relative
+##        expr      min       lq     mean   median      uq     max neval
+##    q_tokens 4.265965 4.230409 4.286133 4.208135 4.14068 5.72937    20
+##  tokenizers 1.000000 1.000000 1.000000 1.000000 1.00000 1.00000    20</code></pre>
+<pre class="r"><code>microbenchmark::microbenchmark(q_tokens = tokens(poetry, what = &quot;fasterword&quot;, hash = FALSE, removeSeparators = FALSE),
+                               tokenizers = tokenize_words(poetry), 
+                               times = 20, unit = &quot;relative&quot;)</code></pre>
+<pre><code>## Unit: relative
+##        expr      min       lq     mean   median     uq     max neval
+##    q_tokens 4.647231 4.704185 4.631963 4.558733 4.4297 5.65416    20
+##  tokenizers 1.000000 1.000000 1.000000 1.000000 1.0000 1.00000    20</code></pre>
+<pre class="r"><code>microbenchmark::microbenchmark(q_tokens = tokens(poetry, what = &quot;fastestword&quot;, hash = FALSE, removeSeparators = FALSE),
+                               tokenizers = tokenize_words(poetry), 
+                               times = 20, unit = &quot;relative&quot;)</code></pre>
+<pre><code>## Unit: relative
+##        expr      min       lq     mean   median       uq      max neval
+##    q_tokens 3.088677 3.146333 3.051235 3.006303 2.804418 3.840489    20
+##  tokenizers 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    20</code></pre>
 </div>
 
 

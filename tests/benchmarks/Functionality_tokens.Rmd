@@ -58,3 +58,17 @@ tokenize_words("1 $ 100 £1000 2000+\n")
 tokens(poetry, what = "sentence")
 tokenize_sentences(poetry)
 ```
+### Performance benchmark
+```{r}
+microbenchmark::microbenchmark(q_tokens = tokens(poetry, what = "word", hash = FALSE, removeSeparators = FALSE),
+                               tokenizers = tokenize_words(poetry), 
+                               times = 20, unit = "relative")
+
+microbenchmark::microbenchmark(q_tokens = tokens(poetry, what = "fasterword", hash = FALSE, removeSeparators = FALSE),
+                               tokenizers = tokenize_words(poetry), 
+                               times = 20, unit = "relative")
+
+microbenchmark::microbenchmark(q_tokens = tokens(poetry, what = "fastestword", hash = FALSE, removeSeparators = FALSE),
+                               tokenizers = tokenize_words(poetry), 
+                               times = 20, unit = "relative")
+```
