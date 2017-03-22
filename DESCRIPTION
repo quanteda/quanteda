@@ -110,6 +110,7 @@ Collate:
     'textmodel-wordfish.R'
     'textmodel-wordscores.R'
     'textmodel-wordshoal.R'
+    'textplot_scale1d.R'
     'textstat-deprecated.R'
     'textstat-lexdiv.R'
     'textstat-readability.R'
