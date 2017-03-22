@@ -160,7 +160,8 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
     if (scale == 'relative')
         x[, position := position/ntokens]
 
-    plot <- ggplot2::ggplot(x, ggplot2::aes(x=position, y=1)) + ggplot2::geom_segment(ggplot2::aes(xend=position, yend=0)) + 
+    plot <- ggplot2::ggplot(x, ggplot2::aes(x=position, y=1)) + 
+        ggplot2::geom_segment(ggplot2::aes(xend=position, yend=0)) + 
         ggplot2::theme(axis.line = ggplot2::element_blank(),
                        panel.background = ggplot2::element_blank(),
                        panel.grid.major.y = ggplot2::element_blank(),
@@ -200,84 +201,3 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
 }
 
 
-#' plot a fitted wordfish model
-#' 
-#' Plot a fitted wordfish model, either as an ideal point-style plot (theta plus
-#' confidence interval on the x-axis, document labels on the y) with optional 
-#' renaming and sorting, or as a plot of estimated feature-level parameters
-#' (beta on the x, psi on the y, feature names over-plotted with alpha
-#' transparency, optionally some highlighted) as in Slapin and Proksch, 2008.
-#' @param x the fitted \link{textmodel_wordfish} object to be plotted
-#' @param margin \code{"documents"} to plot document scores theta (the default)
-#'   or \code{"features"} to plot psi against beta parameters
-#' @param sort if \code{TRUE} (the default), order points from low to high score. If a 
-#'   vector, order according to these values from low to high. Only applies when
-#'   \code{margin = "documents"}
-#' @param doclabels a vector of names for document. If left NULL (the default), 
-#'   ordinary document names will be used.
-#' @param mar_left an overridden left margin, passed to \code{par} (default 
-#'   8.1). This overrides R's default 4.1, which is typically too cramped for 
-#'   document names.
-#' @param highlighted a vector of feature names to draw attention to in a feature 
-#'   plot. Only applies if \code{margin = "features"}.
-#' @param alpha A number between 0 and 1 (default 0.5) representing the level of
-#'   alpha transparency used to overplot feature names in a feature plot. Only 
-#'   applies if \code{margin = "features"}.
-#' @param ... additional arguments passed to \code{\link{plot}}
-#' @export
-#' @references Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
-#'   for Estimating Time-Series Party Positions from Texts." \emph{American 
-#'   Journal of Political Science} 52(3):705-772.
-#' @author Adam Obeng
-#' @importFrom graphics plot segments axis points par text
-#' @importFrom grDevices rgb
-#' @keywords plot
-#' @examples 
-#' postwar <- dfm_trim(dfm(data_corpus_inaugural[41:57]), min_count = 5, min_docfreq = 2)
-#' mod <- textmodel(postwar, model = "wordfish")
-#' textplot_scale1d(mod, sort = FALSE)
-#' textplot_scale1d(mod, sort = TRUE)
-#' textplot_scale1d(mod, margin = "features", 
-#'                  highlighted = c("government", "countries", "children", 
-#'                              "the", "nuclear", "federal"),)
-textplot_scale1d <- function (x, margin = c("documents", "features"), doclabels = NULL, 
-                                      sort = TRUE, highlighted = NULL, alpha = 0.7, 
-                              highlighted_colour = "black",
-                                      ...) 
-{
-  if (!is(x, "textmodel_wordfish_fitted")) 
-    stop("x must be a fitted textmodel_wordfish object")
-  margin <- match.arg(margin)
-  if (margin == "documents") {
-    n <- length(x@theta)
-    if (is.null(doclabels)) 
-      doclabels <- docnames(x@x)
-    stopifnot(length(doclabels) == n)
-    results <- data.frame(doclabels = doclabels, theta = x@theta, 
-                          lower = x@theta - 1.96 * x@se.theta, upper = x@theta + 
-                            1.96 * x@se.theta)
-    
-    ggplot2::ggplot(data = results, aes(x = doclabels, y = theta)) +
-    {if(sort==TRUE)geom_point(aes(x = reorder(doclabels, theta), y = theta))} + 
-      geom_pointrange(aes(ymin = lower, ymax = upper)) + 
-      coord_flip() + 
-      ylab("Theta") + 
-      xlab(NULL) +
-      theme_bw() 
-  }
-  else {
-    results_wordfish <- data.frame(feature = x@features, 
-                     psi = x@psi,
-                     beta = x@beta)
-
-    ggplot2::ggplot(data = results_wordfish, aes(x = beta, y = psi, label = feature)) + 
-      geom_text(colour = "grey70") +
-      geom_text(aes(beta, psi, label = feature), 
-                data = results_wordfish[results_wordfish$feature %in% highlighted,],
-                color = highlighted_colour) +
-      xlab("Beta") +
-      ylab("Psi") + 
-      theme_bw() +
-      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-  }
-}
