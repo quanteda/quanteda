@@ -107,10 +107,10 @@ DataFrame qatd_cpp_kwic(const List &texts_,
         len += output[h].size();
     }
     
-    std::vector<int> pos_from(len), pos_to(len);
-    CharacterVector coxs_name_(len), coxs_pre_(len), coxs_target_(len), coxs_post_(len);
     Texts contexts(len);
-    std::vector<int>  documents(len);
+    IntegerVector documents_(len);
+    IntegerVector pos_from_(len), pos_to_(len);
+    CharacterVector coxs_name_(len), coxs_pre_(len), coxs_target_(len), coxs_post_(len);
     
     std::size_t j = 0;
     for (std::size_t h = 0; h < output.size(); h++) {
@@ -126,15 +126,15 @@ DataFrame qatd_cpp_kwic(const List &texts_,
             // Save as intergers
             Text context(tokens.begin() + std::max(0, from), tokens.begin() + std::min(to, last) + 1);
             contexts[j] = context;
-            documents[j] = (int)h + 1;
+            documents_[j] = (int)h + 1;
             
             // Save as strings
             Text cox_pre(tokens.begin() + std::max(0, from), tokens.begin() + targets[i].first);
             Text cox_target(tokens.begin() + targets[i].first, tokens.begin() + targets[i].second + 1);
             Text cox_post(tokens.begin() + targets[i].second + 1, tokens.begin() + std::min(to, last) + 1);
             
-            pos_from[j] = targets[i].first + 1;
-            pos_to[j] = targets[i].second + 1;
+            pos_from_[j] = targets[i].first + 1;
+            pos_to_[j] = targets[i].second + 1;
             coxs_pre_[j] = get_text(cox_pre, types_);
             coxs_target_[j] = get_text(cox_target, types_);
             coxs_post_[j] = get_text(cox_post, types_);
@@ -144,14 +144,15 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     }
     
     DataFrame output_ = DataFrame::create(_["docname"] = coxs_name_,
-                                          _["from"]    = pos_from,
-                                          _["to"]      = pos_to,
+                                          _["from"]    = pos_from_,
+                                          _["to"]      = pos_to_,
                                           _["pre"]     = coxs_pre_,
                                           _["keyword"] = coxs_target_,
                                           _["post"]    = coxs_post_,
                                           _["stringsAsFactors"] = false);
-    output_.attr("docs") = documents;
+    
     output_.attr("ids") = as<Tokens>(wrap(contexts));
+    output_.attr("docs") = documents_;
     output_.attr("types") = types_;
     return output_;
 }
