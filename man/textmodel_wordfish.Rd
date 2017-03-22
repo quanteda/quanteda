@@ -7,7 +7,7 @@
 textmodel_wordfish(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1),
   tol = c(1e-06, 1e-08), dispersion = c("poisson", "quasipoisson"),
   dispersionLevel = c("feature", "overall"), dispersionFloor = 0,
-  sparse = TRUE, abs_err = FALSE, svd_sparse = FALSE,
+  sparse = TRUE, abs_err = FALSE, svd_sparse = TRUE,
   residual_floor = 0.5)
 }
 \arguments{
