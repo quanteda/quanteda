@@ -4,7 +4,7 @@
 \alias{textstat_collocations}
 \title{calculate collocation statistics}
 \usage{
-textstat_collocations(x, y, ...)
+textstat_collocations(x, ...)
 }
 \arguments{
 \item{x}{a \link{dfm} containing the features to be examined for keyness}
@@ -28,22 +28,9 @@ calculate collocation statistics
 
 toks <- tokens(data_char_inaugural, removePunct = TRUE)
 toks <- tokens_remove(toks, stopwords(), padding = TRUE)
-
-# use contexts and tokens for target collocation
-coxs <- contexts(toks, "econom*", window = 10, valuetype = "glob")
-head(textstat_collocations(coxs, toks), 10)
-
-# use fcm and dfm for all-all collocation 
-fcm <- fcm(toks, tri = FALSE)
-col_pmi <- textstat_collocations(fcm, dfm(toks), measure = "pmi", top = 5000)
-col_pmi[grepl("econom", col_pmi$collocation),]
-head(col_pmi, 20)
-
-toks <- tokens("A D A C E A D F E B A C E D")
-col_chi2 <- textstat_collocations(fcm(toks, 'window', window = 2, tri = FALSE), 
-                                  dfm(toks, tolower = FALSE), measure = "chi2", top = 3)
-
-
+head(textstat_collocations(toks, method = 'bj'))
+head(textstat_collocations(toks, method = 'lr'))
+head(textstat_collocations(toks, method = 'all'))
 
 }
 \keyword{textstat}

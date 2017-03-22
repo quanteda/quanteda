@@ -45,10 +45,6 @@ qatd_cpp_tokens_compound <- function(texts_, comps_, types_, delim_, join) {
     .Call('quanteda_qatd_cpp_tokens_compound', PACKAGE = 'quanteda', texts_, comps_, types_, delim_, join)
 }
 
-qatd_cpp_tokens_contexts <- function(texts_, types_, words_, window) {
-    .Call('quanteda_qatd_cpp_tokens_contexts', PACKAGE = 'quanteda', texts_, types_, words_, window)
-}
-
 qatd_cpp_tokens_detect <- function(texts_, words_) {
     .Call('quanteda_qatd_cpp_tokens_detect', PACKAGE = 'quanteda', texts_, words_)
 }

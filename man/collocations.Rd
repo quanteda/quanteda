@@ -4,9 +4,9 @@
 \alias{collocations}
 \title{detect collocations from text}
 \usage{
-collocations(x, method = c("lr", "chi2", "pmi", "dice", "all"), size = 2,
-  n = NULL, toLower = TRUE, punctuation = c("dontspan", "ignore",
-  "include"), ...)
+collocations(x, method = c("lr", "chi2", "pmi", "dice"), features = "*",
+  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
+  min_count = 2, size = 2, ...)
 }
 \arguments{
 \item{x}{a character, \link{corpus}, \link{tokens} object}
@@ -28,10 +28,10 @@ coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
 (\code{n=3}) collocations are currently implemented.  Can be \code{c(2,3)}
 (or \code{2:3}) to return both bi- and tri-gram collocations.}
 
+\item{...}{additional parameters passed to \code{\link{tokens}}}
+
 \item{n}{the number of collocations to return, sorted in descending order of 
 the requested statistic, or \eqn{G^2} if none is specified.}
-
-\item{toLower}{convert collocations to lower case if \code{TRUE} (default)}
 
 \item{punctuation}{how to handle tokens separated by punctuation characters.  Options are:
 \describe{
@@ -43,7 +43,7 @@ returned.}
 punctuation characters as tokens}
 }}
 
-\item{...}{additional parameters passed to \code{\link{tokens}}}
+\item{toLower}{convert collocations to lower case if \code{TRUE} (default)}
 }
 \value{
 a collocations class object: a specially classed data.table consisting 
@@ -57,13 +57,13 @@ default (\code{spanPunct = FALSE})  as adjacent and hence are not eligible to
 be collocations.
 }
 \examples{
-txt <- c("This is software testing: looking for (word) pairs!  
+txts <- c("This is software testing: looking for (word) pairs!  
          This [is] a software testing again. For.",
          "Here: this is more Software Testing, looking again for word pairs.")
-collocations(txt, punctuation = "dontspan") # default
-collocations(txt, punctuation = "dontspan", removePunct = TRUE)  # includes "testing looking"
-collocations(txt, punctuation = "ignore", removePunct = TRUE)    # same as previous 
-collocations(txt, punctuation = "include", removePunct = FALSE)  # keep punctuation as tokens
+toks <- tokens(txts)
+cols <- collocations(toks, 'lr', "*", min_count = 1)
+cols <- collocations(toks, 'lr', "^([a-z]+)$", valuetype = 'regex', min_count = 1)
+as.tokens(cols)
 
 collocations(txt, size = 2:3)
 removeFeatures(collocations(txt, size = 2:3), stopwords("english"))
@@ -76,6 +76,7 @@ collocations(data_char_inaugural[49:57], n = 10)
 collocations(data_char_inaugural[49:57], method = "all", n = 10)
 collocations(data_char_inaugural[49:57], method = "chi2", size = 3, n = 10)
 collocations(corpus_subset(data_corpus_inaugural, Year>1980), method = "pmi", size = 3, n = 10)
+
 }
 \references{
 McInnes, B T. 2004. "Extending the Log Likelihood Measure to 

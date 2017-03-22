@@ -4,8 +4,8 @@
 \alias{sequences}
 \title{find variable-length collocations with filtering}
 \usage{
-sequences(x, features, valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE, min_count = 2, max_length = 5, nested = TRUE,
+sequences(x, features = "*", valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE, min_count = 2, max_size = 5, nested = TRUE,
   ordered = FALSE)
 }
 \arguments{
@@ -22,7 +22,7 @@ or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{min_count}{minimum frequency of sequences for which parameters are estimated}
 
-\item{max_length}{maxium length of sequences which are collected}
+\item{max_size}{maxium length of sequences which are collected}
 
 \item{nested}{if true, collect all the subsequences of a longer sequence as separate entities.
 e.g. in a sequence of capitalized words "United States Congress", "States Congress" is considered 
