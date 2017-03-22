@@ -61,21 +61,11 @@ txts <- c("This is software testing: looking for (word) pairs!
          This [is] a software testing again. For.",
          "Here: this is more Software Testing, looking again for word pairs.")
 toks <- tokens(txts)
+cols <- collocations(toks, 'lr')
+cols <- collocations(toks, 'lr', size = 3)
 cols <- collocations(toks, 'lr', "*", min_count = 1)
 cols <- collocations(toks, 'lr', "^([a-z]+)$", valuetype = 'regex', min_count = 1)
 as.tokens(cols)
-
-collocations(txt, size = 2:3)
-removeFeatures(collocations(txt, size = 2:3), stopwords("english"))
-
-collocations("@textasdata We really, really love the #quanteda package - thanks!!")
-collocations("@textasdata We really, really love the #quanteda package - thanks!!",
-              removeTwitter = TRUE)
-
-collocations(data_char_inaugural[49:57], n = 10)
-collocations(data_char_inaugural[49:57], method = "all", n = 10)
-collocations(data_char_inaugural[49:57], method = "chi2", size = 3, n = 10)
-collocations(corpus_subset(data_corpus_inaugural, Year>1980), method = "pmi", size = 3, n = 10)
 
 }
 \references{

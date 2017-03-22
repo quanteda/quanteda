@@ -52,21 +52,11 @@ NULL
 #'          This [is] a software testing again. For.",
 #'          "Here: this is more Software Testing, looking again for word pairs.")
 #' toks <- tokens(txts)
+#' cols <- collocations(toks, 'lr')
+#' cols <- collocations(toks, 'lr', size = 3)
 #' cols <- collocations(toks, 'lr', "*", min_count = 1)
 #' cols <- collocations(toks, 'lr', "^([a-z]+)$", valuetype = 'regex', min_count = 1)
 #' as.tokens(cols)
-#' 
-#' collocations(txt, size = 2:3)
-#' removeFeatures(collocations(txt, size = 2:3), stopwords("english"))
-#' 
-#' collocations("@@textasdata We really, really love the #quanteda package - thanks!!")
-#' collocations("@@textasdata We really, really love the #quanteda package - thanks!!",
-#'               removeTwitter = TRUE)
-#' 
-#' collocations(data_char_inaugural[49:57], n = 10)
-#' collocations(data_char_inaugural[49:57], method = "all", n = 10)
-#' collocations(data_char_inaugural[49:57], method = "chi2", size = 3, n = 10)
-#' collocations(corpus_subset(data_corpus_inaugural, Year>1980), method = "pmi", size = 3, n = 10)
 #' 
 collocations <- function(x, method = c("lr", "chi2", "pmi", "dice"), 
                          features = "*", 
@@ -87,41 +77,6 @@ wFIRSTGREPpenn <- "([,:.]|''|``|-rrb-)_.*"
 wMIDDLEGREPpenn <- "([,:.]|''|``|-[lr]rb-)_.*"
 wLASTGREPpenn <- "-lrb-_.*"
 
-#' @rdname collocations
-#' @noRd
-#' @export
-collocations.corpus <- function(x, method = c("lr", "chi2", "pmi", "dice"), 
-                                features = "*", 
-                                valuetype = c("glob", "regex", "fixed"),
-                                case_insensitive = TRUE, 
-                                min_count = 2,
-                                size = 2, ...) {
-    
-    #collocations(texts(x), method = method, size = size, n = n, punctuation = punctuation, ...)
-    collocations(texts(x), features, valuetype, case_insensitive, min_count, method, size, ...)
-}
-
-#' @rdname collocations
-#' @noRd
-#' @export    
-collocations.character <- function(x, method = c("lr", "chi2", "pmi", "dice"),
-                                   features = "*", 
-                                   valuetype = c("glob", "regex", "fixed"),
-                                   case_insensitive = TRUE, 
-                                   min_count = 2, 
-                                   size = 2, ...) {
-
-    #x <- tokens((if (toLower) char_tolower(x) else x), hash = FALSE, ...)
-    #collocations(x, method = method, size = size , n = n, punctuation = punctuation)
-    collocations(tokens(x, ...), features, method, valuetype, case_insensitive, min_count, size)
-}
-
-#' @rdname collocations
-#' @noRd
-#' @export    
-collocations.tokenizedTexts <- function(x, ...) {
-    collocations(as.tokens(x), ...)
-} 
     
 #' @rdname collocations
 #' @noRd
@@ -157,20 +112,21 @@ collocations.tokens <- function(x, method = c("lr", "chi2", "pmi", "dice"),
         stop("Only bigram and trigram collocations implemented so far.")
     
     coll <- NULL
-    if (2 %in% size)
+    if (size == 2) {
         coll <- collocations2(x, method, features_id, 2, ...)
-    if (3 %in% size) {
-        if (is.null(coll)) 
-            coll <- collocations3(x, method, features_id, 3, ...)
-        else {
-            coll <- rbind(coll, collocations3(x, method, features_id, 3, ...))
-            class(coll) <- c("collocations", class(coll))
-        }
+    } else if (size == 3) {
+        coll <- collocations3(x, method, features_id, 3, ...)
+        # if (is.null(coll)) 
+        #     coll <- collocations3(x, method, features_id, 3, ...)
+        # else {
+        #     coll <- rbind(coll, collocations3(x, method, features_id, 3, ...))
+        #     #class(coll) <- c("collocations", class(coll))
+        # }
     }
     # remove any "collocations" containing the dummy token, return
     word1 <- word2 <- word3 <- NULL
-    temp <- coll[word1 != DUMMY_TOKEN & word2 != DUMMY_TOKEN & word3 != DUMMY_TOKEN]
     
+    temp <- coll[word1 != DUMMY_TOKEN & word2 != DUMMY_TOKEN & word3 != DUMMY_TOKEN]
     
     # temporary coversion for textstats_collocations ---------------------------
     
@@ -420,9 +376,9 @@ collocations3 <- function(x, method = c("lr", "chi2", "pmi", "dice"),
     #     dt$dice <- allTable$dice
     # }
 
-    class(dt) <- c("collocations", class(dt))
+    #class(dt) <- c("collocations", class(dt))
     #dt[1:ifelse(is.null(n), nrow(dt), n), ]
-    return(df)
+    return(dt)
 }
 
 
@@ -543,14 +499,14 @@ collocations2 <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"),
     }
     if (method=="chi2") {
         setorder(allTable2, -chi2)
-        df <- data.table(word1=allTable2$w1, 
+        dt <- data.table(word1=allTable2$w1, 
                          word2=allTable2$w2,
                          word3="",
                          count=allTable2$w1w2n,
                          X2=allTable2$chi2)
     } else if (method=="pmi") {
         setorder(allTable2, -pmi)
-        df <- data.table(word1=allTable2$w1, 
+        dt <- data.table(word1=allTable2$w1, 
                          word2=allTable2$w2,
                          word3="",
                          count=allTable2$w1w2n,
@@ -558,32 +514,32 @@ collocations2 <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"),
         
     } else if (method=="dice") {
         setorder(allTable2, -dice)
-        df <- data.table(word1=allTable2$w1, 
+        dt <- data.table(word1=allTable2$w1, 
                          word2=allTable2$w2,
                          word3="",
                          count=allTable2$w1w2n,
                          dice=allTable2$dice) 
     } else {
         setorder(allTable2, -lrratio)
-        df <- data.table(word1=allTable2$w1, 
+        dt <- data.table(word1=allTable2$w1, 
                          word2=allTable2$w2,
                          word3="",
                          count=allTable2$w1w2n,
                          G2=allTable2$lrratio) 
     }
     
-    if (method=="all") {
-        df$G2 <- allTable2$lrratio
-        df$X2 <- allTable2$chi2
-        df$pmi <- allTable2$pmi
-        df$dice <- allTable2$dice
-    }
+    # if (method=="all") {
+    #     dt$G2 <- allTable2$lrratio
+    #     dt$X2 <- allTable2$chi2
+    #     dt$pmi <- allTable2$pmi
+    #     dt$dice <- allTable2$dice
+    # }
     
     #df[, word1 := factor(word1, levels = 1:length(tlevels), labels = tlevels)]
     #df[, word2 := factor(word2, levels = 1:length(tlevels), labels = tlevels)]
-    class(df) <- c("collocations", class(df))
+    #class(df) <- c("collocations", class(df))
     #df[1:ifelse(is.null(n), nrow(df), n), ]
-    return(df)
+    return(dt)
 }
 
 #' check if an object is collocations type
