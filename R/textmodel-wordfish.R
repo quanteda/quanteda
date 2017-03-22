@@ -117,8 +117,8 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
                                dispersionFloor = 0,
                                sparse = TRUE,
                                abs_err = FALSE,
-                               svd_sparse = FALSE,
-                               residual_floor = 0.0) {
+                               svd_sparse = TRUE,
+                               residual_floor = 0.5) {
     
     dispersion <- match.arg(dispersion)
     dispersionLevel <- match.arg(dispersionLevel)
