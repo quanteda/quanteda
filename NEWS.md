@@ -9,13 +9,14 @@
 * Added an experimental method `bootstrap_dfm()` to generate a list of dimensionally-equivalent dfm objects based on sentence-level resampling of the original documents.
 * Added option to `tokens()` and `dfm()` for passing docvars through to to tokens and dfm objects, and added `docvars()` and `metadoc()` methods for tokens and dfm class objects.  Overall, the code for docvars and metadoc is now more robust and consistent.  
 * `docvars()` on eligible objects that contain no docvars now returns an empty 0 x 0 data.frame (in the spirit of #242).
-
+* Redesigned `textmodel_scale1d` now produces sorted and grouped document positions for fitted wordfish models, and produces a ggplot2 plot object.
 
 ### Behaviour changes 
 
 * `docvars()` now permits direct access to "metadoc" fields (starting with `_`, e.g. `_document`)
 * `metadoc()` now returns a vector instead of a data.frame for a single variable, similar to `docvars()`
 * Most `verbose` options now take the default from `getOption("verbose")` rather than fixing the value in the function signatures. (#577)
+* `textstat_dist()` and `textstat_simil()` now return a matrix if a `selection` argument is supplied, and coercion to a list produces a list of distances or similarities only for that selection. 
 
 ### Bug fixes
 

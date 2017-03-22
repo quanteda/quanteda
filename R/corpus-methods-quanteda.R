@@ -118,7 +118,7 @@ texts.character <- function(x, groups = NULL, spacer = "  ") {
     if (is.null(groups)) return(x)
     # if (!is.factor(groups)) stop("groups must be a factor")
     x <- split(x, as.factor(groups))
-    sapply(x, paste, collapse = spacer)
+    vapply(x, paste, character(1), collapse = spacer)
 }
 
 

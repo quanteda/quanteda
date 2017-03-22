@@ -189,13 +189,13 @@ expand <- function(elem){
     comb <- vector("list", m)
     if(m == 0) return(comb)
     k <- 1L
-    for (i in 1:length(elem)) {
+    for (i in seq_along(elem)) {
         vec <- elem[[i]]
         l <- length(vec)
         m <- m / l
         vec_rep <- vec[rep.int(rep.int(seq_len(l), rep.int(k, l)), m)]
         k <- k * l
-        for (j in 1:length(vec_rep)) {
+        for (j in seq_along(vec_rep)) {
             comb[[j]] <- c(comb[[j]], vec_rep[j])
         }
     }
@@ -232,7 +232,7 @@ is_indexed <- function(x){
 #' @keywords internal utilities
 vector2list <- function(x) {
     if (is.list(x)) {
-        if (!all(sapply(x, is.character, USE.NAMES = FALSE)))
+        if (!all(vapply(x, is.character, logical(1), USE.NAMES = FALSE)))
             stop("Patterns must be a list of character type only")
         return(x)
     } else {

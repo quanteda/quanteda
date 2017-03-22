@@ -42,7 +42,7 @@ toLower.NULL <- function(x, ...) NULL
 #' @export
 toLower.tokenizedTexts <- function(x, keep_acronyms = FALSE, ...) {
     attributes_saved <- attributes(x)
-    typeTest <- all(sapply(x, is.character))
+    typeTest <- all(vapply(x, is.character, logical(1)))
     if (!typeTest) {
         stop("Each element of the list must be a character vector.")
     }
@@ -102,7 +102,7 @@ toUpper.NULL <- function(x, ...) NULL
 #' @export
 toUpper.tokenizedTexts <- function(x, ...) {
     attributes_saved <- attributes(x)
-    typeTest <- all(sapply(x, is.character))
+    typeTest <- all(vapply(x, is.character, logical(1)))
     if (!typeTest) {
         stop("Each element of the list must be a character vector.")
     }

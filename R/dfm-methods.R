@@ -82,8 +82,8 @@ as.dfm <- function(x) {
         stop("as.dfm only applicable to matrix(-like) objects.")
     new("dfmSparse", Matrix(as.matrix(x), 
                             sparse = TRUE,
-                            dimnames = list(docs = if (is.null(rownames(x))) paste0("doc", 1:nrow(x)) else rownames(x),
-                                            features = if (is.null(colnames(x))) paste0("feat", 1:ncol(x)) else colnames(x)) 
+                            dimnames = list(docs = if (is.null(rownames(x))) paste0("doc", seq_len(nrow(x))) else rownames(x),
+                                            features = if (is.null(colnames(x))) paste0("feat", seq_len(ncol(x))) else colnames(x)) 
                             ) 
         )
 }

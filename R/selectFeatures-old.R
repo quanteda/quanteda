@@ -29,7 +29,7 @@ selectFeaturesOLD.tokenizedTexts <- function(x, features, selection = c("keep", 
         if (!sum(stringi::stri_detect_charclass(features, c("[*?]"))))
             valuetype <- "fixed"
         else {
-            features <- sapply(features, utils::glob2rx, USE.NAMES = FALSE)
+            features <- vapply(features, utils::glob2rx, character(1), USE.NAMES = FALSE)
             valuetype <- "regex"
         }
     }
