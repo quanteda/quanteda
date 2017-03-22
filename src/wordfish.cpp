@@ -2,6 +2,7 @@
 // includes from the plugin
 #include <RcppArmadillo.h>
 #include <RcppParallel.h>
+#include <random>
 //#include <ctime>
 using namespace RcppParallel;
 using namespace Rcpp;
@@ -27,6 +28,11 @@ Rcpp::List wordfishcpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& 
     double priorprecpsi = priorvec(1);
     double priorprecbeta = priorvec(2);
     double priorprectheta = priorvec(3);		
+    
+    // random engine
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_real_distribution<double> dist(0.0, 1.0);
     
     std::size_t N = wfm.n_rows;
     std::size_t K = wfm.n_cols;
@@ -75,7 +81,7 @@ Rcpp::List wordfishcpp(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVector& 
     } else {
         // Load initial values
         for (std::size_t i=0; i < N; i++) {
-            theta(i) = pow(rsum(i)/asum,-0.5) - rand() % 2;// * U(i,0);
+            theta(i) = pow(rsum(i)/asum,-0.5) - dist(mt);// * U(i,0);
             //Rcout<<"theta starting values:"<<theta(i)<<std::endl;
         }
     }
