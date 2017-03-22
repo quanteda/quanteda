@@ -94,6 +94,9 @@ test_that("test textplot_wordcloud in the most basic way", {
                            textplot_scale1d(wfm, sort = FALSE)))
     expect_silent(textplot_scale1d(wfm, sort = TRUE, groups = docvars(data_corpus_irishbudget2010, "party")))
     expect_silent(textplot_scale1d(wfm, sort = FALSE, groups = docvars(data_corpus_irishbudget2010, "party")))
+    
+    expect_silent(textplot_scale1d(wfm, doclabels = apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
+                                                          1, paste, collapse = " ")))
 
     p1 <- textplot_scale1d(wfm, margin = "features", sort = TRUE)
     p2 <- textplot_scale1d(wfm, margin = "features", sort = FALSE)
