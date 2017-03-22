@@ -46,15 +46,15 @@ textplot_wordcloud(inaugDfm, min.freq = 10,
 Plotting a `kwic` object produces a lexical dispersion plot which allows us to visualize the occurrences of particular terms throughout the text.  We call these "x-ray" plots due to their similarity to the data produced by [Amazon's "x-ray" feature for Kindle books](https://en.wikipedia.org/wiki/X-Ray_(Amazon_Kindle)).
 
 ```{r eval=TRUE, fig.width=8, fig.height=3}
-textplot_xray(kwic(data_corpus_inaugural[50:57], "american"))
+textplot_xray(kwic(data_corpus_inaugural[40:57], "american"))
 ```
 
 You can also pass multiple kwic objects to `plot` to compare the dispersion of different terms:
 ```{r eval=TRUE, fig.width=8, fig.height=4}
 textplot_xray(
-     kwic(data_corpus_inaugural[50:57], "american"),
-     kwic(data_corpus_inaugural[50:57], "people"),
-     kwic(data_corpus_inaugural[50:57], "communist")
+     kwic(data_corpus_inaugural[40:57], "american"),
+     kwic(data_corpus_inaugural[40:57], "people"),
+     kwic(data_corpus_inaugural[40:57], "communist")
 )
 ```
 
