@@ -80,7 +80,7 @@ test_that("test corpus constructors works for kwic", {
     kwiccorpus <- corpus(kwic(inaugTexts, "christmas"))
     expect_that(kwiccorpus, is_a("corpus"))
     expect_equal(sort(names(docvars(kwiccorpus))),
-                 c("context", "docname", "keyword", "position"))
+                 c("context", "docname", "keyword", "from", "to"))
 })
 
 
