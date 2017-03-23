@@ -60,15 +60,18 @@ tokenize_sentences(poetry)
 ```
 ### Performance benchmark
 ```{r}
-microbenchmark::microbenchmark(q_tokens = tokens(poetry, what = "word", hash = FALSE, removeSeparators = FALSE),
-                               tokenizers = tokenize_words(poetry), 
+microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "word", hash = FALSE,                  
+                                                 removeSeparators = FALSE, removeTwitter = TRUE),
+                               tokenizers = tokenize_words(data_char_inaugural), 
                                times = 20, unit = "relative")
 
-microbenchmark::microbenchmark(q_tokens = tokens(poetry, what = "fasterword", hash = FALSE, removeSeparators = FALSE),
-                               tokenizers = tokenize_words(poetry), 
+microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "fasterword", hash = FALSE,     
+                                                 removeSeparators = FALSE, removeTwitter = TRUE),
+                               tokenizers = tokenize_words(data_char_inaugural), 
                                times = 20, unit = "relative")
 
-microbenchmark::microbenchmark(q_tokens = tokens(poetry, what = "fastestword", hash = FALSE, removeSeparators = FALSE),
-                               tokenizers = tokenize_words(poetry), 
+microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "fastestword", hash = FALSE, 
+                                                 removeSeparators = FALSE, removeTwitter = TRUE),
+                               tokenizers = tokenize_words(data_char_inaugural), 
                                times = 20, unit = "relative")
 ```
