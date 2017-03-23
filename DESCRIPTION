@@ -86,6 +86,7 @@ Collate:
     'fcm.R'
     'joinTokens-deprecated.R'
     'kwic.R'
+    'kwic_old.R'
     'nfunctions.R'
     'nscrabble.R'
     'nsyllable.R'
