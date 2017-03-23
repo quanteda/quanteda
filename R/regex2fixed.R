@@ -26,7 +26,7 @@ regex2fixed <- function(regex, types, valuetype, case_insensitive = FALSE, index
 regex2id <- function(regex, types, valuetype, case_insensitive = FALSE, index = TRUE) {
     
     # Normalize
-    regex <- stringi::stri_trans_nfc(regex)
+    regex <- lapply(regex, stringi::stri_trans_nfc)
     types <- stringi::stri_trans_nfc(types)
     
     # Make case insensitive
