@@ -4,7 +4,7 @@
 \alias{textmodel_wordshoal}
 \title{wordshoal text model}
 \usage{
-textmodel_wordshoal(x, groups, authors, dir = c(1, 2), tol = 0.001)
+textmodel_wordshoal(x, groups, authors, tol = 0.001, ...)
 }
 \arguments{
 \item{x}{the \link{dfm} from which the model will be fit}
@@ -15,11 +15,10 @@ document group for each document}
 \item{authors}{the name of a variable in the document variables for data giving the 
 author of each document}
 
-\item{dir}{set global identification by specifying the indexes for a pair of 
-authors such that \eqn{\hat{\theta}_{dir[1]} < \hat{\theta}_{dir[2]}}.}
+\item{tol}{lower bound for convergence tolerance in wordfish, and for the log-posterior 
+of the wordshoal model}
 
-\item{tol}{tolerance for convergence.  A convergence 
-threshold for the log-posterior of the model.}
+\item{...}{additional arguments passed to \code{\link{textmodel_wordfish}}}
 }
 \value{
 An object of class textmodel_fitted_wordshoal.  This is a list 
@@ -47,19 +46,22 @@ Returns estimates of relative author positions across the full corpus of texts.
 data(data_corpus_irish30, package = "quantedaData")
 iedfm <- dfm(data_corpus_irish30, removePunct = TRUE)
 wordshoalfit <- 
-    textmodel_wordshoal(iedfm, dir = c(7,1),
-                        groups = docvars(ie30corpus, "debateID"), 
-                        authors = docvars(ie30corpus, "member.name"))
+    textmodel_wordshoal(iedfm, 
+                        groups = docvars(data_corpus_irish30, "debateID"), 
+                        authors = docvars(data_corpus_irish30, "member.name"))
 fitdf <- merge(as.data.frame(summary(wordshoalfit)),
-               docvars(ie30corpus), 
-               by.x="row.names", by.y="member.name")
-fitdf <- subset(fitdf,!duplicated(memberID))
+               docvars(data_corpus_irish30), 
+               by.x = "row.names", by.y = "member.name")
+fitdf <- subset(fitdf, !duplicated(memberID))
 aggregate(theta ~ party.name, data = fitdf, mean)
 }
 }
 \references{
 Benjamin E Lauderdale and Alexander Herzog.  2016. "A Scaling Model 
   for Estimating Time-Series Party Positions from Texts." \emph{Political Analysis}.
+}
+\seealso{
+\code{\link{textmodel_wordfish}}
 }
 \author{
 Benjamin Lauderdale and Kenneth Benoit
