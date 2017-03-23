@@ -30,9 +30,6 @@ coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}}
 
 \item{...}{additional parameters passed to \code{\link{tokens}}}
 
-\item{n}{the number of collocations to return, sorted in descending order of 
-the requested statistic, or \eqn{G^2} if none is specified.}
-
 \item{punctuation}{how to handle tokens separated by punctuation characters.  Options are:
 \describe{
 \item{\code{dontspan}}{do not form collocations from tokens separated by punctuation characters (default)}
@@ -55,18 +52,6 @@ collocations and their scores, sorted in descending order of the association
 measure.  Words separated by punctuation delimiters are not counted by
 default (\code{spanPunct = FALSE})  as adjacent and hence are not eligible to
 be collocations.
-}
-\examples{
-txts <- c("This is software testing: looking for (word) pairs!  
-         This [is] a software testing again. For.",
-         "Here: this is more Software Testing, looking again for word pairs.")
-toks <- tokens(txts)
-cols <- collocations(toks, 'lr')
-cols <- collocations(toks, 'lr', size = 3)
-cols <- collocations(toks, 'lr', "*", min_count = 1)
-cols <- collocations(toks, 'lr', "^([a-z]+)$", valuetype = 'regex', min_count = 1)
-as.tokens(cols)
-
 }
 \references{
 McInnes, B T. 2004. "Extending the Log Likelihood Measure to 

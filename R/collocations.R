@@ -25,8 +25,6 @@ NULL
 #' @param size length of the collocation.  Only bigram (\code{n=2}) and trigram 
 #'   (\code{n=3}) collocations are currently implemented.  Can be \code{c(2,3)}
 #'   (or \code{2:3}) to return both bi- and tri-gram collocations.
-#' @param n the number of collocations to return, sorted in descending order of 
-#'   the requested statistic, or \eqn{G^2} if none is specified.
 #' @param punctuation how to handle tokens separated by punctuation characters.  Options are:
 #'   \describe{
 #'   \item{\code{dontspan}}{do not form collocations from tokens separated by punctuation characters (default)}
@@ -47,16 +45,6 @@ NULL
 #'   Minnesota.
 #' @seealso \link{tokens_ngrams}
 #' @author Kenneth Benoit
-#' @examples
-#' txts <- c("This is software testing: looking for (word) pairs!  
-#'          This [is] a software testing again. For.",
-#'          "Here: this is more Software Testing, looking again for word pairs.")
-#' toks <- tokens(txts)
-#' cols <- collocations(toks, 'lr')
-#' cols <- collocations(toks, 'lr', size = 3)
-#' cols <- collocations(toks, 'lr', "*", min_count = 1)
-#' cols <- collocations(toks, 'lr', "^([a-z]+)$", valuetype = 'regex', min_count = 1)
-#' as.tokens(cols)
 #' 
 collocations <- function(x, method = c("lr", "chi2", "pmi", "dice"), 
                          features = "*", 
@@ -541,15 +529,5 @@ collocations2 <- function(x, method = c("lr", "chi2", "pmi", "dice", "all"),
     #class(df) <- c("collocations", class(df))
     #df[1:ifelse(is.null(n), nrow(df), n), ]
     return(dt)
-}
-
-#' check if an object is collocations type
-#' 
-#' Return \code{TRUE} if an object was constructed by \link{collocations}.
-#' @param x any object
-#' @export
-#' @keywords collocations
-is.collocations <- function(x) {
-    class(x)[1] == "collocations" 
 }
 

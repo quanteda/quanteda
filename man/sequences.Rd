@@ -37,24 +37,6 @@ variable-length term sequences whose frequency is unlikey to have occurred by
 chance.  The algorithm is based on Blaheta and Johnson's "Unsupervised 
 Learning of Multi-Word Verbs".
 }
-\examples{
-toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
-toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-
-# extracting multi-part proper nouns (capitalized terms)
-seqs <- sequences(toks, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", case_insensitive = FALSE)
-head(seqs, 10)
-
-# more efficient when applied to the same tokens object 
-toks_comp <- tokens_compound(toks, seqs)
-toks_comp_ir <- tokens_compound(tokens(data_corpus_irishbudget2010), seqs)
-
-# types can be any words
-seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, 
-                   min_count = 2, ordered = TRUE)
-head(seqs2, 10)
-
-}
 \references{
 Blaheta, D., & Johnson, M. (2001). 
   \href{http://web.science.mq.edu.au/~mjohnson/papers/2001/dpb-colloc01.pdf}{Unsupervised

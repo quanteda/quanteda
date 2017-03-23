@@ -25,12 +25,30 @@ of the measure, otherwise leave in original feature order}
 calculate collocation statistics
 }
 \examples{
+txts <- c("This is software testing: looking for (word) pairs!  
+         This [is] a software testing again. For.",
+         "Here: this is more Software Testing, looking again for word pairs.")
+toks <- tokens(txts)
+cols <- textstat_collocations(toks, 'lr')
+cols <- textstat_collocations(toks, 'lr', size = 3)
+cols <- textstat_collocations(toks, 'lr', "*", min_count = 1)
+cols <- textstat_collocations(toks, 'lr', "^([a-z]+)$", valuetype = 'regex', min_count = 1)
+as.tokens(cols)
 
-toks <- tokens(data_char_inaugural, removePunct = TRUE)
-toks <- tokens_remove(toks, stopwords(), padding = TRUE)
-head(textstat_collocations(toks, method = 'bj'))
-head(textstat_collocations(toks, method = 'lr'))
+toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
+toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 
+# extracting multi-part proper nouns (capitalized terms)
+seqs <- textstat_collocations(toks, "bj", "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", case_insensitive = FALSE)
+head(seqs, 10)
+
+# more efficient when applied to the same tokens object 
+toks_comp <- tokens_compound(toks, seqs)
+
+# types can be any words
+seqs2 <- textstat_collocations(toks, "bj", "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, 
+                               min_count = 2, ordered = TRUE)
+head(seqs2, 10)
 
 }
 \keyword{textstat}

@@ -16,22 +16,6 @@
 #'   as a subsequence. But "United States" is not a subsequence because it is followed by "Congress".
 #' @param ordered if true, use the Blaheta-Johnson method that distinguishs between 
 #'   the order of words, and tends to promote rare sequences. 
-#' @examples 
-#' toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
-#' toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
-#' 
-#' # extracting multi-part proper nouns (capitalized terms)
-#' seqs <- sequences(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE)
-#' head(seqs, 10)
-#' 
-#' # more efficient when applied to the same tokens object 
-#' toks_comp <- tokens_compound(toks, seqs)
-#' toks_comp_ir <- tokens_compound(tokens(data_corpus_irishbudget2010), seqs)
-#' 
-#' # types can be any words
-#' seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, 
-#'                    min_count = 2, ordered = TRUE)
-#' head(seqs2, 10)
 #' 
 #' @keywords collocations
 #' @author Kohei Watanabe

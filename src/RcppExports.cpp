@@ -169,20 +169,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_kwic
-DataFrame qatd_cpp_kwic(const List& texts_, const CharacterVector types_, const List& words_, unsigned int window);
-RcppExport SEXP quanteda_qatd_cpp_kwic(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP, SEXP windowSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
-    Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
-    Rcpp::traits::input_parameter< const List& >::type words_(words_SEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type window(windowSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_kwic(texts_, types_, words_, window));
-    return rcpp_result_gen;
-END_RCPP
-}
 // qatd_cpp_tokens_lookup
 List qatd_cpp_tokens_lookup(const List& texts_, const CharacterVector types_, const List& keys_, const IntegerVector& ids_, const bool overlap);
 RcppExport SEXP quanteda_qatd_cpp_tokens_lookup(SEXP texts_SEXP, SEXP types_SEXP, SEXP keys_SEXP, SEXP ids_SEXP, SEXP overlapSEXP) {
