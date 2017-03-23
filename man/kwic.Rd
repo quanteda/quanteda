@@ -61,6 +61,7 @@ microbenchmark::microbenchmark(
    kwic(toks, "the", window = 3, valuetype = "fixed"))
 }
 kwic(data_corpus_inaugural, "war against")
+kwic(data_corpus_inaugural, "war against", new = FALSE)
 kwic(data_corpus_inaugural, "war against", valuetype = "regex")
 
 mykwic <- kwic(data_corpus_inaugural, "provident*")
