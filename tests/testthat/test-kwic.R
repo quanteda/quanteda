@@ -104,7 +104,7 @@ test_that("test kwic on two tokens", {
 
 test_that("test kwic on non-existant token", {
     testkwic <- kwic(paste(LETTERS, collapse=' '), 'É')
-    expect_true(is.null(testkwic) )
+    expect_true(is.data.frame(testkwic) )
 })
 
 test_that("test kwic on multiple texts", {

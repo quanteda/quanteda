@@ -95,9 +95,6 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     result <- qatd_cpp_kwic(x, types, keywords_id, window)
     result$docname <- as.factor(result$docname)
     
-    if (!nrow(result)) 
-        return(NULL)
-    
     # add attributes for kwic object
     attr(result, "ntoken")  <- ntoken(x)
     attr(result, "valuetype") <- valuetype
@@ -127,20 +124,20 @@ is.kwic <- function(x) {
 #' @noRd
 #' @export
 print.kwic <- function(x, ...) {
-    if (!length(x)) {
+    if (!nrow(x)) {
         print(NULL)
-        return()
+    } else {
+        kwic <- data.frame(
+            pre = format(stringi::stri_replace_all_regex(x$pre, "(\\w*) (\\W)", "$1$2"), justify="right"),
+            s1 = rep('|', nrow(x)),
+            keyword = format(x$keyword, justify="centre"),
+            s2 = rep('|', nrow(x)),
+            post = format(stringi::stri_replace_all_regex(x$post, "(\\w*) (\\W)", "$1$2"), justify="left")
+        )
+        colnames(kwic) <- NULL
+        rownames(kwic) <- stringi::stri_c("[", x$docname, ", ", x$from, ':', x$to, "]")
+        print(kwic)
     }
-    kwic <- data.frame(
-        pre = format(stringi::stri_replace_all_regex(x$pre, "(\\w*) (\\W)", "$1$2"), justify="right"),
-        s1 = rep('|', nrow(x)),
-        keyword = format(x$keyword, justify="centre"),
-        s2 = rep('|', nrow(x)),
-        post = format(stringi::stri_replace_all_regex(x$post, "(\\w*) (\\W)", "$1$2"), justify="left")
-    )
-    colnames(kwic) <- NULL
-    rownames(kwic) <- stringi::stri_c("[", x$docname, ", ", x$from, ':', x$to, "]")
-    print(kwic)
 }
 
 #' @rdname kwic
