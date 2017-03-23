@@ -9,13 +9,9 @@
 \usage{
 applyDictionary(x, dictionary, ...)
 
-\method{applyDictionary}{tokens}(x, dictionary, exclusive = TRUE,
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  capkeys = !exclusive, verbose = TRUE, ...)
+\method{applyDictionary}{tokens}(x, ...)
 
-\method{applyDictionary}{tokenizedTexts}(x, dictionary, exclusive = TRUE,
-  valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE,
-  capkeys = !exclusive, verbose = TRUE, ...)
+\method{applyDictionary}{tokenizedTexts}(x, ...)
 
 \method{applyDictionary}{dfm}(x, ...)
 }
@@ -30,10 +26,6 @@ applyDictionary(x, dictionary, ...)
 \item{exclusive}{if \code{TRUE}, remove all features not in dictionary, 
 otherwise, replace values in dictionary with keys while leaving other 
 features unaffected}
-
-\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
-"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
-or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{ignore the case of dictionary values if \code{TRUE}}
 
@@ -63,11 +55,13 @@ Selecting only features defined in a "dictionary" is traditionally
   features.
 }
 \examples{
+
 toks <- tokens(data_corpus_inaugural)
 head(kwic(toks, "united states"))
 dict <- dictionary(list(country = "united states"))
 toks2 <- applyDictionary(toks, dict, valuetype = "fixed")
 toks2
+
 }
 \keyword{deprecated}
 \keyword{internal}
