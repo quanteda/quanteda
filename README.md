@@ -114,7 +114,7 @@ Demonstration
 
 ``` r
 library(quanteda)
-## quanteda version 0.9.9.37
+## quanteda version 0.9.9.39
 ## Using 7 of 8 cores for parallel computing
 ## 
 ## Attaching package: 'quanteda'
@@ -144,7 +144,7 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Tue Mar 21 01:32:08 2017
+## Created: Thu Mar 23 09:21:33 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
@@ -178,7 +178,7 @@ textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
                    colors = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
-![](man/imagesquanteda_example-1.png)
+![](man/images/quanteda_example-1.png)
 
 Contributing
 ------------
