@@ -45,7 +45,7 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
     if(!requireNamespace("grid", quietly = TRUE)) 
         stop("You must have grid installed to make a dispersion plot.")
     
-    position <- keyword <- docname <- ntokens <- NULL    
+    position <- from <- keyword <- docname <- ntokens <- NULL    
     
     kwics <- list(...)
     if (!all(vapply(kwics, is.kwic, logical(1))))
