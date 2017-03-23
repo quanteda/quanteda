@@ -95,9 +95,6 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     result <- qatd_cpp_kwic(x, types, keywords_id, window)
     result$docname <- as.factor(result$docname)
     
-    if (!nrow(result)) 
-        return(NULL)
-    
     # add attributes for kwic object
     attr(result, "ntoken")  <- ntoken(x)
     attr(result, "valuetype") <- valuetype
