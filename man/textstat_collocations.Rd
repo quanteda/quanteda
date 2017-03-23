@@ -30,7 +30,7 @@ toks <- tokens(data_char_inaugural, removePunct = TRUE)
 toks <- tokens_remove(toks, stopwords(), padding = TRUE)
 head(textstat_collocations(toks, method = 'bj'))
 head(textstat_collocations(toks, method = 'lr'))
-head(textstat_collocations(toks, method = 'all'))
+
 
 }
 \keyword{textstat}

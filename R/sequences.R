@@ -47,6 +47,7 @@ sequences <- function(x, features = "*",
                       max_size = 5, 
                       nested = TRUE, ordered = FALSE) {
     
+    .Deprecated('textstat_collocations')
     UseMethod("sequences")
 }
 
@@ -69,7 +70,7 @@ sequences.tokens <- function(x, features = "*",
     
     result <- qatd_cpp_sequences(x, features_id, min_count, max_size, nested, ordered)
     rownames(result) <- unlist(stringi::stri_c_list(lapply(attr(result, 'ids'), function(y) types[y]), sep=' '), use.names = FALSE)
-    class(result) <- c("collocation_new", 'data.frame')
+    class(result) <- c("collocation", 'data.frame')
     
     result <- result[result$count >= min_count,]
     result$z <- result$lambda / result$sigma
@@ -79,24 +80,3 @@ sequences.tokens <- function(x, features = "*",
     
     return(result)
 }
-
-#' @method "[" collocation_new
-#' @export
-#' @noRd
-"[.collocation_new" <- function(x, i, ...) {
-    x <- as.data.frame(x)[i,]
-    attr(x, 'ids') <- attr(x, 'ids')[i]
-    class(x) <- c("collocation_new", 'data.frame')
-    return(x)
-}
-
-#' @export
-#' @method as.tokens collocation_new
-#' @noRd 
-as.tokens.collocation_new <- function(x) {
-    toks <- attr(x, 'ids')
-    attr(toks, 'types') <- attr(x, 'types')
-    class(toks) <- c("tokens", "tokenizedTexts")
-    return(toks)
-}
-

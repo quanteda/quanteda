@@ -30,10 +30,12 @@ textstat_collocations <- function(x, ...) {
 textstat_collocations.tokens <- function(x, method = 'lr', ...) {
     
     if (method == 'bj') {
-        sequences(x, ...)
+        result <- sequences.tokens(x, ...)
     } else {
-        collocations(x, method, ...)
+        result <- collocations.tokens(x, method, ...)
     }
+    class(result) <- c("collocation", 'data.frame')
+    return(result)
 }
 
 #' @rdname textstat_collocations
@@ -55,4 +57,27 @@ textstat_collocations.character <- function(x, method, ...) {
 #' @export    
 textstat_collocations.tokenizedTexts <- function(x, ...) {
     textstat_collocations(as.tokens(x), ...)
-} 
+}
+
+
+#' @method "[" collocation
+#' @export
+#' @noRd
+"[.collocation" <- function(x, i, ...) {
+    x <- as.data.frame(x)[i,]
+    attr(x, 'ids') <- attr(x, 'ids')[i]
+    class(x) <- c("collocation", 'data.frame')
+    return(x)
+}
+
+#' @export
+#' @method as.tokens collocation
+#' @noRd 
+as.tokens.collocation <- function(x) {
+    toks <- attr(x, 'ids')
+    attr(toks, 'types') <- attr(x, 'types')
+    class(toks) <- c("tokens", "tokenizedTexts")
+    return(toks)
+}
+
+

@@ -65,6 +65,7 @@ collocations <- function(x, method = c("lr", "chi2", "pmi", "dice"),
                          min_count = 2, 
                          size = 2, ...) {
     
+    .Deprecated('textstat_collocations')
     UseMethod("collocations")
 }
  
@@ -136,7 +137,7 @@ collocations.tokens <- function(x, method = c("lr", "chi2", "pmi", "dice"),
     
     result <- data.frame(temp[,c(4, 5)], row.names = cols)
     result <- result[result$count >= min_count,]
-    class(result) <- c("collocation_new", 'data.frame')
+    class(result) <- c("collocation", 'data.frame')
     attr(result, 'ids') <- ids
     attr(result, 'types') <- types
     

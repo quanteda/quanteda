@@ -30,3 +30,13 @@ test_that("test that collocations and sequences are counting the same features",
     both <- merge(seqs, cols, by = 'row.names')
     expect_true(all(both$count.x == both$count.x))
 })
+
+test_that("test that extractor works with collocation", {
+    
+    toks <- tokens(data_char_inaugural, removePunct = TRUE)
+    toks <- tokens_remove(toks, stopwords(), padding = TRUE)
+    cols <- textstat_collocations(toks, method = 'lr', max_size = 2)
+    cols <- cols[1:5]
+    expect_equal(nrow(cols), length(as.tokens(cols)))
+    
+})    
