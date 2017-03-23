@@ -26,15 +26,16 @@
 #' toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 #' 
 #' # extracting multi-part proper nouns (capitalized terms)
-#' seqs <- textstat_collocations(toks, "bj", "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE)
+#' seqs <- textstat_collocations(toks, "bj", "^([A-Z][a-z\\-]{2,})", valuetype="regex", 
+#'                               case_insensitive = FALSE)
 #' head(seqs, 10)
 #' 
 #' # more efficient when applied to the same tokens object 
 #' toks_comp <- tokens_compound(toks, seqs)
 #' 
 #' # types can be any words
-#' seqs2 <- textstat_collocations(toks, "bj", "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, 
-#'                                min_count = 2, ordered = TRUE)
+#' seqs2 <- textstat_collocations(toks, "bj", "^([a-z]+)$", valuetype="regex", 
+#'                                case_insensitive = FALSE, min_count = 2, ordered = TRUE)
 #' head(seqs2, 10)
 #' 
 textstat_collocations <- function(x, ...) {
@@ -48,7 +49,7 @@ textstat_collocations.tokens <- function(x, method = 'lr', ...) {
     if (method == 'bj') {
         result <- sequences.tokens(x, ...)
     } else {
-        result <- collocations.tokens(x, method, ...)
+        result <- collocations2.tokens(x, method, ...)
     }
     class(result) <- c("collocations", 'data.frame')
     return(result)
