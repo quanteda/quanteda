@@ -54,7 +54,7 @@ sequences.tokens <- function(x, features = "*",
     
     result <- qatd_cpp_sequences(x, features_id, min_count, max_size, nested, ordered)
     rownames(result) <- unlist(stringi::stri_c_list(lapply(attr(result, 'ids'), function(y) types[y]), sep=' '), use.names = FALSE)
-    class(result) <- c("collocation", 'data.frame')
+    class(result) <- c("collocations", 'data.frame')
     
     result <- result[result$count >= min_count,]
     result$z <- result$lambda / result$sigma

@@ -155,8 +155,8 @@ selectFeatures(toksh, feats, selection = "remove", padding = TRUE, case_insensit
  
 
 ## example for collocations
-(myCollocs <- collocations(data_char_inaugural[1:3], n=20))
-selectFeatures(myCollocs, stopwords("english"), "remove")
+## (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
+## selectFeatures(myCollocs, stopwords("english"), "remove")
 }
 \seealso{
 \code{\link{removeFeatures}}, \code{\link{dfm_trim}}

@@ -153,8 +153,8 @@ selectFeatures.tokens <- function(x, features, selection = c("keep", "remove"),
 #' @examples  
 #' 
 #' ## example for collocations
-#' (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
-#' selectFeatures(myCollocs, stopwords("english"), "remove")
+#' ## (myCollocs <- collocations(data_char_inaugural[1:3], n=20))
+#' ## selectFeatures(myCollocs, stopwords("english"), "remove")
 #' @export
 selectFeatures.collocations <- function(x, features, selection = c("keep", "remove"), 
                                         valuetype = c("glob", "regex", "fixed"),

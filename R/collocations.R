@@ -125,7 +125,7 @@ collocations.tokens <- function(x, method = c("lr", "chi2", "pmi", "dice"),
     
     result <- data.frame(temp[,c(4, 5)], row.names = cols)
     result <- result[result$count >= min_count,]
-    class(result) <- c("collocation", 'data.frame')
+    class(result) <- c("collocations", 'data.frame')
     attr(result, 'ids') <- ids
     attr(result, 'types') <- types
     

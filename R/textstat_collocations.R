@@ -50,7 +50,7 @@ textstat_collocations.tokens <- function(x, method = 'lr', ...) {
     } else {
         result <- collocations.tokens(x, method, ...)
     }
-    class(result) <- c("collocation", 'data.frame')
+    class(result) <- c("collocations", 'data.frame')
     return(result)
 }
 
@@ -65,7 +65,7 @@ textstat_collocations.corpus <- function(x, method, ...) {
 #' @noRd
 #' @export    
 textstat_collocations.character <- function(x, method, ...) {
-    textstat_collocations(tokens(x, ...), ...)
+    textstat_collocations(tokens(x), ...)
 }
 
 #' @rdname textstat_collocations
@@ -76,28 +76,28 @@ textstat_collocations.tokenizedTexts <- function(x, ...) {
 }
 
 
-#' @rdname is.collocation
+#' @rdname is.collocations
 #' @export
 #' @return \code{is.collocation} returns \code{TRUE} if the object is of class
 #'   collocation, \code{FALSE} otherwise.
 is.collocations <- function(x) {
-    ifelse("collocation" %in% class(x), TRUE, FALSE)
+    ifelse("collocations" %in% class(x), TRUE, FALSE)
 }
 
-#' @method "[" collocation
+#' @method "[" collocations
 #' @export
 #' @noRd
-"[.collocation" <- function(x, i, ...) {
+"[.collocations" <- function(x, i, ...) {
     x <- as.data.frame(x)[i,]
     attr(x, 'ids') <- attr(x, 'ids')[i]
-    class(x) <- c("collocation", 'data.frame')
+    class(x) <- c("collocations", 'data.frame')
     return(x)
 }
 
 #' @export
-#' @method as.tokens collocation
+#' @method as.tokens collocations
 #' @noRd 
-as.tokens.collocation <- function(x) {
+as.tokens.collocations <- function(x) {
     toks <- attr(x, 'ids')
     attr(toks, 'types') <- attr(x, 'types')
     class(toks) <- c("tokens", "tokenizedTexts")
