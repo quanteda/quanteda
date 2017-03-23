@@ -77,7 +77,7 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     
     valuetype <- match.arg(valuetype)
     keywords <- vector2list(keywords)
-
+    
     # add document names if none
     if (is.null(names(x))) {
         names(x) <- paste("text", seq_along(x), sep="")
@@ -85,17 +85,43 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
     
     types <- types(x)
     keywords_id <- regex2id(keywords, types, valuetype, case_insensitive, FALSE)
-    result <- qatd_cpp_kwic(x, types, keywords_id, window)
-    result$document <- as.factor(result$document)
+
+    context <- as.list(x)
+    target <- qatd_cpp_tokens_detect(x, keywords_id)
+    ids <- which(sapply(target, sum, USE.NAMES = FALSE) > 0)
     
-    if (!nrow(result)) 
-        return(NULL)
+    df_result <- data.frame()
+    if (length(ids)) {
+        # build up result
+        for (id in ids) {
+            df_temp <- kwic_split(context[[id]], target[[id]], window)
+            df_temp$docname <- rep(names(x)[id], nrow(df_temp))
+            df_result <- rbind(df_result, df_temp, stringsAsFactors = FALSE)
+        }
+        # reorder variables to put docname first
+        docname_index <- which(names(df_result) == "docname")
+        df_result <- cbind(df_result[, docname_index, drop = FALSE], 
+                           df_result[, -docname_index])
+    }
+    
+    if (length(df_result)) {
+        # factorize docname
+        df_result$docname <- factor(df_result$docname)
+        # make single indexes into integers, if possible
+        if (all(sapply(strsplit(df_result$position, ":"), function(y) y[1] == y[2]))) {
+            df_result$position <- sapply(strsplit(df_result$position, ":"),
+                                         function(y) as.integer(y[1]))
+        }
+    }
     
     # add attributes for kwic object
-    attr(result, "valuetype") <- valuetype
-    attr(result, "keywords") <- sapply(keywords, paste, collapse = " ")
-    class(result) <- c("kwic", "data.frame")
-    return(result)
+    attr(df_result, "valuetype") <- valuetype
+    attr(df_result, "ntoken")  <- ntoken(x)
+    attr(df_result, "keywords") <- sapply(keywords, paste, collapse = " ")
+    attr(df_result, "tokenize_opts") <- list(...)
+    # special class for new kwic
+    class(df_result) <- c("kwic", class(df_result))
+    df_result
 }
 
 #' @rdname kwic
@@ -160,7 +186,6 @@ print.kwic_old <- function(x, ...) {
 }
 
 
-
 #' @rdname kwic
 #' @export
 #' @examples
@@ -171,6 +196,34 @@ is.kwic <- function(x) {
     ifelse("kwic" %in% class(x), TRUE, FALSE)
 }
 
+#' @rdname kwic
+#' @details \code{as.kwic} is a temporary function to convert a "kwic2" to a standard 
+#' "kwic" object.
+#' @export
+#' @examples 
+#' # as.kwic examples
+#' txt <- c("This is a test",
+#'          "This is it.",
+#'          "What is in a train?",
+#'          "Is it a question?",
+#'          "Sometimes you don't know if this is it.",
+#'          "Is it a bird or a plane or is it a train?")
+#' 
+#' toks <- tokens(txt)
+#' (kwOld <- kwic(toks, "is it", new = FALSE))
+#' (kwNew <- kwic(toks, "is it", new = TRUE))
+#' \dontrun{
+#' # this breaks - need to harmonize print methods
+#' as.kwic(kwNew)
+#' }
+as.kwic <- function(x) {
+    # strip "kwic2" from class list
+    if (class(x)[1] == "kwic_old" & is.kwic(x))
+        class(x) <- class(x)[-1]
+    x
+}
+
+
 #' @method print kwic
 #' @noRd
 #' @export
@@ -179,14 +232,15 @@ print.kwic <- function(x, ...) {
         print(NULL)
         return()
     }
-    kwic <- data.frame(
-        pre = format(stringi::stri_replace_all_regex(x$pre, "(\\w*) (\\W)", "$1$2"), justify="right"),
+    df <- data.frame(
+        before = format(stringi::stri_replace_all_regex(x$contextPre, "(\\w*) (\\W)", "$1$2"), justify="right"),
         s1 = rep('|', nrow(x)),
-        keyword = format(x$target, justify="centre"),
+        keyword = format(x$keyword, justify="centre"),
         s2 = rep('|', nrow(x)),
-        post = format(stringi::stri_replace_all_regex(x$post, "(\\w*) (\\W)", "$1$2"), justify="left")
+        after = format(stringi::stri_replace_all_regex(x$contextPost, "(\\w*) (\\W)", "$1$2"), justify="left")
     )
-    colnames(kwic) <- NULL
-    rownames(kwic) <- stringi::stri_c("[", x$document, ", ", x$position, "]")
-    print(kwic)
+    colnames(df) <- NULL
+    rownames(df) <- stringi::stri_c("[", x$docname, ", ", x$position, "]")
+    print(df)
 }
+
