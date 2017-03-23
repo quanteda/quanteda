@@ -17,9 +17,6 @@ feature frequencies will be combined for use as a reference}
 Currenly available: \code{"chi2"} (\eqn{chi^2} with Yates correction); 
 \code{"exact"} (Fisher's exact test); \code{"lr"} for the likelihood ratio
 \eqn{G} statistic with Yates correction.}
-
-\item{sort}{logical; if \code{TRUE} sort features scored in descending order 
-of the measure, otherwise leave in original feature order}
 }
 \description{
 calculate collocation statistics

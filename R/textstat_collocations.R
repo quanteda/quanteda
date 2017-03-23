@@ -9,8 +9,6 @@
 #'   Currenly available: \code{"chi2"} (\eqn{chi^2} with Yates correction); 
 #'   \code{"exact"} (Fisher's exact test); \code{"lr"} for the likelihood ratio
 #'   \eqn{G} statistic with Yates correction.
-#' @param sort logical; if \code{TRUE} sort features scored in descending order 
-#'   of the measure, otherwise leave in original feature order
 #' @export
 #' @keywords textstat
 #' @examples
@@ -78,11 +76,12 @@ textstat_collocations.tokenizedTexts <- function(x, ...) {
 }
 
 
-#' @rdname textstat_collocations
+#' @rdname is.collocation
 #' @export
-#' @noRd 
+#' @return \code{is.collocation} returns \code{TRUE} if the object is of class
+#'   collocation, \code{FALSE} otherwise.
 is.collocations <- function(x) {
-    ifelse("collocations" %in% class(x), TRUE, FALSE)
+    ifelse("collocation" %in% class(x), TRUE, FALSE)
 }
 
 #' @method "[" collocation
