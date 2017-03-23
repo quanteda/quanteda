@@ -36,10 +36,15 @@
 #'    kwic(toks, "the", window = 3, valuetype = "fixed"))
 #' }
 #' kwic(data_corpus_inaugural, "war against")
+#' kwic(data_corpus_inaugural, "war against", new = FALSE)
 #' kwic(data_corpus_inaugural, "war against", valuetype = "regex")
 #' 
 kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
+    if (new) {    
         UseMethod("kwic")
+    } else {
+        UseMethod("kwic_old")
+    }
 }
 
 #' @rdname kwic

@@ -93,7 +93,7 @@ kwic_old.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob
 
     attr(contexts, "keywords") <- keywords
     attr(contexts, "tokenize_opts") <- list(...)
-    class(contexts) <- c("kwic_old", "kwic", class(contexts))
+    class(contexts) <- c("kwic_old", class(contexts))
     contexts
 }
 
@@ -158,7 +158,7 @@ kwic_old.tokenizedText <- function(x, word, window = 5, valuetype = c("glob", "r
     result$contextPre <- format(result$contextPre, justify="left")
     # trim trailing spaces from keyword
     result$keyword <- stringi::stri_trim_both(result$keyword)
-    class(result) <- c("kwic", class(result))
+    class(result) <- c("kwic_old", class(result))
     result
 }
 
