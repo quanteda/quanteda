@@ -11,10 +11,29 @@ This version of the package is a transitional release prior to v1.0. It includes
 About the package
 -----------------
 
-An R package for managing and analyzing text, created by [Kenneth Benoit](kbenoit@lse.ac.uk) in collaboration with a team of core [contributors](https://github.com/kbenoit/quanteda/graphs/contributors): [Kohei Watanabe](https://github.com/koheiw), [Paul Nulty](https://github.com/pnulty), [Adam Obeng](https://github.com/adamobeng), [Haiyan Wang](https://github.com/HaiyanLW), [Ben Lauderdale](https://github.com/lauderdale), and [Will Lowe](https://github.com/conjugateprior).
+An R package for managing and analyzing text, created by [Kenneth Benoit](http://kenbenoit.net) in collaboration with a team of core [contributors](https://github.com/kbenoit/quanteda/graphs/contributors): [Kohei Watanabe](https://github.com/koheiw), [Paul Nulty](https://github.com/pnulty), [Adam Obeng](https://github.com/adamobeng), [Haiyan Wang](https://github.com/HaiyanLW), [Ben Lauderdale](https://github.com/lauderdale), and [Will Lowe](https://github.com/conjugateprior).
 Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
 For more details, see the [**package website**](http://quanteda.io).
+
+How to cite the package:
+
+
+    To cite package 'quanteda' in publications please use the
+    following:
+
+      Benoit, Kenneth et. al. ().  "quanteda: Quantitative Analysis of
+      Textual Data".  R package version: 0.9.9-39.  URL
+      https://github.com/kbenoit/quanteda.
+
+    A BibTeX entry for LaTeX users is
+
+      @Manual{,
+        title = {quanteda: Quantitative Analysis of Textual Data},
+        author = {Kenneth Benoit and Paul Nulty and Kohei Watanabe and Paul Nulty and Adam Obeng and Haiyan Wang and Benjamin Lauderdale and Will Lowe},
+        note = {R package version 0.9.9-39},
+        url = {http://quanteda.io},
+      }
 
 ### Leave feedback
 
@@ -114,7 +133,7 @@ Demonstration
 
 ``` r
 library(quanteda)
-## quanteda version 0.9.9.37
+## quanteda version 0.9.9.39
 ## Using 7 of 8 cores for parallel computing
 ## 
 ## Attaching package: 'quanteda'
@@ -144,16 +163,16 @@ summary(uk2010immigCorpus)
 ##          UKIP   346    739        27         UKIP
 ## 
 ## Source:  /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/* on x86_64 by kbenoit
-## Created: Tue Mar 21 01:32:08 2017
+## Created: Fri Mar 24 09:02:48 2017
 ## Notes:   Immigration-related sections of 2010 UK party manifestos
 
 # key words in context for "deport", 3 words of context
 kwic(uk2010immigCorpus, "deport", 3)
-##                                                                    
-## [BNP, 159]         The BNP will | deport | all foreigners convicted
-## [BNP, 1970]                . 2. | Deport | all illegal immigrants  
-## [BNP, 1976] immigrants We shall | deport | all illegal immigrants  
-## [BNP, 2621]  Criminals We shall | deport | all criminal entrants
+##                                                                         
+## [BNP, 159:159]          The BNP will | deport | all foreigners convicted
+## [BNP, 1970:1970]                . 2. | Deport | all illegal immigrants  
+## [BNP, 1976:1976] immigrants We shall | deport | all illegal immigrants  
+## [BNP, 2621:2621]  Criminals We shall | deport | all criminal entrants
 
 # create a dfm, removing stopwords
 mydfm <- dfm(uk2010immigCorpus, remove = c("will", stopwords("english")),
@@ -178,7 +197,7 @@ textplot_wordcloud(mydfm, min.freq = 6, random.order = FALSE,
                    colors = RColorBrewer::brewer.pal(8,"Dark2"))
 ```
 
-![](man/imagesquanteda_example-1.png)
+![](man/images/quanteda_example-1.png)
 
 Contributing
 ------------

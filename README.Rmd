@@ -9,7 +9,7 @@ output:
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "##",
-  fig.path = "man/images"
+  fig.path = "man/images/"
 )
 ```
 ###[![quanteda: quantitative analysis of textual data](https://rawgit.com/kbenoit/quanteda/master/images/quanteda_logo.svg)](http://quanteda.io)
@@ -31,7 +31,7 @@ This version of the package is a transitional release prior to v1.0.  It include
 
 ## About the package
 
-An R package for managing and analyzing text, created by [Kenneth Benoit](kbenoit@lse.ac.uk) in 
+An R package for managing and analyzing text, created by [Kenneth Benoit](http://kenbenoit.net) in 
 collaboration with a team of core 
 [contributors](https://github.com/kbenoit/quanteda/graphs/contributors): 
 [Kohei Watanabe](https://github.com/koheiw), 
@@ -44,6 +44,13 @@ Supported by the European Research Council grant ERC-2011-StG
 283794-QUANTESS.
 
 For more details, see the [**package website**](http://quanteda.io).
+
+How to cite the package:
+
+```{r echo = FALSE, comment = NA}
+citation("quanteda")
+```
+
 
 ### Leave feedback
 
