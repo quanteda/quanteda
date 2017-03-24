@@ -77,7 +77,11 @@ qatd_cpp_chars_remove <- function(input_, char_remove) {
     .Call('quanteda_qatd_cpp_chars_remove', PACKAGE = 'quanteda', input_, char_remove)
 }
 
-wordfishcpp <- function(wfm, dir, priors, tol, disp, dispfloor) {
-    .Call('quanteda_wordfishcpp', PACKAGE = 'quanteda', wfm, dir, priors, tol, disp, dispfloor)
+wordfishcpp_dense <- function(wfm, dir, priors, tol, disp, dispfloor, abs_err) {
+    .Call('quanteda_wordfishcpp_dense', PACKAGE = 'quanteda', wfm, dir, priors, tol, disp, dispfloor, abs_err)
+}
+
+wordfishcpp <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor) {
+    .Call('quanteda_wordfishcpp', PACKAGE = 'quanteda', wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor)
 }
 

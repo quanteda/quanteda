@@ -10,6 +10,7 @@
 * Added option to `tokens()` and `dfm()` for passing docvars through to to tokens and dfm objects, and added `docvars()` and `metadoc()` methods for tokens and dfm class objects.  Overall, the code for docvars and metadoc is now more robust and consistent.  
 * `docvars()` on eligible objects that contain no docvars now returns an empty 0 x 0 data.frame (in the spirit of #242).
 * Redesigned `textmodel_scale1d` now produces sorted and grouped document positions for fitted wordfish models, and produces a ggplot2 plot object.
+* `textmodel_wordfish()` now preserves sparsity while processing the dfm, and uses a fast approximation to an SVD to get starting values.  This also dramatically improves performance in computing this model.  (#482, #124)
 
 ### Behaviour changes 
 
@@ -26,6 +27,7 @@
 * `removeURL` in `tokens()` now removes URLs where the first part of the URL is a single letter (#587).
 * `dfm_select` now works correctly for ngram features (#589).
 * Fixed a bug crashing corpus constructors for character vectors with duplicated names (the cause of #580).
+* Fixed a bug in the behaviour for `dfm_select(x, features)` when `features` was a dfm, that failed to produce the intended featnames matches for the output dfm.
 
 
 ## Changes since v0.9.9-17
