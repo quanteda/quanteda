@@ -29,12 +29,8 @@
 #' head(kwic(data_char_inaugural, "secure*", window = 3, valuetype = "glob"))
 #' head(kwic(data_char_inaugural, "secur", window = 3, valuetype = "regex"))
 #' head(kwic(data_char_inaugural, "security", window = 3, valuetype = "fixed"))
-#' \dontrun{
+#' 
 #' toks <- tokens(data_char_inaugural)
-#' microbenchmark::microbenchmark(
-#'    kwic(toks, "the", window = 3, valuetype = "fixed"),
-#'    kwic(toks, "the", window = 3, valuetype = "fixed"))
-#' }
 #' kwic(data_corpus_inaugural, "war against")
 #' kwic(data_corpus_inaugural, "war against", new = FALSE)
 #' kwic(data_corpus_inaugural, "war against", valuetype = "regex")
@@ -135,7 +131,11 @@ print.kwic <- function(x, ...) {
             post = format(stringi::stri_replace_all_regex(x$post, "(\\w*) (\\W)", "$1$2"), justify="left")
         )
         colnames(kwic) <- NULL
-        rownames(kwic) <- stringi::stri_c("[", x$docname, ", ", x$from, ':', x$to, "]")
+        if (all(x$from == x$to)) {
+            rownames(kwic) <- stringi::stri_c("[", x$docname, ", ", x$from, "]")
+        } else {
+            rownames(kwic) <- stringi::stri_c("[", x$docname, ", ", x$from, ':', x$to, "]")
+        }
         print(kwic)
     }
 }
