@@ -26,15 +26,15 @@ Targets range(Text tokens,
     }
     
     Targets targets;
-    size_t last = tokens_pos.size() - 1;
     size_t start, end;
-    for (size_t k = 0; k <= tokens_pos.size(); k++) {
+    size_t last = tokens_pos.size() - 1;
+    for (size_t k = 0; k < tokens_pos.size(); k++) {
         if ((k == 0 || tokens_pos[k - 1] == 0) && tokens_pos[k] == 1) {
             start = k;
             //Rcout << "starts " << start << "\n";
         }
-        if (tokens_pos[k - 1] == 1 && (k > last || tokens_pos[k] == 0)) {
-            end = k - 1;
+        if (tokens_pos[k] == 1 && (k == last || tokens_pos[k + 1] == 0)) {
+            end = k;
             //Rcout << "ends " << end << "\n";
             targets.push_back(make_pair(start, end));
         }
@@ -101,7 +101,7 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     }
 #endif
     
-    // Get total number including of sub-elements
+    // Get total number of matches
     std::size_t len = 0;
     for (std::size_t h = 0; h < output.size(); h++) {
         len += output[h].size();
