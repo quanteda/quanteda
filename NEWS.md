@@ -27,6 +27,7 @@
 * `removeURL` in `tokens()` now removes URLs where the first part of the URL is a single letter (#587).
 * `dfm_select` now works correctly for ngram features (#589).
 * Fixed a bug crashing corpus constructors for character vectors with duplicated names (the cause of #580).
+* Fixed a bug in the behaviour for `dfm_select(x, features)` when `features` was a dfm, that failed to produce the intended featnames matches for the output dfm.
 
 
 ## Changes since v0.9.9-17
