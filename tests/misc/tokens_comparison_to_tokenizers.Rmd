@@ -1,13 +1,21 @@
 ---
-title: "tokens() functionality comparison"
-date: "22/03/2016"
-output: html_document
+title: "tokens() comparison to the *tokenizers* package"
+author: Haiyan Wang and Kenneth Benoit
+date: March 24, 2017
+output:
+  md_document:
+    variant: markdown_github
 ---
+
+
 To demonstrate the functionality of `tokens()` that removes or keeps some special characters/symbols. Test on: 
 
-```{r}
+```{r echo = FALSE}
 require(quanteda, quietly = TRUE, warn.conflicts = FALSE)
 require(tokenizers, quietly = TRUE, warn.conflicts = FALSE)
+```
+
+```{r}
 poetry <- paste0("I wandered lonely as a cloud,\n",
                  "That floats on high o'er vales and hills.\n",
                  "They stretched in never-ending line.\n",
@@ -17,48 +25,73 @@ poetry <- paste0("I wandered lonely as a cloud,\n",
                  "Prof. Plum kills Mrs. Peacock. \n",
                  "4u @ http://www.github.com\n")
 ```
+
+## Word tokenization
+
+Feature comparison:
+
+|                       | **quanteda** | **tokenizers** | Notes |
+|-----------------------|--------------|----------------|-------|
+| Numbers: Remove       | `tokens(x, removeNumbers = TRUE)` | ??   |       |
+| Twitter symbols: Keep | `tokens(x, removeTwitter = FALSE)`| n/a               |       |
+| Punctuation: Remove   | `tokens(x, removePunct = TRUE)` | ??               |       |
+| Separators: Keep      | `tokens(x, removeSeparators = FALSE)` |  n/a |       |
+| Hyphens: Keep         |              |                |       |
+| Hyphens: Remove       |              |                |       |
+| URLs: Remove          |              |                |       |
+
+
 ### Preserve words with hyphens
+
 ```{r}
 tokens("They stretched in never-ending line.\n", what = "word", removePunct = TRUE, removeHyphens = FALSE)
 tokenize_words("They stretched in never-ending line.\n")
 ```
 
 ### Eliminate URLs beginning with "http(s)" 
+
 ```{r}
 tokens("4u http://www.github.com\n", what = "word", removePunct = TRUE, removeURL = TRUE)
 tokenize_words("4u http://www.github.com\n")
 ```
 
 ### Preserve Twitter characters @ and \#
+
 ```{r}
 tokens("in sprightly @LSE and tell us what makes you feel #partofLSE\n", what = "word", removePunct = TRUE, removeTwitter = FALSE)
 tokenize_words("in sprightly @LSE and tell us what makes you feel #partofLSE\n")
 ```
 
 ### Remove numbers but preserve words starting with digits
+
 ```{r}
 tokens(c("1 $100 £1000 2000+ \n", "4u http://www.github.com\n"), what = "word", removePunct = TRUE, removeNumbers = TRUE)
 tokenize_words(c("1 $100 £1000 2000+ \n", "4u http://www.github.com\n"))
 ```
 
 ### Remove Symbols in the Unicode "Symbol" [S] class
+
 ```{r}
 tokens("1 $ 100 £1000 2000+", what = "character", removePunct = TRUE, removeSymbols = TRUE)
 tokenize_characters("1 $ 100 £1000 2000+", strip_non_alphanum = TRUE)
 ```
 
 ### Remove Separators in the Unicode "Separator" [Z] class but not Punctuations
+
 ```{r}
 tokens("1 $ 100 £1000 2000+\n", what = "word", removePunct = FALSE, removeSeparators = TRUE)
 tokenize_words("1 $ 100 £1000 2000+\n")
 ```
 
 ### Sentence segmenter handles some exceptions in English
+
 ```{r}
 tokens(poetry, what = "sentence")
 tokenize_sentences(poetry)
 ```
-### Performance benchmark
+
+### Performance benchmarks
+
 ```{r}
 microbenchmark::microbenchmark(q_tokens = tokens(data_char_inaugural, what = "word", hash = FALSE,                  
                                                  removeSeparators = FALSE, removeTwitter = TRUE),
