@@ -6,13 +6,18 @@ if (!exists("meta") || is.null(meta))
 citEntry(entry = "Manual",
          title = "quanteda: Quantitative Analysis of Textual Data",
          author = personList(as.person("Kenneth Benoit"),
-                             as.person("Paul Nulty")),                            
+                             as.person("Paul Nulty"),
+                             as.person("Kohei Watanabe"),
+                             as.person("Paul Nulty"),
+                             as.person("Adam Obeng"),
+                             as.person("Haiyan Wang"),
+                             as.person("Benjamin Lauderdale"),
+                             as.person("Will Lowe")),
          year = (year <- substring(meta$Date, 1, 4)),
          note = (note <- paste("R package version", meta$Version)),
-         url = "https://github.com/kbenoit/quanteda",
-         
+         url = "http://quanteda.io",
          textVersion = 
-             sprintf("Benoit, Kenneth and Paul Nulty.  (%s).  \"quanteda: Quantitative Analysis of 
+             sprintf("Benoit, Kenneth et. al. (%s).  \"quanteda: Quantitative Analysis of 
                      Textual Data\".  R package version: %s.  URL https://github.com/kbenoit/quanteda", 
                      year, meta$Version)
 )
