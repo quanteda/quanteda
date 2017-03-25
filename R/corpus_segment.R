@@ -117,11 +117,7 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
     texts(x) <- paste0(texts(x), " ")
     
     segTxt <- lapply(texts(x), function(y) {
-        result <- unname(char_segment(y, what, delimiter, valuetype = valuetype, ...))
-        # remove first line if blank, #618
-        # if (result[1] == "") result <- result[-1]
-        # remove 
-        result
+        unname(char_segment(y, what, delimiter, valuetype = valuetype, ...))
     })
     
     names(segTxt) <- paste0(names(segTxt), ".")
