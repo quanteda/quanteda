@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>plot a fitted wordfish model — textplot_scale1d • quanteda</title>
+<title>plot a fitted scaling model — textplot_scale1d • quanteda</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,48 +77,57 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>plot a fitted wordfish model</h1>
+    <h1>plot a fitted scaling model</h1>
     </div>
 
     
-    <p>Plot a fitted wordfish model, either as an ideal point-style plot (theta plus
-confidence interval on the x-axis, document labels on the y) with optional 
-renaming and sorting, or as a plot of estimated feature-level parameters
-(beta on the x, psi on the y, feature names over-plotted with alpha
-transparency, optionally some highlighted) as in Slapin and Proksch, 2008.</p>
+    <p>Plot the results of a fitted scaling model, from (e.g.) a predicted 
+<a href='textmodel_wordscores.html'>textmodel_wordscores</a> model or a fitted <a href='textmodel_wordfish.html'>textmodel_wordfish</a>
+model. Either document or feature parameters may be plotted: an ideal
+point-style plot (estimated document position plus confidence interval on the
+x-axis, document labels on the y-axis) with optional renaming and sorting, or
+as a plot of estimated feature-level parameters (estimated feature positions
+on the x-axis, and a measure of relative frequency or influence on the
+y-axis, with feature names replacing plotting points with some being chosen
+by the user to be highlighted).</p>
     
 
     <pre><span class='fu'>textplot_scale1d</span>(<span class='no'>x</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"documents"</span>, <span class='st'>"features"</span>), <span class='kw'>doclabels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>mar_left</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>highlighted</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>highlighted</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.7</span>,
+  <span class='kw'>highlighted_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
-      <dd>the fitted <a href='textmodel_wordfish.html'>textmodel_wordfish</a> object to be plotted</dd>
+      <dd>the fitted or predicted scaling model object to be plotted</dd>
       <dt>margin</dt>
-      <dd><code>&quot;documents&quot;</code> to plot document scores theta (the default)
-or <code>&quot;features&quot;</code> to plot psi against beta parameters</dd>
+      <dd><code>&quot;documents&quot;</code> to plot estimated document scores (the
+default) or <code>&quot;features&quot;</code> to plot estimated feature scores by a measure
+of relative frequency</dd>
       <dt>doclabels</dt>
-      <dd>a vector of names for document. If left NULL (the default), 
-ordinary document names will be used.</dd>
+      <dd>a vector of names for document; if left NULL (the default), 
+docnames will be used</dd>
       <dt>sort</dt>
-      <dd>if <code>TRUE</code> (the default), order points from low to high score. If a 
-vector, order according to these values from low to high. Only applies when
-<code>margin = &quot;documents&quot;</code></dd>
-      <dt>mar_left</dt>
-      <dd>an overridden left margin, passed to <code>par</code> (default 
-8.1). This overrides R&#39;s default 4.1, which is typically too cramped for 
-document names.</dd>
+      <dd>if <code>TRUE</code> (the default), order points from low to high 
+score. If a vector, order according to these values from low to high. Only 
+applies when <code>margin = &quot;documents&quot;</code>.</dd>
+      <dt>groups</dt>
+      <dd>optional grouping variable for sorting categories of the documents.
+Only applies when <code>margin = &quot;documents&quot;</code>.</dd>
       <dt>highlighted</dt>
-      <dd>a vector of feature names to draw attention to in a feature 
-plot. Only applies if <code>margin = &quot;features&quot;</code>.</dd>
+      <dd>a vector of feature names to draw attention to in a 
+feature plot; only applies if <code>margin = &quot;features&quot;</code></dd>
       <dt>alpha</dt>
       <dd>A number between 0 and 1 (default 0.5) representing the level of
-alpha transparency used to overplot feature names in a feature plot. Only 
-applies if <code>margin = &quot;features&quot;</code>.</dd>
-      <dt>...</dt>
-      <dd>additional arguments passed to <code>plot</code></dd>
+alpha transparency used to overplot feature names in a feature plot; only 
+applies if <code>margin = &quot;features&quot;</code></dd>
+      <dt>highlighted_color</dt>
+      <dd>color for highlighted terms in <code>highlighted</code></dd>
     </dl>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a <span class="pkg">ggplot2</span> object</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -128,17 +137,27 @@ applies if <code>margin = &quot;features&quot;</code>.</dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>postwar</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm_trim.html'>dfm_trim</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>41</span>:<span class='fl'>57</span>]), <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-<span class='no'>mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel.html'>textmodel</a></span>(<span class='no'>postwar</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"wordfish"</span>)
-<span class='fu'>textplot_scale1d</span>(<span class='no'>mod</span>, <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><img src='textplot_scale1d-2.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>textplot_scale1d</span>(<span class='no'>mod</span>, <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><img src='textplot_scale1d-4.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>textplot_scale1d</span>(<span class='no'>mod</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>,
-                 <span class='kw'>highlighted</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"government"</span>, <span class='st'>"countries"</span>, <span class='st'>"children"</span>,
-                             <span class='st'>"the"</span>, <span class='st'>"nuclear"</span>, <span class='st'>"federal"</span>))</div><img src='textplot_scale1d-6.png' alt='' width='540' height='400' /></pre>
+    <pre class="examples"><div class='input'><span class='co'>## wordfish</span>
+<span class='no'>wfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textmodel_wordfish.html'>textmodel_wordfish</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_irishbudget2010</span>), <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>6</span>,<span class='fl'>5</span>))
+
+<span class='co'># plot estimated document positions</span>
+<span class='no'>doclab</span> <span class='kw'>&lt;-</span> <span class='fu'>apply</span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='fu'>c</span>(<span class='st'>"name"</span>, <span class='st'>"party"</span>)),
+                <span class='fl'>1</span>, <span class='no'>paste</span>, <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>" "</span>)
+<span class='fu'>textplot_scale1d</span>(<span class='no'>wfm</span>, <span class='kw'>doclabels</span> <span class='kw'>=</span> <span class='no'>doclab</span>)</div><img src='textplot_scale1d-2.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>textplot_scale1d</span>(<span class='no'>wfm</span>, <span class='kw'>doclabels</span> <span class='kw'>=</span> <span class='no'>doclab</span>,
+                 <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_irishbudget2010</span>, <span class='st'>"party"</span>))</div><img src='textplot_scale1d-4.png' alt='' width='540' height='400' /><div class='input'>
+<span class='co'># plot estimated word positions</span>
+<span class='fu'>textplot_scale1d</span>(<span class='no'>wfm</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='st'>"features"</span>,
+                 <span class='kw'>highlighted</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"government"</span>, <span class='st'>"global"</span>, <span class='st'>"children"</span>,
+                                 <span class='st'>"bank"</span>, <span class='st'>"economy"</span>, <span class='st'>"the"</span>, <span class='st'>"citizenship"</span>,
+                                 <span class='st'>"productivity"</span>, <span class='st'>"deficit"</span>))</div><img src='textplot_scale1d-6.png' alt='' width='540' height='400' /></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#references">References</a></li>
       
       <li><a href="#examples">Examples</a></li>
@@ -146,7 +165,7 @@ applies if <code>margin = &quot;features&quot;</code>.</dd>
 
     <h2>Author</h2>
     
-Adam Obeng
+Kenneth Benoit, Stefan Mueller, and Adam Obeng
 
   </div>
 </div>

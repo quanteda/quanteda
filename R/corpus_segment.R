@@ -111,7 +111,15 @@ corpus_segment.corpus <- function(x, what = c("sentences", "paragraphs", "tokens
         }
     }
     
-    segTxt <- lapply(texts(x), function(y) unname(char_segment(y, what, delimiter, valuetype = valuetype, ...)))
+    # trim any leading or trailing blanks
+    texts(x) <- stringi::stri_trim_left(texts(x))
+    # add a blank to the end, in case the last part is a tag
+    texts(x) <- paste0(texts(x), " ")
+    
+    segTxt <- lapply(texts(x), function(y) {
+        unname(char_segment(y, what, delimiter, valuetype = valuetype, ...))
+    })
+    
     names(segTxt) <- paste0(names(segTxt), ".")
     
     newCorpus <- corpus(unlist(segTxt),
