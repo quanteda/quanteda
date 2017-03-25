@@ -19,7 +19,7 @@
 #'   \href{https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft}{79}.
 #'    (Set \code{max_nchar} to \code{NULL} for no upper limit.) These are
 #'   applied after (and hence, in addition to) any selection based on pattern
-#'   matches.
+#'   matches. These arguments are Ignored when padding is \code{TRUE}.
 #' @param padding if \code{TRUE} features or documents not existing in x is 
 #'   added to \link{dfm}. This option is available only when selection is 
 #'   \code{keep} and valuetype is \code{fixed}. 
@@ -114,8 +114,9 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
             case_insensitive <- FALSE
         }
         features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
-        features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
+        features_id <- unlist(regex2id(features, types, valuetype, case_insensitive), use.names = FALSE)
         features_id <- sort(features_id) # keep the original column order
+        
     } else {
         if (selection == "keep")
             features_id <- seq_len(nfeature(x))
@@ -123,18 +124,20 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
             features_id <- NULL
     }
     
-    # select features based on character length
-    features_id <- intersect(features_id, which(stringi::stri_length(types) >= min_nchar & 
-                                                stringi::stri_length(types) <= max_nchar))
-
+    if (!padding) {
+        # select features based on character length
+        features_id <- intersect(features_id, which(stringi::stri_length(types) >= min_nchar & 
+                                                    stringi::stri_length(types) <= max_nchar))
+    }
+    
     # select documents based on "documents" pattern
     if (!is.null(documents)){
         documents <- unlist(documents, use.names = FALSE) # this funciton does not accpet list
-        documents_id <- unlist(regex2id(documents, labels, valuetype, case_insensitive, FALSE), use.names = FALSE)
+        documents_id <- unlist(regex2id(documents, labels, valuetype, case_insensitive), use.names = FALSE)
         documents_id <- sort(documents_id) # keep the original row order
     } else {
         if (selection == "keep")
-            documents_id <- 1:ndoc(x)
+            documents_id <- seq_len(ndoc(x))
         else
             documents_id <- NULL
     }
@@ -142,27 +145,46 @@ dfm_select.dfm <-  function(x, features = NULL, documents = NULL,
     types_add <- labels_add <- character() # avoid error in verbose message
     
     if (selection == "keep") {
-        if (!length(features_id) || !length(documents_id)) {
-            x <- NULL
-        } else {
+        if (length(features_id) && length(documents_id)) {
+            
             x <- x[documents_id, features_id]
             if (valuetype == 'fixed' && padding) {
-                
+
                 # padding for features
-                types_add <- setdiff(features, types)
-                if (length(types_add)) {
-                    x <- new("dfmSparse", Matrix::cbind2(x, sparseMatrix(i = NULL, j = NULL, dims = c(ndoc(x), length(types_add)), 
-                                                                         dimnames = list(docnames(x), types_add))))
+                features_add <- setdiff(features, types)
+                if (length(features_add)) {
+                    x <- new("dfmSparse", Matrix::cbind2(x, sparseMatrix(i = NULL, j = NULL, 
+                                                                         dims = c(ndoc(x), length(features_add)), 
+                                                                         dimnames = list(docnames(x), features_add))))
                 }
-                if (case_insensitive)
-                    x <- dfm_tolower(x)
-                
+    
                 # padding for documents
-                labels_add <- setdiff(documents, labels)
-                if (length(labels_add)) {
-                    x <- new("dfmSparse", Matrix::rbind2(x, sparseMatrix(i = NULL, j = NULL, dims = c(length(labels_add), nfeature(x)), 
-                                                                         dimnames = list(labels_add, featnames(x)))))
+                documents_add <- setdiff(documents, labels)
+                if (length(documents_add)) {
+                    x <- new("dfmSparse", Matrix::rbind2(x, sparseMatrix(i = NULL, j = NULL, 
+                                                                         dims = c(length(documents_add), nfeature(x)), 
+                                                                         dimnames = list(documents_add, featnames(x)))))
                 }
+            }
+        } else {
+            if (valuetype == 'fixed' && padding) {
+
+                # create empty dfm
+                if (length(features) && length(documents)) {
+                    x <- new("dfmSparse", as(sparseMatrix(i = NULL, j = NULL,
+                                                       dims = c(length(documents), length(features)),
+                                                       dimnames = list(documents, features)), 'dgCMatrix'))
+                } else if (length(features)) {
+                    x <- new("dfmSparse", as(sparseMatrix(i = NULL, j = NULL,
+                                                       dims = c(ndoc(x), length(features)),
+                                                       dimnames = list(docnames(x), features)), 'dgCMatrix'))
+                } else if (length(documents)) {
+                    x <- new("dfmSparse", as(sparseMatrix(i = NULL, j = NULL,
+                                                       dims = c(length(documents), nfeature(x)),
+                                                       dimnames = list(documents, featnames(x))), 'dgCMatrix'))
+                }
+            } else {
+                x <- NULL
             }
         }
     } else {

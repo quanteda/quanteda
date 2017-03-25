@@ -65,22 +65,30 @@ tokens_compound.tokens <- function(x, sequences,
     if (!is.tokens(x))
         stop("x must be a tokens object")
     
-    sequences <- sequence2list(sequences)
-    seqs <- as.list(sequences)
-    seqs <- seqs[lengths(seqs) > 1] # drop single words
-    
-    # Do nothing if no sequence is given
-    if (!length(seqs))
-        return(x)
-    
     valuetype <- match.arg(valuetype)
-    attrs <- attributes(x)
+
+    names_org <- names(x)
+    attrs_org <- attributes(x)
     types <- types(x)
     
-    seqs_id <- regex2id(seqs, types, valuetype, case_insensitive)
-    if(length(seqs_id) == 0) return(x) # do nothing
-    x <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join)
-    attributes(x, FALSE) <- attrs
+    if ('collocation_new' %in% class(sequences)) {
+        if (identical(attr(sequences, 'types'), types)) {
+            #cat("Skip regex2id\n")
+            seqs_ids <- attr(sequences, 'ids')
+        } else { 
+            #cat("Use regex2id\n")
+            seqs <- sequence2list(rownames(sequences))
+            seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
+        }
+    } else {
+        #cat("Use regex2id\n")
+        seqs <- sequence2list(sequences)
+        seqs <- seqs[lengths(seqs) > 1] # drop single words
+        seqs_ids <- regex2id(seqs, types, valuetype, case_insensitive)
+    }
+    if(length(seqs_ids) == 0) return(x) # do nothing
+    x <- qatd_cpp_tokens_compound(x, seqs_ids, types, concatenator, join)
+    attributes(x, FALSE) <- attrs_org
     attr(x, "concatenator") <- concatenator
     return(x)
 }

@@ -45,6 +45,10 @@ toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 seqs <- sequences(toks, "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", case_insensitive = FALSE)
 head(seqs, 10)
 
+# more efficient when applied to the same tokens object 
+toks_comp <- tokens_compound(toks, seqs)
+toks_comp_ir <- tokens_compound(tokens(data_corpus_irishbudget2010), seqs)
+
 # types can be any words
 seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, 
                    min_count = 2, ordered = TRUE)
