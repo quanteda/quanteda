@@ -135,18 +135,6 @@ test_that("longer selection than longer than features that exist (related to #44
     )
 })
 
-test_that("test dfm_select with features from a dfm,  fixed", {
-
-
-    expect_equal(colSums(dfm_select(testdfm, dfm(c("a", "b", "c")), selection = "keep", valuetype = "fixed", 
-                                    padding = TRUE, verbose = FALSE)),
-                 c(a=2, c=2, b=0))
-    
-    expect_equal(colSums(dfm_select(testdfm, dfm(c("a", "b", "c")), selection = "keep", valuetype = "fixed", 
-                                    padding = FALSE, verbose = FALSE)),
-                 c(a=2, c=2))
-    
-})
 
 test_that("test dfm_select with ngrams #589", {
     
@@ -186,3 +174,35 @@ test_that("test dfm_select with dates in document names", {
     expect_equal(ndoc(paddeddfm), 365)
     
 })
+
+
+test_that("test dfm_select with features from a dfm,  fixed", {
+    txt <- c(doc1 = "a B c D e",
+             doc2 = "a BBB c D e",
+             doc3 = "Aaaa BBB cc")
+    testdfm <- dfm(txt, tolower = FALSE)  
+    expect_equal(
+        colSums(dfm_select(testdfm, dfm(c("a", "b", "c")), case_insensitive = TRUE)),
+        c(a = 2, b = 0, c = 2)
+    )
+    expect_equal(
+        colSums(dfm_select(testdfm, dfm(c("a", "b", "c")), case_insensitive = FALSE)),
+        c(a = 2, b = 0, c = 2)
+    )
+    
+    expect_equal(
+        colSums(dfm_select(testdfm, dfm(c("a", "b", "c")))),
+        c(a=2, b = 0, c=2)
+    )
+})
+
+
+test_that("dfm_select returns equal feature sets", {
+    txts <- c(d1 = "This is text one", d2 = "The second text", d3 = "This is text three")
+    dfm1 <- dfm(txts[1:2])
+    dfm2 <- dfm(txts[2:3])
+    dfm3 <- dfm_select(dfm1, dfm2)
+    expect_true(setequal(featnames(dfm2), featnames(dfm3)))
+})
+
+
