@@ -241,9 +241,3 @@ test_that("print method works as expected", {
     testkwic <- kwic('what does the fox say fox', 'foox')
     expect_null(print(testkwic))
 })
-
-test_that("print method (kwic_old) works as expected", {
-    testkwic <- kwic('what does the fox say fox', 'fox')
-    expect_output(print(testkwic), "*\\[*fox*\\]*")
-    expect_output(print(testkwic), "\\[text1, 4\\]*")
-})

@@ -14,10 +14,6 @@
 #' @param case_insensitive match without respect to case if \code{TRUE}
 #' @param ... additional arguments passed to \link{tokens}, for applicable 
 #'   object types
-#' @param new logical; if \code{TRUE} use the newer \code{kwic}, if \code{FALSE}
-#' then call \code{\link{kwic_old}}.  Once the full
-#' testing of the newer \link{kwic} method is complete and the transition
-#' declared successful, we will delete this option and delete \code{kwic_old}.
 #' @return A kwic object classed data.frame, with the document name 
 #'   (\code{docname}), the token index position (\code{position}), the context
 #'   before (\code{contextPre}), the keyword in its original format
@@ -32,29 +28,24 @@
 #' 
 #' toks <- tokens(data_char_inaugural)
 #' kwic(data_corpus_inaugural, "war against")
-#' kwic(data_corpus_inaugural, "war against", new = FALSE)
 #' kwic(data_corpus_inaugural, "war against", valuetype = "regex")
 #' 
-kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
-    if (new) {    
-        UseMethod("kwic")
-    } else {
-        UseMethod("kwic_old")
-    }
+kwic <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+    UseMethod("kwic")
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export
-kwic.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
-    kwic(tokens(x, ...), keywords, window, valuetype, case_insensitive, new = TRUE)
+kwic.character <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+    kwic(tokens(x, ...), keywords, window, valuetype, case_insensitive)
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
-    kwic(texts(x), keywords, window, valuetype, case_insensitive, ..., new = TRUE)
+kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+    kwic(texts(x), keywords, window, valuetype, case_insensitive, ...)
 }
 
 #' @rdname kwic
@@ -73,7 +64,7 @@ kwic.corpus <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
 #' kwic(toks, c("is", "a"), valuetype = "fixed")
 #' kwic(toks, list("is", "a", c("is", "it")), valuetype = "fixed")
 #' @export 
-kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
+kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
     
     if (!is.tokens(x))
         stop("x must be a tokens object")
@@ -102,8 +93,8 @@ kwic.tokens <- function(x, keywords, window = 5, valuetype = c("glob", "regex", 
 #' @rdname kwic
 #' @noRd
 #' @export 
-kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ..., new = TRUE) {
-    kwic(as.tokens(x), keywords, window, valuetype, case_insensitive, ..., new = TRUE)
+kwic.tokenizedTexts <- function(x, keywords, window = 5, valuetype = c("glob", "regex", "fixed"), case_insensitive = TRUE, ...) {
+    kwic(as.tokens(x), keywords, window, valuetype, case_insensitive, ...)
 }
 
 #' @rdname kwic
