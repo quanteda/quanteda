@@ -55,13 +55,13 @@ Selecting only features defined in a "dictionary" is traditionally
   features.
 }
 \examples{
-
+\donttest{
 toks <- tokens(data_corpus_inaugural)
 head(kwic(toks, "united states"))
 dict <- dictionary(list(country = "united states"))
 toks2 <- applyDictionary(toks, dict, valuetype = "fixed")
 toks2
-
+}
 }
 \keyword{deprecated}
 \keyword{internal}
