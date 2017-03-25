@@ -100,6 +100,10 @@
 </li>
 <li>
 <code><a href="../reference/docvars.html">docvars()</a></code> on eligible objects that contain no docvars now returns an empty 0 x 0 data.frame (in the spirit of #242).</li>
+<li>Redesigned <code>textmodel_scale1d</code> now produces sorted and grouped document positions for fitted wordfish models, and produces a ggplot2 plot object.</li>
+<li>
+<code><a href="../reference/textmodel_wordfish.html">textmodel_wordfish()</a></code> now preserves sparsity while processing the dfm, and uses a fast approximation to an SVD to get starting values. This also dramatically improves performance in computing this model. (#482, #124)</li>
+<li>The speed of <code><a href="../reference/kwic.html">kwic()</a></code> is now dramatically improved, and also returns an indexed set of tokens that makes subsequent commands on a kwic class object much faster. (#603)</li>
 </ul>
 </div>
 <div id="behaviour-changes" class="section level3">
@@ -128,6 +132,8 @@
 <li>
 <code>dfm_select</code> now works correctly for ngram features (#589).</li>
 <li>Fixed a bug crashing corpus constructors for character vectors with duplicated names (the cause of #580).</li>
+<li>Fixed a bug in the behaviour for <code><a href="../reference/dfm_select.html">dfm_select(x, features)</a></code> when <code>features</code> was a dfm, that failed to produce the intended featnames matches for the output dfm.</li>
+<li>Fixed a bug in <code><a href="../reference/corpus_segment.html">corpus_segment(x, what = "tags")</a></code> when a document contained a whitespace just before a tag, at the beginning of the file, or ended with a tag followed by no text (#618).</li>
 </ul>
 </div>
 </div>
