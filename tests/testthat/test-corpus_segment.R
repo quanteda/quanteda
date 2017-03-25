@@ -116,3 +116,42 @@ test_that("char_segment tokens works", {
            as.character(char_segment(data_char_ukimmig2010, what = "tokens")))
 })
 
+test_that("corpus_segment works with blank before tag", {
+    testCorpus <- corpus(c("\n##INTRO This is the introduction.
+                        ##DOC1 This is the first document.  Second sentence in Doc 1.
+                           ##DOC3 Third document starts here.  End of third document.",
+                           "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
+    testCorpusSeg <- corpus_segment(testCorpus, "tags")
+    summ <- summary(testCorpusSeg, verbose = FALSE)
+    expect_equal(summ["text1.1", "Tokens"], 5)
+    expect_equal(summ["text1.1", "tag"], "##INTRO")
+})
+
+test_that("corpus_segment works for end tag", {
+    testCorpus <- corpus(c("##INTRO This is the introduction.
+                        ##DOC1 This is the first document.  Second sentence in Doc 1.
+                           ##DOC3 Third document starts here.  End of third document.",
+                           "##INTRO Document ##NUMBER Two starts before ##NUMBER Three. ##END"))
+    testCorpusSeg <- corpus_segment(testCorpus, "tags")
+    summ <- summary(testCorpusSeg, verbose = FALSE)
+    expect_equal(summ["text2.4", "tag"], "##END")
+    expect_equal(summ["text2.4", "Tokens"], 0)
+})
+
+test_that("char_segment works with blank before tag", {
+    txt <- c("\n##INTRO This is the introduction.
+                        ##DOC1 This is the first document.  Second sentence in Doc 1.
+                           ##DOC3 Third document starts here.  End of third document.",
+                           "##INTRO Document ##NUMBER Two starts before ##NUMBER Three.")
+    testSeg <- char_segment(txt, "tags")
+    expect_equal(testSeg[7], "Three.")
+})
+
+test_that("char_segment works for end tag", {
+    txt <- c("##INTRO This is the introduction.
+                        ##DOC1 This is the first document.  Second sentence in Doc 1.
+             ##DOC3 Third document starts here.  End of third document.",
+             "##INTRO Document ##NUMBER Two starts before ##NUMBER Three. ##END")
+    testSeg <- char_segment(txt, "tags")
+    expect_equal(testSeg[length(testSeg)], "Three.")
+})
