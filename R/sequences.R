@@ -24,6 +24,10 @@
 #' seqs <- sequences(toks, "^([A-Z][a-z\\-]{2,})", valuetype="regex", case_insensitive = FALSE)
 #' head(seqs, 10)
 #' 
+#' # more efficient when applied to the same tokens object 
+#' toks_comp <- tokens_compound(toks, seqs)
+#' toks_comp_ir <- tokens_compound(tokens(data_corpus_irishbudget2010), seqs)
+#' 
 #' # types can be any words
 #' seqs2 <- sequences(toks, "^([a-z]+)$", valuetype="regex", case_insensitive = FALSE, 
 #'                    min_count = 2, ordered = TRUE)
@@ -54,18 +58,37 @@ sequences.tokens <- function(x, features, valuetype = c("glob", "regex", "fixed"
     types <- types(x)
     features <- unlist(features, use.names = FALSE) # this funciton does not accpet list
     features_id <- unlist(regex2id(features, types, valuetype, case_insensitive, FALSE), use.names = FALSE)
-
-    seqs <- qatd_cpp_sequences(x, features_id, min_count, max_length, nested, ordered)
-    seqs$length <- lengths(seqs$sequence)
-    seqs$sequence <- stringi::stri_c_list(lapply(seqs$sequence, function(y) types[y]), sep=' ')
     
-    df <- as.data.frame(seqs, stringsAsFactors = FALSE)
-    df <- df[df$count >= min_count,]
-    df$z <- df$lambda / df$sigma
-    df$p <- 1 - stats::pnorm(df$z)
-    df <- df[order(df$z, decreasing = TRUE),]
-    class(df) <- c("sequences", class(df))
-    rownames(df) <- NULL
-    return(df)
+    cols <- qatd_cpp_sequences(x, features_id, min_count, max_length, nested, ordered)
+    rownames(cols) <- unlist(stringi::stri_c_list(lapply(attr(cols, 'ids'), function(y) types[y]), sep=' '), use.names = FALSE)
+    class(cols) <- c("collocation_new", 'data.frame')
+    
+    cols <- cols[cols$count >= min_count,]
+    cols$z <- cols$lambda / cols$sigma
+    cols$p <- 1 - stats::pnorm(cols$z)
+    cols <- cols[order(cols$z, decreasing = TRUE),]
+    attr(cols, 'types') <- types
+    
+    return(cols)
+}
+
+#' @method "[" collocation_new
+#' @export
+#' @noRd
+"[.collocation_new" <- function(x, i, ...) {
+    x <- as.data.frame(x)[i,]
+    attr(x, 'ids') <- attr(x, 'ids')[i]
+    class(x) <- c("collocation_new", 'data.frame')
+    return(x)
+}
+
+#' @export
+#' @method as.tokens collocation_new
+#' @noRd 
+as.tokens.collocation_new <- function(x) {
+    toks <- attr(x, 'ids')
+    attr(toks, 'types') <- attr(x, 'types')
+    class(toks) <- c("tokens", "tokenizedTexts")
+    return(toks)
 }
 

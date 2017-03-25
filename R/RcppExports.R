@@ -49,6 +49,10 @@ qatd_cpp_tokens_detect <- function(texts_, words_) {
     .Call('quanteda_qatd_cpp_tokens_detect', PACKAGE = 'quanteda', texts_, words_)
 }
 
+qatd_cpp_kwic <- function(texts_, types_, words_, window) {
+    .Call('quanteda_qatd_cpp_kwic', PACKAGE = 'quanteda', texts_, types_, words_, window)
+}
+
 qatd_cpp_tokens_lookup <- function(texts_, types_, keys_, ids_, overlap) {
     .Call('quanteda_qatd_cpp_tokens_lookup', PACKAGE = 'quanteda', texts_, types_, keys_, ids_, overlap)
 }
@@ -77,11 +81,11 @@ qatd_cpp_chars_remove <- function(input_, char_remove) {
     .Call('quanteda_qatd_cpp_chars_remove', PACKAGE = 'quanteda', input_, char_remove)
 }
 
-wordfishcpp_dense <- function(wfm, dir, priors, tol, disp, dispfloor, abs_err) {
-    .Call('quanteda_wordfishcpp_dense', PACKAGE = 'quanteda', wfm, dir, priors, tol, disp, dispfloor, abs_err)
-}
-
 wordfishcpp <- function(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor) {
     .Call('quanteda_wordfishcpp', PACKAGE = 'quanteda', wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor)
+}
+
+wordfishcpp_dense <- function(wfm, dir, priors, tol, disp, dispfloor, abs_err) {
+    .Call('quanteda_wordfishcpp_dense', PACKAGE = 'quanteda', wfm, dir, priors, tol, disp, dispfloor, abs_err)
 }
 

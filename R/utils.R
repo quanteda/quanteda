@@ -50,34 +50,6 @@ reassign_slots <- function(x_new, x_orig, exceptions = NULL) {
     x_new
 }
 
-#' copy the attributes from one S3 object to another
-#' 
-#' Copy the attributes from one S3 object to another.  Necessary when some
-#' operation defined for the base class obliterates them.
-#' @param x_new the object to which the attributes will be copied
-#' @param x_from the object from which the attributes will be copied, or a list
-#'   of attrbiutes if \code{attr_only = TRUE}
-#' @param exception a character vector of attribute names NOT to be copied
-#' @param attr_only logical; if \code{TRUE}, then \code{x_orig} is a list of
-#'   attributes rather than an object with attributes.
-#' @keywords internal
-#' @author Ken Benoit
-reassign_attributes <- function(x_new, x_from, exceptions = NULL, attr_only = FALSE) {
-    if (!attr_only) { 
-        attrs_from <- attributes(x_from)
-    } else {
-        attrs_from <- x_from
-    }
-    # remove exceptions, if any
-    if (!is.null(exceptions)) attrs_from[[exceptions]] <- NULL
-    # copy the old attributes to the new object, keeping any new attributes not 
-    # found in the old object
-    attrs_new <- c(attributes(x_new)[setdiff(names(attributes(x_new)), names(attrs_from))],
-                   attrs_from)
-    # assign the attributes
-    attributes(x_new) <- attrs_new
-    x_new
-}
 
 #' R-like alternative to reassign_attributes()
 #' @keywords internal
@@ -216,8 +188,7 @@ sequence2list <- function(sequences) {
     # make sure the resulting list is all character
     if (!all(is.character(unlist(sequences, use.names = FALSE))))
         stop("sequences must be a list of character elements or a dictionary")
-    
-    sequences
+    return(as.list(sequences))
 }
 
 

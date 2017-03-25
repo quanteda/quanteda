@@ -264,13 +264,13 @@ corpus.kwic <- function(x, docnames = NULL, docvars = NULL, text_field = "text",
     # convert docnames to a factor, as in original kwic
     x$docname <- factor(x$docname)
     
-    result <- corpus(x, text_field = "contextPre", ...)
-    result[["contextPost"]] <- NULL
+    result <- corpus(x, text_field = "pre", ...)
+    result[["post"]] <- NULL
     result[["context"]] <- "pre"
     docnames(result) <- paste0(docnames(result), ".pre")
 
-    tempCorp <- corpus(x, text_field = "contextPost", ...)
-    tempCorp[["contextPre"]] <- NULL
+    tempCorp <- corpus(x, text_field = "post", ...)
+    tempCorp[["pre"]] <- NULL
     tempCorp[["context"]] <- "post"
     docnames(tempCorp) <- paste0(docnames(tempCorp), ".post")
     
