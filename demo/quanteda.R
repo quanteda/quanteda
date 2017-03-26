@@ -140,5 +140,5 @@ collocs3 <- collocations(inaugTexts, size = 3, method = "all")
 head(collocs3, 20)
 
 # remove parts of speech and inspect
-head(removeFeatures(collocs2, stopwords("english")), 20)
-head(removeFeatures(collocs3, stopwords("english")), 20)
+#head(removeFeatures(collocs2, stopwords("english")), 20)
+#head(removeFeatures(collocs3, stopwords("english")), 20)
