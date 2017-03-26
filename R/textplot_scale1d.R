@@ -26,14 +26,33 @@
 #' @param alpha A number between 0 and 1 (default 0.5) representing the level of
 #'   alpha transparency used to overplot feature names in a feature plot; only 
 #'   applies if \code{margin = "features"}
+#' @param rescaling_plot a vector for rescaling method ("raw", "lbg", or "mv", 
+#'   displayed in Wordscores "documents" plot
 #' @return a \pkg{ggplot2} object
 #' @export
 #' @references Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
 #'   for Estimating Time-Series Party Positions from Texts." \emph{American 
 #'   Journal of Political Science} 52(3):705-772.
-#' @author Kenneth Benoit, Stefan Mueller, and Adam Obeng
+#' @author Kenneth Benoit, Stefan Müller, and Adam Obeng
 #' @keywords textplot
 #' @examples
+#' ## wordscores
+#' ie_dfm <- dfm(data_corpus_irishbudget2010, verbose=FALSE)
+#' 
+#' refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
+#' ws <- predict(textmodel(ie_dfm, refscores, model="wordscores", smooth=1), 
+#'               rescaling = c("lbg", "mv"))
+#' doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
+#'                 1, paste, collapse = " ")
+#' # plot estimated document positions
+#' 
+#' textplot_scale1d(ws, margin = "documents", rescaling_plot = "lbg",
+#'                  doclabels = doclab,
+#'                  groups = docvars(data_corpus_irishbudget2010, "party"))
+#'
+#' textplot_scale1d(ws, margin = "features", 
+#'                  highlighted = c("minister", "have", "our", "budget"))
+#'
 #' ## wordfish
 #' wfm <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
 #' 
@@ -50,8 +69,9 @@
 #'                                  "bank", "economy", "the", "citizenship",
 #'                                  "productivity", "deficit"))
 textplot_scale1d <- function(x, margin = c("documents", "features"), doclabels = NULL, 
-                              sort = TRUE, groups = NULL, highlighted = NULL, alpha = 0.7, 
-                              highlighted_color = "black") {
+                             sort = TRUE, groups = NULL, rescaling_plot = "raw",
+                             highlighted = NULL, alpha = 0.7, 
+                             highlighted_color = "black") {
     UseMethod("textplot_scale1d")
 }
 
@@ -135,4 +155,108 @@ textplot_scale1d.textmodel_wordfish_fitted <-
     suppressMessages(p)
 }
 
+#' @noRd
+#' @importFrom stats reorder aggregate
+#' @importFrom ggplot2 ggplot aes geom_point element_blank geom_pointrange 
+#' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
+#' @importFrom ggplot2 facet_grid element_line
+#' @export
+textplot_scale1d.textmodel_wordscores_predicted <- 
+    function(x, margin = c("documents", "features"), 
+             rescaling_plot = "raw", doclabels = NULL, 
+             sort = TRUE, groups = NULL, highlighted = NULL, alpha = 0.7, 
+             highlighted_color = "black") {
+      
+      margin <- match.arg(margin)
+
+      if (margin == "documents") {
+        n <- length(x@textscores$textscore_raw)
+        if (is.null(doclabels))
+          doclabels <- x@newdata@Dimnames$docs
+        stopifnot(length(doclabels) == n)
+
+        if (sort & !is.null(groups)) {
+          temp_medians <- aggregate(x@textscores$textscore_raw, list(groups), median, na.rm = TRUE)
+          groups <- factor(groups, levels = temp_medians[order(temp_medians$x, decreasing = TRUE), 1])
+        }
+        
+        if (rescaling_plot == "raw") {
+          textscore_raw <- textscore_raw_lo <- textscore_raw_hi <- NULL
+          textscore_lbg <- textscore_lbg_lo <- textscore_lbg_hi <- NULL
+          
+          results <- data.frame(doclabels = doclabels, 
+                              textscore = x@textscores$textscore_raw, 
+                              lower = x@textscores$textscore_raw_lo, 
+                              upper = x@textscores$textscore_raw_hi)
+        }
+        
+        if (rescaling_plot == "lbg") {
+          textscore_lbg <- textscore_lbg_lo <- textscore_lbg_hi <- NULL
+          results <- data.frame(doclabels = doclabels, 
+                                textscore = x@textscores$textscore_lbg, 
+                                lower = x@textscores$textscore_lbg_lo, 
+                                upper = x@textscores$textscore_lbg_hi)
+        }
+        
+        if (rescaling_plot == "mv"){
+          textscore_mv <- textscore_mv_lo <- textscore_mv_hi <- NULL
+          results <- data.frame(doclabels = doclabels, 
+                                textscore = x@textscores$textscore_mv)
+        }
+        if (!is.null(groups))
+          results$groups <- groups
+        
+        p <- if (sort) {
+          ggplot(data = results, aes(x = reorder(doclabels, textscore), y = textscore))
+        } else {
+          ggplot(data = results, aes(x = doclabels, y = textscore))
+        }
+        p <- p + 
+          coord_flip() + 
+          { if (!is.null(groups))
+            facet_grid(as.factor(groups) ~ ., scales = "free_y", space = "free") } +  
+          { if (rescaling_plot != "mv")
+          geom_pointrange(aes(ymin = lower, ymax = upper), lwd = .25, fatten = .4) } +
+          geom_point(size = 1) +
+          { if (rescaling_plot == "raw")
+            ylab("Estimated textscore") } +
+          { if (rescaling_plot == "lbg")
+             ylab("Estimated textscore (LBG transformation)") } +
+          { if (rescaling_plot == "mv")
+             ylab("Estimated textscore (MV transformation)") } + 
+          xlab(NULL)
+
+    } else {
+      frequency <- NULL
+      results <- data.frame(frequency_log = log(colSums(x@newdata)),
+                            word_scores = x@Sw)
+      results$feature <- rownames(results) 
+
+      p <-
+        ggplot(data = results,
+               aes(x = word_scores, y = frequency_log, label = feature)) +
+        geom_text(colour = "grey70") +
+        geom_text(aes(word_scores, frequency_log, label = feature),
+                  data = results[results$feature %in% highlighted,],
+                  color = highlighted_color) +
+        xlab("Textscore") +
+        ylab("Log frequency of words") +
+        theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+    }
+      
+      # apply a minimal theme
+      p <- p + 
+        theme_bw() + 
+        theme(panel.background = ggplot2::element_blank(),
+              panel.grid.major.x = element_blank(),
+              panel.grid.minor.x = element_blank(), 
+              # panel.grid.major.y = element_blank(),
+              panel.grid.minor.y = element_blank(), 
+              plot.background = element_blank(),
+              axis.ticks.y = element_blank(), 
+              # panel.spacing = grid::unit(0.1, "lines"),
+              panel.grid.major.y = element_line(linetype = "dotted"))
+      
+    suppressMessages(p)
+}
 
