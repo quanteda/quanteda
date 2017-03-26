@@ -4,19 +4,16 @@
 \alias{textstat_collocations}
 \title{calculate collocation statistics}
 \usage{
-textstat_collocations(x, ...)
+textstat_collocations(x, method = c("lr", "chi2", "pmi", "dice", "bj"), ...)
 }
 \arguments{
 \item{x}{a \link{dfm} containing the features to be examined for keyness}
 
-\item{target}{the document index (numeric, character or logical) identifying the 
-document forming the "target" for computing keyness; all other documents' 
-feature frequencies will be combined for use as a reference}
+\item{method}{either one of the methods in \code{\link{collocations2}} or 
+\code{"bj"} for Blaheta and Johnson's method (called through 
+\code{\link{sequences}})}
 
-\item{measure}{(signed) association measure to be used for computing keyness.
-Currenly available: \code{"chi2"} (\eqn{chi^2} with Yates correction); 
-\code{"exact"} (Fisher's exact test); \code{"lr"} for the likelihood ratio
-\eqn{G} statistic with Yates correction.}
+\item{...}{additional arguments passed to \code{\link{collocations2}}}
 }
 \description{
 calculate collocation statistics
@@ -26,18 +23,20 @@ txts <- c("This is software testing: looking for (word) pairs!
          This [is] a software testing again. For.",
          "Here: this is more Software Testing, looking again for word pairs.")
 toks <- tokens(txts)
-cols <- textstat_collocations(toks, 'lr')
-cols <- textstat_collocations(toks, 'lr', size = 3)
-cols <- textstat_collocations(toks, 'lr', "*", min_count = 1)
-cols <- textstat_collocations(toks, 'lr', "^([a-z]+)$", valuetype = 'regex', min_count = 1)
+(cols <- textstat_collocations(toks, method = 'lr'))
+(cols <- textstat_collocations(toks, method = 'lr', size = 3))
+(cols <- textstat_collocations(toks, method = 'lr', "*", min_count = 1))
+(cols <- textstat_collocations(toks, method = 'lr', "^([a-z]+)$", 
+                               valuetype = 'regex', min_count = 1))
 as.tokens(cols)
 
 toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
 toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 
 # extracting multi-part proper nouns (capitalized terms)
-seqs <- textstat_collocations(toks, "bj", "^([A-Z][a-z\\\\-]{2,})", valuetype="regex", 
-                              case_insensitive = FALSE)
+seqs <- textstat_collocations(toks, method = "bj", 
+                              features = "^([A-Z][a-z\\\\-]{2,})", 
+                              valuetype = "regex", case_insensitive = FALSE)
 head(seqs, 10)
 
 # more efficient when applied to the same tokens object 

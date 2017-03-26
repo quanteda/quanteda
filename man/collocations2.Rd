@@ -24,23 +24,21 @@ score, computed as log \eqn{n_{11}/m_{11}}} \item{\code{"dice"}}{the Dice
 coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}} 
 \item{\code{"all"}}{returns all of the above} }}
 
+\item{features}{features to be selected for collocations}
+
+\item{valuetype}{how to interpret keyword expressions: \code{"glob"} for 
+"glob"-style wildcard expressions; \code{"regex"} for regular expressions;
+or \code{"fixed"} for exact matching. See \link{valuetype} for details.}
+
+\item{case_insensitive}{ignore the case when matching features if \code{TRUE}}
+
+\item{min_count}{exclude collocations below this count}
+
 \item{size}{length of the collocation.  Only bigram (\code{n=2}) and trigram 
 (\code{n=3}) collocations are currently implemented.  Can be \code{c(2,3)}
 (or \code{2:3}) to return both bi- and tri-gram collocations.}
 
 \item{...}{additional parameters passed to \code{\link{tokens}}}
-
-\item{punctuation}{how to handle tokens separated by punctuation characters.  Options are:
-\describe{
-\item{\code{dontspan}}{do not form collocations from tokens separated by punctuation characters (default)}
-\item{\code{ignore}}{ignore punctuation characters when forming collocations, meaning that collocations will 
-include those separated by punctuation characters in the text.  The punctuation characters themselves are not
-returned.}
-\item{\code{include}}{do not treat punctuation characters specially, meaning that collocations will include
-punctuation characters as tokens}
-}}
-
-\item{toLower}{convert collocations to lower case if \code{TRUE} (default)}
 }
 \value{
 a collocations class object: a specially classed data.table consisting 

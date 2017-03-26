@@ -31,7 +31,7 @@ sequences <- function(x, features = "*",
                       max_size = 5, 
                       nested = TRUE, ordered = FALSE) {
     
-    .Deprecated('textstat_collocations')
+    # .Deprecated('textstat_collocations')
     UseMethod("sequences")
 }
 

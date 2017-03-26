@@ -22,19 +22,13 @@ NULL
 #'   score, computed as log \eqn{n_{11}/m_{11}}} \item{\code{"dice"}}{the Dice 
 #'   coefficient, computed as \eqn{n_{11}/n_{1.} + n_{.1}}} 
 #'   \item{\code{"all"}}{returns all of the above} }
+#' @param features features to be selected for collocations
+#' @inheritParams valuetype
+#' @param case_insensitive ignore the case when matching features if \code{TRUE}
+#' @param min_count exclude collocations below this count
 #' @param size length of the collocation.  Only bigram (\code{n=2}) and trigram 
 #'   (\code{n=3}) collocations are currently implemented.  Can be \code{c(2,3)}
 #'   (or \code{2:3}) to return both bi- and tri-gram collocations.
-#' @param punctuation how to handle tokens separated by punctuation characters.  Options are:
-#'   \describe{
-#'   \item{\code{dontspan}}{do not form collocations from tokens separated by punctuation characters (default)}
-#'   \item{\code{ignore}}{ignore punctuation characters when forming collocations, meaning that collocations will 
-#'   include those separated by punctuation characters in the text.  The punctuation characters themselves are not
-#'   returned.}
-#'   \item{\code{include}}{do not treat punctuation characters specially, meaning that collocations will include
-#'   punctuation characters as tokens}
-#'   }
-#' @param toLower convert collocations to lower case if \code{TRUE} (default)
 #' @param ... additional parameters passed to \code{\link{tokens}}
 #' @return a collocations class object: a specially classed data.table consisting 
 #'   of collocations, their frequencies, and the computed association measure(s).
@@ -45,14 +39,12 @@ NULL
 #'   Minnesota.
 #' @seealso \link{tokens_ngrams}
 #' @author Kenneth Benoit
-#' 
 collocations2 <- function(x, method = c("lr", "chi2", "pmi", "dice"), 
                          features = "*", 
                          valuetype = c("glob", "regex", "fixed"),
                          case_insensitive = TRUE, 
                          min_count = 2, 
                          size = 2, ...) {
-    
     UseMethod("collocations2")
 }
  
@@ -132,6 +124,13 @@ collocations2.tokens <- function(x, method = c("lr", "chi2", "pmi", "dice"),
     
 }
 
+#' @rdname collocations2
+#' @noRd
+#' @export    
+collocations2.character <- function(x, ...) {
+    collocations2(tokens(x), ...)
+}
+    
 
 collocations_trigram <- function(x, method = c("lr", "chi2", "pmi", "dice"), 
                           features, 

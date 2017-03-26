@@ -73,7 +73,7 @@ collocations <- function(x,  method = c("lr", "chi2", "pmi", "dice", "all"), siz
 #     addedArgs <- names(list(...))
 #     if (length(addedArgs) && any(!(addedArgs %in% names(formals(getS3method("tokenize", "character"))))))
 #         warning("Argument", ifelse(length(addedArgs)>1, "s ", " "), addedArgs, " not used.", sep = "", noBreaks. = TRUE)
-    .Deprecated('textstat_collocations')
+    #.Deprecated('textstat_collocations')
     UseMethod("collocations")
 }
  
