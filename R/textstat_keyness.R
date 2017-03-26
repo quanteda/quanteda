@@ -75,7 +75,8 @@ textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "l
     grouping <- rep(2, ndoc(x))
     names(grouping) <- docnames(x)
     grouping[target] <- 1
-    x <- dfm(x, groups = grouping)
+    rownames(x) <- grouping
+    x <- dfm_compress(x, margin = 'documents')
     x <- x[order(docnames(x)), ]
 
     if (measure == "chi2") {

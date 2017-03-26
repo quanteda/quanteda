@@ -126,7 +126,7 @@ in characters for features to be removed or kept; defaults are 1 and
 <a href = '79'>https://en.wikipedia.org/wiki/Donaudampfschiffahrtselektrizitätenhauptbetriebswerkbauunterbeamtengesellschaft</a>.
  (Set <code>max_nchar</code> to <code>NULL</code> for no upper limit.) These are
 applied after (and hence, in addition to) any selection based on pattern
-matches.</dd>
+matches. These arguments are Ignored when padding is <code>TRUE</code>.</dd>
       <dt>padding</dt>
       <dd>if <code>TRUE</code> features or documents not existing in x is 
 added to <a href='dfm.html'>dfm</a>. This option is available only when selection is 
@@ -142,14 +142,19 @@ removed</dd>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A <a href='dfm.html'>dfm</a> or <a href='fcm.html'>fcm</a> object, after the feature selection has been applied.</p>
-    <p>When <code>features</code> is a <a href='dfm.html'>dfm</a> object and <code>padding</code> is <code>TRUE</code> , 
+    <p>When <code>features</code> is a <a href='dfm.html'>dfm</a> object and <code>padding</code> is <code>TRUE</code>, 
   then the returned object will be identical in its feature set to the dfm 
   supplied as the <code>features</code> argument. This means that any features in 
   <code>x</code> not in <code>features</code> will be discarded, and that any features in 
   found in the dfm supplied as <code>features</code> but not found in <code>x</code> will 
-  be added with all zero counts.  This is useful when you have trained a model 
+  be added with all zero counts.  Because selecting on a dfm is designed to produce 
+  a selected dfm with an exact feature match, when <code>features</code> is
+  a <a href='dfm.html'>dfm</a> object, then the following settings are always used: 
+  <code>padding = TRUE</code>, 
+  <code>case_insensitive = FALSE</code>, and <code>valuetype = &quot;fixed&quot;</code>.</p>
+    <p>Selecting on a <a href='dfm.html'>dfm</a> is useful when you have trained a model 
   on one dfm, and need to project this onto a test set whose features must be 
-  identical.  See examples.</p>
+  identical.  It is also used in <code><a href='bootstrap_dfm.html'>bootstrap_dfm</a></code>.  See examples.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -218,22 +223,22 @@ removed</dd>
 #&gt;   text1         1      1          1             0      0           0        0
 #&gt;   text2         0      0          0             1      1           1        1</div><div class='input'>
 <span class='co'># selecting on a dfm</span>
-<span class='no'>txts</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"This is text one"</span>, <span class='st'>"This is text two"</span>, <span class='st'>"This is text three"</span>)
-(<span class='no'>dfm1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>txts</span>[<span class='fl'>1</span>:<span class='fl'>2</span>], <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (20% sparse).
-#&gt; 2 x 5 sparse Matrix of class &quot;dfmSparse&quot;
+<span class='no'>txts</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"This is text one"</span>, <span class='st'>"The second text"</span>, <span class='st'>"This is text three"</span>)
+(<span class='no'>dfm1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>txts</span>[<span class='fl'>1</span>:<span class='fl'>2</span>]))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
+#&gt; 2 x 6 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
-#&gt; docs    this is text one two
-#&gt;   text1    1  1    1   1   0
-#&gt;   text2    1  1    1   0   1</div><div class='input'>(<span class='no'>dfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>txts</span>[<span class='fl'>2</span>:<span class='fl'>3</span>], <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (20% sparse).
-#&gt; 2 x 5 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt; docs    this is text one the second
+#&gt;   text1    1  1    1   1   0      0
+#&gt;   text2    0  0    1   0   1      1</div><div class='input'>(<span class='no'>dfm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>txts</span>[<span class='fl'>2</span>:<span class='fl'>3</span>]))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
+#&gt; 2 x 6 sparse Matrix of class &quot;dfmSparse&quot;
 #&gt;        features
-#&gt; docs    this is text two three
-#&gt;   text1    1  1    1   1     0
-#&gt;   text2    1  1    1   0     1</div><div class='input'>(<span class='no'>dfm3</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_select</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; <span class='message'>dfm_select kept 4 features in 2 documentss padding 0s for 1 feature and 0 document.</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (30% sparse).
-#&gt; 2 x 5 sparse Matrix of class &quot;dfmSparse&quot;
-#&gt;       this is text two three
-#&gt; text1    1  1    1   0     0
-#&gt; text2    1  1    1   1     0</div><div class='input'><span class='fu'>setequal</span>(<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>dfm2</span>), <span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>dfm3</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+#&gt; docs    the second text this is three
+#&gt;   text1   1      1    1    0  0     0
+#&gt;   text2   0      0    1    1  1     1</div><div class='input'>(<span class='no'>dfm3</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_select</span>(<span class='no'>dfm1</span>, <span class='no'>dfm2</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; <span class='message'>dfm_select kept 5 features in 2 documents, padding 0s for 1 feature and 0 documents</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (50% sparse).
+#&gt; 2 x 6 sparse Matrix of class &quot;dfmSparse&quot;
+#&gt;       the second text this is three
+#&gt; text1   0      0    1    1  1     0
+#&gt; text2   1      1    1    0  0     0</div><div class='input'><span class='fu'>setequal</span>(<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>dfm2</span>), <span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>dfm3</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='no'>tmpdfm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'>c</span>(<span class='st'>"This is a document with lots of stopwords."</span>,
                 <span class='st'>"No if, and, or but about it: lots of stopwords."</span>),
               <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)

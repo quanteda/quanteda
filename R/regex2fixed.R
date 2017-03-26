@@ -25,6 +25,10 @@ regex2fixed <- function(regex, types, valuetype, case_insensitive = FALSE, index
 
 regex2id <- function(regex, types, valuetype, case_insensitive = FALSE, index = TRUE) {
     
+    # Normalize
+    regex <- lapply(regex, stringi::stri_trans_nfc)
+    types <- stringi::stri_trans_nfc(types)
+    
     # Make case insensitive
     if (case_insensitive) {
         types_search <- stringi::stri_trans_tolower(types)
@@ -67,8 +71,8 @@ regex2id <- function(regex, types, valuetype, case_insensitive = FALSE, index = 
     
     # Separate multi and single-entry patterns
     len <- lengths(regex)
-    pats_multi <- regex[len>1] 
-    pats_single <- regex[len==1]
+    pats_multi <- regex[len > 1] 
+    pats_single <- regex[len == 1]
     
     # Process multi-entry patterns
     id <- list()
@@ -134,7 +138,12 @@ select_types <- function (regex, types_search, exact, index){
 # from the longest regex queries to limit the size of the index.
 index_regex <- function(types, valuetype, case_insensitive, len_max){
     
-    if (case_insensitive) types <- stringi::stri_trans_tolower(types)
+    # Normalize
+    types <- stringi::stri_trans_nfc(types)
+    
+    if (case_insensitive)
+        types <- stringi::stri_trans_tolower(types)
+
     if (valuetype == 'fixed') {
         exact <- TRUE
     } else {
