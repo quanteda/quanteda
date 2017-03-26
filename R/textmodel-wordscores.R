@@ -121,8 +121,8 @@ textmodel_wordscores <- function(data, scores,
 #' @rdname textmodel-internal
 #' @param object a fitted Wordscores textmodel
 #' @param level probability level for confidence interval width
-#' @param rescaling \code{none} for "raw" scores; \code{lbg} for LBG (2003) 
-#'   rescaling; or \code{mv} for the rescaling proposed by Martin and Vanberg 
+#' @param rescaling \code{"none"} for "raw" scores; \code{"lbg"} for LBG (2003) 
+#'   rescaling; or \code{"mv"} for the rescaling proposed by Martin and Vanberg 
 #'   (2007).  (Note to authors: Provide full details here in documentation.)
 #' @param newdata dfm on which prediction should be made
 #' @param ... additional arguments passed to other functions
@@ -142,11 +142,12 @@ textmodel_wordscores <- function(data, scores,
 #' @keywords internal textmodel
 #' @export
 #' @importFrom stats qnorm median sd
-predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling = "none", 
-                               level=0.95, verbose = getOption("verbose"), ...) {    
-    if (length(list(...))>0) 
+predict.textmodel_wordscores_fitted <- 
+    function(object, newdata=NULL, rescaling = c("none", "lbg", "mv"), 
+             level=0.95, verbose = getOption("verbose"), ...) {    
+    if (length(list(...)) > 0) 
         stop("Arguments:", names(list(...)), "not supported.\n")
-    rescaling <- match.arg(rescaling, c("none", "lbg", "mv"), several.ok=TRUE)
+    rescaling <- match.arg(rescaling, several.ok=TRUE)
     
     if (!is.null(newdata))
         data <- newdata
@@ -216,7 +217,12 @@ predict.textmodel_wordscores_fitted <- function(object, newdata=NULL, rescaling 
     }
     
     new("textmodel_wordscores_predicted", rescaling = rescaling,
-        newdata = newdata, textscores = result)
+        newdata = newdata, 
+        textscores = result,
+        x = object@x,
+        Sw = object@Sw,
+        y = object@y,
+        call = object@call)
 }
 
 

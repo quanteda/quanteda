@@ -27,7 +27,8 @@
 \S4method{show}{textmodel_wordfish_predicted}(object)
 
 \method{predict}{textmodel_wordscores_fitted}(object, newdata = NULL,
-  rescaling = "none", level = 0.95, verbose = getOption("verbose"), ...)
+  rescaling = c("none", "lbg", "mv"), level = 0.95,
+  verbose = getOption("verbose"), ...)
 
 \method{print}{textmodel_wordscores_fitted}(x, n = 30L, digits = 2, ...)
 
@@ -52,8 +53,8 @@
 
 \item{newdata}{dfm on which prediction should be made}
 
-\item{rescaling}{\code{none} for "raw" scores; \code{lbg} for LBG (2003) 
-rescaling; or \code{mv} for the rescaling proposed by Martin and Vanberg 
+\item{rescaling}{\code{"none"} for "raw" scores; \code{"lbg"} for LBG (2003) 
+rescaling; or \code{"mv"} for the rescaling proposed by Martin and Vanberg 
 (2007).  (Note to authors: Provide full details here in documentation.)}
 
 \item{level}{probability level for confidence interval width}
