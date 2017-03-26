@@ -9,24 +9,26 @@
 
 #' calculate collocation statistics
 #' 
-#' @rdname textstat_collocations
-#' @param x a \link{dfm} containing the features to be examined for keyness
-#' @param method either one of the methods in \code{\link{collocations2}} or 
+#' Identify and score collocations from a corpus, character, or tokens object,
+#' with targeted selection.
+#' @param x a character, \link{corpus}, or \link{tokens} object to be mined 
+#' for collocations
+#' @param method either one of the methods in \code{\link{collocations}} or 
 #'   \code{"bj"} for Blaheta and Johnson's method (called through 
 #'   \code{\link{sequences}})
-#' @param ... additional arguments passed to \code{\link{collocations2}}
+#' @param ... additional arguments passed to \code{\link{collocations}}
 #' @export
 #' @keywords textstat
 #' @examples
 #' txts <- c("This is software testing: looking for (word) pairs!  
-#'          This [is] a software testing again. For.",
-#'          "Here: this is more Software Testing, looking again for word pairs.")
+#'            This [is] a software testing again. For.",
+#'           "Here: this is more Software Testing, looking again for word pairs.")
 #' toks <- tokens(txts)
-#' (cols <- textstat_collocations(toks, method = 'lr'))
-#' (cols <- textstat_collocations(toks, method = 'lr', size = 3))
-#' (cols <- textstat_collocations(toks, method = 'lr', "*", min_count = 1))
-#' (cols <- textstat_collocations(toks, method = 'lr', "^([a-z]+)$", 
-#'                                valuetype = 'regex', min_count = 1))
+#' textstat_collocations(toks, method = "lr")
+#' textstat_collocations(toks, method = "lr", size = 3, min_count = 2)
+#' textstat_collocations(toks, method = "lr", size = 3, min_count = 1)
+#' (cols <- textstat_collocations(toks, method = "lr", "^([a-z]+)$", 
+#'                                valuetype = "regex", min_count = 1))
 #' as.tokens(cols)
 #' 
 #' toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
@@ -45,7 +47,6 @@
 #' seqs2 <- textstat_collocations(toks, "bj", "^([a-z]+)$", valuetype="regex", 
 #'                                case_insensitive = FALSE, min_count = 2, ordered = TRUE)
 #' head(seqs2, 10)
-#' 
 textstat_collocations <- function(x, method =  c("lr", "chi2", "pmi", "dice", "bj"), ...) {
     UseMethod("textstat_collocations")
 }
@@ -57,7 +58,7 @@ textstat_collocations.tokens <- function(x, method =  c("lr", "chi2", "pmi", "di
     if (method == 'bj') {
         result <- sequences(x, ...)
     } else {
-        result <- collocations2.tokens(x, method = method, ...)
+        result <- collocations(x, method = method, ...)
     }
     class(result) <- c("collocations", 'data.frame')
     return(result)
@@ -88,13 +89,14 @@ textstat_collocations.tokenizedTexts <- function(x, method = c("lr", "chi2", "pm
 }
 
 
-#' @rdname is.collocations
+#' @rdname collocations
 #' @export
 #' @return \code{is.collocation} returns \code{TRUE} if the object is of class
-#'   collocation, \code{FALSE} otherwise.
+#'   collocations, \code{FALSE} otherwise.
 is.collocations <- function(x) {
     ifelse("collocations" %in% class(x), TRUE, FALSE)
 }
+
 
 #' @method "[" collocations
 #' @export

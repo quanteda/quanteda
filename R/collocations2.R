@@ -39,13 +39,33 @@ NULL
 #'   Minnesota.
 #' @seealso \link{tokens_ngrams}
 #' @author Kenneth Benoit
-collocations2 <- function(x, method = c("lr", "chi2", "pmi", "dice"), 
+#' @examples
+#' txt <- c("This is software testing: looking for (word) pairs!  
+#'          This [is] a software testing again. For.",
+#'          "Here: this is more Software Testing, looking again for word pairs.")
+#' collocations(txt, punctuation = "dontspan", min_count = 2, n = 5) # default
+#' collocations(txt, punctuation = "dontspan", removePunct = TRUE)  # includes "testing looking"
+#' collocations(txt, punctuation = "ignore", removePunct = TRUE)    # same as previous 
+#' collocations(txt, punctuation = "include", removePunct = FALSE)  # keep punctuation as tokens
+#'
+#' collocations(txt, size = 2)
+#' # removeFeatures(collocations(txt, size = 2), stopwords("english"))
+#' 
+#' collocations("@@textasdata We really, really love the #quanteda package - thanks!!")
+#' collocations("@@textasdata We really, really love the #quanteda package - thanks!!",
+#'               removeTwitter = TRUE)
+#' 
+#' collocations(data_char_inaugural[49:57], n = 10)
+#' collocations(data_char_inaugural[49:57], method = "chi2", n = 10)
+#' collocations(data_char_inaugural[49:57], method = "chi2", size = 3, n = 10)
+#' collocations(corpus_subset(data_corpus_inaugural, Year>1980), method = "pmi", size = 3, n = 10)
+collocations <- function(x, method = c("lr", "chi2", "pmi", "dice"), 
                          features = "*", 
                          valuetype = c("glob", "regex", "fixed"),
                          case_insensitive = TRUE, 
-                         min_count = 2, 
+                         min_count = 1, 
                          size = 2, ...) {
-    UseMethod("collocations2")
+    UseMethod("collocations")
 }
  
 wFIRSTGREP <- "[])};:,.?!$\u2014]"
@@ -58,14 +78,14 @@ wMIDDLEGREPpenn <- "([,:.]|''|``|-[lr]rb-)_.*"
 wLASTGREPpenn <- "-lrb-_.*"
 
     
-#' @rdname collocations2
+#' @rdname collocations
 #' @noRd
 #' @export    
-collocations2.tokens <- function(x, method = c("lr", "chi2", "pmi", "dice"), 
+collocations.tokens <- function(x, method = c("lr", "chi2", "pmi", "dice"), 
                                 features = "*", 
                                 valuetype = c("glob", "regex", "fixed"),
                                 case_insensitive = TRUE, 
-                                min_count = 2, 
+                                min_count = 1, 
                                 size = 2, ...) {
     
     # this substitutes punctuation options  ------------------------
@@ -124,13 +144,20 @@ collocations2.tokens <- function(x, method = c("lr", "chi2", "pmi", "dice"),
     
 }
 
-#' @rdname collocations2
+#' @rdname collocations
 #' @noRd
 #' @export    
-collocations2.character <- function(x, ...) {
-    collocations2(tokens(x), ...)
+collocations.character <- function(x, ...) {
+    collocations(tokens(x), ...)
 }
-    
+
+#' @rdname collocations
+#' @noRd
+#' @export    
+collocations.corpus <- function(x, ...) {
+    collocations(texts(x), ...)
+}
+
 
 collocations_trigram <- function(x, method = c("lr", "chi2", "pmi", "dice"), 
                           features, 

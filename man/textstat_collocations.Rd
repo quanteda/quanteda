@@ -7,27 +7,29 @@
 textstat_collocations(x, method = c("lr", "chi2", "pmi", "dice", "bj"), ...)
 }
 \arguments{
-\item{x}{a \link{dfm} containing the features to be examined for keyness}
+\item{x}{a character, \link{corpus}, or \link{tokens} object to be mined 
+for collocations}
 
-\item{method}{either one of the methods in \code{\link{collocations2}} or 
+\item{method}{either one of the methods in \code{\link{collocations}} or 
 \code{"bj"} for Blaheta and Johnson's method (called through 
 \code{\link{sequences}})}
 
-\item{...}{additional arguments passed to \code{\link{collocations2}}}
+\item{...}{additional arguments passed to \code{\link{collocations}}}
 }
 \description{
-calculate collocation statistics
+Identify and score collocations from a corpus, character, or tokens object,
+with targeted selection.
 }
 \examples{
 txts <- c("This is software testing: looking for (word) pairs!  
-         This [is] a software testing again. For.",
-         "Here: this is more Software Testing, looking again for word pairs.")
+           This [is] a software testing again. For.",
+          "Here: this is more Software Testing, looking again for word pairs.")
 toks <- tokens(txts)
-(cols <- textstat_collocations(toks, method = 'lr'))
-(cols <- textstat_collocations(toks, method = 'lr', size = 3))
-(cols <- textstat_collocations(toks, method = 'lr', "*", min_count = 1))
-(cols <- textstat_collocations(toks, method = 'lr', "^([a-z]+)$", 
-                               valuetype = 'regex', min_count = 1))
+textstat_collocations(toks, method = "lr")
+textstat_collocations(toks, method = "lr", size = 3, min_count = 2)
+textstat_collocations(toks, method = "lr", size = 3, min_count = 1)
+(cols <- textstat_collocations(toks, method = "lr", "^([a-z]+)$", 
+                               valuetype = "regex", min_count = 1))
 as.tokens(cols)
 
 toks <- tokens(corpus_segment(data_corpus_inaugural, what = "sentence"))
@@ -46,6 +48,5 @@ toks_comp <- tokens_compound(toks, seqs)
 seqs2 <- textstat_collocations(toks, "bj", "^([a-z]+)$", valuetype="regex", 
                                case_insensitive = FALSE, min_count = 2, ordered = TRUE)
 head(seqs2, 10)
-
 }
 \keyword{textstat}

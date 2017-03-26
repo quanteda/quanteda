@@ -267,6 +267,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// wordfishcpp_dense
+Rcpp::List wordfishcpp_dense(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEXP dispfloor, bool abs_err);
+RcppExport SEXP quanteda_wordfishcpp_dense(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP, SEXP dispSEXP, SEXP dispfloorSEXP, SEXP abs_errSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type wfm(wfmSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type dir(dirSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type priors(priorsSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type disp(dispSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type dispfloor(dispfloorSEXP);
+    Rcpp::traits::input_parameter< bool >::type abs_err(abs_errSEXP);
+    rcpp_result_gen = Rcpp::wrap(wordfishcpp_dense(wfm, dir, priors, tol, disp, dispfloor, abs_err));
+    return rcpp_result_gen;
+END_RCPP
+}
 // wordfishcpp
 Rcpp::List wordfishcpp(arma::sp_mat& wfm, IntegerVector& dirvec, NumericVector& priorvec, NumericVector& tolvec, IntegerVector& disptype, NumericVector& dispmin, bool ABS, bool svd_on, double residual_floor);
 RcppExport SEXP quanteda_wordfishcpp(SEXP wfmSEXP, SEXP dirvecSEXP, SEXP priorvecSEXP, SEXP tolvecSEXP, SEXP disptypeSEXP, SEXP dispminSEXP, SEXP ABSSEXP, SEXP svd_onSEXP, SEXP residual_floorSEXP) {
@@ -283,23 +300,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type svd_on(svd_onSEXP);
     Rcpp::traits::input_parameter< double >::type residual_floor(residual_floorSEXP);
     rcpp_result_gen = Rcpp::wrap(wordfishcpp(wfm, dirvec, priorvec, tolvec, disptype, dispmin, ABS, svd_on, residual_floor));
-    return rcpp_result_gen;
-END_RCPP
-}
-// wordfishcpp_dense
-Rcpp::List wordfishcpp_dense(SEXP wfm, SEXP dir, SEXP priors, SEXP tol, SEXP disp, SEXP dispfloor, bool abs_err);
-RcppExport SEXP quanteda_wordfishcpp_dense(SEXP wfmSEXP, SEXP dirSEXP, SEXP priorsSEXP, SEXP tolSEXP, SEXP dispSEXP, SEXP dispfloorSEXP, SEXP abs_errSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type wfm(wfmSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type dir(dirSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type priors(priorsSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type tol(tolSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type disp(dispSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type dispfloor(dispfloorSEXP);
-    Rcpp::traits::input_parameter< bool >::type abs_err(abs_errSEXP);
-    rcpp_result_gen = Rcpp::wrap(wordfishcpp_dense(wfm, dir, priors, tol, disp, dispfloor, abs_err));
     return rcpp_result_gen;
 END_RCPP
 }
