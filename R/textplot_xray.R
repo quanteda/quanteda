@@ -45,7 +45,7 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
     if(!requireNamespace("grid", quietly = TRUE)) 
         stop("You must have grid installed to make a dispersion plot.")
     
-    position <- keyword <- docname <- ntokens <- NULL    
+    position <- from <- keyword <- docname <- ntokens <- NULL    
     
     kwics <- list(...)
     if (!all(vapply(kwics, is.kwic, logical(1))))
@@ -53,6 +53,8 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
 
     # create a data.table from the kwic arguments
     x <- data.table(do.call(rbind, kwics))
+    # use old variable name
+    x[, position := from]
     # get the vector of ntokens
     ntokensByDoc <- unlist(lapply(kwics, attr, "ntoken"))
     # add ntokens to data.table as an indexed "merge"
@@ -81,17 +83,17 @@ textplot_xray.kwic <- function(..., scale = c("absolute", "relative"), sort = FA
             scale <- "absolute"
         }
     }
-
-    # make docname a factor if not already
-    if (!is.factor(x[, docname]))
-        x[, docname := factor(docname)]
     
-    if (sort) 
-        x[, docname:=factor(docname, levels=levels(docname)[order(levels(docname))])]
+    # Deal with the sort argument:
+    if (sort) {
+        x[, docname := factor(docname)] # levels are sorted by default
+    } else {
+        x[, docname := factor(docname, levels = unique(docname))]
+    }
 
     # convert character positions to first integer value in range
-    if (is.character(x[, position]))
-        x[, position := as.integer(sapply(strsplit(position, ":"), "[", 1))]
+    # if (is.character(x[, position]))
+    #     x[, position := as.integer(sapply(strsplit(position, ":"), "[", 1))]
 
     if (scale == 'relative')
         x[, position := position/ntokens]

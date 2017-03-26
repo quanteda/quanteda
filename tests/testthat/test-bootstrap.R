@@ -14,5 +14,11 @@ test_that("bootstrap_dfm works as planned", {
     dfmresamp <- bootstrap_dfm(txt, n = 3, verbose = FALSE)
     expect_identical(dfmresamp[[1]], 
                      dfm(mycorpus, include_docvars = FALSE))
+    
+    # are feature names of resamples identical?
+    expect_identical(
+        featnames(dfmresamp[[1]]),
+        featnames(dfmresamp[[2]])
+    )
 
 })

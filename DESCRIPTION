@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 0.9.9-40
+Version: 0.9.9-42
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible toolset for for the management, processing, and
     quantitative analysis of textual data in R.
@@ -86,8 +86,7 @@ Collate:
     'fcm-methods.R'
     'fcm.R'
     'joinTokens-deprecated.R'
-    'kwic2.R'
-    'kwic_old.R'
+    'kwic.R'
     'nfunctions.R'
     'nscrabble.R'
     'nsyllable.R'

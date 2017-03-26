@@ -66,7 +66,7 @@ collocations_old(txt, punctuation = "ignore", removePunct = TRUE)    # same as p
 collocations_old(txt, punctuation = "include", removePunct = FALSE)  # keep punctuation as tokens
 
 collocations_old(txt, size = 2:3)
-removeFeatures(collocations_old(txt, size = 2:3), stopwords("english"))
+# removeFeatures(collocations_old(txt, size = 2:3), stopwords("english"))
 
 collocations_old("@textasdata We really, really love the #quanteda package - thanks!!")
 collocations_old("@textasdata We really, really love the #quanteda package - thanks!!",

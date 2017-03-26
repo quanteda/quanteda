@@ -17,13 +17,13 @@ textplot_wordcloud(inaugDfm, min.freq = 10,
      colors = c('red', 'pink', 'green', 'purple', 'orange', 'blue'))
 
 ## ----eval=TRUE, fig.width=8, fig.height=3--------------------------------
-textplot_xray(kwic(data_corpus_inaugural[50:57], "american"))
+textplot_xray(kwic(data_corpus_inaugural[40:57], "american"))
 
 ## ----eval=TRUE, fig.width=8, fig.height=4--------------------------------
 textplot_xray(
-     kwic(data_corpus_inaugural[50:57], "american"),
-     kwic(data_corpus_inaugural[50:57], "people"),
-     kwic(data_corpus_inaugural[50:57], "communist")
+     kwic(data_corpus_inaugural[40:57], "american"),
+     kwic(data_corpus_inaugural[40:57], "people"),
+     kwic(data_corpus_inaugural[40:57], "communist")
 )
 
 ## ----eval=TRUE, fig.width=8, fig.height=1.5------------------------------
@@ -36,9 +36,9 @@ textplot_xray(
 
 ## ----eval=TRUE, fig.width=8, fig.height=4--------------------------------
 textplot_xray(
-     kwic(data_corpus_inaugural[50:57], "american"),
-     kwic(data_corpus_inaugural[50:57], "people"),
-     kwic(data_corpus_inaugural[50:57], "communist"),
+     kwic(data_corpus_inaugural[40:57], "american"),
+     kwic(data_corpus_inaugural[40:57], "people"),
+     kwic(data_corpus_inaugural[40:57], "communist"),
      scale = 'absolute'
 )
 
@@ -46,9 +46,9 @@ textplot_xray(
 library(ggplot2)
 theme_set(theme_bw())
 g <- textplot_xray(
-     kwic(data_corpus_inaugural[50:57], "american"),
-     kwic(data_corpus_inaugural[50:57], "people"),
-     kwic(data_corpus_inaugural[50:57], "communist")
+     kwic(data_corpus_inaugural[40:57], "american"),
+     kwic(data_corpus_inaugural[40:57], "people"),
+     kwic(data_corpus_inaugural[40:57], "communist")
 )
 g + aes(color = keyword) + scale_color_manual(values = c('blue', 'red', 'green'))
 
