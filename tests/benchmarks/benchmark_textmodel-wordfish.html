@@ -130,39 +130,15 @@ $(document).ready(function () {
 <pre><code>## Using 7 of 8 cores for parallel computing</code></pre>
 <pre class="r"><code>ie2010dfm &lt;- dfm(data_corpus_irishbudget2010, verbose = FALSE)
 microbenchmark::microbenchmark(
-    wfm_mt &lt;- textmodel_wordfish(ie2010dfm, dir = c(6,5),mt=T), 
-    wfm_sparse &lt;- textmodel_wordfish(ie2010dfm, dir = c(6,5),  mt=F), 
-    wfm_dense &lt;- textmodel_wordfish(ie2010dfm, dir = c(6,5), sparse=F),
+    wfm_mt = textmodel_wordfish(ie2010dfm, dir = c(6,5), mt = TRUE), 
+    wfm_sparse = textmodel_wordfish(ie2010dfm, dir = c(6,5),  mt = FALSE), 
+    wfm_dense = textmodel_wordfish(ie2010dfm, dir = c(6,5), sparse = FALSE),
     times=20, unit = 'relative')</code></pre>
-<pre><code>## svd done
-## svd done
-## svd done
-## svd done
-## svd done
-## svd done
-## svd done
-## svd done
-## svd done
-## svd done
-## svd done
-## svd done
-## svd done
-## svd done
-## svd done
-## svd done
-## svd done
-## svd done
-## svd done
-## svd done</code></pre>
 <pre><code>## Unit: relative
-##                                                                   expr
-##         wfm_mt &lt;- textmodel_wordfish(ie2010dfm, dir = c(6, 5), mt = T)
-##     wfm_sparse &lt;- textmodel_wordfish(ie2010dfm, dir = c(6, 5), mt = F)
-##  wfm_dense &lt;- textmodel_wordfish(ie2010dfm, dir = c(6, 5), sparse = F)
-##       min       lq    mean   median       uq      max neval
-##  1.000000 1.000000 1.00000 1.000000 1.000000 1.000000    20
-##  3.276030 3.265503 3.24655 3.257966 3.244309 3.145247    20
-##  3.788205 3.787324 3.76504 3.779162 3.761006 3.662588    20</code></pre>
+##        expr      min       lq     mean   median       uq      max neval
+##      wfm_mt 1.000000 1.000000 1.000000 1.000000 1.000000 1.000000    20
+##  wfm_sparse 3.220474 3.201734 3.205917 3.197928 3.201404 3.282915    20
+##   wfm_dense 3.738846 3.741970 3.737090 3.740751 3.740002 3.703965    20</code></pre>
 </div>
 
 
