@@ -16,6 +16,7 @@ using namespace arma;
 #define ARMA_64BIT_WORD
 #endif
 
+
 #if QUANTEDA_USE_TBB
 typedef std::tuple<unsigned int, unsigned int, double> Triplet;
 typedef tbb::concurrent_vector<Triplet> Triplets;
@@ -320,6 +321,11 @@ Rcpp::List wordfishcpp_mt(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVecto
     double priorprecbeta = priorvec(2);
     double priorprectheta = priorvec(3);		
     
+    // random engine
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_real_distribution<double> dist(0.0, 1.0);
+    
     std::size_t N = wfm.n_rows;
     std::size_t K = wfm.n_cols;
     
@@ -382,10 +388,10 @@ Rcpp::List wordfishcpp_mt(arma::sp_mat &wfm, IntegerVector& dirvec, NumericVecto
         arma::mat V(K, svdk);
         arma::svds(U, s, V, C, svdk);
         for (std::size_t i = 0; i < N; i++) theta(i) = pow(rsum(i)/asum, -0.5) * U(i, 0);
-        Rcout<<"svd done"<<endl;
+        //Rcout<<"svd done"<<endl;
     } else {
         // Load initial values
-        for (std::size_t i=0; i < N; i++) theta(i) = pow(rsum(i)/asum, -0.5) ;//* U(i, 0);
+        for (std::size_t i=0; i < N; i++) theta(i) = pow(rsum(i)/asum, -0.5) - dist(mt);//* U(i, 0);
     }
     //for (int k=0; k < K; k++) beta(k) = 0; // pow(csum(k)/asum,-0.5) * V(k,0);
     beta.fill(0.0);
