@@ -62,6 +62,7 @@ setClass("textmodel_wordfish_predicted",
 #'   only applies when \code{sparse = TRUE}
 #' @param residual_floor specifies the threshold for residual matrix when 
 #'   calculating the svds, only applies when \code{sparse = TRUE}
+#' @param mt specifies whether multi-thread is used
 #' @return An object of class textmodel_fitted_wordfish.  This is a list 
 #'   containing: \item{dir}{global identification of the dimension} 
 #'   \item{theta}{estimated document positions} \item{alpha}{estimated document 
@@ -115,7 +116,7 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
                                dispersion = c("poisson", "quasipoisson"), 
                                dispersionLevel = c("feature", "overall"),
                                dispersionFloor = 0,
-                               sparse = TRUE,
+                               sparse = TRUE, mt=TRUE,
                                abs_err = FALSE,
                                svd_sparse = TRUE,
                                residual_floor = 0.5) {
@@ -165,7 +166,11 @@ textmodel_wordfish <- function(data, dir = c(1, 2), priors = c(Inf, Inf, 3, 1), 
 
     # catm("disp = ", disp, "\n")
     if (sparse == TRUE){
-        wfresult <- wordfishcpp(data, as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor, abs_err, svd_sparse, residual_floor)
+        if (mt == FALSE){
+            wfresult <- wordfishcpp(data, as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor, abs_err, svd_sparse, residual_floor)
+        } else {
+            wfresult <- wordfishcpp_mt(data, as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor, abs_err, svd_sparse, residual_floor)
+        }
     } else{
         wfresult <- wordfishcpp_dense(as.matrix(data), as.integer(dir), 1/(priors^2), tol, disp, dispersionFloor, abs_err)
     }
