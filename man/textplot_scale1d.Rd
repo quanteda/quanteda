@@ -5,8 +5,8 @@
 \title{plot a fitted scaling model}
 \usage{
 textplot_scale1d(x, margin = c("documents", "features"), doclabels = NULL,
-  sort = TRUE, groups = NULL, highlighted = NULL, alpha = 0.7,
-  highlighted_color = "black")
+  sort = TRUE, groups = NULL, rescaling = c("none", "mv", "lbg"),
+  highlighted = NULL, alpha = 0.7, highlighted_color = "black")
 }
 \arguments{
 \item{x}{the fitted or predicted scaling model object to be plotted}
@@ -24,6 +24,11 @@ applies when \code{margin = "documents"}.}
 
 \item{groups}{optional grouping variable for sorting categories of the documents.
 Only applies when \code{margin = "documents"}.}
+
+\item{rescaling}{a vector for rescaling method for the document scores: 
+\code{"none"} for the default; \code{"lbg"} \code{"mv"} are options for 
+predicted Wordscores objects. 
+displayed in Wordscores "documents" plot}
 
 \item{highlighted}{a vector of feature names to draw attention to in a 
 feature plot; only applies if \code{margin = "features"}}
@@ -49,12 +54,26 @@ y-axis, with feature names replacing plotting points with some being chosen
 by the user to be highlighted).
 }
 \examples{
+ie_dfm <- dfm(data_corpus_irishbudget2010)
+doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
+                1, paste, collapse = " ")
+
+## wordscores
+refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
+ws <- predict(textmodel(ie_dfm, refscores, model="wordscores", smooth=1), 
+              rescaling = c("lbg", "mv"))
+# plot estimated document positions
+textplot_scale1d(ws, margin = "documents", rescaling = "lbg",
+                 doclabels = doclab,
+                 groups = docvars(data_corpus_irishbudget2010, "party"))
+# plot estimated word positions
+textplot_scale1d(ws, margin = "features", 
+                 highlighted = c("minister", "have", "our", "budget"))
+
 ## wordfish
 wfm <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
 
 # plot estimated document positions
-doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
-                1, paste, collapse = " ")
 textplot_scale1d(wfm, doclabels = doclab)
 textplot_scale1d(wfm, doclabels = doclab,
                  groups = docvars(data_corpus_irishbudget2010, "party"))
@@ -71,6 +90,6 @@ Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model
   Journal of Political Science} 52(3):705-772.
 }
 \author{
-Kenneth Benoit, Stefan Mueller, and Adam Obeng
+Kenneth Benoit, Stefan Müller, and Adam Obeng
 }
 \keyword{textplot}
