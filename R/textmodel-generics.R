@@ -170,10 +170,12 @@ setMethod("textmodel", signature(x = "formula", y="missing", data="dfm", model =
 #' @return 
 #' Returns a list of named numeric vectors with the following elements:
 #' \describe{
-#' \item{\code{coef_features}}{coefficients estimated for each feature}
-#' \item{\code{coef_features_se}}{standard errors estimated for each feature-level point estimate}
-#' \item{\code{coef_documents}}{coefficients estimated for each document}
-#' \item{\code{coef_documents_se}}{standard errors estimated for each document-level point estimate}
+#' \item{\code{coef_feature}}{coefficients estimated for each feature}
+#' \item{\code{coef_feature_se}}{standard errors estimated for each feature-level point estimate}
+#' \item{\code{coef_document}}{coefficients estimated for each document}
+#' \item{\code{coef_document_se}}{standard errors estimated for each document-level point estimate}
+#' \item{\code{coef_document_offset}}{a document-level offset for applicable models}
+#' \item{\code{coef_feature_offset}}{a feature-level offset for applicable models}
 #' }
 #' An element that is not applicable for a particular object class will be \code{NULL}, 
 #' for instance \code{coef_documents} has no meaning for a fitted wordscores object.

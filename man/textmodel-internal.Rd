@@ -10,6 +10,8 @@
 \alias{print.textmodel_wordfish_fitted}
 \alias{show,textmodel_wordfish_fitted-method}
 \alias{show,textmodel_wordfish_predicted-method}
+\alias{coef,textmodel_wordfish_fitted-method}
+\alias{coefficients,textmodel_wordfish_fitted-method}
 \alias{textmodel_wordscores_fitted-class}
 \alias{textmodel_wordscores_predicted-class}
 \alias{predict.textmodel_wordscores_fitted}
@@ -30,6 +32,10 @@
 \S4method{show}{textmodel_wordfish_fitted}(object)
 
 \S4method{show}{textmodel_wordfish_predicted}(object)
+
+\S4method{coef}{textmodel_wordfish_fitted}(object, ...)
+
+\S4method{coefficients}{textmodel_wordfish_fitted}(object, ...)
 
 \method{predict}{textmodel_wordscores_fitted}(object, newdata = NULL,
   rescaling = c("none", "lbg", "mv"), level = 0.95,
