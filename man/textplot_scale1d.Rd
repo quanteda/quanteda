@@ -5,8 +5,8 @@
 \title{plot a fitted scaling model}
 \usage{
 textplot_scale1d(x, margin = c("documents", "features"), doclabels = NULL,
-  sort = TRUE, groups = NULL, rescaling = c("none", "mv", "lbg"),
-  highlighted = NULL, alpha = 0.7, highlighted_color = "black")
+  sort = TRUE, groups = NULL, highlighted = NULL, alpha = 0.7,
+  highlighted_color = "black")
 }
 \arguments{
 \item{x}{the fitted or predicted scaling model object to be plotted}
@@ -24,11 +24,6 @@ applies when \code{margin = "documents"}.}
 
 \item{groups}{optional grouping variable for sorting categories of the documents.
 Only applies when \code{margin = "documents"}.}
-
-\item{rescaling}{a vector for rescaling method for the document scores: 
-\code{"none"} for the default; \code{"lbg"} \code{"mv"} are options for 
-predicted Wordscores objects. 
-displayed in Wordscores "documents" plot}
 
 \item{highlighted}{a vector of feature names to draw attention to in a 
 feature plot; only applies if \code{margin = "features"}}
@@ -60,15 +55,15 @@ doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")),
 
 ## wordscores
 refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
-ws <- predict(textmodel(ie_dfm, refscores, model="wordscores", smooth=1), 
-              rescaling = c("lbg", "mv"))
+ws <- textmodel(ie_dfm, refscores, model="wordscores", smooth = 1)
+pred <- predict(ws)
+# plot estimated word positions
+textplot_scale1d(pred, margin = "features", 
+                 highlighted = c("minister", "have", "our", "budget"))
 # plot estimated document positions
-textplot_scale1d(ws, margin = "documents", rescaling = "lbg",
+textplot_scale1d(pred, margin = "documents",
                  doclabels = doclab,
                  groups = docvars(data_corpus_irishbudget2010, "party"))
-# plot estimated word positions
-textplot_scale1d(ws, margin = "features", 
-                 highlighted = c("minister", "have", "our", "budget"))
 
 ## wordfish
 wfm <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))

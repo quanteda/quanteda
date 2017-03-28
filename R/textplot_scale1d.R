@@ -26,10 +26,6 @@
 #' @param alpha A number between 0 and 1 (default 0.5) representing the level of
 #'   alpha transparency used to overplot feature names in a feature plot; only 
 #'   applies if \code{margin = "features"}
-#' @param rescaling a vector for rescaling method for the document scores: 
-#'   \code{"none"} for the default; \code{"lbg"} \code{"mv"} are options for 
-#'   predicted Wordscores objects. 
-#'   displayed in Wordscores "documents" plot
 #' @return a \pkg{ggplot2} object
 #' @export
 #' @references Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
@@ -44,15 +40,15 @@
 #' 
 #' ## wordscores
 #' refscores <- c(rep(NA, 4), -1, 1, rep(NA, 8))
-#' ws <- predict(textmodel(ie_dfm, refscores, model="wordscores", smooth=1), 
-#'               rescaling = c("lbg", "mv"))
+#' ws <- textmodel(ie_dfm, refscores, model="wordscores", smooth = 1)
+#' pred <- predict(ws)
+#' # plot estimated word positions
+#' textplot_scale1d(pred, margin = "features", 
+#'                  highlighted = c("minister", "have", "our", "budget"))
 #' # plot estimated document positions
-#' textplot_scale1d(ws, margin = "documents", rescaling = "lbg",
+#' textplot_scale1d(pred, margin = "documents",
 #'                  doclabels = doclab,
 #'                  groups = docvars(data_corpus_irishbudget2010, "party"))
-#' # plot estimated word positions
-#' textplot_scale1d(ws, margin = "features", 
-#'                  highlighted = c("minister", "have", "our", "budget"))
 #'
 #' ## wordfish
 #' wfm <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
@@ -69,7 +65,6 @@
 #'                                  "productivity", "deficit"))
 textplot_scale1d <- function(x, margin = c("documents", "features"), doclabels = NULL, 
                              sort = TRUE, groups = NULL, 
-                             rescaling  = c("none", "mv", "lbg"),
                              highlighted = NULL, alpha = 0.7, 
                              highlighted_color = "black") {
     UseMethod("textplot_scale1d")
@@ -84,16 +79,11 @@ textplot_scale1d <- function(x, margin = c("documents", "features"), doclabels =
 textplot_scale1d.textmodel_wordfish_fitted <- 
     function(x, margin = c("documents", "features"), doclabels = NULL, 
              sort = TRUE, groups = NULL, 
-             rescaling  = c("none", "mv", "lbg"),
              highlighted = NULL, alpha = 0.7, 
              highlighted_color = "black") {
         
         margin <- match.arg(margin)
-        rescaling <- match.arg(rescaling)
 
-        if (rescaling != "none") 
-            stop(rescaling, " is not a valid rescaling for wordfish objects")
-        
         if (margin == "documents") {
             n <- length(x@theta)
             if (is.null(doclabels)) 
@@ -170,12 +160,11 @@ textplot_scale1d.textmodel_wordfish_fitted <-
 textplot_scale1d.textmodel_wordscores_predicted <- 
     function(x, margin = c("documents", "features"), doclabels = NULL, 
              sort = TRUE, groups = NULL, 
-             rescaling  = c("none", "mv", "lbg"),
              highlighted = NULL, alpha = 0.7, 
              highlighted_color = "black") {
         
         margin <- match.arg(margin)
-        rescaling <- match.arg(rescaling)
+        rescaling <- "raw"
         
         if (margin == "documents") {
             textscore <- lower <- upper <- NULL
