@@ -50,8 +50,8 @@ setClass("textmodel_wordshoal_predicted",
 #'   \item{se.theta}{standard errors for theta-hats} \item{data}{corpus to which 
 #'   the model was fit}
 #' @details Returns estimates of relative author positions across the full corpus of texts.
-#' @references Benjamin E Lauderdale and Alexander Herzog.  2016. "A Scaling Model 
-#'   for Estimating Time-Series Party Positions from Texts." \emph{Political Analysis}.
+#' @references Benjamin E. Lauderdale and Alexander Herzog.  (forthcoming) "Measuring 
+#'    Political Positions from Legislative Speech." \emph{Political Analysis}.
 #' @author Benjamin Lauderdale and Kenneth Benoit
 #' @keywords textmodel experimental
 #' @examples
