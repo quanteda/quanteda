@@ -147,7 +147,8 @@ predict.textmodel_wordscores_fitted <-
              level=0.95, verbose = getOption("verbose"), ...) {    
     if (length(list(...)) > 0) 
         stop("Arguments:", names(list(...)), "not supported.\n")
-    rescaling <- match.arg(rescaling, several.ok=TRUE)
+    
+    rescaling <- match.arg(rescaling)
     
     if (!is.null(newdata))
         data <- newdata
@@ -194,7 +195,7 @@ predict.textmodel_wordscores_fitted <-
             (max(object@y, na.rm=TRUE) - min(object@y, na.rm=TRUE)) /
             (textscore_raw[upperIndex] - textscore_raw[lowerIndex]) +
             min(object@y, na.rm=TRUE)
-        result$textscore_mv <- textscore_mv
+        result$textscore_mv <- as.numeric(textscore_mv)
     } 
     
     if ("lbg" %in% rescaling) {
@@ -327,4 +328,43 @@ print.textmodel_wordscores_predicted <- function(x, ...) {
 }
 
 
+#' @rdname textmodel-internal
+#' @export
+setMethod("coef", signature(object = "textmodel_wordscores_fitted"),
+          function(object, ...) list(coef_feature = object@Sw,
+                                     coef_feature_se = NULL,
+                                     coef_document = NULL,
+                                     coef_document_se = NULL)
+)
 
+#' @rdname textmodel-internal
+#' @export
+setMethod("coefficients", signature(object = "textmodel_wordscores_fitted"),
+          function(object, ...) coef(object, ...))
+
+#' @rdname textmodel-internal
+#' @export
+setMethod("coef", signature(object = "textmodel_wordscores_predicted"),
+          function(object, ...) {
+              if ("textscore_mv" %in% names(object@textscores)) {
+                  coef_document <- object@textscores$textscore_mv
+                  coef_document_se <- NULL
+              } else if ("textscore_lbg" %in% names(object@textscores)) {
+                  coef_document <- object@textscores$textscore_lbg
+                  coef_document_se <- (object@textscores$textscore_lbg - object@textscores$textscore_lbg_lo) / 1.96
+              } else {
+                  coef_document <- object@textscores$textscore_raw
+                  coef_document_se <- object@textscores$textscore_raw_se
+              }
+              
+              list(coef_feature = object@Sw,
+                   coef_feature_se = NULL,
+                   coef_document = coef_document,
+                   coef_document_se = coef_document_se)
+          }
+)
+
+#' @rdname textmodel-internal
+#' @export
+setMethod("coefficients", signature(object = "textmodel_wordscores_predicted"),
+          function(object, ...) coef(object, ...))
