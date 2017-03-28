@@ -28,9 +28,6 @@
 #'   applies if \code{margin = "features"}
 #' @return a \pkg{ggplot2} object
 #' @export
-#' @references Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
-#'   for Estimating Time-Series Party Positions from Texts." \emph{American 
-#'   Journal of Political Science} 52(3):705-772.
 #' @author Kenneth Benoit, Stefan Müller, and Adam Obeng
 #' @keywords textplot
 #' @examples
@@ -52,12 +49,10 @@
 #'
 #' ## wordfish
 #' wfm <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
-#' 
 #' # plot estimated document positions
 #' textplot_scale1d(wfm, doclabels = doclab)
 #' textplot_scale1d(wfm, doclabels = doclab,
 #'                  groups = docvars(data_corpus_irishbudget2010, "party"))
-#' 
 #' # plot estimated word positions
 #' textplot_scale1d(wfm, margin = "features", 
 #'                  highlighted = c("government", "global", "children", 
@@ -76,185 +71,137 @@ textplot_scale1d <- function(x, margin = c("documents", "features"), doclabels =
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
 #' @importFrom ggplot2 facet_grid element_line
 #' @export
-textplot_scale1d.textmodel_wordfish_fitted <- 
-    function(x, margin = c("documents", "features"), doclabels = NULL, 
-             sort = TRUE, groups = NULL, 
-             highlighted = NULL, alpha = 0.7, 
-             highlighted_color = "black") {
-        
-        margin <- match.arg(margin)
+textplot_scale1d.textmodel_wordfish_fitted <-  function(x, 
+                                                        margin = c("documents", "features"), 
+                                                        doclabels = NULL, 
+                                                        sort = TRUE, groups = NULL, 
+                                                        highlighted = NULL, alpha = 0.7, 
+                                                        highlighted_color = "black") {
+    margin <- match.arg(margin)
+    if (is.null(doclabels)) doclabels <- x@docs
+    
+    if (margin == "documents") {
+        p <- textplot_scale1d_documents(coef(x)$coef_document, coef(x)$coef_document_se, 
+                                        doclabels = doclabels, sort = sort, groups = groups) +
+            ylab("Estimated theta")
+    } else if (margin == "features") {
+        p <- textplot_scale1d_features(coef(x)$coef_feature, 
+                                       weight = coef(x)$coef_feature_offset, 
+                                       featlabels = x@features,
+                                       highlighted = highlighted, alpha = alpha,
+                                       highlighted_color = highlighted_color) +
+            xlab("Estimated beta") +
+            ylab("Estimated psi")
+    } 
+    apply_theme(p)
+} 
 
-        if (margin == "documents") {
-            n <- length(x@theta)
-            if (is.null(doclabels)) 
-                doclabels <- x@docs
-            stopifnot(length(doclabels) == n)
-            
-            if (sort & !is.null(groups)) {
-                temp_medians <- aggregate(x@theta, list(groups), median, na.rm = TRUE)
-                groups <- factor(groups, levels = temp_medians[order(temp_medians$x, decreasing = TRUE), 1])
-            }
-            
-            theta <- lower <- upper <- NULL
-            results <- data.frame(doclabels = doclabels, 
-                                  theta = x@theta, 
-                                  lower = x@theta - 1.96 * x@se.theta, 
-                                  upper = x@theta + 1.96 * x@se.theta)
-            if (!is.null(groups))
-                results$groups <- groups
-            
-            p <- if (sort) {
-                ggplot(data = results, aes(x = reorder(doclabels, theta), y = theta))
-            } else {
-                ggplot(data = results, aes(x = doclabels, y = theta))
-            }
-            p <- p + 
-                coord_flip() + 
-                { if (!is.null(groups))
-                    facet_grid(as.factor(groups) ~ ., scales = "free_y", space = "free") } +       
-                geom_pointrange(aes(ymin = lower, ymax = upper), lwd = .25, fatten = .4) + 
-                geom_point(size = 1) +
-                ylab("Estimated theta") + 
-                xlab(NULL)
-            
-            
-        } else {
-            beta <- psi <- feature <- NULL
-            results <- data.frame(feature = x@features, 
-                                  psi = x@psi,
-                                  beta = x@beta)
-            p <- 
-                ggplot(data = results,
-                       aes(x = beta, y = psi, label = feature)) + 
-                geom_text(colour = "grey70") +
-                geom_text(aes(beta, psi, label = feature), 
-                          data = results[results$feature %in% highlighted,],
-                          color = highlighted_color) +
-                xlab("Beta") +
-                ylab("Psi") + 
-                theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-        }
-        
-        # apply a minimal theme
-        p <- p + 
-            theme_bw() + 
-            theme(panel.background = ggplot2::element_blank(),
-                  panel.grid.major.x = element_blank(),
-                  panel.grid.minor.x = element_blank(), 
-                  # panel.grid.major.y = element_blank(),
-                  panel.grid.minor.y = element_blank(), 
-                  plot.background = element_blank(),
-                  axis.ticks.y = element_blank(), 
-                  # panel.spacing = grid::unit(0.1, "lines"),
-                  panel.grid.major.y = element_line(linetype = "dotted"))
-        
-        suppressMessages(p)
-    }
-
+     
 #' @noRd
 #' @importFrom stats reorder aggregate
 #' @importFrom ggplot2 ggplot aes geom_point element_blank geom_pointrange 
 #' @importFrom ggplot2 coord_flip xlab ylab theme_bw geom_text theme geom_point
 #' @importFrom ggplot2 facet_grid element_line
 #' @export
-textplot_scale1d.textmodel_wordscores_predicted <- 
-    function(x, margin = c("documents", "features"), doclabels = NULL, 
-             sort = TRUE, groups = NULL, 
-             highlighted = NULL, alpha = 0.7, 
-             highlighted_color = "black") {
+textplot_scale1d.textmodel_wordscores_predicted <- function(x, 
+                                                            margin = c("documents", "features"), 
+                                                            doclabels = NULL, 
+                                                            sort = TRUE, groups = NULL, 
+                                                            highlighted = NULL, alpha = 0.7, 
+                                                            highlighted_color = "black") {
+    margin <- match.arg(margin)
+    if (is.null(doclabels)) doclabels <- docnames(x@newdata)
+    
+    if (margin == "documents") {
+        p <- textplot_scale1d_documents(coef(x)$coef_document, coef(x)$coef_document_se, 
+                                        doclabels = doclabels, sort = sort, groups = groups) +
+            
+              ylab("Document position")
         
-        margin <- match.arg(margin)
-        rescaling <- "raw"
-        
-        if (margin == "documents") {
-            textscore <- lower <- upper <- NULL
-            n <- length(x@textscores$textscore_raw)
-            if (is.null(doclabels))
-                doclabels <- x@newdata@Dimnames$docs
-            stopifnot(length(doclabels) == n)
-            
-            if (sort & !is.null(groups)) {
-                temp_medians <- aggregate(x@textscores$textscore_raw, list(groups), median, na.rm = TRUE)
-                groups <- factor(groups, levels = temp_medians[order(temp_medians$x, decreasing = TRUE), 1])
-            }
-            
-            if (rescaling == "raw") {
-                textscore_raw <- textscore_raw_lo <- textscore_raw_hi <- NULL
-                textscore_lbg <- textscore_lbg_lo <- textscore_lbg_hi <- NULL
-                
-                results <- data.frame(doclabels = doclabels, 
-                                      textscore = x@textscores$textscore_raw, 
-                                      lower = x@textscores$textscore_raw_lo, 
-                                      upper = x@textscores$textscore_raw_hi)
-            }
-            
-            if (rescaling == "lbg") {
-                textscore_lbg <- textscore_lbg_lo <- textscore_lbg_hi <- NULL
-                results <- data.frame(doclabels = doclabels, 
-                                      textscore = x@textscores$textscore_lbg, 
-                                      lower = x@textscores$textscore_lbg_lo, 
-                                      upper = x@textscores$textscore_lbg_hi)
-            }
-            
-            if (rescaling == "mv"){
-                textscore_mv <- textscore_mv_lo <- textscore_mv_hi <- NULL
-                results <- data.frame(doclabels = doclabels, 
-                                      textscore = x@textscores$textscore_mv)
-            }
-            if (!is.null(groups))
-                results$groups <- groups
-            
-            p <- if (sort) {
-                ggplot(data = results, aes(x = reorder(doclabels, textscore), y = textscore))
-            } else {
-                ggplot(data = results, aes(x = doclabels, y = textscore))
-            }
-            p <- p + 
-                coord_flip() + 
-                { if (!is.null(groups))
-                    facet_grid(as.factor(groups) ~ ., scales = "free_y", space = "free") } +  
-                    { if (rescaling != "mv")
-                        geom_pointrange(aes(ymin = lower, ymax = upper), lwd = .25, fatten = .4) } +
-                geom_point(size = 1) +
-                { if (rescaling == "raw")
-                    ylab("Estimated textscore") } +
-                    { if (rescaling == "lbg")
-                        ylab("Estimated textscore (LBG transformation)") } +
-                        { if (rescaling == "mv")
-                            ylab("Estimated textscore (MV transformation)") } + 
-                xlab(NULL)
-            
-        } else {
-            frequency <- frequency_log <- lower <- upper <- word_scores <- feature <- NULL
-            results <- data.frame(frequency_log = log(colSums(x@newdata)),
-                                  word_scores = x@Sw)
-            results$feature <- rownames(results) 
-            
-            p <-
-                ggplot(data = results,
-                       aes(x = word_scores, y = frequency_log, label = feature)) +
-                geom_text(colour = "grey70") +
-                geom_text(aes(word_scores, frequency_log, label = feature),
-                          data = results[results$feature %in% highlighted,],
-                          color = highlighted_color) +
-                xlab("Word score") +
-                ylab("Log frequency of words") +
-                theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-        }
-        
-        # apply a minimal theme
-        p <- p + 
-            theme_bw() + 
-            theme(panel.background = ggplot2::element_blank(),
-                  panel.grid.major.x = element_blank(),
-                  panel.grid.minor.x = element_blank(), 
-                  # panel.grid.major.y = element_blank(),
-                  panel.grid.minor.y = element_blank(), 
-                  plot.background = element_blank(),
-                  axis.ticks.y = element_blank(), 
-                  # panel.spacing = grid::unit(0.1, "lines"),
-                  panel.grid.major.y = element_line(linetype = "dotted"))
-        
-        suppressMessages(p)
-    }
+    } else if (margin == "features") {
+        p <- textplot_scale1d_features(x@Sw, 
+                                       weight = log(colSums(x@x[, names(x@Sw)])),
+                                       featlabels = featnames(x@x[, names(x@Sw)]),
+                                       highlighted = highlighted, alpha = alpha,
+                                       highlighted_color = highlighted_color) +
+            xlab("Word score") +
+            ylab("log(term frequency)") 
+    } 
+    apply_theme(p)
+}
 
+
+##
+## internal function to plot document scaling
+##
+textplot_scale1d_documents <- function(x, se, doclabels, sort = TRUE, groups = NULL) {
+
+    if (!is.null(doclabels))
+        stopifnot(length(doclabels) == length(x))
+    
+    if (sort & !is.null(groups)) {
+        temp_medians <- aggregate(x, list(groups), median, na.rm = TRUE)
+        groups <- factor(groups, levels = temp_medians[order(temp_medians$x, decreasing = TRUE), 1])
+    }
+    
+    theta <- lower <- upper <- NULL
+    results <- data.frame(doclabels = doclabels, 
+                          theta = x, 
+                          lower = x - 1.96 * se, 
+                          upper = x + 1.96 * se)
+    if (!is.null(groups))
+        results$groups <- groups
+    
+    p <- if (sort) {
+        ggplot(data = results, aes(x = reorder(doclabels, theta), y = theta))
+    } else {
+        ggplot(data = results, aes(x = doclabels, y = theta))
+    }
+    
+    p <- p + 
+        coord_flip() + 
+        { if (!is.null(groups))
+            facet_grid(as.factor(groups) ~ ., scales = "free_y", space = "free") } +       
+        geom_pointrange(aes(ymin = lower, ymax = upper), lwd = .25, fatten = .4) + 
+        geom_point(size = 1) +
+        xlab(NULL)
+    p
+}
+
+##
+## internal function to plot document scaling
+##
+textplot_scale1d_features <- function(x, weight, featlabels,
+                                      highlighted = NULL, alpha = 0.7, 
+                                      highlighted_color = "black") {
+        
+    beta <- psi <- feature <- NULL
+    results <- data.frame(feature = featlabels, 
+                          psi = weight,
+                          beta = x)
+    p <- ggplot(data = results, aes(x = beta, y = psi, label = feature)) + 
+        geom_text(colour = "grey70") +
+        geom_text(aes(beta, psi, label = feature), 
+                  data = results[results$feature %in% highlighted,],
+                  color = highlighted_color) +
+        xlab("Beta") +
+        ylab("Psi") + 
+        theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+    p
+}
+
+##
+## common minimal B&W theme
+##
+apply_theme <- function(p) {
+    p + theme_bw() + 
+        theme(panel.background = ggplot2::element_blank(),
+              panel.grid.major.x = element_blank(),
+              panel.grid.minor.x = element_blank(), 
+              # panel.grid.major.y = element_blank(),
+              panel.grid.minor.y = element_blank(), 
+              plot.background = element_blank(),
+              axis.ticks.y = element_blank(), 
+              # panel.spacing = grid::unit(0.1, "lines"),
+              panel.grid.major.y = element_line(linetype = "dotted"))
+}

@@ -67,12 +67,10 @@ textplot_scale1d(pred, margin = "documents",
 
 ## wordfish
 wfm <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
-
 # plot estimated document positions
 textplot_scale1d(wfm, doclabels = doclab)
 textplot_scale1d(wfm, doclabels = doclab,
                  groups = docvars(data_corpus_irishbudget2010, "party"))
-
 # plot estimated word positions
 textplot_scale1d(wfm, margin = "features", 
                  highlighted = c("government", "global", "children", 
