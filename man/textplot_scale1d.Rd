@@ -77,10 +77,9 @@ textplot_scale1d(wfm, margin = "features",
                                  "bank", "economy", "the", "citizenship",
                                  "productivity", "deficit"))
 }
-\references{
-Jonathan Slapin and Sven-Oliver Proksch.  2008. "A Scaling Model 
-  for Estimating Time-Series Party Positions from Texts." \emph{American 
-  Journal of Political Science} 52(3):705-772.
+\seealso{
+\code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
+  \code{\link{coef.textmodel}}
 }
 \author{
 Kenneth Benoit, Stefan Müller, and Adam Obeng

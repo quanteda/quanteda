@@ -29,6 +29,8 @@
 #' @return a \pkg{ggplot2} object
 #' @export
 #' @author Kenneth Benoit, Stefan Müller, and Adam Obeng
+#' @seealso \code{\link{textmodel_wordfish}}, \code{\link{textmodel_wordscores}}, 
+#'   \code{\link{coef.textmodel}}
 #' @keywords textplot
 #' @examples
 #' ie_dfm <- dfm(data_corpus_irishbudget2010)
