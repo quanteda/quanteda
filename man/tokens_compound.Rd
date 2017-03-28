@@ -67,7 +67,7 @@ tokens_compound(toks, myDict)
 
 # with collocations
 #cols <- textstat_collocations("capital gains taxes are worse than inheritance taxes", 
-                              size = 2, min_count = 1)
+#                              size = 2, min_count = 1)
 #toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
 #tokens_compound(toks, cols)
 }
